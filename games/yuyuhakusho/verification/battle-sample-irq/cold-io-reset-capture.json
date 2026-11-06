@@ -1,0 +1,37 @@
+{
+  "pass": true,
+  "cases": 288,
+  "steps": 108576,
+  "cross_core_equal": true,
+  "observer_on_off_equal": true,
+  "no_unexpected_RAM_writes": true,
+  "input_scope": "settled virtual MD6 devices, two ports; direct or four-MD6 TeamPlayer; physically valid D-pad directions",
+  "cores": {
+    "original": {
+      "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+      "core_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+      "core_name": "Genesis Plus GX",
+      "core_version": "v1.7.4 60bee4c",
+      "fps": 59.92274340431231,
+      "ram_bytes": 65536,
+      "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+      "teamplayer": false
+    },
+    "observed": {
+      "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+      "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+      "core_name": "Genesis Plus GX",
+      "core_version": "v1.7.460bee4c",
+      "fps": 59.92274340431231,
+      "ram_bytes": 65536,
+      "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+      "teamplayer": false
+    }
+  },
+  "fixture_sha256": "8f1cd113ea2c7edc1d93c3f429b032e98b326e19070084482777e14eda916829",
+  "source_sha256": {
+    "scripts/yuyuhakusho/capture_controller_scan_work.py": "1edc3cefc30bdb089439ccc8f223f2fb2401e60d05591789e768535513ec5d57",
+    "scripts/yuyuhakusho/controller-scan-io.c": "92a98d9d6a59b931f0905a039d78e46fe494576dc4deeb96cd59d653f3ac4617"
+  },
+  "scope": "Complete original 2514 through real return. No CPU/ROM or trace playback in production."
+}

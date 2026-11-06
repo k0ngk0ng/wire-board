@@ -1,0 +1,11 @@
+{
+  "test_first": true,
+  "production_exists": false,
+  "files": {
+    "games/yuyuhakusho/audio/scoreclock/battle_sample_prefix_e2e_test.go": "dce6a3c836b1b097c4f0da8c45583c2786fadc656290e6bc2f84bf35c56f442c",
+    "games/yuyuhakusho/audio/scoreclock/battle_sample_runtime_e2e_test.go": "316e208ffd9dba9e2d25f48c4a6eb716654cee43739fbc972b14c769479b38d7",
+    "scripts/yuyuhakusho/extract_battle_prefix_fixture.py": "d9ff4548447ce8750a856bbe61f2b1382bb76abc708e51caa9787a3930262fe7",
+    "games/yuyuhakusho/verification/battle-sample-irq/portable-battle-prefix.json.gz": "3d8a4d237ea741b3b6323b7a68733da14c2ac152f214ebd1f49884d8bb55f6e5",
+    "games/yuyuhakusho/verification/battle-sample-irq/portable-export.json": "03836a3763e4b2a20487dc111e6c522e6cefb8fc9b9332e9b5c4c29ef45139a5"
+  }
+}

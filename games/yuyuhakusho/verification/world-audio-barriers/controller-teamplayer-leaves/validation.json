@@ -1,0 +1,45 @@
+{
+  "pass": true,
+  "scope": "Static instructions only; direct Ghidra raw-68000 route, not REA-native decompilation or observed execution",
+  "command": [
+    "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/nes-basket/tools/ghidra_12.1.4_PUBLIC/support/analyzeHeadless",
+    "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/docs/research/md-yuyuhakusho/static-work/world-audio-irq-controller-teamplayer-leaves",
+    "world_audio_irq_setup",
+    "-import",
+    "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/downloads/yuyuhakusho-jp.bin",
+    "-loader",
+    "BinaryLoader",
+    "-loader-baseAddr",
+    "0",
+    "-processor",
+    "68000:BE:32:default",
+    "-noanalysis",
+    "-scriptPath",
+    "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/static",
+    "-postScript",
+    "MdControlProbe.java",
+    "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/games/yuyuhakusho/verification/world-audio-barriers/controller-teamplayer-leaves/vdp-and-irq-setup.txt",
+    "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho",
+    "2a06,2a08,2a6a,2afc:2a06:2c1d",
+    "2d1c:2d1c:2d1f",
+    "-deleteProject",
+    "-log",
+    "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/games/yuyuhakusho/verification/world-audio-barriers/controller-teamplayer-leaves/ghidra.log",
+    "-scriptlog",
+    "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/games/yuyuhakusho/verification/world-audio-barriers/controller-teamplayer-leaves/ghidra-script.log"
+  ],
+  "output_sha256": "0074064e2e94540784afe53ed61334dc3bcd861fdf19bf8218fd01f9b8374181",
+  "source_sha256": {
+    "scripts/yuyuhakusho/static/MdControlProbe.java": "44903c14bfe5a1ffc354e4fab1eb5893303081bbe55aa9f620808daf4ebe18a8",
+    "scripts/yuyuhakusho/probe_world_irq_static.py": "f8ae09b345b06a7fb8d5ef2cf15d2f2481e13cefddebfdd583110a25a68aa41a",
+    ".local/md-yuyuhakusho/downloads/yuyuhakusho-jp.bin": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06"
+  },
+  "settings": {
+    "user.home": ".local/md-yuyuhakusho/world-audio-irq-controller-teamplayer-leaves/home",
+    "java.io.tmpdir": ".local/md-yuyuhakusho/world-audio-irq-controller-teamplayer-leaves/tmp",
+    "application.settingsdir": ".local/md-yuyuhakusho/world-audio-irq-controller-teamplayer-leaves/config",
+    "application.cachedir": ".local/md-yuyuhakusho/world-audio-irq-controller-teamplayer-leaves/cache",
+    "application.tempdir": ".local/md-yuyuhakusho/world-audio-irq-controller-teamplayer-leaves/tmp"
+  },
+  "output": "games/yuyuhakusho/verification/world-audio-barriers/controller-teamplayer-leaves/vdp-and-irq-setup.txt"
+}

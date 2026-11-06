@@ -1,0 +1,57 @@
+2026-11-07 01:48:16 INFO  (LoggingInitialization) Using log config file: jar:file:/Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/nes-basket/tools/ghidra_12.1.4_PUBLIC/Ghidra/Framework/Generic/lib/Generic.jar!/generic.log4j.xml  
+2026-11-07 01:48:16 INFO  (LoggingInitialization) Using log file: /Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/games/yuyuhakusho/verification/world-audio-barriers/controller-scan/ghidra.log  
+2026-11-07 01:48:16 DEBUG (GhidraObjectInputFilter) Including serial input filter: FileSystem/data/client.rmi.serial.filter  
+2026-11-07 01:48:16 INFO  (Preferences) Loading user preferences: /Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/world-audio-irq-controller-scan/config/jason-ghidra/ghidra_12.1.4_PUBLIC/preferences  
+2026-11-07 01:48:16 INFO  (ClassSearcher) Searching for classes...  
+2026-11-07 01:48:16 INFO  (ClassSearcher) Class search complete (479 ms)  
+2026-11-07 01:48:16 INFO  (DefaultSSLContextInitializer) Initializing SSL Context  
+2026-11-07 01:48:16 INFO  (SecureRandomFactory) Initializing Random Number Generator...  
+2026-11-07 01:48:16 INFO  (SecureRandomFactory) Random Number Generator initialization complete: NativePRNGNonBlocking  
+2026-11-07 01:48:16 INFO  (DefaultTrustManagerFactory) Trust manager disabled, cacerts have not been set  
+2026-11-07 01:48:16 INFO  (FileCacheMaintenanceDaemon) Starting cache cleanup: /Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/world-audio-irq-controller-scan/cache/jason-ghidra/fscache2  
+2026-11-07 01:48:16 INFO  (FileCacheMaintenanceDaemon) Finished cache cleanup, estimated storage used: 0  
+2026-11-07 01:48:17 INFO  (AnalyzeHeadless) Headless startup complete (1479 ms)  
+2026-11-07 01:48:17 INFO  (ClassSearcher) Class searcher loaded 93 extension points (46 false positives)  
+2026-11-07 01:48:17 INFO  (HeadlessAnalyzer) HEADLESS Script Paths:
+    /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/nes-basket/tools/ghidra_12.1.4_PUBLIC/Ghidra/Features/FileFormats/ghidra_scripts
+    /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/nes-basket/tools/ghidra_12.1.4_PUBLIC/Ghidra/Debug/Debugger/ghidra_scripts
+    /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/nes-basket/tools/ghidra_12.1.4_PUBLIC/Ghidra/Features/DecompilerDependent/ghidra_scripts
+    /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/nes-basket/tools/ghidra_12.1.4_PUBLIC/Ghidra/Features/PyGhidra/ghidra_scripts
+    /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/nes-basket/tools/ghidra_12.1.4_PUBLIC/Ghidra/Processors/8051/ghidra_scripts
+    /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/nes-basket/tools/ghidra_12.1.4_PUBLIC/Ghidra/Features/Base/ghidra_scripts
+    /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/nes-basket/tools/ghidra_12.1.4_PUBLIC/Ghidra/Processors/DATA/ghidra_scripts
+    /Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/static
+    /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/nes-basket/tools/ghidra_12.1.4_PUBLIC/Ghidra/Features/SwiftDemangler/ghidra_scripts
+    /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/nes-basket/tools/ghidra_12.1.4_PUBLIC/Ghidra/Debug/Debugger-rmi-trace/ghidra_scripts
+    /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/nes-basket/tools/ghidra_12.1.4_PUBLIC/Ghidra/Features/VersionTracking/ghidra_scripts
+    /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/nes-basket/tools/ghidra_12.1.4_PUBLIC/Ghidra/Features/Decompiler/ghidra_scripts
+    /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/nes-basket/tools/ghidra_12.1.4_PUBLIC/Ghidra/Features/WildcardAssembler/ghidra_scripts
+    /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/nes-basket/tools/ghidra_12.1.4_PUBLIC/Ghidra/Processors/Atmel/ghidra_scripts
+    /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/nes-basket/tools/ghidra_12.1.4_PUBLIC/Ghidra/Features/FunctionID/ghidra_scripts
+    /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/nes-basket/tools/ghidra_12.1.4_PUBLIC/Ghidra/Processors/PIC/ghidra_scripts
+    /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/nes-basket/tools/ghidra_12.1.4_PUBLIC/Ghidra/Features/SystemEmulation/ghidra_scripts
+    /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/nes-basket/tools/ghidra_12.1.4_PUBLIC/Ghidra/Processors/JVM/ghidra_scripts
+    /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/nes-basket/tools/ghidra_12.1.4_PUBLIC/Ghidra/Features/GnuDemangler/ghidra_scripts
+    /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/nes-basket/tools/ghidra_12.1.4_PUBLIC/Ghidra/Features/BytePatterns/ghidra_scripts
+    /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/nes-basket/tools/ghidra_12.1.4_PUBLIC/Ghidra/Features/MicrosoftCodeAnalyzer/ghidra_scripts
+    /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/nes-basket/tools/ghidra_12.1.4_PUBLIC/Ghidra/Features/PDB/ghidra_scripts
+    /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/nes-basket/tools/ghidra_12.1.4_PUBLIC/Ghidra/Features/BSim/ghidra_scripts  
+2026-11-07 01:48:17 INFO  (HeadlessAnalyzer) HEADLESS: execution starts  
+2026-11-07 01:48:17 INFO  (HeadlessAnalyzer) Creating temporary project: /Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/docs/research/md-yuyuhakusho/static-work/world-audio-irq-controller-scan/world_audio_irq_setup  
+2026-11-07 01:48:17 DEBUG (DefaultProjectManager) No tools found; Installing default tools  
+2026-11-07 01:48:17 DEBUG (DefaultProjectManager) 	no recent project directories found  
+2026-11-07 01:48:17 INFO  (DefaultProject) Creating project: /Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/docs/research/md-yuyuhakusho/static-work/world-audio-irq-controller-scan/world_audio_irq_setup  
+2026-11-07 01:48:17 INFO  (HeadlessAnalyzer) REPORT: Processing input files:   
+2026-11-07 01:48:17 INFO  (HeadlessAnalyzer)      project: /Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/docs/research/md-yuyuhakusho/static-work/world-audio-irq-controller-scan/world_audio_irq_setup  
+2026-11-07 01:48:17 INFO  (HeadlessAnalyzer) IMPORTING: file:///Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/downloads/yuyuhakusho-jp.bin  
+2026-11-07 01:48:17 INFO  (ProgramLoader) Successfully applied "-loader-baseAddr" to "Base Address" (old: "null", new: "0")  
+2026-11-07 01:48:17 INFO  (ProgramLoader) Using Loader: Raw Binary  
+2026-11-07 01:48:17 INFO  (ProgramLoader) Using Language/Compiler: 68000:BE:32:default:default  
+2026-11-07 01:48:17 INFO  (ProgramLoader) Using Library Search Path: [., /System/Library/dyld/dyld_shared_cache_arm64e, /System/Library/dyld/dyld_shared_cache_x86_64, /System/Library/dyld/dyld_shared_cache_x86_64h, /System/Cryptexes/OS/System/Library/dyld/dyld_shared_cache_arm64e, /System/Cryptexes/OS/System/Library/dyld/dyld_shared_cache_x86_64, /System/Cryptexes/OS/System/Library/dyld/dyld_shared_cache_x86_64h, /Users/jason/Library/Java/Extensions, /Library/Java/Extensions, /Network/Library/Java/Extensions, /System/Library/Java/Extensions, /usr/lib/java]  
+2026-11-07 01:48:17 INFO  (HeadlessAnalyzer) IMPORTING: Loaded 0 additional files  
+2026-11-07 01:48:17 INFO  (HeadlessAnalyzer) REPORT: Execute script: MdControlProbe.java '/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/games/yuyuhakusho/verification/world-audio-barriers/controller-scan/vdp-and-irq-setup.txt' '/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho' '25d4:25d4:2693' '2694:2694:2837' '2838:2838:2c1d' '2514,2c1e:2514:2c6b'   
+2026-11-07 01:48:18 INFO  (HeadlessAnalyzer) SCRIPT: /Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/static/MdControlProbe.java  
+2026-11-07 01:48:18 INFO  (GhidraScript) MdControlProbe.java> Wrote /Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/games/yuyuhakusho/verification/world-audio-barriers/controller-scan/vdp-and-irq-setup.txt  
+2026-11-07 01:48:18 INFO  (LocalFileSystem) /yuyuhakusho-jp.bin: file created (jason)  
+2026-11-07 01:48:18 INFO  (HeadlessAnalyzer) REPORT: Save succeeded for: /yuyuhakusho-jp.bin (world_audio_irq_setup:/yuyuhakusho-jp.bin)  
+2026-11-07 01:48:18 INFO  (HeadlessAnalyzer) REPORT: Import succeeded  

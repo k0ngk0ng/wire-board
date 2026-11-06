@@ -50,6 +50,11 @@ func advanceSoundIRQ(clock Clock, state *engine.SoundSchedulerState, root *rootc
 	if limits.MaxOperations == 0 {
 		s.limit = 65536
 	}
+	return advanceSoundIRQOnService(s, state, root, owners, input, library, catchup)
+}
+
+func advanceSoundIRQOnService(s *service, state *engine.SoundSchedulerState, root *rootcontrol.State, owners rootcontrol.RuleOwners, input rootcontrol.RuleInput, library *resourcebridge.Library, catchup bool) (SoundIRQResult, error) {
+	var err error
 	r := &soundIRQClock{s: s, state: state, queue: owners.Queue, result: SoundIRQResult{Entries: []Clock{}, Drivers: []DriverResult{}, SchedulerFields: []SchedulerField{}, RequestFields: []QueueField{}}}
 	for {
 		var drive bool

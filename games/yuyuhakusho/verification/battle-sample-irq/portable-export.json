@@ -1,0 +1,2741 @@
+{
+  "pass": true,
+  "cases": 23,
+  "cpu_steps": 14282,
+  "io_operations": 3816,
+  "auxiliary_inputs": 285,
+  "scope": "Clock/VDP prefix oracle with explicitly observed external line-end main delay feedback. Does not prove independent PCM/DMA feedback. Source PCs/opcodes are provenance only.",
+  "costs": {
+    "0xfff000": {
+      "source_pc": 16773120,
+      "opcode": 124,
+      "handler": "m68k_op_ori_16_tos",
+      "base_cycles": 20,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        20
+      ]
+    },
+    "0xfff004": {
+      "source_pc": 16773124,
+      "opcode": 3192,
+      "handler": "m68k_op_cmpi_16_aw",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    },
+    "0xfff00a": {
+      "source_pc": 16773130,
+      "opcode": 26368,
+      "handler": "m68k_op_beq_16",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0xfff00e": {
+      "source_pc": 16773134,
+      "opcode": 28160,
+      "handler": "m68k_op_bgt_16",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0xfff012": {
+      "source_pc": 16773138,
+      "opcode": 13308,
+      "handler": "m68k_op_move_16_al_i",
+      "base_cycles": 20,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        20
+      ]
+    },
+    "0xfff01a": {
+      "source_pc": 16773146,
+      "opcode": 21624,
+      "handler": "m68k_op_addq_16_aw",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    },
+    "0xfff01e": {
+      "source_pc": 16773150,
+      "opcode": 18663,
+      "handler": "m68k_op_movem_32_re_pd",
+      "base_cycles": 8,
+      "internal_cycles": 112,
+      "observed_cpu_cycles": [
+        120
+      ]
+    },
+    "0xfff022": {
+      "source_pc": 16773154,
+      "opcode": 19000,
+      "handler": "m68k_op_tst_8_aw",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0xfff026": {
+      "source_pc": 16773158,
+      "opcode": 27234,
+      "handler": "m68k_op_bpl_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0xfff028": {
+      "source_pc": 16773160,
+      "opcode": 4156,
+      "handler": "m68k_op_move_8_d_i",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0xfff02c": {
+      "source_pc": 16773164,
+      "opcode": 16889,
+      "handler": "m68k_op_lea_32_al",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0xfff032": {
+      "source_pc": 16773170,
+      "opcode": 45072,
+      "handler": "m68k_op_cmp_8_ai",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0xfff034": {
+      "source_pc": 16773172,
+      "opcode": 25340,
+      "handler": "m68k_op_bhi_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8,
+        10
+      ]
+    },
+    "0xfff036": {
+      "source_pc": 16773174,
+      "opcode": 45072,
+      "handler": "m68k_op_cmp_8_ai",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0xfff038": {
+      "source_pc": 16773176,
+      "opcode": 25336,
+      "handler": "m68k_op_bhi_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0xfff03a": {
+      "source_pc": 16773178,
+      "opcode": 12348,
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0xfff03e": {
+      "source_pc": 16773182,
+      "opcode": 20936,
+      "handler": "m68k_op_dbf_16",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10,
+        14
+      ]
+    },
+    "0xfff042": {
+      "source_pc": 16773186,
+      "opcode": 16889,
+      "handler": "m68k_op_lea_32_al",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0xfff048": {
+      "source_pc": 16773192,
+      "opcode": 2296,
+      "handler": "m68k_op_bset_8_s_aw",
+      "base_cycles": 20,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        20
+      ]
+    },
+    "0xfff04e": {
+      "source_pc": 16773198,
+      "opcode": 12344,
+      "handler": "m68k_op_move_16_d_aw",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0xfff052": {
+      "source_pc": 16773202,
+      "opcode": 12416,
+      "handler": "m68k_op_move_16_ai_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0xfff054": {
+      "source_pc": 16773204,
+      "opcode": 4156,
+      "handler": "m68k_op_move_8_d_i",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0xfff058": {
+      "source_pc": 16773208,
+      "opcode": 16889,
+      "handler": "m68k_op_lea_32_al",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0xfff05e": {
+      "source_pc": 16773214,
+      "opcode": 45072,
+      "handler": "m68k_op_cmp_8_ai",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0xfff060": {
+      "source_pc": 16773216,
+      "opcode": 25340,
+      "handler": "m68k_op_bhi_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8,
+        10
+      ]
+    },
+    "0xfff062": {
+      "source_pc": 16773218,
+      "opcode": 45072,
+      "handler": "m68k_op_cmp_8_ai",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0xfff064": {
+      "source_pc": 16773220,
+      "opcode": 25336,
+      "handler": "m68k_op_bhi_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0xfff066": {
+      "source_pc": 16773222,
+      "opcode": 12348,
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0xfff06a": {
+      "source_pc": 16773226,
+      "opcode": 20936,
+      "handler": "m68k_op_dbf_16",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10,
+        14
+      ]
+    },
+    "0xfff06e": {
+      "source_pc": 16773230,
+      "opcode": 16889,
+      "handler": "m68k_op_lea_32_al",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0xfff074": {
+      "source_pc": 16773236,
+      "opcode": 17401,
+      "handler": "m68k_op_lea_32_al",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0xfff07a": {
+      "source_pc": 16773242,
+      "opcode": 12857,
+      "handler": "m68k_op_move_16_d_al",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    },
+    "0xfff080": {
+      "source_pc": 16773248,
+      "opcode": 9276,
+      "handler": "m68k_op_move_32_d_i",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0xfff086": {
+      "source_pc": 16773254,
+      "opcode": 8322,
+      "handler": "m68k_op_move_32_ai_d",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0xfff088": {
+      "source_pc": 16773256,
+      "opcode": 12929,
+      "handler": "m68k_op_move_16_ai_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0xfff08a": {
+      "source_pc": 16773258,
+      "opcode": 20153,
+      "handler": "m68k_op_jsr_32_al",
+      "base_cycles": 20,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        20
+      ]
+    },
+    "0x2514": {
+      "source_pc": 9492,
+      "opcode": 16888,
+      "handler": "m68k_op_lea_32_aw",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2518": {
+      "source_pc": 9496,
+      "opcode": 12348,
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x251c": {
+      "source_pc": 9500,
+      "opcode": 29184,
+      "handler": "m68k_op_moveq_32",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x251e": {
+      "source_pc": 9502,
+      "opcode": 8385,
+      "handler": "m68k_op_move_32_pi_d",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2520": {
+      "source_pc": 9504,
+      "opcode": 8385,
+      "handler": "m68k_op_move_32_pi_d",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2522": {
+      "source_pc": 9506,
+      "opcode": 8385,
+      "handler": "m68k_op_move_32_pi_d",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2524": {
+      "source_pc": 9508,
+      "opcode": 8385,
+      "handler": "m68k_op_move_32_pi_d",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2526": {
+      "source_pc": 9510,
+      "opcode": 20936,
+      "handler": "m68k_op_dbf_16",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10,
+        14
+      ]
+    },
+    "0x252a": {
+      "source_pc": 9514,
+      "opcode": 16888,
+      "handler": "m68k_op_lea_32_aw",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x252e": {
+      "source_pc": 9518,
+      "opcode": 17401,
+      "handler": "m68k_op_lea_32_al",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2534": {
+      "source_pc": 9524,
+      "opcode": 24842,
+      "handler": "m68k_op_bsr_8",
+      "base_cycles": 18,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        18
+      ]
+    },
+    "0x2540": {
+      "source_pc": 9536,
+      "opcode": 4988,
+      "handler": "m68k_op_move_8_di_i",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    },
+    "0x2546": {
+      "source_pc": 9542,
+      "opcode": 4988,
+      "handler": "m68k_op_move_8_di_i",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    },
+    "0x254c": {
+      "source_pc": 9548,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x254e": {
+      "source_pc": 9550,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x2550": {
+      "source_pc": 9552,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x2552": {
+      "source_pc": 9554,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x2554": {
+      "source_pc": 9556,
+      "opcode": 4137,
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2558": {
+      "source_pc": 9560,
+      "opcode": 4988,
+      "handler": "m68k_op_move_8_di_i",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    },
+    "0x255e": {
+      "source_pc": 9566,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x2560": {
+      "source_pc": 9568,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x2562": {
+      "source_pc": 9570,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x2564": {
+      "source_pc": 9572,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x2566": {
+      "source_pc": 9574,
+      "opcode": 4649,
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x256a": {
+      "source_pc": 9578,
+      "opcode": 576,
+      "handler": "m68k_op_andi_16_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x256e": {
+      "source_pc": 9582,
+      "opcode": 577,
+      "handler": "m68k_op_andi_16_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2572": {
+      "source_pc": 9586,
+      "opcode": 24832,
+      "handler": "m68k_op_bsr_16",
+      "base_cycles": 18,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        18
+      ]
+    },
+    "0x2c1e": {
+      "source_pc": 11294,
+      "opcode": 16962,
+      "handler": "m68k_op_clr_16_d",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x2c20": {
+      "source_pc": 11296,
+      "opcode": 2048,
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2c24": {
+      "source_pc": 11300,
+      "opcode": 26118,
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8,
+        10
+      ]
+    },
+    "0x2c2c": {
+      "source_pc": 11308,
+      "opcode": 2242,
+      "handler": "m68k_op_bset_32_s_d",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2c30": {
+      "source_pc": 11312,
+      "opcode": 2048,
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2c34": {
+      "source_pc": 11316,
+      "opcode": 26118,
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8,
+        10
+      ]
+    },
+    "0x2c3c": {
+      "source_pc": 11324,
+      "opcode": 2242,
+      "handler": "m68k_op_bset_32_s_d",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2c40": {
+      "source_pc": 11328,
+      "opcode": 2049,
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2c44": {
+      "source_pc": 11332,
+      "opcode": 26118,
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8,
+        10
+      ]
+    },
+    "0x2c46": {
+      "source_pc": 11334,
+      "opcode": 2049,
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2c4a": {
+      "source_pc": 11338,
+      "opcode": 26372,
+      "handler": "m68k_op_beq_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2c50": {
+      "source_pc": 11344,
+      "opcode": 2049,
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2c54": {
+      "source_pc": 11348,
+      "opcode": 26118,
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8,
+        10
+      ]
+    },
+    "0x2c5c": {
+      "source_pc": 11356,
+      "opcode": 2242,
+      "handler": "m68k_op_bset_32_s_d",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2c60": {
+      "source_pc": 11360,
+      "opcode": 20085,
+      "handler": "m68k_op_rts_32",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    },
+    "0x2576": {
+      "source_pc": 9590,
+      "opcode": 58690,
+      "handler": "m68k_op_asl_16_s",
+      "base_cycles": 6,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2578": {
+      "source_pc": 9592,
+      "opcode": 9339,
+      "handler": "m68k_op_movea_32_pcix",
+      "base_cycles": 18,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        18
+      ]
+    },
+    "0x257c": {
+      "source_pc": 9596,
+      "opcode": 20178,
+      "handler": "m68k_op_jmp_32_ai",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x25d4": {
+      "source_pc": 9684,
+      "opcode": 4988,
+      "handler": "m68k_op_move_8_di_i",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    },
+    "0x25da": {
+      "source_pc": 9690,
+      "opcode": 4988,
+      "handler": "m68k_op_move_8_di_i",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    },
+    "0x25e0": {
+      "source_pc": 9696,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x25e2": {
+      "source_pc": 9698,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x25e4": {
+      "source_pc": 9700,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x25e6": {
+      "source_pc": 9702,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x25e8": {
+      "source_pc": 9704,
+      "opcode": 4137,
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x25ec": {
+      "source_pc": 9708,
+      "opcode": 4988,
+      "handler": "m68k_op_move_8_di_i",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    },
+    "0x25f2": {
+      "source_pc": 9714,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x25f4": {
+      "source_pc": 9716,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x25f6": {
+      "source_pc": 9718,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x25f8": {
+      "source_pc": 9720,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x25fa": {
+      "source_pc": 9722,
+      "opcode": 4649,
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x25fe": {
+      "source_pc": 9726,
+      "opcode": 5120,
+      "handler": "m68k_op_move_8_d_d",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x2600": {
+      "source_pc": 9728,
+      "opcode": 512,
+      "handler": "m68k_op_andi_8_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2604": {
+      "source_pc": 9732,
+      "opcode": 514,
+      "handler": "m68k_op_andi_8_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2608": {
+      "source_pc": 9736,
+      "opcode": 59402,
+      "handler": "m68k_op_lsr_8_s",
+      "base_cycles": 6,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        14
+      ]
+    },
+    "0x260a": {
+      "source_pc": 9738,
+      "opcode": 513,
+      "handler": "m68k_op_andi_8_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x260e": {
+      "source_pc": 9742,
+      "opcode": 58377,
+      "handler": "m68k_op_lsr_8_s",
+      "base_cycles": 6,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2610": {
+      "source_pc": 9744,
+      "opcode": 33282,
+      "handler": "m68k_op_or_8_er_d",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x2612": {
+      "source_pc": 9746,
+      "opcode": 4416,
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2616": {
+      "source_pc": 9750,
+      "opcode": 4417,
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x261a": {
+      "source_pc": 9754,
+      "opcode": 4988,
+      "handler": "m68k_op_move_8_di_i",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    },
+    "0x2620": {
+      "source_pc": 9760,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x2622": {
+      "source_pc": 9762,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x2624": {
+      "source_pc": 9764,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x2626": {
+      "source_pc": 9766,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x2628": {
+      "source_pc": 9768,
+      "opcode": 4137,
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x262c": {
+      "source_pc": 9772,
+      "opcode": 4988,
+      "handler": "m68k_op_move_8_di_i",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    },
+    "0x2632": {
+      "source_pc": 9778,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x2634": {
+      "source_pc": 9780,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x2636": {
+      "source_pc": 9782,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x2638": {
+      "source_pc": 9784,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x263a": {
+      "source_pc": 9786,
+      "opcode": 4649,
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x263e": {
+      "source_pc": 9790,
+      "opcode": 577,
+      "handler": "m68k_op_andi_16_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2642": {
+      "source_pc": 9794,
+      "opcode": 26386,
+      "handler": "m68k_op_beq_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2656": {
+      "source_pc": 9814,
+      "opcode": 12668,
+      "handler": "m68k_op_move_16_di_i",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    },
+    "0x265c": {
+      "source_pc": 9820,
+      "opcode": 24832,
+      "handler": "m68k_op_bsr_16",
+      "base_cycles": 18,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        18
+      ]
+    },
+    "0x25c2": {
+      "source_pc": 9666,
+      "opcode": 17000,
+      "handler": "m68k_op_clr_16_di",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    },
+    "0x25c6": {
+      "source_pc": 9670,
+      "opcode": 17000,
+      "handler": "m68k_op_clr_16_di",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    },
+    "0x25ca": {
+      "source_pc": 9674,
+      "opcode": 17000,
+      "handler": "m68k_op_clr_16_di",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    },
+    "0x25ce": {
+      "source_pc": 9678,
+      "opcode": 17000,
+      "handler": "m68k_op_clr_16_di",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    },
+    "0x25d2": {
+      "source_pc": 9682,
+      "opcode": 20085,
+      "handler": "m68k_op_rts_32",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    },
+    "0x2660": {
+      "source_pc": 9824,
+      "opcode": 4988,
+      "handler": "m68k_op_move_8_di_i",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    },
+    "0x2666": {
+      "source_pc": 9830,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x2668": {
+      "source_pc": 9832,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x266a": {
+      "source_pc": 9834,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x266c": {
+      "source_pc": 9836,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x266e": {
+      "source_pc": 9838,
+      "opcode": 4137,
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2672": {
+      "source_pc": 9842,
+      "opcode": 4988,
+      "handler": "m68k_op_move_8_di_i",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    },
+    "0x2678": {
+      "source_pc": 9848,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x267a": {
+      "source_pc": 9850,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x267c": {
+      "source_pc": 9852,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x267e": {
+      "source_pc": 9854,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x2680": {
+      "source_pc": 9856,
+      "opcode": 4649,
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2684": {
+      "source_pc": 9860,
+      "opcode": 576,
+      "handler": "m68k_op_andi_16_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2688": {
+      "source_pc": 9864,
+      "opcode": 4416,
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x268c": {
+      "source_pc": 9868,
+      "opcode": 4988,
+      "handler": "m68k_op_move_8_di_i",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    },
+    "0x2692": {
+      "source_pc": 9874,
+      "opcode": 20085,
+      "handler": "m68k_op_rts_32",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    },
+    "0x2536": {
+      "source_pc": 9526,
+      "opcode": 16888,
+      "handler": "m68k_op_lea_32_aw",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x253a": {
+      "source_pc": 9530,
+      "opcode": 17401,
+      "handler": "m68k_op_lea_32_al",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0xfff090": {
+      "source_pc": 16773264,
+      "opcode": 20153,
+      "handler": "m68k_op_jsr_32_al",
+      "base_cycles": 20,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        20
+      ]
+    },
+    "0x2c36": {
+      "source_pc": 11318,
+      "opcode": 2048,
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2c3a": {
+      "source_pc": 11322,
+      "opcode": 26372,
+      "handler": "m68k_op_beq_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2c56": {
+      "source_pc": 11350,
+      "opcode": 2049,
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2c5a": {
+      "source_pc": 11354,
+      "opcode": 26372,
+      "handler": "m68k_op_beq_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2c26": {
+      "source_pc": 11302,
+      "opcode": 2048,
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2c2a": {
+      "source_pc": 11306,
+      "opcode": 26372,
+      "handler": "m68k_op_beq_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2c4c": {
+      "source_pc": 11340,
+      "opcode": 2242,
+      "handler": "m68k_op_bset_32_s_d",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2838": {
+      "source_pc": 10296,
+      "opcode": 16897,
+      "handler": "m68k_op_clr_8_d",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x283a": {
+      "source_pc": 10298,
+      "opcode": 13372,
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x283e": {
+      "source_pc": 10302,
+      "opcode": 4929,
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2842": {
+      "source_pc": 10306,
+      "opcode": 26126,
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2844": {
+      "source_pc": 10308,
+      "opcode": 4137,
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2848": {
+      "source_pc": 10312,
+      "opcode": 2048,
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x284c": {
+      "source_pc": 10316,
+      "opcode": 22474,
+      "handler": "m68k_op_dbeq_16",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2850": {
+      "source_pc": 10320,
+      "opcode": 24588,
+      "handler": "m68k_op_bra_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x285e": {
+      "source_pc": 10334,
+      "opcode": 2561,
+      "handler": "m68k_op_eori_8_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2862": {
+      "source_pc": 10338,
+      "opcode": 512,
+      "handler": "m68k_op_andi_8_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2866": {
+      "source_pc": 10342,
+      "opcode": 26112,
+      "handler": "m68k_op_bne_16",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x286a": {
+      "source_pc": 10346,
+      "opcode": 13372,
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x286e": {
+      "source_pc": 10350,
+      "opcode": 4929,
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2872": {
+      "source_pc": 10354,
+      "opcode": 26126,
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2882": {
+      "source_pc": 10370,
+      "opcode": 4137,
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2886": {
+      "source_pc": 10374,
+      "opcode": 2048,
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x288a": {
+      "source_pc": 10378,
+      "opcode": 22218,
+      "handler": "m68k_op_dbne_16",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x288e": {
+      "source_pc": 10382,
+      "opcode": 2561,
+      "handler": "m68k_op_eori_8_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2892": {
+      "source_pc": 10386,
+      "opcode": 512,
+      "handler": "m68k_op_andi_8_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2896": {
+      "source_pc": 10390,
+      "opcode": 26112,
+      "handler": "m68k_op_bne_16",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x289a": {
+      "source_pc": 10394,
+      "opcode": 12668,
+      "handler": "m68k_op_move_16_di_i",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    },
+    "0x28a0": {
+      "source_pc": 10400,
+      "opcode": 9288,
+      "handler": "m68k_op_movea_32_a",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x28a2": {
+      "source_pc": 10402,
+      "opcode": 13372,
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x28a6": {
+      "source_pc": 10406,
+      "opcode": 4929,
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x28aa": {
+      "source_pc": 10410,
+      "opcode": 26126,
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x28ac": {
+      "source_pc": 10412,
+      "opcode": 4137,
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x28b0": {
+      "source_pc": 10416,
+      "opcode": 2048,
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x28b4": {
+      "source_pc": 10420,
+      "opcode": 22474,
+      "handler": "m68k_op_dbeq_16",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x28b8": {
+      "source_pc": 10424,
+      "opcode": 24588,
+      "handler": "m68k_op_bra_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x28c6": {
+      "source_pc": 10438,
+      "opcode": 2561,
+      "handler": "m68k_op_eori_8_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x28ca": {
+      "source_pc": 10442,
+      "opcode": 512,
+      "handler": "m68k_op_andi_8_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x28ce": {
+      "source_pc": 10446,
+      "opcode": 24832,
+      "handler": "m68k_op_bsr_16",
+      "base_cycles": 18,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        18
+      ]
+    },
+    "0x29c2": {
+      "source_pc": 10690,
+      "opcode": 20554,
+      "handler": "m68k_op_addq_16_a",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x29c4": {
+      "source_pc": 10692,
+      "opcode": 53312,
+      "handler": "m68k_op_add_16_er_d",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x29c6": {
+      "source_pc": 10694,
+      "opcode": 13499,
+      "handler": "m68k_op_move_16_ai_pcix",
+      "base_cycles": 18,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        18
+      ]
+    },
+    "0x29ca": {
+      "source_pc": 10698,
+      "opcode": 20085,
+      "handler": "m68k_op_rts_32",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    },
+    "0x28d2": {
+      "source_pc": 10450,
+      "opcode": 13372,
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x28d6": {
+      "source_pc": 10454,
+      "opcode": 4929,
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x28da": {
+      "source_pc": 10458,
+      "opcode": 26126,
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x28ea": {
+      "source_pc": 10474,
+      "opcode": 4137,
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x28ee": {
+      "source_pc": 10478,
+      "opcode": 2048,
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x28f2": {
+      "source_pc": 10482,
+      "opcode": 22218,
+      "handler": "m68k_op_dbne_16",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x28f6": {
+      "source_pc": 10486,
+      "opcode": 2561,
+      "handler": "m68k_op_eori_8_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x28fa": {
+      "source_pc": 10490,
+      "opcode": 512,
+      "handler": "m68k_op_andi_8_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x28fe": {
+      "source_pc": 10494,
+      "opcode": 24832,
+      "handler": "m68k_op_bsr_16",
+      "base_cycles": 18,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        18
+      ]
+    },
+    "0x2902": {
+      "source_pc": 10498,
+      "opcode": 13372,
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2906": {
+      "source_pc": 10502,
+      "opcode": 4929,
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x290a": {
+      "source_pc": 10506,
+      "opcode": 26126,
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x290c": {
+      "source_pc": 10508,
+      "opcode": 4137,
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2910": {
+      "source_pc": 10512,
+      "opcode": 2048,
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2914": {
+      "source_pc": 10516,
+      "opcode": 22474,
+      "handler": "m68k_op_dbeq_16",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2918": {
+      "source_pc": 10520,
+      "opcode": 24588,
+      "handler": "m68k_op_bra_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2926": {
+      "source_pc": 10534,
+      "opcode": 2561,
+      "handler": "m68k_op_eori_8_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x292a": {
+      "source_pc": 10538,
+      "opcode": 512,
+      "handler": "m68k_op_andi_8_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x292e": {
+      "source_pc": 10542,
+      "opcode": 24832,
+      "handler": "m68k_op_bsr_16",
+      "base_cycles": 18,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        18
+      ]
+    },
+    "0x2932": {
+      "source_pc": 10546,
+      "opcode": 13372,
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2936": {
+      "source_pc": 10550,
+      "opcode": 4929,
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x293a": {
+      "source_pc": 10554,
+      "opcode": 26126,
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x294a": {
+      "source_pc": 10570,
+      "opcode": 4137,
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x294e": {
+      "source_pc": 10574,
+      "opcode": 2048,
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2952": {
+      "source_pc": 10578,
+      "opcode": 22218,
+      "handler": "m68k_op_dbne_16",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2956": {
+      "source_pc": 10582,
+      "opcode": 2561,
+      "handler": "m68k_op_eori_8_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x295a": {
+      "source_pc": 10586,
+      "opcode": 512,
+      "handler": "m68k_op_andi_8_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x295e": {
+      "source_pc": 10590,
+      "opcode": 24930,
+      "handler": "m68k_op_bsr_8",
+      "base_cycles": 18,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        18
+      ]
+    },
+    "0x2960": {
+      "source_pc": 10592,
+      "opcode": 13884,
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2964": {
+      "source_pc": 10596,
+      "opcode": 20552,
+      "handler": "m68k_op_addq_16_a",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2966": {
+      "source_pc": 10598,
+      "opcode": 24832,
+      "handler": "m68k_op_bsr_16",
+      "base_cycles": 18,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        18
+      ]
+    },
+    "0x29ec": {
+      "source_pc": 10732,
+      "opcode": 12328,
+      "handler": "m68k_op_move_16_d_di",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x29f0": {
+      "source_pc": 10736,
+      "opcode": 9339,
+      "handler": "m68k_op_movea_32_pcix",
+      "base_cycles": 18,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        18
+      ]
+    },
+    "0x29f4": {
+      "source_pc": 10740,
+      "opcode": 20178,
+      "handler": "m68k_op_jmp_32_ai",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2a6a": {
+      "source_pc": 10858,
+      "opcode": 13372,
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2a6e": {
+      "source_pc": 10862,
+      "opcode": 4929,
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2a72": {
+      "source_pc": 10866,
+      "opcode": 26126,
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8,
+        10
+      ]
+    },
+    "0x2a74": {
+      "source_pc": 10868,
+      "opcode": 4137,
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2a78": {
+      "source_pc": 10872,
+      "opcode": 2048,
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2a7c": {
+      "source_pc": 10876,
+      "opcode": 22474,
+      "handler": "m68k_op_dbeq_16",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2a80": {
+      "source_pc": 10880,
+      "opcode": 24588,
+      "handler": "m68k_op_bra_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2a8e": {
+      "source_pc": 10894,
+      "opcode": 2561,
+      "handler": "m68k_op_eori_8_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2a92": {
+      "source_pc": 10898,
+      "opcode": 512,
+      "handler": "m68k_op_andi_8_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2a96": {
+      "source_pc": 10902,
+      "opcode": 4416,
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2a9a": {
+      "source_pc": 10906,
+      "opcode": 13372,
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2a9e": {
+      "source_pc": 10910,
+      "opcode": 4929,
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2aa2": {
+      "source_pc": 10914,
+      "opcode": 26126,
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8,
+        10
+      ]
+    },
+    "0x2ab2": {
+      "source_pc": 10930,
+      "opcode": 4137,
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2ab6": {
+      "source_pc": 10934,
+      "opcode": 2048,
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2aba": {
+      "source_pc": 10938,
+      "opcode": 22218,
+      "handler": "m68k_op_dbne_16",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2abe": {
+      "source_pc": 10942,
+      "opcode": 2561,
+      "handler": "m68k_op_eori_8_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2ac2": {
+      "source_pc": 10946,
+      "opcode": 512,
+      "handler": "m68k_op_andi_8_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2ac6": {
+      "source_pc": 10950,
+      "opcode": 4416,
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2aca": {
+      "source_pc": 10954,
+      "opcode": 13372,
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2ace": {
+      "source_pc": 10958,
+      "opcode": 4929,
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2ad2": {
+      "source_pc": 10962,
+      "opcode": 26126,
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8,
+        10
+      ]
+    },
+    "0x2ad4": {
+      "source_pc": 10964,
+      "opcode": 4137,
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2ad8": {
+      "source_pc": 10968,
+      "opcode": 2048,
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2adc": {
+      "source_pc": 10972,
+      "opcode": 22474,
+      "handler": "m68k_op_dbeq_16",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2ae0": {
+      "source_pc": 10976,
+      "opcode": 24588,
+      "handler": "m68k_op_bra_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2aee": {
+      "source_pc": 10990,
+      "opcode": 2561,
+      "handler": "m68k_op_eori_8_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2af2": {
+      "source_pc": 10994,
+      "opcode": 512,
+      "handler": "m68k_op_andi_8_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2af6": {
+      "source_pc": 10998,
+      "opcode": 4416,
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2afa": {
+      "source_pc": 11002,
+      "opcode": 20085,
+      "handler": "m68k_op_rts_32",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    },
+    "0x296a": {
+      "source_pc": 10602,
+      "opcode": 20939,
+      "handler": "m68k_op_dbf_16",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10,
+        14
+      ]
+    },
+    "0x2a82": {
+      "source_pc": 10882,
+      "opcode": 4137,
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2a86": {
+      "source_pc": 10886,
+      "opcode": 2048,
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2a8a": {
+      "source_pc": 10890,
+      "opcode": 22218,
+      "handler": "m68k_op_dbne_16",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2aa4": {
+      "source_pc": 10916,
+      "opcode": 4137,
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2aa8": {
+      "source_pc": 10920,
+      "opcode": 2048,
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2aac": {
+      "source_pc": 10924,
+      "opcode": 22474,
+      "handler": "m68k_op_dbeq_16",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2ab0": {
+      "source_pc": 10928,
+      "opcode": 24588,
+      "handler": "m68k_op_bra_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2ae2": {
+      "source_pc": 10978,
+      "opcode": 4137,
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2ae6": {
+      "source_pc": 10982,
+      "opcode": 2048,
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2aea": {
+      "source_pc": 10986,
+      "opcode": 22218,
+      "handler": "m68k_op_dbne_16",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x296e": {
+      "source_pc": 10606,
+      "opcode": 13372,
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2972": {
+      "source_pc": 10610,
+      "opcode": 4988,
+      "handler": "m68k_op_move_8_di_i",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    },
+    "0x2978": {
+      "source_pc": 10616,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x297a": {
+      "source_pc": 10618,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x297c": {
+      "source_pc": 10620,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x297e": {
+      "source_pc": 10622,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x2980": {
+      "source_pc": 10624,
+      "opcode": 4137,
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2984": {
+      "source_pc": 10628,
+      "opcode": 2048,
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2988": {
+      "source_pc": 10632,
+      "opcode": 22218,
+      "handler": "m68k_op_dbne_16",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x298c": {
+      "source_pc": 10636,
+      "opcode": 20085,
+      "handler": "m68k_op_rts_32",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    }
+  },
+  "fixture_sha256": "3d8a4d237ea741b3b6323b7a68733da14c2ac152f214ebd1f49884d8bb55f6e5",
+  "sources": {
+    "games/yuyuhakusho/verification/battle-sample-irq/native-battle-prefix.json.gz": "2eda162b5f7b8e2e4f6847d86910ebfb30710e37ea4bf394439d4b303e463177",
+    ".local/md-yuyuhakusho/downloads/yuyuhakusho-jp.bin": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "games/yuyuhakusho/engine/testdata/world-frame-irq.json": "6fc2de03bf83b14037e152bc7637ef9279e2a1cd7c5f8ba37cadb1fec5dd25b5",
+    ".local/md-yuyuhakusho/tools/Genesis-Plus-GX-60bee4c724859710ce05672239e5b601ad01382e/core/m68k/m68kops.h": "d3ff2631658e589813d2915ba3dc03b9fd2097761f6eb221fc6264a4b8d1d6f0",
+    "scripts/yuyuhakusho/extract_battle_prefix_fixture.py": "d9ff4548447ce8750a856bbe61f2b1382bb76abc708e51caa9787a3930262fe7"
+  }
+}

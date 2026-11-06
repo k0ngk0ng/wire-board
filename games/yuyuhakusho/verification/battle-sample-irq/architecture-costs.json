@@ -1,0 +1,6193 @@
+{
+  "pass": true,
+  "scope": "Offline source provenance only; production uses fixed semantic branches and loops, never loads this table.",
+  "controller_instructions": [
+    {
+      "source_pc": 9684,
+      "source": "move.b #0x40,(0x6,A1)",
+      "handler": "m68k_op_move_8_di_i",
+      "base_cycles": 16,
+      "fixed_cycles": 16
+    },
+    {
+      "source_pc": 9690,
+      "source": "move.b #0x60,(0x0,A1)",
+      "handler": "m68k_op_move_8_di_i",
+      "base_cycles": 16,
+      "fixed_cycles": 16
+    },
+    {
+      "source_pc": 9696,
+      "source": "nop",
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "fixed_cycles": 4
+    },
+    {
+      "source_pc": 9698,
+      "source": "nop",
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "fixed_cycles": 4
+    },
+    {
+      "source_pc": 9700,
+      "source": "nop",
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "fixed_cycles": 4
+    },
+    {
+      "source_pc": 9702,
+      "source": "nop",
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "fixed_cycles": 4
+    },
+    {
+      "source_pc": 9704,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 9708,
+      "source": "move.b #0x20,(0x0,A1)",
+      "handler": "m68k_op_move_8_di_i",
+      "base_cycles": 16,
+      "fixed_cycles": 16
+    },
+    {
+      "source_pc": 9714,
+      "source": "nop",
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "fixed_cycles": 4
+    },
+    {
+      "source_pc": 9716,
+      "source": "nop",
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "fixed_cycles": 4
+    },
+    {
+      "source_pc": 9718,
+      "source": "nop",
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "fixed_cycles": 4
+    },
+    {
+      "source_pc": 9720,
+      "source": "nop",
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "fixed_cycles": 4
+    },
+    {
+      "source_pc": 9722,
+      "source": "move.b (0x0,A1),D1b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 9726,
+      "source": "move.b D0b,D2b",
+      "handler": "m68k_op_move_8_d_d",
+      "base_cycles": 4,
+      "fixed_cycles": 4
+    },
+    {
+      "source_pc": 9728,
+      "source": "andi.b #0xf,D0b",
+      "handler": "m68k_op_andi_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 9732,
+      "source": "andi.b #0x30,D2b",
+      "handler": "m68k_op_andi_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 9736,
+      "source": "lsr.b #0x4,D2b",
+      "handler": "m68k_op_lsr_8_s",
+      "base_cycles": 6,
+      "fixed_cycles": 14
+    },
+    {
+      "source_pc": 9738,
+      "source": "andi.b #0x30,D1b",
+      "handler": "m68k_op_andi_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 9742,
+      "source": "lsr.b #0x2,D1b",
+      "handler": "m68k_op_lsr_8_s",
+      "base_cycles": 6,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 9744,
+      "source": "or.b D2b,D1b",
+      "handler": "m68k_op_or_8_er_d",
+      "base_cycles": 4,
+      "fixed_cycles": 4
+    },
+    {
+      "source_pc": 9746,
+      "source": "move.b D0b,(0x2,A0)",
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 9750,
+      "source": "move.b D1b,(0x3,A0)",
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 9754,
+      "source": "move.b #0x60,(0x0,A1)",
+      "handler": "m68k_op_move_8_di_i",
+      "base_cycles": 16,
+      "fixed_cycles": 16
+    },
+    {
+      "source_pc": 9760,
+      "source": "nop",
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "fixed_cycles": 4
+    },
+    {
+      "source_pc": 9762,
+      "source": "nop",
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "fixed_cycles": 4
+    },
+    {
+      "source_pc": 9764,
+      "source": "nop",
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "fixed_cycles": 4
+    },
+    {
+      "source_pc": 9766,
+      "source": "nop",
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "fixed_cycles": 4
+    },
+    {
+      "source_pc": 9768,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 9772,
+      "source": "move.b #0x20,(0x0,A1)",
+      "handler": "m68k_op_move_8_di_i",
+      "base_cycles": 16,
+      "fixed_cycles": 16
+    },
+    {
+      "source_pc": 9778,
+      "source": "nop",
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "fixed_cycles": 4
+    },
+    {
+      "source_pc": 9780,
+      "source": "nop",
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "fixed_cycles": 4
+    },
+    {
+      "source_pc": 9782,
+      "source": "nop",
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "fixed_cycles": 4
+    },
+    {
+      "source_pc": 9784,
+      "source": "nop",
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "fixed_cycles": 4
+    },
+    {
+      "source_pc": 9786,
+      "source": "move.b (0x0,A1),D1b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 9790,
+      "source": "andi.w #0xf,D1w",
+      "handler": "m68k_op_andi_16_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 9794,
+      "source": "beq.b 0x00002656",
+      "handler": "m68k_op_beq_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 9796,
+      "source": "move.w #0x4,(0x0,A0)",
+      "handler": "m68k_op_move_16_di_i",
+      "base_cycles": 16,
+      "fixed_cycles": 16
+    },
+    {
+      "source_pc": 9802,
+      "source": "bsr.w 0x000025c2",
+      "handler": "m68k_op_bsr_16",
+      "base_cycles": 18,
+      "fixed_cycles": 18
+    },
+    {
+      "source_pc": 9806,
+      "source": "move.b #0x40,(0x0,A1)",
+      "handler": "m68k_op_move_8_di_i",
+      "base_cycles": 16,
+      "fixed_cycles": 16
+    },
+    {
+      "source_pc": 9812,
+      "source": "rts",
+      "handler": "m68k_op_rts_32",
+      "base_cycles": 16,
+      "fixed_cycles": 16
+    },
+    {
+      "source_pc": 9814,
+      "source": "move.w #0x8,(0x0,A0)",
+      "handler": "m68k_op_move_16_di_i",
+      "base_cycles": 16,
+      "fixed_cycles": 16
+    },
+    {
+      "source_pc": 9820,
+      "source": "bsr.w 0x000025c2",
+      "handler": "m68k_op_bsr_16",
+      "base_cycles": 18,
+      "fixed_cycles": 18
+    },
+    {
+      "source_pc": 9824,
+      "source": "move.b #0x60,(0x0,A1)",
+      "handler": "m68k_op_move_8_di_i",
+      "base_cycles": 16,
+      "fixed_cycles": 16
+    },
+    {
+      "source_pc": 9830,
+      "source": "nop",
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "fixed_cycles": 4
+    },
+    {
+      "source_pc": 9832,
+      "source": "nop",
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "fixed_cycles": 4
+    },
+    {
+      "source_pc": 9834,
+      "source": "nop",
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "fixed_cycles": 4
+    },
+    {
+      "source_pc": 9836,
+      "source": "nop",
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "fixed_cycles": 4
+    },
+    {
+      "source_pc": 9838,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 9842,
+      "source": "move.b #0x20,(0x0,A1)",
+      "handler": "m68k_op_move_8_di_i",
+      "base_cycles": 16,
+      "fixed_cycles": 16
+    },
+    {
+      "source_pc": 9848,
+      "source": "nop",
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "fixed_cycles": 4
+    },
+    {
+      "source_pc": 9850,
+      "source": "nop",
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "fixed_cycles": 4
+    },
+    {
+      "source_pc": 9852,
+      "source": "nop",
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "fixed_cycles": 4
+    },
+    {
+      "source_pc": 9854,
+      "source": "nop",
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "fixed_cycles": 4
+    },
+    {
+      "source_pc": 9856,
+      "source": "move.b (0x0,A1),D1b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 9860,
+      "source": "andi.w #0xf,D0w",
+      "handler": "m68k_op_andi_16_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 9864,
+      "source": "move.b D0b,(0x4,A0)",
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 9868,
+      "source": "move.b #0x40,(0x0,A1)",
+      "handler": "m68k_op_move_8_di_i",
+      "base_cycles": 16,
+      "fixed_cycles": 16
+    },
+    {
+      "source_pc": 9874,
+      "source": "rts",
+      "handler": "m68k_op_rts_32",
+      "base_cycles": 16,
+      "fixed_cycles": 16
+    },
+    {
+      "source_pc": 9876,
+      "source": "move.w #0xc,(0x0,A0)",
+      "handler": "m68k_op_move_16_di_i",
+      "base_cycles": 16,
+      "fixed_cycles": 16
+    },
+    {
+      "source_pc": 9882,
+      "source": "bsr.w 0x000025c2",
+      "handler": "m68k_op_bsr_16",
+      "base_cycles": 18,
+      "fixed_cycles": 18
+    },
+    {
+      "source_pc": 9886,
+      "source": "clr.b D1b",
+      "handler": "m68k_op_clr_8_d",
+      "base_cycles": 4,
+      "fixed_cycles": 4
+    },
+    {
+      "source_pc": 9888,
+      "source": "move.w #0x1000,D2w",
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 9892,
+      "source": "move.b D1b,(0x0,A1)",
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 9896,
+      "source": "bne.b 0x000026b8",
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 9898,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 9902,
+      "source": "btst.l #0x4,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 9906,
+      "source": "dbeq D2w,0x000026aa",
+      "handler": "m68k_op_dbeq_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 9910,
+      "source": "bra.b 0x000026c4",
+      "handler": "m68k_op_bra_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 9912,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 9916,
+      "source": "btst.l #0x4,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 9920,
+      "source": "dbne D2w,0x000026b8",
+      "handler": "m68k_op_dbne_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 9924,
+      "source": "eori.b #0x20,D1b",
+      "handler": "m68k_op_eori_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 9928,
+      "source": "andi.b #0xf,D0b",
+      "handler": "m68k_op_andi_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 9932,
+      "source": "move.w #0x1000,D2w",
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 9936,
+      "source": "move.b D1b,(0x0,A1)",
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 9940,
+      "source": "bne.b 0x000026e4",
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 9942,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 9946,
+      "source": "btst.l #0x4,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 9950,
+      "source": "dbeq D2w,0x000026d6",
+      "handler": "m68k_op_dbeq_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 9954,
+      "source": "bra.b 0x000026f0",
+      "handler": "m68k_op_bra_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 9956,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 9960,
+      "source": "btst.l #0x4,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 9964,
+      "source": "dbne D2w,0x000026e4",
+      "handler": "m68k_op_dbne_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 9968,
+      "source": "eori.b #0x20,D1b",
+      "handler": "m68k_op_eori_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 9972,
+      "source": "andi.b #0xf,D0b",
+      "handler": "m68k_op_andi_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 9976,
+      "source": "move.w #0x1000,D2w",
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 9980,
+      "source": "move.b D1b,(0x0,A1)",
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 9984,
+      "source": "bne.b 0x00002710",
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 9986,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 9990,
+      "source": "btst.l #0x4,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 9994,
+      "source": "dbeq D2w,0x00002702",
+      "handler": "m68k_op_dbeq_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 9998,
+      "source": "bra.b 0x0000271c",
+      "handler": "m68k_op_bra_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10000,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10004,
+      "source": "btst.l #0x4,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10008,
+      "source": "dbne D2w,0x00002710",
+      "handler": "m68k_op_dbne_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10012,
+      "source": "eori.b #0x20,D1b",
+      "handler": "m68k_op_eori_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10016,
+      "source": "andi.b #0xf,D0b",
+      "handler": "m68k_op_andi_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10020,
+      "source": "move.b D0b,(0x2,A0)",
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10024,
+      "source": "move.w #0x1000,D2w",
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10028,
+      "source": "move.b D1b,(0x0,A1)",
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10032,
+      "source": "bne.b 0x00002740",
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10034,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10038,
+      "source": "btst.l #0x4,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10042,
+      "source": "dbeq D2w,0x00002732",
+      "handler": "m68k_op_dbeq_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10046,
+      "source": "bra.b 0x0000274c",
+      "handler": "m68k_op_bra_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10048,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10052,
+      "source": "btst.l #0x4,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10056,
+      "source": "dbne D2w,0x00002740",
+      "handler": "m68k_op_dbne_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10060,
+      "source": "eori.b #0x20,D1b",
+      "handler": "m68k_op_eori_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10064,
+      "source": "andi.b #0xf,D0b",
+      "handler": "m68k_op_andi_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10068,
+      "source": "move.b D0b,(0x3,A0)",
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10072,
+      "source": "move.w #0x1000,D2w",
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10076,
+      "source": "move.b D1b,(0x0,A1)",
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10080,
+      "source": "bne.b 0x00002770",
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10082,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10086,
+      "source": "btst.l #0x4,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10090,
+      "source": "dbeq D2w,0x00002762",
+      "handler": "m68k_op_dbeq_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10094,
+      "source": "bra.b 0x0000277c",
+      "handler": "m68k_op_bra_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10096,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10100,
+      "source": "btst.l #0x4,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10104,
+      "source": "dbne D2w,0x00002770",
+      "handler": "m68k_op_dbne_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10108,
+      "source": "eori.b #0x20,D1b",
+      "handler": "m68k_op_eori_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10112,
+      "source": "andi.b #0xf,D0b",
+      "handler": "m68k_op_andi_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10116,
+      "source": "move.b D0b,(0x4,A0)",
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10120,
+      "source": "move.w #0x1000,D2w",
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10124,
+      "source": "move.b D1b,(0x0,A1)",
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10128,
+      "source": "bne.b 0x000027a0",
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10130,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10134,
+      "source": "btst.l #0x4,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10138,
+      "source": "dbeq D2w,0x00002792",
+      "handler": "m68k_op_dbeq_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10142,
+      "source": "bra.b 0x000027ac",
+      "handler": "m68k_op_bra_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10144,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10148,
+      "source": "btst.l #0x4,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10152,
+      "source": "dbne D2w,0x000027a0",
+      "handler": "m68k_op_dbne_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10156,
+      "source": "eori.b #0x20,D1b",
+      "handler": "m68k_op_eori_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10160,
+      "source": "andi.b #0xf,D0b",
+      "handler": "m68k_op_andi_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10164,
+      "source": "move.b D0b,(0x5,A0)",
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10168,
+      "source": "move.w #0x1000,D2w",
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10172,
+      "source": "move.b D1b,(0x0,A1)",
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10176,
+      "source": "bne.b 0x000027d0",
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10178,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10182,
+      "source": "btst.l #0x4,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10186,
+      "source": "dbeq D2w,0x000027c2",
+      "handler": "m68k_op_dbeq_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10190,
+      "source": "bra.b 0x000027dc",
+      "handler": "m68k_op_bra_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10192,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10196,
+      "source": "btst.l #0x4,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10200,
+      "source": "dbne D2w,0x000027d0",
+      "handler": "m68k_op_dbne_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10204,
+      "source": "eori.b #0x20,D1b",
+      "handler": "m68k_op_eori_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10208,
+      "source": "andi.b #0xf,D0b",
+      "handler": "m68k_op_andi_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10212,
+      "source": "move.b D0b,(0x6,A0)",
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10216,
+      "source": "move.w #0x1000,D2w",
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10220,
+      "source": "move.b D1b,(0x0,A1)",
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10224,
+      "source": "bne.b 0x00002800",
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10226,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10230,
+      "source": "btst.l #0x4,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10234,
+      "source": "dbeq D2w,0x000027f2",
+      "handler": "m68k_op_dbeq_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10238,
+      "source": "bra.b 0x0000280c",
+      "handler": "m68k_op_bra_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10240,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10244,
+      "source": "btst.l #0x4,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10248,
+      "source": "dbne D2w,0x00002800",
+      "handler": "m68k_op_dbne_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10252,
+      "source": "eori.b #0x20,D1b",
+      "handler": "m68k_op_eori_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10256,
+      "source": "andi.b #0xf,D0b",
+      "handler": "m68k_op_andi_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10260,
+      "source": "move.b D0b,(0x7,A0)",
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10264,
+      "source": "move.w #0x1000,D2w",
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10268,
+      "source": "move.b #0x60,(0x0,A1)",
+      "handler": "m68k_op_move_8_di_i",
+      "base_cycles": 16,
+      "fixed_cycles": 16
+    },
+    {
+      "source_pc": 10274,
+      "source": "nop",
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "fixed_cycles": 4
+    },
+    {
+      "source_pc": 10276,
+      "source": "nop",
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "fixed_cycles": 4
+    },
+    {
+      "source_pc": 10278,
+      "source": "nop",
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "fixed_cycles": 4
+    },
+    {
+      "source_pc": 10280,
+      "source": "nop",
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "fixed_cycles": 4
+    },
+    {
+      "source_pc": 10282,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10286,
+      "source": "btst.l #0x4,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10290,
+      "source": "dbne D2w,0x0000282a",
+      "handler": "m68k_op_dbne_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10294,
+      "source": "rts",
+      "handler": "m68k_op_rts_32",
+      "base_cycles": 16,
+      "fixed_cycles": 16
+    },
+    {
+      "source_pc": 10296,
+      "source": "clr.b D1b",
+      "handler": "m68k_op_clr_8_d",
+      "base_cycles": 4,
+      "fixed_cycles": 4
+    },
+    {
+      "source_pc": 10298,
+      "source": "move.w #0x1000,D2w",
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10302,
+      "source": "move.b D1b,(0x0,A1)",
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10306,
+      "source": "bne.b 0x00002852",
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10308,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10312,
+      "source": "btst.l #0x4,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10316,
+      "source": "dbeq D2w,0x00002844",
+      "handler": "m68k_op_dbeq_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10320,
+      "source": "bra.b 0x0000285e",
+      "handler": "m68k_op_bra_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10322,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10326,
+      "source": "btst.l #0x4,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10330,
+      "source": "dbne D2w,0x00002852",
+      "handler": "m68k_op_dbne_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10334,
+      "source": "eori.b #0x20,D1b",
+      "handler": "m68k_op_eori_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10338,
+      "source": "andi.b #0xf,D0b",
+      "handler": "m68k_op_andi_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10342,
+      "source": "bne.w 0x0000298e",
+      "handler": "m68k_op_bne_16",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10346,
+      "source": "move.w #0x1000,D2w",
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10350,
+      "source": "move.b D1b,(0x0,A1)",
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10354,
+      "source": "bne.b 0x00002882",
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10356,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10360,
+      "source": "btst.l #0x4,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10364,
+      "source": "dbeq D2w,0x00002874",
+      "handler": "m68k_op_dbeq_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10368,
+      "source": "bra.b 0x0000288e",
+      "handler": "m68k_op_bra_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10370,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10374,
+      "source": "btst.l #0x4,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10378,
+      "source": "dbne D2w,0x00002882",
+      "handler": "m68k_op_dbne_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10382,
+      "source": "eori.b #0x20,D1b",
+      "handler": "m68k_op_eori_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10386,
+      "source": "andi.b #0xf,D0b",
+      "handler": "m68k_op_andi_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10390,
+      "source": "bne.w 0x0000298e",
+      "handler": "m68k_op_bne_16",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10394,
+      "source": "move.w #0x10,(0x0,A0)",
+      "handler": "m68k_op_move_16_di_i",
+      "base_cycles": 16,
+      "fixed_cycles": 16
+    },
+    {
+      "source_pc": 10400,
+      "source": "movea.l A0,A2",
+      "handler": "m68k_op_movea_32_a",
+      "base_cycles": 4,
+      "fixed_cycles": 4
+    },
+    {
+      "source_pc": 10402,
+      "source": "move.w #0x1000,D2w",
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10406,
+      "source": "move.b D1b,(0x0,A1)",
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10410,
+      "source": "bne.b 0x000028ba",
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10412,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10416,
+      "source": "btst.l #0x4,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10420,
+      "source": "dbeq D2w,0x000028ac",
+      "handler": "m68k_op_dbeq_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10424,
+      "source": "bra.b 0x000028c6",
+      "handler": "m68k_op_bra_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10426,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10430,
+      "source": "btst.l #0x4,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10434,
+      "source": "dbne D2w,0x000028ba",
+      "handler": "m68k_op_dbne_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10438,
+      "source": "eori.b #0x20,D1b",
+      "handler": "m68k_op_eori_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10442,
+      "source": "andi.b #0xf,D0b",
+      "handler": "m68k_op_andi_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10446,
+      "source": "bsr.w 0x000029c2",
+      "handler": "m68k_op_bsr_16",
+      "base_cycles": 18,
+      "fixed_cycles": 18
+    },
+    {
+      "source_pc": 10450,
+      "source": "move.w #0x1000,D2w",
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10454,
+      "source": "move.b D1b,(0x0,A1)",
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10458,
+      "source": "bne.b 0x000028ea",
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10460,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10464,
+      "source": "btst.l #0x4,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10468,
+      "source": "dbeq D2w,0x000028dc",
+      "handler": "m68k_op_dbeq_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10472,
+      "source": "bra.b 0x000028f6",
+      "handler": "m68k_op_bra_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10474,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10478,
+      "source": "btst.l #0x4,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10482,
+      "source": "dbne D2w,0x000028ea",
+      "handler": "m68k_op_dbne_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10486,
+      "source": "eori.b #0x20,D1b",
+      "handler": "m68k_op_eori_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10490,
+      "source": "andi.b #0xf,D0b",
+      "handler": "m68k_op_andi_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10494,
+      "source": "bsr.w 0x000029c2",
+      "handler": "m68k_op_bsr_16",
+      "base_cycles": 18,
+      "fixed_cycles": 18
+    },
+    {
+      "source_pc": 10498,
+      "source": "move.w #0x1000,D2w",
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10502,
+      "source": "move.b D1b,(0x0,A1)",
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10506,
+      "source": "bne.b 0x0000291a",
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10508,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10512,
+      "source": "btst.l #0x4,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10516,
+      "source": "dbeq D2w,0x0000290c",
+      "handler": "m68k_op_dbeq_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10520,
+      "source": "bra.b 0x00002926",
+      "handler": "m68k_op_bra_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10522,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10526,
+      "source": "btst.l #0x4,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10530,
+      "source": "dbne D2w,0x0000291a",
+      "handler": "m68k_op_dbne_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10534,
+      "source": "eori.b #0x20,D1b",
+      "handler": "m68k_op_eori_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10538,
+      "source": "andi.b #0xf,D0b",
+      "handler": "m68k_op_andi_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10542,
+      "source": "bsr.w 0x000029c2",
+      "handler": "m68k_op_bsr_16",
+      "base_cycles": 18,
+      "fixed_cycles": 18
+    },
+    {
+      "source_pc": 10546,
+      "source": "move.w #0x1000,D2w",
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10550,
+      "source": "move.b D1b,(0x0,A1)",
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10554,
+      "source": "bne.b 0x0000294a",
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10556,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10560,
+      "source": "btst.l #0x4,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10564,
+      "source": "dbeq D2w,0x0000293c",
+      "handler": "m68k_op_dbeq_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10568,
+      "source": "bra.b 0x00002956",
+      "handler": "m68k_op_bra_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10570,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10574,
+      "source": "btst.l #0x4,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10578,
+      "source": "dbne D2w,0x0000294a",
+      "handler": "m68k_op_dbne_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10582,
+      "source": "eori.b #0x20,D1b",
+      "handler": "m68k_op_eori_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10586,
+      "source": "andi.b #0xf,D0b",
+      "handler": "m68k_op_andi_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10590,
+      "source": "bsr.b 0x000029c2",
+      "handler": "m68k_op_bsr_8",
+      "base_cycles": 18,
+      "fixed_cycles": 18
+    },
+    {
+      "source_pc": 10592,
+      "source": "move.w #0x3,D3w",
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10596,
+      "source": "addq.w #0x8,A0",
+      "handler": "m68k_op_addq_16_a",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10598,
+      "source": "bsr.w 0x000029ec",
+      "handler": "m68k_op_bsr_16",
+      "base_cycles": 18,
+      "fixed_cycles": 18
+    },
+    {
+      "source_pc": 10602,
+      "source": "dbf D3w,0x00002964",
+      "handler": "m68k_op_dbf_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10606,
+      "source": "move.w #0x1000,D2w",
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10610,
+      "source": "move.b #0x60,(0x0,A1)",
+      "handler": "m68k_op_move_8_di_i",
+      "base_cycles": 16,
+      "fixed_cycles": 16
+    },
+    {
+      "source_pc": 10616,
+      "source": "nop",
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "fixed_cycles": 4
+    },
+    {
+      "source_pc": 10618,
+      "source": "nop",
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "fixed_cycles": 4
+    },
+    {
+      "source_pc": 10620,
+      "source": "nop",
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "fixed_cycles": 4
+    },
+    {
+      "source_pc": 10622,
+      "source": "nop",
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "fixed_cycles": 4
+    },
+    {
+      "source_pc": 10624,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10628,
+      "source": "btst.l #0x4,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10632,
+      "source": "dbne D2w,0x00002980",
+      "handler": "m68k_op_dbne_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10636,
+      "source": "rts",
+      "handler": "m68k_op_rts_32",
+      "base_cycles": 16,
+      "fixed_cycles": 16
+    },
+    {
+      "source_pc": 10638,
+      "source": "clr.w (0x0,A0)",
+      "handler": "m68k_op_clr_16_di",
+      "base_cycles": 16,
+      "fixed_cycles": 16
+    },
+    {
+      "source_pc": 10642,
+      "source": "clr.w (0x8,A0)",
+      "handler": "m68k_op_clr_16_di",
+      "base_cycles": 16,
+      "fixed_cycles": 16
+    },
+    {
+      "source_pc": 10646,
+      "source": "clr.w (0x10,A0)",
+      "handler": "m68k_op_clr_16_di",
+      "base_cycles": 16,
+      "fixed_cycles": 16
+    },
+    {
+      "source_pc": 10650,
+      "source": "clr.w (0x18,A0)",
+      "handler": "m68k_op_clr_16_di",
+      "base_cycles": 16,
+      "fixed_cycles": 16
+    },
+    {
+      "source_pc": 10654,
+      "source": "clr.w (0x20,A0)",
+      "handler": "m68k_op_clr_16_di",
+      "base_cycles": 16,
+      "fixed_cycles": 16
+    },
+    {
+      "source_pc": 10658,
+      "source": "move.w #0x1000,D2w",
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10662,
+      "source": "move.b #0x60,(0x0,A1)",
+      "handler": "m68k_op_move_8_di_i",
+      "base_cycles": 16,
+      "fixed_cycles": 16
+    },
+    {
+      "source_pc": 10668,
+      "source": "nop",
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "fixed_cycles": 4
+    },
+    {
+      "source_pc": 10670,
+      "source": "nop",
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "fixed_cycles": 4
+    },
+    {
+      "source_pc": 10672,
+      "source": "nop",
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "fixed_cycles": 4
+    },
+    {
+      "source_pc": 10674,
+      "source": "nop",
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "fixed_cycles": 4
+    },
+    {
+      "source_pc": 10676,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10680,
+      "source": "btst.l #0x4,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10684,
+      "source": "dbne D2w,0x000029b4",
+      "handler": "m68k_op_dbne_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10688,
+      "source": "rts",
+      "handler": "m68k_op_rts_32",
+      "base_cycles": 16,
+      "fixed_cycles": 16
+    },
+    {
+      "source_pc": 10690,
+      "source": "addq.w #0x8,A2",
+      "handler": "m68k_op_addq_16_a",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10692,
+      "source": "add.w D0w,D0w",
+      "handler": "m68k_op_add_16_er_d",
+      "base_cycles": 4,
+      "fixed_cycles": 4
+    },
+    {
+      "source_pc": 10694,
+      "source": "move.w (0x29cc,PC,D0w*0x1),(A2)",
+      "handler": "m68k_op_move_16_ai_pcix",
+      "base_cycles": 18,
+      "fixed_cycles": 18
+    },
+    {
+      "source_pc": 10698,
+      "source": "rts",
+      "handler": "m68k_op_rts_32",
+      "base_cycles": 16,
+      "fixed_cycles": 16
+    },
+    {
+      "source_pc": 10732,
+      "source": "move.w (0x0,A0),D0w",
+      "handler": "m68k_op_move_16_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10736,
+      "source": "movea.l (0x29f6,PC,D0w*0x1),A2",
+      "handler": "m68k_op_movea_32_pcix",
+      "base_cycles": 18,
+      "fixed_cycles": 18
+    },
+    {
+      "source_pc": 10740,
+      "source": "jmp (A2)",
+      "handler": "m68k_op_jmp_32_ai",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 9492,
+      "source": "lea (-0x900).w,A0",
+      "handler": "m68k_op_lea_32_aw",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 9496,
+      "source": "move.w #0x4,D0w",
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 9500,
+      "source": "moveq 0x0,D1",
+      "handler": "m68k_op_moveq_32",
+      "base_cycles": 4,
+      "fixed_cycles": 4
+    },
+    {
+      "source_pc": 9502,
+      "source": "move.l D1,(A0)+",
+      "handler": "m68k_op_move_32_pi_d",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 9504,
+      "source": "move.l D1,(A0)+",
+      "handler": "m68k_op_move_32_pi_d",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 9506,
+      "source": "move.l D1,(A0)+",
+      "handler": "m68k_op_move_32_pi_d",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 9508,
+      "source": "move.l D1,(A0)+",
+      "handler": "m68k_op_move_32_pi_d",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 9510,
+      "source": "dbf D0w,0x0000251e",
+      "handler": "m68k_op_dbf_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 9514,
+      "source": "lea (-0x900).w,A0",
+      "handler": "m68k_op_lea_32_aw",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 9518,
+      "source": "lea (0xa10003).l,A1",
+      "handler": "m68k_op_lea_32_al",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 9524,
+      "source": "bsr.b 0x00002540",
+      "handler": "m68k_op_bsr_8",
+      "base_cycles": 18,
+      "fixed_cycles": 18
+    },
+    {
+      "source_pc": 9526,
+      "source": "lea (-0x8d8).w,A0",
+      "handler": "m68k_op_lea_32_aw",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 9530,
+      "source": "lea (0xa10005).l,A1",
+      "handler": "m68k_op_lea_32_al",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 9536,
+      "source": "move.b #0x60,(0x6,A1)",
+      "handler": "m68k_op_move_8_di_i",
+      "base_cycles": 16,
+      "fixed_cycles": 16
+    },
+    {
+      "source_pc": 9542,
+      "source": "move.b #0x60,(0x0,A1)",
+      "handler": "m68k_op_move_8_di_i",
+      "base_cycles": 16,
+      "fixed_cycles": 16
+    },
+    {
+      "source_pc": 9548,
+      "source": "nop",
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "fixed_cycles": 4
+    },
+    {
+      "source_pc": 9550,
+      "source": "nop",
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "fixed_cycles": 4
+    },
+    {
+      "source_pc": 9552,
+      "source": "nop",
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "fixed_cycles": 4
+    },
+    {
+      "source_pc": 9554,
+      "source": "nop",
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "fixed_cycles": 4
+    },
+    {
+      "source_pc": 9556,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 9560,
+      "source": "move.b #0x20,(0x0,A1)",
+      "handler": "m68k_op_move_8_di_i",
+      "base_cycles": 16,
+      "fixed_cycles": 16
+    },
+    {
+      "source_pc": 9566,
+      "source": "nop",
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "fixed_cycles": 4
+    },
+    {
+      "source_pc": 9568,
+      "source": "nop",
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "fixed_cycles": 4
+    },
+    {
+      "source_pc": 9570,
+      "source": "nop",
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "fixed_cycles": 4
+    },
+    {
+      "source_pc": 9572,
+      "source": "nop",
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "fixed_cycles": 4
+    },
+    {
+      "source_pc": 9574,
+      "source": "move.b (0x0,A1),D1b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 9578,
+      "source": "andi.w #0xf,D0w",
+      "handler": "m68k_op_andi_16_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 9582,
+      "source": "andi.w #0xf,D1w",
+      "handler": "m68k_op_andi_16_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 9586,
+      "source": "bsr.w 0x00002c1e",
+      "handler": "m68k_op_bsr_16",
+      "base_cycles": 18,
+      "fixed_cycles": 18
+    },
+    {
+      "source_pc": 9590,
+      "source": "asl.w #0x2,D2w",
+      "handler": "m68k_op_asl_16_s",
+      "base_cycles": 6,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 9592,
+      "source": "movea.l (0x257e,PC,D2w*0x1),A2",
+      "handler": "m68k_op_movea_32_pcix",
+      "base_cycles": 18,
+      "fixed_cycles": 18
+    },
+    {
+      "source_pc": 9596,
+      "source": "jmp (A2)",
+      "handler": "m68k_op_jmp_32_ai",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 11294,
+      "source": "clr.w D2w",
+      "handler": "m68k_op_clr_16_d",
+      "base_cycles": 4,
+      "fixed_cycles": 4
+    },
+    {
+      "source_pc": 11296,
+      "source": "btst.l #0x3,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 11300,
+      "source": "bne.b 0x00002c2c",
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 11302,
+      "source": "btst.l #0x2,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 11306,
+      "source": "beq.b 0x00002c30",
+      "handler": "m68k_op_beq_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 11308,
+      "source": "bset.l #0x3,D2",
+      "handler": "m68k_op_bset_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 11312,
+      "source": "btst.l #0x1,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 11316,
+      "source": "bne.b 0x00002c3c",
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 11318,
+      "source": "btst.l #0x0,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 11322,
+      "source": "beq.b 0x00002c40",
+      "handler": "m68k_op_beq_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 11324,
+      "source": "bset.l #0x2,D2",
+      "handler": "m68k_op_bset_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 11328,
+      "source": "btst.l #0x3,D1",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 11332,
+      "source": "bne.b 0x00002c4c",
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 11334,
+      "source": "btst.l #0x2,D1",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 11338,
+      "source": "beq.b 0x00002c50",
+      "handler": "m68k_op_beq_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 11340,
+      "source": "bset.l #0x1,D2",
+      "handler": "m68k_op_bset_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 11344,
+      "source": "btst.l #0x1,D1",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 11348,
+      "source": "bne.b 0x00002c5c",
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 11350,
+      "source": "btst.l #0x0,D1",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 11354,
+      "source": "beq.b 0x00002c60",
+      "handler": "m68k_op_beq_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 11356,
+      "source": "bset.l #0x0,D2",
+      "handler": "m68k_op_bset_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 11360,
+      "source": "rts",
+      "handler": "m68k_op_rts_32",
+      "base_cycles": 16,
+      "fixed_cycles": 16
+    },
+    {
+      "source_pc": 10758,
+      "source": "rts",
+      "handler": "m68k_op_rts_32",
+      "base_cycles": 16,
+      "fixed_cycles": 16
+    },
+    {
+      "source_pc": 10760,
+      "source": "move.w #0x1000,D2w",
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10764,
+      "source": "move.b D1b,(0x0,A1)",
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10768,
+      "source": "bne.b 0x00002a20",
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10770,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10774,
+      "source": "btst.l #0x4,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10778,
+      "source": "dbeq D2w,0x00002a12",
+      "handler": "m68k_op_dbeq_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10782,
+      "source": "bra.b 0x00002a2c",
+      "handler": "m68k_op_bra_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10784,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10788,
+      "source": "btst.l #0x4,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10792,
+      "source": "dbne D2w,0x00002a20",
+      "handler": "m68k_op_dbne_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10796,
+      "source": "eori.b #0x20,D1b",
+      "handler": "m68k_op_eori_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10800,
+      "source": "andi.b #0xf,D0b",
+      "handler": "m68k_op_andi_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10804,
+      "source": "move.b D0b,(0x2,A0)",
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10808,
+      "source": "move.w #0x1000,D2w",
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10812,
+      "source": "move.b D1b,(0x0,A1)",
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10816,
+      "source": "bne.b 0x00002a50",
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10818,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10822,
+      "source": "btst.l #0x4,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10826,
+      "source": "dbeq D2w,0x00002a42",
+      "handler": "m68k_op_dbeq_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10830,
+      "source": "bra.b 0x00002a5c",
+      "handler": "m68k_op_bra_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10832,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10836,
+      "source": "btst.l #0x4,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10840,
+      "source": "dbne D2w,0x00002a50",
+      "handler": "m68k_op_dbne_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10844,
+      "source": "eori.b #0x20,D1b",
+      "handler": "m68k_op_eori_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10848,
+      "source": "andi.b #0xf,D0b",
+      "handler": "m68k_op_andi_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10852,
+      "source": "move.b D0b,(0x3,A0)",
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10856,
+      "source": "rts",
+      "handler": "m68k_op_rts_32",
+      "base_cycles": 16,
+      "fixed_cycles": 16
+    },
+    {
+      "source_pc": 10858,
+      "source": "move.w #0x1000,D2w",
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10862,
+      "source": "move.b D1b,(0x0,A1)",
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10866,
+      "source": "bne.b 0x00002a82",
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10868,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10872,
+      "source": "btst.l #0x4,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10876,
+      "source": "dbeq D2w,0x00002a74",
+      "handler": "m68k_op_dbeq_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10880,
+      "source": "bra.b 0x00002a8e",
+      "handler": "m68k_op_bra_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10882,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10886,
+      "source": "btst.l #0x4,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10890,
+      "source": "dbne D2w,0x00002a82",
+      "handler": "m68k_op_dbne_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10894,
+      "source": "eori.b #0x20,D1b",
+      "handler": "m68k_op_eori_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10898,
+      "source": "andi.b #0xf,D0b",
+      "handler": "m68k_op_andi_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10902,
+      "source": "move.b D0b,(0x2,A0)",
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10906,
+      "source": "move.w #0x1000,D2w",
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10910,
+      "source": "move.b D1b,(0x0,A1)",
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10914,
+      "source": "bne.b 0x00002ab2",
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10916,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10920,
+      "source": "btst.l #0x4,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10924,
+      "source": "dbeq D2w,0x00002aa4",
+      "handler": "m68k_op_dbeq_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10928,
+      "source": "bra.b 0x00002abe",
+      "handler": "m68k_op_bra_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10930,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10934,
+      "source": "btst.l #0x4,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10938,
+      "source": "dbne D2w,0x00002ab2",
+      "handler": "m68k_op_dbne_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10942,
+      "source": "eori.b #0x20,D1b",
+      "handler": "m68k_op_eori_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10946,
+      "source": "andi.b #0xf,D0b",
+      "handler": "m68k_op_andi_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10950,
+      "source": "move.b D0b,(0x3,A0)",
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10954,
+      "source": "move.w #0x1000,D2w",
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10958,
+      "source": "move.b D1b,(0x0,A1)",
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10962,
+      "source": "bne.b 0x00002ae2",
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10964,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10968,
+      "source": "btst.l #0x4,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10972,
+      "source": "dbeq D2w,0x00002ad4",
+      "handler": "m68k_op_dbeq_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10976,
+      "source": "bra.b 0x00002aee",
+      "handler": "m68k_op_bra_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10978,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10982,
+      "source": "btst.l #0x4,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 10986,
+      "source": "dbne D2w,0x00002ae2",
+      "handler": "m68k_op_dbne_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 10990,
+      "source": "eori.b #0x20,D1b",
+      "handler": "m68k_op_eori_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10994,
+      "source": "andi.b #0xf,D0b",
+      "handler": "m68k_op_andi_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 10998,
+      "source": "move.b D0b,(0x4,A0)",
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 11002,
+      "source": "rts",
+      "handler": "m68k_op_rts_32",
+      "base_cycles": 16,
+      "fixed_cycles": 16
+    },
+    {
+      "source_pc": 11004,
+      "source": "move.w #0x1000,D2w",
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 11008,
+      "source": "move.b D1b,(0x0,A1)",
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 11012,
+      "source": "bne.b 0x00002b14",
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 11014,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 11018,
+      "source": "btst.l #0x4,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 11022,
+      "source": "dbeq D2w,0x00002b06",
+      "handler": "m68k_op_dbeq_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 11026,
+      "source": "bra.b 0x00002b20",
+      "handler": "m68k_op_bra_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 11028,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 11032,
+      "source": "btst.l #0x4,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 11036,
+      "source": "dbne D2w,0x00002b14",
+      "handler": "m68k_op_dbne_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 11040,
+      "source": "eori.b #0x20,D1b",
+      "handler": "m68k_op_eori_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 11044,
+      "source": "andi.b #0xf,D0b",
+      "handler": "m68k_op_andi_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 11048,
+      "source": "move.b D0b,(0x2,A0)",
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 11052,
+      "source": "move.w #0x1000,D2w",
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 11056,
+      "source": "move.b D1b,(0x0,A1)",
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 11060,
+      "source": "bne.b 0x00002b44",
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 11062,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 11066,
+      "source": "btst.l #0x4,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 11070,
+      "source": "dbeq D2w,0x00002b36",
+      "handler": "m68k_op_dbeq_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 11074,
+      "source": "bra.b 0x00002b50",
+      "handler": "m68k_op_bra_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 11076,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 11080,
+      "source": "btst.l #0x4,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 11084,
+      "source": "dbne D2w,0x00002b44",
+      "handler": "m68k_op_dbne_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 11088,
+      "source": "eori.b #0x20,D1b",
+      "handler": "m68k_op_eori_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 11092,
+      "source": "andi.b #0xf,D0b",
+      "handler": "m68k_op_andi_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 11096,
+      "source": "move.b D0b,(0x3,A0)",
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 11100,
+      "source": "move.w #0x1000,D2w",
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 11104,
+      "source": "move.b D1b,(0x0,A1)",
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 11108,
+      "source": "bne.b 0x00002b74",
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 11110,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 11114,
+      "source": "btst.l #0x4,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 11118,
+      "source": "dbeq D2w,0x00002b66",
+      "handler": "m68k_op_dbeq_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 11122,
+      "source": "bra.b 0x00002b80",
+      "handler": "m68k_op_bra_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 11124,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 11128,
+      "source": "btst.l #0x4,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 11132,
+      "source": "dbne D2w,0x00002b74",
+      "handler": "m68k_op_dbne_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 11136,
+      "source": "eori.b #0x20,D1b",
+      "handler": "m68k_op_eori_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 11140,
+      "source": "andi.b #0xf,D0b",
+      "handler": "m68k_op_andi_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 11144,
+      "source": "move.b D0b,(0x4,A0)",
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 11148,
+      "source": "move.w #0x1000,D2w",
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 11152,
+      "source": "move.b D1b,(0x0,A1)",
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 11156,
+      "source": "bne.b 0x00002ba4",
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 11158,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 11162,
+      "source": "btst.l #0x4,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 11166,
+      "source": "dbeq D2w,0x00002b96",
+      "handler": "m68k_op_dbeq_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 11170,
+      "source": "bra.b 0x00002bb0",
+      "handler": "m68k_op_bra_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 11172,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 11176,
+      "source": "btst.l #0x4,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 11180,
+      "source": "dbne D2w,0x00002ba4",
+      "handler": "m68k_op_dbne_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 11184,
+      "source": "eori.b #0x20,D1b",
+      "handler": "m68k_op_eori_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 11188,
+      "source": "andi.b #0xf,D0b",
+      "handler": "m68k_op_andi_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 11192,
+      "source": "move.b D0b,(0x5,A0)",
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 11196,
+      "source": "move.w #0x1000,D2w",
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 11200,
+      "source": "move.b D1b,(0x0,A1)",
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 11204,
+      "source": "bne.b 0x00002bd4",
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 11206,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 11210,
+      "source": "btst.l #0x4,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 11214,
+      "source": "dbeq D2w,0x00002bc6",
+      "handler": "m68k_op_dbeq_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 11218,
+      "source": "bra.b 0x00002be0",
+      "handler": "m68k_op_bra_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 11220,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 11224,
+      "source": "btst.l #0x4,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 11228,
+      "source": "dbne D2w,0x00002bd4",
+      "handler": "m68k_op_dbne_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 11232,
+      "source": "eori.b #0x20,D1b",
+      "handler": "m68k_op_eori_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 11236,
+      "source": "andi.b #0xf,D0b",
+      "handler": "m68k_op_andi_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 11240,
+      "source": "move.b D0b,(0x6,A0)",
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 11244,
+      "source": "move.w #0x1000,D2w",
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 11248,
+      "source": "move.b D1b,(0x0,A1)",
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 11252,
+      "source": "bne.b 0x00002c04",
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 11254,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 11258,
+      "source": "btst.l #0x4,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 11262,
+      "source": "dbeq D2w,0x00002bf6",
+      "handler": "m68k_op_dbeq_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 11266,
+      "source": "bra.b 0x00002c10",
+      "handler": "m68k_op_bra_8",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 11268,
+      "source": "move.b (0x0,A1),D0b",
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 11272,
+      "source": "btst.l #0x4,D0",
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "fixed_cycles": 10
+    },
+    {
+      "source_pc": 11276,
+      "source": "dbne D2w,0x00002c04",
+      "handler": "m68k_op_dbne_16",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 11280,
+      "source": "eori.b #0x20,D1b",
+      "handler": "m68k_op_eori_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 11284,
+      "source": "andi.b #0xf,D0b",
+      "handler": "m68k_op_andi_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    },
+    {
+      "source_pc": 11288,
+      "source": "move.b D0b,(0x7,A0)",
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "fixed_cycles": 12
+    },
+    {
+      "source_pc": 11292,
+      "source": "rts",
+      "handler": "m68k_op_rts_32",
+      "base_cycles": 16,
+      "fixed_cycles": 16
+    },
+    {
+      "source_pc": 11548,
+      "source": "ori.b #0xa,D0b",
+      "handler": "m68k_op_ori_8_d",
+      "base_cycles": 8,
+      "fixed_cycles": 8
+    }
+  ],
+  "prefix_costs": {
+    "0xfff000": {
+      "source_pc": 16773120,
+      "opcode": 124,
+      "handler": "m68k_op_ori_16_tos",
+      "base_cycles": 20,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        20
+      ]
+    },
+    "0xfff004": {
+      "source_pc": 16773124,
+      "opcode": 3192,
+      "handler": "m68k_op_cmpi_16_aw",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    },
+    "0xfff00a": {
+      "source_pc": 16773130,
+      "opcode": 26368,
+      "handler": "m68k_op_beq_16",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0xfff00e": {
+      "source_pc": 16773134,
+      "opcode": 28160,
+      "handler": "m68k_op_bgt_16",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0xfff012": {
+      "source_pc": 16773138,
+      "opcode": 13308,
+      "handler": "m68k_op_move_16_al_i",
+      "base_cycles": 20,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        20
+      ]
+    },
+    "0xfff01a": {
+      "source_pc": 16773146,
+      "opcode": 21624,
+      "handler": "m68k_op_addq_16_aw",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    },
+    "0xfff01e": {
+      "source_pc": 16773150,
+      "opcode": 18663,
+      "handler": "m68k_op_movem_32_re_pd",
+      "base_cycles": 8,
+      "internal_cycles": 112,
+      "observed_cpu_cycles": [
+        120
+      ]
+    },
+    "0xfff022": {
+      "source_pc": 16773154,
+      "opcode": 19000,
+      "handler": "m68k_op_tst_8_aw",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0xfff026": {
+      "source_pc": 16773158,
+      "opcode": 27234,
+      "handler": "m68k_op_bpl_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0xfff028": {
+      "source_pc": 16773160,
+      "opcode": 4156,
+      "handler": "m68k_op_move_8_d_i",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0xfff02c": {
+      "source_pc": 16773164,
+      "opcode": 16889,
+      "handler": "m68k_op_lea_32_al",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0xfff032": {
+      "source_pc": 16773170,
+      "opcode": 45072,
+      "handler": "m68k_op_cmp_8_ai",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0xfff034": {
+      "source_pc": 16773172,
+      "opcode": 25340,
+      "handler": "m68k_op_bhi_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8,
+        10
+      ]
+    },
+    "0xfff036": {
+      "source_pc": 16773174,
+      "opcode": 45072,
+      "handler": "m68k_op_cmp_8_ai",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0xfff038": {
+      "source_pc": 16773176,
+      "opcode": 25336,
+      "handler": "m68k_op_bhi_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0xfff03a": {
+      "source_pc": 16773178,
+      "opcode": 12348,
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0xfff03e": {
+      "source_pc": 16773182,
+      "opcode": 20936,
+      "handler": "m68k_op_dbf_16",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10,
+        14
+      ]
+    },
+    "0xfff042": {
+      "source_pc": 16773186,
+      "opcode": 16889,
+      "handler": "m68k_op_lea_32_al",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0xfff048": {
+      "source_pc": 16773192,
+      "opcode": 2296,
+      "handler": "m68k_op_bset_8_s_aw",
+      "base_cycles": 20,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        20
+      ]
+    },
+    "0xfff04e": {
+      "source_pc": 16773198,
+      "opcode": 12344,
+      "handler": "m68k_op_move_16_d_aw",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0xfff052": {
+      "source_pc": 16773202,
+      "opcode": 12416,
+      "handler": "m68k_op_move_16_ai_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0xfff054": {
+      "source_pc": 16773204,
+      "opcode": 4156,
+      "handler": "m68k_op_move_8_d_i",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0xfff058": {
+      "source_pc": 16773208,
+      "opcode": 16889,
+      "handler": "m68k_op_lea_32_al",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0xfff05e": {
+      "source_pc": 16773214,
+      "opcode": 45072,
+      "handler": "m68k_op_cmp_8_ai",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0xfff060": {
+      "source_pc": 16773216,
+      "opcode": 25340,
+      "handler": "m68k_op_bhi_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8,
+        10
+      ]
+    },
+    "0xfff062": {
+      "source_pc": 16773218,
+      "opcode": 45072,
+      "handler": "m68k_op_cmp_8_ai",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0xfff064": {
+      "source_pc": 16773220,
+      "opcode": 25336,
+      "handler": "m68k_op_bhi_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0xfff066": {
+      "source_pc": 16773222,
+      "opcode": 12348,
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0xfff06a": {
+      "source_pc": 16773226,
+      "opcode": 20936,
+      "handler": "m68k_op_dbf_16",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10,
+        14
+      ]
+    },
+    "0xfff06e": {
+      "source_pc": 16773230,
+      "opcode": 16889,
+      "handler": "m68k_op_lea_32_al",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0xfff074": {
+      "source_pc": 16773236,
+      "opcode": 17401,
+      "handler": "m68k_op_lea_32_al",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0xfff07a": {
+      "source_pc": 16773242,
+      "opcode": 12857,
+      "handler": "m68k_op_move_16_d_al",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    },
+    "0xfff080": {
+      "source_pc": 16773248,
+      "opcode": 9276,
+      "handler": "m68k_op_move_32_d_i",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0xfff086": {
+      "source_pc": 16773254,
+      "opcode": 8322,
+      "handler": "m68k_op_move_32_ai_d",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0xfff088": {
+      "source_pc": 16773256,
+      "opcode": 12929,
+      "handler": "m68k_op_move_16_ai_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0xfff08a": {
+      "source_pc": 16773258,
+      "opcode": 20153,
+      "handler": "m68k_op_jsr_32_al",
+      "base_cycles": 20,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        20
+      ]
+    },
+    "0x2514": {
+      "source_pc": 9492,
+      "opcode": 16888,
+      "handler": "m68k_op_lea_32_aw",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2518": {
+      "source_pc": 9496,
+      "opcode": 12348,
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x251c": {
+      "source_pc": 9500,
+      "opcode": 29184,
+      "handler": "m68k_op_moveq_32",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x251e": {
+      "source_pc": 9502,
+      "opcode": 8385,
+      "handler": "m68k_op_move_32_pi_d",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2520": {
+      "source_pc": 9504,
+      "opcode": 8385,
+      "handler": "m68k_op_move_32_pi_d",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2522": {
+      "source_pc": 9506,
+      "opcode": 8385,
+      "handler": "m68k_op_move_32_pi_d",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2524": {
+      "source_pc": 9508,
+      "opcode": 8385,
+      "handler": "m68k_op_move_32_pi_d",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2526": {
+      "source_pc": 9510,
+      "opcode": 20936,
+      "handler": "m68k_op_dbf_16",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10,
+        14
+      ]
+    },
+    "0x252a": {
+      "source_pc": 9514,
+      "opcode": 16888,
+      "handler": "m68k_op_lea_32_aw",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x252e": {
+      "source_pc": 9518,
+      "opcode": 17401,
+      "handler": "m68k_op_lea_32_al",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2534": {
+      "source_pc": 9524,
+      "opcode": 24842,
+      "handler": "m68k_op_bsr_8",
+      "base_cycles": 18,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        18
+      ]
+    },
+    "0x2540": {
+      "source_pc": 9536,
+      "opcode": 4988,
+      "handler": "m68k_op_move_8_di_i",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    },
+    "0x2546": {
+      "source_pc": 9542,
+      "opcode": 4988,
+      "handler": "m68k_op_move_8_di_i",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    },
+    "0x254c": {
+      "source_pc": 9548,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x254e": {
+      "source_pc": 9550,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x2550": {
+      "source_pc": 9552,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x2552": {
+      "source_pc": 9554,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x2554": {
+      "source_pc": 9556,
+      "opcode": 4137,
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2558": {
+      "source_pc": 9560,
+      "opcode": 4988,
+      "handler": "m68k_op_move_8_di_i",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    },
+    "0x255e": {
+      "source_pc": 9566,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x2560": {
+      "source_pc": 9568,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x2562": {
+      "source_pc": 9570,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x2564": {
+      "source_pc": 9572,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x2566": {
+      "source_pc": 9574,
+      "opcode": 4649,
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x256a": {
+      "source_pc": 9578,
+      "opcode": 576,
+      "handler": "m68k_op_andi_16_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x256e": {
+      "source_pc": 9582,
+      "opcode": 577,
+      "handler": "m68k_op_andi_16_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2572": {
+      "source_pc": 9586,
+      "opcode": 24832,
+      "handler": "m68k_op_bsr_16",
+      "base_cycles": 18,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        18
+      ]
+    },
+    "0x2c1e": {
+      "source_pc": 11294,
+      "opcode": 16962,
+      "handler": "m68k_op_clr_16_d",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x2c20": {
+      "source_pc": 11296,
+      "opcode": 2048,
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2c24": {
+      "source_pc": 11300,
+      "opcode": 26118,
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8,
+        10
+      ]
+    },
+    "0x2c2c": {
+      "source_pc": 11308,
+      "opcode": 2242,
+      "handler": "m68k_op_bset_32_s_d",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2c30": {
+      "source_pc": 11312,
+      "opcode": 2048,
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2c34": {
+      "source_pc": 11316,
+      "opcode": 26118,
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8,
+        10
+      ]
+    },
+    "0x2c3c": {
+      "source_pc": 11324,
+      "opcode": 2242,
+      "handler": "m68k_op_bset_32_s_d",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2c40": {
+      "source_pc": 11328,
+      "opcode": 2049,
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2c44": {
+      "source_pc": 11332,
+      "opcode": 26118,
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8,
+        10
+      ]
+    },
+    "0x2c46": {
+      "source_pc": 11334,
+      "opcode": 2049,
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2c4a": {
+      "source_pc": 11338,
+      "opcode": 26372,
+      "handler": "m68k_op_beq_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2c50": {
+      "source_pc": 11344,
+      "opcode": 2049,
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2c54": {
+      "source_pc": 11348,
+      "opcode": 26118,
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8,
+        10
+      ]
+    },
+    "0x2c5c": {
+      "source_pc": 11356,
+      "opcode": 2242,
+      "handler": "m68k_op_bset_32_s_d",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2c60": {
+      "source_pc": 11360,
+      "opcode": 20085,
+      "handler": "m68k_op_rts_32",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    },
+    "0x2576": {
+      "source_pc": 9590,
+      "opcode": 58690,
+      "handler": "m68k_op_asl_16_s",
+      "base_cycles": 6,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2578": {
+      "source_pc": 9592,
+      "opcode": 9339,
+      "handler": "m68k_op_movea_32_pcix",
+      "base_cycles": 18,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        18
+      ]
+    },
+    "0x257c": {
+      "source_pc": 9596,
+      "opcode": 20178,
+      "handler": "m68k_op_jmp_32_ai",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x25d4": {
+      "source_pc": 9684,
+      "opcode": 4988,
+      "handler": "m68k_op_move_8_di_i",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    },
+    "0x25da": {
+      "source_pc": 9690,
+      "opcode": 4988,
+      "handler": "m68k_op_move_8_di_i",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    },
+    "0x25e0": {
+      "source_pc": 9696,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x25e2": {
+      "source_pc": 9698,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x25e4": {
+      "source_pc": 9700,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x25e6": {
+      "source_pc": 9702,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x25e8": {
+      "source_pc": 9704,
+      "opcode": 4137,
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x25ec": {
+      "source_pc": 9708,
+      "opcode": 4988,
+      "handler": "m68k_op_move_8_di_i",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    },
+    "0x25f2": {
+      "source_pc": 9714,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x25f4": {
+      "source_pc": 9716,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x25f6": {
+      "source_pc": 9718,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x25f8": {
+      "source_pc": 9720,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x25fa": {
+      "source_pc": 9722,
+      "opcode": 4649,
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x25fe": {
+      "source_pc": 9726,
+      "opcode": 5120,
+      "handler": "m68k_op_move_8_d_d",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x2600": {
+      "source_pc": 9728,
+      "opcode": 512,
+      "handler": "m68k_op_andi_8_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2604": {
+      "source_pc": 9732,
+      "opcode": 514,
+      "handler": "m68k_op_andi_8_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2608": {
+      "source_pc": 9736,
+      "opcode": 59402,
+      "handler": "m68k_op_lsr_8_s",
+      "base_cycles": 6,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        14
+      ]
+    },
+    "0x260a": {
+      "source_pc": 9738,
+      "opcode": 513,
+      "handler": "m68k_op_andi_8_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x260e": {
+      "source_pc": 9742,
+      "opcode": 58377,
+      "handler": "m68k_op_lsr_8_s",
+      "base_cycles": 6,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2610": {
+      "source_pc": 9744,
+      "opcode": 33282,
+      "handler": "m68k_op_or_8_er_d",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x2612": {
+      "source_pc": 9746,
+      "opcode": 4416,
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2616": {
+      "source_pc": 9750,
+      "opcode": 4417,
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x261a": {
+      "source_pc": 9754,
+      "opcode": 4988,
+      "handler": "m68k_op_move_8_di_i",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    },
+    "0x2620": {
+      "source_pc": 9760,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x2622": {
+      "source_pc": 9762,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x2624": {
+      "source_pc": 9764,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x2626": {
+      "source_pc": 9766,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x2628": {
+      "source_pc": 9768,
+      "opcode": 4137,
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x262c": {
+      "source_pc": 9772,
+      "opcode": 4988,
+      "handler": "m68k_op_move_8_di_i",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    },
+    "0x2632": {
+      "source_pc": 9778,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x2634": {
+      "source_pc": 9780,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x2636": {
+      "source_pc": 9782,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x2638": {
+      "source_pc": 9784,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x263a": {
+      "source_pc": 9786,
+      "opcode": 4649,
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x263e": {
+      "source_pc": 9790,
+      "opcode": 577,
+      "handler": "m68k_op_andi_16_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2642": {
+      "source_pc": 9794,
+      "opcode": 26386,
+      "handler": "m68k_op_beq_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2656": {
+      "source_pc": 9814,
+      "opcode": 12668,
+      "handler": "m68k_op_move_16_di_i",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    },
+    "0x265c": {
+      "source_pc": 9820,
+      "opcode": 24832,
+      "handler": "m68k_op_bsr_16",
+      "base_cycles": 18,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        18
+      ]
+    },
+    "0x25c2": {
+      "source_pc": 9666,
+      "opcode": 17000,
+      "handler": "m68k_op_clr_16_di",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    },
+    "0x25c6": {
+      "source_pc": 9670,
+      "opcode": 17000,
+      "handler": "m68k_op_clr_16_di",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    },
+    "0x25ca": {
+      "source_pc": 9674,
+      "opcode": 17000,
+      "handler": "m68k_op_clr_16_di",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    },
+    "0x25ce": {
+      "source_pc": 9678,
+      "opcode": 17000,
+      "handler": "m68k_op_clr_16_di",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    },
+    "0x25d2": {
+      "source_pc": 9682,
+      "opcode": 20085,
+      "handler": "m68k_op_rts_32",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    },
+    "0x2660": {
+      "source_pc": 9824,
+      "opcode": 4988,
+      "handler": "m68k_op_move_8_di_i",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    },
+    "0x2666": {
+      "source_pc": 9830,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x2668": {
+      "source_pc": 9832,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x266a": {
+      "source_pc": 9834,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x266c": {
+      "source_pc": 9836,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x266e": {
+      "source_pc": 9838,
+      "opcode": 4137,
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2672": {
+      "source_pc": 9842,
+      "opcode": 4988,
+      "handler": "m68k_op_move_8_di_i",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    },
+    "0x2678": {
+      "source_pc": 9848,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x267a": {
+      "source_pc": 9850,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x267c": {
+      "source_pc": 9852,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x267e": {
+      "source_pc": 9854,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x2680": {
+      "source_pc": 9856,
+      "opcode": 4649,
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2684": {
+      "source_pc": 9860,
+      "opcode": 576,
+      "handler": "m68k_op_andi_16_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2688": {
+      "source_pc": 9864,
+      "opcode": 4416,
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x268c": {
+      "source_pc": 9868,
+      "opcode": 4988,
+      "handler": "m68k_op_move_8_di_i",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    },
+    "0x2692": {
+      "source_pc": 9874,
+      "opcode": 20085,
+      "handler": "m68k_op_rts_32",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    },
+    "0x2536": {
+      "source_pc": 9526,
+      "opcode": 16888,
+      "handler": "m68k_op_lea_32_aw",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x253a": {
+      "source_pc": 9530,
+      "opcode": 17401,
+      "handler": "m68k_op_lea_32_al",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0xfff090": {
+      "source_pc": 16773264,
+      "opcode": 20153,
+      "handler": "m68k_op_jsr_32_al",
+      "base_cycles": 20,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        20
+      ]
+    },
+    "0x2c36": {
+      "source_pc": 11318,
+      "opcode": 2048,
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2c3a": {
+      "source_pc": 11322,
+      "opcode": 26372,
+      "handler": "m68k_op_beq_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2c56": {
+      "source_pc": 11350,
+      "opcode": 2049,
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2c5a": {
+      "source_pc": 11354,
+      "opcode": 26372,
+      "handler": "m68k_op_beq_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2c26": {
+      "source_pc": 11302,
+      "opcode": 2048,
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2c2a": {
+      "source_pc": 11306,
+      "opcode": 26372,
+      "handler": "m68k_op_beq_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2c4c": {
+      "source_pc": 11340,
+      "opcode": 2242,
+      "handler": "m68k_op_bset_32_s_d",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2838": {
+      "source_pc": 10296,
+      "opcode": 16897,
+      "handler": "m68k_op_clr_8_d",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x283a": {
+      "source_pc": 10298,
+      "opcode": 13372,
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x283e": {
+      "source_pc": 10302,
+      "opcode": 4929,
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2842": {
+      "source_pc": 10306,
+      "opcode": 26126,
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2844": {
+      "source_pc": 10308,
+      "opcode": 4137,
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2848": {
+      "source_pc": 10312,
+      "opcode": 2048,
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x284c": {
+      "source_pc": 10316,
+      "opcode": 22474,
+      "handler": "m68k_op_dbeq_16",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2850": {
+      "source_pc": 10320,
+      "opcode": 24588,
+      "handler": "m68k_op_bra_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x285e": {
+      "source_pc": 10334,
+      "opcode": 2561,
+      "handler": "m68k_op_eori_8_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2862": {
+      "source_pc": 10338,
+      "opcode": 512,
+      "handler": "m68k_op_andi_8_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2866": {
+      "source_pc": 10342,
+      "opcode": 26112,
+      "handler": "m68k_op_bne_16",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x286a": {
+      "source_pc": 10346,
+      "opcode": 13372,
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x286e": {
+      "source_pc": 10350,
+      "opcode": 4929,
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2872": {
+      "source_pc": 10354,
+      "opcode": 26126,
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2882": {
+      "source_pc": 10370,
+      "opcode": 4137,
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2886": {
+      "source_pc": 10374,
+      "opcode": 2048,
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x288a": {
+      "source_pc": 10378,
+      "opcode": 22218,
+      "handler": "m68k_op_dbne_16",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x288e": {
+      "source_pc": 10382,
+      "opcode": 2561,
+      "handler": "m68k_op_eori_8_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2892": {
+      "source_pc": 10386,
+      "opcode": 512,
+      "handler": "m68k_op_andi_8_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2896": {
+      "source_pc": 10390,
+      "opcode": 26112,
+      "handler": "m68k_op_bne_16",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x289a": {
+      "source_pc": 10394,
+      "opcode": 12668,
+      "handler": "m68k_op_move_16_di_i",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    },
+    "0x28a0": {
+      "source_pc": 10400,
+      "opcode": 9288,
+      "handler": "m68k_op_movea_32_a",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x28a2": {
+      "source_pc": 10402,
+      "opcode": 13372,
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x28a6": {
+      "source_pc": 10406,
+      "opcode": 4929,
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x28aa": {
+      "source_pc": 10410,
+      "opcode": 26126,
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x28ac": {
+      "source_pc": 10412,
+      "opcode": 4137,
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x28b0": {
+      "source_pc": 10416,
+      "opcode": 2048,
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x28b4": {
+      "source_pc": 10420,
+      "opcode": 22474,
+      "handler": "m68k_op_dbeq_16",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x28b8": {
+      "source_pc": 10424,
+      "opcode": 24588,
+      "handler": "m68k_op_bra_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x28c6": {
+      "source_pc": 10438,
+      "opcode": 2561,
+      "handler": "m68k_op_eori_8_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x28ca": {
+      "source_pc": 10442,
+      "opcode": 512,
+      "handler": "m68k_op_andi_8_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x28ce": {
+      "source_pc": 10446,
+      "opcode": 24832,
+      "handler": "m68k_op_bsr_16",
+      "base_cycles": 18,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        18
+      ]
+    },
+    "0x29c2": {
+      "source_pc": 10690,
+      "opcode": 20554,
+      "handler": "m68k_op_addq_16_a",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x29c4": {
+      "source_pc": 10692,
+      "opcode": 53312,
+      "handler": "m68k_op_add_16_er_d",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x29c6": {
+      "source_pc": 10694,
+      "opcode": 13499,
+      "handler": "m68k_op_move_16_ai_pcix",
+      "base_cycles": 18,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        18
+      ]
+    },
+    "0x29ca": {
+      "source_pc": 10698,
+      "opcode": 20085,
+      "handler": "m68k_op_rts_32",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    },
+    "0x28d2": {
+      "source_pc": 10450,
+      "opcode": 13372,
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x28d6": {
+      "source_pc": 10454,
+      "opcode": 4929,
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x28da": {
+      "source_pc": 10458,
+      "opcode": 26126,
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x28ea": {
+      "source_pc": 10474,
+      "opcode": 4137,
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x28ee": {
+      "source_pc": 10478,
+      "opcode": 2048,
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x28f2": {
+      "source_pc": 10482,
+      "opcode": 22218,
+      "handler": "m68k_op_dbne_16",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x28f6": {
+      "source_pc": 10486,
+      "opcode": 2561,
+      "handler": "m68k_op_eori_8_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x28fa": {
+      "source_pc": 10490,
+      "opcode": 512,
+      "handler": "m68k_op_andi_8_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x28fe": {
+      "source_pc": 10494,
+      "opcode": 24832,
+      "handler": "m68k_op_bsr_16",
+      "base_cycles": 18,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        18
+      ]
+    },
+    "0x2902": {
+      "source_pc": 10498,
+      "opcode": 13372,
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2906": {
+      "source_pc": 10502,
+      "opcode": 4929,
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x290a": {
+      "source_pc": 10506,
+      "opcode": 26126,
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x290c": {
+      "source_pc": 10508,
+      "opcode": 4137,
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2910": {
+      "source_pc": 10512,
+      "opcode": 2048,
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2914": {
+      "source_pc": 10516,
+      "opcode": 22474,
+      "handler": "m68k_op_dbeq_16",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2918": {
+      "source_pc": 10520,
+      "opcode": 24588,
+      "handler": "m68k_op_bra_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2926": {
+      "source_pc": 10534,
+      "opcode": 2561,
+      "handler": "m68k_op_eori_8_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x292a": {
+      "source_pc": 10538,
+      "opcode": 512,
+      "handler": "m68k_op_andi_8_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x292e": {
+      "source_pc": 10542,
+      "opcode": 24832,
+      "handler": "m68k_op_bsr_16",
+      "base_cycles": 18,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        18
+      ]
+    },
+    "0x2932": {
+      "source_pc": 10546,
+      "opcode": 13372,
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2936": {
+      "source_pc": 10550,
+      "opcode": 4929,
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x293a": {
+      "source_pc": 10554,
+      "opcode": 26126,
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x294a": {
+      "source_pc": 10570,
+      "opcode": 4137,
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x294e": {
+      "source_pc": 10574,
+      "opcode": 2048,
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2952": {
+      "source_pc": 10578,
+      "opcode": 22218,
+      "handler": "m68k_op_dbne_16",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2956": {
+      "source_pc": 10582,
+      "opcode": 2561,
+      "handler": "m68k_op_eori_8_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x295a": {
+      "source_pc": 10586,
+      "opcode": 512,
+      "handler": "m68k_op_andi_8_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x295e": {
+      "source_pc": 10590,
+      "opcode": 24930,
+      "handler": "m68k_op_bsr_8",
+      "base_cycles": 18,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        18
+      ]
+    },
+    "0x2960": {
+      "source_pc": 10592,
+      "opcode": 13884,
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2964": {
+      "source_pc": 10596,
+      "opcode": 20552,
+      "handler": "m68k_op_addq_16_a",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2966": {
+      "source_pc": 10598,
+      "opcode": 24832,
+      "handler": "m68k_op_bsr_16",
+      "base_cycles": 18,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        18
+      ]
+    },
+    "0x29ec": {
+      "source_pc": 10732,
+      "opcode": 12328,
+      "handler": "m68k_op_move_16_d_di",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x29f0": {
+      "source_pc": 10736,
+      "opcode": 9339,
+      "handler": "m68k_op_movea_32_pcix",
+      "base_cycles": 18,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        18
+      ]
+    },
+    "0x29f4": {
+      "source_pc": 10740,
+      "opcode": 20178,
+      "handler": "m68k_op_jmp_32_ai",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2a6a": {
+      "source_pc": 10858,
+      "opcode": 13372,
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2a6e": {
+      "source_pc": 10862,
+      "opcode": 4929,
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2a72": {
+      "source_pc": 10866,
+      "opcode": 26126,
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8,
+        10
+      ]
+    },
+    "0x2a74": {
+      "source_pc": 10868,
+      "opcode": 4137,
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2a78": {
+      "source_pc": 10872,
+      "opcode": 2048,
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2a7c": {
+      "source_pc": 10876,
+      "opcode": 22474,
+      "handler": "m68k_op_dbeq_16",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2a80": {
+      "source_pc": 10880,
+      "opcode": 24588,
+      "handler": "m68k_op_bra_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2a8e": {
+      "source_pc": 10894,
+      "opcode": 2561,
+      "handler": "m68k_op_eori_8_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2a92": {
+      "source_pc": 10898,
+      "opcode": 512,
+      "handler": "m68k_op_andi_8_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2a96": {
+      "source_pc": 10902,
+      "opcode": 4416,
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2a9a": {
+      "source_pc": 10906,
+      "opcode": 13372,
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2a9e": {
+      "source_pc": 10910,
+      "opcode": 4929,
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2aa2": {
+      "source_pc": 10914,
+      "opcode": 26126,
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8,
+        10
+      ]
+    },
+    "0x2ab2": {
+      "source_pc": 10930,
+      "opcode": 4137,
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2ab6": {
+      "source_pc": 10934,
+      "opcode": 2048,
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2aba": {
+      "source_pc": 10938,
+      "opcode": 22218,
+      "handler": "m68k_op_dbne_16",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2abe": {
+      "source_pc": 10942,
+      "opcode": 2561,
+      "handler": "m68k_op_eori_8_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2ac2": {
+      "source_pc": 10946,
+      "opcode": 512,
+      "handler": "m68k_op_andi_8_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2ac6": {
+      "source_pc": 10950,
+      "opcode": 4416,
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2aca": {
+      "source_pc": 10954,
+      "opcode": 13372,
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2ace": {
+      "source_pc": 10958,
+      "opcode": 4929,
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2ad2": {
+      "source_pc": 10962,
+      "opcode": 26126,
+      "handler": "m68k_op_bne_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8,
+        10
+      ]
+    },
+    "0x2ad4": {
+      "source_pc": 10964,
+      "opcode": 4137,
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2ad8": {
+      "source_pc": 10968,
+      "opcode": 2048,
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2adc": {
+      "source_pc": 10972,
+      "opcode": 22474,
+      "handler": "m68k_op_dbeq_16",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2ae0": {
+      "source_pc": 10976,
+      "opcode": 24588,
+      "handler": "m68k_op_bra_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2aee": {
+      "source_pc": 10990,
+      "opcode": 2561,
+      "handler": "m68k_op_eori_8_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2af2": {
+      "source_pc": 10994,
+      "opcode": 512,
+      "handler": "m68k_op_andi_8_d",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2af6": {
+      "source_pc": 10998,
+      "opcode": 4416,
+      "handler": "m68k_op_move_8_di_d",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2afa": {
+      "source_pc": 11002,
+      "opcode": 20085,
+      "handler": "m68k_op_rts_32",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    },
+    "0x296a": {
+      "source_pc": 10602,
+      "opcode": 20939,
+      "handler": "m68k_op_dbf_16",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10,
+        14
+      ]
+    },
+    "0x2a82": {
+      "source_pc": 10882,
+      "opcode": 4137,
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2a86": {
+      "source_pc": 10886,
+      "opcode": 2048,
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2a8a": {
+      "source_pc": 10890,
+      "opcode": 22218,
+      "handler": "m68k_op_dbne_16",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2aa4": {
+      "source_pc": 10916,
+      "opcode": 4137,
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2aa8": {
+      "source_pc": 10920,
+      "opcode": 2048,
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2aac": {
+      "source_pc": 10924,
+      "opcode": 22474,
+      "handler": "m68k_op_dbeq_16",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2ab0": {
+      "source_pc": 10928,
+      "opcode": 24588,
+      "handler": "m68k_op_bra_8",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2ae2": {
+      "source_pc": 10978,
+      "opcode": 4137,
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2ae6": {
+      "source_pc": 10982,
+      "opcode": 2048,
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2aea": {
+      "source_pc": 10986,
+      "opcode": 22218,
+      "handler": "m68k_op_dbne_16",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x296e": {
+      "source_pc": 10606,
+      "opcode": 13372,
+      "handler": "m68k_op_move_16_d_i",
+      "base_cycles": 8,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        8
+      ]
+    },
+    "0x2972": {
+      "source_pc": 10610,
+      "opcode": 4988,
+      "handler": "m68k_op_move_8_di_i",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    },
+    "0x2978": {
+      "source_pc": 10616,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x297a": {
+      "source_pc": 10618,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x297c": {
+      "source_pc": 10620,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x297e": {
+      "source_pc": 10622,
+      "opcode": 20081,
+      "handler": "m68k_op_nop",
+      "base_cycles": 4,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        4
+      ]
+    },
+    "0x2980": {
+      "source_pc": 10624,
+      "opcode": 4137,
+      "handler": "m68k_op_move_8_d_di",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x2984": {
+      "source_pc": 10628,
+      "opcode": 2048,
+      "handler": "m68k_op_btst_32_s_d",
+      "base_cycles": 10,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        10
+      ]
+    },
+    "0x2988": {
+      "source_pc": 10632,
+      "opcode": 22218,
+      "handler": "m68k_op_dbne_16",
+      "base_cycles": 12,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        12
+      ]
+    },
+    "0x298c": {
+      "source_pc": 10636,
+      "opcode": 20085,
+      "handler": "m68k_op_rts_32",
+      "base_cycles": 16,
+      "internal_cycles": 0,
+      "observed_cpu_cycles": [
+        16
+      ]
+    }
+  },
+  "dynamic_costs": {
+    "short_branch_not_taken": 8,
+    "word_branch_not_taken": 12,
+    "taken": 10,
+    "dbf_continue": 10,
+    "dbf_expired": 14,
+    "successful_DBcc_condition": 12,
+    "temporary_save_internal_cycles": 112,
+    "temporary_save_base_after_refresh_skip": 8
+  },
+  "sources": {
+    "games/yuyuhakusho/verification/world-audio-barriers/controller-scan/vdp-and-irq-setup.txt": "e90c17a560249bd9b5655cc2a58688125c62f37f9f0e6984b3a0757eb703662d",
+    "games/yuyuhakusho/verification/world-audio-barriers/controller-teamplayer-leaves/vdp-and-irq-setup.txt": "0074064e2e94540784afe53ed61334dc3bcd861fdf19bf8218fd01f9b8374181",
+    ".local/md-yuyuhakusho/downloads/yuyuhakusho-jp.bin": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    ".local/md-yuyuhakusho/tools/Genesis-Plus-GX-60bee4c724859710ce05672239e5b601ad01382e/core/m68k/m68kops.h": "d3ff2631658e589813d2915ba3dc03b9fd2097761f6eb221fc6264a4b8d1d6f0",
+    "games/yuyuhakusho/verification/battle-sample-irq/portable-export.json": "03836a3763e4b2a20487dc111e6c522e6cefb8fc9b9332e9b5c4c29ef45139a5",
+    "scripts/yuyuhakusho/export_battle_sample_costs.py": "a07f38f98423225ba0e83d49e4cb9a6732a6cdc590f2e3b3720af2073bed6167"
+  }
+}
