@@ -1,0 +1,50 @@
+{
+  "gofmt_pass": true,
+  "files": [
+    "games/yuyuhakusho/audio/scoreclock/battle_sample.go",
+    "games/yuyuhakusho/audio/session/battle_sample.go",
+    "games/yuyuhakusho/audio/scoreclock/battle_return.go",
+    "games/yuyuhakusho/audio/scoreclock/battle_return_e2e_test.go",
+    "games/yuyuhakusho/audio/scoreclock/battle_return_runtime_e2e_test.go"
+  ],
+  "links": [
+    {
+      "file": "games/yuyuhakusho/verification/battle-irq-return/README.md",
+      "target": "FAILURES.md"
+    },
+    {
+      "file": "games/yuyuhakusho/verification/battle-irq-return/README.md",
+      "target": "test-first.json"
+    },
+    {
+      "file": "games/yuyuhakusho/verification/battle-irq-return/README.md",
+      "target": "private-io-correction.json"
+    },
+    {
+      "file": "games/yuyuhakusho/audio/session/README.md",
+      "target": "../../verification/sound-irq-runtime/"
+    },
+    {
+      "file": "games/yuyuhakusho/audio/session/README.md",
+      "target": "../../verification/world-sound-live/README.md"
+    },
+    {
+      "file": "games/yuyuhakusho/audio/session/README.md",
+      "target": "../../verification/world-arena-work/README.md"
+    },
+    {
+      "file": "games/yuyuhakusho/audio/session/README.md",
+      "target": "../../verification/battle-sample-irq/README.md"
+    },
+    {
+      "file": "games/yuyuhakusho/audio/session/README.md",
+      "target": "../../verification/battle-irq-return/README.md"
+    },
+    {
+      "file": "games/yuyuhakusho/audio/session/README.md",
+      "target": "../../verification/battle-irq-return/README.md"
+    }
+  ],
+  "tracked_diff_check_pass": true,
+  "old_tests_fixtures_and_resources_unchanged": true
+}

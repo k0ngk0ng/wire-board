@@ -368,6 +368,18 @@ func PrepareBattleSampleIRQ(clock Clock, context BattleSampleContext, input Batt
 // on one clock, refresh owner and CPU budget. The saved-temporary/RTE epilogue
 // is still a separate pending stage; callers must not resume the World yet.
 func AdvanceBattleSampleIRQ(clock Clock, context BattleSampleContext, physical BattleSampleInput, aux SampleAuxiliary, observer BattleSampleObserver, state *engine.SoundSchedulerState, root *rootcontrol.State, owners rootcontrol.RuleOwners, input rootcontrol.RuleInput, library *resourcebridge.Library, bus Bus, chip Chip, limits Limits) (BattleSampleResult, error) {
+	return runBattleSampleIRQ(clock, context, physical, aux, observer, state, root, owners, input, library, bus, chip, limits, false, 0)
+}
+
+// RunBattleSampleIRQ also completes the IRQ return on the same service budget.
+// An unpriced new World IRQ fails instead of resuming the interrupted World.
+func RunBattleSampleIRQ(clock Clock, context BattleSampleContext, physical BattleSampleInput, callerMask uint8, aux SampleAuxiliary, observer BattleSampleObserver, state *engine.SoundSchedulerState, root *rootcontrol.State, owners rootcontrol.RuleOwners, input rootcontrol.RuleInput, library *resourcebridge.Library, bus Bus, chip Chip, limits Limits) (BattleSampleResult, error) {
+	if callerMask > 7 {
+		return BattleSampleResult{}, ErrBattleSampleContext
+	}
+	return runBattleSampleIRQ(clock, context, physical, aux, observer, state, root, owners, input, library, bus, chip, limits, true, callerMask)
+}
+func runBattleSampleIRQ(clock Clock, context BattleSampleContext, physical BattleSampleInput, aux SampleAuxiliary, observer BattleSampleObserver, state *engine.SoundSchedulerState, root *rootcontrol.State, owners rootcontrol.RuleOwners, input rootcontrol.RuleInput, library *resourcebridge.Library, bus Bus, chip Chip, limits Limits, complete bool, callerMask uint8) (BattleSampleResult, error) {
 	if state == nil {
 		return BattleSampleResult{}, ErrRunningProfile
 	}
@@ -396,5 +408,14 @@ func AdvanceBattleSampleIRQ(clock Clock, context BattleSampleContext, physical B
 	if err := p.sync(); err != nil {
 		return BattleSampleResult{}, err
 	}
-	return BattleSampleResult{Prefix: prefix, Sound: sound, Clock: s.clock, Context: p.snapshot(), Operations: s.operations, AwaitingReturn: true}, nil
+	if complete {
+		returned, err := p.finish(callerMask)
+		if err != nil {
+			return BattleSampleResult{}, err
+		}
+		if returned.PendingWorld {
+			return BattleSampleResult{}, ErrBattleWorldWork
+		}
+	}
+	return BattleSampleResult{Prefix: prefix, Sound: sound, Clock: s.clock, Context: p.snapshot(), Operations: s.operations, AwaitingReturn: !complete}, nil
 }

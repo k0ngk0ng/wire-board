@@ -1,0 +1,4 @@
+{
+  "reason": "Pinned cores use compile-time vdp_68k_irq_ack and do not export m68k_set_int_ack_callback. Initial captures failed on that missing symbol before suffix execution. Do not modify or rebuild the reference cores. Observe CPU/RTE before and after, final pin/mask/VDP effects and source ordering; no in-ack timing observation claim. Original attempted sources and failure logs retained.",
+  "production_exists": false
+}

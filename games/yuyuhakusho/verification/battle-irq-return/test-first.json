@@ -1,0 +1,16 @@
+{
+  "test_first": true,
+  "production_exists": false,
+  "files": {
+    "games/yuyuhakusho/audio/scoreclock/battle_return_e2e_test.go": "7c91b15381572980699ecd741263b5db1fd4fbb202f08edccfd6651d0b7f1d69",
+    "games/yuyuhakusho/audio/scoreclock/battle_return_runtime_e2e_test.go": "ddb7f0853ce26f138ebaac0f6a4f7e818f6892c12fe5b9e69d3b4c2d5d06446c",
+    "scripts/yuyuhakusho/capture_battle_irq_return.py": "2b5fa997b8868c31bee72028702bc7a0f5d8168a23825e22160305e9be1c5c3c",
+    "scripts/yuyuhakusho/capture_battle_irq_return_natural.py": "de8bbd104b3dcb53ea53d87f0e8462024c1fcb5fbd39f861ae81e1a859b2e080",
+    "scripts/yuyuhakusho/battle-return-observer.c": "9ab54729da361e178a16f23567d037e13ddf05f343ca8b6e7c4f2a5fffdc77b1",
+    "scripts/yuyuhakusho/extract_battle_return_fixture.py": "3a47aa5ff2c030a546ce27f7b4ec06712fcde23428940b02e2d4f1536add7186",
+    "games/yuyuhakusho/verification/battle-irq-return/FAILURES.md": "cebc1f8ad994e6f1c3a5a60cb973d1450a29eaee071bf1050f3b66f073c9db69",
+    "games/yuyuhakusho/verification/battle-irq-return/native-battle-return.json.gz": "48d1930721dac453ed3e2bde07ce307cd179ca73502b51e9c6e23bbc7c88d72f",
+    "games/yuyuhakusho/verification/battle-irq-return/native-battle-return-natural.json.gz": "f6b2589277946ca50f674a16e83496405855dc185babd6f71b31a6dd24d76b01",
+    "games/yuyuhakusho/verification/battle-irq-return/portable-battle-return.json.gz": "54a7d28be7c0a5f3e7b577d2790cc28d38d1d596fb30960be53064f5fbcc6f78"
+  }
+}

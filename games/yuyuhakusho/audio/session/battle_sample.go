@@ -38,3 +38,24 @@ func (r *Runtime) BeginBattleSampleIRQ(clock scoreclock.Clock, context scorecloc
 	*queue, *pause = queued, paused
 	return result, nil
 }
+
+// RunBattleSampleIRQ completes the real prefix, driver and IRQ return before
+// committing. A pending unpriced World IRQ or late error discards all owners.
+func (r *Runtime) RunBattleSampleIRQ(clock scoreclock.Clock, context scoreclock.BattleSampleContext, physical scoreclock.BattleSampleInput, callerMask uint8, queue *[4]uint8, pause *uint8, priorities engine.SoundPriorityTable, limits scoreclock.Limits) (scoreclock.BattleSampleResult, error) {
+	if queue == nil || pause == nil {
+		return scoreclock.BattleSampleResult{}, errors.New("missing World sampling IRQ owners")
+	}
+	next, err := r.fork()
+	if err != nil {
+		return scoreclock.BattleSampleResult{}, err
+	}
+	queued, paused := *queue, *pause
+	owners := rootcontrol.RuleOwners{Score: next.score, Queue: &queued, AudioPause: &paused}
+	result, err := scoreclock.RunBattleSampleIRQ(clock, context, physical, callerMask, battleAux{next.mixed}, nil, &next.scheduler, &next.root, owners, rootcontrol.RuleInput{Priorities: priorities}, next.library, next.mixed, next.mixed, limits)
+	if err != nil {
+		return scoreclock.BattleSampleResult{}, err
+	}
+	*r = *next
+	*queue, *pause = queued, paused
+	return result, nil
+}

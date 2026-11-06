@@ -1,0 +1,39 @@
+{
+  "reason": "The private two-core stepper records CPU operations manually and does not install HOOK_CPU memory callbacks; its original trace omitted the real late-reload VDP write. The frozen Go assertion correctly fails on the extra actual reload. Add a passive original write16 map delegate for private captures, preserve original oracles and tests, and require every non-IO event/clock/register outcome to remain byte-identical. No production or Go-test change.",
+  "frozen_archives": {
+    "scripts/yuyuhakusho/battle-return-observer.c": {
+      "archive": "games/yuyuhakusho/verification/battle-irq-return/battle-return-observer.c.before-private-io.gz",
+      "compressed": true,
+      "sha256": "9ab54729da361e178a16f23567d037e13ddf05f343ca8b6e7c4f2a5fffdc77b1"
+    },
+    "scripts/yuyuhakusho/capture_battle_irq_return.py": {
+      "archive": "games/yuyuhakusho/verification/battle-irq-return/capture_battle_irq_return.py.before-private-io.gz",
+      "compressed": true,
+      "sha256": "2b5fa997b8868c31bee72028702bc7a0f5d8168a23825e22160305e9be1c5c3c"
+    },
+    "scripts/yuyuhakusho/extract_battle_return_fixture.py": {
+      "archive": "games/yuyuhakusho/verification/battle-irq-return/extract_battle_return_fixture.py.before-private-io.gz",
+      "compressed": true,
+      "sha256": "3a47aa5ff2c030a546ce27f7b4ec06712fcde23428940b02e2d4f1536add7186"
+    },
+    "games/yuyuhakusho/verification/battle-irq-return/native-battle-return.json.gz": {
+      "archive": "games/yuyuhakusho/verification/battle-irq-return/native-battle-return.json.gz.before-private-io",
+      "compressed": false,
+      "sha256": "48d1930721dac453ed3e2bde07ce307cd179ca73502b51e9c6e23bbc7c88d72f"
+    },
+    "games/yuyuhakusho/verification/battle-irq-return/portable-battle-return.json.gz": {
+      "archive": "games/yuyuhakusho/verification/battle-irq-return/portable-battle-return.json.gz.before-private-io",
+      "compressed": false,
+      "sha256": "54a7d28be7c0a5f3e7b577d2790cc28d38d1d596fb30960be53064f5fbcc6f78"
+    }
+  },
+  "all_original_non_io_events_and_register_outcomes_unchanged": true,
+  "current_sha256": {
+    "scripts/yuyuhakusho/battle-return-observer.c": "f4905e6b85e975273468dbdcf15998b9aa17f0b66c8550ee8c85e4cbf5851562",
+    "scripts/yuyuhakusho/capture_battle_irq_return.py": "ae2a8d76bc58cd4005336771d0e7693b7b23911d2bdd832e8929ba73a576d73a",
+    "scripts/yuyuhakusho/extract_battle_return_fixture.py": "7ce6e3ebed844d3b9273c95f82e6b434799c12d673aa41619e8392331ec5bd7a",
+    "games/yuyuhakusho/verification/battle-irq-return/native-battle-return.json.gz": "25016e6400057170eb2d971a19572284f410ed17675f7c4edd44bcb459436f91",
+    "games/yuyuhakusho/verification/battle-irq-return/portable-battle-return.json.gz": "fa4e7e7a4d7f10fbf9f26340415c8d5cc8f46958ec8cebc8f49410387070eddc"
+  },
+  "reproduction_path_note": "Offline exporter accepts explicit --private/--natural input paths and defaults to identical committed native fixtures. This changes no portable oracle bytes."
+}

@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/capture_battle_irq_return.py", line 66, in <module>
+    if __name__=='__main__':main()
+                            ~~~~^^
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/capture_battle_irq_return.py", line 52, in main
+    assert pc in [0xfff096,0xfff09a,0xfff000,0xfff004,0xfff00a,0xfff09c,0xfff0a4,0xfff0a8],hex(pc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0xfff00e

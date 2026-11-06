@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/capture_battle_irq_return_natural.py", line 65, in <module>
+    if __name__=='__main__':main()
+                            ~~~~^^
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/capture_battle_irq_return_natural.py", line 23, in main
+    native_ack=ref.api('vdp_68k_irq_ack',C.c_int,C.c_int);set_ack=ref.api('m68k_set_int_ack_callback',None,C.c_void_p)
+                                                                  ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/reference.py", line 89, in api
+    f = getattr(self.lib, name)
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/ctypes/__init__.py", line 486, in __getattr__
+    func = self.__getitem__(name)
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/ctypes/__init__.py", line 491, in __getitem__
+    func = self._FuncPtr((name_or_ordinal, self))
+AttributeError: dlsym(0x7f49f890, m68k_set_int_ack_callback): symbol not found

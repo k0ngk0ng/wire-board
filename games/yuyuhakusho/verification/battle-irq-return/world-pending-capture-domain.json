@@ -1,0 +1,4 @@
+{
+  "reason": "The private matrix legitimately reaches a third pending horizontal IRQ with phase word4 when a return crosses a line. Initial capture allowed only sample suffix/late-reload PCs and failed at FFF00e. Expand evidence to stop at the newly accepted FFF000 world entry and tag pending_world, preserving the additional exception frame; do not execute or approximate the unpriced world handler.",
+  "production_exists": false
+}
