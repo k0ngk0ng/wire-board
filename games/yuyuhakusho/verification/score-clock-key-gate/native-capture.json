@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "pass": true,
+  "cases": 288,
+  "native_executions": 1152,
+  "instruction_steps": 2378,
+  "main_accesses": 360,
+  "psg_writes": 24,
+  "state_equal": true,
+  "pinned_cores_equal": true,
+  "identities": {
+    "observed": {
+      "core_name": "Genesis Plus GX",
+      "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+      "core_version": "v1.7.460bee4c",
+      "fps": 59.92274340431231,
+      "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+      "ram_bytes": 65536,
+      "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+      "teamplayer": false
+    },
+    "original": {
+      "core_name": "Genesis Plus GX",
+      "core_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+      "core_version": "v1.7.4 60bee4c",
+      "fps": 59.92274340431231,
+      "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+      "ram_bytes": 65536,
+      "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+      "teamplayer": false
+    }
+  },
+  "sources": {
+    "docs/research/md-yuyuhakusho/static/audio-loop-sequencer.txt": "9f81bd47bfe322110bc11339992f0e570b704077ccff22493940b75af7837152",
+    "scripts/yuyuhakusho/score-clock-bridge.c": "d00bda0e284c030affc1ce2224a61058351a2990799ea9c5964eed58dabb0c91",
+    "scripts/yuyuhakusho/score-clock-key-gate-capture.py": "9ea14ec26e06b9333ba43b69d272171a98cc7b8502afde1f12f23e00d44e5e4d",
+    "scripts/yuyuhakusho/score-clock-pan-capture.py": "608a1665c33e10c1a01ed6785fbd02666eb0caa5e209d9f5cceb0c2b9a10d3a8",
+    "scripts/yuyuhakusho/score-clock-psg-capture.py": "9f80bcca6558d8e651a0925a8ae5e37e2a7f045f4fe3df22d7a2f0347ca47f9f",
+    "scripts/yuyuhakusho/score-clock-psg-observer.c": "d80a57828f590929d1b53bdb42f4e1a1e2e6022b1c34c4648b36e21dbe58d464"
+  },
+  "fixture_sha256": "2b0c5ba4d41c17bbe79b0bd7a113aea2249d2eb5c1ad19f59a70db6e126268ad",
+  "scope": "Fixed key/gate leafs, legitimate channels/flags and gate0,1,2,255; initialheld/mailbox0/noextraIRQ; sourceSPprovenanceonly",
+  "command": [
+    "python3",
+    "scripts/yuyuhakusho/score-clock-key-gate-capture.py",
+    "--out",
+    ".local/md-yuyuhakusho/score-clock-key-gate-native-v1"
+  ],
+  "exit_code": 0
+}
