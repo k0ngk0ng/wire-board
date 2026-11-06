@@ -1,0 +1,21 @@
+{
+  "format": 1,
+  "passed": true,
+  "sha256": {
+    "docs/research/escape-verification/browser.json": "2ee98fd9c2716cc67ce26de7cdfc96730811885e132f262c5d9972602e389e46",
+    "docs/research/escape-verification/campaigns.json": "c2ccdc28ef7d895c6c7b612c98aaa2a98a2c26dfa12a10c337a8fcbc03bc2738",
+    "docs/research/escape-verification/contracts.json": "341290b61f305b1ce37af8d759e8a608de729771443c57198549526280708503",
+    "docs/research/escape-verification/generation-corpus.json": "e62246d8d2cfb9ada449750a3e6502a41d07861ddf257f96fdd1698964e7b249",
+    "docs/research/escape-verification/interaction.json": "08d1fdc52fa1258bfa6bb669f81bbe1f055db8d7d6fac9337a325f91da6efb0a",
+    "docs/research/escape-verification/performance.json": "6575c283882b97cec386e18ff57021cebc33b4503433a91b921082e77c4460e0",
+    "docs/research/escape-verification/scope-escape.json": "305f38b390addf80e182a3f43950ab02077983eafe85197c926f7a6ffc693d97",
+    "docs/research/escape-verification/scope-shared.json": "65de21ac99875a22ae90a6078240a079608471622d705eff8ead5f82d21f30b3",
+    "docs/screenshots/escape/archive-desktop.png": "a15304c7280bf02f842a87f0f3697590f74c35dd38bf32cafde0765c1f844cd9",
+    "docs/screenshots/escape/archive-mobile-fullscreen.png": "65841826baaff90f297cb98b64261dc48d4c9236018498437df4e354823e269a",
+    "docs/screenshots/escape/archive-pump-mobile.png": "408ef0e8cdd0ffd56c826a2df9c71c8208f4d3c2c4f31f0c879349709168485a",
+    "docs/screenshots/escape/archive-victory-mobile.png": "4a25fe1a40bf214413a53773d6e6d29a555cb27a7ae64dc28203f55bdc442de8",
+    "docs/screenshots/escape/four-player.png": "f3bac19b22ef794bc1d11b9e92182b47cc6fa013e827e61360641f46115178b9",
+    "docs/screenshots/escape/station-circuits.png": "8c8b474db41e63ec59649a80143077334479fe93f73555894c99b82233e82364",
+    "docs/screenshots/escape/station-desktop.png": "4f52f949d982e1fd1157862948df4382f883b6852486638a0ed1a1aac073f3a6"
+  }
+}
