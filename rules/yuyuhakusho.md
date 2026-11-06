@@ -26,5 +26,6 @@
 - 暂停先取得真实总线，再捕获实际 YM total level；hold 不推进音乐参数、fade 或消费请求，resume 成功后才释放唯一 pending payload。`score.State.Ticks` 统计实际 driver 调用，暂停调用也计数，不能把它当成音乐推进次数。
 - 世界组件的临时队列视图不能覆盖中途声音消费：声音请求通过显式临时上下文访问 World 的唯一 queue／AudioPause owner；上下文、hook 和操作历史不进入存档。音频与世界须共同分叉，后续对象或帧末处理失败时一起撤销。请求介入点与事务通过，不代表世界耗时及 IRQ 接受时机已通过。
 - 没有声音请求的世界计算也须提供实际工作边界；成本取当前分支、循环和数据相关计算，保留工作边界与长操作内部的 refresh 顺序。只给场景回调入口时钟的逐步一致，不等于全世界耗时、VDP 批次或 IRQ 接受已通过；未计价的路径不能按零耗时接入正式调度。
+- 普通 IRQ 接受须核对屏蔽条件、当前工作结束后的实际批次边界和 CPU 相位。VDP 信号、异常入口与声音 driver 入口分别推进；RAM IRQ 等待与控制器扫描不可省略。延迟寄存器写入和降屏蔽指令内部接受不能直接套用普通批次入口模型。
 - delayed request 的 delay 从 1 递减到 0 时不当次提交；busy 重入只增加 backlog，补跑在 driver 后递减当时的 backlog。enqueue 的负 slot 在 TST／CMP 分别读取，不得折成入口队列快照。音频联合状态不复制 World 的 queue、pause 或主时钟。
 - 固定参考 profile 的 master cycle、帧末 lookahead 和 FIR 副效单独验证。保持实际调用顺序；Reset 的特定有界过冲不能推广为普通端口写任意回时。单曲、单样本或给定原时刻的 DSP 一致，不等于独立时序及真实混合对局音频已经通过。
