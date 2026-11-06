@@ -1,0 +1,105 @@
+"""Original pitch calculator and PSG volume envelopes at logical tick entries."""
+import argparse
+import ctypes as C
+import gzip
+import importlib.util
+import json
+from pathlib import Path
+
+from extract_audio_assets import AudioSession,write_cpu
+from reference import ROOT,CPUHead
+from research_audio_loops import ORIGINAL,OBSERVED,quiet_checkpoint
+
+spec=importlib.util.spec_from_file_location('envelope_psg',ROOT/'scripts/yuyuhakusho/score-clock-psg-capture.py')
+psg=importlib.util.module_from_spec(spec);spec.loader.exec_module(psg)
+VOICE=0xfff840
+
+
+def cases(provenance):
+    rows=[]
+    def add(record,**changes):
+        i=len(rows);origin,refresh=[(0,0),(1,896),(895,896),(1008,1008)][i%4]
+        row={'id':str(i),'key':record['key'],'work':record['work'],'tick':record['tick'],
+             'source_cursor':record['source_cursor'],'scale':1,'base_pitch':8805,'detune':-5,
+             'modulation':False,'mod_offset':-77,'base_level':15,'note_off':False,'claimed':False,
+             'tie':False,'gate_ticks':0,'gate_remaining':0,'channel':128 if record['key']['family']=='volume'else 0,
+             'origin':origin,'refresh':refresh}
+        row.update(changes);rows.append(row)
+    for r in provenance:add(r)
+    for r in provenance:
+        if r['key']['family']=='pitch'and r['tick']['key_off']:add(r,channel=128)
+    multiplier=next(r for r in provenance if r['key']['family']=='pitch'and r['tick']['offset']==1 and not r['work']['restarts'])
+    for scale in range(-128,128):add(multiplier,scale=scale,modulation=bool(scale&1))
+    samples=[next(r for r in provenance if r['key']['family']=='volume'and r['tick']['writes_level']and r['tick']['level']>0),
+             next(r for r in provenance if r['key']['family']=='volume'and r['tick']['key_off']),
+             next(r for r in provenance if r['key']['family']=='volume'and not r['tick']['writes_level']and not r['tick']['key_off'])]
+    gates=[{}, {'note_off':True},{'claimed':True},{'tie':True,'gate_ticks':1,'gate_remaining':0},
+           {'tie':True,'gate_ticks':0,'gate_remaining':0},{'tie':True,'gate_ticks':1,'gate_remaining':1}]
+    for r in samples:
+        for base in[0,15,253,255]:
+            for gate in gates:
+                for channel in[128,224]:add(r,base_level=base,channel=channel,**gate)
+    none_pitch={'key':{'family':'pitch','envelope_id':0,'section':'prefix','tick_index':0},'work':{'restarts':0},'tick':{},'source_cursor':0}
+    none_volume={'key':{'family':'volume','envelope_id':0,'section':'prefix','tick_index':0},'work':{'restarts':0},'tick':{},'source_cursor':0}
+    for enabled in[False,True]:
+        for _ in range(4):add(none_pitch,modulation=enabled)
+    for base in[0,15,255]:
+        for gate in gates:
+            for channel in[128,224]:add(none_volume,base_level=base,channel=channel,**gate)
+    return rows
+
+
+def setup(ref,checkpoint,case):
+    ref.restore(checkpoint,restore_refresh_cycles=True);ref.api('psg_reset',None)()
+    for offset in range(48):write_cpu(ref,VOICE+offset,0)
+    write_cpu(ref,VOICE,(2 if case['note_off']else 0)|(4 if case['claimed']else 0)|(16 if case['tie']else 0))
+    write_cpu(ref,VOICE+1,case['channel']);write_cpu(ref,VOICE+3,case['scale']&255)
+    write_cpu(ref,VOICE+9,case['base_level']);write_cpu(ref,VOICE+0x10,case['base_pitch'],2)
+    write_cpu(ref,VOICE+0x12,case['gate_remaining']);write_cpu(ref,VOICE+0x13,case['gate_ticks'])
+    write_cpu(ref,VOICE+0x1e,case['detune']&255);write_cpu(ref,VOICE+0x1c,case['mod_offset']&65535,2)
+    pitch=case['key']['family']=='pitch'
+    write_cpu(ref,VOICE+(0xa if pitch else 0xb),case['key']['envelope_id']|(128 if pitch and case['modulation']else 0))
+    write_cpu(ref,VOICE+(0x26 if pitch else 0xc),case['source_cursor'])
+    setter=ref.api('m68k_set_reg',None,C.c_uint,C.c_uint)
+    for i in range(15):setter(i,0)
+    for i,value in[(17,0x2700),(15,0xffff00),(13,VOICE),(16,0x379ae if pitch else 0x3a0dc)]:setter(i,value)
+    write_cpu(ref,0xffff00,0x3d8,4);ref.cpu.cycles,ref.cpu.refresh_cycles=case['origin'],case['refresh'];return ref.save()
+
+
+def execute(ref,case,observer=None):
+    pitch=case['key']['family']=='pitch';run=ref.api('m68k_run',None,C.c_uint);steps=[]
+    for _ in range(128):
+        pc=ref.get_register(16)&0xffffff
+        if pc==0x3d8:return steps,'complete'
+        if pitch and pc in[0x38afc,0x3a178]:return steps,'key-off'
+        assert(0x379ae<=pc<=0x37a4c if pitch else 0x3a0dc<=pc<=0x3a18c),('escaped envelope calculator',case['id'],hex(pc))
+        if observer:observer.score_clock_psg_pc(pc)
+        before,refresh=ref.cpu.cycles,ref.cpu.refresh_cycles;run(before+1);steps.append([pc,before,refresh,ref.cpu.cycles,ref.cpu.refresh_cycles])
+    raise AssertionError(('envelope step cap',case['id']))
+
+
+def main():
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--out',type=Path,required=True);p.add_argument('--only-none',action='store_true');args=p.parse_args();out=args.out.resolve();assert out.is_relative_to(ROOT/'.local')and not out.exists();out.mkdir(parents=True)
+    provenance_path=ROOT/'.local/md-yuyuhakusho/envelope-work-export-v2/provenance.json.gz'
+    provenance=json.loads(gzip.decompress(provenance_path.read_bytes()))['records'];inputs=cases(provenance);inputs=[r for r in inputs if (r['key']['envelope_id']==0)==args.only_none];observer,_=psg.build(out)
+    controls={};rows=[];identities={};print(json.dumps({'cases':len(inputs)}),flush=True)
+    for name,core in[('original',ORIGINAL),('observed',OBSERVED)]:
+        with AudioSession(ROOT,out/('core-'+name),core=core)as ref:
+            checkpoint=quiet_checkpoint(ref);identities[name]=ref.identity
+            for i,case in enumerate(inputs):
+                initial=setup(ref,checkpoint,case);plain_steps,plain_next=execute(ref,case);plain,plain_ram=ref.save(),ref.ram_cpu();plain_psg=psg.native_psg(ref)[1]
+                again=setup(ref,checkpoint,case);assert initial['data']==again['data'];address=C.addressof(ref.cpu);assert observer.score_clock_psg_attach(address,address+CPUHead.cycles.offset,address+CPUHead.refresh_cycles.offset)
+                try:steps,next_phase=execute(ref,case,observer);writes=psg.trace(observer)
+                finally:assert observer.score_clock_psg_detach()==1
+                saved=ref.save();assert(plain_steps==steps and plain_next==next_phase and plain['data']==saved['data']and plain['refresh_cycles']==saved['refresh_cycles']and plain_ram==ref.ram_cpu()and plain_psg==psg.native_psg(ref)[1]),('observer changed envelope',case['id'])
+                ram=ref.ram_cpu();result={'steps':steps,'next':next_phase,'writes':writes,'end':{'Cycle':ref.cpu.cycles,'Refresh':ref.cpu.refresh_cycles},'word':ref.get_register(6)&65535,'scale':ram[0xf843], 'note_off':bool(ram[0xf840]&2),'cursor':ram[0xf866 if case['key']['family']=='pitch'else 0xf84c]}
+                if name=='original':controls[i]=result
+                else:
+                    assert controls[i]==result,('pinned cores disagree',case['id']);public={k:v for k,v in case.items()if k not in['source_cursor']};rows.append({'input':public,**result,'native_observer_state_equal':True})
+        print(json.dumps({'core':name,'cases':len(inputs),'pass':True}),flush=True)
+    sources=[Path(__file__),ROOT/'scripts/yuyuhakusho/score-clock-psg-capture.py',ROOT/'scripts/yuyuhakusho/score-clock-psg-observer.c',ROOT/'docs/research/md-yuyuhakusho/static/audio-loop-sequencer.txt',provenance_path]
+    payload={'version':1,'scope':'All580 logical envelope ticks; signed scales/fullPSG gates; calculator/volume leaf and pitch terminal beforekeyoff; noextraIRQ/fulltick','identities':identities,'cases':rows,'sources':{str(p.relative_to(ROOT)):psg.sha(p.read_bytes())for p in sources}}
+    target=out/'native-envelope-full.json.gz';target.write_bytes(gzip.compress((json.dumps(payload,sort_keys=True,separators=(',',':'))+'\n').encode(),mtime=0));print(json.dumps({'pass':True,'cases':len(rows),'executions':len(rows)*4,'fixture_sha256':psg.sha(target.read_bytes())}),flush=True)
+
+
+if __name__=='__main__':main()

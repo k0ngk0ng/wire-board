@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "pass": true,
+  "scope": "Frozen envelope source/work evidence only; Go binding/pricing not yet implemented; full platform audio incomplete",
+  "logical_steps": 580,
+  "pitch_steps": 206,
+  "volume_steps": 374,
+  "extra_restart_steps": 2,
+  "runtime_program_or_raw_cursor_in_work": false,
+  "native_profiles": 1030,
+  "native_executions": 4120,
+  "fixtures": [
+    {
+      "path": "games/yuyuhakusho/verification/score-envelope-source/native-envelope-full.json.gz",
+      "sha256": "9b7d91f9938bbc79d61a69cada7a2bc493feeefc9be546dfabc9908237171677",
+      "cases": 986,
+      "executions": 3944,
+      "steps": 24734,
+      "psg_writes": 435,
+      "state_equal": true
+    },
+    {
+      "path": "games/yuyuhakusho/verification/score-envelope-source/native-envelope-none.json.gz",
+      "sha256": "f36ee5dfa3f169ca2aecad58002695bff418243fb257ffb6ce8ca61f491095d7",
+      "cases": 44,
+      "executions": 176,
+      "steps": 566,
+      "psg_writes": 18,
+      "state_equal": true
+    }
+  ],
+  "production_go_implemented": false,
+  "source_files": {
+    "scripts/yuyuhakusho/export_envelope_work.py": "15f5d3d6e7cd876b46a94c5ef54f3e172e306db0c7de2761917665f090dfce25",
+    "scripts/yuyuhakusho/score-clock-envelope-capture.py": "46a74202e4c70e9c220e83a68563a06b7b229ee556e5ad14a15d606bd94cb20c",
+    "scripts/yuyuhakusho/score-clock-psg-capture.py": "9f80bcca6558d8e651a0925a8ae5e37e2a7f045f4fe3df22d7a2f0347ca47f9f",
+    "scripts/yuyuhakusho/score-clock-psg-observer.c": "d80a57828f590929d1b53bdb42f4e1a1e2e6022b1c34c4648b36e21dbe58d464",
+    "scripts/yuyuhakusho/score_parameter_tables.py": "edb4f38a19b07812cdab2629aa70cf9bf9d453d10b2f3c3a8d279876b3152593",
+    "docs/research/md-yuyuhakusho/SCORE_ENVELOPE_WORK_FAILURES.md": "ca868f89df65a6e01e8eea1bc73c7b2105a2799ae03946a84415942ffd9d5628",
+    "docs/research/md-yuyuhakusho/static/audio-loop-sequencer.txt": "9f81bd47bfe322110bc11339992f0e570b704077ccff22493940b75af7837152",
+    ".local/md-yuyuhakusho/tools/Genesis-Plus-GX-60bee4c724859710ce05672239e5b601ad01382e/core/m68k/m68kops.h": "d3ff2631658e589813d2915ba3dc03b9fd2097761f6eb221fc6264a4b8d1d6f0"
+  }
+}
