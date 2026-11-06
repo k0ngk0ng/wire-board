@@ -1,0 +1,134 @@
+{
+  "scope": "Correct invalid E2E active-unowned FM6 setup to formal FM1 automatic pan using existing transaction working snapshot. Add direct YM stage test BEFORE implementing BeginObservedPan; leave frozen originals, musical expectations and raw native oracle untouched.",
+  "before_sha256": "148e78719ed25ed529088543638a48764fd18bae89ce7f87220ebad07cd040f0",
+  "after_sha256": "af9054e813446e5bf7ae2356be312c8f409a47a578b1b843fe8c33d5c793057d",
+  "original_test_archive": "games/yuyuhakusho/verification/score-observed-pcm/observed-pcm-test.before-setup-correction.go.txt",
+  "current_test": "games/yuyuhakusho/audio/scoreclock/observed_pcm_e2e_test.go",
+  "source_catalog_sha256": "deaf3a70eac46c199335445d186f77d51f185bdaad4d95443d09b2f1d7054d71",
+  "formal_music_channels": {
+    "130": [
+      "dac",
+      "fm1",
+      "fm2",
+      "fm3",
+      "fm4",
+      "fm5",
+      "psg1",
+      "psg2",
+      "psg3"
+    ],
+    "131": [
+      "dac",
+      "fm1",
+      "fm2",
+      "fm3",
+      "fm4",
+      "fm5",
+      "psg1",
+      "psg2",
+      "psg3"
+    ],
+    "132": [
+      "dac",
+      "fm1",
+      "fm2",
+      "fm3",
+      "fm4",
+      "fm5",
+      "psg1",
+      "psg2",
+      "psg3"
+    ],
+    "133": [
+      "dac",
+      "fm1",
+      "fm2",
+      "fm3",
+      "fm4",
+      "fm5",
+      "psg1",
+      "psg2",
+      "psg3"
+    ],
+    "134": [
+      "dac",
+      "fm1",
+      "fm2",
+      "fm3",
+      "fm4",
+      "fm5",
+      "psg1",
+      "psg2",
+      "psg3"
+    ],
+    "135": [
+      "dac",
+      "fm1",
+      "fm2",
+      "fm3",
+      "fm4",
+      "fm5",
+      "psg1",
+      "psg2",
+      "psg3"
+    ],
+    "136": [
+      "dac",
+      "fm1",
+      "fm2",
+      "fm3",
+      "fm4",
+      "fm5",
+      "psg1",
+      "psg2",
+      "psg3"
+    ],
+    "138": [
+      "dac",
+      "fm1",
+      "fm2",
+      "fm3",
+      "fm4",
+      "fm5",
+      "psg1",
+      "psg2",
+      "psg3"
+    ],
+    "141": [
+      "dac",
+      "fm1",
+      "fm2",
+      "fm3",
+      "fm4",
+      "fm5",
+      "psg1",
+      "psg2",
+      "psg3"
+    ],
+    "149": [
+      "dac",
+      "fm1",
+      "fm2",
+      "fm3",
+      "fm4",
+      "fm5",
+      "psg1",
+      "psg2",
+      "psg3"
+    ],
+    "143": [
+      "dac",
+      "fm1",
+      "fm2",
+      "fm3",
+      "fm4",
+      "fm5",
+      "psg1",
+      "psg2",
+      "psg3"
+    ]
+  },
+  "prior_failures": "second-native.jsonl",
+  "unchanged_native_fixture_sha256": "2a9e2851b81d86407c633943c9119c5b08525af956da235d1c9aefe2acf66fca",
+  "new_api_not_implemented": true
+}

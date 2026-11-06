@@ -21,6 +21,9 @@ type PanRequest struct {
 	Channel uint8
 	Claimed bool
 	Pan     score.Pan
+	// WritePan is the ordinary voice call's YM argument. Nil uses Pan.
+	// DAC redirection always uses Pan; instrument tails load Pan themselves.
+	WritePan *score.Pan
 }
 
 type PanEffect struct {
@@ -46,11 +49,25 @@ func validPanRequest(request PanRequest) bool {
 	if request.Entry != "voice" && request.Entry != "instrument" || request.Pan.AMS > 3 || request.Pan.FMS > 7 || request.Entry == "instrument" && request.Claimed {
 		return false
 	}
+	if request.WritePan != nil && (request.WritePan.AMS > 3 || request.WritePan.FMS > 7 || request.Entry == "instrument" && *request.WritePan != request.Pan) {
+		return false
+	}
 	switch request.Channel {
 	case 0, 1, 2, 4, 5, 6:
 		return true
 	}
 	return false
+}
+
+func panByte(p score.Pan) uint8 {
+	value := p.AMS<<4 | p.FMS
+	if p.Left {
+		value |= 128
+	}
+	if p.Right {
+		value |= 64
+	}
+	return value
 }
 
 // panAcquire deliberately does not call acquire: pan waits only for BUSACK,
@@ -109,6 +126,12 @@ func BeginPanRouting(clock Clock, request PanRequest, bus PanBus, chip Chip, lim
 	if err != nil {
 		return nil, err
 	}
+	storedValue := panByte(request.Pan)
+	writeValue := storedValue
+	if request.WritePan != nil {
+		writeValue = panByte(*request.WritePan)
+	}
+	request.WritePan = nil // the derived value above is detached from its caller
 	t := &PanRouting{s: s, bus: bus, request: request}
 	if request.Entry == "voice" {
 		if err = s.spend(12); err != nil {
@@ -121,14 +144,7 @@ func BeginPanRouting(clock Clock, request PanRequest, bus PanBus, chip Chip, lim
 			return t, nil
 		}
 	}
-	value := request.Pan.AMS<<4 | request.Pan.FMS
-	if request.Pan.Left {
-		value |= 128
-	}
-	if request.Pan.Right {
-		value |= 64
-	}
-	t.effect = PanEffect{Kind: "ym", Write: Request{Bank: request.Channel >> 2, Register: 0xb4 + (request.Channel & 3), Value: value}}
+	t.effect = PanEffect{Kind: "ym", Write: Request{Bank: request.Channel >> 2, Register: 0xb4 + (request.Channel & 3), Value: writeValue}}
 	if err = s.spend(16); err != nil {
 		return nil, err
 	}
@@ -162,7 +178,7 @@ func BeginPanRouting(clock Clock, request PanRequest, bus PanBus, chip Chip, lim
 		return nil, err
 	}
 	if marker != 0 {
-		t.effect = PanEffect{Kind: "dac-pan", RestorePan: value}
+		t.effect = PanEffect{Kind: "dac-pan", RestorePan: storedValue}
 		return t, nil
 	}
 	if err = t.releasePanBus(false); err != nil {
