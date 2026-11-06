@@ -1,0 +1,9 @@
+{
+  "files": {
+    "games/yuyuhakusho/audio/chips/mixed_runtime_e2e_test.go": "f98390f2e3697c4ae33d724e2ee1d54aa67918923d1224aa887a6a88e49791a3",
+    "games/yuyuhakusho/verification/audio-mixed-runtime/test-input-correction.json": "157e5839195740f11032e8d2c60172b2728446f3f66b0bb5fd4fe5a42cf002bf",
+    "games/yuyuhakusho/verification/audio-mixed-runtime/test-v1-before-native-input-fix.go.txt": "3080b0e207790bcc3978655e54faa7f507d2eba8d3c41d391680a270f7875150"
+  },
+  "original_assertions_and_fixtures_unchanged": true,
+  "only_test_setup_change": "Use the actual first native accepted ordinary publication, preserving its dual destination and StartDual flag."
+}

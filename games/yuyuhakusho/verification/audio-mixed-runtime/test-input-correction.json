@@ -1,0 +1,15 @@
+{
+  "at_utc": "2026-11-06T00:26:15.118701+00:00",
+  "original_test_sha256": "3080b0e207790bcc3978655e54faa7f507d2eba8d3c41d391680a270f7875150",
+  "original_test_archived_as": "games/yuyuhakusho/verification/audio-mixed-runtime/test-v1-before-native-input-fix.go.txt",
+  "reason": "Fork ownership setup selected a native dual-only descriptor but invented a Single destination. Existing PCM validation correctly rejected it before reaching Fork. Use the unchanged first native accepted input (dual-append, 31ordinary, SlotA, StartDual=true, Begin=End=0). No original fixture, expected output, production code, or ownership assertion changes.",
+  "original_native_input": {
+    "Kind": 1,
+    "Begin": 0,
+    "End": 0,
+    "DescriptorID": "31ordinary",
+    "Destination": 1,
+    "StartDual": true,
+    "Pan": 0
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "pass": false,
+  "exit_code": 1,
+  "command": [
+    "go",
+    "test",
+    "-json",
+    "-count=1",
+    "-timeout=5m",
+    "-run",
+    "^Test(MixedRuntime|PCMDeviceFork)",
+    "./games/yuyuhakusho/audio/chips"
+  ],
+  "elapsed_seconds": 4.813705208711326,
+  "sources": {
+    "games/yuyuhakusho/audio/pcmcommands/fork.go": "903a773105a56a851993cb43d0f305b063354ef45999c003fb20a0b125edf704",
+    "games/yuyuhakusho/audio/mixed/runtime.go": "681fcac2494a7efc5c4855db38a4d536331855e17326ea8741c63705db637ab3"
+  },
+  "test_first_sha256": "f74347e963b000ae34282c99679206540c116c8384b2f29c3587c81a5f81f1bd",
+  "log_sha256": "8139f34329e75198ba5c079308fb33edcaefe28bedcc19409335bcc982e86b4c"
+}

@@ -1,0 +1,15 @@
+{
+  "at_utc": "2026-11-06T00:23:36.977774+00:00",
+  "test_first": true,
+  "production_exists": false,
+  "pcm_fork_exists": false,
+  "files": {
+    "games/yuyuhakusho/audio/chips/mixed_runtime_e2e_test.go": "3080b0e207790bcc3978655e54faa7f507d2eba8d3c41d391680a270f7875150",
+    "docs/research/md-yuyuhakusho/AUDIO_MIXED_RUNTIME_FAILURES.md": "a9a4c454a5c6b99bf4a49e6cfb8bff1cc4719b8616530710a98065a23057e528"
+  },
+  "native_fixtures": {
+    "games/yuyuhakusho/audio/pcmcommands/testdata/original-command-ports-v3.json.gz": "e435f0f778088e0bb133082f82720c8ca7ed10c7d13be388faea837d76fff995",
+    "games/yuyuhakusho/verification/fmpsg-pcm-integration/fmpsg-pcm-integration-native.json.gz": "692b9cd82914dedca8fa3017e30c55280fb255759932deb7a087d607a59b6fef",
+    "games/yuyuhakusho/audio/scoreclock/testdata/bus-native-services.json.gz": "791338a42a2edc197b1366cdff93ca57e6d2fd1f917de7cf1c5549f6c0935921"
+  }
+}

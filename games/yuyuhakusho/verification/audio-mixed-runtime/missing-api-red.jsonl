@@ -1,0 +1,7 @@
+{"ImportPath":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/mixed","Action":"build-output","Output":"# github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips\n"}
+{"ImportPath":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/mixed","Action":"build-output","Output":"games/yuyuhakusho/audio/chips/mixed_runtime_e2e_test.go:12:2: no required module provides package github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/mixed; to add it:\n"}
+{"ImportPath":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/mixed","Action":"build-output","Output":"\tgo get github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/mixed\n"}
+{"ImportPath":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/mixed","Action":"build-fail"}
+{"Time":"2026-11-06T08:23:37.019195+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips"}
+{"Time":"2026-11-06T08:23:37.019208+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips [setup failed]\n"}
+{"Time":"2026-11-06T08:23:37.019211+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips","Elapsed":0,"FailedBuild":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/mixed"}
