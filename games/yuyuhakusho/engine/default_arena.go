@@ -15,30 +15,71 @@ type DefaultArenaCamera struct {
 // Both sums wrap as words before unsigned division; widening or using signed
 // averages changes extreme inputs. With no samples all camera state is held.
 func StepDefaultArenaCamera(state DefaultArenaCamera) (DefaultArenaCamera, error) {
+	return StepDefaultArenaCameraObserved(state, nil)
+}
+
+// StepDefaultArenaCameraObserved exposes work without retaining its observer.
+func StepDefaultArenaCameraObserved(state DefaultArenaCamera, hook ArenaWorkHook) (DefaultArenaCamera, error) {
+	work := arenaWorkEmitter{hook: hook}
+	next, err := stepDefaultArenaCameraWork(state, &work)
+	if work.err != nil {
+		return state, work.err
+	}
+	return next, err
+}
+
+func stepDefaultArenaCameraWork(state DefaultArenaCamera, work *arenaWorkEmitter) (DefaultArenaCamera, error) {
 	if state.Used > 64 || state.Used&3 != 0 {
 		return state, errors.New("invalid arena camera sample offset")
 	}
+	work.spend("camera-entry", 12)
+	work.branch("camera-empty", state.Used == 0, true)
 	if state.Used == 0 {
+		work.spend("camera-return", 16)
 		return state, nil
 	}
+	work.spend("camera-samples", 4, 8, 8, 4, 4)
 	count := state.Used / 4
 	var x, y uint16
 	for i := int(count) - 1; i >= 0; i-- {
+		work.spend("camera-sample", 14, 14, 4)
 		x += uint16(state.SamplesX[i] >> 16)
 		y += uint16(state.SamplesY[i] >> 16)
+		work.branch("camera-sample-loop", i != 0, false)
 	}
+	work.spend("camera-count", 10)
+	work.division(x, count)
+	work.spend("camera-target-x", 8)
+	work.division(y, count)
+	work.spend("camera-target-y", 8, 10, 16, 12, 16)
 	tx := int16(x/count) - 160
 	ty := (int16(y/count) - 192) >> 2
+	work.branch("camera-left-bound", tx >= 744, false)
 	if tx < 744 {
+		work.spend("camera-left-clamp", 16, 12)
 		tx = 744
-	} else if tx > 984 {
-		tx = 984
+	} else {
+		work.spend("camera-right-bound", 16)
+		work.branch("camera-right-branch", tx <= 984, false)
+		if tx > 984 {
+			work.spend("camera-right-clamp", 16)
+			tx = 984
+		}
 	}
+	work.spend("camera-top-bound", 4)
+	work.branch("camera-top-branch", ty >= 0, false)
 	if ty < 0 {
+		work.spend("camera-top-clamp", 4)
 		ty = 0
-	} else if ty > 32 {
+	}
+	work.spend("camera-bottom-bound", 8)
+	work.branch("camera-bottom-branch", ty <= 32, false)
+	if ty > 32 {
+		work.spend("camera-bottom-clamp", 12)
 		ty = 32
 	}
+	work.spend("camera-smooth", 12, 12, 12, 12, 16, 12, 8, 12, 8, 12, 12, 12, 10, 16)
+	work.spend("camera-return", 16)
 	state.Used, state.TargetX, state.TargetY = 0, tx, ty
 	state.X += (tx - state.X) >> 3
 	state.Left = state.X + 16
@@ -84,18 +125,46 @@ type DefaultArenaState struct {
 // camera consumption, wave/parallax rows and feedback copies. It does not
 // encode VDP commands or draw pixels. Row banks remain presentation data.
 func StepDefaultArena(state DefaultArenaState, view DefaultArenaView, library ArenaRuntimeLibrary) (DefaultArenaState, error) {
-	if view.PauseFlags&128 != 0 || view.SlowFlag != 0 {
+	return StepDefaultArenaObserved(state, view, library, nil)
+}
+
+// StepDefaultArenaObserved emits internal work boundaries in the actual rule
+// path. Work can interleave sound, whose owners are independent of these pure
+// camera/scroll values. Any work error returns the original complete state.
+func StepDefaultArenaObserved(state DefaultArenaState, view DefaultArenaView, library ArenaRuntimeLibrary, hook ArenaWorkHook) (DefaultArenaState, error) {
+	work := arenaWorkEmitter{hook: hook}
+	next, err := stepDefaultArenaWork(state, view, library, &work)
+	if work.err != nil {
+		return state, work.err
+	}
+	return next, err
+}
+func stepDefaultArenaWork(state DefaultArenaState, view DefaultArenaView, library ArenaRuntimeLibrary, work *arenaWorkEmitter) (DefaultArenaState, error) {
+	work.spend("arena-pause", 12)
+	work.branch("arena-pause-branch", view.PauseFlags&128 != 0, false)
+	if view.PauseFlags&128 != 0 {
+		work.spend("arena-return", 16)
 		return state, nil
 	}
+	work.spend("arena-slow", 12)
+	work.branch("arena-slow-branch", view.SlowFlag != 0, false)
+	if view.SlowFlag != 0 {
+		work.spend("arena-return", 16)
+		return state, nil
+	}
+	work.spend("arena-body", 18, 12)
+	work.branch("arena-initialized", state.Stage != 0, false)
 	before := state
 	if state.Stage == 0 {
+		work.spend("arena-initialize", 16, 24, 24, 16, 16, 16)
 		state.Mode = 3
 		state.Drifts = [2]int32{}
 		state.Phases = [2]uint16{}
 		state.Stage += 2
 	}
 	var err error
-	state.Camera, err = StepDefaultArenaCamera(state.Camera)
+	work.spend("arena-camera", 18)
+	state.Camera, err = stepDefaultArenaCameraWork(state.Camera, work)
 	if err != nil {
 		return before, err
 	}
@@ -106,32 +175,49 @@ func StepDefaultArena(state DefaultArenaState, view DefaultArenaView, library Ar
 	if !ok || len(tail) != 56 {
 		return before, errors.New("arena parallax tail is unavailable")
 	}
+	work.spend("arena-vertical", 12, 12, 4, 12, 12, 12, 12, 4, 4, 8, 4, 16, 8, 4, 16, 12)
+	work.branch("arena-drift-held", view.Pan != 0, false)
 	dy := state.Camera.Y - view.Shake
 	state.Vertical = [2]int16{dy + 8, dy + 8}
 	state.SourceA, state.SourceB = int32(dy*2-0x1800), int32(dy*2-0x1600)
 	if view.Pan == 0 {
+		work.spend("arena-drift", 32, 32, 20, 20)
 		state.Drifts[0] += 0x2000
 		state.Drifts[1] += 0x4000
 		state.Phases[0] += 8
 		state.Phases[1] += 8
 	}
+	work.spend("arena-offsets", 12, 4, 8, 10, 4, 8, 4, 12, 12, 10, 8, 4, 12, 12, 12, 8, 4, 12)
 	x := state.Camera.X
 	state.Offsets[0] = -((x >> 1) + (x >> 2) - 0x228)
 	state.Offsets[1] = -((x >> 2) - 0x78)
 	state.Offsets[2] = -((x >> 3) - 0x0c)
+	work.spend("arena-near-setup", 8, 12, 4, 4, 4, 8)
+	work.rows("arena-near-fill", 16, 12)
 	for i := 80; i < 208; i++ {
 		state.RowsA[i] = state.Offsets[1]
 	}
+	work.spend("arena-front-setup", 12, 4, 4, 4, 8)
+	work.rows("arena-front-fill", 4, 12)
 	for i := 208; i < 240; i++ {
 		state.RowsA[i] = state.Offsets[0]
 	}
+	work.spend("arena-far-setup", 8, 12, 4, 4, 4, 8)
+	work.rows("arena-far-fill", 8, 12)
 	for i := 16; i < 80; i++ {
 		state.RowsB[i] = state.Offsets[1]
 	}
 	for group := 0; group < 2; group++ {
+		work.spend("arena-wave-setup", 12, 12, 12, 8, 8, 12, 8)
 		base := state.Offsets[2] + int16(state.Drifts[group]>>16)
 		phase := state.Phases[group]
 		for i := 0; i < 16; i++ {
+			shiftCost := uint16(14)
+			if group != 0 {
+				shiftCost = 12
+			}
+			work.spend("arena-wave-row", 4, 14, 4, shiftCost, 4, 8, 4)
+			work.loop("arena-wave-loop", i < 15)
 			wave := int16(library.WaveX[(phase&0x7fe)/2])
 			if group == 0 {
 				wave >>= 4
@@ -142,16 +228,24 @@ func StepDefaultArena(state DefaultArenaState, view DefaultArenaView, library Ar
 			phase += 0x300
 		}
 	}
+	work.spend("arena-lower-setup", 12, 12, 4, 4, 4, 12)
+	work.rows("arena-lower-fill", 9, 12)
 	for i := 112; i < 184; i++ {
 		state.RowsB[i] = state.Offsets[2] + int16(state.Drifts[1]>>16)
 	}
+	work.spend("arena-tail-setup", 12, 8, 4, 24, 16, 12, 8, 8)
+	work.rows("arena-tail-copy", 7, 20)
 	copy(state.RowsB[184:240], tail)
+	work.spend("arena-body-return", 16, 10)
+	work.spend("arena-pan", 12)
+	work.branch("arena-pan-branch", view.Pan == 0, false)
 	if view.Pan != 0 {
 		// The original copies 224 rows from the signed camera/feedback
 		// selection. Negative selections can begin in the current HUD bank.
 		if dy < -256 || dy > 32 {
 			return before, errors.New("arena feedback row view is unavailable")
 		}
+		work.spend("arena-pan-setup", 16, 16, 12, 12, 16, 16, 12, 8)
 		get := func(index int) int16 {
 			if index < 256 {
 				return view.HUDPrefix[index]
@@ -162,11 +256,16 @@ func StepDefaultArena(state DefaultArenaState, view DefaultArenaView, library Ar
 			return state.RowsB[index-512]
 		}
 		for i := 0; i < 224; i++ {
+			work.spend("arena-pan-row", 8, 4, 8, 8, 4, 8)
+			if i&3 == 3 {
+				work.loop("arena-pan-loop", i < 223)
+			}
 			state.PanA[i] = get(256+int(dy)+i) + view.Pan
 			state.PanB[i] = get(512+int(dy)+i) + view.Pan
 		}
 		state.SourceA, state.SourceB = -0xa000, -0x9e00
 	}
+	work.spend("arena-return", 16)
 	return state, nil
 }
 

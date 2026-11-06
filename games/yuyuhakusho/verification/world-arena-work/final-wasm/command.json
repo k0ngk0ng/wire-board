@@ -1,0 +1,33 @@
+{
+  "command": [
+    "/opt/homebrew/bin/go",
+    "test",
+    "-json",
+    "-count=1",
+    "-timeout=15m",
+    "-run",
+    "^Test(ArenaWork|DefaultArena|WorldSoundLive)",
+    "-exec",
+    "/opt/homebrew/Cellar/go/1.26.2/libexec/lib/wasm/go_js_wasm_exec",
+    "./games/yuyuhakusho/engine",
+    "./games/yuyuhakusho/audio/scoreclock"
+  ],
+  "cwd": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho",
+  "environment": {
+    "TEST_TELEMETRY_DIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-telemetry",
+    "GOCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-cache",
+    "GOMODCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-mod",
+    "GOTMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+    "TMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+    "GOMAXPROCS": "1",
+    "GOOS": "js",
+    "GOARCH": "wasm",
+    "GODEBUG": "gccheckmark=1,clobberfree=1"
+  },
+  "exit_code": 0,
+  "elapsed_seconds": 209.03198409080505,
+  "output_sha256": "19db9bdcc8333e062be5b4012aab8cb0c7d25117d3e3e8a93ac78ed58517d1e9",
+  "tests_passed": 834,
+  "top_level_passed": 12,
+  "failures": []
+}

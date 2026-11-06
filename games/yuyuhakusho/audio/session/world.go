@@ -12,16 +12,37 @@ type WorldHook func(*Runtime, engine.WorldSoundOperation, engine.WorldSoundOwner
 // caller supplies the verified temporal policy; nil leaves audio unchanged.
 // The hook must not retain the branch, owners, or apply callback.
 func (r *Runtime) WorldFrame(world engine.ChuWorldState, held [8]engine.Buttons, rules engine.ChuWorldLibrary, hook WorldHook) (engine.ChuWorldState, []engine.ChuWorldEvent, engine.WorldFrameOutcome, error) {
-	if hook == nil {
+	return r.WorldFrameWithHooks(world, held, rules, WorldFrameHooks{Sound: hook})
+}
+
+type WorldFrameHooks struct {
+	Sound WorldHook
+	Work  func(*Runtime, engine.WorldWorkOperation, engine.WorldSoundOwners) error
+}
+
+// WorldFrameWithHooks stages audio effects at both requests and default-arena
+// work boundaries. The caller must stage its own main clock; this API does not
+// yet own the complete world's temporal checkpoint or IRQ acceptance policy.
+func (r *Runtime) WorldFrameWithHooks(world engine.ChuWorldState, held [8]engine.Buttons, rules engine.ChuWorldLibrary, hooks WorldFrameHooks) (engine.ChuWorldState, []engine.ChuWorldEvent, engine.WorldFrameOutcome, error) {
+	if hooks.Sound == nil && hooks.Work == nil {
 		return engine.StepChuSessionFrame(world, held, rules)
 	}
 	next, err := r.fork()
 	if err != nil {
 		return world, nil, engine.WorldFrameOutcome{}, err
 	}
-	state, events, outcome, err := engine.StepChuSessionFrameObserved(world, held, rules, func(op engine.WorldSoundOperation, owners engine.WorldSoundOwners, apply func() error) error {
-		return hook(next, op, owners, apply)
-	})
+	var observers engine.ChuWorldHooks
+	if hooks.Sound != nil {
+		observers.Sound = func(op engine.WorldSoundOperation, owners engine.WorldSoundOwners, apply func() error) error {
+			return hooks.Sound(next, op, owners, apply)
+		}
+	}
+	if hooks.Work != nil {
+		observers.Work = func(op engine.WorldWorkOperation, owners engine.WorldSoundOwners) error {
+			return hooks.Work(next, op, owners)
+		}
+	}
+	state, events, outcome, err := engine.StepChuSessionFrameWithHooks(world, held, rules, observers)
 	if err != nil {
 		return world, nil, engine.WorldFrameOutcome{}, err
 	}

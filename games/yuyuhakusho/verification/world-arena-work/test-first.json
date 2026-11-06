@@ -1,0 +1,15 @@
+{
+  "head": "83be8982c98634293805f2b1482739e38c43d4e4",
+  "test_first": true,
+  "production_exists": false,
+  "files": {
+    "games/yuyuhakusho/engine/arena_work_test.go": "d3561838dfcb3194fc2e54f2dc499e2e9e6906cb344c58410a8fa8eca7a649e9",
+    "games/yuyuhakusho/audio/scoreclock/world_arena_work_e2e_test.go": "67059892128f7c0c2cd33b95d038b544c865ce1ccc30af5c82ca37232fe2d7c9",
+    "scripts/yuyuhakusho/capture_world_arena_work.py": "52216a3e0d017bf0303ea425efc47df7f94e972349e72cfe2b62df4d268fa4cb",
+    "scripts/yuyuhakusho/export_world_arena_costs.py": "9e6f7c1a164670a34d75d0622b94f177b7a5ece764b07433bdfabfe00e060081",
+    "games/yuyuhakusho/verification/world-arena-work/FAILURES.md": "eef175cadef69b9819d1e2c43dd712f591b03aeabe239bc0e9ff9ee245025c90",
+    "games/yuyuhakusho/verification/world-arena-work/native-arena-work.json.gz": "89afa0935fe8009ba9afc1d52521ce1024b5c0b471063d699a8fc0ef8f79546d",
+    "games/yuyuhakusho/verification/world-arena-work/source-steps.json.gz": "4bead06bb2ee7712165b0c0dfe0cd1307c232a30a6efa57898eea8c72098687c",
+    "games/yuyuhakusho/verification/world-arena-work/architecture-costs.json": "1b636395f5ce1a8016c352c5bd74d8ea464a220e0b06507d37f2a92d81e76785"
+  }
+}

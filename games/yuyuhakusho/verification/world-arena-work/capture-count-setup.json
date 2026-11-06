@@ -1,0 +1,1 @@
+{"original_expected_count":1224,"actual_existing_fixture_count":792,"reason":"Arithmetic error before either native core was started: 360 camera plus 432 arena cases. Correct only the capture inventory assertion; no fixture or expected result changed."}
