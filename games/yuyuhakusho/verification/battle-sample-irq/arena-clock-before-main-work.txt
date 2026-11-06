@@ -1,0 +1,40 @@
+// ArenaWorkOperation is one indivisible work quantum of the actual default
+// arena/camera rule path. Fixed source arithmetic is compiled into that path;
+// no source program, addresses or recorded operation list is loaded at runtime.
+// InternalRefresh marks the camera division's internal refresh skip, which
+// occurs after its dynamic work. Other operations have no such skip.
+type ArenaWorkOperation struct {
+	Phase           string
+	CPUCycles       uint16
+	InternalRefresh bool
+}
+type ArenaWorkHook func(ArenaWorkOperation) error
+
+// Advance charges only this work against the caller's sole main clock. IRQ
+// acceptance and interrupt service remain the caller's responsibility between
+// operations; this function neither owns a second clock nor chooses IRQ times.
+func (op ArenaWorkOperation) Advance(cycle, refresh uint64) (uint64, uint64, error) {
+	if op.Phase == "" || op.CPUCycles < 4 || op.CPUCycles > 136 || op.CPUCycles&1 != 0 || op.InternalRefresh && op.CPUCycles < 106 {
+		return 0, 0, errors.New("invalid arena work quantum")
+	}
+	if cycle >= refresh {
+		if cycle > math.MaxUint64-896 {
+			return 0, 0, errors.New("arena work refresh overflow")
+		}
+		refresh = cycle + 896
+		cycle += 14
+	}
+	delta := uint64(op.CPUCycles) * 7
+	if cycle > math.MaxUint64-delta {
+		return 0, 0, errors.New("arena work clock overflow")
+	}
+	cycle += delta
+	if op.InternalRefresh && cycle >= refresh {
+		if refresh > math.MaxUint64-896 {
+			return 0, 0, errors.New("arena internal refresh overflow")
+		}
+		refresh += 896
+	}
+	return cycle, refresh, nil
+}
+

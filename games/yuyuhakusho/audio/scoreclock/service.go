@@ -49,6 +49,7 @@ type service struct {
 	operations uint32
 	limit      uint32
 	level      *LevelEffect
+	before     func() error // Borrowed main-batch coordinator for an enclosing IRQ.
 }
 
 func (s *service) add(delta uint64) error {
@@ -65,6 +66,11 @@ func (s *service) add(delta uint64) error {
 func (s *service) cost(cpu uint64, io func() error) error {
 	if s.operations >= s.limit {
 		return ErrBudget
+	}
+	if s.before != nil {
+		if err := s.before(); err != nil {
+			return err
+		}
 	}
 	s.operations++
 	if s.clock.Cycle >= s.clock.Refresh {

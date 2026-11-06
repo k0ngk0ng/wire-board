@@ -1,0 +1,16 @@
+{
+  "test_first": true,
+  "production_exists": false,
+  "files": {
+    "games/yuyuhakusho/engine/controller_scan_work_test.go": "42cc5c2d21d68846a0783cd13bb362b7a03be1872ce2f10e367bfe4ee2b634dd",
+    "games/yuyuhakusho/engine/main_work_split_test.go": "7f64b7feaf720240a1aa2b330fac7153f6071b453ebb1c7adb8fa252b165bab2",
+    "scripts/yuyuhakusho/capture_controller_scan_work.py": "3da6c53b7978c2d758d85b51e5d0d50204d6ac54a540958cfdcc62150d65ed8a",
+    "scripts/yuyuhakusho/controller-scan-io.c": "92a98d9d6a59b931f0905a039d78e46fe494576dc4deeb96cd59d653f3ac4617",
+    "scripts/yuyuhakusho/capture_battle_sample_prefix.py": "6ad593bf5346f2688ad4d9f81494c1c26427047ca79d71f6666f3f4f8ada68b7",
+    "scripts/yuyuhakusho/battle-prefix-observer.c": "90494ffb6062386e765218b5a7d27364577f9996ad767de86381260b12a98e57",
+    "games/yuyuhakusho/verification/battle-sample-irq/FAILURES.md": "ce41e6762358e1ba5dcc97ef99dd8df1c0e2d20499da75cbc3e2677cbbfc4586",
+    "games/yuyuhakusho/verification/battle-sample-irq/native-controller-scan.json.gz": "a583b95c2b7e0d6edc72ee42b4cb1ff6a100e7154c179b4bb3ee44dde53eb2f1",
+    "games/yuyuhakusho/verification/battle-sample-irq/cold-io-reset-controller-scan.json.gz": "8f1cd113ea2c7edc1d93c3f429b032e98b326e19070084482777e14eda916829",
+    "games/yuyuhakusho/verification/battle-sample-irq/native-battle-prefix.json.gz": "2eda162b5f7b8e2e4f6847d86910ebfb30710e37ea4bf394439d4b303e463177"
+  }
+}

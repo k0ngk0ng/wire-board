@@ -1,0 +1,6 @@
+{
+  "reason": "Initial scanner capture reset both device protocol and IO data/control to cold zero. Direct six-button pads then consume one extra rising TH transition and are correctly identified as MD3 by the original game; this is a cold-first-scan profile, not a settled match scan. Keep original outcomes and executed source archive. Add explicit previous-complete-scan end state: direct MD6 data/control40, TeamPlayer60, protocol counters reset by scanline gap. Capture new separate settled dataset on both cores; do not edit original fixture or production.",
+  "cold_source_sha256": "1edc3cefc30bdb089439ccc8f223f2fb2401e60d05591789e768535513ec5d57",
+  "settled_source_sha256": "3da6c53b7978c2d758d85b51e5d0d50204d6ac54a540958cfdcc62150d65ed8a",
+  "production_exists": false
+}
