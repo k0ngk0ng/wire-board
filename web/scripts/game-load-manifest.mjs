@@ -81,7 +81,7 @@ export function gameLoadManifest() {
           if (f.isDirectory()) walk(p);
           else if (
             !p.startsWith("assets/") &&
-            /\.(png|jpg|jpeg|webp|svg|gif|mp3|wav|ogg|wasm)$/.test(p)
+            /\.(png|jpg|jpeg|webp|svg|gif|mp3|wav|ogg|flac|pvzr|json|js|wasm)$/.test(p)
           )
             media["/" + p] = statSync(path.join(dir, p)).size;
         }

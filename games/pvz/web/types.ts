@@ -17,6 +17,8 @@ export type Spec = {
   cost: number;
   cooldown?: number;
   cooldownTicks?: number;
+  unlockAfterSeconds?: number;
+  unlockAt?: number;
   hp?: number;
   description?: string;
   originalId?: number;

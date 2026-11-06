@@ -19,3 +19,4 @@
 .pvz-board button:disabled,.pvz-card-book button:disabled,.pvz-layer-modal button:disabled{opacity:1}.pvz-book-slots button:disabled{color:#514630}.pvz-layer-list button:disabled{color:#4f452f}.pvz-imitater-target select:disabled{opacity:1;color:#4f472f;background:#c2b58b}
 .pvz-grid-controls .pvz-pickups button:disabled{pointer-events:none}
 .pvz-unaffordable .pvz-seed-cost{color:#702b1f}
+.pvz-outcome{color:var(--text,#263b35);min-width:0}.pvz-outcome>p{font-weight:650;line-height:1.7;margin:0 0 14px}.pvz-outcome table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:13px}.pvz-outcome th,.pvz-outcome td{text-align:left;padding:9px 6px;border-bottom:1px solid #c5cdbf;white-space:nowrap}.pvz-round-history{flex-wrap:wrap;white-space:normal}.pvz-below{flex-wrap:wrap}@media(max-width:420px){.pvz-outcome table{font-size:11px}.pvz-outcome th,.pvz-outcome td{padding:8px 3px}}

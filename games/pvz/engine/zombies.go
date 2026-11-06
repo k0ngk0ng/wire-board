@@ -1117,11 +1117,7 @@ func (s *State) zombieFindContact(z *Zombie, next, direction int) *Plant {
 	return best
 }
 func (s *State) zombieMower(z *Zombie) {
-	if z.Allegiance != "plants" && z.Altitude == 0 && !z.Digging && z.Kind != "bungee" && z.Kind != "zomboss" && z.X <= 150 && z.Row >= 0 && z.Row < len(s.Mowers) && s.Mowers[z.Row].State == "ready" {
-		s.Mowers[z.Row].State = "moving"
-		s.Mowers[z.Row].X = -150
-		s.emit("mower", z.Row, -150, -1, "", 0, 0)
-	}
+	s.activateMower(z)
 }
 func (s *State) zombieCrushCell(row, col int) {
 	for tries := 0; tries < 4; tries++ {

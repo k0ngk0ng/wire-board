@@ -152,6 +152,9 @@ func applyAction(s *State, actor int, a Action) error {
 		if !specScene(c, s.Map.ID) || c.WaterOnly && !s.isWater(a.Row) || s.isWater(a.Row) && !c.WaterOnly && !c.WaterAllowed {
 			return errors.New("该僵尸不能从这条路线出场")
 		}
+		if s.RulesVersion >= 2 && s.Tick < s.unlockAt(a.Kind) {
+			return errors.New("该特殊僵尸尚未解锁，请等待卡牌倒计时")
+		}
 		if c.RequiresIce {
 			ice := false
 			for _, v := range s.Terrain {
@@ -195,6 +198,16 @@ func applyAction(s *State, actor int, a Action) error {
 		p.Money -= c.Cost
 		p.Cooldowns[a.Kind] = s.Tick + int64(c.Cooldown/TickMS)
 		s.LaneCooldowns[a.Row] = s.Tick + 8
+		// A single team entrance cadence prevents rapid card cycling and two
+		// teammates from creating an opening burst across every lane at once.
+		for i := range s.Players {
+			q := &s.Players[i]
+			if q.Team == p.Team && q.Side == "zombies" {
+				for _, kind := range q.Deck {
+					q.Cooldowns[kind] = max(q.Cooldowns[kind], s.Tick+3000/TickMS)
+				}
+			}
+		}
 	case "shovel":
 		if p.Side != "plants" || a.PlantID <= 0 || a.Kind != "" {
 			return errors.New("当前不能铲除")

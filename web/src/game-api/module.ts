@@ -129,7 +129,12 @@ export type RoomPresentation = {
 
 export type BoardProps<Data = unknown> = {
   onReady?: () => void;
-  onLoadProgress?: (percent: number, label: string) => void;
+  onLoadProgress?: (
+    percent: number,
+    label: string,
+    bytes?: { loaded: number; total: number },
+  ) => void;
+  loadSizes?: Readonly<Record<string, number>>;
   onLoadError?: (error: string) => void;
   room: GameRoom;
   data: Data;
@@ -183,6 +188,7 @@ export type GameModule<Data = unknown, Options = unknown> = {
   // modify authoritative snapshots or decide outcomes in this adapter.
   createPresentation?: () => RoomPresentation;
   resources?: (room: GameRoom, media: Record<string, number>) => string[];
+  assetLoading?: "board";
   asyncBoard?: boolean;
   Board: ComponentType<BoardProps<Data>>;
   Options?: ComponentType<OptionsProps<Options>>;
@@ -196,6 +202,7 @@ export type GameModule<Data = unknown, Options = unknown> = {
     seat: number;
     assets: string;
   }>;
+  ResultDetails?: ComponentType<{ room: GameRoom; data: Data }>;
   // Only the six migrated games use the existing room-protocol adapter.
   legacy?: boolean;
 };

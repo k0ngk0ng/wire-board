@@ -12,30 +12,15 @@ import { layerName, mapFor, plantsAt, slopeAt, stageFor, terrainReason } from ".
 import { createPredictor } from "./runtime";
 import { useSceneMusic } from "./music";
 import { PvzEffects } from "./effects";
+import { ResourceDownloads, type DownloadProgress } from "./downloads";
+import { roundRow } from "./outcome";
+import { neededUnits } from "./entry-assets";
 import type { PvzAction, Spec, View } from "./types";
 
 type Predictor = Awaited<ReturnType<typeof createPredictor>>;
 function complete(view: View | undefined): view is View { return !!view && Array.isArray(view.players) && Array.isArray(view.plants); }
 function formatClock(seconds: number) { const n = Math.max(0, Math.ceil(seconds)); return `${Math.floor(n / 60)}:${String(n % 60).padStart(2, "0")}`; }
 
-function neededUnits(view: View) {
-  const kinds = new Set<string>(["mower", "sun"]);
-  for (const player of view.players ?? []) { for (const kind of player.deck ?? []) kinds.add(kind); if (player.imitaterKind) kinds.add(player.imitaterKind); }
-  for (const plant of view.plants ?? []) { kinds.add(plant.kind); if (plant.targetKind) kinds.add(plant.targetKind); }
-  for (const zombie of view.zombies ?? []) {
-    kinds.add(zombie.kind);
-    if (zombie.flags?.stolenPlant) {
-      const held = view.catalog?.plants.find(spec => spec.originalId === zombie.flags!.stolenPlant - 1);
-      if (held) kinds.add(held.kind);
-    }
-  }
-  for (const pickup of view.pickups ?? []) kinds.add(pickup.kind);
-  for (const event of view.events ?? []) if (event.kind && ["zombie-death", "plant-death"].includes(event.type)) kinds.add(event.kind);
-  if (kinds.has("dancing")) kinds.add("backupdancer");
-  if (kinds.has("gargantuar") || kinds.has("redeye") || kinds.has("redgargantuar") || kinds.has("gigagargantuar")) kinds.add("imp");
-  if (kinds.has("zomboss")) for (const zombie of view.catalog?.zombies ?? []) kinds.add(zombie.kind);
-  return [...kinds];
-}
 
 export function Board(props: BoardProps<View>) {
   const overlayRoot = useGameOverlayRoot();
@@ -95,13 +80,15 @@ export function Board(props: BoardProps<View>) {
     const controller = new AbortController();
     let retired = false;
     setReady(false); isReady.current = false; renderEnabled.current = false; setArt(null); setLoadError("");
+    let downloaded:DownloadProgress|undefined;
     const report = (value: number, label: string) => {
       if (retired) return;
-      setProgress(value); latest.current.onLoadProgress?.(value, label);
+      setProgress(value); latest.current.onLoadProgress?.(value, label, downloaded);
     };
+    const downloads=new ResourceDownloads(latest.current.loadSizes??{},p=>{downloaded=p;report(p.percent,"加载本局场景与规则程序")});
     Promise.all([
-      loadArt(props.assets, controller.signal, report, sceneID, neededUnits(authoritative.current)),
-      createPredictor(props.assets),
+      loadArt(props.assets, controller.signal, report, sceneID, neededUnits(authoritative.current),downloads),
+      createPredictor(props.assets,downloads),
     ]).then(([loadedArt, predictor]) => {
       if (retired) { predictor.dispose(); return; }
       runtime.current = predictor;
@@ -128,7 +115,8 @@ export function Board(props: BoardProps<View>) {
     const kinds = unitKey.split("|");
     const missing = kinds.some(kind => !unitReady(art, kind));
     if (!missing) { setLoadingUnits(false); return; }
-    setLoadingUnits(true);
+    const visible=[...(view.plants??[]),...(view.zombies??[])].some(entity=>!unitReady(art,entity.kind));
+    setLoadingUnits(visible);
     void ensureUnits(art, kinds).then(() => { if (!retired) setLoadingUnits(false); }).catch(reason => {
       if (retired) return;
       setLoadError(reason instanceof Error ? reason.message : "角色素材加载失败");
@@ -281,6 +269,9 @@ export function Board(props: BoardProps<View>) {
       if (!kind) { if (stack.length && own.side === "plants") setLayers({ row, col }); return; }
       const spec = current.catalog[own.side].find(card => card.kind === (kind === "imitater" ? own.imitaterKind : kind));
       if (!spec) return;
+      const staged=current.catalog[own.side].find(card=>card.kind===kind);
+      if((staged?.unlockAt??0)>current.tick){setError(`开战后 ${staged!.unlockAfterSeconds} 秒解锁`);return;}
+      if(art&&!unitReady(art,kind)){setError("角色素材加载中，请稍候");return;}
       const invalid = terrainReason(spec, mapFor(current));
       if (invalid) { setError(invalid); return; }
       if (own.money < spec.cost) { setError(own.side === "plants" ? "阳光不足" : "脑力不足"); return; }
@@ -291,6 +282,7 @@ export function Board(props: BoardProps<View>) {
 
   function renderCard(card: Spec) {
     const effective = card.kind === "imitater" ? view.catalog.plants.find(spec => spec.kind === player?.imitaterKind) ?? card : card;
+    const locked=(card.unlockAt??0)>view.tick;
     const cooldown = Math.max(0, ((player?.cooldowns[card.kind] ?? 0) - view.tick) * 50);
     const unaffordable = (player?.money ?? 0) < effective.cost;
     const chosen = selected === card.kind && !shovel;
@@ -300,7 +292,7 @@ export function Board(props: BoardProps<View>) {
       <span className="pvz-seed-name">{card.name}</span>
       {art && <CardArt art={art} kind={card.kind === "imitater" ? player?.imitaterKind || card.kind : card.kind} />}
       <span className="pvz-seed-cost">{effective.cost}</span>
-      {cooldown > 0 && <span className="pvz-seed-cooldown" aria-hidden="true" style={{ height: `${Math.min(100, cooldown / total * 100)}%` }}><b>{Math.ceil(cooldown / 1000)}</b></span>}
+      {cooldown > 0 && <span className="pvz-seed-cooldown" aria-hidden="true" style={{ height: `${Math.min(100, cooldown / total * 100)}%` }}><b>{locked?`解锁 ${formatClock(cooldown/1000)}`:Math.ceil(cooldown/1000)}</b></span>}
     </button>;
   }
 
@@ -329,7 +321,7 @@ export function Board(props: BoardProps<View>) {
       {ready && !watching && side === "zombies" && view.phase === "prepare" && <div className="pvz-phase-banner pvz-phase-small"><strong>植物正在布阵</strong><span>{formatClock(remaining)}</span></div>}
       <div ref={grid} className="pvz-grid-controls" role="grid" aria-label="草坪格子" data-controller-group="board">{Array.from({ length: map.rows }, (_, row) => side === "plants" || ["cell", "plant"].includes(view.catalog?.zombies.find(card => card.kind === selected)?.target ?? "") ? Array.from({ length: map.cols }, (_, col) => <button key={`${row}-${col}`} type="button" data-pvz-cell={`${row}:${col}`} aria-label={`第 ${row + 1} 行第 ${col + 1} 列`} style={{ left: `${(stage.left + col * stage.cellWidth) / stage.width * 100}%`, top: `${(stage.top + row * stage.cellHeight + (stage.roofSlope[col] ?? 0)) / stage.height * 100}%`, width: `${stage.cellWidth / stage.width * 100}%`, height: `${stage.cellHeight / stage.height * 100}%` }} disabled={!usable} onFocus={() => { paintState.current.hover = { row, col }; }} onClick={() => actAt(row, col)} />) : <button key={row} type="button" aria-label={`向第 ${row + 1} 行出兵`} style={{ left: "95.3%", top: `${(stage.top + row * stage.cellHeight) / stage.height * 100}%`, width: "4.7%", height: `${stage.cellHeight / stage.height * 100}%` }} disabled={!usable} onFocus={() => { paintState.current.hover = { row, col: 8 }; }} onClick={() => actAt(row, 8)} />)}<div className="pvz-pickups" data-controller-group="pickups">{view.pickups?.map(pickup => <button type="button" key={pickup.id} data-pvz-pickup={pickup.id} data-owner={pickup.owner} aria-label={`收取${pickup.amount}${pickup.kind === "sun" ? "阳光" : "金币"}`} disabled={!ready || watching || automated || view.players[pickup.owner]?.team !== player?.team} style={{ left: `${(stage.left + pickup.x / 1000 * stage.cellWidth) / stage.width * 100}%`, top: `${(stage.top + pickup.y / 1000 * stage.cellHeight + slopeAt(pickup.x, stage.roofSlope)) / stage.height * 100}%`, width: `${36 / stage.width * 100}%`, height: `${36 / stage.height * 100}%` }} onClick={() => { void submit({ type: "collect", pickupId: pickup.id }).catch(() => {}); }} />)}</div></div>
     </div>
-    <div className="pvz-below"><span className="pvz-action-error" role="status" aria-live="polite">{error || (abilityPlant !== null ? "选择炮击目标" : "")}</span><span className="pvz-round-history">{view.rounds?.map((round, i) => <span key={i}>{round.attackTeam === 0 ? "A" : "B"} 队 · {round.breached ? formatClock(round.elapsedMS / 1000) : "守住"}</span>)}</span></div>
+    <div className="pvz-below"><span className="pvz-action-error" role="status" aria-live="polite">{error || (abilityPlant !== null ? "选择炮击目标" : "")}</span><span className="pvz-round-history">{view.rounds?.map((round, i) => { const row=roundRow(round,i);return <span key={i}>{row.attack}进攻 · {row.result} {row.time}</span>;})}</span></div>
     {bookOpen && art && <CardBook view={view} art={art} actor={watching ? -1 : props.room.you} canEdit={!watching && !automated} onClose={() => setBookOpen(false)} onSave={(kinds, imitateKind) => submit({ type: "deck", kinds, imitateKind })} />}
     {layers && createPortal(<Modal title="植物管理" className="pvz-layer-modal" onClose={() => setLayers(null)}><div data-controller-group="plant-layers" className="pvz-layer-list">{plantsAt(view, layers.row, layers.col).map(plant => <div key={plant.id}><strong>{view.catalog.plants.find(spec => spec.kind === plant.kind)?.name ?? plant.kind}<small>{layerName(plant)} · {props.room.seats[plant.owner]?.name}</small></strong><span>{plant.hp} / {plant.maxHP}{plant.asleep ? " · 休眠" : ""}</span><button type="button" disabled={!usable || plant.owner !== props.room.you} onClick={() => { void submit({ type: "shovel", plantId: plant.id }).then(() => setLayers(null)).catch(() => {}); }}>铲除</button>{plant.kind === "cobcannon" && <button type="button" disabled={!usable || plant.owner !== props.room.you || plant.asleep || plant.readyAt > view.tick || (plant.chargeMS ?? 0) > view.tick * 50} onClick={() => { choose(null); setAbilityPlant(plant.id); paintState.current.selected = "__ability"; setLayers(null); }}>{Math.max(plant.readyAt * 50, plant.chargeMS ?? 0) > view.tick * 50 ? `装填 ${Math.ceil((Math.max(plant.readyAt * 50, plant.chargeMS ?? 0) - view.tick * 50) / 1000)} 秒` : "瞄准"}</button>}</div>)}</div></Modal>, overlayRoot)}
   </div>;

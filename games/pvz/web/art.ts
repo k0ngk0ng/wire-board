@@ -1,3 +1,4 @@
+import { ResourceDownloads, runDownloads } from "./downloads";
 export type SpriteFrame = { x: number; y: number; w: number; h: number; duration?: number };
 export type SpriteDefinition = {
   src: string;
@@ -33,19 +34,18 @@ export type ArtManifest = {
 type NativeLayer = { src: string; m: [number, number, number, number, number, number]; alpha?: number };
 type NativeAnimation = { kind?: string; clips: Record<string, { fps: number; loop: boolean; frames: NativeLayer[][]; bounds?: { x: number; y: number; width: number; height: number } }> };
 export type DrawnPose = { kind: string; clip: string; index: number; frames: number; time: number; x: number; y: number };
-export type Art = { manifest: ArtManifest; images: Map<string, HTMLImageElement>; native: Map<string, NativeAnimation>; loaded: Set<string>; pending: Map<string, Promise<void>>; drawnPoses: DrawnPose[]; base: string; scene: string };
+type ArtImage = CanvasImageSource & { naturalWidth: number; naturalHeight: number };
+export type Art = { manifest: ArtManifest; images: Map<string, ArtImage>; native: Map<string, NativeAnimation>; loaded: Set<string>; pending: Map<string, Promise<void>>; drawnPoses: DrawnPose[]; base: string; scene: string; downloads?: ResourceDownloads };
 
 export function assetURL(base: string, path: string) {
   if (/^(https?:|data:|blob:)/.test(path)) return path;
   return `${base.replace(/\/$/, "")}/${path.replace(/^\//, "")}`;
 }
 
-export async function loadArt(_legacyAssets: string, signal: AbortSignal, progress: (n: number, label: string) => void, scene = "day", kinds: string[] = []): Promise<Art> {
+export async function loadArt(_legacyAssets: string, signal: AbortSignal, progress: (n: number, label: string) => void, scene = "day", kinds: string[] = [], downloads?: ResourceDownloads): Promise<Art> {
   const base = assetURL(import.meta.env.BASE_URL, "pvz/classic-v2");
-  progress(5, "读取草坪与角色资源");
-  const response = await fetch(assetURL(base, "manifest.json"), { signal });
-  if (!response.ok) throw new Error(`原版资源清单加载失败（${response.status}）`);
-  const manifest = await response.json() as ArtManifest;
+  if(!downloads)progress(5, "读取草坪与角色资源");
+  const manifest = downloads ? JSON.parse(new TextDecoder().decode(await downloads.bytes(assetURL(base,"manifest.json"),"/pvz/classic-v2/manifest.json",signal))) as ArtManifest : await (async()=>{const response=await fetch(assetURL(base,"manifest.json"),{signal});if(!response.ok)throw Error(`原版资源清单加载失败（${response.status}）`);return response.json() as Promise<ArtManifest>})() ;
   if ((!manifest.background && !manifest.maps?.[scene]?.background) || !manifest.sprites) throw new Error("原版资源清单不完整");
   manifest.sprites.zombie ??= manifest.sprites.normal;
   manifest.sprites.polevaulter ??= manifest.sprites.pole;
@@ -56,17 +56,17 @@ export async function loadArt(_legacyAssets: string, signal: AbortSignal, progre
     manifest.byUnit.coin ??= manifest.byUnit.goldcoin;
   }
   for (const kind of kinds) if (!manifest.sprites[kind]) throw new Error(`缺少经典角色素材：${kind}`);
-  const art: Art = { manifest, images: new Map(), native: new Map(), loaded: new Set(), pending: new Map(), drawnPoses: [], base, scene };
+  const art: Art = { manifest, images: new Map(), native: new Map(), loaded: new Set(), pending: new Map(), drawnPoses: [], base, scene, downloads };
   const sceneMap = manifest.maps?.[scene];
   if (sceneMap) { manifest.background = sceneMap.background; manifest.backgroundCrop = sceneMap.backgroundCrop; manifest.lawn = sceneMap.lawn; }
   const shared = ["shovel", "seedpacket", "seedbank", "shadow"].map(key => manifest.images?.[key]).filter((p): p is string => !!p);
-  const music = manifest.music?.[scene]?.tracks.filter(track => track.required !== false).map(track => track.src) ?? [];
-  const paths = [...new Set([manifest.background, ...(manifest.byScene?.[scene] ?? []), ...shared, ...music, ...unitPaths(art, [...kinds, "mower", "sun"])])];
+  const paths = [...new Set([manifest.background, ...(manifest.byScene?.[scene] ?? []), ...shared, ...unitPaths(art, [...kinds, "mower", "sun"])])];
+  downloads?.plan(paths.map(path=>"/pvz/classic-v2/"+path));downloads?.planned("art");
   let done = 0;
-  await Promise.all(paths.map(async path => {
+  await runDownloads(paths,async path => {
     await loadAsset(art, path, signal);
-    progress(10 + ++done / paths.length * 75, "加载场景、角色与原版音乐");
-  }));
+    if(!downloads)progress(10 + ++done / paths.length * 75, "加载场景与角色");
+  });
   return art;
 }
 
@@ -100,15 +100,17 @@ async function loadAsset(art: Art, path: string, signal?: AbortSignal) {
   }
   if (native) {
     const task = (async () => {
-      const response = await fetch(assetURL(art.base, path), { signal });
-      if (!response.ok) throw new Error(`动画加载失败：${path}`);
-      const bytes = new Uint8Array(await response.arrayBuffer());
+      const bytes = art.downloads ? await art.downloads.bytes(assetURL(art.base,path),"/pvz/classic-v2/"+path,signal) : await(async()=>{const response=await fetch(assetURL(art.base,path),{signal});if(!response.ok)throw Error(`动画加载失败：${path}`);return new Uint8Array(await response.arrayBuffer())})();
       const decoded = bytes[0] === 0x1f && bytes[1] === 0x8b ? await new Response(new Blob([bytes]).stream().pipeThrough(new DecompressionStream("gzip"))).text() : new TextDecoder().decode(bytes);
       const data = JSON.parse(decoded) as NativeAnimation;
       if (!data.clips || !Object.values(data.clips).every(clip => Array.isArray(clip.frames) && Number.isFinite(clip.fps))) throw new Error(`动画格式无效：${path}`);
       art.native.set(path, data); art.loaded.add(path);
     })().finally(() => art.pending.delete(path));
     art.pending.set(path, task); return task;
+  }
+  if(art.downloads){
+    const task=(async()=>{const bytes=await art.downloads!.bytes(assetURL(art.base,path),"/pvz/classic-v2/"+path,signal);signal?.throwIfAborted();const image=await createImageBitmap(new Blob([bytes]));signal?.throwIfAborted();art.images.set(path,Object.assign(image,{naturalWidth:image.width,naturalHeight:image.height}));art.loaded.add(path)})().finally(()=>art.pending.delete(path));
+    art.pending.set(path,task);return task;
   }
   const task = new Promise<void>((resolve, reject) => {
     const image = new Image(); image.crossOrigin = "anonymous";
@@ -125,7 +127,7 @@ async function loadAsset(art: Art, path: string, signal?: AbortSignal) {
 
 export async function ensureUnits(art: Art, kinds: string[], signal?: AbortSignal) {
   for (const kind of kinds) if (!art.manifest.sprites[kind]) throw new Error(`缺少经典角色素材：${kind}`);
-  await Promise.all(unitPaths(art, kinds).map(path => loadAsset(art, path, signal)));
+  await runDownloads(unitPaths(art, kinds),path=>loadAsset(art,path,signal));
 }
 export async function ensureMusic(art: Art, src: string) { await loadAsset(art, src); }
 export function unitReady(art: Art, kind: string) { return !!art.manifest.sprites[kind] && unitPaths(art, [kind]).every(path => art.loaded.has(path)); }

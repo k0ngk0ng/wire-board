@@ -34,7 +34,7 @@ export function GameBoard({
   inputWindow?: number;
   loadEvents?: Pick<
     import("./module").BoardProps,
-    "onReady" | "onLoadProgress" | "onLoadError"
+    "onReady" | "onLoadProgress" | "onLoadError" | "loadSizes"
   >;
 }) {
   const module = gameModule(room.kind);
