@@ -1,0 +1,40 @@
+{
+  "pass": true,
+  "scope": "Given ordered external scanline/VINT/register operations and handler-entry-inferred acknowledgements; no CPU acceptance or directly observed CPU pin claim",
+  "windows": [
+    {
+      "name": "original-steps-2068",
+      "frames": 7,
+      "operations": 6703
+    },
+    {
+      "name": "original-steps-2393",
+      "frames": 8,
+      "operations": 7654
+    }
+  ],
+  "scalar_states": 7757,
+  "reads": 2193,
+  "handler_entry_acknowledgements": 60,
+  "source": {
+    "path": "games/yuyuhakusho/verification/world-video/native/events.json.gz",
+    "sha256": "03371dac6766f3cccda1e537173ee4507643de6cc9e3c78bdb540bace697c6fd"
+  },
+  "capture": {
+    "path": "games/yuyuhakusho/verification/world-video/native/capture.json",
+    "sha256": "3a3738423a47dfbb4e8c08f7796994d05aeb4b58384f201214b992bfcc6ef4b4"
+  },
+  "producer": {
+    "path": "scripts/yuyuhakusho/world-video-fixture.py",
+    "sha256": "abbcca04868873264fce93cff4bdac52bd44c48624cefb20641274d4facad130"
+  },
+  "fixture": {
+    "path": "games/yuyuhakusho/audio/videoclock/testdata/natural.json.gz",
+    "sha256": "a59f17ac534a208c979dbd6fde53cb091ff67c969126080dbf82e522005cfc63",
+    "json_sha256": "90c3e0b9bddb7a88947006f95afb9229c47fed16b3e3283b628fdb82a479f498"
+  },
+  "original_pc_in_fixture": false,
+  "per_frame_reseed": false,
+  "direct_ack_observed": false,
+  "native_cpu_pin_observed": false
+}

@@ -1,0 +1,336 @@
+{
+  "scope": "Read-only bounded fixed-barrier causality; independent world/IRQ schedule remains unresolved",
+  "production_modified": false,
+  "original_analyzer_sha256": "02446e9a3dea0b6e7d1ccdac66b3aafe6c77edacafe5e60457062a8271ffaea0",
+  "scenarios": [
+    {
+      "name": "baseline",
+      "source_sha256": "735833ae6e4ac55d8094ffe5827ecd33b92433b21b1135250ccab037f27b8402",
+      "original_control": {
+        "frame_tail_counterexample": {
+          "rejected": true,
+          "reason": "frame-tail placement changes the selected command before any earlier command differs",
+          "frame": 375,
+          "native_selected": 255,
+          "hypothetical_selected": 115,
+          "hypothetical_queue_before_consume": [
+            146,
+            115,
+            0,
+            0
+          ],
+          "priority_before": 0,
+          "unchanged_dispatches_before_counterexample": 69,
+          "native_tick_time_master": 335249048,
+          "scope": "Original driver non-consumer operations are reused only along the unchanged selected-command prefix; no claim is made about later hypothetical DSP output"
+        },
+        "battle_only_frame_tail_counterexample": {
+          "rejected": true,
+          "reason": "frame-tail placement changes the selected command before any earlier command differs",
+          "frame": 1813,
+          "native_selected": 255,
+          "hypothetical_selected": 163,
+          "hypothetical_queue_before_consume": [
+            163,
+            0,
+            0,
+            0
+          ],
+          "priority_before": 0,
+          "unchanged_dispatches_before_counterexample": 1508,
+          "native_tick_time_master": 1623825747,
+          "scope": "Original driver non-consumer operations are reused only along the unchanged selected-command prefix; no claim is made about later hypothetical DSP output"
+        }
+      },
+      "candidates": [
+        {
+          "policy": "frame-head",
+          "start_frame": 1,
+          "fallback_to_frame_head": 0,
+          "independent_schedule_proved": false,
+          "scope": "Given original driver groups and IRQ-frame labels; stop at the first queue/pause mismatch; no later PCM or arbitrary-input claim",
+          "rejected": true,
+          "reason": "selected command changed",
+          "frame": 9,
+          "unchanged_dispatch_checks": 0,
+          "native_selected": 4,
+          "candidate_selected": 0,
+          "queue_before_consume": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "priority_before": 0
+        },
+        {
+          "policy": "frame-head",
+          "start_frame": 1800,
+          "fallback_to_frame_head": 0,
+          "independent_schedule_proved": false,
+          "scope": "Given original driver groups and IRQ-frame labels; stop at the first queue/pause mismatch; no later PCM or arbitrary-input claim",
+          "rejected": true,
+          "reason": "selected command changed",
+          "frame": 2071,
+          "unchanged_dispatch_checks": 1766,
+          "native_selected": 124,
+          "candidate_selected": 255,
+          "queue_before_consume": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "priority_before": 0
+        },
+        {
+          "policy": "before-arena",
+          "start_frame": 1,
+          "fallback_to_frame_head": 1972,
+          "independent_schedule_proved": false,
+          "scope": "Given original driver groups and IRQ-frame labels; stop at the first queue/pause mismatch; no later PCM or arbitrary-input claim",
+          "rejected": true,
+          "reason": "selected command changed",
+          "frame": 9,
+          "unchanged_dispatch_checks": 0,
+          "native_selected": 4,
+          "candidate_selected": 0,
+          "queue_before_consume": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "priority_before": 0
+        },
+        {
+          "policy": "before-arena",
+          "start_frame": 1800,
+          "fallback_to_frame_head": 744,
+          "independent_schedule_proved": false,
+          "scope": "Given original driver groups and IRQ-frame labels; stop at the first queue/pause mismatch; no later PCM or arbitrary-input claim",
+          "rejected": true,
+          "reason": "selected command changed",
+          "frame": 2396,
+          "unchanged_dispatch_checks": 2091,
+          "native_selected": 125,
+          "candidate_selected": 255,
+          "queue_before_consume": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "priority_before": 0
+        },
+        {
+          "policy": "after-manager",
+          "start_frame": 1,
+          "fallback_to_frame_head": 671,
+          "independent_schedule_proved": false,
+          "scope": "Given original driver groups and IRQ-frame labels; stop at the first queue/pause mismatch; no later PCM or arbitrary-input claim",
+          "rejected": true,
+          "reason": "selected command changed",
+          "frame": 9,
+          "unchanged_dispatch_checks": 0,
+          "native_selected": 4,
+          "candidate_selected": 0,
+          "queue_before_consume": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "priority_before": 0
+        },
+        {
+          "policy": "after-manager",
+          "start_frame": 1800,
+          "fallback_to_frame_head": 5,
+          "independent_schedule_proved": false,
+          "scope": "Given original driver groups and IRQ-frame labels; stop at the first queue/pause mismatch; no later PCM or arbitrary-input claim",
+          "rejected": true,
+          "reason": "selected command changed",
+          "frame": 2071,
+          "unchanged_dispatch_checks": 1766,
+          "native_selected": 124,
+          "candidate_selected": 255,
+          "queue_before_consume": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "priority_before": 0
+        }
+      ]
+    },
+    {
+      "name": "pause",
+      "source_sha256": "b0c2d19bd5fb04e346cebd6b52464e57ba15fc9ea938ba61cfc521cd7e40249d",
+      "original_control": {
+        "frame_tail_counterexample": {
+          "rejected": true,
+          "reason": "frame-tail placement changes the selected command before any earlier command differs",
+          "frame": 375,
+          "native_selected": 255,
+          "hypothetical_selected": 115,
+          "hypothetical_queue_before_consume": [
+            146,
+            115,
+            0,
+            0
+          ],
+          "priority_before": 0,
+          "unchanged_dispatches_before_counterexample": 69,
+          "native_tick_time_master": 335249048,
+          "scope": "Original driver non-consumer operations are reused only along the unchanged selected-command prefix; no claim is made about later hypothetical DSP output"
+        },
+        "battle_only_frame_tail_counterexample": {
+          "rejected": true,
+          "reason": "frame-tail placement changes the selected command before any earlier command differs",
+          "frame": 1813,
+          "native_selected": 255,
+          "hypothetical_selected": 163,
+          "hypothetical_queue_before_consume": [
+            163,
+            0,
+            0,
+            0
+          ],
+          "priority_before": 0,
+          "unchanged_dispatches_before_counterexample": 1508,
+          "native_tick_time_master": 1623825747,
+          "scope": "Original driver non-consumer operations are reused only along the unchanged selected-command prefix; no claim is made about later hypothetical DSP output"
+        }
+      },
+      "candidates": [
+        {
+          "policy": "frame-head",
+          "start_frame": 1,
+          "fallback_to_frame_head": 0,
+          "independent_schedule_proved": false,
+          "scope": "Given original driver groups and IRQ-frame labels; stop at the first queue/pause mismatch; no later PCM or arbitrary-input claim",
+          "rejected": true,
+          "reason": "selected command changed",
+          "frame": 9,
+          "unchanged_dispatch_checks": 0,
+          "native_selected": 4,
+          "candidate_selected": 0,
+          "queue_before_consume": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "priority_before": 0
+        },
+        {
+          "policy": "frame-head",
+          "start_frame": 1800,
+          "fallback_to_frame_head": 0,
+          "independent_schedule_proved": false,
+          "scope": "Given original driver groups and IRQ-frame labels; stop at the first queue/pause mismatch; no later PCM or arbitrary-input claim",
+          "rejected": true,
+          "reason": "selected command changed",
+          "frame": 2071,
+          "unchanged_dispatch_checks": 1766,
+          "native_selected": 124,
+          "candidate_selected": 255,
+          "queue_before_consume": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "priority_before": 0
+        },
+        {
+          "policy": "before-arena",
+          "start_frame": 1,
+          "fallback_to_frame_head": 1228,
+          "independent_schedule_proved": false,
+          "scope": "Given original driver groups and IRQ-frame labels; stop at the first queue/pause mismatch; no later PCM or arbitrary-input claim",
+          "rejected": true,
+          "reason": "selected command changed",
+          "frame": 9,
+          "unchanged_dispatch_checks": 0,
+          "native_selected": 4,
+          "candidate_selected": 0,
+          "queue_before_consume": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "priority_before": 0
+        },
+        {
+          "policy": "before-arena",
+          "start_frame": 1800,
+          "fallback_to_frame_head": 0,
+          "independent_schedule_proved": false,
+          "scope": "Given original driver groups and IRQ-frame labels; stop at the first queue/pause mismatch; no later PCM or arbitrary-input claim",
+          "rejected": true,
+          "reason": "selected command changed",
+          "frame": 2396,
+          "unchanged_dispatch_checks": 2091,
+          "native_selected": 125,
+          "candidate_selected": 255,
+          "queue_before_consume": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "priority_before": 0
+        },
+        {
+          "policy": "after-manager",
+          "start_frame": 1,
+          "fallback_to_frame_head": 666,
+          "independent_schedule_proved": false,
+          "scope": "Given original driver groups and IRQ-frame labels; stop at the first queue/pause mismatch; no later PCM or arbitrary-input claim",
+          "rejected": true,
+          "reason": "selected command changed",
+          "frame": 9,
+          "unchanged_dispatch_checks": 0,
+          "native_selected": 4,
+          "candidate_selected": 0,
+          "queue_before_consume": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "priority_before": 0
+        },
+        {
+          "policy": "after-manager",
+          "start_frame": 1800,
+          "fallback_to_frame_head": 0,
+          "independent_schedule_proved": false,
+          "scope": "Given original driver groups and IRQ-frame labels; stop at the first queue/pause mismatch; no later PCM or arbitrary-input claim",
+          "rejected": true,
+          "reason": "selected command changed",
+          "frame": 2071,
+          "unchanged_dispatch_checks": 1766,
+          "native_selected": 124,
+          "candidate_selected": 255,
+          "queue_before_consume": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "priority_before": 0
+        }
+      ]
+    }
+  ],
+  "frozen_sources_unchanged": {
+    "scripts/yuyuhakusho/analyze_audio_phase_budget.py": "02446e9a3dea0b6e7d1ccdac66b3aafe6c77edacafe5e60457062a8271ffaea0",
+    "docs/research/md-yuyuhakusho/audio-phase-budget/causality.json": "9b0b21976b7c395d68abebfa19a4abb45e827170b9d40f96ce6bf016bcb94e74"
+  },
+  "producer_sha256": "b5d8aff886774bffc5411142b4dca0dbbd937c704c57729c5ab232014467a622"
+}

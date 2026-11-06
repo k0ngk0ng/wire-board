@@ -1,0 +1,12 @@
+{
+  "stage": "missing API before implementation",
+  "test": {
+    "path": "games/yuyuhakusho/audio/videoclock/clock_test.go",
+    "sha256": "bbea9ac8f41a48021b0e8f74980c92fd6883dbe1b7e0a23be26bb9c835602b0b"
+  },
+  "red": {
+    "path": "games/yuyuhakusho/verification/world-video/missing-api-red.jsonl",
+    "sha256": "d1df6c97192a5488d9e58a6aae1756393f22cebf32f6f7332571457690a52694"
+  },
+  "production_exists": false
+}

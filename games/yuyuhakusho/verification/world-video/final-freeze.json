@@ -1,0 +1,214 @@
+{
+  "pass": true,
+  "scope": "Standalone fixed NTSC224H40 VDP counter/pending and explicit pin-operation effects, given ordered external operations",
+  "native_frames": 15,
+  "scalar_states": 7757,
+  "reads": 2193,
+  "handler_entry_inferred_acks": 60,
+  "native_race_tests": 9,
+  "actual_node_wasm_tests": 9,
+  "vet_pass": true,
+  "direct_ack_observed": false,
+  "native_cpu_pin_observed": false,
+  "independent_CPU_acceptance_proved": false,
+  "world_runtime_wired": false,
+  "global_world_irq_audio_proved": false,
+  "files": [
+    {
+      "path": "games/yuyuhakusho/audio/videoclock/clock.go",
+      "sha256": "89a278d4d78ddad492ef57ff6d57c91aa7ce6a0d64cab3b3d54d75cf3985e185"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/videoclock/clock_test.go",
+      "sha256": "1267cc86a905bc34b5aadd08d00cc261d24b242849d52978058adb71a952abd8"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/videoclock/testdata/natural.json.gz",
+      "sha256": "a59f17ac534a208c979dbd6fde53cb091ff67c969126080dbf82e522005cfc63"
+    },
+    {
+      "path": "scripts/yuyuhakusho/world-video-capture.py",
+      "sha256": "8645100808be0ca044f022d9ae46d38e46d2da816840962580da6132bd9de6be"
+    },
+    {
+      "path": "scripts/yuyuhakusho/world-video-check-ack.py",
+      "sha256": "45ab4efb2191b978f78c2409330a8547456e38c58c46c8281b2d8de954a468b1"
+    },
+    {
+      "path": "scripts/yuyuhakusho/world-video-check-native.py",
+      "sha256": "448e1531ecea4fce5a3323eebc3222b84115e55331ccfdd0a699e9b845addcff"
+    },
+    {
+      "path": "scripts/yuyuhakusho/world-video-fixture.py",
+      "sha256": "abbcca04868873264fce93cff4bdac52bd44c48624cefb20641274d4facad130"
+    },
+    {
+      "path": "scripts/yuyuhakusho/world-video-observer-ack.c",
+      "sha256": "f2c38478c6e91479bd0b914afb13a7bdeaece77d7d12cf870ab74b90dfcfaaf8"
+    },
+    {
+      "path": "scripts/yuyuhakusho/world-video-observer.c",
+      "sha256": "30251f1106a23c132c1e60818108dd073f712a5da33746e772f0804b9faa35a8"
+    },
+    {
+      "path": "scripts/yuyuhakusho/world-video-prototype.py",
+      "sha256": "42d930649026ba8260da2589fc98b37fcbecaf79da01ec005b249953bb6c9dfa"
+    },
+    {
+      "path": "scripts/yuyuhakusho/world-video-verify.py",
+      "sha256": "ec1f09224b4ab1c87e1c26dbda379c36351654358c4372cef133204676c120f5"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/WORLD_VIDEO.md",
+      "sha256": "c825851f950f77b1fa7417810bf5ab0fed1e47aef81190285795100b4e89fa51"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/WORLD_VIDEO_FAILURES.md",
+      "sha256": "c5b4f0a6e4d3b8555653b29aa35a9ba06f0c4a443f9281081a42ccc52af73e5c"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/WORLD_VIDEO_PIN_FAILURES.md",
+      "sha256": "d80af4543d401564f5db31f648855f829a42046bf6f8a2eacc7547de07d1e749"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/world-video/api-test-first.json",
+      "sha256": "6274f2e6a59ef260406b1e3ba7434ea997ba3b3085c75daa0dde171d642b7621"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/world-video/api-test-frozen.json",
+      "sha256": "f04107b16ee3e450a682e8a31faaf2e0842ea2974e3354f2c028f8aa4fc330a6"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/world-video/cleanup.json",
+      "sha256": "71e33b27e464970c55b80b7bf39a1027bc2440eb5a547cecc8afe69d20a30c5f"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/world-video/clock-implementation-v1.go.txt",
+      "sha256": "cfcc1a6f377682ac302978d33bcb44ae3d7be6e800e2d0379e6e0c548f5cfedb"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/world-video/clock-merge-frozen-test.go.txt",
+      "sha256": "1267cc86a905bc34b5aadd08d00cc261d24b242849d52978058adb71a952abd8"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/world-video/clock-merge-semantic-red-test.go.txt",
+      "sha256": "838ab354b629c383ed6aab9c1f994ac77f1b0353b66a3aa53bb72371954cb5e8"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/world-video/clock-test-frozen.go.txt",
+      "sha256": "77a7f4e6838d74e7369a4403d0da9e0774a57608db110d77cdb8bec8fcceeb86"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/world-video/clock-test-initial.go.txt",
+      "sha256": "bbea9ac8f41a48021b0e8f74980c92fd6883dbe1b7e0a23be26bb9c835602b0b"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/world-video/clock-test-v1.go.txt",
+      "sha256": "77a7f4e6838d74e7369a4403d0da9e0774a57608db110d77cdb8bec8fcceeb86"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/world-video/final-tests-missing-api-red.jsonl",
+      "sha256": "67cc3c9ac6831911ae22c0736f3ca370d9914c7b53935001df16e103fee53899"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/world-video/first-implementation.jsonl",
+      "sha256": "289ba4817a870520e364057e2f1b0241fb01ba10221bb891157179b32980017a"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/world-video/fixture.json",
+      "sha256": "1e18f2fcddefaa23607ff7a0b168c8f1ebfea806365b71ac5e3f3a718d6547ff"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/world-video/go-v2/native-command.json",
+      "sha256": "d972aa85f1e2e0917574a18727b22a6a2dfa1bce58dab93e5d797f44e73a9fd0"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/world-video/go-v2/native.jsonl",
+      "sha256": "6e57cee086ebdf5af2602f5b007e6ff65f813fc4fe92bfc36ba1c5917e8ce82f"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/world-video/go-v2/vet-command.json",
+      "sha256": "05d120edde9833d597a2da224ef4caed6a0a91990878f5b82fe06ec6d841c790"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/world-video/go-v2/vet.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/world-video/go-v2/wasm-command.json",
+      "sha256": "98f1477fb58c490786a1327948f0e49594fb6bfa7d6a5f9b6455675ff514a3f8"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/world-video/go-v2/wasm.jsonl",
+      "sha256": "dcb4aac3a22a6be49d22c9cb22729d6a0745f7118f5e002bf4ed3ffc9dcd18d7"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/world-video/merge-api-missing-red.jsonl",
+      "sha256": "9f4d4a085319bd12a43c3f0d5966346f45b3240bc5f2f2b3601ed61943c19824"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/world-video/merge-pin-semantic-red.jsonl",
+      "sha256": "6568b3f2dd98f9a307d48391b45d3d83e3f0e3ac3521b85bdf35b32d40228a81"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/world-video/merge-test-first.json",
+      "sha256": "e10ad5f438ebdd4c8dda587bed6f96bce6c35ff0b87fc6e927576120188c7100"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/world-video/missing-api-red.jsonl",
+      "sha256": "d1df6c97192a5488d9e58a6aae1756393f22cebf32f6f7332571457690a52694"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/world-video/missing-direct-ack-red.log",
+      "sha256": "4765267f8c9bb936898ae2b79b04df8fd2b2153fdc7c8348110849f31304b14c"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/world-video/native/capture.json",
+      "sha256": "3a3738423a47dfbb4e8c08f7796994d05aeb4b58384f201214b992bfcc6ef4b4"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/world-video/native/events.json.gz",
+      "sha256": "03371dac6766f3cccda1e537173ee4507643de6cc9e3c78bdb540bace697c6fd"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/world-video/native/executed-observer.c.txt",
+      "sha256": "30251f1106a23c132c1e60818108dd073f712a5da33746e772f0804b9faa35a8"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/world-video/native/executed-producer.py.txt",
+      "sha256": "1fb502e88adfd6dcaadb9073d0e7723888a506276da9961b06ef0929315a2866"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/world-video/native-ack/executed-observer.c.txt",
+      "sha256": "f2c38478c6e91479bd0b914afb13a7bdeaece77d7d12cf870ab74b90dfcfaaf8"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/world-video/native-ack/executed-producer.py.txt",
+      "sha256": "8645100808be0ca044f022d9ae46d38e46d2da816840962580da6132bd9de6be"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/world-video/native-ack/included-base-observer.c.txt",
+      "sha256": "30251f1106a23c132c1e60818108dd073f712a5da33746e772f0804b9faa35a8"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/world-video/native-ack-capture.log",
+      "sha256": "942bc9604ef94176e27d404d0857e06ff3dd431388dd12bd9fa40ebb8c0cf91e"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/world-video/native-capture.log",
+      "sha256": "8a6ad49fa8a2afa5d14ec2150bd3b3b1167c40ca7af4e5d1f68f661821572bc9"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/world-video/prototype-first.json",
+      "sha256": "e385116ac83ccbd61f7271e8490db4850cc123eae90338f95bb70b53ced40d30"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/world-video/prototype-first.log",
+      "sha256": "deecc3adc0fc6d040ef57045d247f32fc8ed31be0d69f90aa9a54a36ec7367be"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/world-video/test-first.json",
+      "sha256": "c6d4eb84b0757a3c0e84337fb4565ee3af682f6932d7eaaf0abcfe8d27135710"
+    }
+  ]
+}

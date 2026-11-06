@@ -1,0 +1,16 @@
+{
+  "stage": "merge-vs-replace test first before v1 correction",
+  "v1_production_unchanged": true,
+  "actual_semantic_red": true,
+  "actual_missing_effect_API_red": true,
+  "frozen_test_sha256": "1267cc86a905bc34b5aadd08d00cc261d24b242849d52978058adb71a952abd8",
+  "files": {
+    "games/yuyuhakusho/verification/world-video/clock-implementation-v1.go.txt": "cfcc1a6f377682ac302978d33bcb44ae3d7be6e800e2d0379e6e0c548f5cfedb",
+    "games/yuyuhakusho/verification/world-video/clock-test-v1.go.txt": "77a7f4e6838d74e7369a4403d0da9e0774a57608db110d77cdb8bec8fcceeb86",
+    "games/yuyuhakusho/verification/world-video/clock-merge-semantic-red-test.go.txt": "838ab354b629c383ed6aab9c1f994ac77f1b0353b66a3aa53bb72371954cb5e8",
+    "games/yuyuhakusho/verification/world-video/clock-merge-frozen-test.go.txt": "1267cc86a905bc34b5aadd08d00cc261d24b242849d52978058adb71a952abd8",
+    "games/yuyuhakusho/verification/world-video/merge-pin-semantic-red.jsonl": "6568b3f2dd98f9a307d48391b45d3d83e3f0e3ac3521b85bdf35b32d40228a81",
+    "games/yuyuhakusho/verification/world-video/merge-api-missing-red.jsonl": "9f4d4a085319bd12a43c3f0d5966346f45b3240bc5f2f2b3601ed61943c19824",
+    "docs/research/md-yuyuhakusho/WORLD_VIDEO_PIN_FAILURES.md": "d80af4543d401564f5db31f648855f829a42046bf6f8a2eacc7547de07d1e749"
+  }
+}

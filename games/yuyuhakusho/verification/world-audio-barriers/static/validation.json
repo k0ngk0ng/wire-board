@@ -1,0 +1,47 @@
+{
+  "pass": true,
+  "scope": "Static instructions only; direct Ghidra raw-68000 route, not REA-native decompilation or observed execution",
+  "command": [
+    "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/nes-basket/tools/ghidra_12.1.4_PUBLIC/support/analyzeHeadless",
+    "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/docs/research/md-yuyuhakusho/static-work/world-audio-irq-setup",
+    "world_audio_irq_setup",
+    "-import",
+    "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/downloads/yuyuhakusho-jp.bin",
+    "-loader",
+    "BinaryLoader",
+    "-loader-baseAddr",
+    "0",
+    "-processor",
+    "68000:BE:32:default",
+    "-noanalysis",
+    "-scriptPath",
+    "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/static",
+    "-postScript",
+    "MdControlProbe.java",
+    "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/games/yuyuhakusho/verification/world-audio-barriers/static/vdp-and-irq-setup.txt",
+    "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho",
+    "2ff4:2ff4:302f",
+    "3030,3054,307c:3030:30af",
+    "2514:2514:258f",
+    "219ac,219ea:219ac:21a07",
+    "-deleteProject",
+    "-log",
+    "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/games/yuyuhakusho/verification/world-audio-barriers/static/ghidra.log",
+    "-scriptlog",
+    "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/games/yuyuhakusho/verification/world-audio-barriers/static/ghidra-script.log"
+  ],
+  "output_sha256": "ff8ffa0e1bd4188b4b0324abfe88596109e039ad680b3255bc24a58791bc3e39",
+  "source_sha256": {
+    "scripts/yuyuhakusho/static/MdControlProbe.java": "44903c14bfe5a1ffc354e4fab1eb5893303081bbe55aa9f620808daf4ebe18a8",
+    "scripts/yuyuhakusho/probe_world_irq_static.py": "b84c076e49fcf89a477f62e2693dfadf27c49b6ad157b58aa631bfb4a97f03fb",
+    ".local/md-yuyuhakusho/downloads/yuyuhakusho-jp.bin": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06"
+  },
+  "settings": {
+    "user.home": ".local/md-yuyuhakusho/world-audio-irq-static/home",
+    "java.io.tmpdir": ".local/md-yuyuhakusho/world-audio-irq-static/tmp",
+    "application.settingsdir": ".local/md-yuyuhakusho/world-audio-irq-static/config",
+    "application.cachedir": ".local/md-yuyuhakusho/world-audio-irq-static/cache",
+    "application.tempdir": ".local/md-yuyuhakusho/world-audio-irq-static/tmp"
+  },
+  "output": "games/yuyuhakusho/verification/world-audio-barriers/static/vdp-and-irq-setup.txt"
+}
