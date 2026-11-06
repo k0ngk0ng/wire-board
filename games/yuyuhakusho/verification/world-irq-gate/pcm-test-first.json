@@ -1,0 +1,12 @@
+{
+  "test_first": true,
+  "production_exists": false,
+  "files": {
+    "games/yuyuhakusho/audio/pcmcommands/transfer_gate_e2e_test.go": "f0e027042069defb7b8bfbc5ed32484f30a2cc6817cc3a834dc8f613fa251803",
+    "scripts/yuyuhakusho/capture_pcm_transfer_gate.py": "c4998007a96008261e48c8b37504108f2bc0262f0073ebe4937cb37ddf4dd530",
+    "scripts/yuyuhakusho/export_pcm_transfer_gate.py": "3b3d127a0ff9420218a3be95fa539a93024cf0ec700be0ad4e6f53b1acda2cb1",
+    "games/yuyuhakusho/verification/world-irq-gate/FAILURES.md": "b399b0ddaeea5c27076f992662107afd5a0799853e928f96a49141265c8634d9",
+    "games/yuyuhakusho/verification/world-irq-gate/portable-transfer-gate.json.gz": "bfb91e1a30b6419b615fe936a9770ce08a2aab835b3b677261f8d64dfec0b6ee",
+    "games/yuyuhakusho/verification/world-irq-gate/pcm-native-transfer-gate.json.gz": "8cabcc790a717ba25859b4daf33339c51df2d77f11b4872c50ee837a8659d1f3"
+  }
+}

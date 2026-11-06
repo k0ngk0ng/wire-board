@@ -1,0 +1,9 @@
+{
+  "reason": "mixed.Runtime.RunUntil is variadic; SampleAuxiliary requires one explicit DMA slice. Add a delegating adapter to the new actual-runtime test. No assertion, native fixture or expected value changes. The production session adapter received the same explicit bridge.",
+  "frozen_path": "games/yuyuhakusho/audio/scoreclock/battle_world_runtime_e2e_test.go",
+  "frozen_archive": "games/yuyuhakusho/verification/world-irq-gate/world-runtime-test-before-adapter.go.gz",
+  "frozen_sha256": "cae5e91bdb747cd1e51e71f2add33f7ea4c827a7aa06334fd0336f98bd2a01a2",
+  "current_sha256": "ae63b5ee2d4540cb4c46adaca1fa9ee47ff64265e7aad2c224545547b47cdbbf",
+  "diff": "games/yuyuhakusho/verification/world-irq-gate/world-runtime-test-adapter.diff.gz",
+  "red": "games/yuyuhakusho/verification/world-irq-gate/world-first-native.jsonl"
+}

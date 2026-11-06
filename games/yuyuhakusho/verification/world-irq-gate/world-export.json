@@ -1,0 +1,190 @@
+{
+  "pass": true,
+  "cases": 23,
+  "cpu_steps": 4013,
+  "io": 994,
+  "costs": {
+    "0xfff000": {
+      "handler": "m68k_op_ori_16_tos",
+      "base": 20,
+      "internal": 0
+    },
+    "0xfff004": {
+      "handler": "m68k_op_cmpi_16_aw",
+      "base": 16,
+      "internal": 0
+    },
+    "0xfff00a": {
+      "handler": "m68k_op_beq_16",
+      "base": 10,
+      "internal": 0
+    },
+    "0xfff00e": {
+      "handler": "m68k_op_bgt_16",
+      "base": 10,
+      "internal": 0
+    },
+    "0xfff0aa": {
+      "handler": "m68k_op_bset_8_s_aw",
+      "base": 20,
+      "internal": 0
+    },
+    "0xfff0b0": {
+      "handler": "m68k_op_bset_8_s_al",
+      "base": 24,
+      "internal": 0
+    },
+    "0xfff0b8": {
+      "handler": "m68k_op_bne_8",
+      "base": 10,
+      "internal": 0
+    },
+    "0xfff0ba": {
+      "handler": "m68k_op_move_8_al_i",
+      "base": 20,
+      "internal": 0
+    },
+    "0xfff0c2": {
+      "handler": "m68k_op_cmpi_8_aw",
+      "base": 16,
+      "internal": 0
+    },
+    "0xfff0c8": {
+      "handler": "m68k_op_beq_16",
+      "base": 10,
+      "internal": 0
+    },
+    "0xfff0cc": {
+      "handler": "m68k_op_bclr_8_s_al",
+      "base": 24,
+      "internal": 0
+    },
+    "0xfff0d4": {
+      "handler": "m68k_op_beq_8",
+      "base": 10,
+      "internal": 0
+    },
+    "0xfff0d6": {
+      "handler": "m68k_op_movem_32_re_pd",
+      "base": 8,
+      "internal": 112
+    },
+    "0xfff0da": {
+      "handler": "m68k_op_tst_8_aw",
+      "base": 12,
+      "internal": 0
+    },
+    "0xfff0de": {
+      "handler": "m68k_op_bpl_8",
+      "base": 10,
+      "internal": 0
+    },
+    "0xfff0e0": {
+      "handler": "m68k_op_move_8_d_i",
+      "base": 8,
+      "internal": 0
+    },
+    "0xfff0e4": {
+      "handler": "m68k_op_lea_32_al",
+      "base": 12,
+      "internal": 0
+    },
+    "0xfff0ea": {
+      "handler": "m68k_op_cmp_8_ai",
+      "base": 8,
+      "internal": 0
+    },
+    "0xfff0ec": {
+      "handler": "m68k_op_bhi_8",
+      "base": 10,
+      "internal": 0
+    },
+    "0xfff0ee": {
+      "handler": "m68k_op_cmp_8_ai",
+      "base": 8,
+      "internal": 0
+    },
+    "0xfff0f0": {
+      "handler": "m68k_op_bhi_8",
+      "base": 10,
+      "internal": 0
+    },
+    "0xfff0f2": {
+      "handler": "m68k_op_move_32_al_i",
+      "base": 28,
+      "internal": 0
+    },
+    "0xfff0fc": {
+      "handler": "m68k_op_move_16_al_i",
+      "base": 20,
+      "internal": 0
+    },
+    "0xfff104": {
+      "handler": "m68k_op_move_16_d_i",
+      "base": 8,
+      "internal": 0
+    },
+    "0xfff108": {
+      "handler": "m68k_op_dbf_16",
+      "base": 12,
+      "internal": 0
+    },
+    "0xfff10c": {
+      "handler": "m68k_op_bclr_8_s_aw",
+      "base": 20,
+      "internal": 0
+    },
+    "0xfff112": {
+      "handler": "m68k_op_move_16_d_aw",
+      "base": 12,
+      "internal": 0
+    },
+    "0xfff116": {
+      "handler": "m68k_op_clr_16_d",
+      "base": 4,
+      "internal": 0
+    },
+    "0xfff118": {
+      "handler": "m68k_op_move_32_d_i",
+      "base": 12,
+      "internal": 0
+    },
+    "0xfff11e": {
+      "handler": "m68k_op_lea_32_al",
+      "base": 12,
+      "internal": 0
+    },
+    "0xfff124": {
+      "handler": "m68k_op_lea_32_al",
+      "base": 12,
+      "internal": 0
+    },
+    "0xfff12a": {
+      "handler": "m68k_op_move_16_ai_d",
+      "base": 8,
+      "internal": 0
+    },
+    "0xfff12c": {
+      "handler": "m68k_op_move_32_ai_d",
+      "base": 12,
+      "internal": 0
+    },
+    "0xfff12e": {
+      "handler": "m68k_op_move_16_ai_d",
+      "base": 8,
+      "internal": 0
+    },
+    "0xfff130": {
+      "handler": "m68k_op_jsr_32_al",
+      "base": 20,
+      "internal": 0
+    }
+  },
+  "fixture_sha256": "2f2eac2ad323145ab6da4b978392e6e5f76e1c498694fc53e06cb2a1cda51ac8",
+  "scope": "Given actual world IRQ entry and observed bus/line feedback. Not whole-world or independent background timing.",
+  "sources": {
+    ".local/md-yuyuhakusho/battle-world-entry-native/native-world-irq-entry.json.gz": "68fdc01b5d5757e06415bce61ede0f67149faf5f7cb9d00782dcf5cd624d75ff",
+    ".local/md-yuyuhakusho/tools/Genesis-Plus-GX-60bee4c724859710ce05672239e5b601ad01382e/core/m68k/m68kops.h": "d3ff2631658e589813d2915ba3dc03b9fd2097761f6eb221fc6264a4b8d1d6f0",
+    "scripts/yuyuhakusho/extract_battle_world_entry.py": "16fa0709278f7074f47bff8cc81f4c852efd263c016f8504f032db3b71920246"
+  }
+}

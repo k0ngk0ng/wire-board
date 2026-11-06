@@ -128,6 +128,7 @@ type Frame struct {
 	Status       Status
 }
 type Globals struct {
+	BankBlocked                                                                               bool `json:",omitempty"`
 	RateRequest, StartMarker, ModeFlags, LatestFlags, OrdinaryPan, MusicPan, RestorePan, Busy uint8
 	SingleDescriptor                                                                          string
 }
@@ -144,6 +145,7 @@ type Voice struct {
 	Accumulator                 uint8
 }
 type Work struct {
+	BankBlockedRead                   bool `json:",omitempty"`
 	Rate, Flags, Marker, Pan          uint8
 	Source                            string
 	PrefetchSlot, DecodeSlot          uint8

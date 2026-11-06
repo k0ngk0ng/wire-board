@@ -1,0 +1,8 @@
+{"ImportPath":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/session","Action":"build-output","Output":"# github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/session\n"}
+{"ImportPath":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/session","Action":"build-output","Output":"games/yuyuhakusho/audio/session/battle_world.go:26:101: cannot use battleWorldDevice{…} (value of struct type battleWorldDevice) as scoreclock.BattleWorldDevice value in argument to scoreclock.PrepareBattleWorldIRQ: battleWorldDevice does not implement scoreclock.BattleWorldDevice (wrong type for method RunUntil)\n"}
+{"ImportPath":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/session","Action":"build-output","Output":"\t\thave RunUntil(uint64, ...[]pcmcommands.DMAInterval) (pcmcommands.RunResult, error)\n"}
+{"ImportPath":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/session","Action":"build-output","Output":"\t\twant RunUntil(uint64, []pcmcommands.DMAInterval) (pcmcommands.RunResult, error)\n"}
+{"ImportPath":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/session","Action":"build-fail"}
+{"Time":"2026-11-07T04:58:01.309212+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/scoreclock"}
+{"Time":"2026-11-07T04:58:01.309271+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/scoreclock","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/scoreclock [build failed]\n"}
+{"Time":"2026-11-07T04:58:01.309278+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/scoreclock","Elapsed":0,"FailedBuild":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/session"}

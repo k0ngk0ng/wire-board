@@ -1,0 +1,30 @@
+{
+  "command": [
+    "/opt/homebrew/bin/go",
+    "test",
+    "-json",
+    "-count=1",
+    "-timeout=15m",
+    "-run",
+    "^Test(PCMTransferGate|PCMDeviceFork|Segmented|Original|IndependentReset|CompleteChipControl|ConstructionInput|ActualYMAddress|PhysicalOutput|RestoreRequires|OpaqueMetadata|SameSlot|UnscheduledDMA|PendingBus|MixedRuntime|BattleWorldEntry|BattleSamplePrefix|BattleReturn|SoundIRQ|WorldSoundLiveJoint)",
+    "-race",
+    "./games/yuyuhakusho/audio/pcmcommands",
+    "./games/yuyuhakusho/audio/chips",
+    "./games/yuyuhakusho/audio/scoreclock"
+  ],
+  "cwd": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho",
+  "environment": {
+    "TEST_TELEMETRY_DIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-telemetry",
+    "GOCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-cache",
+    "GOMODCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-mod",
+    "GOTMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+    "TMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+    "GOMAXPROCS": "2"
+  },
+  "exit_code": 0,
+  "elapsed_seconds": 129.66540789604187,
+  "output_sha256": "fd6de84cd8817f939200b0925e834fccc7d06c73b953547261a2f5ec32c73858",
+  "tests_passed": 368,
+  "top_level_passed": 34,
+  "failures": []
+}
