@@ -1,0 +1,16 @@
+{
+  "test_first": true,
+  "production_exists": false,
+  "files": {
+    "games/yuyuhakusho/audio/videoclock/dma_e2e_test.go": "b3f04ebbc04dcfad4fe9663502fefd295ef31d5ced225054097936d645c65a90",
+    "games/yuyuhakusho/verification/world-dma/FAILURES.md": "7d045451315c78e3caa55de8fb447eea05ab1dc81cb7ba5d425f3d7be8553b94",
+    "games/yuyuhakusho/verification/world-dma/native-dma-segments.json.gz": "1b389197002e9f641052ea3c4387f2d4a649e9e86d470b76ef8d08d4e751a942",
+    "games/yuyuhakusho/verification/world-dma/native-world-dma.json.gz": "dc5e3364f4c80343b28a2bfc200994485407d06f4740fdae5297c99001d38d8f",
+    "games/yuyuhakusho/verification/world-dma/segment-capture.json": "678200e729f1b0acac40af1297f2bec6da3eab9e24f3383e6840ee042c351e9d",
+    "games/yuyuhakusho/verification/world-dma/world-capture.json": "33ee4ca58d88dc2b172ce420afb52e6730c1ab380bfdc1956cc9f69d50bc1c14",
+    "scripts/yuyuhakusho/capture_world_dma_segments.py": "fc1c9dc9e14c157e9af8217785ad2ab903267c4b15b0a17d607a203c369a6b00",
+    "scripts/yuyuhakusho/capture_battle_world_dma.py": "d8d74752aadcda9de8409038133db50dcc7e436b4db4cdd444e845c847612404",
+    "scripts/yuyuhakusho/battle-world-dma-observer.c": "75f9f69407bae6f4eeda27ce30e8491980d43809305b9327ef2fb13cbeeb63c2"
+  },
+  "scope": "2592 two-core actual DMA update effects and89 actual World DMA transfers, including6 across frame boundaries. Given per-transfer main/VDP entry, not independent entire World execution."
+}
