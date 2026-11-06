@@ -130,6 +130,11 @@ func BeginHeldVoice(clock Clock, op score.Operation, v score.VoiceState, catalog
 	if err != nil {
 		return nil, err
 	}
+	return beginHeldVoiceOnService(s, op, v, catalog, chip, channel)
+}
+
+func beginHeldVoiceOnService(s *service, op score.Operation, v score.VoiceState, catalog *score.Catalog, chip KeyGateChip, channel uint8) (*HeldVoiceTransfer, error) {
+	var err error
 	t := &HeldVoiceTransfer{s: s, catalog: catalog, chip: chip, slot: op.VoiceSlot, owner: v.Owner, channel: channel, channelName: v.Channel, position: op.Position, sequence: op.Sequence + 1, intentOffset: op.IntentOffset, wait: v.NoteWait, remaining: v.GateRemaining, phase: heldWait}
 	if err = s.spend(16); err != nil {
 		return nil, err

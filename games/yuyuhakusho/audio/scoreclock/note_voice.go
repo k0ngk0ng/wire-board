@@ -116,6 +116,11 @@ func BeginNoteVoice(clock Clock, op score.Operation, v score.VoiceState, catalog
 	if err != nil {
 		return nil, err
 	}
+	return beginNoteVoiceOnService(s, op, v, catalog, chip, family)
+}
+
+func beginNoteVoiceOnService(s *service, op score.Operation, v score.VoiceState, catalog *score.Catalog, chip KeyGateChip, family string) (*NoteVoiceTransfer, error) {
+	var err error
 	if err = s.spend(16); err != nil {
 		return nil, err
 	}
