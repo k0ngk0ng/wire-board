@@ -296,6 +296,11 @@ func (t *tick) startEffect(s definition) error {
 func (t *tick) restoreVoice(i int, stoppingAll bool) error {
 	defer t.enter(RoutineOwnership, i, BranchTrackStop)()
 	target := musicSlot(i)
+	// The all-primary stop restores the shared third PSG lane through its
+	// secondary slot, even when inactive. Ordinary track-end uses musicSlot.
+	if stoppingAll && isPSG(i) && (t.driver.state.Voices[i].Channel == "psg3" || t.driver.state.Voices[i].Channel == "psg-noise") {
+		target = 17
+	}
 	if target < 0 {
 		return fmt.Errorf("unsupported restore domain")
 	}

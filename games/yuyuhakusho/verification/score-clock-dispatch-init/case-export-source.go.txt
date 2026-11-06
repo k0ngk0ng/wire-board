@@ -1,0 +1,30 @@
+package main
+
+import (
+ "bytes"
+ "compress/gzip"
+ "encoding/json"
+ "fmt"
+ "io"
+ "os"
+
+ "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/resourcebridge"
+ "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score"
+)
+func load(name string) []byte { raw,e:=os.ReadFile("games/yuyuhakusho/data/"+name+".json.gz");if e!=nil{panic(e)};z,e:=gzip.NewReader(bytes.NewReader(raw));if e!=nil{panic(e)};defer z.Close();raw,e=io.ReadAll(z);if e!=nil{panic(e)};return raw }
+type row struct { ID string `json:"id"`; Before score.State `json:"before"`; Code uint8 `json:"code"`; Pending bool `json:"pending"` }
+func main(){
+ if len(os.Args)!=2{panic("new output required")};if _,e:=os.Stat(os.Args[1]);!os.IsNotExist(e){panic("preserve old output")}
+ raw:=load("audio-score");l,e:=resourcebridge.DecodeWithEnvelopeWork(raw,load("audio-pcm-payloads"),load("audio-score-parser-work"),load("audio-score-instrument-work"),load("audio-score-envelope-work"));if e!=nil{panic(e)}
+ var cat struct{Scores []struct{ID uint8}};if e=json.Unmarshal(raw,&cat);e!=nil{panic(e)}
+ d,e:=score.New(l.Catalog());if e!=nil{panic(e)};if _,e=d.Advance(score.Input{SoundID:0x82});e!=nil{panic(e)};if _,e=d.Advance(score.Input{});e!=nil{panic(e)};music:=d.Snapshot()
+ rows:=[]row{}
+ for _,r:=range cat.Scores{rows=append(rows,row{ID:fmt.Sprintf("empty-%02x",r.ID),Code:r.ID});rows=append(rows,row{ID:fmt.Sprintf("music-%02x",r.ID),Before:music,Code:r.ID})}
+ full,_:=score.Restore(l.Catalog(),music)
+ for code:=uint8(0xa0);code<=0xab;code++{p,_:=score.Restore(l.Catalog(),music);if _,e=p.Advance(score.Input{SoundID:code});e!=nil{panic(e)};rows=append(rows,row{ID:fmt.Sprintf("stop-primary-%02x",code),Before:p.Snapshot(),Code:0x82});if _,e=full.Advance(score.Input{SoundID:code});e!=nil{panic(e)}}
+ state:=full.Snapshot();rows=append(rows,row{ID:"stop-all-primary",Before:state,Code:0x95})
+ for _,kind:=range []string{"tied","claimed"}{s:=state;for i:=10;i<16;i++{if s.Voices[i].Active{if kind=="tied"{s.Voices[i].Tie=true}else{s.Voices[i].Claimed=true}}};rows=append(rows,row{ID:"stop-primary-"+kind,Before:s,Code:0x82})}
+ for _,code:=range []uint8{0x82,0xab}{rows=append(rows,row{ID:fmt.Sprintf("pending-%02x",code),Before:music,Code:code,Pending:true})}
+ for _,r:=range rows{if _,e=score.Restore(l.Catalog(),r.Before);e!=nil{panic(e)}}
+ f,e:=os.OpenFile(os.Args[1],os.O_CREATE|os.O_EXCL|os.O_WRONLY,0600);if e!=nil{panic(e)};defer f.Close();z:=gzip.NewWriter(f);if e=json.NewEncoder(z).Encode(struct{Cases []row `json:"cases"`}{rows});e!=nil{panic(e)};if e=z.Close();e!=nil{panic(e)};fmt.Println("dispatch profiles",len(rows))
+}

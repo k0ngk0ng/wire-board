@@ -1,0 +1,149 @@
+"""Original whole music/primary dispatch ticks on the existing pinned cores."""
+import argparse
+import ctypes as C
+import gzip
+import json
+from pathlib import Path
+from importlib.util import spec_from_file_location, module_from_spec
+
+from extract_audio_assets import AudioSession, write_cpu
+from inspect_dac_dsp_state import symbols
+from reference import ROOT, CPUHead
+from research_audio_loops import ORIGINAL, OBSERVED, quiet_checkpoint
+
+
+def module(name, filename):
+    spec = spec_from_file_location(name, ROOT/'scripts/yuyuhakusho'/filename)
+    result = module_from_spec(spec)
+    spec.loader.exec_module(result)
+    return result
+
+
+running = module('dispatch_running', 'score-clock-running-tick-capture.py')
+note = running.note
+
+
+def execute(ref, row, observer=None, port=None):
+    run = ref.api('m68k_run', None, C.c_uint)
+    steps, fields = [], []
+    kinds = {0x38808: ('priority-clear', 0xf800), 0x38a58: ('priority-save', 0xf800),
+             0x38a6e: ('priority-restore', 0xf800), 0x38a72: ('header-selected', 0xf809)}
+    for _ in range(60000):
+        pc = ref.get_register(16) & 0xffffff
+        if pc == 0x3d8:
+            return steps, fields
+        assert 0x375ae <= pc <= 0x3a18e, ('escaped audio dispatch', row['id'], hex(pc))
+        before, refresh = ref.cpu.cycles, ref.cpu.refresh_cycles
+        event = kinds.get(pc)
+        at = before + (14 if before >= refresh else 0)
+        value = C.c_ubyte.from_address(ref.ram_pointer+(event[1] ^ 1)).value if event else None
+        if observer:
+            observer.score_clock_pc(pc)
+        if port:
+            port.score_clock_psg_pc(pc)
+        run(before+1)
+        steps.append([pc, before, refresh, ref.cpu.cycles, ref.cpu.refresh_cycles])
+        if event:
+            if event[0] != 'priority-save':
+                value = C.c_ubyte.from_address(ref.ram_pointer+(event[1] ^ 1)).value
+            fields.append(dict(kind=event[0], at=at, value=value))
+    raise AssertionError(('dispatch step cap', row['id']))
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--out', type=Path, required=True)
+    args = parser.parse_args()
+    out = args.out.resolve()
+    assert out.is_relative_to(ROOT/'.local') and not out.exists()
+    out.mkdir(parents=True)
+    candidates = ROOT/'.local/md-yuyuhakusho/dispatch-init-case-export/cases.json.gz'
+    inputs = note.load(candidates)['cases']
+    rompath = ROOT/'.local/md-yuyuhakusho/downloads/yuyuhakusho-jp.bin'
+    rom = rompath.read_bytes()
+    catalog = note.load(ROOT/'games/yuyuhakusho/data/audio-score.json.gz')
+    contexts = note.contexts(rom, catalog)
+    work = {r['id']: r for r in note.load(ROOT/'games/yuyuhakusho/data/audio-score-instrument-work.json.gz')['profiles']}
+    envpath = ROOT/'.local/md-yuyuhakusho/envelope-work-export-v2/provenance.json.gz'
+    env = {(r['key']['family'], r['key']['envelope_id'], r['key']['section'], r['key']['tick_index']): r
+           for r in note.load(envpath)['records']}
+    patterns = [p['id'] for p in catalog['pan_patterns']]
+    registry, descriptors = note.Registry(rom), {}
+    wanted = {d['id'] for d in catalog['dac_descriptors']}
+    for code in range(0x81, 0x9a):
+        try:
+            identity = registry.descriptor(code)
+        except (ValueError, IndexError):
+            continue
+        if identity in wanted:
+            descriptors.setdefault(identity, code)
+    for i, row in enumerate(inputs):
+        row['id'] = f'{i}-{row["id"]}'
+        row['origin'], row['refresh'] = [(0, 0), (1, 896), (895, 896), (1008, 1008)][i % 4]
+    source = ROOT/'scripts/yuyuhakusho/score-clock-note-voice-observer.c'
+    tmp = out/'tmp'
+    tmp.mkdir()
+    library = out/'dispatch-observer.dylib'
+    note.subprocess.run(['clang', '-dynamiclib', '-O2', '-fno-modules', str(source), '-o', str(library)],
+                        cwd=ROOT, env=dict(note.os.environ, TMPDIR=str(tmp), CLANG_MODULE_CACHE_PATH=str(tmp/'clang-cache')), check=True)
+    observer = C.CDLL(str(library))
+    observer.score_clock_attach.argtypes = [C.c_void_p]*9
+    observer.score_clock_attach.restype = C.c_int
+    observer.score_clock_pc.argtypes = [C.c_uint]
+    observer.score_clock_count.restype = C.c_size_t
+    observer.score_clock_events.restype = C.POINTER(note.music.shared.Event)
+    for name in ['score_clock_overflow', 'score_clock_detach', 'score_clock_note_enable', 'score_clock_note_disable']:
+        getattr(observer, name).restype = C.c_int
+    port, _ = note.psg.build(out)
+    controls, rows, identities = {}, [], {}
+    table = list(rom[0x3a50e:0x3a50e+255])
+    print(json.dumps({'profiles': len(inputs)}), flush=True)
+    for name, core in [('original', ORIGINAL), ('observed', OBSERVED)]:
+        with AudioSession(ROOT, out/('core-'+name), core=core) as ref:
+            checkpoint, lookup = quiet_checkpoint(ref), symbols(core)
+            identities[name] = ref.identity
+            for i, row in enumerate(inputs):
+                def setup():
+                    running.setup(ref, checkpoint, row, lookup, contexts, work, env, patterns, descriptors)
+                    if row['pending']:
+                        write_cpu(ref, 0xfff809, row['code'])
+                    else:
+                        write_cpu(ref, 0xfff80a, row['code'])
+                    return ref.save()
+                initial = setup()
+                plain_steps, plain_fields = execute(ref, row)
+                plain, ram, plain_psg = ref.save(), ref.ram_cpu(), note.psg.native_psg(ref)[1]
+                assert setup()['data'] == initial['data']
+                note.music.shared.attach(observer, ref)
+                assert observer.score_clock_note_enable() == 1
+                address = C.addressof(ref.cpu)
+                assert port.score_clock_psg_attach(address, address+CPUHead.cycles.offset, address+CPUHead.refresh_cycles.offset)
+                try:
+                    steps, fields = execute(ref, row, observer, port)
+                    events, writes = note.music.shared.events(observer), note.psg.trace(port)
+                finally:
+                    assert port.score_clock_psg_detach() == 1 and observer.score_clock_note_disable() == 1 and observer.score_clock_detach() == 1
+                saved = ref.save()
+                assert steps == plain_steps and fields == plain_fields and saved['data'] == plain['data'] and saved['refresh_cycles'] == plain['refresh_cycles'] and ram == ref.ram_cpu() and plain_psg == note.psg.native_psg(ref)[1]
+                result = dict(steps=steps, fields=fields, events=[e for e in events if e['kind'] != 7], psg=writes,
+                              end=dict(Cycle=ref.cpu.cycles, Refresh=ref.cpu.refresh_cycles), audio_ram=ref.ram_cpu()[0xf800:0xfba0].hex())
+                if name == 'original':
+                    controls[i] = result
+                else:
+                    assert controls[i] == result, ('dispatch core mismatch', row['id'])
+                    rows.append(dict(input=row, **result, native_observer_state_equal=True))
+        print(json.dumps({'core': name, 'profiles': len(inputs), 'pass': True}), flush=True)
+    paths = [Path(__file__), source, candidates, candidates.with_name('main.go'),
+             ROOT/'scripts/yuyuhakusho/score-clock-running-tick-capture.py',
+             ROOT/'scripts/yuyuhakusho/score-clock-note-voice-capture.py',
+             ROOT/'docs/research/md-yuyuhakusho/static/audio-control.txt']
+    payload = dict(version=1, scope='Whole music/primary dispatch from actual gate to return, no active fade/pause or extra IRQ.',
+                   identities=identities, priorities=table, cases=rows,
+                   sources={str(p.relative_to(ROOT)): note.psg.sha(p.read_bytes()) for p in paths})
+    target = out/'native-dispatch-init-full.json.gz'
+    target.write_bytes(gzip.compress((json.dumps(payload, sort_keys=True, separators=(',', ':'))+'\n').encode(), mtime=0))
+    print(json.dumps({'pass': True, 'profiles': len(rows), 'executions': len(rows)*4, 'sha256': note.psg.sha(target.read_bytes())}), flush=True)
+
+
+if __name__ == '__main__':
+    main()

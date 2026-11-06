@@ -1,0 +1,29 @@
+{
+  "parent_commit": "a8e19224779bc59b80e49a6c71296f6db79a81f3",
+  "before_sources": {
+    "games/yuyuhakusho/audio/rootcontrol/orchestrator.go": {
+      "archive": "games/yuyuhakusho/verification/score-clock-dispatch-init/orchestrator.before-dispatch-init.txt",
+      "baseline_sha256": "d3f5da558b0c69e3261601d3dfcf379a152ed3ebd03c746f05dfe623ca660620"
+    },
+    "games/yuyuhakusho/audio/rootcontrol/orchestrator_score.go": {
+      "archive": "games/yuyuhakusho/verification/score-clock-dispatch-init/orchestrator_score.before-dispatch-init.txt",
+      "baseline_sha256": "a91ac75cc02c680bc8510b98cb6834577562926623a48f604cfbf082287bb8dc"
+    },
+    "games/yuyuhakusho/audio/scoreclock/request_tick.go": {
+      "archive": "games/yuyuhakusho/verification/score-clock-dispatch-init/request_tick.before-dispatch-init.txt",
+      "baseline_sha256": "a8b6f33fd3feed23cefa5d3ee9a24fe1d1dec15c5f4a2876c7e0b53e8e23b099"
+    },
+    "games/yuyuhakusho/audio/scoreclock/running_tick.go": {
+      "archive": "games/yuyuhakusho/verification/score-clock-dispatch-init/running_tick.before-dispatch-init.txt",
+      "baseline_sha256": "e9e3e6e51e5ab4ea18a9d3d884db6b3d2684bf1ebef50ac152d15930d70fa35c"
+    },
+    "games/yuyuhakusho/audio/score/driver.go": {
+      "archive": "games/yuyuhakusho/verification/score-clock-dispatch-init/driver.before-stop-target-fix.txt",
+      "baseline_sha256": "1bb71397ea52b001ab790da68ef2ad68406876b1c849c642fd5f50f0b09a14bf"
+    }
+  },
+  "persistent_score_and_root_state_sources_unchanged": true,
+  "all_previous_clock_root_test_names_retained": true,
+  "test_oracle_corrections_after_implementation": false,
+  "canonical_correction": "all-primary PSG3/noise restoration target17, distinct from ordinary track-end"
+}

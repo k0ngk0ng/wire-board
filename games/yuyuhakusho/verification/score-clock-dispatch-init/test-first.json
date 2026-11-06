@@ -1,0 +1,17 @@
+{
+  "test_first": true,
+  "production_exists": false,
+  "production_files": [
+    "games/yuyuhakusho/audio/scoreclock/dispatch_init.go",
+    "games/yuyuhakusho/audio/score/header_plan.go"
+  ],
+  "files": {
+    "games/yuyuhakusho/audio/scoreclock/dispatch_init_e2e_test.go": "e82a66c89261207ae962e7e1610750a63c618d3787580200c18fd8cb494e13b9",
+    "docs/research/md-yuyuhakusho/SCORE_CLOCK_DISPATCH_INIT_FAILURES.md": "c96feb032911458cb43fb56ab989d2d7d6ca8c6cf56046efb982d55eed60eb05",
+    "scripts/yuyuhakusho/score-clock-dispatch-init-capture.py": "b10a19f4de5e173269307b0f8e3fd140755de9e151f18406701aa324c6e96ae0",
+    "games/yuyuhakusho/verification/score-clock-dispatch-init/native-dispatch-init-full.json.gz": "33f9653b81054ea37461070935216dd80befb4aa4d28e3b55f2ae74b2e70449f",
+    "games/yuyuhakusho/verification/score-clock-dispatch-init/case-export-source.go.txt": "c3f39cbe35f3ee1095ca6bdfe5799de9243a62174b27a8ad4dd8105d05f9641d"
+  },
+  "original_profiles": 63,
+  "every_profile_reached_selected_handler": true
+}

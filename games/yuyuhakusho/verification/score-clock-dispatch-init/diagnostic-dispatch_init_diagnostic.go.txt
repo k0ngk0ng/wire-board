@@ -1,0 +1,250 @@
+package scoreclock_test
+
+import (
+	"encoding/hex"
+	"encoding/json"
+	"errors"
+	"fmt"
+	"reflect"
+	"testing"
+
+	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/rootcontrol"
+	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score"
+	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/scoreclock"
+	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine"
+)
+
+type dispatchInitNative struct {
+	Input struct {
+		ID              string
+		Before          score.State
+		Code            uint8
+		Pending         bool
+		Origin, Refresh uint64
+	}
+	Fields []struct {
+		Kind  string
+		At    uint64
+		Value uint8
+	}
+	Events []instrumentNativeEvent
+	PSG    []struct {
+		At    uint64
+		Value uint8
+	}
+	End      scoreclock.Clock
+	AudioRAM string `json:"audio_ram"`
+	Equal    bool   `json:"native_observer_state_equal"`
+}
+
+func dispatchInitNatives(t *testing.T) ([]dispatchInitNative, engine.SoundPriorityTable) {
+	t.Helper()
+	var f struct {
+		Version    int
+		Priorities engine.SoundPriorityTable
+		Cases      []dispatchInitNative
+	}
+	if err := json.Unmarshal(parserClockUnpack(t, "../../verification/score-clock-dispatch-init/native-dispatch-init-full.json.gz"), &f); err != nil {
+		t.Fatal(err)
+	}
+	if f.Version != 1 || len(f.Cases) != 63 {
+		t.Fatal("complete dispatch initialization source scope missing")
+	}
+	return f.Cases, f.Priorities
+}
+
+func TestDispatchInitCatalogHeadersAreDetachedAndComplete(t *testing.T) {
+	l := observedEnvelopeLibrary(t)
+	var raw struct {
+		Scores []struct {
+			ID     uint8
+			Kind   string
+			Voices []struct{ Channel string }
+		}
+	}
+	if err := json.Unmarshal(parserClockUnpack(t, "../../data/audio-score.json.gz"), &raw); err != nil {
+		t.Fatal(err)
+	}
+	if len(raw.Scores) != 23 {
+		t.Fatal("catalog dispatch scope missing")
+	}
+	for _, definition := range raw.Scores {
+		plan, ok := l.Catalog().HeaderPlan(definition.ID)
+		if !ok || plan.ID != definition.ID || plan.Music != (definition.Kind == "music") || len(plan.Voices) != len(definition.Voices) {
+			t.Fatal("header work does not use actual catalog", definition.ID)
+		}
+		for i, v := range definition.Voices {
+			if plan.Voices[i].Channel != v.Channel || int(plan.Voices[i].Slot) != dispatchInitSlot(v.Channel, plan.Music) {
+				t.Fatal("header slot/order changed", definition.ID, i)
+			}
+		}
+		plan.Voices[0].Slot = 99
+		again, _ := l.Catalog().HeaderPlan(definition.ID)
+		if again.Voices[0].Slot == 99 {
+			t.Fatal("header plan aliases immutable catalog")
+		}
+	}
+}
+
+func dispatchInitSlot(channel string, music bool) int {
+	if music {
+		return map[string]int{"dac": 0, "fm1": 1, "fm2": 2, "fm3": 3, "fm4": 4, "fm5": 5, "fm6": 6, "psg1": 7, "psg2": 8, "psg3": 9, "psg-noise": 9}[channel]
+	}
+	return map[string]int{"fm3": 10, "fm4": 11, "fm5": 12, "psg1": 13, "psg2": 14, "psg3": 15, "psg-noise": 15}[channel]
+}
+
+func TestDispatchInitWholeOriginalTicksAndUniqueOwners(t *testing.T) {
+	l := observedEnvelopeLibrary(t)
+	rows, priorities := dispatchInitNatives(t)
+	for _, row := range rows {
+		t.Run(row.Input.ID, func(t *testing.T) {
+			if !row.Equal {
+				t.Fatal("dispatch observer changed native state")
+			}
+			d, err := score.Restore(l.Catalog(), row.Input.Before)
+			if err != nil {
+				t.Fatal(err)
+			}
+			root := rootcontrol.InitialState()
+			root.Priority = 63
+			queue := [4]uint8{row.Input.Code}
+			if row.Input.Pending {
+				root.Selected, queue = row.Input.Code, [4]uint8{}
+			}
+			legacyRoot, legacyQueue, pause := root, queue, uint8(0)
+			e := newNoteVoiceIO(t, l, 0, 0)
+			result, err := scoreclock.AdvanceDriverTick(scoreclock.Clock{Cycle: row.Input.Origin, Refresh: row.Input.Refresh}, &root, rootcontrol.RuleOwners{Score: d, Queue: &queue, AudioPause: &pause}, rootcontrol.RuleInput{Priorities: priorities}, l, e, e, scoreclock.Limits{})
+			if err != nil {
+				t.Fatal("whole dispatch clock differs", result.Clock, row.End, err)
+			}
+			wantTrace := noteAccesses(t, noteNative{Events: row.Events, PSG: row.PSG})
+			if !reflect.DeepEqual(e.trace, wantTrace) {
+				for i := 0; i < len(e.trace) && i < len(wantTrace); i++ {
+					if e.trace[i] != wantTrace[i] {
+						t.Fatalf("dispatch access%d got%+v want%+v", i, e.trace[i], wantTrace[i])
+					}
+				}
+				t.Fatal("dispatch access count differs", len(e.trace), len(wantTrace))
+			}
+			if len(result.Fields) != len(row.Fields) {
+				t.Fatal("Root header field count differs", len(result.Fields), len(row.Fields))
+			}
+			for i, field := range result.Fields {
+				want := row.Fields[i]
+				if field.Kind != want.Kind || field.At != want.At || field.Value != want.Value {
+					t.Fatal("Root header field time/order differs", i, field, want)
+				}
+			}
+			legacy, _ := score.Restore(l.Catalog(), row.Input.Before)
+			var reads []instrumentNativeEvent
+			for _, event := range row.Events {
+				if event.Kind == 17 || event.Kind == 19 {
+					reads = append(reads, event)
+				}
+			}
+			next := 0
+			feedback := func(read score.FeedbackRead) (score.DACFeedback, error) {
+				if next >= len(reads) || reads[next].Kind != 17 {
+					return score.DACFeedback{}, errors.New("source dispatch feedback marker missing")
+				}
+				marker := uint8(reads[next].Value)
+				next++
+				if read.Kind == score.ReadPanRedirect {
+					return score.DACFeedback{PanRedirect: marker != 0}, nil
+				}
+				value := score.DACFeedback{Blocked: marker&128 != 0}
+				if !value.Blocked {
+					if next >= len(reads) || reads[next].Kind != 19 {
+						return score.DACFeedback{}, errors.New("source dispatch feedback flags missing")
+					}
+					value.Priority = uint8(reads[next].Value) & 192
+					next++
+				}
+				return value, nil
+			}
+			lp := uint8(0)
+			want, failure := rootcontrol.AdvanceRules(&legacyRoot, rootcontrol.RuleOwners{Score: legacy, Queue: &legacyQueue, AudioPause: &lp}, rootcontrol.RuleInput{Priorities: priorities}, rootcontrol.RuleHooks{Operation: func(rootcontrol.RuleOperation) error { return nil }, AcceptDispatch: func(uint8) error { return nil }, Score: score.ObservedHooks{Parser: l.Parser(), Operation: func(score.Operation) error { return nil }, ReadDAC: feedback}})
+			if failure != nil || next != len(reads) || !reflect.DeepEqual(result.Output, want) || root != legacyRoot || queue != legacyQueue || d.Snapshot() != legacy.Snapshot() {
+				t.Fatal("dispatch timing changed canonical rules", failure, next, len(reads))
+			}
+			ram, failure := hex.DecodeString(row.AudioRAM)
+			state := d.Snapshot()
+			if failure != nil || len(ram) != 928 || root.Priority != ram[0] || root.Selected != ram[9] || queue != ([4]uint8{ram[10], ram[11], ram[12], ram[13]}) || state.TempoRemaining != ram[1] || state.TempoPeriod != ram[2] {
+				t.Fatal("native header final fields differ", failure)
+			}
+			for slot, v := range state.Voices {
+				r := ram[64+48*slot : 64+48*(slot+1)]
+				flags := uint8(0)
+				for bit, enabled := range map[uint8]bool{128: v.Active, 2: v.NoteOff, 4: v.Claimed, 16: v.Tie} {
+					if enabled {
+						flags |= bit
+					}
+				}
+				if r[0]&150 != flags || v.Owned && (r[8] != uint8(v.Transpose) || r[9] != v.BaseLevel || r[14] != v.NoteWait) {
+					t.Fatal("native voice final projection differs", slot, flags, r[0], v.NoteWait, r[14])
+				}
+			}
+		})
+	}
+}
+
+func TestDispatchInitRootHeaderEffectsAreUnique(t *testing.T) {
+	l := observedEnvelopeLibrary(t)
+	for _, mode := range []string{"missing", "twice", "expired", "error"} {
+		d, _ := score.New(l.Catalog())
+		before := d.Snapshot()
+		root := rootcontrol.InitialState()
+		root.Selected = 0x82
+		queue, pause := [4]uint8{}, uint8(0)
+		var saved func() error
+		_, err := rootcontrol.AdvanceRules(&root, rootcontrol.RuleOwners{Score: d, Queue: &queue, AudioPause: &pause}, rootcontrol.RuleInput{}, rootcontrol.RuleHooks{Operation: func(rootcontrol.RuleOperation) error { return nil }, Score: score.ObservedHooks{Parser: l.Parser(), Operation: func(score.Operation) error { return nil }}, HeaderEffect: func(op score.Operation, apply func() error) error {
+			if op.Kind != score.OpPrioritySave {
+				return apply()
+			}
+			switch mode {
+			case "missing":
+				return nil
+			case "error":
+				return errors.New("header effect failed")
+			case "twice":
+				if err := apply(); err != nil {
+					return err
+				}
+				_ = apply()
+				return nil
+			default:
+				saved = apply
+				return apply()
+			}
+		}})
+		if mode == "expired" {
+			if err != nil || saved == nil || saved() == nil {
+				t.Fatal("expired header effect usable", err)
+			}
+		} else if err == nil || d.Snapshot() != before {
+			t.Fatal("invalid header lease committed score", mode, err)
+		}
+	}
+}
+
+func TestDispatchInitWholeBudgetAndDetachedFailure(t *testing.T) {
+	l := observedEnvelopeLibrary(t)
+	rows, priorities := dispatchInitNatives(t)
+	for _, mode := range []string{"budget", "io"} {
+		row := rows[0]
+		d, _ := score.Restore(l.Catalog(), row.Input.Before)
+		root := rootcontrol.InitialState()
+		root.Priority = 63
+		queue, pause := [4]uint8{row.Input.Code}, uint8(0)
+		e := newNoteVoiceIO(t, l, 0, 0)
+		e.failWrite = mode == "io"
+		limits := scoreclock.Limits{MaxOperations: 300}
+		if mode == "io" {
+			limits = scoreclock.Limits{}
+		}
+		_, err := scoreclock.AdvanceDriverTick(scoreclock.Clock{}, &root, rootcontrol.RuleOwners{Score: d, Queue: &queue, AudioPause: &pause}, rootcontrol.RuleInput{Priorities: priorities}, l, e, e, limits)
+		if err == nil || mode == "budget" && !errors.Is(err, scoreclock.ErrBudget) || d.Snapshot() != row.Input.Before || len(e.trace) == 0 {
+			t.Fatal(fmt.Sprintf("%s failure committed score/reset shared budget", mode), err)
+		}
+	}
+}

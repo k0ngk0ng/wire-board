@@ -141,6 +141,10 @@ func (r *runningTick) rootOperation(op rootcontrol.RuleOperation) error {
 			}
 			return r.s.spend(16)
 		case rootcontrol.RuleVoices:
+			if r.request != nil && r.request.init != nil && r.request.init.done && r.request.init.plan.Music {
+				r.endsTick = true
+				return nil
+			}
 			return r.s.spend(8)
 		case rootcontrol.RuleReturn:
 			if r.voice != nil || !r.endsTick && r.scan != 18 {
@@ -184,6 +188,11 @@ func (r *runningTick) rootOperation(op rootcontrol.RuleOperation) error {
 			return ErrRunningProfile
 		}
 		return nil
+	case rootcontrol.RuleBulkClear:
+		if r.request == nil || r.request.init == nil || !op.MusicOnly || op.HeaderLongs != 16 || op.VoiceLongs != 120 {
+			return ErrRunningSequence
+		}
+		return nil
 	default:
 		return ErrRunningProfile
 	}
@@ -224,6 +233,9 @@ func (r *runningTick) scoreOperation(op score.Operation, state score.State) erro
 	}
 	if op.Routine == score.RoutineTempo {
 		return r.tempoOperation(op, state)
+	}
+	if r.phase == rootcontrol.RuleDispatch && r.request != nil && r.request.init != nil {
+		return r.request.init.consume(op, state)
 	}
 	if heldOperation(op, score.OpParameter, score.RoutineDispatch) && op.Branch == score.BranchNoDispatch && r.phase == rootcontrol.RuleDispatch {
 		return nil

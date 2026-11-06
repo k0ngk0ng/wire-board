@@ -33,7 +33,7 @@ func (r *ruleTick) scoreHooks() score.ObservedHooks {
 			if r.prioritySaved {
 				return fmt.Errorf("%w: nested music priority save", ErrRuleUnsupported)
 			}
-			r.savedPriority, r.prioritySaved = r.root.Priority, true
+			return r.headerEffect(op, func() error { r.savedPriority, r.prioritySaved = r.root.Priority, true; return nil })
 		case score.OpPriorityClear:
 			if err := r.applyPriorityClear(op); err != nil {
 				return err
@@ -45,17 +45,17 @@ func (r *ruleTick) scoreHooks() score.ObservedHooks {
 			if err := r.emit(RuleOperation{Kind: RuleBulkClear, HeaderLongs: 16, VoiceLongs: 120, MusicOnly: true}); err != nil {
 				return err
 			}
-			r.clearHeader()
+			return r.headerEffect(op, func() error { r.clearHeader(); return nil })
 		case score.OpPriorityRestore:
 			if !r.prioritySaved {
 				return fmt.Errorf("%w: music priority restore without save", ErrRuleUnsupported)
 			}
-			r.root.Priority, r.prioritySaved = r.savedPriority, false
+			return r.headerEffect(op, func() error { r.root.Priority, r.prioritySaved = r.savedPriority, false; return nil })
 		case score.OpSelectedReset:
 			if op.Routine != score.RoutineMusicReset || op.SoundID != 255 || r.prioritySaved {
 				return fmt.Errorf("%w: unknown score selected reset", ErrRuleUnsupported)
 			}
-			r.root.Selected = 255
+			return r.headerEffect(op, func() error { r.root.Selected = 255; return nil })
 		case score.OpQueueReplace:
 			if op.WriteCount != 1 || op.Writes[0].Kind != "queue" || op.Writes[0].Action != "replace-first" {
 				return fmt.Errorf("%w: unknown score queue effect", ErrRuleUnsupported)
