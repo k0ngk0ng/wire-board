@@ -1,0 +1,22 @@
+{
+  "existing_files": {
+    "held_voice.go": {
+      "before_sha256": "ef29c323a9a656b4a31d3c91e508ea365fc9b527e7fb015645a6e807bc3a8c79",
+      "current_sha256": "21609515c3bd01b18fa0e640e13e6e77e111fb38562bee44ee52a6fdbe48cd18"
+    },
+    "instrument.go": {
+      "before_sha256": "6bf1097fbd0c1ae9a8c24519ed4b347baacd23b4447d0271c6eb4fdb01d74098",
+      "current_sha256": "ca8c41fdcfcc04f5ae35c45ce9e08a63dcd3ac4d4b2ad2886a5eec93a4f3d232"
+    },
+    "music.go": {
+      "before_sha256": "d402a33062c2f4de38a14e0d1926a0fa8cc609bd141605887a3814043a9749d2",
+      "current_sha256": "60f70071f957bbd827227ba4d8c14dca8598d243c92c2b5dac6081a2e0469010"
+    }
+  },
+  "score_driver_and_catalog_data_changed": false,
+  "new_note_test_original_preserved": true,
+  "original_native_oracle_preserved": true,
+  "setup_correction": "test-setup-correction.json",
+  "expected_regression_top": 82,
+  "expected_regression_records": 7262
+}

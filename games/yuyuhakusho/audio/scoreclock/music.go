@@ -49,6 +49,11 @@ func beginMusic(clock Clock, request MusicRequest, bus MusicBus, limits Limits, 
 	if err != nil {
 		return nil, err
 	}
+	return beginMusicOnService(s, request, bus, commit)
+}
+
+func beginMusicOnService(s *service, request MusicRequest, bus MusicBus, commit bool) (*MusicPublication, error) {
+	var err error
 	descriptor, ok := bus.MusicDescriptor(request.DescriptorID)
 	if !ok || descriptor.ID != request.DescriptorID || descriptor.PayloadID == "" || descriptor.Protocol != pcmcommands.MusicProtocol || descriptor.NativeRate == 0 || descriptor.NativeRate >= 128 || descriptor.RoutingOrPan != 0 {
 		return nil, ErrMusicSequence

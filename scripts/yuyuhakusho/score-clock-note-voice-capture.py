@@ -1,0 +1,319 @@
+"""Complete original new-note calls selected from actual typed driver paths."""
+import argparse
+import copy
+import ctypes as C
+import gzip
+import importlib.util
+import json
+import os
+from pathlib import Path
+import subprocess
+
+from extract_audio_assets import AudioSession, write_cpu
+from export_audio_score import header, Registry
+from inspect_dac_dsp_state import symbols
+from reference import ROOT, CPUHead
+from research_audio_loops import ORIGINAL, OBSERVED, quiet_checkpoint
+from score_flow_extract import Parser
+
+
+def module(name, filename):
+    spec = importlib.util.spec_from_file_location(name, ROOT/'scripts/yuyuhakusho'/filename)
+    value = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(value)
+    return value
+
+
+music = module('note_music', 'score-clock-music-capture.py')
+psg = module('note_psg', 'score-clock-psg-capture.py')
+command = module('note_command', 'pcm-command-capture.py')
+VOICE, MOD = 0xfff840, 0xfffc00
+CHANNELS = dict(dac=6, fm1=0, fm2=1, fm3=2, fm4=4, fm5=5, psg1=128, psg2=160, psg3=192, **{'psg-noise': 224})
+MODES = ['disabled', 'advance-on-note', 'restart-on-note-once', 'restart-on-note-loop', 'restart-every-driver-tick']
+
+
+def load(path):
+    raw = path.read_bytes()
+    return json.loads(gzip.decompress(raw) if path.suffix == '.gz' else raw)
+
+
+def contexts(rom, catalog):
+    result = {}
+    for definition in catalog['scores']:
+        origin = header(rom, definition['id'])
+        for voice, source in zip(definition['voices'], origin['voices']):
+            parser = Parser(rom, source['sequence'], source['duration_multiplier'], voice['channel'])
+            prefix, cycle = len(voice['timeline']['prefix']), len(voice['timeline']['cycle'])
+            for ordinal in range(prefix+cycle*3):
+                if ordinal < prefix:
+                    key = (False, ordinal)
+                else:
+                    lap, at = divmod(ordinal-prefix, cycle)
+                    key = (False, prefix) if lap == 0 and at == 0 else (True, cycle) if at == 0 else (True, at)
+                context = dict(position=parser.position, multiplier=parser.multiplier, duration=parser.duration, words=list(parser.words), stack=parser.stack, bank=origin['bank'])
+                actual = parser.next()
+                context['next_kind'] = actual['event_kind']
+                result[(definition['id'], voice['id'], *key)] = context
+    return result
+
+
+def inputs(candidates, catalog):
+    rows = []
+    definitions = {r['id']: r for r in catalog['scores']}
+    for source in candidates['cases']:
+        row = copy.deepcopy(source)
+        row.update(marker=0, flags=0, variant='actual-driver')
+        rows.append(row)
+    # Guard projections are additional bounded source profiles, not natural runs.
+    for family in ['fm', 'psg']:
+        source = next(r for r in rows if r['before']['Voices'][r['slot']]['Channel'].startswith(family))
+        row = copy.deepcopy(source)
+        row['before']['Voices'][row['slot']]['Claimed'] = True
+        row['variant'] = 'claimed'
+        rows.append(row)
+    found = {}
+    for source in rows:
+        if source['slot'] != 0:
+            continue
+        v = source['before']['Voices'][0]
+        voice = definitions[v['Owner']['score_id']]['voices'][v['Owner']['voice_id']]
+        cycle, index = v['Cycle'], v['EventIndex']
+        descriptor = v['DACDescriptor']
+        for _ in range(1000):
+            events = voice['timeline']['cycle' if cycle else 'prefix']
+            if index == len(events):
+                cycle, index = True, 0
+                continue
+            event = events[index]
+            index += 1
+            if event['kind'] == 'note':
+                form = event['pitch']['kind']
+                descriptor = '' if form == 'rest' else event['pitch']['descriptor_id'] if form == 'dac' else descriptor
+                break
+        if descriptor:
+            found.setdefault(descriptor, source)
+    assert len(found) == 6
+    for source in found.values():
+        for marker, flags in [(128, 0), (0, 192)]:
+            row = copy.deepcopy(source)
+            row.update(marker=marker, flags=flags, variant='DAC-feedback')
+            rows.append(row)
+    for i, row in enumerate(rows):
+        row['case_id'] = row['id']
+        row['id'] = f'{i}-new-note-{row["variant"]}'
+        row['origin'], row['refresh'] = [(0, 0), (1, 896), (895, 896), (1008, 1008)][i % 4]
+        row.pop('shape')
+    return rows
+
+
+def envelope_cursor(records, family, identity, cursor):
+    if not identity:
+        return 0
+    section = 'cycle' if cursor['cycle'] else 'prefix'
+    key = (family, identity, section, cursor['index'])
+    if key in records:
+        return records[key]['source_cursor']
+    last = records.get((family, identity, section, cursor['index']-1))
+    assert last and family == 'pitch' and last['tick']['key_off'], key
+    return last['source_cursor']+1
+
+
+def setup(ref, checkpoint, row, lookup, source, work, envelopes, patterns):
+    ref.restore(checkpoint, restore_refresh_cycles=True)
+    ref.api('psg_reset', None)()
+    image = C.cast(ref.lib.audio_update, C.c_void_p).value-lookup['_audio_update'][0]
+    C.c_int.from_address(image+lookup['_fm_cycles_busy'][0]).value = 0
+    C.c_void_p.from_address(image+lookup['_fm_ptr'][0]).value = image+lookup['_fm_buffer'][0]
+    command.initial(ref)
+    ref.cpu.cycles = 0
+    ref.api('gen_zbusreq_w', None, C.c_uint, C.c_uint)(1, 0)
+    ref.cpu.cycles, ref.cpu.refresh_cycles = row['origin'], row['refresh']
+    v = row['before']['Voices'][row['slot']]
+    for offset in range(48):
+        write_cpu(ref, VOICE+offset, 0)
+    flags = 128 | (2 if v['NoteOff'] else 0) | (4 if v['Claimed'] else 0) | (16 if v['Tie'] else 0)
+    p, panstate = v['PanDefinition'], v['PanState']
+    mode = p.get('mode', '') or 'disabled'
+    fields = {0: flags, 1: CHANNELS[v['Channel']], 2: source['multiplier'], 3: v['PitchScale'] & 255,
+              8: v['Transpose'] & 255, 9: v['BaseLevel'], 0xa: v['PitchControl']['envelope_id'] | (128 if v['PitchControl']['modulation_enabled'] else 0),
+              0xc: envelope_cursor(envelopes, 'volume', v['VolumeEnvelope'], v['VolumeCursor']), 0xd: source['stack'], 0xe: 1, 0xf: source['duration'],
+              0x12: v['GateRemaining'], 0x13: v['GateTicks'], 0x18: v['ModDelay'], 0x19: v['ModRate'], 0x1a: v['ModDelta'] & 255,
+              0x1b: v['ModSteps'], 0x1e: v['Detune'] & 255, 0x1f: MODES.index(mode), 0x20: patterns.index(p['pattern'])+1 if mode != 'disabled' else 0,
+              0x21: panstate['step'], 0x22: p.get('step_limit', 0), 0x23: p.get('period', 0), 0x24: panstate['elapsed'], 0x25: v['LoadedAlgorithm'],
+              0x26: envelope_cursor(envelopes, 'pitch', v['PitchControl']['envelope_id'], v['PitchCursor']),
+              0x27: (128 if v['Pan']['left'] else 0) | (64 if v['Pan']['right'] else 0) | v['Pan']['ams'] << 4 | v['Pan']['fms']}
+    fields[0xb] = v['VolumeEnvelope'] if CHANNELS[v['Channel']] >= 128 else work[v['Tone']]['records_skipped'] if v['Tone'] else 0
+    if CHANNELS[v['Channel']] >= 128:
+        fields[0x25] = v['NoiseControl']
+    for offset, value in fields.items():
+        write_cpu(ref, VOICE+offset, value)
+    write_cpu(ref, VOICE+4, source['position'], 4)
+    for offset, value in [(0x10, v['BasePitch']), (0x1c, v['ModOffset'] & 65535)]:
+        write_cpu(ref, VOICE+offset, value, 2)
+    if v['Channel'] == 'dac':
+        write_cpu(ref, VOICE+0x10, row.get('previous_dac_note', 128))
+    write_cpu(ref, VOICE+0x14, MOD, 4)
+    for i, field in enumerate(['delay', 'rate', 'delta', 'steps']):
+        write_cpu(ref, MOD+i, v['Modulation'][field] & 255)
+    for offset, value in zip([0x28, 0x2c], source['words']):
+        write_cpu(ref, VOICE+offset, value, 4)
+    for address in [0xfff820, 0xfff824]:
+        write_cpu(ref, address, source['bank'], 4)
+    write_cpu(ref, 0xfff80e, 0 if row['slot'] < 10 else 1)
+    write_cpu(ref, 0xfff80f, 0)
+    for address in [0xfff801, 0xfff802, 0xfff80a]:
+        write_cpu(ref, address, 0)
+    zram = (C.c_ubyte*8192).in_dll(ref.lib, 'zram')
+    # The retained descriptor matches the canonical SingleDescriptor seed.
+    zram[0x1fe6:0x1fea] = bytes.fromhex('00800480')
+    for address, value in [(0x1ffd, row['marker']), (0x1ffc, row['flags']), (0x1f2a, 9), (0x1ff8, 64), (0x1ff9, 64), (0x1ffe, 17), (0x1ffb, 5)]:
+        zram[address] = value
+    # FM callers require the ordinary player's busy mailbox to be idle.
+    zram[0x1f2a] = 0
+    setter = ref.api('m68k_set_reg', None, C.c_uint, C.c_uint)
+    for i in range(15):
+        setter(i, 0)
+    start = 0x37658 if v['Channel'] == 'dac' else 0x39ffe if CHANNELS[v['Channel']] >= 128 else 0x377ec
+    for i, value in [(17, 0x2700), (15, 0xffff00), (13, VOICE), (16, start)]:
+        setter(i, value)
+    write_cpu(ref, 0xffff00, 0x3d8, 4)
+    return ref.save()
+
+
+def execute(ref, row, observer=None, port=None):
+    run, steps, queue = ref.api('m68k_run', None, C.c_uint), [], []
+    for _ in range(24000):
+        pc = ref.get_register(16) & 0xffffff
+        if pc == 0x3d8:
+            return steps, queue
+        assert 0x37658 <= pc <= 0x37722 or 0x377ec <= pc <= 0x37b8e or 0x38ae0 <= pc <= 0x38c2c or 0x38dae <= pc <= 0x39250 or 0x39ffe <= pc <= 0x3a18c, ('escaped new-note body', row['id'], hex(pc))
+        if observer:
+            observer.score_clock_pc(pc)
+        if port:
+            port.score_clock_psg_pc(pc)
+        before, refresh = ref.cpu.cycles, ref.cpu.refresh_cycles
+        run(before+1)
+        steps.append([pc, before, refresh, ref.cpu.cycles, ref.cpu.refresh_cycles])
+        if pc == 0x38f28:
+            at = before+(14 if before >= refresh else 0)
+            queue.append(dict(at=at, value=C.c_ubyte.from_address(ref.ram_pointer+(0xf80a ^ 1)).value))
+    raise AssertionError(('new-note source step cap', row['id']))
+
+
+def projection(ref, descriptors):
+    ram = ref.ram_cpu()
+    byte = lambda n: ram[(VOICE+n) & 65535]
+    signed = lambda value: value-256 if value >= 128 else value
+    word = lambda n: byte(n)*256+byte(n+1)
+    stereo = byte(0x27)
+    result = dict(Active=bool(byte(0) & 128), NoteOff=bool(byte(0) & 2), Claimed=bool(byte(0) & 4), Tie=bool(byte(0) & 16),
+                  Channel=next(k for k, v in CHANNELS.items() if v == byte(1)), Transpose=signed(byte(8)), BaseLevel=byte(9),
+                  PitchScale=signed(byte(3)), NoteWait=byte(0xe), GateRemaining=byte(0x12), GateTicks=byte(0x13),
+                  ModDelay=byte(0x18), ModRate=byte(0x19), ModSteps=byte(0x1b), ModDelta=signed(byte(0x1a)), ModOffset=word(0x1c)-65536 if word(0x1c) >= 32768 else word(0x1c),
+                  Detune=signed(byte(0x1e)), Pan=dict(left=bool(stereo & 128), right=bool(stereo & 64), ams=stereo >> 4 & 3, fms=stereo & 7),
+                  PanState=dict(step=byte(0x21), elapsed=byte(0x24)), LoadedAlgorithm=byte(0x25))
+    if byte(1) == 6:
+        result['DACDescriptor'] = descriptors.get(byte(0x10), '')
+    else:
+        result['BasePitch'] = word(0x10)
+    return dict(voice=result, tempo_remaining=ram[0xf801], tempo_period=ram[0xf802], queue=ram[0xf80a])
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--out', type=Path, required=True)
+    args = parser.parse_args()
+    out = args.out.resolve()
+    assert out.is_relative_to(ROOT/'.local') and not out.exists()
+    out.mkdir(parents=True)
+    candidate_path = ROOT/'.local/md-yuyuhakusho/note-voice-case-export/cases.json.gz'
+    candidate_data = load(candidate_path)
+    catalog_path = ROOT/'games/yuyuhakusho/data/audio-score.json.gz'
+    catalog = load(catalog_path)
+    rom_path = ROOT/'.local/md-yuyuhakusho/downloads/yuyuhakusho-jp.bin'
+    rom = rom_path.read_bytes()
+    selected, source_contexts = inputs(candidate_data, catalog), contexts(rom, catalog)
+    instrument_path = ROOT/'games/yuyuhakusho/data/audio-score-instrument-work.json.gz'
+    work = {r['id']: r for r in load(instrument_path)['profiles']}
+    envelope_path = ROOT/'.local/md-yuyuhakusho/envelope-work-export-v2/provenance.json.gz'
+    envelopes = {(r['key']['family'], r['key']['envelope_id'], r['key']['section'], r['key']['tick_index']): r for r in load(envelope_path)['records']}
+    patterns = [r['id'] for r in catalog['pan_patterns']]
+    registry, descriptor_notes, native_descriptors = Registry(rom), {}, {}
+    wanted = {r['id'] for r in catalog['dac_descriptors']}
+    for note in range(0x81, 0x9a):
+        try:
+            identity = registry.descriptor(note)
+        except (ValueError, IndexError):
+            continue
+        if identity in wanted:
+            descriptor_notes.setdefault(identity, note)
+            native_descriptors[note] = identity
+    assert set(descriptor_notes) == wanted
+    for row in selected:
+        v = row['before']['Voices'][row['slot']]
+        row['previous_dac_note'] = descriptor_notes[v['DACDescriptor']] if v['DACDescriptor'] else 128
+        assert (v['Owner']['score_id'], v['Owner']['voice_id'], v['Cycle'], v['EventIndex']) in source_contexts, (row['id'], v['Owner'], v['Cycle'], v['EventIndex'])
+    tmp = out/'tmp'
+    tmp.mkdir()
+    source = ROOT/'scripts/yuyuhakusho/score-clock-note-voice-observer.c'
+    dylib = out/'note-voice-observer.dylib'
+    subprocess.run(['clang', '-dynamiclib', '-O2', '-fno-modules', str(source), '-o', str(dylib)], cwd=ROOT,
+                   env=dict(os.environ, TMPDIR=str(tmp), CLANG_MODULE_CACHE_PATH=str(tmp/'clang-cache')), check=True)
+    observer = C.CDLL(str(dylib))
+    observer.score_clock_attach.argtypes = [C.c_void_p]*9
+    observer.score_clock_attach.restype = C.c_int
+    observer.score_clock_pc.argtypes = [C.c_uint]
+    observer.score_clock_count.restype = C.c_size_t
+    observer.score_clock_events.restype = C.POINTER(music.shared.Event)
+    for name in ['score_clock_overflow', 'score_clock_detach', 'score_clock_note_enable', 'score_clock_note_disable']:
+        getattr(observer, name).restype = C.c_int
+    port, _ = psg.build(out)
+    controls, rows, identities = {}, [], {}
+    print(json.dumps({'cases': len(selected), 'actual_driver_cases': len(candidate_data['cases']), 'observed_driver_calls': candidate_data['Calls'], 'observed_note_calls': candidate_data['Notes'], 'owners': candidate_data['Owners']}), flush=True)
+    for name, core in [('original', ORIGINAL), ('observed', OBSERVED)]:
+        with AudioSession(ROOT, out/('core-'+name), core=core) as ref:
+            checkpoint, lookup = quiet_checkpoint(ref), symbols(core)
+            identities[name] = ref.identity
+            for i, row in enumerate(selected):
+                v = row['before']['Voices'][row['slot']]
+                context = source_contexts[(v['Owner']['score_id'], v['Owner']['voice_id'], v['Cycle'], v['EventIndex'])]
+                initial = setup(ref, checkpoint, row, lookup, context, work, envelopes, patterns)
+                plain_steps, plain_queue = execute(ref, row)
+                plain, plain_ram, plain_psg = ref.save(), ref.ram_cpu(), psg.native_psg(ref)[1]
+                again = setup(ref, checkpoint, row, lookup, context, work, envelopes, patterns)
+                assert initial['data'] == again['data']
+                music.shared.attach(observer, ref)
+                assert observer.score_clock_note_enable() == 1
+                address = C.addressof(ref.cpu)
+                assert port.score_clock_psg_attach(address, address+CPUHead.cycles.offset, address+CPUHead.refresh_cycles.offset)
+                try:
+                    steps, queue = execute(ref, row, observer, port)
+                    events, writes = music.shared.events(observer), psg.trace(port)
+                finally:
+                    assert port.score_clock_psg_detach() == 1 and observer.score_clock_note_disable() == 1 and observer.score_clock_detach() == 1
+                saved = ref.save()
+                assert (steps == plain_steps and queue == plain_queue and saved['data'] == plain['data'] and saved['refresh_cycles'] == plain['refresh_cycles'] and plain_ram == ref.ram_cpu() and plain_psg == psg.native_psg(ref)[1]), ('observer changed new-note body', row['id'])
+                z = (C.c_ubyte*8192).in_dll(ref.lib, 'zram')
+                result = dict(steps=steps, events=[e for e in events if e['kind'] != 7], psg=writes, queue=queue,
+                              end=dict(Cycle=ref.cpu.cycles, Refresh=ref.cpu.refresh_cycles), state=projection(ref, native_descriptors),
+                              music_fields={str(k): int(z[k]) for k in [0x1ffd, 0x1ffc, 0x1ff8, 0x1ff9, 0x1ffe, 0x1ffb, 0x1fe6, 0x1fe7, 0x1fe8, 0x1fe9]})
+                if name == 'original':
+                    controls[i] = result
+                else:
+                    assert controls[i] == result, ('pinned cores disagree', row['id'])
+                    public = {k: value for k, value in row.items() if k != 'previous_dac_note'}
+                    rows.append(dict(input=public, **result, native_observer_state_equal=True))
+        print(json.dumps({'core': name, 'cases': len(selected), 'pass': True}), flush=True)
+    bindings = [Path(__file__), source, candidate_path, ROOT/'.local/md-yuyuhakusho/note-voice-case-export/main.go',
+                catalog_path, instrument_path, envelope_path, rom_path, ROOT/'scripts/yuyuhakusho/score_flow_extract.py',
+                ROOT/'scripts/yuyuhakusho/pcm-command-capture.py',
+                ROOT/'scripts/yuyuhakusho/score-clock-bridge.c', ROOT/'scripts/yuyuhakusho/score-clock-music-observer.c', ROOT/'scripts/yuyuhakusho/score-clock-psg-observer.c']
+    payload = dict(version=1, scope='Complete new-note bodies selected from 23 accepted typed scores/115 owners, fixed initial idle held bus and no extraIRQ; native flow context private only; no track-end/full world proof.',
+                   identities=identities, cases=rows, sources={str(p.relative_to(ROOT)): psg.sha(p.read_bytes()) for p in bindings})
+    target = out/'native-note-voice-full.json.gz'
+    target.write_bytes(gzip.compress((json.dumps(payload, sort_keys=True, separators=(',', ':'))+'\n').encode(), mtime=0))
+    print(json.dumps({'pass': True, 'cases': len(rows), 'executions': len(rows)*4, 'sha256': psg.sha(target.read_bytes())}), flush=True)
+
+
+if __name__ == '__main__':
+    main()
