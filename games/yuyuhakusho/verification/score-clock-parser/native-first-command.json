@@ -1,0 +1,17 @@
+{
+  "pass": true,
+  "exit_code": 0,
+  "elapsed_seconds": 2.0258486662060022,
+  "command": [
+    "go",
+    "test",
+    "-json",
+    "-count=1",
+    "-timeout=5m",
+    "-run",
+    "^TestParserClock",
+    "./games/yuyuhakusho/audio/scoreclock"
+  ],
+  "production_sha256": "897bef09fa54dc21ed7230504288d4cc910268bd5c25e9a8677c81744a20fa29",
+  "log_sha256": "f97c8bd6f11ef034a0b09775fc6d12ffd141442189a43186e1708a123a191e29"
+}

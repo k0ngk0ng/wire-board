@@ -1,0 +1,7 @@
+{
+  "scope": "Only this terminal capture own empty session directories and byte-identical duplicate raw fixture; pinned cores/ROM and committed oracle retained",
+  "removed_duplicate_bytes": 6025,
+  "removed_empty_core_directories": 2,
+  "removed_empty_capture_root": true,
+  "no_original_source_or_oracle_removed": true
+}
