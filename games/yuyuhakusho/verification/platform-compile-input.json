@@ -1,0 +1,15 @@
+{
+  "scope": "Compile-only embed input, actual local app index and metadata; no client payload copied. Not a release build or serving artifact. Real browser uses the complete isolated dist.",
+  "files": [
+    {
+      "path": "web/dist/index.html",
+      "bytes": 592,
+      "sha256": "5cc555a9c26b9a42879b077f6c7011d1e7165cb096d7def8df1417daacbdfce2"
+    },
+    {
+      "path": "web/dist/game-load-manifest.json",
+      "bytes": 25072,
+      "sha256": "ffe553095114e449a9722d671c008536621356f5e7e17702c9754e8e2a809f4c"
+    }
+  ]
+}
