@@ -1,0 +1,176 @@
+{
+  "pass": true,
+  "scope": "Original seven-bit note domains/private branch and refresh profiles; source PCs are offline oracle provenance only",
+  "native_profiles": 1064,
+  "executions": 4256,
+  "two_pinned_cores": {
+    "observed": {
+      "core_name": "Genesis Plus GX",
+      "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+      "core_version": "v1.7.460bee4c",
+      "fps": 59.92274340431231,
+      "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+      "ram_bytes": 65536,
+      "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+      "teamplayer": false
+    },
+    "original": {
+      "core_name": "Genesis Plus GX",
+      "core_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+      "core_version": "v1.7.4 60bee4c",
+      "fps": 59.92274340431231,
+      "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+      "ram_bytes": 65536,
+      "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+      "teamplayer": false
+    }
+  },
+  "retained_instruction_steps": 11388,
+  "unique_source_points": 41,
+  "CPU_cycles_by_source": {
+    "03767e": [
+      12
+    ],
+    "037682": [
+      8
+    ],
+    "037684": [
+      8,
+      10
+    ],
+    "037686": [
+      8
+    ],
+    "037688": [
+      20
+    ],
+    "03768e": [
+      10
+    ],
+    "03783a": [
+      8
+    ],
+    "03783c": [
+      8,
+      10
+    ],
+    "03783e": [
+      8
+    ],
+    "037840": [
+      10
+    ],
+    "03784c": [
+      8
+    ],
+    "037850": [
+      8,
+      10
+    ],
+    "037852": [
+      12
+    ],
+    "037856": [
+      16
+    ],
+    "03785c": [
+      136,
+      138,
+      140
+    ],
+    "037860": [
+      4
+    ],
+    "037862": [
+      8
+    ],
+    "037864": [
+      8
+    ],
+    "037868": [
+      14
+    ],
+    "03786c": [
+      4
+    ],
+    "03786e": [
+      8
+    ],
+    "037872": [
+      4
+    ],
+    "037874": [
+      28
+    ],
+    "037876": [
+      4
+    ],
+    "037878": [
+      12
+    ],
+    "037896": [
+      16
+    ],
+    "03789a": [
+      16
+    ],
+    "03a044": [
+      8
+    ],
+    "03a046": [
+      4
+    ],
+    "03a048": [
+      8,
+      10
+    ],
+    "03a04a": [
+      8
+    ],
+    "03a04c": [
+      10
+    ],
+    "03a058": [
+      8
+    ],
+    "03a05c": [
+      8,
+      10
+    ],
+    "03a05e": [
+      12
+    ],
+    "03a062": [
+      8
+    ],
+    "03a066": [
+      8
+    ],
+    "03a068": [
+      8
+    ],
+    "03a06c": [
+      22
+    ],
+    "03a076": [
+      16
+    ],
+    "03a07a": [
+      16
+    ]
+  },
+  "DIVU_internal_refresh_skips": 480,
+  "octave_shift_internal_refresh_skips": 120,
+  "capture_command": [
+    "python3",
+    "scripts/yuyuhakusho/score-clock-note-capture.py",
+    "--out",
+    ".local/md-yuyuhakusho/score-clock-note-native-v1"
+  ],
+  "capture_environment": {
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "TMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp"
+  },
+  "fixture_sha256": "8a6eea0e45e62adb30cfe99f30bd2b8f2ecde58b0e9aa87e73a4ddf5e443816e",
+  "no_core_ROM_or_existing_oracle_changed": true
+}

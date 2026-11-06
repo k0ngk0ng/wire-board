@@ -1,0 +1,9 @@
+{
+  "at_utc": "2026-11-06T02:52:49.394265+00:00",
+  "scope": "Production correction only; frozen native fixture and Go tests unchanged",
+  "first_production_sha256": "914ece587800b639d18c7ee3c9a4853b80e56de1b677e714e7b4e4b654209289",
+  "failed_original_profiles": 120,
+  "source_function": "m68k_op_lsl_16_r, internal22CPU cycles + fixed6; SKIP_BUS_REFRESH occurs before fixed6",
+  "source_example": "FM index0 phase0: original ends1960/ref2688; first Go1974/ref2744",
+  "failure_log": "native-first.jsonl"
+}

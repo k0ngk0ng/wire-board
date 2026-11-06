@@ -1,0 +1,5 @@
+{
+  "scope": "Only own terminal capture byte-identical fixture and empty core session directories removed; authoritative oracle and pinned originals retained",
+  "removed_duplicate_bytes": 31109,
+  "removed_empty_directories": 3
+}
