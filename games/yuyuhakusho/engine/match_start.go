@@ -72,6 +72,10 @@ type MatchStartOutcome struct{ Events []MatchStartEvent }
 // Spawned fighters retain old fields not written here and initialize later in
 // their own scheduled126c8 call, rather than being advanced prematurely.
 func StepMatchStart(state MatchStartState, library MatchStartLibrary) (MatchStartState, MatchStartOutcome, error) {
+	return stepMatchStartWithSound(state, library, nil)
+}
+
+func stepMatchStartWithSound(state MatchStartState, library MatchStartLibrary, soundPort *worldSoundPort) (MatchStartState, MatchStartOutcome, error) {
 	original := state
 	out := MatchStartOutcome{}
 	if state.PauseFlags&0x80 != 0 || state.ModeFlag == 2 {
@@ -85,7 +89,7 @@ func StepMatchStart(state MatchStartState, library MatchStartLibrary) (MatchStar
 			return original, MatchStartOutcome{}, errors.New("match-start arena resource is unavailable")
 		}
 		state.VideoMode = 2
-		startSound(&state, 4)
+		startSound(&state, 4, soundPort)
 		state.VideoBytes = [5]uint8{0, 0, 0x81, 0, 0}
 		state.PlaneBases = [5]uint16{0xc000, 0xe000, 0xd000, 0xf000, 0xf400}
 		state.PlaneSize = [2]uint16{2, 0}
@@ -168,7 +172,7 @@ func StepMatchStart(state MatchStartState, library MatchStartLibrary) (MatchStar
 				music = 0x84
 			}
 		}
-		startSound(&state, music)
+		startSound(&state, music, soundPort)
 	}
 	state.Selected = 0
 	for i, cid := range state.Characters {
@@ -219,11 +223,6 @@ func StepMatchStart(state MatchStartState, library MatchStartLibrary) (MatchStar
 	state.Manager.Stage += 2
 	return state, out, nil
 }
-func startSound(state *MatchStartState, request uint8) {
-	for i, value := range state.SoundQueue {
-		if value < 128 || value == request {
-			state.SoundQueue[i] = request
-			break
-		}
-	}
+func startSound(state *MatchStartState, request uint8, soundPort *worldSoundPort) {
+	enqueueWorldSound(&state.SoundQueue, request, "start", soundPort)
 }

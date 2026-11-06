@@ -1,0 +1,6 @@
+{
+  "terminated_owned_test_pid": 29345,
+  "reason": "Replace expensive full native race replay with the full unchanged native suite plus focused race detection on newly added live-owner/lease/gate/real-audio-transaction paths. Full Wasm suite already passed. No production code, test assertions, native fixtures or original expected results changed. Preserve both partial full-race runs as cancelled, not passed.",
+  "full_native_pattern": "^Test(WorldSoundLive|AnimationRecords|CollisionManager|EffectMotion|MatchStart|MatchLifecycle|MatchOverlays|SoundScheduler|SoundRequestLive)",
+  "additional_race_pattern": "^TestWorldSoundLive(Interleaving|Rollback|FullQueue|Joint)"
+}

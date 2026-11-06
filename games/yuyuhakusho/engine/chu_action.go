@@ -43,6 +43,10 @@ func StepChuAction(state ChuActionState, parameters ChuActionParameters, command
 // StepFighterAction keeps one copy of the complete action driver for the
 // restored sources0..10. AlternateVelocity remains the sole +48 long owner.
 func StepFighterAction(state ChuActionState, characterID uint8, parameters ChuActionParameters, commands CommandLibrary, animations AnimationLibrary) (ChuActionState, error) {
+	return stepFighterActionWithSound(state, characterID, parameters, commands, animations, nil)
+}
+
+func stepFighterActionWithSound(state ChuActionState, characterID uint8, parameters ChuActionParameters, commands CommandLibrary, animations AnimationLibrary, soundPort *worldSoundPort) (ChuActionState, error) {
 	original := state
 	if characterID != 0 && characterID != 1 && characterID != 2 && characterID != 3 && characterID != 4 && characterID != 5 && characterID != 6 && characterID != 7 && characterID != 8 && characterID != 9 && characterID != 10 {
 		return original, errors.New("unsupported complete fighter action source")
@@ -312,7 +316,7 @@ func StepFighterAction(state ChuActionState, characterID uint8, parameters ChuAc
 	if err != nil {
 		return original, err
 	}
-	tail, aux48, power, err := stepFighterActionTail(state.ChuTailState, characterID, state.AlternateVelocity, state.Power, state.EnergyFraction, parameters.ChuTailParameters, animations, mode)
+	tail, aux48, power, err := stepFighterActionTail(state.ChuTailState, characterID, state.AlternateVelocity, state.Power, state.EnergyFraction, parameters.ChuTailParameters, animations, mode, soundPort)
 	if err != nil {
 		return original, err
 	}

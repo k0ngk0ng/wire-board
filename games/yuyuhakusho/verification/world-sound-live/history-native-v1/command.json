@@ -1,0 +1,36 @@
+{
+  "command": [
+    "/opt/homebrew/bin/go",
+    "test",
+    "-json",
+    "-count=1",
+    "-timeout=20m",
+    "-run",
+    "^Test(WorldSoundLive|AnimationRecords|CollisionManager|EffectMotion|MatchStart|MatchLifecycle|MatchOverlays|SoundScheduler|SoundRequestLive)",
+    "-race",
+    "./games/yuyuhakusho/engine",
+    "./games/yuyuhakusho/audio/scoreclock"
+  ],
+  "cwd": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho",
+  "environment": {
+    "TEST_TELEMETRY_DIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-telemetry",
+    "GOCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-cache",
+    "GOMODCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-mod",
+    "GOTMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+    "TMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+    "GOMAXPROCS": "2"
+  },
+  "elapsed_seconds": 367.904522895813,
+  "exit_code": 1,
+  "output_sha256": "707fd421869a04aaba424967851545e2e45bc5cf28af495f9a3e2e632ca48e19",
+  "tests_passed": 45,
+  "top_level_passed": 25,
+  "failures": [
+    {
+      "Time": "2026-11-07T01:00:19.11371+08:00",
+      "Action": "fail",
+      "Package": "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine",
+      "Elapsed": 363.77
+    }
+  ]
+}

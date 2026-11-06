@@ -54,11 +54,11 @@ type ChuTailState struct {
 // later handlers. World input preparation, movement and audio-consumer timing
 // are separate caller stages, not simulated inside this atomic rule function.
 func StepChuActionTail(state ChuTailState, parameters ChuTailParameters, library AnimationLibrary, mode ChuTailMode) (ChuTailState, error) {
-	state, _, _, err := stepFighterActionTail(state, 9, 0, 0, 0, parameters, library, mode)
+	state, _, _, err := stepFighterActionTail(state, 9, 0, 0, 0, parameters, library, mode, nil)
 	return state, err
 }
 
-func stepFighterActionTail(state ChuTailState, characterID uint8, aux48 int32, power int16, energyFraction uint16, parameters ChuTailParameters, library AnimationLibrary, mode ChuTailMode) (ChuTailState, int32, int16, error) {
+func stepFighterActionTail(state ChuTailState, characterID uint8, aux48 int32, power int16, energyFraction uint16, parameters ChuTailParameters, library AnimationLibrary, mode ChuTailMode, soundPort *worldSoundPort) (ChuTailState, int32, int16, error) {
 	if mode != ChuTailNormal && mode != ChuTailHitStop {
 		return state, aux48, power, errors.New("unsupported shared-tail entry")
 	}
@@ -165,13 +165,13 @@ func stepFighterActionTail(state ChuTailState, characterID uint8, aux48 int32, p
 	default:
 		state.GuardMask = 0
 	}
-	animation, err := SubmitAnimationRecord(AnimationSubmissionState{Actor: AnimationActorState{
+	animation, err := submitAnimationRecordWithSound(AnimationSubmissionState{Actor: AnimationActorState{
 		ObjectID: state.ObjectID, AnimationSet: state.AnimationSet, ShapeSet: state.ShapeSet, Pose: state.Body.Pose, Clock: state.Body.Clock,
 		Facing: state.Body.Facing, ActionFlags: state.Body.ActionFlags, EnabledStages: state.Body.EnabledStages, Attributes: state.Body.Attributes,
 		GraphicOffsetX: state.GraphicOffsetX, GraphicOffsetY: state.GraphicOffsetY, WorldX: state.Body.X, WorldY: state.Body.Y,
 		GraphicParameter: state.GraphicParameter, Auxiliary94: state.TargetMask, Auxiliary64: state.Body.Auxiliary64,
 		Value65: state.AttackValue, Value66: state.StunDamage, Value67: state.EffectKind, Value68: state.Reaction},
-		Buffers: state.Buffers, PendingSound: state.PendingSound, SoundQueue: state.SoundQueue}, library)
+		Buffers: state.Buffers, PendingSound: state.PendingSound, SoundQueue: state.SoundQueue}, library, soundPort)
 	if err != nil {
 		return original, originalAux48, originalPower, err
 	}

@@ -58,13 +58,17 @@ type MatchLifecycleOutcome struct {
 // initialization. ClearWorldFrom requests clearing every object from 8040 to
 // A000, including fields outside this typed view; the caller must apply it.
 func StepMatchLifecycle(state MatchLifecycleState) (MatchLifecycleState, MatchLifecycleOutcome, error) {
+	return stepMatchLifecycleWithSound(state, nil)
+}
+
+func stepMatchLifecycleWithSound(state MatchLifecycleState, soundPort *worldSoundPort) (MatchLifecycleState, MatchLifecycleOutcome, error) {
 	before := state
 	outcome := MatchLifecycleOutcome{}
 	if state.PauseFlags&0x80 != 0 || state.ModeFlag == 2 {
 		return state, outcome, nil
 	}
 	abort := func() {
-		queueMatchSound(&state, 1)
+		queueMatchSound(&state, 1, soundPort)
 		state.Manager.Stage = 24
 	}
 	switch state.Manager.Stage {
@@ -86,7 +90,7 @@ func StepMatchLifecycle(state MatchLifecycleState) (MatchLifecycleState, MatchLi
 		state.Manager.Stage += 2
 		fallthrough
 	case 10:
-		flushMatchSound(&state)
+		flushMatchSound(&state, soundPort)
 		if matchStartRequest(&state) {
 			abort()
 			break
@@ -100,7 +104,7 @@ func StepMatchLifecycle(state MatchLifecycleState) (MatchLifecycleState, MatchLi
 		state.Manager.Stage += 2
 		fallthrough
 	case 14:
-		flushMatchSound(&state)
+		flushMatchSound(&state, soundPort)
 		if matchSurvivorTeam(state.Fighters, false) != 0 {
 			if matchSurvivorTeam(state.Fighters, true) != 0 {
 				state.Manager.Stage += 2
@@ -113,7 +117,7 @@ func StepMatchLifecycle(state MatchLifecycleState) (MatchLifecycleState, MatchLi
 		state.Manager.Stage += 2
 		fallthrough
 	case 18:
-		flushMatchSound(&state)
+		flushMatchSound(&state, soundPort)
 		if int16(state.ResultTicks) < 64 {
 			state.ResultTicks++
 			break
@@ -123,7 +127,7 @@ func StepMatchLifecycle(state MatchLifecycleState) (MatchLifecycleState, MatchLi
 				return state, outcome, nil
 			}
 		}
-		queueMatchSound(&state, 5)
+		queueMatchSound(&state, 5, soundPort)
 		state.Manager.Stage += 2
 	case 20:
 		state.PauseFlags &^= 1
@@ -140,7 +144,7 @@ func StepMatchLifecycle(state MatchLifecycleState) (MatchLifecycleState, MatchLi
 		state.Manager.Stage += 2
 		fallthrough
 	case 22:
-		flushMatchSound(&state)
+		flushMatchSound(&state, soundPort)
 		state.ResultTicks++
 		if int16(state.ResultTicks) >= 224 {
 			if matchPressed(state.EligibleChannels, state.Pressed)&0x80 != 0 || matchStartRequest(&state) {
@@ -152,7 +156,7 @@ func StepMatchLifecycle(state MatchLifecycleState) (MatchLifecycleState, MatchLi
 			state.Manager.Stage += 2
 			break
 		}
-		if err := maybeMatchTaunt(&state); err != nil {
+		if err := maybeMatchTaunt(&state, soundPort); err != nil {
 			return before, MatchLifecycleOutcome{}, err
 		}
 	case 24:
@@ -244,18 +248,13 @@ func matchStartRequest(state *MatchLifecycleState) bool {
 	return state.PauseMask == 0 && matchPressed(state.EligibleChannels, state.Pressed)&0x80 != 0
 }
 
-func queueMatchSound(state *MatchLifecycleState, request uint8) {
-	for index, value := range state.SoundQueue {
-		if value < 128 || value == request {
-			state.SoundQueue[index] = request
-			break
-		}
-	}
+func queueMatchSound(state *MatchLifecycleState, request uint8, soundPort *worldSoundPort) {
+	enqueueWorldSound(&state.SoundQueue, request, "lifecycle", soundPort)
 }
 
-func flushMatchSound(state *MatchLifecycleState) {
+func flushMatchSound(state *MatchLifecycleState, soundPort *worldSoundPort) {
 	if state.PendingSound != 0 {
-		queueMatchSound(state, state.PendingSound)
+		queueMatchSound(state, state.PendingSound, soundPort)
 		state.PendingSound = 0
 	}
 }
@@ -338,7 +337,7 @@ func recordMatchPair(state *MatchLifecycleState, winner, loser int) error {
 	return nil
 }
 
-func maybeMatchTaunt(state *MatchLifecycleState) error {
+func maybeMatchTaunt(state *MatchLifecycleState, soundPort *worldSoundPort) error {
 	if state.OptionFF14 != 0 || state.OptionA097 != 0 || state.WinnerCode <= 0 || state.Rule == 0 && state.RoundIndex >= 10 {
 		return nil
 	}
@@ -368,7 +367,7 @@ func maybeMatchTaunt(state *MatchLifecycleState) error {
 		return err
 	}
 	if uint16(frame) == state.ResultTicks {
-		queueMatchSound(state, 0x8f)
+		queueMatchSound(state, 0x8f, soundPort)
 	}
 	return nil
 }

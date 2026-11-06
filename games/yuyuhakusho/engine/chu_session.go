@@ -173,6 +173,12 @@ func CompleteChuSessionResource(state ChuWorldState, resource ChuSessionResource
 // button bits enter this boundary; both pressed/released edges are calculated
 // locally. Internal world state is never replaced by a reference frame.
 func StepChuSessionFrame(state ChuWorldState, held [8]Buttons, library ChuWorldLibrary) (ChuWorldState, []ChuWorldEvent, WorldFrameOutcome, error) {
+	return StepChuSessionFrameObserved(state, held, library, nil)
+}
+
+// StepChuSessionFrameObserved includes input and palette in the World rollback.
+// It does not infer interrupt times or retain the synchronous hook.
+func StepChuSessionFrameObserved(state ChuWorldState, held [8]Buttons, library ChuWorldLibrary, hook WorldSoundHook) (ChuWorldState, []ChuWorldEvent, WorldFrameOutcome, error) {
 	original := state
 	if state.MatchComplete {
 		return state, nil, WorldFrameOutcome{}, nil
@@ -196,7 +202,7 @@ func StepChuSessionFrame(state ChuWorldState, held [8]Buttons, library ChuWorldL
 	if outcome.ResetRequested {
 		return state, []ChuWorldEvent{{Kind: "reset-request"}}, outcome, nil
 	}
-	state, events, err := StepChuWorldObjects(state, ChuWorldView{}, library)
+	state, events, err := StepChuWorldObjectsObserved(state, ChuWorldView{}, library, hook)
 	if err != nil {
 		return original, nil, WorldFrameOutcome{}, err
 	}

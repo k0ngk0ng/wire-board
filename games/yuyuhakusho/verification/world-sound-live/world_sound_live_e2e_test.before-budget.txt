@@ -1,0 +1,105 @@
+package scoreclock_test
+
+import (
+	"encoding/json"
+	"reflect"
+	"testing"
+
+	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips"
+	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/scoreclock"
+	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/session"
+	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine"
+)
+
+// Synthetic entry clocks test ownership/transaction composition, not original
+// CPU/VDP acceptance. Full native IRQ expectations remain frozen separately.
+func TestWorldSoundLiveJointAudioTransaction(t *testing.T) {
+	library := observedEnvelopeLibrary(t)
+	_, priorities := soundIRQNatives(t)
+	config := session.Config{Chips: chips.Config{Profile: chips.ReferenceMixedHQ44100}}
+	initial, err := session.New(library, config)
+	if err != nil {
+		t.Fatal(err)
+	}
+	raw, err := json.Marshal(initial.Snapshot())
+	if err != nil {
+		t.Fatal(err)
+	}
+	clock := scoreclock.Clock{Cycle: 10000, Refresh: 10896}
+	limits := scoreclock.Limits{MaxOperations: 1000000}
+	for _, failure := range []string{"none", "late-object", "late-palette", "budget"} {
+		t.Run(failure, func(t *testing.T) {
+			var checkpoint session.State
+			if err := json.Unmarshal(raw, &checkpoint); err != nil {
+				t.Fatal(err)
+			}
+			live, err := session.Restore(library, config, checkpoint)
+			if err != nil {
+				t.Fatal(err)
+			}
+			direct, err := session.Restore(library, config, checkpoint)
+			if err != nil {
+				t.Fatal(err)
+			}
+			world := engine.ChuWorldState{Objects: engine.WorldObjects{0x8100: {ObjectID: 0x8100, Header: engine.MatchObjectHeader{Behavior: 0x1edac, Size: 64}}}, PendingSound: 4}
+			if failure == "late-object" {
+				world.Objects[0x9fc0] = engine.WorldObject{ObjectID: 0x9fc0, Header: engine.MatchObjectHeader{Behavior: 0xdeadbeef, Size: 64}}
+			}
+			if failure == "late-palette" {
+				world.Palette.Flags = 1
+				world.Palette.Status = 0x80
+				world.Palette.Mode = 0xffff
+			}
+			worldRaw, _ := json.Marshal(world)
+			queue := [4]uint8{4, 0, 0, 0}
+			pause := uint8(0)
+			expected, err := direct.Interrupt(clock, &queue, &pause, priorities, limits)
+			if err != nil {
+				t.Fatal("direct real IRQ", err)
+			}
+			calls := 0
+			var observed scoreclock.SoundIRQResult
+			got, events, _, err := live.WorldFrame(world, [8]engine.Buttons{}, engine.ChuWorldLibrary{}, func(branch *session.Runtime, op engine.WorldSoundOperation, owners engine.WorldSoundOwners, apply func() error) error {
+				if err := apply(); err != nil {
+					return err
+				}
+				if op.Request.Kind != engine.RequestReturn {
+					return nil
+				}
+				calls++
+				budget := limits
+				if failure == "budget" {
+					budget.MaxOperations = 1
+				}
+				var err error
+				observed, err = branch.Interrupt(clock, owners.Queue, owners.AudioPause, priorities, budget)
+				return err
+			})
+			if calls != 1 {
+				t.Fatal("IRQ not invoked exactly once", calls)
+			}
+			if failure == "none" {
+				if err != nil || !reflect.DeepEqual(observed, expected) || !reflect.DeepEqual(live.Snapshot(), direct.Snapshot()) || got.SoundQueue != queue || got.Clock.AudioPause != pause || got.PendingSound != 0 {
+					t.Fatal("world IRQ commit differs", err, got.SoundQueue, queue)
+				}
+				saved, _ := json.Marshal(live.Snapshot())
+				var roundtrip session.State
+				if err := json.Unmarshal(saved, &roundtrip); err != nil {
+					t.Fatal(err)
+				}
+				restored, err := session.Restore(library, config, roundtrip)
+				if err != nil || !reflect.DeepEqual(restored.Snapshot(), live.Snapshot()) {
+					t.Fatal("joint result cannot restore", err)
+				}
+			} else {
+				if err == nil || events != nil || !reflect.DeepEqual(got, world) || !reflect.DeepEqual(live.Snapshot(), initial.Snapshot()) {
+					t.Fatal("partial World/audio commit", failure, err)
+				}
+			}
+			after, _ := json.Marshal(world)
+			if string(after) != string(worldRaw) {
+				t.Fatal("mutated caller world")
+			}
+		})
+	}
+}

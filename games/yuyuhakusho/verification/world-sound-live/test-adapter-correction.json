@@ -1,0 +1,16 @@
+{
+  "reason": "Synthetic transaction test passed MaxOperations=1000000, exceeding the preexisting tickService hard limit of 65536. Correct only caller budget to 65536; do not modify production budget checks or native oracles. Preserve original missing-API test and actual failing direct-IRQ run.",
+  "current_test": "games/yuyuhakusho/audio/scoreclock/world_sound_live_e2e_test.go",
+  "original_test_archive": "games/yuyuhakusho/verification/world-sound-live/world_sound_live_e2e_test.before-budget.txt",
+  "original_sha256": "234050115e799b945023001966d7098226078f81b83395c7d3e719b97504dc55",
+  "current_sha256": "38045a7813410ae8608be740744ccad1d980daa36b9f5bf76fa2917b37f06148",
+  "diff": "budget-test-correction.diff.gz",
+  "startup": {
+    "reason": "All 11 frozen native World datasets begin after match-start/resource setup; the unchanged six-producer coverage assertion correctly failed for start after all 24454 whole-world passes matched. Add actual NewChuSession -> CompleteChuSessionResource -> first logical frame to cover start. Do not drop the start assertion, change native fixture data, alter the 11 datasets, or change production.",
+    "current_test": "games/yuyuhakusho/engine/world_sound_live_test.go",
+    "original_test_archive": "games/yuyuhakusho/verification/world-sound-live/world_sound_live_test.before-startup.txt",
+    "original_sha256": "47b2642d0bb474efd912e12fea291476a938306a5fddf4ebdf5fb89f99b117c2",
+    "current_sha256": "48b6e642be1a06c077414e82f739413403f351bda363d6d67b461b2939da7d1b",
+    "diff": "startup-test-correction.diff.gz"
+  }
+}

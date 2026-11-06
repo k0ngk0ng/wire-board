@@ -28,6 +28,10 @@ type CollisionManagerState struct {
 // does not advance actors or submit new shapes; the world scheduler must call
 // it before those updates, as the original manager object does.
 func ResolveCollisionManager(state CollisionManagerState) (CollisionManagerState, error) {
+	return resolveCollisionManagerWithSound(state, nil)
+}
+
+func resolveCollisionManagerWithSound(state CollisionManagerState, soundPort *worldSoundPort) (CollisionManagerState, error) {
 	if state.PauseFlags&0x80 != 0 {
 		return state, nil
 	}
@@ -112,12 +116,7 @@ func ResolveCollisionManager(state CollisionManagerState) (CollisionManagerState
 	if state.PendingSound != 0 {
 		request := state.PendingSound
 		state.PendingSound = 0
-		for i, value := range state.SoundQueue {
-			if value < 128 || value == request {
-				state.SoundQueue[i] = request
-				break
-			}
-		}
+		enqueueWorldSound(&state.SoundQueue, request, "collision", soundPort)
 	}
 	if state.SlowTicks != 0 {
 		state.SlowTicks--

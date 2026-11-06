@@ -1,0 +1,204 @@
+package engine
+
+import (
+	"encoding/json"
+	"errors"
+	"reflect"
+	"testing"
+)
+
+func TestWorldSoundLiveOriginalPasses(t *testing.T) {
+	library := sessionLibrary(t)
+	all := map[string]int{}
+	for _, name := range []string{"chu-world-oracle", "chu-world-fighter10", "chu-world-fighter0-special", "chu-world-fighter1-special", "chu-world-fighter2-special", "chu-world-fighter3-special", "chu-world-fighter4-special", "chu-world-fighter5-special", "chu-world-fighter6-special", "chu-world-fighter7-special", "chu-world-fighter8-special"} {
+		t.Run(name, func(t *testing.T) {
+			observed := 0
+			count := visitChuWorldTest(t, func(row chuWorldOriginalPass) {
+				before := decodeChuWorldTest(t, row.Before)
+				raw, _ := json.Marshal(before)
+				plain, events, err := StepChuWorldObjects(before, ChuWorldView{StreamBase: 0xff6000}, library)
+				if err != nil {
+					t.Fatal(row.Frame, err)
+				}
+				var queue *[4]uint8
+				got, seen, err := StepChuWorldObjectsObserved(before, ChuWorldView{StreamBase: 0xff6000}, library, func(op WorldSoundOperation, owners WorldSoundOwners, apply func() error) error {
+					if owners.Queue == nil || owners.AudioPause == nil || op.ObjectID < 0x8000 || op.ObjectID >= 0xa000 {
+						t.Fatal("missing actual owner/context", op)
+					}
+					if queue != nil && queue != owners.Queue {
+						t.Fatal("component replaced queue owner")
+					}
+					queue = owners.Queue
+					all[op.Producer]++
+					observed++
+					return apply()
+				})
+				if err != nil || !reflect.DeepEqual(got, plain) || !reflect.DeepEqual(seen, events) {
+					t.Fatal("passive observer changed world", row.Frame, err)
+				}
+				after, _ := json.Marshal(before)
+				if string(raw) != string(after) {
+					t.Fatal("mutated caller", row.Frame)
+				}
+				compareChuWorldTest(t, got, decodeChuWorldTest(t, row.After), row.Frame)
+				compareChuWorldOrderTest(t, row, seen)
+			}, name)
+			if observed == 0 {
+				t.Fatal("no producer operations")
+			}
+			t.Logf("original passes=%d live operations=%d", count, observed)
+		})
+	}
+	for _, producer := range []string{"animation", "collision", "effect", "start", "lifecycle", "overlay"} {
+		if all[producer] == 0 {
+			t.Fatal("missing producer", producer, all)
+		}
+	}
+	t.Logf("producer operations=%v", all)
+}
+
+func worldSoundCollisionTest() ChuWorldState {
+	return ChuWorldState{Objects: WorldObjects{0x8100: {ObjectID: 0x8100, Header: MatchObjectHeader{Behavior: 0x1edac, Size: 64}}}, PendingSound: 0x90, SoundQueue: [4]uint8{0x81, 0x82, 0x83, 0x84}}
+}
+
+func TestWorldSoundLiveInterleavingAndRestore(t *testing.T) {
+	for _, viaFrame := range []bool{false, true} {
+		t.Run(map[bool]string{false: "objects", true: "frame"}[viaFrame], func(t *testing.T) {
+			state := worldSoundCollisionTest()
+			raw, _ := json.Marshal(state)
+			var restored ChuWorldState
+			if err := json.Unmarshal(raw, &restored); err != nil {
+				t.Fatal(err)
+			}
+			var queue *[4]uint8
+			reads, stores := 0, 0
+			hook := func(op WorldSoundOperation, owners WorldSoundOwners, apply func() error) error {
+				if queue != nil && queue != owners.Queue {
+					t.Fatal("owner changed")
+				}
+				queue = owners.Queue
+				if op.Producer != "collision" || op.ObjectID != 0x8100 {
+					t.Fatal(op)
+				}
+				if err := apply(); err != nil {
+					return err
+				}
+				if op.Request.Kind == RequestTestDecision && op.Request.Slot == 0 {
+					owners.Queue[0] = 0x90
+				}
+				if op.Request.Kind == RequestCompareRead {
+					reads++
+				}
+				if op.Request.Kind == RequestStore {
+					stores++
+					if op.Request.Slot != 0 {
+						t.Fatal("stale negative-slot read", op)
+					}
+				}
+				if op.Request.Kind == RequestReturn {
+					*owners.Queue = [4]uint8{0x91, 0x92, 0x93, 0x94}
+					*owners.AudioPause = 0x80
+				}
+				return nil
+			}
+			var got ChuWorldState
+			var err error
+			if viaFrame {
+				got, _, _, err = StepChuSessionFrameObserved(restored, [8]Buttons{}, ChuWorldLibrary{}, hook)
+			} else {
+				got, _, err = StepChuWorldObjectsObserved(restored, ChuWorldView{}, ChuWorldLibrary{}, hook)
+			}
+			if err != nil || reads != 1 || stores != 1 || got.PendingSound != 0 || got.SoundQueue != [4]uint8{0x91, 0x92, 0x93, 0x94} || got.Clock.AudioPause != 0x80 {
+				t.Fatal("live consumer was overwritten", reads, stores, got.SoundQueue, got.Clock.AudioPause, err)
+			}
+			unchanged, _ := json.Marshal(restored)
+			if string(raw) != string(unchanged) {
+				t.Fatal("caller mutated")
+			}
+		})
+	}
+}
+
+func TestWorldSoundLiveRollbackAndLease(t *testing.T) {
+	sentinel := errors.New("injected world audio failure")
+	for _, kind := range []string{"no-apply", "double-apply", "after-apply-error", "late-object", "late-palette"} {
+		t.Run(kind, func(t *testing.T) {
+			state := worldSoundCollisionTest()
+			var held func() error
+			calls := 0
+			if kind == "late-object" {
+				state.Objects[0x9fc0] = WorldObject{ObjectID: 0x9fc0, Header: MatchObjectHeader{Behavior: 0xdeadbeef, Size: 64}}
+			}
+			if kind == "late-palette" {
+				state.Palette.Flags = 1
+				state.Palette.Status = 0x80
+				state.Palette.Mode = 0xffff
+			}
+			raw, _ := json.Marshal(state)
+			got, events, _, err := StepChuSessionFrameObserved(state, [8]Buttons{}, ChuWorldLibrary{}, func(op WorldSoundOperation, owners WorldSoundOwners, apply func() error) error {
+				calls++
+				held = apply
+				if kind == "no-apply" {
+					return nil
+				}
+				if err := apply(); err != nil {
+					return err
+				}
+				*owners.AudioPause = 0x80
+				if kind == "double-apply" {
+					return apply()
+				}
+				if kind == "after-apply-error" {
+					return sentinel
+				}
+				return nil
+			})
+			if calls == 0 || err == nil || events != nil || !reflect.DeepEqual(got, state) {
+				t.Fatal("world did not roll back", calls, err)
+			}
+			if kind == "after-apply-error" && !errors.Is(err, sentinel) {
+				t.Fatal(err)
+			}
+			if kind == "no-apply" || kind == "double-apply" || kind == "after-apply-error" {
+				if calls != 1 {
+					t.Fatal("observer called again after failure", calls)
+				}
+			}
+			if held == nil || !errors.Is(held(), ErrSoundScheduleSequence) {
+				t.Fatal("expired effect accepted")
+			}
+			after, _ := json.Marshal(state)
+			if string(raw) != string(after) {
+				t.Fatal("caller changed")
+			}
+		})
+	}
+}
+
+func TestWorldSoundLiveFullQueueAndFrameGates(t *testing.T) {
+	state := worldSoundCollisionTest()
+	got, _, err := StepChuWorldObjectsObserved(state, ChuWorldView{}, ChuWorldLibrary{}, func(_ WorldSoundOperation, _ WorldSoundOwners, apply func() error) error { return apply() })
+	if err != nil || got.SoundQueue != state.SoundQueue || got.PendingSound != 0 {
+		t.Fatal("full queue changes pending semantics", err)
+	}
+	for _, kind := range []string{"ended", "unready", "invalid-input"} {
+		t.Run(kind, func(t *testing.T) {
+			s := worldSoundCollisionTest()
+			held := [8]Buttons{}
+			if kind == "ended" {
+				s.MatchComplete = true
+			}
+			if kind == "unready" {
+				s.ResourceBusy = 1
+			}
+			if kind == "invalid-input" {
+				held[0] = 0xffff
+			}
+			calls := 0
+			got, events, _, err := StepChuSessionFrameObserved(s, held, ChuWorldLibrary{}, func(_ WorldSoundOperation, _ WorldSoundOwners, apply func() error) error { calls++; return apply() })
+			if calls != 0 || events != nil || !reflect.DeepEqual(got, s) || (err == nil) != (kind == "ended") {
+				t.Fatal("frame gate changed", kind, err, calls)
+			}
+		})
+	}
+}

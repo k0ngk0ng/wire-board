@@ -1,0 +1,5 @@
+{
+  "signal": "SIGTERM",
+  "pid": 27734,
+  "reason": "Stop owned test binary compiled before startup adapter correction; retain partial JSONL and command record. All 11 Wasm native-world subtests had passed, but parent six-producer coverage correctly failed for missing startup setup. Rerun corrected complete scope; do not terminate review service."
+}

@@ -50,6 +50,10 @@ type Fighter7SecondChildContext struct {
 // The main entry itself selects the137f4 hit-stop continuation. It writes its
 // sibling's target before the ground clamp and even if that sibling is empty.
 func StepFighter7FirstChild(object WorldObject, context Fighter7FirstChildContext, environment ChuProjectileEnvironment, library AnimationLibrary) (WorldObject, Fighter7FirstChildContext, ChuProjectileOutcome, error) {
+	return stepFighter7FirstChildWithSound(object, context, environment, library, nil)
+}
+
+func stepFighter7FirstChildWithSound(object WorldObject, context Fighter7FirstChildContext, environment ChuProjectileEnvironment, library AnimationLibrary, soundPort *worldSoundPort) (WorldObject, Fighter7FirstChildContext, ChuProjectileOutcome, error) {
 	original, oldContext := object, context
 	fail := func(err error) (WorldObject, Fighter7FirstChildContext, ChuProjectileOutcome, error) {
 		return original, oldContext, ChuProjectileOutcome{}, err
@@ -137,7 +141,7 @@ func StepFighter7FirstChild(object WorldObject, context Fighter7FirstChildContex
 		}
 	}
 	var err error
-	object, context.Submission, err = submitFighter7Child(object, context.Submission, environment, library)
+	object, context.Submission, err = submitFighter7Child(object, context.Submission, environment, library, soundPort)
 	if err != nil {
 		return fail(err)
 	}
@@ -148,6 +152,10 @@ func StepFighter7FirstChild(object WorldObject, context Fighter7FirstChildContex
 // continuation, following the first child and healing all four nearby parents.
 // Health alone is merged from Fighters; the parent pose is a disjoint view.
 func StepFighter7SecondChild(object WorldObject, context Fighter7SecondChildContext, environment ChuProjectileEnvironment, library AnimationLibrary) (WorldObject, Fighter7SecondChildContext, ChuProjectileOutcome, error) {
+	return stepFighter7SecondChildWithSound(object, context, environment, library, nil)
+}
+
+func stepFighter7SecondChildWithSound(object WorldObject, context Fighter7SecondChildContext, environment ChuProjectileEnvironment, library AnimationLibrary, soundPort *worldSoundPort) (WorldObject, Fighter7SecondChildContext, ChuProjectileOutcome, error) {
 	original, oldContext := object, context
 	fail := func(err error) (WorldObject, Fighter7SecondChildContext, ChuProjectileOutcome, error) {
 		return original, oldContext, ChuProjectileOutcome{}, err
@@ -251,7 +259,7 @@ func StepFighter7SecondChild(object WorldObject, context Fighter7SecondChildCont
 		}
 	}
 	var err error
-	object, context.Submission, err = submitFighter7Child(object, context.Submission, environment, library)
+	object, context.Submission, err = submitFighter7Child(object, context.Submission, environment, library, soundPort)
 	if err != nil {
 		return fail(err)
 	}
@@ -324,8 +332,8 @@ func fighter7ChildOutside(object *WorldObject, environment ChuProjectileEnvironm
 	return y < 0 || x > environment.ArenaRight+32 || x < environment.ArenaLeft-32
 }
 
-func submitFighter7Child(object WorldObject, submission Fighter7ChildSubmission, environment ChuProjectileEnvironment, library AnimationLibrary) (WorldObject, Fighter7ChildSubmission, error) {
-	result, err := SubmitAnimationRecord(AnimationSubmissionState{Actor: object.AsAnimation(), Buffers: submission.Buffers, PendingSound: submission.PendingSound, SoundQueue: submission.SoundQueue}, library)
+func submitFighter7Child(object WorldObject, submission Fighter7ChildSubmission, environment ChuProjectileEnvironment, library AnimationLibrary, soundPort *worldSoundPort) (WorldObject, Fighter7ChildSubmission, error) {
+	result, err := submitAnimationRecordWithSound(AnimationSubmissionState{Actor: object.AsAnimation(), Buffers: submission.Buffers, PendingSound: submission.PendingSound, SoundQueue: submission.SoundQueue}, library, soundPort)
 	if err != nil {
 		return object, submission, err
 	}

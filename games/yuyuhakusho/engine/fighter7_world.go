@@ -5,7 +5,7 @@ func fighter7WorldEnvironment(state *ChuWorldState) ChuProjectileEnvironment {
 		ArenaLeft: state.Camera.Left, ArenaRight: state.Camera.Right, CameraX: state.Camera.X, CameraY: state.Camera.Y, Shake: int16(state.Clock.ScreenShake)}
 }
 
-func stepFighter7WorldFirstChild(state *ChuWorldState, object WorldObject, library AnimationLibrary) ([]ChuWorldEvent, error) {
+func stepFighter7WorldFirstChild(state *ChuWorldState, object WorldObject, library AnimationLibrary, soundPort *worldSoundPort) ([]ChuWorldEvent, error) {
 	parent, err := LookupWorldObject(state.Objects, object.ObjectID-0x100)
 	if err != nil {
 		return nil, err
@@ -17,7 +17,7 @@ func stepFighter7WorldFirstChild(state *ChuWorldState, object WorldObject, libra
 	context := Fighter7FirstChildContext{Parent: Fighter7ChildParent{ObjectID: parent.ObjectID, Pose: parent.Body.Pose},
 		Link:       Fighter7ChildLink{ObjectID: link.ObjectID, VelocityX: link.Body.VelocityX, VerticalVelocity: link.Body.VerticalVelocity, Aux48: link.Aux48},
 		Submission: Fighter7ChildSubmission{Buffers: state.Buffers, PendingSound: state.PendingSound, SoundQueue: state.SoundQueue}}
-	next, context, out, err := StepFighter7FirstChild(object, context, fighter7WorldEnvironment(state), library)
+	next, context, out, err := stepFighter7FirstChildWithSound(object, context, fighter7WorldEnvironment(state), library, soundPort)
 	if err != nil {
 		return nil, err
 	}
@@ -27,7 +27,7 @@ func stepFighter7WorldFirstChild(state *ChuWorldState, object WorldObject, libra
 	return chuWorldPresentation(object.ObjectID, out.Draw, out.ClearedBytes), nil
 }
 
-func stepFighter7WorldSecondChild(state *ChuWorldState, object WorldObject, library AnimationLibrary) ([]ChuWorldEvent, error) {
+func stepFighter7WorldSecondChild(state *ChuWorldState, object WorldObject, library AnimationLibrary, soundPort *worldSoundPort) ([]ChuWorldEvent, error) {
 	parent, err := LookupWorldObject(state.Objects, object.ObjectID-0x200)
 	if err != nil {
 		return nil, err
@@ -53,7 +53,7 @@ func stepFighter7WorldSecondChild(state *ChuWorldState, object WorldObject, libr
 		}
 		context.EffectExtras[i] = Fighter7ChildEffectExtra{VerticalVelocity: o.Body.VerticalVelocity, Delay: o.Body.Clock.Duration}
 	}
-	next, context, out, err := StepFighter7SecondChild(object, context, fighter7WorldEnvironment(state), library)
+	next, context, out, err := stepFighter7SecondChildWithSound(object, context, fighter7WorldEnvironment(state), library, soundPort)
 	if err != nil {
 		return nil, err
 	}

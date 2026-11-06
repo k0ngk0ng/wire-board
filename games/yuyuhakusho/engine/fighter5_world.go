@@ -2,7 +2,7 @@ package engine
 
 import "errors"
 
-func stepFighter5WorldProjectile(state *ChuWorldState, object WorldObject, library AnimationLibrary) ([]ChuWorldEvent, error) {
+func stepFighter5WorldProjectile(state *ChuWorldState, object WorldObject, library AnimationLibrary, soundPort *worldSoundPort) ([]ChuWorldEvent, error) {
 	pool, err := BuildWorldEffectPool(state.Objects, state.EffectCursor)
 	if err != nil {
 		return nil, err
@@ -23,8 +23,8 @@ func stepFighter5WorldProjectile(state *ChuWorldState, object WorldObject, libra
 	view := Fighter5ProjectileState{Visual: fighter1WorldVisual(state, object), VelocityX: object.Body.VelocityX, VerticalVelocity: object.Body.VerticalVelocity,
 		Ground: object.Body.Ground, Aux48: object.Aux48, Gravity: object.Body.Gravity, Depth: object.Body.Depth, Owner: object.DragonBank,
 		Layer: object.Body.Layer, Team: object.Body.Team, ActionKind: object.Body.ActionKind, ContactFlags: object.ContactFlags, HitStopTicks: object.HitStopTicks, Pool: pool}
-	next, parentNext, out, err := StepFighter5Projectile(view, parent, ChuProjectileEnvironment{PauseFlags: state.Clock.PauseFlags, SlowFlag: state.Clock.SlowFlag,
-		PaletteAttributes: state.Match.AttributeMask, ArenaLeft: state.Camera.Left, ArenaRight: state.Camera.Right, CameraX: state.Camera.X, CameraY: state.Camera.Y, Shake: int16(state.Clock.ScreenShake)}, library)
+	next, parentNext, out, err := stepFighter5ProjectileWithSound(view, parent, ChuProjectileEnvironment{PauseFlags: state.Clock.PauseFlags, SlowFlag: state.Clock.SlowFlag,
+		PaletteAttributes: state.Match.AttributeMask, ArenaLeft: state.Camera.Left, ArenaRight: state.Camera.Right, CameraX: state.Camera.X, CameraY: state.Camera.Y, Shake: int16(state.Clock.ScreenShake)}, library, soundPort)
 	if err != nil {
 		return nil, err
 	}

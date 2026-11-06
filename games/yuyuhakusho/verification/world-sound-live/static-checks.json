@@ -1,0 +1,55 @@
+{
+  "gofmt_pass": true,
+  "files": [
+    "games/yuyuhakusho/engine/animation_records.go",
+    "games/yuyuhakusho/engine/chu_action.go",
+    "games/yuyuhakusho/engine/chu_actor.go",
+    "games/yuyuhakusho/engine/chu_attachments.go",
+    "games/yuyuhakusho/engine/chu_projectile.go",
+    "games/yuyuhakusho/engine/chu_session.go",
+    "games/yuyuhakusho/engine/chu_tail.go",
+    "games/yuyuhakusho/engine/chu_world.go",
+    "games/yuyuhakusho/engine/collision_manager.go",
+    "games/yuyuhakusho/engine/effect_motion.go",
+    "games/yuyuhakusho/engine/fighter0_projectile.go",
+    "games/yuyuhakusho/engine/fighter1_projectile.go",
+    "games/yuyuhakusho/engine/fighter2_projectile.go",
+    "games/yuyuhakusho/engine/fighter4_projectile.go",
+    "games/yuyuhakusho/engine/fighter4_world.go",
+    "games/yuyuhakusho/engine/fighter5_projectile.go",
+    "games/yuyuhakusho/engine/fighter5_world.go",
+    "games/yuyuhakusho/engine/fighter7_children.go",
+    "games/yuyuhakusho/engine/fighter7_world.go",
+    "games/yuyuhakusho/engine/fighter8_projectile.go",
+    "games/yuyuhakusho/engine/match_lifecycle.go",
+    "games/yuyuhakusho/engine/match_overlays.go",
+    "games/yuyuhakusho/engine/match_start.go",
+    "games/yuyuhakusho/engine/world_sound_live.go",
+    "games/yuyuhakusho/engine/world_sound_live_test.go",
+    "games/yuyuhakusho/audio/session/world.go",
+    "games/yuyuhakusho/audio/scoreclock/world_sound_live_e2e_test.go"
+  ],
+  "git_diff_check_pass": true,
+  "links": [
+    {
+      "file": "games/yuyuhakusho/verification/world-sound-live/README.md",
+      "target": "FAILURES.md"
+    },
+    {
+      "file": "games/yuyuhakusho/verification/world-sound-live/README.md",
+      "target": "test-first.json"
+    },
+    {
+      "file": "games/yuyuhakusho/verification/world-sound-live/README.md",
+      "target": "test-adapter-correction.json"
+    },
+    {
+      "file": "games/yuyuhakusho/audio/session/README.md",
+      "target": "../../verification/sound-irq-runtime/"
+    },
+    {
+      "file": "games/yuyuhakusho/audio/session/README.md",
+      "target": "../../verification/world-sound-live/README.md"
+    }
+  ]
+}

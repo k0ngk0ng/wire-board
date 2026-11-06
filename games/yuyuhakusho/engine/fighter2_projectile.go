@@ -11,6 +11,10 @@ type Fighter2ProjectileState struct {
 // prefix clear. This object never follows a parent or moves by its velocity.
 // Nonzero hit-stop freezes its clock while animation submission still runs.
 func StepFighter2Projectile(state Fighter2ProjectileState, environment ChuProjectileEnvironment, library AnimationLibrary) (Fighter2ProjectileState, ChuProjectileOutcome, error) {
+	return stepFighter2ProjectileWithSound(state, environment, library, nil)
+}
+
+func stepFighter2ProjectileWithSound(state Fighter2ProjectileState, environment ChuProjectileEnvironment, library AnimationLibrary, soundPort *worldSoundPort) (Fighter2ProjectileState, ChuProjectileOutcome, error) {
 	before := state
 	s := &state.Projectile
 	if s.Stage == 0 {
@@ -64,8 +68,8 @@ func StepFighter2Projectile(state Fighter2ProjectileState, environment ChuProjec
 			s.Pool = pool
 		}
 	}
-	submission, err := SubmitAnimationRecord(AnimationSubmissionState{Actor: s.Animation, Buffers: s.Buffers,
-		PendingSound: s.PendingSound, SoundQueue: s.SoundQueue}, library)
+	submission, err := submitAnimationRecordWithSound(AnimationSubmissionState{Actor: s.Animation, Buffers: s.Buffers,
+		PendingSound: s.PendingSound, SoundQueue: s.SoundQueue}, library, soundPort)
 	if err != nil {
 		return before, ChuProjectileOutcome{}, err
 	}

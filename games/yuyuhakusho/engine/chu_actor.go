@@ -98,6 +98,10 @@ func StepChuActor(state ChuActorState, view ChuActorView, commands CommandLibrar
 // StepFighterActor shares the original complete active-rule callback between
 // sources0..10; drawing, source identity and other callbacks remain caller-owned.
 func StepFighterActor(state ChuActorState, characterID uint8, view ChuActorView, commands CommandLibrary, animations AnimationLibrary) (ChuActorState, ChuActorEmissions, error) {
+	return stepFighterActorWithSound(state, characterID, view, commands, animations, nil)
+}
+
+func stepFighterActorWithSound(state ChuActorState, characterID uint8, view ChuActorView, commands CommandLibrary, animations AnimationLibrary, soundPort *worldSoundPort) (ChuActorState, ChuActorEmissions, error) {
 	original := state
 	if characterID != 0 && characterID != 1 && characterID != 2 && characterID != 3 && characterID != 4 && characterID != 5 && characterID != 6 && characterID != 7 && characterID != 8 && characterID != 9 && characterID != 10 {
 		return original, ChuActorEmissions{}, errors.New("unsupported complete fighter actor source")
@@ -153,7 +157,7 @@ func StepFighterActor(state ChuActorState, characterID uint8, view ChuActorView,
 		if actionErr != nil {
 			return original, ChuActorEmissions{}, actionErr
 		}
-		action, actionErr = StepFighterAction(action, characterID, view.Parameters, commands, animations)
+		action, actionErr = stepFighterActionWithSound(action, characterID, view.Parameters, commands, animations, soundPort)
 		if actionErr != nil {
 			return original, ChuActorEmissions{}, actionErr
 		}
