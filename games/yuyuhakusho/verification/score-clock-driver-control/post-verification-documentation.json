@@ -1,0 +1,11 @@
+{
+  "runtime_and_test_sources_unchanged": true,
+  "documentation_only_updates": {
+    "games/yuyuhakusho/audio/scoreclock/DISPATCH_INIT.md": {
+      "verified_before_sha256": "50888cf5d8c0075487eb5eef65baa955c08048c7bd355e4df1ef4b94a7aa3b4e",
+      "current_sha256": "28e06fe8c60ccc384f823807c8338d689fbb5133b1b528d9f79b29b498f8d0e4",
+      "original_archive": "games/yuyuhakusho/verification/score-clock-driver-control/DISPATCH_INIT.before-control-reference.md.txt"
+    }
+  },
+  "reason": "After all checks completed, the historical initialization profile page was linked to the now-complete control profile. No Go code, test, oracle or verification script changed."
+}

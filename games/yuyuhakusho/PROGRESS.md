@@ -2,7 +2,7 @@
 
 更新：2026-11-06。进度改用[待办清单](../../docs/research/md-yuyuhakusho/TODO.md)，按验收范围勾选。独立 worktree 为 `worktrees/yuyuhakusho`，分支为 `codex/yuyuhakusho`。全 11 人物／8 场地已有独立 Go／Wasm 玩法；游戏已注册到本地平台。逐连接输入增量、真实主机端到端与竞态正确性已验收；正式认证双人房间正常约 60 帧／秒，单端每次 TCP 写入延迟 120 ms 时慢端约 58 帧／秒。改键、虚拟手柄、320px 竖屏／740×360 横屏原生触摸、全屏及重连通过。完整对局音频继续完成；未上传资源、发布或部署。Main 仅按用户要求回馈即时游戏规范、补游戏规范和索引，其他游戏的未提交工作未覆盖。
 
-最新音频进展：正式 catalog 的音乐与 primary 技能音轨初始化已接入同一个整拍执行器，包含音乐切换前停止旧声部、patch／pan 恢复、header 与 claim。63 组完整原版调用通过；音乐初始化后结束当前拍，primary 继续本拍声部扫描。原版对照修正了 all-primary stop 的第三路 PSG 恢复目标，普通 track-end 保持原路径。当前原生竞态与实际 Node/Wasm 各通过 122 个顶层测试、8,273 条 clock／Root 记录，相关 score 契约和 15 条旧音轨的普通／observed 接口检查也通过，无跳过，见[分派初始化验收](verification/score-clock-dispatch-init/)。既有[队列／普通 PCM](verification/score-clock-request-queue/)、[稳定运行整拍](verification/score-clock-running-tick/)和声部检查继续通过。01／05／04 控制指令、非 idle fade／pause、world IRQ、请求生产时刻、联合音频 checkpoint 和平台播放仍待完成。
+最新音频进展：在给定主时钟起点、无额外 IRQ 的 fight profile 中，01／05／04、活动渐弱和暂停 start／hold／resume 已接入同一个 driver／Root，103 组原版完整调用与实际混音存档后继续执行通过。原版对照还修正了 PCM 延迟提交 YM 与较晚 PSG 输入交错时的时间域判断；8 组完整 YM／PSG／FIR／PCM 对照通过，不排序或夹紧事件，不丢失主机争用成本。当前原生竞态与实际 Node/Wasm 各通过 127 个顶层／8,403 条 clock／Root 记录，完整芯片与 mixed 消费者各通过 25 个顶层／184 条记录，无跳过，见[控制整拍](verification/score-clock-driver-control/)和[独立芯片时间域](verification/fmpsg-independent-lanes/)。既有音乐／primary 初始化、队列／普通 PCM、稳定运行拍与声部检查继续通过。world IRQ、请求生产时刻、联合音频 checkpoint 和平台整场播放仍待完成。
 
 ## 当前可运行范围
 

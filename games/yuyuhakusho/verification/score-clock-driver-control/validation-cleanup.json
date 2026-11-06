@@ -1,0 +1,73 @@
+{
+  "pass": true,
+  "all_validation_and_diagnostic_processes_terminal": true,
+  "removed_duplicate_files": [
+    {
+      "path": ".local/md-yuyuhakusho/driver-control-final/native-chips-command.json",
+      "bytes": 68751,
+      "sha256": "de005574f5726ded1b6e321889205a62d3c68a5b75f38e4d1123e3b7ba5b6784"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/driver-control-final/native-chips.jsonl",
+      "bytes": 179999,
+      "sha256": "97ad7da438247e0574ce00f3e66ced6b72ddd5fb736f2c24992a54662f2d1c8b"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/driver-control-final/native-clock-command.json",
+      "bytes": 1568442,
+      "sha256": "a5d2a84032b92743acde115fbf53e96662c7a3bd950cee60136527aec9416551"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/driver-control-final/native-clock.jsonl",
+      "bytes": 8918554,
+      "sha256": "286c5c85e644ba098199db0dbabcc6efaa7927f33c039dc827adba0c1e202607"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/driver-control-final/vet-command.json",
+      "bytes": 38378,
+      "sha256": "1c775256fc8c92e6e034edeb218bcec3e3e080266d32dea7c9c7140c0390d470"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/driver-control-final/vet.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/driver-control-final/wasm-chips-command.json",
+      "bytes": 68860,
+      "sha256": "3cfd0115bdaff7653715ec8bff3ca7dd7fcfc750a2410e41a75076921f530f90"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/driver-control-final/wasm-chips.jsonl",
+      "bytes": 179959,
+      "sha256": "7db2bc1d84b5fc8e458bbeadf7897232fc787005e99b5efbd012ac8df2810e8f"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/driver-control-final/wasm-clock-command.json",
+      "bytes": 1568551,
+      "sha256": "ac1ec79c9b4230bf65dd67f7b3305a1ba95095505ced3a78b85dfdd5f7459938"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/driver-control-final/wasm-clock.jsonl",
+      "bytes": 8911132,
+      "sha256": "7cfc426b6df0380bfccdd08dad37c9d3b8037d1bc227ef5c53c51de365013ffa"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/driver-control-debug/first-trace-diagnostic.go.txt",
+      "bytes": 16562,
+      "sha256": "117df7ae5b2bf7d66bc08235f26d469c127364c7261b9db048c6365128f5c52e"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/driver-control-debug/first-trace-diagnostic.jsonl",
+      "bytes": 8599,
+      "sha256": "28a71d9598ee2dbffd2803d6c6c3799a89c914322be0f3e0deec2cb2c627822e"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/driver-control-debug/overlay.json",
+      "bytes": 315,
+      "sha256": "22b341d91bda6f935f4226f790acbe8e000f9ed817ef6e6e61142d73b0b5f306"
+    }
+  ],
+  "removed_bytes": 21528102,
+  "preserved_directory": "games/yuyuhakusho/verification/score-clock-driver-control"
+}

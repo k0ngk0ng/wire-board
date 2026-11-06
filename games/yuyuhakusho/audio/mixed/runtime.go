@@ -18,7 +18,7 @@ type Config struct {
 }
 
 // State contains each owner's canonical state once. LastPCMWasDAC records only
-// the cause of the current chip Cursor; it adds no clock or output history.
+// the cause of the current YM frontier; it adds no clock or output history.
 type State struct {
 	Version       uint8
 	ChipConfig    chips.Config
@@ -133,21 +133,21 @@ func (r *Runtime) consume(events []pcmcommands.Event) error {
 			if event.Port != 0 && event.Port != 2 {
 				return errors.New("PCM address lacks a physical address port")
 			}
-			err = r.chip.WritePort(at, event.Port, event.Value)
+			err = r.chip.WritePortOnLane(at, event.Port, event.Value)
 		case pcmcommands.DAC, pcmcommands.Pan, pcmcommands.Enable, pcmcommands.YMWrite:
 			if event.Port != 1 && event.Port != 3 {
 				return errors.New("PCM data lacks a physical data port")
 			}
-			err = r.chip.WritePort(at, event.Port, event.Value)
+			err = r.chip.WritePortOnLane(at, event.Port, event.Value)
 		case pcmcommands.Reset:
-			cursor := r.chip.Snapshot().Cursor
+			cursor := r.chip.YMInputCursor()
 			if at < cursor {
 				if !r.lastPCMWasDAC {
 					return errors.New("backwards reset lacks a completed PCM DAC cause")
 				}
-				err = r.chip.ResetYMAfterDAC(at, cursor)
+				err = r.chip.ResetYMAfterDACOnLane(at, cursor)
 			} else {
-				err = r.chip.ResetYM(at)
+				err = r.chip.ResetYMOnLane(at)
 			}
 		default:
 			return fmt.Errorf("unsupported PCM physical event %q", event.Kind)
@@ -225,10 +225,10 @@ func (r *Runtime) WritePSG(at uint64, value uint8) error {
 		if err != nil {
 			return err
 		}
-		if err = next.chip.WritePSG(cycle, value); err != nil {
+		if err = next.chip.WritePSGOnLane(cycle, value); err != nil {
 			return err
 		}
-		next.lastPCMWasDAC = false
+		// PSG has its own timeline and does not replace the last YM cause.
 		return nil
 	})
 }
@@ -257,12 +257,12 @@ func (r *Runtime) finish(protocol pcmcommands.Frame) (Frame, error) {
 	if err := r.consume(protocol.Ledger); err != nil {
 		return Frame{}, err
 	}
-	before := r.chip.Snapshot().Cursor
+	before := r.chip.YMInputCursor()
 	frame, err := r.chip.FrameBoundary()
 	if err != nil {
 		return Frame{}, err
 	}
-	if r.chip.Snapshot().Cursor != before {
+	if r.chip.YMInputCursor() != before {
 		r.lastPCMWasDAC = false
 	}
 	return Frame{PCM: frame.PCM, Protocol: protocol}, nil

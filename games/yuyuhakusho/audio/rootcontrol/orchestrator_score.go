@@ -85,10 +85,9 @@ func (r *ruleTick) fullClear(tx *score.TickTransaction) error {
 	if err := r.write(score.Intent{Kind: "ym", Register: 0x27}); err != nil {
 		return err
 	}
-	if err := r.emit(RuleOperation{Kind: RuleBulkClear, HeaderLongs: 16, VoiceLongs: 216}); err != nil {
+	if err := r.ruleEffect(RuleOperation{Kind: RuleBulkClear, HeaderLongs: 16, VoiceLongs: 216}, r.hooks.BulkClear, func() error { r.clearHeader(); return nil }); err != nil {
 		return err
 	}
-	r.clearHeader()
 	if err := tx.ApplyMusicControl(score.ActionResetScore); err != nil {
 		return err
 	}
@@ -108,16 +107,18 @@ func (r *ruleTick) fullClear(tx *score.TickTransaction) error {
 
 func (r *ruleTick) fade(tx *score.TickTransaction, result FadeResult) error {
 	for _, w := range result.Writes[:result.WriteCount] {
-		if err := r.emit(RuleOperation{Kind: RuleFadeWrite, FadeWrite: w}); err != nil {
+		if err := r.ruleEffect(RuleOperation{Kind: RuleFadeWrite, FadeWrite: w}, r.hooks.FadeWrite, func() error {
+			switch w.Counter {
+			case FadeRemainingCounter:
+				r.root.Fade.Remaining = w.Value
+			case FadeStepsCounter:
+				r.root.Fade.Steps = w.Value
+			default:
+				return fmt.Errorf("%w: unknown fade counter", ErrRuleUnsupported)
+			}
+			return nil
+		}); err != nil {
 			return err
-		}
-		switch w.Counter {
-		case FadeRemainingCounter:
-			r.root.Fade.Remaining = w.Value
-		case FadeStepsCounter:
-			r.root.Fade.Steps = w.Value
-		default:
-			return fmt.Errorf("%w: unknown fade counter", ErrRuleUnsupported)
 		}
 	}
 	switch result.Action {

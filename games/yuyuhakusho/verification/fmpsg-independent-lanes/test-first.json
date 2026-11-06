@@ -1,0 +1,14 @@
+{
+  "test_first": true,
+  "production_exists": false,
+  "production_files": [
+    "games/yuyuhakusho/audio/chips/independent.go"
+  ],
+  "files": {
+    "games/yuyuhakusho/audio/chips/independent_lanes_e2e_test.go": "465980ee910098913047033539a3c3e9cabb6995f2dfc98c97df614a2a4a6e25",
+    "docs/research/md-yuyuhakusho/MIXED_INDEPENDENT_LANES_FAILURES.md": "8680b3e6d03ae2a7961a068ad553d8a85c253213391661a4ebae962765a899af",
+    "scripts/yuyuhakusho/fmpsg-independent-lanes-capture.py": "81c5ee28e33dcbc8fab457bb587fafc68900d1469734eb896280366f6712f6c3",
+    "games/yuyuhakusho/verification/fmpsg-independent-lanes/native.json.gz": "0a97a810a3c3cc873f21fce6c9f062b4a4ccc58c092d89485347a99c96b477e1",
+    "games/yuyuhakusho/verification/fmpsg-independent-lanes/native-capture.json": "0f3b22b88192707580b7a8570a5490a2342dc0dc2bf5b8373d537490991b3146"
+  }
+}

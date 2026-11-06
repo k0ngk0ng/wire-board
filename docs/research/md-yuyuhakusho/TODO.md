@@ -11,7 +11,8 @@
 - [x] 初始无新请求的稳定运行整拍，串联 header、tempo、18 个声部和 return；307 组原版整拍对照通过，原生竞态与 Wasm 各通过 7,794 条记录。见[稳定运行整拍验收](../../../games/yuyuhakusho/verification/score-clock-running-tick/)。
 - [x] 实际队列消费与普通 PCM 请求整拍；287 组队列和 122 组完整请求原版对照通过，当前原生竞态与 Wasm 各通过 8,206 条 clock／Root 记录。见[请求消费与普通分派验收](../../../games/yuyuhakusho/verification/score-clock-request-queue/)。
 - [x] 音乐／primary 技能音轨初始化、切换前停止与恢复；63 组完整原版调用通过，当前原生竞态与 Wasm 各通过 8,273 条 clock／Root 记录。见[分派初始化验收](../../../games/yuyuhakusho/verification/score-clock-dispatch-init/)。
-- [ ] 接通 01／05／04 控制指令与非 idle fade／pause，完成 driver／Root（当前）。
+- [x] 无额外 IRQ 的 driver／Root 控制、渐弱与暂停恢复；103 组原版完整调用、实际混音存档继续执行通过，原生竞态与 Wasm 各通过 8,403 条 clock／Root 记录。见[控制整拍验收](../../../games/yuyuhakusho/verification/score-clock-driver-control/)。
+- [x] FM／PSG 独立输入时间域；8 组完整原版混音对照通过，两端各通过 184 条芯片／混音检查。见[独立时间域验收](../../../games/yuyuhakusho/verification/fmpsg-independent-lanes/)。
 - [ ] 接通 world IRQ、请求生产时刻和联合音频 checkpoint。
 - [ ] 接入平台播放器，按需加载并发布无损压缩资源。
 - [ ] 完成浏览器整场对局、混合音频、暂停恢复、重连及加载验收。

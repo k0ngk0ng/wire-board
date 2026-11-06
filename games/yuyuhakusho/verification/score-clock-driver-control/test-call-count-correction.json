@@ -1,0 +1,22 @@
+{
+  "reason": "Existing FinishSuspended counts one actual driver invocation; only musical parameters/counters suspend. Frozen test incorrectly compared the call counter unchanged. Corrected only call-count expectations in the new checkpoint E2E; every other score field and IO assertion retained.",
+  "original_test_archive": "games/yuyuhakusho/verification/score-clock-driver-control/driver_control_e2e_test.before-call-count-correction.txt",
+  "original_test_sha256": "b685bec48d0653a539974ed86a64f8ca467d1d6f9499fcbd97efb2483473f1a7",
+  "current_test": "games/yuyuhakusho/audio/scoreclock/driver_control_e2e_test.go",
+  "current_test_sha256": "63ce606be6f78c5edd64c7f92ac99df3473197bb6f0d2b12de0c9d43e9973142",
+  "baseline_contract_sources": {
+    "games/yuyuhakusho/audio/score/transaction.go": "d73c1508d44a1d4a7a7fff06769b0ca3555a3c276b2d528977d598be35a68525",
+    "games/yuyuhakusho/audio/rootcontrol/orchestrator_test.go": "e1810e2216384bd5d767fac6c8dc1a8252ed94f6303cfc2457f24726c4345f9f",
+    "games/yuyuhakusho/audio/rootcontrol/orchestrator_e2e_v3_test.go": "458d67d0dcfaec6337f7ce83a130a914470cda85ffc36b4cf42b416fac2ab2bf"
+  },
+  "native_oracle_changed": false,
+  "production_changed_for_test_correction": false,
+  "exact_diff": {
+    "path": "games/yuyuhakusho/verification/score-clock-driver-control/test-call-count-correction.diff.gz",
+    "raw_sha256": "566618ed6ef837ec566bf26c3719e0aeabdcad214a899f25cad398832300edcf",
+    "gzip_sha256": "78aa1aa2a0a8617ae80f565ceac0d3eefd2185ba9ee912f924c7715e9c973f98",
+    "raw_bytes": 1954,
+    "gzip_bytes": 665,
+    "reason": "Lossless packaging preserves required unified-diff context prefixes without treating them as source indentation."
+  }
+}

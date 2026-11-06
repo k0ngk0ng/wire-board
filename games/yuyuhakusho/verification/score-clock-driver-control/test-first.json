@@ -1,0 +1,16 @@
+{
+  "test_first": true,
+  "production_exists": false,
+  "production_files": [
+    "games/yuyuhakusho/audio/scoreclock/driver_control.go",
+    "games/yuyuhakusho/audio/rootcontrol/rule_effect.go",
+    "games/yuyuhakusho/audio/mixed/pause_levels.go"
+  ],
+  "files": {
+    "docs/research/md-yuyuhakusho/SCORE_CLOCK_DRIVER_CONTROL_FAILURES.md": "82fb53ef009456339ccacbc2bd408a1f222a5f40301b61a7eb89d41dbae04679",
+    "games/yuyuhakusho/audio/scoreclock/driver_control_e2e_test.go": "b685bec48d0653a539974ed86a64f8ca467d1d6f9499fcbd97efb2483473f1a7",
+    "scripts/yuyuhakusho/score-clock-driver-control-capture.py": "5c04137db296be6e0fc303bba991f98cf0b84fa2e34d88a7d1e4dd903db81587",
+    "games/yuyuhakusho/verification/score-clock-driver-control/native-driver-control-full.json.gz": "f2ea40ecb7ca75f439fbd6a3f2eebfe8fd6b753eb4f9e5880a3b3f43fc59f023",
+    "games/yuyuhakusho/verification/score-clock-driver-control/case-export-source.go.txt": "7b22192ea4cd5f1b563db2813680362b1e83cb57bab1481bea5667c366b700b8"
+  }
+}

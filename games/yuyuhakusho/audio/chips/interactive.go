@@ -15,6 +15,7 @@ import (
 type InteractiveState struct {
 	Time         uint64
 	Cursor       uint64
+	YMLag        uint64 `json:"YMLag,omitempty"`
 	InputCount   uint16
 	FMGenerated  uint16
 	YM           YMState
@@ -66,6 +67,9 @@ func validInteractive(config Config, state InteractiveState) error {
 	if state.Cursor < state.Time || (state.Cursor > end && state.Cursor-end > MaxInputAhead) {
 		return errors.New("interactive raw cursor out of bounds")
 	}
+	if state.YMLag > state.Cursor-state.Time || state.YMLag != 0 && state.Cursor != state.PSG.Cursor {
+		return errors.New("invalid independent YM frontier")
+	}
 	if _, ok = plus(config.MasterOrigin, state.Cursor); !ok {
 		return errors.New("interactive origin+cursor overflow")
 	}
@@ -106,7 +110,7 @@ func validInteractive(config Config, state InteractiveState) error {
 	}
 	if state.FMGenerated != 0 {
 		last, ok := plus(first, uint64(state.FMGenerated-1)*ChipPeriod)
-		if !ok || last >= state.Cursor {
+		if !ok || last >= state.Cursor-state.YMLag {
 			return errors.New("interactive FM progress exceeds actual raw input")
 		}
 	}
@@ -165,7 +169,7 @@ func (active *Interactive) Snapshot() InteractiveState { return cloneInteractive
 // the instance. In-flight FIR data cannot silently be squeezed into18 cells.
 func (active *Interactive) CommittedState() (State, error) {
 	state := active.state
-	if state.InputCount != 0 {
+	if state.InputCount != 0 || state.YMLag != 0 {
 		return State{}, errors.New("interactive frame must be flushed before exporting committed state")
 	}
 	result := State{Time: state.Time, YM: state.YM, PSG: state.PSG, LastFMOutput: state.LastFMOutput, Integrator: state.Integrator, InputAhead: uint32(state.Cursor - state.Time), BusyUntil: state.BusyUntil}
@@ -269,6 +273,9 @@ func generateFM(config Config, state *InteractiveState, chip *YM, to uint64) ([]
 }
 
 func (active *Interactive) validateEvent(event Event) error {
+	return active.validateEventOnLanes(event, false)
+}
+func (active *Interactive) validateEventOnLanes(event Event, independent bool) error {
 	state := &active.state
 	if state.InputCount >= MaxPendingEvents {
 		return errors.New("interactive input capacity reached before frame flush")
@@ -277,7 +284,14 @@ func (active *Interactive) validateEvent(event Event) error {
 	if !ok {
 		return errors.New("interactive frame end overflow")
 	}
-	if event.Cycle < state.Cursor || (event.Cycle > end && event.Cycle-end > MaxInputAhead) {
+	frontier := state.Cursor
+	if independent {
+		frontier = active.YMInputCursor()
+		if event.Kind == PSGByteWrite {
+			frontier = state.PSG.Cursor
+		}
+	}
+	if event.Cycle < state.Time || event.Cycle < frontier || (event.Cycle > end && event.Cycle-end > MaxInputAhead) {
 		return errors.New("interactive input time out of order/bounds")
 	}
 	if _, ok = plus(active.config.MasterOrigin, event.Cycle); !ok {
@@ -303,10 +317,14 @@ func (active *Interactive) validateEvent(event Event) error {
 }
 
 func (active *Interactive) event(event Event) (uint8, error) {
-	if err := active.validateEvent(event); err != nil {
+	return active.eventOnLanes(event, false)
+}
+func (active *Interactive) eventOnLanes(event Event, independent bool) (uint8, error) {
+	if err := active.validateEventOnLanes(event, independent); err != nil {
 		return 0, err
 	}
 	next := active.state // FIR slices remain owned by active until all plans pass.
+	ymFrontier := active.YMInputCursor()
 	chip := YM{state: next.YM}
 	var edges []psg.Edge
 	var err error
@@ -359,7 +377,14 @@ func (active *Interactive) event(event Event) (uint8, error) {
 		return 0, err
 	}
 	next.YM = chip.state
-	next.Cursor = event.Cycle
+	if independent || next.YMLag != 0 {
+		if event.Kind != PSGByteWrite {
+			ymFrontier = event.Cycle
+		}
+		setYMFrontier(&next, ymFrontier)
+	} else {
+		next.Cursor = event.Cycle
+	}
 	next.InputCount++
 	applyFIR(&next, plan)
 	active.state = next
@@ -382,6 +407,7 @@ func (active *Interactive) ReadStatus(cycle uint64, port uint8) (uint8, error) {
 // loop to finish and never replays already returned reads. A caller may flush
 // after a bounded raw overrun, then continue at the same or a later raw cycle.
 func (active *Interactive) FrameBoundary() (Frame, error) {
+	ymFrontier := active.YMInputCursor()
 	end, ok := plus(active.state.Time, FrameCycles)
 	if !ok {
 		return Frame{}, errors.New("interactive frame end overflow")
@@ -445,6 +471,10 @@ func (active *Interactive) FrameBoundary() (Frame, error) {
 	}
 	next.YM = chip.state
 	next.PSG = psgChip.Snapshot()
+	if ymFrontier < end {
+		ymFrontier = end
+	}
+	setYMFrontier(&next, ymFrontier)
 	if err = validInteractive(active.config, next); err != nil {
 		return Frame{}, err
 	}

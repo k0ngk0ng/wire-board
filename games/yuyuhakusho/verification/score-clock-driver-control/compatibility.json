@@ -1,0 +1,50 @@
+{
+  "parent_commit": "30453c4dd9fde7573f5efc5b4e1c2cf8fdf7b049",
+  "before_sources": {
+    "games/yuyuhakusho/audio/rootcontrol/orchestrator.go": {
+      "archive": "games/yuyuhakusho/verification/score-clock-driver-control/orchestrator.before-driver-control.txt",
+      "baseline_sha256": "b997acbad57b16d1232adb31fe385f7c54f42a1cfcb987db03e8552778c7d7bc"
+    },
+    "games/yuyuhakusho/audio/rootcontrol/orchestrator_score.go": {
+      "archive": "games/yuyuhakusho/verification/score-clock-driver-control/orchestrator_score.before-driver-control.txt",
+      "baseline_sha256": "993b1aaf7bfa1c262ffc50ba03440cf50afb866a4c156eb5798b18712e556ff5"
+    },
+    "games/yuyuhakusho/audio/scoreclock/request_tick.go": {
+      "archive": "games/yuyuhakusho/verification/score-clock-driver-control/request_tick.before-driver-control.txt",
+      "baseline_sha256": "284ea2aae72ff91be692ee7539c28bbfa4c389f54675bb904e36bee37e14d273"
+    },
+    "games/yuyuhakusho/audio/scoreclock/running_tick.go": {
+      "archive": "games/yuyuhakusho/verification/score-clock-driver-control/running_tick.before-driver-control.txt",
+      "baseline_sha256": "d22d5b97cad59ac8697759ec4a5a0955b14652ab922e13d13d0335d462f69c35"
+    },
+    "games/yuyuhakusho/audio/scoreclock/pause.go": {
+      "archive": "games/yuyuhakusho/verification/score-clock-driver-control/pause.before-driver-control.txt",
+      "baseline_sha256": "f173123028a6f60f086446028ef5230670707f65a027954d06712d62482e04b6"
+    },
+    "games/yuyuhakusho/audio/scoreclock/psg.go": {
+      "archive": "games/yuyuhakusho/verification/score-clock-driver-control/psg.before-driver-control.txt",
+      "baseline_sha256": "a6b2458ae6ca2648644344c7da2e792ca0b0bc11831abd9156bcbdf157934fe6"
+    },
+    "games/yuyuhakusho/audio/scoreclock/envelope.go": {
+      "archive": "games/yuyuhakusho/verification/score-clock-driver-control/envelope.before-driver-control.txt",
+      "baseline_sha256": "309c46bd28a1548a1f1610cdd6f849516e2befd268dddf69b8fc12771f43d299"
+    },
+    "games/yuyuhakusho/audio/chips/interactive.go": {
+      "archive": "games/yuyuhakusho/verification/fmpsg-independent-lanes/interactive.before-independent.txt",
+      "baseline_sha256": "44b2f607d2bf405b5e693c1cf9000f0a3d07571c4f67bf51c929914e4dade824"
+    },
+    "games/yuyuhakusho/audio/chips/reset.go": {
+      "archive": "games/yuyuhakusho/verification/fmpsg-independent-lanes/reset.before-independent.txt",
+      "baseline_sha256": "4ed69e716ebce21da50189443ba8d07fa283a145a4f61e08dbbd4f3328f98bfe"
+    },
+    "games/yuyuhakusho/audio/mixed/runtime.go": {
+      "archive": "games/yuyuhakusho/verification/fmpsg-independent-lanes/runtime.before-independent.txt",
+      "baseline_sha256": "681fcac2494a7efc5c4855db38a4d536331855e17326ea8741c63705db637ab3"
+    }
+  },
+  "score_and_root_state_layouts_unchanged": true,
+  "all_previous_clock_root_test_names_retained": true,
+  "native_oracles_unchanged_after_implementation": true,
+  "new_test_correction": "Only actual-driver-call counter expectations, with frozen original archive and unchanged pre-existing contract proof.",
+  "chip_state_extension": "YMLag stores irreducible relative YM frontier only when hidden behind PSG; legacy strict entry points and zero-lag serialization retained."
+}
