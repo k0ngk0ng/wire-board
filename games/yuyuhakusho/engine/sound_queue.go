@@ -14,35 +14,8 @@ type SoundPriorityState struct {
 // invocation timing, selected-sound playback and synthesis are separate stages.
 // Queue positions retain their original A..D ordering and are scanned D..A.
 func ConsumeSoundQueue(state SoundPriorityState, priorities SoundPriorityTable) SoundPriorityState {
-	candidate := state.CurrentPriority
-	for slot := len(state.Queue) - 1; slot >= 0; slot-- {
-		code := state.Queue[slot]
-		state.Queue[slot] = 0
-		if code == 0 {
-			continue
-		}
-		priority := priorities[code-1]
-		if priority == 255 {
-			state.SelectedSound = code
-			// The special branch bypasses the final priority write. Remaining
-			// lower slots keep only further special requests for later calls.
-			for lower := slot - 1; lower >= 0; lower-- {
-				queued := state.Queue[lower]
-				if queued == 0 || priorities[queued-1] != 255 {
-					state.Queue[lower] = 0
-				}
-			}
-			return state
-		}
-		if priority&127 >= candidate&127 {
-			candidate = priority
-			state.SelectedSound = code
-		}
-	}
-	// Selection compares masked priorities; the unmasked candidate's sign
-	// independently decides whether the current-priority byte is committed.
-	if candidate < 128 {
-		state.CurrentPriority = candidate
-	}
+	// The observed implementation is the same canonical rule on local value
+	// owners; the legacy pure interface retains its exact result contract.
+	_ = ConsumeSoundQueueObserved(SoundQueueOwners{Priority: &state.CurrentPriority, Selected: &state.SelectedSound, Queue: &state.Queue}, priorities, nil)
 	return state
 }

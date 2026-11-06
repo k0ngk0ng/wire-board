@@ -9,7 +9,9 @@
 - [x] 串联新音符解析、参数、资源及 FM／PSG／DAC 后处理；1,095 组原版整段调用对照通过，原生竞态与 Wasm 各通过 7,262 条测试记录。见[新音符声部验收](../../../games/yuyuhakusho/verification/score-clock-note-voice/)。
 - [x] 音轨结束、优先级／队列更新和被占用声部恢复；119 组原版终止调用对照通过，原生竞态与 Wasm 各通过 7,485 条测试记录。见[终止与恢复验收](../../../games/yuyuhakusho/verification/score-clock-track-end/)。
 - [x] 初始无新请求的稳定运行整拍，串联 header、tempo、18 个声部和 return；307 组原版整拍对照通过，原生竞态与 Wasm 各通过 7,794 条记录。见[稳定运行整拍验收](../../../games/yuyuhakusho/verification/score-clock-running-tick/)。
-- [ ] 接通完整 driver／Root、world IRQ、请求消费顺序和联合音频 checkpoint（当前）。
+- [x] 实际队列消费与普通 PCM 请求整拍；287 组队列和 122 组完整请求原版对照通过，当前原生竞态与 Wasm 各通过 8,206 条 clock／Root 记录。见[请求消费与普通分派验收](../../../games/yuyuhakusho/verification/score-clock-request-queue/)。
+- [ ] 接通剩余音乐／primary／控制指令和非 idle fade／pause，完成 driver／Root（当前）。
+- [ ] 接通 world IRQ、请求生产时刻和联合音频 checkpoint。
 - [ ] 接入平台播放器，按需加载并发布无损压缩资源。
 - [ ] 完成浏览器整场对局、混合音频、暂停恢复、重连及加载验收。
 

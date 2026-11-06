@@ -1,0 +1,57 @@
+{
+  "pass": true,
+  "removed_duplicate_final_files": [
+    {
+      "path": ".local/md-yuyuhakusho/request-queue-final/engine-native-command.json",
+      "bytes": 34208,
+      "sha256": "bbd1885592932504b38dac3352af654049709a6e958a56091d3a20154a83a6f2"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/request-queue-final/engine-native.jsonl",
+      "bytes": 6534,
+      "sha256": "9eca721fcc51c1b73c223c5f8921a0eda25921d1c5e78d512c038508f0f4847d"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/request-queue-final/engine-wasm-command.json",
+      "bytes": 34316,
+      "sha256": "ea50fc03219ccc0a72125d5707779d02c5b8d17bcfbd5545aee50242710ac4a3"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/request-queue-final/engine-wasm.jsonl",
+      "bytes": 6534,
+      "sha256": "b531c1aa172edd74369c0057221464c91dcd6f62ec8c7a2461f74a73450cafdd"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/request-queue-final/native-command.json",
+      "bytes": 1527942,
+      "sha256": "405cb142063e6a97de1520d9b9b7b491f3ebc486c23ca46eab326b001e54640d"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/request-queue-final/native.jsonl",
+      "bytes": 8711631,
+      "sha256": "34f26eeb6bb1a4425d2727d97dbe04dfa73db9eeb04cf425e64680b438fd86a8"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/request-queue-final/vet-command.json",
+      "bytes": 33283,
+      "sha256": "17daa9cd274f5949b9236f9a421173793101fae4bfe7cff03d46046d03a2415f"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/request-queue-final/vet.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/request-queue-final/wasm-command.json",
+      "bytes": 1528050,
+      "sha256": "81e7ba1597906823d9f81fd3c16e50d79fe412f00edffe5a3dfda4e9873cb071"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/request-queue-final/wasm.jsonl",
+      "bytes": 8704367,
+      "sha256": "2af2761c7765b8759590b1c40f4925a4ecec05854ae013c2ffc28b72bc7c701c"
+    }
+  ],
+  "removed_bytes": 20586865,
+  "preserved_directory": "games/yuyuhakusho/verification/score-clock-request-queue"
+}

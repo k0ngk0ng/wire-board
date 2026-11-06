@@ -202,8 +202,9 @@ func (r *ruleTick) normal(tx *score.TickTransaction, priorities engine.SoundPrio
 	if err := r.emit(RuleOperation{Kind: RuleConsumeQueue}); err != nil {
 		return err
 	}
-	view := engine.ConsumeSoundQueue(engine.SoundPriorityState{CurrentPriority: r.root.Priority, SelectedSound: r.root.Selected, Queue: *r.owners.Queue}, priorities)
-	r.root.Priority, r.root.Selected, *r.owners.Queue = view.CurrentPriority, view.SelectedSound, view.Queue
+	if err := r.consumeQueue(priorities); err != nil {
+		return err
+	}
 	if err := r.enter(RuleDispatch); err != nil {
 		return err
 	}

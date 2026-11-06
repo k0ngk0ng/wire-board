@@ -2,7 +2,7 @@
 
 更新：2026-11-06。进度改用[待办清单](../../docs/research/md-yuyuhakusho/TODO.md)，按验收范围勾选。独立 worktree 为 `worktrees/yuyuhakusho`，分支为 `codex/yuyuhakusho`。全 11 人物／8 场地已有独立 Go／Wasm 玩法；游戏已注册到本地平台。逐连接输入增量、真实主机端到端与竞态正确性已验收；正式认证双人房间正常约 60 帧／秒，单端每次 TCP 写入延迟 120 ms 时慢端约 58 帧／秒。改键、虚拟手柄、320px 竖屏／740×360 横屏原生触摸、全屏及重连通过。完整对局音频继续完成；未上传资源、发布或部署。Main 仅按用户要求回馈即时游戏规范、补游戏规范和索引，其他游戏的未提交工作未覆盖。
 
-最新音频进展：初始 queue 为空、selected 为 FF、fade／pause／control 为 idle 的完整稳定运行拍已接通，串联 gate、header、tempo、18 个声部、终止恢复及 return，共用一个临时 clock／refresh／预算。307 组原版整拍 IO 与结束时刻一致；原生竞态与实际 Node/Wasm 各通过 115 个顶层测试、7,794 条记录，无跳过，见[稳定运行整拍验收](verification/score-clock-running-tick/)。既有声部与 Root 检查继续通过。待消费新请求、dispatch／header、非 idle fade／pause、world IRQ、联合音频 checkpoint 和平台播放仍待完成。
+最新音频进展：实际队列消费、普通 PCM 仲裁与发布已接入同一个整拍执行器，所有阶段与后续 18 个声部共用一个临时 clock／refresh／预算。287 组队列和 122 组完整普通请求的字段访问、IO、发布区间及结束时刻与原版一致，包含黑龙 F0；队列规则另对照全部 12,156 个既有边界输入。当前原生竞态与实际 Node/Wasm 各通过 118 个顶层测试、8,206 条 clock／Root 记录，独立 engine 队列检查各通过 4 个顶层／6 条记录，无跳过，见[请求消费与普通分派验收](verification/score-clock-request-queue/)。既有[稳定运行整拍](verification/score-clock-running-tick/)和声部检查继续通过。剩余音乐／primary／控制指令、非 idle fade／pause、world IRQ、请求生产时刻、联合音频 checkpoint 和平台播放仍待完成。
 
 ## 当前可运行范围
 
