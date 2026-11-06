@@ -1,0 +1,13 @@
+{
+  "test_first": true,
+  "production_exists": false,
+  "head": "99116dd36e439cc8fa229230f2714cb9ffd010c7",
+  "files": {
+    "games/yuyuhakusho/engine/irq_acceptance_test.go": "e2e15596382b67a0285583c7a6f7c76c5f4b971c600a266901ef753aa2fd1450",
+    "scripts/yuyuhakusho/capture_world_irq_acceptance.py": "e5646cf0b8ea9542697c14c8e08fb614fc615a293ea87f5b113c4fa65c42eb02",
+    "games/yuyuhakusho/verification/world-irq-acceptance/FAILURES.md": "7cceec2f43f4fea3dd20237975295fc853bf1148ce2f733f2e860818b2054fd0",
+    "games/yuyuhakusho/verification/world-irq-acceptance/architecture.json": "0f4d180aeb7d0033235e06b31712cbc16c91a07862c65a7056ed30c80105c35b",
+    "games/yuyuhakusho/verification/world-irq-acceptance/native-irq-acceptance.json.gz": "6bcf0f9e79a5959203ffcd4a43c45c3e3cd950524421967ebcb3fb7eb458b83a",
+    "games/yuyuhakusho/verification/world-irq-acceptance/capture.json": "becb98112983c2c7670ad5a7ac1982a2d67306906dd1c635722de81f74298d7e"
+  }
+}

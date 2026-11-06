@@ -1,0 +1,21 @@
+{
+  "pass": true,
+  "ordinary_irq_cpu_cycles_by_phase": [
+    50,
+    59,
+    58,
+    57,
+    56,
+    55,
+    54,
+    53,
+    52,
+    51
+  ],
+  "source_phase": "floor(master_cycle/7) modulo 10",
+  "acceptance": "normal battle level 4 or 6 strictly greater than current mask",
+  "refresh_changes": false,
+  "deferred_write_irq_included": false,
+  "source": ".local/md-yuyuhakusho/tools/Genesis-Plus-GX-60bee4c724859710ce05672239e5b601ad01382e/core/m68k/m68kcpu.h",
+  "source_sha256": "6f2fc0979153d994b4ba539aa51bc0da4b8ff089e174d4cc07aee1f537643827"
+}

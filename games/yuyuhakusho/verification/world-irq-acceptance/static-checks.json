@@ -1,0 +1,10 @@
+{
+  "gofmt_pass": true,
+  "files": [
+    "games/yuyuhakusho/engine/irq_acceptance.go",
+    "games/yuyuhakusho/engine/irq_acceptance_test.go"
+  ],
+  "git_diff_check_pass": true,
+  "old_tracked_production_tests_fixtures_unchanged": true,
+  "only_modified_tracked_file": "rules/yuyuhakusho.md"
+}
