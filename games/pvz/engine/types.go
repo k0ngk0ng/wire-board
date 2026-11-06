@@ -159,35 +159,35 @@ type Zombie struct {
 	Flags             map[string]int64 `json:"flags,omitempty"`
 }
 type Projectile struct {
-	ID        int    `json:"id"`
-	Owner     int    `json:"owner"`
-	Row       int    `json:"row"`
-	X         int    `json:"x"`
-	Kind      string `json:"kind"`
-	Damage    int    `json:"damage"`
-	Y         int    `json:"y"`
-	MotionX   int    `json:"motionX,omitempty"`
-	MotionY   int    `json:"motionY,omitempty"`
-	MotionHeight int `json:"motionHeight,omitempty"`
-	VX        int    `json:"vx,omitempty"`
-	VY        int    `json:"vy,omitempty"`
-	TargetX   int    `json:"targetX,omitempty"`
-	TargetY   int    `json:"targetY,omitempty"`
-	LandAt    int64  `json:"landAt,omitempty"`
-	Height    int    `json:"height,omitempty"`
-	Radius    int    `json:"radius,omitempty"`
-	Pierce    bool   `json:"pierce,omitempty"`
-	Payload   string `json:"payload,omitempty"`
-	TargetID  int    `json:"targetId,omitempty"`
-	BornAt    int64  `json:"bornAt"`
-	Hits      []int  `json:"hits,omitempty"`
-	Remaining int    `json:"remaining,omitempty"`
+	ID           int    `json:"id"`
+	Owner        int    `json:"owner"`
+	Row          int    `json:"row"`
+	X            int    `json:"x"`
+	Kind         string `json:"kind"`
+	Damage       int    `json:"damage"`
+	Y            int    `json:"y"`
+	MotionX      int    `json:"motionX,omitempty"`
+	MotionY      int    `json:"motionY,omitempty"`
+	MotionHeight int    `json:"motionHeight,omitempty"`
+	VX           int    `json:"vx,omitempty"`
+	VY           int    `json:"vy,omitempty"`
+	TargetX      int    `json:"targetX,omitempty"`
+	TargetY      int    `json:"targetY,omitempty"`
+	LandAt       int64  `json:"landAt,omitempty"`
+	Height       int    `json:"height,omitempty"`
+	Radius       int    `json:"radius,omitempty"`
+	Pierce       bool   `json:"pierce,omitempty"`
+	Payload      string `json:"payload,omitempty"`
+	TargetID     int    `json:"targetId,omitempty"`
+	BornAt       int64  `json:"bornAt"`
+	Hits         []int  `json:"hits,omitempty"`
+	Remaining    int    `json:"remaining,omitempty"`
 }
 type Mower struct {
-	Row   int    `json:"row"`
-	State string `json:"state"`
-	X     int    `json:"x"`
-	MotionX int  `json:"motionX,omitempty"`
+	Row     int    `json:"row"`
+	State   string `json:"state"`
+	X       int    `json:"x"`
+	MotionX int    `json:"motionX,omitempty"`
 }
 type Event struct {
 	ID     int64  `json:"id"`

@@ -6,7 +6,9 @@ import json
 import os
 from pathlib import Path
 import re
+import shutil
 import subprocess
+import sys
 
 ROOT = Path(__file__).resolve().parents[2]
 POKER = ('doudizhu', 'guandan', 'shengji')
@@ -142,6 +144,47 @@ def frontend_tests(root, game):
     return sorted([*(base/'tests').glob('*.test.mjs'),
                    *(base/'web').glob('*.test.mjs')])
 
+def prepare_pvz_asset_tools(root):
+    output = root/'.local/pvz/ci-assets'
+    output.mkdir(parents=True, exist_ok=True)
+    result = output/'prepare-result.json'
+    report = {'passed': False, 'python': sys.version.split()[0]}
+    result.write_text(json.dumps(report, indent=2)+'\n')
+    try:
+        selected = shutil.which('ffmpeg')
+        report['source'] = 'system'
+        if not selected:
+            from importlib.metadata import version
+            import imageio_ffmpeg
+            if version('imageio-ffmpeg') != '0.6.0':
+                raise RuntimeError('PvZ fallback requires imageio-ffmpeg==0.6.0')
+            selected = imageio_ffmpeg.get_ffmpeg_exe()
+            package = Path(imageio_ffmpeg.__file__).resolve().parent
+            if not Path(selected).resolve().is_relative_to(package) or not package.is_relative_to(root.resolve()):
+                raise ValueError('PvZ fallback must use the workspace wheel executable')
+            report['source'] = 'imageio-ffmpeg==0.6.0'
+        executable = Path(selected).resolve(strict=True)
+        if not executable.is_file() or not os.access(executable, os.X_OK):
+            raise ValueError('PvZ FFmpeg is not executable')
+        folder = output/'bin'
+        folder.mkdir(exist_ok=True)
+        bound = folder/'ffmpeg'
+        if bound.is_symlink(): bound.unlink()
+        elif bound.exists(): raise ValueError('Unexpected regular file at PvZ FFmpeg binding')
+        bound.symlink_to(executable)
+        tested = subprocess.run([str(bound), '-version'], capture_output=True, text=True, check=True)
+        first = tested.stdout.splitlines()[0]
+        if not first.startswith('ffmpeg version '):
+            raise ValueError('PvZ FFmpeg version response is invalid')
+        report.update(passed=True, ffmpegVersion=first, executable=str(executable),
+                      executableSHA256=hashlib.sha256(executable.read_bytes()).hexdigest())
+    except Exception as error:
+        report['errorType'] = type(error).__name__
+        result.write_text(json.dumps(report, indent=2)+'\n')
+        raise
+    result.write_text(json.dumps(report, indent=2)+'\n')
+    return report
+
 def build_commands(root, game, index=0):
     if game == 'pvz' and index == 0:
         base, output = root/'games/pvz/build', root/'.local/pvz/ci-assets'
@@ -245,8 +288,12 @@ def main():
     r.add_argument('--backend', action='store_true')
     r.add_argument('--shard', type=int, default=0)
     r.add_argument('--count', type=int, default=1)
+    sub.add_parser('pvz-tools', help='Bind the scoped PvZ media verifier executable')
     args = parser.parse_args()
     if args.command == 'run': return run(args)
+    if args.command == 'pvz-tools':
+        print(json.dumps(prepare_pvz_asset_tools(ROOT)))
+        return
     if args.base:
         subprocess.run(['git', 'merge-base', '--is-ancestor', args.base, args.head], cwd=ROOT, check=True)
         # No rename folding: both old and new owners must be validated.

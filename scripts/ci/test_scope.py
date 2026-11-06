@@ -9,8 +9,14 @@ PvZ asset-gate failures declared before implementation: semantic/native/music
 checks are omitted, run on unrelated games or repeat on later shards; CI needs
 private EXE/PAK/MO3/BASS inputs; Pillow is installed globally; FFmpeg is silently
 missing; caches/temporary files escape the workspace; output parents are absent.
+
+Missing-tool failures before the runner fallback: absent FFmpeg aborts before
+recording evidence; an unpinned/global download is selected; the bound wheel
+executable cannot run; cleanup deletes the failure result with its temporary
+tools. FLAC verification must retain full PCM checks without needing ffprobe.
 """
 import importlib.util
+import json
 import os
 import shlex
 import subprocess
@@ -84,17 +90,56 @@ class ScopeTests(unittest.TestCase):
         workflow=(ROOT/'.github/workflows/build.yml').read_text()
         gate=workflow.split('      - name: Prepare PvZ asset verification environment\n',1)[1].split('      - name: Validate this game only\n',1)[0]
         self.assertIn("if: matrix.game == 'pvz' && matrix.shard == 0",gate)
-        for command in ['command -v ffmpeg','command -v ffprobe',
+        for command in ['if ! command -v ffmpeg >/dev/null 2>&1; then',
                         'python3 -m venv .local/pvz/ci-assets/venv',
                         '.local/pvz/ci-assets/venv/bin/python -m pip install Pillow==13.0.0',
+                        '.local/pvz/ci-assets/venv/bin/python -m pip install imageio-ffmpeg==0.6.0',
+                        '.local/pvz/ci-assets/venv/bin/python -B scripts/ci/scope.py pvz-tools',
+                        'prepare-result.json', 'install.log', 'set -o pipefail',
                         'export TMPDIR="$PWD/.local/tmp"',
                         'export PIP_CACHE_DIR="$PWD/.local/pvz/ci-assets/pip-cache"']:
             self.assertIn(command,gate)
         for forbidden in ['apt-get','brew install','sudo','main.pak','.mo3','BASS']:
             self.assertNotIn(forbidden,gate)
+        self.assertNotIn('command -v ffprobe',gate)
         run=workflow.split('      - name: Validate this game only\n',1)[1].split('      - uses: actions/upload-artifact@v4',1)[0]
         self.assertIn('if [ "$GAME_ID" = pvz ] && [ "$SHARD_INDEX" = 0 ]; then',run)
-        self.assertIn('export PATH="$PWD/.local/pvz/ci-assets/venv/bin:$PATH"',run)
+        self.assertIn('export PATH="$PWD/.local/pvz/ci-assets/bin:$PWD/.local/pvz/ci-assets/venv/bin:$PATH"',run)
+        cleanup=workflow.split('      - name: Remove temporary PvZ asset tools\n',1)[1].split('      - uses: actions/upload-artifact@v4',1)[0]
+        self.assertIn('.local/pvz/ci-assets/bin',cleanup)
+        self.assertNotIn('rm -rf .local/pvz/ci-assets\n',cleanup)
+
+    def test_pvz_missing_ffmpeg_binds_pinned_workspace_wheel_and_preserves_report(self):
+        parent=ROOT/'.local/ci-scope';parent.mkdir(parents=True,exist_ok=True)
+        with tempfile.TemporaryDirectory(dir=parent,prefix='pvz-no-ffmpeg-') as temporary:
+            root=Path(temporary);package=root/'wheel/imageio_ffmpeg';package.mkdir(parents=True)
+            executable=package/'ffmpeg-fixture';executable.write_text('#!/bin/sh\nprintf "ffmpeg version fixture\\n"\n');executable.chmod(0o755)
+            fake=SimpleNamespace(__file__=str(package/'__init__.py'),get_ffmpeg_exe=lambda:str(executable))
+            with patch('shutil.which',return_value=None),patch.dict('sys.modules',{'imageio_ffmpeg':fake}),patch('importlib.metadata.version',return_value='0.6.0'):
+                report=scope.prepare_pvz_asset_tools(root)
+            self.assertTrue(report['passed']);self.assertEqual(report['source'],'imageio-ffmpeg==0.6.0')
+            self.assertEqual((root/'.local/pvz/ci-assets/bin/ffmpeg').resolve(),executable)
+            self.assertEqual(json.loads((root/'.local/pvz/ci-assets/prepare-result.json').read_text())['ffmpegVersion'],'ffmpeg version fixture')
+
+    def test_pvz_existing_ffmpeg_does_not_require_or_install_a_fallback(self):
+        parent=ROOT/'.local/ci-scope';parent.mkdir(parents=True,exist_ok=True)
+        with tempfile.TemporaryDirectory(dir=parent,prefix='pvz-system-ffmpeg-') as temporary:
+            root=Path(temporary);executable=root/'system-ffmpeg';executable.write_text('#!/bin/sh\nprintf "ffmpeg version system-fixture\\n"\n');executable.chmod(0o755)
+            with patch('shutil.which',return_value=str(executable)),patch.dict('sys.modules',{'imageio_ffmpeg':None}):
+                report=scope.prepare_pvz_asset_tools(root)
+            self.assertTrue(report['passed']);self.assertEqual(report['source'],'system')
+
+    def test_pvz_bad_fallback_keeps_a_failure_result(self):
+        parent=ROOT/'.local/ci-scope';parent.mkdir(parents=True,exist_ok=True)
+        for case in ['wrong-version','missing-executable']:
+            with self.subTest(case=case),tempfile.TemporaryDirectory(dir=parent,prefix='pvz-tool-failure-') as temporary:
+                root=Path(temporary);package=root/'wheel/imageio_ffmpeg';package.mkdir(parents=True)
+                fake=SimpleNamespace(__file__=str(package/'__init__.py'),get_ffmpeg_exe=lambda:str(package/'missing-ffmpeg'))
+                with patch('shutil.which',return_value=None),patch.dict('sys.modules',{'imageio_ffmpeg':fake}),patch('importlib.metadata.version',return_value='1.0.0' if case=='wrong-version' else '0.6.0'):
+                    with self.assertRaises((RuntimeError,ValueError,FileNotFoundError)):
+                        scope.prepare_pvz_asset_tools(root)
+                result=json.loads((root/'.local/pvz/ci-assets/prepare-result.json').read_text())
+                self.assertFalse(result['passed']);self.assertIn('errorType',result)
 
     # Long campaigns run once through the explicit verified runner, not through
     # inherited diagnostic variables on ordinary/race test selections.
