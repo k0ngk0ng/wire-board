@@ -69,6 +69,10 @@ type EffectMotionOutcome struct {
 // before pause/slow-time checks. Delay returns also omit drawing and movement.
 // Owners and immutable library data remain unchanged, including on error.
 func StepEffectMotion(state EffectMotionState, world EffectMotionWorld, owners map[uint16]EffectMotionOwner, library EffectMotionLibrary) (EffectMotionState, EffectMotionWorld, EffectMotionOutcome, error) {
+	return stepEffectMotionWithSound(state, world, owners, library, nil)
+}
+
+func stepEffectMotionWithSound(state EffectMotionState, world EffectMotionWorld, owners map[uint16]EffectMotionOwner, library EffectMotionLibrary, soundPort *worldSoundPort) (EffectMotionState, EffectMotionWorld, EffectMotionOutcome, error) {
 	before, beforeWorld := state, world
 	if state.Slot.Stage == 0 {
 		if int(state.Slot.Type) >= len(library.Types) {
@@ -101,12 +105,7 @@ func StepEffectMotion(state EffectMotionState, world EffectMotionWorld, owners m
 			state.SkipTiles = definition.SkipTiles
 		}
 		if definition.Sound != 0 {
-			for i, queued := range world.SoundQueue {
-				if queued < 128 || queued == definition.Sound {
-					world.SoundQueue[i] = definition.Sound
-					break
-				}
-			}
+			enqueueWorldSound(&world.SoundQueue, definition.Sound, "effect", soundPort)
 		}
 		return state, world, EffectMotionOutcome{}, nil
 	}

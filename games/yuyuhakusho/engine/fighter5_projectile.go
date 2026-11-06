@@ -28,6 +28,10 @@ type Fighter5ProjectileParent struct {
 // direct reflection return, or completed clear boundary. Parent and child
 // updates commit together; collision scheduling is owned by the world.
 func StepFighter5Projectile(state Fighter5ProjectileState, parent Fighter5ProjectileParent, environment ChuProjectileEnvironment, library AnimationLibrary) (Fighter5ProjectileState, Fighter5ProjectileParent, ChuProjectileOutcome, error) {
+	return stepFighter5ProjectileWithSound(state, parent, environment, library, nil)
+}
+
+func stepFighter5ProjectileWithSound(state Fighter5ProjectileState, parent Fighter5ProjectileParent, environment ChuProjectileEnvironment, library AnimationLibrary, soundPort *worldSoundPort) (Fighter5ProjectileState, Fighter5ProjectileParent, ChuProjectileOutcome, error) {
 	before, oldParent := state, parent
 	behavior := state.Visual.Header.Behavior
 	if behavior == 0x146ba {
@@ -128,7 +132,7 @@ func StepFighter5Projectile(state Fighter5ProjectileState, parent Fighter5Projec
 		}
 		return next, parent, out, nil
 	}
-	if err := submitFighter5Projectile(v, environment, library); err != nil {
+	if err := submitFighter5Projectile(v, environment, library, soundPort); err != nil {
 		return fail(err)
 	}
 	return state, parent, ChuProjectileOutcome{Draw: true}, nil
@@ -213,7 +217,7 @@ func StepFighter5ProjectileHitStop(state Fighter5ProjectileState, environment Ch
 		offset = -offset
 	}
 	state.Visual.ScreenOffsetX += offset
-	if err := submitFighter5Projectile(&state.Visual, environment, library); err != nil {
+	if err := submitFighter5Projectile(&state.Visual, environment, library, nil); err != nil {
 		return before, ChuProjectileOutcome{}, err
 	}
 	return state, ChuProjectileOutcome{Draw: true}, nil
@@ -249,8 +253,8 @@ func spawnFighter5ProjectileEffect(state *Fighter5ProjectileState, trail, large 
 	return nil
 }
 
-func submitFighter5Projectile(v *Fighter8ProjectileState, environment ChuProjectileEnvironment, library AnimationLibrary) error {
-	next, err := SubmitAnimationRecord(AnimationSubmissionState{Actor: v.Animation, Buffers: v.Buffers, PendingSound: v.PendingSound, SoundQueue: v.SoundQueue}, library)
+func submitFighter5Projectile(v *Fighter8ProjectileState, environment ChuProjectileEnvironment, library AnimationLibrary, soundPort *worldSoundPort) error {
+	next, err := submitAnimationRecordWithSound(AnimationSubmissionState{Actor: v.Animation, Buffers: v.Buffers, PendingSound: v.PendingSound, SoundQueue: v.SoundQueue}, library, soundPort)
 	if err != nil {
 		return err
 	}

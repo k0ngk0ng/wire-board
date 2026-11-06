@@ -29,8 +29,8 @@ func initializeFighter1Visual(v *Fighter8ProjectileState, pose uint8, attributes
 	v.Animation.Clock.Duration, v.Animation.Clock.Ticks = 8, 255
 }
 
-func submitFighter1Visual(v Fighter8ProjectileState, world ChuAttachmentWorld, library AnimationLibrary) (Fighter8ProjectileState, error) {
-	s, err := SubmitAnimationRecord(AnimationSubmissionState{Actor: v.Animation, Buffers: v.Buffers, PendingSound: v.PendingSound, SoundQueue: v.SoundQueue}, library)
+func submitFighter1Visual(v Fighter8ProjectileState, world ChuAttachmentWorld, library AnimationLibrary, soundPort *worldSoundPort) (Fighter8ProjectileState, error) {
+	s, err := submitAnimationRecordWithSound(AnimationSubmissionState{Actor: v.Animation, Buffers: v.Buffers, PendingSound: v.PendingSound, SoundQueue: v.SoundQueue}, library, soundPort)
 	if err != nil {
 		return v, err
 	}
@@ -57,6 +57,10 @@ func clearFighter1Visual(v Fighter8ProjectileState) (Fighter8ProjectileState, Ch
 // StepFighter1LinearProjectile recovers12ee8 through12fc8/1580 or13006/3556.
 // Animation completion is not a deletion condition for this moving object.
 func StepFighter1LinearProjectile(state Fighter1LinearProjectileState, world ChuProjectileEnvironment, library AnimationLibrary) (Fighter1LinearProjectileState, ChuProjectileOutcome, error) {
+	return stepFighter1LinearProjectileWithSound(state, world, library, nil)
+}
+
+func stepFighter1LinearProjectileWithSound(state Fighter1LinearProjectileState, world ChuProjectileEnvironment, library AnimationLibrary, soundPort *worldSoundPort) (Fighter1LinearProjectileState, ChuProjectileOutcome, error) {
 	before := state
 	v := &state.Visual
 	if v.Header.Stage == 0 {
@@ -93,7 +97,7 @@ func StepFighter1LinearProjectile(state Fighter1LinearProjectileState, world Chu
 		return state, out, nil
 	}
 	var err error
-	state.Visual, err = submitFighter1Visual(*v, ChuAttachmentWorld{PauseFlags: world.PauseFlags, SlowFlag: world.SlowFlag, AttributeMask: world.PaletteAttributes, CameraX: world.CameraX, CameraY: world.CameraY, Shake: world.Shake}, library)
+	state.Visual, err = submitFighter1Visual(*v, ChuAttachmentWorld{PauseFlags: world.PauseFlags, SlowFlag: world.SlowFlag, AttributeMask: world.PaletteAttributes, CameraX: world.CameraX, CameraY: world.CameraY, Shake: world.Shake}, library, soundPort)
 	if err != nil {
 		return before, ChuProjectileOutcome{}, err
 	}
@@ -103,6 +107,10 @@ func StepFighter1LinearProjectile(state Fighter1LinearProjectileState, world Chu
 // StepFighter1WaveProjectile recovers1300c using the existing signed1024-byte
 // wave. OriginX is a position, not a velocity; only its high word is displaced.
 func StepFighter1WaveProjectile(state Fighter1WaveProjectileState, world ChuAttachmentWorld, library AnimationLibrary, wave []int8) (Fighter1WaveProjectileState, ChuProjectileOutcome, error) {
+	return stepFighter1WaveProjectileWithSound(state, world, library, wave, nil)
+}
+
+func stepFighter1WaveProjectileWithSound(state Fighter1WaveProjectileState, world ChuAttachmentWorld, library AnimationLibrary, wave []int8, soundPort *worldSoundPort) (Fighter1WaveProjectileState, ChuProjectileOutcome, error) {
 	before := state
 	v := &state.Visual
 	if v.Header.Stage == 0 {
@@ -144,7 +152,7 @@ func StepFighter1WaveProjectile(state Fighter1WaveProjectileState, world ChuAtta
 		return state, out, nil
 	}
 	var err error
-	state.Visual, err = submitFighter1Visual(*v, world, library)
+	state.Visual, err = submitFighter1Visual(*v, world, library, soundPort)
 	if err != nil {
 		return before, ChuProjectileOutcome{}, err
 	}

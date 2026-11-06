@@ -9,3 +9,7 @@
 `AdvancePCM` 显式返回真实主机争用成本，外部 main owner 必须保留该结果。`FrameBoundary` 只完成已经到达的 reference frame，不暗中 RunUntil 或推测世界边界。这些接口不决定 CPU 中断接受时刻，不把视频帧当成固定声音消费点，也不安装原版 PC／时间表。
 
 完整原版中断／补跑、live 字段与联合 JSON 状态对照见[验收目录](../../verification/sound-irq-runtime/)。world IRQ／请求生产的独立时序、平台连续播放与浏览器整场音频仍待接通。
+
+## Actual world producer transaction
+
+`WorldFrame` stages the actual `StepChuSessionFrameObserved` producer path and this runtime together. Synchronous `WorldHook` calls receive the detached audio branch and World queue/pause owners; late object/palette errors discard both. Existing pure APIs remain available. This interface supplies no CPU/VDP pricing or acceptance policy, and exposes enqueue operations only. See [world-sound-live verification](../../verification/world-sound-live/README.md).

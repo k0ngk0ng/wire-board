@@ -104,6 +104,11 @@ type ChuWorldEvent struct {
 // by a preceding callback executes immediately in this pass. On any failure,
 // the entire caller state and event list are preserved atomically.
 func StepChuWorldObjects(state ChuWorldState, view ChuWorldView, library ChuWorldLibrary) (ChuWorldState, []ChuWorldEvent, error) {
+	return StepChuWorldObjectsObserved(state, view, library, nil)
+}
+
+// StepChuWorldObjectsObserved exposes only actual enqueue operations, not CPU time.
+func StepChuWorldObjectsObserved(state ChuWorldState, view ChuWorldView, library ChuWorldLibrary, hook WorldSoundHook) (ChuWorldState, []ChuWorldEvent, error) {
 	original := state
 	if state.MatchComplete {
 		return state, nil, nil
@@ -117,6 +122,7 @@ func StepChuWorldObjects(state ChuWorldState, view ChuWorldView, library ChuWorl
 	state.Stream = append([]byte(nil), state.Stream...)
 	state.Throws.Records = append([]ThrowContactRecord(nil), state.Throws.Records...)
 	state.Registration.Owners = append([]uint16(nil), state.Registration.Owners...)
+	port := &worldSoundPort{owners: WorldSoundOwners{Queue: &state.SoundQueue, AudioPause: &state.Clock.AudioPause}, hook: hook}
 	var events []ChuWorldEvent
 	var hudCursor uint16 // Logical per-pass transfer cursor, not a physical DMA address.
 	for address := uint32(0x8000); address < 0xa000; {
@@ -134,7 +140,11 @@ func StepChuWorldObjects(state ChuWorldState, view ChuWorldView, library ChuWorl
 			return original, nil, fmt.Errorf("invalid object stride %d at %04x", stride, id)
 		}
 		events = append(events, ChuWorldEvent{Kind: "callback", ObjectID: id, Header: object.Header, Stride: stride})
-		more, err := stepChuWorldObject(&state, object, view, library, &hudCursor)
+		port.objectID = id
+		more, err := stepChuWorldObjectWithSound(&state, object, view, library, &hudCursor, port)
+		if port.err != nil {
+			return original, nil, fmt.Errorf("object %04x sound producer: %w", id, port.err)
+		}
 		if err != nil {
 			return original, nil, fmt.Errorf("object %04x callback %x stage %d: %w", id, object.Header.Behavior, object.Header.Stage, err)
 		}
@@ -154,6 +164,10 @@ func StepChuWorldObjects(state ChuWorldState, view ChuWorldView, library ChuWorl
 }
 
 func stepChuWorldObject(state *ChuWorldState, object WorldObject, view ChuWorldView, library ChuWorldLibrary, hudCursor *uint16) ([]ChuWorldEvent, error) {
+	return stepChuWorldObjectWithSound(state, object, view, library, hudCursor, nil)
+}
+
+func stepChuWorldObjectWithSound(state *ChuWorldState, object WorldObject, view ChuWorldView, library ChuWorldLibrary, hudCursor *uint16, soundPort *worldSoundPort) ([]ChuWorldEvent, error) {
 	id := object.ObjectID
 	switch object.Header.Behavior {
 	case 0x9ad0, 0xa01e:
@@ -171,11 +185,11 @@ func stepChuWorldObject(state *ChuWorldState, object WorldObject, view ChuWorldV
 			return nil, errors.New("match manager identity is unavailable")
 		}
 		if object.Header.Stage < 4 {
-			return stepChuWorldStart(state, object, library.MatchStart)
+			return stepChuWorldStartWithSound(state, object, library.MatchStart, soundPort)
 		}
-		return stepChuWorldMatch(state, object)
+		return stepChuWorldMatch(state, object, soundPort)
 	case 0x1edac:
-		return nil, stepChuWorldCollision(state)
+		return nil, stepChuWorldCollision(state, soundPort)
 	case 0x20918:
 		return nil, stepChuWorldArena(state, object, library.Arena)
 	case 0x20ae0, 0x20cb2, 0x20e28, 0x20fb4, 0x21126, 0x212f8, 0x21412:
@@ -183,37 +197,37 @@ func stepChuWorldObject(state *ChuWorldState, object WorldObject, view ChuWorldV
 	case 0x21258:
 		return stepChuWorldArenaAChild(state, object)
 	case 0x12668:
-		return stepChuWorldFighter(state, object, view, library, hudCursor)
+		return stepChuWorldFighter(state, object, view, library, hudCursor, soundPort)
 	case 0x1313e:
-		return stepChuWorldProjectile(state, object, library.Animations)
+		return stepChuWorldProjectileWithSound(state, object, library.Animations, soundPort)
 	case 0x12c96, 0x134c2:
-		return stepFighter0WorldProjectile(state, object, library.Fighter0Projectiles)
+		return stepFighter0WorldProjectileWithSound(state, object, library.Fighter0Projectiles, soundPort)
 	case 0x12dd4:
-		return stepFighter2WorldProjectile(state, object, library.Animations)
+		return stepFighter2WorldProjectile(state, object, library.Animations, soundPort)
 	case 0x147ae:
-		return stepFighter8WorldProjectile(state, object, library.Animations)
+		return stepFighter8WorldProjectile(state, object, library.Animations, soundPort)
 	case 0x12ee8:
-		return stepFighter1WorldLinear(state, object, library.Animations)
+		return stepFighter1WorldLinear(state, object, library.Animations, soundPort)
 	case 0x1300c:
-		return stepFighter1WorldWave(state, object, library.Animations, library.Arena.WaveX)
+		return stepFighter1WorldWave(state, object, library.Animations, library.Arena.WaveX, soundPort)
 	case 0x13bb6:
-		return stepFighter4WorldDragonHead(state, object, library.Fighter4Dragon)
+		return stepFighter4WorldDragonHead(state, object, library.Fighter4Dragon, soundPort)
 	case 0x13e9a:
 		return stepFighter4WorldDragonTrail(state, object)
 	case 0x13fc8:
-		return stepFighter4WorldBoost(state, object, library.Animations)
+		return stepFighter4WorldBoost(state, object, library.Animations, soundPort)
 	case 0x1414e, 0x143e4, 0x146ba:
-		return stepFighter5WorldProjectile(state, object, library.Animations)
+		return stepFighter5WorldProjectile(state, object, library.Animations, soundPort)
 	case 0x136e6:
-		return stepFighter7WorldFirstChild(state, object, library.Animations)
+		return stepFighter7WorldFirstChild(state, object, library.Animations, soundPort)
 	case 0x1391e:
-		return stepFighter7WorldSecondChild(state, object, library.Animations)
+		return stepFighter7WorldSecondChild(state, object, library.Animations, soundPort)
 	case 0x15094:
 		return stepFighter7WorldPan(state, object)
 	case 0x132de, 0x1361e:
-		return stepChuWorldAttachment(state, object, library.Attachments)
+		return stepChuWorldAttachmentWithSound(state, object, library.Attachments, soundPort)
 	case 0x149ac:
-		return stepChuWorldEffect(state, object, library.Effects)
+		return stepChuWorldEffect(state, object, library.Effects, soundPort)
 	case 0x14930, 0x14ec6:
 		return stepChuWorldAttachedEffect(state, object, library.AttachedEffects)
 	case 0x14882:
@@ -223,7 +237,7 @@ func stepChuWorldObject(state *ChuWorldState, object WorldObject, view ChuWorldV
 	case 0xff74:
 		return nil, stepChuWorldTraining(state)
 	case 0xfe78, 0xfeb2, 0x10088, 0x10116, 0x10172, 0x101f2, 0x10330, 0x10436, 0x104ac, 0x10522, 0x10616, 0x106e8:
-		return stepChuWorldOverlay(state, object)
+		return stepChuWorldOverlay(state, object, soundPort)
 	default:
 		return nil, errors.New("object callback is not recovered")
 	}
@@ -240,7 +254,7 @@ func chuWorldPresentation(id uint16, draw bool, cleared uint16) []ChuWorldEvent 
 	return events
 }
 
-func stepChuWorldOverlay(state *ChuWorldState, object WorldObject) ([]ChuWorldEvent, error) {
+func stepChuWorldOverlay(state *ChuWorldState, object WorldObject, soundPort *worldSoundPort) ([]ChuWorldEvent, error) {
 	s := MatchOverlayState{ObjectID: object.ObjectID, Object: object.AsMatchOverlay(), ModeFlag: state.Match.ModeFlag, SlowFlag: state.Clock.SlowFlag, SoundQueue: state.SoundQueue}
 	if object.Header.Behavior == 0x101f2 {
 		for i := range s.Children {
@@ -251,7 +265,7 @@ func stepChuWorldOverlay(state *ChuWorldState, object WorldObject) ([]ChuWorldEv
 			s.Children[i] = child.AsMatchOverlay()
 		}
 	}
-	next, out, err := StepMatchOverlay(s, MatchOverlayEnvironment{PauseFlags: state.Clock.PauseFlags, WinnerCode: state.Match.WinnerCode, Characters: state.Match.Characters, TeamTitles: state.Match.TeamTitles, RoundIndex: uint16(state.Match.RoundIndex), Blink: uint8(state.Clock.Frame)})
+	next, out, err := stepMatchOverlayWithSound(s, MatchOverlayEnvironment{PauseFlags: state.Clock.PauseFlags, WinnerCode: state.Match.WinnerCode, Characters: state.Match.Characters, TeamTitles: state.Match.TeamTitles, RoundIndex: uint16(state.Match.RoundIndex), Blink: uint8(state.Clock.Frame)}, soundPort)
 	if err != nil {
 		return nil, err
 	}
@@ -271,7 +285,7 @@ func stepChuWorldOverlay(state *ChuWorldState, object WorldObject) ([]ChuWorldEv
 	return chuWorldPresentation(object.ObjectID, out.Draw, out.ClearedBytes), nil
 }
 
-func stepChuWorldMatch(state *ChuWorldState, object WorldObject) ([]ChuWorldEvent, error) {
+func stepChuWorldMatch(state *ChuWorldState, object WorldObject, soundPort *worldSoundPort) ([]ChuWorldEvent, error) {
 	m := &state.Match
 	s := MatchLifecycleState{Manager: object.Header, PauseFlags: state.Clock.PauseFlags, PauseMask: state.Clock.PauseMask, ModeFlag: m.ModeFlag, Disabled: m.Disabled,
 		EligibleChannels: m.EligibleChannels, PendingSound: state.PendingSound, SoundQueue: state.SoundQueue, OpeningTicks: m.OpeningTicks, ResultTicks: m.ResultTicks,
@@ -287,7 +301,7 @@ func stepChuWorldMatch(state *ChuWorldState, object WorldObject) ([]ChuWorldEven
 		p, _ := LookupWorldObject(state.Objects, uint16(0x8300+i*64))
 		s.Presentation[i] = p.Header
 	}
-	next, out, err := StepMatchLifecycle(s)
+	next, out, err := stepMatchLifecycleWithSound(s, soundPort)
 	if err != nil {
 		return nil, err
 	}
@@ -318,7 +332,7 @@ func stepChuWorldMatch(state *ChuWorldState, object WorldObject) ([]ChuWorldEven
 	return nil, nil
 }
 
-func stepChuWorldCollision(state *ChuWorldState) error {
+func stepChuWorldCollision(state *ChuWorldState, soundPort *worldSoundPort) error {
 	pool, err := BuildWorldEffectPool(state.Objects, state.EffectCursor)
 	if err != nil {
 		return err
@@ -337,7 +351,7 @@ func stepChuWorldCollision(state *ChuWorldState) error {
 		o, _ := LookupWorldObject(state.Objects, uint16(0x9400+i*128))
 		s.EffectParameters[i] = o.GraphicParameter
 	}
-	next, err := ResolveCollisionManager(s)
+	next, err := resolveCollisionManagerWithSound(s, soundPort)
 	if err != nil {
 		return err
 	}
@@ -461,7 +475,7 @@ func stepChuWorldArenaAChild(state *ChuWorldState, object WorldObject) ([]ChuWor
 	return events, nil
 }
 
-func stepChuWorldFighter(state *ChuWorldState, object WorldObject, view ChuWorldView, library ChuWorldLibrary, hudCursor *uint16) ([]ChuWorldEvent, error) {
+func stepChuWorldFighter(state *ChuWorldState, object WorldObject, view ChuWorldView, library ChuWorldLibrary, hudCursor *uint16, soundPort *worldSoundPort) ([]ChuWorldEvent, error) {
 	if _, ok := chuAIIndex(object.ObjectID); !ok || object.Tag > 10 {
 		return nil, errors.New("complete fighter action source is not recovered")
 	}
@@ -523,7 +537,7 @@ func stepChuWorldFighter(state *ChuWorldState, object WorldObject, view ChuWorld
 			w.OtherHitStopTicks[id] = o.HitStopTicks
 		}
 	}
-	next, out, err := StepFighterActor(ChuActorState{Fighter: fighter, World: w}, object.Tag, v, library.Commands, library.Animations)
+	next, out, err := stepFighterActorWithSound(ChuActorState{Fighter: fighter, World: w}, object.Tag, v, library.Commands, library.Animations, soundPort)
 	if err != nil {
 		return nil, err
 	}
@@ -570,26 +584,34 @@ func stepChuWorldFighter(state *ChuWorldState, object WorldObject, view ChuWorld
 }
 
 func stepChuWorldProjectile(state *ChuWorldState, object WorldObject, library AnimationLibrary) ([]ChuWorldEvent, error) {
+	return stepChuWorldProjectileWithSound(state, object, library, nil)
+}
+
+func stepChuWorldProjectileWithSound(state *ChuWorldState, object WorldObject, library AnimationLibrary, soundPort *worldSoundPort) ([]ChuWorldEvent, error) {
 	return stepWorldProjectile(state, object, func(projectile ChuProjectileState, environment ChuProjectileEnvironment) (ChuProjectileState, ChuProjectileOutcome, error) {
-		return StepChuProjectile(projectile, environment, library)
+		return stepChuProjectileWithSound(projectile, environment, library, soundPort)
 	})
 }
 
 func stepFighter0WorldProjectile(state *ChuWorldState, object WorldObject, library Fighter0ProjectileLibrary) ([]ChuWorldEvent, error) {
+	return stepFighter0WorldProjectileWithSound(state, object, library, nil)
+}
+
+func stepFighter0WorldProjectileWithSound(state *ChuWorldState, object WorldObject, library Fighter0ProjectileLibrary, soundPort *worldSoundPort) ([]ChuWorldEvent, error) {
 	kind := Fighter0ScatterProjectile
 	if object.Header.Behavior == 0x134c2 {
 		kind = Fighter0ReleaseLight
 	}
 	return stepWorldProjectile(state, object, func(projectile ChuProjectileState, environment ChuProjectileEnvironment) (ChuProjectileState, ChuProjectileOutcome, error) {
-		next, out, err := StepFighter0Projectile(Fighter0ProjectileState{Kind: kind, Projectile: projectile}, environment, library)
+		next, out, err := stepFighter0ProjectileWithSound(Fighter0ProjectileState{Kind: kind, Projectile: projectile}, environment, library, soundPort)
 		return next.Projectile, out, err
 	})
 }
 
-func stepFighter2WorldProjectile(state *ChuWorldState, object WorldObject, library AnimationLibrary) ([]ChuWorldEvent, error) {
+func stepFighter2WorldProjectile(state *ChuWorldState, object WorldObject, library AnimationLibrary, soundPort *worldSoundPort) ([]ChuWorldEvent, error) {
 	hitStop := object.HitStopTicks
 	events, err := stepWorldProjectile(state, object, func(projectile ChuProjectileState, environment ChuProjectileEnvironment) (ChuProjectileState, ChuProjectileOutcome, error) {
-		next, out, err := StepFighter2Projectile(Fighter2ProjectileState{Projectile: projectile, HitStopTicks: hitStop}, environment, library)
+		next, out, err := stepFighter2ProjectileWithSound(Fighter2ProjectileState{Projectile: projectile, HitStopTicks: hitStop}, environment, library, soundPort)
 		hitStop = next.HitStopTicks
 		return next.Projectile, out, err
 	})
@@ -603,12 +625,12 @@ func stepFighter2WorldProjectile(state *ChuWorldState, object WorldObject, libra
 	return events, nil
 }
 
-func stepFighter8WorldProjectile(state *ChuWorldState, object WorldObject, library AnimationLibrary) ([]ChuWorldEvent, error) {
+func stepFighter8WorldProjectile(state *ChuWorldState, object WorldObject, library AnimationLibrary, soundPort *worldSoundPort) ([]ChuWorldEvent, error) {
 	view := Fighter8ProjectileState{Header: object.Header, Animation: object.AsAnimation(), GraphicsSet: object.GraphicsSet, TilesBase: object.TilesBase,
 		GraphicCache: object.GraphicCache, Health: object.Body.Health, Shake: object.Shake, ScreenX: object.ScreenX, ScreenY: object.ScreenY,
 		ScreenOffsetX: object.ScreenOffsetX, ScreenOffsetY: object.ScreenOffsetY, Buffers: state.Buffers, PendingSound: state.PendingSound, SoundQueue: state.SoundQueue}
-	next, out, err := StepFighter8Projectile(view, ChuAttachmentWorld{PauseFlags: state.Clock.PauseFlags, SlowFlag: state.Clock.SlowFlag,
-		AttributeMask: state.Match.AttributeMask, CameraX: state.Camera.X, CameraY: state.Camera.Y, Shake: int16(state.Clock.ScreenShake)}, library)
+	next, out, err := stepFighter8ProjectileWithSound(view, ChuAttachmentWorld{PauseFlags: state.Clock.PauseFlags, SlowFlag: state.Clock.SlowFlag,
+		AttributeMask: state.Match.AttributeMask, CameraX: state.Camera.X, CameraY: state.Camera.Y, Shake: int16(state.Clock.ScreenShake)}, library, soundPort)
 	if err != nil {
 		return nil, err
 	}
@@ -649,12 +671,12 @@ func mergeFighter1WorldVisual(object WorldObject, visual Fighter8ProjectileState
 	return object, nil
 }
 
-func stepFighter1WorldLinear(state *ChuWorldState, object WorldObject, library AnimationLibrary) ([]ChuWorldEvent, error) {
+func stepFighter1WorldLinear(state *ChuWorldState, object WorldObject, library AnimationLibrary, soundPort *worldSoundPort) ([]ChuWorldEvent, error) {
 	view := Fighter1LinearProjectileState{Visual: fighter1WorldVisual(state, object), VelocityX: object.Body.VelocityX,
 		VelocityY: object.Body.VerticalVelocity, Ground: object.Body.Ground, ContactFlags: object.ContactFlags}
-	next, out, err := StepFighter1LinearProjectile(view, ChuProjectileEnvironment{PauseFlags: state.Clock.PauseFlags, SlowFlag: state.Clock.SlowFlag,
+	next, out, err := stepFighter1LinearProjectileWithSound(view, ChuProjectileEnvironment{PauseFlags: state.Clock.PauseFlags, SlowFlag: state.Clock.SlowFlag,
 		PaletteAttributes: state.Match.AttributeMask, ArenaLeft: state.Camera.Left, ArenaRight: state.Camera.Right,
-		CameraX: state.Camera.X, CameraY: state.Camera.Y, Shake: int16(state.Clock.ScreenShake)}, library)
+		CameraX: state.Camera.X, CameraY: state.Camera.Y, Shake: int16(state.Clock.ScreenShake)}, library, soundPort)
 	if err != nil {
 		return nil, err
 	}
@@ -668,11 +690,11 @@ func stepFighter1WorldLinear(state *ChuWorldState, object WorldObject, library A
 	return chuWorldPresentation(object.ObjectID, out.Draw, out.ClearedBytes), nil
 }
 
-func stepFighter1WorldWave(state *ChuWorldState, object WorldObject, library AnimationLibrary, wave []int8) ([]ChuWorldEvent, error) {
+func stepFighter1WorldWave(state *ChuWorldState, object WorldObject, library AnimationLibrary, wave []int8, soundPort *worldSoundPort) ([]ChuWorldEvent, error) {
 	view := Fighter1WaveProjectileState{Visual: fighter1WorldVisual(state, object), OriginX: object.Body.VelocityX, VelocityY: object.Body.VerticalVelocity,
 		Phase: uint16(uint32(object.Aux48) >> 16), Remaining: uint16(uint32(object.Body.Gravity) >> 16), ContactFlags: object.ContactFlags}
-	next, out, err := StepFighter1WaveProjectile(view, ChuAttachmentWorld{PauseFlags: state.Clock.PauseFlags, SlowFlag: state.Clock.SlowFlag,
-		AttributeMask: state.Match.AttributeMask, CameraX: state.Camera.X, CameraY: state.Camera.Y, Shake: int16(state.Clock.ScreenShake)}, library, wave)
+	next, out, err := stepFighter1WaveProjectileWithSound(view, ChuAttachmentWorld{PauseFlags: state.Clock.PauseFlags, SlowFlag: state.Clock.SlowFlag,
+		AttributeMask: state.Match.AttributeMask, CameraX: state.Camera.X, CameraY: state.Camera.Y, Shake: int16(state.Clock.ScreenShake)}, library, wave, soundPort)
 	if err != nil {
 		return nil, err
 	}
@@ -721,6 +743,10 @@ func stepWorldProjectile(state *ChuWorldState, object WorldObject, step func(Chu
 }
 
 func stepChuWorldAttachment(state *ChuWorldState, object WorldObject, library ChuAttachmentLibrary) ([]ChuWorldEvent, error) {
+	return stepChuWorldAttachmentWithSound(state, object, library, nil)
+}
+
+func stepChuWorldAttachmentWithSound(state *ChuWorldState, object WorldObject, library ChuAttachmentLibrary, soundPort *worldSoundPort) ([]ChuWorldEvent, error) {
 	kind, offset := ChuChargeAttachment, uint16(0x200)
 	if object.Header.Behavior == 0x1361e {
 		kind, offset = ChuReleaseAttachment, 0x300
@@ -735,8 +761,8 @@ func stepChuWorldAttachment(state *ChuWorldState, object WorldObject, library Ch
 	}
 	s := object.AsChuAttachment(kind)
 	s.Buffers, s.PendingSound, s.SoundQueue = state.Buffers, state.PendingSound, state.SoundQueue
-	next, out, err := StepChuAttachment(s, ChuAttachmentParent{CharacterID: parent.Tag, FrameIndex: parent.Body.Clock.FrameIndex, Pose: parent.Body.Pose, X: parent.Body.X, Y: parent.Body.Y, Power: parent.Power},
-		ChuAttachmentWorld{PauseFlags: state.Clock.PauseFlags, SlowFlag: state.Clock.SlowFlag, AttributeMask: state.Match.AttributeMask, CameraX: state.Camera.X, CameraY: state.Camera.Y, Shake: int16(state.Clock.ScreenShake)}, library)
+	next, out, err := stepChuAttachmentWithSound(s, ChuAttachmentParent{CharacterID: parent.Tag, FrameIndex: parent.Body.Clock.FrameIndex, Pose: parent.Body.Pose, X: parent.Body.X, Y: parent.Body.Y, Power: parent.Power},
+		ChuAttachmentWorld{PauseFlags: state.Clock.PauseFlags, SlowFlag: state.Clock.SlowFlag, AttributeMask: state.Match.AttributeMask, CameraX: state.Camera.X, CameraY: state.Camera.Y, Shake: int16(state.Clock.ScreenShake)}, library, soundPort)
 	if err != nil {
 		return nil, err
 	}
@@ -753,13 +779,13 @@ func stepChuWorldAttachment(state *ChuWorldState, object WorldObject, library Ch
 	return chuWorldPresentation(object.ObjectID, out.Draw, out.ClearedBytes), nil
 }
 
-func stepChuWorldEffect(state *ChuWorldState, object WorldObject, library EffectMotionLibrary) ([]ChuWorldEvent, error) {
+func stepChuWorldEffect(state *ChuWorldState, object WorldObject, library EffectMotionLibrary, soundPort *worldSoundPort) ([]ChuWorldEvent, error) {
 	owners := make(map[uint16]EffectMotionOwner, len(state.Objects))
 	for id, o := range state.Objects {
 		owners[id] = EffectMotionOwner{X: o.Body.X, Y: o.Body.Y}
 	}
-	next, world, out, err := StepEffectMotion(object.AsEffectMotion(), EffectMotionWorld{PauseFlags: state.Clock.PauseFlags, SlowFlag: state.Clock.SlowFlag,
-		PaletteAttributes: state.Match.AttributeMask, TileCursor: state.EffectTileCursor, SoundQueue: state.SoundQueue, CameraX: state.Camera.X, CameraY: state.Camera.Y, Shake: int16(state.Clock.ScreenShake)}, owners, library)
+	next, world, out, err := stepEffectMotionWithSound(object.AsEffectMotion(), EffectMotionWorld{PauseFlags: state.Clock.PauseFlags, SlowFlag: state.Clock.SlowFlag,
+		PaletteAttributes: state.Match.AttributeMask, TileCursor: state.EffectTileCursor, SoundQueue: state.SoundQueue, CameraX: state.Camera.X, CameraY: state.Camera.Y, Shake: int16(state.Clock.ScreenShake)}, owners, library, soundPort)
 	if err != nil {
 		return nil, err
 	}
@@ -885,6 +911,10 @@ func stepChuWorldTraining(state *ChuWorldState) error {
 }
 
 func stepChuWorldStart(state *ChuWorldState, object WorldObject, library MatchStartLibrary) ([]ChuWorldEvent, error) {
+	return stepChuWorldStartWithSound(state, object, library, nil)
+}
+
+func stepChuWorldStartWithSound(state *ChuWorldState, object WorldObject, library MatchStartLibrary, soundPort *worldSoundPort) ([]ChuWorldEvent, error) {
 	m := &state.Match
 	s := MatchStartState{Manager: object.Header, PauseFlags: state.Clock.PauseFlags, ModeFlag: m.ModeFlag, ResourceBusy: state.ResourceBusy, ResourceList: state.ResourceList, VideoMode: state.VideoMode,
 		Arena: m.Arena, Rule: m.Rule, Layout: m.Layout, Round: m.Round, RoundPair: m.RoundPair, Characters: m.Characters, Controllers: m.Controllers, Colors: m.Colors, BaseTeams: m.BaseTeams,
@@ -909,7 +939,7 @@ func stepChuWorldStart(state *ChuWorldState, object WorldObject, library MatchSt
 		s.Fighters[i] = MatchStartFighter{Header: o.Header, TargetBit: o.TargetBit, Attributes: o.Body.Attributes, X: o.Body.X, Ground: o.Body.Ground, Depth: o.Body.Depth,
 			Facing: o.Body.Facing, Layer: o.Body.Layer, CharacterID: o.Tag, Channel: o.InputChannel, BaseTeam: o.Body.BaseTeam, InputMode: uint8(o.InputMode), StreamPosition: o.StreamPosition, HUDOffset: o.HUDOffset}
 	}
-	next, out, err := StepMatchStart(s, library)
+	next, out, err := stepMatchStartWithSound(s, library, soundPort)
 	if err != nil {
 		return nil, err
 	}

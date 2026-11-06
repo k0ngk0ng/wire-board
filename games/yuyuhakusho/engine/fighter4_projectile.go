@@ -65,6 +65,10 @@ type Fighter4BoostParent struct {
 // StepFighter4DragonHead recovers13bb6 through this callback's single1580
 // request or its completed3556 prefix clear. Trail callbacks are separate.
 func StepFighter4DragonHead(state Fighter4DragonHeadState, history Fighter4DragonHistory, environment ChuProjectileEnvironment, library Fighter4DragonLibrary) (Fighter4DragonHeadState, Fighter4DragonHistory, ChuProjectileOutcome, error) {
+	return stepFighter4DragonHeadWithSound(state, history, environment, library, nil)
+}
+
+func stepFighter4DragonHeadWithSound(state Fighter4DragonHeadState, history Fighter4DragonHistory, environment ChuProjectileEnvironment, library Fighter4DragonLibrary, soundPort *worldSoundPort) (Fighter4DragonHeadState, Fighter4DragonHistory, ChuProjectileOutcome, error) {
 	before, oldHistory := state, history
 	v := &state.Visual
 	if v.Header.Stage == 0 {
@@ -174,7 +178,7 @@ func StepFighter4DragonHead(state Fighter4DragonHeadState, history Fighter4Drago
 		}
 		return next, history, out, nil
 	}
-	updated, err := submitFighter4DragonVisual(*v, ChuAttachmentWorld{CameraX: environment.CameraX, CameraY: environment.CameraY, Shake: environment.Shake}, library.Animations)
+	updated, err := submitFighter4DragonVisual(*v, ChuAttachmentWorld{CameraX: environment.CameraX, CameraY: environment.CameraY, Shake: environment.Shake}, library.Animations, soundPort)
 	if err != nil {
 		return fail(err)
 	}
@@ -207,8 +211,8 @@ func initializeFighter4DragonVisual(v *Fighter8ProjectileState, attributes uint1
 	v.Animation.Clock.Duration, v.Animation.Clock.Ticks = 8, 255
 }
 
-func submitFighter4DragonVisual(v Fighter8ProjectileState, world ChuAttachmentWorld, library AnimationLibrary) (Fighter8ProjectileState, error) {
-	s, err := SubmitAnimationRecord(AnimationSubmissionState{Actor: v.Animation, Buffers: v.Buffers, PendingSound: v.PendingSound, SoundQueue: v.SoundQueue}, library)
+func submitFighter4DragonVisual(v Fighter8ProjectileState, world ChuAttachmentWorld, library AnimationLibrary, soundPort *worldSoundPort) (Fighter8ProjectileState, error) {
+	s, err := submitAnimationRecordWithSound(AnimationSubmissionState{Actor: v.Animation, Buffers: v.Buffers, PendingSound: v.PendingSound, SoundQueue: v.SoundQueue}, library, soundPort)
 	if err != nil {
 		return v, err
 	}
@@ -335,6 +339,10 @@ func clearFighter4DragonTrail(state Fighter4DragonTrailState) (Fighter4DragonTra
 // StepFighter4Boost recovers13fc8 and the complete negative-energy parent
 // constructor. Child and parent are committed together only on success.
 func StepFighter4Boost(state Fighter4BoostState, parent Fighter4BoostParent, environment ChuAttachmentWorld, library AnimationLibrary) (Fighter4BoostState, Fighter4BoostParent, ChuProjectileOutcome, error) {
+	return stepFighter4BoostWithSound(state, parent, environment, library, nil)
+}
+
+func stepFighter4BoostWithSound(state Fighter4BoostState, parent Fighter4BoostParent, environment ChuAttachmentWorld, library AnimationLibrary, soundPort *worldSoundPort) (Fighter4BoostState, Fighter4BoostParent, ChuProjectileOutcome, error) {
 	before, oldParent := state, parent
 	v := &state.Visual
 	if v.Header.Stage == 0 {
@@ -384,7 +392,7 @@ func StepFighter4Boost(state Fighter4BoostState, parent Fighter4BoostParent, env
 		}
 		return state, parent, out, nil
 	}
-	updated, err := submitFighter4DragonVisual(*v, environment, library)
+	updated, err := submitFighter4DragonVisual(*v, environment, library, soundPort)
 	if err != nil {
 		return before, oldParent, ChuProjectileOutcome{}, err
 	}

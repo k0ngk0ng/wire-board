@@ -1,0 +1,14 @@
+{"ImportPath":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Action":"build-output","Output":"# github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine\n"}
+{"ImportPath":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Action":"build-output","Output":"games/yuyuhakusho/engine/chu_tail.go:57:84: not enough arguments in call to stepFighterActionTail\n"}
+{"ImportPath":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Action":"build-output","Output":"\thave (ChuTailState, number, number, number, number, ChuTailParameters, AnimationLibrary, ChuTailMode)\n"}
+{"ImportPath":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Action":"build-output","Output":"\twant (ChuTailState, uint8, int32, int16, uint16, ChuTailParameters, AnimationLibrary, ChuTailMode, *worldSoundPort)\n"}
+{"ImportPath":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Action":"build-output","Output":"games/yuyuhakusho/engine/fighter5_projectile.go:220:65: not enough arguments in call to submitFighter5Projectile\n"}
+{"ImportPath":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Action":"build-output","Output":"\thave (*Fighter8ProjectileState, ChuProjectileEnvironment, AnimationLibrary)\n"}
+{"ImportPath":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Action":"build-output","Output":"\twant (*Fighter8ProjectileState, ChuProjectileEnvironment, AnimationLibrary, *worldSoundPort)\n"}
+{"ImportPath":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Action":"build-fail"}
+{"Time":"2026-11-07T00:51:41.303434+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine"}
+{"Time":"2026-11-07T00:51:41.303481+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine [build failed]\n"}
+{"Time":"2026-11-07T00:51:41.303489+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Elapsed":0,"FailedBuild":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine"}
+{"Time":"2026-11-07T00:51:41.30349+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/scoreclock"}
+{"Time":"2026-11-07T00:51:41.303502+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/scoreclock","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/scoreclock [build failed]\n"}
+{"Time":"2026-11-07T00:51:41.303507+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/scoreclock","Elapsed":0,"FailedBuild":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine"}

@@ -1,0 +1,10 @@
+{
+  "head": "88b296fe78ee261af4f3ad39be7460009aabfee6",
+  "test_first": true,
+  "production_exists": false,
+  "files": {
+    "games/yuyuhakusho/engine/world_sound_live_test.go": "47b2642d0bb474efd912e12fea291476a938306a5fddf4ebdf5fb89f99b117c2",
+    "games/yuyuhakusho/audio/scoreclock/world_sound_live_e2e_test.go": "234050115e799b945023001966d7098226078f81b83395c7d3e719b97504dc55",
+    "games/yuyuhakusho/verification/world-sound-live/FAILURES.md": "f15a64b88ee922385067810f992bf93ac66547e1c84fb1acd06faee1756c9132"
+  }
+}

@@ -43,6 +43,10 @@ type MatchOverlayOutcome struct {
 // callbacks to sprite submission or their silent return. Result objects persist
 // at their terminal stage until the match manager clears the object region.
 func StepMatchOverlay(state MatchOverlayState, world MatchOverlayEnvironment) (MatchOverlayState, MatchOverlayOutcome, error) {
+	return stepMatchOverlayWithSound(state, world, nil)
+}
+
+func stepMatchOverlayWithSound(state MatchOverlayState, world MatchOverlayEnvironment, soundPort *worldSoundPort) (MatchOverlayState, MatchOverlayOutcome, error) {
 	original := state
 	kind := state.Object.Header.Behavior
 	paused := world.PauseFlags&0x80 != 0 || state.SlowFlag != 0
@@ -71,16 +75,16 @@ func StepMatchOverlay(state MatchOverlayState, world MatchOverlayEnvironment) (M
 				break
 			}
 			object.Header.Stage += 2
-			beginMatchDemo(&state, true)
+			beginMatchDemo(&state, true, soundPort)
 		case 4:
-			beginMatchDemo(&state, true)
+			beginMatchDemo(&state, true, soundPort)
 		case 6, 10:
 			object.Timer--
 			if int16(object.Timer) < 0 {
 				object.Header.Stage += 2
 			}
 		case 8:
-			beginMatchDemo(&state, false)
+			beginMatchDemo(&state, false, soundPort)
 		case 12:
 			state.ModeFlag = 3
 			object.Header.Stage += 2
@@ -157,7 +161,7 @@ func StepMatchOverlay(state MatchOverlayState, world MatchOverlayEnvironment) (M
 			if second {
 				sound, first = 0x59, 6
 			}
-			overlaySound(&state.SoundQueue, sound)
+			overlaySound(&state.SoundQueue, sound, soundPort)
 			for i := range state.Children {
 				child := &state.Children[i]
 				child.Header = MatchObjectHeader{Behavior: 0x10330, Size: 64}
@@ -224,7 +228,7 @@ func StepMatchOverlay(state MatchOverlayState, world MatchOverlayEnvironment) (M
 				if kind == 0x104ac {
 					sound, x, parameter = 0x5d, 0x108, 0x4a
 				}
-				overlaySound(&state.SoundQueue, sound)
+				overlaySound(&state.SoundQueue, sound, soundPort)
 				object.ScreenX, object.ScreenY = x, 0xe0
 				initializeMatchGraphic(object, false)
 				object.Depth, object.Parameter, object.Attributes = 0, parameter, 0xe050
@@ -254,7 +258,7 @@ func StepMatchOverlay(state MatchOverlayState, world MatchOverlayEnvironment) (M
 				}
 			case 4:
 				if kind == 0x10616 {
-					if err := chooseMatchTeamTitle(&state, world); err != nil {
+					if err := chooseMatchTeamTitle(&state, world, soundPort); err != nil {
 						return original, outcome, err
 					}
 				}
@@ -268,7 +272,7 @@ func StepMatchOverlay(state MatchOverlayState, world MatchOverlayEnvironment) (M
 				initializeMatchGraphic(object, false)
 				object.Depth, object.Attributes = 0, attribute
 				if kind == 0x10522 {
-					if err := chooseMatchCharacterTitle(&state, world); err != nil {
+					if err := chooseMatchCharacterTitle(&state, world, soundPort); err != nil {
 						return original, outcome, err
 					}
 				} else if kind == 0x106e8 {
@@ -291,15 +295,15 @@ func StepMatchOverlay(state MatchOverlayState, world MatchOverlayEnvironment) (M
 					object.Counter++
 					if object.Counter == 32 {
 						if object.Data == 9 {
-							overlaySound(&state.SoundQueue, 0x6e)
+							overlaySound(&state.SoundQueue, 0x6e, soundPort)
 						} else if object.Data == 11 {
-							overlaySound(&state.SoundQueue, 0x6d)
+							overlaySound(&state.SoundQueue, 0x6d, soundPort)
 						}
 					}
 				} else if kind == 0x106e8 {
 					object.Timer--
 					if object.Timer == 0 {
-						overlaySound(&state.SoundQueue, 0x66)
+						overlaySound(&state.SoundQueue, 0x66, soundPort)
 					}
 				}
 			default:
@@ -313,14 +317,14 @@ func StepMatchOverlay(state MatchOverlayState, world MatchOverlayEnvironment) (M
 	return state, outcome, nil
 }
 
-func beginMatchDemo(state *MatchOverlayState, first bool) {
+func beginMatchDemo(state *MatchOverlayState, first bool, soundPort *worldSoundPort) {
 	parameter, sound, timer := uint16(0x46), uint8(0x5b), uint16(96)
 	if first {
 		parameter, sound, timer = 0x44, 0x5a, 64
 		state.Object.Data = state.Object.Data&0x00ff | 0x0100
 	}
 	state.Object.Parameter, state.Object.Timer = parameter, timer
-	overlaySound(&state.SoundQueue, sound)
+	overlaySound(&state.SoundQueue, sound, soundPort)
 	state.Object.Header.Stage += 2
 	state.Object.Timer--
 	if int16(state.Object.Timer) < 0 {
@@ -347,7 +351,7 @@ func initializeMatchGraphic(object *MatchOverlayObject, intro bool) {
 	object.Depth = 256
 }
 
-func chooseMatchCharacterTitle(state *MatchOverlayState, world MatchOverlayEnvironment) error {
+func chooseMatchCharacterTitle(state *MatchOverlayState, world MatchOverlayEnvironment, soundPort *worldSoundPort) error {
 	if world.WinnerCode < 1 || world.WinnerCode > 4 {
 		return errors.New("result winner character slot is unavailable")
 	}
@@ -358,11 +362,11 @@ func chooseMatchCharacterTitle(state *MatchOverlayState, world MatchOverlayEnvir
 	state.Object.Data = uint16(character)
 	state.Object.Parameter = uint16(character) * 2
 	sounds := [11]uint8{0x6b, 0x69, 0x68, 0x67, 0x6a, 0x71, 0x70, 0x72, 0x6c, 0x6f, 0x6c}
-	overlaySound(&state.SoundQueue, sounds[character-1])
+	overlaySound(&state.SoundQueue, sounds[character-1], soundPort)
 	return nil
 }
 
-func chooseMatchTeamTitle(state *MatchOverlayState, world MatchOverlayEnvironment) error {
+func chooseMatchTeamTitle(state *MatchOverlayState, world MatchOverlayEnvironment, soundPort *worldSoundPort) error {
 	index := 0
 	if uint16(world.WinnerCode)>>2 != 0 {
 		index = 1
@@ -372,17 +376,12 @@ func chooseMatchTeamTitle(state *MatchOverlayState, world MatchOverlayEnvironmen
 		return errors.New("result team title is unavailable")
 	}
 	state.Object.Parameter = 0x1c + (title-1)*2
-	overlaySound(&state.SoundQueue, uint8(0x5e+title-1))
+	overlaySound(&state.SoundQueue, uint8(0x5e+title-1), soundPort)
 	return nil
 }
 
-func overlaySound(queue *[4]uint8, request uint8) {
-	for i, value := range queue {
-		if value < 128 || value == request {
-			queue[i] = request
-			break
-		}
-	}
+func overlaySound(queue *[4]uint8, request uint8, soundPort *worldSoundPort) {
+	enqueueWorldSound(queue, request, "overlay", soundPort)
 }
 
 func clearMatchOverlay(state MatchOverlayState, draw bool) (MatchOverlayState, MatchOverlayOutcome, error) {

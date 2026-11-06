@@ -84,6 +84,10 @@ type AnimationSubmissionState struct {
 // supply a read-only library; record selection uses this actor's own pose and
 // clock index. It does not advance the animation clock or consume sound slots.
 func SubmitAnimationRecord(state AnimationSubmissionState, library AnimationLibrary) (AnimationSubmissionState, error) {
+	return submitAnimationRecordWithSound(state, library, nil)
+}
+
+func submitAnimationRecordWithSound(state AnimationSubmissionState, library AnimationLibrary, soundPort *worldSoundPort) (AnimationSubmissionState, error) {
 	key := AnimationFrameKey{AnimationSet: state.Actor.AnimationSet, ShapeSet: state.Actor.ShapeSet, Pose: state.Actor.Pose, Index: state.Actor.Clock.FrameIndex}
 	data, ok := library[key]
 	if !ok {
@@ -166,12 +170,7 @@ func SubmitAnimationRecord(state AnimationSubmissionState, library AnimationLibr
 	if state.PendingSound != 0 {
 		request := state.PendingSound
 		state.PendingSound = 0
-		for i, value := range state.SoundQueue {
-			if value < 128 || value == request {
-				state.SoundQueue[i] = request
-				break
-			}
-		}
+		enqueueWorldSound(&state.SoundQueue, request, "animation", soundPort)
 	}
 	return state, nil
 }

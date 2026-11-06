@@ -22,6 +22,10 @@ type Fighter8ProjectileState struct {
 // StepFighter8Projectile stops at1483e's draw request or after1487c/3556's
 // clear. It advances its own animation, never follows or updates a parent.
 func StepFighter8Projectile(state Fighter8ProjectileState, world ChuAttachmentWorld, library AnimationLibrary) (Fighter8ProjectileState, ChuProjectileOutcome, error) {
+	return stepFighter8ProjectileWithSound(state, world, library, nil)
+}
+
+func stepFighter8ProjectileWithSound(state Fighter8ProjectileState, world ChuAttachmentWorld, library AnimationLibrary, soundPort *worldSoundPort) (Fighter8ProjectileState, ChuProjectileOutcome, error) {
 	before := state
 	if state.Header.Stage == 0 {
 		state.Header.Stage += 2
@@ -45,8 +49,8 @@ func StepFighter8Projectile(state Fighter8ProjectileState, world ChuAttachmentWo
 		}
 		return next, outcome, nil
 	}
-	submission, err := SubmitAnimationRecord(AnimationSubmissionState{Actor: state.Animation, Buffers: state.Buffers,
-		PendingSound: state.PendingSound, SoundQueue: state.SoundQueue}, library)
+	submission, err := submitAnimationRecordWithSound(AnimationSubmissionState{Actor: state.Animation, Buffers: state.Buffers,
+		PendingSound: state.PendingSound, SoundQueue: state.SoundQueue}, library, soundPort)
 	if err != nil {
 		return before, ChuProjectileOutcome{}, err
 	}

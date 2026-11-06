@@ -48,6 +48,10 @@ type ChuProjectileOutcome struct {
 // deletion; hardware sprite encoding and world collision scheduling are not
 // executed by this rule function.
 func StepChuProjectile(state ChuProjectileState, environment ChuProjectileEnvironment, library AnimationLibrary) (ChuProjectileState, ChuProjectileOutcome, error) {
+	return stepChuProjectileWithSound(state, environment, library, nil)
+}
+
+func stepChuProjectileWithSound(state ChuProjectileState, environment ChuProjectileEnvironment, library AnimationLibrary, soundPort *worldSoundPort) (ChuProjectileState, ChuProjectileOutcome, error) {
 	before := state
 	if state.Stage == 0 {
 		state.Stage += 2
@@ -99,7 +103,7 @@ func StepChuProjectile(state ChuProjectileState, environment ChuProjectileEnviro
 		}
 		return next, result, nil
 	}
-	animation, err := SubmitAnimationRecord(AnimationSubmissionState{Actor: state.Animation, Buffers: state.Buffers, PendingSound: state.PendingSound, SoundQueue: state.SoundQueue}, library)
+	animation, err := submitAnimationRecordWithSound(AnimationSubmissionState{Actor: state.Animation, Buffers: state.Buffers, PendingSound: state.PendingSound, SoundQueue: state.SoundQueue}, library, soundPort)
 	if err != nil {
 		return before, ChuProjectileOutcome{}, err
 	}

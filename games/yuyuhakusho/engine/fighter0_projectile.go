@@ -26,12 +26,16 @@ type Fighter0ProjectileLibrary struct {
 // stopping before1580 sprite emission or after3556 prefix deletion. Source0's
 // parent motion, shared1313e projectile and world scheduling remain separate.
 func StepFighter0Projectile(state Fighter0ProjectileState, environment ChuProjectileEnvironment, library Fighter0ProjectileLibrary) (Fighter0ProjectileState, ChuProjectileOutcome, error) {
+	return stepFighter0ProjectileWithSound(state, environment, library, nil)
+}
+
+func stepFighter0ProjectileWithSound(state Fighter0ProjectileState, environment ChuProjectileEnvironment, library Fighter0ProjectileLibrary, soundPort *worldSoundPort) (Fighter0ProjectileState, ChuProjectileOutcome, error) {
 	before := state
 	var outcome ChuProjectileOutcome
 	var err error
 	switch state.Kind {
 	case Fighter0ScatterProjectile:
-		state.Projectile, outcome, err = stepFighter0Scatter(state.Projectile, environment, library.Animations)
+		state.Projectile, outcome, err = stepFighter0Scatter(state.Projectile, environment, library.Animations, soundPort)
 	case Fighter0ReleaseLight:
 		state.Projectile, outcome, err = stepFighter0ReleaseLight(state.Projectile, environment, library.Sequences)
 	default:
@@ -58,7 +62,7 @@ func projectFighter0Projectile(state *ChuProjectileState, world ChuProjectileEnv
 	state.ScreenX, state.ScreenY, state.ScreenOffsetX, state.ScreenOffsetY = projection.ScreenX, projection.ScreenY, projection.OffsetX, projection.OffsetY
 }
 
-func stepFighter0Scatter(state ChuProjectileState, world ChuProjectileEnvironment, library AnimationLibrary) (ChuProjectileState, ChuProjectileOutcome, error) {
+func stepFighter0Scatter(state ChuProjectileState, world ChuProjectileEnvironment, library AnimationLibrary, soundPort *worldSoundPort) (ChuProjectileState, ChuProjectileOutcome, error) {
 	if state.Stage == 0 {
 		initializeFighter0ProjectileGraphics(&state, world.PaletteAttributes)
 		state.Animation.AnimationSet, state.Animation.ShapeSet = 0xd92ca, 0xd9a3a
@@ -101,8 +105,8 @@ func stepFighter0Scatter(state ChuProjectileState, world ChuProjectileEnvironmen
 		}
 		return clearChuProjectile(state)
 	}
-	submission, err := SubmitAnimationRecord(AnimationSubmissionState{Actor: state.Animation, Buffers: state.Buffers,
-		PendingSound: state.PendingSound, SoundQueue: state.SoundQueue}, library)
+	submission, err := submitAnimationRecordWithSound(AnimationSubmissionState{Actor: state.Animation, Buffers: state.Buffers,
+		PendingSound: state.PendingSound, SoundQueue: state.SoundQueue}, library, soundPort)
 	if err != nil {
 		return state, ChuProjectileOutcome{}, err
 	}

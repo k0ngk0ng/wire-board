@@ -65,6 +65,10 @@ type ChuAttachmentOutcome struct {
 // Parent/world values are read-only inputs. Drawing does not encode an MD DMA
 // or sprite queue here; an independent renderer consumes the returned object.
 func StepChuAttachment(state ChuAttachmentState, parent ChuAttachmentParent, world ChuAttachmentWorld, library ChuAttachmentLibrary) (ChuAttachmentState, ChuAttachmentOutcome, error) {
+	return stepChuAttachmentWithSound(state, parent, world, library, nil)
+}
+
+func stepChuAttachmentWithSound(state ChuAttachmentState, parent ChuAttachmentParent, world ChuAttachmentWorld, library ChuAttachmentLibrary, soundPort *worldSoundPort) (ChuAttachmentState, ChuAttachmentOutcome, error) {
 	original := state
 	if state.Kind != ChuChargeAttachment && state.Kind != ChuReleaseAttachment {
 		return original, ChuAttachmentOutcome{}, errors.New("unsupported Chu attachment kind")
@@ -140,7 +144,7 @@ func StepChuAttachment(state ChuAttachmentState, parent ChuAttachmentParent, wor
 			}
 			return next, outcome, nil
 		}
-		submission, err := SubmitAnimationRecord(AnimationSubmissionState{Actor: state.Actor, Buffers: state.Buffers, PendingSound: state.PendingSound, SoundQueue: state.SoundQueue}, library.Animations)
+		submission, err := submitAnimationRecordWithSound(AnimationSubmissionState{Actor: state.Actor, Buffers: state.Buffers, PendingSound: state.PendingSound, SoundQueue: state.SoundQueue}, library.Animations, soundPort)
 		if err != nil {
 			return original, ChuAttachmentOutcome{}, err
 		}
