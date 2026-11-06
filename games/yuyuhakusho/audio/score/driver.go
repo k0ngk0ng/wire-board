@@ -859,7 +859,7 @@ func (t *tick) loadPatch(i int) error {
 	if !v.Owned {
 		selected = t.driver.catalog.fallbackPatchID
 	}
-	patch, ok := t.driver.catalog.patches[selected]
+	patch, ok := t.driver.catalog.patch(selected)
 	if !ok {
 		return fmt.Errorf("missing selected patch")
 	}
@@ -885,7 +885,7 @@ func (t *tick) level(i int) error {
 		t.operation(Operation{Kind: OpParameter, Routine: RoutineLevel, VoiceSlot: int8(i), OtherSlot: -1, Branch: BranchClaimed})
 		return t.err
 	}
-	patch, ok := t.driver.catalog.patches[v.Tone]
+	patch, ok := t.driver.catalog.patch(v.Tone)
 	if !ok {
 		return fmt.Errorf("missing selected patch")
 	}

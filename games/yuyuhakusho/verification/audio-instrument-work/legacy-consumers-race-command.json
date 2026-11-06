@@ -1,0 +1,17 @@
+{
+  "pass": true,
+  "exit_code": 0,
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "-json",
+    "-count=1",
+    "-timeout=5m",
+    "./games/yuyuhakusho/audio/rootcontrol",
+    "./games/yuyuhakusho/audio/scoreclock"
+  ],
+  "elapsed_seconds": 19.342075833119452,
+  "scope": "Unchanged legacy catalog Root/scoreclock consumers after selected-reference resolver changes",
+  "log_sha256": "61eef1bc06d6b2b8cec7ade1be4f659bba8bbd697ac013f0ef59fbfd04865f85"
+}

@@ -1,0 +1,15 @@
+{
+  "at_utc": "2026-11-06T03:14:51.417197+00:00",
+  "test_first": true,
+  "production_exists": false,
+  "files": {
+    "games/yuyuhakusho/audio/score/instrument_work_e2e_test.go": "3e09383693fc9c9be74bf8688229ee5285582162a1b304e172512dd2abbe8ad7",
+    "docs/research/md-yuyuhakusho/AUDIO_INSTRUMENT_WORK_FAILURES.md": "21bce872784442d2fcd946032420d10495e3a9611741aa87861775654ca32403",
+    "scripts/yuyuhakusho/export_instrument_work.py": "06d57110cbf18766f961d0e12ad389883304962107f6e3b862a07b5632977795",
+    "games/yuyuhakusho/data/audio-score-instrument-work.json.gz": "09b580e0b3a4354d5dd4d1c896105a0faf002eb50d469c0c048f788d79228125",
+    "games/yuyuhakusho/data/audio-score.json.gz": "deaf3a70eac46c199335445d186f77d51f185bdaad4d95443d09b2f1d7054d71",
+    "games/yuyuhakusho/audio/score/driver.go": "441da690dac15abbbafbce0b102bca189baad38fbda078c5b1067908506df7c9",
+    "games/yuyuhakusho/audio/score/catalog.go": "9d19b1b16342d54b4df4625a7e75bd3c2e6806af04194540a134f9b12059a542",
+    "games/yuyuhakusho/audio/score/state.go": "91fc0de482e99c0b1bc8f9a38e59ec8c013f5df80f9add02f173e148f47160a4"
+  }
+}

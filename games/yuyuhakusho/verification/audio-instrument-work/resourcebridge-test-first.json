@@ -1,0 +1,7 @@
+{
+  "test_first": true,
+  "files": {
+    "games/yuyuhakusho/audio/resourcebridge/instrument_e2e_test.go": "42adc1617cf24903fd3b0b963701823ecc72d324d7eccca345467dfc4d57000e",
+    "games/yuyuhakusho/audio/resourcebridge/library.go": "c5f87f255c8559e43f9f9b24f8d749d248ed8ebf9892ab1d05003e1548b2e269"
+  }
+}
