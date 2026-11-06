@@ -1,0 +1,11 @@
+{
+  "test_first": true,
+  "at_utc": "2026-11-06T04:00:16.329783+00:00",
+  "production_exists": false,
+  "files": {
+    "games/yuyuhakusho/audio/scoreclock/instrument_e2e_test.go": "54a076c84c73d3b87eb8c27e22c97b0c55b350cb33636df92b2964556a68f260",
+    "games/yuyuhakusho/verification/score-clock-instrument/native-instrument-full.json.gz": "a80a4487bbe1b4d28639319828cac9baafa53770eede7c570d1773bb32ea6c1a",
+    "docs/research/md-yuyuhakusho/SCORE_CLOCK_INSTRUMENT_FAILURES.md": "5e8c936aa1c0bee1de6e1997da6e806846b46740360044f6ee5507dd886f5c81",
+    "scripts/yuyuhakusho/score-clock-instrument-capture.py": "ad1b60d2a43a17ab9a04b7e9cffc1e4073b14a50486875814fc593767b7573a5"
+  }
+}
