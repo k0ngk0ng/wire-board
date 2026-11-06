@@ -82,6 +82,17 @@ func (r *runningTick) rootOperation(op rootcontrol.RuleOperation) error {
 		return ErrRunningSequence
 	}
 	r.rootSequence++
+	if op.Kind == rootcontrol.RuleEnterPhase && op.Phase == rootcontrol.RuleReturn && r.request != nil && r.request.control != nil && r.request.control.suspended() {
+		if r.phase != rootcontrol.RuleGate || r.phaseIndex != 1 {
+			return ErrRunningSequence
+		}
+		if err := r.request.control.finishPaused(); err != nil {
+			return err
+		}
+		r.phase = op.Phase
+		r.finished, r.endsTick = true, true
+		return nil
+	}
 	if op.Kind == rootcontrol.RuleEnterPhase {
 		phases := [8]rootcontrol.RulePhase{rootcontrol.RuleGate, rootcontrol.RuleControlIdle, rootcontrol.RuleTempo, rootcontrol.RuleFade, rootcontrol.RuleQueue, rootcontrol.RuleDispatch, rootcontrol.RuleVoices, rootcontrol.RuleReturn}
 		if int(r.phaseIndex) >= len(phases) || op.Phase != phases[r.phaseIndex] {
@@ -107,12 +118,18 @@ func (r *runningTick) rootOperation(op rootcontrol.RuleOperation) error {
 			if !r.tempoClosed {
 				return ErrRunningSequence
 			}
+			if r.request != nil && r.request.control != nil {
+				return r.request.control.beginFade()
+			}
 			if err := r.s.spend(18); err != nil {
 				return err
 			}
 			_, err := fadeIdleBody(r.s)
 			return err
 		case rootcontrol.RuleQueue:
+			if r.request != nil && r.request.control != nil && r.request.control.stage != "idle" {
+				return ErrRunningSequence
+			}
 			if r.request != nil {
 				return nil
 			}
@@ -141,6 +158,9 @@ func (r *runningTick) rootOperation(op rootcontrol.RuleOperation) error {
 			}
 			return r.s.spend(16)
 		case rootcontrol.RuleVoices:
+			if r.request != nil && r.request.control != nil && r.request.control.stage != "idle" && r.request.control.stage != "dispatch-done" {
+				return ErrRunningSequence
+			}
 			if r.request != nil && r.request.init != nil && r.request.init.done && r.request.init.plan.Music {
 				r.endsTick = true
 				return nil
@@ -161,6 +181,12 @@ func (r *runningTick) rootOperation(op rootcontrol.RuleOperation) error {
 	}
 	if op.Phase != r.phase {
 		return ErrRunningSequence
+	}
+	if r.request != nil && r.request.control != nil {
+		handled, err := r.request.control.rootOperation(op)
+		if handled {
+			return err
+		}
 	}
 	switch op.Kind {
 	case rootcontrol.RulePauseRead:
@@ -233,6 +259,9 @@ func (r *runningTick) scoreOperation(op score.Operation, state score.State) erro
 	}
 	if op.Routine == score.RoutineTempo {
 		return r.tempoOperation(op, state)
+	}
+	if r.request != nil && r.request.control != nil && r.request.control.handlesScore(op) {
+		return r.request.control.scoreOperation(op, state)
 	}
 	if r.phase == rootcontrol.RuleDispatch && r.request != nil && r.request.init != nil {
 		return r.request.init.consume(op, state)

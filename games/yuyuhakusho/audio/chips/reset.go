@@ -22,7 +22,7 @@ func warmYMReset(current YMState) YMState {
 	return next
 }
 
-func (active *Interactive) resetYM(cycle uint64, completedDAC *uint64) error {
+func (active *Interactive) resetYM(cycle uint64, completedDAC *uint64, independent bool) error {
 	state := &active.state
 	if state.InputCount >= MaxPendingEvents {
 		return errors.New("reset input capacity reached before frame flush")
@@ -37,11 +37,15 @@ func (active *Interactive) resetYM(cycle uint64, completedDAC *uint64) error {
 	if _, ok = plus(active.config.MasterOrigin, cycle); !ok {
 		return errors.New("reset origin+request overflow")
 	}
+	frontier := state.Cursor
+	if independent {
+		frontier = active.YMInputCursor()
+	}
 	if completedDAC == nil {
-		if cycle < state.Cursor {
+		if cycle < frontier {
 			return errors.New("ordinary YM reset moved input time backwards")
 		}
-	} else if *completedDAC != state.Cursor || cycle > *completedDAC || *completedDAC-cycle > MaxResetDACBackstep {
+	} else if *completedDAC != frontier || cycle > *completedDAC || *completedDAC-cycle > MaxResetDACBackstep {
 		return errors.New("reset does not match bounded completed DAC frontier")
 	}
 
@@ -64,6 +68,13 @@ func (active *Interactive) resetYM(cycle uint64, completedDAC *uint64) error {
 	if cycle > next.Cursor {
 		next.Cursor = cycle
 	}
+	if independent || next.YMLag != 0 {
+		ym := active.YMInputCursor()
+		if cycle > ym {
+			ym = cycle
+		}
+		setYMFrontier(&next, ym)
+	}
 	applyFIR(&next, plan)
 	active.state = next
 	return nil
@@ -73,7 +84,7 @@ func (active *Interactive) resetYM(cycle uint64, completedDAC *uint64) error {
 // It clears YM registers and busy after synchronizing FM, but preserves PSG,
 // FIR/integrator, generated FM progress and already submitted output.
 func (active *Interactive) ResetYM(cycle uint64) error {
-	return active.resetYM(cycle, nil)
+	return active.resetYM(cycle, nil, false)
 }
 
 // ResetYMAfterDAC is the explicit exception for a Device reset request which
@@ -83,5 +94,5 @@ func (active *Interactive) ResetYM(cycle uint64) error {
 // must equal this instance's current frontier and request may retreat at most
 // MaxResetDACBackstep. Ordinary writes, reads and queued inputs stay monotonic.
 func (active *Interactive) ResetYMAfterDAC(request, completedDAC uint64) error {
-	return active.resetYM(request, &completedDAC)
+	return active.resetYM(request, &completedDAC, false)
 }

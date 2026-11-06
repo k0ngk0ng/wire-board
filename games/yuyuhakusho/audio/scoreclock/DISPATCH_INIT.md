@@ -10,6 +10,6 @@ stop-primary 复用已验证的 restored patch／pan 服务，但保留自己的
 
 Root 的 priority clear 和音乐 reset 的 priority save／restore、selected reset 使用同步一次性 effect lease，在实际时刻访问唯一 owner。header／音乐声部的连续清零沿用规则层明确的 bulk effect；本 profile 不在其中插入 IRQ、外部 owner 访问或回调，不声称证明逐 long 中断可见性。`DriverResult.Fields` 是当前调用的诊断记录，不用于再次播放。
 
-输入仍要求 idle control／fade／pause、没有 pause restore payload，并使用调用方给定的主时钟起点。01／05／04、活动 fade／pause、selected 0 的重初始化、活动 secondary 音轨以及 world IRQ／请求生产时刻仍未接通。Root、score、queue、bus、chip 与 PCM 使用可丢弃的同一分支，只有成功后才联合提交；失败不提交 score，但可能已经修改外部 owner，接口不自动回滚或 flush。
+本页的原版初始化矩阵限定 idle control／fade／pause、没有 pause restore payload，并使用调用方给定的主时钟起点。完整 driver 后续已增加 01／05／04 与活动 fade／pause，当前接口见 [DRIVER_CONTROL.md](DRIVER_CONTROL.md)。selected 0 的重初始化、活动 secondary 音轨以及 world IRQ／请求生产时刻仍未接通。Root、score、queue、bus、chip 与 PCM 使用可丢弃的同一分支，只有成功后才联合提交；失败不提交 score，但可能已经修改外部 owner，接口不自动回滚或 flush。
 
 原版完整调用、先行失败与复跑说明见[验收目录](../../verification/score-clock-dispatch-init/)。本接口通过不代表联合音频 checkpoint 或平台整场播放已经完成。

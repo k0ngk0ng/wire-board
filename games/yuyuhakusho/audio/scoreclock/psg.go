@@ -107,16 +107,16 @@ func (s *service) servePSG(request PSGRequest, chip PSGChip) error {
 			err = psgAbsoluteStore(s, chip, request.Data)
 		}
 	case PSGMuteAll:
-		if err = s.spend(12); err != nil {
-			return err
-		} // select the PSG port
-		for _, value := range [...]uint8{0x9f, 0xbf, 0xdf, 0xff} {
-			// The fixed mute operation uses an immediate byte at the selected
-			// port, rather than the absolute data-register store above.
-			if err = s.cost(12, func() error { return chip.WritePSG(s.clock.Cycle, value) }); err != nil {
-				return err
+		scan, failure := beginMutePSG(s, chip)
+		if failure != nil {
+			return failure
+		}
+		for _, value := range mutePSGValues {
+			if failure = scan.next(value); failure != nil {
+				return failure
 			}
 		}
+		return nil
 	}
 	if err != nil {
 		return err

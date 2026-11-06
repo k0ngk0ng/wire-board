@@ -1,0 +1,447 @@
+package scoreclock_test
+
+import (
+	"encoding/hex"
+	"encoding/json"
+	"errors"
+	"reflect"
+	"testing"
+
+	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips"
+	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/mixed"
+	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/resourcebridge"
+	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/rootcontrol"
+	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score"
+	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/scoreclock"
+	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine"
+)
+
+type driverControlNative struct {
+	Input struct {
+		ID              string
+		Before          score.State
+		Root            rootcontrol.State
+		Queue           [4]uint8
+		Pause           uint8
+		Levels          [6][4]uint8
+		Origin, Refresh uint64
+	}
+	Fields []struct {
+		Kind  string
+		At    uint64
+		Value uint8
+	}
+	Events []instrumentNativeEvent
+	PSG    []struct {
+		At    uint64
+		Value uint8
+	}
+	End        scoreclock.Clock
+	AudioRAM   string      `json:"audio_ram"`
+	PauseCache [6][4]uint8 `json:"pause_cache"`
+	Equal      bool        `json:"native_observer_state_equal"`
+}
+
+func driverControlNatives(t *testing.T) ([]driverControlNative, engine.SoundPriorityTable) {
+	t.Helper()
+	var f struct {
+		Version    int
+		Priorities engine.SoundPriorityTable
+		Cases      []driverControlNative
+	}
+	if err := json.Unmarshal(parserClockUnpack(t, "../../verification/score-clock-driver-control/native-driver-control-full.json.gz"), &f); err != nil {
+		t.Fatal(err)
+	}
+	if f.Version != 1 || len(f.Cases) != 103 {
+		t.Fatal("whole driver control source scope missing")
+	}
+	return f.Cases, f.Priorities
+}
+
+type driverControlIO struct {
+	*noteVoiceIO
+	failCapture bool
+	captures    int
+}
+
+func (e *driverControlIO) ReadPauseLevels(at uint64) ([6][4]uint8, error) {
+	e.captures++
+	if e.failCapture {
+		return [6][4]uint8{}, errors.New("pause capture failed")
+	}
+	return e.r.ReadPauseLevels(at)
+}
+func newDriverControlIO(t *testing.T, l *resourcebridge.Library, levels [6][4]uint8) *driverControlIO {
+	t.Helper()
+	e := newNoteVoiceIO(t, l, 0, 0)
+	s := e.r.Snapshot()
+	for ch := range levels {
+		for op, v := range levels[ch] {
+			s.Chips.YM.Channels[ch].Operators[op].Level = v
+		}
+	}
+	pcm, err := l.PCMConfig(0, 64)
+	if err != nil {
+		t.Fatal(err)
+	}
+	e.r, err = mixed.Restore(mixed.Config{PCM: pcm, Chips: chips.Config{Profile: chips.ReferenceMixedHQ44100}}, s)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return &driverControlIO{noteVoiceIO: e}
+}
+
+func TestDriverControlWholeOriginalAndActualOwners(t *testing.T) {
+	l := observedEnvelopeLibrary(t)
+	rows, priorities := driverControlNatives(t)
+	for _, row := range rows {
+		t.Run(row.Input.ID, func(t *testing.T) {
+			if !row.Equal {
+				t.Fatal("control observer changed native state")
+			}
+			d, err := score.Restore(l.Catalog(), row.Input.Before)
+			if err != nil {
+				t.Fatal(err)
+			}
+			root, err := rootcontrol.RestoreState(row.Input.Root)
+			if err != nil {
+				t.Fatal(err)
+			}
+			queue, pause := row.Input.Queue, row.Input.Pause
+			e := newDriverControlIO(t, l, row.Input.Levels)
+			result, err := scoreclock.AdvanceDriverTick(scoreclock.Clock{Cycle: row.Input.Origin, Refresh: row.Input.Refresh}, &root, rootcontrol.RuleOwners{Score: d, Queue: &queue, AudioPause: &pause}, rootcontrol.RuleInput{Priorities: priorities}, l, e, e, scoreclock.Limits{})
+			if err != nil || result.Clock != row.End {
+				t.Fatal("whole control clock differs", result.Clock, row.End, err)
+			}
+			wantTrace := noteAccesses(t, noteNative{Events: row.Events, PSG: row.PSG})
+			if !reflect.DeepEqual(e.trace, wantTrace) {
+				for i := 0; i < len(e.trace) && i < len(wantTrace); i++ {
+					if e.trace[i] != wantTrace[i] {
+						t.Fatalf("control access%d got%+v want%+v", i, e.trace[i], wantTrace[i])
+					}
+				}
+				t.Fatal("control access count differs", len(e.trace), len(wantTrace))
+			}
+			if len(result.Fields) != len(row.Fields) {
+				t.Fatal("control field count differs", len(result.Fields), len(row.Fields))
+			}
+			for i, field := range result.Fields {
+				want := row.Fields[i]
+				if field.Kind != want.Kind || field.At != want.At || field.Value != want.Value {
+					t.Fatal("control field time/order differs", i, field, want)
+				}
+			}
+			legacy, _ := score.Restore(l.Catalog(), row.Input.Before)
+			lr, _ := rootcontrol.RestoreState(row.Input.Root)
+			lq, lp := row.Input.Queue, row.Input.Pause
+			var reads []instrumentNativeEvent
+			for _, event := range row.Events {
+				if event.Kind == 17 || event.Kind == 19 {
+					reads = append(reads, event)
+				}
+			}
+			next := 0
+			feedback := func(read score.FeedbackRead) (score.DACFeedback, error) {
+				if next >= len(reads) || reads[next].Kind != 17 {
+					return score.DACFeedback{}, errors.New("control native feedback missing")
+				}
+				marker := uint8(reads[next].Value)
+				next++
+				if read.Kind == score.ReadPanRedirect {
+					return score.DACFeedback{PanRedirect: marker != 0}, nil
+				}
+				v := score.DACFeedback{Blocked: marker&128 != 0}
+				if !v.Blocked {
+					if next >= len(reads) || reads[next].Kind != 19 {
+						return score.DACFeedback{}, errors.New("control native flags missing")
+					}
+					v.Priority = uint8(reads[next].Value) & 192
+					next++
+				}
+				return v, nil
+			}
+			want, failure := rootcontrol.AdvanceRules(&lr, rootcontrol.RuleOwners{Score: legacy, Queue: &lq, AudioPause: &lp}, rootcontrol.RuleInput{Priorities: priorities}, rootcontrol.RuleHooks{Operation: func(rootcontrol.RuleOperation) error { return nil }, AcceptDispatch: func(uint8) error { return nil }, CaptureLevels: func() (rootcontrol.PauseLevels, error) { return rootcontrol.PauseLevels{Levels: row.Input.Levels}, nil }, Score: score.ObservedHooks{Parser: l.Parser(), Operation: func(score.Operation) error { return nil }, ReadDAC: feedback}})
+			if failure != nil || next != len(reads) || !reflect.DeepEqual(result.Output, want) || !reflect.DeepEqual(root, lr) || queue != lq || pause != lp || d.Snapshot() != legacy.Snapshot() {
+				t.Fatal("control timer changed canonical rules", failure, next, len(reads))
+			}
+			ram, failure := hex.DecodeString(row.AudioRAM)
+			s := d.Snapshot()
+			if failure != nil || len(ram) != 928 || root.Priority != ram[0] || root.Selected != ram[9] || root.ChoiceBits != ram[44] || root.Fade.Steps != ram[4] || root.Fade.Remaining != ram[6] || pause != ram[7] || queue != ([4]uint8{ram[10], ram[11], ram[12], ram[13]}) || s.TempoPeriod != ram[2] || s.TempoRemaining != ram[1] {
+				t.Fatal("native control header differs", failure)
+			}
+			for slot, v := range s.Voices {
+				r := ram[64+48*slot : 64+48*(slot+1)]
+				flags := uint8(0)
+				for bit, on := range map[uint8]bool{128: v.Active, 2: v.NoteOff, 4: v.Claimed, 16: v.Tie} {
+					if on {
+						flags |= bit
+					}
+				}
+				if r[0]&150 != flags || v.Owned && (r[8] != uint8(v.Transpose) || r[9] != v.BaseLevel || r[14] != v.NoteWait) {
+					t.Fatal("native control voice differs", slot, flags, r[0], v.BaseLevel, r[9], v.NoteWait, r[14])
+				}
+			}
+			if row.Input.Pause != 0 {
+				if row.Input.Pause < 128 {
+					if e.captures != 1 || root.PauseRestore == nil || root.PauseRestore.Levels != row.PauseCache {
+						t.Fatal("actual captured payload differs from source")
+					}
+				} else if e.captures != 0 {
+					t.Fatal("hold/resume recaptured destroyed levels")
+				}
+				levels, err := rootcontrol.CapturePauseLevels(e.r.Snapshot().Chips.YM)
+				if err != nil {
+					t.Fatal(err)
+				}
+				if row.Input.Pause != 255 && row.Input.Pause&128 != 0 {
+					if root.PauseRestore != nil || levels.Levels != row.PauseCache {
+						t.Fatal("actual resume levels/payload lifetime differ")
+					}
+				} else {
+					for _, ch := range levels.Levels {
+						for _, value := range ch {
+							if value != 127 {
+								t.Fatal("actual paused FM not muted")
+							}
+						}
+					}
+				}
+			}
+		})
+	}
+}
+
+func TestDriverControlRootEffectsRequireUniqueLeases(t *testing.T) {
+	l := observedEnvelopeLibrary(t)
+	for _, kind := range []string{"fade", "pause", "bulk", "selected"} {
+		for _, mode := range []string{"missing", "twice", "expired", "error"} {
+			t.Run(kind+"-"+mode, func(t *testing.T) {
+				d, _ := score.New(l.Catalog())
+				before := d.Snapshot()
+				root := rootcontrol.InitialState()
+				root.Selected = 1
+				if kind == "bulk" || kind == "selected" {
+					root.Selected = 4
+				}
+				queue, pause := [4]uint8{}, uint8(0)
+				if kind == "pause" {
+					pause = 1
+					root.Selected = 255
+				}
+				seen := map[uint32]rootcontrol.RuleOperation{}
+				var saved func() error
+				fx := func(op rootcontrol.RuleOperation, apply func() error) error {
+					if seen[op.Sequence] != op || op.Version != 1 {
+						t.Fatal("effect lost actual operation sequence/phase")
+					}
+					switch mode {
+					case "missing":
+						return nil
+					case "twice":
+						if err := apply(); err != nil {
+							return err
+						}
+						_ = apply()
+						return nil
+					case "error":
+						return errors.New("Root effect failed")
+					default:
+						if saved == nil {
+							saved = apply
+						}
+						return apply()
+					}
+				}
+				h := rootcontrol.RuleHooks{Operation: func(op rootcontrol.RuleOperation) error { seen[op.Sequence] = op; return nil }, Score: score.ObservedHooks{Parser: l.Parser(), Operation: func(score.Operation) error { return nil }}, CaptureLevels: func() (rootcontrol.PauseLevels, error) { return rootcontrol.PauseLevels{}, nil }}
+				switch kind {
+				case "fade":
+					h.FadeWrite = fx
+				case "pause":
+					h.PauseWrite = fx
+				case "bulk":
+					h.BulkClear = fx
+				case "selected":
+					h.SelectedWrite = fx
+				}
+				_, err := rootcontrol.AdvanceRules(&root, rootcontrol.RuleOwners{Score: d, Queue: &queue, AudioPause: &pause}, rootcontrol.RuleInput{}, h)
+				if mode == "expired" {
+					if err != nil || saved == nil || saved() == nil {
+						t.Fatal("expired Root effect usable", err)
+					}
+				} else if err == nil || d.Snapshot() != before {
+					t.Fatal("invalid Root effect committed score", err)
+				}
+			})
+		}
+	}
+}
+
+func TestDriverControlPauseReadsUseLiveOwnerAndRejectFabrication(t *testing.T) {
+	l := observedEnvelopeLibrary(t)
+	for _, mode := range []string{"live", "missing", "twice", "expired", "error", "fabricated"} {
+		t.Run(mode, func(t *testing.T) {
+			d, _ := score.New(l.Catalog())
+			before := d.Snapshot()
+			root := rootcontrol.InitialState()
+			queue, pause := [4]uint8{}, uint8(1)
+			var saved func() uint8
+			_, err := rootcontrol.AdvanceRules(&root, rootcontrol.RuleOwners{Score: d, Queue: &queue, AudioPause: &pause}, rootcontrol.RuleInput{}, rootcontrol.RuleHooks{Operation: func(rootcontrol.RuleOperation) error { return nil }, Score: score.ObservedHooks{Parser: l.Parser(), Operation: func(score.Operation) error { return nil }}, CaptureLevels: func() (rootcontrol.PauseLevels, error) { return rootcontrol.PauseLevels{}, nil }, ReadPause: func(op rootcontrol.RuleOperation, read func() uint8) (uint8, error) {
+				if op.ReadIndex != 1 {
+					return read(), nil
+				}
+				switch mode {
+				case "live":
+					pause = 0
+					return read(), nil
+				case "missing":
+					return 1, nil
+				case "twice":
+					v := read()
+					_ = read()
+					return v, nil
+				case "error":
+					return 0, errors.New("pause read failed")
+				case "fabricated":
+					_ = read()
+					return 0, nil
+				default:
+					saved = read
+					return read(), nil
+				}
+			}})
+			if mode == "live" {
+				if err != nil || pause != 0 || d.Snapshot().Ticks != before.Ticks+1 {
+					t.Fatal("pause read used an earlier snapshot", err)
+				}
+			} else if mode == "expired" {
+				pause = 9
+				if err != nil || saved == nil || saved() != 0 {
+					t.Fatal("expired pause read usable", err)
+				}
+			} else if err == nil || d.Snapshot() != before {
+				t.Fatal("fabricated/misused pause read committed score", err)
+			}
+		})
+	}
+}
+
+func TestDriverControlPauseCheckpointRoundTripAndContinuation(t *testing.T) {
+	l := observedEnvelopeLibrary(t)
+	rows, priorities := driverControlNatives(t)
+	var row driverControlNative
+	for _, r := range rows {
+		if r.Input.Pause == 1 && r.Input.Before.Voices[1].Active {
+			row = r
+			break
+		}
+	}
+	if row.Input.ID == "" {
+		t.Fatal("pause witness missing")
+	}
+	d, _ := score.Restore(l.Catalog(), row.Input.Before)
+	root, _ := rootcontrol.RestoreState(row.Input.Root)
+	queue, pause := [4]uint8{}, uint8(1)
+	e := newDriverControlIO(t, l, row.Input.Levels)
+	s := e.r.Snapshot()
+	s.Chips.PSG.Level = [4]uint16{2800, 2224, 1766, 1403}
+	pcm, _ := l.PCMConfig(0, 64)
+	cfg := mixed.Config{PCM: pcm, Chips: chips.Config{Profile: chips.ReferenceMixedHQ44100}}
+	var err error
+	e.r, err = mixed.Restore(cfg, s)
+	if err != nil {
+		t.Fatal(err)
+	}
+	run := func(clock scoreclock.Clock) scoreclock.DriverResult {
+		t.Helper()
+		r, err := scoreclock.AdvanceDriverTick(clock, &root, rootcontrol.RuleOwners{Score: d, Queue: &queue, AudioPause: &pause}, rootcontrol.RuleInput{Priorities: priorities}, l, e, e, scoreclock.Limits{})
+		if err != nil {
+			t.Fatal(err)
+		}
+		return r
+	}
+	result := run(scoreclock.Clock{})
+	expectedScore := row.Input.Before
+	expectedScore.Ticks++ // Every actual driver call is counted, including suspension.
+	if pause != 255 || root.PauseRestore == nil || d.Snapshot() != expectedScore || e.r.Snapshot().Chips.PSG.Level != ([4]uint16{}) {
+		t.Fatal("pause did not suspend/mute actual owners")
+	}
+	raw, err := json.Marshal(struct {
+		Root  rootcontrol.State
+		Score score.State
+		Mixed mixed.State
+		Pause uint8
+	}{root, d.Snapshot(), e.r.Snapshot(), pause})
+	if err != nil {
+		t.Fatal(err)
+	}
+	var restored struct {
+		Root  rootcontrol.State
+		Score score.State
+		Mixed mixed.State
+		Pause uint8
+	}
+	if err = json.Unmarshal(raw, &restored); err != nil {
+		t.Fatal(err)
+	}
+	root, err = rootcontrol.RestoreState(restored.Root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	d, err = score.Restore(l.Catalog(), restored.Score)
+	if err != nil {
+		t.Fatal(err)
+	}
+	e.r, err = mixed.Restore(cfg, restored.Mixed)
+	if err != nil {
+		t.Fatal(err)
+	}
+	pause = restored.Pause
+	queue[0] = 0xa0
+	traceBefore := len(e.trace)
+	held := run(scoreclock.Clock{Cycle: result.Clock.Cycle + 1000, Refresh: result.Clock.Refresh})
+	expectedScore.Ticks++
+	if len(e.trace) != traceBefore || queue[0] != 0xa0 || d.Snapshot() != expectedScore {
+		t.Fatal("pause hold advanced owners")
+	}
+	pause = 128
+	resumed := run(scoreclock.Clock{Cycle: held.Clock.Cycle + 1000, Refresh: held.Clock.Refresh})
+	expectedScore.Ticks++
+	levels, err := rootcontrol.CapturePauseLevels(e.r.Snapshot().Chips.YM)
+	if err != nil || levels.Levels != row.Input.Levels || root.PauseRestore != nil || pause != 0 || queue[0] != 0xa0 || d.Snapshot() != expectedScore {
+		t.Fatal("restored resume lost payload/queue", err)
+	}
+	_ = run(scoreclock.Clock{Cycle: resumed.Clock.Cycle + 1000, Refresh: resumed.Clock.Refresh})
+	if queue != ([4]uint8{}) || d.Snapshot().Ticks != expectedScore.Ticks+1 {
+		t.Fatal("resumed normal driver did not consume pending input")
+	}
+}
+
+func TestDriverControlFailureKeepsScoreUncommitted(t *testing.T) {
+	l := observedEnvelopeLibrary(t)
+	rows, priorities := driverControlNatives(t)
+	for _, mode := range []string{"budget", "io", "capture"} {
+		var row driverControlNative
+		for _, r := range rows {
+			if mode == "capture" && r.Input.Pause == 1 || mode != "capture" && r.Input.Queue[0] == 4 && r.Input.Before.Voices[1].Active {
+				row = r
+				break
+			}
+		}
+		if row.Input.ID == "" {
+			t.Fatal("failure witness missing")
+		}
+		d, _ := score.Restore(l.Catalog(), row.Input.Before)
+		root, _ := rootcontrol.RestoreState(row.Input.Root)
+		queue, pause := row.Input.Queue, row.Input.Pause
+		e := newDriverControlIO(t, l, row.Input.Levels)
+		e.failWrite, e.failCapture = mode == "io", mode == "capture"
+		limits := scoreclock.Limits{}
+		if mode == "budget" {
+			limits.MaxOperations = 300
+		}
+		_, err := scoreclock.AdvanceDriverTick(scoreclock.Clock{}, &root, rootcontrol.RuleOwners{Score: d, Queue: &queue, AudioPause: &pause}, rootcontrol.RuleInput{Priorities: priorities}, l, e, e, limits)
+		if err == nil || mode == "budget" && !errors.Is(err, scoreclock.ErrBudget) || d.Snapshot() != row.Input.Before || len(e.trace) == 0 {
+			t.Fatal("control failure committed score/reset budget", mode, err)
+		}
+	}
+}

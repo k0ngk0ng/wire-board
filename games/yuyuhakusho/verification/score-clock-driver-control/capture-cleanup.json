@@ -1,0 +1,35 @@
+{
+  "all_capture_processes_terminal": true,
+  "preserved_formal_directories": [
+    "games/yuyuhakusho/verification/score-clock-driver-control",
+    "games/yuyuhakusho/verification/fmpsg-independent-lanes"
+  ],
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/score-clock-driver-control-native-v1/score-clock-psg-observer.dylib",
+      "bytes": 17392,
+      "sha256": "d205c1b2f146b15dd056a1e75f56a5b3fed96f47563d3ef5d186e122ed653631"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/score-clock-driver-control-native-v1/native-driver-control-full.json.gz",
+      "bytes": 981149,
+      "sha256": "f2ea40ecb7ca75f439fbd6a3f2eebfe8fd6b753eb4f9e5880a3b3f43fc59f023"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/score-clock-driver-control-native-v1/driver-control-observer.dylib",
+      "bytes": 18464,
+      "sha256": "4927a4140fd698f516047343cbac6298b41092748fa41e9338321f6116a180cb"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fmpsg-independent-lanes-native-v1/native.json.gz",
+      "bytes": 271216,
+      "sha256": "0a97a810a3c3cc873f21fce6c9f062b4a4ccc58c092d89485347a99c96b477e1"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fmpsg-independent-lanes-native-v1/native-capture.json",
+      "bytes": 747,
+      "sha256": "0f3b22b88192707580b7a8570a5490a2342dc0dc2bf5b8373d537490991b3146"
+    }
+  ],
+  "removed_bytes": 1288968
+}

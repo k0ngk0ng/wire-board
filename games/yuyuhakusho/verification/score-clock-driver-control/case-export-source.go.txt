@@ -1,0 +1,34 @@
+package main
+
+import("bytes";"compress/gzip";"encoding/json";"fmt";"io";"os"
+"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/resourcebridge"
+"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/rootcontrol"
+"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score")
+func load(name string)[]byte{raw,e:=os.ReadFile("games/yuyuhakusho/data/"+name+".json.gz");if e!=nil{panic(e)};z,e:=gzip.NewReader(bytes.NewReader(raw));if e!=nil{panic(e)};defer z.Close();raw,e=io.ReadAll(z);if e!=nil{panic(e)};return raw}
+type row struct{ID string `json:"id"`;Before score.State `json:"before"`;Root rootcontrol.State `json:"root"`;Queue [4]uint8 `json:"queue"`;Pause uint8 `json:"pause"`;Levels [6][4]uint8 `json:"levels"`}
+func held(s score.State)score.State{s.TempoPeriod,s.TempoRemaining=0,0;for i:=range s.Voices{if s.Voices[i].Active{s.Voices[i].NoteWait=2;s.Voices[i].GateTicks,s.Voices[i].GateRemaining=0,0}};return s}
+func main(){
+ if len(os.Args)!=2{panic("new output required")};if _,e:=os.Stat(os.Args[1]);!os.IsNotExist(e){panic("preserve prior inputs")}
+ raw:=load("audio-score");l,e:=resourcebridge.DecodeWithEnvelopeWork(raw,load("audio-pcm-payloads"),load("audio-score-parser-work"),load("audio-score-instrument-work"),load("audio-score-envelope-work"));if e!=nil{panic(e)}
+ var cat struct{Scores []struct{ID uint8;Kind string}};if e=json.Unmarshal(raw,&cat);e!=nil{panic(e)}
+ music:=map[uint8]score.State{};for _,c:=range cat.Scores{if c.Kind!="music"{continue};d,_:=score.New(l.Catalog());if _,e=d.Advance(score.Input{SoundID:c.ID});e!=nil{panic(e)};if _,e=d.Advance(score.Input{});e!=nil{panic(e)};music[c.ID]=d.Snapshot()}
+ base:=music[0x82];d,_:=score.Restore(l.Catalog(),base);if _,e=d.Advance(score.Input{SoundID:0xab});e!=nil{panic(e)};primary:=d.Snapshot()
+ rows:=[]row{};add:=func(id string,s score.State,code uint8)int{r:=row{ID:id,Before:s,Root:rootcontrol.InitialState()};r.Root.Priority,r.Root.ChoiceBits=63,1;for ch:=range r.Levels{for op:=range r.Levels[ch]{r.Levels[ch][op]=127}};if code!=0{r.Queue[0]=code};rows=append(rows,r);return len(rows)-1}
+ for _,code:=range []uint8{1,5,4}{add(fmt.Sprintf("command-%02x-empty",code),score.State{},code);for _,c:=range cat.Scores{if c.Kind=="music"{add(fmt.Sprintf("command-%02x-music-%02x",code,c.ID),music[c.ID],code)}};add(fmt.Sprintf("command-%02x-primary",code),primary,code);i:=add(fmt.Sprintf("command-%02x-pending",code),base,0);rows[i].Root.Selected=code}
+ fade:=func(id string,s score.State,steps,remaining uint8)int{i:=add(id,s,0);rows[i].Root.Fade=rootcontrol.FadeState{Steps:steps,Remaining:remaining};return i}
+ for _,steps:=range []uint8{1,40,255}{for _,remaining:=range []uint8{1,255}{fade(fmt.Sprintf("fade-timer-%d-%d",steps,remaining),held(base),steps,remaining)}}
+ for _,c:=range cat.Scores{if c.Kind=="music"{fade(fmt.Sprintf("fade-step-music-%02x",c.ID),held(music[c.ID]),2,0)}}
+ isolated:=func(slot int,level uint8)score.State{s:=held(base);for i:=range s.Voices{s.Voices[i].Active=i==slot};s.Voices[slot].BaseLevel=level;return s}
+ for _,level:=range []uint8{0,126,127,128,254,255}{fade(fmt.Sprintf("fade-fm-level-%d",level),isolated(1,level),2,0)}
+ for _,level:=range []uint8{0,14,15,16,254,255}{fade(fmt.Sprintf("fade-psg-level-%d",level),isolated(7,level),2,0)}
+ for _,level:=range []uint8{14,15,255}{fade(fmt.Sprintf("fade-noise-level-%d",level),isolated(9,level),2,0)}
+ s:=isolated(1,3);s.Voices[1].Claimed=true;fade("fade-fm-claimed",s,2,0)
+ for _,kind:=range []string{"noteoff","claimed","tie-gate-zero","tie-expired","tie-live"}{s:=isolated(7,3);v:=&s.Voices[7];switch kind{case "noteoff":v.NoteOff=true;case "claimed":v.Claimed=true;case "tie-gate-zero":v.Tie=true;case "tie-expired":v.Tie=true;v.GateTicks=2;case "tie-live":v.Tie=true;v.GateTicks,v.GateRemaining=2,1};fade("fade-psg-"+kind,s,2,0)}
+ for _,code:=range []uint8{0x82,0xa0}{i:=fade(fmt.Sprintf("fade-step-request-%02x",code),held(base),2,0);rows[i].Queue[0]=code}
+ i:=fade("fade-terminal-clears-pending",primary,1,0);rows[i].Queue=[4]uint8{6,0,0,0x82}
+ levels:=rootcontrol.PauseLevels{};for ch:=range levels.Levels{for op:=range levels.Levels[ch]{levels.Levels[ch][op]=uint8(3+ch*9+op)}}
+ for n,s:=range []score.State{{},base,primary}{for _,value:=range []uint8{1,127,255,128,129,254}{i:=fade(fmt.Sprintf("pause-%02x-state-%d",value,n),s,40,0);rows[i].Pause=value;rows[i].Queue=[4]uint8{6,0,0,0x82};if value&128!=0{saved:=levels;rows[i].Root.PauseRestore=&saved}else{rows[i].Levels=levels.Levels}}}
+ for _,value:=range []uint8{0,127}{i:=add(fmt.Sprintf("pause-start-level-%d",value),base,0);rows[i].Pause=1;for ch:=range rows[i].Levels{for op:=range rows[i].Levels[ch]{rows[i].Levels[ch][op]=value}}}
+ for _,r:=range rows{if _,e=score.Restore(l.Catalog(),r.Before);e!=nil{panic(e)};if _,e=rootcontrol.RestoreState(r.Root);e!=nil{panic(e)}}
+ f,e:=os.OpenFile(os.Args[1],os.O_CREATE|os.O_EXCL|os.O_WRONLY,0600);if e!=nil{panic(e)};defer f.Close();z:=gzip.NewWriter(f);if e=json.NewEncoder(z).Encode(struct{Cases []row `json:"cases"`}{rows});e!=nil{panic(e)};if e=z.Close();e!=nil{panic(e)};fmt.Println("driver control profiles",len(rows))
+}

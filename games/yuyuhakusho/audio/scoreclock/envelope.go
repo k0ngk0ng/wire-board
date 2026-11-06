@@ -232,6 +232,14 @@ func beginEnvelopeVolume(s *service, r EnvelopeVolumeRequest, chip PSGChip) (*Vo
 			level = 15
 		}
 	}
+	return beginBaseVolume(s, r, chip, level)
+}
+
+// beginBaseVolume starts at the shared immediate attenuation guards. Fade
+// enters here directly; normal volume has already resolved its envelope.
+func beginBaseVolume(s *service, r EnvelopeVolumeRequest, chip PSGChip, level uint8) (*VolumeTransfer, error) {
+	var err error
+	t := &VolumeTransfer{s: s, chip: chip}
 	if err = s.spend(12); err != nil {
 		return nil, err
 	}

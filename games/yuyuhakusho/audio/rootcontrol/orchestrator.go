@@ -90,6 +90,10 @@ type RuleHooks struct {
 	QueueTest      func(read func() bool) (bool, error)
 	QueueOperation engine.SoundQueueHook
 	SelectedWrite  func(op RuleOperation, apply func() error) error
+	ReadPause      func(op RuleOperation, read func() uint8) (uint8, error)
+	PauseWrite     func(op RuleOperation, apply func() error) error
+	FadeWrite      func(op RuleOperation, apply func() error) error
+	BulkClear      func(op RuleOperation, apply func() error) error
 	// HeaderEffect times each actual Root-owned music reset effect once.
 	HeaderEffect func(op score.Operation, apply func() error) error
 	// QueueReplace may time the real canonical queue mutation. It must call
@@ -173,45 +177,39 @@ func (r *ruleTick) enter(phase RulePhase) error {
 	return r.emit(RuleOperation{Kind: RuleEnterPhase})
 }
 func (r *ruleTick) readPause(index uint8) (uint8, error) {
-	if err := r.emit(RuleOperation{Kind: RulePauseRead, ReadIndex: index}); err != nil {
+	op := RuleOperation{Version: 1, Sequence: r.sequence, Phase: r.phase, Kind: RulePauseRead, ReadIndex: index}
+	if err := r.emit(op); err != nil {
 		return 0, err
 	}
-	return *r.owners.AudioPause, nil
-}
-func (r *ruleTick) writePause(value uint8) error {
-	if err := r.emit(RuleOperation{Kind: RulePauseWrite, Value: value}); err != nil {
-		return err
-	}
-	*r.owners.AudioPause = value
-	return nil
-}
-func (r *ruleTick) selected(value uint8) error {
-	if err := r.emit(RuleOperation{Kind: RuleSelectedWrite, Value: value}); err != nil {
-		return err
-	}
-	if r.hooks.SelectedWrite == nil {
-		r.root.Selected = value
-		return nil
+	if r.hooks.ReadPause == nil {
+		return *r.owners.AudioPause, nil
 	}
 	active, called, violated := true, false, false
-	apply := func() error {
+	var sampled uint8
+	read := func() uint8 {
 		if !active || called {
 			violated = true
-			return ErrRuleUnsupported
+			return 0
 		}
 		called = true
-		r.root.Selected = value
-		return nil
+		sampled = *r.owners.AudioPause
+		return sampled
 	}
-	err := r.hooks.SelectedWrite(RuleOperation{Version: 1, Kind: RuleSelectedWrite, Phase: r.phase, Value: value}, apply)
+	value, err := r.hooks.ReadPause(op, read)
 	active = false
 	if err != nil {
-		return err
+		return 0, err
 	}
-	if !called || violated {
-		return ErrRuleUnsupported
+	if !called || violated || value != sampled {
+		return 0, ErrRuleUnsupported
 	}
-	return nil
+	return value, nil
+}
+func (r *ruleTick) writePause(value uint8) error {
+	return r.ruleEffect(RuleOperation{Kind: RulePauseWrite, Value: value}, r.hooks.PauseWrite, func() error { *r.owners.AudioPause = value; return nil })
+}
+func (r *ruleTick) selected(value uint8) error {
+	return r.ruleEffect(RuleOperation{Kind: RuleSelectedWrite, Value: value}, r.hooks.SelectedWrite, func() error { r.root.Selected = value; return nil })
 }
 func (r *ruleTick) write(intent score.Intent) error {
 	return r.emit(RuleOperation{Kind: RuleChipWrite, Write: intent})

@@ -39,49 +39,16 @@ func (s *service) pauseLoopEnd(last bool) error {
 // All argument setup, calls, memory loads, final DBF paths and one return are
 // accounted here; the canonical YM leaf contributes its own work exactly once.
 func (s *service) pauseLevels(writes [24]rootcontrol.LevelWrite, restore bool) error {
-	if !restore {
-		if err := s.spend(4); err != nil {
-			return err
-		} // select mute level
-	}
-	if err := s.spend(4); err != nil {
+	scan, err := beginLevelScan(s, writes, restore)
+	if err != nil {
 		return err
-	} // three channels
-	index := 0
-	for channel := 0; channel < 3; channel++ {
-		for n := 0; n < 3; n++ {
-			if err := s.spend(4); err != nil {
-				return err
-			} // base, channel, operator count
-		}
-		for operator := 0; operator < 4; operator++ {
-			for bank := 0; bank < 2; bank++ {
-				if restore {
-					if err := s.spend(14); err != nil {
-						return err
-					} // live retained level
-				}
-				if err := s.spend(18); err != nil {
-					return err
-				} // PC-relative caller
-				write := writes[index]
-				index++
-				if err := s.serveYM(Request{Bank: write.Bank, Register: write.Register, Value: write.Value}); err != nil {
-					return err
-				}
-			}
-			if err := s.spend(4); err != nil {
-				return err
-			} // next physical operator
-			if err := s.pauseLoopEnd(operator == 3); err != nil {
-				return err
-			}
-		}
-		if err := s.pauseLoopEnd(channel == 2); err != nil {
+	}
+	for _, write := range writes {
+		if err := scan.next(write); err != nil {
 			return err
 		}
 	}
-	return s.spend(16)
+	return nil
 }
 
 // StartPause begins immediately after EnterTick's actual pause-ack store. It

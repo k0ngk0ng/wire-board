@@ -1,0 +1,15 @@
+{
+  "cases": 8,
+  "executions": 32,
+  "projection_checks_per_core": 2897,
+  "operations": 2889,
+  "frames": 15,
+  "stereo_frames": 11032,
+  "producer_sha256": "81c5ee28e33dcbc8fab457bb587fafc68900d1469734eb896280366f6712f6c3",
+  "raw_sha256": "ee18907e3dff7cb0c472652de11458f8439e612bd15f08e1c52163d87b9297c7",
+  "gzip_sha256": "0a97a810a3c3cc873f21fce6c9f062b4a4ccc58c092d89485347a99c96b477e1",
+  "original_core_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+  "observed_core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+  "scope": "Original callback order, per-chip monotonic clocks, no global sort; full YM/PSG/FIR/PCM, projection-on/off and cross-core equality.",
+  "pass": true
+}
