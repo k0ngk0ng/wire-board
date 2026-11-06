@@ -1,0 +1,16 @@
+{
+  "test_first": true,
+  "production_exists": false,
+  "production_files": [
+    "games/yuyuhakusho/audio/scoreclock/music.go",
+    "games/yuyuhakusho/audio/pcmcommands/music_bus.go",
+    "games/yuyuhakusho/audio/mixed/music.go"
+  ],
+  "files": {
+    "games/yuyuhakusho/audio/scoreclock/music_publication_e2e_test.go": "3ba1c8fd9db2638336d50c51eca5ebe6296631924ff74c9aa25787b2f1ff5973",
+    "games/yuyuhakusho/verification/score-clock-music/native-music-full.json.gz": "1cc7e8a2db7ae55c27fe4643bf63aa5fcac17034205ac01c51ff50d67bf46817",
+    "scripts/yuyuhakusho/score-clock-music-capture.py": "faaa20431d5e5e88fa79d0f996af59f950aa98ffa8fcfb66e0898de8e4070e1f",
+    "scripts/yuyuhakusho/score-clock-music-observer.c": "bb02ffd1214b3ae726cc90ae88a34579c7f0a8baeac19b7cb541b1c954cbfdb7",
+    "docs/research/md-yuyuhakusho/SCORE_CLOCK_MUSIC_PUBLICATION_FAILURES.md": "dbacb2ba0126d6150c2afe34ea68399d1df5728924115e99162874935f58e745"
+  }
+}
