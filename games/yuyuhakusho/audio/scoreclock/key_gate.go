@@ -163,6 +163,11 @@ func BeginGateTransfer(clock Clock, request GateRequest, bus Bus, chip KeyGateCh
 	if err != nil {
 		return nil, err
 	}
+	return beginGateTransfer(s, request, chip)
+}
+
+func beginGateTransfer(s *service, request GateRequest, chip KeyGateChip) (*GateTransfer, error) {
+	var err error
 	t := &GateTransfer{s: s, expired: request.Remaining == 1}
 	if err = s.spend(12); err != nil {
 		return nil, err

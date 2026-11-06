@@ -1,0 +1,13 @@
+{
+  "test_first": true,
+  "production_exists": false,
+  "production_files": [
+    "games/yuyuhakusho/audio/scoreclock/held_voice.go"
+  ],
+  "files": {
+    "games/yuyuhakusho/audio/scoreclock/held_voice_e2e_test.go": "a9b4fdbbd2e4548359373ac8cde16979f4341bc08c3ad1fa99aeead6d7369d69",
+    "docs/research/md-yuyuhakusho/SCORE_CLOCK_HELD_VOICE_FAILURES.md": "509d847c3d3a216001cb40295967810a6cf4feba32c907f6fd0e8f91f0cf5880",
+    "scripts/yuyuhakusho/score-clock-held-voice-capture.py": "064d5c6f2355b81a6bc7dd97851dcb4a82e7b2be36a58c6ae12e8ff19ce7b6f7",
+    "games/yuyuhakusho/verification/score-clock-held-voice/native-held-voice-full.json.gz": "aee3a7d4779b551f36aa67cdac03eac50baee2c9ec6c0424a6b8661a6badc218"
+  }
+}
