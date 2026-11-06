@@ -1,0 +1,11 @@
+{
+  "test_first": true,
+  "production_exists": false,
+  "production_file": "games/yuyuhakusho/audio/scoreclock/key_gate.go",
+  "files": {
+    "games/yuyuhakusho/audio/scoreclock/key_gate_e2e_test.go": "9993b27f4dcdad1757e1035f6e52e520a8a8a9b41640cfcb3be2b99f4df7aba1",
+    "games/yuyuhakusho/verification/score-clock-key-gate/native-key-gate-full.json.gz": "2b0c5ba4d41c17bbe79b0bd7a113aea2249d2eb5c1ad19f59a70db6e126268ad",
+    "scripts/yuyuhakusho/score-clock-key-gate-capture.py": "9ea14ec26e06b9333ba43b69d272171a98cc7b8502afde1f12f23e00d44e5e4d",
+    "docs/research/md-yuyuhakusho/SCORE_CLOCK_KEY_GATE_FAILURES.md": "5dfb1621db95d16c3a970143170c63b0f3d5c894116a7519ecd38b3970ebaea3"
+  }
+}
