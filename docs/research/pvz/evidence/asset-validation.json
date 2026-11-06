@@ -1,0 +1,494 @@
+{
+  "sprites": [
+    {
+      "kind": "peashooter",
+      "clip": "idle",
+      "frames": 25,
+      "size": [
+        996,
+        231
+      ],
+      "sha256": "05080b9155e0b261476b872dd5a28cc74682d9323a195b7584cb1182461d2d0e"
+    },
+    {
+      "kind": "peashooter",
+      "clip": "attack",
+      "frames": 25,
+      "size": [
+        996,
+        231
+      ],
+      "sha256": "b9719aeaaf145184dcfa57a39466b74fd9c0bcab1bd1a8e88ccc77d8e3b421c3"
+    },
+    {
+      "kind": "sunflower",
+      "clip": "idle",
+      "frames": 25,
+      "size": [
+        948,
+        240
+      ],
+      "sha256": "5ff027f3e61abf5d1893d933041468fe6709fded3a95ab244d030e7317f19906"
+    },
+    {
+      "kind": "cherrybomb",
+      "clip": "idle",
+      "frames": 13,
+      "size": [
+        1596,
+        198
+      ],
+      "sha256": "15a10d073ebd6ab7a9bb721705ad526271c9f2726351c387f9b505dfb114a24f"
+    },
+    {
+      "kind": "cherrybomb",
+      "clip": "attack",
+      "frames": 14,
+      "size": [
+        1596,
+        198
+      ],
+      "sha256": "5741f3bea283fc379bb454388c4bc46757cae920bbfdd8ebc0d1b169327cfe3c"
+    },
+    {
+      "kind": "wallnut",
+      "clip": "idle",
+      "frames": 17,
+      "size": [
+        984,
+        158
+      ],
+      "sha256": "bcaadab74d77b104982d6f8a3aff8ebaa455bc65f2fb7b67e6f6308bb1f9c1db"
+    },
+    {
+      "kind": "potatomine",
+      "clip": "idle",
+      "frames": 11,
+      "size": [
+        1111,
+        83
+      ],
+      "sha256": "086e84f907ff264949eb1f19ceb1f8a933c962007457810a1c39e15cbfe3cd36"
+    },
+    {
+      "kind": "potatomine",
+      "clip": "unarmed",
+      "frames": 1,
+      "size": [
+        101,
+        83
+      ],
+      "sha256": "cffdb26f47617fba783c86ca903a447591015f1a9f533c2f966a46e65f9efa3e"
+    },
+    {
+      "kind": "potatomine",
+      "clip": "attack",
+      "frames": 19,
+      "size": [
+        1212,
+        166
+      ],
+      "sha256": "87061a3754381fa8af977b3c407052933f5d4725c0a3b61c21afd897fc36ced7"
+    },
+    {
+      "kind": "snowpea",
+      "clip": "idle",
+      "frames": 25,
+      "size": [
+        960,
+        231
+      ],
+      "sha256": "82c4a3e8ee2fb68f1e9ed38c081f0f604ed6a7d5a56c17460132c27f7d05a0c7"
+    },
+    {
+      "kind": "snowpea",
+      "clip": "attack",
+      "frames": 25,
+      "size": [
+        960,
+        231
+      ],
+      "sha256": "c2727e732c3bed956e6055bcad4203c087dae9494e11fb1d0cb68af6888af539"
+    },
+    {
+      "kind": "repeater",
+      "clip": "idle",
+      "frames": 25,
+      "size": [
+        1008,
+        231
+      ],
+      "sha256": "96c47f1e310a71aebb3990cc25106310cb743988d6cb217e9af5b0a9642c59e2"
+    },
+    {
+      "kind": "repeater",
+      "clip": "attack",
+      "frames": 25,
+      "size": [
+        1008,
+        231
+      ],
+      "sha256": "d1d44848c495360cc2e41acd36a97cb89aafe515008b6f32c4bbf1a31f9aa500"
+    },
+    {
+      "kind": "tallnut",
+      "clip": "idle",
+      "frames": 17,
+      "size": [
+        1068,
+        250
+      ],
+      "sha256": "718a3fa24583321309392355b925c5c390fe49d20fdb799e647557eb6e5f88f1"
+    },
+    {
+      "kind": "normal",
+      "clip": "idle",
+      "frames": 29,
+      "size": [
+        1668,
+        462
+      ],
+      "sha256": "2fb56f41733fea2668a07fd843f66ab42251cfdc8c323d41157a1dec8c22693a"
+    },
+    {
+      "kind": "normal",
+      "clip": "walk",
+      "frames": 47,
+      "size": [
+        1668,
+        616
+      ],
+      "sha256": "6d63e952f889da0736ccef37f2454465334e2255fd66421f3345146589b41fec"
+    },
+    {
+      "kind": "normal",
+      "clip": "attack",
+      "frames": 40,
+      "size": [
+        1668,
+        616
+      ],
+      "sha256": "dddb3fc54670bd43278fcc9deadbc96817d72ab4f66c29cdcd5471676f71c8bb"
+    },
+    {
+      "kind": "normal",
+      "clip": "death",
+      "frames": 39,
+      "size": [
+        1668,
+        616
+      ],
+      "sha256": "ab225b744d726156be1908bcaa0c2c99181794b53e3a97aabbbc8e8e156fbff8"
+    },
+    {
+      "kind": "conehead",
+      "clip": "idle",
+      "frames": 29,
+      "size": [
+        1668,
+        516
+      ],
+      "sha256": "5a2f90dd9115832fb80d6a886f1b0bb70075185d2cd8ac17c907165e337a3af0"
+    },
+    {
+      "kind": "conehead",
+      "clip": "walk",
+      "frames": 47,
+      "size": [
+        1668,
+        688
+      ],
+      "sha256": "49b4ce8cb3fb6d8cb7bbde6de3f0df83c01401f22f4bb3519e831193148ad69a"
+    },
+    {
+      "kind": "conehead",
+      "clip": "attack",
+      "frames": 40,
+      "size": [
+        1668,
+        688
+      ],
+      "sha256": "3e4a10bc5fa8f7b937b9598d42dc9fc62a45bf49f92e2953c8896c1257e977c3"
+    },
+    {
+      "kind": "conehead",
+      "clip": "death",
+      "frames": 39,
+      "size": [
+        1668,
+        688
+      ],
+      "sha256": "2535d74e8cbd3391f5a7691fdedde676cec02b3b5624d77cd280a188bfc5b25c"
+    },
+    {
+      "kind": "buckethead",
+      "clip": "idle",
+      "frames": 29,
+      "size": [
+        1668,
+        495
+      ],
+      "sha256": "e7e2c8b57b4976ca2773c1dae0070f75d3022fd00be1c9f268e3db66afebb163"
+    },
+    {
+      "kind": "buckethead",
+      "clip": "walk",
+      "frames": 47,
+      "size": [
+        1668,
+        660
+      ],
+      "sha256": "5efa504a0247c8869000b4265e56eff97c6d9c78c96b97a41a20e0362eff66a6"
+    },
+    {
+      "kind": "buckethead",
+      "clip": "attack",
+      "frames": 40,
+      "size": [
+        1668,
+        660
+      ],
+      "sha256": "918aa1a1d631ab68f593cf289c1b68197d386e7d255a14c1cfd11d92f3a5a156"
+    },
+    {
+      "kind": "buckethead",
+      "clip": "death",
+      "frames": 39,
+      "size": [
+        1668,
+        660
+      ],
+      "sha256": "e968beae92caa97ed48c1846f92cd9c03c7b721662314a76ece931866b279d81"
+    },
+    {
+      "kind": "newspaper",
+      "clip": "idle",
+      "frames": 25,
+      "size": [
+        1944,
+        516
+      ],
+      "sha256": "a5decc1b920e98ad321e7d6ae0db1d87dbd8adfe6c7d6824af84fe02fe0c4593"
+    },
+    {
+      "kind": "newspaper",
+      "clip": "walk",
+      "frames": 47,
+      "size": [
+        1944,
+        688
+      ],
+      "sha256": "91424ed0604c8f4bcbd539ec0d6732770e6ae6d189a897612ef509608fcb5786"
+    },
+    {
+      "kind": "newspaper",
+      "clip": "attack",
+      "frames": 24,
+      "size": [
+        1944,
+        344
+      ],
+      "sha256": "f86e7a8e97eb5a211a75a67d45cc215a5315c8a47d4f9434dfeb02d14cfd8777"
+    },
+    {
+      "kind": "newspaper",
+      "clip": "rage",
+      "frames": 47,
+      "size": [
+        1944,
+        688
+      ],
+      "sha256": "7ee4ede5d16fc0345616c084e9c49645fb840bf2fdf3c4e3ca05c63fb09d07fb"
+    },
+    {
+      "kind": "newspaper",
+      "clip": "death",
+      "frames": 36,
+      "size": [
+        1944,
+        516
+      ],
+      "sha256": "84cb06c361cd54757830a51a2de0d8525d0b3661baa4443a5b9560d9874a80ba"
+    },
+    {
+      "kind": "pole",
+      "clip": "idle",
+      "frames": 13,
+      "size": [
+        5136,
+        544
+      ],
+      "sha256": "b49e320da6d6bb0356dbd0c0b4582ffb8e7598fde419cda04627acb923b4013c"
+    },
+    {
+      "kind": "pole",
+      "clip": "walk",
+      "frames": 37,
+      "size": [
+        5136,
+        1088
+      ],
+      "sha256": "fdf09f1cca92a6a780e89f6e8e2ee7604bd268ed3a72225ab87314678b66e913"
+    },
+    {
+      "kind": "pole",
+      "clip": "attack",
+      "frames": 28,
+      "size": [
+        5136,
+        816
+      ],
+      "sha256": "205b7b6d5a5d08deb1cc99a94acff59b9873822eea8a20aa3c6cbeaacc703304"
+    },
+    {
+      "kind": "pole",
+      "clip": "jump",
+      "frames": 43,
+      "size": [
+        5136,
+        1088
+      ],
+      "sha256": "b77ad9cce14a428155e164d7da476772a09bb30583c91af476b625f28e2c6b70"
+    },
+    {
+      "kind": "pole",
+      "clip": "spent",
+      "frames": 45,
+      "size": [
+        5136,
+        1088
+      ],
+      "sha256": "5c04a750070eedf5b8d21112944bf4b5aaf59c0c610b03fd06d0a3afecf818a0"
+    },
+    {
+      "kind": "pole",
+      "clip": "death",
+      "frames": 27,
+      "size": [
+        5136,
+        816
+      ],
+      "sha256": "fd3f84e490ff448f0be251331b77ed12c0a6ee7f3caba24b06e55b899fbcdc87"
+    },
+    {
+      "kind": "football",
+      "clip": "idle",
+      "frames": 21,
+      "size": [
+        3180,
+        410
+      ],
+      "sha256": "76c8f1e534a6816ffb2ac2e49eb71c40dd44926cb0c88686a5dd91d9cff78078"
+    },
+    {
+      "kind": "football",
+      "clip": "walk",
+      "frames": 30,
+      "size": [
+        3180,
+        615
+      ],
+      "sha256": "274b909bf65d7bb14381b91145815250387e44c25a375f97b73357d573de283e"
+    },
+    {
+      "kind": "football",
+      "clip": "attack",
+      "frames": 36,
+      "size": [
+        3180,
+        615
+      ],
+      "sha256": "a79310a5913853baa0905250878026dbe7e8254c71c1652bfdfb986a6db21043"
+    },
+    {
+      "kind": "football",
+      "clip": "death",
+      "frames": 18,
+      "size": [
+        3180,
+        410
+      ],
+      "sha256": "bb52f72864eb14915d3a305e717f7e64fe7b47ac0184c88a049a71b78dfe8829"
+    },
+    {
+      "kind": "mower",
+      "clip": "idle",
+      "frames": 17,
+      "size": [
+        1128,
+        158
+      ],
+      "sha256": "aba7a6ead34c731435c0f17518487adc9abf3641023305e070bf05c204bec85b"
+    },
+    {
+      "kind": "sun",
+      "clip": "idle",
+      "frames": 13,
+      "size": [
+        1752,
+        292
+      ],
+      "sha256": "7150a627c05fcc74f1340843d61920d81ade092221c8b17ef0690b365070435e"
+    }
+  ],
+  "audio": [
+    {
+      "key": "plant",
+      "file": "audio/plant.ogg",
+      "sourceEncoding": "original OGG/Vorbis; no lossy re-encoding",
+      "decodedPCM16LEBytes": 66560,
+      "decodedPCM16LESHA256": "228f99425b8b45d6bace694f950057adb011379c60c3f34a81d19863dff8b4dc"
+    },
+    {
+      "key": "spawn",
+      "file": "audio/groan.ogg",
+      "sourceEncoding": "original OGG/Vorbis; no lossy re-encoding",
+      "decodedPCM16LEBytes": 104448,
+      "decodedPCM16LESHA256": "6f62d6c8a8242bb03a0bb29b32300e56d0e40f14602e02149cc39b0a6b565add"
+    },
+    {
+      "key": "shoot",
+      "file": "audio/throw.ogg",
+      "sourceEncoding": "original OGG/Vorbis; no lossy re-encoding",
+      "decodedPCM16LEBytes": 24960,
+      "decodedPCM16LESHA256": "7050f7396bdb31dc7d9a8f75b99738a118298911f2aba88797915c93e56ab26d"
+    },
+    {
+      "key": "hit",
+      "file": "audio/splat.ogg",
+      "sourceEncoding": "original OGG/Vorbis; no lossy re-encoding",
+      "decodedPCM16LEBytes": 92164,
+      "decodedPCM16LESHA256": "5ac96a46cf4754fcdfdd72d6014285e1dfc74d23f5484b451fc3d44d478beb88"
+    },
+    {
+      "key": "explosion",
+      "file": "audio/cherrybomb.ogg",
+      "sourceEncoding": "original OGG/Vorbis; no lossy re-encoding",
+      "decodedPCM16LEBytes": 495268,
+      "decodedPCM16LESHA256": "9f3d6d4550843666e0e2d22760c1ee7dd7e616527edd44149515630ab6a00a0b"
+    },
+    {
+      "key": "mower",
+      "file": "audio/lawnmower.ogg",
+      "sourceEncoding": "original OGG/Vorbis; no lossy re-encoding",
+      "decodedPCM16LEBytes": 510976,
+      "decodedPCM16LESHA256": "60ae332cf951d67a97691e5f7d2772de8ccf3847865e7924476ad2ccbf2f7e48"
+    },
+    {
+      "key": "shovel",
+      "file": "audio/shovel.ogg",
+      "sourceEncoding": "original OGG/Vorbis; no lossy re-encoding",
+      "decodedPCM16LEBytes": 20156,
+      "decodedPCM16LESHA256": "dc7f4034972b9f19348278285cdbc8ba171b40facb01549ff16774334c5fc46e"
+    },
+    {
+      "key": "sun",
+      "file": "audio/points.ogg",
+      "sourceEncoding": "original OGG/Vorbis; no lossy re-encoding",
+      "decodedPCM16LEBytes": 199648,
+      "decodedPCM16LESHA256": "3aec4e7588db0cb6c7ef2f57ea3a63745d9bca661c56bc711e73d1ce090b02f0"
+    }
+  ],
+  "frames": 1239,
+  "status": "pass"
+}

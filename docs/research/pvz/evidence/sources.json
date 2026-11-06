@@ -1,0 +1,78 @@
+{
+  "downloads": [
+    {
+      "url": "https://archive.org/download/plants-vs-zombies-v-1.0.0.1051/Plants%20vs%20Zombies%20v1.0.0.1051.zip",
+      "sha256": "520599455b5b112b658dbf2bc5f17c939d411442ad0d0b741a7ad01757e1397d",
+      "sha1": "55b9b22f09ebdc8e6fa74529a74b31ac9c7601b3",
+      "bytes": 24684894
+    },
+    {
+      "url": "https://archive.org/download/PlantsVsZombies_EN/PlantsVsZombiesSetup-en_2009.exe",
+      "bytes": 27951128,
+      "sha256": "2f1249af3848a6bc02d75039e285fb0fa7ca0a53d7e5c6bdb81e38b31d5864d2",
+      "sha1": "f9d6cae552fd613e30fcee1045ba676664b824de"
+    }
+  ],
+  "extracted": [
+    {
+      "name": "PlantsVsZombies.exe",
+      "bytes": 3002368,
+      "sha256": "8e8eea73a85d7af311755708f5daf2786650cf3c032188b8315fcf99858c8342"
+    },
+    {
+      "name": "main.pak",
+      "bytes": 25020446,
+      "sha256": "2fc4e9e8e1ecf40f7c53c03df5cc5a3d553dbabc63a1a833c4656975ccb8a933"
+    }
+  ],
+  "references": [
+    {
+      "file": "Plant.h",
+      "url": "https://raw.githubusercontent.com/Patoke/re-plants-vs-zombies/main/Lawn/Plant.h",
+      "sha256": "a706e591d7ecc86794e92ea8b3f5793de4f6756856abf6e07f4dd6bed86295b1",
+      "authority": "historical-reference; symbols/address hints only; verify against shipped artifact"
+    },
+    {
+      "file": "SexyAppBase.cpp",
+      "url": "https://raw.githubusercontent.com/Patoke/re-plants-vs-zombies/main/SexyAppFramework/SexyAppBase.cpp",
+      "sha256": "8de65cd88e102d081472437449c3a0b670df5291d26c9845f9dd30bfdfbc4a70",
+      "authority": "historical-reference; symbols/address hints only; verify against shipped artifact"
+    },
+    {
+      "file": "GameConstants.h",
+      "url": "https://raw.githubusercontent.com/Patoke/re-plants-vs-zombies/main/GameConstants.h",
+      "sha256": "a8a6b0e6081160e557314d4113e1a28d46ccaf0c426b316044ec005205037c66",
+      "authority": "historical-reference; symbols/address hints only; verify against shipped artifact"
+    },
+    {
+      "file": "Zombie.cpp",
+      "url": "https://raw.githubusercontent.com/Patoke/re-plants-vs-zombies/main/Lawn/Zombie.cpp",
+      "sha256": "368e12d6a908e8a2d016935ffc0fd9d6f5b6261f28d769916068d3de00c4780d",
+      "authority": "historical-reference; symbols/address hints only; verify against shipped artifact"
+    },
+    {
+      "file": "Projectile.cpp",
+      "url": "https://raw.githubusercontent.com/Patoke/re-plants-vs-zombies/main/Lawn/Projectile.cpp",
+      "sha256": "7775d18eb8857449902704d7c3750688b2acb37d33003d9049c0bb8a9dd60dc3",
+      "authority": "historical-reference; symbols/address hints only; verify against shipped artifact"
+    },
+    {
+      "file": "Plant.cpp",
+      "url": "https://raw.githubusercontent.com/Patoke/re-plants-vs-zombies/main/Lawn/Plant.cpp",
+      "sha256": "41850e03dc7fb997c57c3307460d8e9d038bc37ed26d17412ae7056419a9e34a",
+      "authority": "historical-reference; symbols/address hints only; verify against shipped artifact"
+    },
+    {
+      "file": "Reanimator.cpp",
+      "url": "https://raw.githubusercontent.com/Patoke/re-plants-vs-zombies/main/Sexy.TodLib/Reanimator.cpp",
+      "sha256": "7e6d30c62b9edf445f5bcc5e5ae7343ffb56dd5c0fd1c0b93a7d8ec35fb4e448",
+      "authority": "historical-reference; symbols/address hints only; verify against shipped artifact"
+    },
+    {
+      "file": "Reanimator.h",
+      "url": "https://raw.githubusercontent.com/Patoke/re-plants-vs-zombies/main/Sexy.TodLib/Reanimator.h",
+      "sha256": "bdd3cc4f5277bc0a7b09d3340fa9061fd5610fe5c8cf203d6f976bc52104573b",
+      "authority": "historical-reference; symbols/address hints only; verify against shipped artifact"
+    }
+  ]
+}

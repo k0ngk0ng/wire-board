@@ -1,0 +1,74 @@
+[
+  {
+    "index": 0,
+    "name": "PEASHOOTER",
+    "sunCost": 100,
+    "refreshUpdates": 750,
+    "launchUpdates": 150,
+    "sourceAddress": "0x69f2b0",
+    "evidenceID": "ev_dc71287f4a873a20c822a0bf6b9c3dea5337f41f1c93ef3b1cbdb775f3f87f9e"
+  },
+  {
+    "index": 1,
+    "name": "SUNFLOWER",
+    "sunCost": 50,
+    "refreshUpdates": 750,
+    "launchUpdates": 2500,
+    "sourceAddress": "0x69f2d4",
+    "evidenceID": "ev_dc71287f4a873a20c822a0bf6b9c3dea5337f41f1c93ef3b1cbdb775f3f87f9e"
+  },
+  {
+    "index": 2,
+    "name": "CHERRY_BOMB",
+    "sunCost": 150,
+    "refreshUpdates": 5000,
+    "launchUpdates": 0,
+    "sourceAddress": "0x69f2f8",
+    "evidenceID": "ev_dc71287f4a873a20c822a0bf6b9c3dea5337f41f1c93ef3b1cbdb775f3f87f9e"
+  },
+  {
+    "index": 3,
+    "name": "WALL_NUT",
+    "sunCost": 50,
+    "refreshUpdates": 3000,
+    "launchUpdates": 0,
+    "sourceAddress": "0x69f31c",
+    "evidenceID": "ev_dc71287f4a873a20c822a0bf6b9c3dea5337f41f1c93ef3b1cbdb775f3f87f9e"
+  },
+  {
+    "index": 4,
+    "name": "POTATO_MINE",
+    "sunCost": 25,
+    "refreshUpdates": 3000,
+    "launchUpdates": 0,
+    "sourceAddress": "0x69f340",
+    "evidenceID": "ev_dc71287f4a873a20c822a0bf6b9c3dea5337f41f1c93ef3b1cbdb775f3f87f9e"
+  },
+  {
+    "index": 5,
+    "name": "SNOW_PEA",
+    "sunCost": 175,
+    "refreshUpdates": 750,
+    "launchUpdates": 150,
+    "sourceAddress": "0x69f364",
+    "evidenceID": "ev_dc71287f4a873a20c822a0bf6b9c3dea5337f41f1c93ef3b1cbdb775f3f87f9e"
+  },
+  {
+    "index": 7,
+    "name": "REPEATER",
+    "sunCost": 200,
+    "refreshUpdates": 750,
+    "launchUpdates": 150,
+    "sourceAddress": "0x69f3ac",
+    "evidenceID": "ev_dc71287f4a873a20c822a0bf6b9c3dea5337f41f1c93ef3b1cbdb775f3f87f9e"
+  },
+  {
+    "index": 23,
+    "name": "TALL_NUT",
+    "sunCost": 125,
+    "refreshUpdates": 3000,
+    "launchUpdates": 0,
+    "sourceAddress": "0x69f5ec",
+    "evidenceID": "ev_dc71287f4a873a20c822a0bf6b9c3dea5337f41f1c93ef3b1cbdb775f3f87f9e"
+  }
+]
