@@ -37,6 +37,9 @@ async function resolveRelease({github, context, inputs={}, sleep=(ms)=>new Promi
     if(attempt+1<attempts) {info(`Waiting for the main binary build of ${sha} (${attempt+1}/${attempts})`);await sleep(20000);}
   }
   if(!selected) throw Error('No matching successful main binary build; push this commit to main and wait for its build');
+  const statuses=(await github.rest.repos.getCombinedStatusForRef({...repo,ref:sha})).data.statuses;
+  const local=statuses.find(s=>s.context==='cdn-local-readback');
+  if(!local||local.state!=='success'||!new RegExp(`^run ${selected.id}; sha256=[a-f0-9]{64}$`).test(local.description||'')) throw Error('Matching local CDN readback is required before publication');
   const releases=await github.paginate(github.rest.repos.listReleases,{...repo,per_page:100});
   const release=releases.find(r=>r.tag_name===version);
   if(release && (!release.draft||(!tagSHA && release.target_commitish!==sha))) throw Error('Release must be unpublished and target this exact commit');

@@ -348,7 +348,7 @@ class ScopeTests(unittest.TestCase):
 
     def test_verified_native_build_and_source_container_bind_runtime(self):
         workflow=(ROOT/'.github/workflows/build.yml').read_text().split('  verify:',1)[1]
-        steps=['games/contra/build/ci_runtime.py','scripts/contra/accept_production.py','scripts/cdn_delivery.py publish','scripts/cdn_delivery.py trim','games/contra/build/native.py']
+        steps=['games/contra/build/ci_runtime.py','scripts/contra/accept_production.py','scripts/cdn_delivery.py upload','scripts/cdn_delivery.py trim','games/contra/build/native.py']
         positions=[workflow.index(step) for step in steps]
         self.assertEqual(positions,sorted(positions))
         self.assertIn('--runtime .local/contra-ci-runtime/manifest.json',workflow)
@@ -356,6 +356,9 @@ class ScopeTests(unittest.TestCase):
         self.assertIn('dist/package/verification-plan.json',workflow)
         self.assertIn('dist/package/wire-board.build.json',workflow)
         self.assertNotIn('go build -trimpath -ldflags="-s -w"',workflow)
+        self.assertNotIn('scripts/cdn_delivery.py publish',workflow)
+        self.assertNotIn('scripts/cdn_delivery.py verify',workflow)
+        self.assertIn('--report .local/cdn-delivery/uploaded.json',workflow)
         docker=(ROOT/'Dockerfile').read_text()
         for text in ['python3','xz','COPY scripts/ /src/scripts/','COPY internal/ /src/internal/','ARG SOURCE_SHA','ARG WIRE_BOARD_ASSET_BASE','games/contra/build/ci_runtime.py','scripts/cdn_delivery.py verify','scripts/cdn_delivery.py trim','games/contra/build/native.py']:
             self.assertIn(text,docker)

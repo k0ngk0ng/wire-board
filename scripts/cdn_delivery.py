@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""Publish immutable compiled assets, verify CDN responses, then trim packaging.
-Only main's verified source uses credentials. Tags reuse the unchanged binary.
+"""Upload immutable compiled assets; run CDN readback locally before release.
+Actions may upload and package candidates. Tags require the local readback gate.
 """
 import argparse,base64,concurrent.futures,gzip,hashlib,hmac,json,os,re,shutil,time,threading,zlib
 from email.utils import formatdate
@@ -290,26 +290,30 @@ def verify_once(row):
  return row
 
 def main():
- p=argparse.ArgumentParser(description=__doc__);p.add_argument('action',choices=['publish','verify','trim','check-package']);p.add_argument('--dist',type=Path,default=Path('web/dist'));p.add_argument('--report',type=Path,default=Path('.local/cdn-delivery/verified.json'));p.add_argument('--binary',type=Path,default=Path('dist/package/wire-board'));args=p.parse_args()
+ p=argparse.ArgumentParser(description=__doc__);p.add_argument('action',choices=['upload','publish','verify','trim','check-package']);p.add_argument('--dist',type=Path,default=Path('web/dist'));p.add_argument('--report',type=Path,default=Path('.local/cdn-delivery/verified.json'));p.add_argument('--binary',type=Path,default=Path('dist/package/wire-board'));args=p.parse_args()
+ if args.action in ('publish','verify') and os.environ.get('GITHUB_ACTIONS')=='true':raise ValueError('CDN readback must run on a local machine, outside GitHub Actions')
  if args.action=='check-package':
   output=args.report.parent/'server-package.json'
   try:result=verify_server_package(Path.cwd(),args.dist,args.binary,json.loads(args.report.read_text()))
   except Exception as error:
    output.write_text(json.dumps({'passed':False,'error':str(error)},indent=2)+'\n');raise
   output.write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result));return
- if args.action=='trim':trim(args.dist,json.loads(args.report.read_text()));print('Removed all verified client payloads from server packaging');return
+ if args.action=='trim':trim(args.dist,json.loads(args.report.read_text()));print('Removed all inventory-matched client payloads from server packaging');return
  manifest=json.loads((args.dist/'game-load-manifest.json').read_text());base=manifest.get('assetBase','');rows=inventory(args.dist,base)
  known={r['url']:r for r in rows}
  for files in manifest['games'].values():
   for f in files:
    if f['url'] not in known or f['bytes']!=known[f['url']]['bytes']:raise ValueError('Manifest does not match compiled assets')
  if manifest['entry'] not in known:raise ValueError('Entry is not bound to CDN inventory')
- args.report.parent.mkdir(parents=True,exist_ok=True);report={'passed':False,'files':rows,'indexSHA256':sha((args.dist/'index.html').read_bytes()),'manifestSHA256':sha((args.dist/'game-load-manifest.json').read_bytes())}
+ args.report.parent.mkdir(parents=True,exist_ok=True);report={'passed':False,'stage':'uploading' if args.action=='upload' else 'verifying','cdnVerified':False,'files':rows,'indexSHA256':sha((args.dist/'index.html').read_bytes()),'manifestSHA256':sha((args.dist/'game-load-manifest.json').read_bytes())}
  receipt=args.dist/'contra-delivery.json'
  if receipt.exists():report['contraDeliverySHA256']=sha(receipt.read_bytes())
  args.report.write_text(json.dumps(report,indent=2)+'\n')
- if args.action=='publish':publish(args.dist,rows,'stoneage-assets','stoneage-assets.oss-cn-shanghai.aliyuncs.com')
+ if args.action in ('upload','publish'):publish(args.dist,rows,'stoneage-assets','stoneage-assets.oss-cn-shanghai.aliyuncs.com')
+ if args.action=='upload':
+  if inventory(args.dist,base)!=rows or receipt.exists() and sha(receipt.read_bytes())!=report.get('contraDeliverySHA256'):raise ValueError('Local assets changed during upload')
+  report.update(passed=True,stage='uploaded');args.report.write_text(json.dumps(report,indent=2)+'\n');print(f'Uploaded {len(rows)} immutable OSS assets; CDN readback awaits local verification');return
  with concurrent.futures.ThreadPoolExecutor(max_workers=6) as pool:list(pool.map(verify,rows))
  if inventory(args.dist,base)!=rows or receipt.exists() and sha(receipt.read_bytes())!=report.get('contraDeliverySHA256'):raise ValueError('Local assets changed during CDN verification')
- report['passed']=True;args.report.write_text(json.dumps(report,indent=2)+'\n');print(f'Verified {len(rows)} CDN assets; MIME, CORS and SHA-256 passed')
+ report.update(passed=True,stage='verified',cdnVerified=True,verificationLocation='local');args.report.write_text(json.dumps(report,indent=2)+'\n');print(f'Locally verified {len(rows)} CDN assets; MIME, CORS and SHA-256 passed')
 if __name__=='__main__':main()
