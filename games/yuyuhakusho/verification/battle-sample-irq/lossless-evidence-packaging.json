@@ -1,0 +1,47 @@
+{
+  "reason": "Raw immutable Ghidra logs contain original trailing spaces; archived source excerpt has original blank EOF. Preserve exact original bytes in gzip so final source diff check is meaningful. Pre-stage git diff --check did not inspect newly added logs; the failed staged check and original diagnostics are retained. No runtime/test/oracle content was changed.",
+  "files": [
+    {
+      "original": "games/yuyuhakusho/verification/battle-sample-irq/arena-clock-before-main-work.txt",
+      "retained": "games/yuyuhakusho/verification/battle-sample-irq/arena-clock-before-main-work.txt.gz",
+      "raw_bytes": 1550,
+      "raw_sha256": "6c0287a7ff4ccea94c20fbae20564ba6f274c8c9e846802daf637d00698af9a4"
+    },
+    {
+      "original": "games/yuyuhakusho/verification/world-audio-barriers/controller-scan/console.log",
+      "retained": "games/yuyuhakusho/verification/world-audio-barriers/controller-scan/console.log.gz",
+      "raw_bytes": 12037,
+      "raw_sha256": "c153e282dd308018631c65d2aa9f5b281808f2ae75a00cd4008dac7973806076"
+    },
+    {
+      "original": "games/yuyuhakusho/verification/world-audio-barriers/controller-scan/ghidra-script.log",
+      "retained": "games/yuyuhakusho/verification/world-audio-barriers/controller-scan/ghidra-script.log.gz",
+      "raw_bytes": 219,
+      "raw_sha256": "0194685b494d89f68e5fab2aa2ef90b82ecae631ea5ca2477b6413711a472284"
+    },
+    {
+      "original": "games/yuyuhakusho/verification/world-audio-barriers/controller-scan/ghidra.log",
+      "retained": "games/yuyuhakusho/verification/world-audio-barriers/controller-scan/ghidra.log.gz",
+      "raw_bytes": 8530,
+      "raw_sha256": "9ed25029af41cbe28a64ce33ca3f9f20622546af67b5aca27453510f2ad7ff81"
+    },
+    {
+      "original": "games/yuyuhakusho/verification/world-audio-barriers/controller-teamplayer-leaves/console.log",
+      "retained": "games/yuyuhakusho/verification/world-audio-barriers/controller-teamplayer-leaves/console.log.gz",
+      "raw_bytes": 12377,
+      "raw_sha256": "b9d895ff7b7cd42d93c29e96f891de69b3256f2d60e2d954ba2e2155bf91d3e7"
+    },
+    {
+      "original": "games/yuyuhakusho/verification/world-audio-barriers/controller-teamplayer-leaves/ghidra-script.log",
+      "retained": "games/yuyuhakusho/verification/world-audio-barriers/controller-teamplayer-leaves/ghidra-script.log.gz",
+      "raw_bytes": 232,
+      "raw_sha256": "4fbe187bb5da1d181a384286126838142d11c0b490648fd1452261b8565001b1"
+    },
+    {
+      "original": "games/yuyuhakusho/verification/world-audio-barriers/controller-teamplayer-leaves/ghidra.log",
+      "retained": "games/yuyuhakusho/verification/world-audio-barriers/controller-teamplayer-leaves/ghidra.log.gz",
+      "raw_bytes": 8610,
+      "raw_sha256": "a9f0b6e311fcee4f1118a2b98eb7d0d59bc6f11094684c3362fe19eb2b440cb8"
+    }
+  ]
+}

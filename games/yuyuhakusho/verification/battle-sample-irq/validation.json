@@ -547,14 +547,14 @@
     "games/yuyuhakusho/verification/battle-sample-irq/README.md": "6b8f73d03bcaf4e6715311f2a0f0573d58ef9934f25fe46c5ad83ab0153a52e5",
     "games/yuyuhakusho/verification/sound-irq-runtime/native-sound-irq-full.json.gz": "7c9b2c1a41dcf423ffc12f825066d2b0852893a13e306ea67701d1c129c7383c",
     "games/yuyuhakusho/verification/world-arena-work/README.md": "6dbf8fde034a5ea598cf9b307b2117afe4a550b7e0bd3d91e2e8bd63147a2cae",
-    "games/yuyuhakusho/verification/world-audio-barriers/controller-scan/console.log": "c153e282dd308018631c65d2aa9f5b281808f2ae75a00cd4008dac7973806076",
-    "games/yuyuhakusho/verification/world-audio-barriers/controller-scan/ghidra-script.log": "0194685b494d89f68e5fab2aa2ef90b82ecae631ea5ca2477b6413711a472284",
-    "games/yuyuhakusho/verification/world-audio-barriers/controller-scan/ghidra.log": "9ed25029af41cbe28a64ce33ca3f9f20622546af67b5aca27453510f2ad7ff81",
+    "games/yuyuhakusho/verification/world-audio-barriers/controller-scan/console.log.gz": "fb7a906f868b285706ea294a27cbe2f35ee7d3f78e7c437693a1db198177fd00",
+    "games/yuyuhakusho/verification/world-audio-barriers/controller-scan/ghidra-script.log.gz": "ff47167629729c48251cea207746ded9c658f67f61ae8eb61b73ef1de4334134",
+    "games/yuyuhakusho/verification/world-audio-barriers/controller-scan/ghidra.log.gz": "da7a553e8958ce531462fdebe046cd01e9046f06b7d3259ea43ab0c820286587",
     "games/yuyuhakusho/verification/world-audio-barriers/controller-scan/validation.json": "9e06ae1bf9e99b881bbf2763a329dcf07c99c35966931267b0175f093affa99b",
     "games/yuyuhakusho/verification/world-audio-barriers/controller-scan/vdp-and-irq-setup.txt": "e90c17a560249bd9b5655cc2a58688125c62f37f9f0e6984b3a0757eb703662d",
-    "games/yuyuhakusho/verification/world-audio-barriers/controller-teamplayer-leaves/console.log": "b9d895ff7b7cd42d93c29e96f891de69b3256f2d60e2d954ba2e2155bf91d3e7",
-    "games/yuyuhakusho/verification/world-audio-barriers/controller-teamplayer-leaves/ghidra-script.log": "4fbe187bb5da1d181a384286126838142d11c0b490648fd1452261b8565001b1",
-    "games/yuyuhakusho/verification/world-audio-barriers/controller-teamplayer-leaves/ghidra.log": "a9f0b6e311fcee4f1118a2b98eb7d0d59bc6f11094684c3362fe19eb2b440cb8",
+    "games/yuyuhakusho/verification/world-audio-barriers/controller-teamplayer-leaves/console.log.gz": "f6ca739d9d14842c6be4ae895b1d93c8c555d347bc5af7938e5a6d3dd3f8b99a",
+    "games/yuyuhakusho/verification/world-audio-barriers/controller-teamplayer-leaves/ghidra-script.log.gz": "459c967416f52076b24f99b10e97c5043149f39b01bcc1957bd9b700c856e46a",
+    "games/yuyuhakusho/verification/world-audio-barriers/controller-teamplayer-leaves/ghidra.log.gz": "1e3dfb3a1bcd22c222e92fdd359109816f255ef9576c602c565f440c8df8d21f",
     "games/yuyuhakusho/verification/world-audio-barriers/controller-teamplayer-leaves/validation.json": "5d9982a406121360650e22ddb96962a95678c97a80eb939a34627a01c5e80f37",
     "games/yuyuhakusho/verification/world-audio-barriers/controller-teamplayer-leaves/vdp-and-irq-setup.txt": "0074064e2e94540784afe53ed61334dc3bcd861fdf19bf8218fd01f9b8374181",
     "games/yuyuhakusho/verification/world-irq-acceptance/README.md": "c3a4404bb015174165e310bd3450a1e608aabb45624d0fb3158ae6838d3cfb46",
@@ -1043,7 +1043,7 @@
   "artifacts": {
     "games/yuyuhakusho/verification/battle-sample-irq/FAILURES.md": "ce41e6762358e1ba5dcc97ef99dd8df1c0e2d20499da75cbc3e2677cbbfc4586",
     "games/yuyuhakusho/verification/battle-sample-irq/architecture-costs.json": "6b952d07ffec1a9aa57e2003e955f0888fdf52c76ea9512269d1de21192fd658",
-    "games/yuyuhakusho/verification/battle-sample-irq/arena-clock-before-main-work.txt": "6c0287a7ff4ccea94c20fbae20564ba6f274c8c9e846802daf637d00698af9a4",
+    "games/yuyuhakusho/verification/battle-sample-irq/arena-clock-before-main-work.txt.gz": "ca9979e408988eb273cb73755859ed3f35d96069c70dd7a8725795feecd30891",
     "games/yuyuhakusho/verification/battle-sample-irq/cold-io-reset-capture.json": "171ab759ae139c18c668673686d11f11af119f23dbb76536433bdceee3aa2903",
     "games/yuyuhakusho/verification/battle-sample-irq/cold-io-reset-controller-scan.json.gz": "8f1cd113ea2c7edc1d93c3f429b032e98b326e19070084482777e14eda916829",
     "games/yuyuhakusho/verification/battle-sample-irq/controller-and-main-work-missing-red.jsonl": "5af7c7e666e9bcb751256eea7d0a3bc8be88641cdde2ca665c2da34ed5a9f125",
@@ -1063,6 +1063,8 @@
     "games/yuyuhakusho/verification/battle-sample-irq/final-vet/output.jsonl.gz": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
     "games/yuyuhakusho/verification/battle-sample-irq/final-wasm/command.json": "c4183d87e7bddc109e67fa27a0feb0792818ee1d1eb02ef9777ebaa551772f38",
     "games/yuyuhakusho/verification/battle-sample-irq/final-wasm/output.jsonl.gz": "014e9503dade37c9f315bc4aded78e9934c4e945a5e1c157e0475023cd8b2744",
+    "games/yuyuhakusho/verification/battle-sample-irq/history-staged-whitespace.txt.gz": "b790fcd34b4d251f02ad6e02021d7d822966eaf0e9b847298b31dbcb8594a7f6",
+    "games/yuyuhakusho/verification/battle-sample-irq/lossless-evidence-packaging.json": "37830df7ae6dcbd04f73ce19ca79452bd133274491f4a510eff8c475662c992a",
     "games/yuyuhakusho/verification/battle-sample-irq/native-battle-prefix.json.gz": "2eda162b5f7b8e2e4f6847d86910ebfb30710e37ea4bf394439d4b303e463177",
     "games/yuyuhakusho/verification/battle-sample-irq/native-controller-scan.json.gz": "a583b95c2b7e0d6edc72ee42b4cb1ff6a100e7154c179b4bb3ee44dde53eb2f1",
     "games/yuyuhakusho/verification/battle-sample-irq/natural-prefix-v1-capture.json": "a77010ab6b38c780b220ca1ad9f6d6e94c24649009f0ee7c67c3802ee115ce52",
@@ -1098,6 +1100,38 @@
     "games/yuyuhakusho/verification/battle-sample-irq/final-vet/output.jsonl.gz": {
       "raw_bytes": 0,
       "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "games/yuyuhakusho/verification/battle-sample-irq/arena-clock-before-main-work.txt.gz": {
+      "raw_bytes": 1550,
+      "raw_sha256": "6c0287a7ff4ccea94c20fbae20564ba6f274c8c9e846802daf637d00698af9a4"
+    },
+    "games/yuyuhakusho/verification/world-audio-barriers/controller-scan/console.log.gz": {
+      "raw_bytes": 12037,
+      "raw_sha256": "c153e282dd308018631c65d2aa9f5b281808f2ae75a00cd4008dac7973806076"
+    },
+    "games/yuyuhakusho/verification/world-audio-barriers/controller-scan/ghidra-script.log.gz": {
+      "raw_bytes": 219,
+      "raw_sha256": "0194685b494d89f68e5fab2aa2ef90b82ecae631ea5ca2477b6413711a472284"
+    },
+    "games/yuyuhakusho/verification/world-audio-barriers/controller-scan/ghidra.log.gz": {
+      "raw_bytes": 8530,
+      "raw_sha256": "9ed25029af41cbe28a64ce33ca3f9f20622546af67b5aca27453510f2ad7ff81"
+    },
+    "games/yuyuhakusho/verification/world-audio-barriers/controller-teamplayer-leaves/console.log.gz": {
+      "raw_bytes": 12377,
+      "raw_sha256": "b9d895ff7b7cd42d93c29e96f891de69b3256f2d60e2d954ba2e2155bf91d3e7"
+    },
+    "games/yuyuhakusho/verification/world-audio-barriers/controller-teamplayer-leaves/ghidra-script.log.gz": {
+      "raw_bytes": 232,
+      "raw_sha256": "4fbe187bb5da1d181a384286126838142d11c0b490648fd1452261b8565001b1"
+    },
+    "games/yuyuhakusho/verification/world-audio-barriers/controller-teamplayer-leaves/ghidra.log.gz": {
+      "raw_bytes": 8610,
+      "raw_sha256": "a9f0b6e311fcee4f1118a2b98eb7d0d59bc6f11094684c3362fe19eb2b440cb8"
+    },
+    "games/yuyuhakusho/verification/battle-sample-irq/history-staged-whitespace.txt.gz": {
+      "raw_bytes": 35088,
+      "raw_sha256": "7d1c4bb4bb9baadd6767d2612a0f912d1b82c68fcc935798c70c0b594ad3ced2"
     }
   },
   "runs": {
