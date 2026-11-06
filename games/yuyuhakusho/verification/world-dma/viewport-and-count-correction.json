@@ -1,0 +1,27 @@
+{
+  "reason": "vdp_reset resets the reference viewport to192 lines. The private segment capture now explicitly restores its declared320x224 viewport before invoking original DMA. All2592 input rows remain identical; every non-VBlank output is byte-identical. Original192-profile fixtures/source/capture and failed logs remain archived. Separately the test distinguishes six entire wrapper invocations crossing frames from four DMA transfers themselves crossing frames; all89 transfers and original six-wrapper coverage remain required. No whole-World native bytes or end expectations changed.",
+  "changed_segment_rows": 588,
+  "current_sha256": {
+    "games/yuyuhakusho/audio/videoclock/dma_e2e_test.go": "a55f312544b91d06068efdae2f2c9b4c4545a046fa34721ae675787a2ff5a3bc",
+    "scripts/yuyuhakusho/capture_world_dma_segments.py": "f2c8a6ba70a1042ee568931d6b3a7e86008ff05c9ea107f1c9ec2ad86543d480",
+    "games/yuyuhakusho/verification/world-dma/native-dma-segments.json.gz": "cde683ca9115864237a724aecd19a13b6853946bee22acbbf65be20907d8dcdf",
+    "games/yuyuhakusho/verification/world-dma/segment-capture.json": "823f7dc68772df118f87eeeaf16bd0b4961985aa8df7d913f4138c3f14d5bcbe"
+  },
+  "first_blank_test_revision_archive": "games/yuyuhakusho/verification/world-dma/test-before-cross-count-adapter.go.gz",
+  "first_blank_test_revision_sha256": "741094357d452071e57e1455399c4dfe20f38b661a729120c7c8b7ca9732c39f",
+  "coverage_diff": "games/yuyuhakusho/verification/world-dma/cross-count-adapter.diff.gz",
+  "frozen_archives": {
+    "scripts/yuyuhakusho/capture_world_dma_segments.py": {
+      "archive": "games/yuyuhakusho/verification/world-dma/history-192-viewport/capture_world_dma_segments.py.gz",
+      "compressed": true
+    },
+    "games/yuyuhakusho/verification/world-dma/native-dma-segments.json.gz": {
+      "archive": "games/yuyuhakusho/verification/world-dma/history-192-viewport/native-dma-segments.json.gz",
+      "compressed": false
+    },
+    "games/yuyuhakusho/verification/world-dma/segment-capture.json": {
+      "archive": "games/yuyuhakusho/verification/world-dma/history-192-viewport/segment-capture.json.gz",
+      "compressed": true
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{"Time":"2026-11-07T05:31:21.891197+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/videoclock"}
+{"Time":"2026-11-07T05:31:22.473197+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/videoclock","Test":"TestWorldDMAOriginalMaskRestoreVerticalAcceptance"}
+{"Time":"2026-11-07T05:31:22.473399+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/videoclock","Test":"TestWorldDMAOriginalMaskRestoreVerticalAcceptance","Output":"=== RUN   TestWorldDMAOriginalMaskRestoreVerticalAcceptance\n"}
+{"Time":"2026-11-07T05:31:22.500355+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/videoclock","Test":"TestWorldDMAOriginalMaskRestoreVerticalAcceptance","Output":"--- PASS: TestWorldDMAOriginalMaskRestoreVerticalAcceptance (0.03s)\n"}
+{"Time":"2026-11-07T05:31:22.500388+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/videoclock","Test":"TestWorldDMAOriginalMaskRestoreVerticalAcceptance","Elapsed":0.03}
+{"Time":"2026-11-07T05:31:22.500603+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/videoclock","Output":"PASS\n"}
+{"Time":"2026-11-07T05:31:22.500961+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/videoclock","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/videoclock\t0.610s\n"}
+{"Time":"2026-11-07T05:31:22.500978+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/videoclock","Elapsed":0.61}

@@ -1,0 +1,9 @@
+{
+  "reason": "Two declared private World transfers actually begin in the first blank line before cycle788. Their native context must map to existing PreVertical phase rather than illegal Scanlines/Line0. Adapter-only context decoding; no assertions, original bytes, expected end/state, or coverage count changed. Production also independently fixed an actual unsigned-product DMA duration bug exposed by original segment matrix.",
+  "frozen_path": "games/yuyuhakusho/audio/videoclock/dma_e2e_test.go",
+  "frozen_archive": "games/yuyuhakusho/verification/world-dma/test-before-first-blank-adapter.go.gz",
+  "frozen_sha256": "b3f04ebbc04dcfad4fe9663502fefd295ef31d5ced225054097936d645c65a90",
+  "current_sha256": "741094357d452071e57e1455399c4dfe20f38b661a729120c7c8b7ca9732c39f",
+  "diff": "games/yuyuhakusho/verification/world-dma/first-blank-adapter.diff.gz",
+  "red": "games/yuyuhakusho/verification/world-dma/first-native.jsonl"
+}
