@@ -1,0 +1,16 @@
+{
+  "pass": true,
+  "cases": 1895,
+  "private": 1872,
+  "natural": 23,
+  "pending_world": 8,
+  "cpu_steps": 6784,
+  "external_aux_inputs": 127,
+  "scope": "Private declared zero background or natural observed line-delay feedback; return ordering and pin/mask/video outcomes. No in-ack hook, CPU/stack/program in production.",
+  "fixture_sha256": "fa4e7e7a4d7f10fbf9f26340415c8d5cc8f46958ec8cebc8f49410387070eddc",
+  "sources": {
+    ".local/md-yuyuhakusho/battle-return-native-v4/native-battle-return.json.gz": "25016e6400057170eb2d971a19572284f410ed17675f7c4edd44bcb459436f91",
+    ".local/md-yuyuhakusho/battle-return-natural-v3/native-battle-return-natural.json.gz": "f6b2589277946ca50f674a16e83496405855dc185babd6f71b31a6dd24d76b01"
+  },
+  "extractor_sha256": "6cb35d442d5a841fd2c430b7266e499400dd902c29d577b3f9929bf9143c22f5"
+}

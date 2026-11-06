@@ -1,0 +1,25 @@
+{
+  "pass": true,
+  "cases": 23,
+  "events": 253,
+  "all_2400_video_ram_and_pcm_controls_equal": true,
+  "private_observer_on_off_equal": true,
+  "original_control_sha256": "17856c6293e27590544dc338f2a3cecae1aab4dc40112873e939f277ab0ce064",
+  "identity": {
+    "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+    "core_name": "Genesis Plus GX",
+    "core_version": "v1.7.460bee4c",
+    "fps": 59.92274340431231,
+    "ram_bytes": 65536,
+    "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+    "teamplayer": false
+  },
+  "fixture_sha256": "f6b2589277946ca50f674a16e83496405855dc185babd6f71b31a6dd24d76b01",
+  "sources": {
+    "scripts/yuyuhakusho/capture_battle_irq_return_natural.py": "de8bbd104b3dcb53ea53d87f0e8462024c1fcb5fbd39f861ae81e1a859b2e080",
+    "scripts/yuyuhakusho/battle-return-observer.c": "9ab54729da361e178a16f23567d037e13ddf05f343ca8b6e7c4f2a5fffdc77b1",
+    "scripts/yuyuhakusho/battle-prefix-observer.c": "90494ffb6062386e765218b5a7d27364577f9996ad767de86381260b12a98e57"
+  },
+  "scope": "Actual natural sample IRQ driver return through original World resumption, including native before/after pin-mask-VDP effects and immediately following reload IRQ. No in-ack hook is used. Given prior driver completion time; whole-world timing remains unfinished."
+}

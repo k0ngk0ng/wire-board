@@ -1,0 +1,36 @@
+{
+  "pass": true,
+  "cases": 1872,
+  "cross_core_equal": true,
+  "observer_off_on_cases": 118,
+  "registers_and_original_return_stack_verified": true,
+  "background_feedback": "Declared zero, direct suffix CPU execution plus explicit active-line external VDP advances; no PCM or DMA progress",
+  "cores": {
+    "original": {
+      "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+      "core_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+      "core_name": "Genesis Plus GX",
+      "core_version": "v1.7.4 60bee4c",
+      "fps": 59.92274340431231,
+      "ram_bytes": 65536,
+      "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+      "teamplayer": false
+    },
+    "observed": {
+      "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+      "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+      "core_name": "Genesis Plus GX",
+      "core_version": "v1.7.460bee4c",
+      "fps": 59.92274340431231,
+      "ram_bytes": 65536,
+      "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+      "teamplayer": false
+    }
+  },
+  "fixture_sha256": "25016e6400057170eb2d971a19572284f410ed17675f7c4edd44bcb459436f91",
+  "sources": {
+    "scripts/yuyuhakusho/capture_battle_irq_return.py": "ae2a8d76bc58cd4005336771d0e7693b7b23911d2bdd832e8929ba73a576d73a",
+    "scripts/yuyuhakusho/battle-return-observer.c": "f4905e6b85e975273468dbdcf15998b9aa17f0b66c8550ee8c85e4cbf5851562",
+    "scripts/yuyuhakusho/battle-prefix-observer.c": "90494ffb6062386e765218b5a7d27364577f9996ad767de86381260b12a98e57"
+  }
+}

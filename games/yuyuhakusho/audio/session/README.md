@@ -17,3 +17,7 @@
 `WorldFrameWithHooks` additionally exposes actual default-arena work boundaries and stages the resulting audio effects in the same transaction. The main clock is still borrowed and must be staged by the caller; no whole-world IRQ policy is inferred. See [arena work verification](../../verification/world-arena-work/README.md).
 
 `BeginBattleSampleIRQ` couples actual RAM sampling-prefix timing, physical controller sampling, real PCM line-batch progress and the complete sound call on one transaction. Its result still requires the outer IRQ return stage before resuming World. See [sampling IRQ verification](../../verification/battle-sample-irq/README.md).
+
+`RunBattleSampleIRQ` completes the pending temporary restore, RTE and immediately following late-reload IRQ on the shared service before committing. It rejects an unpriced new World IRQ; `BeginBattleSampleIRQ` keeps its pending-return contract. See [IRQ return verification](../../verification/battle-irq-return/README.md).
+
+The complete return path now prices temporary restore, RTE and the immediately following reload before resuming World; a further World IRQ remains explicit unpriced work. See [return evidence](../../verification/battle-irq-return/README.md).
