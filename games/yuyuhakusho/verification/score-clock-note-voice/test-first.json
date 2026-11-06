@@ -1,0 +1,15 @@
+{
+  "test_first": true,
+  "production_exists": false,
+  "production_files": [
+    "games/yuyuhakusho/audio/scoreclock/note_voice.go",
+    "games/yuyuhakusho/audio/score/instrument_parameters.go"
+  ],
+  "files": {
+    "games/yuyuhakusho/audio/scoreclock/note_voice_e2e_test.go": "a940085dbc9ef85eefb1656522c5cf66d883e43b1c1d78e135f7a14bc24d2bec",
+    "docs/research/md-yuyuhakusho/SCORE_CLOCK_NOTE_VOICE_FAILURES.md": "0149f11bf18f6d36bc154aa61c0bd1228454113d21a1d4ae9645272867c1d4d3",
+    "scripts/yuyuhakusho/score-clock-note-voice-capture.py": "17f431e27beeafee24e7918a98187b1a4c7d7db28a641ba1a6d0c3709f905ee8",
+    "scripts/yuyuhakusho/score-clock-note-voice-observer.c": "f55a48c457c7df324a2851b49857f69b09b7a919e669e50bd902df901d637548",
+    "games/yuyuhakusho/verification/score-clock-note-voice/native-note-voice-full.json.gz": "ae7ca47989d01682b0b04a47a37bf98218d4375435d36d8bc8e53f7f519b4e07"
+  }
+}

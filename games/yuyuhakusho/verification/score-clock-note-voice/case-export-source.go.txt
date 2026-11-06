@@ -1,0 +1,101 @@
+package main
+
+import (
+	"bytes"
+	"compress/gzip"
+	"encoding/json"
+	"fmt"
+	"io"
+	"math/bits"
+	"os"
+	"strings"
+
+	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/resourcebridge"
+	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score"
+)
+
+func unpack(name string) []byte {
+	raw, err := os.ReadFile("games/yuyuhakusho/data/"+name+".json.gz")
+	if err != nil { panic(err) }
+	z, err := gzip.NewReader(bytes.NewReader(raw)); if err != nil { panic(err) }
+	defer z.Close(); raw, err = io.ReadAll(z); if err != nil { panic(err) }; return raw
+}
+
+type shape struct {
+	Kind score.OperationKind
+	Routine score.Routine
+	Branch score.Branch
+	Event string
+	Work score.ParserWork
+	Site score.ParserWorkSite
+	Control score.ControlProjection
+	Flags score.VoiceFlags
+	Count uint8
+	OctaveCost uint8
+}
+
+type candidate struct {
+	ID int `json:"id"`
+	Score uint8 `json:"score"`
+	Slot int `json:"slot"`
+	Before score.State `json:"before"`
+	Events []shape `json:"shape"`
+	FirstOwner bool `json:"first_owner"`
+	DAC string `json:"dac,omitempty"`
+}
+
+func main() {
+	if len(os.Args)!=2 { panic("new output required") }; out:=os.Args[1]
+	if _,err:=os.Stat(out); !os.IsNotExist(err) { panic("preserve existing output") }
+	raw:=unpack("audio-score")
+	l,err:=resourcebridge.DecodeWithEnvelopeWork(raw,unpack("audio-pcm-payloads"),unpack("audio-score-parser-work"),unpack("audio-score-instrument-work"),unpack("audio-score-envelope-work"));if err!=nil {panic(err)}
+	var catalog struct {Scores []struct {ID uint8}}
+	if err=json.Unmarshal(raw,&catalog);err!=nil {panic(err)}
+	seen,owners,descriptors:=map[string]bool{},map[score.Owner]bool{},map[string]bool{}
+	rows:=[]candidate{}; calls,notes:=0,0
+	for _,definition:=range catalog.Scores {
+		d,err:=score.New(l.Catalog());if err!=nil {panic(err)}
+		for tick:=0;tick<12000;tick++ {
+			var tx *score.TickTransaction
+			var current *candidate
+			stopped:=false
+			tx,err=d.BeginTickObserved(score.ObservedHooks{Parser:l.Parser(),ReadDAC:func(score.FeedbackRead)(score.DACFeedback,error){return score.DACFeedback{},nil},Operation:func(op score.Operation)error{
+				if op.Kind==score.OpEnter && op.Routine==score.RoutineVoice {
+					s,e:=tx.Snapshot();if e!=nil{return e};v:=s.Voices[op.VoiceSlot]
+					if v.NoteWait==1 && v.Channel!="fm6" {
+						for i:=range s.Voices {if i!=int(op.VoiceSlot){s.Voices[i].Active=false}}
+						s.TempoPeriod,s.TempoRemaining=0,0
+						current=&candidate{Score:definition.ID,Slot:int(op.VoiceSlot),Before:s,FirstOwner:!owners[v.Owner]}
+					}
+				}
+				if current!=nil {
+					if op.Kind==score.OpChipWrite&&op.WriteCount==1&&op.Writes[0].Kind=="dac" { current.DAC=op.Writes[0].DescriptorID }
+					current.Events=append(current.Events,shape{Kind:op.Kind,Routine:op.Routine,Branch:op.Branch,Event:op.EventKind,Work:op.Work,Site:op.WorkSite,Control:op.Control,Flags:op.Flags,Count:op.WriteCount,OctaveCost:uint8(bits.OnesCount8(op.PitchIndex/24))})
+					if op.EventKind=="track-end" {stopped=true}
+					if op.Kind==score.OpLeave&&op.Routine==score.RoutineVoice {
+						if !stopped {
+							v:=current.Before.Voices[current.Slot];family:="fm";if v.Channel=="dac" {family="dac"}else if strings.HasPrefix(v.Channel,"psg"){family="psg"}
+							raw,_:=json.Marshal(struct{Family string;Events []shape}{family,current.Events});key:=string(raw)
+							if !seen[key]||current.FirstOwner||current.DAC!=""&&!descriptors[current.DAC] {current.ID=len(rows);rows=append(rows,*current);seen[key]=true}
+							if current.DAC!="" { descriptors[current.DAC]=true }
+							owners[v.Owner]=true;notes++
+						}
+						current=nil;stopped=false
+					}
+				}
+				return nil
+			}});if err!=nil {panic(err)}
+			if err=tx.AdvanceTempo();err!=nil {panic(err)}
+			code:=uint8(0);if tick==0 {code=definition.ID}
+			if err=tx.Dispatch(code);err!=nil {panic(err)}
+			if err=tx.AdvanceVoices();err!=nil {panic(err)}
+			if _,err=tx.Finish();err!=nil {panic(err)}
+			calls++
+			active:=false;for _,v:=range d.Snapshot().Voices {active=active||v.Active};if !active {break}
+		}
+		fmt.Printf("%02x: selected=%d calls=%d notes=%d\n",definition.ID,len(rows),calls,notes)
+	}
+	f,err:=os.OpenFile(out,os.O_WRONLY|os.O_CREATE|os.O_EXCL,0600);if err!=nil {panic(err)}
+	defer f.Close();z:=gzip.NewWriter(f);if err=json.NewEncoder(z).Encode(struct{Cases []candidate `json:"cases"`;Calls,Notes,Owners int}{rows,calls,notes,len(owners)});err!=nil {panic(err)};if err=z.Close();err!=nil {panic(err)}
+	fmt.Printf("complete selected=%d owners=%d notes=%d\n",len(rows),len(owners),notes)
+}

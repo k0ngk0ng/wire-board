@@ -1,0 +1,443 @@
+package scoreclock_test
+
+import (
+	"encoding/json"
+	"errors"
+	"reflect"
+	"sort"
+	"sync"
+	"testing"
+
+	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips"
+	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips/psg"
+	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/mixed"
+	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/pcmcommands"
+	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/resourcebridge"
+	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score"
+	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/scoreclock"
+)
+
+type noteNative struct {
+	Input struct {
+		ID              string
+		Slot            int
+		Before          score.State
+		Marker, Flags   uint8
+		Origin, Refresh uint64
+	}
+	Events []instrumentNativeEvent
+	PSG    []struct {
+		At    uint64
+		Value uint8
+	}
+	Queue []struct {
+		At    uint64
+		Value uint8
+	}
+	End   scoreclock.Clock
+	State struct {
+		Voice          score.VoiceState
+		TempoPeriod    uint8 `json:"tempo_period"`
+		TempoRemaining uint8 `json:"tempo_remaining"`
+	}
+	MusicFields map[string]uint8 `json:"music_fields"`
+	Equal       bool             `json:"native_observer_state_equal"`
+}
+
+var noteNativeOnce sync.Once
+var noteNativeRows []noteNative
+
+func noteNatives(t *testing.T) []noteNative {
+	t.Helper()
+	noteNativeOnce.Do(func() {
+		var f struct {
+			Version int
+			Cases   []noteNative
+		}
+		if err := json.Unmarshal(parserClockUnpack(t, "../../verification/score-clock-note-voice/native-note-voice-canonical-aux.json.gz"), &f); err != nil {
+			t.Fatal(err)
+		}
+		if f.Version != 1 || len(f.Cases) != 1095 {
+			t.Fatal("new-note source coverage incomplete")
+		}
+		noteNativeRows = f.Cases
+	})
+	return noteNativeRows
+}
+
+type noteVoiceIO struct {
+	*musicIO
+	failWrite bool
+}
+
+func (e *noteVoiceIO) WritePSG(at uint64, value uint8) error {
+	err := e.r.WritePSG(at, value)
+	if err == nil {
+		e.trace = append(e.trace, access{Kind: "psg", At: at, Value: value})
+	}
+	return err
+}
+func (e *noteVoiceIO) WritePort(at uint64, port, value uint8) error {
+	if e.failWrite {
+		return errors.New("new-note detached write failed")
+	}
+	return e.musicIO.WritePort(at, port, value)
+}
+func newNoteVoiceIO(t *testing.T, l *resourcebridge.Library, marker, flags uint8) *noteVoiceIO {
+	t.Helper()
+	pcm, err := l.PCMConfig(0, 64)
+	if err != nil {
+		t.Fatal(err)
+	}
+	cfg := mixed.Config{PCM: pcm, Chips: chips.Config{Profile: chips.ReferenceMixedHQ44100}}
+	r, err := mixed.New(cfg, chips.State{YM: chips.ResetYMState(), PSG: psg.ResetState()})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err = r.RequestBus(0, true); err != nil {
+		t.Fatal(err)
+	}
+	s := r.Snapshot()
+	s.PCM.Global = pcmcommands.Globals{StartMarker: marker, ModeFlags: flags, RestorePan: 64, MusicPan: 64, RateRequest: 17, LatestFlags: 5, SingleDescriptor: "descriptor-7a185ee9f8801e5cb536"}
+	r, err = mixed.Restore(cfg, s)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return &noteVoiceIO{musicIO: &musicIO{panIO: &panIO{instrumentIO: &instrumentIO{r: r}}}}
+}
+
+func noteAccesses(t *testing.T, row noteNative) []access {
+	t.Helper()
+	out := frequencyPanAccesses(t, row.Events, row.PSG)
+	var stores []instrumentNativeEvent
+	for _, event := range row.Events {
+		switch event.Kind {
+		case 17:
+			out = append(out, access{Kind: "pan-request", At: event.After, Value: uint8(event.Value)})
+		case 18:
+			out = append(out, access{Kind: "restore-pan", At: event.After, Value: uint8(event.Value)})
+		case 19:
+			out = append(out, access{Kind: "music-flags", At: event.After, Value: uint8(event.Value)})
+		case 20:
+			stores = append(stores, event)
+		}
+	}
+	if len(stores)%8 != 0 {
+		t.Fatal("partial source publication")
+	}
+	for i := 7; i < len(stores); i += 8 {
+		out = append(out, access{Kind: "publish", At: stores[i].After, Value: uint8(stores[i].Value)})
+	}
+	sort.SliceStable(out, func(i, j int) bool { return out[i].At < out[j].At })
+	return out
+}
+
+func TestNoteVoiceCompleteOriginalCallsAndActualOwners(t *testing.T) {
+	l := observedEnvelopeLibrary(t)
+	c := l.Catalog()
+	for _, row := range noteNatives(t) {
+		t.Run(row.Input.ID, func(t *testing.T) {
+			if !row.Equal || len(row.Queue) != 0 {
+				t.Fatal("invalid new-note source scope")
+			}
+			d, err := score.Restore(c, row.Input.Before)
+			if err != nil {
+				t.Fatal(err)
+			}
+			legacy, err := score.Restore(c, row.Input.Before)
+			if err != nil {
+				t.Fatal(err)
+			}
+			e := newNoteVoiceIO(t, l, row.Input.Marker, row.Input.Flags)
+			var tx *score.TickTransaction
+			var voice *scoreclock.NoteVoiceTransfer
+			var end scoreclock.Clock
+			closed := false
+			type feedback struct {
+				Read  score.FeedbackRead
+				Value score.DACFeedback
+			}
+			var reads []feedback
+			tx, err = d.BeginTickObserved(score.ObservedHooks{Parser: l.Parser(), ReadDAC: func(read score.FeedbackRead) (score.DACFeedback, error) {
+				if voice == nil {
+					return score.DACFeedback{}, errors.New("new-note feedback lacks active voice")
+				}
+				value, err := voice.ReadDAC(read)
+				if err == nil {
+					reads = append(reads, feedback{read, value})
+				}
+				return value, err
+			}, Operation: func(op score.Operation) error {
+				if op.VoiceSlot != int8(row.Input.Slot) || closed {
+					return nil
+				}
+				if voice == nil && !(op.Kind == score.OpEnter && op.Routine == score.RoutineVoice) {
+					return nil
+				}
+				s, failure := tx.Snapshot()
+				if failure != nil {
+					return failure
+				}
+				if voice == nil {
+					voice, failure = scoreclock.BeginNoteVoice(scoreclock.Clock{Cycle: row.Input.Origin, Refresh: row.Input.Refresh}, op, s.Voices[row.Input.Slot], c, e, e, scoreclock.Limits{})
+					if len(e.trace) != 0 {
+						return errors.New("new-note Begin emitted hardware")
+					}
+					return failure
+				}
+				if failure = voice.Consume(op, s.Voices[row.Input.Slot]); failure != nil {
+					return failure
+				}
+				if op.Kind == score.OpLeave && op.Routine == score.RoutineVoice {
+					end, failure = voice.Finish()
+					closed = true
+				}
+				return failure
+			}})
+			if err != nil {
+				t.Fatal(err)
+			}
+			defer tx.Abort()
+			if err = tx.AdvanceTempo(); err != nil {
+				t.Fatal(err)
+			}
+			if err = tx.Dispatch(0); err != nil {
+				t.Fatal(err)
+			}
+			if err = tx.AdvanceVoices(); err != nil {
+				t.Fatal(err)
+			}
+			out, err := tx.Finish()
+			if err != nil || !closed || end != row.End {
+				t.Fatal("complete new-note clock differs", end, row.End, err)
+			}
+			index := 0
+			want, err := legacy.AdvanceObserved(score.ObservedInput{}, score.ObservedHooks{Parser: l.Parser(), Operation: func(score.Operation) error { return nil }, ReadDAC: func(read score.FeedbackRead) (score.DACFeedback, error) {
+				if index >= len(reads) || reads[index].Read != read {
+					return score.DACFeedback{}, errors.New("legacy feedback stages differ")
+				}
+				value := reads[index].Value
+				index++
+				return value, nil
+			}})
+			if err != nil || index != len(reads) || !reflect.DeepEqual(out, want) || d.Snapshot() != legacy.Snapshot() {
+				t.Fatal("new-note timer changed canonical output/state", err)
+			}
+			trace := noteAccesses(t, row)
+			if !reflect.DeepEqual(e.trace, trace) {
+				for i := 0; i < len(e.trace) && i < len(trace); i++ {
+					if e.trace[i] != trace[i] {
+						t.Fatalf("source access %d differs: got %+v want %+v", i, e.trace[i], trace[i])
+					}
+				}
+				t.Fatal("source access count differs", len(e.trace), len(trace))
+			}
+			v, n := d.Snapshot().Voices[row.Input.Slot], row.State.Voice
+			// Source byte25 has a different role for PSG; FM uses only its
+			// three algorithm bits here, with feedback already in the patch.
+			if v.Channel == "psg1" || v.Channel == "psg2" || v.Channel == "psg3" || v.Channel == "psg-noise" {
+				n.LoadedAlgorithm = row.Input.Before.Voices[row.Input.Slot].LoadedAlgorithm
+			} else if v.Channel != "dac" {
+				n.LoadedAlgorithm &= 7
+			}
+			if v.PanDefinition.Mode == "" || v.PanDefinition.Mode == "disabled" {
+				// Disabled counters are unobservable and reseeded on enable;
+				// the canonical typed control intentionally normalizes them.
+				n.PanState.Step, n.PanState.Elapsed = 0, 0
+			}
+			if v.Channel != n.Channel || v.Active != n.Active || v.NoteOff != n.NoteOff || v.Claimed != n.Claimed || v.Tie != n.Tie || v.Transpose != n.Transpose || v.BaseLevel != n.BaseLevel || v.PitchScale != n.PitchScale || v.NoteWait != n.NoteWait || v.GateRemaining != n.GateRemaining || v.GateTicks != n.GateTicks || v.ModDelay != n.ModDelay || v.ModRate != n.ModRate || v.ModSteps != n.ModSteps || v.ModDelta != n.ModDelta || v.ModOffset != n.ModOffset || v.Detune != n.Detune || v.Pan != n.Pan || v.PanState != n.PanState || v.LoadedAlgorithm != n.LoadedAlgorithm {
+				t.Fatal("new-note native counter/parameter projection differs", v, n)
+			}
+			if v.Channel == "dac" {
+				if v.DACDescriptor != n.DACDescriptor {
+					t.Fatal("native DAC selection differs")
+				}
+			} else if v.BasePitch != n.BasePitch {
+				t.Fatal("native new pitch differs", v.BasePitch, n.BasePitch)
+			}
+			state := d.Snapshot()
+			if state.TempoPeriod != row.State.TempoPeriod || state.TempoRemaining != row.State.TempoRemaining {
+				t.Fatal("native tempo control differs")
+			}
+			g := e.r.Snapshot().PCM.Global
+			for key, value := range map[string]uint8{"8189": g.StartMarker, "8188": g.ModeFlags, "8184": g.RestorePan, "8185": g.MusicPan, "8190": g.RateRequest, "8187": g.LatestFlags} {
+				if row.MusicFields[key] != value {
+					t.Fatal("native publication globals differ", key, value, row.MusicFields[key])
+				}
+			}
+			var stores []instrumentNativeEvent
+			for _, event := range row.Events {
+				if event.Kind == 20 {
+					stores = append(stores, event)
+				}
+			}
+			if len(e.publications)*8 != len(stores) {
+				t.Fatal("music publication repeated or missing")
+			}
+			for i, p := range e.publications {
+				if p.Begin != stores[i*8].After || p.End != stores[i*8+7].After {
+					t.Fatal("music publication lost held interval")
+				}
+			}
+			if _, err = voice.Finish(); !errors.Is(err, scoreclock.ErrNoteVoiceSequence) {
+				t.Fatal("closed note reused")
+			}
+		})
+	}
+}
+
+func TestNoteVoiceCatalogInstrumentParametersAreReadOnly(t *testing.T) {
+	l := observedEnvelopeLibrary(t)
+	c := l.Catalog()
+	var raw struct{ Profiles []score.InstrumentWork }
+	if err := json.Unmarshal(parserClockUnpack(t, "../../data/audio-score-instrument-work.json.gz"), &raw); err != nil {
+		t.Fatal(err)
+	}
+	for _, work := range raw.Profiles {
+		got, patch, err := c.InstrumentParameters(work.ID)
+		if err != nil || got != work || patch.ID != work.PatchID {
+			t.Fatal("bound instrument read differs", err)
+		}
+		want := patch
+		patch.Algorithm ^= 1
+		patch.Operators[0].TotalLevel ^= 1
+		_, again, err := c.InstrumentParameters(work.ID)
+		if err != nil || again != want {
+			t.Fatal("instrument query leaked mutable catalog")
+		}
+	}
+	if _, _, err := c.InstrumentParameters("unknown"); err == nil {
+		t.Fatal("unknown instrument accepted")
+	}
+}
+
+func TestNoteVoiceFailureBudgetAndClosedRead(t *testing.T) {
+	l := observedEnvelopeLibrary(t)
+	c := l.Catalog()
+	var row noteNative
+	for _, candidate := range noteNatives(t) {
+		if candidate.Input.Before.Voices[candidate.Input.Slot].Channel == "fm1" {
+			row = candidate
+			break
+		}
+	}
+	if row.Input.ID == "" {
+		t.Fatal("new-note FM witness missing")
+	}
+	for _, failIO := range []bool{false, true} {
+		d, err := score.Restore(c, row.Input.Before)
+		if err != nil {
+			t.Fatal(err)
+		}
+		e := newNoteVoiceIO(t, l, row.Input.Marker, row.Input.Flags)
+		e.failWrite = failIO
+		limits := scoreclock.Limits{MaxOperations: 160}
+		if failIO {
+			limits = scoreclock.Limits{}
+		}
+		var tx *score.TickTransaction
+		var voice *scoreclock.NoteVoiceTransfer
+		tx, err = d.BeginTickObserved(score.ObservedHooks{Parser: l.Parser(), Operation: func(op score.Operation) error {
+			if op.VoiceSlot != int8(row.Input.Slot) {
+				return nil
+			}
+			if voice == nil && !(op.Kind == score.OpEnter && op.Routine == score.RoutineVoice) {
+				return nil
+			}
+			s, failure := tx.Snapshot()
+			if failure != nil {
+				return failure
+			}
+			if voice == nil {
+				voice, failure = scoreclock.BeginNoteVoice(scoreclock.Clock{}, op, s.Voices[row.Input.Slot], c, e, e, limits)
+				return failure
+			}
+			return voice.Consume(op, s.Voices[row.Input.Slot])
+		}})
+		if err != nil {
+			t.Fatal(err)
+		}
+		if err = tx.AdvanceTempo(); err != nil {
+			t.Fatal(err)
+		}
+		if err = tx.Dispatch(0); err != nil {
+			t.Fatal(err)
+		}
+		err = tx.AdvanceVoices()
+		if err == nil || !failIO && !errors.Is(err, scoreclock.ErrBudget) || d.Snapshot() != row.Input.Before || len(e.trace) == 0 {
+			t.Fatal("new-note failure committed state/reset budget", err)
+		}
+		if _, err = voice.Finish(); !errors.Is(err, scoreclock.ErrNoteVoiceSequence) {
+			t.Fatal("failed note continued")
+		}
+		if _, err = voice.ReadDAC(score.FeedbackRead{}); !errors.Is(err, scoreclock.ErrNoteVoiceSequence) {
+			t.Fatal("failed note accepted feedback read")
+		}
+	}
+}
+
+func TestNoteVoiceInvalidEntrySequenceAndEarlyFinish(t *testing.T) {
+	l := observedEnvelopeLibrary(t)
+	row := noteNatives(t)[0]
+	d, err := score.Restore(l.Catalog(), row.Input.Before)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var tx *score.TickTransaction
+	var first score.Operation
+	var v score.VoiceState
+	tx, err = d.BeginTickObserved(score.ObservedHooks{Parser: l.Parser(), Operation: func(op score.Operation) error {
+		if op.Kind == score.OpEnter && op.Routine == score.RoutineVoice && op.VoiceSlot == int8(row.Input.Slot) {
+			s, failure := tx.Snapshot()
+			if failure != nil {
+				return failure
+			}
+			first, v = op, s.Voices[row.Input.Slot]
+			return errors.New("capture actual note entry")
+		}
+		return nil
+	}})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err = tx.AdvanceTempo(); err != nil {
+		t.Fatal(err)
+	}
+	if err = tx.Dispatch(0); err != nil {
+		t.Fatal(err)
+	}
+	if err = tx.AdvanceVoices(); err == nil || first.Version != 1 {
+		t.Fatal("actual entry witness missing")
+	}
+	e := newNoteVoiceIO(t, l, 0, 0)
+	bad := first
+	bad.Version = 0
+	if _, err = scoreclock.BeginNoteVoice(scoreclock.Clock{}, bad, v, l.Catalog(), e, e, scoreclock.Limits{}); err == nil {
+		t.Fatal("bad note observation accepted")
+	}
+	other := v
+	other.NoteWait = 2
+	if _, err = scoreclock.BeginNoteVoice(scoreclock.Clock{}, first, other, l.Catalog(), e, e, scoreclock.Limits{}); err == nil {
+		t.Fatal("held note accepted as new note")
+	}
+	for _, early := range []bool{false, true} {
+		voice, failure := scoreclock.BeginNoteVoice(scoreclock.Clock{}, first, v, l.Catalog(), e, e, scoreclock.Limits{})
+		if failure != nil {
+			t.Fatal(failure)
+		}
+		if early {
+			if _, failure = voice.Finish(); !errors.Is(failure, scoreclock.ErrNoteVoiceSequence) {
+				t.Fatal("early note finish accepted")
+			}
+		} else {
+			op := first
+			op.Sequence += 2
+			if failure = voice.Consume(op, v); !errors.Is(failure, scoreclock.ErrNoteVoiceSequence) {
+				t.Fatal("note sequence gap accepted")
+			}
+		}
+		if _, failure = voice.ReadDAC(score.FeedbackRead{}); !errors.Is(failure, scoreclock.ErrNoteVoiceSequence) {
+			t.Fatal("poisoned note read feedback")
+		}
+	}
+}

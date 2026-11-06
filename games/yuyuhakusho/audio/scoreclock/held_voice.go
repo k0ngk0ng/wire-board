@@ -40,6 +40,7 @@ const (
 	heldGateKey heldKeyReason = iota + 1
 	heldVolumeKey
 	heldPitchKey
+	heldNoteKey
 )
 
 type heldModPart uint8
@@ -85,6 +86,7 @@ type HeldVoiceTransfer struct {
 	pitchSuppression score.Branch
 	prepared         uint16
 	frequency        *FrequencyTransfer
+	onNote           bool
 	done             bool
 	failure          error
 }
@@ -231,6 +233,9 @@ func (t *HeldVoiceTransfer) consume(op score.Operation, v score.VoiceState) erro
 		}
 		t.volume = nil
 		t.phase = heldModEnter
+		if t.onNote {
+			t.phase = heldVoiceReturn
+		}
 	case heldModEnter:
 		return t.beginModulation(op, v)
 	case heldModBody:
@@ -252,7 +257,7 @@ func (t *HeldVoiceTransfer) consume(op score.Operation, v score.VoiceState) erro
 	case heldFrequency:
 		return t.consumeFrequency(op)
 	case heldPitchReturn:
-		if !heldOperation(op, score.OpLeave, score.RoutinePitch) || op.Branch != score.BranchHeldNote {
+		if !heldOperation(op, score.OpLeave, score.RoutinePitch) || op.Branch != t.pitchBranch() {
 			return ErrHeldVoiceSequence
 		}
 		if t.frequency != nil {
@@ -262,6 +267,9 @@ func (t *HeldVoiceTransfer) consume(op score.Operation, v score.VoiceState) erro
 			t.frequency = nil
 		}
 		t.phase = heldVoiceReturn
+		if t.onNote {
+			t.phase = heldAmbient
+		}
 	case heldVoiceReturn:
 		if !heldOperation(op, score.OpLeave, score.RoutineVoice) || op.Branch != score.BranchActive {
 			return ErrHeldVoiceSequence
@@ -276,7 +284,7 @@ func (t *HeldVoiceTransfer) consume(op score.Operation, v score.VoiceState) erro
 func (t *HeldVoiceTransfer) beginAmbient(op score.Operation, v score.VoiceState) error {
 	s := t.s
 	if t.channel < 128 {
-		if !heldOperation(op, score.OpEnter, score.RoutinePan) || op.Branch != score.BranchHeldNote {
+		if !heldOperation(op, score.OpEnter, score.RoutinePan) || op.Branch != t.pitchBranch() {
 			return ErrHeldVoiceSequence
 		}
 		if err := s.spend(18); err != nil {
@@ -287,11 +295,11 @@ func (t *HeldVoiceTransfer) beginAmbient(op score.Operation, v score.VoiceState)
 		if definition.Mode == "" {
 			definition.Mode = param.PanDisabled
 		}
-		tick, err := t.catalog.PanAutomationStep(definition, v.PanState, false, v.NoteOff)
+		tick, err := t.catalog.PanAutomationStep(definition, v.PanState, t.onNote, v.NoteOff)
 		if err != nil {
 			return err
 		}
-		request := PanAutomationRequest{Channel: t.channel, Definition: definition, State: v.PanState, NoteOff: v.NoteOff, Claimed: v.Claimed, Pan: v.Pan}
+		request := PanAutomationRequest{Channel: t.channel, Definition: definition, State: v.PanState, OnNote: t.onNote, NoteOff: v.NoteOff, Claimed: v.Claimed, Pan: v.Pan}
 		panRequest := PanRequest{Entry: "voice", Channel: t.channel, Claimed: v.Claimed, Pan: v.Pan}
 		if !validPanRequest(panRequest) {
 			return ErrHeldVoiceSequence
@@ -303,7 +311,7 @@ func (t *HeldVoiceTransfer) beginAmbient(op score.Operation, v score.VoiceState)
 		t.panTick, t.part, t.phase = tick, 0, heldPan
 		return nil
 	}
-	if v.VolumeEnvelope == 0 {
+	if !t.onNote && v.VolumeEnvelope == 0 {
 		// The held PSG wrapper is still called when it skips its body.
 		if err := s.ordinaryCosts(18, 12); err != nil {
 			return err
@@ -319,21 +327,34 @@ func (t *HeldVoiceTransfer) beginAmbient(op score.Operation, v score.VoiceState)
 	if !heldOperation(op, score.OpEnter, score.RoutineVolume) {
 		return ErrHeldVoiceSequence
 	}
-	if err := s.ordinaryCosts(18, 12); err != nil {
-		return err
+	if t.onNote {
+		if err := s.spend(10); err != nil {
+			return err
+		}
+	} else {
+		if err := s.ordinaryCosts(18, 12); err != nil {
+			return err
+		}
+		if err := s.branch(false, true); err != nil {
+			return err
+		}
 	}
-	if err := s.branch(false, true); err != nil {
-		return err
+	r := EnvelopeVolumeRequest{HasEnvelope: v.VolumeEnvelope != 0, BaseLevel: v.BaseLevel, Channel: t.channel, NoteOff: v.NoteOff, Claimed: v.Claimed, Tied: v.Tie, GateTicks: v.GateTicks, GateRemaining: v.GateRemaining}
+	var err error
+	if r.HasEnvelope {
+		r.Tick, r.Work, err = t.catalog.VolumeEnvelopeStep(v.VolumeEnvelope, v.VolumeCursor)
+		if err != nil {
+			return err
+		}
 	}
-	tick, work, err := t.catalog.VolumeEnvelopeStep(v.VolumeEnvelope, v.VolumeCursor)
+	t.volume, err = beginEnvelopeVolume(s, r, t.chip)
 	if err != nil {
 		return err
 	}
-	t.volume, err = beginEnvelopeVolume(s, EnvelopeVolumeRequest{HasEnvelope: true, Work: work, Tick: tick, BaseLevel: v.BaseLevel, Channel: t.channel, NoteOff: v.NoteOff, Claimed: v.Claimed, Tied: v.Tie, GateTicks: v.GateTicks, GateRemaining: v.GateRemaining}, t.chip)
-	if err != nil {
-		return err
+	t.volumeTick, t.phase = r.Tick, heldVolumeBody
+	if r.HasEnvelope {
+		t.phase = heldVolumeResource
 	}
-	t.volumeTick, t.phase = tick, heldVolumeResource
 	return nil
 }
 
@@ -366,7 +387,7 @@ func (t *HeldVoiceTransfer) consumePan(op score.Operation, v score.VoiceState) e
 		t.part++
 		return nil
 	}
-	if !heldOperation(op, score.OpLeave, score.RoutinePan) || op.Branch != score.BranchHeldNote {
+	if !heldOperation(op, score.OpLeave, score.RoutinePan) || op.Branch != t.pitchBranch() {
 		return ErrHeldVoiceSequence
 	}
 	if _, err := t.pan.Finish(); err != nil {
@@ -375,6 +396,9 @@ func (t *HeldVoiceTransfer) consumePan(op score.Operation, v score.VoiceState) e
 	t.pan = nil
 	t.panTick = param.PanTick{}
 	t.phase = heldModEnter
+	if t.onNote {
+		t.phase, t.keyReason, t.part = heldKey, heldNoteKey, 0
+	}
 	return nil
 }
 
@@ -405,7 +429,7 @@ func (t *HeldVoiceTransfer) consumeVolume(op score.Operation, v score.VoiceState
 		t.phase, t.keyReason, t.part = heldKey, heldVolumeKey, 0
 		return nil
 	}
-	if !t.volumeTick.WritesLevel {
+	if v.VolumeEnvelope != 0 && !t.volumeTick.WritesLevel {
 		if !heldOperation(op, score.OpParameter, score.RoutineVolume) || op.Branch != score.BranchHold {
 			return ErrHeldVoiceSequence
 		}
@@ -498,16 +522,34 @@ func (t *HeldVoiceTransfer) consumeModulation(op score.Operation, v score.VoiceS
 }
 
 func (t *HeldVoiceTransfer) beginPitch(op score.Operation, v score.VoiceState) error {
-	if !heldOperation(op, score.OpEnter, score.RoutinePitch) || op.Branch != score.BranchHeldNote {
+	if !heldOperation(op, score.OpEnter, score.RoutinePitch) || op.Branch != t.pitchBranch() {
 		return ErrHeldVoiceSequence
 	}
 	s, fm := t.s, t.channel < 128
-	if err := s.ordinaryCosts(10, 12); err != nil {
-		return err
-	}
-	disabled := v.PitchControl.EnvelopeID == 0 && !v.PitchControl.ModulationEnabled
-	if err := s.branch(disabled, fm); err != nil {
-		return err
+	disabled := false
+	if t.onNote {
+		if err := s.spend(12); err != nil {
+			return err
+		}
+		rest := fm && v.BasePitch == 0 || !fm && int16(v.BasePitch) < 0
+		if err := s.branch(!rest, false); err != nil {
+			return err
+		}
+		if rest {
+			if err := s.ordinaryCosts(16, 16); err != nil {
+				return err
+			}
+			t.pitchSuppression, t.phase = score.BranchRest, heldPitchSuppressed
+			return nil
+		}
+	} else {
+		if err := s.ordinaryCosts(10, 12); err != nil {
+			return err
+		}
+		disabled = v.PitchControl.EnvelopeID == 0 && !v.PitchControl.ModulationEnabled
+		if err := s.branch(disabled, fm); err != nil {
+			return err
+		}
 	}
 	t.pitchSuppression = score.BranchDisabled
 	if !disabled {
@@ -602,7 +644,7 @@ func (t *HeldVoiceTransfer) keyEffect() (KeyEffect, bool) {
 	case heldVolumeKey:
 		value, ok := t.volume.ExpectedWrite()
 		return KeyEffect{Kind: "psg", PSG: value}, ok
-	case heldPitchKey:
+	case heldPitchKey, heldNoteKey:
 		return t.key.ExpectedEffect()
 	}
 	return KeyEffect{}, false
@@ -610,12 +652,21 @@ func (t *HeldVoiceTransfer) keyEffect() (KeyEffect, bool) {
 
 func (t *HeldVoiceTransfer) consumeKey(op score.Operation, v score.VoiceState) error {
 	if t.part == 0 {
-		if !heldOperation(op, score.OpEnter, score.RoutineKey) || op.Branch != score.BranchKeyOff || !v.NoteOff {
+		branch := score.BranchKeyOff
+		if t.keyReason == heldNoteKey {
+			branch = score.BranchKeyOn
+		}
+		if !heldOperation(op, score.OpEnter, score.RoutineKey) || op.Branch != branch || t.keyReason != heldNoteKey && !v.NoteOff {
 			return ErrHeldVoiceSequence
 		}
-		if t.keyReason == heldPitchKey {
+		if t.keyReason == heldPitchKey || t.keyReason == heldNoteKey {
 			var err error
-			t.key, err = beginKey(t.s, KeyRequest{Channel: t.channel, NoteOff: v.NoteOff, Claimed: v.Claimed, Tied: v.Tie}, t.chip)
+			if t.keyReason == heldNoteKey {
+				if err = t.s.spend(10); err != nil {
+					return err
+				}
+			}
+			t.key, err = beginKey(t.s, KeyRequest{Channel: t.channel, On: t.keyReason == heldNoteKey, NoteOff: v.NoteOff, Claimed: v.Claimed, Tied: v.Tie}, t.chip)
 			if err != nil {
 				return err
 			}
@@ -634,7 +685,7 @@ func (t *HeldVoiceTransfer) consumeKey(op score.Operation, v score.VoiceState) e
 				err = t.gate.Apply(effect)
 			case heldVolumeKey:
 				err = t.writeVolume(op)
-			case heldPitchKey:
+			case heldPitchKey, heldNoteKey:
 				err = t.key.Apply(effect)
 			}
 			if err != nil {
@@ -642,6 +693,9 @@ func (t *HeldVoiceTransfer) consumeKey(op score.Operation, v score.VoiceState) e
 			}
 		} else {
 			branch := score.BranchTied
+			if t.keyReason == heldNoteKey {
+				branch = score.BranchNoteOff
+			}
 			if v.Claimed {
 				branch = score.BranchClaimed
 			}
@@ -652,7 +706,11 @@ func (t *HeldVoiceTransfer) consumeKey(op score.Operation, v score.VoiceState) e
 		t.part = 2
 		return nil
 	}
-	if !heldOperation(op, score.OpLeave, score.RoutineKey) || op.Branch != score.BranchKeyOff {
+	branch := score.BranchKeyOff
+	if t.keyReason == heldNoteKey {
+		branch = score.BranchKeyOn
+	}
+	if !heldOperation(op, score.OpLeave, score.RoutineKey) || op.Branch != branch {
 		return ErrHeldVoiceSequence
 	}
 	switch t.keyReason {
@@ -671,8 +729,21 @@ func (t *HeldVoiceTransfer) consumeKey(op score.Operation, v score.VoiceState) e
 		}
 		t.key = nil
 		return t.beginFrequency(t.prepared)
+	case heldNoteKey:
+		if _, err := t.key.Finish(); err != nil {
+			return err
+		}
+		t.key = nil
+		t.phase = heldVoiceReturn
 	}
 	return nil
+}
+
+func (t *HeldVoiceTransfer) pitchBranch() score.Branch {
+	if t.onNote {
+		return score.BranchNoteBoundary
+	}
+	return score.BranchHeldNote
 }
 
 func (t *HeldVoiceTransfer) consumeFrequency(op score.Operation) error {

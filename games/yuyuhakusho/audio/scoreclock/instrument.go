@@ -116,6 +116,11 @@ func BeginInstrumentTransfer(clock Clock, work InstrumentRequest, bus Bus, chip 
 	if err != nil {
 		return nil, err
 	}
+	return beginInstrumentTransfer(s, work)
+}
+
+func beginInstrumentTransfer(s *service, work InstrumentRequest) (*InstrumentTransfer, error) {
+	var err error
 	t := &InstrumentTransfer{s: s, request: work}
 	if err = s.spend(12); err != nil {
 		return nil, err

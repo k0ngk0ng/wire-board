@@ -1,0 +1,41 @@
+{
+  "original_test_sha256": "a940085dbc9ef85eefb1656522c5cf66d883e43b1c1d78e135f7a14bc24d2bec",
+  "original_archive": "games/yuyuhakusho/verification/score-clock-note-voice/note_voice_e2e_test.before-setup-correction.txt",
+  "first_failure_sha256": "e4abc228f2b48bc82bce86c169d8ebce47e40aab7475340a1b903e064850a240",
+  "native_oracle_changed": false,
+  "native_capture_changed": false,
+  "reasons": [
+    "PCM RateRequest17 inherited from the music leaf setup causes the real auxiliary owner to read retained descriptor metadata; the Go test failed to bind the retained SingleDescriptor. Original quiet metadata prefix04800080 matches formal music descriptor-7a185ee9f8801e5cb536 from source descriptor0x81.",
+    "Native row byte0x25 contains algorithm+feedback for FM and the noise latch for PSG; the Go test incorrectly compared it directly to the canonical three-bit LoadedAlgorithm for every family. Normalize only this declared typed projection; preserve raw native fixture."
+  ],
+  "production_fix_separate": "Actual tied cleanup OpParameter was omitted; fix production state machine without changing expected operations.",
+  "native_baseline_correction": {
+    "before_capture_sha256": "17f431e27beeafee24e7918a98187b1a4c7d7db28a641ba1a6d0c3709f905ee8",
+    "archive": "games/yuyuhakusho/verification/score-clock-note-voice/capture.before-aux-baseline-correction.py.txt",
+    "original_oracle_preserved": "native-note-voice-full.json.gz",
+    "diagnosis": "games/yuyuhakusho/verification/score-clock-note-voice/aux-baseline-diagnosis.json",
+    "observed_v2_aux": {
+      "pc": 96,
+      "cycles": 75,
+      "sp": 8116
+    },
+    "declared_canonical_empty_aux": {
+      "pc": 93,
+      "cycles": 0,
+      "sp": 7936
+    },
+    "reason": "Native v2 restored a later quiescent auxiliary instruction/continuation whereas mixed.New starts the known empty idle boundary. Retain the pending rate17/flags5 and selected real music descriptor; initialize the native auxiliary owner with the existing command.initial helper and seed the same retained descriptor metadata. This corrects the declared initial state; raw v2 evidence stays unchanged.",
+    "noise_byte_role": "PSG source byte25 must be seeded from the canonical NoiseControl, not the unused FM LoadedAlgorithm.",
+    "v3_sha256": "3240bd2feb4522329e33c22b770746700aa8fcdebc98b7a47997b58b5da244ed",
+    "hold_origin": "The actual mixed test holds the auxiliary at master0, then starts the supplied main clock at0/1/895/1008. Native must assert the initial hold at0 too; asserting at the supplied main origin executes a different partial idle block before rate17 is staged."
+  },
+  "typed_pan_projection": "Expected disabled pan counters normalize to constant zero, never copied from the actual result; source raw inactive counters remain archived. Active pan counters remain compared directly.",
+  "corrected_oracle": {
+    "path": "games/yuyuhakusho/verification/score-clock-note-voice/native-note-voice-canonical-aux.json.gz",
+    "sha256": "e5adbf99ab977504d468a8237d4acf77037ecb86ed7f58a61ed89dc2a4bd8c03"
+  },
+  "corrected_capture_sha256": "5cb3b093df7c0a8d4bdfde9c7171242e870dac98d678e32c773dbca9e24c81d8",
+  "current_test_sha256": "d4ef9ddd05135d5e5d239e47925d2bdc7b188c6810ee8fb5c22f896c2197299a",
+  "current_capture_sha256": "5cb3b093df7c0a8d4bdfde9c7171242e870dac98d678e32c773dbca9e24c81d8",
+  "third_pass_records": 1099
+}
