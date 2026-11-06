@@ -1,0 +1,18 @@
+{
+  "test_first": true,
+  "production_exists": false,
+  "production_files": [
+    "games/yuyuhakusho/engine/sound_scheduler_observed.go",
+    "games/yuyuhakusho/audio/scoreclock/sound_irq.go",
+    "games/yuyuhakusho/audio/session/runtime.go"
+  ],
+  "files": {
+    "docs/research/md-yuyuhakusho/SOUND_IRQ_RUNTIME_FAILURES.md": "f40979177f24f329742f8b5f95996b14babde5c0401c9a3c2ead2fa56e06f38b",
+    "games/yuyuhakusho/engine/sound_scheduler_observed_test.go": "281f85d3df23e89df372b37197d1f66fad7fa9027fdde8d282c586eb417eba2b",
+    "games/yuyuhakusho/audio/scoreclock/sound_irq_e2e_test.go": "75219118e2d01aad0c1803259bfa518fd1b3870e40c0e3471258198fae373314",
+    "scripts/yuyuhakusho/score-clock-sound-irq-capture.py": "9f8477c9f0d68b73af31c13262095739c3cabfcbb64d549e398b5c549a50378a",
+    "scripts/yuyuhakusho/sound-irq-observer.c": "771773e5ce718b9bfdd93282bd698d463cb18a0c517c0f01ef4ebdd195e0e460",
+    "scripts/yuyuhakusho/sound_irq_cases.py": "cb7f7cc63def514415467adc53da23dd83023e54d4017d48f2848397ad93bc4f",
+    "games/yuyuhakusho/verification/sound-irq-runtime/native-sound-irq-full.json.gz": "7c9b2c1a41dcf423ffc12f825066d2b0852893a13e306ea67701d1c129c7383c"
+  }
+}

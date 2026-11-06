@@ -1,0 +1,4 @@
+{
+  "GODEBUG": "gccheckmark=1,clobberfree=1",
+  "purpose": "Preserve and investigate a previous actual Go/js/wasm heap bad-pointer failure. Run full unchanged clock/Root suite with runtime marking checks; no test/oracle exclusions."
+}

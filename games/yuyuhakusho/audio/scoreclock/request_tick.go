@@ -48,19 +48,8 @@ func AdvanceDriverTick(clock Clock, root *rootcontrol.State, owners rootcontrol.
 }
 
 func advanceRequestTick(clock Clock, root *rootcontrol.State, owners rootcontrol.RuleOwners, input rootcontrol.RuleInput, library *resourcebridge.Library, bus Bus, chip Chip, limits Limits, allowScores bool) (DriverResult, error) {
-	if root == nil || owners.Score == nil || owners.Queue == nil || owners.AudioPause == nil || library == nil || bus == nil || chip == nil || input.Idle != (rootcontrol.RuleIdleProjection{}) {
-		return DriverResult{}, ErrRunningProfile
-	}
-	if !allowScores && (root.Selected == 0 || root.Fade.Steps != 0 || root.PauseRestore != nil || *owners.AudioPause != 0) {
-		return DriverResult{}, ErrRunningProfile
-	}
-	keyChip, _ := chip.(KeyGateChip)
-	if keyChip == nil {
-		for _, v := range owners.Score.Snapshot().Voices {
-			if v.Active {
-				return DriverResult{}, ErrRunningProfile
-			}
-		}
+	if _, err := validateRequestOwners(root, owners, input, library, bus, chip, allowScores); err != nil {
+		return DriverResult{}, err
 	}
 	s, err := pauseService(clock, bus, chip, limits)
 	if err != nil {
@@ -69,8 +58,34 @@ func advanceRequestTick(clock Clock, root *rootcontrol.State, owners rootcontrol
 	if limits.MaxOperations == 0 {
 		s.limit = 65536
 	}
+	return advanceRequestOnService(s, root, owners, input, library, allowScores)
+}
+
+func validateRequestOwners(root *rootcontrol.State, owners rootcontrol.RuleOwners, input rootcontrol.RuleInput, library *resourcebridge.Library, bus Bus, chip Chip, allowScores bool) (KeyGateChip, error) {
+	if root == nil || owners.Score == nil || owners.Queue == nil || owners.AudioPause == nil || library == nil || bus == nil || chip == nil || input.Idle != (rootcontrol.RuleIdleProjection{}) {
+		return nil, ErrRunningProfile
+	}
+	if !allowScores && (root.Selected == 0 || root.Fade.Steps != 0 || root.PauseRestore != nil || *owners.AudioPause != 0) {
+		return nil, ErrRunningProfile
+	}
+	keyChip, _ := chip.(KeyGateChip)
+	if keyChip == nil {
+		for _, v := range owners.Score.Snapshot().Voices {
+			if v.Active {
+				return nil, ErrRunningProfile
+			}
+		}
+	}
+	return keyChip, nil
+}
+
+func advanceRequestOnService(s *service, root *rootcontrol.State, owners rootcontrol.RuleOwners, input rootcontrol.RuleInput, library *resourcebridge.Library, allowScores bool) (DriverResult, error) {
+	keyChip, err := validateRequestOwners(root, owners, input, library, s.bus, s.chip, allowScores)
+	if err != nil {
+		return DriverResult{}, err
+	}
 	parent := &runningTick{s: s, catalog: library.Catalog(), chip: keyChip}
-	ordinaryBus, _ := bus.(OrdinaryBus)
+	ordinaryBus, _ := s.bus.(OrdinaryBus)
 	r := &requestTick{parent: parent, root: root, queue: owners.Queue, library: library, bus: ordinaryBus, allowScores: allowScores}
 	if allowScores {
 		r.control = &driverControl{r: r, s: s, stage: "idle", route: rootcontrol.RuleNormal}

@@ -1,0 +1,566 @@
+// Package pcmcommands advances the game's typed PCM command protocol. It has
+// no CPU, arbitrary PC, firmware, register file, RAM image or input replay log.
+package pcmcommands
+
+import (
+	"crypto/sha256"
+	"encoding/hex"
+	"encoding/json"
+	"errors"
+	"fmt"
+	"math"
+	"sort"
+
+	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/phaseclock"
+)
+
+const FrameCycles uint64 = 896040
+const maxInputs = 64
+const maxAtomicSteps = 40000
+
+type Protocol uint8
+
+const (
+	OrdinaryProtocol Protocol = 1
+	MusicProtocol    Protocol = 2
+)
+
+type InputKind uint8
+
+const (
+	Hold InputKind = iota
+	Ordinary
+	Music
+	SetRestorePan
+	HardReset
+)
+
+type Destination uint8
+
+const (
+	Single Destination = iota
+	SlotA
+	SlotB
+)
+
+type Kind string
+
+const (
+	DAC       Kind = "dac"
+	Pan       Kind = "pan"
+	Enable    Kind = "enable"
+	Bank      Kind = "bank"
+	Metadata  Kind = "metadata"
+	Dummy     Kind = "dummy"
+	YMWrite   Kind = "ym-write"
+	Reset     Kind = "reset"
+	YMAddress Kind = "ym-address"
+)
+
+// Resources borrows an immutable catalog. The device stores IDs and never
+// duplicates encoded payload storage. Identity binds the trusted catalog.
+type Resources struct {
+	Identity string
+	Length   func(string) (uint32, bool)
+	ByteAt   func(string, uint32) (byte, bool)
+}
+type Descriptor struct {
+	ID, PayloadID                   string
+	NativeRate, Flags, RoutingOrPan uint8
+	Protocol                        Protocol
+}
+type Config struct {
+	Resources   Resources
+	Descriptors []Descriptor
+	Origin      uint64
+	RestorePan  uint8
+
+	IncludeYMAddresses bool
+}
+
+// Ordinary inputs are accepted upstream arbitration decisions. StartDual is the
+// original sampled decision, not a fresh mode check at publication time.
+type Input struct {
+	Kind         InputKind
+	Begin, End   uint64
+	DescriptorID string
+	Destination  Destination
+	StartDual    bool
+	Pan          uint8
+}
+type DMAInterval struct {
+	Begin, End uint32
+	Mode       uint8
+	Remaining  uint32
+}
+type FramePlan struct {
+	Inputs []Input
+	DMA    []DMAInterval
+}
+type Event struct {
+	Cycle, StartCycle uint64
+	Kind              Kind
+	Value             uint8
+	PayloadID         string
+	Offset            uint32
+	Bus               *phaseclock.Effect
+	Register          uint16
+
+	Port uint8
+}
+type Transaction struct{ Begin, End, Grant, Resume uint64 }
+type Status struct {
+	ModeFlags, StartMarker, RateRequest uint8
+	SlotBusy, SlotFlags                 [2]uint8
+	Busy                                uint8
+	Held                                bool
+}
+
+func (s Status) Blocked() bool     { return s.StartMarker&128 != 0 }
+func (s Status) Priority() uint8   { return s.ModeFlags & 192 }
+func (s Status) PanRedirect() bool { return s.StartMarker != 0 }
+
+type Frame struct {
+	Index        uint64
+	Events       []Event
+	Ledger       []Event
+	Transactions []Transaction
+	Status       Status
+}
+type Globals struct {
+	RateRequest, StartMarker, ModeFlags, LatestFlags, OrdinaryPan, MusicPan, RestorePan, Busy uint8
+	SingleDescriptor                                                                          string
+}
+type SingleStream struct {
+	Descriptor                     string
+	Consumed, Fetched, DummyCursor uint32
+	Accumulator, Rate              uint8
+}
+type Voice struct {
+	Descriptor, Request         string
+	Busy, Flags, Control        uint8
+	Enabled                     bool
+	Consumed, Fetched, Produced uint32
+	Accumulator                 uint8
+}
+type Work struct {
+	Rate, Flags, Marker, Pan          uint8
+	Source                            string
+	PrefetchSlot, DecodeSlot          uint8
+	Enabled, Same                     bool
+	Control, Gap, SlotBusy, OtherBusy uint8
+	Pair                              [2][2]uint8
+	Mix                               [2]uint8
+	Count                             uint16
+	Tail                              bool
+}
+type HeldWindow struct {
+	Input Input
+	Grant uint64
+
+	Open bool
+}
+
+// Frame counts completed reference flushes; Time is the independent execution
+// frontier, which may be ahead or suspended behind a held frame. Part/Count
+// identify bounded progress within a named audio phase, never an original PC.
+type State struct {
+	Version     uint8
+	Identity    string
+	Frame, Time uint64
+	Phase       string
+	Part        uint16
+	Global      Globals
+	Single      *SingleStream
+	Voices      [2]Voice
+	Work        Work
+	Held        *HeldWindow
+	WaitFlag    bool
+
+	PendingLedger []Event
+}
+type library struct {
+	resources   Resources
+	descriptors map[string]Descriptor
+	lengths     map[string]uint32
+	identity    string
+	origin      uint64
+
+	includeYMAddresses bool
+}
+type Device struct {
+	library *library
+	state   State
+	frame   Frame
+	plan    FramePlan
+	err     error
+}
+
+func New(config Config) (*Device, error) {
+	if config.Resources.Identity == "" || len(config.Resources.Identity) > 256 || config.Resources.Length == nil || config.Resources.ByteAt == nil {
+		return nil, errors.New("missing immutable PCM catalog")
+	}
+	if len(config.Descriptors) == 0 || len(config.Descriptors) > 1024 || config.Origin > math.MaxUint64-FrameCycles-1024 {
+		return nil, errors.New("invalid PCM configuration")
+	}
+	l := &library{resources: config.Resources, descriptors: make(map[string]Descriptor), lengths: make(map[string]uint32), origin: config.Origin}
+	descriptors := append([]Descriptor(nil), config.Descriptors...)
+	for _, descriptor := range descriptors {
+		if descriptor.ID == "" || len(descriptor.ID) > 128 || descriptor.Protocol != OrdinaryProtocol && descriptor.Protocol != MusicProtocol || descriptor.Protocol == MusicProtocol && descriptor.Flags&1 != 0 {
+			return nil, errors.New("invalid PCM descriptor")
+		}
+		if _, ok := l.descriptors[descriptor.ID]; ok {
+			return nil, errors.New("duplicate PCM descriptor")
+		}
+		length, ok := l.lengths[descriptor.PayloadID]
+		if !ok {
+			n, exists := config.Resources.Length(descriptor.PayloadID)
+			if !exists || n == 0 || n > 32768 {
+				return nil, errors.New("PCM payload length outside profile")
+			}
+			hash := sha256.New()
+			for i := uint32(0); i < n; i++ {
+				b, exists := config.Resources.ByteAt(descriptor.PayloadID, i)
+				if !exists {
+					return nil, errors.New("PCM catalog byte unavailable")
+				}
+				hash.Write([]byte{b})
+			}
+			if descriptor.PayloadID != hex.EncodeToString(hash.Sum(nil)) {
+				return nil, errors.New("PCM payload digest differs")
+			}
+			length = n
+			l.lengths[descriptor.PayloadID] = length
+		}
+		_ = length
+		l.descriptors[descriptor.ID] = descriptor
+	}
+	sort.Slice(descriptors, func(i, j int) bool { return descriptors[i].ID < descriptors[j].ID })
+	raw, _ := json.Marshal(struct {
+		Catalog     string
+		Descriptors []Descriptor
+		Origin      uint64
+		RestorePan  uint8
+	}{config.Resources.Identity, descriptors, config.Origin, config.RestorePan})
+	if config.IncludeYMAddresses {
+		raw = append(raw, []byte("\x00pcm-physical-ym-addresses-v1")...)
+	}
+	l.includeYMAddresses = config.IncludeYMAddresses
+	digest := sha256.Sum256(raw)
+	l.identity = hex.EncodeToString(digest[:])
+	d := &Device{library: l, state: State{Version: 1, Identity: l.identity, Time: config.Origin, Phase: "idle", Global: Globals{RestorePan: config.RestorePan}}}
+	for i := range d.state.Voices {
+		d.state.Voices[i].Accumulator = 128
+	}
+	return d, nil
+}
+func clone(s State) State {
+	s.PendingLedger = cloneEvents(s.PendingLedger)
+	if s.Single != nil {
+		x := *s.Single
+		s.Single = &x
+	}
+	if s.Held != nil {
+		x := *s.Held
+		s.Held = &x
+	}
+	return s
+}
+func (d *Device) Snapshot() State { return clone(d.state) }
+func Restore(config Config, state State) (*Device, error) {
+	d, e := New(config)
+	if e != nil {
+		return nil, e
+	}
+	if e = d.validateState(state); e != nil {
+		return nil, e
+	}
+	d.state = clone(state)
+	return d, nil
+}
+func (d *Device) Status() Status {
+	s := d.state
+	return Status{ModeFlags: s.Global.ModeFlags, StartMarker: s.Global.StartMarker, RateRequest: s.Global.RateRequest, Busy: s.Global.Busy, SlotBusy: [2]uint8{s.Voices[0].Busy, s.Voices[1].Busy}, SlotFlags: [2]uint8{s.Voices[0].Flags, s.Voices[1].Flags}, Held: s.Held != nil}
+}
+func (d *Device) descriptor(id string) Descriptor {
+	v, ok := d.library.descriptors[id]
+	if !ok {
+		d.err = fmt.Errorf("unknown PCM descriptor %q", id)
+	}
+	return v
+}
+func (d *Device) length(id string) uint32 {
+	x := d.descriptor(id)
+	return d.library.lengths[x.PayloadID]
+}
+func (d *Device) byteAt(id string, index uint32) uint8 {
+	x := d.descriptor(id)
+	v, ok := d.library.resources.ByteAt(x.PayloadID, index)
+	if !ok {
+		d.err = errors.New("PCM decode outside payload")
+	}
+	return v
+}
+func (d *Device) next(phase string) { d.state.Phase = phase; d.state.Part = 0 }
+func (d *Device) op(ticks uint16, fn func()) {
+	if d.err != nil {
+		return
+	}
+	delta := uint64(ticks) * 15
+	if d.state.Time > math.MaxUint64-delta {
+		d.err = errors.New("PCM clock overflow")
+		return
+	}
+	d.state.Time += delta
+	if fn != nil {
+		fn()
+	}
+	d.state.Part++
+}
+func (d *Device) profile(ticks []uint16, fn func(uint16), done func()) {
+	part := d.state.Part
+	if int(part) >= len(ticks) {
+		d.err = errors.New("invalid PCM phase part")
+		return
+	}
+	d.op(ticks[part], func() {
+		if fn != nil {
+			fn(part)
+		}
+	})
+	if d.err == nil && int(d.state.Part) == len(ticks) {
+		done()
+	}
+}
+func (d *Device) emit(ticks uint16, kind Kind, value uint8, id string, offset uint32) {
+	start := d.state.Time
+	d.op(ticks, nil)
+	if d.err != nil {
+		return
+	}
+	e := Event{Cycle: d.state.Time, StartCycle: start, Kind: kind, Value: value, Offset: offset}
+	if id != "" {
+		e.PayloadID = d.descriptor(id).PayloadID
+	}
+	if kind == Bank || kind == Metadata || kind == Dummy {
+		origin := d.library.origin + d.state.Frame*FrameCycles
+		if e.Cycle < origin || e.Cycle-origin > math.MaxUint32 {
+			d.err = errors.New("PCM bank phase outside reference frame")
+			return
+		}
+		relative := uint32(e.Cycle - origin)
+		dma := phaseclock.DMA{}
+		for _, window := range d.plan.DMA {
+			if relative >= window.Begin {
+				dma = phaseclock.DMA{End: window.End, Mode: window.Mode, Remaining: window.Remaining}
+			} else {
+				break
+			}
+		}
+		effect, err := phaseclock.ResolveBankAccess(relative, dma)
+		if err != nil {
+			d.err = err
+			return
+		}
+		e.Bus = &effect
+		d.state.Time = origin + uint64(effect.Z80After)
+		d.state.WaitFlag = d.state.WaitFlag || effect.SetWaitFlag
+	}
+	d.frame.Ledger = append(d.frame.Ledger, e)
+}
+func (d *Device) validateInput(in Input) error {
+	if in.Kind > HardReset || in.End < in.Begin || in.End > math.MaxUint64-14 || in.Destination > SlotB {
+		return errors.New("invalid PCM input interval/kind")
+	}
+	if in.Kind == SetRestorePan {
+		if in.DescriptorID != "" || in.StartDual || in.Destination != Single {
+			return errors.New("restore pan carries a PCM descriptor")
+		}
+		return nil
+	}
+	if in.Kind == Hold || in.Kind == HardReset {
+		if in.DescriptorID != "" || in.StartDual || in.Pan != 0 || in.Destination != Single {
+			return errors.New("hold carries a PCM command")
+		}
+		return nil
+	}
+	descriptor, ok := d.library.descriptors[in.DescriptorID]
+	if !ok {
+		return errors.New("unknown PCM command descriptor")
+	}
+	if in.Kind == Music {
+		if descriptor.Protocol != MusicProtocol || in.Destination != Single || in.StartDual {
+			return errors.New("invalid accepted music DAC intent")
+		}
+	} else {
+		if descriptor.Protocol != OrdinaryProtocol || in.Pan != 0 || in.Destination == Single && (descriptor.Flags&1 != 0 || in.StartDual) || in.Destination != Single && descriptor.Flags&1 == 0 {
+			return errors.New("ordinary PCM destination differs from descriptor")
+		}
+	}
+	if in.Destination == Single && (descriptor.NativeRate == 0 || descriptor.NativeRate >= 128) {
+		return errors.New("single command request rate is a control sentinel")
+	}
+	return nil
+}
+func (d *Device) publish(in Input) {
+	// This opaque-resource profile cannot synthesize a ROM source assembled
+	// from fields of two descriptors. Refuse those unverified interleavings.
+	if in.Kind == Ordinary || in.Kind == Music {
+		switch d.state.Phase {
+		case "s-init", "s-pan-pad", "s-bank-setup", "s-bank-serial", "s-prime-start", "s-header-start":
+			// Slot A/B publication changes independent flags/marker fields but
+			// leaves the single descriptor's source bytes untouched.
+			if in.Kind == Music || in.Destination == Single {
+				d.err = errors.New("PCM descriptor publication overlaps single metadata capture")
+				return
+			}
+		case "d-transfer":
+			if d.state.Part > 12 && d.state.Part <= 18 && in.Kind == Ordinary && in.Destination != Single && uint8(in.Destination-SlotA) == d.state.Work.PrefetchSlot {
+				d.err = errors.New("PCM descriptor publication overlaps same-slot metadata capture")
+				return
+			}
+		}
+	}
+	if in.Kind == Hold {
+		return
+	}
+	if in.Kind == SetRestorePan {
+		d.state.Global.RestorePan = in.Pan
+		return
+	}
+	descriptor := d.descriptor(in.DescriptorID)
+	g := &d.state.Global
+	if in.Kind == Music {
+		g.StartMarker = 1
+		g.MusicPan = in.Pan
+		g.SingleDescriptor = in.DescriptorID
+		g.RateRequest = descriptor.NativeRate
+		g.LatestFlags = descriptor.Flags
+		return
+	}
+	if in.Destination == Single {
+		g.StartMarker = 128
+		g.OrdinaryPan = descriptor.RoutingOrPan
+		g.SingleDescriptor = in.DescriptorID
+		g.RateRequest = descriptor.NativeRate
+		g.LatestFlags = descriptor.Flags
+		return
+	}
+	if in.StartDual {
+		g.RateRequest = 128
+		g.StartMarker = 128
+	}
+	index := int(in.Destination - SlotA)
+	v := &d.state.Voices[index]
+	v.Busy = 128
+	v.Flags = descriptor.Flags
+	v.Request = in.DescriptorID
+	g.LatestFlags = descriptor.Flags
+	g.OrdinaryPan = 192
+}
+func (d *Device) release() {
+	h := d.state.Held
+	resume := (h.Input.End + 14) / 15 * 15
+	if h.Input.Kind == HardReset {
+		d.frame.Ledger = append(d.frame.Ledger, Event{Cycle: h.Input.End, StartCycle: h.Input.End, Kind: Reset})
+		d.state.Work = Work{}
+		d.state.WaitFlag = false
+		d.next("boot")
+	} else {
+		d.publish(h.Input)
+	}
+	d.state.Time = resume
+	d.frame.Transactions = append(d.frame.Transactions, Transaction{Begin: h.Input.Begin, End: h.Input.End, Grant: h.Grant, Resume: resume})
+	d.state.Held = nil
+}
+func (d *Device) AdvanceFrame(plan FramePlan) (Frame, error) {
+	before := d.state
+	if before.Frame > (math.MaxUint64-d.library.origin)/FrameCycles-1 {
+		return Frame{}, errors.New("PCM reference frame overflow")
+	}
+	origin := d.library.origin + before.Frame*FrameCycles
+	end := origin + FrameCycles
+	if len(plan.Inputs) > maxInputs || len(plan.DMA) > maxInputs {
+		return Frame{}, errors.New("PCM frame input cap exceeded")
+	}
+	lastEnd := origin
+	if before.Held != nil && before.Held.Open && len(plan.Inputs) != 0 {
+		return Frame{}, errors.New("open hardware bus must be released before planned windows")
+	}
+	if before.Held != nil && !before.Held.Open && before.Held.Input.End > lastEnd {
+		lastEnd = before.Held.Input.End
+	}
+	for _, in := range plan.Inputs {
+		if e := d.validateInput(in); e != nil {
+			return Frame{}, e
+		}
+		if in.Begin < origin || in.Begin >= end || in.Begin < lastEnd {
+			return Frame{}, errors.New("PCM inputs overlap or leave current frame")
+		}
+		lastEnd = in.End
+	}
+	var lastBegin uint32
+	for i, v := range plan.DMA {
+		if v.Remaining != 0 || v.Mode > 3 || v.End < v.Begin || uint64(v.Begin) >= FrameCycles || uint64(v.End) > FrameCycles || i > 0 && v.Begin <= lastBegin {
+			return Frame{}, errors.New("invalid PCM DMA interval")
+		}
+		lastBegin = v.Begin
+	}
+	n := *d
+	n.state = clone(d.state)
+	n.plan = FramePlan{Inputs: append([]Input(nil), plan.Inputs...), DMA: append([]DMAInterval(nil), plan.DMA...)}
+	n.frame = Frame{Index: before.Frame, Events: []Event{}, Ledger: cloneEvents(n.state.PendingLedger)}
+	n.state.PendingLedger = nil
+	n.err = nil
+	cursor := 0
+	steps := 0
+	for {
+		if n.state.Held != nil {
+			if n.state.Held.Open || n.state.Held.Input.End >= end {
+				break
+			}
+			n.release()
+			if n.err != nil {
+				break
+			}
+			continue
+		}
+		if cursor < len(plan.Inputs) && n.state.Time >= plan.Inputs[cursor].Begin {
+			in := plan.Inputs[cursor]
+			cursor++
+			n.state.Held = &HeldWindow{Input: in, Grant: n.state.Time}
+			if in.Kind == HardReset {
+				n.frame.Ledger = append(n.frame.Ledger, Event{Cycle: in.Begin, StartCycle: in.Begin, Kind: Reset})
+				n.state.WaitFlag = false
+			}
+			continue
+		}
+		if n.state.Time >= end {
+			break
+		}
+		steps++
+		if steps > maxAtomicSteps {
+			n.err = errors.New("PCM atomic step bound exceeded")
+			break
+		}
+		n.step()
+		if n.err != nil {
+			break
+		}
+	}
+	if n.err != nil {
+		return Frame{}, n.err
+	}
+	if cursor != len(plan.Inputs) {
+		return Frame{}, errors.New("PCM frame left unconsumed inputs")
+	}
+	n.state.Frame++
+	for _, event := range n.frame.Ledger {
+		if event.Kind != YMWrite && event.Kind != Reset && event.Kind != YMAddress {
+			n.frame.Events = append(n.frame.Events, event)
+		}
+	}
+	n.frame.Status = n.Status()
+	d.state = n.state
+	return n.frame, nil
+}

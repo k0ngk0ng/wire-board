@@ -1,0 +1,14 @@
+{
+  "original_test_archive": "games/yuyuhakusho/verification/sound-irq-runtime/sound_irq_e2e_test.before-adapter-correction.txt",
+  "current_test": "games/yuyuhakusho/audio/scoreclock/sound_irq_e2e_test.go",
+  "original_test_sha256": "75219118e2d01aad0c1803259bfa518fd1b3870e40c0e3471258198fae373314",
+  "reason": "The new combined test adapter shadowed the music PublishAcceptedAt with ordinary formatting, and the failure witness lookup omitted the native producer prefix. Music publications must route to the existing music adapter; witness IDs retain their original prefix. No native oracle, input, timestamp or production behavior changes for this test correction.",
+  "current_test_sha256": "b049aaecb5a3f1f2851fe9227d0f27dccc7b8f0cc7b64abbc10c3a2fac221fea",
+  "exact_diff": {
+    "path": "games/yuyuhakusho/verification/sound-irq-runtime/test-adapter-correction.diff.gz",
+    "raw_sha256": "8b7f7fa61f92c325c1ef8133ea51889e3170bbac5405ea724f9ca42bee9c5d82",
+    "gzip_sha256": "5c63a15a30c60b74fac2a49dcd5eeed90a4144e44334a3189e68c1cb93d209fc",
+    "raw_bytes": 754,
+    "gzip_bytes": 458
+  }
+}

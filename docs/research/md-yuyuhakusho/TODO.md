@@ -13,7 +13,8 @@
 - [x] 音乐／primary 技能音轨初始化、切换前停止与恢复；63 组完整原版调用通过，当前原生竞态与 Wasm 各通过 8,273 条 clock／Root 记录。见[分派初始化验收](../../../games/yuyuhakusho/verification/score-clock-dispatch-init/)。
 - [x] 无额外 IRQ 的 driver／Root 控制、渐弱与暂停恢复；103 组原版完整调用、实际混音存档继续执行通过，原生竞态与 Wasm 各通过 8,403 条 clock／Root 记录。见[控制整拍验收](../../../games/yuyuhakusho/verification/score-clock-driver-control/)。
 - [x] FM／PSG 独立输入时间域；8 组完整原版混音对照通过，两端各通过 184 条芯片／混音检查。见[独立时间域验收](../../../games/yuyuhakusho/verification/fmpsg-independent-lanes/)。
-- [ ] 接通 world IRQ、请求生产时刻和联合音频 checkpoint。
+- [x] 给定实际入口 clock 的外层声音中断／补跑与音频 owner 联合存档；122 组原版完整调用、联合 JSON 恢复及整体失败回滚通过。见[声音 IRQ／联合状态验收](../../../games/yuyuhakusho/verification/sound-irq-runtime/)。
+- [ ] 接通世界 CPU／VDP IRQ 接受、请求生产时刻和 World／audio 联合帧 checkpoint。
 - [ ] 接入平台播放器，按需加载并发布无损压缩资源。
 - [ ] 完成浏览器整场对局、混合音频、暂停恢复、重连及加载验收。
 

@@ -1,8 +1,8 @@
 # 《幽游白书：魔强统一战》复刻进度
 
-更新：2026-11-06。进度改用[待办清单](../../docs/research/md-yuyuhakusho/TODO.md)，按验收范围勾选。独立 worktree 为 `worktrees/yuyuhakusho`，分支为 `codex/yuyuhakusho`。全 11 人物／8 场地已有独立 Go／Wasm 玩法；游戏已注册到本地平台。逐连接输入增量、真实主机端到端与竞态正确性已验收；正式认证双人房间正常约 60 帧／秒，单端每次 TCP 写入延迟 120 ms 时慢端约 58 帧／秒。改键、虚拟手柄、320px 竖屏／740×360 横屏原生触摸、全屏及重连通过。完整对局音频继续完成；未上传资源、发布或部署。Main 仅按用户要求回馈即时游戏规范、补游戏规范和索引，其他游戏的未提交工作未覆盖。
+更新：2026-11-07。进度改用[待办清单](../../docs/research/md-yuyuhakusho/TODO.md)，按验收范围勾选。独立 worktree 为 `worktrees/yuyuhakusho`，分支为 `codex/yuyuhakusho`。全 11 人物／8 场地已有独立 Go／Wasm 玩法；游戏已注册到本地平台。逐连接输入增量、真实主机端到端与竞态正确性已验收；正式认证双人房间正常约 60 帧／秒，单端每次 TCP 写入延迟 120 ms 时慢端约 58 帧／秒。改键、虚拟手柄、320px 竖屏／740×360 横屏原生触摸、全屏及重连通过。完整对局音频继续完成；未上传资源、发布或部署。Main 仅按用户要求回馈即时游戏规范、补游戏规范和索引，其他游戏的未提交工作未覆盖。
 
-最新音频进展：在给定主时钟起点、无额外 IRQ 的 fight profile 中，01／05／04、活动渐弱和暂停 start／hold／resume 已接入同一个 driver／Root，103 组原版完整调用与实际混音存档后继续执行通过。原版对照还修正了 PCM 延迟提交 YM 与较晚 PSG 输入交错时的时间域判断；8 组完整 YM／PSG／FIR／PCM 对照通过，不排序或夹紧事件，不丢失主机争用成本。当前原生竞态与实际 Node/Wasm 各通过 127 个顶层／8,403 条 clock／Root 记录，完整芯片与 mixed 消费者各通过 25 个顶层／184 条记录，无跳过，见[控制整拍](verification/score-clock-driver-control/)和[独立芯片时间域](verification/fmpsg-independent-lanes/)。既有音乐／primary 初始化、队列／普通 PCM、稳定运行拍与声部检查继续通过。world IRQ、请求生产时刻、联合音频 checkpoint 和平台整场播放仍待完成。
+最新音频进展：在给定实际入口 clock 的边界，外层声音中断、延迟请求、busy／backlog 补跑已与现有 driver 共用时钟和预算，122 组原版完整调用通过。联合音频状态各保存一次 Scheduler／Root／score／PCM／FM／PSG，不复制 World 队列、暂停位或主时钟；JSON 恢复和整体失败回滚通过。最终原生竞态与开启 GC 检查的实际 Node/Wasm 各通过 8,527 条 clock／Root 记录，PCM／芯片回归各通过 289 条记录，engine scheduler 各通过 7 条记录。一次未重现的 Go/Wasm 坏指针错误及复核记录如实保留，见[声音 IRQ／联合状态验收](verification/sound-irq-runtime/)和[Wasm 复核](verification/sound-irq-runtime/WASM_GC_INVESTIGATION.md)。既有控制、渐弱、暂停恢复、音乐／技能音轨和独立芯片时间域检查继续通过。世界 CPU／VDP IRQ 接受、请求生产时刻、World／audio 联合帧 checkpoint 与平台整场播放仍待完成。
 
 ## 当前可运行范围
 
