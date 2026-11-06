@@ -1,0 +1,300 @@
+{
+  "version": "classic-v1",
+  "files": [
+    {
+      "path": "audio/cherrybomb.ogg",
+      "bytes": 55108,
+      "sha256": "0a4ff684a5fd4e26060089125568f6b995a6414844c3ab943c42c994927a0203"
+    },
+    {
+      "path": "audio/groan.ogg",
+      "bytes": 16120,
+      "sha256": "7e3e1b1b53c80c7a48c6e9ecba5538e5e0bd08ec61199fab6f9dbaa816929fb1"
+    },
+    {
+      "path": "audio/lawnmower.ogg",
+      "bytes": 56925,
+      "sha256": "6ebe3285d8d44e0b7b7309803876224abe2b8ee2c9daa870224b31fe27fe67e7"
+    },
+    {
+      "path": "audio/plant.ogg",
+      "bytes": 12675,
+      "sha256": "1a2067fb16914b6bded36be4c014b3f1e097aaddf2a48803d3cd68319316e5f9"
+    },
+    {
+      "path": "audio/points.ogg",
+      "bytes": 23298,
+      "sha256": "99bbe6f2f1e782f2f31c26e547a22a45665e6c1ef279e58a384209bdac7c0b1f"
+    },
+    {
+      "path": "audio/shovel.ogg",
+      "bytes": 7036,
+      "sha256": "c96ea143c9839e4ca228e5772120db45603b04edb88c6891370cf96a2ed9cd85"
+    },
+    {
+      "path": "audio/splat.ogg",
+      "bytes": 12141,
+      "sha256": "a272d645ee67d775762bb7296941a06065b93523b947881466c9d16683bd436e"
+    },
+    {
+      "path": "audio/throw.ogg",
+      "bytes": 6981,
+      "sha256": "d9858cbac3a300fe65e12f50526cbd5f015c4917ab31468f3c10ee988370915d"
+    },
+    {
+      "path": "images/ProjectilePea.png",
+      "bytes": 1371,
+      "sha256": "24a9be5e2db62312ba359b15c367b8a8fb6d1764e4af3a221d178622bea7caa9"
+    },
+    {
+      "path": "images/ProjectileSnowPea.png",
+      "bytes": 1779,
+      "sha256": "634822e425bdc2f71fdfc10f7914a5c841f3d32839242da31995ae149ddce547"
+    },
+    {
+      "path": "images/SeedBank.png",
+      "bytes": 12610,
+      "sha256": "6313852cc2b66226a3f112f3077639a75b3714a4f6a6da9c2d4c45a4b55e7fdc"
+    },
+    {
+      "path": "images/SeedPacket_Larger.png",
+      "bytes": 16676,
+      "sha256": "b7363c278458446477fe2cd68e6da8aec5fc79daac0d99db0053b028cf68675c"
+    },
+    {
+      "path": "images/Shovel.png",
+      "bytes": 4201,
+      "sha256": "42c6b93d91a1d4ace901413c0306d9c22d644ec177a7d9189f420ab94f676700"
+    },
+    {
+      "path": "images/background1.jpg",
+      "bytes": 171907,
+      "sha256": "ad2100045025a71343277d9ab13bbdb69126132f8482e14987ab2c4f4729dbbc"
+    },
+    {
+      "path": "images/plantshadow.png",
+      "bytes": 919,
+      "sha256": "1c574d7145a9cc64fd322efde3349e824ff83abb36d02db852aede60cbb404fd"
+    },
+    {
+      "path": "manifest.json",
+      "bytes": 21324,
+      "sha256": "952f94af0ade262fcb3d43550537db1b5d16825bee9620ab4dc36d4141a99fa2"
+    },
+    {
+      "path": "sprites/buckethead-attack.webp",
+      "bytes": 402470,
+      "sha256": "918aa1a1d631ab68f593cf289c1b68197d386e7d255a14c1cfd11d92f3a5a156"
+    },
+    {
+      "path": "sprites/buckethead-death.webp",
+      "bytes": 224152,
+      "sha256": "e968beae92caa97ed48c1846f92cd9c03c7b721662314a76ece931866b279d81"
+    },
+    {
+      "path": "sprites/buckethead-idle.webp",
+      "bytes": 274564,
+      "sha256": "e7e2c8b57b4976ca2773c1dae0070f75d3022fd00be1c9f268e3db66afebb163"
+    },
+    {
+      "path": "sprites/buckethead-walk.webp",
+      "bytes": 472568,
+      "sha256": "5efa504a0247c8869000b4265e56eff97c6d9c78c96b97a41a20e0362eff66a6"
+    },
+    {
+      "path": "sprites/cherrybomb-attack.webp",
+      "bytes": 118590,
+      "sha256": "5741f3bea283fc379bb454388c4bc46757cae920bbfdd8ebc0d1b169327cfe3c"
+    },
+    {
+      "path": "sprites/cherrybomb-idle.webp",
+      "bytes": 83138,
+      "sha256": "15a10d073ebd6ab7a9bb721705ad526271c9f2726351c387f9b505dfb114a24f"
+    },
+    {
+      "path": "sprites/conehead-attack.webp",
+      "bytes": 420364,
+      "sha256": "3e4a10bc5fa8f7b937b9598d42dc9fc62a45bf49f92e2953c8896c1257e977c3"
+    },
+    {
+      "path": "sprites/conehead-death.webp",
+      "bytes": 224386,
+      "sha256": "2535d74e8cbd3391f5a7691fdedde676cec02b3b5624d77cd280a188bfc5b25c"
+    },
+    {
+      "path": "sprites/conehead-idle.webp",
+      "bytes": 283892,
+      "sha256": "5a2f90dd9115832fb80d6a886f1b0bb70075185d2cd8ac17c907165e337a3af0"
+    },
+    {
+      "path": "sprites/conehead-walk.webp",
+      "bytes": 488756,
+      "sha256": "49b4ce8cb3fb6d8cb7bbde6de3f0df83c01401f22f4bb3519e831193148ad69a"
+    },
+    {
+      "path": "sprites/football-attack.webp",
+      "bytes": 512912,
+      "sha256": "a79310a5913853baa0905250878026dbe7e8254c71c1652bfdfb986a6db21043"
+    },
+    {
+      "path": "sprites/football-death.webp",
+      "bytes": 195994,
+      "sha256": "bb52f72864eb14915d3a305e717f7e64fe7b47ac0184c88a049a71b78dfe8829"
+    },
+    {
+      "path": "sprites/football-idle.webp",
+      "bytes": 322638,
+      "sha256": "76c8f1e534a6816ffb2ac2e49eb71c40dd44926cb0c88686a5dd91d9cff78078"
+    },
+    {
+      "path": "sprites/football-walk.webp",
+      "bytes": 462674,
+      "sha256": "274b909bf65d7bb14381b91145815250387e44c25a375f97b73357d573de283e"
+    },
+    {
+      "path": "sprites/mower-idle.webp",
+      "bytes": 96204,
+      "sha256": "aba7a6ead34c731435c0f17518487adc9abf3641023305e070bf05c204bec85b"
+    },
+    {
+      "path": "sprites/newspaper-attack.webp",
+      "bytes": 275014,
+      "sha256": "f86e7a8e97eb5a211a75a67d45cc215a5315c8a47d4f9434dfeb02d14cfd8777"
+    },
+    {
+      "path": "sprites/newspaper-death.webp",
+      "bytes": 200242,
+      "sha256": "84cb06c361cd54757830a51a2de0d8525d0b3661baa4443a5b9560d9874a80ba"
+    },
+    {
+      "path": "sprites/newspaper-idle.webp",
+      "bytes": 289012,
+      "sha256": "a5decc1b920e98ad321e7d6ae0db1d87dbd8adfe6c7d6824af84fe02fe0c4593"
+    },
+    {
+      "path": "sprites/newspaper-rage.webp",
+      "bytes": 474090,
+      "sha256": "7ee4ede5d16fc0345616c084e9c49645fb840bf2fdf3c4e3ca05c63fb09d07fb"
+    },
+    {
+      "path": "sprites/newspaper-walk.webp",
+      "bytes": 574312,
+      "sha256": "91424ed0604c8f4bcbd539ec0d6732770e6ae6d189a897612ef509608fcb5786"
+    },
+    {
+      "path": "sprites/normal-attack.webp",
+      "bytes": 364808,
+      "sha256": "dddb3fc54670bd43278fcc9deadbc96817d72ab4f66c29cdcd5471676f71c8bb"
+    },
+    {
+      "path": "sprites/normal-death.webp",
+      "bytes": 221622,
+      "sha256": "ab225b744d726156be1908bcaa0c2c99181794b53e3a97aabbbc8e8e156fbff8"
+    },
+    {
+      "path": "sprites/normal-idle.webp",
+      "bytes": 253704,
+      "sha256": "2fb56f41733fea2668a07fd843f66ab42251cfdc8c323d41157a1dec8c22693a"
+    },
+    {
+      "path": "sprites/normal-walk.webp",
+      "bytes": 426912,
+      "sha256": "6d63e952f889da0736ccef37f2454465334e2255fd66421f3345146589b41fec"
+    },
+    {
+      "path": "sprites/peashooter-attack.webp",
+      "bytes": 75524,
+      "sha256": "b9719aeaaf145184dcfa57a39466b74fd9c0bcab1bd1a8e88ccc77d8e3b421c3"
+    },
+    {
+      "path": "sprites/peashooter-idle.webp",
+      "bytes": 117040,
+      "sha256": "05080b9155e0b261476b872dd5a28cc74682d9323a195b7584cb1182461d2d0e"
+    },
+    {
+      "path": "sprites/pole-attack.webp",
+      "bytes": 321862,
+      "sha256": "205b7b6d5a5d08deb1cc99a94acff59b9873822eea8a20aa3c6cbeaacc703304"
+    },
+    {
+      "path": "sprites/pole-death.webp",
+      "bytes": 206770,
+      "sha256": "fd3f84e490ff448f0be251331b77ed12c0a6ee7f3caba24b06e55b899fbcdc87"
+    },
+    {
+      "path": "sprites/pole-idle.webp",
+      "bytes": 156490,
+      "sha256": "b49e320da6d6bb0356dbd0c0b4582ffb8e7598fde419cda04627acb923b4013c"
+    },
+    {
+      "path": "sprites/pole-jump.webp",
+      "bytes": 587950,
+      "sha256": "b77ad9cce14a428155e164d7da476772a09bb30583c91af476b625f28e2c6b70"
+    },
+    {
+      "path": "sprites/pole-spent.webp",
+      "bytes": 545370,
+      "sha256": "5c04a750070eedf5b8d21112944bf4b5aaf59c0c610b03fd06d0a3afecf818a0"
+    },
+    {
+      "path": "sprites/pole-walk.webp",
+      "bytes": 528144,
+      "sha256": "fdf09f1cca92a6a780e89f6e8e2ee7604bd268ed3a72225ab87314678b66e913"
+    },
+    {
+      "path": "sprites/potatomine-attack.webp",
+      "bytes": 60000,
+      "sha256": "87061a3754381fa8af977b3c407052933f5d4725c0a3b61c21afd897fc36ced7"
+    },
+    {
+      "path": "sprites/potatomine-idle.webp",
+      "bytes": 63402,
+      "sha256": "086e84f907ff264949eb1f19ceb1f8a933c962007457810a1c39e15cbfe3cd36"
+    },
+    {
+      "path": "sprites/potatomine-unarmed.webp",
+      "bytes": 2536,
+      "sha256": "cffdb26f47617fba783c86ca903a447591015f1a9f533c2f966a46e65f9efa3e"
+    },
+    {
+      "path": "sprites/repeater-attack.webp",
+      "bytes": 88244,
+      "sha256": "d1d44848c495360cc2e41acd36a97cb89aafe515008b6f32c4bbf1a31f9aa500"
+    },
+    {
+      "path": "sprites/repeater-idle.webp",
+      "bytes": 127988,
+      "sha256": "96c47f1e310a71aebb3990cc25106310cb743988d6cb217e9af5b0a9642c59e2"
+    },
+    {
+      "path": "sprites/snowpea-attack.webp",
+      "bytes": 86868,
+      "sha256": "c2727e732c3bed956e6055bcad4203c087dae9494e11fb1d0cb68af6888af539"
+    },
+    {
+      "path": "sprites/snowpea-idle.webp",
+      "bytes": 137234,
+      "sha256": "82c4a3e8ee2fb68f1e9ed38c081f0f604ed6a7d5a56c17460132c27f7d05a0c7"
+    },
+    {
+      "path": "sprites/sun-idle.webp",
+      "bytes": 143268,
+      "sha256": "7150a627c05fcc74f1340843d61920d81ade092221c8b17ef0690b365070435e"
+    },
+    {
+      "path": "sprites/sunflower-idle.webp",
+      "bytes": 163534,
+      "sha256": "5ff027f3e61abf5d1893d933041468fe6709fded3a95ab244d030e7317f19906"
+    },
+    {
+      "path": "sprites/tallnut-idle.webp",
+      "bytes": 168566,
+      "sha256": "718a3fa24583321309392355b925c5c390fe49d20fdb799e647557eb6e5f88f1"
+    },
+    {
+      "path": "sprites/wallnut-idle.webp",
+      "bytes": 92856,
+      "sha256": "bcaadab74d77b104982d6f8a3aff8ebaa455bc65f2fb7b67e6f6308bb1f9c1db"
+    }
+  ]
+}
