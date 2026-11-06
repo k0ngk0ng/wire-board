@@ -1,0 +1,18 @@
+{
+  "terminal_capture": true,
+  "preserved_unique_fixture": "games/yuyuhakusho/verification/score-clock-request-queue/native-request-queue-full.json.gz",
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/score-clock-request-queue-native-v1/native-request-queue-full.json.gz",
+      "bytes": 353740,
+      "sha256": "ac4bcf7ef50bc21bdf2db1aff4d6d273ff52c5e40e4b57c29d4be8a3e7760e91",
+      "verified_equal_before_removal": true
+    },
+    {
+      "path": ".local/md-yuyuhakusho/score-clock-request-queue-native-v1/ordinary-observer.dylib",
+      "bytes": 18296,
+      "purpose": "terminal capture observer"
+    }
+  ],
+  "cleanup_note": "Initial empty-parent check stopped after both file removals because three empty child directories remained; removed only those confirmed-empty directories."
+}

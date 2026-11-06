@@ -1,0 +1,26 @@
+{
+  "parent_commit": "1b939e965fa996557349e4f356756daa93b1d061",
+  "before_sources": {
+    "games/yuyuhakusho/audio/rootcontrol/orchestrator.go": {
+      "parent_sha256": "01c077d3d4a0aea6e04900fa9af50db08d7f2593b9bbaa6b9010e7d31878d6cb",
+      "archive": "games/yuyuhakusho/verification/score-clock-request-queue/orchestrator.before-request.txt"
+    },
+    "games/yuyuhakusho/audio/rootcontrol/orchestrator_score.go": {
+      "parent_sha256": "e80f403c79ea8c748be45d6bc820926ec1e3e0d77f7d0362e606dd4f02b872dc",
+      "archive": "games/yuyuhakusho/verification/score-clock-request-queue/orchestrator_score.before-request.txt"
+    },
+    "games/yuyuhakusho/audio/scoreclock/running_tick.go": {
+      "parent_sha256": "27d3a5fb3077b8b5fc2ac3b4c87afc60e27d5801d8d3c76f9480436661208e6f",
+      "archive": "games/yuyuhakusho/verification/score-clock-request-queue/running_tick.before-request.txt"
+    },
+    "games/yuyuhakusho/audio/scoreclock/ordinary.go": {
+      "parent_sha256": "a9c25293285f44c11e622f2e0bd2e13af9ff73896c9aa7eb2ac6292cd01bebc0",
+      "archive": "games/yuyuhakusho/verification/score-clock-request-queue/ordinary.before-request.txt"
+    },
+    "games/yuyuhakusho/engine/sound_queue.go": {
+      "parent_sha256": "156b7d1484afd423e2e116aef0cea5aa897cd8c2c34dc707c012efa7360d978e",
+      "archive": "games/yuyuhakusho/verification/score-clock-request-queue/sound_queue.before-request.txt"
+    }
+  },
+  "test_oracle_corrections_after_implementation": false
+}

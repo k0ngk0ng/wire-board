@@ -215,6 +215,11 @@ func BeginOrdinaryPublication(clock Clock, code uint8, library *resourcebridge.L
 	if err != nil {
 		return nil, err
 	}
+	return beginOrdinaryOnService(s, code, library, choice, bus)
+}
+
+func beginOrdinaryOnService(s *service, code uint8, library *resourcebridge.Library, choice PCMChoiceField, bus OrdinaryBus) (*OrdinaryPublication, error) {
+	var err error
 	d, ok := library.OrdinaryDescriptor(code)
 	actual, found := bus.OrdinaryDescriptor(d.ID)
 	if !ok || !found || actual != d || d.Protocol != pcmcommands.OrdinaryProtocol || d.Flags&32 != 0 || d.Flags&1 == 0 && (d.NativeRate == 0 || d.NativeRate >= 128) {

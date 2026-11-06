@@ -74,6 +74,7 @@ type runningTick struct {
 	activeReady                 bool
 	voice                       *VoiceTransfer
 	endsTick, finished          bool
+	request                     *requestTick
 }
 
 func (r *runningTick) rootOperation(op rootcontrol.RuleOperation) error {
@@ -112,6 +113,9 @@ func (r *runningTick) rootOperation(op rootcontrol.RuleOperation) error {
 			_, err := fadeIdleBody(r.s)
 			return err
 		case rootcontrol.RuleQueue:
+			if r.request != nil {
+				return nil
+			}
 			if err := r.s.spend(16); err != nil {
 				return err
 			}
@@ -119,6 +123,9 @@ func (r *runningTick) rootOperation(op rootcontrol.RuleOperation) error {
 		case rootcontrol.RuleDispatch:
 			if !r.queueConsumed {
 				return ErrRunningSequence
+			}
+			if r.request != nil {
+				return r.request.beginDispatch()
 			}
 			if err := r.s.ordinaryCosts(18, 4, 12, 16, 4); err != nil {
 				return err
@@ -166,6 +173,16 @@ func (r *runningTick) rootOperation(op rootcontrol.RuleOperation) error {
 			return ErrRunningSequence
 		}
 		r.queueConsumed = true
+		return nil
+	case rootcontrol.RuleDispatchCode:
+		if r.request == nil || op.Phase != rootcontrol.RuleDispatch || op.SoundID != r.request.selected {
+			return ErrRunningProfile
+		}
+		return nil
+	case rootcontrol.RuleSelectedWrite:
+		if r.request == nil || op.Phase != rootcontrol.RuleDispatch || op.Value != 255 {
+			return ErrRunningProfile
+		}
 		return nil
 	default:
 		return ErrRunningProfile

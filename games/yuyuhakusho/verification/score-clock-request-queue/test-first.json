@@ -1,0 +1,15 @@
+{
+  "test_first": true,
+  "production_exists": false,
+  "production_files": [
+    "games/yuyuhakusho/engine/sound_queue_observed.go",
+    "games/yuyuhakusho/audio/scoreclock/request_tick.go"
+  ],
+  "files": {
+    "games/yuyuhakusho/engine/sound_queue_observed_test.go": "eba35a8ac69538effef08442398b96ff52e40e962cd6ad024f790816320224ff",
+    "games/yuyuhakusho/audio/scoreclock/request_queue_e2e_test.go": "d0d532c4c778a18021c47771890a13bfe2c3995afbcd5a8542160431fbc93d64",
+    "docs/research/md-yuyuhakusho/SCORE_CLOCK_REQUEST_QUEUE_FAILURES.md": "07a9effe5271bcb0d352541f275a1e8490cb32905f36ba592220a00fbcd30b2d",
+    "scripts/yuyuhakusho/score-clock-request-queue-capture.py": "69f403d35b6e52f7d4f36a3e4dc623caff3d63adac14b03bd26c7a73c19e0d35",
+    "games/yuyuhakusho/verification/score-clock-request-queue/native-request-queue-full.json.gz": "ac4bcf7ef50bc21bdf2db1aff4d6d273ff52c5e40e4b57c29d4be8a3e7760e91"
+  }
+}

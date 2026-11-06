@@ -85,8 +85,11 @@ type RuleHooks struct {
 	Score     score.ObservedHooks
 	// WorkingScore receives the actual transaction state before this effect.
 	// The detached value is an observation, never another mutable score owner.
-	WorkingScore  func(score.Operation, score.State) error
-	PriorityClear func(op score.Operation, apply func() error) error
+	WorkingScore   func(score.Operation, score.State) error
+	PriorityClear  func(op score.Operation, apply func() error) error
+	QueueTest      func(read func() bool) (bool, error)
+	QueueOperation engine.SoundQueueHook
+	SelectedWrite  func(op RuleOperation, apply func() error) error
 	// QueueReplace may time the real canonical queue mutation. It must call
 	// apply exactly once synchronously on success and never retain it.
 	QueueReplace     func(op score.Operation, apply func() error) error
@@ -184,7 +187,28 @@ func (r *ruleTick) selected(value uint8) error {
 	if err := r.emit(RuleOperation{Kind: RuleSelectedWrite, Value: value}); err != nil {
 		return err
 	}
-	r.root.Selected = value
+	if r.hooks.SelectedWrite == nil {
+		r.root.Selected = value
+		return nil
+	}
+	active, called, violated := true, false, false
+	apply := func() error {
+		if !active || called {
+			violated = true
+			return ErrRuleUnsupported
+		}
+		called = true
+		r.root.Selected = value
+		return nil
+	}
+	err := r.hooks.SelectedWrite(RuleOperation{Version: 1, Kind: RuleSelectedWrite, Phase: r.phase, Value: value}, apply)
+	active = false
+	if err != nil {
+		return err
+	}
+	if !called || violated {
+		return ErrRuleUnsupported
+	}
 	return nil
 }
 func (r *ruleTick) write(intent score.Intent) error {
