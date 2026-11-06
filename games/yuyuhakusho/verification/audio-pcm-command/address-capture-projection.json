@@ -1,0 +1,146 @@
+{
+  "pass": true,
+  "cases": [
+    {
+      "name": "dual-append",
+      "old_native_sha256": "7d44a9d51d2c0f765aa1e4a60cb1e7f1a9d4cff76ddc1732aac7c6b0f1f0b9d2",
+      "new_native_sha256": "cd8c5889395047572208ae7b2e65fed4f2dda7e388a2f1670b6b4e34f8cd2e21",
+      "old_ledger_exact_projection_equal": true,
+      "all_original_status_pcm_dsp_frames_equal": true
+    },
+    {
+      "name": "dual-dma",
+      "old_native_sha256": "ff44bd973604c7720eac1b3d18f61832f003a15703571d4b93927e4b490c4466",
+      "new_native_sha256": "53c3a98668f9faa2653ee9366593c19e0eaecb3ad3ffd7e2a4a0511ee8dc10fe",
+      "old_ledger_exact_projection_equal": true,
+      "all_original_status_pcm_dsp_frames_equal": true
+    },
+    {
+      "name": "dual-hard-reset",
+      "old_native_sha256": "ab5e1f3aa653fcacc98e67d1ab172cd3c3dcd14fe1a611858469bcea222308a7",
+      "new_native_sha256": "8277aa32c1b06609c9ebcc5d2b463192c2efeb55b868c1405d937a2f2a9f633d",
+      "old_ledger_exact_projection_equal": true,
+      "all_original_status_pcm_dsp_frames_equal": true
+    },
+    {
+      "name": "dual-pause",
+      "old_native_sha256": "d701eeac7b345840d52ec2505ddffbbf5feebe44e68a6017b99abd19414622a4",
+      "new_native_sha256": "9f621c8b58fc20666c3fd8a376e0df204973d3d7cbf18b47db2a8399fe257626",
+      "old_ledger_exact_projection_equal": true,
+      "all_original_status_pcm_dsp_frames_equal": true
+    },
+    {
+      "name": "dual-replace-a",
+      "old_native_sha256": "8ce0cb8873d6abd9196c2610761329878839dc815b66410773927cc72be9acbf",
+      "new_native_sha256": "fda67c2fef633232c615e0dab5fe737bda8723ba609579293a0e9f04fe18d79a",
+      "old_ledger_exact_projection_equal": true,
+      "all_original_status_pcm_dsp_frames_equal": true
+    },
+    {
+      "name": "dual-to-single",
+      "old_native_sha256": "cc195eee06d77116cbf5a1264307bf38f5771763d83bff625a345fdc21471735",
+      "new_native_sha256": "78d1fc550efa5f806bf2f7fc2acf0bc29ffec721c3d74ccbe63312accf87bf31",
+      "old_ledger_exact_projection_equal": true,
+      "all_original_status_pcm_dsp_frames_equal": true
+    },
+    {
+      "name": "idle-to-dual-a",
+      "old_native_sha256": "b65c03014c89d07f4a50260f33788659a933f247c390855fc3b793dde142b5af",
+      "new_native_sha256": "9b9b9154fb2e3f0906c62b0deea9504bcbd4342dcfd83d344a0a7085c11bd9ab",
+      "old_ledger_exact_projection_equal": true,
+      "all_original_status_pcm_dsp_frames_equal": true
+    },
+    {
+      "name": "idle-to-dual-b",
+      "old_native_sha256": "32502d36bcc7707de705fc0f7fbe7b2e356641b92a3ed6d8e70c3fa58edd0a88",
+      "new_native_sha256": "0fe5f3f0e910f0a1943febb5718af7c85c45493c6309172b925429d166296c05",
+      "old_ledger_exact_projection_equal": true,
+      "all_original_status_pcm_dsp_frames_equal": true
+    },
+    {
+      "name": "idle-to-single",
+      "old_native_sha256": "68944e4a89363d8bcbaf0639f7715bfce24125986b452f726cfd97d82bf321c5",
+      "new_native_sha256": "5b8b92bfb636edad768aea6dcaa3c1c9eb531a790e9356fc8bb5c660bfc8842b",
+      "old_ledger_exact_projection_equal": true,
+      "all_original_status_pcm_dsp_frames_equal": true
+    },
+    {
+      "name": "internal-single-byte",
+      "old_native_sha256": "4d5c1260926405350a274dc64e9640736fb0ea4df86612120f5f9007ff0060bd",
+      "new_native_sha256": "92787f365a28b8bc94a1c5dc9fcdf72330b7905950052680a76f47bef354aff0",
+      "old_ledger_exact_projection_equal": true,
+      "all_original_status_pcm_dsp_frames_equal": true
+    },
+    {
+      "name": "legitimate-f0-remap",
+      "old_native_sha256": "d8813465ec0295e2355c1c5fe3a61e99f483077897cc8b72ae551ac54cb2b8f5",
+      "new_native_sha256": "35e3fa40c1e398fc43e9cb3d51464760b57d92e7ae3b15aeeebc44875e950ad8",
+      "old_ledger_exact_projection_equal": true,
+      "all_original_status_pcm_dsp_frames_equal": true
+    },
+    {
+      "name": "music-from-idle",
+      "old_native_sha256": "994f10ae2b41ea4829c2e753b135118cdb5c40511eb0844d26a417652ca7efdb",
+      "new_native_sha256": "9091b3fdd7d5533ba674460a40733382e300dc8bcb0abf9b27c579e424617049",
+      "old_ledger_exact_projection_equal": true,
+      "all_original_status_pcm_dsp_frames_equal": true
+    },
+    {
+      "name": "music-pan-restore",
+      "old_native_sha256": "9c1206525c7f2903d69d60a14dcc4dfc09ac11ed501b0a39c9c4cf183a34e1c4",
+      "new_native_sha256": "ab214de58af03819ce967aa01cd675e98811278607c27302318b5d621c9fc616",
+      "old_ledger_exact_projection_equal": true,
+      "all_original_status_pcm_dsp_frames_equal": true
+    },
+    {
+      "name": "music-replace",
+      "old_native_sha256": "bccee9c7948b12b0ae8775a3f4012cd271fa8dabc06ffe934537735ecf1d8e8f",
+      "new_native_sha256": "3721f4f11d2218e001b2c06de2c8be6f2cc232b217868ab6882449404771bcb2",
+      "old_ledger_exact_projection_equal": true,
+      "all_original_status_pcm_dsp_frames_equal": true
+    },
+    {
+      "name": "single-dma",
+      "old_native_sha256": "d6ee6d4031671fc074a4cfd18ff6daa9508b0382e2d97bc5be02c0470f1520cb",
+      "new_native_sha256": "e25ee7f9feddac636df8aaaf931c390e3141524ecff1b23c0a1b350f86dba002",
+      "old_ledger_exact_projection_equal": true,
+      "all_original_status_pcm_dsp_frames_equal": true
+    },
+    {
+      "name": "single-hard-reset",
+      "old_native_sha256": "8931d47fa38cddf4fdf031b4aef56d2c2caefd283c4beefc89e1665956011028",
+      "new_native_sha256": "24023b6860a7f4c228284d707fd7563121e1eddcec650b0539b96c313c689981",
+      "old_ledger_exact_projection_equal": true,
+      "all_original_status_pcm_dsp_frames_equal": true
+    },
+    {
+      "name": "single-pause",
+      "old_native_sha256": "5a791f856fca2c81cff58716b86ddbb4295798fe2febf545af3f47b05c3d1706",
+      "new_native_sha256": "a350404fb263ae328c9694721d05e02772f77b84ee5c23b8dad6889d6a44618d",
+      "old_ledger_exact_projection_equal": true,
+      "all_original_status_pcm_dsp_frames_equal": true
+    },
+    {
+      "name": "single-replace",
+      "old_native_sha256": "c422550440607ff6e00bc161f98279d41468aa89057494383b5e541b6216f174",
+      "new_native_sha256": "d33ab4a1c45e05b99f2b3e70d17f2aeca9d0968165ddb10447b973dc1bbfae97",
+      "old_ledger_exact_projection_equal": true,
+      "all_original_status_pcm_dsp_frames_equal": true
+    },
+    {
+      "name": "single-reset-during-dac-operation",
+      "old_native_sha256": "a6ed5d78ceff03308f452ec343cb1e9c8927b3c9cd76f2370d550cc61eba5bad",
+      "new_native_sha256": "abeb17ee1eb95dfab752368925c601e6fc2beaa761105c4052ee05d9c7247849",
+      "old_ledger_exact_projection_equal": true,
+      "all_original_status_pcm_dsp_frames_equal": true
+    },
+    {
+      "name": "single-to-dual",
+      "old_native_sha256": "ec3fb00ed46f8dd14ae94cdcf34bd35fb03cec64b5faaef36bb356454d601cbc",
+      "new_native_sha256": "be77ed31ad3801ffff361769e3feaba6a7116d7d1accfafc537a76b8fae5994b",
+      "old_ledger_exact_projection_equal": true,
+      "all_original_status_pcm_dsp_frames_equal": true
+    }
+  ],
+  "scope": "New address recorder adds only address observations and retained-latch scalar; frozen20 native values are unchanged in every prior field"
+}

@@ -1,0 +1,26 @@
+{
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-native-smoke",
+      "bytes": 3992279,
+      "files": 2,
+      "canonical_path": ".local/md-yuyuhakusho/pcm-command-native-first/idle-to-single.json.gz",
+      "exact_file_sha256": "0a1b010b5fcd5ed1e13f02e233ca60dfc9404ac1bbc2c928f746250ed7ff703c"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-native-expanded",
+      "bytes": 10857,
+      "files": 2,
+      "canonical_path": ".local/md-yuyuhakusho/pcm-command-native-expanded-final/internal-single-byte.json.gz",
+      "exact_file_sha256": "4d5c1260926405350a274dc64e9640736fb0ea4df86612120f5f9007ff0060bd"
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-static/tmp",
+      "bytes": 213387,
+      "files": 16,
+      "reason": "finished private Java caches only; listing and all Ghidra logs retained"
+    }
+  ],
+  "bytes": 4216523,
+  "kept": "Canonical old12/new20/new23 full original vectors, all actual failures/corrections, cross-tick/opaque/held-address source evidence; no shared Go caches or other owners removed."
+}

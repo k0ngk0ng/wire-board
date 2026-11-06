@@ -1,0 +1,273 @@
+package pcmcommands
+
+import (
+	"errors"
+	"math"
+)
+
+const MaxPendingLedger = 4096
+
+type RunResult struct {
+	Frontier   uint64
+	M68KDelay  uint64
+	EventCount uint32
+}
+
+func cloneEvents(events []Event) []Event {
+	if events == nil {
+		return nil
+	}
+	out := append([]Event(nil), events...)
+	for i := range out {
+		if out[i].Bus != nil {
+			v := *out[i].Bus
+			out[i].Bus = &v
+		}
+	}
+	return out
+}
+func (d *Device) frameBounds() (uint64, uint64, error) {
+	if d.state.Frame > (math.MaxUint64-d.library.origin)/FrameCycles-1 {
+		return 0, 0, errors.New("PCM reference frame overflows")
+	}
+	origin := d.library.origin + d.state.Frame*FrameCycles
+	return origin, origin + FrameCycles, nil
+}
+func (d *Device) busTime(at uint64) error {
+	start, end, e := d.frameBounds()
+	if e != nil {
+		return e
+	}
+	if at < start || at > end {
+		return errors.New("PCM bus time leaves unflushed reference frame")
+	}
+	return nil
+}
+func validateDMA(dma []DMAInterval) error {
+	if len(dma) > maxInputs {
+		return errors.New("PCM DMA interval cap exceeded")
+	}
+	var last uint32
+	for i, v := range dma {
+		if v.Remaining != 0 || v.Mode > 3 || v.End < v.Begin || uint64(v.Begin) >= FrameCycles || uint64(v.End) > FrameCycles || i > 0 && v.Begin <= last {
+			return errors.New("invalid segmented PCM DMA input")
+		}
+		last = v.Begin
+	}
+	return nil
+}
+
+// RunUntil uses the original auxiliary budget. Bank contention is returned as
+// an effect for the external main-clock owner; it never increases this budget.
+// No implicit reference frame flush, bus acquisition or input replay occurs.
+func (d *Device) RunUntil(at uint64, intervals ...[]DMAInterval) (RunResult, error) {
+	if e := d.busTime(at); e != nil {
+		return RunResult{}, e
+	}
+	if len(intervals) > 1 {
+		return RunResult{}, errors.New("multiple PCM DMA inputs")
+	}
+	var dma []DMAInterval
+	if len(intervals) == 1 {
+		dma = intervals[0]
+	}
+	if e := validateDMA(dma); e != nil {
+		return RunResult{}, e
+	}
+	if d.state.Held != nil {
+		return RunResult{Frontier: d.state.Time}, nil
+	}
+	n := *d
+	n.state = clone(d.state)
+	n.plan = FramePlan{DMA: append([]DMAInterval(nil), dma...)}
+	n.frame = Frame{Index: n.state.Frame, Ledger: []Event{}}
+	n.err = nil
+	steps := 0
+	for n.state.Time < at {
+		steps++
+		if steps > maxAtomicSteps {
+			return RunResult{}, errors.New("segmented PCM operation cap exceeded")
+		}
+		n.step()
+		if n.err != nil {
+			return RunResult{}, n.err
+		}
+	}
+	if len(n.state.PendingLedger)+len(n.frame.Ledger) > MaxPendingLedger {
+		return RunResult{}, errors.New("undrained PCM output cap exceeded")
+	}
+	result := RunResult{Frontier: n.state.Time, EventCount: uint32(len(n.frame.Ledger))}
+	for _, event := range n.frame.Ledger {
+		if event.Bus != nil {
+			result.M68KDelay += uint64(event.Bus.M68KDelay)
+		}
+	}
+	n.state.PendingLedger = append(n.state.PendingLedger, n.frame.Ledger...)
+	d.state = n.state
+	return result, nil
+}
+
+// RequestBus implements the no-DMA Bus surface; a coordinator with a current
+// typed DMA interval uses RequestBusWithDMA. Both operate one hardware level.
+func (d *Device) RequestBus(at uint64, asserted bool) (uint64, error) {
+	return d.RequestBusWithDMA(at, asserted, nil)
+}
+func (d *Device) RequestBusWithDMA(at uint64, asserted bool, dma []DMAInterval) (uint64, error) {
+	if e := d.busTime(at); e != nil {
+		return 0, e
+	}
+	if e := validateDMA(dma); e != nil {
+		return 0, e
+	}
+	if asserted {
+		if d.state.Held != nil {
+			return at, nil
+		}
+		n := *d
+		n.state = clone(d.state)
+		result, e := n.RunUntil(at, dma)
+		if e != nil {
+			return 0, e
+		}
+		if at > math.MaxUint64-result.M68KDelay {
+			return 0, errors.New("main-clock contention effect overflows")
+		}
+		n.state.Held = &HeldWindow{Input: Input{Kind: Hold, Begin: at, End: at}, Grant: n.state.Time, Open: true}
+		d.state = n.state
+		return at + result.M68KDelay, nil
+	}
+	if d.state.Held == nil {
+		return at, nil
+	}
+	if at > math.MaxUint64-14 {
+		return 0, errors.New("PCM bus release overflows")
+	}
+	if !d.state.Held.Open && d.state.Held.Input.Kind != Hold {
+		return 0, errors.New("scheduled PCM publication owns its boundary")
+	}
+	n := *d
+	n.state = clone(d.state)
+	n.state.Time = (at + 14) / 15 * 15
+	n.state.Held = nil
+	d.state = n.state
+	return at, nil
+}
+func (d *Device) BusGranted(at uint64) (bool, error) {
+	if e := d.busTime(at); e != nil {
+		return false, e
+	}
+	return d.state.Held != nil, nil
+}
+
+// Mailbox only reads the actual held player's busy byte. The main service
+// already owns its access latency; this method adds no cycles and no shadow.
+func (d *Device) Mailbox(at uint64) (uint8, error) {
+	if e := d.busTime(at); e != nil {
+		return 0, e
+	}
+	if d.state.Held == nil {
+		return 0, errors.New("PCM mailbox requires the hardware bus")
+	}
+	return d.state.Global.Busy, nil
+}
+
+// PublishAccepted stages an upstream accepted intent while the real hardware
+// level is held. Begin/End are validated metadata, not an extra execution plan.
+func (d *Device) PublishAccepted(in Input) error {
+	if d.state.Held == nil || !d.state.Held.Open {
+		return errors.New("PCM publication requires an open hardware hold")
+	}
+	if in.Kind != Ordinary && in.Kind != Music && in.Kind != SetRestorePan {
+		return errors.New("not an accepted PCM publication")
+	}
+	if e := d.validateInput(in); e != nil {
+		return e
+	}
+	n := *d
+	n.state = clone(d.state)
+	n.err = nil
+	n.publish(in)
+	if n.err != nil {
+		return n.err
+	}
+	d.state = n.state
+	return nil
+}
+
+// DrainLedger transfers only unconsumed outputs. A device snapshot retains
+// this bounded queue until the caller actually drains it; no history is kept.
+func (d *Device) DrainLedger() []Event {
+	events := d.state.PendingLedger
+	d.state.PendingLedger = nil
+	return events
+}
+
+// FlushFrame commits the explicit reference boundary without running the
+// player. Call RunUntil(end), or hold the hardware, before requesting a flush.
+func (d *Device) FlushFrame() (Frame, error) {
+	_, end, e := d.frameBounds()
+	if e != nil {
+		return Frame{}, e
+	}
+	if d.state.Held == nil && d.state.Time < end {
+		return Frame{}, errors.New("PCM frame has not reached its boundary")
+	}
+	if d.state.Held != nil && !d.state.Held.Open && d.state.Held.Input.End < end {
+		return Frame{}, errors.New("scheduled PCM hold ends before flush")
+	}
+	frame := Frame{Index: d.state.Frame, Ledger: d.state.PendingLedger, Events: []Event{}}
+	if frame.Ledger == nil {
+		frame.Ledger = []Event{}
+	}
+	for _, event := range frame.Ledger {
+		if event.Kind != YMWrite && event.Kind != Reset {
+			frame.Events = append(frame.Events, event)
+		}
+	}
+	d.state.PendingLedger = nil
+	d.state.Frame++
+	frame.Status = d.Status()
+	return frame, nil
+}
+func (d *Device) validatePending(s State) error {
+	if len(s.PendingLedger) > MaxPendingLedger {
+		return errors.New("PCM snapshot output cap exceeded")
+	}
+	origin := d.library.origin + s.Frame*FrameCycles
+	for _, event := range s.PendingLedger {
+		if event.Cycle < origin || event.Cycle > origin+FrameCycles+1024 || event.StartCycle < origin || event.StartCycle > event.Cycle {
+			return errors.New("PCM pending event leaves current frame")
+		}
+		switch event.Kind {
+		case DAC, Pan, Enable, YMWrite, Reset:
+			if event.PayloadID != "" || event.Offset != 0 || event.Bus != nil {
+				return errors.New("PCM chip event carries resource/bus data")
+			}
+			if event.Kind == Enable && event.Value != 0 && event.Value != 128 || event.Kind == YMWrite && (event.Register != 0x28 || event.Value != 6) || event.Kind != YMWrite && event.Register != 0 || event.Kind == Reset && event.Value != 0 {
+				return errors.New("invalid PCM pending chip event")
+			}
+		case Bank, Metadata, Dummy:
+			length, ok := d.library.lengths[event.PayloadID]
+			if !ok || event.Bus == nil || event.Value != 0 || event.Register != 0 {
+				return errors.New("invalid PCM pending source event")
+			}
+			lead := uint64(16 * 15)
+			if event.Kind != Bank {
+				lead = 19 * 15
+			}
+			if event.Cycle-event.StartCycle != lead {
+				return errors.New("PCM pending source boundary differs")
+			}
+			if event.Kind == Metadata && event.Offset > 3 || event.Kind == Dummy && event.Offset >= 32768 || event.Kind == Bank && event.Offset > length+127 {
+				return errors.New("PCM pending source cursor invalid")
+			}
+			effect := event.Bus
+			if uint64(effect.At) < event.Cycle-origin || effect.Z80After != effect.At+45 || effect.M68KDelay != ((effect.At%7+72)/7)*7 || effect.SetWaitFlag {
+				return errors.New("PCM pending bus effect invalid")
+			}
+		default:
+			return errors.New("unknown PCM pending output kind")
+		}
+	}
+	return nil
+}

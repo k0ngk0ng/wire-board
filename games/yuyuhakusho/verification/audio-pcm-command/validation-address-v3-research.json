@@ -1,0 +1,876 @@
+{
+  "pass": true,
+  "scope": "Frozen research23 exact autonomous accepted command/hold/DMA/reset/address/data/bank semantics and DAC-only DSP projection; production Go revisions remain separately bound",
+  "accepted_cases": 23,
+  "ordered_events": 519256,
+  "reference_frames": 1274,
+  "stereo_pcm_frames": 937609,
+  "nonzero_native_samples": 1610823,
+  "native_original_observed_equal": true,
+  "observer_overflow": 0,
+  "retained_ym_address_latch_all_frames_equal": true,
+  "opaque_boundary_cases": 2,
+  "full_chip_synthesis_claim": false,
+  "global_world_irq_wired": false,
+  "platform_audio_wired": false,
+  "physical_speaker_verified": false,
+  "original_cycle_clamped": false,
+  "input_calls_sorted": false,
+  "native_identity": {
+    "original": {
+      "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+      "core_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+      "core_name": "Genesis Plus GX",
+      "core_version": "v1.7.4 60bee4c",
+      "fps": 59.92274340431231,
+      "ram_bytes": 65536,
+      "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+      "teamplayer": false
+    },
+    "observed": {
+      "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+      "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+      "core_name": "Genesis Plus GX",
+      "core_version": "v1.7.460bee4c",
+      "fps": 59.92274340431231,
+      "ram_bytes": 65536,
+      "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+      "teamplayer": false
+    }
+  },
+  "sources": [
+    {
+      "path": "scripts/yuyuhakusho/pcm-command-static.py",
+      "sha256": "a77be03f1d00a95d20b2187ce1c57fd14f1e37ec363561bfa17e49a7329b5abf",
+      "bytes": 2160
+    },
+    {
+      "path": "scripts/yuyuhakusho/pcm-command-capture.py",
+      "sha256": "4349a80c12019688324fbea3cb988ddcab16da8a76d170be9842b935c5d8356f",
+      "bytes": 13119
+    },
+    {
+      "path": "scripts/yuyuhakusho/pcm-command-observer.c",
+      "sha256": "e3f1b1b6846c891561802ac83ff0e1c6b80ed1889ab7b1f756f3224a90ccf6b4",
+      "bytes": 4641
+    },
+    {
+      "path": "scripts/yuyuhakusho/pcm-command-prototype.py",
+      "sha256": "95d4b2bb92716d18d327df86e12052b1febc3a2a77bbed081305437a9a398f9b",
+      "bytes": 18014
+    },
+    {
+      "path": "scripts/yuyuhakusho/pcm-command-dsp-prototype.py",
+      "sha256": "91b7ac11d907c170a66091aa9d48f408d01cded5f22c3f6cd4bcbf1b6f1cc5ec",
+      "bytes": 4177
+    },
+    {
+      "path": "scripts/yuyuhakusho/pcm-command-check-address.py",
+      "sha256": "fbe82c46712419bb60c6bc1e6dbade4375a631bea60b26befeb74e8a143d81e4",
+      "bytes": 1464
+    },
+    {
+      "path": "scripts/yuyuhakusho/pcm-command-address-state.py",
+      "sha256": "918f9365c6d74b36b2c123bc9f7122793fe27332733c5b5a8b487c537d9dc179",
+      "bytes": 1743
+    },
+    {
+      "path": "scripts/yuyuhakusho/pcm-command-verify.py",
+      "sha256": "d745fd394530934cce59b82382b31512513ee6ea94c6e52374b3ad47dd8aaabf",
+      "bytes": 1321
+    },
+    {
+      "path": "scripts/yuyuhakusho/reference.py",
+      "sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+      "bytes": 8606
+    },
+    {
+      "path": "scripts/yuyuhakusho/extract_audio_assets.py",
+      "sha256": "e8a59cb97a15b02d930b2335175eca9fb17600a778ce93d779449cdac3775f56",
+      "bytes": 29061
+    },
+    {
+      "path": "scripts/yuyuhakusho/research_audio_loops.py",
+      "sha256": "854c259284e11c59a21be9560f0beca26f15ffebe132d18d64dce6fbed5e22f4",
+      "bytes": 10547
+    },
+    {
+      "path": "scripts/yuyuhakusho/inspect_dac_dsp_state.py",
+      "sha256": "008576cb72b0ef5feab4e566dda23e9d2841a6340a66c93a4ba04de07284d82f",
+      "bytes": 5746
+    },
+    {
+      "path": "scripts/yuyuhakusho/prototype_dac_frame_dsp.py",
+      "sha256": "755364d6379a89a58ced263f3ed4615f424e02bc03cc9a1cc376680a3d450c6b",
+      "bytes": 5566
+    },
+    {
+      "path": "scripts/yuyuhakusho/prototype_dac_dsp.py",
+      "sha256": "14b1a0252153965640f0c17d8769ebcaa6f94718543a1897206ef77d81c5b2b0",
+      "bytes": 6501
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/AUDIO_PCM_COMMANDS.md",
+      "sha256": "a5dcb66a894fd31210ecfcf7bb1effb2a9403a3b3d21616ba000ee7315055a1a",
+      "bytes": 11179
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/AUDIO_PCM_COMMAND_FAILURES.md",
+      "sha256": "2424de3b26a69374243ffbe46de25f9ce4e50b242e903daf2812a97a03bd3ad7",
+      "bytes": 3898
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/AUDIO_PCM_COMMAND_PLAN.md",
+      "sha256": "7404e770670a458b548d4b3370e029986fba5c83489c0341954cde12d48bab9e",
+      "bytes": 3197
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/static/audio-z80.txt",
+      "sha256": "6de7db3bc1660869bd228d8d09ea990a4ae4da12bfd35c2bed74523f05cc8e0a",
+      "bytes": 17136
+    }
+  ],
+  "source_manifest_sha256": "7ebe1e7fefdeaaef74a7df0bcd26f8eff48920bd89f168977b29283b93e2c184",
+  "evidence": [
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/actual-address-verified.json",
+      "sha256": "06d602fa34a7b65219d5ae1ab5c33e5945586a4b422b88e55f21c35567931477",
+      "bytes": 946
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/actual-address-verified.log",
+      "sha256": "1f7ccc646c9fe0b50e56d23689ba85bfdf0894dff7e79bcd6236c92773692ae0",
+      "bytes": 756
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/address-capture-projection.json",
+      "sha256": "2a4e6a5e65704c290946078b4113c78d6c33fa91265b457c322e558f3b5349a5",
+      "bytes": 6985
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/address-prototype-smoke.json",
+      "sha256": "e8f2bd3f4de353358569c1102d1bb1ca273e4d7934d1961e8518566d6b2565c7",
+      "bytes": 785
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/address-prototype-smoke.log",
+      "sha256": "7eb6b19d564efeb64cd7897f033134b933eb83f90aa2c19cbefbbf0ec6d75597",
+      "bytes": 368
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/address-source-freeze/pcm-command-capture.py.txt",
+      "sha256": "4349a80c12019688324fbea3cb988ddcab16da8a76d170be9842b935c5d8356f",
+      "bytes": 13119
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/address-source-freeze/pcm-command-dsp-prototype.py.txt",
+      "sha256": "91b7ac11d907c170a66091aa9d48f408d01cded5f22c3f6cd4bcbf1b6f1cc5ec",
+      "bytes": 4177
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/address-source-freeze/pcm-command-observer.c.txt",
+      "sha256": "e3f1b1b6846c891561802ac83ff0e1c6b80ed1889ab7b1f756f3224a90ccf6b4",
+      "bytes": 4641
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/address-source-freeze/pcm-command-prototype.py.txt",
+      "sha256": "95d4b2bb92716d18d327df86e12052b1febc3a2a77bbed081305437a9a398f9b",
+      "bytes": 18014
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/address-source-freeze.json",
+      "sha256": "c05deb0a2e8d0cf912d32b232a9852a64e4acea430c00cfc660dc40c9b7e76ac",
+      "bytes": 1502
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/autonomous-address-state.json",
+      "sha256": "4cb627a29bf2b618b3dc94a31077333feaee443ccce1544c58a9f618aa5e57d3",
+      "bytes": 7317
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/autonomous-address-state.log",
+      "sha256": "424a7732ed7f3b55543eac06b3d0962b6d7ff81431fa3a554b143f9e4b73db9b",
+      "bytes": 44
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/capture-before-address-ledger.py.txt",
+      "sha256": "0ee648fdb773de14dcac61c8b8cdd30d7f985fa07446b5dddc6a41f569fffb4c",
+      "bytes": 12642
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/capture-before-chip-reset-dma.py.txt",
+      "sha256": "b40b42067b2aa27c1b2f28cfbb9ef1fe40f3e3c4a816f7182ebf7c7e292f0bb0",
+      "bytes": 9559
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/cleanup-research.json",
+      "sha256": "a745c3dc545da411d69d005711389cf03b033ac3e4fab59b4cdb1d4130275b6e",
+      "bytes": 1075
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/data-only-address-red.json",
+      "sha256": "91c06fc2dab69772000215b15810409a25c4ce3f617f5d8ac186d9cf935486c3",
+      "bytes": 948
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/data-only-address-red.log",
+      "sha256": "65c46434f5de2cd754f2518db8a00c42d8dd8612ac518df69cf8111aa88db9e5",
+      "bytes": 758
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/dsp-full-address-projection.json",
+      "sha256": "db0d7f242d86c84af0d73eda21d6f803189a10a918f107fe4fa90b3128d1d09b",
+      "bytes": 8320
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/dsp-full-address-projection.log",
+      "sha256": "22508c776bd600f650e46b706f6a0b40a71f2111a7cbfdc5eeb2ef7ea34d78d2",
+      "bytes": 6256
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/dsp-ordered-chip-tick.json",
+      "sha256": "580de833a45c3ae796de4d72ee8a4bf672029fb5638960f6a19c09f0ce12fe6f",
+      "bytes": 1052
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/dsp-ordered-chip-tick.log",
+      "sha256": "04154d13353c1b26e2c8e08e09ec06356e303e5f152b073936419df1b30a7cbd",
+      "bytes": 342
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/dsp-ordered-expanded.json",
+      "sha256": "ff8d3ef8d7e2a5fc8d4b05eccf41dc35c1ed4f3c5bbb92066af105f4814ac805",
+      "bytes": 7194
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/dsp-ordered-expanded.log",
+      "sha256": "c242d29cefea338a7897af30c5a22a08aa81d85d1c35383dc03bb8e1e6c05a8f",
+      "bytes": 5363
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/dsp-ordered-reset-complete.json",
+      "sha256": "8a4e5327945df8c2d52348b213f193895b5d21233c226e395f9fd06b5dd1cd4c",
+      "bytes": 928
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/dsp-ordered-reset-complete.log",
+      "sha256": "947ccd69d5f00f4626066662222488b08104754f6cde425a9ed83ab33a432735",
+      "bytes": 274
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/dsp-sort-chip-tick-red.json",
+      "sha256": "e101b45359ee6805f32c5e732ce8166b9f65dc39db016ebea538281994e875a3",
+      "bytes": 1188
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/dsp-sort-chip-tick-red.log",
+      "sha256": "0ce3d96d1e20bcba2686960fb8c0513adfc60fe3d6a23d7785e565a550b77cb8",
+      "bytes": 430
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/dsp-sort-initial-no-difference.json",
+      "sha256": "99932ce323ff70717841f7cb492d5ee00d2d045552383ee584ffc09ac3e133b6",
+      "bytes": 7193
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/dsp-sort-initial-no-difference.log",
+      "sha256": "c242d29cefea338a7897af30c5a22a08aa81d85d1c35383dc03bb8e1e6c05a8f",
+      "bytes": 5363
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/missing-command-layer-red.json",
+      "sha256": "16ad36340bfa3d3f97e47c4960c93f8f9a638ec1aef68d003ec2594fbafc1d00",
+      "bytes": 347
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/model-before-address-ledger.py.txt",
+      "sha256": "39a89a2f92a2f2afb71e9a9ba4ae725b8709aafa68b5472f20ee7cf805529c39",
+      "bytes": 17313
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/model-before-dual.py.txt",
+      "sha256": "6ed59a284b5a3a2bd904a8f2802ade15c7bbcc57c234f8f85e6764a67221e778",
+      "bytes": 9638
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/model-before-expanded-controls.py.txt",
+      "sha256": "6d8337a664179bb33f074181ce30759313968339cd5873d4b7468e453cc5f137",
+      "bytes": 15160
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/native-address-final.log",
+      "sha256": "e906fa4b90656991a895d11ad4016902c59561a90f60a61ff02d66b0fe3e21df",
+      "bytes": 3720
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/native-address-smoke.log",
+      "sha256": "b9074117580d9884a5d307067646ca850f97c11121630046a5ea29b1484664d0",
+      "bytes": 192
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/native-expanded-final.log",
+      "sha256": "2d2e7fcee1b3003fd8f885a9b34497ebc0260e4e4ef58e694d40998a1dca16b9",
+      "bytes": 3162
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/native-expanded-smoke.log",
+      "sha256": "84c27b521959f0ebc2cbf0484118897412e8d431d85c962fcd24695b67fc5cf2",
+      "bytes": 166
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/native-first.log",
+      "sha256": "d7dd6b3c72ef7b96c35933660abaf0d3f9e43501716240f2d8136794b68c33d9",
+      "bytes": 1860
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/native-opaque-boundaries.log",
+      "sha256": "20d33e84ddda6cc7d421badf720eaa41d06b915389348407e3f9201880eebfb8",
+      "bytes": 360
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/native-reset-chip-tick.log",
+      "sha256": "1bc102d8fccbde747b36019d2d1fa57973b87e5214cb2387549f8f71c70e30d7",
+      "bytes": 190
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/native-reset-complete.log",
+      "sha256": "e8e91ba3c250807392a7cf05a304c317409075ec83aeac7451ef63ff1915c87c",
+      "bytes": 176
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/native-smoke.log",
+      "sha256": "d04338ee813c0d79e5a83a62b940af4124a365e978506958a3f37dbf905cd588",
+      "bytes": 156
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/observer-before-address-ledger.c.txt",
+      "sha256": "298346dcc756ab5ae8a308baced3040cf7a53413af7dba2d47eb742b5027aff3",
+      "bytes": 4528
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/observer-before-chip-reset-dma.c.txt",
+      "sha256": "5d56bb674a665b8b3f326f04af5dd2c5a3095bcaa773544260d2d3969865dcdf",
+      "bytes": 3565
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/old-player-freeze-check.json",
+      "sha256": "3d218e8192536a41736bd907e5f4fc47d0afbeb144cd9d363b3c10254fb55f6f",
+      "bytes": 81
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/opaque-native-evidence.json",
+      "sha256": "7fb9f3805795669d03308d72ee906289a41dbac382898dc280ff9daedb7d6fc6",
+      "bytes": 1836
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/pcm-command-static.txt",
+      "sha256": "058e33a2b5119057e9deaac1d956c2bc780e8eb2223432506dc1fffc26e0bd19",
+      "bytes": 2229
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/prototype-all-first.json",
+      "sha256": "7760d969a8bf0a6fbcc81d5e53884d2b7823087699319b9031dc360d7e778cd9",
+      "bytes": 7781
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/prototype-all-first.log",
+      "sha256": "cd49f8b62a49ed310f1419d3f0185b8bb7e5e1c0313b4bc09c1c1bc3cd457379",
+      "bytes": 4215
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/prototype-expanded-first.json",
+      "sha256": "ff416533aa56092723e32cdb9560d2861fd1e6d07ccfe61bb30887af81f27d7c",
+      "bytes": 12857
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/prototype-expanded-first.log",
+      "sha256": "a597040692d8a0dd4ec1cf885836aef73342762493af3c46181b281bb4db343d",
+      "bytes": 7015
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/prototype-full-address.json",
+      "sha256": "15c8f3668e0a02ede01a2792644ffa84b57ed90658d0c81073a6ec363197d822",
+      "bytes": 15164
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/prototype-full-address.log",
+      "sha256": "9185bbdcdd91f046ea7d873aefbb6783b26268283f39aca49bc87f0bf0291906",
+      "bytes": 8293
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/prototype-reset-chip-tick.json",
+      "sha256": "4f95f2e103e38c595f96446b7fae83a269e08669730c27ec64360239981fbbbc",
+      "bytes": 789
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/prototype-reset-chip-tick.log",
+      "sha256": "961c41927f172edc38d89e976d5a8ec31e727924534f9aee4e9c20c1ff361cae",
+      "bytes": 372
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/prototype-reset-complete.json",
+      "sha256": "e73c450835a50da74481a32160ba21ca41d2f2c4048cd79990d23a83a9f4f125",
+      "bytes": 1085
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/prototype-reset-complete.log",
+      "sha256": "fddf6c8ba021ab9c86526c579ab3d06a6362fda4bdfbe8a84d3197b4f4dd5c61",
+      "bytes": 524
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/reset-chip-tick-input-plan.json",
+      "sha256": "4ceb7ed943c51af425979056b4eb7b9c2cb6fa457e3d8f5913bfac86ba939a63",
+      "bytes": 469
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/single-model-before-request-return-correction.py.txt",
+      "sha256": "673f4b7c90c671d1c0fb42f7ee6154f8f08e10e8df93f211c2956b003395a3ff",
+      "bytes": 9610
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/single-prototype-corrected.json",
+      "sha256": "64fd3a9138fe6c8edd6629e793cb1ccfeb099ccbdfca586c050232d265e2cd63",
+      "bytes": 3208
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/single-prototype-corrected.log",
+      "sha256": "86ae206033ec6cf5b2395e3f018840c7b683b2e9f40fae8365a7dcf2e49af174",
+      "bytes": 1707
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/single-prototype-first.json",
+      "sha256": "0f92b2946b7ddd611896af8be6b3b515f2dbabe38de6a1054e983dde7d0bc8ea",
+      "bytes": 4073
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/single-prototype-first.log",
+      "sha256": "95e09a3882a4f758cf38750127225595af89392361b32cf35faaf7b3dcd21527",
+      "bytes": 2307
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/sort-hypothesis-correction.json",
+      "sha256": "590ed41eebc9b83caffa9556e9701ed7ddf110614c8b124319d473c78e24669c",
+      "bytes": 797
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/static-analysis.json",
+      "sha256": "e4ad8ffb5ff27385adad1af1be596956de44c12d7eaef76961b95278da845ced",
+      "bytes": 1419
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/tiny-prototype-first.json",
+      "sha256": "2ca31ea579690147ae670839ed8357a86af2a719050ca16799783c78f80b30d5",
+      "bytes": 579
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/tiny-prototype-first.log",
+      "sha256": "04addb55193b059ce3337c69a63f3279cda4b6b256e609f7d2481903279dc7ca",
+      "bytes": 258
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command-go/validation-controls-v2.json",
+      "sha256": "48ab2f3eaec093f4be245b298a601d44b0d4fe0c212511d968e97b91573138bc",
+      "bytes": 6266
+    }
+  ],
+  "native_artifacts": [
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-address-native-final/capture.json",
+      "sha256": "117fb300e59a003d18f760904c5214cbb3eef94bff2da4c75683329f2b472812",
+      "bytes": 9825
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-address-native-final/dual-append.json.gz",
+      "sha256": "cd8c5889395047572208ae7b2e65fed4f2dda7e388a2f1670b6b4e34f8cd2e21",
+      "bytes": 10266837
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-address-native-final/dual-dma.json.gz",
+      "sha256": "53c3a98668f9faa2653ee9366593c19e0eaecb3ad3ffd7e2a4a0511ee8dc10fe",
+      "bytes": 2699258
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-address-native-final/dual-hard-reset-complete.json.gz",
+      "sha256": "373cf0064670fb3634f7f9411849ff0b7e9149dc6fc49191f4dd116ccc97193a",
+      "bytes": 3259545
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-address-native-final/dual-hard-reset.json.gz",
+      "sha256": "8277aa32c1b06609c9ebcc5d2b463192c2efeb55b868c1405d937a2f2a9f633d",
+      "bytes": 1672749
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-address-native-final/dual-pause.json.gz",
+      "sha256": "9f621c8b58fc20666c3fd8a376e0df204973d3d7cbf18b47db2a8399fe257626",
+      "bytes": 2702401
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-address-native-final/dual-replace-a.json.gz",
+      "sha256": "fda67c2fef633232c615e0dab5fe737bda8723ba609579293a0e9f04fe18d79a",
+      "bytes": 3263839
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-address-native-final/dual-to-single.json.gz",
+      "sha256": "78d1fc550efa5f806bf2f7fc2acf0bc29ffec721c3d74ccbe63312accf87bf31",
+      "bytes": 5000599
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-address-native-final/idle-to-dual-a.json.gz",
+      "sha256": "9b9b9154fb2e3f0906c62b0deea9504bcbd4342dcfd83d344a0a7085c11bd9ab",
+      "bytes": 2699511
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-address-native-final/idle-to-dual-b.json.gz",
+      "sha256": "0fe5f3f0e910f0a1943febb5718af7c85c45493c6309172b925429d166296c05",
+      "bytes": 1133770
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-address-native-final/idle-to-single.json.gz",
+      "sha256": "5b8b92bfb636edad768aea6dcaa3c1c9eb531a790e9356fc8bb5c660bfc8842b",
+      "bytes": 4448003
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-address-native-final/internal-single-byte.json.gz",
+      "sha256": "92787f365a28b8bc94a1c5dc9fcdf72330b7905950052680a76f47bef354aff0",
+      "bytes": 9367
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-address-native-final/legitimate-f0-remap.json.gz",
+      "sha256": "35e3fa40c1e398fc43e9cb3d51464760b57d92e7ae3b15aeeebc44875e950ad8",
+      "bytes": 6906364
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-address-native-final/music-from-idle.json.gz",
+      "sha256": "9091b3fdd7d5533ba674460a40733382e300dc8bcb0abf9b27c579e424617049",
+      "bytes": 1094160
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-address-native-final/music-pan-restore.json.gz",
+      "sha256": "ab214de58af03819ce967aa01cd675e98811278607c27302318b5d621c9fc616",
+      "bytes": 1094238
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-address-native-final/music-replace.json.gz",
+      "sha256": "3721f4f11d2218e001b2c06de2c8be6f2cc232b217868ab6882449404771bcb2",
+      "bytes": 759656
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-address-native-final/single-dma.json.gz",
+      "sha256": "e25ee7f9feddac636df8aaaf931c390e3141524ecff1b23c0a1b350f86dba002",
+      "bytes": 4448248
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-address-native-final/single-hard-reset.json.gz",
+      "sha256": "24023b6860a7f4c228284d707fd7563121e1eddcec650b0539b96c313c689981",
+      "bytes": 5069328
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-address-native-final/single-pause.json.gz",
+      "sha256": "a350404fb263ae328c9694721d05e02772f77b84ee5c23b8dad6889d6a44618d",
+      "bytes": 4450461
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-address-native-final/single-replace.json.gz",
+      "sha256": "d33ab4a1c45e05b99f2b3e70d17f2aeca9d0968165ddb10447b973dc1bbfae97",
+      "bytes": 5068692
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-address-native-final/single-reset-between-address-data.json.gz",
+      "sha256": "9c1f08842eaf2abc08c81966a5d2f2d7d0336bfaac6de2923586c1fa952f707d",
+      "bytes": 18871
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-address-native-final/single-reset-crossing-chip-tick.json.gz",
+      "sha256": "282cec8dd81e96b8318bd0a1e859c8b9c77ef627b73e75ebceb67c9e27629b3b",
+      "bytes": 631077
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-address-native-final/single-reset-during-dac-operation.json.gz",
+      "sha256": "abeb17ee1eb95dfab752368925c601e6fc2beaa761105c4052ee05d9c7247849",
+      "bytes": 631431
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-address-native-final/single-to-dual.json.gz",
+      "sha256": "be77ed31ad3801ffff361769e3feaba6a7116d7d1accfafc537a76b8fae5994b",
+      "bytes": 8325768
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-opaque-boundaries/capture.json",
+      "sha256": "c87366fda8eb7f8ba9db7e969e2eba7fdf7e8c2bec5c97e1964a920e7e7e41bc",
+      "bytes": 2132
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-opaque-boundaries/opaque-dual-mixed-transfer.json.gz",
+      "sha256": "a4b4fd51910bb11948c6289e656a988050d6de4c64c4ac3e8c4abcdfce1030e5",
+      "bytes": 259709
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-opaque-boundaries/opaque-single-mixed-header.json.gz",
+      "sha256": "31aa6cebcec33a11cfd2c5e8a9b5a5d50361eddc252fc4230afcaea5c1f8bd2a",
+      "bytes": 25099
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-reset-chip-tick/capture.json",
+      "sha256": "35013691017ddf36f197ce4ccd6910b33bfe25641ba37e05817f4ec8b8c2d06b",
+      "bytes": 1767
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-reset-chip-tick/single-reset-crossing-chip-tick.json.gz",
+      "sha256": "fafee45b94e24b01779d94a45d11af25ac905ccab2737beeb75bbd82368463b9",
+      "bytes": 575649
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-reset-complete/capture.json",
+      "sha256": "77bc9b7b28e38447ce829b7493d611895fcbafb49cf5eb7413cc78fddeacf030",
+      "bytes": 1752
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-reset-complete/dual-hard-reset-complete.json.gz",
+      "sha256": "9f5c20b93b644c7a5b7b364e823cbbb5250feffa60ebc49ffb2876505acc5f9f",
+      "bytes": 3048459
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-address-native-smoke/capture.json",
+      "sha256": "8cb2a3fcfeccbf2e3a9da2ff488680c59c4290db8d997852765ce423f2c4de03",
+      "bytes": 1769
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-address-native-smoke/single-reset-between-address-data.json.gz",
+      "sha256": "9c1f08842eaf2abc08c81966a5d2f2d7d0336bfaac6de2923586c1fa952f707d",
+      "bytes": 18871
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-native-first/capture.json",
+      "sha256": "7d2af685c686e89e2a582d530c76a7be20c4be46bdb797e5c7a627af19b1b5a6",
+      "bytes": 5615
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-native-first/dual-append.json.gz",
+      "sha256": "81eac95b1d0a660db5285f58cf167e75007851588b28fad2367bcee6e1f625dd",
+      "bytes": 9624303
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-native-first/dual-pause.json.gz",
+      "sha256": "f5d6a56411438eb72baa72f154570a0c776f05cb553f8c513f1485babbd292b5",
+      "bytes": 2335660
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-native-first/dual-replace-a.json.gz",
+      "sha256": "cfa5a000c0662e05893e98aee9b97e7bc06df0e0a8059f47249dee4772e4cd6d",
+      "bytes": 2818308
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-native-first/dual-to-single.json.gz",
+      "sha256": "6004c3245a3727d8197057688207135812bbf0b09d52462214d4e05b9d48ef44",
+      "bytes": 4471092
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-native-first/idle-to-dual-a.json.gz",
+      "sha256": "cc32a9c56e44ede562f499ba01924e2f66a1534978330fe8e542566ee685216a",
+      "bytes": 2333058
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-native-first/idle-to-dual-b.json.gz",
+      "sha256": "22697e177ec95e77c659b2c7504147d07869e489b70ef18c345ab7b22d2a9008",
+      "bytes": 970898
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-native-first/idle-to-single.json.gz",
+      "sha256": "0a1b010b5fcd5ed1e13f02e233ca60dfc9404ac1bbc2c928f746250ed7ff703c",
+      "bytes": 3990546
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-native-first/music-from-idle.json.gz",
+      "sha256": "91edd6819b1af7759da830a619531f67a4f2b29126e0dc4b91415211114a006a",
+      "bytes": 976407
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-native-first/music-replace.json.gz",
+      "sha256": "bf3b3e2a9311516a3d0914db5ad356f6594d2a010e43b36b3fe8dafce84a6853",
+      "bytes": 682681
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-native-first/single-pause.json.gz",
+      "sha256": "bd568584547284659e7c23ca1e56affb137ab034f39b46cffd077184b1ffeb85",
+      "bytes": 3993132
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-native-first/single-replace.json.gz",
+      "sha256": "7709776365b8c40b6eca4145d476cbb1487f33e44391c0376a9e7db9f796a5b1",
+      "bytes": 4547583
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-native-first/single-to-dual.json.gz",
+      "sha256": "c7c09218cdf51c430d4bb9f8f1565598d3986ffd56e0017a5aa5d1008cc9a194",
+      "bytes": 7221701
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-native-expanded-final/capture.json",
+      "sha256": "0af91d7cc4da49d478ad084ccf15011f6ca3538e0bf867696f9c4d530bfb62c0",
+      "bytes": 8675
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-native-expanded-final/dual-append.json.gz",
+      "sha256": "7d44a9d51d2c0f765aa1e4a60cb1e7f1a9d4cff76ddc1732aac7c6b0f1f0b9d2",
+      "bytes": 9736049
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-native-expanded-final/dual-dma.json.gz",
+      "sha256": "ff44bd973604c7720eac1b3d18f61832f003a15703571d4b93927e4b490c4466",
+      "bytes": 2524451
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-native-expanded-final/dual-hard-reset.json.gz",
+      "sha256": "ab5e1f3aa653fcacc98e67d1ab172cd3c3dcd14fe1a611858469bcea222308a7",
+      "bytes": 1564367
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-native-expanded-final/dual-pause.json.gz",
+      "sha256": "d701eeac7b345840d52ec2505ddffbbf5feebe44e68a6017b99abd19414622a4",
+      "bytes": 2527641
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-native-expanded-final/dual-replace-a.json.gz",
+      "sha256": "8ce0cb8873d6abd9196c2610761329878839dc815b66410773927cc72be9acbf",
+      "bytes": 3053056
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-native-expanded-final/dual-to-single.json.gz",
+      "sha256": "cc195eee06d77116cbf5a1264307bf38f5771763d83bff625a345fdc21471735",
+      "bytes": 4568174
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-native-expanded-final/idle-to-dual-a.json.gz",
+      "sha256": "b65c03014c89d07f4a50260f33788659a933f247c390855fc3b793dde142b5af",
+      "bytes": 2524900
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-native-expanded-final/idle-to-dual-b.json.gz",
+      "sha256": "32502d36bcc7707de705fc0f7fbe7b2e356641b92a3ed6d8e70c3fa58edd0a88",
+      "bytes": 1057774
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-native-expanded-final/idle-to-single.json.gz",
+      "sha256": "68944e4a89363d8bcbaf0639f7715bfce24125986b452f726cfd97d82bf321c5",
+      "bytes": 4046512
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-native-expanded-final/internal-single-byte.json.gz",
+      "sha256": "4d5c1260926405350a274dc64e9640736fb0ea4df86612120f5f9007ff0060bd",
+      "bytes": 9119
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-native-expanded-final/legitimate-f0-remap.json.gz",
+      "sha256": "d8813465ec0295e2355c1c5fe3a61e99f483077897cc8b72ae551ac54cb2b8f5",
+      "bytes": 6454773
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-native-expanded-final/music-from-idle.json.gz",
+      "sha256": "994f10ae2b41ea4829c2e753b135118cdb5c40511eb0844d26a417652ca7efdb",
+      "bytes": 994025
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-native-expanded-final/music-pan-restore.json.gz",
+      "sha256": "9c1206525c7f2903d69d60a14dcc4dfc09ac11ed501b0a39c9c4cf183a34e1c4",
+      "bytes": 994177
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-native-expanded-final/music-replace.json.gz",
+      "sha256": "bccee9c7948b12b0ae8775a3f4012cd271fa8dabc06ffe934537735ecf1d8e8f",
+      "bytes": 692328
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-native-expanded-final/single-dma.json.gz",
+      "sha256": "d6ee6d4031671fc074a4cfd18ff6daa9508b0382e2d97bc5be02c0470f1520cb",
+      "bytes": 4046868
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-native-expanded-final/single-hard-reset.json.gz",
+      "sha256": "8931d47fa38cddf4fdf031b4aef56d2c2caefd283c4beefc89e1665956011028",
+      "bytes": 4612436
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-native-expanded-final/single-pause.json.gz",
+      "sha256": "5a791f856fca2c81cff58716b86ddbb4295798fe2febf545af3f47b05c3d1706",
+      "bytes": 4049126
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-native-expanded-final/single-replace.json.gz",
+      "sha256": "c422550440607ff6e00bc161f98279d41468aa89057494383b5e541b6216f174",
+      "bytes": 4611700
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-native-expanded-final/single-reset-during-dac-operation.json.gz",
+      "sha256": "a6ed5d78ceff03308f452ec343cb1e9c8927b3c9cd76f2370d550cc61eba5bad",
+      "bytes": 575986
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-native-expanded-final/single-to-dual.json.gz",
+      "sha256": "ec3fb00ed46f8dd14ae94cdcf34bd35fb03cec64b5faaef36bb356454d601cbc",
+      "bytes": 7773396
+    }
+  ],
+  "checks": [
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/prototype-full-address.json",
+      "expected_pass": true
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/dsp-full-address-projection.json",
+      "expected_pass": true
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/autonomous-address-state.json",
+      "expected_pass": true
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/address-capture-projection.json",
+      "expected_pass": true
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/opaque-native-evidence.json",
+      "expected_pass": true
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/dsp-sort-initial-no-difference.json",
+      "expected_pass": true
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/dsp-sort-chip-tick-red.json",
+      "expected_pass": false
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/dsp-ordered-chip-tick.json",
+      "expected_pass": true
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/data-only-address-red.json",
+      "expected_pass": false
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/actual-address-verified.json",
+      "expected_pass": true
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/old-player-freeze-check.json",
+      "expected_pass": true
+    }
+  ],
+  "go_v2": {
+    "path": "games/yuyuhakusho/verification/audio-pcm-command-go/validation-controls-v2.json",
+    "sha256": "48ab2f3eaec093f4be245b298a601d44b0d4fe0c212511d968e97b91573138bc",
+    "domain": "ordered data/control/reset, not address ports or adaptive bridge",
+    "legacy12_vectors_unchanged": true
+  },
+  "limitations": [
+    "Accepted23 includes a bounded reset25frame prefix and its55frame completion; does not count them as distinct command input plans",
+    "Fixed declared external holds/DMA intervals, not independent worldIRQ producer timing",
+    "Continuous DMA current cases Remaining0; nonzero wait/VDP slice domain remains rejected by Go controls",
+    "Opaque resource metadata-mixing windows explicitly rejected; no adjacentROM or guessed byte resources",
+    "private transport holds are separate from complete world gamePause semantics",
+    "ResearchDAC reset mapping is mutedFM profile; full warmYMReset provided and verified by independent chips owner",
+    "New runtime bus bridge and Go exact-address support are separate in-progress revisions"
+  ],
+  "cleanup": "cleanup-research.json",
+  "reproduction": "python3 scripts/yuyuhakusho/pcm-command-verify.py [--native]; commands in AUDIO_PCM_COMMANDS.md"
+}

@@ -1,0 +1,45 @@
+package pcmcommands_controls_test
+
+import (
+ "bytes"
+ "compress/gzip"
+ "crypto/sha256"
+ "encoding/binary"
+ "encoding/hex"
+ "encoding/json"
+ "flag"
+ "io"
+ "os"
+ "reflect"
+ "testing"
+
+ pcmc "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/pcmcommands"
+ "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/dsp"
+ "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/phaseclock"
+)
+var controlsVector=flag.String("native-controls-vector","testdata/original-command-controls-v2.json.gz","original-only controls vector")
+type controlEvent struct{Cycle uint64;Kind string;Value uint8;PayloadID string;Offset uint32;Bus *phaseclock.Effect;Register uint16}
+type controlFrame struct{Events []controlEvent;PCMHex string;DSP dsp.State;Status pcmc.Status}
+type controlCase struct{Name string;Payloads map[string]string;Descriptors []pcmc.Descriptor;Inputs []pcmc.Input;Transactions []pcmc.Transaction;Frames []controlFrame;DMA []struct{Frame uint64;Interval pcmc.DMAInterval};MasterOrigin uint64;InitialDSP dsp.State;SourceSHA256 string}
+func controlCases(t *testing.T)[]controlCase{t.Helper();raw,e:=os.ReadFile(*controlsVector);if e!=nil{t.Fatal(e)};r,e:=gzip.NewReader(bytes.NewReader(raw));if e!=nil{t.Fatal(e)};defer r.Close();raw,e=io.ReadAll(r);if e!=nil{t.Fatal(e)};var b struct{Version int;Cases []controlCase};if e=json.Unmarshal(raw,&b);e!=nil||b.Version!=2{t.Fatal(e)};if len(b.Cases)!=20{t.Fatal("native control matrix incomplete")};return b.Cases}
+func controlConfig(t *testing.T,c controlCase)pcmc.Config{t.Helper();data:=map[string][]byte{};for id,h:=range c.Payloads{b,e:=hex.DecodeString(h);if e!=nil{t.Fatal(e)};data[id]=b};h:=sha256.Sum256([]byte(c.SourceSHA256));return pcmc.Config{Resources:pcmc.Resources{Identity:hex.EncodeToString(h[:]),Length:func(id string)(uint32,bool){v,ok:=data[id];return uint32(len(v)),ok},ByteAt:func(id string,at uint32)(byte,bool){v,ok:=data[id];if !ok||at>=uint32(len(v)){return 0,false};return v[at],true}},Descriptors:c.Descriptors}}
+func TestCompleteChipControlContract(t *testing.T){var frame pcmc.Frame;_=frame.Ledger;var event pcmc.Event;_=event.Register;_=pcmc.SetRestorePan;_=pcmc.HardReset;_=pcmc.YMWrite;_=pcmc.Reset}
+func TestOriginalCompleteControlLedgerAndState(t *testing.T){
+ fullEvents,pcmFrames:=0,0
+ for _,c:=range controlCases(t){t.Run(c.Name,func(t *testing.T){
+  cfg:=controlConfig(t,c);d,e:=pcmc.New(cfg);if e!=nil{t.Fatal(e)};renderer,e:=dsp.New(dsp.Config{Profile:dsp.ReferenceFrameDiscreteHQ44100,MasterOrigin:c.MasterOrigin},c.InitialDSP);if e!=nil{t.Fatal(e)};reset:=false;for _,in:=range c.Inputs{if in.Kind==pcmc.HardReset{reset=true}}
+  var transactions []pcmc.Transaction;reversed:=false
+  for f,native:=range c.Frames{
+   raw,e:=json.Marshal(d.Snapshot());if e!=nil{t.Fatal(e)};var state pcmc.State;if e=json.Unmarshal(raw,&state);e!=nil{t.Fatal(e)};d,e=pcmc.Restore(cfg,state);if e!=nil{t.Fatal("restore",f,e)}
+   plan:=pcmc.FramePlan{};for _,in:=range c.Inputs{if in.Begin/pcmc.FrameCycles==uint64(f){plan.Inputs=append(plan.Inputs,in)}};for _,dma:=range c.DMA{if dma.Frame==uint64(f){plan.DMA=append(plan.DMA,dma.Interval)}}
+   frame,e:=d.AdvanceFrame(plan);if e!=nil{t.Fatal("advance",f,e)};got:=make([]controlEvent,len(frame.Ledger));for i,event:=range frame.Ledger{got[i]=controlEvent{Cycle:event.Cycle,Kind:string(event.Kind),Value:event.Value,PayloadID:event.PayloadID,Offset:event.Offset,Bus:event.Bus,Register:event.Register};if i>0&&event.Cycle<frame.Ledger[i-1].Cycle{reversed=true}}
+   if !reflect.DeepEqual(got,native.Events){for i:=0;i<len(got)&&i<len(native.Events);i++{if !reflect.DeepEqual(got[i],native.Events[i]){t.Fatalf("original ordered ledger frame%d index%d actual=%+v native=%+v",f,i,got[i],native.Events[i])}};t.Fatalf("ordered ledger size frame%d actual=%d native=%d",f,len(got),len(native.Events))};if frame.Status!=native.Status{t.Fatalf("native control status frame%d actual=%+v native=%+v",f,frame.Status,native.Status)};transactions=append(transactions,frame.Transactions...);fullEvents+=len(got)
+   // The existing DAC queue has a monotone raw-time contract. Its reset bridge
+   // is a separate proof; never sort/clamp this device's reset-domain ledger.
+   if !reset{
+    var chip []dsp.Event;for _,event:=range frame.Events{var kind dsp.EventKind;switch event.Kind{case pcmc.DAC:kind=dsp.DACData;case pcmc.Pan:kind=dsp.DACPan;case pcmc.Enable:kind=dsp.DACEnable;default:continue};value:=event.Value;if event.Kind==pcmc.Pan{value&=192};chip=append(chip,dsp.Event{Cycle:event.Cycle,Kind:kind,Value:value})};if e=renderer.Queue(chip);e!=nil{t.Fatal(e)};pcm,e:=renderer.FrameBoundary();if e!=nil{t.Fatal(e)};actual:=make([]byte,len(pcm)*2);for i,v:=range pcm{binary.LittleEndian.PutUint16(actual[i*2:],uint16(v))};expected,e:=hex.DecodeString(native.PCMHex);if e!=nil{t.Fatal(e)};if !bytes.Equal(actual,expected){t.Fatalf("original control PCM frame%d differs",f)};if !reflect.DeepEqual(renderer.Snapshot(),native.DSP){t.Fatalf("original control DSP frame%d differs",f)};pcmFrames+=len(pcm)/2
+   }
+  }
+  if !reflect.DeepEqual(transactions,c.Transactions){t.Fatalf("control transaction differs actual=%+v native=%+v",transactions,c.Transactions)};if c.Name=="single-reset-during-dac-operation"&&!reversed{t.Fatal("reset raw-time reversal was hidden")};t.Logf("original control %d frames; PCM bridge=%t",len(c.Frames),!reset)
+ })};t.Logf("ordered original %d events; monotone non-reset %d stereo PCM frames",fullEvents,pcmFrames)
+}

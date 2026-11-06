@@ -1,0 +1,7 @@
+{
+  "scope": "New composition E2E before native capture and bridge acceptance; existing production APIs unchanged",
+  "files": {
+    "docs/research/md-yuyuhakusho/fmpsg-pcm-integration-failures.md": "6075b2c154edb4edd55d09407d0fb7b7b373fb8d150433e0febd311cc0c366eb",
+    "games/yuyuhakusho/audio/chips/fmpsg_pcm_integration_e2e_test.go": "371931f3a77d1171eddc1d20fc25b941df7a6c44e19ba95d2d059d8ec68694f3"
+  }
+}

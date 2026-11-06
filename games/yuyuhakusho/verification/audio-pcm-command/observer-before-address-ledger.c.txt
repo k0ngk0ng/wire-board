@@ -1,0 +1,23 @@
+/* Passive research-only PCM command recorder. Every handler delegates intact. */
+#include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
+#include "z80.h"
+typedef void (*fm_fn)(unsigned,unsigned,unsigned);
+typedef void (*reset_fn)(unsigned);
+typedef unsigned char (*read_fn)(unsigned);
+typedef void (*write_fn)(unsigned,unsigned char);
+typedef struct {uint32_t kind,frame,cycles_before,cycles_after,m68k_before,m68k_after,z80_before,z80_after,address,data,bank,pc;uint32_t registers[13];uint8_t state[128];uint32_t busy,dma_end,dma_type,dma_remaining,zstate_before,zstate_after;} command_event;
+static fm_fn saved_fm,*fm_slot;static reset_fn saved_reset,*reset_slot;static uint32_t *dma_end_ptr,*dma_remaining_ptr;static uint8_t *dma_type_ptr,*zstate_ptr;static read_fn saved_read,*read_slot;static write_fn saved_write,*write_slot;static Z80_Regs *cpu;static int32_t *mcycles;static uint32_t *bank;static uint8_t *ram;static command_event *events;static size_t count,capacity;static unsigned frame,overflow;static uint8_t latch[2];
+static command_event *next(unsigned kind,unsigned address,unsigned data,unsigned pc,unsigned zbefore,unsigned mbefore){
+ if(count==capacity){overflow++;return NULL;}command_event *e=&events[count++];memset(e,0,sizeof(*e));e->kind=kind;e->frame=frame;e->pc=pc;e->bank=*bank;e->address=address;e->data=data;e->cycles_before=e->z80_before=zbefore;e->cycles_after=e->z80_after=cpu->cycles;e->m68k_before=mbefore;e->m68k_after=*mcycles;e->busy=ram[0x1f2a];e->dma_end=*dma_end_ptr;e->dma_type=*dma_type_ptr;e->dma_remaining=*dma_remaining_ptr;e->zstate_before=e->zstate_after=*zstate_ptr;PAIR *r[]={&cpu->pc,&cpu->sp,&cpu->af,&cpu->bc,&cpu->de,&cpu->hl,&cpu->ix,&cpu->iy,&cpu->af2,&cpu->bc2,&cpu->de2,&cpu->hl2,&cpu->wz};for(int i=0;i<13;i++)e->registers[i]=r[i]->d;memcpy(e->state,ram+0x1f80,128);return e;
+}
+static void observed_fm(unsigned cycles,unsigned address,unsigned data){unsigned a=address&3,p=a>>1;if(!(a&1))latch[p]=(uint8_t)data;else if((p==0&&(latch[0]==0x2a||latch[0]==0x2b))||(p==1&&latch[1]==0xb6)){command_event *e=next(p==0&&latch[0]==0x2a?1:2,(p<<8)|latch[p],data,cpu->pc.w.l,cpu->cycles,*mcycles);if(e)e->cycles_before=e->cycles_after=cycles;}else{command_event *e=next(9,(p<<8)|latch[p],data,cpu->pc.w.l,cpu->cycles,*mcycles);if(e)e->cycles_before=e->cycles_after=cycles;}saved_fm(cycles,address,data);}
+static void observed_reset(unsigned cycles){command_event *e=next(10,0,0,cpu->pc.w.l,cpu->cycles,*mcycles);if(e)e->cycles_before=e->cycles_after=cycles;saved_reset(cycles);}
+static unsigned char observed_read(unsigned address){unsigned pc=cpu->pc.w.l,z=cpu->cycles,m=*mcycles,zs=*zstate_ptr;unsigned char data=saved_read(address);unsigned kind=address>=0x8000?3:(address>=0xc00&&address<0xe00?4:(address>=0xa00&&address<0xc00?5:(address>=0x800&&address<0xa00?6:((address>=0x1f80&&address<0x2000)||address==0x1f2a?8:0))));if(kind&&!(kind==8&&address==0x1ffe&&pc==0x60&&data==0)){command_event *e=next(kind,address,data,pc,z,m);if(e)e->zstate_before=zs;}return data;}
+static void observed_write(unsigned address,unsigned char data){unsigned pc=cpu->pc.w.l,z=cpu->cycles,m=*mcycles;saved_write(address,data);if((address>=0x1f80&&address<0x2000)||address==0x1f2a)next(7,address,data,pc,z,m);}
+unsigned command_event_size(void){return sizeof(command_event);}size_t command_count(void){return count;}unsigned command_overflow(void){return overflow;}const command_event *command_events(void){return events;}
+void command_frame(unsigned f){frame=f;}
+int command_attach(void *fm,void *rs,void *rd,void *wr,void *z,void *mc,void *zb,void *zr,void *de,void *dt,void *dl,void *zs,size_t max){if(saved_fm||!max)return 0;fm_slot=fm;reset_slot=rs;read_slot=rd;write_slot=wr;saved_fm=*fm_slot;saved_reset=*reset_slot;saved_read=*read_slot;saved_write=*write_slot;cpu=z;mcycles=mc;bank=zb;ram=zr;dma_end_ptr=de;dma_type_ptr=dt;dma_remaining_ptr=dl;zstate_ptr=zs;capacity=max;count=overflow=frame=0;events=calloc(max,sizeof(*events));if(!events)return 0;latch[0]=latch[1]=255;*fm_slot=observed_fm;*reset_slot=observed_reset;*read_slot=observed_read;*write_slot=observed_write;return 1;}
+int command_detach(void){if(!saved_fm)return 0;int intact=*fm_slot==observed_fm&&*reset_slot==observed_reset&&*read_slot==observed_read&&*write_slot==observed_write;*fm_slot=saved_fm;*reset_slot=saved_reset;*read_slot=saved_read;*write_slot=saved_write;saved_fm=NULL;saved_reset=NULL;saved_read=NULL;saved_write=NULL;return intact;}
+void command_free(void){free(events);events=NULL;capacity=count=0;}

@@ -1,0 +1,12 @@
+{
+  "pass_": false,
+  "sort_by_raw_cycle": true,
+  "first_difference": {
+    "frame": 8,
+    "first_byte": 56
+  },
+  "frames": 12,
+  "stereo_frames": 8832,
+  "cpu_source_sha256": "fafee45b94e24b01779d94a45d11af25ac905ccab2737beeb75bbd82368463b9",
+  "scope": "Deliberate wrong hypothesis; old20no-difference correction kept"
+}

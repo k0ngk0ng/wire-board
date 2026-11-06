@@ -1,0 +1,70 @@
+route=direct-ghidra-headless; REA raw 68000 unsupported
+language=68000:BE:32:default
+source=MD Yu Yu Hakusho Japan; static reachable instructions only
+
+seeds=37f58,37fce,3807e scope=0x37f58..0x380a7
+00037f58 move.b #-0x80,(0x00a01f86).l
+00037f60 move.b (0x0,A0),(0x00a01f80).l
+00037f68 move.b (0x1,A0),(0x00a01f81).l
+00037f70 move.b D2b,(0x00a01f82).l
+00037f76 move.b D3b,(0x00a01f83).l
+00037f7c move.b D4b,(0x00a01f84).l
+00037f82 move.b D5b,(0x00a01f85).l
+00037f88 move.b (0x5,A0),(0x00a01ffb).l
+00037f90 move.b (0x5,A0),(0x00a01f87).l
+00037f98 move.b #-0x40,(0x00a01ffa).l
+00037fa0 move.w #0x0,(0x00a11100).l
+00037fa8 move (SP)+,SR
+00037faa btst.b #0x5,(0x5,A0)
+00037fb0 beq.w 0x00037fcc
+00037fb4 btst.l #0x5,D6
+00037fb8 bne.w 0x00037fcc
+00037fbc cmpi.b #0x2,(0xfffff82b).w
+00037fc2 beq.w 0x00037fcc
+00037fc6 move.b #0x1,(0xfffff82b).w
+00037fcc rts
+00037fce bclr.b #0x0,(0xfffff82c).w
+00037fd4 bsr.w 0x0003807e
+00037fd8 move SR,-(SP)
+00037fda ori #0x700,SR
+00037fde move.w #0x100,(0x00a11100).l
+00037fe6 bset.b #0x0,(0x00a11100).l
+00037fee bne.b 0x00037fe6
+00037ff0 btst.l #0x0,D6
+00037ff4 bne.w 0x00038008
+00037ff8 move.b #-0x80,(0x00a01ffe).l
+00038000 move.b #-0x80,(0x00a01ffd).l
+00038008 move.b #-0x80,(0x00a01fa6).l
+00038010 move.b (0x0,A0),(0x00a01fa0).l
+00038018 move.b (0x1,A0),(0x00a01fa1).l
+00038020 move.b D2b,(0x00a01fa2).l
+00038026 move.b D3b,(0x00a01fa3).l
+0003802c move.b D4b,(0x00a01fa4).l
+00038032 move.b D5b,(0x00a01fa5).l
+00038038 move.b (0x5,A0),(0x00a01ffb).l
+00038040 move.b (0x5,A0),(0x00a01fa7).l
+00038048 move.b #-0x40,(0x00a01ffa).l
+00038050 move.w #0x0,(0x00a11100).l
+00038058 move (SP)+,SR
+0003805a btst.b #0x5,(0x5,A0)
+00038060 beq.w 0x0003807c
+00038064 btst.l #0x5,D6
+00038068 bne.w 0x0003807c
+0003806c cmpi.b #0x2,(0xfffff82b).w
+00038072 beq.w 0x0003807c
+00038076 move.b #0x1,(0xfffff82b).w
+0003807c rts
+0003807e moveq 0x0,D0
+00038080 move.w (0x0,A0),D0w
+00038084 lsl.l #0x8,D0
+00038086 movea.l D0,A2
+00038088 move.b (0x3,A0),D0b
+0003808c lsl.w #0x8,D0w
+0003808e move.b (0x2,A0),D0b
+00038092 andi.w #0x7fff,D0w
+00038096 move.b (0x0,A2,D0w*0x1),D2b
+0003809a move.b (0x1,A2,D0w*0x1),D3b
+0003809e move.b (0x2,A2,D0w*0x1),D4b
+000380a2 move.b (0x3,A2,D0w*0x1),D5b
+000380a6 rts
+printed_instructions=64

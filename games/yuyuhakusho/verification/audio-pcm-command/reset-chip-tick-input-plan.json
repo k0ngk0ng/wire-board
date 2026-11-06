@@ -1,0 +1,13 @@
+{
+  "private_declared_input": true,
+  "begin": 7183006,
+  "end": 7185006,
+  "prior_original_store": 7183080,
+  "prior_original_operation_start": 7182885,
+  "prior_original_chip_tick": 7183008,
+  "previous_DAC": 115,
+  "new_DAC": 123,
+  "source": "pcm-command-native-expanded-final/idle-to-single.json.gz",
+  "purpose": "falsify sorting raw calls across completed Z80 store and 68k reset, preserving every raw timestamp",
+  "model_future_timestamps_are_inputs": false
+}

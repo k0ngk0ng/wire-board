@@ -1,0 +1,56 @@
+{
+  "pass": true,
+  "cases": [
+    {
+      "name": "opaque-dual-mixed-transfer",
+      "native_original_observed_equal": true,
+      "source_path": ".local/md-yuyuhakusho/pcm-command-opaque-boundaries/opaque-dual-mixed-transfer.json.gz",
+      "sha256": "a4b4fd51910bb11948c6289e656a988050d6de4c64c4ac3e8c4abcdfce1030e5",
+      "facts": {
+        "accepted_descriptor_bank_start_length_candidates": [
+          "050056ca0a0a",
+          "060057b6f81c"
+        ],
+        "actual_transferred_bank_start_length": "050057b6f81c",
+        "cycle": 46290
+      },
+      "opaque_resource_profile": "explicit rejection, no guessed source bytes or adjacentROM packaging"
+    },
+    {
+      "name": "opaque-single-mixed-header",
+      "native_original_observed_equal": true,
+      "source_path": ".local/md-yuyuhakusho/pcm-command-opaque-boundaries/opaque-single-mixed-header.json.gz",
+      "sha256": "31aa6cebcec33a11cfd2c5e8a9b5a5d50361eddc252fc4230afcaea5c1f8bd2a",
+      "facts": {
+        "original_header_candidates": [
+          589824,
+          458780
+        ],
+        "actual_first_header_reads": [
+          {
+            "mapped": 458752,
+            "byte": 32,
+            "cycle": 9285
+          },
+          {
+            "mapped": 458753,
+            "byte": 128,
+            "cycle": 9615
+          },
+          {
+            "mapped": 458754,
+            "byte": 206,
+            "cycle": 64485
+          },
+          {
+            "mapped": 458755,
+            "byte": 23,
+            "cycle": 64815
+          }
+        ]
+      },
+      "opaque_resource_profile": "explicit rejection, no guessed source bytes or adjacentROM packaging"
+    }
+  ],
+  "limits": "Declared private early replacements produce mixed nativeROM fields. This proves a boundary of the address-free resource profile, not normal world reachability."
+}

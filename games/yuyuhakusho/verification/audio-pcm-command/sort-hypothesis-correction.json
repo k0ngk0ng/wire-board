@@ -1,0 +1,18 @@
+{
+  "initial_attempt_produced_failure": false,
+  "original_20_cases_sorting_pcm_and_state_equal": true,
+  "initial_red_filename_was_inaccurate": "renamed without changing bytes",
+  "artifacts": [
+    {
+      "initial_name": "dsp-sort-raw-cycle-red.json",
+      "corrected_name": "dsp-sort-initial-no-difference.json",
+      "sha256": "99932ce323ff70717841f7cb492d5ee00d2d045552383ee584ffc09ac3e133b6"
+    },
+    {
+      "initial_name": "dsp-sort-raw-cycle-red.log",
+      "corrected_name": "dsp-sort-initial-no-difference.log",
+      "sha256": "c242d29cefea338a7897af30c5a22a08aa81d85d1c35383dc03bb8e1e6c05a8f"
+    }
+  ],
+  "next_test": "A new declared input resets inside a DAC operation with a chip tick strictly between reset raw time and completed store; no existing oracle values changed."
+}

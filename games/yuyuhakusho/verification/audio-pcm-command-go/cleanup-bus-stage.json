@@ -1,0 +1,21 @@
+{
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-go-control-red",
+      "files": 1,
+      "bytes": 5446
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-go-dma-red",
+      "files": 1,
+      "bytes": 979
+    },
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-go-supplement-input",
+      "files": 2,
+      "bytes": 3624108
+    }
+  ],
+  "bytes": 3630533,
+  "kept": "All canonical original raw data remain in parent-owned source locations; accepted portable originals, actual red source/logs and frozen v1/v2/bus source copies preserved. Shared Go caches and other owners untouched."
+}

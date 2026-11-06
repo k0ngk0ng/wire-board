@@ -31,6 +31,8 @@ const (
 	Hold InputKind = iota
 	Ordinary
 	Music
+	SetRestorePan
+	HardReset
 )
 
 type Destination uint8
@@ -44,12 +46,15 @@ const (
 type Kind string
 
 const (
-	DAC      Kind = "dac"
-	Pan      Kind = "pan"
-	Enable   Kind = "enable"
-	Bank     Kind = "bank"
-	Metadata Kind = "metadata"
-	Dummy    Kind = "dummy"
+	DAC       Kind = "dac"
+	Pan       Kind = "pan"
+	Enable    Kind = "enable"
+	Bank      Kind = "bank"
+	Metadata  Kind = "metadata"
+	Dummy     Kind = "dummy"
+	YMWrite   Kind = "ym-write"
+	Reset     Kind = "reset"
+	YMAddress Kind = "ym-address"
 )
 
 // Resources borrows an immutable catalog. The device stores IDs and never
@@ -69,6 +74,8 @@ type Config struct {
 	Descriptors []Descriptor
 	Origin      uint64
 	RestorePan  uint8
+
+	IncludeYMAddresses bool
 }
 
 // Ordinary inputs are accepted upstream arbitration decisions. StartDual is the
@@ -97,6 +104,9 @@ type Event struct {
 	PayloadID         string
 	Offset            uint32
 	Bus               *phaseclock.Effect
+	Register          uint16
+
+	Port uint8
 }
 type Transaction struct{ Begin, End, Grant, Resume uint64 }
 type Status struct {
@@ -113,6 +123,7 @@ func (s Status) PanRedirect() bool { return s.StartMarker != 0 }
 type Frame struct {
 	Index        uint64
 	Events       []Event
+	Ledger       []Event
 	Transactions []Transaction
 	Status       Status
 }
@@ -146,6 +157,8 @@ type Work struct {
 type HeldWindow struct {
 	Input Input
 	Grant uint64
+
+	Open bool
 }
 
 // Frame counts completed reference flushes; Time is the independent execution
@@ -163,6 +176,8 @@ type State struct {
 	Work        Work
 	Held        *HeldWindow
 	WaitFlag    bool
+
+	PendingLedger []Event
 }
 type library struct {
 	resources   Resources
@@ -170,6 +185,8 @@ type library struct {
 	lengths     map[string]uint32
 	identity    string
 	origin      uint64
+
+	includeYMAddresses bool
 }
 type Device struct {
 	library *library
@@ -225,6 +242,10 @@ func New(config Config) (*Device, error) {
 		Origin      uint64
 		RestorePan  uint8
 	}{config.Resources.Identity, descriptors, config.Origin, config.RestorePan})
+	if config.IncludeYMAddresses {
+		raw = append(raw, []byte("\x00pcm-physical-ym-addresses-v1")...)
+	}
+	l.includeYMAddresses = config.IncludeYMAddresses
 	digest := sha256.Sum256(raw)
 	l.identity = hex.EncodeToString(digest[:])
 	d := &Device{library: l, state: State{Version: 1, Identity: l.identity, Time: config.Origin, Phase: "idle", Global: Globals{RestorePan: config.RestorePan}}}
@@ -234,6 +255,7 @@ func New(config Config) (*Device, error) {
 	return d, nil
 }
 func clone(s State) State {
+	s.PendingLedger = cloneEvents(s.PendingLedger)
 	if s.Single != nil {
 		x := *s.Single
 		s.Single = &x
@@ -344,13 +366,19 @@ func (d *Device) emit(ticks uint16, kind Kind, value uint8, id string, offset ui
 		d.state.Time = origin + uint64(effect.Z80After)
 		d.state.WaitFlag = d.state.WaitFlag || effect.SetWaitFlag
 	}
-	d.frame.Events = append(d.frame.Events, e)
+	d.frame.Ledger = append(d.frame.Ledger, e)
 }
 func (d *Device) validateInput(in Input) error {
-	if in.Kind > Music || in.End < in.Begin || in.End > math.MaxUint64-14 || in.Destination > SlotB {
+	if in.Kind > HardReset || in.End < in.Begin || in.End > math.MaxUint64-14 || in.Destination > SlotB {
 		return errors.New("invalid PCM input interval/kind")
 	}
-	if in.Kind == Hold {
+	if in.Kind == SetRestorePan {
+		if in.DescriptorID != "" || in.StartDual || in.Destination != Single {
+			return errors.New("restore pan carries a PCM descriptor")
+		}
+		return nil
+	}
+	if in.Kind == Hold || in.Kind == HardReset {
 		if in.DescriptorID != "" || in.StartDual || in.Pan != 0 || in.Destination != Single {
 			return errors.New("hold carries a PCM command")
 		}
@@ -377,7 +405,7 @@ func (d *Device) validateInput(in Input) error {
 func (d *Device) publish(in Input) {
 	// This opaque-resource profile cannot synthesize a ROM source assembled
 	// from fields of two descriptors. Refuse those unverified interleavings.
-	if in.Kind != Hold {
+	if in.Kind == Ordinary || in.Kind == Music {
 		switch d.state.Phase {
 		case "s-init", "s-pan-pad", "s-bank-setup", "s-bank-serial", "s-prime-start", "s-header-start":
 			d.err = errors.New("PCM descriptor publication overlaps single metadata capture")
@@ -390,6 +418,10 @@ func (d *Device) publish(in Input) {
 		}
 	}
 	if in.Kind == Hold {
+		return
+	}
+	if in.Kind == SetRestorePan {
+		d.state.Global.RestorePan = in.Pan
 		return
 	}
 	descriptor := d.descriptor(in.DescriptorID)
@@ -425,7 +457,14 @@ func (d *Device) publish(in Input) {
 func (d *Device) release() {
 	h := d.state.Held
 	resume := (h.Input.End + 14) / 15 * 15
-	d.publish(h.Input)
+	if h.Input.Kind == HardReset {
+		d.frame.Ledger = append(d.frame.Ledger, Event{Cycle: h.Input.End, StartCycle: h.Input.End, Kind: Reset})
+		d.state.Work = Work{}
+		d.state.WaitFlag = false
+		d.next("boot")
+	} else {
+		d.publish(h.Input)
+	}
 	d.state.Time = resume
 	d.frame.Transactions = append(d.frame.Transactions, Transaction{Begin: h.Input.Begin, End: h.Input.End, Grant: h.Grant, Resume: resume})
 	d.state.Held = nil
@@ -441,7 +480,10 @@ func (d *Device) AdvanceFrame(plan FramePlan) (Frame, error) {
 		return Frame{}, errors.New("PCM frame input cap exceeded")
 	}
 	lastEnd := origin
-	if before.Held != nil && before.Held.Input.End > lastEnd {
+	if before.Held != nil && before.Held.Open && len(plan.Inputs) != 0 {
+		return Frame{}, errors.New("open hardware bus must be released before planned windows")
+	}
+	if before.Held != nil && !before.Held.Open && before.Held.Input.End > lastEnd {
 		lastEnd = before.Held.Input.End
 	}
 	for _, in := range plan.Inputs {
@@ -455,7 +497,7 @@ func (d *Device) AdvanceFrame(plan FramePlan) (Frame, error) {
 	}
 	var lastBegin uint32
 	for i, v := range plan.DMA {
-		if v.Mode > 3 || v.End < v.Begin || uint64(v.Begin) >= FrameCycles || uint64(v.End) > FrameCycles || i > 0 && v.Begin <= lastBegin {
+		if v.Remaining != 0 || v.Mode > 3 || v.End < v.Begin || uint64(v.Begin) >= FrameCycles || uint64(v.End) > FrameCycles || i > 0 && v.Begin <= lastBegin {
 			return Frame{}, errors.New("invalid PCM DMA interval")
 		}
 		lastBegin = v.Begin
@@ -463,13 +505,14 @@ func (d *Device) AdvanceFrame(plan FramePlan) (Frame, error) {
 	n := *d
 	n.state = clone(d.state)
 	n.plan = FramePlan{Inputs: append([]Input(nil), plan.Inputs...), DMA: append([]DMAInterval(nil), plan.DMA...)}
-	n.frame = Frame{Index: before.Frame, Events: []Event{}}
+	n.frame = Frame{Index: before.Frame, Events: []Event{}, Ledger: cloneEvents(n.state.PendingLedger)}
+	n.state.PendingLedger = nil
 	n.err = nil
 	cursor := 0
 	steps := 0
 	for {
 		if n.state.Held != nil {
-			if n.state.Held.Input.End >= end {
+			if n.state.Held.Open || n.state.Held.Input.End >= end {
 				break
 			}
 			n.release()
@@ -482,6 +525,10 @@ func (d *Device) AdvanceFrame(plan FramePlan) (Frame, error) {
 			in := plan.Inputs[cursor]
 			cursor++
 			n.state.Held = &HeldWindow{Input: in, Grant: n.state.Time}
+			if in.Kind == HardReset {
+				n.frame.Ledger = append(n.frame.Ledger, Event{Cycle: in.Begin, StartCycle: in.Begin, Kind: Reset})
+				n.state.WaitFlag = false
+			}
 			continue
 		}
 		if n.state.Time >= end {
@@ -504,6 +551,11 @@ func (d *Device) AdvanceFrame(plan FramePlan) (Frame, error) {
 		return Frame{}, errors.New("PCM frame left unconsumed inputs")
 	}
 	n.state.Frame++
+	for _, event := range n.frame.Ledger {
+		if event.Kind != YMWrite && event.Kind != Reset && event.Kind != YMAddress {
+			n.frame.Events = append(n.frame.Events, event)
+		}
+	}
 	n.frame.Status = n.Status()
 	d.state = n.state
 	return n.frame, nil

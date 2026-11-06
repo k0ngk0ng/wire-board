@@ -1,0 +1,1 @@
+{"name": "single-reset-crossing-chip-tick", "pass": true, "reference_frames": 12, "stereo_frames": 8832, "nonzero_native_samples": 17228, "first_difference": null, "raw_timestamp_reversals": [{"previous_cycle": 7183080, "cycle": 7183006, "kind": "reset"}], "native_sha256": "fafee45b94e24b01779d94a45d11af25ac905ccab2737beeb75bbd82368463b9"}

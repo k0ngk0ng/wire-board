@@ -1,0 +1,133 @@
+{
+  "pass": true,
+  "scope": "Segmented real PCM hardware bus with actual mailbox, immutable sources and one pending output owner; current data/control/reset domain",
+  "source_manifest_sha256": "75466a35d97ccddcbcf640de9f93afcad77001a8a2d9f5c632f1ffa17247d877",
+  "sources": [
+    {
+      "path": "docs/research/md-yuyuhakusho/AUDIO_PCM_COMMAND_GO_BUS.md",
+      "sha256": "15b545dc7be797b820bdfa88fbd107bdab45f6cf1cbfe20a1c16aacba8242152",
+      "frozen_copy": "games/yuyuhakusho/verification/audio-pcm-command-go/bus-source/00-AUDIO_PCM_COMMAND_GO_BUS.md.txt"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/AUDIO_PCM_COMMAND_GO_BUS_FAILURES.md",
+      "sha256": "9863665da8596d60972243cb2012e306539534be313537a14cfd5511a3cf39b5",
+      "frozen_copy": "games/yuyuhakusho/verification/audio-pcm-command-go/bus-source/01-AUDIO_PCM_COMMAND_GO_BUS_FAILURES.md.txt"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmcommands/README.md",
+      "sha256": "fe114abfc64e8ddfb51ae7e876a6b97b6edd212595af0434b9d9e7a01d0b5b22",
+      "frozen_copy": "games/yuyuhakusho/verification/audio-pcm-command-go/bus-source/02-README.md.txt"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmcommands/bus_bridge.go",
+      "sha256": "ec76ed3b45a58efa7a9eb549908ed1896cbbbab1265e3d8e8ee76d584cf3da66",
+      "frozen_copy": "games/yuyuhakusho/verification/audio-pcm-command-go/bus-source/03-bus_bridge.go.txt"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmcommands/bus_bridge_e2e_test.go",
+      "sha256": "2f1fd5268cff16ec3df2aa859c92462fe9b1c4ff73000dbd5358ad6e6e5c82f6",
+      "frozen_copy": "games/yuyuhakusho/verification/audio-pcm-command-go/bus-source/04-bus_bridge_e2e_test.go.txt"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmcommands/bus_pending_boundary_test.go",
+      "sha256": "3582ab0fea321d7f13e420f36282cedb6650f27d6d960e645ee184ca86b15184",
+      "frozen_copy": "games/yuyuhakusho/verification/audio-pcm-command-go/bus-source/05-bus_pending_boundary_test.go.txt"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmcommands/controls_e2e_test.go",
+      "sha256": "43370bb302461bbd731f7f89401e06c33905a2608790eda6dc329bebeace5fe2",
+      "frozen_copy": "games/yuyuhakusho/verification/audio-pcm-command-go/bus-source/06-controls_e2e_test.go.txt"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmcommands/controls_supplement_e2e_test.go",
+      "sha256": "62412a0dbe92e67b30c0bd395102882149152b4e1346de5575e38edab71c73b0",
+      "frozen_copy": "games/yuyuhakusho/verification/audio-pcm-command-go/bus-source/07-controls_supplement_e2e_test.go.txt"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmcommands/device.go",
+      "sha256": "bd1060eb000839bd844610cc8f9091620926c7ec75795b381d5040b0d62a3320",
+      "frozen_copy": "games/yuyuhakusho/verification/audio-pcm-command-go/bus-source/08-device.go.txt"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmcommands/device_e2e_test.go",
+      "sha256": "0cafbd42860b4b38dd58133af02d8b0689bd6000db576ac5452d42b6798beaa0",
+      "frozen_copy": "games/yuyuhakusho/verification/audio-pcm-command-go/bus-source/09-device_e2e_test.go.txt"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmcommands/dma_domain_test.go",
+      "sha256": "b873aca6586f420a583d5a3d29111d06d75875dba58b5e24845ddfa6d97ec161",
+      "frozen_copy": "games/yuyuhakusho/verification/audio-pcm-command-go/bus-source/10-dma_domain_test.go.txt"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmcommands/phases_control.go",
+      "sha256": "a08151b591ad9f1b5f276f331ac316518ed83342283a17b01195abd4b3790d03",
+      "frozen_copy": "games/yuyuhakusho/verification/audio-pcm-command-go/bus-source/11-phases_control.go.txt"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmcommands/phases_dual.go",
+      "sha256": "b3ecf57aba5620577dc3864c29b23364f351ea8c37bedc671677fb16774ff7af",
+      "frozen_copy": "games/yuyuhakusho/verification/audio-pcm-command-go/bus-source/12-phases_dual.go.txt"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmcommands/phases_single.go",
+      "sha256": "7cd3f0b83693d1e22998df12f5cd79d2ee9d5371dc75718f41c39fac2661a4b1",
+      "frozen_copy": "games/yuyuhakusho/verification/audio-pcm-command-go/bus-source/13-phases_single.go.txt"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmcommands/restore_boundary_test.go",
+      "sha256": "8a5f3c900255e9bef0142bcd3917a544a5e6eee0a054abf99e9030b473526fed",
+      "frozen_copy": "games/yuyuhakusho/verification/audio-pcm-command-go/bus-source/14-restore_boundary_test.go.txt"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmcommands/state.go",
+      "sha256": "d2125bb856fa024dade12805fa995c74623e5b966d1a985c77053d4a3d757c98",
+      "frozen_copy": "games/yuyuhakusho/verification/audio-pcm-command-go/bus-source/15-state.go.txt"
+    },
+    {
+      "path": "scripts/yuyuhakusho/pcm-command-go-export-mailboxes.py",
+      "sha256": "ff59d9fd695f03cc6e1a019e475cd17ea55f7d8c7368b85b37d911e937b64d38",
+      "frozen_copy": "games/yuyuhakusho/verification/audio-pcm-command-go/bus-source/16-pcm-command-go-export-mailboxes.py.txt"
+    }
+  ],
+  "native_segmented_streams": 17,
+  "native_segmented_events": 272526,
+  "checks": [
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command-go/native-bus-race.jsonl",
+      "sha256": "9fafb0e22b4d14e624f6176eba5c7ed07c743740d8b3cdd7a07e51ef4dfd818d",
+      "top_level_tests": 13,
+      "subtests": 67
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command-go/wasm-bus.jsonl",
+      "sha256": "32ab3ad083a1e62a12ad7d679620f10383c13eb0c43b844e067b4ad84ef9432c",
+      "top_level_tests": 13,
+      "subtests": 67
+    }
+  ],
+  "vet": {
+    "path": "games/yuyuhakusho/verification/audio-pcm-command-go/vet-bus.txt",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "exit_code": 0
+  },
+  "native_mailboxes_fixture": {
+    "path": "games/yuyuhakusho/audio/pcmcommands/testdata/original-command-bus-mailboxes.json.gz",
+    "sha256": "f6221f45df1ed33b182a58015069b3f7ed130bc23283680579a503d43e4aaea7"
+  },
+  "main_clock_duplicated": false,
+  "input_history_replayed": false,
+  "pending_output_limit": 4096,
+  "pending_output_snapshot_owned": true,
+  "unified_hardware_level": true,
+  "full_aux_address_latch_verified": false,
+  "world_irq_scheduled": false,
+  "platform_wired": false,
+  "failure_evidence": [
+    "bus-native-api-red.jsonl",
+    "bus-second.jsonl",
+    "state-before-partial-frame-frontier-fix.go.txt",
+    "bus-pending-wrap-red.jsonl",
+    "bus-before-pending-wrap-fix.go.txt"
+  ],
+  "independent_service_evidence": "verification/score-clock-bus maintained by phase_clock owner: actual Device and chips.Interactive; Main IO/real mailbox/aux data domain, no fake busy"
+}

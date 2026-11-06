@@ -1,0 +1,218 @@
+{
+  "pass": true,
+  "scope": "Autonomous typed command/payload/window model into DAC-only reference frame DSP; no FM synthesis/world/physical speaker claim",
+  "sort_by_cycle": true,
+  "raw_cycles_clamped": false,
+  "model_sha256": "39a89a2f92a2f2afb71e9a9ba4ae725b8709aafa68b5472f20ee7cf805529c39",
+  "checker_sha256": "91b7ac11d907c170a66091aa9d48f408d01cded5f22c3f6cd4bcbf1b6f1cc5ec",
+  "dsp_prototype_sha256": "755364d6379a89a58ced263f3ed4615f424e02bc03cc9a1cc376680a3d450c6b",
+  "kernel_source_sha256": "e4ca194284710361b033505aeb1f4283ae8d2e8cdcd2153a598604743f99abaf",
+  "cases": [
+    {
+      "name": "dual-append",
+      "pass": true,
+      "reference_frames": 125,
+      "stereo_frames": 91994,
+      "nonzero_native_samples": 172148,
+      "first_difference": null,
+      "raw_timestamp_reversals": [],
+      "native_sha256": "7d44a9d51d2c0f765aa1e4a60cb1e7f1a9d4cff76ddc1732aac7c6b0f1f0b9d2"
+    },
+    {
+      "name": "dual-dma",
+      "pass": true,
+      "reference_frames": 46,
+      "stereo_frames": 33854,
+      "nonzero_native_samples": 61414,
+      "first_difference": null,
+      "raw_timestamp_reversals": [],
+      "native_sha256": "ff44bd973604c7720eac1b3d18f61832f003a15703571d4b93927e4b490c4466"
+    },
+    {
+      "name": "dual-hard-reset",
+      "pass": true,
+      "reference_frames": 25,
+      "stereo_frames": 18399,
+      "nonzero_native_samples": 35910,
+      "first_difference": null,
+      "raw_timestamp_reversals": [],
+      "native_sha256": "ab5e1f3aa653fcacc98e67d1ab172cd3c3dcd14fe1a611858469bcea222308a7"
+    },
+    {
+      "name": "dual-pause",
+      "pass": true,
+      "reference_frames": 48,
+      "stereo_frames": 35326,
+      "nonzero_native_samples": 65700,
+      "first_difference": null,
+      "raw_timestamp_reversals": [],
+      "native_sha256": "d701eeac7b345840d52ec2505ddffbbf5feebe44e68a6017b99abd19414622a4"
+    },
+    {
+      "name": "dual-replace-a",
+      "pass": true,
+      "reference_frames": 125,
+      "stereo_frames": 91994,
+      "nonzero_native_samples": 73060,
+      "first_difference": null,
+      "raw_timestamp_reversals": [],
+      "native_sha256": "8ce0cb8873d6abd9196c2610761329878839dc815b66410773927cc72be9acbf"
+    },
+    {
+      "name": "dual-to-single",
+      "pass": true,
+      "reference_frames": 80,
+      "stereo_frames": 58876,
+      "nonzero_native_samples": 101774,
+      "first_difference": null,
+      "raw_timestamp_reversals": [],
+      "native_sha256": "cc195eee06d77116cbf5a1264307bf38f5771763d83bff625a345fdc21471735"
+    },
+    {
+      "name": "idle-to-dual-a",
+      "pass": true,
+      "reference_frames": 44,
+      "stereo_frames": 32382,
+      "nonzero_native_samples": 61306,
+      "first_difference": null,
+      "raw_timestamp_reversals": [],
+      "native_sha256": "b65c03014c89d07f4a50260f33788659a933f247c390855fc3b793dde142b5af"
+    },
+    {
+      "name": "idle-to-dual-b",
+      "pass": true,
+      "reference_frames": 22,
+      "stereo_frames": 16191,
+      "nonzero_native_samples": 29536,
+      "first_difference": null,
+      "raw_timestamp_reversals": [],
+      "native_sha256": "32502d36bcc7707de705fc0f7fbe7b2e356641b92a3ed6d8e70c3fa58edd0a88"
+    },
+    {
+      "name": "idle-to-single",
+      "pass": true,
+      "reference_frames": 66,
+      "stereo_frames": 48573,
+      "nonzero_native_samples": 90724,
+      "first_difference": null,
+      "raw_timestamp_reversals": [],
+      "native_sha256": "68944e4a89363d8bcbaf0639f7715bfce24125986b452f726cfd97d82bf321c5"
+    },
+    {
+      "name": "internal-single-byte",
+      "pass": true,
+      "reference_frames": 5,
+      "stereo_frames": 3680,
+      "nonzero_native_samples": 0,
+      "first_difference": null,
+      "raw_timestamp_reversals": [],
+      "native_sha256": "4d5c1260926405350a274dc64e9640736fb0ea4df86612120f5f9007ff0060bd"
+    },
+    {
+      "name": "legitimate-f0-remap",
+      "pass": true,
+      "reference_frames": 108,
+      "stereo_frames": 79483,
+      "nonzero_native_samples": 151342,
+      "first_difference": null,
+      "raw_timestamp_reversals": [],
+      "native_sha256": "d8813465ec0295e2355c1c5fe3a61e99f483077897cc8b72ae551ac54cb2b8f5"
+    },
+    {
+      "name": "music-from-idle",
+      "pass": true,
+      "reference_frames": 22,
+      "stereo_frames": 16191,
+      "nonzero_native_samples": 27147,
+      "first_difference": null,
+      "raw_timestamp_reversals": [],
+      "native_sha256": "994f10ae2b41ea4829c2e753b135118cdb5c40511eb0844d26a417652ca7efdb"
+    },
+    {
+      "name": "music-pan-restore",
+      "pass": true,
+      "reference_frames": 26,
+      "stereo_frames": 19135,
+      "nonzero_native_samples": 27154,
+      "first_difference": null,
+      "raw_timestamp_reversals": [],
+      "native_sha256": "9c1206525c7f2903d69d60a14dcc4dfc09ac11ed501b0a39c9c4cf183a34e1c4"
+    },
+    {
+      "name": "music-replace",
+      "pass": true,
+      "reference_frames": 35,
+      "stereo_frames": 25759,
+      "nonzero_native_samples": 31742,
+      "first_difference": null,
+      "raw_timestamp_reversals": [],
+      "native_sha256": "bccee9c7948b12b0ae8775a3f4012cd271fa8dabc06ffe934537735ecf1d8e8f"
+    },
+    {
+      "name": "single-dma",
+      "pass": true,
+      "reference_frames": 68,
+      "stereo_frames": 50045,
+      "nonzero_native_samples": 90872,
+      "first_difference": null,
+      "raw_timestamp_reversals": [],
+      "native_sha256": "d6ee6d4031671fc074a4cfd18ff6daa9508b0382e2d97bc5be02c0470f1520cb"
+    },
+    {
+      "name": "single-hard-reset",
+      "pass": true,
+      "reference_frames": 75,
+      "stereo_frames": 55197,
+      "nonzero_native_samples": 104008,
+      "first_difference": null,
+      "raw_timestamp_reversals": [],
+      "native_sha256": "8931d47fa38cddf4fdf031b4aef56d2c2caefd283c4beefc89e1665956011028"
+    },
+    {
+      "name": "single-pause",
+      "pass": true,
+      "reference_frames": 70,
+      "stereo_frames": 51517,
+      "nonzero_native_samples": 95164,
+      "first_difference": null,
+      "raw_timestamp_reversals": [],
+      "native_sha256": "5a791f856fca2c81cff58716b86ddbb4295798fe2febf545af3f47b05c3d1706"
+    },
+    {
+      "name": "single-replace",
+      "pass": true,
+      "reference_frames": 75,
+      "stereo_frames": 55197,
+      "nonzero_native_samples": 102550,
+      "first_difference": null,
+      "raw_timestamp_reversals": [],
+      "native_sha256": "c422550440607ff6e00bc161f98279d41468aa89057494383b5e541b6216f174"
+    },
+    {
+      "name": "single-reset-during-dac-operation",
+      "pass": true,
+      "reference_frames": 12,
+      "stereo_frames": 8832,
+      "nonzero_native_samples": 17250,
+      "first_difference": null,
+      "raw_timestamp_reversals": [
+        {
+          "previous_cycle": 7186425,
+          "cycle": 7186321,
+          "kind": "reset"
+        }
+      ],
+      "native_sha256": "a6ed5d78ceff03308f452ec343cb1e9c8927b3c9cd76f2370d550cc61eba5bad"
+    },
+    {
+      "name": "single-to-dual",
+      "pass": true,
+      "reference_frames": 125,
+      "stereo_frames": 91994,
+      "nonzero_native_samples": 180256,
+      "first_difference": null,
+      "raw_timestamp_reversals": [],
+      "native_sha256": "ec3fb00ed46f8dd14ae94cdcf34bd35fb03cec64b5faaef36bb356454d601cbc"
+    }
+  ]
+}

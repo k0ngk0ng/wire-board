@@ -1,0 +1,22 @@
+package pcmcommands_address_red_test
+import (
+ "bytes"
+ "compress/gzip"
+ "crypto/sha256"
+ "encoding/hex"
+ "encoding/json"
+ "flag"
+ "io"
+ "os"
+ "testing"
+ pcmc "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/pcmcommands"
+ "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips"
+)
+var vector=flag.String("ports-vector","","original physical-port vector")
+func TestDataTimeAddressRepairMatchesInterruptedNativeLatch(t *testing.T){
+ raw,e:=os.ReadFile(*vector);if e!=nil{t.Fatal(e)};r,e:=gzip.NewReader(bytes.NewReader(raw));if e!=nil{t.Fatal(e)};defer r.Close();raw,e=io.ReadAll(r);if e!=nil{t.Fatal(e)}
+ var body struct{Cases []struct{Name,SourceSHA256 string;Payloads map[string]string;Descriptors []pcmc.Descriptor;Inputs []pcmc.Input;Frames []struct{YMAddress uint16}}};if e=json.Unmarshal(raw,&body);e!=nil{t.Fatal(e)}
+ for _,c:=range body.Cases{if c.Name!="single-reset-between-address-data"{continue};data:=map[string][]byte{};for id,h:=range c.Payloads{b,e:=hex.DecodeString(h);if e!=nil{t.Fatal(e)};data[id]=b};identity:=sha256.Sum256([]byte(c.SourceSHA256));cfg:=pcmc.Config{Resources:pcmc.Resources{Identity:hex.EncodeToString(identity[:]),Length:func(id string)(uint32,bool){b,ok:=data[id];return uint32(len(b)),ok},ByteAt:func(id string,i uint32)(byte,bool){b,ok:=data[id];if !ok||i>=uint32(len(b)){return 0,false};return b[i],true}},Descriptors:c.Descriptors};d,e:=pcmc.New(cfg);if e!=nil{t.Fatal(e)};ym,e:=chips.NewYM(chips.ResetYMState());if e!=nil{t.Fatal(e)}
+  for f,expected:=range c.Frames{var inputs []pcmc.Input;for _,in:=range c.Inputs{if in.Begin/pcmc.FrameCycles==uint64(f){inputs=append(inputs,in)}};frame,e:=d.AdvanceFrame(pcmc.FramePlan{Inputs:inputs});if e!=nil{t.Fatal(e)};for _,event:=range frame.Ledger{switch event.Kind{case pcmc.DAC:e=ym.WriteRegister(0,0x2a,event.Value);case pcmc.Enable:e=ym.WriteRegister(0,0x2b,event.Value);case pcmc.Pan:e=ym.WriteRegister(1,0xb6,event.Value);case pcmc.YMWrite:e=ym.WriteRegister(uint8(event.Register>>8),uint8(event.Register),event.Value);case pcmc.Reset:s:=chips.ResetYMState();s.Address=ym.Snapshot().Address;ym,e=chips.NewYM(s)};if e!=nil{t.Fatal(e)}};if actual:=ym.Snapshot().Address;actual!=expected.YMAddress{t.Fatalf("data-time hypothesis native frame%d address=%x actual=%x",f,expected.YMAddress,actual)}};return
+ };t.Fatal("interrupted native case missing")
+}

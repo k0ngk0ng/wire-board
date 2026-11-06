@@ -1,0 +1,112 @@
+"""Declared typed PCM commands and bus windows from an empty native player."""
+from pathlib import Path
+import argparse,ctypes as C,gzip,json,runpy
+from reference import ROOT,sha
+from extract_audio_assets import AudioSession,sample_descriptor
+from research_audio_loops import quiet_checkpoint
+from inspect_dac_dsp_state import symbols,snapshot,YM
+Z80=runpy.run_path(str(ROOT/'scripts/yuyuhakusho/pcm-player-capture.py'))['Z80']
+F=896040;ORIGINAL=ROOT/'.local/md-yuyuhakusho/tools/genesis_plus_gx_libretro.dylib';OBSERVED=ROOT/'.local/md-yuyuhakusho/tools/Genesis-Plus-GX-60bee4c724859710ce05672239e5b601ad01382e/genesis_plus_gx_libretro.dylib';BRIDGE=ROOT/'.local/md-yuyuhakusho/pcm-command-tools/observer.dylib'
+class Event(C.Structure):
+ _fields_=[(k,C.c_uint32)for k in ['kind','frame','cycles_before','cycles_after','m68k_before','m68k_after','z80_before','z80_after','address','data','bank','pc']]+[('registers',C.c_uint32*13),('state',C.c_ubyte*128),('busy',C.c_uint32)]+[(name,C.c_uint32)for name in ['dma_end','dma_type','dma_remaining','zstate_before','zstate_after']]
+def pub(code,at=0,target='single',hold=0,protocol='ordinary',pan=192):return {'kind':'publish','begin':at,'end':at+hold,'code':code,'target':target,'protocol':protocol,'pan':pan}
+CASES=[{'name':'idle-to-single','frames':66,'inputs':[pub(0x73)]},{'name':'idle-to-dual-a','frames':44,'inputs':[pub(6,target='a')]},{'name':'idle-to-dual-b','frames':22,'inputs':[pub(0x7a,target='b')]},
+ {'name':'dual-append','frames':125,'inputs':[pub(0x1f,target='a'),pub(0x3f,8*F+20000,'b',2000)]},
+ {'name':'dual-replace-a','frames':125,'inputs':[pub(0x1f,target='a'),pub(6,8*F+20000,'a',2000)]},
+ {'name':'single-to-dual','frames':125,'inputs':[pub(0x73),pub(0x1f,8*F+20000,'a',2000)]},
+ {'name':'dual-to-single','frames':80,'inputs':[pub(6,target='a'),pub(0x73,8*F+20000,'single',2000)]},
+ {'name':'single-replace','frames':75,'inputs':[pub(0x73),pub(0x73,8*F+20000,'single',2000)]},
+ {'name':'music-from-idle','frames':22,'inputs':[pub(0x81,protocol='music',pan=64)]},
+ {'name':'music-replace','frames':35,'inputs':[pub(0x81,protocol='music',pan=64),pub(0x83,4*F+15000,'single',2000,'music',128)]},
+ {'name':'single-pause','frames':70,'inputs':[pub(0x73),{'kind':'hold','begin':8*F+20000,'end':11*F+35000}]},
+ {'name':'dual-pause','frames':48,'inputs':[pub(6,target='a'),{'kind':'hold','begin':8*F+20000,'end':11*F+35000}]}]
+CASES.extend([
+ {'name':'internal-single-byte','frames':5,'inputs':[pub(0x7f)]},
+ {'name':'legitimate-f0-remap','frames':108,'inputs':[pub(0xf0,target='b')]},
+ {'name':'music-pan-restore','frames':26,'inputs':[pub(0x81,protocol='music',pan=64),{'kind':'restore-pan','begin':4*F+15000,'end':4*F+17000,'pan':128}]},
+ {'name':'single-dma','frames':68,'inputs':[pub(0x73)],'dma':[{'frame':8,'end':90000,'mode':0,'remaining':0}]},
+ {'name':'dual-dma','frames':46,'inputs':[pub(6,target='a')],'dma':[{'frame':8,'end':90000,'mode':1,'remaining':0}]},
+ {'name':'dual-hard-reset','frames':25,'inputs':[pub(0x1f,target='a'),{'kind':'reset','begin':8*F+20000,'end':8*F+22000},pub(6,9*F+20000,'a',2000)]},
+ {'name':'single-hard-reset','frames':75,'inputs':[pub(0x73),{'kind':'reset','begin':8*F+20000,'end':8*F+22000},pub(0x73,9*F+20000,'single',2000)]},
+ {'name':'single-reset-during-dac-operation','frames':12,'inputs':[pub(0x73),{'kind':'reset','begin':8*F+18001,'end':8*F+20001}]},
+ {'name':'single-reset-crossing-chip-tick','frames':12,'inputs':[pub(0x73),{'kind':'reset','begin':7183006,'end':7185006}]},
+ {'name':'dual-hard-reset-complete','frames':55,'inputs':[pub(0x1f,target='a'),{'kind':'reset','begin':8*F+20000,'end':8*F+22000},pub(6,9*F+20000,'a',2000)]},
+ {'name':'single-reset-between-address-data','frames':5,'inputs':[pub(0x73),{'kind':'reset','begin':71300,'end':2*F+10000}]},
+ {'name':'opaque-single-mixed-header','frames':4,'inputs':[pub(0x73),pub(0x7f,2000,'single',2000)]},
+ {'name':'opaque-dual-mixed-transfer','frames':4,'inputs':[pub(6,target='a'),pub(0x1f,43344,'a',2000)]},
+])
+def resource(rom,action):
+ code=action['code']
+ if action['protocol']=='ordinary':d=sample_descriptor(rom,code)if code!=0xf0 else ordinary_remapped(rom,122);raw=bytes.fromhex(d['descriptor_bytes'])
+ else:
+  raw=rom[0x37724+(code-0x81)*8:0x3772c+(code-0x81)*8];bank=(raw[0]<<16)|((raw[1]&128)<<8);head=bank+(int.from_bytes(raw[2:4],'little')&0x7fff);header=rom[head:head+4];begin=bank+(int.from_bytes(header[:2],'little')&0x7fff);size=int.from_bytes(header[2:],'little');assert size>128 and begin+size<=len(rom)
+  d={'descriptor_bytes':raw.hex(),'sample_address':begin,'encoded_bytes':size,'header_address':head,'header_bytes':header.hex(),'z80_header':int.from_bytes(raw[2:4],'little')}
+ data=rom[d['sample_address']:d['sample_address']+d['encoded_bytes']];return {'id':sha(data),'encoded_hex':data.hex(),'rate':raw[4],'flags':raw[5],'ordinary_routing':raw[6],'source':d}
+def ordinary_remapped(rom,index):
+ raw=rom[0x380a8+index*8:0x380b0+index*8];bank=(raw[0]<<16)|((raw[1]&128)<<8);head=bank+(int.from_bytes(raw[2:4],'little')&32767);h=rom[head:head+4];return {'descriptor_bytes':raw.hex(),'sample_address':bank+(int.from_bytes(h[:2],'little')&32767),'encoded_bytes':int.from_bytes(h[2:],'little'),'header_address':head,'header_bytes':h.hex(),'z80_header':int.from_bytes(raw[2:4],'little')}
+def initial(ref):
+ z=Z80.in_dll(ref.lib,'Z80');zr=(C.c_ubyte*8192).in_dll(ref.lib,'zram')
+ for key,_ in Z80._fields_:
+  if key not in ['daisy','irq_callback']:setattr(z,key,0)
+ z.pc=0x5d;z.sp=0x1f00;z.hl=0x4001
+ for i in list(range(0xc00,0xe00))+list(range(0x1f80,0x2000))+[0x1f2a]:zr[i]=0
+ C.c_uint8.in_dll(ref.lib,'zstate').value=1;return z,zr
+
+def stage(zr,action,s):
+ raw=bytes.fromhex(s['source']['descriptor_bytes'])
+ if action['protocol']=='music':
+  assert not zr[0x1ffd]&128 and raw[5]&192>=zr[0x1ffc]&192
+  zr[0x1ffd]=1;zr[0x1ff9]=action['pan']
+ elif action['target']=='single':zr[0x1ffd]=128;zr[0x1ffa]=raw[6]
+ else:
+  if not zr[0x1ffc]&1:zr[0x1ffe]=128;zr[0x1ffd]=128
+  base=0x1f80+(32 if action['target']=='b'else 0);zr[base+6]=128;zr[base:base+2]=raw[:2];zr[base+2:base+6]=bytes.fromhex(s['source']['header_bytes']);zr[base+7]=raw[5];zr[0x1ffb]=raw[5];zr[0x1ffa]=192;return
+ zr[0x1fe8:0x1fea]=raw[:2];zr[0x1fe6:0x1fe8]=raw[2:4];zr[0x1ffe]=raw[4];zr[0x1ffb]=raw[5]
+def dump(path,value):raw=(json.dumps(value,separators=(',',':'))+'\n').encode();path.write_bytes(gzip.compress(raw,mtime=0))
+def ym_control(ref,lookup):
+ image=C.cast(ref.lib.audio_update,C.c_void_p).value-lookup['_audio_update'][0];ym=YM.from_address(image+lookup['_ym2612'][0]);return {'address':int(ym.OPN.ST.address)}
+
+def main():
+ p=argparse.ArgumentParser(description=__doc__);p.add_argument('--out',type=Path,required=True);p.add_argument('--smoke',action='store_true');p.add_argument('--case');p.add_argument('--cases',nargs='+');p.add_argument('--accepted',action='store_true');a=p.parse_args();out=a.out.resolve();assert out.is_relative_to(ROOT);out.mkdir(parents=True,exist_ok=True);rom=(ROOT/'.local/md-yuyuhakusho/downloads/yuyuhakusho-jp.bin').read_bytes();assert sha(rom)=='c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06'
+ cases=CASES[:1]if a.smoke else[c for c in CASES if (not a.case or c['name']==a.case)and(not a.cases or c['name']in a.cases)and(not a.accepted or not c['name'].startswith('opaque-'))];assert cases;bridge=C.CDLL(str(BRIDGE));bridge.command_event_size.restype=C.c_uint;assert bridge.command_event_size()==C.sizeof(Event);bridge.command_attach.argtypes=[C.c_void_p]*12+[C.c_size_t];bridge.command_attach.restype=C.c_int;bridge.command_count.restype=C.c_size_t;bridge.command_events.restype=C.c_void_p;controls={};reports=[];identities={}
+ for mode,core in [('original',ORIGINAL),('observed',OBSERVED)]:
+  with AudioSession(ROOT,out/mode,core=core)as ref:
+   checkpoint=quiet_checkpoint(ref);identities[mode]=ref.identity;lookup=symbols(core)
+   for case in cases:
+    ref.restore(checkpoint,restore_refresh_cycles=True);z,zr=initial(ref);initial_dsp=snapshot(ref,lookup);frames=[];transactions=[];sources={};video=sha(ref.image);ram=sha(ref.ram_cpu())
+    for action in case['inputs']:
+     if action['kind']=='publish':sources[str(action['code'])+action['protocol']]=resource(rom,action)
+    if mode=='observed':
+     slots=[C.c_void_p.in_dll(ref.lib,k)for k in ['fm_write','fm_reset','z80_readmem','z80_writemem']];bank=C.c_uint.in_dll(ref.lib,'zbank');de=C.c_uint.in_dll(ref.lib,'dma_endCycles');dt=C.c_uint8.in_dll(ref.lib,'dma_type');dl=C.c_uint.in_dll(ref.lib,'dma_length');zs=C.c_uint8.in_dll(ref.lib,'zstate');assert bridge.command_attach(*[C.addressof(x)for x in slots],C.addressof(z),C.addressof(ref.cpu)+type(ref.cpu).cycles.offset,C.addressof(bank),C.addressof(zr),*[C.addressof(x)for x in [de,dt,dl,zs]],400000)
+    de=C.c_uint.in_dll(ref.lib,'dma_endCycles');dt=C.c_uint8.in_dll(ref.lib,'dma_type');dl=C.c_uint.in_dll(ref.lib,'dma_length');reset=ref.api('gen_zreset_w',None,C.c_uint,C.c_uint);run=ref.api('z80_run',None,C.c_uint);hold=ref.api('gen_zbusreq_w',None,C.c_uint,C.c_uint);update=ref.api('audio_update',C.c_int,C.c_void_p);end=C.c_uint.in_dll(ref.lib,'mcycles_vdp');held=None;cursor=0;inputs=case['inputs']
+    for frame in range(case['frames']):
+     if mode=='observed':bridge.command_frame(frame)
+     origin=frame*F;dma=next((d for d in case.get('dma',[])if d['frame']==frame),{});de.value=dma.get('end',0);dt.value=dma.get('mode',0);dl.value=dma.get('remaining',0)
+     if held and held['end']<origin+F:
+      action=held
+      if action['kind']=='publish':stage(zr,action,sources[str(action['code'])+action['protocol']])
+      elif action['kind']=='reset':reset(1,action['end']-origin)
+      elif action['kind']=='restore-pan':zr[0x1ff8]=action['pan']
+      before=z.cycles;hold(0,action['end']-origin);transactions[-1].update(release=action['end'],before_release_cycles=before,after_release_cycles=z.cycles);held=None
+     while cursor<len(inputs)and inputs[cursor]['begin']<origin+F:
+      action=inputs[cursor];cursor+=1;assert not held and action['begin']>=origin
+      before=z.cycles;hold(1,action['begin']-origin);transactions.append({'input':action,'before_request_cycles':before,'after_grant_cycles':z.cycles,'grant_pc':z.pc,'busy':zr[0x1f2a]})
+      if action['kind']=='reset':reset(0,action['begin']-origin)
+      if action['end']>=origin+F:held=action;break
+      if action['kind']=='publish':stage(zr,action,sources[str(action['code'])+action['protocol']])
+      elif action['kind']=='reset':reset(1,action['end']-origin)
+      elif action['kind']=='restore-pan':zr[0x1ff8]=action['pan']
+      before=z.cycles;hold(0,action['end']-origin);transactions[-1].update(release=action['end'],before_release_cycles=before,after_release_cycles=z.cycles)
+     if not held:run(F)
+     end.value=F;buffer=(C.c_int16*8820)();n=update(buffer);pcm=C.string_at(buffer,n*4);z.cycles-=F;ref.frame=checkpoint['frame']+frame+1
+     row={'frame':frame,'pcm_hex':pcm.hex(),'pcm_sha256':sha(pcm),'stereo_frames':n,'z80_ram_sha256':sha(bytes(zr)),'registers':{k:int(getattr(z,k))for k,_ in Z80._fields_ if k not in ['daisy','irq_callback']},'player_state_hex':bytes(zr[0x1f80:]).hex(),'busy':zr[0x1f2a],'native_dsp':snapshot(ref,lookup)['initial_state'],'held':held is not None,'native_ym_control':ym_control(ref,lookup)};assert sha(ref.image)==video and sha(ref.ram_cpu())==ram
+     if mode=='observed':assert row==controls[case['name']]['frames'][frame],('observer changed native',case['name'],frame)
+     frames.append(row)
+    assert not held and cursor==len(inputs)
+    body={'case':case,'resources':sources,'initial_dsp':initial_dsp,'transactions':transactions,'frames':frames}
+    if mode=='original':controls[case['name']]=body
+    else:
+     assert bridge.command_detach()==1 and not bridge.command_overflow();count=bridge.command_count();raw=C.string_at(bridge.command_events(),count*C.sizeof(Event));events=(Event*count).from_buffer_copy(raw);bridge.command_free();body['events']=[{k:int(getattr(e,k))for k,_ in Event._fields_[:12]}|{'registers':list(e.registers),'state':bytes(e.state).hex(),'busy':e.busy,**{k:int(getattr(e,k))for k in ['dma_end','dma_type','dma_remaining','zstate_before','zstate_after']}}for e in events];assert transactions==controls[case['name']]['transactions'];path=out/(case['name']+'.json.gz');dump(path,body);reports.append({'name':case['name'],'frames':case['frames'],'events':count,'dac_events':sum(e.kind==1 for e in events),'bank_reads':sum(e.kind==3 for e in events),'final_mode':zr[0x1ffc],'pass':True,'path':str(path.relative_to(ROOT)),'sha256':sha(path.read_bytes())})
+    print(json.dumps({'mode':mode,'case':case['name'],'frames':case['frames'],'mode_flags':zr[0x1ffc]}),flush=True)
+ (out/'capture.json').write_text(json.dumps({'pass':True,'scope':'Declared typed command submissions/bus windows from original empty idle PCM; original player executes, no world/68k run','identity':identities,'producer_sha256':sha(Path(__file__).read_bytes()),'observer_source_sha256':sha((ROOT/'scripts/yuyuhakusho/pcm-command-observer.c').read_bytes()),'observer_sha256':sha(BRIDGE.read_bytes()),'cases':reports},indent=2)+'\n')
+if __name__=='__main__':main()

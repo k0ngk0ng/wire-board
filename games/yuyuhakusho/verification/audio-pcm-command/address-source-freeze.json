@@ -1,0 +1,28 @@
+{
+  "source": [
+    {
+      "path": "scripts/yuyuhakusho/pcm-command-capture.py",
+      "archive": "games/yuyuhakusho/verification/audio-pcm-command/address-source-freeze/pcm-command-capture.py.txt",
+      "sha256": "4349a80c12019688324fbea3cb988ddcab16da8a76d170be9842b935c5d8356f"
+    },
+    {
+      "path": "scripts/yuyuhakusho/pcm-command-observer.c",
+      "archive": "games/yuyuhakusho/verification/audio-pcm-command/address-source-freeze/pcm-command-observer.c.txt",
+      "sha256": "e3f1b1b6846c891561802ac83ff0e1c6b80ed1889ab7b1f756f3224a90ccf6b4"
+    },
+    {
+      "path": "scripts/yuyuhakusho/pcm-command-prototype.py",
+      "archive": "games/yuyuhakusho/verification/audio-pcm-command/address-source-freeze/pcm-command-prototype.py.txt",
+      "sha256": "95d4b2bb92716d18d327df86e12052b1febc3a2a77bbed081305437a9a398f9b"
+    },
+    {
+      "path": "scripts/yuyuhakusho/pcm-command-dsp-prototype.py",
+      "archive": "games/yuyuhakusho/verification/audio-pcm-command/address-source-freeze/pcm-command-dsp-prototype.py.txt",
+      "sha256": "91b7ac11d907c170a66091aa9d48f408d01cded5f22c3f6cd4bcbf1b6f1cc5ec"
+    }
+  ],
+  "native_bridge_path": ".local/md-yuyuhakusho/pcm-command-tools/observer.dylib",
+  "native_bridge_sha256": "a682399f62e8fc5355e5787366b7ec24a83a03706fe8bc5b3e45d2a2f0b9532c",
+  "raw_dataset": ".local/md-yuyuhakusho/pcm-command-address-native-final",
+  "scope": "Final accepted23 source+passive observer; parent will not alter during successfulServeYM native capture"
+}

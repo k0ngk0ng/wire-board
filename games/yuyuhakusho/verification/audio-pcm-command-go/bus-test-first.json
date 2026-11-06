@@ -1,0 +1,9 @@
+{
+  "actual_missing_bus_api": true,
+  "sources": {
+    "games/yuyuhakusho/audio/pcmcommands/bus_bridge_e2e_test.go": "13e795a47dc1974d068113bc0dd9f68c52ad9cf5d829419155c5f76f9f2f6b5c",
+    "games/yuyuhakusho/audio/pcmcommands/testdata/original-command-bus-mailboxes.json.gz": "f6221f45df1ed33b182a58015069b3f7ed130bc23283680579a503d43e4aaea7",
+    "docs/research/md-yuyuhakusho/AUDIO_PCM_COMMAND_GO_BUS_FAILURES.md": "9863665da8596d60972243cb2012e306539534be313537a14cfd5511a3cf39b5"
+  },
+  "red_sha256": "7c013fd4c015f2edfb56c1551e0ec6ba7b3e28c61a6b65aa9dc732de437d5625"
+}

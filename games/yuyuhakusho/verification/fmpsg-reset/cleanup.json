@@ -1,0 +1,17 @@
+{
+  "pass": true,
+  "scope": "Only owned repeated native output and empty reference dirs; CPU source and all baseline/failure/first-stage evidence kept; shared Go caches untouched",
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/fmpsg-reset-review",
+      "files": 3,
+      "bytes": 141507
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fmpsg-reset-capture",
+      "files": 0,
+      "bytes": 0
+    }
+  ],
+  "bytes": 141507
+}
