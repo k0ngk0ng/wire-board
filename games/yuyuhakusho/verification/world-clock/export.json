@@ -1,0 +1,697 @@
+{
+  "pass": true,
+  "cases": 19,
+  "cpu_steps": 2268,
+  "io": 994,
+  "auxiliary_inputs": 244,
+  "scope": "Actual whole wrapper CPU/IO oracle, with observed per-batch auxiliary and bus feedback declared external. IRQ phases use original frame-relative coordinates; clocks/refresh exported absolute. No runtime PC/time program.",
+  "costs": {
+    "0x32d6": {
+      "handler": "m68k_op_tst_16_aw",
+      "base": 12,
+      "internal": 0
+    },
+    "0x32da": {
+      "handler": "m68k_op_bpl_8",
+      "base": 10,
+      "internal": 0
+    },
+    "0x3314": {
+      "handler": "m68k_op_bset_8_s_aw",
+      "base": 20,
+      "internal": 0
+    },
+    "0x331a": {
+      "handler": "m68k_op_bclr_8_s_aw",
+      "base": 20,
+      "internal": 0
+    },
+    "0x3320": {
+      "handler": "m68k_op_andi_16_tos",
+      "base": 20,
+      "internal": 0
+    },
+    "0x3324": {
+      "handler": "m68k_op_jsr_32_al",
+      "base": 20,
+      "internal": 0
+    },
+    "0x654": {
+      "handler": "m68k_op_lea_32_aw",
+      "base": 8,
+      "internal": 0
+    },
+    "0x658": {
+      "handler": "m68k_op_movea_16_aw",
+      "base": 12,
+      "internal": 0
+    },
+    "0x65c": {
+      "handler": "m68k_op_cmpa_16_a",
+      "base": 6,
+      "internal": 0
+    },
+    "0x65e": {
+      "handler": "m68k_op_beq_8",
+      "base": 10,
+      "internal": 0
+    },
+    "0x660": {
+      "handler": "m68k_op_move_16_aw_a",
+      "base": 12,
+      "internal": 0
+    },
+    "0x664": {
+      "handler": "m68k_op_move_16_aw_i",
+      "base": 16,
+      "internal": 0
+    },
+    "0x66a": {
+      "handler": "m68k_op_lea_32_al",
+      "base": 12,
+      "internal": 0
+    },
+    "0x670": {
+      "handler": "m68k_op_move_16_frs_pd",
+      "base": 14,
+      "internal": 0
+    },
+    "0x672": {
+      "handler": "m68k_op_ori_16_tos",
+      "base": 20,
+      "internal": 0
+    },
+    "0x676": {
+      "handler": "m68k_op_move_16_d_aw",
+      "base": 12,
+      "internal": 0
+    },
+    "0x67a": {
+      "handler": "m68k_op_bset_32_s_d",
+      "base": 10,
+      "internal": 0
+    },
+    "0x67e": {
+      "handler": "m68k_op_move_16_ai_d",
+      "base": 8,
+      "internal": 0
+    },
+    "0x680": {
+      "handler": "m68k_op_move_32_ai_pi",
+      "base": 20,
+      "internal": 0
+    },
+    "0x682": {
+      "handler": "m68k_op_move_32_ai_pi",
+      "base": 20,
+      "internal": 0
+    },
+    "0x684": {
+      "handler": "m68k_op_move_32_ai_pi",
+      "base": 20,
+      "internal": 0
+    },
+    "0x686": {
+      "handler": "m68k_op_move_16_ai_pi",
+      "base": 12,
+      "internal": 0
+    },
+    "0x688": {
+      "handler": "m68k_op_move_16_ai_pi",
+      "base": 12,
+      "internal": 0
+    },
+    "0x68a": {
+      "handler": "m68k_op_move_16_ai_aw",
+      "base": 16,
+      "internal": 0
+    },
+    "0x68e": {
+      "handler": "m68k_op_move_16_tos_pi",
+      "base": 16,
+      "internal": 0
+    },
+    "0x690": {
+      "handler": "m68k_op_cmpa_16_a",
+      "base": 6,
+      "internal": 0
+    },
+    "0x692": {
+      "handler": "m68k_op_bne_8",
+      "base": 10,
+      "internal": 0
+    },
+    "0x2e5e": {
+      "handler": "m68k_op_ori_16_tos",
+      "base": 20,
+      "internal": 0
+    },
+    "0x2e62": {
+      "handler": "m68k_op_bset_8_s_al",
+      "base": 24,
+      "internal": 0
+    },
+    "0x2e6a": {
+      "handler": "m68k_op_bne_8",
+      "base": 10,
+      "internal": 0
+    },
+    "0x2e6c": {
+      "handler": "m68k_op_move_8_al_i",
+      "base": 20,
+      "internal": 0
+    },
+    "0x2e74": {
+      "handler": "m68k_op_cmpi_8_aw",
+      "base": 16,
+      "internal": 0
+    },
+    "0x2e7a": {
+      "handler": "m68k_op_beq_16",
+      "base": 10,
+      "internal": 0
+    },
+    "0x2e7e": {
+      "handler": "m68k_op_bclr_8_s_al",
+      "base": 24,
+      "internal": 0
+    },
+    "0x2e86": {
+      "handler": "m68k_op_beq_8",
+      "base": 10,
+      "internal": 0
+    },
+    "0x2e88": {
+      "handler": "m68k_op_movem_32_re_pd",
+      "base": 8,
+      "internal": 112
+    },
+    "0x2e8c": {
+      "handler": "m68k_op_move_16_d_al",
+      "base": 16,
+      "internal": 0
+    },
+    "0x2e92": {
+      "handler": "m68k_op_andi_16_d",
+      "base": 8,
+      "internal": 0
+    },
+    "0x2e96": {
+      "handler": "m68k_op_beq_8",
+      "base": 10,
+      "internal": 0
+    },
+    "0x2e98": {
+      "handler": "m68k_op_bsr_8",
+      "base": 18,
+      "internal": 0
+    },
+    "0x2ea0": {
+      "handler": "m68k_op_move_16_d_aw",
+      "base": 12,
+      "internal": 0
+    },
+    "0x2ea4": {
+      "handler": "m68k_op_bne_16",
+      "base": 10,
+      "internal": 0
+    },
+    "0x2f74": {
+      "handler": "m68k_op_btst_8_s_aw",
+      "base": 16,
+      "internal": 0
+    },
+    "0x2f7a": {
+      "handler": "m68k_op_bne_8",
+      "base": 10,
+      "internal": 0
+    },
+    "0x2f7c": {
+      "handler": "m68k_op_bsr_16",
+      "base": 18,
+      "internal": 0
+    },
+    "0x3030": {
+      "handler": "m68k_op_move_8_d_aw",
+      "base": 12,
+      "internal": 0
+    },
+    "0x3034": {
+      "handler": "m68k_op_btst_32_s_d",
+      "base": 10,
+      "internal": 0
+    },
+    "0x3038": {
+      "handler": "m68k_op_beq_8",
+      "base": 10,
+      "internal": 0
+    },
+    "0x303a": {
+      "handler": "m68k_op_move_8_aw_i",
+      "base": 16,
+      "internal": 0
+    },
+    "0x3040": {
+      "handler": "m68k_op_bset_8_s_aw",
+      "base": 20,
+      "internal": 0
+    },
+    "0x3046": {
+      "handler": "m68k_op_rts_32",
+      "base": 16,
+      "internal": 0
+    },
+    "0x2f80": {
+      "handler": "m68k_op_jsr_32_al",
+      "base": 20,
+      "internal": 0
+    },
+    "0x46a": {
+      "handler": "m68k_op_lea_32_al",
+      "base": 12,
+      "internal": 0
+    },
+    "0x470": {
+      "handler": "m68k_op_move_16_ai_aw",
+      "base": 16,
+      "internal": 0
+    },
+    "0x474": {
+      "handler": "m68k_op_move_16_ai_aw",
+      "base": 16,
+      "internal": 0
+    },
+    "0x478": {
+      "handler": "m68k_op_move_16_ai_aw",
+      "base": 16,
+      "internal": 0
+    },
+    "0x47c": {
+      "handler": "m68k_op_move_16_ai_aw",
+      "base": 16,
+      "internal": 0
+    },
+    "0x480": {
+      "handler": "m68k_op_move_16_ai_aw",
+      "base": 16,
+      "internal": 0
+    },
+    "0x484": {
+      "handler": "m68k_op_move_16_ai_aw",
+      "base": 16,
+      "internal": 0
+    },
+    "0x488": {
+      "handler": "m68k_op_move_16_ai_aw",
+      "base": 16,
+      "internal": 0
+    },
+    "0x48c": {
+      "handler": "m68k_op_move_16_ai_aw",
+      "base": 16,
+      "internal": 0
+    },
+    "0x490": {
+      "handler": "m68k_op_move_16_ai_aw",
+      "base": 16,
+      "internal": 0
+    },
+    "0x494": {
+      "handler": "m68k_op_move_16_ai_aw",
+      "base": 16,
+      "internal": 0
+    },
+    "0x498": {
+      "handler": "m68k_op_move_16_ai_aw",
+      "base": 16,
+      "internal": 0
+    },
+    "0x49c": {
+      "handler": "m68k_op_move_16_ai_aw",
+      "base": 16,
+      "internal": 0
+    },
+    "0x4a0": {
+      "handler": "m68k_op_move_16_ai_aw",
+      "base": 16,
+      "internal": 0
+    },
+    "0x4a4": {
+      "handler": "m68k_op_move_16_ai_aw",
+      "base": 16,
+      "internal": 0
+    },
+    "0x4a8": {
+      "handler": "m68k_op_rts_32",
+      "base": 16,
+      "internal": 0
+    },
+    "0x2f86": {
+      "handler": "m68k_op_bsr_8",
+      "base": 18,
+      "internal": 0
+    },
+    "0x2ff4": {
+      "handler": "m68k_op_lea_32_al",
+      "base": 12,
+      "internal": 0
+    },
+    "0x2ffa": {
+      "handler": "m68k_op_move_16_d_aw",
+      "base": 12,
+      "internal": 0
+    },
+    "0x2ffe": {
+      "handler": "m68k_op_bset_32_s_d",
+      "base": 10,
+      "internal": 0
+    },
+    "0x3002": {
+      "handler": "m68k_op_move_16_ai_d",
+      "base": 8,
+      "internal": 0
+    },
+    "0x3004": {
+      "handler": "m68k_op_move_32_ai_i",
+      "base": 20,
+      "internal": 0
+    },
+    "0x300a": {
+      "handler": "m68k_op_move_16_ai_i",
+      "base": 12,
+      "internal": 0
+    },
+    "0x300e": {
+      "handler": "m68k_op_move_16_ai_i",
+      "base": 12,
+      "internal": 0
+    },
+    "0x3012": {
+      "handler": "m68k_op_move_16_ai_i",
+      "base": 12,
+      "internal": 0
+    },
+    "0x3016": {
+      "handler": "m68k_op_move_16_ai_i",
+      "base": 12,
+      "internal": 0
+    },
+    "0x301a": {
+      "handler": "m68k_op_move_32_aw_i",
+      "base": 24,
+      "internal": 0
+    },
+    "0x3022": {
+      "handler": "m68k_op_move_16_ai_aw",
+      "base": 16,
+      "internal": 0
+    },
+    "0x3026": {
+      "handler": "m68k_op_move_16_ai_aw",
+      "base": 16,
+      "internal": 0
+    },
+    "0x302a": {
+      "handler": "m68k_op_move_16_ai_aw",
+      "base": 16,
+      "internal": 0
+    },
+    "0x302e": {
+      "handler": "m68k_op_rts_32",
+      "base": 16,
+      "internal": 0
+    },
+    "0x2f88": {
+      "handler": "m68k_op_jsr_32_al",
+      "base": 20,
+      "internal": 0
+    },
+    "0x3054": {
+      "handler": "m68k_op_move_16_d_aw",
+      "base": 12,
+      "internal": 0
+    },
+    "0x3058": {
+      "handler": "m68k_op_cmp_16_aw",
+      "base": 12,
+      "internal": 0
+    },
+    "0x305c": {
+      "handler": "m68k_op_beq_8",
+      "base": 10,
+      "internal": 0
+    },
+    "0x3064": {
+      "handler": "m68k_op_bsr_8",
+      "base": 18,
+      "internal": 0
+    },
+    "0x3090": {
+      "handler": "m68k_op_move_16_d_aw",
+      "base": 12,
+      "internal": 0
+    },
+    "0x3094": {
+      "handler": "m68k_op_lea_32_pcix",
+      "base": 12,
+      "internal": 0
+    },
+    "0x3098": {
+      "handler": "m68k_op_adda_16_ai",
+      "base": 12,
+      "internal": 0
+    },
+    "0x309a": {
+      "handler": "m68k_op_jmp_32_ai",
+      "base": 8,
+      "internal": 0
+    },
+    "0x313e": {
+      "handler": "m68k_op_bclr_8_s_aw",
+      "base": 20,
+      "internal": 0
+    },
+    "0x3144": {
+      "handler": "m68k_op_move_16_al_aw",
+      "base": 24,
+      "internal": 0
+    },
+    "0x314c": {
+      "handler": "m68k_op_move_32_al_i",
+      "base": 28,
+      "internal": 0
+    },
+    "0x3156": {
+      "handler": "m68k_op_move_16_al_i",
+      "base": 20,
+      "internal": 0
+    },
+    "0x315e": {
+      "handler": "m68k_op_move_16_al_i",
+      "base": 20,
+      "internal": 0
+    },
+    "0x3166": {
+      "handler": "m68k_op_clr_16_aw",
+      "base": 16,
+      "internal": 0
+    },
+    "0x316a": {
+      "handler": "m68k_op_btst_8_s_aw",
+      "base": 16,
+      "internal": 0
+    },
+    "0x3170": {
+      "handler": "m68k_op_bne_8",
+      "base": 10,
+      "internal": 0
+    },
+    "0x3172": {
+      "handler": "m68k_op_move_16_al_aw",
+      "base": 24,
+      "internal": 0
+    },
+    "0x317a": {
+      "handler": "m68k_op_move_16_al_aw",
+      "base": 24,
+      "internal": 0
+    },
+    "0x3182": {
+      "handler": "m68k_op_rts_32",
+      "base": 16,
+      "internal": 0
+    },
+    "0x3066": {
+      "handler": "m68k_op_btst_8_s_aw",
+      "base": 16,
+      "internal": 0
+    },
+    "0x306c": {
+      "handler": "m68k_op_bne_8",
+      "base": 10,
+      "internal": 0
+    },
+    "0x3074": {
+      "handler": "m68k_op_move_8_aw_i",
+      "base": 16,
+      "internal": 0
+    },
+    "0x307a": {
+      "handler": "m68k_op_rts_32",
+      "base": 16,
+      "internal": 0
+    },
+    "0x2f8e": {
+      "handler": "m68k_op_btst_8_s_aw",
+      "base": 16,
+      "internal": 0
+    },
+    "0x2f94": {
+      "handler": "m68k_op_bne_8",
+      "base": 10,
+      "internal": 0
+    },
+    "0x2fbc": {
+      "handler": "m68k_op_rts_32",
+      "base": 16,
+      "internal": 0
+    },
+    "0x2e9a": {
+      "handler": "m68k_op_movem_32_er_pi",
+      "base": 12,
+      "internal": 112
+    },
+    "0x2e9e": {
+      "handler": "m68k_op_rte_32",
+      "base": 20,
+      "internal": 0
+    },
+    "0x694": {
+      "handler": "m68k_op_bclr_8_s_aw",
+      "base": 20,
+      "internal": 0
+    },
+    "0x69a": {
+      "handler": "m68k_op_rts_32",
+      "base": 16,
+      "internal": 0
+    },
+    "0x332a": {
+      "handler": "m68k_op_ori_16_tos",
+      "base": 20,
+      "internal": 0
+    },
+    "0x332e": {
+      "handler": "m68k_op_bset_8_s_al",
+      "base": 24,
+      "internal": 0
+    },
+    "0x3336": {
+      "handler": "m68k_op_bne_8",
+      "base": 10,
+      "internal": 0
+    },
+    "0x3338": {
+      "handler": "m68k_op_move_8_al_i",
+      "base": 20,
+      "internal": 0
+    },
+    "0x3340": {
+      "handler": "m68k_op_cmpi_8_aw",
+      "base": 16,
+      "internal": 0
+    },
+    "0x3346": {
+      "handler": "m68k_op_beq_16",
+      "base": 10,
+      "internal": 0
+    },
+    "0x334a": {
+      "handler": "m68k_op_bclr_8_s_al",
+      "base": 24,
+      "internal": 0
+    },
+    "0x3352": {
+      "handler": "m68k_op_beq_8",
+      "base": 10,
+      "internal": 0
+    },
+    "0x3354": {
+      "handler": "m68k_op_bclr_8_s_aw",
+      "base": 20,
+      "internal": 0
+    },
+    "0x335a": {
+      "handler": "m68k_op_andi_16_tos",
+      "base": 20,
+      "internal": 0
+    },
+    "0x335e": {
+      "handler": "m68k_op_jsr_32_al",
+      "base": 20,
+      "internal": 0
+    },
+    "0x32dc": {
+      "handler": "m68k_op_bset_8_s_aw",
+      "base": 20,
+      "internal": 0
+    },
+    "0x32e2": {
+      "handler": "m68k_op_bset_8_s_al",
+      "base": 24,
+      "internal": 0
+    },
+    "0x32ea": {
+      "handler": "m68k_op_bne_8",
+      "base": 10,
+      "internal": 0
+    },
+    "0x32ec": {
+      "handler": "m68k_op_move_8_al_i",
+      "base": 20,
+      "internal": 0
+    },
+    "0x32f4": {
+      "handler": "m68k_op_cmpi_8_aw",
+      "base": 16,
+      "internal": 0
+    },
+    "0x32fa": {
+      "handler": "m68k_op_beq_16",
+      "base": 10,
+      "internal": 0
+    },
+    "0x32fe": {
+      "handler": "m68k_op_bclr_8_s_al",
+      "base": 24,
+      "internal": 0
+    },
+    "0x3306": {
+      "handler": "m68k_op_beq_8",
+      "base": 10,
+      "internal": 0
+    },
+    "0x3308": {
+      "handler": "m68k_op_bclr_8_s_aw",
+      "base": 20,
+      "internal": 0
+    },
+    "0x330e": {
+      "handler": "m68k_op_andi_16_tos",
+      "base": 20,
+      "internal": 0
+    },
+    "0x3312": {
+      "handler": "m68k_op_rts_32",
+      "base": 16,
+      "internal": 0
+    }
+  },
+  "fixture_sha256": "6421f7aec56bfa8daa1ef91f1113e41dc55ed291142d5dbefabb6aa440b5058a",
+  "sources": {
+    "games/yuyuhakusho/verification/world-dma/native-world-dma.json.gz": "dc5e3364f4c80343b28a2bfc200994485407d06f4740fdae5297c99001d38d8f",
+    ".local/md-yuyuhakusho/downloads/yuyuhakusho-jp.bin": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    ".local/md-yuyuhakusho/tools/Genesis-Plus-GX-60bee4c724859710ce05672239e5b601ad01382e/core/m68k/m68kops.h": "d3ff2631658e589813d2915ba3dc03b9fd2097761f6eb221fc6264a4b8d1d6f0",
+    "scripts/yuyuhakusho/extract_world_clock.py": "55eb442e35f542cf9cbb398d2cc097ca33b47f8a79f7a794080ff2f19cc1ff46"
+  }
+}

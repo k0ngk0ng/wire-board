@@ -1,0 +1,9 @@
+{
+  "pass": true,
+  "old_six_cases_reconstructed_byte_identically": true,
+  "old_sha256": "b2b48b125135e543fa54648da9b8985cd0d1984032dbe3850e42bd1a40561f88",
+  "new_ten_cases_sha256": "946c9bb19c5da5b0ccba49be5d72ef12a3f12d25f2afc7fffe84b4b5b7ee89ba",
+  "derivation": "Load new native file; serialize {version:1,cases:new.cases[:6]} with separators comma/colon and terminal newline; gzip mtime0.",
+  "old_case_count": 6,
+  "new_case_count": 10
+}

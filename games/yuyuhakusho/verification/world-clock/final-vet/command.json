@@ -1,0 +1,24 @@
+{
+  "command": [
+    "/opt/homebrew/bin/go",
+    "vet",
+    "./games/yuyuhakusho/audio/pcmcommands",
+    "./games/yuyuhakusho/audio/chips",
+    "./games/yuyuhakusho/audio/videoclock",
+    "./games/yuyuhakusho/audio/scoreclock",
+    "./games/yuyuhakusho/audio/mixed",
+    "./games/yuyuhakusho/audio/session"
+  ],
+  "cwd": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho",
+  "environment": {
+    "TEST_TELEMETRY_DIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-telemetry",
+    "GOCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-cache",
+    "GOMODCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-mod",
+    "GOTMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+    "TMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+    "GOMAXPROCS": "2"
+  },
+  "exit_code": 0,
+  "elapsed_seconds": 0.518233060836792,
+  "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

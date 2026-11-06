@@ -62,12 +62,14 @@ var ErrBattleSampleContext = errors.New("unsupported battle sample IRQ context")
 var ErrBattleSampleFrame = errors.New("battle sampling leaves the current unflushed video frame")
 
 type battleSample struct {
-	s        *service
-	context  BattleSampleContext
-	video    *videoclock.Clock
-	aux      SampleAuxiliary
-	observer BattleSampleObserver
-	work     *engine.MainWorkOperation
+	s             *service
+	context       BattleSampleContext
+	video         *videoclock.Clock
+	aux           SampleAuxiliary
+	observer      BattleSampleObserver
+	work          *engine.MainWorkOperation
+	cachedDisplay *bool        // Borrowed only when the enclosing main owner supplies it.
+	mainSync      func() error // Same enclosing main coordinator, never checkpointed.
 }
 
 func newBattleSample(s *service, context BattleSampleContext, input BattleSampleInput, aux SampleAuxiliary, observer BattleSampleObserver) (*battleSample, error) {
@@ -111,6 +113,9 @@ func (p *battleSample) effect(effect videoclock.Effect) error {
 // against the batch TARGET, then charges its real main contention and advances
 // the VDP line. A current instruction can overrun; no line changes inside it.
 func (p *battleSample) sync() error {
+	if p.mainSync != nil {
+		return p.mainSync()
+	}
 	for {
 		target := p.context.FrameOrigin + uint64(p.video.LineCycle()) + 3420
 		if p.s.clock.Cycle < target {
