@@ -1,0 +1,53 @@
+package main
+
+import (
+	"bytes"
+	"compress/gzip"
+	"encoding/json"
+	"fmt"
+	"io"
+	"os"
+
+	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/resourcebridge"
+	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score"
+	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score/param"
+)
+
+func unpack(name string)[]byte{raw,err:=os.ReadFile("games/yuyuhakusho/data/"+name+".json.gz");if err!=nil{panic(err)};z,err:=gzip.NewReader(bytes.NewReader(raw));if err!=nil{panic(err)};defer z.Close();raw,err=io.ReadAll(z);if err!=nil{panic(err)};return raw}
+type row struct {ID int `json:"id"`;Slot,Target int;Before,Entry score.State;TargetMode string;Claimed bool}
+
+func main(){
+	if len(os.Args)!=2{panic("new output path required")};if _,err:=os.Stat(os.Args[1]);!os.IsNotExist(err){panic("preserve prior output")}
+	raw:=unpack("audio-score");l,err:=resourcebridge.DecodeWithEnvelopeWork(raw,unpack("audio-pcm-payloads"),unpack("audio-score-parser-work"),unpack("audio-score-instrument-work"),unpack("audio-score-envelope-work"));if err!=nil{panic(err)}
+	var catalog struct{Scores []struct{ID uint8;Kind string;Voices []struct{ID int;Channel string;Timeline struct{Prefix []struct{Kind string};Cycle []struct{Kind string}}}}};if err=json.Unmarshal(raw,&catalog);err!=nil{panic(err)}
+	slots:=map[string]int{"dac":0,"fm1":1,"fm2":2,"fm3":3,"fm4":4,"fm5":5,"psg1":7,"psg2":8,"psg3":9}
+	primary:=map[string]int{"fm3":10,"fm4":11,"fm5":12,"psg1":13,"psg2":14,"psg3":15}
+	targets:=map[int]int{10:3,11:4,12:5,13:7,14:8,15:9}
+	var rows []row
+	for _,definition:=range catalog.Scores{for _,voice:=range definition.Voices{
+		end:=-1;for i,e:=range voice.Timeline.Prefix{if e.Kind=="track-end"{end=i;break}};if end<0{continue}
+		slot,target:=slots[voice.Channel],-1;if definition.Kind!="music"{slot=primary[voice.Channel];target=targets[slot]}
+		modes:=[]string{"none"};if target>=0{modes=[]string{"unowned","inactive","active"};if target==9{modes=append(modes,"noise")}}
+		for _,mode:=range modes{for _,claimed:=range []bool{false,true}{
+			if slot==0&&claimed{continue}
+			d,err:=score.New(l.Catalog());if err!=nil{panic(err)}
+			if definition.Kind!="music"{if _,err=d.Advance(score.Input{SoundID:0x82});err!=nil{panic(err)}}
+			if _,err=d.Advance(score.Input{SoundID:definition.ID});err!=nil{panic(err)}
+			s:=d.Snapshot();for i:=range s.Voices{s.Voices[i].Active=false};s.TempoPeriod,s.TempoRemaining=0,0
+			v:=&s.Voices[slot];v.Active=true;v.NoteWait=1;v.EventIndex=end;v.Cycle=false;v.Claimed=claimed
+			if end>0&&voice.Timeline.Prefix[end-1].Kind=="enqueue-replace-first"{v.EventIndex--}
+			if target>=0{
+				if mode=="unowned"{s.Voices[target]=score.VoiceState{Claimed:true}}else{
+					m:=&s.Voices[target];m.Active=mode=="active"||mode=="noise";m.Claimed=true;m.NoteOff=true;m.NoteWait=2;m.PitchControl=score.PitchControl{};m.VolumeEnvelope=0;m.HasModulation=false;m.PanDefinition=param.PanDefinition{Mode:param.PanDisabled};m.PanState=param.PanState{}
+					if mode=="noise"{m.Channel="psg-noise";m.NoiseControl=0xe7}
+				}
+			}
+			before:=s;d,err=score.Restore(l.Catalog(),s);if err!=nil{panic(err)}
+			var tx *score.TickTransaction;var entry score.State;found:=false
+			tx,err=d.BeginTickObserved(score.ObservedHooks{Parser:l.Parser(),Operation:func(op score.Operation)error{if op.Kind==score.OpEnter&&op.Routine==score.RoutineVoice&&op.VoiceSlot==int8(slot){var e error;entry,e=tx.Snapshot();found=true;return e};return nil}});if err!=nil{panic(err)}
+			if err=tx.AdvanceTempo();err!=nil{panic(err)};if err=tx.Dispatch(0);err!=nil{panic(err)};if err=tx.AdvanceVoices();err!=nil{panic(err)};if _,err=tx.Finish();err!=nil{panic(err)};if !found{panic("entry missing")}
+			rows=append(rows,row{ID:len(rows),Slot:slot,Target:target,Before:before,Entry:entry,TargetMode:mode,Claimed:claimed})
+		}}
+	}}
+	f,err:=os.OpenFile(os.Args[1],os.O_WRONLY|os.O_CREATE|os.O_EXCL,0600);if err!=nil{panic(err)};defer f.Close();z:=gzip.NewWriter(f);if err=json.NewEncoder(z).Encode(struct{Cases []row `json:"cases"`}{rows});err!=nil{panic(err)};if err=z.Close();err!=nil{panic(err)};fmt.Println("track-end profiles",len(rows))
+}

@@ -66,6 +66,11 @@ func (t *NoteVoiceTransfer) consumeControl(op score.Operation, v score.VoiceStat
 			t.phase = noteControlNoise
 		case "instrument", "level":
 			t.phase = noteInstrumentEnter
+		case "queue":
+			if !t.allowStop {
+				return ErrNoteVoiceUnavailable
+			}
+			t.phase = noteControlQueue
 		default:
 			return ErrNoteVoiceUnavailable
 		}
@@ -124,6 +129,11 @@ func (t *NoteVoiceTransfer) consumeControl(op score.Operation, v score.VoiceStat
 		t.phase = noteControlReturn
 	case noteControlReturn:
 		return t.finishControl(op)
+	case noteControlQueue:
+		if op.Kind != score.OpQueueReplace || op.WriteCount != 1 || op.Writes[0].Kind != "queue" || op.Writes[0].Action != "replace-first" || op.Writes[0].Order != op.IntentOffset {
+			return ErrNoteVoiceSequence
+		}
+		t.queueOp, t.phase = op, noteQueuePending
 	case noteInstrumentEnter:
 		mode, routine, branch := "load", score.RoutinePatch, score.BranchInitialLoad
 		if t.controlNext == "level" {
@@ -151,7 +161,16 @@ func (t *NoteVoiceTransfer) consumeControl(op score.Operation, v score.VoiceStat
 		if err = validInstrumentRequest(request); err != nil {
 			return err
 		}
-		t.instrument, err = beginInstrumentTransfer(s, request)
+		route := request.Domain
+		if t.canonicalDomain && domain != "music" {
+			// The historical isolated route labels use positive for global
+			// and negative for voice-local. Actual primary slots use negative.
+			route = "secondary"
+			if t.slot >= 16 {
+				route = "primary"
+			}
+		}
+		t.instrument, err = beginInstrumentOnRoute(s, request, route)
 		if err != nil {
 			return err
 		}

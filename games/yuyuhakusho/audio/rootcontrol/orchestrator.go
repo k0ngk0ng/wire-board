@@ -83,6 +83,10 @@ type RuleOperation struct {
 type RuleHooks struct {
 	Operation func(RuleOperation) error
 	Score     score.ObservedHooks
+	// WorkingScore receives the actual transaction state before this effect.
+	// The detached value is an observation, never another mutable score owner.
+	WorkingScore  func(score.Operation, score.State) error
+	PriorityClear func(op score.Operation, apply func() error) error
 	// QueueReplace may time the real canonical queue mutation. It must call
 	// apply exactly once synchronously on success and never retain it.
 	QueueReplace     func(op score.Operation, apply func() error) error
@@ -142,6 +146,7 @@ type ruleTick struct {
 	hooks    RuleHooks
 	phase    RulePhase
 	sequence uint32
+	tx       *score.TickTransaction
 	// Only the original music-reset save/restore interval owns this latch.
 	savedPriority uint8
 	prioritySaved bool
@@ -319,6 +324,7 @@ func AdvanceRules(root *State, owners RuleOwners, input RuleInput, hooks RuleHoo
 	if err != nil {
 		return RuleOutput{}, err
 	}
+	r.tx = tx
 	defer tx.Abort()
 	route, err := r.gate()
 	if err != nil {

@@ -1,0 +1,30 @@
+{
+  "changed_existing": {
+    "games/yuyuhakusho/audio/scoreclock/note_voice.go": {
+      "before_sha256": "4da620299048520f128448c710c6f7ccd83f00b34cfaf458e61671a99144b6d5",
+      "current_sha256": "fe044d6cc92819cfb24081ed93ec9f70bbaf755b6e0eca99430f413d1ae1fc88"
+    },
+    "games/yuyuhakusho/audio/scoreclock/note_voice_control.go": {
+      "before_sha256": "46b3c35dcea3682e2c865f3a7e4db285a1921bc271f1f0f8f8743bc253bbe26d",
+      "current_sha256": "cb368547b8501eab9dff32374d307d3a61542587b3084ed159bf930d1079af4c"
+    },
+    "games/yuyuhakusho/audio/scoreclock/instrument.go": {
+      "before_sha256": "ca8c41fdcfcc04f5ae35c45ce9e08a63dcd3ac4d4b2ad2886a5eec93a4f3d232",
+      "current_sha256": "17e71ab33937f74e4733abd08303198a0e06010ed72ee4385d51eec24d82d441"
+    },
+    "games/yuyuhakusho/audio/rootcontrol/orchestrator.go": {
+      "before_sha256": "3e97fa61c5abd1494f3f72bd9347d32492237abbd753a880d703ab6009583e84",
+      "current_sha256": "01c077d3d4a0aea6e04900fa9af50db08d7f2593b9bbaa6b9010e7d31878d6cb"
+    },
+    "games/yuyuhakusho/audio/rootcontrol/orchestrator_score.go": {
+      "before_sha256": "100245172d934365fa091ba4ca7dc0e784801acdd762a4f4d75954a0c6c4cdc0",
+      "current_sha256": "e80f403c79ea8c748be45d6bc820926ec1e3e0d77f7d0362e606dd4f02b872dc"
+    }
+  },
+  "score_state_and_driver_unchanged": true,
+  "root_state_unchanged": true,
+  "old_standalone_profile_routes_preserved": true,
+  "actual_slot_domain_selected_by_unified_voice": true,
+  "first_implementation_counter_projection_failure_only": true,
+  "second_new_e2e_records": 121
+}
