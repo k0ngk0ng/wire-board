@@ -41,6 +41,11 @@ func PricePitchCalculation(clock Clock, r PitchCalculationRequest, limits Limits
 	if err != nil {
 		return PitchCalculationResult{}, err
 	}
+	return pricePitchCalculation(s, r)
+}
+
+func pricePitchCalculation(s *service, r PitchCalculationRequest) (PitchCalculationResult, error) {
+	var err error
 	if err = s.ordinaryCosts(4, 12, 8); err != nil {
 		return PitchCalculationResult{}, err
 	}
@@ -149,6 +154,11 @@ func BeginEnvelopeVolume(clock Clock, r EnvelopeVolumeRequest, chip PSGChip, lim
 	if err != nil {
 		return nil, err
 	}
+	return beginEnvelopeVolume(s, r, chip)
+}
+
+func beginEnvelopeVolume(s *service, r EnvelopeVolumeRequest, chip PSGChip) (*VolumeTransfer, error) {
+	var err error
 	t := &VolumeTransfer{s: s, chip: chip}
 	if err = s.ordinaryCosts(12, 4, 12); err != nil {
 		return nil, err

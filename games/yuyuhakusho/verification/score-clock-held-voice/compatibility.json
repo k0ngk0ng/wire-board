@@ -1,0 +1,29 @@
+{
+  "files": {
+    "frequency.go": {
+      "before_sha256": "3c72bfd80862b52ac64f8ff696bb803774b4c230f664871238990be049bdbb6e",
+      "after_sha256": "d4a3ad099d5b7006919b2abd586a89db232eee07c852a42b843068c89adf6a43",
+      "change": "Private constructor/body receives existing shared service; original public validation and fixed body unchanged"
+    },
+    "key_gate.go": {
+      "before_sha256": "deceb68e0a3b5684daf1fa43d4e1314cdb6a22e5cd388a80faf478ffab817456",
+      "after_sha256": "707c0e63157f6cd434747c4dbacd2a119cf83fba802a80fc086a29a90e245ac5",
+      "change": "Private constructor/body receives existing shared service; original public validation and fixed body unchanged"
+    },
+    "pan_automation.go": {
+      "before_sha256": "5eca8543bd1a12cc7dbbb3af393584aa25890202b3672b7255255d9f8679c119",
+      "after_sha256": "134b912e3314d89960492f2c4f975d38be8e8b8e89ba602071d7baedde126b4f",
+      "change": "Private constructor/body receives existing shared service; original public validation and fixed body unchanged"
+    },
+    "envelope.go": {
+      "before_sha256": "2f7c02e8500c9e77d4d79ba24be5ba3faa3099de17d8d13252005232d9cd042d",
+      "after_sha256": "309c46bd28a1548a1f1610cdd6f849516e2befd268dddf69b8fc12771f43d299",
+      "change": "Private constructor/body receives existing shared service; original public validation and fixed body unchanged"
+    }
+  },
+  "original_score_driver_and_data_changed": false,
+  "frozen_tests_oracles_changed": false,
+  "first_implementation_passed_records": 724,
+  "whole_original_profiles": 721,
+  "whole_original_executions": 2884
+}

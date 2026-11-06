@@ -58,6 +58,11 @@ func BeginPanAutomation(clock Clock, request PanAutomationRequest, catalog *scor
 	if err != nil {
 		return nil, err
 	}
+	return beginPanAutomation(s, request, panRequest, tick, panBus)
+}
+
+func beginPanAutomation(s *service, request PanAutomationRequest, panRequest PanRequest, tick param.PanTick, panBus PanBus) (*PanAutomationTransfer, error) {
+	var err error
 	t := &PanAutomationTransfer{s: s}
 	if err = s.panAutomationDispatch(request.NoteOff); err != nil {
 		return nil, err

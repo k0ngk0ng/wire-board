@@ -32,6 +32,11 @@ func BeginFrequencyTransfer(clock Clock, request FrequencyRequest, bus Bus, chip
 	if err != nil {
 		return nil, err
 	}
+	return beginFrequencyTransfer(s, request, chip)
+}
+
+func beginFrequencyTransfer(s *service, request FrequencyRequest, chip KeyGateChip) (*FrequencyTransfer, error) {
+	var err error
 	t := &FrequencyTransfer{s: s, chip: chip, channel: request.Channel}
 	if request.Channel < 128 {
 		// The audited normal FM3 field is zero. Its taken branch is part of
