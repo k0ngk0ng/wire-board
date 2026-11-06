@@ -126,6 +126,13 @@ func BeginPanRouting(clock Clock, request PanRequest, bus PanBus, chip Chip, lim
 	if err != nil {
 		return nil, err
 	}
+	return beginPanRouting(s, request, bus)
+}
+
+// beginPanRouting composes the same routing leaf with its fixed caller. The
+// caller has validated the request and supplies its existing clock/budget.
+func beginPanRouting(s *service, request PanRequest, bus PanBus) (*PanRouting, error) {
+	var err error
 	storedValue := panByte(request.Pan)
 	writeValue := storedValue
 	if request.WritePan != nil {

@@ -1,0 +1,15 @@
+{
+  "old_pan_sha256": "95c3aff75727d12285316b73a605a85a854a74f86a44dc420d27206ba2993b35",
+  "current_pan_sha256": "5d347b4d01ac2c7e0792cdc42b037c50634f49d0199026475609795b85c013f4",
+  "change": "Existing routing body extracted to private shared-service constructor; public validation unchanged",
+  "legacy_tests_changed": false,
+  "frozen_tests_changed": false,
+  "first_implementation": "Production API compile failure; preserved; no test/oracle correction",
+  "second_implementation_records": 131,
+  "all_scoreclock_regression": {
+    "native": 5439,
+    "wasm": 5439,
+    "top_level_per_runtime": 75,
+    "skips": 0
+  }
+}
