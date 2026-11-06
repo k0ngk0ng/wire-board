@@ -1,0 +1,11 @@
+{
+  "test_first": true,
+  "production_exists": false,
+  "production_file": "games/yuyuhakusho/audio/scoreclock/control.go",
+  "files": {
+    "games/yuyuhakusho/audio/scoreclock/control_e2e_test.go": "833f6a8e29d50d153371b8f797d3f1979db84d9df8089f1219a013b583c6a5cc",
+    "games/yuyuhakusho/verification/score-clock-control/native-control-full.json.gz": "3953f69441473aac3e3b48433c5cb7b9ff895286ced6619e64477218be9c168d",
+    "scripts/yuyuhakusho/score-clock-control-capture.py": "0dcf49e9ceeb4d1ea4e290ad60594f5507f59bf72b527e882fa2c132caa4a8bc",
+    "docs/research/md-yuyuhakusho/SCORE_CLOCK_CONTROL_FAILURES.md": "a492f1b4e38b26f47dfa2b4eb4f5d69ef5d0339ca5763ebfde964cfe2f32157a"
+  }
+}

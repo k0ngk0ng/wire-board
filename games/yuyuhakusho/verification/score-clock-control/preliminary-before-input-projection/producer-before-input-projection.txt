@@ -1,0 +1,107 @@
+"""Original normal control handler/continuation timing and queue/noise effects."""
+import argparse
+import ctypes as C
+import gzip
+import importlib.util
+import json
+from pathlib import Path
+
+from extract_audio_assets import AudioSession, write_cpu
+from reference import ROOT, CPUHead
+from research_audio_loops import ORIGINAL, OBSERVED, quiet_checkpoint
+
+spec=importlib.util.spec_from_file_location('control_psg',ROOT/'scripts/yuyuhakusho/score-clock-psg-capture.py')
+psg=importlib.util.module_from_spec(spec);spec.loader.exec_module(psg)
+VOICE=0xfff840
+PARAM=0xfffd00
+RETURN=0x3d8
+
+
+def specifications():
+    raw=ROOT/'games/yuyuhakusho/data/audio-score.json.gz';catalog=json.loads(gzip.decompress(raw.read_bytes()))
+    prototypes={}
+    for s in catalog['scores']:
+        for v in s['voices']:
+            family='psg'if v['channel'].startswith('psg')else'dac'if v['channel']=='dac'else'fm'
+            for section in['prefix','cycle']:
+                for e in v['timeline'][section]:
+                    if e['kind']in['note','track-end']:continue
+                    key=(e['kind'],family,e.get('immediate_fm',False),e.get('definition',{}).get('mode')=='disabled',e.get('enabled',False))
+                    prototypes.setdefault(key,e)
+    # Original pan's PSG-ignore guard, declared private compatibility profile.
+    prototypes.setdefault(('pan','psg',False,False,False),{'kind':'pan','left':True,'right':False})
+    result=[]
+    for key,event in sorted(prototypes.items()):
+        action,family,immediate,disabled,enabled=key
+        work={'Action':action,'Family':family,'ImmediateFM':immediate,'PanDisabled':disabled,'Enabled':enabled}
+        if action=='pan':start,stop,next_phase=0x38e52,(RETURN if family=='psg'else 0x37b34),('complete'if family=='psg'else'pan')
+        elif action=='pan-automation':start,stop,next_phase=0x38e82,(0x37b34 if disabled else RETURN),('pan'if disabled else'complete')
+        elif action=='level-add':start,stop,next_phase=(0x38eb6,0x3901c,'level')if immediate else(0x38f2e,RETURN,'complete')
+        elif action=='fm-patch':start,stop,next_phase=0x38f46,0x38f4e,'instrument'
+        else:
+            entries={'detune':0x38e6e,'tie':0x38ec0,'gate':0x38ec6,'tempo':0x38f1e,'enqueue-replace-first':0x38f28,'modulation':0x39098,'psg-noise':0x39192,'fm-patch-select':0x391b2,'volume-envelope':0x391b2,'transpose-add':0x3920a,'modulation-enable':0x39212 if enabled else 0x3921a}
+            start,stop,next_phase=entries[action],RETURN,'complete'
+        packet=[17,3,253,7,2]
+        if action=='pan':packet=[128 if event.get('left')else 0|64 if event.get('right')else 0]
+        if action=='pan-automation':packet=[0 if disabled else 1,0,0,3,2]
+        if action=='psg-noise':packet=[224|event['clock']|(4 if event['white']else 0)]
+        if action=='enqueue-replace-first':packet=[event['sound_id']]
+        for claimed in[False,True]:
+            for phase,(origin,refresh)in enumerate([(0,0),(1,896),(895,896),(1008,1008)]):
+                i=len(result)
+                result.append({'id':f'{i}-{action}-{family}-phase{phase}','work':{**work,'Claimed':claimed},'start':start,'stop':stop,'next':next_phase,'packet':packet,'origin':origin,'refresh':refresh})
+    return result
+
+
+def setup(ref,checkpoint,case):
+    ref.restore(checkpoint,restore_refresh_cycles=True);ref.api('psg_reset',None)()
+    for offset in range(48):write_cpu(ref,VOICE+offset,0)
+    w=case['work'];write_cpu(ref,VOICE,4 if w['Claimed']else 0)
+    write_cpu(ref,VOICE+1,128 if w['Family']=='psg'else 6 if w['Family']=='dac'else 0)
+    write_cpu(ref,VOICE+9,15);write_cpu(ref,VOICE+0x27,181)
+    for offset,value in enumerate(case['packet']):write_cpu(ref,PARAM+offset,value)
+    write_cpu(ref,0xfff80a,19)
+    setter=ref.api('m68k_set_reg',None,C.c_uint,C.c_uint)
+    for index in range(15):setter(index,0)
+    for index,value in[(17,0x2700),(15,0xffff00),(12,PARAM),(13,VOICE),(16,case['start'])]:setter(index,value)
+    write_cpu(ref,0xffff00,RETURN,4);ref.cpu.cycles,ref.cpu.refresh_cycles=case['origin'],case['refresh'];return ref.save()
+
+
+def execute(ref,case,observer=None):
+    run=ref.api('m68k_run',None,C.c_uint);steps=[];queue=[]
+    for _ in range(64):
+        pc=ref.get_register(16)&0xffffff
+        if pc==case['stop']:return steps,queue
+        assert(0x38e52<=pc<=0x38ece or 0x38f1e<=pc<=0x38f4a or 0x39098<=pc<=0x390ba or 0x39192<=pc<=0x391b6 or 0x3920a<=pc<=0x39220),('escaped control body',case['id'],hex(pc))
+        before,refresh=ref.cpu.cycles,ref.cpu.refresh_cycles
+        if observer:observer.score_clock_psg_pc(pc)
+        run(before+1);steps.append([pc,before,refresh,ref.cpu.cycles,ref.cpu.refresh_cycles])
+        if pc==0x38f28:queue.append({'at':before+(14 if before>=refresh else 0),'value':ref.ram_cpu()[0xf80a]})
+    raise AssertionError(('control body step cap',case['id']))
+
+
+def main():
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--out',type=Path,required=True);args=p.parse_args();out=args.out.resolve();assert out.is_relative_to(ROOT/'.local')and not out.exists();out.mkdir(parents=True)
+    inputs=specifications();observer,_=psg.build(out);controls={};rows=[];identities={}
+    print(json.dumps({'cases':len(inputs)}),flush=True)
+    for name,core in[('original',ORIGINAL),('observed',OBSERVED)]:
+        with AudioSession(ROOT,out/('core-'+name),core=core)as ref:
+            checkpoint=quiet_checkpoint(ref);identities[name]=ref.identity
+            for i,case in enumerate(inputs):
+                initial=setup(ref,checkpoint,case);plain_steps,plain_queue=execute(ref,case);plain,plain_ram=ref.save(),ref.ram_cpu();plain_psg=psg.native_psg(ref)[1]
+                again=setup(ref,checkpoint,case);assert initial['data']==again['data'];address=C.addressof(ref.cpu);assert observer.score_clock_psg_attach(address,address+CPUHead.cycles.offset,address+CPUHead.refresh_cycles.offset)
+                try:steps,queue=execute(ref,case,observer);writes=psg.trace(observer)
+                finally:assert observer.score_clock_psg_detach()==1
+                saved=ref.save();assert(plain_steps==steps and plain_queue==queue and plain['data']==saved['data']and plain['refresh_cycles']==saved['refresh_cycles']and plain_ram==ref.ram_cpu()and plain_psg==psg.native_psg(ref)[1]),('observer changed control',case['id'])
+                expected=1 if case['work']['Action']=='psg-noise'and not case['work']['Claimed']else 0;assert len(writes)==expected
+                result={'steps':steps,'writes':writes,'queue':queue,'end':{'Cycle':ref.cpu.cycles,'Refresh':ref.cpu.refresh_cycles},'voice_hex':ref.ram_cpu()[0xf840:0xf870].hex(),'queue_value':ref.ram_cpu()[0xf80a]}
+                if name=='original':controls[i]=result
+                else:
+                    assert controls[i]==result,('pinned cores disagree',case['id']);public={k:v for k,v in case.items()if k not in['start','stop','packet']};rows.append({'input':public,**result,'native_observer_state_equal':True})
+        print(json.dumps({'core':name,'cases':len(inputs),'pass':True}),flush=True)
+    sources=[Path(__file__),ROOT/'scripts/yuyuhakusho/score-clock-psg-capture.py',ROOT/'scripts/yuyuhakusho/score-clock-psg-observer.c',ROOT/'games/yuyuhakusho/data/audio-score.json.gz',ROOT/'docs/research/md-yuyuhakusho/static/audio-loop-sequencer.txt']
+    data={'version':1,'scope':'Formal normal control shapes plus private PSG pan-ignore guard; claimed/unclaimed; pure handlers/declared continuation, complete noise/queue; no extraIRQ','identities':identities,'cases':rows,'sources':{str(p.relative_to(ROOT)):psg.sha(p.read_bytes())for p in sources}}
+    target=out/'native-control-full.json.gz';target.write_bytes(gzip.compress((json.dumps(data,sort_keys=True,separators=(',',':'))+'\n').encode(),mtime=0));print(json.dumps({'pass':True,'cases':len(rows),'executions':len(rows)*4,'fixture_sha256':psg.sha(target.read_bytes())}),flush=True)
+
+
+if __name__=='__main__':main()

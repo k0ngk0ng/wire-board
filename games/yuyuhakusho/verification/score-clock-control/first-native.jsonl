@@ -1,0 +1,9 @@
+{"ImportPath":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/scoreclock","Action":"build-output","Output":"# github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/scoreclock\n"}
+{"ImportPath":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/scoreclock","Action":"build-output","Output":"games/yuyuhakusho/audio/scoreclock/header.go:15:6: ControlWork redeclared in this block\n"}
+{"ImportPath":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/scoreclock","Action":"build-output","Output":"\tgames/yuyuhakusho/audio/scoreclock/control.go:11:6: other declaration of ControlWork\n"}
+{"ImportPath":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/scoreclock","Action":"build-output","Output":"games/yuyuhakusho/audio/scoreclock/header.go:44:10: work.Mode undefined (type ControlWork has no field or method Mode)\n"}
+{"ImportPath":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/scoreclock","Action":"build-output","Output":"games/yuyuhakusho/audio/scoreclock/header.go:44:28: work.AuxMode undefined (type ControlWork has no field or method AuxMode)\n"}
+{"ImportPath":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/scoreclock","Action":"build-fail"}
+{"Time":"2026-11-06T14:47:50.840492+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/scoreclock"}
+{"Time":"2026-11-06T14:47:50.840528+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/scoreclock","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/scoreclock [build failed]\n"}
+{"Time":"2026-11-06T14:47:50.840536+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/scoreclock","Elapsed":0,"FailedBuild":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/scoreclock"}

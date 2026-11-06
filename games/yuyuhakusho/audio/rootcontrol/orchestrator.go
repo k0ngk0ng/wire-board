@@ -81,8 +81,11 @@ type RuleOperation struct {
 // AcceptDispatch is only an explicit callable-stress extension for the proven
 // idle ordinary/primary domain; it cannot authorize private 7F duck behavior.
 type RuleHooks struct {
-	Operation        func(RuleOperation) error
-	Score            score.ObservedHooks
+	Operation func(RuleOperation) error
+	Score     score.ObservedHooks
+	// QueueReplace may time the real canonical queue mutation. It must call
+	// apply exactly once synchronously on success and never retain it.
+	QueueReplace     func(op score.Operation, apply func() error) error
 	CaptureLevels    func() (PauseLevels, error)
 	DispatchExternal func(uint8) error
 	AcceptDispatch   func(uint8) error

@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "pass": true,
+  "cases": 208,
+  "native_executions": 832,
+  "instruction_steps": 820,
+  "psg_writes": 4,
+  "queue_effects": 8,
+  "native_state_ram_psg_steps_equal": true,
+  "pinned_cores_equal": true,
+  "identities": {
+    "observed": {
+      "core_name": "Genesis Plus GX",
+      "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+      "core_version": "v1.7.460bee4c",
+      "fps": 59.92274340431231,
+      "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+      "ram_bytes": 65536,
+      "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+      "teamplayer": false
+    },
+    "original": {
+      "core_name": "Genesis Plus GX",
+      "core_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+      "core_version": "v1.7.4 60bee4c",
+      "fps": 59.92274340431231,
+      "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+      "ram_bytes": 65536,
+      "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+      "teamplayer": false
+    }
+  },
+  "sources": {
+    "docs/research/md-yuyuhakusho/static/audio-loop-sequencer.txt": "9f81bd47bfe322110bc11339992f0e570b704077ccff22493940b75af7837152",
+    "games/yuyuhakusho/data/audio-score.json.gz": "deaf3a70eac46c199335445d186f77d51f185bdaad4d95443d09b2f1d7054d71",
+    "scripts/yuyuhakusho/score-clock-control-capture.py": "0dcf49e9ceeb4d1ea4e290ad60594f5507f59bf72b527e882fa2c132caa4a8bc",
+    "scripts/yuyuhakusho/score-clock-psg-capture.py": "9f80bcca6558d8e651a0925a8ae5e37e2a7f045f4fe3df22d7a2f0347ca47f9f",
+    "scripts/yuyuhakusho/score-clock-psg-observer.c": "d80a57828f590929d1b53bdb42f4e1a1e2e6022b1c34c4648b36e21dbe58d464"
+  },
+  "fixture_sha256": "3953f69441473aac3e3b48433c5cb7b9ff895286ced6619e64477218be9c168d",
+  "scope": "Formal normal control shapes plus private PSG pan-ignore guard; claimed/unclaimed; pure handlers/declared continuation, complete noise/queue; no extraIRQ",
+  "command": [
+    "python3",
+    "scripts/yuyuhakusho/score-clock-control-capture.py",
+    "--out",
+    ".local/md-yuyuhakusho/score-clock-control-native-v2"
+  ],
+  "exit_code": 0
+}

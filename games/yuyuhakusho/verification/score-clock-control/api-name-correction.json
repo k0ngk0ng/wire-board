@@ -1,0 +1,10 @@
+{
+  "scope": "Mechanical new API type rename only; existing header.ControlWork remains unchanged. No assertions, parameters, branches, source oracle or expected outputs changed.",
+  "original_test_archive": "games/yuyuhakusho/verification/score-clock-control/control-test.before-api-name-correction.go.txt",
+  "current_test": "games/yuyuhakusho/audio/scoreclock/control_e2e_test.go",
+  "before_sha256": "833f6a8e29d50d153371b8f797d3f1979db84d9df8089f1219a013b583c6a5cc",
+  "after_sha256": "b2986f77eb488005a0c3b98ad8c2234a51144ac9acb3ae049558ec06c141607e",
+  "old": "scoreclock.ControlWork",
+  "new": "scoreclock.ControlParameterWork",
+  "compile_red": "first-native.jsonl"
+}
