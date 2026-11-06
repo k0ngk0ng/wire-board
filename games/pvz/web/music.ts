@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import type { BoardProps } from "../../../web/src/game-api/module";
-import { ensureMusic, type Art } from "./art";
+import type { Art } from "./art";
 import { SceneMusic, type MusicFrame } from "./music-state";
 import { mapFor } from "./scene";
 import type { View } from "./types";
@@ -33,7 +33,10 @@ export function useSceneMusic(props: BoardProps<View>, view: View, art: Art | nu
   }, []);
   useEffect(() => {
     if (!art || !art.manifest.music?.[scene]) return;
-    const music = new SceneMusic(props.audio, art.base, art.manifest.music[scene], `${props.room.id}:${scene}:${art.manifest.version}`, src => ensureMusic(art, src));
+    // Immutable CDN music is streamed by the platform's native media channel.
+    // Full-file integrity is verified by delivery; bootstrap never fetches a
+    // complete FLAC merely to hand its URL to that channel a second time.
+    const music = new SceneMusic(props.audio, art.base, art.manifest.music[scene], `${props.room.id}:${scene}:${art.manifest.version}`);
     driver.current = music;
     void music.sync(sample());
     const gesture = () => { music.retry(); void music.sync(sample()); };

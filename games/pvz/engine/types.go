@@ -206,6 +206,7 @@ type RoundResult struct {
 	ElapsedMS  int64 `json:"elapsedMS"`
 }
 type State struct {
+	RulesVersion    int                 `json:"rulesVersion,omitempty"`
 	Map             MapInfo             `json:"map"`
 	Projection      bool                `json:"projection,omitempty"`
 	Options         Options             `json:"options"`
@@ -348,6 +349,7 @@ func (s *State) beginRound() {
 		}
 		s.Players[p] = Player{Team: s.Options.Teams[p], Side: side, Money: money / (len(s.Players) / 2), Cooldowns: map[string]int64{}, Deck: DefaultDeck(s.Map.ID, side), ImitaterKind: "peashooter"}
 	}
+	s.seedUnlocks()
 	if s.Map.Night && !s.Map.Roof && !s.Map.Fog {
 		for i := 0; i < 3; i++ {
 			s.Graves = append(s.Graves, Grave{ID: s.id(), Row: i % s.Map.Rows, Col: 6 + i%3, HP: 1000})

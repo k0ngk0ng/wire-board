@@ -51,6 +51,7 @@ export function CardBook({ view, art, actor, canEdit, onClose, onSave }: { view:
           <CardArt art={art} kind={spec.kind} lazy />
           <strong>{spec.name}</strong><span>{effective.cost} {side === "plants" ? "阳光" : "脑力"} · {(effective.cooldown ?? 0) / 1000} 秒</span>
           {spec.upgradeFrom && <small>{spec.kind === "cobcannon" ? "需要两株相邻的本人玉米投手" : `升级自 ${view.catalog.plants.find(card => card.kind === spec.upgradeFrom)?.name ?? spec.upgradeFrom}`}</small>}
+          {spec.unlockAfterSeconds && <small>开战后 {spec.unlockAfterSeconds} 秒解锁</small>}
           <p>{spec.description}</p>{reason && <em>{reason}</em>}
         </button>;
       })}

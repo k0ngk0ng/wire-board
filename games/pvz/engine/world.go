@@ -47,15 +47,15 @@ func DefaultDeck(scene, side string) []string {
 	}
 	switch scene {
 	case "night":
-		return []string{"sunshroom", "puffshroom", "fumeshroom", "gravebuster", "hypnoshroom", "iceshroom", "wallnut", "magnetshroom", "doomshroom", "coffeebean"}
+		return []string{"sunshroom", "puffshroom", "fumeshroom", "gravebuster", "hypnoshroom", "iceshroom", "wallnut", "magnetshroom", "doomshroom", "blover"}
 	case "pool":
 		return []string{"sunflower", "peashooter", "lilypad", "tanglekelp", "cattail", "cactus", "wallnut", "cherrybomb", "repeater", "pumpkin"}
 	case "fog":
 		return []string{"sunshroom", "puffshroom", "lilypad", "seashroom", "plantern", "blover", "magnetshroom", "fumeshroom", "cactus", "pumpkin"}
 	case "roof", "roofnight":
-		return []string{"sunflower", "flowerpot", "cabbagepult", "kernelpult", "melonpult", "wintermelon", "umbrellaleaf", "pumpkin", "coffeebean", "cobcannon"}
+		return []string{"sunflower", "flowerpot", "cabbagepult", "kernelpult", "melonpult", "wintermelon", "umbrellaleaf", "pumpkin", "blover", "cobcannon"}
 	default:
-		return []string{"sunflower", "peashooter", "repeater", "snowpea", "wallnut", "potatomine", "cherrybomb", "tallnut", "torchwood", "pumpkin"}
+		return []string{"sunflower", "peashooter", "repeater", "snowpea", "wallnut", "potatomine", "cherrybomb", "tallnut", "blover", "pumpkin"}
 	}
 }
 func (s *State) bodyAt(row, col int) int {

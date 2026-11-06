@@ -140,6 +140,7 @@ func start(ctx gameapi.Context, raw json.RawMessage) (gameapi.Match, error) {
 	if e != nil {
 		return gameapi.Match{}, e
 	}
+	engine.EnableProgression(&runtime)
 	s := state{Runtime: runtime, ServerAt: ctx.Now.UnixMilli(), Applied: []Applied{}}
 	return s.match()
 }
@@ -271,7 +272,7 @@ func (s state) view(viewer int) View {
 	if r.Map.Fog {
 		wire = "projection"
 	}
-	return View{Protocol: 2, Map: r.Map, Visibility: engine.VisibilityFor(s.Runtime, viewer), WireMode: wire, Pickups: r.Pickups, Graves: r.Graves, Craters: r.Craters, Terrain: r.Terrain, Ladders: r.Ladders, Options: r.Options, Epoch: r.Epoch, Round: r.Round, Phase: r.Phase, Tick: r.Tick, ServerAt: s.ServerAt, PhaseUntil: s.phaseUntil(), Players: r.Players, Plants: r.Plants, Zombies: r.Zombies, Projectiles: r.Projectiles, Mowers: r.Mowers, Events: r.Events, Rounds: r.Rounds, WinnerTeam: r.WinnerTeam, CanAct: s.canAct(viewer), Catalog: engine.GetCatalog(), Snapshot: r, Revision: s.Revision, Digest: engine.Digest(r), Actor: viewer}
+	return View{Protocol: 2, Map: r.Map, Visibility: engine.VisibilityFor(s.Runtime, viewer), WireMode: wire, Pickups: r.Pickups, Graves: r.Graves, Craters: r.Craters, Terrain: r.Terrain, Ladders: r.Ladders, Options: r.Options, Epoch: r.Epoch, Round: r.Round, Phase: r.Phase, Tick: r.Tick, ServerAt: s.ServerAt, PhaseUntil: s.phaseUntil(), Players: r.Players, Plants: r.Plants, Zombies: r.Zombies, Projectiles: r.Projectiles, Mowers: r.Mowers, Events: r.Events, Rounds: r.Rounds, WinnerTeam: r.WinnerTeam, CanAct: s.canAct(viewer), Catalog: engine.CatalogFor(r), Snapshot: r, Revision: s.Revision, Digest: engine.Digest(r), Actor: viewer}
 }
 
 func project(m gameapi.Match, viewer int) (any, error) {

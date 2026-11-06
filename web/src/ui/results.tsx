@@ -1,7 +1,7 @@
 import { Crown, RotateCcw } from "lucide-react";
 import type { Room } from "../types";
 import { PlayerName } from "../profiles";
-import { isIndependentGame } from "../game-api/registry";
+import { gameModule, isIndependentGame } from "../game-api/registry";
 import { catanResultDescription } from "../../../games/catan/web/catan-results";
 import { splendorResultDescription } from "../../../games/splendor/web/splendor-city-state";
 import { cooperativeOutcomeLabel } from "./cooperative-rating";
@@ -21,6 +21,7 @@ export function Results({
   command: (t: string) => void;
 }) {
   const g = room.game!;
+  const ResultDetails = gameModule(room.kind)?.ResultDetails;
   return (
     <section className="results">
       <div>
@@ -39,28 +40,31 @@ export function Results({
                     : "合作挑战结束"
                 : `${g.winners.map((i) => room.seats[i]?.name).join("、")} 获胜`}
         </h2>
-        <p>
-          {room.result?.unrated
-            ? "练习对局不计积分，成绩已保存。"
-            : room.result?.draw
-              ? "本局没有获胜方，积分保持不变。"
-              : room.result?.cooperative
-                ? g.winners.length > 0
-                  ? "大家共同完成了本局目标。"
-                  : "本局挑战结束，没有获胜者。可以再来一局。"
-                : isIndependentGame(room.kind)
-                  ? "本局已结算。"
-                  : g.sanguosha
-                    ? "身份阵营结算：获胜阵营的成员共同获胜，包括已经阵亡的队友。"
-                    : g.carcassonne
-                      ? "地块用尽后结算未完成建筑与田地；总分最高者获胜，同分共同获胜。离场玩家不参与排名。"
-                      : g.catan
-                        ? catanResultDescription(g.catan)
-                        : g.splendor
-                          ? splendorResultDescription(g.splendor)
-                          : "总分 = 路线分 + 目的地净得分 + 本地图奖励。"}
-        </p>
+        {!ResultDetails && (
+          <p>
+            {room.result?.unrated
+              ? "练习对局不计积分，成绩已保存。"
+              : room.result?.draw
+                ? "本局没有获胜方，积分保持不变。"
+                : room.result?.cooperative
+                  ? g.winners.length > 0
+                    ? "大家共同完成了本局目标。"
+                    : "本局挑战结束，没有获胜者。可以再来一局。"
+                  : isIndependentGame(room.kind)
+                    ? "本局已结算。"
+                    : g.sanguosha
+                      ? "身份阵营结算：获胜阵营的成员共同获胜，包括已经阵亡的队友。"
+                      : g.carcassonne
+                        ? "地块用尽后结算未完成建筑与田地；总分最高者获胜，同分共同获胜。离场玩家不参与排名。"
+                        : g.catan
+                          ? catanResultDescription(g.catan)
+                          : g.splendor
+                            ? splendorResultDescription(g.splendor)
+                            : "总分 = 路线分 + 目的地净得分 + 本地图奖励。"}
+          </p>
+        )}
       </div>
+      {ResultDetails && <ResultDetails room={room} data={g.data} />}
       {room.result && !room.result.unrated && (
         <RatingChanges result={room.result} />
       )}

@@ -44,7 +44,7 @@ func Validate(s State) error {
 		for k, at := range p.Cooldowns {
 			_, a := PlantSpec(k)
 			_, b := ZombieSpec(k)
-			if !a && !b || at < 0 || at > s.Tick+120000/TickMS {
+			if !a && !b || at < 0 || at > s.Tick+180000/TickMS {
 				return bad
 			}
 		}

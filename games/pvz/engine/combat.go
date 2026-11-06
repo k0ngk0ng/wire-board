@@ -84,10 +84,28 @@ func (s *State) damagePlant(id, amount int, attacker *Zombie) {
 	}
 }
 func (s *State) canBreach(z Zombie) bool {
-	if z.HP <= 0 || z.X >= 0 || z.Allegiance == "plants" || z.Digging || z.Kind == "bungee" || z.Kind == "zomboss" || z.Kind == "yeti" && z.State == "escaping" {
+	if z.X >= 0 || !houseApproach(z) || z.Kind == "digger" && z.State == "emerging" {
 		return false
 	}
-	return z.Altitude > 0 || s.Mowers[z.Row].State != "ready"
+	if z.Altitude > 0 && !flyingBypass(z) {
+		return false
+	}
+	return flyingBypass(z) || s.Mowers[z.Row].State != "ready"
+}
+func flyingBypass(z Zombie) bool { return z.Kind == "balloon" && z.Altitude > 0 }
+func houseApproach(z Zombie) bool {
+	return z.HP > 0 && z.Allegiance != "plants" && !z.Digging && z.Kind != "bungee" && z.Kind != "zomboss" && z.Flags["direction"] <= 0 && !(z.Kind == "yeti" && z.State == "escaping")
+}
+func mowerTarget(z Zombie) bool {
+	return z.HP > 0 && z.Allegiance != "plants" && !z.Digging && !flyingBypass(z) && z.Kind != "bungee" && z.Kind != "zomboss" && !(z.Kind == "digger" && z.State == "emerging")
+}
+func (s *State) activateMower(z *Zombie) {
+	if !houseApproach(*z) || !mowerTarget(*z) || z.X > 150 || z.Row < 0 || z.Row >= len(s.Mowers) || s.Mowers[z.Row].State != "ready" {
+		return
+	}
+	s.Mowers[z.Row].State = "moving"
+	s.Mowers[z.Row].X = -150
+	s.emit("mower", z.Row, -150, -1, "", 0, 0)
 }
 func (s *State) transformImitater(index int) {
 	if index < 0 || index >= len(s.Plants) {

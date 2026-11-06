@@ -4,6 +4,7 @@ import catalog from "./catalog";
 import { Board } from "./Board";
 import type { Options, View } from "./types";
 import { SCENES } from "./scene";
+import { ResultDetails } from "./ResultDetails";
 import "./style.css";
 
 function PvzOptions({ value, onChange, capacity, disabled }: OptionsProps<Options>) {
@@ -29,10 +30,12 @@ function PvzOptions({ value, onChange, capacity, disabled }: OptionsProps<Option
 export default defineGame<View, Options>({
   ...catalog,
   asyncBoard: true,
+  assetLoading: "board",
   // The Board loads the selected scene and public decks from this build's CDN
   // root. The shared legacy-media prefix does not own PvZ's new assets.
   resources: () => [],
   Board,
+  ResultDetails,
   Options: PvzOptions,
   defaultOptions: { mode: "duel", teams: [0, 1], roundSeconds: 360, prepSeconds: 20, scene: "day" },
   PlayerSummary: ({ room, data, seat }) => {
@@ -45,6 +48,7 @@ export default defineGame<View, Options>({
   },
   Rules: () => <div className="pvz-rules">
     <p>植物方选择卡牌后点击草坪格种植，僵尸方选择卡牌后点击右侧行入口出兵。所有单位自动战斗。每人独立持有阳光或脑力、卡牌冷却和单位；铲子只清除自己的植物。</p>
+    <p>植物队初始共 300 阳光，2v2 每人 150。僵尸队每次部署至少间隔 3 秒，各单位更长的冷却仍生效。特殊僵尸在开战后分批解锁：45 秒开放橄榄球等强化单位，60 秒开放潜水、海豚、跳跳等单位，90 秒开放气球、矿工、蹦极和车辆，120 秒开放巨人与僵王；换边后重新计时。默认植物牌组含对空手段，三叶草可吹走气球。</p>
     <p>布阵时通过卡册选择最多 10 张卡，模仿者须指定目标。泳池水面使用睡莲承载陆生植物，屋顶使用花盆；花盆或睡莲、本体和南瓜可以同格。点击植物可分别管理自己的层，玉米加农炮选择瞄准后再指定目标。白天休眠的蘑菇可用咖啡豆唤醒。</p>
     <p>白天、夜晚、泳池、浓雾、屋顶与夜间屋顶共用对战规则。浓雾隐藏未被路灯或三叶草揭示的敌方单位；水生、飞行、潜水与地底单位遵循各自规则。升级植物需要自己的前置植物。</p>
     <p>割草机每行仅能使用一次。僵尸突破房屋即攻破，植物守到回合结束即守住。双方各进攻一次：只有一方攻破时该队获胜；均攻破时比较突破时间，均守住或时间相同则和局。2v2 共用草坪、共同胜负。</p>

@@ -3,24 +3,26 @@ package engine
 // Original IDs, plant prices and recharge counters are bound to the sampled
 // PC 1.0.0.1051 tables. Zombie purchase prices are explicit versus rules.
 type Spec struct {
-	Kind         string   `json:"kind"`
-	Name         string   `json:"name"`
-	Cost         int      `json:"cost"`
-	Cooldown     int      `json:"cooldown"`
-	HP           int      `json:"hp"`
-	Armor        int      `json:"armor,omitempty"`
-	Description  string   `json:"description"`
-	OriginalID   int      `json:"originalId"`
-	Target       string   `json:"target"`
-	Layer        string   `json:"layer,omitempty"`
-	UpgradeFrom  string   `json:"upgradeFrom,omitempty"`
-	WaterOnly    bool     `json:"waterOnly,omitempty"`
-	WaterAllowed bool     `json:"waterAllowed,omitempty"`
-	RoofOnly     bool     `json:"roofOnly,omitempty"`
-	Scenes       []string `json:"scenes,omitempty"`
-	Mushroom     bool     `json:"mushroom,omitempty"`
-	LaunchMS     int      `json:"launchMS,omitempty"`
-	RequiresIce  bool     `json:"requiresIce,omitempty"`
+	UnlockAfterSeconds int      `json:"unlockAfterSeconds,omitempty"`
+	UnlockAt           int64    `json:"unlockAt,omitempty"`
+	Kind               string   `json:"kind"`
+	Name               string   `json:"name"`
+	Cost               int      `json:"cost"`
+	Cooldown           int      `json:"cooldown"`
+	HP                 int      `json:"hp"`
+	Armor              int      `json:"armor,omitempty"`
+	Description        string   `json:"description"`
+	OriginalID         int      `json:"originalId"`
+	Target             string   `json:"target"`
+	Layer              string   `json:"layer,omitempty"`
+	UpgradeFrom        string   `json:"upgradeFrom,omitempty"`
+	WaterOnly          bool     `json:"waterOnly,omitempty"`
+	WaterAllowed       bool     `json:"waterAllowed,omitempty"`
+	RoofOnly           bool     `json:"roofOnly,omitempty"`
+	Scenes             []string `json:"scenes,omitempty"`
+	Mushroom           bool     `json:"mushroom,omitempty"`
+	LaunchMS           int      `json:"launchMS,omitempty"`
+	RequiresIce        bool     `json:"requiresIce,omitempty"`
 }
 type Catalog struct {
 	Plants  []Spec `json:"plants"`

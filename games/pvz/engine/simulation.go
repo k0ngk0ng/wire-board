@@ -118,6 +118,11 @@ func (s *State) blast(row, x, radius, rows, damage, owner int, kind string, targ
 	s.emit("explosion", row, x, owner, kind, target, damage)
 }
 func (s *State) mowerStep() {
+	// Boundary protection is independent of the enemy's current animation.
+	// Jump/landing state machines may not pass through walkAndAttack this tick.
+	for i := range s.Zombies {
+		s.activateMower(&s.Zombies[i])
+	}
 	for row := range s.Mowers {
 		m := &s.Mowers[row]
 		if m.State != "moving" {
@@ -127,7 +132,7 @@ func (s *State) mowerStep() {
 		m.X += 300
 		for i := range s.Zombies {
 			z := &s.Zombies[i]
-			if z.Row == row && z.HP > 0 && z.Allegiance != "plants" && z.Altitude == 0 && !z.Digging && z.Kind != "bungee" && z.Kind != "zomboss" && z.X >= old-350 && z.X <= m.X+350 {
+			if z.Row == row && mowerTarget(*z) && z.X >= old-350 && z.X <= m.X+350 {
 				z.HP = 0
 			}
 		}

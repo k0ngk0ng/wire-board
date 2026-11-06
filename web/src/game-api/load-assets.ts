@@ -168,6 +168,9 @@ export async function prepareGame(
       total,
     }),
   );
-  progress({ percent: 90, label: "初始化游戏画面" });
-  return { module, build: manifest.build };
+  progress({
+    percent: module.assetLoading === "board" ? 35 : 90,
+    label: "初始化游戏画面",
+  });
+  return { module, build: manifest.build, media: manifest.media };
 }

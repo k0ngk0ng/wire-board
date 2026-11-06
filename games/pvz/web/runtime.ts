@@ -1,4 +1,5 @@
 import type { PvzAction, View } from "./types";
+import type { ResourceDownloads } from "./downloads";
 
 type EngineView = Record<string, unknown> & Pick<View, "epoch" | "tick" | "phase" | "players" | "plants" | "zombies" | "projectiles" | "mowers"> & { phaseEndTick: number };
 type EngineState = EngineView & { events: View["events"] };
@@ -18,30 +19,27 @@ const MAX_PREDICTION = 5;
 const MAX_PENDING = 32;
 const url = (base: string, file: string) => `${base.replace(/\/$/, "")}/${file.replace(/^\//, "")}`;
 
-async function loadRuntime(_legacyAssets: string): Promise<Port> {
+async function loadRuntime(_legacyAssets: string, downloads?: ResourceDownloads): Promise<Port> {
   const base = url(import.meta.env.BASE_URL, "pvz/v1/runtime");
-  const previous = loaded.get(base); if (previous) return previous;
+  const previous = loaded.get(base); if (previous) { downloads?.planned("runtime"); return previous; }
   const pending = (async () => {
-    const manifestResponse = await fetch(url(base, "build.json"), { signal: AbortSignal.timeout(45000) });
-    if (!manifestResponse.ok) throw Error("植物大战僵尸运行时版本加载失败");
-    const manifest = await manifestResponse.json() as { sourceSHA256: string; files: Record<string, { sha256: string; bytes: number }> };
+    const manifest = downloads ? JSON.parse(new TextDecoder().decode(await downloads.bytes(url(base,"build.json"),"/pvz/v1/runtime/build.json",AbortSignal.timeout(45000)))) as {sourceSHA256:string;files:Record<string,{sha256:string;bytes:number}>} : await(async()=>{const response=await fetch(url(base,"build.json"),{signal:AbortSignal.timeout(45000)});if(!response.ok)throw Error("植物大战僵尸运行时版本加载失败");return response.json() as Promise<{sourceSHA256:string;files:Record<string,{sha256:string;bytes:number}>}>})();
     const file = manifest.files?.["pvz.wasm"];
     if (!/^[a-f0-9]{64}$/.test(manifest.sourceSHA256) || !file || !/^[a-f0-9]{64}$/.test(file.sha256) || !Number.isSafeInteger(file.bytes) || file.bytes <= 0) throw Error("植物大战僵尸运行时清单无效");
     const runtime = globalThis as RuntimeGlobal;
+    downloads?.plan(["/pvz/v1/runtime/pvz.wasm",...(!runtime.Go?["/pvz/v1/runtime/wasm_exec.js"]:[])]);downloads?.planned("runtime");
     if (!runtime.Go) {
       loader ??= new Promise<void>((resolve, reject) => {
         const script = document.createElement("script"); script.src = url(base, "wasm_exec.js"); script.crossOrigin = "anonymous";
         const hash = manifest.files["wasm_exec.js"]?.sha256;
         if (hash && /^[a-f0-9]{64}$/.test(hash)) script.integrity = "sha256-" + btoa(String.fromCharCode(...hash.match(/../g)!.map(n => parseInt(n, 16))));
-        script.onload = () => runtime.Go ? resolve() : reject(Error("浏览器运行时初始化失败"));
+        script.onload = () => {downloads?.complete("/pvz/v1/runtime/wasm_exec.js");runtime.Go ? resolve() : reject(Error("浏览器运行时初始化失败"));};
         script.onerror = () => { script.remove(); reject(Error("浏览器运行时加载失败")); };
         document.head.append(script);
       }).catch(error => { loader = undefined; throw error; });
       await loader;
     }
-    const response = await fetch(url(base, "pvz.wasm"), { signal: AbortSignal.timeout(60000) });
-    if (!response.ok) throw Error("植物大战僵尸规则程序加载失败");
-    const bytes = await response.arrayBuffer();
+    const bytes = downloads ? (await downloads.bytes(url(base,"pvz.wasm"),"/pvz/v1/runtime/pvz.wasm",AbortSignal.timeout(60000))).buffer as ArrayBuffer : await(async()=>{const response=await fetch(url(base,"pvz.wasm"),{signal:AbortSignal.timeout(60000)});if(!response.ok)throw Error("植物大战僵尸规则程序加载失败");return response.arrayBuffer()})();
     const hash = [...new Uint8Array(await crypto.subtle.digest("SHA-256", bytes))].map(n => n.toString(16).padStart(2, "0")).join("");
     if (bytes.byteLength !== file.bytes || hash !== file.sha256) throw Error("规则程序与版本清单不匹配，请重新加载");
     const go = new runtime.Go!();
@@ -71,8 +69,8 @@ export type Predictor = {
 /** Replays confirmed operations in the shared Go engine, then overlays only a
  * bounded window of this client's pending actions. Confirmed events are the
  * sole source of audio; prediction never publishes an outcome or rating. */
-export async function createPredictor(assets: string): Promise<Predictor> {
-  const port = await loadRuntime(assets);
+export async function createPredictor(assets: string, downloads?: ResourceDownloads): Promise<Predictor> {
+  const port = await loadRuntime(assets,downloads);
   const identity = `pvz-${++instanceSerial}`;
   const authID = `${identity}-auth`, localID = `${identity}-local`;
   let authority: EngineState | undefined, projected: EngineView | undefined;
