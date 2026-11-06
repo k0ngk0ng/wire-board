@@ -1,0 +1,37 @@
+{
+  "pass": true,
+  "cases": [
+    {
+      "name": "single-reset-crossing-chip-tick",
+      "pass": true,
+      "events": 3883,
+      "expected": 3883,
+      "difference": null,
+      "holds": [
+        {
+          "grant": 0,
+          "resume": 0,
+          "input": {
+            "kind": "publish",
+            "begin": 0,
+            "end": 0,
+            "code": 115,
+            "target": "single",
+            "protocol": "ordinary",
+            "pan": 192
+          }
+        },
+        {
+          "grant": 7183080,
+          "resume": 7185015,
+          "input": {
+            "kind": "reset",
+            "begin": 7183006,
+            "end": 7185006
+          }
+        }
+      ]
+    }
+  ],
+  "model_sha256": "39a89a2f92a2f2afb71e9a9ba4ae725b8709aafa68b5472f20ee7cf805529c39"
+}

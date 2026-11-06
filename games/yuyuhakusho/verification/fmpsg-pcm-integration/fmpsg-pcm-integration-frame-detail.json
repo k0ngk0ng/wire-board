@@ -1,0 +1,9 @@
+{
+  "scope": "Only add failed-frame diagnostic after first positive/negative execution; comparisons, input paths and production unchanged",
+  "before_test_sha256": "65665f3ed62e89f9bf5851f23606b7f6773bb79624cd5ec944587cc2a1777f06",
+  "prior_logs": [
+    "fmpsg-pcm-integration-first-native.jsonl",
+    "fmpsg-pcm-integration-data-only-red.jsonl",
+    "fmpsg-pcm-integration-sort-red.jsonl"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "scope": "Additional E2E matrix endpoint after initial production and full green; no production code or Go test/assertion changes. Native+1008 reset combination supplements original pre-production +194 reset and prior existing +1008 ordinary-I/O proof. Do not claim revised fixture wholly preceded implementation.",
+  "original_preproduction_fixture": {
+    "historical_path": "games/yuyuhakusho/verification/fmpsg-reset/native.json.gz",
+    "retained_path": "games/yuyuhakusho/verification/fmpsg-reset/native-before-full-ahead.json.gz",
+    "sha256": "ba1a6f3bb5734d0fb66673f9c49115e08e9c3e140e67235d915c51f992aeb02d"
+  },
+  "pre_extension_producer_sha256": "1651842e5919d67a86a8aa54bd05d9b95cdf402ec84d2848d9647422b6be356e",
+  "production_sha256": "4ed69e716ebce21da50189443ba8d07fa283a145a4f61e08dbbd4f3328f98bfe"
+}

@@ -1,0 +1,10 @@
+{
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/pcm-command-go-address-red",
+      "files": 1,
+      "bytes": 2354
+    }
+  ],
+  "kept": "Actual negative source/log and canonical original fixture preserved; no shared caches, parent native artifacts or external paths removed"
+}

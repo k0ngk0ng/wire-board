@@ -11,7 +11,7 @@ func (d *Device) step() {
 		d.err = errors.New("invalid PCM slot phase")
 		return
 	}
-	if d.stepSingle() || d.stepDual() {
+	if d.stepSingle() || d.stepDual() || d.stepControl() {
 		return
 	}
 	d.err = errors.New("unknown PCM phase")
@@ -24,7 +24,11 @@ func (d *Device) validateState(s State) error {
 		return errors.New("PCM checkpoint frame overflows")
 	}
 	origin := d.library.origin + s.Frame*FrameCycles
-	if s.Time < d.library.origin || s.Time > origin+1024 || s.Held == nil && s.Time < origin {
+	upper := uint64(math.MaxUint64)
+	if origin <= math.MaxUint64-FrameCycles-1024 {
+		upper = origin + FrameCycles + 1024
+	}
+	if s.Time < d.library.origin || s.Time > upper || s.Held == nil && s.Time < origin {
 		return errors.New("PCM checkpoint frontier outside frame")
 	}
 	count := 0
@@ -33,6 +37,9 @@ func (d *Device) validateState(s State) error {
 	}
 	if ticks, ok := dualProfiles[s.Phase]; ok {
 		count = len(ticks)
+	}
+	if s.Phase == "boot" {
+		count = len(bootProfile)
 	}
 	if count == 0 {
 		switch s.Phase {
@@ -98,7 +105,7 @@ func (d *Device) validateState(s State) error {
 	if !exists(s.Global.SingleDescriptor) || !exists(s.Work.Source) {
 		return errors.New("PCM checkpoint missing descriptor")
 	}
-	if s.Global.Busy > 128 || s.Global.RestorePan != d.state.Global.RestorePan {
+	if s.Global.Busy > 128 {
 		return errors.New("PCM checkpoint control byte invalid")
 	}
 	if s.Single != nil {
@@ -132,9 +139,12 @@ func (d *Device) validateState(s State) error {
 		if e := d.validateInput(s.Held.Input); e != nil {
 			return e
 		}
-		if s.Held.Input.End < origin || s.Held.Grant < d.library.origin || s.Held.Grant != s.Time || s.Held.Grant < s.Held.Input.Begin {
+		if (!s.Held.Open && s.Held.Input.End < origin) || s.Held.Grant < d.library.origin || s.Held.Grant != s.Time || s.Held.Grant < s.Held.Input.Begin || s.Held.Open && s.Held.Input.Kind != Hold {
 			return errors.New("PCM checkpoint hold interval invalid")
 		}
+	}
+	if e := d.validatePending(s); e != nil {
+		return e
 	}
 	if d.err != nil {
 		return d.err

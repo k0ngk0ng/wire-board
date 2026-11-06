@@ -1,0 +1,1330 @@
+{
+  "scope": "Two distinct composition proofs: given original actual ports\u2192full chips; autonomous typed Go PCM Device output\u2192same full chips from matching observed full initial. No production source change, original event-time replay in Device, global world/IRQ schedule or speaker-equivalence claim.",
+  "layers": {
+    "native_oracle": {
+      "scope": "Given original actual physical-port streams into full native chips from captured complete quiescent state; this is not autonomous Device output or global world scheduling proof",
+      "cases": 23,
+      "frames": 1274,
+      "stereo_frames": 937609,
+      "physical_ledger_events": 519256,
+      "raw_cycles_modified": false,
+      "address_times_synthesized": false,
+      "source_ports_sha256": "e435f0f778088e0bb133082f82720c8ca7ed10c7d13be388faea837d76fff995",
+      "source_owner_capture_sha256": "4349a80c12019688324fbea3cb988ddcab16da8a76d170be9842b935c5d8356f",
+      "projector_sha256": "09dbf073f36af1376e2f24c2027ff48874810ab14e4d99df80848e4c1cb593d1",
+      "producer_sha256": "888cc9ed1628a7cd6ef5225e821e5f42652d6033baf78fcb74a84cf9fadc5c44",
+      "json_sha256": "be10a1edfd47a89ab5e7b10dcbecc143eb8ee9fe288507cae215d70f4ab2bb9c",
+      "gzip_sha256": "692b9cd82914dedca8fa3017e30c55280fb255759932deb7a087d607a59b6fef",
+      "gzip_bytes": 3308580,
+      "original": {
+        "identity": {
+          "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+          "core_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+          "core_name": "Genesis Plus GX",
+          "core_version": "v1.7.4 60bee4c",
+          "fps": 59.92274340431231,
+          "ram_bytes": 65536,
+          "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+          "teamplayer": false
+        },
+        "observed_quiescent_fm_sidecar": {
+          "fm_cycles_start": 0,
+          "fm_cycles_count": 0,
+          "fm_cycles_busy": 0,
+          "fm_ptr_offset_bytes": 0
+        },
+        "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+        "cases": [
+          {
+            "name": "dual-append",
+            "frames": 125,
+            "chip_operations": 30688,
+            "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+            "sidecar_restore": [],
+            "raw_reset_backsteps": [],
+            "native_projection_checks": 126,
+            "original_cpu_pcm_and_captured_DSP_equal": true,
+            "actual_original_address_latches_equal": true
+          },
+          {
+            "name": "dual-dma",
+            "frames": 46,
+            "chip_operations": 10444,
+            "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+            "sidecar_restore": [],
+            "raw_reset_backsteps": [],
+            "native_projection_checks": 47,
+            "original_cpu_pcm_and_captured_DSP_equal": true,
+            "actual_original_address_latches_equal": true
+          },
+          {
+            "name": "dual-hard-reset-complete",
+            "frames": 55,
+            "chip_operations": 12614,
+            "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+            "sidecar_restore": [],
+            "raw_reset_backsteps": [],
+            "native_projection_checks": 56,
+            "original_cpu_pcm_and_captured_DSP_equal": true,
+            "actual_original_address_latches_equal": true
+          },
+          {
+            "name": "dual-hard-reset",
+            "frames": 25,
+            "chip_operations": 6476,
+            "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+            "sidecar_restore": [],
+            "raw_reset_backsteps": [],
+            "native_projection_checks": 26,
+            "original_cpu_pcm_and_captured_DSP_equal": true,
+            "actual_original_address_latches_equal": true
+          },
+          {
+            "name": "dual-pause",
+            "frames": 48,
+            "chip_operations": 10444,
+            "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+            "sidecar_restore": [],
+            "raw_reset_backsteps": [],
+            "native_projection_checks": 49,
+            "original_cpu_pcm_and_captured_DSP_equal": true,
+            "actual_original_address_latches_equal": true
+          },
+          {
+            "name": "dual-replace-a",
+            "frames": 125,
+            "chip_operations": 12604,
+            "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+            "sidecar_restore": [],
+            "raw_reset_backsteps": [],
+            "native_projection_checks": 126,
+            "original_cpu_pcm_and_captured_DSP_equal": true,
+            "actual_original_address_latches_equal": true
+          },
+          {
+            "name": "dual-to-single",
+            "frames": 80,
+            "chip_operations": 33328,
+            "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+            "sidecar_restore": [],
+            "raw_reset_backsteps": [],
+            "native_projection_checks": 81,
+            "original_cpu_pcm_and_captured_DSP_equal": true,
+            "actual_original_address_latches_equal": true
+          },
+          {
+            "name": "idle-to-dual-a",
+            "frames": 44,
+            "chip_operations": 10444,
+            "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+            "sidecar_restore": [],
+            "raw_reset_backsteps": [],
+            "native_projection_checks": 45,
+            "original_cpu_pcm_and_captured_DSP_equal": true,
+            "actual_original_address_latches_equal": true
+          },
+          {
+            "name": "idle-to-dual-b",
+            "frames": 22,
+            "chip_operations": 4472,
+            "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+            "sidecar_restore": [],
+            "raw_reset_backsteps": [],
+            "native_projection_checks": 23,
+            "original_cpu_pcm_and_captured_DSP_equal": true,
+            "actual_original_address_latches_equal": true
+          },
+          {
+            "name": "idle-to-single",
+            "frames": 66,
+            "chip_operations": 31162,
+            "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+            "sidecar_restore": [],
+            "raw_reset_backsteps": [],
+            "native_projection_checks": 67,
+            "original_cpu_pcm_and_captured_DSP_equal": true,
+            "actual_original_address_latches_equal": true
+          },
+          {
+            "name": "internal-single-byte",
+            "frames": 5,
+            "chip_operations": 14,
+            "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+            "sidecar_restore": [],
+            "raw_reset_backsteps": [],
+            "native_projection_checks": 6,
+            "original_cpu_pcm_and_captured_DSP_equal": true,
+            "actual_original_address_latches_equal": true
+          },
+          {
+            "name": "legitimate-f0-remap",
+            "frames": 108,
+            "chip_operations": 26848,
+            "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+            "sidecar_restore": [],
+            "raw_reset_backsteps": [],
+            "native_projection_checks": 109,
+            "original_cpu_pcm_and_captured_DSP_equal": true,
+            "actual_original_address_latches_equal": true
+          },
+          {
+            "name": "music-from-idle",
+            "frames": 22,
+            "chip_operations": 8030,
+            "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+            "sidecar_restore": [],
+            "raw_reset_backsteps": [],
+            "native_projection_checks": 23,
+            "original_cpu_pcm_and_captured_DSP_equal": true,
+            "actual_original_address_latches_equal": true
+          },
+          {
+            "name": "music-pan-restore",
+            "frames": 26,
+            "chip_operations": 8030,
+            "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+            "sidecar_restore": [],
+            "raw_reset_backsteps": [],
+            "native_projection_checks": 27,
+            "original_cpu_pcm_and_captured_DSP_equal": true,
+            "actual_original_address_latches_equal": true
+          },
+          {
+            "name": "music-replace",
+            "frames": 35,
+            "chip_operations": 5212,
+            "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+            "sidecar_restore": [],
+            "raw_reset_backsteps": [],
+            "native_projection_checks": 36,
+            "original_cpu_pcm_and_captured_DSP_equal": true,
+            "actual_original_address_latches_equal": true
+          },
+          {
+            "name": "single-dma",
+            "frames": 68,
+            "chip_operations": 31162,
+            "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+            "sidecar_restore": [],
+            "raw_reset_backsteps": [],
+            "native_projection_checks": 69,
+            "original_cpu_pcm_and_captured_DSP_equal": true,
+            "actual_original_address_latches_equal": true
+          },
+          {
+            "name": "single-hard-reset",
+            "frames": 75,
+            "chip_operations": 35456,
+            "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+            "sidecar_restore": [],
+            "raw_reset_backsteps": [],
+            "native_projection_checks": 76,
+            "original_cpu_pcm_and_captured_DSP_equal": true,
+            "actual_original_address_latches_equal": true
+          },
+          {
+            "name": "single-pause",
+            "frames": 70,
+            "chip_operations": 31162,
+            "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+            "sidecar_restore": [],
+            "raw_reset_backsteps": [],
+            "native_projection_checks": 71,
+            "original_cpu_pcm_and_captured_DSP_equal": true,
+            "actual_original_address_latches_equal": true
+          },
+          {
+            "name": "single-replace",
+            "frames": 75,
+            "chip_operations": 35452,
+            "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+            "sidecar_restore": [],
+            "raw_reset_backsteps": [],
+            "native_projection_checks": 76,
+            "original_cpu_pcm_and_captured_DSP_equal": true,
+            "actual_original_address_latches_equal": true
+          },
+          {
+            "name": "single-reset-between-address-data",
+            "frames": 5,
+            "chip_operations": 15,
+            "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+            "sidecar_restore": [],
+            "raw_reset_backsteps": [],
+            "native_projection_checks": 6,
+            "original_cpu_pcm_and_captured_DSP_equal": true,
+            "actual_original_address_latches_equal": true
+          },
+          {
+            "name": "single-reset-crossing-chip-tick",
+            "frames": 12,
+            "chip_operations": 4292,
+            "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+            "sidecar_restore": [],
+            "raw_reset_backsteps": [
+              {
+                "complete": 7183080,
+                "request": 7183006
+              }
+            ],
+            "native_projection_checks": 13,
+            "original_cpu_pcm_and_captured_DSP_equal": true,
+            "actual_original_address_latches_equal": true
+          },
+          {
+            "name": "single-reset-during-dac-operation",
+            "frames": 12,
+            "chip_operations": 4294,
+            "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+            "sidecar_restore": [],
+            "raw_reset_backsteps": [
+              {
+                "complete": 7186425,
+                "request": 7186321
+              }
+            ],
+            "native_projection_checks": 13,
+            "original_cpu_pcm_and_captured_DSP_equal": true,
+            "actual_original_address_latches_equal": true
+          },
+          {
+            "name": "single-to-dual",
+            "frames": 125,
+            "chip_operations": 34118,
+            "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+            "sidecar_restore": [],
+            "raw_reset_backsteps": [],
+            "native_projection_checks": 126,
+            "original_cpu_pcm_and_captured_DSP_equal": true,
+            "actual_original_address_latches_equal": true
+          }
+        ]
+      },
+      "observed": {
+        "identity": {
+          "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+          "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+          "core_name": "Genesis Plus GX",
+          "core_version": "v1.7.460bee4c",
+          "fps": 59.92274340431231,
+          "ram_bytes": 65536,
+          "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+          "teamplayer": false
+        },
+        "observed_quiescent_fm_sidecar": {
+          "fm_cycles_start": 0,
+          "fm_cycles_count": 0,
+          "fm_cycles_busy": 0,
+          "fm_ptr_offset_bytes": 0
+        },
+        "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+        "cases": [
+          {
+            "name": "dual-append",
+            "frames": 125,
+            "chip_operations": 30688,
+            "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+            "sidecar_restore": [],
+            "raw_reset_backsteps": [],
+            "native_projection_checks": 126,
+            "original_cpu_pcm_and_captured_DSP_equal": true,
+            "actual_original_address_latches_equal": true
+          },
+          {
+            "name": "dual-dma",
+            "frames": 46,
+            "chip_operations": 10444,
+            "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+            "sidecar_restore": [],
+            "raw_reset_backsteps": [],
+            "native_projection_checks": 47,
+            "original_cpu_pcm_and_captured_DSP_equal": true,
+            "actual_original_address_latches_equal": true
+          },
+          {
+            "name": "dual-hard-reset-complete",
+            "frames": 55,
+            "chip_operations": 12614,
+            "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+            "sidecar_restore": [],
+            "raw_reset_backsteps": [],
+            "native_projection_checks": 56,
+            "original_cpu_pcm_and_captured_DSP_equal": true,
+            "actual_original_address_latches_equal": true
+          },
+          {
+            "name": "dual-hard-reset",
+            "frames": 25,
+            "chip_operations": 6476,
+            "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+            "sidecar_restore": [],
+            "raw_reset_backsteps": [],
+            "native_projection_checks": 26,
+            "original_cpu_pcm_and_captured_DSP_equal": true,
+            "actual_original_address_latches_equal": true
+          },
+          {
+            "name": "dual-pause",
+            "frames": 48,
+            "chip_operations": 10444,
+            "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+            "sidecar_restore": [],
+            "raw_reset_backsteps": [],
+            "native_projection_checks": 49,
+            "original_cpu_pcm_and_captured_DSP_equal": true,
+            "actual_original_address_latches_equal": true
+          },
+          {
+            "name": "dual-replace-a",
+            "frames": 125,
+            "chip_operations": 12604,
+            "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+            "sidecar_restore": [],
+            "raw_reset_backsteps": [],
+            "native_projection_checks": 126,
+            "original_cpu_pcm_and_captured_DSP_equal": true,
+            "actual_original_address_latches_equal": true
+          },
+          {
+            "name": "dual-to-single",
+            "frames": 80,
+            "chip_operations": 33328,
+            "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+            "sidecar_restore": [],
+            "raw_reset_backsteps": [],
+            "native_projection_checks": 81,
+            "original_cpu_pcm_and_captured_DSP_equal": true,
+            "actual_original_address_latches_equal": true
+          },
+          {
+            "name": "idle-to-dual-a",
+            "frames": 44,
+            "chip_operations": 10444,
+            "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+            "sidecar_restore": [],
+            "raw_reset_backsteps": [],
+            "native_projection_checks": 45,
+            "original_cpu_pcm_and_captured_DSP_equal": true,
+            "actual_original_address_latches_equal": true
+          },
+          {
+            "name": "idle-to-dual-b",
+            "frames": 22,
+            "chip_operations": 4472,
+            "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+            "sidecar_restore": [],
+            "raw_reset_backsteps": [],
+            "native_projection_checks": 23,
+            "original_cpu_pcm_and_captured_DSP_equal": true,
+            "actual_original_address_latches_equal": true
+          },
+          {
+            "name": "idle-to-single",
+            "frames": 66,
+            "chip_operations": 31162,
+            "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+            "sidecar_restore": [],
+            "raw_reset_backsteps": [],
+            "native_projection_checks": 67,
+            "original_cpu_pcm_and_captured_DSP_equal": true,
+            "actual_original_address_latches_equal": true
+          },
+          {
+            "name": "internal-single-byte",
+            "frames": 5,
+            "chip_operations": 14,
+            "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+            "sidecar_restore": [],
+            "raw_reset_backsteps": [],
+            "native_projection_checks": 6,
+            "original_cpu_pcm_and_captured_DSP_equal": true,
+            "actual_original_address_latches_equal": true
+          },
+          {
+            "name": "legitimate-f0-remap",
+            "frames": 108,
+            "chip_operations": 26848,
+            "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+            "sidecar_restore": [],
+            "raw_reset_backsteps": [],
+            "native_projection_checks": 109,
+            "original_cpu_pcm_and_captured_DSP_equal": true,
+            "actual_original_address_latches_equal": true
+          },
+          {
+            "name": "music-from-idle",
+            "frames": 22,
+            "chip_operations": 8030,
+            "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+            "sidecar_restore": [],
+            "raw_reset_backsteps": [],
+            "native_projection_checks": 23,
+            "original_cpu_pcm_and_captured_DSP_equal": true,
+            "actual_original_address_latches_equal": true
+          },
+          {
+            "name": "music-pan-restore",
+            "frames": 26,
+            "chip_operations": 8030,
+            "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+            "sidecar_restore": [],
+            "raw_reset_backsteps": [],
+            "native_projection_checks": 27,
+            "original_cpu_pcm_and_captured_DSP_equal": true,
+            "actual_original_address_latches_equal": true
+          },
+          {
+            "name": "music-replace",
+            "frames": 35,
+            "chip_operations": 5212,
+            "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+            "sidecar_restore": [],
+            "raw_reset_backsteps": [],
+            "native_projection_checks": 36,
+            "original_cpu_pcm_and_captured_DSP_equal": true,
+            "actual_original_address_latches_equal": true
+          },
+          {
+            "name": "single-dma",
+            "frames": 68,
+            "chip_operations": 31162,
+            "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+            "sidecar_restore": [],
+            "raw_reset_backsteps": [],
+            "native_projection_checks": 69,
+            "original_cpu_pcm_and_captured_DSP_equal": true,
+            "actual_original_address_latches_equal": true
+          },
+          {
+            "name": "single-hard-reset",
+            "frames": 75,
+            "chip_operations": 35456,
+            "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+            "sidecar_restore": [],
+            "raw_reset_backsteps": [],
+            "native_projection_checks": 76,
+            "original_cpu_pcm_and_captured_DSP_equal": true,
+            "actual_original_address_latches_equal": true
+          },
+          {
+            "name": "single-pause",
+            "frames": 70,
+            "chip_operations": 31162,
+            "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+            "sidecar_restore": [],
+            "raw_reset_backsteps": [],
+            "native_projection_checks": 71,
+            "original_cpu_pcm_and_captured_DSP_equal": true,
+            "actual_original_address_latches_equal": true
+          },
+          {
+            "name": "single-replace",
+            "frames": 75,
+            "chip_operations": 35452,
+            "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+            "sidecar_restore": [],
+            "raw_reset_backsteps": [],
+            "native_projection_checks": 76,
+            "original_cpu_pcm_and_captured_DSP_equal": true,
+            "actual_original_address_latches_equal": true
+          },
+          {
+            "name": "single-reset-between-address-data",
+            "frames": 5,
+            "chip_operations": 15,
+            "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+            "sidecar_restore": [],
+            "raw_reset_backsteps": [],
+            "native_projection_checks": 6,
+            "original_cpu_pcm_and_captured_DSP_equal": true,
+            "actual_original_address_latches_equal": true
+          },
+          {
+            "name": "single-reset-crossing-chip-tick",
+            "frames": 12,
+            "chip_operations": 4292,
+            "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+            "sidecar_restore": [],
+            "raw_reset_backsteps": [
+              {
+                "complete": 7183080,
+                "request": 7183006
+              }
+            ],
+            "native_projection_checks": 13,
+            "original_cpu_pcm_and_captured_DSP_equal": true,
+            "actual_original_address_latches_equal": true
+          },
+          {
+            "name": "single-reset-during-dac-operation",
+            "frames": 12,
+            "chip_operations": 4294,
+            "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+            "sidecar_restore": [],
+            "raw_reset_backsteps": [
+              {
+                "complete": 7186425,
+                "request": 7186321
+              }
+            ],
+            "native_projection_checks": 13,
+            "original_cpu_pcm_and_captured_DSP_equal": true,
+            "actual_original_address_latches_equal": true
+          },
+          {
+            "name": "single-to-dual",
+            "frames": 125,
+            "chip_operations": 34118,
+            "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+            "sidecar_restore": [],
+            "raw_reset_backsteps": [],
+            "native_projection_checks": 126,
+            "original_cpu_pcm_and_captured_DSP_equal": true,
+            "actual_original_address_latches_equal": true
+          }
+        ]
+      },
+      "limits": [
+        "Source InitialDSP is only a limited original scalar projection; complete initial YM/PSG/FIR above is directly observed and checked unchanged by PCM initialization",
+        "Source DSP.InputAhead is an exporter-derived DAC-only cursor, not a complete physical-port frontier; the listed actual original DSP scalar fields and all original PCM/address latches are independently checked",
+        "Native omitted FM checkpoint fields are restored solely from the observed original quiescent sidecar; no production context or Go expected output enters the oracle"
+      ],
+      "pass": true
+    },
+    "go_given_native_ports": {
+      "cases": 23,
+      "frames": 1274,
+      "stereo_frames": 937609
+    },
+    "go_autonomous_device": {
+      "cases": 23,
+      "frames": 1274,
+      "stereo_frames": 937609,
+      "full_ledger_events": 519256,
+      "input": "Immutable resources/descriptors + typed accepted commands/holds/DMA only",
+      "native_event_times_are_Device_inputs": false
+    }
+  },
+  "negative_hypotheses": {
+    "data_only": {
+      "case": "single-reset-between-address-data",
+      "frame": 0,
+      "actual_address": 43,
+      "native_address": 42,
+      "only_complete_state_difference": "YM.Address",
+      "log": {
+        "path": "games/yuyuhakusho/verification/fmpsg-pcm-integration/fmpsg-pcm-integration-data-only-red.jsonl",
+        "bytes": 22194,
+        "sha256": "0f296f6456deb1a6c84f74fc905be63837561ba25490660de07ee1f3df64c3d7"
+      }
+    },
+    "raw_sort": {
+      "case": "single-reset-crossing-chip-tick",
+      "frame": 8,
+      "interleaved_sample": 28,
+      "first_byte": 56,
+      "log": {
+        "path": "games/yuyuhakusho/verification/fmpsg-pcm-integration/fmpsg-pcm-integration-sort-frame-detail-red.jsonl",
+        "bytes": 3143,
+        "sha256": "9cebf17f473105c94517202d341e9cd62c76c6c041dfdc2f190dfcc398de5549"
+      }
+    },
+    "old20_no_difference_correction_preserved": {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/sort-hypothesis-correction.json",
+      "bytes": 797,
+      "sha256": "590ed41eebc9b83caffa9556e9701ed7ddf110614c8b124319d473c78e24669c"
+    }
+  },
+  "checks": {
+    "native": {
+      "layers": {
+        "TestPCMFullChipGivenNativePorts": {
+          "cases": 23,
+          "frames": 1274,
+          "stereo_frames": 937609,
+          "elapsed_seconds": 1.14
+        },
+        "TestPCMFullChipAutonomousDevice": {
+          "cases": 23,
+          "frames": 1274,
+          "stereo_frames": 937609,
+          "elapsed_seconds": 1.43
+        }
+      },
+      "log": {
+        "path": "games/yuyuhakusho/verification/fmpsg-pcm-integration/fmpsg-pcm-integration-native-final.jsonl",
+        "bytes": 45467,
+        "sha256": "ee9ea4e463b95717335208b5340d6cd805b6febd247c8946c2a2310d76b6b8a7"
+      }
+    },
+    "race": {
+      "layers": {
+        "TestPCMFullChipGivenNativePorts": {
+          "cases": 23,
+          "frames": 1274,
+          "stereo_frames": 937609,
+          "elapsed_seconds": 14.62
+        },
+        "TestPCMFullChipAutonomousDevice": {
+          "cases": 23,
+          "frames": 1274,
+          "stereo_frames": 937609,
+          "elapsed_seconds": 19.28
+        }
+      },
+      "log": {
+        "path": "games/yuyuhakusho/verification/fmpsg-pcm-integration/fmpsg-pcm-integration-race-final.jsonl",
+        "bytes": 45496,
+        "sha256": "2a2a7d6933db3553bd520d3172d0fa1f9fa2c342759ef91dfa4425dd35a8a0e6"
+      }
+    },
+    "wasm": {
+      "layers": {
+        "TestPCMFullChipGivenNativePorts": {
+          "cases": 23,
+          "frames": 1274,
+          "stereo_frames": 937609,
+          "elapsed_seconds": 5.23
+        },
+        "TestPCMFullChipAutonomousDevice": {
+          "cases": 23,
+          "frames": 1274,
+          "stereo_frames": 937609,
+          "elapsed_seconds": 6.67
+        }
+      },
+      "log": {
+        "path": "games/yuyuhakusho/verification/fmpsg-pcm-integration/fmpsg-pcm-integration-wasm-final.jsonl",
+        "bytes": 45481,
+        "sha256": "4d9bef13f0662b36841cd64dd0cd41069466f5efe95d17f0b293cafba6c7b7b0"
+      }
+    }
+  },
+  "vet_pass": true,
+  "unchanged_preexisting_audio_go": [
+    {
+      "path": "games/yuyuhakusho/audio/chips/interactive.go",
+      "bytes": 14749,
+      "sha256": "44b2f607d2bf405b5e693c1cf9000f0a3d07571c4f67bf51c929914e4dade824"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/interactive_test.go",
+      "bytes": 9477,
+      "sha256": "65f420ddeb6b57c50a466c4906432245231da55fd92b260d033ec46894fe5409"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/kernel_contract_test.go",
+      "bytes": 451,
+      "sha256": "d01e01f8905ca158ee9604782a7c8add2a86e55d6db80599ce9326bc6ece657c"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/psg/psg.go",
+      "bytes": 8044,
+      "sha256": "b13590a9b3c4f04a45ea77ebf0938903550c889ab317b3ff8c877b95a71cb9ff"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/psg/psg_test.go",
+      "bytes": 5272,
+      "sha256": "0c19b319cb0fc923a797366b6bb35425d019cda73ffeea93d86dc29e73ef1db4"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/reset.go",
+      "bytes": 3404,
+      "sha256": "4ed69e716ebce21da50189443ba8d07fa283a145a4f61e08dbbd4f3328f98bfe"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/reset_test.go",
+      "bytes": 6755,
+      "sha256": "b7d0a5f096304be77ba0d927852e847431b5ba8a487f9825afdb4be3ff9c82ab"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/stream.go",
+      "bytes": 6142,
+      "sha256": "91d0be1cc1412a1416dfebf5bf8cf78a2901ae08f782de6c456b7a3f836ad3e0"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/stream_test.go",
+      "bytes": 5538,
+      "sha256": "fc2f63f06dd7b5b4838d973783fb8ffacd3c14de1c11ad90b70c800353870878"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/ym.go",
+      "bytes": 18862,
+      "sha256": "c2a893762a202145ef03a97cfd08762119378604d9aef3f69a48487020b17b62"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/ym_tables.go",
+      "bytes": 3731,
+      "sha256": "d9a1b020866cdf687790b3013a3bca72ecead5fcceadb1654acda4d78438344a"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/ym_test.go",
+      "bytes": 5121,
+      "sha256": "e64daa6f258ce0a3c7d46dcc83688e4fef9aad60f50aaf13782668c8282ffffa"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/dsp/dsp.go",
+      "bytes": 10402,
+      "sha256": "9b15ee92fc61bd9265052944f86ce6140782176700cca9a5b93adf0edb47aced"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/dsp/dsp_test.go",
+      "bytes": 10442,
+      "sha256": "226c6227033d4ba27411c8f671eaa65dc65683e22f6d67354414785e8261fada"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/dsp/kernel.go",
+      "bytes": 1809,
+      "sha256": "bdf6c8423864f8ed991c95b5d7e615bf74b05d53b3708b15e2556e96a6e184c1"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/dsp/kernel_view.go",
+      "bytes": 303,
+      "sha256": "4ad1d64448b9a0ca021bad6e109b8cda19d34c111a6c1784e0eb96741ce800ed"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/dsp/overflow_test.go",
+      "bytes": 800,
+      "sha256": "764f6cf8d0f18d56a02a04a77aa79def7247a5b737a26302cc775232a7b5f122"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmplayer/player.go",
+      "bytes": 11785,
+      "sha256": "10016b081eabd200dccabe755d5d33efa386bc8b3dd0d677e6f3231fd9982468"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmplayer/player_dsp_e2e_test.go",
+      "bytes": 3707,
+      "sha256": "9539978f5dc87de5b2c1d33ab13aef79c6441b573ee7025da21961bdbea0f300"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmplayer/player_e2e_test.go",
+      "bytes": 7483,
+      "sha256": "77d9e2d02b99d29384c24aa66ca0dc1c0febc1577b0cca4728937c908cbf751c"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmplayer/player_edges_e2e_test.go",
+      "bytes": 1949,
+      "sha256": "9b0b6709f1b04175c3d10ba9a19bdc6a02197761d8cfb850a569b7ec7160d675"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmplayer/player_profile_test.go",
+      "bytes": 413,
+      "sha256": "905c8626912ab7f01864e1e21d63f9c3e6992ff4f97b27ba660ebd77c2fa7fa5"
+    }
+  ],
+  "frozen_device_validation": {
+    "path": "games/yuyuhakusho/verification/audio-pcm-command-go/validation-ports-v3.json",
+    "bytes": 8132,
+    "sha256": "fcbcbcf0e184cfe99dce059ecb210decaa470ab3f32c92e5ecc2f6c32e172c4e"
+  },
+  "sources": [
+    {
+      "path": "docs/research/md-yuyuhakusho/fmpsg-pcm-integration-failures.md",
+      "bytes": 2253,
+      "sha256": "6075b2c154edb4edd55d09407d0fb7b7b373fb8d150433e0febd311cc0c366eb"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/fmpsg-pcm-integration-verification.md",
+      "bytes": 6089,
+      "sha256": "f6f14e5d00c24994923082f1de23bfc1228450f8c2cd1cbc2d0ae8aa3c6cac57"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/INTERACTIVE.md",
+      "bytes": 3420,
+      "sha256": "d437938c0ce02dfdac5555997800433d2f5c0e0b902c0516894e533ad67e42e4"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/README.md",
+      "bytes": 3522,
+      "sha256": "67db1c394d09a185f319d23ddfddc72ce4b4242164862e25be22bdd35f2b0636"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/RESET.md",
+      "bytes": 2820,
+      "sha256": "c7ef5f41dd09e7f41955ddbeff1b58bd2edff3712c8e9f057879ca5786048865"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/SOURCE.md",
+      "bytes": 2411,
+      "sha256": "8ed27e1653ff3ffe8ee0da3952cd60a81354ecebf84885f0e2c139930bb3ad30"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/fmpsg_pcm_integration_e2e_test.go",
+      "bytes": 8919,
+      "sha256": "aecf55e237bc58581a49d6f246e349caa1d5a69440a78abde94c1315aca25c2d"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/interactive.go",
+      "bytes": 14749,
+      "sha256": "44b2f607d2bf405b5e693c1cf9000f0a3d07571c4f67bf51c929914e4dade824"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/interactive_test.go",
+      "bytes": 9477,
+      "sha256": "65f420ddeb6b57c50a466c4906432245231da55fd92b260d033ec46894fe5409"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/kernel_contract_test.go",
+      "bytes": 451,
+      "sha256": "d01e01f8905ca158ee9604782a7c8add2a86e55d6db80599ce9326bc6ece657c"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/psg/README.md",
+      "bytes": 2355,
+      "sha256": "f98f92c4a1c511e08b23c000d65514fc562cd9a52e98931ce742d68998569dce"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/psg/psg.go",
+      "bytes": 8044,
+      "sha256": "b13590a9b3c4f04a45ea77ebf0938903550c889ab317b3ff8c877b95a71cb9ff"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/psg/psg_test.go",
+      "bytes": 5272,
+      "sha256": "0c19b319cb0fc923a797366b6bb35425d019cda73ffeea93d86dc29e73ef1db4"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/reset.go",
+      "bytes": 3404,
+      "sha256": "4ed69e716ebce21da50189443ba8d07fa283a145a4f61e08dbbd4f3328f98bfe"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/reset_test.go",
+      "bytes": 6755,
+      "sha256": "b7d0a5f096304be77ba0d927852e847431b5ba8a487f9825afdb4be3ff9c82ab"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/stream.go",
+      "bytes": 6142,
+      "sha256": "91d0be1cc1412a1416dfebf5bf8cf78a2901ae08f782de6c456b7a3f836ad3e0"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/stream_test.go",
+      "bytes": 5538,
+      "sha256": "fc2f63f06dd7b5b4838d973783fb8ffacd3c14de1c11ad90b70c800353870878"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/ym.go",
+      "bytes": 18862,
+      "sha256": "c2a893762a202145ef03a97cfd08762119378604d9aef3f69a48487020b17b62"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/ym_tables.go",
+      "bytes": 3731,
+      "sha256": "d9a1b020866cdf687790b3013a3bca72ecead5fcceadb1654acda4d78438344a"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/chips/ym_test.go",
+      "bytes": 5121,
+      "sha256": "e64daa6f258ce0a3c7d46dcc83688e4fef9aad60f50aaf13782668c8282ffffa"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/dsp/KERNEL_SOURCE.md",
+      "bytes": 1745,
+      "sha256": "1acdce5137fd136e1425a1eb7c68a33fcc71f2cfc6871d659874e3add0ce7a97"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/dsp/README.md",
+      "bytes": 2696,
+      "sha256": "825c457e56192137f06ab8dfeec75a3f3fb30afd19bb826afeb0425c832fe539"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/dsp/dsp.go",
+      "bytes": 10402,
+      "sha256": "9b15ee92fc61bd9265052944f86ce6140782176700cca9a5b93adf0edb47aced"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/dsp/dsp_test.go",
+      "bytes": 10442,
+      "sha256": "226c6227033d4ba27411c8f671eaa65dc65683e22f6d67354414785e8261fada"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/dsp/kernel.go",
+      "bytes": 1809,
+      "sha256": "bdf6c8423864f8ed991c95b5d7e615bf74b05d53b3708b15e2556e96a6e184c1"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/dsp/kernel_view.go",
+      "bytes": 303,
+      "sha256": "4ad1d64448b9a0ca021bad6e109b8cda19d34c111a6c1784e0eb96741ce800ed"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/dsp/overflow_test.go",
+      "bytes": 800,
+      "sha256": "764f6cf8d0f18d56a02a04a77aa79def7247a5b737a26302cc775232a7b5f122"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmcommands/README.md",
+      "bytes": 8124,
+      "sha256": "a9fe5d52c99a59799a0d9a1ba5915dab1c744af6818b986048d0481f90e25afd"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmcommands/bus_bridge.go",
+      "bytes": 9242,
+      "sha256": "0dd755b50438409fd69731f3b9a5d4f49a81f04b2f2934a4363d9f7cc036738a"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmcommands/bus_bridge_e2e_test.go",
+      "bytes": 7203,
+      "sha256": "2f1fd5268cff16ec3df2aa859c92462fe9b1c4ff73000dbd5358ad6e6e5c82f6"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmcommands/bus_pending_boundary_test.go",
+      "bytes": 1111,
+      "sha256": "3582ab0fea321d7f13e420f36282cedb6650f27d6d960e645ee184ca86b15184"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmcommands/controls_e2e_test.go",
+      "bytes": 6563,
+      "sha256": "43370bb302461bbd731f7f89401e06c33905a2608790eda6dc329bebeace5fe2"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmcommands/controls_supplement_e2e_test.go",
+      "bytes": 3084,
+      "sha256": "62412a0dbe92e67b30c0bd395102882149152b4e1346de5575e38edab71c73b0"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmcommands/device.go",
+      "bytes": 16447,
+      "sha256": "6bd121b24d5b35c7760c719fd87fe41839100fcb6d7f284936eebdc75d509a3d"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmcommands/device_e2e_test.go",
+      "bytes": 8723,
+      "sha256": "0cafbd42860b4b38dd58133af02d8b0689bd6000db576ac5452d42b6798beaa0"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmcommands/dma_domain_test.go",
+      "bytes": 1069,
+      "sha256": "b873aca6586f420a583d5a3d29111d06d75875dba58b5e24845ddfa6d97ec161"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmcommands/phases_control.go",
+      "bytes": 1919,
+      "sha256": "313eb96643577d547738950e4d06a95cb8660e760a54cf6fe13eee25d1b8ef01"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmcommands/phases_dual.go",
+      "bytes": 11048,
+      "sha256": "6a7bbd6e5d46a380659f12fb85c833947628436b57e28a6c7f8323102155bd63"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmcommands/phases_single.go",
+      "bytes": 9692,
+      "sha256": "ca650f1dabc657b668b1c9672674ca98e4f361e68ffc7a92fc7c08fb5713f088"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmcommands/ports_e2e_test.go",
+      "bytes": 5466,
+      "sha256": "fcd198106ce34e6c2fb7e1270d8e99c26874e6fb9ddeaa1cfa958da073ecb700"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmcommands/restore_boundary_test.go",
+      "bytes": 3689,
+      "sha256": "8a5f3c900255e9bef0142bcd3917a544a5e6eee0a054abf99e9030b473526fed"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmcommands/state.go",
+      "bytes": 5096,
+      "sha256": "d2125bb856fa024dade12805fa995c74623e5b966d1a985c77053d4a3d757c98"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/phaseclock/PHASECLOCK_FAILURES.md",
+      "bytes": 809,
+      "sha256": "6fecfe7be5e6a7eb252d5c778374c8a36630334e8e048ee68a047926c1c91fdd"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/phaseclock/README.md",
+      "bytes": 1873,
+      "sha256": "845d22ee8720055984dc1c8ab901ec69125244ad20f738fb8ffd9206a2989ba5"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/phaseclock/bus.go",
+      "bytes": 1740,
+      "sha256": "0dbfd23afeaf502357f85288848369d998478e0e08c2230e66e9e3ca77e0b48f"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/phaseclock/bus_test.go",
+      "bytes": 3559,
+      "sha256": "2dd00bf7f236cd3129435e2d1e33e25ce7bdcd41fce1e2f5a8f65a11b08edc66"
+    },
+    {
+      "path": "go.mod",
+      "bytes": 702,
+      "sha256": "33aa54f687143b2e468be7fe308f3455104c8b0f2fdc6e409233b5b1c8a3166f"
+    },
+    {
+      "path": "go.sum",
+      "bytes": 4934,
+      "sha256": "bde219704d2cf0b9e3e8b9bb01e6d97656accddcf5423d8587cd1afd8b8c25cb"
+    },
+    {
+      "path": "scripts/yuyuhakusho/extract_audio_assets.py",
+      "bytes": 29061,
+      "sha256": "e8a59cb97a15b02d930b2335175eca9fb17600a778ce93d779449cdac3775f56"
+    },
+    {
+      "path": "scripts/yuyuhakusho/fmpsg-pcm-integration-capture.py",
+      "bytes": 8847,
+      "sha256": "888cc9ed1628a7cd6ef5225e821e5f42652d6033baf78fcb74a84cf9fadc5c44"
+    },
+    {
+      "path": "scripts/yuyuhakusho/fmpsg-pcm-integration-verify.py",
+      "bytes": 9913,
+      "sha256": "6a03ac98de62d3817677e27b6c7ac31e98ade0ac3247cc6f453395ee938f8b67"
+    },
+    {
+      "path": "scripts/yuyuhakusho/fmpsg-reset-capture.py",
+      "bytes": 12668,
+      "sha256": "09dbf073f36af1376e2f24c2027ff48874810ab14e4d99df80848e4c1cb593d1"
+    },
+    {
+      "path": "scripts/yuyuhakusho/fmpsg_capture_ym.py",
+      "bytes": 7445,
+      "sha256": "e0a844190151342b41e340955f4d910ed32beabda708075beb8c0bed59b3ee40"
+    },
+    {
+      "path": "scripts/yuyuhakusho/fmpsg_psg_capture.py",
+      "bytes": 10145,
+      "sha256": "cea9ec640768978121b56ca96c0c95fb5145c48d3ac1bc71e0dd72f8f089f061"
+    },
+    {
+      "path": "scripts/yuyuhakusho/inspect_dac_dsp_state.py",
+      "bytes": 5746,
+      "sha256": "008576cb72b0ef5feab4e566dda23e9d2841a6340a66c93a4ba04de07284d82f"
+    },
+    {
+      "path": "scripts/yuyuhakusho/pcm-command-capture.py",
+      "bytes": 13119,
+      "sha256": "4349a80c12019688324fbea3cb988ddcab16da8a76d170be9842b935c5d8356f"
+    },
+    {
+      "path": "scripts/yuyuhakusho/pcm-player-capture.py",
+      "bytes": 8296,
+      "sha256": "8ed416b0510f695d6e32f12f49a697395c86769e0499cf35aebada1d577146e0"
+    },
+    {
+      "path": "scripts/yuyuhakusho/reference.py",
+      "bytes": 8606,
+      "sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81"
+    },
+    {
+      "path": "scripts/yuyuhakusho/research_audio_loops.py",
+      "bytes": 10547,
+      "sha256": "854c259284e11c59a21be9560f0beca26f15ffebe132d18d64dce6fbed5e22f4"
+    }
+  ],
+  "source_manifest_sha256": "a65a2f53da831fd6f9ece84a24ef1ecb79ac258bbf49648b774568492ecb2623",
+  "artifacts": [
+    {
+      "path": "games/yuyuhakusho/audio/pcmcommands/testdata/original-command-ports-v3.json.gz",
+      "bytes": 7368236,
+      "sha256": "e435f0f778088e0bb133082f82720c8ca7ed10c7d13be388faea837d76fff995"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/actual-address-verified.json",
+      "bytes": 946,
+      "sha256": "06d602fa34a7b65219d5ae1ab5c33e5945586a4b422b88e55f21c35567931477"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/data-only-address-red.json",
+      "bytes": 948,
+      "sha256": "91c06fc2dab69772000215b15810409a25c4ce3f617f5d8ac186d9cf935486c3"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/dsp-ordered-chip-tick.json",
+      "bytes": 1052,
+      "sha256": "580de833a45c3ae796de4d72ee8a4bf672029fb5638960f6a19c09f0ce12fe6f"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/dsp-sort-chip-tick-red.json",
+      "bytes": 1188,
+      "sha256": "e101b45359ee6805f32c5e732ce8166b9f65dc39db016ebea538281994e875a3"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command/sort-hypothesis-correction.json",
+      "bytes": 797,
+      "sha256": "590ed41eebc9b83caffa9556e9701ed7ddf110614c8b124319d473c78e24669c"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command-go/validation-ports-v3.json",
+      "bytes": 8132,
+      "sha256": "fcbcbcf0e184cfe99dce059ecb210decaa470ab3f32c92e5ecc2f6c32e172c4e"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fmpsg-pcm-integration/fmpsg-pcm-integration-cleanup.json",
+      "bytes": 483,
+      "sha256": "e305592b8286bffa0ba484f0ff4be973b484aaa30a4875503cafd16362f22604"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fmpsg-pcm-integration/fmpsg-pcm-integration-data-only-red.jsonl",
+      "bytes": 22194,
+      "sha256": "0f296f6456deb1a6c84f74fc905be63837561ba25490660de07ee1f3df64c3d7"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fmpsg-pcm-integration/fmpsg-pcm-integration-first-native.jsonl",
+      "bytes": 45471,
+      "sha256": "bd830d7398a3d2a30077a4e52fb48a6f64023fc2826c869e2b3fd87478af9578"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fmpsg-pcm-integration/fmpsg-pcm-integration-frame-detail.json",
+      "bytes": 396,
+      "sha256": "09188b41c24d57daa1491f343827739f4f2a5988d6a7c6ed3c9ff8c6552739ce"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fmpsg-pcm-integration/fmpsg-pcm-integration-native-capture.json",
+      "bytes": 22980,
+      "sha256": "19028e070b06036bb6d98b6a4949975fce1523a4d836678b64fcc5cc1046fd6a"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fmpsg-pcm-integration/fmpsg-pcm-integration-native-final.jsonl",
+      "bytes": 45467,
+      "sha256": "ee9ea4e463b95717335208b5340d6cd805b6febd247c8946c2a2310d76b6b8a7"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fmpsg-pcm-integration/fmpsg-pcm-integration-native-first.log",
+      "bytes": 5329,
+      "sha256": "2b5e03d9897b9fc03828f60d9b9ae8864488991709f2857c23ecc5f9feb763f1"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fmpsg-pcm-integration/fmpsg-pcm-integration-native.json.gz",
+      "bytes": 3308580,
+      "sha256": "692b9cd82914dedca8fa3017e30c55280fb255759932deb7a087d607a59b6fef"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fmpsg-pcm-integration/fmpsg-pcm-integration-race-final.jsonl",
+      "bytes": 45496,
+      "sha256": "2a2a7d6933db3553bd520d3172d0fa1f9fa2c342759ef91dfa4425dd35a8a0e6"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fmpsg-pcm-integration/fmpsg-pcm-integration-recapture.json",
+      "bytes": 175,
+      "sha256": "06653207338a4c60c70c27625c522c2917d7e8e97c28465cce70018d33258d9c"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fmpsg-pcm-integration/fmpsg-pcm-integration-recapture.log",
+      "bytes": 5329,
+      "sha256": "2b5e03d9897b9fc03828f60d9b9ae8864488991709f2857c23ecc5f9feb763f1"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fmpsg-pcm-integration/fmpsg-pcm-integration-sort-frame-detail-red.jsonl",
+      "bytes": 3143,
+      "sha256": "9cebf17f473105c94517202d341e9cd62c76c6c041dfdc2f190dfcc398de5549"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fmpsg-pcm-integration/fmpsg-pcm-integration-sort-red.jsonl",
+      "bytes": 2819,
+      "sha256": "0b4ec69697e94febd29ecd1080b0e35f15efe199bd84ea2d6bd1a2371228a75c"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fmpsg-pcm-integration/fmpsg-pcm-integration-test-before-format.go.txt",
+      "bytes": 7739,
+      "sha256": "371931f3a77d1171eddc1d20fc25b941df7a6c44e19ba95d2d059d8ec68694f3"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fmpsg-pcm-integration/fmpsg-pcm-integration-test-before-frame-detail.go.txt",
+      "bytes": 8797,
+      "sha256": "65665f3ed62e89f9bf5851f23606b7f6773bb79624cd5ec944587cc2a1777f06"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fmpsg-pcm-integration/fmpsg-pcm-integration-test-first.json",
+      "bytes": 411,
+      "sha256": "7da2ec480a0230e139f9172fc8f98cef2d46c334a4598168608cb8ccdff004de"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fmpsg-pcm-integration/fmpsg-pcm-integration-vet-final.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fmpsg-pcm-integration/fmpsg-pcm-integration-wasm-final.jsonl",
+      "bytes": 45481,
+      "sha256": "4d9bef13f0662b36841cd64dd0cd41069466f5efe95d17f0b293cafba6c7b7b0"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/fmpsg-reset/validation.json",
+      "bytes": 32142,
+      "sha256": "3f509a17e0a137be0c4a9547665992dc4419001fb1c5fdc1fd2713071e5a2191"
+    }
+  ],
+  "commands": {
+    "native_race": {
+      "argv": [
+        "nice",
+        "-n",
+        "15",
+        "/opt/homebrew/bin/go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "-run",
+        "^TestPCMFullChip",
+        "./games/yuyuhakusho/audio/chips"
+      ],
+      "environment": {
+        "PATH": "/opt/homebrew/bin:/Users/jason/.nvm/versions/node/v24.15.0/bin:/usr/bin:/bin",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "LC_CTYPE": "C.UTF-8",
+        "TEST_TELEMETRY_DIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-telemetry",
+        "GOCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-cache",
+        "GOMODCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-mod",
+        "GOTMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+        "TMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp"
+      }
+    },
+    "wasm": {
+      "argv": [
+        "nice",
+        "-n",
+        "15",
+        "/opt/homebrew/bin/go",
+        "test",
+        "-exec",
+        "/opt/homebrew/Cellar/go/1.26.2/libexec/lib/wasm/go_js_wasm_exec",
+        "-json",
+        "-count=1",
+        "-run",
+        "^TestPCMFullChip",
+        "./games/yuyuhakusho/audio/chips"
+      ],
+      "environment": {
+        "PATH": "/opt/homebrew/bin:/Users/jason/.nvm/versions/node/v24.15.0/bin:/usr/bin:/bin",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "LC_CTYPE": "C.UTF-8",
+        "TEST_TELEMETRY_DIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-telemetry",
+        "GOCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-cache",
+        "GOMODCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-mod",
+        "GOTMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+        "TMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+        "GOOS": "js",
+        "GOARCH": "wasm"
+      }
+    },
+    "vet": {
+      "argv": [
+        "nice",
+        "-n",
+        "15",
+        "/opt/homebrew/bin/go",
+        "vet",
+        "./games/yuyuhakusho/audio/chips"
+      ],
+      "environment": {
+        "PATH": "/opt/homebrew/bin:/Users/jason/.nvm/versions/node/v24.15.0/bin:/usr/bin:/bin",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "LC_CTYPE": "C.UTF-8",
+        "TEST_TELEMETRY_DIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-telemetry",
+        "GOCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-cache",
+        "GOMODCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-mod",
+        "GOTMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+        "TMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp"
+      }
+    }
+  },
+  "pass": true
+}

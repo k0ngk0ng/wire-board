@@ -1,0 +1,1 @@
+{"name": "internal-single-byte", "pass": true, "events": 139, "expected": 139, "difference": null, "holds": [{"grant": 0, "resume": 0, "input": {"kind": "publish", "begin": 0, "end": 0, "code": 127, "target": "single", "protocol": "ordinary", "pan": 192}}]}

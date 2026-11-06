@@ -1,0 +1,22 @@
+{
+  "pass": true,
+  "scope": "Autonomous typed command/payload/window model into DAC-only reference frame DSP; no FM synthesis/world/physical speaker claim",
+  "sort_by_cycle": false,
+  "raw_cycles_clamped": false,
+  "model_sha256": "39a89a2f92a2f2afb71e9a9ba4ae725b8709aafa68b5472f20ee7cf805529c39",
+  "checker_sha256": "91b7ac11d907c170a66091aa9d48f408d01cded5f22c3f6cd4bcbf1b6f1cc5ec",
+  "dsp_prototype_sha256": "755364d6379a89a58ced263f3ed4615f424e02bc03cc9a1cc376680a3d450c6b",
+  "kernel_source_sha256": "e4ca194284710361b033505aeb1f4283ae8d2e8cdcd2153a598604743f99abaf",
+  "cases": [
+    {
+      "name": "dual-hard-reset-complete",
+      "pass": true,
+      "reference_frames": 55,
+      "stereo_frames": 40478,
+      "nonzero_native_samples": 74538,
+      "first_difference": null,
+      "raw_timestamp_reversals": [],
+      "native_sha256": "9f5c20b93b644c7a5b7b364e823cbbb5250feffa60ebc49ffb2876505acc5f9f"
+    }
+  ]
+}

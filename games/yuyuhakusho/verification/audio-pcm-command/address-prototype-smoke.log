@@ -1,0 +1,1 @@
+{"name": "single-reset-between-address-data", "pass": true, "events": 147, "expected": 147, "difference": null, "holds": [{"grant": 0, "resume": 0, "input": {"kind": "publish", "begin": 0, "end": 0, "code": 115, "target": "single", "protocol": "ordinary", "pan": 192}}, {"grant": 71340, "resume": 1802085, "input": {"kind": "reset", "begin": 71300, "end": 1802080}}]}

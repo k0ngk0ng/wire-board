@@ -1,0 +1,17 @@
+{
+  "pass": true,
+  "scope": "Only owned empty native frontend directories and duplicate full-chip recapture. Frozen initial/PCM/native/negative evidence, original resources, shared Go caches retained.",
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/fmpsg-pcm-integration-capture",
+      "files": 0,
+      "bytes": 0
+    },
+    {
+      "path": ".local/md-yuyuhakusho/fmpsg-pcm-integration-review",
+      "files": 2,
+      "bytes": 3331560
+    }
+  ],
+  "bytes": 3331560
+}

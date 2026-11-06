@@ -1,0 +1,590 @@
+{
+  "scope": "Given original actual physical-port streams into full native chips from captured complete quiescent state; this is not autonomous Device output or global world scheduling proof",
+  "cases": 23,
+  "frames": 1274,
+  "stereo_frames": 937609,
+  "physical_ledger_events": 519256,
+  "raw_cycles_modified": false,
+  "address_times_synthesized": false,
+  "source_ports_sha256": "e435f0f778088e0bb133082f82720c8ca7ed10c7d13be388faea837d76fff995",
+  "source_owner_capture_sha256": "4349a80c12019688324fbea3cb988ddcab16da8a76d170be9842b935c5d8356f",
+  "projector_sha256": "09dbf073f36af1376e2f24c2027ff48874810ab14e4d99df80848e4c1cb593d1",
+  "producer_sha256": "888cc9ed1628a7cd6ef5225e821e5f42652d6033baf78fcb74a84cf9fadc5c44",
+  "json_sha256": "be10a1edfd47a89ab5e7b10dcbecc143eb8ee9fe288507cae215d70f4ab2bb9c",
+  "gzip_sha256": "692b9cd82914dedca8fa3017e30c55280fb255759932deb7a087d607a59b6fef",
+  "gzip_bytes": 3308580,
+  "original": {
+    "identity": {
+      "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+      "core_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+      "core_name": "Genesis Plus GX",
+      "core_version": "v1.7.4 60bee4c",
+      "fps": 59.92274340431231,
+      "ram_bytes": 65536,
+      "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+      "teamplayer": false
+    },
+    "observed_quiescent_fm_sidecar": {
+      "fm_cycles_start": 0,
+      "fm_cycles_count": 0,
+      "fm_cycles_busy": 0,
+      "fm_ptr_offset_bytes": 0
+    },
+    "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+    "cases": [
+      {
+        "name": "dual-append",
+        "frames": 125,
+        "chip_operations": 30688,
+        "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+        "sidecar_restore": [],
+        "raw_reset_backsteps": [],
+        "native_projection_checks": 126,
+        "original_cpu_pcm_and_captured_DSP_equal": true,
+        "actual_original_address_latches_equal": true
+      },
+      {
+        "name": "dual-dma",
+        "frames": 46,
+        "chip_operations": 10444,
+        "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+        "sidecar_restore": [],
+        "raw_reset_backsteps": [],
+        "native_projection_checks": 47,
+        "original_cpu_pcm_and_captured_DSP_equal": true,
+        "actual_original_address_latches_equal": true
+      },
+      {
+        "name": "dual-hard-reset-complete",
+        "frames": 55,
+        "chip_operations": 12614,
+        "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+        "sidecar_restore": [],
+        "raw_reset_backsteps": [],
+        "native_projection_checks": 56,
+        "original_cpu_pcm_and_captured_DSP_equal": true,
+        "actual_original_address_latches_equal": true
+      },
+      {
+        "name": "dual-hard-reset",
+        "frames": 25,
+        "chip_operations": 6476,
+        "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+        "sidecar_restore": [],
+        "raw_reset_backsteps": [],
+        "native_projection_checks": 26,
+        "original_cpu_pcm_and_captured_DSP_equal": true,
+        "actual_original_address_latches_equal": true
+      },
+      {
+        "name": "dual-pause",
+        "frames": 48,
+        "chip_operations": 10444,
+        "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+        "sidecar_restore": [],
+        "raw_reset_backsteps": [],
+        "native_projection_checks": 49,
+        "original_cpu_pcm_and_captured_DSP_equal": true,
+        "actual_original_address_latches_equal": true
+      },
+      {
+        "name": "dual-replace-a",
+        "frames": 125,
+        "chip_operations": 12604,
+        "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+        "sidecar_restore": [],
+        "raw_reset_backsteps": [],
+        "native_projection_checks": 126,
+        "original_cpu_pcm_and_captured_DSP_equal": true,
+        "actual_original_address_latches_equal": true
+      },
+      {
+        "name": "dual-to-single",
+        "frames": 80,
+        "chip_operations": 33328,
+        "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+        "sidecar_restore": [],
+        "raw_reset_backsteps": [],
+        "native_projection_checks": 81,
+        "original_cpu_pcm_and_captured_DSP_equal": true,
+        "actual_original_address_latches_equal": true
+      },
+      {
+        "name": "idle-to-dual-a",
+        "frames": 44,
+        "chip_operations": 10444,
+        "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+        "sidecar_restore": [],
+        "raw_reset_backsteps": [],
+        "native_projection_checks": 45,
+        "original_cpu_pcm_and_captured_DSP_equal": true,
+        "actual_original_address_latches_equal": true
+      },
+      {
+        "name": "idle-to-dual-b",
+        "frames": 22,
+        "chip_operations": 4472,
+        "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+        "sidecar_restore": [],
+        "raw_reset_backsteps": [],
+        "native_projection_checks": 23,
+        "original_cpu_pcm_and_captured_DSP_equal": true,
+        "actual_original_address_latches_equal": true
+      },
+      {
+        "name": "idle-to-single",
+        "frames": 66,
+        "chip_operations": 31162,
+        "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+        "sidecar_restore": [],
+        "raw_reset_backsteps": [],
+        "native_projection_checks": 67,
+        "original_cpu_pcm_and_captured_DSP_equal": true,
+        "actual_original_address_latches_equal": true
+      },
+      {
+        "name": "internal-single-byte",
+        "frames": 5,
+        "chip_operations": 14,
+        "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+        "sidecar_restore": [],
+        "raw_reset_backsteps": [],
+        "native_projection_checks": 6,
+        "original_cpu_pcm_and_captured_DSP_equal": true,
+        "actual_original_address_latches_equal": true
+      },
+      {
+        "name": "legitimate-f0-remap",
+        "frames": 108,
+        "chip_operations": 26848,
+        "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+        "sidecar_restore": [],
+        "raw_reset_backsteps": [],
+        "native_projection_checks": 109,
+        "original_cpu_pcm_and_captured_DSP_equal": true,
+        "actual_original_address_latches_equal": true
+      },
+      {
+        "name": "music-from-idle",
+        "frames": 22,
+        "chip_operations": 8030,
+        "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+        "sidecar_restore": [],
+        "raw_reset_backsteps": [],
+        "native_projection_checks": 23,
+        "original_cpu_pcm_and_captured_DSP_equal": true,
+        "actual_original_address_latches_equal": true
+      },
+      {
+        "name": "music-pan-restore",
+        "frames": 26,
+        "chip_operations": 8030,
+        "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+        "sidecar_restore": [],
+        "raw_reset_backsteps": [],
+        "native_projection_checks": 27,
+        "original_cpu_pcm_and_captured_DSP_equal": true,
+        "actual_original_address_latches_equal": true
+      },
+      {
+        "name": "music-replace",
+        "frames": 35,
+        "chip_operations": 5212,
+        "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+        "sidecar_restore": [],
+        "raw_reset_backsteps": [],
+        "native_projection_checks": 36,
+        "original_cpu_pcm_and_captured_DSP_equal": true,
+        "actual_original_address_latches_equal": true
+      },
+      {
+        "name": "single-dma",
+        "frames": 68,
+        "chip_operations": 31162,
+        "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+        "sidecar_restore": [],
+        "raw_reset_backsteps": [],
+        "native_projection_checks": 69,
+        "original_cpu_pcm_and_captured_DSP_equal": true,
+        "actual_original_address_latches_equal": true
+      },
+      {
+        "name": "single-hard-reset",
+        "frames": 75,
+        "chip_operations": 35456,
+        "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+        "sidecar_restore": [],
+        "raw_reset_backsteps": [],
+        "native_projection_checks": 76,
+        "original_cpu_pcm_and_captured_DSP_equal": true,
+        "actual_original_address_latches_equal": true
+      },
+      {
+        "name": "single-pause",
+        "frames": 70,
+        "chip_operations": 31162,
+        "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+        "sidecar_restore": [],
+        "raw_reset_backsteps": [],
+        "native_projection_checks": 71,
+        "original_cpu_pcm_and_captured_DSP_equal": true,
+        "actual_original_address_latches_equal": true
+      },
+      {
+        "name": "single-replace",
+        "frames": 75,
+        "chip_operations": 35452,
+        "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+        "sidecar_restore": [],
+        "raw_reset_backsteps": [],
+        "native_projection_checks": 76,
+        "original_cpu_pcm_and_captured_DSP_equal": true,
+        "actual_original_address_latches_equal": true
+      },
+      {
+        "name": "single-reset-between-address-data",
+        "frames": 5,
+        "chip_operations": 15,
+        "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+        "sidecar_restore": [],
+        "raw_reset_backsteps": [],
+        "native_projection_checks": 6,
+        "original_cpu_pcm_and_captured_DSP_equal": true,
+        "actual_original_address_latches_equal": true
+      },
+      {
+        "name": "single-reset-crossing-chip-tick",
+        "frames": 12,
+        "chip_operations": 4292,
+        "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+        "sidecar_restore": [],
+        "raw_reset_backsteps": [
+          {
+            "complete": 7183080,
+            "request": 7183006
+          }
+        ],
+        "native_projection_checks": 13,
+        "original_cpu_pcm_and_captured_DSP_equal": true,
+        "actual_original_address_latches_equal": true
+      },
+      {
+        "name": "single-reset-during-dac-operation",
+        "frames": 12,
+        "chip_operations": 4294,
+        "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+        "sidecar_restore": [],
+        "raw_reset_backsteps": [
+          {
+            "complete": 7186425,
+            "request": 7186321
+          }
+        ],
+        "native_projection_checks": 13,
+        "original_cpu_pcm_and_captured_DSP_equal": true,
+        "actual_original_address_latches_equal": true
+      },
+      {
+        "name": "single-to-dual",
+        "frames": 125,
+        "chip_operations": 34118,
+        "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+        "sidecar_restore": [],
+        "raw_reset_backsteps": [],
+        "native_projection_checks": 126,
+        "original_cpu_pcm_and_captured_DSP_equal": true,
+        "actual_original_address_latches_equal": true
+      }
+    ]
+  },
+  "observed": {
+    "identity": {
+      "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+      "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+      "core_name": "Genesis Plus GX",
+      "core_version": "v1.7.460bee4c",
+      "fps": 59.92274340431231,
+      "ram_bytes": 65536,
+      "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+      "teamplayer": false
+    },
+    "observed_quiescent_fm_sidecar": {
+      "fm_cycles_start": 0,
+      "fm_cycles_count": 0,
+      "fm_cycles_busy": 0,
+      "fm_ptr_offset_bytes": 0
+    },
+    "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+    "cases": [
+      {
+        "name": "dual-append",
+        "frames": 125,
+        "chip_operations": 30688,
+        "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+        "sidecar_restore": [],
+        "raw_reset_backsteps": [],
+        "native_projection_checks": 126,
+        "original_cpu_pcm_and_captured_DSP_equal": true,
+        "actual_original_address_latches_equal": true
+      },
+      {
+        "name": "dual-dma",
+        "frames": 46,
+        "chip_operations": 10444,
+        "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+        "sidecar_restore": [],
+        "raw_reset_backsteps": [],
+        "native_projection_checks": 47,
+        "original_cpu_pcm_and_captured_DSP_equal": true,
+        "actual_original_address_latches_equal": true
+      },
+      {
+        "name": "dual-hard-reset-complete",
+        "frames": 55,
+        "chip_operations": 12614,
+        "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+        "sidecar_restore": [],
+        "raw_reset_backsteps": [],
+        "native_projection_checks": 56,
+        "original_cpu_pcm_and_captured_DSP_equal": true,
+        "actual_original_address_latches_equal": true
+      },
+      {
+        "name": "dual-hard-reset",
+        "frames": 25,
+        "chip_operations": 6476,
+        "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+        "sidecar_restore": [],
+        "raw_reset_backsteps": [],
+        "native_projection_checks": 26,
+        "original_cpu_pcm_and_captured_DSP_equal": true,
+        "actual_original_address_latches_equal": true
+      },
+      {
+        "name": "dual-pause",
+        "frames": 48,
+        "chip_operations": 10444,
+        "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+        "sidecar_restore": [],
+        "raw_reset_backsteps": [],
+        "native_projection_checks": 49,
+        "original_cpu_pcm_and_captured_DSP_equal": true,
+        "actual_original_address_latches_equal": true
+      },
+      {
+        "name": "dual-replace-a",
+        "frames": 125,
+        "chip_operations": 12604,
+        "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+        "sidecar_restore": [],
+        "raw_reset_backsteps": [],
+        "native_projection_checks": 126,
+        "original_cpu_pcm_and_captured_DSP_equal": true,
+        "actual_original_address_latches_equal": true
+      },
+      {
+        "name": "dual-to-single",
+        "frames": 80,
+        "chip_operations": 33328,
+        "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+        "sidecar_restore": [],
+        "raw_reset_backsteps": [],
+        "native_projection_checks": 81,
+        "original_cpu_pcm_and_captured_DSP_equal": true,
+        "actual_original_address_latches_equal": true
+      },
+      {
+        "name": "idle-to-dual-a",
+        "frames": 44,
+        "chip_operations": 10444,
+        "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+        "sidecar_restore": [],
+        "raw_reset_backsteps": [],
+        "native_projection_checks": 45,
+        "original_cpu_pcm_and_captured_DSP_equal": true,
+        "actual_original_address_latches_equal": true
+      },
+      {
+        "name": "idle-to-dual-b",
+        "frames": 22,
+        "chip_operations": 4472,
+        "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+        "sidecar_restore": [],
+        "raw_reset_backsteps": [],
+        "native_projection_checks": 23,
+        "original_cpu_pcm_and_captured_DSP_equal": true,
+        "actual_original_address_latches_equal": true
+      },
+      {
+        "name": "idle-to-single",
+        "frames": 66,
+        "chip_operations": 31162,
+        "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+        "sidecar_restore": [],
+        "raw_reset_backsteps": [],
+        "native_projection_checks": 67,
+        "original_cpu_pcm_and_captured_DSP_equal": true,
+        "actual_original_address_latches_equal": true
+      },
+      {
+        "name": "internal-single-byte",
+        "frames": 5,
+        "chip_operations": 14,
+        "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+        "sidecar_restore": [],
+        "raw_reset_backsteps": [],
+        "native_projection_checks": 6,
+        "original_cpu_pcm_and_captured_DSP_equal": true,
+        "actual_original_address_latches_equal": true
+      },
+      {
+        "name": "legitimate-f0-remap",
+        "frames": 108,
+        "chip_operations": 26848,
+        "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+        "sidecar_restore": [],
+        "raw_reset_backsteps": [],
+        "native_projection_checks": 109,
+        "original_cpu_pcm_and_captured_DSP_equal": true,
+        "actual_original_address_latches_equal": true
+      },
+      {
+        "name": "music-from-idle",
+        "frames": 22,
+        "chip_operations": 8030,
+        "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+        "sidecar_restore": [],
+        "raw_reset_backsteps": [],
+        "native_projection_checks": 23,
+        "original_cpu_pcm_and_captured_DSP_equal": true,
+        "actual_original_address_latches_equal": true
+      },
+      {
+        "name": "music-pan-restore",
+        "frames": 26,
+        "chip_operations": 8030,
+        "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+        "sidecar_restore": [],
+        "raw_reset_backsteps": [],
+        "native_projection_checks": 27,
+        "original_cpu_pcm_and_captured_DSP_equal": true,
+        "actual_original_address_latches_equal": true
+      },
+      {
+        "name": "music-replace",
+        "frames": 35,
+        "chip_operations": 5212,
+        "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+        "sidecar_restore": [],
+        "raw_reset_backsteps": [],
+        "native_projection_checks": 36,
+        "original_cpu_pcm_and_captured_DSP_equal": true,
+        "actual_original_address_latches_equal": true
+      },
+      {
+        "name": "single-dma",
+        "frames": 68,
+        "chip_operations": 31162,
+        "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+        "sidecar_restore": [],
+        "raw_reset_backsteps": [],
+        "native_projection_checks": 69,
+        "original_cpu_pcm_and_captured_DSP_equal": true,
+        "actual_original_address_latches_equal": true
+      },
+      {
+        "name": "single-hard-reset",
+        "frames": 75,
+        "chip_operations": 35456,
+        "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+        "sidecar_restore": [],
+        "raw_reset_backsteps": [],
+        "native_projection_checks": 76,
+        "original_cpu_pcm_and_captured_DSP_equal": true,
+        "actual_original_address_latches_equal": true
+      },
+      {
+        "name": "single-pause",
+        "frames": 70,
+        "chip_operations": 31162,
+        "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+        "sidecar_restore": [],
+        "raw_reset_backsteps": [],
+        "native_projection_checks": 71,
+        "original_cpu_pcm_and_captured_DSP_equal": true,
+        "actual_original_address_latches_equal": true
+      },
+      {
+        "name": "single-replace",
+        "frames": 75,
+        "chip_operations": 35452,
+        "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+        "sidecar_restore": [],
+        "raw_reset_backsteps": [],
+        "native_projection_checks": 76,
+        "original_cpu_pcm_and_captured_DSP_equal": true,
+        "actual_original_address_latches_equal": true
+      },
+      {
+        "name": "single-reset-between-address-data",
+        "frames": 5,
+        "chip_operations": 15,
+        "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+        "sidecar_restore": [],
+        "raw_reset_backsteps": [],
+        "native_projection_checks": 6,
+        "original_cpu_pcm_and_captured_DSP_equal": true,
+        "actual_original_address_latches_equal": true
+      },
+      {
+        "name": "single-reset-crossing-chip-tick",
+        "frames": 12,
+        "chip_operations": 4292,
+        "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+        "sidecar_restore": [],
+        "raw_reset_backsteps": [
+          {
+            "complete": 7183080,
+            "request": 7183006
+          }
+        ],
+        "native_projection_checks": 13,
+        "original_cpu_pcm_and_captured_DSP_equal": true,
+        "actual_original_address_latches_equal": true
+      },
+      {
+        "name": "single-reset-during-dac-operation",
+        "frames": 12,
+        "chip_operations": 4294,
+        "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+        "sidecar_restore": [],
+        "raw_reset_backsteps": [
+          {
+            "complete": 7186425,
+            "request": 7186321
+          }
+        ],
+        "native_projection_checks": 13,
+        "original_cpu_pcm_and_captured_DSP_equal": true,
+        "actual_original_address_latches_equal": true
+      },
+      {
+        "name": "single-to-dual",
+        "frames": 125,
+        "chip_operations": 34118,
+        "full_initial_sha256": "08ef202546d6b09cf11299840d452823d861888a12bcad8660ff43509790c45c",
+        "sidecar_restore": [],
+        "raw_reset_backsteps": [],
+        "native_projection_checks": 126,
+        "original_cpu_pcm_and_captured_DSP_equal": true,
+        "actual_original_address_latches_equal": true
+      }
+    ]
+  },
+  "limits": [
+    "Source InitialDSP is only a limited original scalar projection; complete initial YM/PSG/FIR above is directly observed and checked unchanged by PCM initialization",
+    "Source DSP.InputAhead is an exporter-derived DAC-only cursor, not a complete physical-port frontier; the listed actual original DSP scalar fields and all original PCM/address latches are independently checked",
+    "Native omitted FM checkpoint fields are restored solely from the observed original quiescent sidecar; no production context or Go expected output enters the oracle"
+  ],
+  "pass": true
+}

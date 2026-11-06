@@ -1,0 +1,711 @@
+{
+  "pass": true,
+  "cases": [
+    {
+      "name": "dual-append",
+      "pass": true,
+      "events": 45196,
+      "expected": 45196,
+      "difference": null,
+      "holds": [
+        {
+          "grant": 0,
+          "resume": 0,
+          "input": {
+            "kind": "publish",
+            "begin": 0,
+            "end": 0,
+            "code": 31,
+            "target": "a",
+            "protocol": "ordinary",
+            "pan": 192
+          }
+        },
+        {
+          "grant": 7188405,
+          "resume": 7190325,
+          "input": {
+            "kind": "publish",
+            "begin": 7188320,
+            "end": 7190320,
+            "code": 63,
+            "target": "b",
+            "protocol": "ordinary",
+            "pan": 192
+          }
+        }
+      ]
+    },
+    {
+      "name": "dual-dma",
+      "pass": true,
+      "events": 13016,
+      "expected": 13016,
+      "difference": null,
+      "holds": [
+        {
+          "grant": 0,
+          "resume": 0,
+          "input": {
+            "kind": "publish",
+            "begin": 0,
+            "end": 0,
+            "code": 6,
+            "target": "a",
+            "protocol": "ordinary",
+            "pan": 192
+          }
+        }
+      ]
+    },
+    {
+      "name": "dual-hard-reset-complete",
+      "pass": true,
+      "events": 15754,
+      "expected": 15754,
+      "difference": null,
+      "holds": [
+        {
+          "grant": 0,
+          "resume": 0,
+          "input": {
+            "kind": "publish",
+            "begin": 0,
+            "end": 0,
+            "code": 31,
+            "target": "a",
+            "protocol": "ordinary",
+            "pan": 192
+          }
+        },
+        {
+          "grant": 7188405,
+          "resume": 7190325,
+          "input": {
+            "kind": "reset",
+            "begin": 7188320,
+            "end": 7190320
+          }
+        },
+        {
+          "grant": 8084430,
+          "resume": 8086365,
+          "input": {
+            "kind": "publish",
+            "begin": 8084360,
+            "end": 8086360,
+            "code": 6,
+            "target": "a",
+            "protocol": "ordinary",
+            "pan": 192
+          }
+        }
+      ]
+    },
+    {
+      "name": "dual-hard-reset",
+      "pass": true,
+      "events": 8148,
+      "expected": 8148,
+      "difference": null,
+      "holds": [
+        {
+          "grant": 0,
+          "resume": 0,
+          "input": {
+            "kind": "publish",
+            "begin": 0,
+            "end": 0,
+            "code": 31,
+            "target": "a",
+            "protocol": "ordinary",
+            "pan": 192
+          }
+        },
+        {
+          "grant": 7188405,
+          "resume": 7190325,
+          "input": {
+            "kind": "reset",
+            "begin": 7188320,
+            "end": 7190320
+          }
+        },
+        {
+          "grant": 8084430,
+          "resume": 8086365,
+          "input": {
+            "kind": "publish",
+            "begin": 8084360,
+            "end": 8086360,
+            "code": 6,
+            "target": "a",
+            "protocol": "ordinary",
+            "pan": 192
+          }
+        }
+      ]
+    },
+    {
+      "name": "dual-pause",
+      "pass": true,
+      "events": 13016,
+      "expected": 13016,
+      "difference": null,
+      "holds": [
+        {
+          "grant": 0,
+          "resume": 0,
+          "input": {
+            "kind": "publish",
+            "begin": 0,
+            "end": 0,
+            "code": 6,
+            "target": "a",
+            "protocol": "ordinary",
+            "pan": 192
+          }
+        },
+        {
+          "grant": 7188405,
+          "resume": 9891450,
+          "input": {
+            "kind": "hold",
+            "begin": 7188320,
+            "end": 9891440
+          }
+        }
+      ]
+    },
+    {
+      "name": "dual-replace-a",
+      "pass": true,
+      "events": 15744,
+      "expected": 15744,
+      "difference": null,
+      "holds": [
+        {
+          "grant": 0,
+          "resume": 0,
+          "input": {
+            "kind": "publish",
+            "begin": 0,
+            "end": 0,
+            "code": 31,
+            "target": "a",
+            "protocol": "ordinary",
+            "pan": 192
+          }
+        },
+        {
+          "grant": 7188405,
+          "resume": 7190325,
+          "input": {
+            "kind": "publish",
+            "begin": 7188320,
+            "end": 7190320,
+            "code": 6,
+            "target": "a",
+            "protocol": "ordinary",
+            "pan": 192
+          }
+        }
+      ]
+    },
+    {
+      "name": "dual-to-single",
+      "pass": true,
+      "events": 45516,
+      "expected": 45516,
+      "difference": null,
+      "holds": [
+        {
+          "grant": 0,
+          "resume": 0,
+          "input": {
+            "kind": "publish",
+            "begin": 0,
+            "end": 0,
+            "code": 6,
+            "target": "a",
+            "protocol": "ordinary",
+            "pan": 192
+          }
+        },
+        {
+          "grant": 7188405,
+          "resume": 7190325,
+          "input": {
+            "kind": "publish",
+            "begin": 7188320,
+            "end": 7190320,
+            "code": 115,
+            "target": "single",
+            "protocol": "ordinary",
+            "pan": 192
+          }
+        }
+      ]
+    },
+    {
+      "name": "idle-to-dual-a",
+      "pass": true,
+      "events": 13016,
+      "expected": 13016,
+      "difference": null,
+      "holds": [
+        {
+          "grant": 0,
+          "resume": 0,
+          "input": {
+            "kind": "publish",
+            "begin": 0,
+            "end": 0,
+            "code": 6,
+            "target": "a",
+            "protocol": "ordinary",
+            "pan": 192
+          }
+        }
+      ]
+    },
+    {
+      "name": "idle-to-dual-b",
+      "pass": true,
+      "events": 5548,
+      "expected": 5548,
+      "difference": null,
+      "holds": [
+        {
+          "grant": 0,
+          "resume": 0,
+          "input": {
+            "kind": "publish",
+            "begin": 0,
+            "end": 0,
+            "code": 122,
+            "target": "b",
+            "protocol": "ordinary",
+            "pan": 192
+          }
+        }
+      ]
+    },
+    {
+      "name": "idle-to-single",
+      "pass": true,
+      "events": 42782,
+      "expected": 42782,
+      "difference": null,
+      "holds": [
+        {
+          "grant": 0,
+          "resume": 0,
+          "input": {
+            "kind": "publish",
+            "begin": 0,
+            "end": 0,
+            "code": 115,
+            "target": "single",
+            "protocol": "ordinary",
+            "pan": 192
+          }
+        }
+      ]
+    },
+    {
+      "name": "internal-single-byte",
+      "pass": true,
+      "events": 146,
+      "expected": 146,
+      "difference": null,
+      "holds": [
+        {
+          "grant": 0,
+          "resume": 0,
+          "input": {
+            "kind": "publish",
+            "begin": 0,
+            "end": 0,
+            "code": 127,
+            "target": "single",
+            "protocol": "ordinary",
+            "pan": 192
+          }
+        }
+      ]
+    },
+    {
+      "name": "legitimate-f0-remap",
+      "pass": true,
+      "events": 33520,
+      "expected": 33520,
+      "difference": null,
+      "holds": [
+        {
+          "grant": 0,
+          "resume": 0,
+          "input": {
+            "kind": "publish",
+            "begin": 0,
+            "end": 0,
+            "code": 240,
+            "target": "b",
+            "protocol": "ordinary",
+            "pan": 192
+          }
+        }
+      ]
+    },
+    {
+      "name": "music-from-idle",
+      "pass": true,
+      "events": 10977,
+      "expected": 10977,
+      "difference": null,
+      "holds": [
+        {
+          "grant": 0,
+          "resume": 0,
+          "input": {
+            "kind": "publish",
+            "begin": 0,
+            "end": 0,
+            "code": 129,
+            "target": "single",
+            "protocol": "music",
+            "pan": 64
+          }
+        }
+      ]
+    },
+    {
+      "name": "music-pan-restore",
+      "pass": true,
+      "events": 10977,
+      "expected": 10977,
+      "difference": null,
+      "holds": [
+        {
+          "grant": 0,
+          "resume": 0,
+          "input": {
+            "kind": "publish",
+            "begin": 0,
+            "end": 0,
+            "code": 129,
+            "target": "single",
+            "protocol": "music",
+            "pan": 64
+          }
+        },
+        {
+          "grant": 3599190,
+          "resume": 3601170,
+          "input": {
+            "kind": "restore-pan",
+            "begin": 3599160,
+            "end": 3601160,
+            "pan": 128
+          }
+        }
+      ]
+    },
+    {
+      "name": "music-replace",
+      "pass": true,
+      "events": 7231,
+      "expected": 7231,
+      "difference": null,
+      "holds": [
+        {
+          "grant": 0,
+          "resume": 0,
+          "input": {
+            "kind": "publish",
+            "begin": 0,
+            "end": 0,
+            "code": 129,
+            "target": "single",
+            "protocol": "music",
+            "pan": 64
+          }
+        },
+        {
+          "grant": 3599190,
+          "resume": 3601170,
+          "input": {
+            "kind": "publish",
+            "begin": 3599160,
+            "end": 3601160,
+            "code": 131,
+            "target": "single",
+            "protocol": "music",
+            "pan": 128
+          }
+        }
+      ]
+    },
+    {
+      "name": "single-dma",
+      "pass": true,
+      "events": 42782,
+      "expected": 42782,
+      "difference": null,
+      "holds": [
+        {
+          "grant": 0,
+          "resume": 0,
+          "input": {
+            "kind": "publish",
+            "begin": 0,
+            "end": 0,
+            "code": 115,
+            "target": "single",
+            "protocol": "ordinary",
+            "pan": 192
+          }
+        }
+      ]
+    },
+    {
+      "name": "single-hard-reset",
+      "pass": true,
+      "events": 48814,
+      "expected": 48814,
+      "difference": null,
+      "holds": [
+        {
+          "grant": 0,
+          "resume": 0,
+          "input": {
+            "kind": "publish",
+            "begin": 0,
+            "end": 0,
+            "code": 115,
+            "target": "single",
+            "protocol": "ordinary",
+            "pan": 192
+          }
+        },
+        {
+          "grant": 7188345,
+          "resume": 7190325,
+          "input": {
+            "kind": "reset",
+            "begin": 7188320,
+            "end": 7190320
+          }
+        },
+        {
+          "grant": 8084430,
+          "resume": 8086365,
+          "input": {
+            "kind": "publish",
+            "begin": 8084360,
+            "end": 8086360,
+            "code": 115,
+            "target": "single",
+            "protocol": "ordinary",
+            "pan": 192
+          }
+        }
+      ]
+    },
+    {
+      "name": "single-pause",
+      "pass": true,
+      "events": 42782,
+      "expected": 42782,
+      "difference": null,
+      "holds": [
+        {
+          "grant": 0,
+          "resume": 0,
+          "input": {
+            "kind": "publish",
+            "begin": 0,
+            "end": 0,
+            "code": 115,
+            "target": "single",
+            "protocol": "ordinary",
+            "pan": 192
+          }
+        },
+        {
+          "grant": 7188345,
+          "resume": 9891450,
+          "input": {
+            "kind": "hold",
+            "begin": 7188320,
+            "end": 9891440
+          }
+        }
+      ]
+    },
+    {
+      "name": "single-replace",
+      "pass": true,
+      "events": 48811,
+      "expected": 48811,
+      "difference": null,
+      "holds": [
+        {
+          "grant": 0,
+          "resume": 0,
+          "input": {
+            "kind": "publish",
+            "begin": 0,
+            "end": 0,
+            "code": 115,
+            "target": "single",
+            "protocol": "ordinary",
+            "pan": 192
+          }
+        },
+        {
+          "grant": 7188345,
+          "resume": 7190325,
+          "input": {
+            "kind": "publish",
+            "begin": 7188320,
+            "end": 7190320,
+            "code": 115,
+            "target": "single",
+            "protocol": "ordinary",
+            "pan": 192
+          }
+        }
+      ]
+    },
+    {
+      "name": "single-reset-between-address-data",
+      "pass": true,
+      "events": 147,
+      "expected": 147,
+      "difference": null,
+      "holds": [
+        {
+          "grant": 0,
+          "resume": 0,
+          "input": {
+            "kind": "publish",
+            "begin": 0,
+            "end": 0,
+            "code": 115,
+            "target": "single",
+            "protocol": "ordinary",
+            "pan": 192
+          }
+        },
+        {
+          "grant": 71340,
+          "resume": 1802085,
+          "input": {
+            "kind": "reset",
+            "begin": 71300,
+            "end": 1802080
+          }
+        }
+      ]
+    },
+    {
+      "name": "single-reset-crossing-chip-tick",
+      "pass": true,
+      "events": 6028,
+      "expected": 6028,
+      "difference": null,
+      "holds": [
+        {
+          "grant": 0,
+          "resume": 0,
+          "input": {
+            "kind": "publish",
+            "begin": 0,
+            "end": 0,
+            "code": 115,
+            "target": "single",
+            "protocol": "ordinary",
+            "pan": 192
+          }
+        },
+        {
+          "grant": 7183080,
+          "resume": 7185015,
+          "input": {
+            "kind": "reset",
+            "begin": 7183006,
+            "end": 7185006
+          }
+        }
+      ]
+    },
+    {
+      "name": "single-reset-during-dac-operation",
+      "pass": true,
+      "events": 6032,
+      "expected": 6032,
+      "difference": null,
+      "holds": [
+        {
+          "grant": 0,
+          "resume": 0,
+          "input": {
+            "kind": "publish",
+            "begin": 0,
+            "end": 0,
+            "code": 115,
+            "target": "single",
+            "protocol": "ordinary",
+            "pan": 192
+          }
+        },
+        {
+          "grant": 7186425,
+          "resume": 7188330,
+          "input": {
+            "kind": "reset",
+            "begin": 7186321,
+            "end": 7188321
+          }
+        }
+      ]
+    },
+    {
+      "name": "single-to-dual",
+      "pass": true,
+      "events": 43273,
+      "expected": 43273,
+      "difference": null,
+      "holds": [
+        {
+          "grant": 0,
+          "resume": 0,
+          "input": {
+            "kind": "publish",
+            "begin": 0,
+            "end": 0,
+            "code": 115,
+            "target": "single",
+            "protocol": "ordinary",
+            "pan": 192
+          }
+        },
+        {
+          "grant": 7188345,
+          "resume": 7190325,
+          "input": {
+            "kind": "publish",
+            "begin": 7188320,
+            "end": 7190320,
+            "code": 31,
+            "target": "a",
+            "protocol": "ordinary",
+            "pan": 192
+          }
+        }
+      ]
+    }
+  ],
+  "model_sha256": "95d4b2bb92716d18d327df86e12052b1febc3a2a77bbed081305437a9a398f9b"
+}

@@ -1,0 +1,4 @@
+{"mode": "original", "case": "opaque-single-mixed-header", "frames": 4, "mode_flags": 0}
+{"mode": "original", "case": "opaque-dual-mixed-transfer", "frames": 4, "mode_flags": 193}
+{"mode": "observed", "case": "opaque-single-mixed-header", "frames": 4, "mode_flags": 0}
+{"mode": "observed", "case": "opaque-dual-mixed-transfer", "frames": 4, "mode_flags": 193}

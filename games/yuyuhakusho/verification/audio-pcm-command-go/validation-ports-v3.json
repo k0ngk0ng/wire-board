@@ -1,0 +1,155 @@
+{
+  "pass": true,
+  "scope": "Opt-in actual YM address/data-port output, original auxiliary ledger and per-frame address-latch projection; no new register shadow",
+  "source_manifest_sha256": "9ba6302cd933de5193852cbdada52ed9c44558df34cff68943b9ce1084ebe932",
+  "sources": [
+    {
+      "path": "docs/research/md-yuyuhakusho/AUDIO_PCM_COMMAND_GO_PORTS.md",
+      "sha256": "6e0750f38fde48c56762ce9542cb393edc30cdb1d268b045533776a9b0f12900",
+      "frozen_copy": "games/yuyuhakusho/verification/audio-pcm-command-go/ports-v3-source/00-AUDIO_PCM_COMMAND_GO_PORTS.md.txt"
+    },
+    {
+      "path": "docs/research/md-yuyuhakusho/AUDIO_PCM_COMMAND_GO_PORT_FAILURES.md",
+      "sha256": "941420e291ce0682490a5507dce4eb640f79c021e1306823b58313fe42e332fb",
+      "frozen_copy": "games/yuyuhakusho/verification/audio-pcm-command-go/ports-v3-source/01-AUDIO_PCM_COMMAND_GO_PORT_FAILURES.md.txt"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmcommands/README.md",
+      "sha256": "a9fe5d52c99a59799a0d9a1ba5915dab1c744af6818b986048d0481f90e25afd",
+      "frozen_copy": "games/yuyuhakusho/verification/audio-pcm-command-go/ports-v3-source/02-README.md.txt"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmcommands/bus_bridge.go",
+      "sha256": "0dd755b50438409fd69731f3b9a5d4f49a81f04b2f2934a4363d9f7cc036738a",
+      "frozen_copy": "games/yuyuhakusho/verification/audio-pcm-command-go/ports-v3-source/03-bus_bridge.go.txt"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmcommands/bus_bridge_e2e_test.go",
+      "sha256": "2f1fd5268cff16ec3df2aa859c92462fe9b1c4ff73000dbd5358ad6e6e5c82f6",
+      "frozen_copy": "games/yuyuhakusho/verification/audio-pcm-command-go/ports-v3-source/04-bus_bridge_e2e_test.go.txt"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmcommands/bus_pending_boundary_test.go",
+      "sha256": "3582ab0fea321d7f13e420f36282cedb6650f27d6d960e645ee184ca86b15184",
+      "frozen_copy": "games/yuyuhakusho/verification/audio-pcm-command-go/ports-v3-source/05-bus_pending_boundary_test.go.txt"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmcommands/controls_e2e_test.go",
+      "sha256": "43370bb302461bbd731f7f89401e06c33905a2608790eda6dc329bebeace5fe2",
+      "frozen_copy": "games/yuyuhakusho/verification/audio-pcm-command-go/ports-v3-source/06-controls_e2e_test.go.txt"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmcommands/controls_supplement_e2e_test.go",
+      "sha256": "62412a0dbe92e67b30c0bd395102882149152b4e1346de5575e38edab71c73b0",
+      "frozen_copy": "games/yuyuhakusho/verification/audio-pcm-command-go/ports-v3-source/07-controls_supplement_e2e_test.go.txt"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmcommands/device.go",
+      "sha256": "6bd121b24d5b35c7760c719fd87fe41839100fcb6d7f284936eebdc75d509a3d",
+      "frozen_copy": "games/yuyuhakusho/verification/audio-pcm-command-go/ports-v3-source/08-device.go.txt"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmcommands/device_e2e_test.go",
+      "sha256": "0cafbd42860b4b38dd58133af02d8b0689bd6000db576ac5452d42b6798beaa0",
+      "frozen_copy": "games/yuyuhakusho/verification/audio-pcm-command-go/ports-v3-source/09-device_e2e_test.go.txt"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmcommands/dma_domain_test.go",
+      "sha256": "b873aca6586f420a583d5a3d29111d06d75875dba58b5e24845ddfa6d97ec161",
+      "frozen_copy": "games/yuyuhakusho/verification/audio-pcm-command-go/ports-v3-source/10-dma_domain_test.go.txt"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmcommands/phases_control.go",
+      "sha256": "313eb96643577d547738950e4d06a95cb8660e760a54cf6fe13eee25d1b8ef01",
+      "frozen_copy": "games/yuyuhakusho/verification/audio-pcm-command-go/ports-v3-source/11-phases_control.go.txt"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmcommands/phases_dual.go",
+      "sha256": "6a7bbd6e5d46a380659f12fb85c833947628436b57e28a6c7f8323102155bd63",
+      "frozen_copy": "games/yuyuhakusho/verification/audio-pcm-command-go/ports-v3-source/12-phases_dual.go.txt"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmcommands/phases_single.go",
+      "sha256": "ca650f1dabc657b668b1c9672674ca98e4f361e68ffc7a92fc7c08fb5713f088",
+      "frozen_copy": "games/yuyuhakusho/verification/audio-pcm-command-go/ports-v3-source/13-phases_single.go.txt"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmcommands/ports_e2e_test.go",
+      "sha256": "fcd198106ce34e6c2fb7e1270d8e99c26874e6fb9ddeaa1cfa958da073ecb700",
+      "frozen_copy": "games/yuyuhakusho/verification/audio-pcm-command-go/ports-v3-source/14-ports_e2e_test.go.txt"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmcommands/restore_boundary_test.go",
+      "sha256": "8a5f3c900255e9bef0142bcd3917a544a5e6eee0a054abf99e9030b473526fed",
+      "frozen_copy": "games/yuyuhakusho/verification/audio-pcm-command-go/ports-v3-source/15-restore_boundary_test.go.txt"
+    },
+    {
+      "path": "games/yuyuhakusho/audio/pcmcommands/state.go",
+      "sha256": "d2125bb856fa024dade12805fa995c74623e5b966d1a985c77053d4a3d757c98",
+      "frozen_copy": "games/yuyuhakusho/verification/audio-pcm-command-go/ports-v3-source/16-state.go.txt"
+    },
+    {
+      "path": "scripts/yuyuhakusho/pcm-command-go-export-ports.py",
+      "sha256": "03534ba46834afaca6edb46f39e465671903e8ea2e94a82b6270ccf82c5ab561",
+      "frozen_copy": "games/yuyuhakusho/verification/audio-pcm-command-go/ports-v3-source/17-pcm-command-go-export-ports.py.txt"
+    },
+    {
+      "path": "scripts/yuyuhakusho/pcm-command-go-verify.py",
+      "sha256": "ecdfd86f0070ce2774fd78f923406d6cc9a112010021bec926ac2c574f20950c",
+      "frozen_copy": "games/yuyuhakusho/verification/audio-pcm-command-go/ports-v3-source/18-pcm-command-go-verify.py.txt"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "games/yuyuhakusho/audio/pcmcommands/testdata/original-command-ports-v3.json.gz",
+      "sha256": "e435f0f778088e0bb133082f82720c8ca7ed10c7d13be388faea837d76fff995",
+      "bytes": 7368236
+    }
+  ],
+  "coverage": {
+    "accepted_scenarios": 23,
+    "reference_frames": 1274,
+    "physical_events": 519256,
+    "per_frame_native_address_latches": 1274
+  },
+  "checks": [
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command-go/native-ports-v3-race.jsonl",
+      "sha256": "2f0abe3406cefeb4a339b5ed93e36f7645341b2dac586a7a6fc8ad6ba8cbf6c7",
+      "top_level_tests": 15,
+      "subtests": 90
+    },
+    {
+      "path": "games/yuyuhakusho/verification/audio-pcm-command-go/wasm-ports-v3.jsonl",
+      "sha256": "236ead7188ef82b22eb72613fa29c827c60e09870413df4c703ba5ac5d4679a7",
+      "top_level_tests": 15,
+      "subtests": 90
+    }
+  ],
+  "vet": {
+    "path": "games/yuyuhakusho/verification/audio-pcm-command-go/vet-ports-v3.txt",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "exit_code": 0
+  },
+  "immutable_output_view": "Config.IncludeYMAddresses is bound into checkpoint identity; default false retains old data-domain assertions",
+  "old_v1_v2_bus_vectors_and_assertions_unchanged": true,
+  "payload_bytes_borrowed": true,
+  "register_latch_shadow_in_device": false,
+  "full_chip_warm_reset_projection_verified": false,
+  "address_latch_warm_reset_projection_verified": true,
+  "world_irq_scheduled": false,
+  "platform_wired": false,
+  "failure_evidence": [
+    "data-only-address-go-red.jsonl",
+    "data-only-address-test-before-port-output.go.txt",
+    "ports-api-red.jsonl",
+    "ports-test-first.json"
+  ],
+  "limits": [
+    "Go physical view directly matches original addresses/data/reset/bank times; latch projection uses actual YM ports",
+    "Latch warm-reset projection preserves actual address only; full YM/FIR reset belongs to chips scope",
+    "Remaining nonzero DMA and opaque mixed descriptor windows remain explicitly outside supported device environment",
+    "World producers, game pause scheduling and platform media remain upstream integration scopes"
+  ],
+  "reproduction": "python3 scripts/yuyuhakusho/pcm-command-go-verify.py; workspace-local Go env plus go test -race ./games/yuyuhakusho/audio/pcmcommands; exact Wasm env in wasm-ports-v3-command.json"
+}

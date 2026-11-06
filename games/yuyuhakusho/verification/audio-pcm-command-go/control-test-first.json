@@ -1,0 +1,20 @@
+{
+  "actual_missing_control_API": true,
+  "current_v1_production_unchanged": true,
+  "scope": "Additional 20 original-only control streams; current v1 compiled package remains unchanged while Root checkpoints",
+  "sources": {
+    "scripts/yuyuhakusho/pcm-command-go-export-controls.py": "1b85cc976bf71457053e0b588d674535e624b918c0129192c71afcac6e037a31",
+    "games/yuyuhakusho/audio/pcmcommands/testdata/original-command-controls-v2.json.gz": "4a3d66f2f1a5f60b346439d937ac25acf24c4d7a88027206269a1311dc338368",
+    "games/yuyuhakusho/verification/audio-pcm-command-go/controls-e2e-before-implementation.go.txt": "397698b5634b65c0b83d7cc87be462bd2b3704f44aa2603cb9c29529d64f08a9",
+    "games/yuyuhakusho/verification/audio-pcm-command-go/dma-wait-test-before-restriction.go.txt": "b103a58c770fc212f3f6cdacf69856152edc6dca1a2f1c4f2c80b389e82ff401",
+    "docs/research/md-yuyuhakusho/AUDIO_PCM_COMMAND_GO_CONTROL_FAILURES.md": "922f5b5006abdec35f991fbe345632ae5d74a86dc0c3f5455942f6b14e9f6641"
+  },
+  "red": {
+    "path": "games/yuyuhakusho/verification/audio-pcm-command-go/control-api-red.jsonl",
+    "sha256": "250e0a7d888b214b445c67a8b0340b4de6a37e432f6b2b887076fdc48783c27a"
+  },
+  "dma_remaining_actual_red": {
+    "path": "games/yuyuhakusho/verification/audio-pcm-command-go/dma-wait-domain-red.jsonl",
+    "sha256": "1281dcffa29e159b35a8471a83708bff5311f86a8edb976cad8ba8ffba5123ac"
+  }
+}

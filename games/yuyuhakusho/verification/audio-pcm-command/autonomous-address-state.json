@@ -1,0 +1,169 @@
+{
+  "pass": true,
+  "scope": "At every frame boundary the autonomous address stream reproduces the original retained YM address; reset preserves that latch",
+  "cases": [
+    {
+      "name": "dual-append",
+      "frames": 125,
+      "all_model_address_latches_equal": true,
+      "native_sha256": "cd8c5889395047572208ae7b2e65fed4f2dda7e388a2f1670b6b4e34f8cd2e21",
+      "address_trace_sha256": "1b6f08c880b34c557d9dd456a6533c2baa39f957df0b58b4af995ab8f19ec19f"
+    },
+    {
+      "name": "dual-dma",
+      "frames": 46,
+      "all_model_address_latches_equal": true,
+      "native_sha256": "53c3a98668f9faa2653ee9366593c19e0eaecb3ad3ffd7e2a4a0511ee8dc10fe",
+      "address_trace_sha256": "1e61a0458a577239b9fe277a8dff9e6539b73446c45f272e128bde8019f626b0"
+    },
+    {
+      "name": "dual-hard-reset-complete",
+      "frames": 55,
+      "all_model_address_latches_equal": true,
+      "native_sha256": "373cf0064670fb3634f7f9411849ff0b7e9149dc6fc49191f4dd116ccc97193a",
+      "address_trace_sha256": "0a1d654db03ba8d48c6de1bb10ffc289c2ffb265e3c544cccfb5bdc5dee532b1"
+    },
+    {
+      "name": "dual-hard-reset",
+      "frames": 25,
+      "all_model_address_latches_equal": true,
+      "native_sha256": "8277aa32c1b06609c9ebcc5d2b463192c2efeb55b868c1405d937a2f2a9f633d",
+      "address_trace_sha256": "fa9bb8c1a1f6646db9bb5113a8c0c7fac883aed4d9b437c9412ea595becad2c5"
+    },
+    {
+      "name": "dual-pause",
+      "frames": 48,
+      "all_model_address_latches_equal": true,
+      "native_sha256": "9f621c8b58fc20666c3fd8a376e0df204973d3d7cbf18b47db2a8399fe257626",
+      "address_trace_sha256": "e753f7263db7b11127cb4b8bf855e99ad5190c41bb6d419b9bfefa80a8c04a4d"
+    },
+    {
+      "name": "dual-replace-a",
+      "frames": 125,
+      "all_model_address_latches_equal": true,
+      "native_sha256": "fda67c2fef633232c615e0dab5fe737bda8723ba609579293a0e9f04fe18d79a",
+      "address_trace_sha256": "8792fa024cd7bfcb4b768527904bf361c7d09caeb2b596c0d851f903c6bd2200"
+    },
+    {
+      "name": "dual-to-single",
+      "frames": 80,
+      "all_model_address_latches_equal": true,
+      "native_sha256": "78d1fc550efa5f806bf2f7fc2acf0bc29ffec721c3d74ccbe63312accf87bf31",
+      "address_trace_sha256": "e02ef3f9f016a68c3bdaa198e8431ea88783cb4b7faba5f07bdc9159abf19821"
+    },
+    {
+      "name": "idle-to-dual-a",
+      "frames": 44,
+      "all_model_address_latches_equal": true,
+      "native_sha256": "9b9b9154fb2e3f0906c62b0deea9504bcbd4342dcfd83d344a0a7085c11bd9ab",
+      "address_trace_sha256": "81ae291868e419d45c6a8a2e4f26bb1cf5f6c9534b429ecbe5f45a07c8879346"
+    },
+    {
+      "name": "idle-to-dual-b",
+      "frames": 22,
+      "all_model_address_latches_equal": true,
+      "native_sha256": "0fe5f3f0e910f0a1943febb5718af7c85c45493c6309172b925429d166296c05",
+      "address_trace_sha256": "d29c4c841c9d50beaf47f8661347ec8b845b4a1e40040beb942f736ff0ac896b"
+    },
+    {
+      "name": "idle-to-single",
+      "frames": 66,
+      "all_model_address_latches_equal": true,
+      "native_sha256": "5b8b92bfb636edad768aea6dcaa3c1c9eb531a790e9356fc8bb5c660bfc8842b",
+      "address_trace_sha256": "8ad6de5369423e513e016a60e5416b68e60b5ac5c38ef73e3dfb5a57544b7a14"
+    },
+    {
+      "name": "internal-single-byte",
+      "frames": 5,
+      "all_model_address_latches_equal": true,
+      "native_sha256": "92787f365a28b8bc94a1c5dc9fcdf72330b7905950052680a76f47bef354aff0",
+      "address_trace_sha256": "3d99bba44c9e0d2664db8ee65dc9242e3108ea9dbb22474abd2467c4e2f84658"
+    },
+    {
+      "name": "legitimate-f0-remap",
+      "frames": 108,
+      "all_model_address_latches_equal": true,
+      "native_sha256": "35e3fa40c1e398fc43e9cb3d51464760b57d92e7ae3b15aeeebc44875e950ad8",
+      "address_trace_sha256": "5c7460842de4c1a9ba5c2ff1c0ee032cb2bb26df0bd53673397bfe0dc27bb18a"
+    },
+    {
+      "name": "music-from-idle",
+      "frames": 22,
+      "all_model_address_latches_equal": true,
+      "native_sha256": "9091b3fdd7d5533ba674460a40733382e300dc8bcb0abf9b27c579e424617049",
+      "address_trace_sha256": "3955607d675fa76c23916835f5c3a18710a0e160e127333afdefb50128da1cd2"
+    },
+    {
+      "name": "music-pan-restore",
+      "frames": 26,
+      "all_model_address_latches_equal": true,
+      "native_sha256": "ab214de58af03819ce967aa01cd675e98811278607c27302318b5d621c9fc616",
+      "address_trace_sha256": "5b77699f11d0ee520e5b63a8d47e98d0128421caaffb104c151d1c5452af743f"
+    },
+    {
+      "name": "music-replace",
+      "frames": 35,
+      "all_model_address_latches_equal": true,
+      "native_sha256": "3721f4f11d2218e001b2c06de2c8be6f2cc232b217868ab6882449404771bcb2",
+      "address_trace_sha256": "51f355190b1241a51ed444c7e985788823cf8899f3073c1d555af5fd3f03ba01"
+    },
+    {
+      "name": "single-dma",
+      "frames": 68,
+      "all_model_address_latches_equal": true,
+      "native_sha256": "e25ee7f9feddac636df8aaaf931c390e3141524ecff1b23c0a1b350f86dba002",
+      "address_trace_sha256": "02bcfc621bf56caa884b83f020b4ce07d5d4674e2f817e80af4a5633429d1572"
+    },
+    {
+      "name": "single-hard-reset",
+      "frames": 75,
+      "all_model_address_latches_equal": true,
+      "native_sha256": "24023b6860a7f4c228284d707fd7563121e1eddcec650b0539b96c313c689981",
+      "address_trace_sha256": "d0000683aa032dc550fa0f3980d5dd35dc9e9140e45bc2fdda32fa39eb7ddc49"
+    },
+    {
+      "name": "single-pause",
+      "frames": 70,
+      "all_model_address_latches_equal": true,
+      "native_sha256": "a350404fb263ae328c9694721d05e02772f77b84ee5c23b8dad6889d6a44618d",
+      "address_trace_sha256": "4a9ce4cac586efc8d6fc3e5399a368829a71723995acb9f63a614cc9479fa627"
+    },
+    {
+      "name": "single-replace",
+      "frames": 75,
+      "all_model_address_latches_equal": true,
+      "native_sha256": "d33ab4a1c45e05b99f2b3e70d17f2aeca9d0968165ddb10447b973dc1bbfae97",
+      "address_trace_sha256": "6b4c17e342cfc4f5b88f8dd36062d3d4c63cc40fb25c9f650e79b428fe31f808"
+    },
+    {
+      "name": "single-reset-between-address-data",
+      "frames": 5,
+      "all_model_address_latches_equal": true,
+      "native_sha256": "9c1f08842eaf2abc08c81966a5d2f2d7d0336bfaac6de2923586c1fa952f707d",
+      "address_trace_sha256": "bdf882acca989dfafbf494028abeb676977c6c6a9380279323de9c4351dfaa54"
+    },
+    {
+      "name": "single-reset-crossing-chip-tick",
+      "frames": 12,
+      "all_model_address_latches_equal": true,
+      "native_sha256": "282cec8dd81e96b8318bd0a1e859c8b9c77ef627b73e75ebceb67c9e27629b3b",
+      "address_trace_sha256": "360142faa560df5ceeb305534079bf16a4ffe321b89223bd97d7b25869ed653a"
+    },
+    {
+      "name": "single-reset-during-dac-operation",
+      "frames": 12,
+      "all_model_address_latches_equal": true,
+      "native_sha256": "abeb17ee1eb95dfab752368925c601e6fc2beaa761105c4052ee05d9c7247849",
+      "address_trace_sha256": "360142faa560df5ceeb305534079bf16a4ffe321b89223bd97d7b25869ed653a"
+    },
+    {
+      "name": "single-to-dual",
+      "frames": 125,
+      "all_model_address_latches_equal": true,
+      "native_sha256": "be77ed31ad3801ffff361769e3feaba6a7116d7d1accfafc537a76b8fae5994b",
+      "address_trace_sha256": "4d6b0631119ebb8c00f6a93cb87f6bce2680f3ad1e16a15f2c2120472f750197"
+    }
+  ],
+  "producer_sha256": "918f9365c6d74b36b2c123bc9f7122793fe27332733c5b5a8b487c537d9dc179",
+  "model_sha256": "95d4b2bb92716d18d327df86e12052b1febc3a2a77bbed081305437a9a398f9b"
+}

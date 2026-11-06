@@ -1,0 +1,12 @@
+{
+  "test_before_implementation": true,
+  "reset_production_exists": false,
+  "native_counterexample_before_implementation": true,
+  "files": {
+    "docs/research/md-yuyuhakusho/FMPSG_RESET_FAILURES.md": "b7d6924044c8bc5b2f4a742e1d53be58dac1b9800419b80d662d7cfdb3c8c62d",
+    "games/yuyuhakusho/audio/chips/reset_test.go": "80286731c4f0bd35578223147cbe1e89079accd88b3412c652d667fc2c56ddbd",
+    "scripts/yuyuhakusho/fmpsg-reset-capture.py": "1651842e5919d67a86a8aa54bd05d9b95cdf402ec84d2848d9647422b6be356e",
+    "games/yuyuhakusho/verification/fmpsg-reset/native.json.gz": "ba1a6f3bb5734d0fb66673f9c49115e08e9c3e140e67235d915c51f992aeb02d",
+    "games/yuyuhakusho/verification/fmpsg-reset/native-reset-api-red.jsonl": "e382f5b0fe55e87f21bf2ecc0547e57e265fc47ab4b7261cdbbac4142890cc03"
+  }
+}

@@ -18,7 +18,12 @@ var singleProfiles = map[string][]uint16{
 }
 
 func (d *Device) written(kind Kind, value uint8, ticks uint64) {
-	d.frame.Events = append(d.frame.Events, Event{Cycle: d.state.Time, StartCycle: d.state.Time - ticks*15, Kind: kind, Value: value})
+	d.frame.Ledger = append(d.frame.Ledger, Event{Cycle: d.state.Time, StartCycle: d.state.Time - ticks*15, Kind: kind, Value: value, Port: func() uint8 {
+		if kind == Pan {
+			return 3
+		}
+		return 1
+	}()})
 }
 func (d *Device) singleRemaining() uint16 {
 	return uint16(d.length(d.state.Single.Descriptor) - d.state.Single.Fetched)
@@ -154,6 +159,9 @@ func (d *Device) stepSingle() bool {
 				g.Busy = 0
 			}
 		case "s-before-enable":
+			if part == 8 {
+				d.addressWritten(2, 0xb6, 10)
+			}
 			if part == 3 {
 				g.Busy = 128
 			}
@@ -161,6 +169,15 @@ func (d *Device) stepSingle() bool {
 				d.written(Pan, w.Pan, 7)
 			}
 		case "s-enable":
+			if part == 3 {
+				d.addressWritten(0, 0x28, 10)
+			}
+			if part == 9 {
+				d.addressWritten(0, 0x2b, 10)
+			}
+			if part == 5 {
+				d.controlWritten(YMWrite, 6, 0x28, 10)
+			}
 			if part == 11 {
 				d.written(Enable, 128, 10)
 			}
@@ -191,6 +208,8 @@ func (d *Device) stepSingle() bool {
 				b := d.byteAt(single.Descriptor, single.Consumed-1)
 				_, pair := pcm.DecodeByte(pcm.DecoderState{Accumulator: single.Accumulator}, b)
 				single.Accumulator = pair[0]
+			case 14:
+				d.addressWritten(0, 0x2a, 7)
 			case 16:
 				d.written(DAC, single.Accumulator, 13)
 			case 17:
@@ -209,6 +228,9 @@ func (d *Device) stepSingle() bool {
 				single.DummyCursor += 4
 			}
 		case "s-low":
+			if part == 6 {
+				d.addressWritten(0, 0x2a, 7)
+			}
 			if part == 1 {
 				g.Busy = 64
 			}
@@ -224,6 +246,10 @@ func (d *Device) stepSingle() bool {
 			}
 		case "end":
 			switch part {
+			case 5:
+				d.addressWritten(2, 0xb6, 10)
+			case 12:
+				d.addressWritten(0, 0x2b, 10)
 			case 1:
 				g.Busy = 128
 			case 7:

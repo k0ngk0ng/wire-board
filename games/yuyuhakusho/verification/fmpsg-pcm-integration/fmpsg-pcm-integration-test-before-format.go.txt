@@ -1,0 +1,137 @@
+package chips_test
+
+import (
+	"bytes"
+	"compress/gzip"
+	"crypto/sha256"
+	"encoding/hex"
+	"encoding/json"
+	"flag"
+	"io"
+	"os"
+	"reflect"
+	"sort"
+	"testing"
+
+	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips"
+	pcmc "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/pcmcommands"
+)
+
+var pcmIntegrationDataOnly=flag.Bool("fmpsg-pcm-integration-data-only",false,"Deliberately wrong data-cycle address synthesis hypothesis")
+var pcmIntegrationSort=flag.Bool("fmpsg-pcm-integration-sort",false,"Deliberately wrong raw-cycle sorting hypothesis")
+
+type pcmIntegrationSourceCase struct {
+	Name string
+	Payloads map[string]string
+	Descriptors []pcmc.Descriptor
+	Inputs []pcmc.Input
+	Transactions []pcmc.Transaction
+	DMA []struct {Frame uint64;Interval pcmc.DMAInterval}
+	Frames []struct {Events []pcmc.Event;Status pcmc.Status;YMAddress uint16}
+	MasterOrigin uint64
+	SourceSHA256 string
+}
+type pcmIntegrationFullCase struct {
+	Name string
+	SourceSHA256 string
+	Config chips.Config
+	Initial chips.State
+	Frames []struct {PCM string;State chips.State}
+}
+func pcmIntegrationJSON(t *testing.T,path string,result any){
+	t.Helper();raw,err:=os.ReadFile(path);if err!=nil{t.Fatal(err)};z,err:=gzip.NewReader(bytes.NewReader(raw));if err!=nil{t.Fatal(err)};defer z.Close();body,err:=io.ReadAll(z);if err!=nil{t.Fatal(err)};if err=json.Unmarshal(body,result);err!=nil{t.Fatal(err)}
+}
+func pcmIntegrationCases(t *testing.T)([]pcmIntegrationSourceCase,map[string]pcmIntegrationFullCase){
+	t.Helper();var source struct {Version int;Cases []pcmIntegrationSourceCase}
+	pcmIntegrationJSON(t,"../pcmcommands/testdata/original-command-ports-v3.json.gz",&source)
+	if source.Version!=3||len(source.Cases)!=23{t.Fatal("original v3 physical-port matrix differs")}
+	var native struct {Version int;Cases []pcmIntegrationFullCase}
+	pcmIntegrationJSON(t,"../../verification/fmpsg-pcm-integration/fmpsg-pcm-integration-native.json.gz",&native)
+	if native.Version!=1||len(native.Cases)!=23{t.Fatal("full native chip matrix differs")}
+	byName:=map[string]pcmIntegrationFullCase{}
+	for _,row:=range native.Cases{if _,exists:=byName[row.Name];exists{t.Fatal("duplicate full native case")};if row.Initial.YM==chips.ResetYMState()||row.Config.MasterOrigin==0{t.Fatal("full quiescent state was replaced by a cold/DAC-only state")};byName[row.Name]=row}
+	return source.Cases,byName
+}
+func pcmIntegrationConfig(t *testing.T,c pcmIntegrationSourceCase)pcmc.Config{
+	t.Helper();payloads:=map[string][]byte{}
+	for id,value:=range c.Payloads{raw,err:=hex.DecodeString(value);if err!=nil{t.Fatal(err)};payloads[id]=raw}
+	identity:=sha256.Sum256([]byte(c.SourceSHA256))
+	return pcmc.Config{Resources:pcmc.Resources{Identity:hex.EncodeToString(identity[:]),Length:func(id string)(uint32,bool){raw,ok:=payloads[id];return uint32(len(raw)),ok},ByteAt:func(id string,offset uint32)(byte,bool){raw,ok:=payloads[id];if !ok||offset>=uint32(len(raw)){return 0,false};return raw[offset],true}},Descriptors:c.Descriptors,IncludeYMAddresses:true}
+}
+func pcmIntegrationNormalize(input []pcmc.Event)[]pcmc.Event{
+	out:=make([]pcmc.Event,len(input));for i,e:=range input{e.StartCycle=0;out[i]=e};return out
+}
+func pcmIntegrationChipFrame(t *testing.T,active *chips.Interactive,events []pcmc.Event){
+	t.Helper();input:=events
+	if *pcmIntegrationSort{input=append([]pcmc.Event(nil),events...);sort.SliceStable(input,func(i,j int)bool{return input[i].Cycle<input[j].Cycle})}
+	var previous *pcmc.Event
+	for i:=range input{
+		e:=input[i];var err error
+		switch e.Kind{
+		case pcmc.YMAddress:
+			if *pcmIntegrationDataOnly{continue};err=active.WritePort(e.Cycle,e.Port,e.Value)
+		case pcmc.DAC,pcmc.Pan,pcmc.Enable,pcmc.YMWrite:
+			if *pcmIntegrationDataOnly{
+				register:=e.Register
+				switch e.Kind{case pcmc.DAC:register=0x2a;case pcmc.Pan:register=0x1b6;case pcmc.Enable:register=0x2b}
+				if err=active.WritePort(e.Cycle,uint8(register>>8)*2,uint8(register));err!=nil{t.Fatal(err)}
+			}
+			err=active.WritePort(e.Cycle,e.Port,e.Value)
+		case pcmc.Reset:
+			cursor:=active.Snapshot().Cursor
+			if e.Cycle<cursor{
+				if previous==nil||previous.Kind!=pcmc.DAC||previous.Cycle!=cursor{t.Fatal("reset lacks an actual completed DAC cause")}
+				err=active.ResetYMAfterDAC(e.Cycle,previous.Cycle)
+			}else{err=active.ResetYM(e.Cycle)}
+		case pcmc.Bank,pcmc.Metadata,pcmc.Dummy:continue
+		default:t.Fatal("unknown physical ledger event",e.Kind)
+		}
+		if err!=nil{t.Fatalf("chip event%d %s cycle%d: %v",i,e.Kind,e.Cycle,err)}
+		copy:=e;previous=&copy
+	}
+}
+func pcmIntegrationCheckFrame(t *testing.T,active *chips.Interactive,expected pcmIntegrationFullCase,index int){
+	t.Helper();got,err:=active.FrameBoundary();if err!=nil{t.Fatal(err)};equalPCM(t,got.PCM,expected.Frames[index].PCM)
+	state,err:=active.CommittedState();if err!=nil{t.Fatal(err)}
+	if !reflect.DeepEqual(state,expected.Frames[index].State){a,_:=json.Marshal(state);b,_:=json.Marshal(expected.Frames[index].State);t.Fatalf("frame%d complete chip state differs\nGo=%s\nNative=%s",index,a,b)}
+}
+
+func TestPCMFullChipGivenNativePorts(t *testing.T){
+	sources,native:=pcmIntegrationCases(t);frames:=0
+	for _,c:=range sources{t.Run(c.Name,func(t *testing.T){
+		expected,exists:=native[c.Name];if !exists||expected.SourceSHA256!=c.SourceSHA256||len(expected.Frames)!=len(c.Frames){t.Fatal("full native source identity differs")}
+		active,err:=chips.NewInteractive(expected.Config,expected.Initial);if err!=nil{t.Fatal(err)}
+		for index,frame:=range c.Frames{
+			pcmIntegrationChipFrame(t,active,frame.Events)
+			active,err=chips.RestoreInteractive(expected.Config,active.Snapshot());if err!=nil{t.Fatal(err)}
+			pcmIntegrationCheckFrame(t,active,expected,index);frames++
+		}
+	})}
+	if !*pcmIntegrationDataOnly&&!*pcmIntegrationSort&&frames!=1274{t.Fatal("incomplete original-port full-chip frames",frames)}
+}
+
+func TestPCMFullChipAutonomousDevice(t *testing.T){
+	sources,native:=pcmIntegrationCases(t);frames,events:=0,0
+	for _,c:=range sources{t.Run(c.Name,func(t *testing.T){
+		expected:=native[c.Name];cfg:=pcmIntegrationConfig(t,c);device,err:=pcmc.New(cfg);if err!=nil{t.Fatal(err)}
+		active,err:=chips.NewInteractive(expected.Config,expected.Initial);if err!=nil{t.Fatal(err)}
+		var transactions []pcmc.Transaction
+		for index,observed:=range c.Frames{
+			checkpoint,err:=json.Marshal(device.Snapshot());if err!=nil{t.Fatal(err)};var saved pcmc.State;if err=json.Unmarshal(checkpoint,&saved);err!=nil{t.Fatal(err)};device,err=pcmc.Restore(cfg,saved);if err!=nil{t.Fatal(err)}
+			plan:=pcmc.FramePlan{}
+			for _,in:=range c.Inputs{if in.Begin/pcmc.FrameCycles==uint64(index){plan.Inputs=append(plan.Inputs,in)}}
+			for _,dma:=range c.DMA{if dma.Frame==uint64(index){plan.DMA=append(plan.DMA,dma.Interval)}}
+			generated,err:=device.AdvanceFrame(plan);if err!=nil{t.Fatal(err)}
+			if !reflect.DeepEqual(pcmIntegrationNormalize(generated.Ledger),pcmIntegrationNormalize(observed.Events))||generated.Status!=observed.Status{t.Fatal("independently generated physical ledger/status differs",index)}
+			transactions=append(transactions,generated.Transactions...)
+			// Only independently generated output is supplied to the DSP. Native
+			// event cycles above are assertions and never drive the Device.
+			pcmIntegrationChipFrame(t,active,generated.Ledger)
+			active,err=chips.RestoreInteractive(expected.Config,active.Snapshot());if err!=nil{t.Fatal(err)}
+			pcmIntegrationCheckFrame(t,active,expected,index)
+			frames++;events+=len(generated.Ledger)
+		}
+		if !reflect.DeepEqual(transactions,c.Transactions){t.Fatal("independent device transactions differ")}
+	})}
+	if !*pcmIntegrationDataOnly&&!*pcmIntegrationSort&&(frames!=1274||events!=519256){t.Fatalf("incomplete autonomous device coverage: %d frames %d events",frames,events)}
+}

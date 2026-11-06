@@ -1,0 +1,16 @@
+{
+  "actual_data_time_latch_red": true,
+  "actual_missing_port_api_red": true,
+  "sources": {
+    "games/yuyuhakusho/audio/pcmcommands/ports_e2e_test.go": "1e8e80d0423e7ff5f86430dd4ebddf398a4c6ee60dac86b029eb4f9bb2cfbef1",
+    "games/yuyuhakusho/audio/pcmcommands/testdata/original-command-ports-v3.json.gz": "e435f0f778088e0bb133082f82720c8ca7ed10c7d13be388faea837d76fff995",
+    "scripts/yuyuhakusho/pcm-command-go-export-ports.py": "03534ba46834afaca6edb46f39e465671903e8ea2e94a82b6270ccf82c5ab561",
+    "docs/research/md-yuyuhakusho/AUDIO_PCM_COMMAND_GO_PORT_FAILURES.md": "941420e291ce0682490a5507dce4eb640f79c021e1306823b58313fe42e332fb",
+    "games/yuyuhakusho/verification/audio-pcm-command-go/data-only-address-test-before-port-output.go.txt": "de7b2628fb2b8516fb20bcdcbadc481737bd52eb2190a3fc24fe15750449fd97"
+  },
+  "red": {
+    "data-only-address-go-red.jsonl": "e02e5c52581693fa3ca3bd468c2a09a259a92f48589ce4c32259830759bb3866",
+    "ports-api-red.jsonl": "03d6d9722db9f337369648a893a7aafdd122ba934a87c769c5fa2f1f884bd345"
+  },
+  "old_vectors_unchanged": true
+}

@@ -1,0 +1,12 @@
+{
+  "test_first": true,
+  "command": [
+    "test",
+    "-f",
+    "games/yuyuhakusho/audio/pcmcommands/device.go"
+  ],
+  "exit_code": 1,
+  "expected_failure": "Independent empty-to-complete command device absent",
+  "failure_scenarios_sha256": "07415a46224b304fda3aaa824c98bdebe8d5108c6e033d178b858ae187d9b2c1",
+  "old_pcmplayer_unchanged": true
+}

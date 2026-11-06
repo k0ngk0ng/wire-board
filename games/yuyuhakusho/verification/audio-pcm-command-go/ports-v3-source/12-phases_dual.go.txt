@@ -1,0 +1,457 @@
+package pcmcommands
+
+import "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/pcm"
+
+var dualProfiles = map[string][]uint16{
+	"d-transfer-jump": {10},
+	"d-start":         {4, 13, 13, 13, 10, 10, 4, 10, 20, 20, 10, 10, 4, 10, 4, 20, 20, 10, 4, 10, 4, 10, 16, 16, 10, 16, 16, 7, 13, 13, 4, 13, 13, 13, 13, 13, 10, 10, 10, 4, 10},
+	"d-preamble":      {7, 14, 14, 10}, "d-active-prefix": {10, 4, 4, 7}, "d-active-mid": {4, 15, 4, 7, 4, 15, 4, 20}, "d-end-produced": {13, 4}, "d-end-pad": {4, 4, 10}, "d-decode-pointer": {4, 4},
+	"d-high-output": {4, 7, 19, 4, 7, 4, 7, 7, 4, 10}, "d-low-output": {4, 7, 19, 4, 7, 4, 7, 7, 4, 13, 4, 10}, "d-leave": {4, 4, 13, 13, 13, 13, 4, 10},
+	"d-refill-gap": {10, 4, 4, 10}, "d-gap-equal": {13, 4, 10, 7, 10}, "d-gap-compare": {7, 10}, "d-gap-readable": {13, 4, 10}, "d-enable-decode": {7, 13, 7}, "d-pending-read": {13, 4, 10}, "d-pending-normal": {4, 7, 10, 12}, "d-pending-negative": {7, 13, 13}, "d-pending-filler": {4, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 10},
+	"d-copy-setup": {10, 10, 8, 7, 4}, "d-copy-tails": {10, 10}, "d-copy-remcheck": {4, 4, 10}, "d-copy-exact": {4, 13, 4, 13, 7, 4, 12}, "d-copy-underflow": {4, 4, 13, 4, 13}, "d-copy-more": {11, 11, 4, 13},
+	"d-notcopy-prefix": {10, 4, 4, 4, 10, 20, 20, 13, 4, 10}, "d-drain-compare": {10, 4, 4, 10}, "d-drain-clear": {4, 13, 13, 13}, "d-drain-pad": {7, 20, 20, 10}, "d-empty-pad": {4, 7, 10, 20, 20, 10}, "d-other-check": {13, 4, 10}, "d-footer": {4, 4, 4, 7, 10, 20, 20, 20, 20, 20, 10},
+	"d-transfer": {4, 13, 13, 13, 7, 13, 7, 13, 13, 13, 13, 10, 10, 10, 10, 10, 11, 11, 11, 4, 13, 4, 20, 20, 20, 20, 20, 10},
+}
+
+func (d *Device) finishDecode() {
+	w := &d.state.Work
+	w.DecodeSlot++
+	if w.DecodeSlot < 2 {
+		d.next("d-decode-read")
+		return
+	}
+	w.DecodeSlot = 0
+	w.Mix = [2]uint8{pcm.MixDual(w.Pair[0][0], w.Pair[1][0]), pcm.MixDual(w.Pair[0][1], w.Pair[1][1])}
+	w.Pair = [2][2]uint8{}
+	d.next("d-high-output")
+}
+func (d *Device) dualRemaining(v *Voice) uint16 { return uint16(d.length(v.Descriptor) - v.Fetched) }
+func (d *Device) stepDual() bool {
+	s := &d.state
+	w := &s.Work
+	g := &s.Global
+	phase := s.Phase
+	voice := &s.Voices[w.PrefetchSlot]
+	decoded := &s.Voices[w.DecodeSlot]
+	switch phase {
+	case "d-decode-read":
+		d.op(10, func() { w.Enabled = decoded.Enabled })
+		d.next("d-decode-branch")
+		return true
+	case "d-decode-branch":
+		ticks := uint16(12)
+		if w.Enabled {
+			ticks = 7
+		}
+		d.op(ticks, nil)
+		if w.Enabled {
+			d.next("d-active-prefix")
+		} else {
+			d.next("d-inactive")
+		}
+		return true
+	case "d-active-highlead":
+		ticks := uint16(4)
+		if w.DecodeSlot == 0 {
+			ticks = 7
+		}
+		d.op(ticks, nil)
+		d.next("d-active-hi")
+		return true
+	case "d-active-hi":
+		d.op(7, func() {
+			b := d.byteAt(decoded.Descriptor, decoded.Consumed)
+			_, pair := pcm.DecodeByte(pcm.DecoderState{Accumulator: decoded.Accumulator}, b)
+			w.Pair[w.DecodeSlot][0] = pair[0]
+		})
+		d.next("d-active-mid")
+		return true
+	case "d-end-branch":
+		ticks := uint16(7)
+		if w.Same {
+			ticks = 12
+		}
+		d.op(ticks, nil)
+		if w.Same {
+			d.next("d-end-disable")
+		} else {
+			d.next("d-end-pad")
+		}
+		return true
+	case "d-end-disable":
+		d.op(13, func() { decoded.Enabled = false })
+		d.finishDecode()
+		return true
+	case "d-inactive":
+		var ticks []uint16
+		if w.DecodeSlot == w.PrefetchSlot {
+			ticks = []uint16{10, 4, 4, 7, 15, 15}
+			if w.PrefetchSlot == 0 {
+				ticks = append(ticks, 4, 4, 7, 20, 20, 10)
+			} else {
+				ticks = append(ticks, 4, 4, 4, 20, 20, 10)
+			}
+		} else {
+			ticks = []uint16{10, 7, 15, 15}
+			if w.DecodeSlot == 0 {
+				ticks = append(ticks, 7, 10, 20, 20, 20, 20, 10)
+			} else {
+				ticks = append(ticks, 4, 10, 20, 20, 20, 20, 10)
+			}
+		}
+		d.profile(ticks, nil, func() { w.Pair[w.DecodeSlot] = [2]uint8{128, 128}; d.finishDecode() })
+		return true
+	case "d-refill-read":
+		d.op(10, func() { w.Control = voice.Control })
+		d.next("d-refill-branch")
+		return true
+	case "d-refill-branch":
+		d.op(10, nil)
+		if w.Control&1 != 0 {
+			d.next("d-refill-gap")
+		} else if w.Control&64 != 0 {
+			d.next("d-transfer-jump")
+		} else {
+			d.next("d-notcopy-prefix")
+		}
+		return true
+	case "d-copy-shift":
+		if s.Part == 0 {
+			d.op(7, nil)
+			if w.Count == 7 {
+				w.Count = 0
+				d.next("d-copy-tails")
+			}
+		} else {
+			d.op(4, nil)
+			w.Count++
+			s.Part = 0
+		}
+		return true
+	case "d-copy-data":
+		d.emit(16, Bank, 0, voice.Descriptor, voice.Fetched)
+		voice.Fetched++
+		w.Count--
+		s.Part = 0
+		if w.Count == 0 {
+			d.next("d-copy-pe")
+		}
+		return true
+	case "d-copy-pe":
+		d.op(10, nil)
+		if d.dualRemaining(voice) == 0 {
+			d.next("d-copy-exact")
+		} else {
+			d.next("d-copy-remcheck")
+		}
+		return true
+	case "d-notcopy-positive-jump":
+		d.op(10, nil)
+		if w.SlotBusy != 0 {
+			d.next("d-drain-compare")
+		} else {
+			d.next("d-empty-pad")
+		}
+		return true
+	}
+	ticks, ok := dualProfiles[phase]
+	if !ok {
+		return false
+	}
+	d.profile(ticks, func(part uint16) {
+		switch phase {
+		case "d-start":
+			switch part {
+			case 1:
+				g.RateRequest = 0
+			case 2:
+				w.Flags = g.LatestFlags
+			case 3:
+				g.ModeFlags = w.Flags
+			case 5:
+				d.addressWritten(2, 0xb6, 10)
+			case 11:
+				d.addressWritten(0, 0x28, 10)
+			case 17:
+				d.addressWritten(0, 0x2b, 10)
+			case 7:
+				d.written(Pan, 192, 10)
+			case 13:
+				d.controlWritten(YMWrite, 6, 0x28, 10)
+			case 19:
+				d.written(Enable, 128, 10)
+			case 28:
+				s.Voices[0].Accumulator = 128
+			case 29:
+				s.Voices[1].Accumulator = 128
+			case 31:
+				s.Voices[0].Enabled = false
+				s.Voices[0].Consumed = 0
+			case 32:
+				s.Voices[1].Enabled = false
+				s.Voices[1].Consumed = 0
+			case 33:
+				s.Voices[0].Control = 0
+				s.Voices[0].Produced = 0
+				s.Voices[0].Fetched = 0
+			case 34:
+				s.Voices[1].Control = 0
+				s.Voices[1].Produced = 0
+				s.Voices[1].Fetched = 0
+			case 35:
+				g.Busy = 0
+			}
+		case "d-active-prefix":
+			if part == 3 {
+				_ = d.byteAt(decoded.Descriptor, decoded.Consumed)
+			}
+		case "d-active-mid":
+			if part == 3 {
+				b := d.byteAt(decoded.Descriptor, decoded.Consumed)
+				_, pair := pcm.DecodeByte(pcm.DecoderState{Accumulator: decoded.Accumulator}, b)
+				w.Pair[w.DecodeSlot][1] = pair[1]
+			}
+			if part == 7 {
+				decoded.Accumulator = w.Pair[w.DecodeSlot][1]
+				decoded.Consumed++
+			}
+		case "d-end-produced":
+			if part == 0 {
+				w.Same = uint8(decoded.Produced) == uint8(decoded.Consumed)
+			}
+		case "d-high-output":
+			if part == 4 {
+				d.addressWritten(0, 0x2a, 7)
+			}
+			if part == 1 {
+				g.Busy = 64
+			}
+			if part == 6 {
+				d.written(DAC, w.Mix[0], 7)
+				w.Mix[0] = 0
+			}
+			if part == 7 {
+				g.Busy = 0
+			}
+		case "d-low-output":
+			if part == 4 {
+				d.addressWritten(0, 0x2a, 7)
+			}
+			if part == 1 {
+				g.Busy = 64
+			}
+			if part == 6 {
+				d.written(DAC, w.Mix[1], 7)
+				w.Mix[1] = 0
+			}
+			if part == 7 {
+				g.Busy = 0
+			}
+			if part == 9 {
+				w.Rate = g.RateRequest
+			}
+		case "d-leave":
+			if part == 2 {
+				s.Voices[0].Busy = 0
+			}
+			if part == 3 {
+				s.Voices[1].Busy = 0
+			}
+			if part == 4 {
+				s.Voices[0].Flags = 0
+			}
+			if part == 5 {
+				s.Voices[1].Flags = 0
+			}
+		case "d-refill-gap":
+			if part == 2 {
+				w.Gap = uint8(voice.Consumed - voice.Produced)
+			}
+		case "d-enable-decode":
+			if part == 1 {
+				voice.Enabled = true
+			}
+		case "d-pending-read":
+			if part == 0 {
+				w.SlotBusy = voice.Busy
+			}
+		case "d-pending-negative":
+			if part == 1 {
+				voice.Busy = 64
+			}
+			if part == 2 {
+				voice.Control = 64
+			}
+		case "d-copy-exact":
+			if part == 1 {
+				voice.Produced = voice.Fetched
+			}
+			if part == 3 {
+				voice.Control = 0
+			}
+		case "d-copy-underflow":
+			if part == 2 {
+				voice.Produced = d.length(voice.Descriptor)
+			}
+			if part == 4 {
+				voice.Control = 0
+			}
+		case "d-copy-more":
+			if part == 3 {
+				voice.Produced = voice.Fetched
+			}
+		case "d-notcopy-prefix":
+			if part == 7 {
+				w.SlotBusy = voice.Busy
+			}
+		case "d-drain-compare":
+			if part == 2 {
+				w.Same = uint8(voice.Consumed) == uint8(voice.Produced)
+			}
+		case "d-drain-clear":
+			if part == 1 {
+				voice.Enabled = false
+			}
+			if part == 2 {
+				voice.Busy = 0
+			}
+			if part == 3 {
+				voice.Flags = 0
+			}
+		case "d-other-check":
+			if part == 0 {
+				w.OtherBusy = s.Voices[1-w.PrefetchSlot].Busy
+			}
+		case "d-transfer":
+			switch part {
+			case 1:
+				voice.Enabled = false
+			case 2:
+				voice.Consumed = 0
+			case 3:
+				voice.Produced = 0
+			case 5:
+				voice.Accumulator = 128
+			case 7:
+				voice.Control = 1
+			case 8:
+				g.Busy = 1
+			case 9:
+				w.Flags = g.LatestFlags
+			case 10:
+				g.ModeFlags = w.Flags
+			case 12:
+				w.Source = voice.Request
+			case 18:
+				voice.Descriptor = w.Source
+				voice.Fetched = 0
+			case 20:
+				g.Busy = 0
+			}
+		}
+	}, func() {
+		switch phase {
+		case "d-start":
+			w.PrefetchSlot = 0
+			w.DecodeSlot = 0
+			w.Tail = false
+			w.Count = 0
+			w.Flags = 0
+			d.next("d-preamble")
+		case "d-preamble":
+			w.DecodeSlot = 0
+			d.next("d-decode-read")
+		case "d-active-prefix":
+			d.next("d-active-highlead")
+		case "d-active-mid":
+			if w.DecodeSlot != w.PrefetchSlot {
+				d.next("d-end-produced")
+			} else {
+				d.next("d-decode-pointer")
+			}
+		case "d-end-produced":
+			d.next("d-end-branch")
+		case "d-end-pad", "d-decode-pointer":
+			d.finishDecode()
+		case "d-high-output":
+			d.next("d-refill-read")
+		case "d-low-output":
+			if w.Rate != 0 {
+				d.next("d-leave")
+			} else {
+				w.PrefetchSlot = 1 - w.PrefetchSlot
+				d.next("d-preamble")
+			}
+		case "d-leave":
+			d.next("entry")
+		case "d-refill-gap":
+			if w.Gap == 0 {
+				d.next("d-gap-equal")
+			} else {
+				d.next("d-gap-compare")
+			}
+		case "d-gap-equal", "d-gap-readable":
+			d.next("d-copy-setup")
+		case "d-gap-compare":
+			if w.Gap < 192 {
+				d.next("d-enable-decode")
+			} else {
+				d.next("d-gap-readable")
+			}
+		case "d-enable-decode":
+			d.next("d-pending-read")
+		case "d-pending-read":
+			if w.SlotBusy&128 != 0 {
+				d.next("d-pending-negative")
+			} else {
+				d.next("d-pending-normal")
+			}
+		case "d-pending-normal", "d-pending-negative":
+			d.next("d-pending-filler")
+		case "d-pending-filler", "d-copy-exact", "d-copy-underflow", "d-copy-more", "d-footer":
+			d.next("d-low-output")
+		case "d-copy-setup":
+			w.Count = 0
+			d.next("d-copy-shift")
+		case "d-copy-tails":
+			w.Count = 4
+			d.next("d-copy-data")
+		case "d-copy-remcheck":
+			if d.dualRemaining(voice)&32768 != 0 {
+				d.next("d-copy-underflow")
+			} else {
+				d.next("d-copy-more")
+			}
+		case "d-notcopy-prefix":
+			if w.SlotBusy&128 != 0 {
+				d.next("d-pending-negative")
+			} else {
+				d.next("d-notcopy-positive-jump")
+			}
+		case "d-drain-compare":
+			if w.Same {
+				d.next("d-drain-clear")
+			} else {
+				d.next("d-drain-pad")
+			}
+		case "d-drain-clear", "d-empty-pad":
+			d.next("d-other-check")
+		case "d-drain-pad":
+			d.next("d-footer")
+		case "d-other-check":
+			if w.OtherBusy == 0 {
+				w.Mix = [2]uint8{}
+				d.next("end")
+			} else {
+				d.next("d-footer")
+			}
+		case "d-transfer-jump":
+			d.next("d-transfer")
+		case "d-transfer":
+			w.Source = ""
+			w.Flags = 0
+			d.next("d-low-output")
+		}
+	})
+	return true
+}

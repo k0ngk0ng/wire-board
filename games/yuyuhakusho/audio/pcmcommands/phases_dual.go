@@ -168,8 +168,16 @@ func (d *Device) stepDual() bool {
 				w.Flags = g.LatestFlags
 			case 3:
 				g.ModeFlags = w.Flags
+			case 5:
+				d.addressWritten(2, 0xb6, 10)
+			case 11:
+				d.addressWritten(0, 0x28, 10)
+			case 17:
+				d.addressWritten(0, 0x2b, 10)
 			case 7:
 				d.written(Pan, 192, 10)
+			case 13:
+				d.controlWritten(YMWrite, 6, 0x28, 10)
 			case 19:
 				d.written(Enable, 128, 10)
 			case 28:
@@ -212,6 +220,9 @@ func (d *Device) stepDual() bool {
 				w.Same = uint8(decoded.Produced) == uint8(decoded.Consumed)
 			}
 		case "d-high-output":
+			if part == 4 {
+				d.addressWritten(0, 0x2a, 7)
+			}
 			if part == 1 {
 				g.Busy = 64
 			}
@@ -223,6 +234,9 @@ func (d *Device) stepDual() bool {
 				g.Busy = 0
 			}
 		case "d-low-output":
+			if part == 4 {
+				d.addressWritten(0, 0x2a, 7)
+			}
 			if part == 1 {
 				g.Busy = 64
 			}

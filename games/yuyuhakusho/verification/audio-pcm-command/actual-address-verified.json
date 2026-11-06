@@ -1,0 +1,40 @@
+{
+  "pass": true,
+  "data_only_synthesized_address": false,
+  "native_path": ".local/md-yuyuhakusho/pcm-command-address-native-smoke/single-reset-between-address-data.json.gz",
+  "native_sha256": "9c1f08842eaf2abc08c81966a5d2f2d7d0336bfaac6de2923586c1fa952f707d",
+  "rows": [
+    {
+      "frame": 0,
+      "actual": 42,
+      "original": 42,
+      "equal": true
+    },
+    {
+      "frame": 1,
+      "actual": 42,
+      "original": 42,
+      "equal": true
+    },
+    {
+      "frame": 2,
+      "actual": 43,
+      "original": 43,
+      "equal": true
+    },
+    {
+      "frame": 3,
+      "actual": 43,
+      "original": 43,
+      "equal": true
+    },
+    {
+      "frame": 4,
+      "actual": 43,
+      "original": 43,
+      "equal": true
+    }
+  ],
+  "checker_sha256": "fbe82c46712419bb60c6bc1e6dbade4375a631bea60b26befeb74e8a143d81e4",
+  "scope": "A typed address-latch projection of actual port calls; no full chip inference from this one field"
+}

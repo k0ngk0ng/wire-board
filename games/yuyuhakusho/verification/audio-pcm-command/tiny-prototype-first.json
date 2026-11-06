@@ -1,0 +1,28 @@
+{
+  "pass": true,
+  "cases": [
+    {
+      "name": "internal-single-byte",
+      "pass": true,
+      "events": 139,
+      "expected": 139,
+      "difference": null,
+      "holds": [
+        {
+          "grant": 0,
+          "resume": 0,
+          "input": {
+            "kind": "publish",
+            "begin": 0,
+            "end": 0,
+            "code": 127,
+            "target": "single",
+            "protocol": "ordinary",
+            "pan": 192
+          }
+        }
+      ]
+    }
+  ],
+  "model_sha256": "39a89a2f92a2f2afb71e9a9ba4ae725b8709aafa68b5472f20ee7cf805529c39"
+}
