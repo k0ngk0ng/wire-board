@@ -1,0 +1,273 @@
+{
+  "scope": "Offline static fixed-caller cost provenance only, no production PC/opcode input",
+  "operations": [
+    {
+      "name": "mask-save",
+      "source_pc": 228264,
+      "source_opcode": 16615,
+      "handler": "m68k_op_move_16_frs_pd",
+      "table_CPU_cycles": 14
+    },
+    {
+      "name": "mask-disable",
+      "source_pc": 228266,
+      "source_opcode": 124,
+      "handler": "m68k_op_ori_16_tos",
+      "table_CPU_cycles": 20
+    },
+    {
+      "name": "mask-restore",
+      "source_pc": 228310,
+      "source_opcode": 18143,
+      "handler": "m68k_op_move_16_tos_pi",
+      "table_CPU_cycles": 16
+    },
+    {
+      "name": "cache-select",
+      "source_pc": 228312,
+      "source_opcode": 17400,
+      "handler": "m68k_op_lea_32_aw",
+      "table_CPU_cycles": 8
+    },
+    {
+      "name": "cache-long-save",
+      "source_pc": 228316,
+      "source_opcode": 12057,
+      "handler": "m68k_op_move_32_pd_pi",
+      "table_CPU_cycles": 20
+    },
+    {
+      "name": "mute-call",
+      "source_pc": 228332,
+      "source_opcode": 20154,
+      "handler": "m68k_op_jsr_32_pcdi",
+      "table_CPU_cycles": 18
+    },
+    {
+      "name": "mute-level",
+      "source_pc": 231950,
+      "source_opcode": 29311,
+      "handler": "m68k_op_moveq_32",
+      "table_CPU_cycles": 4
+    },
+    {
+      "name": "mute-channels",
+      "source_pc": 231952,
+      "source_opcode": 29698,
+      "handler": "m68k_op_moveq_32",
+      "table_CPU_cycles": 4
+    },
+    {
+      "name": "register-base",
+      "source_pc": 231954,
+      "source_opcode": 28736,
+      "handler": "m68k_op_moveq_32",
+      "table_CPU_cycles": 4
+    },
+    {
+      "name": "register-channel",
+      "source_pc": 231956,
+      "source_opcode": 53314,
+      "handler": "m68k_op_add_16_er_d",
+      "table_CPU_cycles": 4
+    },
+    {
+      "name": "operators",
+      "source_pc": 231958,
+      "source_opcode": 30211,
+      "handler": "m68k_op_moveq_32",
+      "table_CPU_cycles": 4
+    },
+    {
+      "name": "bank0-call",
+      "source_pc": 231960,
+      "source_opcode": 20154,
+      "handler": "m68k_op_jsr_32_pcdi",
+      "table_CPU_cycles": 18
+    },
+    {
+      "name": "bank1-call",
+      "source_pc": 231964,
+      "source_opcode": 20154,
+      "handler": "m68k_op_jsr_32_pcdi",
+      "table_CPU_cycles": 18
+    },
+    {
+      "name": "register-next",
+      "source_pc": 231968,
+      "source_opcode": 22592,
+      "handler": "m68k_op_addq_16_d",
+      "table_CPU_cycles": 4
+    },
+    {
+      "name": "operator-loop",
+      "source_pc": 231970,
+      "source_opcode": 20939,
+      "handler": "m68k_op_dbf_16",
+      "table_CPU_cycles": 12
+    },
+    {
+      "name": "channel-loop",
+      "source_pc": 231974,
+      "source_opcode": 20938,
+      "handler": "m68k_op_dbf_16",
+      "table_CPU_cycles": 12
+    },
+    {
+      "name": "mute-return",
+      "source_pc": 231978,
+      "source_opcode": 20085,
+      "handler": "m68k_op_rts_32",
+      "table_CPU_cycles": 16
+    },
+    {
+      "name": "cache-restore-select",
+      "source_pc": 228336,
+      "source_opcode": 17400,
+      "handler": "m68k_op_lea_32_aw",
+      "table_CPU_cycles": 8
+    },
+    {
+      "name": "cache-long-restore",
+      "source_pc": 228340,
+      "source_opcode": 8991,
+      "handler": "m68k_op_move_32_pd_pi",
+      "table_CPU_cycles": 20
+    },
+    {
+      "name": "psg-tail",
+      "source_pc": 228356,
+      "source_opcode": 24576,
+      "handler": "m68k_op_bra_16",
+      "table_CPU_cycles": 10
+    },
+    {
+      "name": "resume-mask-save",
+      "source_pc": 228364,
+      "source_opcode": 16615,
+      "handler": "m68k_op_move_16_frs_pd",
+      "table_CPU_cycles": 14
+    },
+    {
+      "name": "resume-mask-disable",
+      "source_pc": 228366,
+      "source_opcode": 124,
+      "handler": "m68k_op_ori_16_tos",
+      "table_CPU_cycles": 20
+    },
+    {
+      "name": "resume-release",
+      "source_pc": 228370,
+      "source_opcode": 13308,
+      "handler": "m68k_op_move_16_al_i",
+      "table_CPU_cycles": 20
+    },
+    {
+      "name": "resume-mask-restore",
+      "source_pc": 228378,
+      "source_opcode": 18143,
+      "handler": "m68k_op_move_16_tos_pi",
+      "table_CPU_cycles": 16
+    },
+    {
+      "name": "resume-cache-select",
+      "source_pc": 228380,
+      "source_opcode": 17400,
+      "handler": "m68k_op_lea_32_aw",
+      "table_CPU_cycles": 8
+    },
+    {
+      "name": "resume-channels",
+      "source_pc": 228384,
+      "source_opcode": 29698,
+      "handler": "m68k_op_moveq_32",
+      "table_CPU_cycles": 4
+    },
+    {
+      "name": "resume-register-base",
+      "source_pc": 228386,
+      "source_opcode": 28736,
+      "handler": "m68k_op_moveq_32",
+      "table_CPU_cycles": 4
+    },
+    {
+      "name": "resume-register-channel",
+      "source_pc": 228388,
+      "source_opcode": 53314,
+      "handler": "m68k_op_add_16_er_d",
+      "table_CPU_cycles": 4
+    },
+    {
+      "name": "resume-operators",
+      "source_pc": 228390,
+      "source_opcode": 30211,
+      "handler": "m68k_op_moveq_32",
+      "table_CPU_cycles": 4
+    },
+    {
+      "name": "resume-bank0-load",
+      "source_pc": 228392,
+      "source_opcode": 4657,
+      "handler": "m68k_op_move_8_d_ix",
+      "table_CPU_cycles": 14
+    },
+    {
+      "name": "resume-bank0-call",
+      "source_pc": 228396,
+      "source_opcode": 20154,
+      "handler": "m68k_op_jsr_32_pcdi",
+      "table_CPU_cycles": 18
+    },
+    {
+      "name": "resume-bank1-load",
+      "source_pc": 228400,
+      "source_opcode": 4657,
+      "handler": "m68k_op_move_8_d_ix",
+      "table_CPU_cycles": 14
+    },
+    {
+      "name": "resume-bank1-call",
+      "source_pc": 228404,
+      "source_opcode": 20154,
+      "handler": "m68k_op_jsr_32_pcdi",
+      "table_CPU_cycles": 18
+    },
+    {
+      "name": "resume-register-next",
+      "source_pc": 228408,
+      "source_opcode": 22592,
+      "handler": "m68k_op_addq_16_d",
+      "table_CPU_cycles": 4
+    },
+    {
+      "name": "resume-operator-loop",
+      "source_pc": 228410,
+      "source_opcode": 20939,
+      "handler": "m68k_op_dbf_16",
+      "table_CPU_cycles": 12
+    },
+    {
+      "name": "resume-channel-loop",
+      "source_pc": 228414,
+      "source_opcode": 20938,
+      "handler": "m68k_op_dbf_16",
+      "table_CPU_cycles": 12
+    },
+    {
+      "name": "resume-return",
+      "source_pc": 228418,
+      "source_opcode": 20085,
+      "handler": "m68k_op_rts_32",
+      "table_CPU_cycles": 16
+    }
+  ],
+  "DBF_repeat_CPU_cycles": 10,
+  "DBF_exhausted_CPU_cycles": 14,
+  "sources": {
+    ".local/md-yuyuhakusho/tools/Genesis-Plus-GX-60bee4c724859710ce05672239e5b601ad01382e/core/m68k/m68kops.h": "d3ff2631658e589813d2915ba3dc03b9fd2097761f6eb221fc6264a4b8d1d6f0",
+    ".local/md-yuyuhakusho/tools/Genesis-Plus-GX-60bee4c724859710ce05672239e5b601ad01382e/core/m68k/m68kcpu.h": "6f2fc0979153d994b4ba539aa51bc0da4b8ff089e174d4cc07aee1f537643827",
+    ".local/md-yuyuhakusho/tools/Genesis-Plus-GX-60bee4c724859710ce05672239e5b601ad01382e/core/m68k/m68kcpu.c": "8c09b9d86e8c77366eff430f62c3b5742adce1ccdee849c246e24dcba74fcf15",
+    ".local/md-yuyuhakusho/downloads/yuyuhakusho-jp.bin": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+    "docs/research/md-yuyuhakusho/static/audio-loop-sequencer.txt": "9f81bd47bfe322110bc11339992f0e570b704077ccff22493940b75af7837152"
+  }
+}

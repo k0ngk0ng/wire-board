@@ -1,0 +1,25 @@
+{
+  "pass": true,
+  "base_revision": "12910ff1c8fcc93cf06a79b82f87bedf1a437cd1",
+  "scope": "Only share canonical leaf clock/budget implementation; public standalone behavior remains original",
+  "changed_sources": {
+    "games/yuyuhakusho/audio/scoreclock/service.go": {
+      "before_sha256": "3ba87dba2a672c351c2e5c41065b6a42236656f58e7e7bd37b99af6849911aee",
+      "current_sha256": "10979760c6b6730ba600825ca876bf9e39a30cb96ff99c0cf5f7c9fdeb64c106",
+      "before_archive": "games/yuyuhakusho/verification/score-clock-pause/service.go.before-shared-budget.txt"
+    },
+    "games/yuyuhakusho/audio/scoreclock/psg.go": {
+      "before_sha256": "10db96b908b5f3a8cb3f3aba3c0f87921ddc23c7ff56a41677672c9f951463c2",
+      "current_sha256": "a6b2458ae6ca2648644344c7da2e792ca0b0bc11831abd9156bcbdf157934fe6",
+      "before_archive": "games/yuyuhakusho/verification/score-clock-pause/psg.go.before-shared-budget.txt"
+    }
+  },
+  "legacy_tests_and_fixtures_unchanged": 18,
+  "legacy_top_level_tests_passed": 28,
+  "legacy_passed_records": 860,
+  "new_pause_top_level_tests": 4,
+  "new_pause_passed_records": 6,
+  "production_unchanged_when_fixing_derived_fixture_stage": true,
+  "old_frozen_manifests_retained_as_historical_proofs": true,
+  "old_SHA_audits_must_not_be_reported_as_current_for_changed_service_go_and_psg_go": true
+}

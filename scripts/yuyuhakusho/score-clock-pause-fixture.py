@@ -1,0 +1,128 @@
+"""Freeze existing natural pause IO and static costs; no native execution."""
+import argparse
+import gzip
+import hashlib
+import json
+from pathlib import Path
+import re
+
+ROOT = Path(__file__).resolve().parents[2]
+NATURAL = ROOT / 'games/yuyuhakusho/verification/score-clock/natural-windows.json.gz'
+
+
+def sha(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def levels(raw):
+    result = [[0]*4 for _ in range(6)]
+    for bank in range(2):
+        for channel in range(3):
+            for physical, logical in enumerate([0, 2, 1, 3]):
+                result[bank*3+channel][logical] = raw[bank*16+physical*4+channel] & 127
+    return result
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--out', type=Path, required=True)
+    args = parser.parse_args()
+    out = args.out.resolve()
+    assert out.is_relative_to(ROOT) and not out.exists()
+    out.mkdir(parents=True)
+    source = json.loads(gzip.decompress(NATURAL.read_bytes()))
+    rows = []
+    saved = None
+    for frame in source['frames']:
+        if frame['frame'] not in [3001, 3041]:
+            continue
+        events = frame['events']
+        entry = next(e for e in events if e['kind'] == 8)
+        field = next(e for e in events if e['kind'] == 10 and e['address'] & 65535 == 0xf807
+                     and e['pc'] in [0x37ba2, 0x37c08] and e['at'] >= entry['at'])
+        main_writes = [i for i, e in enumerate(events) if e['kind'] == 2 and e['owner'] == 1]
+        assert len(main_writes) == 48
+        end = next(i for i in range(main_writes[-1]+1, len(events))
+                   if events[i]['kind'] == 5 and events[i]['value'] == 0
+                   and 0x38b2e <= events[i]['pc'] < 0x38c0c)
+        trace, request, latch = [], None, 0
+        for e in events[:end+1]:
+            if e['at'] < entry['at'] or e['owner'] != 1:
+                continue
+            kind = e['kind']
+            if kind == 4:
+                assert request is None
+                request = e
+            elif kind == 5:
+                assert request is not None and request['pc'] == e['pc'] and request['at'] == e['at']
+                asserted = bool(e['value'] & (256 if e['width'] == 2 else 1))
+                trace.append({'kind': 'request', 'at': request['at'], 'after': e['after'], 'asserted': asserted})
+                request = None
+            elif kind == 6:
+                trace.append({'kind': 'ack', 'at': e['at'], 'granted': not bool(e['value'] & 1)})
+            elif kind == 3:
+                trace.append({'kind': 'mailbox', 'at': e['after'], 'value': e['value']})
+            elif kind == 1:
+                trace.append({'kind': 'status', 'at': e['at'], 'port': e['address'], 'value': e['value']})
+            elif kind == 2:
+                value = e['value']
+                if e['address'] % 2 == 0:
+                    latch = value
+                else:
+                    assert 0x40 <= latch < 0x50, 'pause domain unexpectedly wrote a non-TL register'
+                    value &= 127
+                trace.append({'kind': 'write', 'at': e['at'], 'port': e['address'], 'value': value, 'raw_value': e['value']})
+        assert request is None
+        if entry['value'] == 1:
+            raw, filled = bytearray(32), set()
+            for e in events:
+                if e['kind'] == 7 and 0x37bf4 <= e['pc'] <= 0x37c02:
+                    at = (e['address'] & 65535) - 0xfbe0
+                    assert 0 <= at < 32 and at+e['width'] <= 32
+                    raw[at:at+e['width']] = e['value'].to_bytes(e['width'], 'big')
+                    filled.update(range(at, at+e['width']))
+            assert len(filled) == 32
+            saved = levels(raw)
+        else:
+            assert saved is not None
+            observed = [[0]*4 for _ in range(6)]
+            for e in trace:
+                if e['kind'] != 'write':
+                    continue
+                if e['port'] % 2 == 0:
+                    latch = e['value']
+                else:
+                    observed[(e['port']//2)*3 + (latch & 3)][[0, 2, 1, 3][(latch-0x40)//4]] = e['value']
+            assert observed == saved, 'natural resume differs from the retained pre-mute levels'
+        rows.append({'frame': frame['frame'], 'route': 'start' if entry['value'] == 1 else 'resume',
+                     'entry': {'Cycle': entry['at'], 'Refresh': entry['refresh']}, 'pause': entry['value'],
+                     'pause_write': {'at': field['at'], 'value': field['value']},
+                     'body': {'Cycle': field['at']+16*7, 'Refresh': field['refresh']},
+                     'levels': saved, 'trace': trace})
+    assert len(rows) == 2
+    fixture = {'version': 1, 'scope': 'Existing natural main IO with observed external feedback; not an independent PCM/chip or whole-world schedule oracle',
+               'source': {'path': str(NATURAL.relative_to(ROOT)), 'sha256': sha(NATURAL)},
+               'raw_ignored_TL_bit7_retained': True, 'PSG_and_final_RTS_not_directly_observed_here': True, 'cases': rows}
+    packed = gzip.compress((json.dumps(fixture, sort_keys=True, separators=(',', ':'))+'\n').encode(), mtime=0)
+    (out/'natural-pause-io.json.gz').write_bytes(packed)
+    core = ROOT / '.local/md-yuyuhakusho/tools/Genesis-Plus-GX-60bee4c724859710ce05672239e5b601ad01382e/core/m68k'
+    table = core/'m68kops.h'
+    rompath = ROOT/'.local/md-yuyuhakusho/downloads/yuyuhakusho-jp.bin'
+    rom = rompath.read_bytes()
+    entries = re.findall(r'\{(m68k_op_\w+)\s*,\s*(0x[0-9a-f]+),\s*(0x[0-9a-f]+),\s*(\d+)\}', table.read_text())
+    names = [('mask-save',0x37ba8),('mask-disable',0x37baa),('mask-restore',0x37bd6),('cache-select',0x37bd8),('cache-long-save',0x37bdc),('mute-call',0x37bec),('mute-level',0x38a0e),('mute-channels',0x38a10),('register-base',0x38a12),('register-channel',0x38a14),('operators',0x38a16),('bank0-call',0x38a18),('bank1-call',0x38a1c),('register-next',0x38a20),('operator-loop',0x38a22),('channel-loop',0x38a26),('mute-return',0x38a2a),('cache-restore-select',0x37bf0),('cache-long-restore',0x37bf4),('psg-tail',0x37c04),('resume-mask-save',0x37c0c),('resume-mask-disable',0x37c0e),('resume-release',0x37c12),('resume-mask-restore',0x37c1a),('resume-cache-select',0x37c1c),('resume-channels',0x37c20),('resume-register-base',0x37c22),('resume-register-channel',0x37c24),('resume-operators',0x37c26),('resume-bank0-load',0x37c28),('resume-bank0-call',0x37c2c),('resume-bank1-load',0x37c30),('resume-bank1-call',0x37c34),('resume-register-next',0x37c38),('resume-operator-loop',0x37c3a),('resume-channel-loop',0x37c3e),('resume-return',0x37c42)]
+    costs = []
+    for name, pc in names:
+        opcode = int.from_bytes(rom[pc:pc+2], 'big')
+        found = [e for e in entries if opcode & int(e[1],16) == int(e[2],16)][-1]
+        costs.append({'name':name,'source_pc':pc,'source_opcode':opcode,'handler':found[0],'table_CPU_cycles':int(found[3])})
+    cost = {'scope':'Offline static fixed-caller cost provenance only, no production PC/opcode input', 'operations':costs,
+            'DBF_repeat_CPU_cycles':10,'DBF_exhausted_CPU_cycles':14,
+            'sources':{str(p.relative_to(ROOT)):sha(p)for p in [table,core/'m68kcpu.h',core/'m68kcpu.c',rompath,ROOT/'docs/research/md-yuyuhakusho/static/audio-loop-sequencer.txt']}}
+    (out/'cost-source.json').write_text(json.dumps(cost,indent=2)+'\n')
+    print(json.dumps({'cases':len(rows),'accesses':[len(r['trace'])for r in rows], 'fixture_sha256':sha(out/'natural-pause-io.json.gz'),
+                      'costs':{r['name']:r['table_CPU_cycles']for r in costs}}))
+
+
+if __name__ == '__main__':
+    main()

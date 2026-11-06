@@ -90,6 +90,15 @@ func ServePSG(clock Clock, request PSGRequest, chip PSGChip, limits Limits) (Clo
 	if err != nil {
 		return Clock{}, err
 	}
+	if err = s.servePSG(request, chip); err != nil {
+		return Clock{}, err
+	}
+	return s.clock, nil
+}
+
+// servePSG uses the same shared operation budget as its fixed caller.
+func (s *service) servePSG(request PSGRequest, chip PSGChip) error {
+	var err error
 	switch request.Kind {
 	case PSGSingle:
 		err = psgAbsoluteStore(s, chip, request.Value)
@@ -99,21 +108,21 @@ func ServePSG(clock Clock, request PSGRequest, chip PSGChip, limits Limits) (Clo
 		}
 	case PSGMuteAll:
 		if err = s.spend(12); err != nil {
-			return Clock{}, err
+			return err
 		} // select the PSG port
 		for _, value := range [...]uint8{0x9f, 0xbf, 0xdf, 0xff} {
 			// The fixed mute operation uses an immediate byte at the selected
 			// port, rather than the absolute data-register store above.
 			if err = s.cost(12, func() error { return chip.WritePSG(s.clock.Cycle, value) }); err != nil {
-				return Clock{}, err
+				return err
 			}
 		}
 	}
 	if err != nil {
-		return Clock{}, err
+		return err
 	}
 	if err = s.spend(16); err != nil {
-		return Clock{}, err
+		return err
 	} // return from this leaf
-	return s.clock, nil
+	return nil
 }
