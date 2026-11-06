@@ -1,0 +1,16 @@
+{
+  "test_first": true,
+  "production_exists": false,
+  "production_files": [
+    "games/yuyuhakusho/audio/scoreclock/pan.go",
+    "games/yuyuhakusho/audio/pcmcommands/pan_bus.go",
+    "games/yuyuhakusho/audio/mixed/pan.go"
+  ],
+  "files": {
+    "games/yuyuhakusho/audio/scoreclock/pan_e2e_test.go": "e74274c6a12a436467f74eaddce06056d28b7567e9a3bd267ffee0f68a8af45b",
+    "games/yuyuhakusho/verification/score-clock-pan/native-pan-full.json.gz": "16bfc990dd55b9b2f4aad4809a23ef139e107f219d324270046dd295a6f5cbdc",
+    "scripts/yuyuhakusho/score-clock-pan-capture.py": "608a1665c33e10c1a01ed6785fbd02666eb0caa5e209d9f5cceb0c2b9a10d3a8",
+    "scripts/yuyuhakusho/score-clock-pan-observer.c": "9313e16fd97c4f14eff099e443153e8c9f3cd091ee9bed7d921fd8503c328847",
+    "docs/research/md-yuyuhakusho/SCORE_CLOCK_PAN_FAILURES.md": "9369b5096f3197f790782e569c09ea92a84227fe28db4dca7805f3d62fc31713"
+  }
+}
