@@ -77,21 +77,22 @@ type Objective struct {
 	BaseAtStart int     `json:"baseAtStart"`
 }
 type World struct {
-	Layout       string      `json:"layout,omitempty"`
-	Seed         int64       `json:"seed"`
-	Stage        int         `json:"stage"`
-	PreparedWave int         `json:"preparedWave"`
-	Map          Map         `json:"map"`
-	Choice       *Choice     `json:"choice"`
-	BoonChoice   *Choice     `json:"boonChoice"`
-	Boons        Boons       `json:"boons"`
-	Event        WaveEvent   `json:"event"`
-	Forecast     []WaveEvent `json:"forecast"`
-	Objectives   []Objective `json:"objectives"`
-	Branches     []string    `json:"branches"`
-	ShortcutWave int         `json:"shortcutWave"`
-	BoonWave     int         `json:"boonWave"`
-	Legacy       bool        `json:"legacy"`
+	ObjectiveRefreshWave int         `json:"objectiveRefreshWave,omitempty"`
+	Layout               string      `json:"layout,omitempty"`
+	Seed                 int64       `json:"seed"`
+	Stage                int         `json:"stage"`
+	PreparedWave         int         `json:"preparedWave"`
+	Map                  Map         `json:"map"`
+	Choice               *Choice     `json:"choice"`
+	BoonChoice           *Choice     `json:"boonChoice"`
+	Boons                Boons       `json:"boons"`
+	Event                WaveEvent   `json:"event"`
+	Forecast             []WaveEvent `json:"forecast"`
+	Objectives           []Objective `json:"objectives"`
+	Branches             []string    `json:"branches"`
+	ShortcutWave         int         `json:"shortcutWave"`
+	BoonWave             int         `json:"boonWave"`
+	Legacy               bool        `json:"legacy"`
 }
 
 func cloneMap(m Map) Map {
@@ -287,6 +288,7 @@ func (s *State) worldPrepare(now int64) {
 	} else {
 		s.offerExpansion(now)
 	}
+	s.refreshObjectives()
 	if s.CompletedWaves > 0 && s.CompletedWaves%5 == 0 && w.BoonWave < s.CompletedWaves {
 		w.BoonWave = s.CompletedWaves
 		w.BoonChoice = &Choice{Kind: "boon", Stage: w.Stage, Title: "星核赐福 · 全队选择成长", Votes: make([]string, len(s.Players)), Deadline: s.NextAt, Options: []ChoiceOption{{ID: "power", Label: "星火之力", Description: "全队防御塔伤害永久增加 12%"}, {ID: "reach", Label: "远望之眼", Description: "全队防御塔射程永久增加 8%"}, {ID: "fortune", Label: "丰收之光", Description: "击杀与过波金币永久增加 10%"}}}
@@ -546,6 +548,9 @@ func (s *State) resolveChoices(now int64) {
 }
 
 func (s *State) validWorld() error {
+	if s.World.ObjectiveRefreshWave < 0 || s.World.ObjectiveRefreshWave > s.CompletedWaves || s.World.ObjectiveRefreshWave%15 != 0 {
+		return errors.New("无效任务刷新周期")
+	}
 	w := s.World
 	m := w.Map
 	if w.Layout != "" && w.Layout != "central" {

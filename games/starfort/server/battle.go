@@ -294,7 +294,7 @@ func (s *State) step(now int64) {
 	// must not overwrite aura sources while later enemies still query them.
 	banners := []Point{}
 	for _, e := range s.Enemies {
-		if e.HP > 0 && e.Kind == "banner" {
+		if e.HP > 0 && e.Kind == "banner" && !s.abilitiesBlocked(e) {
 			banners = append(banners, Point{e.X, e.Y})
 		}
 	}
@@ -302,12 +302,13 @@ func (s *State) step(now int64) {
 	alive := make([]Enemy, 0, len(s.Enemies))
 	for _, e := range s.Enemies {
 		if e.HP <= 0 {
-			if e.Kind == "splitter" {
+			if e.Kind == "splitter" && !s.silenced(e) {
 				for child := 0; child < 2; child++ {
 					spawned := e
 					spawned.ID = 0
 					spawned.Kind = "swarm"
 					spawned.Frostbound = false
+					spawned.FrozenUntil, spawned.SilencedUntil = 0, 0
 					spawned.HP = math.Max(1, e.MaxHP*.3)
 					spawned.MaxHP = spawned.HP
 					spawned.Shield, spawned.Armor = 0, 0
@@ -323,7 +324,7 @@ func (s *State) step(now int64) {
 		if s.World.Event.ID == "frost" {
 			speed *= .85
 		}
-		if e.Kind == "boss" && e.Phase == 2 {
+		if e.Kind == "boss" && e.Phase == 2 && !s.abilitiesBlocked(e) {
 			speed *= 1.18
 		}
 		for _, banner := range banners {
@@ -332,10 +333,9 @@ func (s *State) step(now int64) {
 				break
 			}
 		}
-		if e.SlowUntil > s.Tick {
-			speed *= .55
-		} else if e.Frostbound {
-			speed *= .7
+		speed *= s.iceSlowFactor(e)
+		if s.frozen(e) {
+			speed = 0
 		}
 		oldProgress := e.Progress
 		nextProgress := e.Progress + speed*StepMS/1000
@@ -452,6 +452,9 @@ func (s *State) hitWithSkill(index int, damage float64, t Tower, skill string) {
 		factor := 1.
 		if t.Kind == "arcane" {
 			factor = 1.5
+			if s.specialized() && t.Branch == "power" && !heavy(*e) {
+				factor *= 1.15
+			}
 		}
 		absorbed := math.Min(e.Shield, damage*factor)
 		e.Shield -= absorbed

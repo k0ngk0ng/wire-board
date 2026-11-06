@@ -490,7 +490,9 @@ export function Board({
     <button
       key={branch.id}
       className={
-        branch.id === "volley" || branch.id === "heart"
+        data.specializationRules === 1 ||
+        branch.id === "volley" ||
+        branch.id === "heart"
           ? "sf-skill-branch"
           : undefined
       }
@@ -508,9 +510,9 @@ export function Board({
       <span>
         {branch.name} · {upgrade?.cost}
       </span>
-      {(branch.id === "volley" || branch.id === "heart") && (
-        <small>{branch.description}</small>
-      )}
+      {(data.specializationRules === 1 ||
+        branch.id === "volley" ||
+        branch.id === "heart") && <small>{branch.description}</small>}
     </button>
   ));
 
@@ -1124,6 +1126,12 @@ export function Board({
           className="sf-tasks-dialog"
           onClose={() => setTasksOpen(false)}
         >
+          {data.specializationRules === 1 && (
+            <p data-sf-task-refresh>
+              下次刷新：守过第 {(Math.floor(data.completedWaves / 15) + 1) * 15}{" "}
+              波
+            </p>
+          )}
           {world && world.objectives.length > 0 ? (
             <section className="sf-objectives" aria-label="任务列表">
               <p>

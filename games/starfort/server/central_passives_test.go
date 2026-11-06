@@ -27,6 +27,7 @@ func centralCase(t *testing.T, n int) *State {
 		t.Fatal(e)
 	}
 	s.initCentralWorld(s.World.Seed) // Explicit archived central-map fixture.
+	s.SpecializationRules = 0        // Archived starts predate the wish specializations.
 	return s
 }
 func TestCentralMapFixedFromStart(t *testing.T) {

@@ -32,6 +32,7 @@ func legacyStartMatch(m gameapi.Match) (gameapi.Match, error) {
 	}
 	s.World.Layout = ""
 	s.SkillRules = 0
+	s.SpecializationRules = 0
 	s.SkillRNG = 0
 	s.IceWalls = nil
 	s.IceWallSerial = 0

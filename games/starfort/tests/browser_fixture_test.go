@@ -39,7 +39,7 @@ func scenarioModule() gameapi.Module {
 			delete(v, "scenario")
 		}
 		switch scenario {
-		case "density-observed", "density-central", "density-coop", "density-ceiling", "coop-growth", "coop-objectives", "ice-arrow", "ice-wall", "central-passives", "cadence", "cadence-speed", "vitality", "impact", "natural", "battle", "victory-ready", "defeat-ready", "advanced", "zero-gold", "growth-vote", "cleared-5", "cleared-10", "cleared-15", "stage2", "stage3", "stage4", "endless-rotation", "objectives", "objectives-clear", "objectives-fail", "legacy-save":
+		case "specialization-arrow", "specialization-frost", "specialization-cannon", "specialization-arcane", "density-observed", "density-central", "density-coop", "density-ceiling", "coop-growth", "coop-objectives", "ice-arrow", "ice-wall", "central-passives", "cadence", "cadence-speed", "vitality", "impact", "natural", "battle", "victory-ready", "defeat-ready", "advanced", "zero-gold", "growth-vote", "cleared-5", "cleared-10", "cleared-15", "stage2", "stage3", "stage4", "endless-rotation", "objectives", "objectives-clear", "objectives-fail", "legacy-save":
 		default:
 			return "", nil, errors.New("unknown test scenario")
 		}
@@ -84,7 +84,7 @@ func scenarioModule() gameapi.Module {
 			dense.ServerAt = ctx.Now.UnixMilli()
 			return dense.Envelope()
 		}
-		if scenario != "coop-growth" && scenario != "coop-objectives" && scenario != "natural" && scenario != "central-passives" && scenario != "ice-arrow" && scenario != "ice-wall" {
+		if !strings.HasPrefix(scenario, "specialization-") && scenario != "coop-growth" && scenario != "coop-objectives" && scenario != "natural" && scenario != "central-passives" && scenario != "ice-arrow" && scenario != "ice-wall" {
 			match, err = legacyStartMatch(match)
 			if err != nil {
 				return match, err
@@ -120,6 +120,31 @@ func scenarioModule() gameapi.Module {
 			}
 		}
 		switch scenario {
+		case "specialization-arrow", "specialization-frost", "specialization-cannon", "specialization-arcane":
+			if err = fixtureCadence(&s, 3, ""); err != nil {
+				return match, err
+			}
+			kind := strings.TrimPrefix(scenario, "specialization-")
+			for _, tower := range s.Towers {
+				if tower.Kind == kind {
+					s.Towers = []starfort.Tower{tower}
+					break
+				}
+			}
+			s.SkillRNG = 5
+			lead := s.Enemies[0]
+			s.Enemies = nil
+			for i, kind := range []string{"healer", "banner", "elite", "boss"} {
+				e := lead
+				e.ID = i + 1
+				e.Kind = kind
+				e.Level = 4
+				e.Shield = 800000
+				e.Phase = 1
+				s.Enemies = append(s.Enemies, e)
+			}
+			s.EnemySerial = len(s.Enemies)
+			s.WaveInfo.Total, s.WaveInfo.Spawned = len(s.Enemies), len(s.Enemies)
 		case "ice-arrow", "ice-wall":
 			if err = fixtureCadence(&s, 1, ""); err != nil {
 				return match, err
@@ -167,6 +192,7 @@ func scenarioModule() gameapi.Module {
 			s.World.Map = archived[ctx.Players]
 			s.World.Layout = "central"
 			s.SkillRules = 0
+			s.SpecializationRules = 0
 			if err = fixtureCadence(&s, 1, ""); err != nil {
 				return match, err
 			}

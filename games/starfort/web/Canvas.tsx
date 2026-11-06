@@ -843,11 +843,14 @@ export function Battlefield({
       ),
     [],
   );
-  const drawnEnemies = useRef<{ enemy: Enemy; point: Point }[]>([]);
+  const drawnEnemies = useRef<{ enemy: Enemy; point: Point; tick: number }[]>(
+    [],
+  );
   const inspected = useRef<number | null>(null);
   const [inspection, setInspection] = useState<{
     enemy: Enemy;
     point: Point;
+    tick: number;
   } | null>(null);
   const closeInspection = () => {
     inspected.current = null;
@@ -1401,6 +1404,7 @@ export function Battlefield({
         v.phase === "battle"
           ? at - timeline.current.time(0) - FLIGHT_MS
           : v.elapsedMS;
+      const statusTick = Math.floor(Math.max(0, effectClock) / 200);
       const wallBirths = new Map(
         effects.current
           .filter((e) => e.type === "ice_wall" && e.iceWall && e.born <= at)
@@ -1608,7 +1612,14 @@ export function Battlefield({
       drawnEnemies.current = [];
       const enemyPositions = new Map<number, Point>();
       for (const enemy of v.enemies) {
-        const destination = current.destinations.get(enemy.id);
+        const icebound = (enemy.frozenUntil ?? 0) > statusTick;
+        const pendingKnockback = effects.current.some(
+          (e) =>
+            e.type === "knockback" && e.targetId === enemy.id && e.born > at,
+        );
+        const destination = pendingKnockback
+          ? enemy
+          : current.destinations.get(enemy.id);
         const position = enemyPoint(
           map.routes?.find((route) => route.id === enemy.route)?.points ??
             map.path,
@@ -1627,7 +1638,7 @@ export function Battlefield({
             workerIndex,
             workerCount,
             at,
-            reduced || v.phase !== "battle",
+            reduced || v.phase !== "battle" || icebound,
           );
           position.x = crater.x + pose.x;
           position.y = crater.y + pose.y;
@@ -1647,7 +1658,9 @@ export function Battlefield({
           );
           ctx.restore();
         }
-        const frozen = enemy.frostbound || enemy.slowUntil > v.tick;
+        const silenced = (enemy.silencedUntil ?? 0) > statusTick;
+        const frozen =
+          icebound || enemy.frostbound || enemy.slowUntil > statusTick;
         if (enemy.kind === "boss" && (enemy.phase ?? 1) > 1) {
           const size = Math.max(100, 60 / pixelScale);
           sprite(
@@ -1667,13 +1680,14 @@ export function Battlefield({
         );
         drawnEnemies.current.push({
           enemy,
+          tick: statusTick,
           point: worldToScreen(
             { x: position.x, y: position.y - size * 0.3 },
             camera.current,
             viewport.current,
           ),
         });
-        const moving = !reduced && v.phase === "battle" && !crater;
+        const moving = !reduced && v.phase === "battle" && !crater && !icebound;
         const pose = moving ? Math.floor(at / 160 + enemy.id) % 3 : 0;
         const bob = moving
           ? Math.sin(at / (enemy.kind === "runner" ? 90 : 140) + enemy.id) * 1.5
@@ -1716,6 +1730,30 @@ export function Battlefield({
           )
         )
           fallbackEnemy(ctx, x, y + size * 0.15, size, enemy.kind);
+        if (icebound) {
+          ctx.save();
+          ctx.fillStyle = "#a8e4ff77";
+          ctx.strokeStyle = "#e2faff";
+          ctx.lineWidth = Math.max(2, 1.5 / pixelScale);
+          ctx.beginPath();
+          ctx.roundRect(x - size * 0.45, y - size * 0.65, size * 0.9, size, 6);
+          ctx.fill();
+          ctx.stroke();
+          ctx.restore();
+        }
+        if (silenced) {
+          ctx.save();
+          ctx.strokeStyle = "#e9d9ff";
+          ctx.lineWidth = Math.max(2, 1.5 / pixelScale);
+          const sy = y - size * 0.65,
+            sr = Math.max(7, 5 / pixelScale);
+          ctx.beginPath();
+          ctx.arc(x, sy, sr, 0, Math.PI * 2);
+          ctx.moveTo(x - sr * 0.7, sy - sr * 0.7);
+          ctx.lineTo(x + sr * 0.7, sy + sr * 0.7);
+          ctx.stroke();
+          ctx.restore();
+        }
         if (enemy.frostbound) {
           ctx.save();
           ctx.strokeStyle = "#ecfbff";
@@ -1740,15 +1778,18 @@ export function Battlefield({
             workerIndex,
             workerCount,
             at,
-            reduced || v.phase !== "battle",
+            reduced || v.phase !== "battle" || icebound,
           );
         if (["healer", "banner", "engineer"].includes(enemy.kind)) {
-          const label =
-            enemy.kind === "healer"
-              ? "治疗"
-              : enemy.kind === "banner"
-                ? "加速"
-                : "破门";
+          const label = silenced
+            ? "沉默"
+            : icebound
+              ? "冰封"
+              : enemy.kind === "healer"
+                ? "治疗"
+                : enemy.kind === "banner"
+                  ? "加速"
+                  : "破门";
           ctx.font = `bold ${Math.max(11, 9 / pixelScale)}px system-ui`;
           ctx.textAlign = "center";
           ctx.lineWidth = 3;
@@ -1810,6 +1851,10 @@ export function Battlefield({
         "frostbound",
         "chain",
         "frost_ring",
+        "freeze",
+        "meteor",
+        "blast",
+        "knockback",
       ]);
       for (
         let i = effects.current.length - 1;
@@ -1837,6 +1882,42 @@ export function Battlefield({
           ...e,
           kind: towersByID.get(e.towerId ?? 0)?.kind ?? e.kind,
         };
+        if (["freeze", "meteor", "blast"].includes(e.type) && elapsed < 650) {
+          ctx.save();
+          ctx.globalAlpha = 0.65 * (1 - elapsed / 650);
+          ctx.strokeStyle =
+            e.type === "freeze"
+              ? "#c5f4ff"
+              : e.type === "meteor"
+                ? "#e4b5ff"
+                : "#ffce8a";
+          ctx.fillStyle =
+            e.type === "freeze"
+              ? "#b4eaff18"
+              : e.type === "meteor"
+                ? "#ac75e018"
+                : "#ffbb5b18";
+          ctx.lineWidth = Math.max(2, 1.5 / pixelScale);
+          const radius = (e.amount ?? 90) * (0.85 + (elapsed / 650) * 0.15);
+          ctx.beginPath();
+          ctx.arc(e.x, e.y, radius, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.stroke();
+          if (e.type === "meteor") {
+            for (let i = 0; i < 6; i++) {
+              const angle = (i * Math.PI) / 3,
+                r = radius * (0.3 + (i % 2) * 0.35);
+              const mx = e.x + Math.cos(angle) * r,
+                my = e.y + Math.sin(angle) * r;
+              ctx.beginPath();
+              ctx.moveTo(mx - 22, my - 42);
+              ctx.lineTo(mx, my);
+              ctx.stroke();
+              circle(ctx, mx, my, 5, "#ffedb9");
+            }
+          }
+          ctx.restore();
+        }
         if (accentIDs.has(e.id))
           drawCombatAccent(
             ctx,
@@ -2312,8 +2393,18 @@ export function Battlefield({
             </p>
             <p>
               基础速度 {Math.round(inspection.enemy.speed)}
-              {inspection.enemy.frostbound ? " · 永久减速 30%" : ""}
-              {inspection.enemy.slowUntil > data.tick ? " · 临时减速 45%" : ""}
+              {inspection.enemy.frostbound
+                ? ` · 永久减速 ${data.specializationRules === 1 && data.world?.event.id === "frost" ? 45 : 30}%`
+                : ""}
+              {inspection.enemy.slowUntil > inspection.tick
+                ? ` · 临时减速 ${data.specializationRules === 1 && data.world?.event.id === "frost" ? 60 : 45}%`
+                : ""}
+              {(inspection.enemy.frozenUntil ?? 0) > inspection.tick
+                ? " · 冰封中"
+                : ""}
+              {(inspection.enemy.silencedUntil ?? 0) > inspection.tick
+                ? " · 沉默中"
+                : ""}
               {inspection.enemy.repairing ? " · 填坑中" : ""}
             </p>
             <p>{enemyInfo[inspection.enemy.kind]?.[1]}</p>

@@ -166,6 +166,7 @@ export class CombatPlayback {
         event.vitals ||
         event.crater ||
         event.slowTargets?.length ||
+        event.statusTargets?.length ||
         (event.type === "frostbound" && event.targetId) ||
         event.iceWall
       )
@@ -241,6 +242,21 @@ export class CombatPlayback {
           enemies.set(id, {
             ...enemy,
             slowUntil: Math.max(enemy.slowUntil, event.slowUntil ?? 0),
+          });
+      }
+      for (const id of event.statusTargets ?? []) {
+        const enemy = enemies.get(id);
+        if (enemy)
+          enemies.set(id, {
+            ...enemy,
+            frozenUntil: Math.max(
+              enemy.frozenUntil ?? 0,
+              event.frozenUntil ?? 0,
+            ),
+            silencedUntil: Math.max(
+              enemy.silencedUntil ?? 0,
+              event.silencedUntil ?? 0,
+            ),
           });
       }
       let craters = this.current.craters;
