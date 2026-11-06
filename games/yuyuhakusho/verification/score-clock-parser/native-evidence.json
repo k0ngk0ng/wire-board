@@ -1,0 +1,261 @@
+{
+  "pass": true,
+  "scope": "Offline observed instruction-boundary cycle/refresh consistency only; PCs are research provenance and never production input",
+  "native_cases": 148,
+  "executions": 592,
+  "observed_steps": 860,
+  "two_pinned_cores": {
+    "observed": {
+      "core_name": "Genesis Plus GX",
+      "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+      "core_version": "v1.7.460bee4c",
+      "fps": 59.92274340431231,
+      "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+      "ram_bytes": 65536,
+      "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+      "teamplayer": false
+    },
+    "original": {
+      "core_name": "Genesis Plus GX",
+      "core_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+      "core_version": "v1.7.4 60bee4c",
+      "fps": 59.92274340431231,
+      "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+      "ram_bytes": 65536,
+      "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+      "teamplayer": false
+    }
+  },
+  "CPU_cycles_by_source": {
+    "03766a": [
+      4
+    ],
+    "03766c": [
+      8
+    ],
+    "03766e": [
+      8
+    ],
+    "037672": [
+      8,
+      10
+    ],
+    "037678": [
+      10
+    ],
+    "03781e": [
+      4
+    ],
+    "037820": [
+      8
+    ],
+    "037822": [
+      8
+    ],
+    "037826": [
+      8,
+      10
+    ],
+    "037828": [
+      18
+    ],
+    "03782c": [
+      10
+    ],
+    "03787e": [
+      4
+    ],
+    "037880": [
+      12
+    ],
+    "037884": [
+      4
+    ],
+    "037886": [
+      8,
+      10
+    ],
+    "037888": [
+      4
+    ],
+    "03788a": [
+      10
+    ],
+    "03788c": [
+      12
+    ],
+    "037890": [
+      12
+    ],
+    "037894": [
+      16
+    ],
+    "038dae": [
+      8
+    ],
+    "038db2": [
+      10
+    ],
+    "038db4": [
+      14
+    ],
+    "038db8": [
+      10
+    ],
+    "038dbc": [
+      10
+    ],
+    "038dc8": [
+      10
+    ],
+    "038dd4": [
+      10
+    ],
+    "038dd8": [
+      10
+    ],
+    "038de0": [
+      10
+    ],
+    "038de4": [
+      10
+    ],
+    "038de8": [
+      10
+    ],
+    "038df4": [
+      10
+    ],
+    "038df8": [
+      10
+    ],
+    "038e00": [
+      10
+    ],
+    "038e04": [
+      10
+    ],
+    "038e0c": [
+      10
+    ],
+    "038e10": [
+      10
+    ],
+    "038e14": [
+      10
+    ],
+    "038e18": [
+      10
+    ],
+    "038e1c": [
+      10
+    ],
+    "038e24": [
+      10
+    ],
+    "038e28": [
+      10
+    ],
+    "0391b8": [
+      8
+    ],
+    "0391ba": [
+      22
+    ],
+    "0391bc": [
+      8
+    ],
+    "0391be": [
+      8
+    ],
+    "0391c0": [
+      8
+    ],
+    "0391c2": [
+      16
+    ],
+    "0391c4": [
+      4
+    ],
+    "0391c6": [
+      8
+    ],
+    "0391c8": [
+      8
+    ],
+    "0391ca": [
+      14
+    ],
+    "0391ce": [
+      8,
+      10
+    ],
+    "0391d0": [
+      14
+    ],
+    "0391d4": [
+      18
+    ],
+    "0391d8": [
+      8,
+      10
+    ],
+    "0391da": [
+      8
+    ],
+    "0391dc": [
+      16
+    ],
+    "0391de": [
+      4
+    ],
+    "0391e0": [
+      12
+    ],
+    "0391e4": [
+      4
+    ],
+    "0391e6": [
+      18
+    ],
+    "0391ea": [
+      12
+    ],
+    "0391ee": [
+      10
+    ],
+    "0391f0": [
+      4
+    ],
+    "0391f2": [
+      12
+    ],
+    "0391f6": [
+      18
+    ],
+    "0391fa": [
+      8
+    ],
+    "0391fc": [
+      4
+    ],
+    "0391fe": [
+      12
+    ],
+    "039202": [
+      16
+    ]
+  },
+  "fixture_sha256": "411994b0115330d680988b55de993f06bb60dd4ce7c68d93aad151164eb92169",
+  "capture_command": [
+    "python3",
+    "scripts/yuyuhakusho/score-clock-parser-capture.py",
+    "--out",
+    ".local/md-yuyuhakusho/score-clock-parser-native-v1"
+  ],
+  "capture_environment": {
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "TMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp"
+  },
+  "no_core_or_ROM_modification": true
+}
