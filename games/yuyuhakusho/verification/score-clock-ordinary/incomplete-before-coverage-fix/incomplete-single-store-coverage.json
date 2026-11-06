@@ -1,0 +1,4 @@
+{
+  "pass": false,
+  "reason": "Observer omitted first four single command metadata destinations 1FE6..1FE9; source/ROM/core unchanged. Correct observer and add explicit read/store count checks BEFORE Go tests or implementation."
+}
