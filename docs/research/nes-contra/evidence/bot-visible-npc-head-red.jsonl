@@ -1,0 +1,9 @@
+{"Time":"2026-10-26T13:32:21.295381+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine"}
+{"Time":"2026-10-26T13:32:21.846975+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBuiltinBotVisionSoldierHeadDoesNotEstablishPlayer"}
+{"Time":"2026-10-26T13:32:21.84718+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBuiltinBotVisionSoldierHeadDoesNotEstablishPlayer","Output":"=== RUN   TestBuiltinBotVisionSoldierHeadDoesNotEstablishPlayer\n"}
+{"Time":"2026-10-26T13:32:22.998489+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBuiltinBotVisionSoldierHeadDoesNotEstablishPlayer","Output":"    bot_vision_powerup_test.go:24: single-seat occupancy converted an NPC head into the player's location {29 28 true true 0 0 26 128 false false false}\n"}
+{"Time":"2026-10-26T13:32:22.998534+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBuiltinBotVisionSoldierHeadDoesNotEstablishPlayer","Output":"--- FAIL: TestBuiltinBotVisionSoldierHeadDoesNotEstablishPlayer (1.15s)\n"}
+{"Time":"2026-10-26T13:32:22.99854+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBuiltinBotVisionSoldierHeadDoesNotEstablishPlayer","Elapsed":1.15}
+{"Time":"2026-10-26T13:32:22.998553+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\n"}
+{"Time":"2026-10-26T13:32:23.000497+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/contra/engine\t1.705s\n"}
+{"Time":"2026-10-26T13:32:23.000513+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Elapsed":1.705}

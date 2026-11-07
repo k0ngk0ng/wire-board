@@ -23,6 +23,7 @@ import type {
 } from "./types";
 import type { Act } from "../../../web/src/types";
 import { AssetsContext, Modal, api } from "../../../web/src/ui/board-host";
+import { useControllerCancel } from "../../../web/src/controllers/use-controller-cancel";
 import { useMapControls } from "../../../web/src/ui/map-controls";
 import { cityName } from "./cities";
 import { HiddenDrawAnimation } from "./hidden-draw-animation";
@@ -257,7 +258,7 @@ export function RailMap({
   }, [assets]);
   return (
     <div className="map-frame">
-      <div className="map-controls">
+      <div className="map-controls" data-controller-group="camera">
         <button
           className="city-toggle"
           aria-pressed={showCities}
@@ -300,6 +301,7 @@ export function RailMap({
         <div className="map-canvas" style={canvasStyle}>
           <svg
             className="rail-map"
+            data-controller-group="board"
             viewBox={`0 0 ${catalog.map.width} ${catalog.map.height}`}
             style={mapStyle}
             role="group"
@@ -327,6 +329,7 @@ export function RailMap({
                 <g
                   key={r.id}
                   className="map-route"
+                  data-rail-route={r.id}
                   role="button"
                   tabIndex={0}
                   aria-label={`${cityName(a.name)} 到 ${cityName(b.name)}，${r.length} 节，${r.color < 0 ? "任意单色" : trainNames[r.color]}${claimed ? "，已占领" : ""}`}
@@ -455,6 +458,7 @@ export function RailMap({
               return (
                 <g
                   key={c.id}
+                  data-rail-city={c.id}
                   className={`map-city ${stationMode ? "station-city" : ""}`}
                   role={stationMode ? "button" : undefined}
                   tabIndex={stationMode ? 0 : undefined}
@@ -572,6 +576,13 @@ export function RailBoard({
   act: Act;
   busy: boolean;
 }) {
+  const root = useRef<HTMLDivElement>(null);
+  useControllerCancel(root, () => {
+    setKeep([]);
+    setHighlight(undefined);
+    setStationMode(false);
+    setStationCity(undefined);
+  });
   const [catalog, setCatalog] = useState<Catalog>();
   const [loadError, setLoadError] = useState("");
   const [selected, setSelected] = useState<Route>();
@@ -635,8 +646,17 @@ export function RailBoard({
     setTicketChoiceOpen(true);
   }, [r.pending?.map((t) => t.id).join(",")]);
   if (loadError)
-    return <p role="alert">地图加载失败：{loadError}。请刷新重试。</p>;
-  if (!catalog) return <div className="loading">正在展开地图…</div>;
+    return (
+      <div ref={root}>
+        <p role="alert">地图加载失败：{loadError}。请刷新重试。</p>
+      </div>
+    );
+  if (!catalog)
+    return (
+      <div ref={root} className="loading">
+        正在展开地图…
+      </div>
+    );
   const city = (id: number) => cityName(catalog.cities[id].name);
   const selectRoute = (route: Route) => {
     setSelected(route);
@@ -675,6 +695,7 @@ export function RailBoard({
     );
   return (
     <div
+      ref={root}
       className={`rail-board ${catalog.map.height > catalog.map.width ? "portrait-board" : ""}`}
     >
       <h2 className="sr-only">铁路环游 · {catalog.map.name}</h2>
@@ -858,7 +879,11 @@ export function RailBoard({
                   左右滑动车票查看全部任务，点击选择保留。
                 </small>
               )}
-              <div className="pending-tickets">
+              <div
+                className="pending-tickets"
+                data-controller-group="tickets"
+                data-controller-cards=""
+              >
                 {r.pending?.map((t) => (
                   <TicketCard
                     key={t.id}
@@ -954,7 +979,7 @@ export function RailBoard({
                   : "每回合摸两张；公开万能牌占用整个行动"}
             </small>
           </div>
-          <div className="train-market-cards">
+          <div className="train-market-cards" data-controller-group="market">
             <button
               className="train-deck"
               aria-label="摸一张暗牌"

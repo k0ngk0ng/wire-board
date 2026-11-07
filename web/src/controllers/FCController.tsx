@@ -59,12 +59,13 @@ export function FCController({
     const waiting = recording === button;
     const keyboard =
       bindingLabels?.[button] ?? keyLabel(profile.keyboard[button] ?? "");
+    const pressed = active.has(button) || !!activeButtons?.has(button);
     return (
       <button
         key={button}
         type="button"
         data-controller-button={button}
-        className={`fc-control fc-${button}${active.has(button) || activeButtons?.has(button) ? " is-pressed" : ""}${waiting ? " recording" : ""}${mode === "configure" ? " controller-key" : ""}`}
+        className={`fc-control fc-${button}${pressed ? " is-pressed" : ""}${waiting ? " recording" : ""}${mode === "configure" ? " controller-key" : ""}`}
         aria-label={
           mode === "configure" ? `修改 ${labels[button]} 按键` : labels[button]
         }

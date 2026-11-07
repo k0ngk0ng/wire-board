@@ -1,5 +1,6 @@
 import { PlayerName } from "./profiles";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { MessageCircle, Send, X } from "lucide-react";
 import type { Room } from "./types";
 
@@ -7,11 +8,26 @@ export function Chat({
   room,
   userId,
   send,
+  fullscreenTarget,
 }: {
   room: Room;
   userId: string;
   send: (text: string, nonce: string) => Promise<void>;
+  fullscreenTarget?: HTMLElement | null;
 }) {
+  const home = useRef<HTMLDivElement>(null);
+  const [host] = useState(() => {
+    const element = document.createElement("div");
+    element.style.display = "contents";
+    return element;
+  });
+  useLayoutEffect(() => {
+    // Keep the portal target stable: changing it remounts the composer and can
+    // lose a draft, scroll position or pending-send guard. The normal slot stays
+    // outside fullscreen and can become inert without disabling this host.
+    (fullscreenTarget ?? home.current)?.appendChild(host);
+  }, [fullscreenTarget, host]);
+  useLayoutEffect(() => () => host.remove(), [host]);
   const messages = room.chat || [];
   const latest = messages.at(-1)?.id;
   const [open, setOpen] = useState(false);
@@ -63,8 +79,13 @@ export function Chat({
       setSending(false);
     }
   };
-  return (
-    <div className="table-chat">
+  const content = (
+    <div
+      className="table-chat"
+      onKeyDown={(event) => {
+        if (event.key !== "Escape") event.stopPropagation();
+      }}
+    >
       {open && (
         <section
           className="chat-panel"
@@ -200,5 +221,11 @@ export function Chat({
         {!open && unread > 0 && <b>{unread > 99 ? "99+" : unread}</b>}
       </button>
     </div>
+  );
+  return (
+    <>
+      <div ref={home} style={{ display: "contents" }} />
+      {createPortal(content, host)}
+    </>
   );
 }

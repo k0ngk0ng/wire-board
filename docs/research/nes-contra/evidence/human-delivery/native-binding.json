@@ -1,0 +1,880 @@
+{
+  "passed": true,
+  "scope": "Production initializer and local build binding only; no publication or complete bot campaign.",
+  "checks": [
+    {
+      "command": [
+        "python3",
+        "-B",
+        "games/contra/build/native.py",
+        "--runtime",
+        "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-web-runtime/public/manifest.json",
+        "--out",
+        "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-native/human-delivery/temporary/probe",
+        "--package",
+        "./games/contra/build/cmd/probe"
+      ],
+      "exitCode": 0,
+      "stdout": "{\"rulesBuildID\": \"9abc9b428651fd7fe8d848157a94ef43c4a9475eab0a7716043fdf27e8685618\", \"runtimeBuildID\": \"cbdf242b79f2742692e5859eeca258b1a7c302184aef1ec8845989a6cd0034c1\", \"visualsID\": \"24d3c7bfb252cf15523759394c3397e246aa17b331eedf2e0744b75ccb5bee32\", \"goVersion\": \"go1.26.0\", \"flags\": \"-s -w -X github.com/k0ngk0ng/wire-board/games/contra/runtime.CompiledRulesBuildID=9abc9b428651fd7fe8d848157a94ef43c4a9475eab0a7716043fdf27e8685618 -X github.com/k0ngk0ng/wire-board/games/contra/runtime.CompiledRuntimeBuildID=cbdf242b79f2742692e5859eeca258b1a7c302184aef1ec8845989a6cd0034c1\", \"package\": \"./games/contra/build/cmd/probe\", \"target\": {\"GOARCH\": \"arm64\", \"GOOS\": \"darwin\"}, \"sha256\": \"435fa51e19782ed7448a337964f68112880c96657a844937309bee9539d03fb0\", \"bytes\": 5742642, \"runtimeManifestSHA256\": \"cbdf242b79f2742692e5859eeca258b1a7c302184aef1ec8845989a6cd0034c1\", \"inputs\": [{\"path\": \"games/contra/build/cmd/probe/main.go\", \"sha256\": \"62e02a5115ebfd456b5a896e640270dae23568c521fa05e83be6c281bb88e595\"}, {\"path\": \"games/contra/engine/audio_control.go\", \"sha256\": \"bde8282741e22d6daedef20baba0b538593d4f4eff4fefc8fc1cfa05bdb070f1\"}, {\"path\": \"games/contra/engine/audio_control_data.json\", \"sha256\": \"34ccedb60f81dd76def7f8093f4d6e1ffffdca4dffede6603e9a8bbc84109f7b\"}, {\"path\": \"games/contra/engine/base_throw_tables.go\", \"sha256\": \"67891d032f513fb26a39d5fe17db149cc222afaf4ee481e80062fd9edc802f9c\"}, {\"path\": \"games/contra/engine/base_throw_work.go\", \"sha256\": \"25c3a0216975e7a69209a407386697c27d618d03c78108c83501edcfdeabeaa5\"}, {\"path\": \"games/contra/engine/bot.go\", \"sha256\": \"3e6f2d01a86ff3346ff96916f8a51d86896e7d78b5449c56adb52535c79130e8\"}, {\"path\": \"games/contra/engine/bot_boss_aim.go\", \"sha256\": \"ca1245a8017804f0259bd0031591472fe584a7651a52f83274868b3779424e15\"}, {\"path\": \"games/contra/engine/bot_coop.go\", \"sha256\": \"058711cfd8f60f01cb00150c39a0075f28758696684967db5f845f8fea6e0964\"}, {\"path\": \"games/contra/engine/bot_drop_through.go\", \"sha256\": \"6b04c79f601909bd28ae660911b7e860fa6fbd39c82763f11bb4f033e63af3f9\"}, {\"path\": \"games/contra/engine/bot_identity.go\", \"sha256\": \"1a7d6425ae5f70d57ba54fa9b8a65d4be411a628fcf2ba1afe6ce5dd9e207445\"}, {\"path\": \"games/contra/engine/bot_life.go\", \"sha256\": \"e483f1153bd76ee4fd98bd5122580bf8c89659a417b594f162e16e7a623efa8f\"}, {\"path\": \"games/contra/engine/bot_navigation.go\", \"sha256\": \"9481f7995f866bf1468da1185a1f4580c1d0edfe817df59920f65d1b3a559788\"}, {\"path\": \"games/contra/engine/bot_nozzle_navigation.go\", \"sha256\": \"353617eb970d9969e45e8527946ebe14077aed09bcefbb276e5ed56e72af8d9d\"}, {\"path\": \"games/contra/engine/bot_observation.go\", \"sha256\": \"84ea17a1871704e3822bd65869b5e728ac6b4c6fbd632b71c8fc6ebbc1aaa983\"}, {\"path\": \"games/contra/engine/bot_side_collision.go\", \"sha256\": \"2d92c7beb69a49efe3c137946fc6798b40f57f0f3a142a2f2a2f438df655f53d\"}, {\"path\": \"games/contra/engine/bot_tracking.go\", \"sha256\": \"7e78dc336a94f9e1b19e5ccb07b5ea5d0435fd2399fc834f90e2f29c3643df53\"}, {\"path\": \"games/contra/engine/bot_vertical.go\", \"sha256\": \"6acb887805baae3ef643a90ff5fd7f041170c1d351bd529623f30aed2e73020e\"}, {\"path\": \"games/contra/engine/bot_vision.go\", \"sha256\": \"998f68f99358aa9a9cf1fe069d9d68ddf214a32e578e405bcd6dbbf5d9c0cb0d\"}, {\"path\": \"games/contra/engine/bot_vision_alien_recipes.go\", \"sha256\": \"400aa3d3768763731444a57c9f49415c9414c09cf4d56a680be4b5a3f7a0a690\"}, {\"path\": \"games/contra/engine/bot_vision_anchors.go\", \"sha256\": \"f734fc263912ce76a727e3885158a0574de461cb9530bac37f5cf8f616109e4d\"}, {\"path\": \"games/contra/engine/bot_vision_background_recipes.go\", \"sha256\": \"9fa8a2cb0f28fa7ce3ae08b1b1d03cef664ddc57ce4f7926f97e4e7e8edc9422\"}, {\"path\": \"games/contra/engine/bot_vision_bits.go\", \"sha256\": \"d0919b17838644c1d7fa6022fa4144aa80e250d62a7e3a438216c719cbf15c39\"}, {\"path\": \"games/contra/engine/bot_vision_builtin.go\", \"sha256\": \"7d831de42ffa14c3277bd1156c531a8cffedf1db0ca7a0b11ad618029ca7ed7f\"}, {\"path\": \"games/contra/engine/bot_vision_builtin_background.go\", \"sha256\": \"aebdacfd63a37da5efc5fb1569bc04861f4f850c1c7e3d64e2a0f73cf1f745b0\"}, {\"path\": \"games/contra/engine/bot_vision_builtin_sprites.go\", \"sha256\": \"5ff564d91f9fbc18735fc5f05fe5c67ed24d660124513a4631abbdece298d61d\"}, {\"path\": \"games/contra/engine/bot_vision_counts.go\", \"sha256\": \"e0c06cf9f5f84c4db2877b85aba1c8a53699586e7b2e28dc7b5e1d0328115319\"}, {\"path\": \"games/contra/engine/bot_vision_future_sprites.go\", \"sha256\": \"96dfcfa3e62f036ef9f115c4a24b7a91ebd5d0a1d94e78675cf4a1cca2922b95\"}, {\"path\": \"games/contra/engine/bot_vision_machine_recipes.go\", \"sha256\": \"838c392a68cb68f6965f716b7ba06add209b169e305fe77f1960b39ee8604c04\"}, {\"path\": \"games/contra/engine/bot_vision_markers.go\", \"sha256\": \"39e28fddf0348ce6a2ef629f166158aaa29e72b55bd0acb441ea7d7ef74caeb7\"}, {\"path\": \"games/contra/engine/bot_vision_match.go\", \"sha256\": \"59781619dd468b1e5cb5924db7c82b6702b8f2ca033a4d8187cc69b1462f52ea\"}, {\"path\": \"games/contra/engine/bot_vision_nozzle_recipes.go\", \"sha256\": \"f5079a4f0ff6ba17272fca8061bfe721b3eefa657272b687dbbc04bcef436f35\"}, {\"path\": \"games/contra/engine/bot_vision_player_support.go\", \"sha256\": \"bc760c23fe4e2e605a33dbda9a8d20f63b8ab55c4fb6946ed06d882d39583e7a\"}, {\"path\": \"games/contra/engine/bot_vision_snow_recipes.go\", \"sha256\": \"24200bbf1a90b550ff0839d3e964b05594154afd7a8702b98c2a675904d8e152\"}, {\"path\": \"games/contra/engine/bot_vision_terrain.go\", \"sha256\": \"3ac6f1ea1355916232c357c4614d22aef9299593ac1fcc2f8d75c796631fb61d\"}, {\"path\": \"games/contra/engine/bot_vision_uniform.go\", \"sha256\": \"9458a47834f3e554f65f56070996b4e6731f48a4e49b782a9e6f671674989f2d\"}, {\"path\": \"games/contra/engine/bot_visual_frame.go\", \"sha256\": \"18781aae93930ee8a3b4fa67d99055626a0c17948d525e135a4d33c8736247b7\"}, {\"path\": \"games/contra/engine/bot_visual_frame_catalog.go\", \"sha256\": \"e957e6492f5e9ee9b4d68a6f82eb176f08a409efb70622fd87533f5c737e6981\"}, {\"path\": \"games/contra/engine/bot_visual_frame_pixels.go\", \"sha256\": \"9bf6da5e26abfd0a97f9d54da452354a7f6c9b0b90fd024930e22cafaede0e20\"}, {\"path\": \"games/contra/engine/bot_visual_templates.go\", \"sha256\": \"87aa3c8cccba2de116ced6b97d0309708ed3c6c74688e85ff3180cd5097420ca\"}, {\"path\": \"games/contra/engine/campaign.go\", \"sha256\": \"3b806217cdba05e24c519ec5aabe7e4bb2fba2388617147e9e94e5747ea3d047\"}, {\"path\": \"games/contra/engine/campaign_initialize.go\", \"sha256\": \"2b28b7b61a1e62ca2c0243f7f1e3607a99613a0165490635bed9fdf94a819d7e\"}, {\"path\": \"games/contra/engine/campaign_reset.go\", \"sha256\": \"538917d1938f030a9b32a0bf0ab856835b93e84a98228c9aab19d010a7c21402\"}, {\"path\": \"games/contra/engine/campaign_reset_display.go\", \"sha256\": \"3247a6fb273d2d4ca91db3985d78758ac2f64a04f0a587f239e8a68d43024161\"}, {\"path\": \"games/contra/engine/campaign_scene.go\", \"sha256\": \"a013e52d7c7e0483029aa25de6fcdc878fbef156617ee31eb566aa721d80f85a\"}, {\"path\": \"games/contra/engine/campaign_scene_data.go\", \"sha256\": \"87c45e0c10589a13d31280ada06446191acdf33303b700d86c420db7d62e4b68\"}, {\"path\": \"games/contra/engine/campaign_scene_entrance.go\", \"sha256\": \"250ad43d7f247686a335fef280e70a027997d1aa5834b6690f6909785c2c9427\"}, {\"path\": \"games/contra/engine/campaign_scene_interlude.go\", \"sha256\": \"e9b8a343f3391482d279e27c03ece8807c12545ff20bd2f53811626e86435970\"}, {\"path\": \"games/contra/engine/campaign_scene_intro.go\", \"sha256\": \"abccb604137ef5f08bdf419eb48045b8bd6cf7a550d212f908814f230213806e\"}, {\"path\": \"games/contra/engine/campaign_types.go\", \"sha256\": \"669e2fe7467845739ee9990440d5a21739df492df3dfdd2dbb55ead787f5a1b6\"}, {\"path\": \"games/contra/engine/chr_animation.go\", \"sha256\": \"14159d1555b3cab0a0b27dd099d80e57672811da6700187a4aa4a110d2bc8e60\"}, {\"path\": \"games/contra/engine/controls.go\", \"sha256\": \"8997448968036aaee15b2f6c564cbf8358ac5d86ebcebab80544ef27bd61b309\"}, {\"path\": \"games/contra/engine/enemies.go\", \"sha256\": \"5453d59a7a64609f3e97844f32255716698f7121ca48d54c30e07c2dc7101594\"}, {\"path\": \"games/contra/engine/enemies_aliens_blob.go\", \"sha256\": \"f7d3b99e677e6922451ef03a6141435cbd25d6542c73e92c5a50fa0421b95866\"}, {\"path\": \"games/contra/engine/enemies_aliens_boss.go\", \"sha256\": \"b5822fd07e13a76d5397d60f86f8c4540f4a557b9e7beae8dd856bc8eabb98b3\"}, {\"path\": \"games/contra/engine/enemies_aliens_fetus.go\", \"sha256\": \"5c972bd9be3d887e330b41435a2a57d1bad270f89054efc13aaebcc1f2455017\"}, {\"path\": \"games/contra/engine/enemies_aliens_small.go\", \"sha256\": \"cf77c572614a38435d5ac64c9e7577d1b0d7b45a31f074993bfb994422348e9f\"}, {\"path\": \"games/contra/engine/enemies_aliens_spider.go\", \"sha256\": \"4eee94a2b3874b1f28d17f96038242c24d0bdc78b50b1008373a4715cf181ebb\"}, {\"path\": \"games/contra/engine/enemies_aliens_tables.go\", \"sha256\": \"49150a49fa1d65400ac8858a0f926b998ca2f2c6aa61ed0cca77d0de394e184d\"}, {\"path\": \"games/contra/engine/enemies_all_spawn.go\", \"sha256\": \"0f449fd4a5fba8af534028ba5518dc7bb329d94dd90a8d9eebded98948580c2b\"}, {\"path\": \"games/contra/engine/enemies_all_tables.go\", \"sha256\": \"2247d31f91a966b5918deaa48a7e2048be4b38e9112a20e5381647d253b2fcdf\"}, {\"path\": \"games/contra/engine/enemies_base_boss.go\", \"sha256\": \"e3e47eb52d4d5d2ae49f4e412f2d4626367c05e0ce91316edbf99ad6609f0d07\"}, {\"path\": \"games/contra/engine/enemies_base_boss_tables.go\", \"sha256\": \"643c6d066a5a41ed48f656f1a5d8ddb71144fe288bf2b6595120ae788c004437\"}, {\"path\": \"games/contra/engine/enemies_base_common.go\", \"sha256\": \"33279fcb1e02a35cd52c646b0871abafea55608afb2aae0a13e9da78a86259ec\"}, {\"path\": \"games/contra/engine/enemies_base_generators.go\", \"sha256\": \"839e2aebea8d029680ea0f753da70832a952d7a85c39da9bf71dccb97cd17b58\"}, {\"path\": \"games/contra/engine/enemies_base_pickup.go\", \"sha256\": \"a5d37901e7afe92649984e2f2488bec704ab388df61686b21e93e765db640410\"}, {\"path\": \"games/contra/engine/enemies_base_redblue.go\", \"sha256\": \"758b6e3a262f3f8255af74e14651f6e5cf1ffd7e0eb3eca7b6e0ff6ffd550642\"}, {\"path\": \"games/contra/engine/enemies_base_soldiers.go\", \"sha256\": \"19f79e62bb2ff7d145da31e71f8b4a0a139a6507fcbf066d0c5aa2fd15417aa5\"}, {\"path\": \"games/contra/engine/enemies_base_tables.go\", \"sha256\": \"089508f8f1305825b414715bcdd7a79cfeaf3645cae046fd60a024c3a0911837\"}, {\"path\": \"games/contra/engine/enemies_base_thrown.go\", \"sha256\": \"dc94e4f6f796574a8883f4a815def4608971c4ac91054b7db77f4a5b57259ac5\"}, {\"path\": \"games/contra/engine/enemies_base_types.go\", \"sha256\": \"017de660e87019abc7947e2b01cf5beb135c8babb681a14b08c64c6350fbbe22\"}, {\"path\": \"games/contra/engine/enemies_base_walls.go\", \"sha256\": \"f1a18790bf394e76d0dd20c494912441cb1b9715703012607b6662c13c0c58c8\"}, {\"path\": \"games/contra/engine/enemies_box.go\", \"sha256\": \"22f18cdfb86e18749ac93bd257a5edff4a9c14365f3a1d2a4d1c3f2f94d227a9\"}, {\"path\": \"games/contra/engine/enemies_bridge.go\", \"sha256\": \"c65d6be3d1c023c3e900fc26ddeeb1eb321e9020fbfdaa0346fd612e93da919c\"}, {\"path\": \"games/contra/engine/enemies_bullets.go\", \"sha256\": \"4594bcf17deb3fc4163bdbad63b6373b50334266e3e0acd0643a9e22cf737f95\"}, {\"path\": \"games/contra/engine/enemies_capsule.go\", \"sha256\": \"2c3b89084d3abe8fbfd903b03e1270d9ab44cf93543eb3f0daecc24c3f6256e7\"}, {\"path\": \"games/contra/engine/enemies_collision.go\", \"sha256\": \"13f4f13b7598589270e4f71a4a09e680c4169709349ecc7cfd31e05b4e182270\"}, {\"path\": \"games/contra/engine/enemies_collision_tables.go\", \"sha256\": \"e948f46d1b73a59b22c3dbd8b746e8348c62a952287065ed6a1fe2784ef7e6aa\"}, {\"path\": \"games/contra/engine/enemies_collision_tick.go\", \"sha256\": \"5c3a75f69ee273c1c5ee6c6a4f3b5e9473bc74951837fa8deee710a3d34e6490\"}, {\"path\": \"games/contra/engine/enemies_dispatch.go\", \"sha256\": \"02e5df581fae1bfd7a0f171426234454651e326f7927d82ebf729a17dc842f2d\"}, {\"path\": \"games/contra/engine/enemies_explosion.go\", \"sha256\": \"c7957b98947d6038a034bc0aa69e930c2f3fdf6a25da16b3caac22c412bab581\"}, {\"path\": \"games/contra/engine/enemies_generation.go\", \"sha256\": \"a964e9491ddb362510df78e6036b938124a21966aa9dd07766db8c4d1a470ed8\"}, {\"path\": \"games/contra/engine/enemies_machines.go\", \"sha256\": \"330ebe5ce39280b7d9201ab7d8e4e975c81e2a325bfb505456f554ad5f0d08c8\"}, {\"path\": \"games/contra/engine/enemies_machines_common.go\", \"sha256\": \"c65dfb0b0188b92e9a0137233929f6e037623233481bf31169ccce68685e7de5\"}, {\"path\": \"games/contra/engine/enemies_machines_flames.go\", \"sha256\": \"3b568e6d0f9960e5a23e312ceb5ce94df8f31513b2b6b55b79f98efba83f3b97\"}, {\"path\": \"games/contra/engine/enemies_machines_giant.go\", \"sha256\": \"286e059bfffd00fd47a20d3e0ce4dbf0284c5d7ee0933a0321bd72e9c4a17a75\"}, {\"path\": \"games/contra/engine/enemies_machines_graphics.go\", \"sha256\": \"2c29abb313c6de5f2d00aa10638685dcc3e7eddc7f6883eea4f5c122032e3fa2\"}, {\"path\": \"games/contra/engine/enemies_machines_hangar.go\", \"sha256\": \"d93715a851ff4a698f049c522601a42dc327fd21eb24f59592757f22fb711558\"}, {\"path\": \"games/contra/engine/enemies_machines_walls.go\", \"sha256\": \"b8a41e34a9be42c494efcb6471f46c8a64dd0e34ae524e7499e48f3fe6f25b26\"}, {\"path\": \"games/contra/engine/enemies_pickup.go\", \"sha256\": \"ee72755e14212ce714c225639767fead9e92cdb1c0535740ebfe8ffe5822f73a\"}, {\"path\": \"games/contra/engine/enemies_progress.go\", \"sha256\": \"af4c9a2c311b9f1df44a284eb3cb7b3404a6e6f54116ce0595b6663a7bd87a61\"}, {\"path\": \"games/contra/engine/enemies_runner.go\", \"sha256\": \"2dc1814a4c61caa30214d29df0c1a2b082bd615566c422820e0dc1ed5c18fb9f\"}, {\"path\": \"games/contra/engine/enemies_shooters_aim.go\", \"sha256\": \"e572d019735880aa80cd4a50e4836bc799365a879490f06f2842471fb7d0f4d8\"}, {\"path\": \"games/contra/engine/enemies_shooters_bossdoor.go\", \"sha256\": \"d70e057853a477e247121551b7bf9e4a9dc9a3d1e3686192e3e379d4109de465\"}, {\"path\": \"games/contra/engine/enemies_shooters_bossdoor_terrain.go\", \"sha256\": \"3dfc8069c2d83e8a23271b9beb8df8dd5b18250231697a15a54192b0d140210b\"}, {\"path\": \"games/contra/engine/enemies_shooters_runner.go\", \"sha256\": \"53032d44797a4c93742590c4c18991f578d4cd40208a854eb57ba0d62b055ba1\"}, {\"path\": \"games/contra/engine/enemies_shooters_sniper.go\", \"sha256\": \"69a06fc83a6f31ccbd262e4b1080a5566e1eb290a84364e32802777977ba9766\"}, {\"path\": \"games/contra/engine/enemies_shooters_tables.go\", \"sha256\": \"d57dba7bb57ce7c2a89feb10ed9a186e3967a8d649d6af1cce73490236996e02\"}, {\"path\": \"games/contra/engine/enemies_shooters_turrets.go\", \"sha256\": \"7e2b933f8828c630ee73ed2b066f7e8e8a45fa694eeefd13fea6dd79b3ae03bb\"}, {\"path\": \"games/contra/engine/enemies_snow_carrier.go\", \"sha256\": \"90356bb7417d25915891d9c9cf33e0dcfac16d4d4c39555ae89a56685eb2909a\"}, {\"path\": \"games/contra/engine/enemies_snow_small.go\", \"sha256\": \"58762e0243a4a020a24610a2bb89e33c60a88dec136e8a51bbedac35771f7b99\"}, {\"path\": \"games/contra/engine/enemies_snow_tables.go\", \"sha256\": \"32251d6ec9a2180918499e4014fa6794f68e921b8249853a90ad7fa1ee280467\"}, {\"path\": \"games/contra/engine/enemies_snow_tank.go\", \"sha256\": \"0302721a28609af5e6f3bc3ff6b5d7b3366c0e1eb7bf40240e5b56bccef11bcd\"}, {\"path\": \"games/contra/engine/enemies_tables.go\", \"sha256\": \"aa7124b97aba6137fab33603a794c1cfb5d2b09293ca8c6b28a8c161508bb379\"}, {\"path\": \"games/contra/engine/enemies_terrain.go\", \"sha256\": \"684f00cf30cb3721f990955c29f2f424217a29d0c01e8ec013dd227ef5ca4481\"}, {\"path\": \"games/contra/engine/enemies_waterfall.go\", \"sha256\": \"609480371bdb561a7300493153ebf319d22474745c85ecf974f78cc68dfab0f0\"}, {\"path\": \"games/contra/engine/enemies_waterfall_arms.go\", \"sha256\": \"cdd6b582249bdd7ba5b5506a01220c08411c0872e42ff7cac7e7be6d6a191e14\"}, {\"path\": \"games/contra/engine/enemies_waterfall_boss.go\", \"sha256\": \"af3964719899eec27a0e25363824cdec5045c458845141bcc8d2cb1fb926f786\"}, {\"path\": \"games/contra/engine/frame.go\", \"sha256\": \"4d96f20438ee959e03f4029df0b272fec7cdcceef406666995f07e50073267dc\"}, {\"path\": \"games/contra/engine/graphics_prefix.go\", \"sha256\": \"9bc5f16b4bcb558245683f05906dd458121086202bd6a9d013832d589e3d91a0\"}, {\"path\": \"games/contra/engine/graphics_queue.go\", \"sha256\": \"89e7f6aaf289801945abf79cda322700306840c10ff29177a5680eb58b64d927\"}, {\"path\": \"games/contra/engine/graphics_queue_modes.go\", \"sha256\": \"992fb3c372bc134a97daa945c384ab898fdac09eb0a9176b5f11aa0662c60461\"}, {\"path\": \"games/contra/engine/graphics_text.go\", \"sha256\": \"30ea97cbccbf2810925d5ef71716c13087ef6b9d93e5c4e4d66ffda9f7f81fa7\"}, {\"path\": \"games/contra/engine/level.go\", \"sha256\": \"8854357fcc3e2b6df97fd1c8b5cfdacc468dae5721a5054d3ec4202624cb1506\"}, {\"path\": \"games/contra/engine/level_bundle.go\", \"sha256\": \"d7a4632ebf30ae0a25b06e8e90b51dcfb723cef8155e5479afddbe3d094d4c29\"}, {\"path\": \"games/contra/engine/leveldata/jungle.json\", \"sha256\": \"4aa0e5bee44bf2a75aea2e2debf6e7f9367f912307c8d3ba528a988e3211ba20\"}, {\"path\": \"games/contra/engine/leveldata/stage-1.json\", \"sha256\": \"ae541455b3d25b9b86898b9b013739f8ae0735b409b593defc484a59af5924ad\"}, {\"path\": \"games/contra/engine/leveldata/stage-2.json\", \"sha256\": \"b398dc1e444c586f4ac6181679d673f8fd9463638a0107a656ef104e69933153\"}, {\"path\": \"games/contra/engine/leveldata/stage-3.json\", \"sha256\": \"2ce2245014def20fd2638c278755f7a2a3b06c92a24b8c232facb568903c7355\"}, {\"path\": \"games/contra/engine/leveldata/stage-4.json\", \"sha256\": \"a1433c299763814b6c7acf02848e64f1629c163c639914fd6832e81b25b80f4a\"}, {\"path\": \"games/contra/engine/leveldata/stage-5.json\", \"sha256\": \"362f9e0d91e0edebab407317b132c585af5c861f14a98ba9017b061f24720a48\"}, {\"path\": \"games/contra/engine/leveldata/stage-6.json\", \"sha256\": \"30eba1e7f4048b119665ffe70b736c5ef9d3b268347bd4a365d1773fa154a5fc\"}, {\"path\": \"games/contra/engine/leveldata/stage-7.json\", \"sha256\": \"aed95f893082874faa83db70c0da7b3d1f61fea023805d10ff6fe90419a893d1\"}, {\"path\": \"games/contra/engine/leveldata/stage-8.json\", \"sha256\": \"81c8b9ff4bba44d3814dfbda3fef935c6b5a9500e051360307db42d487ea7596\"}, {\"path\": \"games/contra/engine/levels.go\", \"sha256\": \"e4dfe377e366a30f39d62a5ac3941eb567a078b3df0472904261c517ca97107c\"}, {\"path\": \"games/contra/engine/movement.go\", \"sha256\": \"ec945d0fdb15f6c410feb8d2399d6a38d79faedf9476cb7573c41847042b1d67\"}, {\"path\": \"games/contra/engine/palette.go\", \"sha256\": \"67231cea41345e82a6e10a45b1e2c16cb285f476d1dffcc3b2c749923b1844c2\"}, {\"path\": \"games/contra/engine/palette_snow.go\", \"sha256\": \"47f3c0189a690b18afc5eff782935ad60b2cf3bb36172dc6331ace6f046527d2\"}, {\"path\": \"games/contra/engine/player.go\", \"sha256\": \"ed0687688e689a5b2eff66af7961e1016f7e99a389558ea04d76c0abc987d560\"}, {\"path\": \"games/contra/engine/player_animation.go\", \"sha256\": \"18392ccb6932d2d506140c0b1caf77878e602859d22aa93aa4ad9473dabcddd8\"}, {\"path\": \"games/contra/engine/player_indoor.go\", \"sha256\": \"e0986f8fb67f9a34193d12eb4463405fa34f9088fa8def229d6e914a238b832c\"}, {\"path\": \"games/contra/engine/player_lifecycle.go\", \"sha256\": \"8142df869f40347294c4b7980fe0986f0e25499f0d0a350a02902784cf27a358\"}, {\"path\": \"games/contra/engine/presentation_sprites.go\", \"sha256\": \"19b3b32ae25806c577446e6554ca9299d01310aef32f37f37abcd7ae14f64805\"}, {\"path\": \"games/contra/engine/presentation_sprites_data.json\", \"sha256\": \"fe84f190385ee83695635445a2712a5dd7ee4fab7b96a00595e6dd44a1362f74\"}, {\"path\": \"games/contra/engine/random.go\", \"sha256\": \"a6b91ae20bafdae5b255d9ea6ad8d55d299e6e260ac53dbca61a3c21772f0db8\"}, {\"path\": \"games/contra/engine/random_adapted.go\", \"sha256\": \"d6abd1fa926d8280104de22837f1c0cf7c346ecdf1ab2e11a2bd10c51c26461b\"}, {\"path\": \"games/contra/engine/scroll.go\", \"sha256\": \"3dde97a33fd70f5cabf6231a6cdf4fa438feb2dcb5145ec625499a5d37034cab\"}, {\"path\": \"games/contra/engine/scroll_queue.go\", \"sha256\": \"a8566de09d23e1b10952585df01e0586280785f4f36e8c3d3f935ba2a3bdb27f\"}, {\"path\": \"games/contra/engine/session.go\", \"sha256\": \"9230a9e46bfb9aaf160f4f70ebbe282c3b2aa59479f2a6a094a47b2016ece81c\"}, {\"path\": \"games/contra/engine/session_paused.go\", \"sha256\": \"02af6bbfbc6e4e921b01d24dfd5cf73cab4121798c3c6d5f3d7d5b1cf7b85da7\"}, {\"path\": \"games/contra/engine/session_review.go\", \"sha256\": \"2d65a6c983e379677abdac0a8b7eeb951dc27fda6d9320955d75fcc6f2f99791\"}, {\"path\": \"games/contra/engine/session_terminal.go\", \"sha256\": \"82a5406ad50b22391d259c94c48f3b3025769d5e5e7cf1e62fa8c88ab2f77890\"}, {\"path\": \"games/contra/engine/session_validate.go\", \"sha256\": \"4747b20c48ef22c2c629ad36d4a74e0c8dda370bd646eb393dcba99e6ce050ec\"}, {\"path\": \"games/contra/engine/terrain.go\", \"sha256\": \"b7ab25fd69fb2a9a59146fe9c8fd35d73b8704b7bba9c6c62c566af31de0bfca\"}, {\"path\": \"games/contra/engine/terrain_scroll.go\", \"sha256\": \"b52d1b920b6db6810d286dde706c303d9682ddbe58049af145ccf4d62dda5925\"}, {\"path\": \"games/contra/engine/terrain_scroll_graphics.go\", \"sha256\": \"56468b7ff58134e8fc94ffff8deef2504e06f119c5fa9eb69bf97736faadea41\"}, {\"path\": \"games/contra/engine/terrain_work.go\", \"sha256\": \"d900dc1aa7f768306c2735172aac08b4e15b95f8a730761070524e6738d015ac\"}, {\"path\": \"games/contra/engine/weapons.go\", \"sha256\": \"cd5149419c3e0c700dcd1896ac1f53f9f609dcfc5eb4853f5139edf7c1ff1884\"}, {\"path\": \"games/contra/engine/weapons_step.go\", \"sha256\": \"3a5f55cff6a26cccbb96eaa3a9b78332b139360620c584ce7f681c8ed51b20e3\"}, {\"path\": \"games/contra/engine/weapons_tables.go\", \"sha256\": \"b7fc20675297b7ad196c1b2fd581f802e717db47190dd1482cbcd3db3e3e0637\"}, {\"path\": \"games/contra/engine/weapons_types.go\", \"sha256\": \"02f649589efeaa9a398b2120cc28cf5d80e9a89717046a9fbc07b627bfb14faa\"}, {\"path\": \"games/contra/engine/world.go\", \"sha256\": \"224947fac1c0fb69ebad02cd9707539e61786e3aff5bb0a7c6d9b3de120b63a7\"}, {\"path\": \"games/contra/engine/world_active.go\", \"sha256\": \"71b2dace7602719508c9e3b29fbe08a825b862e6e22ee77c447db159a1b0dace\"}, {\"path\": \"games/contra/engine/world_display.go\", \"sha256\": \"4fdcc601dd69efd92ca80bd03e53e72fd73dd11c8e2404904580b8f66de08651\"}, {\"path\": \"games/contra/engine/world_pause.go\", \"sha256\": \"f2eab47699e6c311dd5460ea524ad55ba4a350bcf8d53fc1310df3f03fb4ef10\"}, {\"path\": \"games/contra/engine/world_presentation.go\", \"sha256\": \"59233e0045e1b7b32ea3d6ca89fbf79c84dc13b2707b20ef976403dff24d0738\"}, {\"path\": \"games/contra/runtime/bridge.go\", \"sha256\": \"77f3340123058d4c244af92ea3e2931d4104463e33d88cc089fc743aa003bbf7\"}, {\"path\": \"games/contra/runtime/build_files_native.go\", \"sha256\": \"e244bd43848ca7f9e81287e87143db97b81805c7ffa533fd90330568fa21024b\"}, {\"path\": \"games/contra/runtime/build_identity.go\", \"sha256\": \"d50b465d79cc34330fa6f35fe2e1f7ad0e9bee5d1356e74691b82bb12d504250\"}, {\"path\": \"games/contra/runtime/development.go\", \"sha256\": \"30f44a8873d61dd5d75f0af9df24d08c01985819473985a257e384ca6c32c835\"}, {\"path\": \"games/contra/server/bot_visual.go\", \"sha256\": \"a8b8da3b9531806ad8eb88298a34ad38c913a0f7826262e663cc67765221e06d\"}, {\"path\": \"games/contra/server/data/visual-catalog-v1.json.gz\", \"sha256\": \"46fa695321db37e3a397b5373840e023a91874893eda12b48719a67b217fc1f5\"}, {\"path\": \"games/contra/server/input.go\", \"sha256\": \"8b0efb31d6a81188f1d97b20f2dac4186b1fa23788067a86b374f0a4e6fd6f64\"}, {\"path\": \"games/contra/server/module.go\", \"sha256\": \"5fdff80fe803458e003eb4d53697bb49b66081674a3362a2cf4aa7e27ad3117e\"}, {\"path\": \"games/contra/server/production_assets_native.go\", \"sha256\": \"51114c419b6034fb9b86525f3f2480d4c3e4c8ac2340e063522a184c9df83703\"}, {\"path\": \"games/contra/server/production_native.go\", \"sha256\": \"eba360bc64ae25b1c76f350c2a79c3267202159e4f58e5c8118246bf4cc48507\"}, {\"path\": \"games/contra/server/timer.go\", \"sha256\": \"c71b1015aea5e301de9a9b855dd492d17580387c0f04db8bc2aa5643c571c079\"}, {\"path\": \"games/contra/server/visual_loader.go\", \"sha256\": \"36fc52cfeaa1d6677daa978ec183961e559025a48b42fd2bac2b2eb35761334f\"}, {\"path\": \"go.mod\", \"sha256\": \"33aa54f687143b2e468be7fe308f3455104c8b0f2fdc6e409233b5b1c8a3166f\"}, {\"path\": \"go.sum\", \"sha256\": \"bde219704d2cf0b9e3e8b9bb01e6d97656accddcf5423d8587cd1afd8b8c25cb\"}, {\"path\": \"internal/gameapi/module.go\", \"sha256\": \"c090e4aea8e57a549c9be02083ab985d41b30ca11fc01e31b4ae2c29210ce499\"}, {\"path\": \"internal/gameapi/rating.go\", \"sha256\": \"0cfc31c77e0984418b6682b2f86c2027768e8a374a3f8931a666b2c6de063898\"}]}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-native/human-delivery/temporary/probe"
+      ],
+      "exitCode": 0,
+      "stdout": "{\"frames\":12,\"phase\":\"intro\",\"registered\":false,\"revision\":12,\"rulesBuildID\":\"9abc9b428651fd7fe8d848157a94ef43c4a9475eab0a7716043fdf27e8685618\",\"runtimeBuildID\":\"cbdf242b79f2742692e5859eeca258b1a7c302184aef1ec8845989a6cd0034c1\",\"visualsID\":\"24d3c7bfb252cf15523759394c3397e246aa17b331eedf2e0744b75ccb5bee32\"}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-ldflags=-s -w -X github.com/k0ngk0ng/wire-board/games/contra/runtime.CompiledRulesBuildID=9abc9b428651fd7fe8d848157a94ef43c4a9475eab0a7716043fdf27e8685618 -X github.com/k0ngk0ng/wire-board/games/contra/runtime.CompiledRuntimeBuildID=cbdf242b79f2742692e5859eeca258b1a7c302184aef1ec8845989a6cd0034c1",
+        "./internal/production",
+        "-run",
+        "^TestContraProductionRegistration",
+        "-count=1"
+      ],
+      "exitCode": 0,
+      "stdout": "{\"Time\":\"2026-10-28T13:58:17.310772+08:00\",\"Action\":\"start\",\"Package\":\"github.com/k0ngk0ng/wire-board/internal/production\"}\n{\"Time\":\"2026-10-28T13:58:17.942036+08:00\",\"Action\":\"run\",\"Package\":\"github.com/k0ngk0ng/wire-board/internal/production\",\"Test\":\"TestContraProductionRegistrationRequiresIdentities\"}\n{\"Time\":\"2026-10-28T13:58:17.942073+08:00\",\"Action\":\"output\",\"Package\":\"github.com/k0ngk0ng/wire-board/internal/production\",\"Test\":\"TestContraProductionRegistrationRequiresIdentities\",\"Output\":\"=== RUN   TestContraProductionRegistrationRequiresIdentities\\n\"}\n{\"Time\":\"2026-10-28T13:58:17.942104+08:00\",\"Action\":\"output\",\"Package\":\"github.com/k0ngk0ng/wire-board/internal/production\",\"Test\":\"TestContraProductionRegistrationRequiresIdentities\",\"Output\":\"--- PASS: TestContraProductionRegistrationRequiresIdentities (0.00s)\\n\"}\n{\"Time\":\"2026-10-28T13:58:17.942111+08:00\",\"Action\":\"pass\",\"Package\":\"github.com/k0ngk0ng/wire-board/internal/production\",\"Test\":\"TestContraProductionRegistrationRequiresIdentities\",\"Elapsed\":0}\n{\"Time\":\"2026-10-28T13:58:17.942122+08:00\",\"Action\":\"run\",\"Package\":\"github.com/k0ngk0ng/wire-board/internal/production\",\"Test\":\"TestContraProductionRegistrationWithLinkedBuild\"}\n{\"Time\":\"2026-10-28T13:58:17.942123+08:00\",\"Action\":\"output\",\"Package\":\"github.com/k0ngk0ng/wire-board/internal/production\",\"Test\":\"TestContraProductionRegistrationWithLinkedBuild\",\"Output\":\"=== RUN   TestContraProductionRegistrationWithLinkedBuild\\n\"}\n{\"Time\":\"2026-10-28T13:58:32.760048+08:00\",\"Action\":\"output\",\"Package\":\"github.com/k0ngk0ng/wire-board/internal/production\",\"Test\":\"TestContraProductionRegistrationWithLinkedBuild\",\"Output\":\"--- PASS: TestContraProductionRegistrationWithLinkedBuild (14.82s)\\n\"}\n{\"Time\":\"2026-10-28T13:58:32.760065+08:00\",\"Action\":\"pass\",\"Package\":\"github.com/k0ngk0ng/wire-board/internal/production\",\"Test\":\"TestContraProductionRegistrationWithLinkedBuild\",\"Elapsed\":14.82}\n{\"Time\":\"2026-10-28T13:58:32.760322+08:00\",\"Action\":\"output\",\"Package\":\"github.com/k0ngk0ng/wire-board/internal/production\",\"Output\":\"PASS\\n\"}\n{\"Time\":\"2026-10-28T13:58:33.776061+08:00\",\"Action\":\"output\",\"Package\":\"github.com/k0ngk0ng/wire-board/internal/production\",\"Output\":\"ok  \\tgithub.com/k0ngk0ng/wire-board/internal/production\\t16.465s\\n\"}\n{\"Time\":\"2026-10-28T13:58:33.776078+08:00\",\"Action\":\"pass\",\"Package\":\"github.com/k0ngk0ng/wire-board/internal/production\",\"Elapsed\":16.465}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "go",
+        "build",
+        "-trimpath",
+        "-buildvcs=false",
+        "-o",
+        "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-native/human-delivery/temporary/unbound",
+        "./games/contra/build/cmd/probe"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-native/human-delivery/temporary/unbound"
+      ],
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "2026/10/28 13:58:34 production Contra requires linked rule and runtime asset identities\n"
+    },
+    {
+      "command": [
+        "python3",
+        "-B",
+        "games/contra/build/native.py",
+        "--runtime",
+        "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-native/human-delivery/temporary/rules/manifest.json",
+        "--out",
+        "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-native/human-delivery/temporary/rules/binary",
+        "--package",
+        "./games/contra/build/cmd/probe"
+      ],
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/Users/jason/Sources/github.com/k0ngk0ng/wire-board/games/contra/build/native.py\", line 26, in <module>\n    if __name__=='__main__':main()\n                            ~~~~^^\n  File \"/Users/jason/Sources/github.com/k0ngk0ng/wire-board/games/contra/build/native.py\", line 17, in main\n    manifest,runtime_id,before=verify_runtime_file(ROOT,ROOT/args.runtime)\n                               ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/jason/Sources/github.com/k0ngk0ng/wire-board/games/contra/build/identity.py\", line 58, in verify_runtime_file\n    if manifest.get('rulesBuildID')!=current['rules']['id'] or manifest.get('visualsID')!=current['visuals']['id'] or manifest.get('runtime')!=current['runtime']:raise ValueError('runtime artifact source/toolchain/visual identity differs from current build')\n                                                                                                                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: runtime artifact source/toolchain/visual identity differs from current build\n"
+    },
+    {
+      "command": [
+        "python3",
+        "-B",
+        "games/contra/build/native.py",
+        "--runtime",
+        "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-native/human-delivery/temporary/source/manifest.json",
+        "--out",
+        "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-native/human-delivery/temporary/source/binary",
+        "--package",
+        "./games/contra/build/cmd/probe"
+      ],
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/Users/jason/Sources/github.com/k0ngk0ng/wire-board/games/contra/build/native.py\", line 26, in <module>\n    if __name__=='__main__':main()\n                            ~~~~^^\n  File \"/Users/jason/Sources/github.com/k0ngk0ng/wire-board/games/contra/build/native.py\", line 17, in main\n    manifest,runtime_id,before=verify_runtime_file(ROOT,ROOT/args.runtime)\n                               ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/jason/Sources/github.com/k0ngk0ng/wire-board/games/contra/build/identity.py\", line 58, in verify_runtime_file\n    if manifest.get('rulesBuildID')!=current['rules']['id'] or manifest.get('visualsID')!=current['visuals']['id'] or manifest.get('runtime')!=current['runtime']:raise ValueError('runtime artifact source/toolchain/visual identity differs from current build')\n                                                                                                                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: runtime artifact source/toolchain/visual identity differs from current build\n"
+    },
+    {
+      "command": [
+        "python3",
+        "-B",
+        "games/contra/build/native.py",
+        "--runtime",
+        "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-native/human-delivery/temporary/toolchain/manifest.json",
+        "--out",
+        "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-native/human-delivery/temporary/toolchain/binary",
+        "--package",
+        "./games/contra/build/cmd/probe"
+      ],
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/Users/jason/Sources/github.com/k0ngk0ng/wire-board/games/contra/build/native.py\", line 26, in <module>\n    if __name__=='__main__':main()\n                            ~~~~^^\n  File \"/Users/jason/Sources/github.com/k0ngk0ng/wire-board/games/contra/build/native.py\", line 17, in main\n    manifest,runtime_id,before=verify_runtime_file(ROOT,ROOT/args.runtime)\n                               ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/jason/Sources/github.com/k0ngk0ng/wire-board/games/contra/build/identity.py\", line 58, in verify_runtime_file\n    if manifest.get('rulesBuildID')!=current['rules']['id'] or manifest.get('visualsID')!=current['visuals']['id'] or manifest.get('runtime')!=current['runtime']:raise ValueError('runtime artifact source/toolchain/visual identity differs from current build')\n                                                                                                                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: runtime artifact source/toolchain/visual identity differs from current build\n"
+    },
+    {
+      "command": [
+        "python3",
+        "-B",
+        "games/contra/build/native.py",
+        "--runtime",
+        "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-native/human-delivery/temporary/visuals/manifest.json",
+        "--out",
+        "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-native/human-delivery/temporary/visuals/binary",
+        "--package",
+        "./games/contra/build/cmd/probe"
+      ],
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/Users/jason/Sources/github.com/k0ngk0ng/wire-board/games/contra/build/native.py\", line 26, in <module>\n    if __name__=='__main__':main()\n                            ~~~~^^\n  File \"/Users/jason/Sources/github.com/k0ngk0ng/wire-board/games/contra/build/native.py\", line 17, in main\n    manifest,runtime_id,before=verify_runtime_file(ROOT,ROOT/args.runtime)\n                               ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/jason/Sources/github.com/k0ngk0ng/wire-board/games/contra/build/identity.py\", line 58, in verify_runtime_file\n    if manifest.get('rulesBuildID')!=current['rules']['id'] or manifest.get('visualsID')!=current['visuals']['id'] or manifest.get('runtime')!=current['runtime']:raise ValueError('runtime artifact source/toolchain/visual identity differs from current build')\n                                                                                                                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: runtime artifact source/toolchain/visual identity differs from current build\n"
+    },
+    {
+      "command": [
+        "python3",
+        "-B",
+        "games/contra/build/native.py",
+        "--runtime",
+        "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-native/human-delivery/temporary/corrupt-wasm/manifest.json",
+        "--out",
+        "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-native/human-delivery/temporary/corrupt-wasm/binary",
+        "--package",
+        "./games/contra/build/cmd/probe"
+      ],
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/Users/jason/Sources/github.com/k0ngk0ng/wire-board/games/contra/build/native.py\", line 26, in <module>\n    if __name__=='__main__':main()\n                            ~~~~^^\n  File \"/Users/jason/Sources/github.com/k0ngk0ng/wire-board/games/contra/build/native.py\", line 17, in main\n    manifest,runtime_id,before=verify_runtime_file(ROOT,ROOT/args.runtime)\n                               ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/jason/Sources/github.com/k0ngk0ng/wire-board/games/contra/build/identity.py\", line 65, in verify_runtime_file\n    verify_asset_files(path.parent,manifest)\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/jason/Sources/github.com/k0ngk0ng/wire-board/games/contra/build/identity.py\", line 77, in verify_asset_files\n    for asset in assets:verify(asset)\n                        ~~~~~~^^^^^^^\n  File \"/Users/jason/Sources/github.com/k0ngk0ng/wire-board/games/contra/build/identity.py\", line 75, in verify\n    if len(body)!=asset['bytes']or sha(body)!=asset['sha256']:raise ValueError('runtime artifact checksum differs: '+rel)\n                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: runtime artifact checksum differs: contra.wasm\n"
+    },
+    {
+      "command": [
+        "python3",
+        "-B",
+        "games/contra/build/native.py",
+        "--runtime",
+        "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-native/human-delivery/temporary/escape/manifest.json",
+        "--out",
+        "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-native/human-delivery/temporary/escape/binary",
+        "--package",
+        "./games/contra/build/cmd/probe"
+      ],
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/Users/jason/Sources/github.com/k0ngk0ng/wire-board/games/contra/build/native.py\", line 26, in <module>\n    if __name__=='__main__':main()\n                            ~~~~^^\n  File \"/Users/jason/Sources/github.com/k0ngk0ng/wire-board/games/contra/build/native.py\", line 17, in main\n    manifest,runtime_id,before=verify_runtime_file(ROOT,ROOT/args.runtime)\n                               ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/jason/Sources/github.com/k0ngk0ng/wire-board/games/contra/build/identity.py\", line 65, in verify_runtime_file\n    verify_asset_files(path.parent,manifest)\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/jason/Sources/github.com/k0ngk0ng/wire-board/games/contra/build/identity.py\", line 77, in verify_asset_files\n    for asset in assets:verify(asset)\n                        ~~~~~~^^^^^^^\n  File \"/Users/jason/Sources/github.com/k0ngk0ng/wire-board/games/contra/build/identity.py\", line 73, in verify\n    if not source.is_relative_to(directory):raise ValueError('runtime asset escaped manifest directory')\n                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: runtime asset escaped manifest directory\n"
+    }
+  ],
+  "runtimeBuildID": "cbdf242b79f2742692e5859eeca258b1a7c302184aef1ec8845989a6cd0034c1",
+  "rulesBuildID": "9abc9b428651fd7fe8d848157a94ef43c4a9475eab0a7716043fdf27e8685618",
+  "visualsID": "24d3c7bfb252cf15523759394c3397e246aa17b331eedf2e0744b75ccb5bee32",
+  "offline": {
+    "frames": 12,
+    "phase": "intro",
+    "registered": false,
+    "revision": 12,
+    "rulesBuildID": "9abc9b428651fd7fe8d848157a94ef43c4a9475eab0a7716043fdf27e8685618",
+    "runtimeBuildID": "cbdf242b79f2742692e5859eeca258b1a7c302184aef1ec8845989a6cd0034c1",
+    "visualsID": "24d3c7bfb252cf15523759394c3397e246aa17b331eedf2e0744b75ccb5bee32"
+  },
+  "nativeBuild": {
+    "rulesBuildID": "9abc9b428651fd7fe8d848157a94ef43c4a9475eab0a7716043fdf27e8685618",
+    "runtimeBuildID": "cbdf242b79f2742692e5859eeca258b1a7c302184aef1ec8845989a6cd0034c1",
+    "visualsID": "24d3c7bfb252cf15523759394c3397e246aa17b331eedf2e0744b75ccb5bee32",
+    "goVersion": "go1.26.0",
+    "flags": "-s -w -X github.com/k0ngk0ng/wire-board/games/contra/runtime.CompiledRulesBuildID=9abc9b428651fd7fe8d848157a94ef43c4a9475eab0a7716043fdf27e8685618 -X github.com/k0ngk0ng/wire-board/games/contra/runtime.CompiledRuntimeBuildID=cbdf242b79f2742692e5859eeca258b1a7c302184aef1ec8845989a6cd0034c1",
+    "package": "./games/contra/build/cmd/probe",
+    "target": {
+      "GOARCH": "arm64",
+      "GOOS": "darwin"
+    },
+    "sha256": "435fa51e19782ed7448a337964f68112880c96657a844937309bee9539d03fb0",
+    "bytes": 5742642,
+    "runtimeManifestSHA256": "cbdf242b79f2742692e5859eeca258b1a7c302184aef1ec8845989a6cd0034c1",
+    "inputs": [
+      {
+        "path": "games/contra/build/cmd/probe/main.go",
+        "sha256": "62e02a5115ebfd456b5a896e640270dae23568c521fa05e83be6c281bb88e595"
+      },
+      {
+        "path": "games/contra/engine/audio_control.go",
+        "sha256": "bde8282741e22d6daedef20baba0b538593d4f4eff4fefc8fc1cfa05bdb070f1"
+      },
+      {
+        "path": "games/contra/engine/audio_control_data.json",
+        "sha256": "34ccedb60f81dd76def7f8093f4d6e1ffffdca4dffede6603e9a8bbc84109f7b"
+      },
+      {
+        "path": "games/contra/engine/base_throw_tables.go",
+        "sha256": "67891d032f513fb26a39d5fe17db149cc222afaf4ee481e80062fd9edc802f9c"
+      },
+      {
+        "path": "games/contra/engine/base_throw_work.go",
+        "sha256": "25c3a0216975e7a69209a407386697c27d618d03c78108c83501edcfdeabeaa5"
+      },
+      {
+        "path": "games/contra/engine/bot.go",
+        "sha256": "3e6f2d01a86ff3346ff96916f8a51d86896e7d78b5449c56adb52535c79130e8"
+      },
+      {
+        "path": "games/contra/engine/bot_boss_aim.go",
+        "sha256": "ca1245a8017804f0259bd0031591472fe584a7651a52f83274868b3779424e15"
+      },
+      {
+        "path": "games/contra/engine/bot_coop.go",
+        "sha256": "058711cfd8f60f01cb00150c39a0075f28758696684967db5f845f8fea6e0964"
+      },
+      {
+        "path": "games/contra/engine/bot_drop_through.go",
+        "sha256": "6b04c79f601909bd28ae660911b7e860fa6fbd39c82763f11bb4f033e63af3f9"
+      },
+      {
+        "path": "games/contra/engine/bot_identity.go",
+        "sha256": "1a7d6425ae5f70d57ba54fa9b8a65d4be411a628fcf2ba1afe6ce5dd9e207445"
+      },
+      {
+        "path": "games/contra/engine/bot_life.go",
+        "sha256": "e483f1153bd76ee4fd98bd5122580bf8c89659a417b594f162e16e7a623efa8f"
+      },
+      {
+        "path": "games/contra/engine/bot_navigation.go",
+        "sha256": "9481f7995f866bf1468da1185a1f4580c1d0edfe817df59920f65d1b3a559788"
+      },
+      {
+        "path": "games/contra/engine/bot_nozzle_navigation.go",
+        "sha256": "353617eb970d9969e45e8527946ebe14077aed09bcefbb276e5ed56e72af8d9d"
+      },
+      {
+        "path": "games/contra/engine/bot_observation.go",
+        "sha256": "84ea17a1871704e3822bd65869b5e728ac6b4c6fbd632b71c8fc6ebbc1aaa983"
+      },
+      {
+        "path": "games/contra/engine/bot_side_collision.go",
+        "sha256": "2d92c7beb69a49efe3c137946fc6798b40f57f0f3a142a2f2a2f438df655f53d"
+      },
+      {
+        "path": "games/contra/engine/bot_tracking.go",
+        "sha256": "7e78dc336a94f9e1b19e5ccb07b5ea5d0435fd2399fc834f90e2f29c3643df53"
+      },
+      {
+        "path": "games/contra/engine/bot_vertical.go",
+        "sha256": "6acb887805baae3ef643a90ff5fd7f041170c1d351bd529623f30aed2e73020e"
+      },
+      {
+        "path": "games/contra/engine/bot_vision.go",
+        "sha256": "998f68f99358aa9a9cf1fe069d9d68ddf214a32e578e405bcd6dbbf5d9c0cb0d"
+      },
+      {
+        "path": "games/contra/engine/bot_vision_alien_recipes.go",
+        "sha256": "400aa3d3768763731444a57c9f49415c9414c09cf4d56a680be4b5a3f7a0a690"
+      },
+      {
+        "path": "games/contra/engine/bot_vision_anchors.go",
+        "sha256": "f734fc263912ce76a727e3885158a0574de461cb9530bac37f5cf8f616109e4d"
+      },
+      {
+        "path": "games/contra/engine/bot_vision_background_recipes.go",
+        "sha256": "9fa8a2cb0f28fa7ce3ae08b1b1d03cef664ddc57ce4f7926f97e4e7e8edc9422"
+      },
+      {
+        "path": "games/contra/engine/bot_vision_bits.go",
+        "sha256": "d0919b17838644c1d7fa6022fa4144aa80e250d62a7e3a438216c719cbf15c39"
+      },
+      {
+        "path": "games/contra/engine/bot_vision_builtin.go",
+        "sha256": "7d831de42ffa14c3277bd1156c531a8cffedf1db0ca7a0b11ad618029ca7ed7f"
+      },
+      {
+        "path": "games/contra/engine/bot_vision_builtin_background.go",
+        "sha256": "aebdacfd63a37da5efc5fb1569bc04861f4f850c1c7e3d64e2a0f73cf1f745b0"
+      },
+      {
+        "path": "games/contra/engine/bot_vision_builtin_sprites.go",
+        "sha256": "5ff564d91f9fbc18735fc5f05fe5c67ed24d660124513a4631abbdece298d61d"
+      },
+      {
+        "path": "games/contra/engine/bot_vision_counts.go",
+        "sha256": "e0c06cf9f5f84c4db2877b85aba1c8a53699586e7b2e28dc7b5e1d0328115319"
+      },
+      {
+        "path": "games/contra/engine/bot_vision_future_sprites.go",
+        "sha256": "96dfcfa3e62f036ef9f115c4a24b7a91ebd5d0a1d94e78675cf4a1cca2922b95"
+      },
+      {
+        "path": "games/contra/engine/bot_vision_machine_recipes.go",
+        "sha256": "838c392a68cb68f6965f716b7ba06add209b169e305fe77f1960b39ee8604c04"
+      },
+      {
+        "path": "games/contra/engine/bot_vision_markers.go",
+        "sha256": "39e28fddf0348ce6a2ef629f166158aaa29e72b55bd0acb441ea7d7ef74caeb7"
+      },
+      {
+        "path": "games/contra/engine/bot_vision_match.go",
+        "sha256": "59781619dd468b1e5cb5924db7c82b6702b8f2ca033a4d8187cc69b1462f52ea"
+      },
+      {
+        "path": "games/contra/engine/bot_vision_nozzle_recipes.go",
+        "sha256": "f5079a4f0ff6ba17272fca8061bfe721b3eefa657272b687dbbc04bcef436f35"
+      },
+      {
+        "path": "games/contra/engine/bot_vision_player_support.go",
+        "sha256": "bc760c23fe4e2e605a33dbda9a8d20f63b8ab55c4fb6946ed06d882d39583e7a"
+      },
+      {
+        "path": "games/contra/engine/bot_vision_snow_recipes.go",
+        "sha256": "24200bbf1a90b550ff0839d3e964b05594154afd7a8702b98c2a675904d8e152"
+      },
+      {
+        "path": "games/contra/engine/bot_vision_terrain.go",
+        "sha256": "3ac6f1ea1355916232c357c4614d22aef9299593ac1fcc2f8d75c796631fb61d"
+      },
+      {
+        "path": "games/contra/engine/bot_vision_uniform.go",
+        "sha256": "9458a47834f3e554f65f56070996b4e6731f48a4e49b782a9e6f671674989f2d"
+      },
+      {
+        "path": "games/contra/engine/bot_visual_frame.go",
+        "sha256": "18781aae93930ee8a3b4fa67d99055626a0c17948d525e135a4d33c8736247b7"
+      },
+      {
+        "path": "games/contra/engine/bot_visual_frame_catalog.go",
+        "sha256": "e957e6492f5e9ee9b4d68a6f82eb176f08a409efb70622fd87533f5c737e6981"
+      },
+      {
+        "path": "games/contra/engine/bot_visual_frame_pixels.go",
+        "sha256": "9bf6da5e26abfd0a97f9d54da452354a7f6c9b0b90fd024930e22cafaede0e20"
+      },
+      {
+        "path": "games/contra/engine/bot_visual_templates.go",
+        "sha256": "87aa3c8cccba2de116ced6b97d0309708ed3c6c74688e85ff3180cd5097420ca"
+      },
+      {
+        "path": "games/contra/engine/campaign.go",
+        "sha256": "3b806217cdba05e24c519ec5aabe7e4bb2fba2388617147e9e94e5747ea3d047"
+      },
+      {
+        "path": "games/contra/engine/campaign_initialize.go",
+        "sha256": "2b28b7b61a1e62ca2c0243f7f1e3607a99613a0165490635bed9fdf94a819d7e"
+      },
+      {
+        "path": "games/contra/engine/campaign_reset.go",
+        "sha256": "538917d1938f030a9b32a0bf0ab856835b93e84a98228c9aab19d010a7c21402"
+      },
+      {
+        "path": "games/contra/engine/campaign_reset_display.go",
+        "sha256": "3247a6fb273d2d4ca91db3985d78758ac2f64a04f0a587f239e8a68d43024161"
+      },
+      {
+        "path": "games/contra/engine/campaign_scene.go",
+        "sha256": "a013e52d7c7e0483029aa25de6fcdc878fbef156617ee31eb566aa721d80f85a"
+      },
+      {
+        "path": "games/contra/engine/campaign_scene_data.go",
+        "sha256": "87c45e0c10589a13d31280ada06446191acdf33303b700d86c420db7d62e4b68"
+      },
+      {
+        "path": "games/contra/engine/campaign_scene_entrance.go",
+        "sha256": "250ad43d7f247686a335fef280e70a027997d1aa5834b6690f6909785c2c9427"
+      },
+      {
+        "path": "games/contra/engine/campaign_scene_interlude.go",
+        "sha256": "e9b8a343f3391482d279e27c03ece8807c12545ff20bd2f53811626e86435970"
+      },
+      {
+        "path": "games/contra/engine/campaign_scene_intro.go",
+        "sha256": "abccb604137ef5f08bdf419eb48045b8bd6cf7a550d212f908814f230213806e"
+      },
+      {
+        "path": "games/contra/engine/campaign_types.go",
+        "sha256": "669e2fe7467845739ee9990440d5a21739df492df3dfdd2dbb55ead787f5a1b6"
+      },
+      {
+        "path": "games/contra/engine/chr_animation.go",
+        "sha256": "14159d1555b3cab0a0b27dd099d80e57672811da6700187a4aa4a110d2bc8e60"
+      },
+      {
+        "path": "games/contra/engine/controls.go",
+        "sha256": "8997448968036aaee15b2f6c564cbf8358ac5d86ebcebab80544ef27bd61b309"
+      },
+      {
+        "path": "games/contra/engine/enemies.go",
+        "sha256": "5453d59a7a64609f3e97844f32255716698f7121ca48d54c30e07c2dc7101594"
+      },
+      {
+        "path": "games/contra/engine/enemies_aliens_blob.go",
+        "sha256": "f7d3b99e677e6922451ef03a6141435cbd25d6542c73e92c5a50fa0421b95866"
+      },
+      {
+        "path": "games/contra/engine/enemies_aliens_boss.go",
+        "sha256": "b5822fd07e13a76d5397d60f86f8c4540f4a557b9e7beae8dd856bc8eabb98b3"
+      },
+      {
+        "path": "games/contra/engine/enemies_aliens_fetus.go",
+        "sha256": "5c972bd9be3d887e330b41435a2a57d1bad270f89054efc13aaebcc1f2455017"
+      },
+      {
+        "path": "games/contra/engine/enemies_aliens_small.go",
+        "sha256": "cf77c572614a38435d5ac64c9e7577d1b0d7b45a31f074993bfb994422348e9f"
+      },
+      {
+        "path": "games/contra/engine/enemies_aliens_spider.go",
+        "sha256": "4eee94a2b3874b1f28d17f96038242c24d0bdc78b50b1008373a4715cf181ebb"
+      },
+      {
+        "path": "games/contra/engine/enemies_aliens_tables.go",
+        "sha256": "49150a49fa1d65400ac8858a0f926b998ca2f2c6aa61ed0cca77d0de394e184d"
+      },
+      {
+        "path": "games/contra/engine/enemies_all_spawn.go",
+        "sha256": "0f449fd4a5fba8af534028ba5518dc7bb329d94dd90a8d9eebded98948580c2b"
+      },
+      {
+        "path": "games/contra/engine/enemies_all_tables.go",
+        "sha256": "2247d31f91a966b5918deaa48a7e2048be4b38e9112a20e5381647d253b2fcdf"
+      },
+      {
+        "path": "games/contra/engine/enemies_base_boss.go",
+        "sha256": "e3e47eb52d4d5d2ae49f4e412f2d4626367c05e0ce91316edbf99ad6609f0d07"
+      },
+      {
+        "path": "games/contra/engine/enemies_base_boss_tables.go",
+        "sha256": "643c6d066a5a41ed48f656f1a5d8ddb71144fe288bf2b6595120ae788c004437"
+      },
+      {
+        "path": "games/contra/engine/enemies_base_common.go",
+        "sha256": "33279fcb1e02a35cd52c646b0871abafea55608afb2aae0a13e9da78a86259ec"
+      },
+      {
+        "path": "games/contra/engine/enemies_base_generators.go",
+        "sha256": "839e2aebea8d029680ea0f753da70832a952d7a85c39da9bf71dccb97cd17b58"
+      },
+      {
+        "path": "games/contra/engine/enemies_base_pickup.go",
+        "sha256": "a5d37901e7afe92649984e2f2488bec704ab388df61686b21e93e765db640410"
+      },
+      {
+        "path": "games/contra/engine/enemies_base_redblue.go",
+        "sha256": "758b6e3a262f3f8255af74e14651f6e5cf1ffd7e0eb3eca7b6e0ff6ffd550642"
+      },
+      {
+        "path": "games/contra/engine/enemies_base_soldiers.go",
+        "sha256": "19f79e62bb2ff7d145da31e71f8b4a0a139a6507fcbf066d0c5aa2fd15417aa5"
+      },
+      {
+        "path": "games/contra/engine/enemies_base_tables.go",
+        "sha256": "089508f8f1305825b414715bcdd7a79cfeaf3645cae046fd60a024c3a0911837"
+      },
+      {
+        "path": "games/contra/engine/enemies_base_thrown.go",
+        "sha256": "dc94e4f6f796574a8883f4a815def4608971c4ac91054b7db77f4a5b57259ac5"
+      },
+      {
+        "path": "games/contra/engine/enemies_base_types.go",
+        "sha256": "017de660e87019abc7947e2b01cf5beb135c8babb681a14b08c64c6350fbbe22"
+      },
+      {
+        "path": "games/contra/engine/enemies_base_walls.go",
+        "sha256": "f1a18790bf394e76d0dd20c494912441cb1b9715703012607b6662c13c0c58c8"
+      },
+      {
+        "path": "games/contra/engine/enemies_box.go",
+        "sha256": "22f18cdfb86e18749ac93bd257a5edff4a9c14365f3a1d2a4d1c3f2f94d227a9"
+      },
+      {
+        "path": "games/contra/engine/enemies_bridge.go",
+        "sha256": "c65d6be3d1c023c3e900fc26ddeeb1eb321e9020fbfdaa0346fd612e93da919c"
+      },
+      {
+        "path": "games/contra/engine/enemies_bullets.go",
+        "sha256": "4594bcf17deb3fc4163bdbad63b6373b50334266e3e0acd0643a9e22cf737f95"
+      },
+      {
+        "path": "games/contra/engine/enemies_capsule.go",
+        "sha256": "2c3b89084d3abe8fbfd903b03e1270d9ab44cf93543eb3f0daecc24c3f6256e7"
+      },
+      {
+        "path": "games/contra/engine/enemies_collision.go",
+        "sha256": "13f4f13b7598589270e4f71a4a09e680c4169709349ecc7cfd31e05b4e182270"
+      },
+      {
+        "path": "games/contra/engine/enemies_collision_tables.go",
+        "sha256": "e948f46d1b73a59b22c3dbd8b746e8348c62a952287065ed6a1fe2784ef7e6aa"
+      },
+      {
+        "path": "games/contra/engine/enemies_collision_tick.go",
+        "sha256": "5c3a75f69ee273c1c5ee6c6a4f3b5e9473bc74951837fa8deee710a3d34e6490"
+      },
+      {
+        "path": "games/contra/engine/enemies_dispatch.go",
+        "sha256": "02e5df581fae1bfd7a0f171426234454651e326f7927d82ebf729a17dc842f2d"
+      },
+      {
+        "path": "games/contra/engine/enemies_explosion.go",
+        "sha256": "c7957b98947d6038a034bc0aa69e930c2f3fdf6a25da16b3caac22c412bab581"
+      },
+      {
+        "path": "games/contra/engine/enemies_generation.go",
+        "sha256": "a964e9491ddb362510df78e6036b938124a21966aa9dd07766db8c4d1a470ed8"
+      },
+      {
+        "path": "games/contra/engine/enemies_machines.go",
+        "sha256": "330ebe5ce39280b7d9201ab7d8e4e975c81e2a325bfb505456f554ad5f0d08c8"
+      },
+      {
+        "path": "games/contra/engine/enemies_machines_common.go",
+        "sha256": "c65dfb0b0188b92e9a0137233929f6e037623233481bf31169ccce68685e7de5"
+      },
+      {
+        "path": "games/contra/engine/enemies_machines_flames.go",
+        "sha256": "3b568e6d0f9960e5a23e312ceb5ce94df8f31513b2b6b55b79f98efba83f3b97"
+      },
+      {
+        "path": "games/contra/engine/enemies_machines_giant.go",
+        "sha256": "286e059bfffd00fd47a20d3e0ce4dbf0284c5d7ee0933a0321bd72e9c4a17a75"
+      },
+      {
+        "path": "games/contra/engine/enemies_machines_graphics.go",
+        "sha256": "2c29abb313c6de5f2d00aa10638685dcc3e7eddc7f6883eea4f5c122032e3fa2"
+      },
+      {
+        "path": "games/contra/engine/enemies_machines_hangar.go",
+        "sha256": "d93715a851ff4a698f049c522601a42dc327fd21eb24f59592757f22fb711558"
+      },
+      {
+        "path": "games/contra/engine/enemies_machines_walls.go",
+        "sha256": "b8a41e34a9be42c494efcb6471f46c8a64dd0e34ae524e7499e48f3fe6f25b26"
+      },
+      {
+        "path": "games/contra/engine/enemies_pickup.go",
+        "sha256": "ee72755e14212ce714c225639767fead9e92cdb1c0535740ebfe8ffe5822f73a"
+      },
+      {
+        "path": "games/contra/engine/enemies_progress.go",
+        "sha256": "af4c9a2c311b9f1df44a284eb3cb7b3404a6e6f54116ce0595b6663a7bd87a61"
+      },
+      {
+        "path": "games/contra/engine/enemies_runner.go",
+        "sha256": "2dc1814a4c61caa30214d29df0c1a2b082bd615566c422820e0dc1ed5c18fb9f"
+      },
+      {
+        "path": "games/contra/engine/enemies_shooters_aim.go",
+        "sha256": "e572d019735880aa80cd4a50e4836bc799365a879490f06f2842471fb7d0f4d8"
+      },
+      {
+        "path": "games/contra/engine/enemies_shooters_bossdoor.go",
+        "sha256": "d70e057853a477e247121551b7bf9e4a9dc9a3d1e3686192e3e379d4109de465"
+      },
+      {
+        "path": "games/contra/engine/enemies_shooters_bossdoor_terrain.go",
+        "sha256": "3dfc8069c2d83e8a23271b9beb8df8dd5b18250231697a15a54192b0d140210b"
+      },
+      {
+        "path": "games/contra/engine/enemies_shooters_runner.go",
+        "sha256": "53032d44797a4c93742590c4c18991f578d4cd40208a854eb57ba0d62b055ba1"
+      },
+      {
+        "path": "games/contra/engine/enemies_shooters_sniper.go",
+        "sha256": "69a06fc83a6f31ccbd262e4b1080a5566e1eb290a84364e32802777977ba9766"
+      },
+      {
+        "path": "games/contra/engine/enemies_shooters_tables.go",
+        "sha256": "d57dba7bb57ce7c2a89feb10ed9a186e3967a8d649d6af1cce73490236996e02"
+      },
+      {
+        "path": "games/contra/engine/enemies_shooters_turrets.go",
+        "sha256": "7e2b933f8828c630ee73ed2b066f7e8e8a45fa694eeefd13fea6dd79b3ae03bb"
+      },
+      {
+        "path": "games/contra/engine/enemies_snow_carrier.go",
+        "sha256": "90356bb7417d25915891d9c9cf33e0dcfac16d4d4c39555ae89a56685eb2909a"
+      },
+      {
+        "path": "games/contra/engine/enemies_snow_small.go",
+        "sha256": "58762e0243a4a020a24610a2bb89e33c60a88dec136e8a51bbedac35771f7b99"
+      },
+      {
+        "path": "games/contra/engine/enemies_snow_tables.go",
+        "sha256": "32251d6ec9a2180918499e4014fa6794f68e921b8249853a90ad7fa1ee280467"
+      },
+      {
+        "path": "games/contra/engine/enemies_snow_tank.go",
+        "sha256": "0302721a28609af5e6f3bc3ff6b5d7b3366c0e1eb7bf40240e5b56bccef11bcd"
+      },
+      {
+        "path": "games/contra/engine/enemies_tables.go",
+        "sha256": "aa7124b97aba6137fab33603a794c1cfb5d2b09293ca8c6b28a8c161508bb379"
+      },
+      {
+        "path": "games/contra/engine/enemies_terrain.go",
+        "sha256": "684f00cf30cb3721f990955c29f2f424217a29d0c01e8ec013dd227ef5ca4481"
+      },
+      {
+        "path": "games/contra/engine/enemies_waterfall.go",
+        "sha256": "609480371bdb561a7300493153ebf319d22474745c85ecf974f78cc68dfab0f0"
+      },
+      {
+        "path": "games/contra/engine/enemies_waterfall_arms.go",
+        "sha256": "cdd6b582249bdd7ba5b5506a01220c08411c0872e42ff7cac7e7be6d6a191e14"
+      },
+      {
+        "path": "games/contra/engine/enemies_waterfall_boss.go",
+        "sha256": "af3964719899eec27a0e25363824cdec5045c458845141bcc8d2cb1fb926f786"
+      },
+      {
+        "path": "games/contra/engine/frame.go",
+        "sha256": "4d96f20438ee959e03f4029df0b272fec7cdcceef406666995f07e50073267dc"
+      },
+      {
+        "path": "games/contra/engine/graphics_prefix.go",
+        "sha256": "9bc5f16b4bcb558245683f05906dd458121086202bd6a9d013832d589e3d91a0"
+      },
+      {
+        "path": "games/contra/engine/graphics_queue.go",
+        "sha256": "89e7f6aaf289801945abf79cda322700306840c10ff29177a5680eb58b64d927"
+      },
+      {
+        "path": "games/contra/engine/graphics_queue_modes.go",
+        "sha256": "992fb3c372bc134a97daa945c384ab898fdac09eb0a9176b5f11aa0662c60461"
+      },
+      {
+        "path": "games/contra/engine/graphics_text.go",
+        "sha256": "30ea97cbccbf2810925d5ef71716c13087ef6b9d93e5c4e4d66ffda9f7f81fa7"
+      },
+      {
+        "path": "games/contra/engine/level.go",
+        "sha256": "8854357fcc3e2b6df97fd1c8b5cfdacc468dae5721a5054d3ec4202624cb1506"
+      },
+      {
+        "path": "games/contra/engine/level_bundle.go",
+        "sha256": "d7a4632ebf30ae0a25b06e8e90b51dcfb723cef8155e5479afddbe3d094d4c29"
+      },
+      {
+        "path": "games/contra/engine/leveldata/jungle.json",
+        "sha256": "4aa0e5bee44bf2a75aea2e2debf6e7f9367f912307c8d3ba528a988e3211ba20"
+      },
+      {
+        "path": "games/contra/engine/leveldata/stage-1.json",
+        "sha256": "ae541455b3d25b9b86898b9b013739f8ae0735b409b593defc484a59af5924ad"
+      },
+      {
+        "path": "games/contra/engine/leveldata/stage-2.json",
+        "sha256": "b398dc1e444c586f4ac6181679d673f8fd9463638a0107a656ef104e69933153"
+      },
+      {
+        "path": "games/contra/engine/leveldata/stage-3.json",
+        "sha256": "2ce2245014def20fd2638c278755f7a2a3b06c92a24b8c232facb568903c7355"
+      },
+      {
+        "path": "games/contra/engine/leveldata/stage-4.json",
+        "sha256": "a1433c299763814b6c7acf02848e64f1629c163c639914fd6832e81b25b80f4a"
+      },
+      {
+        "path": "games/contra/engine/leveldata/stage-5.json",
+        "sha256": "362f9e0d91e0edebab407317b132c585af5c861f14a98ba9017b061f24720a48"
+      },
+      {
+        "path": "games/contra/engine/leveldata/stage-6.json",
+        "sha256": "30eba1e7f4048b119665ffe70b736c5ef9d3b268347bd4a365d1773fa154a5fc"
+      },
+      {
+        "path": "games/contra/engine/leveldata/stage-7.json",
+        "sha256": "aed95f893082874faa83db70c0da7b3d1f61fea023805d10ff6fe90419a893d1"
+      },
+      {
+        "path": "games/contra/engine/leveldata/stage-8.json",
+        "sha256": "81c8b9ff4bba44d3814dfbda3fef935c6b5a9500e051360307db42d487ea7596"
+      },
+      {
+        "path": "games/contra/engine/levels.go",
+        "sha256": "e4dfe377e366a30f39d62a5ac3941eb567a078b3df0472904261c517ca97107c"
+      },
+      {
+        "path": "games/contra/engine/movement.go",
+        "sha256": "ec945d0fdb15f6c410feb8d2399d6a38d79faedf9476cb7573c41847042b1d67"
+      },
+      {
+        "path": "games/contra/engine/palette.go",
+        "sha256": "67231cea41345e82a6e10a45b1e2c16cb285f476d1dffcc3b2c749923b1844c2"
+      },
+      {
+        "path": "games/contra/engine/palette_snow.go",
+        "sha256": "47f3c0189a690b18afc5eff782935ad60b2cf3bb36172dc6331ace6f046527d2"
+      },
+      {
+        "path": "games/contra/engine/player.go",
+        "sha256": "ed0687688e689a5b2eff66af7961e1016f7e99a389558ea04d76c0abc987d560"
+      },
+      {
+        "path": "games/contra/engine/player_animation.go",
+        "sha256": "18392ccb6932d2d506140c0b1caf77878e602859d22aa93aa4ad9473dabcddd8"
+      },
+      {
+        "path": "games/contra/engine/player_indoor.go",
+        "sha256": "e0986f8fb67f9a34193d12eb4463405fa34f9088fa8def229d6e914a238b832c"
+      },
+      {
+        "path": "games/contra/engine/player_lifecycle.go",
+        "sha256": "8142df869f40347294c4b7980fe0986f0e25499f0d0a350a02902784cf27a358"
+      },
+      {
+        "path": "games/contra/engine/presentation_sprites.go",
+        "sha256": "19b3b32ae25806c577446e6554ca9299d01310aef32f37f37abcd7ae14f64805"
+      },
+      {
+        "path": "games/contra/engine/presentation_sprites_data.json",
+        "sha256": "fe84f190385ee83695635445a2712a5dd7ee4fab7b96a00595e6dd44a1362f74"
+      },
+      {
+        "path": "games/contra/engine/random.go",
+        "sha256": "a6b91ae20bafdae5b255d9ea6ad8d55d299e6e260ac53dbca61a3c21772f0db8"
+      },
+      {
+        "path": "games/contra/engine/random_adapted.go",
+        "sha256": "d6abd1fa926d8280104de22837f1c0cf7c346ecdf1ab2e11a2bd10c51c26461b"
+      },
+      {
+        "path": "games/contra/engine/scroll.go",
+        "sha256": "3dde97a33fd70f5cabf6231a6cdf4fa438feb2dcb5145ec625499a5d37034cab"
+      },
+      {
+        "path": "games/contra/engine/scroll_queue.go",
+        "sha256": "a8566de09d23e1b10952585df01e0586280785f4f36e8c3d3f935ba2a3bdb27f"
+      },
+      {
+        "path": "games/contra/engine/session.go",
+        "sha256": "9230a9e46bfb9aaf160f4f70ebbe282c3b2aa59479f2a6a094a47b2016ece81c"
+      },
+      {
+        "path": "games/contra/engine/session_paused.go",
+        "sha256": "02af6bbfbc6e4e921b01d24dfd5cf73cab4121798c3c6d5f3d7d5b1cf7b85da7"
+      },
+      {
+        "path": "games/contra/engine/session_review.go",
+        "sha256": "2d65a6c983e379677abdac0a8b7eeb951dc27fda6d9320955d75fcc6f2f99791"
+      },
+      {
+        "path": "games/contra/engine/session_terminal.go",
+        "sha256": "82a5406ad50b22391d259c94c48f3b3025769d5e5e7cf1e62fa8c88ab2f77890"
+      },
+      {
+        "path": "games/contra/engine/session_validate.go",
+        "sha256": "4747b20c48ef22c2c629ad36d4a74e0c8dda370bd646eb393dcba99e6ce050ec"
+      },
+      {
+        "path": "games/contra/engine/terrain.go",
+        "sha256": "b7ab25fd69fb2a9a59146fe9c8fd35d73b8704b7bba9c6c62c566af31de0bfca"
+      },
+      {
+        "path": "games/contra/engine/terrain_scroll.go",
+        "sha256": "b52d1b920b6db6810d286dde706c303d9682ddbe58049af145ccf4d62dda5925"
+      },
+      {
+        "path": "games/contra/engine/terrain_scroll_graphics.go",
+        "sha256": "56468b7ff58134e8fc94ffff8deef2504e06f119c5fa9eb69bf97736faadea41"
+      },
+      {
+        "path": "games/contra/engine/terrain_work.go",
+        "sha256": "d900dc1aa7f768306c2735172aac08b4e15b95f8a730761070524e6738d015ac"
+      },
+      {
+        "path": "games/contra/engine/weapons.go",
+        "sha256": "cd5149419c3e0c700dcd1896ac1f53f9f609dcfc5eb4853f5139edf7c1ff1884"
+      },
+      {
+        "path": "games/contra/engine/weapons_step.go",
+        "sha256": "3a5f55cff6a26cccbb96eaa3a9b78332b139360620c584ce7f681c8ed51b20e3"
+      },
+      {
+        "path": "games/contra/engine/weapons_tables.go",
+        "sha256": "b7fc20675297b7ad196c1b2fd581f802e717db47190dd1482cbcd3db3e3e0637"
+      },
+      {
+        "path": "games/contra/engine/weapons_types.go",
+        "sha256": "02f649589efeaa9a398b2120cc28cf5d80e9a89717046a9fbc07b627bfb14faa"
+      },
+      {
+        "path": "games/contra/engine/world.go",
+        "sha256": "224947fac1c0fb69ebad02cd9707539e61786e3aff5bb0a7c6d9b3de120b63a7"
+      },
+      {
+        "path": "games/contra/engine/world_active.go",
+        "sha256": "71b2dace7602719508c9e3b29fbe08a825b862e6e22ee77c447db159a1b0dace"
+      },
+      {
+        "path": "games/contra/engine/world_display.go",
+        "sha256": "4fdcc601dd69efd92ca80bd03e53e72fd73dd11c8e2404904580b8f66de08651"
+      },
+      {
+        "path": "games/contra/engine/world_pause.go",
+        "sha256": "f2eab47699e6c311dd5460ea524ad55ba4a350bcf8d53fc1310df3f03fb4ef10"
+      },
+      {
+        "path": "games/contra/engine/world_presentation.go",
+        "sha256": "59233e0045e1b7b32ea3d6ca89fbf79c84dc13b2707b20ef976403dff24d0738"
+      },
+      {
+        "path": "games/contra/runtime/bridge.go",
+        "sha256": "77f3340123058d4c244af92ea3e2931d4104463e33d88cc089fc743aa003bbf7"
+      },
+      {
+        "path": "games/contra/runtime/build_files_native.go",
+        "sha256": "e244bd43848ca7f9e81287e87143db97b81805c7ffa533fd90330568fa21024b"
+      },
+      {
+        "path": "games/contra/runtime/build_identity.go",
+        "sha256": "d50b465d79cc34330fa6f35fe2e1f7ad0e9bee5d1356e74691b82bb12d504250"
+      },
+      {
+        "path": "games/contra/runtime/development.go",
+        "sha256": "30f44a8873d61dd5d75f0af9df24d08c01985819473985a257e384ca6c32c835"
+      },
+      {
+        "path": "games/contra/server/bot_visual.go",
+        "sha256": "a8b8da3b9531806ad8eb88298a34ad38c913a0f7826262e663cc67765221e06d"
+      },
+      {
+        "path": "games/contra/server/data/visual-catalog-v1.json.gz",
+        "sha256": "46fa695321db37e3a397b5373840e023a91874893eda12b48719a67b217fc1f5"
+      },
+      {
+        "path": "games/contra/server/input.go",
+        "sha256": "8b0efb31d6a81188f1d97b20f2dac4186b1fa23788067a86b374f0a4e6fd6f64"
+      },
+      {
+        "path": "games/contra/server/module.go",
+        "sha256": "5fdff80fe803458e003eb4d53697bb49b66081674a3362a2cf4aa7e27ad3117e"
+      },
+      {
+        "path": "games/contra/server/production_assets_native.go",
+        "sha256": "51114c419b6034fb9b86525f3f2480d4c3e4c8ac2340e063522a184c9df83703"
+      },
+      {
+        "path": "games/contra/server/production_native.go",
+        "sha256": "eba360bc64ae25b1c76f350c2a79c3267202159e4f58e5c8118246bf4cc48507"
+      },
+      {
+        "path": "games/contra/server/timer.go",
+        "sha256": "c71b1015aea5e301de9a9b855dd492d17580387c0f04db8bc2aa5643c571c079"
+      },
+      {
+        "path": "games/contra/server/visual_loader.go",
+        "sha256": "36fc52cfeaa1d6677daa978ec183961e559025a48b42fd2bac2b2eb35761334f"
+      },
+      {
+        "path": "go.mod",
+        "sha256": "33aa54f687143b2e468be7fe308f3455104c8b0f2fdc6e409233b5b1c8a3166f"
+      },
+      {
+        "path": "go.sum",
+        "sha256": "bde219704d2cf0b9e3e8b9bb01e6d97656accddcf5423d8587cd1afd8b8c25cb"
+      },
+      {
+        "path": "internal/gameapi/module.go",
+        "sha256": "c090e4aea8e57a549c9be02083ab985d41b30ca11fc01e31b4ae2c29210ce499"
+      },
+      {
+        "path": "internal/gameapi/rating.go",
+        "sha256": "0cfc31c77e0984418b6682b2f86c2027768e8a374a3f8931a666b2c6de063898"
+      }
+    ]
+  },
+  "productionCompositionVerified": true,
+  "registryUnchanged": true,
+  "scriptSHA256": "5463abec38433229ba2bc1b1f4b5632c2e6fa1ce13d777ed049d2b7a32bb8160"
+}

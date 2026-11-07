@@ -1,0 +1,90 @@
+{
+  "evidence_id": "ev_0a9b1255693659627cc036ce37b7469bb658cb046b14c0c6b597b941c95c67ae",
+  "subject": {
+    "name": "PlantsVsZombies.exe",
+    "digest": {
+      "sha256": "8e8eea73a85d7af311755708f5daf2786650cf3c032188b8315fcf99858c8342"
+    },
+    "local_path": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/pvz/.local/pvz-research/original-1.0.0.1051/PlantsVsZombies.exe",
+    "format": "pe",
+    "architecture": "x86"
+  },
+  "provider": {
+    "id": "ghidra",
+    "name": "Ghidra",
+    "version": "12.1.4"
+  },
+  "analysis_profile": {
+    "provider": {
+      "id": "ghidra",
+      "name": "Ghidra",
+      "version": "12.1.4"
+    },
+    "parameters": {
+      "target_kind": "executable",
+      "target_format": "pe",
+      "executable_role": "application",
+      "managed": false,
+      "native_aot_metadata": {
+        "contract_revision": "rtr-9.1-x64-pe-read-only-v3",
+        "source_bytes": 134217728,
+        "work_units": 67108864,
+        "working_memory_bytes": 67108864,
+        "report_bytes": 4194304
+      },
+      "architecture": "x86",
+      "available_architectures": [
+        "x86"
+      ],
+      "import_mode": "ephemeral-source-immutable",
+      "pdb_observations": "program-info-v1",
+      "annotation_policy": "atomic-function-entry-metadata-v1",
+      "load_image_observations": "source-mappings-entry-context-v2",
+      "function_body_evidence": "complete-inclusive-ranges-v1",
+      "function_references": "complete-body-and-entry-reference-manager-v2",
+      "call_relationship_coverage": "function-body-call-coverage-v5",
+      "function_dossier_coverage": "observed-facets-and-call-relationships-v1",
+      "string_inventory_evidence": "defined-data-coverage-v1",
+      "location_resolution": "explicit-address-exact-entry-symbol-first-v3",
+      "procedure_file_offset_resolution": "address-first-unique-target-source-mapping-v2",
+      "instruction_flow_evidence": "decoded-return-pcode-v1",
+      "instruction_references": "exact-address-incoming-v1",
+      "function_boundary_observations": "ghidra-function-boundary-limitations-v3",
+      "no_return_repair": "returning-imports-decoded-return-v2",
+      "process_launch": "inspected-jvm-launch-support-v1",
+      "jump_table_evidence": "typed-case-default-blocks-v1",
+      "decompiler_jump_loads": true,
+      "loader": "auto-from-header",
+      "language_id": "auto-from-header",
+      "compiler_spec_id": "auto-default",
+      "analyzer_preset": "ghidra-default"
+    },
+    "digest": "483a3c23d7b0c6333d61d7e050154873e5f8d7ea53a284362e069d8e793666a4"
+  },
+  "predicate_type": "rea.analysis",
+  "operation": "procedure_pseudo_code",
+  "parameters": {
+    "procedure": "0x4609D0"
+  },
+  "raw_result": {
+    "value": "\nvoid FUN_004609d0(int *param_1)\n\n{\n  char cVar1;\n  int iVar2;\n  int iVar3;\n  undefined4 uVar4;\n  undefined4 uVar5;\n  int iVar6;\n  int extraout_EDX;\n  float10 fVar7;\n  char *pcVar8;\n  float local_1c;\n  float fStack_18;\n  \n  iVar2 = param_1[0xf];\n  if (iVar2 == 0) {\n    iVar2 = FUN_004607e0(param_1);\n    if (iVar2 != 0) {\n      param_1[0x4b] = *(int *)(iVar2 + 0x158);\n      FUN_0052a580(0);\n      iVar2 = FUN_006397d0();\n      iVar2 = iVar2 - param_1[4] / 2;\n      param_1[0x20] = iVar2;\n      param_1[0xf] = 3;\n      param_1[0x15] = 0x50;\n      if (iVar2 < param_1[2]) {\n        pcVar8 = \"anim_lookleft\";\n      }\n      else {\n        pcVar8 = \"anim_lookright\";\n      }\n      FUN_0045fd90(pcVar8,3,0x41c00000);\n      if (*(char *)(*param_1 + 0x8c5) == '\\0') {\n        local_1c = 0.0;\n        if (*(float *)(DAT_006a9f00 + 0x858) != 0.0) {\n          fVar7 = (float10)FUN_005af410(*(undefined4 *)(DAT_006a9f00 + 0x858));\n          local_1c = (float)fVar7;\n        }\n        FUN_00515020(local_1c);\n        return;\n      }\n    }\n  }\n  else if (iVar2 == 3) {\n    if (param_1[0x15] == 0) {\n      FUN_0045fd90(\"anim_jumpup\",3,0x41c00000);\n      param_1[0xf] = 4;\n      param_1[0x15] = 0x2d;\n      return;\n    }\n  }\n  else if (iVar2 == 4) {\n    if (param_1[0x15] == 0) {\n      iVar2 = FUN_004607e0(param_1);\n      if (iVar2 != 0) {\n        FUN_0052a580(0x41f00000);\n        iVar2 = FUN_006397d0();\n        param_1[0x20] = iVar2 - param_1[4] / 2;\n      }\n      param_1[0xf] = 5;\n      param_1[0x15] = 0x32;\n      param_1[8] = param_1[7] * 10000 + 0x4a768;\n      return;\n    }\n  }\n  else {\n    iVar2 = FUN_0041c4c0();\n    if (0 < iVar2) {\n      FUN_0041c4c0();\n    }\n    iVar3 = FUN_0041c740();\n    iVar2 = param_1[0xf];\n    if (iVar2 == 5) {\n      uVar4 = FUN_0041c740();\n      iVar2 = param_1[0x15];\n      uVar5 = FUN_0041c680(param_1[0x20],4);\n      iVar6 = FUN_00511c40(uVar5);\n      param_1[2] = iVar6;\n      iVar3 = FUN_00511c40(uVar4,iVar3 + -0x70,4);\n      param_1[3] = iVar3;\n      if (iVar2 == 0) {\n        FUN_0045fd90(\"anim_jumpdown\",3,0x42700000);\n        param_1[0xf] = 6;\n        param_1[0x15] = 10;\n        return;\n      }\n    }\n    else if (iVar2 == 6) {\n      iVar2 = param_1[0x15];\n      iVar3 = FUN_00511c40(iVar3 + -0x70,iVar3 + 8,1);\n      param_1[3] = iVar3;\n      if (iVar2 == 5) {\n        FUN_004606f0(param_1);\n      }\n      if (param_1[0x15] == 0) {\n        cVar1 = FUN_0040ce00();\n        if (cVar1 == '\\0') {\n          param_1[0xf] = 7;\n          param_1[0x15] = 100;\n          *(undefined4 *)(extraout_EDX + 0x5540) = 0xc;\n          *(undefined4 *)(extraout_EDX + 0x5544) = 1;\n          *(undefined4 *)(extraout_EDX + 0x5548) = 4;\n          FUN_00453630();\n          fStack_18 = 80.0;\n          cVar1 = FUN_0041c0b0();\n          if (cVar1 != '\\0') {\n            fStack_18 = 69.0;\n          }\n          FUN_00453c80((float)(param_1[2] + 0x28),(float)param_1[3] + fStack_18);\n          return;\n        }\n        FUN_00453c30((float)(param_1[2] + -0xb),(float)(param_1[3] + 0x14),param_1[8] + 1);\n        FUN_00453630();\n        (**(code **)(*(int *)*param_1 + 0xd8))(DAT_006a7ac8);\n        FUN_004679b0(param_1);\n        return;\n      }\n    }\n    else if ((iVar2 == 7) && (param_1[0x15] == 0)) {\n      FUN_004679b0(param_1);\n    }\n  }\n  return;\n}\n\n",
+    "limitations": []
+  },
+  "normalized_result": "\nvoid FUN_004609d0(int *param_1)\n\n{\n  char cVar1;\n  int iVar2;\n  int iVar3;\n  undefined4 uVar4;\n  undefined4 uVar5;\n  int iVar6;\n  int extraout_EDX;\n  float10 fVar7;\n  char *pcVar8;\n  float local_1c;\n  float fStack_18;\n  \n  iVar2 = param_1[0xf];\n  if (iVar2 == 0) {\n    iVar2 = FUN_004607e0(param_1);\n    if (iVar2 != 0) {\n      param_1[0x4b] = *(int *)(iVar2 + 0x158);\n      FUN_0052a580(0);\n      iVar2 = FUN_006397d0();\n      iVar2 = iVar2 - param_1[4] / 2;\n      param_1[0x20] = iVar2;\n      param_1[0xf] = 3;\n      param_1[0x15] = 0x50;\n      if (iVar2 < param_1[2]) {\n        pcVar8 = \"anim_lookleft\";\n      }\n      else {\n        pcVar8 = \"anim_lookright\";\n      }\n      FUN_0045fd90(pcVar8,3,0x41c00000);\n      if (*(char *)(*param_1 + 0x8c5) == '\\0') {\n        local_1c = 0.0;\n        if (*(float *)(DAT_006a9f00 + 0x858) != 0.0) {\n          fVar7 = (float10)FUN_005af410(*(undefined4 *)(DAT_006a9f00 + 0x858));\n          local_1c = (float)fVar7;\n        }\n        FUN_00515020(local_1c);\n        return;\n      }\n    }\n  }\n  else if (iVar2 == 3) {\n    if (param_1[0x15] == 0) {\n      FUN_0045fd90(\"anim_jumpup\",3,0x41c00000);\n      param_1[0xf] = 4;\n      param_1[0x15] = 0x2d;\n      return;\n    }\n  }\n  else if (iVar2 == 4) {\n    if (param_1[0x15] == 0) {\n      iVar2 = FUN_004607e0(param_1);\n      if (iVar2 != 0) {\n        FUN_0052a580(0x41f00000);\n        iVar2 = FUN_006397d0();\n        param_1[0x20] = iVar2 - param_1[4] / 2;\n      }\n      param_1[0xf] = 5;\n      param_1[0x15] = 0x32;\n      param_1[8] = param_1[7] * 10000 + 0x4a768;\n      return;\n    }\n  }\n  else {\n    iVar2 = FUN_0041c4c0();\n    if (0 < iVar2) {\n      FUN_0041c4c0();\n    }\n    iVar3 = FUN_0041c740();\n    iVar2 = param_1[0xf];\n    if (iVar2 == 5) {\n      uVar4 = FUN_0041c740();\n      iVar2 = param_1[0x15];\n      uVar5 = FUN_0041c680(param_1[0x20],4);\n      iVar6 = FUN_00511c40(uVar5);\n      param_1[2] = iVar6;\n      iVar3 = FUN_00511c40(uVar4,iVar3 + -0x70,4);\n      param_1[3] = iVar3;\n      if (iVar2 == 0) {\n        FUN_0045fd90(\"anim_jumpdown\",3,0x42700000);\n        param_1[0xf] = 6;\n        param_1[0x15] = 10;\n        return;\n      }\n    }\n    else if (iVar2 == 6) {\n      iVar2 = param_1[0x15];\n      iVar3 = FUN_00511c40(iVar3 + -0x70,iVar3 + 8,1);\n      param_1[3] = iVar3;\n      if (iVar2 == 5) {\n        FUN_004606f0(param_1);\n      }\n      if (param_1[0x15] == 0) {\n        cVar1 = FUN_0040ce00();\n        if (cVar1 == '\\0') {\n          param_1[0xf] = 7;\n          param_1[0x15] = 100;\n          *(undefined4 *)(extraout_EDX + 0x5540) = 0xc;\n          *(undefined4 *)(extraout_EDX + 0x5544) = 1;\n          *(undefined4 *)(extraout_EDX + 0x5548) = 4;\n          FUN_00453630();\n          fStack_18 = 80.0;\n          cVar1 = FUN_0041c0b0();\n          if (cVar1 != '\\0') {\n            fStack_18 = 69.0;\n          }\n          FUN_00453c80((float)(param_1[2] + 0x28),(float)param_1[3] + fStack_18);\n          return;\n        }\n        FUN_00453c30((float)(param_1[2] + -0xb),(float)(param_1[3] + 0x14),param_1[8] + 1);\n        FUN_00453630();\n        (**(code **)(*(int *)*param_1 + 0xd8))(DAT_006a7ac8);\n        FUN_004679b0(param_1);\n        return;\n      }\n    }\n    else if ((iVar2 == 7) && (param_1[0x15] == 0)) {\n      FUN_004679b0(param_1);\n    }\n  }\n  return;\n}\n\n",
+  "confidence": "observed",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+    "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+    "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+    "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+    "Pseudocode is Ghidra decompiler output, not original source and not text-equivalent to Hopper output.",
+    "External functions and functions without an analyzable body return null; other decompiler failures remain explicit.",
+    "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state.",
+    "The target references PDB PlantsVsZombies.pdb (GUID 8efc826c-78d7-4bea-aa67-ff33ea3dc99b, age (hex) 1, signature unknown, version RSDS); Ghidra reports load state unknown. Original names and types may be missing; an empty name search does not prove a procedure is absent. Use list_procedures and address-based analysis to inspect recovered functions. REA does not admit a caller-selected PDB companion."
+  ],
+  "relationship_coverage": null,
+  "locations": [],
+  "evidence_links": []
+}

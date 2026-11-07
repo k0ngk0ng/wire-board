@@ -1,0 +1,6 @@
+=== RUN   TestBotCannotLandBodyInsideVisibleHighWall
+    bot_high_wall_test.go:30: predicted landing body remains inside visible wall 151 16
+--- FAIL: TestBotCannotLandBodyInsideVisibleHighWall (0.00s)
+FAIL
+FAIL	github.com/k0ngk0ng/wire-board/games/contra/engine	0.573s
+FAIL

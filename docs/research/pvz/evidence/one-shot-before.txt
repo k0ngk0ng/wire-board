@@ -1,0 +1,14 @@
+..E.
+======================================================================
+ERROR: test_original_one_shot_actions_hold_their_last_pose (test_native_classic.NativeClassicTests.test_original_one_shot_actions_hold_their_last_pose)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/pvz/games/pvz/build/test_native_classic.py", line 13, in test_original_one_shot_actions_hold_their_last_pose
+    self.assertFalse(module.looping_marker(marker), marker)
+                     ^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'native_classic' has no attribute 'looping_marker'
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.000s
+
+FAILED (errors=1)

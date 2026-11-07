@@ -1,0 +1,55 @@
+{
+  "source_is_original_execution": true,
+  "source_evidence": [
+    {
+      "path": "docs/research/nes-contra/evidence/static-player-modes.json.gz",
+      "sha256": "7aeb234075120dcfb1caa77ecb70a156d4b6af9837c03fc615d3cf15d4b48d56"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/static-player-mode-boundaries.json.gz",
+      "sha256": "e27ceb5b029d7a3b62e9c539dcf1cbbcdcdede87c1eda99eea4975aea62136d8"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/static-player-boss-lifecycle.json.gz",
+      "sha256": "778b2b892a4dc9bf4e859a0c14e2221f4b76c76ddda60f5409d02908c0725394"
+    }
+  ],
+  "fixture_sha256": "13844ca60439831b7a5934520e5b4d9a3d73b15ab6d3285a5a995264b3504c4e",
+  "calls": 9776,
+  "blocked_peer_gate_cases": 4,
+  "scene_coverage": {
+    "sceneTypes": [
+      0,
+      1,
+      128
+    ],
+    "scrollTypes": [
+      0,
+      1
+    ],
+    "shock": 390,
+    "advancing": 536,
+    "forceJump": 4,
+    "camera": 198
+  },
+  "boundary_cases": 12,
+  "boss_lifecycle_counts": {
+    "normal": 1716,
+    "dying": 606,
+    "spawn": 4
+  },
+  "repeat_labels": {
+    "scene": [
+      "v2",
+      "v3"
+    ],
+    "boundaries": [
+      "v2",
+      "v3"
+    ],
+    "boss_lifecycle": [
+      "v1",
+      "v2"
+    ]
+  }
+}

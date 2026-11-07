@@ -1,0 +1,458 @@
+{
+  "status": "unresolved-visible-nozzle-knowledge-needed",
+  "scope": "Offline audit only. Diagnostic collision/death state never enters bot input.",
+  "finding": "Player lands next to visible middle nozzle; death begins at frame75809, while middle flame is first recognized at75815. Existing expanded-flame recipes do not identify the dormant nozzle or very short emerging jet.",
+  "frames": [
+    {
+      "frame": 75804,
+      "visible_enemies": [
+        {
+          "ID": 0,
+          "X": 32,
+          "Y": 184,
+          "Kind": 17,
+          "Sprite": 0,
+          "Appearance": 0,
+          "Family": "machine-flame"
+        }
+      ],
+      "visible_player": {
+        "X": 125,
+        "Y": 142,
+        "Alive": true,
+        "Visible": true,
+        "Lives": 10,
+        "Weapon": 0,
+        "Sprite": 9,
+        "Appearance": 192,
+        "LivesKnown": true,
+        "WeaponKnown": false,
+        "AliveKnown": false,
+        "GameOverKnown": false,
+        "GameOver": false
+      },
+      "diagnostic_only": {
+        "x": 126,
+        "y": 144.5859375,
+        "death": 0
+      }
+    },
+    {
+      "frame": 75805,
+      "visible_enemies": [
+        {
+          "ID": 0,
+          "X": 32,
+          "Y": 184,
+          "Kind": 17,
+          "Sprite": 0,
+          "Appearance": 0,
+          "Family": "machine-flame"
+        }
+      ],
+      "visible_player": {
+        "X": 126,
+        "Y": 143,
+        "Alive": true,
+        "Visible": true,
+        "Lives": 10,
+        "Weapon": 0,
+        "Sprite": 9,
+        "Appearance": 192,
+        "LivesKnown": true,
+        "WeaponKnown": false,
+        "AliveKnown": false,
+        "GameOverKnown": false,
+        "GameOver": false
+      },
+      "diagnostic_only": {
+        "x": 127,
+        "y": 148.5859375,
+        "death": 0
+      }
+    },
+    {
+      "frame": 75806,
+      "visible_enemies": [
+        {
+          "ID": 0,
+          "X": 32,
+          "Y": 184,
+          "Kind": 17,
+          "Sprite": 0,
+          "Appearance": 0,
+          "Family": "machine-flame"
+        }
+      ],
+      "visible_player": {
+        "X": 127,
+        "Y": 148,
+        "Alive": true,
+        "Visible": true,
+        "Lives": 10,
+        "Weapon": 0,
+        "Sprite": 15,
+        "Appearance": 0,
+        "LivesKnown": true,
+        "WeaponKnown": false,
+        "AliveKnown": false,
+        "GameOverKnown": false,
+        "GameOver": false
+      },
+      "diagnostic_only": {
+        "x": 126,
+        "y": 148.5859375,
+        "death": 0
+      }
+    },
+    {
+      "frame": 75807,
+      "visible_enemies": [
+        {
+          "ID": 0,
+          "X": 32,
+          "Y": 184,
+          "Kind": 17,
+          "Sprite": 0,
+          "Appearance": 0,
+          "Family": "machine-flame"
+        }
+      ],
+      "visible_player": {
+        "X": 0,
+        "Y": 0,
+        "Alive": false,
+        "Visible": false,
+        "Lives": 10,
+        "Weapon": 0,
+        "Sprite": 0,
+        "Appearance": 0,
+        "LivesKnown": true,
+        "WeaponKnown": false,
+        "AliveKnown": false,
+        "GameOverKnown": false,
+        "GameOver": false
+      },
+      "diagnostic_only": {
+        "x": 125,
+        "y": 148.5859375,
+        "death": 0
+      }
+    },
+    {
+      "frame": 75808,
+      "visible_enemies": [
+        {
+          "ID": 0,
+          "X": 32,
+          "Y": 184,
+          "Kind": 17,
+          "Sprite": 0,
+          "Appearance": 0,
+          "Family": "machine-flame"
+        }
+      ],
+      "visible_player": {
+        "X": 0,
+        "Y": 0,
+        "Alive": false,
+        "Visible": false,
+        "Lives": 10,
+        "Weapon": 0,
+        "Sprite": 0,
+        "Appearance": 0,
+        "LivesKnown": true,
+        "WeaponKnown": false,
+        "AliveKnown": false,
+        "GameOverKnown": false,
+        "GameOver": false
+      },
+      "diagnostic_only": {
+        "x": 126,
+        "y": 148.5859375,
+        "death": 0
+      }
+    },
+    {
+      "frame": 75809,
+      "visible_enemies": [
+        {
+          "ID": 0,
+          "X": 32,
+          "Y": 184,
+          "Kind": 17,
+          "Sprite": 0,
+          "Appearance": 0,
+          "Family": "machine-flame"
+        }
+      ],
+      "visible_player": {
+        "X": 0,
+        "Y": 0,
+        "Alive": false,
+        "Visible": false,
+        "Lives": 10,
+        "Weapon": 0,
+        "Sprite": 0,
+        "Appearance": 0,
+        "LivesKnown": true,
+        "WeaponKnown": false,
+        "AliveKnown": false,
+        "GameOverKnown": false,
+        "GameOver": false
+      },
+      "diagnostic_only": {
+        "x": 127,
+        "y": 148.5859375,
+        "death": 1
+      }
+    },
+    {
+      "frame": 75810,
+      "visible_enemies": [
+        {
+          "ID": 0,
+          "X": 32,
+          "Y": 184,
+          "Kind": 17,
+          "Sprite": 0,
+          "Appearance": 0,
+          "Family": "machine-flame"
+        }
+      ],
+      "visible_player": {
+        "X": 127,
+        "Y": 148,
+        "Alive": true,
+        "Visible": true,
+        "Lives": 10,
+        "Weapon": 0,
+        "Sprite": 13,
+        "Appearance": 0,
+        "LivesKnown": true,
+        "WeaponKnown": false,
+        "AliveKnown": false,
+        "GameOverKnown": false,
+        "GameOver": false
+      },
+      "diagnostic_only": {
+        "x": 126,
+        "y": 146.22265625,
+        "death": 1
+      }
+    },
+    {
+      "frame": 75811,
+      "visible_enemies": [
+        {
+          "ID": 0,
+          "X": 32,
+          "Y": 184,
+          "Kind": 17,
+          "Sprite": 0,
+          "Appearance": 0,
+          "Family": "machine-flame"
+        }
+      ],
+      "visible_player": {
+        "X": 126,
+        "Y": 146,
+        "Alive": true,
+        "Visible": true,
+        "Lives": 10,
+        "Weapon": 0,
+        "Sprite": 10,
+        "Appearance": 0,
+        "LivesKnown": true,
+        "WeaponKnown": false,
+        "AliveKnown": false,
+        "GameOverKnown": false,
+        "GameOver": false
+      },
+      "diagnostic_only": {
+        "x": 125,
+        "y": 143.99609375,
+        "death": 1
+      }
+    },
+    {
+      "frame": 75812,
+      "visible_enemies": [
+        {
+          "ID": 0,
+          "X": 32,
+          "Y": 184,
+          "Kind": 17,
+          "Sprite": 0,
+          "Appearance": 0,
+          "Family": "machine-flame"
+        }
+      ],
+      "visible_player": {
+        "X": 125,
+        "Y": 143,
+        "Alive": true,
+        "Visible": true,
+        "Lives": 10,
+        "Weapon": 0,
+        "Sprite": 10,
+        "Appearance": 0,
+        "LivesKnown": true,
+        "WeaponKnown": false,
+        "AliveKnown": false,
+        "GameOverKnown": false,
+        "GameOver": false
+      },
+      "diagnostic_only": {
+        "x": 124,
+        "y": 141.90625,
+        "death": 1
+      }
+    },
+    {
+      "frame": 75813,
+      "visible_enemies": [
+        {
+          "ID": 0,
+          "X": 32,
+          "Y": 184,
+          "Kind": 17,
+          "Sprite": 0,
+          "Appearance": 0,
+          "Family": "machine-flame"
+        }
+      ],
+      "visible_player": {
+        "X": 124,
+        "Y": 141,
+        "Alive": true,
+        "Visible": true,
+        "Lives": 10,
+        "Weapon": 0,
+        "Sprite": 10,
+        "Appearance": 0,
+        "LivesKnown": true,
+        "WeaponKnown": false,
+        "AliveKnown": false,
+        "GameOverKnown": false,
+        "GameOver": false
+      },
+      "diagnostic_only": {
+        "x": 123,
+        "y": 139.953125,
+        "death": 1
+      }
+    },
+    {
+      "frame": 75814,
+      "visible_enemies": [
+        {
+          "ID": 0,
+          "X": 32,
+          "Y": 184,
+          "Kind": 17,
+          "Sprite": 0,
+          "Appearance": 0,
+          "Family": "machine-flame"
+        }
+      ],
+      "visible_player": {
+        "X": 123,
+        "Y": 138,
+        "Alive": true,
+        "Visible": true,
+        "Lives": 10,
+        "Weapon": 0,
+        "Sprite": 10,
+        "Appearance": 0,
+        "LivesKnown": true,
+        "WeaponKnown": false,
+        "AliveKnown": false,
+        "GameOverKnown": false,
+        "GameOver": false
+      },
+      "diagnostic_only": {
+        "x": 122,
+        "y": 138.13671875,
+        "death": 1
+      }
+    },
+    {
+      "frame": 75815,
+      "visible_enemies": [
+        {
+          "ID": 0,
+          "X": 108,
+          "Y": 136,
+          "Kind": 17,
+          "Sprite": 0,
+          "Appearance": 0,
+          "Family": "machine-flame"
+        },
+        {
+          "ID": 1,
+          "X": 32,
+          "Y": 184,
+          "Kind": 17,
+          "Sprite": 0,
+          "Appearance": 0,
+          "Family": "machine-flame"
+        }
+      ],
+      "visible_player": {
+        "X": 122,
+        "Y": 137,
+        "Alive": true,
+        "Visible": true,
+        "Lives": 10,
+        "Weapon": 0,
+        "Sprite": 10,
+        "Appearance": 0,
+        "LivesKnown": true,
+        "WeaponKnown": false,
+        "AliveKnown": false,
+        "GameOverKnown": false,
+        "GameOver": false
+      },
+      "diagnostic_only": {
+        "x": 121,
+        "y": 136.45703125,
+        "death": 1
+      }
+    },
+    {
+      "frame": 75816,
+      "visible_enemies": [
+        {
+          "ID": 0,
+          "X": 32,
+          "Y": 184,
+          "Kind": 17,
+          "Sprite": 0,
+          "Appearance": 0,
+          "Family": "machine-flame"
+        }
+      ],
+      "visible_player": {
+        "X": 121,
+        "Y": 135,
+        "Alive": true,
+        "Visible": true,
+        "Lives": 10,
+        "Weapon": 0,
+        "Sprite": 10,
+        "Appearance": 0,
+        "LivesKnown": true,
+        "WeaponKnown": false,
+        "AliveKnown": false,
+        "GameOverKnown": false,
+        "GameOver": false
+      },
+      "diagnostic_only": {
+        "x": 120,
+        "y": 134.9140625,
+        "death": 1
+      }
+    }
+  ]
+}

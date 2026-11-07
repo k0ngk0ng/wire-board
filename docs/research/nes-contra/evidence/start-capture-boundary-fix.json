@@ -1,0 +1,55 @@
+{
+  "scope": "Corrected startup recorder matches F8DB stack depth to C001 entry SP+2; nested NMI returns must not complete the world call. Invalid original fixture is not an acceptance oracle.",
+  "romSHA256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+  "originalRAMUnchanged": true,
+  "ramSHA256": "112e10f72f1491d9942327da6e93fbe9518704439b8b9def5cc0bbc9b0599a2d",
+  "changedRecords": [
+    {
+      "index": 670,
+      "emulatorFrame": 1392,
+      "incompleteRoutine": 2,
+      "completeRoutine": 3,
+      "incompleteQueueUsed": 0,
+      "completeQueueUsed": 1
+    }
+  ],
+  "correctedFixtureSHA256": "678aecc90c213f8cc9119196a7c9588acbfa71c811372d85177187002e3e7d96",
+  "discardedFixtureSHA256": "90eb8f57ff84f170445a50a9d9fd86892823627bb544dc1278a8fb1a743373b2",
+  "discardedScenario": {
+    "name": "world-start-v1",
+    "frames": 1800,
+    "captures": [
+      400,
+      800,
+      1100,
+      1400,
+      1800
+    ],
+    "segments": [
+      {
+        "start": 100,
+        "end": 102,
+        "keys": [
+          "select"
+        ]
+      },
+      {
+        "start": 120,
+        "end": 122,
+        "keys": [
+          "start"
+        ]
+      },
+      {
+        "start": 720,
+        "end": 722,
+        "keys": [
+          "start"
+        ]
+      }
+    ],
+    "hooks_lua": "\nlocal records=assert(io.open(out..'/world-frames.jsonl','w'))\nlocal state=assert(io.open(out..'/world-frames.bin','wb'))\n\nlocal ppuout=assert(io.open(out..'/world-ppu.bin','wb'))\nlocal function ppustate()\n local bytes={}\n for a=0x2000,0x27ff do bytes[#bytes+1]=string.char(ppu.readbyte(a))end\n for a=0x3f00,0x3f1f do bytes[#bytes+1]=string.char(ppu.readbyte(a))end\n return table.concat(bytes)\nend\nlocal pending=nil;local ordinal=0\nmemory.registerexec(0xc001,1,function()\n if memory.readbyte(0x18)~=5 or memory.readbyte(0x30)~=0 then return end\n assert(not pending,'nested world frame')\n pending={frame=emu.framecount(),before=memory.readbyterange(0,2048),beforePPU=ppustate(),commands={}}\nend)\nmemory.registerexec(0xf9bc,1,function()\n if pending then pending.commands[#pending.commands+1]=string.format('{\"kind\":\"sound\",\"id\":%d}',memory.getregister('a')) end\nend)\nmemory.registerexec(0xf9d4,1,function()\n if pending then pending.commands[#pending.commands+1]='{\"kind\":\"reset\"}' end\nend)\nmemory.registerexec(0xf8db,1,function()\n if not pending then return end\n local p=pending;pending=nil;ppuout:write(p.beforePPU);ppuout:write(ppustate())\n state:write(p.before);state:write(memory.readbyterange(0,2048))\n records:write(string.format('{\"index\":%d,\"emulatorFrame\":%d,\"commands\":[%s]}\\n',ordinal,p.frame,table.concat(p.commands,',')))\n ordinal=ordinal+1\nend)\nfunction finish_probe()assert(not pending);records:close();state:close();ppuout:close()end\n",
+    "timeout_seconds": 120
+  },
+  "reaBundleSHA256": "86fa246705a316be2ab2e183b93685b6e4410f59d066cb64bc4d3b65bb445b56"
+}

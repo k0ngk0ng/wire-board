@@ -129,3 +129,9 @@ test("transport epoch reset clears controls without reusing a delayed race input
   assert.equal(q.next(400), null);
   q.complete(release.token);
 });
+
+test('brake pressure is retained and changes produce new input packets',()=>{
+ const q=new LatestDrive();sync(q);q.set({...neutral,brake:true,brakeAmount:.25});const a=q.next(0);assert.equal(a.brakeAmount,.25);q.complete(a.token);
+ q.set({...neutral,brake:true,brakeAmount:.75});const b=q.next(120);assert.equal(b.brakeAmount,.75);q.complete(b.token);
+ q.set({...neutral,brake:true});assert.equal(q.value.brakeAmount,1);q.set(neutral);assert.equal(q.value.brakeAmount,0);
+});

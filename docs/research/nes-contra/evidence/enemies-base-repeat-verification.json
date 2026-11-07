@@ -1,0 +1,131 @@
+{
+  "success": true,
+  "comparisons": [
+    {
+      "source": ".local/contra-enemies-base/oracle/runs/base-2-room-v2",
+      "repeat": ".local/contra-enemies-base/oracle/runs/base-2-room-v3",
+      "checks": [
+        {
+          "artifact": "ram.bin",
+          "sha256": "e0b9d12566b62ce057065e4c9f5f8420544c2c5a34b7b1f92f4d509ee9674689",
+          "identical": true
+        },
+        {
+          "artifact": "inputs.csv",
+          "sha256": "424f1097b9e4e327bfdc727743f90fa5df62ca3be855cc92371019f7824d5520",
+          "identical": true
+        },
+        {
+          "artifact": "base-enemies.jsonl",
+          "sha256": "2618ea6d3f3b899cf4fce7cbcc46ed7827efccacaa8a9bf98906162d2253416a",
+          "identical": true
+        }
+      ]
+    },
+    {
+      "source": ".local/contra-enemies-base/oracle/runs/base-4-room-v2",
+      "repeat": ".local/contra-enemies-base/oracle/runs/base-4-room-v3",
+      "checks": [
+        {
+          "artifact": "ram.bin",
+          "sha256": "f7b0acfc4d8d0d3c3a8c0fce486b2a6ffca1238ef855f3c605838ea1311e26bb",
+          "identical": true
+        },
+        {
+          "artifact": "inputs.csv",
+          "sha256": "4b91b45cebf1d48a80bb52924c831cb6c464eb50f375ad7c27a50788fef45411",
+          "identical": true
+        },
+        {
+          "artifact": "base-enemies.jsonl",
+          "sha256": "e023ea0f33f1d0fc183f274056ea987104e835d09c1f7fae1c31233f759b1589",
+          "identical": true
+        }
+      ]
+    },
+    {
+      "source": ".local/contra-enemies-base/cases/runs/base-cases-v2",
+      "repeat": ".local/contra-enemies-base/cases/runs/base-cases-v3",
+      "checks": [
+        {
+          "artifact": "ram.bin",
+          "sha256": "220d03bcbeabfa207252e04698387e2350fb2464de8d973f79202a5fac7147e3",
+          "identical": true
+        },
+        {
+          "artifact": "inputs.csv",
+          "sha256": "629121544df27cef686ded9d49c2e484c8f503ba09586a401f221b3a3d22b7d6",
+          "identical": true
+        },
+        {
+          "artifact": "boss.jsonl",
+          "sha256": "fa0a14ecffa95f2ef59531cde28795fad0c7235c5a4e45607858485d09513dbb",
+          "identical": true
+        }
+      ]
+    },
+    {
+      "source": ".local/contra-enemies-base/pickup-oracle/runs/base-pickup-controlled-v1",
+      "repeat": ".local/contra-enemies-base/pickup-oracle/runs/base-pickup-controlled-v2",
+      "checks": [
+        {
+          "artifact": "ram.bin",
+          "sha256": "f4c7da82e16cd2a77de25400cc862ca497a4ab34aebc12243aa02aefff25c9c8",
+          "identical": true
+        },
+        {
+          "artifact": "inputs.csv",
+          "sha256": "34f7e10980928b133eb4d37b2b7f7d3a1a1548f6274e3b189c0fb62ba6713cea",
+          "identical": true
+        },
+        {
+          "artifact": "boss.jsonl",
+          "sha256": "b2ed1233b3c0f2f54a1b4fb1190b350242d588459421d96afd8aea54af7cda0b",
+          "identical": true
+        }
+      ]
+    },
+    {
+      "source": ".local/contra-enemies-base/pickup-oracle/runs/base-pickup-natural-v1",
+      "repeat": ".local/contra-enemies-base/pickup-oracle/runs/base-pickup-natural-v2",
+      "checks": [
+        {
+          "artifact": "ram.bin",
+          "sha256": "e0b9d12566b62ce057065e4c9f5f8420544c2c5a34b7b1f92f4d509ee9674689",
+          "identical": true
+        },
+        {
+          "artifact": "inputs.csv",
+          "sha256": "424f1097b9e4e327bfdc727743f90fa5df62ca3be855cc92371019f7824d5520",
+          "identical": true
+        },
+        {
+          "artifact": "base-enemies.jsonl",
+          "sha256": "e66792e5cf587410d0483b550abe083c7cea9aa3d970f9c16611a37398974f0b",
+          "identical": true
+        }
+      ]
+    },
+    {
+      "source": ".local/contra-enemies-base/cases/runs/base-waves-v1",
+      "repeat": ".local/contra-enemies-base/cases/runs/base-waves-v2",
+      "checks": [
+        {
+          "artifact": "ram.bin",
+          "sha256": "d22a927a089e5eb9860c9221b8649f1f020e77ed881903f2fecbd8c465c2ce81",
+          "identical": true
+        },
+        {
+          "artifact": "inputs.csv",
+          "sha256": "4bf83ac5e4f63899b2a5f1075b640fe3aeb2d9f3d821a931784cfb954868c4a9",
+          "identical": true
+        },
+        {
+          "artifact": "boss.jsonl",
+          "sha256": "e501ec7dfd1a033dd0b6f9e43f8cefa4ff51ad284d034e930cd5beabaf9c38e0",
+          "identical": true
+        }
+      ]
+    }
+  ]
+}

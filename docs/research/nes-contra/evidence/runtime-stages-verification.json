@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "sourceChangedDuringCheck": [],
+  "manifestSHA256": "b5e307c308df7c019d67c3de87b560e90c45afcc1c0a8644c73fafd475b00fea",
+  "generatorSHA256": "c7c23485125887813e62b68f70c06e45df405727ad201c1fef1120ab37cb6102",
+  "testSHA256": "c3f9339ba89902e2984e332d935fcbefc10c8de17ff3181007836299f9b3b915",
+  "logSHA256": "48a46c3e980c1dfab9218dfd9049de1f71dc7f839c13d17de435bf4a20bd484d",
+  "tests": 6,
+  "originalCHRFrames": 2048,
+  "originalEnemyCalls": 372,
+  "scope": "Static per-stage/scene resource completeness, source binding and on-event audio dependency closure; not a browser loading or gameplay acceptance result.",
+  "sourceOnlyRebindAfterBaseDataflowFix": true,
+  "mediaSetsChanged": false
+}

@@ -68,7 +68,7 @@ func Module() gameapi.Module {
 			}
 			var o Options
 			_ = json.Unmarshal(normalized, &o)
-			s := &State{Options: o, Players: make([]Player, ctx.Players), Phase: "prepare", Epoch: 1, Wave: 1, BaseHP: 30, BaseMaxHP: 30, ServerAt: ctx.Now.UnixMilli(), NextAt: ctx.Now.UnixMilli() + int64(o.PrepSeconds)*1000, Towers: []Tower{}, Enemies: []Enemy{}, Events: []Event{}}
+			s := &State{SpecializationRules: 1, SkillRules: 2, Options: o, Players: make([]Player, ctx.Players), Phase: "prepare", Epoch: 1, Wave: 1, BaseHP: 30, BaseMaxHP: 30, ServerAt: ctx.Now.UnixMilli(), NextAt: ctx.Now.UnixMilli() + int64(o.PrepSeconds)*1000, Towers: []Tower{}, Enemies: []Enemy{}, Events: []Event{}}
 			for i := range s.Players {
 				s.Players[i].Gold = 300
 			}
@@ -154,8 +154,11 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 			s.event(Event{Type: "sell", X: pos.X, Y: pos.Y, Kind: t.Kind, Owner: p, Amount: float64(amount)})
 			s.Towers = slices.Delete(s.Towers, index, index+1)
 		} else {
-			if (t.Level == 3 && (a.Branch != "power" && a.Branch != "speed")) || (t.Level != 3 && a.Branch != "") {
-				return m, errors.New("第 4 级请选择威力或迅捷专精，其他等级无需选择")
+			chosen := *t
+			chosen.Level++
+			chosen.Branch = a.Branch
+			if (t.Level == 3 && !s.validBranch(chosen)) || (t.Level != 3 && a.Branch != "") {
+				return m, errors.New("请选择当前可用的升级分支；其他等级无需选择")
 			}
 			cost := upgradeCost(*t)
 			if s.Players[p].Gold < cost || t.Level >= maxValue || t.Spent > maxValue-cost {
@@ -293,10 +296,11 @@ type BuildControl struct {
 	Enabled bool   `json:"enabled"`
 }
 type UpgradeControl struct {
-	TowerID     int  `json:"towerId"`
-	Cost        int  `json:"cost"`
-	Enabled     bool `json:"enabled"`
-	NeedsBranch bool `json:"needsBranch"`
+	TowerID     int            `json:"towerId"`
+	Cost        int            `json:"cost"`
+	Enabled     bool           `json:"enabled"`
+	NeedsBranch bool           `json:"needsBranch"`
+	Branches    []BranchChoice `json:"branches,omitempty"`
 }
 type SellControl struct {
 	TowerID int  `json:"towerId"`
@@ -351,7 +355,11 @@ func (s *State) controls(p int) Controls {
 		if t.Owner == p {
 			c.Targets = append(c.Targets, TargetControl{t.ID, c.CanAct})
 			cost := upgradeCost(t)
-			c.Upgrades = append(c.Upgrades, UpgradeControl{t.ID, cost, c.CanAct && s.Players[p].Gold >= cost && t.Level < maxValue && t.Spent <= maxValue-cost, t.Level == 3})
+			var branches []BranchChoice
+			if t.Level == 3 {
+				branches = s.branchChoices(t)
+			}
+			c.Upgrades = append(c.Upgrades, UpgradeControl{t.ID, cost, c.CanAct && s.Players[p].Gold >= cost && t.Level < maxValue && t.Spent <= maxValue-cost, t.Level == 3, branches})
 			c.Sells = append(c.Sells, SellControl{t.ID, refund(t), c.CanAct})
 		}
 	}
@@ -366,6 +374,8 @@ func (s *State) controls(p int) Controls {
 // ViewTower adds computed combat stats to the public projection. Persisting
 // these values as well would risk stale ranges after upgrading or tuning.
 type ViewTower struct {
+	BranchName string       `json:"branchName,omitempty"`
+	Passive    *PassiveView `json:"passive,omitempty"`
 	Tower
 	EffectiveRange    float64 `json:"effectiveRange"`
 	EffectiveDamage   float64 `json:"effectiveDamage"`
@@ -379,32 +389,166 @@ type ViewEnemy struct {
 	MaxHealth float64 `json:"maxHealth"`
 }
 
+func viewEnemy(enemy Enemy) ViewEnemy {
+	capacity := enemy.MaxHP
+	if enemy.Kind == "shield" {
+		capacity += enemy.MaxHP * shieldRatio
+	}
+	// Also handle imported snapshots whose shield exceeds the usual capacity.
+	health := enemy.HP + enemy.Shield
+	return ViewEnemy{enemy, health, max(capacity, health)}
+}
+
+type ViewTowerSpec struct {
+	TowerSpec
+	Passive *PassiveView `json:"passive,omitempty"`
+}
+
+// ViewWorld carries dynamic world state; the map is sent once at the top level.
+type ViewWorld struct {
+	World
+	Map *Map `json:"map,omitempty"`
+}
+
+type EventVitals struct {
+	HP        float64 `json:"hp"`
+	Shield    float64 `json:"shield"`
+	SlowUntil int64   `json:"slowUntil"`
+}
+type ViewDamageGroup struct {
+	Amount  float64 `json:"amount"`
+	Base    int     `json:"base,omitempty"`
+	Targets []int   `json:"targets"`
+}
+type ViewEvent struct {
+	DamageGroups []ViewDamageGroup `json:"damageGroups,omitempty"`
+	Event
+	Target *ViewEnemy   `json:"target,omitempty"`
+	Vitals *EventVitals `json:"vitals,omitempty"`
+}
+
+func compactEvents(events []Event) []ViewEvent {
+	out := make([]ViewEvent, 0, len(events))
+	seen := map[int]bool{}
+	for _, event := range events {
+		item := ViewEvent{Event: event, Target: event.Target}
+		for _, group := range event.DamageGroups {
+			base := group.Targets[0]
+			for _, id := range group.Targets {
+				base = min(base, id)
+			}
+			if base < 100 {
+				base = 0
+			}
+			targets := make([]int, len(group.Targets))
+			for i, id := range group.Targets {
+				targets[i] = id - base
+			}
+			item.DamageGroups = append(item.DamageGroups, ViewDamageGroup{Amount: group.Amount, Base: base, Targets: targets})
+		}
+		if target := event.Target; target != nil {
+			if seen[target.ID] {
+				switch event.Type {
+				case "shot":
+					item.Target = nil
+				case "hit", "heal":
+					item.Target = nil
+					item.Vitals = &EventVitals{target.HP, target.Shield, target.SlowUntil}
+				}
+			}
+			seen[target.ID] = true
+		}
+		out = append(out, item)
+	}
+	return out
+}
 func view(m gameapi.Match, p int) (any, error) {
 	s, err := decode(m)
 	if err != nil {
 		return nil, err
 	}
+	// Send recent complete batches, not the entire persisted event ring on
+	// every update. Keep the idle cursor so the next batch remains contiguous.
+	cutoff := s.ElapsedMS - 1000
+	first := 0
+	for first < len(s.Events)-1 {
+		event := s.Events[first]
+		at := event.Tick * StepMS
+		if event.AtMS != nil {
+			at = *event.AtMS
+		}
+		if at > cutoff {
+			break
+		}
+		first++
+	}
+	s.Events = s.Events[first:]
 	towers := make([]ViewTower, 0, len(s.Towers))
 	for _, tower := range s.Towers {
 		damage, radius, interval := s.towerStats(tower)
-		towers = append(towers, ViewTower{tower, radius, damage, interval})
+		towers = append(towers, ViewTower{BranchName: s.branchName(tower), Tower: tower, EffectiveRange: radius, EffectiveDamage: damage, EffectiveInterval: interval, Passive: s.passiveView(tower)})
 	}
 	enemies := make([]ViewEnemy, 0, len(s.Enemies))
 	for _, enemy := range s.Enemies {
-		capacity := enemy.MaxHP
-		if enemy.Kind == "shield" {
-			capacity += enemy.MaxHP * shieldRatio
-		}
-		// Accommodate imported snapshots with a larger shield without overflow.
-		health := enemy.HP + enemy.Shield
-		enemies = append(enemies, ViewEnemy{enemy, health, max(capacity, health)})
+		enemies = append(enemies, viewEnemy(enemy))
+	}
+	walls := make([]ViewIceWall, 0, len(s.IceWalls))
+	for _, wall := range s.IceWalls {
+		walls = append(walls, viewIceWall(wall))
+	}
+	specs := make([]ViewTowerSpec, 0, len(catalog))
+	for _, spec := range catalog {
+		specs = append(specs, ViewTowerSpec{spec, s.passiveView(Tower{Kind: spec.Kind})})
 	}
 	return struct {
-		*State
-		Enemies  []ViewEnemy `json:"enemies"`
-		Towers   []ViewTower `json:"towers"`
-		Map      Map         `json:"map"`
-		Catalog  []TowerSpec `json:"catalog"`
-		Controls Controls    `json:"controls"`
-	}{s, enemies, towers, s.mapData(), catalog, s.controls(p)}, nil
+		SpecializationRules int             `json:"specializationRules,omitempty"`
+		Options             Options         `json:"options"`
+		World               ViewWorld       `json:"world"`
+		Players             []Player        `json:"players"`
+		Phase               string          `json:"phase"`
+		Epoch               int             `json:"epoch"`
+		Wave                int             `json:"wave"`
+		CompletedWaves      int             `json:"completedWaves"`
+		BaseHP              int             `json:"baseHP"`
+		BaseMaxHP           int             `json:"baseMaxHP"`
+		Kills               int             `json:"kills"`
+		Tick                int64           `json:"tick"`
+		ServerAt            int64           `json:"serverAt"`
+		NextAt              int64           `json:"nextAt"`
+		ElapsedMS           int64           `json:"elapsedMS"`
+		WaveInfo            WaveInfo        `json:"waveInfo"`
+		Events              []ViewEvent     `json:"events"`
+		Craters             []Crater        `json:"craters,omitempty"`
+		IceWalls            []ViewIceWall   `json:"iceWalls,omitempty"`
+		Enemies             []ViewEnemy     `json:"enemies"`
+		Towers              []ViewTower     `json:"towers"`
+		Map                 Map             `json:"map"`
+		Catalog             []ViewTowerSpec `json:"catalog"`
+		Controls            Controls        `json:"controls"`
+	}{
+		SpecializationRules: s.SpecializationRules,
+		Options:             s.Options,
+		World:               ViewWorld{World: s.World},
+		Players:             s.Players,
+		Phase:               s.Phase,
+		Epoch:               s.Epoch,
+		Wave:                s.Wave,
+		CompletedWaves:      s.CompletedWaves,
+		BaseHP:              s.BaseHP,
+		BaseMaxHP:           s.BaseMaxHP,
+		Kills:               s.Kills,
+		Tick:                s.Tick,
+		ServerAt:            s.ServerAt,
+		NextAt:              s.NextAt,
+		ElapsedMS:           s.ElapsedMS,
+		WaveInfo:            s.WaveInfo,
+		Events:              compactEvents(s.Events),
+		Craters:             s.Craters,
+		IceWalls:            walls,
+		Enemies:             enemies,
+		Towers:              towers,
+		Map:                 s.mapData(),
+		Catalog:             specs,
+		Controls:            s.controls(p),
+	}, nil
 }

@@ -1,0 +1,339 @@
+{
+  "sampleRate": 44100,
+  "channels": 2,
+  "sampleFormat": "PCM16LE",
+  "records": {
+    "76": {
+      "startOrder": 76,
+      "startRow": 0,
+      "blockFrames": 65536,
+      "nativeBASSflags": 2261508,
+      "nativeBASSflagsHex": "0x228204",
+      "decodeLimitSeconds": 400,
+      "sourceFile": "mainmusic.mo3",
+      "sourceSHA256": "afbd1a0cd7fd9e641a425355b6560eb9bf25bf901e99f163ab3bb1c37db49f59",
+      "decodedPCMFramesIncludingFinalRead": 2883584,
+      "orderChangeTimeline": [
+        {
+          "order": 76,
+          "row": 0,
+          "decodedBytePosition": 0,
+          "decodedPCMFrame": 0
+        },
+        {
+          "order": 77,
+          "row": 0,
+          "decodedBytePosition": 705024,
+          "decodedPCMFrame": 176256
+        },
+        {
+          "order": 78,
+          "row": 0,
+          "decodedBytePosition": 1410048,
+          "decodedPCMFrame": 352512
+        },
+        {
+          "order": 79,
+          "row": 0,
+          "decodedBytePosition": 2115072,
+          "decodedPCMFrame": 528768
+        },
+        {
+          "order": 80,
+          "row": 0,
+          "decodedBytePosition": 2820096,
+          "decodedPCMFrame": 705024
+        },
+        {
+          "order": 81,
+          "row": 0,
+          "decodedBytePosition": 3525120,
+          "decodedPCMFrame": 881280
+        },
+        {
+          "order": 82,
+          "row": 0,
+          "decodedBytePosition": 4230144,
+          "decodedPCMFrame": 1057536
+        },
+        {
+          "order": 83,
+          "row": 0,
+          "decodedBytePosition": 4935168,
+          "decodedPCMFrame": 1233792
+        },
+        {
+          "order": 84,
+          "row": 0,
+          "decodedBytePosition": 5640192,
+          "decodedPCMFrame": 1410048
+        },
+        {
+          "order": 85,
+          "row": 0,
+          "decodedBytePosition": 6345216,
+          "decodedPCMFrame": 1586304
+        },
+        {
+          "order": 86,
+          "row": 0,
+          "decodedBytePosition": 7050240,
+          "decodedPCMFrame": 1762560
+        },
+        {
+          "order": 87,
+          "row": 0,
+          "decodedBytePosition": 7755264,
+          "decodedPCMFrame": 1938816
+        },
+        {
+          "order": 88,
+          "row": 0,
+          "decodedBytePosition": 8460288,
+          "decodedPCMFrame": 2115072
+        },
+        {
+          "order": 89,
+          "row": 0,
+          "decodedBytePosition": 9165312,
+          "decodedPCMFrame": 2291328
+        },
+        {
+          "order": 90,
+          "row": 0,
+          "decodedBytePosition": 9870336,
+          "decodedPCMFrame": 2467584
+        },
+        {
+          "order": 91,
+          "row": 0,
+          "decodedBytePosition": 10575360,
+          "decodedPCMFrame": 2643840
+        },
+        {
+          "order": 78,
+          "row": 0,
+          "decodedBytePosition": 11280384,
+          "decodedPCMFrame": 2820096
+        }
+      ],
+      "backwardJumps": [
+        {
+          "order": 78,
+          "row": 0,
+          "decodedBytePosition": 11280384,
+          "decodedPCMFrame": 2820096,
+          "targetPreviouslyObserved": true
+        }
+      ],
+      "status": "observed",
+      "loopOrder": 78,
+      "loopRow": 0,
+      "introPCMFrames": 352512,
+      "firstCyclePCMFrames": 2820096,
+      "loopPCMFrames": 2467584,
+      "verificationBlockFrames": 1024,
+      "verifiedExactBoundaryAcrossBlockSizes": true,
+      "introSeconds": 7.993469387755102,
+      "firstCycleSeconds": 63.947755102040816,
+      "loopSeconds": 55.95428571428572,
+      "enabledChannels": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29
+      ],
+      "sourceRole": "night-active-drums",
+      "candidateOriginalTrigger": "Music::UpdateMusicBurst 0x45b260, scheme2, even order76 / odd order77; caller to bind original-executable Evidence"
+    },
+    "77": {
+      "startOrder": 77,
+      "startRow": 0,
+      "blockFrames": 65536,
+      "nativeBASSflags": 2261508,
+      "nativeBASSflagsHex": "0x228204",
+      "decodeLimitSeconds": 400,
+      "sourceFile": "mainmusic.mo3",
+      "sourceSHA256": "afbd1a0cd7fd9e641a425355b6560eb9bf25bf901e99f163ab3bb1c37db49f59",
+      "decodedPCMFramesIncludingFinalRead": 2686976,
+      "orderChangeTimeline": [
+        {
+          "order": 77,
+          "row": 0,
+          "decodedBytePosition": 0,
+          "decodedPCMFrame": 0
+        },
+        {
+          "order": 78,
+          "row": 0,
+          "decodedBytePosition": 705024,
+          "decodedPCMFrame": 176256
+        },
+        {
+          "order": 79,
+          "row": 0,
+          "decodedBytePosition": 1410048,
+          "decodedPCMFrame": 352512
+        },
+        {
+          "order": 80,
+          "row": 0,
+          "decodedBytePosition": 2115072,
+          "decodedPCMFrame": 528768
+        },
+        {
+          "order": 81,
+          "row": 0,
+          "decodedBytePosition": 2820096,
+          "decodedPCMFrame": 705024
+        },
+        {
+          "order": 82,
+          "row": 0,
+          "decodedBytePosition": 3525120,
+          "decodedPCMFrame": 881280
+        },
+        {
+          "order": 83,
+          "row": 0,
+          "decodedBytePosition": 4230144,
+          "decodedPCMFrame": 1057536
+        },
+        {
+          "order": 84,
+          "row": 0,
+          "decodedBytePosition": 4935168,
+          "decodedPCMFrame": 1233792
+        },
+        {
+          "order": 85,
+          "row": 0,
+          "decodedBytePosition": 5640192,
+          "decodedPCMFrame": 1410048
+        },
+        {
+          "order": 86,
+          "row": 0,
+          "decodedBytePosition": 6345216,
+          "decodedPCMFrame": 1586304
+        },
+        {
+          "order": 87,
+          "row": 0,
+          "decodedBytePosition": 7050240,
+          "decodedPCMFrame": 1762560
+        },
+        {
+          "order": 88,
+          "row": 0,
+          "decodedBytePosition": 7755264,
+          "decodedPCMFrame": 1938816
+        },
+        {
+          "order": 89,
+          "row": 0,
+          "decodedBytePosition": 8460288,
+          "decodedPCMFrame": 2115072
+        },
+        {
+          "order": 90,
+          "row": 0,
+          "decodedBytePosition": 9165312,
+          "decodedPCMFrame": 2291328
+        },
+        {
+          "order": 91,
+          "row": 0,
+          "decodedBytePosition": 9870336,
+          "decodedPCMFrame": 2467584
+        },
+        {
+          "order": 78,
+          "row": 0,
+          "decodedBytePosition": 10575360,
+          "decodedPCMFrame": 2643840
+        }
+      ],
+      "backwardJumps": [
+        {
+          "order": 78,
+          "row": 0,
+          "decodedBytePosition": 10575360,
+          "decodedPCMFrame": 2643840,
+          "targetPreviouslyObserved": true
+        }
+      ],
+      "status": "observed",
+      "loopOrder": 78,
+      "loopRow": 0,
+      "introPCMFrames": 176256,
+      "firstCyclePCMFrames": 2643840,
+      "loopPCMFrames": 2467584,
+      "verificationBlockFrames": 1024,
+      "verifiedExactBoundaryAcrossBlockSizes": true,
+      "introSeconds": 3.996734693877551,
+      "firstCycleSeconds": 59.95102040816327,
+      "loopSeconds": 55.95428571428572,
+      "enabledChannels": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29
+      ],
+      "sourceRole": "night-active-drums",
+      "candidateOriginalTrigger": "Music::UpdateMusicBurst 0x45b260, scheme2, even order76 / odd order77; caller to bind original-executable Evidence"
+    }
+  }
+}

@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
-"""Restore the published Fortress 2 BLUE fallback media for a clean checkout.
+"""Restore immutable Fortress 2 BLUE media inputs for a clean build.
 
-CI and fresh clones do not contain the gitignored v2 media directory. Fetch the
-exact immutable objects recorded in assets/manifest.json so the build keeps a
-same-origin fallback when the CDN is unavailable. Existing matching files are
-left untouched.
+Matching media may come from a verified cache or the canonical CDN. Every file
+must match the current manifest; server packaging later removes client payloads.
 """
 from __future__ import annotations
 
+import argparse
 import concurrent.futures
 import hashlib
 import json
@@ -54,13 +53,52 @@ def fetch(url: str) -> bytes:
     raise RuntimeError(f"fetch failed after retries: {url}: {last}")
 
 
+def media_paths(entry, source=None):
+    relative=Path(entry["urlPath"].removeprefix("/"))
+    expected=Path("fortressblue/v2")
+    if not relative.is_relative_to(expected) or ".." in relative.parts:
+        raise ValueError("Invalid published media path")
+    output=Path("games/fortressblue/assets/public")/relative
+    if entry["output"]!=output.as_posix():
+        raise ValueError("Media destination does not match its immutable path")
+    target=ROOT/output
+    for parent in [target,*target.parents]:
+        if parent==ROOT.parent:break
+        if parent.is_symlink():raise ValueError("Symlink in media destination")
+    if not target.resolve().is_relative_to((ROOT/"games/fortressblue/assets/public").resolve()):
+        raise ValueError("Media destination escaped public directory")
+    if source is None:return target
+    cached=source/relative
+    for parent in [cached,*cached.parents]:
+        if parent==source.parent:break
+        if parent.is_symlink():raise ValueError("Symlink in media cache")
+    return target,cached
+
+
+def restore_media(source, entries):
+    restored=0
+    for entry in entries:
+        target,cached=media_paths(entry,source)
+        if not cached.is_file():continue
+        data=cached.read_bytes()
+        if len(data)!=entry["bytes"] or sha(data)!=entry["sha256"]:continue
+        target.parent.mkdir(parents=True,exist_ok=True)
+        target.write_bytes(data);restored+=1
+    return restored
+
+
 def main() -> None:
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--restore-from",type=Path)
+    args=parser.parse_args()
     manifest = json.loads(MANIFEST.read_text())
     entries = manifest["entries"]
     if not entries:
         raise SystemExit("empty asset manifest")
+    if args.restore_from:
+        print(f"Verified media cache restored: {restore_media(args.restore_from,entries)} objects",flush=True)
     def ensure(entry):
-        target = ROOT / entry["output"]
+        target = media_paths(entry)
         if target.is_file():
             data = target.read_bytes()
             if len(data) == entry["bytes"] and sha(data) == entry["sha256"]:

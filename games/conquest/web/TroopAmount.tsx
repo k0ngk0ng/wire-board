@@ -26,6 +26,7 @@ export function TroopAmount({
   return (
     <section
       className="cq-amount-panel"
+      data-controller-group="amount"
       data-cq-amount-panel={mode}
       aria-label={label}
       onKeyDown={(event) => {

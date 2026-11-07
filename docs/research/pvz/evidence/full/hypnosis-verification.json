@@ -1,0 +1,29 @@
+{
+  "scope": "derived from retained original static functions; no public assets changed",
+  "subjectSHA256": "8e8eea73a85d7af311755708f5daf2786650cf3c032188b8315fcf99858c8342",
+  "hypnosisCallSite": {
+    "address": "0x52b940",
+    "evidenceID": "ev_dc5468fc05689463f2dc0ae895539bbde875306f7d235d3c2f62b36082e9aca8",
+    "velocityBits": "0x3e2e147b",
+    "velocityFloat32": 0.17000000178813934,
+    "animTicksPerFrame": 18,
+    "directStatusCounterClears": []
+  },
+  "hypnosisRelationshipFunction": {
+    "address": "0x52fa60",
+    "evidenceID": "ev_5731e4c7fdecc66475be9e9455785efd840a53510c61403db23d67587f0bb21d",
+    "directStatusCounterClears": []
+  },
+  "movingChilledSpeed": {
+    "address": "0x52ef10",
+    "evidenceID": "ev_f049f52ffef07dc95eeee700ac3a8a2ede0f24de120e657a1e8ef3b2fbe6e0ec",
+    "firstBranch": "actor+0xac > 0 returns true",
+    "mindControlException": false,
+    "remainingBranches": "dancer/backupdancer leader/follower chill propagation"
+  },
+  "conclusion": "Own chill survives the hypnosis transition and remains eligible for chilled speed. Existing ice/butter counters are not directly reset by these two hypnosis functions; the retained UpdateAnimSpeed gate continues to inspect them.",
+  "limitations": [
+    "This does not assert that unrelated future actions never clear status counters.",
+    "Dancer relationship changes can remove group-derived slowing without clearing the actors own chill counter."
+  ]
+}

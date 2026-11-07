@@ -1,0 +1,14 @@
+...E
+======================================================================
+ERROR: test_original_night_waiting_order_is_the_only_allowed_silent_stem (test_music_classic.ClassicMusicTests.test_original_night_waiting_order_is_the_only_allowed_silent_stem)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/pvz/games/pvz/build/test_music_classic.py", line 12, in test_original_night_waiting_order_is_the_only_allowed_silent_stem
+    self.assertTrue(module.intentional_silence("night", "drums", 92, bytes(16)))
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'music_classic' has no attribute 'intentional_silence'
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.000s
+
+FAILED (errors=1)

@@ -1,0 +1,174 @@
+{
+  "layout": "game",
+  "actions": [
+    {
+      "id": "left",
+      "label": "向左转向",
+      "keys": [
+        "KeyA",
+        "ArrowLeft"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 14
+        },
+        {
+          "type": "axis",
+          "index": 0,
+          "direction": -1
+        }
+      ],
+      "continuous": true
+    },
+    {
+      "id": "right",
+      "label": "向右转向",
+      "keys": [
+        "KeyD",
+        "ArrowRight"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 15
+        },
+        {
+          "type": "axis",
+          "index": 0,
+          "direction": 1
+        }
+      ],
+      "continuous": true
+    },
+    {
+      "id": "throttle",
+      "label": "油门",
+      "keys": [
+        "KeyW",
+        "ArrowUp"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 7
+        },
+        {
+          "type": "button",
+          "index": 12
+        }
+      ],
+      "continuous": true
+    },
+    {
+      "id": "brake",
+      "label": "刹车",
+      "keys": [
+        "KeyS",
+        "ArrowDown"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 6
+        },
+        {
+          "type": "button",
+          "index": 13
+        }
+      ],
+      "continuous": true
+    },
+    {
+      "id": "drift",
+      "label": "手刹",
+      "keys": [
+        "Space"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "id": "rear",
+      "label": "向后看",
+      "keys": [
+        "KeyB"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 3
+        }
+      ]
+    },
+    {
+      "id": "reset",
+      "label": "重置赛车",
+      "keys": [
+        "KeyR"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 2
+        }
+      ]
+    },
+    {
+      "id": "map",
+      "label": "赛道地图",
+      "keys": [
+        "KeyM"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 9
+        }
+      ]
+    },
+    {
+      "id": "cancel",
+      "label": "关闭地图",
+      "keys": [
+        "Backspace"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 1
+        }
+      ]
+    },
+    {
+      "id": "nextSkin",
+      "label": "下一款外观",
+      "keys": [
+        "BracketRight"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 5
+        }
+      ]
+    },
+    {
+      "id": "previousSkin",
+      "label": "上一款外观",
+      "keys": [
+        "BracketLeft"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 4
+        }
+      ]
+    }
+  ]
+}

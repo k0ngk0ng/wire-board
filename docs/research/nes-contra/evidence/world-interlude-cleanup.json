@@ -1,0 +1,30 @@
+{
+  "scope": "Only own FCEUX configuration/runtime/temp, own Go temporary directory and completed diagnostic logs. Both raw RAM/PPU streams, source states, input traces, PNGs and acceptance artifacts remain.",
+  "reclaimedBytes": 19670,
+  "removed": [
+    {
+      "path": ".local/contra-world-interlude/oracle/fceux-home",
+      "bytes": 17756
+    },
+    {
+      "path": ".local/contra-world-interlude/oracle/runtime",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-world-interlude/oracle/tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-world-interlude/checks/tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-world-interlude/oracle/runs/world-interlude-v2/emulator.log",
+      "bytes": 957
+    },
+    {
+      "path": ".local/contra-world-interlude/oracle/runs/world-interlude-v1/emulator.log",
+      "bytes": 957
+    }
+  ]
+}

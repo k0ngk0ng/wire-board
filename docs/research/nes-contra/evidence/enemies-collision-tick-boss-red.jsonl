@@ -1,0 +1,9 @@
+{"Time":"2026-10-25T15:19:10.042041+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine"}
+{"Time":"2026-10-25T15:19:10.468487+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalWholeEnemyPhase"}
+{"Time":"2026-10-25T15:19:10.468822+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalWholeEnemyPhase","Output":"=== RUN   TestOriginalWholeEnemyPhase\n"}
+{"Time":"2026-10-25T15:19:10.93229+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalWholeEnemyPhase","Output":"    enemies_collision_tick_test.go:140: boss frame1400 record1 boss-reset-discards-prior-and-retains-later-audio: enemy slot 14 type 17: enemy type 17 has no recovered phase dispatcher\n"}
+{"Time":"2026-10-25T15:19:10.932335+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalWholeEnemyPhase","Output":"--- FAIL: TestOriginalWholeEnemyPhase (0.46s)\n"}
+{"Time":"2026-10-25T15:19:10.932349+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalWholeEnemyPhase","Elapsed":0.46}
+{"Time":"2026-10-25T15:19:10.932359+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\n"}
+{"Time":"2026-10-25T15:19:10.934772+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/contra/engine\t0.893s\n"}
+{"Time":"2026-10-25T15:19:10.934798+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Elapsed":0.893}

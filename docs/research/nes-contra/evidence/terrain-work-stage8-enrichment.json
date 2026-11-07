@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "scope": "Passive enrichment only; all existing stage8-v2 frame fields recursively identical, all1800 players-entry and weapons-return RAM snapshots recorded directly.",
+  "priorFixtureSHA256": "d4d5abd73e744595fb0ebdfdab1521d14f6bd7225163599a701d72a1537a004a",
+  "enrichedFixtureSHA256": "70d49a1909271d10fef15261d19b27dfeb564dd6c057da8ea8095438b6fd0287",
+  "frames": 1800,
+  "RAMSHA256": "40e7104edef91cffa7afe015f68d0a2ee89e9709c7b5142296006f6a522ce08e",
+  "inputSHA256": "6d8f5f7a41d7ea189ac92f3ae5b94dbc49c964f89103c74264ac58881c22595c"
+}

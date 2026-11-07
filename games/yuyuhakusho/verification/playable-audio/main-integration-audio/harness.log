@@ -1,0 +1,13 @@
+✘ [ERROR] No loader is configured for ".png" files: games/yuyuhakusho/assets/arena-previews.png
+
+    games/yuyuhakusho/web/ArenaPicker.tsx:1:21:
+      1 │ import previews from "../assets/arena-previews.png";
+        ╵                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+✘ [ERROR] No loader is configured for ".png" files: games/yuyuhakusho/assets/character-portraits.png
+
+    games/yuyuhakusho/web/CharacterPicker.tsx:3:22:
+      3 │ import portraits from "../assets/character-portraits.png";
+        ╵                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2 errors

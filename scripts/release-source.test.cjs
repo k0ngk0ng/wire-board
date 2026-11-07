@@ -18,6 +18,7 @@ function fixture(options={}) {
   const repos={
     getCommit:async()=>{if(options.noTag)throw Object.assign(Error('missing tag'),{status:404});return {data:{sha:options.tagSHA||SHA}}},
     listReleases:()=>{},
+    getCombinedStatusForRef:async()=>({data:{statuses:options.statuses??[{context:'cdn-local-readback',state:'success',description:'run 11; sha256='+'c'.repeat(64)}]}}),
     createRelease:async(args)=>{releases.push({...args,id:77,tag_name:args.tag_name});return {data:releases.at(-1)}}
   };
   const github={rest:{actions,repos},paginate:async(method)=>{
@@ -45,6 +46,10 @@ for(const [name,options] of Object.entries({
  'known failed rules':{jobs:[{name:'Test and Linux amd64 binary',conclusion:'success'},{name:'rules',conclusion:'failure'}]},
  'expired artifact':{artifacts:[{name:'wire-board-linux-amd64',expired:true,size_in_bytes:100}]},
  'missing artifact':{artifacts:[]},
+ 'missing local CDN readback':{statuses:[]},
+ 'failed local CDN readback':{statuses:[{context:'cdn-local-readback',state:'failure',description:'run 11; sha256='+'c'.repeat(64)}]},
+ 'different build readback':{statuses:[{context:'cdn-local-readback',state:'success',description:'run 12; sha256='+'c'.repeat(64)}]},
+ 'unbound readback':{statuses:[{context:'cdn-local-readback',state:'success',description:'looks fine'}]},
  'published release':{releases:[{id:2,tag_name:'v1.8.0',draft:false,target_commitish:SHA}]},
  'wrong tagless draft target':{manual:true,noTag:true,releases:[{id:2,tag_name:'v1.8.0',draft:true,target_commitish:OTHER}]},
 })) test('rejects '+name,async()=>{await assert.rejects(resolveRelease(fixture(options)))});

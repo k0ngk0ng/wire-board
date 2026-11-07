@@ -1,0 +1,16 @@
+{"Time":"2026-10-26T11:19:55.878807+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine"}
+{"Time":"2026-10-26T11:19:56.323021+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotTracksVisibleGeometryNotOrdinals"}
+{"Time":"2026-10-26T11:19:56.323247+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotTracksVisibleGeometryNotOrdinals","Output":"=== RUN   TestBotTracksVisibleGeometryNotOrdinals\n"}
+{"Time":"2026-10-26T11:19:56.323506+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotTracksVisibleGeometryNotOrdinals","Output":"--- PASS: TestBotTracksVisibleGeometryNotOrdinals (0.00s)\n"}
+{"Time":"2026-10-26T11:19:56.323565+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotTracksVisibleGeometryNotOrdinals","Elapsed":0}
+{"Time":"2026-10-26T11:19:56.323603+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotAmbiguousHeadsUseOnlyVisibleHistory"}
+{"Time":"2026-10-26T11:19:56.323617+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotAmbiguousHeadsUseOnlyVisibleHistory","Output":"=== RUN   TestBotAmbiguousHeadsUseOnlyVisibleHistory\n"}
+{"Time":"2026-10-26T11:19:56.323693+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotAmbiguousHeadsUseOnlyVisibleHistory","Output":"--- PASS: TestBotAmbiguousHeadsUseOnlyVisibleHistory (0.00s)\n"}
+{"Time":"2026-10-26T11:19:56.323732+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotAmbiguousHeadsUseOnlyVisibleHistory","Elapsed":0}
+{"Time":"2026-10-26T11:19:56.32375+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotRemembersOnlyDisclosedEmplacementClass"}
+{"Time":"2026-10-26T11:19:56.323765+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotRemembersOnlyDisclosedEmplacementClass","Output":"=== RUN   TestBotRemembersOnlyDisclosedEmplacementClass\n"}
+{"Time":"2026-10-26T11:19:56.323776+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotRemembersOnlyDisclosedEmplacementClass","Output":"--- PASS: TestBotRemembersOnlyDisclosedEmplacementClass (0.00s)\n"}
+{"Time":"2026-10-26T11:19:56.323814+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotRemembersOnlyDisclosedEmplacementClass","Elapsed":0}
+{"Time":"2026-10-26T11:19:56.323848+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"PASS\n"}
+{"Time":"2026-10-26T11:19:56.325157+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/contra/engine\t0.446s\n"}
+{"Time":"2026-10-26T11:19:56.325234+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Elapsed":0.446}

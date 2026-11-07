@@ -1,0 +1,21 @@
+.game-mobile-play-notice {
+  display: none;
+}
+
+@media (max-width: 600px), (max-width: 950px) and (pointer: coarse) {
+  .game-mobile-play-notice {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 640px;
+    margin: 4px auto 0;
+    padding: 2px 8px;
+    border-radius: 4px;
+    color: #4c3c1c;
+    background: #fff4d6;
+    font-size: 12px;
+    line-height: 1.5;
+    text-align: left;
+    overflow-wrap: anywhere;
+  }
+}

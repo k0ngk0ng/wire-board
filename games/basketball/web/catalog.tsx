@@ -9,6 +9,7 @@ export default {
   playerCounts: [1, 2],
   requiresFullTable: true,
   supportsBots: true,
+  mobilePlayNotice: true,
   realtime: true,
   ownsSounds: true,
   Cover: Cover,

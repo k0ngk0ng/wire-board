@@ -1,0 +1,58 @@
+{
+  "passed": true,
+  "scope": "Independent immutable Snow background artwork recipes only; not global integration, gameplay strategy, hidden liveness, or natural campaign completion",
+  "romSHA256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+  "command": "source scripts/env.sh; go test -race ./games/contra/engine -run '^TestBotSnowBackgroundRecipes' -count=1 -json",
+  "tests": [
+    "TestBotSnowBackgroundRecipesOriginalPixels",
+    "TestBotSnowBackgroundRecipesVisibleAnchorsAndNegatives",
+    "TestBotSnowBackgroundRecipesAreDetachedAndVisualOnly"
+  ],
+  "recipes": 4,
+  "visualAppearances": 64,
+  "negativeCases": 15,
+  "sourcePatterns": 28,
+  "originalControlledObservations": 95,
+  "reaFunctions": 33,
+  "redBeforeImplementation": true,
+  "familyAnchors": {
+    "snow-tank": {
+      "0F": [
+        3,
+        12
+      ],
+      "12": [
+        6,
+        22
+      ],
+      "13": [
+        10,
+        27
+      ]
+    },
+    "snow-carrier": {
+      "09/0A/0B/0D": [
+        28,
+        16
+      ]
+    }
+  },
+  "sourceSHA256": {
+    "games/contra/engine/bot_vision_snow_recipes.go": "24200bbf1a90b550ff0839d3e964b05594154afd7a8702b98c2a675904d8e152",
+    "games/contra/engine/bot_vision_snow_recipes_test.go": "8b11d6dab630c1440a8813c41379e709f0b6d46ce12d39330ccc4ffd575c2cc9",
+    "games/contra/engine/testdata/bot-snow-original-art.json.gz": "b2d88e57662ce011a5799bbab3ef77a914c6c725abe230f3fdcbe558e8bf99d6",
+    "scripts/contra/bot_snow_background_reference.py": "c3419f3d9f47224a1e69480b9d8d565368ea71012c1cacb7af732e9fb6a39f1c",
+    "docs/research/nes-contra/bot-snow-background-recipes.md": "2d57bc51fe8d4cf7d9d4ad34a68d33203af764583963163f881647b2cc8af52f",
+    "docs/research/nes-contra/evidence/bot-snow-original-art.png": "ab9831f319a663f3f6bd9cc3e8dc4b6982b3dc9bf2f9994abf7e441e4f42577b",
+    "docs/research/nes-contra/evidence/bot-snow-recipes-red.jsonl": "7c5d28fb124f447bf1e870f6f9bb432c9af93dc71463e269691037527a21e039",
+    "docs/research/nes-contra/evidence/bot-snow-recipes-green.jsonl": "623648fbe1fbeb1bbf040176be6a4bba1bf9ab98a54204e7498f3767bab6d390"
+  },
+  "remaining": [
+    "Owner merges helper into global construction and checks captured real RGBA.",
+    "Partially faded Carrier and partial occlusion stay unknown.",
+    "Identical intact art during destruction cannot establish hidden live/dead state."
+  ],
+  "cleanup": [
+    "Removed only preliminary .local/contra-bot-snow-recipes/artwork.png and its now-empty owned directory. Shared caches and all retained evidence left intact."
+  ]
+}

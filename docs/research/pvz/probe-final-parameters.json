@@ -1,0 +1,44 @@
+[
+  {
+    "name": "plant-magnet-attack-item",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x461610"
+    }
+  },
+  {
+    "name": "plant-damage-range-flags",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x45eb10"
+    }
+  },
+  {
+    "name": "zombie-chew-events",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x52b940"
+    }
+  },
+  {
+    "name": "plant-upgrade-requirements",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x463470"
+    }
+  },
+  {
+    "name": "board-find-umbrella",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x41d3d0"
+    }
+  },
+  {
+    "name": "plant-blover-all",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x4665b0"
+    }
+  }
+]

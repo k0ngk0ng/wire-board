@@ -1,0 +1,9 @@
+{"Time":"2026-10-26T13:39:28.160662+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine"}
+{"Time":"2026-10-26T13:39:28.710494+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisionOverlappingCartridgePlayers"}
+{"Time":"2026-10-26T13:39:28.710736+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisionOverlappingCartridgePlayers","Output":"=== RUN   TestBotVisionOverlappingCartridgePlayers\n"}
+{"Time":"2026-10-26T13:39:29.887616+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisionOverlappingCartridgePlayers","Output":"    bot_vision_partial_test.go:68: partly hidden role was promoted to an unambiguous full body\n"}
+{"Time":"2026-10-26T13:39:29.887659+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisionOverlappingCartridgePlayers","Output":"--- FAIL: TestBotVisionOverlappingCartridgePlayers (1.18s)\n"}
+{"Time":"2026-10-26T13:39:29.887665+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisionOverlappingCartridgePlayers","Elapsed":1.18}
+{"Time":"2026-10-26T13:39:29.887678+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\n"}
+{"Time":"2026-10-26T13:39:29.890262+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/contra/engine\t1.729s\n"}
+{"Time":"2026-10-26T13:39:29.890284+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Elapsed":1.73}

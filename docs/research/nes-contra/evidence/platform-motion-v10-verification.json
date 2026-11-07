@@ -1,0 +1,24 @@
+{
+  "passed": true,
+  "scope": "Actual private platform, standard two-human new game and first-stage input; not a natural eight-stage campaign or WAN acceptance.",
+  "fixture": {
+    "url": "http://127.0.0.1:64592",
+    "rulesBuildID": "14af9397bdbbab07843d4e9627efe767f3b68d88fd19a854d6ed0f4b26a2d9e9",
+    "runtimeBuildID": "8c3aa1a067f3bb64f9ac41049fb9b8d8b4201dcb9d9a740a1bd8aacaf8acd09b",
+    "visualsID": "24d3c7bfb252cf15523759394c3397e246aa17b331eedf2e0744b75ccb5bee32",
+    "webRoot": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-platform-web/motion-v10",
+    "publicRoot": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-browser/motion-v10/public",
+    "webManifestSHA256": "f18a968fbd55cd34e596d145847925bde5f547186ec5154d84f8a92b276afb6b"
+  },
+  "cases": [
+    "desktop",
+    "mobile"
+  ],
+  "evidence": "docs/research/nes-contra/evidence/platform-motion-v10",
+  "visual_review": [
+    "desktop-playing-fullscreen.png",
+    "mobile-playing-fullscreen.png"
+  ],
+  "fixture_stopped": true,
+  "temporary_browser_profiles_removed": true
+}

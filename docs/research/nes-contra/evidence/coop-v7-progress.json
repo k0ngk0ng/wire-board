@@ -1,0 +1,50 @@
+{
+  "status": "completed-incomplete-campaign",
+  "run": ".local/contra-bot/runs/assisted-coop-scene-v7/players2",
+  "prefix_frames": 0,
+  "infinite_lives": true,
+  "observed_stage_entries": [
+    {
+      "frame": 1,
+      "level_index": 0,
+      "routine": 1
+    },
+    {
+      "frame": 6567,
+      "level_index": 1,
+      "routine": 0
+    },
+    {
+      "frame": 14061,
+      "level_index": 2,
+      "routine": 0
+    },
+    {
+      "frame": 21463,
+      "level_index": 3,
+      "routine": 0
+    },
+    {
+      "frame": 34577,
+      "level_index": 4,
+      "routine": 0
+    }
+  ],
+  "latest_progress": {
+    "frames": 90000,
+    "level": 5,
+    "screen": 5,
+    "reserve_refills": 402,
+    "restore_checkpoints": 90,
+    "source_changed_during_run": true,
+    "error": "sources changed during campaign acceptance"
+  },
+  "complete_campaign": false,
+  "independent_replay": {
+    "frames": 90000,
+    "nextStepStoredStateEqual": true,
+    "nextStepStructEqual": true,
+    "recordedStateMatches": true,
+    "roundTripDifferences": null
+  }
+}

@@ -1,0 +1,9 @@
+{"Time":"2026-10-26T12:28:56.300116+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine"}
+{"Time":"2026-10-26T12:28:56.737853+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleRespawnDescentKeepsReachableLanding"}
+{"Time":"2026-10-26T12:28:56.738098+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleRespawnDescentKeepsReachableLanding","Output":"=== RUN   TestBotVisibleRespawnDescentKeepsReachableLanding\n"}
+{"Time":"2026-10-26T12:28:56.738248+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleRespawnDescentKeepsReachableLanding","Output":"    bot_navigation_test.go:100: drifted off the only reachable visible landing 1\n"}
+{"Time":"2026-10-26T12:28:56.738304+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleRespawnDescentKeepsReachableLanding","Output":"--- FAIL: TestBotVisibleRespawnDescentKeepsReachableLanding (0.00s)\n"}
+{"Time":"2026-10-26T12:28:56.73832+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleRespawnDescentKeepsReachableLanding","Elapsed":0}
+{"Time":"2026-10-26T12:28:56.738335+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\n"}
+{"Time":"2026-10-26T12:28:56.7395+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/contra/engine\t0.439s\n"}
+{"Time":"2026-10-26T12:28:56.739591+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Elapsed":0.439}

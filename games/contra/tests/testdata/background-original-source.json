@@ -1,0 +1,158 @@
+{
+  "source_is_original_execution": true,
+  "romSHA256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+  "fixtureSHA256": "1dc7f209c0d8512b44f4ed45bd803fc081e48b7c4ac2183468134fe7302581f2",
+  "scenario": {
+    "name": "background-v1",
+    "load_state": "coop-play",
+    "frames": 600,
+    "captures": [
+      1,
+      2,
+      30,
+      60,
+      90,
+      120,
+      160,
+      200,
+      240,
+      320,
+      400,
+      480,
+      600
+    ],
+    "segments": [
+      {
+        "start": 1,
+        "end": 600,
+        "player": 1,
+        "keys": [
+          "right",
+          "B"
+        ]
+      },
+      {
+        "start": 1,
+        "end": 600,
+        "player": 2,
+        "keys": [
+          "right",
+          "B"
+        ]
+      },
+      {
+        "start": 60,
+        "end": 61,
+        "player": 1,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 150,
+        "end": 151,
+        "player": 1,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 240,
+        "end": 241,
+        "player": 1,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 330,
+        "end": 331,
+        "player": 1,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 420,
+        "end": 421,
+        "player": 1,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 510,
+        "end": 511,
+        "player": 1,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 60,
+        "end": 61,
+        "player": 2,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 150,
+        "end": 151,
+        "player": 2,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 240,
+        "end": 241,
+        "player": 2,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 330,
+        "end": 331,
+        "player": 2,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 420,
+        "end": 421,
+        "player": 2,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 510,
+        "end": 511,
+        "player": 2,
+        "keys": [
+          "A"
+        ]
+      }
+    ],
+    "hooks_lua": "\nlocal display=assert(io.open(out..'/background.jsonl','w'))\nlocal dma=assert(io.open(out..'/background-dma.bin','wb'))\nlocal oam=string.rep(string.char(0xf4),256)\nlocal control=0;local mask=0;local phase=0;local scrollX=0;local scrollY=0\nlocal writes=0;local seq=0;local dmaFrame=-1\nlocal selected={[1]=true,[2]=true,[30]=true,[60]=true,[90]=true,[120]=true,[160]=true,[200]=true,[240]=true,[320]=true,[400]=true,[480]=true,[600]=true}\nmemory.registerwrite(0x4014,1,function(a,s,v) oam=memory.readbyterange(v*256,256);dmaFrame=emu.framecount() end)\nmemory.registerwrite(0x2000,1,function(a,s,v) control=v end)\nmemory.registerwrite(0x2001,1,function(a,s,v) mask=v end)\nmemory.registerread(0x2002,1,function() phase=0 end)\nmemory.registerwrite(0x2005,1,function(a,s,v)\n if phase==0 then scrollX=v else scrollY=v end\n phase=1-phase;writes=writes+1\nend)\nemu.registerafter(function()\n seq=seq+1\n if selected[seq] then\n  dma:write(oam)\n  display:write(string.format('{\"frame\":%d,\"emulatorFrame\":%d,\"dmaFrame\":%d,\"control\":%d,\"mask\":%d,\"scrollX\":%d,\"scrollY\":%d,\"scrollWrites\":%d}\\n',seq,emu.framecount(),dmaFrame,control,mask,scrollX,scrollY,writes))\n  writefile(string.format('background-%05d-ppu.bin',seq),bytes(0,0x4000,ppu.readbyte))\n end\n writes=0\nend)\nlocal colors={}\nfor i=0,63 do local r,g,b,a=gui.parsecolor(string.format('P%02x',i));colors[#colors+1]=string.char(r,g,b) end\nwritefile('background-colors.rgb',table.concat(colors))\nfunction finish_probe()display:close();dma:close()end\n"
+  },
+  "source": {
+    "rom_sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+    "source_archive": "/Users/jason/Documents/nes/roms/03/\u9b42\u6597\u7f57\u65e5\u7248(\u5b8c\u5168\u7248).zip",
+    "initial_state": {
+      "name": "coop-play.fcs",
+      "sha256": "3101897748bbc64347634680bc4597161bfdee6339a349a1eb6f5c41cd5b6c7e"
+    },
+    "emulator": "/opt/homebrew/bin/fceux",
+    "emulator_sha256": "2d84a8310d530745263cfeadf00de9a631162a8dd76c71e1bed659c73753f2f6",
+    "frames": 600,
+    "scenario_sha256": "24e14b4f9f7bc5f0970dac7643ef5688d2da21fbd48d604d12e2443f74ebfe79",
+    "has_custom_hooks": true,
+    "completed": true
+  },
+  "observedScrollWrites": "Exactly one X/Y pair and matching DMA per observed frame.",
+  "scope": "First-stage natural two-player frames; no full-game or other-stage claim."
+}

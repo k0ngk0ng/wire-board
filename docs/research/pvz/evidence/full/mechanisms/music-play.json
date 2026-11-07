@@ -1,0 +1,90 @@
+{
+  "evidence_id": "ev_6e6d9ef1435e122ae803c42485febc4dce09ca0747b9ea1f5a8ac3f0f6c8199a",
+  "subject": {
+    "name": "PlantsVsZombies.exe",
+    "digest": {
+      "sha256": "8e8eea73a85d7af311755708f5daf2786650cf3c032188b8315fcf99858c8342"
+    },
+    "local_path": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/pvz/.local/pvz-research/original-1.0.0.1051/PlantsVsZombies.exe",
+    "format": "pe",
+    "architecture": "x86"
+  },
+  "provider": {
+    "id": "ghidra",
+    "name": "Ghidra",
+    "version": "12.1.4"
+  },
+  "analysis_profile": {
+    "provider": {
+      "id": "ghidra",
+      "name": "Ghidra",
+      "version": "12.1.4"
+    },
+    "parameters": {
+      "target_kind": "executable",
+      "target_format": "pe",
+      "executable_role": "application",
+      "managed": false,
+      "native_aot_metadata": {
+        "contract_revision": "rtr-9.1-x64-pe-read-only-v3",
+        "source_bytes": 134217728,
+        "work_units": 67108864,
+        "working_memory_bytes": 67108864,
+        "report_bytes": 4194304
+      },
+      "architecture": "x86",
+      "available_architectures": [
+        "x86"
+      ],
+      "import_mode": "ephemeral-source-immutable",
+      "pdb_observations": "program-info-v1",
+      "annotation_policy": "atomic-function-entry-metadata-v1",
+      "load_image_observations": "source-mappings-entry-context-v2",
+      "function_body_evidence": "complete-inclusive-ranges-v1",
+      "function_references": "complete-body-and-entry-reference-manager-v2",
+      "call_relationship_coverage": "function-body-call-coverage-v5",
+      "function_dossier_coverage": "observed-facets-and-call-relationships-v1",
+      "string_inventory_evidence": "defined-data-coverage-v1",
+      "location_resolution": "explicit-address-exact-entry-symbol-first-v3",
+      "procedure_file_offset_resolution": "address-first-unique-target-source-mapping-v2",
+      "instruction_flow_evidence": "decoded-return-pcode-v1",
+      "instruction_references": "exact-address-incoming-v1",
+      "function_boundary_observations": "ghidra-function-boundary-limitations-v3",
+      "no_return_repair": "returning-imports-decoded-return-v2",
+      "process_launch": "inspected-jvm-launch-support-v1",
+      "jump_table_evidence": "typed-case-default-blocks-v1",
+      "decompiler_jump_loads": true,
+      "loader": "auto-from-header",
+      "language_id": "auto-from-header",
+      "compiler_spec_id": "auto-default",
+      "analyzer_preset": "ghidra-default"
+    },
+    "digest": "483a3c23d7b0c6333d61d7e050154873e5f8d7ea53a284362e069d8e793666a4"
+  },
+  "predicate_type": "rea.analysis",
+  "operation": "procedure_pseudo_code",
+  "parameters": {
+    "procedure": "0x45adb0"
+  },
+  "raw_result": {
+    "value": "\nvoid FUN_0045adb0(void)\n\n{\n  int iVar1;\n  int in_EAX;\n  undefined4 uVar2;\n  undefined4 uVar3;\n  undefined4 in_ECX;\n  int in_EDX;\n  int unaff_ESI;\n  bool bVar4;\n  undefined8 uVar5;\n  \n  if (*(char *)(unaff_ESI + 0x41) != '\\0') {\n    return;\n  }\n  bVar4 = in_EDX == -1;\n  *(undefined4 *)(unaff_ESI + 8) = in_ECX;\n  *(undefined4 *)(unaff_ESI + 0xc) = 0xffffffff;\n  *(undefined4 *)(unaff_ESI + 0x10) = 0xffffffff;\n  *(undefined4 *)(unaff_ESI + 0x14) = 0xffffffff;\n  switch(in_ECX) {\n  case 1:\n    *(undefined4 *)(unaff_ESI + 0xc) = 1;\n    *(undefined4 *)(unaff_ESI + 0x10) = 2;\n    *(undefined4 *)(unaff_ESI + 0x14) = 3;\n    if (in_EDX == -1) {\n      in_EDX = 0;\n    }\n    FUN_0045ac70(unaff_ESI,1,in_EDX,0x3ff0000000000000);\n    FUN_0045ac70(unaff_ESI,*(undefined4 *)(unaff_ESI + 0x10),in_EDX,0);\n    uVar2 = *(undefined4 *)(unaff_ESI + 0x14);\n    uVar5 = 0;\n    break;\n  case 2:\n    *(undefined4 *)(unaff_ESI + 0xc) = 1;\n    *(undefined4 *)(unaff_ESI + 0x10) = 2;\n    if (in_EDX == -1) {\n      in_EDX = -0x7fffffd0;\n      in_EAX = -0x7fffffa4;\n    }\n    FUN_0045ac70(unaff_ESI,1,in_EDX,0x3ff0000000000000);\n    uVar2 = *(undefined4 *)(unaff_ESI + 0x10);\n    uVar5 = 0x3ff0000000000000;\n    in_EDX = in_EAX;\n    break;\n  case 3:\n    *(undefined4 *)(unaff_ESI + 0xc) = 1;\n    *(undefined4 *)(unaff_ESI + 0x10) = 2;\n    *(undefined4 *)(unaff_ESI + 0x14) = 3;\n    if (in_EDX == -1) {\n      in_EDX = -0x7fffffa2;\n    }\n    FUN_0045ac70(unaff_ESI,1,in_EDX,0x3ff0000000000000);\n    FUN_0045ac70(unaff_ESI,*(undefined4 *)(unaff_ESI + 0x10),in_EDX,0);\n    uVar2 = *(undefined4 *)(unaff_ESI + 0x14);\n    uVar5 = 0;\n    break;\n  case 4:\n    *(undefined4 *)(unaff_ESI + 0xc) = 1;\n    *(undefined4 *)(unaff_ESI + 0x10) = 2;\n    *(undefined4 *)(unaff_ESI + 0x14) = 3;\n    if (in_EDX == -1) {\n      in_EDX = -0x7fffff83;\n    }\n    FUN_0045ac70(unaff_ESI,1,in_EDX,0x3ff0000000000000);\n    FUN_0045ac70(unaff_ESI,*(undefined4 *)(unaff_ESI + 0x10),in_EDX,0);\n    uVar2 = *(undefined4 *)(unaff_ESI + 0x14);\n    uVar5 = 0;\n    break;\n  case 5:\n    *(undefined4 *)(unaff_ESI + 0xc) = 1;\n    *(undefined4 *)(unaff_ESI + 0x10) = 2;\n    *(undefined4 *)(unaff_ESI + 0x14) = 3;\n    if (in_EDX == -1) {\n      in_EDX = -0x7fffff48;\n    }\n    FUN_0045ac70(unaff_ESI,1,in_EDX,0x3ff0000000000000);\n    FUN_0045ac70(unaff_ESI,*(undefined4 *)(unaff_ESI + 0x10),in_EDX,0);\n    uVar2 = *(undefined4 *)(unaff_ESI + 0x14);\n    uVar5 = 0;\n    break;\n  case 6:\n    *(undefined4 *)(unaff_ESI + 0xc) = 1;\n    if (in_EDX == -1) {\n      in_EDX = -0x7fffff86;\n    }\n    uVar5 = 0x3ff0000000000000;\n    uVar2 = 1;\n    break;\n  case 7:\n    *(undefined4 *)(unaff_ESI + 0xc) = 1;\n    if (in_EDX == -1) {\n      in_EDX = -0x7fffff68;\n    }\n    uVar5 = 0x3ff0000000000000;\n    uVar2 = 1;\n    break;\n  case 8:\n    *(undefined4 *)(unaff_ESI + 0xc) = 1;\n    if (in_EDX == -1) {\n      in_EDX = 0xdd;\n    }\n    uVar5 = 0x3ff0000000000000;\n    uVar2 = 1;\n    break;\n  case 9:\n    *(undefined4 *)(unaff_ESI + 0xc) = 1;\n    if (in_EDX == -1) {\n      in_EDX = 0xb1;\n    }\n    uVar5 = 0x3ff0000000000000;\n    uVar2 = 1;\n    break;\n  case 10:\n    *(undefined4 *)(unaff_ESI + 0xc) = 1;\n    if (in_EDX == -1) {\n      in_EDX = 0xa6;\n    }\n    uVar5 = 0x3ff0000000000000;\n    uVar2 = 1;\n    break;\n  case 0xb:\n    *(undefined4 *)(unaff_ESI + 0xc) = 1;\n    if (in_EDX == -1) {\n      in_EDX = 0xd4;\n    }\n    uVar5 = 0x3ff0000000000000;\n    uVar2 = 1;\n    break;\n  case 0xc:\n    *(undefined4 *)(unaff_ESI + 0xc) = 1;\n    if (in_EDX == -1) {\n      in_EDX = 0x9e;\n    }\n    uVar5 = 0x3ff0000000000000;\n    uVar2 = 1;\n    break;\n  case 0xd:\n    *(undefined4 *)(unaff_ESI + 0xc) = 4;\n    if (in_EDX == -1) {\n      in_EDX = 0;\n    }\n    uVar5 = 0x3ff0000000000000;\n    uVar2 = 4;\n    break;\n  default:\n    goto switchD_0045adf4_default;\n  }\n  FUN_0045ac70(unaff_ESI,uVar2,in_EDX,uVar5);\nswitchD_0045adf4_default:\n  if (bVar4) {\n    uVar2 = FUN_0045ac20();\n    uVar3 = (**(code **)(DAT_006a9ff0 + 0xa4))(uVar2,3);\n    iVar1 = DAT_006a9ff0;\n    *(undefined4 *)(unaff_ESI + 0x1c) = uVar3;\n    uVar2 = (**(code **)(iVar1 + 0xa4))(uVar2,4);\n    *(undefined4 *)(unaff_ESI + 0x20) = uVar2;\n  }\n  else {\n    if (*(int *)(unaff_ESI + 0xc) != -1) {\n      uVar2 = FUN_0045ac20();\n      (**(code **)(DAT_006a9ff0 + 0xa8))(uVar2,3,*(undefined4 *)(unaff_ESI + 0x1c));\n      (**(code **)(DAT_006a9ff0 + 0xa8))(uVar2,4,*(undefined4 *)(unaff_ESI + 0x20));\n    }\n    if (*(int *)(unaff_ESI + 0x10) != -1) {\n      uVar2 = FUN_0045ac20();\n      (**(code **)(DAT_006a9ff0 + 0xa8))(uVar2,3,*(undefined4 *)(unaff_ESI + 0x1c));\n      (**(code **)(DAT_006a9ff0 + 0xa8))(uVar2,4,*(undefined4 *)(unaff_ESI + 0x20));\n    }\n    if (*(int *)(unaff_ESI + 0x14) != -1) {\n      uVar2 = FUN_0045ac20();\n      (**(code **)(DAT_006a9ff0 + 0xa8))(uVar2,3,*(undefined4 *)(unaff_ESI + 0x1c));\n      (**(code **)(DAT_006a9ff0 + 0xa8))(uVar2,4,*(undefined4 *)(unaff_ESI + 0x20));\n      return;\n    }\n  }\n  return;\n}\n\n",
+    "limitations": []
+  },
+  "normalized_result": "\nvoid FUN_0045adb0(void)\n\n{\n  int iVar1;\n  int in_EAX;\n  undefined4 uVar2;\n  undefined4 uVar3;\n  undefined4 in_ECX;\n  int in_EDX;\n  int unaff_ESI;\n  bool bVar4;\n  undefined8 uVar5;\n  \n  if (*(char *)(unaff_ESI + 0x41) != '\\0') {\n    return;\n  }\n  bVar4 = in_EDX == -1;\n  *(undefined4 *)(unaff_ESI + 8) = in_ECX;\n  *(undefined4 *)(unaff_ESI + 0xc) = 0xffffffff;\n  *(undefined4 *)(unaff_ESI + 0x10) = 0xffffffff;\n  *(undefined4 *)(unaff_ESI + 0x14) = 0xffffffff;\n  switch(in_ECX) {\n  case 1:\n    *(undefined4 *)(unaff_ESI + 0xc) = 1;\n    *(undefined4 *)(unaff_ESI + 0x10) = 2;\n    *(undefined4 *)(unaff_ESI + 0x14) = 3;\n    if (in_EDX == -1) {\n      in_EDX = 0;\n    }\n    FUN_0045ac70(unaff_ESI,1,in_EDX,0x3ff0000000000000);\n    FUN_0045ac70(unaff_ESI,*(undefined4 *)(unaff_ESI + 0x10),in_EDX,0);\n    uVar2 = *(undefined4 *)(unaff_ESI + 0x14);\n    uVar5 = 0;\n    break;\n  case 2:\n    *(undefined4 *)(unaff_ESI + 0xc) = 1;\n    *(undefined4 *)(unaff_ESI + 0x10) = 2;\n    if (in_EDX == -1) {\n      in_EDX = -0x7fffffd0;\n      in_EAX = -0x7fffffa4;\n    }\n    FUN_0045ac70(unaff_ESI,1,in_EDX,0x3ff0000000000000);\n    uVar2 = *(undefined4 *)(unaff_ESI + 0x10);\n    uVar5 = 0x3ff0000000000000;\n    in_EDX = in_EAX;\n    break;\n  case 3:\n    *(undefined4 *)(unaff_ESI + 0xc) = 1;\n    *(undefined4 *)(unaff_ESI + 0x10) = 2;\n    *(undefined4 *)(unaff_ESI + 0x14) = 3;\n    if (in_EDX == -1) {\n      in_EDX = -0x7fffffa2;\n    }\n    FUN_0045ac70(unaff_ESI,1,in_EDX,0x3ff0000000000000);\n    FUN_0045ac70(unaff_ESI,*(undefined4 *)(unaff_ESI + 0x10),in_EDX,0);\n    uVar2 = *(undefined4 *)(unaff_ESI + 0x14);\n    uVar5 = 0;\n    break;\n  case 4:\n    *(undefined4 *)(unaff_ESI + 0xc) = 1;\n    *(undefined4 *)(unaff_ESI + 0x10) = 2;\n    *(undefined4 *)(unaff_ESI + 0x14) = 3;\n    if (in_EDX == -1) {\n      in_EDX = -0x7fffff83;\n    }\n    FUN_0045ac70(unaff_ESI,1,in_EDX,0x3ff0000000000000);\n    FUN_0045ac70(unaff_ESI,*(undefined4 *)(unaff_ESI + 0x10),in_EDX,0);\n    uVar2 = *(undefined4 *)(unaff_ESI + 0x14);\n    uVar5 = 0;\n    break;\n  case 5:\n    *(undefined4 *)(unaff_ESI + 0xc) = 1;\n    *(undefined4 *)(unaff_ESI + 0x10) = 2;\n    *(undefined4 *)(unaff_ESI + 0x14) = 3;\n    if (in_EDX == -1) {\n      in_EDX = -0x7fffff48;\n    }\n    FUN_0045ac70(unaff_ESI,1,in_EDX,0x3ff0000000000000);\n    FUN_0045ac70(unaff_ESI,*(undefined4 *)(unaff_ESI + 0x10),in_EDX,0);\n    uVar2 = *(undefined4 *)(unaff_ESI + 0x14);\n    uVar5 = 0;\n    break;\n  case 6:\n    *(undefined4 *)(unaff_ESI + 0xc) = 1;\n    if (in_EDX == -1) {\n      in_EDX = -0x7fffff86;\n    }\n    uVar5 = 0x3ff0000000000000;\n    uVar2 = 1;\n    break;\n  case 7:\n    *(undefined4 *)(unaff_ESI + 0xc) = 1;\n    if (in_EDX == -1) {\n      in_EDX = -0x7fffff68;\n    }\n    uVar5 = 0x3ff0000000000000;\n    uVar2 = 1;\n    break;\n  case 8:\n    *(undefined4 *)(unaff_ESI + 0xc) = 1;\n    if (in_EDX == -1) {\n      in_EDX = 0xdd;\n    }\n    uVar5 = 0x3ff0000000000000;\n    uVar2 = 1;\n    break;\n  case 9:\n    *(undefined4 *)(unaff_ESI + 0xc) = 1;\n    if (in_EDX == -1) {\n      in_EDX = 0xb1;\n    }\n    uVar5 = 0x3ff0000000000000;\n    uVar2 = 1;\n    break;\n  case 10:\n    *(undefined4 *)(unaff_ESI + 0xc) = 1;\n    if (in_EDX == -1) {\n      in_EDX = 0xa6;\n    }\n    uVar5 = 0x3ff0000000000000;\n    uVar2 = 1;\n    break;\n  case 0xb:\n    *(undefined4 *)(unaff_ESI + 0xc) = 1;\n    if (in_EDX == -1) {\n      in_EDX = 0xd4;\n    }\n    uVar5 = 0x3ff0000000000000;\n    uVar2 = 1;\n    break;\n  case 0xc:\n    *(undefined4 *)(unaff_ESI + 0xc) = 1;\n    if (in_EDX == -1) {\n      in_EDX = 0x9e;\n    }\n    uVar5 = 0x3ff0000000000000;\n    uVar2 = 1;\n    break;\n  case 0xd:\n    *(undefined4 *)(unaff_ESI + 0xc) = 4;\n    if (in_EDX == -1) {\n      in_EDX = 0;\n    }\n    uVar5 = 0x3ff0000000000000;\n    uVar2 = 4;\n    break;\n  default:\n    goto switchD_0045adf4_default;\n  }\n  FUN_0045ac70(unaff_ESI,uVar2,in_EDX,uVar5);\nswitchD_0045adf4_default:\n  if (bVar4) {\n    uVar2 = FUN_0045ac20();\n    uVar3 = (**(code **)(DAT_006a9ff0 + 0xa4))(uVar2,3);\n    iVar1 = DAT_006a9ff0;\n    *(undefined4 *)(unaff_ESI + 0x1c) = uVar3;\n    uVar2 = (**(code **)(iVar1 + 0xa4))(uVar2,4);\n    *(undefined4 *)(unaff_ESI + 0x20) = uVar2;\n  }\n  else {\n    if (*(int *)(unaff_ESI + 0xc) != -1) {\n      uVar2 = FUN_0045ac20();\n      (**(code **)(DAT_006a9ff0 + 0xa8))(uVar2,3,*(undefined4 *)(unaff_ESI + 0x1c));\n      (**(code **)(DAT_006a9ff0 + 0xa8))(uVar2,4,*(undefined4 *)(unaff_ESI + 0x20));\n    }\n    if (*(int *)(unaff_ESI + 0x10) != -1) {\n      uVar2 = FUN_0045ac20();\n      (**(code **)(DAT_006a9ff0 + 0xa8))(uVar2,3,*(undefined4 *)(unaff_ESI + 0x1c));\n      (**(code **)(DAT_006a9ff0 + 0xa8))(uVar2,4,*(undefined4 *)(unaff_ESI + 0x20));\n    }\n    if (*(int *)(unaff_ESI + 0x14) != -1) {\n      uVar2 = FUN_0045ac20();\n      (**(code **)(DAT_006a9ff0 + 0xa8))(uVar2,3,*(undefined4 *)(unaff_ESI + 0x1c));\n      (**(code **)(DAT_006a9ff0 + 0xa8))(uVar2,4,*(undefined4 *)(unaff_ESI + 0x20));\n      return;\n    }\n  }\n  return;\n}\n\n",
+  "confidence": "observed",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+    "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+    "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+    "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+    "Pseudocode is Ghidra decompiler output, not original source and not text-equivalent to Hopper output.",
+    "External functions and functions without an analyzable body return null; other decompiler failures remain explicit.",
+    "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state.",
+    "The target references PDB PlantsVsZombies.pdb (GUID 8efc826c-78d7-4bea-aa67-ff33ea3dc99b, age (hex) 1, signature unknown, version RSDS); Ghidra reports load state unknown. Original names and types may be missing; an empty name search does not prove a procedure is absent. Use list_procedures and address-based analysis to inspect recovered functions. REA does not admit a caller-selected PDB companion."
+  ],
+  "relationship_coverage": null,
+  "locations": [],
+  "evidence_links": []
+}

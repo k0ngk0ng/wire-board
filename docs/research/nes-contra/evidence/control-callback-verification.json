@@ -1,0 +1,7 @@
+{
+  "passed": true,
+  "frames": 60,
+  "ramSHA256": "739c51e5a72bf56d33fe61ba9743e24261d2303f3e7c4daa97f93888f22afc98",
+  "inputSHA256": "1fef1d77802088da008adb88144325ae3dc4bc5c711255bd58cf4657f4023049",
+  "scope": "Equivalent declarative timeline and per-frame controller callback; no RAM mutation."
+}

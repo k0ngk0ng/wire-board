@@ -1,0 +1,68 @@
+{
+  "passed": true,
+  "native_calls": 607,
+  "native_pixel_frames": 15,
+  "native_foreground_pixels": 13409,
+  "typescript_tests": 7,
+  "typescript_typecheck": "passed --strict --noEmit target es2022",
+  "commands": [
+    "node --experimental-strip-types --test games/contra/tests/sprites.test.mjs",
+    "node web/node_modules/typescript/bin/tsc --noEmit --target es2022 --module esnext --moduleResolution bundler --strict --lib ES2022,DOM games/contra/web/sprites.ts"
+  ],
+  "red_before_implementation": {
+    "python": "Traceback (most recent call last):\n  File \"/Users/jason/Sources/github.com/k0ngk0ng/wire-board/scripts/contra/sprites_verify.py\", line 13, in <module>\n    from sprites_decode import SpriteBank, render_oam\nModuleNotFoundError: No module named 'sprites_decode'\n",
+    "typescript": "node:internal/modules/esm/resolve:271\n    throw new ERR_MODULE_NOT_FOUND(\n          ^\n\nError [ERR_MODULE_NOT_FOUND]: Cannot find module '/Users/jason/Sources/github.com/k0ngk0ng/wire-board/games/contra/web/sprites.ts' imported from /Users/jason/Sources/github.com/k0ngk0ng/wire-board/games/contra/tests/sprites.test.mjs\n    at finalizeResolution (node:internal/modules/esm/resolve:271:11)\n    at moduleResolve (node:internal/modules/esm/resolve:861:10)\n    at defaultResolve (node:internal/modules/esm/resolve:988:11)\n    at #cachedDefaultResolve (node:internal/modules/esm/loader:697:20)\n    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:714:38)\n    at ModuleLoader.resolveSync (node:internal/modules/esm/loader:746:52)\n    at #resolve (node:internal/modules/esm/loader:679:17)\n    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:599:35)\n    at ModuleJob.syncLink (node:internal/modules/esm/module_job:162:33)\n    at ModuleJob.link (node:internal/modules/esm/module_job:252:17) {\n  code: 'ERR_MODULE_NOT_FOUND',\n  url: 'file:///Users/jason/Sources/github.com/k0ngk0ng/wire-board/games/contra/web/sprites.ts'\n}\n\nNode.js v24.15.0\n✖ games/contra/tests/sprites.test.mjs (25.509375ms)\nℹ tests 1\nℹ suites 0\nℹ pass 0\nℹ fail 1\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 28.63875\n\n✖ failing tests:\n\ntest at games/contra/tests/sprites.test.mjs:1:1\n✖ games/contra/tests/sprites.test.mjs (25.509375ms)\n  'test failed'\n"
+  },
+  "green": "✔ 607 original builder calls retain full OAM, shared-part recoil, flips and clipping (2.226208ms)\n✔ caller-owned typed-array views and Node buffers remain unchanged (0.070166ms)\n✔ 15 actual DMA frames reproduce all 13,409 original opaque foreground pixels (14.486292ms)\n✔ catalog has stable original anchors and rejects mismatched or invalid descriptors (0.291541ms)\n✔ compact sprite X clipping keeps partial writes and regular OAM consumes wrapped slots (0.108875ms)\n✔ 8x16 tile low-bit, row boundary and vertical flip bind the correct CHR slot (0.062542ms)\n✔ scanline cap, OAM priority, left clipping and background-priority mask remain explicit (2.14575ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 86.991666\n",
+  "fixture_source": {
+    "romSHA256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+    "originalEvidenceSHA256": "7029b9685ca4409e0141924024321ee8d9532de4386b15bfe1378bfaff4ebc4f",
+    "catalogEvidenceSHA256": "292a58f7f9ef5cfd741c481a0701ec1d76a327daa2e7292be0174e394b820e6e",
+    "expectedOutputs": "unmodified original FCEUX execution",
+    "fixtureSHA256": "1c0ba1e5f65b13a9dcb0cd4d8f93f80f7908647567b975cafb41f2ca17022d22",
+    "calls": 607,
+    "samples": 15,
+    "parts": 1145,
+    "limitations": [
+      "Native 607-call fixture covers 14 sprite codes in outdoor stage one.",
+      "Other declared boundary tests are synthetic byte/format cases, not additional natural gameplay."
+    ]
+  },
+  "files": {
+    "games/contra/web/sprites.ts": "732771548119a0ec3aac18fbc33896c3e7592c98132c8a907290f0405376993c",
+    "games/contra/tests/sprites.test.mjs": "ad52e4a4ebcc4587e8b19aef1f9bc0807b63d070ede2c8745f427787448409b0",
+    "games/contra/tests/testdata/sprites-original.json.gz": "1c0ba1e5f65b13a9dcb0cd4d8f93f80f7908647567b975cafb41f2ca17022d22",
+    "games/contra/assets/sprites-source.json": "8e76ab3c5e5f3a40abfe38fa4f00d35c3eba9eae4a2918a373a050205d12e240"
+  },
+  "cleanup": [
+    {
+      "path": ".local/contra-sprites/swift-cache",
+      "bytes": 93390128
+    },
+    {
+      "path": "dist/contra-sprites-tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-sprites/recheck",
+      "bytes": 1144967
+    },
+    {
+      "path": ".local/contra-sprites/runtime/fceux-home",
+      "bytes": 17722
+    },
+    {
+      "path": ".local/contra-sprites/runtime/runtime",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-sprites/runtime/tmp",
+      "bytes": 0
+    }
+  ],
+  "retained_local": [
+    "assets/chr indexed page PNGs",
+    "natural original capture outputs",
+    "REA evidence used by concurrent state recovery"
+  ]
+}

@@ -1,0 +1,23 @@
+// Actual compiled Go/Wasm startup and rules/graphics checkpoint roundtrip.
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {gunzipSync} from 'node:zlib';
+import path from 'node:path';
+import {pathToFileURL} from 'node:url';
+const [root,delivery]=process.argv.slice(2);
+const runtime=path.join(delivery,'yuyuhakusho/v1/runtime');
+await import(pathToFileURL(path.join(runtime,'wasm_exec.js')));
+const go=new globalThis.Go(),{instance}=await WebAssembly.instantiate(readFileSync(path.join(runtime,'client.wasm')),go.importObject);void go.run(instance);
+const call=(command,...data)=>{const result=JSON.parse(globalThis.yuyuhakushoNetworkWasm(JSON.stringify(command),...data));assert.equal(result.ok,true,result.error);return result;};
+const read=name=>new Uint8Array(gunzipSync(readFileSync(path.join(delivery,'yuyuhakusho/data',name))));
+const asset=call({op:'load',arena:0},read('chu-world-rules.json.gz'),read('world-sprites.json.gz'),read('arena-assets-default.json.gz'),read('hud-assets.json.gz'),new Uint8Array(),read('renderstate-metadata.json.gz'),new Uint8Array(readFileSync(path.join(delivery,'yuyuhakusho/data/runtime-resource-descriptor.json')))).asset;
+const session=call({op:'prepare',asset,options:{Seed:42,Difficulty:6,Players:[{Slot:0,CharacterID:3,Color:0,HumanChannel:0},{Slot:3,CharacterID:9,Color:1,HumanChannel:1}]}}).session;
+call({op:'ready',session});const pixels=new Uint8Array(320*224*4);let view;
+for(let i=0;i<300;i++)view=call({op:'step',session,held:[i%80<40?8:0,0,0,0],automated:0},pixels).view;
+assert.equal(view.frame,'300');assert.equal(view.players.length,2);assert.ok(pixels.some(value=>value!==0));
+const checkpoint=call({op:'checkpoint',session,epoch:'0123456789abcdef01234567'}).checkpoint;
+const restored=call({op:'restoreCheckpoint',asset,checkpoint}).session;
+const first=call({op:'step',session,held:[64,0,0,0],automated:0},pixels);
+const second=call({op:'advance',session:restored,held:[64,0,0,0],automated:0},new Uint8Array(320*224*4));
+assert.deepEqual(first.view,second.view);assert.equal(call({op:'digests',session}).rulesDigest,call({op:'digests',session:restored}).rulesDigest);assert.equal(call({op:'digests',session}).presentationDigest,call({op:'digests',session:restored}).presentationDigest);
+console.log(JSON.stringify({passed:true,frames:301,checkpointRoundtrip:true,sourceBoundCompiledRuntime:true}));process.exit(0);

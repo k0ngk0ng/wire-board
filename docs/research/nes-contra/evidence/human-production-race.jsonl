@@ -1,0 +1,8 @@
+{"Time":"2026-10-28T13:32:42.269875+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/contra/server"}
+{"Time":"2026-10-28T13:32:42.993155+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/server","Test":"TestProductionEmbeddedVisualsAndOfflineCallbacks"}
+{"Time":"2026-10-28T13:32:42.993201+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/server","Test":"TestProductionEmbeddedVisualsAndOfflineCallbacks","Output":"=== RUN   TestProductionEmbeddedVisualsAndOfflineCallbacks\n"}
+{"Time":"2026-10-28T13:32:56.845259+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/server","Test":"TestProductionEmbeddedVisualsAndOfflineCallbacks","Output":"--- PASS: TestProductionEmbeddedVisualsAndOfflineCallbacks (13.85s)\n"}
+{"Time":"2026-10-28T13:32:56.845297+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/server","Test":"TestProductionEmbeddedVisualsAndOfflineCallbacks","Elapsed":13.85}
+{"Time":"2026-10-28T13:32:56.845325+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/server","Output":"PASS\n"}
+{"Time":"2026-10-28T13:32:57.864938+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/server","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/contra/server\t15.595s\n"}
+{"Time":"2026-10-28T13:32:57.865061+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/server","Elapsed":15.595}

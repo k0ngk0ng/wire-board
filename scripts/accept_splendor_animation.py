@@ -31,6 +31,9 @@ def main():
     parser.add_argument('--scroll-board', action='store_true', help='Keep the action source visible with player avatars above the viewport')
     parser.add_argument('--reduced-motion', action='store_true')
     parser.add_argument('--acquisition', action='store_true', help='Buy a reserved card, obtain a noble, and finish the base game')
+    parser.add_argument('--confirmation', choices=['keyboard', 'gamepad'])
+    parser.add_argument('--dialog-baseline', action='store_true')
+    parser.add_argument('--fullscreen', action='store_true')
     args = parser.parse_args()
     url = urllib.parse.urlsplit(args.base_url)
     if url.hostname not in ('127.0.0.1', 'localhost', '::1'):
@@ -39,6 +42,8 @@ def main():
         parser.error('width must be at least 320')
     if args.acquisition and args.expanded:
         parser.error('acquisition currently verifies the base game')
+    if args.confirmation and not args.acquisition:
+        parser.error('--confirmation requires --acquisition')
     base = args.base_url.rstrip('/')
     run = uuid.uuid4().hex[:8]
     out = ROOT / '.local' / f'splendor-animation-{args.width}-{run}'
@@ -52,6 +57,8 @@ def main():
                AGENT_BROWSER_PROFILE=str(out / 'profile'),
                AGENT_BROWSER_ARGS='--mute-audio,--disable-breakpad',
                TMPDIR=str(temporary))
+    if args.confirmation == 'gamepad':
+        env['AGENT_BROWSER_INIT_SCRIPTS'] = str(ROOT / 'scripts/controllers/gamepad/virtual-device.js')
     clients = [urllib.request.build_opener(urllib.request.HTTPCookieProcessor(
         http.cookiejar.CookieJar())) for _ in range(4)]
     names = ['动画验收' + run + str(i) for i in range(4)]
@@ -97,8 +104,52 @@ def main():
             card=before.get('cardEventId', 0), token=before.get('tokenEventId', 0))))
         if args.acquisition:
             time.sleep(1.5)  # Let earlier rapid HTTP actions finish animating.
+        if panel and args.confirmation and not args.dialog_baseline:
+            version = room()['version']
+            browser('click', '.market .deck:not(:disabled)')
+            browser('wait', '[data-splendor-confirm]')
+            time.sleep(.2)
+            blind = js("""(()=>{const p=document.querySelector('.gem-blind-reserve'),r=p.getBoundingClientRect();return {focused:document.activeElement.matches('[data-splendor-confirm]'),centered:Math.abs(r.x+r.width/2-innerWidth/2)<2&&Math.abs(r.y+r.height/2-innerHeight/2)<2,inside:!!p.closest('[data-game-fullscreen-surface]')}})()""")
+            report['blindConfirmation'] = blind
+            assert all(blind.values()), blind
+            browser('screenshot', str(out/'blind-confirmation.png'))
+            if args.fullscreen and args.confirmation=='gamepad':
+                js('window.__pulseGamepad(0,{"1":1},{},3)')
+            else:
+                browser('press','Escape')
+            browser('wait','--fn','!document.querySelector(".gem-blind-reserve")')
+            assert room()['version']==version, 'Blind reserve cancel changed the game'
         if panel:
             browser('click', f'.reserved [data-card-id="{action["card"]}"]')
+            if args.confirmation:
+                time.sleep(.25)
+                def dialog_check():
+                    return js('''(()=>{const p=document.querySelector('.gem-purchase-panel'),r=p.getBoundingClientRect(),c=p.querySelector('[data-card-acquire]'),a=document.activeElement;return {role:p.getAttribute('role'),x:r.x+r.width/2,y:r.y+r.height/2,viewportX:innerWidth/2,viewportY:innerHeight/2,fits:r.x>=0&&r.y>=0&&r.right<=innerWidth+1&&r.bottom<=innerHeight+1,focused:a===c,enabled:!c.disabled,focusVisible:getComputedStyle(c).outlineStyle!=='none'&&parseFloat(getComputedStyle(c).outlineWidth)>=2,focusText:a.textContent,insideSurface:!!p.closest('[data-game-fullscreen-surface]')}})()''')
+                checks = report.setdefault('confirmation', [])
+                checks.append(dialog_check())
+                browser('screenshot', str(out/'confirmation.png'))
+                if not args.dialog_baseline:
+                    d = checks[-1]
+                    assert d['role']=='dialog' and d['focused'] and d['enabled'] and d['focusVisible'] and d['fits'] and d['insideSurface'], d
+                    assert abs(d['x']-d['viewportX'])<2 and abs(d['y']-d['viewportY'])<2, d
+                    version = room()['version']
+                    browser('press','Tab')
+                    assert js('!!document.activeElement.closest(".gem-purchase-panel")'), 'Tab escaped the dialog'
+                    if args.fullscreen and args.confirmation=='gamepad':
+                        js('window.__pulseGamepad(0,{"1":1},{},3)')
+                    else:
+                        browser('press','Escape')
+                    assert room()['version']==version, 'Cancel changed the game'
+                    assert js('document.activeElement.dataset.cardId')==str(action['card']), 'Close did not restore card focus'
+                    browser('click', f'.reserved [data-card-id="{action["card"]}"]')
+                    time.sleep(.2)
+                    assert dialog_check()['focused'], 'Reopening did not focus confirmation'
+                    if args.confirmation=='gamepad':
+                        js('window.__pulseGamepad(0,{"1":1},{},3)')
+                        browser('wait','--fn','!document.querySelector(".gem-purchase-panel")')
+                        assert room()['version']==version
+                        browser('click', f'.reserved [data-card-id="{action["card"]}"]');time.sleep(.2)
+                        assert dialog_check()['focused']
         delta = 35 if actor == 0 else -35
         js('document.querySelector(".players-strip").scrollLeft=' +
            str(430 if actor >= 2 else 0) +
@@ -116,7 +167,14 @@ def main():
             js('window.flightCardSource = ' + json.dumps(source))
         js((ROOT / 'scripts/splendor_animation_probe.js').read_text())
         if panel:
-            browser('click', f'button[data-card-acquire="{action["card"]}"]')
+            if args.confirmation and not args.dialog_baseline:
+                if args.confirmation=='keyboard':
+                    report['beforeConfirmation'] = js('({focused:document.activeElement.outerHTML,hasFocus:document.hasFocus()})')
+                    browser('press','Enter')
+                else:
+                    js('window.__pulseGamepad(0,{"0":1},{},3)')
+            else:
+                browser('click', f'button[data-card-acquire="{action["card"]}"]')
         else:
             command(actor, 'action', action=action)
         if not (out / (label + '-in-flight.png')).exists():
@@ -130,7 +188,7 @@ def main():
         report['actions'].append(result)
         assert result.get('done'), result
         assert not result['errors'], result
-        assert result['samples'] or result['card'], result
+        assert result['samples'] or result['card'], {'label':label,'beforeConfirmation':report.get('beforeConfirmation'),'version':room()['version']}
         assert result['visible'] > 0, result
         if args.reduced_motion:
             assert result['reducedMotion'] and result['feedbackFrames'] > 0, 'Reduced-motion feedback is missing'
@@ -155,6 +213,7 @@ def main():
         command(0, 'start')
         browser('open', base)
         started = True
+        browser('tab', next(t['tabId'] for t in browser('tab')['tabs'] if t['active']))
         js('fetch("/api/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(' +
            json.dumps(dict(name=names[0], password=password)) + ')}).then(r=>r.ok)')
         browser('set', 'viewport', str(args.width), '844')
@@ -162,6 +221,13 @@ def main():
             browser('set', 'media', 'light', 'reduced-motion')
         browser('open', base)
         time.sleep(.5)
+        if args.confirmation == 'gamepad':
+            js('window.__setGamepad(0,"Acceptance Standard Pad","standard");new Promise(resolve=>{let n=12;const next=()=>--n?requestAnimationFrame(next):resolve(true);requestAnimationFrame(next)})')
+            browser('wait','[data-controller-navigation="splendor"]')
+            report['virtualGamepad'] = True
+        if args.fullscreen:
+            browser('click','button[aria-label="全屏"]')
+            browser('wait','[data-room-fullscreen]')
         assert js('document.documentElement.scrollWidth <= innerWidth'), 'Horizontal overflow'
         browser('screenshot', str(out / 'opening.png'))
         if args.acquisition:

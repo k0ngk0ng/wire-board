@@ -7,6 +7,8 @@ import (
 	"log"
 	"slices"
 	"time"
+
+	"github.com/k0ngk0ng/wire-board/internal/gameapi"
 )
 
 type realtimeInput struct {
@@ -17,18 +19,21 @@ type realtimeInput struct {
 }
 
 type realtimeFrame struct {
-	Type     string          `json:"type"`
-	Deadline int64           `json:"deadline"`
-	Timeouts []int           `json:"timeouts"`
-	Inputs   []realtimeInput `json:"inputs"`
-	Timer    bool            `json:"timer"`
+	Type        string          `json:"type"`
+	Deadline    int64           `json:"deadline"`
+	Timeouts    []int           `json:"timeouts"`
+	Inputs      []realtimeInput `json:"inputs"`
+	Timer       bool            `json:"timer"`
+	PausedTimer bool            `json:"pausedTimer,omitempty"`
+	TimerAt     int64           `json:"timerAt,omitempty"`
 }
 
 // Called with s.mu held. The module chooses its frame frequency through the
 // persisted SystemDeadline; a 50 ms wakeup never changes ordinary game pacing.
 func (s *Server) expireRealtimeModuleTimers(now time.Time) {
 	for _, room := range s.rooms {
-		if !s.modules[room.Kind].Realtime || room.Status != "playing" || room.Loading != nil || room.Module == nil || room.Module.Paused || room.Module.Result != nil || room.Module.SystemDeadline == 0 || room.Module.SystemDeadline > room.gameNow(now).UnixMilli() {
+		module := s.modules[room.Kind]
+		if !module.Realtime || room.Status != "playing" || room.Loading != nil || room.Module == nil || (room.Module.Paused && module.OnPausedTimer == nil) || room.Module.Result != nil || room.Module.SystemDeadline == 0 || room.Module.SystemDeadline > room.gameNow(now).UnixMilli() {
 			continue
 		}
 		if err := s.runRealtimeModuleFrame(room, now); err != nil {
@@ -44,7 +49,7 @@ func (s *Server) expireRealtimeModuleTimers(now time.Time) {
 // no stale bot proposal survives a returning player's Reclaim.
 func (s *Server) runRealtimeModuleFrame(room *Room, now time.Time) error {
 	module := s.modules[room.Kind]
-	if room.Loading != nil || !module.Realtime || module.OnTimer == nil {
+	if room.Status != "playing" || room.Module == nil || room.Module.Result != nil || room.Loading != nil || !module.Realtime || module.OnTimer == nil || (room.Module.Paused && module.OnPausedTimer == nil) {
 		return errors.New("missing realtime clock capability")
 	}
 	raw, err := json.Marshal(room)
@@ -83,7 +88,14 @@ func (s *Server) runRealtimeModuleFrame(room *Room, now time.Time) error {
 		}
 	}
 	if next.Module.Result == nil && next.Module.SystemDeadline != 0 && next.Module.SystemDeadline <= next.gameNow(now).UnixMilli() {
-		match, err := module.OnTimer(moduleContext(&next, -1, next.Version, now), *next.Module)
+		ctx := moduleContext(&next, -1, next.Version, now)
+		var match gameapi.Match
+		if next.Module.Paused {
+			match, err = runPausedPresentationTimer(module, ctx, *next.Module)
+			event.PausedTimer, event.TimerAt = true, ctx.Now.UnixMilli()
+		} else {
+			match, err = module.OnTimer(ctx, *next.Module)
+		}
 		if err != nil {
 			return err
 		}

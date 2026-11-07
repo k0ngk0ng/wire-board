@@ -1,3 +1,4 @@
+import { useControllerCancel } from "../../../web/src/controllers/use-controller-cancel";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import type { BoardProps } from "../../../web/src/game-api/module";
 import { Modal } from "../../../web/src/ui/board-host";
@@ -78,12 +79,18 @@ export function Board({
   audio,
   clock,
 }: BoardProps<View>) {
+  const controllerRoot = useRef<HTMLElement>(null);
   const [selected, setSelected] = useState<number | null>(null),
     [target, setTarget] = useState<number | null>(null),
     [promotion, setPromotion] = useState(""),
     [offer, setOffer] = useState(false),
     [resign, setResign] = useState(false),
     [focus, setFocus] = useState(12);
+  useControllerCancel(controllerRoot, () => {
+    setSelected(null);
+    setTarget(null);
+    setPromotion("");
+  });
   const cells = useRef<(HTMLButtonElement | null)[]>([]);
   const black = !room.spectating && room.you !== data.white;
   const scope = `${room.id}:${data.round}:${room.you}:${clock.epoch ?? 0}`;
@@ -184,6 +191,7 @@ export function Board({
   };
   return (
     <section
+      ref={controllerRoot}
       className="chess-board"
       data-ply={data.ply}
       data-moving={event?.id ?? ""}
@@ -209,7 +217,12 @@ export function Board({
               : `你执${black ? "黑" : "白"}，己方在下方`}
             {data.checkSquare >= 0 ? " · 王被将军" : ""}
           </div>
-          <div className="chess-grid" role="group" aria-label="国际象棋棋盘">
+          <div
+            data-controller-group="board"
+            className="chess-grid"
+            role="group"
+            aria-label="国际象棋棋盘"
+          >
             {Array.from({ length: 64 }, (_, display) => {
               const sq = black
                 ? Math.floor(display / 8) * 8 + 7 - (display % 8)
@@ -298,7 +311,7 @@ export function Board({
             选择棋子与目标格后确认。方向键移动焦点，回车选择。
           </p>
         </div>
-        <aside className="chess-actions">
+        <aside data-controller-group="actions" className="chess-actions">
           <h3>
             {data.phase === "finished"
               ? (reasons[data.reason] ?? "对局结束")
@@ -394,6 +407,7 @@ export function Board({
           <button
             type="button"
             disabled={!canAct || !data.canResign}
+            data-chess-resign
             onClick={() => setResign(true)}
           >
             认输

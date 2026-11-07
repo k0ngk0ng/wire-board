@@ -1,0 +1,30 @@
+{"Time":"2026-10-25T23:55:14.039038+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine"}
+{"Time":"2026-10-25T23:55:14.594202+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotStandardCampaignE2E"}
+{"Time":"2026-10-25T23:55:14.594424+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotStandardCampaignE2E","Output":"=== RUN   TestBotStandardCampaignE2E\n"}
+{"Time":"2026-10-25T23:55:14.600682+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotStandardCampaignE2E/players1"}
+{"Time":"2026-10-25T23:55:14.600699+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotStandardCampaignE2E/players1","Output":"=== RUN   TestBotStandardCampaignE2E/players1\n"}
+{"Time":"2026-10-25T23:55:15.128199+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotStandardCampaignE2E/players1","Output":"    bot_e2e_test.go:160: bot evidence /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-bot/runs/attempt-3992278450/players1: {\n"}
+{"Time":"2026-10-25T23:55:15.128225+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotStandardCampaignE2E/players1","Output":"          \"complete_campaign\": false,\n"}
+{"Time":"2026-10-25T23:55:15.12823+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotStandardCampaignE2E/players1","Output":"          \"continues\": 3,\n"}
+{"Time":"2026-10-25T23:55:15.128233+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotStandardCampaignE2E/players1","Output":"          \"error\": \"\",\n"}
+{"Time":"2026-10-25T23:55:15.128237+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotStandardCampaignE2E/players1","Output":"          \"frames\": 26344,\n"}
+{"Time":"2026-10-25T23:55:15.128239+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotStandardCampaignE2E/players1","Output":"          \"level\": 1,\n"}
+{"Time":"2026-10-25T23:55:15.128246+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotStandardCampaignE2E/players1","Output":"          \"no_state_injection\": true,\n"}
+{"Time":"2026-10-25T23:55:15.128249+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotStandardCampaignE2E/players1","Output":"          \"outcome\": \"\",\n"}
+{"Time":"2026-10-25T23:55:15.128252+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotStandardCampaignE2E/players1","Output":"          \"passed\": true,\n"}
+{"Time":"2026-10-25T23:55:15.128255+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotStandardCampaignE2E/players1","Output":"          \"players\": 1,\n"}
+{"Time":"2026-10-25T23:55:15.128264+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotStandardCampaignE2E/players1","Output":"          \"restore_checkpoints\": 26,\n"}
+{"Time":"2026-10-25T23:55:15.128267+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotStandardCampaignE2E/players1","Output":"          \"routine\": 0,\n"}
+{"Time":"2026-10-25T23:55:15.12827+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotStandardCampaignE2E/players1","Output":"          \"screen\": 0,\n"}
+{"Time":"2026-10-25T23:55:15.128272+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotStandardCampaignE2E/players1","Output":"          \"seed\": 42,\n"}
+{"Time":"2026-10-25T23:55:15.128275+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotStandardCampaignE2E/players1","Output":"          \"standard_continues\": 3,\n"}
+{"Time":"2026-10-25T23:55:15.128288+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotStandardCampaignE2E/players1","Output":"          \"standard_reserve_lives\": 2,\n"}
+{"Time":"2026-10-25T23:55:15.12829+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotStandardCampaignE2E/players1","Output":"          \"target_level\": 1\n"}
+{"Time":"2026-10-25T23:55:15.128292+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotStandardCampaignE2E/players1","Output":"        }\n"}
+{"Time":"2026-10-25T23:55:15.128305+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotStandardCampaignE2E/players1","Output":"--- PASS: TestBotStandardCampaignE2E/players1 (0.53s)\n"}
+{"Time":"2026-10-25T23:55:15.128308+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotStandardCampaignE2E/players1","Elapsed":0.53}
+{"Time":"2026-10-25T23:55:15.128314+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotStandardCampaignE2E","Output":"--- PASS: TestBotStandardCampaignE2E (0.53s)\n"}
+{"Time":"2026-10-25T23:55:15.128316+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotStandardCampaignE2E","Elapsed":0.53}
+{"Time":"2026-10-25T23:55:15.128325+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"PASS\n"}
+{"Time":"2026-10-25T23:55:15.128741+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/contra/engine\t1.090s\n"}
+{"Time":"2026-10-25T23:55:15.128756+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Elapsed":1.09}

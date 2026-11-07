@@ -1,5 +1,8 @@
 package starfort_test
 
+// Legacy layout regressions use captured v1.36.1 geometry; current central
+// layout and skills are verified separately through production starts.
+
 // Failure cases enumerated before objective implementation: accepting twice
 // double-charges gold; unauthorized/battle actions activate objectives; an
 // escort is a checkbox instead of moving; its position changes on reconnect or
@@ -55,7 +58,7 @@ func addObjectiveFixture(b *rulesTable, kind, status string, hp float64) {
 	b.validate()
 }
 func TestStarfortWorldObjectiveConvoyTravelAndDelivery(t *testing.T) {
-	b := newRulesTable(t, 1, map[string]any{})
+	b := newLegacyRulesTable(t, 1, map[string]any{})
 	addObjectiveFixture(b, "convoy", "available", 100)
 	var raw map[string]any
 	_ = json.Unmarshal(b.s.Data, &raw)
@@ -141,7 +144,7 @@ func TestStarfortWorldObjectiveMineIgnoresDistantBaseLeak(t *testing.T) {
 // Regression scenario before the position fix: a road along the southern map
 // edge receives a +Y landmark offset and places the beacon outside the board.
 func TestStarfortWorldObjectiveLocationsBounded(t *testing.T) {
-	b := newRulesTable(t, 1, map[string]any{"waves": 20})
+	b := newLegacyRulesTable(t, 1, map[string]any{"waves": 20})
 	seen := 0
 	for sec := 0; sec < 8000 && b.s.Result == nil; sec++ {
 		b.botPass()
@@ -179,7 +182,7 @@ func TestStarfortWorldObjectiveLocationsBounded(t *testing.T) {
 func TestStarfortWorldMineInvestmentProfit(t *testing.T) {
 	for _, players := range []int{1, 2, 4} {
 		t.Run(fmt.Sprint(players), func(t *testing.T) {
-			b := newRulesTable(t, players, map[string]any{"waves": 20})
+			b := newLegacyRulesTable(t, players, map[string]any{"waves": 20})
 			worldUntil(t, b, 6)
 			for _, kind := range []string{"route", "boon"} {
 				v := worldRead(t, b)

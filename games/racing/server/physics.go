@@ -5,22 +5,35 @@ import (
 	"math"
 )
 
+func brakeLevel(brake bool, amount *float64) float64 {
+	if !brake {
+		return 0
+	}
+	if amount == nil {
+		return 1
+	}
+	return clamp(*amount, 0, 1)
+}
+
 func stepCar(c *Car, t Track, ms, at int64) {
 	dt := float64(ms) / 1000
 	_, _, distance, _ := nearest(t, Point{c.X, c.Y})
 	c.Offroad = distance > t.RoadWidth/2
-	steer, throttle, brake, drift := c.Steer, c.Throttle, c.Brake, c.Drift
-	if brake {
+	steer, throttle, brake, drift := c.Steer, c.Throttle, brakeLevel(c.Brake, c.BrakeAmount), c.Drift
+	if brake > 0 {
 		throttle = 0
 	}
 	if at-c.LastInputAt > lostInputMS || at < c.ResetUntil {
 		steer = 0
 		throttle = 0
-		brake = true
+		brake = 1
 		drift = false
 	}
 	forward := c.VX*math.Cos(c.Angle) + c.VY*math.Sin(c.Angle)
-	yaw := steer * (1.65 + .002*math.Abs(forward)) * math.Min(math.Abs(forward)/65, 1)
+	// Full steering remains useful at low speed, but loses authority as road
+	// speed rises. Inputs from keyboard, mouse and gamepad share this rule.
+	speedForSteering := math.Abs(forward)
+	yaw := steer * 1.65 * math.Min(speedForSteering/65, 1) / (1 + math.Pow(speedForSteering/220, 2))
 	if drift {
 		yaw *= 1.18
 	}
@@ -41,8 +54,8 @@ func stepCar(c *Car, t Track, ms, at int64) {
 	if drift {
 		forward *= math.Exp(-1.2 * dt)
 	}
-	if brake {
-		forward *= math.Exp(-6 * dt)
+	if brake > 0 {
+		forward *= math.Exp(-6 * brake * dt)
 	}
 	side *= math.Exp(-grip * dt)
 	forward = clamp(forward, 0, limit)
@@ -215,6 +228,7 @@ func updateProgress(s *State, c *Car, before Point, at int64) {
 				c.Speed = 0
 				c.Throttle = 0
 				c.Brake = true
+				c.BrakeAmount = nil
 				s.emit("finish", c.Seat, at, 1)
 				s.Log = append(s.Log, fmt.Sprintf("玩家 %d 完成 %d 圈", c.Seat+1, c.Lap))
 				if s.FinishDeadline == 0 {
@@ -262,13 +276,16 @@ func advance(s *State, until int64) {
 				continue
 			}
 			steer, throttle, brake, drift, last := c.Steer, c.Throttle, c.Brake, c.Drift, c.LastInputAt
+			pressure := c.BrakeAmount
 			c.Steer = c.Applied.Steer
 			c.Throttle = c.Applied.Throttle
 			c.Brake = c.Applied.Brake
+			c.BrakeAmount = c.Applied.BrakeAmount
 			c.Drift = c.Applied.Drift
 			c.LastInputAt = c.Applied.At
 			stepCar(c, s.Track, stepMS, at)
 			c.Steer, c.Throttle, c.Brake, c.Drift, c.LastInputAt = steer, throttle, brake, drift, last
+			c.BrakeAmount = pressure
 		}
 		if s.Phase != "countdown" {
 			collide(s, at)

@@ -1,0 +1,34 @@
+{
+  "passed": true,
+  "game": "escape",
+  "commands": [
+    [
+      "node",
+      "--experimental-strip-types",
+      "--test",
+      "games/escape/tests/assets.test.mjs",
+      "games/escape/tests/prediction.test.mjs"
+    ],
+    [
+      "go",
+      "test",
+      "-json",
+      "-count=1",
+      "-timeout=45m",
+      "-run",
+      "^(?:TestEscapeAllComputerCampaignsE2E|TestEscapeAlternateRouteCampaignsE2E|TestEscapeAutoPlayMixedCampaignHTTP|TestEscapeBrowserServer|TestEscapeComputersRespondToSharedRally|TestEscapeCooperativeCircuitAndCoupledPumps|TestEscapeDangerWarningRescueAndTimeoutE2E|TestEscapeGenerationCorpusE2E|TestEscapeHTTPPersistenceSpectatorAndAutoPlay|TestEscapePauseRestoreAndManualReclaim|TestEscapeRegistrationAndOptions|TestEscapeRejectsForgedAndStaleActions|TestEscapeSeededExplorationAndVisibility|TestEscapeShortMovementEdgesBeforeNextTick)$",
+      "./games/escape/tests"
+    ],
+    [
+      "go",
+      "test",
+      "-json",
+      "-count=1",
+      "-timeout=45m",
+      "-race",
+      "-run",
+      "^(?:TestEscapeAutoPlayMixedCampaignHTTP|TestEscapeDangerWarningRescueAndTimeoutE2E|TestEscapeHTTPPersistenceSpectatorAndAutoPlay)$",
+      "./games/escape/tests"
+    ]
+  ]
+}

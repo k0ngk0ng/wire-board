@@ -1,0 +1,125 @@
+{
+  "romSHA256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+  "source": "docs/research/nes-contra/evidence/enemies-all-stage-data.json",
+  "sourceSHA256": "1d9a20a87e69ccf21e3f53d98ac48f956a6ed0aaa431c5cbb3749f0e297a9975",
+  "stages": [
+    {
+      "level": 5,
+      "stage": 6,
+      "spawnAttributes": [
+        {
+          "kind": 16,
+          "attributes": [
+            3,
+            5,
+            6,
+            7
+          ]
+        },
+        {
+          "kind": 17,
+          "attributes": [
+            2,
+            4,
+            8,
+            9,
+            12
+          ]
+        },
+        {
+          "kind": 18,
+          "attributes": [
+            0,
+            4,
+            9,
+            10,
+            14
+          ]
+        },
+        {
+          "kind": 19,
+          "attributes": [
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "level": 6,
+      "stage": 7,
+      "spawnAttributes": [
+        {
+          "kind": 16,
+          "attributes": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14
+          ]
+        },
+        {
+          "kind": 21,
+          "attributes": [
+            0
+          ]
+        },
+        {
+          "kind": 17,
+          "attributes": [
+            0,
+            1,
+            2,
+            3,
+            7,
+            11,
+            15
+          ]
+        },
+        {
+          "kind": 18,
+          "attributes": [
+            0,
+            2
+          ]
+        },
+        {
+          "kind": 19,
+          "attributes": [
+            0
+          ]
+        },
+        {
+          "kind": 23,
+          "attributes": [
+            0,
+            1
+          ]
+        },
+        {
+          "kind": 22,
+          "attributes": [
+            0
+          ]
+        },
+        {
+          "kind": 24,
+          "attributes": [
+            0
+          ]
+        }
+      ]
+    }
+  ],
+  "note": "Static source-script attribute inventory. Runtime-generation-only types retain their separately recovered initializers. Static spike-wall attribute 2 is present in the shipped script and has a dedicated original fixture."
+}

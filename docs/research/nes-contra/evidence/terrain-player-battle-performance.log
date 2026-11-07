@@ -1,0 +1,12 @@
+goos: darwin
+goarch: arm64
+pkg: github.com/k0ngk0ng/wire-board/games/contra/server
+cpu: Apple M4
+BenchmarkContraSharedVisualTimer/one-bot-10         	      10	  30584583 ns/op	10279514 B/op	    3079 allocs/op
+BenchmarkContraSharedVisualTimer/one-bot-10         	      10	  30552538 ns/op	10292709 B/op	    3082 allocs/op
+BenchmarkContraSharedVisualTimer/one-bot-10         	      10	  30540233 ns/op	10319000 B/op	    3085 allocs/op
+BenchmarkContraSharedVisualTimer/two-bots-10        	      10	  31335567 ns/op	10323812 B/op	    3101 allocs/op
+BenchmarkContraSharedVisualTimer/two-bots-10        	      10	  31330975 ns/op	10297484 B/op	    3097 allocs/op
+BenchmarkContraSharedVisualTimer/two-bots-10        	      10	  31312821 ns/op	10323810 B/op	    3101 allocs/op
+PASS
+ok  	github.com/k0ngk0ng/wire-board/games/contra/server	4.090s

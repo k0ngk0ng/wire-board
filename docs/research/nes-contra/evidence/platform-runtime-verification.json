@@ -1,0 +1,541 @@
+{
+  "passed": true,
+  "evidenceSHA256": "b82fdb10550b4940bc89f2ab2b2cc7d66e8fa6b3bd3832dc8f43714c595bfc12",
+  "rulesBuildID": "b6082df8a8b596541dda3e4898ff4ce9a0a0fc681a7cab144439bb307a0cbbee",
+  "webManifestSHA256": "c395d7ed8a9b2debbfc020afe6531030e5d718cf80b757ab2f658de864036ca1",
+  "scope": "Loopback actual platform with a byte-preserving delay proxy; ACK latency is not total input-to-display latency or WAN evidence.",
+  "cases": [
+    {
+      "name": "desktop",
+      "visibleSamples": 391,
+      "singleRevisionFraction": 1.0,
+      "medianVisibleIntervalMS": 16.699999999999818,
+      "contrastRatios": [
+        12.99392123934672,
+        13.205053898170414
+      ],
+      "matchingNativeDigestsAtRevisions": [
+        "462",
+        "479"
+      ],
+      "receivedWebSocketBytesPerSecond": 783704.2606516291,
+      "medianAcknowledgementMS": 4.815999418497086,
+      "maximumAcknowledgementMS": 4.904000088572502,
+      "canvas": {
+        "h": 562.5,
+        "w": 600,
+        "x": 250,
+        "y": 78
+      },
+      "controller": {
+        "h": 233.328125,
+        "w": 600,
+        "x": 250,
+        "y": 652.5
+      }
+    },
+    {
+      "name": "mobile",
+      "visibleSamples": 91,
+      "singleRevisionFraction": 1.0,
+      "medianVisibleIntervalMS": 16.69999999999891,
+      "contrastRatios": [
+        13.205053898170414,
+        12.99392123934672
+      ],
+      "matchingNativeDigestsAtRevisions": [
+        "561",
+        "571"
+      ],
+      "receivedWebSocketBytesPerSecond": 785293.8230383974,
+      "medianAcknowledgementMS": 6.3499994575977325,
+      "maximumAcknowledgementMS": 8.515000343322754,
+      "canvas": {
+        "h": 285,
+        "w": 304,
+        "x": 8,
+        "y": 100
+      },
+      "controller": {
+        "h": 118.21875,
+        "w": 304,
+        "x": 8,
+        "y": 391
+      }
+    }
+  ],
+  "streamDelayNativeSeekEvents": 9,
+  "hiddenCheckpointSilent": true,
+  "evidence": "docs/research/nes-contra/evidence/platform-runtime/room-e2e.json.gz",
+  "checks": {
+    "runtimeRaceTests": 7,
+    "contraFrontendTests": 56,
+    "publicAudioTests": 92,
+    "typecheck": true,
+    "realPlatform": true,
+    "pcNativeKeyboardMouse": true,
+    "phone320NativeMultitouch": true,
+    "naturalLifeLoss": true,
+    "initialTwoHumanBarrier": true,
+    "checkpointGapOver120": true,
+    "controllerAccountIsolation": true,
+    "reloadSameEpoch": true,
+    "autoplayReleaseAcknowledged": true,
+    "spectatorNoController": true,
+    "bytePreservingNetworkDelay": true,
+    "checkpointDeliveredWhileHidden": true
+  },
+  "limits": [
+    "First-stage browser integration; not eight-stage natural campaign or full bot acceptance.",
+    "Local browser/loopback measurements; no WAN performance, physical iOS, audio-output or long-session concurrency conclusion.",
+    "Current native/Wasm build remains in use by parent performance and bot acceptance. No production registration, OSS upload or publication performed."
+  ],
+  "files": {
+    "docs/research/nes-contra/evidence/platform-runtime/desktop-intro-fullscreen.png": "eefe8a371db3705e2556edf704887c9b39cbe7041b92ff04567bee0e4424a830",
+    "docs/research/nes-contra/evidence/platform-runtime/desktop-life-loss.png": "94beb0dbb7b68feb08c1006a50622f68db8bc8c82d2a58939653ba9fb4b59b56",
+    "docs/research/nes-contra/evidence/platform-runtime/desktop-loading-barrier.png": "32dd86deca8f318f4c59e27ada23f386880093f8d6764ec9c7f05c26f89c8ecc",
+    "docs/research/nes-contra/evidence/platform-runtime/desktop-playing-fullscreen.png": "db6be88c8ee52be875bfec9e1447dd5bab5b396efbdd953442dc7ae9acf2c800",
+    "docs/research/nes-contra/evidence/platform-runtime/desktop-waiting.png": "a4c8df8294da4b6290b9f2e2d4bff54afbb3a232fc28bd4cf04bf670e056338e",
+    "docs/research/nes-contra/evidence/platform-runtime/harness-at-run.py": "7928bb1d19203894b98978510b43cb7b8a07d890d78dee958e2a91a94cf27b5c",
+    "docs/research/nes-contra/evidence/platform-runtime/mobile-controller-settings.png": "2a22570238e51b43748a4e742cebba78a1332de18a67f28b36b87ea46adbb5e6",
+    "docs/research/nes-contra/evidence/platform-runtime/mobile-exit.png": "3b057e2d7f32ebc12e63ef5bebaa0c1c192a14966b38495cd7e82c5d948cf609",
+    "docs/research/nes-contra/evidence/platform-runtime/mobile-intro-fullscreen.png": "22ef330d4a6f109a0c59b7110bffd9ab5ea6b5114e4562f29bf479254412b497",
+    "docs/research/nes-contra/evidence/platform-runtime/mobile-playing-fullscreen.png": "b87516fd557fe8d832dd0e640529b365b0eb4017a9a2541ed06883d17e53bcb1",
+    "docs/research/nes-contra/evidence/platform-runtime/native-input-at-run.mjs": "d01e3fed4be92f0fe61fee5a1442a75b8beacc085e67474a0d82c706e4617af1",
+    "docs/research/nes-contra/evidence/platform-runtime/network-at-run.py": "b81398bfc64eaf9da5245ee20fed606a4400980f542d75056f9154763355f77f",
+    "docs/research/nes-contra/evidence/platform-runtime/presentation-before-buffer.json.gz": "16e3ff4ee2430e59fdb7f21bb80f8562c1fa8ecacd0234c156e647f286ff356f",
+    "docs/research/nes-contra/evidence/platform-runtime/room-e2e.json.gz": "b82fdb10550b4940bc89f2ab2b2cc7d66e8fa6b3bd3832dc8f43714c595bfc12",
+    "docs/research/nes-contra/evidence/platform-runtime/test-records.json.gz": "d3fb1a0e185da02f2f060a7fceb4c3ef9e0365d4789697c1a0f27049c602f682"
+  },
+  "cleanup": {
+    "removedBytes": 151507510,
+    "removed": [
+      {
+        "path": ".local/contra-browser/accept-v1",
+        "bytes": 842293
+      },
+      {
+        "path": ".local/contra-browser/accept-v2",
+        "bytes": 973289
+      },
+      {
+        "path": ".local/contra-browser/accept-v3",
+        "bytes": 1501376
+      },
+      {
+        "path": ".local/contra-browser/accept-v4",
+        "bytes": 154358
+      },
+      {
+        "path": ".local/contra-browser/accept-v5",
+        "bytes": 326020
+      },
+      {
+        "path": ".local/contra-browser/accept-v6",
+        "bytes": 0
+      },
+      {
+        "path": ".local/contra-browser/accept-v7",
+        "bytes": 2061386
+      },
+      {
+        "path": ".local/contra-browser/platform-v1",
+        "bytes": 606510
+      },
+      {
+        "path": ".local/contra-browser/platform-v2",
+        "bytes": 1841033
+      },
+      {
+        "path": ".local/contra-browser/platform-v3",
+        "bytes": 2191683
+      },
+      {
+        "path": ".local/contra-browser/platform-v4",
+        "bytes": 3201311
+      },
+      {
+        "path": ".local/contra-browser/platform-v5",
+        "bytes": 1919346
+      },
+      {
+        "path": ".local/contra-browser/platform-v6",
+        "bytes": 3951457
+      },
+      {
+        "path": ".local/contra-browser/platform-presentation-red-v1",
+        "bytes": 114850
+      },
+      {
+        "path": ".local/contra-browser/platform-presentation-red-v2",
+        "bytes": 1041748
+      },
+      {
+        "path": ".local/contra-browser/platform-presentation-green-v1",
+        "bytes": 645575
+      },
+      {
+        "path": ".local/contra-browser/platform-presentation-green-v2",
+        "bytes": 3680597
+      },
+      {
+        "path": ".local/contra-browser/platform-final-v1",
+        "bytes": 3962605
+      },
+      {
+        "path": ".local/contra-browser/platform-final-v2",
+        "bytes": 3942691
+      },
+      {
+        "path": ".local/contra-browser/platform-web-before-buffer",
+        "bytes": 93947445
+      },
+      {
+        "path": ".local/contra-browser/protocol",
+        "bytes": 15321776
+      },
+      {
+        "path": ".local/contra-browser/raster-test",
+        "bytes": 13294
+      },
+      {
+        "path": ".local/contra-browser/tmp",
+        "bytes": 3025864
+      },
+      {
+        "path": ".local/contra-browser/applied-pages-green.tap",
+        "bytes": 598
+      },
+      {
+        "path": ".local/contra-browser/applied-pages-red.tap",
+        "bytes": 1070
+      },
+      {
+        "path": ".local/contra-browser/archived-measurements.json",
+        "bytes": 1909
+      },
+      {
+        "path": ".local/contra-browser/asset-urls-green.tap",
+        "bytes": 192
+      },
+      {
+        "path": ".local/contra-browser/asset-urls-red.tap",
+        "bytes": 939
+      },
+      {
+        "path": ".local/contra-browser/audio-all-green.tap",
+        "bytes": 7894
+      },
+      {
+        "path": ".local/contra-browser/audio-rate-red.tap",
+        "bytes": 1420
+      },
+      {
+        "path": ".local/contra-browser/audio-restore-green.tap",
+        "bytes": 2346
+      },
+      {
+        "path": ".local/contra-browser/audio-restore-red.tap",
+        "bytes": 2539
+      },
+      {
+        "path": ".local/contra-browser/audio-typecheck.log",
+        "bytes": 0
+      },
+      {
+        "path": ".local/contra-browser/browser-v1.log",
+        "bytes": 129
+      },
+      {
+        "path": ".local/contra-browser/browser-v2.log",
+        "bytes": 129
+      },
+      {
+        "path": ".local/contra-browser/browser-v3.log",
+        "bytes": 129
+      },
+      {
+        "path": ".local/contra-browser/browser-v4.log",
+        "bytes": 452
+      },
+      {
+        "path": ".local/contra-browser/browser-v5.log",
+        "bytes": 1168
+      },
+      {
+        "path": ".local/contra-browser/browser-v6.log",
+        "bytes": 510
+      },
+      {
+        "path": ".local/contra-browser/browser-v7.log",
+        "bytes": 129
+      },
+      {
+        "path": ".local/contra-browser/build-identity-red.jsonl",
+        "bytes": 4092
+      },
+      {
+        "path": ".local/contra-browser/build.log",
+        "bytes": 87
+      },
+      {
+        "path": ".local/contra-browser/bundle-red.jsonl",
+        "bytes": 3997
+      },
+      {
+        "path": ".local/contra-browser/client-gating-green.tap",
+        "bytes": 767
+      },
+      {
+        "path": ".local/contra-browser/client-gating-red.tap",
+        "bytes": 1797
+      },
+      {
+        "path": ".local/contra-browser/final-checkpoint-red.jsonl",
+        "bytes": 1768
+      },
+      {
+        "path": ".local/contra-browser/final-fixture.log",
+        "bytes": 396
+      },
+      {
+        "path": ".local/contra-browser/final-measurements.json",
+        "bytes": 1909
+      },
+      {
+        "path": ".local/contra-browser/final-v1.log",
+        "bytes": 992
+      },
+      {
+        "path": ".local/contra-browser/final-v2.log",
+        "bytes": 137
+      },
+      {
+        "path": ".local/contra-browser/formal-unit-green.tap",
+        "bytes": 926
+      },
+      {
+        "path": ".local/contra-browser/format-bridge.log",
+        "bytes": 40
+      },
+      {
+        "path": ".local/contra-browser/format-client.log",
+        "bytes": 80
+      },
+      {
+        "path": ".local/contra-browser/format-final.log",
+        "bytes": 78
+      },
+      {
+        "path": ".local/contra-browser/format.log",
+        "bytes": 135
+      },
+      {
+        "path": ".local/contra-browser/frontend-final.log",
+        "bytes": 5479
+      },
+      {
+        "path": ".local/contra-browser/frontend-green.log",
+        "bytes": 5484
+      },
+      {
+        "path": ".local/contra-browser/fullscreen-focus-green.tap",
+        "bytes": 208
+      },
+      {
+        "path": ".local/contra-browser/fullscreen-focus-red.tap",
+        "bytes": 1092
+      },
+      {
+        "path": ".local/contra-browser/hidden-restore-green.tap",
+        "bytes": 423
+      },
+      {
+        "path": ".local/contra-browser/hidden-restore-red.tap",
+        "bytes": 1108
+      },
+      {
+        "path": ".local/contra-browser/paused-owner-green.tap",
+        "bytes": 669
+      },
+      {
+        "path": ".local/contra-browser/paused-owner-red.tap",
+        "bytes": 1424
+      },
+      {
+        "path": ".local/contra-browser/paused-red.jsonl",
+        "bytes": 14358
+      },
+      {
+        "path": ".local/contra-browser/platform-build.log",
+        "bytes": 6221
+      },
+      {
+        "path": ".local/contra-browser/platform-fixture-v1.log",
+        "bytes": 3893
+      },
+      {
+        "path": ".local/contra-browser/platform-v1.log",
+        "bytes": 528
+      },
+      {
+        "path": ".local/contra-browser/platform-v2.log",
+        "bytes": 1272
+      },
+      {
+        "path": ".local/contra-browser/platform-v3.log",
+        "bytes": 445
+      },
+      {
+        "path": ".local/contra-browser/platform-v4.log",
+        "bytes": 131
+      },
+      {
+        "path": ".local/contra-browser/platform-v5.log",
+        "bytes": 1136
+      },
+      {
+        "path": ".local/contra-browser/platform-v6.log",
+        "bytes": 131
+      },
+      {
+        "path": ".local/contra-browser/presentation-green-fixture.log",
+        "bytes": 322
+      },
+      {
+        "path": ".local/contra-browser/presentation-green-v1.log",
+        "bytes": 1482
+      },
+      {
+        "path": ".local/contra-browser/presentation-green-v2.log",
+        "bytes": 150
+      },
+      {
+        "path": ".local/contra-browser/presentation-green.tap",
+        "bytes": 847
+      },
+      {
+        "path": ".local/contra-browser/presentation-red-fixture.log",
+        "bytes": 320
+      },
+      {
+        "path": ".local/contra-browser/presentation-red-v1.log",
+        "bytes": 1777
+      },
+      {
+        "path": ".local/contra-browser/presentation-red-v2.log",
+        "bytes": 686
+      },
+      {
+        "path": ".local/contra-browser/presentation-red.tap",
+        "bytes": 1556
+      },
+      {
+        "path": ".local/contra-browser/protocol-all-green.jsonl",
+        "bytes": 5737
+      },
+      {
+        "path": ".local/contra-browser/protocol-green.jsonl",
+        "bytes": 1488
+      },
+      {
+        "path": ".local/contra-browser/protocol-red.jsonl",
+        "bytes": 1275
+      },
+      {
+        "path": ".local/contra-browser/raster-green.tap",
+        "bytes": 322
+      },
+      {
+        "path": ".local/contra-browser/raster-red.tap",
+        "bytes": 2412
+      },
+      {
+        "path": ".local/contra-browser/result-projection-green.tap",
+        "bytes": 319
+      },
+      {
+        "path": ".local/contra-browser/result-projection-red.tap",
+        "bytes": 1520
+      },
+      {
+        "path": ".local/contra-browser/room-transport-green.tap",
+        "bytes": 545
+      },
+      {
+        "path": ".local/contra-browser/room-transport-red.tap",
+        "bytes": 1507
+      },
+      {
+        "path": ".local/contra-browser/runtime-final.jsonl",
+        "bytes": 6548
+      },
+      {
+        "path": ".local/contra-browser/stage-assets-green.tap",
+        "bytes": 487
+      },
+      {
+        "path": ".local/contra-browser/stage-assets-red.tap",
+        "bytes": 1003
+      },
+      {
+        "path": ".local/contra-browser/stale-audio-green.tap",
+        "bytes": 423
+      },
+      {
+        "path": ".local/contra-browser/stale-audio-red.tap",
+        "bytes": 1151
+      },
+      {
+        "path": ".local/contra-browser/starvation-green.tap",
+        "bytes": 529
+      },
+      {
+        "path": ".local/contra-browser/starvation-red.tap",
+        "bytes": 1580
+      },
+      {
+        "path": ".local/contra-browser/typecheck.log",
+        "bytes": 0
+      },
+      {
+        "path": ".local/contra-platform/formal-v1",
+        "bytes": 4883021
+      },
+      {
+        "path": ".local/contra-platform/presentation-red-v1",
+        "bytes": 275529
+      },
+      {
+        "path": ".local/contra-platform/presentation-green-v1",
+        "bytes": 459811
+      },
+      {
+        "path": ".local/contra-platform/final-v1",
+        "bytes": 160790
+      },
+      {
+        "path": ".local/contra-platform/final-v2",
+        "bytes": 345110
+      }
+    ],
+    "retainedInUse": [
+      ".local/contra-browser/build"
+    ],
+    "untouchedParentEvidence": [
+      ".local/contra-browser/terminal-v1",
+      ".local/contra-browser/terminal-v2"
+    ],
+    "scope": "Only this task owned old development builds, profiles, local fixture databases, intermediate screenshots and logs. No ROMs, normalized source assets, published objects, backup databases, other game files or shared Go caches were removed."
+  },
+  "fixtureProcess": {
+    "exitCodeAfterBrowserEvidence": 1,
+    "countedAsPassingTest": false,
+    "reason": "Not verified; long-lived fixture log was not retained during cleanup. Browser evidence and separately counted runtime/frontend/audio checks had already completed."
+  },
+  "postVerificationSourceChanges": [
+    "games/contra/engine/bot_vision.go",
+    "games/contra/engine/bot_vision_builtin.go",
+    "games/contra/engine/bot_vision_builtin_sprites.go"
+  ]
+}

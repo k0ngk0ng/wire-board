@@ -1,0 +1,7 @@
+=== RUN   TestBotJumpCanLandAfterVisibleCeilingContact
+    bot_ceiling_response_test.go:51: native lower landing 29 114 132
+    bot_ceiling_response_test.go:63: visible ceiling discards reachable falling route 92 100 false
+--- FAIL: TestBotJumpCanLandAfterVisibleCeilingContact (0.00s)
+FAIL
+FAIL	github.com/k0ngk0ng/wire-board/games/contra/engine	0.578s
+FAIL

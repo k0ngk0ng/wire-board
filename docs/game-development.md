@@ -23,7 +23,7 @@ games/<id>/
 先列出失败场景并编写 E2E，再实现游戏。复杂功能以完整链路验收为主；小型纯函数和低风险改动可以针对性验证。禁止先实现代码再补单元测试。
 
 1. 在 `games/<id>/server` 中实现自己的类型和导出的 `Module() gameapi.Module`。接入契约位于 [internal/gameapi/module.go](../internal/gameapi/module.go)，不需要导入 `internal/game` 或 `internal/server`。
-2. 在 [games/registry.go](../games/registry.go) 中导入这个 Go 包，并将其 `Module()` 加入 `Modules()` 返回值。这是新游戏唯一需要修改的公共注册文件。
+2. 普通模块在 [games/registry.go](../games/registry.go) 中导入 Go 包，并将其 `Module()` 加入 `Modules()` 返回值。需要校验原生运行产物、可能初始化失败的模块在 [internal/production/modules.go](../internal/production/modules.go) 中构造；初始化错误必须在数据库创建和服务监听前返回，不得静默省略模块。游戏之间不互相初始化。
 3. 在 `games/<id>/web/module.tsx` 中默认导出 `defineGame<本游戏视图, 本游戏选项>({...})`。前端自动发现该路径，ID 必须与后端一致。`legacy` 保持未设置。
 4. 在游戏目录内编写自己的测试、玩法说明和素材声明。游戏之间不得直接导入实现，不得修改另一款游戏的源码来完成接入。
 5. 执行本页的构建、边界和接入验收；新游戏应另有自己的完整对局 E2E。
@@ -91,7 +91,7 @@ games/<id>/
 
 [web/src/game-api/module.ts](../web/src/game-api/module.ts) 定义 `defineGame`。模块提供名称、介绍、人数范围、棋盘及可选的配置编辑、规则和封面组件。人数不是连续范围时提供 `playerCounts`（例如 `[2, 4, 6]`），首页据此准确显示可选人数。分类通过 `category` 声明为 `board`、`poker` 或 `realtime`，大厅、创建和后台共用分类下拉。必须满桌开局时声明 `requiresFullTable: true`，后端仍须严格校验实际人数和模式。支持机器人时声明 `supportsBots: true`，并与后端能力保持一致。自行播放音效的游戏声明 `ownsSounds: true`，宿主停止重复播放通用动作音；事件到音效的映射保留在游戏目录；通过 `BoardProps.audio.play([音效 URL])` 交给平台播放，退出时调用 `audio.stop()` 清理本游戏队列。播放器、用户交互解锁、静音、停止和失败处理由平台统一维护。游戏不得另建播放器或绕过全局静音。
 
-新游戏复用宿主的创建卡片、等待房间、玩家栏和回合提示。`Cover` 提供与既有游戏一致的 SVG 插画；`PlayerSummary` 可在公共玩家卡中补充本游戏的公开资产摘要。不得通过游戏 CSS 隐藏或另行重排宿主布局；文字与背景须成对定义并验证最终对比度，详见 [AGENTS.md](../AGENTS.md)。
+新游戏复用宿主的创建卡片、等待房间、玩家栏和回合提示。`Cover` 提供与既有游戏一致的 SVG 插画；`PlayerSummary` 可在公共玩家卡中补充本游戏的公开资产摘要。不得通过游戏 CSS 隐藏或另行重排宿主布局；文字与背景须成对定义并验证最终对比度，详见 [界面与交互开发规范](../rules/ui.md)。
 
 棋盘收到本游戏的 `data`、房间席位、当前观看者、`busy`、素材地址、全局音效开关 `sound`、服务器时间基准 `clock`，以及 `act`／`command`。一般游戏行动使用 `act({ ...本游戏动作 })`；平台负责加入当前版本和幂等键。`room.game.actors` 可用于提示当前行动者，但所有合法性仍由服务端确认。
 

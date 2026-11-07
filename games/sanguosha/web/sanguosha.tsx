@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useControllerCancel } from "../../../web/src/controllers/use-controller-cancel";
+import { useEffect, useRef, useState } from "react";
 import { Bot } from "lucide-react";
 import type { Room, SanguoshaState, SGOptions } from "./types";
 import type { Act } from "../../../web/src/types";
@@ -120,6 +121,7 @@ function Card({
       type="button"
       className={`sg-card ${selected ? "selected" : ""} ${small ? "small" : ""} ${c.suit === 1 || c.suit === 3 ? "red-suit" : ""}`}
       onClick={onClick}
+      data-sg-card={id}
       aria-pressed={onClick ? !!selected : undefined}
       title={`${suits[c.suit]}${c.rank} ${info.name}：${info.text}`}
     >
@@ -196,6 +198,21 @@ export function SanguoshaBoard({
     [help, setHelp] = useState(""),
     [error, setError] = useState("");
   const [detail, setDetail] = useState<number>();
+  const controllerRoot = useRef<HTMLElement>(null);
+  useControllerCancel(controllerRoot, () => {
+    if (detail !== undefined) {
+      setDetail(undefined);
+      return;
+    }
+    if (help) {
+      setHelp("");
+      return;
+    }
+    setCards([]);
+    setTargets([]);
+    setSkill("");
+    setDirection("");
+  });
   const mineGeneral = g.generals.find((x) => x.id === me?.general);
   const skills = [
     ...(me?.ownSkills || me?.skills || mineGeneral?.skills || []),
@@ -618,6 +635,7 @@ export function SanguoshaBoard({
       : "选择手牌、技能和目标，再确认出牌。";
   return (
     <section
+      ref={controllerRoot}
       className={`sg-board ${g.hegemony ? "sg-hegemony" : ""} ${g.threeV3 ? "sg-threev3" : ""} ${g.selecting ? "sg-selecting" : ""} ${extraCards.length ? "has-choice-cards" : ""}`}
     >
       <header className="sg-heading">
@@ -664,6 +682,7 @@ export function SanguoshaBoard({
         </aside>
       )}
       <div
+        data-controller-group="players"
         className="sg-seats"
         style={{ "--sg-seat-count": room.seats.length } as React.CSSProperties}
       >
@@ -1048,7 +1067,7 @@ export function SanguoshaBoard({
         />
       )}
       {g.selecting && responding && !g.hegemony && (
-        <div className="sg-general-options">
+        <div data-controller-group="board" className="sg-general-options">
           {me?.choices?.map((id) => {
             const general = g.generals.find((x) => x.id === id)!;
             return (
@@ -1231,7 +1250,11 @@ export function SanguoshaBoard({
                       ? "涉猎 · 每种花色选择一张"
                       : "选择牌"}
           </h3>
-          <div className="sg-choice-cards">
+          <div
+            data-controller-group="choices"
+            data-controller-cards
+            className="sg-choice-cards"
+          >
             {extraCards.map((id) => (
               <div key={id}>
                 <Card
@@ -1266,7 +1289,11 @@ export function SanguoshaBoard({
             </span>
             <span>攻击范围 {g.range}</span>
           </header>
-          <div className="sg-hand">
+          <div
+            data-controller-group="hand"
+            data-controller-row
+            className="sg-hand"
+          >
             {me.hand?.map((id) => (
               <Card
                 key={id}
@@ -1300,7 +1327,11 @@ export function SanguoshaBoard({
             !["qixing_exchange", "kuangfeng", "dawu"].includes(ask || "") && (
               <details className="sg-private-stars">
                 <summary>我的星 · {me.stars.length} 张，仅自己可见</summary>
-                <div className="sg-choice-cards">
+                <div
+                  data-controller-group="choices"
+                  data-controller-cards
+                  className="sg-choice-cards"
+                >
                   {me.stars.map((id) => (
                     <Card
                       key={id}
@@ -1329,7 +1360,11 @@ export function SanguoshaBoard({
                 <summary>
                   我的{pile.label}牌 · {pile.ids!.length} 张，仅自己可见
                 </summary>
-                <div className="sg-choice-cards">
+                <div
+                  data-controller-group="choices"
+                  data-controller-cards
+                  className="sg-choice-cards"
+                >
                   {pile.ids!.map((id) => (
                     <Card
                       key={id}
@@ -1355,7 +1390,7 @@ export function SanguoshaBoard({
                   : ""}
             </p>
           )}
-          <div className="sg-skills">
+          <div data-controller-group="skills" className="sg-skills">
             {me.equip.some((id) => getCard(id).kind === "fan") && (
               <button
                 disabled={
@@ -1407,7 +1442,10 @@ export function SanguoshaBoard({
           </div>
         </section>
       )}
-      <div className={`sg-actions ${enabled ? "active" : ""}`}>
+      <div
+        data-controller-group="actions"
+        className={`sg-actions ${enabled ? "active" : ""}`}
+      >
         <div aria-live="polite">
           <strong>
             {game.finished
@@ -2013,6 +2051,7 @@ export function SanguoshaBoard({
                   ].includes(ask || "")) && (
                   <button
                     className="primary"
+                    data-sg-confirm
                     disabled={
                       busy ||
                       selectionInvalid ||
@@ -2107,6 +2146,7 @@ export function SanguoshaBoard({
               )}
               {optional && (
                 <button
+                  data-sg-pass
                   className="outline"
                   disabled={busy}
                   onClick={() =>
@@ -2131,6 +2171,7 @@ export function SanguoshaBoard({
                 <button
                   className="outline"
                   disabled={busy}
+                  data-sg-end
                   onClick={() =>
                     void send({
                       type: "sg_end",

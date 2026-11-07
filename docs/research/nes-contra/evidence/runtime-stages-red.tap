@@ -1,0 +1,33 @@
+node:fs:441
+    return binding.readFileUtf8(path, stringToFlags(options.flag));
+                   ^
+
+Error: ENOENT: no such file or directory, open '/Users/jason/Sources/github.com/k0ngk0ng/wire-board/games/contra/assets/runtime-stages.json'
+    at readFileSync (node:fs:441:20)
+    at read (file:///Users/jason/Sources/github.com/k0ngk0ng/wire-board/games/contra/tests/runtime-stages.test.mjs:6:89)
+    at file:///Users/jason/Sources/github.com/k0ngk0ng/wire-board/games/contra/tests/runtime-stages.test.mjs:6:138
+    at ModuleJob.run (node:internal/modules/esm/module_job:437:25)
+    at async node:internal/modules/esm/loader:639:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/jason/Sources/github.com/k0ngk0ng/wire-board/games/contra/assets/runtime-stages.json'
+}
+
+Node.js v24.15.0
+✖ games/contra/tests/runtime-stages.test.mjs (26.473417ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 29.911708
+
+✖ failing tests:
+
+test at games/contra/tests/runtime-stages.test.mjs:1:1
+✖ games/contra/tests/runtime-stages.test.mjs (26.473417ms)
+  'test failed'

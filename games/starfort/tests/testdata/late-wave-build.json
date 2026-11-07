@@ -1,0 +1,186 @@
+{
+  "source": "Sanitized tower configuration from a finished wave-43 central-layout match; no room/player identifiers. Stress enemies are artificial and durable.",
+  "players": 2,
+  "towers": [
+    {
+      "id": 1,
+      "pad": 3,
+      "owner": 0,
+      "kind": "cannon",
+      "level": 10,
+      "branch": "power",
+      "spent": 2937,
+      "priority": "first"
+    },
+    {
+      "id": 2,
+      "pad": 10,
+      "owner": 1,
+      "kind": "frost",
+      "level": 12,
+      "branch": "speed",
+      "spent": 3256,
+      "priority": "first"
+    },
+    {
+      "id": 3,
+      "pad": 12,
+      "owner": 1,
+      "kind": "cannon",
+      "level": 11,
+      "branch": "power",
+      "spent": 3514,
+      "priority": "first"
+    },
+    {
+      "id": 4,
+      "pad": 11,
+      "owner": 1,
+      "kind": "arcane",
+      "level": 11,
+      "branch": "power",
+      "spent": 3263,
+      "priority": "first"
+    },
+    {
+      "id": 5,
+      "pad": 1,
+      "owner": 0,
+      "kind": "frost",
+      "level": 9,
+      "branch": "power",
+      "spent": 1897,
+      "priority": "first"
+    },
+    {
+      "id": 6,
+      "pad": 2,
+      "owner": 0,
+      "kind": "arrow",
+      "level": 23,
+      "branch": "volley",
+      "spent": 9376,
+      "priority": "first"
+    },
+    {
+      "id": 7,
+      "pad": 0,
+      "owner": 0,
+      "kind": "arcane",
+      "level": 6,
+      "branch": "power",
+      "spent": 1079,
+      "priority": "first"
+    },
+    {
+      "id": 8,
+      "pad": 9,
+      "owner": 1,
+      "kind": "arrow",
+      "level": 13,
+      "branch": "heart",
+      "spent": 3103,
+      "priority": "first"
+    },
+    {
+      "id": 9,
+      "pad": 13,
+      "owner": 1,
+      "kind": "cannon",
+      "level": 13,
+      "branch": "speed",
+      "spent": 4827,
+      "priority": "first"
+    },
+    {
+      "id": 10,
+      "pad": 4,
+      "owner": 0,
+      "kind": "cannon",
+      "level": 7,
+      "branch": "speed",
+      "spent": 1526,
+      "priority": "first"
+    },
+    {
+      "id": 11,
+      "pad": 8,
+      "owner": 1,
+      "kind": "arrow",
+      "level": 6,
+      "branch": "volley",
+      "spent": 747,
+      "priority": "first"
+    },
+    {
+      "id": 12,
+      "pad": 5,
+      "owner": 0,
+      "kind": "arrow",
+      "level": 14,
+      "branch": "heart",
+      "spent": 3576,
+      "priority": "first"
+    },
+    {
+      "id": 13,
+      "pad": 16,
+      "owner": 1,
+      "kind": "frost",
+      "level": 8,
+      "branch": "speed",
+      "spent": 1527,
+      "priority": "first"
+    },
+    {
+      "id": 15,
+      "pad": 14,
+      "owner": 1,
+      "kind": "arrow",
+      "level": 16,
+      "branch": "heart",
+      "spent": 4626,
+      "priority": "first"
+    },
+    {
+      "id": 16,
+      "pad": 7,
+      "owner": 0,
+      "kind": "frost",
+      "level": 5,
+      "branch": "speed",
+      "spent": 669,
+      "priority": "first"
+    },
+    {
+      "id": 17,
+      "pad": 15,
+      "owner": 1,
+      "kind": "arcane",
+      "level": 5,
+      "branch": "power",
+      "spent": 790,
+      "priority": "first"
+    },
+    {
+      "id": 18,
+      "pad": 6,
+      "owner": 0,
+      "kind": "cannon",
+      "level": 10,
+      "branch": "power",
+      "spent": 2937,
+      "priority": "first"
+    },
+    {
+      "id": 19,
+      "pad": 20,
+      "owner": 0,
+      "kind": "cannon",
+      "level": 4,
+      "branch": "power",
+      "spent": 593,
+      "priority": "first"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "frames": 38400,
+  "all_policy_inputs_equal": true,
+  "prefixSHA256": "d7433e9339290c20de2759798d37afed904eddad61495004c1ea5130fb6a1a1d",
+  "memory": ".local/contra-bot/diagnostic-fresh-v9-waterfall-memory/bot.json",
+  "diagnostic_scope": "Exact reconstruction of fresh v9 public policy memory; not campaign clear"
+}

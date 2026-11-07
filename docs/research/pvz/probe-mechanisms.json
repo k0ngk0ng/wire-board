@@ -1,0 +1,807 @@
+[
+  {
+    "name": "plant-sleep",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x45E860"
+    }
+  },
+  {
+    "name": "plant-find-and-fire",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x45EF10"
+    }
+  },
+  {
+    "name": "plant-threepeater",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x45F2A0"
+    }
+  },
+  {
+    "name": "plant-starfruit-target",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x45F470"
+    }
+  },
+  {
+    "name": "plant-starfruit-launch",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x45F6E0"
+    }
+  },
+  {
+    "name": "plant-sunshroom",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x45FB70"
+    }
+  },
+  {
+    "name": "plant-gravebuster",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x45FC70"
+    }
+  },
+  {
+    "name": "plant-potato",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x45FE20"
+    }
+  },
+  {
+    "name": "plant-tanglekelp",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x460060"
+    }
+  },
+  {
+    "name": "plant-spikeweed",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x460370"
+    }
+  },
+  {
+    "name": "plant-scaredyshroom",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x460420"
+    }
+  },
+  {
+    "name": "plant-torchwood",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x460610"
+    }
+  },
+  {
+    "name": "plant-squash-damage",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x4606F0"
+    }
+  },
+  {
+    "name": "plant-squash-target",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x4607E0"
+    }
+  },
+  {
+    "name": "plant-squash",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x4609D0"
+    }
+  },
+  {
+    "name": "plant-doomshroom",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x460DD0"
+    }
+  },
+  {
+    "name": "plant-blover",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x460F00"
+    }
+  },
+  {
+    "name": "plant-coffeebean",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x460F60"
+    }
+  },
+  {
+    "name": "plant-umbrella",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x460FA0"
+    }
+  },
+  {
+    "name": "plant-cobcannon",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x461020"
+    }
+  },
+  {
+    "name": "plant-cactus",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x4611F0"
+    }
+  },
+  {
+    "name": "plant-chomper",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x461320"
+    }
+  },
+  {
+    "name": "plant-magnetshroom",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x461D90"
+    }
+  },
+  {
+    "name": "plant-goldmagnet",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x462680"
+    }
+  },
+  {
+    "name": "plant-abilities-dispatch",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x463150"
+    }
+  },
+  {
+    "name": "plant-reanimation",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x463920"
+    }
+  },
+  {
+    "name": "plant-shooting",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x464820"
+    }
+  },
+  {
+    "name": "plant-ice-all",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x466420"
+    }
+  },
+  {
+    "name": "plant-burn-row",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x4664B0"
+    }
+  },
+  {
+    "name": "plant-special",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x4666A0"
+    }
+  },
+  {
+    "name": "plant-imitater",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x466CA0"
+    }
+  },
+  {
+    "name": "plant-cob-fire",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x466D50"
+    }
+  },
+  {
+    "name": "plant-fire",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x466E00"
+    }
+  },
+  {
+    "name": "plant-target-zombie",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x4675C0"
+    }
+  },
+  {
+    "name": "zombie-bungee-target",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x5246A0"
+    }
+  },
+  {
+    "name": "zombie-bungee-steal",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x524C70"
+    }
+  },
+  {
+    "name": "zombie-bungee",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x525180"
+    }
+  },
+  {
+    "name": "zombie-pogo",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x525480"
+    }
+  },
+  {
+    "name": "zombie-catapult-target",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x525890"
+    }
+  },
+  {
+    "name": "zombie-catapult",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x5259D0"
+    }
+  },
+  {
+    "name": "zombie-balloon",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x525BE0"
+    }
+  },
+  {
+    "name": "zombie-newspaper",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x525CE0"
+    }
+  },
+  {
+    "name": "zombie-pole",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x525DC0"
+    }
+  },
+  {
+    "name": "zombie-dolphin",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x5261E0"
+    }
+  },
+  {
+    "name": "zombie-snorkel",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x526720"
+    }
+  },
+  {
+    "name": "zombie-jackbox",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x526AE0"
+    }
+  },
+  {
+    "name": "zombie-gargantuar",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x526D10"
+    }
+  },
+  {
+    "name": "zombie-imp",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x5272E0"
+    }
+  },
+  {
+    "name": "zombie-peahead",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x5273D0"
+    }
+  },
+  {
+    "name": "zombie-jalapenohead",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x5275C0"
+    }
+  },
+  {
+    "name": "zombie-gatlinghead",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x527750"
+    }
+  },
+  {
+    "name": "zombie-squashhead",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x527AA0"
+    }
+  },
+  {
+    "name": "zombie-bobsled",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x528050"
+    }
+  },
+  {
+    "name": "zombie-digger",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x528310"
+    }
+  },
+  {
+    "name": "zombie-summon-dancers",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x528970"
+    }
+  },
+  {
+    "name": "zombie-backupdancer",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x528B80"
+    }
+  },
+  {
+    "name": "zombie-dancing",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x528CA0"
+    }
+  },
+  {
+    "name": "zombie-rise-grave",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x528EC0"
+    }
+  },
+  {
+    "name": "zombie-pool",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x5295F0"
+    }
+  },
+  {
+    "name": "zombie-damage-states",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x52A470"
+    }
+  },
+  {
+    "name": "zombie-zomboni",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x52A7B0"
+    }
+  },
+  {
+    "name": "zombie-yeti",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x52A8E0"
+    }
+  },
+  {
+    "name": "zombie-ladder",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x52A930"
+    }
+  },
+  {
+    "name": "zombie-walking",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x52AA40"
+    }
+  },
+  {
+    "name": "zombie-actions-dispatch",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x52B110"
+    }
+  },
+  {
+    "name": "zombie-garlic-reaction",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x52B6A0"
+    }
+  },
+  {
+    "name": "zombie-can-target-plant",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x52E4C0"
+    }
+  },
+  {
+    "name": "zombie-find-plant",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x52E780"
+    }
+  },
+  {
+    "name": "zombie-hypnosis",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x52FA60"
+    }
+  },
+  {
+    "name": "zombie-shield-damage",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x530BC0"
+    }
+  },
+  {
+    "name": "zombie-body-damage",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x5312D0"
+    }
+  },
+  {
+    "name": "zombie-take-damage",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x5317C0"
+    }
+  },
+  {
+    "name": "zombie-chill-eligibility",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x531990"
+    }
+  },
+  {
+    "name": "zombie-damage-eligibility",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x531A80"
+    }
+  },
+  {
+    "name": "zombie-ice-trap",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x5323C0"
+    }
+  },
+  {
+    "name": "zombie-burn",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x532B70"
+    }
+  },
+  {
+    "name": "zombie-attach-shield",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x533000"
+    }
+  },
+  {
+    "name": "boss-rv",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x534AC0"
+    }
+  },
+  {
+    "name": "boss-spawn",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x534C70"
+    }
+  },
+  {
+    "name": "boss-stomp",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x534E30"
+    }
+  },
+  {
+    "name": "boss-stomp-contact",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x534FF0"
+    }
+  },
+  {
+    "name": "boss-bungee",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x5350C0"
+    }
+  },
+  {
+    "name": "boss-head-spit",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x535440"
+    }
+  },
+  {
+    "name": "boss-iceball-counter",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x535630"
+    }
+  },
+  {
+    "name": "boss-fireball-counter",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x5356D0"
+    }
+  },
+  {
+    "name": "boss-fireball-update",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x535C60"
+    }
+  },
+  {
+    "name": "boss-update",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x536080"
+    }
+  },
+  {
+    "name": "boss-reanimation",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x5367F0"
+    }
+  },
+  {
+    "name": "projectile-init",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x46C730"
+    }
+  },
+  {
+    "name": "projectile-find-plant",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x46CAA0"
+    }
+  },
+  {
+    "name": "projectile-find-zombie",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x46CD40"
+    }
+  },
+  {
+    "name": "projectile-collision",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x46CE80"
+    }
+  },
+  {
+    "name": "projectile-damage-flags",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x46D230"
+    }
+  },
+  {
+    "name": "projectile-splash",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x46D390"
+    }
+  },
+  {
+    "name": "projectile-lob",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x46D490"
+    }
+  },
+  {
+    "name": "projectile-normal",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x46D890"
+    }
+  },
+  {
+    "name": "projectile-impact",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x46E000"
+    }
+  },
+  {
+    "name": "projectile-rect",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x46EBC0"
+    }
+  },
+  {
+    "name": "projectile-torchwood-fire",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x46ECB0"
+    }
+  },
+  {
+    "name": "projectile-thaw-to-pea",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x46EE00"
+    }
+  },
+  {
+    "name": "board-can-plant",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x40E020"
+    }
+  },
+  {
+    "name": "board-planting-requirements",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x41D7D0"
+    }
+  },
+  {
+    "name": "board-row-zombie-type",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x40DB20"
+    }
+  },
+  {
+    "name": "board-row-has-zombies",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x416110"
+    }
+  },
+  {
+    "name": "board-bobsled-ice",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x40DD90"
+    }
+  },
+  {
+    "name": "board-can-add-grave",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x408ED0"
+    }
+  },
+  {
+    "name": "board-plant-layers",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x40D2A0"
+    }
+  },
+  {
+    "name": "board-pumpkin-at",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x40D1A0"
+    }
+  },
+  {
+    "name": "board-pot-at",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x40D220"
+    }
+  },
+  {
+    "name": "board-stage-night",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x41C010"
+    }
+  },
+  {
+    "name": "board-stage-graves",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x41C040"
+    }
+  },
+  {
+    "name": "board-stage-roof",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x41C0B0"
+    }
+  },
+  {
+    "name": "board-stage-pool",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x41C0D0"
+    }
+  },
+  {
+    "name": "board-stage-fog",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x41C170"
+    }
+  },
+  {
+    "name": "board-grid-x",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x41C680"
+    }
+  }
+]

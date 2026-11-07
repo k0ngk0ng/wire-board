@@ -1,0 +1,645 @@
+{
+  "passed": true,
+  "scope": "C3D1 graphics admission/packets, C656 coordinates/palette masks and caller attribute lookup; first-stage tileset. Does not claim complete enemy AI or campaign acceptance.",
+  "natural_requests": 3,
+  "controlled_requests": 420,
+  "controlled_attribute_lookup_requests": 420,
+  "accepted": 255,
+  "rejected": 168,
+  "checks": [
+    "TestOriginalGraphicsCallerAttributeLookup",
+    "TestOriginalGraphicsRequests",
+    "TestGraphicsQueueMixedScrollAndEnemyBudget",
+    "TestGraphicsQueueValidationAndOwnership"
+  ],
+  "race": "passed",
+  "natural_observation_ram_unchanged": true,
+  "repeat": [
+    {
+      "run": "graphics-natural-v1",
+      "file": "ram.bin",
+      "sha256": "9b2a0b98e87fb7e846b79b3edf61fc56097fd68f08a5a4dca0c95556b8f7add0",
+      "bytes": 1433600
+    },
+    {
+      "run": "graphics-natural-v1",
+      "file": "graphics-requests.jsonl",
+      "sha256": "2717db7b865bb8c7332595539509f508ae9391f15179d73c6db08eed06b7c074",
+      "bytes": 7420
+    },
+    {
+      "run": "graphics-controlled-v1",
+      "file": "ram.bin",
+      "sha256": "394ba032352590e0e4252f3dee1f82dc91ecb32fa52d390775acdac058029246",
+      "bytes": 860160
+    },
+    {
+      "run": "graphics-controlled-v1",
+      "file": "graphics-requests.jsonl",
+      "sha256": "63fd4dab64af85c53580a4e4cf9f887af239477e8ad1c6ca15c23d6c13249f10",
+      "bytes": 1036337
+    },
+    {
+      "run": "graphics-controlled-abi-v1",
+      "file": "ram.bin",
+      "sha256": "394ba032352590e0e4252f3dee1f82dc91ecb32fa52d390775acdac058029246",
+      "bytes": 860160
+    },
+    {
+      "run": "graphics-controlled-abi-v1",
+      "file": "graphics-requests.jsonl",
+      "sha256": "33ed05fb184a978a3776707da43bf91282f35ba42f7a7584ee8ceac70fa012d3",
+      "bytes": 1054469
+    }
+  ],
+  "fixtures": {
+    "original-graphics-requests-controlled-abi.json.gz": {
+      "sha256": "f493a1a79cf29849ba7e481bb98a38c0473d5039ba855f8bf8be230248c92892",
+      "records": 420,
+      "scope": "controlled",
+      "interventions": "At C3D1 boundary: explicit x/y/code/scroll/cursor setup; original function executes; queue/scroll setup restored after recording return. Weapon-box dispatcher is staged once per frame. Not natural gameplay."
+    },
+    "original-graphics-requests-controlled.json.gz": {
+      "sha256": "2af04c4203ebf91448eaf5c055b606dd5a9ae3cd7d4846bfe574e09c1a4095fb",
+      "records": 420,
+      "scope": "controlled",
+      "interventions": "At C3D1 boundary: explicit x/y/code/scroll/cursor setup; original function executes; queue/scroll setup restored after recording return. Weapon-box dispatcher is staged once per frame. Not natural gameplay."
+    },
+    "original-graphics-requests-natural.json.gz": {
+      "sha256": "e976dfd2c9027a2a176dcd9b6891b86a2d7f97df56efc0590eb44fedc035e50a",
+      "records": 3,
+      "scope": "natural",
+      "interventions": "none; natural dual-player input with M pickup"
+    }
+  },
+  "functions": [
+    {
+      "requested": "0xc3d1",
+      "evidence_id": "ev_d5814606fb44e1a77b620fd939f365a0ca405b94661bc3d4ce1998d3150f88c6",
+      "assembly": [
+        "0xc3d0: RTS",
+        "0xc3d1: STA 0x0011",
+        "0xc3d3: LDA 0x0021",
+        "0xc3d5: CMP #0x40",
+        "0xc3d7: BCS 0xc3d0",
+        "0xc3d9: JSR 0xc656",
+        "0xc3dc: LDX 0x0021",
+        "0xc3de: LDA 0x0030",
+        "0xc3e0: LDY 0x0040",
+        "0xc3e2: BPL 0xc3e6",
+        "0xc3e4: LDA #0x8",
+        "0xc3e6: ASL A",
+        "0xc3e7: ASL A",
+        "0xc3e8: TAY",
+        "0xc3e9: LDA 0xc56e,Y",
+        "0xc3ec: STA 0x0016",
+        "0xc3ee: LDA 0xc56f,Y",
+        "0xc3f1: STA 0x0017",
+        "0xc3f3: LDA 0x000f",
+        "0xc3f5: BNE 0xc410",
+        "0xc3f7: LDA 0xc570,Y",
+        "0xc3fa: STA 0x000e",
+        "0xc3fc: LDA 0xc571,Y",
+        "0xc3ff: STA 0x000f",
+        "0xc401: LDY 0x0010",
+        "0xc403: LDA 0x0000",
+        "0xc405: BNE 0xc46b",
+        "0xc407: JSR 0xc6d7",
+        "0xc40a: LDA (0xe),Y",
+        "0xc40c: STA 0x700,X",
+        "0xc40f: INX",
+        "0xc410: LDA #0x0",
+        "0xc412: STA 0x0011",
+        "0xc414: LDA 0x0010",
+        "0xc416: ASL A",
+        "0xc417: ASL A",
+        "0xc418: ROL 0x0011",
+        "0xc41a: ASL A",
+        "0xc41b: ROL 0x0011",
+        "0xc41d: ASL A",
+        "0xc41e: ROL 0x0011",
+        "0xc420: ADC 0x0016",
+        "0xc422: STA 0x0016",
+        "0xc424: LDA 0x0011",
+        "0xc426: ADC 0x0017",
+        "0xc428: STA 0x0017",
+        "0xc42a: LDA #0x1",
+        "0xc42c: STA 0x700,X",
+        "0xc42f: INX",
+        "0xc430: LDA #0x4",
+        "0xc432: STA 0x0014",
+        "0xc434: STA 0x700,X",
+        "0xc437: INX",
+        "0xc438: STA 0x700,X",
+        "0xc43b: INX",
+        "0xc43c: LDY #0x0",
+        "0xc43e: LDA 0x000d",
+        "0xc440: STA 0x700,X",
+        "0xc443: INX",
+        "0xc444: LDA 0x000c",
+        "0xc446: STA 0x700,X",
+        "0xc449: INX",
+        "0xc44a: LDA (0x16),Y",
+        "0xc44c: STA 0x700,X",
+        "0xc44f: INX",
+        "0xc450: INY",
+        "0xc451: TYA",
+        "0xc452: AND #0x3",
+        "0xc454: BNE 0xc44a",
+        "0xc456: LDA 0x000c",
+        "0xc458: CLC",
+        "0xc459: ADC #0x20",
+        "0xc45b: STA 0x000c",
+        "0xc45d: LDA 0x000d",
+        "0xc45f: ADC #0x0",
+        "0xc461: STA 0x000d",
+        "0xc463: DEC 0x0014",
+        "0xc465: BNE 0xc43e",
+        "0xc467: STX 0x0021",
+        "0xc469: CLC",
+        "0xc46a: RTS",
+        "0xc46b: TAX",
+        "0xc46c: LDA (0xe),Y",
+        "0xc46e: DEX",
+        "0xc46f: STX 0x0001",
+        "0xc471: BNE 0xc49c",
+        "0xc473: TAX",
+        "0xc474: AND #0x33",
+        "0xc476: ASL A",
+        "0xc477: ASL A",
+        "0xc478: STA 0x0008",
+        "0xc47a: TXA",
+        "0xc47b: AND #0xcc",
+        "0xc47d: LSR A",
+        "0xc47e: LSR A",
+        "0xc47f: STA 0x0009",
+        "0xc481: LDX 0x0002",
+        "0xc483: LDY 0x600,X",
+        "0xc486: LDA (0x46),Y",
+        "0xc488: AND #0x33",
+        "0xc48a: ORA 0x0008",
+        "0xc48c: STA 0x0008",
+        "0xc48e: LDY 0x601,X",
+        "0xc491: LDA (0x46),Y",
+        "0xc493: AND #0xcc",
+        "0xc495: ORA 0x0009",
+        "0xc497: STA 0x0009",
+        "0xc499: JMP 0xc516",
+        "0xc49c: DEX",
+        "0xc49d: BNE 0xc4cc",
+        "0xc49f: LDX #0x0",
+        "0xc4a1: STX 0x0009",
+        "0xc4a3: ASL A",
+        "0xc4a4: ROL 0x0009",
+        "0xc4a6: ASL A",
+        "0xc4a7: ROL 0x0009",
+        "0xc4a9: ASL A",
+        "0xc4aa: ROL 0x0009",
+        "0xc4ac: ASL A",
+        "0xc4ad: ROL 0x0009",
+        "0xc4af: STA 0x0008",
+        "0xc4b1: LDX 0x0002",
+        "0xc4b3: LDY 0x600,X",
+        "0xc4b6: LDA (0x46),Y",
+        "0xc4b8: AND #0xf",
+        "0xc4ba: ORA 0x0008",
+        "0xc4bc: STA 0x0008",
+        "0xc4be: LDY 0x608,X",
+        "0xc4c1: LDA (0x46),Y",
+        "0xc4c3: AND #0xf0",
+        "0xc4c5: ORA 0x0009",
+        "0xc4c7: STA 0x0009",
+        "0xc4c9: JMP 0xc516",
+        "0xc4cc: LDX #0x0",
+        "0xc4ce: STX 0x0008",
+        "0xc4d0: STX 0x000b",
+        "0xc4d2: LSR A",
+        "0xc4d3: ROR 0x0008",
+        "0xc4d5: LSR A",
+        "0xc4d6: ROR 0x0008",
+        "0xc4d8: AND #0xc",
+        "0xc4da: STA 0x000a",
+        "0xc4dc: LDA (0xe),Y",
+        "0xc4de: ASL A",
+        "0xc4df: ROL 0x000b",
+        "0xc4e1: ASL A",
+        "0xc4e2: ROL 0x000b",
+        "0xc4e4: AND #0x30",
+        "0xc4e6: STA 0x0009",
+        "0xc4e8: LDX 0x0002",
+        "0xc4ea: LDY 0x600,X",
+        "0xc4ed: LDA (0x46),Y",
+        "0xc4ef: AND #0x3f",
+        "0xc4f1: ORA 0x0008",
+        "0xc4f3: STA 0x0008",
+        "0xc4f5: LDY 0x601,X",
+        "0xc4f8: LDA (0x46),Y",
+        "0xc4fa: AND #0xcf",
+        "0xc4fc: ORA 0x0009",
+        "0xc4fe: STA 0x0009",
+        "0xc500: LDY 0x608,X",
+        "0xc503: LDA (0x46),Y",
+        "0xc505: AND #0xf3",
+        "0xc507: ORA 0x000a",
+        "0xc509: STA 0x000a",
+        "0xc50b: LDY 0x609,X",
+        "0xc50e: LDA (0x46),Y",
+        "0xc510: AND #0xfc",
+        "0xc512: ORA 0x000b",
+        "0xc514: STA 0x000b",
+        "0xc516: LDA 0x0001",
+        "0xc518: ASL A",
+        "0xc519: TAY",
+        "0xc51a: LDX 0x0021",
+        "0xc51c: LDA #0x1",
+        "0xc51e: STA 0x700,X",
+        "0xc521: INX",
+        "0xc522: LDA 0xc568,Y",
+        "0xc525: STA 0x700,X",
+        "0xc528: INX",
+        "0xc529: LDA 0xc569,Y",
+        "0xc52c: STA 0x700,X",
+        "0xc52f: INX",
+        "0xc530: LDY #0x0",
+        "0xc532: LDA 0x0015",
+        "0xc534: STA 0x700,X",
+        "0xc537: INX",
+        "0xc538: LDA 0x0014",
+        "0xc53a: STA 0x700,X",
+        "0xc53d: INX",
+        "0xc53e: LDA 0x8,Y",
+        "0xc541: STA 0x700,X",
+        "0xc544: INX",
+        "0xc545: LDA 0x0000",
+        "0xc547: CMP #0x2",
+        "0xc549: BEQ 0xc553",
+        "0xc54b: INY",
+        "0xc54c: LDA 0x8,Y",
+        "0xc54f: STA 0x700,X",
+        "0xc552: INX",
+        "0xc553: LDA 0x0001",
+        "0xc555: BEQ 0xc565",
+        "0xc557: INY",
+        "0xc558: LDA 0x0014",
+        "0xc55a: CLC",
+        "0xc55b: ADC #0x8",
+        "0xc55d: STA 0x0014",
+        "0xc55f: LDA #0x0",
+        "0xc561: STA 0x0001",
+        "0xc563: BEQ 0xc532",
+        "0xc565: JMP 0xc410"
+      ],
+      "limitations": [
+        "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+        "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+        "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+        "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+        "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+        "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+        "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+        "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+        "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels.",
+        "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state.",
+        "Headerless raw-binary analysis uses the caller-supplied architecture and entry address; file offset 0 is mapped at that address. Headers are not discovered from file bytes.",
+        "Little-endian generic Ghidra languages are used for x86, x86_64, arm, arm64, and NMOS 6502. Big-endian, Thumb-only, Cortex-M, 65C02, 65816, and other processor variants are unsupported in this increment.",
+        "Static analysis does not emulate reset vectors, memory-mapped I/O, or firmware boot sequences.",
+        "Ghidra analysis was seeded before auto-analysis from /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-enemies-terrain/seeds.tsv (sha256 b775a6106314eadc00bc58590e6daad211ea1bbe3e0b13fd2761f1207257c032: 3 function, 0 code, 0 label entries). Seeded functions, code and names are caller assertions, not Ghidra discoveries.",
+        "Seed outcome: 3 functions created, 0 already present, 0 failed; 0 code seeds decoded, 0 failed; 0 labels applied, 0 failed; 0 seeds outside initialized memory."
+      ]
+    },
+    {
+      "requested": "0xc656",
+      "evidence_id": "ev_2e1bde10a13acee4daad4e9d2fa8f39efe41d090c9380ec751f6ef7cf20aaabb",
+      "assembly": [
+        "0xc656: LDA 0x0010",
+        "0xc658: AND #0x80",
+        "0xc65a: STA 0x000f",
+        "0xc65c: LDA 0x0010",
+        "0xc65e: AND #0x7f",
+        "0xc660: STA 0x0010",
+        "0xc662: TYA",
+        "0xc663: CLC",
+        "0xc664: ADC 0x00fc",
+        "0xc666: BCS 0xc66c",
+        "0xc668: CMP #0xf0",
+        "0xc66a: BCC 0xc66e",
+        "0xc66c: ADC #0xf",
+        "0xc66e: AND #0xf8",
+        "0xc670: STA 0x0012",
+        "0xc672: LSR A",
+        "0xc673: LSR A",
+        "0xc674: TAY",
+        "0xc675: LSR A",
+        "0xc676: AND #0x2",
+        "0xc678: STA 0x0000",
+        "0xc67a: TYA",
+        "0xc67b: AND #0x38",
+        "0xc67d: STA 0x0014",
+        "0xc67f: LDA #0x0",
+        "0xc681: ASL 0x0012",
+        "0xc683: ROL A",
+        "0xc684: ASL 0x0012",
+        "0xc686: ROL A",
+        "0xc687: STA 0x0013",
+        "0xc689: LDA 0x0011",
+        "0xc68b: CLC",
+        "0xc68c: ADC 0x00fd",
+        "0xc68e: STA 0x0011",
+        "0xc690: LDA 0x00ff",
+        "0xc692: AND #0x1",
+        "0xc694: BCC 0xc698",
+        "0xc696: EOR #0x1",
+        "0xc698: TAY",
+        "0xc699: LDA 0xc64e,Y",
+        "0xc69c: ORA #0x3",
+        "0xc69e: STA 0x0015",
+        "0xc6a0: LDA 0xc64c,Y",
+        "0xc6a3: ORA 0x0013",
+        "0xc6a5: STA 0x0013",
+        "0xc6a7: STA 0x000d",
+        "0xc6a9: LDA 0xc650,Y",
+        "0xc6ac: STA 0x0002",
+        "0xc6ae: LDA 0x0011",
+        "0xc6b0: AND #0xf8",
+        "0xc6b2: LSR A",
+        "0xc6b3: LSR A",
+        "0xc6b4: LSR A",
+        "0xc6b5: TAY",
+        "0xc6b6: LSR A",
+        "0xc6b7: TAX",
+        "0xc6b8: AND #0x1",
+        "0xc6ba: ORA 0x0000",
+        "0xc6bc: STA 0x0000",
+        "0xc6be: TXA",
+        "0xc6bf: LSR A",
+        "0xc6c0: ORA 0x0014",
+        "0xc6c2: STA 0x0003",
+        "0xc6c4: CLC",
+        "0xc6c5: ADC #0xc0",
+        "0xc6c7: STA 0x0014",
+        "0xc6c9: TYA",
+        "0xc6ca: ORA 0x0012",
+        "0xc6cc: STA 0x0012",
+        "0xc6ce: STA 0x000c",
+        "0xc6d0: LDA 0x0002",
+        "0xc6d2: ORA 0x0003",
+        "0xc6d4: STA 0x0002",
+        "0xc6d6: RTS"
+      ],
+      "limitations": [
+        "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+        "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+        "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+        "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+        "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+        "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+        "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+        "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+        "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels.",
+        "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state.",
+        "Headerless raw-binary analysis uses the caller-supplied architecture and entry address; file offset 0 is mapped at that address. Headers are not discovered from file bytes.",
+        "Little-endian generic Ghidra languages are used for x86, x86_64, arm, arm64, and NMOS 6502. Big-endian, Thumb-only, Cortex-M, 65C02, 65816, and other processor variants are unsupported in this increment.",
+        "Static analysis does not emulate reset vectors, memory-mapped I/O, or firmware boot sequences.",
+        "Ghidra analysis was seeded before auto-analysis from /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-enemies-terrain/seeds.tsv (sha256 b775a6106314eadc00bc58590e6daad211ea1bbe3e0b13fd2761f1207257c032: 3 function, 0 code, 0 label entries). Seeded functions, code and names are caller assertions, not Ghidra discoveries.",
+        "Seed outcome: 3 functions created, 0 already present, 0 failed; 0 code seeds decoded, 0 failed; 0 labels applied, 0 failed; 0 seeds outside initialized memory."
+      ]
+    },
+    {
+      "requested": "0xc6d7",
+      "evidence_id": "ev_6b386b138f29dc4036d5e43ade5a1623dad3d7afccc64465268a6a4aa55f3832",
+      "assembly": [
+        "0xc6d7: LDA #0x1",
+        "0xc6d9: STA 0x700,X",
+        "0xc6dc: INX",
+        "0xc6dd: STA 0x700,X",
+        "0xc6e0: INX",
+        "0xc6e1: STA 0x700,X",
+        "0xc6e4: INX",
+        "0xc6e5: LDA 0x0015",
+        "0xc6e7: STA 0x700,X",
+        "0xc6ea: INX",
+        "0xc6eb: LDA 0x0014",
+        "0xc6ed: STA 0x700,X",
+        "0xc6f0: INX",
+        "0xc6f1: RTS"
+      ],
+      "limitations": [
+        "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+        "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+        "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+        "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+        "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+        "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+        "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+        "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+        "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels.",
+        "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state.",
+        "Headerless raw-binary analysis uses the caller-supplied architecture and entry address; file offset 0 is mapped at that address. Headers are not discovered from file bytes.",
+        "Little-endian generic Ghidra languages are used for x86, x86_64, arm, arm64, and NMOS 6502. Big-endian, Thumb-only, Cortex-M, 65C02, 65816, and other processor variants are unsupported in this increment.",
+        "Static analysis does not emulate reset vectors, memory-mapped I/O, or firmware boot sequences.",
+        "Ghidra analysis was seeded before auto-analysis from /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-enemies-terrain/seeds.tsv (sha256 b775a6106314eadc00bc58590e6daad211ea1bbe3e0b13fd2761f1207257c032: 3 function, 0 code, 0 label entries). Seeded functions, code and names are caller assertions, not Ghidra discoveries.",
+        "Seed outcome: 3 functions created, 0 already present, 0 failed; 0 code seeds decoded, 0 failed; 0 labels applied, 0 failed; 0 seeds outside initialized memory."
+      ]
+    }
+  ],
+  "sources": {
+    "games/contra/engine/graphics_queue.go": "9d630b16bfe135773e42896a21d026f91c7f60187aed2c2f89d71f082dc3b3a6",
+    "games/contra/engine/graphics_queue_test.go": "80a4362783a9dc87a9d54d3c5f6487992089c7081023cdaa5a42a34cc2d97cbd",
+    "scripts/contra/enemies_terrain_prepare.py": "419747a61a679a9f5f211668b762b289b10c251c0105dc2bdf272ce3d6ce925a",
+    "scripts/contra/enemies_terrain_capture.py": "5bccfea98ba2192b49fd3d8e45e5cf56f89b08eaed0ef2457977f2f7ee21b011",
+    "scripts/contra/enemies_terrain_export.py": "859bd8cc90b9a20052aad5e3fe6024717e6a408efc24623755a6e95b22b0396a"
+  },
+  "native_bundle_sha256": "e7e2c9e3fd380acf8e7342f7b7689f45fb489f848968036fc95812ba65af5fe4",
+  "commands": [
+    "python3 -B scripts/contra/enemies_terrain_prepare.py",
+    "node scripts/contra/enemies_rea.mjs .local/contra-enemies-terrain/spec.json",
+    ".local/board-art-env/bin/python -B scripts/contra/enemies_terrain_capture.py natural <new-label>",
+    ".local/board-art-env/bin/python -B scripts/contra/enemies_terrain_capture.py controlled <new-label>",
+    ".local/board-art-env/bin/python -B scripts/contra/enemies_terrain_capture.py controlled <new-abi-label> abi",
+    "source scripts/env.sh && go test -race ./games/contra/engine -run '^Test(OriginalGraphics|GraphicsQueue)' -count=1 -json"
+  ],
+  "cleanup": [
+    {
+      "path": ".local/contra-enemies-terrain/swift-cache",
+      "bytes": 93397696
+    },
+    {
+      "path": "dist/contra-enemies-terrain-tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-enemies-terrain/tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-enemies-terrain/oracle/fceux-home",
+      "bytes": 17764
+    },
+    {
+      "path": ".local/contra-enemies-terrain/oracle/runtime",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-enemies-terrain/oracle/tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-enemies-terrain/oracle/runs/graphics-natural-v2",
+      "removed_intermediates": [
+        {
+          "name": "record.lua",
+          "bytes": 14639
+        },
+        {
+          "name": "frame-00350-prg.bin",
+          "bytes": 32768
+        },
+        {
+          "name": "frame-00250.gd",
+          "bytes": 245771
+        },
+        {
+          "name": "frame-00350.gd",
+          "bytes": 245771
+        },
+        {
+          "name": "frame-00700.png",
+          "bytes": 7388
+        },
+        {
+          "name": "initial-ram.bin",
+          "bytes": 2048
+        },
+        {
+          "name": "frame-00001-prg.bin",
+          "bytes": 32768
+        },
+        {
+          "name": "frame-00001.png",
+          "bytes": 6182
+        },
+        {
+          "name": "emulator.log",
+          "bytes": 957
+        },
+        {
+          "name": "frame-00250-prg.bin",
+          "bytes": 32768
+        },
+        {
+          "name": "frame-00700-prg.bin",
+          "bytes": 32768
+        },
+        {
+          "name": "hashes.json",
+          "bytes": 1712
+        },
+        {
+          "name": "frames.csv",
+          "bytes": 13923
+        },
+        {
+          "name": "frame-00700.gd",
+          "bytes": 245771
+        },
+        {
+          "name": "frame-00700-ppu.bin",
+          "bytes": 16384
+        },
+        {
+          "name": "initial-prg.bin",
+          "bytes": 32768
+        },
+        {
+          "name": "frame-00250-ppu.bin",
+          "bytes": 16384
+        },
+        {
+          "name": "frame-00350.png",
+          "bytes": 7386
+        },
+        {
+          "name": "frame-00001-ppu.bin",
+          "bytes": 16384
+        },
+        {
+          "name": "frame-00001.gd",
+          "bytes": 245771
+        },
+        {
+          "name": "frame-00350-ppu.bin",
+          "bytes": 16384
+        },
+        {
+          "name": "frame-00250.png",
+          "bytes": 7636
+        }
+      ],
+      "retained": "original repeat RAM, calls and source/command metadata"
+    },
+    {
+      "path": ".local/contra-enemies-terrain/oracle/runs/graphics-controlled-v2",
+      "removed_intermediates": [
+        {
+          "name": "record.lua",
+          "bytes": 29577
+        },
+        {
+          "name": "initial-ram.bin",
+          "bytes": 2048
+        },
+        {
+          "name": "emulator.log",
+          "bytes": 957
+        },
+        {
+          "name": "hashes.json",
+          "bytes": 612
+        },
+        {
+          "name": "frames.csv",
+          "bytes": 8323
+        },
+        {
+          "name": "initial-prg.bin",
+          "bytes": 32768
+        }
+      ],
+      "retained": "original repeat RAM, calls and source/command metadata"
+    },
+    {
+      "path": ".local/contra-enemies-terrain/oracle/runs/graphics-controlled-abi-v2",
+      "removed_intermediates": [
+        {
+          "name": "record.lua",
+          "bytes": 34014
+        },
+        {
+          "name": "initial-ram.bin",
+          "bytes": 2048
+        },
+        {
+          "name": "emulator.log",
+          "bytes": 957
+        },
+        {
+          "name": "hashes.json",
+          "bytes": 612
+        },
+        {
+          "name": "frames.csv",
+          "bytes": 8323
+        },
+        {
+          "name": "initial-prg.bin",
+          "bytes": 32768
+        }
+      ],
+      "retained": "original repeat RAM, calls and source/command metadata"
+    },
+    {
+      "path": ".local/contra-enemies-terrain/oracle/contra-j.nes",
+      "bytes": 262160
+    }
+  ]
+}

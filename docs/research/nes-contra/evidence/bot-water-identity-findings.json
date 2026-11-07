@@ -1,0 +1,24 @@
+{
+  "scope": "Diagnose solo player loss caused by visibly identical cross-seat water artwork",
+  "passed": false,
+  "artworkAliasProofPassed": true,
+  "aliasPairs": 24,
+  "singleOccupiedPlayerRegressionPassed": false,
+  "facts": [
+    "The submitted stall picture visibly contains a water player head at x128.",
+    "Water sprite24 through29 produce byte-identical normalized RGBA for both actor palettes across four tested direction/bob attributes.",
+    "Current classifier drops the ambiguous player image even when the public HUD has only one occupied seat."
+  ],
+  "boundary": "Regression fixture contains submitted renderer data and actual public HUD only, no World, runtime slot, HP, AI state or collision map.",
+  "command": "go test ./games/contra/engine -run '^TestBotWaterArtworkHasCrossSeatAliases$|^TestBuiltinBotVisionSoloWaterPublicOccupancy$' -count=1 -v",
+  "artifacts": {
+    "docs/research/nes-contra/evidence/bot-water-stall.png": "9c7e1fc8ab50815107e4e220b50736069aeec3bbbb44daf78e6e175c34364d05",
+    "docs/research/nes-contra/evidence/water-identity-red.log.gz": "1914f59620b1f9cbdd11bca2f2c9d8d42966c7d8cf60a5519a456df6dba4232d",
+    "games/contra/engine/testdata/bot-water-submitted-frame.json.gz": "73d4f2b67ad5cc2b9f17625d6c72fc2364eb297b28cc2f1926ba03d0f1a692f4",
+    "games/contra/engine/bot_vision_water_identity_test.go": "327303215ed369952db9c440acc3e6cafdcc0c90308431ce674a243d725176f8"
+  },
+  "nextAction": "Retain visible alias candidates; use public occupancy and bounded visible tracking for identity, without a hidden-state fallback.",
+  "originalRegressionExpectationSuperseded": true,
+  "replacementContract": "Public occupancy narrows candidate masks but does not prove a head belongs to a player rather than an NPC. Head-only imagery remains a candidate; history or legal-input feedback establishes identity.",
+  "replacementEvidence": "coop-water-and-uniform-verification.json"
+}

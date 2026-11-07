@@ -1,0 +1,14 @@
+# github.com/k0ngk0ng/wire-board/games/contra/engine [github.com/k0ngk0ng/wire-board/games/contra/engine.test]
+games/contra/engine/palette_test.go:32:47: undefined: PaletteOutput
+games/contra/engine/palette_test.go:33:5: undefined: PaletteOutput
+games/contra/engine/palette_test.go:66:10: undefined: SnowControlState
+games/contra/engine/palette_test.go:67:15: undefined: PaletteResult
+games/contra/engine/palette_test.go:70:35: undefined: PaletteCycleContext
+games/contra/engine/palette_test.go:97:26: undefined: PaletteOutput
+games/contra/engine/palette_test.go:103:16: undefined: PaletteCycleContext
+games/contra/engine/palette_test.go:105:5: undefined: SnowControlState
+games/contra/engine/enemies_waterfall_test.go:55:38: s.StepScuba undefined (type EnemySystem has no field or method StepScuba)
+games/contra/engine/enemies_waterfall_test.go:55:72: s.StepWaterfallHazard undefined (type EnemySystem has no field or method StepWaterfallHazard)
+games/contra/engine/palette_test.go:105:5: too many errors
+FAIL	github.com/k0ngk0ng/wire-board/games/contra/engine [build failed]
+FAIL

@@ -1,0 +1,162 @@
+{
+  "layout": "game",
+  "legacyProfile": "classic-2",
+  "actions": [
+    {
+      "id": "up",
+      "label": "球拍向上",
+      "keys": [
+        "KeyW",
+        "ArrowUp"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 12
+        },
+        {
+          "type": "axis",
+          "index": 1,
+          "direction": -1
+        }
+      ]
+    },
+    {
+      "id": "down",
+      "label": "球拍向下",
+      "keys": [
+        "KeyS",
+        "ArrowDown"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 13
+        },
+        {
+          "type": "axis",
+          "index": 1,
+          "direction": 1
+        }
+      ]
+    },
+    {
+      "id": "left",
+      "label": "球拍向左",
+      "keys": [
+        "KeyA",
+        "ArrowLeft"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 14
+        },
+        {
+          "type": "axis",
+          "index": 0,
+          "direction": -1
+        }
+      ]
+    },
+    {
+      "id": "right",
+      "label": "球拍向右",
+      "keys": [
+        "KeyD",
+        "ArrowRight"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 15
+        },
+        {
+          "type": "axis",
+          "index": 0,
+          "direction": 1
+        }
+      ]
+    },
+    {
+      "id": "a",
+      "label": "正手击球",
+      "keys": [
+        "KeyK"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 1
+        }
+      ]
+    },
+    {
+      "id": "b",
+      "label": "削球",
+      "keys": [
+        "KeyJ"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "id": "select",
+      "label": "辅助挡球",
+      "keys": [
+        "KeyF"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 8
+        }
+      ]
+    },
+    {
+      "id": "start",
+      "label": "挡球",
+      "keys": [
+        "Space"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 9
+        }
+      ]
+    },
+    {
+      "id": "turboA",
+      "label": "连续正手",
+      "keys": [
+        "KeyI"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 3
+        }
+      ],
+      "turboTarget": "a"
+    },
+    {
+      "id": "turboB",
+      "label": "连续削球",
+      "keys": [
+        "KeyU"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 2
+        }
+      ],
+      "turboTarget": "b"
+    }
+  ]
+}

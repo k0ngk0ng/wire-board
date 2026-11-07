@@ -1,0 +1,26 @@
+{
+  "status": "targeted-tests-pass-continuation-still-incomplete",
+  "finding": "The unknown upper-front cell is a narrow mostly-dark shaft; a lower floor is visible. It is not simply a character-occluded continuation of the upper platform. Stopping fire did not resolve its terrain class.",
+  "change": "Allow a controlled drop to a known lower floor. Predictor first walks off its leading support, stops horizontal motion at visible walls, rejects wall-interior landings, and cannot fall through a continuous platform.",
+  "sources": {
+    "games/contra/engine/bot.go": "c1f3fc419b04434b244c379f17deb8c453d849dc47debbb27ad6aea1e84216f4",
+    "games/contra/engine/bot_navigation.go": "400bbbea3af306e5cc8f2a688f81b2fd8b324ad9be15f3f1e127fcc535a6127d",
+    "games/contra/engine/bot_visible_shaft_test.go": "82c22574108503b80d26a1903727035948b214c20567d2f6f24c679aeaaeb0ac",
+    "games/contra/engine/bot_known_support_probe_test.go": "d0c93eea588625be7ba8e9dc9534d3499fb596e8450b63864989a80c517c5f72",
+    "games/contra/engine/testdata/bot-energy-visible-shaft.json.gz": "d015e5560b545616fe138129374c5c10f9eb7cf7a576d022ce7cd6ee161d283f"
+  },
+  "race_log": "visible-shaft-green.log",
+  "test_scope_note": "The short safe-edge probe fixture now removes its lower floor to isolate the no-drop case; the new shaft test preserves and validates the lower landing.",
+  "run": ".local/contra-bot/diagnostic-energy-shaft-drop",
+  "cleanup": [
+    "Removed this task temporary tagged diagnostic file games/contra/engine/bot_terrain_probe_test.go; retained its output log."
+  ],
+  "complete_campaign": false,
+  "run_result": {
+    "frames": 128000,
+    "level_index": 5,
+    "screen": 5,
+    "last_observed_y": 196,
+    "finding": "Left the upper platform and returned to lower terrain; stage remains incomplete and further movement diagnosis is required."
+  }
+}

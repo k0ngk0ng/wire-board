@@ -1,0 +1,14 @@
+{
+  "romSHA256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+  "originalEvidenceSHA256": "7029b9685ca4409e0141924024321ee8d9532de4386b15bfe1378bfaff4ebc4f",
+  "catalogEvidenceSHA256": "292a58f7f9ef5cfd741c481a0701ec1d76a327daa2e7292be0174e394b820e6e",
+  "expectedOutputs": "unmodified original FCEUX execution",
+  "fixtureSHA256": "1c0ba1e5f65b13a9dcb0cd4d8f93f80f7908647567b975cafb41f2ca17022d22",
+  "calls": 607,
+  "samples": 15,
+  "parts": 1145,
+  "limitations": [
+    "Native 607-call fixture covers 14 sprite codes in outdoor stage one.",
+    "Other declared boundary tests are synthetic byte/format cases, not additional natural gameplay."
+  ]
+}

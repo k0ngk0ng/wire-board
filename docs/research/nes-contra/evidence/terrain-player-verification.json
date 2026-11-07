@@ -1,0 +1,52 @@
+{
+  "status": "targeted-race-and-diagnostic-movement-passed",
+  "scope": "Current visible pixels only. Complete identified player opaque pixels may be masked; transparent pixels remain required. Unknown cells need at least 128 visible pixels, adequate nonuniform detail, and one unambiguous material across fixed terrain patterns.",
+  "tests": 4,
+  "new_subcases": 6,
+  "fixture_source": "Recorded assisted legal input replay, frames 67938 and 67944 of diagnostic-energy-family-fixed. PNG tests contain no World, prior terrain, or hidden collision data.",
+  "sources": {
+    "games/contra/engine/bot_vision.go": "16bfabd22a00af5e61166a5dfeaffaefc4346f0e4d74958b5d370ae95bf0f8d5",
+    "games/contra/engine/bot_vision_terrain.go": "58aeb989b7bb5a1b856929ec1bdbce3b797223839703d99b97831e5e928c6429",
+    "games/contra/engine/bot_vision_terrain_player_test.go": "49c8167097fbb16a05d889a8e53a7c1434260b7c510018ea618d606bc33d220c",
+    "games/contra/engine/testdata/bot-energy-floor-67938.png": "d9128e62c8f8cf9ea0847ba2ddb2bd42c7503cbbe20073f16ccd0c017412c31d",
+    "games/contra/engine/testdata/bot-energy-floor-67944.png": "18ef6093181630f058cc4a00dc3424b7a0affbb1961370db590d5556bc37357c"
+  },
+  "replay_run": ".local/contra-bot/diagnostic-energy-terrain-recovery",
+  "complete_campaign": false,
+  "movement": {
+    "start_frame": 68001,
+    "end_frame": 76000,
+    "start_level_index": 5,
+    "start_screen": 4,
+    "end_level_index": 5,
+    "end_screen": 5,
+    "restored_public_bot_memory": true,
+    "scope": "Assisted legal-prefix continuation; not full campaign acceptance"
+  },
+  "independent_replay": {
+    "frames": 76000,
+    "nextStepStoredStateEqual": true,
+    "nextStepStructEqual": true,
+    "recordedStateMatches": true,
+    "roundTripDifferences": null
+  },
+  "battle_performance": {
+    "machine": "Apple M4",
+    "two_bots_batch_ms": [
+      31.335567,
+      31.330975,
+      31.312821
+    ],
+    "batch_budget_ms": 50,
+    "scope": "Existing true-battle host benchmark; not production concurrency or worst-case later-stage coverage",
+    "log": "terrain-player-battle-performance.log"
+  },
+  "visual_regression": {
+    "passed": true,
+    "top_level_tests": 26,
+    "subtests": 19,
+    "race": false,
+    "log": "terrain-visual-regression.log",
+    "scope": "Existing built-in visual recipes, markers, player aliases, terrain and candidate guards"
+  }
+}

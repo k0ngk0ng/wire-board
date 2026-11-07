@@ -1,0 +1,21 @@
+{"Time":"2026-10-25T12:36:31.481437+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine"}
+{"Time":"2026-10-25T12:36:31.862728+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalMovementTrace"}
+{"Time":"2026-10-25T12:36:31.862777+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalMovementTrace","Output":"=== RUN   TestOriginalMovementTrace\n"}
+{"Time":"2026-10-25T12:36:31.868973+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalMovementTrace","Output":"    movement_test.go:94: verified original observations: map[advanceY:714 beginJump:11 gravity:714 input:1440]\n"}
+{"Time":"2026-10-25T12:36:31.868992+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalMovementTrace","Output":"--- PASS: TestOriginalMovementTrace (0.01s)\n"}
+{"Time":"2026-10-25T12:36:31.868998+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalMovementTrace","Elapsed":0.01}
+{"Time":"2026-10-25T12:36:31.869005+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestVerticalArithmeticBoundaries"}
+{"Time":"2026-10-25T12:36:31.869008+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestVerticalArithmeticBoundaries","Output":"=== RUN   TestVerticalArithmeticBoundaries\n"}
+{"Time":"2026-10-25T12:36:31.869014+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestVerticalArithmeticBoundaries","Output":"--- PASS: TestVerticalArithmeticBoundaries (0.00s)\n"}
+{"Time":"2026-10-25T12:36:31.869021+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestVerticalArithmeticBoundaries","Elapsed":0}
+{"Time":"2026-10-25T12:36:31.869026+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestJumpRetainsSubpixelAndExistingJump"}
+{"Time":"2026-10-25T12:36:31.869028+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestJumpRetainsSubpixelAndExistingJump","Output":"=== RUN   TestJumpRetainsSubpixelAndExistingJump\n"}
+{"Time":"2026-10-25T12:36:31.869031+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestJumpRetainsSubpixelAndExistingJump","Output":"--- PASS: TestJumpRetainsSubpixelAndExistingJump (0.00s)\n"}
+{"Time":"2026-10-25T12:36:31.869033+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestJumpRetainsSubpixelAndExistingJump","Elapsed":0}
+{"Time":"2026-10-25T12:36:31.86904+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestControlsLogicalBitsAndRelease"}
+{"Time":"2026-10-25T12:36:31.869043+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestControlsLogicalBitsAndRelease","Output":"=== RUN   TestControlsLogicalBitsAndRelease\n"}
+{"Time":"2026-10-25T12:36:31.869046+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestControlsLogicalBitsAndRelease","Output":"--- PASS: TestControlsLogicalBitsAndRelease (0.00s)\n"}
+{"Time":"2026-10-25T12:36:31.869048+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestControlsLogicalBitsAndRelease","Elapsed":0}
+{"Time":"2026-10-25T12:36:31.869051+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"PASS\n"}
+{"Time":"2026-10-25T12:36:31.869382+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/contra/engine\t0.388s\n"}
+{"Time":"2026-10-25T12:36:31.869394+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Elapsed":0.388}

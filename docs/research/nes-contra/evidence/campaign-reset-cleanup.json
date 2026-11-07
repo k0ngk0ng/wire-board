@@ -1,0 +1,90 @@
+{
+  "scope": "Only this reset task private Swift/cache/config files, repeated capture intermediates, interrupted build output caused by concurrent Session red, and redundant green/race outputs. Primary original captures, private REA records, source slices, all test-first red and final bound race evidence retained.",
+  "removed": [
+    {
+      "path": ".local/contra-campaign-reset/swift-cache",
+      "bytes": 93396920
+    },
+    {
+      "path": "dist/cr-tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-campaign-reset/oracle/fceux-home",
+      "bytes": 17749
+    },
+    {
+      "path": ".local/contra-campaign-reset/oracle/runtime",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-campaign-reset/oracle/tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-campaign-reset/oracle/runs/repeat-boundaries/record.lua",
+      "bytes": 31629
+    },
+    {
+      "path": ".local/contra-campaign-reset/oracle/runs/repeat-boundaries/initial-ram.bin",
+      "bytes": 2048
+    },
+    {
+      "path": ".local/contra-campaign-reset/oracle/runs/repeat-boundaries/source.json",
+      "bytes": 897
+    },
+    {
+      "path": ".local/contra-campaign-reset/oracle/runs/repeat-boundaries/capture-complete.json",
+      "bytes": 21
+    },
+    {
+      "path": ".local/contra-campaign-reset/oracle/runs/repeat-boundaries/emulator.log",
+      "bytes": 957
+    },
+    {
+      "path": ".local/contra-campaign-reset/oracle/runs/repeat-boundaries/hashes.json",
+      "bytes": 696
+    },
+    {
+      "path": ".local/contra-campaign-reset/oracle/runs/repeat-boundaries/reset.jsonl",
+      "bytes": 3406870
+    },
+    {
+      "path": ".local/contra-campaign-reset/oracle/runs/repeat-boundaries/frames.csv",
+      "bytes": 2675
+    },
+    {
+      "path": ".local/contra-campaign-reset/oracle/runs/repeat-boundaries/inputs.csv",
+      "bytes": 1008
+    },
+    {
+      "path": ".local/contra-campaign-reset/oracle/runs/repeat-boundaries/initial-prg.bin",
+      "bytes": 32768
+    },
+    {
+      "path": ".local/contra-campaign-reset/oracle/runs/repeat-boundaries/scenario.json",
+      "bytes": 29669
+    },
+    {
+      "path": ".local/contra-campaign-reset/oracle/runs/repeat-boundaries/ram.bin",
+      "bytes": 282624
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/campaign-reset-runtime-first.jsonl",
+      "bytes": 2158
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/campaign-reset-runtime-green.jsonl",
+      "bytes": 45187
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/campaign-reset-first.jsonl",
+      "bytes": 91215
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/campaign-reset-race.jsonl",
+      "bytes": 91231
+    }
+  ],
+  "bytes_removed": 97436322
+}

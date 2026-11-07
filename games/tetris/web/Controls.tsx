@@ -41,7 +41,7 @@ export function Controls({
           disabled={disabled}
           onClick={tap("hold")}
         >
-          暂存<small>C／Shift</small>
+          暂存
         </button>
         <button
           type="button"
@@ -49,7 +49,7 @@ export function Controls({
           disabled={disabled}
           onClick={tap("rotateCCW")}
         >
-          逆旋<small>Z</small>
+          逆旋
         </button>
         <button
           type="button"
@@ -57,7 +57,7 @@ export function Controls({
           disabled={disabled}
           onClick={tap("rotateCW")}
         >
-          顺旋<small>↑／X</small>
+          顺旋
         </button>
       </div>
       <div className="tetris-control-row">
@@ -93,7 +93,7 @@ export function Controls({
         disabled={disabled}
         onClick={tap("hardDrop")}
       >
-        硬降<small>空格</small>
+        硬降
       </button>
       {autoPlay && (
         <p className="tetris-auto-note">电脑托管中，可在上方取消托管</p>

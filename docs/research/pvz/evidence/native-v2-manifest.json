@@ -1,0 +1,1694 @@
+{
+  "version": "classic-v2",
+  "matrixOrder": "canvas-a-b-c-d-e-f",
+  "units": [
+    {
+      "kind": "peashooter",
+      "clips": 8,
+      "images": 13,
+      "jsonBytes": 412679,
+      "gzipBytes": 59996,
+      "bounds": {
+        "x": 5,
+        "y": -1,
+        "width": 84,
+        "height": 83
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "sunflower",
+      "clips": 6,
+      "images": 28,
+      "jsonBytes": 786743,
+      "gzipBytes": 102789,
+      "bounds": {
+        "x": 3,
+        "y": 2,
+        "width": 79,
+        "height": 80
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "cherrybomb",
+      "clips": 8,
+      "images": 17,
+      "jsonBytes": 300869,
+      "gzipBytes": 38779,
+      "bounds": {
+        "x": -25,
+        "y": -13,
+        "width": 133,
+        "height": 99
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "wallnut",
+      "clips": 8,
+      "images": 3,
+      "jsonBytes": 25775,
+      "gzipBytes": 1177,
+      "bounds": {
+        "x": 1,
+        "y": 1,
+        "width": 82,
+        "height": 79
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "potatomine",
+      "clips": 8,
+      "images": 11,
+      "jsonBytes": 211115,
+      "gzipBytes": 6474,
+      "bounds": {
+        "x": -13,
+        "y": 2,
+        "width": 101,
+        "height": 83
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "snowpea",
+      "clips": 8,
+      "images": 15,
+      "jsonBytes": 490884,
+      "gzipBytes": 74168,
+      "bounds": {
+        "x": 5,
+        "y": -1,
+        "width": 82,
+        "height": 83
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "chomper",
+      "clips": 13,
+      "images": 22,
+      "jsonBytes": 1392347,
+      "gzipBytes": 244881,
+      "bounds": {
+        "x": -13,
+        "y": -55,
+        "width": 146,
+        "height": 147
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "repeater",
+      "clips": 8,
+      "images": 19,
+      "jsonBytes": 668403,
+      "gzipBytes": 93305,
+      "bounds": {
+        "x": 4,
+        "y": -1,
+        "width": 85,
+        "height": 83
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "puffshroom",
+      "clips": 10,
+      "images": 6,
+      "jsonBytes": 116823,
+      "gzipBytes": 3883,
+      "bounds": {
+        "x": 17,
+        "y": 23,
+        "width": 46,
+        "height": 43
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "sunshroom",
+      "clips": 12,
+      "images": 3,
+      "jsonBytes": 58278,
+      "gzipBytes": 3710,
+      "bounds": {
+        "x": 11,
+        "y": 7,
+        "width": 63,
+        "height": 63
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "fumeshroom",
+      "clips": 10,
+      "images": 5,
+      "jsonBytes": 148784,
+      "gzipBytes": 9090,
+      "bounds": {
+        "x": -17,
+        "y": -14,
+        "width": 138,
+        "height": 95
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "gravebuster",
+      "clips": 8,
+      "images": 11,
+      "jsonBytes": 475490,
+      "gzipBytes": 48053,
+      "bounds": {
+        "x": -15,
+        "y": -8,
+        "width": 107,
+        "height": 84
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "hypnoshroom",
+      "clips": 8,
+      "images": 5,
+      "jsonBytes": 116218,
+      "gzipBytes": 6391,
+      "bounds": {
+        "x": -4,
+        "y": -3,
+        "width": 85,
+        "height": 84
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "scaredyshroom",
+      "clips": 13,
+      "images": 12,
+      "jsonBytes": 320411,
+      "gzipBytes": 24512,
+      "bounds": {
+        "x": -9,
+        "y": -2,
+        "width": 88,
+        "height": 95
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "iceshroom",
+      "clips": 8,
+      "images": 4,
+      "jsonBytes": 70456,
+      "gzipBytes": 1491,
+      "bounds": {
+        "x": -4,
+        "y": -1,
+        "width": 88,
+        "height": 80
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "doomshroom",
+      "clips": 10,
+      "images": 5,
+      "jsonBytes": 87613,
+      "gzipBytes": 4292,
+      "bounds": {
+        "x": -23,
+        "y": -28,
+        "width": 129,
+        "height": 111
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "lilypad",
+      "clips": 6,
+      "images": 1,
+      "jsonBytes": 1714,
+      "gzipBytes": 298,
+      "bounds": {
+        "x": -3,
+        "y": 3,
+        "width": 85,
+        "height": 85
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "squash",
+      "clips": 11,
+      "images": 4,
+      "jsonBytes": 103141,
+      "gzipBytes": 7052,
+      "bounds": {
+        "x": -10,
+        "y": -22,
+        "width": 99,
+        "height": 105
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "threepeater",
+      "clips": 10,
+      "images": 16,
+      "jsonBytes": 842362,
+      "gzipBytes": 136206,
+      "bounds": {
+        "x": 4,
+        "y": -7,
+        "width": 84,
+        "height": 89
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "tanglekelp",
+      "clips": 9,
+      "images": 21,
+      "jsonBytes": 247525,
+      "gzipBytes": 37766,
+      "bounds": {
+        "x": -8,
+        "y": 1,
+        "width": 155,
+        "height": 93
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "jalapeno",
+      "clips": 8,
+      "images": 8,
+      "jsonBytes": 94829,
+      "gzipBytes": 6694,
+      "bounds": {
+        "x": 3,
+        "y": -15,
+        "width": 77,
+        "height": 101
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "spikeweed",
+      "clips": 8,
+      "images": 5,
+      "jsonBytes": 131011,
+      "gzipBytes": 6077,
+      "bounds": {
+        "x": -5,
+        "y": 29,
+        "width": 89,
+        "height": 48
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "torchwood",
+      "clips": 6,
+      "images": 6,
+      "jsonBytes": 105679,
+      "gzipBytes": 3023,
+      "bounds": {
+        "x": 4,
+        "y": -17,
+        "width": 75,
+        "height": 98
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "tallnut",
+      "clips": 8,
+      "images": 3,
+      "jsonBytes": 26187,
+      "gzipBytes": 1173,
+      "bounds": {
+        "x": -5,
+        "y": -40,
+        "width": 89,
+        "height": 125
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "seashroom",
+      "clips": 10,
+      "images": 8,
+      "jsonBytes": 245348,
+      "gzipBytes": 12170,
+      "bounds": {
+        "x": 10,
+        "y": 11,
+        "width": 63,
+        "height": 68
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "plantern",
+      "clips": 6,
+      "images": 7,
+      "jsonBytes": 246384,
+      "gzipBytes": 49416,
+      "bounds": {
+        "x": -6,
+        "y": -5,
+        "width": 91,
+        "height": 94
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "cactus",
+      "clips": 13,
+      "images": 15,
+      "jsonBytes": 435134,
+      "gzipBytes": 43033,
+      "bounds": {
+        "x": -25,
+        "y": -86,
+        "width": 142,
+        "height": 168
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "blover",
+      "clips": 8,
+      "images": 7,
+      "jsonBytes": 332800,
+      "gzipBytes": 27484,
+      "bounds": {
+        "x": -28,
+        "y": -38,
+        "width": 154,
+        "height": 133
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "splitpea",
+      "clips": 9,
+      "images": 14,
+      "jsonBytes": 499393,
+      "gzipBytes": 69964,
+      "bounds": {
+        "x": -27,
+        "y": -2,
+        "width": 116,
+        "height": 84
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "starfruit",
+      "clips": 8,
+      "images": 7,
+      "jsonBytes": 98585,
+      "gzipBytes": 6839,
+      "bounds": {
+        "x": -2,
+        "y": -1,
+        "width": 84,
+        "height": 77
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "pumpkin",
+      "clips": 8,
+      "images": 4,
+      "jsonBytes": 54662,
+      "gzipBytes": 1276,
+      "bounds": {
+        "x": -11,
+        "y": 6,
+        "width": 106,
+        "height": 73
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "magnetshroom",
+      "clips": 10,
+      "images": 17,
+      "jsonBytes": 408364,
+      "gzipBytes": 57794,
+      "bounds": {
+        "x": -12,
+        "y": -14,
+        "width": 120,
+        "height": 95
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "cabbagepult",
+      "clips": 8,
+      "images": 15,
+      "jsonBytes": 855095,
+      "gzipBytes": 137058,
+      "bounds": {
+        "x": -34,
+        "y": -35,
+        "width": 107,
+        "height": 113
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "flowerpot",
+      "clips": 6,
+      "images": 5,
+      "jsonBytes": 65231,
+      "gzipBytes": 2179,
+      "bounds": {
+        "x": 5,
+        "y": 3,
+        "width": 71,
+        "height": 72
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "kernelpult",
+      "clips": 8,
+      "images": 21,
+      "jsonBytes": 692466,
+      "gzipBytes": 103914,
+      "bounds": {
+        "x": -47,
+        "y": -65,
+        "width": 135,
+        "height": 145
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "coffeebean",
+      "clips": 8,
+      "images": 13,
+      "jsonBytes": 24141,
+      "gzipBytes": 1066,
+      "bounds": {
+        "x": 14,
+        "y": 3,
+        "width": 53,
+        "height": 150
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "garlic",
+      "clips": 8,
+      "images": 10,
+      "jsonBytes": 80970,
+      "gzipBytes": 2842,
+      "bounds": {
+        "x": 9,
+        "y": -37,
+        "width": 65,
+        "height": 113
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "umbrellaleaf",
+      "clips": 9,
+      "images": 8,
+      "jsonBytes": 201023,
+      "gzipBytes": 15463,
+      "bounds": {
+        "x": -123,
+        "y": -131,
+        "width": 324,
+        "height": 313
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "marigold",
+      "clips": 6,
+      "images": 13,
+      "jsonBytes": 365172,
+      "gzipBytes": 45601,
+      "bounds": {
+        "x": 11,
+        "y": -2,
+        "width": 65,
+        "height": 84
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "melonpult",
+      "clips": 8,
+      "images": 11,
+      "jsonBytes": 613355,
+      "gzipBytes": 85549,
+      "bounds": {
+        "x": -63,
+        "y": -61,
+        "width": 146,
+        "height": 152
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "gatlingpea",
+      "clips": 8,
+      "images": 16,
+      "jsonBytes": 728674,
+      "gzipBytes": 96075,
+      "bounds": {
+        "x": -1,
+        "y": -15,
+        "width": 107,
+        "height": 97
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "twinsunflower",
+      "clips": 6,
+      "images": 11,
+      "jsonBytes": 421073,
+      "gzipBytes": 62451,
+      "bounds": {
+        "x": -6,
+        "y": -9,
+        "width": 91,
+        "height": 91
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "gloomshroom",
+      "clips": 10,
+      "images": 13,
+      "jsonBytes": 564997,
+      "gzipBytes": 35682,
+      "bounds": {
+        "x": -11,
+        "y": -12,
+        "width": 104,
+        "height": 90
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "cattail",
+      "clips": 8,
+      "images": 13,
+      "jsonBytes": 275954,
+      "gzipBytes": 22353,
+      "bounds": {
+        "x": -42,
+        "y": -16,
+        "width": 131,
+        "height": 96
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "wintermelon",
+      "clips": 8,
+      "images": 11,
+      "jsonBytes": 618159,
+      "gzipBytes": 87130,
+      "bounds": {
+        "x": -69,
+        "y": -61,
+        "width": 157,
+        "height": 154
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "goldmagnet",
+      "clips": 8,
+      "images": 15,
+      "jsonBytes": 644671,
+      "gzipBytes": 88258,
+      "bounds": {
+        "x": -39,
+        "y": -18,
+        "width": 168,
+        "height": 99
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "spikerock",
+      "clips": 8,
+      "images": 7,
+      "jsonBytes": 308513,
+      "gzipBytes": 28114,
+      "bounds": {
+        "x": -4,
+        "y": 22,
+        "width": 89,
+        "height": 53
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "cobcannon",
+      "clips": 11,
+      "images": 10,
+      "jsonBytes": 522769,
+      "gzipBytes": 39616,
+      "bounds": {
+        "x": -44,
+        "y": -221,
+        "width": 206,
+        "height": 308
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "imitater",
+      "clips": 9,
+      "images": 11,
+      "jsonBytes": 360894,
+      "gzipBytes": 72019,
+      "bounds": {
+        "x": 7,
+        "y": -6,
+        "width": 67,
+        "height": 84
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "explodeonut",
+      "clips": 6,
+      "images": 1,
+      "jsonBytes": 21817,
+      "gzipBytes": 1032,
+      "bounds": {
+        "x": 1,
+        "y": 1,
+        "width": 82,
+        "height": 79
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "giantwallnut",
+      "clips": 6,
+      "images": 1,
+      "jsonBytes": 19268,
+      "gzipBytes": 1002,
+      "bounds": {
+        "x": 1,
+        "y": 1,
+        "width": 82,
+        "height": 79
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "sprout",
+      "clips": 8,
+      "images": 6,
+      "jsonBytes": 272816,
+      "gzipBytes": 20938,
+      "bounds": {
+        "x": 22,
+        "y": 32,
+        "width": 38,
+        "height": 42
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "leftpeater",
+      "clips": 8,
+      "images": 19,
+      "jsonBytes": 668405,
+      "gzipBytes": 93303,
+      "bounds": {
+        "x": 4,
+        "y": -1,
+        "width": 85,
+        "height": 83
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "normal",
+      "clips": 17,
+      "images": 26,
+      "jsonBytes": 2256722,
+      "gzipBytes": 323811,
+      "bounds": {
+        "x": -85,
+        "y": -12,
+        "width": 203,
+        "height": 154
+      },
+      "anchor": [
+        60,
+        115
+      ]
+    },
+    {
+      "kind": "flag",
+      "clips": 17,
+      "images": 27,
+      "jsonBytes": 2333868,
+      "gzipBytes": 336765,
+      "bounds": {
+        "x": -67,
+        "y": -77,
+        "width": 172,
+        "height": 219
+      },
+      "anchor": [
+        60,
+        115
+      ]
+    },
+    {
+      "kind": "conehead",
+      "clips": 23,
+      "images": 28,
+      "jsonBytes": 3075401,
+      "gzipBytes": 449298,
+      "bounds": {
+        "x": -85,
+        "y": -30,
+        "width": 203,
+        "height": 172
+      },
+      "anchor": [
+        60,
+        115
+      ]
+    },
+    {
+      "kind": "pole",
+      "clips": 15,
+      "images": 23,
+      "jsonBytes": 1743568,
+      "gzipBytes": 249355,
+      "bounds": {
+        "x": -259,
+        "y": -119,
+        "width": 428,
+        "height": 272
+      },
+      "anchor": [
+        60,
+        115
+      ]
+    },
+    {
+      "kind": "buckethead",
+      "clips": 23,
+      "images": 28,
+      "jsonBytes": 3074765,
+      "gzipBytes": 448072,
+      "bounds": {
+        "x": -85,
+        "y": -23,
+        "width": 203,
+        "height": 165
+      },
+      "anchor": [
+        60,
+        115
+      ]
+    },
+    {
+      "kind": "newspaper",
+      "clips": 20,
+      "images": 25,
+      "jsonBytes": 2567378,
+      "gzipBytes": 363684,
+      "bounds": {
+        "x": -60,
+        "y": -20,
+        "width": 162,
+        "height": 172
+      },
+      "anchor": [
+        60,
+        115
+      ]
+    },
+    {
+      "kind": "screendoor",
+      "clips": 17,
+      "images": 22,
+      "jsonBytes": 1791921,
+      "gzipBytes": 237952,
+      "bounds": {
+        "x": -46,
+        "y": -12,
+        "width": 151,
+        "height": 161
+      },
+      "anchor": [
+        60,
+        115
+      ]
+    },
+    {
+      "kind": "football",
+      "clips": 12,
+      "images": 22,
+      "jsonBytes": 1244195,
+      "gzipBytes": 126744,
+      "bounds": {
+        "x": -33,
+        "y": -34,
+        "width": 265,
+        "height": 205
+      },
+      "anchor": [
+        60,
+        115
+      ]
+    },
+    {
+      "kind": "dancing",
+      "clips": 17,
+      "images": 21,
+      "jsonBytes": 1574418,
+      "gzipBytes": 178744,
+      "bounds": {
+        "x": -25,
+        "y": -23,
+        "width": 216,
+        "height": 175
+      },
+      "anchor": [
+        60,
+        115
+      ]
+    },
+    {
+      "kind": "backupdancer",
+      "clips": 15,
+      "images": 21,
+      "jsonBytes": 1381040,
+      "gzipBytes": 174050,
+      "bounds": {
+        "x": -10,
+        "y": -31,
+        "width": 201,
+        "height": 183
+      },
+      "anchor": [
+        60,
+        115
+      ]
+    },
+    {
+      "kind": "duckytube",
+      "clips": 17,
+      "images": 28,
+      "jsonBytes": 2355169,
+      "gzipBytes": 336147,
+      "bounds": {
+        "x": -85,
+        "y": -12,
+        "width": 203,
+        "height": 154
+      },
+      "anchor": [
+        60,
+        115
+      ]
+    },
+    {
+      "kind": "snorkel",
+      "clips": 23,
+      "images": 25,
+      "jsonBytes": 1380030,
+      "gzipBytes": 196280,
+      "bounds": {
+        "x": -31,
+        "y": -54,
+        "width": 215,
+        "height": 300
+      },
+      "anchor": [
+        60,
+        115
+      ]
+    },
+    {
+      "kind": "zomboni",
+      "clips": 10,
+      "images": 19,
+      "jsonBytes": 497340,
+      "gzipBytes": 29142,
+      "bounds": {
+        "x": -85,
+        "y": -14,
+        "width": 179,
+        "height": 176
+      },
+      "anchor": [
+        60,
+        115
+      ]
+    },
+    {
+      "kind": "bobsled",
+      "clips": 16,
+      "images": 20,
+      "jsonBytes": 1846254,
+      "gzipBytes": 237801,
+      "bounds": {
+        "x": -78,
+        "y": -50,
+        "width": 321,
+        "height": 201
+      },
+      "anchor": [
+        60,
+        115
+      ]
+    },
+    {
+      "kind": "dolphin",
+      "clips": 18,
+      "images": 28,
+      "jsonBytes": 2052091,
+      "gzipBytes": 286786,
+      "bounds": {
+        "x": -176,
+        "y": -61,
+        "width": 293,
+        "height": 284
+      },
+      "anchor": [
+        60,
+        115
+      ]
+    },
+    {
+      "kind": "jackinthebox",
+      "clips": 14,
+      "images": 21,
+      "jsonBytes": 836534,
+      "gzipBytes": 109274,
+      "bounds": {
+        "x": -108,
+        "y": -26,
+        "width": 206,
+        "height": 186
+      },
+      "anchor": [
+        60,
+        115
+      ]
+    },
+    {
+      "kind": "balloon",
+      "clips": 13,
+      "images": 23,
+      "jsonBytes": 1104530,
+      "gzipBytes": 172138,
+      "bounds": {
+        "x": -30,
+        "y": -55,
+        "width": 214,
+        "height": 204
+      },
+      "anchor": [
+        60,
+        115
+      ]
+    },
+    {
+      "kind": "digger",
+      "clips": 19,
+      "images": 32,
+      "jsonBytes": 1416109,
+      "gzipBytes": 200092,
+      "bounds": {
+        "x": -69,
+        "y": -25,
+        "width": 172,
+        "height": 175
+      },
+      "anchor": [
+        60,
+        115
+      ]
+    },
+    {
+      "kind": "pogo",
+      "clips": 12,
+      "images": 18,
+      "jsonBytes": 1447000,
+      "gzipBytes": 229877,
+      "bounds": {
+        "x": -46,
+        "y": -12,
+        "width": 138,
+        "height": 154
+      },
+      "anchor": [
+        60,
+        115
+      ]
+    },
+    {
+      "kind": "yeti",
+      "clips": 12,
+      "images": 16,
+      "jsonBytes": 827546,
+      "gzipBytes": 112263,
+      "bounds": {
+        "x": -101,
+        "y": -29,
+        "width": 224,
+        "height": 194
+      },
+      "anchor": [
+        60,
+        115
+      ]
+    },
+    {
+      "kind": "bungee",
+      "clips": 11,
+      "images": 25,
+      "jsonBytes": 756954,
+      "gzipBytes": 91522,
+      "bounds": {
+        "x": -39,
+        "y": -11,
+        "width": 159,
+        "height": 141
+      },
+      "anchor": [
+        60,
+        115
+      ]
+    },
+    {
+      "kind": "ladder",
+      "clips": 15,
+      "images": 21,
+      "jsonBytes": 1809583,
+      "gzipBytes": 267292,
+      "bounds": {
+        "x": -66,
+        "y": -23,
+        "width": 168,
+        "height": 183
+      },
+      "anchor": [
+        60,
+        115
+      ]
+    },
+    {
+      "kind": "catapult",
+      "clips": 12,
+      "images": 34,
+      "jsonBytes": 1844257,
+      "gzipBytes": 115673,
+      "bounds": {
+        "x": -22,
+        "y": -47,
+        "width": 206,
+        "height": 201
+      },
+      "anchor": [
+        60,
+        115
+      ]
+    },
+    {
+      "kind": "gargantuar",
+      "clips": 14,
+      "images": 33,
+      "jsonBytes": 2755614,
+      "gzipBytes": 433260,
+      "bounds": {
+        "x": -176,
+        "y": -138,
+        "width": 380,
+        "height": 326
+      },
+      "anchor": [
+        60,
+        115
+      ]
+    },
+    {
+      "kind": "imp",
+      "clips": 14,
+      "images": 13,
+      "jsonBytes": 1123500,
+      "gzipBytes": 199001,
+      "bounds": {
+        "x": 12,
+        "y": -22,
+        "width": 126,
+        "height": 157
+      },
+      "anchor": [
+        60,
+        115
+      ]
+    },
+    {
+      "kind": "zomboss",
+      "clips": 40,
+      "images": 45,
+      "jsonBytes": 5123825,
+      "gzipBytes": 770391,
+      "bounds": {
+        "x": -384,
+        "y": -540,
+        "width": 1765,
+        "height": 1167
+      },
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "kind": "peahead",
+      "clips": 17,
+      "images": 26,
+      "jsonBytes": 2454477,
+      "gzipBytes": 388818,
+      "bounds": {
+        "x": -85,
+        "y": -28,
+        "width": 203,
+        "height": 170
+      },
+      "anchor": [
+        60,
+        115
+      ]
+    },
+    {
+      "kind": "wallnuthead",
+      "clips": 17,
+      "images": 23,
+      "jsonBytes": 2004593,
+      "gzipBytes": 306770,
+      "bounds": {
+        "x": -101,
+        "y": -34,
+        "width": 226,
+        "height": 199
+      },
+      "anchor": [
+        60,
+        115
+      ]
+    },
+    {
+      "kind": "jalapenohead",
+      "clips": 17,
+      "images": 30,
+      "jsonBytes": 3067460,
+      "gzipBytes": 548696,
+      "bounds": {
+        "x": -100,
+        "y": -31,
+        "width": 229,
+        "height": 201
+      },
+      "anchor": [
+        60,
+        115
+      ]
+    },
+    {
+      "kind": "gatlinghead",
+      "clips": 17,
+      "images": 29,
+      "jsonBytes": 3411216,
+      "gzipBytes": 538986,
+      "bounds": {
+        "x": -85,
+        "y": -35,
+        "width": 203,
+        "height": 177
+      },
+      "anchor": [
+        60,
+        115
+      ]
+    },
+    {
+      "kind": "squashhead",
+      "clips": 19,
+      "images": 27,
+      "jsonBytes": 2933438,
+      "gzipBytes": 469787,
+      "bounds": {
+        "x": -85,
+        "y": -43,
+        "width": 203,
+        "height": 185
+      },
+      "anchor": [
+        60,
+        115
+      ]
+    },
+    {
+      "kind": "tallnuthead",
+      "clips": 17,
+      "images": 23,
+      "jsonBytes": 2005047,
+      "gzipBytes": 306744,
+      "bounds": {
+        "x": -134,
+        "y": -64,
+        "width": 286,
+        "height": 244
+      },
+      "anchor": [
+        60,
+        115
+      ]
+    },
+    {
+      "kind": "redeye",
+      "clips": 14,
+      "images": 33,
+      "jsonBytes": 2758914,
+      "gzipBytes": 433327,
+      "bounds": {
+        "x": -176,
+        "y": -138,
+        "width": 380,
+        "height": 326
+      },
+      "anchor": [
+        60,
+        115
+      ]
+    },
+    {
+      "kind": "mower",
+      "clips": 6,
+      "images": 8,
+      "jsonBytes": 295551,
+      "gzipBytes": 17431,
+      "bounds": {
+        "x": -8,
+        "y": -2,
+        "width": 94,
+        "height": 79
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "poolcleaner",
+      "clips": 8,
+      "images": 11,
+      "jsonBytes": 139269,
+      "gzipBytes": 7587,
+      "bounds": {
+        "x": 2,
+        "y": -43,
+        "width": 94,
+        "height": 125
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "roofcleaner",
+      "clips": 6,
+      "images": 11,
+      "jsonBytes": 103250,
+      "gzipBytes": 1768,
+      "bounds": {
+        "x": 0,
+        "y": 24,
+        "width": 78,
+        "height": 59
+      },
+      "anchor": [
+        40,
+        80
+      ]
+    },
+    {
+      "kind": "sun",
+      "clips": 6,
+      "images": 3,
+      "jsonBytes": 40905,
+      "gzipBytes": 1685,
+      "bounds": {
+        "x": -73,
+        "y": -73,
+        "width": 146,
+        "height": 146
+      },
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "kind": "firepea",
+      "clips": 6,
+      "images": 5,
+      "jsonBytes": 80997,
+      "gzipBytes": 2558,
+      "bounds": {
+        "x": -21,
+        "y": 9,
+        "width": 90,
+        "height": 59
+      },
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "kind": "fumepuff",
+      "clips": 6,
+      "images": 5,
+      "jsonBytes": 6929,
+      "gzipBytes": 486,
+      "bounds": {
+        "x": 39,
+        "y": 53,
+        "width": 106,
+        "height": 97
+      },
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "kind": "bossfireball",
+      "clips": 7,
+      "images": 6,
+      "jsonBytes": 379876,
+      "gzipBytes": 15549,
+      "bounds": {
+        "x": -59,
+        "y": -58,
+        "width": 317,
+        "height": 317
+      },
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "kind": "bossiceball",
+      "clips": 7,
+      "images": 8,
+      "jsonBytes": 628169,
+      "gzipBytes": 55203,
+      "bounds": {
+        "x": -25,
+        "y": -29,
+        "width": 253,
+        "height": 253
+      },
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "kind": "jalapenofire",
+      "clips": 6,
+      "images": 3,
+      "jsonBytes": 3357,
+      "gzipBytes": 335,
+      "bounds": {
+        "x": -47,
+        "y": 28,
+        "width": 95,
+        "height": 74
+      },
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "kind": "charred",
+      "clips": 7,
+      "images": 17,
+      "jsonBytes": 291380,
+      "gzipBytes": 14939,
+      "bounds": {
+        "x": -10,
+        "y": 12,
+        "width": 92,
+        "height": 123
+      },
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "kind": "goldcoin",
+      "clips": 6,
+      "images": 4,
+      "jsonBytes": 77737,
+      "gzipBytes": 2390,
+      "bounds": {
+        "x": -30,
+        "y": -29,
+        "width": 100,
+        "height": 99
+      },
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "kind": "silvercoin",
+      "clips": 6,
+      "images": 4,
+      "jsonBytes": 70916,
+      "gzipBytes": 2156,
+      "bounds": {
+        "x": -22,
+        "y": -22,
+        "width": 85,
+        "height": 85
+      },
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "kind": "diamond",
+      "clips": 6,
+      "images": 6,
+      "jsonBytes": 48177,
+      "gzipBytes": 744,
+      "bounds": {
+        "x": -2,
+        "y": -2,
+        "width": 72,
+        "height": 57
+      },
+      "anchor": [
+        0,
+        0
+      ]
+    }
+  ],
+  "removedUnpublishedIntermediateRasters": [
+    "sprites/goldcoin-idle.webp",
+    "sprites/silvercoin-idle.webp",
+    "sprites/diamond-idle.webp"
+  ]
+}

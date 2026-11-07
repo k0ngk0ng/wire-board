@@ -1,0 +1,16 @@
+{
+  "removed": [
+    ".local/contra-enemies-machines/cases-oracle/runs/machines-cases-v1",
+    ".local/contra-enemies-machines/cases-oracle/machines-cases-v1.json",
+    ".local/contra-enemies-machines/cases-oracle/runs/machines-cases-giant-audio-v1",
+    ".local/contra-enemies-machines/cases-oracle/machines-cases-giant-audio-v1.json",
+    ".local/contra-enemies-machines/graphics-definitions.go.txt",
+    ".local/contra-enemies-machines/go-cache",
+    ".local/contra-enemies-machines/swift-cache",
+    ".local/contra-enemies-machines/replay-oracle",
+    "dist/contra-enemies-machines-tmp"
+  ],
+  "scope": "Owned failed probes only: first dispatcher setup omitted stage-table pointer; first audio-edge probe omitted audio slot setup. Neither is retained as an accepted oracle. Generated intermediate table text removed after source-bound data was normalized. Completed scoped checks then removed owned Go/Swift caches, the empty temporary build directory and duplicate replay runs. Exact replay results and fixture/output digests remain in versioned evidence.",
+  "retained": "Accepted first source captures, original controlled entry copies, compressed fixtures, complete REA evidence, native replay hashes and successful scoped Go test log. No user ROM, other game, global cache or another owner directory removed.",
+  "removedBytesThisPass": 317964597
+}

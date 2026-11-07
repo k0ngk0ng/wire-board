@@ -1,0 +1,43 @@
+{"Time":"2026-10-25T15:27:15.354223+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine"}
+{"Time":"2026-10-25T15:27:15.911544+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestContinuousOriginalBossDoor"}
+{"Time":"2026-10-25T15:27:15.911665+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestContinuousOriginalBossDoor","Output":"=== RUN   TestContinuousOriginalBossDoor\n"}
+{"Time":"2026-10-25T15:27:16.055752+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestContinuousOriginalBossDoor","Output":"--- PASS: TestContinuousOriginalBossDoor (0.14s)\n"}
+{"Time":"2026-10-25T15:27:16.055796+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestContinuousOriginalBossDoor","Elapsed":0.14}
+{"Time":"2026-10-25T15:27:16.055808+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalBossDoorCollisionPatterns"}
+{"Time":"2026-10-25T15:27:16.055813+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalBossDoorCollisionPatterns","Output":"=== RUN   TestOriginalBossDoorCollisionPatterns\n"}
+{"Time":"2026-10-25T15:27:16.081401+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalBossDoorCollisionPatterns","Output":"    enemies_shooters_bossdoor_terrain_test.go:81: verified 16 original tunnel collision writes\n"}
+{"Time":"2026-10-25T15:27:16.081422+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalBossDoorCollisionPatterns","Output":"--- PASS: TestOriginalBossDoorCollisionPatterns (0.03s)\n"}
+{"Time":"2026-10-25T15:27:16.081431+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalBossDoorCollisionPatterns","Elapsed":0.03}
+{"Time":"2026-10-25T15:27:16.081445+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalBossDoorStates"}
+{"Time":"2026-10-25T15:27:16.081449+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalBossDoorStates","Output":"=== RUN   TestOriginalBossDoorStates\n"}
+{"Time":"2026-10-25T15:27:16.14737+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalBossDoorStates","Output":"--- PASS: TestOriginalBossDoorStates (0.07s)\n"}
+{"Time":"2026-10-25T15:27:16.147379+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalBossDoorStates","Elapsed":0.07}
+{"Time":"2026-10-25T15:27:16.147407+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalRunnerFireTransition"}
+{"Time":"2026-10-25T15:27:16.147412+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalRunnerFireTransition","Output":"=== RUN   TestOriginalRunnerFireTransition\n"}
+{"Time":"2026-10-25T15:27:16.175545+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalRunnerFireTransition","Output":"--- PASS: TestOriginalRunnerFireTransition (0.03s)\n"}
+{"Time":"2026-10-25T15:27:16.175551+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalRunnerFireTransition","Elapsed":0.03}
+{"Time":"2026-10-25T15:27:16.175567+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalEnemyShotAndAimBoundaries"}
+{"Time":"2026-10-25T15:27:16.175573+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalEnemyShotAndAimBoundaries","Output":"=== RUN   TestOriginalEnemyShotAndAimBoundaries\n"}
+{"Time":"2026-10-25T15:27:17.739914+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalEnemyShotAndAimBoundaries","Output":"--- PASS: TestOriginalEnemyShotAndAimBoundaries (1.56s)\n"}
+{"Time":"2026-10-25T15:27:17.739966+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalEnemyShotAndAimBoundaries","Elapsed":1.56}
+{"Time":"2026-10-25T15:27:17.739973+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalTurretStatesWithGraphicsQueue"}
+{"Time":"2026-10-25T15:27:17.739977+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalTurretStatesWithGraphicsQueue","Output":"=== RUN   TestOriginalTurretStatesWithGraphicsQueue\n"}
+{"Time":"2026-10-25T15:27:17.963354+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalTurretStatesWithGraphicsQueue","Output":"--- PASS: TestOriginalTurretStatesWithGraphicsQueue (0.22s)\n"}
+{"Time":"2026-10-25T15:27:17.963376+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalTurretStatesWithGraphicsQueue","Elapsed":0.22}
+{"Time":"2026-10-25T15:27:17.963381+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalControlledShooterStates"}
+{"Time":"2026-10-25T15:27:17.963385+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalControlledShooterStates","Output":"=== RUN   TestOriginalControlledShooterStates\n"}
+{"Time":"2026-10-25T15:27:18.080708+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalControlledShooterStates","Output":"--- PASS: TestOriginalControlledShooterStates (0.12s)\n"}
+{"Time":"2026-10-25T15:27:18.080717+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalControlledShooterStates","Elapsed":0.12}
+{"Time":"2026-10-25T15:27:18.080731+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalSniperSteps"}
+{"Time":"2026-10-25T15:27:18.080735+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalSniperSteps","Output":"=== RUN   TestOriginalSniperSteps\n"}
+{"Time":"2026-10-25T15:27:20.660761+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalSniperSteps","Output":"    enemies_shooters_test.go:294: matched 788 natural sniper calls\n"}
+{"Time":"2026-10-25T15:27:20.660792+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalSniperSteps","Output":"--- PASS: TestOriginalSniperSteps (2.58s)\n"}
+{"Time":"2026-10-25T15:27:20.660796+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalSniperSteps","Elapsed":2.58}
+{"Time":"2026-10-25T15:27:20.660813+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestContinuousNaturalShooterStates"}
+{"Time":"2026-10-25T15:27:20.660817+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestContinuousNaturalShooterStates","Output":"=== RUN   TestContinuousNaturalShooterStates\n"}
+{"Time":"2026-10-25T15:27:22.326839+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestContinuousNaturalShooterStates","Output":"    enemies_shooters_test.go:415: matched continuous original shooter calls: map[4:806 6:1051 7:764]\n"}
+{"Time":"2026-10-25T15:27:22.32687+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestContinuousNaturalShooterStates","Output":"--- PASS: TestContinuousNaturalShooterStates (1.67s)\n"}
+{"Time":"2026-10-25T15:27:22.326874+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestContinuousNaturalShooterStates","Elapsed":1.67}
+{"Time":"2026-10-25T15:27:22.327157+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"PASS\n"}
+{"Time":"2026-10-25T15:27:23.345502+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/contra/engine\t7.991s\n"}
+{"Time":"2026-10-25T15:27:23.345567+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Elapsed":7.991}

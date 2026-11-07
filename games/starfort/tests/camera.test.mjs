@@ -8,6 +8,7 @@ import assert from "node:assert/strict";
 import {
   worldBounds,
   fitCamera,
+  fillCamera,
   clampCamera,
   worldToScreen,
   screenToWorld,
@@ -154,4 +155,20 @@ test("wide compact desktop overview opens the selected region at a pannable scal
   near(detail.x, point.x);
   near(detail.y, point.y);
   assert.ok(cameraWindow(detail, desktop).width <= 1088);
+});
+
+// Fill-view failures specified before implementation: a larger/fullscreen
+// viewport still letterboxes the initial battlefield, portrait becomes a tiny
+// strip, extreme/hidden sizes create invalid zoom, and fit-overview is lost.
+test("fill view covers wide and portrait viewports while fit remains an overview", () => {
+  for (const viewport of [{width:1904,height:1012},{width:304,height:688}]) {
+    const filled=fillCamera(world,viewport),overview=fitCamera(world,viewport);
+    assert.ok(filled.zoom>=overview.zoom);
+    assert.ok(world.width*filled.zoom>=viewport.width-1e-8);
+    assert.ok(world.height*filled.zoom>=viewport.height-1e-8);
+    near(filled.x,overview.x);near(filled.y,overview.y);
+  }
+  for (const viewport of [{width:0,height:0},{width:99999,height:99999}]) {
+    const filled=fillCamera(world,viewport);assert.ok(filled.zoom>0&&filled.zoom<=2&&Number.isFinite(filled.zoom));
+  }
 });

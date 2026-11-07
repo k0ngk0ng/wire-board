@@ -1,0 +1,38 @@
+{
+  "scope": "Standard two-human module campaign through natural shared exhaustion, original continue menu and legal quit; not browser or full-eight-stage success acceptance",
+  "passed": true,
+  "command": "go test ./games/contra/server -run '^TestContraModuleStandardSharedFailure$' -race -count=1 -json",
+  "rulesBuildID": "0105a96fa28932353c8813180c905806decec6c96c3b5c0a216f8bf4a11dec41",
+  "finalFrame": 1663,
+  "finalRevision": 1664,
+  "controls": "Both humans hold right with 250ms refresh; after original continue menu, release, Select, release, Start through seat-specific module actions. Timer advances by 50ms.",
+  "noInterventions": [
+    "No bonus lives",
+    "No damage or HP injection",
+    "No stage selection",
+    "No outcome mutation",
+    "No bot strategy or synthetic observer execution"
+  ],
+  "artifacts": {
+    "docs/research/nes-contra/evidence/natural-shared-failure-race.jsonl.gz": "6ffc8c5cd5695ee3163f60ebf42f248bac2fdfcc6c8da7703d9e7a63ce4f47d8",
+    "docs/research/nes-contra/evidence/natural-shared-failure-replay.json": "45afa2f142d30d08e163f2f7b6ce951ff0156667601388423c0c46a464d7b7e6",
+    "games/contra/server/campaign_failure_e2e_test.go": "0a593e8a585771e3516ff832ed8f0b5e83c7228f3d0da4b7daf7b7265a6c6386",
+    "docs/research/nes-contra/evidence/natural-shared-failure-replay-race.log.gz": "61f54233a3f1d14f750e5253723c9a16274e23bb445733aa985d0be2064f7c47",
+    "games/contra/engine/session_recorded_failure_test.go": "d3d502483faee7d31fcb69ff55eae468403c630755f663d4e92415144e5e9417"
+  },
+  "limitations": [
+    "Timer clock is accelerated in the module harness.",
+    "Ledger policy is covered separately by HTTP/SQLite boundary checks.",
+    "Synthetic visual asset configuration is unused because both seats remain human.",
+    "This verifies natural shared failure, not a natural victory or complete game acceptance."
+  ],
+  "recordedReplay": {
+    "passed": true,
+    "command": "go test ./games/contra/engine -run '^TestSessionRecordedStandardSharedFailure$' -race -count=1 -v",
+    "actions": 227,
+    "restoredAtNaturalLossFrame": 989,
+    "finalFrame": 1663,
+    "finalRevision": 1664,
+    "equality": "Every remaining Session state equals the save/restored run, including terminal flush."
+  }
+}

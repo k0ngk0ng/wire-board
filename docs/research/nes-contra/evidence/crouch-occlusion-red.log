@@ -1,0 +1,6 @@
+=== RUN   TestBotCrouchIntentSurvivesVisibleBodyOcclusion
+    bot_crouch_occlusion_test.go:33: occlusion released crouch 108042 1
+--- FAIL: TestBotCrouchIntentSurvivesVisibleBodyOcclusion (0.00s)
+FAIL
+FAIL	github.com/k0ngk0ng/wire-board/games/contra/engine	0.584s
+FAIL

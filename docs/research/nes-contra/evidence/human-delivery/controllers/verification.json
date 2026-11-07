@@ -1,0 +1,51 @@
+{
+  "passed": true,
+  "scope": "Shared controller with native Chromium mouse/touch events; not an iPhone hardware run",
+  "single_contact_combo_added": false,
+  "sourceSHA256": {
+    "web/src/controllers/FCController.tsx": "0bbb4dc5f39739143db9dffb706e08fdb44622ad309e826c484856459e58b71e",
+    "web/src/controllers/fc-controller.css": "c6c7ce6f381c31494d7f52c2e9cf83dba68f8ac01ffa29541d3ddf6d0ba4ee15",
+    "scripts/accept_fc_controller.py": "a9a5b04ba776440bd75a8c926beb1027923ee177c10ab6aaf1d1cf569d83c0d4",
+    "scripts/controllers/fc-touch.mjs": "420890677a1bb70815e59e461188b1f948d13d92b8d74c1646377d4cb3432000"
+  },
+  "native_chords": [
+    {
+      "event": "touchStart",
+      "held": [
+        "b"
+      ]
+    },
+    {
+      "event": "touchStart",
+      "held": [
+        "a",
+        "b"
+      ]
+    },
+    {
+      "event": "touchStart",
+      "held": [
+        "a",
+        "b",
+        "left"
+      ]
+    },
+    {
+      "event": "touchEnd",
+      "held": [
+        "b",
+        "left"
+      ]
+    },
+    {
+      "event": "touchEnd",
+      "held": [
+        "b"
+      ]
+    },
+    {
+      "event": "touchCancel",
+      "held": []
+    }
+  ]
+}

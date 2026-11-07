@@ -1,0 +1,94 @@
+{
+  "passed": true,
+  "scope": "Campaign reducer, commands and decision boundaries; not full intro/end-sequence execution or a naturally completed campaign.",
+  "originalCases": 117,
+  "originalRecords": 199,
+  "sourceSHA256": {
+    "games/contra/engine/campaign.go": "3b806217cdba05e24c519ec5aabe7e4bb2fba2388617147e9e94e5747ea3d047",
+    "games/contra/engine/campaign_test.go": "3cea38e50cff35484df0242bc52dbe885bc99b2b666b3b05c1464396032ac672",
+    "games/contra/engine/campaign_types.go": "669e2fe7467845739ee9990440d5a21739df492df3dfdd2dbb55ead787f5a1b6",
+    "scripts/contra/campaign_capture.py": "a6197eea5df237145fdbfe3a5aef1839b0b016788550dcb7f1831f0046781e7f",
+    "scripts/contra/campaign_export.py": "e6a721154b4fd663a1b1cefb994c5801b53aaaf66d93c724d703456a8b5f5c56",
+    "scripts/contra/campaign_prepare.py": "4e1545235211dfbaa90b6c1e02c29079e5e822b99866a77cde57311edd2f371c",
+    "scripts/contra/campaign_rea.mjs": "c958004e0394bcd004aa943d67fedeeb5ab37c6d7f64d9d3cbd254c34c1d6c10"
+  },
+  "tests": [
+    "TestCampaignOriginalDecisionBoundaries",
+    "TestCampaignInvalidStateAndCheckpointAtomicity",
+    "TestCampaignThreeContinuesAndTerminalRestore",
+    "TestCampaignBossWipePriorityPauseAndClearOnce"
+  ],
+  "command": "go test -race <all production engine .go files> campaign_test.go -run ^TestCampaign -count=1 -json (cwd games/contra/engine)",
+  "testScopeReason": "Explicit files avoid concurrently authored red tests in unrelated engine subtasks; all production files compiled.",
+  "red": [
+    "campaign-red.jsonl",
+    "campaign-music-red.jsonl",
+    "campaign-validation-red.jsonl",
+    "campaign-ending-validation-red.jsonl"
+  ],
+  "green": "campaign-final-green.jsonl",
+  "limitations": [
+    "117 controlled boundary inputs, not a naturally cleared campaign.",
+    "Intro/interlude/end-sequence runners remain explicit external work.",
+    "World must apply reset command payloads atomically and only platform settlement writes the ledger."
+  ],
+  "cleanup": [
+    {
+      "path": ".local/contra-campaign-rules/swift-cache",
+      "bytes": 93396920
+    },
+    {
+      "path": "dist/ccr-tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-campaign-rules/initial-rea",
+      "bytes": 3481867
+    },
+    {
+      "path": ".local/contra-campaign-rules/fixed-rea",
+      "bytes": 196959
+    },
+    {
+      "path": ".local/contra-campaign-rules/fixed-rea-v2",
+      "bytes": 6529438
+    },
+    {
+      "path": ".local/contra-campaign-rules/ending-rea",
+      "bytes": 361479
+    },
+    {
+      "path": ".local/contra-campaign-rules/ending-final-rea",
+      "bytes": 2909737
+    },
+    {
+      "path": ".local/contra-campaign-rules/oracle/runs/campaign-boundary-v1",
+      "bytes": 423433
+    },
+    {
+      "path": ".local/contra-campaign-rules/oracle/runs/campaign-boundary-v2",
+      "bytes": 452536
+    },
+    {
+      "path": ".local/contra-campaign-rules/oracle/runs/campaign-boundary-v3",
+      "bytes": 589820
+    },
+    {
+      "path": ".local/contra-campaign-rules/oracle/runs/campaign-boundary-v4",
+      "bytes": 595487
+    },
+    {
+      "path": ".local/contra-campaign-rules/oracle/runs/campaign-boundary-v5",
+      "bytes": 636062
+    },
+    {
+      "path": ".local/contra-campaign-rules/oracle/runs/campaign-boundary-v6",
+      "bytes": 652601
+    },
+    {
+      "path": ".local/contra-campaign-rules/oracle/runs/campaign-boundary-v7",
+      "bytes": 677850
+    }
+  ],
+  "retained": "Both final matching original captures, final fixed/ending REA dossiers and source states remain for active World integration."
+}

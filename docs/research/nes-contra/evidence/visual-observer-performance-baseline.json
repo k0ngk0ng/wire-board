@@ -1,0 +1,21 @@
+{
+  "scope": "Exploratory actual normalized graphics and built-in pure-pixel observer on a standard two-player first-stage frame; not final bot or capacity acceptance",
+  "command": "go test ./games/contra/server -run '^$' -bench '^BenchmarkContraRealVisualObservation$' -benchtime=1s -count=1",
+  "hardware": "Apple M4 darwin/arm64",
+  "nsPerObservation": 7572436,
+  "bytesAllocatedPerObservation": 2385552,
+  "allocationsPerObservation": 146,
+  "source": {
+    "path": "games/contra/server/visual_performance_benchmark_test.go",
+    "sha256": "72011288f5bbb8c2eae36ec23fb1dc8dd905c9ce3fa2bbc024cf19150d1383f0"
+  },
+  "output": "goos: darwin\ngoarch: arm64\npkg: github.com/k0ngk0ng/wire-board/games/contra/server\ncpu: Apple M4\nBenchmarkContraRealVisualObservation-10    \t     157\t   7572436 ns/op\t 2385552 B/op\t     146 allocs/op\nPASS\nok  \tgithub.com/k0ngk0ng/wire-board/games/contra/server\t5.308s\n",
+  "limitations": [
+    "Current visual knowledge is still being completed.",
+    "Only one standard first-stage scene, not a worst-case eight-stage matrix.",
+    "Excludes visual-frame rendering, rules, SQLite and transport.",
+    "Does not represent production Linux hardware."
+  ],
+  "nextAction": "Optimize redundant same-frame classification and allocation while preserving the strict visible-pixel boundary; rerun on complete knowledge and production-equivalent hardware.",
+  "performanceScopeCorrection": "The old frame-600 NewSession fixture did not send Start and remained in LevelRoutine=1 (intro), not battle. Its timing is not battle/capacity acceptance. See actual-battle-performance-verification.json for corrected setup."
+}

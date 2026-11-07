@@ -1,3 +1,7 @@
+import {
+  PhysicalController,
+  mergeLogicalButtons,
+} from "../../../web/src/controllers/gamepad";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { BoardProps } from "../../../web/src/game-api/module";
 import { api } from "../../../web/src/ui/board-host";
@@ -45,6 +49,7 @@ export function Board(props: BoardProps<View>) {
     engine = useRef<CourtRenderer | null>(null),
     channel = useRef<StrokeChannel | null>(null),
     keyboard = useRef<KeyboardController | null>(null),
+    gamepad = useRef<PhysicalController | null>(null),
     events = useRef(new EventTimeline());
   const gesture = useRef({ x: 0, y: 0, down: false }),
     pointer = useRef<{ id: number; touch: boolean } | null>(null),
@@ -114,6 +119,7 @@ export function Board(props: BoardProps<View>) {
   function cancel(emit = false) {
     clearPointer();
     keyboard.current?.clear();
+    gamepad.current?.clear();
     held.current.clear();
     channel.current?.cancel(emit);
     ballDisplay.current.reset();
@@ -266,6 +272,17 @@ export function Board(props: BoardProps<View>) {
   useEffect(() => {
     let alive = true;
     keyboard.current = null;
+    gamepad.current?.dispose();
+    gamepad.current = null;
+    let revision = -1;
+    const applyProfile = (profile: ControllerProfile) => {
+      if (!alive || profile.revision < revision) return;
+      revision = profile.revision;
+      cancel();
+      keyboard.current = new KeyboardController(profile);
+      if (gamepad.current) gamepad.current.configure(profile);
+      else gamepad.current = new PhysicalController(profile);
+    };
     const user = room.seats[room.you]?.id;
     const change = (event: Event) => {
       const detail = (
@@ -275,26 +292,25 @@ export function Board(props: BoardProps<View>) {
           profile: ControllerProfile;
         }>
       ).detail;
-      if (detail?.userId === user && detail.model === "classic-2") {
-        cancel();
-        keyboard.current = new KeyboardController(detail.profile);
+      if (detail?.userId === user && detail.model === "game:tabletennis") {
+        applyProfile(detail.profile);
       }
     };
     window.addEventListener("controller-settings-changed", change);
     if (!watching)
-      void api("/controllers")
+      void api("/controllers?game=tabletennis")
         .then((settings: ControllerSettingsData) => {
-          if (alive && settings.profiles["classic-2"])
-            keyboard.current = new KeyboardController(
-              settings.profiles["classic-2"],
-            );
+          if (alive && settings.profiles["game:tabletennis"])
+            applyProfile(settings.profiles["game:tabletennis"]);
         })
         .catch(() => {
-          if (alive) setError("键盘设置暂时无法读取，可继续使用鼠标或触屏");
+          if (alive) setError("控制器设置暂时无法读取，可继续使用鼠标或触屏");
         });
     return () => {
       alive = false;
       window.removeEventListener("controller-settings-changed", change);
+      gamepad.current?.dispose();
+      gamepad.current = null;
       keyboard.current?.clear();
     };
   }, [room.seats[room.you]?.id, watching]);
@@ -307,6 +323,7 @@ export function Board(props: BoardProps<View>) {
     motion.current.clear();
     ballDisplay.current.reset();
     keyboard.current?.clear();
+    gamepad.current?.clear();
     pointer.current = null;
     gesture.current = { x: 0, y: 0, down: false };
     held.current.clear();
@@ -354,6 +371,7 @@ export function Board(props: BoardProps<View>) {
         return;
       clearPointer();
       keyboard.current?.clear();
+      gamepad.current?.clear();
       held.current.clear();
     };
     keyRoot.addEventListener("focusout", focusOut);
@@ -477,13 +495,19 @@ export function Board(props: BoardProps<View>) {
               }
             }
           } else events.current.reset(p.data.events, at);
-          if (
+          const keyboardEnabled =
             canControl() &&
             (document.activeElement === c ||
-              document.activeElement === keyRoot) &&
-            keyboard.current
-          ) {
-            const keys = keyboard.current.sample(time);
+              document.activeElement === keyRoot);
+          const physical =
+            gamepad.current?.sample(time, canControl()) ?? new Set<string>();
+          if (physical.size && (pointer.current || lastPointerSample.current))
+            clearPointer();
+          if (canControl() && keyboard.current) {
+            const keys = mergeLogicalButtons(
+              keyboardEnabled ? keyboard.current.sample(time) : [],
+              physical,
+            );
             const axis =
               (keys.has("right") ? 1 : 0) - (keys.has("left") ? 1 : 0);
             if (axis)

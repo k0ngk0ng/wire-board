@@ -1,0 +1,88 @@
+{
+  "passed": true,
+  "command": [
+    "go",
+    "test",
+    "./games/contra/engine",
+    "-run",
+    "TestOriginalMachine|TestControlledMachine|TestMachineTile",
+    "-count=1",
+    "-v"
+  ],
+  "testLog": "docs/research/nes-contra/evidence/enemies-machines-go-test.txt",
+  "testLogSHA256": "d08b6f17a6cc922c88d1fa212e7d90eb632df348aac15a7ae612a7fd403f52c7",
+  "fixtures": [
+    {
+      "path": "games/contra/engine/testdata/original-enemy-machines-cases.json.gz",
+      "sha256": "b7964055ca4b49984a209e0ef8a895099e78d95d0843d80f5d68e83a321dba1e",
+      "records": 546
+    },
+    {
+      "path": "games/contra/engine/testdata/original-enemy-machines-common.json.gz",
+      "sha256": "5ab7381d8519bbe3d8b932676c2a25d459044aec9ce2a224fa7bab03f364f09d",
+      "records": 469
+    },
+    {
+      "path": "games/contra/engine/testdata/original-enemy-machines-edges.json.gz",
+      "sha256": "f2e4606bf9c458b40230cc0f222d86bb83e0ad722368f176fee44d2883bd7a73",
+      "records": 15
+    },
+    {
+      "path": "games/contra/engine/testdata/original-enemy-machines-giant-audio.json.gz",
+      "sha256": "2636891ed8c568d489bde9a20f297cf69050fc88e32b92a152c1cd86a4a936f4",
+      "records": 9
+    },
+    {
+      "path": "games/contra/engine/testdata/original-enemy-machines-giant.json.gz",
+      "sha256": "da1db311b506ba144e56162071950d8af6fd98936e7f16670961a5942f4619cb",
+      "records": 342
+    },
+    {
+      "path": "games/contra/engine/testdata/original-enemy-machines-graphics-controlled.json.gz",
+      "sha256": "a7e7933bf95016109e10b66f93a053473432f854fec11d43eb98bb3a7677316a",
+      "records": 1920
+    },
+    {
+      "path": "games/contra/engine/testdata/original-enemy-machines-graphics-natural.json.gz",
+      "sha256": "ec6c1a42aa798416513362d49849447a2499d16086e83354541b6aa6bb13036a",
+      "records": 360
+    },
+    {
+      "path": "games/contra/engine/testdata/original-enemy-machines-mechanisms.json.gz",
+      "sha256": "20a45759bd3cc73bbd93e01d1577cec6ebb93760898276e28772349bfaf3a1e8",
+      "records": 542
+    },
+    {
+      "path": "games/contra/engine/testdata/original-enemy-machines-mortar-vertical.json.gz",
+      "sha256": "6ec9285d529993b0fa2c54be8793bb5e0c948513d372f6a62d0667267e047f7c",
+      "records": 108
+    },
+    {
+      "path": "games/contra/engine/testdata/original-enemy-machines-natural.json.gz",
+      "sha256": "ea1252181c643d47a9889103f2c3bbf1f01397c79acb2e2a15e769c175183e27",
+      "records": 6845
+    },
+    {
+      "path": "games/contra/engine/testdata/original-enemy-machines-spawn-variants.json.gz",
+      "sha256": "28be21dacc0d0ac186467ad4b410854058320615a26be62bbe0245e9ad8ca9f5",
+      "records": 18
+    },
+    {
+      "path": "games/contra/engine/testdata/original-enemy-machines-walls.json.gz",
+      "sha256": "ae3626556b602d3de9e5706d25604130887461e6a80f7caf9520e8d6de5cd43c",
+      "records": 207
+    }
+  ],
+  "records": 11381,
+  "rea": {
+    "functions": 153,
+    "path": "docs/research/nes-contra/evidence/enemies-machines-rea.json.gz",
+    "sha256": "6e0f6f132fe0a1764ccb4b12e505cdd2276b265c71150a3a430f6f39574e134b"
+  },
+  "replay": "docs/research/nes-contra/evidence/enemies-machines-replay.json",
+  "limitations": [
+    "The controller-only continuation starts from previously declared stage-entry overrides.",
+    "Stage-six continuation yielded no stage-specific machinery calls before player death; machinery there is covered by declared function-boundary inputs.",
+    "Per-call native agreement does not replace a continuous independent world/campaign E2E, networking, bots, audiovisual or platform-rating acceptance."
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "origin": "original synthesized composition",
+  "assets": [
+    {
+      "path": "/escape/v1/audio/clue.flac",
+      "sha256": "de389cb779fca880e262f73bc913a881794d5b834d62c61d30c33340558ecc2b",
+      "bytes": 14690,
+      "rate": 22050,
+      "channels": 1,
+      "bitDepth": 16,
+      "frames": 19845,
+      "pcmSHA256": "13bcfd0eceff281b81b5d0ccb4e4e5ce646eacb9d1df4c3e2f029ef80a71d216",
+      "decodedPCM_SHA256": "13bcfd0eceff281b81b5d0ccb4e4e5ce646eacb9d1df4c3e2f029ef80a71d216"
+    },
+    {
+      "path": "/escape/v1/audio/pickup.flac",
+      "sha256": "c88848bdb1d7d006303e6e47b9b42a35ce98444636de7499058513f37b7db800",
+      "bytes": 11575,
+      "rate": 22050,
+      "channels": 1,
+      "bitDepth": 16,
+      "frames": 11025,
+      "pcmSHA256": "e754f26de3bc149c5520b0971defe4a40d6bfb9e5055fa956de594389a31f87a",
+      "decodedPCM_SHA256": "e754f26de3bc149c5520b0971defe4a40d6bfb9e5055fa956de594389a31f87a"
+    },
+    {
+      "path": "/escape/v1/audio/solved.flac",
+      "sha256": "8559cf5dd3b4c7d6cd64df6821db9878e4fa7f826cc5c927de9b8ed4a95c0920",
+      "bytes": 20236,
+      "rate": 22050,
+      "channels": 1,
+      "bitDepth": 16,
+      "frames": 35280,
+      "pcmSHA256": "7c6eb46173fdd821d046741d7f5838392db40c3416280cdd41530ad61d095358",
+      "decodedPCM_SHA256": "7c6eb46173fdd821d046741d7f5838392db40c3416280cdd41530ad61d095358"
+    },
+    {
+      "path": "/escape/v1/audio/warning.flac",
+      "sha256": "a185243b9d468ff4709b15c3b1e3ddb1c1e32ecbf5c124ce8e8ec7af450109b2",
+      "bytes": 15759,
+      "rate": 22050,
+      "channels": 1,
+      "bitDepth": 16,
+      "frames": 28665,
+      "pcmSHA256": "210e7b12f67b36f8b24d4c3454331e30b0c588c8724c8990ae9dcb1b33e6ca26",
+      "decodedPCM_SHA256": "210e7b12f67b36f8b24d4c3454331e30b0c588c8724c8990ae9dcb1b33e6ca26"
+    },
+    {
+      "path": "/escape/v1/audio/error.flac",
+      "sha256": "42d943120cdb3e1b51bd9a6fc785ae42ef4701b3d5fb0a9e49f89b33faee3317",
+      "bytes": 11575,
+      "rate": 22050,
+      "channels": 1,
+      "bitDepth": 16,
+      "frames": 12128,
+      "pcmSHA256": "5e3589d79ffbb3c6a90657e238f08f5c10e5ce03586ebcdf2a4617b9cb9dff78",
+      "decodedPCM_SHA256": "5e3589d79ffbb3c6a90657e238f08f5c10e5ce03586ebcdf2a4617b9cb9dff78"
+    },
+    {
+      "path": "/escape/v1/audio/victory.flac",
+      "sha256": "b7337efaef4a6df70fe91d9e8e5e0cfc171aa6df1d7ac9237f3cdf915269da9c",
+      "bytes": 27442,
+      "rate": 22050,
+      "channels": 1,
+      "bitDepth": 16,
+      "frames": 70560,
+      "pcmSHA256": "cf7b2ddbf04c9962f0cc0e44ac1631812362bcd8db7dee8ee1d842035d7f7607",
+      "decodedPCM_SHA256": "cf7b2ddbf04c9962f0cc0e44ac1631812362bcd8db7dee8ee1d842035d7f7607"
+    },
+    {
+      "path": "/escape/v1/audio/ambient.flac",
+      "sha256": "2bfa0e9f46256f57167401a44925e33425217819fe25963afb126581f81a30d4",
+      "bytes": 311632,
+      "rate": 22050,
+      "channels": 1,
+      "bitDepth": 16,
+      "frames": 396900,
+      "pcmSHA256": "f95702f84952ef25f344a4c528713285eaecd2c2e0efc09d0b815be9a559e6e9",
+      "decodedPCM_SHA256": "f95702f84952ef25f344a4c528713285eaecd2c2e0efc09d0b815be9a559e6e9"
+    }
+  ]
+}

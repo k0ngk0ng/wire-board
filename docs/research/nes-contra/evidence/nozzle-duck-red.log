@@ -1,0 +1,14 @@
+=== RUN   TestBotVisibleNozzleBeamCrouchesOnlyAcrossCurrentBody
+=== RUN   TestBotVisibleNozzleBeamCrouchesOnlyAcrossCurrentBody/crossing
+    bot_nozzle_duck_test.go:47: did not crouch under visible overhead beam 201
+=== RUN   TestBotVisibleNozzleBeamCrouchesOnlyAcrossCurrentBody/other-row
+=== RUN   TestBotVisibleNozzleBeamCrouchesOnlyAcrossCurrentBody/no-source
+=== RUN   TestBotVisibleNozzleBeamCrouchesOnlyAcrossCurrentBody/vanished
+--- FAIL: TestBotVisibleNozzleBeamCrouchesOnlyAcrossCurrentBody (0.00s)
+    --- FAIL: TestBotVisibleNozzleBeamCrouchesOnlyAcrossCurrentBody/crossing (0.00s)
+    --- PASS: TestBotVisibleNozzleBeamCrouchesOnlyAcrossCurrentBody/other-row (0.00s)
+    --- PASS: TestBotVisibleNozzleBeamCrouchesOnlyAcrossCurrentBody/no-source (0.00s)
+    --- PASS: TestBotVisibleNozzleBeamCrouchesOnlyAcrossCurrentBody/vanished (0.00s)
+FAIL
+FAIL	github.com/k0ngk0ng/wire-board/games/contra/engine	0.560s
+FAIL

@@ -122,12 +122,32 @@
 .gem-market-switch {
   display: none;
 }
-.splendor-board .gem-purchase-panel {
+.gem-purchase-panel {
   width: min(620px, calc(100vw - 24px));
   z-index: 75;
 }
-.gem-purchase-panel header h3 {
+.gem-purchase-panel .modal-head h2 {
   flex: 1;
+}
+.modal-backdrop:has(> .gem-purchase-panel) {
+  background: transparent;
+  backdrop-filter: none;
+}
+.gem-purchase-panel {
+  pointer-events: auto;
+}
+.gem-purchase-panel .modal-head {
+  margin-bottom: 12px;
+}
+.gem-purchase-panel.is-collapsed .modal-head {
+  margin-bottom: 0;
+}
+.gem-purchase-panel .gem-purchase-actions {
+  position: sticky;
+  bottom: 0;
+  padding-top: 10px;
+  background: #faf9f1;
+  color: #293b35;
 }
 .gem-purchase-panel .gem-purchase-content {
   max-height: min(70dvh, 700px);
@@ -325,4 +345,11 @@
 .deck.orient-deck.has-orient-back > .orient-deck-label,
 .deck.orient-deck.has-orient-back > .orient-deck-symbol {
   display: none;
+}
+
+.gem-purchase-panel [data-card-acquire]:focus,
+.gem-blind-reserve [data-splendor-confirm]:focus {
+  outline: 3px solid #075b50;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 5px #fff;
 }

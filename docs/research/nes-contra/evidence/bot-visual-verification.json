@@ -1,0 +1,62 @@
+{
+  "passed": true,
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "./games/contra/engine",
+    "-run",
+    "^(TestBotVisualFrame|TestVerifiedBotVisualCatalog|TestBotVisualSpriteTemplates)",
+    "-count=1",
+    "-json"
+  ],
+  "exitCode": 0,
+  "sourceChangedDuringCheck": [],
+  "sourceHashes": {
+    "games/contra/engine/bot_visual_benchmark_test.go": "ee56813d2de994c4653fc56f32f2d7f44b8fdf90b0c888f3456d91bab0b20655",
+    "games/contra/engine/bot_visual_frame.go": "18781aae93930ee8a3b4fa67d99055626a0c17948d525e135a4d33c8736247b7",
+    "games/contra/engine/bot_visual_frame_catalog.go": "e957e6492f5e9ee9b4d68a6f82eb176f08a409efb70622fd87533f5c737e6981",
+    "games/contra/engine/bot_visual_frame_catalog_test.go": "5cac1595363fe4174ef64fb57543728a9c964165dc43e9c0b5db19173d6c1cf6",
+    "games/contra/engine/bot_visual_frame_pixels.go": "9bf6da5e26abfd0a97f9d54da452354a7f6c9b0b90fd024930e22cafaede0e20",
+    "games/contra/engine/bot_visual_frame_test.go": "c825076c6a755c77fcfb2c7183f6a45712363f6f910066474d7da526892b8c57",
+    "games/contra/engine/bot_visual_templates.go": "87aa3c8cccba2de116ced6b97d0309708ed3c6c74688e85ff3180cd5097420ca",
+    "games/contra/engine/bot_visual_templates_test.go": "b2b6302defd4530f722adb05baa64f5414a8cd8c2b4a0189b3c5277c8b70aa8c",
+    "games/contra/engine/presentation_sprites.go": "19b3b32ae25806c577446e6554ca9299d01310aef32f37f37abcd7ae14f64805",
+    "games/contra/engine/presentation_sprites_data.json": "fe84f190385ee83695635445a2712a5dd7ee4fab7b96a00595e6dd44a1362f74",
+    "games/contra/engine/world_presentation.go": "59233e0045e1b7b32ea3d6ca89fbf79c84dc13b2707b20ef976403dff24d0738",
+    "games/contra/engine/world_display.go": "4fdcc601dd69efd92ca80bd03e53e72fd73dd11c8e2404904580b8f66de08651",
+    "games/contra/engine/bot_vision.go": "9d7ade7b8379d733ca1952fda244065d835e83e5ff707b9bdef24b22b4f06f3f",
+    "games/contra/engine/frame.go": "3106acd976b3a02782acbe7480aa2c440f0e8987794f04e9547029c0d8362ac1",
+    "games/contra/engine/testdata/bot-visual-frame-raster.json.gz": "705233c797f12e9c2cd93f582d294c43e69562a29baa596cf51b4d83c690b17a",
+    "games/contra/tests/testdata/background-original.json.gz": "1dc7f209c0d8512b44f4ed45bd803fc081e48b7c4ac2183468134fe7302581f2",
+    "games/contra/web/runtime-renderer.ts": "638e9ce5e27ad97ba27585415d9337640ed3ace82d06e2c9de1a1adb266fd4af",
+    "games/contra/web/background.ts": "4e8d9e1a10011573dcdfabb77d3997da02ae4a61d56962754b14e00e91d637c5",
+    "games/contra/web/sprites.ts": "732771548119a0ec3aac18fbc33896c3e7592c98132c8a907290f0405376993c"
+  },
+  "logSHA256": "5aae1cfb985fe9739fc106275cbe0e2a1ae487acc343862088a421f9708079df",
+  "tests": [
+    "TestVerifiedBotVisualCatalogLazyIdentityAndOwnership",
+    "TestVerifiedBotVisualCatalogRejectsBadAssetsAndAllowsRetry",
+    "TestBotVisualFrameOriginalPixels",
+    "TestBotVisualFrameOwnershipAndNoninterference",
+    "TestBotVisualFrameRejectsInvalidInputs",
+    "TestBotVisualFrameContainsNoRuleTypes",
+    "TestBotVisualFrameOriginalRasterPixels",
+    "TestBotVisualSpriteTemplatesMatchVisibleProvider",
+    "TestBotVisualSpriteTemplatesSkipBlankAndAbsentPixels",
+    "TestBotVisualSpriteTemplatesAliasesKeepLabelsAndOwnership"
+  ],
+  "originalPixelFrames": 20,
+  "originalPixels": 1228800,
+  "templateCases": 36,
+  "scope": "Final visible pixels, immutable lazy asset catalog and mechanical static-template generation only; not strategy fairness, whole-campaign or server capacity acceptance.",
+  "independentRootCheck": {
+    "path": ".local/contra-world/checks/visual-provider-root-race.log",
+    "sha256": "72c8dc302679b6d0fd801682a1ee9ec29c1fc931eca1d0c6957f036e7e0478c0"
+  },
+  "initialBenchmark": {
+    "path": ".local/contra-world/checks/visual-benchmark.log",
+    "sha256": "cf7fbad74f5deffd7eabddd31b8c42fe32cf76d42736e9ad477681a28d3cb405",
+    "limitation": "One M4 sample, not a server capacity result."
+  }
+}

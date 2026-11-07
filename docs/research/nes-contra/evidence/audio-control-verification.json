@@ -1,0 +1,63 @@
+{
+  "passed": true,
+  "scope": "ROM-free authoritative audio control and BoardProps.audio adapter; control, transport and native media lifecycle only. No full-game listening, exact nonlinear mix, distribution or upload claim.",
+  "testsFirst": {
+    "failureInventory": "games/contra/engine/audio_control_test.go and games/contra/web/audio.test.mjs",
+    "retainedRedGreen": "audio-control-test-records.json.gz",
+    "libraryRed": "missing AudioContext before context/full-library implementation",
+    "adapterRed": "missing module before adapter implementation",
+    "stemExpansionRed": "duplicate IDs rejected before selection-variable fix"
+  },
+  "originalControl": {
+    "definitions": 129,
+    "isolatedCases": 205,
+    "isolatedTicks": 298300,
+    "combinedCases": 8,
+    "combinedTicks": 8140,
+    "requestCarryCases": 1275,
+    "snapshotRoundTrip": true,
+    "racePassed": true
+  },
+  "adapter": {
+    "targetedTests": 6,
+    "typeCheck": true,
+    "nativeChecks": 11,
+    "nativeEvidence": "audio-native-adapter-v3/result.json",
+    "browser": "Chromium native HTMLAudioElement",
+    "screenshots": [
+      "audio-native-adapter-v3/desktop.png",
+      "audio-native-adapter-v3/mobile-320.png"
+    ]
+  },
+  "resources": {
+    "ids": 46,
+    "stems": 110,
+    "repeatedOriginalPCM": true,
+    "sourceEvidence": "audio-verification.json",
+    "loopEvidence": "../audio-loops.md",
+    "notPublished": true,
+    "readyLoopGroups": 8,
+    "readyLoopStems": 23,
+    "loopNativeEvidence": "audio-loop-intro-verification.json"
+  },
+  "commands": [
+    ". scripts/env.sh && go test ./games/contra/engine -run '^TestAudio' -race -count=1",
+    "node --test games/contra/web/audio.test.mjs",
+    "python3 -B scripts/contra/audio_accept.py --out docs/research/nes-contra/evidence/audio-native-adapter-fresh"
+  ],
+  "sourceSHA256": {
+    "games/contra/engine/audio_control.go": "bde8282741e22d6daedef20baba0b538593d4f4eff4fefc8fc1cfa05bdb070f1",
+    "games/contra/engine/audio_control_data.json": "34ccedb60f81dd76def7f8093f4d6e1ffffdca4dffede6603e9a8bbc84109f7b",
+    "games/contra/engine/audio_control_data-source.json": "c621a6182e9e8a08c53e7ddb74f47f7626f8160fe8e920dd607988136c4950ee",
+    "games/contra/engine/audio_control_test.go": "56d58e24d07000b550fbe4de48831fadbc7ba9898b22f6e9c2c73331a9a99071",
+    "games/contra/web/audio.ts": "3804b063d320484e671f71895ed7e89580b7dd7393ff1c3014bfdbefe0ff1ed4",
+    "games/contra/web/audio.test.mjs": "be12fb357c031c7e4c60cd991acc01e3b371f518e5560a7c2cff156e4e10c5d3",
+    "scripts/contra/audio_control_data.py": "df083c56047cb0732deef12fbd9315a61111fc6e568057a99868d7522505c733",
+    "scripts/contra/audio_fixture.go": "f72a46ad2671134b81bf7adb9bf36a3bbcf278fc424eb0f3bc23d129d33c925b",
+    "scripts/contra/audio_accept.py": "3c3032f676ce7b2c279badcd2e11537de46e4fe3e978c66421b30f90577c84c1",
+    "games/contra/assets/audio-source.json": "f24d39df9285ab013eeb537b68646e0822741e3abcfd37f8f8ca41d46a8da333",
+    "games/contra/assets/audio-loops.json": "46954da60063e19981b4438df78df4a0b83fd2b6bce7d8c7519e6f537fcc9129"
+  },
+  "cleanup": "audio-control-cleanup.json",
+  "frontendIntegrationSupersededBy": "audio-integration-review-verification.json"
+}

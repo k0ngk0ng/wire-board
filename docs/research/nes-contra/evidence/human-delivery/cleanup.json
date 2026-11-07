@@ -1,0 +1,113 @@
+{
+  "scope": "Only known obsolete Contra builds and this task controller profiles/invalid test logs",
+  "removed": [
+    {
+      "path": ".local/contra-browser/portable-v9",
+      "bytes": 128667067
+    },
+    {
+      "path": ".local/contra-browser/portable-v10",
+      "bytes": 128667873
+    },
+    {
+      "path": ".local/contra-browser/motion-v10",
+      "bytes": 128667873
+    },
+    {
+      "path": ".local/contra-browser/motion-v11",
+      "bytes": 128667873
+    },
+    {
+      "path": ".local/contra-browser/source-media-v11",
+      "bytes": 128668651
+    },
+    {
+      "path": ".local/contra-platform-web/motion-v10",
+      "bytes": 93995270
+    },
+    {
+      "path": ".local/contra-main/motion-v11",
+      "bytes": 116853161
+    },
+    {
+      "path": ".local/contra-main/integrated-source-v11",
+      "bytes": 226748483
+    },
+    {
+      "path": ".local/contra-main/integrated-source-v11-r2",
+      "bytes": 226746321
+    },
+    {
+      "path": ".local/contra-main/integrated-source-v12",
+      "bytes": 226762827
+    },
+    {
+      "path": ".local/contra-main/human-delivery",
+      "bytes": 226765611
+    },
+    {
+      "path": ".local/contra-delivery/portable-v10",
+      "bytes": 109022632
+    },
+    {
+      "path": ".local/contra-delivery/motion-v10",
+      "bytes": 109022632
+    },
+    {
+      "path": ".local/contra-native/portable-v10",
+      "bytes": 66493
+    },
+    {
+      "path": ".local/contra-native/motion-v10",
+      "bytes": 69716
+    },
+    {
+      "path": ".local/contra-native/motion-v11",
+      "bytes": 69718
+    },
+    {
+      "path": ".local/fc-controller/human-delivery-chords",
+      "bytes": 12013299
+    },
+    {
+      "path": ".local/fc-controller/human-delivery-chords-r2",
+      "bytes": 11813720
+    },
+    {
+      "path": ".local/fc-controller/human-delivery-chords-r3/profile",
+      "bytes": 10323900
+    },
+    {
+      "path": ".local/contra-world/checks/controller-chords-r2.log",
+      "bytes": 4111
+    },
+    {
+      "path": ".local/contra-world/checks/human-main-acceptance.log",
+      "bytes": 1511
+    },
+    {
+      "path": ".local/contra-world/checks/integrated-source-v11-main.log",
+      "bytes": 1525
+    }
+  ],
+  "bytesRemoved": 2013620267,
+  "retained": [
+    ".local/contra-preview/human-delivery",
+    "docs/research/nes-contra/evidence",
+    ".local/contra-bot",
+    ".local/contra-web-runtime",
+    ".local/contra-web-delivery",
+    ".local/contra-victory/build",
+    ".local/contra-victory/boundary-review-v1"
+  ],
+  "untouched": [
+    "user ROMs",
+    "AGENTS.md",
+    "docs/prototypes",
+    "docs/research/md-yuyuhakusho",
+    "other games",
+    "OSS objects",
+    "server database/backups"
+  ],
+  "previewHealthyAfter": true
+}

@@ -1,0 +1,21 @@
+{
+  "scope": "Independent root verification of immutable rendered-pixel bot input provider; not bot strategy or campaign acceptance",
+  "recordedAt": "2026-10-26T00:47:51.921494+00:00",
+  "command": "GOCACHE=\"$PWD/.local/go-build\" GOMODCACHE=\"$PWD/.local/go-mod\" GOTMPDIR=\"$PWD/.local/contra-world/checks/tmp\" TMPDIR=\"$PWD/.local/contra-world/checks/tmp\" go test ./games/contra/engine -run '^TestBotVisualFrame' -race -count=1 -v",
+  "exitCode": 0,
+  "originalOrdinaryFrames": 13,
+  "originalRasterFrames": 7,
+  "testOutput": "=== RUN   TestBotVisualFrameOriginalPixels\n--- PASS: TestBotVisualFrameOriginalPixels (0.28s)\n=== RUN   TestBotVisualFrameOwnershipAndNoninterference\n--- PASS: TestBotVisualFrameOwnershipAndNoninterference (0.01s)\n=== RUN   TestBotVisualFrameRejectsInvalidInputs\n--- PASS: TestBotVisualFrameRejectsInvalidInputs (0.00s)\n=== RUN   TestBotVisualFrameContainsNoRuleTypes\n--- PASS: TestBotVisualFrameContainsNoRuleTypes (0.00s)\n=== RUN   TestBotVisualFrameOriginalRasterPixels\n--- PASS: TestBotVisualFrameOriginalRasterPixels (0.17s)\nPASS\nok  \tgithub.com/k0ngk0ng/wire-board/games/contra/engine\t2.094s\n",
+  "sources": {
+    "games/contra/engine/bot_visual_frame.go": "18781aae93930ee8a3b4fa67d99055626a0c17948d525e135a4d33c8736247b7",
+    "games/contra/engine/bot_visual_frame_pixels.go": "9bf6da5e26abfd0a97f9d54da452354a7f6c9b0b90fd024930e22cafaede0e20",
+    "games/contra/engine/bot_visual_frame_test.go": "c825076c6a755c77fcfb2c7183f6a45712363f6f910066474d7da526892b8c57",
+    "games/contra/engine/testdata/bot-visual-frame-raster.json.gz": "705233c797f12e9c2cd93f582d294c43e69562a29baa596cf51b4d83c690b17a",
+    "games/contra/tests/testdata/background-original.json.gz": "1dc7f209c0d8512b44f4ed45bd803fc081e48b7c4ac2183468134fe7302581f2"
+  },
+  "limitations": [
+    "Final visual-only strategy and host wiring remain incomplete.",
+    "Does not demonstrate natural eight-stage completion.",
+    "Raster oracle uses recorded FCEUX execution, not hardware subdot timing."
+  ]
+}

@@ -1,0 +1,1601 @@
+{
+  "passed": true,
+  "romSHA256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+  "stages": 8,
+  "normalMapEntries": 144,
+  "baseBossMapEntries": 2,
+  "actualOriginalMapLoads": 146,
+  "actualLoadedSupertileBytes": 8256,
+  "mapEntryCounts": [
+    14,
+    24,
+    10,
+    32,
+    22,
+    14,
+    16,
+    12
+  ],
+  "tileSets": 8,
+  "verifiedTransitions": [
+    {
+      "stage": 1,
+      "chrPreset": 13,
+      "paletteCollisionBytes": 15,
+      "baseBoss": false
+    },
+    {
+      "stage": 2,
+      "chrPreset": 8,
+      "paletteCollisionBytes": 15,
+      "baseBoss": true
+    },
+    {
+      "stage": 3,
+      "chrPreset": 14,
+      "paletteCollisionBytes": 15,
+      "baseBoss": false
+    },
+    {
+      "stage": 4,
+      "chrPreset": 9,
+      "paletteCollisionBytes": 15,
+      "baseBoss": true
+    },
+    {
+      "stage": 5,
+      "chrPreset": 15,
+      "paletteCollisionBytes": 15,
+      "baseBoss": false
+    },
+    {
+      "stage": 6,
+      "chrPreset": 16,
+      "paletteCollisionBytes": 15,
+      "baseBoss": false
+    },
+    {
+      "stage": 7,
+      "chrPreset": null,
+      "paletteCollisionBytes": 15,
+      "baseBoss": false
+    },
+    {
+      "stage": 8,
+      "chrPreset": 17,
+      "paletteCollisionBytes": 15,
+      "baseBoss": false
+    }
+  ],
+  "controlledStageEntries": [
+    {
+      "stage": 1,
+      "source": {
+        "rom_sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+        "source_archive": "/Users/jason/Documents/nes/roms/03/\u9b42\u6597\u7f57\u65e5\u7248(\u5b8c\u5168\u7248).zip",
+        "initial_state": null,
+        "emulator": "/opt/homebrew/bin/fceux",
+        "emulator_sha256": "2d84a8310d530745263cfeadf00de9a631162a8dd76c71e1bed659c73753f2f6",
+        "frames": 1420,
+        "scenario_sha256": "1b19d0cf124557d2fef512b3274061230a7e20704340f30e7911c28486eb452b",
+        "has_custom_hooks": true,
+        "completed": true
+      },
+      "intervention": {
+        "frame": 721,
+        "pc": "0xcc5f",
+        "address": "0x30",
+        "before": 0,
+        "after": 0,
+        "reason": "controlled original stage initializer, not a natural campaign clear"
+      },
+      "initializedHeaderMatches": true,
+      "mapWindowMatches": [
+        [
+          0,
+          13
+        ],
+        [
+          1
+        ]
+      ],
+      "desiredCHR": [
+        1,
+        4,
+        6,
+        7,
+        68,
+        69,
+        70,
+        71
+      ],
+      "actualCHRPageAliases": [
+        [
+          1
+        ],
+        [
+          4
+        ],
+        [
+          6
+        ],
+        [
+          7
+        ],
+        [
+          68
+        ],
+        [
+          69
+        ],
+        [
+          70
+        ],
+        [
+          71
+        ]
+      ],
+      "ramSHA256": "446086a32fb07958996a6f2ffe45620ecda292fb5b0a1865136f65f63f39bab5",
+      "ppuSHA256": "40159a6487884a512719e466daf34498aa0921ef6c5716b09cb730e1f7c4389e"
+    },
+    {
+      "stage": 2,
+      "source": {
+        "rom_sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+        "source_archive": "/Users/jason/Documents/nes/roms/03/\u9b42\u6597\u7f57\u65e5\u7248(\u5b8c\u5168\u7248).zip",
+        "initial_state": null,
+        "emulator": "/opt/homebrew/bin/fceux",
+        "emulator_sha256": "2d84a8310d530745263cfeadf00de9a631162a8dd76c71e1bed659c73753f2f6",
+        "frames": 1420,
+        "scenario_sha256": "b6ce80265dba6199cb8a117802c933d3acc7a0ea0cc7abb62ac8203db8aa2cc7",
+        "has_custom_hooks": true,
+        "completed": true
+      },
+      "intervention": {
+        "frame": 721,
+        "pc": "0xcc5f",
+        "address": "0x30",
+        "before": 0,
+        "after": 1,
+        "reason": "controlled original stage initializer, not a natural campaign clear"
+      },
+      "initializedHeaderMatches": true,
+      "mapWindowMatches": [
+        [
+          0,
+          4,
+          8,
+          20
+        ],
+        []
+      ],
+      "desiredCHR": [
+        1,
+        5,
+        8,
+        9,
+        72,
+        73,
+        74,
+        105
+      ],
+      "actualCHRPageAliases": [
+        [
+          1
+        ],
+        [
+          5
+        ],
+        [
+          8
+        ],
+        [
+          9
+        ],
+        [
+          72
+        ],
+        [
+          73
+        ],
+        [
+          74
+        ],
+        [
+          106
+        ]
+      ],
+      "ramSHA256": "1fca24e5a1048175f86c8bb7b125d454b99f6bac27362d80262acfb173e99a4c",
+      "ppuSHA256": "8fd5def05925f72eddb64299e7ac7b304abe9fbf998715dc8e191609159fd1f1"
+    },
+    {
+      "stage": 3,
+      "source": {
+        "rom_sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+        "source_archive": "/Users/jason/Documents/nes/roms/03/\u9b42\u6597\u7f57\u65e5\u7248(\u5b8c\u5168\u7248).zip",
+        "initial_state": null,
+        "emulator": "/opt/homebrew/bin/fceux",
+        "emulator_sha256": "2d84a8310d530745263cfeadf00de9a631162a8dd76c71e1bed659c73753f2f6",
+        "frames": 1420,
+        "scenario_sha256": "6486eaa08b68a59cfc14dd159f163635e7470258cda4c07e765af2a1e0400246",
+        "has_custom_hooks": true,
+        "completed": true
+      },
+      "intervention": {
+        "frame": 721,
+        "pc": "0xcc5f",
+        "address": "0x30",
+        "before": 0,
+        "after": 2,
+        "reason": "controlled original stage initializer, not a natural campaign clear"
+      },
+      "initializedHeaderMatches": true,
+      "mapWindowMatches": [
+        [
+          0
+        ],
+        [
+          1
+        ]
+      ],
+      "desiredCHR": [
+        1,
+        4,
+        10,
+        11,
+        96,
+        97,
+        70,
+        37
+      ],
+      "actualCHRPageAliases": [
+        [
+          1
+        ],
+        [
+          4
+        ],
+        [
+          10,
+          14,
+          16,
+          18
+        ],
+        [
+          11
+        ],
+        [
+          96
+        ],
+        [
+          97
+        ],
+        [
+          70
+        ],
+        [
+          37
+        ]
+      ],
+      "ramSHA256": "51ea1f841ee12da25dd55c74a50fa1d8e1ad0480148aa6ca723b5af80a2d0013",
+      "ppuSHA256": "c2940f2f51e585f5440aeebdaa279e70bf1604d35a1be9538f07eb01c513200c"
+    },
+    {
+      "stage": 4,
+      "source": {
+        "rom_sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+        "source_archive": "/Users/jason/Documents/nes/roms/03/\u9b42\u6597\u7f57\u65e5\u7248(\u5b8c\u5168\u7248).zip",
+        "initial_state": null,
+        "emulator": "/opt/homebrew/bin/fceux",
+        "emulator_sha256": "2d84a8310d530745263cfeadf00de9a631162a8dd76c71e1bed659c73753f2f6",
+        "frames": 1420,
+        "scenario_sha256": "8ca24e62ff5fa7cc2241368000636dec377bba0049768c4a4624fe7d303e46c1",
+        "has_custom_hooks": true,
+        "completed": true
+      },
+      "intervention": {
+        "frame": 721,
+        "pc": "0xcc5f",
+        "address": "0x30",
+        "before": 0,
+        "after": 3,
+        "reason": "controlled original stage initializer, not a natural campaign clear"
+      },
+      "initializedHeaderMatches": true,
+      "mapWindowMatches": [
+        [
+          0,
+          4,
+          8,
+          12,
+          16,
+          24
+        ],
+        []
+      ],
+      "desiredCHR": [
+        1,
+        5,
+        8,
+        9,
+        72,
+        73,
+        104,
+        105
+      ],
+      "actualCHRPageAliases": [
+        [
+          1
+        ],
+        [
+          5
+        ],
+        [
+          8
+        ],
+        [
+          9
+        ],
+        [
+          72
+        ],
+        [
+          73
+        ],
+        [
+          104
+        ],
+        [
+          106
+        ]
+      ],
+      "ramSHA256": "773b6b0b3ca62f035244d1c122918812a1acee2ce6d80c0356f4bdddeda260a2",
+      "ppuSHA256": "7938aa6d0f41e098284f1c2622797f9e3b4b05561de08bdb1ac6700f8b4b7b29"
+    },
+    {
+      "stage": 5,
+      "source": {
+        "rom_sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+        "source_archive": "/Users/jason/Documents/nes/roms/03/\u9b42\u6597\u7f57\u65e5\u7248(\u5b8c\u5168\u7248).zip",
+        "initial_state": null,
+        "emulator": "/opt/homebrew/bin/fceux",
+        "emulator_sha256": "2d84a8310d530745263cfeadf00de9a631162a8dd76c71e1bed659c73753f2f6",
+        "frames": 1420,
+        "scenario_sha256": "d25a8374a377f6e07c5fa1e1e4c8842faef44b7877c158d7cab5d3af07d751e7",
+        "has_custom_hooks": true,
+        "completed": true
+      },
+      "intervention": {
+        "frame": 721,
+        "pc": "0xcc5f",
+        "address": "0x30",
+        "before": 0,
+        "after": 4,
+        "reason": "controlled original stage initializer, not a natural campaign clear"
+      },
+      "initializedHeaderMatches": true,
+      "mapWindowMatches": [
+        [
+          0,
+          21
+        ],
+        [
+          1
+        ]
+      ],
+      "desiredCHR": [
+        1,
+        4,
+        14,
+        15,
+        80,
+        110,
+        82,
+        83
+      ],
+      "actualCHRPageAliases": [
+        [
+          1
+        ],
+        [
+          4
+        ],
+        [
+          10,
+          14,
+          16,
+          18
+        ],
+        [
+          15
+        ],
+        [
+          80
+        ],
+        [
+          110,
+          111
+        ],
+        [
+          82
+        ],
+        [
+          83
+        ]
+      ],
+      "ramSHA256": "55c490cd2ceadd2797ffc758b8e01839cab9bf007c5d6897643aad3b645b47ff",
+      "ppuSHA256": "ec1ac1ac1094f4167b1fb35aff8172814c7a4f85c90ed2d4f7fbb0142b0ef89d"
+    },
+    {
+      "stage": 6,
+      "source": {
+        "rom_sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+        "source_archive": "/Users/jason/Documents/nes/roms/03/\u9b42\u6597\u7f57\u65e5\u7248(\u5b8c\u5168\u7248).zip",
+        "initial_state": null,
+        "emulator": "/opt/homebrew/bin/fceux",
+        "emulator_sha256": "2d84a8310d530745263cfeadf00de9a631162a8dd76c71e1bed659c73753f2f6",
+        "frames": 1420,
+        "scenario_sha256": "402780e3b209960070b6b5c4d763bb1cb5b1298b38f136f8dea0df13195bb823",
+        "has_custom_hooks": true,
+        "completed": true
+      },
+      "intervention": {
+        "frame": 721,
+        "pc": "0xcc5f",
+        "address": "0x30",
+        "before": 0,
+        "after": 5,
+        "reason": "controlled original stage initializer, not a natural campaign clear"
+      },
+      "initializedHeaderMatches": true,
+      "mapWindowMatches": [
+        [
+          0,
+          13
+        ],
+        [
+          1
+        ]
+      ],
+      "desiredCHR": [
+        1,
+        4,
+        16,
+        17,
+        84,
+        85,
+        86,
+        87
+      ],
+      "actualCHRPageAliases": [
+        [
+          1
+        ],
+        [
+          4
+        ],
+        [
+          10,
+          14,
+          16,
+          18
+        ],
+        [
+          17
+        ],
+        [
+          84
+        ],
+        [
+          85
+        ],
+        [
+          86
+        ],
+        [
+          87
+        ]
+      ],
+      "ramSHA256": "45eb5ee5aae7b1d77737b9567b403fb81f802826845fb229261bb2861554a604",
+      "ppuSHA256": "d7e98bdc658d4c41942356c7573819b3fe6f2e8ac83a87836d8baf7bde3ffe5b"
+    },
+    {
+      "stage": 7,
+      "source": {
+        "rom_sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+        "source_archive": "/Users/jason/Documents/nes/roms/03/\u9b42\u6597\u7f57\u65e5\u7248(\u5b8c\u5168\u7248).zip",
+        "initial_state": null,
+        "emulator": "/opt/homebrew/bin/fceux",
+        "emulator_sha256": "2d84a8310d530745263cfeadf00de9a631162a8dd76c71e1bed659c73753f2f6",
+        "frames": 1420,
+        "scenario_sha256": "5adcd4a4b5c74938f49a6e52f9be32658c0a1803a0dbf2d8965413e478fc3bf3",
+        "has_custom_hooks": true,
+        "completed": true
+      },
+      "intervention": {
+        "frame": 721,
+        "pc": "0xcc5f",
+        "address": "0x30",
+        "before": 0,
+        "after": 6,
+        "reason": "controlled original stage initializer, not a natural campaign clear"
+      },
+      "initializedHeaderMatches": true,
+      "mapWindowMatches": [
+        [
+          0,
+          15
+        ],
+        [
+          1
+        ]
+      ],
+      "desiredCHR": [
+        1,
+        4,
+        18,
+        19,
+        88,
+        89,
+        90,
+        91
+      ],
+      "actualCHRPageAliases": [
+        [
+          1
+        ],
+        [
+          4
+        ],
+        [
+          10,
+          14,
+          16,
+          18
+        ],
+        [
+          19
+        ],
+        [
+          88
+        ],
+        [
+          89
+        ],
+        [
+          90
+        ],
+        [
+          91
+        ]
+      ],
+      "ramSHA256": "17e4d58ba67a99c005745467e2e083b5e40fe65d7367b6f8adbbb18a2ea8c4e7",
+      "ppuSHA256": "2c48d7e62b183727c85197bad65a47921f452f45163d814193a395bda1ba89ab"
+    },
+    {
+      "stage": 8,
+      "source": {
+        "rom_sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+        "source_archive": "/Users/jason/Documents/nes/roms/03/\u9b42\u6597\u7f57\u65e5\u7248(\u5b8c\u5168\u7248).zip",
+        "initial_state": null,
+        "emulator": "/opt/homebrew/bin/fceux",
+        "emulator_sha256": "2d84a8310d530745263cfeadf00de9a631162a8dd76c71e1bed659c73753f2f6",
+        "frames": 1420,
+        "scenario_sha256": "82463ae45ce3da6e8840bc774f5ce6a47724a40a74769a947d2c791658fb6e3b",
+        "has_custom_hooks": true,
+        "completed": true
+      },
+      "intervention": {
+        "frame": 721,
+        "pc": "0xcc5f",
+        "address": "0x30",
+        "before": 0,
+        "after": 7,
+        "reason": "controlled original stage initializer, not a natural campaign clear"
+      },
+      "initializedHeaderMatches": true,
+      "mapWindowMatches": [
+        [
+          0,
+          11
+        ],
+        [
+          1
+        ]
+      ],
+      "desiredCHR": [
+        1,
+        4,
+        20,
+        21,
+        92,
+        93,
+        94,
+        95
+      ],
+      "actualCHRPageAliases": [
+        [
+          1
+        ],
+        [
+          4
+        ],
+        [
+          20
+        ],
+        [
+          21
+        ],
+        [
+          92
+        ],
+        [
+          93
+        ],
+        [
+          94
+        ],
+        [
+          95
+        ]
+      ],
+      "ramSHA256": "68a967f0feaaf4d6c1b50b5c02ebb8b3d70d207acdb1b88539001c5a0cd45c5f",
+      "ppuSHA256": "2b52932d3fdf86cad54ba5c3b757f5a9b02f849ac1bda9a9eca1666b5dfc9988"
+    }
+  ],
+  "functions": [
+    {
+      "entry": "0xc001",
+      "evidence_id": "ev_4df3a29fbd61ba4bcab0d886750d3a164105b95acffd258c8b967c650aa62a92",
+      "assembly": [
+        "0xc001: INC 0x001a",
+        "0xc003: LDA 0x0018",
+        "0xc005: BEQ 0xc00e",
+        "0xc007: CMP #0x3",
+        "0xc009: BCS 0xc00e",
+        "0xc00b: JSR 0xc21e",
+        "0xc00e: LDA 0x0018",
+        "0xc010: JSR 0xc6f2"
+      ],
+      "limitations": [
+        "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+        "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+        "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+        "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+        "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+        "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+        "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+        "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+        "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels.",
+        "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state.",
+        "Headerless raw-binary analysis uses the caller-supplied architecture and entry address; file offset 0 is mapped at that address. Headers are not discovered from file bytes.",
+        "Little-endian generic Ghidra languages are used for x86, x86_64, arm, arm64, and NMOS 6502. Big-endian, Thumb-only, Cortex-M, 65C02, 65816, and other processor variants are unsupported in this increment.",
+        "Static analysis does not emulate reset vectors, memory-mapped I/O, or firmware boot sequences.",
+        "Ghidra analysis was seeded before auto-analysis from /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-levels/fixed-seeds.tsv (sha256 2a196bd6197f01443fe2514e9b47310b70016841f5c1c2b5c0c5a516059fec46: 10 function, 0 code, 0 label entries). Seeded functions, code and names are caller assertions, not Ghidra discoveries.",
+        "Seed outcome: 9 functions created, 1 already present, 0 failed; 0 code seeds decoded, 0 failed; 0 labels applied, 0 failed; 0 seeds outside initialized memory."
+      ]
+    },
+    {
+      "entry": "0xc3d7",
+      "evidence_id": "ev_77c27c239f98a068b263dd5e53d88db9e5766dcc6584c0328e518fee55400d52",
+      "assembly": [
+        "0xc3d7: BCS 0xc3d0",
+        "0xc3d9: JSR 0xc656",
+        "0xc3dc: LDX 0x0021",
+        "0xc3de: LDA 0x0030",
+        "0xc3e0: LDY 0x0040",
+        "0xc3e2: BPL 0xc3e6",
+        "0xc3e4: LDA #0x8",
+        "0xc3e6: ASL A",
+        "0xc3e7: ASL A",
+        "0xc3e8: TAY",
+        "0xc3e9: LDA 0xc56e,Y",
+        "0xc3ec: STA 0x0016",
+        "0xc3ee: LDA 0xc56f,Y",
+        "0xc3f1: STA 0x0017",
+        "0xc3f3: LDA 0x000f",
+        "0xc3f5: BNE 0xc410",
+        "0xc3f7: LDA 0xc570,Y",
+        "0xc3fa: STA 0x000e",
+        "0xc3fc: LDA 0xc571,Y",
+        "0xc3ff: STA 0x000f",
+        "0xc401: LDY 0x0010",
+        "0xc403: LDA 0x0000",
+        "0xc405: BNE 0xc46b",
+        "0xc407: JSR 0xc6d7",
+        "0xc40a: LDA (0xe),Y",
+        "0xc40c: STA 0x700,X",
+        "0xc40f: INX",
+        "0xc410: LDA #0x0",
+        "0xc412: STA 0x0011",
+        "0xc414: LDA 0x0010",
+        "0xc416: ASL A",
+        "0xc417: ASL A",
+        "0xc418: ROL 0x0011",
+        "0xc41a: ASL A",
+        "0xc41b: ROL 0x0011",
+        "0xc41d: ASL A",
+        "0xc41e: ROL 0x0011",
+        "0xc420: ADC 0x0016",
+        "0xc422: STA 0x0016",
+        "0xc424: LDA 0x0011",
+        "0xc426: ADC 0x0017",
+        "0xc428: STA 0x0017",
+        "0xc42a: LDA #0x1",
+        "0xc42c: STA 0x700,X",
+        "0xc42f: INX",
+        "0xc430: LDA #0x4",
+        "0xc432: STA 0x0014",
+        "0xc434: STA 0x700,X",
+        "0xc437: INX",
+        "0xc438: STA 0x700,X",
+        "0xc43b: INX",
+        "0xc43c: LDY #0x0",
+        "0xc43e: LDA 0x000d",
+        "0xc440: STA 0x700,X",
+        "0xc443: INX",
+        "0xc444: LDA 0x000c",
+        "0xc446: STA 0x700,X",
+        "0xc449: INX",
+        "0xc44a: LDA (0x16),Y",
+        "0xc44c: STA 0x700,X",
+        "0xc44f: INX",
+        "0xc450: INY",
+        "0xc451: TYA",
+        "0xc452: AND #0x3",
+        "0xc454: BNE 0xc44a",
+        "0xc456: LDA 0x000c",
+        "0xc458: CLC",
+        "0xc459: ADC #0x20",
+        "0xc45b: STA 0x000c",
+        "0xc45d: LDA 0x000d",
+        "0xc45f: ADC #0x0",
+        "0xc461: STA 0x000d",
+        "0xc463: DEC 0x0014",
+        "0xc465: BNE 0xc43e",
+        "0xc467: STX 0x0021",
+        "0xc469: CLC",
+        "0xc46a: RTS",
+        "0xc46b: TAX",
+        "0xc46c: LDA (0xe),Y",
+        "0xc46e: DEX",
+        "0xc46f: STX 0x0001",
+        "0xc471: BNE 0xc49c",
+        "0xc473: TAX",
+        "0xc474: AND #0x33",
+        "0xc476: ASL A",
+        "0xc477: ASL A",
+        "0xc478: STA 0x0008",
+        "0xc47a: TXA",
+        "0xc47b: AND #0xcc",
+        "0xc47d: LSR A",
+        "0xc47e: LSR A",
+        "0xc47f: STA 0x0009",
+        "0xc481: LDX 0x0002",
+        "0xc483: LDY 0x600,X",
+        "0xc486: LDA (0x46),Y",
+        "0xc488: AND #0x33",
+        "0xc48a: ORA 0x0008",
+        "0xc48c: STA 0x0008",
+        "0xc48e: LDY 0x601,X",
+        "0xc491: LDA (0x46),Y",
+        "0xc493: AND #0xcc",
+        "0xc495: ORA 0x0009",
+        "0xc497: STA 0x0009",
+        "0xc499: JMP 0xc516",
+        "0xc49c: DEX",
+        "0xc49d: BNE 0xc4cc",
+        "0xc49f: LDX #0x0",
+        "0xc4a1: STX 0x0009",
+        "0xc4a3: ASL A",
+        "0xc4a4: ROL 0x0009",
+        "0xc4a6: ASL A",
+        "0xc4a7: ROL 0x0009",
+        "0xc4a9: ASL A",
+        "0xc4aa: ROL 0x0009",
+        "0xc4ac: ASL A",
+        "0xc4ad: ROL 0x0009",
+        "0xc4af: STA 0x0008",
+        "0xc4b1: LDX 0x0002",
+        "0xc4b3: LDY 0x600,X",
+        "0xc4b6: LDA (0x46),Y",
+        "0xc4b8: AND #0xf",
+        "0xc4ba: ORA 0x0008",
+        "0xc4bc: STA 0x0008",
+        "0xc4be: LDY 0x608,X",
+        "0xc4c1: LDA (0x46),Y",
+        "0xc4c3: AND #0xf0",
+        "0xc4c5: ORA 0x0009",
+        "0xc4c7: STA 0x0009",
+        "0xc4c9: JMP 0xc516",
+        "0xc4cc: LDX #0x0",
+        "0xc4ce: STX 0x0008",
+        "0xc4d0: STX 0x000b",
+        "0xc4d2: LSR A",
+        "0xc4d3: ROR 0x0008",
+        "0xc4d5: LSR A",
+        "0xc4d6: ROR 0x0008",
+        "0xc4d8: AND #0xc",
+        "0xc4da: STA 0x000a",
+        "0xc4dc: LDA (0xe),Y",
+        "0xc4de: ASL A",
+        "0xc4df: ROL 0x000b",
+        "0xc4e1: ASL A",
+        "0xc4e2: ROL 0x000b",
+        "0xc4e4: AND #0x30",
+        "0xc4e6: STA 0x0009",
+        "0xc4e8: LDX 0x0002",
+        "0xc4ea: LDY 0x600,X",
+        "0xc4ed: LDA (0x46),Y",
+        "0xc4ef: AND #0x3f",
+        "0xc4f1: ORA 0x0008",
+        "0xc4f3: STA 0x0008",
+        "0xc4f5: LDY 0x601,X",
+        "0xc4f8: LDA (0x46),Y",
+        "0xc4fa: AND #0xcf",
+        "0xc4fc: ORA 0x0009",
+        "0xc4fe: STA 0x0009",
+        "0xc500: LDY 0x608,X",
+        "0xc503: LDA (0x46),Y",
+        "0xc505: AND #0xf3",
+        "0xc507: ORA 0x000a",
+        "0xc509: STA 0x000a",
+        "0xc50b: LDY 0x609,X",
+        "0xc50e: LDA (0x46),Y",
+        "0xc510: AND #0xfc",
+        "0xc512: ORA 0x000b",
+        "0xc514: STA 0x000b",
+        "0xc516: LDA 0x0001",
+        "0xc518: ASL A",
+        "0xc519: TAY",
+        "0xc51a: LDX 0x0021",
+        "0xc51c: LDA #0x1",
+        "0xc51e: STA 0x700,X",
+        "0xc521: INX",
+        "0xc522: LDA 0xc568,Y",
+        "0xc525: STA 0x700,X",
+        "0xc528: INX",
+        "0xc529: LDA 0xc569,Y",
+        "0xc52c: STA 0x700,X",
+        "0xc52f: INX",
+        "0xc530: LDY #0x0",
+        "0xc532: LDA 0x0015",
+        "0xc534: STA 0x700,X",
+        "0xc537: INX",
+        "0xc538: LDA 0x0014",
+        "0xc53a: STA 0x700,X",
+        "0xc53d: INX",
+        "0xc53e: LDA 0x8,Y",
+        "0xc541: STA 0x700,X",
+        "0xc544: INX",
+        "0xc545: LDA 0x0000",
+        "0xc547: CMP #0x2",
+        "0xc549: BEQ 0xc553",
+        "0xc54b: INY",
+        "0xc54c: LDA 0x8,Y",
+        "0xc54f: STA 0x700,X",
+        "0xc552: INX",
+        "0xc553: LDA 0x0001",
+        "0xc555: BEQ 0xc565",
+        "0xc557: INY",
+        "0xc558: LDA 0x0014",
+        "0xc55a: CLC",
+        "0xc55b: ADC #0x8",
+        "0xc55d: STA 0x0014",
+        "0xc55f: LDA #0x0",
+        "0xc561: STA 0x0001",
+        "0xc563: BEQ 0xc532",
+        "0xc565: JMP 0xc410"
+      ],
+      "limitations": [
+        "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+        "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+        "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+        "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+        "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+        "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+        "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+        "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+        "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels.",
+        "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state.",
+        "Headerless raw-binary analysis uses the caller-supplied architecture and entry address; file offset 0 is mapped at that address. Headers are not discovered from file bytes.",
+        "Little-endian generic Ghidra languages are used for x86, x86_64, arm, arm64, and NMOS 6502. Big-endian, Thumb-only, Cortex-M, 65C02, 65816, and other processor variants are unsupported in this increment.",
+        "Static analysis does not emulate reset vectors, memory-mapped I/O, or firmware boot sequences.",
+        "Ghidra analysis was seeded before auto-analysis from /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-levels/fixed-seeds.tsv (sha256 2a196bd6197f01443fe2514e9b47310b70016841f5c1c2b5c0c5a516059fec46: 10 function, 0 code, 0 label entries). Seeded functions, code and names are caller assertions, not Ghidra discoveries.",
+        "Seed outcome: 9 functions created, 1 already present, 0 failed; 0 code seeds decoded, 0 failed; 0 labels applied, 0 failed; 0 seeds outside initialized memory."
+      ]
+    },
+    {
+      "entry": "0xc76e",
+      "evidence_id": "ev_bd184a0d8b742cd47633e0aaf4c7db25495f8920a8fca510a03607b6ecb876db",
+      "assembly": [
+        "0xc76e: LDY 0x0030",
+        "0xc770: LDA 0xc78b,Y",
+        "0xc773: BNE 0xc778",
+        "0xc775: RTS"
+      ],
+      "limitations": [
+        "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+        "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+        "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+        "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+        "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+        "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+        "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+        "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+        "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels.",
+        "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state.",
+        "Headerless raw-binary analysis uses the caller-supplied architecture and entry address; file offset 0 is mapped at that address. Headers are not discovered from file bytes.",
+        "Little-endian generic Ghidra languages are used for x86, x86_64, arm, arm64, and NMOS 6502. Big-endian, Thumb-only, Cortex-M, 65C02, 65816, and other processor variants are unsupported in this increment.",
+        "Static analysis does not emulate reset vectors, memory-mapped I/O, or firmware boot sequences.",
+        "Ghidra analysis was seeded before auto-analysis from /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-levels/fixed-seeds.tsv (sha256 2a196bd6197f01443fe2514e9b47310b70016841f5c1c2b5c0c5a516059fec46: 10 function, 0 code, 0 label entries). Seeded functions, code and names are caller assertions, not Ghidra discoveries.",
+        "Seed outcome: 9 functions created, 1 already present, 0 failed; 0 code seeds decoded, 0 failed; 0 labels applied, 0 failed; 0 seeds outside initialized memory."
+      ]
+    },
+    {
+      "entry": "0xc778",
+      "evidence_id": "ev_957a94ec5c7bcc5b9f1b937414cfc840c3cc10a2cdc290fddb2d02d3c4159f27",
+      "assembly": [
+        "0xc778: ASL A",
+        "0xc779: ASL A",
+        "0xc77a: ASL A",
+        "0xc77b: TAY",
+        "0xc77c: LDX #0x0",
+        "0xc77e: LDA 0xc793,Y",
+        "0xc781: STA 0x7f0,X",
+        "0xc784: INY",
+        "0xc785: INX",
+        "0xc786: CPX #0x8",
+        "0xc788: BNE 0xc77e",
+        "0xc78a: RTS"
+      ],
+      "limitations": [
+        "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+        "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+        "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+        "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+        "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+        "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+        "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+        "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+        "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels.",
+        "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state.",
+        "Headerless raw-binary analysis uses the caller-supplied architecture and entry address; file offset 0 is mapped at that address. Headers are not discovered from file bytes.",
+        "Little-endian generic Ghidra languages are used for x86, x86_64, arm, arm64, and NMOS 6502. Big-endian, Thumb-only, Cortex-M, 65C02, 65816, and other processor variants are unsupported in this increment.",
+        "Static analysis does not emulate reset vectors, memory-mapped I/O, or firmware boot sequences.",
+        "Ghidra analysis was seeded before auto-analysis from /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-levels/fixed-seeds.tsv (sha256 2a196bd6197f01443fe2514e9b47310b70016841f5c1c2b5c0c5a516059fec46: 10 function, 0 code, 0 label entries). Seeded functions, code and names are caller assertions, not Ghidra discoveries.",
+        "Seed outcome: 9 functions created, 1 already present, 0 failed; 0 code seeds decoded, 0 failed; 0 labels applied, 0 failed; 0 seeds outside initialized memory."
+      ]
+    },
+    {
+      "entry": "0xcec6",
+      "evidence_id": "ev_7a629665dc61c133ee0d9b75aa4e4008a7fd8d567f259aa3c09f0b8c307a7c1e",
+      "assembly": [
+        "0xcec6: LDA #0xff",
+        "0xcec8: STA 0x0048",
+        "0xceca: LDA 0x0030",
+        "0xcecc: ASL A",
+        "0xcecd: ASL A",
+        "0xcece: ASL A",
+        "0xcecf: ASL A",
+        "0xced0: SEC",
+        "0xced1: SBC 0x0030",
+        "0xced3: TAY",
+        "0xced4: LDX #0x0",
+        "0xced6: LDA 0xd05a,Y",
+        "0xced9: STA 0x49,X",
+        "0xcedb: INY",
+        "0xcedc: INX",
+        "0xcedd: CPX #0xf",
+        "0xcedf: BNE 0xced6",
+        "0xcee1: LDA #0x20"
+      ],
+      "limitations": [
+        "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+        "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+        "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+        "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+        "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+        "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+        "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+        "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+        "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels.",
+        "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state.",
+        "Headerless raw-binary analysis uses the caller-supplied architecture and entry address; file offset 0 is mapped at that address. Headers are not discovered from file bytes.",
+        "Little-endian generic Ghidra languages are used for x86, x86_64, arm, arm64, and NMOS 6502. Big-endian, Thumb-only, Cortex-M, 65C02, 65816, and other processor variants are unsupported in this increment.",
+        "Static analysis does not emulate reset vectors, memory-mapped I/O, or firmware boot sequences.",
+        "Ghidra analysis was seeded before auto-analysis from /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-levels/fixed-seeds.tsv (sha256 2a196bd6197f01443fe2514e9b47310b70016841f5c1c2b5c0c5a516059fec46: 10 function, 0 code, 0 label entries). Seeded functions, code and names are caller assertions, not Ghidra discoveries.",
+        "Seed outcome: 9 functions created, 1 already present, 0 failed; 0 code seeds decoded, 0 failed; 0 labels applied, 0 failed; 0 seeds outside initialized memory."
+      ]
+    },
+    {
+      "entry": "0xcee3",
+      "evidence_id": "ev_0b3ed1eb9f1588cda63c65762a5b69027e8199f54612e91b585f1dc3e58c9890",
+      "assembly": [
+        "0xcee3: STA 0x0002",
+        "0xcee5: STA 0x0036",
+        "0xcee7: LDA 0x001a",
+        "0xcee9: AND #0x30",
+        "0xceeb: STA 0x0003",
+        "0xceed: LDX #0x0",
+        "0xceef: STX 0x0000",
+        "0xcef1: LDA #0x0",
+        "0xcef3: STA 0x0007",
+        "0xcef5: LDY 0x0000",
+        "0xcef7: LDA 0x50,Y",
+        "0xcefa: ASL A",
+        "0xcefb: ROL 0x0007",
+        "0xcefd: CLC",
+        "0xcefe: ADC 0x50,Y",
+        "0xcf01: BCC 0xcf06",
+        "0xcf03: INC 0x0007",
+        "0xcf05: CLC",
+        "0xcf06: ADC 0xd0e1",
+        "0xcf09: STA 0x0006",
+        "0xcf0b: LDA 0x0007",
+        "0xcf0d: ADC 0xd0e2",
+        "0xcf10: STA 0x0007",
+        "0xcf12: LDY #0x0",
+        "0xcf14: LDA #0xf",
+        "0xcf16: STA 0x7c0,X",
+        "0xcf19: INX",
+        "0xcf1a: LDA 0x0074",
+        "0xcf1c: BNE 0xcf38",
+        "0xcf1e: LDA (0x6),Y",
+        "0xcf20: STA 0x7c0,X",
+        "0xcf23: INY",
+        "0xcf24: INX",
+        "0xcf25: CPY #0x3",
+        "0xcf27: BNE 0xcf1a",
+        "0xcf29: INC 0x0000",
+        "0xcf2b: CPX 0x0002",
+        "0xcf2d: BNE 0xcef1",
+        "0xcf2f: LDA 0x0074",
+        "0xcf31: BEQ 0xcf37",
+        "0xcf33: BMI 0xcf37",
+        "0xcf35: DEC 0x0074",
+        "0xcf37: RTS",
+        "0xcf38: STY 0x0003",
+        "0xcf3a: LDY 0x0040",
+        "0xcf3c: BMI 0xcf44",
+        "0xcf3e: LDY 0x0003",
+        "0xcf40: CPX #0x4",
+        "0xcf42: BCC 0xcf1e",
+        "0xcf44: LDY 0x0003",
+        "0xcf46: CPX #0x10",
+        "0xcf48: BCS 0xcf1e",
+        "0xcf4a: LDA 0x0074",
+        "0xcf4c: BMI 0xcf61",
+        "0xcf4e: CMP #0x9",
+        "0xcf50: BCS 0xcf61",
+        "0xcf52: TAY",
+        "0xcf53: LDA 0xcf64,Y",
+        "0xcf56: STA 0x0004",
+        "0xcf58: LDY 0x0003",
+        "0xcf5a: LDA (0x6),Y",
+        "0xcf5c: SEC",
+        "0xcf5d: SBC 0x0004",
+        "0xcf5f: BCS 0xcf20",
+        "0xcf61: LDA #0xf",
+        "0xcf63: BNE 0xcf20",
+        "0xcf65: BRK"
+      ],
+      "limitations": [
+        "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+        "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+        "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+        "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+        "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+        "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+        "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+        "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+        "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels.",
+        "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state.",
+        "Headerless raw-binary analysis uses the caller-supplied architecture and entry address; file offset 0 is mapped at that address. Headers are not discovered from file bytes.",
+        "Little-endian generic Ghidra languages are used for x86, x86_64, arm, arm64, and NMOS 6502. Big-endian, Thumb-only, Cortex-M, 65C02, 65816, and other processor variants are unsupported in this increment.",
+        "Static analysis does not emulate reset vectors, memory-mapped I/O, or firmware boot sequences.",
+        "Ghidra analysis was seeded before auto-analysis from /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-levels/fixed-seeds.tsv (sha256 2a196bd6197f01443fe2514e9b47310b70016841f5c1c2b5c0c5a516059fec46: 10 function, 0 code, 0 label entries). Seeded functions, code and names are caller assertions, not Ghidra discoveries.",
+        "Seed outcome: 9 functions created, 1 already present, 0 failed; 0 code seeds decoded, 0 failed; 0 labels applied, 0 failed; 0 seeds outside initialized memory."
+      ]
+    },
+    {
+      "entry": "0xdcc5",
+      "evidence_id": "ev_1519a659b4c4f1316ac84a59b04444581874fb1544eae4fe44a3c7826610bb87",
+      "assembly": [
+        "0xdcc5: LDY #0x0",
+        "0xdcc7: LDA 0xdd45,Y",
+        "0xdcca: STA 0x42,Y",
+        "0xdccd: INY",
+        "0xdcce: CPY #0x6",
+        "0xdcd0: BNE 0xdcc7",
+        "0xdcd2: LDA 0x0030",
+        "0xdcd4: LSR A",
+        "0xdcd5: BCS 0xdcde",
+        "0xdcd7: LDA 0x0064",
+        "0xdcd9: ASL A",
+        "0xdcda: ASL A",
+        "0xdcdb: SEC",
+        "0xdcdc: ADC 0x0065",
+        "0xdcde: JSR 0xe09c",
+        "0xdce1: JSR 0xdd4b",
+        "0xdce4: JSR 0xde79",
+        "0xdce7: INC 0x0060",
+        "0xdce9: INC 0x0062",
+        "0xdceb: DEC 0x0061",
+        "0xdced: BNE 0xdcf3",
+        "0xdcef: LDA #0x80",
+        "0xdcf1: STA 0x0061",
+        "0xdcf3: RTS"
+      ],
+      "limitations": [
+        "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+        "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+        "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+        "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+        "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+        "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+        "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+        "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+        "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels.",
+        "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state.",
+        "Headerless raw-binary analysis uses the caller-supplied architecture and entry address; file offset 0 is mapped at that address. Headers are not discovered from file bytes.",
+        "Little-endian generic Ghidra languages are used for x86, x86_64, arm, arm64, and NMOS 6502. Big-endian, Thumb-only, Cortex-M, 65C02, 65816, and other processor variants are unsupported in this increment.",
+        "Static analysis does not emulate reset vectors, memory-mapped I/O, or firmware boot sequences.",
+        "Ghidra analysis was seeded before auto-analysis from /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-levels/fixed-seeds.tsv (sha256 2a196bd6197f01443fe2514e9b47310b70016841f5c1c2b5c0c5a516059fec46: 10 function, 0 code, 0 label entries). Seeded functions, code and names are caller assertions, not Ghidra discoveries.",
+        "Seed outcome: 9 functions created, 1 already present, 0 failed; 0 code seeds decoded, 0 failed; 0 labels applied, 0 failed; 0 seeds outside initialized memory."
+      ]
+    },
+    {
+      "entry": "0xdd16",
+      "evidence_id": "ev_c3d80154cbd267d9738df3734187aa394a4be009f55043692d437811cc7e8eba",
+      "assembly": [
+        "0xdd16: LDA #0x80",
+        "0xdd18: STA 0x0040",
+        "0xdd1a: JSR 0xcec6",
+        "0xdd1d: JSR 0xf9d4",
+        "0xdd20: LDA 0x0030",
+        "0xdd22: LSR A",
+        "0xdd23: ORA #0x8",
+        "0xdd25: JSR 0xc778",
+        "0xdd28: LDA #0x5e",
+        "0xdd2a: JSR 0xf9bc",
+        "0xdd2d: LDA #0xb1",
+        "0xdd2f: STA 0x00ff",
+        "0xdd31: LDA #0xe0",
+        "0xdd33: STA 0x00fc",
+        "0xdd35: LDA #0xc",
+        "0xdd37: STA 0x0074",
+        "0xdd39: LDA #0x20",
+        "0xdd3b: JSR 0xcee3",
+        "0xdd3e: LDA 0x00ff",
+        "0xdd40: EOR #0x1",
+        "0xdd42: STA 0x00ff",
+        "0xdd44: RTS"
+      ],
+      "limitations": [
+        "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+        "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+        "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+        "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+        "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+        "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+        "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+        "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+        "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels.",
+        "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state.",
+        "Headerless raw-binary analysis uses the caller-supplied architecture and entry address; file offset 0 is mapped at that address. Headers are not discovered from file bytes.",
+        "Little-endian generic Ghidra languages are used for x86, x86_64, arm, arm64, and NMOS 6502. Big-endian, Thumb-only, Cortex-M, 65C02, 65816, and other processor variants are unsupported in this increment.",
+        "Static analysis does not emulate reset vectors, memory-mapped I/O, or firmware boot sequences.",
+        "Ghidra analysis was seeded before auto-analysis from /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-levels/fixed-seeds.tsv (sha256 2a196bd6197f01443fe2514e9b47310b70016841f5c1c2b5c0c5a516059fec46: 10 function, 0 code, 0 label entries). Seeded functions, code and names are caller assertions, not Ghidra discoveries.",
+        "Seed outcome: 9 functions created, 1 already present, 0 failed; 0 code seeds decoded, 0 failed; 0 labels applied, 0 failed; 0 seeds outside initialized memory."
+      ]
+    },
+    {
+      "entry": "0xe09c",
+      "evidence_id": "ev_179f95b9c59830cfbf617439005830f64234b7e3cf73f396956a6f62f57abe99",
+      "assembly": [
+        "0xe09c: ASL A",
+        "0xe09d: TAX",
+        "0xe09e: LDY #0x14",
+        "0xe0a0: JSR 0xf989",
+        "0xe0a3: TXA",
+        "0xe0a4: TAY",
+        "0xe0a5: LDA (0x42),Y",
+        "0xe0a7: STA 0x0000",
+        "0xe0a9: INY",
+        "0xe0aa: LDA (0x42),Y",
+        "0xe0ac: STA 0x0001",
+        "0xe0ae: LDY #0x0",
+        "0xe0b0: LDX 0x0069",
+        "0xe0b2: LDA (0x0),Y",
+        "0xe0b4: INY",
+        "0xe0b5: CMP #0x80",
+        "0xe0b7: BCS 0xe0d7",
+        "0xe0b9: STA 0x600,X",
+        "0xe0bc: INX",
+        "0xe0bd: LDA 0x0041",
+        "0xe0bf: BNE 0xe0cc",
+        "0xe0c1: CPX #0x38",
+        "0xe0c3: BEQ 0xe0d4",
+        "0xe0c5: CPX #0x78",
+        "0xe0c7: BCC 0xe0b2",
+        "0xe0c9: JMP 0xf997",
+        "0xe0cc: CPX #0x40",
+        "0xe0ce: BEQ 0xe0d4",
+        "0xe0d0: CPX #0x80",
+        "0xe0d2: BCC 0xe0b2",
+        "0xe0d4: JMP 0xf997",
+        "0xe0d7: CMP #0xf0",
+        "0xe0d9: BCS 0xe0ec",
+        "0xe0db: AND #0x7f",
+        "0xe0dd: STA 0x0002",
+        "0xe0df: LDA (0x0),Y",
+        "0xe0e1: INY",
+        "0xe0e2: STA 0x600,X",
+        "0xe0e5: INX",
+        "0xe0e6: DEC 0x0002",
+        "0xe0e8: BNE 0xe0e2",
+        "0xe0ea: BEQ 0xe0bd",
+        "0xe0ec: AND #0xf",
+        "0xe0ee: ASL A",
+        "0xe0ef: ASL A",
+        "0xe0f0: ASL A",
+        "0xe0f1: ORA 0x0069",
+        "0xe0f3: STY 0x0003",
+        "0xe0f5: TAY",
+        "0xe0f6: LDA #0x8",
+        "0xe0f8: STA 0x0002",
+        "0xe0fa: LDA 0x600,Y",
+        "0xe0fd: STA 0x600,X",
+        "0xe100: INX",
+        "0xe101: INY",
+        "0xe102: DEC 0x0002",
+        "0xe104: BNE 0xe0fa",
+        "0xe106: LDY 0x0003",
+        "0xe108: BNE 0xe0bd",
+        "0xe10a: LDX #0x1",
+        "0xe10c: LDY 0x0083",
+        "0xe10e: LDA 0x90,X",
+        "0xe110: CMP #0x1",
+        "0xe112: BNE 0xe18d",
+        "0xe114: LDA 0x0040",
+        "0xe116: LSR A",
+        "0xe117: BCC 0xe128",
+        "0xe119: LDA 0x528,Y",
+        "0xe11c: CMP #0x1",
+        "0xe11e: BNE 0xe15b",
+        "0xe120: LDA 0xbc,X",
+        "0xe122: CMP #0x2",
+        "0xe124: BNE 0xe15b",
+        "0xe126: BEQ 0xe18d",
+        "0xe128: LDA 0x598,Y",
+        "0xe12b: ASL A",
+        "0xe12c: BPL 0xe15b",
+        "0xe12e: ASL A",
+        "0xe12f: BPL 0xe14d",
+        "0xe131: LDA 0x324,Y",
+        "0xe134: SEC",
+        "0xe135: SBC 0x31a,X",
+        "0xe138: BCC 0xe143",
+        "0xe13a: CMP #0x8",
+        "0xe13c: LDA 0x598,Y",
+        "0xe13f: AND #0xef",
+        "0xe141: BCS 0xe148",
+        "0xe143: LDA 0x598,Y",
+        "0xe146: ORA #0x10",
+        "0xe148: STA 0x598,Y",
+        "0xe14b: BNE 0xe15b",
+        "0xe14d: LDA 0xa0,X",
+        "0xe14f: BEQ 0xe15b",
+        "0xe151: LDA 0xc6,X",
+        "0xe153: BMI 0xe18d",
+        "0xe155: CMP #0x1",
+        "0xe157: BCC 0xe18d",
+        "0xe159: BCS 0xe15b",
+        "0xe15b: LDY #0x0",
+        "0xe15d: LDA 0xb2,X",
+        "0xe15f: BEQ 0xe169",
+        "0xe161: LDA 0xf1,X",
+        "0xe163: AND #0x4",
+        "0xe165: BNE 0xe18d",
+        "0xe167: BEQ 0xe176",
+        "0xe169: INY",
+        "0xe16a: LDA 0xa0,X",
+        "0xe16c: BNE 0xe176",
+        "0xe16e: INY",
+        "0xe16f: LDA 0xd6,X",
+        "0xe171: CMP #0x17",
+        "0xe173: BEQ 0xe176",
+        "0xe175: INY",
+        "0xe176: JSR 0xe342",
+        "0xe179: LDA 0x31a,X",
+        "0xe17c: SEC",
+        "0xe17d: SBC 0x0008",
+        "0xe17f: CMP 0x000a",
+        "0xe181: BCS 0xe18d",
+        "0xe183: LDA 0x334,X",
+        "0xe186: SEC",
+        "0xe187: SBC 0x0009",
+        "0xe189: CMP 0x000b",
+        "0xe18b: BCC 0xe1d0",
+        "0xe18d: DEX",
+        "0xe18e: BMI 0xe193",
+        "0xe190: JMP 0xe10c",
+        "0xe193: LDX 0x0083",
+        "0xe195: RTS",
+        "0xe196: LDA 0x31a,X",
+        "0xe199: CMP 0xb8,X",
+        "0xe19b: BCC 0xe18d",
+        "0xe19d: LDA #0x1",
+        "0xe19f: STA 0x568,Y",
+        "0xe1a2: LDA 0x518,Y",
+        "0xe1a5: CLC",
+        "0xe1a6: ADC 0x4d8,Y",
+        "0xe1a9: LDA 0x508,Y",
+        "0xe1ac: ADC #0x0",
+        "0xe1ae: CLC",
+        "0xe1af: ADC 0xd4,X",
+        "0xe1b1: STA 0xd4,X",
+        "0xe1b3: LDA 0x598,Y",
+        "0xe1b6: ASL A",
+        "0xe1b7: ASL A",
+        "0xe1b8: ASL A",
+        "0xe1b9: LDA #0xe4",
+        "0xe1bb: BCC 0xe1bf",
+        "0xe1bd: LDA #0xe8",
+        "0xe1bf: CLC",
+        "0xe1c0: ADC 0x324,Y",
+        "0xe1c3: STA 0x31a,X",
+        "0xe1c6: LDA #0x1",
+        "0xe1c8: STA 0xb6,X",
+        "0xe1ca: JSR 0xd79d",
+        "0xe1cd: JMP 0xe18d",
+        "0xe1d0: LDY 0x0083",
+        "0xe1d2: LDA 0x33e,Y",
+        "0xe1d5: SEC",
+        "0xe1d6: SBC 0x334,X",
+        "0xe1d9: BCS 0xe1df",
+        "0xe1db: EOR #0xff",
+        "0xe1dd: ADC #0x1",
+        "0xe1df: CMP #0x80",
+        "0xe1e1: BCS 0xe18d",
+        "0xe1e3: LDA 0x598,Y",
+        "0xe1e6: ASL A",
+        "0xe1e7: BPL 0xe1ed",
+        "0xe1e9: AND #0x20",
+        "0xe1eb: BEQ 0xe196",
+        "0xe1ed: LDA 0x528,Y",
+        "0xe1f0: BEQ 0xe21d",
+        "0xe1f2: LDA 0xae,X",
+        "0xe1f4: BNE 0xe18d",
+        "0xe1f6: LDA 0xb0,X",
+        "0xe1f8: BNE 0xe207",
+        "0xe1fa: JSR 0xd474",
+        "0xe1fd: LDA 0x528,Y",
+        "0xe200: CMP #0x1",
+        "0xe202: BEQ 0xe271",
+        "0xe204: LDX 0x0083",
+        "0xe206: RTS",
+        "0xe207: STX 0x0017",
+        "0xe209: LDX 0x0083",
+        "0xe20b: LDA 0x578,X",
+        "0xe20e: BEQ 0xe21c",
+        "0xe210: CMP #0xf0",
+        "0xe212: BCS 0xe21c",
+        "0xe214: LDA #0x0",
+        "0xe216: STA 0x578,X",
+        "0xe219: JSR 0xe8a6",
+        "0xe21c: RTS",
+        "0xe21d: STX 0x0010",
+        "0xe21f: LDA #0xa",
+        "0xe221: STA 0x0000",
+        "0xe223: TXA",
+        "0xe224: TAY",
+        "0xe225: JSR 0xc33b",
+        "0xe228: LDX 0x0010",
+        "0xe22a: LDY 0x0083",
+        "0xe22c: LDA #0x38",
+        "0xe22e: JSR 0xf9bc",
+        "0xe231: LDA 0x5a8,Y",
+        "0xe234: AND #0x7",
+        "0xe236: BEQ 0xe256",
+        "0xe238: CMP #0x5",
+        "0xe23a: BCC 0xe25e",
+        "0xe23c: BEQ 0xe247",
+        "0xe23e: JSR 0xe949",
+        "0xe241: LDA #0x20",
+        "0xe243: STA 0x007d",
+        "0xe245: BNE 0xe271",
+        "0xe247: LDA #0x80",
+        "0xe249: LDY 0x0030",
+        "0xe24b: CPY #0x6",
+        "0xe24d: BNE 0xe251",
+        "0xe24f: LDA #0x90",
+        "0xe251: STA 0xb0,X",
+        "0xe253: JMP 0xe271",
+        "0xe256: LDA #0x10",
+        "0xe258: STA 0x0008",
+        "0xe25a: LDY #0xff",
+        "0xe25c: BNE 0xe26a",
+        "0xe25e: LDY #0xf0",
+        "0xe260: STA 0x0008",
+        "0xe262: EOR 0xaa,X",
+        "0xe264: AND #0xf",
+        "0xe266: BEQ 0xe26a",
+        "0xe268: LDY #0xe0",
+        "0xe26a: TYA",
+        "0xe26b: AND 0xaa,X",
+        "0xe26d: ORA 0x0008",
+        "0xe26f: STA 0xaa,X",
+        "0xe271: LDX 0x0083",
+        "0xe273: JMP 0xe73a"
+      ],
+      "limitations": [
+        "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+        "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+        "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+        "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+        "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+        "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+        "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+        "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+        "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels.",
+        "Ghidra Listing reports a terminal call at 0xe0c9 to 0xf997 FUN_f997 (external=false, thunk=false, hasNoReturn=false); fallthrough is excluded by Ghidra's flow model. The reason for the terminal flow is not established by this observation.",
+        "Ghidra Listing reports a terminal call at 0xe0d4 to 0xf997 FUN_f997 (external=false, thunk=false, hasNoReturn=false); fallthrough is excluded by Ghidra's flow model. The reason for the terminal flow is not established by this observation.",
+        "Ghidra Listing reports a terminal call at 0xe273 to 0xe73a FUN_e73a (external=false, thunk=false, hasNoReturn=false); fallthrough is excluded by Ghidra's flow model. The reason for the terminal flow is not established by this observation.",
+        "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state.",
+        "Headerless raw-binary analysis uses the caller-supplied architecture and entry address; file offset 0 is mapped at that address. Headers are not discovered from file bytes.",
+        "Little-endian generic Ghidra languages are used for x86, x86_64, arm, arm64, and NMOS 6502. Big-endian, Thumb-only, Cortex-M, 65C02, 65816, and other processor variants are unsupported in this increment.",
+        "Static analysis does not emulate reset vectors, memory-mapped I/O, or firmware boot sequences.",
+        "Ghidra analysis was seeded before auto-analysis from /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-levels/fixed-seeds.tsv (sha256 2a196bd6197f01443fe2514e9b47310b70016841f5c1c2b5c0c5a516059fec46: 10 function, 0 code, 0 label entries). Seeded functions, code and names are caller assertions, not Ghidra discoveries.",
+        "Seed outcome: 9 functions created, 1 already present, 0 failed; 0 code seeds decoded, 0 failed; 0 labels applied, 0 failed; 0 seeds outside initialized memory."
+      ]
+    },
+    {
+      "entry": "0xface",
+      "evidence_id": "ev_97d92e6270fd38e5eb0ba5bd3dda6c50ca8f8e1db706aa1f8e3423738fa1b19a",
+      "assembly": [
+        "0xface: LDA 0x07f0",
+        "0xfad1: STA 0xb000",
+        "0xfad4: LSR A",
+        "0xfad5: LSR A",
+        "0xfad6: LSR A",
+        "0xfad7: LSR A",
+        "0xfad8: STA 0xb001",
+        "0xfadb: LDA 0x07f1",
+        "0xfade: STA 0xb002",
+        "0xfae1: LSR A",
+        "0xfae2: LSR A",
+        "0xfae3: LSR A",
+        "0xfae4: LSR A",
+        "0xfae5: STA 0xb003",
+        "0xfae8: LDA 0x07f2",
+        "0xfaeb: STA 0xc000",
+        "0xfaee: LSR A",
+        "0xfaef: LSR A",
+        "0xfaf0: LSR A",
+        "0xfaf1: LSR A",
+        "0xfaf2: STA 0xc001",
+        "0xfaf5: LDA 0x07f3",
+        "0xfaf8: STA 0xc002",
+        "0xfafb: LSR A",
+        "0xfafc: LSR A",
+        "0xfafd: LSR A",
+        "0xfafe: LSR A",
+        "0xfaff: STA 0xc003",
+        "0xfb02: LDA 0x07f4",
+        "0xfb05: STA 0xd000",
+        "0xfb08: LSR A",
+        "0xfb09: LSR A",
+        "0xfb0a: LSR A",
+        "0xfb0b: LSR A",
+        "0xfb0c: STA 0xd001",
+        "0xfb0f: LDA 0x07f5",
+        "0xfb12: STA 0xd002",
+        "0xfb15: LSR A",
+        "0xfb16: LSR A",
+        "0xfb17: LSR A",
+        "0xfb18: LSR A",
+        "0xfb19: STA 0xd003",
+        "0xfb1c: LDA 0x07f6",
+        "0xfb1f: STA 0xe000",
+        "0xfb22: LSR A",
+        "0xfb23: LSR A",
+        "0xfb24: LSR A",
+        "0xfb25: LSR A",
+        "0xfb26: STA 0xe001",
+        "0xfb29: LDA 0x07f7",
+        "0xfb2c: STA 0xe002",
+        "0xfb2f: LSR A",
+        "0xfb30: LSR A",
+        "0xfb31: LSR A",
+        "0xfb32: LSR A",
+        "0xfb33: STA 0xe003",
+        "0xfb36: LDA #0x0",
+        "0xfb38: STA 0x9000",
+        "0xfb3b: RTS"
+      ],
+      "limitations": [
+        "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+        "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+        "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+        "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+        "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+        "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+        "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+        "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+        "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels.",
+        "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state.",
+        "Headerless raw-binary analysis uses the caller-supplied architecture and entry address; file offset 0 is mapped at that address. Headers are not discovered from file bytes.",
+        "Little-endian generic Ghidra languages are used for x86, x86_64, arm, arm64, and NMOS 6502. Big-endian, Thumb-only, Cortex-M, 65C02, 65816, and other processor variants are unsupported in this increment.",
+        "Static analysis does not emulate reset vectors, memory-mapped I/O, or firmware boot sequences.",
+        "Ghidra analysis was seeded before auto-analysis from /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-levels/fixed-seeds.tsv (sha256 2a196bd6197f01443fe2514e9b47310b70016841f5c1c2b5c0c5a516059fec46: 10 function, 0 code, 0 label entries). Seeded functions, code and names are caller assertions, not Ghidra discoveries.",
+        "Seed outcome: 9 functions created, 1 already present, 0 failed; 0 code seeds decoded, 0 failed; 0 labels applied, 0 failed; 0 seeds outside initialized memory."
+      ]
+    },
+    {
+      "entry": "0xa816",
+      "evidence_id": "ev_2250ef78a8e738f7e7462e320339d3804c33fd84b855b32d7ecdcd5afd8465ea",
+      "assembly": [
+        "0xa816: LDA 0x0030",
+        "0xa818: ASL A",
+        "0xa819: ASL A",
+        "0xa81a: ASL A",
+        "0xa81b: ASL A",
+        "0xa81c: ASL A",
+        "0xa81d: TAY",
+        "0xa81e: LDX #0x0",
+        "0xa820: STX 0x003b",
+        "0xa822: STX 0x0194",
+        "0xa825: LDA 0xa87b,Y",
+        "0xa828: STA 0x40,X",
+        "0xa82a: INY",
+        "0xa82b: INX",
+        "0xa82c: CPX #0x20",
+        "0xa82e: BNE 0xa825",
+        "0xa830: LDY #0x0",
+        "0xa832: LDX #0xf",
+        "0xa834: LDA 0xa84b,Y",
+        "0xa837: STA 0x1a0,X",
+        "0xa83a: LDA 0xa85b,Y",
+        "0xa83d: STA 0x1b0,X",
+        "0xa840: LDA 0xa86b,Y",
+        "0xa843: STA 0x7b0,X",
+        "0xa846: INY",
+        "0xa847: DEX",
+        "0xa848: BPL 0xa834",
+        "0xa84a: RTS"
+      ],
+      "limitations": [
+        "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+        "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+        "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+        "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+        "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+        "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+        "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+        "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+        "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels.",
+        "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state.",
+        "Headerless raw-binary analysis uses the caller-supplied architecture and entry address; file offset 0 is mapped at that address. Headers are not discovered from file bytes.",
+        "Little-endian generic Ghidra languages are used for x86, x86_64, arm, arm64, and NMOS 6502. Big-endian, Thumb-only, Cortex-M, 65C02, 65816, and other processor variants are unsupported in this increment.",
+        "Static analysis does not emulate reset vectors, memory-mapped I/O, or firmware boot sequences.",
+        "Ghidra analysis was seeded before auto-analysis from /Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-levels/header-seeds.tsv (sha256 0ba3035264a2648841d8023e4c378c5990442532d320712881ced61521d1221b: 1 function, 0 code, 0 label entries). Seeded functions, code and names are caller assertions, not Ghidra discoveries.",
+        "Seed outcome: 0 functions created, 1 already present, 0 failed; 0 code seeds decoded, 0 failed; 0 labels applied, 0 failed; 0 seeds outside initialized memory."
+      ]
+    }
+  ],
+  "scope": "Original function and transition execution at declared controlled inputs, not natural campaign traversal.",
+  "limitations": [
+    "Ordinary initialization CHR presets differ from later animated desired/applied pages; see separate animation recovery.",
+    "E09C Ghidra dossier includes a conservative fallthrough into E10A; admitted map streams terminate within E09C..E109.",
+    "C848..C857 are CHR-animation dispatch data, not graphics-queue opcodes or instructions."
+  ],
+  "files": {
+    "levels-catalog.json.gz": "7907d15dd973f6f8127a9c3a6aa95bae71b26c6175d4ff5747fadbb2753f5026",
+    "levels-fixed-rea.json.gz": "1c9beb86a293835a69c67b86dc391fce19fd0c7a871710c07abe78470d6bc3ba",
+    "levels-header-rea.json.gz": "40d4b0275ae3a6ff0cef8c160dd28c2a4c8599b513e8e4c52bd9cf9a5d3c2a08",
+    "levels-loader-original.json.gz": "ade2205eacf994ed8c3bc269b55ef49e23e524fa6c2f5a5c07897f155e56af98",
+    "levels-transitions-original.json.gz": "6af68cd0792bbc470b0136e778cd380f9c06f67bfe2b5694e8464e03b3f18e7a"
+  }
+}

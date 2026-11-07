@@ -1,0 +1,99 @@
+.contra-runtime {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  outline: none;
+  color: #f4f3ed;
+  background: #202a2d;
+}
+.contra-board {
+  width: 100%;
+  min-width: 0;
+}
+.contra-game-resources {
+  display: flex;
+  gap: 12px;
+  justify-content: space-around;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 8px;
+  background: #202a2d;
+  color: #f4f3ed;
+}
+.contra-game-resources > span {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  min-width: 0;
+  font-size: 13px;
+}
+.contra-game-resources strong {
+  overflow-wrap: anywhere;
+}
+.contra-game-resources [aria-current] {
+  color: #fff2b1;
+}
+.contra-board-loading,
+.contra-board-error,
+.contra-state {
+  margin: 0 auto;
+  padding: 12px;
+  max-width: 600px;
+  background: #202a2d;
+  color: #f4f3ed;
+}
+.contra-board-error {
+  background: #7d2424;
+  color: #fff;
+}
+[data-room-fullscreen] .contra-runtime,
+[data-room-fullscreen] .contra-game-resources,
+[data-room-fullscreen] .contra-state {
+  max-width: min(600px, calc((100dvh - 240px) * 256 / 240));
+}
+.contra-runtime-screen {
+  width: 100%;
+  position: relative;
+  background: #080c10;
+  aspect-ratio: 256/240;
+  overflow: hidden;
+}
+.contra-runtime-screen canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+}
+.contra-runtime-controller {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 12px 0;
+  background: #eee8d9;
+  color: #332d24;
+}
+.contra-runtime-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: #202a2de6;
+  color: #fff;
+}
+.contra-runtime-loading progress {
+  width: 60%;
+}
+.contra-runtime [role="alert"] {
+  padding: 12px;
+  margin: 0;
+  color: #fff;
+  background: #7d2424;
+}
+@media (max-width: 600px) {
+  .contra-runtime-controller {
+    padding: 6px 0;
+  }
+}

@@ -7,9 +7,29 @@
 - 璀璨宝石同分以发展卡更少者优先；铁路采用当前地图的同分规则（见 [地图说明](rail-maps.md)），积分排名与游戏胜负共用同一比较逻辑。其他游戏按最终得分排列失败者。
 - 超时被移出的玩家排在存活失败者之后，不会靠被移出前的高分获得积分。
 - 三国杀以阵营为第一名：获胜阵营每人 +20，失败阵营每人 −10。包含已经阵亡的队友。
-- 开局有任意电脑玩家，整场都不计积分。中止不计积分。模块可将练习／休闲对局标记为 `Unrated`（例如俄罗斯方块单人练习）；这类对局保存成绩和历史，但不写积分流水，也不在历史中标记胜者。
+- 开局有任意电脑玩家，整场都不计积分。游戏内部占玩家角色的电脑也由 `HasComputerPlayers` 排除；关卡敌兵和 Boss 不属于电脑玩家。真人主动托管不改变计分资格。
+- 模块可将练习／休闲对局标记为 `Match.Unrated` 或 `Result.Unrated`（例如俄罗斯方块单人练习）；这类对局保存成绩和历史，但不写积分流水，也不在历史中标记胜者。
 - 积分功能上线前已开始或已结束的对局不补算。新开局记录是否参与积分。
 
 积分流水 `rating_ledger` 与对局归档在同一 SQLite 事务提交，每个 `(match_id,user_id)` 只记录一次。重复保存、接口重试、重启、观战、离桌和再开一局均不得重复结算。历史记录附带该局是否计分、排名与积分变化。
 
+服务端模块可显式声明 `RatingPolicy: gameapi.RatingCoopCampaignV1`（`coop_campaign_v1`）。此策略在开局冻结，不随模块升级或后续注册更改；旧合作局及没有声明策略的游戏继续不计分。计分合作局使用 `Result.Cooperative`：通关时全部参战者各加 20 分；失败时没有赢家，全部参战者各扣 10 分。所有人的排名均为 1，不把团队失败表示成和局。
+
+第一轮公共加载全部完成后，挑战开始承担结算责任。首次加载中取消或到期不扣分；开始后的刷新和重启不重置该边界。主动结束房间视为放弃；连续 24 小时无操作、或暂停后连续 30 天无操作，按全队失败结算。房间关闭与模块内终局分开保存，不伪造游戏状态或全灭；原始参战名单保留。管理员中止属于平台中止，不加减分，原因随历史保存。其他未启用此策略的中止对局保持原有不计分行为。
+
+挑战中一旦出现电脑玩家角色或练习标记，不再恢复计分资格。`Result.Unrated` 可在终局明确排除计分；标准／练习玩法应优先在 `Start` 的 `Match.Unrated` 声明，便于开局前展示。历史附带 `ratingPolicy`、`outcome`（通关、失败、放弃、到期、取消或中止）及 `unratedReason`；重复保存仍只结算一次。计分的放弃／到期记录计入对局数，不计胜场。
+
 `GET /api/leaderboard?offset=0` 返回每页 50 名已参加计分对局的玩家、并列排名、积分、获胜/对局数及当前用户积分。玩家资料接口同步返回积分，战绩显示每一局的加减分。榜单不包含电脑。
+
+合作策略的可重复验收：
+
+```sh
+source scripts/env.sh
+mkdir -p .local/coop-campaign/tmp
+export TMPDIR="$PWD/.local/coop-campaign/tmp"
+export GOTMPDIR="$TMPDIR"
+go test -race ./internal/server -run '^TestCoopCampaign' -count=1 -json > .local/coop-campaign/recheck.jsonl
+node --experimental-strip-types --test web/tests/coop-campaign-copy.test.mjs
+```
+
+HTTP E2E 使用专用合作规则夹具，通过真实注册、房间、加载、行动、托管、关闭与重启路径验证平台计分，结果保留于 `.local/coop-campaign/evidence/`。其成功不代表任何具体游戏已完成通关验收。

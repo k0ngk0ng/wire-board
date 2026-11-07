@@ -1,0 +1,227 @@
+{
+  "passed": true,
+  "scope": "Independent weapon generation and full-pool update against original calls; not full-world or campaign acceptance.",
+  "fireCalls": 17775,
+  "poolSteps": 6331,
+  "sourceSHA256": {
+    "games/contra/engine/weapons.go": "102d1baddcf33c45c579f1b6b5096f9b3b017b7174c8c6730a928b226837236e",
+    "games/contra/engine/weapons_step.go": "66418a29dc83ed1592549c9d0a242bef5c3670c7d44829cd0a63635488e3182e",
+    "games/contra/engine/weapons_tables.go": "b7fc20675297b7ad196c1b2fd581f802e717db47190dd1482cbcd3db3e3e0637",
+    "games/contra/engine/weapons_test.go": "21c2a114fc01483a09d039212f9a7a36ab4bb0a9d866e5a4cd8562797fd3be67",
+    "games/contra/engine/weapons_types.go": "a6e538b735b869bad168f6121205a0e5c8c4aa6d80320fb5bc62a42d22fe6aa4",
+    "scripts/contra/weapons_capture.py": "8c844b8c74a527dbe77a38755b7b94aa650f33542888caa83b42f1b2ddce6553",
+    "scripts/contra/weapons_capture_equipment.py": "ae56a08394366c871e303098a046b9e55b9fb0bc6bab64851b52ff58599f88ff",
+    "scripts/contra/weapons_export.py": "9c983cac283b1640096f32884286fe6648768c56740fba93fc763d42efbcd184",
+    "scripts/contra/weapons_prepare.py": "ef6a1d24b85b9e8848c6114fe2771c63e0b77ac7cd4d168bb5e25d0e43b0ce36",
+    "scripts/contra/weapons_rea.mjs": "75aa1d46263e5774f5077b80a0bd7913f39685d91b9668108919b356b5183911",
+    "scripts/contra/weapons_tables.py": "76fad1ef8d7ce31c952a195981f17592e7f38c5a2cb6ab5e626fb2e4521f2f53",
+    "scripts/contra/weapons_capture_machinegun.py": "0f2e77095d6d52730f6c5e418e690dfc12bac57d8aff1abe5d76a359fc389709"
+  },
+  "tests": [
+    "TestOriginalWeaponFire/natural",
+    "TestOriginalWeaponFire/isolated",
+    "TestOriginalWeaponFire/equipment",
+    "TestOriginalWeaponFire/machine",
+    "TestOriginalWeaponFire",
+    "TestOriginalNaturalProjectileSteps"
+  ],
+  "reaIndex": "weapons-index.json",
+  "red": [
+    "weapons-red.jsonl",
+    "weapons-step-red.jsonl"
+  ],
+  "green": "weapons-machine-green-race.jsonl",
+  "limitations": [
+    "Nonzero vertical scroll and solid-background collision lack dynamic coverage; horizontal 0/1 scroll is naturally verified.",
+    "Natural M pickup/use is verified; other weapons use explicit staged equipment.",
+    "Per-call comparisons do not replace continuous full-world or campaign E2E."
+  ],
+  "cleanup": [
+    {
+      "path": ".local/contra-weapons/swift-cache",
+      "bytes": 93390128
+    },
+    {
+      "path": "dist/contra-weapons-tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-weapons/rea",
+      "bytes": 327439
+    },
+    {
+      "path": ".local/contra-weapons/core-rea",
+      "bytes": 738178
+    },
+    {
+      "path": ".local/contra-weapons/weapons-rea",
+      "bytes": 1932584
+    },
+    {
+      "path": ".local/contra-weapons/full-rea",
+      "bytes": 5595257
+    },
+    {
+      "path": ".local/contra-weapons/leaf-rea",
+      "bytes": 10578205
+    },
+    {
+      "path": ".local/contra-weapons/fixed-rea",
+      "bytes": 155464
+    },
+    {
+      "path": ".local/contra-weapons/recheck",
+      "bytes": 790175
+    },
+    {
+      "path": ".local/contra-weapons/oracle/runs/natural-v1",
+      "bytes": 2669648
+    },
+    {
+      "path": ".local/contra-weapons/oracle/runs/isolated-v2",
+      "bytes": 18073143
+    },
+    {
+      "path": ".local/contra-weapons/oracle/runs/isolated-v3",
+      "bytes": 18073143
+    },
+    {
+      "path": ".local/contra-weapons/oracle/runs/equipment-v2-s2-w3",
+      "bytes": 1154483
+    },
+    {
+      "path": ".local/contra-weapons/oracle/runs/equipment-v2-s2-w4",
+      "bytes": 1149229
+    },
+    {
+      "path": ".local/contra-weapons/oracle/runs/equipment-v2-s2-w2",
+      "bytes": 1166310
+    },
+    {
+      "path": ".local/contra-weapons/oracle/runs/equipment-v2-s3-w2",
+      "bytes": 1302441
+    },
+    {
+      "path": ".local/contra-weapons/oracle/runs/equipment-v2-s3-w3",
+      "bytes": 1303007
+    },
+    {
+      "path": ".local/contra-weapons/oracle/runs/equipment-v2-s3-w4",
+      "bytes": 1288926
+    },
+    {
+      "path": ".local/contra-weapons/oracle/runs/equipment-v2-s3-w17",
+      "bytes": 1290147
+    },
+    {
+      "path": ".local/contra-weapons/oracle/runs/equipment-v2-s3-w19",
+      "bytes": 1303434
+    },
+    {
+      "path": ".local/contra-weapons/oracle/runs/equipment-v2-s1-w0",
+      "bytes": 1340102
+    },
+    {
+      "path": ".local/contra-weapons/oracle/runs/equipment-v2-s1-w16",
+      "bytes": 1340580
+    },
+    {
+      "path": ".local/contra-weapons/oracle/runs/equipment-v2-s2-w19",
+      "bytes": 1149746
+    },
+    {
+      "path": ".local/contra-weapons/oracle/runs/equipment-v2-s1-w18",
+      "bytes": 1340371
+    },
+    {
+      "path": ".local/contra-weapons/oracle/runs/equipment-v2-s1-w20",
+      "bytes": 1326759
+    },
+    {
+      "path": ".local/contra-weapons/oracle/runs/equipment-v2-s2-w17",
+      "bytes": 1153393
+    },
+    {
+      "path": ".local/contra-weapons/oracle/runs/equipment-v2-s3-w20",
+      "bytes": 1289268
+    },
+    {
+      "path": ".local/contra-weapons/oracle/runs/equipment-v2-s1-w1",
+      "bytes": 1327347
+    },
+    {
+      "path": ".local/contra-weapons/oracle/runs/equipment-v2-s3-w18",
+      "bytes": 1302876
+    },
+    {
+      "path": ".local/contra-weapons/oracle/runs/equipment-v2-s3-w16",
+      "bytes": 1303067
+    },
+    {
+      "path": ".local/contra-weapons/oracle/runs/equipment-v2-s2-w16",
+      "bytes": 1166647
+    },
+    {
+      "path": ".local/contra-weapons/oracle/runs/equipment-v2-s1-w19",
+      "bytes": 1340927
+    },
+    {
+      "path": ".local/contra-weapons/oracle/runs/equipment-v2-s2-w18",
+      "bytes": 1166647
+    },
+    {
+      "path": ".local/contra-weapons/oracle/runs/equipment-v2-s2-w20",
+      "bytes": 1149465
+    },
+    {
+      "path": ".local/contra-weapons/oracle/runs/equipment-v2-s1-w17",
+      "bytes": 1327729
+    },
+    {
+      "path": ".local/contra-weapons/oracle/runs/equipment-v2-s2-w0",
+      "bytes": 1166310
+    },
+    {
+      "path": ".local/contra-weapons/oracle/runs/equipment-v2-s2-w1",
+      "bytes": 1153156
+    },
+    {
+      "path": ".local/contra-weapons/oracle/runs/equipment-v2-s3-w1",
+      "bytes": 1289790
+    },
+    {
+      "path": ".local/contra-weapons/oracle/runs/equipment-v2-s3-w0",
+      "bytes": 1302617
+    },
+    {
+      "path": ".local/contra-weapons/oracle/runs/equipment-v2-s1-w3",
+      "bytes": 1340420
+    },
+    {
+      "path": ".local/contra-weapons/oracle/runs/equipment-v2-s1-w4",
+      "bytes": 1326394
+    },
+    {
+      "path": ".local/contra-weapons/oracle/runs/equipment-v2-s1-w2",
+      "bytes": 1339883
+    },
+    {
+      "path": ".local/contra-weapons/pickup/runs/pickup-observe",
+      "bytes": 5468311
+    },
+    {
+      "path": ".local/contra-weapons/pickup/runs/pickup-box-lower-01",
+      "bytes": 5039840
+    }
+  ],
+  "retained": "Primary original captures, final REA dossiers, source states, source-bound fixtures and red/green evidence remain for active integration.",
+  "machinePickup": {
+    "first": {
+      "frame": 292,
+      "actor": 0,
+      "weapon": 1
+    },
+    "framesWithMachinegun": 409,
+    "ram_sha256": "9b2a0b98e87fb7e846b79b3edf61fc56097fd68f08a5a4dca0c95556b8f7add0"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "scope": "One shared public-pixel classification per rule frame with independent authenticated-seat bot policies",
+  "passed": true,
+  "fullServerRacePassedTests": 52,
+  "command": "go test ./games/contra/server -race -count=1 -json",
+  "checks": [
+    "Three rule frames invoke the classifier three times for two automated seats, formerly six",
+    "Canonical observation Actor=0 even when only seat one is automated",
+    "Each policy receives its own Actor and copied enemy slice",
+    "Manual seats do not advance bot memory",
+    "Input errors remain transactional",
+    "Unknown/public HUD and hidden-state noninterference remain enforced",
+    "Natural cooperative failure, replay, restore and input/ledger boundaries remain passing"
+  ],
+  "sourceSHA256": {
+    "games/contra/server/timer.go": "3f8fcc59896e9ce96a9db555dd5413bae7b4b8b8ef1b2eca46926c9b6f964af8",
+    "games/contra/server/bot_visual.go": "9c405eb36806b72cc7497d42306a08278f38a73b024fe66ddaf79287d604096b",
+    "games/contra/server/bot_visual_e2e_test.go": "14093dab69d387c7c1f80df21ec21278e62dbb3300ffc04bbe489a51c84d092b",
+    "games/contra/server/shared_visual_e2e_test.go": "96017d985f72b3beda43222fde76c6dc838626c80515bb6cc4fd43df5642137a"
+  },
+  "artifacts": {
+    "docs/research/nes-contra/evidence/shared-classification-red.log.gz": "838ba96bb6b00ebf3fca965034d9922e3f0b9399ca8061741fc1c8277c5f4b84",
+    "docs/research/nes-contra/evidence/shared-classification-green.jsonl.gz": "bd87d3a68de19ddebc74ab50dd804dac89c4494a3e0402d70187362210f25f99",
+    "docs/research/nes-contra/evidence/shared-classification-server-race.jsonl.gz": "a3ac4f19fa614a1f4cf6467d386cf02d422be86b779fff83ebc65724570ce715"
+  },
+  "limitations": [
+    "No claim of final vision strategy completeness or eight-stage victory.",
+    "Classifier call count reduction is verified; production-hardware latency still needs measurement.",
+    "The explicit browser-host test remains skipped in this ordinary package run."
+  ]
+}

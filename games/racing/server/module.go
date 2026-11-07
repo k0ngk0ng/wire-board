@@ -43,14 +43,15 @@ func configure(n int, raw json.RawMessage) (json.RawMessage, error) {
 }
 
 type Action struct {
-	Type     string  `json:"type"`
-	Epoch    string  `json:"epoch"`
-	Seq      int64   `json:"seq"`
-	Steer    float64 `json:"steer"`
-	Throttle float64 `json:"throttle"`
-	Brake    bool    `json:"brake"`
-	Drift    bool    `json:"drift"`
-	Skin     int     `json:"skin"`
+	BrakeAmount *float64 `json:"brakeAmount,omitempty"`
+	Type        string   `json:"type"`
+	Epoch       string   `json:"epoch"`
+	Seq         int64    `json:"seq"`
+	Steer       float64  `json:"steer"`
+	Throttle    float64  `json:"throttle"`
+	Brake       bool     `json:"brake"`
+	Drift       bool     `json:"drift"`
+	Skin        int      `json:"skin"`
 }
 
 func Module() gameapi.Module {
@@ -94,6 +95,9 @@ func validAction(ctx gameapi.Context, s State, raw json.RawMessage) (Action, err
 	c := s.Cars[ctx.Actor]
 	switch a.Type {
 	case "drive":
+		if a.BrakeAmount != nil && (!finite(*a.BrakeAmount) || *a.BrakeAmount < 0 || *a.BrakeAmount > 1 || a.Brake != (*a.BrakeAmount > 0)) {
+			return a, errors.New("刹车力度超出范围或状态不一致")
+		}
 		if a.Seq <= c.Seq || a.Seq <= 0 || a.Seq > maxInputSequence || c.Seq < 0 || c.Seq >= maxInputSequence || a.Seq-c.Seq > maxSequenceJump || !finite(a.Steer) || a.Steer < -1 || a.Steer > 1 || !finite(a.Throttle) || a.Throttle < 0 || a.Throttle > 1 {
 			return a, errors.New("输入已过期或超出范围")
 		}
@@ -127,10 +131,11 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 		c.Steer = a.Steer
 		c.Throttle = a.Throttle
 		c.Brake = a.Brake
+		c.BrakeAmount = a.BrakeAmount
 		c.Drift = a.Drift
 		c.LastInputAt = at
 		c.IdleAt = at + idleMS
-		in := Input{At: at, Steer: a.Steer, Throttle: a.Throttle, Brake: a.Brake, Drift: a.Drift}
+		in := Input{At: at, Steer: a.Steer, Throttle: a.Throttle, Brake: a.Brake, BrakeAmount: a.BrakeAmount, Drift: a.Drift}
 		if len(c.Pending) > 0 && c.Pending[len(c.Pending)-1].At == at {
 			c.Pending[len(c.Pending)-1] = in
 		} else {
@@ -160,6 +165,7 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 		c.Steer = 0
 		c.Throttle = 0
 		c.Brake = true
+		c.BrakeAmount = nil
 		c.Drift = false
 		c.LastInputAt = at
 		c.IdleAt = at + idleMS
@@ -200,6 +206,7 @@ func reclaim(ctx gameapi.Context, m gameapi.Match) (gameapi.Match, error) {
 	c.Steer = 0
 	c.Throttle = 0
 	c.Brake = true
+	c.BrakeAmount = nil
 	c.Drift = false
 	c.Pending = nil
 	c.Applied = Input{At: at, Brake: true}
@@ -249,6 +256,7 @@ func repairSequences(s *State) bool {
 		c.Steer = 0
 		c.Throttle = 0
 		c.Brake = true
+		c.BrakeAmount = nil
 		c.Drift = false
 		c.Pending = nil
 		c.Applied = Input{At: s.ServerAt, Brake: true}

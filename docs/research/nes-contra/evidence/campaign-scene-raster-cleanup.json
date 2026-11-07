@@ -1,0 +1,30 @@
+{
+  "scope": "Only this raster task private simulator profiles/temp/API-probe intermediate run and completed emulator log. Kept API inventory, full original RAM/timing/PPU/PNG, final native dossiers and normalized verification artifacts. Shared REA cache is left untouched for other agents.",
+  "reclaimedBytes": 62100,
+  "removed": [
+    {
+      "path": ".local/contra-raster/oracle/runs/raster-api",
+      "bytes": 43130
+    },
+    {
+      "path": ".local/contra-raster/oracle/api.json",
+      "bytes": 320
+    },
+    {
+      "path": ".local/contra-raster/oracle/fceux-home",
+      "bytes": 17693
+    },
+    {
+      "path": ".local/contra-raster/oracle/runtime",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-raster/oracle/tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-raster/oracle/runs/raster-v1/emulator.log",
+      "bytes": 957
+    }
+  ]
+}

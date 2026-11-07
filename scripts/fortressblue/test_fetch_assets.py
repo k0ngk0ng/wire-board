@@ -10,6 +10,8 @@ import importlib.util
 import threading
 import time
 import unittest
+import tempfile
+from unittest.mock import patch
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
@@ -84,6 +86,38 @@ class DownloadHTTPTests(unittest.TestCase):
             fetch_assets.fetch(self.base + "/slow")
         self.assertLess(time.monotonic() - began, 1.5)
 
+
+# Cache failure inventory before implementation: a different commit's program
+# is restored, mismatched media is copied, missing artifacts skip validation,
+# or a symlink/traversal writes outside the explicit public asset directory.
+class VerifiedMediaCacheTests(unittest.TestCase):
+    def setUp(self):
+        parent=Path(__file__).resolve().parents[2]/".local/fortress-media-tests";parent.mkdir(parents=True,exist_ok=True)
+        self.temp=tempfile.TemporaryDirectory(dir=parent);self.addCleanup(self.temp.cleanup)
+        self.root=Path(self.temp.name);self.source=self.root/"artifact";self.source.mkdir()
+        self.body=b"immutable media";self.relative="fortressblue/v2/image.webp"
+        self.entry={"urlPath":"/"+self.relative,"output":"games/fortressblue/assets/public/"+self.relative,"bytes":len(self.body),"sha256":fetch_assets.sha(self.body)}
+        p=self.source/self.relative;p.parent.mkdir(parents=True);p.write_bytes(self.body)
+        (self.source/"index.html").write_text("old program must not be copied")
+        self.patch=patch.object(fetch_assets,"ROOT",self.root);self.patch.start();self.addCleanup(self.patch.stop)
+    def test_only_exact_manifest_media_is_restored(self):
+        self.assertEqual(fetch_assets.restore_media(self.source,[self.entry]),1)
+        self.assertEqual((self.root/self.entry['output']).read_bytes(),self.body)
+        self.assertFalse((self.root/'web/dist/index.html').exists())
+    def test_missing_or_changed_media_is_not_accepted(self):
+        (self.source/self.relative).write_bytes(b'changed')
+        self.assertEqual(fetch_assets.restore_media(self.source,[self.entry]),0)
+        self.assertFalse((self.root/self.entry['output']).exists())
+        self.assertEqual(fetch_assets.restore_media(self.root/'missing',[self.entry]),0)
+    def test_symlinks_and_invalid_destinations_are_rejected(self):
+        source=self.source/self.relative;source.unlink();source.symlink_to(self.source/'index.html')
+        with self.assertRaises(ValueError):fetch_assets.restore_media(self.source,[self.entry])
+        source.unlink();source.write_bytes(self.body)
+        for fields in [{'output':'../escape.webp'},{'urlPath':'/../index.html'}]:
+            with self.assertRaises(ValueError):fetch_assets.restore_media(self.source,[{**self.entry,**fields}])
+        public=self.root/'games/fortressblue/assets/public';public.parent.mkdir(parents=True)
+        escaped=self.root/'outside-public';escaped.mkdir();public.symlink_to(escaped,target_is_directory=True)
+        with self.assertRaises(ValueError):fetch_assets.restore_media(self.source,[self.entry])
 
 if __name__ == "__main__":
     unittest.main()

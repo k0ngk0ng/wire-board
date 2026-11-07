@@ -1,0 +1,9 @@
+{"Time":"2026-10-26T12:50:50.132346+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine"}
+{"Time":"2026-10-26T12:50:50.54483+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleDeepLedgeDoesNotCancelNecessaryJump"}
+{"Time":"2026-10-26T12:50:50.544902+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleDeepLedgeDoesNotCancelNecessaryJump","Output":"=== RUN   TestBotVisibleDeepLedgeDoesNotCancelNecessaryJump\n"}
+{"Time":"2026-10-26T12:50:50.544922+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleDeepLedgeDoesNotCancelNecessaryJump","Output":"    bot_navigation_test.go:124: a physically unreachable deep ledge cancelled the safe jump 1\n"}
+{"Time":"2026-10-26T12:50:50.544931+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleDeepLedgeDoesNotCancelNecessaryJump","Output":"--- FAIL: TestBotVisibleDeepLedgeDoesNotCancelNecessaryJump (0.00s)\n"}
+{"Time":"2026-10-26T12:50:50.544949+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleDeepLedgeDoesNotCancelNecessaryJump","Elapsed":0}
+{"Time":"2026-10-26T12:50:50.544955+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\n"}
+{"Time":"2026-10-26T12:50:50.545305+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/contra/engine\t0.413s\n"}
+{"Time":"2026-10-26T12:50:50.545314+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Elapsed":0.413}

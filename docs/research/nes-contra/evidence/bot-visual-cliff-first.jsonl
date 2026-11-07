@@ -1,0 +1,20 @@
+{"Time":"2026-10-26T12:20:33.171697+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine"}
+{"Time":"2026-10-26T12:20:33.575594+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleCliffStartsJumpBeforeLosingSupport"}
+{"Time":"2026-10-26T12:20:33.575648+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleCliffStartsJumpBeforeLosingSupport","Output":"=== RUN   TestBotVisibleCliffStartsJumpBeforeLosingSupport\n"}
+{"Time":"2026-10-26T12:20:33.575675+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleCliffStartsJumpBeforeLosingSupport","Output":"--- PASS: TestBotVisibleCliffStartsJumpBeforeLosingSupport (0.00s)\n"}
+{"Time":"2026-10-26T12:20:33.57568+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleCliffStartsJumpBeforeLosingSupport","Elapsed":0}
+{"Time":"2026-10-26T12:20:33.575684+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleContinuousFloorDoesNotJump"}
+{"Time":"2026-10-26T12:20:33.575688+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleContinuousFloorDoesNotJump","Output":"=== RUN   TestBotVisibleContinuousFloorDoesNotJump\n"}
+{"Time":"2026-10-26T12:20:33.575693+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleContinuousFloorDoesNotJump","Output":"--- PASS: TestBotVisibleContinuousFloorDoesNotJump (0.00s)\n"}
+{"Time":"2026-10-26T12:20:33.575696+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleContinuousFloorDoesNotJump","Elapsed":0}
+{"Time":"2026-10-26T12:20:33.575699+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleSafeLowerLedgeDoesNotNeedJump"}
+{"Time":"2026-10-26T12:20:33.575701+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleSafeLowerLedgeDoesNotNeedJump","Output":"=== RUN   TestBotVisibleSafeLowerLedgeDoesNotNeedJump\n"}
+{"Time":"2026-10-26T12:20:33.575705+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleSafeLowerLedgeDoesNotNeedJump","Output":"--- PASS: TestBotVisibleSafeLowerLedgeDoesNotNeedJump (0.00s)\n"}
+{"Time":"2026-10-26T12:20:33.575708+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleSafeLowerLedgeDoesNotNeedJump","Elapsed":0}
+{"Time":"2026-10-26T12:20:33.57571+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleCliffWithCeilingDoesNotInventJump"}
+{"Time":"2026-10-26T12:20:33.575713+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleCliffWithCeilingDoesNotInventJump","Output":"=== RUN   TestBotVisibleCliffWithCeilingDoesNotInventJump\n"}
+{"Time":"2026-10-26T12:20:33.575717+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleCliffWithCeilingDoesNotInventJump","Output":"--- PASS: TestBotVisibleCliffWithCeilingDoesNotInventJump (0.00s)\n"}
+{"Time":"2026-10-26T12:20:33.575719+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleCliffWithCeilingDoesNotInventJump","Elapsed":0}
+{"Time":"2026-10-26T12:20:33.575747+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"PASS\n"}
+{"Time":"2026-10-26T12:20:33.576096+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/contra/engine\t0.404s\n"}
+{"Time":"2026-10-26T12:20:33.576121+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Elapsed":0.404}

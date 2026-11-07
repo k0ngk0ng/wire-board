@@ -1,5 +1,7 @@
 import type { GameAudioPort } from "../../../web/src/game-api/module";
 import playback from "../assets/audio-playback.json";
+import audioRelease from "../assets/audio-release.json";
+import { localAudioFixture } from "./release-assets";
 import { assetURL } from "./assets";
 import { FPS, frameNumber, type NetworkView } from "./types";
 import type { RuntimeView } from "./wasm";
@@ -34,7 +36,9 @@ export class MatchAudio {
     window.addEventListener("keydown", this.gesture, true);
   }
   private sources(clip: Clip) {
-    return [assetURL(this.base, "/yuyuhakusho/audio/" + clip.file)];
+    return localAudioFixture()
+      ? [assetURL(this.base, "/yuyuhakusho/audio/" + clip.file)]
+      : [audioRelease.assetsBaseURL + "/" + clip.file];
   }
   private settle() {
     const now = performance.now();

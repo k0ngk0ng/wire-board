@@ -1,0 +1,9 @@
+{"Time":"2026-10-25T18:48:25.743179+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine"}
+{"Time":"2026-10-25T18:48:26.278194+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestCampaignSceneExitFadeDoesNotOverwritePaletteFade"}
+{"Time":"2026-10-25T18:48:26.278331+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestCampaignSceneExitFadeDoesNotOverwritePaletteFade","Output":"=== RUN   TestCampaignSceneExitFadeDoesNotOverwritePaletteFade\n"}
+{"Time":"2026-10-25T18:48:26.278433+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestCampaignSceneExitFadeDoesNotOverwritePaletteFade","Output":"    campaign_scene_test.go:238: FB exit fade overwrote 74 palette fade: 6\n"}
+{"Time":"2026-10-25T18:48:26.278471+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestCampaignSceneExitFadeDoesNotOverwritePaletteFade","Output":"--- FAIL: TestCampaignSceneExitFadeDoesNotOverwritePaletteFade (0.00s)\n"}
+{"Time":"2026-10-25T18:48:26.278486+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestCampaignSceneExitFadeDoesNotOverwritePaletteFade","Elapsed":0}
+{"Time":"2026-10-25T18:48:26.278516+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\n"}
+{"Time":"2026-10-25T18:48:26.279738+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/contra/engine\t0.536s\n"}
+{"Time":"2026-10-25T18:48:26.2798+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Elapsed":0.537}

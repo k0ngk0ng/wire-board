@@ -1,0 +1,11 @@
+{
+  "scope": "only this compatibility investigation private captures, failed/obsolete probes, REA caches, temporary emulator profiles and redundant outputs; all compared successful capture bytes are retained in portable package, full REA records in canonical evidence, six readable PNGs retained",
+  "removed": [
+    ".local/contra-enemies-base/roller-oracle",
+    ".local/contra-enemies-base/roller-swift-cache",
+    ".local/contra-enemies-base/roller-rea",
+    ".local/contra-enemies-base/roller-helper-rea",
+    ".local/contra-enemies-base/roller-lane-rea",
+    "dist/contra-enemies-base-roller-tmp"
+  ]
+}

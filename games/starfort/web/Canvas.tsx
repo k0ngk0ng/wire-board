@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState } from "react";
-import type { PointerEvent as ReactPointerEvent } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import type { ReactNode, PointerEvent as ReactPointerEvent } from "react";
 import {
   worldBounds,
   fitCamera,
+  fillCamera,
   clampCamera,
   worldToScreen,
   screenToWorld,
@@ -16,17 +17,34 @@ import {
 } from "./camera";
 import type { Camera, Viewport } from "./camera";
 import "./world-camera.css";
-import { CombatTimeline, FLIGHT_MS } from "./combat-timeline";
+import {
+  CombatTimeline,
+  CombatPlayback,
+  FLIGHT_MS,
+  activeEffects,
+  dueSoundEvents,
+} from "./combat-timeline";
 import {
   assetURL,
   enemyPoint,
   objectivePoint,
   freshEvents,
+  blastImpactTargets,
+  combatMotion,
 } from "./presentation";
+import type { CombatStatus } from "./combat-timeline";
 import type { EventCursor } from "./presentation";
 import type { Enemy, Event, View, MapData, Point, Objective } from "./types";
 import atlasLayout from "../assets/public/starfort/v1/atlas.json";
 import worldAtlasLayout from "../assets/public/starfort/world-v2/atlas.json";
+import { shotPose, workerPose } from "./animation";
+import {
+  drawCrater,
+  drawRepairTool,
+  drawCombatAccent,
+  drawIceWall,
+} from "./combat-art";
+import { battlefieldPalette as palette } from "./palette";
 
 type Atlas = {
   frames: Record<string, { x: number; y: number; w: number; h: number }>;
@@ -39,7 +57,7 @@ type Art = {
   worldAtlas: Atlas | null;
   worldSheet: HTMLImageElement | null;
 };
-type Effect = Event & { born: number; impact?: Point };
+type Effect = Event & { born: number; impact?: Point; impactTargetId?: number };
 const colors = ["#b34f2d", "#386da7", "#8a5196", "#4f7641"];
 const towerNames: Record<string, string> = {
   arrow: "箭塔",
@@ -47,12 +65,64 @@ const towerNames: Record<string, string> = {
   frost: "冰塔",
   arcane: "法师塔",
 };
-const towerColors: Record<string, string> = {
-  arrow: "#a07a39",
-  cannon: "#925437",
-  frost: "#6cb9d1",
-  arcane: "#9a76c2",
-};
+const towerColors: Record<string, string> = palette.tower;
+const outlinedFrames = new WeakMap<
+  HTMLImageElement,
+  Map<string, HTMLCanvasElement>
+>();
+const outlineMargin = 6;
+
+function outlinedFrame(
+  sheet: HTMLImageElement,
+  frame: Atlas["frames"][string],
+  name: string,
+) {
+  let frames = outlinedFrames.get(sheet);
+  if (!frames) {
+    frames = new Map();
+    outlinedFrames.set(sheet, frames);
+  }
+  const cached = frames.get(name);
+  if (cached) return cached;
+  const bitmap = document.createElement("canvas");
+  bitmap.width = frame.w + outlineMargin * 2;
+  bitmap.height = frame.h + outlineMargin * 2;
+  const ctx = bitmap.getContext("2d");
+  if (!ctx) return null;
+  // Rasterize the alpha silhouette once per atlas frame. The original image
+  // keeps its exact size/anchor; the thin contour does not affect hit targets.
+  for (let index = 0; index < 8; index++) {
+    const angle = (index * Math.PI) / 4;
+    ctx.drawImage(
+      sheet,
+      frame.x,
+      frame.y,
+      frame.w,
+      frame.h,
+      outlineMargin + Math.cos(angle) * 4,
+      outlineMargin + Math.sin(angle) * 4,
+      frame.w,
+      frame.h,
+    );
+  }
+  ctx.globalCompositeOperation = "source-in";
+  ctx.fillStyle = palette.unitOutline;
+  ctx.fillRect(0, 0, bitmap.width, bitmap.height);
+  ctx.globalCompositeOperation = "source-over";
+  ctx.drawImage(
+    sheet,
+    frame.x,
+    frame.y,
+    frame.w,
+    frame.h,
+    outlineMargin,
+    outlineMargin,
+    frame.w,
+    frame.h,
+  );
+  frames.set(name, bitmap);
+  return bitmap;
+}
 // Canvas artwork and its accessible hit target share the same dimensions.
 function towerDimensions(zoom: number) {
   const width = Math.max(66, 42 / zoom);
@@ -104,6 +174,21 @@ function sprite(
   const frame = worldFrame ?? art.atlas?.frames[name];
   const sheet = worldFrame ? art.worldSheet : art.sheet;
   if (!sheet || !frame) return false;
+  if (/^(tower|enemy|base)-/.test(name)) {
+    const outlined = outlinedFrame(sheet, frame, name);
+    if (outlined) {
+      const marginX = (outlineMargin * width) / frame.w;
+      const marginY = (outlineMargin * height) / frame.h;
+      ctx.drawImage(
+        outlined,
+        x - width / 2 - marginX,
+        y - (anchor === "center" ? height / 2 : height) - marginY,
+        width + marginX * 2,
+        height + marginY * 2,
+      );
+      return true;
+    }
+  }
   ctx.drawImage(
     sheet,
     frame.x,
@@ -124,6 +209,7 @@ function circle(
   r: number,
   fill: string,
   stroke?: string,
+  strokeWidth = 2,
 ) {
   ctx.beginPath();
   ctx.arc(x, y, r, 0, Math.PI * 2);
@@ -131,7 +217,7 @@ function circle(
   ctx.fill();
   if (stroke) {
     ctx.strokeStyle = stroke;
-    ctx.lineWidth = 2;
+    ctx.lineWidth = strokeWidth;
     ctx.stroke();
   }
 }
@@ -146,16 +232,22 @@ function fallbackTower(
   size: number,
   kind: string,
 ) {
-  ctx.fillStyle = "#766653";
+  ctx.strokeStyle = palette.unitOutline;
+  ctx.lineWidth = size * 0.035;
+  ctx.lineJoin = "round";
+  ctx.fillStyle = "#86704b";
   ctx.fillRect(x - size * 0.35, y - size * 0.34, size * 0.7, size * 0.35);
+  ctx.strokeRect(x - size * 0.35, y - size * 0.34, size * 0.7, size * 0.35);
   ctx.fillStyle = towerColors[kind];
   ctx.fillRect(x - size * 0.25, y - size * 0.8, size * 0.5, size * 0.6);
+  ctx.strokeRect(x - size * 0.25, y - size * 0.8, size * 0.5, size * 0.6);
   ctx.beginPath();
   ctx.moveTo(x - size * 0.4, y - size * 0.7);
   ctx.lineTo(x, y - size);
   ctx.lineTo(x + size * 0.4, y - size * 0.7);
   ctx.closePath();
   ctx.fill();
+  ctx.stroke();
 }
 function fallbackEnemy(
   ctx: CanvasRenderingContext2D,
@@ -169,21 +261,15 @@ function fallbackEnemy(
     x,
     y - size * 0.4,
     size * 0.4,
-    kind === "runner" ? "#bd783f" : kind === "boss" ? "#9d628b" : "#91b968",
-    "#345444",
+    kind === "runner" ? "#d68b3f" : kind === "boss" ? "#b16a9e" : "#83b449",
+    palette.unitOutline,
+    size * 0.035,
   );
   circle(ctx, x - size * 0.12, y - size * 0.45, size * 0.045, "#18332d");
   circle(ctx, x + size * 0.12, y - size * 0.45, size * 0.045, "#18332d");
 }
 
-const regionColors: Record<string, string> = {
-  forest: "#bfcea0",
-  canyon: "#d5bb98",
-  river: "#b8cec0",
-  snow: "#dce7e8",
-  marsh: "#9cbbac",
-  ruins: "#c9c2b1",
-};
+const regionColors: Record<string, string> = palette.terrain;
 function drawLandscape(
   ctx: CanvasRenderingContext2D,
   art: Art,
@@ -211,11 +297,18 @@ function drawLandscape(
     ctx.clip();
     ctx.fillStyle = regionColors[region.biome] ?? regionColors.forest;
     ctx.fillRect(region.x, region.y, region.width, region.height);
+    ctx.save();
+    ctx.globalCompositeOperation = "multiply";
+    ctx.globalAlpha *= palette.textureOpacity;
     if (!art.worldSheet && art.map && region.id === 0)
       ctx.drawImage(art.map, region.x, region.y, region.width, region.height);
     for (let y = region.y; y < region.y + region.height; y += 256)
       for (let x = region.x; x < region.x + region.width; x += 256)
         sprite(ctx, art, `tile-${region.biome}`, x + 128, y + 256, 256, 256);
+    ctx.restore();
+    ctx.strokeStyle = palette.terrainEdge;
+    ctx.lineWidth = Math.max(2, (compact ? 0.75 : 1.25) / scale);
+    ctx.strokeRect(region.x, region.y, region.width, region.height);
     ctx.restore();
     // Sparse edge ornaments leave roads, pads and enemy health readable.
     if (!compact) {
@@ -239,9 +332,9 @@ function drawLandscape(
       }
       ctx.font = `600 ${Math.max(17, 12 / scale)}px system-ui`;
       ctx.textAlign = "left";
-      ctx.fillStyle = "#354b37";
+      ctx.fillStyle = palette.label.ink;
       ctx.lineWidth = 4;
-      ctx.strokeStyle = "#fffbed";
+      ctx.strokeStyle = palette.label.halo;
       ctx.strokeText(
         region.label,
         region.x + 26,
@@ -253,7 +346,7 @@ function drawLandscape(
   for (const feature of map.features ?? []) {
     if (previous?.features?.some((old) => old.id === feature.id)) continue;
     if (feature.kind === "river") {
-      ctx.fillStyle = "#83b6c0";
+      ctx.fillStyle = palette.water.fill;
       ctx.fillRect(
         feature.x - feature.width / 2,
         feature.y - feature.height / 2,
@@ -261,7 +354,15 @@ function drawLandscape(
         feature.height,
       );
       ctx.save();
-      ctx.strokeStyle = "#cbe5e4";
+      ctx.strokeStyle = palette.water.edge;
+      ctx.lineWidth = Math.max(4, 1.5 / scale);
+      ctx.strokeRect(
+        feature.x - feature.width / 2,
+        feature.y - feature.height / 2,
+        feature.width,
+        feature.height,
+      );
+      ctx.strokeStyle = palette.water.ripple;
       ctx.lineWidth = 3;
       for (
         let y = feature.y - feature.height / 2 + 14;
@@ -281,7 +382,7 @@ function drawLandscape(
       ctx.restore();
     }
     if (feature.kind === "highground") {
-      ctx.fillStyle = "#92886a";
+      ctx.fillStyle = palette.highground.edge;
       ctx.beginPath();
       ctx.ellipse(
         feature.x,
@@ -293,7 +394,7 @@ function drawLandscape(
         Math.PI * 2,
       );
       ctx.fill();
-      ctx.fillStyle = "#d1d1a9";
+      ctx.fillStyle = palette.highground.top;
       ctx.beginPath();
       ctx.ellipse(
         feature.x,
@@ -305,6 +406,9 @@ function drawLandscape(
         Math.PI * 2,
       );
       ctx.fill();
+      ctx.strokeStyle = palette.highground.edge;
+      ctx.lineWidth = Math.max(3, 1.25 / scale);
+      ctx.stroke();
     }
   }
 }
@@ -332,22 +436,57 @@ function drawRoutes(
     const gated = route.id.includes("shortcut") && !route.active;
     if (previous || !route.active) ctx.setLineDash([24, 18]);
     linePath(ctx, route.points);
-    ctx.lineWidth = compact ? 24 : previous ? 22 : gated ? 28 : 72;
-    ctx.strokeStyle = previous ? "#7a536f" : "#879071";
+    ctx.lineWidth = compact ? 20 : previous ? 22 : gated ? 28 : 64;
+    ctx.strokeStyle = previous
+      ? "#cbb4d2"
+      : route.active
+        ? "#a19161"
+        : "#86906d";
     ctx.stroke();
     linePath(ctx, route.points);
-    ctx.lineWidth = compact ? 14 : previous ? 13 : gated ? 18 : 59;
-    ctx.strokeStyle = previous
-      ? "#f7e6fb"
-      : route.active
-        ? "#dec497"
-        : "#bfb69b";
+    ctx.lineWidth = compact ? 14 : previous ? 14 : gated ? 20 : 53;
+    ctx.strokeStyle = route.active ? "#c5b184" : "#9a9c7a";
     ctx.stroke();
     if (!compact && !previous && !gated) {
-      linePath(ctx, route.points);
-      ctx.lineWidth = 40;
-      ctx.strokeStyle = route.active ? "#ecd5aa" : "#cdc4ac";
-      ctx.stroke();
+      ctx.setLineDash([]);
+      for (let segment = 1; segment < route.points.length; segment++) {
+        const a = route.points[segment - 1],
+          b = route.points[segment];
+        const length = Math.hypot(b.x - a.x, b.y - a.y),
+          nx = -(b.y - a.y) / length,
+          ny = (b.x - a.x) / length;
+        for (let step = 0; step < length; step += 13) {
+          const p = step / length,
+            seed = segment * 31 + step;
+          const x = a.x + (b.x - a.x) * p,
+            y = a.y + (b.y - a.y) * p;
+          const offset = Math.sin(seed * 2.17) * 22;
+          ctx.fillStyle = step % 3 < 1 ? "#dfcd9f" : "#a69067";
+          ctx.beginPath();
+          ctx.ellipse(
+            x + nx * offset,
+            y + ny * offset,
+            2 + Math.abs(Math.sin(seed)) * 2,
+            1.3,
+            seed,
+            0,
+            Math.PI * 2,
+          );
+          ctx.fill();
+          for (const side of [-1, 1]) {
+            const edge = side * (28 + Math.sin(seed) * 5),
+              ex = x + nx * edge,
+              ey = y + ny * edge;
+            ctx.strokeStyle = side > 0 ? "#71834b" : "#879356";
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(ex - 2, ey);
+            ctx.lineTo(ex, ey - 4 - Math.abs(Math.sin(seed)) * 3);
+            ctx.lineTo(ex + 2, ey);
+            ctx.stroke();
+          }
+        }
+      }
     }
     const entry = route.points[0];
     if (entry) {
@@ -519,16 +658,19 @@ function drawFeatures(
     ctx.restore();
     if (objective.status === "active" && objective.maxHP > 0) {
       const barWidth = Math.max(48, 32 / scale),
-        barHeight = Math.max(5, 3 / scale);
-      ctx.fillStyle = "#314734";
+        barHeight = Math.max(5, 3 / scale),
+        border = Math.max(1, 1 / scale);
+      ctx.fillStyle = palette.health.track;
       ctx.fillRect(
-        position.x - barWidth / 2 - 1,
-        position.y - size - barHeight - 4,
-        barWidth + 2,
-        barHeight + 2,
+        position.x - barWidth / 2 - border,
+        position.y - size - barHeight - 3 - border,
+        barWidth + border * 2,
+        barHeight + border * 2,
       );
       ctx.fillStyle =
-        objective.hp < objective.maxHP * 0.35 ? "#e59b79" : "#dce89a";
+        objective.hp < objective.maxHP * 0.35
+          ? palette.health.critical
+          : palette.health.healthy;
       ctx.fillRect(
         position.x - barWidth / 2,
         position.y - size - barHeight - 3,
@@ -538,9 +680,10 @@ function drawFeatures(
     }
     ctx.font = `600 ${Math.max(13, 10 / scale)}px system-ui`;
     ctx.textAlign = "center";
-    ctx.strokeStyle = "#fffbed";
+    ctx.strokeStyle = palette.label.halo;
     ctx.lineWidth = 4;
-    ctx.fillStyle = objective.status === "failed" ? "#763d35" : "#344a36";
+    ctx.fillStyle =
+      objective.status === "failed" ? palette.label.danger : palette.label.ink;
     ctx.strokeText(
       `${objective.label} · ${status}`,
       position.x,
@@ -554,22 +697,117 @@ function drawFeatures(
   }
 }
 
+function MapPopover({
+  point,
+  viewport,
+  avoid,
+  children,
+}: {
+  point: Point;
+  viewport: Viewport;
+  avoid?: { left: number; top: number; right: number; bottom: number };
+  children: ReactNode;
+}) {
+  const node = useRef<HTMLDivElement>(null);
+  const [height, setHeight] = useState(160);
+  useLayoutEffect(() => {
+    const observer = new ResizeObserver(() =>
+      setHeight(node.current?.offsetHeight ?? 160),
+    );
+    if (node.current) observer.observe(node.current);
+    return () => observer.disconnect();
+  }, []);
+  const width = Math.min(260, Math.max(0, viewport.width - 16));
+  const topLimit = 64,
+    bottomLimit = Math.max(topLimit, viewport.height - 76);
+  const bounds = avoid ?? {
+    left: point.x - 64,
+    right: point.x + 64,
+    top: point.y - 64,
+    bottom: point.y + 64,
+  };
+  let left = bounds.right + 10;
+  let top = Math.max(
+    topLimit,
+    Math.min(bottomLimit - height, point.y - height / 2),
+  );
+  let maxHeight = bottomLimit - topLimit;
+  let transform: string | undefined;
+  if (left + width > viewport.width - 8) {
+    if (bounds.left - 10 - width >= 8) left = bounds.left - 10 - width;
+    else {
+      left = Math.max(
+        8,
+        Math.min(viewport.width - width - 8, point.x - width / 2),
+      );
+      const above = Math.max(
+        0,
+        Math.min(bottomLimit, bounds.top - 10) - topLimit,
+      );
+      const below = Math.max(
+        0,
+        bottomLimit - Math.max(topLimit, bounds.bottom + 10),
+      );
+      if (below >= above) {
+        top = Math.max(topLimit, bounds.bottom + 10);
+        maxHeight = below;
+      } else {
+        top = Math.min(bottomLimit, bounds.top - 10);
+        maxHeight = above;
+        transform = "translateY(-100%)";
+      }
+    }
+  }
+  return (
+    <div
+      ref={node}
+      className="sf-map-popover"
+      style={{ left, top, width, maxHeight, transform }}
+      onPointerDown={(e) => e.stopPropagation()}
+      onPointerUp={(e) => e.stopPropagation()}
+      onClick={(e) => e.stopPropagation()}
+      onWheel={(e) => e.stopPropagation()}
+    >
+      {children}
+    </div>
+  );
+}
+const enemyInfo: Record<string, [string, string]> = {
+  slime: ["史莱姆", "普通敌人"],
+  runner: ["疾行者", "移动较快"],
+  swarm: ["蜂群", "成群来袭"],
+  armored: ["重甲兵", "护甲降低物理伤害"],
+  shield: ["护盾兵", "护盾吸收伤害"],
+  elite: ["精英", "不受一箭穿心秒杀"],
+  boss: ["首领", "半血进入第二阶段，加速并召唤护卫；不受一箭穿心秒杀"],
+  healer: ["治疗者", "恢复附近同伴生命"],
+  banner: ["旗手", "提高附近同伴移动速度"],
+  splitter: ["分裂怪", "死亡后生成小怪"],
+  engineer: ["工兵", "更快修补弹坑，可打开下一波捷径"],
+};
+
 export function Battlefield({
   onReady,
   onLoadError,
+  onEvents,
+  onCombatState,
   roomID,
   data,
   assets,
   selected,
+  towerPanel,
   select,
 }: {
   onReady?: () => void;
   onLoadError?: (message: string) => void;
+  onEvents?: (events: Event[], at: number) => void;
+  onCombatState?: (state: CombatStatus) => void;
   roomID: string;
   data: View;
   assets: string;
   selected: number | null;
-  select: (pad: number) => void;
+  towerPanel?: ReactNode;
+  select: (pad: number, toggle?: boolean) => void;
 }) {
   const canvas = useRef<HTMLCanvasElement>(null),
     container = useRef<HTMLDivElement>(null);
@@ -584,10 +822,55 @@ export function Battlefield({
     data,
     previous: new Map<number, Enemy>(),
     previousObjectives: new Map<string, Objective>(),
+    destinations: new Map(data.enemies.map((enemy) => [enemy.id, enemy])),
     at: performance.now(),
     duration: 1000,
   });
-  const timeline = useRef(new CombatTimeline(state.current));
+  // Map objects are decoded anew with each snapshot; content, not identity,
+  // invalidates the static terrain layer. Never stringify it per animation frame.
+  const terrainKey = useRef("");
+  const timeline = useRef(new CombatPlayback(data, state.current.at));
+  const movement = useRef(new CombatTimeline(state.current));
+  const soundEvents = useRef<Effect[]>([]);
+  const onEventsRef = useRef(onEvents);
+  onEventsRef.current = onEvents;
+  const onCombatStateRef = useRef(onCombatState);
+  onCombatStateRef.current = onCombatState;
+  useEffect(
+    () =>
+      timeline.current.subscribe((status) =>
+        onCombatStateRef.current?.(status),
+      ),
+    [],
+  );
+  const drawnEnemies = useRef<{ enemy: Enemy; point: Point; tick: number }[]>(
+    [],
+  );
+  const inspected = useRef<number | null>(null);
+  const [inspection, setInspection] = useState<{
+    enemy: Enemy;
+    point: Point;
+    tick: number;
+  } | null>(null);
+  const closeInspection = () => {
+    inspected.current = null;
+    setInspection(null);
+  };
+  useEffect(() => {
+    closeInspection();
+  }, [selected, roomID]);
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      if (inspected.current === null) return;
+      const current = drawnEnemies.current.find(
+        (e) => e.enemy.id === inspected.current && e.enemy.hp > 0,
+      );
+      if (current) setInspection(current);
+      else closeInspection();
+    }, 100);
+    return () => window.clearInterval(timer);
+  }, []);
+  const hoverRef = useRef<number | null>(null);
   const selectedRef = useRef(selected);
   selectedRef.current = selected;
   const cursor = useRef<EventCursor | null>(null),
@@ -600,9 +883,14 @@ export function Battlefield({
   renderMap.current = preview ?? data.map;
   const previewRef = useRef(preview);
   previewRef.current = preview;
+  terrainKey.current = JSON.stringify([data.map, preview ?? null]);
   const camera = useRef<Camera>({ x: 480, y: 240, zoom: 0.3 });
   const viewport = useRef<Viewport>({ width: 0, height: 0 });
   const cameraRoom = useRef<string | null>(null);
+  const fullscreenView = useRef<{ active: boolean; normal: Camera | null }>({
+    active: false,
+    normal: null,
+  });
   const [view, setView] = useState({
     camera: camera.current,
     viewport: viewport.current,
@@ -626,6 +914,27 @@ export function Battlefield({
         viewport.current,
       ),
     );
+  useEffect(() => {
+    const node = container.current;
+    const reveal = (event: globalThis.Event) => {
+      const target = event.target;
+      if (
+        !(target instanceof HTMLElement) ||
+        !target.hasAttribute("data-sf-pad")
+      )
+        return;
+      const pad = state.current.data.map.pads.find(
+        (p) => p.id === Number(target.dataset.sfPad),
+      );
+      if (!pad) return;
+      event.preventDefault();
+      // Center in the clear part of the battlefield, below the fixed HUD.
+      focus(pad);
+      node?.scrollIntoView({ block: "nearest", inline: "nearest" });
+    };
+    node?.addEventListener("controller-reveal", reveal);
+    return () => node?.removeEventListener("controller-reveal", reveal);
+  }, []);
   const navigateMinimap = (event: ReactPointerEvent<SVGSVGElement>) => {
     const svg = event.currentTarget,
       point = svg.createSVGPoint();
@@ -791,57 +1100,97 @@ export function Battlefield({
   useEffect(() => {
     const at = performance.now(),
       prior = state.current;
-    const contiguous =
-      cursor.current?.room === roomID &&
-      data.tick >= prior.data.tick &&
-      at - prior.at < 4000;
-    // Operations between simulation snapshots must not restart enemy motion.
-    if (data.tick !== prior.data.tick || !contiguous) {
+    const [next, batch] = freshEvents(cursor.current, roomID, data, at);
+    const contiguous = !next.reset;
+    cursor.current = next;
+    const immediate =
+      !contiguous ||
+      document.hidden ||
+      reduced ||
+      data.phase === "paused" ||
+      prior.data.phase === "paused" ||
+      (prior.data.phase !== "battle" && data.phase === "battle");
+    if (immediate) {
+      timeline.current.reset(data, at);
+      effects.current = [];
+      soundEvents.current =
+        reduced && contiguous && !document.hidden
+          ? batch
+              .filter((event) => event.type !== "shot")
+              .map((event) => ({ ...event, born: at }))
+          : [];
+    } else {
+      const impactTargets = blastImpactTargets(batch);
+      const scheduled = timeline.current.push(data, batch, at).map((event) => ({
+        ...event,
+        impactTargetId: impactTargets.get(event.id),
+      }));
+      effects.current.push(...scheduled);
+      soundEvents.current.push(...scheduled);
+    }
+    // Geometry follows the same logical interval as attacks. Health is read
+    // separately so a final snapshot cannot reveal damage before impact.
+    if (data.tick !== prior.data.tick || immediate) {
+      const motion = immediate
+        ? {
+            previous: new Map<number, Enemy>(),
+            destinations: new Map(
+              data.enemies.map((enemy) => [enemy.id, enemy]),
+            ),
+          }
+        : combatMotion(
+            prior.data.enemies,
+            prior.destinations,
+            timeline.current.read(at, false).enemies,
+            data.enemies,
+            batch,
+          );
       state.current = {
         data,
-        previous: contiguous
-          ? new Map(prior.data.enemies.map((e) => [e.id, e]))
-          : new Map(),
-        previousObjectives: contiguous
-          ? new Map(
-              (prior.data.world?.objectives ?? []).map((objective) => [
-                objective.id,
-                objective,
-              ]),
-            )
-          : new Map(),
-        at,
-        duration: Math.min(
-          1000,
-          Math.max(200, (data.tick - prior.data.tick) * 200),
-        ),
+        previous: motion.previous,
+        destinations: motion.destinations,
+        previousObjectives:
+          contiguous && !immediate
+            ? new Map(
+                (prior.data.world?.objectives ?? []).map((objective) => [
+                  objective.id,
+                  objective,
+                ]),
+              )
+            : new Map(),
+        at: immediate ? at : timeline.current.time(prior.data.elapsedMS),
+        duration: Math.max(200, data.elapsedMS - prior.data.elapsedMS),
       };
+      if (immediate) movement.current.reset(state.current);
+      else movement.current.pushAt(state.current, state.current.at);
     } else state.current = { ...state.current, data };
-    const immediate =
-      !contiguous || document.hidden || data.phase === "paused" || reduced;
-    if (immediate) timeline.current.reset(state.current);
-    else
-      timeline.current.push(
-        { ...state.current, at: state.current.at + FLIGHT_MS },
-        at,
-      );
-    const [next, batch] = freshEvents(cursor.current, roomID, data, at);
-    cursor.current = next;
-    if (!contiguous || document.hidden || data.phase === "paused")
-      effects.current = [];
-    if (!document.hidden && data.phase !== "paused")
-      effects.current.push(
-        ...batch.map((e) => ({
-          ...e,
-          born: at + (e.type === "shot" || immediate ? 0 : FLIGHT_MS),
-        })),
-      );
-    effects.current = effects.current.slice(-60);
+    effects.current = activeEffects(effects.current, at, reduced);
   }, [data, roomID, reduced]);
+  useEffect(() => {
+    const reset = () => {
+      cursor.current = null;
+      effects.current = [];
+      soundEvents.current = [];
+      timeline.current.reset(state.current.data, performance.now());
+      state.current = {
+        ...state.current,
+        previous: new Map(),
+        previousObjectives: new Map(),
+      };
+      movement.current.reset(state.current);
+    };
+    document.addEventListener("visibilitychange", reset);
+    return () => document.removeEventListener("visibilitychange", reset);
+  }, []);
   useEffect(() => {
     const node = container.current;
     if (!node) return;
     const wheel = (event: WheelEvent) => {
+      if (
+        event.target instanceof Element &&
+        event.target.closest(".sf-map-popover")
+      )
+        return;
       // Wheel input over the battlefield zooms around the pointer. Outside it,
       // the page retains normal scrolling.
       event.preventDefault();
@@ -878,6 +1227,10 @@ export function Battlefield({
     if (!node || !wrap) return;
     const ctx = node.getContext("2d");
     if (!ctx) return;
+    const background = document.createElement("canvas");
+    const backgroundContext = background.getContext("2d");
+    let backgroundKey = "",
+      backgroundArt: Art | null = null;
     let lastEnemyPositions = new Map<number, Point>();
     let frame = 0,
       lastPaint = 0;
@@ -888,11 +1241,12 @@ export function Battlefield({
       const dpr = Math.min(2, window.devicePixelRatio || 1);
       viewport.current = { width, height };
       const bounds = worldBounds(renderMap.current);
+      const full = !!wrap.closest("[data-room-fullscreen]");
       let next: Camera;
       if (cameraRoom.current !== roomID) {
         cameraRoom.current = roomID;
         // Returning to an expanded game starts at its base, at a readable scale.
-        const starter = fitCamera(
+        const starter = fillCamera(
           worldBounds({ width: 960, height: 640 }),
           viewport.current,
         );
@@ -901,7 +1255,34 @@ export function Battlefield({
           bounds,
           viewport.current,
         );
+        fullscreenView.current.normal = null;
+      } else if (full && !fullscreenView.current.active) {
+        fullscreenView.current.normal = { ...camera.current };
+        const filled = fillCamera(
+          worldBounds({ width: 960, height: 640 }),
+          viewport.current,
+        );
+        next = clampCamera(
+          {
+            ...camera.current,
+            zoom: Math.max(camera.current.zoom, filled.zoom),
+          },
+          bounds,
+          viewport.current,
+        );
+      } else if (
+        !full &&
+        fullscreenView.current.active &&
+        fullscreenView.current.normal
+      ) {
+        next = clampCamera(
+          fullscreenView.current.normal,
+          bounds,
+          viewport.current,
+        );
+        fullscreenView.current.normal = null;
       } else next = clampCamera(camera.current, bounds, viewport.current);
+      fullscreenView.current.active = full;
       publishCamera(next);
       node.width = Math.round(width * dpr);
       node.height = Math.round(height * dpr);
@@ -913,16 +1294,27 @@ export function Battlefield({
       frame = requestAnimationFrame(draw);
       if (document.hidden || (reduced && at - lastPaint < 150)) return;
       lastPaint = at;
+      const [sounds, futureSounds] = dueSoundEvents(soundEvents.current, at);
+      soundEvents.current = futureSounds;
+      if (sounds.length) onEventsRef.current?.(sounds, at);
       if (!wrap.clientWidth || !node.width) return;
-      const current = timeline.current.read(at),
-        v = { ...current.data, towers: state.current.data.towers },
+      const current = movement.current.read(at),
+        combat = timeline.current.read(at),
+        v = {
+          ...state.current.data,
+          enemies: combat.enemies,
+          baseHP: combat.baseHP,
+          craters: combat.craters,
+          iceWalls: combat.iceWalls,
+          phase: combat.phase,
+        },
         map = v.map,
         pixelScale = camera.current.zoom,
         dpr = node.width / viewport.current.width,
         scale = pixelScale * dpr;
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.clearRect(0, 0, node.width, node.height);
-      ctx.fillStyle = "#b9c997";
+      ctx.fillStyle = palette.terrain.forest;
       ctx.fillRect(0, 0, node.width, node.height);
       ctx.setTransform(
         scale,
@@ -937,23 +1329,59 @@ export function Battlefield({
         viewport.current,
         camera.current,
       );
-      drawLandscape(ctx, art.current, map, pixelScale, undefined, overview);
-      if (previewRef.current) {
-        ctx.save();
-        ctx.globalAlpha = 0.58;
+      const cacheKey = `${terrainKey.current}|${node.width}|${node.height}|${camera.current.x}|${camera.current.y}|${pixelScale}|${overview}`;
+      if (
+        backgroundContext &&
+        (backgroundKey !== cacheKey || backgroundArt !== art.current)
+      ) {
+        background.width = node.width;
+        background.height = node.height;
+        backgroundContext.setTransform(1, 0, 0, 1, 0, 0);
+        backgroundContext.fillStyle = palette.terrain.forest;
+        backgroundContext.fillRect(0, 0, background.width, background.height);
+        backgroundContext.setTransform(ctx.getTransform());
         drawLandscape(
-          ctx,
+          backgroundContext,
           art.current,
-          previewRef.current,
-          pixelScale,
           map,
+          pixelScale,
+          undefined,
           overview,
         );
-        ctx.restore();
+        if (previewRef.current) {
+          backgroundContext.save();
+          backgroundContext.globalAlpha = 0.58;
+          drawLandscape(
+            backgroundContext,
+            art.current,
+            previewRef.current,
+            pixelScale,
+            map,
+            overview,
+          );
+          backgroundContext.restore();
+        }
+        drawRoutes(backgroundContext, map, pixelScale, undefined, overview);
+        if (previewRef.current)
+          drawRoutes(
+            backgroundContext,
+            previewRef.current,
+            pixelScale,
+            map,
+            overview,
+          );
+        backgroundKey = cacheKey;
+        backgroundArt = art.current;
       }
-      drawRoutes(ctx, map, pixelScale, undefined, overview);
-      if (previewRef.current)
-        drawRoutes(ctx, previewRef.current, pixelScale, map, overview);
+      if (backgroundContext) {
+        ctx.save();
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.drawImage(background, 0, 0);
+        ctx.restore();
+      } else {
+        drawLandscape(ctx, art.current, map, pixelScale, undefined, overview);
+        drawRoutes(ctx, map, pixelScale, undefined, overview);
+      }
       if (overview) {
         drawOverview(ctx, map, v, pixelScale);
         return;
@@ -971,8 +1399,28 @@ export function Battlefield({
         at,
         reduced,
       );
-      const sel = map.pads.find((p) => p.id === selectedRef.current),
-        tower = v.towers.find((t) => t.pad === selectedRef.current);
+      for (const crater of v.craters ?? []) drawCrater(ctx, crater);
+      const effectClock =
+        v.phase === "battle"
+          ? at - timeline.current.time(0) - FLIGHT_MS
+          : v.elapsedMS;
+      const statusTick = Math.floor(Math.max(0, effectClock) / 200);
+      const wallBirths = new Map(
+        effects.current
+          .filter((e) => e.type === "ice_wall" && e.iceWall && e.born <= at)
+          .map((e) => [e.iceWall!.id, at - e.born]),
+      );
+      for (const wall of v.iceWalls ?? [])
+        drawIceWall(
+          ctx,
+          wall,
+          effectClock,
+          reduced,
+          wallBirths.get(wall.id) ?? null,
+        );
+      const rangePad = hoverRef.current ?? selectedRef.current;
+      const sel = map.pads.find((p) => p.id === rangePad),
+        tower = v.towers.find((t) => t.pad === rangePad);
       if (sel && tower) {
         ctx.save();
         circle(
@@ -985,7 +1433,7 @@ export function Battlefield({
           "#f5edc024",
         );
         ctx.setLineDash([8, 8]);
-        ctx.strokeStyle = "#625536";
+        ctx.strokeStyle = palette.road.edge;
         ctx.lineWidth = 2;
         ctx.stroke();
         ctx.restore();
@@ -996,73 +1444,121 @@ export function Battlefield({
         ctx.save();
         ctx.translate(pad.x, pad.y);
         ctx.scale(1, 0.45);
-        circle(ctx, 0, 0, 22, "#dfe6bd", "#788268");
+        circle(
+          ctx,
+          0,
+          0,
+          22,
+          palette.pad.fill,
+          palette.pad.edge,
+          Math.max(2, 1.2 / pixelScale),
+        );
         if (selectedRef.current === pad.id) {
-          ctx.strokeStyle = "#fff5b0";
+          ctx.strokeStyle = palette.pad.selected;
           ctx.lineWidth = 6;
           ctx.stroke();
         }
         ctx.restore();
       }
+      const towersByID = new Map(v.towers.map((t) => [t.id, t]));
+      const latestShots = new Map<number, Effect>();
+      for (const event of effects.current)
+        if (event.type === "shot" && event.towerId && event.born <= at)
+          latestShots.set(event.towerId, event);
+      const visiblePoint = (point: Point, margin = 100) => {
+        const screen = worldToScreen(point, camera.current, viewport.current);
+        return (
+          screen.x >= -margin &&
+          screen.x <= viewport.current.width + margin &&
+          screen.y >= -margin &&
+          screen.y <= viewport.current.height + margin
+        );
+      };
       const { width: towerSize, height: towerHeight } =
         towerDimensions(pixelScale);
+      const buildings: { y: number; draw: () => void }[] = [];
       for (const t of v.towers) {
         const pad = map.pads.find((p) => p.id === t.pad);
-        if (!pad) continue;
-        const towerPoint = { x: pad.x, y: pad.y + 14 };
-        ctx.save();
-        ctx.shadowColor = "#254b2a36";
-        ctx.shadowBlur = 8;
-        ctx.shadowOffsetY = 5;
-        if (
-          !sprite(
-            ctx,
-            art.current,
-            `tower-${t.kind}-${Math.min(3, t.level)}`,
-            towerPoint.x,
-            towerPoint.y,
-            towerSize,
-            towerHeight,
-          )
-        )
-          fallbackTower(ctx, towerPoint.x, towerPoint.y, towerSize, t.kind);
-        ctx.restore();
-        // The aim marker rotates from server angles; it never picks a target itself.
-        if (v.phase === "battle") {
-          const pivot = { x: towerPoint.x, y: towerPoint.y - towerSize * 0.59 };
-          ctx.save();
-          ctx.translate(pivot.x, pivot.y);
-          ctx.rotate(t.angle);
-          ctx.strokeStyle =
-            t.kind === "frost"
-              ? "#d4f5ff"
-              : t.kind === "arcane"
-                ? "#f1d7ff"
-                : "#ffebaa";
-          ctx.lineWidth = 4;
-          ctx.beginPath();
-          ctx.moveTo(8, 0);
-          ctx.lineTo(19, 0);
-          ctx.stroke();
-          ctx.restore();
-        }
-        if (t.level > 1) {
-          ctx.font = `bold ${Math.max(13, 9 / pixelScale)}px system-ui`;
-          ctx.textAlign = "center";
-          ctx.lineWidth = 3;
-          ctx.strokeStyle = "#263c32";
-          ctx.strokeText(
-            `★${t.level}`,
-            towerPoint.x,
-            towerPoint.y - towerSize * 0.93,
-          );
-          ctx.fillStyle = "#fff2b8";
-          ctx.fillText(
-            `★${t.level}`,
-            towerPoint.x,
-            towerPoint.y - towerSize * 0.93,
-          );
-        }
+        if (!pad || !visiblePoint(pad, towerHeight * pixelScale + 32)) continue;
+        const lastShot = latestShots.get(t.id);
+        const pose = shotPose(
+          t.kind,
+          lastShot ? at - lastShot.born : -1,
+          reduced,
+        );
+        buildings.push({
+          y: pad.y,
+          draw: () => {
+            const towerPoint = {
+              x: pad.x - Math.cos(t.angle) * pose.recoil,
+              y: pad.y + 14 - Math.sin(t.angle) * pose.recoil,
+            };
+            if (pose.glow > 0)
+              circle(
+                ctx,
+                pad.x,
+                pad.y - towerSize * 0.55,
+                12 + pose.glow * 15,
+                `rgba(255,235,160,${pose.glow * 0.6})`,
+              );
+            ctx.save();
+            ctx.shadowColor = "#243b2d40";
+            ctx.shadowBlur = 4;
+            ctx.shadowOffsetY = 3;
+            if (
+              !sprite(
+                ctx,
+                art.current,
+                `tower-${t.kind}-${Math.min(3, t.level)}`,
+                towerPoint.x,
+                towerPoint.y,
+                towerSize,
+                towerHeight,
+              )
+            )
+              fallbackTower(ctx, towerPoint.x, towerPoint.y, towerSize, t.kind);
+            ctx.restore();
+            // The aim marker rotates from server angles; it never picks a target itself.
+            if (v.phase === "battle") {
+              const pivot = {
+                x: towerPoint.x,
+                y: towerPoint.y - towerSize * 0.59,
+              };
+              ctx.save();
+              ctx.translate(pivot.x, pivot.y);
+              ctx.rotate(t.angle);
+              ctx.strokeStyle =
+                t.kind === "frost"
+                  ? "#d4f5ff"
+                  : t.kind === "arcane"
+                    ? "#f1d7ff"
+                    : "#ffebaa";
+              ctx.lineWidth = 4;
+              ctx.beginPath();
+              ctx.moveTo(8, 0);
+              ctx.lineTo(19, 0);
+              ctx.stroke();
+              ctx.restore();
+            }
+            if (t.level > 1) {
+              ctx.font = `bold ${Math.max(13, 9 / pixelScale)}px system-ui`;
+              ctx.textAlign = "center";
+              ctx.lineWidth = 3;
+              ctx.strokeStyle = "#263c32";
+              ctx.strokeText(
+                `★${t.level}`,
+                towerPoint.x,
+                towerPoint.y - towerSize * 0.93,
+              );
+              ctx.fillStyle = "#fff2b8";
+              ctx.fillText(
+                `★${t.level}`,
+                towerPoint.x,
+                towerPoint.y - towerSize * 0.93,
+              );
+            }
+          },
+        });
       }
       const endpoint = map.path[map.path.length - 1] ?? {
         x: map.width,
@@ -1070,52 +1566,101 @@ export function Battlefield({
       };
       const bx = map.base?.x ?? Math.min(map.width - 55, endpoint.x - 65),
         by = (map.base?.y ?? endpoint.y) + 35;
-      const baseSize = Math.max(105, 38 / pixelScale);
-      const damaged = v.baseHP < v.baseMaxHP * 0.5;
-      if (
-        !sprite(
-          ctx,
-          art.current,
-          `base-${damaged ? "damaged" : "intact"}`,
-          bx,
-          by,
-          baseSize,
-          baseSize,
-        )
-      ) {
-        ctx.fillStyle = damaged ? "#b19291" : "#a5bacc";
-        ctx.fillRect(bx - 40, by - 76, 80, 76);
-        circle(ctx, bx, by - 72, 18, "#f8e7a1");
-      }
-      if (!reduced && v.phase !== "lost") {
-        const pulse = 0.3 + 0.12 * Math.sin(at / 700);
-        circle(
-          ctx,
-          bx,
-          by - baseSize * 0.62,
-          baseSize * 0.13,
-          `rgba(255,239,151,${pulse})`,
-        );
-      }
-      ctx.font = `bold ${Math.max(15, 10 / pixelScale)}px system-ui`;
-      ctx.textAlign = "center";
-      ctx.strokeStyle = "#fff9e5";
-      ctx.lineWidth = 4;
-      ctx.strokeText("星核", bx, by + 15);
-      ctx.fillStyle = "#3f5143";
-      ctx.fillText("星核", bx, by + 15);
+      buildings.push({
+        y: by - 35,
+        draw: () => {
+          const baseSize = Math.max(105, 38 / pixelScale);
+          const damaged = v.baseHP < v.baseMaxHP * 0.5;
+          if (
+            !sprite(
+              ctx,
+              art.current,
+              `base-${damaged ? "damaged" : "intact"}`,
+              bx,
+              by,
+              baseSize,
+              baseSize,
+            )
+          ) {
+            ctx.fillStyle = damaged ? "#b19291" : "#a5bacc";
+            ctx.fillRect(bx - 40, by - 76, 80, 76);
+            ctx.strokeStyle = palette.unitOutline;
+            ctx.lineWidth = Math.max(3, 1.2 / pixelScale);
+            ctx.strokeRect(bx - 40, by - 76, 80, 76);
+            circle(ctx, bx, by - 72, 18, "#f8e7a1", palette.unitOutline);
+          }
+          if (!reduced && v.phase !== "lost") {
+            const pulse = 0.3 + 0.12 * Math.sin(at / 700);
+            circle(
+              ctx,
+              bx,
+              by - baseSize * 0.62,
+              baseSize * 0.13,
+              `rgba(255,239,151,${pulse})`,
+            );
+          }
+          ctx.font = `bold ${Math.max(15, 10 / pixelScale)}px system-ui`;
+          ctx.textAlign = "center";
+          ctx.strokeStyle = palette.label.halo;
+          ctx.lineWidth = 4;
+          ctx.strokeText("星核", bx, by + 15);
+          ctx.fillStyle = palette.label.ink;
+          ctx.fillText("星核", bx, by + 15);
+        },
+      });
+      buildings.sort((a, b) => a.y - b.y).forEach((item) => item.draw());
+      drawnEnemies.current = [];
       const enemyPositions = new Map<number, Point>();
       for (const enemy of v.enemies) {
+        const icebound = (enemy.frozenUntil ?? 0) > statusTick;
+        const pendingKnockback = effects.current.some(
+          (e) =>
+            e.type === "knockback" && e.targetId === enemy.id && e.born > at,
+        );
+        const destination = pendingKnockback
+          ? enemy
+          : current.destinations.get(enemy.id);
         const position = enemyPoint(
           map.routes?.find((route) => route.id === enemy.route)?.points ??
             map.path,
           current.previous.get(enemy.id),
-          enemy,
+          destination ?? enemy,
           fraction,
           reduced,
         );
+        const crater = enemy.repairing
+          ? v.craters?.find((c) => c.id === enemy.repairing && c.remaining > 0)
+          : undefined;
+        const workerIndex = Math.max(0, crater?.workers.indexOf(enemy.id) ?? 0);
+        const workerCount = Math.max(1, crater?.workers.length ?? 0);
+        if (crater) {
+          const pose = workerPose(
+            workerIndex,
+            workerCount,
+            at,
+            reduced || v.phase !== "battle" || icebound,
+          );
+          position.x = crater.x + pose.x;
+          position.y = crater.y + pose.y;
+        }
         enemyPositions.set(enemy.id, position);
-        const frozen = enemy.slowUntil > v.tick;
+        if (!visiblePoint(position, Math.max(64 * pixelScale, 64))) continue;
+        if (inspected.current === enemy.id) {
+          ctx.save();
+          ctx.lineWidth = 2 / pixelScale;
+          circle(
+            ctx,
+            position.x,
+            position.y,
+            24 / pixelScale,
+            "#fff8cf22",
+            "#fff4b0",
+          );
+          ctx.restore();
+        }
+        const silenced = (enemy.silencedUntil ?? 0) > statusTick;
+        const frozen =
+          icebound || enemy.frostbound || enemy.slowUntil > statusTick;
         if (enemy.kind === "boss" && (enemy.phase ?? 1) > 1) {
           const size = Math.max(100, 60 / pixelScale);
           sprite(
@@ -1133,13 +1678,34 @@ export function Battlefield({
           enemy.kind === "boss" ? 64 : 42,
           (enemy.kind === "boss" ? 40 : 32) / pixelScale,
         );
-        const moving = !reduced && v.phase === "battle";
+        drawnEnemies.current.push({
+          enemy,
+          tick: statusTick,
+          point: worldToScreen(
+            { x: position.x, y: position.y - size * 0.3 },
+            camera.current,
+            viewport.current,
+          ),
+        });
+        const moving = !reduced && v.phase === "battle" && !crater && !icebound;
         const pose = moving ? Math.floor(at / 160 + enemy.id) % 3 : 0;
         const bob = moving
           ? Math.sin(at / (enemy.kind === "runner" ? 90 : 140) + enemy.id) * 1.5
           : 0;
+        const arrival =
+          crater && !reduced
+            ? effects.current.find(
+                (e) =>
+                  e.type === "repair_start" &&
+                  e.targetId === enemy.id &&
+                  e.born <= at,
+              )
+            : undefined;
+        const falling = arrival
+          ? Math.sin(Math.min(1, (at - arrival.born) / 420) * Math.PI)
+          : 0;
         const x = position.x,
-          y = position.y + bob;
+          y = position.y + bob + falling * 9;
         ctx.save();
         ctx.translate(x, y);
         ctx.scale(1, 0.32);
@@ -1164,18 +1730,71 @@ export function Battlefield({
           )
         )
           fallbackEnemy(ctx, x, y + size * 0.15, size, enemy.kind);
+        if (icebound) {
+          ctx.save();
+          ctx.fillStyle = "#a8e4ff77";
+          ctx.strokeStyle = "#e2faff";
+          ctx.lineWidth = Math.max(2, 1.5 / pixelScale);
+          ctx.beginPath();
+          ctx.roundRect(x - size * 0.45, y - size * 0.65, size * 0.9, size, 6);
+          ctx.fill();
+          ctx.stroke();
+          ctx.restore();
+        }
+        if (silenced) {
+          ctx.save();
+          ctx.strokeStyle = "#e9d9ff";
+          ctx.lineWidth = Math.max(2, 1.5 / pixelScale);
+          const sy = y - size * 0.65,
+            sr = Math.max(7, 5 / pixelScale);
+          ctx.beginPath();
+          ctx.arc(x, sy, sr, 0, Math.PI * 2);
+          ctx.moveTo(x - sr * 0.7, sy - sr * 0.7);
+          ctx.lineTo(x + sr * 0.7, sy + sr * 0.7);
+          ctx.stroke();
+          ctx.restore();
+        }
+        if (enemy.frostbound) {
+          ctx.save();
+          ctx.strokeStyle = "#ecfbff";
+          ctx.lineWidth = Math.max(1.5, 1 / pixelScale);
+          ctx.beginPath();
+          for (let i = 0; i < 3; i++) {
+            const fx = x + (i - 1) * size * 0.19,
+              fy = y + size * 0.13;
+            ctx.moveTo(fx, fy - 7);
+            ctx.lineTo(fx, fy + 2);
+            ctx.moveTo(fx - 4, fy - 4);
+            ctx.lineTo(fx + 4, fy - 1);
+          }
+          ctx.stroke();
+          ctx.restore();
+        }
+        if (crater)
+          drawRepairTool(
+            ctx,
+            x,
+            y,
+            workerIndex,
+            workerCount,
+            at,
+            reduced || v.phase !== "battle" || icebound,
+          );
         if (["healer", "banner", "engineer"].includes(enemy.kind)) {
-          const label =
-            enemy.kind === "healer"
-              ? "治疗"
-              : enemy.kind === "banner"
-                ? "加速"
-                : "破门";
+          const label = silenced
+            ? "沉默"
+            : icebound
+              ? "冰封"
+              : enemy.kind === "healer"
+                ? "治疗"
+                : enemy.kind === "banner"
+                  ? "加速"
+                  : "破门";
           ctx.font = `bold ${Math.max(11, 9 / pixelScale)}px system-ui`;
           ctx.textAlign = "center";
           ctx.lineWidth = 3;
-          ctx.strokeStyle = "#fff9e8";
-          ctx.fillStyle = "#663e39";
+          ctx.strokeStyle = palette.label.halo;
+          ctx.fillStyle = palette.label.danger;
           ctx.strokeText(label, x, y + size * 0.4);
           ctx.fillText(label, x, y + size * 0.4);
         }
@@ -1190,31 +1809,66 @@ export function Battlefield({
         }
         const barWidth = size * 0.66,
           barHeight = Math.max(4, 2.5 / pixelScale),
-          barY = y - size * 0.75;
-        ctx.fillStyle = "#283b34";
-        ctx.fillRect(
-          x - barWidth / 2 - 1,
-          barY - 1,
-          barWidth + 2,
-          barHeight + 2,
-        );
-        ctx.fillStyle = "#add584";
-        ctx.fillRect(
-          x - barWidth / 2,
-          barY,
-          barWidth *
-            Math.max(
-              0,
-              Math.min(
-                1,
-                (enemy.health ?? enemy.hp) /
-                  Math.max(1, enemy.maxHealth ?? enemy.maxHP),
-              ),
+          barY = y - size * 0.75,
+          border = Math.max(1, 1 / pixelScale),
+          health = Math.max(
+            0,
+            Math.min(
+              1,
+              (enemy.health ?? enemy.hp) /
+                Math.max(1, enemy.maxHealth ?? enemy.maxHP),
             ),
-          barHeight,
+          );
+        ctx.fillStyle = palette.health.track;
+        ctx.fillRect(
+          x - barWidth / 2 - border,
+          barY - border,
+          barWidth + border * 2,
+          barHeight + border * 2,
         );
+        ctx.fillStyle =
+          health < 0.35 ? palette.health.critical : palette.health.healthy;
+        ctx.fillRect(x - barWidth / 2, barY, barWidth * health, barHeight);
       }
-      effects.current = effects.current.filter((e) => at - e.born < 900);
+      effects.current = activeEffects(effects.current, at, reduced);
+      // One explosion represents the whole blast. Keep every projectile and
+      // authoritative impact, but bound decorative bursts in dense battles.
+      for (const event of effects.current) {
+        if (event.born <= at && event.impactTargetId)
+          event.impact ??= enemyPositions.get(event.impactTargetId) ??
+            lastEnemyPositions.get(event.impactTargetId) ?? {
+              x: event.x,
+              y: event.y,
+            };
+      }
+      const accentIDs = new Set<number>();
+      const accentTypes = new Set([
+        "hit",
+        "death",
+        "crater",
+        "crater_filled",
+        "ice_wall",
+        "frostbound",
+        "chain",
+        "frost_ring",
+        "freeze",
+        "meteor",
+        "blast",
+        "knockback",
+      ]);
+      for (
+        let i = effects.current.length - 1;
+        i >= 0 && accentIDs.size < 48;
+        i--
+      ) {
+        const event = effects.current[i];
+        if (
+          event.born <= at &&
+          accentTypes.has(event.type) &&
+          visiblePoint(event.impact ?? event)
+        )
+          accentIDs.add(event.id);
+      }
       for (const e of effects.current) {
         const elapsed = at - e.born,
           t = elapsed / 900;
@@ -1224,6 +1878,55 @@ export function Battlefield({
             circle(ctx, e.x, e.y, 16, "#fff4c880");
           continue;
         }
+        const accent = {
+          ...e,
+          kind: towersByID.get(e.towerId ?? 0)?.kind ?? e.kind,
+        };
+        if (["freeze", "meteor", "blast"].includes(e.type) && elapsed < 650) {
+          ctx.save();
+          ctx.globalAlpha = 0.65 * (1 - elapsed / 650);
+          ctx.strokeStyle =
+            e.type === "freeze"
+              ? "#c5f4ff"
+              : e.type === "meteor"
+                ? "#e4b5ff"
+                : "#ffce8a";
+          ctx.fillStyle =
+            e.type === "freeze"
+              ? "#b4eaff18"
+              : e.type === "meteor"
+                ? "#ac75e018"
+                : "#ffbb5b18";
+          ctx.lineWidth = Math.max(2, 1.5 / pixelScale);
+          const radius = (e.amount ?? 90) * (0.85 + (elapsed / 650) * 0.15);
+          ctx.beginPath();
+          ctx.arc(e.x, e.y, radius, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.stroke();
+          if (e.type === "meteor") {
+            for (let i = 0; i < 6; i++) {
+              const angle = (i * Math.PI) / 3,
+                r = radius * (0.3 + (i % 2) * 0.35);
+              const mx = e.x + Math.cos(angle) * r,
+                my = e.y + Math.sin(angle) * r;
+              ctx.beginPath();
+              ctx.moveTo(mx - 22, my - 42);
+              ctx.lineTo(mx, my);
+              ctx.stroke();
+              circle(ctx, mx, my, 5, "#ffedb9");
+            }
+          }
+          ctx.restore();
+        }
+        if (accentIDs.has(e.id))
+          drawCombatAccent(
+            ctx,
+            accent,
+            elapsed,
+            e.impact?.x ?? e.x,
+            e.impact?.y ?? e.y,
+            reduced,
+          );
         ctx.save();
         if (e.type === "shot" && elapsed < FLIGHT_MS) {
           const target = e.targetId
@@ -1237,6 +1940,29 @@ export function Battlefield({
               e.y +
               (ty - e.y) * p -
               (e.kind === "cannon" ? Math.sin(p * Math.PI) * 45 : 0);
+          ctx.strokeStyle =
+            e.kind === "frost"
+              ? "#b9efffaa"
+              : e.kind === "arcane"
+                ? "#d2a0ffbb"
+                : e.skill === "focus"
+                  ? "#fff4bbee"
+                  : "#ead4a477";
+          ctx.lineWidth = ["focus", "execute", "heart", "volley"].includes(
+            e.skill ?? "",
+          )
+            ? 5
+            : 3;
+          ctx.beginPath();
+          const tail = Math.max(0, p - 0.22);
+          ctx.moveTo(
+            e.x + (tx - e.x) * tail,
+            e.y +
+              (ty - e.y) * tail -
+              (e.kind === "cannon" ? Math.sin(tail * Math.PI) * 45 : 0),
+          );
+          ctx.lineTo(x, y);
+          ctx.stroke();
           ctx.translate(x, y);
           ctx.rotate(Math.atan2(ty - e.y, tx - e.x));
           if (
@@ -1358,123 +2084,128 @@ export function Battlefield({
     data.map.path[data.map.path.length - 1] ?? { x: 860, y: 340 };
   return (
     <section className="sf-world-camera" aria-label="战场与地图导航">
-      <div className="sf-camera-toolbar" role="group" aria-label="地图视角">
-        <button
-          className="sf-secondary"
-          data-sf-zoom-out
-          aria-label="缩小地图"
-          onClick={() => zoom(1 / 1.3)}
+      <div className="sf-map-tools">
+        <div
+          className="sf-camera-toolbar"
+          data-controller-group="camera"
+          role="group"
+          aria-label="地图视角"
         >
-          −
-        </button>
-        <output aria-label="地图缩放">
-          {Math.round(view.camera.zoom * 100)}%
-        </output>
-        <button
-          className="sf-secondary"
-          data-sf-zoom-in
-          aria-label="放大地图"
-          onClick={() => zoom(1.3)}
-        >
-          ＋
-        </button>
-        <button
-          className="sf-secondary"
-          data-sf-camera-base
-          onClick={() => {
-            const starter = fitCamera(
-              worldBounds({ width: 960, height: 640 }),
-              viewport.current,
-            );
-            publishCamera(
-              focusCamera(
-                {
-                  ...camera.current,
-                  zoom: Math.max(camera.current.zoom, starter.zoom),
-                },
-                base,
-                bounds,
-                viewport.current,
-              ),
-            );
-          }}
-        >
-          回到星核
-        </button>
-        <button
-          className="sf-secondary"
-          data-sf-fit
-          onClick={() => publishCamera(fitCamera(bounds, viewport.current))}
-        >
-          全图
-        </button>
-      </div>
-      <details className="sf-entry-menu">
-        <summary>
-          进攻入口 · {routes.filter((r) => r.active).length} 路来袭
-        </summary>
-        <div className="sf-entry-list" aria-label="进攻入口">
-          {routes.map((route) => {
-            const enemies = data.enemies.filter(
-              (enemy) => (enemy.route ?? "main") === route.id,
-            ).length;
-            return (
-              <button
-                key={route.id}
-                className="sf-secondary"
-                data-sf-entry={route.id}
-                data-active={route.active}
-                onClick={() => focus(route.points[0] ?? base)}
-              >
-                <span aria-hidden="true">{route.active ? "●" : "○"}</span>{" "}
-                {route.label}
-                {enemies > 0
-                  ? ` · ${enemies} 敌人`
-                  : route.active
-                    ? " · 出怪"
-                    : " · 休整"}
-              </button>
-            );
-          })}
-        </div>
-      </details>
-      {!!data.world?.choice?.options.some((option) => option.map) && (
-        <details className="sf-preview-menu">
-          <summary>在战场上预览扩展方案</summary>
-          <div
-            className="sf-map-previews"
-            role="group"
-            aria-label="扩展地图预览"
+          <button
+            className="sf-secondary"
+            data-sf-zoom-out
+            aria-label="缩小地图"
+            onClick={() => zoom(1 / 1.3)}
           >
-            <span>虚线为新道路：</span>
-            <button
-              className="sf-secondary"
-              aria-pressed={!preview}
-              onClick={() => setPreviewID(null)}
-            >
-              当前战场
-            </button>
-            {data.world.choice.options
-              .filter((option) => option.map)
-              .map((option) => (
+            −
+          </button>
+          <output aria-label="地图缩放">
+            {Math.round(view.camera.zoom * 100)}%
+          </output>
+          <button
+            className="sf-secondary"
+            data-sf-zoom-in
+            aria-label="放大地图"
+            onClick={() => zoom(1.3)}
+          >
+            ＋
+          </button>
+          <button
+            className="sf-secondary"
+            data-sf-camera-base
+            onClick={() => {
+              const starter = fitCamera(
+                worldBounds({ width: 960, height: 640 }),
+                viewport.current,
+              );
+              publishCamera(
+                focusCamera(
+                  {
+                    ...camera.current,
+                    zoom: Math.max(camera.current.zoom, starter.zoom),
+                  },
+                  base,
+                  bounds,
+                  viewport.current,
+                ),
+              );
+            }}
+          >
+            回到星核
+          </button>
+          <button
+            className="sf-secondary"
+            data-sf-fit
+            onClick={() => publishCamera(fitCamera(bounds, viewport.current))}
+          >
+            全图
+          </button>
+        </div>
+        <details className="sf-entry-menu">
+          <summary>入口</summary>
+          <div className="sf-entry-list" aria-label="进攻入口">
+            {routes.map((route) => {
+              const enemies = data.enemies.filter(
+                (enemy) => (enemy.route ?? "main") === route.id,
+              ).length;
+              return (
                 <button
+                  key={route.id}
                   className="sf-secondary"
-                  key={option.id}
-                  aria-pressed={previewID === option.id}
-                  data-sf-preview={option.id}
-                  onClick={() => {
-                    setPreviewID(option.id);
-                    publishCamera(
-                      fitCamera(worldBounds(option.map!), viewport.current),
-                    );
-                  }}
+                  data-sf-entry={route.id}
+                  data-active={route.active}
+                  onClick={() => focus(route.points[0] ?? base)}
                 >
-                  预览{option.label}
+                  <span aria-hidden="true">{route.active ? "●" : "○"}</span>{" "}
+                  {route.label}
+                  {enemies > 0
+                    ? ` · ${enemies} 敌人`
+                    : route.active
+                      ? " · 出怪"
+                      : " · 休整"}
                 </button>
-              ))}
+              );
+            })}
           </div>
         </details>
-      )}
+        {!!data.world?.choice?.options.some((option) => option.map) && (
+          <details className="sf-preview-menu">
+            <summary>扩展预览</summary>
+            <div
+              className="sf-map-previews"
+              role="group"
+              aria-label="扩展地图预览"
+            >
+              <span>虚线为新道路：</span>
+              <button
+                className="sf-secondary"
+                aria-pressed={!preview}
+                onClick={() => setPreviewID(null)}
+              >
+                当前战场
+              </button>
+              {data.world.choice.options
+                .filter((option) => option.map)
+                .map((option) => (
+                  <button
+                    className="sf-secondary"
+                    key={option.id}
+                    aria-pressed={previewID === option.id}
+                    data-sf-preview={option.id}
+                    onClick={() => {
+                      setPreviewID(option.id);
+                      publishCamera(
+                        fitCamera(worldBounds(option.map!), viewport.current),
+                      );
+                    }}
+                  >
+                    预览{option.label}
+                  </button>
+                ))}
+            </div>
+          </details>
+        )}
+      </div>
       <div
         className={`sf-battlefield sf-world-viewport ${overview ? "sf-world-overview" : ""}`}
         ref={container}
@@ -1490,6 +2221,27 @@ export function Battlefield({
             pointerUp(event);
         }}
         onClick={(event) => {
+          if (performance.now() < gesture.current.suppressUntil) return;
+          if (
+            event.target === canvas.current ||
+            event.target === container.current
+          ) {
+            const rect = canvas.current!.getBoundingClientRect();
+            const x = event.clientX - rect.left,
+              y = event.clientY - rect.top;
+            const hit = [...drawnEnemies.current]
+              .reverse()
+              .find((e) => Math.hypot(e.point.x - x, e.point.y - y) <= 24);
+            if (hit) {
+              if (inspected.current === hit.enemy.id) closeInspection();
+              else {
+                inspected.current = hit.enemy.id;
+                setInspection(hit);
+              }
+              return;
+            }
+            closeInspection();
+          }
           if (
             !isWorldOverview(
               renderMap.current,
@@ -1536,44 +2288,58 @@ export function Battlefield({
           role="img"
           aria-label={`星垒战场，第 ${data.wave} 波，${data.enemies.length} 名敌人，${data.towers.length} 座防御塔。拖动或双指缩放查看地图，空地可建造，点击塔身可升级，所有按钮均可用键盘选择。`}
         />
-        {data.map.pads.map((pad) => {
-          const tower = data.towers.find((t) => t.pad === pad.id);
-          const point = worldToScreen(pad, view.camera, view.viewport);
-          const dimensions = towerDimensions(view.camera.zoom);
-          const width = dimensions.width * view.camera.zoom;
-          const height = dimensions.height * view.camera.zoom;
-          const bottom = point.y + 14 * view.camera.zoom;
-          const visible =
-            !overview &&
-            (tower
-              ? point.x + width / 2 > 0 &&
-                point.x - width / 2 < view.viewport.width &&
-                bottom > 0 &&
-                bottom - height < view.viewport.height
-              : point.x >= 16 &&
-                point.x <= view.viewport.width - 16 &&
-                point.y >= 16 &&
-                point.y <= view.viewport.height - 16);
-          return (
-            <button
-              key={pad.id}
-              data-sf-pad={pad.id}
-              data-pad={pad.id}
-              hidden={!visible}
-              className={`sf-pad ${tower ? "sf-pad-occupied" : ""} ${selected === pad.id ? "sf-pad-selected" : ""}`}
-              style={{
-                left: point.x,
-                top: tower ? bottom : point.y,
-                ...(tower ? { width, height } : {}),
-              }}
-              aria-label={`建造点 ${pad.id + 1}${pad.terrain === "highground" ? "，高台" : ""}${tower ? `，${towerNames[tower.kind]} ${tower.level} 级，玩家 ${tower.owner + 1}` : "，空地"}`}
-              aria-pressed={selected === pad.id}
-              onClick={() => select(pad.id)}
-            >
-              {!tower && <span>{pad.id + 1}</span>}
-            </button>
-          );
-        })}
+        <div data-controller-group="board" style={{ display: "contents" }}>
+          {data.map.pads.map((pad) => {
+            const tower = data.towers.find((t) => t.pad === pad.id);
+            const point = worldToScreen(pad, view.camera, view.viewport);
+            const dimensions = towerDimensions(view.camera.zoom);
+            const width = dimensions.width * view.camera.zoom;
+            const height = dimensions.height * view.camera.zoom;
+            const bottom = point.y + 14 * view.camera.zoom;
+            return (
+              <button
+                key={pad.id}
+                data-sf-pad={pad.id}
+                data-pad={pad.id}
+                hidden={overview}
+                className={`sf-pad ${tower ? "sf-pad-occupied" : ""} ${selected === pad.id ? "sf-pad-selected" : ""}`}
+                style={{
+                  left: point.x,
+                  zIndex: tower
+                    ? 1 +
+                      [...data.map.pads]
+                        .sort((a, b) => a.y - b.y)
+                        .findIndex((p) => p.id === pad.id)
+                    : 0,
+                  top: tower ? bottom : point.y,
+                  ...(tower ? { width, height } : {}),
+                }}
+                aria-label={`建造点 ${pad.id + 1}${pad.terrain === "highground" ? "，高台" : ""}${tower ? `，${towerNames[tower.kind]} ${tower.level} 级，玩家 ${tower.owner + 1}` : "，空地"}`}
+                aria-pressed={selected === pad.id}
+                onPointerEnter={(event) => {
+                  if (event.pointerType === "mouse" && tower)
+                    hoverRef.current = pad.id;
+                }}
+                onPointerLeave={() => {
+                  hoverRef.current = null;
+                }}
+                onFocus={() => {
+                  if (tower) hoverRef.current = pad.id;
+                }}
+                onBlur={() => {
+                  hoverRef.current = null;
+                }}
+                onClick={() => {
+                  const switchingFromEnemy = inspected.current !== null;
+                  closeInspection();
+                  select(pad.id, !switchingFromEnemy);
+                }}
+              >
+                {!tower && <span>{pad.id + 1}</span>}
+              </button>
+            );
+          })}
+        </div>
         {overview && (
           <span className="sf-overview-hint" role="status">
             总览 · 点选区域放大
@@ -1593,6 +2359,85 @@ export function Battlefield({
           </div>
         )}
       </div>
+      {inspection ? (
+        <MapPopover point={inspection.point} viewport={view.viewport}>
+          <section
+            className="sf-enemy-info"
+            data-sf-enemy-info
+            aria-label="敌人信息"
+          >
+            <header>
+              <strong>
+                {enemyInfo[inspection.enemy.kind]?.[0] ?? inspection.enemy.kind}{" "}
+                · Lv.{inspection.enemy.level ?? data.wave}
+              </strong>
+              <button
+                data-sf-enemy-close
+                aria-label="关闭敌人信息"
+                onClick={closeInspection}
+              >
+                ×
+              </button>
+            </header>
+            <p>
+              生命{" "}
+              {Math.ceil(
+                inspection.enemy.health ??
+                  inspection.enemy.hp + inspection.enemy.shield,
+              )}{" "}
+              /{" "}
+              {Math.ceil(
+                inspection.enemy.maxHealth ??
+                  inspection.enemy.maxHP + inspection.enemy.shield,
+              )}
+            </p>
+            <p>
+              基础速度 {Math.round(inspection.enemy.speed)}
+              {inspection.enemy.frostbound
+                ? ` · 永久减速 ${data.specializationRules === 1 && data.world?.event.id === "frost" ? 45 : 30}%`
+                : ""}
+              {inspection.enemy.slowUntil > inspection.tick
+                ? ` · 临时减速 ${data.specializationRules === 1 && data.world?.event.id === "frost" ? 60 : 45}%`
+                : ""}
+              {(inspection.enemy.frozenUntil ?? 0) > inspection.tick
+                ? " · 冰封中"
+                : ""}
+              {(inspection.enemy.silencedUntil ?? 0) > inspection.tick
+                ? " · 沉默中"
+                : ""}
+              {inspection.enemy.repairing ? " · 填坑中" : ""}
+            </p>
+            <p>{enemyInfo[inspection.enemy.kind]?.[1]}</p>
+          </section>
+        </MapPopover>
+      ) : towerPanel &&
+        selected !== null &&
+        data.map.pads.some((p) => p.id === selected) ? (
+        <MapPopover
+          point={worldToScreen(
+            data.map.pads.find((p) => p.id === selected)!,
+            view.camera,
+            view.viewport,
+          )}
+          viewport={view.viewport}
+          avoid={(() => {
+            const pad = data.map.pads.find((p) => p.id === selected)!;
+            const point = worldToScreen(pad, view.camera, view.viewport);
+            const dimensions = towerDimensions(view.camera.zoom);
+            const width = dimensions.width * view.camera.zoom,
+              height = dimensions.height * view.camera.zoom;
+            const bottom = point.y + 14 * view.camera.zoom;
+            return {
+              left: point.x - width / 2,
+              right: point.x + width / 2,
+              top: bottom - height,
+              bottom,
+            };
+          })()}
+        >
+          {towerPanel}
+        </MapPopover>
+      ) : null}
       <div className="sf-map-navigation">
         <svg
           className="sf-minimap"
@@ -1688,17 +2533,11 @@ export function Battlefield({
             style={{ strokeWidth: 2 }}
           />
         </svg>
-        <p>
-          拖动战场 · 滚轮／双指缩放
-          <br />
-          小地图可拖动 · 入口可定位
-          {preview ? (
-            <>
-              <br />
-              <strong>正在预览，投票确定后才会扩展</strong>
-            </>
-          ) : null}
-        </p>
+        {preview && (
+          <p>
+            <strong>扩展方案预览</strong>
+          </p>
+        )}
       </div>
     </section>
   );

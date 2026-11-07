@@ -1,0 +1,17 @@
+{
+  "scope": "Assisted diagnostic continuation from fresh v9 failure with subsequent policy repairs; not a single-policy fresh campaign",
+  "outcome": "cleared",
+  "finalized": true,
+  "frames": 363938,
+  "recorded_input_replay_passed": true,
+  "fresh_campaign_acceptance": false,
+  "policy_note": "Initial short-rise candidate cleared; final candidate also fixes walk-first priority and is undergoing separate verification",
+  "files": {
+    "result.json": "3358fac46ec791ec584a39850cf3aaa55a18bd60cb4d07af8575b830f4cc3940",
+    "bot.json": "7a0d82461a5e7e5b4720c372c445bffe68db3b90b3463a999ea6b487c1e2a210",
+    "pads.bin.gz": "487052035732bd7f12e3c2d339855beb1ddb91830e834708a7c193ed9b0c28c2",
+    "final-session.json": "6e4bd56a20916f5909b5a5ab7514af170f4b7449e71124fa3f988c7a8df2ef07",
+    "test-life-refills.json": "d0857ce59985b17b6589e0da2009775ecdbb2d5b257ab0419065b58d7ccbaa2c",
+    "replay.json": "e800cde37fb244982927ba25a60eaabaab2bf38da1359a2315ef5d7ccbb5c9d2"
+  }
+}

@@ -130,6 +130,15 @@ try:
      check('real keyboard acceleration exceeds old cap and release reaches server',speedKmh=speed*.36)
     samples,trace=native('keyboard-rear',[{'key':'w','down':True},{'wait':450},{'motion':True},{'read':'moving'},{'key':'b','down':True},{'wait':150},{'read':'rear'},{'shot':'metro-rear'},{'key':'b','down':False},{'wait':150},{'read':'front'},{'key':'w','down':False},{'key':' ','down':True},{'wait':150},{'read':'handbrake'},{'key':' ','down':False},{'wait':150}])
     assert samples['rear']['canvas']['rear']=='true' and samples['front']['canvas']['rear']=='false';assert samples['handbrake']['controls']['drift']=='true';assert samples['after']['controls']['drift']=='false';assert trace['packets'];check('native W + B rear view and Space handbrake')
+    # Native mouse steering reaches the same authoritative drive interface.
+    browser('scrollintoview','[aria-label="方向盘"]')
+    wheel=js('document.querySelector("[aria-label=方向盘]").getBoundingClientRect().toJSON()')
+    mx=round(wheel['x']+wheel['width']*.75);my=round(wheel['y']+wheel['height']*.5)
+    browser('mouse','move',str(mx),str(my));browser('mouse','down');time.sleep(.3)
+    mouse_car=room()['game']['data']['cars'][0]
+    assert mouse_car['steer']>.1,mouse_car
+    browser('mouse','up');wait(lambda:abs(room()['game']['data']['cars'][0]['steer'])<.01)
+    record('native-mouse-steering',{'during':mouse_car,'after':room()['game']['data']['cars'][0]});check('native mouse steering and release accepted by authority')
     assert any(a['snapshot']==b['snapshot'] and ((a['x']-b['x'])**2+(a['y']-b['y'])**2)>.01 for a,b in zip(trace['motion'],trace['motion'][1:])),trace['motion'];check('opponents move smoothly between authoritative snapshots')
     samples,_=native('reset',[{'key':'s','down':True},{'wait':1200},{'key':'s','down':False},{'wait':150},{'key':'r','down':True},{'key':'r','down':False},{'wait':200},{'read':'reset'}]);c=samples['reset']['room']['game']['data']['cars'][0];assert c['resetUntil']>samples['reset']['room']['game']['data']['serverAt'];check('native R authoritative reset',car=c)
     samples,_=native('reconnect-held-view',[{'key':'w','down':True},{'key':'b','down':True},{'wait':200},{'disconnect':True},{'wait':2000},{'read':'reconnected'},{'key':'w','down':True,'repeat':True},{'key':'b','down':True,'repeat':True},{'wait':250},{'read':'repeated'},{'key':'w','down':False},{'key':'b','down':False}])

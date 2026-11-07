@@ -216,7 +216,10 @@ func decode(m gameapi.Match) (*State, error) {
 		}
 		if p.Active != nil {
 			a := p.Active
-			if a.Kind < I || a.Kind > Z || a.Rot < 0 || a.Rot > 3 || a.X < -2 || a.X > BoardWidth+2 || a.Y < 0 || a.Y >= BoardRows {
+			// SRS can place the shape origin above the board while every
+			// occupied cell remains inside it. Validate those cells, just as
+			// movement and rotation do, rather than the padded shape origin.
+			if a.Kind < I || a.Kind > Z || a.Rot < 0 || a.Rot > 3 || !fits(p.Board, a.Kind, a.Rot, a.X, a.Y) {
 				return nil, fmt.Errorf("玩家 %d 活动方块无效", i)
 			}
 		}

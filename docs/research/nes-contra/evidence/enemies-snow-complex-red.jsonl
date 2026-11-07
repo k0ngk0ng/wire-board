@@ -1,0 +1,7 @@
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"# command-line-arguments [command-line-arguments.test]\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./enemies_snow_test.go:177:21: s.StepSnowTank undefined (type EnemySystem has no field or method StepSnowTank)\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./enemies_snow_test.go:178:21: s.StepSnowCarrier undefined (type EnemySystem has no field or method StepSnowCarrier)\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-fail"}
+{"Time":"2026-10-25T17:45:18.29746+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-10-25T17:45:18.297484+08:00","Action":"output","Package":"command-line-arguments","Output":"FAIL\tcommand-line-arguments [build failed]\n"}
+{"Time":"2026-10-25T17:45:18.29749+08:00","Action":"fail","Package":"command-line-arguments","Elapsed":0,"FailedBuild":"command-line-arguments [command-line-arguments.test]"}

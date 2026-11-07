@@ -1,0 +1,167 @@
+{
+  "version": 1,
+  "scope": "formal Contra module callbacks and real HTTP/WebSocket/SQLite; not full natural campaign or browser acceptance",
+  "passed": true,
+  "testsPassed": 21,
+  "topLevelTests": 9,
+  "testedRulesBuildIDs": [
+    "152f52903d390a66b3c8117fb111f34cb76a48ef517162292a951a59b01ac657"
+  ],
+  "bundleIDs": [
+    "7a6447d85739b966bbcd9a612964a90827965a5a94baf1e4979efd791b8c4671"
+  ],
+  "checks": [
+    {
+      "command": "go test -race ./games/contra/server -count=1 -json",
+      "passed": true,
+      "tests": [
+        "TestContraHTTPLoadingStreamAndSQLiteRestore",
+        "TestContraHTTPPausePresentationRequiresManualResume",
+        "TestContraModuleStandardAndRejectClientAuthority",
+        "TestContraModuleInputClockReplayAndRestore",
+        "TestContraModulePauseResumeAndAutomation",
+        "TestContraModuleStageGateAndTerminalPublication/shared-win",
+        "TestContraModuleStageGateAndTerminalPublication/shared-loss",
+        "TestContraModuleStageGateAndTerminalPublication",
+        "TestContraModuleReplayWindowAndGateAutomation",
+        "TestContraModuleRejectsCorruptReplaySavepoint/frame-gap",
+        "TestContraModuleRejectsCorruptReplaySavepoint/head-frame",
+        "TestContraModuleRejectsCorruptReplaySavepoint/revision-gap",
+        "TestContraModuleRejectsCorruptReplaySavepoint/head-digest",
+        "TestContraModuleRejectsCorruptReplaySavepoint/resource-identity",
+        "TestContraModuleRejectsCorruptReplaySavepoint/rule-identity",
+        "TestContraModuleRejectsCorruptReplaySavepoint"
+      ],
+      "started": "2026-10-26T00:27:39.581335+08:00",
+      "finished": "2026-10-26T00:27:54.142768+08:00",
+      "serverRuntimeProductionChangedAfterStart": [],
+      "engineChangedAfterStart": [
+        "games/contra/engine/bot_navigation.go",
+        "games/contra/engine/bot_observation.go",
+        "games/contra/engine/bot.go"
+      ]
+    },
+    {
+      "command": "go test -race ./games/contra/server -run '^TestContraHTTPBoundaryCooperativeLedger$' -count=1 -json",
+      "passed": true,
+      "tests": [
+        "TestContraHTTPBoundaryCooperativeLedger/players-1-win-true",
+        "TestContraHTTPBoundaryCooperativeLedger/players-1-win-false",
+        "TestContraHTTPBoundaryCooperativeLedger/players-2-win-true",
+        "TestContraHTTPBoundaryCooperativeLedger/players-2-win-false",
+        "TestContraHTTPBoundaryCooperativeLedger"
+      ],
+      "started": "2026-10-26T07:41:47.115234+08:00",
+      "finished": "2026-10-26T07:41:59.126587+08:00",
+      "serverRuntimeProductionChangedAfterStart": [],
+      "engineChangedAfterStart": [
+        "games/contra/engine/bot_navigation.go",
+        "games/contra/engine/bot_observation.go",
+        "games/contra/engine/bot.go"
+      ]
+    }
+  ],
+  "identityNote": "Historical module acceptance before the stage-loading input fix. Actual RulesBuildID is retained in the traces. Current server input behavior and source binding are verified in followupVerification.",
+  "controlledFixtures": [
+    "original stage transition boundary",
+    "original shared success/failure boundary; no natural-clear claim"
+  ],
+  "cooperativeLedger": {
+    "players": [
+      1,
+      2
+    ],
+    "sharedClear": 20,
+    "sharedFailure": -10,
+    "entryPerParticipant": 1,
+    "restartDuplicateEntries": 0,
+    "manualAutoplay": "keeps start-frozen eligibility",
+    "enemyNPCs": "not computer participants"
+  },
+  "productionRegistered": false,
+  "published": false,
+  "remaining": [
+    "standard eight-stage bot strategy acceptance",
+    "formal native/Wasm bundle installation and cross-stage client wiring",
+    "PC/mobile browser and full game acceptance",
+    "repeat formal integration against final frozen engine build"
+  ],
+  "serverRuntimeAndHarnessSourceSHA256": {
+    "games/contra/server/http_e2e_test.go": "6f2ed7493718b55edc7f3ef56d274568f9485f5ade9f28cb8ed851514c6877b1",
+    "games/contra/server/timer.go": "97985e63708540e390a5861f94514a2479d049fc4d772f1eaab49163d5c5f19a",
+    "games/contra/server/input.go": "87ac7cd74a4d9ef8f770b671e518d5e336f1db1a8e5cf3b24d435733e47fe1a2",
+    "games/contra/server/module_e2e_test.go": "a10c48d94fc58049a5fb93a158fff10f1cc5cf7ec2ba178ea119c1752cc130b6",
+    "games/contra/server/module.go": "a5de726162bf38acf57fa206242d5c239763248a4e3fc0ddda807ee92a9563ed",
+    "games/contra/runtime/development.go": "ec104639f4760d5e265ee359568d6794a2a293a6e8079972d9e61a73233e7c37",
+    "games/contra/runtime/build_identity_test.go": "8ca40f10640f686938b3f4224bb34e216eefcf50a07af0d47631784251c28af6",
+    "games/contra/runtime/bridge.go": "fea4a8ac710a51fa15540a8267eadf33df600732bc26e79cae8f1c75d53f9e1c",
+    "games/contra/runtime/protocol_e2e_test.go": "5e13ea8eacf2b53f0df6fe7334d93dbb25bfbed0e29eaf505d4d490408c189ef",
+    "games/contra/runtime/bundle_protocol_test.go": "578652909190f8cc953e386f0bd5a2bcd3cfca191bb6e324a635e80116e0abcf",
+    "games/contra/runtime/paused_protocol_test.go": "03398da1fbe3146018e5b30b8df73a54b69f2bb7c5575542e2ae997deaacfb33",
+    "games/contra/runtime/build_identity.go": "6675baf98e846cb907b5b4a5a3cecb9021c3124fc14e9b0a876745c66a830b65",
+    "games/contra/runtime/build_files_native.go": "e244bd43848ca7f9e81287e87143db97b81805c7ffa533fd90330568fa21024b",
+    "internal/gameapi/module.go": "146c3f8fb92abef646bba349f234d1638e3b141254460eed5087951e9cc5dcd3",
+    "internal/gameapi/rating.go": "0cfc31c77e0984418b6682b2f86c2027768e8a374a3f8931a666b2c6de063898",
+    "internal/gametest/http.go": "1c85ec23f38392ac16e2e4b2e7e48126c9d7d332dbd12b1a7381d8fee2ea4665"
+  },
+  "artifacts": [
+    {
+      "path": "docs/research/nes-contra/evidence/server-module-green-race.jsonl.gz",
+      "sha256": "1260c42fb54663962aedfd67fcd943a110a18f57017b4810d8556638e4871ad5",
+      "originalBytes": 15253
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/server-module-ledger-race.jsonl.gz",
+      "sha256": "65b761bc3d5fc18218abc84d0762b35cd1c8583f6531c70509ee20af1d2ce951",
+      "originalBytes": 5280
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/server-module-red.jsonl.gz",
+      "sha256": "c90b822be44315180011eb217ef08a32d288306010565d497de8396423eb4c76",
+      "originalBytes": 3495
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/server-module-replay-validation-red.jsonl.gz",
+      "sha256": "8deeabb9f7e15febc82e6ef75a2d58e04440142bb899e25bb1a0a80ef6cd4955",
+      "originalBytes": 7968
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/server-module-TestContraHTTPBoundaryCooperativeLedger-players-1-win-false.json.gz",
+      "sha256": "39a46cd45a2b324db3af2c194e882b8f6b855eaac545d26570e268f8a9e962d7",
+      "originalBytes": 500168
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/server-module-TestContraHTTPBoundaryCooperativeLedger-players-1-win-true.json.gz",
+      "sha256": "588f36a098337b6f6a55ace62aa1b475a4a7a2fde27cf16b85f35c6ae1178130",
+      "originalBytes": 479863
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/server-module-TestContraHTTPBoundaryCooperativeLedger-players-2-win-false.json.gz",
+      "sha256": "4c17e55fe09f9472cd958cfc6486096ceb021201fdb368ea7dae179d2b1173e3",
+      "originalBytes": 768203
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/server-module-TestContraHTTPBoundaryCooperativeLedger-players-2-win-true.json.gz",
+      "sha256": "6f9d55afd46df9e68f2d749f46c5d8b5af2954418cbd8ba057b6e45639631dfa",
+      "originalBytes": 737605
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/server-module-TestContraHTTPLoadingStreamAndSQLiteRestore.json.gz",
+      "sha256": "ec25fdf3d96d36b850b5dff135f304f3ebe16b60590fcc78d8390aa19950fd3c",
+      "originalBytes": 829730
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/server-module-TestContraHTTPPausePresentationRequiresManualResume.json.gz",
+      "sha256": "d97110df16e80da35ea62b8d292122ec32fd4c6c09b7d60c1259932fc230f2cb",
+      "originalBytes": 1247079
+    }
+  ],
+  "cleanup": {
+    "paths": [
+      ".local/contra-server/check.jsonl",
+      ".local/contra-server/tmp"
+    ],
+    "scope": "only this task intermediate log and empty temporary directory; retained red/green and compressed authenticated test traces"
+  },
+  "followupVerification": "docs/research/nes-contra/evidence/server-stage-input-verification.json"
+}

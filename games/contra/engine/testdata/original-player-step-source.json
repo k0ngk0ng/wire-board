@@ -1,0 +1,16 @@
+{
+  "source_is_original_execution": true,
+  "fixture_sha256": "74046d18c80fb11b40927a6fe169a6f34f8e6001408e12977bbd27dc7fbea317",
+  "source": "docs/research/nes-contra/evidence/static-playerstep-rendered-oracle.json.gz",
+  "capture_script": "scripts/contra/static_capture_playerstep.py",
+  "repeated_recordings": [
+    "v4",
+    "v5"
+  ],
+  "verified_equal": [
+    "all normal-player entry/return snapshots",
+    "all descendant call snapshots and order",
+    "all collision maps"
+  ],
+  "no_implementation_output_used": true
+}

@@ -1,0 +1,6 @@
+=== RUN   TestBuiltinBotVisionDormantEnergyNozzles
+--- PASS: TestBuiltinBotVisionDormantEnergyNozzles (1.13s)
+=== RUN   TestBuiltinBotVisionNozzleDoesNotAliasJungleArtwork
+--- PASS: TestBuiltinBotVisionNozzleDoesNotAliasJungleArtwork (2.18s)
+PASS
+ok  	github.com/k0ngk0ng/wire-board/games/contra/engine	3.868s

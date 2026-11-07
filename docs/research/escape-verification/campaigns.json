@@ -1,0 +1,349 @@
+{
+  "passed": true,
+  "primaryCases": 36,
+  "alternateCases": 18,
+  "cases": [
+    {
+      "case": "station-2-easy-lantern-17",
+      "passed": true,
+      "sharedWinners": 2
+    },
+    {
+      "case": "station-2-easy-salt-42",
+      "passed": true,
+      "sharedWinners": 2
+    },
+    {
+      "case": "station-2-normal-lantern-17",
+      "passed": true,
+      "sharedWinners": 2
+    },
+    {
+      "case": "station-2-normal-salt-42",
+      "passed": true,
+      "sharedWinners": 2
+    },
+    {
+      "case": "station-2-hard-lantern-17",
+      "passed": true,
+      "sharedWinners": 2
+    },
+    {
+      "case": "station-2-hard-salt-42",
+      "passed": true,
+      "sharedWinners": 2
+    },
+    {
+      "case": "station-3-easy-lantern-17",
+      "passed": true,
+      "sharedWinners": 3
+    },
+    {
+      "case": "station-3-easy-salt-42",
+      "passed": true,
+      "sharedWinners": 3
+    },
+    {
+      "case": "station-3-normal-lantern-17",
+      "passed": true,
+      "sharedWinners": 3
+    },
+    {
+      "case": "station-3-normal-salt-42",
+      "passed": true,
+      "sharedWinners": 3
+    },
+    {
+      "case": "station-3-hard-lantern-17",
+      "passed": true,
+      "sharedWinners": 3
+    },
+    {
+      "case": "station-3-hard-salt-42",
+      "passed": true,
+      "sharedWinners": 3
+    },
+    {
+      "case": "station-4-easy-lantern-17",
+      "passed": true,
+      "sharedWinners": 4
+    },
+    {
+      "case": "station-4-easy-salt-42",
+      "passed": true,
+      "sharedWinners": 4
+    },
+    {
+      "case": "station-4-normal-lantern-17",
+      "passed": true,
+      "sharedWinners": 4
+    },
+    {
+      "case": "station-4-normal-salt-42",
+      "passed": true,
+      "sharedWinners": 4
+    },
+    {
+      "case": "station-4-hard-lantern-17",
+      "passed": true,
+      "sharedWinners": 4
+    },
+    {
+      "case": "station-4-hard-salt-42",
+      "passed": true,
+      "sharedWinners": 4
+    },
+    {
+      "case": "archive-2-easy-lantern-17",
+      "passed": true,
+      "sharedWinners": 2
+    },
+    {
+      "case": "archive-2-easy-salt-42",
+      "passed": true,
+      "sharedWinners": 2
+    },
+    {
+      "case": "archive-2-normal-lantern-17",
+      "passed": true,
+      "sharedWinners": 2
+    },
+    {
+      "case": "archive-2-normal-salt-42",
+      "passed": true,
+      "sharedWinners": 2
+    },
+    {
+      "case": "archive-2-hard-lantern-17",
+      "passed": true,
+      "sharedWinners": 2
+    },
+    {
+      "case": "archive-2-hard-salt-42",
+      "passed": true,
+      "sharedWinners": 2
+    },
+    {
+      "case": "archive-3-easy-lantern-17",
+      "passed": true,
+      "sharedWinners": 3
+    },
+    {
+      "case": "archive-3-easy-salt-42",
+      "passed": true,
+      "sharedWinners": 3
+    },
+    {
+      "case": "archive-3-normal-lantern-17",
+      "passed": true,
+      "sharedWinners": 3
+    },
+    {
+      "case": "archive-3-normal-salt-42",
+      "passed": true,
+      "sharedWinners": 3
+    },
+    {
+      "case": "archive-3-hard-lantern-17",
+      "passed": true,
+      "sharedWinners": 3
+    },
+    {
+      "case": "archive-3-hard-salt-42",
+      "passed": true,
+      "sharedWinners": 3
+    },
+    {
+      "case": "archive-4-easy-lantern-17",
+      "passed": true,
+      "sharedWinners": 4
+    },
+    {
+      "case": "archive-4-easy-salt-42",
+      "passed": true,
+      "sharedWinners": 4
+    },
+    {
+      "case": "archive-4-normal-lantern-17",
+      "passed": true,
+      "sharedWinners": 4
+    },
+    {
+      "case": "archive-4-normal-salt-42",
+      "passed": true,
+      "sharedWinners": 4
+    },
+    {
+      "case": "archive-4-hard-lantern-17",
+      "passed": true,
+      "sharedWinners": 4
+    },
+    {
+      "case": "archive-4-hard-salt-42",
+      "passed": true,
+      "sharedWinners": 4
+    },
+    {
+      "case": {
+        "difficulty": "easy",
+        "scenario": "archive",
+        "seed": "alternate-23"
+      },
+      "passed": true,
+      "sharedWinners": 3
+    },
+    {
+      "case": {
+        "difficulty": "hard",
+        "scenario": "archive",
+        "seed": "alternate-23"
+      },
+      "passed": true,
+      "sharedWinners": 3
+    },
+    {
+      "case": {
+        "difficulty": "normal",
+        "scenario": "archive",
+        "seed": "alternate-23"
+      },
+      "passed": true,
+      "sharedWinners": 2
+    },
+    {
+      "case": {
+        "difficulty": "hard",
+        "scenario": "archive",
+        "seed": "alternate-23"
+      },
+      "passed": true,
+      "sharedWinners": 4
+    },
+    {
+      "case": {
+        "difficulty": "easy",
+        "scenario": "archive",
+        "seed": "alternate-23"
+      },
+      "passed": true,
+      "sharedWinners": 4
+    },
+    {
+      "case": {
+        "difficulty": "easy",
+        "scenario": "archive",
+        "seed": "alternate-23"
+      },
+      "passed": true,
+      "sharedWinners": 2
+    },
+    {
+      "case": {
+        "difficulty": "hard",
+        "scenario": "archive",
+        "seed": "alternate-23"
+      },
+      "passed": true,
+      "sharedWinners": 2
+    },
+    {
+      "case": {
+        "difficulty": "normal",
+        "scenario": "station",
+        "seed": "alternate-23"
+      },
+      "passed": true,
+      "sharedWinners": 3
+    },
+    {
+      "case": {
+        "difficulty": "normal",
+        "scenario": "archive",
+        "seed": "alternate-23"
+      },
+      "passed": true,
+      "sharedWinners": 4
+    },
+    {
+      "case": {
+        "difficulty": "normal",
+        "scenario": "archive",
+        "seed": "alternate-23"
+      },
+      "passed": true,
+      "sharedWinners": 3
+    },
+    {
+      "case": {
+        "difficulty": "normal",
+        "scenario": "station",
+        "seed": "alternate-23"
+      },
+      "passed": true,
+      "sharedWinners": 4
+    },
+    {
+      "case": {
+        "difficulty": "easy",
+        "scenario": "station",
+        "seed": "alternate-23"
+      },
+      "passed": true,
+      "sharedWinners": 3
+    },
+    {
+      "case": {
+        "difficulty": "hard",
+        "scenario": "station",
+        "seed": "alternate-23"
+      },
+      "passed": true,
+      "sharedWinners": 3
+    },
+    {
+      "case": {
+        "difficulty": "hard",
+        "scenario": "station",
+        "seed": "alternate-23"
+      },
+      "passed": true,
+      "sharedWinners": 4
+    },
+    {
+      "case": {
+        "difficulty": "normal",
+        "scenario": "station",
+        "seed": "alternate-23"
+      },
+      "passed": true,
+      "sharedWinners": 2
+    },
+    {
+      "case": {
+        "difficulty": "easy",
+        "scenario": "station",
+        "seed": "alternate-23"
+      },
+      "passed": true,
+      "sharedWinners": 4
+    },
+    {
+      "case": {
+        "difficulty": "easy",
+        "scenario": "station",
+        "seed": "alternate-23"
+      },
+      "passed": true,
+      "sharedWinners": 2
+    },
+    {
+      "case": {
+        "difficulty": "hard",
+        "scenario": "station",
+        "seed": "alternate-23"
+      },
+      "passed": true,
+      "sharedWinners": 2
+    }
+  ]
+}

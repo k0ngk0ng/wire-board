@@ -1,0 +1,129 @@
+{
+  "compatibility_id": "BASE-ROLLER-STALE-ATTRIBUTE",
+  "field": "new roller Attributes only",
+  "path": "92E4 -> 971B -> 971E",
+  "evidence": "enemies-base-roller-paired.json.gz",
+  "scope": "four natural room records, the repeated room-entry record before controlled Boss transition, and twelve explicitly controlled dispatch records; no automatic future exemption",
+  "fixtures": [
+    {
+      "fixture": "enemies-base-4-room.json.gz",
+      "sha256": "a37c4cacf7e998ce1dc09b737688149d922379ea255c8afcf1230f1c455d3bc1",
+      "bindings": [
+        {
+          "record_id": 140,
+          "slot": 4,
+          "original": 19,
+          "normalized": 0
+        },
+        {
+          "record_id": 8586,
+          "slot": 8,
+          "original": 12,
+          "normalized": 0
+        },
+        {
+          "record_id": 8715,
+          "slot": 9,
+          "original": 12,
+          "normalized": 0
+        },
+        {
+          "record_id": 9174,
+          "slot": 6,
+          "original": 19,
+          "normalized": 0
+        }
+      ]
+    },
+    {
+      "fixture": "enemies-base-4-boss.json.gz",
+      "sha256": "1eaa75522ef30f0b9a95fddae4148312e4c2968462d9de1d265aa09e9c552440",
+      "bindings": [
+        {
+          "record_id": 140,
+          "slot": 4,
+          "original": 19,
+          "normalized": 0
+        }
+      ]
+    },
+    {
+      "fixture": "enemies-base-controlled.json.gz",
+      "sha256": "03c258a639f12db7cb5b787dfdb4e244cc05e6a0857bb24bfe6c2c72dd417c5d",
+      "bindings": [
+        {
+          "record_id": 893,
+          "slot": 14,
+          "original": 19,
+          "normalized": 0
+        },
+        {
+          "record_id": 894,
+          "slot": 14,
+          "original": 19,
+          "normalized": 0
+        },
+        {
+          "record_id": 895,
+          "slot": 14,
+          "original": 19,
+          "normalized": 0
+        },
+        {
+          "record_id": 906,
+          "slot": 14,
+          "original": 19,
+          "normalized": 0
+        },
+        {
+          "record_id": 907,
+          "slot": 14,
+          "original": 19,
+          "normalized": 0
+        },
+        {
+          "record_id": 908,
+          "slot": 14,
+          "original": 19,
+          "normalized": 0
+        },
+        {
+          "record_id": 919,
+          "slot": 14,
+          "original": 19,
+          "normalized": 0
+        },
+        {
+          "record_id": 920,
+          "slot": 14,
+          "original": 19,
+          "normalized": 0
+        },
+        {
+          "record_id": 921,
+          "slot": 14,
+          "original": 19,
+          "normalized": 0
+        },
+        {
+          "record_id": 932,
+          "slot": 14,
+          "original": 19,
+          "normalized": 0
+        },
+        {
+          "record_id": 933,
+          "slot": 14,
+          "original": 19,
+          "normalized": 0
+        },
+        {
+          "record_id": 934,
+          "slot": 14,
+          "original": 19,
+          "normalized": 0
+        }
+      ]
+    }
+  ]
+}

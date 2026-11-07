@@ -3,6 +3,7 @@ import { Check, Maximize, Minus, Plus, RotateCw } from "lucide-react";
 import type { CarDefinition, CarPlacement, CarTile, Room } from "./types";
 import type { Act } from "../../../web/src/types";
 import "./carcassonne.css";
+import { useControllerCancel } from "../../../web/src/controllers/use-controller-cancel";
 
 export const carNames: Record<string, string> = {
   city: "城市",
@@ -157,6 +158,11 @@ export function CarcassonneBoard({
       moved: boolean;
     } | null>(null),
     suppressClick = useRef(false);
+  const root = useRef<HTMLDivElement>(null);
+  useControllerCancel(root, () => {
+    setPicked(null);
+    setFeature(null);
+  });
   const latest = useRef(view);
   latest.current = view;
   const [dragging, setDragging] = useState(false);
@@ -228,14 +234,54 @@ export function CarcassonneBoard({
     el.addEventListener("wheel", wheel, { passive: false });
     return () => el.removeEventListener("wheel", wheel);
   }, []);
+  useEffect(() => {
+    const node = viewport.current;
+    const reveal = (event: Event) => {
+      const target = event.target;
+      const map = svg.current;
+      if (!(target instanceof SVGGraphicsElement) || !map?.contains(target))
+        return;
+      const matrix = map.getScreenCTM();
+      if (!matrix || !node) return;
+      event.preventDefault();
+      const r = target.getBoundingClientRect(),
+        b = node.getBoundingClientRect();
+      if (
+        r.left < b.left + 12 ||
+        r.right > b.right - 12 ||
+        r.top < b.top + 12 ||
+        r.bottom > b.bottom - 12
+      ) {
+        const center = new DOMPoint(
+          r.x + r.width / 2,
+          r.y + r.height / 2,
+        ).matrixTransform(matrix.inverse());
+        setView((v) => ({
+          x: center.x,
+          y: center.y,
+          z: Math.max(
+            0.03,
+            Math.min(
+              v.z,
+              (v.z * (b.width - 24)) / r.width,
+              (v.z * (b.height - 24)) / r.height,
+            ),
+          ),
+        }));
+      }
+      node.scrollIntoView({ block: "nearest", inline: "nearest" });
+    };
+    node?.addEventListener("controller-reveal", reveal);
+    return () => node?.removeEventListener("controller-reveal", reveal);
+  }, []);
   const previewLegal =
     !!picked &&
     g.legal.some(
       (p) => p.x === picked.x && p.y === picked.y && p.rotation === rotation,
     );
   const cells = [...new Map(g.legal.map((p) => [`${p.x},${p.y}`, p])).values()];
-  const choose = (p: CarPlacement) => {
-    if (!mine || busy || suppressClick.current) return;
+  const choose = (p: CarPlacement, pointer = false) => {
+    if (!mine || busy || (pointer && suppressClick.current)) return;
     setPicked(p);
     if (
       !g.legal.some(
@@ -303,8 +349,9 @@ export function CarcassonneBoard({
                 aria-label={`派遣至${carNames[mf.kind]} ${fi + 1}`}
                 className={`car-feature-target ${feature === fi ? "selected" : ""}`}
                 transform={`translate(${p.x} ${p.y})`}
-                onClick={() => {
-                  if (!busy && !suppressClick.current) setFeature(fi);
+                onClick={(e) => {
+                  if (!busy && (e.detail === 0 || !suppressClick.current))
+                    setFeature(fi);
                 }}
                 onKeyDown={(e) => {
                   if (!busy && (e.key === "Enter" || e.key === " ")) {
@@ -324,9 +371,9 @@ export function CarcassonneBoard({
     );
   };
   return (
-    <div className="car-board">
+    <div className="car-board" ref={root}>
       <section className="car-map-panel">
-        <header className="car-map-tools">
+        <header className="car-map-tools" data-controller-group="camera">
           <span>
             <b>卡卡颂</b>
             <small>{g.tiles.length} / 72 块</small>
@@ -374,6 +421,7 @@ export function CarcassonneBoard({
         >
           <svg
             ref={svg}
+            data-controller-group="board"
             role="group"
             aria-label="卡卡颂地图，可拖动和缩放"
             viewBox={`${view.x - size.w / (2 * view.z)} ${view.y - size.h / (2 * view.z)} ${size.w / view.z} ${size.h / view.z}`}
@@ -427,7 +475,8 @@ export function CarcassonneBoard({
                   tabIndex={busy ? -1 : 0}
                   aria-label={`放置位置 ${p.x},${p.y}`}
                   className="car-empty-cell"
-                  onClick={() => choose(p)}
+                  data-car-cell={placeCell(p)}
+                  onClick={(e) => choose(p, e.detail > 0)}
                   onKeyDown={(e) => {
                     if (e.key === "Enter" || e.key === " ") {
                       e.preventDefault();
@@ -500,7 +549,7 @@ export function CarcassonneBoard({
           </div>
         </div>
         {mine && tilePhase && (
-          <div className="car-place-actions">
+          <div className="car-place-actions" data-controller-group="placement">
             <button
               className="outline"
               disabled={busy}
@@ -538,7 +587,7 @@ export function CarcassonneBoard({
             <p>
               可用随从 <b>{g.players[room.you].meeples} / 7</b>
             </p>
-            <div className="car-feature-list">
+            <div className="car-feature-list" data-controller-group="features">
               {g.meepleChoices.map((fi) => {
                 const f = g.catalog[last.kind].features[fi];
                 return (
@@ -561,7 +610,7 @@ export function CarcassonneBoard({
                   农民会留在田地直到终局，每座相邻完整城市计 3 分。
                 </p>
               )}
-            <div className="car-deploy-buttons">
+            <div className="car-deploy-buttons" data-controller-group="deploy">
               <button
                 className="outline"
                 disabled={busy}

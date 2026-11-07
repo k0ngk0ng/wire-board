@@ -1,0 +1,235 @@
+{
+  "scope": "Live trace samples; diagnostic evidence only, campaigns remain running",
+  "runs": {
+    "1": {
+      "path": ".local/contra-bot/runs/fresh-1p-motion-v9/players1",
+      "progress": {
+        "frame": 141600,
+        "infinite_lives": true,
+        "level": 5,
+        "reserve_refills": 357,
+        "routine": 4,
+        "screen": 6
+      },
+      "sample_frames": [
+        135834,
+        141600
+      ],
+      "levels": [
+        5
+      ],
+      "screens": [
+        6
+      ],
+      "input_pairs": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          9,
+          0
+        ],
+        [
+          64,
+          0
+        ],
+        [
+          65,
+          0
+        ],
+        [
+          66,
+          0
+        ],
+        [
+          68,
+          0
+        ],
+        [
+          73,
+          0
+        ],
+        [
+          137,
+          0
+        ]
+      ]
+    },
+    "2": {
+      "path": ".local/contra-bot/runs/fresh-2p-motion-v9/players2",
+      "progress": {
+        "frame": 54000,
+        "infinite_lives": true,
+        "level": 2,
+        "reserve_refills": 57,
+        "routine": 4,
+        "screen": 7
+      },
+      "sample_frames": [
+        48042,
+        54000
+      ],
+      "levels": [
+        2
+      ],
+      "screens": [
+        7
+      ],
+      "input_pairs": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          5
+        ],
+        [
+          0,
+          8
+        ],
+        [
+          0,
+          9
+        ],
+        [
+          0,
+          10
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          2,
+          10
+        ],
+        [
+          6,
+          8
+        ],
+        [
+          6,
+          9
+        ],
+        [
+          8,
+          0
+        ],
+        [
+          8,
+          1
+        ],
+        [
+          8,
+          5
+        ],
+        [
+          8,
+          6
+        ],
+        [
+          8,
+          8
+        ],
+        [
+          8,
+          9
+        ],
+        [
+          8,
+          10
+        ],
+        [
+          10,
+          8
+        ],
+        [
+          64,
+          0
+        ],
+        [
+          64,
+          69
+        ],
+        [
+          64,
+          72
+        ],
+        [
+          64,
+          74
+        ],
+        [
+          72,
+          0
+        ],
+        [
+          72,
+          64
+        ],
+        [
+          72,
+          65
+        ],
+        [
+          72,
+          69
+        ],
+        [
+          72,
+          70
+        ],
+        [
+          72,
+          72
+        ],
+        [
+          72,
+          73
+        ],
+        [
+          72,
+          74
+        ],
+        [
+          73,
+          72
+        ],
+        [
+          73,
+          74
+        ],
+        [
+          74,
+          64
+        ],
+        [
+          74,
+          69
+        ],
+        [
+          74,
+          72
+        ]
+      ]
+    }
+  }
+}

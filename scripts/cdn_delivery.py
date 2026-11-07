@@ -1,31 +1,160 @@
 #!/usr/bin/env python3
-"""Publish immutable compiled assets, verify CDN responses, then trim packaging.
-Only main's verified source uses credentials. Tags reuse the unchanged binary.
+"""Upload immutable compiled assets; run CDN readback locally before release.
+Actions may upload and package candidates. Tags require the local readback gate.
 """
-import argparse,base64,concurrent.futures,gzip,hashlib,hmac,json,os,re,shutil
+import argparse,base64,concurrent.futures,gzip,hashlib,hmac,json,os,re,shutil,time,threading,zlib
 from email.utils import formatdate
 from pathlib import Path
-from urllib.request import Request,urlopen
-from urllib.error import HTTPError
+from urllib.request import Request,urlopen as standard_urlopen,getproxies,proxy_bypass
+from urllib.parse import urlsplit
+from contextlib import contextmanager
+from io import BytesIO
+from urllib.error import HTTPError,URLError
+from http.client import IncompleteRead,HTTPSConnection,HTTPException
+# urllib's default HTTPS opener sends Connection: close. Reuse one verified
+# TLS connection per worker/host so a manifest does not need hundreds of
+# independent handshakes across regions. Preserve configured proxy handling.
+_connections=threading.local()
+_https_proxy=getproxies().get('https')
+def close_connections():
+ for connection in getattr(_connections,'values',{}).values():connection.close()
+ _connections.values={}
+
+@contextmanager
+def urlopen(request,timeout=60):
+ parts=urlsplit(request.full_url)
+ if parts.scheme!='https' or (_https_proxy and not proxy_bypass(parts.hostname)):
+  with standard_urlopen(request,timeout=timeout) as response:yield response
+  return
+ connections=getattr(_connections,'values',None)
+ if connections is None:connections={};_connections.values=connections
+ key=(parts.hostname,parts.port or 443,timeout)
+ connection=connections.get(key)
+ if connection is None:
+  connection=HTTPSConnection(parts.hostname,parts.port or 443,timeout=timeout)
+  connections[key]=connection
+ response=None
+ try:
+  connection.request(request.get_method(),request.selector,body=request.data,headers=dict(request.header_items()))
+  response=connection.getresponse()
+  if 300<=response.status<400:
+   response.read();response.close()
+   with standard_urlopen(request,timeout=timeout) as redirected:yield redirected
+   return
+  if response.status>=400:
+   body=response.read()
+   raise HTTPError(request.full_url,response.status,response.reason,response.headers,BytesIO(body))
+  try:yield response
+  finally:
+   try:response.read()
+   finally:response.close()
+ except HTTPError:
+  if response is not None:response.close()
+  raise
+ except (OSError,HTTPException) as error:
+  connection.close();connections.pop(key,None)
+  raise URLError(error) from error
+
 BASE=re.compile(r'https://cdn\.ichenj\.com/bga/web/[a-f0-9]{40}/\Z')
 MIME={'.js':'text/javascript','.css':'text/css','.svg':'image/svg+xml','.png':'image/png','.webp':'image/webp','.jpg':'image/jpeg','.woff':'font/woff','.woff2':'font/woff2','.ttf':'font/ttf','.wasm':'application/wasm'}
+CONTRA_MIME={'.js':'text/javascript','.wasm':'application/wasm','.json':'application/json','.idx':'application/octet-stream','.rgb':'application/octet-stream','.wav':'audio/wav'}
+MIME['.gz']='application/gzip'
+MIME.update({'.jpeg':'image/jpeg','.gif':'image/gif','.json':'application/json','.txt':'text/plain','.md':'text/plain','.mp3':'audio/mpeg','.wav':'audio/wav','.ogg':'audio/ogg','.flac':'audio/flac','.idx':'application/octet-stream','.rgb':'application/octet-stream','.pvzr':'application/octet-stream'})
+SERVER_METADATA={'index.html','game-load-manifest.json','contra-delivery.json','cdn-assets-manifest.json'}
+SHA256=re.compile(r'[a-f0-9]{64}\Z')
+PVZR_MAX_COMPRESSED_BYTES=16*1024*1024
+PVZR_MAX_DECODED_BYTES=64*1024*1024
 def sha(data):return hashlib.sha256(data).hexdigest()
+def validate_pvzr(data):
+ # .pvzr is one canonical, already-compressed application payload, not an
+ # HTTP Content-Encoding sidecar. Verify the stored bytes without adding an
+ # uncompressed copy or allowing an unbounded expansion during publication.
+ if len(data)>PVZR_MAX_COMPRESSED_BYTES or not data.startswith(b'\x1f\x8b\x08'):
+  raise ValueError('Invalid PvZ native animation container')
+ try:
+  decoder=zlib.decompressobj(16+zlib.MAX_WBITS)
+  body=decoder.decompress(data,PVZR_MAX_DECODED_BYTES+1)
+  if len(body)>PVZR_MAX_DECODED_BYTES or not decoder.eof or decoder.unused_data or not body:
+   raise ValueError('Invalid PvZ native animation container')
+ except zlib.error as error:
+  raise ValueError('Invalid PvZ native animation container') from error
+def contra_inventory(dist,base):
+ folder,receipt_path=dist/'contra',dist/'contra-delivery.json'
+ if folder.is_symlink() or receipt_path.is_symlink():raise ValueError('Symlink Contra delivery root or receipt')
+ if not folder.exists() and not receipt_path.exists():return []
+ if not folder.is_dir() or not receipt_path.is_file():raise ValueError('Contra runtime requires its delivery directory and receipt')
+ try:receipt=json.loads(receipt_path.read_bytes())
+ except (ValueError,OSError) as e:raise ValueError('Invalid Contra delivery receipt') from e
+ if not isinstance(receipt,dict):raise ValueError('Invalid Contra delivery receipt')
+ runtime,rules=receipt.get('runtimeBuildID'),receipt.get('rulesBuildID')
+ if not isinstance(runtime,str) or not SHA256.fullmatch(runtime) or not isinstance(rules,str) or not SHA256.fullmatch(rules):raise ValueError('Missing canonical Contra build identities')
+ prefix='contra/runtime-'+runtime+'/'
+ if receipt.get('prefix')!=prefix:raise ValueError('Contra prefix differs from runtime identity')
+ files=receipt.get('files')
+ if not isinstance(files,dict) or not files or 'manifest.json' not in files:raise ValueError('Incomplete Contra delivery receipt')
+ expected={}
+ for name,item in files.items():
+  path=Path(name)
+  if not re.fullmatch(r'[A-Za-z0-9._/-]+',name) or path.is_absolute() or path.as_posix()!=name or '..' in path.parts or path.suffix not in CONTRA_MIME:raise ValueError('Noncanonical Contra payload path: '+name)
+  if not isinstance(item,dict) or type(item.get('bytes')) is not int or item['bytes']<=0 or not isinstance(item.get('sha256'),str) or not SHA256.fullmatch(item['sha256']):raise ValueError('Invalid Contra payload identity: '+name)
+  if item.get('mime')!=CONTRA_MIME[path.suffix] or type(item.get('requiresRange')) is not bool or item['requiresRange']!=(path.suffix=='.wav'):raise ValueError('Invalid Contra MIME or Range contract: '+name)
+  expected[prefix+name]=item
+ actual=set()
+ for path in folder.rglob('*'):
+  if path.is_symlink():raise ValueError('Symlink in Contra delivery directory')
+  if path.is_dir():continue
+  if not path.is_file():raise ValueError('Contra payload must be a regular file')
+  actual.add(path.relative_to(dist).as_posix())
+ if actual!=set(expected):raise ValueError('Contra files do not exactly match the delivery receipt')
+ rows=[]
+ for rel,item in sorted(expected.items()):
+  body=(dist/rel).read_bytes()
+  if len(body)!=item['bytes'] or sha(body)!=item['sha256']:raise ValueError('Contra payload checksum differs: '+rel)
+  encoding='gzip' if Path(rel).suffix=='.js' else ''
+  rows.append({'url':base+rel,'path':rel,'bytes':len(body),'sha256':item['sha256'],'mime':item['mime'],'encoding':encoding,'wireBytes':len(gzip.compress(body,mtime=0)) if encoding else len(body),'requiresRange':item['requiresRange']})
+ if files['manifest.json']['sha256']!=runtime:raise ValueError('Contra manifest checksum differs from runtime identity')
+ try:manifest=json.loads((dist/prefix/'manifest.json').read_bytes())
+ except ValueError as e:raise ValueError('Invalid Contra runtime manifest') from e
+ if not isinstance(manifest,dict) or manifest.get('version')!=1 or manifest.get('rulesBuildID')!=rules:raise ValueError('Contra runtime rules identity differs from receipt')
+ return rows
+
 def inventory(dist,base):
  if not BASE.fullmatch(base):raise ValueError('Expected immutable commit-bound CDN base')
- folder=dist/'assets'
- if folder.is_symlink():raise ValueError('Symlink asset directory')
+ if dist.is_symlink():raise ValueError('Symlink public directory')
+ runtime_rows=contra_inventory(dist,base)
  rows=[]
- candidates=sorted(folder.rglob('*'))
- if (dist/'favicon.svg').exists():candidates.append(dist/'favicon.svg')
- for p in candidates:
-  if p.is_symlink():raise ValueError('Symlink in asset directory')
+ for p in sorted(dist.rglob('*')):
+  if p.is_symlink():raise ValueError('Symlink in public directory')
   if not p.is_file():continue
-  if p.suffix=='.gz':continue # CDN negotiates compression; publish canonical bytes.
-  if p.suffix not in MIME:raise ValueError('Unexpected public asset type: '+p.name)
-  data=p.read_bytes();rel=p.relative_to(dist).as_posix()
-  encoding='gzip' if p.suffix in ('.js','.css','.svg') else ''
-  rows.append({'url':base+rel,'path':rel,'bytes':len(data),'sha256':sha(data),'mime':MIME[p.suffix],'encoding':encoding,'wireBytes':len(gzip.compress(data,mtime=0)) if encoding else len(data)})
- if not rows:raise ValueError('No compiled assets')
+  rel=p.relative_to(dist).as_posix()
+  if not re.fullmatch(r'[A-Za-z0-9._/-]+',rel) or any(part.startswith('.') for part in Path(rel).parts):raise ValueError('Noncanonical public asset path: '+rel)
+  if rel in SERVER_METADATA or rel.startswith('contra/'):continue
+  if p.suffix=='.gz':
+   canonical=p.with_suffix('')
+   if canonical.is_file():
+    if canonical.suffix not in MIME or gzip.decompress(p.read_bytes())!=canonical.read_bytes():raise ValueError('Invalid precompressed asset: '+rel)
+    continue
+   # Canonical gzip JSON is an application payload, not an HTTP sidecar.
+   # Its compressed bytes are authenticated by the game resource descriptor.
+   if not p.name.endswith('.json.gz'):raise ValueError('Invalid precompressed asset: '+rel)
+   descriptor=p.parent/'runtime-resource-descriptor.json'
+   if not descriptor.is_file():raise ValueError('Invalid precompressed asset: '+rel)
+   try:
+    entries=[entry for entry in json.loads(descriptor.read_bytes()).get('resources',[])if entry.get('logical_path')=='/'+rel]
+    if len(entries)!=1:raise ValueError('Undeclared canonical gzip')
+    entry=entries[0];encoded=p.read_bytes();raw=gzip.decompress(encoded);json.loads(raw)
+    if len(encoded)!=entry['gzip_bytes']or sha(encoded)!=entry['gzip_sha256']or len(raw)!=entry['raw_json_bytes']or sha(raw)!=entry['raw_json_sha256']:raise ValueError('Canonical gzip descriptor differs')
+   except (ValueError,KeyError,OSError,EOFError)as error:raise ValueError('Invalid canonical gzip JSON: '+rel)from error
+  if p.suffix not in MIME:raise ValueError('Unexpected public asset type: '+rel)
+  data=p.read_bytes()
+  if not data:raise ValueError('Empty public asset: '+rel)
+  if p.suffix=='.pvzr':validate_pvzr(data)
+  encoding='gzip' if p.suffix in ('.js','.css','.svg','.json','.txt','.md') else ''
+  row={'url':base+rel,'path':rel,'bytes':len(data),'sha256':sha(data),'mime':MIME[p.suffix],'encoding':encoding,'wireBytes':len(gzip.compress(data,mtime=0)) if encoding else len(data)}
+  if p.suffix in ('.mp3','.wav','.ogg','.flac'):row['requiresRange']=True
+  rows.append(row)
+ rows.extend(runtime_rows)
+ if not rows:raise ValueError('No published assets')
  return rows
 
 def decoded(body,headers):
@@ -34,30 +163,101 @@ def decoded(body,headers):
   except (OSError,EOFError) as e:raise ValueError('Invalid gzip response') from e
  return body
 
-def validate_response(row,body,headers):
- if row.get('encoding') and headers.get('Content-Encoding')!=row['encoding']:raise ValueError('CDN compression missing: '+row['url'])
- body=decoded(body,headers)
+def validate_headers(row,headers):
  mime=headers.get('Content-Type','').split(';')[0].lower()
  compatible={row['mime']}
  if row['mime']=='text/javascript':compatible.add('application/javascript')
- if len(body)!=row['bytes'] or sha(body)!=row['sha256']:raise ValueError('CDN content mismatch: '+row['url'])
  if mime not in compatible:raise ValueError('CDN MIME mismatch: '+row['url'])
  if headers.get('Access-Control-Allow-Origin') not in ('*','https://bga.ichenj.com'):raise ValueError('CDN CORS missing: '+row['url'])
+
+def validate_response(row,body,headers):
+ if row.get('encoding') and headers.get('Content-Encoding')!=row['encoding']:raise ValueError('CDN compression missing: '+row['url'])
+ if row.get('requiresRange') and headers.get('Content-Encoding') not in (None,'','identity'):raise ValueError('Seekable audio must use identity encoding: '+row['url'])
+ body=decoded(body,headers)
+ if len(body)!=row['bytes'] or sha(body)!=row['sha256']:raise ValueError('CDN content mismatch: '+row['url'])
+ validate_headers(row,headers)
+
+def validate_range_response(row,expected,body,headers,status):
+ end=len(expected)-1
+ if status!=206 or headers.get('Content-Range')!=f'bytes 0-{end}/{row["bytes"]}':raise ValueError('CDN did not honor the audio byte range: '+row['url'])
+ if headers.get('Content-Encoding') not in (None,'','identity') or body!=expected:raise ValueError('CDN audio range bytes differ: '+row['url'])
+ validate_headers(row,headers)
 
 def trim(dist,report):
  rows=report.get('files',[])
  if not report.get('passed') or not rows:raise ValueError('No verified CDN inventory')
- base=rows[0]['url'].split('/assets/')[0]+'/'
+ first=rows[0]
+ if not first.get('path') or not first['url'].endswith(first['path']):raise ValueError('Invalid verified asset URL')
+ base=first['url'][:-len(first['path'])]
  if inventory(dist,base)!=rows:raise ValueError('Verified assets differ from packaging input')
  if 'manifestSHA256' in report and sha((dist/'game-load-manifest.json').read_bytes())!=report['manifestSHA256']:raise ValueError('Manifest changed after verification')
  if 'indexSHA256' in report and sha((dist/'index.html').read_bytes())!=report['indexSHA256']:raise ValueError('Entry changed after verification')
- shutil.rmtree(dist/'assets')
+ contra_prefix=None
+ receipt_path=dist/'contra-delivery.json'
+ if receipt_path.exists():
+  raw=receipt_path.read_bytes()
+  if report.get('contraDeliverySHA256')!=sha(raw):raise ValueError('Contra delivery receipt changed or was not verified')
+  contra_prefix=json.loads(raw)['prefix']
+ elif report.get('contraDeliverySHA256'):raise ValueError('Verified Contra delivery receipt is missing')
+ manifest={'version':1,'assetBase':base,'files':{'/'+row['path']:{key:row[key] for key in ('url','bytes','sha256','mime')} for row in rows}}
+ (dist/'cdn-assets-manifest.json').write_text(json.dumps(manifest,separators=(',',':'))+'\n')
+ for row in rows:
+  target=dist/row['path'];target.unlink()
+  compressed=target.with_suffix(target.suffix+'.gz')
+  if compressed.exists():compressed.unlink()
+ for p in sorted(dist.rglob('*'),key=lambda p:len(p.parts),reverse=True):
+  if p.is_dir() and not any(p.iterdir()):p.rmdir()
+ remaining={p.relative_to(dist).as_posix() for p in dist.rglob('*') if p.is_file()}
+ if not remaining<=SERVER_METADATA:raise ValueError('Client payload remains in server assets: '+str(sorted(remaining-SERVER_METADATA)))
+
+def verify_server_package(root,dist,binary,report):
+ if dist.is_symlink() or binary.is_symlink():raise ValueError('Symlink package input')
+ root=root.resolve();dist=dist.resolve();binary=binary.resolve()
+ binary.relative_to(root)
+ if not report.get('passed') or not report.get('files'):raise ValueError('Missing verified CDN report')
+ prefix=dist.relative_to(root).as_posix()+'/'
+ actual={p.relative_to(dist).as_posix():p for p in dist.rglob('*') if p.is_file()}
+ if not {'index.html','game-load-manifest.json','cdn-assets-manifest.json'}<=set(actual) or not set(actual)<=SERVER_METADATA:raise ValueError('Server assets are not metadata-only')
+ if any(p.is_symlink() for p in dist.rglob('*')):raise ValueError('Symlink in server assets')
+ for name,key in [('index.html','indexSHA256'),('game-load-manifest.json','manifestSHA256')]:
+  if report.get(key)!=sha(actual[name].read_bytes()):raise ValueError('Server entry metadata differs from CDN verification')
+ if 'contra-delivery.json' in actual or report.get('contraDeliverySHA256'):
+  if 'contra-delivery.json' not in actual or report.get('contraDeliverySHA256')!=sha(actual['contra-delivery.json'].read_bytes()):raise ValueError('Server runtime receipt differs from CDN verification')
+ manifest=json.loads(actual['cdn-assets-manifest.json'].read_bytes())
+ rows=report['files'];first=rows[0];base=first['url'][:-len(first['path'])]
+ expected={'version':1,'assetBase':base,'files':{'/'+r['path']:{k:r[k] for k in ('url','bytes','sha256','mime')} for r in rows}}
+ if not BASE.fullmatch(base) or manifest!=expected:raise ValueError('Server redirects differ from verified CDN assets')
+ receipt=json.loads(binary.with_suffix(binary.suffix+'.build.json').read_bytes())
+ data=binary.read_bytes()
+ if receipt.get('sha256')!=sha(data) or receipt.get('bytes')!=len(data):raise ValueError('Binary differs from compiler receipt')
+ embedded={row['path']:row['sha256'] for row in receipt.get('inputs',[]) if row['path'].startswith(prefix)}
+ expected_inputs={prefix+name:sha(path.read_bytes()) for name,path in actual.items()}
+ if embedded!=expected_inputs:raise ValueError('Compiler embedded client payloads or stale server metadata')
+ for row in receipt['inputs']:
+  if re.search(r'(?:^|/)games/[^/]+/assets/public/',row['path']) or row['path'].startswith('.local/web-public/'):
+   raise ValueError('Client media source embedded outside the server asset directory')
+ return {'passed':True,'binarySHA256':sha(data),'binaryBytes':len(data),'embeddedFiles':sorted(embedded),'cdnFileCount':len(rows),'metadataOnly':True}
 
 def credentials():
  def read(env,file):
   if os.environ.get(env):return os.environ[env]
   return (Path('config/secrets')/file).read_text().strip()
  return read('OSS_ACCESS_KEY_ID','oss-access-key-id'),read('OSS_ACCESS_KEY_SECRET','oss-access-key-secret')
+
+def retry_request(action,label):
+ # Restart the complete object operation, including its immutable-content check.
+ # A PUT may have committed before a timeout; upload must GET it before retrying.
+ for attempt in range(1,5):
+  try:return action()
+  except (URLError,TimeoutError,ConnectionError,IncompleteRead) as error:
+   transient=not isinstance(error,HTTPError) or error.code in (408,429,500,502,503,504)
+   if not transient or attempt==4:
+    error.add_note('Asset request failed: '+label)
+    if isinstance(error,HTTPError):error.close()
+    raise
+   if isinstance(error,HTTPError):error.close()
+   print(f'Retrying {label} after {type(error).__name__} ({attempt}/4)',flush=True)
+   time.sleep(2**(attempt-1))
 
 def publish(dist,rows,bucket,endpoint):
  key_id,secret=credentials()
@@ -77,6 +277,7 @@ def publish(dist,rows,bucket,endpoint):
    return
   except HTTPError as e:
    if e.code!=404:raise
+   e.close()
   body=(dist/row['path']).read_bytes()
   if row['encoding']:body=gzip.compress(body,mtime=0)
   md5=base64.b64encode(hashlib.md5(body).digest()).decode();date=formatdate(usegmt=True)
@@ -86,23 +287,46 @@ def publish(dist,rows,bucket,endpoint):
   if row['encoding']:request.add_header('Content-Encoding',row['encoding'])
   with urlopen(request,timeout=45) as r:
    if r.status!=200:raise ValueError('Upload failed: '+key)
- with concurrent.futures.ThreadPoolExecutor(max_workers=6) as pool:list(pool.map(upload,rows))
+ with concurrent.futures.ThreadPoolExecutor(max_workers=6) as pool:list(pool.map(lambda row:retry_request(lambda:upload(row),row["url"]),rows))
+ print(f'Published or confirmed {len(rows)} immutable OSS assets',flush=True)
 
 def verify(row):
- with urlopen(Request(row['url'],headers={'Origin':'https://bga.ichenj.com','Accept-Encoding':'gzip'}),timeout=60) as r:validate_response(row,r.read(),r.headers)
+ return retry_request(lambda:verify_once(row),row["url"])
+
+def verify_once(row):
+ with urlopen(Request(row['url'],headers={'Origin':'https://bga.ichenj.com','Accept-Encoding':'identity' if row.get('requiresRange') else 'gzip'}),timeout=60) as r:
+  body=r.read();validate_response(row,body,r.headers)
+  if row.get('requiresRange'):expected=body[:64]
+ if row.get('requiresRange'):
+  with urlopen(Request(row['url'],headers={'Origin':'https://bga.ichenj.com','Accept-Encoding':'identity','Range':f'bytes=0-{len(expected)-1}'}),timeout=60) as r:
+   validate_range_response(row,expected,r.read(),r.headers,r.status)
  return row
 
 def main():
- p=argparse.ArgumentParser(description=__doc__);p.add_argument('action',choices=['publish','verify','trim']);p.add_argument('--dist',type=Path,default=Path('web/dist'));p.add_argument('--report',type=Path,default=Path('.local/cdn-delivery/verified.json'));args=p.parse_args()
- if args.action=='trim':trim(args.dist,json.loads(args.report.read_text()));print('Removed verified compiled assets from server packaging');return
+ p=argparse.ArgumentParser(description=__doc__);p.add_argument('action',choices=['upload','publish','verify','trim','check-package']);p.add_argument('--dist',type=Path,default=Path('web/dist'));p.add_argument('--report',type=Path,default=Path('.local/cdn-delivery/verified.json'));p.add_argument('--binary',type=Path,default=Path('dist/package/wire-board'));args=p.parse_args()
+ if args.action in ('publish','verify') and os.environ.get('GITHUB_ACTIONS')=='true':raise ValueError('CDN readback must run on a local machine, outside GitHub Actions')
+ if args.action=='check-package':
+  output=args.report.parent/'server-package.json'
+  try:result=verify_server_package(Path.cwd(),args.dist,args.binary,json.loads(args.report.read_text()))
+  except Exception as error:
+   output.write_text(json.dumps({'passed':False,'error':str(error)},indent=2)+'\n');raise
+  output.write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result));return
+ if args.action=='trim':trim(args.dist,json.loads(args.report.read_text()));print('Removed all inventory-matched client payloads from server packaging');return
  manifest=json.loads((args.dist/'game-load-manifest.json').read_text());base=manifest.get('assetBase','');rows=inventory(args.dist,base)
  known={r['url']:r for r in rows}
  for files in manifest['games'].values():
   for f in files:
    if f['url'] not in known or f['bytes']!=known[f['url']]['bytes']:raise ValueError('Manifest does not match compiled assets')
  if manifest['entry'] not in known:raise ValueError('Entry is not bound to CDN inventory')
- args.report.parent.mkdir(parents=True,exist_ok=True);report={'passed':False,'files':rows,'indexSHA256':sha((args.dist/'index.html').read_bytes()),'manifestSHA256':sha((args.dist/'game-load-manifest.json').read_bytes())};args.report.write_text(json.dumps(report,indent=2)+'\n')
- if args.action=='publish':publish(args.dist,rows,'stoneage-assets','stoneage-assets.oss-cn-shanghai.aliyuncs.com')
+ args.report.parent.mkdir(parents=True,exist_ok=True);report={'passed':False,'stage':'uploading' if args.action=='upload' else 'verifying','cdnVerified':False,'files':rows,'indexSHA256':sha((args.dist/'index.html').read_bytes()),'manifestSHA256':sha((args.dist/'game-load-manifest.json').read_bytes())}
+ receipt=args.dist/'contra-delivery.json'
+ if receipt.exists():report['contraDeliverySHA256']=sha(receipt.read_bytes())
+ args.report.write_text(json.dumps(report,indent=2)+'\n')
+ if args.action in ('upload','publish'):publish(args.dist,rows,'stoneage-assets','stoneage-assets.oss-cn-shanghai.aliyuncs.com')
+ if args.action=='upload':
+  if inventory(args.dist,base)!=rows or receipt.exists() and sha(receipt.read_bytes())!=report.get('contraDeliverySHA256'):raise ValueError('Local assets changed during upload')
+  report.update(passed=True,stage='uploaded');args.report.write_text(json.dumps(report,indent=2)+'\n');print(f'Uploaded {len(rows)} immutable OSS assets; CDN readback awaits local verification');return
  with concurrent.futures.ThreadPoolExecutor(max_workers=6) as pool:list(pool.map(verify,rows))
- report['passed']=True;args.report.write_text(json.dumps(report,indent=2)+'\n');print(f'Verified {len(rows)} CDN assets; MIME, CORS and SHA-256 passed')
+ if inventory(args.dist,base)!=rows or receipt.exists() and sha(receipt.read_bytes())!=report.get('contraDeliverySHA256'):raise ValueError('Local assets changed during CDN verification')
+ report.update(passed=True,stage='verified',cdnVerified=True,verificationLocation='local');args.report.write_text(json.dumps(report,indent=2)+'\n');print(f'Locally verified {len(rows)} CDN assets; MIME, CORS and SHA-256 passed')
 if __name__=='__main__':main()

@@ -1,0 +1,701 @@
+{
+  "passed": true,
+  "scope": "Original requests, slot-priority matrix, quiet-warmed offline PCM/channel isolation and numerical repeat checks; no browser, listening, loop-seam or complete-game claim.",
+  "resources": 46,
+  "effects": 29,
+  "cues": 5,
+  "music": 7,
+  "loopEffects": 1,
+  "percussion": 4,
+  "stems": 110,
+  "priorityCases": 16,
+  "stageInitializersRAMIdentical": 8,
+  "verification": {
+    "passed": true,
+    "scope": "Byte-bound offline original APU rendering and repeated numerical checks; no browser/listening/seam or public-release acceptance.",
+    "manifestSHA256": "2c12175542be491a636033d2a43fb3103b5beb507301ab142907e03e392b7ccf",
+    "sounds": [
+      {
+        "id": 2,
+        "seconds": 0.26240362811791385,
+        "peak": 3115,
+        "sha256": "3e189a9604763caff1e35c4cdb9f353f735fd9e1d2c087f8265c789e3ac1410e",
+        "dpcmRegions": []
+      },
+      {
+        "id": 11,
+        "seconds": 0.34199546485260773,
+        "peak": 6104,
+        "sha256": "b40c89e9e0c1460d498981926b53800b3cbdacab66f1429eb8378010f0a1395c",
+        "dpcmRegions": []
+      },
+      {
+        "id": 13,
+        "seconds": 0.6260997732426303,
+        "peak": 7018,
+        "sha256": "7921ceb8ef14a3edbd90ff67b918542f4d29199525a1451cd1708397ba61af34",
+        "dpcmRegions": []
+      },
+      {
+        "id": 16,
+        "seconds": 0.3617233560090703,
+        "peak": 8178,
+        "sha256": "624e82aaa6d3040bdf398364f795806f94060f05c29ef6b2c0d064d612af8add",
+        "dpcmRegions": []
+      },
+      {
+        "id": 19,
+        "seconds": 0.5748072562358276,
+        "peak": 4681,
+        "sha256": "4ea61aa94ddcf3d225a3ea1cd2128340fbc0a6b6f3029093b610d9da68574fdb",
+        "dpcmRegions": []
+      },
+      {
+        "id": 20,
+        "seconds": 19.933832199546487,
+        "peak": 2619,
+        "sha256": "87e0890806279b2e400e6b56962126d4b2a1a2ae17b130c4e305f321d65ef449",
+        "dpcmRegions": []
+      },
+      {
+        "id": 22,
+        "seconds": 1.076825396825397,
+        "peak": 9341,
+        "sha256": "513fa5faf30d6cce65379c6126c91cacf7a678074c7959bae2f587fced2e68a8",
+        "dpcmRegions": []
+      },
+      {
+        "id": 24,
+        "seconds": 0.5150340136054422,
+        "peak": 2818,
+        "sha256": "d41b39c2450ba28f9c8ebd3f947fa2b3c39e540b24fd3550cc2a9143953e1258",
+        "dpcmRegions": []
+      },
+      {
+        "id": 25,
+        "seconds": 1.2436507936507937,
+        "peak": 5840,
+        "sha256": "40b37206997109e1a1735c3408dcdb18e3624310e20dfd3765cffce660bdf545",
+        "dpcmRegions": []
+      },
+      {
+        "id": 26,
+        "seconds": 0.809546485260771,
+        "peak": 11528,
+        "sha256": "3100e82ca8da3fae3cf3bddfce41e7c8ed173cb3c3ec21be51218e9dd9ad51a7",
+        "dpcmRegions": []
+      },
+      {
+        "id": 28,
+        "seconds": 0.8026757369614512,
+        "peak": 11117,
+        "sha256": "ca6a003e0bf1dab2d8a2c9df8d21b0e558061ea876c50803e7050051b9c32292",
+        "dpcmRegions": []
+      },
+      {
+        "id": 32,
+        "seconds": 4.037482993197279,
+        "peak": 27399,
+        "sha256": "15ed6f6af27bfead898deb55c586f399214e08b56181af2d8b6580fc1275f711",
+        "dpcmRegions": [
+          [
+            64704,
+            49
+          ]
+        ]
+      },
+      {
+        "id": 36,
+        "seconds": 1.0783673469387756,
+        "peak": 6114,
+        "sha256": "1de329b6faaa8f2b7ea7b9feb7f969c2907af93780e5a4b77f3d1d4839ab1630",
+        "dpcmRegions": []
+      },
+      {
+        "id": 38,
+        "seconds": 0.8102267573696145,
+        "peak": 6005,
+        "sha256": "2bfc67ce80e6608b646acf8eee598e27db82cc68b7a77549013d4775314bf1b9",
+        "dpcmRegions": []
+      },
+      {
+        "id": 40,
+        "seconds": 0.7426757369614513,
+        "peak": 9339,
+        "sha256": "d8bebd6282ccdc957a3f0777fc13ae55f7d505665942fb5a583e4eb412759ec7",
+        "dpcmRegions": []
+      },
+      {
+        "id": 42,
+        "seconds": 0.520249433106576,
+        "peak": 3948,
+        "sha256": "18fd85b701b89489f44fab69ba93b5619503756072694bd7af1183b9d6778bc0",
+        "dpcmRegions": []
+      },
+      {
+        "id": 43,
+        "seconds": 1.0726984126984127,
+        "peak": 7018,
+        "sha256": "70df7feb70f58690d7f17c24389a0e95bd7853a830db4d52d8bb6fdd75cc74f7",
+        "dpcmRegions": []
+      },
+      {
+        "id": 44,
+        "seconds": 0.4943310657596372,
+        "peak": 10074,
+        "sha256": "d0e3f79d39e32c22a9cf8d866dcef73fa4493c749bc3d0c82e5ea6a33571fe2b",
+        "dpcmRegions": []
+      },
+      {
+        "id": 46,
+        "seconds": 0.6805668934240363,
+        "peak": 7168,
+        "sha256": "cc9863e58e75caa1ca93d9d8166513bc9abc6254781da645bfeddbdd072e8ba1",
+        "dpcmRegions": []
+      },
+      {
+        "id": 47,
+        "seconds": 0.8992743764172335,
+        "peak": 7018,
+        "sha256": "c51f8288542c6cd38aac638fa86779b83504f86dc0545af83b72d20eb1e56e2b",
+        "dpcmRegions": []
+      },
+      {
+        "id": 48,
+        "seconds": 2.0753061224489797,
+        "peak": 3796,
+        "sha256": "8aed4c3db47a41806e9e67d854c9851c48559f198afb295ebdd88043129a5662",
+        "dpcmRegions": []
+      },
+      {
+        "id": 51,
+        "seconds": 4.302448979591837,
+        "peak": 5447,
+        "sha256": "c00d1773ecd864a7961f422672251a4507c715d385b46013c036fce15607556e",
+        "dpcmRegions": []
+      },
+      {
+        "id": 52,
+        "seconds": 1.0944897959183673,
+        "peak": 7698,
+        "sha256": "a54ffb5b1d4f408410d2ae81dbb9ccb0970cfdc0714aad397c94953f13860fab",
+        "dpcmRegions": []
+      },
+      {
+        "id": 54,
+        "seconds": 0.36560090702947845,
+        "peak": 5764,
+        "sha256": "4364e47a3d0c1a086a8cdae8aba00112264678a1aa36871f75a2acdfdad9ea39",
+        "dpcmRegions": []
+      },
+      {
+        "id": 56,
+        "seconds": 1.1434920634920636,
+        "peak": 4762,
+        "sha256": "50b9ca7ca49dcc9960de0dad9351948c2475cf15960dc1f038e9d0c468c27af5",
+        "dpcmRegions": []
+      },
+      {
+        "id": 57,
+        "seconds": 1.0056009070294785,
+        "peak": 6963,
+        "sha256": "275dfcb8e198533532336ba159707f122a1a2b4feb58f0d1b71beb58abe67071",
+        "dpcmRegions": []
+      },
+      {
+        "id": 61,
+        "seconds": 1.0821995464852607,
+        "peak": 5840,
+        "sha256": "1c8947d76c4594708f0f964e0fee7f59397b4586161d3df3d7264e9d4a279125",
+        "dpcmRegions": []
+      },
+      {
+        "id": 62,
+        "seconds": 2.4136507936507936,
+        "peak": 5840,
+        "sha256": "5e41082248d1425d71565b2e36871799224eb9aa666180bb95e99bd99805f4dd",
+        "dpcmRegions": []
+      },
+      {
+        "id": 70,
+        "seconds": 133.08083900226757,
+        "peak": 26847,
+        "sha256": "37e1e3af35ff5b30b57cc7614969c3f82277b0706408fed79b0cd35e4373e44e",
+        "dpcmRegions": [
+          [
+            64512,
+            81
+          ],
+          [
+            64704,
+            593
+          ]
+        ]
+      },
+      {
+        "id": 74,
+        "seconds": 133.08083900226757,
+        "peak": 27763,
+        "sha256": "04c9a6be92b814b8a902dd2189c316b9617436cfb33ab8f6f572d4b117b32172",
+        "dpcmRegions": [
+          [
+            64512,
+            81
+          ],
+          [
+            64704,
+            593
+          ]
+        ]
+      },
+      {
+        "id": 78,
+        "seconds": 133.08083900226757,
+        "peak": 26579,
+        "sha256": "bae7492fd428ce2ebc95eb59d550a095827698cf338a6ead6aea6407897f3325",
+        "dpcmRegions": [
+          [
+            64512,
+            81
+          ],
+          [
+            64704,
+            593
+          ]
+        ]
+      },
+      {
+        "id": 82,
+        "seconds": 133.08083900226757,
+        "peak": 27433,
+        "sha256": "48918539223cd7ad11c8d3214524a201523f107bc88921d6a3327638821d1ed5",
+        "dpcmRegions": [
+          [
+            64512,
+            81
+          ],
+          [
+            64704,
+            593
+          ]
+        ]
+      },
+      {
+        "id": 86,
+        "seconds": 133.08083900226757,
+        "peak": 28007,
+        "sha256": "912b950f2c57eff68d67378f298b6cede31a2f680bdbd838369659a13b4f8575",
+        "dpcmRegions": [
+          [
+            64512,
+            81
+          ],
+          [
+            64704,
+            593
+          ]
+        ]
+      },
+      {
+        "id": 90,
+        "seconds": 133.08083900226757,
+        "peak": 26078,
+        "sha256": "ee4f327e29a7c004dae4628eecc2dd82a51e6072b253586e2a6ad28d9f99cf89",
+        "dpcmRegions": [
+          [
+            64512,
+            81
+          ],
+          [
+            64704,
+            593
+          ]
+        ]
+      },
+      {
+        "id": 94,
+        "seconds": 133.08083900226757,
+        "peak": 27064,
+        "sha256": "8cbc1870bc0058e34a2ef98092655c171e98f8b15e5392455c0436e980b2213c",
+        "dpcmRegions": [
+          [
+            64512,
+            81
+          ],
+          [
+            64704,
+            593
+          ]
+        ]
+      },
+      {
+        "id": 98,
+        "seconds": 4.1650340136054425,
+        "peak": 25441,
+        "sha256": "fe9aee0935e244f4b127d92e90177da93f7f82e81d70fdb5d2d16cba848f4836",
+        "dpcmRegions": [
+          [
+            64512,
+            81
+          ],
+          [
+            64704,
+            593
+          ]
+        ]
+      },
+      {
+        "id": 102,
+        "seconds": 7.999773242630385,
+        "peak": 26150,
+        "sha256": "80769a297ea0ed46fde90304115d3b223f1fcb172aba90c40c6854eaec72fbeb",
+        "dpcmRegions": [
+          [
+            64512,
+            81
+          ],
+          [
+            64704,
+            593
+          ]
+        ]
+      },
+      {
+        "id": 110,
+        "seconds": 5.947120181405896,
+        "peak": 26247,
+        "sha256": "c5c16a2b174c64c4a2d2a2fef2ba5507311c8db66f09efd01ed62240731f3fe8",
+        "dpcmRegions": [
+          [
+            64512,
+            81
+          ],
+          [
+            64704,
+            593
+          ]
+        ]
+      },
+      {
+        "id": 114,
+        "seconds": 1.4420181405895691,
+        "peak": 8596,
+        "sha256": "fd5e5c51a665fa97c773fd3240b443106c7a2d03144d99457ca4f2c6acb11f58",
+        "dpcmRegions": []
+      },
+      {
+        "id": 116,
+        "seconds": 0.7840362811791384,
+        "peak": 7163,
+        "sha256": "4af34aebedf8b4ea73e50cc502f7cf0793625f23250488861f9f9c4fb6219b94",
+        "dpcmRegions": []
+      },
+      {
+        "id": 117,
+        "seconds": 2.023310657596372,
+        "peak": 11839,
+        "sha256": "ac83b5298f3cdd7201b332abd683f435649f2bf48f6f6b23c33f1b81d5a782b6",
+        "dpcmRegions": []
+      },
+      {
+        "id": 119,
+        "seconds": 3.2635374149659864,
+        "peak": 12374,
+        "sha256": "ddc4f9fc3c79a339acc58a2f59efd83dbe7e78f6d8dbf03a1611abe5cac4f377",
+        "dpcmRegions": []
+      },
+      {
+        "id": 123,
+        "seconds": 3.2599773242630388,
+        "peak": 12258,
+        "sha256": "4a474713370afdaa82bbaa666afa4f295f2a290923e9b95083ead7f66471a96a",
+        "dpcmRegions": []
+      },
+      {
+        "id": 127,
+        "seconds": 0.31272108843537416,
+        "peak": 10200,
+        "sha256": "c09a2f9445f936e2b5cf9ae27ec558049ab45f226d99a6d2ec1e52a282f60bab",
+        "dpcmRegions": [
+          [
+            64512,
+            81
+          ]
+        ]
+      },
+      {
+        "id": 128,
+        "seconds": 0.4099092970521542,
+        "peak": 19607,
+        "sha256": "8708d9e5ab027c2f63aedcd56381295c5300546475803ef5483533aaf378903c",
+        "dpcmRegions": [
+          [
+            64704,
+            593
+          ]
+        ]
+      },
+      {
+        "id": 129,
+        "seconds": 0.321156462585034,
+        "peak": 20784,
+        "sha256": "6c4ae5149e13ecfa8449fd5818ae3e31d6cb3f93381e9d7b83c1c747c8db9cb9",
+        "dpcmRegions": [
+          [
+            64704,
+            49
+          ]
+        ]
+      }
+    ]
+  },
+  "stemsVerification": {
+    "passed": true,
+    "scope": "Original-channel isolation with identical emulated driver/APU/timing; independent media mix and seams not accepted.",
+    "sounds": [
+      {
+        "id": 2,
+        "stems": 1,
+        "sameDriverAPUTimeline": true
+      },
+      {
+        "id": 11,
+        "stems": 2,
+        "sameDriverAPUTimeline": true
+      },
+      {
+        "id": 13,
+        "stems": 1,
+        "sameDriverAPUTimeline": true
+      },
+      {
+        "id": 16,
+        "stems": 3,
+        "sameDriverAPUTimeline": true
+      },
+      {
+        "id": 19,
+        "stems": 1,
+        "sameDriverAPUTimeline": true
+      },
+      {
+        "id": 20,
+        "stems": 2,
+        "sameDriverAPUTimeline": true
+      },
+      {
+        "id": 22,
+        "stems": 2,
+        "sameDriverAPUTimeline": true
+      },
+      {
+        "id": 24,
+        "stems": 1,
+        "sameDriverAPUTimeline": true
+      },
+      {
+        "id": 25,
+        "stems": 1,
+        "sameDriverAPUTimeline": true
+      },
+      {
+        "id": 26,
+        "stems": 2,
+        "sameDriverAPUTimeline": true
+      },
+      {
+        "id": 28,
+        "stems": 2,
+        "sameDriverAPUTimeline": true
+      },
+      {
+        "id": 32,
+        "stems": 3,
+        "sameDriverAPUTimeline": true
+      },
+      {
+        "id": 36,
+        "stems": 2,
+        "sameDriverAPUTimeline": true
+      },
+      {
+        "id": 38,
+        "stems": 2,
+        "sameDriverAPUTimeline": true
+      },
+      {
+        "id": 40,
+        "stems": 2,
+        "sameDriverAPUTimeline": true
+      },
+      {
+        "id": 42,
+        "stems": 1,
+        "sameDriverAPUTimeline": true
+      },
+      {
+        "id": 43,
+        "stems": 1,
+        "sameDriverAPUTimeline": true
+      },
+      {
+        "id": 44,
+        "stems": 2,
+        "sameDriverAPUTimeline": true
+      },
+      {
+        "id": 46,
+        "stems": 1,
+        "sameDriverAPUTimeline": true
+      },
+      {
+        "id": 47,
+        "stems": 1,
+        "sameDriverAPUTimeline": true
+      },
+      {
+        "id": 48,
+        "stems": 1,
+        "sameDriverAPUTimeline": true
+      },
+      {
+        "id": 51,
+        "stems": 1,
+        "sameDriverAPUTimeline": true
+      },
+      {
+        "id": 52,
+        "stems": 2,
+        "sameDriverAPUTimeline": true
+      },
+      {
+        "id": 54,
+        "stems": 1,
+        "sameDriverAPUTimeline": true
+      },
+      {
+        "id": 56,
+        "stems": 1,
+        "sameDriverAPUTimeline": true
+      },
+      {
+        "id": 57,
+        "stems": 1,
+        "sameDriverAPUTimeline": true
+      },
+      {
+        "id": 61,
+        "stems": 1,
+        "sameDriverAPUTimeline": true
+      },
+      {
+        "id": 62,
+        "stems": 1,
+        "sameDriverAPUTimeline": true
+      },
+      {
+        "id": 70,
+        "stems": 5,
+        "sameDriverAPUTimeline": true
+      },
+      {
+        "id": 74,
+        "stems": 5,
+        "sameDriverAPUTimeline": true
+      },
+      {
+        "id": 78,
+        "stems": 5,
+        "sameDriverAPUTimeline": true
+      },
+      {
+        "id": 82,
+        "stems": 5,
+        "sameDriverAPUTimeline": true
+      },
+      {
+        "id": 86,
+        "stems": 5,
+        "sameDriverAPUTimeline": true
+      },
+      {
+        "id": 90,
+        "stems": 5,
+        "sameDriverAPUTimeline": true
+      },
+      {
+        "id": 94,
+        "stems": 5,
+        "sameDriverAPUTimeline": true
+      },
+      {
+        "id": 98,
+        "stems": 5,
+        "sameDriverAPUTimeline": true
+      },
+      {
+        "id": 102,
+        "stems": 5,
+        "sameDriverAPUTimeline": true
+      },
+      {
+        "id": 110,
+        "stems": 5,
+        "sameDriverAPUTimeline": true
+      },
+      {
+        "id": 114,
+        "stems": 2,
+        "sameDriverAPUTimeline": true
+      },
+      {
+        "id": 116,
+        "stems": 1,
+        "sameDriverAPUTimeline": true
+      },
+      {
+        "id": 117,
+        "stems": 2,
+        "sameDriverAPUTimeline": true
+      },
+      {
+        "id": 119,
+        "stems": 5,
+        "sameDriverAPUTimeline": true
+      },
+      {
+        "id": 123,
+        "stems": 5,
+        "sameDriverAPUTimeline": true
+      },
+      {
+        "id": 127,
+        "stems": 1,
+        "sameDriverAPUTimeline": true
+      },
+      {
+        "id": 128,
+        "stems": 1,
+        "sameDriverAPUTimeline": true
+      },
+      {
+        "id": 129,
+        "stems": 1,
+        "sameDriverAPUTimeline": true
+      }
+    ],
+    "stemCount": 110
+  },
+  "sourceSHA256": {
+    "scripts/contra/audio_prepare.py": "4c8180b109730143a010ec5b3e76afd4fe1202cd4e11d9334d45c2d04006ee82",
+    "scripts/contra/audio_trace.py": "a868f73ad72e9492bc4d773aecff28a1dd49b731fcfd3c743755bd9c53ad003c",
+    "scripts/contra/audio_export.py": "2d4ea653766ad5879685af12d27a7b2c5d7497f3d64228aa80cea06507f72b6e",
+    "scripts/contra/audio_verify.py": "e14c77e5fbf200129ef6bc779e78e16f9ad375a6d5dfce81f1a4d05b47d2429e",
+    "scripts/contra/audio_stems.py": "b0046f489ef21a9a3781ef21ba5c3d4a1ee7ff0762b01402f2cba01028f2ccc6",
+    "scripts/contra/audio_stems_verify.py": "84ae0e7cd67279d97788b42e13134d63bb0f3b8203d145b23a6483b292964445",
+    "scripts/contra/audio_priority.py": "988b7e26b52ffdd9e6f12345cd7d5e757dec0c0be5000713a43d5afd0bffa84c",
+    "scripts/contra/audio_catalog.py": "a7eadf7239f0a4c0aa25aeaec8ee629cdba82685196757212644c3284acafb10",
+    "scripts/contra/audio_wave_bridge.c": "4f85938eff2b8cf88266b151d6083d74976fd00369a31b43733c0a67b883a272"
+  },
+  "catalogSHA256": "f24d39df9285ab013eeb537b68646e0822741e3abcfd37f8f8ca41d46a8da333"
+}

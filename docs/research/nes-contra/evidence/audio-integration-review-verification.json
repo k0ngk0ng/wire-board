@@ -1,0 +1,117 @@
+{
+  "passed": true,
+  "scope": "Independent Contra audio integration review of 60Hz displayed authority snapshots. No device-listening, sample-accurate multi-track or exact nonlinear-mix acceptance.",
+  "targetedAudioTests": 15,
+  "audioAndPresentationTests": 22,
+  "typeCheck": true,
+  "nativeChecks": 17,
+  "nativeEvidence": "audio-native-integration-review-v4/result.json",
+  "terminalCueSource": "audio-terminal-cue-verification.json",
+  "terminalRequests": {
+    "noise": 27,
+    "dpcm": 12,
+    "total": 39
+  },
+  "testsFirst": {
+    "initialFailures": 5,
+    "rateFailure": true,
+    "terminalFailures": true,
+    "records": "audio-integration-review-test-records.json.gz"
+  },
+  "findings": [
+    "Late native playback now aligns only to the latest drawn matching voice.",
+    "Pause/resume/pulse reappearance aligns at boundaries, without per-frame seeking.",
+    "Source update rate is mapped to the fixed 60Hz authority; offsets retain media seconds.",
+    "Explicit background suspension restores current persistent loops with original IDs; finite effects never restore.",
+    "First live finalized 6E uses the verified full finite cue once, with source ID and current offset.",
+    "Platform-owned queue now marks starvation resync; hidden callbacks do not draw or consume audio recovery."
+  ],
+  "ownership": {
+    "changed": [
+      "audio adapter/tests",
+      "audio fixture/proof scripts",
+      "audio documentation/evidence"
+    ],
+    "reviewedNotEdited": [
+      "runtime-client.ts",
+      "runtime-presentation.ts",
+      "public audio.ts/module.ts"
+    ]
+  },
+  "commands": [
+    ". scripts/env.sh",
+    "node --test games/contra/web/audio.test.mjs games/contra/web/audio-presentation.test.mjs games/contra/web/runtime-presentation.test.mjs games/contra/web/runtime-client.test.mjs",
+    "python3 -B scripts/contra/audio_terminal_verify.py",
+    "python3 -B scripts/contra/audio_accept.py --out docs/research/nes-contra/evidence/audio-native-integration-review-fresh"
+  ],
+  "sourceSHA256": {
+    "games/contra/web/audio.ts": "67e82d537ed49f4b9987aecfdeb8cc8be62ff56c52c734fda107c261e42991c3",
+    "games/contra/web/audio.test.mjs": "7fcc27ff2ada6ff8153cf17bc7ec03fc9c66ba1d7287ac26a3ae41f814e34dee",
+    "games/contra/web/audio-presentation.test.mjs": "669e0aef1e18d12508c9e61df1f3faac2552f01048d2bdc098971fe7d44ecc38",
+    "scripts/contra/audio_accept.py": "cc507196e2d6c323c305f8ae6abf84801188579da3063b55d41705312f4bb3d5",
+    "scripts/contra/audio_fixture.go": "6d16c15668d7e722bd80985b8ff4219a0de5ead921a07d2ba8e4db0c5d77a7f9",
+    "scripts/contra/audio_terminal_verify.py": "7465af6ff75bdd3e616b9ee75b5bd58c843f2f5b023294fe6b49175832e5531a",
+    "web/src/audio.ts": "e2734b797f71f642792bf27ed07ab7bf0693e569b3a3e3a03c5f66b27480a19c",
+    "web/src/game-api/module.ts": "1f6b232dbceff3fc34b2d56dcca5e5717ae9cb0d6327b2fa5f180886b55e9a3c",
+    "games/contra/web/runtime-client.ts": "b4d81b3ede4934b25a9d6fd7ced15b0c6d0bb996afe6ce02123cab70f8d0bad7",
+    "games/contra/web/runtime-presentation.ts": "de1e75a969cb5061d262b3ac4bf6ceb9e707c8b4bc73f3026af9baf7bbbecd46"
+  },
+  "cleanup": {
+    "removed": [
+      {
+        "path": "docs/research/nes-contra/evidence/audio-native-integration-review-v1",
+        "bytes": 5243
+      },
+      {
+        "path": "docs/research/nes-contra/evidence/audio-native-integration-review-v2",
+        "bytes": 54798
+      },
+      {
+        "path": "docs/research/nes-contra/evidence/audio-native-integration-review-v3",
+        "bytes": 55312
+      },
+      {
+        "path": ".local/contra-audio/integration-review/red.log",
+        "bytes": 5140
+      },
+      {
+        "path": ".local/contra-audio/integration-review/rate-red.log",
+        "bytes": 1853
+      },
+      {
+        "path": ".local/contra-audio/integration-review/terminal-red.log",
+        "bytes": 3759
+      },
+      {
+        "path": ".local/contra-audio/integration-review/native-v1.log",
+        "bytes": 5243
+      },
+      {
+        "path": ".local/contra-audio/integration-review/native-v2.log",
+        "bytes": 13690
+      },
+      {
+        "path": ".local/contra-audio/integration-review/native-v3.log",
+        "bytes": 10068
+      },
+      {
+        "path": ".local/contra-audio/integration-review/first.log",
+        "bytes": 1336
+      },
+      {
+        "path": ".local/contra-audio/integration-review/terminal-first.log",
+        "bytes": 1658
+      },
+      {
+        "path": ".local/contra-audio/integration-review/targeted.log",
+        "bytes": 1448
+      },
+      {
+        "path": ".local/contra-audio/integration-review/format.log",
+        "bytes": 118
+      }
+    ],
+    "bytes": 159666,
+    "scope": "Only this review failed/superseded native fixture output and intermediate logs, after retaining compressed verification records. Private browser profiles and sockets were deleted by each native run. No game or source media removed."
+  }
+}

@@ -261,11 +261,13 @@ export function Board({
             <>
               <button
                 disabled={busy || !c.canPass}
+                data-controller-action="pass"
                 onClick={() => void send("pass")}
               >
                 不出
               </button>
               <button
+                data-controller-action="hint"
                 disabled={busy || !c.canAct || !c.moves.length}
                 onClick={() => {
                   const m = c.moves[hint % c.moves.length];
@@ -279,6 +281,7 @@ export function Board({
               <button
                 className="primary"
                 disabled={busy || !c.canAct || !selected.length}
+                data-controller-action="play"
                 onClick={playSelected}
               >
                 出牌（{selected.length}）

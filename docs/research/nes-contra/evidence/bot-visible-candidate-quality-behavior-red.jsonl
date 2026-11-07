@@ -1,0 +1,9 @@
+{"Time":"2026-10-26T13:43:38.918649+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine"}
+{"Time":"2026-10-26T13:43:39.33126+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleTrackPrefersExactCandidateAtSameLocation"}
+{"Time":"2026-10-26T13:43:39.3313+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleTrackPrefersExactCandidateAtSameLocation","Output":"=== RUN   TestBotVisibleTrackPrefersExactCandidateAtSameLocation\n"}
+{"Time":"2026-10-26T13:43:39.331407+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleTrackPrefersExactCandidateAtSameLocation","Output":"    bot_tracking_test.go:37: partial standing pose displaced exact head artwork on the same existing track {60 100 true true 2 0 14 0 true false false}\n"}
+{"Time":"2026-10-26T13:43:39.33142+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleTrackPrefersExactCandidateAtSameLocation","Output":"--- FAIL: TestBotVisibleTrackPrefersExactCandidateAtSameLocation (0.00s)\n"}
+{"Time":"2026-10-26T13:43:39.331424+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleTrackPrefersExactCandidateAtSameLocation","Elapsed":0}
+{"Time":"2026-10-26T13:43:39.331437+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\n"}
+{"Time":"2026-10-26T13:43:39.331782+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/contra/engine\t0.413s\n"}
+{"Time":"2026-10-26T13:43:39.331796+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Elapsed":0.413}

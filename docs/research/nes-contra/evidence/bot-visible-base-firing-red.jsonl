@@ -1,0 +1,17 @@
+{"Time":"2026-10-26T13:12:33.417748+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine"}
+{"Time":"2026-10-26T13:12:33.941053+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleLowBaseCoreUsesCrouchedFire"}
+{"Time":"2026-10-26T13:12:33.941079+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleLowBaseCoreUsesCrouchedFire","Output":"=== RUN   TestBotVisibleLowBaseCoreUsesCrouchedFire\n"}
+{"Time":"2026-10-26T13:12:33.941153+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleLowBaseCoreUsesCrouchedFire","Output":"    bot_base_memory_test.go:57: visible low core did not receive aligned crouched fire 66\n"}
+{"Time":"2026-10-26T13:12:33.941168+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleLowBaseCoreUsesCrouchedFire","Output":"--- FAIL: TestBotVisibleLowBaseCoreUsesCrouchedFire (0.00s)\n"}
+{"Time":"2026-10-26T13:12:33.941176+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleLowBaseCoreUsesCrouchedFire","Elapsed":0}
+{"Time":"2026-10-26T13:12:33.941183+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleStandingBaseCoreKeepsStandingFire"}
+{"Time":"2026-10-26T13:12:33.941185+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleStandingBaseCoreKeepsStandingFire","Output":"=== RUN   TestBotVisibleStandingBaseCoreKeepsStandingFire\n"}
+{"Time":"2026-10-26T13:12:33.941189+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleStandingBaseCoreKeepsStandingFire","Output":"--- PASS: TestBotVisibleStandingBaseCoreKeepsStandingFire (0.00s)\n"}
+{"Time":"2026-10-26T13:12:33.941196+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleStandingBaseCoreKeepsStandingFire","Elapsed":0}
+{"Time":"2026-10-26T13:12:33.941199+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleLowBaseCoreAlignsBeforeCrouching"}
+{"Time":"2026-10-26T13:12:33.941202+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleLowBaseCoreAlignsBeforeCrouching","Output":"=== RUN   TestBotVisibleLowBaseCoreAlignsBeforeCrouching\n"}
+{"Time":"2026-10-26T13:12:33.941204+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleLowBaseCoreAlignsBeforeCrouching","Output":"--- PASS: TestBotVisibleLowBaseCoreAlignsBeforeCrouching (0.00s)\n"}
+{"Time":"2026-10-26T13:12:33.941207+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleLowBaseCoreAlignsBeforeCrouching","Elapsed":0}
+{"Time":"2026-10-26T13:12:33.941223+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\n"}
+{"Time":"2026-10-26T13:12:33.941573+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/contra/engine\t0.524s\n"}
+{"Time":"2026-10-26T13:12:33.941581+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Elapsed":0.524}

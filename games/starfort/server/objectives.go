@@ -133,7 +133,7 @@ func (s *State) stepObjectives() {
 		}
 		damage := 0.
 		for _, e := range s.Enemies {
-			if e.HP > 0 && math.Hypot(e.X-o.X, e.Y-o.Y) <= radius {
+			if e.HP > 0 && !s.frozen(e) && math.Hypot(e.X-o.X, e.Y-o.Y) <= radius {
 				damage += .8
 			}
 		}

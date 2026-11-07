@@ -1,0 +1,7 @@
+=== RUN   TestBotJumpCannotPassThroughVisibleFloatingWall
+    bot_air_side_collision_test.go:54: native fall 72 124 225
+    bot_air_side_collision_test.go:63: visual planner crosses solid body-side wall 148 162
+--- FAIL: TestBotJumpCannotPassThroughVisibleFloatingWall (0.00s)
+FAIL
+FAIL	github.com/k0ngk0ng/wire-board/games/contra/engine	0.585s
+FAIL

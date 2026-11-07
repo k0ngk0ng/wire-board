@@ -61,9 +61,11 @@ export class InputQueue {
     this.pendingEvents = [];
   }
 
-  unconfirmed(): InputEvent[] {
+  unconfirmed(acknowledged = 0): InputEvent[] {
     return [
-      ...this.sentBatches.flatMap((batch) => batch.events),
+      ...this.sentBatches
+        .filter((batch) => batch.seq > acknowledged)
+        .flatMap((batch) => batch.events),
       ...this.pendingEvents,
     ];
   }

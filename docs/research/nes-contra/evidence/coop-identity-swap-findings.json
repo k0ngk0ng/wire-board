@@ -1,0 +1,39 @@
+{
+  "scope": "Diagnose co-op identity-memory inversion using recorded legal assisted inputs and submitted pictures",
+  "passed": false,
+  "campaignComplete": false,
+  "run": ".local/contra-bot/runs/assisted-coop-bit-v5/players2",
+  "finalFrame": "60000",
+  "finalMemoryOwnPositions": [
+    [
+      25,
+      202
+    ],
+    [
+      230,
+      132
+    ]
+  ],
+  "diagnosticActualPlayerX": [
+    230,
+    25
+  ],
+  "publicObservationWindow": {
+    "start": 32400,
+    "end": 32500,
+    "samples": 101,
+    "completePrimaryCounts": [
+      90,
+      48
+    ]
+  },
+  "finding": "Current clear primary observations repeatedly identify the right/left bodies, while both policies retain the opposite seat mapping; distance rejection and nearby partial hypotheses reinforce wrong history.",
+  "boundary": "Actual rule positions are diagnostic evidence only; strategy repair must use current full-body evidence and public tracking, never the hidden positions.",
+  "artifacts": {
+    "docs/research/nes-contra/evidence/coop-waterfall-identity-swap.png": "abb4101d9915f5a65a7b18758b171d6a6ab0d66277823cd0c19fa3fa33aa0ae6",
+    ".local/contra-bot/runs/assisted-coop-bit-v5/players2/final-bots.json": "b13952b5af086e62eacda36a273f891b87377eef0461120c1090f80e6e6afbc9",
+    ".local/contra-bot/runs/assisted-coop-bit-v5/players2/final-session.json": "ae67edd834cd5a29102ea6274ee282a6369a62842a105138ff4d17bcf88f035b",
+    ".local/contra-bot/diagnostic-coop-waterfall-window/observations.json": "21c335126274aa261d47c1f0bae2c1bae244eb80b46172b74614def098753e38"
+  },
+  "nextAction": "Correct public identity continuity so strong current body evidence can repair weaker historical hypotheses without assigning one visible body to both seats."
+}

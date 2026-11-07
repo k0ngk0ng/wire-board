@@ -1,0 +1,12 @@
+# github.com/k0ngk0ng/wire-board/games/contra/engine [github.com/k0ngk0ng/wire-board/games/contra/engine.test]
+games/contra/engine/enemies_step_test.go:37:13: s.StepExplosion undefined (type EnemySystem has no field or method StepExplosion)
+games/contra/engine/enemies_step_test.go:37:88: undefined: ExplosionPhase
+games/contra/engine/enemies_step_test.go:40:12: s.PendingSounds undefined (type EnemySystem has no field or method PendingSounds)
+games/contra/engine/enemies_step_test.go:41:24: s.PendingSounds undefined (type EnemySystem has no field or method PendingSounds)
+games/contra/engine/player_modes_test.go:30:150: unknown field ScreenCleared in struct literal of type PlayerStepContext
+games/contra/engine/player_test.go:102:3: unknown field IndoorAnchorX in struct literal of type Player
+games/contra/engine/player_test.go:102:38: unknown field IndoorAnchorY in struct literal of type Player
+games/contra/engine/player_test.go:117:22: p.IndoorAnchorX undefined (type Player has no field or method IndoorAnchorX)
+games/contra/engine/player_test.go:117:56: p.IndoorAnchorY undefined (type Player has no field or method IndoorAnchorY)
+FAIL	github.com/k0ngk0ng/wire-board/games/contra/engine [build failed]
+FAIL

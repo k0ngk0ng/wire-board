@@ -1,0 +1,126 @@
+{
+  "passed": true,
+  "scope": "Eight-stage map/resource data and original CHR animation recovery; no game-rule or registration edits.",
+  "originalMapCalls": 146,
+  "originalMapBytesCompared": 8256,
+  "resourceTransitions": 8,
+  "originalCHRCalls": 2048,
+  "controlledCHRBoundaryCalls": 28,
+  "appliedPreviousDesiredPairs": 2040,
+  "checks": [
+    "Python AST",
+    "REA runner Node syntax",
+    "JSON/gzip payload validity",
+    "source-bound artifact SHA256",
+    "git diff --check"
+  ],
+  "files": {
+    "scripts/contra/levels_capture.py": "bdd407fa95e7bcc6a34b5d0a3d39996666836be24b7b5f531da0bacb0ce41f79",
+    "scripts/contra/levels_capture_chr.py": "2fa630f5b38b6a2ed5a4312d35de0ea1db879a4cb19733ed6bf89366f2c29d4b",
+    "scripts/contra/levels_capture_chr_cases.py": "07f7d692941e4f2fe8da5217f1268a86ccfd49a96970ac1d608ebde5ed7a9fac",
+    "scripts/contra/levels_data.py": "ef4ef4d527045c0909ba9c0a2a05c1bac79c135fddd0944a87050481231f8c6b",
+    "scripts/contra/levels_export.py": "bfc665d920c466fe937e9fe2b12fac3b560b5a4ff35a09112c3cd7036ac3c916",
+    "scripts/contra/levels_export_chr.py": "2143acd474a39f33f7df3416b75762b2ab49db7c5df8d5969b24a481cbc09ee7",
+    "scripts/contra/levels_prepare.py": "6e5000b42a16e91f93ceddf095b6178a48d231307dd4e36cb150e4e9f8d47826",
+    "scripts/contra/levels_rea.mjs": "7b434db51584cf10f0123adf9b2a788abfe87be982a79e5063d004bbdd5599ec",
+    "docs/research/nes-contra/evidence/levels-catalog.json.gz": "7907d15dd973f6f8127a9c3a6aa95bae71b26c6175d4ff5747fadbb2753f5026",
+    "docs/research/nes-contra/evidence/levels-chr-animation.json": "ae7067a054d35c18c2c77bc3a511d1184412a6b70b61d5f4116b475c328595e7",
+    "docs/research/nes-contra/evidence/levels-chr-cases-original.json.gz": "cbebecd99fac75b4c24506ef9dffd114361a31e7387b1269a78c92aae63dd3a8",
+    "docs/research/nes-contra/evidence/levels-chr-original.json.gz": "1c0bda3f2f42d88401ac02c561906c87257d835dbb6dadb65929d9ed74843636",
+    "docs/research/nes-contra/evidence/levels-chr-rea.json.gz": "790318382f62a07c57e3fb640dd390343b0d51e9384135eb073538cf8d69365b",
+    "docs/research/nes-contra/evidence/levels-chr-verification.json": "aa106c66aab45d8c5c675670636c79b511f9b572ebcc887551856647fef15f4b",
+    "docs/research/nes-contra/evidence/levels-fixed-rea.json.gz": "1c9beb86a293835a69c67b86dc391fce19fd0c7a871710c07abe78470d6bc3ba",
+    "docs/research/nes-contra/evidence/levels-header-rea.json.gz": "40d4b0275ae3a6ff0cef8c160dd28c2a4c8599b513e8e4c52bd9cf9a5d3c2a08",
+    "docs/research/nes-contra/evidence/levels-loader-original.json.gz": "ade2205eacf994ed8c3bc269b55ef49e23e524fa6c2f5a5c07897f155e56af98",
+    "docs/research/nes-contra/evidence/levels-transitions-original.json.gz": "6af68cd0792bbc470b0136e778cd380f9c06f67bfe2b5694e8464e03b3f18e7a",
+    "docs/research/nes-contra/evidence/levels-verification.json": "ad4e456be763bee9a2639c3ef637896eac13050f3d87a90071f4d648a6540adb",
+    "docs/research/nes-contra/levels.md": "3ae57ea678640c1eaca056e735fcc988b981be8eacab42154829e84ec6f2dcc7"
+  },
+  "cleanup": [
+    {
+      "path": ".local/contra-levels/swift-cache",
+      "bytes": 93389352
+    },
+    {
+      "path": "dist/cl-tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-levels/runtime/fceux-home",
+      "bytes": 17717
+    },
+    {
+      "path": ".local/contra-levels/runtime/runtime",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-levels/runtime/tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-levels/chr-runtime/fceux-home",
+      "bytes": 17728
+    },
+    {
+      "path": ".local/contra-levels/chr-runtime/runtime",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-levels/chr-runtime/tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-levels/chr-cases/fceux-home",
+      "bytes": 17733
+    },
+    {
+      "path": ".local/contra-levels/chr-cases/runtime",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-levels/chr-cases/tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-levels/runtime/runs/loader-stage-1-map-0-smoke",
+      "bytes": 51741
+    },
+    {
+      "path": ".local/contra-levels/runtime/runs/loader-stage-2-map-0-smoke2",
+      "bytes": 52455
+    },
+    {
+      "path": ".local/contra-levels/runtime/runs/loader-stage-3-map-9-smoke3",
+      "bytes": 52380
+    },
+    {
+      "path": ".local/contra-levels/runtime/loader-stage-2-map-0-smoke2.json",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-levels/runtime/loader-stage-3-map-9-smoke3.json",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-levels/runtime/loader-smoke-observations.json.gz",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-levels/runtime/loader-stage-1-map-0-smoke.json",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-levels/runtime/loader-smoke2-observations.json.gz",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-levels/runtime/loader-smoke3-observations.json.gz",
+      "bytes": 0
+    }
+  ],
+  "retained": [
+    "source-bound original captures and stage states",
+    "REA dossiers used by active World integration",
+    "normalized data and complete evidence bundles"
+  ]
+}

@@ -1,3 +1,4 @@
+import { useControllerCancel } from "../../../web/src/controllers/use-controller-cancel";
 import { treasonRemoveSites } from "./catan-progress-choice-state";
 import { CatanExplorerBoard } from "./catan-explorer";
 import { catanPirateNeedsFortress } from "./catan-results";
@@ -82,7 +83,7 @@ import {
   CatanWorldFishChoice,
   CatanWorldFishPreview,
 } from "./catan-world-fishing";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { CSSProperties } from "react";
 import {
   ArrowLeftRight,
@@ -559,6 +560,23 @@ function CatanBaseBoard({
   const [monopoly, setMonopoly] = useState(0);
   const [goldGive, setGoldGive] = useState(0);
   const [goldTake, setGoldTake] = useState(0);
+  const root = useRef<HTMLDivElement>(null);
+  useControllerCancel(root, () => {
+    setChosen(null);
+    setHelperPayment(null);
+    setHelperKnight(null);
+    setMoveFrom(null);
+    setMode("");
+    setProgress(null);
+    setDev(null);
+    setVillage(null);
+    setCaravanSelection(null);
+    setTwoSelection(null);
+    setTwoRetreat(null);
+    setTransportSelection(emptyTransportPick());
+    setAttackSelection(emptyAttackSelection());
+    setWonderFocus(null);
+  });
   useEffect(() => {
     setVillage(null);
     setCaravanSelection(null);
@@ -738,10 +756,11 @@ function CatanBaseBoard({
       (!!city && (cityVertices[effective] || []).includes(id)));
   return (
     <div
+      ref={root}
       className={`catan-board ${sea ? "catan-seafarers" : ""} ${pirates ? "catan-pirate-islands" : ""} ${sea?.wonders ? "catan-wonders" : ""} ${sea?.newWorld ? "catan-new-world" : ""} ${city ? "catan-cities-knights" : ""} ${progress ? "catan-progress-open" : ""} ${city || sea?.wonders || sea?.newWorld || g.fishing || g.rivers || g.caravans || g.two || g.attack || g.transport ? "catan-map-side-hand" : ""}`}
     >
       <section className="catan-map-panel">
-        <div className="catan-map-toolbar">
+        <div className="catan-map-toolbar" data-controller-group="camera">
           <span>
             <Flag size={14} /> {setup ? "起始建设" : `第 ${game.round} 轮`} ·
             {pirates && catanPirateNeedsFortress(g)
@@ -886,6 +905,7 @@ function CatanBaseBoard({
             <svg
               ref={twoMap}
               className="catan-map"
+              data-controller-group="board"
               viewBox={`${mapMinX} ${mapMinY} ${mapWidth} ${mapHeight}`}
               role="group"
               aria-label="卡坦岛地图，可缩放拖动，选择地块、道路或交点"
@@ -1251,6 +1271,7 @@ function CatanBaseBoard({
                 return (
                   <g
                     key={e.id}
+                    data-catan-edge={e.id}
                     className={`catan-edge ${ok ? "selectable" : ""}`}
                     pointerEvents={ok ? undefined : "none"}
                     role={ok ? "button" : undefined}
@@ -1426,6 +1447,7 @@ function CatanBaseBoard({
                 return (
                   <g
                     key={v.id}
+                    data-catan-vertex={v.id}
                     className={`catan-vertex ${ok ? "selectable" : ""}`}
                     pointerEvents={ok ? undefined : "none"}
                     transform={`translate(${v.x},${v.y}) scale(${pieceScale})`}
@@ -1817,7 +1839,10 @@ function CatanBaseBoard({
             </button>
           )}
         {mine && phase === "catan_turn" && (
-          <div className="catan-build-menu">
+          <div
+            className="catan-build-menu"
+            data-controller-group="catan-build-menu"
+          >
             {(city
               ? g.rivers
                 ? (["road", "bridge", "settlement", "city"] as const)
@@ -1954,7 +1979,11 @@ function CatanBaseBoard({
           chosen.type !== "fish_ground" &&
           chosen.type !== "robber_start" &&
           (mine || cityChoiceMine) && (
-            <section className="catan-confirm" aria-label="确认行动">
+            <section
+              className="catan-confirm"
+              data-controller-group="catan-confirm"
+              aria-label="确认行动"
+            >
               <strong>
                 {
                   (
@@ -2087,7 +2116,10 @@ function CatanBaseBoard({
           </p>
         )}
         {mine && phase === "catan_steal" && (
-          <section className="catan-confirm">
+          <section
+            className="catan-confirm"
+            data-controller-group="catan-confirm"
+          >
             <strong>选择偷取一张资源的对手</strong>
             {pirates && <p>可从任一有资源的对手偷取，也可放弃。</p>}
             {g.victims.map((i) => (
@@ -2112,7 +2144,10 @@ function CatanBaseBoard({
           </button>
         )}
         {phase === "catan_discard" && (
-          <section className="catan-confirm">
+          <section
+            className="catan-confirm"
+            data-controller-group="catan-confirm"
+          >
             <strong>
               掷出 7 · 超过{city ? "个人弃牌上限" : "七张"}需弃一半
             </strong>
@@ -2155,7 +2190,10 @@ function CatanBaseBoard({
           </section>
         )}
         {mine && phase === "catan_turn" && mode === "trade" && (
-          <section className="catan-trade-editor">
+          <section
+            className="catan-trade-editor"
+            data-controller-group="catan-trade-editor"
+          >
             <ResourcePicker
               label="给出"
               values={give}
@@ -2237,7 +2275,7 @@ function CatanBaseBoard({
           </section>
         )}
         {g.trade && playing && (
-          <section className="catan-offer">
+          <section className="catan-offer" data-controller-group="catan-offer">
             <strong>{room.seats[g.trade.from].name} 的交易提议</strong>
             <small>给出</small>
             <Bundle values={g.trade.give} assets={assets} />
@@ -2331,7 +2369,10 @@ function CatanBaseBoard({
           </section>
         )}
         {dev !== null && mine && (
-          <section className="catan-confirm">
+          <section
+            className="catan-confirm"
+            data-controller-group="catan-confirm"
+          >
             <strong>{devLabel(dev)}</strong>
             <p>{describeDev(dev)}</p>
             {dev === 2 && !g.transport && (
@@ -2513,7 +2554,7 @@ function CatanBaseBoard({
         )}
       </aside>
       {p && !room.spectating && (
-        <section className="catan-hand">
+        <section className="catan-hand" data-controller-group="catan-hand">
           <header>
             <h3>
               {city ? "你的资源与商品" : "你的资源"}{" "}
@@ -2531,7 +2572,10 @@ function CatanBaseBoard({
             ))}
           </div>
           {!city && (
-            <div className="catan-development">
+            <div
+              className="catan-development"
+              data-controller-group="catan-development"
+            >
               <strong>发展卡</strong>
               {p.dev?.some((n) => n > 0) ? (
                 p.dev.map(

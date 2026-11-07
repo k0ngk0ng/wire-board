@@ -1,0 +1,6 @@
+=== RUN   TestBotWaitsBeforeJumpingIntoVisibleNozzleBeam
+    bot_nozzle_jump_window_test.go:50: an arbitrary late quiet frame is assumed to be a fresh opening 193
+--- FAIL: TestBotWaitsBeforeJumpingIntoVisibleNozzleBeam (0.00s)
+FAIL
+FAIL	github.com/k0ngk0ng/wire-board/games/contra/engine	0.431s
+FAIL

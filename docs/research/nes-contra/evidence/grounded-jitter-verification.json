@@ -1,0 +1,19 @@
+{
+  "status": "targeted-tests-pass-campaign-still-incomplete",
+  "cause": "At104210, visible crouch anchor moved196->195 while actual body remained196.78. Strict Y equality released Down; natural death followed at104211.",
+  "change": "Permit one pixel of observed Y variation while visible support remains and pose is not jumping.",
+  "scope": "Public-frame geometry only; hidden diagnostic position was used only to audit the failure.",
+  "sources": {
+    "games/contra/engine/bot.go": "6e357cc0bbc05891012c5cd6b4e1fb536bc5d17908301f3f167b4c5f619472da",
+    "games/contra/engine/bot_grounded_jitter_test.go": "f0572982b105a381c28bc8cc48ea7ab1707a0ab55204069d8aa7409f2d168fff",
+    "games/contra/engine/testdata/bot-energy-duck-jitter.json.gz": "0a31ab0c481f27a3be2d9bd00891897681d08123001cb86b34030c74addd79e0"
+  },
+  "race_log": "grounded-jitter-green.log",
+  "new_run": ".local/contra-bot/diagnostic-energy-grounded-jitter",
+  "complete_campaign": false,
+  "run_result": {
+    "frames": 112000,
+    "level_index": 5,
+    "screen": 5
+  }
+}

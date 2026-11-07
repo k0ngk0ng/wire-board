@@ -1,0 +1,122 @@
+{
+  "layout": "game",
+  "actions": [
+    {
+      "id": "left",
+      "label": "向左移动",
+      "keys": [
+        "ArrowLeft",
+        "KeyA"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 14
+        },
+        {
+          "type": "axis",
+          "index": 0,
+          "direction": -1
+        }
+      ]
+    },
+    {
+      "id": "right",
+      "label": "向右移动",
+      "keys": [
+        "ArrowRight",
+        "KeyD"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 15
+        },
+        {
+          "type": "axis",
+          "index": 0,
+          "direction": 1
+        }
+      ]
+    },
+    {
+      "id": "rotateCW",
+      "label": "顺时针旋转",
+      "keys": [
+        "KeyX"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "id": "rotateCCW",
+      "label": "逆时针旋转",
+      "keys": [
+        "KeyZ",
+        "ControlLeft",
+        "ControlRight"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 1
+        }
+      ]
+    },
+    {
+      "id": "softDrop",
+      "label": "软降",
+      "keys": [
+        "ArrowDown",
+        "KeyS"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 13
+        },
+        {
+          "type": "axis",
+          "index": 1,
+          "direction": 1
+        }
+      ]
+    },
+    {
+      "id": "hardDrop",
+      "label": "硬降",
+      "keys": [
+        "Space"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 3
+        }
+      ]
+    },
+    {
+      "id": "menuUp",
+      "label": "向上选择／顺旋",
+      "keys": [
+        "ArrowUp",
+        "KeyW"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 12
+        },
+        {
+          "type": "axis",
+          "index": 1,
+          "direction": -1
+        }
+      ]
+    }
+  ]
+}

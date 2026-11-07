@@ -48,6 +48,8 @@ func TestControllerProfilesE2E(t *testing.T) {
 	if !reflect.DeepEqual(profile["keyboard"], want) {
 		t.Fatalf("defaults: %v", profile)
 	}
+	profile["gamepads"] = map[string]any{"standard:Restart Pad": padConfig(1)}
+	profile["gamepadDevice"] = "standard:Restart Pad"
 	profile["keyboard"].(map[string]any)["right"] = "ArrowRight"
 	saved := a.post("/api/controllers/classic-2", profile, 200)
 	if saved["revision"] != float64(1) {
@@ -105,7 +107,10 @@ func TestControllerMDProfilesE2E(t *testing.T) {
 	models := state["models"].([]any)
 	ids := []string{}
 	for _, raw := range models {
-		ids = append(ids, raw.(map[string]any)["id"].(string))
+		model := raw.(map[string]any)
+		if model["gameId"] == nil {
+			ids = append(ids, model["id"].(string))
+		}
 	}
 	if !reflect.DeepEqual(ids, []string{"classic-2", "md-6"}) {
 		t.Fatalf("controller models: %v", ids)

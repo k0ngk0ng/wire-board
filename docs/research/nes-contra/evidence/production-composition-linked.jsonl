@@ -1,0 +1,12 @@
+{"Time":"2026-10-28T06:31:16.322395+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/internal/production"}
+{"Time":"2026-10-28T06:31:16.976216+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/internal/production","Test":"TestContraProductionRegistrationRequiresIdentities"}
+{"Time":"2026-10-28T06:31:16.97625+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/internal/production","Test":"TestContraProductionRegistrationRequiresIdentities","Output":"=== RUN   TestContraProductionRegistrationRequiresIdentities\n"}
+{"Time":"2026-10-28T06:31:16.976293+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/internal/production","Test":"TestContraProductionRegistrationRequiresIdentities","Output":"--- PASS: TestContraProductionRegistrationRequiresIdentities (0.00s)\n"}
+{"Time":"2026-10-28T06:31:16.976298+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/internal/production","Test":"TestContraProductionRegistrationRequiresIdentities","Elapsed":0}
+{"Time":"2026-10-28T06:31:16.976312+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/internal/production","Test":"TestContraProductionRegistrationWithLinkedBuild"}
+{"Time":"2026-10-28T06:31:16.976315+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/internal/production","Test":"TestContraProductionRegistrationWithLinkedBuild","Output":"=== RUN   TestContraProductionRegistrationWithLinkedBuild\n"}
+{"Time":"2026-10-28T06:31:33.176457+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/internal/production","Test":"TestContraProductionRegistrationWithLinkedBuild","Output":"--- PASS: TestContraProductionRegistrationWithLinkedBuild (16.20s)\n"}
+{"Time":"2026-10-28T06:31:33.177168+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/internal/production","Test":"TestContraProductionRegistrationWithLinkedBuild","Elapsed":16.2}
+{"Time":"2026-10-28T06:31:33.177599+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/internal/production","Output":"PASS\n"}
+{"Time":"2026-10-28T06:31:34.197918+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/internal/production","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/internal/production\t17.875s\n"}
+{"Time":"2026-10-28T06:31:34.197949+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/internal/production","Elapsed":17.875}

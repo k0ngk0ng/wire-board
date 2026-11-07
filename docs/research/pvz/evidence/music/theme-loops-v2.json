@@ -1,0 +1,3476 @@
+{
+  "status": "pass",
+  "sampleRate": 44100,
+  "channels": 2,
+  "sampleFormat": "PCM16LE",
+  "bytesPerFrame": 4,
+  "originalMusicFlags": 33284,
+  "nativeBASSflags": 2261508,
+  "nativeBASSflagsHex": "0x228204",
+  "bassVersion": "2.4.18.3",
+  "librarySHA256": "e81fb7b4d0009ba6343fbfcd840620704dcb840686d405b9734cd37150d31974",
+  "sources": {
+    "mainmusic.mo3": {
+      "file": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/pvz/.local/pvz-research/extracted/sounds/mainmusic.mo3",
+      "sha256": "afbd1a0cd7fd9e641a425355b6560eb9bf25bf901e99f163ab3bb1c37db49f59"
+    },
+    "mainmusic_hihats.mo3": {
+      "file": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/pvz/.local/pvz-research/extracted/sounds/mainmusic_hihats.mo3",
+      "sha256": "1506a5043de8c2b4d6fe67db1baa1db7db588c1421e084d0fa55159e1f4b9d5d"
+    }
+  },
+  "boundaryMethod": "MUSICPOS|MIXTIME wildcard callback + BASS_POS_BYTE|DECODE; exact positions identical for 65536 and 1024-frame requests; prior main boundaries also revalidated",
+  "themes": {
+    "day": {
+      "main": {
+        "startOrder": 0,
+        "startRow": 0,
+        "blockFrames": 65536,
+        "nativeBASSflags": 2261508,
+        "nativeBASSflagsHex": "0x228204",
+        "decodeLimitSeconds": 400,
+        "sourceFile": "mainmusic.mo3",
+        "sourceSHA256": "afbd1a0cd7fd9e641a425355b6560eb9bf25bf901e99f163ab3bb1c37db49f59",
+        "decodedPCMFramesIncludingFinalRead": 8388608,
+        "orderChangeTimeline": [
+          {
+            "order": 0,
+            "row": 0,
+            "decodedBytePosition": 0,
+            "decodedPCMFrame": 0
+          },
+          {
+            "order": 1,
+            "row": 0,
+            "decodedBytePosition": 735744,
+            "decodedPCMFrame": 183936
+          },
+          {
+            "order": 2,
+            "row": 0,
+            "decodedBytePosition": 1471488,
+            "decodedPCMFrame": 367872
+          },
+          {
+            "order": 3,
+            "row": 0,
+            "decodedBytePosition": 2207232,
+            "decodedPCMFrame": 551808
+          },
+          {
+            "order": 4,
+            "row": 0,
+            "decodedBytePosition": 2942976,
+            "decodedPCMFrame": 735744
+          },
+          {
+            "order": 5,
+            "row": 0,
+            "decodedBytePosition": 3678720,
+            "decodedPCMFrame": 919680
+          },
+          {
+            "order": 6,
+            "row": 0,
+            "decodedBytePosition": 4414464,
+            "decodedPCMFrame": 1103616
+          },
+          {
+            "order": 7,
+            "row": 0,
+            "decodedBytePosition": 5150208,
+            "decodedPCMFrame": 1287552
+          },
+          {
+            "order": 8,
+            "row": 0,
+            "decodedBytePosition": 5885952,
+            "decodedPCMFrame": 1471488
+          },
+          {
+            "order": 9,
+            "row": 0,
+            "decodedBytePosition": 6621696,
+            "decodedPCMFrame": 1655424
+          },
+          {
+            "order": 10,
+            "row": 0,
+            "decodedBytePosition": 7357440,
+            "decodedPCMFrame": 1839360
+          },
+          {
+            "order": 11,
+            "row": 0,
+            "decodedBytePosition": 8093184,
+            "decodedPCMFrame": 2023296
+          },
+          {
+            "order": 12,
+            "row": 0,
+            "decodedBytePosition": 8828928,
+            "decodedPCMFrame": 2207232
+          },
+          {
+            "order": 13,
+            "row": 0,
+            "decodedBytePosition": 9564672,
+            "decodedPCMFrame": 2391168
+          },
+          {
+            "order": 14,
+            "row": 0,
+            "decodedBytePosition": 10300416,
+            "decodedPCMFrame": 2575104
+          },
+          {
+            "order": 15,
+            "row": 0,
+            "decodedBytePosition": 11036160,
+            "decodedPCMFrame": 2759040
+          },
+          {
+            "order": 16,
+            "row": 0,
+            "decodedBytePosition": 11771904,
+            "decodedPCMFrame": 2942976
+          },
+          {
+            "order": 17,
+            "row": 0,
+            "decodedBytePosition": 12507648,
+            "decodedPCMFrame": 3126912
+          },
+          {
+            "order": 18,
+            "row": 0,
+            "decodedBytePosition": 13243392,
+            "decodedPCMFrame": 3310848
+          },
+          {
+            "order": 19,
+            "row": 0,
+            "decodedBytePosition": 13979136,
+            "decodedPCMFrame": 3494784
+          },
+          {
+            "order": 20,
+            "row": 0,
+            "decodedBytePosition": 14714880,
+            "decodedPCMFrame": 3678720
+          },
+          {
+            "order": 21,
+            "row": 0,
+            "decodedBytePosition": 15450624,
+            "decodedPCMFrame": 3862656
+          },
+          {
+            "order": 22,
+            "row": 0,
+            "decodedBytePosition": 16186368,
+            "decodedPCMFrame": 4046592
+          },
+          {
+            "order": 23,
+            "row": 0,
+            "decodedBytePosition": 16922112,
+            "decodedPCMFrame": 4230528
+          },
+          {
+            "order": 24,
+            "row": 0,
+            "decodedBytePosition": 17657856,
+            "decodedPCMFrame": 4414464
+          },
+          {
+            "order": 25,
+            "row": 0,
+            "decodedBytePosition": 18393600,
+            "decodedPCMFrame": 4598400
+          },
+          {
+            "order": 26,
+            "row": 0,
+            "decodedBytePosition": 18761472,
+            "decodedPCMFrame": 4690368
+          },
+          {
+            "order": 27,
+            "row": 0,
+            "decodedBytePosition": 19497216,
+            "decodedPCMFrame": 4874304
+          },
+          {
+            "order": 28,
+            "row": 0,
+            "decodedBytePosition": 20232960,
+            "decodedPCMFrame": 5058240
+          },
+          {
+            "order": 29,
+            "row": 0,
+            "decodedBytePosition": 20968704,
+            "decodedPCMFrame": 5242176
+          },
+          {
+            "order": 30,
+            "row": 0,
+            "decodedBytePosition": 21704448,
+            "decodedPCMFrame": 5426112
+          },
+          {
+            "order": 31,
+            "row": 0,
+            "decodedBytePosition": 22440192,
+            "decodedPCMFrame": 5610048
+          },
+          {
+            "order": 32,
+            "row": 0,
+            "decodedBytePosition": 23175936,
+            "decodedPCMFrame": 5793984
+          },
+          {
+            "order": 33,
+            "row": 0,
+            "decodedBytePosition": 23911680,
+            "decodedPCMFrame": 5977920
+          },
+          {
+            "order": 34,
+            "row": 0,
+            "decodedBytePosition": 24647424,
+            "decodedPCMFrame": 6161856
+          },
+          {
+            "order": 35,
+            "row": 0,
+            "decodedBytePosition": 25383168,
+            "decodedPCMFrame": 6345792
+          },
+          {
+            "order": 36,
+            "row": 0,
+            "decodedBytePosition": 26118912,
+            "decodedPCMFrame": 6529728
+          },
+          {
+            "order": 37,
+            "row": 0,
+            "decodedBytePosition": 26854656,
+            "decodedPCMFrame": 6713664
+          },
+          {
+            "order": 38,
+            "row": 0,
+            "decodedBytePosition": 27590400,
+            "decodedPCMFrame": 6897600
+          },
+          {
+            "order": 39,
+            "row": 0,
+            "decodedBytePosition": 28326144,
+            "decodedPCMFrame": 7081536
+          },
+          {
+            "order": 40,
+            "row": 0,
+            "decodedBytePosition": 29061888,
+            "decodedPCMFrame": 7265472
+          },
+          {
+            "order": 41,
+            "row": 0,
+            "decodedBytePosition": 29797632,
+            "decodedPCMFrame": 7449408
+          },
+          {
+            "order": 42,
+            "row": 0,
+            "decodedBytePosition": 30533376,
+            "decodedPCMFrame": 7633344
+          },
+          {
+            "order": 43,
+            "row": 0,
+            "decodedBytePosition": 31269120,
+            "decodedPCMFrame": 7817280
+          },
+          {
+            "order": 44,
+            "row": 0,
+            "decodedBytePosition": 32004864,
+            "decodedPCMFrame": 8001216
+          },
+          {
+            "order": 45,
+            "row": 0,
+            "decodedBytePosition": 32740608,
+            "decodedPCMFrame": 8185152
+          },
+          {
+            "order": 12,
+            "row": 0,
+            "decodedBytePosition": 33476352,
+            "decodedPCMFrame": 8369088
+          }
+        ],
+        "backwardJumps": [
+          {
+            "order": 12,
+            "row": 0,
+            "decodedBytePosition": 33476352,
+            "decodedPCMFrame": 8369088,
+            "targetPreviouslyObserved": true
+          }
+        ],
+        "status": "observed",
+        "loopOrder": 12,
+        "loopRow": 0,
+        "introPCMFrames": 2207232,
+        "firstCyclePCMFrames": 8369088,
+        "loopPCMFrames": 6161856,
+        "verificationBlockFrames": 1024,
+        "verifiedExactBoundaryAcrossBlockSizes": true,
+        "introSeconds": 50.05061224489796,
+        "firstCycleSeconds": 189.7752380952381,
+        "loopSeconds": 139.72462585034015,
+        "enabledChannels": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23
+        ],
+        "initialVolume": 1
+      },
+      "drums": {
+        "startOrder": 0,
+        "startRow": 0,
+        "blockFrames": 65536,
+        "nativeBASSflags": 2261508,
+        "nativeBASSflagsHex": "0x228204",
+        "decodeLimitSeconds": 400,
+        "sourceFile": "mainmusic.mo3",
+        "sourceSHA256": "afbd1a0cd7fd9e641a425355b6560eb9bf25bf901e99f163ab3bb1c37db49f59",
+        "decodedPCMFramesIncludingFinalRead": 8388608,
+        "orderChangeTimeline": [
+          {
+            "order": 0,
+            "row": 0,
+            "decodedBytePosition": 0,
+            "decodedPCMFrame": 0
+          },
+          {
+            "order": 1,
+            "row": 0,
+            "decodedBytePosition": 735744,
+            "decodedPCMFrame": 183936
+          },
+          {
+            "order": 2,
+            "row": 0,
+            "decodedBytePosition": 1471488,
+            "decodedPCMFrame": 367872
+          },
+          {
+            "order": 3,
+            "row": 0,
+            "decodedBytePosition": 2207232,
+            "decodedPCMFrame": 551808
+          },
+          {
+            "order": 4,
+            "row": 0,
+            "decodedBytePosition": 2942976,
+            "decodedPCMFrame": 735744
+          },
+          {
+            "order": 5,
+            "row": 0,
+            "decodedBytePosition": 3678720,
+            "decodedPCMFrame": 919680
+          },
+          {
+            "order": 6,
+            "row": 0,
+            "decodedBytePosition": 4414464,
+            "decodedPCMFrame": 1103616
+          },
+          {
+            "order": 7,
+            "row": 0,
+            "decodedBytePosition": 5150208,
+            "decodedPCMFrame": 1287552
+          },
+          {
+            "order": 8,
+            "row": 0,
+            "decodedBytePosition": 5885952,
+            "decodedPCMFrame": 1471488
+          },
+          {
+            "order": 9,
+            "row": 0,
+            "decodedBytePosition": 6621696,
+            "decodedPCMFrame": 1655424
+          },
+          {
+            "order": 10,
+            "row": 0,
+            "decodedBytePosition": 7357440,
+            "decodedPCMFrame": 1839360
+          },
+          {
+            "order": 11,
+            "row": 0,
+            "decodedBytePosition": 8093184,
+            "decodedPCMFrame": 2023296
+          },
+          {
+            "order": 12,
+            "row": 0,
+            "decodedBytePosition": 8828928,
+            "decodedPCMFrame": 2207232
+          },
+          {
+            "order": 13,
+            "row": 0,
+            "decodedBytePosition": 9564672,
+            "decodedPCMFrame": 2391168
+          },
+          {
+            "order": 14,
+            "row": 0,
+            "decodedBytePosition": 10300416,
+            "decodedPCMFrame": 2575104
+          },
+          {
+            "order": 15,
+            "row": 0,
+            "decodedBytePosition": 11036160,
+            "decodedPCMFrame": 2759040
+          },
+          {
+            "order": 16,
+            "row": 0,
+            "decodedBytePosition": 11771904,
+            "decodedPCMFrame": 2942976
+          },
+          {
+            "order": 17,
+            "row": 0,
+            "decodedBytePosition": 12507648,
+            "decodedPCMFrame": 3126912
+          },
+          {
+            "order": 18,
+            "row": 0,
+            "decodedBytePosition": 13243392,
+            "decodedPCMFrame": 3310848
+          },
+          {
+            "order": 19,
+            "row": 0,
+            "decodedBytePosition": 13979136,
+            "decodedPCMFrame": 3494784
+          },
+          {
+            "order": 20,
+            "row": 0,
+            "decodedBytePosition": 14714880,
+            "decodedPCMFrame": 3678720
+          },
+          {
+            "order": 21,
+            "row": 0,
+            "decodedBytePosition": 15450624,
+            "decodedPCMFrame": 3862656
+          },
+          {
+            "order": 22,
+            "row": 0,
+            "decodedBytePosition": 16186368,
+            "decodedPCMFrame": 4046592
+          },
+          {
+            "order": 23,
+            "row": 0,
+            "decodedBytePosition": 16922112,
+            "decodedPCMFrame": 4230528
+          },
+          {
+            "order": 24,
+            "row": 0,
+            "decodedBytePosition": 17657856,
+            "decodedPCMFrame": 4414464
+          },
+          {
+            "order": 25,
+            "row": 0,
+            "decodedBytePosition": 18393600,
+            "decodedPCMFrame": 4598400
+          },
+          {
+            "order": 26,
+            "row": 0,
+            "decodedBytePosition": 18761472,
+            "decodedPCMFrame": 4690368
+          },
+          {
+            "order": 27,
+            "row": 0,
+            "decodedBytePosition": 19497216,
+            "decodedPCMFrame": 4874304
+          },
+          {
+            "order": 28,
+            "row": 0,
+            "decodedBytePosition": 20232960,
+            "decodedPCMFrame": 5058240
+          },
+          {
+            "order": 29,
+            "row": 0,
+            "decodedBytePosition": 20968704,
+            "decodedPCMFrame": 5242176
+          },
+          {
+            "order": 30,
+            "row": 0,
+            "decodedBytePosition": 21704448,
+            "decodedPCMFrame": 5426112
+          },
+          {
+            "order": 31,
+            "row": 0,
+            "decodedBytePosition": 22440192,
+            "decodedPCMFrame": 5610048
+          },
+          {
+            "order": 32,
+            "row": 0,
+            "decodedBytePosition": 23175936,
+            "decodedPCMFrame": 5793984
+          },
+          {
+            "order": 33,
+            "row": 0,
+            "decodedBytePosition": 23911680,
+            "decodedPCMFrame": 5977920
+          },
+          {
+            "order": 34,
+            "row": 0,
+            "decodedBytePosition": 24647424,
+            "decodedPCMFrame": 6161856
+          },
+          {
+            "order": 35,
+            "row": 0,
+            "decodedBytePosition": 25383168,
+            "decodedPCMFrame": 6345792
+          },
+          {
+            "order": 36,
+            "row": 0,
+            "decodedBytePosition": 26118912,
+            "decodedPCMFrame": 6529728
+          },
+          {
+            "order": 37,
+            "row": 0,
+            "decodedBytePosition": 26854656,
+            "decodedPCMFrame": 6713664
+          },
+          {
+            "order": 38,
+            "row": 0,
+            "decodedBytePosition": 27590400,
+            "decodedPCMFrame": 6897600
+          },
+          {
+            "order": 39,
+            "row": 0,
+            "decodedBytePosition": 28326144,
+            "decodedPCMFrame": 7081536
+          },
+          {
+            "order": 40,
+            "row": 0,
+            "decodedBytePosition": 29061888,
+            "decodedPCMFrame": 7265472
+          },
+          {
+            "order": 41,
+            "row": 0,
+            "decodedBytePosition": 29797632,
+            "decodedPCMFrame": 7449408
+          },
+          {
+            "order": 42,
+            "row": 0,
+            "decodedBytePosition": 30533376,
+            "decodedPCMFrame": 7633344
+          },
+          {
+            "order": 43,
+            "row": 0,
+            "decodedBytePosition": 31269120,
+            "decodedPCMFrame": 7817280
+          },
+          {
+            "order": 44,
+            "row": 0,
+            "decodedBytePosition": 32004864,
+            "decodedPCMFrame": 8001216
+          },
+          {
+            "order": 45,
+            "row": 0,
+            "decodedBytePosition": 32740608,
+            "decodedPCMFrame": 8185152
+          },
+          {
+            "order": 12,
+            "row": 0,
+            "decodedBytePosition": 33476352,
+            "decodedPCMFrame": 8369088
+          }
+        ],
+        "backwardJumps": [
+          {
+            "order": 12,
+            "row": 0,
+            "decodedBytePosition": 33476352,
+            "decodedPCMFrame": 8369088,
+            "targetPreviouslyObserved": true
+          }
+        ],
+        "status": "observed",
+        "loopOrder": 12,
+        "loopRow": 0,
+        "introPCMFrames": 2207232,
+        "firstCyclePCMFrames": 8369088,
+        "loopPCMFrames": 6161856,
+        "verificationBlockFrames": 1024,
+        "verifiedExactBoundaryAcrossBlockSizes": true,
+        "introSeconds": 50.05061224489796,
+        "firstCycleSeconds": 189.7752380952381,
+        "loopSeconds": 139.72462585034015,
+        "reusedTimingFrom": "day.main",
+        "enabledChannels": [
+          24,
+          25,
+          26
+        ],
+        "initialVolume": 0
+      },
+      "hihat": {
+        "startOrder": 0,
+        "startRow": 0,
+        "blockFrames": 65536,
+        "nativeBASSflags": 2261508,
+        "nativeBASSflagsHex": "0x228204",
+        "decodeLimitSeconds": 400,
+        "sourceFile": "mainmusic_hihats.mo3",
+        "sourceSHA256": "1506a5043de8c2b4d6fe67db1baa1db7db588c1421e084d0fa55159e1f4b9d5d",
+        "decodedPCMFramesIncludingFinalRead": 8388608,
+        "orderChangeTimeline": [
+          {
+            "order": 0,
+            "row": 0,
+            "decodedBytePosition": 0,
+            "decodedPCMFrame": 0
+          },
+          {
+            "order": 1,
+            "row": 0,
+            "decodedBytePosition": 735744,
+            "decodedPCMFrame": 183936
+          },
+          {
+            "order": 2,
+            "row": 0,
+            "decodedBytePosition": 1471488,
+            "decodedPCMFrame": 367872
+          },
+          {
+            "order": 3,
+            "row": 0,
+            "decodedBytePosition": 2207232,
+            "decodedPCMFrame": 551808
+          },
+          {
+            "order": 4,
+            "row": 0,
+            "decodedBytePosition": 2942976,
+            "decodedPCMFrame": 735744
+          },
+          {
+            "order": 5,
+            "row": 0,
+            "decodedBytePosition": 3678720,
+            "decodedPCMFrame": 919680
+          },
+          {
+            "order": 6,
+            "row": 0,
+            "decodedBytePosition": 4414464,
+            "decodedPCMFrame": 1103616
+          },
+          {
+            "order": 7,
+            "row": 0,
+            "decodedBytePosition": 5150208,
+            "decodedPCMFrame": 1287552
+          },
+          {
+            "order": 8,
+            "row": 0,
+            "decodedBytePosition": 5885952,
+            "decodedPCMFrame": 1471488
+          },
+          {
+            "order": 9,
+            "row": 0,
+            "decodedBytePosition": 6621696,
+            "decodedPCMFrame": 1655424
+          },
+          {
+            "order": 10,
+            "row": 0,
+            "decodedBytePosition": 7357440,
+            "decodedPCMFrame": 1839360
+          },
+          {
+            "order": 11,
+            "row": 0,
+            "decodedBytePosition": 8093184,
+            "decodedPCMFrame": 2023296
+          },
+          {
+            "order": 12,
+            "row": 0,
+            "decodedBytePosition": 8828928,
+            "decodedPCMFrame": 2207232
+          },
+          {
+            "order": 13,
+            "row": 0,
+            "decodedBytePosition": 9564672,
+            "decodedPCMFrame": 2391168
+          },
+          {
+            "order": 14,
+            "row": 0,
+            "decodedBytePosition": 10300416,
+            "decodedPCMFrame": 2575104
+          },
+          {
+            "order": 15,
+            "row": 0,
+            "decodedBytePosition": 11036160,
+            "decodedPCMFrame": 2759040
+          },
+          {
+            "order": 16,
+            "row": 0,
+            "decodedBytePosition": 11771904,
+            "decodedPCMFrame": 2942976
+          },
+          {
+            "order": 17,
+            "row": 0,
+            "decodedBytePosition": 12507648,
+            "decodedPCMFrame": 3126912
+          },
+          {
+            "order": 18,
+            "row": 0,
+            "decodedBytePosition": 13243392,
+            "decodedPCMFrame": 3310848
+          },
+          {
+            "order": 19,
+            "row": 0,
+            "decodedBytePosition": 13979136,
+            "decodedPCMFrame": 3494784
+          },
+          {
+            "order": 20,
+            "row": 0,
+            "decodedBytePosition": 14714880,
+            "decodedPCMFrame": 3678720
+          },
+          {
+            "order": 21,
+            "row": 0,
+            "decodedBytePosition": 15450624,
+            "decodedPCMFrame": 3862656
+          },
+          {
+            "order": 22,
+            "row": 0,
+            "decodedBytePosition": 16186368,
+            "decodedPCMFrame": 4046592
+          },
+          {
+            "order": 23,
+            "row": 0,
+            "decodedBytePosition": 16922112,
+            "decodedPCMFrame": 4230528
+          },
+          {
+            "order": 24,
+            "row": 0,
+            "decodedBytePosition": 17657856,
+            "decodedPCMFrame": 4414464
+          },
+          {
+            "order": 25,
+            "row": 0,
+            "decodedBytePosition": 18393600,
+            "decodedPCMFrame": 4598400
+          },
+          {
+            "order": 26,
+            "row": 0,
+            "decodedBytePosition": 18761472,
+            "decodedPCMFrame": 4690368
+          },
+          {
+            "order": 27,
+            "row": 0,
+            "decodedBytePosition": 19497216,
+            "decodedPCMFrame": 4874304
+          },
+          {
+            "order": 28,
+            "row": 0,
+            "decodedBytePosition": 20232960,
+            "decodedPCMFrame": 5058240
+          },
+          {
+            "order": 29,
+            "row": 0,
+            "decodedBytePosition": 20968704,
+            "decodedPCMFrame": 5242176
+          },
+          {
+            "order": 30,
+            "row": 0,
+            "decodedBytePosition": 21704448,
+            "decodedPCMFrame": 5426112
+          },
+          {
+            "order": 31,
+            "row": 0,
+            "decodedBytePosition": 22440192,
+            "decodedPCMFrame": 5610048
+          },
+          {
+            "order": 32,
+            "row": 0,
+            "decodedBytePosition": 23175936,
+            "decodedPCMFrame": 5793984
+          },
+          {
+            "order": 33,
+            "row": 0,
+            "decodedBytePosition": 23911680,
+            "decodedPCMFrame": 5977920
+          },
+          {
+            "order": 34,
+            "row": 0,
+            "decodedBytePosition": 24647424,
+            "decodedPCMFrame": 6161856
+          },
+          {
+            "order": 35,
+            "row": 0,
+            "decodedBytePosition": 25383168,
+            "decodedPCMFrame": 6345792
+          },
+          {
+            "order": 36,
+            "row": 0,
+            "decodedBytePosition": 26118912,
+            "decodedPCMFrame": 6529728
+          },
+          {
+            "order": 37,
+            "row": 0,
+            "decodedBytePosition": 26854656,
+            "decodedPCMFrame": 6713664
+          },
+          {
+            "order": 38,
+            "row": 0,
+            "decodedBytePosition": 27590400,
+            "decodedPCMFrame": 6897600
+          },
+          {
+            "order": 39,
+            "row": 0,
+            "decodedBytePosition": 28326144,
+            "decodedPCMFrame": 7081536
+          },
+          {
+            "order": 40,
+            "row": 0,
+            "decodedBytePosition": 29061888,
+            "decodedPCMFrame": 7265472
+          },
+          {
+            "order": 41,
+            "row": 0,
+            "decodedBytePosition": 29797632,
+            "decodedPCMFrame": 7449408
+          },
+          {
+            "order": 42,
+            "row": 0,
+            "decodedBytePosition": 30533376,
+            "decodedPCMFrame": 7633344
+          },
+          {
+            "order": 43,
+            "row": 0,
+            "decodedBytePosition": 31269120,
+            "decodedPCMFrame": 7817280
+          },
+          {
+            "order": 44,
+            "row": 0,
+            "decodedBytePosition": 32004864,
+            "decodedPCMFrame": 8001216
+          },
+          {
+            "order": 45,
+            "row": 0,
+            "decodedBytePosition": 32740608,
+            "decodedPCMFrame": 8185152
+          },
+          {
+            "order": 12,
+            "row": 0,
+            "decodedBytePosition": 33476352,
+            "decodedPCMFrame": 8369088
+          }
+        ],
+        "backwardJumps": [
+          {
+            "order": 12,
+            "row": 0,
+            "decodedBytePosition": 33476352,
+            "decodedPCMFrame": 8369088,
+            "targetPreviouslyObserved": true
+          }
+        ],
+        "status": "observed",
+        "loopOrder": 12,
+        "loopRow": 0,
+        "introPCMFrames": 2207232,
+        "firstCyclePCMFrames": 8369088,
+        "loopPCMFrames": 6161856,
+        "verificationBlockFrames": 1024,
+        "verifiedExactBoundaryAcrossBlockSizes": true,
+        "introSeconds": 50.05061224489796,
+        "firstCycleSeconds": 189.7752380952381,
+        "loopSeconds": 139.72462585034015,
+        "enabledChannels": [
+          27
+        ],
+        "initialVolume": 0
+      }
+    },
+    "night": {
+      "main": {
+        "startOrder": 48,
+        "startRow": 0,
+        "blockFrames": 65536,
+        "nativeBASSflags": 2261508,
+        "nativeBASSflagsHex": "0x228204",
+        "decodeLimitSeconds": 400,
+        "sourceFile": "mainmusic.mo3",
+        "sourceSHA256": "afbd1a0cd7fd9e641a425355b6560eb9bf25bf901e99f163ab3bb1c37db49f59",
+        "decodedPCMFramesIncludingFinalRead": 4980736,
+        "orderChangeTimeline": [
+          {
+            "order": 48,
+            "row": 0,
+            "decodedBytePosition": 0,
+            "decodedPCMFrame": 0
+          },
+          {
+            "order": 49,
+            "row": 0,
+            "decodedBytePosition": 705024,
+            "decodedPCMFrame": 176256
+          },
+          {
+            "order": 50,
+            "row": 0,
+            "decodedBytePosition": 1410048,
+            "decodedPCMFrame": 352512
+          },
+          {
+            "order": 51,
+            "row": 0,
+            "decodedBytePosition": 2115072,
+            "decodedPCMFrame": 528768
+          },
+          {
+            "order": 52,
+            "row": 0,
+            "decodedBytePosition": 2820096,
+            "decodedPCMFrame": 705024
+          },
+          {
+            "order": 53,
+            "row": 0,
+            "decodedBytePosition": 3525120,
+            "decodedPCMFrame": 881280
+          },
+          {
+            "order": 54,
+            "row": 0,
+            "decodedBytePosition": 4230144,
+            "decodedPCMFrame": 1057536
+          },
+          {
+            "order": 55,
+            "row": 0,
+            "decodedBytePosition": 4935168,
+            "decodedPCMFrame": 1233792
+          },
+          {
+            "order": 56,
+            "row": 0,
+            "decodedBytePosition": 5640192,
+            "decodedPCMFrame": 1410048
+          },
+          {
+            "order": 57,
+            "row": 0,
+            "decodedBytePosition": 6345216,
+            "decodedPCMFrame": 1586304
+          },
+          {
+            "order": 58,
+            "row": 0,
+            "decodedBytePosition": 7050240,
+            "decodedPCMFrame": 1762560
+          },
+          {
+            "order": 59,
+            "row": 0,
+            "decodedBytePosition": 7755264,
+            "decodedPCMFrame": 1938816
+          },
+          {
+            "order": 60,
+            "row": 0,
+            "decodedBytePosition": 8460288,
+            "decodedPCMFrame": 2115072
+          },
+          {
+            "order": 61,
+            "row": 0,
+            "decodedBytePosition": 9165312,
+            "decodedPCMFrame": 2291328
+          },
+          {
+            "order": 62,
+            "row": 0,
+            "decodedBytePosition": 9870336,
+            "decodedPCMFrame": 2467584
+          },
+          {
+            "order": 63,
+            "row": 0,
+            "decodedBytePosition": 10575360,
+            "decodedPCMFrame": 2643840
+          },
+          {
+            "order": 64,
+            "row": 0,
+            "decodedBytePosition": 11280384,
+            "decodedPCMFrame": 2820096
+          },
+          {
+            "order": 65,
+            "row": 0,
+            "decodedBytePosition": 11985408,
+            "decodedPCMFrame": 2996352
+          },
+          {
+            "order": 66,
+            "row": 0,
+            "decodedBytePosition": 12690432,
+            "decodedPCMFrame": 3172608
+          },
+          {
+            "order": 67,
+            "row": 0,
+            "decodedBytePosition": 13395456,
+            "decodedPCMFrame": 3348864
+          },
+          {
+            "order": 68,
+            "row": 0,
+            "decodedBytePosition": 14100480,
+            "decodedPCMFrame": 3525120
+          },
+          {
+            "order": 69,
+            "row": 0,
+            "decodedBytePosition": 14805504,
+            "decodedPCMFrame": 3701376
+          },
+          {
+            "order": 70,
+            "row": 0,
+            "decodedBytePosition": 15510528,
+            "decodedPCMFrame": 3877632
+          },
+          {
+            "order": 71,
+            "row": 0,
+            "decodedBytePosition": 16215552,
+            "decodedPCMFrame": 4053888
+          },
+          {
+            "order": 72,
+            "row": 0,
+            "decodedBytePosition": 16920576,
+            "decodedPCMFrame": 4230144
+          },
+          {
+            "order": 73,
+            "row": 0,
+            "decodedBytePosition": 17625600,
+            "decodedPCMFrame": 4406400
+          },
+          {
+            "order": 74,
+            "row": 0,
+            "decodedBytePosition": 18330624,
+            "decodedPCMFrame": 4582656
+          },
+          {
+            "order": 75,
+            "row": 0,
+            "decodedBytePosition": 19035648,
+            "decodedPCMFrame": 4758912
+          },
+          {
+            "order": 48,
+            "row": 0,
+            "decodedBytePosition": 19740672,
+            "decodedPCMFrame": 4935168
+          }
+        ],
+        "backwardJumps": [
+          {
+            "order": 48,
+            "row": 0,
+            "decodedBytePosition": 19740672,
+            "decodedPCMFrame": 4935168,
+            "targetPreviouslyObserved": true
+          }
+        ],
+        "status": "observed",
+        "loopOrder": 48,
+        "loopRow": 0,
+        "introPCMFrames": 0,
+        "firstCyclePCMFrames": 4935168,
+        "loopPCMFrames": 4935168,
+        "verificationBlockFrames": 1024,
+        "verifiedExactBoundaryAcrossBlockSizes": true,
+        "introSeconds": 0.0,
+        "firstCycleSeconds": 111.90857142857143,
+        "loopSeconds": 111.90857142857143,
+        "enabledChannels": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29
+        ],
+        "initialVolume": 1
+      },
+      "drums": {
+        "startOrder": 92,
+        "startRow": 0,
+        "blockFrames": 65536,
+        "nativeBASSflags": 2261508,
+        "nativeBASSflagsHex": "0x228204",
+        "decodeLimitSeconds": 400,
+        "sourceFile": "mainmusic.mo3",
+        "sourceSHA256": "afbd1a0cd7fd9e641a425355b6560eb9bf25bf901e99f163ab3bb1c37db49f59",
+        "decodedPCMFramesIncludingFinalRead": 196608,
+        "orderChangeTimeline": [
+          {
+            "order": 92,
+            "row": 0,
+            "decodedBytePosition": 0,
+            "decodedPCMFrame": 0
+          },
+          {
+            "order": 92,
+            "row": 0,
+            "decodedBytePosition": 705024,
+            "decodedPCMFrame": 176256
+          }
+        ],
+        "backwardJumps": [
+          {
+            "order": 92,
+            "row": 0,
+            "decodedBytePosition": 705024,
+            "decodedPCMFrame": 176256,
+            "targetPreviouslyObserved": true
+          }
+        ],
+        "status": "observed",
+        "loopOrder": 92,
+        "loopRow": 0,
+        "introPCMFrames": 0,
+        "firstCyclePCMFrames": 176256,
+        "loopPCMFrames": 176256,
+        "verificationBlockFrames": 1024,
+        "verifiedExactBoundaryAcrossBlockSizes": true,
+        "introSeconds": 0.0,
+        "firstCycleSeconds": 3.996734693877551,
+        "loopSeconds": 3.996734693877551,
+        "enabledChannels": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29
+        ],
+        "initialVolume": 1
+      }
+    },
+    "pool": {
+      "main": {
+        "startOrder": 94,
+        "startRow": 0,
+        "blockFrames": 65536,
+        "nativeBASSflags": 2261508,
+        "nativeBASSflagsHex": "0x228204",
+        "decodeLimitSeconds": 400,
+        "sourceFile": "mainmusic.mo3",
+        "sourceSHA256": "afbd1a0cd7fd9e641a425355b6560eb9bf25bf901e99f163ab3bb1c37db49f59",
+        "decodedPCMFramesIncludingFinalRead": 4521984,
+        "orderChangeTimeline": [
+          {
+            "order": 94,
+            "row": 0,
+            "decodedBytePosition": 0,
+            "decodedPCMFrame": 0
+          },
+          {
+            "order": 95,
+            "row": 0,
+            "decodedBytePosition": 794624,
+            "decodedPCMFrame": 198656
+          },
+          {
+            "order": 96,
+            "row": 0,
+            "decodedBytePosition": 1589248,
+            "decodedPCMFrame": 397312
+          },
+          {
+            "order": 97,
+            "row": 0,
+            "decodedBytePosition": 2383872,
+            "decodedPCMFrame": 595968
+          },
+          {
+            "order": 98,
+            "row": 0,
+            "decodedBytePosition": 3178496,
+            "decodedPCMFrame": 794624
+          },
+          {
+            "order": 99,
+            "row": 0,
+            "decodedBytePosition": 3973120,
+            "decodedPCMFrame": 993280
+          },
+          {
+            "order": 100,
+            "row": 0,
+            "decodedBytePosition": 4767744,
+            "decodedPCMFrame": 1191936
+          },
+          {
+            "order": 101,
+            "row": 0,
+            "decodedBytePosition": 5562368,
+            "decodedPCMFrame": 1390592
+          },
+          {
+            "order": 102,
+            "row": 0,
+            "decodedBytePosition": 6356992,
+            "decodedPCMFrame": 1589248
+          },
+          {
+            "order": 103,
+            "row": 0,
+            "decodedBytePosition": 7151616,
+            "decodedPCMFrame": 1787904
+          },
+          {
+            "order": 104,
+            "row": 0,
+            "decodedBytePosition": 7946240,
+            "decodedPCMFrame": 1986560
+          },
+          {
+            "order": 105,
+            "row": 0,
+            "decodedBytePosition": 8740864,
+            "decodedPCMFrame": 2185216
+          },
+          {
+            "order": 106,
+            "row": 0,
+            "decodedBytePosition": 9535488,
+            "decodedPCMFrame": 2383872
+          },
+          {
+            "order": 107,
+            "row": 0,
+            "decodedBytePosition": 10330112,
+            "decodedPCMFrame": 2582528
+          },
+          {
+            "order": 108,
+            "row": 0,
+            "decodedBytePosition": 11124736,
+            "decodedPCMFrame": 2781184
+          },
+          {
+            "order": 109,
+            "row": 0,
+            "decodedBytePosition": 11919360,
+            "decodedPCMFrame": 2979840
+          },
+          {
+            "order": 110,
+            "row": 0,
+            "decodedBytePosition": 12713984,
+            "decodedPCMFrame": 3178496
+          },
+          {
+            "order": 111,
+            "row": 0,
+            "decodedBytePosition": 13508608,
+            "decodedPCMFrame": 3377152
+          },
+          {
+            "order": 112,
+            "row": 0,
+            "decodedBytePosition": 14303232,
+            "decodedPCMFrame": 3575808
+          },
+          {
+            "order": 113,
+            "row": 0,
+            "decodedBytePosition": 14700544,
+            "decodedPCMFrame": 3675136
+          },
+          {
+            "order": 114,
+            "row": 0,
+            "decodedBytePosition": 15495168,
+            "decodedPCMFrame": 3873792
+          },
+          {
+            "order": 115,
+            "row": 0,
+            "decodedBytePosition": 16289792,
+            "decodedPCMFrame": 4072448
+          },
+          {
+            "order": 116,
+            "row": 0,
+            "decodedBytePosition": 17084416,
+            "decodedPCMFrame": 4271104
+          },
+          {
+            "order": 94,
+            "row": 0,
+            "decodedBytePosition": 17879040,
+            "decodedPCMFrame": 4469760
+          }
+        ],
+        "backwardJumps": [
+          {
+            "order": 94,
+            "row": 0,
+            "decodedBytePosition": 17879040,
+            "decodedPCMFrame": 4469760,
+            "targetPreviouslyObserved": true
+          }
+        ],
+        "status": "observed",
+        "loopOrder": 94,
+        "loopRow": 0,
+        "introPCMFrames": 0,
+        "firstCyclePCMFrames": 4469760,
+        "loopPCMFrames": 4469760,
+        "verificationBlockFrames": 1024,
+        "verifiedExactBoundaryAcrossBlockSizes": true,
+        "introSeconds": 0.0,
+        "firstCycleSeconds": 101.35510204081632,
+        "loopSeconds": 101.35510204081632,
+        "enabledChannels": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17
+        ],
+        "initialVolume": 1
+      },
+      "drums": {
+        "startOrder": 94,
+        "startRow": 0,
+        "blockFrames": 65536,
+        "nativeBASSflags": 2261508,
+        "nativeBASSflagsHex": "0x228204",
+        "decodeLimitSeconds": 400,
+        "sourceFile": "mainmusic.mo3",
+        "sourceSHA256": "afbd1a0cd7fd9e641a425355b6560eb9bf25bf901e99f163ab3bb1c37db49f59",
+        "decodedPCMFramesIncludingFinalRead": 4521984,
+        "orderChangeTimeline": [
+          {
+            "order": 94,
+            "row": 0,
+            "decodedBytePosition": 0,
+            "decodedPCMFrame": 0
+          },
+          {
+            "order": 95,
+            "row": 0,
+            "decodedBytePosition": 794624,
+            "decodedPCMFrame": 198656
+          },
+          {
+            "order": 96,
+            "row": 0,
+            "decodedBytePosition": 1589248,
+            "decodedPCMFrame": 397312
+          },
+          {
+            "order": 97,
+            "row": 0,
+            "decodedBytePosition": 2383872,
+            "decodedPCMFrame": 595968
+          },
+          {
+            "order": 98,
+            "row": 0,
+            "decodedBytePosition": 3178496,
+            "decodedPCMFrame": 794624
+          },
+          {
+            "order": 99,
+            "row": 0,
+            "decodedBytePosition": 3973120,
+            "decodedPCMFrame": 993280
+          },
+          {
+            "order": 100,
+            "row": 0,
+            "decodedBytePosition": 4767744,
+            "decodedPCMFrame": 1191936
+          },
+          {
+            "order": 101,
+            "row": 0,
+            "decodedBytePosition": 5562368,
+            "decodedPCMFrame": 1390592
+          },
+          {
+            "order": 102,
+            "row": 0,
+            "decodedBytePosition": 6356992,
+            "decodedPCMFrame": 1589248
+          },
+          {
+            "order": 103,
+            "row": 0,
+            "decodedBytePosition": 7151616,
+            "decodedPCMFrame": 1787904
+          },
+          {
+            "order": 104,
+            "row": 0,
+            "decodedBytePosition": 7946240,
+            "decodedPCMFrame": 1986560
+          },
+          {
+            "order": 105,
+            "row": 0,
+            "decodedBytePosition": 8740864,
+            "decodedPCMFrame": 2185216
+          },
+          {
+            "order": 106,
+            "row": 0,
+            "decodedBytePosition": 9535488,
+            "decodedPCMFrame": 2383872
+          },
+          {
+            "order": 107,
+            "row": 0,
+            "decodedBytePosition": 10330112,
+            "decodedPCMFrame": 2582528
+          },
+          {
+            "order": 108,
+            "row": 0,
+            "decodedBytePosition": 11124736,
+            "decodedPCMFrame": 2781184
+          },
+          {
+            "order": 109,
+            "row": 0,
+            "decodedBytePosition": 11919360,
+            "decodedPCMFrame": 2979840
+          },
+          {
+            "order": 110,
+            "row": 0,
+            "decodedBytePosition": 12713984,
+            "decodedPCMFrame": 3178496
+          },
+          {
+            "order": 111,
+            "row": 0,
+            "decodedBytePosition": 13508608,
+            "decodedPCMFrame": 3377152
+          },
+          {
+            "order": 112,
+            "row": 0,
+            "decodedBytePosition": 14303232,
+            "decodedPCMFrame": 3575808
+          },
+          {
+            "order": 113,
+            "row": 0,
+            "decodedBytePosition": 14700544,
+            "decodedPCMFrame": 3675136
+          },
+          {
+            "order": 114,
+            "row": 0,
+            "decodedBytePosition": 15495168,
+            "decodedPCMFrame": 3873792
+          },
+          {
+            "order": 115,
+            "row": 0,
+            "decodedBytePosition": 16289792,
+            "decodedPCMFrame": 4072448
+          },
+          {
+            "order": 116,
+            "row": 0,
+            "decodedBytePosition": 17084416,
+            "decodedPCMFrame": 4271104
+          },
+          {
+            "order": 94,
+            "row": 0,
+            "decodedBytePosition": 17879040,
+            "decodedPCMFrame": 4469760
+          }
+        ],
+        "backwardJumps": [
+          {
+            "order": 94,
+            "row": 0,
+            "decodedBytePosition": 17879040,
+            "decodedPCMFrame": 4469760,
+            "targetPreviouslyObserved": true
+          }
+        ],
+        "status": "observed",
+        "loopOrder": 94,
+        "loopRow": 0,
+        "introPCMFrames": 0,
+        "firstCyclePCMFrames": 4469760,
+        "loopPCMFrames": 4469760,
+        "verificationBlockFrames": 1024,
+        "verifiedExactBoundaryAcrossBlockSizes": true,
+        "introSeconds": 0.0,
+        "firstCycleSeconds": 101.35510204081632,
+        "loopSeconds": 101.35510204081632,
+        "reusedTimingFrom": "pool.main",
+        "enabledChannels": [
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28
+        ],
+        "initialVolume": 0
+      },
+      "hihat": {
+        "startOrder": 94,
+        "startRow": 0,
+        "blockFrames": 65536,
+        "nativeBASSflags": 2261508,
+        "nativeBASSflagsHex": "0x228204",
+        "decodeLimitSeconds": 400,
+        "sourceFile": "mainmusic_hihats.mo3",
+        "sourceSHA256": "1506a5043de8c2b4d6fe67db1baa1db7db588c1421e084d0fa55159e1f4b9d5d",
+        "decodedPCMFramesIncludingFinalRead": 4521984,
+        "orderChangeTimeline": [
+          {
+            "order": 94,
+            "row": 0,
+            "decodedBytePosition": 0,
+            "decodedPCMFrame": 0
+          },
+          {
+            "order": 95,
+            "row": 0,
+            "decodedBytePosition": 794624,
+            "decodedPCMFrame": 198656
+          },
+          {
+            "order": 96,
+            "row": 0,
+            "decodedBytePosition": 1589248,
+            "decodedPCMFrame": 397312
+          },
+          {
+            "order": 97,
+            "row": 0,
+            "decodedBytePosition": 2383872,
+            "decodedPCMFrame": 595968
+          },
+          {
+            "order": 98,
+            "row": 0,
+            "decodedBytePosition": 3178496,
+            "decodedPCMFrame": 794624
+          },
+          {
+            "order": 99,
+            "row": 0,
+            "decodedBytePosition": 3973120,
+            "decodedPCMFrame": 993280
+          },
+          {
+            "order": 100,
+            "row": 0,
+            "decodedBytePosition": 4767744,
+            "decodedPCMFrame": 1191936
+          },
+          {
+            "order": 101,
+            "row": 0,
+            "decodedBytePosition": 5562368,
+            "decodedPCMFrame": 1390592
+          },
+          {
+            "order": 102,
+            "row": 0,
+            "decodedBytePosition": 6356992,
+            "decodedPCMFrame": 1589248
+          },
+          {
+            "order": 103,
+            "row": 0,
+            "decodedBytePosition": 7151616,
+            "decodedPCMFrame": 1787904
+          },
+          {
+            "order": 104,
+            "row": 0,
+            "decodedBytePosition": 7946240,
+            "decodedPCMFrame": 1986560
+          },
+          {
+            "order": 105,
+            "row": 0,
+            "decodedBytePosition": 8740864,
+            "decodedPCMFrame": 2185216
+          },
+          {
+            "order": 106,
+            "row": 0,
+            "decodedBytePosition": 9535488,
+            "decodedPCMFrame": 2383872
+          },
+          {
+            "order": 107,
+            "row": 0,
+            "decodedBytePosition": 10330112,
+            "decodedPCMFrame": 2582528
+          },
+          {
+            "order": 108,
+            "row": 0,
+            "decodedBytePosition": 11124736,
+            "decodedPCMFrame": 2781184
+          },
+          {
+            "order": 109,
+            "row": 0,
+            "decodedBytePosition": 11919360,
+            "decodedPCMFrame": 2979840
+          },
+          {
+            "order": 110,
+            "row": 0,
+            "decodedBytePosition": 12713984,
+            "decodedPCMFrame": 3178496
+          },
+          {
+            "order": 111,
+            "row": 0,
+            "decodedBytePosition": 13508608,
+            "decodedPCMFrame": 3377152
+          },
+          {
+            "order": 112,
+            "row": 0,
+            "decodedBytePosition": 14303232,
+            "decodedPCMFrame": 3575808
+          },
+          {
+            "order": 113,
+            "row": 0,
+            "decodedBytePosition": 14700544,
+            "decodedPCMFrame": 3675136
+          },
+          {
+            "order": 114,
+            "row": 0,
+            "decodedBytePosition": 15495168,
+            "decodedPCMFrame": 3873792
+          },
+          {
+            "order": 115,
+            "row": 0,
+            "decodedBytePosition": 16289792,
+            "decodedPCMFrame": 4072448
+          },
+          {
+            "order": 116,
+            "row": 0,
+            "decodedBytePosition": 17084416,
+            "decodedPCMFrame": 4271104
+          },
+          {
+            "order": 94,
+            "row": 0,
+            "decodedBytePosition": 17879040,
+            "decodedPCMFrame": 4469760
+          }
+        ],
+        "backwardJumps": [
+          {
+            "order": 94,
+            "row": 0,
+            "decodedBytePosition": 17879040,
+            "decodedPCMFrame": 4469760,
+            "targetPreviouslyObserved": true
+          }
+        ],
+        "status": "observed",
+        "loopOrder": 94,
+        "loopRow": 0,
+        "introPCMFrames": 0,
+        "firstCyclePCMFrames": 4469760,
+        "loopPCMFrames": 4469760,
+        "verificationBlockFrames": 1024,
+        "verifiedExactBoundaryAcrossBlockSizes": true,
+        "introSeconds": 0.0,
+        "firstCycleSeconds": 101.35510204081632,
+        "loopSeconds": 101.35510204081632,
+        "enabledChannels": [
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          29
+        ],
+        "initialVolume": 0
+      }
+    },
+    "fog": {
+      "main": {
+        "startOrder": 125,
+        "startRow": 0,
+        "blockFrames": 65536,
+        "nativeBASSflags": 2261508,
+        "nativeBASSflagsHex": "0x228204",
+        "decodeLimitSeconds": 400,
+        "sourceFile": "mainmusic.mo3",
+        "sourceSHA256": "afbd1a0cd7fd9e641a425355b6560eb9bf25bf901e99f163ab3bb1c37db49f59",
+        "decodedPCMFramesIncludingFinalRead": 4915200,
+        "orderChangeTimeline": [
+          {
+            "order": 125,
+            "row": 0,
+            "decodedBytePosition": 0,
+            "decodedPCMFrame": 0
+          },
+          {
+            "order": 126,
+            "row": 0,
+            "decodedBytePosition": 385280,
+            "decodedPCMFrame": 96320
+          },
+          {
+            "order": 127,
+            "row": 0,
+            "decodedBytePosition": 1155840,
+            "decodedPCMFrame": 288960
+          },
+          {
+            "order": 128,
+            "row": 0,
+            "decodedBytePosition": 1926400,
+            "decodedPCMFrame": 481600
+          },
+          {
+            "order": 129,
+            "row": 0,
+            "decodedBytePosition": 2696960,
+            "decodedPCMFrame": 674240
+          },
+          {
+            "order": 130,
+            "row": 0,
+            "decodedBytePosition": 3467520,
+            "decodedPCMFrame": 866880
+          },
+          {
+            "order": 131,
+            "row": 0,
+            "decodedBytePosition": 4238080,
+            "decodedPCMFrame": 1059520
+          },
+          {
+            "order": 132,
+            "row": 0,
+            "decodedBytePosition": 5008640,
+            "decodedPCMFrame": 1252160
+          },
+          {
+            "order": 133,
+            "row": 0,
+            "decodedBytePosition": 5779200,
+            "decodedPCMFrame": 1444800
+          },
+          {
+            "order": 134,
+            "row": 0,
+            "decodedBytePosition": 6549760,
+            "decodedPCMFrame": 1637440
+          },
+          {
+            "order": 135,
+            "row": 0,
+            "decodedBytePosition": 7320320,
+            "decodedPCMFrame": 1830080
+          },
+          {
+            "order": 136,
+            "row": 0,
+            "decodedBytePosition": 8090880,
+            "decodedPCMFrame": 2022720
+          },
+          {
+            "order": 137,
+            "row": 0,
+            "decodedBytePosition": 8861440,
+            "decodedPCMFrame": 2215360
+          },
+          {
+            "order": 138,
+            "row": 0,
+            "decodedBytePosition": 9632000,
+            "decodedPCMFrame": 2408000
+          },
+          {
+            "order": 139,
+            "row": 0,
+            "decodedBytePosition": 10402560,
+            "decodedPCMFrame": 2600640
+          },
+          {
+            "order": 140,
+            "row": 0,
+            "decodedBytePosition": 11173120,
+            "decodedPCMFrame": 2793280
+          },
+          {
+            "order": 141,
+            "row": 0,
+            "decodedBytePosition": 11943680,
+            "decodedPCMFrame": 2985920
+          },
+          {
+            "order": 142,
+            "row": 0,
+            "decodedBytePosition": 12714240,
+            "decodedPCMFrame": 3178560
+          },
+          {
+            "order": 143,
+            "row": 0,
+            "decodedBytePosition": 13484800,
+            "decodedPCMFrame": 3371200
+          },
+          {
+            "order": 144,
+            "row": 0,
+            "decodedBytePosition": 14255360,
+            "decodedPCMFrame": 3563840
+          },
+          {
+            "order": 145,
+            "row": 0,
+            "decodedBytePosition": 15025920,
+            "decodedPCMFrame": 3756480
+          },
+          {
+            "order": 146,
+            "row": 0,
+            "decodedBytePosition": 15796480,
+            "decodedPCMFrame": 3949120
+          },
+          {
+            "order": 147,
+            "row": 0,
+            "decodedBytePosition": 16567040,
+            "decodedPCMFrame": 4141760
+          },
+          {
+            "order": 148,
+            "row": 0,
+            "decodedBytePosition": 17337600,
+            "decodedPCMFrame": 4334400
+          },
+          {
+            "order": 149,
+            "row": 0,
+            "decodedBytePosition": 18108160,
+            "decodedPCMFrame": 4527040
+          },
+          {
+            "order": 150,
+            "row": 0,
+            "decodedBytePosition": 18878720,
+            "decodedPCMFrame": 4719680
+          },
+          {
+            "order": 126,
+            "row": 0,
+            "decodedBytePosition": 19649280,
+            "decodedPCMFrame": 4912320
+          }
+        ],
+        "backwardJumps": [
+          {
+            "order": 126,
+            "row": 0,
+            "decodedBytePosition": 19649280,
+            "decodedPCMFrame": 4912320,
+            "targetPreviouslyObserved": true
+          }
+        ],
+        "status": "observed",
+        "loopOrder": 126,
+        "loopRow": 0,
+        "introPCMFrames": 96320,
+        "firstCyclePCMFrames": 4912320,
+        "loopPCMFrames": 4816000,
+        "verificationBlockFrames": 1024,
+        "verifiedExactBoundaryAcrossBlockSizes": true,
+        "introSeconds": 2.184126984126984,
+        "firstCycleSeconds": 111.39047619047619,
+        "loopSeconds": 109.2063492063492,
+        "enabledChannels": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ],
+        "initialVolume": 1
+      },
+      "drums": {
+        "startOrder": 125,
+        "startRow": 0,
+        "blockFrames": 65536,
+        "nativeBASSflags": 2261508,
+        "nativeBASSflagsHex": "0x228204",
+        "decodeLimitSeconds": 400,
+        "sourceFile": "mainmusic.mo3",
+        "sourceSHA256": "afbd1a0cd7fd9e641a425355b6560eb9bf25bf901e99f163ab3bb1c37db49f59",
+        "decodedPCMFramesIncludingFinalRead": 4915200,
+        "orderChangeTimeline": [
+          {
+            "order": 125,
+            "row": 0,
+            "decodedBytePosition": 0,
+            "decodedPCMFrame": 0
+          },
+          {
+            "order": 126,
+            "row": 0,
+            "decodedBytePosition": 385280,
+            "decodedPCMFrame": 96320
+          },
+          {
+            "order": 127,
+            "row": 0,
+            "decodedBytePosition": 1155840,
+            "decodedPCMFrame": 288960
+          },
+          {
+            "order": 128,
+            "row": 0,
+            "decodedBytePosition": 1926400,
+            "decodedPCMFrame": 481600
+          },
+          {
+            "order": 129,
+            "row": 0,
+            "decodedBytePosition": 2696960,
+            "decodedPCMFrame": 674240
+          },
+          {
+            "order": 130,
+            "row": 0,
+            "decodedBytePosition": 3467520,
+            "decodedPCMFrame": 866880
+          },
+          {
+            "order": 131,
+            "row": 0,
+            "decodedBytePosition": 4238080,
+            "decodedPCMFrame": 1059520
+          },
+          {
+            "order": 132,
+            "row": 0,
+            "decodedBytePosition": 5008640,
+            "decodedPCMFrame": 1252160
+          },
+          {
+            "order": 133,
+            "row": 0,
+            "decodedBytePosition": 5779200,
+            "decodedPCMFrame": 1444800
+          },
+          {
+            "order": 134,
+            "row": 0,
+            "decodedBytePosition": 6549760,
+            "decodedPCMFrame": 1637440
+          },
+          {
+            "order": 135,
+            "row": 0,
+            "decodedBytePosition": 7320320,
+            "decodedPCMFrame": 1830080
+          },
+          {
+            "order": 136,
+            "row": 0,
+            "decodedBytePosition": 8090880,
+            "decodedPCMFrame": 2022720
+          },
+          {
+            "order": 137,
+            "row": 0,
+            "decodedBytePosition": 8861440,
+            "decodedPCMFrame": 2215360
+          },
+          {
+            "order": 138,
+            "row": 0,
+            "decodedBytePosition": 9632000,
+            "decodedPCMFrame": 2408000
+          },
+          {
+            "order": 139,
+            "row": 0,
+            "decodedBytePosition": 10402560,
+            "decodedPCMFrame": 2600640
+          },
+          {
+            "order": 140,
+            "row": 0,
+            "decodedBytePosition": 11173120,
+            "decodedPCMFrame": 2793280
+          },
+          {
+            "order": 141,
+            "row": 0,
+            "decodedBytePosition": 11943680,
+            "decodedPCMFrame": 2985920
+          },
+          {
+            "order": 142,
+            "row": 0,
+            "decodedBytePosition": 12714240,
+            "decodedPCMFrame": 3178560
+          },
+          {
+            "order": 143,
+            "row": 0,
+            "decodedBytePosition": 13484800,
+            "decodedPCMFrame": 3371200
+          },
+          {
+            "order": 144,
+            "row": 0,
+            "decodedBytePosition": 14255360,
+            "decodedPCMFrame": 3563840
+          },
+          {
+            "order": 145,
+            "row": 0,
+            "decodedBytePosition": 15025920,
+            "decodedPCMFrame": 3756480
+          },
+          {
+            "order": 146,
+            "row": 0,
+            "decodedBytePosition": 15796480,
+            "decodedPCMFrame": 3949120
+          },
+          {
+            "order": 147,
+            "row": 0,
+            "decodedBytePosition": 16567040,
+            "decodedPCMFrame": 4141760
+          },
+          {
+            "order": 148,
+            "row": 0,
+            "decodedBytePosition": 17337600,
+            "decodedPCMFrame": 4334400
+          },
+          {
+            "order": 149,
+            "row": 0,
+            "decodedBytePosition": 18108160,
+            "decodedPCMFrame": 4527040
+          },
+          {
+            "order": 150,
+            "row": 0,
+            "decodedBytePosition": 18878720,
+            "decodedPCMFrame": 4719680
+          },
+          {
+            "order": 126,
+            "row": 0,
+            "decodedBytePosition": 19649280,
+            "decodedPCMFrame": 4912320
+          }
+        ],
+        "backwardJumps": [
+          {
+            "order": 126,
+            "row": 0,
+            "decodedBytePosition": 19649280,
+            "decodedPCMFrame": 4912320,
+            "targetPreviouslyObserved": true
+          }
+        ],
+        "status": "observed",
+        "loopOrder": 126,
+        "loopRow": 0,
+        "introPCMFrames": 96320,
+        "firstCyclePCMFrames": 4912320,
+        "loopPCMFrames": 4816000,
+        "verificationBlockFrames": 1024,
+        "verifiedExactBoundaryAcrossBlockSizes": true,
+        "introSeconds": 2.184126984126984,
+        "firstCycleSeconds": 111.39047619047619,
+        "loopSeconds": 109.2063492063492,
+        "reusedTimingFrom": "fog.main",
+        "enabledChannels": [
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22
+        ],
+        "initialVolume": 0
+      },
+      "hihat": {
+        "startOrder": 125,
+        "startRow": 0,
+        "blockFrames": 65536,
+        "nativeBASSflags": 2261508,
+        "nativeBASSflagsHex": "0x228204",
+        "decodeLimitSeconds": 400,
+        "sourceFile": "mainmusic_hihats.mo3",
+        "sourceSHA256": "1506a5043de8c2b4d6fe67db1baa1db7db588c1421e084d0fa55159e1f4b9d5d",
+        "decodedPCMFramesIncludingFinalRead": 4915200,
+        "orderChangeTimeline": [
+          {
+            "order": 125,
+            "row": 0,
+            "decodedBytePosition": 0,
+            "decodedPCMFrame": 0
+          },
+          {
+            "order": 126,
+            "row": 0,
+            "decodedBytePosition": 385280,
+            "decodedPCMFrame": 96320
+          },
+          {
+            "order": 127,
+            "row": 0,
+            "decodedBytePosition": 1155840,
+            "decodedPCMFrame": 288960
+          },
+          {
+            "order": 128,
+            "row": 0,
+            "decodedBytePosition": 1926400,
+            "decodedPCMFrame": 481600
+          },
+          {
+            "order": 129,
+            "row": 0,
+            "decodedBytePosition": 2696960,
+            "decodedPCMFrame": 674240
+          },
+          {
+            "order": 130,
+            "row": 0,
+            "decodedBytePosition": 3467520,
+            "decodedPCMFrame": 866880
+          },
+          {
+            "order": 131,
+            "row": 0,
+            "decodedBytePosition": 4238080,
+            "decodedPCMFrame": 1059520
+          },
+          {
+            "order": 132,
+            "row": 0,
+            "decodedBytePosition": 5008640,
+            "decodedPCMFrame": 1252160
+          },
+          {
+            "order": 133,
+            "row": 0,
+            "decodedBytePosition": 5779200,
+            "decodedPCMFrame": 1444800
+          },
+          {
+            "order": 134,
+            "row": 0,
+            "decodedBytePosition": 6549760,
+            "decodedPCMFrame": 1637440
+          },
+          {
+            "order": 135,
+            "row": 0,
+            "decodedBytePosition": 7320320,
+            "decodedPCMFrame": 1830080
+          },
+          {
+            "order": 136,
+            "row": 0,
+            "decodedBytePosition": 8090880,
+            "decodedPCMFrame": 2022720
+          },
+          {
+            "order": 137,
+            "row": 0,
+            "decodedBytePosition": 8861440,
+            "decodedPCMFrame": 2215360
+          },
+          {
+            "order": 138,
+            "row": 0,
+            "decodedBytePosition": 9632000,
+            "decodedPCMFrame": 2408000
+          },
+          {
+            "order": 139,
+            "row": 0,
+            "decodedBytePosition": 10402560,
+            "decodedPCMFrame": 2600640
+          },
+          {
+            "order": 140,
+            "row": 0,
+            "decodedBytePosition": 11173120,
+            "decodedPCMFrame": 2793280
+          },
+          {
+            "order": 141,
+            "row": 0,
+            "decodedBytePosition": 11943680,
+            "decodedPCMFrame": 2985920
+          },
+          {
+            "order": 142,
+            "row": 0,
+            "decodedBytePosition": 12714240,
+            "decodedPCMFrame": 3178560
+          },
+          {
+            "order": 143,
+            "row": 0,
+            "decodedBytePosition": 13484800,
+            "decodedPCMFrame": 3371200
+          },
+          {
+            "order": 144,
+            "row": 0,
+            "decodedBytePosition": 14255360,
+            "decodedPCMFrame": 3563840
+          },
+          {
+            "order": 145,
+            "row": 0,
+            "decodedBytePosition": 15025920,
+            "decodedPCMFrame": 3756480
+          },
+          {
+            "order": 146,
+            "row": 0,
+            "decodedBytePosition": 15796480,
+            "decodedPCMFrame": 3949120
+          },
+          {
+            "order": 147,
+            "row": 0,
+            "decodedBytePosition": 16567040,
+            "decodedPCMFrame": 4141760
+          },
+          {
+            "order": 148,
+            "row": 0,
+            "decodedBytePosition": 17337600,
+            "decodedPCMFrame": 4334400
+          },
+          {
+            "order": 149,
+            "row": 0,
+            "decodedBytePosition": 18108160,
+            "decodedPCMFrame": 4527040
+          },
+          {
+            "order": 150,
+            "row": 0,
+            "decodedBytePosition": 18878720,
+            "decodedPCMFrame": 4719680
+          },
+          {
+            "order": 126,
+            "row": 0,
+            "decodedBytePosition": 19649280,
+            "decodedPCMFrame": 4912320
+          }
+        ],
+        "backwardJumps": [
+          {
+            "order": 126,
+            "row": 0,
+            "decodedBytePosition": 19649280,
+            "decodedPCMFrame": 4912320,
+            "targetPreviouslyObserved": true
+          }
+        ],
+        "status": "observed",
+        "loopOrder": 126,
+        "loopRow": 0,
+        "introPCMFrames": 96320,
+        "firstCyclePCMFrames": 4912320,
+        "loopPCMFrames": 4816000,
+        "verificationBlockFrames": 1024,
+        "verifiedExactBoundaryAcrossBlockSizes": true,
+        "introSeconds": 2.184126984126984,
+        "firstCycleSeconds": 111.39047619047619,
+        "loopSeconds": 109.2063492063492,
+        "enabledChannels": [
+          23
+        ],
+        "initialVolume": 0
+      }
+    },
+    "roof": {
+      "main": {
+        "startOrder": 184,
+        "startRow": 0,
+        "blockFrames": 65536,
+        "nativeBASSflags": 2261508,
+        "nativeBASSflagsHex": "0x228204",
+        "decodeLimitSeconds": 400,
+        "sourceFile": "mainmusic.mo3",
+        "sourceSHA256": "afbd1a0cd7fd9e641a425355b6560eb9bf25bf901e99f163ab3bb1c37db49f59",
+        "decodedPCMFramesIncludingFinalRead": 4784128,
+        "orderChangeTimeline": [
+          {
+            "order": 184,
+            "row": 0,
+            "decodedBytePosition": 0,
+            "decodedPCMFrame": 0
+          },
+          {
+            "order": 185,
+            "row": 0,
+            "decodedBytePosition": 705536,
+            "decodedPCMFrame": 176384
+          },
+          {
+            "order": 186,
+            "row": 0,
+            "decodedBytePosition": 1411072,
+            "decodedPCMFrame": 352768
+          },
+          {
+            "order": 187,
+            "row": 0,
+            "decodedBytePosition": 2116608,
+            "decodedPCMFrame": 529152
+          },
+          {
+            "order": 188,
+            "row": 0,
+            "decodedBytePosition": 2822144,
+            "decodedPCMFrame": 705536
+          },
+          {
+            "order": 189,
+            "row": 0,
+            "decodedBytePosition": 3527680,
+            "decodedPCMFrame": 881920
+          },
+          {
+            "order": 190,
+            "row": 0,
+            "decodedBytePosition": 4233216,
+            "decodedPCMFrame": 1058304
+          },
+          {
+            "order": 191,
+            "row": 0,
+            "decodedBytePosition": 4938752,
+            "decodedPCMFrame": 1234688
+          },
+          {
+            "order": 192,
+            "row": 0,
+            "decodedBytePosition": 5644288,
+            "decodedPCMFrame": 1411072
+          },
+          {
+            "order": 193,
+            "row": 0,
+            "decodedBytePosition": 6349824,
+            "decodedPCMFrame": 1587456
+          },
+          {
+            "order": 194,
+            "row": 0,
+            "decodedBytePosition": 7055360,
+            "decodedPCMFrame": 1763840
+          },
+          {
+            "order": 195,
+            "row": 0,
+            "decodedBytePosition": 7760896,
+            "decodedPCMFrame": 1940224
+          },
+          {
+            "order": 196,
+            "row": 0,
+            "decodedBytePosition": 8466432,
+            "decodedPCMFrame": 2116608
+          },
+          {
+            "order": 197,
+            "row": 0,
+            "decodedBytePosition": 9171968,
+            "decodedPCMFrame": 2292992
+          },
+          {
+            "order": 198,
+            "row": 0,
+            "decodedBytePosition": 9877504,
+            "decodedPCMFrame": 2469376
+          },
+          {
+            "order": 199,
+            "row": 0,
+            "decodedBytePosition": 10583040,
+            "decodedPCMFrame": 2645760
+          },
+          {
+            "order": 200,
+            "row": 0,
+            "decodedBytePosition": 11288576,
+            "decodedPCMFrame": 2822144
+          },
+          {
+            "order": 201,
+            "row": 0,
+            "decodedBytePosition": 11994112,
+            "decodedPCMFrame": 2998528
+          },
+          {
+            "order": 202,
+            "row": 0,
+            "decodedBytePosition": 12699648,
+            "decodedPCMFrame": 3174912
+          },
+          {
+            "order": 203,
+            "row": 0,
+            "decodedBytePosition": 13405184,
+            "decodedPCMFrame": 3351296
+          },
+          {
+            "order": 204,
+            "row": 0,
+            "decodedBytePosition": 14110720,
+            "decodedPCMFrame": 3527680
+          },
+          {
+            "order": 205,
+            "row": 0,
+            "decodedBytePosition": 14816256,
+            "decodedPCMFrame": 3704064
+          },
+          {
+            "order": 206,
+            "row": 0,
+            "decodedBytePosition": 15521792,
+            "decodedPCMFrame": 3880448
+          },
+          {
+            "order": 207,
+            "row": 0,
+            "decodedBytePosition": 16227328,
+            "decodedPCMFrame": 4056832
+          },
+          {
+            "order": 208,
+            "row": 0,
+            "decodedBytePosition": 16932864,
+            "decodedPCMFrame": 4233216
+          },
+          {
+            "order": 209,
+            "row": 0,
+            "decodedBytePosition": 17638400,
+            "decodedPCMFrame": 4409600
+          },
+          {
+            "order": 210,
+            "row": 0,
+            "decodedBytePosition": 18343936,
+            "decodedPCMFrame": 4585984
+          },
+          {
+            "order": 185,
+            "row": 0,
+            "decodedBytePosition": 19049472,
+            "decodedPCMFrame": 4762368
+          }
+        ],
+        "backwardJumps": [
+          {
+            "order": 185,
+            "row": 0,
+            "decodedBytePosition": 19049472,
+            "decodedPCMFrame": 4762368,
+            "targetPreviouslyObserved": true
+          }
+        ],
+        "status": "observed",
+        "loopOrder": 185,
+        "loopRow": 0,
+        "introPCMFrames": 176384,
+        "firstCyclePCMFrames": 4762368,
+        "loopPCMFrames": 4585984,
+        "verificationBlockFrames": 1024,
+        "verifiedExactBoundaryAcrossBlockSizes": true,
+        "introSeconds": 3.9996371882086166,
+        "firstCycleSeconds": 107.99020408163265,
+        "loopSeconds": 103.99056689342403,
+        "enabledChannels": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17
+        ],
+        "initialVolume": 1
+      },
+      "drums": {
+        "startOrder": 184,
+        "startRow": 0,
+        "blockFrames": 65536,
+        "nativeBASSflags": 2261508,
+        "nativeBASSflagsHex": "0x228204",
+        "decodeLimitSeconds": 400,
+        "sourceFile": "mainmusic.mo3",
+        "sourceSHA256": "afbd1a0cd7fd9e641a425355b6560eb9bf25bf901e99f163ab3bb1c37db49f59",
+        "decodedPCMFramesIncludingFinalRead": 4784128,
+        "orderChangeTimeline": [
+          {
+            "order": 184,
+            "row": 0,
+            "decodedBytePosition": 0,
+            "decodedPCMFrame": 0
+          },
+          {
+            "order": 185,
+            "row": 0,
+            "decodedBytePosition": 705536,
+            "decodedPCMFrame": 176384
+          },
+          {
+            "order": 186,
+            "row": 0,
+            "decodedBytePosition": 1411072,
+            "decodedPCMFrame": 352768
+          },
+          {
+            "order": 187,
+            "row": 0,
+            "decodedBytePosition": 2116608,
+            "decodedPCMFrame": 529152
+          },
+          {
+            "order": 188,
+            "row": 0,
+            "decodedBytePosition": 2822144,
+            "decodedPCMFrame": 705536
+          },
+          {
+            "order": 189,
+            "row": 0,
+            "decodedBytePosition": 3527680,
+            "decodedPCMFrame": 881920
+          },
+          {
+            "order": 190,
+            "row": 0,
+            "decodedBytePosition": 4233216,
+            "decodedPCMFrame": 1058304
+          },
+          {
+            "order": 191,
+            "row": 0,
+            "decodedBytePosition": 4938752,
+            "decodedPCMFrame": 1234688
+          },
+          {
+            "order": 192,
+            "row": 0,
+            "decodedBytePosition": 5644288,
+            "decodedPCMFrame": 1411072
+          },
+          {
+            "order": 193,
+            "row": 0,
+            "decodedBytePosition": 6349824,
+            "decodedPCMFrame": 1587456
+          },
+          {
+            "order": 194,
+            "row": 0,
+            "decodedBytePosition": 7055360,
+            "decodedPCMFrame": 1763840
+          },
+          {
+            "order": 195,
+            "row": 0,
+            "decodedBytePosition": 7760896,
+            "decodedPCMFrame": 1940224
+          },
+          {
+            "order": 196,
+            "row": 0,
+            "decodedBytePosition": 8466432,
+            "decodedPCMFrame": 2116608
+          },
+          {
+            "order": 197,
+            "row": 0,
+            "decodedBytePosition": 9171968,
+            "decodedPCMFrame": 2292992
+          },
+          {
+            "order": 198,
+            "row": 0,
+            "decodedBytePosition": 9877504,
+            "decodedPCMFrame": 2469376
+          },
+          {
+            "order": 199,
+            "row": 0,
+            "decodedBytePosition": 10583040,
+            "decodedPCMFrame": 2645760
+          },
+          {
+            "order": 200,
+            "row": 0,
+            "decodedBytePosition": 11288576,
+            "decodedPCMFrame": 2822144
+          },
+          {
+            "order": 201,
+            "row": 0,
+            "decodedBytePosition": 11994112,
+            "decodedPCMFrame": 2998528
+          },
+          {
+            "order": 202,
+            "row": 0,
+            "decodedBytePosition": 12699648,
+            "decodedPCMFrame": 3174912
+          },
+          {
+            "order": 203,
+            "row": 0,
+            "decodedBytePosition": 13405184,
+            "decodedPCMFrame": 3351296
+          },
+          {
+            "order": 204,
+            "row": 0,
+            "decodedBytePosition": 14110720,
+            "decodedPCMFrame": 3527680
+          },
+          {
+            "order": 205,
+            "row": 0,
+            "decodedBytePosition": 14816256,
+            "decodedPCMFrame": 3704064
+          },
+          {
+            "order": 206,
+            "row": 0,
+            "decodedBytePosition": 15521792,
+            "decodedPCMFrame": 3880448
+          },
+          {
+            "order": 207,
+            "row": 0,
+            "decodedBytePosition": 16227328,
+            "decodedPCMFrame": 4056832
+          },
+          {
+            "order": 208,
+            "row": 0,
+            "decodedBytePosition": 16932864,
+            "decodedPCMFrame": 4233216
+          },
+          {
+            "order": 209,
+            "row": 0,
+            "decodedBytePosition": 17638400,
+            "decodedPCMFrame": 4409600
+          },
+          {
+            "order": 210,
+            "row": 0,
+            "decodedBytePosition": 18343936,
+            "decodedPCMFrame": 4585984
+          },
+          {
+            "order": 185,
+            "row": 0,
+            "decodedBytePosition": 19049472,
+            "decodedPCMFrame": 4762368
+          }
+        ],
+        "backwardJumps": [
+          {
+            "order": 185,
+            "row": 0,
+            "decodedBytePosition": 19049472,
+            "decodedPCMFrame": 4762368,
+            "targetPreviouslyObserved": true
+          }
+        ],
+        "status": "observed",
+        "loopOrder": 185,
+        "loopRow": 0,
+        "introPCMFrames": 176384,
+        "firstCyclePCMFrames": 4762368,
+        "loopPCMFrames": 4585984,
+        "verificationBlockFrames": 1024,
+        "verifiedExactBoundaryAcrossBlockSizes": true,
+        "introSeconds": 3.9996371882086166,
+        "firstCycleSeconds": 107.99020408163265,
+        "loopSeconds": 103.99056689342403,
+        "reusedTimingFrom": "roof.main",
+        "enabledChannels": [
+          18,
+          19,
+          20
+        ],
+        "initialVolume": 0
+      },
+      "hihat": {
+        "startOrder": 184,
+        "startRow": 0,
+        "blockFrames": 65536,
+        "nativeBASSflags": 2261508,
+        "nativeBASSflagsHex": "0x228204",
+        "decodeLimitSeconds": 400,
+        "sourceFile": "mainmusic_hihats.mo3",
+        "sourceSHA256": "1506a5043de8c2b4d6fe67db1baa1db7db588c1421e084d0fa55159e1f4b9d5d",
+        "decodedPCMFramesIncludingFinalRead": 4784128,
+        "orderChangeTimeline": [
+          {
+            "order": 184,
+            "row": 0,
+            "decodedBytePosition": 0,
+            "decodedPCMFrame": 0
+          },
+          {
+            "order": 185,
+            "row": 0,
+            "decodedBytePosition": 705536,
+            "decodedPCMFrame": 176384
+          },
+          {
+            "order": 186,
+            "row": 0,
+            "decodedBytePosition": 1411072,
+            "decodedPCMFrame": 352768
+          },
+          {
+            "order": 187,
+            "row": 0,
+            "decodedBytePosition": 2116608,
+            "decodedPCMFrame": 529152
+          },
+          {
+            "order": 188,
+            "row": 0,
+            "decodedBytePosition": 2822144,
+            "decodedPCMFrame": 705536
+          },
+          {
+            "order": 189,
+            "row": 0,
+            "decodedBytePosition": 3527680,
+            "decodedPCMFrame": 881920
+          },
+          {
+            "order": 190,
+            "row": 0,
+            "decodedBytePosition": 4233216,
+            "decodedPCMFrame": 1058304
+          },
+          {
+            "order": 191,
+            "row": 0,
+            "decodedBytePosition": 4938752,
+            "decodedPCMFrame": 1234688
+          },
+          {
+            "order": 192,
+            "row": 0,
+            "decodedBytePosition": 5644288,
+            "decodedPCMFrame": 1411072
+          },
+          {
+            "order": 193,
+            "row": 0,
+            "decodedBytePosition": 6349824,
+            "decodedPCMFrame": 1587456
+          },
+          {
+            "order": 194,
+            "row": 0,
+            "decodedBytePosition": 7055360,
+            "decodedPCMFrame": 1763840
+          },
+          {
+            "order": 195,
+            "row": 0,
+            "decodedBytePosition": 7760896,
+            "decodedPCMFrame": 1940224
+          },
+          {
+            "order": 196,
+            "row": 0,
+            "decodedBytePosition": 8466432,
+            "decodedPCMFrame": 2116608
+          },
+          {
+            "order": 197,
+            "row": 0,
+            "decodedBytePosition": 9171968,
+            "decodedPCMFrame": 2292992
+          },
+          {
+            "order": 198,
+            "row": 0,
+            "decodedBytePosition": 9877504,
+            "decodedPCMFrame": 2469376
+          },
+          {
+            "order": 199,
+            "row": 0,
+            "decodedBytePosition": 10583040,
+            "decodedPCMFrame": 2645760
+          },
+          {
+            "order": 200,
+            "row": 0,
+            "decodedBytePosition": 11288576,
+            "decodedPCMFrame": 2822144
+          },
+          {
+            "order": 201,
+            "row": 0,
+            "decodedBytePosition": 11994112,
+            "decodedPCMFrame": 2998528
+          },
+          {
+            "order": 202,
+            "row": 0,
+            "decodedBytePosition": 12699648,
+            "decodedPCMFrame": 3174912
+          },
+          {
+            "order": 203,
+            "row": 0,
+            "decodedBytePosition": 13405184,
+            "decodedPCMFrame": 3351296
+          },
+          {
+            "order": 204,
+            "row": 0,
+            "decodedBytePosition": 14110720,
+            "decodedPCMFrame": 3527680
+          },
+          {
+            "order": 205,
+            "row": 0,
+            "decodedBytePosition": 14816256,
+            "decodedPCMFrame": 3704064
+          },
+          {
+            "order": 206,
+            "row": 0,
+            "decodedBytePosition": 15521792,
+            "decodedPCMFrame": 3880448
+          },
+          {
+            "order": 207,
+            "row": 0,
+            "decodedBytePosition": 16227328,
+            "decodedPCMFrame": 4056832
+          },
+          {
+            "order": 208,
+            "row": 0,
+            "decodedBytePosition": 16932864,
+            "decodedPCMFrame": 4233216
+          },
+          {
+            "order": 209,
+            "row": 0,
+            "decodedBytePosition": 17638400,
+            "decodedPCMFrame": 4409600
+          },
+          {
+            "order": 210,
+            "row": 0,
+            "decodedBytePosition": 18343936,
+            "decodedPCMFrame": 4585984
+          },
+          {
+            "order": 185,
+            "row": 0,
+            "decodedBytePosition": 19049472,
+            "decodedPCMFrame": 4762368
+          }
+        ],
+        "backwardJumps": [
+          {
+            "order": 185,
+            "row": 0,
+            "decodedBytePosition": 19049472,
+            "decodedPCMFrame": 4762368,
+            "targetPreviouslyObserved": true
+          }
+        ],
+        "status": "observed",
+        "loopOrder": 185,
+        "loopRow": 0,
+        "introPCMFrames": 176384,
+        "firstCyclePCMFrames": 4762368,
+        "loopPCMFrames": 4585984,
+        "verificationBlockFrames": 1024,
+        "verifiedExactBoundaryAcrossBlockSizes": true,
+        "introSeconds": 3.9996371882086166,
+        "firstCycleSeconds": 107.99020408163265,
+        "loopSeconds": 103.99056689342403,
+        "enabledChannels": [
+          21
+        ],
+        "initialVolume": 0
+      }
+    },
+    "menu": {
+      "main": {
+        "startOrder": 152,
+        "startRow": 0,
+        "blockFrames": 65536,
+        "nativeBASSflags": 2261508,
+        "nativeBASSflagsHex": "0x228204",
+        "decodeLimitSeconds": 400,
+        "sourceFile": "mainmusic.mo3",
+        "sourceSHA256": "afbd1a0cd7fd9e641a425355b6560eb9bf25bf901e99f163ab3bb1c37db49f59",
+        "decodedPCMFramesIncludingFinalRead": 3866624,
+        "orderChangeTimeline": [
+          {
+            "order": 152,
+            "row": 0,
+            "decodedBytePosition": 0,
+            "decodedPCMFrame": 0
+          },
+          {
+            "order": 153,
+            "row": 0,
+            "decodedBytePosition": 3082240,
+            "decodedPCMFrame": 770560
+          },
+          {
+            "order": 154,
+            "row": 0,
+            "decodedBytePosition": 6164480,
+            "decodedPCMFrame": 1541120
+          },
+          {
+            "order": 155,
+            "row": 0,
+            "decodedBytePosition": 9246720,
+            "decodedPCMFrame": 2311680
+          },
+          {
+            "order": 156,
+            "row": 0,
+            "decodedBytePosition": 12328960,
+            "decodedPCMFrame": 3082240
+          },
+          {
+            "order": 152,
+            "row": 0,
+            "decodedBytePosition": 15411200,
+            "decodedPCMFrame": 3852800
+          }
+        ],
+        "backwardJumps": [
+          {
+            "order": 152,
+            "row": 0,
+            "decodedBytePosition": 15411200,
+            "decodedPCMFrame": 3852800,
+            "targetPreviouslyObserved": true
+          }
+        ],
+        "status": "observed",
+        "loopOrder": 152,
+        "loopRow": 0,
+        "introPCMFrames": 0,
+        "firstCyclePCMFrames": 3852800,
+        "loopPCMFrames": 3852800,
+        "verificationBlockFrames": 1024,
+        "verifiedExactBoundaryAcrossBlockSizes": true,
+        "introSeconds": 0.0,
+        "firstCycleSeconds": 87.36507936507937,
+        "loopSeconds": 87.36507936507937,
+        "enabledChannels": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29
+        ],
+        "initialVolume": 1
+      }
+    },
+    "boss": {
+      "main": {
+        "startOrder": 158,
+        "startRow": 0,
+        "blockFrames": 65536,
+        "nativeBASSflags": 2261508,
+        "nativeBASSflagsHex": "0x228204",
+        "decodeLimitSeconds": 400,
+        "sourceFile": "mainmusic.mo3",
+        "sourceSHA256": "afbd1a0cd7fd9e641a425355b6560eb9bf25bf901e99f163ab3bb1c37db49f59",
+        "decodedPCMFramesIncludingFinalRead": 4456448,
+        "orderChangeTimeline": [
+          {
+            "order": 158,
+            "row": 0,
+            "decodedBytePosition": 0,
+            "decodedPCMFrame": 0
+          },
+          {
+            "order": 159,
+            "row": 0,
+            "decodedBytePosition": 2822144,
+            "decodedPCMFrame": 705536
+          },
+          {
+            "order": 160,
+            "row": 0,
+            "decodedBytePosition": 5644288,
+            "decodedPCMFrame": 1411072
+          },
+          {
+            "order": 161,
+            "row": 0,
+            "decodedBytePosition": 8466432,
+            "decodedPCMFrame": 2116608
+          },
+          {
+            "order": 162,
+            "row": 0,
+            "decodedBytePosition": 11288576,
+            "decodedPCMFrame": 2822144
+          },
+          {
+            "order": 163,
+            "row": 0,
+            "decodedBytePosition": 14110720,
+            "decodedPCMFrame": 3527680
+          },
+          {
+            "order": 164,
+            "row": 0,
+            "decodedBytePosition": 14816256,
+            "decodedPCMFrame": 3704064
+          },
+          {
+            "order": 158,
+            "row": 0,
+            "decodedBytePosition": 17638400,
+            "decodedPCMFrame": 4409600
+          }
+        ],
+        "backwardJumps": [
+          {
+            "order": 158,
+            "row": 0,
+            "decodedBytePosition": 17638400,
+            "decodedPCMFrame": 4409600,
+            "targetPreviouslyObserved": true
+          }
+        ],
+        "status": "observed",
+        "loopOrder": 158,
+        "loopRow": 0,
+        "introPCMFrames": 0,
+        "firstCyclePCMFrames": 4409600,
+        "loopPCMFrames": 4409600,
+        "verificationBlockFrames": 1024,
+        "verifiedExactBoundaryAcrossBlockSizes": true,
+        "introSeconds": 0.0,
+        "firstCycleSeconds": 99.99092970521542,
+        "loopSeconds": 99.99092970521542,
+        "enabledChannels": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29
+        ],
+        "initialVolume": 1
+      }
+    },
+    "chooseSeeds": {
+      "main": {
+        "startOrder": 122,
+        "startRow": 0,
+        "blockFrames": 65536,
+        "nativeBASSflags": 2261508,
+        "nativeBASSflagsHex": "0x228204",
+        "decodeLimitSeconds": 400,
+        "sourceFile": "mainmusic.mo3",
+        "sourceSHA256": "afbd1a0cd7fd9e641a425355b6560eb9bf25bf901e99f163ab3bb1c37db49f59",
+        "decodedPCMFramesIncludingFinalRead": 983040,
+        "orderChangeTimeline": [
+          {
+            "order": 122,
+            "row": 0,
+            "decodedBytePosition": 0,
+            "decodedPCMFrame": 0
+          },
+          {
+            "order": 123,
+            "row": 0,
+            "decodedBytePosition": 634752,
+            "decodedPCMFrame": 158688
+          },
+          {
+            "order": 123,
+            "row": 0,
+            "decodedBytePosition": 3808512,
+            "decodedPCMFrame": 952128
+          }
+        ],
+        "backwardJumps": [
+          {
+            "order": 123,
+            "row": 0,
+            "decodedBytePosition": 3808512,
+            "decodedPCMFrame": 952128,
+            "targetPreviouslyObserved": true
+          }
+        ],
+        "status": "observed",
+        "loopOrder": 123,
+        "loopRow": 0,
+        "introPCMFrames": 158688,
+        "firstCyclePCMFrames": 952128,
+        "loopPCMFrames": 793440,
+        "verificationBlockFrames": 1024,
+        "verifiedExactBoundaryAcrossBlockSizes": true,
+        "introSeconds": 3.5983673469387756,
+        "firstCycleSeconds": 21.590204081632653,
+        "loopSeconds": 17.991836734693877,
+        "enabledChannels": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29
+        ],
+        "initialVolume": 1
+      }
+    }
+  },
+  "channelMaskAuthority": "Caller-supplied original-executable REA result for Music::SetupMusicFileForTune; timing independently observed by this scanner",
+  "scanDoesNotRenderFormalAssets": true
+}

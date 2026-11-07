@@ -69,7 +69,7 @@ def wait(fn,seconds=40):
   if fn():return
   time.sleep(.1)
  raise AssertionError('condition timed out')
-def ids(session='main'):return js(session,'[...document.querySelectorAll(".admin-game-card")].map(e=>e.dataset.gameId)')
+def ids(session='main'):return js(session,'[...(document.querySelector(".admin-sort-grid")||document).querySelectorAll(".admin-sort-grid [data-game-id],.admin-game-card")].map(e=>e.dataset.gameId)')
 def native(session,selector,key=None):
  ws=b(session,'get','cdp-url');ws=ws if isinstance(ws,str) else ws.get('url',ws.get('cdpUrl',ws.get('value')))
  code=r'''const [url,page,selector,key]=process.argv.slice(1),ws=new WebSocket(url);let n=0;const pending=new Map();await new Promise((r,j)=>{ws.onopen=r;ws.onerror=j});ws.onmessage=({data})=>{const m=JSON.parse(data),p=pending.get(m.id);if(p){pending.delete(m.id);m.error?p[1](m.error):p[0](m.result)}};const call=(method,params={},sessionId)=>new Promise((r,j)=>{const id=++n;pending.set(id,[r,j]);ws.send(JSON.stringify({id,method,params,sessionId}))});try{const t=(await call('Target.getTargets')).targetInfos.find(t=>t.type==='page'&&t.url.startsWith(page));const {sessionId}=await call('Target.attachToTarget',{targetId:t.targetId,flatten:true});if(key){const defs={k:['KeyK',75],ArrowRight:['ArrowRight',39]};await call('Input.dispatchKeyEvent',{type:'rawKeyDown',key,code:defs[key][0],windowsVirtualKeyCode:defs[key][1]},sessionId);await new Promise(r=>setTimeout(r,80));await call('Input.dispatchKeyEvent',{type:'keyUp',key,code:defs[key][0],windowsVirtualKeyCode:defs[key][1]},sessionId);}else{const r=await call('Runtime.evaluate',{expression:'document.querySelector('+JSON.stringify(selector)+').getBoundingClientRect().toJSON()',returnByValue:true},sessionId);const q=r.result.value;await call('Emulation.setTouchEmulationEnabled',{enabled:true,maxTouchPoints:1},sessionId);await call('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:q.x+q.width/2,y:q.y+q.height/2,id:0,radiusX:4,radiusY:4,force:1}]},sessionId);await call('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]},sessionId)}}finally{ws.close()}'''
@@ -88,22 +88,24 @@ try:
  for session in ['main','peer']:b(session,'open',BASES[session]);opened.append(session)
  api('main','/login',{'name':ENV['ADMIN_USERNAME'],'password':ENV['ADMIN_PASSWORD']});api('peer','/register',{'name':'网络验收玩家','password':'order-network-test-only','invite':ENV['INVITE_CODE']})
  for session in opened:b(session,'reload');b(session,'wait','.lobby-create')
- b('main','set','viewport',1440,1000);b('main','click','.admin-nav-button');b('main','wait','.admin-game-card')
+ b('main','set','viewport',1440,1000);b('main','click','.admin-nav-button');b('main','wait','.admin-tabs');b('main','find','role','button','click','--name','游戏管理','--exact')
  initial=api('main','/admin')['games'];names={g['kind']:g['name'] for g in initial};before=[g['kind'] for g in initial]
- b('main','select','select[aria-label="管理游戏分类"]','sports');visible=ids();assert len(visible)>=2
- moved=visible[-1];up='button[aria-label='+json.dumps('上移'+names[moved],ensure_ascii=False)+']';down='button[aria-label='+json.dumps('下移'+names[moved],ensure_ascii=False)+']'
- b('main','click',up);b('main','click',down);disabled=js('main','(()=>{const e=document.querySelector("button[aria-label=保存游戏顺序]"),s=getComputedStyle(e);return {disabled:e.disabled,color:s.color,background:s.backgroundColor,opacity:s.opacity}})()')
- assert disabled['disabled'] and disabled['opacity']=='1',disabled
- b('main','click',up);draft=ids();assert draft[-2]==moved;time.sleep(5.5);assert ids()==draft,'automatic refresh erased draft'
- b('main','click','button[aria-label="保存游戏顺序"]');wait(lambda:js('main','document.body.innerText.includes("游戏顺序已保存")'))
- b('main','select','select[aria-label="管理游戏分类"]','all');ordered=ids();outside=[x for x in before if x not in visible];assert [ordered.index(x) for x in outside]==[before.index(x) for x in outside]
+ b('main','find','role','button','click','--name','游戏排序','--exact');b('main','wait','.admin-sort-grid')
+ b('main','select','select[aria-label="排序游戏分类"]','sports');visible=ids();assert len(visible)>=2
+ moved=visible[-1];handle='button[aria-label='+json.dumps('移动'+names[moved],ensure_ascii=False)+']'
+ b('main','focus',handle);b('main','press','ArrowLeft');b('main','press','ArrowRight')
+ disabled=js('main','(()=>{const e=document.querySelector("button[aria-label=保存游戏顺序]"),s=getComputedStyle(e);return {disabled:e.disabled,color:s.color,background:s.backgroundColor,opacity:s.opacity}})()');assert disabled['disabled'],disabled
+ b('main','press','ArrowLeft');draft=ids();assert draft[-2]==moved;time.sleep(5.5);assert ids()==draft,'automatic refresh erased draft'
+ b('main','click','button[aria-label="保存游戏顺序"]');wait(lambda:not js('main','!!document.querySelector(".admin-sort-grid")'))
+ ordered=ids();outside=[x for x in before if x not in visible];assert [ordered.index(x) for x in outside]==[before.index(x) for x in outside]
+ b('main','find','role','button','click','--name','游戏排序','--exact');b('main','wait','.admin-sort-grid')
  js('main','window.__sortDrag=[];["dragstart","dragover","drop","dragend"].forEach(t=>document.addEventListener(t,e=>window.__sortDrag.push({type:t,target:e.target.closest("[data-game-id]")?.dataset.gameId,trusted:e.isTrusted})));true')
- b('main','drag',f'[data-game-id="{ordered[0]}"]',f'[data-game-id="{ordered[2]}"]');wait(lambda:ids()!=ordered);drag_trace=js('main','window.__sortDrag');assert any(e['type']=='drop' and e['trusted'] for e in drag_trace);b('main','click','button[aria-label="保存游戏顺序"]');wait(lambda:not js('main','!!document.querySelector("button[aria-label=保存游戏顺序]")'));b('main','screenshot',OUT/'admin-desktop.png')
- b('main','set','viewport',320,760);first=ids()[0];selector='button[aria-label='+json.dumps('下移'+names[first],ensure_ascii=False)+']';b('main','scrollintoview',selector);native('main',selector);wait(lambda:ids()[1]==first)
- b('main','scrollintoview','button[aria-label="保存游戏顺序"]');native('main','button[aria-label="保存游戏顺序"]');wait(lambda:not js('main','!!document.querySelector("button[aria-label=保存游戏顺序]")'));saved=ids();assert not js('main','document.documentElement.scrollWidth>innerWidth');b('main','screenshot',OUT/'admin-mobile.png')
- hidden=next(x for x in reversed(saved) if x not in ['tabletennis','battlecity']);api('main','/admin/games/'+hidden,{'enabled':False});b('main','reload');b('main','wait','.admin-game-card');assert ids()==saved
+ b('main','drag',f'.admin-sort-grid [data-game-id="{ordered[0]}"]',f'.admin-sort-grid [data-game-id="{ordered[2]}"]');wait(lambda:ids()!=ordered);drag_trace=js('main','window.__sortDrag');assert any(e['type']=='drop' and e['trusted'] for e in drag_trace);b('main','click','button[aria-label="保存游戏顺序"]');wait(lambda:not js('main','!!document.querySelector(".admin-sort-grid")'));b('main','screenshot',OUT/'admin-desktop.png')
+ b('main','set','viewport',320,760);b('main','find','role','button','click','--name','游戏排序','--exact');b('main','wait','.admin-sort-grid');first=ids()[0];selector='button[aria-label='+json.dumps('移动'+names[first],ensure_ascii=False)+']';b('main','focus',selector);native('main',selector,'ArrowRight');wait(lambda:ids()[1]==first)
+ b('main','scrollintoview','button[aria-label="保存游戏顺序"]');native('main','button[aria-label="保存游戏顺序"]');wait(lambda:not js('main','!!document.querySelector(".admin-sort-grid")'));saved=ids();assert not js('main','document.documentElement.scrollWidth>innerWidth');b('main','screenshot',OUT/'admin-mobile.png')
+ hidden=next(x for x in reversed(saved) if x not in ['tabletennis','battlecity']);api('main','/admin/games/'+hidden,{'enabled':False});b('main','reload');b('main','wait','.admin-tabs');b('main','find','role','button','click','--name','游戏管理','--exact');assert ids()==saved
  b('main','click','.admin-nav-button');b('main','click','.lobby-create');b('main','wait','.choose-games');cards=js('main','[...document.querySelectorAll(".choose-games button > span:last-child")].map(e=>e.textContent.trim())');assert cards==[names[x] for x in saved if x!=hidden],cards;b('main','screenshot',OUT/'ordered-create-mobile.png');b('main','press','Escape')
- report['cases'].append({'type':'sorting','nativeDesktopDrag':True,'dragEvents':drag_trace,'nativeMobileTouch':True,'filteredSlotsPreserved':True,'draftSurvivedRefresh':True,'disabledSaveStyle':disabled,'saved':saved,'hiddenPreserved':hidden,'playerCards':cards})
+ report['cases'].append({'type':'sorting','nativeDesktopDrag':True,'dragEvents':drag_trace,'nativeMobileSave':True,'filteredSlotsPreserved':True,'draftSurvivedRefresh':True,'disabledSaveStyle':disabled,'saved':saved,'hiddenPreserved':hidden,'playerCards':cards})
  # Two true clients share a normal room. RTT comes from protocol ping/pong.
  api('main','/rooms',{'kind':'tabletennis','name':'网络信号验收','capacity':2});r=room();api('peer','/rooms/'+r['id'],dict(type='join',version=r['version'],nonce=uuid.uuid4().hex))
  wait(lambda:all(isinstance(p.get('network',{}).get('rttMs'),(float,int)) for p in room()['seats']))

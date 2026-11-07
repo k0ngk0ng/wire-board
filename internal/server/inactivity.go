@@ -32,6 +32,7 @@ func (s *Server) expireIdleRooms(now time.Time) {
 		var next Room
 		_ = json.Unmarshal(raw, &next)
 		next.Status, next.CloseReason = "closed", "inactive"
+		next.Loading = nil
 		next.TurnDeadline, next.BotAt = 0, 0
 		next.Updated = now.Unix()
 		next.Version++
@@ -43,6 +44,9 @@ func (s *Server) expireIdleRooms(now time.Time) {
 			message := "牌桌连续 24 小时无人操作，已自动关闭，本局不计胜负与积分。"
 			if limit == pausedRoomIdleLimit {
 				message = "暂停对局连续 30 天无人操作，已自动关闭，本局不计胜负与积分。"
+			}
+			if next.RatingPolicy != "" && next.RatingStarted && next.Rated {
+				message = "合作挑战超过无人操作保留期限，已按全队失败结算，每位参与者扣除 10 积分。"
 			}
 			next.Game.Log = append(next.Game.Log, message)
 			if len(next.Game.Log) > 80 {

@@ -67,7 +67,7 @@ export function Board(props: BoardProps<BasketballNetworkView>) {
     setFaultNeedsReload(false);
     setProgress({ percent: 0, label: "加载控制器设置" });
     setProfile(undefined);
-    const model = "classic-2";
+    const model = "game:basketball";
     const changed = (event: Event) => {
       const change = (event as CustomEvent).detail;
       if (change?.userId !== userID || change?.model !== model) return;
@@ -77,7 +77,9 @@ export function Board(props: BoardProps<BasketballNetworkView>) {
     };
     window.addEventListener("controller-settings-changed", changed);
     void (async () => {
-      const settings: ControllerSettingsData = await api("/controllers");
+      const settings: ControllerSettingsData = await api(
+        "/controllers?game=basketball",
+      );
       if (!alive) return;
       const fetched = settings.profiles[model];
       const saved =

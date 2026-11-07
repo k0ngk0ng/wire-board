@@ -41,6 +41,17 @@ const c = {
   resetUntil: 0,
 };
 const input = { steer: 0, throttle: 1, brake: false, drift: false };
+test('higher road speeds reduce yaw, with the same direction and analogue proportion',()=>{
+ let previous=Infinity;
+ for(const speed of [65,130,260,520,900]){
+  const car={...c,vx:speed,speed};
+  const right=predictCar(car,{...input,steer:1},track,20,1000).angle;
+  assert.ok(right>0&&right<previous,{speed,right,previous});previous=right;
+  assert.ok(Math.abs(predictCar(car,{...input,steer:-1},track,20,1000).angle+right)<1e-12);
+  assert.ok(Math.abs(predictCar(car,{...input,steer:.25},track,20,1000).angle-right*.25)<1e-12);
+ }
+ assert.equal(predictCar({...c,vx:0,speed:0},{...input,throttle:0,steer:1},track,20,1000).angle,0);
+});
 test("prediction reacts immediately yet leaves all scoring and server inputs unchanged", () => {
   const original = JSON.stringify(c),
     n = predictCar(c, { ...input, steer: 1 }, track, 100, 1000);
@@ -124,4 +135,11 @@ test('sports-car prediction retains 324 km/h road speed and decelerates on grass
  assert.ok(Math.abs(result.x-fast.x-180)<.01,result.x);
  assert.ok(predictCar({...fast,y:100},input,straight,200,1000).speed<=110.01);
  assert.ok(predictCar(fast,{...input,brake:true},straight,200,1000).speed<300);
+});
+
+test('predicted brake pressure matches partial/full and preserves legacy braking',()=>{
+ const light=predictCar(c,{...input,brake:true,brakeAmount:.25},track,200,1000);
+ const full=predictCar(c,{...input,brake:true,brakeAmount:1},track,200,1000);
+ const legacy=predictCar(c,{...input,brake:true},track,200,1000);
+ assert.ok(light.speed>full.speed);assert.equal(full.speed,legacy.speed);
 });

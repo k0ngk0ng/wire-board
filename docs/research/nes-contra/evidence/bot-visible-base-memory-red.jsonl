@@ -1,0 +1,13 @@
+{"Time":"2026-10-26T13:08:52.24828+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine"}
+{"Time":"2026-10-26T13:08:52.8437+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleBaseCorePersistsThroughBriefOcclusion"}
+{"Time":"2026-10-26T13:08:52.843764+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleBaseCorePersistsThroughBriefOcclusion","Output":"=== RUN   TestBotVisibleBaseCorePersistsThroughBriefOcclusion\n"}
+{"Time":"2026-10-26T13:08:52.843778+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleBaseCorePersistsThroughBriefOcclusion","Output":"    bot_base_memory_test.go:24: occlusion became permission to enter the electrical barrier 2 8\n"}
+{"Time":"2026-10-26T13:08:52.843795+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleBaseCorePersistsThroughBriefOcclusion","Output":"--- FAIL: TestBotVisibleBaseCorePersistsThroughBriefOcclusion (0.00s)\n"}
+{"Time":"2026-10-26T13:08:52.8438+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleBaseCorePersistsThroughBriefOcclusion","Elapsed":0}
+{"Time":"2026-10-26T13:08:52.843805+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleBaseCoreMemoryDoesNotCrossScene"}
+{"Time":"2026-10-26T13:08:52.843811+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleBaseCoreMemoryDoesNotCrossScene","Output":"=== RUN   TestBotVisibleBaseCoreMemoryDoesNotCrossScene\n"}
+{"Time":"2026-10-26T13:08:52.843816+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleBaseCoreMemoryDoesNotCrossScene","Output":"--- PASS: TestBotVisibleBaseCoreMemoryDoesNotCrossScene (0.00s)\n"}
+{"Time":"2026-10-26T13:08:52.84382+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotVisibleBaseCoreMemoryDoesNotCrossScene","Elapsed":0}
+{"Time":"2026-10-26T13:08:52.843842+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\n"}
+{"Time":"2026-10-26T13:08:52.84418+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/contra/engine\t0.596s\n"}
+{"Time":"2026-10-26T13:08:52.844189+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Elapsed":0.596}

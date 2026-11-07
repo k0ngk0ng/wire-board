@@ -1,0 +1,9 @@
+{"Time":"2026-10-26T16:51:26.940199+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine"}
+{"Time":"2026-10-26T16:51:27.482179+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBuiltinBotVisionFutureGroupsUseReviewedAppearances"}
+{"Time":"2026-10-26T16:51:27.48242+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBuiltinBotVisionFutureGroupsUseReviewedAppearances","Output":"=== RUN   TestBuiltinBotVisionFutureGroupsUseReviewedAppearances\n"}
+{"Time":"2026-10-26T16:51:27.508349+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBuiltinBotVisionFutureGroupsUseReviewedAppearances","Output":"    bot_future_knowledge_test.go:111: unreviewed broad future sprite combination remains in global knowledge {enemy  -1 17 116 64  {false 0} {false 0} {false 0}} 116 64 [1 4 14 15 80 81 82 83]\n"}
+{"Time":"2026-10-26T16:51:27.508397+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBuiltinBotVisionFutureGroupsUseReviewedAppearances","Output":"--- FAIL: TestBuiltinBotVisionFutureGroupsUseReviewedAppearances (0.03s)\n"}
+{"Time":"2026-10-26T16:51:27.508406+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBuiltinBotVisionFutureGroupsUseReviewedAppearances","Elapsed":0.03}
+{"Time":"2026-10-26T16:51:27.508429+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\n"}
+{"Time":"2026-10-26T16:51:27.509224+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/contra/engine\t0.569s\n"}
+{"Time":"2026-10-26T16:51:27.509244+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Elapsed":0.569}

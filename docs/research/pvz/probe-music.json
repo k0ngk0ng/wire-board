@@ -1,0 +1,51 @@
+[
+  {
+    "name": "music-setup-channels",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x45a6c0"
+    }
+  },
+  {
+    "name": "music-play",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x45adb0"
+    }
+  },
+  {
+    "name": "music-play-offset",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x45ac70"
+    }
+  },
+  {
+    "name": "music-burst",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x45b260"
+    }
+  },
+  {
+    "name": "music-update",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x45b670"
+    }
+  },
+  {
+    "name": "bungee-draw-held",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x52ca90"
+    }
+  },
+  {
+    "name": "bobsled-draw",
+    "tool": "procedure_pseudo_code",
+    "arguments": {
+      "procedure": "0x52c6d0"
+    }
+  }
+]

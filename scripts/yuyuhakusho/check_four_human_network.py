@@ -11,6 +11,7 @@ ROOT = Path(__file__).resolve().parents[2]
 p = argparse.ArgumentParser(description=__doc__)
 p.add_argument('--dist', type=Path, required=True)
 p.add_argument('--label', required=True)
+p.add_argument('--host',type=Path,default=ROOT/'.local/md-yuyuhakusho/review-polish-final/host')
 args = p.parse_args()
 DIST = args.dist.resolve()
 assert DIST.is_relative_to(ROOT/'.local')
@@ -89,7 +90,7 @@ report['app_build']=json.loads((DIST/'game-load-manifest.json').read_bytes())['b
 report['runtime']=json.loads((DIST/'yuyuhakusho/v1/runtime/build.json').read_bytes())
 host=None
 try:
-    host=subprocess.Popen([str(ROOT/'.local/md-yuyuhakusho/review-polish-final/host'),'-build',str(DIST),'-data',str(TMP/'database')],cwd=ROOT,env=env,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=(OUT/'host.log').open('w'),text=True)
+    host=subprocess.Popen([str(args.host.resolve()),'-build',str(DIST),'-data',str(TMP/'database')],cwd=ROOT,env=env,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=(OUT/'host.log').open('w'),text=True)
     urls=json.loads(host.stdout.readline());report['urls']=urls
     register(0)
     click(0,'创建房间');browser(0,'find','role','button','click','--name','魔强统一战')

@@ -1,0 +1,11 @@
+{
+  "layout": "navigation",
+  "actions": [
+    {
+      "id": "buildTown",
+      "label": "直接建城镇",
+      "keys": ["KeyT"],
+      "gamepad": [{ "type": "button", "index": 3 }]
+    }
+  ]
+}

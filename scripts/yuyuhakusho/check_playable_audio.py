@@ -33,7 +33,7 @@ proxy = None
 opened = False
 try:
     subprocess.run(['python3', '-B', str(ROOT/'scripts/yuyuhakusho/build_platform_web.py')], cwd=ROOT, env=env, check=True, stdout=(OUT/'build.log').open('w'), stderr=subprocess.STDOUT)
-    subprocess.run([str(ROOT/'web/node_modules/.bin/esbuild'), 'scripts/yuyuhakusho/platform_board_harness.tsx', '--bundle', '--format=esm', '--jsx=automatic', '--alias:react=./web/node_modules/react', '--alias:react-dom=./web/node_modules/react-dom', '--loader:.svg=file', '--outfile='+str(TMP/'harness.js')], cwd=ROOT, env=env, check=True, stdout=(OUT/'harness.log').open('w'), stderr=subprocess.STDOUT)
+    subprocess.run([str(ROOT/'web/node_modules/.bin/esbuild'), 'scripts/yuyuhakusho/platform_board_harness.tsx', '--bundle', '--format=esm', '--jsx=automatic', '--alias:react=./web/node_modules/react', '--alias:react-dom=./web/node_modules/react-dom', '--loader:.svg=file','--loader:.png=file', '--outfile='+str(TMP/'harness.js')], cwd=ROOT, env=env, check=True, stdout=(OUT/'harness.log').open('w'), stderr=subprocess.STDOUT)
     host = subprocess.Popen([str(TMP/'host'), '-build', str(TMP), '-root', str(ROOT)], cwd=ROOT, env=env, stdout=subprocess.PIPE, stderr=(OUT/'host.log').open('w'), text=True)
     upstream = host.stdout.readline().strip()
     class Proxy(http.server.SimpleHTTPRequestHandler):

@@ -8,6 +8,10 @@ on:
         description: 'Optional extra game ID or all for full acceptance; empty selects changed games'
         type: string
         default: ''
+      contra_campaigns:
+        description: 'Experimental Contra computer checks; not a human gameplay delivery gate'
+        type: boolean
+        default: false
 permissions:
   contents: read
   actions: read
@@ -22,6 +26,9 @@ jobs:
     outputs:
       matrix: ${{ steps.scope.outputs.matrix }}
       has_games: ${{ steps.scope.outputs.has_games }}
+      verified_ancestor: ${{ steps.baseline.outputs.sha }}
+      contra_campaign_matrix: ${{ steps.scope.outputs.contra_campaign_matrix }}
+      has_contra_campaigns: ${{ steps.scope.outputs.has_contra_campaigns }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -34,6 +41,7 @@ jobs:
           python3 -B scripts/ci/test_scope.py
           python3 -B scripts/ci/check-plan.py
           node --test scripts/ci/baseline.test.cjs scripts/release-source.test.cjs
+          python3 -B scripts/test_cdn_local_ready.py
       - name: Find the last verified ancestor
         id: baseline
         uses: actions/github-script@v7
@@ -66,7 +74,11 @@ jobs:
           BASE_SHA: ${{ steps.baseline.outputs.sha }}
           SOURCE_SHA: ${{ github.sha }}
           MANUAL_GAME: ${{ inputs.game }}
-        run: python3 -B scripts/ci/scope.py plan --base "$BASE_SHA" --head "$SOURCE_SHA" --manual "$MANUAL_GAME"
+          CONTRA_RESEARCH_CAMPAIGNS: ${{ inputs.contra_campaigns || false }}
+        run: |
+          args=(plan --base "$BASE_SHA" --head "$SOURCE_SHA" --manual "$MANUAL_GAME")
+          if [ "$CONTRA_RESEARCH_CAMPAIGNS" = true ]; then args+=(--contra-campaigns); fi
+          python3 -B scripts/ci/scope.py "${args[@]}"
       - uses: actions/upload-artifact@v4
         with:
           name: verification-plan
@@ -88,10 +100,44 @@ jobs:
           node-version: '22'
           cache: npm
           cache-dependency-path: web/package-lock.json
-      - name: Restore published game fallbacks
+      - uses: actions/cache@v4
+        id: media-cache
+        with:
+          path: .local/verified-game-media/fortressblue/v2
+          key: immutable-fortress-media-${{ hashFiles('games/fortressblue/assets/manifest.json') }}
+      - name: Find verified immutable media source
+        if: steps.media-cache.outputs.cache-hit != 'true'
+        id: media-source
+        uses: actions/github-script@v7
+        env:
+          VERIFIED_ANCESTOR: ${{ needs.plan.outputs.verified_ancestor }}
+        with:
+          script: |
+            const sha = process.env.VERIFIED_ANCESTOR;
+            if (!/^[a-f0-9]{40}$/.test(sha || '')) return;
+            const repo = context.repo;
+            const {data} = await github.rest.actions.listWorkflowRuns({...repo, workflow_id:'build.yml', branch:'main', event:'push', head_sha:sha, per_page:100});
+            for (const run of data.workflow_runs) {
+              if (run.head_sha !== sha || run.head_branch !== 'main' || run.event !== 'push' || run.status !== 'completed' || run.conclusion !== 'success') continue;
+              const artifacts = await github.paginate(github.rest.actions.listWorkflowRunArtifacts,{...repo,run_id:run.id,per_page:100});
+              if (artifacts.some(a => a.name === 'web-dist' && !a.expired && a.size_in_bytes > 0)) {
+                core.setOutput('run',String(run.id));
+                break;
+              }
+            }
+      - name: Restore verified media cache candidate
+        if: steps.media-source.outputs.run != ''
+        continue-on-error: true
+        uses: actions/download-artifact@v4
+        with:
+          name: web-dist
+          path: .local/verified-game-media
+          run-id: ${{ steps.media-source.outputs.run }}
+          github-token: ${{ github.token }}
+      - name: Restore verified game media
         run: |
           python3 -B scripts/fortressblue/test_fetch_assets.py
-          python3 -B scripts/fortressblue/fetch-assets.py
+          python3 -B scripts/fortressblue/fetch-assets.py --restore-from .local/verified-game-media
       - name: Check game boundaries and compile application
         env:
           WIRE_BOARD_ASSET_BASE: https://cdn.ichenj.com/bga/web/${{ github.sha }}/
@@ -119,7 +165,7 @@ jobs:
     name: Shared platform HTTP, persistence and race checks
     needs: frontend
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
@@ -170,8 +216,23 @@ jobs:
           name: web-dist
           path: web/dist
       - name: Install dependencies for game rendering checks
-        if: (matrix.game == 'battlecity' || matrix.game == 'conquest' || matrix.game == 'tabletennis') && matrix.shard == 0
+        if: (matrix.game == 'battlecity' || matrix.game == 'conquest' || matrix.game == 'tabletennis' || matrix.game == 'contra') && matrix.shard == 0
         run: npm --prefix web ci
+      - name: Prepare PvZ asset verification environment
+        if: matrix.game == 'pvz' && matrix.shard == 0
+        run: |
+          set -o pipefail
+          mkdir -p .local/tmp .local/pvz/ci-assets
+          export TMPDIR="$PWD/.local/tmp"
+          export PIP_CACHE_DIR="$PWD/.local/pvz/ci-assets/pip-cache"
+          export PIP_DISABLE_PIP_VERSION_CHECK=1
+          python3 -B -c 'import json; from pathlib import Path; Path(".local/pvz/ci-assets/prepare-result.json").write_text(json.dumps({"passed":False,"phase":"dependency-setup"})+"\n")'
+          python3 -m venv .local/pvz/ci-assets/venv
+          .local/pvz/ci-assets/venv/bin/python -m pip install Pillow==13.0.0 2>&1 | tee .local/pvz/ci-assets/install.log
+          if ! command -v ffmpeg >/dev/null 2>&1; then
+            .local/pvz/ci-assets/venv/bin/python -m pip install imageio-ffmpeg==0.6.0 2>&1 | tee -a .local/pvz/ci-assets/install.log
+          fi
+          .local/pvz/ci-assets/venv/bin/python -B scripts/ci/scope.py pvz-tools
       - name: Validate this game only
         env:
           GAME_ID: ${{ matrix.game }}
@@ -181,12 +242,53 @@ jobs:
         run: |
           args=(--game "$GAME_ID" --shard "$SHARD_INDEX" --count "$SHARD_COUNT")
           if [ "$BACKEND_CHANGED" = true ]; then args+=(--backend); fi
+          if [ "$GAME_ID" = pvz ] && [ "$SHARD_INDEX" = 0 ]; then
+            export PATH="$PWD/.local/pvz/ci-assets/bin:$PWD/.local/pvz/ci-assets/venv/bin:$PATH"
+            export TMPDIR="$PWD/.local/tmp"
+            export PIP_CACHE_DIR="$PWD/.local/pvz/ci-assets/pip-cache"
+          fi
           python3 -B scripts/ci/scope.py run "${args[@]}"
+      - name: Remove temporary PvZ asset tools
+        if: always() && matrix.game == 'pvz' && matrix.shard == 0
+        run: rm -rf .local/pvz/ci-assets/bin .local/pvz/ci-assets/venv .local/pvz/ci-assets/pip-cache
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: game-${{ matrix.game }}-${{ matrix.shard }}-acceptance
           path: .local/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 7
+  contra_campaigns:
+    name: Experimental Contra computer ${{ matrix.mode }} (${{ matrix.players }} seats; non-gating)
+    needs: [plan, frontend]
+    if: needs.plan.outputs.has_contra_campaigns == 'true'
+    runs-on: ubuntu-latest
+    # Temporary human-only delivery: failed research retains its own false
+    # report and artifacts but is not a prerequisite for the verified build.
+    continue-on-error: true
+    # Each process has a 90-minute test limit; allow setup and artifact upload.
+    timeout-minutes: 110
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix: ${{ fromJSON(needs.plan.outputs.contra_campaign_matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+      - name: Run experimental computer checks without a delivery gate
+        env:
+          CAMPAIGN_MODE: ${{ matrix.mode }}
+          CAMPAIGN_PLAYERS: ${{ matrix.players }}
+        run: python3 -B scripts/contra/campaign_modes.py --mode "$CAMPAIGN_MODE" --players "$CAMPAIGN_PLAYERS" --out .local/ci/contra-campaign
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: contra-computer-research-${{ matrix.mode }}-${{ matrix.players }}
+          path: .local/ci/contra-campaign/
           include-hidden-files: true
           if-no-files-found: error
           retention-days: 7
@@ -199,7 +301,7 @@ jobs:
       needs.shared.result == 'success' &&
       (needs.games.result == 'success' || needs.games.result == 'skipped')
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
@@ -210,21 +312,39 @@ jobs:
         with:
           name: web-dist
           path: web/dist
-      - name: Publish and verify immutable frontend modules
-        env:
-          OSS_ACCESS_KEY_ID: ${{ secrets.OSS_ACCESS_KEY_ID }}
-          OSS_ACCESS_KEY_SECRET: ${{ secrets.OSS_ACCESS_KEY_SECRET }}
-        run: python3 -B scripts/cdn_delivery.py publish
+      - uses: actions/download-artifact@v4
+        with:
+          name: verification-plan
+          path: .local/ci
+      - name: Preserve and validate native runtime binding before CDN trimming
+        run: |
+          python3 -B games/contra/build/ci_runtime.py --dist web/dist --out .local/contra-ci-runtime
+          python3 -B scripts/contra/accept_production.py --runtime .local/contra-ci-runtime/manifest.json --out .local/contra-ci-acceptance
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: cdn-assets-verification
-          path: .local/cdn-delivery/verified.json
+          name: contra-native-build-binding
+          path: |
+            .local/contra-ci-runtime/ci-origin.json
+            .local/contra-ci-acceptance/result.json
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Upload immutable frontend modules without CDN readback
+        env:
+          OSS_ACCESS_KEY_ID: ${{ secrets.OSS_ACCESS_KEY_ID }}
+          OSS_ACCESS_KEY_SECRET: ${{ secrets.OSS_ACCESS_KEY_SECRET }}
+        run: python3 -B scripts/cdn_delivery.py upload --report .local/cdn-delivery/uploaded.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cdn-assets-upload
+          path: .local/cdn-delivery/uploaded.json
           include-hidden-files: true
           if-no-files-found: warn
           retention-days: 30
       - name: Keep application modules off the server package
-        run: python3 -B scripts/cdn_delivery.py trim
+        run: python3 -B scripts/cdn_delivery.py trim --report .local/cdn-delivery/uploaded.json
       - name: Build Linux amd64 after every required check passed
         env:
           CGO_ENABLED: '0'
@@ -232,12 +352,24 @@ jobs:
           GOARCH: amd64
         run: |
           mkdir -p dist/package
-          go build -trimpath -ldflags="-s -w" -o dist/package/wire-board .
+          python3 -B games/contra/build/native.py --runtime .local/contra-ci-runtime/manifest.json --out dist/package/wire-board --goos linux --goarch amd64
+          test -s dist/package/wire-board.build.json
+          python3 -B scripts/cdn_delivery.py check-package --binary dist/package/wire-board --report .local/cdn-delivery/uploaded.json
+          cp .local/ci/plan.json dist/package/verification-plan.json
           cp README.md .env.example compose.yaml dist/package/
           cp scripts/update.sh dist/package/update.sh
-          cp -r docs dist/package/
+          mkdir -p dist/package/docs
+          cp docs/deployment.md docs/admin.md docs/THIRD_PARTY.md dist/package/docs/
           tar -C dist/package -czf dist/wire-board-linux-amd64.tar.gz .
           cd dist && sha256sum wire-board-linux-amd64.tar.gz > SHA256SUMS
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: server-package-boundary
+          path: .local/cdn-delivery/server-package.json
+          if-no-files-found: warn
+          include-hidden-files: true
+          retention-days: 30
       - name: Smoke test Linux binary
         env:
           INVITE_CODE: ci-smoke-only

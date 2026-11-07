@@ -22,6 +22,7 @@ export type TrackCanvasProps = {
   clock: GameClock;
   seat: number;
   assets: string;
+  onInputFrame?: () => void;
   onReady?: () => void;
   onLoadError?: (error: string) => void;
   input: MutableRefObject<Drive>;
@@ -135,6 +136,7 @@ export function TrackCanvas(props: TrackCanvasProps) {
       }
       const draw = (now: number) => {
         if (disposed) return;
+        latest.current.onInputFrame?.();
         const p = latest.current,
           d = p.data,
           dt = Math.min(0.05, Math.max(0, (now - last) / 1000));

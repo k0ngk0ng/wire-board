@@ -1,0 +1,46 @@
+TAP version 13
+# Subtest: stage resource catalog is source-bound, small, and scene-specific
+ok 1 - stage resource catalog is source-bound, small, and scene-specific
+  ---
+  duration_ms: 4.202917
+  type: 'test'
+  ...
+# Subtest: every published level preset and enabled animation page is present
+ok 2 - every published level preset and enabled animation page is present
+  ---
+  duration_ms: 0.75925
+  type: 'test'
+  ...
+# Subtest: scene and terminal sets keep specific source resources
+ok 3 - scene and terminal sets keep specific source resources
+  ---
+  duration_ms: 0.097708
+  type: 'test'
+  ...
+# Subtest: declared audio recursively covers native percussion and end callbacks
+ok 4 - declared audio recursively covers native percussion and end callbacks
+  ---
+  duration_ms: 2.545792
+  type: 'test'
+  ...
+# Subtest: retained original CHR outputs and stage-native sound requests fit declared sets
+ok 5 - retained original CHR outputs and stage-native sound requests fit declared sets
+  ---
+  duration_ms: 19.795083
+  type: 'test'
+  ...
+# Subtest: new direct pattern writers require explicit manifest review
+ok 6 - new direct pattern writers require explicit manifest review
+  ---
+  duration_ms: 11.669
+  type: 'test'
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 6
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 75.707917

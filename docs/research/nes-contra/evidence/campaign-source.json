@@ -1,0 +1,84 @@
+{
+  "rom_sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+  "archive_sha256": "2c4fd35488d32ca3abf207114893d54ad294f74df8bd1961a7b1e090549bae64",
+  "source_unchanged": true,
+  "slices": [
+    {
+      "name": "fixed",
+      "rom_offset": 114705,
+      "prg_offset": 114689,
+      "cpu_start": "0xc001",
+      "bytes": 16383,
+      "sha256": "ce699850c1c626195b8020d1f5acdc5963e8dc1dc9b68df5a520a7bc26ed3956"
+    },
+    {
+      "name": "ending",
+      "rom_offset": 65889,
+      "prg_offset": 65873,
+      "cpu_start": "0x8151",
+      "bytes": 16047,
+      "sha256": "561b468dbaf0093bc2b0fe48fb79ef4f2ea5287cfdc4337a0b52f5b88b7c8622"
+    }
+  ],
+  "routine_table": {
+    "cpu": "0xcc47",
+    "values": [
+      "0xcc5f",
+      "0xfac6",
+      "0xcc7d",
+      "0xccc0",
+      "0xcccc",
+      "0xcd1f",
+      "0xcdaf",
+      "0xcdf1",
+      "0xcdf8",
+      "0xce3a",
+      "0xfaa6",
+      "0xce4f"
+    ]
+  },
+  "initial_continues": {
+    "cpu": "0xc2c6",
+    "bytes": "a903853a",
+    "value": 3
+  },
+  "standard_reserve_lives": {
+    "cpu": "0xc2e9",
+    "bytes": "a902",
+    "value": 2
+  },
+  "stage_scroll_and_music": {
+    "cpu": "0xccb0",
+    "values": [
+      224,
+      70,
+      232,
+      90,
+      0,
+      74,
+      232,
+      90,
+      224,
+      78,
+      224,
+      82,
+      224,
+      70,
+      224,
+      86
+    ]
+  },
+  "clear_tunes": {
+    "cpu": "0xce32",
+    "values": [
+      0,
+      0,
+      0,
+      0,
+      98,
+      98,
+      0,
+      102
+    ]
+  }
+}

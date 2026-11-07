@@ -1,0 +1,955 @@
+{
+  "version": "classic-v1",
+  "sourceVersion": "PC 1.0.0.1051",
+  "background": "images/background1.jpg",
+  "backgroundCrop": {
+    "x": 220,
+    "y": 0,
+    "width": 800,
+    "height": 600
+  },
+  "lawn": {
+    "x": 40,
+    "y": 80,
+    "width": 720,
+    "height": 500
+  },
+  "sprites": {
+    "peashooter": {
+      "src": "sprites/peashooter-idle.webp",
+      "frameWidth": 83,
+      "frameHeight": 77,
+      "columns": 12,
+      "frames": 25,
+      "fps": 12.0,
+      "anchorX": 38,
+      "anchorY": 75,
+      "sourceFrames": [
+        79,
+        103
+      ],
+      "loop": true,
+      "animations": {
+        "idle": {
+          "src": "sprites/peashooter-idle.webp",
+          "frameWidth": 83,
+          "frameHeight": 77,
+          "columns": 12,
+          "frames": 25,
+          "fps": 12.0,
+          "anchorX": 38,
+          "anchorY": 75,
+          "sourceFrames": [
+            79,
+            103
+          ],
+          "loop": true
+        },
+        "attack": {
+          "src": "sprites/peashooter-attack.webp",
+          "frameWidth": 83,
+          "frameHeight": 77,
+          "columns": 12,
+          "frames": 25,
+          "fps": 12.0,
+          "anchorX": 38,
+          "anchorY": 75,
+          "sourceFrames": [
+            54,
+            78
+          ],
+          "loop": true
+        }
+      }
+    },
+    "sunflower": {
+      "src": "sprites/sunflower-idle.webp",
+      "frameWidth": 79,
+      "frameHeight": 80,
+      "columns": 12,
+      "frames": 25,
+      "fps": 12.0,
+      "anchorX": 37,
+      "anchorY": 78,
+      "sourceFrames": [
+        4,
+        28
+      ],
+      "loop": true,
+      "animations": {
+        "idle": {
+          "src": "sprites/sunflower-idle.webp",
+          "frameWidth": 79,
+          "frameHeight": 80,
+          "columns": 12,
+          "frames": 25,
+          "fps": 12.0,
+          "anchorX": 37,
+          "anchorY": 78,
+          "sourceFrames": [
+            4,
+            28
+          ],
+          "loop": true
+        }
+      }
+    },
+    "cherrybomb": {
+      "src": "sprites/cherrybomb-idle.webp",
+      "frameWidth": 133,
+      "frameHeight": 99,
+      "columns": 12,
+      "frames": 13,
+      "fps": 30.0,
+      "anchorX": 65,
+      "anchorY": 93,
+      "sourceFrames": [
+        14,
+        26
+      ],
+      "loop": true,
+      "animations": {
+        "idle": {
+          "src": "sprites/cherrybomb-idle.webp",
+          "frameWidth": 133,
+          "frameHeight": 99,
+          "columns": 12,
+          "frames": 13,
+          "fps": 30.0,
+          "anchorX": 65,
+          "anchorY": 93,
+          "sourceFrames": [
+            14,
+            26
+          ],
+          "loop": true
+        },
+        "attack": {
+          "src": "sprites/cherrybomb-attack.webp",
+          "frameWidth": 133,
+          "frameHeight": 99,
+          "columns": 12,
+          "frames": 14,
+          "fps": 30.0,
+          "anchorX": 65,
+          "anchorY": 93,
+          "sourceFrames": [
+            0,
+            13
+          ],
+          "loop": true
+        }
+      }
+    },
+    "wallnut": {
+      "src": "sprites/wallnut-idle.webp",
+      "frameWidth": 82,
+      "frameHeight": 79,
+      "columns": 12,
+      "frames": 17,
+      "fps": 12.0,
+      "anchorX": 39,
+      "anchorY": 79,
+      "sourceFrames": [
+        0,
+        16
+      ],
+      "loop": true,
+      "animations": {
+        "idle": {
+          "src": "sprites/wallnut-idle.webp",
+          "frameWidth": 82,
+          "frameHeight": 79,
+          "columns": 12,
+          "frames": 17,
+          "fps": 12.0,
+          "anchorX": 39,
+          "anchorY": 79,
+          "sourceFrames": [
+            0,
+            16
+          ],
+          "loop": true
+        }
+      }
+    },
+    "potatomine": {
+      "src": "sprites/potatomine-idle.webp",
+      "frameWidth": 101,
+      "frameHeight": 83,
+      "columns": 11,
+      "frames": 11,
+      "fps": 12.0,
+      "anchorX": 53,
+      "anchorY": 78,
+      "sourceFrames": [
+        20,
+        30
+      ],
+      "loop": true,
+      "animations": {
+        "idle": {
+          "src": "sprites/potatomine-idle.webp",
+          "frameWidth": 101,
+          "frameHeight": 83,
+          "columns": 11,
+          "frames": 11,
+          "fps": 12.0,
+          "anchorX": 53,
+          "anchorY": 78,
+          "sourceFrames": [
+            20,
+            30
+          ],
+          "loop": true
+        },
+        "unarmed": {
+          "src": "sprites/potatomine-unarmed.webp",
+          "frameWidth": 101,
+          "frameHeight": 83,
+          "columns": 1,
+          "frames": 1,
+          "fps": 12.0,
+          "anchorX": 53,
+          "anchorY": 78,
+          "sourceFrames": [
+            0,
+            0
+          ],
+          "loop": true
+        },
+        "attack": {
+          "src": "sprites/potatomine-attack.webp",
+          "frameWidth": 101,
+          "frameHeight": 83,
+          "columns": 12,
+          "frames": 19,
+          "fps": 12.0,
+          "anchorX": 53,
+          "anchorY": 78,
+          "sourceFrames": [
+            1,
+            19
+          ],
+          "loop": true
+        }
+      }
+    },
+    "snowpea": {
+      "src": "sprites/snowpea-idle.webp",
+      "frameWidth": 80,
+      "frameHeight": 77,
+      "columns": 12,
+      "frames": 25,
+      "fps": 12.0,
+      "anchorX": 37,
+      "anchorY": 75,
+      "sourceFrames": [
+        79,
+        103
+      ],
+      "loop": true,
+      "animations": {
+        "idle": {
+          "src": "sprites/snowpea-idle.webp",
+          "frameWidth": 80,
+          "frameHeight": 77,
+          "columns": 12,
+          "frames": 25,
+          "fps": 12.0,
+          "anchorX": 37,
+          "anchorY": 75,
+          "sourceFrames": [
+            79,
+            103
+          ],
+          "loop": true
+        },
+        "attack": {
+          "src": "sprites/snowpea-attack.webp",
+          "frameWidth": 80,
+          "frameHeight": 77,
+          "columns": 12,
+          "frames": 25,
+          "fps": 12.0,
+          "anchorX": 37,
+          "anchorY": 75,
+          "sourceFrames": [
+            54,
+            78
+          ],
+          "loop": true
+        }
+      }
+    },
+    "repeater": {
+      "src": "sprites/repeater-idle.webp",
+      "frameWidth": 84,
+      "frameHeight": 77,
+      "columns": 12,
+      "frames": 25,
+      "fps": 12.0,
+      "anchorX": 40,
+      "anchorY": 75,
+      "sourceFrames": [
+        79,
+        103
+      ],
+      "loop": true,
+      "animations": {
+        "idle": {
+          "src": "sprites/repeater-idle.webp",
+          "frameWidth": 84,
+          "frameHeight": 77,
+          "columns": 12,
+          "frames": 25,
+          "fps": 12.0,
+          "anchorX": 40,
+          "anchorY": 75,
+          "sourceFrames": [
+            79,
+            103
+          ],
+          "loop": true
+        },
+        "attack": {
+          "src": "sprites/repeater-attack.webp",
+          "frameWidth": 84,
+          "frameHeight": 77,
+          "columns": 12,
+          "frames": 25,
+          "fps": 12.0,
+          "anchorX": 40,
+          "anchorY": 75,
+          "sourceFrames": [
+            54,
+            78
+          ],
+          "loop": true
+        }
+      }
+    },
+    "tallnut": {
+      "src": "sprites/tallnut-idle.webp",
+      "frameWidth": 89,
+      "frameHeight": 125,
+      "columns": 12,
+      "frames": 17,
+      "fps": 12.0,
+      "anchorX": 45,
+      "anchorY": 120,
+      "sourceFrames": [
+        20,
+        36
+      ],
+      "loop": true,
+      "animations": {
+        "idle": {
+          "src": "sprites/tallnut-idle.webp",
+          "frameWidth": 89,
+          "frameHeight": 125,
+          "columns": 12,
+          "frames": 17,
+          "fps": 12.0,
+          "anchorX": 45,
+          "anchorY": 120,
+          "sourceFrames": [
+            20,
+            36
+          ],
+          "loop": true
+        }
+      }
+    },
+    "normal": {
+      "src": "sprites/normal-idle.webp",
+      "frameWidth": 139,
+      "frameHeight": 154,
+      "columns": 12,
+      "frames": 29,
+      "fps": 12.0,
+      "anchorX": 106,
+      "anchorY": 127,
+      "sourceFrames": [
+        0,
+        28
+      ],
+      "loop": true,
+      "animations": {
+        "idle": {
+          "src": "sprites/normal-idle.webp",
+          "frameWidth": 139,
+          "frameHeight": 154,
+          "columns": 12,
+          "frames": 29,
+          "fps": 12.0,
+          "anchorX": 106,
+          "anchorY": 127,
+          "sourceFrames": [
+            0,
+            28
+          ],
+          "loop": true
+        },
+        "walk": {
+          "src": "sprites/normal-walk.webp",
+          "frameWidth": 139,
+          "frameHeight": 154,
+          "columns": 12,
+          "frames": 47,
+          "fps": 12.0,
+          "anchorX": 106,
+          "anchorY": 127,
+          "sourceFrames": [
+            44,
+            90
+          ],
+          "loop": true
+        },
+        "attack": {
+          "src": "sprites/normal-attack.webp",
+          "frameWidth": 139,
+          "frameHeight": 154,
+          "columns": 12,
+          "frames": 40,
+          "fps": 12.0,
+          "anchorX": 106,
+          "anchorY": 127,
+          "sourceFrames": [
+            138,
+            177
+          ],
+          "loop": true
+        },
+        "death": {
+          "src": "sprites/normal-death.webp",
+          "frameWidth": 139,
+          "frameHeight": 154,
+          "columns": 12,
+          "frames": 39,
+          "fps": 12.0,
+          "anchorX": 106,
+          "anchorY": 127,
+          "sourceFrames": [
+            178,
+            216
+          ],
+          "loop": false
+        }
+      }
+    },
+    "conehead": {
+      "src": "sprites/conehead-idle.webp",
+      "frameWidth": 139,
+      "frameHeight": 172,
+      "columns": 12,
+      "frames": 29,
+      "fps": 12.0,
+      "anchorX": 106,
+      "anchorY": 145,
+      "sourceFrames": [
+        0,
+        28
+      ],
+      "loop": true,
+      "animations": {
+        "idle": {
+          "src": "sprites/conehead-idle.webp",
+          "frameWidth": 139,
+          "frameHeight": 172,
+          "columns": 12,
+          "frames": 29,
+          "fps": 12.0,
+          "anchorX": 106,
+          "anchorY": 145,
+          "sourceFrames": [
+            0,
+            28
+          ],
+          "loop": true
+        },
+        "walk": {
+          "src": "sprites/conehead-walk.webp",
+          "frameWidth": 139,
+          "frameHeight": 172,
+          "columns": 12,
+          "frames": 47,
+          "fps": 12.0,
+          "anchorX": 106,
+          "anchorY": 145,
+          "sourceFrames": [
+            44,
+            90
+          ],
+          "loop": true
+        },
+        "attack": {
+          "src": "sprites/conehead-attack.webp",
+          "frameWidth": 139,
+          "frameHeight": 172,
+          "columns": 12,
+          "frames": 40,
+          "fps": 12.0,
+          "anchorX": 106,
+          "anchorY": 145,
+          "sourceFrames": [
+            138,
+            177
+          ],
+          "loop": true
+        },
+        "death": {
+          "src": "sprites/conehead-death.webp",
+          "frameWidth": 139,
+          "frameHeight": 172,
+          "columns": 12,
+          "frames": 39,
+          "fps": 12.0,
+          "anchorX": 106,
+          "anchorY": 145,
+          "sourceFrames": [
+            178,
+            216
+          ],
+          "loop": false
+        }
+      }
+    },
+    "buckethead": {
+      "src": "sprites/buckethead-idle.webp",
+      "frameWidth": 139,
+      "frameHeight": 165,
+      "columns": 12,
+      "frames": 29,
+      "fps": 12.0,
+      "anchorX": 106,
+      "anchorY": 138,
+      "sourceFrames": [
+        0,
+        28
+      ],
+      "loop": true,
+      "animations": {
+        "idle": {
+          "src": "sprites/buckethead-idle.webp",
+          "frameWidth": 139,
+          "frameHeight": 165,
+          "columns": 12,
+          "frames": 29,
+          "fps": 12.0,
+          "anchorX": 106,
+          "anchorY": 138,
+          "sourceFrames": [
+            0,
+            28
+          ],
+          "loop": true
+        },
+        "walk": {
+          "src": "sprites/buckethead-walk.webp",
+          "frameWidth": 139,
+          "frameHeight": 165,
+          "columns": 12,
+          "frames": 47,
+          "fps": 12.0,
+          "anchorX": 106,
+          "anchorY": 138,
+          "sourceFrames": [
+            44,
+            90
+          ],
+          "loop": true
+        },
+        "attack": {
+          "src": "sprites/buckethead-attack.webp",
+          "frameWidth": 139,
+          "frameHeight": 165,
+          "columns": 12,
+          "frames": 40,
+          "fps": 12.0,
+          "anchorX": 106,
+          "anchorY": 138,
+          "sourceFrames": [
+            138,
+            177
+          ],
+          "loop": true
+        },
+        "death": {
+          "src": "sprites/buckethead-death.webp",
+          "frameWidth": 139,
+          "frameHeight": 165,
+          "columns": 12,
+          "frames": 39,
+          "fps": 12.0,
+          "anchorX": 106,
+          "anchorY": 138,
+          "sourceFrames": [
+            178,
+            216
+          ],
+          "loop": false
+        }
+      }
+    },
+    "newspaper": {
+      "src": "sprites/newspaper-idle.webp",
+      "frameWidth": 162,
+      "frameHeight": 172,
+      "columns": 12,
+      "frames": 25,
+      "fps": 12.0,
+      "anchorX": 120,
+      "anchorY": 135,
+      "sourceFrames": [
+        0,
+        24
+      ],
+      "loop": true,
+      "animations": {
+        "idle": {
+          "src": "sprites/newspaper-idle.webp",
+          "frameWidth": 162,
+          "frameHeight": 172,
+          "columns": 12,
+          "frames": 25,
+          "fps": 12.0,
+          "anchorX": 120,
+          "anchorY": 135,
+          "sourceFrames": [
+            0,
+            24
+          ],
+          "loop": true
+        },
+        "walk": {
+          "src": "sprites/newspaper-walk.webp",
+          "frameWidth": 162,
+          "frameHeight": 172,
+          "columns": 12,
+          "frames": 47,
+          "fps": 12.0,
+          "anchorX": 120,
+          "anchorY": 135,
+          "sourceFrames": [
+            25,
+            71
+          ],
+          "loop": true
+        },
+        "attack": {
+          "src": "sprites/newspaper-attack.webp",
+          "frameWidth": 162,
+          "frameHeight": 172,
+          "columns": 12,
+          "frames": 24,
+          "fps": 12.0,
+          "anchorX": 120,
+          "anchorY": 135,
+          "sourceFrames": [
+            72,
+            95
+          ],
+          "loop": true
+        },
+        "rage": {
+          "src": "sprites/newspaper-rage.webp",
+          "frameWidth": 162,
+          "frameHeight": 172,
+          "columns": 12,
+          "frames": 47,
+          "fps": 12.0,
+          "anchorX": 120,
+          "anchorY": 135,
+          "sourceFrames": [
+            145,
+            191
+          ],
+          "loop": true
+        },
+        "death": {
+          "src": "sprites/newspaper-death.webp",
+          "frameWidth": 162,
+          "frameHeight": 172,
+          "columns": 12,
+          "frames": 36,
+          "fps": 12.0,
+          "anchorX": 120,
+          "anchorY": 135,
+          "sourceFrames": [
+            96,
+            131
+          ],
+          "loop": false
+        }
+      }
+    },
+    "pole": {
+      "src": "sprites/pole-idle.webp",
+      "frameWidth": 428,
+      "frameHeight": 272,
+      "columns": 12,
+      "frames": 13,
+      "fps": 12.0,
+      "anchorX": 319,
+      "anchorY": 234,
+      "sourceFrames": [
+        0,
+        12
+      ],
+      "loop": true,
+      "animations": {
+        "idle": {
+          "src": "sprites/pole-idle.webp",
+          "frameWidth": 428,
+          "frameHeight": 272,
+          "columns": 12,
+          "frames": 13,
+          "fps": 12.0,
+          "anchorX": 319,
+          "anchorY": 234,
+          "sourceFrames": [
+            0,
+            12
+          ],
+          "loop": true
+        },
+        "walk": {
+          "src": "sprites/pole-walk.webp",
+          "frameWidth": 428,
+          "frameHeight": 272,
+          "columns": 12,
+          "frames": 37,
+          "fps": 12.0,
+          "anchorX": 319,
+          "anchorY": 234,
+          "sourceFrames": [
+            13,
+            49
+          ],
+          "loop": true
+        },
+        "attack": {
+          "src": "sprites/pole-attack.webp",
+          "frameWidth": 428,
+          "frameHeight": 272,
+          "columns": 12,
+          "frames": 28,
+          "fps": 12.0,
+          "anchorX": 319,
+          "anchorY": 234,
+          "sourceFrames": [
+            165,
+            192
+          ],
+          "loop": true
+        },
+        "jump": {
+          "src": "sprites/pole-jump.webp",
+          "frameWidth": 428,
+          "frameHeight": 272,
+          "columns": 12,
+          "frames": 43,
+          "fps": 12.0,
+          "anchorX": 319,
+          "anchorY": 234,
+          "sourceFrames": [
+            50,
+            92
+          ],
+          "loop": false
+        },
+        "spent": {
+          "src": "sprites/pole-spent.webp",
+          "frameWidth": 428,
+          "frameHeight": 272,
+          "columns": 12,
+          "frames": 45,
+          "fps": 12.0,
+          "anchorX": 319,
+          "anchorY": 234,
+          "sourceFrames": [
+            93,
+            137
+          ],
+          "loop": true
+        },
+        "death": {
+          "src": "sprites/pole-death.webp",
+          "frameWidth": 428,
+          "frameHeight": 272,
+          "columns": 12,
+          "frames": 27,
+          "fps": 12.0,
+          "anchorX": 319,
+          "anchorY": 234,
+          "sourceFrames": [
+            138,
+            164
+          ],
+          "loop": false
+        }
+      }
+    },
+    "football": {
+      "src": "sprites/football-idle.webp",
+      "frameWidth": 265,
+      "frameHeight": 205,
+      "columns": 12,
+      "frames": 21,
+      "fps": 12.0,
+      "anchorX": 93,
+      "anchorY": 149,
+      "sourceFrames": [
+        0,
+        20
+      ],
+      "loop": true,
+      "animations": {
+        "idle": {
+          "src": "sprites/football-idle.webp",
+          "frameWidth": 265,
+          "frameHeight": 205,
+          "columns": 12,
+          "frames": 21,
+          "fps": 12.0,
+          "anchorX": 93,
+          "anchorY": 149,
+          "sourceFrames": [
+            0,
+            20
+          ],
+          "loop": true
+        },
+        "walk": {
+          "src": "sprites/football-walk.webp",
+          "frameWidth": 265,
+          "frameHeight": 205,
+          "columns": 12,
+          "frames": 30,
+          "fps": 12.0,
+          "anchorX": 93,
+          "anchorY": 149,
+          "sourceFrames": [
+            21,
+            50
+          ],
+          "loop": true
+        },
+        "attack": {
+          "src": "sprites/football-attack.webp",
+          "frameWidth": 265,
+          "frameHeight": 205,
+          "columns": 12,
+          "frames": 36,
+          "fps": 12.0,
+          "anchorX": 93,
+          "anchorY": 149,
+          "sourceFrames": [
+            51,
+            86
+          ],
+          "loop": true
+        },
+        "death": {
+          "src": "sprites/football-death.webp",
+          "frameWidth": 265,
+          "frameHeight": 205,
+          "columns": 12,
+          "frames": 18,
+          "fps": 12.0,
+          "anchorX": 93,
+          "anchorY": 149,
+          "sourceFrames": [
+            87,
+            104
+          ],
+          "loop": false
+        }
+      }
+    },
+    "mower": {
+      "src": "sprites/mower-idle.webp",
+      "frameWidth": 94,
+      "frameHeight": 79,
+      "columns": 12,
+      "frames": 17,
+      "fps": 20.0,
+      "anchorX": 48,
+      "anchorY": 82,
+      "sourceFrames": [
+        0,
+        16
+      ],
+      "loop": true,
+      "animations": {
+        "idle": {
+          "src": "sprites/mower-idle.webp",
+          "frameWidth": 94,
+          "frameHeight": 79,
+          "columns": 12,
+          "frames": 17,
+          "fps": 20.0,
+          "anchorX": 48,
+          "anchorY": 82,
+          "sourceFrames": [
+            0,
+            16
+          ],
+          "loop": true
+        }
+      }
+    },
+    "sun": {
+      "src": "sprites/sun-idle.webp",
+      "frameWidth": 146,
+      "frameHeight": 146,
+      "columns": 12,
+      "frames": 13,
+      "fps": 12.0,
+      "anchorX": 73,
+      "anchorY": 73,
+      "sourceFrames": [
+        0,
+        12
+      ],
+      "loop": true,
+      "animations": {
+        "idle": {
+          "src": "sprites/sun-idle.webp",
+          "frameWidth": 146,
+          "frameHeight": 146,
+          "columns": 12,
+          "frames": 13,
+          "fps": 12.0,
+          "anchorX": 73,
+          "anchorY": 73,
+          "sourceFrames": [
+            0,
+            12
+          ],
+          "loop": true
+        }
+      }
+    }
+  },
+  "images": {
+    "background": "images/background1.jpg",
+    "shovel": "images/Shovel.png",
+    "seedpacket": "images/SeedPacket_Larger.png",
+    "seedbank": "images/SeedBank.png",
+    "projectile": "images/ProjectilePea.png",
+    "snowProjectile": "images/ProjectileSnowPea.png",
+    "shadow": "images/plantshadow.png"
+  },
+  "audio": {
+    "plant": "audio/plant.ogg",
+    "spawn": "audio/groan.ogg",
+    "shoot": "audio/throw.ogg",
+    "hit": "audio/splat.ogg",
+    "explosion": "audio/cherrybomb.ogg",
+    "mower": "audio/lawnmower.ogg",
+    "shovel": "audio/shovel.ogg",
+    "sun": "audio/points.ogg"
+  }
+}

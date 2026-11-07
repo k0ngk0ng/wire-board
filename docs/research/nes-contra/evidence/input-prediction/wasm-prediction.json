@@ -1,0 +1,20 @@
+{
+  "passed": true,
+  "scope": "Actual Wasm rules, no server-frame progress during initial local response; deterministic 60Hz test clock",
+  "cases": [
+    {
+      "actor": 0,
+      "visibleAfterMS": 50,
+      "authorityFrame": "60",
+      "predictedFrame": "63",
+      "authorityUnchanged": true
+    },
+    {
+      "actor": 1,
+      "visibleAfterMS": 50,
+      "authorityFrame": "60",
+      "predictedFrame": "63",
+      "authorityUnchanged": true
+    }
+  ]
+}

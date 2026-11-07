@@ -1,0 +1,790 @@
+{
+  "status": "pass",
+  "scope": "asset pipeline; not original Windows runtime equivalence",
+  "units": [
+    {
+      "kind": "peashooter",
+      "clips": 8,
+      "compressedBytes": 59996,
+      "previewSize": [
+        62,
+        60
+      ]
+    },
+    {
+      "kind": "sunflower",
+      "clips": 6,
+      "compressedBytes": 102789,
+      "previewSize": [
+        62,
+        64
+      ]
+    },
+    {
+      "kind": "cherrybomb",
+      "clips": 8,
+      "compressedBytes": 38779,
+      "previewSize": [
+        77,
+        62
+      ]
+    },
+    {
+      "kind": "wallnut",
+      "clips": 8,
+      "compressedBytes": 1177,
+      "previewSize": [
+        62,
+        71
+      ]
+    },
+    {
+      "kind": "potatomine",
+      "clips": 8,
+      "compressedBytes": 6474,
+      "previewSize": [
+        95,
+        75
+      ]
+    },
+    {
+      "kind": "snowpea",
+      "clips": 8,
+      "compressedBytes": 74168,
+      "previewSize": [
+        63,
+        63
+      ]
+    },
+    {
+      "kind": "chomper",
+      "clips": 13,
+      "compressedBytes": 244881,
+      "previewSize": [
+        80,
+        94
+      ]
+    },
+    {
+      "kind": "repeater",
+      "clips": 8,
+      "compressedBytes": 93305,
+      "previewSize": [
+        66,
+        60
+      ]
+    },
+    {
+      "kind": "puffshroom",
+      "clips": 10,
+      "compressedBytes": 3883,
+      "previewSize": [
+        35,
+        35
+      ]
+    },
+    {
+      "kind": "sunshroom",
+      "clips": 12,
+      "compressedBytes": 3710,
+      "previewSize": [
+        34,
+        37
+      ]
+    },
+    {
+      "kind": "fumeshroom",
+      "clips": 10,
+      "compressedBytes": 9090,
+      "previewSize": [
+        80,
+        81
+      ]
+    },
+    {
+      "kind": "gravebuster",
+      "clips": 8,
+      "compressedBytes": 48053,
+      "previewSize": [
+        100,
+        75
+      ]
+    },
+    {
+      "kind": "hypnoshroom",
+      "clips": 8,
+      "compressedBytes": 6391,
+      "previewSize": [
+        55,
+        77
+      ]
+    },
+    {
+      "kind": "scaredyshroom",
+      "clips": 13,
+      "compressedBytes": 24512,
+      "previewSize": [
+        49,
+        70
+      ]
+    },
+    {
+      "kind": "iceshroom",
+      "clips": 8,
+      "compressedBytes": 1491,
+      "previewSize": [
+        82,
+        75
+      ]
+    },
+    {
+      "kind": "doomshroom",
+      "clips": 10,
+      "compressedBytes": 4292,
+      "previewSize": [
+        81,
+        76
+      ]
+    },
+    {
+      "kind": "lilypad",
+      "clips": 6,
+      "compressedBytes": 298,
+      "previewSize": [
+        78,
+        56
+      ]
+    },
+    {
+      "kind": "squash",
+      "clips": 11,
+      "compressedBytes": 7052,
+      "previewSize": [
+        68,
+        82
+      ]
+    },
+    {
+      "kind": "threepeater",
+      "clips": 10,
+      "compressedBytes": 136206,
+      "previewSize": [
+        69,
+        78
+      ]
+    },
+    {
+      "kind": "tanglekelp",
+      "clips": 9,
+      "compressedBytes": 37766,
+      "previewSize": [
+        88,
+        68
+      ]
+    },
+    {
+      "kind": "jalapeno",
+      "clips": 8,
+      "compressedBytes": 6694,
+      "previewSize": [
+        46,
+        76
+      ]
+    },
+    {
+      "kind": "spikeweed",
+      "clips": 8,
+      "compressedBytes": 6077,
+      "previewSize": [
+        81,
+        33
+      ]
+    },
+    {
+      "kind": "torchwood",
+      "clips": 6,
+      "compressedBytes": 3023,
+      "previewSize": [
+        69,
+        89
+      ]
+    },
+    {
+      "kind": "tallnut",
+      "clips": 8,
+      "compressedBytes": 1173,
+      "previewSize": [
+        79,
+        119
+      ]
+    },
+    {
+      "kind": "seashroom",
+      "clips": 10,
+      "compressedBytes": 12170,
+      "previewSize": [
+        45,
+        49
+      ]
+    },
+    {
+      "kind": "plantern",
+      "clips": 6,
+      "compressedBytes": 49416,
+      "previewSize": [
+        81,
+        89
+      ]
+    },
+    {
+      "kind": "cactus",
+      "clips": 13,
+      "compressedBytes": 43033,
+      "previewSize": [
+        85,
+        77
+      ]
+    },
+    {
+      "kind": "blover",
+      "clips": 8,
+      "compressedBytes": 27484,
+      "previewSize": [
+        86,
+        85
+      ]
+    },
+    {
+      "kind": "splitpea",
+      "clips": 9,
+      "compressedBytes": 69964,
+      "previewSize": [
+        85,
+        63
+      ]
+    },
+    {
+      "kind": "starfruit",
+      "clips": 8,
+      "compressedBytes": 6839,
+      "previewSize": [
+        74,
+        67
+      ]
+    },
+    {
+      "kind": "pumpkin",
+      "clips": 8,
+      "compressedBytes": 1276,
+      "previewSize": [
+        93,
+        62
+      ]
+    },
+    {
+      "kind": "magnetshroom",
+      "clips": 10,
+      "compressedBytes": 57794,
+      "previewSize": [
+        54,
+        72
+      ]
+    },
+    {
+      "kind": "cabbagepult",
+      "clips": 8,
+      "compressedBytes": 137058,
+      "previewSize": [
+        87,
+        72
+      ]
+    },
+    {
+      "kind": "flowerpot",
+      "clips": 6,
+      "compressedBytes": 2179,
+      "previewSize": [
+        67,
+        64
+      ]
+    },
+    {
+      "kind": "kernelpult",
+      "clips": 8,
+      "compressedBytes": 103914,
+      "previewSize": [
+        97,
+        73
+      ]
+    },
+    {
+      "kind": "coffeebean",
+      "clips": 8,
+      "compressedBytes": 1066,
+      "previewSize": [
+        46,
+        60
+      ]
+    },
+    {
+      "kind": "garlic",
+      "clips": 8,
+      "compressedBytes": 2842,
+      "previewSize": [
+        54,
+        56
+      ]
+    },
+    {
+      "kind": "umbrellaleaf",
+      "clips": 9,
+      "compressedBytes": 15463,
+      "previewSize": [
+        78,
+        66
+      ]
+    },
+    {
+      "kind": "marigold",
+      "clips": 6,
+      "compressedBytes": 45601,
+      "previewSize": [
+        52,
+        72
+      ]
+    },
+    {
+      "kind": "melonpult",
+      "clips": 8,
+      "compressedBytes": 85549,
+      "previewSize": [
+        106,
+        89
+      ]
+    },
+    {
+      "kind": "gatlingpea",
+      "clips": 8,
+      "compressedBytes": 96075,
+      "previewSize": [
+        75,
+        73
+      ]
+    },
+    {
+      "kind": "twinsunflower",
+      "clips": 6,
+      "compressedBytes": 62451,
+      "previewSize": [
+        87,
+        81
+      ]
+    },
+    {
+      "kind": "gloomshroom",
+      "clips": 10,
+      "compressedBytes": 35682,
+      "previewSize": [
+        82,
+        75
+      ]
+    },
+    {
+      "kind": "cattail",
+      "clips": 8,
+      "compressedBytes": 22353,
+      "previewSize": [
+        82,
+        74
+      ]
+    },
+    {
+      "kind": "wintermelon",
+      "clips": 8,
+      "compressedBytes": 87130,
+      "previewSize": [
+        104,
+        97
+      ]
+    },
+    {
+      "kind": "goldmagnet",
+      "clips": 8,
+      "compressedBytes": 88258,
+      "previewSize": [
+        62,
+        75
+      ]
+    },
+    {
+      "kind": "spikerock",
+      "clips": 8,
+      "compressedBytes": 28114,
+      "previewSize": [
+        81,
+        43
+      ]
+    },
+    {
+      "kind": "cobcannon",
+      "clips": 11,
+      "compressedBytes": 39616,
+      "previewSize": [
+        160,
+        94
+      ]
+    },
+    {
+      "kind": "imitater",
+      "clips": 9,
+      "compressedBytes": 72019,
+      "previewSize": [
+        51,
+        74
+      ]
+    },
+    {
+      "kind": "explodeonut",
+      "clips": 6,
+      "compressedBytes": 1032,
+      "previewSize": [
+        62,
+        71
+      ]
+    },
+    {
+      "kind": "giantwallnut",
+      "clips": 6,
+      "compressedBytes": 1002,
+      "previewSize": [
+        62,
+        71
+      ]
+    },
+    {
+      "kind": "sprout",
+      "clips": 8,
+      "compressedBytes": 20938,
+      "previewSize": [
+        22,
+        34
+      ]
+    },
+    {
+      "kind": "leftpeater",
+      "clips": 8,
+      "compressedBytes": 93303,
+      "previewSize": [
+        66,
+        60
+      ]
+    },
+    {
+      "kind": "normal",
+      "clips": 17,
+      "compressedBytes": 323811,
+      "previewSize": [
+        75,
+        120
+      ]
+    },
+    {
+      "kind": "flag",
+      "clips": 17,
+      "compressedBytes": 336765,
+      "previewSize": [
+        100,
+        143
+      ]
+    },
+    {
+      "kind": "conehead",
+      "clips": 23,
+      "compressedBytes": 449298,
+      "previewSize": [
+        73,
+        142
+      ]
+    },
+    {
+      "kind": "pole",
+      "clips": 15,
+      "compressedBytes": 249355,
+      "previewSize": [
+        160,
+        109
+      ]
+    },
+    {
+      "kind": "buckethead",
+      "clips": 23,
+      "compressedBytes": 448072,
+      "previewSize": [
+        79,
+        134
+      ]
+    },
+    {
+      "kind": "newspaper",
+      "clips": 20,
+      "compressedBytes": 363684,
+      "previewSize": [
+        92,
+        122
+      ]
+    },
+    {
+      "kind": "screendoor",
+      "clips": 17,
+      "compressedBytes": 237952,
+      "previewSize": [
+        82,
+        125
+      ]
+    },
+    {
+      "kind": "football",
+      "clips": 12,
+      "compressedBytes": 126744,
+      "previewSize": [
+        124,
+        139
+      ]
+    },
+    {
+      "kind": "dancing",
+      "clips": 17,
+      "compressedBytes": 178744,
+      "previewSize": [
+        73,
+        139
+      ]
+    },
+    {
+      "kind": "backupdancer",
+      "clips": 15,
+      "compressedBytes": 174050,
+      "previewSize": [
+        81,
+        145
+      ]
+    },
+    {
+      "kind": "duckytube",
+      "clips": 17,
+      "compressedBytes": 336147,
+      "previewSize": [
+        80,
+        120
+      ]
+    },
+    {
+      "kind": "snorkel",
+      "clips": 23,
+      "compressedBytes": 196280,
+      "previewSize": [
+        74,
+        140
+      ]
+    },
+    {
+      "kind": "zomboni",
+      "clips": 10,
+      "compressedBytes": 29142,
+      "previewSize": [
+        160,
+        154
+      ]
+    },
+    {
+      "kind": "bobsled",
+      "clips": 16,
+      "compressedBytes": 237801,
+      "previewSize": [
+        72,
+        121
+      ]
+    },
+    {
+      "kind": "dolphin",
+      "clips": 18,
+      "compressedBytes": 286786,
+      "previewSize": [
+        99,
+        112
+      ]
+    },
+    {
+      "kind": "jackinthebox",
+      "clips": 14,
+      "compressedBytes": 109274,
+      "previewSize": [
+        105,
+        132
+      ]
+    },
+    {
+      "kind": "balloon",
+      "clips": 13,
+      "compressedBytes": 172138,
+      "previewSize": [
+        78,
+        127
+      ]
+    },
+    {
+      "kind": "digger",
+      "clips": 19,
+      "compressedBytes": 200092,
+      "previewSize": [
+        103,
+        131
+      ]
+    },
+    {
+      "kind": "pogo",
+      "clips": 12,
+      "compressedBytes": 229877,
+      "previewSize": [
+        72,
+        120
+      ]
+    },
+    {
+      "kind": "yeti",
+      "clips": 12,
+      "compressedBytes": 112263,
+      "previewSize": [
+        97,
+        155
+      ]
+    },
+    {
+      "kind": "bungee",
+      "clips": 11,
+      "compressedBytes": 91522,
+      "previewSize": [
+        145,
+        101
+      ]
+    },
+    {
+      "kind": "ladder",
+      "clips": 15,
+      "compressedBytes": 267292,
+      "previewSize": [
+        97,
+        126
+      ]
+    },
+    {
+      "kind": "catapult",
+      "clips": 12,
+      "compressedBytes": 115673,
+      "previewSize": [
+        160,
+        127
+      ]
+    },
+    {
+      "kind": "gargantuar",
+      "clips": 14,
+      "compressedBytes": 433260,
+      "previewSize": [
+        156,
+        180
+      ]
+    },
+    {
+      "kind": "imp",
+      "clips": 14,
+      "compressedBytes": 199001,
+      "previewSize": [
+        52,
+        81
+      ]
+    },
+    {
+      "kind": "zomboss",
+      "clips": 40,
+      "compressedBytes": 770391,
+      "previewSize": [
+        90,
+        180
+      ]
+    },
+    {
+      "kind": "peahead",
+      "clips": 17,
+      "compressedBytes": 388818,
+      "previewSize": [
+        92,
+        126
+      ]
+    },
+    {
+      "kind": "wallnuthead",
+      "clips": 17,
+      "compressedBytes": 306770,
+      "previewSize": [
+        95,
+        130
+      ]
+    },
+    {
+      "kind": "jalapenohead",
+      "clips": 17,
+      "compressedBytes": 548696,
+      "previewSize": [
+        102,
+        139
+      ]
+    },
+    {
+      "kind": "gatlinghead",
+      "clips": 17,
+      "compressedBytes": 538986,
+      "previewSize": [
+        101,
+        133
+      ]
+    },
+    {
+      "kind": "squashhead",
+      "clips": 19,
+      "compressedBytes": 469787,
+      "previewSize": [
+        91,
+        150
+      ]
+    },
+    {
+      "kind": "tallnuthead",
+      "clips": 17,
+      "compressedBytes": 306744,
+      "previewSize": [
+        115,
+        162
+      ]
+    },
+    {
+      "kind": "redeye",
+      "clips": 14,
+      "compressedBytes": 433327,
+      "previewSize": [
+        156,
+        180
+      ]
+    }
+  ],
+  "decodedSharedImages": 933,
+  "declaredFiles": 1434,
+  "semanticChecks": [
+    "shooter-body",
+    "multihead-body",
+    "original-damage-stages",
+    "bobsled-team",
+    "pool-water",
+    "roof-slope"
+  ]
+}

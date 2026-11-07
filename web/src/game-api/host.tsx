@@ -1,6 +1,6 @@
 import type { GameSetupFormProps } from "../ui/create-room";
 import { useContext, useEffect, useState } from "react";
-import { ArrowRight, Check, Clock, Crown, Plus } from "lucide-react";
+import { X, ArrowRight, Check, Clock, Crown, Plus } from "lucide-react";
 import { AssetsContext } from "../ui/board-host";
 import type { Act, Room } from "../types";
 import "./host.css";
@@ -9,6 +9,9 @@ import { PlayerName } from "../profiles";
 import { gameModule, gameName } from "./registry";
 import { GameViewportFit } from "./viewport-fit";
 import { NetworkSignal } from "../ui/network-signal";
+import { cooperativeRatingNotice } from "../ui/cooperative-rating";
+import { GameMobilePlayNotice } from "../ui/game-mobile-play-notice";
+import { NavigationController } from "../controllers/NavigationController";
 
 export function GameBoard({
   room,
@@ -33,7 +36,7 @@ export function GameBoard({
   inputWindow?: number;
   loadEvents?: Pick<
     import("./module").BoardProps,
-    "onReady" | "onLoadProgress" | "onLoadError"
+    "onReady" | "onLoadProgress" | "onLoadError" | "loadSizes"
   >;
 }) {
   const module = gameModule(room.kind);
@@ -54,11 +57,17 @@ export function GameBoard({
       clock={clock}
     />
   );
-  return module.viewportFit ? (
+  const fitted = module.viewportFit ? (
     <GameViewportFit enabled={!room.loading}>{board}</GameViewportFit>
   ) : (
     board
   );
+  return <>
+    <NavigationController gameId={room.kind} userId={room.seats[room.you]?.id ?? ""}
+      enabled={!busy && !room.spectating && room.you >= 0 && !room.seats[room.you]?.autoPlay && !room.seats[room.you]?.left} />
+    {fitted}
+    <GameMobilePlayNotice enabled={module.mobilePlayNotice} />
+  </>;
 }
 
 export function ModuleCreate({
@@ -152,6 +161,11 @@ export function ModuleCreate({
         创建房间
         <ArrowRight size={18} />
       </button>
+      {module.ratingPolicy === "coop_campaign_v1" && (
+        <p className="muted small">
+          {cooperativeRatingNotice(!!module.supportsBots)}
+        </p>
+      )}
     </form>
   );
 }
@@ -192,16 +206,24 @@ export function ModuleWaiting({
         <span className="tag">
           {module.playerCounts?.join(" / ") ??
             `${module.minPlayers}～${module.maxPlayers}`}{" "}
-          人 · {module.supportsBots ? "支持电脑与托管" : "好友对局"}
+          人 ·{" "}
+          {module.supportsBots
+            ? "支持电脑与托管"
+            : module.minPlayers === 1
+              ? "单人或好友同玩"
+              : "好友对局"}
         </span>
       </div>
       <div className="waiting-seats">
         <span className="eyebrow">TAKE YOUR SEAT</span>
         <h2>
-          {module.supportsBots
-            ? "朋友或电脑，到齐就开局。"
-            : "好友到齐，就能开局。"}
+          {room.capacity === 1
+            ? "准备好，就能开局。"
+            : module.supportsBots
+              ? "朋友或电脑，到齐就开局。"
+              : "好友到齐，就能开局。"}
         </h2>
+        <GameMobilePlayNotice enabled={module.mobilePlayNotice} />
         {Options && (
           <>
             <Options
@@ -269,15 +291,21 @@ export function ModuleWaiting({
                     className="bot-remove"
                     disabled={busy}
                     aria-label={`移除${seat.name}`}
+                    title={`移除${seat.name}`}
                     onClick={() => command("remove_bot", { target: seat.id })}
                   >
-                    移除
+                    <X size={16} />
                   </button>
                 )}
               </div>
             );
           })}
         </div>
+        {module.ratingPolicy === "coop_campaign_v1" && (
+          <p className="muted small">
+            {cooperativeRatingNotice(!!module.supportsBots)}
+          </p>
+        )}
         {!room.spectating && (
           <div className="waiting-actions">
             {host &&
@@ -336,7 +364,11 @@ export function ModuleWaiting({
             : host
               ? optionsDirty
                 ? "先保存地图与规则设置，才能开始游戏。"
-                : "电脑自动准备。你准备好后即可开始，也可以继续邀请朋友。"
+                : module.supportsBots
+                  ? "电脑自动准备。你准备好后即可开始，也可以继续邀请朋友。"
+                  : room.capacity === 1
+                    ? "准备好后即可开始。"
+                    : "好友到齐并准备好后即可开始。"
               : "准备好后，等待房主开始游戏。"}
         </p>
       </div>

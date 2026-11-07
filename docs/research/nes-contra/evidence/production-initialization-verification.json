@@ -1,0 +1,344 @@
+{
+  "passed": true,
+  "scope": "Local production initializer/build preparation; no production registration, remote upload, commit or deployment. Not full bot/campaign acceptance.",
+  "rulesBuildID": "351aa577d333e861243da1eff3c191fa858572aba9df855a4988034028ce8c52",
+  "runtimeBuildID": "1186b99419ef7c40f319654d6edfcb1dbd14e06d0f2d12917449a3fb2827cbba",
+  "visualsID": "24d3c7bfb252cf15523759394c3397e246aa17b331eedf2e0744b75ccb5bee32",
+  "nativeOfflineFrames": 12,
+  "nativeBinaryBytes": 5675682,
+  "nativeChecks": 10,
+  "raceEntries": {
+    "github.com/k0ngk0ng/wire-board/games/contra/runtime": 7,
+    "github.com/k0ngk0ng/wire-board/games/contra/server": 67
+  },
+  "frontendTests": 58,
+  "buildIdentityTests": 2,
+  "boundariesPassed": true,
+  "vetPassed": true,
+  "fixtureExitedSuccessfully": true,
+  "wasmStagePayloadAudit": [
+    {
+      "path": "games/contra/engine/leveldata/stage-1.json",
+      "sha256": "ae541455b3d25b9b86898b9b013739f8ae0735b409b593defc484a59af5924ad",
+      "featureOffset": 2176,
+      "featureBytes": 256,
+      "featureSHA256": "04a97e714c277e3e55502d560bf854b55a151cf267d7487b12330aad473d8958",
+      "fullPayloadPresent": false,
+      "uniqueFeaturePresent": false
+    },
+    {
+      "path": "games/contra/engine/leveldata/stage-2.json",
+      "sha256": "b398dc1e444c586f4ac6181679d673f8fd9463638a0107a656ef104e69933153",
+      "featureOffset": 0,
+      "featureBytes": 256,
+      "featureSHA256": "ea7b0997e4ccbe6107c16bf988e4061a3b1d665f936e289dc4418210c81a027f",
+      "fullPayloadPresent": false,
+      "uniqueFeaturePresent": false
+    },
+    {
+      "path": "games/contra/engine/leveldata/stage-3.json",
+      "sha256": "2ce2245014def20fd2638c278755f7a2a3b06c92a24b8c232facb568903c7355",
+      "featureOffset": 0,
+      "featureBytes": 256,
+      "featureSHA256": "ff17c356cf5a357d59e3a60ca7e136694c0a0b3d59c29106abfe3acabd217b3b",
+      "fullPayloadPresent": false,
+      "uniqueFeaturePresent": false
+    },
+    {
+      "path": "games/contra/engine/leveldata/stage-4.json",
+      "sha256": "a1433c299763814b6c7acf02848e64f1629c163c639914fd6832e81b25b80f4a",
+      "featureOffset": 0,
+      "featureBytes": 256,
+      "featureSHA256": "e994a9fecfd69fe93660ff815b82a81382101cf2845866420e1760554a963e0f",
+      "fullPayloadPresent": false,
+      "uniqueFeaturePresent": false
+    },
+    {
+      "path": "games/contra/engine/leveldata/stage-5.json",
+      "sha256": "362f9e0d91e0edebab407317b132c585af5c861f14a98ba9017b061f24720a48",
+      "featureOffset": 0,
+      "featureBytes": 256,
+      "featureSHA256": "9f75ff84344276ec7a736a7ac2ffaf211ba3a6a88d7d94588097749797dc94b4",
+      "fullPayloadPresent": false,
+      "uniqueFeaturePresent": false
+    },
+    {
+      "path": "games/contra/engine/leveldata/stage-6.json",
+      "sha256": "30eba1e7f4048b119665ffe70b736c5ef9d3b268347bd4a365d1773fa154a5fc",
+      "featureOffset": 0,
+      "featureBytes": 256,
+      "featureSHA256": "8056347df47137f75f39028b437259afc4caba5e2caeb51dc8ca2df9c9027ed3",
+      "fullPayloadPresent": false,
+      "uniqueFeaturePresent": false
+    },
+    {
+      "path": "games/contra/engine/leveldata/stage-7.json",
+      "sha256": "aed95f893082874faa83db70c0da7b3d1f61fea023805d10ff6fe90419a893d1",
+      "featureOffset": 0,
+      "featureBytes": 256,
+      "featureSHA256": "0a91fa519b6cea48aacdb0be796c8fc6cc4c15f53550596207d21c114066e399",
+      "fullPayloadPresent": false,
+      "uniqueFeaturePresent": false
+    },
+    {
+      "path": "games/contra/engine/leveldata/stage-8.json",
+      "sha256": "81c8b9ff4bba44d3814dfbda3fef935c6b5a9500e051360307db42d487ea7596",
+      "featureOffset": 0,
+      "featureBytes": 256,
+      "featureSHA256": "24ea506b04b16e8ba528c4271cb377c31c80dd4b9e7f5bb9fa68db2339d2de5e",
+      "fullPayloadPresent": false,
+      "uniqueFeaturePresent": false
+    }
+  ],
+  "nativeVisualsExcludedFromWasm": true,
+  "visualSource": {
+    "schema": 1,
+    "kind": "normalized indexed pixels for native offline perception",
+    "romSHA256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+    "source": "games/contra/engine/testdata/bot-visual-catalog.json.gz",
+    "sourceSHA256": "262dd05adb06b658d7d7b20bb5ae309c56cf3a6082666a862c0df55796ad32ce",
+    "sourceManifestSHA256": "c7964303f4c60705933021cf57cd1646556b254244030d85fdd5e1b14f62c57c",
+    "catalogID": "24d3c7bfb252cf15523759394c3397e246aa17b331eedf2e0744b75ccb5bee32",
+    "compressedSHA256": "46fa695321db37e3a397b5373840e023a91874893eda12b48719a67b217fc1f5",
+    "uncompressedSHA256": "7c78bd661fc40da7146efcbb7fb830bd20cd6e5de2cd50f5482a04135cad8262",
+    "pages": 100,
+    "bytes": 95315,
+    "generator": "scripts/contra/prepare_visual_bundle.py",
+    "generatorSHA256": "991d2fa289e7b1cb624789a1ecb30c4ddc62df5d3f8157e16d48af87cdd419b2"
+  },
+  "registryUnchanged": true,
+  "browserMeasurement": {
+    "passed": true,
+    "evidenceSHA256": "b65eb7487258933adc8da519420360c0786ccba925eadd5b28ca21fb3507e78b",
+    "rulesBuildID": "351aa577d333e861243da1eff3c191fa858572aba9df855a4988034028ce8c52",
+    "webManifestSHA256": "acffd6c552b4174b6eb69ca2f1eb51fae855a193ecc217f634c4c963b168de30",
+    "scope": "Loopback actual platform with a byte-preserving delay proxy; ACK latency is not total input-to-display latency or WAN evidence.",
+    "cases": [
+      {
+        "name": "desktop",
+        "visibleSamples": 388,
+        "singleRevisionFraction": 1.0,
+        "medianVisibleIntervalMS": 16.699999999999818,
+        "contrastRatios": [
+          12.99392123934672,
+          13.205053898170414
+        ],
+        "matchingNativeDigestsAtRevisions": [
+          "462",
+          "478"
+        ],
+        "receivedWebSocketBytesPerSecond": 785282.372598162,
+        "medianAcknowledgementMS": 7.334999740123749,
+        "maximumAcknowledgementMS": 7.536999881267548,
+        "canvas": {
+          "h": 562.5,
+          "w": 600,
+          "x": 250,
+          "y": 78
+        },
+        "controller": {
+          "h": 233.328125,
+          "w": 600,
+          "x": 250,
+          "y": 652.5
+        }
+      },
+      {
+        "name": "mobile",
+        "visibleSamples": 91,
+        "singleRevisionFraction": 1.0,
+        "medianVisibleIntervalMS": 16.69999999999891,
+        "contrastRatios": [
+          13.205053898170414,
+          12.99392123934672
+        ],
+        "matchingNativeDigestsAtRevisions": [
+          "558",
+          "568"
+        ],
+        "receivedWebSocketBytesPerSecond": 656649.6655518395,
+        "medianAcknowledgementMS": 6.299000233411789,
+        "maximumAcknowledgementMS": 7.097000256180763,
+        "canvas": {
+          "h": 285,
+          "w": 304,
+          "x": 8,
+          "y": 118
+        },
+        "controller": {
+          "h": 118.21875,
+          "w": 304,
+          "x": 8,
+          "y": 409
+        }
+      }
+    ],
+    "streamDelayNativeSeekEvents": 7,
+    "hiddenCheckpointSilent": true
+  },
+  "files": {
+    "docs/research/nes-contra/evidence/production-initialization/browser-acceptance.json.gz": "0cf2c06f36c86b55f3de56a2b301b8367f9bb0d6e1437dcaafeb72d549eec832",
+    "docs/research/nes-contra/evidence/production-initialization/desktop-playing-fullscreen.png": "d31594c12532c6fab80f9aa70b8f67fc7a585b1bb1852cffcb30e40ae78cc79d",
+    "docs/research/nes-contra/evidence/production-initialization/harness-at-run.py": "b722e751a4caeafc8abc4f0501fdee29ed71ab2f5ed3720369ee2f6dd5b61fe9",
+    "docs/research/nes-contra/evidence/production-initialization/mobile-controller-settings.png": "bc4faf503bdf5f2bf5612b87fd3c2a4aca7045de059482604137d523c6e04aac",
+    "docs/research/nes-contra/evidence/production-initialization/mobile-playing-fullscreen.png": "16b75ca9aaf163cc3fd5fe1a1f69975050473e537bea32423acdf24abfd69b96",
+    "docs/research/nes-contra/evidence/production-initialization/native-acceptance.json.gz": "584abb1584776fc9105ac66320f7e0d5e8be2ab0dfcb2321cf3caa0acfcb7683",
+    "docs/research/nes-contra/evidence/production-initialization/native-input-at-run.mjs": "d01e3fed4be92f0fe61fee5a1442a75b8beacc085e67474a0d82c706e4617af1",
+    "docs/research/nes-contra/evidence/production-initialization/network-at-run.py": "b81398bfc64eaf9da5245ee20fed606a4400980f542d75056f9154763355f77f",
+    "docs/research/nes-contra/evidence/production-initialization/test-records.json.gz": "621ca72fdfb7ec53ea82335ffe7d382fd2823b1e14068036f3fc1d70cf604af4"
+  },
+  "fixtureExitCode": 0,
+  "cleanup": {
+    "removedBytes": 113838147,
+    "removed": [
+      {
+        "path": ".local/contra-production/accept-frozen",
+        "bytes": 62707
+      },
+      {
+        "path": ".local/contra-production/accept-frozen.log",
+        "bytes": 133
+      },
+      {
+        "path": ".local/contra-production/accept-v1",
+        "bytes": 61689
+      },
+      {
+        "path": ".local/contra-production/accept-v1.log",
+        "bytes": 129
+      },
+      {
+        "path": ".local/contra-production/accept-v2",
+        "bytes": 1405
+      },
+      {
+        "path": ".local/contra-production/accept-v2.log",
+        "bytes": 1286
+      },
+      {
+        "path": ".local/contra-production/boundaries.log",
+        "bytes": 76
+      },
+      {
+        "path": ".local/contra-production/browser-fixture.log",
+        "bytes": 280
+      },
+      {
+        "path": ".local/contra-production/browser-frozen.log",
+        "bytes": 146
+      },
+      {
+        "path": ".local/contra-production/browser-measurements.json",
+        "bytes": 1907
+      },
+      {
+        "path": ".local/contra-production/build-identity-green.log",
+        "bytes": 100
+      },
+      {
+        "path": ".local/contra-production/build-identity-red.log",
+        "bytes": 256
+      },
+      {
+        "path": ".local/contra-production/build.log",
+        "bytes": 90
+      },
+      {
+        "path": ".local/contra-production/format.log",
+        "bytes": 110
+      },
+      {
+        "path": ".local/contra-production/frontend-build.log",
+        "bytes": 9026
+      },
+      {
+        "path": ".local/contra-production/frontend-final.log",
+        "bytes": 5708
+      },
+      {
+        "path": ".local/contra-production/frozen-build.log",
+        "bytes": 90
+      },
+      {
+        "path": ".local/contra-production/frozen-fixture",
+        "bytes": 300261
+      },
+      {
+        "path": ".local/contra-production/frozen-fixture.log",
+        "bytes": 317
+      },
+      {
+        "path": ".local/contra-production/identity-final.log",
+        "bytes": 100
+      },
+      {
+        "path": ".local/contra-production/production-green.jsonl",
+        "bytes": 22363
+      },
+      {
+        "path": ".local/contra-production/production-red.log",
+        "bytes": 1169
+      },
+      {
+        "path": ".local/contra-production/runtime-identity-green.tap",
+        "bytes": 1161
+      },
+      {
+        "path": ".local/contra-production/runtime-manifest-red.tap",
+        "bytes": 1106
+      },
+      {
+        "path": ".local/contra-production/runtime-recovery-red.tap",
+        "bytes": 1495
+      },
+      {
+        "path": ".local/contra-production/server-runtime-final.jsonl",
+        "bytes": 81364
+      },
+      {
+        "path": ".local/contra-production/stage-runtime-green.jsonl",
+        "bytes": 3317
+      },
+      {
+        "path": ".local/contra-production/stage-runtime-red.log",
+        "bytes": 477
+      },
+      {
+        "path": ".local/contra-production/typecheck.log",
+        "bytes": 0
+      },
+      {
+        "path": ".local/contra-production/vet.log",
+        "bytes": 0
+      },
+      {
+        "path": ".local/contra-production/visual-generation.json",
+        "bytes": 839
+      },
+      {
+        "path": ".local/contra-production/visual-id-red.log",
+        "bytes": 292
+      },
+      {
+        "path": ".local/contra-production/web-dist",
+        "bytes": 93955913
+      },
+      {
+        "path": ".local/contra-browser/platform-production-frozen",
+        "bytes": 3987573
+      },
+      {
+        "path": ".local/contra-browser/protocol",
+        "bytes": 15321968
+      },
+      {
+        "path": ".local/contra-browser/raster-test",
+        "bytes": 13294
+      }
+    ],
+    "retainedInUse": [
+      ".local/contra-production/build"
+    ],
+    "scope": "Only this task owned caches, temporary fixture databases, old logs and copied test outputs. No original assets, ROMs, remote objects, backups, parent terminal evidence or earlier in-use build were deleted."
+  }
+}

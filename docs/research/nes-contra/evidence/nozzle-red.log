@@ -1,0 +1,10 @@
+=== RUN   TestBuiltinBotVisionDormantEnergyNozzles
+    bot_vision_nozzle_test.go:19: visible dormant nozzle missing at 140,88: [{ID:0 X:32 Y:184 Kind:17 Sprite:0 Appearance:0 Family:machine-flame}]
+    bot_vision_nozzle_test.go:19: visible dormant nozzle missing at 140,136: [{ID:0 X:32 Y:184 Kind:17 Sprite:0 Appearance:0 Family:machine-flame}]
+    bot_vision_nozzle_test.go:19: visible dormant nozzle missing at 140,184: [{ID:0 X:32 Y:184 Kind:17 Sprite:0 Appearance:0 Family:machine-flame}]
+--- FAIL: TestBuiltinBotVisionDormantEnergyNozzles (1.10s)
+=== RUN   TestBuiltinBotVisionNozzleDoesNotAliasJungleArtwork
+--- PASS: TestBuiltinBotVisionNozzleDoesNotAliasJungleArtwork (2.12s)
+FAIL
+FAIL	github.com/k0ngk0ng/wire-board/games/contra/engine	3.788s
+FAIL

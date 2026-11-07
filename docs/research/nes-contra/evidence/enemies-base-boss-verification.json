@@ -1,0 +1,198 @@
+{
+  "verified_at": "2026-10-25T10:05:27.466270+00:00",
+  "rom_sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "-json",
+    "audio_control.go",
+    "campaign.go",
+    "campaign_types.go",
+    "chr_animation.go",
+    "controls.go",
+    "enemies.go",
+    "enemies_aliens_blob.go",
+    "enemies_aliens_boss.go",
+    "enemies_aliens_fetus.go",
+    "enemies_aliens_small.go",
+    "enemies_aliens_spider.go",
+    "enemies_aliens_tables.go",
+    "enemies_all_spawn.go",
+    "enemies_all_tables.go",
+    "enemies_base_boss.go",
+    "enemies_base_boss_tables.go",
+    "enemies_base_common.go",
+    "enemies_base_generators.go",
+    "enemies_base_pickup.go",
+    "enemies_base_redblue.go",
+    "enemies_base_soldiers.go",
+    "enemies_base_tables.go",
+    "enemies_base_thrown.go",
+    "enemies_base_types.go",
+    "enemies_base_walls.go",
+    "enemies_box.go",
+    "enemies_bridge.go",
+    "enemies_bullets.go",
+    "enemies_capsule.go",
+    "enemies_collision.go",
+    "enemies_collision_tables.go",
+    "enemies_collision_tick.go",
+    "enemies_dispatch.go",
+    "enemies_explosion.go",
+    "enemies_generation.go",
+    "enemies_machines.go",
+    "enemies_machines_common.go",
+    "enemies_machines_flames.go",
+    "enemies_machines_giant.go",
+    "enemies_machines_graphics.go",
+    "enemies_machines_hangar.go",
+    "enemies_machines_walls.go",
+    "enemies_pickup.go",
+    "enemies_progress.go",
+    "enemies_runner.go",
+    "enemies_shooters_aim.go",
+    "enemies_shooters_bossdoor.go",
+    "enemies_shooters_bossdoor_terrain.go",
+    "enemies_shooters_runner.go",
+    "enemies_shooters_sniper.go",
+    "enemies_shooters_tables.go",
+    "enemies_shooters_turrets.go",
+    "enemies_snow_carrier.go",
+    "enemies_snow_small.go",
+    "enemies_snow_tables.go",
+    "enemies_snow_tank.go",
+    "enemies_tables.go",
+    "enemies_terrain.go",
+    "enemies_waterfall.go",
+    "enemies_waterfall_arms.go",
+    "enemies_waterfall_boss.go",
+    "frame.go",
+    "graphics_queue.go",
+    "level.go",
+    "levels.go",
+    "movement.go",
+    "palette.go",
+    "palette_snow.go",
+    "player.go",
+    "player_animation.go",
+    "player_indoor.go",
+    "player_lifecycle.go",
+    "presentation_sprites.go",
+    "random.go",
+    "random_adapted.go",
+    "scroll.go",
+    "scroll_queue.go",
+    "terrain.go",
+    "terrain_scroll.go",
+    "terrain_scroll_graphics.go",
+    "weapons.go",
+    "weapons_step.go",
+    "weapons_tables.go",
+    "weapons_types.go",
+    "world_active.go",
+    "world_presentation.go",
+    "enemies_spawn_test.go",
+    "enemies_base_boss_test.go",
+    "-run",
+    "^TestOriginalBaseBoss",
+    "-count=1"
+  ],
+  "cwd": "games/contra/engine",
+  "scope": "all current production engine sources, original enemy conversion helper and Base Boss tests only; no unrelated game acceptance",
+  "passed_tests": 3,
+  "controlled_calls": 810,
+  "continuous_calls": 7959,
+  "bias_calls": 810,
+  "fixtures": {
+    "enemies-base-boss-bias.json.gz": {
+      "sha256": "bf2fb1bc477922104f661193a2ad48cd948705875cfd19db508f75202a37ef18",
+      "records": 810,
+      "scope": "controlled dispatch; declared inputs restored after each original call; not natural boss traversal"
+    },
+    "enemies-base-boss-controlled.json.gz": {
+      "sha256": "851d8feea6c0374229f6cea8bb9fd139fb1a04d9eae0b00eeeeadfaea95d4162",
+      "records": 810,
+      "scope": "controlled dispatch; declared inputs restored after each original call; not natural boss traversal"
+    },
+    "enemies-base-2-boss.json.gz": {
+      "sha256": "ab4b392883a5acdbd9a60148adf46dbbcd5f952c8d074421e3362002e0315231",
+      "records": 11080,
+      "scope": "one controlled room/clear/barrier setup; original transition and subsequent enemy execution"
+    },
+    "enemies-base-4-boss.json.gz": {
+      "sha256": "1eaa75522ef30f0b9a95fddae4148312e4c2968462d9de1d265aa09e9c552440",
+      "records": 13493,
+      "scope": "one controlled room/clear/barrier setup; original transition and subsequent enemy execution"
+    },
+    "enemies-base-boss-sequence-2.json.gz": {
+      "sha256": "5beafb85b367035ed566adb6ee04d2f239a5e3d522367ecec0a5cb20b6bb9820",
+      "records": 643,
+      "scope": "one initial room/clear/barrier override and one plate-counter override on Boss entry; thereafter original execution with recorded controller inputs; no enemy or projectile states patched"
+    },
+    "enemies-base-boss-sequence-4.json.gz": {
+      "sha256": "e74f1c132f4a7e7e26361bc54f2f74f4563996581521e053018b4aab1c33df1e",
+      "records": 4396,
+      "scope": "one initial room/clear/barrier override and one plate-counter override on Boss entry; thereafter original execution with recorded controller inputs; no enemy or projectile states patched"
+    }
+  },
+  "repeated_original_execution": [
+    {
+      "first": ".local/contra-enemies-base/boss-oracle/runs/base-boss-v2",
+      "repeat": ".local/contra-enemies-base/boss-oracle/runs/base-boss-repeat",
+      "sha256": {
+        "boss.jsonl": "6d86789d0380e58cf12acd6f88795f2ae8485ec4549ea89dbfe63e2425b3fffd",
+        "ram.bin": "cc5af9b30fa80065e9417c480784775db4076c3deaf9a6d93b1178267ee1207e",
+        "inputs.csv": "55cbc4b5d79bb759b1afb74c94e872a09c06a0c0d7db7d925c123a7dcfbec960"
+      }
+    },
+    {
+      "first": ".local/contra-enemies-base/boss-sequence/runs/base-boss-sequence-2-v2",
+      "repeat": ".local/contra-enemies-base/boss-sequence/runs/base-boss-sequence-2-repeat",
+      "sha256": {
+        "base-enemies.jsonl": "c095a43a72cb3ddb62312da4b77e73a4d931aa14e744057c6b09d8a3290e4b0e",
+        "ram.bin": "2b528e864455738cc1b88efabc1ebcf9196058ea08153ca26f0bedf282fe7a1b",
+        "inputs.csv": "d3ae5b7ce9efdefe3d64a79b7ac289c9dab322e8690a4cf0dd85e9995b2d100b"
+      }
+    },
+    {
+      "first": ".local/contra-enemies-base/boss-sequence/runs/base-boss-sequence-4-v2",
+      "repeat": ".local/contra-enemies-base/boss-sequence/runs/base-boss-sequence-4-repeat",
+      "sha256": {
+        "base-enemies.jsonl": "d6f83bf79b53f1d4cdd6aa63dc4ccb9fa254663bad7e94f88a59ba3c67a36627",
+        "ram.bin": "94dcf42f295990d557eabded87dea59717763eab93111458b741a7d1c7f3ba1e",
+        "inputs.csv": "3e445fdee1fa0ed622e01c43537a17d220b3b810345768c3474e77d6bf4b472f"
+      }
+    },
+    {
+      "first": ".local/contra-enemies-base/boss-oracle/runs/base-boss-bias-v1",
+      "repeat": ".local/contra-enemies-base/boss-oracle/runs/base-boss-bias-repeat",
+      "sha256": {
+        "boss.jsonl": "28e880c5a4a9c5033a078d4a8af17c1fe010281c14c8ea7828bd11679625c9a1",
+        "ram.bin": "4480eeb6c177bc2ef956b6843856c7d1bf667875abedb8b69305110faa0e01ef",
+        "inputs.csv": "55cbc4b5d79bb759b1afb74c94e872a09c06a0c0d7db7d925c123a7dcfbec960"
+      }
+    }
+  ],
+  "source_sha256": {
+    "games/contra/engine/enemies_base_boss.go": "e3e47eb52d4d5d2ae49f4e412f2d4626367c05e0ce91316edbf99ad6609f0d07",
+    "games/contra/engine/enemies_base_boss_tables.go": "643c6d066a5a41ed48f656f1a5d8ddb71144fe288bf2b6595120ae788c004437",
+    "games/contra/engine/enemies_base_boss_test.go": "2bbd9e5e9eebd35da1a260eedb63a8eae2bb66dc89b5915410b011824fd45cd6",
+    "scripts/contra/enemies_base_boss_capture.py": "889c677f0d336b6bb47d2af29a585f1d88e87a6e74612a1f64a3c75ea6a1e590",
+    "scripts/contra/enemies_base_boss_sequence.py": "4fda681c873e81a36a8cfd0cc06c0cb6351c0d5c5ecefc3bebbd27d8684a58a0",
+    "scripts/contra/enemies_base_boss_tables.py": "1616d92591dbf650898723057d9595382cd7786ddfbe9ec3855f7ba0d7854876",
+    "scripts/contra/enemies_base_boss_verify.py": "36b946aee13c4e9e92967813b1d38d229b0fcb6b99d11939e05f5bf03af17176"
+  },
+  "test_output": {
+    "path": ".local/contra-enemies-base/boss-test-results/race.jsonl",
+    "sha256": "fe7c2cf340339ae961d8f2eb6128e3655763e9ce036a8abb5b43217425561757"
+  },
+  "bias_red": {
+    "path": ".local/contra-enemies-base/boss-test-results/bias-red.txt",
+    "sha256": "a3705d0f74f0631a971948dd5207686461e59caa1430cab36509b2a9c6e689bb"
+  },
+  "test_before_implementation": {
+    "path": ".local/contra-enemies-base/boss-test-results/red.txt",
+    "sha256": "93ab5066d7b41fd96dfe22076c5b5f42556948ca2ae51102c076b989607baa6c"
+  }
+}

@@ -60,7 +60,7 @@ export function SplendorCardAnimation({
         event.target instanceof Element
           ? event.target.closest<HTMLButtonElement>("button[data-card-acquire]")
           : null;
-      if (!button || button.disabled || !button.closest(".splendor-board"))
+      if (!button || button.disabled || !overlayRoot.contains(button))
         return;
       const card = Number(button.dataset.cardAcquire);
       const panel = button.closest(".gem-effect-panel, .gem-purchase-panel");
@@ -74,7 +74,7 @@ export function SplendorCardAnimation({
     };
     document.addEventListener("click", capture, true);
     return () => document.removeEventListener("click", capture, true);
-  }, [room.id, room.you]);
+  }, [room.id, room.you, overlayRoot]);
 
   // Capture hand/noble slots after server updates, before the next card is
   // removed. Relative origins track scrolling without extra layout reads.

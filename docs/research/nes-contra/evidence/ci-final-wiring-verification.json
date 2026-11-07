@@ -1,0 +1,68 @@
+{
+  "passed": true,
+  "scope": "Scoped campaign matrix and verified native/runtime build wiring; local tests and lint only, no hosted Actions/Docker build/upload/release",
+  "sourceSHA256": {
+    ".github/workflows/build.yml": "e685f325986a245863ed7abf50dd8a714a4ea014db498bdd56943d330282744d",
+    "Dockerfile": "803102f35b07bd1ad510eb4a731434195fd60977ce67b0b2ff7926a8f3198d4b",
+    "scripts/ci/scope.py": "ff2a1b35df6cb58d1d2ed29eee2da329d7a18a482f4c17521386664fda1f7359",
+    "scripts/ci/test_scope.py": "28952032566da93885263b1392faf0a9ba43364d593d41cafaec566a7e0a9b2b",
+    "scripts/ci/check-plan.py": "8559a34d206aa5a95dc6185f2cadcef491caf7fcf45a11e15f837491ed40d7d2"
+  },
+  "tests": {
+    "scopeUnitTests": 26,
+    "temporaryGitCLIScenarios": 18,
+    "baselineAndReleaseGuardTests": 25,
+    "selectedBuildCommandsExecuted": 8,
+    "actionlint": true,
+    "yamlValidation": true,
+    "dockerArgumentCases": 3
+  },
+  "campaignSelection": {
+    "rulesAndAI": "engine code/fixtures; server rules/actions/acceptance; explicitly selected contra/all",
+    "excluded": "runtime/build/assets/web, production initialization and asset loading, application composition/main",
+    "backendGoContractsPreserved": true
+  },
+  "campaignJobs": [
+    {
+      "mode": "standard-terminal",
+      "players": 1
+    },
+    {
+      "mode": "standard-terminal",
+      "players": 2
+    },
+    {
+      "mode": "assisted-clear",
+      "players": 1
+    },
+    {
+      "mode": "assisted-clear",
+      "players": 2
+    }
+  ],
+  "timeouts": {
+    "goCampaignMinutes": 90,
+    "campaignJobMinutes": 110,
+    "verifiedBuildJobMinutes": 30
+  },
+  "dockerSourceBuildArguments": [
+    "SOURCE_SHA",
+    "WIRE_BOARD_ASSET_BASE=https://cdn.ichenj.com/bga/web/<SOURCE_SHA>/"
+  ],
+  "hostedActionsRun": false,
+  "dockerBuildRun": false,
+  "uploads": false,
+  "logsSHA256": {
+    "actionlint.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "build-contracts.log": "839bfef24df0017181b1f3ef8cf74e01bc89774c4aad2928c3ddd33b97b521fa",
+    "cli-green.log": "b7a60e5886dc9eb1ff1b3b0c687678772b04b28eebe7672961ed6c247d64b57a",
+    "cli-red.log": "55bf9e18b766dde65c600ae19ebf9ab3e51a8da949b02d028313b114d0c75a6e",
+    "docker-red.log": "a967e55117f3a75f9c2432c04c6d72ea71905cac32cc1a9f899d848507addf26",
+    "green.log": "90eddeed1e7bdc7e5dd4fb35d8fd0fd282696e9b15d30d0c756d24e0abab4f81",
+    "red.log": "6eb89bc7efabbfd0423c5ac20a9ebf520e8734fe9fcca97ffbbf64c5ce711740",
+    "release-guards.log": "1857991e593b0b72684ea4d990a51c04379e43509066011c056e39a12e829a84",
+    "runtime-cli-red.log": "7c2cbf2b5aadd6933a437073d2facb5d7d21bdc1775ec1d5ff09749998975f31",
+    "runtime-scope-red.log": "b30a16fffb25920bf836bf672d2dc58d16df3e9fc451e06446e04e55a01db048",
+    "yaml-validation.json": "cf69deb58ede8971f1fc1bb2f87d6e29baeed7428f7490ec6e359e5a41eec211"
+  }
+}

@@ -1,4 +1,5 @@
-import { pullPower } from "./cue-input";
+import { useGameController } from "../../../web/src/controllers/use-game-controller";
+import { pullPower, cueTip } from "./cue-input";
 import { useEffect, useRef, useState } from "react";
 import type { Ball, Vec } from "./types";
 import { ballInk, valueOf, ballName } from "./types";
@@ -11,12 +12,17 @@ import {
   scaleOf,
   screenToWorld,
   worldToScreen,
-  zoomAt,
-  clampPan,
   type Camera,
 } from "./presentation";
 
 type Props = {
+  controllerUser: string;
+  controllerScope: string;
+  controlsEnabled: boolean;
+  onControllerError: (message: string) => void;
+  spin: { top: number; side: number };
+  onSpin: (value: { top: number; side: number }) => void;
+  onTogglePlace: () => void;
   onReady?: () => void;
   onLoadError?: (message: string) => void;
   balls: Ball[];
@@ -148,7 +154,7 @@ function drawScene(
     ctx.fill();
   }
   // The ball diameter follows the actual table geometry. Precision is supplied
-  // by zoom and the magnifier rather than by changing the collision diameter.
+  // by the magnifier rather than by changing the collision diameter.
   for (const b of p.balls) {
     if (b.down) continue;
     if (p.flash?.ids.includes(b.id) && p.flash.intensity > 0) {
@@ -282,19 +288,17 @@ export function Table(props: Props) {
       height: 350,
       portrait: false,
     }),
-    [pose, setPose] = useState({ zoom: 1, pan: { x: 0, y: 0 } }),
     [art, setArt] = useState<Record<string, HTMLImageElement>>({});
-  const camera: Camera = { ...size, ...pose },
+  const camera: Camera = { ...size, zoom: 1, pan: { x: 0, y: 0 } },
     cam = useRef(camera);
   cam.current = camera;
   const pointers = useRef(new Map<number, Vec>()),
     gesture = useRef<{
       start: Vec;
       dragged: boolean;
-      mode: "pan" | "place" | "aim" | "shot" | "cancel";
+      mode: "place" | "aim" | "shot" | "cancel";
     } | null>(null);
-  const [movingView, setMovingView] = useState(false),
-    [touchInput, setTouchInput] = useState(
+  const [touchInput, setTouchInput] = useState(
       () => matchMedia("(pointer: coarse)").matches,
     ),
     [charging, setCharging] = useState(false),
@@ -306,7 +310,7 @@ export function Table(props: Props) {
     power: number;
     limit: number;
     angle: number;
-    pointer: number | "keyboard";
+    pointer: number | "controller";
     slider?: boolean;
   } | null>(null);
   const cancelCharge = () => {
@@ -316,7 +320,7 @@ export function Table(props: Props) {
     if (gesture.current?.mode === "shot") gesture.current.mode = "cancel";
   };
   const startCharge = (
-    pointer: number | "keyboard",
+    pointer: number | "controller",
     angle: number,
     origin?: Vec,
   ) => {
@@ -355,13 +359,218 @@ export function Table(props: Props) {
     setChargePower(c.power);
     current.current.onPower(c.power);
   };
-  const releaseCharge = (pointer: number | "keyboard") => {
+  const releaseCharge = (pointer: number | "controller") => {
     const c = charge.current;
     if (!c || c.pointer !== pointer) return;
     cancelCharge();
     if (c.power >= 0.02 && current.current.canAim && !current.current.placing)
       current.current.onShoot(c.angle, c.power);
   };
+  const [placementCursor, setPlacementCursor] = useState<Vec>({
+    x: BAULK - 0.15,
+    y: H / 2,
+  });
+  const cursor = useRef(placementCursor);
+  const menuOpen = useRef(false);
+  const previous = useRef(new Set<string>());
+  const cancelled = useRef(0);
+  const sampledAt = useRef(0);
+  const pump = useRef<(at: number) => void>(() => {});
+  const menuRoot = () => {
+    if (!current.current.controlsEnabled) return null;
+    const board = wrap.current?.closest<HTMLElement>(".snooker-board");
+    if (!board) return null;
+    const surface =
+      board.closest<HTMLElement>("[data-fullscreen-board]") ?? board;
+    const dialog = [
+      ...surface.querySelectorAll<HTMLElement>('[role="dialog"],dialog[open]'),
+    ]
+      .filter((n) => n.getClientRects().length && !n.closest("[inert]"))
+      .at(-1);
+    if (dialog) return dialog;
+    const active = document.activeElement;
+    const control =
+      active instanceof Element &&
+      board.contains(active) &&
+      active.closest("button,summary,input,select") &&
+      !active.matches(".snooker-power-pull");
+    return !current.current.canAim || menuOpen.current || control
+      ? board
+      : null;
+  };
+  const controller = useGameController({
+    gameId: "snooker",
+    userId: props.controllerUser,
+    scope: props.controllerScope,
+    root: wrap,
+    enabled: () => current.current.controlsEnabled,
+    menu: menuRoot,
+    menuActions: {
+      left: "navLeft",
+      right: "navRight",
+      up: "navUp",
+      down: "navDown",
+      fire: "confirm",
+      menu: "cancel",
+    },
+    changed: () => pump.current(performance.now()),
+    error: props.onControllerError,
+  });
+  const updateCursor = (point: Vec) => {
+    let x = Math.min(0, point.x - BAULK),
+      y = point.y - H / 2;
+    const radius = Math.hypot(x, y);
+    if (radius > D) {
+      x *= D / radius;
+      y *= D / radius;
+    }
+    cursor.current = { x: BAULK + x, y: H / 2 + y };
+    setPlacementCursor(cursor.current);
+  };
+  useEffect(() => {
+    const cue = current.current.balls.find((b) => b.id === 0);
+    updateCursor(cue && !cue.down ? cue.pos : { x: BAULK - 0.15, y: H / 2 });
+  }, [props.gestureKey, props.placing]);
+  useEffect(() => {
+    const board = wrap.current?.closest<HTMLElement>(".snooker-board");
+    const back = (event: Event) => {
+      if (
+        event.target instanceof Element &&
+        event.target.closest('[role="dialog"],dialog')
+      )
+        return;
+      event.preventDefault();
+      event.stopPropagation();
+      menuOpen.current = false;
+      cancelCharge();
+      canvas.current?.focus({ preventScroll: true });
+    };
+    board?.addEventListener("controller-cancel", back);
+    return () => board?.removeEventListener("controller-cancel", back);
+  }, []);
+  pump.current = (at: number) => {
+    const device = controller.current;
+    if (!device) return;
+    const dt = Math.min(
+      0.05,
+      Math.max(0, sampledAt.current ? (at - sampledAt.current) / 1000 : 1 / 60),
+    );
+    sampledAt.current = at;
+    const actions = device.sample(at),
+      p = current.current;
+    const interrupted = cancelled.current !== device.cancelVersion;
+    cancelled.current = device.cancelVersion;
+    if (
+      interrupted &&
+      !actions.has("fire") &&
+      charge.current?.pointer === "controller"
+    )
+      cancelCharge();
+    const edge = (a: string) => actions.has(a) && !previous.current.has(a);
+    if (menuRoot() || !p.controlsEnabled || !p.canAim) {
+      if (charge.current?.pointer === "controller") cancelCharge();
+      previous.current = actions;
+      return;
+    }
+    if (edge("menu") || edge("nextGroup") || edge("previousGroup")) {
+      menuOpen.current = true;
+      cancelCharge();
+      wrap.current
+        ?.closest(".snooker-board")
+        ?.querySelector<HTMLElement>(
+          ".snooker-tip-ball:not(:disabled),.snooker-decision button:not(:disabled),.snooker-secondary button:not(:disabled)",
+        )
+        ?.focus();
+      previous.current = actions;
+      return;
+    }
+    if (edge("cancel")) {
+      cancelCharge();
+      if (p.placing) p.onTogglePlace();
+      previous.current = actions;
+      return;
+    }
+    if (edge("place")) {
+      cancelCharge();
+      p.onTogglePlace();
+    }
+    const level = (a: string) => device.values.get(a) ?? 0;
+    const dx = level("right") - level("left"),
+      dy = level("down") - level("up");
+    const precision = actions.has("fine") ? 0.1 : 1;
+    if (p.placing) {
+      if (dx || dy)
+        updateCursor({
+          x:
+            cursor.current.x +
+            (cam.current.portrait ? dy : dx) * dt * 0.35 * precision,
+          y:
+            cursor.current.y +
+            (cam.current.portrait ? -dx : dy) * dt * 0.35 * precision,
+        });
+      if (edge("reset")) updateCursor({ x: BAULK - 0.15, y: H / 2 });
+      if (edge("fire")) p.onPlace(cursor.current);
+    } else {
+      if (actions.has("spin")) {
+        if (dx || dy) {
+          p.onSpin(
+            cueTip(
+              p.spin.side + dx * dt * 0.7 * precision,
+              p.spin.top - dy * dt * 0.7 * precision,
+            ),
+          );
+          const panel = wrap.current
+            ?.closest(".snooker-board")
+            ?.querySelector<HTMLDetailsElement>(".snooker-spin");
+          if (panel) panel.open = true;
+        }
+        if (edge("reset")) p.onSpin({ top: 0, side: 0 });
+      } else {
+        let angle = p.angle;
+        if (dx) angle += ((dx * dt * Math.PI) / 12) * precision;
+        if (edge("reset")) angle = 0;
+        if (
+          !charge.current &&
+          !actions.has("fire") &&
+          (edge("up") || edge("down"))
+        )
+          angle =
+            (actions.has("up") ? -Math.PI / 2 : Math.PI / 2) -
+            (cam.current.portrait ? Math.PI / 2 : 0);
+        if (angle !== p.angle) {
+          p.onAim(angle);
+          if (charge.current?.pointer === "controller")
+            charge.current.angle = angle;
+        }
+      }
+      if (edge("fire") && !charge.current) startCharge("controller", p.angle);
+      if (
+        charge.current?.pointer === "controller" &&
+        dy &&
+        !actions.has("spin")
+      ) {
+        const value = Math.max(
+          0,
+          Math.min(1, charge.current.power - dy * dt * 0.5 * precision),
+        );
+        charge.current.power = value;
+        setChargePower(value);
+        p.onPower(value);
+      }
+      if (previous.current.has("fire") && !actions.has("fire") && !interrupted)
+        releaseCharge("controller");
+    }
+    previous.current = actions;
+  };
+  useEffect(() => {
+    let frame = 0;
+    const sample = (at: number) => {
+      pump.current(at);
+      frame = requestAnimationFrame(sample);
+    };
+    frame = requestAnimationFrame(sample);
+    return () => cancelAnimationFrame(frame);
+  }, []);
   useEffect(() => {
     cancelCharge();
     gesture.current = null;
@@ -380,12 +589,14 @@ export function Table(props: Props) {
     window.addEventListener("blur", cancelCharge);
     window.addEventListener("keydown", escape);
     document.addEventListener("visibilitychange", hidden);
+    document.addEventListener("fullscreenchange", cancelCharge);
     return () => {
       current.current.onPower(0);
       charge.current = null;
       window.removeEventListener("blur", cancelCharge);
       window.removeEventListener("keydown", escape);
       document.removeEventListener("visibilitychange", hidden);
+      document.removeEventListener("fullscreenchange", cancelCharge);
     };
   }, []);
   useEffect(() => {
@@ -407,6 +618,7 @@ export function Table(props: Props) {
       ...Array.from({ length: 8 }, (_, i) => `ball-${i}`),
     ]) {
       const img = new Image();
+      img.crossOrigin = "anonymous";
       const path = `/snooker/v1/${name}.webp`;
       img.onload = () => {
         if (active) setArt((old) => ({ ...old, [name]: img }));
@@ -427,25 +639,10 @@ export function Table(props: Props) {
   useEffect(() => {
     if (Object.keys(art).length === 9) props.onReady?.();
   }, [art, props.onReady]);
-  const changeCamera = (c: Camera) => {
-    cancelCharge();
-    cam.current = c;
-    setPose({ zoom: c.zoom, pan: c.pan });
-  };
   useEffect(() => {
     const el = canvas.current!;
-    const wheel = (e: WheelEvent) => {
-      e.preventDefault();
-      const r = el.getBoundingClientRect();
-      changeCamera(
-        zoomAt(cam.current, cam.current.zoom * Math.exp(-e.deltaY * 0.0015), {
-          x: e.clientX - r.left,
-          y: e.clientY - r.top,
-        }),
-      );
-    };
-    el.addEventListener("wheel", wheel, { passive: false });
-    return () => el.removeEventListener("wheel", wheel);
+    el.addEventListener("wheel", cancelCharge, { passive: true });
+    return () => el.removeEventListener("wheel", cancelCharge);
   }, []);
   useEffect(() => {
     const el = canvas.current!,
@@ -468,6 +665,25 @@ export function Table(props: Props) {
       { ...props, pullBack: pullPixels / scaleOf(camera) },
       art,
     );
+    if (props.placing) {
+      const point = worldToScreen(placementCursor, camera);
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(
+        point.x,
+        point.y,
+        Math.max(8, R * scaleOf(camera)),
+        0,
+        Math.PI * 2,
+      );
+      ctx.fillStyle = "#fff9debb";
+      ctx.fill();
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = "#142f25";
+      ctx.setLineDash([3, 2]);
+      ctx.stroke();
+      ctx.restore();
+    }
     // The precision view has its own canvas outside the playing surface.
     // Its reserved layout space never covers a pocket or consumes table input.
     const detail = preview.current;
@@ -523,7 +739,7 @@ export function Table(props: Props) {
     props.finished,
     props.assist,
     props.placing,
-    pose,
+    placementCursor,
     size,
     art,
   ]);
@@ -532,208 +748,129 @@ export function Table(props: Props) {
     return { x: e.clientX - r.left, y: e.clientY - r.top };
   };
   const touchControls = touchInput || size.portrait;
-  const sliderEnabled = props.canAim && !props.placing && !movingView;
+  const sliderEnabled = props.canAim && !props.placing;
   return (
     <div className="snooker-viewport">
-      {!props.finished && (
-        <div className="snooker-aim-tools">
-          <div className="snooker-aim-preview">
-            <canvas ref={preview} role="img" aria-label="瞄准细节放大视图" />
-          </div>
-          <div className="snooker-aim-readout">
-            <strong>
-              {touchControls ? "拖动球桌瞄准 · 滑动力度后松手击球" : "瞄准细节"}
-            </strong>
-            {charging && !touchControls && (
-              <div
-                className="snooker-charge"
-                role="progressbar"
-                aria-label="击球力度"
-                aria-valuemin={0}
-                aria-valuemax={100}
-                aria-valuenow={Math.round(chargePower * 100)}
-              >
-                <span>拉杆 {Math.round(chargePower * 100)}% · 松开击球</span>
-                <div>
-                  <i style={{ width: `${chargePower * 100}%` }} />
-                </div>
-              </div>
-            )}
-            {!charging && props.flash && (
-              <span className="snooker-respot-note" role="status">
-                已复位：{props.flash.ids.map(ballName).join("、")}
-              </span>
-            )}
-            {!charging && !props.flash && !touchControls && (
-              <span>
-                {movingView
-                  ? "移动视图中，拖动只平移球桌"
-                  : props.placing
-                    ? "在 D 区点击摆放白球"
-                    : props.strikeCue
-                      ? "正在出杆…"
-                      : props.canAim
-                        ? "瞄准后向后拉杆，松开击球"
-                        : "等待下一次瞄准"}
-              </span>
-            )}
-            {touchControls && (
-              <button
-                type="button"
-                role="slider"
-                className={`snooker-power-pull${charging ? " snooker-charge" : ""}`}
-                aria-label="击球力度，向右滑动增加力度，拉回起点取消，松开击球"
-                aria-valuemin={0}
-                aria-valuemax={100}
-                aria-valuenow={charging ? Math.round(chargePower * 100) : 0}
-                disabled={!sliderEnabled}
-                onBlur={cancelCharge}
-                onPointerDown={(e) => {
-                  if (!sliderEnabled || e.button !== 0) return;
-                  if (!e.isPrimary || charge.current || pointers.current.size) {
-                    cancelCharge();
-                    return;
-                  }
-                  e.currentTarget.focus({ preventScroll: true });
-                  e.currentTarget.setPointerCapture(e.pointerId);
-                  startCharge(e.pointerId, props.angle, { x: e.clientX, y: 0 });
-                  charge.current!.slider = true;
-                  charge.current!.limit = Math.max(
-                    80,
-                    Math.min(140, e.currentTarget.clientWidth - 30),
-                  );
-                }}
-                onPointerMove={(e) => {
-                  if (charge.current?.pointer === e.pointerId)
-                    updateSlider(e.clientX);
-                }}
-                onPointerUp={(e) => {
-                  if (charge.current?.pointer === e.pointerId) {
-                    updateSlider(e.clientX);
-                    releaseCharge(e.pointerId);
-                  }
-                  if (e.currentTarget.hasPointerCapture(e.pointerId))
-                    e.currentTarget.releasePointerCapture(e.pointerId);
-                }}
-                onPointerCancel={cancelCharge}
-                onLostPointerCapture={(e) => {
-                  if (charge.current?.pointer === e.pointerId) cancelCharge();
-                }}
-                onKeyDown={(e) => {
-                  if (!sliderEnabled) return;
-                  if (["ArrowRight", "ArrowLeft", "Home"].includes(e.key)) {
-                    e.preventDefault();
-                    if (!charge.current) startCharge("keyboard", props.angle);
-                    const c = charge.current!;
-                    if (c.pointer !== "keyboard") return;
-                    c.power =
-                      e.key === "Home"
-                        ? 0
-                        : Math.max(
-                            0,
-                            Math.min(
-                              1,
-                              c.power + (e.key === "ArrowRight" ? 0.05 : -0.05),
-                            ),
-                          );
-                    setChargePower(c.power);
-                    props.onPower(c.power);
-                  } else if (e.key === " " || e.key === "Enter") {
-                    e.preventDefault();
-                    if (!e.repeat) releaseCharge("keyboard");
-                  }
-                }}
-              >
-                <i
-                  aria-hidden="true"
-                  style={{ width: `${charging ? chargePower * 100 : 0}%` }}
-                />
-                <span>
-                  {!sliderEnabled
-                    ? props.placing
-                      ? "先在 D 区摆放白球"
-                      : movingView
-                        ? "移动视图中"
-                        : "等待击球"
-                    : charging
-                      ? `力度 ${Math.round(chargePower * 100)}% · 拉回取消`
-                      : "向右滑动调力度 →"}
-                </span>
-              </button>
-            )}
-          </div>
+      <div className="snooker-aim-tools">
+        <div className="snooker-aim-preview">
+          <canvas ref={preview} role="img" aria-label="瞄准细节放大视图" />
         </div>
-      )}
+        <div className="snooker-aim-readout">
+          {charging && !touchControls && (
+            <div
+              className="snooker-charge"
+              role="progressbar"
+              aria-label="击球力度"
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-valuenow={Math.round(chargePower * 100)}
+            >
+              <span>拉杆 {Math.round(chargePower * 100)}% · 松开击球</span>
+              <div>
+                <i style={{ width: `${chargePower * 100}%` }} />
+              </div>
+            </div>
+          )}
+          {!charging && props.flash && (
+            <span className="snooker-respot-note" role="status">
+              已复位：{props.flash.ids.map(ballName).join("、")}
+            </span>
+          )}
+          {!charging && !props.flash && !touchControls && (
+            <span>
+              {props.placing
+                ? "在 D 区点击摆放白球"
+                : props.strikeCue
+                  ? "正在出杆…"
+                  : props.canAim
+                    ? "瞄准后向后拉杆，松开击球"
+                    : "等待下一次瞄准"}
+            </span>
+          )}
+          {touchControls && (
+            <button
+              type="button"
+              role="slider"
+              data-controller-ignore=""
+              className={`snooker-power-pull${charging ? " snooker-charge" : ""}`}
+              aria-label="击球力度，向右滑动增加力度，拉回起点取消，松开击球"
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-valuenow={charging ? Math.round(chargePower * 100) : 0}
+              disabled={!sliderEnabled}
+              onBlur={cancelCharge}
+              onPointerDown={(e) => {
+                if (!sliderEnabled || e.button !== 0) return;
+                if (!e.isPrimary || charge.current || pointers.current.size) {
+                  cancelCharge();
+                  return;
+                }
+                e.currentTarget.focus({ preventScroll: true });
+                e.currentTarget.setPointerCapture(e.pointerId);
+                startCharge(e.pointerId, props.angle, { x: e.clientX, y: 0 });
+                charge.current!.slider = true;
+                charge.current!.limit = Math.max(
+                  80,
+                  Math.min(140, e.currentTarget.clientWidth - 30),
+                );
+              }}
+              onPointerMove={(e) => {
+                if (charge.current?.pointer === e.pointerId)
+                  updateSlider(e.clientX);
+              }}
+              onPointerUp={(e) => {
+                if (charge.current?.pointer === e.pointerId) {
+                  updateSlider(e.clientX);
+                  releaseCharge(e.pointerId);
+                }
+                if (e.currentTarget.hasPointerCapture(e.pointerId))
+                  e.currentTarget.releasePointerCapture(e.pointerId);
+              }}
+              onPointerCancel={cancelCharge}
+              onLostPointerCapture={(e) => {
+                if (charge.current?.pointer === e.pointerId) cancelCharge();
+              }}
+            >
+              <i
+                aria-hidden="true"
+                style={{ width: `${charging ? chargePower * 100 : 0}%` }}
+              />
+              <span>
+                {!sliderEnabled
+                  ? props.placing
+                    ? "先在 D 区摆放白球"
+                    : "等待击球"
+                  : charging
+                    ? `力度 ${Math.round(chargePower * 100)}% · 拉回取消`
+                    : "向右滑动调力度 →"}
+              </span>
+            </button>
+          )}
+        </div>
+      </div>
       <div
         className="snooker-table"
         ref={wrap}
-        data-zoom={pose.zoom.toFixed(3)}
+        data-zoom="1.000"
+        data-angle={props.angle}
+        data-charging={charging}
+        data-charge-power={charging ? chargePower : 0}
+        data-placing={props.placing}
+        data-cursor-x={placementCursor.x}
+        data-cursor-y={placementCursor.y}
+        data-spin-top={props.spin.top}
+        data-spin-side={props.spin.side}
         data-respot={props.flash?.ids.join(",") ?? ""}
       >
         <canvas
           ref={canvas}
+          data-controller-ignore=""
           tabIndex={0}
-          aria-label="斯诺克球桌，触屏点击或拖动瞄准，通过力度条击球；鼠标移动瞄准，按住向后拉杆，松开击球；按住空格用上下键调力度，Esc 取消"
+          aria-label="斯诺克球桌，触屏点击或拖动瞄准，通过力度条击球；鼠标移动瞄准，按住向后拉杆，松开击球；按住击球键调整力度，松开击球；Esc 取消"
           aria-disabled={!props.canAim}
           data-angle={props.angle}
           data-cue-offset={props.strikeCue?.offset}
           onBlur={cancelCharge}
-          onKeyDown={(e) => {
-            if (
-              e.key === " " &&
-              !e.repeat &&
-              props.canAim &&
-              !props.placing &&
-              !movingView
-            ) {
-              e.preventDefault();
-              startCharge("keyboard", props.angle);
-            } else if (
-              [
-                "ArrowLeft",
-                "ArrowRight",
-                "ArrowUp",
-                "ArrowDown",
-                "Home",
-              ].includes(e.key) &&
-              props.canAim
-            ) {
-              e.preventDefault();
-              if (
-                charge.current?.pointer === "keyboard" &&
-                (e.key === "ArrowUp" || e.key === "ArrowDown")
-              ) {
-                const c = charge.current;
-                c.power = Math.max(
-                  0,
-                  Math.min(1, c.power + (e.key === "ArrowUp" ? 0.05 : -0.05)),
-                );
-                setChargePower(c.power);
-                props.onPower(c.power);
-                return;
-              }
-              const angle =
-                e.key === "Home"
-                  ? 0
-                  : e.key === "ArrowUp"
-                    ? -Math.PI / 2
-                    : e.key === "ArrowDown"
-                      ? Math.PI / 2
-                      : props.angle +
-                        ((e.key === "ArrowLeft" ? -1 : 1) *
-                          (e.shiftKey ? 0.1 : 1) *
-                          Math.PI) /
-                          180;
-              props.onAim(angle);
-              if (charge.current) charge.current.angle = angle;
-            }
-          }}
-          onKeyUp={(e) => {
-            if (e.key === " ") {
-              e.preventDefault();
-              releaseCharge("keyboard");
-            }
-          }}
           onPointerDown={(e) => {
             if (e.button !== 0) return;
             if (e.pointerType === "touch") setTouchInput(true);
@@ -744,20 +881,19 @@ export function Table(props: Props) {
             e.currentTarget.setPointerCapture(e.pointerId);
             if (pointers.current.size > 1) {
               cancelCharge();
-              gesture.current = { start: p, dragged: true, mode: "pan" };
+              gesture.current = { start: p, dragged: true, mode: "cancel" };
               return;
             }
             const cue = props.balls.find((b) => b.id === 0);
-            const mode =
-              movingView || !props.canAim
-                ? "pan"
-                : props.placing
-                  ? "place"
-                  : cue && !cue.down
-                    ? e.pointerType === "touch"
-                      ? "aim"
-                      : "shot"
-                    : "cancel";
+            const mode = !props.canAim
+              ? "cancel"
+              : props.placing
+                ? "place"
+                : cue && !cue.down
+                  ? e.pointerType === "touch"
+                    ? "aim"
+                    : "shot"
+                  : "cancel";
             if ((mode === "shot" || mode === "aim") && cue) {
               const world = screenToWorld(p, cam.current);
               const angle = Math.atan2(
@@ -778,7 +914,6 @@ export function Table(props: Props) {
                 e.buttons === 0 &&
                 !pointers.current.size &&
                 !charge.current &&
-                !movingView &&
                 props.canAim &&
                 !props.placing &&
                 cue &&
@@ -791,31 +926,11 @@ export function Table(props: Props) {
               }
               return;
             }
-            const before = [...pointers.current.values()],
-              p = point(e);
+            const p = point(e);
             pointers.current.set(e.pointerId, p);
-            const after = [...pointers.current.values()];
-            if (after.length === 2) {
+            if (pointers.current.size > 1) {
               cancelCharge();
-              const dist = (a: Vec[]) =>
-                  Math.hypot(a[1].x - a[0].x, a[1].y - a[0].y),
-                mid = (a: Vec[]) => ({
-                  x: (a[0].x + a[1].x) / 2,
-                  y: (a[0].y + a[1].y) / 2,
-                });
-              const a = mid(before),
-                b = mid(after),
-                next = zoomAt(
-                  cam.current,
-                  (cam.current.zoom * dist(after)) / Math.max(1, dist(before)),
-                  a,
-                );
-              changeCamera(
-                clampPan({
-                  ...next,
-                  pan: { x: next.pan.x + b.x - a.x, y: next.pan.y + b.y - a.y },
-                }),
-              );
+              if (gesture.current) gesture.current.mode = "cancel";
               return;
             }
             const g = gesture.current;
@@ -832,16 +947,6 @@ export function Table(props: Props) {
                   Math.atan2(world.y - cue.pos.y, world.x - cue.pos.x),
                 );
               }
-            } else if (g.mode === "pan" && g.dragged) {
-              changeCamera(
-                clampPan({
-                  ...cam.current,
-                  pan: {
-                    x: cam.current.pan.x + p.x - old.x,
-                    y: cam.current.pan.y + p.y - old.y,
-                  },
-                }),
-              );
             }
           }}
           onPointerUp={(e) => {
@@ -876,57 +981,6 @@ export function Table(props: Props) {
             }
           }}
         />
-      </div>
-      <div className="snooker-camera">
-        <span>
-          {movingView
-            ? "拖动平移 · 滚轮／双指缩放"
-            : touchControls
-              ? "点按或拖动瞄准 · 力度条松手击球"
-              : "移动瞄准 · 向后拉杆 · 松开击球 · Esc 取消"}
-        </span>
-        <button
-          aria-pressed={movingView}
-          onClick={() => {
-            cancelCharge();
-            setMovingView((v) => !v);
-          }}
-        >
-          移动视图
-        </button>
-        <button
-          onClick={() =>
-            changeCamera(
-              zoomAt(cam.current, pose.zoom * 1.25, {
-                x: size.width / 2,
-                y: size.height / 2,
-              }),
-            )
-          }
-          aria-label="放大球桌"
-        >
-          ＋
-        </button>
-        <button
-          onClick={() =>
-            changeCamera(
-              zoomAt(cam.current, pose.zoom / 1.25, {
-                x: size.width / 2,
-                y: size.height / 2,
-              }),
-            )
-          }
-          aria-label="缩小球桌"
-        >
-          −
-        </button>
-        <button
-          onClick={() =>
-            changeCamera({ ...cam.current, zoom: 1, pan: { x: 0, y: 0 } })
-          }
-        >
-          复位视图
-        </button>
       </div>
     </div>
   );

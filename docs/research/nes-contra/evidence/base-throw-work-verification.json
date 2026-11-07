@@ -1,0 +1,401 @@
+{
+  "version": 1,
+  "passed": true,
+  "problem": "legal Session frame26905 fails when first rolling soldier has no preceding collision-height producer",
+  "fixedScope": "explicit named creation-work propagation through player/fire/projectile, earlier Base entity producers, collision override and retained screen-stream identity; no changed enemy decision or outcome rules",
+  "originalBoundary": {
+    "beforeFrame": 26904,
+    "frame": 26905,
+    "pads": [
+      64,
+      0
+    ],
+    "beforeSHA256": "78c171aa5912b86e06e5776ff6e83520b88b602f3616af4bf92f6c579662434c",
+    "standaloneNextFrameNeedsNoPatch": true
+  },
+  "legalReplay": {
+    "frames": 26905,
+    "seed": 42,
+    "players": 1,
+    "declaredReserveGrants": [
+      {
+        "Actor": 0,
+        "After": 10,
+        "Before": 2,
+        "Frame": 0
+      },
+      {
+        "Actor": 0,
+        "After": 10,
+        "Before": 9,
+        "Frame": 3784
+      },
+      {
+        "Actor": 0,
+        "After": 10,
+        "Before": 9,
+        "Frame": 4011
+      },
+      {
+        "Actor": 0,
+        "After": 10,
+        "Before": 9,
+        "Frame": 4329
+      },
+      {
+        "Actor": 0,
+        "After": 10,
+        "Before": 9,
+        "Frame": 6811
+      },
+      {
+        "Actor": 0,
+        "After": 10,
+        "Before": 9,
+        "Frame": 7897
+      },
+      {
+        "Actor": 0,
+        "After": 10,
+        "Before": 9,
+        "Frame": 8945
+      },
+      {
+        "Actor": 0,
+        "After": 10,
+        "Before": 9,
+        "Frame": 10681
+      },
+      {
+        "Actor": 0,
+        "After": 10,
+        "Before": 9,
+        "Frame": 12305
+      },
+      {
+        "Actor": 0,
+        "After": 10,
+        "Before": 9,
+        "Frame": 12869
+      },
+      {
+        "Actor": 0,
+        "After": 10,
+        "Before": 9,
+        "Frame": 13332
+      },
+      {
+        "Actor": 0,
+        "After": 10,
+        "Before": 9,
+        "Frame": 13891
+      },
+      {
+        "Actor": 0,
+        "After": 10,
+        "Before": 9,
+        "Frame": 16396
+      },
+      {
+        "Actor": 0,
+        "After": 10,
+        "Before": 9,
+        "Frame": 17231
+      },
+      {
+        "Actor": 0,
+        "After": 10,
+        "Before": 9,
+        "Frame": 18592
+      },
+      {
+        "Actor": 0,
+        "After": 10,
+        "Before": 9,
+        "Frame": 19156
+      },
+      {
+        "Actor": 0,
+        "After": 10,
+        "Before": 9,
+        "Frame": 19477
+      },
+      {
+        "Actor": 0,
+        "After": 10,
+        "Before": 9,
+        "Frame": 19990
+      },
+      {
+        "Actor": 0,
+        "After": 10,
+        "Before": 9,
+        "Frame": 21054
+      },
+      {
+        "Actor": 0,
+        "After": 10,
+        "Before": 9,
+        "Frame": 21409
+      },
+      {
+        "Actor": 0,
+        "After": 10,
+        "Before": 9,
+        "Frame": 21743
+      },
+      {
+        "Actor": 0,
+        "After": 10,
+        "Before": 9,
+        "Frame": 22077
+      },
+      {
+        "Actor": 0,
+        "After": 10,
+        "Before": 9,
+        "Frame": 24213
+      },
+      {
+        "Actor": 0,
+        "After": 10,
+        "Before": 9,
+        "Frame": 25653
+      }
+    ],
+    "unchangedExistingState": [
+      "combat",
+      "campaign",
+      "random",
+      "enemies",
+      "terrain",
+      "scores",
+      "controls",
+      "presentation",
+      "audio"
+    ],
+    "newCompatibilityState": "ThrowWork is additional typed metadata; checked against original native phases and continuous World traces"
+  },
+  "originalEvidence": {
+    "uniqueControlledScenarios": 27,
+    "nativeIndependentRepeats": true,
+    "continuousBaseFrames": 1600,
+    "originalEightStageRegressionFrames": 6400,
+    "romSHA256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+    "sourceTableChecks": 11,
+    "completeREARecords": 14,
+    "noDefaultInheritance": true,
+    "nonCollisionConsumerExamples": [
+      252,
+      2,
+      8,
+      96,
+      14,
+      20,
+      77,
+      0,
+      95,
+      102,
+      137
+    ]
+  },
+  "verification": {
+    "packages": [
+      "github.com/k0ngk0ng/wire-board/games/contra/runtime",
+      "github.com/k0ngk0ng/wire-board/games/contra/engine"
+    ],
+    "testsPassed": 95,
+    "topLevelTests": 35,
+    "tests": [
+      "TestRulesBuildIdentityAndCollection",
+      "TestOriginalWeaponToBaseThrowWork/recorded-entry-7",
+      "TestOriginalWeaponToBaseThrowWork/recorded-entry-165",
+      "TestOriginalWeaponToBaseThrowWork/kind1-routine0",
+      "TestOriginalWeaponToBaseThrowWork/kind1-routine1",
+      "TestOriginalWeaponToBaseThrowWork/kind1-routine2",
+      "TestOriginalWeaponToBaseThrowWork/kind2-routine0",
+      "TestOriginalWeaponToBaseThrowWork/kind2-routine1",
+      "TestOriginalWeaponToBaseThrowWork/kind2-routine2",
+      "TestOriginalWeaponToBaseThrowWork/kind3-routine0",
+      "TestOriginalWeaponToBaseThrowWork/kind3-routine1",
+      "TestOriginalWeaponToBaseThrowWork/kind3-routine2",
+      "TestOriginalWeaponToBaseThrowWork/kind4-routine0",
+      "TestOriginalWeaponToBaseThrowWork/kind4-routine1",
+      "TestOriginalWeaponToBaseThrowWork/kind4-routine2",
+      "TestOriginalWeaponToBaseThrowWork/kind5-routine0",
+      "TestOriginalWeaponToBaseThrowWork/kind5-routine1",
+      "TestOriginalWeaponToBaseThrowWork/kind5-routine2",
+      "TestOriginalWeaponToBaseThrowWork/no-projectile-retains-entry",
+      "TestOriginalWeaponToBaseThrowWork/collision-height-overrides-dispatch",
+      "TestOriginalWeaponToBaseThrowWork",
+      "TestRuntimeCodeIdentityCannotBeSubstituted",
+      "TestRuntimeBundleStageInstallationAndRestore",
+      "TestRuntimeBundleClearedCheckpointUsesLastStage",
+      "TestRuntimeViewUsesSubmittedLives",
+      "TestOriginalBaseThrowEarlierSlotProducers/recorded-entry-7",
+      "TestOriginalBaseThrowEarlierSlotProducers/recorded-entry-165",
+      "TestOriginalBaseThrowEarlierSlotProducers/kind1-routine0",
+      "TestOriginalBaseThrowEarlierSlotProducers/kind1-routine1",
+      "TestOriginalBaseThrowEarlierSlotProducers/kind1-routine2",
+      "TestOriginalBaseThrowEarlierSlotProducers/kind2-routine0",
+      "TestOriginalBaseThrowEarlierSlotProducers/kind2-routine1",
+      "TestOriginalBaseThrowEarlierSlotProducers/kind2-routine2",
+      "TestOriginalBaseThrowEarlierSlotProducers/kind3-routine0",
+      "TestOriginalBaseThrowEarlierSlotProducers/kind3-routine1",
+      "TestOriginalBaseThrowEarlierSlotProducers/kind3-routine2",
+      "TestOriginalBaseThrowEarlierSlotProducers/kind4-routine0",
+      "TestOriginalBaseThrowEarlierSlotProducers/kind4-routine1",
+      "TestOriginalBaseThrowEarlierSlotProducers/kind4-routine2",
+      "TestOriginalBaseThrowEarlierSlotProducers/kind5-routine0",
+      "TestOriginalBaseThrowEarlierSlotProducers/kind5-routine1",
+      "TestOriginalBaseThrowEarlierSlotProducers/kind5-routine2",
+      "TestOriginalBaseThrowEarlierSlotProducers/no-projectile-retains-entry",
+      "TestOriginalBaseThrowEarlierSlotProducers/collision-height-overrides-dispatch",
+      "TestOriginalBaseThrowEarlierSlotProducers/soldier-wave",
+      "TestOriginalBaseThrowEarlierSlotProducers/roller-wave",
+      "TestOriginalBaseThrowEarlierSlotProducers/grenade-image-count",
+      "TestOriginalBaseThrowEarlierSlotProducers/large-explosion-image-family",
+      "TestOriginalBaseThrowEarlierSlotProducers/roller-explosion-image-family",
+      "TestOriginalBaseThrowEarlierSlotProducers/launcher-lane",
+      "TestOriginalBaseThrowEarlierSlotProducers/wall-shot-velocity",
+      "TestRuntimePausedRevisionProtocol",
+      "TestOriginalBaseThrowEarlierSlotProducers/door-opening-explosion",
+      "TestOriginalBaseThrowEarlierSlotProducers",
+      "TestOriginalContinuousBaseThrowWork/2",
+      "TestOriginalContinuousBaseThrowWork/4",
+      "TestOriginalContinuousBaseThrowWork",
+      "TestOriginalBaseRollerInheritsCollisionHeight",
+      "TestRuntimeHTTPStartsIntroAndAcceptsRealPads",
+      "TestOriginalBaseWalls",
+      "TestOriginalBaseGenerators",
+      "TestOriginalBaseIndoorSoldiers",
+      "TestOriginalBaseThrownWeapons",
+      "TestOriginalBaseRedBlueSoldiers",
+      "TestOriginalBaseCommonWalls",
+      "TestOriginalBasePickups",
+      "TestOriginalCombatFramePhase",
+      "TestCombatFrameFailureIsAtomic",
+      "TestSessionBase2ThrowReceivesActualFrameEntry",
+      "TestSessionBase2ThrowRecordedPrefixE2E",
+      "TestSessionNativePadsDriveAndRestore",
+      "TestSessionPresentedLivesNaturalLossAndRestore",
+      "TestSessionPresentedLivesPausedAndTerminalBoundaries",
+      "TestSessionPurePausedPresentationAndResume",
+      "TestSessionRecordedStandardSharedFailure",
+      "TestSessionCheckpointValidation",
+      "TestSessionTerminalFlushIsCompleteAndIdempotent",
+      "TestNewSessionRunsAndRestores",
+      "TestSessionValidationAndAudioProjection",
+      "TestSpreadFireGenerationEffect",
+      "TestOriginalWeaponFire/natural",
+      "TestOriginalWeaponFire/isolated",
+      "TestOriginalWeaponFire/equipment",
+      "TestOriginalWeaponFire/machine",
+      "TestOriginalWeaponFire",
+      "TestOriginalNaturalProjectileSteps",
+      "TestOriginalContinuousEightStageWorld/1",
+      "TestOriginalContinuousEightStageWorld/2",
+      "TestOriginalContinuousEightStageWorld/3",
+      "TestOriginalContinuousEightStageWorld/4",
+      "TestOriginalContinuousEightStageWorld/5",
+      "TestOriginalContinuousEightStageWorld/6",
+      "TestOriginalContinuousEightStageWorld/7",
+      "TestOriginalContinuousEightStageWorld/8",
+      "TestOriginalContinuousEightStageWorld"
+    ],
+    "finished": "2026-10-26T15:15:51.152945+08:00",
+    "command": "go test -race ./games/contra/engine ./games/contra/runtime -run '^(TestOriginalWeaponToBaseThrowWork|TestOriginalBaseThrowEarlierSlotProducers|TestOriginalContinuousBaseThrowWork|TestOriginalBaseRollerInheritsCollisionHeight|TestOriginalBase(Walls|Generators|IndoorSoldiers|ThrownWeapons|RedBlueSoldiers|CommonWalls|Pickups)|TestOriginalContinuousEightStageWorld|TestOriginalWeaponFire|TestOriginalNaturalProjectileSteps|TestOriginalCombatFramePhase|TestCombatFrameFailureIsAtomic|TestSession.*|TestNewSessionRunsAndRestores|TestSpreadFireGenerationEffect|TestRuntime.*|TestRulesBuildIdentityAndCollection)$' -count=1 -json"
+  },
+  "sourceSHA256BeforeAndAfter": {
+    "games/contra/engine/base_throw_work.go": "25c3a0216975e7a69209a407386697c27d618d03c78108c83501edcfdeabeaa5",
+    "games/contra/engine/base_throw_tables.go": "67891d032f513fb26a39d5fe17db149cc222afaf4ee481e80062fd9edc802f9c",
+    "games/contra/engine/weapons_step.go": "3a5f55cff6a26cccbb96eaa3a9b78332b139360620c584ce7f681c8ed51b20e3",
+    "games/contra/engine/weapons_types.go": "02f649589efeaa9a398b2120cc28cf5d80e9a89717046a9fbc07b627bfb14faa",
+    "games/contra/engine/weapons.go": "cd5149419c3e0c700dcd1896ac1f53f9f609dcfc5eb4853f5139edf7c1ff1884",
+    "games/contra/engine/player.go": "ed0687688e689a5b2eff66af7961e1016f7e99a389558ea04d76c0abc987d560",
+    "games/contra/engine/frame.go": "4d96f20438ee959e03f4029df0b272fec7cdcceef406666995f07e50073267dc",
+    "games/contra/engine/world.go": "224947fac1c0fb69ebad02cd9707539e61786e3aff5bb0a7c6d9b3de120b63a7",
+    "games/contra/engine/world_active.go": "71b2dace7602719508c9e3b29fbe08a825b862e6e22ee77c447db159a1b0dace",
+    "games/contra/engine/enemies_bullets.go": "4594bcf17deb3fc4163bdbad63b6373b50334266e3e0acd0643a9e22cf737f95",
+    "games/contra/engine/enemies_collision_tick.go": "5c3a75f69ee273c1c5ee6c6a4f3b5e9473bc74951837fa8deee710a3d34e6490",
+    "games/contra/engine/enemies_base_soldiers.go": "19f79e62bb2ff7d145da31e71f8b4a0a139a6507fcbf066d0c5aa2fd15417aa5",
+    "games/contra/engine/enemies_base_generators.go": "839e2aebea8d029680ea0f753da70832a952d7a85c39da9bf71dccb97cd17b58",
+    "games/contra/engine/enemies_base_thrown.go": "dc94e4f6f796574a8883f4a815def4608971c4ac91054b7db77f4a5b57259ac5",
+    "games/contra/engine/enemies_explosion.go": "c7957b98947d6038a034bc0aa69e930c2f3fdf6a25da16b3caac22c412bab581",
+    "games/contra/engine/enemies_shooters_aim.go": "e572d019735880aa80cd4a50e4836bc799365a879490f06f2842471fb7d0f4d8",
+    "games/contra/engine/enemies_base_walls.go": "f1a18790bf394e76d0dd20c494912441cb1b9715703012607b6662c13c0c58c8",
+    "games/contra/engine/base_throw_work_test.go": "45ff3950197d56eb56dddca7309b2ea491d363723483c1efc11e64fa3d9976c8",
+    "games/contra/engine/session_base_throw_work_test.go": "a01e6b1b170058bb2edb2b61fc11ea3b63535543821ebfa46ebe4b986b26d4fe",
+    "games/contra/engine/testdata/session-base2-throw-entry.json.gz": "a60df1fee5145392e1794e923f86ddcde0986a330e9db5d5f488cc2484cd915e",
+    "games/contra/engine/testdata/original-base-throw-work-producers.json.gz": "15098a63b44261b5232c33c1ca189651f531dd68fd365a4307048a748c1d2fa9",
+    "games/contra/engine/testdata/original-base-throw-work.json.gz": "8d254922a07b73bf6da7eb16f9a870038ebf27b3341cfb04c6341a8e0f6c73f4",
+    "games/contra/engine/testdata/session-base2-throw-prefix-pads.bin.gz": "1a7ac08fba64522efc8a7cf888f58bdf7a68f379a1908316b715cb3ff19c018a",
+    "scripts/contra/base_throw_work_capture.py": "ebe5b2175a30aff66161e832a8e10600d3a9b65509ba624204e298cbf941accc"
+  },
+  "sources": {
+    "tables": "docs/research/nes-contra/evidence/base-throw-work-sources.json",
+    "rea": {
+      "path": "docs/research/nes-contra/evidence/base-throw-work-rea.json.gz",
+      "sha256": "2cb847a1460341cf7c3177e6f59bac55810601617be23129458ff6e693f08ce5",
+      "records": 14
+    }
+  },
+  "artifacts": [
+    {
+      "path": "docs/research/nes-contra/evidence/base-throw-work-session-red.jsonl.gz",
+      "sha256": "1df61f6f27c5925c0d8f017f839218d1d838779d63793eed9a23a6fc0d358273",
+      "originalBytes": 1804
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/base-throw-work-work-red.jsonl.gz",
+      "sha256": "5d9d4eba15ffa9ac0ca70602c1016094c87c9623ac11fba3a0733e4ad894ee4f",
+      "originalBytes": 2938
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/base-throw-work-producers-red.jsonl.gz",
+      "sha256": "ce967effd533fc61e6a3e32bb149e0a73a64a7730e2b23e0ab27b17dbab1d3c4",
+      "originalBytes": 32292
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/base-throw-work-final-race.jsonl.gz",
+      "sha256": "ae5b7cff90bba95860eaa6ce37ecb8859ce3ea2ed3a36c19964093cc1c8ec36d",
+      "originalBytes": 89271
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/base-throw-work-native-repeat.json",
+      "sha256": "d337b73b8e579e01e9b5c6e53d71a4ea1027e154b82f5926b595c2e65d12be9c"
+    },
+    {
+      "path": "games/contra/engine/testdata/session-base2-throw-entry.json.gz",
+      "sha256": "a60df1fee5145392e1794e923f86ddcde0986a330e9db5d5f488cc2484cd915e"
+    },
+    {
+      "path": "games/contra/engine/testdata/session-base2-throw-prefix-pads.bin.gz",
+      "sha256": "1a7ac08fba64522efc8a7cf888f58bdf7a68f379a1908316b715cb3ff19c018a"
+    },
+    {
+      "path": "games/contra/engine/testdata/original-base-throw-work.json.gz",
+      "sha256": "8d254922a07b73bf6da7eb16f9a870038ebf27b3341cfb04c6341a8e0f6c73f4"
+    },
+    {
+      "path": "games/contra/engine/testdata/original-base-throw-work-producers.json.gz",
+      "sha256": "15098a63b44261b5232c33c1ca189651f531dd68fd365a4307048a748c1d2fa9"
+    }
+  ],
+  "rejectedAcquisition": {
+    "accepted": false,
+    "reason": "Recorder mapped enemy fixed-point velocity bytes in reversed order; native soldier moved out of throw range. Corrected before declaring any oracle.",
+    "fixtureSHA256": "6883583ddd0ce0c5319c6d2fcac28879e4006257660af2a57aa960910327b9e2",
+    "run": "oracle/runs/base-throw-work-v1"
+  },
+  "notClaimed": [
+    "standard eight-stage bot victory",
+    "no-refill campaign acceptance",
+    "final browser assets for the changed rule-build"
+  ],
+  "cleanup": {
+    "path": ".local/contra-base-throw-work",
+    "scope": "only this capture/recheck task simulator copies, temporary cache, redundant native-repeat outputs and intermediate logs; immutable fixtures, complete REA, red/green and repeat summaries retained",
+    "bytesRemoved": 5523006
+  }
+}

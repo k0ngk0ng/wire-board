@@ -1,0 +1,252 @@
+{
+  "passed": true,
+  "source_first": true,
+  "runtime": "independent Go; no CPU interpreter, ROM execution or recorded after-state input",
+  "checks": {
+    "race_tests": [
+      "TestOriginalOutdoorNormalStepsWithoutShooting",
+      "TestOriginalOutdoorPlayerAndWeaponIntegration",
+      "TestOriginalOutdoorPlayerLifecycle",
+      "TestPlayerHitDoesNotRepeatOutsideNormalState",
+      "TestOriginalMovementTrace",
+      "TestVerticalArithmeticBoundaries",
+      "TestJumpRetainsSubpixelAndExistingJump",
+      "TestControlsLogicalBitsAndRelease",
+      "TestOriginalTerrainQueries",
+      "TestTerrainPackedOrderAndScrollBoundaries",
+      "TestOriginalWeaponFire/natural",
+      "TestOriginalWeaponFire/isolated",
+      "TestOriginalWeaponFire/equipment",
+      "TestOriginalWeaponFire/machine",
+      "TestOriginalWeaponFire",
+      "TestOriginalNaturalProjectileSteps",
+      "TestJungleLayoutOriginalScreens",
+      "TestJungleLayoutNaturalInitializationAndStreaming",
+      "TestScreenDecodeBoundaries",
+      "TestOriginalCombatFramePhase",
+      "TestCombatFrameFailureIsAtomic"
+    ],
+    "normal_no_shooting_calls": 1019,
+    "normal_complete_player_weapon_calls": 3006,
+    "natural_lifecycle": {
+      "spawn": 4,
+      "dying": 297,
+      "hit": 3,
+      "borrow_checks": 4427
+    },
+    "controlled_borrow": {
+      "cases": 102,
+      "successes": 10
+    },
+    "natural_whole_frame_calls": 1220
+  },
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "games/contra/engine/controls.go",
+    "games/contra/engine/enemies.go",
+    "games/contra/engine/enemies_tables.go",
+    "games/contra/engine/frame.go",
+    "games/contra/engine/level.go",
+    "games/contra/engine/movement.go",
+    "games/contra/engine/player.go",
+    "games/contra/engine/player_animation.go",
+    "games/contra/engine/player_lifecycle.go",
+    "games/contra/engine/terrain.go",
+    "games/contra/engine/weapons.go",
+    "games/contra/engine/weapons_step.go",
+    "games/contra/engine/weapons_tables.go",
+    "games/contra/engine/weapons_types.go",
+    "games/contra/engine/player_test.go",
+    "games/contra/engine/player_integration_test.go",
+    "games/contra/engine/player_lifecycle_test.go",
+    "games/contra/engine/movement_test.go",
+    "games/contra/engine/terrain_test.go",
+    "games/contra/engine/weapons_test.go",
+    "games/contra/engine/level_test.go",
+    "games/contra/engine/frame_test.go",
+    "-count=1",
+    "-json"
+  ],
+  "scope": "Player, movement, terrain, level, weapon and combat-frame checks; concurrent enemy development tests are outside this run.",
+  "files": [
+    {
+      "path": "games/contra/engine/player.go",
+      "sha256": "5f7619d9cb50617ced724f390f4d57e92608cadc8eb0b70fe34b00702c8685c9"
+    },
+    {
+      "path": "games/contra/engine/player_animation.go",
+      "sha256": "5358518c59c602c01c0dfd9c2d559e79ccf80391f21b25585852c677a473a8d2"
+    },
+    {
+      "path": "games/contra/engine/player_integration_test.go",
+      "sha256": "7141dd1f13bf76b2c17a3ba6ab96ed50a6a1938a8ed2890c04881c24e6c903ac"
+    },
+    {
+      "path": "games/contra/engine/player_lifecycle.go",
+      "sha256": "f4d2ed7b0fc29a60f86374921048b83f37ed1acbe24d797c6fb0386c5e885e7d"
+    },
+    {
+      "path": "games/contra/engine/player_lifecycle_test.go",
+      "sha256": "30ce3e570aadc90e2db827046200b0af6984d7dc397794003e4de38d282b9cbc"
+    },
+    {
+      "path": "games/contra/engine/player_test.go",
+      "sha256": "490260900fdc4146e697629137a9285fe97a38c91ca5461a8b6ec981e1faf387"
+    },
+    {
+      "path": "games/contra/engine/testdata/original-player-complete-source.json",
+      "sha256": "7c6dd45455efb2dcce407e2443f16f662a9daae0cf065a7db4d12ae77c6d1497"
+    },
+    {
+      "path": "games/contra/engine/testdata/original-player-complete.json.gz",
+      "sha256": "cfb545aa19f5e4b4e7a94cd963a1111eb4a766aee93fde097946ced3a0ade916"
+    },
+    {
+      "path": "games/contra/engine/testdata/original-player-lifecycle-borrow-controlled.json.gz",
+      "sha256": "3fa5bd63ba8fd43bbf49573668e0c64deb206800c0730b8d7dfdf7817ab6d6fd"
+    },
+    {
+      "path": "games/contra/engine/testdata/original-player-lifecycle-natural.json.gz",
+      "sha256": "9cfa8d0eaf5013dbffc47dea410832c064bfd6f42863d4919d7ba79e841cb631"
+    },
+    {
+      "path": "games/contra/engine/testdata/original-player-step-source.json",
+      "sha256": "f41ac27a6aea7ac18542ff1ee5aa531503233844dbf2d0a23332ad08e1d6c506"
+    },
+    {
+      "path": "games/contra/engine/testdata/original-player-step.json.gz",
+      "sha256": "74046d18c80fb11b40927a6fe169a6f34f8e6001408e12977bbd27dc7fbea317"
+    }
+  ],
+  "repeat_captures": {
+    "player_complete": [
+      "v6",
+      "v7"
+    ],
+    "lifecycle_natural": [
+      "v1",
+      "v2"
+    ],
+    "borrow_controlled": [
+      "controlled-v1",
+      "controlled-v2"
+    ]
+  },
+  "limitations": [
+    "Horizontal outdoor first-stage evidence; indoor/vertical player phases return explicit errors.",
+    "Natural successful borrowing and complete campaign/room/network verification remain outstanding.",
+    "Entity-specific enemy collision eligibility belongs to the enemy/world integration."
+  ],
+  "cleanup": [
+    {
+      "path": ".local/contra-static/swift-cache",
+      "bytes": 93389352
+    },
+    {
+      "path": "dist/contra-static-tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-static/oracle/fceux-home",
+      "bytes": 17704
+    },
+    {
+      "path": ".local/contra-static/oracle/runtime",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-static/oracle/tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-static/player-oracle/fceux-home",
+      "bytes": 17749
+    },
+    {
+      "path": ".local/contra-static/player-oracle/runtime",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-static/player-oracle/tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-static/lifecycle-oracle/fceux-home",
+      "bytes": 17785
+    },
+    {
+      "path": ".local/contra-static/lifecycle-oracle/runtime",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-static/lifecycle-oracle/tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-static/player-oracle/playerstep-v1-draft.json.gz",
+      "bytes": 331775
+    },
+    {
+      "path": ".local/contra-static/player-oracle/playerstep-v1-summary.json",
+      "bytes": 2469
+    },
+    {
+      "path": ".local/contra-static/player-oracle/runs/playerstep-v1-camera-peer",
+      "bytes": 7591669
+    },
+    {
+      "path": ".local/contra-static/player-oracle/runs/playerstep-v1-ground-conflict",
+      "bytes": 1809708
+    },
+    {
+      "path": ".local/contra-static/player-oracle/runs/playerstep-v1-idle",
+      "bytes": 1322299
+    },
+    {
+      "path": ".local/contra-static/player-oracle/runs/playerstep-v1-air-conflict",
+      "bytes": 2227275
+    },
+    {
+      "path": ".local/contra-static/player-oracle/runs/playerstep-v1-drop-water",
+      "bytes": 2814276
+    },
+    {
+      "path": ".local/contra-static/player-oracle/runs/playerstep-v1-jump-return",
+      "bytes": 2532283
+    },
+    {
+      "path": ".local/contra-static/player-oracle/runs/playerstep-v1-walk-jump",
+      "bytes": 10711746
+    },
+    {
+      "path": ".local/contra-static/player-oracle/playerstep-v1-jump-return.json",
+      "bytes": 4858
+    },
+    {
+      "path": ".local/contra-static/player-oracle/playerstep-v1-idle.json",
+      "bytes": 4315
+    },
+    {
+      "path": ".local/contra-static/player-oracle/playerstep-v1-camera-peer.json",
+      "bytes": 4676
+    },
+    {
+      "path": ".local/contra-static/player-oracle/playerstep-v1-ground-conflict.json",
+      "bytes": 4807
+    },
+    {
+      "path": ".local/contra-static/player-oracle/playerstep-v1-drop-water.json",
+      "bytes": 4800
+    },
+    {
+      "path": ".local/contra-static/player-oracle/playerstep-v1-air-conflict.json",
+      "bytes": 4798
+    },
+    {
+      "path": ".local/contra-static/player-oracle/playerstep-v1-walk-jump.json",
+      "bytes": 5834
+    }
+  ]
+}

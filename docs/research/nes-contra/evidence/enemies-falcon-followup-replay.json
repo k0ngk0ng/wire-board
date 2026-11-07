@@ -1,0 +1,124 @@
+{
+  "passed": true,
+  "scope": "Real Boss path (initial reserves30 only), plus controlled F pickup/sniper cases. The first6030 emulator frames of the Boss path match the parent original route exactly.",
+  "pairs": [
+    {
+      "first": ".local/contra-enemies-natural-boss/runs/enemy-real-boss-v1",
+      "second": ".local/contra-enemies-natural-boss/runs/enemy-real-boss-v2",
+      "equal": true,
+      "files": [
+        {
+          "name": "ram.bin",
+          "bytes": 12349440,
+          "sha256": "15227d3f1c01910d610dee07c73b3a2f3aa74da78a3f1e64e8fb3b9228115488"
+        },
+        {
+          "name": "inputs.csv",
+          "bytes": 57226,
+          "sha256": "c6ce6107e214ed8507f453dda46a02b1449f0839c7adacf05af0cbd07ea0b4dc"
+        },
+        {
+          "name": "enemy-ticks.jsonl",
+          "bytes": 244822,
+          "sha256": "bbeddc1886689da6db971f614b6ef88abe9384f15a6e38cf098b89b0e4834fef"
+        }
+      ]
+    },
+    {
+      "first": ".local/contra-enemies-falcon-sniper/runs/falcon-sniper-v1",
+      "second": ".local/contra-enemies-falcon-sniper/runs/falcon-sniper-v2",
+      "equal": true,
+      "files": [
+        {
+          "name": "ram.bin",
+          "bytes": 6144,
+          "sha256": "95e45ac8eef8fcf7103b5c4d73711dd90c0314e0393612b1cb47e33941f52396"
+        },
+        {
+          "name": "inputs.csv",
+          "bytes": 30,
+          "sha256": "3da50be77834a0eb60913ee5048814110f06b80f5e9d92d3e0b18100cddeefcc"
+        },
+        {
+          "name": "enemy-ticks.jsonl",
+          "bytes": 16242,
+          "sha256": "bf6020a56e3b69c110407531ea7cadedec26dc1814f4487c02b185b1f9876aaf"
+        }
+      ]
+    }
+  ],
+  "parentRAMSHA256": "b68568fba67139964ba05021f39bf1416a8d6817163e58aff7607aff1c497d1a",
+  "cleanup": {
+    "bytesRemoved": 63125955,
+    "removed": [
+      {
+        "path": ".local/contra-enemies-natural-boss/runs/enemy-real-boss-v2",
+        "bytes": 37857680
+      },
+      {
+        "path": ".local/contra-enemies-natural-boss/enemy-real-boss-v2.json",
+        "bytes": 25970
+      },
+      {
+        "path": ".local/contra-enemies-falcon-sniper/runs/falcon-sniper-v2",
+        "bytes": 128005
+      },
+      {
+        "path": ".local/contra-enemies-falcon-sniper/falcon-sniper-v2.json",
+        "bytes": 33241
+      },
+      {
+        "path": ".local/contra-enemies-natural-boss/fceux-home",
+        "bytes": 17744
+      },
+      {
+        "path": ".local/contra-enemies-natural-boss/runtime",
+        "bytes": 0
+      },
+      {
+        "path": ".local/contra-enemies-natural-boss/tmp",
+        "bytes": 0
+      },
+      {
+        "path": ".local/contra-enemies-falcon-sniper/fceux-home",
+        "bytes": 17748
+      },
+      {
+        "path": ".local/contra-enemies-falcon-sniper/runtime",
+        "bytes": 0
+      },
+      {
+        "path": ".local/contra-enemies-falcon-sniper/tmp",
+        "bytes": 0
+      },
+      {
+        "path": ".local/contra-enemies-natural-boss/runs/enemy-real-boss-v1/world-frames.bin",
+        "bytes": 24698880
+      },
+      {
+        "path": ".local/contra-enemies-natural-boss/runs/enemy-real-boss-v1/world-frames.jsonl",
+        "bytes": 300390
+      },
+      {
+        "path": ".local/contra-enemies-falcon-sniper/checks/race-green.jsonl",
+        "bytes": 3400
+      },
+      {
+        "path": ".local/contra-enemies-falcon-sniper/checks/scoped-green.jsonl",
+        "bytes": 16268
+      },
+      {
+        "path": ".local/contra-enemies-falcon-sniper/checks/scoped-verification.json",
+        "bytes": 6178
+      },
+      {
+        "path": ".local/contra-enemies-falcon-sniper/checks/race.jsonl",
+        "bytes": 18700
+      },
+      {
+        "path": ".local/contra-enemies-falcon-sniper/checks/verification.json",
+        "bytes": 1751
+      }
+    ]
+  }
+}

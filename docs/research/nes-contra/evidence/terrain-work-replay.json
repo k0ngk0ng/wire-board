@@ -1,0 +1,150 @@
+{
+  "passed": true,
+  "scope": "Six independent original-emulator repeats; controller inputs, full RAM and operation/write records match. Controlled contexts retain their declared scope.",
+  "pairs": [
+    {
+      "name": "stage8-v2",
+      "primary": ".local/contra-terrain-work/runs/stage8-v2",
+      "repeat": ".local/contra-terrain-work/runs/replay-stage8-v2-v1",
+      "equal": true,
+      "files": [
+        {
+          "name": "ram.bin",
+          "bytes": 3686400,
+          "sha256": "40e7104edef91cffa7afe015f68d0a2ee89e9709c7b5142296006f6a522ce08e"
+        },
+        {
+          "name": "inputs.csv",
+          "bytes": 16096,
+          "sha256": "6d8f5f7a41d7ea189ac92f3ae5b94dbc49c964f89103c74264ac58881c22595c"
+        },
+        {
+          "name": "terrain-work.jsonl",
+          "bytes": 57415039,
+          "sha256": "c17a786e7ed278552e5378898bdd7a136834ec4227ddbb71bcadf0b6d8e608b5"
+        }
+      ],
+      "fixtureSHA256": "d4d5abd73e744595fb0ebdfdab1521d14f6bd7225163599a701d72a1537a004a"
+    },
+    {
+      "name": "stage6-v2",
+      "primary": ".local/contra-terrain-work/runs/stage6-v2",
+      "repeat": ".local/contra-terrain-work/runs/replay-stage6-v2-v1",
+      "equal": true,
+      "files": [
+        {
+          "name": "ram.bin",
+          "bytes": 1638400,
+          "sha256": "eb65e3cbb6b7a29dd85f6c56ee4ac621bc1a28c478aaabbc4f54e33baa9f9363"
+        },
+        {
+          "name": "inputs.csv",
+          "bytes": 6746,
+          "sha256": "b7314f5172adf934d27ff71d02e41e32549a6d087ea44ad67b1ff7255f9d92c4"
+        },
+        {
+          "name": "terrain-work.jsonl",
+          "bytes": 55995859,
+          "sha256": "733ab0b111a8998283f44d6385c312bf099ec5e4989f1da807c858c6fa2b9236"
+        }
+      ],
+      "fixtureSHA256": "9e9fa82317ea3e821b12cdfd0bd876dbfaf513aed1e86114a0b0eb4f58de0fd5"
+    },
+    {
+      "name": "guardian-cases-v5",
+      "primary": ".local/contra-terrain-work/runs/guardian-cases-v5",
+      "repeat": ".local/contra-terrain-work/runs/replay-guardian-cases-v5-v1",
+      "equal": true,
+      "files": [
+        {
+          "name": "ram.bin",
+          "bytes": 102400,
+          "sha256": "37194ea0c4422d2f3da93270c945f0939cd2a1465b7df68c1e7cdb18f238ce6a"
+        },
+        {
+          "name": "inputs.csv",
+          "bytes": 353,
+          "sha256": "90e4f7ae62eef00fdf486e0b60fc02a265012837a755f0c27b7058c42b45bf90"
+        },
+        {
+          "name": "terrain-work.jsonl",
+          "bytes": 2279219,
+          "sha256": "610b66bb42d102d0cf2d6dfeb359103a76f4220aad07f6d940bf0568eba066f1"
+        }
+      ],
+      "fixtureSHA256": "04fd56f8be8405838b2ac1f8eb167fe3539c7347a63dd618d3d07a3baf4dfbe7"
+    },
+    {
+      "name": "vertical-cases-v1",
+      "primary": ".local/contra-terrain-work/runs/vertical-cases-v1",
+      "repeat": ".local/contra-terrain-work/runs/replay-vertical-cases-v1-v1",
+      "equal": true,
+      "files": [
+        {
+          "name": "ram.bin",
+          "bytes": 12288,
+          "sha256": "f6917f44ab6b739ca7024f1a6f9cfddb020fe8fa2a2ae91dda24bbc9105559e6"
+        },
+        {
+          "name": "inputs.csv",
+          "bytes": 48,
+          "sha256": "4f1e5ae55841edd3439f270ff39972864e09b95b415d108205a0c78e77cdd937"
+        },
+        {
+          "name": "terrain-work.jsonl",
+          "bytes": 211910,
+          "sha256": "7291d9a3d6919b9bee0ffa8253c03ba2518ea05cce1a8ead9749398a6c7dd7bc"
+        }
+      ],
+      "fixtureSHA256": "de94b1dedf4a1898a7483ac15cb3fcb2a37820223821ddd8bc79d7166ae1b4e1"
+    },
+    {
+      "name": "indoor-cases-v2",
+      "primary": ".local/contra-terrain-work/runs/indoor-cases-v2",
+      "repeat": ".local/contra-terrain-work/runs/replay-indoor-cases-v2-v1",
+      "equal": true,
+      "files": [
+        {
+          "name": "ram.bin",
+          "bytes": 43008,
+          "sha256": "86ed6e8842df9cc2ef379199fdcb60e4b36ac94ac4c209fd1fa54b45cee5243d"
+        },
+        {
+          "name": "inputs.csv",
+          "bytes": 150,
+          "sha256": "6ad5f398977fcdac4ebb53da51e574705743bddec4e1d8060362471174f53b3b"
+        },
+        {
+          "name": "terrain-work.jsonl",
+          "bytes": 782598,
+          "sha256": "9454c13a0742e8723ac96e324b259b6f78a3a33167ec4223c70d29cbdc3e76e3"
+        }
+      ],
+      "fixtureSHA256": "5328ff230d950ab74c1ad809bc529b7db2c316a6aa45b75931ee340c07353193"
+    },
+    {
+      "name": "guardian-world-v1",
+      "primary": ".local/contra-terrain-work/runs/guardian-world-v1",
+      "repeat": ".local/contra-terrain-work/runs/replay-guardian-world-v1-v1",
+      "equal": true,
+      "files": [
+        {
+          "name": "ram.bin",
+          "bytes": 655360,
+          "sha256": "1d33497108361a969107fd076a91bc9f411d8f69e37d7c2773af95cca689e3c4"
+        },
+        {
+          "name": "inputs.csv",
+          "bytes": 2640,
+          "sha256": "f6b9553343fc12961b414a2fb627233781a8393070bab8043247c15fe6b5269e"
+        },
+        {
+          "name": "terrain-work.jsonl",
+          "bytes": 17971890,
+          "sha256": "4f8cf6707049001fe488186b373410c97c7de494a78b87d0c241307adfef3179"
+        }
+      ],
+      "fixtureSHA256": "766485ca0590c97ea093fa82d5d853668fbf221047a1dec0fbdba2db894c2721"
+    }
+  ]
+}

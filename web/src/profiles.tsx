@@ -1,3 +1,4 @@
+import { RefreshButton } from "./ui/refresh-button";
 import { gameName } from "./game-api/registry";
 import { NetworkSignal } from "./ui/network-signal";
 import { catanBaseLayoutName } from "../../games/catan/web/catan-base-layout";
@@ -10,6 +11,10 @@ import { createContext, useContext, useEffect, useState } from "react";
 import type { User, SGOptions, SplendorOptions } from "./types";
 import { splendorCityCatalogue } from "../../games/splendor/web/splendor-city-state";
 import { splendorRulesLabel } from "../../games/splendor/web/splendor-expansions";
+import {
+  cooperativeOutcomeLabel,
+  unratedDescription,
+} from "./ui/cooperative-rating";
 
 export const ProfileContext = createContext<(id: string) => void>(() => {});
 export function PlayerName({
@@ -40,6 +45,10 @@ export function PlayerName({
   );
 }
 type History = {
+  cooperative?: boolean;
+  ratingPolicy?: string;
+  outcome?: string;
+  unratedReason?: string;
   draw?: boolean;
   splendorCatalog?: string;
   splendorOptions?: SplendorOptions;
@@ -156,13 +165,11 @@ export function ProfilePage({ id, self }: { id: string; self: string }) {
           <h3>{profile.user.name}</h3>
           <small>{id === self ? "我的战绩与好友" : "玩家战绩"}</small>
         </div>
-        <button
+        <RefreshButton
           className="subtle"
           disabled={busy}
-          onClick={() => void run(refresh)}
-        >
-          刷新
-        </button>
+          onRefresh={() => run(refresh)}
+        />
         {profile.relationship === "none" && (
           <button
             disabled={busy}
@@ -195,38 +202,6 @@ export function ProfilePage({ id, self }: { id: string; self: string }) {
           </button>
         )}
       </header>
-      <div className="rating-summary">
-        <span>平台积分</span>
-        <strong>{profile.rating.points}</strong>
-        <small>{profile.rating.played} 场计分对局</small>
-      </div>
-      <div className="profile-stats">
-        {Object.entries(profile.stats)
-          .slice(0, statsLimit)
-          .map(([kind, stats]) => (
-            <article key={kind}>
-              <strong>{name(kind)}</strong>
-              <b>
-                {stats.wins} 胜 / {stats.played} 局
-              </b>
-              <small>
-                胜率{" "}
-                {stats.played
-                  ? Math.round((stats.wins / stats.played) * 100)
-                  : 0}
-                % · 中止不计入
-              </small>
-            </article>
-          ))}
-      </div>
-      {Object.keys(profile.stats).length > statsLimit && (
-        <button
-          className="outline wide profile-more-games"
-          onClick={() => setStatsLimit((n) => n + 6)}
-        >
-          显示更多游戏战绩
-        </button>
-      )}
       {id === self && (
         <section className="profile-friends">
           <h3>好友与申请</h3>
@@ -300,6 +275,38 @@ export function ProfilePage({ id, self }: { id: string; self: string }) {
           </div>
         </section>
       )}
+      <div className="rating-summary">
+        <span>平台积分</span>
+        <strong>{profile.rating.points}</strong>
+        <small>{profile.rating.played} 场计分对局</small>
+      </div>
+      <div className="profile-stats">
+        {Object.entries(profile.stats)
+          .slice(0, statsLimit)
+          .map(([kind, stats]) => (
+            <article key={kind}>
+              <strong>{name(kind)}</strong>
+              <b>
+                {stats.wins} 胜 / {stats.played} 局
+              </b>
+              <small>
+                胜率{" "}
+                {stats.played
+                  ? Math.round((stats.wins / stats.played) * 100)
+                  : 0}
+                % · 中止不计入
+              </small>
+            </article>
+          ))}
+      </div>
+      {Object.keys(profile.stats).length > statsLimit && (
+        <button
+          className="outline wide profile-more-games"
+          onClick={() => setStatsLimit((n) => n + 6)}
+        >
+          显示更多游戏战绩
+        </button>
+      )}
       <section className="profile-history">
         <h3>
           对局历史 <small>{profile.total} 局</small>
@@ -345,11 +352,13 @@ export function ProfilePage({ id, self }: { id: string; self: string }) {
                 · {match.room}
               </strong>
               <span>
-                {match.status === "finished"
-                  ? match.draw
-                    ? "和棋"
-                    : "已结算"
-                  : "已中止"}
+                {match.ratingPolicy === "coop_campaign_v1"
+                  ? cooperativeOutcomeLabel(match)
+                  : match.status === "finished"
+                    ? match.draw
+                      ? "和棋"
+                      : "已结算"
+                    : "已中止"}
               </span>
             </header>
             <time>
@@ -358,7 +367,9 @@ export function ProfilePage({ id, self }: { id: string; self: string }) {
                 ? "练习对局"
                 : match.rated
                   ? "计分对局"
-                  : "不计积分"}
+                  : match.cooperative
+                    ? unratedDescription(match)
+                    : "不计积分"}
             </time>
             <div>
               {match.players.map((player) => (
@@ -452,13 +463,17 @@ export function Leaderboard() {
       </div>
       <p className="rating-rules">
         初始 1000 分 · 第一名 +20 · 第二名 −5，之后每低一名多扣 5
-        分。三国杀获胜阵营各 +20，失败阵营各
-        −10。并列同分；含电脑、中止和积分上线前开始的对局不计分。
+        分。三国杀获胜阵营各 +20，失败阵营各 −10。合作计分挑战通关时全员
+        +20，失败、放弃或超过保留期限时全员
+        −10；含电脑、练习、技术中止和未启用计分的旧局不计分。
       </p>
       {error && <p role="alert">{error}</p>}
-      <button className="subtle" disabled={busy} onClick={() => void load()}>
-        刷新榜单
-      </button>
+      <RefreshButton
+        className="subtle"
+        label="刷新榜单"
+        disabled={busy}
+        onRefresh={() => load()}
+      />
       <div className="ranking-table">
         <table>
           <thead>

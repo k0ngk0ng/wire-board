@@ -1,0 +1,188 @@
+[
+  {
+    "frame": 0,
+    "actor": 0,
+    "before": 2,
+    "after": 10
+  },
+  {
+    "frame": 0,
+    "actor": 1,
+    "before": 2,
+    "after": 10
+  },
+  {
+    "frame": 1855,
+    "actor": 1,
+    "before": 9,
+    "after": 10
+  },
+  {
+    "frame": 3350,
+    "actor": 1,
+    "before": 9,
+    "after": 10
+  },
+  {
+    "frame": 3566,
+    "actor": 0,
+    "before": 9,
+    "after": 10
+  },
+  {
+    "frame": 3680,
+    "actor": 1,
+    "before": 9,
+    "after": 10
+  },
+  {
+    "frame": 3812,
+    "actor": 0,
+    "before": 9,
+    "after": 10
+  },
+  {
+    "frame": 4054,
+    "actor": 0,
+    "before": 9,
+    "after": 10
+  },
+  {
+    "frame": 4468,
+    "actor": 1,
+    "before": 9,
+    "after": 10
+  },
+  {
+    "frame": 4499,
+    "actor": 0,
+    "before": 9,
+    "after": 10
+  },
+  {
+    "frame": 4708,
+    "actor": 1,
+    "before": 9,
+    "after": 10
+  },
+  {
+    "frame": 4756,
+    "actor": 0,
+    "before": 9,
+    "after": 10
+  },
+  {
+    "frame": 4952,
+    "actor": 1,
+    "before": 9,
+    "after": 10
+  },
+  {
+    "frame": 4996,
+    "actor": 0,
+    "before": 9,
+    "after": 10
+  },
+  {
+    "frame": 5195,
+    "actor": 1,
+    "before": 9,
+    "after": 10
+  },
+  {
+    "frame": 5236,
+    "actor": 0,
+    "before": 9,
+    "after": 10
+  },
+  {
+    "frame": 5433,
+    "actor": 1,
+    "before": 9,
+    "after": 10
+  },
+  {
+    "frame": 7481,
+    "actor": 1,
+    "before": 9,
+    "after": 10
+  },
+  {
+    "frame": 8678,
+    "actor": 1,
+    "before": 9,
+    "after": 10
+  },
+  {
+    "frame": 8679,
+    "actor": 0,
+    "before": 9,
+    "after": 10
+  },
+  {
+    "frame": 9353,
+    "actor": 0,
+    "before": 9,
+    "after": 10
+  },
+  {
+    "frame": 9359,
+    "actor": 1,
+    "before": 9,
+    "after": 10
+  },
+  {
+    "frame": 9677,
+    "actor": 1,
+    "before": 9,
+    "after": 10
+  },
+  {
+    "frame": 10094,
+    "actor": 1,
+    "before": 9,
+    "after": 10
+  },
+  {
+    "frame": 10582,
+    "actor": 1,
+    "before": 9,
+    "after": 10
+  },
+  {
+    "frame": 10684,
+    "actor": 0,
+    "before": 9,
+    "after": 10
+  },
+  {
+    "frame": 11274,
+    "actor": 0,
+    "before": 9,
+    "after": 10
+  },
+  {
+    "frame": 11560,
+    "actor": 1,
+    "before": 9,
+    "after": 10
+  },
+  {
+    "frame": 11567,
+    "actor": 0,
+    "before": 9,
+    "after": 10
+  },
+  {
+    "frame": 11931,
+    "actor": 0,
+    "before": 9,
+    "after": 10
+  },
+  {
+    "frame": 12041,
+    "actor": 1,
+    "before": 9,
+    "after": 10
+  }
+]

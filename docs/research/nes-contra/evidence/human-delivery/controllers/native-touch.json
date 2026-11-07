@@ -1,0 +1,1 @@
+[{"event":"touchStart","held":["b"]},{"event":"touchStart","held":["a","b"]},{"event":"touchStart","held":["a","b","left"]},{"event":"touchEnd","held":["b","left"]},{"event":"touchEnd","held":["b"]},{"event":"touchCancel","held":[]}]

@@ -1,0 +1,58 @@
+{
+  "status": "targeted-race-and-replay-pass-lair-opening-crossed",
+  "rom_sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+  "original_aliases": [
+    {
+      "pages": [
+        118,
+        54
+      ],
+      "local_tiles": [
+        36,
+        55
+      ],
+      "identical_planar_bytes": "1804d23955284c54f8fcee375b6f2f77"
+    },
+    {
+      "pages": [
+        118,
+        54
+      ],
+      "local_tiles": [
+        38,
+        56
+      ],
+      "identical_planar_bytes": "d180392a19864925df803f361985cee7"
+    }
+  ],
+  "finding": "Same RGB and shape can be Empty or Solid in original Lair artwork. Do not relabel brown fill. Red elevated platform tops are already unambiguously visible.",
+  "change": "Permit a jump to a known forward higher platform even when its underlying fill is unknown; retain existing hazard gates and unknown material labels.",
+  "sources": {
+    "games/contra/engine/bot.go": "25a93c9c886f1a2aab5d612bb10b7184e023eaf75897a48f71f99dd6a6134645",
+    "games/contra/engine/bot_known_top_jump_test.go": "fb78811b0081af695b8feab62183b312cdb6213ae5db84cd79f8f8152ece9808",
+    "games/contra/engine/testdata/bot-alien-known-top.json.gz": "ab9bf1c79d463b4a15bf8c705936103b54d6d2d1d966dd050c815cf40f6a04fd"
+  },
+  "race_log": "known-top-green.log",
+  "run": ".local/contra-bot/diagnostic-alien-known-top",
+  "cleanup": [
+    "Removed temporary tagged bot_alien_probe_test.go; retained diagnostic output."
+  ],
+  "complete_campaign": false,
+  "run_result": {
+    "frames": 174000,
+    "level_index": 7,
+    "screen": 4,
+    "scope": "Assisted legal-prefix continuation, not fresh campaign acceptance"
+  },
+  "replay": {
+    "frames": 174000,
+    "nextStepStoredStateEqual": true,
+    "nextStepStructEqual": true,
+    "recordedStateMatches": true,
+    "roundTripDifferences": null
+  },
+  "fresh_campaign_runs": [
+    ".local/contra-bot/runs/fresh-1p-motion-v8",
+    ".local/contra-bot/runs/fresh-2p-motion-v8"
+  ]
+}

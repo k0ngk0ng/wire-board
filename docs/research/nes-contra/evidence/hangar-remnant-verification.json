@@ -1,0 +1,51 @@
+{
+  "status": "targeted-race-visual-regression-and-replay-pass-hangar-cleared-diagnostic",
+  "source_art": "Hangar U04 / supertile0x68; top tiles8/8/8/8 replaced with50/51/51/52",
+  "top_meaning": "Platform in both supported original uses",
+  "lower_meaning": "Unknown: Empty spike remnant versus Platform armored-door exit have identical pixels",
+  "original_record": {
+    "file": "games/contra/engine/testdata/original-enemy-machines-walls.json.gz",
+    "id": 205,
+    "frame": 1604,
+    "collision_before": [
+      0,
+      0
+    ],
+    "collision_after": [
+      20,
+      20
+    ],
+    "scope": "controlled original execution; not complete campaign"
+  },
+  "rea": "enemies-machines-rea.json.gz / B26D ev_5b91033728a224c6dc3bd2253f27bbd2e988d7e9ca63fead145ed4bf6b195e3f",
+  "sources": {
+    "games/contra/engine/bot_vision_builtin.go": "7d831de42ffa14c3277bd1156c531a8cffedf1db0ca7a0b11ad618029ca7ed7f",
+    "games/contra/engine/bot_hangar_remnant_test.go": "fc3cd3e2ba9a9095248ed82297cc940f240a187bc308cf4215cee0462696fe58",
+    "games/contra/engine/testdata/bot-hangar-remnant-platform.png": "a48c973cd38a35e67de71d55eb75b54854ef99293eb49dc1beca004134969857"
+  },
+  "run_result": {
+    "frames": 166000,
+    "level_index": 6,
+    "screen": 14,
+    "scope": "run predates lower-alias correction; diagnostic only"
+  },
+  "current_run": ".local/contra-bot/diagnostic-hangar-boss",
+  "complete_campaign": false,
+  "later_run_result": {
+    "frames": 170000,
+    "level_index": 7,
+    "screen": 0,
+    "scope": "Legal-prefix continuation with test reserves, not fresh full-policy acceptance"
+  },
+  "replay": {
+    "frames": 170000,
+    "nextStepStoredStateEqual": true,
+    "nextStepStructEqual": true,
+    "recordedStateMatches": true,
+    "roundTripDifferences": null
+  },
+  "visual_regression": {
+    "top_level_tests": 31,
+    "log": "hangar-remnant-visual-regression.log"
+  }
+}

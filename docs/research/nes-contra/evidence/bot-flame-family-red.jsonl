@@ -1,0 +1,9 @@
+{"Time":"2026-10-26T18:07:43.576538+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine"}
+{"Time":"2026-10-26T18:07:44.15261+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotMachineFlameDoesNotBecomeJungleHatch"}
+{"Time":"2026-10-26T18:07:44.152767+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotMachineFlameDoesNotBecomeJungleHatch","Output":"=== RUN   TestBotMachineFlameDoesNotBecomeJungleHatch\n"}
+{"Time":"2026-10-26T18:07:44.152886+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotMachineFlameDoesNotBecomeJungleHatch","Output":"    bot_visual_family_test.go:68: reused flame kind invoked Jungle hatch behavior 0 73\n"}
+{"Time":"2026-10-26T18:07:44.152964+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotMachineFlameDoesNotBecomeJungleHatch","Output":"--- FAIL: TestBotMachineFlameDoesNotBecomeJungleHatch (0.00s)\n"}
+{"Time":"2026-10-26T18:07:44.152983+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotMachineFlameDoesNotBecomeJungleHatch","Elapsed":0}
+{"Time":"2026-10-26T18:07:44.153009+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\n"}
+{"Time":"2026-10-26T18:07:44.15444+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/contra/engine\t0.577s\n"}
+{"Time":"2026-10-26T18:07:44.154514+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Elapsed":0.578}

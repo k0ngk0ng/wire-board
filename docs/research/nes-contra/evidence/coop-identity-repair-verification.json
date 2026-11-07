@@ -1,0 +1,27 @@
+{
+  "status": "targeted-regressions-passed-campaign-pending",
+  "checks": 8,
+  "race": true,
+  "scope": "Public visual identity association, including recorded third-stage observations; not campaign acceptance",
+  "sources": {
+    "games/contra/engine/bot_identity.go": "1a7d6425ae5f70d57ba54fa9b8a65d4be411a628fcf2ba1afe6ce5dd9e207445",
+    "games/contra/engine/bot_identity_recovery_test.go": "0583c8353c709ea8cf3b7f7c8a41885a9fed40edffbf6d46162398f89dd344a9",
+    "games/contra/engine/testdata/bot-coop-identity-observations.json.gz": "46d09131b478c9dac5d2c252678be05c3915c90c26349557726cbe08e5481109",
+    "games/contra/engine/bot_tracking_test.go": "b0c4fff6bc7f85840fbd7dced505efe8844eaf527d2c7241a6033fe0ddb710b7"
+  },
+  "log": "coop-identity-repair-targeted.log",
+  "broader_check": "Broad race run exceeded 120s; dedicated TestBotIntentRestoreAndCancellation passed without race in 13.69s",
+  "campaign_run": ".local/contra-bot/runs/assisted-coop-identity-v6",
+  "campaign_complete": false,
+  "restore_log": "coop-identity-restore.log",
+  "campaign_run_note": "Completed diagnostic run: stuck at Base 1 screen 4. Source changes are also recorded; not acceptance. Scene-memory cause has a separate repair and continuation run.",
+  "campaign_result": {
+    "frames": 60000,
+    "level": 1,
+    "screen": 4,
+    "restore_checkpoints": 60,
+    "reserve_refills": 22,
+    "assisted_campaign_cleared": false,
+    "error": "sources changed during campaign acceptance"
+  }
+}
