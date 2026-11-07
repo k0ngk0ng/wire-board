@@ -221,23 +221,28 @@ func (s *State) event(e Event) {
 	}
 	if e.Type == "hit" && e.TowerID > 0 {
 		// A blast is simultaneous. Death events can sit between its victims; stop
-		// looking when another shot or logical time starts so ordering stays exact.
+		// looking when another shot, skill or logical time starts. A follow-up
+		// impact on an existing victim needs its own event, including secondary
+		// victims when the first impact already killed the primary target.
 		for i := len(s.Events) - 1; i >= 0; i-- {
 			prior := &s.Events[i]
 			if prior.AtMS == nil || *prior.AtMS != atMS || prior.Type == "shot" {
 				break
 			}
 			if prior.Type == "hit" && prior.TowerID == e.TowerID {
-				// Secondary spells can damage the primary target again. Keep
-				// that second delta out of the original grouped impact.
-				if prior.TargetID == e.TargetID {
+				if prior.Skill != e.Skill || prior.TargetID == e.TargetID {
 					break
 				}
 				count := len(prior.Damage)
+				repeated := false
+				for _, hit := range prior.Damage {
+					repeated = repeated || hit.ID == e.TargetID
+				}
 				for _, group := range prior.DamageGroups {
 					count += len(group.Targets)
+					repeated = repeated || slices.Contains(group.Targets, e.TargetID)
 				}
-				if count >= MaxEnemies-1 {
+				if repeated || count >= MaxEnemies-1 {
 					break
 				}
 				for j := range prior.DamageGroups {
