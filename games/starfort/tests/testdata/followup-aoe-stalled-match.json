@@ -1,0 +1,596 @@
+{
+  "schema": 5,
+  "data": {
+    "specializationRules": 1,
+    "skillRules": 2,
+    "skillRng": 13860337217104716157,
+    "iceWallSerial": 5,
+    "craters": [
+      {
+        "id": 9,
+        "towerId": 4,
+        "owner": 1,
+        "route": "main",
+        "progress": 412.40879999999976,
+        "x": 250,
+        "y": 242.23028547756178,
+        "radius": 28,
+        "total": 6,
+        "remaining": 6,
+        "workers": [],
+        "exemptEnemy": 39,
+        "createdMS": 53794
+      },
+      {
+        "id": 11,
+        "towerId": 4,
+        "owner": 1,
+        "route": "main",
+        "progress": 179.9824,
+        "x": 149.8677249963224,
+        "y": 113.57615267870277,
+        "radius": 28,
+        "total": 6,
+        "remaining": 0,
+        "workers": [
+          58,
+          59,
+          60,
+          61
+        ],
+        "exemptEnemy": 41,
+        "createdMS": 60600,
+        "filledMS": 71200
+      },
+      {
+        "id": 12,
+        "towerId": 2,
+        "owner": 0,
+        "route": "main",
+        "progress": 83.14880000000001,
+        "x": 53.09582210357354,
+        "y": 117.03229206772951,
+        "radius": 28,
+        "total": 6,
+        "remaining": 0,
+        "workers": [
+          58,
+          59,
+          60,
+          61
+        ],
+        "exemptEnemy": 57,
+        "createdMS": 65800,
+        "filledMS": 69000
+      }
+    ],
+    "craterSerial": 12,
+    "options": {
+      "mode": "endless",
+      "waves": 10,
+      "difficulty": "hard",
+      "prepSeconds": 30
+    },
+    "world": {
+      "seed": 563149206,
+      "stage": 1,
+      "preparedWave": 5,
+      "map": {
+        "width": 960,
+        "height": 640,
+        "path": [
+          {
+            "x": -30,
+            "y": 120
+          },
+          {
+            "x": 250,
+            "y": 110
+          },
+          {
+            "x": 250,
+            "y": 290
+          },
+          {
+            "x": 700,
+            "y": 290
+          },
+          {
+            "x": 700,
+            "y": 500
+          },
+          {
+            "x": 930,
+            "y": 500
+          }
+        ],
+        "pads": [
+          {
+            "id": 0,
+            "x": 150,
+            "y": 205,
+            "terrain": "plain",
+            "sector": 1
+          },
+          {
+            "id": 1,
+            "x": 340,
+            "y": 205,
+            "terrain": "plain",
+            "sector": 1
+          },
+          {
+            "id": 2,
+            "x": 470,
+            "y": 205,
+            "terrain": "plain",
+            "sector": 1
+          },
+          {
+            "id": 3,
+            "x": 590,
+            "y": 205,
+            "terrain": "plain",
+            "sector": 1
+          },
+          {
+            "id": 4,
+            "x": 790,
+            "y": 385,
+            "terrain": "plain",
+            "sector": 1
+          },
+          {
+            "id": 5,
+            "x": 610,
+            "y": 395,
+            "terrain": "plain",
+            "sector": 1
+          },
+          {
+            "id": 6,
+            "x": 470,
+            "y": 385,
+            "terrain": "plain",
+            "sector": 1
+          },
+          {
+            "id": 7,
+            "x": 340,
+            "y": 395,
+            "terrain": "plain",
+            "sector": 1
+          },
+          {
+            "id": 8,
+            "x": 160,
+            "y": 345,
+            "terrain": "plain",
+            "sector": 1
+          },
+          {
+            "id": 9,
+            "x": 810,
+            "y": 565,
+            "terrain": "plain",
+            "sector": 1
+          },
+          {
+            "id": 10,
+            "x": 890,
+            "y": 395,
+            "terrain": "plain",
+            "sector": 1
+          },
+          {
+            "id": 11,
+            "x": 610,
+            "y": 565,
+            "terrain": "plain",
+            "sector": 1
+          },
+          {
+            "id": 12,
+            "x": 140,
+            "y": 40,
+            "terrain": "plain",
+            "sector": 1
+          },
+          {
+            "id": 13,
+            "x": 340,
+            "y": 70,
+            "terrain": "plain",
+            "sector": 1
+          },
+          {
+            "id": 14,
+            "x": 790,
+            "y": 205,
+            "terrain": "plain",
+            "sector": 1
+          },
+          {
+            "id": 15,
+            "x": 900,
+            "y": 565,
+            "terrain": "plain",
+            "sector": 1
+          }
+        ],
+        "base": {
+          "x": 930,
+          "y": 500
+        },
+        "routes": [
+          {
+            "id": "main",
+            "label": "林间小径",
+            "sector": 1,
+            "points": [
+              {
+                "x": -30,
+                "y": 120
+              },
+              {
+                "x": 250,
+                "y": 110
+              },
+              {
+                "x": 250,
+                "y": 290
+              },
+              {
+                "x": 700,
+                "y": 290
+              },
+              {
+                "x": 700,
+                "y": 500
+              },
+              {
+                "x": 930,
+                "y": 500
+              }
+            ],
+            "active": true
+          }
+        ],
+        "regions": [
+          {
+            "id": 1,
+            "x": 0,
+            "y": 0,
+            "width": 960,
+            "height": 640,
+            "biome": "forest",
+            "label": "星光林地"
+          }
+        ],
+        "features": []
+      },
+      "choice": null,
+      "boonChoice": null,
+      "boons": {
+        "power": 0,
+        "reach": 0,
+        "fortune": 0
+      },
+      "event": {
+        "id": "fog",
+        "label": "薄雾降临",
+        "description": "本波防御塔射程降低 20%，优先守住汇合点",
+        "wave": 5
+      },
+      "forecast": [
+        {
+          "id": "frost",
+          "label": "寒潮来临",
+          "description": "本波所有敌人移动速度降低 15%",
+          "wave": 6
+        },
+        {
+          "id": "surge",
+          "label": "多路突袭",
+          "description": "本波所有已开放入口同时来袭",
+          "wave": 7
+        }
+      ],
+      "objectives": [],
+      "branches": [],
+      "shortcutWave": 0,
+      "boonWave": 0,
+      "legacy": false
+    },
+    "players": [
+      {
+        "gold": 18,
+        "kills": 27,
+        "damage": 5370.4067489551,
+        "ready": false,
+        "pauseVote": false,
+        "resumeVote": false
+      },
+      {
+        "gold": 100,
+        "kills": 30,
+        "damage": 4104.738388266963,
+        "ready": false,
+        "pauseVote": false,
+        "resumeVote": false
+      }
+    ],
+    "phase": "battle",
+    "epoch": 10,
+    "wave": 5,
+    "completedWaves": 4,
+    "baseHP": 30,
+    "baseMaxHP": 30,
+    "kills": 57,
+    "tick": 356,
+    "serverAt": 1900000000000,
+    "nextAt": 0,
+    "elapsedMS": 71200,
+    "towers": [
+      {
+        "id": 1,
+        "pad": 5,
+        "owner": 1,
+        "kind": "arrow",
+        "level": 3,
+        "branch": "",
+        "angle": 0,
+        "cooldown": 0,
+        "spent": 250,
+        "priority": "first"
+      },
+      {
+        "passiveReadyAt": 71800,
+        "id": 2,
+        "pad": 0,
+        "owner": 0,
+        "kind": "cannon",
+        "level": 2,
+        "branch": "",
+        "angle": -1.572243158395788,
+        "cooldown": 752,
+        "spent": 238,
+        "priority": "first"
+      },
+      {
+        "passiveReadyAt": 54325,
+        "id": 3,
+        "pad": 13,
+        "owner": 0,
+        "kind": "frost",
+        "level": 4,
+        "branch": "freeze",
+        "angle": 2.103527297190034,
+        "cooldown": 0,
+        "spent": 467,
+        "priority": "first"
+      },
+      {
+        "passiveReadyAt": 66600,
+        "id": 4,
+        "pad": 1,
+        "owner": 1,
+        "kind": "cannon",
+        "level": 4,
+        "branch": "power",
+        "angle": -2.6933874454352122,
+        "cooldown": 0,
+        "spent": 593,
+        "priority": "first"
+      },
+      {
+        "focusTarget": 39,
+        "focusHits": 1,
+        "id": 5,
+        "pad": 8,
+        "owner": 0,
+        "kind": "arrow",
+        "level": 1,
+        "branch": "",
+        "angle": -0.48984587609389807,
+        "cooldown": 0,
+        "spent": 90,
+        "priority": "first"
+      },
+      {
+        "id": 6,
+        "pad": 7,
+        "owner": 0,
+        "kind": "arcane",
+        "level": 1,
+        "branch": "",
+        "angle": 0,
+        "cooldown": 0,
+        "spent": 130,
+        "priority": "first"
+      }
+    ],
+    "enemies": [
+      {
+        "level": 5,
+        "repairSinceMS": 70800,
+        "id": 58,
+        "kind": "shield",
+        "x": 149.8677249963224,
+        "y": 113.57615267870277,
+        "progress": 179.9824,
+        "hp": 243.91325819099157,
+        "maxHP": 243.91325819099157,
+        "shield": 36.73060655279329,
+        "speed": 59.392,
+        "slowUntil": 0,
+        "armor": 0,
+        "reward": 11,
+        "leak": 1,
+        "route": "main",
+        "phase": 0,
+        "abilityTick": 326
+      },
+      {
+        "level": 5,
+        "repairSinceMS": 70800,
+        "id": 59,
+        "kind": "shield",
+        "x": 149.8677249963224,
+        "y": 113.57615267870277,
+        "progress": 179.9824,
+        "hp": 243.91325819099157,
+        "maxHP": 243.91325819099157,
+        "shield": 115.93060655279328,
+        "speed": 59.392,
+        "slowUntil": 0,
+        "armor": 0,
+        "reward": 11,
+        "leak": 1,
+        "route": "main",
+        "phase": 0,
+        "abilityTick": 330
+      },
+      {
+        "level": 5,
+        "repairSinceMS": 71000,
+        "id": 60,
+        "kind": "healer",
+        "x": 149.8677249963224,
+        "y": 113.57615267870277,
+        "progress": 179.9824,
+        "hp": 128.12626946234283,
+        "maxHP": 207.32626946234282,
+        "shield": 0,
+        "speed": 49.152,
+        "slowUntil": 0,
+        "armor": 0,
+        "reward": 14,
+        "leak": 1,
+        "route": "main",
+        "phase": 0,
+        "abilityTick": 354
+      },
+      {
+        "level": 5,
+        "repairSinceMS": 70800,
+        "id": 61,
+        "kind": "shield",
+        "x": 149.8677249963224,
+        "y": 113.57615267870277,
+        "progress": 179.9824,
+        "hp": 243.91325819099157,
+        "maxHP": 243.91325819099157,
+        "shield": 115.93060655279328,
+        "speed": 59.392,
+        "slowUntil": 0,
+        "armor": 0,
+        "reward": 11,
+        "leak": 1,
+        "route": "main",
+        "phase": 0,
+        "abilityTick": 338
+      },
+      {
+        "level": 5,
+        "id": 62,
+        "kind": "shield",
+        "x": 148.06247593622902,
+        "y": 113.6406258594204,
+        "progress": 178.17600000000002,
+        "hp": 243.91325819099157,
+        "maxHP": 243.91325819099157,
+        "shield": 115.93060655279328,
+        "speed": 59.392,
+        "slowUntil": 0,
+        "armor": 0,
+        "reward": 11,
+        "leak": 1,
+        "route": "main",
+        "phase": 0,
+        "abilityTick": 342
+      },
+      {
+        "level": 5,
+        "id": 63,
+        "kind": "slime",
+        "x": 100.57914901990131,
+        "y": 115.33645896357496,
+        "progress": 130.66240000000002,
+        "hp": 243.91325819099157,
+        "maxHP": 243.91325819099157,
+        "shield": 0,
+        "speed": 59.392,
+        "slowUntil": 0,
+        "armor": 0,
+        "reward": 8,
+        "leak": 1,
+        "route": "main",
+        "phase": 0,
+        "abilityTick": 346
+      },
+      {
+        "level": 5,
+        "id": 64,
+        "kind": "shield",
+        "x": 53.09582210357354,
+        "y": 117.03229206772951,
+        "progress": 83.14880000000001,
+        "hp": 243.91325819099157,
+        "maxHP": 243.91325819099157,
+        "shield": 195.13060655279327,
+        "speed": 59.392,
+        "slowUntil": 0,
+        "armor": 0,
+        "reward": 11,
+        "leak": 1,
+        "route": "main",
+        "phase": 0,
+        "abilityTick": 350
+      },
+      {
+        "level": 5,
+        "id": 65,
+        "kind": "shield",
+        "x": 5.6124951872458055,
+        "y": 118.72812517188407,
+        "progress": 35.635200000000005,
+        "hp": 243.91325819099157,
+        "maxHP": 243.91325819099157,
+        "shield": 195.13060655279327,
+        "speed": 59.392,
+        "slowUntil": 0,
+        "armor": 0,
+        "reward": 11,
+        "leak": 1,
+        "route": "main",
+        "phase": 0,
+        "abilityTick": 354
+      }
+    ],
+    "waveInfo": {
+      "title": "第 5 波 · 精英 · 护盾潮汐",
+      "description": "护盾先吸收伤害，法师塔更擅长击破护盾；本波有精英压阵；治疗师可恢复周围敌人，建议优先支援集火",
+      "rule": "shield",
+      "total": 19,
+      "spawned": 9,
+      "boss": false
+    },
+    "events": [],
+    "spawnClock": 400,
+    "towerSerial": 6,
+    "enemySerial": 65,
+    "eventSerial": 0,
+    "cursor": 0,
+    "log": []
+  },
+  "actors": [
+    0,
+    1
+  ],
+  "timeoutActors": [],
+  "deadline": 0,
+  "attention": [],
+  "systemDeadline": 1900000001000,
+  "log": []
+}
