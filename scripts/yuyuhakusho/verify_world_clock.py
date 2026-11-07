@@ -7,9 +7,14 @@ PATTERN='^Test(PCMTransferGate|ScheduledDMA|PCMDeviceFork|Segmented|Original|Ind
 PACKAGES=['./games/yuyuhakusho/audio/pcmcommands','./games/yuyuhakusho/audio/chips','./games/yuyuhakusho/audio/videoclock','./games/yuyuhakusho/audio/scoreclock']
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 def frozen():
+ correction_path=ROOT/'games/yuyuhakusho/verification/world-logic-begin/context-correction.json';correction=json.loads(correction_path.read_text())if correction_path.exists()else{'frozen_archives':{},'current_sha256':{}}
  for name in ['test-first.json','pcm-test-first.json','flow-test-first.json','boundary-test-first.json']:
   first=json.loads((BASE/name).read_text());assert first['test_first']and not first['production_exists']
-  for path,digest in first['files'].items():assert sha(ROOT/path)==digest,path
+  for path,digest in first['files'].items():
+   if path in correction['frozen_archives']:
+    x=correction['frozen_archives'][path];raw=(ROOT/x['archive']).read_bytes();raw=gzip.decompress(raw)if x['compressed']else raw;assert hashlib.sha256(raw).hexdigest()==digest,path
+   else:assert sha(ROOT/path)==digest,path
+ for path,digest in correction['current_sha256'].items():assert sha(ROOT/path)==digest,path
  assert 'undefined: scoreclock.BattleMainContext'in(BASE/'missing-api-red.jsonl').read_text()
  assert 'AdvanceDMA undefined'in(BASE/'pcm-missing-api-red.jsonl').read_text()
  assert 'undefined: scoreclock.AdvanceBattleWorldIRQToLogic'in(BASE/'flow-missing-api-red.jsonl').read_text()

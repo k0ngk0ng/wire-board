@@ -16,15 +16,18 @@ func (r *Runtime) WorldFrame(world engine.ChuWorldState, held [8]engine.Buttons,
 }
 
 type WorldFrameHooks struct {
-	Sound WorldHook
-	Work  func(*Runtime, engine.WorldWorkOperation, engine.WorldSoundOwners) error
+	Sound     WorldHook
+	Work      func(*Runtime, engine.WorldWorkOperation, engine.WorldSoundOwners) error
+	Prefix    func(*Runtime, engine.MainWorkOperation, engine.WorldFrameOwners) error
+	Normalize func(*Runtime, engine.WorldFrameOwners, engine.MainWorkHook) error
+	Owners    func(*Runtime, *engine.ChuWorldState) error
 }
 
 // WorldFrameWithHooks stages audio effects at both requests and default-arena
 // work boundaries. The caller must stage its own main clock; this API does not
 // yet own the complete world's temporal checkpoint or IRQ acceptance policy.
 func (r *Runtime) WorldFrameWithHooks(world engine.ChuWorldState, held [8]engine.Buttons, rules engine.ChuWorldLibrary, hooks WorldFrameHooks) (engine.ChuWorldState, []engine.ChuWorldEvent, engine.WorldFrameOutcome, error) {
-	if hooks.Sound == nil && hooks.Work == nil {
+	if hooks.Sound == nil && hooks.Work == nil && hooks.Prefix == nil && hooks.Normalize == nil && hooks.Owners == nil {
 		return engine.StepChuSessionFrame(world, held, rules)
 	}
 	next, err := r.fork()
@@ -32,6 +35,22 @@ func (r *Runtime) WorldFrameWithHooks(world engine.ChuWorldState, held [8]engine
 		return world, nil, engine.WorldFrameOutcome{}, err
 	}
 	var observers engine.ChuWorldHooks
+	if hooks.Owners != nil {
+		observers.Owners = func(state *engine.ChuWorldState) error { return hooks.Owners(next, state) }
+	}
+	if hooks.Prefix != nil || hooks.Normalize != nil {
+		observers.Frame = &engine.WorldFrameWorkHooks{}
+		if hooks.Prefix != nil {
+			observers.Frame.Work = func(op engine.MainWorkOperation, owners engine.WorldFrameOwners) error {
+				return hooks.Prefix(next, op, owners)
+			}
+		}
+		if hooks.Normalize != nil {
+			observers.Frame.Normalize = func(owners engine.WorldFrameOwners, work engine.MainWorkHook) error {
+				return hooks.Normalize(next, owners, work)
+			}
+		}
+	}
 	if hooks.Sound != nil {
 		observers.Sound = func(op engine.WorldSoundOperation, owners engine.WorldSoundOwners, apply func() error) error {
 			return hooks.Sound(next, op, owners, apply)

@@ -1,0 +1,15 @@
+{
+  "test_first": true,
+  "production_exists": false,
+  "files": {
+    "games/yuyuhakusho/audio/scoreclock/world_logic_begin_e2e_test.go": "68043241c8ae8ee53b83ac966db5d64d47b0e4ac510e408b11ea0369fd53f0ad",
+    "games/yuyuhakusho/audio/scoreclock/world_logic_runtime_e2e_test.go": "87a6708f278403cbb1a5e71733bf501e25d09e6bc96ebf1997b3925b88c14a47",
+    "scripts/yuyuhakusho/capture_world_frame_prefix.py": "b3b2ccbb2e17a0391effbb09c6e87866129019386c80bd2fc41c60f361dc7929",
+    "scripts/yuyuhakusho/world-frame-prefix-observer.c": "3e4c2bc041f8917190131db31d5722eec91a82ce7e5a3f7e20205b5f221e974f",
+    "scripts/yuyuhakusho/extract_world_logic_begin.py": "f5bcfa1b7b01463e3d1d375d5bd3df252a9d509b6dca294a064b4cc8b724e573",
+    "games/yuyuhakusho/verification/world-logic-begin/FAILURES.md": "5e0b0ff4dd568b33c9f3db962e0575e090e5eaf08828f03f73fcfec4202c7165",
+    "games/yuyuhakusho/verification/world-logic-begin/native-frame-prefix.json.gz": "604a7f3de8d9ae684245a4813fea765e4d0ed8d95ab9b5d25c76feaceb828393",
+    "games/yuyuhakusho/verification/world-logic-begin/portable-logic-begin.json.gz": "a056f7a38e1dc9bbcb0894e124bd447591278d38cadd76a9104a801719036a3b",
+    "games/yuyuhakusho/verification/world-logic-begin/export.json": "b08e2be414482f7aba9f5a0e75f00463eb621a13c4098d919d8067bb3b2d882e"
+  }
+}

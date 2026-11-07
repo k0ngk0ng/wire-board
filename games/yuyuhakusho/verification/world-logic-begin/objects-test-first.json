@@ -1,0 +1,8 @@
+{
+  "test_first": true,
+  "production_exists": false,
+  "files": {
+    "games/yuyuhakusho/audio/scoreclock/world_objects_ready_e2e_test.go": "a6905f0e86de06999549d62d07555f56f3b73a3b8048381fded99db8e717c247"
+  },
+  "scope": "One transaction and budget from World IRQ entry through actual3a2e prelude before object preparation; late failure discards all earlier video/audio/World effects."
+}

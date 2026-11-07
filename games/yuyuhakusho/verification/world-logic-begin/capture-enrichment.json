@@ -1,0 +1,13 @@
+{
+  "pass": true,
+  "original_cpu_io_aux_snapshots_and_input_unchanged": true,
+  "cases": 16,
+  "old_raw_sha256": "0df07f47a2f0a54b60f2f24f9af3b24dcf86a66a204a40a083eeec3dfb6f3910",
+  "final_raw_sha256": "604a7f3de8d9ae684245a4813fea765e4d0ed8d95ab9b5d25c76feaceb828393",
+  "added_fields": [
+    "graphics_before",
+    "graphics_after",
+    "scene"
+  ],
+  "scope": "Additional graphics/video latches decoded from already observed snapshots; every prior native event/snapshot/input byte preserved."
+}

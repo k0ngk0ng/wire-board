@@ -70,4 +70,8 @@ type WorldWorkHook func(WorldWorkOperation, WorldSoundOwners) error
 type ChuWorldHooks struct {
 	Sound WorldSoundHook
 	Work  WorldWorkHook
+	Frame *WorldFrameWorkHooks
+	// Owners borrows the active transaction at each internal value/clone
+	// boundary. It must not retain the pointer after the enclosing frame.
+	Owners func(*ChuWorldState) error
 }

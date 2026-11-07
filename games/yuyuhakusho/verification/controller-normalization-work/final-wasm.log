@@ -1,0 +1,1 @@
+{"pass": true, "platform": "wasm", "native_recapture_identical": false, "cases": 689, "operations": 147216, "validation": "games/yuyuhakusho/verification/controller-normalization-work/final-wasm/validation.json"}

@@ -1,0 +1,104 @@
+{
+  "pass": true,
+  "platform": "wasm",
+  "native_fixture": {
+    "pass": true,
+    "cases": 689,
+    "steps": 147216,
+    "complete_original_2c9e_calls": true,
+    "whole_calls_equal_stepping": true,
+    "cross_core_equal": true,
+    "baseline_2400_video_ram_controls_equal": true,
+    "no_unexpected_RAM_writes": true,
+    "cores": {
+      "original": {
+        "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+        "core_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+        "core_name": "Genesis Plus GX",
+        "core_version": "v1.7.4 60bee4c",
+        "fps": 59.92274340431231,
+        "ram_bytes": 65536,
+        "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+        "teamplayer": false
+      },
+      "observed": {
+        "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+        "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+        "core_name": "Genesis Plus GX",
+        "core_version": "v1.7.460bee4c",
+        "fps": 59.92274340431231,
+        "ram_bytes": 65536,
+        "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+        "teamplayer": false
+      }
+    },
+    "fixture_sha256": "e7def59846e41a31c43f2273c66e4910a53d1fdc4ebc5a83ed9e29d840d2b466",
+    "packet_sources": {
+      "games/yuyuhakusho/verification/battle-sample-irq/native-controller-scan.json.gz": "a583b95c2b7e0d6edc72ee42b4cb1ff6a100e7154c179b4bb3ee44dde53eb2f1",
+      "games/yuyuhakusho/verification/battle-sample-irq/cold-io-reset-controller-scan.json.gz": "8f1cd113ea2c7edc1d93c3f429b032e98b326e19070084482777e14eda916829"
+    },
+    "source_sha256": "ebcfb4cd52f8bfd582ce347683f12e030154628c75d1b5c2b1d92946d28757c5",
+    "legacy_input_sha256": "075d1d45d8b76b4a1ec62e5d99bbe5dbfc8a9989bbec0b46547a3fb196c87af2",
+    "battle_natural_six_button_calls": 3066,
+    "battle_carry_all_zero": true,
+    "scope": "Complete normalization including all sixteen trusted carry nibbles; physical MD3/MD6 direct and four-MD6 TeamPlayer records; transient completed-scan replacement at declared operation boundaries",
+    "limits": [
+      "No IRQ scheduling/duration claim: completed scans replace packets between native normalization operations",
+      "Inactive F7D0 bit6 without bit7 and lower reserved device-flag bits are outside the typed normalized device history domain"
+    ]
+  },
+  "native_recapture_identical": false,
+  "commands": [
+    {
+      "argv": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-json",
+        "-count=1",
+        "-exec",
+        "/opt/homebrew/Cellar/go/1.26.2/libexec/lib/wasm/go_js_wasm_exec",
+        "-run",
+        "^(TestControllerNormalizationWork|TestControllerAgainstOriginalCalls|TestControllerBoundaryEdges|TestControllerRejectsUnsupportedInputs|TestBattleControllerScan)",
+        "./games/yuyuhakusho/engine"
+      ],
+      "log": "games/yuyuhakusho/verification/controller-normalization-work/final-wasm/go-tests.jsonl",
+      "log_sha256": "eb41f8b4a46e14d05eccb59571a0dd5847126afba160c6832d686caf8fc84aa4",
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/go",
+        "vet",
+        "./games/yuyuhakusho/engine"
+      ],
+      "log": "games/yuyuhakusho/verification/controller-normalization-work/final-wasm/go-vet.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0
+    }
+  ],
+  "environment": {
+    "TEST_TELEMETRY_DIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-telemetry",
+    "GOCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-cache",
+    "GOMODCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-mod",
+    "GOTMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+    "TMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp"
+  },
+  "sources": {
+    "scripts/yuyuhakusho/verify_controller_normalization_work.py": "6228c3e0df064978bc44eb4ba563a9ddad1b756cafebd2054db9e0f35ed3c2aa",
+    "scripts/yuyuhakusho/capture_controller_normalization_work.py": "ebcfb4cd52f8bfd582ce347683f12e030154628c75d1b5c2b1d92946d28757c5",
+    "games/yuyuhakusho/engine/controller_normalization_work.go": "8093aa596a5c5bab316b22d2aa8f09a576acd4132c9478ad32fd8e297cd69fd0",
+    "games/yuyuhakusho/engine/controller_normalization_work_test.go": "773ba34980c4e9d479ede3808a87e318b5ac57b70d1b04c2a7459f86b38dc3a0",
+    "games/yuyuhakusho/engine/input.go": "38e957231a29fd08c889709e0e7a39661284258800521467ba41fcdc9dfa12e2",
+    "games/yuyuhakusho/engine/controller_scan.go": "bd1dd8ac54142a45bfc6d979c48a1b18480f2fdd6ca5ae65e5fffa6a36e1af21",
+    "games/yuyuhakusho/engine/main_work.go": "2349d6d86306c6244a80b988b3748b82df958b8eedf0d38cab5a4b7fc977498f",
+    "docs/research/md-yuyuhakusho/static/input-detail.txt": "4ee837e2e89ba82c303c3a73db8a80c17a54b81ab30c43226ace06a363289758",
+    "docs/research/md-yuyuhakusho/static/logical-input.txt": "14e77637a1a7cbe3ed7bcfab350629a39c892ae5436ab4e92c7c99c6a29f7c30",
+    "docs/research/md-yuyuhakusho/static/world-frame-driver.txt": "fef18cc2ba45645e6c2049ae8024b6154eef70e5942a586d8fbae80022037e2d"
+  },
+  "test_first_sha256": "f6df3eb40138e95cac3fd8003e13eb49ff8a4c91fc17161b9301182dd1b606f2",
+  "scope": "Exact semantic normalization values and every native main-work boundary, hook/getter error atomicity and unchanged controller/scanner API regressions",
+  "limits": [
+    "Live scan replacement is an already completed scan; shared main-clock IRQ acceptance, cost and return integration are separate",
+    "Work observes the completed operation boundary after its read value is latched; a before-operation IRQ coordinator must service pending IRQs in LivePorts before returning the read snapshot"
+  ]
+}

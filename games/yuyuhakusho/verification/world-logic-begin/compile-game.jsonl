@@ -1,0 +1,175 @@
+{"Time":"2026-11-07T08:25:03.153288+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio"}
+{"Time":"2026-11-07T08:25:03.155648+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips"}
+{"Time":"2026-11-07T08:25:03.158607+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips/psg"}
+{"Time":"2026-11-07T08:25:03.16124+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/dsp"}
+{"Time":"2026-11-07T08:25:03.192811+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/mixed"}
+{"Time":"2026-11-07T08:25:03.192835+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/mixed","Output":"?   \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/mixed\t[no test files]\n"}
+{"Time":"2026-11-07T08:25:03.192849+08:00","Action":"skip","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/mixed","Elapsed":0}
+{"Time":"2026-11-07T08:25:03.192872+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/pcm"}
+{"Time":"2026-11-07T08:25:03.198576+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/pcmassets"}
+{"Time":"2026-11-07T08:25:03.243026+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/pcmcommands"}
+{"Time":"2026-11-07T08:25:03.243089+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/pcmplayer"}
+{"Time":"2026-11-07T08:25:03.259071+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/phaseclock"}
+{"Time":"2026-11-07T08:25:03.259274+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/resourcebridge"}
+{"Time":"2026-11-07T08:25:03.74385+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips","Output":"testing: warning: no tests to run\n"}
+{"Time":"2026-11-07T08:25:03.744079+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips","Output":"PASS\n"}
+{"Time":"2026-11-07T08:25:03.745175+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips\t0.589s [no tests to run]\n"}
+{"Time":"2026-11-07T08:25:03.747542+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips","Elapsed":0.592}
+{"Time":"2026-11-07T08:25:03.867705+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/rootcontrol"}
+{"Time":"2026-11-07T08:25:04.09326+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio","Output":"testing: warning: no tests to run\n"}
+{"Time":"2026-11-07T08:25:04.093303+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio","Output":"PASS\n"}
+{"Time":"2026-11-07T08:25:04.093609+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio\t0.940s [no tests to run]\n"}
+{"Time":"2026-11-07T08:25:04.095305+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio","Elapsed":0.942}
+{"Time":"2026-11-07T08:25:04.189946+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score"}
+{"Time":"2026-11-07T08:25:04.498456+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips/psg","Output":"testing: warning: no tests to run\n"}
+{"Time":"2026-11-07T08:25:04.498762+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips/psg","Output":"PASS\n"}
+{"Time":"2026-11-07T08:25:04.500305+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips/psg","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips/psg\t1.342s [no tests to run]\n"}
+{"Time":"2026-11-07T08:25:04.504267+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/chips/psg","Elapsed":1.346}
+{"Time":"2026-11-07T08:25:04.58318+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score/param"}
+{"Time":"2026-11-07T08:25:04.886775+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/dsp","Output":"testing: warning: no tests to run\n"}
+{"Time":"2026-11-07T08:25:04.886938+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/dsp","Output":"PASS\n"}
+{"Time":"2026-11-07T08:25:04.888072+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/dsp","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/dsp\t1.701s [no tests to run]\n"}
+{"Time":"2026-11-07T08:25:04.890584+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/dsp","Elapsed":1.729}
+{"Time":"2026-11-07T08:25:05.017444+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/scoreclock"}
+{"Time":"2026-11-07T08:25:05.270756+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/pcm","Output":"testing: warning: no tests to run\n"}
+{"Time":"2026-11-07T08:25:05.27092+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/pcm","Output":"PASS\n"}
+{"Time":"2026-11-07T08:25:05.27202+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/pcm","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/pcm\t2.079s [no tests to run]\n"}
+{"Time":"2026-11-07T08:25:05.273952+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/pcm","Elapsed":2.081}
+{"Time":"2026-11-07T08:25:05.274961+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/session"}
+{"Time":"2026-11-07T08:25:05.274988+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/session","Output":"?   \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/session\t[no test files]\n"}
+{"Time":"2026-11-07T08:25:05.274999+08:00","Action":"skip","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/session","Elapsed":0}
+{"Time":"2026-11-07T08:25:05.346247+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/stream"}
+{"Time":"2026-11-07T08:25:05.652223+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/pcmassets","Output":"testing: warning: no tests to run\n"}
+{"Time":"2026-11-07T08:25:05.652391+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/pcmassets","Output":"PASS\n"}
+{"Time":"2026-11-07T08:25:05.653488+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/pcmassets","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/pcmassets\t2.455s [no tests to run]\n"}
+{"Time":"2026-11-07T08:25:05.655945+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/pcmassets","Elapsed":2.457}
+{"Time":"2026-11-07T08:25:05.740364+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/videoclock"}
+{"Time":"2026-11-07T08:25:06.03739+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/pcmplayer","Output":"testing: warning: no tests to run\n"}
+{"Time":"2026-11-07T08:25:06.03752+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/pcmplayer","Output":"PASS\n"}
+{"Time":"2026-11-07T08:25:06.038797+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/pcmplayer","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/pcmplayer\t2.795s [no tests to run]\n"}
+{"Time":"2026-11-07T08:25:06.04119+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/pcmplayer","Elapsed":2.798}
+{"Time":"2026-11-07T08:25:06.248529+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/capture-renderstate-reference"}
+{"Time":"2026-11-07T08:25:06.248547+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/capture-renderstate-reference","Output":"?   \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/capture-renderstate-reference\t[no test files]\n"}
+{"Time":"2026-11-07T08:25:06.248556+08:00","Action":"skip","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/capture-renderstate-reference","Elapsed":0}
+{"Time":"2026-11-07T08:25:06.46678+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/pcmcommands","Output":"testing: warning: no tests to run\n"}
+{"Time":"2026-11-07T08:25:06.467834+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/pcmcommands","Output":"PASS\n"}
+{"Time":"2026-11-07T08:25:06.468296+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/pcmcommands","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/pcmcommands\t3.224s [no tests to run]\n"}
+{"Time":"2026-11-07T08:25:06.47374+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/pcmcommands","Elapsed":3.231}
+{"Time":"2026-11-07T08:25:06.491067+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/platform-web-harness"}
+{"Time":"2026-11-07T08:25:06.491086+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/platform-web-harness","Output":"?   \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/platform-web-harness\t[no test files]\n"}
+{"Time":"2026-11-07T08:25:06.4911+08:00","Action":"skip","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/platform-web-harness","Elapsed":0}
+{"Time":"2026-11-07T08:25:06.581851+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-animation-catalog"}
+{"Time":"2026-11-07T08:25:06.622387+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-arena-assets"}
+{"Time":"2026-11-07T08:25:06.882284+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/phaseclock","Output":"testing: warning: no tests to run\n"}
+{"Time":"2026-11-07T08:25:06.882521+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/phaseclock","Output":"PASS\n"}
+{"Time":"2026-11-07T08:25:06.883757+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/phaseclock","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/phaseclock\t3.625s [no tests to run]\n"}
+{"Time":"2026-11-07T08:25:06.885771+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/phaseclock","Elapsed":3.627}
+{"Time":"2026-11-07T08:25:06.92161+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-arena-pan"}
+{"Time":"2026-11-07T08:25:06.921733+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-arena-pan","Output":"?   \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-arena-pan\t[no test files]\n"}
+{"Time":"2026-11-07T08:25:06.921748+08:00","Action":"skip","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-arena-pan","Elapsed":0}
+{"Time":"2026-11-07T08:25:06.923741+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-audio-stream-encoder"}
+{"Time":"2026-11-07T08:25:06.923756+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-audio-stream-encoder","Output":"?   \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-audio-stream-encoder\t[no test files]\n"}
+{"Time":"2026-11-07T08:25:06.923766+08:00","Action":"skip","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-audio-stream-encoder","Elapsed":0}
+{"Time":"2026-11-07T08:25:06.987824+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-character-assets"}
+{"Time":"2026-11-07T08:25:07.273002+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/resourcebridge","Output":"testing: warning: no tests to run\n"}
+{"Time":"2026-11-07T08:25:07.273129+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/resourcebridge","Output":"PASS\n"}
+{"Time":"2026-11-07T08:25:07.274541+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/resourcebridge","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/resourcebridge\t4.014s [no tests to run]\n"}
+{"Time":"2026-11-07T08:25:07.277296+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/resourcebridge","Elapsed":4.018}
+{"Time":"2026-11-07T08:25:07.340499+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-chu-runtime"}
+{"Time":"2026-11-07T08:25:07.340519+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-chu-runtime","Output":"?   \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-chu-runtime\t[no test files]\n"}
+{"Time":"2026-11-07T08:25:07.340529+08:00","Action":"skip","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-chu-runtime","Elapsed":0}
+{"Time":"2026-11-07T08:25:07.372634+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-chu-session"}
+{"Time":"2026-11-07T08:25:07.372652+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-chu-session","Output":"?   \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-chu-session\t[no test files]\n"}
+{"Time":"2026-11-07T08:25:07.372658+08:00","Action":"skip","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-chu-session","Elapsed":0}
+{"Time":"2026-11-07T08:25:07.374283+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-finite-audio"}
+{"Time":"2026-11-07T08:25:07.374291+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-finite-audio","Output":"?   \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-finite-audio\t[no test files]\n"}
+{"Time":"2026-11-07T08:25:07.374296+08:00","Action":"skip","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-finite-audio","Elapsed":0}
+{"Time":"2026-11-07T08:25:07.428435+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-sprites"}
+{"Time":"2026-11-07T08:25:07.644355+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/rootcontrol","Output":"testing: warning: no tests to run\n"}
+{"Time":"2026-11-07T08:25:07.644489+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/rootcontrol","Output":"PASS\n"}
+{"Time":"2026-11-07T08:25:07.645322+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/rootcontrol","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/rootcontrol\t3.778s [no tests to run]\n"}
+{"Time":"2026-11-07T08:25:07.646574+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/rootcontrol","Elapsed":3.779}
+{"Time":"2026-11-07T08:25:07.647052+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/data"}
+{"Time":"2026-11-07T08:25:07.647058+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/data","Output":"?   \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/data\t[no test files]\n"}
+{"Time":"2026-11-07T08:25:07.647063+08:00","Action":"skip","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/data","Elapsed":0}
+{"Time":"2026-11-07T08:25:07.789527+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine"}
+{"Time":"2026-11-07T08:25:08.031183+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score","Output":"testing: warning: no tests to run\n"}
+{"Time":"2026-11-07T08:25:08.031351+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score","Output":"PASS\n"}
+{"Time":"2026-11-07T08:25:08.032431+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score\t3.842s [no tests to run]\n"}
+{"Time":"2026-11-07T08:25:08.034411+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score","Elapsed":3.844}
+{"Time":"2026-11-07T08:25:08.388261+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score/param","Output":"testing: warning: no tests to run\n"}
+{"Time":"2026-11-07T08:25:08.388351+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score/param","Output":"PASS\n"}
+{"Time":"2026-11-07T08:25:08.388683+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score/param","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score/param\t3.805s [no tests to run]\n"}
+{"Time":"2026-11-07T08:25:08.389589+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/score/param","Elapsed":3.806}
+{"Time":"2026-11-07T08:25:08.781929+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/scoreclock","Output":"testing: warning: no tests to run\n"}
+{"Time":"2026-11-07T08:25:08.782178+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/scoreclock","Output":"PASS\n"}
+{"Time":"2026-11-07T08:25:08.782252+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/scoreclock","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/scoreclock\t3.762s [no tests to run]\n"}
+{"Time":"2026-11-07T08:25:08.783047+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/scoreclock","Elapsed":3.766}
+{"Time":"2026-11-07T08:25:09.157243+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/stream","Output":"testing: warning: no tests to run\n"}
+{"Time":"2026-11-07T08:25:09.157321+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/stream","Output":"PASS\n"}
+{"Time":"2026-11-07T08:25:09.157534+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/stream","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/stream\t3.811s [no tests to run]\n"}
+{"Time":"2026-11-07T08:25:09.158291+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/stream","Elapsed":3.8120000000000003}
+{"Time":"2026-11-07T08:25:09.534351+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/videoclock","Output":"testing: warning: no tests to run\n"}
+{"Time":"2026-11-07T08:25:09.534398+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/videoclock","Output":"PASS\n"}
+{"Time":"2026-11-07T08:25:09.53476+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/videoclock","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/videoclock\t3.794s [no tests to run]\n"}
+{"Time":"2026-11-07T08:25:09.535267+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/videoclock","Elapsed":3.795}
+{"Time":"2026-11-07T08:25:09.585972+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest"}
+{"Time":"2026-11-07T08:25:09.58602+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/presentation"}
+{"Time":"2026-11-07T08:25:09.586066+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/renderstate"}
+{"Time":"2026-11-07T08:25:09.586135+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/resourceid"}
+{"Time":"2026-11-07T08:25:09.58618+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/runtimebridge"}
+{"Time":"2026-11-07T08:25:09.935788+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-animation-catalog","Output":"testing: warning: no tests to run\n"}
+{"Time":"2026-11-07T08:25:09.93613+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-animation-catalog","Output":"PASS\n"}
+{"Time":"2026-11-07T08:25:09.937225+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-animation-catalog","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-animation-catalog\t3.355s [no tests to run]\n"}
+{"Time":"2026-11-07T08:25:09.939474+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-animation-catalog","Elapsed":3.358}
+{"Time":"2026-11-07T08:25:09.941298+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/server"}
+{"Time":"2026-11-07T08:25:10.32047+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-arena-assets","Output":"testing: warning: no tests to run\n"}
+{"Time":"2026-11-07T08:25:10.320628+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-arena-assets","Output":"PASS\n"}
+{"Time":"2026-11-07T08:25:10.322196+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-arena-assets","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-arena-assets\t3.700s [no tests to run]\n"}
+{"Time":"2026-11-07T08:25:10.325233+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-arena-assets","Elapsed":3.703}
+{"Time":"2026-11-07T08:25:10.327365+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/sessiontick"}
+{"Time":"2026-11-07T08:25:10.695122+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-character-assets","Output":"testing: warning: no tests to run\n"}
+{"Time":"2026-11-07T08:25:10.695323+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-character-assets","Output":"PASS\n"}
+{"Time":"2026-11-07T08:25:10.696288+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-character-assets","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-character-assets\t3.708s [no tests to run]\n"}
+{"Time":"2026-11-07T08:25:10.698359+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-character-assets","Elapsed":3.711}
+{"Time":"2026-11-07T08:25:10.699677+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/syncwire"}
+{"Time":"2026-11-07T08:25:11.078455+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-sprites","Output":"testing: warning: no tests to run\n"}
+{"Time":"2026-11-07T08:25:11.078638+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-sprites","Output":"PASS\n"}
+{"Time":"2026-11-07T08:25:11.080098+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-sprites","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-sprites\t3.652s [no tests to run]\n"}
+{"Time":"2026-11-07T08:25:11.082722+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/cmd/verify-sprites","Elapsed":3.654}
+{"Time":"2026-11-07T08:25:11.484678+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Output":"testing: warning: no tests to run\n"}
+{"Time":"2026-11-07T08:25:11.48484+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Output":"PASS\n"}
+{"Time":"2026-11-07T08:25:11.486006+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine\t3.696s [no tests to run]\n"}
+{"Time":"2026-11-07T08:25:11.488591+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine","Elapsed":3.699}
+{"Time":"2026-11-07T08:25:12.059011+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest","Output":"testing: warning: no tests to run\n"}
+{"Time":"2026-11-07T08:25:12.059225+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest","Output":"PASS\n"}
+{"Time":"2026-11-07T08:25:12.060015+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest\t2.474s [no tests to run]\n"}
+{"Time":"2026-11-07T08:25:12.068658+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/platformtest","Elapsed":2.483}
+{"Time":"2026-11-07T08:25:12.355344+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/resourceid","Output":"testing: warning: no tests to run\n"}
+{"Time":"2026-11-07T08:25:12.35547+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/resourceid","Output":"PASS\n"}
+{"Time":"2026-11-07T08:25:12.356602+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/resourceid","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/resourceid\t2.770s [no tests to run]\n"}
+{"Time":"2026-11-07T08:25:12.359146+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/resourceid","Elapsed":2.773}
+{"Time":"2026-11-07T08:25:12.745291+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/presentation","Output":"testing: warning: no tests to run\n"}
+{"Time":"2026-11-07T08:25:12.745423+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/presentation","Output":"PASS\n"}
+{"Time":"2026-11-07T08:25:12.746938+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/presentation","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/presentation\t3.161s [no tests to run]\n"}
+{"Time":"2026-11-07T08:25:12.748851+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/presentation","Elapsed":3.163}
+{"Time":"2026-11-07T08:25:13.133793+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/runtimebridge","Output":"testing: warning: no tests to run\n"}
+{"Time":"2026-11-07T08:25:13.133842+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/runtimebridge","Output":"PASS\n"}
+{"Time":"2026-11-07T08:25:13.134787+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/runtimebridge","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/runtimebridge\t3.549s [no tests to run]\n"}
+{"Time":"2026-11-07T08:25:13.13705+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/runtimebridge","Elapsed":3.551}
+{"Time":"2026-11-07T08:25:13.516494+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/renderstate","Output":"testing: warning: no tests to run\n"}
+{"Time":"2026-11-07T08:25:13.519627+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/renderstate","Output":"PASS\n"}
+{"Time":"2026-11-07T08:25:13.520898+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/renderstate","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/renderstate\t3.935s [no tests to run]\n"}
+{"Time":"2026-11-07T08:25:13.522789+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/renderstate","Elapsed":3.9370000000000003}
+{"Time":"2026-11-07T08:25:13.959855+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/server","Output":"testing: warning: no tests to run\n"}
+{"Time":"2026-11-07T08:25:13.960056+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/server","Output":"PASS\n"}
+{"Time":"2026-11-07T08:25:13.960677+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/server","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/server\t4.019s [no tests to run]\n"}
+{"Time":"2026-11-07T08:25:13.969415+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/server","Elapsed":4.028}
+{"Time":"2026-11-07T08:25:14.302981+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/sessiontick","Output":"testing: warning: no tests to run\n"}
+{"Time":"2026-11-07T08:25:14.303076+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/sessiontick","Output":"PASS\n"}
+{"Time":"2026-11-07T08:25:14.304211+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/sessiontick","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/sessiontick\t3.977s [no tests to run]\n"}
+{"Time":"2026-11-07T08:25:14.306489+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/sessiontick","Elapsed":3.98}
+{"Time":"2026-11-07T08:25:14.697781+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/syncwire","Output":"testing: warning: no tests to run\n"}
+{"Time":"2026-11-07T08:25:14.697895+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/syncwire","Output":"PASS\n"}
+{"Time":"2026-11-07T08:25:14.699386+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/syncwire","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/syncwire\t4.000s [no tests to run]\n"}
+{"Time":"2026-11-07T08:25:14.701603+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/syncwire","Elapsed":4.002}

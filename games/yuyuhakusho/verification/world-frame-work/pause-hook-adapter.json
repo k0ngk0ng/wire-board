@@ -1,0 +1,8 @@
+{
+  "reason": "The transition test intended an acknowledgement before the producer write, but initially changed AudioPause on every operation including the final return, which legitimately acknowledges the new request. Restrict only this probe to the preceding pause-state-set operation. No expected value, frozen native output, or production implementation changed; the separate hold probe still writes at every operation.",
+  "frozen_path": "games/yuyuhakusho/engine/world_frame_work_test.go",
+  "archive": "games/yuyuhakusho/verification/world-frame-work/test-before-pause-hook-adapter.go.gz",
+  "frozen_sha256": "0b6a17f352d00ac19dd82f1b37b00c6eaa9709aafdaf8cad504404ae5cea0664",
+  "current_sha256": "539d78f5f69b6161faf019e05bc224756b25dfa72b1c06389e9b6320ffc620a6",
+  "diff": "games/yuyuhakusho/verification/world-frame-work/pause-hook-adapter.diff.gz"
+}

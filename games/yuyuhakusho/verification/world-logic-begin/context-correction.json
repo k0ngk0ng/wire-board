@@ -1,0 +1,51 @@
+{
+  "reason": "F512/F514 are desired/previous VIDEO mode (2), not F580/F582 scene stage/request (52/0). Previous wrapper exporter hardcoded scene52/request52 and omitted VideoMode; new snapshot recorder mislabeled actual2/2 as Scene fields. Correct typed projection and runtime to use VideoMode plus irreducible previous-video latch. Scene fields derive from original saved F550..F590 window. All original native bytes, CPU/IO/aux/bus inputs and timing endpoints are unchanged; all Go tests unchanged. Original projection/source archived byte-identically.",
+  "native_ram_fields": {
+    "F512": "World.VideoMode=2",
+    "F514": "BattleGraphics.PreviousVideoMode=2",
+    "F580": "World.SceneMode=52",
+    "F582": "World.SceneRequest=0"
+  },
+  "frozen_archives": {
+    "scripts/yuyuhakusho/capture_world_frame_prefix.py": {
+      "archive": "games/yuyuhakusho/verification/world-logic-begin/context-correction/scripts__yuyuhakusho__capture_world_frame_prefix.py.gz",
+      "compressed": true
+    },
+    "scripts/yuyuhakusho/extract_world_logic_begin.py": {
+      "archive": "games/yuyuhakusho/verification/world-logic-begin/context-correction/scripts__yuyuhakusho__extract_world_logic_begin.py.gz",
+      "compressed": true
+    },
+    "scripts/yuyuhakusho/extract_world_clock.py": {
+      "archive": "games/yuyuhakusho/verification/world-logic-begin/context-correction/scripts__yuyuhakusho__extract_world_clock.py.gz",
+      "compressed": true
+    },
+    "games/yuyuhakusho/verification/world-logic-begin/portable-logic-begin.json.gz": {
+      "archive": "games/yuyuhakusho/verification/world-logic-begin/context-correction/games__yuyuhakusho__verification__world-logic-begin__portable-logic-begin.json.gz",
+      "compressed": false
+    },
+    "games/yuyuhakusho/verification/world-logic-begin/export.json": {
+      "archive": "games/yuyuhakusho/verification/world-logic-begin/context-correction/games__yuyuhakusho__verification__world-logic-begin__export.json.gz",
+      "compressed": true
+    },
+    "games/yuyuhakusho/verification/world-clock/portable-world-clock.json.gz": {
+      "archive": "games/yuyuhakusho/verification/world-logic-begin/context-correction/games__yuyuhakusho__verification__world-clock__portable-world-clock.json.gz",
+      "compressed": false
+    },
+    "games/yuyuhakusho/verification/world-clock/export.json": {
+      "archive": "games/yuyuhakusho/verification/world-logic-begin/context-correction/games__yuyuhakusho__verification__world-clock__export.json.gz",
+      "compressed": true
+    }
+  },
+  "current_sha256": {
+    "scripts/yuyuhakusho/capture_world_frame_prefix.py": "0e596b23a49c82bc3cc0719d7cc9f60e31abc16d389a024d23a668b96ac456fb",
+    "scripts/yuyuhakusho/extract_world_logic_begin.py": "c5c49c55c29bfc7e16903aeae17ed484151df4751fb5df561da3d2cf2b0f70bb",
+    "scripts/yuyuhakusho/extract_world_clock.py": "7e37bacc5ddf1b1db8f511ee645dc5bbb0273ad0bbbfbe706f3d00ccab4a22e8",
+    "games/yuyuhakusho/verification/world-logic-begin/portable-logic-begin.json.gz": "9e593aaf82439554ce5fc27107312ea2e982ab142a35d4a0fe4569b0a1ae9377",
+    "games/yuyuhakusho/verification/world-logic-begin/export.json": "87e1962d5d68fbcfb14c0784ead34fc02f8a59a392ad44fd7a64be77e8cfd5a1",
+    "games/yuyuhakusho/verification/world-clock/portable-world-clock.json.gz": "5a8560b750bb957f099b71c37cc56da9a45488db4a035d9afcc21434d20f732a",
+    "games/yuyuhakusho/verification/world-clock/export.json": "f4347aecaca3529ac0031a88787af88b0ba80fb8ca1c783c6b650058d6b4b576"
+  },
+  "native_frame_fixture_sha256": "604a7f3de8d9ae684245a4813fea765e4d0ed8d95ab9b5d25c76feaceb828393",
+  "native_wrapper_fixture_sha256": "dc5e3364f4c80343b28a2bfc200994485407d06f4740fdae5297c99001d38d8f",
+  "all_cpu_io_aux_bus_and_end_clocks_unchanged": true
+}

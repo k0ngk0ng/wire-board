@@ -1,0 +1,8 @@
+{"Time":"2026-11-07T08:16:35.681372+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/scoreclock"}
+{"Time":"2026-11-07T08:16:36.273436+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/scoreclock","Test":"TestWorldObjectsReadyActualOneTransactionAndWholeBudget"}
+{"Time":"2026-11-07T08:16:36.273558+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/scoreclock","Test":"TestWorldObjectsReadyActualOneTransactionAndWholeBudget","Output":"=== RUN   TestWorldObjectsReadyActualOneTransactionAndWholeBudget\n"}
+{"Time":"2026-11-07T08:16:36.765318+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/scoreclock","Test":"TestWorldObjectsReadyActualOneTransactionAndWholeBudget","Output":"--- PASS: TestWorldObjectsReadyActualOneTransactionAndWholeBudget (0.49s)\n"}
+{"Time":"2026-11-07T08:16:36.768397+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/scoreclock","Test":"TestWorldObjectsReadyActualOneTransactionAndWholeBudget","Elapsed":0.49}
+{"Time":"2026-11-07T08:16:36.769071+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/scoreclock","Output":"PASS\n"}
+{"Time":"2026-11-07T08:16:36.769189+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/scoreclock","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/scoreclock\t1.088s\n"}
+{"Time":"2026-11-07T08:16:36.769207+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/audio/scoreclock","Elapsed":1.088}

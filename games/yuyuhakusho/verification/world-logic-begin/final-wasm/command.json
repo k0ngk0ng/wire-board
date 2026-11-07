@@ -1,0 +1,36 @@
+{
+  "command": [
+    "/opt/homebrew/bin/go",
+    "test",
+    "-json",
+    "-count=1",
+    "-timeout=20m",
+    "-run",
+    "^Test(PCMTransferGate|ScheduledDMA|PCMDeviceFork|Segmented|Original|IndependentReset|CompleteChipControl|ConstructionInput|ActualYMAddress|PhysicalOutput|RestoreRequires|OpaqueMetadata|SameSlot|UnscheduledDMA|PendingBus|MixedRuntime|BattleWorldEntry|BattleSamplePrefix|BattleReturn|SoundIRQ|WorldSoundLiveJoint|WorldClock|WorldFlow|WorldDMA|WorldFrame|WorldLogicBegin|WorldObjectsReady|ControllerNormalizationWork|ControllerAgainstOriginal|ControllerBoundaryEdges|ControllerRejects|CallOrderReload|InvalidInputAndSnapshot|M68KRead|PendingIsNot|StatusBoundary|HorizontalRequest|Random|ChuWorld)",
+    "-exec",
+    "/opt/homebrew/Cellar/go/1.26.2/libexec/lib/wasm/go_js_wasm_exec",
+    "./games/yuyuhakusho/engine",
+    "./games/yuyuhakusho/audio/pcmcommands",
+    "./games/yuyuhakusho/audio/chips",
+    "./games/yuyuhakusho/audio/videoclock",
+    "./games/yuyuhakusho/audio/scoreclock"
+  ],
+  "cwd": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho",
+  "environment": {
+    "TEST_TELEMETRY_DIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-telemetry",
+    "GOCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-cache",
+    "GOMODCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-mod",
+    "GOTMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+    "TMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+    "GOMAXPROCS": "1",
+    "GOOS": "js",
+    "GOARCH": "wasm",
+    "GODEBUG": "gccheckmark=1,clobberfree=1"
+  },
+  "exit_code": 0,
+  "elapsed_seconds": 172.9879767894745,
+  "output_sha256": "42ce2f8825e8b1fb48b1eb7b8461baed2fbd0baed4150983668107a6eb2d8aa2",
+  "tests_passed": 572,
+  "top_level_passed": 85,
+  "failures": []
+}
