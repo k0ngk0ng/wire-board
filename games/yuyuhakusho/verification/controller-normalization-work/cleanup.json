@@ -1,0 +1,43 @@
+{
+  "scope": "Only this task directory; shared Go cache/temp directories remain in active use by Root",
+  "removed": [
+    {
+      "path": "games/yuyuhakusho/verification/controller-normalization-work/final-native/recapture/native-controller-normalization.json.gz",
+      "sha256": "e7def59846e41a31c43f2273c66e4910a53d1fdc4ebc5a83ed9e29d840d2b466",
+      "bytes": 619822,
+      "reason": "byte-identical recapture retained by manifest, or redundant green race run superseded by final-native checks"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/controller-normalization-work/final-native/recapture/source-steps.json.gz",
+      "sha256": "c00894949d22401f8e93498920a0cd7024a297d3567104325a17fa396df94dca",
+      "bytes": 965160,
+      "reason": "byte-identical recapture retained by manifest, or redundant green race run superseded by final-native checks"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/controller-normalization-work/native-race.jsonl",
+      "sha256": "1ddcb22b4a8f0ce6d685e78c4482bef502643876102c150b7493cb3389aefd0b",
+      "bytes": 14335,
+      "reason": "byte-identical recapture retained by manifest, or redundant green race run superseded by final-native checks"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/controller-normalization-work/native-first/original",
+      "bytes": 0,
+      "reason": "empty native frontend output directory"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/controller-normalization-work/native-first/observed",
+      "bytes": 0,
+      "reason": "empty native frontend output directory"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/controller-normalization-work/final-native/recapture/original",
+      "bytes": 0,
+      "reason": "empty native frontend output directory"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/controller-normalization-work/final-native/recapture/observed",
+      "bytes": 0,
+      "reason": "empty native frontend output directory"
+    }
+  ]
+}

@@ -21,34 +21,7 @@ type WorldFrameOutcome struct {
 // itself belongs to the caller. The slow gate uses the entry SlowFlag, while
 // subsequent object callbacks read its possibly changed world value afresh.
 func BeginWorldFrame(state WorldFrameState, samples [8]ControllerFrame) (WorldFrameState, WorldFrameOutcome, error) {
-	original := state
-	state.Clock = StepVideoClock(state.Clock)
-	if state.SlowGate != 0 && state.Clock.SlowFlag != 0 {
-		return state, WorldFrameOutcome{}, nil
-	}
-	state.Controllers = samples
-	for i, frame := range samples {
-		state.Clock.Pressed[i] = uint8(frame.Pressed)
-	}
-	clock, err := ToggleWorldPause(state.Clock)
-	if err != nil {
-		return original, WorldFrameOutcome{}, err
-	}
-	state.Clock = StepLogicClock(ApplyWorldPause(clock))
-	outcome := WorldFrameOutcome{InputConsumed: true}
-	if state.ResetEnabled != 0 {
-		// The original reset chord checks four fixed base channels, independent
-		// of the pause-channel mask and configured normalization count.
-		for _, frame := range samples[:4] {
-			if frame.Pressed&ButtonStart != 0 && frame.Current&0x70 == 0x70 {
-				outcome.ResetRequested = true
-				return state, outcome, nil
-			}
-		}
-	}
-	state.RandomSeed, _ = NextRandom(state.RandomSeed)
-	state.Clock = StepWorldFeedback(state.Clock)
-	return state, outcome, nil
+	return BeginWorldFrameWork(state, WorldFrameWorkHooks{Normalize: func(owners WorldFrameOwners, _ MainWorkHook) error { *owners.Controllers = samples; return nil }})
 }
 
 // FinishWorldPalette recovers the actual2300→conditional233c order used by

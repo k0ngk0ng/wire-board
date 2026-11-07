@@ -128,6 +128,11 @@ func StepChuWorldObjectsWithHooks(state ChuWorldState, view ChuWorldView, librar
 	state.Stream = append([]byte(nil), state.Stream...)
 	state.Throws.Records = append([]ThrowContactRecord(nil), state.Throws.Records...)
 	state.Registration.Owners = append([]uint16(nil), state.Registration.Owners...)
+	if hooks.Owners != nil {
+		if err := hooks.Owners(&state); err != nil {
+			return original, nil, err
+		}
+	}
 	port := &worldSoundPort{owners: WorldSoundOwners{Queue: &state.SoundQueue, AudioPause: &state.Clock.AudioPause}, hook: hooks.Sound}
 	var events []ChuWorldEvent
 	var hudCursor uint16 // Logical per-pass transfer cursor, not a physical DMA address.

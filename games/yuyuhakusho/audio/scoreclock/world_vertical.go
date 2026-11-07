@@ -89,7 +89,7 @@ func (w *battleWorldClock) refreshPalette() error {
 }
 func (w *battleWorldClock) battleSceneRoutine() error {
 	p := w.p
-	if w.world.SceneMode != 52 {
+	if w.world.VideoMode != 2 {
 		return ErrBattleWorldProfile
 	}
 	if err := p.spend("scene-routine-dispatch", 12, 12, 12, 8); err != nil {
@@ -142,7 +142,7 @@ func (w *battleWorldClock) refreshSceneRoutine() error {
 	if err := p.spend("scene-mode-read", 12, 12); err != nil {
 		return err
 	}
-	equal := w.world.SceneMode == w.world.SceneRequest
+	equal := w.world.VideoMode == w.graphics.PreviousVideoMode
 	if err := p.branch("scene-mode-equal", equal, false); err != nil {
 		return err
 	}

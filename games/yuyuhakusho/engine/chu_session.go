@@ -196,20 +196,40 @@ func StepChuSessionFrameWithHooks(state ChuWorldState, held [8]Buttons, library 
 		if err := ValidateControllerButtons(buttons); err != nil {
 			return original, nil, WorldFrameOutcome{}, err
 		}
-		samples[i], _ = SampleController(state.Controllers[i].Current, buttons, MD6, false)
+		if hooks.Frame == nil {
+			samples[i], _ = SampleController(state.Controllers[i].Current, buttons, MD6, false)
+		}
 	}
-	begin, outcome, err := BeginWorldFrame(WorldFrameState{Clock: state.Clock, Controllers: state.Controllers, RandomSeed: state.RandomSeed,
-		SlowGate: state.SlowGate, ResetEnabled: state.ResetEnabled}, samples)
+	if hooks.Owners != nil {
+		if err := hooks.Owners(&state); err != nil {
+			return original, nil, WorldFrameOutcome{}, err
+		}
+	}
+	var outcome WorldFrameOutcome
+	var err error
+	if hooks.Frame != nil {
+		outcome, err = beginWorldFrameLive(WorldFrameOwners{Clock: &state.Clock, Controllers: &state.Controllers, RandomSeed: &state.RandomSeed, SlowGate: &state.SlowGate, ResetEnabled: &state.ResetEnabled}, *hooks.Frame)
+	} else {
+		var begin WorldFrameState
+		begin, outcome, err = BeginWorldFrame(WorldFrameState{Clock: state.Clock, Controllers: state.Controllers, RandomSeed: state.RandomSeed, SlowGate: state.SlowGate, ResetEnabled: state.ResetEnabled}, samples)
+		if err == nil {
+			state.Clock, state.Controllers, state.RandomSeed = begin.Clock, begin.Controllers, begin.RandomSeed
+		}
+	}
 	if err != nil {
 		return original, nil, WorldFrameOutcome{}, err
 	}
-	state.Clock, state.Controllers, state.RandomSeed = begin.Clock, begin.Controllers, begin.RandomSeed
 	if outcome.ResetRequested {
 		return state, []ChuWorldEvent{{Kind: "reset-request"}}, outcome, nil
 	}
 	state, events, err := StepChuWorldObjectsWithHooks(state, ChuWorldView{}, library, hooks)
 	if err != nil {
 		return original, nil, WorldFrameOutcome{}, err
+	}
+	if hooks.Owners != nil {
+		if err := hooks.Owners(&state); err != nil {
+			return original, nil, WorldFrameOutcome{}, err
+		}
 	}
 	state.Palette, err = FinishWorldPalette(state.Palette, library.Arena)
 	if err != nil {

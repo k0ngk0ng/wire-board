@@ -1,0 +1,9 @@
+{
+  "test_first": true,
+  "production_exists": false,
+  "files": {
+    "games/yuyuhakusho/engine/world_frame_live_test.go": "9981b1ed18b5bd5224e12063fbdac915eeb94daf1d984abb2064c294f3e125b4",
+    "games/yuyuhakusho/audio/scoreclock/world_frame_live_e2e_test.go": "e5ce04fbeb43e1137d1016dfd30643f97a742c2ef2cfc2541713590cb886e3b2"
+  },
+  "scope": "Borrow the actual internal World at prefix/object boundaries; preserve IRQ changes and roll back late World/audio failures."
+}

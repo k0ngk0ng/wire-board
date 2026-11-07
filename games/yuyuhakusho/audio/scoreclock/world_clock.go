@@ -29,6 +29,7 @@ type BattleGraphics struct {
 	Pending                      []BattleWorldTransfer
 	UploadPending, CachedDisplay bool
 	SceneIRQReady                bool `json:",omitempty"`
+	PreviousVideoMode            uint16
 	SavedColors                  [2]uint16
 	SpriteMarker                 uint16
 	Layout                       BattleVDPLayout
@@ -38,8 +39,9 @@ type BattleGraphics struct {
 // A late host write affects the background's earlier frontier in this fixed
 // reference profile. The caller retains this owner between main operations.
 type BattleMainContext struct {
-	IRQ        BattleSampleContext
-	DMAWindows []pcmcommands.DMAInterval
+	IRQ               BattleSampleContext
+	DMAWindows        []pcmcommands.DMAInterval
+	NormalizedDevices [8]engine.ControllerDevice `json:",omitzero"`
 }
 type BattleWorldClockDevice interface {
 	BattleWorldDevice
@@ -70,6 +72,7 @@ type battleWorldClock struct {
 	frames             []mixed.Frame
 	pendingVertical    bool
 	verticalReturnMask uint8
+	normalizedDevices  [8]engine.ControllerDevice
 }
 
 var ErrBattleWorldProfile = errors.New("unsupported timed battle World profile")
@@ -78,8 +81,12 @@ func newWorldClock(s *service, context BattleMainContext, graphics *BattleGraphi
 	return newWorldClockEntry(s, context, graphics, flags, world, device, observer, 7)
 }
 func newWorldClockEntry(s *service, context BattleMainContext, graphics *BattleGraphics, flags *BattleWorldFlags, world *engine.ChuWorldState, device BattleWorldClockDevice, observer BattleWorldObserver, entryMask uint8) (*battleWorldClock, error) {
+	return newWorldClockAt(s, context, graphics, flags, world, device, observer, entryMask, 2, false)
+}
+func newWorldClockAt(s *service, context BattleMainContext, graphics *BattleGraphics, flags *BattleWorldFlags, world *engine.ChuWorldState, device BattleWorldClockDevice, observer BattleWorldObserver, entryMask, entryPhase uint8, allowBlank bool) (*battleWorldClock, error) {
 	c := context.IRQ
-	if graphics == nil || flags == nil || world == nil || device == nil || c.Mask != entryMask || c.Phase != 2 || c.Pin != 0 && c.Pin != 4 && c.Pin != 6 || c.Video.Phase != videoclock.Scanlines || c.FrameOrigin > math.MaxUint64-4*896040 || len(graphics.Pending) > 256 || len(context.DMAWindows) > 1 || world.SceneMode != 52 || world.SceneRequest != 52 || world.InterruptMode != 4 {
+	validPhase := c.Video.Phase == videoclock.Scanlines || allowBlank && (c.Video.Phase == videoclock.PreVertical || c.Video.Phase == videoclock.PostVertical)
+	if graphics == nil || flags == nil || world == nil || device == nil || c.Mask != entryMask || c.Phase != entryPhase || c.Pin != 0 && c.Pin != 4 && c.Pin != 6 || !validPhase || c.FrameOrigin > math.MaxUint64-4*896040 || len(graphics.Pending) > 256 || len(context.DMAWindows) > 1 || world.SceneMode != 52 || world.VideoMode != 2 || graphics.PreviousVideoMode != 2 || world.InterruptMode != 4 {
 		return nil, ErrBattleWorldProfile
 	}
 	for _, t := range graphics.Pending {
@@ -111,6 +118,7 @@ func newWorldClockEntry(s *service, context BattleMainContext, graphics *BattleG
 	}
 	p := &battleSample{s: s, context: c, video: video, aux: device}
 	w := &battleWorldClock{p: p, device: device, graphics: graphics, flags: flags, world: world, windows: append([]pcmcommands.DMAInterval(nil), context.DMAWindows...)}
+	w.normalizedDevices = context.NormalizedDevices
 	if observer != nil {
 		p.observer = func(e BattleSampleObservation) error {
 			return observer(BattleWorldObservation{Stage: e.Stage, Clock: e.Clock, Context: e.Context, Flags: *flags, Work: e.Work, IO: e.IO})
@@ -121,7 +129,7 @@ func newWorldClockEntry(s *service, context BattleMainContext, graphics *BattleG
 	return w, nil
 }
 func (w *battleWorldClock) snapshot() BattleMainContext {
-	return BattleMainContext{IRQ: w.p.snapshot(), DMAWindows: append([]pcmcommands.DMAInterval(nil), w.windows...)}
+	return BattleMainContext{IRQ: w.p.snapshot(), DMAWindows: append([]pcmcommands.DMAInterval(nil), w.windows...), NormalizedDevices: w.normalizedDevices}
 }
 
 func (w *battleWorldClock) dma(target videoclock.DMATarget, remaining uint32, at uint32) error {
@@ -247,7 +255,7 @@ func (w *battleWorldClock) accept() (bool, error) {
 	w.pendingVertical = true
 	return true, nil
 }
-func (w *battleWorldClock) before() error {
+func (w *battleWorldClock) settle() error {
 	if err := w.sync(); err != nil {
 		return err
 	}
@@ -267,8 +275,14 @@ func (w *battleWorldClock) before() error {
 			return err
 		}
 	}
-	if work != nil && w.p.observer != nil {
-		return w.p.observer(BattleSampleObservation{Stage: "cpu", Clock: w.p.s.clock, Context: w.p.snapshot(), Work: *work})
+	return nil
+}
+func (w *battleWorldClock) before() error {
+	if err := w.settle(); err != nil {
+		return err
+	}
+	if w.p.work != nil && w.p.observer != nil {
+		return w.p.observer(BattleSampleObservation{Stage: "cpu", Clock: w.p.s.clock, Context: w.p.snapshot(), Work: *w.p.work})
 	}
 	return nil
 }

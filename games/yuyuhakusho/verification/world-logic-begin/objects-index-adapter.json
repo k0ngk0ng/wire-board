@@ -1,0 +1,7 @@
+{
+  "reason": "Before implementing the new combined API, check of the frozen fixture ordering found natural2393 is prefix index7, not10 (which is2396). Correct only this input row selection, preserving all assertions and native data; original frozen test and missing-API red retained.",
+  "frozen_path": "games/yuyuhakusho/audio/scoreclock/world_objects_ready_e2e_test.go",
+  "archive": "games/yuyuhakusho/verification/world-logic-begin/objects-test-before-index.go.gz",
+  "frozen_sha256": "a6905f0e86de06999549d62d07555f56f3b73a3b8048381fded99db8e717c247",
+  "current_sha256": "3430a9344a9cbb68997dc27afb31ca7e1cbb8c2a0090d411bf3ab3daec67bc6c"
+}
