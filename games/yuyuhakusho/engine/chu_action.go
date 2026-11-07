@@ -320,6 +320,7 @@ func stepFighterActionWithSound(state ChuActionState, characterID uint8, paramet
 	if err != nil {
 		return original, err
 	}
+	tail.SoundQueue = worldSoundQueueView(tail.SoundQueue, soundPort)
 	state.ChuTailState, state.AlternateVelocity, state.Power = tail, aux48, power
 	return state, nil
 }

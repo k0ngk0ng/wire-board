@@ -1,0 +1,20 @@
+{
+  "frozen_at": "2026-11-07T00:40:37.621128+00:00",
+  "head": "74a5bce56ac96e41ff08ddd6f41c1ff7228c5b38",
+  "helper_exists": false,
+  "frozen": {
+    "games/yuyuhakusho/engine/world_queue_merge_test.go": "5ebf136fb3cce7bb2343aa4075f4f1854c79fc0f6d6682f868ec9c7c363fee95",
+    "games/yuyuhakusho/verification/world-queue-merge/PLAN.md": "6f8f35ae39bff3199e2ae4b2f4e7025b1f80e640886213e4d976e86192ff1be7",
+    "games/yuyuhakusho/verification/world-queue-merge/missing-helper-red.jsonl": "e62aad7642dc62503cd669b21652e4fc984f20b0e7f27203a24ab964c8eebe01"
+  },
+  "production_before": {
+    "games/yuyuhakusho/engine/world_sound_live.go": "4369c23c8508702e87296314ad492a9d8113afaea749f6646e9ee8b1f69a3c9a",
+    "games/yuyuhakusho/engine/chu_actor.go": "70b5588b9e7cbcbb6166cebb2102fb51ba4c0ba003dbfad5bd9047369e24b5b2",
+    "games/yuyuhakusho/engine/chu_action.go": "78dbba92ebb7eda355665115f0f03e94c0a9f5ef6e28641a9b41d3ee4d417d55",
+    "games/yuyuhakusho/engine/chu_tail.go": "98534785e9660f8953da2905177996ffa9b82da1b53af14e1bf43a29aa1e888f",
+    "games/yuyuhakusho/engine/fighter4_world.go": "e386519b2403039d069cf1807c584a8cc911d665c292bfaf247ab1f4e28d89be",
+    "games/yuyuhakusho/engine/fighter5_world.go": "cb3ab8aaca0c827ab95b9f927d910f21cdc3785e77c66e0de8d5345b3a860827",
+    "games/yuyuhakusho/engine/fighter7_world.go": "c933ef6370dd7e4d77fcb877d30c0c4fee49a6387b9a8018ce3149b82173c4e2"
+  },
+  "scope": "Tests frozen before helper, private API changes and queue merge correction; existing whole native fixtures remain read-only"
+}

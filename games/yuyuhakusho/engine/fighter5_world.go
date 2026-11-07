@@ -47,6 +47,6 @@ func stepFighter5WorldProjectile(state *ChuWorldState, object WorldObject, libra
 	}
 	objects[object.ObjectID] = object
 	state.Objects, state.EffectCursor = objects, next.Pool.Cursor
-	state.Buffers, state.PendingSound, state.SoundQueue = next.Visual.Buffers, next.Visual.PendingSound, next.Visual.SoundQueue
+	state.Buffers, state.PendingSound, state.SoundQueue = next.Visual.Buffers, next.Visual.PendingSound, worldSoundQueueView(next.Visual.SoundQueue, soundPort)
 	return chuWorldPresentation(object.ObjectID, out.Draw, out.ClearedBytes), nil
 }

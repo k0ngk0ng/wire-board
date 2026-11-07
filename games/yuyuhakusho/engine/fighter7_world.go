@@ -23,7 +23,7 @@ func stepFighter7WorldFirstChild(state *ChuWorldState, object WorldObject, libra
 	}
 	link.Body.VelocityX, link.Body.VerticalVelocity, link.Aux48 = context.Link.VelocityX, context.Link.VerticalVelocity, context.Link.Aux48
 	state.Objects[object.ObjectID], state.Objects[link.ObjectID] = next, link
-	state.Buffers, state.PendingSound, state.SoundQueue = context.Submission.Buffers, context.Submission.PendingSound, context.Submission.SoundQueue
+	state.Buffers, state.PendingSound, state.SoundQueue = context.Submission.Buffers, context.Submission.PendingSound, worldSoundQueueView(context.Submission.SoundQueue, soundPort)
 	return chuWorldPresentation(object.ObjectID, out.Draw, out.ClearedBytes), nil
 }
 
@@ -74,7 +74,7 @@ func stepFighter7WorldSecondChild(state *ChuWorldState, object WorldObject, libr
 	}
 	objects[object.ObjectID] = next
 	state.Objects, state.EffectCursor = objects, context.Pool.Cursor
-	state.Buffers, state.PendingSound, state.SoundQueue = context.Submission.Buffers, context.Submission.PendingSound, context.Submission.SoundQueue
+	state.Buffers, state.PendingSound, state.SoundQueue = context.Submission.Buffers, context.Submission.PendingSound, worldSoundQueueView(context.Submission.SoundQueue, soundPort)
 	return chuWorldPresentation(object.ObjectID, out.Draw, out.ClearedBytes), nil
 }
 
