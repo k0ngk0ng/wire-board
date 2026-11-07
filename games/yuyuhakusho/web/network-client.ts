@@ -1,8 +1,12 @@
-import type { GameClock, GameAudioPort } from "../../../web/src/game-api/module";
+import type {
+  GameClock,
+  GameAudioPort,
+} from "../../../web/src/game-api/module";
 import { MatchAudio } from "./audio";
 import { releaseAssetBase } from "./release-assets";
 import type { ControllerProfile } from "../../../web/src/controllers/input";
 import { loadAssets, assetURL } from "./assets";
+import { combineLoadingProgress, loadingStage } from "./loading-progress";
 import { MDInput, mdBits, type MDButton } from "./input";
 import { InputTransport } from "./network-input";
 import { NetworkScene } from "./network-scene";
@@ -82,7 +86,13 @@ export class NetworkClient {
   constructor(options: ClientOptions) {
     options = { ...options, assetsBase: releaseAssetBase(options.assetsBase) };
     this.options = options;
-    if (options.audio) this.audio = new MatchAudio(options.audio, options.assetsBase, options.epoch, options.arena);
+    if (options.audio)
+      this.audio = new MatchAudio(
+        options.audio,
+        options.assetsBase,
+        options.epoch,
+        options.arena,
+      );
     document.addEventListener("visibilitychange", this.visibility);
     const context = options.canvas.getContext("2d", { alpha: false });
     if (!context) throw Error("浏览器无法显示比赛画面");
@@ -113,18 +123,17 @@ export class NetworkClient {
     options.canvas.height = 224;
   }
   async initialize() {
-    let runtimePercent = 0,
-      assetsPercent = 0;
+    let runtimeProgress: Progress = { percent: 0, label: "加载游戏程序" },
+      assetsProgress: Progress = { percent: 0, label: "读取资源清单" };
     const report = (label: string) =>
-      this.options.onProgress({
-        percent: runtimePercent * 0.35 + assetsPercent * 0.55,
-        label,
-      });
+      this.options.onProgress(
+        combineLoadingProgress(runtimeProgress, assetsProgress, label),
+      );
     const [wasm, raw] = await Promise.all([
       loadNetworkWasm(
         assetURL(this.options.assetsBase, "/yuyuhakusho/v1/runtime"),
         (progress) => {
-          runtimePercent = progress.percent;
+          runtimeProgress = progress;
           report(progress.label);
         },
       ),
@@ -134,15 +143,25 @@ export class NetworkClient {
         this.options.descriptorSHA,
         this.abort.signal,
         (progress) => {
-          assetsPercent = progress.percent;
+          assetsProgress = progress;
           report(progress.label);
         },
       ),
     ]);
     this.abort.signal.throwIfAborted();
-    this.options.onProgress({ percent: 92, label: "恢复比赛画面" });
+    const downloaded = combineLoadingProgress(
+      runtimeProgress,
+      assetsProgress,
+      "恢复比赛画面",
+    );
+    this.options.onProgress(loadingStage(downloaded, 92, "恢复比赛画面"));
     const asset = wasm.load(this.options.arena, raw);
-    const scene = new NetworkScene(wasm, asset, this.options.seat, (view, codes) => this.audio?.consume(view, codes));
+    const scene = new NetworkScene(
+      wasm,
+      asset,
+      this.options.seat,
+      (view, codes) => this.audio?.consume(view, codes),
+    );
     this.scene = scene;
     try {
       const result = await this.options.loadCheckpoint();
@@ -155,7 +174,7 @@ export class NetworkClient {
       this.transportBinding();
       this.paint();
       this.initialized = true;
-      this.options.onProgress({ percent: 100, label: "比赛画面已就绪" });
+      this.options.onProgress(loadingStage(downloaded, 100, "比赛画面已就绪"));
       this.raf = requestAnimationFrame(this.tick);
     } catch (error) {
       scene.dispose();
@@ -337,13 +356,19 @@ export class NetworkClient {
     this.options.clearPhysical?.();
   }
   refreshAudio(connected = this.transport.connected) {
-    if (this.view) this.audio?.sync(this.view, this.scene?.view,
-      this.options.sound?.() ?? false, connected && !this.recovering,
-      this.options.paused?.() ?? false);
+    if (this.view)
+      this.audio?.sync(
+        this.view,
+        this.scene?.view,
+        this.options.sound?.() ?? false,
+        connected && !this.recovering,
+        this.options.paused?.() ?? false,
+      );
   }
   private visibility = () => {
     if (document.hidden) this.audio?.suspend();
-    else if (this.initialized && !this.closed) void this.recover(Error("恢复当前比赛声音"));
+    else if (this.initialized && !this.closed)
+      void this.recover(Error("恢复当前比赛声音"));
   };
   pressPointer = (pointer: number, buttons: readonly string[]) =>
     this.input.pressPointer(pointer, buttons);

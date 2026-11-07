@@ -1,0 +1,421 @@
+{
+  "passed": true,
+  "checks": [
+    "cold reports real native total",
+    "cold retains full sizes while waiting for peer",
+    "cold download shows intermediate measured bytes",
+    "peer gate holds simulation",
+    "mobile loading fits",
+    "warm reports real native total",
+    "warm retains full sizes while waiting for peer",
+    "peer gate holds simulation",
+    "mobile loading fits",
+    "warm load does not redownload Wasm or graphics",
+    "actual game shared chat moves",
+    "drag does not send game buttons",
+    "no runtime errors"
+  ],
+  "scope": "Normal app, SQLite, actual Wasm, two human browsers; only response-stream timing controlled",
+  "cold": {
+    "samples": [
+      {
+        "at": 80,
+        "label": "加载游戏程序",
+        "loaded": "80639",
+        "percent": 3,
+        "text": "78.7 / 858.1 KB",
+        "total": "878653"
+      },
+      {
+        "at": 98.39999961853027,
+        "label": "读取资源清单",
+        "loaded": "878653",
+        "percent": 35,
+        "text": "858.1 / 858.1 KB",
+        "total": "878653"
+      },
+      {
+        "at": 119.19999980926514,
+        "label": "下载游戏程序",
+        "loaded": "16992",
+        "percent": 35,
+        "text": "0.0 / 5.5 MB",
+        "total": "5813044"
+      },
+      {
+        "at": 139.30000019073486,
+        "label": "下载游戏程序",
+        "loaded": "16992",
+        "percent": 35,
+        "text": "0.0 / 5.5 MB",
+        "total": "5813044"
+      },
+      {
+        "at": 160.39999961853027,
+        "label": "下载游戏程序",
+        "loaded": "16992",
+        "percent": 35,
+        "text": "0.0 / 5.5 MB",
+        "total": "5813044"
+      },
+      {
+        "at": 180.8000001907349,
+        "label": "下载游戏程序",
+        "loaded": "16992",
+        "percent": 35,
+        "text": "0.0 / 5.5 MB",
+        "total": "5813044"
+      },
+      {
+        "at": 200.39999961853027,
+        "label": "下载游戏程序",
+        "loaded": "2985641",
+        "percent": 77,
+        "text": "2.8 / 5.5 MB",
+        "total": "5813044"
+      },
+      {
+        "at": 218.5999994277954,
+        "label": "下载游戏程序",
+        "loaded": "2985641",
+        "percent": 77,
+        "text": "2.8 / 5.5 MB",
+        "total": "5813044"
+      },
+      {
+        "at": 239.5999994277954,
+        "label": "下载游戏程序",
+        "loaded": "2985641",
+        "percent": 77,
+        "text": "2.8 / 5.5 MB",
+        "total": "5813044"
+      },
+      {
+        "at": 260.80000019073486,
+        "label": "下载游戏程序",
+        "loaded": "2985641",
+        "percent": 77,
+        "text": "2.8 / 5.5 MB",
+        "total": "5813044"
+      },
+      {
+        "at": 282,
+        "label": "下载游戏程序",
+        "loaded": "3182249",
+        "percent": 78,
+        "text": "3.0 / 5.5 MB",
+        "total": "5813044"
+      },
+      {
+        "at": 299.8999996185303,
+        "label": "比赛素材已校验",
+        "loaded": "3182249",
+        "percent": 79,
+        "text": "3.0 / 5.5 MB",
+        "total": "5813044"
+      },
+      {
+        "at": 321,
+        "label": "比赛素材已校验",
+        "loaded": "3182249",
+        "percent": 79,
+        "text": "3.0 / 5.5 MB",
+        "total": "5813044"
+      },
+      {
+        "at": 339.69999980926514,
+        "label": "比赛素材已校验",
+        "loaded": "3182249",
+        "percent": 79,
+        "text": "3.0 / 5.5 MB",
+        "total": "5813044"
+      },
+      {
+        "at": 360.30000019073486,
+        "label": "下载游戏程序",
+        "loaded": "3772073",
+        "percent": 82,
+        "text": "3.6 / 5.5 MB",
+        "total": "5813044"
+      },
+      {
+        "at": 380.69999980926514,
+        "label": "下载游戏程序",
+        "loaded": "3772073",
+        "percent": 82,
+        "text": "3.6 / 5.5 MB",
+        "total": "5813044"
+      },
+      {
+        "at": 400.0999994277954,
+        "label": "下载游戏程序",
+        "loaded": "3772073",
+        "percent": 82,
+        "text": "3.6 / 5.5 MB",
+        "total": "5813044"
+      },
+      {
+        "at": 420.0999994277954,
+        "label": "下载游戏程序",
+        "loaded": "3772073",
+        "percent": 82,
+        "text": "3.6 / 5.5 MB",
+        "total": "5813044"
+      },
+      {
+        "at": 438.3999996185303,
+        "label": "下载游戏程序",
+        "loaded": "3772073",
+        "percent": 82,
+        "text": "3.6 / 5.5 MB",
+        "total": "5813044"
+      },
+      {
+        "at": 460.8999996185303,
+        "label": "下载游戏程序",
+        "loaded": "5082793",
+        "percent": 87,
+        "text": "4.8 / 5.5 MB",
+        "total": "5813044"
+      },
+      {
+        "at": 480.5999994277954,
+        "label": "下载游戏程序",
+        "loaded": "5082793",
+        "percent": 87,
+        "text": "4.8 / 5.5 MB",
+        "total": "5813044"
+      },
+      {
+        "at": 500.5999994277954,
+        "label": "下载游戏程序",
+        "loaded": "5082793",
+        "percent": 87,
+        "text": "4.8 / 5.5 MB",
+        "total": "5813044"
+      },
+      {
+        "at": 520.6999998092651,
+        "label": "下载游戏程序",
+        "loaded": "5082793",
+        "percent": 87,
+        "text": "4.8 / 5.5 MB",
+        "total": "5813044"
+      },
+      {
+        "at": 539.1999998092651,
+        "label": "下载游戏程序",
+        "loaded": "5813044",
+        "percent": 90,
+        "text": "5.5 / 5.5 MB",
+        "total": "5813044"
+      },
+      {
+        "at": 561,
+        "label": "下载游戏程序",
+        "loaded": "5813044",
+        "percent": 90,
+        "text": "5.5 / 5.5 MB",
+        "total": "5813044"
+      },
+      {
+        "at": 580.5,
+        "label": "下载游戏程序",
+        "loaded": "5813044",
+        "percent": 90,
+        "text": "5.5 / 5.5 MB",
+        "total": "5813044"
+      },
+      {
+        "at": 601,
+        "label": "下载游戏程序",
+        "loaded": "5813044",
+        "percent": 90,
+        "text": "5.5 / 5.5 MB",
+        "total": "5813044"
+      },
+      {
+        "at": 901.3000001907347,
+        "label": "初始化游戏程序",
+        "loaded": "5813044",
+        "percent": 91,
+        "text": "5.5 / 5.5 MB",
+        "total": "5813044"
+      },
+      {
+        "at": 924.5999994277954,
+        "label": "恢复比赛画面",
+        "loaded": "5813044",
+        "percent": 93,
+        "text": "5.5 / 5.5 MB",
+        "total": "5813044"
+      },
+      {
+        "at": 938.8999996185304,
+        "label": "比赛画面已就绪",
+        "loaded": "5813044",
+        "percent": 99,
+        "text": "5.5 / 5.5 MB",
+        "total": "5813044"
+      },
+      {
+        "at": 959.3000001907347,
+        "label": "等待其他玩家加载完成",
+        "loaded": "5813044",
+        "percent": 100,
+        "text": "5.5 / 5.5 MB",
+        "total": "5813044"
+      },
+      {
+        "at": 980.0999994277954,
+        "label": "等待其他玩家加载完成",
+        "loaded": "5813044",
+        "percent": 100,
+        "text": "5.5 / 5.5 MB",
+        "total": "5813044"
+      }
+    ],
+    "requests": [
+      {
+        "bytes": 103902,
+        "url": "/yuyuhakusho/data/chu-world-rules.json.gz"
+      },
+      {
+        "bytes": 5395,
+        "url": "/yuyuhakusho/data/hud-assets.json.gz"
+      },
+      {
+        "bytes": 639790,
+        "url": "/yuyuhakusho/data/world-sprites.json.gz"
+      },
+      {
+        "bytes": 111445,
+        "url": "/yuyuhakusho/data/renderstate-metadata.json.gz"
+      },
+      {
+        "bytes": 10965,
+        "url": "/yuyuhakusho/data/arena-assets-default.json.gz"
+      },
+      {
+        "bytes": 4924555,
+        "url": "http://127.0.0.1:56352/yuyuhakusho/v1/runtime/client.wasm"
+      }
+    ],
+    "expectedNativeBytes": 5813044
+  },
+  "warm": {
+    "samples": [
+      {
+        "at": 1078.5,
+        "label": "准备加载",
+        "percent": 0
+      },
+      {
+        "at": 1325.6999998092651,
+        "label": "读取资源清单",
+        "loaded": "4941547",
+        "percent": 57,
+        "text": "4.7 / 4.7 MB",
+        "total": "4941547"
+      },
+      {
+        "at": 1338.3000001907349,
+        "label": "恢复比赛画面",
+        "loaded": "5813044",
+        "percent": 93,
+        "text": "5.5 / 5.5 MB",
+        "total": "5813044"
+      },
+      {
+        "at": 1359.3999996185305,
+        "label": "比赛画面已就绪",
+        "loaded": "5813044",
+        "percent": 99,
+        "text": "5.5 / 5.5 MB",
+        "total": "5813044"
+      },
+      {
+        "at": 1379.8999996185305,
+        "label": "等待其他玩家加载完成",
+        "loaded": "5813044",
+        "percent": 100,
+        "text": "5.5 / 5.5 MB",
+        "total": "5813044"
+      },
+      {
+        "at": 1400.5999994277954,
+        "label": "等待其他玩家加载完成",
+        "loaded": "5813044",
+        "percent": 100,
+        "text": "5.5 / 5.5 MB",
+        "total": "5813044"
+      }
+    ],
+    "requests": [
+      {
+        "bytes": 103902,
+        "url": "/yuyuhakusho/data/chu-world-rules.json.gz"
+      },
+      {
+        "bytes": 5395,
+        "url": "/yuyuhakusho/data/hud-assets.json.gz"
+      },
+      {
+        "bytes": 639790,
+        "url": "/yuyuhakusho/data/world-sprites.json.gz"
+      },
+      {
+        "bytes": 111445,
+        "url": "/yuyuhakusho/data/renderstate-metadata.json.gz"
+      },
+      {
+        "bytes": 10965,
+        "url": "/yuyuhakusho/data/arena-assets-default.json.gz"
+      },
+      {
+        "bytes": 4924555,
+        "url": "http://127.0.0.1:56352/yuyuhakusho/v1/runtime/client.wasm"
+      }
+    ],
+    "expectedNativeBytes": 5813044,
+    "requestsAfterWarm": [
+      {
+        "bytes": 103902,
+        "url": "/yuyuhakusho/data/chu-world-rules.json.gz"
+      },
+      {
+        "bytes": 5395,
+        "url": "/yuyuhakusho/data/hud-assets.json.gz"
+      },
+      {
+        "bytes": 639790,
+        "url": "/yuyuhakusho/data/world-sprites.json.gz"
+      },
+      {
+        "bytes": 111445,
+        "url": "/yuyuhakusho/data/renderstate-metadata.json.gz"
+      },
+      {
+        "bytes": 10965,
+        "url": "/yuyuhakusho/data/arena-assets-default.json.gz"
+      },
+      {
+        "bytes": 4924555,
+        "url": "http://127.0.0.1:56352/yuyuhakusho/v1/runtime/client.wasm"
+      }
+    ]
+  },
+  "sources": {
+    "scripts/yuyuhakusho/check_loading_bytes.py": "5c0e0ed4838da3ca91cc89aa2b8f6893d3d291b0aa51cd1638192044b187daf9",
+    "games/yuyuhakusho/web/Board.tsx": "503f345453e36518a4968379304ef985c13ceba8d86ce61e0d7963a7e178074c",
+    "games/yuyuhakusho/web/assets.ts": "d8df979e2bbf6ef3da01beae4c956638874a58aad68f7d2138b3861c478768ab",
+    "games/yuyuhakusho/web/wasm.ts": "4f62ba4769daa80ebce4f8b2a7c543fdac4dd49e89112ef9aee672383d23782a",
+    "web/src/game-api/loading.tsx": "8f7db56da5d03df1b0d1cf69664ac63a52c26ac93993130c66ac9e8751a1bb99",
+    "web/src/chat.tsx": "aedbecda5b0a9cd159e8ff859a4bdaa225a6f5b435ce22381a3b04014e246699"
+  },
+  "implementationSources": {
+    "web/src/ui/chat-position.ts": "7601ae1fd6d7bc51c5cacbd127bbf6274f4bba0b6567d6f15b63e9f20905a1a5",
+    "games/yuyuhakusho/web/loading-progress.ts": "b127245d38918469c541b2b43055ae462305f03d737b1bcfa6886388aa22a1d3",
+    "games/yuyuhakusho/web/network-client.ts": "5ff6fa09657e82d91d564994812f5988aa8b7f36dd34c4372c8bdb97e9c43c16"
+  }
+}

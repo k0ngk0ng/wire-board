@@ -180,6 +180,25 @@ export async function loadAssets(
     );
   const total = selected.reduce((sum, item) => sum + item.gzip_bytes, 0),
     counts = new Map<string, number>();
+  const reused = selected.filter((item) =>
+    cached.has(item.raw_json_sha256),
+  ).length;
+  const label =
+    reused === selected.length
+      ? "复用已缓存的比赛素材"
+      : reused
+        ? "加载比赛素材（含缓存）"
+        : "加载比赛素材";
+  const update = () => {
+    const loaded = [...counts.values()].reduce((a, b) => a + b, 0);
+    report({
+      percent: Math.min(96, (loaded / total) * 96),
+      label,
+      loaded,
+      total,
+    });
+  };
+  update();
   const values = await Promise.all(
     selected.map(async (item) => {
       const key = item.raw_json_sha256;
@@ -192,14 +211,7 @@ export async function loadAssets(
             signal,
             (n) => {
               counts.set(item.id, n);
-              report({
-                percent: Math.min(
-                  96,
-                  ([...counts.values()].reduce((a, b) => a + b, 0) / total) *
-                    96,
-                ),
-                label: "加载比赛素材",
-              });
+              update();
             },
           );
           const data = await unzip(compressed);
@@ -218,11 +230,17 @@ export async function loadAssets(
       const data = await promise;
       signal.throwIfAborted();
       counts.set(item.id, item.gzip_bytes);
+      update();
       return [item.id, data] as const;
     }),
   );
   const byID = new Map(values);
-  report({ percent: 100, label: "比赛素材已校验" });
+  report({
+    percent: 100,
+    label: reused ? "比赛素材已校验（含缓存）" : "比赛素材已校验",
+    loaded: total,
+    total,
+  });
   return {
     Rules: byID.get("rules")!,
     Sprites: byID.get("sprites")!,

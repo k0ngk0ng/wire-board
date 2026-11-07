@@ -79,13 +79,15 @@ export function GameLoading({
       bytes?: { loaded: number; total: number },
     ) => {
       if (alive.current)
-        setProgress({
-          percent: bytes
-            ? 35 + Math.min(100, Math.max(0, percent)) * 0.64
-            : 90 + Math.min(100, Math.max(0, percent)) * 0.09,
+        setProgress((previous) => ({
+          ...previous,
+          percent:
+            bytes || gameModule(latest.current.kind)?.assetLoading === "board"
+              ? 35 + Math.min(100, Math.max(0, percent)) * 0.64
+              : 90 + Math.min(100, Math.max(0, percent)) * 0.09,
           label,
           ...(bytes ? { loaded: bytes.loaded, total: bytes.total } : {}),
-        });
+        }));
     },
     [],
   );
@@ -96,6 +98,7 @@ export function GameLoading({
     setMounted(false);
     setReady(false);
     setError("");
+    setProgress({ percent: 0, label: "准备加载" });
     const initial = latest.current,
       gate = initial.loading,
       client = crypto.randomUUID();
@@ -139,7 +142,11 @@ export function GameLoading({
           await send("load_ready");
         if (abort.signal.aborted) return;
         setReady(true);
-        setProgress({ percent: 100, label: "本机加载完成" });
+        setProgress((previous) => ({
+          ...previous,
+          percent: 100,
+          label: "本机加载完成",
+        }));
       })().catch((e) => {
         if (!abort.signal.aborted) setError(e.message);
       });
@@ -152,7 +159,7 @@ export function GameLoading({
         initial,
         assets,
         abort.signal,
-        setProgress,
+        (incoming) => setProgress((previous) => ({ ...previous, ...incoming })),
       );
       build = result.build;
       setLoadSizes(result.media);
@@ -209,10 +216,20 @@ export function GameLoading({
               value={Math.floor(progress.percent)}
             />
             <strong>{Math.floor(progress.percent)}%</strong>
-            {progress.total !== undefined && !ready && (
-              <small>
-                {(progress.loaded! / 1048576).toFixed(1)} /{" "}
-                {(progress.total / 1048576).toFixed(1)} MB
+            {progress.total !== undefined && (
+              <small
+                data-loaded-bytes={progress.loaded}
+                data-total-bytes={progress.total}
+              >
+                {(
+                  progress.loaded! /
+                  (progress.total >= 1048576 ? 1048576 : 1024)
+                ).toFixed(1)}{" "}
+                /{" "}
+                {(
+                  progress.total / (progress.total >= 1048576 ? 1048576 : 1024)
+                ).toFixed(1)}{" "}
+                {progress.total >= 1048576 ? "MB" : "KB"}
               </small>
             )}
             {error && (

@@ -3,6 +3,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { MessageCircle, Send, X } from "lucide-react";
 import type { Room } from "./types";
+import { useChatPosition } from "./ui/chat-position";
 
 export function Chat({
   room,
@@ -38,6 +39,8 @@ export function Chat({
   const list = useRef<HTMLDivElement>(null);
   const input = useRef<HTMLTextAreaElement>(null);
   const toggle = useRef<HTMLButtonElement>(null);
+  const panel = useRef<HTMLElement>(null);
+  const position = useChatPosition(toggle, panel, fullscreenTarget, open);
   const nearBottom = useRef(true);
   const pending = useRef(false);
   const retry = useRef<{ text: string; nonce: string } | undefined>(undefined);
@@ -82,12 +85,15 @@ export function Chat({
   const content = (
     <div
       className="table-chat"
+      style={position.style}
       onKeyDown={(event) => {
         if (event.key !== "Escape") event.stopPropagation();
       }}
     >
       {open && (
         <section
+          ref={panel}
+          style={position.panelStyle}
           className="chat-panel"
           id="table-chat-panel"
           role="dialog"
@@ -201,6 +207,10 @@ export function Chat({
       <button
         ref={toggle}
         className="chat-toggle"
+        data-chat-draggable={position.draggable || undefined}
+        data-chat-dragging={position.dragging || undefined}
+        title={position.draggable ? "拖动移动，点击聊天" : undefined}
+        {...position.handlers}
         aria-label={
           open
             ? "收起牌桌聊天"
@@ -208,7 +218,12 @@ export function Chat({
         }
         aria-expanded={open}
         aria-controls="table-chat-panel"
-        onClick={() => {
+        onClick={(event) => {
+          if (position.consumeClick(event.detail)) {
+            event.preventDefault();
+            event.stopPropagation();
+            return;
+          }
           if (open) close();
           else {
             nearBottom.current = true;

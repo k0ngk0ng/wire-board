@@ -1,0 +1,1457 @@
+{
+  "passed": true,
+  "cases": [
+    {
+      "mobile": false,
+      "mode": "native",
+      "checks": [
+        "native drag moves without opening or losing unread state",
+        "open panel stays visible and preserves input node/draft",
+        "drag retains pending-send guard",
+        "viewport resize clamps entry and composer",
+        "cancel/drag does not swallow the next click",
+        "exit restores normal viewport layout"
+      ],
+      "drag": {
+        "mode": "mouse",
+        "end": "up",
+        "before": {
+          "x": 1224,
+          "y": 844,
+          "w": 44,
+          "h": 44
+        },
+        "after": {
+          "x": 984,
+          "y": 694.1773071289062,
+          "w": 44,
+          "h": 44,
+          "panel": false,
+          "events": [
+            {
+              "type": "pointerdown",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointerup",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "click",
+              "trusted": true,
+              "pointerType": "mouse"
+            }
+          ]
+        },
+        "native": true
+      },
+      "geometry": [
+        {
+          "bottom": 778.0469360351562,
+          "height": 900,
+          "hit": true,
+          "left": 1019,
+          "right": 1063,
+          "selector": ".chat-toggle",
+          "top": 734.0469360351562,
+          "width": 1280
+        },
+        {
+          "bottom": 726,
+          "height": 900,
+          "hit": true,
+          "left": 703,
+          "right": 1063,
+          "selector": ".chat-panel",
+          "top": 226,
+          "width": 1280
+        },
+        {
+          "bottom": 277,
+          "height": 900,
+          "hit": true,
+          "left": 1014,
+          "right": 1048,
+          "selector": ".chat-heading button",
+          "top": 243,
+          "width": 1280
+        },
+        {
+          "bottom": 673,
+          "height": 900,
+          "hit": true,
+          "left": 716,
+          "right": 1050,
+          "selector": "textarea",
+          "top": 611,
+          "width": 1280
+        },
+        {
+          "bottom": 715,
+          "height": 900,
+          "hit": true,
+          "left": 975,
+          "right": 1050,
+          "selector": ".chat-compose button",
+          "top": 681,
+          "width": 1280
+        }
+      ],
+      "boundary": {
+        "mode": "mouse",
+        "end": "up",
+        "before": {
+          "x": 999,
+          "y": 754,
+          "w": 44,
+          "h": 44
+        },
+        "after": {
+          "x": 799,
+          "y": 504.17730712890625,
+          "w": 44,
+          "h": 44,
+          "panel": false,
+          "events": [
+            {
+              "type": "pointerdown",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointerdown",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointerdown",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointerdown",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointerup",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointerup",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointerup",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointerup",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "click",
+              "trusted": true,
+              "pointerType": "mouse"
+            }
+          ]
+        },
+        "native": true
+      },
+      "passed": true
+    },
+    {
+      "mobile": false,
+      "mode": "page",
+      "checks": [
+        "native drag moves without opening or losing unread state",
+        "open panel stays visible and preserves input node/draft",
+        "drag retains pending-send guard",
+        "viewport resize clamps entry and composer",
+        "cancel/drag does not swallow the next click",
+        "exit restores normal viewport layout"
+      ],
+      "drag": {
+        "mode": "mouse",
+        "end": "up",
+        "before": {
+          "x": 1224,
+          "y": 844,
+          "w": 44,
+          "h": 44
+        },
+        "after": {
+          "x": 984,
+          "y": 694.17724609375,
+          "w": 44,
+          "h": 44,
+          "panel": false,
+          "events": [
+            {
+              "type": "pointerdown",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointerup",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "click",
+              "trusted": true,
+              "pointerType": "mouse"
+            }
+          ]
+        },
+        "native": true
+      },
+      "geometry": [
+        {
+          "bottom": 778.0982666015625,
+          "height": 900,
+          "hit": true,
+          "left": 1019,
+          "right": 1063,
+          "selector": ".chat-toggle",
+          "top": 734.0982666015625,
+          "width": 1280
+        },
+        {
+          "bottom": 726,
+          "height": 900,
+          "hit": true,
+          "left": 703,
+          "right": 1063,
+          "selector": ".chat-panel",
+          "top": 226,
+          "width": 1280
+        },
+        {
+          "bottom": 277,
+          "height": 900,
+          "hit": true,
+          "left": 1014,
+          "right": 1048,
+          "selector": ".chat-heading button",
+          "top": 243,
+          "width": 1280
+        },
+        {
+          "bottom": 673,
+          "height": 900,
+          "hit": true,
+          "left": 716,
+          "right": 1050,
+          "selector": "textarea",
+          "top": 611,
+          "width": 1280
+        },
+        {
+          "bottom": 715,
+          "height": 900,
+          "hit": true,
+          "left": 975,
+          "right": 1050,
+          "selector": ".chat-compose button",
+          "top": 681,
+          "width": 1280
+        }
+      ],
+      "boundary": {
+        "mode": "mouse",
+        "end": "up",
+        "before": {
+          "x": 999,
+          "y": 754,
+          "w": 44,
+          "h": 44
+        },
+        "after": {
+          "x": 799,
+          "y": 504.1772766113281,
+          "w": 44,
+          "h": 43.999969482421875,
+          "panel": false,
+          "events": [
+            {
+              "type": "pointerdown",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointerdown",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointerdown",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointerdown",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointerup",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointerup",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointerup",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "pointerup",
+              "trusted": true,
+              "pointerType": "mouse"
+            },
+            {
+              "type": "click",
+              "trusted": true,
+              "pointerType": "mouse"
+            }
+          ]
+        },
+        "native": true
+      },
+      "passed": true
+    },
+    {
+      "mobile": true,
+      "mode": "native",
+      "checks": [
+        "native drag moves without opening or losing unread state",
+        "open panel stays visible and preserves input node/draft",
+        "drag retains pending-send guard",
+        "viewport resize clamps entry and composer",
+        "cancel/drag does not swallow the next click",
+        "exit restores normal viewport layout"
+      ],
+      "drag": {
+        "mode": "touch",
+        "end": "up",
+        "before": {
+          "x": 264,
+          "y": 684,
+          "w": 44,
+          "h": 44
+        },
+        "after": {
+          "x": 174,
+          "y": 534,
+          "w": 44,
+          "h": 44,
+          "panel": false,
+          "events": [
+            {
+              "type": "pointerdown",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointerup",
+              "trusted": true,
+              "pointerType": "touch"
+            }
+          ]
+        },
+        "native": true
+      },
+      "geometry": [
+        {
+          "bottom": 618,
+          "height": 740,
+          "hit": true,
+          "left": 209,
+          "right": 253,
+          "selector": ".chat-toggle",
+          "top": 574,
+          "width": 320
+        },
+        {
+          "bottom": 566,
+          "height": 740,
+          "hit": true,
+          "left": 12,
+          "right": 308,
+          "selector": ".chat-panel",
+          "top": 66,
+          "width": 320
+        },
+        {
+          "bottom": 117,
+          "height": 740,
+          "hit": true,
+          "left": 259,
+          "right": 293,
+          "selector": ".chat-heading button",
+          "top": 83,
+          "width": 320
+        },
+        {
+          "bottom": 513,
+          "height": 740,
+          "hit": true,
+          "left": 25,
+          "right": 295,
+          "selector": "textarea",
+          "top": 451,
+          "width": 320
+        },
+        {
+          "bottom": 555,
+          "height": 740,
+          "hit": true,
+          "left": 220,
+          "right": 295,
+          "selector": ".chat-compose button",
+          "top": 521,
+          "width": 320
+        }
+      ],
+      "boundary": {
+        "mode": "touch",
+        "end": "up",
+        "before": {
+          "x": 189,
+          "y": 594,
+          "w": 44,
+          "h": 44
+        },
+        "after": {
+          "x": 12,
+          "y": 344,
+          "w": 44,
+          "h": 44,
+          "panel": false,
+          "events": [
+            {
+              "type": "pointerdown",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointerdown",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointerdown",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointerdown",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointerup",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointerup",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointerup",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointerup",
+              "trusted": true,
+              "pointerType": "touch"
+            }
+          ]
+        },
+        "native": true
+      },
+      "passed": true
+    },
+    {
+      "mobile": true,
+      "mode": "page",
+      "checks": [
+        "native drag moves without opening or losing unread state",
+        "open panel stays visible and preserves input node/draft",
+        "drag retains pending-send guard",
+        "viewport resize clamps entry and composer",
+        "cancel/drag does not swallow the next click",
+        "exit restores normal viewport layout"
+      ],
+      "drag": {
+        "mode": "touch",
+        "end": "up",
+        "before": {
+          "x": 264,
+          "y": 684,
+          "w": 44,
+          "h": 44
+        },
+        "after": {
+          "x": 174,
+          "y": 534,
+          "w": 44,
+          "h": 44,
+          "panel": false,
+          "events": [
+            {
+              "type": "pointerdown",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointerup",
+              "trusted": true,
+              "pointerType": "touch"
+            }
+          ]
+        },
+        "native": true
+      },
+      "geometry": [
+        {
+          "bottom": 618,
+          "height": 740,
+          "hit": true,
+          "left": 209,
+          "right": 253,
+          "selector": ".chat-toggle",
+          "top": 574,
+          "width": 320
+        },
+        {
+          "bottom": 566,
+          "height": 740,
+          "hit": true,
+          "left": 12,
+          "right": 308,
+          "selector": ".chat-panel",
+          "top": 66,
+          "width": 320
+        },
+        {
+          "bottom": 117,
+          "height": 740,
+          "hit": true,
+          "left": 259,
+          "right": 293,
+          "selector": ".chat-heading button",
+          "top": 83,
+          "width": 320
+        },
+        {
+          "bottom": 513,
+          "height": 740,
+          "hit": true,
+          "left": 25,
+          "right": 295,
+          "selector": "textarea",
+          "top": 451,
+          "width": 320
+        },
+        {
+          "bottom": 555,
+          "height": 740,
+          "hit": true,
+          "left": 220,
+          "right": 295,
+          "selector": ".chat-compose button",
+          "top": 521,
+          "width": 320
+        }
+      ],
+      "boundary": {
+        "mode": "touch",
+        "end": "up",
+        "before": {
+          "x": 189,
+          "y": 594,
+          "w": 44,
+          "h": 44
+        },
+        "after": {
+          "x": 12,
+          "y": 344,
+          "w": 44,
+          "h": 44,
+          "panel": false,
+          "events": [
+            {
+              "type": "pointerdown",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointerdown",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointerdown",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointerdown",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointermove",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointerup",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointerup",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointerup",
+              "trusted": true,
+              "pointerType": "touch"
+            },
+            {
+              "type": "pointerup",
+              "trusted": true,
+              "pointerType": "touch"
+            }
+          ]
+        },
+        "native": true
+      },
+      "passed": true
+    }
+  ],
+  "scope": "Real shared components; native mouse/touch; simulated incoming/pending transport only",
+  "sources": {
+    "scripts/fullscreen/check-chat-drag.py": "7d552127cf0c2aa40526acc6e05e6202a444c35e9088f9e53d42976b547db189",
+    "scripts/fullscreen/drag.mjs": "d31134c7ada14ec4061262827e87255408fd043c1e999ab007da2ebce6adc165",
+    "web/src/chat.tsx": "aedbecda5b0a9cd159e8ff859a4bdaa225a6f5b435ce22381a3b04014e246699",
+    "web/src/ui/room-fullscreen.css": "051df21f2cff9f772929e9f42bd68b306da3cbe7f32a9e968e62284ce0826fc0"
+  },
+  "implementationSources": {
+    "web/src/ui/chat-position.ts": "7601ae1fd6d7bc51c5cacbd127bbf6274f4bba0b6567d6f15b63e9f20905a1a5",
+    "games/yuyuhakusho/web/loading-progress.ts": "b127245d38918469c541b2b43055ae462305f03d737b1bcfa6886388aa22a1d3",
+    "games/yuyuhakusho/web/network-client.ts": "5ff6fa09657e82d91d564994812f5988aa8b7f36dd34c4372c8bdb97e9c43c16"
+  }
+}

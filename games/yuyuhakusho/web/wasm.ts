@@ -93,7 +93,16 @@ export function loadNetworkWasm(
   const subscribers = listeners.get(base) ?? new Set();
   listeners.set(base, subscribers);
   subscribers.add(report);
-  report(progress.get(base) ?? { percent: 0, label: "加载游戏程序" });
+  const retained = progress.get(base);
+  report(
+    retained
+      ? {
+          ...retained,
+          label:
+            retained.percent === 100 ? "复用已缓存的游戏程序" : retained.label,
+        }
+      : { percent: 0, label: "加载游戏程序" },
+  );
   const update = (value: Progress) => {
     progress.set(base, value);
     for (const subscriber of subscribers) subscriber(value);
@@ -101,14 +110,14 @@ export function loadNetworkWasm(
   let pending = loaded.get(base);
   if (!pending) {
     pending = (async () => {
-      await ensureGo(new URL("wasm_exec.js", base).href);
       const response = await fetch(new URL("build.json", base), {
         signal: AbortSignal.timeout(45000),
         cache: "no-cache",
       });
       if (!response.ok) throw Error("无法读取游戏程序版本");
-      const { wasm } = (await response.json()) as {
+      const { wasm, files } = (await response.json()) as {
         wasm?: { url: string; sha256: string; bytes: number };
+        files?: Record<string, { bytes: number }>;
       };
       if (
         !wasm ||
@@ -119,6 +128,22 @@ export function loadNetworkWasm(
         wasm.bytes > 64 * 1024 * 1024
       )
         throw Error("游戏程序版本无效");
+      const loaderBytes = files?.["wasm_exec.js"]?.bytes ?? 0;
+      if (
+        !Number.isSafeInteger(loaderBytes) ||
+        loaderBytes < 0 ||
+        loaderBytes > 262144
+      )
+        throw Error("游戏运行环境大小无效");
+      const total = wasm.bytes + loaderBytes;
+      update({ percent: 0, label: "加载游戏程序", loaded: 0, total });
+      await ensureGo(new URL("wasm_exec.js", base).href);
+      update({
+        percent: (loaderBytes / total) * 90,
+        label: "下载游戏程序",
+        loaded: loaderBytes,
+        total,
+      });
       const url = new URL(wasm.url, base);
       if (url.protocol !== "https:" && url.origin !== location.origin)
         throw Error("游戏程序地址无效");
@@ -127,9 +152,14 @@ export function loadNetworkWasm(
         wasm,
         AbortSignal.timeout(45000),
         (count) =>
-          update({ percent: (count / wasm.bytes) * 90, label: "下载游戏程序" }),
+          update({
+            percent: ((count + loaderBytes) / total) * 90,
+            label: "下载游戏程序",
+            loaded: count + loaderBytes,
+            total,
+          }),
       );
-      update({ percent: 94, label: "初始化游戏程序" });
+      update({ percent: 94, label: "初始化游戏程序", loaded: total, total });
       const runtime = window as RuntimeWindow,
         go = new runtime.Go!();
       const module = await WebAssembly.instantiate(
@@ -166,7 +196,7 @@ export function loadNetworkWasm(
           return reply.asset;
         },
       };
-      update({ percent: 100, label: "游戏程序已就绪" });
+      update({ percent: 100, label: "游戏程序已就绪", loaded: total, total });
       return api;
     })().catch((error) => {
       loaded.delete(base);

@@ -1,0 +1,43 @@
+{
+  "passed": false,
+  "cases": [
+    {
+      "mobile": false,
+      "mode": "native",
+      "checks": [],
+      "drag": {
+        "mode": "mouse",
+        "end": "up",
+        "before": {
+          "x": 1224,
+          "y": 844,
+          "w": 44,
+          "h": 44
+        },
+        "after": {
+          "x": 1224,
+          "y": 844.1774291992188,
+          "w": 44,
+          "h": 44,
+          "panel": false,
+          "events": [
+            {
+              "type": "pointerdown",
+              "trusted": true,
+              "pointerType": "mouse"
+            }
+          ]
+        },
+        "native": true
+      }
+    }
+  ],
+  "scope": "Real shared components; native mouse/touch; simulated incoming/pending transport only",
+  "error": "AssertionError({'mode': 'mouse', 'end': 'up', 'before': {'x': 1224, 'y': 844, 'w': 44, 'h': 44}, 'after': {'x': 1224, 'y': 844.1774291992188, 'w': 44, 'h': 44, 'panel': False, 'events': [{'type': 'pointerdown', 'trusted': True, 'pointerType': 'mouse'}]}, 'native': True})",
+  "sources": {
+    "scripts/fullscreen/check-chat-drag.py": "f54c975e5f1af35546b5e18eca736c70516913f1021faad4a82f2dd8c6cc513d",
+    "scripts/fullscreen/drag.mjs": "d31134c7ada14ec4061262827e87255408fd043c1e999ab007da2ebce6adc165",
+    "web/src/chat.tsx": "65d670ffa27be78c3fb8fc8adadd741340d9659652662bc822cbb35ca2315d9e",
+    "web/src/ui/room-fullscreen.css": "f457a4d9064740a3980afacce1f81ca126b094371167d85e898acaf051c2f7ee"
+  }
+}
