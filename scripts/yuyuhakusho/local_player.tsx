@@ -18,7 +18,7 @@ declare global {
 
 const profile: ControllerProfile = { revision: 0, turboHz: 10, keyboard: {
   up: "KeyW", down: "KeyS", left: "KeyA", right: "KeyD", mode: "KeyF", start: "Space",
-  b: "KeyJ", a: "KeyK", c: "KeyL", x: "KeyU", y: "KeyI", z: "KeyO",
+  a: "KeyJ", b: "KeyK", c: "KeyL", x: "KeyU", y: "KeyI", z: "KeyO",
 } };
 const keyboard = new KeyboardController(profile);
 const pointers = new Map<number, readonly string[]>();

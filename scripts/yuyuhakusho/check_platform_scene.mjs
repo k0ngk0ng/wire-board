@@ -9,7 +9,7 @@ const root=fileURLToPath(new URL('../../',import.meta.url)),build=root+'.local/m
 await import(pathToFileURL(build+'wasm_exec.js'));
 const {NetworkScene}=await import(pathToFileURL(build+'network-scene-review.mjs'));
 const go=new globalThis.Go(),binary=await readFile(build+'client.wasm'),{instance}=await WebAssembly.instantiate(binary,go.importObject);void go.run(instance);
-const request=(command,...buffers)=>{const result=JSON.parse(globalThis.yuyuhakushoNetworkWasm(JSON.stringify(command),...buffers));if(!result.ok)throw Error(result.error);return result;},wasm={request};
+const requestCounts={};const request=(command,...buffers)=>{requestCounts[command.op]=(requestCounts[command.op]??0)+1;const result=JSON.parse(globalThis.yuyuhakushoNetworkWasm(JSON.stringify(command),...buffers));if(!result.ok)throw Error(result.error);return result;},wasm={request};
 const data=root+'games/yuyuhakusho/data/',sha=value=>createHash('sha256').update(value).digest('hex'),epoch='0123456789abcdef01234567';
 const unzip=async name=>new Uint8Array(gunzipSync(await readFile(data+name)));
 const buffers=await Promise.all(['chu-world-rules.json.gz','world-sprites.json.gz','arena-assets-default.json.gz','hud-assets.json.gz'].map(unzip));buffers.push(new Uint8Array(),await unzip('renderstate-metadata.json.gz'),new Uint8Array(await readFile(data+'runtime-resource-descriptor.json')));
@@ -20,12 +20,24 @@ const report={scope:'Frozen NetworkScene + actual Go/Wasm and original terminal 
 try{
  const a=asset(),session=request({op:'prepare',asset:a,options:{Seed:42,Difficulty:6,Players:[{Slot:0,CharacterID:3,Color:0,HumanChannel:0},{Slot:3,CharacterID:9,Color:1,HumanChannel:1}]}}).session;request({op:'ready',session});
  const checkpoint=request({op:'checkpoint',session,epoch}).checkpoint,view=fromCheckpoint(a,checkpoint,'opening',false);request({op:'dispose',session});
- const scene=new NetworkScene(wasm,a,-1);scene.restore(checkpoint,view);const authority=scene.authorityFrame;const now=performance.now();scene.sample(now,{serverNow:view.serverAt+60000,receivedAt:now});assert.ok(scene.frame-authority<=12n);scene.sample(now+60000,{serverNow:view.serverAt+60000,receivedAt:now});assert.ok(scene.frame-authority<=12n);const capped=scene.frame;scene.sample(now+120000,{serverNow:view.serverAt+120000,receivedAt:now});assert.equal(scene.frame,capped);assert.equal(scene.authorityFrame,authority);report.checks.push('prediction_at_most_12_frames_without_authority_progress');
- assert.throws(()=>scene.accept({...view,digest:'0'.repeat(64)},[]));assert.equal(scene.authorityFrame,authority);report.checks.push('bad_digest_requires_recovery_without_authority_mutation');scene.dispose();
+ const scene=new NetworkScene(wasm,a,-1);scene.restore(checkpoint,view);const authority=scene.authorityFrame;const now=performance.now();scene.sample(now,{serverNow:view.serverAt+60000,receivedAt:now});assert.ok(scene.frame-authority<=20n);scene.sample(now+60000,{serverNow:view.serverAt+60000,receivedAt:now});assert.ok(scene.frame-authority<=20n);const capped=scene.frame;scene.sample(now+120000,{serverNow:view.serverAt+120000,receivedAt:now});assert.equal(scene.frame,capped);assert.equal(scene.authorityFrame,authority);report.checks.push('prediction_at_most_20_frames_without_authority_progress');
+ assert.throws(()=>scene.accept({...view,digest:'0'.repeat(64)},[]));assert.equal(scene.authorityFrame,authority);report.checks.push('bad_digest_requires_recovery_without_authority_mutation');
+ const oldPixels=sha(scene.pixels),shadow=request({op:'restoreCheckpoint',asset:a,checkpoint}).session,scratch=new Uint8Array(320*224*4);let shadowStep;
+ for(let i=0;i<3;i++)shadowStep=request({op:'step',session:shadow,held:[0,0,0,0],automated:0},scratch);
+ const nextView=networkView({...shadowStep,...request({op:'digests',session:shadow})},'opening',false);
+ nextView.replay={version:1,firstFrame:'1',frameCount:3,data:Buffer.from([3,0,0,0,0,0,0,0,0,0]).toString('base64')};
+ request({op:'dispose',session:shadow});scene.accept(nextView,[]);
+ const beforeCounts={...requestCounts};scene.sample(now+120000,{serverNow:Date.now(),receivedAt:now});
+ assert.ok((requestCounts.advance??0)-(beforeCounts.advance??0)>=1);assert.ok(requestCounts.step-beforeCounts.step<=2);assert.equal(sha(scene.pixels),oldPixels);
+ report.checks.push('historical_intermediate_ticks_skip_pixels_but_final_draw_stays_exact');scene.dispose();
  const directory=root+'games/yuyuhakusho/verification/client-terminal-preview/sample-legacy-four/',terminal=await readFile(directory+'checkpoint.json','utf8'),prior=await readFile(directory+'prior-checkpoint.json','utf8'),reference=await readFile(directory+'final.rgba');
  const b=asset(),finalView=fromCheckpoint(b,terminal,'result',true),priorView=fromCheckpoint(b,prior,'playing',true);assert.equal(BigInt(finalView.frame),BigInt(priorView.frame)+1n);
  const endScene=new NetworkScene(wasm,b,-1);endScene.restore(prior,priorView);
  finalView.replay={version:1,firstFrame:finalView.frame,frameCount:1,data:Buffer.from([1,15,0,0,0,0,0,0,0,0]).toString('base64')};endScene.accept(finalView,[]);const endFrame=endScene.frame;assert.equal(endScene.sample(performance.now()+100000,{serverNow:Date.now()+100000,receivedAt:performance.now()}),false);assert.equal(endScene.frame,endFrame);assert.equal(endScene.authorityFrame,BigInt(finalView.frame));report.checks.push('result_accept_never_advances');
- endScene.restore(terminal,finalView);assert.equal(endScene.renderedFrame,finalView.frame);assert.equal(sha(endScene.pixels),sha(reference));const restoredFrame=endScene.frame;endScene.sample(performance.now()+100000,{serverNow:Date.now()+100000,receivedAt:performance.now()});assert.equal(endScene.frame,restoredFrame);report.checks.push('terminal_restore_exact_rgba_and_same_frame');report.terminal={frame:finalView.frame,rgba_sha256:sha(reference)};endScene.dispose();report.pass=true;
-}catch(error){report.error=String(error);await writeFile(root+'games/yuyuhakusho/verification/platform-web/scene-review.json',JSON.stringify(report,null,2)+'\n');console.error(report.error);process.exit(1);}
-await writeFile(root+'games/yuyuhakusho/verification/platform-web/scene-review.json',JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report));process.exit(0);
+ endScene.restore(terminal,finalView);assert.equal(endScene.renderedFrame,finalView.frame);assert.equal(sha(endScene.pixels),sha(reference));const restoredFrame=endScene.frame;endScene.sample(performance.now()+100000,{serverNow:Date.now()+100000,receivedAt:performance.now()});assert.equal(endScene.frame,restoredFrame);report.checks.push('terminal_restore_exact_rgba_and_same_frame');report.terminal={frame:finalView.frame,rgba_sha256:sha(reference)};endScene.dispose();
+ const c=asset(),early=request({op:'restoreCheckpoint',asset:c,checkpoint:prior}).session,terminalPixels=new Uint8Array(320*224*4);
+ const earlyReply=request({op:'advance',session:early,held:[0,0,0,0],automated:15},terminalPixels);
+ assert.equal(earlyReply.view.completed,true);assert.equal(earlyReply.renderedFrame,finalView.frame);assert.equal(sha(terminalPixels),sha(reference));
+ request({op:'dispose',session:early});request({op:'disposeAssets',asset:c});report.checks.push('advance_operation_retains_actual_early_terminal_rgba');report.pass=true;
+}catch(error){report.error=String(error);await writeFile(root+'games/yuyuhakusho/verification/platform-web/scene-review-prediction20-advance.json',JSON.stringify(report,null,2)+'\n');console.error(report.error);process.exit(1);}
+await writeFile(root+'games/yuyuhakusho/verification/platform-web/scene-review-prediction20-advance.json',JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report));process.exit(0);

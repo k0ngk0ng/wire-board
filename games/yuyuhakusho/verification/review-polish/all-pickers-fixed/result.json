@@ -1,0 +1,55 @@
+{
+  "pass": true,
+  "arena_selection": {
+    "count": 8,
+    "selected": 10,
+    "alignment": {
+      "captions": 0,
+      "controls": 0
+    }
+  },
+  "names": [
+    "幻海",
+    "藏马",
+    "桑原",
+    "浦饭",
+    "飞影",
+    "仙水",
+    "阵",
+    "树",
+    "户愚吕兄",
+    "酎",
+    "户愚吕弟"
+  ],
+  "geometry": {
+    "bottom": 528.765625,
+    "height": 740,
+    "left": 24,
+    "overflow": false,
+    "right": 296,
+    "top": 234.984375,
+    "width": 320
+  },
+  "events": [
+    {
+      "arena": 10,
+      "type": "arena"
+    },
+    {
+      "character": 8,
+      "seat": 0,
+      "type": "character"
+    },
+    {
+      "character": 10,
+      "seat": 1,
+      "type": "character"
+    },
+    {
+      "character": 3,
+      "seat": 1,
+      "type": "character"
+    }
+  ],
+  "checker_sha256": "e403e5450cb6239aa38561b8b41656c196f10c46543f0986912f6279a3d83fb7"
+}

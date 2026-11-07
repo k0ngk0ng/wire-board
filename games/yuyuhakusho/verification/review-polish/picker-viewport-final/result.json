@@ -1,0 +1,5 @@
+{
+  "pass": false,
+  "error": "AssertionError('{\"success\":false,\"data\":null,\"error\":\"Element not found: [data-character-option=\\\\\"10\\\\\"]. Verify the selector, role, or name is correct and the element exists in the DOM.\"}\\n')",
+  "checker_sha256": "18c8d1ea26627db541e34de76bf5226ca15c367e0007157780380bc69afc9c58"
+}

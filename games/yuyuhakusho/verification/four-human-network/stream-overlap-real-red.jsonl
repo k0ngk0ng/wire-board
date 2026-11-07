@@ -1,0 +1,9 @@
+{"Time":"2026-11-07T11:18:19.379354+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/server"}
+{"Time":"2026-11-07T11:18:19.983038+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/server","Test":"TestStreamInputOverlapSurvivesBatchedFourPlayerViews"}
+{"Time":"2026-11-07T11:18:19.98308+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/server","Test":"TestStreamInputOverlapSurvivesBatchedFourPlayerViews","Output":"=== RUN   TestStreamInputOverlapSurvivesBatchedFourPlayerViews\n"}
+{"Time":"2026-11-07T11:18:20.289363+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/server","Test":"TestStreamInputOverlapSurvivesBatchedFourPlayerViews","Output":"    stream_coalescing_test.go:40: coalesced UI lost frame 73: window 74/8 (\u003cnil\u003e)\n"}
+{"Time":"2026-11-07T11:18:20.289397+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/server","Test":"TestStreamInputOverlapSurvivesBatchedFourPlayerViews","Output":"--- FAIL: TestStreamInputOverlapSurvivesBatchedFourPlayerViews (0.31s)\n"}
+{"Time":"2026-11-07T11:18:20.289402+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/server","Test":"TestStreamInputOverlapSurvivesBatchedFourPlayerViews","Elapsed":0.31}
+{"Time":"2026-11-07T11:18:20.289699+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/server","Output":"FAIL\n"}
+{"Time":"2026-11-07T11:18:20.290716+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/server","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/server\t0.911s\n"}
+{"Time":"2026-11-07T11:18:20.293372+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/server","Elapsed":0.914}

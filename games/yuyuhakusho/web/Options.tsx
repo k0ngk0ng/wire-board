@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import type { OptionsProps } from "../../../web/src/game-api/module";
 import type { GameOptions } from "./types";
-import { arenas, defaults } from "./labels";
+import { defaults } from "./labels";
+import { ArenaPicker } from "./ArenaPicker";
 export function OptionsForm({
   value,
   onChange,
@@ -21,23 +22,8 @@ export function OptionsForm({
   }, [capacity, value, onChange]);
   return (
     <div className="yuyu-options">
-      <label>
-        场地
-        <select
-          aria-label="场地"
-          value={value.arena ?? 0}
-          disabled={disabled}
-          onChange={(event) =>
-            onChange({ ...value, arena: Number(event.target.value) })
-          }
-        >
-          {arenas.map((arena) => (
-            <option key={arena.id} value={arena.id}>
-              {arena.name}
-            </option>
-          ))}
-        </select>
-      </label>
+      <ArenaPicker value={value.arena ?? 0} disabled={disabled}
+        onChange={arena => onChange({ ...value, arena })} />
       {capacity === 4 && (
         <label>
           赛制

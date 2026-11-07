@@ -304,17 +304,24 @@ func (s *Session) Step(held [8]engine.Buttons) (Frame, error) {
 	return frame, nil
 }
 func (s *Session) StepControlled(held [4]engine.Buttons, automated uint8) (Frame, error) {
-	return s.stepControlled(held, automated, false)
+	return s.stepControlled(held, automated, false, true)
 }
 
 // StepControlledWithSounds publishes this successful tick's actual producer
 // requests. Media timing is frame based; no hardware scheduler is implied.
 // Requests are never retained in a save, checkpoint or authority replay ring.
 func (s *Session) StepControlledWithSounds(held [4]engine.Buttons, automated uint8) (Frame, error) {
-	return s.stepControlled(held, automated, true)
+	return s.stepControlled(held, automated, true, true)
 }
 
-func (s *Session) stepControlled(held [4]engine.Buttons, automated uint8, sounds bool) (Frame, error) {
+// AdvancePredictionControlled replays previously presented intermediate ticks
+// without constructing disposable pixels. A newly discovered terminal tick
+// still renders its actual callback-time events before committing that state.
+func (s *Session) AdvancePredictionControlled(held [4]engine.Buttons, automated uint8) (Frame, error) {
+	return s.stepControlled(held, automated, false, false)
+}
+
+func (s *Session) stepControlled(held [4]engine.Buttons, automated uint8, sounds, draw bool) (Frame, error) {
 	if s.computed == nil || s.legacy != nil {
 		return Frame{}, errors.New("controlled replay requires sole pixel-free presentation state")
 	}
@@ -347,16 +354,22 @@ func (s *Session) stepControlled(held [4]engine.Buttons, automated uint8, sounds
 		next.Tick++
 	}
 	next.World = world
-	hud, e := presentation.MaterializeHUDRefs(visual.HUD, s.assets.hud)
-	if e != nil {
+	frame := Frame{}
+	if draw || world.MatchComplete {
+		hud, e := presentation.MaterializeHUDRefs(visual.HUD, s.assets.hud)
+		if e != nil {
+			return Frame{}, e
+		}
+		var slots presentation.TileSlots
+		_, frame, slots, e = renderPixels(next, presentation.TileSlots(prior.SpriteSlots), hud, events, s.assets, false)
+		if e != nil {
+			return Frame{}, e
+		}
+		if slots != presentation.TileSlots(visual.SpriteSlots) {
+			return Frame{}, errors.New("temporary pixel slots differ from canonical shared presentation")
+		}
+	} else if _, e = sceneFrame(world, presentation.CompactPalette(world.Palette.Current), nil); e != nil {
 		return Frame{}, e
-	}
-	_, frame, slots, e := renderPixels(next, presentation.TileSlots(prior.SpriteSlots), hud, events, s.assets, false)
-	if e != nil {
-		return Frame{}, e
-	}
-	if slots != presentation.TileSlots(visual.SpriteSlots) {
-		return Frame{}, errors.New("temporary pixel slots differ from canonical shared presentation")
 	}
 	frame.View = sessionView(next, true)
 	frame.SoundRequests = requests

@@ -1,0 +1,9 @@
+{"Time":"2026-11-07T10:01:34.088408+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/internal/server"}
+{"Time":"2026-11-07T10:01:34.726571+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestControllerMDProfilesE2E"}
+{"Time":"2026-11-07T10:01:34.726607+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestControllerMDProfilesE2E","Output":"=== RUN   TestControllerMDProfilesE2E\n"}
+{"Time":"2026-11-07T10:01:34.851102+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestControllerMDProfilesE2E","Output":"    controllers_e2e_test.go:116: MD defaults: map[keyboard:map[a:KeyK b:KeyJ c:KeyL down:KeyS left:KeyA mode:KeyF right:KeyD start:Space up:KeyW x:KeyU y:KeyI z:KeyO] revision:0 turboHz:10]\n"}
+{"Time":"2026-11-07T10:01:34.855182+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestControllerMDProfilesE2E","Output":"--- FAIL: TestControllerMDProfilesE2E (0.13s)\n"}
+{"Time":"2026-11-07T10:01:34.855196+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/internal/server","Test":"TestControllerMDProfilesE2E","Elapsed":0.13}
+{"Time":"2026-11-07T10:01:34.855397+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/internal/server","Output":"FAIL\n"}
+{"Time":"2026-11-07T10:01:34.855999+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/internal/server","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/internal/server\t0.767s\n"}
+{"Time":"2026-11-07T10:01:34.856009+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/internal/server","Elapsed":0.768}

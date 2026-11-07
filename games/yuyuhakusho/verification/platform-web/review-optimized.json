@@ -1,0 +1,29 @@
+{
+  "label": "review-optimized",
+  "scope": "Built normal React platform app and local-only asset routing, not authenticated/browser acceptance",
+  "checks": [
+    "lazy_board_not_home",
+    "all_13_fixed_resource_routes_sha",
+    "runtime_descriptor_exact_wasm",
+    "shared_favicon_route_exact_source",
+    "all_143_lossless_media_routes_sha"
+  ],
+  "favicon": {
+    "url": "/favicon.svg",
+    "bytes": 250,
+    "sha256": "0c308d0332fd6c21fa0eca4b9f0475235b9ed72e3174132ff15d5e94ecc45b1c"
+  },
+  "audio": {
+    "clips": 143,
+    "bytes": 141537925
+  },
+  "pass": true,
+  "resource_descriptor_sha256": "7977b2e32a824923f3037373ba318d70c72d58d447be5953fdb7677ce9c59b8c",
+  "runtime": {
+    "url": "/yuyuhakusho/v1/runtime/client.wasm",
+    "sha256": "486e4599cb8a9dafb3d23a007fa75c48bfa2c184f4c4c492eace0fca0ef772e8",
+    "bytes": 5060604
+  },
+  "build": "4eac2bec823065e7d9c2698ddf7cb8f3a1bde791e4ca2b594eb6928b9e929d2e",
+  "dist": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/review-optimized/dist/"
+}

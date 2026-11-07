@@ -16,7 +16,7 @@ Object.assign(window,{yuyuAudioProbe:audioProbe});
 document.addEventListener('visibilitychange',()=>audioProbe.visibility.push({hidden:document.hidden,at:performance.now()}));
 const originalPort=audio.channel('board-harness');
 const audioPort=new Proxy(originalPort,{get(target,name:keyof typeof originalPort){const value=target[name];return (...args:unknown[])=>{audioProbe.calls.push({kind:name,at:performance.now(),args});return Reflect.apply(value,target,args);};}});
-const profile={revision:1,turboHz:10,keyboard:{up:'KeyW',down:'KeyS',left:'KeyA',right:'KeyD',mode:'KeyF',start:'Space',b:'KeyJ',a:'KeyK',c:'KeyL',x:'KeyU',y:'KeyI',z:'KeyO'}};
+const profile={revision:1,turboHz:10,keyboard:{up:'KeyW',down:'KeyS',left:'KeyA',right:'KeyD',mode:'KeyF',start:'Space',a:'KeyJ',b:'KeyK',c:'KeyL',x:'KeyU',y:'KeyI',z:'KeyO'}};
 type Timing={sequence?:number;sent:number;ack?:number;appliedAt?:number;bytes:number};
 const probe={ready:false,loaded:0,progress:0,error:'',actions:[] as object[],prepare:[] as object[],delay:0,authority:undefined as NetworkView|undefined,firstInputAt:0,visibleAt:0,fullReady:false,testGate:false,publicGate:false,syncCount:0,syncDelayMS:0,gapUpdates:0,gapInjected:[] as {frame:string;at:number}[],pollMS:100,rpc:[] as {op:string;at:number;duration:number;frame?:string}[],fetches:[] as {url:string;at:number;callbackAt:number}[],timings:[] as Timing[],paints:[] as {at:number;frame:string}[],lastHeld:[] as number[],lastStep:undefined as {players:{slot:number;X:number;Y:number;Pose:number;Action:number}[]}|undefined};
 Object.assign(window,{yuyuBoardProbe:probe});

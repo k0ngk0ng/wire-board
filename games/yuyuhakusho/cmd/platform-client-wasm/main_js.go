@@ -159,7 +159,7 @@ func main() {
 				if err == nil {
 					err = put(value.asset, created)
 				}
-			case "ready", "inspect", "preview", "step", "replay", "save", "checkpoint", "digests":
+			case "ready", "inspect", "preview", "step", "advance", "replay", "save", "checkpoint", "digests":
 				if session == nil {
 					err = errors.New("session required")
 					break
@@ -185,6 +185,15 @@ func main() {
 					if err == nil {
 						err = copyPixels(frame)
 						out.SoundRequests = frame.SoundRequests
+					}
+				case "advance":
+					if err = validPixels(); err != nil {
+						break
+					}
+					var frame runtimebridge.Frame
+					frame, err = session.AdvancePredictionControlled(req.Held, req.Automated)
+					if err == nil && len(frame.Pixels) != 0 {
+						err = copyPixels(frame)
 					}
 				case "save":
 					var raw []byte
@@ -267,7 +276,7 @@ func main() {
 				}
 				// Prediction consumes pixels and the small view. Confirmed
 				// replay/explicit digest calls retain both authority checks.
-				if err == nil && req.Op != "step" && req.Op != "preview" {
+				if err == nil && req.Op != "step" && req.Op != "preview" && req.Op != "advance" {
 					out.RulesDigest, out.PresentationDigest, err = session.Digests()
 				}
 			case "dispose":

@@ -67,7 +67,8 @@ export type LocalEvent = {
 export type Progress = { percent: number; label: string };
 export const FPS = 59.92274340431231;
 export const FRAME_MS = 1000 / FPS;
-export const MAX_PREDICTION = 12;
+// Bounded speculative lead covers the verified delayed four-player profile.
+export const MAX_PREDICTION = 20;
 export function frameNumber(value: string): bigint {
   if (!/^(0|[1-9][0-9]*)$/.test(value)) throw Error("无效帧号");
   const number = BigInt(value);

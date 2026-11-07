@@ -1,0 +1,43 @@
+{
+  "pass": true,
+  "names": [
+    "幻海",
+    "藏马",
+    "桑原",
+    "浦饭",
+    "飞影",
+    "仙水",
+    "阵",
+    "树",
+    "户愚吕兄",
+    "酎",
+    "户愚吕弟"
+  ],
+  "geometry": {
+    "bottom": 504.375,
+    "height": 740,
+    "left": 24,
+    "overflow": false,
+    "right": 296,
+    "top": 210.59375,
+    "width": 320
+  },
+  "events": [
+    {
+      "character": 8,
+      "seat": 0,
+      "type": "character"
+    },
+    {
+      "character": 10,
+      "seat": 1,
+      "type": "character"
+    },
+    {
+      "character": 3,
+      "seat": 1,
+      "type": "character"
+    }
+  ],
+  "checker_sha256": "301cd8836925f7d93543028063632710306313a22404d26f578d71d3f03088d3"
+}

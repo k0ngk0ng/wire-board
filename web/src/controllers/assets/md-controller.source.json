@@ -3,6 +3,6 @@
   "file": "md-controller.svg",
   "creation": "Original SVG authored in this repository; no external bitmap or logo was copied",
   "license_evidence": "Project-authored vector source; no third-party image dependency",
-  "visual": "Charcoal body, direction pad, Mode/Start, X/Y/Z above A/B/C; labels are rendered by the shared React component",
-  "sha256": "e5f7264ca0a328f11b033fa06d018bb3fb56a51a3d631bd9384183cab33375c1"
+  "visual": "Charcoal body and direction pad only; the shared React component renders Mode/Start and X/Y/Z above A/B/C once, without decorative lines or duplicate key outlines",
+  "sha256": "35872cc787995a95dd4ba985f672b7ae2d4a1e6555610b4d55ef3abfe235c5e0"
 }

@@ -38,7 +38,7 @@ def check(browser,js,native,report):
  js('yuyuVirtualPad.buttons[15]={pressed:false,touched:false,value:0}')
  browser('wait','--fn','yuyuBoardProbe.authority.inputs[0].appliedButtons===0')
  # A legal empty primary key and replacement binding must remove the old key.
- js('''window.dispatchEvent(new CustomEvent("controller-settings-changed",{detail:{userId:"human",model:"game:yuyuhakusho",profile:{revision:2,turboHz:10,keyboard:{up:"KeyW",down:"KeyS",left:"KeyA",right:"",mode:"KeyF",start:"Space",b:"KeyJ",a:"KeyK",c:"KeyL",x:"KeyU",y:"KeyI",z:"KeyO"},keyboardAlt:{right:["KeyE"]}}}}))''')
+ js('''window.dispatchEvent(new CustomEvent("controller-settings-changed",{detail:{userId:"human",model:"game:yuyuhakusho",profile:{revision:2,turboHz:10,keyboard:{up:"KeyW",down:"KeyS",left:"KeyA",right:"",mode:"KeyF",start:"Space",a:"KeyJ",b:"KeyK",c:"KeyL",x:"KeyU",y:"KeyI",z:"KeyO"},keyboardAlt:{right:["KeyE"]}}}}))''')
  browser('focus','[data-yuyu-board]');browser('wait','100')
  marker=js('yuyuBoardProbe.actions.length')
  native([{'type':'keyDown','key':'d','code':'KeyD','windowsVirtualKeyCode':68,'wait':100},{'type':'keyUp','key':'d','code':'KeyD','windowsVirtualKeyCode':68}])

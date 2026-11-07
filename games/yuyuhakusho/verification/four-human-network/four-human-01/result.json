@@ -1,0 +1,31 @@
+{
+  "pass": false,
+  "scope": "Four distinct signed-in human seats in independent Chromium browsers on this Mac; actual HTTP/SQLite/WebSocket and Go/Wasm. One real TCP connection is then delayed120ms per write. This does not claim four physical devices or arbitrary public networks.",
+  "budget": {
+    "minimum_visible_fps": 50,
+    "maximum_p95_ms": 40
+  },
+  "stages": {},
+  "urls": {
+    "direct": "http://127.0.0.1:54737/",
+    "shaped": "http://127.0.0.1:54738/"
+  },
+  "error": "RuntimeError('{\"success\":false,\"data\":null,\"error\":\"9 elements have role \\\\\"button\\\\\", but none match name \\\\\"加入\\\\\". Names seen: \\\\\"打开游戏许愿池\\\\\", \\\\\"积分榜\\\\\", \\\\\"我的战绩与好友\\\\\", \\\\\"控制器设置\\\\\", \\\\\"Four0a461\\\\\", ...\"}\\n')",
+  "diagnostics": {
+    "0": {
+      "board": null,
+      "text": "围桌\nWIRE BOARD\n游戏牌桌\n许愿池\n积分榜\n0ms\nF\nFour0a460\n魔强统一战 / 牌桌 B7048DFE\n四真人输入同步验收\n玩法速查\n邀请朋友\n离开房间\n魔强统一战\n\n浦饭幽助与伙伴的灵界格斗，支持二至四人混战和四人组队对战。\n\n2 / 3 / 4 人 · 支持电脑与托管\nTAKE YOUR SEAT\n朋友或电脑，到齐就开局。\n场地\n默认场地\n灵界\n亚空间 1\n魔界\n洞窟\n魔性之森\n亚空间 2\n山顶\n赛制\n四人混战\n双人组队对战\nFour0a460（你）\n浦饭\n⌄\n等待玩家\n藏马\n等待玩家\n幻海\n等待玩家\n户愚吕弟\nF\nFour0a460\n0ms\n等待准备\n虚位以待\n邀请一位朋友\n虚位以待\n邀请一位朋友\n虚位以待\n邀请一位朋友\n添加电脑玩家\n我准备好了\n开始游戏\n\n电脑自动准备。你准备好后即可开始，也可以继续邀请朋友。\n\n聊天"
+    },
+    "1": {
+      "board": null,
+      "text": "围桌\nWIRE BOARD\n游戏大厅\n许愿池\n积分榜\n0ms\nF\nFour0a461\n游戏大厅\n\n找个房间，一起开局。\n\n创建房间\n搜索房间\n游戏分类\n全部分类\n桌游\n棋牌类\n即时策略\n体育\n益智休闲\n游戏\n全部游戏\n璀璨宝石\n铁路环游\n卡坦岛\n卡卡颂\n三国杀\n热血篮球\n强手棋\n星垒\n斗地主\n掼蛋\n升级\n斯诺克\n连连看\n五子棋\n军棋\n国际象棋\n中国象棋\n围棋\n极品飞车\n俄罗斯方块\n街霸方块\n坦克大战\n泡泡堂\n疯狂坦克\n征服时代\n乒乓球\n魔强统一战\n状态\n全部状态\n等待入座\n游戏中\n1 个房间\n实时更新\n房间 / 游戏\n桌上的朋友\n状态\n四真人输入同步验收\n魔强统一战 · B7048DFE\nF\n1 / 4\n等待入座\n加入牌桌\n每一步自动保存\n掉线重连，随时回桌\n好友相聚，不必排队\nvdev\n围桌 WIRE BOARD\n好游戏，和好朋友一起。\n私人牌桌 · 自动保存"
+    }
+  },
+  "sources": {
+    "scripts/yuyuhakusho/check_four_human_network.py": "62ee57f0946755625b0e13713376fe475ee45002a8eff82016e3943316bc89bb",
+    "scripts/yuyuhakusho/platform_app_observer.js": "b07d9a383bd2927e2d188e604dfa43c4d084945d788810f5f3ff4480dd283a5c",
+    "scripts/yuyuhakusho/native_app_input.mjs": "b8d4e687b01e668d4b9c870397ba201ce6d94085919ee9ddb20b62abd168e459",
+    "games/yuyuhakusho/web/network-scene.ts": "1e3f95a4f6b881107a08434c87ca707a64f9f9ec9e1fc1f76edb300eeec8a3a1",
+    "games/yuyuhakusho/web/network-client.ts": "e62cf2c1949a52544d3346fc59a4a20010617176ceaf8b88ccc01b12f691dfa1"
+  }
+}

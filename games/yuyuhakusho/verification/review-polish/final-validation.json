@@ -1,0 +1,1647 @@
+{
+  "pass": true,
+  "scope": "User review fixes and four independent authenticated browser clients, including real TCP delayed peer and burst input; local-only delivery.",
+  "sources": [
+    {
+      "path": "games/yuyuhakusho/assets/arena-previews.json",
+      "sha256": "095cab52f821771cbaf2d82d168d1e028e8c1ded0cf0d2e0ec000d038be41854",
+      "bytes": 2021
+    },
+    {
+      "path": "games/yuyuhakusho/assets/arena-previews.png",
+      "sha256": "7d040c57acdf55613334387caec972e1aae5f1ba4f3387b88ca093ea6ca1525c",
+      "bytes": 98924
+    },
+    {
+      "path": "games/yuyuhakusho/assets/audio-playback.json",
+      "sha256": "b3fb0ac3f1af05f96577904abe0a4810eeda7b765fa53eb9a8b8a9e395b41814",
+      "bytes": 44353
+    },
+    {
+      "path": "games/yuyuhakusho/assets/character-portraits.json",
+      "sha256": "415e010bcba57aa4572cc994ed0b06e4b21c421562265f612e7753d56aebf6f6",
+      "bytes": 2081
+    },
+    {
+      "path": "games/yuyuhakusho/assets/character-portraits.png",
+      "sha256": "313a3d3782e73f7a90c7b557c2835ac56d3142c33ac1be1cb83c7d8cd72ae106",
+      "bytes": 4073
+    },
+    {
+      "path": "games/yuyuhakusho/cmd/platform-client-wasm/main_js.go",
+      "sha256": "ccf1d16d88ab3af54297c31b8b4cf681c03fc9d8b7d233cb27cbd35f34884316",
+      "bytes": 9669
+    },
+    {
+      "path": "games/yuyuhakusho/runtimebridge/prediction_advance_e2e_test.go",
+      "sha256": "410ffb5e666b50bfaca4c2848ba72f81410c9ea870c100d3cd5639852614f654",
+      "bytes": 2474
+    },
+    {
+      "path": "games/yuyuhakusho/runtimebridge/session.go",
+      "sha256": "6325a18c51e80c59e9c90690e2ac9a6bfc8fd7758a2171332f771b44cf324e97",
+      "bytes": 17317
+    },
+    {
+      "path": "games/yuyuhakusho/server/stream_coalescing_test.go",
+      "sha256": "6a60d490a359a7c4bcf9a8711682ce7e0ea11fa4d576d35dc343c21eedb3bd38",
+      "bytes": 1822
+    },
+    {
+      "path": "games/yuyuhakusho/server/stream_view.go",
+      "sha256": "6174e409d21c3b09f693633f590375c19decae68ab62f64dd788907923f0c7a2",
+      "bytes": 1477
+    },
+    {
+      "path": "games/yuyuhakusho/server/stream_view_test.go",
+      "sha256": "01db73fe2f54810d44b98e46a733fc63c3fe6e4b011ba64257fee544f9b3104a",
+      "bytes": 5709
+    },
+    {
+      "path": "games/yuyuhakusho/web/ArenaPicker.tsx",
+      "sha256": "d749f3cc9270163c622bee4a00f19e1539ee765b37ccc8f5d40018a62bef7b8c",
+      "bytes": 862
+    },
+    {
+      "path": "games/yuyuhakusho/web/Board.tsx",
+      "sha256": "0e811334e51f97c3b0f587693f4bcfb4a5a61d86257aee2cf9736adf44fb98cf",
+      "bytes": 9698
+    },
+    {
+      "path": "games/yuyuhakusho/web/CharacterPicker.tsx",
+      "sha256": "bf031c7ec6acf563a4e4edc1e973353daf206526298bddc5d81a5759f7ae4d4c",
+      "bytes": 4867
+    },
+    {
+      "path": "games/yuyuhakusho/web/Cover.tsx",
+      "sha256": "15d7f1b24c96a6732c452c49ff4de1b4f40092062d9681a9ee6775e4a35e8854",
+      "bytes": 5844
+    },
+    {
+      "path": "games/yuyuhakusho/web/FAILURES.md",
+      "sha256": "79ffd1caf6f1c408909f10d81a89cd2c7d4a79c20df7d32d51a01fd7ed3860ed",
+      "bytes": 3176
+    },
+    {
+      "path": "games/yuyuhakusho/web/Options.tsx",
+      "sha256": "d816e032db21f7725aa3a026e107eea6b93578ea0fb9be32bf62082e45007041",
+      "bytes": 1328
+    },
+    {
+      "path": "games/yuyuhakusho/web/Preparation.tsx",
+      "sha256": "fec3aeb2005c1164256de1aadb8536d8224e952969bf94d3ed69e1f83311bbb9",
+      "bytes": 2278
+    },
+    {
+      "path": "games/yuyuhakusho/web/assets.ts",
+      "sha256": "0772fc41b5b48af4dee0e9a5df1099a70cbda4bb509f2d25df382a7b76f7af84",
+      "bytes": 7557
+    },
+    {
+      "path": "games/yuyuhakusho/web/audio.ts",
+      "sha256": "13bcde190a99d4e89dfd0910a2d72c46d05f3c2fd495f5c32f68fe0ddc653674",
+      "bytes": 5122
+    },
+    {
+      "path": "games/yuyuhakusho/web/catalog.tsx",
+      "sha256": "6ed4b73bfb10c0d345b6c218907b3b47c88c5f7ec0edb9a0085051a03c318062",
+      "bytes": 397
+    },
+    {
+      "path": "games/yuyuhakusho/web/input.ts",
+      "sha256": "5113279f9fc2be2dd84a10db73dc1edff361354e3192dbf176195f11b6fd5163",
+      "bytes": 5964
+    },
+    {
+      "path": "games/yuyuhakusho/web/labels.ts",
+      "sha256": "b3b420e09764992502909c9a57b0fd244233ff62ad245a75e15caabe9a768f85",
+      "bytes": 679
+    },
+    {
+      "path": "games/yuyuhakusho/web/module.tsx",
+      "sha256": "27fb2594505d3fd18f673cc1270f736891d1a01197c68b20e79815d44bb6d0b6",
+      "bytes": 1629
+    },
+    {
+      "path": "games/yuyuhakusho/web/network-client.ts",
+      "sha256": "e62cf2c1949a52544d3346fc59a4a20010617176ceaf8b88ccc01b12f691dfa1",
+      "bytes": 12378
+    },
+    {
+      "path": "games/yuyuhakusho/web/network-input.ts",
+      "sha256": "13ccfd4ceeb4c434657aa5306723f5ff2076dd810b235f9b5aab1b3fdf896922",
+      "bytes": 7935
+    },
+    {
+      "path": "games/yuyuhakusho/web/network-scene.ts",
+      "sha256": "511fe31bad133c02b611c5bf76d974fe0190edfb5aed16c0adf0ea84def173d0",
+      "bytes": 9224
+    },
+    {
+      "path": "games/yuyuhakusho/web/network.css",
+      "sha256": "f945f35281f38e8c0d693cd624dfbe501652b97eb0f470db0c47e3a61d81ade9",
+      "bytes": 7115
+    },
+    {
+      "path": "games/yuyuhakusho/web/types.ts",
+      "sha256": "39df0c7013eabce971b22416ca2bfc1e0e3aa79ea22488e32293f8ca69d2fcca",
+      "bytes": 2095
+    },
+    {
+      "path": "games/yuyuhakusho/web/wasm.ts",
+      "sha256": "532f815b32dbbae0e3028398849b8ca1e91c568698fb3845bcde1c6c41925a19",
+      "bytes": 6059
+    },
+    {
+      "path": "internal/server/controllers.go",
+      "sha256": "30f8e829d2ae3f7ed553456a67eb58879d889a0009d87149acb3763dbce925c8",
+      "bytes": 11509
+    },
+    {
+      "path": "internal/server/controllers_e2e_test.go",
+      "sha256": "86a839f8b725d403e0e6cda0ceef2e60585d19fc73b1755684788f61d0d6a5e7",
+      "bytes": 6756
+    },
+    {
+      "path": "rules/yuyuhakusho.md",
+      "sha256": "b8b815a541e0a7751da4090f256f66369ef1f4ada54421afc7b2efc7754af95c",
+      "bytes": 11398
+    },
+    {
+      "path": "scripts/yuyuhakusho/build_platform_app.py",
+      "sha256": "42851ee12dde9bbf8811ee2eecca95639042c9a2980dd4505b47a18ffa71768a",
+      "bytes": 3660
+    },
+    {
+      "path": "scripts/yuyuhakusho/build_platform_web.py",
+      "sha256": "18c7d9c2c10d83aef91cb6c2aa1976d5568f3cd812b931ee3875a74882ba54a2",
+      "bytes": 1423
+    },
+    {
+      "path": "scripts/yuyuhakusho/check_character_picker.py",
+      "sha256": "e403e5450cb6239aa38561b8b41656c196f10c46543f0986912f6279a3d83fb7",
+      "bytes": 6174
+    },
+    {
+      "path": "scripts/yuyuhakusho/check_four_human_network.py",
+      "sha256": "5cc163de7799aa2a912eb923bf9944ebf82bc2da35d8d37748bd8b67cfe23ae2",
+      "bytes": 12085
+    },
+    {
+      "path": "scripts/yuyuhakusho/check_platform_app.py",
+      "sha256": "9930d9cd37f9bcf5ead3206fdeccb819e52240a00e413ec07f6faa2db9504bea",
+      "bytes": 21956
+    },
+    {
+      "path": "scripts/yuyuhakusho/check_platform_app_build.mjs",
+      "sha256": "50a7aa944e7ff724cf974fb4dd62c0b1a57adb9cadd3a959ac90689f3f2142f2",
+      "bytes": 3318
+    },
+    {
+      "path": "scripts/yuyuhakusho/check_platform_board.py",
+      "sha256": "7748e48145b38063df547904cb2ec92c478f671b4a22aece7115d547b4206763",
+      "bytes": 13273
+    },
+    {
+      "path": "scripts/yuyuhakusho/check_platform_modes.py",
+      "sha256": "63e1aa3efb804a00054635c5f40435fd8807edd857bd6bb002b91b549583e746",
+      "bytes": 26886
+    },
+    {
+      "path": "scripts/yuyuhakusho/check_platform_scene.mjs",
+      "sha256": "322a6a8bc708e21646f3a25ac1341c72d260ee2df954d91d1bb1b132b129414b",
+      "bytes": 7218
+    },
+    {
+      "path": "scripts/yuyuhakusho/check_review_interface.py",
+      "sha256": "8deec81b8f7882b18fd40e8d9553be7b93a9dad915830dd3ae7ad24fdc6c4f2a",
+      "bytes": 5057
+    },
+    {
+      "path": "scripts/yuyuhakusho/export_arena_previews.py",
+      "sha256": "fa6bdc722565c00bdcecb02ef7be4b3a98fee88c7b51d08a5e9fdf83cd10cdf6",
+      "bytes": 1470
+    },
+    {
+      "path": "scripts/yuyuhakusho/export_character_portraits.py",
+      "sha256": "23f546cfbebc201a4c35f4af871ce1e51bb7d141c69e63545604923825fcd144",
+      "bytes": 2358
+    },
+    {
+      "path": "scripts/yuyuhakusho/native_app_input.mjs",
+      "sha256": "b8d4e687b01e668d4b9c870397ba201ce6d94085919ee9ddb20b62abd168e459",
+      "bytes": 2631
+    },
+    {
+      "path": "scripts/yuyuhakusho/platform_app_host.go",
+      "sha256": "3b4aaa83f41c5230a9c2d2412c2222837f265701ee884496e90e03971e014194",
+      "bytes": 3125
+    },
+    {
+      "path": "scripts/yuyuhakusho/platform_app_observer.js",
+      "sha256": "b07d9a383bd2927e2d188e604dfa43c4d084945d788810f5f3ff4480dd283a5c",
+      "bytes": 2784
+    },
+    {
+      "path": "scripts/yuyuhakusho/platform_board_harness.tsx",
+      "sha256": "2e30e18ea76474283f8b9431206d6781ec18d4fc228c7c2fa12dc1b56249646a",
+      "bytes": 9031
+    },
+    {
+      "path": "scripts/yuyuhakusho/platform_controls_acceptance.py",
+      "sha256": "6aafdecdcc8cd89a20222baff98474d5286dc09eba8aca0a85b86c80cc7447e2",
+      "bytes": 4292
+    },
+    {
+      "path": "scripts/yuyuhakusho/review_polish_preview.tsx",
+      "sha256": "c00e429dabde1c7f8a332d98067d896ec645a26fcdf47c51525d55333aa67a58",
+      "bytes": 2161
+    },
+    {
+      "path": "web/src/controllers/assets/md-controller.source.json",
+      "sha256": "a74abca74270ca406d96bea5d091894c91c3f8b651d3a0c1617303007f897a71",
+      "bytes": 526
+    },
+    {
+      "path": "web/src/controllers/assets/md-controller.svg",
+      "sha256": "35872cc787995a95dd4ba985f672b7ae2d4a1e6555610b4d55ef3abfe235c5e0",
+      "bytes": 1165
+    },
+    {
+      "path": "web/tests/md-gamepad-input.test.mjs",
+      "sha256": "c622c972d3fd6c44928bcce25aca8cf72ef761e172e9655e5c9ee3bccfc2ceb2",
+      "bytes": 2954
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/README.md",
+      "sha256": "dd398e0ea2c752bb8e42d22fff73440c0835d6a8b2be88251e1d553fe5a701f4",
+      "bytes": 3140
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/REPLAY_FAILURES.md",
+      "sha256": "b70ed7adebd883b3b8146d74904575fdda00a4fd06dbb326b004d2ec4183e7ff",
+      "bytes": 1459
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-01/SETUP_FAILURE.md",
+      "sha256": "06cf556c4a52444d032916d8d09e04e8f41e802c160ead2a50b8b981a14194c9",
+      "bytes": 205
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-01/checker-executed.py.txt",
+      "sha256": "62ee57f0946755625b0e13713376fe475ee45002a8eff82016e3943316bc89bb",
+      "bytes": 9433
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-01/failure-seat0.png",
+      "sha256": "e47c51836353558145f247006020e2a35e6bfa591dffd988664bf026fa77b0a1",
+      "bytes": 165442
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-01/failure-seat1.png",
+      "sha256": "e468b7735f9145e9c666c1e236aec5d89e39d07ef784315c0dba3c966c04763b",
+      "bytes": 63097
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-01/host.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-01/result.json",
+      "sha256": "938ce8428b64159ae13fb63da596df6bee919cef0cc4b198a77f6df927461140",
+      "bytes": 3408
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-02/INPUT_SETUP_CORRECTION.md",
+      "sha256": "9fdab008bfc14630aef9300ad94764a53f38343728b3682f0117e9bb5df8ba56",
+      "bytes": 375
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-02/checker-executed.py.txt",
+      "sha256": "26983672faad0c93cfe17dc645b7f0a6eb5fa38dd5211a0fcf7d53e0c34325ec",
+      "bytes": 9540
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-02/failure-seat0.png",
+      "sha256": "2ed004c08e42449b37172462024f2500e6629e334b6c6603a93bd30f45fe3f91",
+      "bytes": 115222
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-02/failure-seat1.png",
+      "sha256": "8f5bcc71a003aa81956a1b9757db88581a4fa04f554af738ab8156d588a35052",
+      "bytes": 113931
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-02/failure-seat2.png",
+      "sha256": "9fd3674992650e23779ff6dd5781575fe9110aff37a4b9a41bbf5b4658b1c81e",
+      "bytes": 113947
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-02/failure-seat3.png",
+      "sha256": "886c7cd1edfad743ed4ca3c03103a303820098638a0c3d84c02ace484c226aa4",
+      "bytes": 114155
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-02/host.log",
+      "sha256": "7a07db2214984dc7b1887450fe84dbfa9c0abdfcc29fa2f78596c771891c83ca",
+      "bytes": 125
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-02/normal-seat0.json",
+      "sha256": "9550cd999fe3ad4676a11fea7b6bd3738214c7bd672b168ea43cb8b4b835ce2d",
+      "bytes": 201876
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-02/normal-seat1.json",
+      "sha256": "a7072b4ec5303ea7c841d7b475c88448c2d13e0a3824e74f894fd6fca6ea94a5",
+      "bytes": 201418
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-02/normal-seat2.json",
+      "sha256": "78232450de4a5817adfac045c5d85a8cdf3080cd1243a3807a1dd5170c00fee5",
+      "bytes": 204375
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-02/normal-seat3.json",
+      "sha256": "95b11e2cdcf5ca6206f08e400a5f310672f74de022739e9db3e7682c0f31cd70",
+      "bytes": 201433
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-02/result.json",
+      "sha256": "ebdd5ed91fe766a852726097ab89fe10d58f26cbf73e3bb1c7e6ae694a217301",
+      "bytes": 4499
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-03/host.log",
+      "sha256": "f536c37c9d847cb66f25406829eb44fae3707293f688bc3dec624c7add2d1d66",
+      "bytes": 56
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-03/normal-seat0.json",
+      "sha256": "7449aa74bd8289d334d9c188af18910f22bcb28d0b7d74ae84df7d4a6d61e564",
+      "bytes": 199202
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-03/normal-seat1.json",
+      "sha256": "4ca1ca542af8cffce60b7f0b54c9af041b4c77395c11f72bed3db3c57030e49a",
+      "bytes": 201926
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-03/normal-seat2.json",
+      "sha256": "65977c0b0f15d637e300c7a97531199d5e431757a3640e5496e92692339a1325",
+      "bytes": 199164
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-03/normal-seat3.json",
+      "sha256": "e4b2431a7c248c4c714b6e14a507ba9985d09bf2030b84f86e2ac76130720665",
+      "bytes": 199132
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-03/one-slow-seat0.json",
+      "sha256": "44ba116c3baa89364203a460a8f76994132049d44dc69e0cf8331064d74d44c8",
+      "bytes": 201820
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-03/one-slow-seat1.json",
+      "sha256": "0e597e9b8f9c79023360f714ce3e23d0b8ee1774a5839de36dbc809f214cd799",
+      "bytes": 201838
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-03/one-slow-seat2.json",
+      "sha256": "e2b736584bd12a0f0bf2f148d748840973a648774062079b2e6c76d5d661e80e",
+      "bytes": 202053
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-03/one-slow-seat3.json",
+      "sha256": "ebb874633b668fc21ee59d72b6a014939786e3cff52fbe173627a25fc9d568d3",
+      "bytes": 200029
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-03/result.json",
+      "sha256": "60dd68bfbe47a574081032d78cf905d5b82de928d2b9516654bcfd62c060eb3d",
+      "bytes": 6469
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-03/seat0.png",
+      "sha256": "0b7b2015682a563375bae5209b9908fb4ea41ab837f0320706bf8473cbb3dbc8",
+      "bytes": 113514
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-03/seat1.png",
+      "sha256": "96af44a8c6cb4d0e5421fe45f05a23263c898dfd2c8461c3b5c51c52652743f8",
+      "bytes": 112259
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-03/seat2.png",
+      "sha256": "715b7e50f41973904f79094979280b168df90d35b64b592ab13712e712ccd3e5",
+      "bytes": 112532
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-03/seat3.png",
+      "sha256": "b589ab7f8838fc48b66c088bfe873f6c27f14a2f06ba435e556ed964c640b426",
+      "bytes": 112607
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-04/host.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-04/normal-seat0.json",
+      "sha256": "dfedf8fad6c7c888aaa1dc50f75775b4472f52c794a08edcc2e2e4b992006ed7",
+      "bytes": 201661
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-04/normal-seat1.json",
+      "sha256": "c5043b1ca2736b7083b1865dc554f891344b7fe6bf82098dfb7e1248e27771c4",
+      "bytes": 201542
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-04/normal-seat2.json",
+      "sha256": "409e104b43f363a303aedfaaf913528005f6070d1de38fd5e3d48183eab44e95",
+      "bytes": 201767
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-04/normal-seat3.json",
+      "sha256": "7000c1b3cc439f7d68fc0354d3d9a70c73847c62d387aad2ea86bb8ddb6a794a",
+      "bytes": 201721
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-04/one-slow-seat0.json",
+      "sha256": "4dbe9fa56bced30d0867c7852929d08fa414eaef1a542f7a67ef3991afb93595",
+      "bytes": 204711
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-04/one-slow-seat1.json",
+      "sha256": "d6b16dbb1b164cac8e84e55065e1749ebe02183ee15dfc749e96ec376c004523",
+      "bytes": 201952
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-04/one-slow-seat2.json",
+      "sha256": "5173b970f13bd9dab0f30f376893d5218ae8cd87d9ee7ceb1ca0b08e3c811fdf",
+      "bytes": 201757
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-04/one-slow-seat3.json",
+      "sha256": "af546729c0d0d819e1ce907bb60af5e69d0d66da6449e24d68338019e06464be",
+      "bytes": 194514
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-04/result.json",
+      "sha256": "228c5ca69a7bfb7fe89cc360246e904745ee2c2e99496d34700e9e0f661e916b",
+      "bytes": 6453
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-04/seat0.png",
+      "sha256": "9c8ef466a3712164d4ec1d4e8512c73ac49645e536ee27cc87e67a148918cda9",
+      "bytes": 114637
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-04/seat1.png",
+      "sha256": "8eb5264a0c5fad1eff9d062a686cff30734d56c96cae8369d7a0f60723a4449f",
+      "bytes": 113429
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-04/seat2.png",
+      "sha256": "91dceaa1f2ae027a5fc993a833a0ce05083bebbda1a0b215f9a669601f6d6213",
+      "bytes": 113313
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-04/seat3.png",
+      "sha256": "09a074dbb06de308ed6af967c275d9cdc5ecf5b7321519761b88a7aa5bd16d88",
+      "bytes": 113720
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-busy-final/failure-seat0.png",
+      "sha256": "37b70c819f3b6653f9ff166bfd5a26cf2862965f58c090531f009d698e6eb915",
+      "bytes": 114011
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-busy-final/failure-seat1.png",
+      "sha256": "41608d63f408ec8dac7b6a236562f01cff7d4536484498e84362614960709778",
+      "bytes": 112931
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-busy-final/failure-seat2.png",
+      "sha256": "e87acdddfaf085136052dff86b4d3f19b6b46dee4b141201065405870520865c",
+      "bytes": 112886
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-busy-final/failure-seat3.png",
+      "sha256": "ba2823c09eb2691339a48278b63b1720d77f98a60bcfcead97aea8c677947009",
+      "bytes": 113227
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-busy-final/host.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-busy-final/normal-seat0.json",
+      "sha256": "cd95e5e61562ba7a0a9367a26944e89b38371821bc6908e0fbcb2cff065974db",
+      "bytes": 178934
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-busy-final/normal-seat1.json",
+      "sha256": "0b36db75cd64749d1ccc0324b300aa9d9d653678549be02fa34b03c784cdcb57",
+      "bytes": 179134
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-busy-final/normal-seat2.json",
+      "sha256": "a47c41943730315146bbdf6c98d5e7cebf3b1c7b696cedf1c87b8d2162f56f86",
+      "bytes": 181978
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-busy-final/normal-seat3.json",
+      "sha256": "d9957d25f28c6f66e830af7ea2b196d5ea686e861aec81259ea5a6f23d620a8d",
+      "bytes": 179143
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-busy-final/one-slow-seat0.json",
+      "sha256": "ad084b7ef1c4ecd03fc2e87a8fc5550eacafe0851acf6ba0ed79c6740c4d5a81",
+      "bytes": 204510
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-busy-final/one-slow-seat1.json",
+      "sha256": "e734d37a3578804296c709439d67b314f3a88f618aa8f07444e85e67ad1f7b7d",
+      "bytes": 202095
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-busy-final/one-slow-seat2.json",
+      "sha256": "dfddabeb90ec57afb077fd75b03606a7ae9c04587fe0f88e15ee81db4d1c493a",
+      "bytes": 202232
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-busy-final/one-slow-seat3.json",
+      "sha256": "6cd74c8908c266c7869bea74bb2680916af7224033468f03388a16b9a07a1477",
+      "bytes": 194110
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-busy-final/result.json",
+      "sha256": "fb0c5e0db918594743eb4b4e4955135425a1336bc149fa6b60e3ce94c3d603d6",
+      "bytes": 7505
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-final/host.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-final/normal-seat0.json",
+      "sha256": "cbbd4a7d6d43fdc8966e9ec1d0615118ebd6a91fabe8a681c95f49bb42f6cf1b",
+      "bytes": 201826
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-final/normal-seat1.json",
+      "sha256": "efc8c58224d5808fb289a60ee9403def09c6269241c43e05c6cafc3a791bff9c",
+      "bytes": 201515
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-final/normal-seat2.json",
+      "sha256": "93e8e888930230e95fd4bf0d103cf717d748768c1d5219acf1f2936ae06885b5",
+      "bytes": 201915
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-final/normal-seat3.json",
+      "sha256": "34e4bf81775cf04481051cea9a4eb81f08d7358f931dcb884aede96983a1e654",
+      "bytes": 201615
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-final/one-slow-seat0.json",
+      "sha256": "f176baca4447158c1c0d10328f14e3a25b2256398980de5e368577cf7bbdcf4c",
+      "bytes": 199063
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-final/one-slow-seat1.json",
+      "sha256": "838a00c9b9e4d320592f5e2474a365bc25699a31e5dc865ada29bd957e1820f8",
+      "bytes": 199004
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-final/one-slow-seat2.json",
+      "sha256": "ec943fe294390a34f9b6eec30afd8ee202dc7a7e24a3fb3b2165561eb7536fe3",
+      "bytes": 199078
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-final/one-slow-seat3.json",
+      "sha256": "4c1c50e05c61daf5721432421e0ec48e9b5f5a688f3ee3c8ebe1906bae21b0e5",
+      "bytes": 192631
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-final/result.json",
+      "sha256": "a3700010ca16c8613f1199f6f9da873df0f6a8699c0437b92bd7b0b88cad2617",
+      "bytes": 6964
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-final/seat0.png",
+      "sha256": "41b3804a82100d86dc3081227099ff9a8e47270b33e061481c2714bc6e221f8b",
+      "bytes": 113963
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-final/seat1.png",
+      "sha256": "6496bea78a4335689d546db62f6b8bfda39b3803fe28d9daab4a915f04cc6c29",
+      "bytes": 112859
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-final/seat2.png",
+      "sha256": "8d08430f2db576d7a0c4c163e428cb651a7b23dee2c934bf39cf1a3820cbe5b0",
+      "bytes": 112817
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-final/seat3.png",
+      "sha256": "1daf21534b7b3cd6ad27ff256d75e89f89249f3a0907f5044ecf1837168ecaa4",
+      "bytes": 112991
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-observed-final/busy-normal-seat0.json",
+      "sha256": "273422c8085aa85728e42d1f3902452781ad6ebe438b2629ad4a5822228c1b7e",
+      "bytes": 218435
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-observed-final/busy-normal-seat1.json",
+      "sha256": "83a410458e8a809f43c85ae4db9d86e8a0da1c2b20a89ba5baeeebf7e37569c9",
+      "bytes": 218495
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-observed-final/busy-normal-seat2.json",
+      "sha256": "18f00f571158c3a1c4c7347b49db799bef0db35fd00902371822665fc3bc9fb2",
+      "bytes": 221713
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-observed-final/busy-normal-seat3.json",
+      "sha256": "ab71cd2cd1a2f6e0866e596c7bce29c21e2eaeaa472b0ec46b5ad15a3d5f41fc",
+      "bytes": 232564
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-observed-final/busy-one-slow-seat0.json",
+      "sha256": "27b4ce5bcb3519d67c82ab65661ca1fc359105cc83e327f1ebfd5bdbbe40050d",
+      "bytes": 218717
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-observed-final/busy-one-slow-seat1.json",
+      "sha256": "079be74b3418b20f70b6a0899f092ab6acb54c5ee17e77b5e9ea4f4a2715f66c",
+      "bytes": 218694
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-observed-final/busy-one-slow-seat2.json",
+      "sha256": "73be15c9ca37f87c8b2d7271260a9fa02df3c56a5638db1c56b7516ba44562e0",
+      "bytes": 219000
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-observed-final/busy-one-slow-seat3.json",
+      "sha256": "2a534c630111a00f1b6d2deeff9e6573cbca5c8dcf72247062a7b36293217288",
+      "bytes": 175965
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-observed-final/failure-seat0.png",
+      "sha256": "34ba4419141a9b36ca4614a0b224d56b641ef77101d286ad9aac2985597eb88d",
+      "bytes": 115250
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-observed-final/failure-seat1.png",
+      "sha256": "5616fcdee0ec5c1b9225b8fa09de384d306af09f7b8601aa0ed1969864669033",
+      "bytes": 114202
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-observed-final/failure-seat2.png",
+      "sha256": "4e53f6ec6cb2e96bbdf282bef694f457dd9fad1464f1a9ed8d42654806b2be47",
+      "bytes": 114547
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-observed-final/failure-seat3.png",
+      "sha256": "e1c90f1a67affc0f233e2b19985c09f481771646499b8f27da1630301ad93104",
+      "bytes": 113821
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-observed-final/host.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-observed-final/initial-checkpoint.json",
+      "sha256": "dd0db5fcc3d2750a9540019666fd4ff32e7aeeac8e6304755845c6a435aa9b19",
+      "bytes": 106346
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-observed-final/normal-seat0.json",
+      "sha256": "ba6a27c4403e6c6ad3da834c2405c220901238420e610c9487e31163b37fdb89",
+      "bytes": 201522
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-observed-final/normal-seat1.json",
+      "sha256": "e8bc1d150ff0ba6d179a70e3b519bcee43175aa1cf16d3edc41a0b91f5438b7f",
+      "bytes": 201496
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-observed-final/normal-seat2.json",
+      "sha256": "1f57e0cd9ad6341e8248615359c2440aec4fca27d0963a7cd7b4e75912f64a99",
+      "bytes": 201821
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-observed-final/normal-seat3.json",
+      "sha256": "49cac094919f31d46fd97755d8a2e4dcecf382de3fde242a3d099bc2a2d56d50",
+      "bytes": 201440
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-observed-final/one-slow-seat0.json",
+      "sha256": "e1f6499ffb68f0fb7a5698554052a842e0a6c7f843b5a211befe7521f44308e7",
+      "bytes": 201649
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-observed-final/one-slow-seat1.json",
+      "sha256": "bc6f648d5b6ab17c2df5524d422c9baf86bc44c3b66028b6e69f46d28b4127e5",
+      "bytes": 201922
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-observed-final/one-slow-seat2.json",
+      "sha256": "2b1702a1a5a4c65922b9277b33ee9ad98f801a25464c15b42497e7b82a6dc249",
+      "bytes": 201766
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-observed-final/one-slow-seat3.json",
+      "sha256": "09cfad7571bec3152f43cc82ecb417f37152e0c5739f5f750db430ed77167f37",
+      "bytes": 195684
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-observed-final/result.json",
+      "sha256": "990e64e4083c9be85767488c1a5864054f079f7084ce1a5ef838e30b33d4837c",
+      "bytes": 27097
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-optimized/busy-normal-seat0.json",
+      "sha256": "ea5bd4ce3d2e84c02ee50a54170f81b9931edf201c957011411389ecdbe481a8",
+      "bytes": 218522
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-optimized/busy-normal-seat1.json",
+      "sha256": "59e908b943d07c0e19c8a12675a98566c795cd29d97bd007780bdd2514de6251",
+      "bytes": 218113
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-optimized/busy-normal-seat2.json",
+      "sha256": "0957380fc49605ab561ef23a016d4ab46c86d8d53aa983f71ffbc13d380d60b5",
+      "bytes": 221384
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-optimized/busy-normal-seat3.json",
+      "sha256": "d17e2d6d260a13777b074aeefa468c87b4f850d01df4ae828f1807f7bc078f36",
+      "bytes": 218377
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-optimized/busy-one-slow-seat0.json",
+      "sha256": "4dd7668479d243bf96c51323022df693e2b276a4cdb3471b3317c4d90db34b3a",
+      "bytes": 218517
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-optimized/busy-one-slow-seat1.json",
+      "sha256": "092a3da1f3aa35a81103ab126d5e94df4cbff5fd34338afc423719f17bc25798",
+      "bytes": 218415
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-optimized/busy-one-slow-seat2.json",
+      "sha256": "415eed2a170babb14902c53eee3682b7144ab9a6d6e5034d1ba6d153d294f451",
+      "bytes": 218701
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-optimized/busy-one-slow-seat3.json",
+      "sha256": "6468c0c71f3d14a777de3b302d44e17ea4b2529d664f45d95090009af7d85606",
+      "bytes": 189501
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-optimized/failure-seat0.png",
+      "sha256": "d5ea3942890fd4a91ac61d0d7ca0e11b376f191a54d2d906eb445cd03e12779e",
+      "bytes": 114830
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-optimized/failure-seat1.png",
+      "sha256": "c8f67db4f31f40cda0d2c75a35797982fcbc8866bd8a80eb93493f63a8abdb29",
+      "bytes": 113868
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-optimized/failure-seat2.png",
+      "sha256": "431aeb55c6d35f7434dacec5a9c0ebec348f719f0b88e0ccb2e24b56e998e131",
+      "bytes": 113931
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-optimized/failure-seat3.png",
+      "sha256": "042afcaa1f61af7acc9722d28f365a7442b1a1bf78fd1a869c548741bc3a0c37",
+      "bytes": 114415
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-optimized/host.log",
+      "sha256": "e60552e2ad9018a05165de3074de5334dc387f4312a100e15fb61365aff40de5",
+      "bytes": 69
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-optimized/normal-seat0.json",
+      "sha256": "865bc07cd3a1ba40c128f021d5e98b1ad414da00e44b5f4d87833203350bca35",
+      "bytes": 201652
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-optimized/normal-seat1.json",
+      "sha256": "62102ee4981918cb2f028b3f66ecfc0a3dba9bb308c754feaacb24da4ce3aeb7",
+      "bytes": 204098
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-optimized/normal-seat2.json",
+      "sha256": "b2f8be974ed6182172cc9daa621cfe9d9b9a153c56bf08c701d4d896b4f237d3",
+      "bytes": 204550
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-optimized/normal-seat3.json",
+      "sha256": "185d9a08cc5788c6fcaab5f0450eedca30663e9f105f38886384cebe26ec1274",
+      "bytes": 201522
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-optimized/one-slow-seat0.json",
+      "sha256": "7f4af9dcc7aa20aac1684cdfdf01b9141cce149e3c13aa658cc24c0de11bd067",
+      "bytes": 201695
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-optimized/one-slow-seat1.json",
+      "sha256": "e92df54973961f755919788e199bf0454e59e3c1be821f69778eeec2e2598e39",
+      "bytes": 201647
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-optimized/one-slow-seat2.json",
+      "sha256": "d48ff60e928e8a9141e4ccf9fd0cbbbdc03602bf611e630a07a1c2c571a28f0f",
+      "bytes": 204591
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-optimized/one-slow-seat3.json",
+      "sha256": "e58acf32d3c7ca76f0a3f725d7893ce4e3c80613e784a95fba128de95bc39dd3",
+      "bytes": 195498
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-optimized/result.json",
+      "sha256": "5b13e24487ce6db55202dfceaaf00968e947fc0d2803896d63a120f3d7846078",
+      "bytes": 12682
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-overlap-final/busy-normal-seat0.json",
+      "sha256": "bef64498d0b644f49771464b8ad246c6bd2fc648946420c2ea0c47dc6f6e1eba",
+      "bytes": 224070
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-overlap-final/busy-normal-seat1.json",
+      "sha256": "5ab9db4661fc91f8172c6bc280a93260032170283b399fbfa5d14d89f2d3b9b8",
+      "bytes": 221216
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-overlap-final/busy-normal-seat2.json",
+      "sha256": "9299cd2800f7db4b84a9423128499235ae03af498a4700c59de2d4bdfe11031f",
+      "bytes": 216184
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-overlap-final/busy-normal-seat3.json",
+      "sha256": "6214004ddfcb76bbf01925a3c76875d9beb4f3e22f6342f934b01ee253a2237e",
+      "bytes": 224739
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-overlap-final/busy-one-slow-seat0.json",
+      "sha256": "1b1f09299ae2b249048237e04725761adf72bf7d43138fa747b095f35296def4",
+      "bytes": 222546
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-overlap-final/busy-one-slow-seat1.json",
+      "sha256": "eb1656a7248cb4b0ab8fc279736aad0137accd385993da7cd24d5247de49397c",
+      "bytes": 222338
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-overlap-final/busy-one-slow-seat2.json",
+      "sha256": "f52bbc9b215521f6ce900c4c24fcb4172cfe23050a4e20aa0589aad12cb76cc3",
+      "bytes": 213914
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-overlap-final/busy-one-slow-seat3.json",
+      "sha256": "0b9ff6de50ef4e58fa0c9757c5abb875e8cb73d5c847e3cc6aa9bcda0114574c",
+      "bytes": 222701
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-overlap-final/host.log",
+      "sha256": "80a2ad1267292b39a928ed03d994bb8b6921eb7a415535d6d6c25649fdb79e95",
+      "bytes": 194
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-overlap-final/initial-checkpoint.json",
+      "sha256": "021da9519515815e9ef15e50688d940c1f8fbde03dfa3d81dc9f45b99e0400e6",
+      "bytes": 106327
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-overlap-final/normal-seat0.json",
+      "sha256": "9efead96a89d938dd34d0e582cf643c60909e02155c13502aba8e7d1c42dda5a",
+      "bytes": 202228
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-overlap-final/normal-seat1.json",
+      "sha256": "99ed246af08aa2fc3cf7adcf55cfb4b9c423be776b0e9c2e0cb618ab5bf1c04b",
+      "bytes": 202168
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-overlap-final/normal-seat2.json",
+      "sha256": "b4a311f5bc76731a8f90a7e03c017674be8f00257d95a9e3b9a04b7f18a3133a",
+      "bytes": 188111
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-overlap-final/normal-seat3.json",
+      "sha256": "d9293577c11592eb5be5af8fb65fdaf061d336991814c1df1a3113e1f371477e",
+      "bytes": 202247
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-overlap-final/one-slow-seat0.json",
+      "sha256": "bb939e034f3b7696e45c0446a00ee69118c970265d8acfbc5849a9568a02d7de",
+      "bytes": 202038
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-overlap-final/one-slow-seat1.json",
+      "sha256": "0cb3da20ac2d816f36ca66e9a0f12b425d024df00aa8df9db6adbc39acaf2f3c",
+      "bytes": 202102
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-overlap-final/one-slow-seat2.json",
+      "sha256": "f6b0a9ea1a0acd63e063bc579565783e45c393ada80bf9030f3cd4c2afc1c95d",
+      "bytes": 193627
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-overlap-final/one-slow-seat3.json",
+      "sha256": "a206343674366af21a218c52d258658d828a2433202e4d9bb3d62b78eaa779d2",
+      "bytes": 195282
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-overlap-final/result.json",
+      "sha256": "54999123c49be685fe4f1b5bed5686849bc684647b8b1ab83732a18f80758c62",
+      "bytes": 12533
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-overlap-final/seat0.png",
+      "sha256": "81be0b028635c15a900de522e1adae8ba19a490fb94061df9901474ec30fd9e2",
+      "bytes": 114702
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-overlap-final/seat1.png",
+      "sha256": "d138a1f52c995f4a79af3a827455ca9d00d4384121b4a76123b7164bc695f856",
+      "bytes": 113847
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-overlap-final/seat2.png",
+      "sha256": "15d7ea57941ec11444048a26e92a3b3796f5e1e80123d7d19c4f610ead0f34aa",
+      "bytes": 114411
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-overlap-final/seat3.png",
+      "sha256": "73146ef61d301540840651da4a6a9fcdc488ed29a91da1f2748a9041de5a7680",
+      "bytes": 114346
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-recovery-diagnostic/busy-normal-seat0.json",
+      "sha256": "0f537a137b723ffdd6e098424a7897381253df0dd4b0b74ba1fbd56a0ea5e44c",
+      "bytes": 218275
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-recovery-diagnostic/busy-normal-seat1.json",
+      "sha256": "a5c4d587d2a04a9ea13defe1bd641a27b93bb11633260607a63e3dfaee945cb6",
+      "bytes": 218400
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-recovery-diagnostic/busy-normal-seat2.json",
+      "sha256": "5ddced1e70254fb4352d17f212758b4b162f983866bb65b61d4fcd3f8e1b7ccd",
+      "bytes": 221631
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-recovery-diagnostic/busy-normal-seat3.json",
+      "sha256": "d2c856077f7b1c81a0c690a85f016df2ae59ab6a3dd036f120a603d9f15be919",
+      "bytes": 232919
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-recovery-diagnostic/busy-one-slow-seat0.json",
+      "sha256": "9e684c621f9201f0481f335e33083381b3c9bc1c29419e045186c08acb840fd8",
+      "bytes": 221915
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-recovery-diagnostic/busy-one-slow-seat1.json",
+      "sha256": "5e648c44b6500bcbe39ed969a2e2f71435dfcbda8684c24218cb748ea5045915",
+      "bytes": 221886
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-recovery-diagnostic/busy-one-slow-seat2.json",
+      "sha256": "1868dd4f754495fd142660fec58b0134d9817466b48a9f8af43d1764bb1e8724",
+      "bytes": 221817
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-recovery-diagnostic/busy-one-slow-seat3.json",
+      "sha256": "28834d808e1e923a6f8065b50fa1d40ad3138b79a38908685b3bcb32e610afb6",
+      "bytes": 214426
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-recovery-diagnostic/host.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-recovery-diagnostic/initial-checkpoint.json",
+      "sha256": "797daae842d0878e880bc2b8b27d4246338fab47f128117e0a1b458ad22bb64a",
+      "bytes": 106348
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-recovery-diagnostic/normal-seat0.json",
+      "sha256": "f5a7c240874c420c7c49075e618d4e0a2d4e928ec78c9064fbc621dde7b2a94e",
+      "bytes": 201549
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-recovery-diagnostic/normal-seat1.json",
+      "sha256": "04864bde46cdb6159297a15b98aa34344693803582c8b6b335cd08d0ca9329b7",
+      "bytes": 201631
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-recovery-diagnostic/normal-seat2.json",
+      "sha256": "0d92bcd03f87388e4032304553a38f5552e884f65073b487546862537cf6e973",
+      "bytes": 201501
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-recovery-diagnostic/normal-seat3.json",
+      "sha256": "255fccef272440007c1cd28339df9a582c86e0d96c28a81c1f879e99565bf488",
+      "bytes": 201435
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-recovery-diagnostic/one-slow-seat0.json",
+      "sha256": "40c2735bd6d83598d8857fcb9dbaaaf90766467eb7ca2174470a0081549d4599",
+      "bytes": 204563
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-recovery-diagnostic/one-slow-seat1.json",
+      "sha256": "2a67a7b6584ff4a57da3926c4ee1677ff9139c60d6264f99fa1d2dec3db680f6",
+      "bytes": 201739
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-recovery-diagnostic/one-slow-seat2.json",
+      "sha256": "9a60ad41d0c118d41f1254cb74ade2952ac85ae7bb934b62875f976f3dd1395f",
+      "bytes": 201980
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-recovery-diagnostic/one-slow-seat3.json",
+      "sha256": "600baa9195970caa5d4f5bb06406700d9bbf6dafb7344c269b4b8c0dfb54b6e6",
+      "bytes": 201860
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-recovery-diagnostic/result.json",
+      "sha256": "52689dc4e5690cb3fef04402e6cf3b2231a1d70cc19d7b2578df5322a7515e2b",
+      "bytes": 12006
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-recovery-diagnostic/seat0.png",
+      "sha256": "bc68227552a1381a26fd933b18924ca0a05cc4cbbe154e2d7b5ad5673fd6abc1",
+      "bytes": 114857
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-recovery-diagnostic/seat1.png",
+      "sha256": "d4470df86b9b963d6debc0834c1f56cf1ef24e6c8ac3346b4286210ab70fb069",
+      "bytes": 113909
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-recovery-diagnostic/seat2.png",
+      "sha256": "c57673fe25784917179875e17aaf079324c024e1067fe845f511667991ba3c98",
+      "bytes": 113928
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/four-human-recovery-diagnostic/seat3.png",
+      "sha256": "07122edefbdbb42e98290179e82ae722b17a860a733929c493ec6487dbe4ba87",
+      "bytes": 113923
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/input-budget-red.json",
+      "sha256": "8da409b0acd48f84c5f92989b123a8264523d6a6d9d2db66ae66d182b492b1a7",
+      "bytes": 416
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/optimized-build.log",
+      "sha256": "a35694a9434f8d89fdb273a13d09fb68183694055c3e4452a334d20c7a9538d2",
+      "bytes": 11200
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/prediction-20-build.log",
+      "sha256": "4d05c0833025050fd88bca3fb7c0a6441c3698abdb6f5008e52ab7e6c845f83e",
+      "bytes": 11682
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/prediction-advance-native.jsonl",
+      "sha256": "addb491b9b61fdf9f5dd2c9d0d81a238b8b3eefce74e279250ce305a8fb5737e",
+      "bytes": 4684
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/prediction-advance-red.jsonl",
+      "sha256": "2eccbac8fb7471562101a8a3b48366e92b699be57f272cede384161da096358e",
+      "bytes": 2263
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/scene-advance-final.log",
+      "sha256": "05f08c21c3fad91748a62974db25eab2a707d4ac8b97eaba85591131eb8e5bd3",
+      "bytes": 564
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/scene-bounds.log",
+      "sha256": "e96653cbcc21cfcb8643b8b53b61e6823db9a19869acf270a7a4706fa17bd0ad",
+      "bytes": 438
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/scene-build-final.log",
+      "sha256": "7deb34173c2eb2339d5707d32e9693bbf34f5b8ba54d1046c3607e9ac96d8d07",
+      "bytes": 88
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/scene-build.log",
+      "sha256": "46fcd9e24595a5d4b178dcfea89a744a06ea6580eca085db73d999c1879943bd",
+      "bytes": 87
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/scene-checker-noncanonical-run.mjs.txt",
+      "sha256": "f47e1f8025d95a8be5e07000ca396646db6f385aca9e0ed1dec82af0b80c2228",
+      "bytes": 7236
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/scene-final.log",
+      "sha256": "b68d15cf3bd028ae44d72607a038422d8de20bb434cc6ca2aaec7ccce02e7618",
+      "bytes": 50
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/scene-noncanonical-fixture-red.json",
+      "sha256": "b3c04b00463a5dda8e3726e259baf19e2672c02fdb0b86b1a7774f9cd9290f62",
+      "bytes": 344
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/stream-overlap-native.jsonl",
+      "sha256": "5ea85f1b003d1cea41ccfbf3cbcfc7c4ace8fc5b4953c59b724479ceb6657359",
+      "bytes": 1564
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/stream-overlap-race.jsonl",
+      "sha256": "fe078055c8c3d9af612bed143d88de51b4b079c99c45d1dff4f0bf65656da4e7",
+      "bytes": 6312
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/stream-overlap-real-red.jsonl",
+      "sha256": "0848437a616a72387f2aa128a795709f9b9b91ad93c66438872e1f749a4ce384",
+      "bytes": 1868
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/stream-overlap-red.jsonl",
+      "sha256": "d6e2eed9fa2ed7d928b7c9a5788372cf9d609da767f561ac345c8fb70a98c2f5",
+      "bytes": 1565
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/stream-red-lineage.json",
+      "sha256": "95c3934afba596ce84316192a94dd4bec14a435d123a280fa8434bbe004a2acb",
+      "bytes": 393
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/stream_coalescing-before-format-fix.go.txt",
+      "sha256": "5056efa23fa10462df606ed8eb3b55f429676f1c07dff2838cd2293113351939",
+      "bytes": 1822
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/stream_view_test-before-overlap.go.txt",
+      "sha256": "3f4be65153106893101a26a0f7f9679219574193c43f5c030033c1d77980dd02",
+      "bytes": 5708
+    },
+    {
+      "path": "games/yuyuhakusho/verification/four-human-network/vet-final.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/FAILURES.md",
+      "sha256": "54d488c5eae0041d2012979573399196a282052f52d3e27b2311bdafff891b56",
+      "bytes": 1699
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/README.md",
+      "sha256": "854c7c1fcf6cd65115ae0d7b28e418ac323496f138fed0506c4f4637ab95e35f",
+      "bytes": 2458
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/actual-app.json",
+      "sha256": "8985d676e86456720d3913ea507984a7d5808bf75122d35307efdd9e563ca5d6",
+      "bytes": 874
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/all-pickers-final/ISSUE.md",
+      "sha256": "fa711f61ca6c98272c146d15a0d9d254b5dbd19226e9173a0008a09264eeba27",
+      "bytes": 302
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/all-pickers-final/arena-desktop.png",
+      "sha256": "9db057f5ab8e3d423deedccb65459de0dbbc7f93f0541950abbbafade83c811b",
+      "bytes": 197333
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/all-pickers-final/desktop-open.png",
+      "sha256": "046471abd79d1e2717c649a89d3e9ea90016ccde19e9a3872abde16c68cc6212",
+      "bytes": 150052
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/all-pickers-final/mobile-open.png",
+      "sha256": "0c0579861a523bd7c503e41432108e1560ddd811196d9233a7b7e6078f9720b3",
+      "bytes": 62965
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/all-pickers-final/result.json",
+      "sha256": "f176cba2160080feed8618d38d4bb2514792b67f42b7549959996378680186b1",
+      "bytes": 1258
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/all-pickers-fixed/arena-desktop.png",
+      "sha256": "9db057f5ab8e3d423deedccb65459de0dbbc7f93f0541950abbbafade83c811b",
+      "bytes": 197333
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/all-pickers-fixed/desktop-open.png",
+      "sha256": "046471abd79d1e2717c649a89d3e9ea90016ccde19e9a3872abde16c68cc6212",
+      "bytes": 150052
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/all-pickers-fixed/mobile-open.png",
+      "sha256": "0c0579861a523bd7c503e41432108e1560ddd811196d9233a7b7e6078f9720b3",
+      "bytes": 62965
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/all-pickers-fixed/mobile-selected.png",
+      "sha256": "23020181106e3f696e3ca599a273109f95aa155c72194ddf521ae96f291da7a8",
+      "bytes": 64056
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/all-pickers-fixed/result.json",
+      "sha256": "3e182cebddc7fca4854bfb6199c1d99ee869cc191692f107c153014c647aef41",
+      "bytes": 881
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/app-build-complete.log",
+      "sha256": "4d740db6ed378550bb2dd83034b7856267bd41ff7421e6ded1e6532f4925e5fe",
+      "bytes": 11117
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/app-build-final.log",
+      "sha256": "7baa3687ef8e24952ff96378e404036f7ca7702fe77095a10cd42e6bc1bcea9a",
+      "bytes": 11276
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/app-build-v2.log",
+      "sha256": "04b2751a01897c1f2d543a708ee7ec404602165ff5b0f1433c7ccf1f9621ff91",
+      "bytes": 11026
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/app-build.log",
+      "sha256": "802b8e8990f989c91751846d0e01f5018212f5545af2d0d85a7786cf906e01b8",
+      "bytes": 10784
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/app-md-settings-mobile.png",
+      "sha256": "fc28e7b6ad33aa9938a2d93785eb13c9d800cf62446f49612c0b820401fc78e4",
+      "bytes": 73059
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/app-portraits-desktop.png",
+      "sha256": "f3319596741ee08068ae26b8ef35b21ab97e4bee5d29ecf320a3e6d910bae80a",
+      "bytes": 150253
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/app-portraits-mobile.png",
+      "sha256": "860c443cc6fc43936f555b7851274ebf1a70e818c0540f36decbccabb2a2dc4a",
+      "bytes": 50161
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/app-waiting.png",
+      "sha256": "5ebc4a1361b3932aeaec998741592be63f875b7d1c31f549c68f90afe3d828a8",
+      "bytes": 143239
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/arena-picker-red/result.json",
+      "sha256": "54b5043d6e7dafe1eda8819c192610337e211739359537bedb31b0155b78754d",
+      "bytes": 1137
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/arena-preview-build-final.log",
+      "sha256": "82fc4535c781424a7f515737043e49d240d2c3baf7365e2e0f41ad678fb29d63",
+      "bytes": 411
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/arena-preview-build.log",
+      "sha256": "b02a08a2b3bdcd5fee835843875e910ad03aca72103b8e99a785958b9acc34fa",
+      "bytes": 334
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/cleanup-final.json",
+      "sha256": "cb6413a783205f82592261f8c84b6500d7f2d6ce8d95a4d2475f979f6f453f45",
+      "bytes": 7604
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/delivery-build.log",
+      "sha256": "d04fc9f2ba77fba8698201d604d742f65034d2775f0dbfb7aab96c73794080fc",
+      "bytes": 10785
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/desktop-configure.png",
+      "sha256": "24abcd5b25fe68cf10719138abd22c4942825cb96fdec2160c5be0ee2abb2b14",
+      "bytes": 131339
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/desktop-preview.png",
+      "sha256": "cd00709a62aaadddb0c6619864726857aceedcc1f26bbcdce0938675a4ba884e",
+      "bytes": 128307
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/final-css-build.log",
+      "sha256": "c7f2763882d2fb2eabb472494779183b5de9df15ad01650c65c6b2cc34858817",
+      "bytes": 11200
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/final-preview-build.log",
+      "sha256": "7045b5d6570e817886fc45929816473a01e6e341fc5200c35cec260844f88199",
+      "bytes": 411
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/live-build-verified.json",
+      "sha256": "b91399ab4d053e208c7b44c501f3eca04155738bf432d8dedc32b4c7f5641777",
+      "bytes": 935
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/md-controller-before.svg",
+      "sha256": "e5f7264ca0a328f11b033fa06d018bb3fb56a51a3d631bd9384183cab33375c1",
+      "bytes": 1807
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/md-default-native.jsonl",
+      "sha256": "75a13a693d7cc118b248a0a303208f394153f746944de65663bc80d64dc7a07e",
+      "bytes": 5583
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/md-default-red.jsonl",
+      "sha256": "465ee1ca4a3800ca8066f3110deb4bc382966484709964fe95297252db010af8",
+      "bytes": 1702
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/md-input.log",
+      "sha256": "7141760b582771cd31db62f313c8bfa2c6d05ea48d4f77dfb83c9f553d9de182",
+      "bytes": 408
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/mobile-configure.png",
+      "sha256": "65860105f357b1f0f9ed541c8e7ab5de853eff18dcf9ded9cc095a3bcd511f70",
+      "bytes": 49309
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/mobile-play.png",
+      "sha256": "4da12e05ce22a3a7cd5aa96a0393baae2489e10f60bd35395849e9cc1ad28631",
+      "bytes": 47833
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/picker-final/SETUP_FAILURE.md",
+      "sha256": "ad1df04648d10556dad6cdc0d0c198e4ee2d9fc6fe7342fa80d48dface01b70b",
+      "bytes": 216
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/picker-final/checker-before-selector-fix.py.txt",
+      "sha256": "6eebc83b0b5f77114bae72ea2f6a42642ee32e040d0708ced6e2e4e3e36d751d",
+      "bytes": 3890
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/picker-final/desktop-open.png",
+      "sha256": "849834090368d32ce4d2dafe8a34eade13f2d5e50bfe4bee3b5e4af6d755ddf6",
+      "bytes": 153510
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/picker-final/result.json",
+      "sha256": "536f1a7bb11acd48bdc822d64c9e3139499f8367a5ddf8ffda17d4a9cf9503be",
+      "bytes": 252
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/picker-final-02/desktop-open.png",
+      "sha256": "849834090368d32ce4d2dafe8a34eade13f2d5e50bfe4bee3b5e4af6d755ddf6",
+      "bytes": 153510
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/picker-final-02/result.json",
+      "sha256": "9e08b18994cf1c817466d4a5f3616bec405983610b0c4c66ef23b89c01558b18",
+      "bytes": 331
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/picker-final-03/desktop-open.png",
+      "sha256": "900dd1a34bf36c2fda8efc04b63d4a847082168ea68bc73b5f213ff7f894eafd",
+      "bytes": 147816
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/picker-final-03/mobile-open.png",
+      "sha256": "a0fc32c8c69b28c169d2ff3ace0d5c85b3437ed2c7150f2394b5eff15c58e687",
+      "bytes": 60597
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/picker-final-03/mobile-selected.png",
+      "sha256": "51de3b12adb33fb492781924d84dbc9f6513e98350e152a1330d6977d748d07e",
+      "bytes": 57702
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/picker-final-03/result.json",
+      "sha256": "593be55430344b3ff0eae69ebf5648b3002bb3a9641bc5fb2e0c4d11bbd2be55",
+      "bytes": 694
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/picker-naming-final/desktop-open.png",
+      "sha256": "b1d67d4e1d4197ee17dbb38543067a5630bd5d460ce21f3374e2133e2824211f",
+      "bytes": 149569
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/picker-naming-final/mobile-open.png",
+      "sha256": "7ec118dc4956d92910142db0c05dcdaf594107ca40de7b80b807d7f41d94b70f",
+      "bytes": 62901
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/picker-naming-final/mobile-selected.png",
+      "sha256": "58e09ca790ceca718815e440598cde447486fe76626820f7b030cf305d54fb45",
+      "bytes": 58401
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/picker-naming-final/result.json",
+      "sha256": "db3b3aec26d484a7435f7ed96f48422bc04b6a8b86830bf516aeb753fedafed4",
+      "bytes": 693
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/picker-red/result.json",
+      "sha256": "10e7c72563c441f8aa5718b9db19e7b8099955bd16ee5f78c79eacc64c4f9d31",
+      "bytes": 207
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/picker-viewport-final/SETUP_FAILURE.md",
+      "sha256": "bf238cbe58e5dbf36bc223a419fac10e145e99640a66d730c8f56ffe9de391f6",
+      "bytes": 208
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/picker-viewport-final/checker-executed.py.txt",
+      "sha256": "18c8d1ea26627db541e34de76bf5226ca15c367e0007157780380bc69afc9c58",
+      "bytes": 4268
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/picker-viewport-final/desktop-open.png",
+      "sha256": "900dd1a34bf36c2fda8efc04b63d4a847082168ea68bc73b5f213ff7f894eafd",
+      "bytes": 147816
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/picker-viewport-final/result.json",
+      "sha256": "987a1e2507a7eb1c097b12bc91e185809ffdcd5151d3a3044d24a233eff6fe4e",
+      "bytes": 331
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/portrait-missing-red.json",
+      "sha256": "77fb213f4b5e5615c8f6c6426650cf0c7eb13390f2191fad51f3f2e2c9f0dbe1",
+      "bytes": 372
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/portrait-preview-build-final.log",
+      "sha256": "c8d9eea0a254dcbc895b5d5c42eb80a427f312011dbd51f20de67adcf24aeed2",
+      "bytes": 334
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/portrait-preview-build.log",
+      "sha256": "a2ee6c023b5ea21f9cce9306839856aaac629e857e7a4d5f33d014ab9821730e",
+      "bytes": 257
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/public-interface-final/checker-executed.py.txt",
+      "sha256": "0de9d53750d22ccb6f28c190cc351e6e4e3b69ba0b744c41a4c14d112942ac66",
+      "bytes": 4989
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/public-interface-final/desktop-arenas.png",
+      "sha256": "a75b970dea85747ee8415fe6862c1653e5852985ea5d21b934c7eb9dbc65030b",
+      "bytes": 203461
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/public-interface-final/desktop-characters.png",
+      "sha256": "db80b9151ee2c5fd5bc3987371a32bfa888db35f597c8ecdf3730393b92fb04f",
+      "bytes": 157857
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/public-interface-final/desktop-waiting.png",
+      "sha256": "1901f5f9711fd376ca895d46647a4ef90e15a99232b3dbb3b0d3f5a7ea6ca08a",
+      "bytes": 154020
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/public-interface-final/host.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/public-interface-final/result.json",
+      "sha256": "be3cd9967ea6c029bc2bda8e81b7f6b6212a91e128e81b7651037be098443033",
+      "bytes": 284
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/public-interface-fixed/desktop-arenas.png",
+      "sha256": "801782f00ef3135ecda27d153bfe6b841000b7f764922e9c39466080f484aac9",
+      "bytes": 203628
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/public-interface-fixed/desktop-characters.png",
+      "sha256": "26f7c2383ec1951893deb73374d25c62cbfddc511bf14419dfd7031b95f0b747",
+      "bytes": 158180
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/public-interface-fixed/desktop-waiting.png",
+      "sha256": "f559e492fe6063f5a4d62dedd02aef1a53b7946ed2fb0904de55541eb1635dfd",
+      "bytes": 154568
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/public-interface-fixed/host.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/public-interface-fixed/mobile-arenas.png",
+      "sha256": "22a8edb696793c39ca8c10dfd5f743a0de1eb5501bb9e11d0d3e7845e9e0769a",
+      "bytes": 83248
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/public-interface-fixed/mobile-characters.png",
+      "sha256": "bc6535fe62a3dfb6d01d76136830f1b5cdebc72f3081535a106673c1f8611f37",
+      "bytes": 49331
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/public-interface-fixed/mobile-controller.png",
+      "sha256": "391a86cc33b39addc65e7a1d777ce220ba5fc00caeff8bd9a2f084fc00a44829",
+      "bytes": 48101
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/public-interface-fixed/mobile-waiting.png",
+      "sha256": "acad41a2c8b3ce2a4a3e6fa39cd90930e35ad6bc7b821427d40ce07deab8164d",
+      "bytes": 49981
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/public-interface-fixed/result.json",
+      "sha256": "1b9f97d50fc444d9cc494e5a90bc6784fc9dcd8f6d40b1af800415e69aabbae2",
+      "bytes": 576
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/typecheck-complete.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/typescript-delivery.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/typescript-final-all.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/typescript-final.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/typescript-picker.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/typescript-shipped.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/typescript.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "games/yuyuhakusho/verification/review-polish/visual-input.json",
+      "sha256": "0a33148a22a2c3118ceb260e5529b78af9aa97daf1fa05a3a52fe3eab5fcf12b",
+      "bytes": 3239
+    }
+  ],
+  "live_build": "d04b906eddfb1b7148790311073bb53baea409af20830c001014d0becb529164",
+  "runtime": {
+    "url": "/yuyuhakusho/v1/runtime/client.wasm",
+    "sha256": "136a2972ff959cad585f55ab6c05a7afa28225aa639928a8195ff92cc814e488",
+    "bytes": 5060576
+  },
+  "binary_sha256": "72b2c6b12000ed6e53d5214277096f800381858b90c0909bda72a7c62428c44a",
+  "four_client_recoveries": 0,
+  "frame_budget_unchanged": {
+    "minimum_fps": 50,
+    "maximum_p95_ms": 40
+  },
+  "prediction_frames": 20,
+  "input_overlap_frames": 20,
+  "recovery_ring_frames": 120,
+  "server_view_byte_budget": 2048,
+  "ui_alignment_px": {
+    "desktop": 0,
+    "mobile": 0
+  },
+  "limits": [
+    "Four independent browsers on this Mac; no four-device/public-network or physical-gamepad claim.",
+    "No OSS upload, online release, implementation merge to main or deployment performed."
+  ]
+}

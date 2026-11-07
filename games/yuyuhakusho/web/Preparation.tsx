@@ -1,6 +1,7 @@
 import type { PreparationProps } from "../../../web/src/game-api/module";
 import type { GameOptions } from "./types";
-import { characters, arenas } from "./labels";
+import { CharacterPicker } from "./CharacterPicker";
+import { ArenaPicker } from "./ArenaPicker";
 import "./network.css";
 export function Preparation({
   room,
@@ -13,23 +14,8 @@ export function Preparation({
   return (
     <section className="yuyu-preparation" aria-label="比赛准备">
       <div className="yuyu-room-rules">
-        <label>
-          场地
-          <select
-            aria-label="场地"
-            value={options.arena}
-            disabled={busy || !host || !participating}
-            onChange={(event) =>
-              prepare({ type: "arena", arena: Number(event.target.value) })
-            }
-          >
-            {arenas.map((arena) => (
-              <option key={arena.id} value={arena.id}>
-                {arena.name}
-              </option>
-            ))}
-          </select>
-        </label>
+        <ArenaPicker value={options.arena} disabled={busy || !host || !participating}
+          onChange={arena => prepare({ type: "arena", arena })} />
         {room.capacity === 4 && (
           <label>
             赛制
@@ -56,31 +42,25 @@ export function Preparation({
             editable =
               participating && (seat === room.you || (host && !!player?.bot));
           return (
-            <label className="yuyu-role" key={seat}>
+            <div className="yuyu-role" key={seat}>
               <span>
                 {player?.name ?? "等待玩家"}
                 {seat === room.you ? "（你）" : ""}
               </span>
-              <select
-                data-character-seat={seat}
-                aria-label={`${player?.name ?? "空席"}的角色`}
+              <CharacterPicker
+                seat={seat}
+                label={`${player?.name ?? "空席"}的角色`}
                 value={character}
                 disabled={busy || !editable || !player}
-                onChange={(event) =>
+                onChange={(character) =>
                   prepare({
                     type: "character",
                     seat,
-                    character: Number(event.target.value),
+                    character,
                   })
                 }
-              >
-                {characters.map((name, id) => (
-                  <option key={id} value={id}>
-                    {name}
-                  </option>
-                ))}
-              </select>
-            </label>
+              />
+            </div>
           );
         })}
       </div>

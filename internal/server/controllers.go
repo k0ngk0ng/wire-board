@@ -65,7 +65,7 @@ func controllerModels() []controllerModel {
 		Buttons: []controllerButton{{"up", "上"}, {"down", "下"}, {"left", "左"}, {"right", "右"}, {"mode", "模式（Mode）"}, {"start", "开始（Start）"}, {"x", "X"}, {"y", "Y"}, {"z", "Z"}, {"a", "A"}, {"b", "B"}, {"c", "C"}},
 		Defaults: controllerProfile{TurboHz: 10, Keyboard: map[string]string{
 			"up": "KeyW", "down": "KeyS", "left": "KeyA", "right": "KeyD", "mode": "KeyF", "start": "Space",
-			"b": "KeyJ", "a": "KeyK", "c": "KeyL", "x": "KeyU", "y": "KeyI", "z": "KeyO",
+			"a": "KeyJ", "b": "KeyK", "c": "KeyL", "x": "KeyU", "y": "KeyI", "z": "KeyO",
 		}},
 	}
 	md.StandardGamepad = map[string][]controllerGamepadBinding{}

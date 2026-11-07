@@ -8,7 +8,10 @@ import (
 	"github.com/k0ngk0ng/wire-board/internal/gameapi"
 )
 
-const streamRedundancy = 6
+// React can coalesce several reliably delivered views into one render. Keep
+// one bounded prediction window of input overlap so that final view still
+// covers the UI's last consumed frame. The120-frame recovery ring is separate.
+const streamRedundancy = 20
 
 func streamView(match gameapi.Match, seat int, cursor string) (gameapi.StreamViewResult, error) {
 	state, err := decode(match)

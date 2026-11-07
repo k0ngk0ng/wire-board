@@ -1,0 +1,265 @@
+{
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/four-human-network/four-human-01/browser-0",
+      "bytes": 9744369
+    },
+    {
+      "path": ".local/md-yuyuhakusho/four-human-network/four-human-01/browser-1",
+      "bytes": 9570414
+    },
+    {
+      "path": ".local/md-yuyuhakusho/four-human-network/four-human-observed-final/browser-3",
+      "bytes": 16131803
+    },
+    {
+      "path": ".local/md-yuyuhakusho/four-human-network/four-human-observed-final/browser-2",
+      "bytes": 24043053
+    },
+    {
+      "path": ".local/md-yuyuhakusho/four-human-network/four-human-observed-final/browser-0",
+      "bytes": 24223864
+    },
+    {
+      "path": ".local/md-yuyuhakusho/four-human-network/four-human-observed-final/browser-1",
+      "bytes": 24051247
+    },
+    {
+      "path": ".local/md-yuyuhakusho/four-human-network/four-human-overlap-final/browser-3",
+      "bytes": 24019521
+    },
+    {
+      "path": ".local/md-yuyuhakusho/four-human-network/four-human-overlap-final/browser-2",
+      "bytes": 24038390
+    },
+    {
+      "path": ".local/md-yuyuhakusho/four-human-network/four-human-overlap-final/browser-0",
+      "bytes": 23931448
+    },
+    {
+      "path": ".local/md-yuyuhakusho/four-human-network/four-human-overlap-final/browser-1",
+      "bytes": 24042546
+    },
+    {
+      "path": ".local/md-yuyuhakusho/four-human-network/four-human-busy-final/browser-3",
+      "bytes": 21557691
+    },
+    {
+      "path": ".local/md-yuyuhakusho/four-human-network/four-human-busy-final/browser-2",
+      "bytes": 23614906
+    },
+    {
+      "path": ".local/md-yuyuhakusho/four-human-network/four-human-busy-final/browser-0",
+      "bytes": 23722166
+    },
+    {
+      "path": ".local/md-yuyuhakusho/four-human-network/four-human-busy-final/browser-1",
+      "bytes": 22050787
+    },
+    {
+      "path": ".local/md-yuyuhakusho/four-human-network/four-human-04/browser-3",
+      "bytes": 15442252
+    },
+    {
+      "path": ".local/md-yuyuhakusho/four-human-network/four-human-04/browser-2",
+      "bytes": 15613680
+    },
+    {
+      "path": ".local/md-yuyuhakusho/four-human-network/four-human-04/browser-0",
+      "bytes": 15749379
+    },
+    {
+      "path": ".local/md-yuyuhakusho/four-human-network/four-human-04/browser-1",
+      "bytes": 15609589
+    },
+    {
+      "path": ".local/md-yuyuhakusho/four-human-network/four-human-03/browser-3",
+      "bytes": 23281998
+    },
+    {
+      "path": ".local/md-yuyuhakusho/four-human-network/four-human-03/browser-2",
+      "bytes": 23527174
+    },
+    {
+      "path": ".local/md-yuyuhakusho/four-human-network/four-human-03/browser-0",
+      "bytes": 23712083
+    },
+    {
+      "path": ".local/md-yuyuhakusho/four-human-network/four-human-03/browser-1",
+      "bytes": 23572230
+    },
+    {
+      "path": ".local/md-yuyuhakusho/four-human-network/four-human-02/browser-3",
+      "bytes": 21279432
+    },
+    {
+      "path": ".local/md-yuyuhakusho/four-human-network/four-human-02/browser-2",
+      "bytes": 21499658
+    },
+    {
+      "path": ".local/md-yuyuhakusho/four-human-network/four-human-02/browser-0",
+      "bytes": 21553428
+    },
+    {
+      "path": ".local/md-yuyuhakusho/four-human-network/four-human-02/browser-1",
+      "bytes": 21446408
+    },
+    {
+      "path": ".local/md-yuyuhakusho/four-human-network/four-human-final/browser-3",
+      "bytes": 15532770
+    },
+    {
+      "path": ".local/md-yuyuhakusho/four-human-network/four-human-final/browser-2",
+      "bytes": 15703436
+    },
+    {
+      "path": ".local/md-yuyuhakusho/four-human-network/four-human-final/browser-0",
+      "bytes": 15855573
+    },
+    {
+      "path": ".local/md-yuyuhakusho/four-human-network/four-human-final/browser-1",
+      "bytes": 15707534
+    },
+    {
+      "path": ".local/md-yuyuhakusho/four-human-network/four-human-recovery-diagnostic/browser-3",
+      "bytes": 21963659
+    },
+    {
+      "path": ".local/md-yuyuhakusho/four-human-network/four-human-recovery-diagnostic/browser-2",
+      "bytes": 23928245
+    },
+    {
+      "path": ".local/md-yuyuhakusho/four-human-network/four-human-recovery-diagnostic/browser-0",
+      "bytes": 24043668
+    },
+    {
+      "path": ".local/md-yuyuhakusho/four-human-network/four-human-recovery-diagnostic/browser-1",
+      "bytes": 23965321
+    },
+    {
+      "path": ".local/md-yuyuhakusho/four-human-network/four-human-optimized/browser-3",
+      "bytes": 15709851
+    },
+    {
+      "path": ".local/md-yuyuhakusho/four-human-network/four-human-optimized/browser-2",
+      "bytes": 15532802
+    },
+    {
+      "path": ".local/md-yuyuhakusho/four-human-network/four-human-optimized/browser-0",
+      "bytes": 15855585
+    },
+    {
+      "path": ".local/md-yuyuhakusho/four-human-network/four-human-optimized/browser-1",
+      "bytes": 15701909
+    },
+    {
+      "path": ".local/md-yuyuhakusho/interface-qa/public-interface-final/browser",
+      "bytes": 9563242
+    },
+    {
+      "path": ".local/md-yuyuhakusho/interface-qa/public-interface-fixed/browser",
+      "bytes": 9563491
+    },
+    {
+      "path": ".local/md-yuyuhakusho/review-polish/public",
+      "bytes": 147566773
+    },
+    {
+      "path": ".local/md-yuyuhakusho/review-polish/dist",
+      "bytes": 154855899
+    },
+    {
+      "path": ".local/md-yuyuhakusho/review-polish/tmp",
+      "bytes": 4440944
+    },
+    {
+      "path": ".local/md-yuyuhakusho/review-polish-v2/public",
+      "bytes": 147566773
+    },
+    {
+      "path": ".local/md-yuyuhakusho/review-polish-v2/dist",
+      "bytes": 154871683
+    },
+    {
+      "path": ".local/md-yuyuhakusho/review-polish-v2/tmp",
+      "bytes": 4440976
+    },
+    {
+      "path": ".local/md-yuyuhakusho/four-human-prediction-20/public",
+      "bytes": 147566773
+    },
+    {
+      "path": ".local/md-yuyuhakusho/four-human-prediction-20/dist",
+      "bytes": 154871698
+    },
+    {
+      "path": ".local/md-yuyuhakusho/four-human-prediction-20/tmp",
+      "bytes": 4441200
+    },
+    {
+      "path": ".local/md-yuyuhakusho/review-complete/public",
+      "bytes": 147566773
+    },
+    {
+      "path": ".local/md-yuyuhakusho/review-complete/dist",
+      "bytes": 154972007
+    },
+    {
+      "path": ".local/md-yuyuhakusho/review-complete/tmp",
+      "bytes": 4440984
+    },
+    {
+      "path": ".local/md-yuyuhakusho/review-done/public",
+      "bytes": 147566773
+    },
+    {
+      "path": ".local/md-yuyuhakusho/review-done/dist",
+      "bytes": 154972202
+    },
+    {
+      "path": ".local/md-yuyuhakusho/review-done/tmp",
+      "bytes": 4440944
+    },
+    {
+      "path": ".local/md-yuyuhakusho/review-optimized/public",
+      "bytes": 147568934
+    },
+    {
+      "path": ".local/md-yuyuhakusho/review-optimized/dist",
+      "bytes": 154974451
+    },
+    {
+      "path": ".local/md-yuyuhakusho/review-optimized/tmp",
+      "bytes": 4441040
+    },
+    {
+      "path": ".local/md-yuyuhakusho/review-final-css/public",
+      "bytes": 147568906
+    },
+    {
+      "path": ".local/md-yuyuhakusho/review-final-css/dist",
+      "bytes": 154974356
+    },
+    {
+      "path": ".local/md-yuyuhakusho/review-final-css/tmp",
+      "bytes": 4440888
+    },
+    {
+      "path": ".local/md-yuyuhakusho/review-polish-final/public",
+      "bytes": 147566773
+    },
+    {
+      "path": ".local/md-yuyuhakusho/review-polish-preview",
+      "bytes": 26926092
+    }
+  ],
+  "removed_bytes": 3098700444,
+  "retained": [
+    "live51080 host/dist/user database",
+    "old51612 review service",
+    "SQLite backups",
+    "original media and decoded game resources",
+    "reproducible source,raw verification evidence and screenshots",
+    "shared Go caches and platform-web verifier runtime"
+  ]
+}

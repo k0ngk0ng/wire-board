@@ -1,0 +1,7 @@
+{"ImportPath":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/server [github.com/k0ngk0ng/wire-board/games/yuyuhakusho/server.test]","Action":"build-output","Output":"# github.com/k0ngk0ng/wire-board/games/yuyuhakusho/server\n"}
+{"ImportPath":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/server [github.com/k0ngk0ng/wire-board/games/yuyuhakusho/server.test]","Action":"build-output","Output":"# [github.com/k0ngk0ng/wire-board/games/yuyuhakusho/server]\n"}
+{"ImportPath":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/server [github.com/k0ngk0ng/wire-board/games/yuyuhakusho/server.test]","Action":"build-output","Output":"games/yuyuhakusho/server/stream_coalescing_test.go:40:49: (*testing.common).Fatalf format %s has arg view.Replay.FirstFrame of wrong type uint64\n"}
+{"ImportPath":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/server [github.com/k0ngk0ng/wire-board/games/yuyuhakusho/server.test]","Action":"build-fail"}
+{"Time":"2026-11-07T11:15:33.503322+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/server"}
+{"Time":"2026-11-07T11:15:33.503386+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/server","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/yuyuhakusho/server [build failed]\n"}
+{"Time":"2026-11-07T11:15:33.503396+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/server","Elapsed":0,"FailedBuild":"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/server [github.com/k0ngk0ng/wire-board/games/yuyuhakusho/server.test]"}

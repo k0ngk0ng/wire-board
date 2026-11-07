@@ -1,0 +1,67 @@
+{
+  "width": 352,
+  "height": 32,
+  "bytes": 4073,
+  "sha256": "313a3d3782e73f7a90c7b557c2835ac56d3142c33ac1be1cb83c7d8cd72ae106",
+  "characters": [
+    {
+      "character_id": 0,
+      "hud_parameter": 2,
+      "rgb_sha256": "ee259cfd084f58428a09cc3cd495b3331dae5f1cc322a7b067de1d195ca99d2d"
+    },
+    {
+      "character_id": 1,
+      "hud_parameter": 4,
+      "rgb_sha256": "4d6e9a8630031ce2c0e558b23dff749aea70bbbc9d9bdcefe2bf9d584f7aa664"
+    },
+    {
+      "character_id": 2,
+      "hud_parameter": 6,
+      "rgb_sha256": "0a1d6e6983a3086d764d52966d7326ab732955790b2b1148822bcddf24030526"
+    },
+    {
+      "character_id": 3,
+      "hud_parameter": 8,
+      "rgb_sha256": "a62b4876b22f1dfd1d812dabb8d045223eca6586be6e8e9699225e1bab5ae16a"
+    },
+    {
+      "character_id": 4,
+      "hud_parameter": 10,
+      "rgb_sha256": "84746d52202d5629d1533f1850f56f0497acbe277dbf60be707b3418c3b984e2"
+    },
+    {
+      "character_id": 5,
+      "hud_parameter": 12,
+      "rgb_sha256": "705c44b135b04191c7895659a667bf1d54338317b773caa16ab6b4e39cb762df"
+    },
+    {
+      "character_id": 6,
+      "hud_parameter": 14,
+      "rgb_sha256": "2ba77be398a79af49a316554f56446e5aa24f7822262fdb9529835001031d373"
+    },
+    {
+      "character_id": 7,
+      "hud_parameter": 16,
+      "rgb_sha256": "78fac474e7fad46b93e763d52a40b05320902e6ca5a4ada814037fcd337c9263"
+    },
+    {
+      "character_id": 8,
+      "hud_parameter": 18,
+      "rgb_sha256": "85c1b2827c4525a800a7af8ce0c2e23d4cfd57d1553a90d62469ff0db7ce5229"
+    },
+    {
+      "character_id": 9,
+      "hud_parameter": 20,
+      "rgb_sha256": "97af4363c59174158ddcee8c7c329c97bb0dd9e97c76da9ed866e6e1b0cee835"
+    },
+    {
+      "character_id": 10,
+      "hud_parameter": 22,
+      "rgb_sha256": "1fca656f550eb30a654d9c79b19824ae8ef5178f5dc34bee76980e0096bd1896"
+    }
+  ],
+  "sources": {
+    "games/yuyuhakusho/data/hud-assets.json.gz": "4c26a97efb8901db2c6ed791d3cb99ebf7e9efcbeaed2cc13e8bd54f22bdc50c",
+    "games/yuyuhakusho/data/chu-world-rules.json.gz": "fac9146e529ca2d191847d1cbba339c2b14e29b5c5a44fdf9a01df27cede1c5b"
+  }
+}

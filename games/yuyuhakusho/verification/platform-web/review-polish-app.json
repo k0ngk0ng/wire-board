@@ -1,0 +1,29 @@
+{
+  "label": "review-polish-app",
+  "scope": "Built normal React platform app and local-only asset routing, not authenticated/browser acceptance",
+  "checks": [
+    "lazy_board_not_home",
+    "all_13_fixed_resource_routes_sha",
+    "runtime_descriptor_exact_wasm",
+    "shared_favicon_route_exact_source",
+    "all_143_lossless_media_routes_sha"
+  ],
+  "favicon": {
+    "url": "/favicon.svg",
+    "bytes": 250,
+    "sha256": "0c308d0332fd6c21fa0eca4b9f0475235b9ed72e3174132ff15d5e94ecc45b1c"
+  },
+  "audio": {
+    "clips": 143,
+    "bytes": 141537925
+  },
+  "pass": true,
+  "resource_descriptor_sha256": "7977b2e32a824923f3037373ba318d70c72d58d447be5953fdb7677ce9c59b8c",
+  "runtime": {
+    "url": "/yuyuhakusho/v1/runtime/client.wasm",
+    "sha256": "f88241679e533adc17c4267197a50c1c5111a3b1d716d2ff0a1b49487f81b014",
+    "bytes": 5058443
+  },
+  "build": "f321f5872d434a3c8d2b517ad215cf2cc32c136df6a2cbc654e2c10c4c7df304",
+  "dist": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/review-polish/dist/"
+}
