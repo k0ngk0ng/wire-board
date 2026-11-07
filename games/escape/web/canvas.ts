@@ -83,15 +83,8 @@ function device(c: CanvasRenderingContext2D, f: Frame, d: Device) {
   const isPaper = d.kind.startsWith("clue") || d.kind === "briefing";
   const size = isPaper ? 94 : d.kind === "extract" ? 160 : 126;
   ellipse(c, d.x, d.y + 1, size * 0.3, 10, "#071d1aa0");
-  if (selected || !d.done) {
-    ellipse(
-      c,
-      d.x,
-      d.y + 3,
-      size * 0.35,
-      9,
-      selected ? "#e7bf6460" : "#c4ab5530",
-    );
+  if (selected) {
+    ellipse(c, d.x, d.y + 3, size * 0.35, 9, "#e7bf6460");
   }
   let index = deviceFrames[d.kind] ?? 6;
   if (d.kind === "power" && f.view.options.scenario === "archive") index = 8;
@@ -251,24 +244,6 @@ export function draw(
   glow(c, 92, 330, 150, "#ffbb59", 0.12 * pulse);
   glow(c, 910, 330, 145, "#e7b65f", 0.12 * pulse);
   glow(c, 500, 170, 180, "#4f9baf", 0.07);
-  for (const door of f.room.doors ?? []) {
-    ellipse(c, door.x, door.y + 3, 36, 11, "#061e1ed9");
-    glow(c, door.x, door.y - 45, 80, "#dcb56b", 0.13);
-    sprite(
-      c,
-      f.art,
-      f.view.options.scenario === "station" ? 12 : 13,
-      door.x,
-      door.y + 5,
-      104,
-    );
-    c.fillStyle = "#efd28d";
-    c.beginPath();
-    c.moveTo(door.x - 5, door.y + 17);
-    c.lineTo(door.x + 5, door.y + 17);
-    c.lineTo(door.x, door.y + 23);
-    c.fill();
-  }
   const depth: (Device | Player)[] = [
     ...(f.room.objects ?? []),
     ...f.view.players.filter((p) => p.room === f.room.id),
