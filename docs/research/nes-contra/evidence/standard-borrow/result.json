@@ -1,0 +1,14 @@
+{
+  "actor": 1,
+  "borrow_completed": true,
+  "complete_campaign": false,
+  "first_action_is_A": true,
+  "frames": 13841,
+  "infinite_lives": false,
+  "no_state_injection": true,
+  "passed": true,
+  "players": 2,
+  "probe_started": 13737,
+  "scope": "standard NewSession plus recorded legal prefix and visually prompted A-edge borrowing; not full campaign acceptance",
+  "seed": 42
+}

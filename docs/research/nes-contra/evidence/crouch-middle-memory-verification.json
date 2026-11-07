@@ -1,0 +1,37 @@
+{
+  "status": "targeted-race-and-replay-pass-stage-not-complete",
+  "changes": [
+    "Keep an already held crouch when body/support is briefly occluded near a visible nozzle; never carry intent across a control gap",
+    "Use the same bounded public hazard memory for jump landing and middle-platform ascent as for waiting"
+  ],
+  "actual_failure_frames": [
+    108042,
+    116088
+  ],
+  "sources": {
+    "games/contra/engine/bot.go": "00a418a8d8ae55c2e481dece3f6fcf5aa56f31acb36618668d9392e75d8b9a24",
+    "games/contra/engine/bot_nozzle_navigation.go": "70e0282c70dcc7cbd2578623f1785e7c3658950f667d0489e99848b0c2ab38e4",
+    "games/contra/engine/bot_crouch_occlusion_test.go": "209465e964ee09f6eb6c17167af124b96656b77ab2cc5035cf506340f0d50888",
+    "games/contra/engine/bot_nozzle_middle_test.go": "7c8707d8a8257015feb42304d9aaf06992243b7f9dc8ee65fe1b6a36ce170b9a",
+    "games/contra/engine/testdata/bot-energy-middle-decision.json.gz": "a51eaa5d75fb050e7eaba22e7fbffb495552f8121435b1db7a3a3fa28d444b9b",
+    "games/contra/engine/testdata/bot-energy-crouch-occlusion.json.gz": "d0caaf6ac3e928affe5a8bc431020e8cf21dd9269fb7c4618af7f30adc9b8cec"
+  },
+  "race_log": "nozzle-middle-green.log",
+  "scope": "Public observations and policy memory only; no hidden World input in regression fixtures",
+  "new_run": ".local/contra-bot/diagnostic-energy-middle-memory",
+  "complete_campaign": false,
+  "run_result": {
+    "frames": 120000,
+    "level_index": 5,
+    "screen": 5,
+    "last_visible_y": 52,
+    "finding": "Reached the upper platform; held at an unknown leading-floor cell."
+  },
+  "replay": {
+    "frames": 120000,
+    "nextStepStoredStateEqual": true,
+    "nextStepStructEqual": true,
+    "recordedStateMatches": true,
+    "roundTripDifferences": null
+  }
+}

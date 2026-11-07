@@ -1,0 +1,292 @@
+{
+  "passed": true,
+  "scope": "Independent enemy shot creation/aim, sniper, rotating/red turret, first-stage Boss cannon and runner-fire phases. Not full-world/campaign acceptance.",
+  "natural": {
+    "prior_sniper_calls": 788,
+    "continuous_calls": 2621,
+    "by_kind": {
+      "sniper": 1051,
+      "rotating_turret": 806,
+      "red_turret": 764
+    },
+    "screens_reached": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "ended": "players exhausted lives; no natural Boss encounter or clear"
+  },
+  "controlled": {
+    "shot_requests": 2786,
+    "quadrant_observations": 2786,
+    "absolute_aim_observations": 2786,
+    "sniper_and_runner_states": 198,
+    "turret_and_boss_states": 352,
+    "real_graphics_requests": 167,
+    "runner_fire_transition_cases": 48
+  },
+  "race_tests": [
+    "TestOriginalRunnerFireTransition",
+    "TestOriginalEnemyShotAndAimBoundaries",
+    "TestOriginalTurretStatesWithGraphicsQueue",
+    "TestOriginalControlledShooterStates",
+    "TestOriginalSniperSteps",
+    "TestContinuousNaturalShooterStates"
+  ],
+  "logs": {
+    "initial-red": {
+      "file": "enemies-shooters-initial-red.jsonl",
+      "sha256": "8d4a678d4b58c935070e4dcb3d0d524dd7e5ff85b4beebb34f007cc20b8422f9"
+    },
+    "states-red": {
+      "file": "enemies-shooters-states-red.jsonl",
+      "sha256": "d857b476b8f327256eb082c0402965aa32d7b08375dc30a2f25efa47df31434a"
+    },
+    "turrets-red": {
+      "file": "enemies-shooters-turrets-red.jsonl",
+      "sha256": "e0d7cdab83745c1438490eec807795e2cc62f7db3dee78b63687573b1ced3fcd"
+    },
+    "runner-transition-red": {
+      "file": "enemies-shooters-runner-transition-red.jsonl",
+      "sha256": "9d1cb7b041d596f7beed4131adf5095a5fb01613f18d0eb3380f2466c21013c6"
+    },
+    "race": {
+      "file": "enemies-shooters-race.jsonl",
+      "sha256": "1a8940553cd579f52b5e3e5b5f772757f059d42b00a6429632a7113dea27879b"
+    }
+  },
+  "repeat_comparisons": [
+    {
+      "first": ".local/contra-enemies-shooters/natural/runs/shooters-natural-v2/ram.bin",
+      "repeat": ".local/contra-enemies-shooters/natural/runs/shooters-natural-v3/ram.bin",
+      "sha256": "d4915b2f2731e02dccdb0857dc464ae870a96c158e7ba94635bece3c93e434bd"
+    },
+    {
+      "first": ".local/contra-enemies-shooters/natural/runs/shooters-natural-v2/inputs.csv",
+      "repeat": ".local/contra-enemies-shooters/natural/runs/shooters-natural-v3/inputs.csv",
+      "sha256": "aaf2f2bf19861a7d5673931efee3eb128d16a8e5da5ae4be69febb37f74d8219"
+    },
+    {
+      "first": ".local/contra-enemies-shooters/natural/runs/shooters-natural-v2/natural-shooters.jsonl",
+      "repeat": ".local/contra-enemies-shooters/natural/runs/shooters-natural-v3/natural-shooters.jsonl",
+      "sha256": "6371f6568cafe48ca115311c969794924b6098771b04518efe7891adf2afeee3"
+    },
+    {
+      "first": ".local/contra-enemies-shooters/oracle/runs/shooters-controlled-v1/ram.bin",
+      "repeat": ".local/contra-enemies-shooters/oracle/runs/shooters-controlled-v2/ram.bin",
+      "sha256": "babe9cf210232d73dd47f16bbf23330c8812a3d43ee8c22bead111e7f703ea25"
+    },
+    {
+      "first": ".local/contra-enemies-shooters/oracle/runs/shooters-controlled-v1/shooters.jsonl",
+      "repeat": ".local/contra-enemies-shooters/oracle/runs/shooters-controlled-v2/shooters.jsonl",
+      "sha256": "b8527fb6cc878df8c30fdf6116ff907d7f4b6cf0bbd36a58772661c6dfdcfa9e"
+    },
+    {
+      "first": ".local/contra-enemies-shooters/turrets/runs/turrets-v2/ram.bin",
+      "repeat": ".local/contra-enemies-shooters/turrets/runs/turrets-v3/ram.bin",
+      "sha256": "e9b47b9de608ce6d86fb3c206f50cc7107ef60f44a2085ebba48e0804f84bb9a"
+    },
+    {
+      "first": ".local/contra-enemies-shooters/turrets/runs/turrets-v2/turrets.jsonl",
+      "repeat": ".local/contra-enemies-shooters/turrets/runs/turrets-v3/turrets.jsonl",
+      "sha256": "d44e96ec6d2f2aa8d242284b734dbb64f35f31a5e1a0bf67abd34ab2b847d9b2"
+    }
+  ],
+  "native_records": 49,
+  "native_evidence_ids": [
+    "ev_76060e2f0f6921c4201fdcc5ab07580bcbb89a27e955e05223b0770fe96d3078",
+    "ev_b933ee02a8b3019a5cde78f2ef3b3dc6b40259e1b35e7a13ec75bbe823607e04",
+    "ev_da8daf85a71b4fef0c45830536ab27bc744767dc2762791bf20373cc94528613",
+    "ev_1fc0bfae02acfc28c9b384793017a24e1be92828f9e34c88232c1e9c1e77fd83",
+    "ev_8eb657aa0291074d79ea7dfe5ff870b66030a253d9b03415b6a50f585bbf0693",
+    "ev_07971d4935deaca6bc2e69355b92f30460d26c2ecc04344e6eb1f809a5e9adc6",
+    "ev_45b32d1a5c5674a9ec0387ef29f9498aa587ed04470db584fabf4103ee62baec",
+    "ev_363245052ab172b1e3abdd8d04ce8b4a5b3bad73c6f1fb308022f20f5a804b69",
+    "ev_77e3a1b467271c397ecf81a0a1ad8005f57d82c38857914a007dcaae4f5f3c51",
+    "ev_2a65b239b0cb7fcb1ded7ba6e147b10e8fa6a90a04d0f7019d815f6b44c1e5ac",
+    "ev_82a09c698aaa5d824cd467380e6b0798548645b0d77e356a1ebc1aecd2cb4886",
+    "ev_de59a35fe45f4f2c6e365b4372fcc41dc6c7d50331eab6495a801791181f6f35",
+    "ev_84848246d2c9f3951ce106790eb5024f134b361f6ca16bdefa697a467d2f7233",
+    "ev_ecbd9438e8c47e2a0f009bb2923aebf188c7edb16d2670f17f2030ea52e2a9f7",
+    "ev_05df21a51343f32885b6998e6882a1a016cc7b6c3359e90df1ff9b5d12ccfff7",
+    "ev_30f16b7a27be8f313b9968a913addccd318593e76a4d2ac68c70f8c3895d74b8",
+    "ev_c9bed52f254c6387b9b1b75d886a6239378cc4735b390a135220907ae3e9bd0c",
+    "ev_12b0f65b1cdb2ccacbb2c308a85d1846c8abd47cdb817b1a88cc0380ba5ed46e",
+    "ev_238b2baee752ccff6d2af6513b00571e1ed64057a7d622c6366f18e93cf31578",
+    "ev_c653339261e08a5007b6003f40d83b6aea9ee2a75d9f50a774c226abe46985f9",
+    "ev_a0caaa6cac174cd500d9345f63ab0d977356c20acafc7a06337436db9730c013",
+    "ev_10333be48c2dd3977a04b87fa68403af8fae6f83a06f97061dce169ea33dd9f6",
+    "ev_5f57d5d34467f261c0d08ad4220a8f14980cd536594d5abd83be9f583af58aaa",
+    "ev_ba63b57ce2ae6b44e4ac7138bb894b288f7aa0eddcff202409b8446b631672f2",
+    "ev_db90d7b321779874f384ef955104d18b5c36d1677d84950558aa665d3fdc6f40",
+    "ev_f21f7d68957cc65cf5a7fb627528324a6c1b22987cf8f446dc890ece24673f3e",
+    "ev_f80e1799cf21c60349d10524a09375ae6733e14ec2f495cb8097becc7f3c8c7f",
+    "ev_76c49f93a5ff54846064fe4456a84562a3db9a3cb5e0dd62e74e036ea4f5439b",
+    "ev_91c9ba6b64d000ada10267a2e530244f0ca7268317a89c8800462dea9377111a",
+    "ev_5bcd51ea5402e25193af90f4e242b0eebf7fcd285215dcdb5bc38c78b8a91cd2",
+    "ev_01ad1b8960b20fd8cf19f4775202ef1ced981ab094ec9614abb87827436d62f5",
+    "ev_30f6e65bdb99baacfdad6d512638c4e3a3b880fd086d266741d2dd54306f0e7a",
+    "ev_5673d3afbb41339552e88eccae9720a6616fb189a9039924f6436aecb33896b6",
+    "ev_7d138be8d12c3e08001a74150669c3d2790d0ec6fe23687e3966116d8e658b6e",
+    "ev_5fd8de89d73fc08c4fb5e2ab7b19ba127b5c5a9de570644a60bba4535164a9ad",
+    "ev_f306a793fc7b0b7ac28682dbabadafd076fe475b4e4d8f98c55d1cef2b098d2c",
+    "ev_d3e8ad8a5970183eb270ee15291cd1ec5d700697b46ed5c3c783b70aaaf591fc",
+    "ev_76267b81cb2c7373fd3106af45005928ad7d2cdbc16ede87d2761c435c29cc98",
+    "ev_432ecac514ae6cb5630ea8668cadab7fef4521bf094c29b1c46d5070388af9d7",
+    "ev_ea0a660cbfc3a37bed1d8cc12a76cf62d216d64d0a75af1cd5cac8c7e48d52aa",
+    "ev_6b192b1449ae309fc61026a75c19db6619959dff4efc1f64a5b0722bfac1800d",
+    "ev_6a1afea9470df21da22f74a056fdc5e45df6d9c9b9b3fcece1c8029951f8365e",
+    "ev_d9f27d1cbea352bbd0caddd59cf7757517d7f339ffec1097e9d0a3923eb17984",
+    "ev_eedabdf07f28d06a87993cc43f73e0af04ac59781d549a94e2356702eaf0b748",
+    "ev_361f713c2a2a83d6f3b2b4692eb0879a6df0cd8acc8abef33625add37989a65f",
+    "ev_3473cf2d075ac93a31d4c5dcca9da1e9461bc1debef66abbc10927d151c4129e",
+    "ev_723ffb2b80d34d372b1d5999063b2c58eb7c3b3e080b5ae15fd43636de5a7223",
+    "ev_002552884bfcb67bdbfcbaf680e728d0b5f5a4e2bdea2f264d63269f24397305",
+    "ev_f8e0d618dd9708fa139a7abf21546af75f1e3cb9290d43bf57dc88e9059a8415"
+  ],
+  "source_sha256": {
+    "games/contra/engine/enemies_shooters_aim.go": "d269f4599c5fa5e869b39878b6210dfc0c1017da8ac804d000ae30df443731fe",
+    "games/contra/engine/enemies_shooters_bossdoor.go": "08ab25e4176aa7369cbf0476f4a162c9f87b3177ab62867a487e5706bbdf99ce",
+    "games/contra/engine/enemies_shooters_bossdoor_sequence_test.go": "715c79d8618526e509890403de5f9dfc42010ae57651ba61a1330b9069eba088",
+    "games/contra/engine/enemies_shooters_bossdoor_terrain.go": "3dfc8069c2d83e8a23271b9beb8df8dd5b18250231697a15a54192b0d140210b",
+    "games/contra/engine/enemies_shooters_bossdoor_terrain_test.go": "2c82a95a0e3e80efaf2065a03b04ced0e088b4330b2c897fb5f7c4cca4ea06ab",
+    "games/contra/engine/enemies_shooters_bossdoor_test.go": "43ef5823dd89868735dd236f1651143edff3d6a2348e8643d6c7cd213c8165bf",
+    "games/contra/engine/enemies_shooters_runner.go": "53032d44797a4c93742590c4c18991f578d4cd40208a854eb57ba0d62b055ba1",
+    "games/contra/engine/enemies_shooters_runner_transition_test.go": "e50f23c8852f189c53e25735950a95b201231c7aa22cd0de005273eb31f969be",
+    "games/contra/engine/enemies_shooters_sniper.go": "0ef33341f693063e3caeb003b857a4159255c7dd87155f0278403cb211479877",
+    "games/contra/engine/enemies_shooters_tables.go": "d57dba7bb57ce7c2a89feb10ed9a186e3967a8d649d6af1cce73490236996e02",
+    "games/contra/engine/enemies_shooters_test.go": "27ab93480f11e8f97fc8df142e12028420beaa22dceb480b73636412b3510705",
+    "games/contra/engine/enemies_shooters_turrets.go": "767ebe192762aef0b8e6fdaca54b4e6a24a80c8f660b7225e2daaf07eb939b31",
+    "scripts/contra/enemies_shooters_capture.py": "a9075a2507d4fb45ff62ffbdc022d5dac0e82c0889771d9594f1d1790b9b9967",
+    "scripts/contra/enemies_shooters_capture_bossdoor.py": "046a91942ca4a47c962ff9f4c48f0d4cc46e5fd0961c9c67a357a9e4a84e972a",
+    "scripts/contra/enemies_shooters_capture_bossdoor_sequence.py": "333c4ce2e482464f580273cb1eb5ae4ca053dc3a8b5afa50b2d9bd7b3e78208f",
+    "scripts/contra/enemies_shooters_capture_natural.py": "113dfdce87195c65c811689c46dacdf91f0e5d104c057a24d6ea53d6067d3fcb",
+    "scripts/contra/enemies_shooters_capture_runner_transition.py": "285ddae3a3cf1ab5518bea8e724c651da62d60f4fd4fdc2e270c9224ddbc7fa9",
+    "scripts/contra/enemies_shooters_capture_states.py": "5cafb5537dfac2493d52c45817f3a52ed0ff6b2b44000fd8d7a99f1790878289",
+    "scripts/contra/enemies_shooters_capture_turrets.py": "8d28d4d0d8caa6634e867435d265e8296eb2530e2cc718b81134af291249d3b3",
+    "scripts/contra/enemies_shooters_export.py": "41e4c32d5806caabd5564cde0bc14271f2f593d59d839802874317e180ac651a",
+    "scripts/contra/enemies_shooters_export_bossdoor.py": "13b94fbe5a3e5cef340cc2e62418e756f5d0e3a12f60cdcb76a056b11e63fa17",
+    "scripts/contra/enemies_shooters_prepare.py": "61943fc76e3b2f76a6267692a4d411844a6c191ea56a6a0b2834b1d72e3c179a",
+    "scripts/contra/enemies_shooters_tables.py": "4e227e42583973e9fb1f541f71a73499426ad81edce3eedfe2ac3eff60679b38"
+  },
+  "fixture_sha256": {
+    "games/contra/engine/testdata/original-enemy-shooters-bossdoor-sequence.json.gz": "4d317c8a47b37295fa68a7073de732b19f40d1cbd22304526da6d1276fcf801e",
+    "games/contra/engine/testdata/original-enemy-shooters-bossdoor.json.gz": "5a2c4a6c161310f54ed9f0146fbbc2e786f33b5066bca123b2b8c2f27c7aeb9f",
+    "games/contra/engine/testdata/original-enemy-shooters-boundaries.json.gz": "48d18a1b921dc4c3cf4a3e9cb5660683195f55bb9c2666458d76955e45a6fa77",
+    "games/contra/engine/testdata/original-enemy-shooters-natural.json.gz": "88ef191f60e86a7c42201bb3c871cae2e31d6f8dd5595d1bf996b74dcde89b2d",
+    "games/contra/engine/testdata/original-enemy-shooters-runner-transition.json.gz": "1661e2f3479eb28734983a520c0e0483969d1336fc5e45c83618c5888e7cc559",
+    "games/contra/engine/testdata/original-enemy-shooters-states.json.gz": "2ef381a5f14a1e8f45da558f4512c491e967ae2325a830f7300f1d3eccdd54a6",
+    "games/contra/engine/testdata/original-enemy-shooters-turrets.json.gz": "deb3203e177f3233ab545421cc5abc9e880064c110443ed87c85e7607b8b20ce"
+  },
+  "limits": [
+    "Natural coverage remains first stage, screen0..10, without a Boss clear.",
+    "Boss cannon phases are original controlled-state execution, not a naturally traversed Boss fight.",
+    "Jungle non-player target alias0x86 is explicitly projected; other levels/aliases need source-specific support.",
+    "Controlled geometry and slot states do not prove campaign reachability or final computer strategy."
+  ],
+  "cleanup": [
+    {
+      "path": ".local/contra-enemies-shooters/natural/runs/shooters-natural-v1",
+      "bytes": 26640736
+    },
+    {
+      "path": ".local/contra-enemies-shooters/natural/ignored-policy-probe.json.gz",
+      "bytes": 252961
+    },
+    {
+      "path": ".local/contra-enemies-shooters/turrets/runs/turrets-v1",
+      "bytes": 1894793
+    },
+    {
+      "path": ".local/contra-enemies-shooters/turrets/pre-queue-boundary-fixture.json.gz",
+      "bytes": 16680
+    },
+    {
+      "path": ".local/contra-enemies-shooters/natural/runs/shooters-natural-v3",
+      "bytes": 20612148
+    },
+    {
+      "path": ".local/contra-enemies-shooters/oracle/runs/shooters-controlled-v2",
+      "bytes": 11313058
+    },
+    {
+      "path": ".local/contra-enemies-shooters/turrets/runs/turrets-v3",
+      "bytes": 1808589
+    },
+    {
+      "path": ".local/contra-enemies-shooters/states/runs/shooters-states-v2",
+      "bytes": 907408
+    },
+    {
+      "path": ".local/contra-enemies-shooters/oracle/fceux-home",
+      "scope": "closed emulator profile/runtime"
+    },
+    {
+      "path": ".local/contra-enemies-shooters/oracle/runtime",
+      "scope": "closed emulator profile/runtime"
+    },
+    {
+      "path": ".local/contra-enemies-shooters/oracle/tmp",
+      "scope": "closed emulator profile/runtime"
+    },
+    {
+      "path": ".local/contra-enemies-shooters/states/fceux-home",
+      "scope": "closed emulator profile/runtime"
+    },
+    {
+      "path": ".local/contra-enemies-shooters/states/runtime",
+      "scope": "closed emulator profile/runtime"
+    },
+    {
+      "path": ".local/contra-enemies-shooters/states/tmp",
+      "scope": "closed emulator profile/runtime"
+    },
+    {
+      "path": ".local/contra-enemies-shooters/turrets/fceux-home",
+      "scope": "closed emulator profile/runtime"
+    },
+    {
+      "path": ".local/contra-enemies-shooters/turrets/runtime",
+      "scope": "closed emulator profile/runtime"
+    },
+    {
+      "path": ".local/contra-enemies-shooters/turrets/tmp",
+      "scope": "closed emulator profile/runtime"
+    },
+    {
+      "path": ".local/contra-enemies-shooters/natural/fceux-home",
+      "scope": "closed emulator profile/runtime"
+    },
+    {
+      "path": ".local/contra-enemies-shooters/natural/runtime",
+      "scope": "closed emulator profile/runtime"
+    },
+    {
+      "path": ".local/contra-enemies-shooters/natural/tmp",
+      "scope": "closed emulator profile/runtime"
+    },
+    {
+      "path": ".local/contra-enemies-shooters/runner-transition/fceux-home",
+      "scope": "closed emulator profile/runtime"
+    },
+    {
+      "path": ".local/contra-enemies-shooters/runner-transition/runtime",
+      "scope": "closed emulator profile/runtime"
+    },
+    {
+      "path": ".local/contra-enemies-shooters/runner-transition/tmp",
+      "scope": "closed emulator profile/runtime"
+    }
+  ],
+  "retained_for_next_boss_door_work": "Private REA target/analysis and Swift cache remain in use for the separately assigned Boss-door recovery; original captured evidence and initial states retained.",
+  "retained_opening_timeline_check": "matches original M pickup prefix exactly",
+  "revalidated_with_bossdoor": "enemies-shooters-bossdoor-verification.json"
+}

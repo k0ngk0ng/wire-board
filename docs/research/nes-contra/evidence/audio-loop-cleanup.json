@@ -1,0 +1,348 @@
+{
+  "completed": true,
+  "scope": "Only this loop task; all parent original WAVs, driver records and other game files remain intact.",
+  "inputSnapshotsRemovedAfterOriginalHashRecheck": [
+    {
+      "path": ".local/contra-audio-loops/inputs/music-46-pulse1.wav",
+      "bytes": 11737774,
+      "sameSource": ".local/contra-audio/stems/music-46-pulse1.wav",
+      "sha256": "919e7409b6ec03f002ebb9b6710791f09bd443753f5dc5d820c207ca050c3694"
+    },
+    {
+      "path": ".local/contra-audio-loops/inputs/music-46-pulse2.wav",
+      "bytes": 11737774,
+      "sameSource": ".local/contra-audio/stems/music-46-pulse2.wav",
+      "sha256": "7ab1f807420d7394b04e73b720c2214980855a1eaaef098e6ec5dcecae2907f6"
+    },
+    {
+      "path": ".local/contra-audio-loops/inputs/music-46-triangle.wav",
+      "bytes": 11737774,
+      "sameSource": ".local/contra-audio/stems/music-46-triangle.wav",
+      "sha256": "bee501b83a6cb766dacf86028297a2e19055095b92c44172acbd66b69056d68b"
+    },
+    {
+      "path": ".local/contra-audio-loops/inputs/driver-70.bin",
+      "bytes": 1055600,
+      "sameSource": ".local/contra-audio/export/sound-46-warm120-8120-run-1/driver.bin",
+      "sha256": "026c455a14f94765fc937457d0b589a1c08d6f8ee861f9d497dfadc0a9888338"
+    },
+    {
+      "path": ".local/contra-audio-loops/inputs/samples-70.csv",
+      "bytes": 102953,
+      "sameSource": ".local/contra-audio/export/sound-46-warm120-8120-run-1/samples.csv",
+      "sha256": "53d696fc924e9c2e32c5f0bc540eac1dd136ea8ba01b8d3805446eb105fb0052"
+    },
+    {
+      "path": ".local/contra-audio-loops/inputs/music-4a-pulse1.wav",
+      "bytes": 11737774,
+      "sameSource": ".local/contra-audio/stems/music-4a-pulse1.wav",
+      "sha256": "096e151f4712d3af6655470aaccd550a398d5235be5108f2e0fb74224975a900"
+    },
+    {
+      "path": ".local/contra-audio-loops/inputs/music-4a-pulse2.wav",
+      "bytes": 11737774,
+      "sameSource": ".local/contra-audio/stems/music-4a-pulse2.wav",
+      "sha256": "58fe7ed81170c0289131ee1e66d8bfef055fb050d2c694042492de34f6c1b271"
+    },
+    {
+      "path": ".local/contra-audio-loops/inputs/music-4a-triangle.wav",
+      "bytes": 11737774,
+      "sameSource": ".local/contra-audio/stems/music-4a-triangle.wav",
+      "sha256": "e2a34cc4e97fba53b12585f1b0b5d3c61af60bfcc298911bc34f2a09af13be0a"
+    },
+    {
+      "path": ".local/contra-audio-loops/inputs/driver-74.bin",
+      "bytes": 1055600,
+      "sameSource": ".local/contra-audio/export/sound-4a-warm120-8120-run-1/driver.bin",
+      "sha256": "b9daea8edf38261f752a3e63efe794dc3bf882c31b9d5bb9398303a1e0bcf76b"
+    },
+    {
+      "path": ".local/contra-audio-loops/inputs/samples-74.csv",
+      "bytes": 102953,
+      "sameSource": ".local/contra-audio/export/sound-4a-warm120-8120-run-1/samples.csv",
+      "sha256": "bfdeab889beecffa57be224f8d9140b13e5890b24e6bb959a0ecc6906cc9b925"
+    },
+    {
+      "path": ".local/contra-audio-loops/inputs/music-4e-pulse1.wav",
+      "bytes": 11737774,
+      "sameSource": ".local/contra-audio/stems/music-4e-pulse1.wav",
+      "sha256": "139bb996b5a35d3d4a815e41592935f499c9e199463a0e73bebb6d8779e76193"
+    },
+    {
+      "path": ".local/contra-audio-loops/inputs/music-4e-pulse2.wav",
+      "bytes": 11737774,
+      "sameSource": ".local/contra-audio/stems/music-4e-pulse2.wav",
+      "sha256": "41cad8618cf9f76b05003661a0f9b048a2bfc37858f04e30c2d0220b8d9be0a4"
+    },
+    {
+      "path": ".local/contra-audio-loops/inputs/music-4e-triangle.wav",
+      "bytes": 11737774,
+      "sameSource": ".local/contra-audio/stems/music-4e-triangle.wav",
+      "sha256": "e4f975b9f2e8766e765b0795d63c4f3c314a53136a1cec142d2c85b9598beda5"
+    },
+    {
+      "path": ".local/contra-audio-loops/inputs/driver-78.bin",
+      "bytes": 1055600,
+      "sameSource": ".local/contra-audio/export/sound-4e-warm120-8120-run-1/driver.bin",
+      "sha256": "695eeae641c1fda7687b145d6b90f27bfb500e6db6ed593739d51c490d493f15"
+    },
+    {
+      "path": ".local/contra-audio-loops/inputs/samples-78.csv",
+      "bytes": 102953,
+      "sameSource": ".local/contra-audio/export/sound-4e-warm120-8120-run-1/samples.csv",
+      "sha256": "0d94ad73d167b585ec86f54e4cf0d327a8b69eee0cab67b4931173d05951df77"
+    },
+    {
+      "path": ".local/contra-audio-loops/inputs/music-52-pulse1.wav",
+      "bytes": 11737774,
+      "sameSource": ".local/contra-audio/stems/music-52-pulse1.wav",
+      "sha256": "f7103c776ca1626a5f737992fc5adf790635161b505da65922c53f67e2f5c878"
+    },
+    {
+      "path": ".local/contra-audio-loops/inputs/music-52-pulse2.wav",
+      "bytes": 11737774,
+      "sameSource": ".local/contra-audio/stems/music-52-pulse2.wav",
+      "sha256": "971eb328e70495e5e6ecf3cea4e2710adb11ed82de15688476e84748430b5ff1"
+    },
+    {
+      "path": ".local/contra-audio-loops/inputs/music-52-triangle.wav",
+      "bytes": 11737774,
+      "sameSource": ".local/contra-audio/stems/music-52-triangle.wav",
+      "sha256": "c4a75421489788fa99f5c62f0b5b080932de98acd83953d886bac4de444993f9"
+    },
+    {
+      "path": ".local/contra-audio-loops/inputs/driver-82.bin",
+      "bytes": 1055600,
+      "sameSource": ".local/contra-audio/export/sound-52-warm120-8120-run-1/driver.bin",
+      "sha256": "a549d2e2763522cd2688ceb8a95cbf3297418fa089faa79c770c165961a881c4"
+    },
+    {
+      "path": ".local/contra-audio-loops/inputs/samples-82.csv",
+      "bytes": 102953,
+      "sameSource": ".local/contra-audio/export/sound-52-warm120-8120-run-1/samples.csv",
+      "sha256": "2bf7c3321c27822c28c16bc94b5361084bc1af6746a65a0421816422f1924c6c"
+    },
+    {
+      "path": ".local/contra-audio-loops/inputs/music-56-pulse1.wav",
+      "bytes": 11737774,
+      "sameSource": ".local/contra-audio/stems/music-56-pulse1.wav",
+      "sha256": "d4f1a3b2b060c0c14e3ab86bdc22e6020922a8c229767957b8b153d46fc44e3a"
+    },
+    {
+      "path": ".local/contra-audio-loops/inputs/music-56-pulse2.wav",
+      "bytes": 11737774,
+      "sameSource": ".local/contra-audio/stems/music-56-pulse2.wav",
+      "sha256": "dc1730dddd65e80e75385acce4430fa0810e4e7fc08af3728750f65093513d7a"
+    },
+    {
+      "path": ".local/contra-audio-loops/inputs/music-56-triangle.wav",
+      "bytes": 11737774,
+      "sameSource": ".local/contra-audio/stems/music-56-triangle.wav",
+      "sha256": "0070e1c0d22a7418a9861bb996fb9e9a66fc7a878e14befffdbacc6fbe61ca28"
+    },
+    {
+      "path": ".local/contra-audio-loops/inputs/driver-86.bin",
+      "bytes": 1055600,
+      "sameSource": ".local/contra-audio/export/sound-56-warm120-8120-run-1/driver.bin",
+      "sha256": "39ad3fc402e706dcc56deb0a473fd9f06e5fa5e12e75086769036823744cd5ba"
+    },
+    {
+      "path": ".local/contra-audio-loops/inputs/samples-86.csv",
+      "bytes": 102953,
+      "sameSource": ".local/contra-audio/export/sound-56-warm120-8120-run-1/samples.csv",
+      "sha256": "328c1bd9589c263cad13161ae0696df1c77b79ad42ff8a6d0d75b7b0744e5760"
+    },
+    {
+      "path": ".local/contra-audio-loops/inputs/music-5a-pulse1.wav",
+      "bytes": 11737774,
+      "sameSource": ".local/contra-audio/stems/music-5a-pulse1.wav",
+      "sha256": "24c91ce044cf77ead3b59b9824ad1f92becdba8d066ac3846363a5dfd3b6602c"
+    },
+    {
+      "path": ".local/contra-audio-loops/inputs/music-5a-pulse2.wav",
+      "bytes": 11737774,
+      "sameSource": ".local/contra-audio/stems/music-5a-pulse2.wav",
+      "sha256": "aa064359d0ac06a94ec5b12875d4c7376abcaeb46907c915314b645f63605766"
+    },
+    {
+      "path": ".local/contra-audio-loops/inputs/music-5a-triangle.wav",
+      "bytes": 11737774,
+      "sameSource": ".local/contra-audio/stems/music-5a-triangle.wav",
+      "sha256": "19f47318c848e11b87fcfc1ee363a4ef6a8b5db81a9012fecb9e41759ecc6e71"
+    },
+    {
+      "path": ".local/contra-audio-loops/inputs/driver-90.bin",
+      "bytes": 1055600,
+      "sameSource": ".local/contra-audio/export/sound-5a-warm120-8120-run-1/driver.bin",
+      "sha256": "c4eba660b9d706212ad4e192529ec3fdfd4654f520d11cc9194eb41ab18ae8d0"
+    },
+    {
+      "path": ".local/contra-audio-loops/inputs/samples-90.csv",
+      "bytes": 102953,
+      "sameSource": ".local/contra-audio/export/sound-5a-warm120-8120-run-1/samples.csv",
+      "sha256": "4911099f2cb50ee00ba9a5bf8e6d86e927eb3d5ef3d8ae73d1cafd4cc4c33137"
+    },
+    {
+      "path": ".local/contra-audio-loops/inputs/music-5e-pulse1.wav",
+      "bytes": 11737774,
+      "sameSource": ".local/contra-audio/stems/music-5e-pulse1.wav",
+      "sha256": "384068cecdb4988ca67ddee9c0b39cdb752cca123318f42fe408db52ef7ca694"
+    },
+    {
+      "path": ".local/contra-audio-loops/inputs/music-5e-pulse2.wav",
+      "bytes": 11737774,
+      "sameSource": ".local/contra-audio/stems/music-5e-pulse2.wav",
+      "sha256": "b9d142dd63fdf1fe32625e8daf2faa889c694a1cc93c34bf53a547107acc1f6e"
+    },
+    {
+      "path": ".local/contra-audio-loops/inputs/music-5e-triangle.wav",
+      "bytes": 11737774,
+      "sameSource": ".local/contra-audio/stems/music-5e-triangle.wav",
+      "sha256": "67bd6008002bfbf3955be5f6f87ddebbb9bc1dd28126ab6334d587e498f1ede8"
+    },
+    {
+      "path": ".local/contra-audio-loops/inputs/driver-94.bin",
+      "bytes": 1055600,
+      "sameSource": ".local/contra-audio/export/sound-5e-warm120-8120-run-1/driver.bin",
+      "sha256": "7bdccd0d84896997b4ea5386c1d2e775756b907408074731ca81b63f63defac6"
+    },
+    {
+      "path": ".local/contra-audio-loops/inputs/samples-94.csv",
+      "bytes": 102953,
+      "sameSource": ".local/contra-audio/export/sound-5e-warm120-8120-run-1/samples.csv",
+      "sha256": "6ca285d0aaf998a7ef479e5abe98d6563fde4c92d2af754be897b42a4f6cf057"
+    }
+  ],
+  "repeatGenerationsDeduplicatedAfterIndependentComparison": [
+    {
+      "file": ".local/contra-audio-loops/output/music-46-pulse1-repeat.wav",
+      "sameAs": ".local/contra-audio-loops/output/music-46-pulse1-loop.wav",
+      "bytes": 4583306,
+      "sha256": "65bb73cbfba38784a7b162f043b2e0194e668fce43a07270ab522c1975095502"
+    },
+    {
+      "file": ".local/contra-audio-loops/output/music-46-pulse2-repeat.wav",
+      "sameAs": ".local/contra-audio-loops/output/music-46-pulse2-loop.wav",
+      "bytes": 4583306,
+      "sha256": "41351fffe20a903e5c2ed3ec7b1ebcb4ea41409fb9e95057a7e19d0c7b7d3483"
+    },
+    {
+      "file": ".local/contra-audio-loops/output/music-46-triangle-repeat.wav",
+      "sameAs": ".local/contra-audio-loops/output/music-46-triangle-loop.wav",
+      "bytes": 4583306,
+      "sha256": "a1145ed8aa219371749df86eea5ca6c4363a4241ba63756fa172edf1dffbd366"
+    },
+    {
+      "file": ".local/contra-audio-loops/output/music-4a-pulse1-repeat.wav",
+      "sameAs": ".local/contra-audio-loops/output/music-4a-pulse1-loop.wav",
+      "bytes": 3702756,
+      "sha256": "9b4948281a7d0cf0d697681582d22838ad70ae0da53584df016e9e77087ad2ed"
+    },
+    {
+      "file": ".local/contra-audio-loops/output/music-4a-pulse2-repeat.wav",
+      "sameAs": ".local/contra-audio-loops/output/music-4a-pulse2-loop.wav",
+      "bytes": 3702756,
+      "sha256": "e7820b6ecad4c4e2664b80fdd9ef1ff1bd325784e17838c187b6f524b62fec58"
+    },
+    {
+      "file": ".local/contra-audio-loops/output/music-4a-triangle-repeat.wav",
+      "sameAs": ".local/contra-audio-loops/output/music-4a-triangle-loop.wav",
+      "bytes": 3702756,
+      "sha256": "871ebfb4587543245d6abec83424a4b51fd1f6a8f4241c0feac246ddb1fd3685"
+    },
+    {
+      "file": ".local/contra-audio-loops/output/music-4e-pulse1-repeat.wav",
+      "sameAs": ".local/contra-audio-loops/output/music-4e-pulse1-loop.wav",
+      "bytes": 4816652,
+      "sha256": "331843ca64e228add25fd14d64526d7c17c26337035b7a079452fbbd6a1dcfbc"
+    },
+    {
+      "file": ".local/contra-audio-loops/output/music-4e-pulse2-repeat.wav",
+      "sameAs": ".local/contra-audio-loops/output/music-4e-pulse2-loop.wav",
+      "bytes": 4816652,
+      "sha256": "6ed3b205cc75e3b62708d76139ae517e45505504bf8ab433a767c47068bf6ac4"
+    },
+    {
+      "file": ".local/contra-audio-loops/output/music-4e-triangle-repeat.wav",
+      "sameAs": ".local/contra-audio-loops/output/music-4e-triangle-loop.wav",
+      "bytes": 4816652,
+      "sha256": "39a73484f3c592687932efb426841d44c6af97d85aa6a8b6b5dc98f37d4700c8"
+    },
+    {
+      "file": ".local/contra-audio-loops/output/music-52-pulse1-repeat.wav",
+      "sameAs": ".local/contra-audio-loops/output/music-52-pulse1-loop.wav",
+      "bytes": 2229302,
+      "sha256": "4bad3d3754a9ee7a6f7b931977aab1cff72864c20e4c07bb0ab77ad0a298f1c9"
+    },
+    {
+      "file": ".local/contra-audio-loops/output/music-52-pulse2-repeat.wav",
+      "sameAs": ".local/contra-audio-loops/output/music-52-pulse2-loop.wav",
+      "bytes": 2229302,
+      "sha256": "2f1abb5d0175555a8ef7908a626788b61a20a81c34f7af732844ed2e54557b2f"
+    },
+    {
+      "file": ".local/contra-audio-loops/output/music-52-triangle-repeat.wav",
+      "sameAs": ".local/contra-audio-loops/output/music-52-triangle-loop.wav",
+      "bytes": 2229302,
+      "sha256": "1e74fa87700f83f2ef27a5bb6adbe41b39af7afb0ea19690fd6041afc73448c8"
+    },
+    {
+      "file": ".local/contra-audio-loops/output/music-56-pulse1-repeat.wav",
+      "sameAs": ".local/contra-audio-loops/output/music-56-pulse1-loop.wav",
+      "bytes": 3023266,
+      "sha256": "55dc8696479cf5442f7ff80de5981234375956fee59138e2a95e1b03d04dd62d"
+    },
+    {
+      "file": ".local/contra-audio-loops/output/music-56-pulse2-repeat.wav",
+      "sameAs": ".local/contra-audio-loops/output/music-56-pulse2-loop.wav",
+      "bytes": 3023266,
+      "sha256": "9643f59796c68d3ba542437a85bad5860fef43d33b5dc2737192e669595d52ca"
+    },
+    {
+      "file": ".local/contra-audio-loops/output/music-56-triangle-repeat.wav",
+      "sameAs": ".local/contra-audio-loops/output/music-56-triangle-loop.wav",
+      "bytes": 3023266,
+      "sha256": "e23f2f52816f75740c73f8aecdc0335b9b0d2086093bb429323863405669d2fa"
+    },
+    {
+      "file": ".local/contra-audio-loops/output/music-5a-pulse1-repeat.wav",
+      "sameAs": ".local/contra-audio-loops/output/music-5a-pulse1-loop.wav",
+      "bytes": 5647304,
+      "sha256": "394851a04e0219167c38ca62fced73e705dd8f5fabcd3af2607f06970148ecf9"
+    },
+    {
+      "file": ".local/contra-audio-loops/output/music-5a-pulse2-repeat.wav",
+      "sameAs": ".local/contra-audio-loops/output/music-5a-pulse2-loop.wav",
+      "bytes": 5647304,
+      "sha256": "613b19f2c9a7d9f1e4699fdcf7cf36a452072c381b8bfc06e71ec00c921db969"
+    },
+    {
+      "file": ".local/contra-audio-loops/output/music-5a-triangle-repeat.wav",
+      "sameAs": ".local/contra-audio-loops/output/music-5a-triangle-loop.wav",
+      "bytes": 5647304,
+      "sha256": "4b8d3ea774dea51ae985fd72883e2541f549584a242f4184f91e9990ff79eabc"
+    },
+    {
+      "file": ".local/contra-audio-loops/output/music-5e-pulse1-repeat.wav",
+      "sameAs": ".local/contra-audio-loops/output/music-5e-pulse1-loop.wav",
+      "bytes": 5055868,
+      "sha256": "e3964ad706c49bfc4b987b6cb6749ecdaae37ec13ca0ec3d3f36b0d4eb11d4f3"
+    },
+    {
+      "file": ".local/contra-audio-loops/output/music-5e-pulse2-repeat.wav",
+      "sameAs": ".local/contra-audio-loops/output/music-5e-pulse2-loop.wav",
+      "bytes": 5055868,
+      "sha256": "428f8df9ec0872500395d2b15157c8f292d9f84d90c921e0d0f249ac2c475ce5"
+    },
+    {
+      "file": ".local/contra-audio-loops/output/music-5e-triangle-repeat.wav",
+      "sameAs": ".local/contra-audio-loops/output/music-5e-triangle-loop.wav",
+      "bytes": 5055868,
+      "sha256": "415932076c4f1f2be884ba6ca18dd9bfe699117bdef25318833bdcf7672ea9c5"
+    }
+  ],
+  "removedBytes": 254603125,
+  "deduplicatedBytes": 87175362,
+  "profiles": "Each native run closed its own agent-browser session and removed its own profile/tmp/socket directory.",
+  "generationSafety": "write_wave atomically replaces files and asserts independent writable storage before comparing, so re-generation cannot falsely pass because of archival hardlinks."
+}

@@ -1,0 +1,277 @@
+{
+  "layout": "game",
+  "actions": [
+    {
+      "id": "left",
+      "label": "向左移动",
+      "keys": [
+        "KeyA",
+        "ArrowLeft"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 14
+        },
+        {
+          "type": "axis",
+          "index": 0,
+          "direction": -1
+        }
+      ]
+    },
+    {
+      "id": "right",
+      "label": "向右移动",
+      "keys": [
+        "KeyD",
+        "ArrowRight"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 15
+        },
+        {
+          "type": "axis",
+          "index": 0,
+          "direction": 1
+        }
+      ]
+    },
+    {
+      "id": "up",
+      "label": "抬高炮角",
+      "keys": [
+        "KeyW",
+        "ArrowUp"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 12
+        },
+        {
+          "type": "axis",
+          "index": 1,
+          "direction": -1
+        }
+      ]
+    },
+    {
+      "id": "down",
+      "label": "降低炮角",
+      "keys": [
+        "KeyS",
+        "ArrowDown"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 13
+        },
+        {
+          "type": "axis",
+          "index": 1,
+          "direction": 1
+        }
+      ]
+    },
+    {
+      "id": "fire",
+      "label": "蓄力／松开发射",
+      "keys": [
+        "Space"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 0
+        },
+        {
+          "type": "button",
+          "index": 7
+        }
+      ]
+    },
+    {
+      "id": "cancel",
+      "label": "取消蓄力",
+      "keys": [
+        "Backspace"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 1
+        }
+      ]
+    },
+    {
+      "id": "weapon",
+      "label": "切换炮弹",
+      "keys": [
+        "KeyQ",
+        "KeyE"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 2
+        }
+      ]
+    },
+    {
+      "id": "facing",
+      "label": "切换朝向",
+      "keys": [
+        "KeyF"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 3
+        }
+      ]
+    },
+    {
+      "id": "item1",
+      "label": "使用道具槽 1",
+      "keys": [
+        "Digit1"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 4
+        }
+      ]
+    },
+    {
+      "id": "item2",
+      "label": "使用道具槽 2",
+      "keys": [
+        "Digit2"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 5
+        }
+      ]
+    },
+    {
+      "id": "item3",
+      "label": "使用道具槽 3",
+      "keys": [
+        "Digit3"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 6
+        }
+      ]
+    },
+    {
+      "id": "item4",
+      "label": "使用道具槽 4",
+      "keys": [
+        "Digit4"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 8
+        }
+      ]
+    },
+    {
+      "id": "zoomIn",
+      "label": "放大视野",
+      "keys": [
+        "Equal"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 9
+        }
+      ]
+    },
+    {
+      "id": "zoomOut",
+      "label": "缩小视野",
+      "keys": [
+        "Minus"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 10
+        }
+      ]
+    },
+    {
+      "id": "resetCamera",
+      "label": "镜头回到当前坦克",
+      "keys": [
+        "KeyR"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 11
+        }
+      ]
+    },
+    {
+      "id": "panLeft",
+      "label": "镜头向左",
+      "keys": [],
+      "gamepad": [
+        {
+          "type": "axis",
+          "index": 2,
+          "direction": -1
+        }
+      ]
+    },
+    {
+      "id": "panRight",
+      "label": "镜头向右",
+      "keys": [],
+      "gamepad": [
+        {
+          "type": "axis",
+          "index": 2,
+          "direction": 1
+        }
+      ]
+    },
+    {
+      "id": "panUp",
+      "label": "镜头向上",
+      "keys": [],
+      "gamepad": [
+        {
+          "type": "axis",
+          "index": 3,
+          "direction": -1
+        }
+      ]
+    },
+    {
+      "id": "panDown",
+      "label": "镜头向下",
+      "keys": [],
+      "gamepad": [
+        {
+          "type": "axis",
+          "index": 3,
+          "direction": 1
+        }
+      ]
+    }
+  ]
+}

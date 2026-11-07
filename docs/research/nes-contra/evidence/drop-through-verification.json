@@ -1,0 +1,59 @@
+{
+  "status": "targeted-race-and-replay-pass-energy-cleared-diagnostic",
+  "changes": [
+    "Reject jump landings with body center inside visible solid wall even when head is above it",
+    "Use original Down+A only on known one-way support with a known lower landing when forward wall blocks progress and no forward higher jump exists",
+    "Apply visible flame-window checks to the entire drop corridor"
+  ],
+  "sources": {
+    "games/contra/engine/bot.go": "d938724ead71aa18b5d349da7501faa2f4c6bd062b3003b09e8e3af074643170",
+    "games/contra/engine/bot_navigation.go": "a97f19d98972dfab95f826efe10b30cac0195de4ed924257f03d9a461ec609e6",
+    "games/contra/engine/bot_nozzle_navigation.go": "72275a7f46b244e29be4bb252c006a22ffeb1ee7e7702c48c8036b26d31f4fc5",
+    "games/contra/engine/bot_drop_through.go": "ea14a390d2716d5de8eafa543e8bdd1855669c1597801e54affc49c7724fa010",
+    "games/contra/engine/bot_high_wall_test.go": "c5e9ee08272ec80e1ad9ce9a791f2f4864c55caa6de9f98350d5ecc8a8b3a40f",
+    "games/contra/engine/bot_drop_through_test.go": "fb17c3c710fdb73e66ebdea75516b3b7ff07c0bb3e13c2a2aa00b78953ce046d",
+    "games/contra/engine/testdata/bot-energy-drop-wall.json.gz": "a6d4c9c7414cc2b091161b8691495351b2a5ba3e70127db529bdef1afa94ab5e"
+  },
+  "race_log": "drop-through-green.log",
+  "fixture_note": "Drop fixture uses actual frame131520 at the later high wall. Initial selected observation belonged to the preceding map or had unknown support and was corrected; solid and no-landing negatives remain.",
+  "run": ".local/contra-bot/diagnostic-energy-neutral-drop",
+  "complete_campaign": false,
+  "previous_run_result": {
+    "frames": 136000,
+    "level_index": 5,
+    "screen": 6,
+    "complete_campaign": false
+  },
+  "original_input_correction": {
+    "source": "games/contra/engine/player.go:114 and startFall/stepFall",
+    "constraint": "Down+A requires neither Left nor Right; lateral fall steering starts only after twenty pixels of descent",
+    "change": "Emit neutral Down+A first; predict and target the actually reachable lower landing after the initial steering lock"
+  },
+  "run_result": {
+    "frames": 140000,
+    "level_index": 5,
+    "screen": 12,
+    "finding": "Advanced from screen6 to the Energy Zone giant arena using legal inputs; stage clear not yet claimed."
+  },
+  "replay": {
+    "frames": 140000,
+    "nextStepStoredStateEqual": true,
+    "nextStepStructEqual": true,
+    "recordedStateMatches": true,
+    "roundTripDifferences": null
+  },
+  "later_run_result": {
+    "frames": 148000,
+    "level_index": 6,
+    "screen": 2,
+    "source_run": ".local/contra-bot/diagnostic-energy-boss-transition",
+    "scope": "Legal-prefix continuation with declared test reserves, not a fresh full-policy campaign"
+  },
+  "later_replay": {
+    "frames": 148000,
+    "nextStepStoredStateEqual": true,
+    "nextStepStructEqual": true,
+    "recordedStateMatches": true,
+    "roundTripDifferences": null
+  }
+}

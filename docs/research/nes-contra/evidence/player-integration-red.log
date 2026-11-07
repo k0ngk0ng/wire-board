@@ -1,0 +1,6 @@
+=== RUN   TestOriginalOutdoorPlayerAndWeaponIntegration
+    player_integration_test.go:10: open testdata/original-player-complete.json.gz: no such file or directory
+--- FAIL: TestOriginalOutdoorPlayerAndWeaponIntegration (0.00s)
+FAIL
+FAIL	github.com/k0ngk0ng/wire-board/games/contra/engine	0.519s
+FAIL

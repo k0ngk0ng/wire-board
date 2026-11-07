@@ -1,0 +1,29 @@
+{
+  "passed": true,
+  "scope": "Go collision-window lookup vs Japanese original $DFEC; not complete player collision or all-stage acceptance.",
+  "originalQueries": 3234,
+  "streamedWindows": 13,
+  "originalCodesObserved": [
+    0,
+    1,
+    2
+  ],
+  "solidCodeCoverage": "direct packed-cell boundary test only; not observed naturally in this fixture",
+  "checks": [
+    "TestOriginalMovementTrace",
+    "TestVerticalArithmeticBoundaries",
+    "TestJumpRetainsSubpixelAndExistingJump",
+    "TestControlsLogicalBitsAndRelease",
+    "TestOriginalTerrainQueries",
+    "TestTerrainPackedOrderAndScrollBoundaries"
+  ],
+  "sourceSHA256": {
+    "games/contra/engine/terrain.go": "b7ab25fd69fb2a9a59146fe9c8fd35d73b8704b7bba9c6c62c566af31de0bfca",
+    "games/contra/engine/terrain_test.go": "c587229cda80674b3dcf61a87f3d841740a32bd45585e82e866d5a34d1308b4d",
+    "games/contra/engine/testdata/original-terrain.json.gz": "de35044e7c68f4c99cd70c2103466c8f9770c33cbcf6c8f61b6208aad4ca5925"
+  },
+  "red": "terrain-red.jsonl",
+  "green": "terrain-green.jsonl",
+  "originalSource": "static-terrain-verification.json",
+  "reproduce": "source scripts/env.sh && go test ./games/contra/engine -count=1 -v"
+}

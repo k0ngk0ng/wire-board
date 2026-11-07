@@ -25,7 +25,8 @@ export function ControllerSettings({
   const [data, setData] = useState<ControllerSettingsData>();
   const [modelID, setModelID] = useState(gameId ? `game:${gameId}` : "");
   const [drafts, setDrafts] = useState<Record<string, ControllerProfile>>({});
-  const [source, setSource] = useState("keyboard");
+  const [source, setSource] = useState("keyboard"),
+    [search, setSearch] = useState("");
   const [waiting, setWaiting] = useState(""),
     [appendKey, setAppendKey] = useState(false),
     [gamepadRecording, setGamepadRecording] = useState(false);
@@ -34,17 +35,15 @@ export function ControllerSettings({
     [busy, setBusy] = useState(false);
   const mounted = useRef(true);
   const choices = (value: ControllerSettingsData) => {
-    return value.models
-      .filter(
-        (m) =>
-          !m.gameId ||
-          !availableGames ||
-          availableGames.includes(m.gameId) ||
-          m.gameId === gameId,
-      )
-      .sort(
-        (a, b) => Number(b.gameId === gameId) - Number(a.gameId === gameId),
-      );
+    const games = value.models.filter((m) => m.gameId);
+    return games.length
+      ? games.filter(
+          (m) =>
+            !availableGames ||
+            availableGames.includes(m.gameId!) ||
+            m.gameId === gameId,
+        )
+      : value.models;
   };
   useEffect(() => {
     mounted.current = true;
@@ -70,6 +69,11 @@ export function ControllerSettings({
     };
   }, []);
   const models = data ? choices(data) : [];
+  const filtered = models.filter((m) =>
+    `${m.name} ${m.gameId ?? m.id}`
+      .toLowerCase()
+      .includes(search.trim().toLowerCase()),
+  );
   const model = data?.models.find((m) => m.id === modelID),
     draft = drafts[modelID];
   const layout = model?.layout ?? model?.id;
@@ -182,30 +186,61 @@ export function ControllerSettings({
       {!data && !error && <p>正在读取控制器设置…</p>}
       {data && (
         <>
+          <input
+            type="search"
+            aria-label="搜索游戏控制方案"
+            placeholder="搜索游戏"
+            value={search}
+            disabled={busy}
+            onChange={(e) => {
+              setSearch(e.target.value);
+              setWaiting("");
+            }}
+          />
           <label className="controller-model">
             {models.some((m) => m.gameId) ? "游戏" : "操作方案"}
             <select
               data-controller-model
               aria-label="游戏／操作方案"
-              value={modelID}
-              disabled={busy || !models.length}
+              value={search ? "" : modelID}
+              disabled={busy || !filtered.length}
               onChange={(e) => {
                 setModelID(e.target.value);
+                setSearch("");
                 setWaiting("");
                 setError("");
                 setNotice("");
               }}
             >
-              {models.map((m) => (
+              {search && (
+                <option value="" disabled>
+                  选择游戏
+                </option>
+              )}
+              {filtered.map((m) => (
                 <option key={m.id} value={m.id}>
                   {m.name}
                 </option>
               ))}
             </select>
           </label>
+          {!filtered.length && (
+            <p className="controller-help" role="status">
+              没有匹配的游戏。
+              {search && (
+                <button
+                  type="button"
+                  className="outline"
+                  onClick={() => setSearch("")}
+                >
+                  清除搜索
+                </button>
+              )}
+            </p>
+          )}
         </>
       )}
-      {model && draft && (
+      {model && draft && !search && (
         <>
           <label className="controller-model">
             配置输入

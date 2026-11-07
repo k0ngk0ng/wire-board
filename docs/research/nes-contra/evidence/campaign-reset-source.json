@@ -1,0 +1,29 @@
+{
+  "rom_sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+  "archive_sha256": "2c4fd35488d32ca3abf207114893d54ad294f74df8bd1961a7b1e090549bae64",
+  "source_unchanged": true,
+  "raw_slice": {
+    "rom_offset": 114705,
+    "cpu_start": "0xc001",
+    "bytes": 16383,
+    "sha256": "ce699850c1c626195b8020d1f5acdc5963e8dc1dc9b68df5a520a7bc26ed3956"
+  },
+  "cursor_y": {
+    "cpu": "0xc0a4",
+    "rom_offset": 114868,
+    "bytes": [
+      162,
+      178
+    ]
+  },
+  "functions": [
+    "0xcd1f",
+    "0xc309",
+    "0xc2cf",
+    "0xcdaf",
+    "0xcdf1",
+    "0xca2b",
+    "0xca62",
+    "0xc70f"
+  ]
+}

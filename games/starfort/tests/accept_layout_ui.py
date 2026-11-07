@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Desktop aspect ratio and one health bar regressions, specified before changes. Reuses real HTTP fixture.
-Run: . scripts/env.sh && python3 -B games/starfort/tests/accept_interaction_ui.py
+Run: . scripts/env.sh && python3 -B games/starfort/tests/accept_layout_ui.py
 Artifacts: .local/starfort-layout/browser/ (screenshots, source hashes, commands).
 """
 import json
@@ -49,10 +49,11 @@ try:
         click('[data-sf-fit]')
         box=js('document.querySelector(".sf-world-viewport").getBoundingClientRect().toJSON()')
         if width>850:
-            assert abs(box['width']/box['height']-16/9)<.02, box
-            assert box['height']>=359 and box['width']<=1140, box
+            available=js('document.querySelector(".starfort-board").getBoundingClientRect().width')
+            assert box['width']>=min(available*.90,1440) and box['height']>=400, box
+            assert 1.45<=box['width']/box['height']<=2.6, box
         else:
-            assert abs(box['height']-max(240,min(380,height-580)))<1, box
+            assert 220<=box['height']<=height, box
             assert box['width']<=width, box
         w.artifact('geometry-'+str(width)+'.json',box)
         b('scrollintoview','[data-starfort-canvas]')
@@ -63,7 +64,9 @@ try:
     wait('document.querySelector(".sf-battlefield").dataset.assetsReady==="true"')
     before=w.data()['enemies'][0]
     assert before['shield']>0
-    js(r"""(()=>{const c=document.querySelector('[data-starfort-canvas]').getContext('2d'),clear=c.clearRect,fill=c.fillRect;window.__bars=[];let width=0;c.clearRect=function(...a){window.__barFrame={at:performance.now(),health:[],shield:0};window.__bars.push(window.__barFrame);return clear.apply(this,a)};c.fillRect=function(...a){if(this.fillStyle==='#283b34')width=a[2]-2;if(this.fillStyle==='#add584'&&width)window.__barFrame.health.push(a[2]/width);if(this.fillStyle==='#cef0ff')window.__barFrame.shield++;return fill.apply(this,a)}})()""")
+    palette=json.loads(subprocess.check_output(['node','--input-type=module','-e','import {battlefieldPalette as p} from \"./games/starfort/web/palette.ts\";process.stdout.write(JSON.stringify(p.health))'],cwd=w.ROOT,text=True))
+    js('window.__healthPalette='+json.dumps(palette))
+    js(r"""(()=>{const c=document.querySelector('[data-starfort-canvas]').getContext('2d'),clear=c.clearRect,fill=c.fillRect,p=window.__healthPalette;window.__bars=[];let track=null;c.clearRect=function(...a){window.__barFrame={at:performance.now(),health:[],shield:0};window.__bars.push(window.__barFrame);return clear.apply(this,a)};c.fillRect=function(...a){if(this.fillStyle===p.track)track=a;if([p.healthy,p.critical].includes(this.fillStyle)&&track){const width=track[2]-2*(a[0]-track[0]);window.__barFrame.health.push(a[2]/width);}if(this.fillStyle==='#cef0ff')window.__barFrame.shield++;return fill.apply(this,a)}})()""")
     b('wait','4000')
     after=w.data()['enemies'][0];frames=js('window.__bars')
     assert after['hp']==before['hp'] and after['shield']<before['shield'],(before,after)

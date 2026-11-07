@@ -1,0 +1,13 @@
+{"Time":"2026-10-26T15:05:45.325348+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine"}
+{"Time":"2026-10-26T15:05:45.52461+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotObservedLastLifeDeathRetainsBorrowAttempt"}
+{"Time":"2026-10-26T15:05:45.524656+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotObservedLastLifeDeathRetainsBorrowAttempt","Output":"=== RUN   TestBotObservedLastLifeDeathRetainsBorrowAttempt\n"}
+{"Time":"2026-10-26T15:05:45.52476+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotObservedLastLifeDeathRetainsBorrowAttempt","Output":"    bot_life_test.go:65: visible last-life death did not permit a legal borrow attempt 10 65\n"}
+{"Time":"2026-10-26T15:05:45.524772+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotObservedLastLifeDeathRetainsBorrowAttempt","Output":"--- FAIL: TestBotObservedLastLifeDeathRetainsBorrowAttempt (0.00s)\n"}
+{"Time":"2026-10-26T15:05:45.524781+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotObservedLastLifeDeathRetainsBorrowAttempt","Elapsed":0}
+{"Time":"2026-10-26T15:05:45.52479+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotUnknownLifeAndNonfatalPosesDoNotEstablishBorrow"}
+{"Time":"2026-10-26T15:05:45.524793+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotUnknownLifeAndNonfatalPosesDoNotEstablishBorrow","Output":"=== RUN   TestBotUnknownLifeAndNonfatalPosesDoNotEstablishBorrow\n"}
+{"Time":"2026-10-26T15:05:45.524803+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotUnknownLifeAndNonfatalPosesDoNotEstablishBorrow","Output":"--- PASS: TestBotUnknownLifeAndNonfatalPosesDoNotEstablishBorrow (0.00s)\n"}
+{"Time":"2026-10-26T15:05:45.524807+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBotUnknownLifeAndNonfatalPosesDoNotEstablishBorrow","Elapsed":0}
+{"Time":"2026-10-26T15:05:45.524827+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\n"}
+{"Time":"2026-10-26T15:05:45.525199+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/contra/engine\t0.200s\n"}
+{"Time":"2026-10-26T15:05:45.525217+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Elapsed":0.2}

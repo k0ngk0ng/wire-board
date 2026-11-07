@@ -1,0 +1,2546 @@
+{
+  "passed": true,
+  "command": "python3 -B games/escape/tests/browser.py",
+  "scope": "production module and authenticated room; native browser inputs; simulated mobile viewport",
+  "cases": [
+    {
+      "scenario": "station",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "entry": {
+        "canAct": true,
+        "circuits": [
+          "lights",
+          "lift"
+        ],
+        "epoch": "42e89e3b588d27bc7a559452",
+        "events": [
+          {
+            "actor": -1,
+            "at": 0,
+            "id": 1,
+            "kind": "arrival",
+            "room": "r4",
+            "text": "所有人已抵达，先查看值守记录。"
+          }
+        ],
+        "incident": null,
+        "objectives": [
+          {
+            "done": false,
+            "id": "power",
+            "label": "修复备用供电"
+          },
+          {
+            "done": false,
+            "id": "pump",
+            "label": "恢复排水"
+          },
+          {
+            "done": false,
+            "id": "relay",
+            "label": "两端联锁同步"
+          },
+          {
+            "done": false,
+            "id": "signal",
+            "label": "校准备用信号"
+          }
+        ],
+        "options": {
+          "difficulty": "easy",
+          "scenario": "station",
+          "seed": "visual-17"
+        },
+        "paused": false,
+        "phase": "playing",
+        "players": [
+          {
+            "appliedSeq": 0,
+            "dx": 0,
+            "dy": 0,
+            "facing": "down",
+            "hp": 100,
+            "ready": false,
+            "room": "r4",
+            "seat": 0,
+            "seq": 0,
+            "x": 440,
+            "y": 440
+          },
+          {
+            "appliedSeq": 1,
+            "dx": 0,
+            "dy": 0,
+            "facing": "up",
+            "goal": {
+              "x": 500,
+              "y": 350
+            },
+            "hp": 100,
+            "ready": false,
+            "room": "r4",
+            "seat": 1,
+            "seq": 1,
+            "task": "前往目标",
+            "x": 535,
+            "y": 440
+          }
+        ],
+        "power": 100,
+        "protocol": 1,
+        "rally": null,
+        "remaining": 1499866,
+        "revision": 2,
+        "rooms": [
+          {
+            "flood": 0,
+            "id": "r0",
+            "known": false,
+            "x": 0,
+            "y": 0
+          },
+          {
+            "flood": 0,
+            "id": "r1",
+            "known": false,
+            "x": 1,
+            "y": 0
+          },
+          {
+            "flood": 0,
+            "id": "r2",
+            "known": false,
+            "x": 2,
+            "y": 0
+          },
+          {
+            "flood": 0,
+            "id": "r3",
+            "known": false,
+            "x": 0,
+            "y": 1
+          },
+          {
+            "doors": [
+              {
+                "direction": "north",
+                "room": "r1",
+                "x": 500,
+                "y": 270
+              },
+              {
+                "direction": "south",
+                "room": "r7",
+                "x": 500,
+                "y": 565
+              },
+              {
+                "direction": "east",
+                "room": "r5",
+                "x": 855,
+                "y": 420
+              },
+              {
+                "direction": "west",
+                "room": "r3",
+                "x": 145,
+                "y": 420
+              }
+            ],
+            "flood": 0,
+            "id": "r4",
+            "kind": "entry",
+            "known": true,
+            "objects": [
+              {
+                "description": "调查设施，交换线索，一起找到撤离路线。点击门口可前往相邻房间。",
+                "done": false,
+                "id": "briefing",
+                "kind": "briefing",
+                "label": "值守记录",
+                "x": 500,
+                "y": 350
+              }
+            ],
+            "title": "候车大厅",
+            "x": 1,
+            "y": 1
+          },
+          {
+            "flood": 0,
+            "id": "r5",
+            "known": false,
+            "x": 2,
+            "y": 1
+          },
+          {
+            "flood": 0,
+            "id": "r6",
+            "known": false,
+            "x": 0,
+            "y": 2
+          },
+          {
+            "flood": 0,
+            "id": "r7",
+            "known": false,
+            "x": 1,
+            "y": 2
+          },
+          {
+            "flood": 0,
+            "id": "r8",
+            "known": false,
+            "x": 2,
+            "y": 2
+          }
+        ],
+        "routes": [
+          {
+            "available": false,
+            "id": "lift",
+            "label": "货运升降机",
+            "reason": "备用供电 · 联锁与升降供电"
+          },
+          {
+            "available": false,
+            "id": "passage",
+            "label": "检修通道",
+            "reason": "排水供电 · 信号校准"
+          }
+        ],
+        "serverAt": 1794014773462,
+        "stats": {
+          "explored": 1,
+          "mistakes": 0,
+          "rescues": 0,
+          "route": ""
+        },
+        "supplies": {
+          "cells": 0,
+          "documents": 0,
+          "fuses": 0,
+          "meds": 0
+        },
+        "tick": 134,
+        "votes": [
+          false,
+          false
+        ],
+        "water": [
+          -1,
+          -1,
+          -1,
+          -1,
+          0,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "you": 0
+      },
+      "afterDoor": {
+        "canAct": true,
+        "circuits": [
+          "lights",
+          "lift"
+        ],
+        "epoch": "42e89e3b588d27bc7a559452",
+        "events": [
+          {
+            "actor": -1,
+            "at": 0,
+            "id": 1,
+            "kind": "arrival",
+            "room": "r4",
+            "text": "所有人已抵达，先查看值守记录。"
+          },
+          {
+            "actor": 1,
+            "at": 834,
+            "id": 2,
+            "kind": "clue",
+            "room": "r4",
+            "text": "已记录撤离方案。"
+          }
+        ],
+        "incident": null,
+        "journal": [
+          {
+            "key": "briefing",
+            "room": "r4",
+            "text": "供电、远端联锁可启动升降机；排水与信号校准可开启检修通道。全队在站台集合。",
+            "title": "最后一班"
+          }
+        ],
+        "objectives": [
+          {
+            "done": false,
+            "id": "power",
+            "label": "修复备用供电"
+          },
+          {
+            "done": false,
+            "id": "pump",
+            "label": "恢复排水"
+          },
+          {
+            "done": false,
+            "id": "relay",
+            "label": "两端联锁同步"
+          },
+          {
+            "done": false,
+            "id": "signal",
+            "label": "校准备用信号"
+          }
+        ],
+        "options": {
+          "difficulty": "easy",
+          "scenario": "station",
+          "seed": "visual-17"
+        },
+        "paused": false,
+        "phase": "playing",
+        "players": [
+          {
+            "appliedSeq": 2,
+            "dx": 0,
+            "dy": 0,
+            "facing": "up",
+            "hp": 100,
+            "ready": false,
+            "room": "r1",
+            "seat": 0,
+            "seq": 2,
+            "x": 500,
+            "y": 525
+          },
+          {
+            "appliedSeq": 2,
+            "dx": 0,
+            "dy": 0,
+            "facing": "left",
+            "focus": "briefing",
+            "goal": {
+              "x": 145,
+              "y": 420
+            },
+            "hp": 100,
+            "ready": false,
+            "room": "r4",
+            "seat": 1,
+            "seq": 2,
+            "task": "前往目标",
+            "x": 302.30662657315105,
+            "y": 388.98179194332226
+          }
+        ],
+        "power": 99.8,
+        "protocol": 1,
+        "rally": null,
+        "remaining": 1497766,
+        "revision": 6,
+        "rooms": [
+          {
+            "flood": 0,
+            "id": "r0",
+            "known": false,
+            "x": 0,
+            "y": 0
+          },
+          {
+            "doors": [
+              {
+                "direction": "west",
+                "room": "r0",
+                "x": 145,
+                "y": 420
+              },
+              {
+                "direction": "south",
+                "room": "r4",
+                "x": 500,
+                "y": 565
+              },
+              {
+                "direction": "east",
+                "room": "r2",
+                "x": 855,
+                "y": 420
+              }
+            ],
+            "flood": 0,
+            "id": "r1",
+            "kind": "records",
+            "known": true,
+            "objects": [
+              {
+                "description": "记录备用通道所需的信号顺序。",
+                "done": false,
+                "id": "r1-clue-signal",
+                "kind": "clue-signal",
+                "label": "信号日志",
+                "x": 365,
+                "y": 370
+              },
+              {
+                "description": "独立备用电池，可补充全队电力。",
+                "done": false,
+                "id": "r1-battery",
+                "kind": "battery",
+                "label": "应急电源",
+                "x": 680,
+                "y": 400
+              }
+            ],
+            "title": "调度档案室",
+            "x": 1,
+            "y": 0
+          },
+          {
+            "flood": 0,
+            "id": "r2",
+            "known": false,
+            "x": 2,
+            "y": 0
+          },
+          {
+            "flood": 0,
+            "id": "r3",
+            "known": false,
+            "x": 0,
+            "y": 1
+          },
+          {
+            "doors": [
+              {
+                "direction": "north",
+                "room": "r1",
+                "x": 500,
+                "y": 270
+              },
+              {
+                "direction": "south",
+                "room": "r7",
+                "x": 500,
+                "y": 565
+              },
+              {
+                "direction": "east",
+                "room": "r5",
+                "x": 855,
+                "y": 420
+              },
+              {
+                "direction": "west",
+                "room": "r3",
+                "x": 145,
+                "y": 420
+              }
+            ],
+            "flood": 0,
+            "id": "r4",
+            "kind": "entry",
+            "known": true,
+            "objects": [
+              {
+                "description": "调查设施，交换线索，一起找到撤离路线。点击门口可前往相邻房间。",
+                "done": true,
+                "id": "briefing",
+                "kind": "briefing",
+                "label": "值守记录",
+                "x": 500,
+                "y": 350
+              }
+            ],
+            "title": "候车大厅",
+            "x": 1,
+            "y": 1
+          },
+          {
+            "flood": 0,
+            "id": "r5",
+            "known": false,
+            "x": 2,
+            "y": 1
+          },
+          {
+            "flood": 0,
+            "id": "r6",
+            "known": false,
+            "x": 0,
+            "y": 2
+          },
+          {
+            "flood": 0,
+            "id": "r7",
+            "known": false,
+            "x": 1,
+            "y": 2
+          },
+          {
+            "flood": 0,
+            "id": "r8",
+            "known": false,
+            "x": 2,
+            "y": 2
+          }
+        ],
+        "routes": [
+          {
+            "available": false,
+            "id": "lift",
+            "label": "货运升降机",
+            "reason": "备用供电 · 联锁与升降供电"
+          },
+          {
+            "available": false,
+            "id": "passage",
+            "label": "检修通道",
+            "reason": "排水供电 · 信号校准"
+          }
+        ],
+        "serverAt": 1794014775562,
+        "stats": {
+          "explored": 2,
+          "mistakes": 0,
+          "rescues": 0,
+          "route": ""
+        },
+        "supplies": {
+          "cells": 0,
+          "documents": 0,
+          "fuses": 0,
+          "meds": 0
+        },
+        "tick": 2234,
+        "votes": [
+          false,
+          false
+        ],
+        "water": [
+          -1,
+          0,
+          -1,
+          -1,
+          0,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "you": 0
+      },
+      "overflow": false,
+      "sceneControls": [
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "rgba(0, 0, 0, 0)",
+          "children": 0,
+          "height": 152,
+          "label": "前往北侧房间",
+          "text": "",
+          "title": null,
+          "width": 102.59375
+        },
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "rgba(0, 0, 0, 0)",
+          "children": 0,
+          "height": 152,
+          "label": "前往南侧房间",
+          "text": "",
+          "title": null,
+          "width": 102.59375
+        },
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "rgba(0, 0, 0, 0)",
+          "children": 0,
+          "height": 152,
+          "label": "前往东侧房间",
+          "text": "",
+          "title": null,
+          "width": 102.59375
+        },
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "rgba(0, 0, 0, 0)",
+          "children": 0,
+          "height": 152,
+          "label": "前往西侧房间",
+          "text": "",
+          "title": null,
+          "width": 102.59375
+        },
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "rgba(0, 0, 0, 0)",
+          "children": 0,
+          "height": 136.796875,
+          "label": "调查值守记录",
+          "text": "",
+          "title": null,
+          "width": 114
+        }
+      ],
+      "toolbar": [
+        {
+          "contained": true,
+          "label": "设施地图",
+          "text": "地图\nM"
+        },
+        {
+          "contained": true,
+          "label": "调查笔记",
+          "text": "笔记\n0"
+        },
+        {
+          "contained": true,
+          "label": "物品栏",
+          "text": "物品栏"
+        },
+        {
+          "contained": true,
+          "label": "呼叫队友",
+          "text": "呼叫"
+        }
+      ],
+      "inventory": [
+        {
+          "contained": true,
+          "count": 0,
+          "key": "cells",
+          "text": "备用电池\n0\n\n为全队恢复 30% 电力。\n\n暂无库存"
+        },
+        {
+          "contained": true,
+          "count": 0,
+          "key": "meds",
+          "text": "急救包\n0\n\n为自己恢复 50 点生命。\n\n暂无库存"
+        },
+        {
+          "contained": true,
+          "count": 0,
+          "key": "fuses",
+          "text": "保险丝\n0\n\n修复备用发电机时消耗两枚。"
+        }
+      ],
+      "hoverHighlight": true
+    },
+    {
+      "scenario": "archive",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "entry": {
+        "canAct": true,
+        "circuits": [
+          "lights",
+          "pump"
+        ],
+        "epoch": "ad902469612738b6db59d17f",
+        "events": [
+          {
+            "actor": -1,
+            "at": 0,
+            "id": 1,
+            "kind": "arrival",
+            "room": "r4",
+            "text": "所有人已抵达，先查看值守记录。"
+          }
+        ],
+        "incident": null,
+        "objectives": [
+          {
+            "done": false,
+            "id": "power",
+            "label": "解开天文锁盘"
+          },
+          {
+            "done": false,
+            "id": "pump",
+            "label": "恢复排水"
+          },
+          {
+            "done": false,
+            "id": "documents",
+            "label": "运回两份档案",
+            "progress": "0 / 2"
+          },
+          {
+            "done": false,
+            "id": "relay",
+            "label": "启动穹顶联锁"
+          }
+        ],
+        "options": {
+          "difficulty": "easy",
+          "scenario": "archive",
+          "seed": "visual-17"
+        },
+        "paused": false,
+        "phase": "playing",
+        "players": [
+          {
+            "appliedSeq": 0,
+            "dx": 0,
+            "dy": 0,
+            "facing": "down",
+            "hp": 100,
+            "ready": false,
+            "room": "r4",
+            "seat": 0,
+            "seq": 0,
+            "x": 440,
+            "y": 440
+          },
+          {
+            "appliedSeq": 1,
+            "dx": 0,
+            "dy": 0,
+            "facing": "up",
+            "goal": {
+              "x": 500,
+              "y": 350
+            },
+            "hp": 100,
+            "ready": false,
+            "room": "r4",
+            "seat": 1,
+            "seq": 1,
+            "task": "前往目标",
+            "x": 535,
+            "y": 440
+          }
+        ],
+        "power": 100,
+        "protocol": 1,
+        "rally": null,
+        "remaining": 1499892,
+        "revision": 2,
+        "rooms": [
+          {
+            "flood": 0,
+            "id": "r0",
+            "known": false,
+            "x": 0,
+            "y": 0
+          },
+          {
+            "flood": 0,
+            "id": "r1",
+            "known": false,
+            "x": 1,
+            "y": 0
+          },
+          {
+            "flood": 0,
+            "id": "r2",
+            "known": false,
+            "x": 2,
+            "y": 0
+          },
+          {
+            "flood": 0,
+            "id": "r3",
+            "known": false,
+            "x": 0,
+            "y": 1
+          },
+          {
+            "doors": [
+              {
+                "direction": "north",
+                "room": "r1",
+                "x": 500,
+                "y": 270
+              },
+              {
+                "direction": "south",
+                "room": "r7",
+                "x": 500,
+                "y": 565
+              },
+              {
+                "direction": "east",
+                "room": "r5",
+                "x": 855,
+                "y": 420
+              },
+              {
+                "direction": "west",
+                "room": "r3",
+                "x": 145,
+                "y": 420
+              }
+            ],
+            "flood": 0,
+            "id": "r4",
+            "kind": "entry",
+            "known": true,
+            "objects": [
+              {
+                "description": "调查设施，交换线索，一起找到撤离路线。点击门口可前往相邻房间。",
+                "done": false,
+                "id": "briefing",
+                "kind": "briefing",
+                "label": "值守记录",
+                "x": 500,
+                "y": 350
+              }
+            ],
+            "title": "月影阅览厅",
+            "x": 1,
+            "y": 1
+          },
+          {
+            "flood": 0,
+            "id": "r5",
+            "known": false,
+            "x": 2,
+            "y": 1
+          },
+          {
+            "flood": 0,
+            "id": "r6",
+            "known": false,
+            "x": 0,
+            "y": 2
+          },
+          {
+            "flood": 0,
+            "id": "r7",
+            "known": false,
+            "x": 1,
+            "y": 2
+          },
+          {
+            "flood": 0,
+            "id": "r8",
+            "known": false,
+            "x": 2,
+            "y": 2
+          }
+        ],
+        "routes": [
+          {
+            "available": false,
+            "id": "boat",
+            "label": "水闸救生艇",
+            "reason": "排水供电 · 两份档案送达"
+          },
+          {
+            "available": false,
+            "id": "lift",
+            "label": "穹顶吊笼",
+            "reason": "天文锁盘 · 联锁与升降供电"
+          }
+        ],
+        "serverAt": 1794014776762,
+        "stats": {
+          "explored": 1,
+          "mistakes": 0,
+          "rescues": 0,
+          "route": ""
+        },
+        "supplies": {
+          "cells": 0,
+          "documents": 0,
+          "fuses": 0,
+          "meds": 0
+        },
+        "tick": 108,
+        "votes": [
+          false,
+          false
+        ],
+        "water": [
+          -1,
+          -1,
+          -1,
+          -1,
+          0,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "you": 0
+      },
+      "afterDoor": {
+        "canAct": true,
+        "circuits": [
+          "lights",
+          "pump"
+        ],
+        "epoch": "ad902469612738b6db59d17f",
+        "events": [
+          {
+            "actor": -1,
+            "at": 0,
+            "id": 1,
+            "kind": "arrival",
+            "room": "r4",
+            "text": "所有人已抵达，先查看值守记录。"
+          },
+          {
+            "actor": 1,
+            "at": 808,
+            "id": 2,
+            "kind": "clue",
+            "room": "r4",
+            "text": "已记录撤离方案。"
+          }
+        ],
+        "incident": null,
+        "journal": [
+          {
+            "key": "briefing",
+            "room": "r4",
+            "text": "排水后，将两份密封档案送至水闸可乘艇离开；也可解开天文锁盘并联动观测台，启用穹顶吊笼。",
+            "title": "守馆人遗言"
+          }
+        ],
+        "objectives": [
+          {
+            "done": false,
+            "id": "power",
+            "label": "解开天文锁盘"
+          },
+          {
+            "done": false,
+            "id": "pump",
+            "label": "恢复排水"
+          },
+          {
+            "done": false,
+            "id": "documents",
+            "label": "运回两份档案",
+            "progress": "0 / 2"
+          },
+          {
+            "done": false,
+            "id": "relay",
+            "label": "启动穹顶联锁"
+          }
+        ],
+        "options": {
+          "difficulty": "easy",
+          "scenario": "archive",
+          "seed": "visual-17"
+        },
+        "paused": false,
+        "phase": "playing",
+        "players": [
+          {
+            "appliedSeq": 2,
+            "dx": 0,
+            "dy": 0,
+            "facing": "up",
+            "hp": 100,
+            "ready": false,
+            "room": "r1",
+            "seat": 0,
+            "seq": 2,
+            "x": 500,
+            "y": 525
+          },
+          {
+            "appliedSeq": 2,
+            "dx": 0,
+            "dy": 0,
+            "facing": "left",
+            "focus": "briefing",
+            "goal": {
+              "x": 145,
+              "y": 420
+            },
+            "hp": 100,
+            "ready": false,
+            "room": "r4",
+            "seat": 1,
+            "seq": 2,
+            "task": "前往目标",
+            "x": 287.099444001855,
+            "y": 391.9803913235778
+          }
+        ],
+        "power": 99.8,
+        "protocol": 1,
+        "rally": null,
+        "remaining": 1497692,
+        "revision": 6,
+        "rooms": [
+          {
+            "flood": 0,
+            "id": "r0",
+            "known": false,
+            "x": 0,
+            "y": 0
+          },
+          {
+            "doors": [
+              {
+                "direction": "west",
+                "room": "r0",
+                "x": 145,
+                "y": 420
+              },
+              {
+                "direction": "south",
+                "room": "r4",
+                "x": 500,
+                "y": 565
+              },
+              {
+                "direction": "east",
+                "room": "r2",
+                "x": 855,
+                "y": 420
+              }
+            ],
+            "flood": 0,
+            "id": "r1",
+            "kind": "records",
+            "known": true,
+            "objects": [
+              {
+                "description": "记录备用通道所需的信号顺序。",
+                "done": false,
+                "id": "r1-clue-signal",
+                "kind": "clue-signal",
+                "label": "信号日志",
+                "x": 365,
+                "y": 370
+              },
+              {
+                "description": "独立备用电池，可补充全队电力。",
+                "done": false,
+                "id": "r1-battery",
+                "kind": "battery",
+                "label": "应急电源",
+                "x": 680,
+                "y": 400
+              }
+            ],
+            "title": "编目室",
+            "x": 1,
+            "y": 0
+          },
+          {
+            "flood": 0,
+            "id": "r2",
+            "known": false,
+            "x": 2,
+            "y": 0
+          },
+          {
+            "flood": 0,
+            "id": "r3",
+            "known": false,
+            "x": 0,
+            "y": 1
+          },
+          {
+            "doors": [
+              {
+                "direction": "north",
+                "room": "r1",
+                "x": 500,
+                "y": 270
+              },
+              {
+                "direction": "south",
+                "room": "r7",
+                "x": 500,
+                "y": 565
+              },
+              {
+                "direction": "east",
+                "room": "r5",
+                "x": 855,
+                "y": 420
+              },
+              {
+                "direction": "west",
+                "room": "r3",
+                "x": 145,
+                "y": 420
+              }
+            ],
+            "flood": 0,
+            "id": "r4",
+            "kind": "entry",
+            "known": true,
+            "objects": [
+              {
+                "description": "调查设施，交换线索，一起找到撤离路线。点击门口可前往相邻房间。",
+                "done": true,
+                "id": "briefing",
+                "kind": "briefing",
+                "label": "值守记录",
+                "x": 500,
+                "y": 350
+              }
+            ],
+            "title": "月影阅览厅",
+            "x": 1,
+            "y": 1
+          },
+          {
+            "flood": 0,
+            "id": "r5",
+            "known": false,
+            "x": 2,
+            "y": 1
+          },
+          {
+            "flood": 0,
+            "id": "r6",
+            "known": false,
+            "x": 0,
+            "y": 2
+          },
+          {
+            "flood": 0,
+            "id": "r7",
+            "known": false,
+            "x": 1,
+            "y": 2
+          },
+          {
+            "flood": 0,
+            "id": "r8",
+            "known": false,
+            "x": 2,
+            "y": 2
+          }
+        ],
+        "routes": [
+          {
+            "available": false,
+            "id": "boat",
+            "label": "水闸救生艇",
+            "reason": "排水供电 · 两份档案送达"
+          },
+          {
+            "available": false,
+            "id": "lift",
+            "label": "穹顶吊笼",
+            "reason": "天文锁盘 · 联锁与升降供电"
+          }
+        ],
+        "serverAt": 1794014778962,
+        "stats": {
+          "explored": 2,
+          "mistakes": 0,
+          "rescues": 0,
+          "route": ""
+        },
+        "supplies": {
+          "cells": 0,
+          "documents": 0,
+          "fuses": 0,
+          "meds": 0
+        },
+        "tick": 2308,
+        "votes": [
+          false,
+          false
+        ],
+        "water": [
+          -1,
+          0,
+          -1,
+          -1,
+          0,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "you": 0
+      },
+      "overflow": false,
+      "sceneControls": [
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "rgba(0, 0, 0, 0)",
+          "children": 0,
+          "height": 152,
+          "label": "前往北侧房间",
+          "text": "",
+          "title": null,
+          "width": 102.59375
+        },
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "rgba(0, 0, 0, 0)",
+          "children": 0,
+          "height": 152,
+          "label": "前往南侧房间",
+          "text": "",
+          "title": null,
+          "width": 102.59375
+        },
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "rgba(0, 0, 0, 0)",
+          "children": 0,
+          "height": 152,
+          "label": "前往东侧房间",
+          "text": "",
+          "title": null,
+          "width": 102.59375
+        },
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "rgba(0, 0, 0, 0)",
+          "children": 0,
+          "height": 152,
+          "label": "前往西侧房间",
+          "text": "",
+          "title": null,
+          "width": 102.59375
+        },
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "rgba(0, 0, 0, 0)",
+          "children": 0,
+          "height": 136.796875,
+          "label": "调查值守记录",
+          "text": "",
+          "title": null,
+          "width": 114
+        }
+      ],
+      "toolbar": [
+        {
+          "contained": true,
+          "label": "设施地图",
+          "text": "地图\nM"
+        },
+        {
+          "contained": true,
+          "label": "调查笔记",
+          "text": "笔记\n0"
+        },
+        {
+          "contained": true,
+          "label": "物品栏",
+          "text": "物品栏"
+        },
+        {
+          "contained": true,
+          "label": "呼叫队友",
+          "text": "呼叫"
+        }
+      ],
+      "inventory": [
+        {
+          "contained": true,
+          "count": 0,
+          "key": "cells",
+          "text": "备用电池\n0\n\n为全队恢复 30% 电力。\n\n暂无库存"
+        },
+        {
+          "contained": true,
+          "count": 0,
+          "key": "meds",
+          "text": "急救包\n0\n\n为自己恢复 50 点生命。\n\n暂无库存"
+        },
+        {
+          "contained": true,
+          "count": 0,
+          "key": "documents",
+          "text": "已运回档案\n0\n\n已送达撤离装置，救生艇需要两份。"
+        }
+      ],
+      "hoverHighlight": true
+    },
+    {
+      "scenario": "station",
+      "viewport": [
+        320,
+        820
+      ],
+      "entry": {
+        "canAct": true,
+        "circuits": [
+          "lights",
+          "lift"
+        ],
+        "epoch": "128eed76995f33d71cbc7aa8",
+        "events": [
+          {
+            "actor": -1,
+            "at": 0,
+            "id": 1,
+            "kind": "arrival",
+            "room": "r4",
+            "text": "所有人已抵达，先查看值守记录。"
+          }
+        ],
+        "incident": null,
+        "objectives": [
+          {
+            "done": false,
+            "id": "power",
+            "label": "修复备用供电"
+          },
+          {
+            "done": false,
+            "id": "pump",
+            "label": "恢复排水"
+          },
+          {
+            "done": false,
+            "id": "relay",
+            "label": "两端联锁同步"
+          },
+          {
+            "done": false,
+            "id": "signal",
+            "label": "校准备用信号"
+          }
+        ],
+        "options": {
+          "difficulty": "easy",
+          "scenario": "station",
+          "seed": "visual-17"
+        },
+        "paused": false,
+        "phase": "playing",
+        "players": [
+          {
+            "appliedSeq": 0,
+            "dx": 0,
+            "dy": 0,
+            "facing": "down",
+            "hp": 100,
+            "ready": false,
+            "room": "r4",
+            "seat": 0,
+            "seq": 0,
+            "x": 440,
+            "y": 440
+          },
+          {
+            "appliedSeq": 1,
+            "dx": 0,
+            "dy": 0,
+            "facing": "up",
+            "goal": {
+              "x": 500,
+              "y": 350
+            },
+            "hp": 100,
+            "ready": false,
+            "room": "r4",
+            "seat": 1,
+            "seq": 1,
+            "task": "前往目标",
+            "x": 529.3820829520982,
+            "y": 425.5539275911099
+          }
+        ],
+        "power": 100,
+        "protocol": 1,
+        "rally": null,
+        "remaining": 1499786,
+        "revision": 2,
+        "rooms": [
+          {
+            "flood": 0,
+            "id": "r0",
+            "known": false,
+            "x": 0,
+            "y": 0
+          },
+          {
+            "flood": 0,
+            "id": "r1",
+            "known": false,
+            "x": 1,
+            "y": 0
+          },
+          {
+            "flood": 0,
+            "id": "r2",
+            "known": false,
+            "x": 2,
+            "y": 0
+          },
+          {
+            "flood": 0,
+            "id": "r3",
+            "known": false,
+            "x": 0,
+            "y": 1
+          },
+          {
+            "doors": [
+              {
+                "direction": "north",
+                "room": "r1",
+                "x": 500,
+                "y": 270
+              },
+              {
+                "direction": "south",
+                "room": "r7",
+                "x": 500,
+                "y": 565
+              },
+              {
+                "direction": "east",
+                "room": "r5",
+                "x": 855,
+                "y": 420
+              },
+              {
+                "direction": "west",
+                "room": "r3",
+                "x": 145,
+                "y": 420
+              }
+            ],
+            "flood": 0,
+            "id": "r4",
+            "kind": "entry",
+            "known": true,
+            "objects": [
+              {
+                "description": "调查设施，交换线索，一起找到撤离路线。点击门口可前往相邻房间。",
+                "done": false,
+                "id": "briefing",
+                "kind": "briefing",
+                "label": "值守记录",
+                "x": 500,
+                "y": 350
+              }
+            ],
+            "title": "候车大厅",
+            "x": 1,
+            "y": 1
+          },
+          {
+            "flood": 0,
+            "id": "r5",
+            "known": false,
+            "x": 2,
+            "y": 1
+          },
+          {
+            "flood": 0,
+            "id": "r6",
+            "known": false,
+            "x": 0,
+            "y": 2
+          },
+          {
+            "flood": 0,
+            "id": "r7",
+            "known": false,
+            "x": 1,
+            "y": 2
+          },
+          {
+            "flood": 0,
+            "id": "r8",
+            "known": false,
+            "x": 2,
+            "y": 2
+          }
+        ],
+        "routes": [
+          {
+            "available": false,
+            "id": "lift",
+            "label": "货运升降机",
+            "reason": "备用供电 · 联锁与升降供电"
+          },
+          {
+            "available": false,
+            "id": "passage",
+            "label": "检修通道",
+            "reason": "排水供电 · 信号校准"
+          }
+        ],
+        "serverAt": 1794014780112,
+        "stats": {
+          "explored": 1,
+          "mistakes": 0,
+          "rescues": 0,
+          "route": ""
+        },
+        "supplies": {
+          "cells": 0,
+          "documents": 0,
+          "fuses": 0,
+          "meds": 0
+        },
+        "tick": 214,
+        "votes": [
+          false,
+          false
+        ],
+        "water": [
+          -1,
+          -1,
+          -1,
+          -1,
+          0,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "you": 0
+      },
+      "afterDoor": {
+        "canAct": true,
+        "circuits": [
+          "lights",
+          "lift"
+        ],
+        "epoch": "128eed76995f33d71cbc7aa8",
+        "events": [
+          {
+            "actor": -1,
+            "at": 0,
+            "id": 1,
+            "kind": "arrival",
+            "room": "r4",
+            "text": "所有人已抵达，先查看值守记录。"
+          },
+          {
+            "actor": 1,
+            "at": 814,
+            "id": 2,
+            "kind": "clue",
+            "room": "r4",
+            "text": "已记录撤离方案。"
+          }
+        ],
+        "incident": null,
+        "journal": [
+          {
+            "key": "briefing",
+            "room": "r4",
+            "text": "供电、远端联锁可启动升降机；排水与信号校准可开启检修通道。全队在站台集合。",
+            "title": "最后一班"
+          }
+        ],
+        "objectives": [
+          {
+            "done": false,
+            "id": "power",
+            "label": "修复备用供电"
+          },
+          {
+            "done": false,
+            "id": "pump",
+            "label": "恢复排水"
+          },
+          {
+            "done": false,
+            "id": "relay",
+            "label": "两端联锁同步"
+          },
+          {
+            "done": false,
+            "id": "signal",
+            "label": "校准备用信号"
+          }
+        ],
+        "options": {
+          "difficulty": "easy",
+          "scenario": "station",
+          "seed": "visual-17"
+        },
+        "paused": false,
+        "phase": "playing",
+        "players": [
+          {
+            "appliedSeq": 2,
+            "dx": 0,
+            "dy": 0,
+            "facing": "up",
+            "hp": 100,
+            "ready": false,
+            "room": "r1",
+            "seat": 0,
+            "seq": 2,
+            "x": 500,
+            "y": 525
+          },
+          {
+            "appliedSeq": 2,
+            "dx": 0,
+            "dy": 0,
+            "facing": "left",
+            "focus": "briefing",
+            "goal": {
+              "x": 145,
+              "y": 420
+            },
+            "hp": 100,
+            "ready": false,
+            "room": "r4",
+            "seat": 1,
+            "seq": 2,
+            "task": "前往目标",
+            "x": 302.30662657315105,
+            "y": 388.98179194332226
+          }
+        ],
+        "power": 99.8,
+        "protocol": 1,
+        "rally": null,
+        "remaining": 1497786,
+        "revision": 6,
+        "rooms": [
+          {
+            "flood": 0,
+            "id": "r0",
+            "known": false,
+            "x": 0,
+            "y": 0
+          },
+          {
+            "doors": [
+              {
+                "direction": "west",
+                "room": "r0",
+                "x": 145,
+                "y": 420
+              },
+              {
+                "direction": "south",
+                "room": "r4",
+                "x": 500,
+                "y": 565
+              },
+              {
+                "direction": "east",
+                "room": "r2",
+                "x": 855,
+                "y": 420
+              }
+            ],
+            "flood": 0,
+            "id": "r1",
+            "kind": "records",
+            "known": true,
+            "objects": [
+              {
+                "description": "记录备用通道所需的信号顺序。",
+                "done": false,
+                "id": "r1-clue-signal",
+                "kind": "clue-signal",
+                "label": "信号日志",
+                "x": 365,
+                "y": 370
+              },
+              {
+                "description": "独立备用电池，可补充全队电力。",
+                "done": false,
+                "id": "r1-battery",
+                "kind": "battery",
+                "label": "应急电源",
+                "x": 680,
+                "y": 400
+              }
+            ],
+            "title": "调度档案室",
+            "x": 1,
+            "y": 0
+          },
+          {
+            "flood": 0,
+            "id": "r2",
+            "known": false,
+            "x": 2,
+            "y": 0
+          },
+          {
+            "flood": 0,
+            "id": "r3",
+            "known": false,
+            "x": 0,
+            "y": 1
+          },
+          {
+            "doors": [
+              {
+                "direction": "north",
+                "room": "r1",
+                "x": 500,
+                "y": 270
+              },
+              {
+                "direction": "south",
+                "room": "r7",
+                "x": 500,
+                "y": 565
+              },
+              {
+                "direction": "east",
+                "room": "r5",
+                "x": 855,
+                "y": 420
+              },
+              {
+                "direction": "west",
+                "room": "r3",
+                "x": 145,
+                "y": 420
+              }
+            ],
+            "flood": 0,
+            "id": "r4",
+            "kind": "entry",
+            "known": true,
+            "objects": [
+              {
+                "description": "调查设施，交换线索，一起找到撤离路线。点击门口可前往相邻房间。",
+                "done": true,
+                "id": "briefing",
+                "kind": "briefing",
+                "label": "值守记录",
+                "x": 500,
+                "y": 350
+              }
+            ],
+            "title": "候车大厅",
+            "x": 1,
+            "y": 1
+          },
+          {
+            "flood": 0,
+            "id": "r5",
+            "known": false,
+            "x": 2,
+            "y": 1
+          },
+          {
+            "flood": 0,
+            "id": "r6",
+            "known": false,
+            "x": 0,
+            "y": 2
+          },
+          {
+            "flood": 0,
+            "id": "r7",
+            "known": false,
+            "x": 1,
+            "y": 2
+          },
+          {
+            "flood": 0,
+            "id": "r8",
+            "known": false,
+            "x": 2,
+            "y": 2
+          }
+        ],
+        "routes": [
+          {
+            "available": false,
+            "id": "lift",
+            "label": "货运升降机",
+            "reason": "备用供电 · 联锁与升降供电"
+          },
+          {
+            "available": false,
+            "id": "passage",
+            "label": "检修通道",
+            "reason": "排水供电 · 信号校准"
+          }
+        ],
+        "serverAt": 1794014782112,
+        "stats": {
+          "explored": 2,
+          "mistakes": 0,
+          "rescues": 0,
+          "route": ""
+        },
+        "supplies": {
+          "cells": 0,
+          "documents": 0,
+          "fuses": 0,
+          "meds": 0
+        },
+        "tick": 2214,
+        "votes": [
+          false,
+          false
+        ],
+        "water": [
+          -1,
+          0,
+          -1,
+          -1,
+          0,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "you": 0
+      },
+      "overflow": false,
+      "sceneControls": [
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "rgba(0, 0, 0, 0)",
+          "children": 0,
+          "height": 49,
+          "label": "前往北侧房间",
+          "text": "",
+          "title": null,
+          "width": 44
+        },
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "rgba(0, 0, 0, 0)",
+          "children": 0,
+          "height": 49,
+          "label": "前往南侧房间",
+          "text": "",
+          "title": null,
+          "width": 44
+        },
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "rgba(0, 0, 0, 0)",
+          "children": 0,
+          "height": 49,
+          "label": "前往东侧房间",
+          "text": "",
+          "title": null,
+          "width": 44
+        },
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "rgba(0, 0, 0, 0)",
+          "children": 0,
+          "height": 49,
+          "label": "前往西侧房间",
+          "text": "",
+          "title": null,
+          "width": 44.000003814697266
+        },
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "rgba(0, 0, 0, 0)",
+          "children": 0,
+          "height": 44.09375,
+          "label": "调查值守记录",
+          "text": "",
+          "title": null,
+          "width": 44
+        }
+      ],
+      "toolbar": [
+        {
+          "contained": true,
+          "label": "设施地图",
+          "text": "地图"
+        },
+        {
+          "contained": true,
+          "label": "调查笔记",
+          "text": "笔记\n0"
+        },
+        {
+          "contained": true,
+          "label": "物品栏",
+          "text": "物品栏"
+        },
+        {
+          "contained": true,
+          "label": "呼叫队友",
+          "text": "呼叫"
+        }
+      ],
+      "inventory": [
+        {
+          "contained": true,
+          "count": 0,
+          "key": "cells",
+          "text": "备用电池\n0\n\n为全队恢复 30% 电力。\n\n暂无库存"
+        },
+        {
+          "contained": true,
+          "count": 0,
+          "key": "meds",
+          "text": "急救包\n0\n\n为自己恢复 50 点生命。\n\n暂无库存"
+        },
+        {
+          "contained": true,
+          "count": 0,
+          "key": "fuses",
+          "text": "保险丝\n0\n\n修复备用发电机时消耗两枚。"
+        }
+      ],
+      "hoverHighlight": true
+    },
+    {
+      "scenario": "archive",
+      "viewport": [
+        320,
+        820
+      ],
+      "entry": {
+        "canAct": true,
+        "circuits": [
+          "lights",
+          "pump"
+        ],
+        "epoch": "624ef7973f2895dca3dbf2f5",
+        "events": [
+          {
+            "actor": -1,
+            "at": 0,
+            "id": 1,
+            "kind": "arrival",
+            "room": "r4",
+            "text": "所有人已抵达，先查看值守记录。"
+          }
+        ],
+        "incident": null,
+        "objectives": [
+          {
+            "done": false,
+            "id": "power",
+            "label": "解开天文锁盘"
+          },
+          {
+            "done": false,
+            "id": "pump",
+            "label": "恢复排水"
+          },
+          {
+            "done": false,
+            "id": "documents",
+            "label": "运回两份档案",
+            "progress": "0 / 2"
+          },
+          {
+            "done": false,
+            "id": "relay",
+            "label": "启动穹顶联锁"
+          }
+        ],
+        "options": {
+          "difficulty": "easy",
+          "scenario": "archive",
+          "seed": "visual-17"
+        },
+        "paused": false,
+        "phase": "playing",
+        "players": [
+          {
+            "appliedSeq": 0,
+            "dx": 0,
+            "dy": 0,
+            "facing": "down",
+            "hp": 100,
+            "ready": false,
+            "room": "r4",
+            "seat": 0,
+            "seq": 0,
+            "x": 440,
+            "y": 440
+          },
+          {
+            "appliedSeq": 1,
+            "dx": 0,
+            "dy": 0,
+            "facing": "up",
+            "goal": {
+              "x": 500,
+              "y": 350
+            },
+            "hp": 100,
+            "ready": false,
+            "room": "r4",
+            "seat": 1,
+            "seq": 1,
+            "task": "前往目标",
+            "x": 529.3820829520982,
+            "y": 425.5539275911099
+          }
+        ],
+        "power": 100,
+        "protocol": 1,
+        "rally": null,
+        "remaining": 1499776,
+        "revision": 2,
+        "rooms": [
+          {
+            "flood": 0,
+            "id": "r0",
+            "known": false,
+            "x": 0,
+            "y": 0
+          },
+          {
+            "flood": 0,
+            "id": "r1",
+            "known": false,
+            "x": 1,
+            "y": 0
+          },
+          {
+            "flood": 0,
+            "id": "r2",
+            "known": false,
+            "x": 2,
+            "y": 0
+          },
+          {
+            "flood": 0,
+            "id": "r3",
+            "known": false,
+            "x": 0,
+            "y": 1
+          },
+          {
+            "doors": [
+              {
+                "direction": "north",
+                "room": "r1",
+                "x": 500,
+                "y": 270
+              },
+              {
+                "direction": "south",
+                "room": "r7",
+                "x": 500,
+                "y": 565
+              },
+              {
+                "direction": "east",
+                "room": "r5",
+                "x": 855,
+                "y": 420
+              },
+              {
+                "direction": "west",
+                "room": "r3",
+                "x": 145,
+                "y": 420
+              }
+            ],
+            "flood": 0,
+            "id": "r4",
+            "kind": "entry",
+            "known": true,
+            "objects": [
+              {
+                "description": "调查设施，交换线索，一起找到撤离路线。点击门口可前往相邻房间。",
+                "done": false,
+                "id": "briefing",
+                "kind": "briefing",
+                "label": "值守记录",
+                "x": 500,
+                "y": 350
+              }
+            ],
+            "title": "月影阅览厅",
+            "x": 1,
+            "y": 1
+          },
+          {
+            "flood": 0,
+            "id": "r5",
+            "known": false,
+            "x": 2,
+            "y": 1
+          },
+          {
+            "flood": 0,
+            "id": "r6",
+            "known": false,
+            "x": 0,
+            "y": 2
+          },
+          {
+            "flood": 0,
+            "id": "r7",
+            "known": false,
+            "x": 1,
+            "y": 2
+          },
+          {
+            "flood": 0,
+            "id": "r8",
+            "known": false,
+            "x": 2,
+            "y": 2
+          }
+        ],
+        "routes": [
+          {
+            "available": false,
+            "id": "boat",
+            "label": "水闸救生艇",
+            "reason": "排水供电 · 两份档案送达"
+          },
+          {
+            "available": false,
+            "id": "lift",
+            "label": "穹顶吊笼",
+            "reason": "天文锁盘 · 联锁与升降供电"
+          }
+        ],
+        "serverAt": 1794014783312,
+        "stats": {
+          "explored": 1,
+          "mistakes": 0,
+          "rescues": 0,
+          "route": ""
+        },
+        "supplies": {
+          "cells": 0,
+          "documents": 0,
+          "fuses": 0,
+          "meds": 0
+        },
+        "tick": 224,
+        "votes": [
+          false,
+          false
+        ],
+        "water": [
+          -1,
+          -1,
+          -1,
+          -1,
+          0,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "you": 0
+      },
+      "afterDoor": {
+        "canAct": true,
+        "circuits": [
+          "lights",
+          "pump"
+        ],
+        "epoch": "624ef7973f2895dca3dbf2f5",
+        "events": [
+          {
+            "actor": -1,
+            "at": 0,
+            "id": 1,
+            "kind": "arrival",
+            "room": "r4",
+            "text": "所有人已抵达，先查看值守记录。"
+          },
+          {
+            "actor": 1,
+            "at": 824,
+            "id": 2,
+            "kind": "clue",
+            "room": "r4",
+            "text": "已记录撤离方案。"
+          }
+        ],
+        "incident": null,
+        "journal": [
+          {
+            "key": "briefing",
+            "room": "r4",
+            "text": "排水后，将两份密封档案送至水闸可乘艇离开；也可解开天文锁盘并联动观测台，启用穹顶吊笼。",
+            "title": "守馆人遗言"
+          }
+        ],
+        "objectives": [
+          {
+            "done": false,
+            "id": "power",
+            "label": "解开天文锁盘"
+          },
+          {
+            "done": false,
+            "id": "pump",
+            "label": "恢复排水"
+          },
+          {
+            "done": false,
+            "id": "documents",
+            "label": "运回两份档案",
+            "progress": "0 / 2"
+          },
+          {
+            "done": false,
+            "id": "relay",
+            "label": "启动穹顶联锁"
+          }
+        ],
+        "options": {
+          "difficulty": "easy",
+          "scenario": "archive",
+          "seed": "visual-17"
+        },
+        "paused": false,
+        "phase": "playing",
+        "players": [
+          {
+            "appliedSeq": 2,
+            "dx": 0,
+            "dy": 0,
+            "facing": "up",
+            "hp": 100,
+            "ready": false,
+            "room": "r1",
+            "seat": 0,
+            "seq": 2,
+            "x": 500,
+            "y": 525
+          },
+          {
+            "appliedSeq": 2,
+            "dx": 0,
+            "dy": 0,
+            "facing": "left",
+            "focus": "briefing",
+            "goal": {
+              "x": 145,
+              "y": 420
+            },
+            "hp": 100,
+            "ready": false,
+            "room": "r4",
+            "seat": 1,
+            "seq": 2,
+            "task": "前往目标",
+            "x": 317.5138091444471,
+            "y": 385.98319256306667
+          }
+        ],
+        "power": 99.8,
+        "protocol": 1,
+        "rally": null,
+        "remaining": 1497876,
+        "revision": 6,
+        "rooms": [
+          {
+            "flood": 0,
+            "id": "r0",
+            "known": false,
+            "x": 0,
+            "y": 0
+          },
+          {
+            "doors": [
+              {
+                "direction": "west",
+                "room": "r0",
+                "x": 145,
+                "y": 420
+              },
+              {
+                "direction": "south",
+                "room": "r4",
+                "x": 500,
+                "y": 565
+              },
+              {
+                "direction": "east",
+                "room": "r2",
+                "x": 855,
+                "y": 420
+              }
+            ],
+            "flood": 0,
+            "id": "r1",
+            "kind": "records",
+            "known": true,
+            "objects": [
+              {
+                "description": "记录备用通道所需的信号顺序。",
+                "done": false,
+                "id": "r1-clue-signal",
+                "kind": "clue-signal",
+                "label": "信号日志",
+                "x": 365,
+                "y": 370
+              },
+              {
+                "description": "独立备用电池，可补充全队电力。",
+                "done": false,
+                "id": "r1-battery",
+                "kind": "battery",
+                "label": "应急电源",
+                "x": 680,
+                "y": 400
+              }
+            ],
+            "title": "编目室",
+            "x": 1,
+            "y": 0
+          },
+          {
+            "flood": 0,
+            "id": "r2",
+            "known": false,
+            "x": 2,
+            "y": 0
+          },
+          {
+            "flood": 0,
+            "id": "r3",
+            "known": false,
+            "x": 0,
+            "y": 1
+          },
+          {
+            "doors": [
+              {
+                "direction": "north",
+                "room": "r1",
+                "x": 500,
+                "y": 270
+              },
+              {
+                "direction": "south",
+                "room": "r7",
+                "x": 500,
+                "y": 565
+              },
+              {
+                "direction": "east",
+                "room": "r5",
+                "x": 855,
+                "y": 420
+              },
+              {
+                "direction": "west",
+                "room": "r3",
+                "x": 145,
+                "y": 420
+              }
+            ],
+            "flood": 0,
+            "id": "r4",
+            "kind": "entry",
+            "known": true,
+            "objects": [
+              {
+                "description": "调查设施，交换线索，一起找到撤离路线。点击门口可前往相邻房间。",
+                "done": true,
+                "id": "briefing",
+                "kind": "briefing",
+                "label": "值守记录",
+                "x": 500,
+                "y": 350
+              }
+            ],
+            "title": "月影阅览厅",
+            "x": 1,
+            "y": 1
+          },
+          {
+            "flood": 0,
+            "id": "r5",
+            "known": false,
+            "x": 2,
+            "y": 1
+          },
+          {
+            "flood": 0,
+            "id": "r6",
+            "known": false,
+            "x": 0,
+            "y": 2
+          },
+          {
+            "flood": 0,
+            "id": "r7",
+            "known": false,
+            "x": 1,
+            "y": 2
+          },
+          {
+            "flood": 0,
+            "id": "r8",
+            "known": false,
+            "x": 2,
+            "y": 2
+          }
+        ],
+        "routes": [
+          {
+            "available": false,
+            "id": "boat",
+            "label": "水闸救生艇",
+            "reason": "排水供电 · 两份档案送达"
+          },
+          {
+            "available": false,
+            "id": "lift",
+            "label": "穹顶吊笼",
+            "reason": "天文锁盘 · 联锁与升降供电"
+          }
+        ],
+        "serverAt": 1794014785212,
+        "stats": {
+          "explored": 2,
+          "mistakes": 0,
+          "rescues": 0,
+          "route": ""
+        },
+        "supplies": {
+          "cells": 0,
+          "documents": 0,
+          "fuses": 0,
+          "meds": 0
+        },
+        "tick": 2124,
+        "votes": [
+          false,
+          false
+        ],
+        "water": [
+          -1,
+          0,
+          -1,
+          -1,
+          0,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "you": 0
+      },
+      "overflow": false,
+      "sceneControls": [
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "rgba(0, 0, 0, 0)",
+          "children": 0,
+          "height": 49,
+          "label": "前往北侧房间",
+          "text": "",
+          "title": null,
+          "width": 44
+        },
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "rgba(0, 0, 0, 0)",
+          "children": 0,
+          "height": 49,
+          "label": "前往南侧房间",
+          "text": "",
+          "title": null,
+          "width": 44
+        },
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "rgba(0, 0, 0, 0)",
+          "children": 0,
+          "height": 49,
+          "label": "前往东侧房间",
+          "text": "",
+          "title": null,
+          "width": 44
+        },
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "rgba(0, 0, 0, 0)",
+          "children": 0,
+          "height": 49,
+          "label": "前往西侧房间",
+          "text": "",
+          "title": null,
+          "width": 44.000003814697266
+        },
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "rgba(0, 0, 0, 0)",
+          "children": 0,
+          "height": 44.09375,
+          "label": "调查值守记录",
+          "text": "",
+          "title": null,
+          "width": 44
+        }
+      ],
+      "toolbar": [
+        {
+          "contained": true,
+          "label": "设施地图",
+          "text": "地图"
+        },
+        {
+          "contained": true,
+          "label": "调查笔记",
+          "text": "笔记\n0"
+        },
+        {
+          "contained": true,
+          "label": "物品栏",
+          "text": "物品栏"
+        },
+        {
+          "contained": true,
+          "label": "呼叫队友",
+          "text": "呼叫"
+        }
+      ],
+      "inventory": [
+        {
+          "contained": true,
+          "count": 0,
+          "key": "cells",
+          "text": "备用电池\n0\n\n为全队恢复 30% 电力。\n\n暂无库存"
+        },
+        {
+          "contained": true,
+          "count": 0,
+          "key": "meds",
+          "text": "急救包\n0\n\n为自己恢复 50 点生命。\n\n暂无库存"
+        },
+        {
+          "contained": true,
+          "count": 0,
+          "key": "documents",
+          "text": "已运回档案\n0\n\n已送达撤离装置，救生艇需要两份。"
+        }
+      ],
+      "hoverHighlight": true
+    }
+  ],
+  "sourceSHA256": {
+    "games/escape/web/canvas.ts": "121caf76ca3a0d3d220c81c460caa3bbe11a5908d381f1cd1c98e47aa8899f2e",
+    "games/escape/web/catalog.tsx": "bafdec262e6650777f336113aed981f7f3bade504c8da17eb34ec84051f0c5c0",
+    "games/escape/web/art.ts": "3ae154ac20b513d82ceac772b28f2c6136323a5d04d4082fc8354c4108aacc61",
+    "games/escape/web/prediction.ts": "ae602ee8ca19d31ed4b63f54ad8b0340196cadc8e980b87a539272ab331d4b55",
+    "games/escape/web/types.ts": "e97c9d4ddf6590badc8521c9285b11d5a8de173ecccb23adcd35c26ff9c22dd2",
+    "games/escape/web/Board.tsx": "0de1be8215a68fb94a25cee13036d991d0c471d5bb21de16ff0e236ed8c32218",
+    "games/escape/web/Cover.tsx": "622cb2937af00af2ea26d330eb0176d0a554e98d2b3b752dd77fe414289d6d7a",
+    "games/escape/web/style.css": "a36f56d73359ac000fa17d81d2d1c4defdce7feb45dcbfb27170c2b50934d143",
+    "games/escape/web/module.tsx": "65e03c83fe3a24c4f65341a73506259a14f5b98c207a1f252235f88e29105331",
+    "games/escape/web/spacing.ts": "a27715ed8db8259a96ec583357371ad161e3a6825f8961a182b60747cbb3794e",
+    "games/escape/controls.json": "84427e83de66ef04779669a65ffa393c9459931ce3b1731f4d222476029a23ff",
+    "games/escape/assets/manifest.json": "6fd287cc16c2b6967858906b684479c826c9f4711f0030d4424ba86a189158ee"
+  },
+  "distIndexSHA256": "3c39ef5f9f848cfcd4c712830c9bcf9f6d2185097fcfbb34e65e8ca5fe534d14"
+}

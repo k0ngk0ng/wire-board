@@ -1,3 +1,4 @@
+import { useControllerCancel } from "../../../web/src/controllers/use-controller-cancel";
 import { PairInput, type InputSnapshot } from "./input";
 import {
   useEffect,
@@ -22,6 +23,7 @@ export function Board({
   audio,
   clock,
 }: BoardProps<View>) {
+  const controllerRoot = useRef<HTMLElement>(null);
   const [spectatorSeat, setSpectatorSeat] = useState(0),
     [hammer, setHammer] = useState(false),
     [notice, setNotice] = useState("");
@@ -79,6 +81,12 @@ export function Board({
       player.event,
     ],
   );
+  useControllerCancel(controllerRoot, () => {
+    input.cancel();
+    gesture.current = null;
+    setHammer(false);
+    redrawInput();
+  });
   const canAct = playable && !manual.current;
   const selected = input.selected;
   const toolsBusy = busy || manual.current || input.hasWork;
@@ -331,6 +339,7 @@ export function Board({
   const points = bolt?.path?.map(coordinate) ?? [];
   return (
     <section
+      ref={controllerRoot}
       className="pairs-board"
       data-revision={player.revision}
       aria-label="连连看棋盘"
@@ -375,7 +384,7 @@ export function Board({
         </div>
       ) : (
         <>
-          <div className="pairs-toolbar">
+          <div data-controller-group="tools" className="pairs-toolbar">
             <button
               className="outline"
               disabled={!canAct || toolsBusy || player.tools.hint < 1}
@@ -408,6 +417,7 @@ export function Board({
             </button>
           </div>
           <div
+            data-controller-group="board"
             className={`pairs-field ${hammer ? "hammering" : ""}`}
             ref={field}
             onPointerDown={(e) => {

@@ -1,0 +1,39 @@
+{
+  "scope": "Production row-mask/popcount matcher integration; same visible pixels, candidate generation, scoring and Exact semantics",
+  "passed": true,
+  "equivalence": {
+    "boundaryCases": 51,
+    "randomCandidates": 18760,
+    "battleCandidates": 91498,
+    "battleAccepted": 132
+  },
+  "regression": {
+    "initialVisualRacePasses": 97,
+    "initialFailure": "Unreviewed legacy future sprite combination; removed by its owner and targeted race rerun passed.",
+    "wholeFinalBuildStillRequired": true
+  },
+  "battlePerformance": {
+    "hardware": "Apple M4 darwin/arm64",
+    "setup": "Legal Start followed by explicit LevelRoutine=4 assertion",
+    "twoBot50msBatchNS": 29371478,
+    "bytesPerBatch": 10280043,
+    "allocationsPerBatch": 3083
+  },
+  "artifacts": {
+    "docs/research/nes-contra/evidence/bit-production-red.log.gz": "c3a886650b15da6e6f7a2bff6c85d564c2be18b028ebb9b972e8f07d6f3d76d5",
+    "docs/research/nes-contra/evidence/bit-production-equivalence.log.gz": "a3463497d85c1f95c21131eaa127a0135ea653f210b0b377f2d6dd243def2893",
+    "docs/research/nes-contra/evidence/bit-production-battle-candidates.log.gz": "9cedff38a8a7796667791579ee2c7edf66079cfd553c1e9bed6574c071aad5d6",
+    "docs/research/nes-contra/evidence/bit-production-vision-race.jsonl.gz": "906a434420ce68df6baaa867c4c36353666518466fedb337a15457514872cd3a",
+    "docs/research/nes-contra/evidence/bit-production-future-followup.jsonl.gz": "8b40130836216a6f3372f443e8a4fd1711a3ec350a9bbbbe798a3988858d2230",
+    "docs/research/nes-contra/evidence/bit-production-battle-timer.log.gz": "47d87750062ec34ec022e9d78dedb399efb1b954c76efc633438264591c3ce73"
+  },
+  "sourceSHA256": {
+    "games/contra/engine/bot_vision_bits.go": "d0919b17838644c1d7fa6022fa4144aa80e250d62a7e3a438216c719cbf15c39",
+    "games/contra/engine/bot_vision_match_test.go": "40d5e9e5ee08bd890a3822c21c01aea40a0f55015a2ca2b9d1ac4b99e5b03441",
+    "games/contra/engine/bot_match_perf_prototype_test.go": "7f40aff62574a949ddbcfee9fe5eb97cde88929474216e6462e4c257a2b016f9"
+  },
+  "limitations": [
+    "One battle scene, not eight-stage worst-case or production-server capacity acceptance.",
+    "Complete campaign and final native/Wasm binding still require verification."
+  ]
+}

@@ -140,6 +140,13 @@ const silence: GameAudioPort = {
   stopMusic: () => {},
   loop: async () => true,
   stopLoop: () => {},
+  track: async () => true,
+  stopTrack: () => {},
+  muteTrack: () => {},
+  pauseTrack: () => {},
+  resumeTrack: async () => true,
+  seekTrack: () => false,
+  restoreTrack: async () => false,
 };
 function App() {
   const [state, setState] = useState<any>(),

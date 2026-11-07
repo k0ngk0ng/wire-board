@@ -1,0 +1,35 @@
+{
+  "status": "targeted-race-pass-coop-gap-crossed-solo-moving-support-pending",
+  "fixes": [
+    "Vertical airborne respawns choose reachable descent support and may retain their current X below the normal movement boundary",
+    "Stable non-jumping bodies do not drift Right when current support pixels become unknown",
+    "Known same-height forward landing may justify a jump across unknown fill"
+  ],
+  "sources": {
+    "games/contra/engine/bot.go": "9e94d8b116377a6625d795d8028c1b7403aa9cbcd11ef5390ecc8c74efdc5b0e",
+    "games/contra/engine/bot_navigation.go": "9e5c6f4d0d131becdb8790b546b32708e6c7f8f76332a9ac512d80b5cc1ab869",
+    "games/contra/engine/bot_vertical_respawn_test.go": "b06a5da251be292319bb3d4ec039141e24853a6374ecbb7fb87ec640855c6805",
+    "games/contra/engine/bot_snow_edge_test.go": "001eeebf7149d1e44bf3302cf04476c38c192935c49f3102821fc942700fc9ea"
+  },
+  "race_log": "snow-edge-green.log",
+  "solo_memory_reconstruction": ".local/contra-bot/diagnostic-solo-waterfall-next/frozen-v8/prefix-verification.json",
+  "runs": [
+    ".local/contra-bot/diagnostic-solo-waterfall-restored",
+    ".local/contra-bot/diagnostic-coop-snow-recovery"
+  ],
+  "complete_campaign": false,
+  "solo_recovery": {
+    "frames": 26000,
+    "level_index": 2,
+    "screen": 6,
+    "scope": "restored frozen-v8 public Bot memory; left respawn fixed, then moving support not recognized under player"
+  },
+  "coop_recovery": {
+    "frames": 113000,
+    "level_index": 4,
+    "screen": 11,
+    "scope": "two-policy legal-prefix continuation; crossed old screen7 gap"
+  },
+  "additional_fix": "Persist vertical descent targets and use corrective direction; neutral airborne input retains original horizontal momentum.",
+  "support_policy": "Visible moving-platform evidence is accepted as support even when background cells are unknown; actual occluded-rock recognition is a separate pending task."
+}

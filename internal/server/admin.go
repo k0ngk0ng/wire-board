@@ -52,6 +52,9 @@ INSERT OR IGNORE INTO user_controls(user_id) SELECT id FROM users;`)
 	if err != nil {
 		return err
 	}
+	if err = s.initAccessActivity(); err != nil {
+		return err
+	}
 	// Preserve the six games shipped before publication settings existed, and
 	// publish newly registered games by default. Existing rows (including an
 	// administrator's explicit unpublication) are never overwritten.
@@ -206,15 +209,17 @@ func (s *Server) seen(id string) {
 
 type adminUser struct {
 	User
-	Role        string `json:"role"`
-	Disabled    bool   `json:"disabled"`
-	CreatedAt   int64  `json:"createdAt"`
-	LastLogin   int64  `json:"lastLogin"`
-	LastSeen    int64  `json:"lastSeen"`
-	Online      bool   `json:"online"`
-	Connections int    `json:"connections"`
-	RoomID      string `json:"roomId,omitempty"`
-	Activity    string `json:"activity"`
+	Role         string `json:"role"`
+	Disabled     bool   `json:"disabled"`
+	CreatedAt    int64  `json:"createdAt"`
+	LastLogin    int64  `json:"lastLogin"`
+	LastSeen     int64  `json:"lastSeen"`
+	Online       bool   `json:"online"`
+	Connections  int    `json:"connections"`
+	RoomID       string `json:"roomId,omitempty"`
+	Activity     string `json:"activity"`
+	RegisteredIP string `json:"registeredIP"`
+	LastLoginIP  string `json:"lastLoginIP"`
 }
 
 func (s *Server) adminOverview(w http.ResponseWriter, r *http.Request) {
@@ -223,7 +228,7 @@ func (s *Server) adminOverview(w http.ResponseWriter, r *http.Request) {
 	if _, ok := s.needAdmin(w, r); !ok {
 		return
 	}
-	rows, err := s.db.Query(`SELECT u.id,u.name,COALESCE(c.role,'player'),COALESCE(c.disabled,0),COALESCE(c.created_at,0),COALESCE(c.last_login,0),COALESCE(c.last_seen,0) FROM users u LEFT JOIN user_controls c ON c.user_id=u.id ORDER BY u.name`)
+	rows, err := s.db.Query(`SELECT u.id,u.name,COALESCE(c.role,'player'),COALESCE(c.disabled,0),COALESCE(c.created_at,0),COALESCE(c.last_login,0),COALESCE(c.last_seen,0),COALESCE(a.registered_ip,''),COALESCE(a.last_login_ip,'') FROM users u LEFT JOIN user_controls c ON c.user_id=u.id LEFT JOIN user_access a ON a.user_id=u.id ORDER BY u.name`)
 	if err != nil {
 		fail(w, 500, "无法读取用户")
 		return
@@ -232,7 +237,7 @@ func (s *Server) adminOverview(w http.ResponseWriter, r *http.Request) {
 	online, playing, waiting := 0, 0, 0
 	for rows.Next() {
 		var u adminUser
-		if err = rows.Scan(&u.ID, &u.Name, &u.Role, &u.Disabled, &u.CreatedAt, &u.LastLogin, &u.LastSeen); err != nil {
+		if err = rows.Scan(&u.ID, &u.Name, &u.Role, &u.Disabled, &u.CreatedAt, &u.LastLogin, &u.LastSeen, &u.RegisteredIP, &u.LastLoginIP); err != nil {
 			break
 		}
 		if at := s.presence[u.ID]; !at.IsZero() {
@@ -300,7 +305,7 @@ func (s *Server) adminOverview(w http.ResponseWriter, r *http.Request) {
 
 // Metadata, room changes and their audit record commit together. In-memory state
 // is published only after persistence succeeds, so failed moderation is atomic.
-func (s *Server) adminCommit(actor User, action, target, detail string, rooms []*Room, change func(*sql.Tx) error) error {
+func (s *Server) adminCommit(actor User, action, target, detail string, rooms []*Room, change func(*sql.Tx) error, ips ...string) error {
 	tx, err := s.db.Begin()
 	if err != nil {
 		return err
@@ -323,7 +328,11 @@ func (s *Server) adminCommit(actor User, action, target, detail string, rooms []
 			return err
 		}
 	}
-	if _, err = tx.Exec("INSERT INTO admin_audit(actor,actor_name,action,target,detail,created_at) VALUES(?,?,?,?,?,?)", actor.ID, actor.Name, action, target, detail, time.Now().Unix()); err != nil {
+	ip := ""
+	if len(ips) > 0 {
+		ip = ips[0]
+	}
+	if _, err = tx.Exec("INSERT INTO admin_audit(actor,actor_name,action,target,detail,created_at,ip) VALUES(?,?,?,?,?,?,?)", actor.ID, actor.Name, action, target, detail, time.Now().Unix(), ip); err != nil {
 		return err
 	}
 	if err = tx.Commit(); err != nil {
@@ -391,7 +400,7 @@ func (s *Server) adminGame(w http.ResponseWriter, r *http.Request) {
 	err := s.adminCommit(u, name, kind, s.gameNames[kind], changed, func(tx *sql.Tx) error {
 		_, err := tx.Exec("INSERT INTO game_settings(kind,enabled) VALUES(?,?) ON CONFLICT(kind) DO UPDATE SET enabled=excluded.enabled", kind, *req.Enabled)
 		return err
-	})
+	}, s.clientIP(r))
 	if err != nil {
 		fail(w, 500, "上架状态未保存，请重试")
 		return
@@ -508,7 +517,7 @@ func (s *Server) adminManageUser(w http.ResponseWriter, r *http.Request) {
 			_, err = tx.Exec("DELETE FROM sessions WHERE user_id=?", id)
 		}
 		return err
-	})
+	}, s.clientIP(r))
 	if err != nil {
 		fail(w, 500, "用户操作未保存，请重试")
 		return
@@ -535,7 +544,7 @@ func (s *Server) adminCloseRoom(w http.ResponseWriter, r *http.Request) {
 		fail(w, 409, "牌桌已经结束")
 		return
 	}
-	if err := s.adminCommit(u, "room_closed", room.ID, room.Name, []*Room{closeAdminRoom(room, "admin")}, nil); err != nil {
+	if err := s.adminCommit(u, "room_closed", room.ID, room.Name, []*Room{closeAdminRoom(room, "admin")}, nil, s.clientIP(r)); err != nil {
 		fail(w, 500, "无法结束牌桌")
 		return
 	}
@@ -555,7 +564,7 @@ func (s *Server) adminAudit(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-	rows, err := s.db.Query("SELECT id,actor_name,action,target,detail,created_at FROM admin_audit WHERE (?=0 OR id<?) ORDER BY id DESC LIMIT 51", before, before)
+	rows, err := s.db.Query("SELECT id,actor_name,action,target,detail,created_at,ip FROM admin_audit WHERE (?=0 OR id<?) ORDER BY id DESC LIMIT 51", before, before)
 	if err != nil {
 		fail(w, 500, "无法读取操作记录")
 		return
@@ -564,11 +573,11 @@ func (s *Server) adminAudit(w http.ResponseWriter, r *http.Request) {
 	entries := []map[string]any{}
 	for rows.Next() {
 		var id, at int64
-		var actor, action, target, detail string
-		if err = rows.Scan(&id, &actor, &action, &target, &detail, &at); err != nil {
+		var actor, action, target, detail, ip string
+		if err = rows.Scan(&id, &actor, &action, &target, &detail, &at, &ip); err != nil {
 			break
 		}
-		entries = append(entries, map[string]any{"id": id, "actor": actor, "action": action, "target": target, "detail": detail, "createdAt": at})
+		entries = append(entries, map[string]any{"id": id, "actor": actor, "action": action, "target": target, "detail": detail, "createdAt": at, "ip": ip})
 	}
 	if err != nil || rows.Err() != nil {
 		fail(w, 500, "无法读取操作记录")

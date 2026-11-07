@@ -1,0 +1,4122 @@
+{
+  "format": "contra-j-audio-source-v1",
+  "romSHA256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+  "acceptedForRelease": false,
+  "tool": {
+    "version": "FCEUX 2.6.6_12 Homebrew",
+    "launcher": "/opt/homebrew/bin/fceux",
+    "launcherSHA256": "2d84a8310d530745263cfeadf00de9a631162a8dd76c71e1bed659c73753f2f6",
+    "executable": "/opt/homebrew/Cellar/fceux/2.6.6_12/libexec/fceux",
+    "executableSHA256": "466c7a8dc48fc3fd66c8aaffec741e844fe16ec1f5ee2318664bdff7c8327115"
+  },
+  "sampleRate": 44100,
+  "channels": 1,
+  "sampleBits": 16,
+  "renderVolume": 192,
+  "stageMusic": [
+    70,
+    90,
+    74,
+    90,
+    78,
+    82,
+    70,
+    86
+  ],
+  "stageClearTable": [
+    0,
+    0,
+    0,
+    0,
+    98,
+    98,
+    0,
+    102
+  ],
+  "stageClearTableMeaning": "CE27 reads CE32 by stage; zero defers/no immediate request. Do not broadcast 0x62 for every boss defeat.",
+  "baseBossMusic": {
+    "id": 94,
+    "source": "fixed DD28 after sceneType=0x80"
+  },
+  "gameOverCue": {
+    "id": 110,
+    "source": "fixed CD96"
+  },
+  "sounds": [
+    {
+      "id": 2,
+      "label": "music-noise-tick",
+      "kind": "percussion",
+      "file": "percussion-02.wav",
+      "sha256": "3e189a9604763caff1e35c4cdb9f353f735fd9e1d2c087f8265c789e3ac1410e",
+      "durationSeconds": 0.26240362811791385,
+      "sampleRange": [
+        88764,
+        100336
+      ],
+      "requestFrame": 122,
+      "requestSampleOrigin": 88764,
+      "warmupFrames": 120,
+      "hexID": "0x02",
+      "researchDirectory": ".local/contra-audio/export",
+      "sourceTable": "0x8926",
+      "slotDefinitions": [
+        {
+          "slot": 5,
+          "control": 5,
+          "sequenceAddress": "0x8aa9"
+        }
+      ],
+      "slotLifetimes": [
+        {
+          "slot": 5,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 2
+        }
+      ],
+      "dpcmRegions": [],
+      "releaseMeaning": "Original slot ownership expiry is independent of the WAV filter tail; do not use media end as the priority timer.",
+      "stems": [
+        {
+          "channel": "noise",
+          "file": "percussion-02-noise.wav",
+          "sha256": "9db50c6f2ce108a3dccb083047d1e9f52b94490a897d35c50b4a36269be5a473",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 255,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 0.26240362811791385,
+          "researchDirectory": ".local/contra-audio/stems"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "label": "landing",
+      "kind": "effect",
+      "file": "effect-0b.wav",
+      "sha256": "b40c89e9e0c1460d498981926b53800b3cbdacab66f1429eb8378010f0a1395c",
+      "durationSeconds": 0.34199546485260773,
+      "sampleRange": [
+        88764,
+        103846
+      ],
+      "requestFrame": 122,
+      "requestSampleOrigin": 88764,
+      "warmupFrames": 120,
+      "hexID": "0x0B",
+      "researchDirectory": ".local/contra-audio/export",
+      "sourceTable": "0x8941",
+      "slotDefinitions": [
+        {
+          "slot": 4,
+          "control": 12,
+          "sequenceAddress": "0x8acc"
+        },
+        {
+          "slot": 5,
+          "control": 5,
+          "sequenceAddress": "0x8add"
+        }
+      ],
+      "slotLifetimes": [
+        {
+          "slot": 4,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 5
+        },
+        {
+          "slot": 5,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 5
+        }
+      ],
+      "dpcmRegions": [],
+      "releaseMeaning": "Original slot ownership expiry is independent of the WAV filter tail; do not use media end as the priority timer.",
+      "stems": [
+        {
+          "channel": "pulse1",
+          "file": "effect-0b-pulse1.wav",
+          "sha256": "eb4093f13e001124210ec57bce3745bc6fbc568c975985a2ec891e097b4d3a78",
+          "channelVolumes": {
+            "square1": 255,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 0.34199546485260773,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "noise",
+          "file": "effect-0b-noise.wav",
+          "sha256": "ee1c9c108fb4871ff51620ed254925d10f21e2c0726474b60c3dfa5d8c4e16bb",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 255,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 0.34199546485260773,
+          "researchDirectory": ".local/contra-audio/stems"
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "label": "waterfall-rock",
+      "kind": "effect",
+      "file": "effect-0d.wav",
+      "sha256": "7921ceb8ef14a3edbd90ff67b918542f4d29199525a1451cd1708397ba61af34",
+      "durationSeconds": 0.6260997732426303,
+      "sampleRange": [
+        88764,
+        116375
+      ],
+      "requestFrame": 122,
+      "requestSampleOrigin": 88764,
+      "warmupFrames": 120,
+      "hexID": "0x0D",
+      "researchDirectory": ".local/contra-audio/export",
+      "sourceTable": "0x8947",
+      "slotDefinitions": [
+        {
+          "slot": 4,
+          "control": 4,
+          "sequenceAddress": "0x8ae8"
+        }
+      ],
+      "slotLifetimes": [
+        {
+          "slot": 4,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 25
+        }
+      ],
+      "dpcmRegions": [],
+      "releaseMeaning": "Original slot ownership expiry is independent of the WAV filter tail; do not use media end as the priority timer.",
+      "stems": [
+        {
+          "channel": "pulse1",
+          "file": "effect-0d-pulse1.wav",
+          "sha256": "9c8e2f010e38c5e80a0670bc6c29123481a4c8df6da598c46ffa6115f68cda8c",
+          "channelVolumes": {
+            "square1": 255,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 0.6260997732426303,
+          "researchDirectory": ".local/contra-audio/stems"
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "label": "interlude-impact",
+      "kind": "effect",
+      "file": "effect-10.wav",
+      "sha256": "624e82aaa6d3040bdf398364f795806f94060f05c29ef6b2c0d064d612af8add",
+      "durationSeconds": 0.3617233560090703,
+      "sampleRange": [
+        88764,
+        104716
+      ],
+      "requestFrame": 122,
+      "requestSampleOrigin": 88764,
+      "warmupFrames": 120,
+      "hexID": "0x10",
+      "researchDirectory": ".local/contra-audio/export",
+      "sourceTable": "0x8950",
+      "slotDefinitions": [
+        {
+          "slot": 4,
+          "control": 20,
+          "sequenceAddress": "0x8b37"
+        },
+        {
+          "slot": 1,
+          "control": 1,
+          "sequenceAddress": "0x8b41"
+        },
+        {
+          "slot": 5,
+          "control": 5,
+          "sequenceAddress": "0x8b48"
+        }
+      ],
+      "slotLifetimes": [
+        {
+          "slot": 4,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 12
+        },
+        {
+          "slot": 1,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 6
+        },
+        {
+          "slot": 5,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 5
+        }
+      ],
+      "dpcmRegions": [],
+      "releaseMeaning": "Original slot ownership expiry is independent of the WAV filter tail; do not use media end as the priority timer.",
+      "stems": [
+        {
+          "channel": "pulse1",
+          "file": "effect-10-pulse1.wav",
+          "sha256": "92268bf4ef341c604c3bdc2c1a789818ff88c03a4032421d81730f76d6178573",
+          "channelVolumes": {
+            "square1": 255,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 0.3617233560090703,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "pulse2",
+          "file": "effect-10-pulse2.wav",
+          "sha256": "071e0c54ca784c7b51333d2fc85a2e2fdd3755d8f4518d5a2587e0bc60ea250d",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 255,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 0.3617233560090703,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "noise",
+          "file": "effect-10-noise.wav",
+          "sha256": "362973f8a60ab952e9391e56e72acb8160d0951c89efac07751d214c5d5d46e9",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 255,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 0.3617233560090703,
+          "researchDirectory": ".local/contra-audio/stems"
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "label": "interlude-effect",
+      "kind": "effect",
+      "file": "effect-13.wav",
+      "sha256": "4ea61aa94ddcf3d225a3ea1cd2128340fbc0a6b6f3029093b610d9da68574fdb",
+      "durationSeconds": 0.5748072562358276,
+      "sampleRange": [
+        88764,
+        114113
+      ],
+      "requestFrame": 122,
+      "requestSampleOrigin": 88764,
+      "warmupFrames": 120,
+      "hexID": "0x13",
+      "researchDirectory": ".local/contra-audio/export",
+      "sourceTable": "0x8959",
+      "slotDefinitions": [
+        {
+          "slot": 4,
+          "control": 4,
+          "sequenceAddress": "0x8b56"
+        }
+      ],
+      "slotLifetimes": [
+        {
+          "slot": 4,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 25
+        }
+      ],
+      "dpcmRegions": [],
+      "releaseMeaning": "Original slot ownership expiry is independent of the WAV filter tail; do not use media end as the priority timer.",
+      "stems": [
+        {
+          "channel": "pulse1",
+          "file": "effect-13-pulse1.wav",
+          "sha256": "284f3695373df2bc3eb78e03ecc9138fabf8e54a15e6eb5f72782f358ad7f637",
+          "channelVolumes": {
+            "square1": 255,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 0.5748072562358276,
+          "researchDirectory": ".local/contra-audio/stems"
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "label": "intro-flight",
+      "kind": "loop-effect",
+      "file": "loop-effect-14.wav",
+      "sha256": "87e0890806279b2e400e6b56962126d4b2a1a2ae17b130c4e305f321d65ef449",
+      "durationSeconds": 19.933832199546487,
+      "sampleRange": [
+        88764,
+        967846
+      ],
+      "requestFrame": 122,
+      "requestSampleOrigin": 88764,
+      "warmupFrames": 120,
+      "hexID": "0x14",
+      "researchDirectory": ".local/contra-audio/export",
+      "sourceTable": "0x895c",
+      "slotDefinitions": [
+        {
+          "slot": 4,
+          "control": 12,
+          "sequenceAddress": "0x8bae"
+        },
+        {
+          "slot": 1,
+          "control": 1,
+          "sequenceAddress": "0x8bea"
+        }
+      ],
+      "slotLifetimes": [
+        {
+          "slot": 4,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": null
+        },
+        {
+          "slot": 1,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": null
+        }
+      ],
+      "dpcmRegions": [],
+      "releaseMeaning": "Original slot ownership expiry is independent of the WAV filter tail; do not use media end as the priority timer.",
+      "stems": [
+        {
+          "channel": "pulse1",
+          "file": "loop-effect-14-pulse1.wav",
+          "sha256": "1bb7144600f8335eca86d34054a661fd2c3866a0706119dd0b74700419e99936",
+          "channelVolumes": {
+            "square1": 255,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 19.933832199546487,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "pulse2",
+          "file": "loop-effect-14-pulse2.wav",
+          "sha256": "59002dd2660508fcc041c1f9bc293807b1a98d9e0b333a5b90a4ab407702bebf",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 255,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 19.933832199546487,
+          "researchDirectory": ".local/contra-audio/stems"
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "label": "scene-preview-effect-16",
+      "kind": "effect",
+      "file": "effect-16.wav",
+      "sha256": "513fa5faf30d6cce65379c6126c91cacf7a678074c7959bae2f587fced2e68a8",
+      "durationSeconds": 1.076825396825397,
+      "sampleRange": [
+        88764,
+        136252
+      ],
+      "requestFrame": 122,
+      "requestSampleOrigin": 88764,
+      "warmupFrames": 120,
+      "hexID": "0x16",
+      "researchDirectory": ".local/contra-audio/export",
+      "sourceTable": "0x8962",
+      "slotDefinitions": [
+        {
+          "slot": 4,
+          "control": 12,
+          "sequenceAddress": "0x8c22"
+        },
+        {
+          "slot": 1,
+          "control": 1,
+          "sequenceAddress": "0x8c59"
+        }
+      ],
+      "slotLifetimes": [
+        {
+          "slot": 4,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 66
+        },
+        {
+          "slot": 1,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 66
+        }
+      ],
+      "dpcmRegions": [],
+      "releaseMeaning": "Original slot ownership expiry is independent of the WAV filter tail; do not use media end as the priority timer.",
+      "stems": [
+        {
+          "channel": "pulse1",
+          "file": "effect-16-pulse1.wav",
+          "sha256": "8dc4bf5d27af7953e21bf72782d864b59fa39566aed087386c0ec8ec6eceb2ff",
+          "channelVolumes": {
+            "square1": 255,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 1.076825396825397,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "pulse2",
+          "file": "effect-16-pulse2.wav",
+          "sha256": "2bedcb81f9437e72e4d2aa423be4eb6adcd42afb8ffffe1064d2fe9318312917",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 255,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 1.076825396825397,
+          "researchDirectory": ".local/contra-audio/stems"
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "label": "scene-preview-effect-18",
+      "kind": "effect",
+      "file": "effect-18.wav",
+      "sha256": "d41b39c2450ba28f9c8ebd3f947fa2b3c39e540b24fd3550cc2a9143953e1258",
+      "durationSeconds": 0.5150340136054422,
+      "sampleRange": [
+        88764,
+        111477
+      ],
+      "requestFrame": 122,
+      "requestSampleOrigin": 88764,
+      "warmupFrames": 120,
+      "hexID": "0x18",
+      "researchDirectory": ".local/contra-audio/export",
+      "sourceTable": "0x8968",
+      "slotDefinitions": [
+        {
+          "slot": 0,
+          "control": 0,
+          "sequenceAddress": "0x8b95"
+        }
+      ],
+      "slotLifetimes": [
+        {
+          "slot": 0,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 36
+        }
+      ],
+      "dpcmRegions": [],
+      "releaseMeaning": "Original slot ownership expiry is independent of the WAV filter tail; do not use media end as the priority timer.",
+      "stems": [
+        {
+          "channel": "pulse1",
+          "file": "effect-18-pulse1.wav",
+          "sha256": "e7c9beee1cd70a0f457fdf0e3319d43bf0f4d41463dace36be63fd66dcafe769",
+          "channelVolumes": {
+            "square1": 255,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 0.5150340136054422,
+          "researchDirectory": ".local/contra-audio/stems"
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "label": "flame-machine",
+      "kind": "effect",
+      "file": "effect-19.wav",
+      "sha256": "40b37206997109e1a1735c3408dcdb18e3624310e20dfd3765cffce660bdf545",
+      "durationSeconds": 1.2436507936507937,
+      "sampleRange": [
+        88764,
+        143609
+      ],
+      "requestFrame": 122,
+      "requestSampleOrigin": 88764,
+      "warmupFrames": 120,
+      "hexID": "0x19",
+      "researchDirectory": ".local/contra-audio/export",
+      "sourceTable": "0x896b",
+      "slotDefinitions": [
+        {
+          "slot": 5,
+          "control": 5,
+          "sequenceAddress": "0x8f26"
+        }
+      ],
+      "slotLifetimes": [
+        {
+          "slot": 5,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 65
+        }
+      ],
+      "dpcmRegions": [],
+      "releaseMeaning": "Original slot ownership expiry is independent of the WAV filter tail; do not use media end as the priority timer.",
+      "stems": [
+        {
+          "channel": "noise",
+          "file": "effect-19-noise.wav",
+          "sha256": "9adb6565f4826c13cf2e8c64363c85ed25c9044ce1c57b7f5b82bee8a7131042",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 255,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 1.2436507936507937,
+          "researchDirectory": ".local/contra-audio/stems"
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "label": "normal-shot",
+      "kind": "effect",
+      "file": "effect-1a.wav",
+      "sha256": "3100e82ca8da3fae3cf3bddfce41e7c8ed173cb3c3ec21be51218e9dd9ad51a7",
+      "durationSeconds": 0.809546485260771,
+      "sampleRange": [
+        88764,
+        124465
+      ],
+      "requestFrame": 122,
+      "requestSampleOrigin": 88764,
+      "warmupFrames": 120,
+      "hexID": "0x1A",
+      "researchDirectory": ".local/contra-audio/export",
+      "sourceTable": "0x896e",
+      "slotDefinitions": [
+        {
+          "slot": 4,
+          "control": 12,
+          "sequenceAddress": "0x8c90"
+        },
+        {
+          "slot": 5,
+          "control": 5,
+          "sequenceAddress": "0x8cb9"
+        }
+      ],
+      "slotLifetimes": [
+        {
+          "slot": 4,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 52
+        },
+        {
+          "slot": 5,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 34
+        }
+      ],
+      "dpcmRegions": [],
+      "releaseMeaning": "Original slot ownership expiry is independent of the WAV filter tail; do not use media end as the priority timer.",
+      "stems": [
+        {
+          "channel": "pulse1",
+          "file": "effect-1a-pulse1.wav",
+          "sha256": "826fc0af8dd8c85e46bcd48fa26f62455c6a8e8ab13d4bdfbad2c2b8c9a24203",
+          "channelVolumes": {
+            "square1": 255,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 0.809546485260771,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "noise",
+          "file": "effect-1a-noise.wav",
+          "sha256": "c594e3985d8ef87fad67f6c87a9835dff7bbc3b5bf6409f46ba93c53276936c6",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 255,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 0.809546485260771,
+          "researchDirectory": ".local/contra-audio/stems"
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "label": "machine-shot",
+      "kind": "effect",
+      "file": "effect-1c.wav",
+      "sha256": "ca6a003e0bf1dab2d8a2c9df8d21b0e558061ea876c50803e7050051b9c32292",
+      "durationSeconds": 0.8026757369614512,
+      "sampleRange": [
+        88764,
+        124162
+      ],
+      "requestFrame": 122,
+      "requestSampleOrigin": 88764,
+      "warmupFrames": 120,
+      "hexID": "0x1C",
+      "researchDirectory": ".local/contra-audio/export",
+      "sourceTable": "0x8974",
+      "slotDefinitions": [
+        {
+          "slot": 4,
+          "control": 12,
+          "sequenceAddress": "0x8ce2"
+        },
+        {
+          "slot": 5,
+          "control": 5,
+          "sequenceAddress": "0x8d0f"
+        }
+      ],
+      "slotLifetimes": [
+        {
+          "slot": 4,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 49
+        },
+        {
+          "slot": 5,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 32
+        }
+      ],
+      "dpcmRegions": [],
+      "releaseMeaning": "Original slot ownership expiry is independent of the WAV filter tail; do not use media end as the priority timer.",
+      "stems": [
+        {
+          "channel": "pulse1",
+          "file": "effect-1c-pulse1.wav",
+          "sha256": "51050393a29002a37ecebf7af050c0f290dce5881c28e8b48461d26445b8ee93",
+          "channelVolumes": {
+            "square1": 255,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 0.8026757369614512,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "noise",
+          "file": "effect-1c-noise.wav",
+          "sha256": "2819e083c0c0e310e668dbb14daf7b8b0233791a60442c09ebeacf4f046a1158",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 255,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 0.8026757369614512,
+          "researchDirectory": ".local/contra-audio/stems"
+        }
+      ]
+    },
+    {
+      "id": 32,
+      "label": "interlude-explosion",
+      "kind": "effect",
+      "file": "effect-20.wav",
+      "sha256": "15ed6f6af27bfead898deb55c586f399214e08b56181af2d8b6580fc1275f711",
+      "durationSeconds": 4.037482993197279,
+      "sampleRange": [
+        88764,
+        266817
+      ],
+      "requestFrame": 122,
+      "requestSampleOrigin": 88764,
+      "warmupFrames": 120,
+      "hexID": "0x20",
+      "researchDirectory": ".local/contra-audio/export",
+      "sourceTable": "0x8980",
+      "slotDefinitions": [
+        {
+          "slot": 4,
+          "control": 28,
+          "sequenceAddress": "0x8d8a"
+        },
+        {
+          "slot": 1,
+          "control": 1,
+          "sequenceAddress": "0x8da1"
+        },
+        {
+          "slot": 3,
+          "control": 3,
+          "sequenceAddress": "0x8db5"
+        },
+        {
+          "slot": 5,
+          "control": 5,
+          "sequenceAddress": "0x8dbc"
+        }
+      ],
+      "slotLifetimes": [
+        {
+          "slot": 4,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 234
+        },
+        {
+          "slot": 1,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 233
+        },
+        {
+          "slot": 3,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 192
+        },
+        {
+          "slot": 5,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 216
+        }
+      ],
+      "dpcmRegions": [
+        [
+          64704,
+          49
+        ]
+      ],
+      "releaseMeaning": "Original slot ownership expiry is independent of the WAV filter tail; do not use media end as the priority timer.",
+      "stems": [
+        {
+          "channel": "pulse1",
+          "file": "effect-20-pulse1.wav",
+          "sha256": "2ea8a96b44f501706b4fd024fb5ad4a132c9763866dffe88e907642da67ae113",
+          "channelVolumes": {
+            "square1": 255,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 4.037482993197279,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "pulse2",
+          "file": "effect-20-pulse2.wav",
+          "sha256": "ab6eb1b16847e4b9620800c954b826b51f653cb4b640939af7694bd36f571cfb",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 255,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 4.037482993197279,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "noise",
+          "file": "effect-20-noise.wav",
+          "sha256": "571279c27ab1613da2b21d1f5252cdbbd3c480850e5de625b542de94c7cd4db5",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 255,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 4.037482993197279,
+          "researchDirectory": ".local/contra-audio/stems"
+        }
+      ]
+    },
+    {
+      "id": 36,
+      "label": "laser-shot",
+      "kind": "effect",
+      "file": "effect-24.wav",
+      "sha256": "1de329b6faaa8f2b7ea7b9feb7f969c2907af93780e5a4b77f3d1d4839ab1630",
+      "durationSeconds": 1.0783673469387756,
+      "sampleRange": [
+        88764,
+        136320
+      ],
+      "requestFrame": 122,
+      "requestSampleOrigin": 88764,
+      "warmupFrames": 120,
+      "hexID": "0x24",
+      "researchDirectory": ".local/contra-audio/export",
+      "sourceTable": "0x898c",
+      "slotDefinitions": [
+        {
+          "slot": 4,
+          "control": 12,
+          "sequenceAddress": "0x8dfe"
+        },
+        {
+          "slot": 5,
+          "control": 5,
+          "sequenceAddress": "0x8e35"
+        }
+      ],
+      "slotLifetimes": [
+        {
+          "slot": 4,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 50
+        },
+        {
+          "slot": 5,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 48
+        }
+      ],
+      "dpcmRegions": [],
+      "releaseMeaning": "Original slot ownership expiry is independent of the WAV filter tail; do not use media end as the priority timer.",
+      "stems": [
+        {
+          "channel": "pulse1",
+          "file": "effect-24-pulse1.wav",
+          "sha256": "1ac97c2f6a7dee179682891458c1257883eb482ca993b87de20f42cc2b7a745b",
+          "channelVolumes": {
+            "square1": 255,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 1.0783673469387756,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "noise",
+          "file": "effect-24-noise.wav",
+          "sha256": "4d2e4cea15101d38fd48b941ce1372a89402e00459dc7e15ce12919f74b20224",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 255,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 1.0783673469387756,
+          "researchDirectory": ".local/contra-audio/stems"
+        }
+      ]
+    },
+    {
+      "id": 38,
+      "label": "flame-shot",
+      "kind": "effect",
+      "file": "effect-26.wav",
+      "sha256": "2bfc67ce80e6608b646acf8eee598e27db82cc68b7a77549013d4775314bf1b9",
+      "durationSeconds": 0.8102267573696145,
+      "sampleRange": [
+        88764,
+        124495
+      ],
+      "requestFrame": 122,
+      "requestSampleOrigin": 88764,
+      "warmupFrames": 120,
+      "hexID": "0x26",
+      "researchDirectory": ".local/contra-audio/export",
+      "sourceTable": "0x8992",
+      "slotDefinitions": [
+        {
+          "slot": 4,
+          "control": 12,
+          "sequenceAddress": "0x8e98"
+        },
+        {
+          "slot": 5,
+          "control": 5,
+          "sequenceAddress": "0x8eac"
+        }
+      ],
+      "slotLifetimes": [
+        {
+          "slot": 4,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 33
+        },
+        {
+          "slot": 5,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 33
+        }
+      ],
+      "dpcmRegions": [],
+      "releaseMeaning": "Original slot ownership expiry is independent of the WAV filter tail; do not use media end as the priority timer.",
+      "stems": [
+        {
+          "channel": "pulse1",
+          "file": "effect-26-pulse1.wav",
+          "sha256": "6e8d35e876d44d1d35100eacac9f20a277ebb09f05fbe673dd46d4878ddb397f",
+          "channelVolumes": {
+            "square1": 255,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 0.8102267573696145,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "noise",
+          "file": "effect-26-noise.wav",
+          "sha256": "34af3b8e69061bcde535eea94973afae40268beb0d4899fb2f2ed20614aa3d93",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 255,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 0.8102267573696145,
+          "researchDirectory": ".local/contra-audio/stems"
+        }
+      ]
+    },
+    {
+      "id": 40,
+      "label": "spread-shot",
+      "kind": "effect",
+      "file": "effect-28.wav",
+      "sha256": "d8bebd6282ccdc957a3f0777fc13ae55f7d505665942fb5a583e4eb412759ec7",
+      "durationSeconds": 0.7426757369614513,
+      "sampleRange": [
+        88764,
+        121516
+      ],
+      "requestFrame": 122,
+      "requestSampleOrigin": 88764,
+      "warmupFrames": 120,
+      "hexID": "0x28",
+      "researchDirectory": ".local/contra-audio/export",
+      "sourceTable": "0x8998",
+      "slotDefinitions": [
+        {
+          "slot": 4,
+          "control": 12,
+          "sequenceAddress": "0x8ebe"
+        },
+        {
+          "slot": 5,
+          "control": 5,
+          "sequenceAddress": "0x8ecc"
+        }
+      ],
+      "slotLifetimes": [
+        {
+          "slot": 4,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 40
+        },
+        {
+          "slot": 5,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 39
+        }
+      ],
+      "dpcmRegions": [],
+      "releaseMeaning": "Original slot ownership expiry is independent of the WAV filter tail; do not use media end as the priority timer.",
+      "stems": [
+        {
+          "channel": "pulse1",
+          "file": "effect-28-pulse1.wav",
+          "sha256": "991b77575340a4f1115f767d6c5f28940452bfd47d413e2d27fda01cebe012ff",
+          "channelVolumes": {
+            "square1": 255,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 0.7426757369614513,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "noise",
+          "file": "effect-28-noise.wav",
+          "sha256": "544732fbdc47f52cafc27e513abb43f8afbc518f133f39206eb7fcc8c300f861",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 255,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 0.7426757369614513,
+          "researchDirectory": ".local/contra-audio/stems"
+        }
+      ]
+    },
+    {
+      "id": 42,
+      "label": "impact-2a",
+      "kind": "effect",
+      "file": "effect-2a.wav",
+      "sha256": "18fd85b701b89489f44fab69ba93b5619503756072694bd7af1183b9d6778bc0",
+      "durationSeconds": 0.520249433106576,
+      "sampleRange": [
+        88764,
+        111707
+      ],
+      "requestFrame": 122,
+      "requestSampleOrigin": 88764,
+      "warmupFrames": 120,
+      "hexID": "0x2A",
+      "researchDirectory": ".local/contra-audio/export",
+      "sourceTable": "0x899e",
+      "slotDefinitions": [
+        {
+          "slot": 4,
+          "control": 4,
+          "sequenceAddress": "0x8f5f"
+        }
+      ],
+      "slotLifetimes": [
+        {
+          "slot": 4,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 23
+        }
+      ],
+      "dpcmRegions": [],
+      "releaseMeaning": "Original slot ownership expiry is independent of the WAV filter tail; do not use media end as the priority timer.",
+      "stems": [
+        {
+          "channel": "pulse1",
+          "file": "effect-2a-pulse1.wav",
+          "sha256": "b1150f500bf4f9a6d0c93b77a41d7582b5c572ca794fac944eb3b9601152274e",
+          "channelVolumes": {
+            "square1": 255,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 0.520249433106576,
+          "researchDirectory": ".local/contra-audio/stems"
+        }
+      ]
+    },
+    {
+      "id": 43,
+      "label": "giant-jump",
+      "kind": "effect",
+      "file": "effect-2b.wav",
+      "sha256": "70df7feb70f58690d7f17c24389a0e95bd7853a830db4d52d8bb6fdd75cc74f7",
+      "durationSeconds": 1.0726984126984127,
+      "sampleRange": [
+        88764,
+        136070
+      ],
+      "requestFrame": 122,
+      "requestSampleOrigin": 88764,
+      "warmupFrames": 120,
+      "hexID": "0x2B",
+      "researchDirectory": ".local/contra-audio/export",
+      "sourceTable": "0x89a1",
+      "slotDefinitions": [
+        {
+          "slot": 4,
+          "control": 4,
+          "sequenceAddress": "0x8fee"
+        }
+      ],
+      "slotLifetimes": [
+        {
+          "slot": 4,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 54
+        }
+      ],
+      "dpcmRegions": [],
+      "releaseMeaning": "Original slot ownership expiry is independent of the WAV filter tail; do not use media end as the priority timer.",
+      "stems": [
+        {
+          "channel": "pulse1",
+          "file": "effect-2b-pulse1.wav",
+          "sha256": "9b20d88d9074f5ad983bb3849678f67c1978bcdd280bb8c5ffd9a6e83dfd5b4e",
+          "channelVolumes": {
+            "square1": 255,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 1.0726984126984127,
+          "researchDirectory": ".local/contra-audio/stems"
+        }
+      ]
+    },
+    {
+      "id": 44,
+      "label": "impact-2c",
+      "kind": "effect",
+      "file": "effect-2c.wav",
+      "sha256": "d0e3f79d39e32c22a9cf8d866dcef73fa4493c749bc3d0c82e5ea6a33571fe2b",
+      "durationSeconds": 0.4943310657596372,
+      "sampleRange": [
+        88764,
+        110564
+      ],
+      "requestFrame": 122,
+      "requestSampleOrigin": 88764,
+      "warmupFrames": 120,
+      "hexID": "0x2C",
+      "researchDirectory": ".local/contra-audio/export",
+      "sourceTable": "0x89a4",
+      "slotDefinitions": [
+        {
+          "slot": 4,
+          "control": 12,
+          "sequenceAddress": "0x8f79"
+        },
+        {
+          "slot": 5,
+          "control": 5,
+          "sequenceAddress": "0x8f9c"
+        }
+      ],
+      "slotLifetimes": [
+        {
+          "slot": 4,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 23
+        },
+        {
+          "slot": 5,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 15
+        }
+      ],
+      "dpcmRegions": [],
+      "releaseMeaning": "Original slot ownership expiry is independent of the WAV filter tail; do not use media end as the priority timer.",
+      "stems": [
+        {
+          "channel": "pulse1",
+          "file": "effect-2c-pulse1.wav",
+          "sha256": "1ddbdeea4438d5ba2e5f94b96926302027c04707afef0339e478999f7e7354a8",
+          "channelVolumes": {
+            "square1": 255,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 0.4943310657596372,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "noise",
+          "file": "effect-2c-noise.wav",
+          "sha256": "659aabb9a713dc3868fd66ebb4e23b79544fd1822fc28e704a8fed5db4bc31ac",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 255,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 0.4943310657596372,
+          "researchDirectory": ".local/contra-audio/stems"
+        }
+      ]
+    },
+    {
+      "id": 46,
+      "label": "impact-2e",
+      "kind": "effect",
+      "file": "effect-2e.wav",
+      "sha256": "cc9863e58e75caa1ca93d9d8166513bc9abc6254781da645bfeddbdd072e8ba1",
+      "durationSeconds": 0.6805668934240363,
+      "sampleRange": [
+        88764,
+        118777
+      ],
+      "requestFrame": 122,
+      "requestSampleOrigin": 88764,
+      "warmupFrames": 120,
+      "hexID": "0x2E",
+      "researchDirectory": ".local/contra-audio/export",
+      "sourceTable": "0x89aa",
+      "slotDefinitions": [
+        {
+          "slot": 4,
+          "control": 4,
+          "sequenceAddress": "0x8fc1"
+        }
+      ],
+      "slotLifetimes": [
+        {
+          "slot": 4,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 25
+        }
+      ],
+      "dpcmRegions": [],
+      "releaseMeaning": "Original slot ownership expiry is independent of the WAV filter tail; do not use media end as the priority timer.",
+      "stems": [
+        {
+          "channel": "pulse1",
+          "file": "effect-2e-pulse1.wav",
+          "sha256": "70b0ee58b73f13357c6dd1447558f5996c4fd318e7d98800a223ddbebb5ca5a2",
+          "channelVolumes": {
+            "square1": 255,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 0.6805668934240363,
+          "researchDirectory": ".local/contra-audio/stems"
+        }
+      ]
+    },
+    {
+      "id": 47,
+      "label": "enemy-explosion",
+      "kind": "effect",
+      "file": "effect-2f.wav",
+      "sha256": "c51f8288542c6cd38aac638fa86779b83504f86dc0545af83b72d20eb1e56e2b",
+      "durationSeconds": 0.8992743764172335,
+      "sampleRange": [
+        88764,
+        128422
+      ],
+      "requestFrame": 122,
+      "requestSampleOrigin": 88764,
+      "warmupFrames": 120,
+      "hexID": "0x2F",
+      "researchDirectory": ".local/contra-audio/export",
+      "sourceTable": "0x89ad",
+      "slotDefinitions": [
+        {
+          "slot": 4,
+          "control": 4,
+          "sequenceAddress": "0x8fd8"
+        }
+      ],
+      "slotLifetimes": [
+        {
+          "slot": 4,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 48
+        }
+      ],
+      "dpcmRegions": [],
+      "releaseMeaning": "Original slot ownership expiry is independent of the WAV filter tail; do not use media end as the priority timer.",
+      "stems": [
+        {
+          "channel": "pulse1",
+          "file": "effect-2f-pulse1.wav",
+          "sha256": "4d4f8fb3c235e9e13fed079088a9c5009921dac621e035c8be5c7fd78a6b7854",
+          "channelVolumes": {
+            "square1": 255,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 0.8992743764172335,
+          "researchDirectory": ".local/contra-audio/stems"
+        }
+      ]
+    },
+    {
+      "id": 48,
+      "label": "ice-grenade",
+      "kind": "effect",
+      "file": "effect-30.wav",
+      "sha256": "8aed4c3db47a41806e9e67d854c9851c48559f198afb295ebdd88043129a5662",
+      "durationSeconds": 2.0753061224489797,
+      "sampleRange": [
+        88764,
+        180285
+      ],
+      "requestFrame": 122,
+      "requestSampleOrigin": 88764,
+      "warmupFrames": 120,
+      "hexID": "0x30",
+      "researchDirectory": ".local/contra-audio/export",
+      "sourceTable": "0x89b0",
+      "slotDefinitions": [
+        {
+          "slot": 4,
+          "control": 4,
+          "sequenceAddress": "0x9082"
+        }
+      ],
+      "slotLifetimes": [
+        {
+          "slot": 4,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 111
+        }
+      ],
+      "dpcmRegions": [],
+      "releaseMeaning": "Original slot ownership expiry is independent of the WAV filter tail; do not use media end as the priority timer.",
+      "stems": [
+        {
+          "channel": "pulse1",
+          "file": "effect-30-pulse1.wav",
+          "sha256": "86bd299848198998500dd6339ebc7344bb8f83a5d03eadf7d9b76ef99362208c",
+          "channelVolumes": {
+            "square1": 255,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 2.0753061224489797,
+          "researchDirectory": ".local/contra-audio/stems"
+        }
+      ]
+    },
+    {
+      "id": 51,
+      "label": "boss-siren",
+      "kind": "effect",
+      "file": "effect-33.wav",
+      "sha256": "c00d1773ecd864a7961f422672251a4507c715d385b46013c036fce15607556e",
+      "durationSeconds": 4.302448979591837,
+      "sampleRange": [
+        88764,
+        278502
+      ],
+      "requestFrame": 122,
+      "requestSampleOrigin": 88764,
+      "warmupFrames": 120,
+      "hexID": "0x33",
+      "researchDirectory": ".local/contra-audio/export",
+      "sourceTable": "0x89b9",
+      "slotDefinitions": [
+        {
+          "slot": 4,
+          "control": 4,
+          "sequenceAddress": "0x901b"
+        }
+      ],
+      "slotLifetimes": [
+        {
+          "slot": 4,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 259
+        }
+      ],
+      "dpcmRegions": [],
+      "releaseMeaning": "Original slot ownership expiry is independent of the WAV filter tail; do not use media end as the priority timer.",
+      "stems": [
+        {
+          "channel": "pulse1",
+          "file": "effect-33-pulse1.wav",
+          "sha256": "1e51c2c0c1e76fb386fd6029e3cbedc4f8901c161b529c6ffd77e00da157ad6b",
+          "channelVolumes": {
+            "square1": 255,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 4.302448979591837,
+          "researchDirectory": ".local/contra-audio/stems"
+        }
+      ]
+    },
+    {
+      "id": 52,
+      "label": "electric-shock",
+      "kind": "effect",
+      "file": "effect-34.wav",
+      "sha256": "a54ffb5b1d4f408410d2ae81dbb9ccb0970cfdc0714aad397c94953f13860fab",
+      "durationSeconds": 1.0944897959183673,
+      "sampleRange": [
+        88764,
+        137031
+      ],
+      "requestFrame": 122,
+      "requestSampleOrigin": 88764,
+      "warmupFrames": 120,
+      "hexID": "0x34",
+      "researchDirectory": ".local/contra-audio/export",
+      "sourceTable": "0x89bc",
+      "slotDefinitions": [
+        {
+          "slot": 4,
+          "control": 12,
+          "sequenceAddress": "0x9209"
+        },
+        {
+          "slot": 5,
+          "control": 5,
+          "sequenceAddress": "0x922a"
+        }
+      ],
+      "slotLifetimes": [
+        {
+          "slot": 4,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 51
+        },
+        {
+          "slot": 5,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 50
+        }
+      ],
+      "dpcmRegions": [],
+      "releaseMeaning": "Original slot ownership expiry is independent of the WAV filter tail; do not use media end as the priority timer.",
+      "stems": [
+        {
+          "channel": "pulse1",
+          "file": "effect-34-pulse1.wav",
+          "sha256": "a207d3d0a7ada0f7ba9c9c061f8b96095abcf477daf6abbeafefd67a20975fcf",
+          "channelVolumes": {
+            "square1": 255,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 1.0944897959183673,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "noise",
+          "file": "effect-34-noise.wav",
+          "sha256": "cc956cddbcd6a93a97974d6c8034e97d498097d1ba545a032dbf671881ac91bc",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 255,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 1.0944897959183673,
+          "researchDirectory": ".local/contra-audio/stems"
+        }
+      ]
+    },
+    {
+      "id": 54,
+      "label": "tank-shot",
+      "kind": "effect",
+      "file": "effect-36.wav",
+      "sha256": "4364e47a3d0c1a086a8cdae8aba00112264678a1aa36871f75a2acdfdad9ea39",
+      "durationSeconds": 0.36560090702947845,
+      "sampleRange": [
+        88764,
+        104887
+      ],
+      "requestFrame": 122,
+      "requestSampleOrigin": 88764,
+      "warmupFrames": 120,
+      "hexID": "0x36",
+      "researchDirectory": ".local/contra-audio/export",
+      "sourceTable": "0x89c2",
+      "slotDefinitions": [
+        {
+          "slot": 4,
+          "control": 4,
+          "sequenceAddress": "0x9177"
+        }
+      ],
+      "slotLifetimes": [
+        {
+          "slot": 4,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 6
+        }
+      ],
+      "dpcmRegions": [],
+      "releaseMeaning": "Original slot ownership expiry is independent of the WAV filter tail; do not use media end as the priority timer.",
+      "stems": [
+        {
+          "channel": "pulse1",
+          "file": "effect-36-pulse1.wav",
+          "sha256": "393eab7258db326b7cdc12c3e411d365459cf08cda4101822e1fc225ee6ebf89",
+          "channelVolumes": {
+            "square1": 255,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 0.36560090702947845,
+          "researchDirectory": ".local/contra-audio/stems"
+        }
+      ]
+    },
+    {
+      "id": 56,
+      "label": "weapon-pickup",
+      "kind": "effect",
+      "file": "effect-38.wav",
+      "sha256": "50b9ca7ca49dcc9960de0dad9351948c2475cf15960dc1f038e9d0c468c27af5",
+      "durationSeconds": 1.1434920634920636,
+      "sampleRange": [
+        88764,
+        139192
+      ],
+      "requestFrame": 122,
+      "requestSampleOrigin": 88764,
+      "warmupFrames": 120,
+      "hexID": "0x38",
+      "researchDirectory": ".local/contra-audio/export",
+      "sourceTable": "0x89c8",
+      "slotDefinitions": [
+        {
+          "slot": 4,
+          "control": 4,
+          "sequenceAddress": "0x91aa"
+        }
+      ],
+      "slotLifetimes": [
+        {
+          "slot": 4,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 64
+        }
+      ],
+      "dpcmRegions": [],
+      "releaseMeaning": "Original slot ownership expiry is independent of the WAV filter tail; do not use media end as the priority timer.",
+      "stems": [
+        {
+          "channel": "pulse1",
+          "file": "effect-38-pulse1.wav",
+          "sha256": "6169b0a809c0909fbbfb800b09ad45c7f49d0c160a2397393688896ab3e3c9e9",
+          "channelVolumes": {
+            "square1": 255,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 1.1434920634920636,
+          "researchDirectory": ".local/contra-audio/stems"
+        }
+      ]
+    },
+    {
+      "id": 57,
+      "label": "life-bonus",
+      "kind": "effect",
+      "file": "effect-39.wav",
+      "sha256": "275dfcb8e198533532336ba159707f122a1a2b4feb58f0d1b71beb58abe67071",
+      "durationSeconds": 1.0056009070294785,
+      "sampleRange": [
+        88764,
+        133111
+      ],
+      "requestFrame": 122,
+      "requestSampleOrigin": 88764,
+      "warmupFrames": 120,
+      "hexID": "0x39",
+      "researchDirectory": ".local/contra-audio/export",
+      "sourceTable": "0x89cb",
+      "slotDefinitions": [
+        {
+          "slot": 4,
+          "control": 4,
+          "sequenceAddress": "0x91c1"
+        }
+      ],
+      "slotLifetimes": [
+        {
+          "slot": 4,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 52
+        }
+      ],
+      "dpcmRegions": [],
+      "releaseMeaning": "Original slot ownership expiry is independent of the WAV filter tail; do not use media end as the priority timer.",
+      "stems": [
+        {
+          "channel": "pulse1",
+          "file": "effect-39-pulse1.wav",
+          "sha256": "04ea690b455ab29667f9356ba511a6c5ec0aeb7b2516c5f81acbca232598d9ee",
+          "channelVolumes": {
+            "square1": 255,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 1.0056009070294785,
+          "researchDirectory": ".local/contra-audio/stems"
+        }
+      ]
+    },
+    {
+      "id": 61,
+      "label": "bridge-explosion",
+      "kind": "effect",
+      "file": "effect-3d.wav",
+      "sha256": "1c8947d76c4594708f0f964e0fee7f59397b4586161d3df3d7264e9d4a279125",
+      "durationSeconds": 1.0821995464852607,
+      "sampleRange": [
+        88764,
+        136489
+      ],
+      "requestFrame": 122,
+      "requestSampleOrigin": 88764,
+      "warmupFrames": 120,
+      "hexID": "0x3D",
+      "researchDirectory": ".local/contra-audio/export",
+      "sourceTable": "0x89d7",
+      "slotDefinitions": [
+        {
+          "slot": 5,
+          "control": 5,
+          "sequenceAddress": "0x9755"
+        }
+      ],
+      "slotLifetimes": [
+        {
+          "slot": 5,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 55
+        }
+      ],
+      "dpcmRegions": [],
+      "releaseMeaning": "Original slot ownership expiry is independent of the WAV filter tail; do not use media end as the priority timer.",
+      "stems": [
+        {
+          "channel": "noise",
+          "file": "effect-3d-noise.wav",
+          "sha256": "8e2a94fa666aedd61696aa5c1b366dab60091f5d86325674a4839dcf3b0ef2ae",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 255,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 1.0821995464852607,
+          "researchDirectory": ".local/contra-audio/stems"
+        }
+      ]
+    },
+    {
+      "id": 62,
+      "label": "base-wall",
+      "kind": "effect",
+      "file": "effect-3e.wav",
+      "sha256": "5e41082248d1425d71565b2e36871799224eb9aa666180bb95e99bd99805f4dd",
+      "durationSeconds": 2.4136507936507936,
+      "sampleRange": [
+        88764,
+        195206
+      ],
+      "requestFrame": 122,
+      "requestSampleOrigin": 88764,
+      "warmupFrames": 120,
+      "hexID": "0x3E",
+      "researchDirectory": ".local/contra-audio/export",
+      "sourceTable": "0x89da",
+      "slotDefinitions": [
+        {
+          "slot": 5,
+          "control": 5,
+          "sequenceAddress": "0x9794"
+        }
+      ],
+      "slotLifetimes": [
+        {
+          "slot": 5,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 140
+        }
+      ],
+      "dpcmRegions": [],
+      "releaseMeaning": "Original slot ownership expiry is independent of the WAV filter tail; do not use media end as the priority timer.",
+      "stems": [
+        {
+          "channel": "noise",
+          "file": "effect-3e-noise.wav",
+          "sha256": "dd3df2875f2822979f320a7a0cd70def582bc5227e597a0cba7ded245f58fce7",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 255,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 2.4136507936507936,
+          "researchDirectory": ".local/contra-audio/stems"
+        }
+      ]
+    },
+    {
+      "id": 70,
+      "label": "jungle-hangar",
+      "kind": "music",
+      "file": "music-46.wav",
+      "sha256": "37e1e3af35ff5b30b57cc7614969c3f82277b0706408fed79b0cd35e4373e44e",
+      "durationSeconds": 133.08083900226757,
+      "sampleRange": [
+        88764,
+        5957629
+      ],
+      "requestFrame": 122,
+      "requestSampleOrigin": 88764,
+      "warmupFrames": 120,
+      "hexID": "0x46",
+      "researchDirectory": ".local/contra-audio/export",
+      "sourceTable": "0x89f2",
+      "slotDefinitions": [
+        {
+          "slot": 0,
+          "control": 24,
+          "sequenceAddress": "0x9d6c"
+        },
+        {
+          "slot": 1,
+          "control": 1,
+          "sequenceAddress": "0x9b92"
+        },
+        {
+          "slot": 2,
+          "control": 2,
+          "sequenceAddress": "0x9f0b"
+        },
+        {
+          "slot": 3,
+          "control": 3,
+          "sequenceAddress": "0xa0b9"
+        }
+      ],
+      "slotLifetimes": [
+        {
+          "slot": 0,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": null
+        },
+        {
+          "slot": 1,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": null
+        },
+        {
+          "slot": 2,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": null
+        },
+        {
+          "slot": 3,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": null
+        }
+      ],
+      "dpcmRegions": [
+        [
+          64512,
+          81
+        ],
+        [
+          64704,
+          593
+        ]
+      ],
+      "releaseMeaning": "Original slot ownership expiry is independent of the WAV filter tail; do not use media end as the priority timer.",
+      "stems": [
+        {
+          "channel": "pulse1",
+          "file": "music-46-pulse1.wav",
+          "sha256": "919e7409b6ec03f002ebb9b6710791f09bd443753f5dc5d820c207ca050c3694",
+          "channelVolumes": {
+            "square1": 255,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 133.08083900226757,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "pulse2",
+          "file": "music-46-pulse2.wav",
+          "sha256": "7ab1f807420d7394b04e73b720c2214980855a1eaaef098e6ec5dcecae2907f6",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 255,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 133.08083900226757,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "triangle",
+          "file": "music-46-triangle.wav",
+          "sha256": "bee501b83a6cb766dacf86028297a2e19055095b92c44172acbd66b69056d68b",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 255,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 133.08083900226757,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "noise",
+          "file": "music-46-noise.wav",
+          "sha256": "af0ce329e17712a809bf621fc2ac6f116c4ef0f64c62e131b0f8894d623490f7",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 255,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 133.08083900226757,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "dpcm",
+          "file": "music-46-dpcm.wav",
+          "sha256": "9b07af93739f0e7c1c4076e426bc0de4501981222805a1bc4576bbfa24aab146",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 255
+          },
+          "silent": false,
+          "seconds": 133.08083900226757,
+          "researchDirectory": ".local/contra-audio/stems"
+        }
+      ],
+      "loop": {
+        "status": "driver-state-repeat",
+        "pcmSeamAccepted": false,
+        "driverFrames": [
+          219,
+          3195
+        ],
+        "sourceSampleRange": [
+          159942,
+          2343706
+        ],
+        "sampleRange": [
+          71178,
+          2254942
+        ],
+        "seconds": 49.51845804988662,
+        "rawBoundaryStep": 3062,
+        "originalAdjacentStep": 535,
+        "eventRepeatCount": 734,
+        "seamReadiness": "Unprocessed candidate; no seamless-loop or listening acceptance."
+      }
+    },
+    {
+      "id": 74,
+      "label": "waterfall",
+      "kind": "music",
+      "file": "music-4a.wav",
+      "sha256": "04c9a6be92b814b8a902dd2189c316b9617436cfb33ab8f6f572d4b117b32172",
+      "durationSeconds": 133.08083900226757,
+      "sampleRange": [
+        88764,
+        5957629
+      ],
+      "requestFrame": 122,
+      "requestSampleOrigin": 88764,
+      "warmupFrames": 120,
+      "hexID": "0x4A",
+      "researchDirectory": ".local/contra-audio/export",
+      "sourceTable": "0x89fe",
+      "slotDefinitions": [
+        {
+          "slot": 0,
+          "control": 24,
+          "sequenceAddress": "0xa2c9"
+        },
+        {
+          "slot": 1,
+          "control": 1,
+          "sequenceAddress": "0xa3b5"
+        },
+        {
+          "slot": 2,
+          "control": 2,
+          "sequenceAddress": "0xa4ab"
+        },
+        {
+          "slot": 3,
+          "control": 3,
+          "sequenceAddress": "0xa512"
+        }
+      ],
+      "slotLifetimes": [
+        {
+          "slot": 0,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": null
+        },
+        {
+          "slot": 1,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": null
+        },
+        {
+          "slot": 2,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": null
+        },
+        {
+          "slot": 3,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": null
+        }
+      ],
+      "dpcmRegions": [
+        [
+          64512,
+          81
+        ],
+        [
+          64704,
+          593
+        ]
+      ],
+      "releaseMeaning": "Original slot ownership expiry is independent of the WAV filter tail; do not use media end as the priority timer.",
+      "stems": [
+        {
+          "channel": "pulse1",
+          "file": "music-4a-pulse1.wav",
+          "sha256": "096e151f4712d3af6655470aaccd550a398d5235be5108f2e0fb74224975a900",
+          "channelVolumes": {
+            "square1": 255,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 133.08083900226757,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "pulse2",
+          "file": "music-4a-pulse2.wav",
+          "sha256": "58fe7ed81170c0289131ee1e66d8bfef055fb050d2c694042492de34f6c1b271",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 255,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 133.08083900226757,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "triangle",
+          "file": "music-4a-triangle.wav",
+          "sha256": "e2a34cc4e97fba53b12585f1b0b5d3c61af60bfcc298911bc34f2a09af13be0a",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 255,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 133.08083900226757,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "noise",
+          "file": "music-4a-noise.wav",
+          "sha256": "fa445219cf183be0698d8c447792ace28a1a96459234fcb728489831763152a1",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 255,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 133.08083900226757,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "dpcm",
+          "file": "music-4a-dpcm.wav",
+          "sha256": "fc890488550a97cb2eb84862df1da939b111cdcf15822febf603f352d8f5e3a5",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 255
+          },
+          "silent": false,
+          "seconds": 133.08083900226757,
+          "researchDirectory": ".local/contra-audio/stems"
+        }
+      ],
+      "loop": {
+        "status": "driver-state-repeat",
+        "pcmSeamAccepted": false,
+        "driverFrames": [
+          699,
+          2619
+        ],
+        "sourceSampleRange": [
+          512162,
+          1921042
+        ],
+        "sampleRange": [
+          423398,
+          1832278
+        ],
+        "seconds": 31.947392290249432,
+        "rawBoundaryStep": 7858,
+        "originalAdjacentStep": 164,
+        "eventRepeatCount": 481,
+        "seamReadiness": "Unprocessed candidate; no seamless-loop or listening acceptance."
+      }
+    },
+    {
+      "id": 78,
+      "label": "snowfield",
+      "kind": "music",
+      "file": "music-4e.wav",
+      "sha256": "bae7492fd428ce2ebc95eb59d550a095827698cf338a6ead6aea6407897f3325",
+      "durationSeconds": 133.08083900226757,
+      "sampleRange": [
+        88764,
+        5957629
+      ],
+      "requestFrame": 122,
+      "requestSampleOrigin": 88764,
+      "warmupFrames": 120,
+      "hexID": "0x4E",
+      "researchDirectory": ".local/contra-audio/export",
+      "sourceTable": "0x8a0a",
+      "slotDefinitions": [
+        {
+          "slot": 0,
+          "control": 24,
+          "sequenceAddress": "0xa5e8"
+        },
+        {
+          "slot": 1,
+          "control": 1,
+          "sequenceAddress": "0xa676"
+        },
+        {
+          "slot": 2,
+          "control": 2,
+          "sequenceAddress": "0xa6de"
+        },
+        {
+          "slot": 3,
+          "control": 3,
+          "sequenceAddress": "0xa762"
+        }
+      ],
+      "slotLifetimes": [
+        {
+          "slot": 0,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": null
+        },
+        {
+          "slot": 1,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": null
+        },
+        {
+          "slot": 2,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": null
+        },
+        {
+          "slot": 3,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": null
+        }
+      ],
+      "dpcmRegions": [
+        [
+          64512,
+          81
+        ],
+        [
+          64704,
+          593
+        ]
+      ],
+      "releaseMeaning": "Original slot ownership expiry is independent of the WAV filter tail; do not use media end as the priority timer.",
+      "stems": [
+        {
+          "channel": "pulse1",
+          "file": "music-4e-pulse1.wav",
+          "sha256": "139bb996b5a35d3d4a815e41592935f499c9e199463a0e73bebb6d8779e76193",
+          "channelVolumes": {
+            "square1": 255,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 133.08083900226757,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "pulse2",
+          "file": "music-4e-pulse2.wav",
+          "sha256": "41cad8618cf9f76b05003661a0f9b048a2bfc37858f04e30c2d0220b8d9be0a4",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 255,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 133.08083900226757,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "triangle",
+          "file": "music-4e-triangle.wav",
+          "sha256": "e4f975b9f2e8766e765b0795d63c4f3c314a53136a1cec142d2c85b9598beda5",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 255,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 133.08083900226757,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "noise",
+          "file": "music-4e-noise.wav",
+          "sha256": "9846f65984991a301b2176e5fc6507be4765013918beecf3ef1e1556fbf3a72e",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 255,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 133.08083900226757,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "dpcm",
+          "file": "music-4e-dpcm.wav",
+          "sha256": "72b021d7dfadab20bd5a5a78052fc32760add8c519d2b613e39ea19e657ac8e3",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 255
+          },
+          "silent": false,
+          "seconds": 133.08083900226757,
+          "researchDirectory": ".local/contra-audio/stems"
+        }
+      ],
+      "loop": {
+        "status": "driver-state-repeat",
+        "pcmSeamAccepted": false,
+        "driverFrames": [
+          1467,
+          3387
+        ],
+        "sourceSampleRange": [
+          1075714,
+          2484594
+        ],
+        "sampleRange": [
+          986950,
+          2395830
+        ],
+        "seconds": 31.947392290249432,
+        "rawBoundaryStep": 5392,
+        "originalAdjacentStep": 413,
+        "eventRepeatCount": 347,
+        "seamReadiness": "Unprocessed candidate; no seamless-loop or listening acceptance."
+      }
+    },
+    {
+      "id": 82,
+      "label": "energy-zone",
+      "kind": "music",
+      "file": "music-52.wav",
+      "sha256": "48918539223cd7ad11c8d3214524a201523f107bc88921d6a3327638821d1ed5",
+      "durationSeconds": 133.08083900226757,
+      "sampleRange": [
+        88764,
+        5957629
+      ],
+      "requestFrame": 122,
+      "requestSampleOrigin": 88764,
+      "warmupFrames": 120,
+      "hexID": "0x52",
+      "researchDirectory": ".local/contra-audio/export",
+      "sourceTable": "0x8a16",
+      "slotDefinitions": [
+        {
+          "slot": 0,
+          "control": 24,
+          "sequenceAddress": "0xa7ec"
+        },
+        {
+          "slot": 1,
+          "control": 1,
+          "sequenceAddress": "0xa88a"
+        },
+        {
+          "slot": 2,
+          "control": 2,
+          "sequenceAddress": "0xa8fc"
+        },
+        {
+          "slot": 3,
+          "control": 3,
+          "sequenceAddress": "0xa947"
+        }
+      ],
+      "slotLifetimes": [
+        {
+          "slot": 0,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": null
+        },
+        {
+          "slot": 1,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": null
+        },
+        {
+          "slot": 2,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": null
+        },
+        {
+          "slot": 3,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": null
+        }
+      ],
+      "dpcmRegions": [
+        [
+          64512,
+          81
+        ],
+        [
+          64704,
+          593
+        ]
+      ],
+      "releaseMeaning": "Original slot ownership expiry is independent of the WAV filter tail; do not use media end as the priority timer.",
+      "stems": [
+        {
+          "channel": "pulse1",
+          "file": "music-52-pulse1.wav",
+          "sha256": "f7103c776ca1626a5f737992fc5adf790635161b505da65922c53f67e2f5c878",
+          "channelVolumes": {
+            "square1": 255,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 133.08083900226757,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "pulse2",
+          "file": "music-52-pulse2.wav",
+          "sha256": "971eb328e70495e5e6ecf3cea4e2710adb11ed82de15688476e84748430b5ff1",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 255,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 133.08083900226757,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "triangle",
+          "file": "music-52-triangle.wav",
+          "sha256": "c4a75421489788fa99f5c62f0b5b080932de98acd83953d886bac4de444993f9",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 255,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 133.08083900226757,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "noise",
+          "file": "music-52-noise.wav",
+          "sha256": "a1be685e4506804b7655ea8975962f746c5bc67a90a2f399fb121fda9e45691e",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 255,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 133.08083900226757,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "dpcm",
+          "file": "music-52-dpcm.wav",
+          "sha256": "12bc34284db5ab77035f5c6a693faa0c02e634dacf24b9a491441ffa01aee9a6",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 255
+          },
+          "silent": false,
+          "seconds": 133.08083900226757,
+          "researchDirectory": ".local/contra-audio/stems"
+        }
+      ],
+      "loop": {
+        "status": "driver-state-repeat",
+        "pcmSeamAccepted": false,
+        "driverFrames": [
+          177,
+          1473
+        ],
+        "sourceSampleRange": [
+          129123,
+          1080116
+        ],
+        "sampleRange": [
+          40359,
+          991352
+        ],
+        "seconds": 21.564467120181405,
+        "rawBoundaryStep": 9815,
+        "originalAdjacentStep": 112,
+        "eventRepeatCount": 307,
+        "seamReadiness": "Unprocessed candidate; no seamless-loop or listening acceptance."
+      }
+    },
+    {
+      "id": 86,
+      "label": "alien-lair",
+      "kind": "music",
+      "file": "music-56.wav",
+      "sha256": "912b950f2c57eff68d67378f298b6cede31a2f680bdbd838369659a13b4f8575",
+      "durationSeconds": 133.08083900226757,
+      "sampleRange": [
+        88764,
+        5957629
+      ],
+      "requestFrame": 122,
+      "requestSampleOrigin": 88764,
+      "warmupFrames": 120,
+      "hexID": "0x56",
+      "researchDirectory": ".local/contra-audio/export",
+      "sourceTable": "0x8a22",
+      "slotDefinitions": [
+        {
+          "slot": 0,
+          "control": 24,
+          "sequenceAddress": "0xa9d6"
+        },
+        {
+          "slot": 1,
+          "control": 1,
+          "sequenceAddress": "0xaaeb"
+        },
+        {
+          "slot": 2,
+          "control": 2,
+          "sequenceAddress": "0xabd9"
+        },
+        {
+          "slot": 3,
+          "control": 3,
+          "sequenceAddress": "0xac73"
+        }
+      ],
+      "slotLifetimes": [
+        {
+          "slot": 0,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": null
+        },
+        {
+          "slot": 1,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": null
+        },
+        {
+          "slot": 2,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": null
+        },
+        {
+          "slot": 3,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": null
+        }
+      ],
+      "dpcmRegions": [
+        [
+          64512,
+          81
+        ],
+        [
+          64704,
+          593
+        ]
+      ],
+      "releaseMeaning": "Original slot ownership expiry is independent of the WAV filter tail; do not use media end as the priority timer.",
+      "stems": [
+        {
+          "channel": "pulse1",
+          "file": "music-56-pulse1.wav",
+          "sha256": "d4f1a3b2b060c0c14e3ab86bdc22e6020922a8c229767957b8b153d46fc44e3a",
+          "channelVolumes": {
+            "square1": 255,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 133.08083900226757,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "pulse2",
+          "file": "music-56-pulse2.wav",
+          "sha256": "dc1730dddd65e80e75385acce4430fa0810e4e7fc08af3728750f65093513d7a",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 255,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 133.08083900226757,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "triangle",
+          "file": "music-56-triangle.wav",
+          "sha256": "0070e1c0d22a7418a9861bb996fb9e9a66fc7a878e14befffdbacc6fbe61ca28",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 255,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 133.08083900226757,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "noise",
+          "file": "music-56-noise.wav",
+          "sha256": "5351a399d8eb7363c552b6a5c3802a3bc162e146b34bfdb2f05d4c475a95fba0",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 255,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 133.08083900226757,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "dpcm",
+          "file": "music-56-dpcm.wav",
+          "sha256": "11245b16fa125f8b836541ba95a8b926cc801c32463a772b903a6089a3a6ee7f",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 255
+          },
+          "silent": false,
+          "seconds": 133.08083900226757,
+          "researchDirectory": ".local/contra-audio/stems"
+        }
+      ],
+      "loop": {
+        "status": "driver-state-repeat",
+        "pcmSeamAccepted": false,
+        "driverFrames": [
+          795,
+          2181
+        ],
+        "sourceSampleRange": [
+          582606,
+          1599641
+        ],
+        "sampleRange": [
+          493842,
+          1510877
+        ],
+        "seconds": 23.06201814058957,
+        "rawBoundaryStep": 4674,
+        "originalAdjacentStep": 2729,
+        "eventRepeatCount": 362,
+        "seamReadiness": "Unprocessed candidate; no seamless-loop or listening acceptance."
+      }
+    },
+    {
+      "id": 90,
+      "label": "bases",
+      "kind": "music",
+      "file": "music-5a.wav",
+      "sha256": "ee4f327e29a7c004dae4628eecc2dd82a51e6072b253586e2a6ad28d9f99cf89",
+      "durationSeconds": 133.08083900226757,
+      "sampleRange": [
+        88764,
+        5957629
+      ],
+      "requestFrame": 122,
+      "requestSampleOrigin": 88764,
+      "warmupFrames": 120,
+      "hexID": "0x5A",
+      "researchDirectory": ".local/contra-audio/export",
+      "sourceTable": "0x8a2e",
+      "slotDefinitions": [
+        {
+          "slot": 0,
+          "control": 24,
+          "sequenceAddress": "0xadac"
+        },
+        {
+          "slot": 1,
+          "control": 1,
+          "sequenceAddress": "0xaeb4"
+        },
+        {
+          "slot": 2,
+          "control": 2,
+          "sequenceAddress": "0xaf2f"
+        },
+        {
+          "slot": 3,
+          "control": 3,
+          "sequenceAddress": "0xafbe"
+        }
+      ],
+      "slotLifetimes": [
+        {
+          "slot": 0,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": null
+        },
+        {
+          "slot": 1,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": null
+        },
+        {
+          "slot": 2,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": null
+        },
+        {
+          "slot": 3,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": null
+        }
+      ],
+      "dpcmRegions": [
+        [
+          64512,
+          81
+        ],
+        [
+          64704,
+          593
+        ]
+      ],
+      "releaseMeaning": "Original slot ownership expiry is independent of the WAV filter tail; do not use media end as the priority timer.",
+      "stems": [
+        {
+          "channel": "pulse1",
+          "file": "music-5a-pulse1.wav",
+          "sha256": "24c91ce044cf77ead3b59b9824ad1f92becdba8d066ac3846363a5dfd3b6602c",
+          "channelVolumes": {
+            "square1": 255,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 133.08083900226757,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "pulse2",
+          "file": "music-5a-pulse2.wav",
+          "sha256": "aa064359d0ac06a94ec5b12875d4c7376abcaeb46907c915314b645f63605766",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 255,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 133.08083900226757,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "triangle",
+          "file": "music-5a-triangle.wav",
+          "sha256": "19f47318c848e11b87fcfc1ee363a4ef6a8b5db81a9012fecb9e41759ecc6e71",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 255,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 133.08083900226757,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "noise",
+          "file": "music-5a-noise.wav",
+          "sha256": "f56cdc0caf3ce2677c228268375e5563d8165b31ad9c66342201b7c7efa02923",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 255,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 133.08083900226757,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "dpcm",
+          "file": "music-5a-dpcm.wav",
+          "sha256": "19ebd31dd6aaf20030cd20e11056dac9f09ce8cd0e301587e0f1ad61b7060694",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 255
+          },
+          "silent": false,
+          "seconds": 133.08083900226757,
+          "researchDirectory": ".local/contra-audio/stems"
+        }
+      ],
+      "loop": {
+        "status": "driver-state-repeat",
+        "pcmSeamAccepted": false,
+        "driverFrames": [
+          1275,
+          3963
+        ],
+        "sourceSampleRange": [
+          934826,
+          2907258
+        ],
+        "sampleRange": [
+          846062,
+          2818494
+        ],
+        "seconds": 44.726349206349205,
+        "rawBoundaryStep": 4811,
+        "originalAdjacentStep": 642,
+        "eventRepeatCount": 437,
+        "seamReadiness": "Unprocessed candidate; no seamless-loop or listening acceptance."
+      }
+    },
+    {
+      "id": 94,
+      "label": "base-boss",
+      "kind": "music",
+      "file": "music-5e.wav",
+      "sha256": "8cbc1870bc0058e34a2ef98092655c171e98f8b15e5392455c0436e980b2213c",
+      "durationSeconds": 133.08083900226757,
+      "sampleRange": [
+        88764,
+        5957629
+      ],
+      "requestFrame": 122,
+      "requestSampleOrigin": 88764,
+      "warmupFrames": 120,
+      "hexID": "0x5E",
+      "researchDirectory": ".local/contra-audio/export",
+      "sourceTable": "0x8a3a",
+      "slotDefinitions": [
+        {
+          "slot": 0,
+          "control": 24,
+          "sequenceAddress": "0xb0d7"
+        },
+        {
+          "slot": 1,
+          "control": 1,
+          "sequenceAddress": "0xb1bc"
+        },
+        {
+          "slot": 2,
+          "control": 2,
+          "sequenceAddress": "0xb23f"
+        },
+        {
+          "slot": 3,
+          "control": 3,
+          "sequenceAddress": "0xb352"
+        }
+      ],
+      "slotLifetimes": [
+        {
+          "slot": 0,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": null
+        },
+        {
+          "slot": 1,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": null
+        },
+        {
+          "slot": 2,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": null
+        },
+        {
+          "slot": 3,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": null
+        }
+      ],
+      "dpcmRegions": [
+        [
+          64512,
+          81
+        ],
+        [
+          64704,
+          593
+        ]
+      ],
+      "releaseMeaning": "Original slot ownership expiry is independent of the WAV filter tail; do not use media end as the priority timer.",
+      "stems": [
+        {
+          "channel": "pulse1",
+          "file": "music-5e-pulse1.wav",
+          "sha256": "384068cecdb4988ca67ddee9c0b39cdb752cca123318f42fe408db52ef7ca694",
+          "channelVolumes": {
+            "square1": 255,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 133.08083900226757,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "pulse2",
+          "file": "music-5e-pulse2.wav",
+          "sha256": "b9d142dd63fdf1fe32625e8daf2faa889c694a1cc93c34bf53a547107acc1f6e",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 255,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 133.08083900226757,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "triangle",
+          "file": "music-5e-triangle.wav",
+          "sha256": "67bd6008002bfbf3955be5f6f87ddebbb9bc1dd28126ab6334d587e498f1ede8",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 255,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 133.08083900226757,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "noise",
+          "file": "music-5e-noise.wav",
+          "sha256": "383bc2a1677a6c8e557b6eddfb9a149626d0e2f582e360b7ca1af6d97edb81d2",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 255,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 133.08083900226757,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "dpcm",
+          "file": "music-5e-dpcm.wav",
+          "sha256": "1abbf8068674f23ab92e5fc51b3d381dfd7a2c76a793e50a8108518a3a054f65",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 255
+          },
+          "silent": false,
+          "seconds": 133.08083900226757,
+          "researchDirectory": ".local/contra-audio/stems"
+        }
+      ],
+      "loop": {
+        "status": "driver-state-repeat",
+        "pcmSeamAccepted": false,
+        "driverFrames": [
+          1467,
+          3567
+        ],
+        "sourceSampleRange": [
+          1075714,
+          2616676
+        ],
+        "sampleRange": [
+          986950,
+          2527912
+        ],
+        "seconds": 34.94244897959184,
+        "rawBoundaryStep": 2491,
+        "originalAdjacentStep": 360,
+        "eventRepeatCount": 551,
+        "seamReadiness": "Unprocessed candidate; no seamless-loop or listening acceptance."
+      }
+    },
+    {
+      "id": 98,
+      "label": "stage-clear",
+      "kind": "cue",
+      "file": "cue-62.wav",
+      "sha256": "fe9aee0935e244f4b127d92e90177da93f7f82e81d70fdb5d2d16cba848f4836",
+      "durationSeconds": 4.1650340136054425,
+      "sampleRange": [
+        88764,
+        272442
+      ],
+      "requestFrame": 122,
+      "requestSampleOrigin": 88764,
+      "warmupFrames": 120,
+      "hexID": "0x62",
+      "researchDirectory": ".local/contra-audio/export",
+      "sourceTable": "0x8a46",
+      "slotDefinitions": [
+        {
+          "slot": 0,
+          "control": 24,
+          "sequenceAddress": "0xb3d6"
+        },
+        {
+          "slot": 1,
+          "control": 1,
+          "sequenceAddress": "0xb3f7"
+        },
+        {
+          "slot": 2,
+          "control": 2,
+          "sequenceAddress": "0xb418"
+        },
+        {
+          "slot": 3,
+          "control": 3,
+          "sequenceAddress": "0xb433"
+        }
+      ],
+      "slotLifetimes": [
+        {
+          "slot": 0,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 231
+        },
+        {
+          "slot": 1,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 231
+        },
+        {
+          "slot": 2,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 231
+        },
+        {
+          "slot": 3,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 140
+        }
+      ],
+      "dpcmRegions": [
+        [
+          64512,
+          81
+        ],
+        [
+          64704,
+          593
+        ]
+      ],
+      "releaseMeaning": "Original slot ownership expiry is independent of the WAV filter tail; do not use media end as the priority timer.",
+      "stems": [
+        {
+          "channel": "pulse1",
+          "file": "cue-62-pulse1.wav",
+          "sha256": "d67e28403f1d57a8492e4b2da34d9edc17e54b4690b0418fe4fb4a9351cf1af9",
+          "channelVolumes": {
+            "square1": 255,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 4.1650340136054425,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "pulse2",
+          "file": "cue-62-pulse2.wav",
+          "sha256": "d2c9f71e2c3dd7c7b1adbf6edd2fdf8eb62a000eaedb463c7d5a582bd36b3dca",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 255,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 4.1650340136054425,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "triangle",
+          "file": "cue-62-triangle.wav",
+          "sha256": "bdf26618d258fb1bceaa584db34ba55fd280e9fb729fe59dcd3fe97bafa94751",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 255,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 4.1650340136054425,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "noise",
+          "file": "cue-62-noise.wav",
+          "sha256": "718fd66e586ee451b14399380b5ab6824f40c4169d606819795727e2c000ba13",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 255,
+            "pcm": 0
+          },
+          "silent": true,
+          "seconds": 4.1650340136054425,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "dpcm",
+          "file": "cue-62-dpcm.wav",
+          "sha256": "4d681fe82275c7c3b8e3cc41c819a66288f87cd41d1a627f025ba6ddd7f25372",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 255
+          },
+          "silent": false,
+          "seconds": 4.1650340136054425,
+          "researchDirectory": ".local/contra-audio/stems"
+        }
+      ]
+    },
+    {
+      "id": 102,
+      "label": "final-stage-clear",
+      "kind": "cue",
+      "file": "cue-66.wav",
+      "sha256": "80769a297ea0ed46fde90304115d3b223f1fcb172aba90c40c6854eaec72fbeb",
+      "durationSeconds": 7.999773242630385,
+      "sampleRange": [
+        88764,
+        441554
+      ],
+      "requestFrame": 122,
+      "requestSampleOrigin": 88764,
+      "warmupFrames": 120,
+      "hexID": "0x66",
+      "researchDirectory": ".local/contra-audio/export",
+      "sourceTable": "0x8a52",
+      "slotDefinitions": [
+        {
+          "slot": 0,
+          "control": 24,
+          "sequenceAddress": "0xb448"
+        },
+        {
+          "slot": 1,
+          "control": 1,
+          "sequenceAddress": "0xb45e"
+        },
+        {
+          "slot": 2,
+          "control": 2,
+          "sequenceAddress": "0xb475"
+        },
+        {
+          "slot": 3,
+          "control": 3,
+          "sequenceAddress": "0xb485"
+        }
+      ],
+      "slotLifetimes": [
+        {
+          "slot": 0,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 462
+        },
+        {
+          "slot": 1,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 462
+        },
+        {
+          "slot": 2,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 462
+        },
+        {
+          "slot": 3,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 462
+        }
+      ],
+      "dpcmRegions": [
+        [
+          64512,
+          81
+        ],
+        [
+          64704,
+          593
+        ]
+      ],
+      "releaseMeaning": "Original slot ownership expiry is independent of the WAV filter tail; do not use media end as the priority timer.",
+      "stems": [
+        {
+          "channel": "pulse1",
+          "file": "cue-66-pulse1.wav",
+          "sha256": "3ca273b51007d8e18b5444427c1055d99faf9bf692ab2fd88ea2cd291e5924ad",
+          "channelVolumes": {
+            "square1": 255,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 7.999773242630385,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "pulse2",
+          "file": "cue-66-pulse2.wav",
+          "sha256": "a13c544f7ea902b326938bc53726fb233a6bea399b8277591d46b128fee7a3a3",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 255,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 7.999773242630385,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "triangle",
+          "file": "cue-66-triangle.wav",
+          "sha256": "281559ae8b3fb524417328fded229e09a24c5fd62467a1df3e11b5d1f76b2fb1",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 255,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 7.999773242630385,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "noise",
+          "file": "cue-66-noise.wav",
+          "sha256": "a7713fa21e1b5c1ab903f27c1a7d68e3dbf0127c76db907d81df51d09d52c0b7",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 255,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 7.999773242630385,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "dpcm",
+          "file": "cue-66-dpcm.wav",
+          "sha256": "3a9d94b4baf28ede859a663ab67fc1dbdd7a14986e97aa2e6e2737a5a894b5ad",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 255
+          },
+          "silent": false,
+          "seconds": 7.999773242630385,
+          "researchDirectory": ".local/contra-audio/stems"
+        }
+      ]
+    },
+    {
+      "id": 110,
+      "label": "game-over",
+      "kind": "cue",
+      "file": "cue-6e.wav",
+      "sha256": "c5c16a2b174c64c4a2d2a2fef2ba5507311c8db66f09efd01ed62240731f3fe8",
+      "durationSeconds": 5.947120181405896,
+      "sampleRange": [
+        88764,
+        351032
+      ],
+      "requestFrame": 122,
+      "requestSampleOrigin": 88764,
+      "warmupFrames": 120,
+      "hexID": "0x6E",
+      "researchDirectory": ".local/contra-audio/export",
+      "sourceTable": "0x8a6a",
+      "slotDefinitions": [
+        {
+          "slot": 0,
+          "control": 24,
+          "sequenceAddress": "0xb4c0"
+        },
+        {
+          "slot": 1,
+          "control": 1,
+          "sequenceAddress": "0xb4e8"
+        },
+        {
+          "slot": 2,
+          "control": 2,
+          "sequenceAddress": "0xb512"
+        },
+        {
+          "slot": 3,
+          "control": 3,
+          "sequenceAddress": "0xb53e"
+        }
+      ],
+      "slotLifetimes": [
+        {
+          "slot": 0,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 343
+        },
+        {
+          "slot": 1,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 343
+        },
+        {
+          "slot": 2,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 343
+        },
+        {
+          "slot": 3,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 301
+        }
+      ],
+      "dpcmRegions": [
+        [
+          64512,
+          81
+        ],
+        [
+          64704,
+          593
+        ]
+      ],
+      "releaseMeaning": "Original slot ownership expiry is independent of the WAV filter tail; do not use media end as the priority timer.",
+      "stems": [
+        {
+          "channel": "pulse1",
+          "file": "cue-6e-pulse1.wav",
+          "sha256": "5c53b9744784daa4f8b55a85f1c51ac50a4c03c54a50e8a6316ab717a7246cc3",
+          "channelVolumes": {
+            "square1": 255,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 5.947120181405896,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "pulse2",
+          "file": "cue-6e-pulse2.wav",
+          "sha256": "734fa418f77228fba723d352a84be1fa04ac7e2b3211ac91463dbc1af0b07d41",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 255,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 5.947120181405896,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "triangle",
+          "file": "cue-6e-triangle.wav",
+          "sha256": "61b6fa4ad11fccc97ca60e09a74d928ad3dd3b381843cdade76c20c21358b666",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 255,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 5.947120181405896,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "noise",
+          "file": "cue-6e-noise.wav",
+          "sha256": "67d123c7c641a43bbd25184b6db36382b4dc0a29fedf5510c0058278a83a9e9a",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 255,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 5.947120181405896,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "dpcm",
+          "file": "cue-6e-dpcm.wav",
+          "sha256": "96314617c8366731e3b756c0cb6ad74fcadbbe59ee831787e50d25d33e340ee2",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 255
+          },
+          "silent": false,
+          "seconds": 5.947120181405896,
+          "researchDirectory": ".local/contra-audio/stems"
+        }
+      ]
+    },
+    {
+      "id": 114,
+      "label": "player-death",
+      "kind": "effect",
+      "file": "effect-72.wav",
+      "sha256": "fd5e5c51a665fa97c773fd3240b443106c7a2d03144d99457ca4f2c6acb11f58",
+      "durationSeconds": 1.4420181405895691,
+      "sampleRange": [
+        88764,
+        152357
+      ],
+      "requestFrame": 122,
+      "requestSampleOrigin": 88764,
+      "warmupFrames": 120,
+      "hexID": "0x72",
+      "researchDirectory": ".local/contra-audio/export",
+      "sourceTable": "0x8a76",
+      "slotDefinitions": [
+        {
+          "slot": 4,
+          "control": 12,
+          "sequenceAddress": "0x98f3"
+        },
+        {
+          "slot": 5,
+          "control": 5,
+          "sequenceAddress": "0x9946"
+        }
+      ],
+      "slotLifetimes": [
+        {
+          "slot": 4,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 75
+        },
+        {
+          "slot": 5,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 67
+        }
+      ],
+      "dpcmRegions": [],
+      "releaseMeaning": "Original slot ownership expiry is independent of the WAV filter tail; do not use media end as the priority timer.",
+      "stems": [
+        {
+          "channel": "pulse1",
+          "file": "effect-72-pulse1.wav",
+          "sha256": "e58ca0195dd4b08405d89247f4060ab9eb73ae22393a67ddb80a6246685082a0",
+          "channelVolumes": {
+            "square1": 255,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 1.4420181405895691,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "noise",
+          "file": "effect-72-noise.wav",
+          "sha256": "5ff28a46d24835a530f88fa3fbdf1124d39f45a71ce6ced125bee8e91bb032cc",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 255,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 1.4420181405895691,
+          "researchDirectory": ".local/contra-audio/stems"
+        }
+      ]
+    },
+    {
+      "id": 116,
+      "label": "pause",
+      "kind": "effect",
+      "file": "effect-74.wav",
+      "sha256": "4af34aebedf8b4ea73e50cc502f7cf0793625f23250488861f9f9c4fb6219b94",
+      "durationSeconds": 0.7840362811791384,
+      "sampleRange": [
+        88764,
+        123340
+      ],
+      "requestFrame": 122,
+      "requestSampleOrigin": 88764,
+      "warmupFrames": 120,
+      "hexID": "0x74",
+      "researchDirectory": ".local/contra-audio/export",
+      "sourceTable": "0x8a7c",
+      "slotDefinitions": [
+        {
+          "slot": 4,
+          "control": 4,
+          "sequenceAddress": "0x8ab1"
+        }
+      ],
+      "slotLifetimes": [
+        {
+          "slot": 4,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 31
+        }
+      ],
+      "dpcmRegions": [],
+      "releaseMeaning": "Original slot ownership expiry is independent of the WAV filter tail; do not use media end as the priority timer.",
+      "stems": [
+        {
+          "channel": "pulse1",
+          "file": "effect-74-pulse1.wav",
+          "sha256": "fed6a9bdf87ae5edeee83d0d4cf4c24b0e82ad0be8b0cfa48cf148c00bbb32a8",
+          "channelVolumes": {
+            "square1": 255,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 0.7840362811791384,
+          "researchDirectory": ".local/contra-audio/stems"
+        }
+      ]
+    },
+    {
+      "id": 117,
+      "label": "large-explosion",
+      "kind": "effect",
+      "file": "effect-75.wav",
+      "sha256": "ac83b5298f3cdd7201b332abd683f435649f2bf48f6f6b23c33f1b81d5a782b6",
+      "durationSeconds": 2.023310657596372,
+      "sampleRange": [
+        88764,
+        177992
+      ],
+      "requestFrame": 122,
+      "requestSampleOrigin": 88764,
+      "warmupFrames": 120,
+      "hexID": "0x75",
+      "researchDirectory": ".local/contra-audio/export",
+      "sourceTable": "0x8a7f",
+      "slotDefinitions": [
+        {
+          "slot": 4,
+          "control": 12,
+          "sequenceAddress": "0x97cf"
+        },
+        {
+          "slot": 5,
+          "control": 5,
+          "sequenceAddress": "0x97e8"
+        }
+      ],
+      "slotLifetimes": [
+        {
+          "slot": 4,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 48
+        },
+        {
+          "slot": 5,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 109
+        }
+      ],
+      "dpcmRegions": [],
+      "releaseMeaning": "Original slot ownership expiry is independent of the WAV filter tail; do not use media end as the priority timer.",
+      "stems": [
+        {
+          "channel": "pulse1",
+          "file": "effect-75-pulse1.wav",
+          "sha256": "0839dae09bc1e63b6f962489cff4a991a8f6fa8cabc8cd14a02a8f24d6b3513e",
+          "channelVolumes": {
+            "square1": 255,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 2.023310657596372,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "noise",
+          "file": "effect-75-noise.wav",
+          "sha256": "e0efee9bb27f74892d8b0fd515e0733712770b9a7714e08a813eb150efb9bf52",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 255,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 2.023310657596372,
+          "researchDirectory": ".local/contra-audio/stems"
+        }
+      ]
+    },
+    {
+      "id": 119,
+      "label": "boss-defeated",
+      "kind": "cue",
+      "file": "cue-77.wav",
+      "sha256": "ddc4f9fc3c79a339acc58a2f59efd83dbe7e78f6d8dbf03a1611abe5cac4f377",
+      "durationSeconds": 3.2635374149659864,
+      "sampleRange": [
+        88764,
+        232686
+      ],
+      "requestFrame": 122,
+      "requestSampleOrigin": 88764,
+      "warmupFrames": 120,
+      "hexID": "0x77",
+      "researchDirectory": ".local/contra-audio/export",
+      "sourceTable": "0x8a85",
+      "slotDefinitions": [
+        {
+          "slot": 4,
+          "control": 28,
+          "sequenceAddress": "0x9827"
+        },
+        {
+          "slot": 1,
+          "control": 1,
+          "sequenceAddress": "0x986f"
+        },
+        {
+          "slot": 3,
+          "control": 3,
+          "sequenceAddress": "0x98b3"
+        },
+        {
+          "slot": 5,
+          "control": 5,
+          "sequenceAddress": "0x98b8"
+        }
+      ],
+      "slotLifetimes": [
+        {
+          "slot": 4,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 194
+        },
+        {
+          "slot": 1,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 194
+        },
+        {
+          "slot": 3,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 194
+        },
+        {
+          "slot": 5,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 194
+        }
+      ],
+      "dpcmRegions": [],
+      "releaseMeaning": "Original slot ownership expiry is independent of the WAV filter tail; do not use media end as the priority timer.",
+      "stems": [
+        {
+          "channel": "pulse1",
+          "file": "cue-77-pulse1.wav",
+          "sha256": "d744322c3a70a9df7fce67146b104621ac2737963c24bd8c95ddd28975a45573",
+          "channelVolumes": {
+            "square1": 255,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 3.2635374149659864,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "pulse2",
+          "file": "cue-77-pulse2.wav",
+          "sha256": "0eaa34bb35cfacdc4b8193ded5bfb4e7010b9a92578f5c871297902c85be044b",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 255,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 3.2635374149659864,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "triangle",
+          "file": "cue-77-triangle.wav",
+          "sha256": "31a669e6f5fc29daf0670f5ac95229d1bf6cb8c17704563dff0efafe67dd3e5a",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 255,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": true,
+          "seconds": 3.2635374149659864,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "noise",
+          "file": "cue-77-noise.wav",
+          "sha256": "6c13f0b22adf7d2ba4431c0f41b7af90198a7c7f3460ecfa55795a9d6b26d025",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 255,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 3.2635374149659864,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "dpcm",
+          "file": "cue-77-dpcm.wav",
+          "sha256": "31a669e6f5fc29daf0670f5ac95229d1bf6cb8c17704563dff0efafe67dd3e5a",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 255
+          },
+          "silent": true,
+          "seconds": 3.2635374149659864,
+          "researchDirectory": ".local/contra-audio/stems"
+        }
+      ]
+    },
+    {
+      "id": 123,
+      "label": "heart-defeated",
+      "kind": "cue",
+      "file": "cue-7b.wav",
+      "sha256": "4a474713370afdaa82bbaa666afa4f295f2a290923e9b95083ead7f66471a96a",
+      "durationSeconds": 3.2599773242630388,
+      "sampleRange": [
+        88764,
+        232529
+      ],
+      "requestFrame": 122,
+      "requestSampleOrigin": 88764,
+      "warmupFrames": 120,
+      "hexID": "0x7B",
+      "researchDirectory": ".local/contra-audio/export",
+      "sourceTable": "0x8a91",
+      "slotDefinitions": [
+        {
+          "slot": 4,
+          "control": 28,
+          "sequenceAddress": "0x9827"
+        },
+        {
+          "slot": 1,
+          "control": 1,
+          "sequenceAddress": "0x986f"
+        },
+        {
+          "slot": 3,
+          "control": 3,
+          "sequenceAddress": "0x98b3"
+        },
+        {
+          "slot": 5,
+          "control": 5,
+          "sequenceAddress": "0x98b8"
+        }
+      ],
+      "slotLifetimes": [
+        {
+          "slot": 4,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 194
+        },
+        {
+          "slot": 1,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 194
+        },
+        {
+          "slot": 3,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 194
+        },
+        {
+          "slot": 5,
+          "firstUpdateTick": 0,
+          "releaseUpdateTick": 194
+        }
+      ],
+      "dpcmRegions": [],
+      "releaseMeaning": "Original slot ownership expiry is independent of the WAV filter tail; do not use media end as the priority timer.",
+      "stems": [
+        {
+          "channel": "pulse1",
+          "file": "cue-7b-pulse1.wav",
+          "sha256": "31e23f897d9fc826ddca312f42afbf557f386818bf7f7029351e714da25e1052",
+          "channelVolumes": {
+            "square1": 255,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 3.2599773242630388,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "pulse2",
+          "file": "cue-7b-pulse2.wav",
+          "sha256": "94c39d0b22d6edc34e9fe7dbf7cb7947f09a848953e682867e43398224c046f4",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 255,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 3.2599773242630388,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "triangle",
+          "file": "cue-7b-triangle.wav",
+          "sha256": "0cfa057d793581b4174697126316ffc9d387d3f0406fb6633727796e3b35783e",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 255,
+            "noise": 0,
+            "pcm": 0
+          },
+          "silent": true,
+          "seconds": 3.2599773242630388,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "noise",
+          "file": "cue-7b-noise.wav",
+          "sha256": "8e819c1eb332292b075e740da27b192141435243ce6d0e4d56796be80af7123d",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 255,
+            "pcm": 0
+          },
+          "silent": false,
+          "seconds": 3.2599773242630388,
+          "researchDirectory": ".local/contra-audio/stems"
+        },
+        {
+          "channel": "dpcm",
+          "file": "cue-7b-dpcm.wav",
+          "sha256": "0cfa057d793581b4174697126316ffc9d387d3f0406fb6633727796e3b35783e",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 255
+          },
+          "silent": true,
+          "seconds": 3.2599773242630388,
+          "researchDirectory": ".local/contra-audio/stems"
+        }
+      ]
+    },
+    {
+      "id": 127,
+      "label": "dpcm-hat",
+      "kind": "percussion",
+      "file": "percussion-7f.wav",
+      "sha256": "c09a2f9445f936e2b5cf9ae27ec558049ab45f226d99a6d2ec1e52a282f60bab",
+      "durationSeconds": 0.31272108843537416,
+      "sampleRange": [
+        88764,
+        102555
+      ],
+      "requestFrame": 122,
+      "requestSampleOrigin": 88764,
+      "warmupFrames": 120,
+      "hexID": "0x7F",
+      "researchDirectory": ".local/contra-audio/export",
+      "sourceTable": null,
+      "slotDefinitions": [],
+      "slotLifetimes": [],
+      "dpcmRegions": [
+        [
+          64512,
+          81
+        ]
+      ],
+      "releaseMeaning": "Original slot ownership expiry is independent of the WAV filter tail; do not use media end as the priority timer.",
+      "stems": [
+        {
+          "channel": "dpcm",
+          "file": "percussion-7f-dpcm.wav",
+          "sha256": "0166499eff140490a5077d1d87f53440329ddcb65df4be004f81d462a909489d",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 255
+          },
+          "silent": false,
+          "seconds": 0.31272108843537416,
+          "researchDirectory": ".local/contra-audio/stems"
+        }
+      ]
+    },
+    {
+      "id": 128,
+      "label": "dpcm-snare",
+      "kind": "percussion",
+      "file": "percussion-80.wav",
+      "sha256": "8708d9e5ab027c2f63aedcd56381295c5300546475803ef5483533aaf378903c",
+      "durationSeconds": 0.4099092970521542,
+      "sampleRange": [
+        88764,
+        106841
+      ],
+      "requestFrame": 122,
+      "requestSampleOrigin": 88764,
+      "warmupFrames": 120,
+      "hexID": "0x80",
+      "researchDirectory": ".local/contra-audio/export",
+      "sourceTable": null,
+      "slotDefinitions": [],
+      "slotLifetimes": [],
+      "dpcmRegions": [
+        [
+          64704,
+          593
+        ]
+      ],
+      "releaseMeaning": "Original slot ownership expiry is independent of the WAV filter tail; do not use media end as the priority timer.",
+      "stems": [
+        {
+          "channel": "dpcm",
+          "file": "percussion-80-dpcm.wav",
+          "sha256": "62ee2cd10f43a4a53008eb910643e41133d9e0aec198b61f17cd2e5c7bfc1a71",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 255
+          },
+          "silent": false,
+          "seconds": 0.4099092970521542,
+          "researchDirectory": ".local/contra-audio/stems"
+        }
+      ]
+    },
+    {
+      "id": 129,
+      "label": "dpcm-extra",
+      "kind": "percussion",
+      "file": "percussion-81.wav",
+      "sha256": "6c4ae5149e13ecfa8449fd5818ae3e31d6cb3f93381e9d7b83c1c747c8db9cb9",
+      "durationSeconds": 0.321156462585034,
+      "sampleRange": [
+        88764,
+        102927
+      ],
+      "requestFrame": 122,
+      "requestSampleOrigin": 88764,
+      "warmupFrames": 120,
+      "hexID": "0x81",
+      "researchDirectory": ".local/contra-audio/export",
+      "sourceTable": null,
+      "slotDefinitions": [],
+      "slotLifetimes": [],
+      "dpcmRegions": [
+        [
+          64704,
+          49
+        ]
+      ],
+      "releaseMeaning": "Original slot ownership expiry is independent of the WAV filter tail; do not use media end as the priority timer.",
+      "stems": [
+        {
+          "channel": "dpcm",
+          "file": "percussion-81-dpcm.wav",
+          "sha256": "a03273bdbe2a4c8f33b4b7c4ab773afebd05a340350cb40bb2c6f671d31bbfbf",
+          "channelVolumes": {
+            "square1": 0,
+            "square2": 0,
+            "triangle": 0,
+            "noise": 0,
+            "pcm": 255
+          },
+          "silent": false,
+          "seconds": 0.321156462585034,
+          "researchDirectory": ".local/contra-audio/stems"
+        }
+      ]
+    }
+  ],
+  "percussionTimeline": "docs/research/nes-contra/evidence/audio-percussion-timeline.json.gz",
+  "priorityEvidence": "docs/research/nes-contra/evidence/audio-priority.json",
+  "platformContract": {
+    "api": "BoardProps.audio.track/stopTrack/muteTrack/pauseTrack/resumeTrack",
+    "gameRules": "Per-slot acceptance, retransmit/epoch deduplication, music event timeline and pause state belong to Contra.",
+    "musicPulseOverride": "Effect slot4 overrides physical pulse1 while the underlying music slot0 advances. Background pulse1 must not be paused for an effect.",
+    "noiseOverride": "Music noise request0x02 and game effects share slot5; rejected noise requests are discarded, not queued.",
+    "dpcm": "0x7F..81 directly start DPCM and bypass normal slot priority; DPCM is a separate physical channel.",
+    "sameTickDuplicates": "Keep at most the last accepted request per slot within a tick; equal IDs in later ticks are genuine retriggers.",
+    "audioPhase": "Game F9BC requests are serviced at the following original audio update; music-internal percussion is generated in the current audio update."
+  },
+  "limitations": [
+    "No upload has been performed. The local controller/adapter is verified separately.",
+    "Original whole clips cannot be blindly overlaid; partial slot replacement needs stems/timeline rules.",
+    "Raw continuous captures are not loop-ready; verified loop derivatives are catalogued separately. Multi-track sync and complete gameplay mixing remain unaccepted.",
+    "Separate channel rendering does not recreate the original nonlinear pulse/TND mix or all oscillator-history effects.",
+    "Source media are local research candidates. Distribution rights are not established by ROM/content identity."
+  ]
+}

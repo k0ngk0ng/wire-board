@@ -1,0 +1,74 @@
+{
+  "scope": "Actual private platform standard solo natural failure, legal native Right/Select/Start, final fullscreen result UI and -10 points; not eight-stage victory or bot acceptance",
+  "passed": true,
+  "fixture": {
+    "url": "http://127.0.0.1:53638",
+    "rulesBuildID": "0105a96fa28932353c8813180c905806decec6c96c3b5c0a216f8bf4a11dec41",
+    "webRoot": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/web/dist",
+    "publicRoot": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/contra-browser/build/public",
+    "webManifestSHA256": "aa7dbba07220840fd27fe632820f5cc8b56d8c6f39f5260540b368a7ee03ce16"
+  },
+  "scriptSHA256": "6bab45939f77c99bcd2ba247a946b2480f69f1aa9d2bc49eb8a79a12ff6bf5e3",
+  "command": "python3 -B scripts/contra/terminal_browser_accept.py --fixture <matching-private-fixture.json> --label <new-label>",
+  "terminal": {
+    "audioTick": "2016",
+    "checked": "2016",
+    "contraRuntime": "true",
+    "digest": "3ac65abd45026b62d51253bcf7fe3fb8f5a16cd1d041b2751639baa40d0bc21e",
+    "frame": "2015",
+    "lives": "[0,0]",
+    "paused": "false",
+    "phase": "finished",
+    "resyncs": "0",
+    "revision": "2016"
+  },
+  "resultText": "本局结果对局结算挑战失败本局挑战结束，没有获胜者。可以再来一局。魂斗罗终局-9672f83 -10 积分再来一局",
+  "checks": [
+    "First visible result overlay has phase=finished at submitted revision",
+    "Natural challenge failure displays -10 points",
+    "Closing overlay preserves final Canvas rectangle",
+    "Result can be reopened",
+    "320px result remains within viewport without horizontal overflow",
+    "PC and settled 320px screenshots visually reviewed"
+  ],
+  "boardBeforeClose": {
+    "height": 562.5,
+    "width": 600,
+    "x": 250,
+    "y": 78
+  },
+  "boardAfterClose": {
+    "height": 562.5,
+    "width": 600,
+    "x": 250,
+    "y": 78
+  },
+  "mobileGeometry": {
+    "height": 295.390625,
+    "scrollWidth": 320,
+    "viewport": [
+      320,
+      740
+    ],
+    "width": 292,
+    "x": 14,
+    "y": 222.296875
+  },
+  "artifacts": {
+    "docs/research/nes-contra/evidence/terminal-browser-desktop-result.png": "7667a3cec22fb76b160998c88e9e14f618a887939cb25a14f9a5afcb5ff17919",
+    "docs/research/nes-contra/evidence/terminal-browser-desktop-final-board.png": "7a41c45a1b25cce315922cbf5778a7e736aa40c32938e5c30fbc8711bf7194a5",
+    "docs/research/nes-contra/evidence/terminal-browser-mobile-result.png": "9760c07ad21198af09dafdeecd88955e6a00f7e89e3b9923a213fb2273678cd6",
+    "docs/research/nes-contra/evidence/terminal-browser-continue-menu.png": "1f657187145900fc6a8fa410bca89b94cfd02ea5753c7c2c1fb7a423ecc74875",
+    "docs/research/nes-contra/evidence/terminal-browser-v2-result.json.gz": "bb820f6289bc7379950c06f489380630e7463a0debfcf81460c8fd4fe2e69bc7"
+  },
+  "cleanup": [
+    "Private browser closed",
+    "Own profile/tmp/socket removed",
+    "Acceptance screenshots and trace retained"
+  ],
+  "limitations": [
+    "Headless local Chromium, not physical device listening or WAN testing.",
+    "Does not cover later network-starvation and hidden-restore fixes; those need separate verification.",
+    "No eight-stage clear or fair-bot claim."
+  ]
+}

@@ -91,6 +91,9 @@ func botAction(ctx gameapi.Context, m gameapi.Match) (json.RawMessage, error) {
 	return marshalBotAction(a)
 }
 func (s *State) investment(p int) *Action {
+	if s.World.Layout == "central" {
+		return s.centralInvestment(p)
+	}
 	owned := []Tower{}
 	counts := map[string]int{}
 	occupied := map[int]bool{}
@@ -193,8 +196,17 @@ func (s *State) investment(p int) *Action {
 		a := &Action{Type: "upgrade", TowerID: t.ID}
 		if t.Level == 3 {
 			a.Branch = "power"
+			if t.Kind == "arrow" && s.SkillRules == 2 {
+				a.Branch = "volley"
+			}
 			if t.Kind == "frost" || t.Kind == "cannon" {
 				a.Branch = "speed"
+			}
+			if s.specialized() && t.Kind == "frost" && t.Pad%2 == 0 {
+				a.Branch = "freeze"
+			}
+			if s.specialized() && t.Kind == "arcane" && t.Pad%2 == 0 {
+				a.Branch = "magic"
 			}
 		}
 		return a

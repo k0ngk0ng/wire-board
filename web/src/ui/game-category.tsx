@@ -4,6 +4,7 @@ export const categories = [
   ["board", "桌游"],
   ["poker", "棋牌类"],
   ["realtime", "即时策略"],
+  ["action", "动作"],
   ["sports", "体育"],
   ["puzzle", "益智休闲"],
 ] as const;

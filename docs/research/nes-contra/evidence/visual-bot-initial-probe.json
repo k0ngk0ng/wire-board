@@ -1,0 +1,82 @@
+{
+  "scope": "First pure-pixel solo/coop development probe, 1800 standard frames per mode; no prefix or state injection",
+  "passed": false,
+  "completeCampaign": false,
+  "command": "CONTRA_BOT_FRAMES=1800 CONTRA_BOT_TARGET=1 go test ./games/contra/engine -run '^TestBotStandardCampaignE2E$' -timeout 5m -count=1 -v",
+  "cases": [
+    {
+      "players": 1,
+      "completeCampaign": false,
+      "result": {
+        "complete_campaign": false,
+        "continues": 3,
+        "error": "",
+        "finalized": false,
+        "frames": 1800,
+        "level": 0,
+        "no_state_injection": true,
+        "observation": "submitted final RGBA and actual public HUD only; immutable global visual knowledge; shared classification",
+        "outcome": "",
+        "passed": false,
+        "players": 1,
+        "prefix_frames": 0,
+        "restore_checkpoints": 1,
+        "routine": 4,
+        "screen": 2,
+        "seed": 42,
+        "standard_continues": 3,
+        "standard_reserve_lives": 2,
+        "target_level": 1
+      },
+      "traceSamples": 304,
+      "player0VisibleSamples": 141,
+      "zeroInputSamples": 163,
+      "finalDiagnosticSpriteCodes": [
+        115,
+        0
+      ],
+      "diagnosticOnly": true,
+      "evidenceDirectory": ".local/contra-bot/runs/attempt-4151253343/players1"
+    },
+    {
+      "players": 2,
+      "completeCampaign": false,
+      "result": {
+        "complete_campaign": false,
+        "continues": 3,
+        "error": "",
+        "finalized": false,
+        "frames": 1800,
+        "level": 0,
+        "no_state_injection": true,
+        "observation": "submitted final RGBA and actual public HUD only; immutable global visual knowledge; shared classification",
+        "outcome": "",
+        "passed": false,
+        "players": 2,
+        "prefix_frames": 0,
+        "restore_checkpoints": 1,
+        "routine": 4,
+        "screen": 0,
+        "seed": 42,
+        "standard_continues": 3,
+        "standard_reserve_lives": 2,
+        "target_level": 1
+      },
+      "traceSamples": 304,
+      "player0VisibleSamples": 19,
+      "zeroInputSamples": 272,
+      "finalDiagnosticSpriteCodes": [
+        15,
+        15
+      ],
+      "diagnosticOnly": true,
+      "evidenceDirectory": ".local/contra-bot/runs/attempt-4151253343/players2"
+    }
+  ],
+  "findings": [
+    "Solo reached stage zero screen two but water sprite115 was absent from the player recipe list.",
+    "Co-op repeatedly lost both character matches while the two characters overlapped; occlusion handling requires confirmation and correction."
+  ],
+  "boundary": "Decision input is submitted pixels and public PresentedLives/Paused only. Raw rule fields appear only in diagnostic traces and are not fed to the strategy.",
+  "testSHA256": "8a09893fa34607250be094ef6b619c41b20d791bdc41fb44699bcae7f8d7d7e1"
+}

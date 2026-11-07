@@ -1,0 +1,10 @@
+{
+  "scope": "public submitted RGBA only; avatar invisible during natural respawn flashing",
+  "source_attempt": ".local/contra-bot/runs/assisted-visual-solo-edge-v2/players1",
+  "seed": 42,
+  "players": 1,
+  "assisted_reserves": true,
+  "image_sha256": "95ba3a96e188f94f318ff6601f1f17ebb0b92bbce5a320d0d44828a9e65368fa",
+  "held_pads_sha256": "5a66d35fba71313ac7fa06752a074b468102948a6bc5afe5088efc8a6f2cc71a",
+  "before_frame": 17997
+}

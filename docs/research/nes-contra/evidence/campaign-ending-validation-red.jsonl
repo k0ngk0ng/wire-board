@@ -1,0 +1,9 @@
+{"Time":"2026-10-25T15:11:42.173944+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-10-25T15:11:42.570993+08:00","Action":"run","Package":"command-line-arguments","Test":"TestCampaignInvalidStateAndCheckpointAtomicity"}
+{"Time":"2026-10-25T15:11:42.571046+08:00","Action":"output","Package":"command-line-arguments","Test":"TestCampaignInvalidStateAndCheckpointAtomicity","Output":"=== RUN   TestCampaignInvalidStateAndCheckpointAtomicity\n"}
+{"Time":"2026-10-25T15:11:42.571073+08:00","Action":"output","Package":"command-line-arguments","Test":"TestCampaignInvalidStateAndCheckpointAtomicity","Output":"    campaign_test.go:171: Japanese sound-test routine accepted as a cleared campaign\n"}
+{"Time":"2026-10-25T15:11:42.571081+08:00","Action":"output","Package":"command-line-arguments","Test":"TestCampaignInvalidStateAndCheckpointAtomicity","Output":"--- FAIL: TestCampaignInvalidStateAndCheckpointAtomicity (0.00s)\n"}
+{"Time":"2026-10-25T15:11:42.571088+08:00","Action":"fail","Package":"command-line-arguments","Test":"TestCampaignInvalidStateAndCheckpointAtomicity","Elapsed":0}
+{"Time":"2026-10-25T15:11:42.571096+08:00","Action":"output","Package":"command-line-arguments","Output":"FAIL\n"}
+{"Time":"2026-10-25T15:11:42.571432+08:00","Action":"output","Package":"command-line-arguments","Output":"FAIL\tcommand-line-arguments\t0.397s\n"}
+{"Time":"2026-10-25T15:11:42.571449+08:00","Action":"fail","Package":"command-line-arguments","Elapsed":0.398}

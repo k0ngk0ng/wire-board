@@ -1,0 +1,2210 @@
+{
+  "scope": "Unprocessed original loop candidate boundaries; expected red before derivation.",
+  "stems": [
+    {
+      "id": 70,
+      "channel": "pulse1",
+      "passed": false,
+      "boundaryError": 21,
+      "tail16Error": 24,
+      "maximumStep": 818,
+      "sourceMaximumStep": 818,
+      "maximumCurvature": 754,
+      "sourceMaximumCurvature": 754,
+      "peak": 1170,
+      "localRMS": [
+        {
+          "offset": 0,
+          "rms": 14.997827982499151,
+          "referenceRMS": 49.44016417230969,
+          "differenceDB": -10.361030721165648,
+          "passed": false
+        },
+        {
+          "offset": 88,
+          "rms": 20.550428543328422,
+          "referenceRMS": 69.7936235179008,
+          "differenceDB": -10.61989727362489,
+          "passed": false
+        },
+        {
+          "offset": 176,
+          "rms": 26.246435074265776,
+          "referenceRMS": 95.6691888406833,
+          "differenceDB": -11.234035360926596,
+          "passed": false
+        },
+        {
+          "offset": 264,
+          "rms": 30.959628285388135,
+          "referenceRMS": 116.8350020289153,
+          "differenceDB": -11.53554465442346,
+          "passed": false
+        },
+        {
+          "offset": 352,
+          "rms": 34.59776966398816,
+          "referenceRMS": 137.2928723080215,
+          "differenceDB": -11.971997759756757,
+          "passed": false
+        },
+        {
+          "offset": 440,
+          "rms": 476.9606471434648,
+          "referenceRMS": 442.15479231753346,
+          "differenceDB": 0.6581642288572267,
+          "passed": true
+        },
+        {
+          "offset": 528,
+          "rms": 574.9653518320607,
+          "referenceRMS": 514.2929179035326,
+          "differenceDB": 0.9686226086695324,
+          "passed": true
+        },
+        {
+          "offset": 616,
+          "rms": 677.985553507501,
+          "referenceRMS": 582.1767380247218,
+          "differenceDB": 1.32331183287806,
+          "passed": true
+        },
+        {
+          "offset": 704,
+          "rms": 733.9004841801692,
+          "referenceRMS": 615.807259134319,
+          "differenceDB": 1.5238474031929792,
+          "passed": true
+        },
+        {
+          "offset": 792,
+          "rms": 623.4959920678286,
+          "referenceRMS": 534.0532366758189,
+          "differenceDB": 1.344982292390221,
+          "passed": true
+        },
+        {
+          "offset": 880,
+          "rms": 594.4709243408677,
+          "referenceRMS": 522.3758471056453,
+          "differenceDB": 1.122950592928647,
+          "passed": true
+        },
+        {
+          "offset": 968,
+          "rms": 532.1449300978966,
+          "referenceRMS": 476.9210083251896,
+          "differenceDB": 0.9516695073770293,
+          "passed": true
+        },
+        {
+          "offset": 1056,
+          "rms": 510.06572925324065,
+          "referenceRMS": 481.4177305205519,
+          "differenceDB": 0.5020812707208224,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "id": 70,
+      "channel": "pulse2",
+      "passed": false,
+      "boundaryError": 69,
+      "tail16Error": 2187,
+      "maximumStep": 1599,
+      "sourceMaximumStep": 1600,
+      "maximumCurvature": 1477,
+      "sourceMaximumCurvature": 1478,
+      "peak": 1747,
+      "localRMS": [
+        {
+          "offset": 0,
+          "rms": 461.88869561703956,
+          "referenceRMS": 462.985912895796,
+          "differenceDB": -0.02060887513949736,
+          "passed": true
+        },
+        {
+          "offset": 88,
+          "rms": 475.06927778681273,
+          "referenceRMS": 472.48663677293473,
+          "differenceDB": 0.047348320084854054,
+          "passed": true
+        },
+        {
+          "offset": 176,
+          "rms": 475.4044289915859,
+          "referenceRMS": 477.8111146666036,
+          "differenceDB": -0.043860490368583846,
+          "passed": true
+        },
+        {
+          "offset": 264,
+          "rms": 475.1916535974987,
+          "referenceRMS": 473.8431324602758,
+          "differenceDB": 0.024684266220360913,
+          "passed": true
+        },
+        {
+          "offset": 352,
+          "rms": 474.98025007397933,
+          "referenceRMS": 467.2083041544929,
+          "differenceDB": 0.14329996984221854,
+          "passed": true
+        },
+        {
+          "offset": 440,
+          "rms": 605.547625167178,
+          "referenceRMS": 593.1734477445897,
+          "differenceDB": 0.17933205624314108,
+          "passed": true
+        },
+        {
+          "offset": 528,
+          "rms": 769.2661471162955,
+          "referenceRMS": 776.9371902684147,
+          "differenceDB": -0.08618579366959772,
+          "passed": true
+        },
+        {
+          "offset": 616,
+          "rms": 870.074924324151,
+          "referenceRMS": 900.4778966959891,
+          "differenceDB": -0.29832809198397825,
+          "passed": true
+        },
+        {
+          "offset": 704,
+          "rms": 975.9954793119657,
+          "referenceRMS": 1013.1149745105221,
+          "differenceDB": -0.3242185697725438,
+          "passed": true
+        },
+        {
+          "offset": 792,
+          "rms": 1006.2120297060717,
+          "referenceRMS": 1057.8879423422832,
+          "differenceDB": -0.43500323860986634,
+          "passed": true
+        },
+        {
+          "offset": 880,
+          "rms": 921.3004050040482,
+          "referenceRMS": 978.4881899198182,
+          "differenceDB": -0.5230865226658097,
+          "passed": true
+        },
+        {
+          "offset": 968,
+          "rms": 938.8236446181205,
+          "referenceRMS": 970.9725028208467,
+          "differenceDB": -0.2924582454611673,
+          "passed": true
+        },
+        {
+          "offset": 1056,
+          "rms": 942.3934449576515,
+          "referenceRMS": 966.8854854339162,
+          "differenceDB": -0.22285568361361643,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "id": 70,
+      "channel": "triangle",
+      "passed": false,
+      "boundaryError": 6434,
+      "tail16Error": 6491,
+      "maximumStep": 6447,
+      "sourceMaximumStep": 711,
+      "maximumCurvature": 6507,
+      "sourceMaximumCurvature": 652,
+      "peak": 8447,
+      "localRMS": [
+        {
+          "offset": 0,
+          "rms": 357.97789033915404,
+          "referenceRMS": 805.0808491645031,
+          "differenceDB": -7.039665834038178,
+          "passed": false
+        },
+        {
+          "offset": 88,
+          "rms": 361.899208105234,
+          "referenceRMS": 1059.433624214927,
+          "differenceDB": -9.329722392363326,
+          "passed": false
+        },
+        {
+          "offset": 176,
+          "rms": 362.21195647911816,
+          "referenceRMS": 1296.7942898882934,
+          "differenceDB": -11.078166148523517,
+          "passed": false
+        },
+        {
+          "offset": 264,
+          "rms": 359.65523702347724,
+          "referenceRMS": 1225.879169151045,
+          "differenceDB": -10.651225535554865,
+          "passed": false
+        },
+        {
+          "offset": 352,
+          "rms": 354.8415238978564,
+          "referenceRMS": 1079.2785775647953,
+          "differenceDB": -9.661982424165066,
+          "passed": false
+        },
+        {
+          "offset": 440,
+          "rms": 348.2664637099623,
+          "referenceRMS": 562.8100324206921,
+          "differenceDB": -4.169003485322928,
+          "passed": false
+        },
+        {
+          "offset": 528,
+          "rms": 340.34987830180967,
+          "referenceRMS": 479.0858227423366,
+          "differenceDB": -2.9697543923827334,
+          "passed": false
+        },
+        {
+          "offset": 616,
+          "rms": 331.43237082487116,
+          "referenceRMS": 400.5957975254775,
+          "differenceDB": -1.6462293104186785,
+          "passed": true
+        },
+        {
+          "offset": 704,
+          "rms": 321.77874086653765,
+          "referenceRMS": 1762.0444215077223,
+          "differenceDB": -14.769190098614972,
+          "passed": false
+        },
+        {
+          "offset": 792,
+          "rms": 643.2706090653079,
+          "referenceRMS": 2662.4927122412514,
+          "differenceDB": -12.337894373886147,
+          "passed": false
+        },
+        {
+          "offset": 880,
+          "rms": 1523.9139772960611,
+          "referenceRMS": 3234.312595625416,
+          "differenceDB": -6.53643079315978,
+          "passed": false
+        },
+        {
+          "offset": 968,
+          "rms": 3881.701759848112,
+          "referenceRMS": 3775.3908543839957,
+          "differenceDB": 0.24120490084143525,
+          "passed": true
+        },
+        {
+          "offset": 1056,
+          "rms": 4328.892963116434,
+          "referenceRMS": 3869.1705558668696,
+          "differenceDB": 0.9751794670248828,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "id": 74,
+      "channel": "pulse1",
+      "passed": false,
+      "boundaryError": 53,
+      "tail16Error": 3064,
+      "maximumStep": 1838,
+      "sourceMaximumStep": 1980,
+      "maximumCurvature": 1825,
+      "sourceMaximumCurvature": 1825,
+      "peak": 2645,
+      "localRMS": [
+        {
+          "offset": 0,
+          "rms": 338.05316225397894,
+          "referenceRMS": 331.71712846578873,
+          "differenceDB": 0.16434211184879685,
+          "passed": true
+        },
+        {
+          "offset": 88,
+          "rms": 329.49030085412306,
+          "referenceRMS": 315.6640536902696,
+          "differenceDB": 0.37235011074564495,
+          "passed": true
+        },
+        {
+          "offset": 176,
+          "rms": 329.7634657489762,
+          "referenceRMS": 305.290691761584,
+          "differenceDB": 0.669779516806323,
+          "passed": true
+        },
+        {
+          "offset": 264,
+          "rms": 330.0161340377353,
+          "referenceRMS": 292.00366218337473,
+          "differenceDB": 1.062937484896107,
+          "passed": true
+        },
+        {
+          "offset": 352,
+          "rms": 368.618222240444,
+          "referenceRMS": 307.7256757215401,
+          "differenceDB": 1.568261325607267,
+          "passed": true
+        },
+        {
+          "offset": 440,
+          "rms": 621.6018464612853,
+          "referenceRMS": 598.4335044376047,
+          "differenceDB": 0.3299279104444288,
+          "passed": true
+        },
+        {
+          "offset": 528,
+          "rms": 789.0555781327677,
+          "referenceRMS": 784.6621142524373,
+          "differenceDB": 0.04849820488281171,
+          "passed": true
+        },
+        {
+          "offset": 616,
+          "rms": 776.9148727799862,
+          "referenceRMS": 780.522489027346,
+          "differenceDB": -0.04023970837499105,
+          "passed": true
+        },
+        {
+          "offset": 704,
+          "rms": 916.13344711229,
+          "referenceRMS": 937.3779861905766,
+          "differenceDB": -0.19912022098447285,
+          "passed": true
+        },
+        {
+          "offset": 792,
+          "rms": 895.9094165815798,
+          "referenceRMS": 917.9461852529602,
+          "differenceDB": -0.21106240067545678,
+          "passed": true
+        },
+        {
+          "offset": 880,
+          "rms": 757.0990575894497,
+          "referenceRMS": 758.5622963653349,
+          "differenceDB": -0.016770942185515753,
+          "passed": true
+        },
+        {
+          "offset": 968,
+          "rms": 907.1530037639518,
+          "referenceRMS": 916.9542153420886,
+          "differenceDB": -0.09334216814464973,
+          "passed": true
+        },
+        {
+          "offset": 1056,
+          "rms": 859.2885587481469,
+          "referenceRMS": 881.7635009470081,
+          "differenceDB": -0.22426177431467037,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "id": 74,
+      "channel": "pulse2",
+      "passed": false,
+      "boundaryError": 38,
+      "tail16Error": 2659,
+      "maximumStep": 1976,
+      "sourceMaximumStep": 1976,
+      "maximumCurvature": 1823,
+      "sourceMaximumCurvature": 1823,
+      "peak": 2041,
+      "localRMS": [
+        {
+          "offset": 0,
+          "rms": 465.0708526848325,
+          "referenceRMS": 465.1252382030224,
+          "differenceDB": -0.0010156710269408867,
+          "passed": true
+        },
+        {
+          "offset": 88,
+          "rms": 471.16823048294606,
+          "referenceRMS": 470.1016876730506,
+          "differenceDB": 0.019683784485064505,
+          "passed": true
+        },
+        {
+          "offset": 176,
+          "rms": 477.0519507761988,
+          "referenceRMS": 475.7341010367891,
+          "differenceDB": 0.024027859505094992,
+          "passed": true
+        },
+        {
+          "offset": 264,
+          "rms": 482.9250377315186,
+          "referenceRMS": 478.53362364014487,
+          "differenceDB": 0.07934528010859436,
+          "passed": true
+        },
+        {
+          "offset": 352,
+          "rms": 482.084032264403,
+          "referenceRMS": 478.0963961794309,
+          "differenceDB": 0.07214553651703019,
+          "passed": true
+        },
+        {
+          "offset": 440,
+          "rms": 636.0260163581512,
+          "referenceRMS": 685.1223472082565,
+          "differenceDB": -0.6458650572864854,
+          "passed": true
+        },
+        {
+          "offset": 528,
+          "rms": 965.3851056787074,
+          "referenceRMS": 990.3347280662512,
+          "differenceDB": -0.22162829287358632,
+          "passed": true
+        },
+        {
+          "offset": 616,
+          "rms": 1146.6069701119684,
+          "referenceRMS": 1179.413420326711,
+          "differenceDB": -0.24502975491658974,
+          "passed": true
+        },
+        {
+          "offset": 704,
+          "rms": 1281.2053991407995,
+          "referenceRMS": 1322.065080883632,
+          "differenceDB": -0.27268148787613083,
+          "passed": true
+        },
+        {
+          "offset": 792,
+          "rms": 1332.4938811652294,
+          "referenceRMS": 1331.243393261491,
+          "differenceDB": 0.008155159165121115,
+          "passed": true
+        },
+        {
+          "offset": 880,
+          "rms": 1242.9138545604667,
+          "referenceRMS": 1240.7705903955605,
+          "differenceDB": 0.01499076153600062,
+          "passed": true
+        },
+        {
+          "offset": 968,
+          "rms": 1205.1271382154896,
+          "referenceRMS": 1188.1587232100735,
+          "differenceDB": 0.12316811136216041,
+          "passed": true
+        },
+        {
+          "offset": 1056,
+          "rms": 1188.450966475569,
+          "referenceRMS": 1154.972659982945,
+          "differenceDB": 0.24819128486726866,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "id": 74,
+      "channel": "triangle",
+      "passed": false,
+      "boundaryError": 7682,
+      "tail16Error": 7826,
+      "maximumStep": 7663,
+      "sourceMaximumStep": 701,
+      "maximumCurvature": 7644,
+      "sourceMaximumCurvature": 646,
+      "peak": 8666,
+      "localRMS": [
+        {
+          "offset": 0,
+          "rms": 101.98666801723542,
+          "referenceRMS": 108.48647194584456,
+          "differenceDB": -0.5366436518680847,
+          "passed": true
+        },
+        {
+          "offset": 88,
+          "rms": 97.2945645687238,
+          "referenceRMS": 112.3722607140646,
+          "differenceDB": -1.251410787044677,
+          "passed": true
+        },
+        {
+          "offset": 176,
+          "rms": 92.81822986910488,
+          "referenceRMS": 142.2739343803604,
+          "differenceDB": -3.7098411941185923,
+          "passed": false
+        },
+        {
+          "offset": 264,
+          "rms": 88.55421987887952,
+          "referenceRMS": 195.45156407182665,
+          "differenceDB": -6.8765977736343,
+          "passed": false
+        },
+        {
+          "offset": 352,
+          "rms": 84.47399318180312,
+          "referenceRMS": 259.43493117119004,
+          "differenceDB": -9.74610852516155,
+          "passed": false
+        },
+        {
+          "offset": 440,
+          "rms": 80.57683328552287,
+          "referenceRMS": 325.3154868460161,
+          "differenceDB": -12.121890865207579,
+          "passed": false
+        },
+        {
+          "offset": 528,
+          "rms": 76.86885929780046,
+          "referenceRMS": 854.9128886022771,
+          "differenceDB": -20.923428563111223,
+          "passed": false
+        },
+        {
+          "offset": 616,
+          "rms": 73.32182929767964,
+          "referenceRMS": 2649.3530724114953,
+          "differenceDB": -31.158130957319777,
+          "passed": false
+        },
+        {
+          "offset": 704,
+          "rms": 69.93195802736454,
+          "referenceRMS": 4618.509394389305,
+          "differenceDB": -36.3965228621963,
+          "passed": false
+        },
+        {
+          "offset": 792,
+          "rms": 206.13369929005503,
+          "referenceRMS": 5094.996686881785,
+          "differenceDB": -27.85989817448182,
+          "passed": false
+        },
+        {
+          "offset": 880,
+          "rms": 1970.2857207851214,
+          "referenceRMS": 5416.852660473653,
+          "differenceDB": -8.784356258960768,
+          "passed": false
+        },
+        {
+          "offset": 968,
+          "rms": 4262.563995515378,
+          "referenceRMS": 4862.083886925872,
+          "differenceDB": -1.1430307059835378,
+          "passed": true
+        },
+        {
+          "offset": 1056,
+          "rms": 4600.80864366661,
+          "referenceRMS": 3605.70447548298,
+          "differenceDB": 2.1168808312015384,
+          "passed": false
+        }
+      ]
+    },
+    {
+      "id": 78,
+      "channel": "pulse1",
+      "passed": false,
+      "boundaryError": 124,
+      "tail16Error": 3748,
+      "maximumStep": 2706,
+      "sourceMaximumStep": 2706,
+      "maximumCurvature": 2489,
+      "sourceMaximumCurvature": 2711,
+      "peak": 3842,
+      "localRMS": [
+        {
+          "offset": 0,
+          "rms": 6.610361854898052,
+          "referenceRMS": 6.610784731753009,
+          "differenceDB": -0.0005556343649662245,
+          "passed": true
+        },
+        {
+          "offset": 88,
+          "rms": 6.360510250880669,
+          "referenceRMS": 6.361483277189069,
+          "differenceDB": -0.0013286595575653561,
+          "passed": true
+        },
+        {
+          "offset": 176,
+          "rms": 6.100434201794568,
+          "referenceRMS": 6.102197336493087,
+          "differenceDB": -0.0025100149040647854,
+          "passed": true
+        },
+        {
+          "offset": 264,
+          "rms": 5.86872442236037,
+          "referenceRMS": 5.871077617458336,
+          "differenceDB": -0.0034821018484269377,
+          "passed": true
+        },
+        {
+          "offset": 352,
+          "rms": 5.633016792711419,
+          "referenceRMS": 5.636422179871616,
+          "differenceDB": -0.005249386064491188,
+          "passed": true
+        },
+        {
+          "offset": 440,
+          "rms": 1470.734126104506,
+          "referenceRMS": 1469.0534121739072,
+          "differenceDB": 0.009931668268395222,
+          "passed": true
+        },
+        {
+          "offset": 528,
+          "rms": 1890.2023341490885,
+          "referenceRMS": 1880.8027085608826,
+          "differenceDB": 0.04330107155059755,
+          "passed": true
+        },
+        {
+          "offset": 616,
+          "rms": 2146.0138210443365,
+          "referenceRMS": 2139.6673843461795,
+          "differenceDB": 0.025724960120754717,
+          "passed": true
+        },
+        {
+          "offset": 704,
+          "rms": 2337.879122274775,
+          "referenceRMS": 2334.1149971136883,
+          "differenceDB": 0.0139960719007072,
+          "passed": true
+        },
+        {
+          "offset": 792,
+          "rms": 2016.0150860535414,
+          "referenceRMS": 2020.9458314765916,
+          "differenceDB": -0.021217907604313,
+          "passed": true
+        },
+        {
+          "offset": 880,
+          "rms": 1837.2374314724266,
+          "referenceRMS": 1854.3626483381736,
+          "differenceDB": -0.08058771673005215,
+          "passed": true
+        },
+        {
+          "offset": 968,
+          "rms": 1736.472500514331,
+          "referenceRMS": 1730.1832271388216,
+          "differenceDB": 0.0315162500513807,
+          "passed": true
+        },
+        {
+          "offset": 1056,
+          "rms": 1646.39673260522,
+          "referenceRMS": 1608.2526855989272,
+          "differenceDB": 0.20360420469348206,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "id": 78,
+      "channel": "pulse2",
+      "passed": false,
+      "boundaryError": 11,
+      "tail16Error": 12,
+      "maximumStep": 2707,
+      "sourceMaximumStep": 2707,
+      "maximumCurvature": 2497,
+      "sourceMaximumCurvature": 3899,
+      "peak": 3820,
+      "localRMS": [
+        {
+          "offset": 0,
+          "rms": 6.7208609323053325,
+          "referenceRMS": 6.719717006686184,
+          "differenceDB": 0.0014785095925442225,
+          "passed": true
+        },
+        {
+          "offset": 88,
+          "rms": 6.475274393433452,
+          "referenceRMS": 6.472645261070636,
+          "differenceDB": 0.0035274166770401893,
+          "passed": true
+        },
+        {
+          "offset": 176,
+          "rms": 6.219998815845692,
+          "referenceRMS": 6.215240891603175,
+          "differenceDB": 0.0066467246093708365,
+          "passed": true
+        },
+        {
+          "offset": 264,
+          "rms": 5.939973578979975,
+          "referenceRMS": 5.934157143811765,
+          "differenceDB": 0.008509409097508835,
+          "passed": true
+        },
+        {
+          "offset": 352,
+          "rms": 5.704478634130566,
+          "referenceRMS": 5.696063068497615,
+          "differenceDB": 0.01282337094378868,
+          "passed": true
+        },
+        {
+          "offset": 440,
+          "rms": 958.6268123931718,
+          "referenceRMS": 944.7931577730199,
+          "differenceDB": 0.12625664842988668,
+          "passed": true
+        },
+        {
+          "offset": 528,
+          "rms": 1653.2640785169342,
+          "referenceRMS": 1646.250575492203,
+          "differenceDB": 0.03692579750997705,
+          "passed": true
+        },
+        {
+          "offset": 616,
+          "rms": 2009.0528415433264,
+          "referenceRMS": 2004.2917761443014,
+          "differenceDB": 0.020608301531292172,
+          "passed": true
+        },
+        {
+          "offset": 704,
+          "rms": 2229.104163994513,
+          "referenceRMS": 2228.4785287677732,
+          "differenceDB": 0.002438181832342513,
+          "passed": true
+        },
+        {
+          "offset": 792,
+          "rms": 2213.9299182041755,
+          "referenceRMS": 2223.5912530454407,
+          "differenceDB": -0.03782175567999758,
+          "passed": true
+        },
+        {
+          "offset": 880,
+          "rms": 1950.8781940565448,
+          "referenceRMS": 1958.9220134530237,
+          "differenceDB": -0.035739844705272895,
+          "passed": true
+        },
+        {
+          "offset": 968,
+          "rms": 1768.725312043042,
+          "referenceRMS": 1775.8270634958778,
+          "differenceDB": -0.03480558635420806,
+          "passed": true
+        },
+        {
+          "offset": 1056,
+          "rms": 1661.1734972909912,
+          "referenceRMS": 1662.20866491426,
+          "differenceDB": -0.005410964845177368,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "id": 78,
+      "channel": "triangle",
+      "passed": false,
+      "boundaryError": 6465,
+      "tail16Error": 7343,
+      "maximumStep": 6525,
+      "sourceMaximumStep": 688,
+      "maximumCurvature": 6451,
+      "sourceMaximumCurvature": 633,
+      "peak": 6170,
+      "localRMS": [
+        {
+          "offset": 0,
+          "rms": 41.26072699393442,
+          "referenceRMS": 46.699873182073105,
+          "differenceDB": -1.0755765087583584,
+          "passed": true
+        },
+        {
+          "offset": 88,
+          "rms": 39.38108287471625,
+          "referenceRMS": 50.15755011101442,
+          "differenceDB": -2.1009732362092097,
+          "passed": false
+        },
+        {
+          "offset": 176,
+          "rms": 37.59968808260713,
+          "referenceRMS": 54.23183715372503,
+          "differenceDB": -3.1814014933175034,
+          "passed": false
+        },
+        {
+          "offset": 264,
+          "rms": 35.90457923717113,
+          "referenceRMS": 58.3111689741494,
+          "differenceDB": -4.212038125077438,
+          "passed": false
+        },
+        {
+          "offset": 352,
+          "rms": 34.25913579279433,
+          "referenceRMS": 62.00535576338527,
+          "differenceDB": -5.153056004611367,
+          "passed": false
+        },
+        {
+          "offset": 440,
+          "rms": 189.17476968247976,
+          "referenceRMS": 158.1781946918051,
+          "differenceDB": 1.5543319863691052,
+          "passed": true
+        },
+        {
+          "offset": 528,
+          "rms": 2265.3856202639286,
+          "referenceRMS": 1836.5981393084253,
+          "differenceDB": 1.8225599894233309,
+          "passed": true
+        },
+        {
+          "offset": 616,
+          "rms": 2587.0974422385784,
+          "referenceRMS": 3436.7601703391433,
+          "differenceDB": -2.4667287989459945,
+          "passed": false
+        },
+        {
+          "offset": 704,
+          "rms": 3439.279497475652,
+          "referenceRMS": 4073.5524570261255,
+          "differenceDB": -1.4701168507606124,
+          "passed": true
+        },
+        {
+          "offset": 792,
+          "rms": 3663.3230780951126,
+          "referenceRMS": 4376.636947683444,
+          "differenceDB": -1.5453060086750408,
+          "passed": true
+        },
+        {
+          "offset": 880,
+          "rms": 3559.494579696606,
+          "referenceRMS": 4620.57200506385,
+          "differenceDB": -2.2661481311055716,
+          "passed": false
+        },
+        {
+          "offset": 968,
+          "rms": 3835.775544570956,
+          "referenceRMS": 3876.3822569157396,
+          "differenceDB": -0.09146822212471634,
+          "passed": true
+        },
+        {
+          "offset": 1056,
+          "rms": 3450.3408272752717,
+          "referenceRMS": 3816.6483769844713,
+          "differenceDB": -0.8764030731616407,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "id": 82,
+      "channel": "pulse1",
+      "passed": false,
+      "boundaryError": 4145,
+      "tail16Error": 4585,
+      "maximumStep": 4138,
+      "sourceMaximumStep": 3059,
+      "maximumCurvature": 4073,
+      "sourceMaximumCurvature": 2824,
+      "peak": 3860,
+      "localRMS": [
+        {
+          "offset": 0,
+          "rms": 236.5940990502139,
+          "referenceRMS": 232.06085602527577,
+          "differenceDB": 0.16804037299854296,
+          "passed": true
+        },
+        {
+          "offset": 88,
+          "rms": 232.24219311017373,
+          "referenceRMS": 222.27006704171808,
+          "differenceDB": 0.38120286957454724,
+          "passed": true
+        },
+        {
+          "offset": 176,
+          "rms": 241.62724435060005,
+          "referenceRMS": 223.28593674125037,
+          "differenceDB": 0.6856906061571542,
+          "passed": true
+        },
+        {
+          "offset": 264,
+          "rms": 241.02544151207493,
+          "referenceRMS": 212.64452037795402,
+          "differenceDB": 1.0881738237594512,
+          "passed": true
+        },
+        {
+          "offset": 352,
+          "rms": 224.10096748131704,
+          "referenceRMS": 186.43710617316515,
+          "differenceDB": 1.598227563014525,
+          "passed": true
+        },
+        {
+          "offset": 440,
+          "rms": 1473.935792206276,
+          "referenceRMS": 1343.2816373626222,
+          "differenceDB": 0.8062297429417291,
+          "passed": true
+        },
+        {
+          "offset": 528,
+          "rms": 1995.2401049716427,
+          "referenceRMS": 1997.678542611971,
+          "differenceDB": -0.01060878256509917,
+          "passed": true
+        },
+        {
+          "offset": 616,
+          "rms": 2211.825815081428,
+          "referenceRMS": 2265.6744390959975,
+          "differenceDB": -0.20893164967490038,
+          "passed": true
+        },
+        {
+          "offset": 704,
+          "rms": 2448.5484171800213,
+          "referenceRMS": 2526.2332777803044,
+          "differenceDB": -0.27129511294752084,
+          "passed": true
+        },
+        {
+          "offset": 792,
+          "rms": 2191.333596696617,
+          "referenceRMS": 2440.472103632376,
+          "differenceDB": -0.935307009970741,
+          "passed": true
+        },
+        {
+          "offset": 880,
+          "rms": 1971.6714117234053,
+          "referenceRMS": 2123.8193801027205,
+          "differenceDB": -0.6456608009147036,
+          "passed": true
+        },
+        {
+          "offset": 968,
+          "rms": 1846.6812924903945,
+          "referenceRMS": 1970.2738111133897,
+          "differenceDB": -0.5626927015270944,
+          "passed": true
+        },
+        {
+          "offset": 1056,
+          "rms": 1909.676801778805,
+          "referenceRMS": 1873.7494078630616,
+          "differenceDB": 0.16496727658072918,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "id": 82,
+      "channel": "pulse2",
+      "passed": false,
+      "boundaryError": 13,
+      "tail16Error": 13,
+      "maximumStep": 2704,
+      "sourceMaximumStep": 2706,
+      "maximumCurvature": 2489,
+      "sourceMaximumCurvature": 2492,
+      "peak": 2767,
+      "localRMS": [
+        {
+          "offset": 0,
+          "rms": 684.6911091975448,
+          "referenceRMS": 671.5721378983148,
+          "differenceDB": 0.16804037299854296,
+          "passed": true
+        },
+        {
+          "offset": 88,
+          "rms": 681.7852170243752,
+          "referenceRMS": 652.5103981608144,
+          "differenceDB": 0.38120286957454724,
+          "passed": true
+        },
+        {
+          "offset": 176,
+          "rms": 684.5226040587864,
+          "referenceRMS": 632.5622397367154,
+          "differenceDB": 0.6856906061571542,
+          "passed": true
+        },
+        {
+          "offset": 264,
+          "rms": 681.3163770714178,
+          "referenceRMS": 601.0908778720723,
+          "differenceDB": 1.0881738237594512,
+          "passed": true
+        },
+        {
+          "offset": 352,
+          "rms": 684.1570794404176,
+          "referenceRMS": 569.1732056863591,
+          "differenceDB": 1.598227563014525,
+          "passed": true
+        },
+        {
+          "offset": 440,
+          "rms": 1086.6268478716972,
+          "referenceRMS": 882.6291331627795,
+          "differenceDB": 1.8060434592253438,
+          "passed": true
+        },
+        {
+          "offset": 528,
+          "rms": 1343.3974877891876,
+          "referenceRMS": 1489.4515639293284,
+          "differenceDB": -0.8964370594141737,
+          "passed": true
+        },
+        {
+          "offset": 616,
+          "rms": 1596.4129869583178,
+          "referenceRMS": 1788.2731008768392,
+          "differenceDB": -0.9857718362122426,
+          "passed": true
+        },
+        {
+          "offset": 704,
+          "rms": 1771.1338856205086,
+          "referenceRMS": 2084.0954543584553,
+          "differenceDB": -1.4133242844896294,
+          "passed": true
+        },
+        {
+          "offset": 792,
+          "rms": 1720.002539691122,
+          "referenceRMS": 2226.391166462276,
+          "differenceDB": -2.241447640611794,
+          "passed": false
+        },
+        {
+          "offset": 880,
+          "rms": 1695.706786048016,
+          "referenceRMS": 1898.0224779712687,
+          "differenceDB": -0.979011864531397,
+          "passed": true
+        },
+        {
+          "offset": 968,
+          "rms": 1623.8637936713167,
+          "referenceRMS": 1856.4604385166633,
+          "differenceDB": -1.162722001211081,
+          "passed": true
+        },
+        {
+          "offset": 1056,
+          "rms": 1579.8123969736812,
+          "referenceRMS": 1622.9865562174896,
+          "differenceDB": -0.2341880992094692,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "id": 82,
+      "channel": "triangle",
+      "passed": false,
+      "boundaryError": 11494,
+      "tail16Error": 12828,
+      "maximumStep": 11011,
+      "sourceMaximumStep": 722,
+      "maximumCurvature": 11027,
+      "sourceMaximumCurvature": 654,
+      "peak": 6197,
+      "localRMS": [
+        {
+          "offset": 0,
+          "rms": 3854.2749409082526,
+          "referenceRMS": 3780.4254025545597,
+          "differenceDB": 0.16804037299854296,
+          "passed": true
+        },
+        {
+          "offset": 88,
+          "rms": 3699.58429637786,
+          "referenceRMS": 3540.729781139721,
+          "differenceDB": 0.3812028695745491,
+          "passed": true
+        },
+        {
+          "offset": 176,
+          "rms": 3431.07855423419,
+          "referenceRMS": 3170.6341355421478,
+          "differenceDB": 0.6856906061571542,
+          "passed": true
+        },
+        {
+          "offset": 264,
+          "rms": 3965.7826169461837,
+          "referenceRMS": 3498.8088278701516,
+          "differenceDB": 1.0881738237594512,
+          "passed": true
+        },
+        {
+          "offset": 352,
+          "rms": 3482.832393960304,
+          "referenceRMS": 2897.485004701061,
+          "differenceDB": 1.598227563014525,
+          "passed": true
+        },
+        {
+          "offset": 440,
+          "rms": 3644.016343333491,
+          "referenceRMS": 2819.11483584435,
+          "differenceDB": 2.2293509802385905,
+          "passed": false
+        },
+        {
+          "offset": 528,
+          "rms": 3731.6722261473387,
+          "referenceRMS": 2641.62870513749,
+          "differenceDB": 3.000634300528502,
+          "passed": false
+        },
+        {
+          "offset": 616,
+          "rms": 3450.109506411687,
+          "referenceRMS": 2361.4833862332575,
+          "differenceDB": 3.292959705270087,
+          "passed": false
+        },
+        {
+          "offset": 704,
+          "rms": 3778.057425738961,
+          "referenceRMS": 3818.0803596606393,
+          "differenceDB": -0.09153019963165496,
+          "passed": true
+        },
+        {
+          "offset": 792,
+          "rms": 3571.616205997808,
+          "referenceRMS": 4762.003977930921,
+          "differenceDB": -2.4984993794679653,
+          "passed": false
+        },
+        {
+          "offset": 880,
+          "rms": 3790.2247139762385,
+          "referenceRMS": 4980.03843936647,
+          "differenceDB": -2.3713547174647913,
+          "passed": false
+        },
+        {
+          "offset": 968,
+          "rms": 3599.3266064404365,
+          "referenceRMS": 5015.6019454689085,
+          "differenceDB": -2.8820361082727826,
+          "passed": false
+        },
+        {
+          "offset": 1056,
+          "rms": 3748.840944580343,
+          "referenceRMS": 4518.549005141028,
+          "differenceDB": -1.622039641898211,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "id": 86,
+      "channel": "pulse1",
+      "passed": false,
+      "boundaryError": 20,
+      "tail16Error": 22,
+      "maximumStep": 1586,
+      "sourceMaximumStep": 1586,
+      "maximumCurvature": 1469,
+      "sourceMaximumCurvature": 1473,
+      "peak": 2011,
+      "localRMS": [
+        {
+          "offset": 0,
+          "rms": 233.74173418600984,
+          "referenceRMS": 229.26322645177856,
+          "differenceDB": 0.16803723704177914,
+          "passed": true
+        },
+        {
+          "offset": 88,
+          "rms": 233.02642435481877,
+          "referenceRMS": 223.0208129889334,
+          "differenceDB": 0.381195532127103,
+          "passed": true
+        },
+        {
+          "offset": 176,
+          "rms": 228.77262732714397,
+          "referenceRMS": 211.40742632796196,
+          "differenceDB": 0.6856764137881411,
+          "passed": true
+        },
+        {
+          "offset": 264,
+          "rms": 233.68581362608424,
+          "referenceRMS": 206.16967652660577,
+          "differenceDB": 1.0881511785364288,
+          "passed": true
+        },
+        {
+          "offset": 352,
+          "rms": 233.72846888459867,
+          "referenceRMS": 194.44733897953134,
+          "differenceDB": 1.5981921980773954,
+          "passed": true
+        },
+        {
+          "offset": 440,
+          "rms": 460.851930034399,
+          "referenceRMS": 489.42109203491,
+          "differenceDB": -0.5224254216329288,
+          "passed": true
+        },
+        {
+          "offset": 528,
+          "rms": 482.62298847910114,
+          "referenceRMS": 507.71243181244193,
+          "differenceDB": -0.4401958619449087,
+          "passed": true
+        },
+        {
+          "offset": 616,
+          "rms": 666.5455914607422,
+          "referenceRMS": 709.0044318080006,
+          "differenceDB": -0.5363817903279817,
+          "passed": true
+        },
+        {
+          "offset": 704,
+          "rms": 677.6008564633656,
+          "referenceRMS": 722.4636173246327,
+          "differenceDB": -0.5568407001899742,
+          "passed": true
+        },
+        {
+          "offset": 792,
+          "rms": 720.8121108514629,
+          "referenceRMS": 719.6164375559368,
+          "differenceDB": 0.014419998388573638,
+          "passed": true
+        },
+        {
+          "offset": 880,
+          "rms": 713.3631971103509,
+          "referenceRMS": 724.6409852801714,
+          "differenceDB": -0.13624387613342936,
+          "passed": true
+        },
+        {
+          "offset": 968,
+          "rms": 717.5096686776369,
+          "referenceRMS": 712.9301518798036,
+          "differenceDB": 0.05561550067154618,
+          "passed": true
+        },
+        {
+          "offset": 1056,
+          "rms": 713.6343006149328,
+          "referenceRMS": 719.3026267889348,
+          "differenceDB": -0.06871860365341555,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "id": 86,
+      "channel": "pulse2",
+      "passed": false,
+      "boundaryError": 25,
+      "tail16Error": 36,
+      "maximumStep": 2343,
+      "sourceMaximumStep": 2343,
+      "maximumCurvature": 3758,
+      "sourceMaximumCurvature": 3758,
+      "peak": 3036,
+      "localRMS": [
+        {
+          "offset": 0,
+          "rms": 229.82487482389433,
+          "referenceRMS": 225.42141718269,
+          "differenceDB": 0.16803712923999198,
+          "passed": true
+        },
+        {
+          "offset": 88,
+          "rms": 229.81146355625884,
+          "referenceRMS": 219.94390034629464,
+          "differenceDB": 0.381195325395992,
+          "passed": true
+        },
+        {
+          "offset": 176,
+          "rms": 230.28751582172833,
+          "referenceRMS": 212.80732122982116,
+          "differenceDB": 0.6856765998955482,
+          "passed": true
+        },
+        {
+          "offset": 264,
+          "rms": 231.99133641145238,
+          "referenceRMS": 204.6747291630723,
+          "differenceDB": 1.0881508465253469,
+          "passed": true
+        },
+        {
+          "offset": 352,
+          "rms": 229.8138796144743,
+          "referenceRMS": 191.19067444362165,
+          "differenceDB": 1.5981909830273346,
+          "passed": true
+        },
+        {
+          "offset": 440,
+          "rms": 931.9241251683645,
+          "referenceRMS": 1023.5851800863276,
+          "differenceDB": -0.8148686937196694,
+          "passed": true
+        },
+        {
+          "offset": 528,
+          "rms": 1334.989102458413,
+          "referenceRMS": 1430.9695402643183,
+          "differenceDB": -0.6030533773819384,
+          "passed": true
+        },
+        {
+          "offset": 616,
+          "rms": 1604.0147205671256,
+          "referenceRMS": 1745.6095206888788,
+          "differenceDB": -0.7347750459505444,
+          "passed": true
+        },
+        {
+          "offset": 704,
+          "rms": 1777.893419564695,
+          "referenceRMS": 1933.1180444620304,
+          "differenceDB": -0.7270530442717711,
+          "passed": true
+        },
+        {
+          "offset": 792,
+          "rms": 1686.5684666311538,
+          "referenceRMS": 1784.6362068723292,
+          "differenceDB": -0.49091447162755,
+          "passed": true
+        },
+        {
+          "offset": 880,
+          "rms": 1559.326638832364,
+          "referenceRMS": 1647.5398580120664,
+          "differenceDB": -0.47797663585306704,
+          "passed": true
+        },
+        {
+          "offset": 968,
+          "rms": 1485.5005127468332,
+          "referenceRMS": 1511.1993230083324,
+          "differenceDB": -0.1489788862622203,
+          "passed": true
+        },
+        {
+          "offset": 1056,
+          "rms": 1359.0086851202586,
+          "referenceRMS": 1381.4628613291768,
+          "differenceDB": -0.1423396359551288,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "id": 86,
+      "channel": "triangle",
+      "passed": false,
+      "boundaryError": 4591,
+      "tail16Error": 4815,
+      "maximumStep": 4771,
+      "sourceMaximumStep": 717,
+      "maximumCurvature": 4851,
+      "sourceMaximumCurvature": 643,
+      "peak": 7972,
+      "localRMS": [
+        {
+          "offset": 0,
+          "rms": 87.87113923514129,
+          "referenceRMS": 86.18749103499522,
+          "differenceDB": 0.16804037299854296,
+          "passed": true
+        },
+        {
+          "offset": 88,
+          "rms": 113.04682025340252,
+          "referenceRMS": 108.19276196146163,
+          "differenceDB": 0.3812028695745491,
+          "passed": true
+        },
+        {
+          "offset": 176,
+          "rms": 151.10023313435948,
+          "referenceRMS": 139.63059996774322,
+          "differenceDB": 0.6856906061571542,
+          "passed": true
+        },
+        {
+          "offset": 264,
+          "rms": 184.9742651115043,
+          "referenceRMS": 163.19341078742428,
+          "differenceDB": 1.0881738237594512,
+          "passed": true
+        },
+        {
+          "offset": 352,
+          "rms": 211.94640938986862,
+          "referenceRMS": 176.32532190533422,
+          "differenceDB": 1.598227563014525,
+          "passed": true
+        },
+        {
+          "offset": 440,
+          "rms": 232.28346095298008,
+          "referenceRMS": 179.7011015309514,
+          "differenceDB": 2.229350980238592,
+          "passed": false
+        },
+        {
+          "offset": 528,
+          "rms": 246.85781711278332,
+          "referenceRMS": 174.74918917140764,
+          "differenceDB": 3.000634300528503,
+          "passed": false
+        },
+        {
+          "offset": 616,
+          "rms": 259.3135960116385,
+          "referenceRMS": 465.28049444203634,
+          "differenceDB": -5.077791171930508,
+          "passed": false
+        },
+        {
+          "offset": 704,
+          "rms": 1074.4887907619548,
+          "referenceRMS": 1227.2936711300313,
+          "differenceDB": -1.1549321089106888,
+          "passed": true
+        },
+        {
+          "offset": 792,
+          "rms": 1877.0612654717154,
+          "referenceRMS": 3422.44915781295,
+          "differenceDB": -5.217171147736615,
+          "passed": false
+        },
+        {
+          "offset": 880,
+          "rms": 3773.0531396117754,
+          "referenceRMS": 4094.897876247618,
+          "differenceDB": -0.7110030681141069,
+          "passed": true
+        },
+        {
+          "offset": 968,
+          "rms": 3895.471791548944,
+          "referenceRMS": 4371.790074722579,
+          "differenceDB": -1.0019847187904571,
+          "passed": true
+        },
+        {
+          "offset": 1056,
+          "rms": 4119.80745720225,
+          "referenceRMS": 4361.336450848253,
+          "differenceDB": -0.49485343589057784,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "id": 90,
+      "channel": "pulse1",
+      "passed": false,
+      "boundaryError": 2,
+      "tail16Error": 3,
+      "maximumStep": 2329,
+      "sourceMaximumStep": 2340,
+      "maximumCurvature": 4291,
+      "sourceMaximumCurvature": 4291,
+      "peak": 3243,
+      "localRMS": [
+        {
+          "offset": 0,
+          "rms": 3.0,
+          "referenceRMS": 3.0000000000000004,
+          "differenceDB": -9.643274665532871e-16,
+          "passed": true
+        },
+        {
+          "offset": 88,
+          "rms": 3.0,
+          "referenceRMS": 3.0,
+          "differenceDB": 0.0,
+          "passed": true
+        },
+        {
+          "offset": 176,
+          "rms": 2.8991549027503933,
+          "referenceRMS": 2.897727419049537,
+          "differenceDB": 0.004277805015901798,
+          "passed": true
+        },
+        {
+          "offset": 264,
+          "rms": 2.6755635344033406,
+          "referenceRMS": 2.6732158411964813,
+          "differenceDB": 0.007624844465017599,
+          "passed": true
+        },
+        {
+          "offset": 352,
+          "rms": 2.4314977489432614,
+          "referenceRMS": 2.42790800934726,
+          "differenceDB": 0.012832880884168927,
+          "passed": true
+        },
+        {
+          "offset": 440,
+          "rms": 659.8582558754763,
+          "referenceRMS": 671.9250606987496,
+          "differenceDB": -0.1574036886810873,
+          "passed": true
+        },
+        {
+          "offset": 528,
+          "rms": 903.1003649217583,
+          "referenceRMS": 913.6282297161823,
+          "differenceDB": -0.10066984757962215,
+          "passed": true
+        },
+        {
+          "offset": 616,
+          "rms": 908.722770516064,
+          "referenceRMS": 921.4551044364417,
+          "differenceDB": -0.12085539113903543,
+          "passed": true
+        },
+        {
+          "offset": 704,
+          "rms": 1094.6081956494766,
+          "referenceRMS": 1106.5692826920126,
+          "differenceDB": -0.09439829874461471,
+          "passed": true
+        },
+        {
+          "offset": 792,
+          "rms": 1059.8292315274193,
+          "referenceRMS": 1058.9292160530715,
+          "differenceDB": 0.007379260775912964,
+          "passed": true
+        },
+        {
+          "offset": 880,
+          "rms": 899.6613180814904,
+          "referenceRMS": 899.4704274363984,
+          "differenceDB": 0.001843172504249547,
+          "passed": true
+        },
+        {
+          "offset": 968,
+          "rms": 1056.744758406335,
+          "referenceRMS": 1056.1626731319188,
+          "differenceDB": 0.004785754932714986,
+          "passed": true
+        },
+        {
+          "offset": 1056,
+          "rms": 1047.9761258444505,
+          "referenceRMS": 1047.6682409265752,
+          "differenceDB": 0.002552202539261262,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "id": 90,
+      "channel": "pulse2",
+      "passed": false,
+      "boundaryError": 46,
+      "tail16Error": 46,
+      "maximumStep": 2269,
+      "sourceMaximumStep": 2269,
+      "maximumCurvature": 2145,
+      "sourceMaximumCurvature": 2154,
+      "peak": 3349,
+      "localRMS": [
+        {
+          "offset": 0,
+          "rms": 3.0,
+          "referenceRMS": 3.0000000000000004,
+          "differenceDB": -9.643274665532871e-16,
+          "passed": true
+        },
+        {
+          "offset": 88,
+          "rms": 2.8498794766027338,
+          "referenceRMS": 2.8500882975268946,
+          "differenceDB": -0.000636423072573567,
+          "passed": true
+        },
+        {
+          "offset": 176,
+          "rms": 2.622089645235022,
+          "referenceRMS": 2.6224840984086564,
+          "differenceDB": -0.0013065606119786644,
+          "passed": true
+        },
+        {
+          "offset": 264,
+          "rms": 2.372529279932279,
+          "referenceRMS": 2.3731907861331436,
+          "differenceDB": -0.0024214533570593717,
+          "passed": true
+        },
+        {
+          "offset": 352,
+          "rms": 2.0934269179083445,
+          "referenceRMS": 2.094468252549826,
+          "differenceDB": -0.004319553183860928,
+          "passed": true
+        },
+        {
+          "offset": 440,
+          "rms": 807.1869682420032,
+          "referenceRMS": 805.99215372547,
+          "differenceDB": 0.012866554972044053,
+          "passed": true
+        },
+        {
+          "offset": 528,
+          "rms": 1397.398250209433,
+          "referenceRMS": 1396.807326862926,
+          "differenceDB": 0.0036738134738203507,
+          "passed": true
+        },
+        {
+          "offset": 616,
+          "rms": 1713.1855977538671,
+          "referenceRMS": 1712.8054092802936,
+          "differenceDB": 0.0019277780530660446,
+          "passed": true
+        },
+        {
+          "offset": 704,
+          "rms": 1931.32238085986,
+          "referenceRMS": 1931.728800645832,
+          "differenceDB": -0.0018276317112256401,
+          "passed": true
+        },
+        {
+          "offset": 792,
+          "rms": 1935.1808818107363,
+          "referenceRMS": 1936.0497448657986,
+          "differenceDB": -0.0038989403946016743,
+          "passed": true
+        },
+        {
+          "offset": 880,
+          "rms": 1718.3617238999202,
+          "referenceRMS": 1718.5192391218604,
+          "differenceDB": -0.0007961636435863484,
+          "passed": true
+        },
+        {
+          "offset": 968,
+          "rms": 1548.9203422477526,
+          "referenceRMS": 1550.8400299999028,
+          "differenceDB": -0.010758378767416171,
+          "passed": true
+        },
+        {
+          "offset": 1056,
+          "rms": 1433.4928983146076,
+          "referenceRMS": 1433.540196010113,
+          "differenceDB": -0.0002865837608540623,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "id": 90,
+      "channel": "triangle",
+      "passed": false,
+      "boundaryError": 5155,
+      "tail16Error": 5248,
+      "maximumStep": 5205,
+      "sourceMaximumStep": 710,
+      "maximumCurvature": 5198,
+      "sourceMaximumCurvature": 646,
+      "peak": 8681,
+      "localRMS": [
+        {
+          "offset": 0,
+          "rms": 14.69337211588876,
+          "referenceRMS": 14.65015771856548,
+          "differenceDB": 0.02558354495239127,
+          "passed": true
+        },
+        {
+          "offset": 88,
+          "rms": 13.982992502326292,
+          "referenceRMS": 13.894208383496169,
+          "differenceDB": 0.055326334111034076,
+          "passed": true
+        },
+        {
+          "offset": 176,
+          "rms": 13.294655894535506,
+          "referenceRMS": 13.140961625174281,
+          "differenceDB": 0.1009990784097358,
+          "passed": true
+        },
+        {
+          "offset": 264,
+          "rms": 12.725250933928367,
+          "referenceRMS": 12.505919090738757,
+          "differenceDB": 0.15101480996264088,
+          "passed": true
+        },
+        {
+          "offset": 352,
+          "rms": 12.063570990485898,
+          "referenceRMS": 11.773003199727368,
+          "differenceDB": 0.2117724438742148,
+          "passed": true
+        },
+        {
+          "offset": 440,
+          "rms": 11.50538733276954,
+          "referenceRMS": 99.38223118731737,
+          "differenceDB": -18.728149975077695,
+          "passed": false
+        },
+        {
+          "offset": 528,
+          "rms": 10.950700754997177,
+          "referenceRMS": 1411.4065763667338,
+          "differenceDB": -42.2042045064772,
+          "passed": false
+        },
+        {
+          "offset": 616,
+          "rms": 468.1326081466642,
+          "referenceRMS": 3305.3181790812637,
+          "differenceDB": -16.976887578343533,
+          "passed": false
+        },
+        {
+          "offset": 704,
+          "rms": 2606.047679900545,
+          "referenceRMS": 4009.7844272817006,
+          "differenceDB": -3.7427733521364814,
+          "passed": false
+        },
+        {
+          "offset": 792,
+          "rms": 4420.657691765111,
+          "referenceRMS": 4710.16910922468,
+          "differenceDB": -0.5509922548250099,
+          "passed": true
+        },
+        {
+          "offset": 880,
+          "rms": 4519.476448156257,
+          "referenceRMS": 4458.095026462833,
+          "differenceDB": 0.11877612207243271,
+          "passed": true
+        },
+        {
+          "offset": 968,
+          "rms": 4809.966287066838,
+          "referenceRMS": 3640.215960241512,
+          "differenceDB": 2.420297659267658,
+          "passed": false
+        },
+        {
+          "offset": 1056,
+          "rms": 4196.765259803358,
+          "referenceRMS": 3641.847977234487,
+          "differenceDB": 1.2318573057068658,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "id": 94,
+      "channel": "pulse1",
+      "passed": true,
+      "boundaryError": 0,
+      "tail16Error": 0,
+      "maximumStep": 2699,
+      "sourceMaximumStep": 2699,
+      "maximumCurvature": 2255,
+      "sourceMaximumCurvature": 2497,
+      "peak": 3807,
+      "localRMS": [
+        {
+          "offset": 0,
+          "rms": 3.039401312749493,
+          "referenceRMS": 3.039401312749493,
+          "differenceDB": 0.0,
+          "passed": true
+        },
+        {
+          "offset": 88,
+          "rms": 3.0,
+          "referenceRMS": 3.0,
+          "differenceDB": 0.0,
+          "passed": true
+        },
+        {
+          "offset": 176,
+          "rms": 3.0,
+          "referenceRMS": 3.0,
+          "differenceDB": 0.0,
+          "passed": true
+        },
+        {
+          "offset": 264,
+          "rms": 3.0,
+          "referenceRMS": 3.0,
+          "differenceDB": 0.0,
+          "passed": true
+        },
+        {
+          "offset": 352,
+          "rms": 3.0,
+          "referenceRMS": 3.0,
+          "differenceDB": 0.0,
+          "passed": true
+        },
+        {
+          "offset": 440,
+          "rms": 801.2780354439936,
+          "referenceRMS": 801.2920348534063,
+          "differenceDB": -0.00015175289669217953,
+          "passed": true
+        },
+        {
+          "offset": 528,
+          "rms": 879.314885894263,
+          "referenceRMS": 882.5450960353551,
+          "differenceDB": -0.031849614064935014,
+          "passed": true
+        },
+        {
+          "offset": 616,
+          "rms": 1119.9071769507666,
+          "referenceRMS": 1119.9341847102503,
+          "differenceDB": -0.00020946699375506988,
+          "passed": true
+        },
+        {
+          "offset": 704,
+          "rms": 1351.8674304735175,
+          "referenceRMS": 1351.9053641276284,
+          "differenceDB": -0.00024372427583827362,
+          "passed": true
+        },
+        {
+          "offset": 792,
+          "rms": 1102.168228780243,
+          "referenceRMS": 1102.185156321611,
+          "differenceDB": -0.0001334003496558738,
+          "passed": true
+        },
+        {
+          "offset": 880,
+          "rms": 1297.2743631827097,
+          "referenceRMS": 1293.540390071983,
+          "differenceDB": 0.025036835047072634,
+          "passed": true
+        },
+        {
+          "offset": 968,
+          "rms": 1096.6273767326045,
+          "referenceRMS": 1096.6466288254069,
+          "differenceDB": -0.00015248578423312676,
+          "passed": true
+        },
+        {
+          "offset": 1056,
+          "rms": 1091.372447286848,
+          "referenceRMS": 1091.4055984155766,
+          "differenceDB": -0.0002638353872969939,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "id": 94,
+      "channel": "pulse2",
+      "passed": false,
+      "boundaryError": 83,
+      "tail16Error": 85,
+      "maximumStep": 3401,
+      "sourceMaximumStep": 3401,
+      "maximumCurvature": 3138,
+      "sourceMaximumCurvature": 3732,
+      "peak": 3510,
+      "localRMS": [
+        {
+          "offset": 0,
+          "rms": 1242.0873640086788,
+          "referenceRMS": 1241.8803333449268,
+          "differenceDB": 0.001447881551056848,
+          "passed": true
+        },
+        {
+          "offset": 88,
+          "rms": 939.1483258270138,
+          "referenceRMS": 939.2761531205209,
+          "differenceDB": -0.001182154276941061,
+          "passed": true
+        },
+        {
+          "offset": 176,
+          "rms": 1199.245273757164,
+          "referenceRMS": 1198.5984217015737,
+          "differenceDB": 0.004686281857273617,
+          "passed": true
+        },
+        {
+          "offset": 264,
+          "rms": 1072.3949211253866,
+          "referenceRMS": 1081.7617492646143,
+          "differenceDB": -0.07553744754275384,
+          "passed": true
+        },
+        {
+          "offset": 352,
+          "rms": 1153.5611913099006,
+          "referenceRMS": 1144.2119605596756,
+          "differenceDB": 0.07068307379958613,
+          "passed": true
+        },
+        {
+          "offset": 440,
+          "rms": 1479.0641536249343,
+          "referenceRMS": 1493.5829789590248,
+          "differenceDB": -0.08484688002621942,
+          "passed": true
+        },
+        {
+          "offset": 528,
+          "rms": 1708.8535842013969,
+          "referenceRMS": 1712.9857601202941,
+          "differenceDB": -0.02097798162427667,
+          "passed": true
+        },
+        {
+          "offset": 616,
+          "rms": 1982.9962299910305,
+          "referenceRMS": 1983.7649899636042,
+          "differenceDB": -0.0033666580836495996,
+          "passed": true
+        },
+        {
+          "offset": 704,
+          "rms": 2137.01245818992,
+          "referenceRMS": 2127.263737817053,
+          "differenceDB": 0.039714339736673834,
+          "passed": true
+        },
+        {
+          "offset": 792,
+          "rms": 2182.7633731906844,
+          "referenceRMS": 2136.5097737398946,
+          "differenceDB": 0.18603547617889532,
+          "passed": true
+        },
+        {
+          "offset": 880,
+          "rms": 2090.9501330551893,
+          "referenceRMS": 2087.4060838028636,
+          "differenceDB": 0.014734611632917331,
+          "passed": true
+        },
+        {
+          "offset": 968,
+          "rms": 1996.1304450213358,
+          "referenceRMS": 1974.8237940645738,
+          "differenceDB": 0.09321134602881606,
+          "passed": true
+        },
+        {
+          "offset": 1056,
+          "rms": 1989.8516828011936,
+          "referenceRMS": 1968.430938865876,
+          "differenceDB": 0.09401048479061505,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "id": 94,
+      "channel": "triangle",
+      "passed": false,
+      "boundaryError": 4187,
+      "tail16Error": 4187,
+      "maximumStep": 4109,
+      "sourceMaximumStep": 766,
+      "maximumCurvature": 4022,
+      "sourceMaximumCurvature": 777,
+      "peak": 6158,
+      "localRMS": [
+        {
+          "offset": 0,
+          "rms": 3580.418454424269,
+          "referenceRMS": 3587.1596128594383,
+          "differenceDB": -0.016338287470429667,
+          "passed": true
+        },
+        {
+          "offset": 88,
+          "rms": 3716.2992127285597,
+          "referenceRMS": 3704.767003572845,
+          "differenceDB": 0.02699546769167616,
+          "passed": true
+        },
+        {
+          "offset": 176,
+          "rms": 3727.3946478994953,
+          "referenceRMS": 3727.262913388708,
+          "differenceDB": 0.00030698430154192094,
+          "passed": true
+        },
+        {
+          "offset": 264,
+          "rms": 3579.3528273822794,
+          "referenceRMS": 3610.3572506986197,
+          "differenceDB": -0.07491335968710552,
+          "passed": true
+        },
+        {
+          "offset": 352,
+          "rms": 3755.4764822942448,
+          "referenceRMS": 3702.950896586741,
+          "differenceDB": 0.12234187184699713,
+          "passed": true
+        },
+        {
+          "offset": 440,
+          "rms": 3569.701451955142,
+          "referenceRMS": 3698.9816727311427,
+          "differenceDB": -0.3090056727977739,
+          "passed": true
+        },
+        {
+          "offset": 528,
+          "rms": 3580.7586994968906,
+          "referenceRMS": 3605.02137250545,
+          "differenceDB": -0.05865576147307229,
+          "passed": true
+        },
+        {
+          "offset": 616,
+          "rms": 3829.5134895404453,
+          "referenceRMS": 3674.0086439724105,
+          "differenceDB": 0.36006859845326117,
+          "passed": true
+        },
+        {
+          "offset": 704,
+          "rms": 3664.3710825453936,
+          "referenceRMS": 3768.1207953396734,
+          "differenceDB": -0.24250738724474738,
+          "passed": true
+        },
+        {
+          "offset": 792,
+          "rms": 3671.4778296018335,
+          "referenceRMS": 3645.45670763084,
+          "differenceDB": 0.061779299891226234,
+          "passed": true
+        },
+        {
+          "offset": 880,
+          "rms": 3726.0171427242994,
+          "referenceRMS": 3644.2506628288493,
+          "differenceDB": 0.19273214457435128,
+          "passed": true
+        },
+        {
+          "offset": 968,
+          "rms": 3683.956004649436,
+          "referenceRMS": 3715.3371539584473,
+          "differenceDB": -0.07367591147989788,
+          "passed": true
+        },
+        {
+          "offset": 1056,
+          "rms": 3634.730675325611,
+          "referenceRMS": 3672.618913606571,
+          "differenceDB": -0.0900726046869065,
+          "passed": true
+        }
+      ]
+    }
+  ]
+}

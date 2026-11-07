@@ -1,0 +1,209 @@
+{
+  "status": "pass",
+  "themes": [
+    "menu",
+    "day",
+    "night",
+    "pool",
+    "fog",
+    "roof",
+    "boss",
+    "chooseSeeds",
+    "roofnight",
+    "nightBurstEven",
+    "nightBurstOdd"
+  ],
+  "tracks": [
+    {
+      "src": "music/boss-main.flac",
+      "sha256": "d4d94b5c18fb8c13b081a5805e6725f90acff9d9aaa996d9dde580b6fc26c0f5",
+      "pcm16leSHA256": "b04223b6a321b52b35221bc5c735cde1c06f2ef069d6065a028fd79b2fa28ca7",
+      "frames": 4409600,
+      "introFrames": 0,
+      "loopFrames": 4409600,
+      "losslessRoundTrip": true,
+      "intentionalSilence": false
+    },
+    {
+      "src": "music/chooseseeds-main.flac",
+      "sha256": "4051f51478c44f68d04f8e1ca301d328ee186be7dc72fa98bb5c9e2cfbc8c8a4",
+      "pcm16leSHA256": "f6cf93b3d86d9991a644d16ba103d90d6d87cc912a8e2220d93ec8dd8244382e",
+      "frames": 952128,
+      "introFrames": 158688,
+      "loopFrames": 793440,
+      "losslessRoundTrip": true,
+      "intentionalSilence": false
+    },
+    {
+      "src": "music/day-drums.flac",
+      "sha256": "7ad83cecdc237e51b340ffb305761c36539f483c0e352a2ee72f9ff544fd245b",
+      "pcm16leSHA256": "1c8c1b0b6ba7ed54faeec73eb87124a21c7649df79139fdbe59bc7e97ea066e6",
+      "frames": 8369088,
+      "introFrames": 2207232,
+      "loopFrames": 6161856,
+      "losslessRoundTrip": true,
+      "intentionalSilence": false
+    },
+    {
+      "src": "music/day-hihats.flac",
+      "sha256": "7cee6314503ba2955d040f78ce6901332027899a258d43c023a5ef4adad4bbd2",
+      "pcm16leSHA256": "31fdc1e0d8bd9c27ff96f499d407fff8b349b62844d181e7fbe40e53b51eb83b",
+      "frames": 8369088,
+      "introFrames": 2207232,
+      "loopFrames": 6161856,
+      "losslessRoundTrip": true,
+      "intentionalSilence": false
+    },
+    {
+      "src": "music/day-main.flac",
+      "sha256": "c334c84ac9323965d3946ecb2fec6759c47d328c04a8761638561df72fd4fa08",
+      "pcm16leSHA256": "8577b3093902bf0332c1feaf63ebb07ac0aa344d00a026f26c6bbf7d32a7ec7e",
+      "frames": 8369088,
+      "introFrames": 2207232,
+      "loopFrames": 6161856,
+      "losslessRoundTrip": true,
+      "intentionalSilence": false
+    },
+    {
+      "src": "music/fog-drums.flac",
+      "sha256": "f3e7cac754272666dea2f5f2ba8cc942c42f9d27c507e1e77c001c556c2c60a2",
+      "pcm16leSHA256": "08939452dc1c8279e216e8ba3579379b6010e63e8d4b94e7a090e35576ff780f",
+      "frames": 4912320,
+      "introFrames": 96320,
+      "loopFrames": 4816000,
+      "losslessRoundTrip": true,
+      "intentionalSilence": false
+    },
+    {
+      "src": "music/fog-hihats.flac",
+      "sha256": "f16bbfa36fdb09c45e632044aad41549689b94eb67b543ec08a182701441a676",
+      "pcm16leSHA256": "df8f6dd2264ec7e537caa4b010e083ac6398ba355d59f6605ca7856f552bbc2a",
+      "frames": 4912320,
+      "introFrames": 96320,
+      "loopFrames": 4816000,
+      "losslessRoundTrip": true,
+      "intentionalSilence": false
+    },
+    {
+      "src": "music/fog-main.flac",
+      "sha256": "9be1977220434a0995e2563d849109a16371a4f96fefaa47e1c422fe52629da4",
+      "pcm16leSHA256": "54982d49065319b15971d50f489429c67e807a4fd063f699fdeabd8990c2d2e7",
+      "frames": 4912320,
+      "introFrames": 96320,
+      "loopFrames": 4816000,
+      "losslessRoundTrip": true,
+      "intentionalSilence": false
+    },
+    {
+      "src": "music/menu-main.flac",
+      "sha256": "3254e265eb64e79e53d06fce71657d644e342286fa8a8b7436c1d3c0d27815fe",
+      "pcm16leSHA256": "31ceaac9fe9b1c75e37924e85817c9b05cd924d13600cd1f4727138ce3ba2808",
+      "frames": 3852800,
+      "introFrames": 0,
+      "loopFrames": 3852800,
+      "losslessRoundTrip": true,
+      "intentionalSilence": false
+    },
+    {
+      "src": "music/night-drums.flac",
+      "sha256": "0b089da52b3afe68656172b5cb489b24fdfda02d1051502796f778864a896b11",
+      "pcm16leSHA256": "8cc8d17f6f190a1181808922c8521de0e4e510650d266775b3f23ccdc48dea07",
+      "frames": 176256,
+      "introFrames": 0,
+      "loopFrames": 176256,
+      "losslessRoundTrip": true,
+      "intentionalSilence": true
+    },
+    {
+      "src": "music/night-main.flac",
+      "sha256": "b8e7a3123ff2c1479860cccdff472ec03c87dbb102ab3ccc1ef366162f2df926",
+      "pcm16leSHA256": "1875cdb2991679056ab5c91aa06758c11da6a81918fae9e871efc999b85338c5",
+      "frames": 4935168,
+      "introFrames": 0,
+      "loopFrames": 4935168,
+      "losslessRoundTrip": true,
+      "intentionalSilence": false
+    },
+    {
+      "src": "music/nightbursteven-main.flac",
+      "sha256": "462a20552b3dac0b32d3e671a087de00c3d148f57daa5f597e444ecc32df3ab8",
+      "pcm16leSHA256": "23ecca83e89ee70327b5c195cef6a760245bf70a09545636421b65092d142c07",
+      "frames": 2820096,
+      "introFrames": 352512,
+      "loopFrames": 2467584,
+      "losslessRoundTrip": true,
+      "intentionalSilence": false
+    },
+    {
+      "src": "music/nightburstodd-main.flac",
+      "sha256": "20263b3270b6620e45c8ad4ef307dd16872a030f713fa1b550a9e393b064ed59",
+      "pcm16leSHA256": "da0aa069fdc0f56139760433512eab576acdc8566454deeaa83f5d9f6c612222",
+      "frames": 2643840,
+      "introFrames": 176256,
+      "loopFrames": 2467584,
+      "losslessRoundTrip": true,
+      "intentionalSilence": false
+    },
+    {
+      "src": "music/pool-drums.flac",
+      "sha256": "be547213aa32b720815700c4a5fba3d114d27242c91849b1d0f629874038d932",
+      "pcm16leSHA256": "5c201cb843a5164e2b7a5ab26b9f795b6fb4c4e49717d372067cd3a24b7e3f70",
+      "frames": 4469760,
+      "introFrames": 0,
+      "loopFrames": 4469760,
+      "losslessRoundTrip": true,
+      "intentionalSilence": false
+    },
+    {
+      "src": "music/pool-hihats.flac",
+      "sha256": "99970dcd9acc8b0d2a22adc58baa748269a2a5a8924a43fa1858291a638d917e",
+      "pcm16leSHA256": "3cb09e295f86f73d631dfb740cbf7c5ba5122d7411f57f62a7d3a4d3891966e1",
+      "frames": 4469760,
+      "introFrames": 0,
+      "loopFrames": 4469760,
+      "losslessRoundTrip": true,
+      "intentionalSilence": false
+    },
+    {
+      "src": "music/pool-main.flac",
+      "sha256": "1e5d26281055fa4531d9c6c28e77c7a54028d0758b6f44280d42c94a9d9e29ea",
+      "pcm16leSHA256": "88dd373ce7b749d499e6c03d3f2bfeb6471da22c90be11be37216cd72d75c930",
+      "frames": 4469760,
+      "introFrames": 0,
+      "loopFrames": 4469760,
+      "losslessRoundTrip": true,
+      "intentionalSilence": false
+    },
+    {
+      "src": "music/roof-drums.flac",
+      "sha256": "a902e0209f555cd1ad47b1e80774b186bb03322761ec433554a7a42f05f52965",
+      "pcm16leSHA256": "e12ad339c41b76d00c6e1905200f9611fd786666dbf0938c399fa15c9b775eb0",
+      "frames": 4762368,
+      "introFrames": 176384,
+      "loopFrames": 4585984,
+      "losslessRoundTrip": true,
+      "intentionalSilence": false
+    },
+    {
+      "src": "music/roof-hihats.flac",
+      "sha256": "4e4cfde93aa4adbdbd31b8d580b5561fdb978304c69141f890401b91c85f3fd1",
+      "pcm16leSHA256": "f48e9eaf22615f31cdc093a07239ffc15ae56543c4e751b35ec2704647df12b3",
+      "frames": 4762368,
+      "introFrames": 176384,
+      "loopFrames": 4585984,
+      "losslessRoundTrip": true,
+      "intentionalSilence": false
+    },
+    {
+      "src": "music/roof-main.flac",
+      "sha256": "cfb66731479f10162f95669a36636088881e903ea6a20b8223376e857b314339",
+      "pcm16leSHA256": "07a8c163cb242882a965fb7bda425d45be06895003987ee15374fb9205f938cc",
+      "frames": 4762368,
+      "introFrames": 176384,
+      "loopFrames": 4585984,
+      "losslessRoundTrip": true,
+      "intentionalSilence": false
+    }
+  ],
+  "scope": "original theme stems and sample-exact loop segments; not frame-equivalent adaptive mixing"
+}

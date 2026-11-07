@@ -1,0 +1,36 @@
+{
+  "scope": "Read-only provenance and code-boundary verification for exact scenery terrain recovery.",
+  "fixtures": [
+    {
+      "source": ".local/contra-bot/diagnostic-coop-snow-next/first-stall/frame-119968.png",
+      "fixture": "games/contra/engine/testdata/bot-snow-scenery-119968.png",
+      "sha256": "e8612e26ede0a1d9d25e0cdceba989c2acd7a16af16f960a1d2115c528c32587",
+      "byteIdentical": true
+    },
+    {
+      "source": ".local/contra-bot/diagnostic-coop-snow-next/terminal-window/frame-129000.png",
+      "fixture": "games/contra/engine/testdata/bot-snow-scenery-129000.png",
+      "sha256": "070f9d13df91f0ba59393505427fbb626267001c7d42cf734335e8659d3214c5",
+      "byteIdentical": true
+    }
+  ],
+  "terrainRecoveryBodyUnchanged": true,
+  "reconstructedPriorTerrainFileSHA256": "58aeb989b7bb5a1b856929ec1bdbce3b797223839703d99b97831e5e928c6429",
+  "playerSupportHelperUnchanged": true,
+  "playerSupportSHA256": "bc760c23fe4e2e605a33dbda9a8d20f63b8ab55c4fb6946ed06d882d39583e7a",
+  "diagnosticInputPolicy": "Only PNGs enter tests; saved Session and OAM audit are not inputs to recognition.",
+  "cleanup": {
+    "removedRedundantLogs": [
+      {
+        "path": "docs/research/nes-contra/evidence/bot-scenery-terrain-real-red.jsonl",
+        "sha256": "774c533bc06dadc2e8537e90fb63ab229800975390f226a2d90862eadd95d02d"
+      },
+      {
+        "path": "docs/research/nes-contra/evidence/bot-scenery-terrain-real-red-final.jsonl",
+        "sha256": "769c731af9aaa87d824bf5c1e6800745caa3ca16ec841631a5f37e2fddf75036"
+      }
+    ],
+    "removedEmptyTemporaryDirectory": ".local/contra-scenery-terrain",
+    "preserved": "Original diagnostic directory, portable PNGs, actual full red log, focused green log, source-bound race log and shared caches."
+  }
+}

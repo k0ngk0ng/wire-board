@@ -5,10 +5,13 @@ import react from "@vitejs/plugin-react";
 import { fileURLToPath } from "node:url";
 import { preparePublicAssets } from "./scripts/public-assets.mjs";
 import { prepareBasketballDelivery } from "../games/basketball/build/runtime-delivery.mjs";
+import { prepareContraDelivery } from "../games/contra/build/runtime-delivery.mjs";
+import { prepareYuYuDelivery } from "../games/yuyuhakusho/build/runtime-delivery.mjs";
+import { preparePvZRuntime } from "../games/pvz/build/runtime.mjs";
 const root = fileURLToPath(new URL("../", import.meta.url));
 export default defineConfig({
   base: assetBase(process.env.WIRE_BOARD_ASSET_BASE),
-  publicDir: preparePublicAssets(root, [prepareBasketballDelivery(root)]),
+  publicDir: preparePublicAssets(root, [prepareBasketballDelivery(root), prepareContraDelivery(root), preparePvZRuntime(root), prepareYuYuDelivery(root)]),
   plugins: [react(), gameLoadManifest()],
   resolve: { dedupe: ["react", "react-dom", "lucide-react", "three"] },
   server: {

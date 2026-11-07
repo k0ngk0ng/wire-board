@@ -1,0 +1,16 @@
+E..
+======================================================================
+ERROR: test_actual_cdn_inventory_accepts_complete_directory (test_public_contract.PublicAssetContractTests.test_actual_cdn_inventory_accepts_complete_directory)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/pvz/games/pvz/build/test_public_contract.py", line 35, in test_actual_cdn_inventory_accepts_complete_directory
+    rows = module.inventory(ASSETS, "https://cdn.ichenj.com/bga/web/" + "a" * 40 + "/")
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/pvz/scripts/cdn_delivery.py", line 120, in inventory
+    if p.suffix not in MIME:raise ValueError('Unexpected public asset type: '+rel)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: Unexpected public asset type: native/backupdancer.pvzr
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.712s
+
+FAILED (errors=1)

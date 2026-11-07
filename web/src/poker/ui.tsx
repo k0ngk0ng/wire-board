@@ -309,6 +309,18 @@ export function Hand({
   disabled?: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null);
+  const latestSelection = useRef(onChange);
+  latestSelection.current = onChange;
+  useEffect(() => {
+    const hand = ref.current;
+    const cancel = (event: Event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      latestSelection.current([]);
+    };
+    hand?.addEventListener("controller-cancel", cancel);
+    return () => hand?.removeEventListener("controller-cancel", cancel);
+  }, []);
   const [width, setWidth] = useState(300);
   const gesture = useRef<{
     x: number;
@@ -346,6 +358,7 @@ export function Hand({
   return (
     <div
       className="poker-hand"
+      data-controller-group="hand"
       style={{
         paddingTop: 16 + (reservedRows - filledRows) * cardWidth * 0.9,
         minHeight:
@@ -401,6 +414,7 @@ export function Hand({
       {rows.map((row, i) => (
         <div
           className="poker-hand-row"
+          data-controller-row
           key={i}
           style={
             {

@@ -1,0 +1,90 @@
+{
+  "evidence_id": "ev_0c241d342cdab84c44c45dc30c719d78b44b3f5b6293ef9b01809afe99c14969",
+  "subject": {
+    "name": "PlantsVsZombies.exe",
+    "digest": {
+      "sha256": "8e8eea73a85d7af311755708f5daf2786650cf3c032188b8315fcf99858c8342"
+    },
+    "local_path": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/pvz/.local/pvz-research/original-1.0.0.1051/PlantsVsZombies.exe",
+    "format": "pe",
+    "architecture": "x86"
+  },
+  "provider": {
+    "id": "ghidra",
+    "name": "Ghidra",
+    "version": "12.1.4"
+  },
+  "analysis_profile": {
+    "provider": {
+      "id": "ghidra",
+      "name": "Ghidra",
+      "version": "12.1.4"
+    },
+    "parameters": {
+      "target_kind": "executable",
+      "target_format": "pe",
+      "executable_role": "application",
+      "managed": false,
+      "native_aot_metadata": {
+        "contract_revision": "rtr-9.1-x64-pe-read-only-v3",
+        "source_bytes": 134217728,
+        "work_units": 67108864,
+        "working_memory_bytes": 67108864,
+        "report_bytes": 4194304
+      },
+      "architecture": "x86",
+      "available_architectures": [
+        "x86"
+      ],
+      "import_mode": "ephemeral-source-immutable",
+      "pdb_observations": "program-info-v1",
+      "annotation_policy": "atomic-function-entry-metadata-v1",
+      "load_image_observations": "source-mappings-entry-context-v2",
+      "function_body_evidence": "complete-inclusive-ranges-v1",
+      "function_references": "complete-body-and-entry-reference-manager-v2",
+      "call_relationship_coverage": "function-body-call-coverage-v5",
+      "function_dossier_coverage": "observed-facets-and-call-relationships-v1",
+      "string_inventory_evidence": "defined-data-coverage-v1",
+      "location_resolution": "explicit-address-exact-entry-symbol-first-v3",
+      "procedure_file_offset_resolution": "address-first-unique-target-source-mapping-v2",
+      "instruction_flow_evidence": "decoded-return-pcode-v1",
+      "instruction_references": "exact-address-incoming-v1",
+      "function_boundary_observations": "ghidra-function-boundary-limitations-v3",
+      "no_return_repair": "returning-imports-decoded-return-v2",
+      "process_launch": "inspected-jvm-launch-support-v1",
+      "jump_table_evidence": "typed-case-default-blocks-v1",
+      "decompiler_jump_loads": true,
+      "loader": "auto-from-header",
+      "language_id": "auto-from-header",
+      "compiler_spec_id": "auto-default",
+      "analyzer_preset": "ghidra-default"
+    },
+    "digest": "483a3c23d7b0c6333d61d7e050154873e5f8d7ea53a284362e069d8e793666a4"
+  },
+  "predicate_type": "rea.analysis",
+  "operation": "procedure_pseudo_code",
+  "parameters": {
+    "procedure": "0x40E020"
+  },
+  "raw_result": {
+    "value": "\nint FUN_0040e020(int param_1,uint param_2,int param_3)\n\n{\n  bool bVar1;\n  bool bVar2;\n  char cVar3;\n  uint in_EAX;\n  int iVar4;\n  int extraout_ECX;\n  int extraout_ECX_00;\n  int extraout_ECX_01;\n  int extraout_EDX;\n  int extraout_EDX_00;\n  undefined8 uVar5;\n  int local_10;\n  int local_c;\n  int local_8;\n  int local_4;\n  \n  if (8 < param_2) {\n    return 1;\n  }\n  if (5 < in_EAX) {\n    return 1;\n  }\n  iVar4 = FUN_00425550(param_3);\n  if ((iVar4 != 0) || (cVar3 = FUN_0042b530(), iVar4 = extraout_ECX, cVar3 != '\\0')) {\n    return iVar4;\n  }\n  FUN_0040d2a0(param_2,in_EAX);\n  if (*(int *)(*(int *)(extraout_EDX + 0x8c) + 0x7f8) == 0x2b) {\n    if (local_10 != 0) {\n      return 1;\n    }\n    if (local_4 != 0) {\n      return 1;\n    }\n    if (local_8 != 0) {\n      return 1;\n    }\n    if (local_c == 0) {\n      if (*(int *)(*(int *)(*(int *)(extraout_EDX + 0x8c) + 0x81c) + 8) != 3) {\n        return 0;\n      }\n      cVar3 = FUN_00467ea0();\n      if (cVar3 != '\\0') {\n        return 0;\n      }\n      return 0xb;\n    }\n    return 1;\n  }\n  iVar4 = FUN_00408e40(1);\n  if (param_3 == 0xb) {\n    if (local_4 != 0) {\n      return 1;\n    }\n    return (-(uint)(iVar4 != 0) & 0xfffffffe) + 2;\n  }\n  if (param_3 == 0x23) {\n    if (local_8 != 0) {\n      return 1;\n    }\n    if ((((local_4 != 0) && (*(char *)(local_4 + 0x143) != '\\0')) && (*(int *)(local_4 + 0x130) < 1)\n        ) && (*(int *)(local_4 + 0x134) != 1)) {\n      return 0;\n    }\n    return 0xd;\n  }\n  if (iVar4 != 0) {\n    return 9;\n  }\n  if (((local_10 == 0) || (*(int *)(local_10 + 0x24) != 0x10)) || (*(int *)(local_10 + 0x134) == 1))\n  {\n    bVar2 = false;\n  }\n  else {\n    bVar2 = true;\n  }\n  if (((local_10 == 0) || (*(int *)(local_10 + 0x24) != 0x21)) ||\n     (bVar1 = true, *(int *)(local_10 + 0x134) == 1)) {\n    bVar1 = false;\n  }\n  iVar4 = FUN_00408e40(2);\n  if (iVar4 != 0) {\n    return 10;\n  }\n  uVar5 = FUN_00408e40(7);\n  if ((int)uVar5 != 0) {\n    return 1;\n  }\n  cVar3 = FUN_0040dfc0(param_2);\n  if (cVar3 != '\\0') {\n    return 1;\n  }\n  iVar4 = *(int *)((int)((ulonglong)uVar5 >> 0x20) + (in_EAX + (param_2 * 3 + 0x2d) * 2) * 4);\n  if (iVar4 == 2) {\n    return 1;\n  }\n  if (iVar4 == 0) {\n    return 1;\n  }\n  if (((param_3 == 0x10) || (param_3 == 0x13)) || (param_3 == 0x18)) {\n    cVar3 = FUN_0040ce00();\n    if (cVar3 == '\\0') {\n      return 3;\n    }\n    if (local_4 != 0) {\n      return 1;\n    }\n    if (local_10 != 0) {\n      return 1;\n    }\n    return 0;\n  }\n  if (((param_3 == 0x15) || (param_3 == 0x2e)) &&\n     ((iVar4 == 3 ||\n      ((cVar3 = FUN_0041c0b0(), cVar3 != '\\0' || (iVar4 = extraout_ECX_00, local_10 != 0)))))) {\n    return 0xc;\n  }\n  if (((iVar4 == 3) && (!bVar2)) && (param_3 != 0x2b)) {\n    if (local_4 == 0) {\n      return 0xb;\n    }\n    if (*(int *)(local_4 + 0x24) != 0x2b) {\n      return 0xb;\n    }\n    if (param_3 != 0x1e) {\n      return 0xb;\n    }\n  }\n  if (param_3 != 0x21) {\n    cVar3 = FUN_0041c0b0();\n    if ((cVar3 != '\\0') && (!bVar1)) {\n      return 5;\n    }\n    if (param_3 != 0x1e) {\n      if ((bVar2) && (param_3 == 4)) {\n        return 4;\n      }\n      iVar4 = extraout_ECX_01;\n      if (extraout_EDX_00 != 0) {\n        if (param_3 == 0x2b) {\n          if (local_4 != 0) {\n            return 1;\n          }\n          cVar3 = FUN_00463470(0x2b);\n          if ((cVar3 != '\\0') && (*(int *)(local_10 + 0x134) != 1)) {\n            return 0;\n          }\n          cVar3 = FUN_00467ec0();\n          if (cVar3 != '\\0') {\n            return 8;\n          }\n        }\n        iVar4 = param_1;\n        if (*(int *)(local_10 + 0x24) == 0x30) {\n          return 1;\n        }\n      }\n      if (local_4 == 0) {\n        if (*(char *)(*(int *)(iVar4 + 0x8c) + 0x814) == '\\0') {\n          cVar3 = FUN_00467ec0();\n          if (cVar3 != '\\0') {\n            return 8;\n          }\n        }\n        else if (param_3 == 0x2f) {\n          cVar3 = FUN_0040d550(param_2,in_EAX);\n          if (cVar3 == '\\0') {\n            return 8;\n          }\n        }\n        else if ((param_3 == 0x2b) && (cVar3 = FUN_0040ce00(), cVar3 == '\\0')) {\n          return 1;\n        }\n      }\n      else {\n        cVar3 = FUN_00463470(param_3);\n        if ((cVar3 == '\\0') || (*(int *)(local_4 + 0x134) == 1)) {\n          cVar3 = FUN_00467ec0();\n          if (cVar3 != '\\0') {\n            return 8;\n          }\n          if (((((param_3 == 3) || (param_3 == 0x17)) &&\n               (*(int *)(*(int *)(*(int *)(param_1 + 0x8c) + 0x82c) + 0x234) != 0)) &&\n              ((*(int *)(local_4 + 0x40) < (*(int *)(local_4 + 0x44) * 2) / 3 &&\n               (param_3 == *(int *)(local_4 + 0x24))))) && (*(int *)(local_4 + 0x134) != 1)) {\n            return 0;\n          }\n          return 1;\n        }\n      }\n      return 0;\n    }\n    if ((local_4 != 0) && (*(int *)(local_4 + 0x24) == 0x2f)) {\n      return 1;\n    }\n    if (local_c == 0) {\n      return 0;\n    }\n    if (*(int *)(*(int *)(*(int *)(extraout_ECX_01 + 0x8c) + 0x82c) + 0x234) == 0) {\n      return 1;\n    }\n    if ((*(int *)(local_c + 0x44) * 2) / 3 <= *(int *)(local_c + 0x40)) {\n      return 1;\n    }\n    if (*(int *)(local_c + 0x24) != 0x1e) {\n      return 1;\n    }\n    if (*(int *)(local_c + 0x134) == 1) {\n      return 1;\n    }\n    return 0;\n  }\n  if (local_4 != 0) {\n    return 1;\n  }\n  if (local_10 != 0) {\n    return 1;\n  }\n  if (local_c != 0) {\n    return 1;\n  }\n  return 0;\n}\n\n",
+    "limitations": []
+  },
+  "normalized_result": "\nint FUN_0040e020(int param_1,uint param_2,int param_3)\n\n{\n  bool bVar1;\n  bool bVar2;\n  char cVar3;\n  uint in_EAX;\n  int iVar4;\n  int extraout_ECX;\n  int extraout_ECX_00;\n  int extraout_ECX_01;\n  int extraout_EDX;\n  int extraout_EDX_00;\n  undefined8 uVar5;\n  int local_10;\n  int local_c;\n  int local_8;\n  int local_4;\n  \n  if (8 < param_2) {\n    return 1;\n  }\n  if (5 < in_EAX) {\n    return 1;\n  }\n  iVar4 = FUN_00425550(param_3);\n  if ((iVar4 != 0) || (cVar3 = FUN_0042b530(), iVar4 = extraout_ECX, cVar3 != '\\0')) {\n    return iVar4;\n  }\n  FUN_0040d2a0(param_2,in_EAX);\n  if (*(int *)(*(int *)(extraout_EDX + 0x8c) + 0x7f8) == 0x2b) {\n    if (local_10 != 0) {\n      return 1;\n    }\n    if (local_4 != 0) {\n      return 1;\n    }\n    if (local_8 != 0) {\n      return 1;\n    }\n    if (local_c == 0) {\n      if (*(int *)(*(int *)(*(int *)(extraout_EDX + 0x8c) + 0x81c) + 8) != 3) {\n        return 0;\n      }\n      cVar3 = FUN_00467ea0();\n      if (cVar3 != '\\0') {\n        return 0;\n      }\n      return 0xb;\n    }\n    return 1;\n  }\n  iVar4 = FUN_00408e40(1);\n  if (param_3 == 0xb) {\n    if (local_4 != 0) {\n      return 1;\n    }\n    return (-(uint)(iVar4 != 0) & 0xfffffffe) + 2;\n  }\n  if (param_3 == 0x23) {\n    if (local_8 != 0) {\n      return 1;\n    }\n    if ((((local_4 != 0) && (*(char *)(local_4 + 0x143) != '\\0')) && (*(int *)(local_4 + 0x130) < 1)\n        ) && (*(int *)(local_4 + 0x134) != 1)) {\n      return 0;\n    }\n    return 0xd;\n  }\n  if (iVar4 != 0) {\n    return 9;\n  }\n  if (((local_10 == 0) || (*(int *)(local_10 + 0x24) != 0x10)) || (*(int *)(local_10 + 0x134) == 1))\n  {\n    bVar2 = false;\n  }\n  else {\n    bVar2 = true;\n  }\n  if (((local_10 == 0) || (*(int *)(local_10 + 0x24) != 0x21)) ||\n     (bVar1 = true, *(int *)(local_10 + 0x134) == 1)) {\n    bVar1 = false;\n  }\n  iVar4 = FUN_00408e40(2);\n  if (iVar4 != 0) {\n    return 10;\n  }\n  uVar5 = FUN_00408e40(7);\n  if ((int)uVar5 != 0) {\n    return 1;\n  }\n  cVar3 = FUN_0040dfc0(param_2);\n  if (cVar3 != '\\0') {\n    return 1;\n  }\n  iVar4 = *(int *)((int)((ulonglong)uVar5 >> 0x20) + (in_EAX + (param_2 * 3 + 0x2d) * 2) * 4);\n  if (iVar4 == 2) {\n    return 1;\n  }\n  if (iVar4 == 0) {\n    return 1;\n  }\n  if (((param_3 == 0x10) || (param_3 == 0x13)) || (param_3 == 0x18)) {\n    cVar3 = FUN_0040ce00();\n    if (cVar3 == '\\0') {\n      return 3;\n    }\n    if (local_4 != 0) {\n      return 1;\n    }\n    if (local_10 != 0) {\n      return 1;\n    }\n    return 0;\n  }\n  if (((param_3 == 0x15) || (param_3 == 0x2e)) &&\n     ((iVar4 == 3 ||\n      ((cVar3 = FUN_0041c0b0(), cVar3 != '\\0' || (iVar4 = extraout_ECX_00, local_10 != 0)))))) {\n    return 0xc;\n  }\n  if (((iVar4 == 3) && (!bVar2)) && (param_3 != 0x2b)) {\n    if (local_4 == 0) {\n      return 0xb;\n    }\n    if (*(int *)(local_4 + 0x24) != 0x2b) {\n      return 0xb;\n    }\n    if (param_3 != 0x1e) {\n      return 0xb;\n    }\n  }\n  if (param_3 != 0x21) {\n    cVar3 = FUN_0041c0b0();\n    if ((cVar3 != '\\0') && (!bVar1)) {\n      return 5;\n    }\n    if (param_3 != 0x1e) {\n      if ((bVar2) && (param_3 == 4)) {\n        return 4;\n      }\n      iVar4 = extraout_ECX_01;\n      if (extraout_EDX_00 != 0) {\n        if (param_3 == 0x2b) {\n          if (local_4 != 0) {\n            return 1;\n          }\n          cVar3 = FUN_00463470(0x2b);\n          if ((cVar3 != '\\0') && (*(int *)(local_10 + 0x134) != 1)) {\n            return 0;\n          }\n          cVar3 = FUN_00467ec0();\n          if (cVar3 != '\\0') {\n            return 8;\n          }\n        }\n        iVar4 = param_1;\n        if (*(int *)(local_10 + 0x24) == 0x30) {\n          return 1;\n        }\n      }\n      if (local_4 == 0) {\n        if (*(char *)(*(int *)(iVar4 + 0x8c) + 0x814) == '\\0') {\n          cVar3 = FUN_00467ec0();\n          if (cVar3 != '\\0') {\n            return 8;\n          }\n        }\n        else if (param_3 == 0x2f) {\n          cVar3 = FUN_0040d550(param_2,in_EAX);\n          if (cVar3 == '\\0') {\n            return 8;\n          }\n        }\n        else if ((param_3 == 0x2b) && (cVar3 = FUN_0040ce00(), cVar3 == '\\0')) {\n          return 1;\n        }\n      }\n      else {\n        cVar3 = FUN_00463470(param_3);\n        if ((cVar3 == '\\0') || (*(int *)(local_4 + 0x134) == 1)) {\n          cVar3 = FUN_00467ec0();\n          if (cVar3 != '\\0') {\n            return 8;\n          }\n          if (((((param_3 == 3) || (param_3 == 0x17)) &&\n               (*(int *)(*(int *)(*(int *)(param_1 + 0x8c) + 0x82c) + 0x234) != 0)) &&\n              ((*(int *)(local_4 + 0x40) < (*(int *)(local_4 + 0x44) * 2) / 3 &&\n               (param_3 == *(int *)(local_4 + 0x24))))) && (*(int *)(local_4 + 0x134) != 1)) {\n            return 0;\n          }\n          return 1;\n        }\n      }\n      return 0;\n    }\n    if ((local_4 != 0) && (*(int *)(local_4 + 0x24) == 0x2f)) {\n      return 1;\n    }\n    if (local_c == 0) {\n      return 0;\n    }\n    if (*(int *)(*(int *)(*(int *)(extraout_ECX_01 + 0x8c) + 0x82c) + 0x234) == 0) {\n      return 1;\n    }\n    if ((*(int *)(local_c + 0x44) * 2) / 3 <= *(int *)(local_c + 0x40)) {\n      return 1;\n    }\n    if (*(int *)(local_c + 0x24) != 0x1e) {\n      return 1;\n    }\n    if (*(int *)(local_c + 0x134) == 1) {\n      return 1;\n    }\n    return 0;\n  }\n  if (local_4 != 0) {\n    return 1;\n  }\n  if (local_10 != 0) {\n    return 1;\n  }\n  if (local_c != 0) {\n    return 1;\n  }\n  return 0;\n}\n\n",
+  "confidence": "observed",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+    "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+    "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+    "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+    "Pseudocode is Ghidra decompiler output, not original source and not text-equivalent to Hopper output.",
+    "External functions and functions without an analyzable body return null; other decompiler failures remain explicit.",
+    "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state.",
+    "The target references PDB PlantsVsZombies.pdb (GUID 8efc826c-78d7-4bea-aa67-ff33ea3dc99b, age (hex) 1, signature unknown, version RSDS); Ghidra reports load state unknown. Original names and types may be missing; an empty name search does not prove a procedure is absent. Use list_procedures and address-based analysis to inspect recovered functions. REA does not admit a caller-selected PDB companion."
+  ],
+  "relationship_coverage": null,
+  "locations": [],
+  "evidence_links": []
+}

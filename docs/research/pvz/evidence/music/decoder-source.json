@@ -1,0 +1,33 @@
+{
+  "url": "https://www.un4seen.com/files/bass24-osx.zip",
+  "bytes": 914205,
+  "sha256": "dfadd6238896b02b144b2870655fb9ee2445fc84d5c00f7e1c56faf9343ce59c",
+  "library": ".local/pvz-music/tools/bass24-osx/libbass.dylib",
+  "librarySHA256": "e81fb7b4d0009ba6343fbfcd840620704dcb840686d405b9734cd37150d31974",
+  "BASSVersion": "2.4.18.3",
+  "architecture": "Mach-O Universal arm64/x86_64/i386",
+  "execution": "offline decode-only device0; no original Windows executable execution",
+  "licenseFile": ".local/pvz-music/tools/bass24-osx/bass.txt",
+  "licenseScope": "Decoder library retained only in workspace tools, not application publication assets",
+  "removedUnusedExtractedExamples": [
+    ".local/pvz-music/tools/bass24-osx/makefile",
+    ".local/pvz-music/tools/bass24-osx/bass.chm",
+    ".local/pvz-music/tools/bass24-osx/delphi",
+    ".local/pvz-music/tools/bass24-osx/c/bass.xcodeproj",
+    ".local/pvz-music/tools/bass24-osx/c/speakers",
+    ".local/pvz-music/tools/bass24-osx/c/netradio",
+    ".local/pvz-music/tools/bass24-osx/c/plugins",
+    ".local/pvz-music/tools/bass24-osx/c/multi",
+    ".local/pvz-music/tools/bass24-osx/c/writewav",
+    ".local/pvz-music/tools/bass24-osx/c/synth",
+    ".local/pvz-music/tools/bass24-osx/c/devlist",
+    ".local/pvz-music/tools/bass24-osx/c/rectest",
+    ".local/pvz-music/tools/bass24-osx/c/livespec",
+    ".local/pvz-music/tools/bass24-osx/c/fxtest",
+    ".local/pvz-music/tools/bass24-osx/c/spectrum",
+    ".local/pvz-music/tools/bass24-osx/c/dsptest",
+    ".local/pvz-music/tools/bass24-osx/c/contest",
+    ".local/pvz-music/probe/stdout.json",
+    ".local/pvz-music/probe/stderr.log"
+  ]
+}

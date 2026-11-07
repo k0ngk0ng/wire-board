@@ -1,0 +1,22 @@
+=== RUN   TestBotEnergyFloorBehindVisibleFeet
+=== RUN   TestBotEnergyFloorBehindVisibleFeet/67938
+=== RUN   TestBotEnergyFloorBehindVisibleFeet/67944
+--- PASS: TestBotEnergyFloorBehindVisibleFeet (31.20s)
+    --- PASS: TestBotEnergyFloorBehindVisibleFeet/67938 (15.66s)
+    --- PASS: TestBotEnergyFloorBehindVisibleFeet/67944 (15.54s)
+=== RUN   TestBotMaskedTerrainRequiresIdentifiedBodyAndUniqueMaterial
+=== RUN   TestBotMaskedTerrainRequiresIdentifiedBodyAndUniqueMaterial/complete
+=== RUN   TestBotMaskedTerrainRequiresIdentifiedBodyAndUniqueMaterial/no-player
+=== RUN   TestBotMaskedTerrainRequiresIdentifiedBodyAndUniqueMaterial/ambiguous
+=== RUN   TestBotMaskedTerrainRequiresIdentifiedBodyAndUniqueMaterial/transparent-hole
+--- PASS: TestBotMaskedTerrainRequiresIdentifiedBodyAndUniqueMaterial (0.08s)
+    --- PASS: TestBotMaskedTerrainRequiresIdentifiedBodyAndUniqueMaterial/complete (0.02s)
+    --- PASS: TestBotMaskedTerrainRequiresIdentifiedBodyAndUniqueMaterial/no-player (0.02s)
+    --- PASS: TestBotMaskedTerrainRequiresIdentifiedBodyAndUniqueMaterial/ambiguous (0.02s)
+    --- PASS: TestBotMaskedTerrainRequiresIdentifiedBodyAndUniqueMaterial/transparent-hole (0.02s)
+=== RUN   TestBotVisionTerrainOccludedSupport
+--- PASS: TestBotVisionTerrainOccludedSupport (0.04s)
+=== RUN   TestBotVisionTerrainFromPixels
+--- PASS: TestBotVisionTerrainFromPixels (0.03s)
+PASS
+ok  	github.com/k0ngk0ng/wire-board/games/contra/engine	32.830s

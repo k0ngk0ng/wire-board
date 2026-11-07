@@ -1,0 +1,14 @@
+✔ disabled controls release once and never send heartbeat input; resumed controls use sequence baseline (2.395667ms)
+✔ an in-flight restore completed while hidden does not consume audio recovery (0.841375ms)
+✔ an old checkpoint from concurrent input recovery cannot rewind a running client (0.994083ms)
+✔ fullscreen focus accepts keyboard but unrelated public room controls stay blocked (0.908209ms)
+✔ interlude follows actual hit row for sprite mask and next row for background control (18.796708ms)
+✔ an active raster effect without a real sprite/background hit does not invent a boundary (2.538791ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 89.118042

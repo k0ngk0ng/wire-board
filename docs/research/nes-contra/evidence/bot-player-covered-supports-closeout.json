@@ -1,0 +1,158 @@
+{
+  "passed": true,
+  "scope": "Player-covered fixed moving-stone recognition only; no policy/navigation/Session change.",
+  "files": {
+    "games/contra/engine/bot_vision.go": "d8b581ba90b529a64c7dea7610d18711bf7e84db799c98aa78acfe02a5346ec9",
+    "games/contra/engine/bot_vision_player_support.go": "bc760c23fe4e2e605a33dbda9a8d20f63b8ab55c4fb6946ed06d882d39583e7a",
+    "games/contra/engine/bot_vision_player_support_test.go": "1b28238ff40beb13db57a03d923f302013ef7bded804b63b0d22d66fc2c16191",
+    "games/contra/engine/testdata/bot-waterfall-player-covered-stone.png": "c91072f742bd1ad8004725666ce01f7638ca6aa109dd6032f41898285add2355",
+    "games/contra/engine/testdata/bot-waterfall-partial-player-stone.png": "c9c0b4a86ea966d37e481eae775134eb259a90beb4fcf2c2ace10fc8d196a499",
+    "games/contra/engine/testdata/player-support-replay/pads.bin.gz": "674487445e6d81b0d548b3c986d4f16d714db105d39106dee2858b7363e125f2",
+    "games/contra/engine/testdata/player-support-replay/test-life-refills.json": "bdd67b1575bef971e63b35c25398f80ad4426cf3acec46f4abe8f5ac72f1961b",
+    "scripts/contra/replay_player_support.go": "745498ebe693b7623db3c656cf7942f128a4d1e688d8fc728529457cf79ef32d",
+    "scripts/contra/verify_player_support.py": "38dbc7d18cd1895517c15e0016b4a0f51d3269ffc5c5c6fe90fa057dfc29e68f"
+  },
+  "verificationSHA256": "c6b90f737890c6c7c65445413d8bea64fac213281fba47d9b3181154cef992cf",
+  "allBoundVisionSourcesStillMatch": true,
+  "logs": {
+    "bot-player-covered-supports-race.jsonl": {
+      "sha256": "78130c0fc0d161774ecb059b7e8e9b390cb761baf7d96a7e349260e8c67e577f",
+      "topLevelPassed": 33,
+      "testAndSubtestPassed": 71,
+      "failures": 0
+    },
+    "bot-player-covered-supports-bound-race.jsonl": {
+      "sha256": "0e8775de64f6c2459e53936590500aac78a85fd6d8f7bb559948a002da0543fc",
+      "topLevelPassed": 3,
+      "testAndSubtestPassed": 22,
+      "failures": 0
+    }
+  },
+  "replay": {
+    "beforeObservations": "docs/research/nes-contra/evidence/bot-player-covered-supports-before-observations.json",
+    "beforeObservationsSHA256": "d4b47fdd8492ca94b20aa6a6b4b03b3f73d348a14ef4aaa8bc8af93ac03b7e23",
+    "retainedOutput": ".local/contra-player-support/recheck-final",
+    "afterObservationsSHA256": "83e882dfeaeaa8506e4724056cce1a5932cf877dc69c0679ede8af5391a7823e",
+    "allFivePNGsByteIdenticalBeforeAfter": true,
+    "sessionByteIdenticalBeforeAfter": true,
+    "sessionSHA256": "12521de4c04d69694e9404f18592d5ae50a8ceb0ff1642056f201b8ef4e410b6",
+    "framePNGSHA256": {
+      "25924": "8dbf5209a9ba46a8556ad85f30ed987e899bb25841ea55336bf04724259d990c",
+      "25925": "894c68720d251337fe63520455954a8b33f5dbf67db5af24e9f755de2fe6db20",
+      "25926": "c91072f742bd1ad8004725666ce01f7638ca6aa109dd6032f41898285add2355",
+      "25927": "2ded4d96fd92bb5b2e25f04d4ba78ecdbd69812a82ed70fba55a3c6d6187add9",
+      "25928": "7f22c3fea6724984c6bce247743c543afc9b65de04b228cfaa00c612d552f43a"
+    },
+    "stonePositions": {
+      "25924": [
+        [
+          168,
+          127
+        ]
+      ],
+      "25925": [
+        [
+          169,
+          127
+        ]
+      ],
+      "25926": [
+        [
+          170,
+          127
+        ]
+      ],
+      "25927": [],
+      "25928": [
+        [
+          171,
+          127
+        ]
+      ]
+    },
+    "declaredLifeGrantsApplied": 21,
+    "scope": "Replays recorded legal pads and original declared life grants; does not run or certify bot navigation policy."
+  },
+  "cleanup": {
+    "removed": [
+      {
+        "path": ".local/contra-player-support/replay-before/frame-25924.png",
+        "sha256": "8dbf5209a9ba46a8556ad85f30ed987e899bb25841ea55336bf04724259d990c"
+      },
+      {
+        "path": ".local/contra-player-support/replay-before/frame-25925.png",
+        "sha256": "894c68720d251337fe63520455954a8b33f5dbf67db5af24e9f755de2fe6db20"
+      },
+      {
+        "path": ".local/contra-player-support/replay-before/frame-25926.png",
+        "sha256": "c91072f742bd1ad8004725666ce01f7638ca6aa109dd6032f41898285add2355"
+      },
+      {
+        "path": ".local/contra-player-support/replay-before/frame-25927.png",
+        "sha256": "2ded4d96fd92bb5b2e25f04d4ba78ecdbd69812a82ed70fba55a3c6d6187add9"
+      },
+      {
+        "path": ".local/contra-player-support/replay-before/frame-25928.png",
+        "sha256": "7f22c3fea6724984c6bce247743c543afc9b65de04b228cfaa00c612d552f43a"
+      },
+      {
+        "path": ".local/contra-player-support/replay-before/observations.json",
+        "sha256": "d4b47fdd8492ca94b20aa6a6b4b03b3f73d348a14ef4aaa8bc8af93ac03b7e23"
+      },
+      {
+        "path": ".local/contra-player-support/replay-before/session.json",
+        "sha256": "12521de4c04d69694e9404f18592d5ae50a8ceb0ff1642056f201b8ef4e410b6"
+      },
+      {
+        "path": ".local/contra-player-support/replay-after/frame-25924.png",
+        "sha256": "8dbf5209a9ba46a8556ad85f30ed987e899bb25841ea55336bf04724259d990c"
+      },
+      {
+        "path": ".local/contra-player-support/replay-after/frame-25925.png",
+        "sha256": "894c68720d251337fe63520455954a8b33f5dbf67db5af24e9f755de2fe6db20"
+      },
+      {
+        "path": ".local/contra-player-support/replay-after/frame-25926.png",
+        "sha256": "c91072f742bd1ad8004725666ce01f7638ca6aa109dd6032f41898285add2355"
+      },
+      {
+        "path": ".local/contra-player-support/replay-after/frame-25927.png",
+        "sha256": "2ded4d96fd92bb5b2e25f04d4ba78ecdbd69812a82ed70fba55a3c6d6187add9"
+      },
+      {
+        "path": ".local/contra-player-support/replay-after/frame-25928.png",
+        "sha256": "7f22c3fea6724984c6bce247743c543afc9b65de04b228cfaa00c612d552f43a"
+      },
+      {
+        "path": ".local/contra-player-support/replay-after/observations.json",
+        "sha256": "83e882dfeaeaa8506e4724056cce1a5932cf877dc69c0679ede8af5391a7823e"
+      },
+      {
+        "path": ".local/contra-player-support/replay-after/session.json",
+        "sha256": "12521de4c04d69694e9404f18592d5ae50a8ceb0ff1642056f201b8ef4e410b6"
+      },
+      {
+        "path": "docs/research/nes-contra/evidence/bot-player-covered-stone-red.jsonl",
+        "sha256": "9a8cbbd8085dbd98ac1a0f3e279f94bde2f8edb981c978cdfde2ab3bac4ad2ff"
+      },
+      {
+        "path": "docs/research/nes-contra/evidence/bot-player-covered-supports-red.jsonl",
+        "sha256": "0eeb99cf3c4f491d3d505586aa66144f4875fed0dcf212a4a266a68e5712d6aa"
+      },
+      {
+        "path": "docs/research/nes-contra/evidence/bot-player-covered-supports-first.jsonl",
+        "sha256": "6e5272938b566881dececed4d439a165ee5be905bb781d9feee8555ca8d2bdd8"
+      }
+    ],
+    "preserved": [
+      ".local/contra-player-support/recheck-final",
+      "docs/research/nes-contra/evidence/bot-player-covered-supports-real-red.jsonl",
+      "docs/research/nes-contra/evidence/bot-player-covered-stone-diagnostics.jsonl"
+    ],
+    "untouched": [
+      ".local/contra-bot/diagnostic-solo-waterfall-momentum",
+      "shared Go caches",
+      "other games and worktrees"
+    ]
+  }
+}

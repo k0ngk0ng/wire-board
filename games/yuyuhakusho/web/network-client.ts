@@ -1,5 +1,6 @@
 import type { GameClock, GameAudioPort } from "../../../web/src/game-api/module";
 import { MatchAudio } from "./audio";
+import { releaseAssetBase } from "./release-assets";
 import type { ControllerProfile } from "../../../web/src/controllers/input";
 import { loadAssets, assetURL } from "./assets";
 import { MDInput, mdBits, type MDButton } from "./input";
@@ -79,6 +80,7 @@ export class NetworkClient {
   private painted = false;
   private audio?: MatchAudio;
   constructor(options: ClientOptions) {
+    options = { ...options, assetsBase: releaseAssetBase(options.assetsBase) };
     this.options = options;
     if (options.audio) this.audio = new MatchAudio(options.audio, options.assetsBase, options.epoch, options.arena);
     document.addEventListener("visibilitychange", this.visibility);

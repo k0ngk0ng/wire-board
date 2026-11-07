@@ -1,0 +1,687 @@
+{
+  "success": true,
+  "scope": "base rules only; all production engine files; unrelated in-progress tests excluded",
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "games/contra/engine/audio_control.go",
+    "games/contra/engine/campaign.go",
+    "games/contra/engine/campaign_types.go",
+    "games/contra/engine/chr_animation.go",
+    "games/contra/engine/controls.go",
+    "games/contra/engine/enemies.go",
+    "games/contra/engine/enemies_aliens_blob.go",
+    "games/contra/engine/enemies_aliens_boss.go",
+    "games/contra/engine/enemies_aliens_fetus.go",
+    "games/contra/engine/enemies_aliens_small.go",
+    "games/contra/engine/enemies_aliens_spider.go",
+    "games/contra/engine/enemies_aliens_tables.go",
+    "games/contra/engine/enemies_all_spawn.go",
+    "games/contra/engine/enemies_all_tables.go",
+    "games/contra/engine/enemies_base_boss.go",
+    "games/contra/engine/enemies_base_boss_tables.go",
+    "games/contra/engine/enemies_base_boss_test.go",
+    "games/contra/engine/enemies_base_common.go",
+    "games/contra/engine/enemies_base_generators.go",
+    "games/contra/engine/enemies_base_oracle_test.go",
+    "games/contra/engine/enemies_base_pickup.go",
+    "games/contra/engine/enemies_base_pickup_test.go",
+    "games/contra/engine/enemies_base_redblue.go",
+    "games/contra/engine/enemies_base_soldiers.go",
+    "games/contra/engine/enemies_base_tables.go",
+    "games/contra/engine/enemies_base_thrown.go",
+    "games/contra/engine/enemies_base_types.go",
+    "games/contra/engine/enemies_base_walls.go",
+    "games/contra/engine/enemies_box.go",
+    "games/contra/engine/enemies_bridge.go",
+    "games/contra/engine/enemies_bullets.go",
+    "games/contra/engine/enemies_capsule.go",
+    "games/contra/engine/enemies_collision.go",
+    "games/contra/engine/enemies_collision_tables.go",
+    "games/contra/engine/enemies_collision_tick.go",
+    "games/contra/engine/enemies_dispatch.go",
+    "games/contra/engine/enemies_drawing_test.go",
+    "games/contra/engine/enemies_explosion.go",
+    "games/contra/engine/enemies_generation.go",
+    "games/contra/engine/enemies_machines.go",
+    "games/contra/engine/enemies_machines_common.go",
+    "games/contra/engine/enemies_machines_flames.go",
+    "games/contra/engine/enemies_machines_giant.go",
+    "games/contra/engine/enemies_machines_graphics.go",
+    "games/contra/engine/enemies_machines_hangar.go",
+    "games/contra/engine/enemies_machines_walls.go",
+    "games/contra/engine/enemies_pickup.go",
+    "games/contra/engine/enemies_progress.go",
+    "games/contra/engine/enemies_runner.go",
+    "games/contra/engine/enemies_shooters_aim.go",
+    "games/contra/engine/enemies_shooters_bossdoor.go",
+    "games/contra/engine/enemies_shooters_bossdoor_terrain.go",
+    "games/contra/engine/enemies_shooters_runner.go",
+    "games/contra/engine/enemies_shooters_sniper.go",
+    "games/contra/engine/enemies_shooters_tables.go",
+    "games/contra/engine/enemies_shooters_turrets.go",
+    "games/contra/engine/enemies_snow_carrier.go",
+    "games/contra/engine/enemies_snow_small.go",
+    "games/contra/engine/enemies_snow_tables.go",
+    "games/contra/engine/enemies_snow_tank.go",
+    "games/contra/engine/enemies_spawn_test.go",
+    "games/contra/engine/enemies_step_test.go",
+    "games/contra/engine/enemies_tables.go",
+    "games/contra/engine/enemies_terrain.go",
+    "games/contra/engine/enemies_waterfall.go",
+    "games/contra/engine/enemies_waterfall_arms.go",
+    "games/contra/engine/enemies_waterfall_boss.go",
+    "games/contra/engine/frame.go",
+    "games/contra/engine/graphics_queue.go",
+    "games/contra/engine/level.go",
+    "games/contra/engine/levels.go",
+    "games/contra/engine/movement.go",
+    "games/contra/engine/palette.go",
+    "games/contra/engine/palette_snow.go",
+    "games/contra/engine/player.go",
+    "games/contra/engine/player_animation.go",
+    "games/contra/engine/player_indoor.go",
+    "games/contra/engine/player_lifecycle.go",
+    "games/contra/engine/presentation_sprites.go",
+    "games/contra/engine/random.go",
+    "games/contra/engine/random_adapted.go",
+    "games/contra/engine/scroll.go",
+    "games/contra/engine/scroll_queue.go",
+    "games/contra/engine/terrain.go",
+    "games/contra/engine/terrain_scroll.go",
+    "games/contra/engine/terrain_scroll_graphics.go",
+    "games/contra/engine/weapons.go",
+    "games/contra/engine/weapons_step.go",
+    "games/contra/engine/weapons_tables.go",
+    "games/contra/engine/weapons_types.go",
+    "games/contra/engine/world_active.go",
+    "games/contra/engine/world_presentation.go",
+    "-run",
+    "^TestOriginal(Base|WeaponPickups$)",
+    "-count=1",
+    "-json"
+  ],
+  "tests": [
+    {
+      "name": "TestOriginalBaseBossGenerationBias",
+      "result": "pass",
+      "seconds": 0.56
+    },
+    {
+      "name": "TestOriginalBaseBossControlled",
+      "result": "pass",
+      "seconds": 0.55
+    },
+    {
+      "name": "TestOriginalBaseBossControllerContinuation",
+      "result": "pass",
+      "seconds": 21.05
+    },
+    {
+      "name": "TestOriginalBaseWalls",
+      "result": "pass",
+      "seconds": 35.83
+    },
+    {
+      "name": "TestOriginalBaseGenerators",
+      "result": "pass",
+      "seconds": 35.82
+    },
+    {
+      "name": "TestOriginalBaseIndoorSoldiers",
+      "result": "pass",
+      "seconds": 35.81
+    },
+    {
+      "name": "TestOriginalBaseThrownWeapons",
+      "result": "pass",
+      "seconds": 36.03
+    },
+    {
+      "name": "TestOriginalBaseRedBlueSoldiers",
+      "result": "pass",
+      "seconds": 35.8
+    },
+    {
+      "name": "TestOriginalBaseCommonWalls",
+      "result": "pass",
+      "seconds": 36.21
+    },
+    {
+      "name": "TestOriginalBasePickups",
+      "result": "pass",
+      "seconds": 36.02
+    },
+    {
+      "name": "TestOriginalWeaponPickups",
+      "result": "pass",
+      "seconds": 0.94
+    }
+  ],
+  "output": {
+    "path": ".local/contra-enemies-base/scoped-race-results.jsonl",
+    "sha256": "10afdd9c9613e8357a2b65ba396c03ca4feb3fd02ed632d40220581c037b5f25"
+  },
+  "fixtures": [
+    {
+      "path": "docs/research/nes-contra/evidence/enemies-base-2-boss.json.gz",
+      "sha256": "ab4b392883a5acdbd9a60148adf46dbbcd5f952c8d074421e3362002e0315231"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/enemies-base-2-room.json.gz",
+      "sha256": "182d24468e130f24d7197c5b1ee9f3953c50a1784da62606f4db53d4ed916597"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/enemies-base-4-boss.json.gz",
+      "sha256": "1eaa75522ef30f0b9a95fddae4148312e4c2968462d9de1d265aa09e9c552440"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/enemies-base-4-room.json.gz",
+      "sha256": "a37c4cacf7e998ce1dc09b737688149d922379ea255c8afcf1230f1c455d3bc1"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/enemies-base-boss-bias.json.gz",
+      "sha256": "bf2fb1bc477922104f661193a2ad48cd948705875cfd19db508f75202a37ef18"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/enemies-base-boss-controlled.json.gz",
+      "sha256": "851d8feea6c0374229f6cea8bb9fd139fb1a04d9eae0b00eeeeadfaea95d4162"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/enemies-base-boss-rea.json.gz",
+      "sha256": "02ba08bf8d1cd905648dfcaca30cd8e53c239a3973489c8230f290ba51f60dcc"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/enemies-base-boss-sequence-2.json.gz",
+      "sha256": "5beafb85b367035ed566adb6ee04d2f239a5e3d522367ecec0a5cb20b6bb9820"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/enemies-base-boss-sequence-4.json.gz",
+      "sha256": "e74f1c132f4a7e7e26361bc54f2f74f4563996581521e053018b4aab1c33df1e"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/enemies-base-controlled.json.gz",
+      "sha256": "03c258a639f12db7cb5b787dfdb4e244cc05e6a0857bb24bfe6c2c72dd417c5d"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/enemies-base-pickup-controlled.json.gz",
+      "sha256": "400a16669b66dd5b8a10a52908eb422f8e3bd25bb1517c76a97175c6e4077f95"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/enemies-base-pickup-natural.json.gz",
+      "sha256": "f86103cb6098dbfa26adbf8d3d94a9bf4695e2f07bf16cd190479e7a5b5d224c"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/enemies-base-rea.json.gz",
+      "sha256": "ff55a95f495503c6c6cd039573ba3f0ed5cfb6a5431382e6f0b0f193f5325fa7"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/enemies-base-roller-originals.json.gz",
+      "sha256": "19799f521cddc5d7d88a8dea71cdfc23142012b77747857745be436896016117"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/enemies-base-roller-paired.json.gz",
+      "sha256": "3602fb0133ec369e1fcb6910772f042319c06fc52cd4950c198cabbca4edac88"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/enemies-base-roller-rea.json.gz",
+      "sha256": "a41188153546cd240bfc29a5fa1282fb8dee0f903f2e3d26585e738bc0db1b06"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/enemies-base-waves-controlled.json.gz",
+      "sha256": "ce53b82496f007a154b0b425e592fbedf785fd30b580cd12453ece3899535576"
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/enemies-base-compatibility.json",
+      "sha256": "7dbeb4b7b5cb2d18f4f670869ca9c3db55ee8009d0a31b399b6983f4c3f37032"
+    }
+  ],
+  "source": [
+    {
+      "path": "games/contra/engine/enemies_base_boss.go",
+      "sha256": "e3e47eb52d4d5d2ae49f4e412f2d4626367c05e0ce91316edbf99ad6609f0d07"
+    },
+    {
+      "path": "games/contra/engine/enemies_base_boss_tables.go",
+      "sha256": "643c6d066a5a41ed48f656f1a5d8ddb71144fe288bf2b6595120ae788c004437"
+    },
+    {
+      "path": "games/contra/engine/enemies_base_boss_test.go",
+      "sha256": "2bbd9e5e9eebd35da1a260eedb63a8eae2bb66dc89b5915410b011824fd45cd6"
+    },
+    {
+      "path": "games/contra/engine/enemies_base_common.go",
+      "sha256": "33279fcb1e02a35cd52c646b0871abafea55608afb2aae0a13e9da78a86259ec"
+    },
+    {
+      "path": "games/contra/engine/enemies_base_generators.go",
+      "sha256": "974e819e73c36e989c61703901fdd5d1703abeda39ab5cfe4eb4269786db4464"
+    },
+    {
+      "path": "games/contra/engine/enemies_base_oracle_test.go",
+      "sha256": "dfe1f225bd3a7e1a1eb6c59c0c998b39f11da790f0d32182df8deabf9eede600"
+    },
+    {
+      "path": "games/contra/engine/enemies_base_pickup.go",
+      "sha256": "a5d37901e7afe92649984e2f2488bec704ab388df61686b21e93e765db640410"
+    },
+    {
+      "path": "games/contra/engine/enemies_base_pickup_test.go",
+      "sha256": "f7e369c0ea466e5815ea140816566a778f6b3fb659b5670a5e96b0028a42ae6e"
+    },
+    {
+      "path": "games/contra/engine/enemies_base_redblue.go",
+      "sha256": "758b6e3a262f3f8255af74e14651f6e5cf1ffd7e0eb3eca7b6e0ff6ffd550642"
+    },
+    {
+      "path": "games/contra/engine/enemies_base_soldiers.go",
+      "sha256": "d2b91ff65e796cf723d2e75e7c481dd1886febaa86006334ade606d013eaa87d"
+    },
+    {
+      "path": "games/contra/engine/enemies_base_tables.go",
+      "sha256": "089508f8f1305825b414715bcdd7a79cfeaf3645cae046fd60a024c3a0911837"
+    },
+    {
+      "path": "games/contra/engine/enemies_base_thrown.go",
+      "sha256": "33f4ee5cdd8f4ef398ebf55cd8d506fbe10995efe54dd91541e900a553a112bc"
+    },
+    {
+      "path": "games/contra/engine/enemies_base_types.go",
+      "sha256": "017de660e87019abc7947e2b01cf5beb135c8babb681a14b08c64c6350fbbe22"
+    },
+    {
+      "path": "games/contra/engine/enemies_base_walls.go",
+      "sha256": "023967d8c1cc2ff6413a48f423d619165d5290471690fe9690b90b45c7ff4c0e"
+    },
+    {
+      "path": "games/contra/engine/enemies_pickup.go",
+      "sha256": "ee72755e14212ce714c225639767fead9e92cdb1c0535740ebfe8ffe5822f73a"
+    },
+    {
+      "path": "games/contra/engine/enemies_bullets.go",
+      "sha256": "c48cadf00915f8eb56a534e72fba02def1b94b0fc753c034add9418f9e7a73dc"
+    }
+  ],
+  "compilation_inputs": [
+    {
+      "path": "games/contra/engine/audio_control.go",
+      "sha256": "56399137fadeaa1fd9392dff572382dca08c0bb501de1425d3301afe21db9ea2"
+    },
+    {
+      "path": "games/contra/engine/campaign.go",
+      "sha256": "3b806217cdba05e24c519ec5aabe7e4bb2fba2388617147e9e94e5747ea3d047"
+    },
+    {
+      "path": "games/contra/engine/campaign_types.go",
+      "sha256": "669e2fe7467845739ee9990440d5a21739df492df3dfdd2dbb55ead787f5a1b6"
+    },
+    {
+      "path": "games/contra/engine/chr_animation.go",
+      "sha256": "14159d1555b3cab0a0b27dd099d80e57672811da6700187a4aa4a110d2bc8e60"
+    },
+    {
+      "path": "games/contra/engine/controls.go",
+      "sha256": "8997448968036aaee15b2f6c564cbf8358ac5d86ebcebab80544ef27bd61b309"
+    },
+    {
+      "path": "games/contra/engine/enemies.go",
+      "sha256": "5453d59a7a64609f3e97844f32255716698f7121ca48d54c30e07c2dc7101594"
+    },
+    {
+      "path": "games/contra/engine/enemies_aliens_blob.go",
+      "sha256": "f7d3b99e677e6922451ef03a6141435cbd25d6542c73e92c5a50fa0421b95866"
+    },
+    {
+      "path": "games/contra/engine/enemies_aliens_boss.go",
+      "sha256": "ec6b951ddb387f87abbca54c0117c6d71c241e03aeb31b9fbb5adcbc697eaff7"
+    },
+    {
+      "path": "games/contra/engine/enemies_aliens_fetus.go",
+      "sha256": "5c972bd9be3d887e330b41435a2a57d1bad270f89054efc13aaebcc1f2455017"
+    },
+    {
+      "path": "games/contra/engine/enemies_aliens_small.go",
+      "sha256": "cf77c572614a38435d5ac64c9e7577d1b0d7b45a31f074993bfb994422348e9f"
+    },
+    {
+      "path": "games/contra/engine/enemies_aliens_spider.go",
+      "sha256": "4eee94a2b3874b1f28d17f96038242c24d0bdc78b50b1008373a4715cf181ebb"
+    },
+    {
+      "path": "games/contra/engine/enemies_aliens_tables.go",
+      "sha256": "49150a49fa1d65400ac8858a0f926b998ca2f2c6aa61ed0cca77d0de394e184d"
+    },
+    {
+      "path": "games/contra/engine/enemies_all_spawn.go",
+      "sha256": "0f449fd4a5fba8af534028ba5518dc7bb329d94dd90a8d9eebded98948580c2b"
+    },
+    {
+      "path": "games/contra/engine/enemies_all_tables.go",
+      "sha256": "2247d31f91a966b5918deaa48a7e2048be4b38e9112a20e5381647d253b2fcdf"
+    },
+    {
+      "path": "games/contra/engine/enemies_base_boss.go",
+      "sha256": "e3e47eb52d4d5d2ae49f4e412f2d4626367c05e0ce91316edbf99ad6609f0d07"
+    },
+    {
+      "path": "games/contra/engine/enemies_base_boss_tables.go",
+      "sha256": "643c6d066a5a41ed48f656f1a5d8ddb71144fe288bf2b6595120ae788c004437"
+    },
+    {
+      "path": "games/contra/engine/enemies_base_boss_test.go",
+      "sha256": "2bbd9e5e9eebd35da1a260eedb63a8eae2bb66dc89b5915410b011824fd45cd6"
+    },
+    {
+      "path": "games/contra/engine/enemies_base_common.go",
+      "sha256": "33279fcb1e02a35cd52c646b0871abafea55608afb2aae0a13e9da78a86259ec"
+    },
+    {
+      "path": "games/contra/engine/enemies_base_generators.go",
+      "sha256": "974e819e73c36e989c61703901fdd5d1703abeda39ab5cfe4eb4269786db4464"
+    },
+    {
+      "path": "games/contra/engine/enemies_base_oracle_test.go",
+      "sha256": "dfe1f225bd3a7e1a1eb6c59c0c998b39f11da790f0d32182df8deabf9eede600"
+    },
+    {
+      "path": "games/contra/engine/enemies_base_pickup.go",
+      "sha256": "a5d37901e7afe92649984e2f2488bec704ab388df61686b21e93e765db640410"
+    },
+    {
+      "path": "games/contra/engine/enemies_base_pickup_test.go",
+      "sha256": "f7e369c0ea466e5815ea140816566a778f6b3fb659b5670a5e96b0028a42ae6e"
+    },
+    {
+      "path": "games/contra/engine/enemies_base_redblue.go",
+      "sha256": "758b6e3a262f3f8255af74e14651f6e5cf1ffd7e0eb3eca7b6e0ff6ffd550642"
+    },
+    {
+      "path": "games/contra/engine/enemies_base_soldiers.go",
+      "sha256": "d2b91ff65e796cf723d2e75e7c481dd1886febaa86006334ade606d013eaa87d"
+    },
+    {
+      "path": "games/contra/engine/enemies_base_tables.go",
+      "sha256": "089508f8f1305825b414715bcdd7a79cfeaf3645cae046fd60a024c3a0911837"
+    },
+    {
+      "path": "games/contra/engine/enemies_base_thrown.go",
+      "sha256": "33f4ee5cdd8f4ef398ebf55cd8d506fbe10995efe54dd91541e900a553a112bc"
+    },
+    {
+      "path": "games/contra/engine/enemies_base_types.go",
+      "sha256": "017de660e87019abc7947e2b01cf5beb135c8babb681a14b08c64c6350fbbe22"
+    },
+    {
+      "path": "games/contra/engine/enemies_base_walls.go",
+      "sha256": "023967d8c1cc2ff6413a48f423d619165d5290471690fe9690b90b45c7ff4c0e"
+    },
+    {
+      "path": "games/contra/engine/enemies_box.go",
+      "sha256": "22f18cdfb86e18749ac93bd257a5edff4a9c14365f3a1d2a4d1c3f2f94d227a9"
+    },
+    {
+      "path": "games/contra/engine/enemies_bridge.go",
+      "sha256": "c65d6be3d1c023c3e900fc26ddeeb1eb321e9020fbfdaa0346fd612e93da919c"
+    },
+    {
+      "path": "games/contra/engine/enemies_bullets.go",
+      "sha256": "c48cadf00915f8eb56a534e72fba02def1b94b0fc753c034add9418f9e7a73dc"
+    },
+    {
+      "path": "games/contra/engine/enemies_capsule.go",
+      "sha256": "2c3b89084d3abe8fbfd903b03e1270d9ab44cf93543eb3f0daecc24c3f6256e7"
+    },
+    {
+      "path": "games/contra/engine/enemies_collision.go",
+      "sha256": "193800d20a14472d1ad80fe151b9edff0d3112ef30d6996115ede6f092012ba7"
+    },
+    {
+      "path": "games/contra/engine/enemies_collision_tables.go",
+      "sha256": "e948f46d1b73a59b22c3dbd8b746e8348c62a952287065ed6a1fe2784ef7e6aa"
+    },
+    {
+      "path": "games/contra/engine/enemies_collision_tick.go",
+      "sha256": "5715da850c2df8ce471160200d295cef2a5aa110b465237a9bab38d57237a22a"
+    },
+    {
+      "path": "games/contra/engine/enemies_dispatch.go",
+      "sha256": "02e5df581fae1bfd7a0f171426234454651e326f7927d82ebf729a17dc842f2d"
+    },
+    {
+      "path": "games/contra/engine/enemies_drawing_test.go",
+      "sha256": "f89b3f6e1750960697cd186af7e7da73f26cf2e36b4873f72b4b2fb45f567605"
+    },
+    {
+      "path": "games/contra/engine/enemies_explosion.go",
+      "sha256": "a9945b38d4cbdcf5bfa180e80817f1769d89f92edd385607aa80fc103967ed68"
+    },
+    {
+      "path": "games/contra/engine/enemies_generation.go",
+      "sha256": "e64d7d7dc7774a0ad22b4934f5ed6a3ec84f996125abe839cd7a1c7a96b4163f"
+    },
+    {
+      "path": "games/contra/engine/enemies_machines.go",
+      "sha256": "330ebe5ce39280b7d9201ab7d8e4e975c81e2a325bfb505456f554ad5f0d08c8"
+    },
+    {
+      "path": "games/contra/engine/enemies_machines_common.go",
+      "sha256": "c65dfb0b0188b92e9a0137233929f6e037623233481bf31169ccce68685e7de5"
+    },
+    {
+      "path": "games/contra/engine/enemies_machines_flames.go",
+      "sha256": "3b568e6d0f9960e5a23e312ceb5ce94df8f31513b2b6b55b79f98efba83f3b97"
+    },
+    {
+      "path": "games/contra/engine/enemies_machines_giant.go",
+      "sha256": "1102a7a3ed520e82a51c997d787f05bde0620b56f0ab6d9693ac8afe6d3cd884"
+    },
+    {
+      "path": "games/contra/engine/enemies_machines_graphics.go",
+      "sha256": "080b1e0300c57df596ddfddc0383102f0c6a0f7401bd2ca2e85ded6ab2c6a522"
+    },
+    {
+      "path": "games/contra/engine/enemies_machines_hangar.go",
+      "sha256": "3727137bfec9f6327c12355ca705fe3d6004b4917a3e65ad21f0934371cd473f"
+    },
+    {
+      "path": "games/contra/engine/enemies_machines_walls.go",
+      "sha256": "b8a41e34a9be42c494efcb6471f46c8a64dd0e34ae524e7499e48f3fe6f25b26"
+    },
+    {
+      "path": "games/contra/engine/enemies_pickup.go",
+      "sha256": "ee72755e14212ce714c225639767fead9e92cdb1c0535740ebfe8ffe5822f73a"
+    },
+    {
+      "path": "games/contra/engine/enemies_progress.go",
+      "sha256": "9d061d4c4990f016be118de1fcf6c5a419854a0a15f0ab63bdb03ba408f43def"
+    },
+    {
+      "path": "games/contra/engine/enemies_runner.go",
+      "sha256": "8b90440113c89ecc547f95d3b478d682452fba19acc289342cd279aa44fc92ac"
+    },
+    {
+      "path": "games/contra/engine/enemies_shooters_aim.go",
+      "sha256": "7717e1fe16c35984b20eecfb5e1bc9686db5826f9edf932c3a0fb625aaa232f1"
+    },
+    {
+      "path": "games/contra/engine/enemies_shooters_bossdoor.go",
+      "sha256": "d70e057853a477e247121551b7bf9e4a9dc9a3d1e3686192e3e379d4109de465"
+    },
+    {
+      "path": "games/contra/engine/enemies_shooters_bossdoor_terrain.go",
+      "sha256": "3dfc8069c2d83e8a23271b9beb8df8dd5b18250231697a15a54192b0d140210b"
+    },
+    {
+      "path": "games/contra/engine/enemies_shooters_runner.go",
+      "sha256": "53032d44797a4c93742590c4c18991f578d4cd40208a854eb57ba0d62b055ba1"
+    },
+    {
+      "path": "games/contra/engine/enemies_shooters_sniper.go",
+      "sha256": "25b39eca07ce2617f9d602a7be711f0cea87e3df6baf2f43b7b1af797e179617"
+    },
+    {
+      "path": "games/contra/engine/enemies_shooters_tables.go",
+      "sha256": "d57dba7bb57ce7c2a89feb10ed9a186e3967a8d649d6af1cce73490236996e02"
+    },
+    {
+      "path": "games/contra/engine/enemies_shooters_turrets.go",
+      "sha256": "5fa0a7852e60018fd6e9183256be6f913f783104c0633d2ffbe3a07b78ca18b6"
+    },
+    {
+      "path": "games/contra/engine/enemies_snow_carrier.go",
+      "sha256": "90356bb7417d25915891d9c9cf33e0dcfac16d4d4c39555ae89a56685eb2909a"
+    },
+    {
+      "path": "games/contra/engine/enemies_snow_small.go",
+      "sha256": "58762e0243a4a020a24610a2bb89e33c60a88dec136e8a51bbedac35771f7b99"
+    },
+    {
+      "path": "games/contra/engine/enemies_snow_tables.go",
+      "sha256": "32251d6ec9a2180918499e4014fa6794f68e921b8249853a90ad7fa1ee280467"
+    },
+    {
+      "path": "games/contra/engine/enemies_snow_tank.go",
+      "sha256": "0302721a28609af5e6f3bc3ff6b5d7b3366c0e1eb7bf40240e5b56bccef11bcd"
+    },
+    {
+      "path": "games/contra/engine/enemies_spawn_test.go",
+      "sha256": "448d5849a02e7b4d06f80a43b5c91fbea6616e0f67519bc449b9e9813dd9869d"
+    },
+    {
+      "path": "games/contra/engine/enemies_step_test.go",
+      "sha256": "4972d0f9a4f8314e6a465834d89682f5673b5b9904575e0671b31ffaa56a5f21"
+    },
+    {
+      "path": "games/contra/engine/enemies_tables.go",
+      "sha256": "aa7124b97aba6137fab33603a794c1cfb5d2b09293ca8c6b28a8c161508bb379"
+    },
+    {
+      "path": "games/contra/engine/enemies_terrain.go",
+      "sha256": "684f00cf30cb3721f990955c29f2f424217a29d0c01e8ec013dd227ef5ca4481"
+    },
+    {
+      "path": "games/contra/engine/enemies_waterfall.go",
+      "sha256": "609480371bdb561a7300493153ebf319d22474745c85ecf974f78cc68dfab0f0"
+    },
+    {
+      "path": "games/contra/engine/enemies_waterfall_arms.go",
+      "sha256": "cdd6b582249bdd7ba5b5506a01220c08411c0872e42ff7cac7e7be6d6a191e14"
+    },
+    {
+      "path": "games/contra/engine/enemies_waterfall_boss.go",
+      "sha256": "af3964719899eec27a0e25363824cdec5045c458845141bcc8d2cb1fb926f786"
+    },
+    {
+      "path": "games/contra/engine/frame.go",
+      "sha256": "5135cd173b02391450fa85587545e1262d3f6a74d4a3125e28bc3c5ac6682dea"
+    },
+    {
+      "path": "games/contra/engine/graphics_queue.go",
+      "sha256": "cfaa13ccf1b22e003f4a6ca475a5b826270e4bc121d0ac965769b0273b6065b7"
+    },
+    {
+      "path": "games/contra/engine/level.go",
+      "sha256": "8854357fcc3e2b6df97fd1c8b5cfdacc468dae5721a5054d3ec4202624cb1506"
+    },
+    {
+      "path": "games/contra/engine/levels.go",
+      "sha256": "e4dfe377e366a30f39d62a5ac3941eb567a078b3df0472904261c517ca97107c"
+    },
+    {
+      "path": "games/contra/engine/movement.go",
+      "sha256": "ec945d0fdb15f6c410feb8d2399d6a38d79faedf9476cb7573c41847042b1d67"
+    },
+    {
+      "path": "games/contra/engine/palette.go",
+      "sha256": "f5efcfd112f28607f9a3caf740919cf11d1b5a84e17a9cedce39dc55ba6b6a81"
+    },
+    {
+      "path": "games/contra/engine/palette_snow.go",
+      "sha256": "47f3c0189a690b18afc5eff782935ad60b2cf3bb36172dc6331ace6f046527d2"
+    },
+    {
+      "path": "games/contra/engine/player.go",
+      "sha256": "eb8e58ff64400ee4c14a525884ed7aef41e3667b1a55d9628a795b3231234eb0"
+    },
+    {
+      "path": "games/contra/engine/player_animation.go",
+      "sha256": "4cf5373a05a76e76ad66610755ca3ccf86861b680bdcdecc2b65423fba215a7e"
+    },
+    {
+      "path": "games/contra/engine/player_indoor.go",
+      "sha256": "ab8014612f5517ec8cbae7c702ce1e3a1d6743f6fb08c64cfb880fbf24f54649"
+    },
+    {
+      "path": "games/contra/engine/player_lifecycle.go",
+      "sha256": "8142df869f40347294c4b7980fe0986f0e25499f0d0a350a02902784cf27a358"
+    },
+    {
+      "path": "games/contra/engine/presentation_sprites.go",
+      "sha256": "32d2ce2fd0f29928f654da2c0666ea07e37c3ec901c313ca6f213684f646860d"
+    },
+    {
+      "path": "games/contra/engine/random.go",
+      "sha256": "a6b91ae20bafdae5b255d9ea6ad8d55d299e6e260ac53dbca61a3c21772f0db8"
+    },
+    {
+      "path": "games/contra/engine/random_adapted.go",
+      "sha256": "d6abd1fa926d8280104de22837f1c0cf7c346ecdf1ab2e11a2bd10c51c26461b"
+    },
+    {
+      "path": "games/contra/engine/scroll.go",
+      "sha256": "3dde97a33fd70f5cabf6231a6cdf4fa438feb2dcb5145ec625499a5d37034cab"
+    },
+    {
+      "path": "games/contra/engine/scroll_queue.go",
+      "sha256": "9123d591ebe95e2fe616d56a461aae4e755ae72dc836bb2bd8dc7ad1a36dfe7b"
+    },
+    {
+      "path": "games/contra/engine/terrain.go",
+      "sha256": "b7ab25fd69fb2a9a59146fe9c8fd35d73b8704b7bba9c6c62c566af31de0bfca"
+    },
+    {
+      "path": "games/contra/engine/terrain_scroll.go",
+      "sha256": "9223a7578aea481665a048ba90a1551b066d162c2beaeb965b33592858e14b56"
+    },
+    {
+      "path": "games/contra/engine/terrain_scroll_graphics.go",
+      "sha256": "9a4a460005bf629b5482464f54e8f56db5d013f6e1d5a1d78607f027cae09200"
+    },
+    {
+      "path": "games/contra/engine/weapons.go",
+      "sha256": "102d1baddcf33c45c579f1b6b5096f9b3b017b7174c8c6730a928b226837236e"
+    },
+    {
+      "path": "games/contra/engine/weapons_step.go",
+      "sha256": "66418a29dc83ed1592549c9d0a242bef5c3670c7d44829cd0a63635488e3182e"
+    },
+    {
+      "path": "games/contra/engine/weapons_tables.go",
+      "sha256": "b7fc20675297b7ad196c1b2fd581f802e717db47190dd1482cbcd3db3e3e0637"
+    },
+    {
+      "path": "games/contra/engine/weapons_types.go",
+      "sha256": "a6e538b735b869bad168f6121205a0e5c8c4aa6d80320fb5bc62a42d22fe6aa4"
+    },
+    {
+      "path": "games/contra/engine/world_active.go",
+      "sha256": "6b35b8f2d6fe5e7d693a6633a4509bbddc62194e8a5f24e728dc13ed77e1169e"
+    },
+    {
+      "path": "games/contra/engine/world_presentation.go",
+      "sha256": "8abcad8a74846a9ccee806b4fb13f320ff316bfc8f9ec1b03f3783185d196230"
+    }
+  ],
+  "source_changed_during_test": [
+    "games/contra/engine/enemies_bullets.go",
+    "games/contra/engine/enemies_progress.go",
+    "games/contra/engine/world_active.go",
+    "games/contra/engine/world_presentation.go"
+  ],
+  "limitations": [
+    "Not an integrated complete campaign or browser/network acceptance.",
+    "Controlled common-wall capture retains the source regular-room attribute page while SceneType selects Boss update tiles.",
+    "Roller stale-attribute exception is bounded by a pinned source/id/slot/value manifest and separate complete original paired-runtime proof."
+  ]
+}

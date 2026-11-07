@@ -1,0 +1,35 @@
+{
+  "scope": "selected original screenshots; every variant image is also retained and compared in the complete paired bundle",
+  "screenshots": [
+    {
+      "source": ".local/contra-enemies-base/roller-oracle/runs/roller-140-natural-0-v3/frame-00100.png",
+      "path": "docs/research/nes-contra/evidence/enemies-base-roller-screens/natural-00100.png",
+      "sha256": "3ed6e44644656cbf96363c715f9df622f083446cdfef277b9f8e0cf12772913d"
+    },
+    {
+      "source": ".local/contra-enemies-base/roller-oracle/runs/roller-140-contact-0-v3/frame-00100.png",
+      "path": "docs/research/nes-contra/evidence/enemies-base-roller-screens/contact-00100.png",
+      "sha256": "29e30f1de236db0cab0c4df23928ad8645fb770850b6f8d00553714a95adb064"
+    },
+    {
+      "source": ".local/contra-enemies-base/roller-oracle/runs/roller-140-contact-0-v3/frame-00200.png",
+      "path": "docs/research/nes-contra/evidence/enemies-base-roller-screens/contact-00200.png",
+      "sha256": "38d7df00538627834c8482f15f7a90ece1f67bf278f48b7bc05c93783c3025ff"
+    },
+    {
+      "source": ".local/contra-enemies-base/roller-oracle/runs/roller-140-shot-0-v3/frame-00040.png",
+      "path": "docs/research/nes-contra/evidence/enemies-base-roller-screens/shot-00040.png",
+      "sha256": "569341ce4227c0774a08a21e102c56ef1990e01a6ec960336fcfc6612f4e4a5f"
+    },
+    {
+      "source": ".local/contra-enemies-base/roller-oracle/runs/roller-140-falcon-0-v3/frame-00040.png",
+      "path": "docs/research/nes-contra/evidence/enemies-base-roller-screens/falcon-00040.png",
+      "sha256": "2e4b89ed6fe98c270a4b52ec97f63f9877ecb92ec49c484a96c056d7d4a578b7"
+    },
+    {
+      "source": ".local/contra-enemies-base/roller-oracle/runs/roller-140-reuse-0-v3/frame-00400.png",
+      "path": "docs/research/nes-contra/evidence/enemies-base-roller-screens/reuse-00400.png",
+      "sha256": "901e947da16bb31aee7b9df664879f9f6080ee0a954ac02b957cf424fdd929a4"
+    }
+  ]
+}

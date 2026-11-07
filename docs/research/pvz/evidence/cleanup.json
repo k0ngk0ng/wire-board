@@ -1,0 +1,214 @@
+{
+  "removed": [
+    {
+      "path": ".local/pvz-music/rendered/boss-main.s16le",
+      "bytes": 17638400,
+      "reason": "verified intermediate PCM; lossless FLAC and PCM digests retained"
+    },
+    {
+      "path": ".local/pvz-music/rendered/pool-hihats.s16le",
+      "bytes": 17879040,
+      "reason": "verified intermediate PCM; lossless FLAC and PCM digests retained"
+    },
+    {
+      "path": ".local/pvz-music/rendered/night-drums.s16le",
+      "bytes": 705024,
+      "reason": "verified intermediate PCM; lossless FLAC and PCM digests retained"
+    },
+    {
+      "path": ".local/pvz-music/rendered/roof-main.s16le",
+      "bytes": 19049472,
+      "reason": "verified intermediate PCM; lossless FLAC and PCM digests retained"
+    },
+    {
+      "path": ".local/pvz-music/rendered/day-drums.s16le",
+      "bytes": 33476352,
+      "reason": "verified intermediate PCM; lossless FLAC and PCM digests retained"
+    },
+    {
+      "path": ".local/pvz-music/rendered/nightBurstOdd-main.s16le",
+      "bytes": 10575360,
+      "reason": "verified intermediate PCM; lossless FLAC and PCM digests retained"
+    },
+    {
+      "path": ".local/pvz-music/rendered/nightBurstEven-main.s16le",
+      "bytes": 11280384,
+      "reason": "verified intermediate PCM; lossless FLAC and PCM digests retained"
+    },
+    {
+      "path": ".local/pvz-music/rendered/fog-drums.s16le",
+      "bytes": 19649280,
+      "reason": "verified intermediate PCM; lossless FLAC and PCM digests retained"
+    },
+    {
+      "path": ".local/pvz-music/rendered/roof-hihats.s16le",
+      "bytes": 19049472,
+      "reason": "verified intermediate PCM; lossless FLAC and PCM digests retained"
+    },
+    {
+      "path": ".local/pvz-music/rendered/night-main.s16le",
+      "bytes": 19740672,
+      "reason": "verified intermediate PCM; lossless FLAC and PCM digests retained"
+    },
+    {
+      "path": ".local/pvz-music/rendered/fog-hihats.s16le",
+      "bytes": 19649280,
+      "reason": "verified intermediate PCM; lossless FLAC and PCM digests retained"
+    },
+    {
+      "path": ".local/pvz-music/rendered/day-hihats.s16le",
+      "bytes": 33476352,
+      "reason": "verified intermediate PCM; lossless FLAC and PCM digests retained"
+    },
+    {
+      "path": ".local/pvz-music/rendered/fog-main.s16le",
+      "bytes": 19649280,
+      "reason": "verified intermediate PCM; lossless FLAC and PCM digests retained"
+    },
+    {
+      "path": ".local/pvz-music/rendered/menu-main.s16le",
+      "bytes": 15411200,
+      "reason": "verified intermediate PCM; lossless FLAC and PCM digests retained"
+    },
+    {
+      "path": ".local/pvz-music/rendered/pool-main.s16le",
+      "bytes": 17879040,
+      "reason": "verified intermediate PCM; lossless FLAC and PCM digests retained"
+    },
+    {
+      "path": ".local/pvz-music/rendered/pool-drums.s16le",
+      "bytes": 17879040,
+      "reason": "verified intermediate PCM; lossless FLAC and PCM digests retained"
+    },
+    {
+      "path": ".local/pvz-music/rendered/day-main.s16le",
+      "bytes": 33476352,
+      "reason": "verified intermediate PCM; lossless FLAC and PCM digests retained"
+    },
+    {
+      "path": ".local/pvz-music/rendered/roof-drums.s16le",
+      "bytes": 19049472,
+      "reason": "verified intermediate PCM; lossless FLAC and PCM digests retained"
+    },
+    {
+      "path": ".local/pvz-music/rendered/chooseSeeds-main.s16le",
+      "bytes": 3808512,
+      "reason": "verified intermediate PCM; lossless FLAC and PCM digests retained"
+    },
+    {
+      "path": ".local/pvz-research/body-fix",
+      "bytes": 11887783,
+      "reason": "superseded pre-v2 raster preview; semantic before/after evidence retained"
+    },
+    {
+      "path": ".local/pvz-research/body-fix-manifest.json",
+      "bytes": 9539,
+      "reason": "superseded intermediate file list"
+    },
+    {
+      "path": ".local/pvz-research/zombie-chill.c",
+      "bytes": 663,
+      "reason": "duplicate diagnostic representation retained as canonical Evidence or final image"
+    },
+    {
+      "path": ".local/pvz-research/animation-ground-velocity.c",
+      "bytes": 356,
+      "reason": "duplicate diagnostic representation retained as canonical Evidence or final image"
+    },
+    {
+      "path": ".local/pvz-research/plant-shooter.c",
+      "bytes": 1460,
+      "reason": "duplicate diagnostic representation retained as canonical Evidence or final image"
+    },
+    {
+      "path": ".local/pvz-research/zombie-speed.c",
+      "bytes": 2096,
+      "reason": "duplicate diagnostic representation retained as canonical Evidence or final image"
+    },
+    {
+      "path": ".local/pvz-research/animation-update.c",
+      "bytes": 3215,
+      "reason": "duplicate diagnostic representation retained as canonical Evidence or final image"
+    },
+    {
+      "path": ".local/pvz-research/zombie-bite-schedule.c",
+      "bytes": 1993,
+      "reason": "duplicate diagnostic representation retained as canonical Evidence or final image"
+    },
+    {
+      "path": ".local/pvz-research/zombie-armor.c",
+      "bytes": 2438,
+      "reason": "duplicate diagnostic representation retained as canonical Evidence or final image"
+    },
+    {
+      "path": ".local/pvz-research/zombie-speed-normalization.c",
+      "bytes": 2093,
+      "reason": "duplicate diagnostic representation retained as canonical Evidence or final image"
+    },
+    {
+      "path": ".local/pvz-research/plant-production.c",
+      "bytes": 2421,
+      "reason": "duplicate diagnostic representation retained as canonical Evidence or final image"
+    },
+    {
+      "path": ".local/pvz-research/zombie-eating.c",
+      "bytes": 3399,
+      "reason": "duplicate diagnostic representation retained as canonical Evidence or final image"
+    },
+    {
+      "path": ".local/pvz-research/pea-reanim.bin",
+      "bytes": 141468,
+      "reason": "duplicate diagnostic representation retained as canonical Evidence or final image"
+    },
+    {
+      "path": ".local/pvz-research/splitpea-preview.png",
+      "bytes": 76862,
+      "reason": "duplicate diagnostic representation retained as canonical Evidence or final image"
+    },
+    {
+      "path": ".local/pvz-research/zomboss-preview.png",
+      "bytes": 150546,
+      "reason": "duplicate diagnostic representation retained as canonical Evidence or final image"
+    },
+    {
+      "path": ".local/pvz-research/background4.jpg",
+      "bytes": 15401,
+      "reason": "temporary scene thumbnail; source and contact retained"
+    },
+    {
+      "path": ".local/pvz-research/background5.jpg",
+      "bytes": 19929,
+      "reason": "temporary scene thumbnail; source and contact retained"
+    },
+    {
+      "path": ".local/pvz-research/background2.jpg",
+      "bytes": 16043,
+      "reason": "temporary scene thumbnail; source and contact retained"
+    },
+    {
+      "path": ".local/pvz-research/background3.jpg",
+      "bytes": 22295,
+      "reason": "temporary scene thumbnail; source and contact retained"
+    },
+    {
+      "path": ".local/pvz-research/background1.jpg",
+      "bytes": 24643,
+      "reason": "temporary scene thumbnail; source and contact retained"
+    },
+    {
+      "path": ".local/pvz-research/background6boss.jpg",
+      "bytes": 15885,
+      "reason": "temporary scene thumbnail; source and contact retained"
+    }
+  ],
+  "removedBytes": 361722512,
+  "retained": [
+    "original ZIP/EXE/main.pak and extracted source assets",
+    "original MO3 files",
+    "pinned official BASS decoder/archive/license",
+    "Pillow venv",
+    "canonical REA Evidence and source references",
+    "final v1/v2 assets and verification artifacts"
+  ],
+  "remainingOwnedREARuntimeDirectories": []
+}

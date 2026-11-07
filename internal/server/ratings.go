@@ -12,6 +12,9 @@ const initialRating = 1000
 // Ratings are a ledger, committed atomically with the first match archive.
 // A room opts in when a new match starts, so deployment never re-rates history.
 func rateMatch(r *Room, record *MatchRecord) {
+	if rateCooperativeChallenge(r, record) {
+		return
+	}
 	draw := r.Module != nil && r.Module.Result != nil && r.Module.Result.Draw
 	record.Rated = r.Rated && r.Status == "finished" && r.Game.Finished && (len(r.Game.Winners) > 0 || draw)
 	if r.Module != nil && (r.Module.HasComputerPlayers || r.Module.Result != nil && r.Module.Result.Cooperative) {
@@ -22,7 +25,7 @@ func rateMatch(r *Room, record *MatchRecord) {
 			record.Rated = false
 		}
 	}
-	if r.Module != nil && r.Module.Result != nil && r.Module.Result.Unrated {
+	if r.Module != nil && (r.Module.Unrated || r.Module.Result != nil && r.Module.Result.Unrated) {
 		record.Rated = false
 	}
 	if !record.Rated {

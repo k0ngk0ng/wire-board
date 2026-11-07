@@ -1,0 +1,82 @@
+{
+  "passed": true,
+  "scope": "Focused combined claw/vertical-flame candidate and exact-memory two-seat diagnostic continuation; not fresh campaign acceptance",
+  "candidateSHA256": "3e6f2d01a86ff3346ff96916f8a51d86896e7d78b5449c56adb52535c79130e8",
+  "baseClawPreserved": true,
+  "effectiveSourcesUnchanged": true,
+  "allBotTests": {
+    "passedTopLevel": 135,
+    "passedIncludingSubtests": 272,
+    "failedOrSkipped": 0
+  },
+  "targetedRace": {
+    "passedTopLevel": 1,
+    "passedIncludingSubtests": 11,
+    "failedOrSkipped": 0
+  },
+  "continuation": {
+    "startFrame": 300001,
+    "endFrame": 304000,
+    "players": 2,
+    "sourceMemoryFrame": 300000,
+    "levelZeroBased": 5,
+    "screen": 6,
+    "scroll": 142,
+    "outcome": "",
+    "finalized": false,
+    "result": {
+      "assisted_campaign_cleared": false,
+      "complete_campaign": false,
+      "finalized": false,
+      "frames": 304000,
+      "infinite_lives": true,
+      "outcome": "",
+      "passed": false,
+      "players": 2,
+      "policy_start_frame": 300001,
+      "refill_after_visible_loss": true,
+      "scope": "focused diagnostic from recorded legal input prefix; not complete campaign acceptance",
+      "seed": 42
+    },
+    "replay": {
+      "frames": 304000,
+      "nextStepStoredStateEqual": true,
+      "nextStepStructEqual": true,
+      "recordedRulesAndEffectsMatch": true,
+      "recordedStateMatches": true,
+      "replayDerivedReviewAdded": false,
+      "roundTripDifferences": null
+    }
+  },
+  "sourceProof": "candidate/source.json",
+  "diagnosis": "diagnosis.json",
+  "commands": {
+    "setup": "mkdir -p .local/contra-bot/coop-v11-review/go-build .local/contra-bot/coop-v11-review/tmp",
+    "environment": {
+      "GOCACHE": "$PWD/.local/contra-bot/coop-v11-review/go-build",
+      "GOMODCACHE": "$PWD/.local/go-mod",
+      "GOTMPDIR": "$PWD/.local/contra-bot/coop-v11-review/tmp",
+      "TMPDIR": "$PWD/.local/contra-bot/coop-v11-review/tmp"
+    },
+    "test": "go test -overlay .local/contra-bot/coop-v11-review/candidate/overlay.json ./games/contra/engine -run TestBot -skip TestBotStandardCampaignE2E -count=1",
+    "continuation": "go run -overlay .local/contra-bot/coop-v11-review/candidate/overlay.json .local/contra-bot/coop-v11-review/inspect_pair.go .local/contra-bot/runs/fresh-2p-motion-v11-resumed/players2 .local/contra-bot/coop-v11-review/candidate/reproduced-304000 2 300001 304000 takeover delayed .local/contra-bot/coop-v11-review/candidate/initial-bots-300000.json",
+    "replay": "go run -overlay .local/contra-bot/coop-v11-review/candidate/overlay.json ./scripts/contra/replay_bot -run .local/contra-bot/coop-v11-review/candidate/continuation-304000"
+  },
+  "cleanup": {
+    "removed": "go-build (owned compile cache only)",
+    "bytesRemoved": 219411536,
+    "temporaryFilesRemaining": []
+  },
+  "artifactsSHA256": {
+    "candidate/bot.go": "3e6f2d01a86ff3346ff96916f8a51d86896e7d78b5449c56adb52535c79130e8",
+    "candidate/overlay.json": "115824fb487423c71dc4b5f3ae518ecc0018f39aa77923e76f0b213dae7c74b4",
+    "candidate/initial-bots-300000.json": "47a9caefa0461566ee9f132ab61568dceea8499593877a7f3117c4d50b2ffba7",
+    "candidate/continuation-304000/pads.bin.gz": "c86008031b00dbf12a9534e25a9e72a0e03ab0a40ba9122e62a2f165d1113ee0",
+    "candidate/continuation-304000/test-life-refills.json": "fae99f704c7f4322c30cd1657aa65d4255c8922b8de39bf5681bc84bc1ef0391",
+    "candidate/continuation-304000/final-session.json": "713d3ffc18ff061d77403d51b8a6ed797a54a4532c599d85e1c9e608cac68b33",
+    "candidate/continuation-304000/bot.json": "0e72aa30f31fb8efdb435e8e0e651f4337d48671ca40a6eea7cbac78d7c6b132",
+    "candidate/continuation-304000/replay.json": "c25c8744f1ce2cccef044134befd9409887656d9c374cdd5a29a29ca20fcbe46",
+    "inspect_coop.go": "214a5503d1df674fb724fc7fdf44f718bbd7ebb897ecae877a7c87d8fcef5cad",
+    "inspect_pair.go": "7b62a7fe7ba8c0fd36bfea5e8b8c385faf1f47f62ce28af12e06ee5fe19afcbe"
+  }
+}

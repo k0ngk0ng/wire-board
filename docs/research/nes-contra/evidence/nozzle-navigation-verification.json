@@ -1,0 +1,27 @@
+{
+  "status": "targeted-tests-pass-continuation-still-stalled",
+  "changes": [
+    "Prefer landings away from a visible left-facing nozzle mouth without inferring active state or timing",
+    "Reject predicted landings whose body lies in a visible solid wall",
+    "Permit a safe higher jump from a middle platform when forward travel approaches a visible nozzle"
+  ],
+  "new_tests": 2,
+  "existing_tests": 8,
+  "fixture": "Frame75764 public pixel observation; Stage5 is supplied as previously disclosed stage-title memory. No World data in fixture.",
+  "sources": {
+    "games/contra/engine/bot_nozzle_navigation.go": "97ec3dab420fd2a7af261bbc163811242f5615c7ce1b6983c80151d75ba60876",
+    "games/contra/engine/bot_navigation.go": "2d81d6d93d8e21b21a72244a2e965c5d367f6f26d531b76d0f57223894c6bc8a",
+    "games/contra/engine/bot.go": "d856d1c8f4a31fbf15231c4ebcf64b8e51da63457db152e70ba83f696683b95b",
+    "games/contra/engine/bot_nozzle_navigation_test.go": "a77dbaad3b39e016f361fbab4f0e5518788a88ff6c53b14564adcd71e401b075",
+    "games/contra/engine/testdata/bot-energy-nozzle-landing.json.gz": "ff2de85a69b0fb485ae290d5b8052b28dd20e1d2247286c133d5a051016b5db8"
+  },
+  "run": ".local/contra-bot/diagnostic-energy-nozzle-navigation",
+  "complete_campaign": false,
+  "continuation": {
+    "start_frame": 76001,
+    "end_frame": 84000,
+    "level_index": 5,
+    "screen": 5,
+    "finding": "Planner selects landings around105..107 instead of126 near muzzle, but emerging/extended flames still kill the actor before further ascent. Needs visible-flame crouch/wait handling, not a passing campaign claim."
+  }
+}

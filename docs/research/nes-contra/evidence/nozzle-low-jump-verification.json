@@ -1,0 +1,40 @@
+{
+  "scope": "Focused low-nozzle/crouch escape; campaign acceptance pending",
+  "fixture": "games/contra/engine/testdata/bot-energy-late-jump.json.gz",
+  "manual_legal_jump": {
+    "path": ".local/contra-bot/energy-late-jump-proof",
+    "frame_start": 300378,
+    "frame_end": 300447,
+    "observed_scroll_from": 44,
+    "observed_scroll_at_300438": 102,
+    "lives_unchanged": true
+  },
+  "regression_cases": [
+    "distant low mouth with visible higher landing",
+    "active flame",
+    "near mouth",
+    "higher mouth",
+    "existing quiet-opening and crouch regressions"
+  ],
+  "sha256": {
+    "games/contra/engine/bot.go": "0f33ce344303408b561f52bd18fb2bf84a7b2f7f34add1411345901afe5edf4f",
+    "games/contra/engine/bot_nozzle_navigation.go": "353617eb970d9969e45e8527946ebe14077aed09bcefbb276e5ed56e72af8d9d",
+    "games/contra/engine/bot_nozzle_low_jump_test.go": "2b3583bedd03b1e23a7d43c6c9d942cb201cc4b24aa98e73456db39590bdf968"
+  },
+  "continuation": ".local/contra-bot/retry-energy-pending-target-fix",
+  "continuation_complete": true,
+  "bot_regressions_passed": true,
+  "intermediate_continuation": {
+    "path": ".local/contra-bot/retry-energy-crouch-escape-fix",
+    "level": 5,
+    "screen": 6,
+    "scroll": 46,
+    "passed_obstruction": false
+  },
+  "additional_failure": "Accepted jump landing target erased during delayed standing presentation",
+  "continuation_screen": 6,
+  "continuation_scroll": 104,
+  "passed_original_scroll44": true,
+  "full_stage_cleared": false,
+  "next_obstruction": "Drop-through preempted a reachable nearly vertical higher landing"
+}

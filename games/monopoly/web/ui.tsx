@@ -96,16 +96,19 @@ export function GameButton({
   onClick,
   danger = false,
   primary = false,
+  action,
 }: {
   children: ReactNode;
   disabled?: boolean;
   onClick: () => void;
   danger?: boolean;
   primary?: boolean;
+  action?: string;
 }) {
   return (
     <button
       type="button"
+      data-controller-action={action}
       className={`mono-button mono-game-action ${primary ? "primary" : ""} ${danger ? "mono-danger" : ""}`}
       disabled={disabled}
       onClick={onClick}

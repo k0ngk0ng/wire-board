@@ -32,7 +32,7 @@ class LoadBoundary extends Component<
 }
 type LoadEvents = Pick<
   BoardProps,
-  "onReady" | "onLoadError" | "onLoadProgress"
+  "onReady" | "onLoadError" | "onLoadProgress" | "loadSizes"
 >;
 export function GameLoading({
   room,
@@ -51,6 +51,9 @@ export function GameLoading({
     percent: 0,
     label: "准备加载",
   });
+  const [loadSizes, setLoadSizes] = useState<Readonly<Record<string, number>>>(
+    {},
+  );
   const latest = useRef(room);
   latest.current = room;
   const host = useRef<HTMLDivElement>(null),
@@ -69,13 +72,23 @@ export function GameLoading({
       setError(message);
     }
   }, []);
-  const onLoadProgress = useCallback((percent: number, label: string) => {
-    if (alive.current)
-      setProgress({
-        percent: 90 + Math.min(100, Math.max(0, percent)) * 0.09,
-        label,
-      });
-  }, []);
+  const onLoadProgress = useCallback(
+    (
+      percent: number,
+      label: string,
+      bytes?: { loaded: number; total: number },
+    ) => {
+      if (alive.current)
+        setProgress({
+          percent: bytes
+            ? 35 + Math.min(100, Math.max(0, percent)) * 0.64
+            : 90 + Math.min(100, Math.max(0, percent)) * 0.09,
+          label,
+          ...(bytes ? { loaded: bytes.loaded, total: bytes.total } : {}),
+        });
+    },
+    [],
+  );
   useEffect(() => {
     const abort = new AbortController();
     alive.current = true;
@@ -142,6 +155,7 @@ export function GameLoading({
         setProgress,
       );
       build = result.build;
+      setLoadSizes(result.media);
       abort.signal.throwIfAborted();
       setMounted(true);
     })().catch((e) => {
@@ -248,7 +262,10 @@ export function GameLoading({
           key={`${identity}:${attempt}`}
         >
           <LoadBoundary failed={onLoadError}>
-            {children({ onReady, onLoadError, onLoadProgress }, blocked)}
+            {children(
+              { onReady, onLoadError, onLoadProgress, loadSizes },
+              blocked,
+            )}
           </LoadBoundary>
         </div>
       )}

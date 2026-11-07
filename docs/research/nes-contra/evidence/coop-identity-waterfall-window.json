@@ -1,0 +1,21 @@
+{
+  "scope": "21-frame diagnostic window only; hidden positions used by offline audit, never strategy",
+  "frames": [
+    16180,
+    16200
+  ],
+  "run": "assisted-coop-scene-v7",
+  "actors": [
+    {
+      "seat": 0,
+      "visible_primary_frames": 10,
+      "within_four_pixels_of_diagnostic_actor": 10
+    },
+    {
+      "seat": 1,
+      "visible_primary_frames": 11,
+      "within_four_pixels_of_diagnostic_actor": 11
+    }
+  ],
+  "complete_campaign": false
+}

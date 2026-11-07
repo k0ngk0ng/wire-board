@@ -1,0 +1,61 @@
+{
+  "passed": true,
+  "scope": "ordinary registered-module action/clock chains; private-seed boundary, short input, coupled circuits, late plan change, rescue/pause/recovery",
+  "cases": [
+    {
+      "test": "TestEscapeRandomControlEpochDoesNotRevealMapSeed",
+      "elapsed": 0,
+      "passed": true
+    },
+    {
+      "test": "TestEscapeShortMovementEdgesBeforeNextTick",
+      "elapsed": 0,
+      "passed": true
+    },
+    {
+      "test": "TestEscapePauseRestoreAndManualReclaim",
+      "elapsed": 0,
+      "passed": true
+    },
+    {
+      "test": "TestEscapeCooperativeCircuitAndCoupledPumps/station",
+      "elapsed": 0.07,
+      "passed": true
+    },
+    {
+      "test": "TestEscapeCooperativeCircuitAndCoupledPumps/archive",
+      "elapsed": 0.06,
+      "passed": true
+    },
+    {
+      "test": "TestEscapeCooperativeCircuitAndCoupledPumps",
+      "elapsed": 0.14,
+      "passed": true
+    },
+    {
+      "test": "TestEscapeComputersRespondToSharedRally",
+      "elapsed": 0.04,
+      "passed": true
+    },
+    {
+      "test": "TestEscapeLateRouteSwitchAndIdempotentPlanE2E/station",
+      "elapsed": 0.18,
+      "passed": true
+    },
+    {
+      "test": "TestEscapeLateRouteSwitchAndIdempotentPlanE2E/archive",
+      "elapsed": 0.21,
+      "passed": true
+    },
+    {
+      "test": "TestEscapeLateRouteSwitchAndIdempotentPlanE2E",
+      "elapsed": 0.39,
+      "passed": true
+    },
+    {
+      "test": "TestEscapeDangerWarningRescueAndTimeoutE2E",
+      "elapsed": 0.46,
+      "passed": true
+    }
+  ]
+}

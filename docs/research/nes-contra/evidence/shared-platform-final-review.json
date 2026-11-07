@@ -1,0 +1,83 @@
+{
+  "passed": true,
+  "scope": "Shared platform and composition checks; excludes unrelated games full matches",
+  "commands": [
+    [
+      "go",
+      "test",
+      "-json",
+      "-count=1",
+      "-timeout=45m",
+      "-race",
+      "-run",
+      "^(?:TestContraStartupRejectsUnboundBuildBeforeDatabase|TestShutdownWaitsForInFlightRequest)$",
+      "."
+    ],
+    [
+      "go",
+      "test",
+      "-json",
+      "-count=1",
+      "-timeout=45m",
+      "-race",
+      "-run",
+      "^(?:TestAllIndependentGamesSupportComputers)$",
+      "./games"
+    ],
+    [
+      "go",
+      "test",
+      "-json",
+      "-count=1",
+      "-timeout=45m",
+      "-race",
+      "-run",
+      "^(?:TestBotSearchRegistration|TestCooperativeResults|TestEventEnvelopeValidation|TestInputReleaseCapabilityValidation|TestPausedEnvelopeValidation|TestPausedTimerCapabilityValidation|TestReclaimOnCancelRegistration)$",
+      "./internal/gameapi"
+    ],
+    [
+      "go",
+      "test",
+      "-json",
+      "-count=1",
+      "-timeout=45m",
+      "-race",
+      "-run",
+      "^(?:TestDelayedHTTPRoundTrip|TestDelayedWebSocketRemainsOrderedAndPipelined)$",
+      "./internal/nettest"
+    ],
+    [
+      "go",
+      "test",
+      "-json",
+      "-count=1",
+      "-timeout=45m",
+      "-race",
+      "-run",
+      "^(?:TestContraProductionRegistrationRequiresIdentities|TestContraProductionRegistrationWithLinkedBuild)$",
+      "./internal/production"
+    ],
+    [
+      "go",
+      "test",
+      "-json",
+      "-count=1",
+      "-timeout=45m",
+      "-race",
+      "-run",
+      "^(?:TestAdminAuthorizationAndModeration|TestAdminBootstrapDoesNotClaimExistingName|TestAdminChangesPersistAndFailedAuditRollsBack|TestAdminExistingAccountPermanentAcrossRestart|TestAdminGameOrderPersistenceAndValidationE2E|TestAdminGameVisibilityExistingPlayAndClosure|TestAdminPresenceCountsUsersNotTabs|TestAdminRevocationTakesOverGameAndClosesSockets|TestAgentCanAdvanceApprovedWish|TestAgentFeedDisabledAndStatusGuard|TestAssetURLValidationAndCSP|TestAuthCSRFAndStatic|TestAutoPlayFinishesPartialTurns|TestAutoPlayPermissionsCancellationAndOwnership|TestAutoPlayPersistsWithoutBrowserAndRestoresControl|TestBotManagementPermissionsAndCleanup|TestBotTickerActsWithoutBrowser|TestChatIsolationPersistenceAndGameIndependence|TestChatValidationRateAndRetention|TestClientLoadingAllHumansBeforeRealtimeClock|TestClientLoadingReconnectRestoreAndOldClient|TestClientLoadingTurnAndLegacyClocks|TestConcurrentCommandsOnlyOneCommits|TestControllerProfileValidationE2E|TestControllerProfilesE2E|TestCoopCampaignAbandonHTTP|TestCoopCampaignCancellationAndAtomicityHTTP|TestCoopCampaignEligibilityHTTP|TestCoopCampaignRoomSummaryHTTP|TestCoopCampaignSharedHTTP|TestCooperativeHistoryHTTP|TestDefaultAssetCSPAllowsImmutableOSS|TestExpiredActionCannotRacePastAutomaticTakeover|TestFinishedDeparturePreservesPlayerIndices|TestFriendRequestsConsentAndIsolation|TestFrontendCDNPolicyHTTP|TestHealth|TestHistorySurvivesRematchAndRoomDeletion|TestInactiveDeadlineIgnoresObserversChatAndTimeouts|TestInactiveDeadlineRenewedByPlayAndAutoplay|TestInactiveGamesCloseWithoutAwardingResults|TestInactiveRoomsCloseAfterRestartAndLegacyMigration|TestInactiveTimerRunsWithoutBrowser|TestInactiveWaitingRoomClosesWithoutHistory|TestLegacyPlayingRoomReceivesPersistentClock|TestMissingInviteRejected|TestModuleAsyncBotBoundedWorkersHTTP|TestModuleAsyncBotExpiredReclaimHTTP|TestModuleAsyncBotFallbackHTTP|TestModuleAsyncBotIdleActorsHTTP|TestModuleAsyncBotManualTakeoverHTTP|TestModuleAsyncBotResponsiveHTTP|TestModuleAsyncBotShutdownRestoreHTTP|TestModuleAsyncBotTransactionHTTP|TestModuleAutomatedSeatContextHTTP|TestModuleBotAndTimeoutE2E|TestModuleBrowserFixture|TestModuleDrawBotUnratedHTTP|TestModuleDrawBrowserFixture|TestModuleDrawHistoryHTTP|TestModuleFixedComputersDoNotRate|TestModuleHiddenProfileHTTP|TestModuleIdleBotSchedulingHTTP|TestModuleIndependentDeadlineReclaimHTTP|TestModuleLastHumanDepartureE2E|TestModulePausedPendingSearchHTTP|TestModulePausedRealtimeFrameHTTP|TestModulePausedRealtimeInputDurabilityHTTP|TestModulePausedRetentionBoundaryHTTP|TestModulePausedSaveHTTP|TestModulePausedTimerControlIsolationHTTP|TestModulePausedTimerDurableReplayHTTP|TestModulePausedTimerLoadingExpiryAndOptOutHTTP|TestModulePausedTimerPresentationHTTP|TestModulePausedTimerStreamAndStartupExpiryHTTP|TestModulePreparationHTTP|TestModuleRealtimeAtomicFrameHTTP|TestModuleRealtimeCloseAndOrdinaryWebSocketScopesHTTP|TestModuleRealtimeControlRestoreAndClosureHTTP|TestModuleRealtimeLiveClockHTTP|TestModuleRealtimeResultAndInactivityHTTP|TestModuleRealtimeStaleControlLiveHTTP|TestModuleRealtimeStaleControlSessionBoundsHTTP|TestModuleRealtimeStaleEliminatedLeaveHTTP|TestModuleRealtimeWebSocketScopesHTTP|TestModuleReclaimCancelPreservesOtherStatesHTTP|TestModuleRegistrationAndLifecycleE2E|TestModuleSaveOptionsAndReadyAtomically|TestModuleSyncSnapshotE2E|TestModuleSystemDeadlinesUsePreciseLiveClock|TestModuleSystemEventAndDepartureE2E|TestModuleSystemEventAtomicityE2E|TestModuleSystemEventLiveClockE2E|TestNetworkHeaderUsesItsOwnConnectionE2E|TestNetworkLatencyIsMeasuredAndVisibleToRoomPeersE2E|TestNetworkProbeDoesNotBlockStateDeliveryE2E|TestNewModuleDefaultsToPublishedE2E|TestOSSSignatureReferenceVectors|TestPasswordAndReadyRoomLifecycle|TestPasswordProtectedSpectatingAndRoomDeletion|TestProfilePaginationMigrationAndActiveLobby|TestPublicVersionCDNAssetsHTTP|TestPublicVersionMetadataHTTP|TestRateMatchUnratedPractice|TestRatingLedgerAtomicIdempotentAndHistory|TestRatingRanksRespectTiesAndElimination|TestRealtimeBatchAtomicDurableInputs|TestRealtimeBatchMissingSnapshotRejectsAcknowledgement|TestRealtimeCheckpointFailureRetryAndCriticalControl|TestRealtimeCrashChild|TestRealtimeCriticalResultRequiresDurableRoom|TestRealtimeDoesNotTimeoutToAutoplay|TestRealtimeFrequentInputDoesNotPostponeSystemFrames|TestRealtimeInstanceRejectsOldControlsAndRestoreClearsHeldInput|TestRealtimeLegacyTimeoutMigrationPreservesManualControl|TestRealtimeLivePeriodicCheckpoint|TestRealtimeLoadEvidence|TestRealtimeMemoryInputsFramesAndCheckpoint|TestRealtimeQueuedInputRespectsChangedControl|TestRealtimeSIGKILLRecoversCheckpoint|TestRealtimeSlowSnapshotReaderDoesNotBlockOtherUsers|TestRealtimeSlowWebSocketDoesNotBlockActions|TestRealtimeStreamAuthenticationAndPrivateViews|TestRealtimeStreamBootstrapAndScopedPush|TestRealtimeStreamInputAcknowledgedExactlyOnce|TestRealtimeStreamRejectsSpectatorAndStaleRoom|TestRealtimeTransportBaseline|TestRetiredDotaRestorePreservesStoredHistory|TestRetiredDotaUnavailableHTTP|TestRoomActionsIsolationIdempotencyAndRestart|TestSpectatorPrivacyMembershipAndPersistence|TestStateExposesSanitizedVersion|TestStaticDeliveryHTTP|TestTimeoutAutoplayAllGamesPersistsAndCanBeCancelled|TestTimeoutAutoplayCancellationGivesExpiredActorTime|TestTimeoutAutoplayDoesNotKeepAbandonedRoomsAlive|TestTimeoutAutoplayOnlyOutstandingParallelPlayers|TestTimeoutAutoplayPreservesHostAndSeat|TestTimeoutAutoplayReclaimSuspendedOwnerCanResume|TestTimeoutAutoplaySaveFailureIsAtomic|TestTimeoutClockDoesNotResetDuringSubstepsOrRestart|TestWebsocketNotificationsAuthAndOrigin|TestWishClarificationQuestionsAndPendingStart|TestWishImagesUploadToOSSAndRejectUnsafeInput|TestWishRateLimitAndUnconfiguredUpload|TestWishReviewAuditAndAgentFeed|TestWishesPersistAcrossRestart|TestWishesRequireAuthAndValidateText)$",
+      "./internal/server"
+    ]
+  ],
+  "logs": {
+    "0-2.log": "9316fc4381e14080ff80702a91f4fa5b5e0240b50927964e9decd20cc86e9eac",
+    "0-3.log": "4ad0c784c0023e453aa6b7d5c564f5557907f8bd386e72c1adc72fbbbeb78eb4",
+    "0-1.log": "70f2f176af5e8571fd8868207d6872d8e4f73363c9b584403ec09d4fafa0f0d7",
+    "0-0.log": "644df2d0d2a6bae603849ba335328ed74f0663b7399cf831bf9c77bcbf25d905",
+    "0-4.log": "a2766a57f75fa6a890f3b35772c5e6511c3e906e596c67bb17b988d4c634e434",
+    "0-5.log": "4a441d4c79665aee5cfe557ac4766a5c5f421029941a016162884a0d50adccf0"
+  },
+  "goVetPassed": true,
+  "gofmtPassed": true,
+  "boundaryPassed": true
+}

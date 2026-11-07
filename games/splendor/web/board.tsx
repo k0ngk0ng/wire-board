@@ -1,3 +1,5 @@
+import { createPortal } from "react-dom";
+import { useGameOverlayRoot } from "../../../web/src/ui/game-overlay-root";
 import { Check, ChevronRight, Crown, Minus, Plus } from "lucide-react";
 import React, { useContext, useEffect, useState } from "react";
 import type { Card, Noble, Room } from "./types";
@@ -182,6 +184,7 @@ export function SplendorBoard({
   busy: boolean;
 }) {
   const assets = useContext(AssetsContext);
+  const overlayRoot = useGameOverlayRoot();
   const g = room.game!,
     s = g.splendor!,
     p = s.players[room.you] ?? {
@@ -507,51 +510,58 @@ export function SplendorBoard({
           )}
         </section>
       )}
-      {blindTier !== undefined && taking && (
-        <Modal
-          title={`确认盲预留 · ${blindTier >= 3 ? "东方 " : ""}${(blindTier % 3) + 1} 级牌堆`}
-          dismissible={!busy}
-          onClose={() => setBlindTier(undefined)}
-        >
-          <p>
-            {p.tradingPosts?.includes(2)
-              ? s.remaining[blindTier] === 1
-                ? "牌堆只剩一张发展卡，查看后预留这一张。"
-                : `查看 ${blindTier >= 3 ? "东方 " : ""}${(blindTier % 3) + 1} 级牌堆顶部两张发展卡，选择一张预留，另一张放回牌堆底部。`
-              : `随机预留一张 ${blindTier >= 3 ? "东方 " : ""}${(blindTier % 3) + 1} 级发展卡，确认前无法查看牌面。`}
-            这会使用本回合的行动。
-          </p>
-          <p>
-            {s.bank[5] > 0
-              ? "同时获得 1 枚黄金。如果持有宝石超过 10 枚，需要归还多出的宝石。"
-              : "公共供应区没有黄金，本次仅预留卡牌。"}
-          </p>
-          <div className="form-grid">
-            <button
-              className="outline"
-              disabled={busy}
-              onClick={() => setBlindTier(undefined)}
-            >
-              取消
-            </button>
-            <button
-              className="primary"
-              disabled={
-                busy || !s.remaining[blindTier] || p.reserved!.length >= 3
-              }
-              onClick={() =>
-                void act({
-                  type: "reserve",
-                  tier: (blindTier % 3) + 1,
-                  choice: blindTier >= 3 ? "orient" : "",
-                })
-              }
-            >
-              确认预留
-            </button>
-          </div>
-        </Modal>
-      )}
+      {blindTier !== undefined &&
+        taking &&
+        createPortal(
+          <Modal
+            className="gem-blind-reserve"
+            initialFocus="[data-splendor-confirm]:not(:disabled)"
+            title={`确认盲预留 · ${blindTier >= 3 ? "东方 " : ""}${(blindTier % 3) + 1} 级牌堆`}
+            dismissible={!busy}
+            onClose={() => setBlindTier(undefined)}
+          >
+            <p>
+              {p.tradingPosts?.includes(2)
+                ? s.remaining[blindTier] === 1
+                  ? "牌堆只剩一张发展卡，查看后预留这一张。"
+                  : `查看 ${blindTier >= 3 ? "东方 " : ""}${(blindTier % 3) + 1} 级牌堆顶部两张发展卡，选择一张预留，另一张放回牌堆底部。`
+                : `随机预留一张 ${blindTier >= 3 ? "东方 " : ""}${(blindTier % 3) + 1} 级发展卡，确认前无法查看牌面。`}
+              这会使用本回合的行动。
+            </p>
+            <p>
+              {s.bank[5] > 0
+                ? "同时获得 1 枚黄金。如果持有宝石超过 10 枚，需要归还多出的宝石。"
+                : "公共供应区没有黄金，本次仅预留卡牌。"}
+            </p>
+            <div className="form-grid">
+              <button
+                className="outline"
+                data-controller-cancel
+                disabled={busy}
+                onClick={() => setBlindTier(undefined)}
+              >
+                取消
+              </button>
+              <button
+                className="primary"
+                data-splendor-confirm
+                disabled={
+                  busy || !s.remaining[blindTier] || p.reserved!.length >= 3
+                }
+                onClick={() =>
+                  void act({
+                    type: "reserve",
+                    tier: (blindTier % 3) + 1,
+                    choice: blindTier >= 3 ? "orient" : "",
+                  })
+                }
+              >
+                确认预留
+              </button>
+            </div>
+          </Modal>,
+          overlayRoot,
+        )}
       {selected && (
         <SplendorPurchase
           room={room}

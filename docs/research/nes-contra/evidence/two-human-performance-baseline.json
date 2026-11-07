@@ -1,0 +1,27 @@
+{
+  "scope": "Exploratory local two-human module performance; not production or WAN acceptance",
+  "command": "go test ./games/contra/server -run '^$' -bench '^BenchmarkContraTwoHumanBatchAndViews$' -benchtime=1s -count=1",
+  "hardware": "Apple M4, darwin/arm64",
+  "setup": "Standard 2-human NewSession advanced to frame 600 using authoritative 50ms timers; full 120-record replay history. Each measured iteration applies the next timer to the same battle state and serializes both seat views. Synthetic graphics catalog is unused; observer errors if invoked.",
+  "metrics": {
+    "nsPerBatch": 1765811,
+    "allocatedBytesPerBatch": 935599,
+    "allocationsPerBatch": 3872,
+    "twoSeatViewBytesPerBatch": 58130,
+    "twoSeatUncompressedViewBytesPerSecondAt20Batches": 1162600
+  },
+  "source": {
+    "path": "games/contra/server/performance_benchmark_test.go",
+    "sha256": "9a7af35057f10464a3470645a1942aa9a9ed2c9176eceb87d8bee547db81e23d"
+  },
+  "output": "goos: darwin\ngoarch: arm64\npkg: github.com/k0ngk0ng/wire-board/games/contra/server\ncpu: Apple M4\nBenchmarkContraTwoHumanBatchAndViews-10    \t     684\t   1765811 ns/op\t     58130 view-B/batch\t   1162600 view-B/s\t  935599 B/op\t    3872 allocs/op\nPASS\nok  \tgithub.com/k0ngk0ng/wire-board/games/contra/server\t2.469s\n",
+  "limitations": [
+    "No HTTP/WebSocket framing or compression measurement.",
+    "No SQLite persistence or concurrent room load.",
+    "No bot observation or strategy cost.",
+    "No WAN jitter or packet-loss simulation.",
+    "Current-state baseline, not a final-release engine fingerprint."
+  ],
+  "nextAction": "Measure actual WebSocket traffic and presentation latency with the frame-buffer implementation; assess redundant replay-window bandwidth before final acceptance.",
+  "performanceScopeCorrection": "The old frame-600 NewSession fixture did not send Start and remained in LevelRoutine=1 (intro), not battle. Its timing is not battle/capacity acceptance. See actual-battle-performance-verification.json for corrected setup."
+}

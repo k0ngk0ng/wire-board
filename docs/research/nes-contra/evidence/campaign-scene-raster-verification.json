@@ -1,0 +1,239 @@
+{
+  "scope": "Source instructions plus read-only original timing and normalized-pattern geometry; screenshot pixels are verification only.",
+  "introLayouts": [
+    {
+      "stage": 1,
+      "hit": [
+        83,
+        62
+      ],
+      "fineTransitionRegionTransparent": true
+    },
+    {
+      "stage": 2,
+      "hit": [
+        83,
+        62
+      ],
+      "fineTransitionRegionTransparent": true
+    },
+    {
+      "stage": 3,
+      "hit": [
+        83,
+        62
+      ],
+      "fineTransitionRegionTransparent": true
+    },
+    {
+      "stage": 4,
+      "hit": [
+        83,
+        62
+      ],
+      "fineTransitionRegionTransparent": true
+    },
+    {
+      "stage": 5,
+      "hit": [
+        83,
+        62
+      ],
+      "fineTransitionRegionTransparent": true
+    },
+    {
+      "stage": 6,
+      "hit": [
+        83,
+        62
+      ],
+      "fineTransitionRegionTransparent": true
+    },
+    {
+      "stage": 7,
+      "hit": [
+        83,
+        62
+      ],
+      "fineTransitionRegionTransparent": true
+    },
+    {
+      "stage": 8,
+      "hit": [
+        83,
+        62
+      ],
+      "fineTransitionRegionTransparent": true
+    }
+  ],
+  "introWrites": 619,
+  "interludeWrites": 122,
+  "intro": {
+    "hit": [
+      83,
+      62
+    ],
+    "markerOAM": [
+      61,
+      3,
+      35,
+      80
+    ],
+    "fineXTransitionRow": 63,
+    "fullNewScrollFromRow": 64,
+    "row63AfterWriteRegionTransparent": true,
+    "firstWriteCyclesAfterStatusRead": 128,
+    "secondWriteCyclesAfterStatusRead": 135,
+    "pollPeriodCycles": 9
+  },
+  "interlude": {
+    "groups": [
+      {
+        "layout": "scene-interlude-1-01",
+        "markerY": [
+          64,
+          185
+        ],
+        "hit": [
+          9,
+          "markerY+2"
+        ],
+        "fullBackgroundStart": "markerY+3",
+        "samples": 122
+      },
+      {
+        "layout": "scene-interlude-2-01",
+        "markerY": [
+          64,
+          185
+        ],
+        "hit": [
+          9,
+          "markerY+2"
+        ],
+        "fullBackgroundStart": "markerY+3",
+        "samples": 122
+      },
+      {
+        "layout": "scene-interlude-3-01",
+        "markerY": [
+          64,
+          185
+        ],
+        "hit": [
+          9,
+          "markerY+2"
+        ],
+        "fullBackgroundStart": "markerY+3",
+        "samples": 122
+      },
+      {
+        "layout": "scene-interlude-4-01",
+        "markerY": [
+          64,
+          185
+        ],
+        "hit": [
+          9,
+          "markerY+2"
+        ],
+        "fullBackgroundStart": "markerY+3",
+        "samples": 122
+      },
+      {
+        "layout": "scene-interlude-5-01",
+        "markerY": [
+          64,
+          185
+        ],
+        "hit": [
+          9,
+          "markerY+2"
+        ],
+        "fullBackgroundStart": "markerY+3",
+        "samples": 122
+      },
+      {
+        "layout": "scene-interlude-6-01",
+        "markerY": [
+          24,
+          185
+        ],
+        "hit": [
+          9,
+          "markerY+2"
+        ],
+        "fullBackgroundStart": "markerY+3",
+        "samples": 162
+      },
+      {
+        "layout": "scene-interlude-7-01",
+        "markerY": [
+          24,
+          185
+        ],
+        "hit": [
+          9,
+          "markerY+2"
+        ],
+        "fullBackgroundStart": "markerY+3",
+        "samples": 162
+      }
+    ],
+    "maskWriteCyclesAfterStatusRead": [
+      13,
+      14
+    ],
+    "controlWriteCyclesAfterStatusRead": [
+      22,
+      23
+    ],
+    "pollReadGapCycles": [
+      8,
+      9
+    ],
+    "maskTransition": "sprite-hit row, midline",
+    "fullControlRegion": "sprite-hit row+1",
+    "partialRowDotLimitation": "Exact horizontal boundary depends on polling phase; persistent Session fields do not encode a 6502 sub-scanline phase."
+  },
+  "pixelChecks": [
+    {
+      "capture": 7250,
+      "emulatorFrame": 8649,
+      "scroll": 22,
+      "backgroundPixelsCompared": 60496,
+      "mismatches": 0
+    },
+    {
+      "capture": 7300,
+      "emulatorFrame": 8699,
+      "scroll": 72,
+      "backgroundPixelsCompared": 60496,
+      "mismatches": 0
+    },
+    {
+      "capture": 7500,
+      "emulatorFrame": 8899,
+      "scroll": 66,
+      "backgroundPixelsCompared": 60496,
+      "mismatches": 0
+    },
+    {
+      "capture": 7800,
+      "emulatorFrame": 9199,
+      "scroll": 0,
+      "backgroundPixelsCompared": 59745,
+      "mismatches": 0
+    }
+  ],
+  "nmiReset": {
+    "source": [
+      "F8A7..F8B6",
+      "F926..F945",
+      "F8E2..F905"
+    ],
+    "normal": "FE mask with Busy blanking; FD/FC scroll and FF control each NMI",
+    "nested": "same mask/scroll/control restoration, no new main-world work"
+  },
+  "rawEventsSHA256": "5ba2869b8b087bbce06aa18e7375b57ab8b72efa51dfd5a8c62531a1df10fa5a"
+}

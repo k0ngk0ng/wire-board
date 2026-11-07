@@ -1,0 +1,90 @@
+{
+  "evidence_id": "ev_cfd8ad10f86475f87880fbd134642a6270bd02d4c5fb713ccf6c2ecc02f51dfb",
+  "subject": {
+    "name": "PlantsVsZombies.exe",
+    "digest": {
+      "sha256": "8e8eea73a85d7af311755708f5daf2786650cf3c032188b8315fcf99858c8342"
+    },
+    "local_path": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/pvz/.local/pvz-research/original-1.0.0.1051/PlantsVsZombies.exe",
+    "format": "pe",
+    "architecture": "x86"
+  },
+  "provider": {
+    "id": "ghidra",
+    "name": "Ghidra",
+    "version": "12.1.4"
+  },
+  "analysis_profile": {
+    "provider": {
+      "id": "ghidra",
+      "name": "Ghidra",
+      "version": "12.1.4"
+    },
+    "parameters": {
+      "target_kind": "executable",
+      "target_format": "pe",
+      "executable_role": "application",
+      "managed": false,
+      "native_aot_metadata": {
+        "contract_revision": "rtr-9.1-x64-pe-read-only-v3",
+        "source_bytes": 134217728,
+        "work_units": 67108864,
+        "working_memory_bytes": 67108864,
+        "report_bytes": 4194304
+      },
+      "architecture": "x86",
+      "available_architectures": [
+        "x86"
+      ],
+      "import_mode": "ephemeral-source-immutable",
+      "pdb_observations": "program-info-v1",
+      "annotation_policy": "atomic-function-entry-metadata-v1",
+      "load_image_observations": "source-mappings-entry-context-v2",
+      "function_body_evidence": "complete-inclusive-ranges-v1",
+      "function_references": "complete-body-and-entry-reference-manager-v2",
+      "call_relationship_coverage": "function-body-call-coverage-v5",
+      "function_dossier_coverage": "observed-facets-and-call-relationships-v1",
+      "string_inventory_evidence": "defined-data-coverage-v1",
+      "location_resolution": "explicit-address-exact-entry-symbol-first-v3",
+      "procedure_file_offset_resolution": "address-first-unique-target-source-mapping-v2",
+      "instruction_flow_evidence": "decoded-return-pcode-v1",
+      "instruction_references": "exact-address-incoming-v1",
+      "function_boundary_observations": "ghidra-function-boundary-limitations-v3",
+      "no_return_repair": "returning-imports-decoded-return-v2",
+      "process_launch": "inspected-jvm-launch-support-v1",
+      "jump_table_evidence": "typed-case-default-blocks-v1",
+      "decompiler_jump_loads": true,
+      "loader": "auto-from-header",
+      "language_id": "auto-from-header",
+      "compiler_spec_id": "auto-default",
+      "analyzer_preset": "ghidra-default"
+    },
+    "digest": "483a3c23d7b0c6333d61d7e050154873e5f8d7ea53a284362e069d8e793666a4"
+  },
+  "predicate_type": "rea.analysis",
+  "operation": "procedure_pseudo_code",
+  "parameters": {
+    "procedure": "0x461610"
+  },
+  "raw_result": {
+    "value": "\nvoid FUN_00461610(int *param_1)\n\n{\n  uint uVar1;\n  int *piVar2;\n  int iVar3;\n  int iVar4;\n  int *piVar5;\n  int *unaff_EBX;\n  float *pfVar6;\n  float10 fVar7;\n  float10 extraout_ST0;\n  float10 extraout_ST0_00;\n  \n  piVar2 = param_1;\n  param_1[0xf] = 0x1a;\n  param_1[0x15] = 0x5dc;\n  FUN_0045fd90(\"anim_shooting\",3,0x41400000);\n  if (*(char *)(*param_1 + 0x8c5) == '\\0') {\n    param_1 = (int *)0x0;\n    if (*(float *)(DAT_006a9f00 + 0x88c) != 0.0) {\n      fVar7 = (float10)FUN_005af410(*(undefined4 *)(DAT_006a9f00 + 0x88c));\n      param_1 = (int *)(float)fVar7;\n    }\n    FUN_00515020(param_1);\n  }\n  if (piVar2[9] == 0x2d) {\n    iVar3 = 0;\n    piVar5 = piVar2 + 0x36;\n    do {\n      if (*piVar5 == 0) {\n        pfVar6 = (float *)(piVar2 + iVar3 * 5 + 0x32);\n        goto LAB_004616cd;\n      }\n      iVar3 = iVar3 + 1;\n      piVar5 = piVar5 + 5;\n    } while (iVar3 < 5);\n    pfVar6 = (float *)0x0;\n  }\n  else {\n    pfVar6 = (float *)(piVar2 + 0x32);\n  }\nLAB_004616cd:\n  if (unaff_EBX[0x31] == 2) {\n    if (unaff_EBX[0x34] < unaff_EBX[0x35] / 3) {\n      param_1 = (int *)0x2;\n    }\n    else {\n      param_1 = (int *)(uint)(unaff_EBX[0x34] < (unaff_EBX[0x35] * 2) / 3);\n    }\n    unaff_EBX[0x34] = 0;\n    unaff_EBX[0x31] = 0;\n    FUN_005345f0(\"anim_bucket\",pfVar6);\n    uVar1 = unaff_EBX[0x46];\n    piVar2 = *(int **)(*(int *)(*unaff_EBX + 0x820) + 8);\n    if (((uVar1 != 0) && ((uVar1 & 0xffff) < (uint)piVar2[2])) &&\n       (iVar3 = (uVar1 & 0xffff) * 0xa0 + *piVar2, *(uint *)(iVar3 + 0x9c) == uVar1)) {\n      FUN_00473a40(iVar3,\"anim_bucket\",0xffffffff);\n    }\n    uVar1 = unaff_EBX[0x46];\n    piVar2 = *(int **)(*(int *)(*unaff_EBX + 0x820) + 8);\n    if (((uVar1 != 0) && ((uVar1 & 0xffff) < (uint)piVar2[2])) &&\n       (iVar3 = (uVar1 & 0xffff) * 0xa0 + *piVar2, *(uint *)(iVar3 + 0x9c) == uVar1)) {\n      FUN_00473a40(iVar3,\"anim_hair\",0);\n    }\n    *pfVar6 = *pfVar6 - (float)(*(int *)(DAT_006a73b8 + 0x24) / 2);\n    pfVar6[1] = pfVar6[1] - (float)(*(int *)(DAT_006a73b8 + 0x28) / 2);\n    fVar7 = (float10)FUN_005af410(0x41a00000);\n    pfVar6[2] = (float)(fVar7 - (float10)10.0) + 25.0;\n    fVar7 = (float10)FUN_005af410(0x41a00000);\n    pfVar6[4] = (float)((int)param_1 + 1);\n    pfVar6[3] = (float)(fVar7 - (float10)10.0) + 20.0;\n    return;\n  }\n  if (unaff_EBX[0x31] == 3) {\n    iVar3 = FUN_0052d6d0();\n    unaff_EBX[0x34] = 0;\n    unaff_EBX[0x31] = 0;\n    FUN_005345f0(\"zombie_football_helmet\",pfVar6);\n    FUN_005331c0(\"zombie_football_helmet\",0xffffffff);\n    FUN_005331c0(\"anim_hair\",0);\n    *pfVar6 = (float)unaff_EBX[0xb] + 37.0;\n    pfVar6[1] = (float)unaff_EBX[0xc] - 60.0;\n    fVar7 = (float10)FUN_005af410(0x41a00000);\n    pfVar6[2] = (float)(fVar7 - (float10)10.0) + 20.0;\n    fVar7 = (float10)FUN_005af410(0x41a00000);\n    pfVar6[4] = (float)(iVar3 + 4);\n    pfVar6[3] = (float)(fVar7 - (float10)10.0) + 20.0;\n    return;\n  }\n  if (unaff_EBX[0x36] == 1) {\n    iVar3 = FUN_0052d780();\n    FUN_005330e0();\n    unaff_EBX[10] = 0;\n    if (*(char *)((int)unaff_EBX + 0x51) == '\\0') {\n      FUN_0052f2e0();\n    }\n    FUN_005345f0(\"anim_screendoor\",pfVar6);\n    *pfVar6 = *pfVar6 - (float)(*(int *)(DAT_006a7398 + 0x24) / 2);\n    pfVar6[1] = pfVar6[1] - (float)(*(int *)(DAT_006a7398 + 0x28) / 2);\n    fVar7 = (float10)FUN_005af410(0x41a00000);\n    pfVar6[2] = (float)(fVar7 - (float10)10.0) + 30.0;\n    fVar7 = (float10)FUN_005af410(0x41a00000);\n    pfVar6[3] = (float)(fVar7 - (float10)10.0);\n    pfVar6[4] = (float)(iVar3 + 7);\n    return;\n  }\n  if (unaff_EBX[0x36] == 3) {\n    iVar3 = FUN_0052d780();\n    FUN_005330e0();\n    *pfVar6 = (float)unaff_EBX[0xb] + 31.0;\n    pfVar6[1] = (float)unaff_EBX[0xc] + 20.0;\n    iVar4 = FUN_00588a40();\n    *pfVar6 = (float)(extraout_ST0 - (float10)(iVar4 / 2));\n    iVar4 = FUN_00588a30();\n    pfVar6[1] = (float)(extraout_ST0_00 - (float10)(iVar4 / 2));\n    fVar7 = (float10)FUN_00511cb0(0xc1200000,0x41200000);\n    pfVar6[2] = (float)(fVar7 + (float10)30.0);\n    fVar7 = (float10)FUN_00511cb0(0xc1200000,0x41200000);\n    pfVar6[3] = (float)fVar7;\n    pfVar6[4] = (float)(iVar3 + 0xe);\n    return;\n  }\n  if (unaff_EBX[9] == 0x12) {\n    FUN_00525350(unaff_EBX,0x10);\n    FUN_005345f0(\"Zombie_pogo_stick\",pfVar6);\n    *pfVar6 = (float)-(*(int *)(DAT_006a78c4 + 0x24) / 2) + 40.0 + *pfVar6;\n    pfVar6[1] = (float)-(*(int *)(DAT_006a78c4 + 0x28) / 2) + 84.0 + pfVar6[1];\n    fVar7 = (float10)FUN_00511cb0(0xc1200000,0x41200000);\n    pfVar6[2] = (float)(fVar7 + (float10)44.0);\n    fVar7 = (float10)FUN_00511cb0(0xc1200000,0x41200000);\n    pfVar6[3] = (float)(fVar7 + (float10)10.0);\n    pfVar6[4] = (float)((uint)(*(char *)((int)unaff_EBX + 0xbb) == '\\0') * 2 + 10);\n    return;\n  }\n  if (unaff_EBX[10] == 0xf) {\n    FUN_00530850(unaff_EBX);\n    FUN_00524a70();\n    unaff_EBX[10] = 0;\n    FUN_00533200(\"Zombie_jackbox_box\");\n    FUN_00533200(\"Zombie_jackbox_handle\");\n    FUN_005345f0(\"Zombie_jackbox_box\",pfVar6);\n    *pfVar6 = *pfVar6 - (float)(*(int *)(DAT_006a7604 + 0x24) / 2);\n    pfVar6[1] = pfVar6[1] - (float)(*(int *)(DAT_006a7604 + 0x28) / 2);\n    fVar7 = (float10)FUN_00511cb0(0xc1200000,0x41200000);\n    pfVar6[2] = (float)(fVar7 + (float10)20.0);\n    fVar7 = (float10)FUN_00511cb0(0xc1200000,0x41200000);\n    pfVar6[4] = 1.82169e-44;\n    pfVar6[3] = (float)(fVar7 + (float10)15.0);\n    return;\n  }\n  if (unaff_EBX[9] == 0x11) {\n    FUN_00528240();\n    FUN_005345f0(\"Zombie_digger_pickaxe\",pfVar6);\n    *pfVar6 = *pfVar6 - (float)(*(int *)(DAT_006a73f0 + 0x24) / 2);\n    pfVar6[1] = pfVar6[1] - (float)(*(int *)(DAT_006a73f0 + 0x28) / 2);\n    fVar7 = (float10)FUN_00511cb0(0xc1200000,0x41200000);\n    pfVar6[2] = (float)(fVar7 + (float10)45.0);\n    fVar7 = (float10)FUN_00511cb0(0xc1200000,0x41200000);\n    pfVar6[4] = 2.94273e-44;\n    pfVar6[3] = (float)(fVar7 + (float10)15.0);\n  }\n  return;\n}\n\n",
+    "limitations": []
+  },
+  "normalized_result": "\nvoid FUN_00461610(int *param_1)\n\n{\n  uint uVar1;\n  int *piVar2;\n  int iVar3;\n  int iVar4;\n  int *piVar5;\n  int *unaff_EBX;\n  float *pfVar6;\n  float10 fVar7;\n  float10 extraout_ST0;\n  float10 extraout_ST0_00;\n  \n  piVar2 = param_1;\n  param_1[0xf] = 0x1a;\n  param_1[0x15] = 0x5dc;\n  FUN_0045fd90(\"anim_shooting\",3,0x41400000);\n  if (*(char *)(*param_1 + 0x8c5) == '\\0') {\n    param_1 = (int *)0x0;\n    if (*(float *)(DAT_006a9f00 + 0x88c) != 0.0) {\n      fVar7 = (float10)FUN_005af410(*(undefined4 *)(DAT_006a9f00 + 0x88c));\n      param_1 = (int *)(float)fVar7;\n    }\n    FUN_00515020(param_1);\n  }\n  if (piVar2[9] == 0x2d) {\n    iVar3 = 0;\n    piVar5 = piVar2 + 0x36;\n    do {\n      if (*piVar5 == 0) {\n        pfVar6 = (float *)(piVar2 + iVar3 * 5 + 0x32);\n        goto LAB_004616cd;\n      }\n      iVar3 = iVar3 + 1;\n      piVar5 = piVar5 + 5;\n    } while (iVar3 < 5);\n    pfVar6 = (float *)0x0;\n  }\n  else {\n    pfVar6 = (float *)(piVar2 + 0x32);\n  }\nLAB_004616cd:\n  if (unaff_EBX[0x31] == 2) {\n    if (unaff_EBX[0x34] < unaff_EBX[0x35] / 3) {\n      param_1 = (int *)0x2;\n    }\n    else {\n      param_1 = (int *)(uint)(unaff_EBX[0x34] < (unaff_EBX[0x35] * 2) / 3);\n    }\n    unaff_EBX[0x34] = 0;\n    unaff_EBX[0x31] = 0;\n    FUN_005345f0(\"anim_bucket\",pfVar6);\n    uVar1 = unaff_EBX[0x46];\n    piVar2 = *(int **)(*(int *)(*unaff_EBX + 0x820) + 8);\n    if (((uVar1 != 0) && ((uVar1 & 0xffff) < (uint)piVar2[2])) &&\n       (iVar3 = (uVar1 & 0xffff) * 0xa0 + *piVar2, *(uint *)(iVar3 + 0x9c) == uVar1)) {\n      FUN_00473a40(iVar3,\"anim_bucket\",0xffffffff);\n    }\n    uVar1 = unaff_EBX[0x46];\n    piVar2 = *(int **)(*(int *)(*unaff_EBX + 0x820) + 8);\n    if (((uVar1 != 0) && ((uVar1 & 0xffff) < (uint)piVar2[2])) &&\n       (iVar3 = (uVar1 & 0xffff) * 0xa0 + *piVar2, *(uint *)(iVar3 + 0x9c) == uVar1)) {\n      FUN_00473a40(iVar3,\"anim_hair\",0);\n    }\n    *pfVar6 = *pfVar6 - (float)(*(int *)(DAT_006a73b8 + 0x24) / 2);\n    pfVar6[1] = pfVar6[1] - (float)(*(int *)(DAT_006a73b8 + 0x28) / 2);\n    fVar7 = (float10)FUN_005af410(0x41a00000);\n    pfVar6[2] = (float)(fVar7 - (float10)10.0) + 25.0;\n    fVar7 = (float10)FUN_005af410(0x41a00000);\n    pfVar6[4] = (float)((int)param_1 + 1);\n    pfVar6[3] = (float)(fVar7 - (float10)10.0) + 20.0;\n    return;\n  }\n  if (unaff_EBX[0x31] == 3) {\n    iVar3 = FUN_0052d6d0();\n    unaff_EBX[0x34] = 0;\n    unaff_EBX[0x31] = 0;\n    FUN_005345f0(\"zombie_football_helmet\",pfVar6);\n    FUN_005331c0(\"zombie_football_helmet\",0xffffffff);\n    FUN_005331c0(\"anim_hair\",0);\n    *pfVar6 = (float)unaff_EBX[0xb] + 37.0;\n    pfVar6[1] = (float)unaff_EBX[0xc] - 60.0;\n    fVar7 = (float10)FUN_005af410(0x41a00000);\n    pfVar6[2] = (float)(fVar7 - (float10)10.0) + 20.0;\n    fVar7 = (float10)FUN_005af410(0x41a00000);\n    pfVar6[4] = (float)(iVar3 + 4);\n    pfVar6[3] = (float)(fVar7 - (float10)10.0) + 20.0;\n    return;\n  }\n  if (unaff_EBX[0x36] == 1) {\n    iVar3 = FUN_0052d780();\n    FUN_005330e0();\n    unaff_EBX[10] = 0;\n    if (*(char *)((int)unaff_EBX + 0x51) == '\\0') {\n      FUN_0052f2e0();\n    }\n    FUN_005345f0(\"anim_screendoor\",pfVar6);\n    *pfVar6 = *pfVar6 - (float)(*(int *)(DAT_006a7398 + 0x24) / 2);\n    pfVar6[1] = pfVar6[1] - (float)(*(int *)(DAT_006a7398 + 0x28) / 2);\n    fVar7 = (float10)FUN_005af410(0x41a00000);\n    pfVar6[2] = (float)(fVar7 - (float10)10.0) + 30.0;\n    fVar7 = (float10)FUN_005af410(0x41a00000);\n    pfVar6[3] = (float)(fVar7 - (float10)10.0);\n    pfVar6[4] = (float)(iVar3 + 7);\n    return;\n  }\n  if (unaff_EBX[0x36] == 3) {\n    iVar3 = FUN_0052d780();\n    FUN_005330e0();\n    *pfVar6 = (float)unaff_EBX[0xb] + 31.0;\n    pfVar6[1] = (float)unaff_EBX[0xc] + 20.0;\n    iVar4 = FUN_00588a40();\n    *pfVar6 = (float)(extraout_ST0 - (float10)(iVar4 / 2));\n    iVar4 = FUN_00588a30();\n    pfVar6[1] = (float)(extraout_ST0_00 - (float10)(iVar4 / 2));\n    fVar7 = (float10)FUN_00511cb0(0xc1200000,0x41200000);\n    pfVar6[2] = (float)(fVar7 + (float10)30.0);\n    fVar7 = (float10)FUN_00511cb0(0xc1200000,0x41200000);\n    pfVar6[3] = (float)fVar7;\n    pfVar6[4] = (float)(iVar3 + 0xe);\n    return;\n  }\n  if (unaff_EBX[9] == 0x12) {\n    FUN_00525350(unaff_EBX,0x10);\n    FUN_005345f0(\"Zombie_pogo_stick\",pfVar6);\n    *pfVar6 = (float)-(*(int *)(DAT_006a78c4 + 0x24) / 2) + 40.0 + *pfVar6;\n    pfVar6[1] = (float)-(*(int *)(DAT_006a78c4 + 0x28) / 2) + 84.0 + pfVar6[1];\n    fVar7 = (float10)FUN_00511cb0(0xc1200000,0x41200000);\n    pfVar6[2] = (float)(fVar7 + (float10)44.0);\n    fVar7 = (float10)FUN_00511cb0(0xc1200000,0x41200000);\n    pfVar6[3] = (float)(fVar7 + (float10)10.0);\n    pfVar6[4] = (float)((uint)(*(char *)((int)unaff_EBX + 0xbb) == '\\0') * 2 + 10);\n    return;\n  }\n  if (unaff_EBX[10] == 0xf) {\n    FUN_00530850(unaff_EBX);\n    FUN_00524a70();\n    unaff_EBX[10] = 0;\n    FUN_00533200(\"Zombie_jackbox_box\");\n    FUN_00533200(\"Zombie_jackbox_handle\");\n    FUN_005345f0(\"Zombie_jackbox_box\",pfVar6);\n    *pfVar6 = *pfVar6 - (float)(*(int *)(DAT_006a7604 + 0x24) / 2);\n    pfVar6[1] = pfVar6[1] - (float)(*(int *)(DAT_006a7604 + 0x28) / 2);\n    fVar7 = (float10)FUN_00511cb0(0xc1200000,0x41200000);\n    pfVar6[2] = (float)(fVar7 + (float10)20.0);\n    fVar7 = (float10)FUN_00511cb0(0xc1200000,0x41200000);\n    pfVar6[4] = 1.82169e-44;\n    pfVar6[3] = (float)(fVar7 + (float10)15.0);\n    return;\n  }\n  if (unaff_EBX[9] == 0x11) {\n    FUN_00528240();\n    FUN_005345f0(\"Zombie_digger_pickaxe\",pfVar6);\n    *pfVar6 = *pfVar6 - (float)(*(int *)(DAT_006a73f0 + 0x24) / 2);\n    pfVar6[1] = pfVar6[1] - (float)(*(int *)(DAT_006a73f0 + 0x28) / 2);\n    fVar7 = (float10)FUN_00511cb0(0xc1200000,0x41200000);\n    pfVar6[2] = (float)(fVar7 + (float10)45.0);\n    fVar7 = (float10)FUN_00511cb0(0xc1200000,0x41200000);\n    pfVar6[4] = 2.94273e-44;\n    pfVar6[3] = (float)(fVar7 + (float10)15.0);\n  }\n  return;\n}\n\n",
+  "confidence": "observed",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+    "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+    "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+    "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+    "Pseudocode is Ghidra decompiler output, not original source and not text-equivalent to Hopper output.",
+    "External functions and functions without an analyzable body return null; other decompiler failures remain explicit.",
+    "macOS sessions require a matching executable Ghidra native decompiler; REA checks for it but does not build native components or change Gatekeeper quarantine state.",
+    "The target references PDB PlantsVsZombies.pdb (GUID 8efc826c-78d7-4bea-aa67-ff33ea3dc99b, age (hex) 1, signature unknown, version RSDS); Ghidra reports load state unknown. Original names and types may be missing; an empty name search does not prove a procedure is absent. Use list_procedures and address-based analysis to inspect recovered functions. REA does not admit a caller-selected PDB companion."
+  ],
+  "relationship_coverage": null,
+  "locations": [],
+  "evidence_links": []
+}

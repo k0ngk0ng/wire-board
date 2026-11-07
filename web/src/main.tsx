@@ -2,6 +2,7 @@ import { CompactRoomPanel } from "./ui/compact-room-panel";
 import { NetworkSignal } from "./ui/network-signal";
 import type { NetworkInfo } from "./network-quality";
 import { isTransientSyncError, quietSyncError } from "./game-api/sync-error";
+import { blocksAutoplayAction } from "./game-api/autoplay-action";
 import {
   GameFullscreen,
   type GameFullscreenHandle,
@@ -10,6 +11,11 @@ import { GameFeedback } from "./ui/game-overlay-root";
 import { SoundControls } from "./ui/sound-controls";
 import { readAudioPreferences } from "./audio-preferences";
 import { Results } from "./ui/results";
+import { RatingChanges } from "./ui/rating-changes";
+import {
+  closeTableDescription,
+  cooperativeOutcomeLabel,
+} from "./ui/cooperative-rating";
 import { GameLoading } from "./game-api/loading";
 import { Runtime } from "./game-api/runtime";
 import { VersionUpdateNotice } from "./VersionUpdateNotice";
@@ -201,6 +207,8 @@ function App() {
   const [controllerSettingsOpen, setControllerSettingsOpen] = useState(false);
   const gameFullscreen = useRef<GameFullscreenHandle>(null);
   const [gameFullscreenReady, setGameFullscreenReady] = useState(false);
+  const [chatFullscreenTarget, setChatFullscreenTarget] =
+    useState<HTMLElement | null>(null);
   useEffect(() => setControllerSettingsOpen(false), [state?.user.id]);
   const [sound, setSound] = useState(() => readAudioPreferences().enabled);
   const [volume, setVolume] = useState(() => readAudioPreferences().volume);
@@ -459,7 +467,13 @@ function App() {
   };
   const act: Act = async (action) => {
     if (!state?.room || presented.blocked) return;
-    if (state.room.seats[state.room.you]?.autoPlay) {
+    if (
+      blocksAutoplayAction(
+        state.room.seats[state.room.you]?.autoPlay,
+        gameModule(state.room.kind),
+        action,
+      )
+    ) {
       setNotice("当前由电脑托管，取消托管后即可继续操作。");
       return;
     }
@@ -731,13 +745,6 @@ function App() {
                     onPreview={previewAudio}
                   />
                   <button
-                    className="avatar"
-                    aria-label="我的战绩与好友"
-                    onClick={() => setProfileID(state.user.id)}
-                  >
-                    {state.user.name[0]}
-                  </button>
-                  <button
                     className="icon-button"
                     aria-label="控制器设置"
                     title="控制器设置"
@@ -745,9 +752,20 @@ function App() {
                   >
                     <Gamepad2 size={19} />
                   </button>
-                  <span className="username">
-                    <PlayerName user={state.user} />
-                  </span>
+                  <button
+                    className="profile-nav"
+                    aria-label="我的战绩与好友"
+                    title="查看我的战绩与好友"
+                    onClick={() => setProfileID(state.user.id)}
+                  >
+                    <span className="avatar" aria-hidden="true">
+                      {state.user.name[0]}
+                    </span>
+                    <span className="profile-nav-text">
+                      <span className="username">{state.user.name}</span>
+                      <small>战绩 · 好友</small>
+                    </span>
+                  </button>
                 </div>
               </header>
             </CompactRoomPanel>
@@ -755,7 +773,7 @@ function App() {
               <ControllerSettings
                 key={state.user.id}
                 userId={state.user.id}
-                gameId={state.room?.kind}
+                gameId={room?.kind}
                 availableGames={state.availableGames}
                 onClose={() => setControllerSettingsOpen(false)}
               />
@@ -835,19 +853,6 @@ function App() {
                     name="tools"
                   >
                     <div className="room-tools">
-                      {canAutoPlay && (
-                        <button
-                          className={`subtle autoplay-control ${autoPlay ? "active" : ""}`}
-                          aria-pressed={autoPlay}
-                          disabled={busy}
-                          onClick={() =>
-                            roomCommand("autoplay", { enabled: !autoPlay })
-                          }
-                        >
-                          {autoPlay ? <Hand size={16} /> : <Bot size={16} />}
-                          {autoPlay ? "取消托管" : "开启托管"}
-                        </button>
-                      )}
                       {room.game &&
                         (room.status === "playing" ||
                           room.status === "finished") && (
@@ -863,18 +868,17 @@ function App() {
                             全屏
                           </button>
                         )}
-                      {room.spectating && (
+                      {canAutoPlay && (
                         <button
-                          className="subtle"
+                          className={`subtle autoplay-control ${autoPlay ? "active" : ""}`}
+                          aria-pressed={autoPlay}
                           disabled={busy}
                           onClick={() =>
-                            void run(() =>
-                              api(`/rooms/${room.id}/watch`, { leave: true }),
-                            )
+                            roomCommand("autoplay", { enabled: !autoPlay })
                           }
                         >
-                          <ArrowLeft size={16} />
-                          离开观战
+                          {autoPlay ? <Hand size={16} /> : <Bot size={16} />}
+                          {autoPlay ? "取消托管" : "开启托管"}
                         </button>
                       )}
                       {room.game && (
@@ -907,18 +911,6 @@ function App() {
                         <Copy size={16} />
                         邀请朋友
                       </button>
-                      {!room.spectating &&
-                        (room.status !== "playing" ||
-                          room.game?.eliminated?.includes(room.you)) && (
-                          <button
-                            className="subtle"
-                            disabled={busy}
-                            onClick={() => roomCommand("leave")}
-                          >
-                            <ArrowLeft size={16} />
-                            离开房间
-                          </button>
-                        )}
                       {room.status === "playing" &&
                         !room.spectating &&
                         room.host === state.user.id && (
@@ -929,6 +921,32 @@ function App() {
                             onClick={() => setCloseTableRoom(room.id)}
                           >
                             结束牌桌
+                          </button>
+                        )}
+                      {room.spectating && (
+                        <button
+                          className="subtle"
+                          disabled={busy}
+                          onClick={() =>
+                            void run(() =>
+                              api(`/rooms/${room.id}/watch`, { leave: true }),
+                            )
+                          }
+                        >
+                          <ArrowLeft size={16} />
+                          离开观战
+                        </button>
+                      )}
+                      {!room.spectating &&
+                        (room.status !== "playing" ||
+                          room.game?.eliminated?.includes(room.you)) && (
+                          <button
+                            className="subtle"
+                            disabled={busy}
+                            onClick={() => roomCommand("leave")}
+                          >
+                            <ArrowLeft size={16} />
+                            离开房间
                           </button>
                         )}
                     </div>
@@ -975,15 +993,20 @@ function App() {
                   <div className="closed-panel">
                     <Flag size={40} />
                     <h2>
-                      {room.closeReason === "unpublished"
-                        ? "这款游戏已下架"
-                        : room.closeReason === "admin"
-                          ? "管理员已结束牌桌"
-                          : room.closeReason === "inactive"
-                            ? "牌桌已因闲置关闭"
-                            : "这张牌桌已结束"}
+                      {room.result?.ratingPolicy === "coop_campaign_v1"
+                        ? cooperativeOutcomeLabel(room.result)
+                        : room.closeReason === "unpublished"
+                          ? "这款游戏已下架"
+                          : room.closeReason === "admin"
+                            ? "管理员已结束牌桌"
+                            : room.closeReason === "inactive"
+                              ? "牌桌已因闲置关闭"
+                              : "这张牌桌已结束"}
                     </h2>
                     <ClosedRoomDescription room={room} />
+                    {room.result?.rated && (
+                      <RatingChanges result={room.result} />
+                    )}
                     {!room.spectating &&
                       room.host === state.user.id &&
                       state.availableGames.includes(room.kind) && (
@@ -1020,6 +1043,7 @@ function App() {
                               <GameFullscreen
                                 ref={gameFullscreen}
                                 onReadyChange={setGameFullscreenReady}
+                                onChatTargetChange={setChatFullscreenTarget}
                                 scope={`${room.id}:${room.matchId ?? room.setupVersion}`}
                                 enabled={!loading && !!room.game}
                                 toolbarActions={
@@ -1185,9 +1209,7 @@ function App() {
                       <span>{gameName(room.kind)} · 对局进行中</span>
                     </div>
                   </div>
-                  <p>
-                    结束后本局不计胜负，也不加减积分。所有玩家可以离开牌桌，或由房主重新开局。
-                  </p>
+                  <p>{closeTableDescription(room)}</p>
                   <div className="modal-actions">
                     <button
                       className="outline"
@@ -1223,31 +1245,37 @@ function App() {
               />
             )}
             {profileID && (
-              <Modal title="玩家页面" onClose={() => setProfileID("")}>
-                {profileID === state.user.id && (
-                  <div className="profile-account-actions">
-                    <button
-                      className="outline"
-                      aria-label="退出登录"
-                      disabled={busy}
-                      onClick={() =>
-                        void run(async () => {
-                          await api("/logout", {});
-                          setProfileID("");
-                        })
-                      }
-                    >
-                      <LogOut size={17} />
-                      退出登录
-                    </button>
-                  </div>
-                )}
-                <ProfilePage
-                  key={profileID}
-                  id={profileID}
-                  self={state.user.id}
-                />
-              </Modal>
+              <GameFeedback>
+                <Modal
+                  title="玩家页面"
+                  className="player-profile-modal"
+                  onClose={() => setProfileID("")}
+                >
+                  {profileID === state.user.id && (
+                    <div className="profile-account-actions">
+                      <button
+                        className="outline"
+                        aria-label="退出登录"
+                        disabled={busy}
+                        onClick={() =>
+                          void run(async () => {
+                            await api("/logout", {});
+                            setProfileID("");
+                          })
+                        }
+                      >
+                        <LogOut size={17} />
+                        退出登录
+                      </button>
+                    </div>
+                  )}
+                  <ProfilePage
+                    key={profileID}
+                    id={profileID}
+                    self={state.user.id}
+                  />
+                </Modal>
+              </GameFeedback>
             )}
             {room?.game && journalRoom === room.id && (
               <Modal title="对局日志" onClose={() => setJournalRoom("")}>
@@ -1282,6 +1310,7 @@ function App() {
                 key={`${state.user.id}:${room.id}`}
                 room={room}
                 userId={state.user.id}
+                fullscreenTarget={chatFullscreenTarget}
                 send={async (text, nonce) => {
                   await api(`/rooms/${room.id}/chat`, { text, nonce });
                   await refresh();

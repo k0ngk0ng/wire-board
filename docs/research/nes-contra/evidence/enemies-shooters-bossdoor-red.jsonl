@@ -1,0 +1,9 @@
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"# command-line-arguments [command-line-arguments.test]\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./enemies_shooters_bossdoor_test.go:28:17: s.StepBossDoor undefined (type EnemySystem has no field or method StepBossDoor)\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./enemies_shooters_bossdoor_test.go:30:22: undefined: BossDoorNoSignal\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./enemies_shooters_bossdoor_test.go:30:44: undefined: BossDoorDefeated\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-output","Output":"./enemies_shooters_bossdoor_test.go:30:155: undefined: BossDoorTunnelFinished\n"}
+{"ImportPath":"command-line-arguments [command-line-arguments.test]","Action":"build-fail"}
+{"Time":"2026-10-25T15:03:56.032734+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-10-25T15:03:56.032776+08:00","Action":"output","Package":"command-line-arguments","Output":"FAIL\tcommand-line-arguments [build failed]\n"}
+{"Time":"2026-10-25T15:03:56.032782+08:00","Action":"fail","Package":"command-line-arguments","Elapsed":0,"FailedBuild":"command-line-arguments [command-line-arguments.test]"}

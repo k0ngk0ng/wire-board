@@ -1,0 +1,181 @@
+{
+  "passed": true,
+  "id": 110,
+  "scope": "Original complete full-mix finite cue, including the recorded internal noise/DPCM requests; no new runtime tick or device-listening claim.",
+  "romSHA256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+  "file": ".local/contra-audio/export/cue-6e.wav",
+  "sha256": "c5c16a2b174c64c4a2d2a2fef2ba5507311c8db66f09efd01ed62240731f3fe8",
+  "sampleRange": [
+    88764,
+    351032
+  ],
+  "requestCount": 39,
+  "noiseRequests": 27,
+  "dpcmRequests": 12,
+  "requests": [
+    {
+      "tick": 7,
+      "id": 127
+    },
+    {
+      "tick": 7,
+      "id": 2
+    },
+    {
+      "tick": 14,
+      "id": 2
+    },
+    {
+      "tick": 21,
+      "id": 127
+    },
+    {
+      "tick": 21,
+      "id": 2
+    },
+    {
+      "tick": 42,
+      "id": 2
+    },
+    {
+      "tick": 49,
+      "id": 2
+    },
+    {
+      "tick": 56,
+      "id": 2
+    },
+    {
+      "tick": 63,
+      "id": 128
+    },
+    {
+      "tick": 63,
+      "id": 2
+    },
+    {
+      "tick": 70,
+      "id": 128
+    },
+    {
+      "tick": 70,
+      "id": 2
+    },
+    {
+      "tick": 77,
+      "id": 127
+    },
+    {
+      "tick": 77,
+      "id": 2
+    },
+    {
+      "tick": 84,
+      "id": 128
+    },
+    {
+      "tick": 84,
+      "id": 2
+    },
+    {
+      "tick": 91,
+      "id": 128
+    },
+    {
+      "tick": 91,
+      "id": 2
+    },
+    {
+      "tick": 98,
+      "id": 127
+    },
+    {
+      "tick": 98,
+      "id": 2
+    },
+    {
+      "tick": 105,
+      "id": 128
+    },
+    {
+      "tick": 105,
+      "id": 2
+    },
+    {
+      "tick": 133,
+      "id": 2
+    },
+    {
+      "tick": 140,
+      "id": 2
+    },
+    {
+      "tick": 147,
+      "id": 2
+    },
+    {
+      "tick": 189,
+      "id": 127
+    },
+    {
+      "tick": 189,
+      "id": 2
+    },
+    {
+      "tick": 196,
+      "id": 2
+    },
+    {
+      "tick": 203,
+      "id": 2
+    },
+    {
+      "tick": 210,
+      "id": 127
+    },
+    {
+      "tick": 210,
+      "id": 2
+    },
+    {
+      "tick": 217,
+      "id": 2
+    },
+    {
+      "tick": 224,
+      "id": 2
+    },
+    {
+      "tick": 231,
+      "id": 127
+    },
+    {
+      "tick": 231,
+      "id": 2
+    },
+    {
+      "tick": 245,
+      "id": 2
+    },
+    {
+      "tick": 259,
+      "id": 2
+    },
+    {
+      "tick": 273,
+      "id": 2
+    },
+    {
+      "tick": 287,
+      "id": 2
+    }
+  ],
+  "sourceFiles": {
+    ".local/contra-audio/export/sound-6e-warm120-720-run-1/calls.csv": "b2a6cc423f583918e672b6f2bba80b13fc40a3211725e2e646225f4559f26107",
+    ".local/contra-audio/export/sound-6e-warm120-720-run-1/apu.csv": "44184d0e85ee8e66f9b22da81209b560d1f67cf7fba16ec2b5f1afe147b5ab81",
+    ".local/contra-audio/export/sound-6e-warm120-720-run-1/full.wav": "e13db263ef76a58cf02aac0bee7abeaf790d163ee76b07996e22d521b1a18c46",
+    "games/contra/engine/audio_control_data.json": "34ccedb60f81dd76def7f8093f4d6e1ffffdca4dffede6603e9a8bbc84109f7b",
+    "games/contra/assets/audio-source.json": "f24d39df9285ab013eeb537b68646e0822741e3abcfd37f8f8ca41d46a8da333",
+    "scripts/contra/audio_terminal_verify.py": "7465af6ff75bdd3e616b9ee75b5bd58c843f2f5b023294fe6b49175832e5531a"
+  }
+}

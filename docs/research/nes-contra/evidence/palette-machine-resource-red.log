@@ -1,0 +1,16 @@
+=== RUN   TestLevelResourcesEnergyGiantPalettes
+=== RUN   TestLevelResourcesEnergyGiantPalettes/levels.json
+    levels_machine_palette_test.go:40: giant palette decimal 82 / hex 52: palette color group is not loaded
+=== RUN   TestLevelResourcesEnergyGiantPalettes/stage-6.json
+    levels_machine_palette_test.go:40: giant palette decimal 81 / hex 51: palette color group is not loaded
+--- FAIL: TestLevelResourcesEnergyGiantPalettes (0.00s)
+    --- FAIL: TestLevelResourcesEnergyGiantPalettes/levels.json (0.00s)
+    --- FAIL: TestLevelResourcesEnergyGiantPalettes/stage-6.json (0.00s)
+=== RUN   TestMachinePaletteExportPreservesSnowColors
+--- PASS: TestMachinePaletteExportPreservesSnowColors (0.00s)
+=== RUN   TestEnergyGiantPaletteSourceIdentity
+    levels_machine_palette_test.go:117: missing source-bound machine palettes map[81:{53718 119270 [32 19 39] f282d504bcb301799fcdabb1a21a87fb885b8524cda77684884461be7384011e} 82:{53721 119273 [32 22 39] 1cff724f0e567136a7e030dc70340dc5bb34091aa2ef411fdda7142098036ae1}]
+--- FAIL: TestEnergyGiantPaletteSourceIdentity (0.00s)
+FAIL
+FAIL	command-line-arguments	0.390s
+FAIL

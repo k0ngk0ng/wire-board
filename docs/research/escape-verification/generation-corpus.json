@@ -1,0 +1,12 @@
+{
+  "cases": 2000,
+  "checks": [
+    "connected graph",
+    "all prerequisite rooms",
+    "two-person compatibility",
+    "layout variation"
+  ],
+  "distinctLayouts": 2000,
+  "passed": true,
+  "seeds": "corpus-0 through corpus-999 in each scenario"
+}

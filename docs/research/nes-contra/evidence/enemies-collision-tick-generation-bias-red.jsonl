@@ -1,0 +1,14 @@
+{"Time":"2026-10-25T16:08:48.933947+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-10-25T16:08:49.481318+08:00","Action":"run","Package":"command-line-arguments","Test":"TestOriginalWholeEnemyPhase"}
+{"Time":"2026-10-25T16:08:49.481504+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalWholeEnemyPhase","Output":"=== RUN   TestOriginalWholeEnemyPhase\n"}
+{"Time":"2026-10-25T16:08:49.558676+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalWholeEnemyPhase","Output":"    enemies_collision_tick_test.go:186: machine-bias frame1668 record269 generation bias gote2 want03 beforee2 writes[{PC:0xf3df Bank:16 Slot:13 Value:24} {PC:0xf227 Bank:16 Slot:13 Value:3} {PC:0xf26b Bank:16 Slot:13 Value:3}]\n"}
+{"Time":"2026-10-25T16:08:49.558731+08:00","Action":"output","Package":"command-line-arguments","Test":"TestOriginalWholeEnemyPhase","Output":"--- FAIL: TestOriginalWholeEnemyPhase (0.08s)\n"}
+{"Time":"2026-10-25T16:08:49.558736+08:00","Action":"fail","Package":"command-line-arguments","Test":"TestOriginalWholeEnemyPhase","Elapsed":0.08}
+{"Time":"2026-10-25T16:08:49.55875+08:00","Action":"run","Package":"command-line-arguments","Test":"TestEnemyTickClearsEphemeralStateAndRejectsUnknownLevel"}
+{"Time":"2026-10-25T16:08:49.558753+08:00","Action":"output","Package":"command-line-arguments","Test":"TestEnemyTickClearsEphemeralStateAndRejectsUnknownLevel","Output":"=== RUN   TestEnemyTickClearsEphemeralStateAndRejectsUnknownLevel\n"}
+{"Time":"2026-10-25T16:08:49.558759+08:00","Action":"output","Package":"command-line-arguments","Test":"TestEnemyTickClearsEphemeralStateAndRejectsUnknownLevel","Output":"    enemies_collision_tick_test.go:247: empty phase overwrote incoming generation bias\n"}
+{"Time":"2026-10-25T16:08:49.558771+08:00","Action":"output","Package":"command-line-arguments","Test":"TestEnemyTickClearsEphemeralStateAndRejectsUnknownLevel","Output":"--- FAIL: TestEnemyTickClearsEphemeralStateAndRejectsUnknownLevel (0.00s)\n"}
+{"Time":"2026-10-25T16:08:49.558774+08:00","Action":"fail","Package":"command-line-arguments","Test":"TestEnemyTickClearsEphemeralStateAndRejectsUnknownLevel","Elapsed":0}
+{"Time":"2026-10-25T16:08:49.558776+08:00","Action":"output","Package":"command-line-arguments","Output":"FAIL\n"}
+{"Time":"2026-10-25T16:08:49.559383+08:00","Action":"output","Package":"command-line-arguments","Output":"FAIL\tcommand-line-arguments\t0.625s\n"}
+{"Time":"2026-10-25T16:08:49.559396+08:00","Action":"fail","Package":"command-line-arguments","Elapsed":0.625}

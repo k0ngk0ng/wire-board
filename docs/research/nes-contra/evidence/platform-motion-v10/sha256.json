@@ -1,0 +1,15 @@
+{
+  "desktop-intro-fullscreen.png": "8c064bf66cd7f8292bd03e3b164a4e69f9e6ab5fa18158be51f8aa290f831618",
+  "desktop-life-loss.png": "377e72e58599d0b4712f89df7b1c6ec402b87a25f8d2e4c915fa5ca3ac3ffa43",
+  "desktop-loading-barrier.png": "f2e463427c3a2a7561fe10e68112019d3250f7e77f205f8ca0baa060ca83ddb5",
+  "desktop-playing-fullscreen.png": "a84d8c895bc102a3c1dafcdb31130aa33e2c212cd83e0350bc4cd3d5d6712a6f",
+  "desktop-waiting.png": "1e5be45e81fb53ad5237e5d8c1d693e3ec0d1ae1b496892b190344fa2168b026",
+  "harness-at-run.py": "b722e751a4caeafc8abc4f0501fdee29ed71ab2f5ed3720369ee2f6dd5b61fe9",
+  "mobile-controller-settings.png": "06e8713d748368d8d350dc1bb4b19001d0df7e4a850b18ccc1f584839d355d15",
+  "mobile-exit.png": "fe653bcb88c0f58607f90a96aa6a13250fbd90e092d95ba5cfffedc23fa2c50d",
+  "mobile-intro-fullscreen.png": "768c744a360dc3b1b62cc95aced4c9e3ca409e2d2dc769ff4b9179a845612167",
+  "mobile-playing-fullscreen.png": "eb35b7d89d8822846fdd8515c7ffa5b7be1453db7c70ba8b15a3bb820fe0686d",
+  "native-input-at-run.mjs": "d01e3fed4be92f0fe61fee5a1442a75b8beacc085e67474a0d82c706e4617af1",
+  "network-at-run.py": "b81398bfc64eaf9da5245ee20fed606a4400980f542d75056f9154763355f77f",
+  "result.json": "b4ebef90a6dbc8e459083e58ec431b7576d26f2384fbecddf75365eb1526e006"
+}

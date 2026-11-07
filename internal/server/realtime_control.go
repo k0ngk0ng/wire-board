@@ -15,7 +15,7 @@ func (s *Server) setModule(room *Room, match gameapi.Match) error {
 		match.Deadline = 0
 		match.TimeoutActors = nil
 	}
-	return room.setModule(match)
+	return room.setModule(match, s.modules[room.Kind])
 }
 
 // Old timeout takeovers must not silently become manual autoplay after upgrade.

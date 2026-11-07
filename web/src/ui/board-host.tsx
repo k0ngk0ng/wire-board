@@ -20,10 +20,14 @@ export function Modal({
   onClose,
   dismissible = true,
   className = "",
+  initialFocus,
+  headerActions,
 }: {
   title: string;
   dismissible?: boolean;
   className?: string;
+  initialFocus?: string;
+  headerActions?: React.ReactNode;
   children: React.ReactNode;
   onClose: () => void;
 }) {
@@ -31,7 +35,15 @@ export function Modal({
   useEffect(() => {
     const prev = document.activeElement as HTMLElement;
     const el = ref.current;
-    el?.querySelector<HTMLElement>("input,button,select")?.focus();
+    const preferred = initialFocus
+      ? el?.querySelector<HTMLElement>(initialFocus)
+      : null;
+    (
+      preferred ??
+      el?.querySelector<HTMLElement>(
+        "button:not(:disabled),input:not(:disabled),select:not(:disabled)",
+      )
+    )?.focus();
     function key(e: KeyboardEvent) {
       if (el?.closest("[inert]")) return;
       if (e.key === "Escape" && dismissible) {
@@ -70,6 +82,10 @@ export function Modal({
       prev?.focus({ preventScroll: true });
     };
   }, []);
+  useEffect(() => {
+    if (initialFocus)
+      ref.current?.querySelector<HTMLElement>(initialFocus)?.focus();
+  }, [initialFocus]);
   return (
     <div
       className="modal-backdrop"
@@ -86,6 +102,7 @@ export function Modal({
       >
         <div className="modal-head">
           <h2>{title}</h2>
+          {headerActions}
           {dismissible && (
             <button className="icon-button" onClick={onClose} aria-label="关闭">
               <X size={20} />

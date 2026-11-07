@@ -1,0 +1,9 @@
+{"Time":"2026-10-25T22:31:23.89865+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine"}
+{"Time":"2026-10-25T22:31:24.115182+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalContinuousInterludeWorld"}
+{"Time":"2026-10-25T22:31:24.115296+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalContinuousInterludeWorld","Output":"=== RUN   TestOriginalContinuousInterludeWorld\n"}
+{"Time":"2026-10-25T22:31:27.951386+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalContinuousInterludeWorld","Output":"    world_interlude_test.go:199: 7997 continuous original World calls, including Boss defeat, interlude, reset, second-stage intro/entrance and 120 battle calls; RAM/PPU/audio and per-frame JSON restore matched; phases=map[1:10:701 1:4:5987 1:5:1 1:8:162 1:9:323 2:0:1 2:1:669 2:2:1 2:3:32 2:4:120]\n"}
+{"Time":"2026-10-25T22:31:27.951447+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalContinuousInterludeWorld","Output":"--- PASS: TestOriginalContinuousInterludeWorld (3.84s)\n"}
+{"Time":"2026-10-25T22:31:27.951453+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalContinuousInterludeWorld","Elapsed":3.84}
+{"Time":"2026-10-25T22:31:27.951469+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"PASS\n"}
+{"Time":"2026-10-25T22:31:27.961818+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/contra/engine\t4.063s\n"}
+{"Time":"2026-10-25T22:31:27.961873+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Elapsed":4.063}

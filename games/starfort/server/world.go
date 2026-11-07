@@ -77,20 +77,22 @@ type Objective struct {
 	BaseAtStart int     `json:"baseAtStart"`
 }
 type World struct {
-	Seed         int64       `json:"seed"`
-	Stage        int         `json:"stage"`
-	PreparedWave int         `json:"preparedWave"`
-	Map          Map         `json:"map"`
-	Choice       *Choice     `json:"choice"`
-	BoonChoice   *Choice     `json:"boonChoice"`
-	Boons        Boons       `json:"boons"`
-	Event        WaveEvent   `json:"event"`
-	Forecast     []WaveEvent `json:"forecast"`
-	Objectives   []Objective `json:"objectives"`
-	Branches     []string    `json:"branches"`
-	ShortcutWave int         `json:"shortcutWave"`
-	BoonWave     int         `json:"boonWave"`
-	Legacy       bool        `json:"legacy"`
+	ObjectiveRefreshWave int         `json:"objectiveRefreshWave,omitempty"`
+	Layout               string      `json:"layout,omitempty"`
+	Seed                 int64       `json:"seed"`
+	Stage                int         `json:"stage"`
+	PreparedWave         int         `json:"preparedWave"`
+	Map                  Map         `json:"map"`
+	Choice               *Choice     `json:"choice"`
+	BoonChoice           *Choice     `json:"boonChoice"`
+	Boons                Boons       `json:"boons"`
+	Event                WaveEvent   `json:"event"`
+	Forecast             []WaveEvent `json:"forecast"`
+	Objectives           []Objective `json:"objectives"`
+	Branches             []string    `json:"branches"`
+	ShortcutWave         int         `json:"shortcutWave"`
+	BoonWave             int         `json:"boonWave"`
+	Legacy               bool        `json:"legacy"`
 }
 
 func cloneMap(m Map) Map {
@@ -232,6 +234,10 @@ func eventFor(wave int, seed int64) WaveEvent {
 	return e
 }
 func (s *State) rotateRoutes() {
+	if s.World.Layout == "central" {
+		s.World.ShortcutWave = 0
+		return
+	}
 	w := &s.World
 	for i := range w.Map.Routes {
 		r := &w.Map.Routes[i]
@@ -277,13 +283,21 @@ func (s *State) worldPrepare(now int64) {
 	w.Event = eventFor(s.Wave, w.Seed)
 	w.Forecast = []WaveEvent{eventFor(s.Wave+1, w.Seed), eventFor(s.Wave+2, w.Seed)}
 	s.rotateRoutes()
-	s.offerExpansion(now)
+	if w.Layout == "central" {
+		s.offerCentralObjectives()
+	} else {
+		s.offerExpansion(now)
+	}
+	s.refreshObjectives()
 	if s.CompletedWaves > 0 && s.CompletedWaves%5 == 0 && w.BoonWave < s.CompletedWaves {
 		w.BoonWave = s.CompletedWaves
 		w.BoonChoice = &Choice{Kind: "boon", Stage: w.Stage, Title: "星核赐福 · 全队选择成长", Votes: make([]string, len(s.Players)), Deadline: s.NextAt, Options: []ChoiceOption{{ID: "power", Label: "星火之力", Description: "全队防御塔伤害永久增加 12%"}, {ID: "reach", Label: "远望之眼", Description: "全队防御塔射程永久增加 8%"}, {ID: "fortune", Label: "丰收之光", Description: "击杀与过波金币永久增加 10%"}}}
 	}
 }
 func (s *State) offerExpansion(now int64) {
+	if s.World.Layout == "central" {
+		return
+	}
 	w := &s.World
 	wanted := min(4, 1+(s.Wave-1)/5)
 	if w.Stage >= wanted || w.Choice != nil {
@@ -534,8 +548,17 @@ func (s *State) resolveChoices(now int64) {
 }
 
 func (s *State) validWorld() error {
+	if s.World.ObjectiveRefreshWave < 0 || s.World.ObjectiveRefreshWave > s.CompletedWaves || s.World.ObjectiveRefreshWave%15 != 0 {
+		return errors.New("无效任务刷新周期")
+	}
 	w := s.World
 	m := w.Map
+	if w.Layout != "" && w.Layout != "central" {
+		return errors.New("无效地图布局")
+	}
+	if w.Layout == "central" && (len(m.Routes) != len(s.Players) || m.Base != (Point{float64(m.Width) / 2, float64(m.Height) / 2}) || w.Choice != nil) {
+		return errors.New("中央地图路线或星核被改变")
+	}
 	if w.Seed < 1 || w.Stage < 1 || w.Stage > 4 || w.PreparedWave < 0 || w.PreparedWave > s.Wave || w.BoonWave < 0 || w.Boons.Power < 0 || w.Boons.Reach < 0 || w.Boons.Fortune < 0 || w.Boons.Power > 1000000 || w.Boons.Reach > 1000000 || w.Boons.Fortune > 1000000 || len(w.Forecast) > 2 || w.ShortcutWave < 0 || len(m.Pads) < 16 || len(m.Pads) > 40 || len(m.Routes) < 1 || len(m.Routes) > 8 || len(m.Regions) < 1 || len(m.Regions) > 4 || len(m.Features) > 32 || len(w.Objectives) > 3 || len(w.Branches) > 3 || m.Width < 960 || m.Width > 1920 || m.Height < 640 || m.Height > 960 {
 		return errors.New("无效扩展战场")
 	}

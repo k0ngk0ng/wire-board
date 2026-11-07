@@ -1,0 +1,14 @@
+F.....
+======================================================================
+FAIL: test_boss_rolling_effect_uses_runtime_rate_two (test_native_classic.NativeClassicTests.test_boss_rolling_effect_uses_runtime_rate_two)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/pvz/games/pvz/build/test_native_classic.py", line 12, in test_boss_rolling_effect_uses_runtime_rate_two
+    self.assertEqual(module.runtime_fps("bossfireball", "idle", 12), 2)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 12 != 2
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.000s
+
+FAILED (failures=1)

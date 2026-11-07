@@ -1,0 +1,8 @@
+{"Time":"2026-10-25T18:41:18.554635+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine"}
+{"Time":"2026-10-25T18:41:18.976242+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestCampaignSceneOriginalIntro"}
+{"Time":"2026-10-25T18:41:18.976545+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestCampaignSceneOriginalIntro","Output":"=== RUN   TestCampaignSceneOriginalIntro\n"}
+{"Time":"2026-10-25T18:41:19.19808+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestCampaignSceneOriginalIntro","Output":"--- PASS: TestCampaignSceneOriginalIntro (0.22s)\n"}
+{"Time":"2026-10-25T18:41:19.198115+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestCampaignSceneOriginalIntro","Elapsed":0.22}
+{"Time":"2026-10-25T18:41:19.198132+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"PASS\n"}
+{"Time":"2026-10-25T18:41:19.199358+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/contra/engine\t0.645s\n"}
+{"Time":"2026-10-25T18:41:19.199375+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Elapsed":0.645}

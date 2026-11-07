@@ -1,15 +1,43 @@
 package server
 
-// Expose only explicitly wired independent modules. FC/MD remain legacy layout
-// presets; an independent game receives its own mutable persistence key.
+import (
+	"github.com/k0ngk0ng/wire-board/games"
+	"github.com/k0ngk0ng/wire-board/internal/gameapi"
+)
+
+func navigationController() *gameapi.ControllerDefinition {
+	button := func(index int) gameapi.ControllerPhysicalBinding {
+		return gameapi.ControllerPhysicalBinding{Type: "button", Index: index}
+	}
+	axis := func(index, direction int) gameapi.ControllerPhysicalBinding {
+		return gameapi.ControllerPhysicalBinding{Type: "axis", Index: index, Direction: direction}
+	}
+	return &gameapi.ControllerDefinition{Layout: "navigation", Actions: []gameapi.ControllerAction{
+		{ID: "navUp", Label: "向上选择", Keys: []string{"ArrowUp"}, Gamepad: []gameapi.ControllerPhysicalBinding{button(12), axis(1, -1)}},
+		{ID: "navDown", Label: "向下选择", Keys: []string{"ArrowDown"}, Gamepad: []gameapi.ControllerPhysicalBinding{button(13), axis(1, 1)}},
+		{ID: "navLeft", Label: "向左选择", Keys: []string{"ArrowLeft"}, Gamepad: []gameapi.ControllerPhysicalBinding{button(14), axis(0, -1)}},
+		{ID: "navRight", Label: "向右选择", Keys: []string{"ArrowRight"}, Gamepad: []gameapi.ControllerPhysicalBinding{button(15), axis(0, 1)}},
+		{ID: "confirm", Label: "选择／确认", Keys: []string{"Enter", "Space"}, Gamepad: []gameapi.ControllerPhysicalBinding{button(0)}},
+		{ID: "cancel", Label: "取消／返回", Keys: []string{"Backspace"}, Gamepad: []gameapi.ControllerPhysicalBinding{button(1)}},
+		{ID: "previousGroup", Label: "上一组操作", Keys: []string{"PageUp"}, Gamepad: []gameapi.ControllerPhysicalBinding{button(4)}},
+		{ID: "nextGroup", Label: "下一组操作", Keys: []string{"PageDown"}, Gamepad: []gameapi.ControllerPhysicalBinding{button(5)}},
+	}}
+}
 func (s *Server) controllerModels() []controllerModel {
 	models := controllerModels()
 	for _, kind := range s.gameKinds {
-		module, independent := s.modules[kind]
-		if !independent || module.Controls == nil {
+		spec := s.modules[kind].Controls
+		if _, independent := s.modules[kind]; !independent {
+			spec = games.ControllerDefinitionFor(kind)
+		}
+		if spec == nil {
 			continue
 		}
-		spec := module.Controls
+		if spec.Layout == "navigation" {
+			base := navigationController()
+			base.Actions = append(base.Actions, spec.Actions...)
+			spec = base
+		}
 		model := controllerModel{ID: "game:" + kind, Name: s.gameNames[kind], GameID: kind, Layout: spec.Layout, legacyProfile: spec.LegacyProfile}
 		if spec.Layout == "classic-2" || spec.Layout == "md-6" {
 			for _, base := range controllerModels() {
@@ -45,9 +73,7 @@ func (s *Server) controllerModels() []controllerModel {
 				}
 			}
 		}
-		if len(model.Buttons) > 0 {
-			models = append(models, model)
-		}
+		models = append(models, model)
 	}
 	return models
 }

@@ -1,0 +1,36 @@
+{
+  "passed": true,
+  "rom_source_unchanged": true,
+  "screen_pointer_entries": 14,
+  "distinct_screens": 13,
+  "supertiles": 108,
+  "oracle_queries": 3234,
+  "oracle_maps": 13,
+  "oracle_codes": [
+    0,
+    1,
+    2
+  ],
+  "observed_stream_decodes": 1,
+  "repeat_byte_identical": [
+    "ram.bin",
+    "collision.jsonl",
+    "collision-maps.jsonl",
+    "streaming.jsonl"
+  ],
+  "first_screen": {
+    "supertile_ids": 56,
+    "pattern_tiles": 896,
+    "attributes": 56,
+    "collision_bytes": 64,
+    "all_match": true
+  },
+  "second_screen": {
+    "supertile_ids_match": 56,
+    "left_tile_columns_match": 16,
+    "remaining_columns": "partial original streaming; preserved as observed"
+  },
+  "terrain_sha256": "b30fe359b3a96429aa6401fcf733045d513cf6c72cbbc89900176b72996c2031",
+  "oracle_sha256": "de35044e7c68f4c99cd70c2103466c8f9770c33cbcf6c8f61b6208aad4ca5925",
+  "oracle_uncompressed_sha256": "fa4286d691469127802212b14ba73ee40160043ae1db2df07e4a5fbd215e0f07"
+}

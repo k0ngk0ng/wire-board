@@ -1,0 +1,972 @@
+[
+  {
+    "category": "query-normal",
+    "case": "query-normal-r10-1",
+    "slots": [
+      {
+        "slot": 14,
+        "kind": 1,
+        "routine": 2,
+        "locator": 8552,
+        "workWriteCount": 0
+      },
+      {
+        "slot": 13,
+        "kind": 16,
+        "routine": 10,
+        "locator": 2305,
+        "workWriteCount": 5
+      }
+    ],
+    "requests": [
+      {
+        "x": 146,
+        "y": 112,
+        "code": 131,
+        "used": 64
+      },
+      {
+        "x": 114,
+        "y": 112,
+        "code": 131,
+        "used": 64
+      }
+    ],
+    "locatorReads": [
+      {
+        "pc": 46726,
+        "bank": 16,
+        "slot": 13,
+        "value": 2305,
+        "workWriteCount": 5
+      }
+    ],
+    "terrainWorkWrites": [
+      {
+        "pc": 60321,
+        "bank": 16,
+        "slot": 14,
+        "address": 19,
+        "value": 80
+      },
+      {
+        "pc": 57357,
+        "bank": 16,
+        "slot": 14,
+        "address": 18,
+        "value": 80
+      },
+      {
+        "pc": 57384,
+        "bank": 16,
+        "slot": 14,
+        "address": 18,
+        "value": 5
+      },
+      {
+        "pc": 57398,
+        "bank": 16,
+        "slot": 14,
+        "address": 18,
+        "value": 1
+      },
+      {
+        "pc": 57400,
+        "bank": 16,
+        "slot": 14,
+        "address": 19,
+        "value": 9
+      },
+      {
+        "pc": 59805,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 2
+      },
+      {
+        "pc": 59808,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 4
+      },
+      {
+        "pc": 59811,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 8
+      },
+      {
+        "pc": 59813,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 16
+      },
+      {
+        "pc": 59816,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 32
+      },
+      {
+        "pc": 46738,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 5
+      },
+      {
+        "pc": 46744,
+        "bank": 16,
+        "slot": 13,
+        "address": 19,
+        "value": 9
+      },
+      {
+        "pc": 59805,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 10
+      },
+      {
+        "pc": 59808,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 20
+      },
+      {
+        "pc": 59811,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 40
+      },
+      {
+        "pc": 59813,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 80
+      },
+      {
+        "pc": 59816,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 160
+      }
+    ]
+  },
+  {
+    "category": "query-high-y",
+    "case": "query-high-y-r10-37",
+    "slots": [
+      {
+        "slot": 14,
+        "kind": 1,
+        "routine": 2,
+        "locator": 8552,
+        "workWriteCount": 0
+      },
+      {
+        "slot": 13,
+        "kind": 16,
+        "routine": 10,
+        "locator": 14593,
+        "workWriteCount": 5
+      }
+    ],
+    "requests": [
+      {
+        "x": 146,
+        "y": 112,
+        "code": 131,
+        "used": 64
+      },
+      {
+        "x": 114,
+        "y": 112,
+        "code": 131,
+        "used": 64
+      }
+    ],
+    "locatorReads": [
+      {
+        "pc": 46726,
+        "bank": 16,
+        "slot": 13,
+        "value": 14593,
+        "workWriteCount": 5
+      }
+    ],
+    "terrainWorkWrites": [
+      {
+        "pc": 60321,
+        "bank": 16,
+        "slot": 14,
+        "address": 19,
+        "value": 80
+      },
+      {
+        "pc": 57357,
+        "bank": 16,
+        "slot": 14,
+        "address": 18,
+        "value": 80
+      },
+      {
+        "pc": 57384,
+        "bank": 16,
+        "slot": 14,
+        "address": 18,
+        "value": 5
+      },
+      {
+        "pc": 57398,
+        "bank": 16,
+        "slot": 14,
+        "address": 18,
+        "value": 1
+      },
+      {
+        "pc": 57400,
+        "bank": 16,
+        "slot": 14,
+        "address": 19,
+        "value": 57
+      },
+      {
+        "pc": 59805,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 2
+      },
+      {
+        "pc": 59808,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 4
+      },
+      {
+        "pc": 59811,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 8
+      },
+      {
+        "pc": 59813,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 16
+      },
+      {
+        "pc": 59816,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 32
+      },
+      {
+        "pc": 46738,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 5
+      },
+      {
+        "pc": 46744,
+        "bank": 16,
+        "slot": 13,
+        "address": 19,
+        "value": 57
+      },
+      {
+        "pc": 59805,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 10
+      },
+      {
+        "pc": 59808,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 20
+      },
+      {
+        "pc": 59811,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 40
+      },
+      {
+        "pc": 59813,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 80
+      },
+      {
+        "pc": 59816,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 160
+      }
+    ]
+  },
+  {
+    "category": "probe-overflow",
+    "case": "probe-overflow-r10-53",
+    "slots": [
+      {
+        "slot": 14,
+        "kind": 5,
+        "routine": 2,
+        "locator": 8544,
+        "workWriteCount": 0
+      },
+      {
+        "slot": 13,
+        "kind": 16,
+        "routine": 10,
+        "locator": 16480,
+        "workWriteCount": 1
+      }
+    ],
+    "requests": [
+      {
+        "x": 146,
+        "y": 112,
+        "code": 131,
+        "used": 64
+      },
+      {
+        "x": 114,
+        "y": 112,
+        "code": 131,
+        "used": 64
+      }
+    ],
+    "locatorReads": [
+      {
+        "pc": 46726,
+        "bank": 16,
+        "slot": 13,
+        "value": 16480,
+        "workWriteCount": 1
+      }
+    ],
+    "terrainWorkWrites": [
+      {
+        "pc": 60321,
+        "bank": 16,
+        "slot": 14,
+        "address": 19,
+        "value": 64
+      },
+      {
+        "pc": 59805,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 192
+      },
+      {
+        "pc": 59808,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 128
+      },
+      {
+        "pc": 59811,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 0
+      },
+      {
+        "pc": 59813,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 0
+      },
+      {
+        "pc": 59816,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 0
+      },
+      {
+        "pc": 46738,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 100
+      },
+      {
+        "pc": 46744,
+        "bank": 16,
+        "slot": 13,
+        "address": 19,
+        "value": 64
+      },
+      {
+        "pc": 59805,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 200
+      },
+      {
+        "pc": 59808,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 144
+      },
+      {
+        "pc": 59811,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 32
+      },
+      {
+        "pc": 59813,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 64
+      },
+      {
+        "pc": 59816,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 128
+      }
+    ]
+  },
+  {
+    "category": "graphics-overwritten",
+    "case": "graphics-overwritten-r10-69",
+    "slots": [
+      {
+        "slot": 15,
+        "kind": 22,
+        "routine": 6,
+        "locator": 8552,
+        "workWriteCount": 0
+      },
+      {
+        "slot": 14,
+        "kind": 1,
+        "routine": 2,
+        "locator": 8466,
+        "workWriteCount": 12
+      },
+      {
+        "slot": 13,
+        "kind": 16,
+        "routine": 10,
+        "locator": 6657,
+        "workWriteCount": 17
+      }
+    ],
+    "requests": [
+      {
+        "x": 178,
+        "y": 64,
+        "code": 140,
+        "used": 10
+      },
+      {
+        "x": 146,
+        "y": 64,
+        "code": 141,
+        "used": 37
+      },
+      {
+        "x": 146,
+        "y": 112,
+        "code": 131,
+        "used": 64
+      },
+      {
+        "x": 114,
+        "y": 112,
+        "code": 131,
+        "used": 64
+      }
+    ],
+    "locatorReads": [
+      {
+        "pc": 46726,
+        "bank": 16,
+        "slot": 13,
+        "value": 6657,
+        "workWriteCount": 17
+      }
+    ],
+    "terrainWorkWrites": [
+      {
+        "pc": 50802,
+        "bank": 22,
+        "slot": 15,
+        "address": 18,
+        "value": 64
+      },
+      {
+        "pc": 50819,
+        "bank": 22,
+        "slot": 15,
+        "address": 18,
+        "value": 128
+      },
+      {
+        "pc": 50822,
+        "bank": 22,
+        "slot": 15,
+        "address": 18,
+        "value": 0
+      },
+      {
+        "pc": 50825,
+        "bank": 22,
+        "slot": 15,
+        "address": 19,
+        "value": 1
+      },
+      {
+        "pc": 50855,
+        "bank": 22,
+        "slot": 15,
+        "address": 19,
+        "value": 33
+      },
+      {
+        "pc": 50894,
+        "bank": 22,
+        "slot": 15,
+        "address": 18,
+        "value": 22
+      },
+      {
+        "pc": 50802,
+        "bank": 22,
+        "slot": 15,
+        "address": 18,
+        "value": 64
+      },
+      {
+        "pc": 50819,
+        "bank": 22,
+        "slot": 15,
+        "address": 18,
+        "value": 128
+      },
+      {
+        "pc": 50822,
+        "bank": 22,
+        "slot": 15,
+        "address": 18,
+        "value": 0
+      },
+      {
+        "pc": 50825,
+        "bank": 22,
+        "slot": 15,
+        "address": 19,
+        "value": 1
+      },
+      {
+        "pc": 50855,
+        "bank": 22,
+        "slot": 15,
+        "address": 19,
+        "value": 33
+      },
+      {
+        "pc": 50894,
+        "bank": 22,
+        "slot": 15,
+        "address": 18,
+        "value": 18
+      },
+      {
+        "pc": 60321,
+        "bank": 16,
+        "slot": 14,
+        "address": 19,
+        "value": 147
+      },
+      {
+        "pc": 57357,
+        "bank": 16,
+        "slot": 14,
+        "address": 18,
+        "value": 147
+      },
+      {
+        "pc": 57384,
+        "bank": 16,
+        "slot": 14,
+        "address": 18,
+        "value": 9
+      },
+      {
+        "pc": 57398,
+        "bank": 16,
+        "slot": 14,
+        "address": 18,
+        "value": 1
+      },
+      {
+        "pc": 57400,
+        "bank": 16,
+        "slot": 14,
+        "address": 19,
+        "value": 26
+      },
+      {
+        "pc": 59805,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 2
+      },
+      {
+        "pc": 59808,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 4
+      },
+      {
+        "pc": 59811,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 8
+      },
+      {
+        "pc": 59813,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 16
+      },
+      {
+        "pc": 59816,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 32
+      },
+      {
+        "pc": 46738,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 5
+      },
+      {
+        "pc": 46744,
+        "bank": 16,
+        "slot": 13,
+        "address": 19,
+        "value": 26
+      },
+      {
+        "pc": 59805,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 10
+      },
+      {
+        "pc": 59808,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 20
+      },
+      {
+        "pc": 59811,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 40
+      },
+      {
+        "pc": 59813,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 80
+      },
+      {
+        "pc": 59816,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 160
+      }
+    ]
+  },
+  {
+    "category": "graphics-overflow",
+    "case": "graphics-overflow-r10-73",
+    "slots": [
+      {
+        "slot": 15,
+        "kind": 22,
+        "routine": 6,
+        "locator": 8552,
+        "workWriteCount": 0
+      },
+      {
+        "slot": 14,
+        "kind": 5,
+        "routine": 2,
+        "locator": 8466,
+        "workWriteCount": 12
+      },
+      {
+        "slot": 13,
+        "kind": 16,
+        "routine": 10,
+        "locator": 17170,
+        "workWriteCount": 13
+      }
+    ],
+    "requests": [
+      {
+        "x": 178,
+        "y": 64,
+        "code": 140,
+        "used": 10
+      },
+      {
+        "x": 146,
+        "y": 64,
+        "code": 141,
+        "used": 37
+      },
+      {
+        "x": 146,
+        "y": 112,
+        "code": 131,
+        "used": 64
+      },
+      {
+        "x": 114,
+        "y": 112,
+        "code": 131,
+        "used": 64
+      }
+    ],
+    "locatorReads": [
+      {
+        "pc": 46726,
+        "bank": 16,
+        "slot": 13,
+        "value": 17170,
+        "workWriteCount": 13
+      }
+    ],
+    "terrainWorkWrites": [
+      {
+        "pc": 50802,
+        "bank": 22,
+        "slot": 15,
+        "address": 18,
+        "value": 64
+      },
+      {
+        "pc": 50819,
+        "bank": 22,
+        "slot": 15,
+        "address": 18,
+        "value": 128
+      },
+      {
+        "pc": 50822,
+        "bank": 22,
+        "slot": 15,
+        "address": 18,
+        "value": 0
+      },
+      {
+        "pc": 50825,
+        "bank": 22,
+        "slot": 15,
+        "address": 19,
+        "value": 1
+      },
+      {
+        "pc": 50855,
+        "bank": 22,
+        "slot": 15,
+        "address": 19,
+        "value": 33
+      },
+      {
+        "pc": 50894,
+        "bank": 22,
+        "slot": 15,
+        "address": 18,
+        "value": 22
+      },
+      {
+        "pc": 50802,
+        "bank": 22,
+        "slot": 15,
+        "address": 18,
+        "value": 64
+      },
+      {
+        "pc": 50819,
+        "bank": 22,
+        "slot": 15,
+        "address": 18,
+        "value": 128
+      },
+      {
+        "pc": 50822,
+        "bank": 22,
+        "slot": 15,
+        "address": 18,
+        "value": 0
+      },
+      {
+        "pc": 50825,
+        "bank": 22,
+        "slot": 15,
+        "address": 19,
+        "value": 1
+      },
+      {
+        "pc": 50855,
+        "bank": 22,
+        "slot": 15,
+        "address": 19,
+        "value": 33
+      },
+      {
+        "pc": 50894,
+        "bank": 22,
+        "slot": 15,
+        "address": 18,
+        "value": 18
+      },
+      {
+        "pc": 60321,
+        "bank": 16,
+        "slot": 14,
+        "address": 19,
+        "value": 67
+      },
+      {
+        "pc": 59805,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 36
+      },
+      {
+        "pc": 59808,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 72
+      },
+      {
+        "pc": 59811,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 144
+      },
+      {
+        "pc": 59813,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 32
+      },
+      {
+        "pc": 59816,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 64
+      },
+      {
+        "pc": 46738,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 22
+      },
+      {
+        "pc": 46744,
+        "bank": 16,
+        "slot": 13,
+        "address": 19,
+        "value": 67
+      },
+      {
+        "pc": 59805,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 44
+      },
+      {
+        "pc": 59808,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 88
+      },
+      {
+        "pc": 59811,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 176
+      },
+      {
+        "pc": 59813,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 96
+      },
+      {
+        "pc": 59816,
+        "bank": 16,
+        "slot": 13,
+        "address": 18,
+        "value": 192
+      }
+    ]
+  }
+]

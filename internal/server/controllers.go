@@ -287,6 +287,17 @@ func (s *Server) saveController(w http.ResponseWriter, r *http.Request) {
 		fail(w, 409, "设置已在其他页面更新，请重新加载后再修改")
 		return
 	}
+	// Old keyboard-only clients do not know about physical devices. An omitted
+	// map preserves them; an explicit empty map is a deliberate device reset.
+	if profile.Gamepads == nil {
+		profile.Gamepads = current.Gamepads
+	}
+	if profile.GamepadDevice == nil {
+		profile.GamepadDevice = current.GamepadDevice
+	}
+	if profile.KeyboardAlt == nil {
+		profile.KeyboardAlt = current.KeyboardAlt
+	}
 	profile.Revision++
 	data, err := json.Marshal(profile)
 	if err == nil {

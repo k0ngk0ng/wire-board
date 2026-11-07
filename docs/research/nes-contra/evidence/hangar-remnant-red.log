@@ -1,0 +1,8 @@
+=== RUN   TestBuiltinBotVisionHangarRemnantPreservesVisiblePlatform
+    bot_hangar_remnant_test.go:12: retained bridge became air at 70: known=true kind=0
+    bot_hangar_remnant_test.go:12: retained bridge became air at 100: known=true kind=0
+    bot_hangar_remnant_test.go:12: retained bridge became air at 150: known=true kind=0
+--- FAIL: TestBuiltinBotVisionHangarRemnantPreservesVisiblePlatform (1.02s)
+FAIL
+FAIL	github.com/k0ngk0ng/wire-board/games/contra/engine	1.593s
+FAIL

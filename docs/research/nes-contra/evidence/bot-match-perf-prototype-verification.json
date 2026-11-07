@@ -1,0 +1,144 @@
+{
+  "passed": true,
+  "productionIntegrated": false,
+  "scope": "Opt-in test-only visible-pixel matcher prototype and isolated compiler overlay. No observer/rule/policy/cadence source edit; no runtime state is supplied to matching.",
+  "testFirst": {
+    "red": "Missing prototype helpers before implementation",
+    "records": "bot-match-perf-prototype-records.json.gz"
+  },
+  "equivalence": {
+    "existingBoundaries": 51,
+    "randomizedCandidates": 18760,
+    "randomSeed": "0x4e4553",
+    "battleFrame": 600,
+    "legalStartFrame": 2,
+    "battleRoutine": 4,
+    "templates": 2332,
+    "visibleColors": 14,
+    "battleCandidates": 91541,
+    "partialCandidates": 31710,
+    "acceptedCandidates": 132,
+    "scoresAndExactEqual": true,
+    "racePassed": true,
+    "observerRegressionRacePassed": true
+  },
+  "measurements": {
+    "host": "Apple M4, darwin/arm64",
+    "hostBatchMS": 50,
+    "framesPerHostBatch": 3,
+    "timer": {
+      "baseline": {
+        "samples": [
+          {
+            "iterations": 10,
+            "nsPerBatch": 66821071,
+            "bytesPerBatch": 9927764,
+            "allocsPerBatch": 3031
+          },
+          {
+            "iterations": 10,
+            "nsPerBatch": 65697783,
+            "bytesPerBatch": 9927773,
+            "allocsPerBatch": 3031
+          },
+          {
+            "iterations": 10,
+            "nsPerBatch": 65353654,
+            "bytesPerBatch": 9940925,
+            "allocsPerBatch": 3033
+          },
+          {
+            "iterations": 10,
+            "nsPerBatch": 65202921,
+            "bytesPerBatch": 9940927,
+            "allocsPerBatch": 3033
+          },
+          {
+            "iterations": 10,
+            "nsPerBatch": 65034317,
+            "bytesPerBatch": 9940925,
+            "allocsPerBatch": 3033
+          }
+        ],
+        "medianNS": 65353654,
+        "medianBytes": 9940925,
+        "medianAllocs": 3033
+      },
+      "prototype": {
+        "samples": [
+          {
+            "iterations": 10,
+            "nsPerBatch": 30114304,
+            "bytesPerBatch": 10272813,
+            "allocsPerBatch": 3082
+          },
+          {
+            "iterations": 10,
+            "nsPerBatch": 29549879,
+            "bytesPerBatch": 10285975,
+            "allocsPerBatch": 3084
+          },
+          {
+            "iterations": 10,
+            "nsPerBatch": 29760279,
+            "bytesPerBatch": 10285976,
+            "allocsPerBatch": 3084
+          },
+          {
+            "iterations": 10,
+            "nsPerBatch": 29968679,
+            "bytesPerBatch": 10299138,
+            "allocsPerBatch": 3086
+          },
+          {
+            "iterations": 10,
+            "nsPerBatch": 29592629,
+            "bytesPerBatch": 10285975,
+            "allocsPerBatch": 3084
+          }
+        ],
+        "medianNS": 29760279,
+        "medianBytes": 10285975,
+        "medianAllocs": 3084
+      }
+    },
+    "timerSpeedup": 2.1960027323668574,
+    "candidateKernelMedianNS": {
+      "baseline": 15940744,
+      "rowPopcount": 3981964,
+      "rowPopcountWithFrameIndex": 4177209
+    },
+    "frameIndexExtraBytes": 115016,
+    "frameIndexExtraAllocs": 17
+  },
+  "sourceIdentity": {
+    "scope": "Compiler-only overlay; immutable template masks and per-frame public RGB planes. No repository source replacement, rule/policy/cadence change, or release build.",
+    "baseline": {
+      "games/contra/engine/bot_vision.go": "5eeb319048ee74149ffef2fd197554ac41b001b9b2726e65edc439bb59707d7c",
+      "games/contra/engine/bot_vision_match.go": "59781619dd468b1e5cb5924db7c82b6702b8f2ca033a4d8187cc69b1462f52ea",
+      "games/contra/engine/bot_match_perf_prototype_helper_test.go": "f309a4f1a0b0ed312ffd19fea7049e1bdbc0cc12deda5f10bb4329f420aa3b1c",
+      "games/contra/server/visual_performance_benchmark_test.go": "1a2e67905143dffb7f0c9ba4e147b017d2010ae0a67008ba2b9710551fa3b390"
+    },
+    "overlay": {
+      "bot_vision.go": "a6955e4dd3abaa77b89ed7b41e89947b374492a2b8d21acb3ca4009af156ba59",
+      "prototype_helper.go": "acefffc1e00ebce6aeffd3510762c0e3ae2a2730756cf356b7b8fd7c53b74d69",
+      "overlay.json": "8aad02b0ba34fa2a0ec7921a7e6e5a32d02acf2b8f585cb66a3e79177dd0e22f"
+    }
+  },
+  "prototypeSHA256": {
+    "games/contra/engine/bot_match_perf_prototype_test.go": "d9b48efb847e282588d6adafc758334183d5b9eb1cec797e68904cb7e034c764",
+    "games/contra/engine/bot_match_perf_prototype_helper_test.go": "f309a4f1a0b0ed312ffd19fea7049e1bdbc0cc12deda5f10bb4329f420aa3b1c"
+  },
+  "commands": [
+    ". scripts/env.sh",
+    "go test ./games/contra/engine -tags contra_match_perf_prototype -run '^TestBotMatch(PerfPrototype|VisualPatternBoundaries)' -race -count=1",
+    "go test ./games/contra/engine -tags contra_match_perf_prototype -run '^$' -bench '^BenchmarkBotMatchPerfPrototype' -benchtime=500ms -count=3",
+    "python3 -B .local/contra-match-perf-prototype/prepare_overlay.py",
+    "go test -overlay .local/contra-match-perf-prototype/overlay.json ./games/contra/server -run '^$' -bench '^BenchmarkContraSharedVisualTimer/two-bots$' -benchtime=10x -count=5"
+  ],
+  "limits": [
+    "One legally reached stage-1 battle baseline, plus original boundary/randomized and observer regression tests; no all-stage worst-case performance claim.",
+    "Timing is for this Apple M4 machine; production target architecture still requires its own check.",
+    "The prototype remains opt-in and leaves the production engine unchanged."
+  ]
+}

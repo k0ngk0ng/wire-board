@@ -1,0 +1,222 @@
+{
+  "rom_sha256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+  "exception": "BASE-ROLLER-STALE-ATTRIBUTE",
+  "records": [
+    {
+      "path": ".local/contra-enemies-base/roller-rea/function-0x92e4.json",
+      "evidence_id": "ev_fc60c317ce2e3ea81f59300debc68d438cf1ef5b504a47993d0c10ee042c1192",
+      "procedure": "0x92e4",
+      "source_sha256": "5484d200c8cd92e1c729b6e594bce831ca0ce18c4bfd82c37807f4aff64bfc9b"
+    },
+    {
+      "path": ".local/contra-enemies-base/roller-rea/function-0x971e.json",
+      "evidence_id": "ev_e269a78ff6f5bb756bfd517f3a9e64c622cf8fd66836547ab52b9762a6d72e47",
+      "procedure": "0x971e",
+      "source_sha256": "5484d200c8cd92e1c729b6e594bce831ca0ce18c4bfd82c37807f4aff64bfc9b"
+    },
+    {
+      "path": ".local/contra-enemies-base/roller-rea/function-0xe54f.json",
+      "evidence_id": "ev_67ab13952b0129b7eaa191e22007dbcb694bb9cf98e3afa94a6a7bb08458fd65",
+      "procedure": "0xe54f",
+      "source_sha256": "5484d200c8cd92e1c729b6e594bce831ca0ce18c4bfd82c37807f4aff64bfc9b"
+    },
+    {
+      "path": ".local/contra-enemies-base/roller-rea/function-0xe58a.json",
+      "evidence_id": "ev_9eca126f813dccf8f280abdde53c0b575c1ab05102956fd2f540e1c4716b2e35",
+      "procedure": "0xe58a",
+      "source_sha256": "5484d200c8cd92e1c729b6e594bce831ca0ce18c4bfd82c37807f4aff64bfc9b"
+    },
+    {
+      "path": ".local/contra-enemies-base/roller-rea/function-0xe683.json",
+      "evidence_id": "ev_f1960719e85596fc19d0b5a53156c5a929c1b52e70f1e3b8a68ef18fbd369b75",
+      "procedure": "0xe683",
+      "source_sha256": "5484d200c8cd92e1c729b6e594bce831ca0ce18c4bfd82c37807f4aff64bfc9b"
+    },
+    {
+      "path": ".local/contra-enemies-base/roller-rea/function-0xe68f.json",
+      "evidence_id": "ev_a4965b9bca7c55b7e4ec4f62dde0cf5bdf94f998a3e1c3d2fdcb71bded6e8921",
+      "procedure": "0xe68f",
+      "source_sha256": "5484d200c8cd92e1c729b6e594bce831ca0ce18c4bfd82c37807f4aff64bfc9b"
+    },
+    {
+      "path": ".local/contra-enemies-base/roller-rea/function-0xe6ed.json",
+      "evidence_id": "ev_e70281f7b5d863aefe76e9db1376f42e271647a683bad86ce884a57ddfafc66c",
+      "procedure": "0xe6ed",
+      "source_sha256": "5484d200c8cd92e1c729b6e594bce831ca0ce18c4bfd82c37807f4aff64bfc9b"
+    },
+    {
+      "path": ".local/contra-enemies-base/roller-rea/function-0xe73a.json",
+      "evidence_id": "ev_b52e68b4c6fa82994782570e4edafc4e44f4a3bce0c9e8cb6b397fc04049a963",
+      "procedure": "0xe73a",
+      "source_sha256": "5484d200c8cd92e1c729b6e594bce831ca0ce18c4bfd82c37807f4aff64bfc9b"
+    },
+    {
+      "path": ".local/contra-enemies-base/roller-rea/function-0xe73f.json",
+      "evidence_id": "ev_57dfaf955365d462d3e70e63b476616808c4fa88117a51d716dd2308c1bb02ed",
+      "procedure": "0xe73f",
+      "source_sha256": "5484d200c8cd92e1c729b6e594bce831ca0ce18c4bfd82c37807f4aff64bfc9b"
+    },
+    {
+      "path": ".local/contra-enemies-base/roller-rea/function-0xe768.json",
+      "evidence_id": "ev_71a3309f43a74119b397f78acaeba9a59cf7ae7c28e85018bc0692cec4668184",
+      "procedure": "0xe768",
+      "source_sha256": "5484d200c8cd92e1c729b6e594bce831ca0ce18c4bfd82c37807f4aff64bfc9b"
+    },
+    {
+      "path": ".local/contra-enemies-base/roller-rea/function-0xe847.json",
+      "evidence_id": "ev_7bd6b103a1f8fbf136ba62eab7bc4eac3b5c8b3b99be37ac798087afa585ef29",
+      "procedure": "0xe847",
+      "source_sha256": "5484d200c8cd92e1c729b6e594bce831ca0ce18c4bfd82c37807f4aff64bfc9b"
+    },
+    {
+      "path": ".local/contra-enemies-base/roller-helper-rea/function-0x97ef.json",
+      "evidence_id": "ev_3665ad1cdd78739f3c225b70557d01d1021d57d560b84c0989c7860644a3b54c",
+      "procedure": "0x97ef",
+      "source_sha256": "5484d200c8cd92e1c729b6e594bce831ca0ce18c4bfd82c37807f4aff64bfc9b"
+    },
+    {
+      "path": ".local/contra-enemies-base/roller-helper-rea/function-0xea98.json",
+      "evidence_id": "ev_aac377426fcada608fe43f55657d17e1d86ec7d17cad3bf2bab4fa5b4d91cbc1",
+      "procedure": "0xea98",
+      "source_sha256": "5484d200c8cd92e1c729b6e594bce831ca0ce18c4bfd82c37807f4aff64bfc9b"
+    },
+    {
+      "path": ".local/contra-enemies-base/roller-helper-rea/function-0xecb2.json",
+      "evidence_id": "ev_af6ca79df005d9ae4adf881fc1b5f310e0fddc3fd8579f2bd9a462293b5a64df",
+      "procedure": "0xecb2",
+      "source_sha256": "5484d200c8cd92e1c729b6e594bce831ca0ce18c4bfd82c37807f4aff64bfc9b"
+    },
+    {
+      "path": ".local/contra-enemies-base/roller-lane-rea/function-0xecb4.json",
+      "evidence_id": "ev_b70b84bd30ba9a895d48680c84d1afdae7af494405b988f89d420431abae64d1",
+      "procedure": "0xecb4",
+      "source_sha256": "5484d200c8cd92e1c729b6e594bce831ca0ce18c4bfd82c37807f4aff64bfc9b"
+    },
+    {
+      "path": ".local/contra-enemies-base/extra-rea/function-0x8f9b.json",
+      "evidence_id": "ev_f5a75c74c6d00eb21e33d29eddf095992dcf609f4a2814b7817a51e5ce233cfe",
+      "procedure": "0x8f9b",
+      "source_sha256": "5484d200c8cd92e1c729b6e594bce831ca0ce18c4bfd82c37807f4aff64bfc9b"
+    },
+    {
+      "path": ".local/contra-enemies-base/extra-rea/function-0x8fa3.json",
+      "evidence_id": "ev_e2e42d790c2c23ca328a7fe7e8c6f0da70c43d1b7dbcfea558331125333c8dcb",
+      "procedure": "0x8fa3",
+      "source_sha256": "5484d200c8cd92e1c729b6e594bce831ca0ce18c4bfd82c37807f4aff64bfc9b"
+    },
+    {
+      "path": ".local/contra-enemies-base/extra-rea/function-0xe67c.json",
+      "evidence_id": "ev_5eb9aac1bc6bd348a41e670cfe784e5c1d5886df1725559842f8a8e419296ddc",
+      "procedure": "0xe67c",
+      "source_sha256": "5484d200c8cd92e1c729b6e594bce831ca0ce18c4bfd82c37807f4aff64bfc9b"
+    },
+    {
+      "path": ".local/contra-enemies-base/extra-rea/function-0xe6d5.json",
+      "evidence_id": "ev_de705977c3552dd356c48dac2879863acb6b2c336d1f036e4ba750f24de60754",
+      "procedure": "0xe6d5",
+      "source_sha256": "5484d200c8cd92e1c729b6e594bce831ca0ce18c4bfd82c37807f4aff64bfc9b"
+    },
+    {
+      "path": ".local/contra-enemies-base/extra-rea/function-0xe737.json",
+      "evidence_id": "ev_6a211d9159152f4f385083d67eaae26e652c140139643417d5cb81f23281e4b5",
+      "procedure": "0xe737",
+      "source_sha256": "5484d200c8cd92e1c729b6e594bce831ca0ce18c4bfd82c37807f4aff64bfc9b"
+    },
+    {
+      "path": ".local/contra-enemies-base/soldier-helper-rea/function-0x971b.json",
+      "evidence_id": "ev_7f9f5d53f58d395f5818802475b2fb4ccc51576ac7ec0e0120ce520ebb571c81",
+      "procedure": "0x971b",
+      "source_sha256": "5484d200c8cd92e1c729b6e594bce831ca0ce18c4bfd82c37807f4aff64bfc9b"
+    },
+    {
+      "path": ".local/contra-enemies-collision/all-rea/function-0xe10a.json",
+      "evidence_id": "ev_5ae4643aaf0aed57f0eda5e0fe45021f8491824ed292dcff2d58685c25cf8efc",
+      "procedure": "0xe10a",
+      "source_sha256": "ce699850c1c626195b8020d1f5acdc5963e8dc1dc9b68df5a520a7bc26ed3956"
+    },
+    {
+      "path": ".local/contra-enemies-collision/all-rea/function-0xe276.json",
+      "evidence_id": "ev_775889be6d7e7f40c215ddf13d748bf691392bb83de4ce23eb4807815fabafce",
+      "procedure": "0xe276",
+      "source_sha256": "ce699850c1c626195b8020d1f5acdc5963e8dc1dc9b68df5a520a7bc26ed3956"
+    },
+    {
+      "path": ".local/contra-enemies-collision/all-rea/function-0xe309.json",
+      "evidence_id": "ev_6bcd250c5b174a476e48249f88ba8c3c2d6257fd8ff3f3148b28d17def4349d8",
+      "procedure": "0xe309",
+      "source_sha256": "ce699850c1c626195b8020d1f5acdc5963e8dc1dc9b68df5a520a7bc26ed3956"
+    },
+    {
+      "path": ".local/contra-enemies-collision/all-rea/function-0xe342.json",
+      "evidence_id": "ev_7f7b5317ae83a71f1291b6978f975041db34af0f9ad9a2b7c8ed3291e643e2a9",
+      "procedure": "0xe342",
+      "source_sha256": "ce699850c1c626195b8020d1f5acdc5963e8dc1dc9b68df5a520a7bc26ed3956"
+    },
+    {
+      "path": ".local/contra-enemies-collision/all-rea/function-0xe949.json",
+      "evidence_id": "ev_92f03c4fa489102a387a6993aabe90a3d7d9cd3b28df059d1581a59082ec75f3",
+      "procedure": "0xe949",
+      "source_sha256": "ce699850c1c626195b8020d1f5acdc5963e8dc1dc9b68df5a520a7bc26ed3956"
+    },
+    {
+      "path": ".local/contra-enemies-collision/all-rea/function-0xe8a6.json",
+      "evidence_id": "ev_781fc4c12d9a20c0a8fea9b3154baf2615a38994e9d6806aba9106cafac854c1",
+      "procedure": "0xe8a6",
+      "source_sha256": "ce699850c1c626195b8020d1f5acdc5963e8dc1dc9b68df5a520a7bc26ed3956"
+    },
+    {
+      "path": ".local/contra-enemies-collision/all-rea/function-0xe8d8.json",
+      "evidence_id": "ev_e477b44c33389d62527c7af32f8dbed514bbc364ca1d8eb28442d9a1517ba7db",
+      "procedure": "0xe8d8",
+      "source_sha256": "ce699850c1c626195b8020d1f5acdc5963e8dc1dc9b68df5a520a7bc26ed3956"
+    },
+    {
+      "path": ".local/contra-enemies/enemy-rea/function-0xed70.json",
+      "evidence_id": "ev_4c66fadfa1caef4a2a0253c63a75fa587618c3d2cfa5fd481b9adfc5b8d82c1c",
+      "procedure": "0xed70",
+      "source_sha256": "5484d200c8cd92e1c729b6e594bce831ca0ce18c4bfd82c37807f4aff64bfc9b"
+    },
+    {
+      "path": ".local/contra-enemies/enemy-rea/function-0xedad.json",
+      "evidence_id": "ev_f101515e52fc8797d3912e768a3398ab7bd38a9e2a56a9c23edb284b44d54b25",
+      "procedure": "0xedad",
+      "source_sha256": "5484d200c8cd92e1c729b6e594bce831ca0ce18c4bfd82c37807f4aff64bfc9b"
+    },
+    {
+      "path": ".local/contra-enemies/enemy-rea/function-0xed34.json",
+      "evidence_id": "ev_638887bbce4254bdc646f2183e307320146181d1ec7c5482b677d1caefeeeb06",
+      "procedure": "0xed34",
+      "source_sha256": "5484d200c8cd92e1c729b6e594bce831ca0ce18c4bfd82c37807f4aff64bfc9b"
+    },
+    {
+      "path": ".local/contra-enemies/enemy-rea/function-0xed3f.json",
+      "evidence_id": "ev_4a9f8f941bd8778d392f80597990285bcb87240fecd29358e27c6abd8f821275",
+      "procedure": "0xed3f",
+      "source_sha256": "5484d200c8cd92e1c729b6e594bce831ca0ce18c4bfd82c37807f4aff64bfc9b"
+    },
+    {
+      "path": ".local/contra-enemies/enemy-rea/function-0xed62.json",
+      "evidence_id": "ev_045b68e5425befa91139d7ba15b877056c83eb4c745d065bfe08ff77feffacea",
+      "procedure": "0xed62",
+      "source_sha256": "5484d200c8cd92e1c729b6e594bce831ca0ce18c4bfd82c37807f4aff64bfc9b"
+    },
+    {
+      "path": ".local/contra-sprites/sprite-rea/function-0x9167.json",
+      "evidence_id": "ev_1117b69c2fd5737671160dcda39a27f9d72b991e7f3e16f3bb72fd99d7ce29bb",
+      "procedure": "0x9167",
+      "source_sha256": "c030e55c4d7485ab0a9bc86d63a0cd4a2b57d04a77b81e69518d085406da6755"
+    },
+    {
+      "path": ".local/contra-sprites/sprite-rea/function-0x919f.json",
+      "evidence_id": "ev_814a44be5ca741d280bb09dfe1930e689693d618c007f5684907914dfd1a00fa",
+      "procedure": "0x919f",
+      "source_sha256": "c030e55c4d7485ab0a9bc86d63a0cd4a2b57d04a77b81e69518d085406da6755"
+    },
+    {
+      "path": ".local/contra-sprites/sprite-rea/function-0x9284.json",
+      "evidence_id": "ev_2f218342a95095a283756cb84332b996e4ddfce574df551045a457719d4c0533",
+      "procedure": "0x9284",
+      "source_sha256": "c030e55c4d7485ab0a9bc86d63a0cd4a2b57d04a77b81e69518d085406da6755"
+    }
+  ]
+}

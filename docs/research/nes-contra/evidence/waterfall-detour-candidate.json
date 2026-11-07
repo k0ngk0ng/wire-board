@@ -1,0 +1,32 @@
+{
+  "scope": "Focused detour fix merged after old-policy runs ended; fresh campaign acceptance still required",
+  "focused_test_passed": true,
+  "failure_cases": [
+    "lower peer stationary before reachable downward detour",
+    "upper peer leaves waiting position",
+    "fresh uncertainty triggers detour",
+    "no visible landing"
+  ],
+  "candidate": ".local/contra-bot/waterfall-detour-candidate",
+  "sha256": {
+    "bot.go": "5fdf374fd9347afb975d86a9b4e73925f53963905f28dbc8adce7d0c31175a35",
+    "bot_navigation.go": "9481f7995f866bf1468da1185a1f4580c1d0edfe817df59920f65d1b3a559788",
+    "overlay.json": "52e843128d08c9b376ba72d3877642a08a136e49a30682abe6bdb1836eec52fb"
+  },
+  "continuation": ".local/contra-bot/diagnostic-fresh-v9-waterfall-detour",
+  "continuation_complete": true,
+  "continuation_frames": 42400,
+  "continuation_level_zero_based": 3,
+  "continuation_screen": 1,
+  "race_passed": true,
+  "merged_to_worktree": true,
+  "independent_replay": {
+    "frames": 42400,
+    "nextStepStoredStateEqual": true,
+    "nextStepStructEqual": true,
+    "recordedRulesAndEffectsMatch": true,
+    "recordedStateMatches": true,
+    "replayDerivedReviewAdded": false,
+    "roundTripDifferences": null
+  }
+}

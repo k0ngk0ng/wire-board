@@ -1,0 +1,11 @@
+{
+  "scope": "public submitted RGBA: flashing player not visible; distant soldier head resembles water head artwork",
+  "source_attempt": ".local/contra-bot/runs/assisted-visual-solo-waterfall-v7/players1",
+  "before_frame": 21541,
+  "seed": 42,
+  "players": 1,
+  "assisted_reserves": true,
+  "refill_after_visible_loss": true,
+  "image_sha256": "112d0cc0ac6b616b494202c86b42d9f27e3524d5c082b399e71ab78b6bcffec5",
+  "replay_prefix_sha256": "75ddc22b9e3f7298a49c403e91c297fc620d6bd8d6868dde930f236e817a2a5b"
+}

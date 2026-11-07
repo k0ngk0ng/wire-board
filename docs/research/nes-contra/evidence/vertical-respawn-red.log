@@ -1,0 +1,13 @@
+=== RUN   TestBotVerticalRespawnKeepsReachableLeftPlatform
+    bot_vertical_respawn_test.go:37: current left spawn is excluded from safe landing 18128 0 16 false
+    bot_vertical_respawn_test.go:40: vertical respawn drifts off its reachable platform 18128 0 65
+    bot_vertical_respawn_test.go:37: current left spawn is excluded from safe landing 18128 1 16 false
+    bot_vertical_respawn_test.go:40: vertical respawn drifts off its reachable platform 18128 1 65
+    bot_vertical_respawn_test.go:37: current left spawn is excluded from safe landing 18132 0 19 false
+    bot_vertical_respawn_test.go:40: vertical respawn drifts off its reachable platform 18132 0 65
+    bot_vertical_respawn_test.go:37: current left spawn is excluded from safe landing 18132 1 19 false
+    bot_vertical_respawn_test.go:40: vertical respawn drifts off its reachable platform 18132 1 65
+--- FAIL: TestBotVerticalRespawnKeepsReachableLeftPlatform (0.00s)
+FAIL
+FAIL	github.com/k0ngk0ng/wire-board/games/contra/engine	0.539s
+FAIL

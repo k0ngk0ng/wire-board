@@ -1,0 +1,477 @@
+{
+  "scope": "Only this agent\u2019s all-stage/ordinary-Alien caches, superseded instrumentation, rejected F38C analysis seed, and independently verified duplicate reruns. Primary native recordings, valid REA, canonical visual fixtures and red/green proofs retained. User ROM, other agents and unrelated games untouched.",
+  "bytesRemoved": 186925300,
+  "removed": [
+    {
+      "path": ".local/contra-enemies-aliens/swift-cache",
+      "files": 103,
+      "bytes": 93396920
+    },
+    {
+      "path": ".local/contra-enemies-aliens/aim-rea",
+      "files": 9,
+      "bytes": 1424234
+    },
+    {
+      "path": ".local/contra-enemies-aliens/aim-rea.log",
+      "files": 1,
+      "bytes": 851
+    },
+    {
+      "path": ".local/contra-enemies-aliens/aim-seeds.tsv",
+      "files": 1,
+      "bytes": 160
+    },
+    {
+      "path": ".local/contra-enemies-aliens/aim-spec.json",
+      "files": 1,
+      "bytes": 722
+    },
+    {
+      "path": ".local/contra-enemies-aliens/oracle/runs/aliens-natural-v2",
+      "files": 28,
+      "bytes": 8461073
+    },
+    {
+      "path": ".local/contra-enemies-aliens/oracle/runs/aliens-fetus-v2",
+      "files": 12,
+      "bytes": 8543808
+    },
+    {
+      "path": ".local/contra-enemies-aliens/oracle/runs/aliens-small-v2",
+      "files": 12,
+      "bytes": 15645116
+    },
+    {
+      "path": ".local/contra-enemies-aliens/oracle/aliens-natural-v2.json",
+      "files": 1,
+      "bytes": 227958
+    },
+    {
+      "path": ".local/contra-enemies-aliens/oracle/aliens-fetus-v2.json",
+      "files": 1,
+      "bytes": 2333269
+    },
+    {
+      "path": ".local/contra-enemies-aliens/oracle/aliens-small-v2.json",
+      "files": 1,
+      "bytes": 4822056
+    },
+    {
+      "path": ".local/contra-enemies-aliens/oracle/fceux-home",
+      "files": 1,
+      "bytes": 17747
+    },
+    {
+      "path": ".local/contra-enemies-aliens/oracle/runtime",
+      "files": 0,
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-enemies-aliens/oracle/tmp",
+      "files": 0,
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-enemies-all/runs/all-enemy-initialization-v2",
+      "files": 12,
+      "bytes": 2987352
+    },
+    {
+      "path": ".local/contra-enemies-all/runs/all-enemy-spawn-v2",
+      "files": 12,
+      "bytes": 16410336
+    },
+    {
+      "path": ".local/contra-enemies-all/all-enemy-initialization-v2.json",
+      "files": 1,
+      "bytes": 17287
+    },
+    {
+      "path": ".local/contra-enemies-all/all-enemy-spawn-v2.json",
+      "files": 1,
+      "bytes": 244553
+    },
+    {
+      "path": ".local/contra-enemies-all/fceux-home",
+      "files": 1,
+      "bytes": 17690
+    },
+    {
+      "path": ".local/contra-enemies-all/runtime",
+      "files": 0,
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-enemies-all/tick-oracle/runs/all-tick-stage-1-v1",
+      "files": 12,
+      "bytes": 737830
+    },
+    {
+      "path": ".local/contra-enemies-all/tick-oracle/all-tick-stage-1-v1.json",
+      "files": 1,
+      "bytes": 221435
+    },
+    {
+      "path": ".local/contra-enemies-all/tick-oracle/runs/all-tick-stage-1-v2",
+      "files": 12,
+      "bytes": 738360
+    },
+    {
+      "path": ".local/contra-enemies-all/tick-oracle/all-tick-stage-1-v2.json",
+      "files": 1,
+      "bytes": 221707
+    },
+    {
+      "path": ".local/contra-enemies-all/tick-oracle/runs/all-tick-stage-1-v4",
+      "files": 12,
+      "bytes": 748137
+    },
+    {
+      "path": ".local/contra-enemies-all/tick-oracle/all-tick-stage-1-v4.json",
+      "files": 1,
+      "bytes": 222169
+    },
+    {
+      "path": ".local/contra-enemies-all/tick-oracle/runs/all-tick-stage-2-v1",
+      "files": 12,
+      "bytes": 1177909
+    },
+    {
+      "path": ".local/contra-enemies-all/tick-oracle/all-tick-stage-2-v1.json",
+      "files": 1,
+      "bytes": 359580
+    },
+    {
+      "path": ".local/contra-enemies-all/tick-oracle/runs/all-tick-stage-2-v2",
+      "files": 12,
+      "bytes": 1178301
+    },
+    {
+      "path": ".local/contra-enemies-all/tick-oracle/all-tick-stage-2-v2.json",
+      "files": 1,
+      "bytes": 359852
+    },
+    {
+      "path": ".local/contra-enemies-all/tick-oracle/runs/all-tick-stage-2-v4",
+      "files": 12,
+      "bytes": 1193865
+    },
+    {
+      "path": ".local/contra-enemies-all/tick-oracle/all-tick-stage-2-v4.json",
+      "files": 1,
+      "bytes": 360314
+    },
+    {
+      "path": ".local/contra-enemies-all/tick-oracle/runs/all-tick-stage-3-v1",
+      "files": 12,
+      "bytes": 1051304
+    },
+    {
+      "path": ".local/contra-enemies-all/tick-oracle/all-tick-stage-3-v1.json",
+      "files": 1,
+      "bytes": 320065
+    },
+    {
+      "path": ".local/contra-enemies-all/tick-oracle/runs/all-tick-stage-3-v2",
+      "files": 12,
+      "bytes": 1051696
+    },
+    {
+      "path": ".local/contra-enemies-all/tick-oracle/all-tick-stage-3-v2.json",
+      "files": 1,
+      "bytes": 320337
+    },
+    {
+      "path": ".local/contra-enemies-all/tick-oracle/runs/all-tick-stage-3-v4",
+      "files": 12,
+      "bytes": 1065646
+    },
+    {
+      "path": ".local/contra-enemies-all/tick-oracle/all-tick-stage-3-v4.json",
+      "files": 1,
+      "bytes": 320799
+    },
+    {
+      "path": ".local/contra-enemies-all/tick-oracle/runs/all-tick-stage-4-v1",
+      "files": 12,
+      "bytes": 1366510
+    },
+    {
+      "path": ".local/contra-enemies-all/tick-oracle/all-tick-stage-4-v1.json",
+      "files": 1,
+      "bytes": 418767
+    },
+    {
+      "path": ".local/contra-enemies-all/tick-oracle/runs/all-tick-stage-4-v2",
+      "files": 12,
+      "bytes": 1367040
+    },
+    {
+      "path": ".local/contra-enemies-all/tick-oracle/all-tick-stage-4-v2.json",
+      "files": 1,
+      "bytes": 419039
+    },
+    {
+      "path": ".local/contra-enemies-all/tick-oracle/runs/all-tick-stage-4-v4",
+      "files": 12,
+      "bytes": 1384887
+    },
+    {
+      "path": ".local/contra-enemies-all/tick-oracle/all-tick-stage-4-v4.json",
+      "files": 1,
+      "bytes": 419501
+    },
+    {
+      "path": ".local/contra-enemies-all/tick-oracle/runs/all-tick-stage-5-v1",
+      "files": 12,
+      "bytes": 1115323
+    },
+    {
+      "path": ".local/contra-enemies-all/tick-oracle/all-tick-stage-5-v1.json",
+      "files": 1,
+      "bytes": 339791
+    },
+    {
+      "path": ".local/contra-enemies-all/tick-oracle/runs/all-tick-stage-5-v2",
+      "files": 12,
+      "bytes": 1115853
+    },
+    {
+      "path": ".local/contra-enemies-all/tick-oracle/all-tick-stage-5-v2.json",
+      "files": 1,
+      "bytes": 340063
+    },
+    {
+      "path": ".local/contra-enemies-all/tick-oracle/runs/all-tick-stage-5-v4",
+      "files": 12,
+      "bytes": 1130478
+    },
+    {
+      "path": ".local/contra-enemies-all/tick-oracle/all-tick-stage-5-v4.json",
+      "files": 1,
+      "bytes": 340525
+    },
+    {
+      "path": ".local/contra-enemies-all/tick-oracle/runs/all-tick-stage-6-v1",
+      "files": 12,
+      "bytes": 863797
+    },
+    {
+      "path": ".local/contra-enemies-all/tick-oracle/all-tick-stage-6-v1.json",
+      "files": 1,
+      "bytes": 260875
+    },
+    {
+      "path": ".local/contra-enemies-all/tick-oracle/runs/all-tick-stage-6-v2",
+      "files": 12,
+      "bytes": 864327
+    },
+    {
+      "path": ".local/contra-enemies-all/tick-oracle/all-tick-stage-6-v2.json",
+      "files": 1,
+      "bytes": 261147
+    },
+    {
+      "path": ".local/contra-enemies-all/tick-oracle/runs/all-tick-stage-6-v4",
+      "files": 12,
+      "bytes": 875718
+    },
+    {
+      "path": ".local/contra-enemies-all/tick-oracle/all-tick-stage-6-v4.json",
+      "files": 1,
+      "bytes": 261609
+    },
+    {
+      "path": ".local/contra-enemies-all/tick-oracle/runs/all-tick-stage-7-v1",
+      "files": 12,
+      "bytes": 1177330
+    },
+    {
+      "path": ".local/contra-enemies-all/tick-oracle/all-tick-stage-7-v1.json",
+      "files": 1,
+      "bytes": 359520
+    },
+    {
+      "path": ".local/contra-enemies-all/tick-oracle/runs/all-tick-stage-7-v2",
+      "files": 12,
+      "bytes": 1177860
+    },
+    {
+      "path": ".local/contra-enemies-all/tick-oracle/all-tick-stage-7-v2.json",
+      "files": 1,
+      "bytes": 359792
+    },
+    {
+      "path": ".local/contra-enemies-all/tick-oracle/runs/all-tick-stage-7-v4",
+      "files": 12,
+      "bytes": 1194998
+    },
+    {
+      "path": ".local/contra-enemies-all/tick-oracle/all-tick-stage-7-v4.json",
+      "files": 1,
+      "bytes": 360254
+    },
+    {
+      "path": ".local/contra-enemies-all/tick-oracle/runs/all-tick-stage-8-v1",
+      "files": 12,
+      "bytes": 675320
+    },
+    {
+      "path": ".local/contra-enemies-all/tick-oracle/all-tick-stage-8-v1.json",
+      "files": 1,
+      "bytes": 201652
+    },
+    {
+      "path": ".local/contra-enemies-all/tick-oracle/runs/all-tick-stage-8-v2",
+      "files": 12,
+      "bytes": 676141
+    },
+    {
+      "path": ".local/contra-enemies-all/tick-oracle/all-tick-stage-8-v2.json",
+      "files": 1,
+      "bytes": 201924
+    },
+    {
+      "path": ".local/contra-enemies-all/tick-oracle/runs/all-tick-stage-8-v4",
+      "files": 12,
+      "bytes": 685843
+    },
+    {
+      "path": ".local/contra-enemies-all/tick-oracle/all-tick-stage-8-v4.json",
+      "files": 1,
+      "bytes": 202386
+    },
+    {
+      "path": ".local/contra-enemies-all/tick-oracle/fceux-home",
+      "files": 1,
+      "bytes": 17763
+    },
+    {
+      "path": ".local/contra-enemies-all/tick-oracle/runtime",
+      "files": 0,
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-enemies-all/tick-oracle/tmp",
+      "files": 0,
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-enemies-all/checks/phase-red.jsonl",
+      "files": 1,
+      "bytes": 1365
+    },
+    {
+      "path": ".local/contra-enemies-all/checks/phase-green-candidate.jsonl",
+      "files": 1,
+      "bytes": 10031
+    },
+    {
+      "path": ".local/contra-enemies-all/checks/spawn-red.jsonl",
+      "files": 1,
+      "bytes": 893
+    },
+    {
+      "path": "games/contra/engine/testdata/original-enemy-collision-tick-stage-1.json.gz",
+      "files": 1,
+      "bytes": 14711,
+      "sha256": "3be86fc32df2ee93c75c082e6ff610626299667507143b70f2a603284457dd08"
+    },
+    {
+      "path": "games/contra/engine/testdata/original-enemy-collision-tick-stage-1-tiles.json.gz",
+      "files": 1,
+      "bytes": 14740,
+      "sha256": "85ecf11e76dea4bada00b6cc9441e048cee1143eebc145d1d2af8bc5a152432d"
+    },
+    {
+      "path": "games/contra/engine/testdata/original-enemy-collision-tick-stage-2.json.gz",
+      "files": 1,
+      "bytes": 18589,
+      "sha256": "64fbe7475f703ada3ea1004ff678a08a0e36cb6b7ff4cba2b2d7f896bc0fdbca"
+    },
+    {
+      "path": "games/contra/engine/testdata/original-enemy-collision-tick-stage-2-tiles.json.gz",
+      "files": 1,
+      "bytes": 18621,
+      "sha256": "527347803f5ce01199cb5d59c527361ac1ab9eb09e03b4b2c8dca470b2a8c97d"
+    },
+    {
+      "path": "games/contra/engine/testdata/original-enemy-collision-tick-stage-3.json.gz",
+      "files": 1,
+      "bytes": 17403,
+      "sha256": "a3ec9d5fe6cc762512509e4555986c2de7b0e1c9cc33db63e89996618af47ec4"
+    },
+    {
+      "path": "games/contra/engine/testdata/original-enemy-collision-tick-stage-3-tiles.json.gz",
+      "files": 1,
+      "bytes": 17433,
+      "sha256": "d2719daf0ac54e9969421f38711b7eb37a23ec85bf138464c3d6e9ada42be2d5"
+    },
+    {
+      "path": "games/contra/engine/testdata/original-enemy-collision-tick-stage-4.json.gz",
+      "files": 1,
+      "bytes": 20725,
+      "sha256": "086ac2d79b3db8b3e5d78d55084ec824790c9551e4fe197168870984e2b5081b"
+    },
+    {
+      "path": "games/contra/engine/testdata/original-enemy-collision-tick-stage-4-tiles.json.gz",
+      "files": 1,
+      "bytes": 20756,
+      "sha256": "20f9c5a5058849dd602177008eb1a03ef89745b1cbffd3ec3699ad94add0917c"
+    },
+    {
+      "path": "games/contra/engine/testdata/original-enemy-collision-tick-stage-5.json.gz",
+      "files": 1,
+      "bytes": 17984,
+      "sha256": "0526af9c4d0c7a9b377a957e074a14cb50a1d8efd2cf7e5226852d8c9229d8f0"
+    },
+    {
+      "path": "games/contra/engine/testdata/original-enemy-collision-tick-stage-5-tiles.json.gz",
+      "files": 1,
+      "bytes": 18017,
+      "sha256": "b2e07fbe77d7503c3c3296886feffd0a8e8f6c1556cb2dd6fdd6dc2a85114215"
+    },
+    {
+      "path": "games/contra/engine/testdata/original-enemy-collision-tick-stage-6.json.gz",
+      "files": 1,
+      "bytes": 15749,
+      "sha256": "e77b509f1980c909bdaceab0c4ce064633b4cfc4d4863aae2496476af1cb4baa"
+    },
+    {
+      "path": "games/contra/engine/testdata/original-enemy-collision-tick-stage-6-tiles.json.gz",
+      "files": 1,
+      "bytes": 15779,
+      "sha256": "574e361ce9bf1737d4e7ea04d256620ebb1ac78f8416766cbd3b41a700974b0d"
+    },
+    {
+      "path": "games/contra/engine/testdata/original-enemy-collision-tick-stage-7.json.gz",
+      "files": 1,
+      "bytes": 18514,
+      "sha256": "d3e89469b9851db4827572cfad92a095dae720cb12ea8c9a901d9c0c8b402811"
+    },
+    {
+      "path": "games/contra/engine/testdata/original-enemy-collision-tick-stage-7-tiles.json.gz",
+      "files": 1,
+      "bytes": 18545,
+      "sha256": "b78b5331fd011e5e164ad93e65a2a51c7302d84dfd2dfb55bae07e0361a99779"
+    },
+    {
+      "path": "games/contra/engine/testdata/original-enemy-collision-tick-stage-8.json.gz",
+      "files": 1,
+      "bytes": 14472,
+      "sha256": "18083d4493a96c05d1516db632b23920e5be905bca3778a8220f1c032bfd7e12"
+    },
+    {
+      "path": "games/contra/engine/testdata/original-enemy-collision-tick-stage-8-tiles.json.gz",
+      "files": 1,
+      "bytes": 14502,
+      "sha256": "225789f52fc3933cea5cc310b52b4af056890d7201010f9538f1b1eada090398"
+    },
+    {
+      "path": "dist/contra-enemies-aliens-tmp",
+      "files": 0,
+      "bytes": 0
+    }
+  ]
+}

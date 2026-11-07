@@ -1,0 +1,9 @@
+{"Time":"2026-10-26T12:28:15.450615+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine"}
+{"Time":"2026-10-26T12:28:15.80965+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBuiltinBotVisionPowerupDoesNotBecomeAvatar"}
+{"Time":"2026-10-26T12:28:15.809901+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBuiltinBotVisionPowerupDoesNotBecomeAvatar","Output":"=== RUN   TestBuiltinBotVisionPowerupDoesNotBecomeAvatar\n"}
+{"Time":"2026-10-26T12:28:17.091454+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBuiltinBotVisionPowerupDoesNotBecomeAvatar","Output":"    bot_vision_powerup_test.go:44: stationary powerup became the flashing player's position [{148 181 true true 0 0 113 64 false false false} {0 0 false false 0 0 0 0 false false false}] [{1 {156 184 true true 0 0 113 0 false false false}}]\n"}
+{"Time":"2026-10-26T12:28:17.091502+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBuiltinBotVisionPowerupDoesNotBecomeAvatar","Output":"--- FAIL: TestBuiltinBotVisionPowerupDoesNotBecomeAvatar (1.28s)\n"}
+{"Time":"2026-10-26T12:28:17.091516+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBuiltinBotVisionPowerupDoesNotBecomeAvatar","Elapsed":1.28}
+{"Time":"2026-10-26T12:28:17.091525+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\n"}
+{"Time":"2026-10-26T12:28:17.0936+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/contra/engine\t1.643s\n"}
+{"Time":"2026-10-26T12:28:17.09362+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Elapsed":1.643}

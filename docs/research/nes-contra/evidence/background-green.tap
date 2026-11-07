@@ -1,0 +1,12 @@
+✔ 13 original complete frames match background, sprite priority and streamed scrolling (227.53225ms)
+✔ horizontal and vertical screen crossings keep exact pixel anchors (10.408583ms)
+✔ palette quadrants, universal zero and clipping preserve sprite occlusion (5.0775ms)
+✔ composition honors behind-background pixels and does not mutate either layer (0.584625ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 315.463125

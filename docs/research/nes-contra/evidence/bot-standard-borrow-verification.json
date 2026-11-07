@@ -1,0 +1,63 @@
+{
+  "scope": "standard-life engine input/visual borrowing E2E, not a complete campaign or platform/browser acceptance",
+  "passed": true,
+  "seed": 42,
+  "players": 2,
+  "actor": 1,
+  "public_trigger_frame": 13737,
+  "borrow_frame": 13841,
+  "first_action": "A only for actor 1",
+  "infinite_lives": false,
+  "state_injection": false,
+  "private_rule_fields_used_by_policy": false,
+  "independent_replay": {
+    "frames": 13841,
+    "nextStepStoredStateEqual": true,
+    "nextStepStructEqual": true,
+    "recordedStateMatches": true,
+    "roundTripDifferences": null
+  },
+  "source_note": "Execution-time development evidence; later source changes require final build-bound revalidation. The complete accepted input stream is retained.",
+  "artifacts": [
+    {
+      "path": "docs/research/nes-contra/evidence/standard-borrow/result.json",
+      "sha256": "4a0b19b2c83e9e1a41bd191c9be1acbc591bc93271ddc30dfb7d8045f27d9cc6",
+      "bytes": 383
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/standard-borrow/pads.bin.gz",
+      "sha256": "13d78da226d349c53a96aa6a396575da5f2446e851ed25260b89a46cb8b16cc0",
+      "bytes": 2197
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/standard-borrow/before-session.json.gz",
+      "sha256": "52bec19b3bc8bce618f544ebd318c8c16affdaa1c582f8a8f1bf8610443d5f2c",
+      "bytes": 5734
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/standard-borrow/final-session.json.gz",
+      "sha256": "8c085c2681c40dc73322ea380d942dc3b908459a31699c4a16acda0005012496",
+      "bytes": 5558
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/standard-borrow/trigger-observation.json.gz",
+      "sha256": "03077ca0ee8b1149f37d729504644d0c99eee3b0d72e505d1e00951bea96dbb3",
+      "bytes": 587
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/standard-borrow/trigger.png",
+      "sha256": "810b67d986a4cca5ab6f2e4611129cd16914a679a9f4e6e1fe1c17a7949b482e",
+      "bytes": 9202
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/standard-borrow/decisions.json.gz",
+      "sha256": "d38f0036187e8878b9921e882321e9667a9039898edb407849b040c7c9e3473b",
+      "bytes": 897
+    },
+    {
+      "path": "docs/research/nes-contra/evidence/standard-borrow/independent-standard-replay.json",
+      "sha256": "b847d61c21d86d3929710d5fa6591b9995fbfb77c24f8955f7be8b76bc50e623",
+      "bytes": 153
+    }
+  ]
+}

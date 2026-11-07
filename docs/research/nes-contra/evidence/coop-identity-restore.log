@@ -1,0 +1,4 @@
+=== RUN   TestBotIntentRestoreAndCancellation
+--- PASS: TestBotIntentRestoreAndCancellation (13.69s)
+PASS
+ok  	github.com/k0ngk0ng/wire-board/games/contra/engine	13.898s

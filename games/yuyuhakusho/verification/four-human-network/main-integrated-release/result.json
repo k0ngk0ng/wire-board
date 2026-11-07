@@ -1,0 +1,883 @@
+{
+  "pass": true,
+  "scope": "Four distinct signed-in human seats in independent Chromium browsers on this Mac; actual HTTP/SQLite/WebSocket and Go/Wasm. One real TCP connection is then delayed120ms per write. This does not claim four physical devices or arbitrary public networks.",
+  "budget": {
+    "minimum_visible_fps": 50,
+    "maximum_p95_ms": 40,
+    "maximum_input_visible_ms": 75
+  },
+  "stages": {
+    "normal": [
+      {
+        "seat": 0,
+        "hidden": false,
+        "visible_frames": 180,
+        "elapsed_ms": 3003.4000005722046,
+        "visible_fps": 59.93207696800513,
+        "p95_ms": 24.199999809265137,
+        "native_input_to_visible_ms": 33.19999980926514,
+        "input_ack_ms": 23.199999809265137,
+        "native_input_to_authority_ms": 113.69999980926514,
+        "local_before_ack": true,
+        "view_messages": 60,
+        "mean_view_bytes": 1765.8666666666666,
+        "max_view_bytes": 1822,
+        "incoming_view_bytes_per_second": 35277.35232730044,
+        "outgoing_input_bytes": 516,
+        "wire_checkpoints": 0,
+        "recoveries": []
+      },
+      {
+        "seat": 1,
+        "hidden": false,
+        "visible_frames": 181,
+        "elapsed_ms": 3007.1000003814697,
+        "visible_fps": 60.190881572624455,
+        "p95_ms": 22.800000190734863,
+        "native_input_to_visible_ms": 20.399999618530273,
+        "input_ack_ms": 19.90000057220459,
+        "native_input_to_authority_ms": 30.699999809265137,
+        "local_before_ack": true,
+        "view_messages": 60,
+        "mean_view_bytes": 1765.75,
+        "max_view_bytes": 1822,
+        "incoming_view_bytes_per_second": 35231.61849840717,
+        "outgoing_input_bytes": 492,
+        "wire_checkpoints": 0,
+        "recoveries": []
+      },
+      {
+        "seat": 2,
+        "hidden": false,
+        "visible_frames": 182,
+        "elapsed_ms": 3023.800000190735,
+        "visible_fps": 60.18916594633237,
+        "p95_ms": 22.199999809265137,
+        "native_input_to_visible_ms": 27.699999809265137,
+        "input_ack_ms": 20.100000381469727,
+        "native_input_to_authority_ms": 37.69999980926514,
+        "local_before_ack": true,
+        "view_messages": 60,
+        "mean_view_bytes": 1765.75,
+        "max_view_bytes": 1822,
+        "incoming_view_bytes_per_second": 35037.03948452848,
+        "outgoing_input_bytes": 516,
+        "wire_checkpoints": 0,
+        "recoveries": []
+      },
+      {
+        "seat": 3,
+        "hidden": false,
+        "visible_frames": 181,
+        "elapsed_ms": 3011.8999996185303,
+        "visible_fps": 60.09495667947953,
+        "p95_ms": 21.40000057220459,
+        "native_input_to_visible_ms": 41.59999942779541,
+        "input_ack_ms": 12.100000381469727,
+        "native_input_to_authority_ms": 66.69999980926514,
+        "local_before_ack": false,
+        "view_messages": 60,
+        "mean_view_bytes": 1765.8666666666666,
+        "max_view_bytes": 1822,
+        "incoming_view_bytes_per_second": 35177.79475195699,
+        "outgoing_input_bytes": 503,
+        "wire_checkpoints": 0,
+        "recoveries": []
+      }
+    ],
+    "one-slow": [
+      {
+        "seat": 0,
+        "hidden": false,
+        "visible_frames": 181,
+        "elapsed_ms": 3014.800000190735,
+        "visible_fps": 60.037150055907134,
+        "p95_ms": 23.799999237060547,
+        "native_input_to_visible_ms": 27.90000057220459,
+        "input_ack_ms": 9.0,
+        "native_input_to_authority_ms": 39.40000057220459,
+        "local_before_ack": false,
+        "view_messages": 60,
+        "mean_view_bytes": 1768.55,
+        "max_view_bytes": 1839,
+        "incoming_view_bytes_per_second": 35197.359689958415,
+        "outgoing_input_bytes": 505,
+        "wire_checkpoints": 0,
+        "recoveries": []
+      },
+      {
+        "seat": 1,
+        "hidden": false,
+        "visible_frames": 181,
+        "elapsed_ms": 3007.1000003814697,
+        "visible_fps": 60.190881572624455,
+        "p95_ms": 23.0,
+        "native_input_to_visible_ms": 24.0,
+        "input_ack_ms": 10.0,
+        "native_input_to_authority_ms": 33.5,
+        "local_before_ack": false,
+        "view_messages": 60,
+        "mean_view_bytes": 1767.7666666666667,
+        "max_view_bytes": 1839,
+        "incoming_view_bytes_per_second": 35271.856601557934,
+        "outgoing_input_bytes": 518,
+        "wire_checkpoints": 0,
+        "recoveries": []
+      },
+      {
+        "seat": 2,
+        "hidden": false,
+        "visible_frames": 180,
+        "elapsed_ms": 3004.7999992370605,
+        "visible_fps": 59.90415336984267,
+        "p95_ms": 22.0,
+        "native_input_to_visible_ms": 32.90000057220459,
+        "input_ack_ms": 10.40000057220459,
+        "native_input_to_authority_ms": 53.40000057220459,
+        "local_before_ack": false,
+        "view_messages": 60,
+        "mean_view_bytes": 1768.95,
+        "max_view_bytes": 1839,
+        "incoming_view_bytes_per_second": 35322.484034527726,
+        "outgoing_input_bytes": 517,
+        "wire_checkpoints": 0,
+        "recoveries": []
+      },
+      {
+        "seat": 3,
+        "hidden": false,
+        "visible_frames": 170,
+        "elapsed_ms": 3006.3999996185303,
+        "visible_fps": 56.54603513224142,
+        "p95_ms": 27.199999809265137,
+        "native_input_to_visible_ms": 27.5,
+        "input_ack_ms": 156.5,
+        "native_input_to_authority_ms": 282.0999994277954,
+        "local_before_ack": true,
+        "view_messages": 59,
+        "mean_view_bytes": 1768.4745762711864,
+        "max_view_bytes": 1839,
+        "incoming_view_bytes_per_second": 34705.96062175335,
+        "outgoing_input_bytes": 515,
+        "wire_checkpoints": 0,
+        "recoveries": []
+      }
+    ],
+    "busy-normal": [
+      {
+        "seat": 0,
+        "hidden": false,
+        "visible_frames": 182,
+        "elapsed_ms": 3068.5999994277954,
+        "visible_fps": 59.31043473699332,
+        "p95_ms": 23.200000762939453,
+        "native_input_to_visible_ms": 35.60000038146973,
+        "input_ack_ms": 9.600000381469727,
+        "native_input_to_authority_ms": 65.70000076293945,
+        "local_before_ack": false,
+        "view_messages": 61,
+        "mean_view_bytes": 1859.704918032787,
+        "max_view_bytes": 2059,
+        "incoming_view_bytes_per_second": 36968.6502056813,
+        "outgoing_input_bytes": 4638,
+        "wire_checkpoints": 0,
+        "recoveries": []
+      },
+      {
+        "seat": 1,
+        "hidden": false,
+        "visible_frames": 182,
+        "elapsed_ms": 3069.5,
+        "visible_fps": 59.293044469783354,
+        "p95_ms": 23.600000381469727,
+        "native_input_to_visible_ms": 23.600000381469727,
+        "input_ack_ms": 8.0,
+        "native_input_to_authority_ms": 31.399999618530273,
+        "local_before_ack": false,
+        "view_messages": 61,
+        "mean_view_bytes": 1861.311475409836,
+        "max_view_bytes": 2054,
+        "incoming_view_bytes_per_second": 36989.7377423033,
+        "outgoing_input_bytes": 4636,
+        "wire_checkpoints": 0,
+        "recoveries": []
+      },
+      {
+        "seat": 2,
+        "hidden": false,
+        "visible_frames": 183,
+        "elapsed_ms": 3069.0999994277954,
+        "visible_fps": 59.626600643223945,
+        "p95_ms": 22.5,
+        "native_input_to_visible_ms": 33.5,
+        "input_ack_ms": 14.5,
+        "native_input_to_authority_ms": 70.59999942779541,
+        "local_before_ack": false,
+        "view_messages": 61,
+        "mean_view_bytes": 1861.0819672131147,
+        "max_view_bytes": 2054,
+        "incoming_view_bytes_per_second": 36989.99707444067,
+        "outgoing_input_bytes": 4660,
+        "wire_checkpoints": 0,
+        "recoveries": []
+      },
+      {
+        "seat": 3,
+        "hidden": false,
+        "visible_frames": 182,
+        "elapsed_ms": 3060.9000005722046,
+        "visible_fps": 59.459636043639755,
+        "p95_ms": 21.399999618530273,
+        "native_input_to_visible_ms": 48.0,
+        "input_ack_ms": 10,
+        "native_input_to_authority_ms": 72.69999980926514,
+        "local_before_ack": false,
+        "view_messages": 61,
+        "mean_view_bytes": 1859.295081967213,
+        "max_view_bytes": 2059,
+        "incoming_view_bytes_per_second": 37053.480995392805,
+        "outgoing_input_bytes": 4620,
+        "wire_checkpoints": 0,
+        "recoveries": []
+      }
+    ],
+    "busy-one-slow": [
+      {
+        "seat": 0,
+        "hidden": false,
+        "visible_frames": 184,
+        "elapsed_ms": 3060.0,
+        "visible_fps": 60.130718954248366,
+        "p95_ms": 24.699999809265137,
+        "native_input_to_visible_ms": 33.19999980926514,
+        "input_ack_ms": 15.199999809265137,
+        "native_input_to_authority_ms": 74.5,
+        "local_before_ack": false,
+        "view_messages": 61,
+        "mean_view_bytes": 1856.950819672131,
+        "max_view_bytes": 2038,
+        "incoming_view_bytes_per_second": 37017.64705882353,
+        "outgoing_input_bytes": 4637,
+        "wire_checkpoints": 0,
+        "recoveries": []
+      },
+      {
+        "seat": 1,
+        "hidden": false,
+        "visible_frames": 184,
+        "elapsed_ms": 3066.8999996185303,
+        "visible_fps": 59.99543513739817,
+        "p95_ms": 23.0,
+        "native_input_to_visible_ms": 31.0,
+        "input_ack_ms": 10.300000190734863,
+        "native_input_to_authority_ms": 53.30000019073486,
+        "local_before_ack": false,
+        "view_messages": 62,
+        "mean_view_bytes": 1856.5806451612902,
+        "max_view_bytes": 2039,
+        "incoming_view_bytes_per_second": 37532.361672802326,
+        "outgoing_input_bytes": 4641,
+        "wire_checkpoints": 0,
+        "recoveries": []
+      },
+      {
+        "seat": 2,
+        "hidden": false,
+        "visible_frames": 184,
+        "elapsed_ms": 3060.699999809265,
+        "visible_fps": 60.116966710708795,
+        "p95_ms": 21.800000190734863,
+        "native_input_to_visible_ms": 25.300000190734863,
+        "input_ack_ms": 11.09999942779541,
+        "native_input_to_authority_ms": 83.19999980926514,
+        "local_before_ack": false,
+        "view_messages": 61,
+        "mean_view_bytes": 1858.0819672131147,
+        "max_view_bytes": 2039,
+        "incoming_view_bytes_per_second": 37031.72477115145,
+        "outgoing_input_bytes": 4620,
+        "wire_checkpoints": 0,
+        "recoveries": []
+      },
+      {
+        "seat": 3,
+        "hidden": false,
+        "visible_frames": 175,
+        "elapsed_ms": 3064.5999994277954,
+        "visible_fps": 57.1037003304428,
+        "p95_ms": 26.399999618530273,
+        "native_input_to_visible_ms": 30.59999942779541,
+        "input_ack_ms": 172.80000019073486,
+        "native_input_to_authority_ms": 181.69999980926514,
+        "local_before_ack": true,
+        "view_messages": 58,
+        "mean_view_bytes": 1860.6379310344828,
+        "max_view_bytes": 2038,
+        "incoming_view_bytes_per_second": 35214.0573060594,
+        "outgoing_input_bytes": 4635,
+        "wire_checkpoints": 0,
+        "recoveries": []
+      }
+    ]
+  },
+  "app_build": "506ae76a7c954fcc91c37a47898664f4ce2d96a5d6e07e93cd2392f86e4b81c2",
+  "runtime": {
+    "format": 1,
+    "package": "./games/yuyuhakusho/cmd/platform-client-wasm",
+    "flags": [
+      "-trimpath",
+      "-buildvcs=false",
+      "-ldflags=-s -w"
+    ],
+    "goVersion": "go1.26.0",
+    "sourceSHA256": "cc9b2b97cff38f45a5c4261743c4aaee252cca9c23b97eb4633060bcdee7e1df",
+    "loaderSHA256": "0c949f4996f9a89698e4b5c586de32249c3b69b7baadb64d220073cc04acba14",
+    "builderSHA256": "660117d0b72216351ab7333dea43b51f1948efbb2131e58e0fb3317f1f10107b",
+    "inputs": [
+      {
+        "path": "games/yuyuhakusho/cmd/platform-client-wasm/main_js.go",
+        "sha256": "ccf1d16d88ab3af54297c31b8b4cf681c03fc9d8b7d233cb27cbd35f34884316"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/action_prelude.go",
+        "sha256": "418ba409a5fbad95345b591553421e29c38d62452cb64305b498bd10d0606f1f"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/animation_clock.go",
+        "sha256": "fa868c5c160fa22fba71520d80c18e8d1f40217ff9a64c6d90a231eab65f28a4"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/animation_records.go",
+        "sha256": "97ef4f3bb9d32231dc8a4340e400513ae2dcb7054324f4ffe0746ea3513129a0"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/arena_a.go",
+        "sha256": "fc5ad9e205bc9bd4a6339fb39deb99be74061bdaf6c9e82fc110f22a8d97ce0c"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/arena_a_child.go",
+        "sha256": "6d9d426e443b67c459a620c08ce2ed69f4a680ca85f3c690ce49a3d2dcd93bf9"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/arena_scene.go",
+        "sha256": "1b037f82ffe3f7f4b4ddbc7e7efb5c52f6a362d016e74374d7c151ece9200309"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/arena_work.go",
+        "sha256": "3eadf3eab2fdc625961121351a8a202059c612ca53e570f45569aa1a5920f13b"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/arenas_2_6_8.go",
+        "sha256": "2a45e57ec7d5c930eeabf3631d2e17a5bccf41a9ae45fdce86cd358438f6a534"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/arenas_4_c_e.go",
+        "sha256": "d2c718275a676b86e83e6d570330ef50c9042feea55b1eda015602e02d4e6094"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/attached_effects.go",
+        "sha256": "360b0dbd71f9ad049cab4710640fc1b9d0507c380cd0b5cb15b19f57fb093071"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/attack_contacts.go",
+        "sha256": "1bc022b3649e4765ad7b33f8e08c91ca909e3097b714c24555ee4a64fac0d880"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/body_separation.go",
+        "sha256": "89c49a0f1a8e68f38b9d3db111159935e2c1c7a222758399360b9cab60fd7a25"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/character_commands.go",
+        "sha256": "6f67aa187c0e48fd7787b00b38c41b6a7105a2a72553f1aa899fb9fed9665e5c"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/chu_action.go",
+        "sha256": "90688fb013fe4e68092e5340b4a6964dd043121db03e2101dfc34a3b66d17624"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/chu_actor.go",
+        "sha256": "1fd986e39cf3b50a37129f5376153ee90259f3b47006a10f53cea96082c1320d"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/chu_ai.go",
+        "sha256": "63ee0b171558e51b45cb793eb9d0aabe5d5b6bf5a92286c66a1c77bf33f0ea61"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/chu_attachments.go",
+        "sha256": "b86d6d5ba317ddef76fc012d730e76faf18384c4d932bf8e7c4c193ecae1d24d"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/chu_attacks.go",
+        "sha256": "108d7a4a72ab06cd9c2950c6830e861c063f937a968499f554cd633062f434a6"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/chu_input.go",
+        "sha256": "a9d14993c78d4ae89403824254d72edc3a6315f61928c65129e8b67ac870e294"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/chu_projectile.go",
+        "sha256": "946d1eb8dd45fb9e76647783146f043cb89d41a494ba2d4fc15cbc7618715277"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/chu_session.go",
+        "sha256": "5ea473fa08a99142142dae6fcdeae6091c68dd5caa0058453b9127e943da9e5e"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/chu_special_motion.go",
+        "sha256": "5c37d35003f4f983010232d495b6e45143553a36b347edbaf2aa494006839c98"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/chu_tail.go",
+        "sha256": "21edc734b148788c433c75da95e632c04eb73db15e6e1b3911516d9d6ff18edd"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/chu_world.go",
+        "sha256": "42a867e07182f73dd2ee95bf4224b485cecc416050c48b73324072adff15de7f"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/clash.go",
+        "sha256": "221f85a59c4765b8bece6a036d0e7d619087b33044ab5b6689efc9d7e40d0f9b"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/collision_manager.go",
+        "sha256": "d30873ffd6ab8853e5311ba941607814f65a515146a3cb6afcc9fa31ad3d78d5"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/commands.go",
+        "sha256": "fd0c39b62a11345e35a2f41e01a545da4dc13f24eb45853dc51ef8be6ac5439e"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/controller_normalization_work.go",
+        "sha256": "8093aa596a5c5bab316b22d2aa8f09a576acd4132c9478ad32fd8e297cd69fd0"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/controller_scan.go",
+        "sha256": "bd1dd8ac54142a45bfc6d979c48a1b18480f2fdd6ca5ae65e5fffa6a36e1af21"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/default_arena.go",
+        "sha256": "f3dbc495325fdbc89c36488581402f4a701307d728a25e335a2214a6a4b60052"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/effect_motion.go",
+        "sha256": "49f107750c76149fb47726abad5c9cf30290e8bcc9b28232f1f7b4728243c849"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/effects.go",
+        "sha256": "6a0916fbc4051a0e67988b9cad99e41d9ef778e0e78a7f63d65f5fb35d2f6b18"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/fighter0_attacks.go",
+        "sha256": "2bd06c5b399bc916daa06eb59e0ef5723a47cf636b2e9ffe1c57607c0dd6e071"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/fighter0_motion.go",
+        "sha256": "3fcd2c8280c1383f41198d87ffba62936aaad259acff8413713d4ba18b35cf71"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/fighter0_projectile.go",
+        "sha256": "3da2971fa2b425141e2f2751509e784100d666e6d67ee9c5cd0e8c245773ab2a"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/fighter10_attacks.go",
+        "sha256": "3be75d818323df1d8097cd337a435b66bb31b03747966c1aaa078557b43822b1"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/fighter10_motion.go",
+        "sha256": "120bf695e1e02406d6ba94493d373b59782e606ba939fbfe284bd17b99b8e427"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/fighter1_attacks.go",
+        "sha256": "e0cdcd4bdac9e6fe2ee2696d98cecdf8ed8f23affae4265bab33b5e192bced4a"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/fighter1_motion.go",
+        "sha256": "e4885d77e4f90dc710569e6526a1698cde5ecf57eaba643d5de173c8e0cc4199"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/fighter1_projectile.go",
+        "sha256": "fe8a43de52919a9d97ad68a9c2223b67dd392c54b9e9c72f4916db202125ff7d"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/fighter2_attacks.go",
+        "sha256": "01c1f021357443798343c35a38e2bbaab5bdb0eb1ef22bcb9e7d54c7bae5d94b"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/fighter2_motion.go",
+        "sha256": "b67ef2363472157538ae898e3240a0e2492045eda064d0d4c3044d5dabed2672"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/fighter2_projectile.go",
+        "sha256": "9740ebce061d625b31390f61b4df6bac8b56a6833783800e8a64ba03249ab0b8"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/fighter3_air_motion.go",
+        "sha256": "8d7d87cee7ffa48644d275bff5a7aee8209c7825583928de1fd3e04777e622d4"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/fighter3_attacks.go",
+        "sha256": "39b112a2bb9d6a7d2fa5614ad26e5bb971b489fe044513ff89e8bb20cdabcae2"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/fighter3_motion.go",
+        "sha256": "14288bf20eb1c378d5c23a14a4f7e2c6a39ac28f1998f21e2d323b01e42e72b3"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/fighter4_attacks.go",
+        "sha256": "ca87b180ace1aaff0c9e48ec2cc21f51c21d67351f88f5fe7eab1dd8753c54a6"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/fighter4_motion.go",
+        "sha256": "a236eac8bded286b9b35241c206d0de35e763d5097651862f14476f7f787f154"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/fighter4_projectile.go",
+        "sha256": "0b3125d70d24e207d50753154e8efa090abcdbc7d43f9754324d382393d3b946"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/fighter4_world.go",
+        "sha256": "02b164be00cb504a8f4a7a35f2b3fd004f024c7748a1e7a2cabf2144f749adde"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/fighter5_attacks.go",
+        "sha256": "c92ece3a1159fb48e91f37566f3e6c942764a4ad4439f392e0af056f49c0760b"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/fighter5_motion.go",
+        "sha256": "a09add7c76bb4ede0f21fc1b3c7ef7a55bc8da9913671fded7ea170d13205506"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/fighter5_projectile.go",
+        "sha256": "e1310b58fc11c30ee7efd61a8f27f432201e9a15484081df4638e215eb788f25"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/fighter5_world.go",
+        "sha256": "38a42cf8e86ea45a2ab94afab6e4977bcc93cf01f481277e417f8f0f380582f9"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/fighter6_attacks.go",
+        "sha256": "f4c4b0e5cfcdb6b3693347baf18b20d922513a2beed45c6fd9047d1d0a37d14d"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/fighter6_motion.go",
+        "sha256": "334b3d5cdc4e6d61dd1a62c8b664ad106fd3bca26ab3aa4625105eca5dd07ca1"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/fighter6_support_motion.go",
+        "sha256": "a1c4cbb25a8583c5de280c94934f8816d8f2e74ae7d421124d1a24e808c74d71"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/fighter7_attacks.go",
+        "sha256": "b33c38737e5b8ad01629d5f2cad911861bead841933c8d92fcdc68a3ed9dcb22"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/fighter7_children.go",
+        "sha256": "5937dbc5be75278cb06e76c44a6d781afd6c673b6298169855b6f79155af46b8"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/fighter7_motion.go",
+        "sha256": "cfb8334a40adb24ceaf5232f09cf06a14fdc948c83f3e71308cf0cf746c26004"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/fighter7_world.go",
+        "sha256": "6c7ab3ddfe71f7c5a1ff878aef4307882af5385672aaf932bbe5845046983ede"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/fighter8_attacks.go",
+        "sha256": "066e13b12eb5a1e2fd8843b171dc198e7f718dc750583c095dea2aab17b52f75"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/fighter8_motion.go",
+        "sha256": "4783a7fe4526a1aa558dca22b5849bcfa2dd45e615c81ee9635b644eae7d9f53"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/fighter8_projectile.go",
+        "sha256": "a14990cfed7a3d4c34ccabb99f4c0814869e528ad292fd8f5b6e4176782afb99"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/fighter_ai.go",
+        "sha256": "10401486da28a33f95fc5427b6cc5d7f00a90a86b6914f9a7d3d8fd723c29c93"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/fighter_bounds.go",
+        "sha256": "065c32dff3bbad040988cadad753661447f7ed3508dacab9b19f34d9ff6da310"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/fighter_envelope.go",
+        "sha256": "f0cba93adb159eea905cc66ed976843c24ba1d7cec34a50423c356c303156453"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/fighter_initialization.go",
+        "sha256": "52f5c58440b000688a9508e8b419cf0d36e88b4b05250742692e21a4c741f8ad"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/fighter_input.go",
+        "sha256": "da1cee3d5fffe0a78f97b31fb9ae9f81ba3b44a6f0a79e4f3148027ca3596c9a"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/fighter_preparation.go",
+        "sha256": "f7bb17f5f381afe2992cae99e7aecb5e3e7a5ba3cd95883a16c4925fa03bc622"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/ground_actions.go",
+        "sha256": "cc6106a696c63bb39293694ed8cc63e04586ceb89e6b04454fb08970aedca80c"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/ground_control.go",
+        "sha256": "c5c1d71729abb591b4fb2bcd6de7b18985f2f08da4c2ac472771039dc265b2c5"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/ground_idle.go",
+        "sha256": "25b8ded1e1fe806808b776eaec9b0b64648fe502d1fbb6c58871ad6f95ae7020"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/input.go",
+        "sha256": "38e957231a29fd08c889709e0e7a39661284258800521467ba41fcdc9dfa12e2"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/irq_acceptance.go",
+        "sha256": "00a09c0abffa1abc8b791a088b2d1d597521e1a5ba1b5d3179c4e0484068f574"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/jump.go",
+        "sha256": "4d04cd8fc08edde75a5793d6be21644e058e7b2caf4e7c3c6c7b15f18fa39605"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/lane_motion.go",
+        "sha256": "34e91c5756878c15efd3fa598dc4f4ae1de9744762e6eceb2b3a0502503ad7cf"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/lane_switch.go",
+        "sha256": "a4b2079963327c84f85eda85553e70555fa1273e54ba082bd3bc706683140280"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/main_work.go",
+        "sha256": "2349d6d86306c6244a80b988b3748b82df958b8eedf0d38cab5a4b7fc977498f"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/match_lifecycle.go",
+        "sha256": "8dc114747661f07fce3a1f274969906579bf452d0789fe1702dd3b78bdc6d7a5"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/match_overlays.go",
+        "sha256": "d8610abd54c4456e00d6492e764ae8933a753295bee466e4cf1f020f62b7dee9"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/match_start.go",
+        "sha256": "3ea5d4b83433769317844f6f70c515f2f52f71fb6e2b385558029a5b9a7e52f0"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/motion.go",
+        "sha256": "35dc27314a13afdff39d96d2d21911c5ba5030baf00ea81d1daf8f9feb5f8878"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/object_prepare_work.go",
+        "sha256": "e064ce5a079277db104df8bb99bcb635216dda0e661d7abc488907615f650a75"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/random.go",
+        "sha256": "4b41a49879d8b0b7355173849ed6e43952e406a82598000119f8cf1e09b81bf5"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/raster_input_storage.go",
+        "sha256": "7c3783a3816745e0088d2e9a2df702fc763ad4e232c64e8b566da103f3ac304a"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/reaction_motion.go",
+        "sha256": "12f7ef77773aef729bf5891f05a0589ed343cad4d4a0231e3a89b757e2268ceb"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/sound_pcm_arbitration.go",
+        "sha256": "ace412910e7c9cc3baf59a8602d65d5e500b0837fae6a2eda02818954f9e540a"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/sound_queue.go",
+        "sha256": "437b3385020e1e790be840e88aba9337c893571e23a6b717b578f35531b3711d"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/sound_queue_observed.go",
+        "sha256": "4deebfefdf375a77c0c7f36fe19e84acb7f53c81dfcae0735fe2ad63485819a7"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/sound_scheduler.go",
+        "sha256": "b7adcf2786f2468ccb647180d6e71bad57b19ca252e1aed6edc35a834d69aafc"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/sound_scheduler_observed.go",
+        "sha256": "383acd835ae9eb5a829b931728ad3ec70791daca274ed8eada661dd92962ed37"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/throw_contacts.go",
+        "sha256": "0b433935245fa97df63841e9d76cd109d53d848d6c816dc93a7a1a33922a3ffb"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/throw_records.go",
+        "sha256": "ce5f9c6c77a8d7ebc298f30e9f99fb9686ad436bc4cc716960c3c0542480b34f"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/world_clock.go",
+        "sha256": "e4268d2cb5bd87fc02da3f0f93c37f966d82113bd8b8993a1a796517d9c4da54"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/world_draw.go",
+        "sha256": "e623738a8fad5eb5605c5e83356858d9fa0175a34b325405dbc34aef78fb8328"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/world_frame.go",
+        "sha256": "9885bc9965c77e605632b981b003d22410c1849b294d51045d4b50af7a8985c1"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/world_frame_work.go",
+        "sha256": "42903bb96a77930c2b21bdb4f7a4e0c870d3b441f30ce46623bb99cca1d75f44"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/world_objects.go",
+        "sha256": "cbf695846c36a00c57bdc1b1922a5df8f6fd581c121f9e88006ea266ca386cb1"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/world_presentable.go",
+        "sha256": "0f724ad3e2c393c16650342a0ada34cbd8b665b9b6b8a3a333917dbbaf373220"
+      },
+      {
+        "path": "games/yuyuhakusho/engine/world_sound_live.go",
+        "sha256": "fadadce7e0e5c492558fd46025f9b9d04cfa7f92359ac3ae3562c45e23632209"
+      },
+      {
+        "path": "games/yuyuhakusho/presentation/arena.go",
+        "sha256": "6ac17c471d00d7daef1c2276f447eceb35dce786e7ea997faa33206de6ede32b"
+      },
+      {
+        "path": "games/yuyuhakusho/presentation/arena_profiles.go",
+        "sha256": "af59330ff8c596a0dfea491182dd9be545d0f664faa3cd08fba4303720ad1320"
+      },
+      {
+        "path": "games/yuyuhakusho/presentation/arena_sprites.go",
+        "sha256": "a253ece318af5bb491ecf44766ca9e70f44e007bf7b95e59233775869eb410a3"
+      },
+      {
+        "path": "games/yuyuhakusho/presentation/catalog.go",
+        "sha256": "dd94a7db1fb11bd9b4bce54b998b3c3e82c3f81389991485995ac5047a189a39"
+      },
+      {
+        "path": "games/yuyuhakusho/presentation/compose.go",
+        "sha256": "3ea96b6c956325fbd07299fd22729b93dc3cfc5690e3f89072380c5ca845b2f1"
+      },
+      {
+        "path": "games/yuyuhakusho/presentation/hud.go",
+        "sha256": "0c403ba976f7ec41086466a9f643350b4efefff3a2a505d12feaa9154995c4cb"
+      },
+      {
+        "path": "games/yuyuhakusho/presentation/hud_profile.go",
+        "sha256": "59249152051a3ba195086b34c547f3d667d153c4d4985a15e040c91268e3c8e8"
+      },
+      {
+        "path": "games/yuyuhakusho/presentation/hud_refs.go",
+        "sha256": "e0d4fa35a1dbd08eb45b854f1848d7dc27a7d6897a639d8b7aa981b5318e64d2"
+      },
+      {
+        "path": "games/yuyuhakusho/presentation/raster.go",
+        "sha256": "0b4d1d925e073f88d9b474b504608bdfdc52e7d7f7f9c913049982f4de5b8528"
+      },
+      {
+        "path": "games/yuyuhakusho/renderstate/catalog.go",
+        "sha256": "abf324fc6274f553bf86a238bffa315e957db65400751f6d9acfb0d96095b8b8"
+      },
+      {
+        "path": "games/yuyuhakusho/renderstate/state.go",
+        "sha256": "c251a25ab151208b56e4aaab2851fe917a15ebe5410ecbb2015a1f6b17597e85"
+      },
+      {
+        "path": "games/yuyuhakusho/resourceid/descriptor.go",
+        "sha256": "dbbf4e3f7194d6f4c10218cf0df1634617429b2ec81de91ef87222bec985579a"
+      },
+      {
+        "path": "games/yuyuhakusho/runtimebridge/network_assets.go",
+        "sha256": "df724464272f8231e3a992ab81ae1d947a45d6b281a3cee4c5bbf6a254731d63"
+      },
+      {
+        "path": "games/yuyuhakusho/runtimebridge/performance.go",
+        "sha256": "fcccea7025b79ba9abb02a890ff344458d601bdce42f4821678f523ef444bc55"
+      },
+      {
+        "path": "games/yuyuhakusho/runtimebridge/serialization.go",
+        "sha256": "7a610c1b743e70b03a5ee3c0dfa411f2d3801ed0d024b54d8d6c6bb4f4b31b7a"
+      },
+      {
+        "path": "games/yuyuhakusho/runtimebridge/session.go",
+        "sha256": "6325a18c51e80c59e9c90690e2ac9a6bfc8fd7758a2171332f771b44cf324e97"
+      },
+      {
+        "path": "games/yuyuhakusho/sessiontick/tick.go",
+        "sha256": "17bb47419e4c5cc3abe3f43dd0a775ad7c1c51f567aace9e3b9e4b3ddaa011f0"
+      },
+      {
+        "path": "games/yuyuhakusho/syncwire/inputs.go",
+        "sha256": "6a72aecd6b426534069112edd4d40eab22e4902080b8f9514f02d48ba98331f7"
+      },
+      {
+        "path": "go.mod",
+        "sha256": "33aa54f687143b2e468be7fe308f3455104c8b0f2fdc6e409233b5b1c8a3166f"
+      },
+      {
+        "path": "go.sum",
+        "sha256": "bde219704d2cf0b9e3e8b9bb01e6d97656accddcf5423d8587cd1afd8b8c25cb"
+      }
+    ],
+    "files": {
+      "client.wasm": {
+        "sha256": "f54be84d8920773d66f4be1288825b6a566cc48ff1d968d538339eb813256d67",
+        "bytes": 4924555
+      },
+      "wasm_exec.js": {
+        "sha256": "0c949f4996f9a89698e4b5c586de32249c3b69b7baadb64d220073cc04acba14",
+        "bytes": 16992
+      }
+    },
+    "wasm": {
+      "url": "./client.wasm",
+      "sha256": "f54be84d8920773d66f4be1288825b6a566cc48ff1d968d538339eb813256d67",
+      "bytes": 4924555
+    }
+  },
+  "urls": {
+    "direct": "http://127.0.0.1:59812/",
+    "shaped": "http://127.0.0.1:59813/"
+  },
+  "human_seats": 4,
+  "characters": [
+    3,
+    1,
+    0,
+    10
+  ],
+  "checkpoints": [
+    {
+      "seat": 0,
+      "requests": 3,
+      "recoveries": []
+    },
+    {
+      "seat": 1,
+      "requests": 2,
+      "recoveries": []
+    },
+    {
+      "seat": 2,
+      "requests": 2,
+      "recoveries": []
+    },
+    {
+      "seat": 3,
+      "requests": 2,
+      "recoveries": []
+    }
+  ],
+  "sources": {
+    "scripts/yuyuhakusho/check_four_human_network.py": "0e8710ead8979af3e4b556f506a752c84b268f8d21aed4fca5100c5c88e779e0",
+    "scripts/yuyuhakusho/platform_app_observer.js": "b07d9a383bd2927e2d188e604dfa43c4d084945d788810f5f3ff4480dd283a5c",
+    "scripts/yuyuhakusho/native_app_input.mjs": "b8d4e687b01e668d4b9c870397ba201ce6d94085919ee9ddb20b62abd168e459",
+    "games/yuyuhakusho/web/network-scene.ts": "511fe31bad133c02b611c5bf76d974fe0190edfb5aed16c0adf0ea84def173d0",
+    "games/yuyuhakusho/web/network-client.ts": "0fc26cb6a6ab528a2182758ff269b00b4dba708d5f8b97532660a4ae9c09562f",
+    "games/yuyuhakusho/web/types.ts": "39df0c7013eabce971b22416ca2bfc1e0e3aa79ea22488e32293f8ca69d2fcca"
+  }
+}

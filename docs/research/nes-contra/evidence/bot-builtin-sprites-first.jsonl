@@ -1,0 +1,8 @@
+{"Time":"2026-10-26T09:47:25.123781+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine"}
+{"Time":"2026-10-26T09:47:25.554354+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBuiltinBotVisionCartridgeActors"}
+{"Time":"2026-10-26T09:47:25.554397+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBuiltinBotVisionCartridgeActors","Output":"=== RUN   TestBuiltinBotVisionCartridgeActors\n"}
+{"Time":"2026-10-26T09:47:26.509356+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBuiltinBotVisionCartridgeActors","Output":"--- PASS: TestBuiltinBotVisionCartridgeActors (0.95s)\n"}
+{"Time":"2026-10-26T09:47:26.509388+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestBuiltinBotVisionCartridgeActors","Elapsed":0.95}
+{"Time":"2026-10-26T09:47:26.509402+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"PASS\n"}
+{"Time":"2026-10-26T09:47:26.511296+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"ok  \tgithub.com/k0ngk0ng/wire-board/games/contra/engine\t1.387s\n"}
+{"Time":"2026-10-26T09:47:26.511322+08:00","Action":"pass","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Elapsed":1.388}

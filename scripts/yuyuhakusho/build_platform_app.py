@@ -11,7 +11,7 @@ assert OUT.is_relative_to(ROOT/'.local'), 'local review output must stay in this
 for path in [OUT,PUBLIC,OUT/'tmp']:path.mkdir(parents=True,exist_ok=True)
 # Keep the shared platform brand route in this isolated local public tree.
 shutil.copyfile(ROOT/'web/public/favicon.svg',PUBLIC/'favicon.svg')
-env=dict(os.environ,TMPDIR=str(OUT/'tmp'),GOTMPDIR=str(OUT/'tmp'),GOCACHE=str(ROOT/'.local/go-cache'),GOMODCACHE=str(ROOT/'.local/go-mod'),TEST_TELEMETRY_DIR=str(ROOT/'.local/go-telemetry'))
+env=dict(os.environ,VITE_YUYU_LOCAL_ASSETS="1",TMPDIR=str(OUT/'tmp'),GOTMPDIR=str(OUT/'tmp'),GOCACHE=str(ROOT/'.local/go-cache'),GOMODCACHE=str(ROOT/'.local/go-mod'),TEST_TELEMETRY_DIR=str(ROOT/'.local/go-telemetry'))
 subprocess.run(['python3',str(ROOT/'scripts/yuyuhakusho/build_platform_web.py')],cwd=ROOT,env=env,check=True)
 descriptor=ROOT/'games/yuyuhakusho/data/runtime-resource-descriptor.json'
 metadata=json.loads(descriptor.read_bytes())

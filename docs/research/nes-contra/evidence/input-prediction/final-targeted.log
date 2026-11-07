@@ -1,0 +1,26 @@
+✔ disabled controls release once and never send heartbeat input; resumed controls use sequence baseline (2.09975ms)
+✔ an in-flight restore completed while hidden does not consume audio recovery (0.770416ms)
+✔ an old checkpoint from concurrent input recovery cannot rewind a running client (0.388375ms)
+✔ unacknowledged local input can draw without publishing prediction as authority (0.546125ms)
+✔ dispose still drains the final physical release before closing transport (0.294709ms)
+✔ checkpoint graphics preparation suspends predictive drawing and input (0.442125ms)
+✔ native prediction responds for actor 0 before authority advances (54.886625ms)
+✔ native prediction responds for actor 1 before authority advances (37.584958ms)
+✔ correction forks native authority and preserves only unconfirmed samples (49.222792ms)
+✔ prediction is bounded, spectators do not advance and cancellation releases old samples (42.882292ms)
+✔ paused, terminal and new epochs cannot reuse speculative state (31.792375ms)
+✔ reconciliation uses native forks without checkpoint export or session growth (301.17675ms)
+✔ a sub-frame tap is retained until the next prediction tick (34.910834ms)
+✔ 50ms authority batches paint one accepted state per display frame with audio at that same state (0.676917ms)
+✔ paused presentation advances revisions while the game frame is fixed (0.085166ms)
+✔ background or oversized backlog skips to the newest accepted state without replaying obsolete audio (0.078708ms)
+✔ a running RAF with no authority frames resynchronizes audio when delivery resumes (0.060625ms)
+✔ immediate authority delivery clears backlog without flagging a checkpoint resync (0.055917ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 18
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 914.284792

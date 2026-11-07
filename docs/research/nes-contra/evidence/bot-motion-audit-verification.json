@@ -1,0 +1,24 @@
+{
+  "status": "targeted-race-and-native-fixtures-pass",
+  "scope": "Prediction and button selection only; actual rule code unchanged. New fixed-camera native fixtures are not newly recorded ROM executions.",
+  "fixes": [
+    "Horizontal drop admission requires visible support in the current column and excludes direct solid backing",
+    "Airborne X prediction scans visible body-side terrain at X+/-8",
+    "Head contact clears rising velocity and permits subsequent descent",
+    "Drop landing tests current feet before gravity/X and has no jump phase gate",
+    "Base low-core roller dodge releases Down before A"
+  ],
+  "native_examples": {
+    "floating_wall": "falls at native step72 X124/Y225; old planner incorrectly chose148/162",
+    "ceiling": "lands at native step29 X114/Y132; old planner rejected it",
+    "drop_edge": "lands at native step26 X88/Y116; old planner skipped it"
+  },
+  "rea_source": "static-playerstep-rea.json.gz",
+  "sources": {
+    "games/contra/engine/bot.go": "2a47e8aa30dc081118e8eba6bd76722d3467298fd5958b361043da8050dd1a55",
+    "games/contra/engine/bot_navigation.go": "98783f43746bf127f3058fb42963fae5f286aff44b050f953abbf0f717674544",
+    "games/contra/engine/bot_drop_through.go": "3c6c9c1323e6190e224bce8f5284882c13b95ffa323d499735c9d55a1af8c478",
+    "games/contra/engine/bot_side_collision.go": "2d92c7beb69a49efe3c137946fc6798b40f57f0f3a142a2f2a2f438df655f53d"
+  },
+  "complete_campaign": false
+}

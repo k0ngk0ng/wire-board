@@ -1,0 +1,9 @@
+{
+  "pass": false,
+  "scope": "Actual Board + real independent Go module/Wasm + platform native audio. Authentication/socket acceptance remains separate.",
+  "error": "CalledProcessError(1, ['/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/web/node_modules/.bin/esbuild', 'scripts/yuyuhakusho/platform_board_harness.tsx', '--bundle', '--format=esm', '--jsx=automatic', '--alias:react=./web/node_modules/react', '--alias:react-dom=./web/node_modules/react-dom', '--loader:.svg=file', '--outfile=/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/platform-web/harness.js'])",
+  "source_sha256": {
+    "scripts/yuyuhakusho/check_playable_audio.py": "10e5fb1fa70cfa9184c30de52d1590d915e04297a397d0f101a0541929445215",
+    "scripts/yuyuhakusho/platform_board_harness.tsx": "2e30e18ea76474283f8b9431206d6781ec18d4fc228c7c2fa12dc1b56249646a"
+  }
+}

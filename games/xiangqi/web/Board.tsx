@@ -1,3 +1,4 @@
+import { useControllerCancel } from "../../../web/src/controllers/use-controller-cancel";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import type { BoardProps } from "../../../web/src/game-api/module";
 import { Modal } from "../../../web/src/ui/board-host";
@@ -58,11 +59,16 @@ export function Board({
   audio,
   clock,
 }: BoardProps<View>) {
+  const controllerRoot = useRef<HTMLElement>(null);
   const [selected, setSelected] = useState<number | null>(null),
     [target, setTarget] = useState<number | null>(null),
     [focus, setFocus] = useState(67),
     [offer, setOffer] = useState(false),
     [resign, setResign] = useState(false);
+  useControllerCancel(controllerRoot, () => {
+    setSelected(null);
+    setTarget(null);
+  });
   const cells = useRef<(HTMLButtonElement | null)[]>([]);
   const flipped = !room.spectating && room.you !== data.red;
   const scope = `${room.id}:${data.round}:${room.you}:${clock.epoch ?? 0}`;
@@ -137,6 +143,7 @@ export function Board({
   const event = data.motion?.event;
   return (
     <section
+      ref={controllerRoot}
       className="xiangqi-board"
       data-ply={data.ply}
       data-moving={event?.id ?? ""}
@@ -167,7 +174,12 @@ export function Board({
               : `你执${flipped ? "黑" : "红"}，己方在下方`}
             {data.checkSquare >= 0 ? " · 将军" : ""}
           </div>
-          <div className="xiangqi-map" role="group" aria-label="中国象棋棋盘">
+          <div
+            data-controller-group="board"
+            className="xiangqi-map"
+            role="group"
+            aria-label="中国象棋棋盘"
+          >
             <svg
               className="xiangqi-grid"
               viewBox="0 0 450 500"
@@ -327,7 +339,7 @@ export function Board({
             选择棋子和目标点后确认。方向键移动焦点，回车选择。
           </p>
         </div>
-        <aside className="xiangqi-actions">
+        <aside data-controller-group="actions" className="xiangqi-actions">
           <h3>
             {data.phase === "finished"
               ? (reasons[data.reason] ?? "对局结束")
@@ -386,6 +398,7 @@ export function Board({
           <button
             type="button"
             disabled={!canAct || !data.canResign}
+            data-xiangqi-resign
             onClick={() => setResign(true)}
           >
             认输

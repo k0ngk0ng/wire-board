@@ -1,0 +1,639 @@
+{
+  "passed": true,
+  "naturalRecords": 6400,
+  "controlledRecords": 137,
+  "matchedRecords": 6534,
+  "counts": {
+    "load": 309,
+    "cycle": 2107,
+    "commit": 2060,
+    "snow": 2058
+  },
+  "rejectedDomainRecords": [
+    {
+      "name": "palette-cycle-boss-2-queue-184-v2",
+      "used": 184,
+      "reason": "original graphics prefix overlaps palette/CHR ownership"
+    },
+    {
+      "name": "palette-cycle-boss-2-queue-246-v2",
+      "used": 246,
+      "reason": "original graphics prefix overlaps palette/CHR ownership"
+    },
+    {
+      "name": "palette-cycle-boss-4-queue-246-v2",
+      "used": 246,
+      "reason": "original graphics prefix overlaps palette/CHR ownership"
+    }
+  ],
+  "redBeforeImplementation": true,
+  "race": "passed",
+  "testIsolation": "All non-test engine Go source files plus palette_test.go; concurrent unrelated red test files were not edited.",
+  "source": {
+    "romSHA256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+    "fixtureSHA256": "bb7a9b775875af6d1ffbda2fc8fd90b1074282876b28382cb26b43be22811db4",
+    "naturalRecords": 6400,
+    "controlledRecords": 137,
+    "naturalRepeatRAMIdentical": true,
+    "scope": "Original CEE3/CF6D/CC02/CE59 calls. Natural gameplay and controlled function inputs remain separate.",
+    "fadeInterpretation": "CF64 byte BB belongs to the preceding BNE operand; valid indexed fade values use CF65..CF6C for timer 1..8."
+  },
+  "files": {
+    "games/contra/engine/palette.go": "f5efcfd112f28607f9a3caf740919cf11d1b5a84e17a9cedce39dc55ba6b6a81",
+    "games/contra/engine/palette_snow.go": "47f3c0189a690b18afc5eff782935ad60b2cf3bb36172dc6331ace6f046527d2",
+    "games/contra/engine/palette_test.go": "4deca25b2b8b3b2ab054a6d6080610ce135bf3bef84ded358b62beb3ecf9f406",
+    "games/contra/engine/testdata/original-palette.json.gz": "bb7a9b775875af6d1ffbda2fc8fd90b1074282876b28382cb26b43be22811db4",
+    "docs/research/nes-contra/evidence/palette-green.jsonl": "780dadf551a72a5dfb6cd7da43f8d08813817bf388fac7127d2eb20adee78472",
+    "docs/research/nes-contra/evidence/palette-overlap-red.jsonl": "293e16dff234f5de44e87f712aa6c221740a15a5069b50f2e9318b5ea556bc69",
+    "docs/research/nes-contra/evidence/palette-red.jsonl": "900b9fd9a90dcbbf87d96f93af1b6b64955461f1045e0abc14fc7187d842aec0",
+    "docs/research/nes-contra/evidence/palette-race.jsonl": "1cc8a40baaa4cf2702f54406f6f3f3c2f185a3b03b48bd231be0563518d61914",
+    "docs/research/nes-contra/evidence/palette-rea.json.gz": "39e70c3848a5b970802e644de9d6c50fc8a75d1ee33f9b134ece2268d54e9d01",
+    "docs/research/nes-contra/evidence/palette-additional-colors.json": "b39c77374b721148880391fc051ae8c388ee05d1ea3ba3cc7dba8b3bb8b9ed1e"
+  },
+  "cleanup": [
+    {
+      "path": ".local/contra-palette/swift-cache",
+      "bytes": 93390128
+    },
+    {
+      "path": "dist/cp-tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-palette/runtime/fceux-home",
+      "bytes": 17723
+    },
+    {
+      "path": ".local/contra-palette/runtime/runtime",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-palette/runtime/tmp",
+      "bytes": 0
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-cycle-stage-2-phase-3-v1",
+      "bytes": 51118
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-load-32-128-5-v1",
+      "bytes": 51345
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-snow-6-3-127-v1",
+      "bytes": 49876
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-load-32-0-255-v1",
+      "bytes": 51345
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-cycle-boss-2-queue-70-v1",
+      "bytes": 51879
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-cycle-stage-7-phase-2-v1",
+      "bytes": 51136
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-requested-gate-v1",
+      "bytes": 49733
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-load-16-0-5-v1",
+      "bytes": 51093
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-cycle-stage-4-phase-1-v1",
+      "bytes": 51132
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-commit-0-0-v1",
+      "bytes": 51017
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-cycle-stage-1-phase-0-v1",
+      "bytes": 51134
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-load-32-0-127-v1",
+      "bytes": 51345
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-flash-1-v1",
+      "bytes": 49722
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-load-32-0-5-v1",
+      "bytes": 51331
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-load-32-128-1-v1",
+      "bytes": 51345
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-load-16-0-1-v1",
+      "bytes": 51093
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-load-32-0-1-v1",
+      "bytes": 51331
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-cycle-boss-2-queue-64-v1",
+      "bytes": 51831
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-flash-5-v1",
+      "bytes": 49722
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-cycle-boss-2-queue-86-v1",
+      "bytes": 52007
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-load-32-128-0-v1",
+      "bytes": 51345
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-load-16-0-0-v1",
+      "bytes": 51093
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-load-32-0-0-v1",
+      "bytes": 51331
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-flash-4-v1",
+      "bytes": 49721
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-load-16-0-128-v1",
+      "bytes": 51107
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-cycle-stage-2-phase-2-v1",
+      "bytes": 51118
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-load-32-128-4-v1",
+      "bytes": 51345
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-cycle-boss-2-queue-71-v1",
+      "bytes": 51887
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-cycle-stage-7-phase-3-v1",
+      "bytes": 51136
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-load-16-0-4-v1",
+      "bytes": 51093
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-cycle-stage-4-phase-0-v1",
+      "bytes": 51132
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-cycle-stage-1-phase-1-v1",
+      "bytes": 51134
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-load-32-0-4-v1",
+      "bytes": 51331
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-cycle-stage-6-phase-1-v1",
+      "bytes": 51136
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-stage-4-v1",
+      "bytes": 2317770
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-commit-32-0-v1",
+      "bytes": 51022
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-cycle-stage-3-phase-0-v1",
+      "bytes": 51114
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-commit-16-70-v1",
+      "bytes": 51308
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-cycle-boss-4-queue-70-v1",
+      "bytes": 51839
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-load-16-128-1-v1",
+      "bytes": 51107
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-commit-32-70-v1",
+      "bytes": 51308
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-snow-12-20-0-v1",
+      "bytes": 49876
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-cycle-stage-5-phase-2-v1",
+      "bytes": 51130
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-cycle-boss-4-queue-64-v1",
+      "bytes": 51791
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-load-16-0-127-v1",
+      "bytes": 51107
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-load-16-0-255-v1",
+      "bytes": 51107
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-load-16-128-5-v1",
+      "bytes": 51107
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-cycle-stage-8-phase-2-v1",
+      "bytes": 51126
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-stage-1-v1",
+      "bytes": 2318460
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-commit-16-86-v1",
+      "bytes": 51377
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-snow-6-3-128-v1",
+      "bytes": 49873
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-cycle-boss-2-queue-0-v1",
+      "bytes": 51311
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-commit-32-86-v1",
+      "bytes": 51377
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-load-32-0-128-v1",
+      "bytes": 51345
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-cycle-boss-4-queue-86-v1",
+      "bytes": 51967
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-cycle-stage-8-phase-3-v1",
+      "bytes": 51126
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-load-16-128-4-v1",
+      "bytes": 51107
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-pause-cycle-v1",
+      "bytes": 49790
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-cycle-stage-6-phase-0-v1",
+      "bytes": 51136
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-stage-5-v1",
+      "bytes": 2316673
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-cycle-stage-3-phase-1-v1",
+      "bytes": 51114
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-commit-16-71-v1",
+      "bytes": 51317
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-load-16-128-0-v1",
+      "bytes": 51107
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-cycle-boss-4-queue-71-v1",
+      "bytes": 51847
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-commit-32-71-v1",
+      "bytes": 51317
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-cycle-stage-5-phase-3-v1",
+      "bytes": 51126
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-load-16-0-9-v1",
+      "bytes": 51093
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-stage-2-v1",
+      "bytes": 2321384
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-snow-0-0-0-v1",
+      "bytes": 49857
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-load-32-128-9-v1",
+      "bytes": 51345
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-load-32-0-9-v1",
+      "bytes": 51331
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-cycle-stage-8-phase-0-v1",
+      "bytes": 51126
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-load-16-128-7-v1",
+      "bytes": 51107
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-commit-0-71-v1",
+      "bytes": 51307
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-stage-6-v1",
+      "bytes": 2312420
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-cycle-stage-6-phase-3-v1",
+      "bytes": 51136
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-cycle-stage-3-phase-2-v1",
+      "bytes": 51114
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-load-32-128-128-v1",
+      "bytes": 51359
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-load-16-128-3-v1",
+      "bytes": 51107
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-flash-9-v1",
+      "bytes": 49722
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-cycle-stage-5-phase-0-v1",
+      "bytes": 51130
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-commit-0-86-v1",
+      "bytes": 51367
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-stage-7-v1",
+      "bytes": 2318412
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-cycle-stage-6-phase-2-v1",
+      "bytes": 51136
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-flash-10-v1",
+      "bytes": 49726
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-load-16-128-127-v1",
+      "bytes": 51121
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-cycle-stage-3-phase-3-v1",
+      "bytes": 51114
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-load-16-128-2-v1",
+      "bytes": 51107
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-flash-8-v1",
+      "bytes": 49721
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-load-16-128-255-v1",
+      "bytes": 51121
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-cycle-stage-5-phase-1-v1",
+      "bytes": 51126
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-load-16-0-8-v1",
+      "bytes": 51093
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-stage-3-v1",
+      "bytes": 2318315
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-load-32-128-8-v1",
+      "bytes": 51345
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-load-32-0-8-v1",
+      "bytes": 51331
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-load-16-128-6-v1",
+      "bytes": 51107
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-cycle-stage-8-phase-1-v1",
+      "bytes": 51126
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-commit-0-70-v1",
+      "bytes": 51303
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-cycle-boss-4-queue-0-v1",
+      "bytes": 51271
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-load-32-128-3-v1",
+      "bytes": 51345
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-load-16-128-128-v1",
+      "bytes": 51121
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-ending-colors-v1",
+      "bytes": 51188
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-load-16-0-3-v1",
+      "bytes": 51093
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-commit-16-0-v1",
+      "bytes": 51022
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-stage-8-v1",
+      "bytes": 2316293
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-snow-9-17-0-v1",
+      "bytes": 49868
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-snow-9-16-255-v1",
+      "bytes": 49884
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-load-32-0-3-v1",
+      "bytes": 51331
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-flash-7-v1",
+      "bytes": 49722
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-load-32-128-7-v1",
+      "bytes": 51345
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-cycle-boss-2-queue-246-v1",
+      "bytes": 53295
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-cycle-stage-2-phase-1-v1",
+      "bytes": 51118
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-cycle-stage-7-phase-0-v1",
+      "bytes": 51136
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-load-16-0-7-v1",
+      "bytes": 51093
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-cycle-stage-4-phase-3-v1",
+      "bytes": 51132
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-cycle-stage-1-phase-2-v1",
+      "bytes": 51134
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-flash-3-v1",
+      "bytes": 49722
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-load-16-128-9-v1",
+      "bytes": 51107
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-cycle-then-flash-v1",
+      "bytes": 51064
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-load-32-0-7-v1",
+      "bytes": 51331
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-load16-unused-sprite-indices-v1",
+      "bytes": 51270
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-load-32-128-6-v1",
+      "bytes": 51345
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-snow-3-2-0-v1",
+      "bytes": 49857
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-cycle-stage-2-phase-0-v1",
+      "bytes": 51118
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-cycle-stage-7-phase-1-v1",
+      "bytes": 51136
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-load-16-0-6-v1",
+      "bytes": 51093
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-cycle-stage-4-phase-2-v1",
+      "bytes": 51132
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-snow-3-1-255-v1",
+      "bytes": 49876
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-cycle-stage-1-phase-3-v1",
+      "bytes": 51134
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-flash-2-v1",
+      "bytes": 49721
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-load-16-128-8-v1",
+      "bytes": 51107
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-load-32-0-6-v1",
+      "bytes": 51331
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-load-32-128-2-v1",
+      "bytes": 51345
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-load-32-128-127-v1",
+      "bytes": 51359
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-load-16-0-2-v1",
+      "bytes": 51093
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-snow-0-20-0-v1",
+      "bytes": 49865
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-cycle-boss-4-queue-246-v1",
+      "bytes": 53255
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-load-32-0-2-v1",
+      "bytes": 51331
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-load-32-128-255-v1",
+      "bytes": 51359
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-snow-other-stage-v1",
+      "bytes": 49808
+    },
+    {
+      "path": ".local/contra-palette/runtime/runs/palette-flash-6-v1",
+      "bytes": 49721
+    }
+  ]
+}

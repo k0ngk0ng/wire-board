@@ -141,6 +141,7 @@ export function Board({
           >
             <div style={mapControls.canvasStyle}>
               <div
+                data-controller-group="board"
                 className="mono-map"
                 aria-label="强手棋棋盘"
                 style={mapControls.mapStyle}
@@ -336,7 +337,11 @@ export function Board({
         </div>
 
         <aside className="mono-panel">
-          <nav className="mono-tabs" aria-label="牌桌面板">
+          <nav
+            data-controller-group="tabs"
+            className="mono-tabs"
+            aria-label="牌桌面板"
+          >
             {(
               [
                 ["action", "行动"],
@@ -358,7 +363,7 @@ export function Board({
               </button>
             ))}
           </nav>
-          <div className="mono-panel-content">
+          <div data-controller-group="actions" className="mono-panel-content">
             {tab === "action" && (
               <>
                 <header className="mono-phase-heading">
@@ -412,6 +417,7 @@ export function Board({
                         <GameButton
                           primary
                           disabled={busy}
+                          action="roll"
                           onClick={() => void send("roll")}
                         >
                           {me.jailed ? "尝试掷双骰" : "掷骰"}
@@ -483,6 +489,7 @@ export function Board({
                             </GameButton>
                             <GameButton
                               disabled={busy}
+                              action="auction"
                               onClick={() => void send("auction")}
                             >
                               转入拍卖
@@ -562,6 +569,7 @@ export function Board({
                             </label>
                             <button
                               className="mono-button primary mono-game-action"
+                              data-controller-action="bid"
                               type="submit"
                               disabled={
                                 busy ||
@@ -706,6 +714,7 @@ export function Board({
                         <GameButton
                           primary
                           disabled={busy}
+                          action="end"
                           onClick={() => void send("end")}
                         >
                           结束回合

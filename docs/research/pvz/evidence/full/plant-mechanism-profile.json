@@ -1,0 +1,4038 @@
+{
+  "sourceSHA256": "8e8eea73a85d7af311755708f5daf2786650cf3c032188b8315fcf99858c8342",
+  "scope": "PC1.0.0.1051 standard seed ids0..48, static mechanism parameter ledger",
+  "logicUpdateSeconds": 0.01,
+  "authorityPolicy": "Native REA evidence and explicitly identified original-byte assembly observations are primary; historical source is used only to label fields and mark candidates. No original Windows execution occurred.",
+  "coverage": {
+    "standardPlantDefinitions": 49,
+    "mechanismGroups": 47,
+    "completeDynamicEquivalence": false,
+    "explicitRemainingUnknownGroups": [
+      "gravebuster",
+      "imitater",
+      "plant-target-category-masks"
+    ]
+  },
+  "plants": [
+    {
+      "id": "peashooter",
+      "originalId": 0,
+      "definitionAddress": "0x69f2b0",
+      "costSun": 100,
+      "refreshUpdates": 750,
+      "launchUpdates": 150,
+      "definitionEvidenceID": "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8",
+      "mechanisms": [
+        "plant-baseline",
+        "shooter-clock",
+        "damage-table",
+        "straight-projectile-motion",
+        "plant-collision-rectangles",
+        "plant-target-category-masks",
+        "reanimation-phase-clock",
+        "plant-cost-overrides"
+      ]
+    },
+    {
+      "id": "sunflower",
+      "originalId": 1,
+      "definitionAddress": "0x69f2d4",
+      "costSun": 50,
+      "refreshUpdates": 750,
+      "launchUpdates": 2500,
+      "definitionEvidenceID": "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8",
+      "mechanisms": [
+        "plant-baseline",
+        "production-clock",
+        "plant-collision-rectangles",
+        "plant-target-category-masks",
+        "reanimation-phase-clock",
+        "plant-cost-overrides"
+      ]
+    },
+    {
+      "id": "cherrybomb",
+      "originalId": 2,
+      "definitionAddress": "0x69f2f8",
+      "costSun": 150,
+      "refreshUpdates": 5000,
+      "launchUpdates": 0,
+      "definitionEvidenceID": "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8",
+      "mechanisms": [
+        "plant-baseline",
+        "cherry-explosion",
+        "plant-collision-rectangles",
+        "plant-target-category-masks",
+        "reanimation-phase-clock",
+        "plant-cost-overrides"
+      ]
+    },
+    {
+      "id": "wallnut",
+      "originalId": 3,
+      "definitionAddress": "0x69f31c",
+      "costSun": 50,
+      "refreshUpdates": 3000,
+      "launchUpdates": 0,
+      "definitionEvidenceID": "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8",
+      "mechanisms": [
+        "plant-baseline",
+        "plant-collision-rectangles",
+        "plant-target-category-masks",
+        "reanimation-phase-clock",
+        "plant-cost-overrides"
+      ]
+    },
+    {
+      "id": "potatomine",
+      "originalId": 4,
+      "definitionAddress": "0x69f340",
+      "costSun": 25,
+      "refreshUpdates": 3000,
+      "launchUpdates": 0,
+      "definitionEvidenceID": "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8",
+      "mechanisms": [
+        "plant-baseline",
+        "short-ranges-and-penetration",
+        "potato-arm",
+        "plant-collision-rectangles",
+        "plant-target-category-masks",
+        "reanimation-phase-clock",
+        "plant-cost-overrides"
+      ]
+    },
+    {
+      "id": "snowpea",
+      "originalId": 5,
+      "definitionAddress": "0x69f364",
+      "costSun": 175,
+      "refreshUpdates": 750,
+      "launchUpdates": 150,
+      "definitionEvidenceID": "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8",
+      "mechanisms": [
+        "plant-baseline",
+        "shooter-clock",
+        "damage-table",
+        "straight-projectile-motion",
+        "plant-collision-rectangles",
+        "plant-target-category-masks",
+        "reanimation-phase-clock",
+        "plant-cost-overrides"
+      ]
+    },
+    {
+      "id": "chomper",
+      "originalId": 6,
+      "definitionAddress": "0x69f388",
+      "costSun": 150,
+      "refreshUpdates": 750,
+      "launchUpdates": 0,
+      "definitionEvidenceID": "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8",
+      "mechanisms": [
+        "plant-baseline",
+        "short-ranges-and-penetration",
+        "chomper-swallow",
+        "plant-collision-rectangles",
+        "plant-target-category-masks",
+        "reanimation-phase-clock",
+        "plant-cost-overrides"
+      ]
+    },
+    {
+      "id": "repeater",
+      "originalId": 7,
+      "definitionAddress": "0x69f3ac",
+      "costSun": 200,
+      "refreshUpdates": 750,
+      "launchUpdates": 150,
+      "definitionEvidenceID": "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8",
+      "mechanisms": [
+        "plant-baseline",
+        "shooter-clock",
+        "damage-table",
+        "straight-projectile-motion",
+        "repeater-and-split-bursts",
+        "plant-collision-rectangles",
+        "plant-target-category-masks",
+        "reanimation-phase-clock",
+        "plant-cost-overrides"
+      ]
+    },
+    {
+      "id": "puffshroom",
+      "originalId": 8,
+      "definitionAddress": "0x69f3d0",
+      "costSun": 0,
+      "refreshUpdates": 750,
+      "launchUpdates": 150,
+      "definitionEvidenceID": "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8",
+      "mechanisms": [
+        "plant-baseline",
+        "shooter-clock",
+        "damage-table",
+        "straight-projectile-motion",
+        "short-ranges-and-penetration",
+        "plant-collision-rectangles",
+        "nocturnal-sleep",
+        "plant-target-category-masks",
+        "reanimation-phase-clock",
+        "plant-cost-overrides"
+      ]
+    },
+    {
+      "id": "sunshroom",
+      "originalId": 9,
+      "definitionAddress": "0x69f3f4",
+      "costSun": 25,
+      "refreshUpdates": 750,
+      "launchUpdates": 2500,
+      "definitionEvidenceID": "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8",
+      "mechanisms": [
+        "plant-baseline",
+        "production-clock",
+        "sunshroom-growth",
+        "plant-collision-rectangles",
+        "nocturnal-sleep",
+        "plant-target-category-masks",
+        "reanimation-phase-clock",
+        "plant-cost-overrides"
+      ]
+    },
+    {
+      "id": "fumeshroom",
+      "originalId": 10,
+      "definitionAddress": "0x69f418",
+      "costSun": 75,
+      "refreshUpdates": 750,
+      "launchUpdates": 150,
+      "definitionEvidenceID": "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8",
+      "mechanisms": [
+        "plant-baseline",
+        "shooter-clock",
+        "short-ranges-and-penetration",
+        "fume-and-gloom-damage",
+        "plant-collision-rectangles",
+        "nocturnal-sleep",
+        "shield-damage-semantics",
+        "plant-target-category-masks",
+        "reanimation-phase-clock",
+        "plant-cost-overrides"
+      ]
+    },
+    {
+      "id": "gravebuster",
+      "originalId": 11,
+      "definitionAddress": "0x69f43c",
+      "costSun": 75,
+      "refreshUpdates": 750,
+      "launchUpdates": 0,
+      "definitionEvidenceID": "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8",
+      "mechanisms": [
+        "plant-baseline",
+        "gravebuster",
+        "plant-collision-rectangles",
+        "plant-target-category-masks",
+        "reanimation-phase-clock",
+        "plant-cost-overrides"
+      ]
+    },
+    {
+      "id": "hypnoshroom",
+      "originalId": 12,
+      "definitionAddress": "0x69f460",
+      "costSun": 75,
+      "refreshUpdates": 3000,
+      "launchUpdates": 0,
+      "definitionEvidenceID": "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8",
+      "mechanisms": [
+        "plant-baseline",
+        "hypnoshroom",
+        "plant-collision-rectangles",
+        "nocturnal-sleep",
+        "plant-target-category-masks",
+        "reanimation-phase-clock",
+        "plant-cost-overrides"
+      ]
+    },
+    {
+      "id": "scaredyshroom",
+      "originalId": 13,
+      "definitionAddress": "0x69f484",
+      "costSun": 25,
+      "refreshUpdates": 750,
+      "launchUpdates": 150,
+      "definitionEvidenceID": "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8",
+      "mechanisms": [
+        "plant-baseline",
+        "shooter-clock",
+        "damage-table",
+        "straight-projectile-motion",
+        "scaredy-nearby-stop",
+        "plant-collision-rectangles",
+        "nocturnal-sleep",
+        "plant-target-category-masks",
+        "reanimation-phase-clock",
+        "plant-cost-overrides"
+      ]
+    },
+    {
+      "id": "iceshroom",
+      "originalId": 14,
+      "definitionAddress": "0x69f4a8",
+      "costSun": 75,
+      "refreshUpdates": 5000,
+      "launchUpdates": 0,
+      "definitionEvidenceID": "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8",
+      "mechanisms": [
+        "plant-baseline",
+        "ice-freeze",
+        "plant-collision-rectangles",
+        "nocturnal-sleep",
+        "plant-target-category-masks",
+        "reanimation-phase-clock",
+        "plant-cost-overrides"
+      ]
+    },
+    {
+      "id": "doomshroom",
+      "originalId": 15,
+      "definitionAddress": "0x69f4cc",
+      "costSun": 125,
+      "refreshUpdates": 5000,
+      "launchUpdates": 0,
+      "definitionEvidenceID": "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8",
+      "mechanisms": [
+        "plant-baseline",
+        "doom-explosion",
+        "plant-collision-rectangles",
+        "nocturnal-sleep",
+        "plant-target-category-masks",
+        "reanimation-phase-clock",
+        "plant-cost-overrides"
+      ]
+    },
+    {
+      "id": "lilypad",
+      "originalId": 16,
+      "definitionAddress": "0x69f4f0",
+      "costSun": 25,
+      "refreshUpdates": 750,
+      "launchUpdates": 0,
+      "definitionEvidenceID": "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8",
+      "mechanisms": [
+        "plant-baseline",
+        "water-and-roof-support",
+        "plant-collision-rectangles",
+        "plant-target-category-masks",
+        "reanimation-phase-clock",
+        "plant-cost-overrides"
+      ]
+    },
+    {
+      "id": "squash",
+      "originalId": 17,
+      "definitionAddress": "0x69f514",
+      "costSun": 50,
+      "refreshUpdates": 3000,
+      "launchUpdates": 0,
+      "definitionEvidenceID": "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8",
+      "mechanisms": [
+        "plant-baseline",
+        "squash",
+        "plant-collision-rectangles",
+        "plant-target-category-masks",
+        "reanimation-phase-clock",
+        "plant-cost-overrides"
+      ]
+    },
+    {
+      "id": "threepeater",
+      "originalId": 18,
+      "definitionAddress": "0x69f538",
+      "costSun": 325,
+      "refreshUpdates": 750,
+      "launchUpdates": 150,
+      "definitionEvidenceID": "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8",
+      "mechanisms": [
+        "plant-baseline",
+        "shooter-clock",
+        "damage-table",
+        "straight-projectile-motion",
+        "threepeater-rows",
+        "plant-collision-rectangles",
+        "plant-target-category-masks",
+        "reanimation-phase-clock",
+        "plant-cost-overrides"
+      ]
+    },
+    {
+      "id": "tanglekelp",
+      "originalId": 19,
+      "definitionAddress": "0x69f55c",
+      "costSun": 25,
+      "refreshUpdates": 3000,
+      "launchUpdates": 0,
+      "definitionEvidenceID": "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8",
+      "mechanisms": [
+        "plant-baseline",
+        "tanglekelp",
+        "plant-collision-rectangles",
+        "plant-target-category-masks",
+        "reanimation-phase-clock",
+        "plant-cost-overrides"
+      ]
+    },
+    {
+      "id": "jalapeno",
+      "originalId": 20,
+      "definitionAddress": "0x69f580",
+      "costSun": 125,
+      "refreshUpdates": 5000,
+      "launchUpdates": 0,
+      "definitionEvidenceID": "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8",
+      "mechanisms": [
+        "plant-baseline",
+        "jalapeno-row",
+        "plant-collision-rectangles",
+        "plant-target-category-masks",
+        "reanimation-phase-clock",
+        "plant-cost-overrides"
+      ]
+    },
+    {
+      "id": "spikeweed",
+      "originalId": 21,
+      "definitionAddress": "0x69f5a4",
+      "costSun": 100,
+      "refreshUpdates": 750,
+      "launchUpdates": 0,
+      "definitionEvidenceID": "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8",
+      "mechanisms": [
+        "plant-baseline",
+        "short-ranges-and-penetration",
+        "spikes-and-vehicles",
+        "plant-collision-rectangles",
+        "plant-target-category-masks",
+        "reanimation-phase-clock",
+        "plant-cost-overrides"
+      ]
+    },
+    {
+      "id": "torchwood",
+      "originalId": 22,
+      "definitionAddress": "0x69f5c8",
+      "costSun": 175,
+      "refreshUpdates": 750,
+      "launchUpdates": 0,
+      "definitionEvidenceID": "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8",
+      "mechanisms": [
+        "plant-baseline",
+        "damage-table",
+        "short-ranges-and-penetration",
+        "torchwood-conversion",
+        "melon-splash",
+        "plant-collision-rectangles",
+        "plant-target-category-masks",
+        "reanimation-phase-clock",
+        "plant-cost-overrides"
+      ]
+    },
+    {
+      "id": "tallnut",
+      "originalId": 23,
+      "definitionAddress": "0x69f5ec",
+      "costSun": 125,
+      "refreshUpdates": 3000,
+      "launchUpdates": 0,
+      "definitionEvidenceID": "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8",
+      "mechanisms": [
+        "plant-baseline",
+        "plant-collision-rectangles",
+        "plant-target-category-masks",
+        "reanimation-phase-clock",
+        "plant-cost-overrides"
+      ]
+    },
+    {
+      "id": "seashroom",
+      "originalId": 24,
+      "definitionAddress": "0x69f610",
+      "costSun": 0,
+      "refreshUpdates": 3000,
+      "launchUpdates": 150,
+      "definitionEvidenceID": "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8",
+      "mechanisms": [
+        "plant-baseline",
+        "shooter-clock",
+        "damage-table",
+        "straight-projectile-motion",
+        "short-ranges-and-penetration",
+        "plant-collision-rectangles",
+        "nocturnal-sleep",
+        "plant-target-category-masks",
+        "reanimation-phase-clock",
+        "plant-cost-overrides"
+      ]
+    },
+    {
+      "id": "plantern",
+      "originalId": 25,
+      "definitionAddress": "0x69f634",
+      "costSun": 25,
+      "refreshUpdates": 3000,
+      "launchUpdates": 2500,
+      "definitionEvidenceID": "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8",
+      "mechanisms": [
+        "plant-baseline",
+        "plantern",
+        "plant-collision-rectangles",
+        "plant-target-category-masks",
+        "reanimation-phase-clock",
+        "plant-cost-overrides"
+      ]
+    },
+    {
+      "id": "cactus",
+      "originalId": 26,
+      "definitionAddress": "0x69f658",
+      "costSun": 125,
+      "refreshUpdates": 750,
+      "launchUpdates": 150,
+      "definitionEvidenceID": "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8",
+      "mechanisms": [
+        "plant-baseline",
+        "shooter-clock",
+        "damage-table",
+        "straight-projectile-motion",
+        "cactus-height-switch",
+        "plant-collision-rectangles",
+        "plant-target-category-masks",
+        "reanimation-phase-clock",
+        "plant-cost-overrides"
+      ]
+    },
+    {
+      "id": "blover",
+      "originalId": 27,
+      "definitionAddress": "0x69f67c",
+      "costSun": 100,
+      "refreshUpdates": 750,
+      "launchUpdates": 0,
+      "definitionEvidenceID": "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8",
+      "mechanisms": [
+        "plant-baseline",
+        "blover",
+        "plant-collision-rectangles",
+        "plant-target-category-masks",
+        "reanimation-phase-clock",
+        "plant-cost-overrides"
+      ]
+    },
+    {
+      "id": "splitpea",
+      "originalId": 28,
+      "definitionAddress": "0x69f6a0",
+      "costSun": 125,
+      "refreshUpdates": 750,
+      "launchUpdates": 150,
+      "definitionEvidenceID": "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8",
+      "mechanisms": [
+        "plant-baseline",
+        "shooter-clock",
+        "damage-table",
+        "straight-projectile-motion",
+        "repeater-and-split-bursts",
+        "plant-collision-rectangles",
+        "shield-damage-semantics",
+        "plant-target-category-masks",
+        "reanimation-phase-clock",
+        "plant-cost-overrides"
+      ]
+    },
+    {
+      "id": "starfruit",
+      "originalId": 29,
+      "definitionAddress": "0x69f6c4",
+      "costSun": 125,
+      "refreshUpdates": 750,
+      "launchUpdates": 150,
+      "definitionEvidenceID": "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8",
+      "mechanisms": [
+        "plant-baseline",
+        "shooter-clock",
+        "damage-table",
+        "plant-collision-rectangles",
+        "shield-damage-semantics",
+        "plant-target-category-masks",
+        "starfruit-five-directions",
+        "reanimation-phase-clock",
+        "plant-cost-overrides"
+      ]
+    },
+    {
+      "id": "pumpkin",
+      "originalId": 30,
+      "definitionAddress": "0x69f6e8",
+      "costSun": 125,
+      "refreshUpdates": 3000,
+      "launchUpdates": 0,
+      "definitionEvidenceID": "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8",
+      "mechanisms": [
+        "plant-baseline",
+        "water-and-roof-support",
+        "plant-collision-rectangles",
+        "plant-target-category-masks",
+        "reanimation-phase-clock",
+        "plant-cost-overrides"
+      ]
+    },
+    {
+      "id": "magnetshroom",
+      "originalId": 31,
+      "definitionAddress": "0x69f70c",
+      "costSun": 100,
+      "refreshUpdates": 750,
+      "launchUpdates": 0,
+      "definitionEvidenceID": "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8",
+      "mechanisms": [
+        "plant-baseline",
+        "magnetshroom",
+        "plant-collision-rectangles",
+        "nocturnal-sleep",
+        "plant-target-category-masks",
+        "reanimation-phase-clock",
+        "plant-cost-overrides"
+      ]
+    },
+    {
+      "id": "cabbagepult",
+      "originalId": 32,
+      "definitionAddress": "0x69f730",
+      "costSun": 100,
+      "refreshUpdates": 750,
+      "launchUpdates": 300,
+      "definitionEvidenceID": "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8",
+      "mechanisms": [
+        "plant-baseline",
+        "shooter-clock",
+        "damage-table",
+        "lobbed-projectiles",
+        "plant-collision-rectangles",
+        "shield-damage-semantics",
+        "plant-target-category-masks",
+        "reanimation-phase-clock",
+        "plant-cost-overrides"
+      ]
+    },
+    {
+      "id": "flowerpot",
+      "originalId": 33,
+      "definitionAddress": "0x69f754",
+      "costSun": 25,
+      "refreshUpdates": 750,
+      "launchUpdates": 0,
+      "definitionEvidenceID": "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8",
+      "mechanisms": [
+        "plant-baseline",
+        "water-and-roof-support",
+        "plant-collision-rectangles",
+        "plant-target-category-masks",
+        "reanimation-phase-clock",
+        "plant-cost-overrides"
+      ]
+    },
+    {
+      "id": "kernelpult",
+      "originalId": 34,
+      "definitionAddress": "0x69f778",
+      "costSun": 100,
+      "refreshUpdates": 750,
+      "launchUpdates": 300,
+      "definitionEvidenceID": "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8",
+      "mechanisms": [
+        "plant-baseline",
+        "shooter-clock",
+        "damage-table",
+        "lobbed-projectiles",
+        "kernel-butter",
+        "plant-collision-rectangles",
+        "shield-damage-semantics",
+        "plant-target-category-masks",
+        "reanimation-phase-clock",
+        "plant-cost-overrides"
+      ]
+    },
+    {
+      "id": "coffeebean",
+      "originalId": 35,
+      "definitionAddress": "0x69f79c",
+      "costSun": 75,
+      "refreshUpdates": 750,
+      "launchUpdates": 0,
+      "definitionEvidenceID": "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8",
+      "mechanisms": [
+        "plant-baseline",
+        "coffeebean",
+        "plant-collision-rectangles",
+        "plant-target-category-masks",
+        "reanimation-phase-clock",
+        "plant-cost-overrides"
+      ]
+    },
+    {
+      "id": "garlic",
+      "originalId": 36,
+      "definitionAddress": "0x69f7c0",
+      "costSun": 50,
+      "refreshUpdates": 750,
+      "launchUpdates": 0,
+      "definitionEvidenceID": "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8",
+      "mechanisms": [
+        "plant-baseline",
+        "garlic",
+        "plant-collision-rectangles",
+        "plant-target-category-masks",
+        "reanimation-phase-clock",
+        "plant-cost-overrides"
+      ]
+    },
+    {
+      "id": "umbrellaleaf",
+      "originalId": 37,
+      "definitionAddress": "0x69f7e4",
+      "costSun": 100,
+      "refreshUpdates": 750,
+      "launchUpdates": 0,
+      "definitionEvidenceID": "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8",
+      "mechanisms": [
+        "plant-baseline",
+        "umbrellaleaf",
+        "plant-collision-rectangles",
+        "plant-target-category-masks",
+        "reanimation-phase-clock",
+        "plant-cost-overrides"
+      ]
+    },
+    {
+      "id": "marigold",
+      "originalId": 38,
+      "definitionAddress": "0x69f808",
+      "costSun": 50,
+      "refreshUpdates": 3000,
+      "launchUpdates": 2500,
+      "definitionEvidenceID": "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8",
+      "mechanisms": [
+        "plant-baseline",
+        "production-clock",
+        "plant-collision-rectangles",
+        "plant-target-category-masks",
+        "reanimation-phase-clock",
+        "plant-cost-overrides"
+      ]
+    },
+    {
+      "id": "melonpult",
+      "originalId": 39,
+      "definitionAddress": "0x69f82c",
+      "costSun": 300,
+      "refreshUpdates": 750,
+      "launchUpdates": 300,
+      "definitionEvidenceID": "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8",
+      "mechanisms": [
+        "plant-baseline",
+        "shooter-clock",
+        "damage-table",
+        "melon-splash",
+        "lobbed-projectiles",
+        "plant-collision-rectangles",
+        "shield-damage-semantics",
+        "plant-target-category-masks",
+        "reanimation-phase-clock",
+        "plant-cost-overrides"
+      ]
+    },
+    {
+      "id": "gatlingpea",
+      "originalId": 40,
+      "definitionAddress": "0x69f850",
+      "costSun": 250,
+      "refreshUpdates": 5000,
+      "launchUpdates": 150,
+      "definitionEvidenceID": "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8",
+      "mechanisms": [
+        "plant-baseline",
+        "shooter-clock",
+        "damage-table",
+        "straight-projectile-motion",
+        "gatling-burst",
+        "upgrade-requirements",
+        "plant-collision-rectangles",
+        "plant-target-category-masks",
+        "reanimation-phase-clock",
+        "plant-cost-overrides"
+      ]
+    },
+    {
+      "id": "twinsunflower",
+      "originalId": 41,
+      "definitionAddress": "0x69f874",
+      "costSun": 150,
+      "refreshUpdates": 5000,
+      "launchUpdates": 2500,
+      "definitionEvidenceID": "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8",
+      "mechanisms": [
+        "plant-baseline",
+        "production-clock",
+        "upgrade-requirements",
+        "plant-collision-rectangles",
+        "plant-target-category-masks",
+        "reanimation-phase-clock",
+        "plant-cost-overrides"
+      ]
+    },
+    {
+      "id": "gloomshroom",
+      "originalId": 42,
+      "definitionAddress": "0x69f898",
+      "costSun": 150,
+      "refreshUpdates": 5000,
+      "launchUpdates": 200,
+      "definitionEvidenceID": "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8",
+      "mechanisms": [
+        "plant-baseline",
+        "shooter-clock",
+        "short-ranges-and-penetration",
+        "fume-and-gloom-damage",
+        "upgrade-requirements",
+        "plant-collision-rectangles",
+        "nocturnal-sleep",
+        "shield-damage-semantics",
+        "plant-target-category-masks",
+        "reanimation-phase-clock",
+        "plant-cost-overrides"
+      ]
+    },
+    {
+      "id": "cattail",
+      "originalId": 43,
+      "definitionAddress": "0x69f8bc",
+      "costSun": 225,
+      "refreshUpdates": 5000,
+      "launchUpdates": 150,
+      "definitionEvidenceID": "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8",
+      "mechanisms": [
+        "plant-baseline",
+        "shooter-clock",
+        "damage-table",
+        "cattail-homing",
+        "upgrade-requirements",
+        "plant-collision-rectangles",
+        "plant-target-category-masks",
+        "reanimation-phase-clock",
+        "plant-cost-overrides"
+      ]
+    },
+    {
+      "id": "wintermelon",
+      "originalId": 44,
+      "definitionAddress": "0x69f8e0",
+      "costSun": 200,
+      "refreshUpdates": 5000,
+      "launchUpdates": 300,
+      "definitionEvidenceID": "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8",
+      "mechanisms": [
+        "plant-baseline",
+        "shooter-clock",
+        "damage-table",
+        "melon-splash",
+        "lobbed-projectiles",
+        "upgrade-requirements",
+        "plant-collision-rectangles",
+        "shield-damage-semantics",
+        "plant-target-category-masks",
+        "reanimation-phase-clock",
+        "plant-cost-overrides"
+      ]
+    },
+    {
+      "id": "goldmagnet",
+      "originalId": 45,
+      "definitionAddress": "0x69f904",
+      "costSun": 50,
+      "refreshUpdates": 5000,
+      "launchUpdates": 0,
+      "definitionEvidenceID": "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8",
+      "mechanisms": [
+        "plant-baseline",
+        "goldmagnet",
+        "upgrade-requirements",
+        "plant-collision-rectangles",
+        "plant-target-category-masks",
+        "reanimation-phase-clock",
+        "plant-cost-overrides"
+      ]
+    },
+    {
+      "id": "spikerock",
+      "originalId": 46,
+      "definitionAddress": "0x69f928",
+      "costSun": 125,
+      "refreshUpdates": 5000,
+      "launchUpdates": 0,
+      "definitionEvidenceID": "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8",
+      "mechanisms": [
+        "plant-baseline",
+        "short-ranges-and-penetration",
+        "spikes-and-vehicles",
+        "upgrade-requirements",
+        "plant-collision-rectangles",
+        "plant-target-category-masks",
+        "reanimation-phase-clock",
+        "plant-cost-overrides"
+      ]
+    },
+    {
+      "id": "cobcannon",
+      "originalId": 47,
+      "definitionAddress": "0x69f94c",
+      "costSun": 500,
+      "refreshUpdates": 5000,
+      "launchUpdates": 600,
+      "definitionEvidenceID": "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8",
+      "mechanisms": [
+        "plant-baseline",
+        "damage-table",
+        "cobcannon",
+        "upgrade-requirements",
+        "plant-collision-rectangles",
+        "plant-target-category-masks",
+        "reanimation-phase-clock",
+        "plant-cost-overrides"
+      ]
+    },
+    {
+      "id": "imitater",
+      "originalId": 48,
+      "definitionAddress": "0x69f970",
+      "costSun": 0,
+      "refreshUpdates": 750,
+      "launchUpdates": 0,
+      "definitionEvidenceID": "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8",
+      "mechanisms": [
+        "plant-baseline",
+        "imitater",
+        "plant-collision-rectangles",
+        "plant-target-category-masks",
+        "reanimation-phase-clock",
+        "plant-cost-overrides"
+      ]
+    }
+  ],
+  "mechanisms": [
+    {
+      "name": "plant-baseline",
+      "kinds": [
+        "peashooter",
+        "sunflower",
+        "cherrybomb",
+        "wallnut",
+        "potatomine",
+        "snowpea",
+        "chomper",
+        "repeater",
+        "puffshroom",
+        "sunshroom",
+        "fumeshroom",
+        "gravebuster",
+        "hypnoshroom",
+        "scaredyshroom",
+        "iceshroom",
+        "doomshroom",
+        "lilypad",
+        "squash",
+        "threepeater",
+        "tanglekelp",
+        "jalapeno",
+        "spikeweed",
+        "torchwood",
+        "tallnut",
+        "seashroom",
+        "plantern",
+        "cactus",
+        "blover",
+        "splitpea",
+        "starfruit",
+        "pumpkin",
+        "magnetshroom",
+        "cabbagepult",
+        "flowerpot",
+        "kernelpult",
+        "coffeebean",
+        "garlic",
+        "umbrellaleaf",
+        "marigold",
+        "melonpult",
+        "gatlingpea",
+        "twinsunflower",
+        "gloomshroom",
+        "cattail",
+        "wintermelon",
+        "goldmagnet",
+        "spikerock",
+        "cobcannon",
+        "imitater"
+      ],
+      "parameters": {
+        "defaultHP": 300,
+        "defaultWidth": 80,
+        "defaultHeight": 80,
+        "updateSeconds": 0.01,
+        "hpOverrides": {
+          "wallnut": 4000,
+          "tallnut": 8000,
+          "pumpkin": 4000,
+          "garlic": 400,
+          "spikerock": 450
+        }
+      },
+      "units": {
+        "hp": "HP",
+        "widthHeight": "px",
+        "updateSeconds": "seconds/update"
+      },
+      "Evidence": [
+        {
+          "file": "plant-initialize.json",
+          "evidenceID": "ev_31ed426848787e31f620f5d629adccee34f78bb4f97dcb85ff6a63e0f391c6fa",
+          "operation": "procedure_pseudo_code",
+          "address": "0x45db60"
+        },
+        {
+          "file": "animation-update.json",
+          "evidenceID": "ev_e306e79a73dbad1b3237a9178806450ce9e7cbfc7a4abc30c7a65120ef1cf498",
+          "operation": "procedure_pseudo_code",
+          "address": "0x471bc0"
+        }
+      ],
+      "sourceBranch": "PlantInitialize default param_1[0x10]=300, [4]=[5]=0x50; type branches 3/0x17/0x1e/0x24/0x2e override HP. Reanimation::Update multiplies animRate by0.01.",
+      "confidence": "observed-static",
+      "unknowns": [],
+      "evidenceIDs": [
+        "ev_31ed426848787e31f620f5d629adccee34f78bb4f97dcb85ff6a63e0f391c6fa",
+        "ev_e306e79a73dbad1b3237a9178806450ce9e7cbfc7a4abc30c7a65120ef1cf498"
+      ],
+      "implementationNotes": [
+        "Some dying/head-loss states are governed by zombie state machines, not simply HP zero."
+      ]
+    },
+    {
+      "name": "shooter-clock",
+      "kinds": [
+        "peashooter",
+        "snowpea",
+        "repeater",
+        "puffshroom",
+        "fumeshroom",
+        "scaredyshroom",
+        "threepeater",
+        "seashroom",
+        "cactus",
+        "splitpea",
+        "starfruit",
+        "cabbagepult",
+        "kernelpult",
+        "melonpult",
+        "gatlingpea",
+        "gloomshroom",
+        "cattail",
+        "wintermelon"
+      ],
+      "parameters": {
+        "firstLaunchCounter": "Rand(launchUpdates+1)",
+        "repeatLaunchCounter": "launchUpdates-Rand(15)",
+        "repeatRandomRangeInclusive": [
+          0,
+          14
+        ]
+      },
+      "units": {
+        "counter": "updates"
+      },
+      "Evidence": [
+        {
+          "file": "plant-initialize.json",
+          "evidenceID": "ev_31ed426848787e31f620f5d629adccee34f78bb4f97dcb85ff6a63e0f391c6fa",
+          "operation": "procedure_pseudo_code",
+          "address": "0x45db60"
+        },
+        {
+          "file": "plant-shooter.json",
+          "evidenceID": "ev_f057d16c1ec19bbb42079f3876d7233f49f6d722dfdd361920387c7622d53512",
+          "operation": "procedure_pseudo_code",
+          "address": "0x45f8a0"
+        },
+        {
+          "file": "full/all-plant-definitions.json",
+          "evidenceID": "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8",
+          "operation": "read_bytes",
+          "address": "0x69f2b0"
+        }
+      ],
+      "sourceBranch": "Init non-production shooters set random [0,launchUpdates]; UpdateShooter decrements counter and resets launchRate-Rand(15). The exact launchUpdates is per definition table.",
+      "confidence": "observed-static",
+      "unknowns": [],
+      "evidenceIDs": [
+        "ev_31ed426848787e31f620f5d629adccee34f78bb4f97dcb85ff6a63e0f391c6fa",
+        "ev_f057d16c1ec19bbb42079f3876d7233f49f6d722dfdd361920387c7622d53512",
+        "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8"
+      ],
+      "implementationNotes": [
+        "Animation windup and branch-specific bursts add per-shot delays; launchUpdates is not enough to schedule projectiles by itself."
+      ]
+    },
+    {
+      "name": "production-clock",
+      "kinds": [
+        "sunflower",
+        "twinsunflower",
+        "sunshroom",
+        "marigold"
+      ],
+      "parameters": {
+        "sunflowerFamilyFirstInclusive": [
+          300,
+          1250
+        ],
+        "marigoldFirstInclusive": [
+          0,
+          2500
+        ],
+        "repeatInclusive": [
+          2350,
+          2500
+        ],
+        "sunflowerDropsPerProduction": 1,
+        "twinsunflowerDropsPerProduction": 2,
+        "marigoldGoldProbability": "1/10",
+        "sunAmountByCoinType": {
+          "4": 25,
+          "5": 15,
+          "6": 50
+        },
+        "sunflowerSunPerProduction": 25,
+        "twinsunflowerSunPerProduction": 50
+      },
+      "units": {
+        "counters": "updates",
+        "drops": "coin entities"
+      },
+      "Evidence": [
+        {
+          "file": "plant-initialize.json",
+          "evidenceID": "ev_31ed426848787e31f620f5d629adccee34f78bb4f97dcb85ff6a63e0f391c6fa",
+          "operation": "procedure_pseudo_code",
+          "address": "0x45db60"
+        },
+        {
+          "file": "plant-production.json",
+          "evidenceID": "ev_f733a4c3bea3d603db4bb3988ee4787f2dfc479d1966f667f416a152fedcd96e",
+          "operation": "procedure_pseudo_code",
+          "address": "0x45f9a0"
+        }
+      ],
+      "sourceBranch": "Init MakesSun branch 1/9/0x29: 300+Rand(951); production:2350+Rand(151); type0x29 emits two coins; type0x26 picks gold iff Rand(100)<10. Original-byte Coin::GetSunValue0x4329a0 establishes25/15/50, separate from coin-value0x4329d0.",
+      "confidence": "observed-static",
+      "unknowns": [],
+      "assemblyObservations": [
+        {
+          "address": "0x45dec6..0x45deda",
+          "observation": "eax=(launchRate/2)-299; Rand(eax); add eax,300"
+        },
+        {
+          "address": "0x45fa83..0x45fa98",
+          "observation": "esi=launchRate-150; eax=launchRate-esi+1; Rand; add esi"
+        },
+        {
+          "address": "0x4329a0..0x4329c9",
+          "observation": "GetSunValue: Coin.type4 returns25 at4329a8;type5 returns15 at4329b3;type6 returns50;allothers0.0x4329d0 is the distinct campaign-money function."
+        }
+      ],
+      "evidenceIDs": [
+        "ev_31ed426848787e31f620f5d629adccee34f78bb4f97dcb85ff6a63e0f391c6fa",
+        "ev_f733a4c3bea3d603db4bb3988ee4787f2dfc479d1966f667f416a152fedcd96e"
+      ],
+      "implementationNotes": [
+        "Marigold creates campaign money, not sunlight or the new PvP brain resource."
+      ],
+      "sourceByteObservationSHA256": "8e8eea73a85d7af311755708f5daf2786650cf3c032188b8315fcf99858c8342"
+    },
+    {
+      "name": "sunshroom-growth",
+      "kinds": [
+        "sunshroom"
+      ],
+      "parameters": {
+        "smallPhaseUpdates": 12000,
+        "growthState": 24,
+        "grownState": 25,
+        "smallSunPerProduction": 15,
+        "grownSunPerProduction": 25,
+        "smallCoinTypeId": 5,
+        "grownCoinTypeId": 4
+      },
+      "units": {
+        "smallPhaseUpdates": "updates"
+      },
+      "Evidence": [
+        {
+          "file": "plant-initialize.json",
+          "evidenceID": "ev_31ed426848787e31f620f5d629adccee34f78bb4f97dcb85ff6a63e0f391c6fa",
+          "operation": "procedure_pseudo_code",
+          "address": "0x45db60"
+        },
+        {
+          "file": "full/mechanisms/plant-sunshroom.json",
+          "evidenceID": "ev_9e1a5d5f2f1f2ae24335b9d98a73fc0df5b0f394bd2ada84f0045860b5df5554",
+          "operation": "procedure_pseudo_code",
+          "address": "0x45FB70"
+        },
+        {
+          "file": "plant-production.json",
+          "evidenceID": "ev_f733a4c3bea3d603db4bb3988ee4787f2dfc479d1966f667f416a152fedcd96e",
+          "operation": "procedure_pseudo_code",
+          "address": "0x45f9a0"
+        }
+      ],
+      "sourceBranch": "Seed9 initialization stateCountdown12000; UpdateSunShroom at zero plays anim_grow, then grown state and common production.",
+      "confidence": "observed-static",
+      "unknowns": [],
+      "evidenceIDs": [
+        "ev_31ed426848787e31f620f5d629adccee34f78bb4f97dcb85ff6a63e0f391c6fa",
+        "ev_9e1a5d5f2f1f2ae24335b9d98a73fc0df5b0f394bd2ada84f0045860b5df5554",
+        "ev_f733a4c3bea3d603db4bb3988ee4787f2dfc479d1966f667f416a152fedcd96e"
+      ],
+      "assemblyObservations": [
+        {
+          "address": "0x4329a0..0x4329c9",
+          "observation": "Coin::GetSunValue type5=15,type4=25. Plant::UpdateProductionPlant seed9 small branch emitscoin5;grownbranch coin4."
+        }
+      ]
+    },
+    {
+      "name": "damage-table",
+      "kinds": [
+        "peashooter",
+        "snowpea",
+        "repeater",
+        "puffshroom",
+        "scaredyshroom",
+        "threepeater",
+        "seashroom",
+        "cactus",
+        "splitpea",
+        "starfruit",
+        "cabbagepult",
+        "kernelpult",
+        "melonpult",
+        "gatlingpea",
+        "cattail",
+        "wintermelon",
+        "torchwood",
+        "cobcannon"
+      ],
+      "parameters": {
+        "projectiles": {
+          "pea": 20,
+          "snowpea": 20,
+          "cabbage": 40,
+          "melon": 80,
+          "puff": 20,
+          "wintermelon": 80,
+          "fireball": 40,
+          "star": 20,
+          "spike": 20,
+          "kernel": 20,
+          "cobbigDefinitionOnly": 300,
+          "butter": 40
+        }
+      },
+      "units": {
+        "damage": "HP"
+      },
+      "Evidence": [
+        {
+          "file": "projectile-definitions.json",
+          "evidenceID": "ev_640ad3a6b16fa442a1ac499473e5640c814e05cb8d7949bba9950824a7911ae2",
+          "operation": "read_bytes",
+          "address": "0x69f1c0"
+        },
+        {
+          "file": "full/mechanisms/plant-fire.json",
+          "evidenceID": "ev_5c3ad94592e47a9a0bb14ab51add547cf72f6128d730209292ea624a89c49fc9",
+          "operation": "procedure_pseudo_code",
+          "address": "0x466E00"
+        }
+      ],
+      "sourceBranch": "0x69f1c0 is a 12-byte-per-entry table. Plant::Fire maps seed ids to projectile types. COBBIG landing routes to Board explosion; its table300 must not be used as the explosion damage.",
+      "confidence": "observed-static",
+      "unknowns": [],
+      "evidenceIDs": [
+        "ev_640ad3a6b16fa442a1ac499473e5640c814e05cb8d7949bba9950824a7911ae2",
+        "ev_5c3ad94592e47a9a0bb14ab51add547cf72f6128d730209292ea624a89c49fc9"
+      ],
+      "implementationNotes": [
+        "Projectile collision flags and immunity still apply; table damage is not a complete damage rule."
+      ]
+    },
+    {
+      "name": "straight-projectile-motion",
+      "kinds": [
+        "peashooter",
+        "snowpea",
+        "repeater",
+        "puffshroom",
+        "scaredyshroom",
+        "threepeater",
+        "seashroom",
+        "cactus",
+        "splitpea",
+        "gatlingpea"
+      ],
+      "parameters": {
+        "normalHorizontalSpeed": 3.33,
+        "backwardHorizontalSpeed": -3.33,
+        "threepeaterInitialVerticalMagnitude": 3,
+        "threepeaterVerticalMultiplier": 0.97
+      },
+      "units": {
+        "speeds": "px/update",
+        "threepeaterVerticalMultiplier": "per update"
+      },
+      "Evidence": [
+        {
+          "file": "full/mechanisms/projectile-normal.json",
+          "evidenceID": "ev_64a4b772a08e7d0b6cf955e9b5eb30e831e2d13ca641131131f7b2c972f44ecd",
+          "operation": "procedure_pseudo_code",
+          "address": "0x46D890"
+        },
+        {
+          "file": "full/mechanisms/plant-fire.json",
+          "evidenceID": "ev_5c3ad94592e47a9a0bb14ab51add547cf72f6128d730209292ea624a89c49fc9",
+          "operation": "procedure_pseudo_code",
+          "address": "0x466E00"
+        }
+      ],
+      "sourceBranch": "Normal projectile motion adds/subtracts3.33; threepeater sets vertical +/-3 then multiplies by0.97 in motion type2.",
+      "confidence": "observed-static",
+      "unknowns": [],
+      "evidenceIDs": [
+        "ev_64a4b772a08e7d0b6cf955e9b5eb30e831e2d13ca641131131f7b2c972f44ecd",
+        "ev_5c3ad94592e47a9a0bb14ab51add547cf72f6128d730209292ea624a89c49fc9"
+      ],
+      "implementationNotes": [
+        "Original float accumulation/rounding must be preserved for strict frame equivalence."
+      ]
+    },
+    {
+      "name": "repeater-and-split-bursts",
+      "kinds": [
+        "repeater",
+        "splitpea"
+      ],
+      "parameters": {
+        "extraLaunchCounter": 25,
+        "repeaterShotSeparation": 25,
+        "splitForwardShotsPerCycle": 1,
+        "splitBackwardShotsPerCycle": 2
+      },
+      "units": {
+        "extraLaunchCounter": "updates remaining",
+        "repeaterShotSeparation": "updates"
+      },
+      "Evidence": [
+        {
+          "file": "plant-shooter.json",
+          "evidenceID": "ev_f057d16c1ec19bbb42079f3876d7233f49f6d722dfdd361920387c7622d53512",
+          "operation": "procedure_pseudo_code",
+          "address": "0x45f8a0"
+        },
+        {
+          "file": "full/mechanisms/plant-shooting.json",
+          "evidenceID": "ev_f4a73d3d7b17e155865f328438189e89f80f18f20d6ce62d75bab8e675fafb32",
+          "operation": "procedure_pseudo_code",
+          "address": "0x464820"
+        }
+      ],
+      "sourceBranch": "UpdateShooter triggers additional fire at counter25. Split fires secondary at counter0 and both primary/secondary at25; primary faces forward and secondary backward.",
+      "confidence": "observed-static",
+      "unknowns": [],
+      "evidenceIDs": [
+        "ev_f057d16c1ec19bbb42079f3876d7233f49f6d722dfdd361920387c7622d53512",
+        "ev_f4a73d3d7b17e155865f328438189e89f80f18f20d6ce62d75bab8e675fafb32"
+      ],
+      "implementationNotes": [
+        "Do not implement splitpea as two identical forward shots."
+      ]
+    },
+    {
+      "name": "gatling-burst",
+      "kinds": [
+        "gatlingpea"
+      ],
+      "parameters": {
+        "shootingCounterStart": 100,
+        "fireCountersDescending": [
+          68,
+          51,
+          35,
+          18
+        ],
+        "shotsPerBurst": 4
+      },
+      "units": {
+        "counters": "updates"
+      },
+      "Evidence": [
+        {
+          "file": "full/mechanisms/plant-find-and-fire.json",
+          "evidenceID": "ev_891b6c467e339c8f380bc62b693b982548c2ab62da7233c8e351bcc4555b1a2b",
+          "operation": "procedure_pseudo_code",
+          "address": "0x45EF10"
+        },
+        {
+          "file": "full/mechanisms/plant-shooting.json",
+          "evidenceID": "ev_f4a73d3d7b17e155865f328438189e89f80f18f20d6ce62d75bab8e675fafb32",
+          "operation": "procedure_pseudo_code",
+          "address": "0x464820"
+        }
+      ],
+      "sourceBranch": "Seed0x28 starts shootingCounter100, UpdateShooting fires at68/51/35/18.",
+      "confidence": "observed-static",
+      "unknowns": [],
+      "evidenceIDs": [
+        "ev_891b6c467e339c8f380bc62b693b982548c2ab62da7233c8e351bcc4555b1a2b",
+        "ev_f4a73d3d7b17e155865f328438189e89f80f18f20d6ce62d75bab8e675fafb32"
+      ]
+    },
+    {
+      "name": "threepeater-rows",
+      "kinds": [
+        "threepeater"
+      ],
+      "parameters": {
+        "rowOffsets": [
+          -1,
+          0,
+          1
+        ],
+        "headCount": 3
+      },
+      "units": {
+        "rowOffsets": "rows"
+      },
+      "Evidence": [
+        {
+          "file": "full/mechanisms/plant-threepeater.json",
+          "evidenceID": "ev_d20ee89af9bb5b7dbaff26a8da96fad6778a70fed50d5e3a3310d7b2db005ba7",
+          "operation": "procedure_pseudo_code",
+          "address": "0x45F2A0"
+        },
+        {
+          "file": "full/mechanisms/plant-shooting.json",
+          "evidenceID": "ev_f4a73d3d7b17e155865f328438189e89f80f18f20d6ce62d75bab8e675fafb32",
+          "operation": "procedure_pseudo_code",
+          "address": "0x464820"
+        },
+        {
+          "file": "full/mechanisms/plant-fire.json",
+          "evidenceID": "ev_5c3ad94592e47a9a0bb14ab51add547cf72f6128d730209292ea624a89c49fc9",
+          "operation": "procedure_pseudo_code",
+          "address": "0x466E00"
+        }
+      ],
+      "sourceBranch": "Threepeater launches only rows in board bounds, with independent attached head animations; Fire sets curved threepeater projectile motion for above/below rows.",
+      "confidence": "observed-static",
+      "unknowns": [],
+      "evidenceIDs": [
+        "ev_d20ee89af9bb5b7dbaff26a8da96fad6778a70fed50d5e3a3310d7b2db005ba7",
+        "ev_f4a73d3d7b17e155865f328438189e89f80f18f20d6ce62d75bab8e675fafb32",
+        "ev_5c3ad94592e47a9a0bb14ab51add547cf72f6128d730209292ea624a89c49fc9"
+      ],
+      "implementationNotes": [
+        "The full three-head attachment geometry is visual evidence owned by the renderer task."
+      ]
+    },
+    {
+      "name": "cattail-homing",
+      "kinds": [
+        "cattail"
+      ],
+      "parameters": {
+        "shootingCounterStart": 50,
+        "fireCountersDescending": [
+          19,
+          1
+        ],
+        "shotsPerBurst": 2,
+        "projectileInitialSpeed": 2,
+        "attackRect": [
+          -800,
+          -600,
+          1600,
+          1200
+        ],
+        "targetWeight": "-truncateTowardZero(EuclideanDistance)+10000 if flyingPhase0x49/0x4a",
+        "flyingPriorityBonus": 10000,
+        "equalWeightTie": "first eligible entity in original iteration order"
+      },
+      "units": {
+        "counters": "updates",
+        "speed": "px/update",
+        "attackRect": "px"
+      },
+      "Evidence": [
+        {
+          "file": "full/mechanisms/plant-find-and-fire.json",
+          "evidenceID": "ev_891b6c467e339c8f380bc62b693b982548c2ab62da7233c8e351bcc4555b1a2b",
+          "operation": "procedure_pseudo_code",
+          "address": "0x45EF10"
+        },
+        {
+          "file": "full/mechanisms/plant-shooting.json",
+          "evidenceID": "ev_f4a73d3d7b17e155865f328438189e89f80f18f20d6ce62d75bab8e675fafb32",
+          "operation": "procedure_pseudo_code",
+          "address": "0x464820"
+        },
+        {
+          "file": "full/mechanisms/plant-fire.json",
+          "evidenceID": "ev_5c3ad94592e47a9a0bb14ab51add547cf72f6128d730209292ea624a89c49fc9",
+          "operation": "procedure_pseudo_code",
+          "address": "0x466E00"
+        },
+        {
+          "file": "full/plant-attack-rect.json",
+          "evidenceID": "ev_68bd733b77738ae76a442c59246d19c91eb03909eed4a7cdfb0af4064b240a9b",
+          "operation": "procedure_pseudo_code",
+          "address": "0x467f90"
+        },
+        {
+          "file": "full/mechanisms/projectile-normal.json",
+          "evidenceID": "ev_64a4b772a08e7d0b6cf955e9b5eb30e831e2d13ca641131131f7b2c972f44ecd",
+          "operation": "procedure_pseudo_code",
+          "address": "0x46D890"
+        },
+        {
+          "file": "full/mechanisms/plant-target-zombie.json",
+          "evidenceID": "ev_576cfe6a4b2efb5970a6d697dec89816c039f08451b94f44b9b8418cb107ce57",
+          "operation": "procedure_pseudo_code",
+          "address": "0x4675C0"
+        }
+      ],
+      "sourceBranch": "Seed0x2b starts50; UpdateShooting fires at19 and1; projectile type8 becomes homing motion9 using target entity id and 2px initial velocity.",
+      "confidence": "observed-static",
+      "unknowns": [],
+      "evidenceIDs": [
+        "ev_891b6c467e339c8f380bc62b693b982548c2ab62da7233c8e351bcc4555b1a2b",
+        "ev_f4a73d3d7b17e155865f328438189e89f80f18f20d6ce62d75bab8e675fafb32",
+        "ev_5c3ad94592e47a9a0bb14ab51add547cf72f6128d730209292ea624a89c49fc9",
+        "ev_68bd733b77738ae76a442c59246d19c91eb03909eed4a7cdfb0af4064b240a9b",
+        "ev_64a4b772a08e7d0b6cf955e9b5eb30e831e2d13ca641131131f7b2c972f44ecd",
+        "ev_576cfe6a4b2efb5970a6d697dec89816c039f08451b94f44b9b8418cb107ce57"
+      ],
+      "assemblyObservations": [
+        {
+          "address": "0x4677eb..0x46787d",
+          "observation": "seed0x2b calculatesdistance,negates; phase0x49or0x4a adds0x2710; storescandidatewhenweightgreater"
+        },
+        {
+          "address": "0x6397d0..0x639879",
+          "observation": "float-to-int helper usesSSEcvttsd2si at6397e5(truncation);x87fallbackcorrectsroundedFISTresulttowardzero"
+        },
+        {
+          "address": "0x46786c..0x46787d",
+          "observation": "ifbestalreadyexistsandcandidateWeight<=bestWeight, skip; otherwise replace =>firsttiepersists"
+        }
+      ]
+    },
+    {
+      "name": "short-ranges-and-penetration",
+      "kinds": [
+        "puffshroom",
+        "seashroom",
+        "fumeshroom",
+        "gloomshroom",
+        "chomper",
+        "spikeweed",
+        "spikerock",
+        "potatomine",
+        "torchwood"
+      ],
+      "parameters": {
+        "attackRects": {
+          "puffshroom": {
+            "offsetX": 60,
+            "width": 230
+          },
+          "seashroom": {
+            "offsetX": 60,
+            "width": 230
+          },
+          "fumeshroom": {
+            "offsetX": 60,
+            "width": 340
+          },
+          "gloomshroom": {
+            "offsetX": -80,
+            "offsetY": -80,
+            "width": 240,
+            "height": 240
+          },
+          "chomper": {
+            "offsetX": 80,
+            "width": 40
+          },
+          "spikeweed": {
+            "offsetX": 20,
+            "width": "plantWidth-50"
+          },
+          "spikerock": {
+            "offsetX": 20,
+            "width": "plantWidth-50"
+          },
+          "potatomine": {
+            "offsetX": 0,
+            "width": "plantWidth-25"
+          },
+          "torchwood": {
+            "offsetX": 50,
+            "width": 30
+          }
+        },
+        "puffProjectileExpireAgeUpdates": 75
+      },
+      "units": {
+        "rectangles": "px relative to plant position"
+      },
+      "Evidence": [
+        {
+          "file": "full/plant-attack-rect.json",
+          "evidenceID": "ev_68bd733b77738ae76a442c59246d19c91eb03909eed4a7cdfb0af4064b240a9b",
+          "operation": "procedure_pseudo_code",
+          "address": "0x467f90"
+        },
+        {
+          "file": "full/mechanisms/projectile-collision.json",
+          "evidenceID": "ev_6924a9033c737c9e3111024b271ad210f38f8426881cf6570b5734f43d6cbd36",
+          "operation": "procedure_pseudo_code",
+          "address": "0x46CE80"
+        }
+      ],
+      "sourceBranch": "GetPlantAttackRect uses the listed seed branches, plus same-row filtering for all except gloom; rectangle overlap is against zombie collision rectangles. CheckForCollision0x46ce80 kills motiontype5(PUFF) atage>=0x4b before collision; also removes offboard projectiles.",
+      "confidence": "observed-static",
+      "unknowns": [],
+      "evidenceIDs": [
+        "ev_68bd733b77738ae76a442c59246d19c91eb03909eed4a7cdfb0af4064b240a9b",
+        "ev_6924a9033c737c9e3111024b271ad210f38f8426881cf6570b5734f43d6cbd36"
+      ]
+    },
+    {
+      "name": "fume-and-gloom-damage",
+      "kinds": [
+        "fumeshroom",
+        "gloomshroom"
+      ],
+      "parameters": {
+        "damagePerPulse": 20,
+        "fumeShootingCounterStart": 50,
+        "fumeFireCounter": 1,
+        "gloomShootingCounterStart": 200,
+        "gloomFireCountersDescending": [
+          126,
+          98,
+          70,
+          42
+        ],
+        "gloomAdjacentRowRange": 1,
+        "damageFlags": 2
+      },
+      "units": {
+        "damage": "HP",
+        "counters": "updates"
+      },
+      "Evidence": [
+        {
+          "file": "full/mechanisms/plant-row-damage.json",
+          "evidenceID": "ev_9a6b4fa5e7770600f5552c91f1a3fd6ce27e67c6ce423f7390d21e174ff0a459",
+          "operation": "procedure_pseudo_code",
+          "address": "0x45ED00"
+        },
+        {
+          "file": "full/mechanisms/plant-find-and-fire.json",
+          "evidenceID": "ev_891b6c467e339c8f380bc62b693b982548c2ab62da7233c8e351bcc4555b1a2b",
+          "operation": "procedure_pseudo_code",
+          "address": "0x45EF10"
+        },
+        {
+          "file": "full/mechanisms/plant-shooting.json",
+          "evidenceID": "ev_f4a73d3d7b17e155865f328438189e89f80f18f20d6ce62d75bab8e675fafb32",
+          "operation": "procedure_pseudo_code",
+          "address": "0x464820"
+        },
+        {
+          "file": "full/mechanisms/plant-fire.json",
+          "evidenceID": "ev_5c3ad94592e47a9a0bb14ab51add547cf72f6128d730209292ea624a89c49fc9",
+          "operation": "procedure_pseudo_code",
+          "address": "0x466E00"
+        }
+      ],
+      "sourceBranch": "Plant::Fire for seed10/42 routes to DoRowAreaDamage with flags2; callee initializes damage0x14 and iterates every eligible overlapping target. Gloom allows row difference -1..1 and fires four pulses.",
+      "confidence": "observed-static",
+      "unknowns": [],
+      "evidenceIDs": [
+        "ev_9a6b4fa5e7770600f5552c91f1a3fd6ce27e67c6ce423f7390d21e174ff0a459",
+        "ev_891b6c467e339c8f380bc62b693b982548c2ab62da7233c8e351bcc4555b1a2b",
+        "ev_f4a73d3d7b17e155865f328438189e89f80f18f20d6ce62d75bab8e675fafb32",
+        "ev_5c3ad94592e47a9a0bb14ab51add547cf72f6128d730209292ea624a89c49fc9"
+      ],
+      "implementationNotes": [
+        "Damage eligibility categories and high-ground equality must be applied."
+      ]
+    },
+    {
+      "name": "spikes-and-vehicles",
+      "kinds": [
+        "spikeweed",
+        "spikerock"
+      ],
+      "parameters": {
+        "attackCountdownStart": 100,
+        "spikeweedFireCountersDescending": [
+          75
+        ],
+        "spikerockFireCountersDescending": [
+          70,
+          32
+        ],
+        "damagePerPulse": 20,
+        "vehicleDamage": 1800,
+        "spikeDamageFlags": 33,
+        "vehicleTypes": [
+          "zomboni",
+          "catapult"
+        ],
+        "spikeweedConsumedByVehicle": true,
+        "spikerockVehicleHitSelfDamage": 50
+      },
+      "units": {
+        "counters": "updates",
+        "damage": "HP"
+      },
+      "Evidence": [
+        {
+          "file": "full/mechanisms/plant-spikeweed.json",
+          "evidenceID": "ev_82fd078c7f7bb80412590f54f90049152a446638a286b7ff15c981b17d5abb34",
+          "operation": "procedure_pseudo_code",
+          "address": "0x460370"
+        },
+        {
+          "file": "full/mechanisms/plant-row-damage.json",
+          "evidenceID": "ev_9a6b4fa5e7770600f5552c91f1a3fd6ce27e67c6ce423f7390d21e174ff0a459",
+          "operation": "procedure_pseudo_code",
+          "address": "0x45ED00"
+        }
+      ],
+      "sourceBranch": "UpdateSpikeweed tests seed0x2e at counters70/32, ordinary at75. DoRowAreaDamage changes damage20 to1800 for zombie type0xc or0x16 when flag0x20 is set, then consumes spikeweed or calls SpikeRockTakeDamage.",
+      "confidence": "observed-static",
+      "unknowns": [],
+      "evidenceIDs": [
+        "ev_82fd078c7f7bb80412590f54f90049152a446638a286b7ff15c981b17d5abb34",
+        "ev_9a6b4fa5e7770600f5552c91f1a3fd6ce27e67c6ce423f7390d21e174ff0a459"
+      ],
+      "assemblyObservations": [
+        {
+          "address": "0x45ec63",
+          "observation": "addl $-0x32,0x40(%esi): spikerock HP subtract50"
+        }
+      ]
+    },
+    {
+      "name": "scaredy-nearby-stop",
+      "kinds": [
+        "scaredyshroom"
+      ],
+      "parameters": {
+        "nearbyRadius": 120,
+        "adjacentRowRange": 1,
+        "targetCentreYOffset": 20,
+        "whenHidden": "launchCounter=launchRate"
+      },
+      "units": {
+        "radiusOffsets": "px",
+        "adjacentRowRange": "rows"
+      },
+      "Evidence": [
+        {
+          "file": "full/mechanisms/plant-scaredyshroom.json",
+          "evidenceID": "ev_bc6e226dc0f93541b1028d35234a206feeb2338ed2304324cb179cd6f168d9a3",
+          "operation": "procedure_pseudo_code",
+          "address": "0x460420"
+        }
+      ],
+      "sourceBranch": "UpdateScaredyShroom checks circle/rect overlap radius0x78 in row[-1,+1], then lowering/scaredidle/grow states; while state !=READY reset launch counter.",
+      "confidence": "observed-static",
+      "unknowns": [],
+      "evidenceIDs": [
+        "ev_bc6e226dc0f93541b1028d35234a206feeb2338ed2304324cb179cd6f168d9a3"
+      ]
+    },
+    {
+      "name": "cactus-height-switch",
+      "kinds": [
+        "cactus"
+      ],
+      "parameters": {
+        "lowState": 30,
+        "risingState": 31,
+        "highState": 32,
+        "loweringState": 33,
+        "counterAfterRise": 1,
+        "primaryTargetMaskFlying": 2,
+        "secondaryTargetMaskGround": 1
+      },
+      "units": {
+        "counter": "updates"
+      },
+      "Evidence": [
+        {
+          "file": "full/mechanisms/plant-cactus.json",
+          "evidenceID": "ev_7593b8738885a4de1b8df9d8ae481a3e1a1ec8a0411cbbbf31d7e978c10a1f8b",
+          "operation": "procedure_pseudo_code",
+          "address": "0x4611F0"
+        },
+        {
+          "file": "full/mechanisms/plant-find-and-fire.json",
+          "evidenceID": "ev_891b6c467e339c8f380bc62b693b982548c2ab62da7233c8e351bcc4555b1a2b",
+          "operation": "procedure_pseudo_code",
+          "address": "0x45EF10"
+        },
+        {
+          "file": "full/mechanisms/plant-damage-range-flags.json",
+          "evidenceID": "ev_b29e13cb7d57d23664bf3346c572c01f90b0cb87f1a803722de05f99e8badd5f",
+          "operation": "procedure_pseudo_code",
+          "address": "0x45eb10"
+        }
+      ],
+      "sourceBranch": "When flying target exists, cactus raises, switches high idle, and sets launch counter1; loses target ->lower->low state. High shooting animation has counter23.",
+      "confidence": "observed-static",
+      "unknowns": [],
+      "evidenceIDs": [
+        "ev_7593b8738885a4de1b8df9d8ae481a3e1a1ec8a0411cbbbf31d7e978c10a1f8b",
+        "ev_891b6c467e339c8f380bc62b693b982548c2ab62da7233c8e351bcc4555b1a2b",
+        "ev_b29e13cb7d57d23664bf3346c572c01f90b0cb87f1a803722de05f99e8badd5f"
+      ]
+    },
+    {
+      "name": "torchwood-conversion",
+      "kinds": [
+        "torchwood"
+      ],
+      "parameters": {
+        "horizontalOverlapStrictlyGreaterThan": 9,
+        "normalPeaBecomes": "fireball",
+        "snowPeaBecomes": "pea",
+        "fireballDamage": 40,
+        "repeatGuard": "lastTorchwoodColumn != currentColumn",
+        "fogClearSizeArgument": 1,
+        "fogClearShape": "absDx+absDy<=1"
+      },
+      "units": {
+        "overlap": "px",
+        "damage": "HP"
+      },
+      "Evidence": [
+        {
+          "file": "full/mechanisms/plant-torchwood.json",
+          "evidenceID": "ev_53c9350f4de22c0139c33dc7e394a8da57b1a2dd7958236f6a302ea5cc036b7a",
+          "operation": "procedure_pseudo_code",
+          "address": "0x460610"
+        },
+        {
+          "file": "full/mechanisms/projectile-torchwood-fire.json",
+          "evidenceID": "ev_6dfcfbcbb5ca7264c220791178d2fb2b25efa4315e53ffe6321b901ed9e9687b",
+          "operation": "procedure_pseudo_code",
+          "address": "0x46ECB0"
+        },
+        {
+          "file": "full/mechanisms/projectile-thaw-to-pea.json",
+          "evidenceID": "ev_d99586da9e46739c6aef9b31c4f6fb97d1989cbe3006933b0c6ee619a972e927",
+          "operation": "procedure_pseudo_code",
+          "address": "0x46EE00"
+        },
+        {
+          "file": "projectile-definitions.json",
+          "evidenceID": "ev_640ad3a6b16fa442a1ac499473e5640c814e05cb8d7949bba9950824a7911ae2",
+          "operation": "read_bytes",
+          "address": "0x69f1c0"
+        },
+        {
+          "file": "full/mechanisms/board-clear-fog.json",
+          "evidenceID": "ev_433143ba61663285f98389050a861d247d9e4bcc6833d7fa68382d4be53af324",
+          "operation": "procedure_pseudo_code",
+          "address": "0x41A430"
+        },
+        {
+          "file": "full/mechanisms/board-update-fog.json",
+          "evidenceID": "ev_1f8f2902aee32cd2a93f3b8846eddb08804acdf4f37d7bf4fb88978f2f6940d7",
+          "operation": "procedure_pseudo_code",
+          "address": "0x41A5D0"
+        }
+      ],
+      "sourceBranch": "Same-row projectile type0 or1 is converted when overlap>9. Conversion functions store the current torchwood column in projectile[0x1e] to prevent repeat conversion in that column.",
+      "confidence": "observed-static",
+      "unknowns": [],
+      "evidenceIDs": [
+        "ev_53c9350f4de22c0139c33dc7e394a8da57b1a2dd7958236f6a302ea5cc036b7a",
+        "ev_6dfcfbcbb5ca7264c220791178d2fb2b25efa4315e53ffe6321b901ed9e9687b",
+        "ev_d99586da9e46739c6aef9b31c4f6fb97d1989cbe3006933b0c6ee619a972e927",
+        "ev_640ad3a6b16fa442a1ac499473e5640c814e05cb8d7949bba9950824a7911ae2",
+        "ev_433143ba61663285f98389050a861d247d9e4bcc6833d7fa68382d4be53af324",
+        "ev_1f8f2902aee32cd2a93f3b8846eddb08804acdf4f37d7bf4fb88978f2f6940d7"
+      ],
+      "implementationNotes": [
+        "Snowpea must pass a second torchwood to become fireball; a single plant cannot thaw and ignite it twice in one cell.",
+        "Torchwood additionally clearsa5-pointManhattan fogmesh neighbourhood; samefadeparametersasPlantern."
+      ]
+    },
+    {
+      "name": "melon-splash",
+      "kinds": [
+        "melonpult",
+        "wintermelon",
+        "torchwood"
+      ],
+      "parameters": {
+        "mainDamage": {
+          "melonpult": 80,
+          "wintermelon": 80,
+          "fireball": 40
+        },
+        "ordinarySplashDamage": "floor(mainDamage/3)",
+        "melonSplashDamageBeforeCrowdCap": 26,
+        "nativeBudgetExpression": "mainDamage*7 (fireball:mainDamage)",
+        "crowdCapExpression": "Let D=mainDamage,S0=floor(D/3),budget=(type6?D:7*D). If S0*N>budget: S=max(1,floor(D*budget/(3*S0*N))); else S=S0.",
+        "secondaryTargetCountDefinition": "N counts only eligible splash targets other than the supplied direct-hit target",
+        "directTargetDamage": "D (if splash-eligible)",
+        "otherTargetDamage": "S",
+        "noDirectTargetDamage": "all eligible targets receive S, not D",
+        "splashEligibility": {
+          "melonAndWintermelonRowDeviationMax": 1,
+          "fireballRowDeviation": 0,
+          "fireballRectWidth": 100,
+          "horizontalOverlapMinInclusive": 0,
+          "fireballSplashExcludedTypes": [
+            "zomboni",
+            "catapult"
+          ],
+          "fireballSplashExcludedShieldIds": [
+            1,
+            3
+          ],
+          "bossRowDeviationTreatedAs": 0
+        }
+      },
+      "units": {
+        "damage": "HP"
+      },
+      "Evidence": [
+        {
+          "file": "projectile-definitions.json",
+          "evidenceID": "ev_640ad3a6b16fa442a1ac499473e5640c814e05cb8d7949bba9950824a7911ae2",
+          "operation": "read_bytes",
+          "address": "0x69f1c0"
+        },
+        {
+          "file": "full/mechanisms/projectile-splash.json",
+          "evidenceID": "ev_5bb73ef09f584bfb4e87fb292ce074037c30aa211df60878341ba8a8385e1e40",
+          "operation": "procedure_pseudo_code",
+          "address": "0x46D390"
+        },
+        {
+          "file": "full/mechanisms/projectile-impact.json",
+          "evidenceID": "ev_2a36806b3bb7d8595dd9e601cb7382d571c0981d67874f2f1f80d975de585cfa",
+          "operation": "procedure_pseudo_code",
+          "address": "0x46E000"
+        }
+      ],
+      "sourceBranch": "DoSplashDamage0x46d390 rawassembly retainsD inEBP,S inEBX,budget inECX;countloop excludes [esp+0x1c]directtarget.46d414 comparesS*NwithbudgetandjlekeepsbaseS;otherwiseintegerdivision computesD*budget/(3*S*N).Applyloopat46d45e selectsDonlyforpointerequaltoDirectTarget,otherwiseS.OriginalIsZombieHitBySplash0x46d2b0 restrictsmelonrowdeviation±1,fireballsame-rowwidth100,fire-resistantvehicle/shields,andhorizontaloverlap>=0.",
+      "confidence": "observed-static",
+      "unknowns": [],
+      "evidenceIDs": [
+        "ev_640ad3a6b16fa442a1ac499473e5640c814e05cb8d7949bba9950824a7911ae2",
+        "ev_5bb73ef09f584bfb4e87fb292ce074037c30aa211df60878341ba8a8385e1e40",
+        "ev_2a36806b3bb7d8595dd9e601cb7382d571c0981d67874f2f1f80d975de585cfa"
+      ],
+      "assemblyObservations": [
+        {
+          "address": "0x46d3c0..0x46d3d4",
+          "observation": "compareiteratorEAXwithsupplieddirecttarget[esp+1c],skipfromNifequal"
+        },
+        {
+          "address": "0x46d3eb..0x46d42d",
+          "observation": "EBP=D;EBX=trunc(D/3);ECX=7*D(orDforfireball);ifEBX*N>ECXcomputeEBX=max(1,D*ECX/(3*EBX*N))"
+        },
+        {
+          "address": "0x46d45e..0x46d468",
+          "observation": "comparecurrentESIwith[esp+1c];samepushEBP(D),elsepushEBX(S),thenTakeDamage"
+        },
+        {
+          "address": "0x46d2b0..0x46d38d",
+          "observation": "fireballtype6setsrectwidth100; rejectsvehicletypes12/22/shield1/3;Bossrowdelta0;fireballsame-row,othersdelta[-1,+1];overlapcomparisonsetge"
+        }
+      ]
+    },
+    {
+      "name": "lobbed-projectiles",
+      "kinds": [
+        "cabbagepult",
+        "kernelpult",
+        "melonpult",
+        "wintermelon"
+      ],
+      "parameters": {
+        "nominalTargetFlightUpdates": 120,
+        "velocityX": "max(40,targetDistanceX)/120",
+        "velocityZ": "targetDeltaY/120-7",
+        "accelerationZ": 0.115,
+        "shieldBypassFlag": 1
+      },
+      "units": {
+        "velocity": "px/update",
+        "accelerationZ": "px/update^2",
+        "flight": "updates"
+      },
+      "Evidence": [
+        {
+          "file": "full/mechanisms/plant-fire.json",
+          "evidenceID": "ev_5c3ad94592e47a9a0bb14ab51add547cf72f6128d730209292ea624a89c49fc9",
+          "operation": "procedure_pseudo_code",
+          "address": "0x466E00"
+        },
+        {
+          "file": "full/mechanisms/projectile-lob.json",
+          "evidenceID": "ev_51ceb495ba2aa8030a2551c43252e244e3ee0d652bdcd44b71c3e941ad75bf32",
+          "operation": "procedure_pseudo_code",
+          "address": "0x46D490"
+        },
+        {
+          "file": "full/mechanisms/projectile-damage-flags.json",
+          "evidenceID": "ev_f2cbb22fee66b33f39ecbdfae82e418201244041a8b6062fafb16f516a2d732e",
+          "operation": "procedure_pseudo_code",
+          "address": "0x46D230"
+        }
+      ],
+      "sourceBranch": "Plant::Fire sets motion1, x=distance/120, z=deltaY/120-7 and accZ float0x3deb851f; lob/backward projectile damage flags include bypass-shield bit1.",
+      "confidence": "observed-static",
+      "unknowns": [],
+      "evidenceIDs": [
+        "ev_5c3ad94592e47a9a0bb14ab51add547cf72f6128d730209292ea624a89c49fc9",
+        "ev_51ceb495ba2aa8030a2551c43252e244e3ee0d652bdcd44b71c3e941ad75bf32",
+        "ev_f2cbb22fee66b33f39ecbdfae82e418201244041a8b6062fafb16f516a2d732e"
+      ],
+      "implementationNotes": [
+        "Roof motion adjusts y/z to slope; 120 is the launch calculation denominator, not a promise every collision occurs exactly at120."
+      ]
+    },
+    {
+      "name": "kernel-butter",
+      "kinds": [
+        "kernelpult"
+      ],
+      "parameters": {
+        "butterProbability": "1/4",
+        "kernelDamage": 20,
+        "butterDamage": 40,
+        "butterImmobilizeUpdates": 400,
+        "shootingCounterStart": 30
+      },
+      "units": {
+        "damage": "HP",
+        "counters": "updates"
+      },
+      "Evidence": [
+        {
+          "file": "full/mechanisms/plant-find-and-fire.json",
+          "evidenceID": "ev_891b6c467e339c8f380bc62b693b982548c2ab62da7233c8e351bcc4555b1a2b",
+          "operation": "procedure_pseudo_code",
+          "address": "0x45EF10"
+        },
+        {
+          "file": "full/mechanisms/plant-shooting.json",
+          "evidenceID": "ev_f4a73d3d7b17e155865f328438189e89f80f18f20d6ce62d75bab8e675fafb32",
+          "operation": "procedure_pseudo_code",
+          "address": "0x464820"
+        },
+        {
+          "file": "projectile-definitions.json",
+          "evidenceID": "ev_640ad3a6b16fa442a1ac499473e5640c814e05cb8d7949bba9950824a7911ae2",
+          "operation": "read_bytes",
+          "address": "0x69f1c0"
+        },
+        {
+          "file": "full/mechanisms/zombie-butter.json",
+          "evidenceID": "ev_c9a9e2c6f57a632de31bf3e16e56be0ad642afb764ab8388f9ff153a04b0f873",
+          "operation": "procedure_pseudo_code",
+          "address": "0x5326D0"
+        }
+      ],
+      "sourceBranch": "Kernel branch in FindTargetAndFire calls Rand(4)==0, sets butter state0x27; ApplyButter writes400 at zombie+0xb0 after eligibility checks.",
+      "confidence": "observed-static",
+      "unknowns": [],
+      "assemblyObservations": [
+        {
+          "address": "0x45f1e0..0x45f1ec",
+          "observation": "mov eax,4; call0x5af400; test eax,eax; jne non-butter"
+        }
+      ],
+      "evidenceIDs": [
+        "ev_891b6c467e339c8f380bc62b693b982548c2ab62da7233c8e351bcc4555b1a2b",
+        "ev_f4a73d3d7b17e155865f328438189e89f80f18f20d6ce62d75bab8e675fafb32",
+        "ev_640ad3a6b16fa442a1ac499473e5640c814e05cb8d7949bba9950824a7911ae2",
+        "ev_c9a9e2c6f57a632de31bf3e16e56be0ad642afb764ab8388f9ff153a04b0f873"
+      ],
+      "implementationNotes": [
+        "Butter rejects headless/freeze-immune/ice vehicles/Boss/kelp targets/sled teams/flying targets; see full ApplyButter branch."
+      ]
+    },
+    {
+      "name": "chomper-swallow",
+      "kinds": [
+        "chomper"
+      ],
+      "parameters": {
+        "biteWindupUpdates": 70,
+        "chewUpdates": 4000,
+        "giantBiteDamage": 40,
+        "nonSwallowableTypes": [
+          "gargantuar",
+          "redeye",
+          "zomboss"
+        ]
+      },
+      "units": {
+        "counters": "updates",
+        "damage": "HP"
+      },
+      "Evidence": [
+        {
+          "file": "full/mechanisms/plant-chomper.json",
+          "evidenceID": "ev_dd28f9b66e79b6aa79a19660c26d76f0c0f8ba90b9be3bdbcffcb6d2eebc8341",
+          "operation": "procedure_pseudo_code",
+          "address": "0x461320"
+        }
+      ],
+      "sourceBranch": "READY->bite sets70; after successful swallowed target, anim_chew sets4000; giant/red-eye/Boss branches call TakeDamage(0x28) instead of swallowing.",
+      "confidence": "observed-static",
+      "unknowns": [],
+      "evidenceIDs": [
+        "ev_dd28f9b66e79b6aa79a19660c26d76f0c0f8ba90b9be3bdbcffcb6d2eebc8341"
+      ],
+      "implementationNotes": [
+        "No fixed numeric swallow-animation duration: original waits for reanimation completion."
+      ]
+    },
+    {
+      "name": "squash",
+      "kinds": [
+        "squash"
+      ],
+      "parameters": {
+        "damage": 1800,
+        "targetRectOffsetX": 20,
+        "targetRectWidth": "plantWidth-35"
+      },
+      "units": {
+        "damage": "HP",
+        "rect": "px"
+      },
+      "Evidence": [
+        {
+          "file": "full/mechanisms/plant-squash.json",
+          "evidenceID": "ev_0a9b1255693659627cc036ce37b7469bb658cb046b14c0c6b597b941c95c67ae",
+          "operation": "procedure_pseudo_code",
+          "address": "0x4609D0"
+        },
+        {
+          "file": "full/mechanisms/plant-squash-target.json",
+          "evidenceID": "ev_e46e856207dce5354e03567408ede06fb773bfa2894540a07141650a0312bd9d",
+          "operation": "procedure_pseudo_code",
+          "address": "0x4607E0"
+        },
+        {
+          "file": "full/mechanisms/plant-squash-damage.json",
+          "evidenceID": "ev_2feb260f59de09379a015d0985c0f61b740033c5e1fb88467647a8ccecd220f6",
+          "operation": "procedure_pseudo_code",
+          "address": "0x4606F0"
+        },
+        {
+          "file": "full/plant-attack-rect.json",
+          "evidenceID": "ev_68bd733b77738ae76a442c59246d19c91eb03909eed4a7cdfb0af4064b240a9b",
+          "operation": "procedure_pseudo_code",
+          "address": "0x467f90"
+        }
+      ],
+      "sourceBranch": "DoSquashDamage calls TakeDamage0x708 on eligible overlapping target in same row (Boss counts as same row); football gets a -20px overlap threshold exception.",
+      "confidence": "observed-static",
+      "unknowns": [],
+      "evidenceIDs": [
+        "ev_0a9b1255693659627cc036ce37b7469bb658cb046b14c0c6b597b941c95c67ae",
+        "ev_e46e856207dce5354e03567408ede06fb773bfa2894540a07141650a0312bd9d",
+        "ev_2feb260f59de09379a015d0985c0f61b740033c5e1fb88467647a8ccecd220f6",
+        "ev_68bd733b77738ae76a442c59246d19c91eb03909eed4a7cdfb0af4064b240a9b"
+      ],
+      "implementationNotes": [
+        "Jump/look animation transitions and exact landing position should follow the retained state function, not a single fixed delay."
+      ]
+    },
+    {
+      "name": "potato-arm",
+      "kinds": [
+        "potatomine"
+      ],
+      "parameters": {
+        "prepareUpdates": 1500,
+        "explosionRadius": 60,
+        "explosionRowRange": 0,
+        "damage": 1800
+      },
+      "units": {
+        "counters": "updates",
+        "radius": "px",
+        "damage": "HP"
+      },
+      "Evidence": [
+        {
+          "file": "plant-initialize.json",
+          "evidenceID": "ev_31ed426848787e31f620f5d629adccee34f78bb4f97dcb85ff6a63e0f391c6fa",
+          "operation": "procedure_pseudo_code",
+          "address": "0x45db60"
+        },
+        {
+          "file": "full/mechanisms/plant-potato.json",
+          "evidenceID": "ev_378a8bdf8ced01169c42349f37854322330b02c6f63548a86e1dcf2c53306570",
+          "operation": "procedure_pseudo_code",
+          "address": "0x45FE20"
+        },
+        {
+          "file": "full/mechanisms/plant-special.json",
+          "evidenceID": "ev_26249238d841754be799302a9daa20e8a54eab1f5b2f3a4876ba15da7418c383",
+          "operation": "procedure_pseudo_code",
+          "address": "0x4666A0"
+        },
+        {
+          "file": "full/mechanisms/board-explosion.json",
+          "evidenceID": "ev_ac6f8bfe4b1e4124c29459b53c5bfbf97ab9290042cfb26f6ac08b263526ddcd",
+          "operation": "procedure_pseudo_code",
+          "address": "0x41D8A0"
+        }
+      ],
+      "sourceBranch": "Init stateCountdown0x5dc; after rise animation state becomes0x10; DoSpecial seed4 invokes Board explosion radius0x3c,rowRange0,burnfalse.",
+      "confidence": "observed-static",
+      "unknowns": [],
+      "evidenceIDs": [
+        "ev_31ed426848787e31f620f5d629adccee34f78bb4f97dcb85ff6a63e0f391c6fa",
+        "ev_378a8bdf8ced01169c42349f37854322330b02c6f63548a86e1dcf2c53306570",
+        "ev_26249238d841754be799302a9daa20e8a54eab1f5b2f3a4876ba15da7418c383",
+        "ev_ac6f8bfe4b1e4124c29459b53c5bfbf97ab9290042cfb26f6ac08b263526ddcd"
+      ],
+      "implementationNotes": [
+        "The 1500 preparation countdown precedes the rise animation; strict readiness must include that animation transition."
+      ]
+    },
+    {
+      "name": "cherry-explosion",
+      "kinds": [
+        "cherrybomb"
+      ],
+      "parameters": {
+        "fuseUpdates": 100,
+        "explosionRadius": 115,
+        "explosionRowRange": 1,
+        "burn": true,
+        "damageBudget": 1800
+      },
+      "units": {
+        "counters": "updates",
+        "radius": "px",
+        "rowRange": "rows",
+        "damage": "HP"
+      },
+      "Evidence": [
+        {
+          "file": "plant-initialize.json",
+          "evidenceID": "ev_31ed426848787e31f620f5d629adccee34f78bb4f97dcb85ff6a63e0f391c6fa",
+          "operation": "procedure_pseudo_code",
+          "address": "0x45db60"
+        },
+        {
+          "file": "full/mechanisms/plant-special.json",
+          "evidenceID": "ev_26249238d841754be799302a9daa20e8a54eab1f5b2f3a4876ba15da7418c383",
+          "operation": "procedure_pseudo_code",
+          "address": "0x4666A0"
+        },
+        {
+          "file": "full/mechanisms/board-explosion.json",
+          "evidenceID": "ev_ac6f8bfe4b1e4124c29459b53c5bfbf97ab9290042cfb26f6ac08b263526ddcd",
+          "operation": "procedure_pseudo_code",
+          "address": "0x41D8A0"
+        },
+        {
+          "file": "full/mechanisms/zombie-burn.json",
+          "evidenceID": "ev_c144c4c4d3908f231bd1e4711001e70b3f0108e1b5b92f5671ba3e395dbf01ab",
+          "operation": "procedure_pseudo_code",
+          "address": "0x532B70"
+        }
+      ],
+      "sourceBranch": "DoSpecial seed2 passes radius0x73,rowRange1,burntrue; ApplyBurn uses1800 for high-HP/Boss, otherwise enters the burned death path.",
+      "confidence": "observed-static",
+      "unknowns": [],
+      "evidenceIDs": [
+        "ev_31ed426848787e31f620f5d629adccee34f78bb4f97dcb85ff6a63e0f391c6fa",
+        "ev_26249238d841754be799302a9daa20e8a54eab1f5b2f3a4876ba15da7418c383",
+        "ev_ac6f8bfe4b1e4124c29459b53c5bfbf97ab9290042cfb26f6ac08b263526ddcd",
+        "ev_c144c4c4d3908f231bd1e4711001e70b3f0108e1b5b92f5671ba3e395dbf01ab"
+      ]
+    },
+    {
+      "name": "doom-explosion",
+      "kinds": [
+        "doomshroom"
+      ],
+      "parameters": {
+        "fuseUpdates": 100,
+        "explosionRadius": 250,
+        "explosionRowRange": 3,
+        "burn": true,
+        "damageBudget": 1800,
+        "craterUpdates": 18000
+      },
+      "units": {
+        "counters": "updates",
+        "radius": "px",
+        "rowRange": "rows",
+        "damage": "HP"
+      },
+      "Evidence": [
+        {
+          "file": "full/mechanisms/plant-doomshroom.json",
+          "evidenceID": "ev_0d2acec7d27bd32637ff15d27e315334cf4d7320bf3643736fc31eea6845dd82",
+          "operation": "procedure_pseudo_code",
+          "address": "0x460DD0"
+        },
+        {
+          "file": "full/mechanisms/plant-special.json",
+          "evidenceID": "ev_26249238d841754be799302a9daa20e8a54eab1f5b2f3a4876ba15da7418c383",
+          "operation": "procedure_pseudo_code",
+          "address": "0x4666A0"
+        },
+        {
+          "file": "full/mechanisms/board-explosion.json",
+          "evidenceID": "ev_ac6f8bfe4b1e4124c29459b53c5bfbf97ab9290042cfb26f6ac08b263526ddcd",
+          "operation": "procedure_pseudo_code",
+          "address": "0x41D8A0"
+        },
+        {
+          "file": "full/mechanisms/zombie-burn.json",
+          "evidenceID": "ev_c144c4c4d3908f231bd1e4711001e70b3f0108e1b5b92f5671ba3e395dbf01ab",
+          "operation": "procedure_pseudo_code",
+          "address": "0x532B70"
+        }
+      ],
+      "sourceBranch": "Doom state starts countdown100; special seed15 calls radius0xfa,rowRange3,burntrue, removes co-located plants and writes crater timer18000.",
+      "confidence": "observed-static",
+      "unknowns": [],
+      "evidenceIDs": [
+        "ev_0d2acec7d27bd32637ff15d27e315334cf4d7320bf3643736fc31eea6845dd82",
+        "ev_26249238d841754be799302a9daa20e8a54eab1f5b2f3a4876ba15da7418c383",
+        "ev_ac6f8bfe4b1e4124c29459b53c5bfbf97ab9290042cfb26f6ac08b263526ddcd",
+        "ev_c144c4c4d3908f231bd1e4711001e70b3f0108e1b5b92f5671ba3e395dbf01ab"
+      ],
+      "implementationNotes": [
+        "Pool/roof crater presentation and planting exclusion are separate Board rules."
+      ]
+    },
+    {
+      "name": "ice-freeze",
+      "kinds": [
+        "iceshroom"
+      ],
+      "parameters": {
+        "fuseUpdates": 100,
+        "firstFreezeInclusive": [
+          400,
+          600
+        ],
+        "repeatFreezeInclusive": [
+          300,
+          400
+        ],
+        "inPoolFreezeUpdates": 300,
+        "postHitChillUpdates": 2000,
+        "damage": 20,
+        "boardIceVisualUpdates": 300,
+        "freezeEligibilityAddress": "0x531a10",
+        "chillRefreshPolicy": "max(existingChillUpdates,2000)"
+      },
+      "units": {
+        "counters": "updates",
+        "damage": "HP"
+      },
+      "Evidence": [
+        {
+          "file": "full/mechanisms/plant-abilities-dispatch.json",
+          "evidenceID": "ev_843c0ab69d9706c5d4d4a77783254da7da77804ca870fccc5ac63e691ccf8db9",
+          "operation": "procedure_pseudo_code",
+          "address": "0x463150"
+        },
+        {
+          "file": "full/mechanisms/plant-ice-all.json",
+          "evidenceID": "ev_b5d171e2f56325ea888b6e6dd99fd534bcc738732047d8f4497d148af57a9e80",
+          "operation": "procedure_pseudo_code",
+          "address": "0x466420"
+        },
+        {
+          "file": "full/mechanisms/zombie-ice-trap.json",
+          "evidenceID": "ev_ab95aea69523def1676a88739d6ef51373a415be865013a2791ae3b9935e5292",
+          "operation": "procedure_pseudo_code",
+          "address": "0x5323C0"
+        },
+        {
+          "file": "zombie-chill.json",
+          "evidenceID": "ev_3eb600a810458ee89c61731cac85d0da91e2bf7b3ef961270f2503a90d9faf80",
+          "operation": "procedure_pseudo_code",
+          "address": "0x530950"
+        },
+        {
+          "file": "full/mechanisms/zombie-can-freeze.json",
+          "evidenceID": "ev_9097cafd0cb612ae3b6ecf6e29d13d7c83b23c9eb92585b54f360284a4c0d1af",
+          "operation": "procedure_pseudo_code",
+          "address": "0x531A10"
+        }
+      ],
+      "sourceBranch": "HitIceTrap snapshots existing cold, ApplyChill(true), then CanBeFrozen: pool300, cold300+Rand(101), warm400+Rand(201); TakeDamage20. Global IceZombies iterates all zombies and destroys Boss fireball.",
+      "confidence": "observed-static",
+      "unknowns": [],
+      "assemblyObservations": [
+        {
+          "address": "0x53240a..0x532414",
+          "observation": "Rand(0x65)+0x12c"
+        },
+        {
+          "address": "0x53241b..0x532425",
+          "observation": "Rand(0xc9)+0x190"
+        }
+      ],
+      "evidenceIDs": [
+        "ev_843c0ab69d9706c5d4d4a77783254da7da77804ca870fccc5ac63e691ccf8db9",
+        "ev_b5d171e2f56325ea888b6e6dd99fd534bcc738732047d8f4497d148af57a9e80",
+        "ev_ab95aea69523def1676a88739d6ef51373a415be865013a2791ae3b9935e5292",
+        "ev_3eb600a810458ee89c61731cac85d0da91e2bf7b3ef961270f2503a90d9faf80",
+        "ev_9097cafd0cb612ae3b6ecf6e29d13d7c83b23c9eb92585b54f360284a4c0d1af"
+      ],
+      "implementationNotes": [
+        "Freeze excludes protected phases/vehicles and checks CanBeChilled first; apply the retained native eligibility state predicate rather than only checking unit kind."
+      ]
+    },
+    {
+      "name": "jalapeno-row",
+      "kinds": [
+        "jalapeno"
+      ],
+      "parameters": {
+        "fuseUpdates": 100,
+        "rowRange": 0,
+        "burnDamageBudget": 1800,
+        "removeCold": true,
+        "destroyPlacedLaddersInRow": true,
+        "counterBossIceballInRow": true
+      },
+      "units": {
+        "counters": "updates",
+        "damage": "HP"
+      },
+      "Evidence": [
+        {
+          "file": "plant-initialize.json",
+          "evidenceID": "ev_31ed426848787e31f620f5d629adccee34f78bb4f97dcb85ff6a63e0f391c6fa",
+          "operation": "procedure_pseudo_code",
+          "address": "0x45db60"
+        },
+        {
+          "file": "full/mechanisms/plant-special.json",
+          "evidenceID": "ev_26249238d841754be799302a9daa20e8a54eab1f5b2f3a4876ba15da7418c383",
+          "operation": "procedure_pseudo_code",
+          "address": "0x4666A0"
+        },
+        {
+          "file": "full/mechanisms/plant-burn-row.json",
+          "evidenceID": "ev_30c27844d42b01546af8ed16c596f3561aa1dbf680eb489d75a20bd5f4a665c6",
+          "operation": "procedure_pseudo_code",
+          "address": "0x4664B0"
+        },
+        {
+          "file": "full/mechanisms/zombie-burn.json",
+          "evidenceID": "ev_c144c4c4d3908f231bd1e4711001e70b3f0108e1b5b92f5671ba3e395dbf01ab",
+          "operation": "procedure_pseudo_code",
+          "address": "0x532B70"
+        }
+      ],
+      "sourceBranch": "Special seed0x14 calls BurnRow; BurnRow removes cold, applies burn to eligible same-row zombies, removes grid-item ladders and counters matching Boss iceball.",
+      "confidence": "observed-static",
+      "unknowns": [],
+      "evidenceIDs": [
+        "ev_31ed426848787e31f620f5d629adccee34f78bb4f97dcb85ff6a63e0f391c6fa",
+        "ev_26249238d841754be799302a9daa20e8a54eab1f5b2f3a4876ba15da7418c383",
+        "ev_30c27844d42b01546af8ed16c596f3561aa1dbf680eb489d75a20bd5f4a665c6",
+        "ev_c144c4c4d3908f231bd1e4711001e70b3f0108e1b5b92f5671ba3e395dbf01ab"
+      ],
+      "implementationNotes": [
+        "Some off-ground categories depend on damage-range flags, not simply row equality."
+      ]
+    },
+    {
+      "name": "gravebuster",
+      "kinds": [
+        "gravebuster"
+      ],
+      "parameters": {
+        "chewUpdatesAfterLanding": 400,
+        "requiresGrave": true,
+        "consumedAfterGraveRemoval": true,
+        "lootDropFactor": 12
+      },
+      "units": {
+        "counter": "updates"
+      },
+      "Evidence": [
+        {
+          "file": "full/mechanisms/plant-gravebuster.json",
+          "evidenceID": "ev_dd5ed512225fadb7d17b0996316ce17fd364f2da19f743b6a5d17d44229e4230",
+          "operation": "procedure_pseudo_code",
+          "address": "0x45FC70"
+        },
+        {
+          "file": "full/mechanisms/board-can-plant.json",
+          "evidenceID": "ev_0c241d342cdab84c44c45dc30c719d78b44b3f5b6293ef9b01809afe99c14969",
+          "operation": "procedure_pseudo_code",
+          "address": "0x40E020"
+        }
+      ],
+      "sourceBranch": "Seed0xb CanPlantAt accepts only a grave with no ordinary plant; landing reanimation completion starts400, then destroys grave and consumes plant. The retained0x45fc70 callargument0xc is a dropfactor into0x41cdb0, not a literalcoin identity; the historicalBoard symbol isDropLootPiece.",
+      "confidence": "observed-static",
+      "unknowns": [
+        "The finalcall0x41cdb0 is DropLootPiece(x,y,dropFactor12), not CoinType12. Its campaign loot-roll distribution remains outside the retained mechanism probes."
+      ],
+      "evidenceIDs": [
+        "ev_dd5ed512225fadb7d17b0996316ce17fd364f2da19f743b6a5d17d44229e4230",
+        "ev_0c241d342cdab84c44c45dc30c719d78b44b3f5b6293ef9b01809afe99c14969"
+      ]
+    },
+    {
+      "name": "tanglekelp",
+      "kinds": [
+        "tanglekelp"
+      ],
+      "parameters": {
+        "grabCountdown": 100,
+        "draggedUnderAtRemaining": 50,
+        "splashAtRemaining": 20,
+        "consumeAndKillAtRemaining": 0
+      },
+      "units": {
+        "counter": "updates"
+      },
+      "Evidence": [
+        {
+          "file": "full/mechanisms/plant-tanglekelp.json",
+          "evidenceID": "ev_28bf54e45d7f88d3ffae7a1cbda345d55dfeb7ea242855d57de8c2de179391cb",
+          "operation": "procedure_pseudo_code",
+          "address": "0x460060"
+        },
+        {
+          "file": "full/mechanisms/board-can-plant.json",
+          "evidenceID": "ev_0c241d342cdab84c44c45dc30c719d78b44b3f5b6293ef9b01809afe99c14969",
+          "operation": "procedure_pseudo_code",
+          "address": "0x40E020"
+        }
+      ],
+      "sourceBranch": "Found target ->state0x22,countdown100; at50 changes zombie height to dragged-under, at20 splash, at0 consumes kelp and kills retained target.",
+      "confidence": "observed-static",
+      "unknowns": [],
+      "evidenceIDs": [
+        "ev_28bf54e45d7f88d3ffae7a1cbda345d55dfeb7ea242855d57de8c2de179391cb",
+        "ev_0c241d342cdab84c44c45dc30c719d78b44b3f5b6293ef9b01809afe99c14969"
+      ],
+      "implementationNotes": [
+        "Aquatic target eligibility remains in damage flags / target-finding functions."
+      ]
+    },
+    {
+      "name": "blover",
+      "kinds": [
+        "blover"
+      ],
+      "parameters": {
+        "initialSpecialCountdown": 50,
+        "blowAwayFlying": true,
+        "clearFogUpdates": 4000,
+        "skipBalloonPoppingPhase": true
+      },
+      "units": {
+        "counters": "updates"
+      },
+      "Evidence": [
+        {
+          "file": "plant-initialize.json",
+          "evidenceID": "ev_31ed426848787e31f620f5d629adccee34f78bb4f97dcb85ff6a63e0f391c6fa",
+          "operation": "procedure_pseudo_code",
+          "address": "0x45db60"
+        },
+        {
+          "file": "full/mechanisms/plant-blover.json",
+          "evidenceID": "ev_b615129e54edfe68d4d97e27eb2a604e7c3c5bc5b965e7428303c228059d852a",
+          "operation": "procedure_pseudo_code",
+          "address": "0x460F00"
+        },
+        {
+          "file": "full/mechanisms/plant-special.json",
+          "evidenceID": "ev_26249238d841754be799302a9daa20e8a54eab1f5b2f3a4876ba15da7418c383",
+          "operation": "procedure_pseudo_code",
+          "address": "0x4666A0"
+        },
+        {
+          "file": "full/mechanisms/plant-blover-all.json",
+          "evidenceID": "ev_90b6664779d1e1c1a14ad713c7bcc54359b97e288fee7c9915fce2c7ea173add",
+          "operation": "procedure_pseudo_code",
+          "address": "0x4665b0"
+        }
+      ],
+      "sourceBranch": "Initseed0x1b sets specialCountdown50. BlowAwayFliers0x4665b0 checks live balloon-flying phase, setsblowingAway, and writesfogBlownCountdown4000 atBoard+0x5d4.",
+      "confidence": "observed-static",
+      "unknowns": [],
+      "evidenceIDs": [
+        "ev_31ed426848787e31f620f5d629adccee34f78bb4f97dcb85ff6a63e0f391c6fa",
+        "ev_b615129e54edfe68d4d97e27eb2a604e7c3c5bc5b965e7428303c228059d852a",
+        "ev_26249238d841754be799302a9daa20e8a54eab1f5b2f3a4876ba15da7418c383",
+        "ev_90b6664779d1e1c1a14ad713c7bcc54359b97e288fee7c9915fce2c7ea173add"
+      ]
+    },
+    {
+      "name": "hypnoshroom",
+      "kinds": [
+        "hypnoshroom"
+      ],
+      "parameters": {
+        "consumedOnChew": true,
+        "mindControlledFlag": true,
+        "clearDancerRelations": true,
+        "mindControlVelX": 0.17,
+        "mindControlAnimTicksPerFrame": 18
+      },
+      "units": {
+        "velocity": "source speed parameter, not raw px/update"
+      },
+      "Evidence": [
+        {
+          "file": "full/mechanisms/zombie-hypnosis.json",
+          "evidenceID": "ev_5731e4c7fdecc66475be9e9455785efd840a53510c61403db23d67587f0bb21d",
+          "operation": "procedure_pseudo_code",
+          "address": "0x52FA60"
+        },
+        {
+          "file": "zombie-eating.json",
+          "evidenceID": "ev_7aa5fbacf6f4dc210598a2609ea6fd42c928983c945e5e7c1df8eff9d4c9cbed",
+          "operation": "procedure_pseudo_code",
+          "address": "0x52fb40"
+        },
+        {
+          "file": "full/mechanisms/plant-sleep.json",
+          "evidenceID": "ev_1f84e3276ad6ee541366ddb8e0048f198ae79c39bedf5811642b31739e149df7",
+          "operation": "procedure_pseudo_code",
+          "address": "0x45E860"
+        },
+        {
+          "file": "full/mechanisms/zombie-chew-events.json",
+          "evidenceID": "ev_dc5468fc05689463f2dc0ae895539bbde875306f7d235d3c2f62b36082e9aca8",
+          "operation": "procedure_pseudo_code",
+          "address": "0x52b940"
+        }
+      ],
+      "sourceBranch": "AnimateChewSound0x52b940 seed0xc with isAsleepfalse consumes the plant, calls StartMindControlled0x52fa60, writesvelX bits0x3e2e147b(.17) and animTicksPerFrame0x12. StartMindControlled setsmindControlled and clears dancer relation ids.",
+      "confidence": "observed-static",
+      "unknowns": [],
+      "evidenceIDs": [
+        "ev_5731e4c7fdecc66475be9e9455785efd840a53510c61403db23d67587f0bb21d",
+        "ev_7aa5fbacf6f4dc210598a2609ea6fd42c928983c945e5e7c1df8eff9d4c9cbed",
+        "ev_1f84e3276ad6ee541366ddb8e0048f198ae79c39bedf5811642b31739e149df7",
+        "ev_dc5468fc05689463f2dc0ae895539bbde875306f7d235d3c2f62b36082e9aca8"
+      ],
+      "implementationNotes": [
+        "Original allegiance change does not itself define PvP wallet or entity ownership; platform adaptation must define this separately."
+      ]
+    },
+    {
+      "name": "garlic",
+      "kinds": [
+        "garlic"
+      ],
+      "parameters": {
+        "HP": 400,
+        "changeRowAtYuckyCounter": 170,
+        "releaseYuckyAfterCounter": 270,
+        "rowDeltaChoices": [
+          -1,
+          1
+        ],
+        "forbidWaterLandTransition": true,
+        "bothValidRowChoiceProbability": "1/2 each"
+      },
+      "units": {
+        "hp": "HP",
+        "counters": "updates",
+        "rowDeltas": "rows"
+      },
+      "Evidence": [
+        {
+          "file": "plant-initialize.json",
+          "evidenceID": "ev_31ed426848787e31f620f5d629adccee34f78bb4f97dcb85ff6a63e0f391c6fa",
+          "operation": "procedure_pseudo_code",
+          "address": "0x45db60"
+        },
+        {
+          "file": "full/mechanisms/zombie-garlic-reaction.json",
+          "evidenceID": "ev_32b6b32f765fb62afc2c1aa74bf755370ac9173b66f5e6a3dc1f12cfffee367c",
+          "operation": "procedure_pseudo_code",
+          "address": "0x52B6A0"
+        },
+        {
+          "file": "full/mechanisms/zombie-chew-events.json",
+          "evidenceID": "ev_dc5468fc05689463f2dc0ae895539bbde875306f7d235d3c2f62b36082e9aca8",
+          "operation": "procedure_pseudo_code",
+          "address": "0x52b940"
+        }
+      ],
+      "sourceBranch": "AnimateChewSound seed0x24 sets yucky flag and counter0. UpdateYuckyFace0x52b6a0 atcounter0xaa changes to a valid adjacent row of the same land/pool category; >0x10e clears reaction.",
+      "confidence": "observed-static",
+      "unknowns": [],
+      "evidenceIDs": [
+        "ev_31ed426848787e31f620f5d629adccee34f78bb4f97dcb85ff6a63e0f391c6fa",
+        "ev_32b6b32f765fb62afc2c1aa74bf755370ac9173b66f5e6a3dc1f12cfffee367c",
+        "ev_dc5468fc05689463f2dc0ae895539bbde875306f7d235d3c2f62b36082e9aca8"
+      ],
+      "assemblyObservations": [
+        {
+          "address": "0x52b902..0x52b916",
+          "observation": "mov eax,2; Rand; zero=>row+1,nonzero=>row-1"
+        }
+      ]
+    },
+    {
+      "name": "magnetshroom",
+      "kinds": [
+        "magnetshroom"
+      ],
+      "parameters": {
+        "targetRowRange": 2,
+        "targetRadiusWalking": 270,
+        "targetRadiusEating": 320,
+        "cooldownUpdates": 1500,
+        "removedObjects": [
+          "bucket",
+          "footballHelmet",
+          "screenDoor",
+          "ladder",
+          "pogoStick",
+          "jackInTheBox",
+          "diggerPickaxe"
+        ],
+        "groundLadderRangeChebyshev": 2,
+        "zombieTargetScore": "EuclideanDistance(plant.x,plant.y,zombieRect.x,zombieRect.y)+abs(rowDifference)*80",
+        "zombieTargetTie": "first eligible entity",
+        "groundLadderScore": "max(abs(columnDifference),abs(rowDifference))+abs(rowDifference)*0.05",
+        "targetPriority": "eligible metallic zombie before placed ground ladder"
+      },
+      "units": {
+        "cooldown": "updates",
+        "radius": "px",
+        "rowRange": "rows"
+      },
+      "Evidence": [
+        {
+          "file": "full/mechanisms/plant-magnetshroom.json",
+          "evidenceID": "ev_a827c84354e7afd6d0fe78e8c40314c7b7465ade58f9f0eb7c299c1b71a78a45",
+          "operation": "procedure_pseudo_code",
+          "address": "0x461D90"
+        },
+        {
+          "file": "full/mechanisms/plant-magnet-attack-item.json",
+          "evidenceID": "ev_cfd8ad10f86475f87880fbd134642a6270bd02d4c5fb713ccf6c2ecc02f51dfb",
+          "operation": "procedure_pseudo_code",
+          "address": "0x461610"
+        },
+        {
+          "file": "full/mechanisms/plant-magnet-free-slot.json",
+          "evidenceID": "ev_7c115f9cc7724226595b2045ccdfd3806999288008451cb34257956c3338c3e4",
+          "operation": "procedure_pseudo_code",
+          "address": "0x4615D0"
+        }
+      ],
+      "sourceBranch": "Actual MagnetShroomAttractItem entry0x461610 setsstate0x1a and stateCountdown0x5dc, then removes bucket/football helmet(screened by helm type2/3), door/ladder(shield1/3), pogo object, jackbox crank/box or digger pickaxe. UpdateMagnetShroom supplies ±2rows /radius270 walking or320 eating.0x4615d0 is only GetFreeMagnetItem. Originalassembly recovers the target/groundladder accumulators lostbyGhidra; metalzombies are scanned/selectedfirst,then placedladders ifnone.ClosestweightedselectionandChebyshev2ladderrange are nowbyte-verified.",
+      "confidence": "observed-static",
+      "unknowns": [],
+      "assemblyObservations": [
+        {
+          "address": "0x461610..0x461643",
+          "observation": "function starts461610; 461637:movl $0x5dc,0x54(%ebp); 461630 setsstate0x1a"
+        },
+        {
+          "address": "0x462148..0x4621ae",
+          "observation": "Distance2Dcall;addabs(rowDifference)*double0x679820(80);replacecandidateifcloser;afteriterationEBXbestnonnullcalls0x461610andreturns"
+        },
+        {
+          "address": "0x4621ec..0x462265",
+          "observation": "gridItemtype3;abs(rowDiff),abs(colDiff);max<=2;scoremax+abs(rowDiff)*double0x6796d8(.05);retainclosest"
+        },
+        {
+          "address": "0x46228d..0x462294",
+          "observation": "placedladderattractionsetsstate0x1a,countdown0x5dc(1500)"
+        }
+      ],
+      "evidenceIDs": [
+        "ev_a827c84354e7afd6d0fe78e8c40314c7b7465ade58f9f0eb7c299c1b71a78a45",
+        "ev_cfd8ad10f86475f87880fbd134642a6270bd02d4c5fb713ccf6c2ecc02f51dfb",
+        "ev_7c115f9cc7724226595b2045ccdfd3806999288008451cb34257956c3338c3e4"
+      ]
+    },
+    {
+      "name": "goldmagnet",
+      "kinds": [
+        "goldmagnet"
+      ],
+      "parameters": {
+        "maxHeldCoins": 5,
+        "minimumCoinAgeUpdates": 50,
+        "eligibleCoinTypeIds": [
+          1,
+          2,
+          3
+        ],
+        "campaignCoinUnitsByType": {
+          "silver": 1,
+          "gold": 5,
+          "diamond": 100
+        },
+        "affectsSun": false,
+        "chargeInclusive": [
+          200,
+          300
+        ],
+        "idleTargetPollProbabilityPerUpdate": "1/50",
+        "targetSelection": "closest eligible coin by Euclidean centre distance; no distance cutoff in this function"
+      },
+      "units": {
+        "ageCharge": "updates",
+        "campaignCoinUnits": "campaign profile currency units"
+      },
+      "Evidence": [
+        {
+          "file": "full/mechanisms/plant-goldmagnet.json",
+          "evidenceID": "ev_53cb890232f0947188058359fd11a0a145458ef18a06db25ab173fc415c1a3de",
+          "operation": "procedure_pseudo_code",
+          "address": "0x462680"
+        },
+        {
+          "file": "full/mechanisms/plant-goldmagnet-target.json",
+          "evidenceID": "ev_a18ddfb3f04e606a2f9c5b2d98366e3138eee80b5aff60064769c99c28aee0fa",
+          "operation": "procedure_pseudo_code",
+          "address": "0x462390"
+        },
+        {
+          "file": "full/mechanisms/plant-goldmagnet-targets.json",
+          "evidenceID": "ev_9cf075c54fac61cf973cbb882b11ccf040666e60881562bc5340faebf7e7e182",
+          "operation": "procedure_pseudo_code",
+          "address": "0x4624B0"
+        },
+        {
+          "file": "full/mechanisms/plant-magnet-free-slot.json",
+          "evidenceID": "ev_7c115f9cc7724226595b2045ccdfd3806999288008451cb34257956c3338c3e4",
+          "operation": "procedure_pseudo_code",
+          "address": "0x4615D0"
+        },
+        {
+          "file": "full/mechanisms/coin-value.json",
+          "evidenceID": "ev_9d08be428fce46a6f655edff8c3d5945ed2f382e3652a2eb9cf194f67b343ccc",
+          "operation": "procedure_pseudo_code",
+          "address": "0x4329D0"
+        }
+      ],
+      "sourceBranch": "Gold target predicate checks coin type1/2/3, age>0x31, excludes motion5 and being-collected; update loop processes five items and credits campaign profile1/5/100. GetFreeMagnetItem explicitly scansfive slots. Charge delay200+Rand(101) and idle target polling Rand(50)==0 verified in original bytes. Assembly recovers the closest-coin accumulator lost by the decompiler: EBX holdscoin and is returned at4624a1. CoinValue0x4329d0 independently confirms campaign coin ids1/2/3 =>1/5/100units; unrelatedsunvalues livein0x4329a0.",
+      "confidence": "observed-static",
+      "unknowns": [],
+      "evidenceIDs": [
+        "ev_53cb890232f0947188058359fd11a0a145458ef18a06db25ab173fc415c1a3de",
+        "ev_a18ddfb3f04e606a2f9c5b2d98366e3138eee80b5aff60064769c99c28aee0fa",
+        "ev_9cf075c54fac61cf973cbb882b11ccf040666e60881562bc5340faebf7e7e182",
+        "ev_7c115f9cc7724226595b2045ccdfd3806999288008451cb34257956c3338c3e4",
+        "ev_9d08be428fce46a6f655edff8c3d5945ed2f382e3652a2eb9cf194f67b343ccc"
+      ],
+      "assemblyObservations": [
+        {
+          "address": "0x462973..0x462989",
+          "observation": "mov eax,0x65; call Rand; add eax,0xc8; store plant+0x54 =>200..300 inclusive"
+        },
+        {
+          "address": "0x46299c..0x4629aa",
+          "observation": "mov eax,0x32; call Rand; test eax; onlyzero calls FindGoldMagnetTarget"
+        },
+        {
+          "address": "0x4623fe..0x4624a7",
+          "observation": "squaredcentredeltas=>sqrt0x63a080; if noEBXcandidate or closerdistance thenEBX=ESI;4624a1 movesEBXtoEAX beforeRET"
+        }
+      ],
+      "implementationNotes": [
+        "Original goldmagnet does not create sunlight/brain income. Any PvP currency conversion must be explicitly defined as adaptation."
+      ]
+    },
+    {
+      "name": "coffeebean",
+      "kinds": [
+        "coffeebean"
+      ],
+      "parameters": {
+        "requiresSleepingPlant": true,
+        "wakeCounter": 100,
+        "wakeSoundAtRemaining": 60,
+        "consumedAfterCrumble": true
+      },
+      "units": {
+        "counters": "updates"
+      },
+      "Evidence": [
+        {
+          "file": "full/mechanisms/board-can-plant.json",
+          "evidenceID": "ev_0c241d342cdab84c44c45dc30c719d78b44b3f5b6293ef9b01809afe99c14969",
+          "operation": "procedure_pseudo_code",
+          "address": "0x40E020"
+        },
+        {
+          "file": "full/mechanisms/plant-special.json",
+          "evidenceID": "ev_26249238d841754be799302a9daa20e8a54eab1f5b2f3a4876ba15da7418c383",
+          "operation": "procedure_pseudo_code",
+          "address": "0x4666A0"
+        },
+        {
+          "file": "full/mechanisms/plant-abilities-dispatch.json",
+          "evidenceID": "ev_843c0ab69d9706c5d4d4a77783254da7da77804ca870fccc5ac63e691ccf8db9",
+          "operation": "procedure_pseudo_code",
+          "address": "0x463150"
+        },
+        {
+          "file": "full/mechanisms/plant-coffeebean.json",
+          "evidenceID": "ev_cd8f668cbc5818356c2e03371d59f55f5592546c276484d99e88f23d58e25513",
+          "operation": "procedure_pseudo_code",
+          "address": "0x460F60"
+        }
+      ],
+      "sourceBranch": "CanPlantAt seed0x23 requires sleeping ordinary plant; DoSpecial writeswakecounter100, UpdateAbilities decrements and SetSleeping(false)at0, sound at60.",
+      "confidence": "observed-static",
+      "unknowns": [],
+      "evidenceIDs": [
+        "ev_0c241d342cdab84c44c45dc30c719d78b44b3f5b6293ef9b01809afe99c14969",
+        "ev_26249238d841754be799302a9daa20e8a54eab1f5b2f3a4876ba15da7418c383",
+        "ev_843c0ab69d9706c5d4d4a77783254da7da77804ca870fccc5ac63e691ccf8db9",
+        "ev_cd8f668cbc5818356c2e03371d59f55f5592546c276484d99e88f23d58e25513"
+      ]
+    },
+    {
+      "name": "umbrellaleaf",
+      "kinds": [
+        "umbrellaleaf"
+      ],
+      "parameters": {
+        "reflectWarmupUpdates": 5,
+        "gridRadiusX": 1,
+        "gridRadiusY": 1
+      },
+      "units": {
+        "warmup": "updates",
+        "gridRadius": "cells"
+      },
+      "Evidence": [
+        {
+          "file": "full/mechanisms/plant-special.json",
+          "evidenceID": "ev_26249238d841754be799302a9daa20e8a54eab1f5b2f3a4876ba15da7418c383",
+          "operation": "procedure_pseudo_code",
+          "address": "0x4666A0"
+        },
+        {
+          "file": "full/mechanisms/plant-umbrella.json",
+          "evidenceID": "ev_28df9174d0583295d09eb5617a1ce41c3b93107fd1e56d06f9a0d50f100b8658",
+          "operation": "procedure_pseudo_code",
+          "address": "0x460FA0"
+        },
+        {
+          "file": "full/mechanisms/board-find-umbrella.json",
+          "evidenceID": "ev_2a200118f740820ccd855c3f2ee5b5d6d0013b267d1a1e7d141c91e396729dee",
+          "operation": "procedure_pseudo_code",
+          "address": "0x41d3d0"
+        }
+      ],
+      "sourceBranch": "Board::FindUmbrellaPlant0x41d3d0 checks seed0x25 and target col,row each within umbrella col,row±1, excludes squished/on-bungee states. Special sets warmup5 before reflecting until animation completes.",
+      "confidence": "observed-static",
+      "unknowns": [],
+      "evidenceIDs": [
+        "ev_26249238d841754be799302a9daa20e8a54eab1f5b2f3a4876ba15da7418c383",
+        "ev_28df9174d0583295d09eb5617a1ce41c3b93107fd1e56d06f9a0d50f100b8658",
+        "ev_2a200118f740820ccd855c3f2ee5b5d6d0013b267d1a1e7d141c91e396729dee"
+      ],
+      "assemblyObservations": [
+        {
+          "address": "0x41d415..0x41d448",
+          "observation": "checkscol,row±1; qualifyingcandidate jumps41d446 directlytoRET preservingEAX; onlyexhaustedloop41d444 clearsEAX"
+        }
+      ]
+    },
+    {
+      "name": "water-and-roof-support",
+      "kinds": [
+        "lilypad",
+        "flowerpot",
+        "pumpkin"
+      ],
+      "parameters": {
+        "supportLayers": [
+          "lilypadOrFlowerpot",
+          "ordinaryPlant",
+          "pumpkin"
+        ],
+        "lilypadAndPotInitialInvulnerabilityUpdates": 100,
+        "pumpkinHP": 4000,
+        "pumpkinWidth": 120,
+        "waterOnlyBaseKinds": [
+          "lilypad",
+          "tanglekelp",
+          "seashroom"
+        ],
+        "waterUpgradeKind": "cattail"
+      },
+      "units": {
+        "invulnerability": "updates",
+        "hp": "HP",
+        "width": "px"
+      },
+      "Evidence": [
+        {
+          "file": "plant-initialize.json",
+          "evidenceID": "ev_31ed426848787e31f620f5d629adccee34f78bb4f97dcb85ff6a63e0f391c6fa",
+          "operation": "procedure_pseudo_code",
+          "address": "0x45db60"
+        },
+        {
+          "file": "full/mechanisms/board-can-plant.json",
+          "evidenceID": "ev_0c241d342cdab84c44c45dc30c719d78b44b3f5b6293ef9b01809afe99c14969",
+          "operation": "procedure_pseudo_code",
+          "address": "0x40E020"
+        },
+        {
+          "file": "full/mechanisms/board-plant-layers.json",
+          "evidenceID": "ev_9ab344591d32f8344533878c00d5ccd330729442d49144107758171f8771e1bd",
+          "operation": "procedure_pseudo_code",
+          "address": "0x40D2A0"
+        }
+      ],
+      "sourceBranch": "PlantInitialize seeds16/33 install100-update invulnerability phase; BoardCanPlantAt separately handles support, ordinary, pumpkin and coffee layers, and water-only seeds16/19/24.",
+      "confidence": "observed-static",
+      "unknowns": [],
+      "evidenceIDs": [
+        "ev_31ed426848787e31f620f5d629adccee34f78bb4f97dcb85ff6a63e0f391c6fa",
+        "ev_0c241d342cdab84c44c45dc30c719d78b44b3f5b6293ef9b01809afe99c14969",
+        "ev_9ab344591d32f8344533878c00d5ccd330729442d49144107758171f8771e1bd"
+      ],
+      "implementationNotes": [
+        "Cattail upgrade consumes existing lilypad as a special aquatic upgrade; preserve original placement rules and platform owner permissions separately."
+      ]
+    },
+    {
+      "name": "plantern",
+      "kinds": [
+        "plantern"
+      ],
+      "parameters": {
+        "attack": false,
+        "revealsFog": true,
+        "clearFogSizeArgument": 4,
+        "fogMeshShape": {
+          "absDxMax": 3,
+          "absDyMax": 2,
+          "excludedManhattanDistance": 5,
+          "maximumInteriorPoints": 31
+        },
+        "fogMeshHorizontalShift": "trunc((fogOffset+50)/100)",
+        "clearAlphaPerUpdate": {
+          "normal": 6,
+          "blownCountdown1To1999": 2,
+          "blownCountdownAtLeast2000": 40
+        },
+        "restoreAlphaPerUpdate": {
+          "normal": 3,
+          "blownCountdown1To1999": 1,
+          "blownCountdownAtLeast2000": 20
+        },
+        "fogMaxAlpha": {
+          "leftmostFogColumn": 200,
+          "otherColumns": 255
+        }
+      },
+      "units": {
+        "meshShape": "fog-grid coordinates",
+        "alpha": "0..255 per update",
+        "countdown": "updates"
+      },
+      "Evidence": [
+        {
+          "file": "full/all-plant-definitions.json",
+          "evidenceID": "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8",
+          "operation": "read_bytes",
+          "address": "0x69f2b0"
+        },
+        {
+          "file": "full/mechanisms/board-stage-fog.json",
+          "evidenceID": "ev_265e51fbfaeef403a530fc6877358f8db95b0921f26b26fcd69f9460bf3acfc1",
+          "operation": "procedure_pseudo_code",
+          "address": "0x41C170"
+        },
+        {
+          "file": "full/mechanisms/board-clear-fog.json",
+          "evidenceID": "ev_433143ba61663285f98389050a861d247d9e4bcc6833d7fa68382d4be53af324",
+          "operation": "procedure_pseudo_code",
+          "address": "0x41A430"
+        },
+        {
+          "file": "full/mechanisms/board-update-fog.json",
+          "evidenceID": "ev_1f8f2902aee32cd2a93f3b8846eddb08804acdf4f37d7bf4fb88978f2f6940d7",
+          "operation": "procedure_pseudo_code",
+          "address": "0x41A5D0"
+        }
+      ],
+      "sourceBranch": "BoardUpdateFog0x41a5d0 callsClearFogAroundPlant for seed0x19(plantern) withEBX=4 (41a702), seed0x16(torchwood) withEBX=1(41a70c). ClearFog0x41a430 forsize4 admitsabsdx<4,absdy<3,absdx+absdy!=5; clips toactivefogcolumns and0..6fogrows. It subtractsalpha6(normal),2(blown1..1999),40(blown>=2000); UpdateFog adds3/1/20,cap200leftcolumn,255other.",
+      "confidence": "observed-static",
+      "unknowns": [],
+      "evidenceIDs": [
+        "ev_b794f08ae804c64ed0c1b9adbb176f350a31bba38f7a3d267d2474b25446a9c8",
+        "ev_265e51fbfaeef403a530fc6877358f8db95b0921f26b26fcd69f9460bf3acfc1",
+        "ev_433143ba61663285f98389050a861d247d9e4bcc6833d7fa68382d4be53af324",
+        "ev_1f8f2902aee32cd2a93f3b8846eddb08804acdf4f37d7bf4fb88978f2f6940d7"
+      ],
+      "assemblyObservations": [
+        {
+          "address": "0x41a6fd..0x41a711",
+          "observation": "plantern seed25 =>EBX=25-21=4;torchwood seed22=>EBX=22-21=1;EBX is strippedthird ClearFog argument"
+        }
+      ]
+    },
+    {
+      "name": "imitater",
+      "kinds": [
+        "imitater"
+      ],
+      "parameters": {
+        "preTransformCountdownUpdates": 200,
+        "transformState": 42,
+        "transformAnimationRate": 26,
+        "emitTransformParticleAtAnimationFraction": 0.8,
+        "costDelegatesToSelectedTarget": true,
+        "refreshDelegatesToSelectedTarget": true,
+        "tableCostZeroIsPlaceholder": true
+      },
+      "units": {
+        "countdown": "updates",
+        "animationRate": "source frames/second",
+        "fraction": "0..1"
+      },
+      "Evidence": [
+        {
+          "file": "plant-initialize.json",
+          "evidenceID": "ev_31ed426848787e31f620f5d629adccee34f78bb4f97dcb85ff6a63e0f391c6fa",
+          "operation": "procedure_pseudo_code",
+          "address": "0x45db60"
+        },
+        {
+          "file": "full/mechanisms/plant-imitater.json",
+          "evidenceID": "ev_da5fc8b299eee56b26ab9295edecbb732e5454901c73933c3d627b88cb0d8c6f",
+          "operation": "procedure_pseudo_code",
+          "address": "0x466CA0"
+        },
+        {
+          "file": "full/mechanisms/plant-cost.json",
+          "evidenceID": "ev_ef106d3d7c44745c084758da5d8f066b7c458d13dfecde16188a888f5cd1eb71",
+          "operation": "procedure_pseudo_code",
+          "address": "0x467B00"
+        },
+        {
+          "file": "full/mechanisms/plant-refresh-time.json",
+          "evidenceID": "ev_4c865f66931be314bf8f7f01eb22fe6e2e83b407c83d98b812442e9dae3918fb",
+          "operation": "procedure_pseudo_code",
+          "address": "0x467E30"
+        }
+      ],
+      "sourceBranch": "Init seed0x30 sets countdown200; UpdateImitater startsanim_explode26fps, emits particle at0.8 then invokes transform after reanimation completes. GetCost0x467b00 seed0x30,target!=-1 returns targetdefinition.sunCost; GetRefreshTime0x467e30 returns targetdefinition.refreshUpdates. The seed48 tablecost0 cannot be charged asfree afterchoosingatarget.",
+      "confidence": "observed-static",
+      "unknowns": [
+        "SeedChooser target-selection restrictions and detailed replacement/filter rules in ImitaterMorph0x466b80 are not established by the cost/refresh delegates."
+      ],
+      "evidenceIDs": [
+        "ev_31ed426848787e31f620f5d629adccee34f78bb4f97dcb85ff6a63e0f391c6fa",
+        "ev_da5fc8b299eee56b26ab9295edecbb732e5454901c73933c3d627b88cb0d8c6f",
+        "ev_ef106d3d7c44745c084758da5d8f066b7c458d13dfecde16188a888f5cd1eb71",
+        "ev_4c865f66931be314bf8f7f01eb22fe6e2e83b407c83d98b812442e9dae3918fb"
+      ],
+      "implementationNotes": [
+        "Initialrandomanimationrate25..30 andexplicitmorphrate26 aredistinctpresentationphases."
+      ]
+    },
+    {
+      "name": "cobcannon",
+      "kinds": [
+        "cobcannon"
+      ],
+      "parameters": {
+        "initialArmCountdownUpdates": 500,
+        "reloadCountdownUpdates": 3000,
+        "chargeAnimationRate": 20,
+        "shootingAnimationRate": 20,
+        "shootingCounterStart": 206,
+        "soundAtAnimationFraction": 0.48,
+        "explosionRadius": 115,
+        "explosionRowRange": 1,
+        "explosionDamageBudget": 1800,
+        "projectileDefinitionDamageUnusedForExplosion": 300,
+        "launchVerticalSpeed": -8,
+        "turnToDescentAtZBelow": -700,
+        "descentVerticalSpeed": 8,
+        "plantCollisionRect": [
+          0,
+          0,
+          140,
+          80
+        ],
+        "requiresTwoAdjacentKernelPults": true,
+        "requiresMatchingFlowerpotPresence": true,
+        "pumpkinOnEitherKernelForbidden": true
+      },
+      "units": {
+        "counters": "updates",
+        "animationRate": "source frames/second",
+        "radiusRect": "px",
+        "damage": "HP",
+        "verticalSpeed": "px/update",
+        "z": "px"
+      },
+      "Evidence": [
+        {
+          "file": "plant-initialize.json",
+          "evidenceID": "ev_31ed426848787e31f620f5d629adccee34f78bb4f97dcb85ff6a63e0f391c6fa",
+          "operation": "procedure_pseudo_code",
+          "address": "0x45db60"
+        },
+        {
+          "file": "full/mechanisms/plant-cobcannon.json",
+          "evidenceID": "ev_9ccd77cec1f695d099618f0a9644158e5e58584644ac1733631a2642d6d00433",
+          "operation": "procedure_pseudo_code",
+          "address": "0x461020"
+        },
+        {
+          "file": "full/mechanisms/plant-cob-fire.json",
+          "evidenceID": "ev_8e5b2a8eecc4bb70878359cd6ce4ff21fc779d5c9aa8f74812807d68a529de47",
+          "operation": "procedure_pseudo_code",
+          "address": "0x466D50"
+        },
+        {
+          "file": "full/mechanisms/plant-shooting.json",
+          "evidenceID": "ev_f4a73d3d7b17e155865f328438189e89f80f18f20d6ce62d75bab8e675fafb32",
+          "operation": "procedure_pseudo_code",
+          "address": "0x464820"
+        },
+        {
+          "file": "full/mechanisms/plant-fire.json",
+          "evidenceID": "ev_5c3ad94592e47a9a0bb14ab51add547cf72f6128d730209292ea624a89c49fc9",
+          "operation": "procedure_pseudo_code",
+          "address": "0x466E00"
+        },
+        {
+          "file": "full/mechanisms/projectile-lob.json",
+          "evidenceID": "ev_51ceb495ba2aa8030a2551c43252e244e3ee0d652bdcd44b71c3e941ad75bf32",
+          "operation": "procedure_pseudo_code",
+          "address": "0x46D490"
+        },
+        {
+          "file": "projectile-definitions.json",
+          "evidenceID": "ev_640ad3a6b16fa442a1ac499473e5640c814e05cb8d7949bba9950824a7911ae2",
+          "operation": "read_bytes",
+          "address": "0x69f1c0"
+        },
+        {
+          "file": "full/mechanisms/board-explosion.json",
+          "evidenceID": "ev_ac6f8bfe4b1e4124c29459b53c5bfbf97ab9290042cfb26f6ac08b263526ddcd",
+          "operation": "procedure_pseudo_code",
+          "address": "0x41D8A0"
+        },
+        {
+          "file": "full/plant-rect.json",
+          "evidenceID": "ev_4df82c031222c5e9d377413486f2772055ad313fce8df041509c326b6f49a032",
+          "operation": "procedure_pseudo_code",
+          "address": "0x467ef0"
+        },
+        {
+          "file": "full/mechanisms/board-cob-pair-helper.json",
+          "evidenceID": "ev_c7ffc3a3ab423d262cc348a32e3ccbf2465b0d0769f8e6463eaae39f91e07965",
+          "operation": "procedure_pseudo_code",
+          "address": "0x40D4F0"
+        },
+        {
+          "file": "full/mechanisms/board-cob-pair.json",
+          "evidenceID": "ev_80e19cf44dcac86a6f83b7ced93f69b403daadaedc0976e04a72f0d6d43bfc12",
+          "operation": "procedure_pseudo_code",
+          "address": "0x40D550"
+        }
+      ],
+      "sourceBranch": "Init0x2f unarmed countdown500; animation completion arms. CobFire writescounter206 and anim_shooting20fps; UpdateShooting after firing completes setsreload3000. Projectile landing calls Board explosion withradius0x73,rowRange1,burntrue.",
+      "confidence": "observed-static",
+      "unknowns": [],
+      "evidenceIDs": [
+        "ev_31ed426848787e31f620f5d629adccee34f78bb4f97dcb85ff6a63e0f391c6fa",
+        "ev_9ccd77cec1f695d099618f0a9644158e5e58584644ac1733631a2642d6d00433",
+        "ev_8e5b2a8eecc4bb70878359cd6ce4ff21fc779d5c9aa8f74812807d68a529de47",
+        "ev_f4a73d3d7b17e155865f328438189e89f80f18f20d6ce62d75bab8e675fafb32",
+        "ev_5c3ad94592e47a9a0bb14ab51add547cf72f6128d730209292ea624a89c49fc9",
+        "ev_51ceb495ba2aa8030a2551c43252e244e3ee0d652bdcd44b71c3e941ad75bf32",
+        "ev_640ad3a6b16fa442a1ac499473e5640c814e05cb8d7949bba9950824a7911ae2",
+        "ev_ac6f8bfe4b1e4124c29459b53c5bfbf97ab9290042cfb26f6ac08b263526ddcd",
+        "ev_4df82c031222c5e9d377413486f2772055ad313fce8df041509c326b6f49a032",
+        "ev_c7ffc3a3ab423d262cc348a32e3ccbf2465b0d0769f8e6463eaae39f91e07965",
+        "ev_80e19cf44dcac86a6f83b7ced93f69b403daadaedc0976e04a72f0d6d43bfc12"
+      ],
+      "implementationNotes": [
+        "Charge animation duration adds to500/3000 countdown; they are not exact complete ready-to-ready periods.",
+        "Original human targeting becomes an automatic target policy only as an explicit PvP adaptation."
+      ]
+    },
+    {
+      "name": "upgrade-requirements",
+      "kinds": [
+        "gatlingpea",
+        "twinsunflower",
+        "gloomshroom",
+        "cattail",
+        "wintermelon",
+        "goldmagnet",
+        "spikerock",
+        "cobcannon"
+      ],
+      "parameters": {
+        "upgradeFrom": {
+          "gatlingpea": "repeater",
+          "twinsunflower": "sunflower",
+          "gloomshroom": "fumeshroom",
+          "cattail": "lilypad",
+          "wintermelon": "melonpult",
+          "goldmagnet": "magnetshroom",
+          "spikerock": "spikeweed",
+          "cobcannon": [
+            "kernelpult",
+            "kernelpult"
+          ]
+        },
+        "cobPairCheckAddress": "0x40d550",
+        "cobHorizontalPair": [
+          "kernelpult",
+          "kernelpult"
+        ],
+        "cobFootprintColumns": 2,
+        "cobRequiresMatchingFlowerpotPresence": true,
+        "cobForbidsPumpkinOnEitherKernel": true
+      },
+      "units": {},
+      "Evidence": [
+        {
+          "file": "full/mechanisms/board-can-plant.json",
+          "evidenceID": "ev_0c241d342cdab84c44c45dc30c719d78b44b3f5b6293ef9b01809afe99c14969",
+          "operation": "procedure_pseudo_code",
+          "address": "0x40E020"
+        },
+        {
+          "file": "full/mechanisms/board-planting-requirements.json",
+          "evidenceID": "ev_6fae4af98925caf999f264bc4174ddbfb5884d6c7bf52b0406dafe0fa779385d",
+          "operation": "procedure_pseudo_code",
+          "address": "0x41D7D0"
+        },
+        {
+          "file": "full/mechanisms/plant-upgrade-requirements.json",
+          "evidenceID": "ev_2d40523ff6f083ec5bdb3ba8dd4263eb5f52d75efddd141f03280801f92f97fc",
+          "operation": "procedure_pseudo_code",
+          "address": "0x463470"
+        },
+        {
+          "file": "full/mechanisms/board-cob-pair-helper.json",
+          "evidenceID": "ev_c7ffc3a3ab423d262cc348a32e3ccbf2465b0d0769f8e6463eaae39f91e07965",
+          "operation": "procedure_pseudo_code",
+          "address": "0x40D4F0"
+        },
+        {
+          "file": "full/mechanisms/board-cob-pair.json",
+          "evidenceID": "ev_80e19cf44dcac86a6f83b7ced93f69b403daadaedc0976e04a72f0d6d43bfc12",
+          "operation": "procedure_pseudo_code",
+          "address": "0x40D550"
+        }
+      ],
+      "sourceBranch": "IsUpgradableTo0x463470 confirmsgatling<-repeater,winter<-melon,twin<-sunflower,spikerock<-spikeweed,gold<-magnet,gloom<-fume,cattail<-lilypad; cob requires existingkernelplus0x40d550 helper. Cattail also excludes an already occupiedcattail at that location. Original helperassembly0x40d550/0x40d4f0 confirms adjacentkernels, no pumpkin, and matching potpresence. CanonicalREA0x40d4f0 now confirmsordinaryseed0x22 withoutpumpkin undernormalcheatdisabledmode;0x40d550 checksbothhelpers andGetFlowerPotAtpresence equality.",
+      "confidence": "observed-static",
+      "unknowns": [],
+      "evidenceIDs": [
+        "ev_0c241d342cdab84c44c45dc30c719d78b44b3f5b6293ef9b01809afe99c14969",
+        "ev_6fae4af98925caf999f264bc4174ddbfb5884d6c7bf52b0406dafe0fa779385d",
+        "ev_2d40523ff6f083ec5bdb3ba8dd4263eb5f52d75efddd141f03280801f92f97fc",
+        "ev_c7ffc3a3ab423d262cc348a32e3ccbf2465b0d0769f8e6463eaae39f91e07965",
+        "ev_80e19cf44dcac86a6f83b7ced93f69b403daadaedc0976e04a72f0d6d43bfc12"
+      ],
+      "assemblyObservations": [
+        {
+          "address": "0x40d550..0x40d5ae",
+          "observation": "calls0x40d4f0 atcol andcol+1; compares GetFlowerPotAt booleans for equality"
+        },
+        {
+          "address": "0x40d4f0..0x40d530",
+          "observation": "GetPlantsOnLawn;rejectpumpkin;withnormalcheatdisabledrequireordinaryplantseed0x22(kernel)"
+        }
+      ]
+    },
+    {
+      "name": "plant-collision-rectangles",
+      "kinds": [
+        "peashooter",
+        "sunflower",
+        "cherrybomb",
+        "wallnut",
+        "potatomine",
+        "snowpea",
+        "chomper",
+        "repeater",
+        "puffshroom",
+        "sunshroom",
+        "fumeshroom",
+        "gravebuster",
+        "hypnoshroom",
+        "scaredyshroom",
+        "iceshroom",
+        "doomshroom",
+        "lilypad",
+        "squash",
+        "threepeater",
+        "tanglekelp",
+        "jalapeno",
+        "spikeweed",
+        "torchwood",
+        "tallnut",
+        "seashroom",
+        "plantern",
+        "cactus",
+        "blover",
+        "splitpea",
+        "starfruit",
+        "pumpkin",
+        "magnetshroom",
+        "cabbagepult",
+        "flowerpot",
+        "kernelpult",
+        "coffeebean",
+        "garlic",
+        "umbrellaleaf",
+        "marigold",
+        "melonpult",
+        "gatlingpea",
+        "twinsunflower",
+        "gloomshroom",
+        "cattail",
+        "wintermelon",
+        "goldmagnet",
+        "spikerock",
+        "cobcannon",
+        "imitater"
+      ],
+      "parameters": {
+        "defaultRect": [
+          "x+10",
+          "y",
+          "width-20",
+          "height"
+        ],
+        "tallnutRect": [
+          "x+10",
+          "y",
+          "width",
+          "height"
+        ],
+        "pumpkinRect": [
+          "x",
+          "y",
+          "width-20",
+          "height"
+        ],
+        "cobcannonRect": [
+          "x",
+          "y",
+          140,
+          80
+        ]
+      },
+      "units": {
+        "rectangles": "px"
+      },
+      "Evidence": [
+        {
+          "file": "full/plant-rect.json",
+          "evidenceID": "ev_4df82c031222c5e9d377413486f2772055ad313fce8df041509c326b6f49a032",
+          "operation": "procedure_pseudo_code",
+          "address": "0x467ef0"
+        }
+      ],
+      "sourceBranch": "GetPlantRect0x467ef0 branches type0x17 tallnut,type0x1e pumpkin,type0x2f cannon, otherwise default.",
+      "confidence": "observed-static",
+      "unknowns": [],
+      "evidenceIDs": [
+        "ev_4df82c031222c5e9d377413486f2772055ad313fce8df041509c326b6f49a032"
+      ]
+    },
+    {
+      "name": "nocturnal-sleep",
+      "kinds": [
+        "puffshroom",
+        "sunshroom",
+        "fumeshroom",
+        "hypnoshroom",
+        "scaredyshroom",
+        "iceshroom",
+        "doomshroom",
+        "seashroom",
+        "magnetshroom",
+        "gloomshroom"
+      ],
+      "parameters": {
+        "sleepsOnNonNightStage": true,
+        "sleepStopsAbilities": true,
+        "coffeeWakeCounterUpdates": 100
+      },
+      "units": {
+        "wakeCounter": "updates"
+      },
+      "Evidence": [
+        {
+          "file": "plant-initialize.json",
+          "evidenceID": "ev_31ed426848787e31f620f5d629adccee34f78bb4f97dcb85ff6a63e0f391c6fa",
+          "operation": "procedure_pseudo_code",
+          "address": "0x45db60"
+        },
+        {
+          "file": "full/mechanisms/plant-sleep.json",
+          "evidenceID": "ev_1f84e3276ad6ee541366ddb8e0048f198ae79c39bedf5811642b31739e149df7",
+          "operation": "procedure_pseudo_code",
+          "address": "0x45E860"
+        },
+        {
+          "file": "full/mechanisms/plant-abilities-dispatch.json",
+          "evidenceID": "ev_843c0ab69d9706c5d4d4a77783254da7da77804ca870fccc5ac63e691ccf8db9",
+          "operation": "procedure_pseudo_code",
+          "address": "0x463150"
+        },
+        {
+          "file": "full/mechanisms/plant-special.json",
+          "evidenceID": "ev_26249238d841754be799302a9daa20e8a54eab1f5b2f3a4876ba15da7418c383",
+          "operation": "procedure_pseudo_code",
+          "address": "0x4666A0"
+        }
+      ],
+      "sourceBranch": "Init tests seed8/9/10/12/13/14/15/24/31/42 and night background conditions. UpdateAbilities exits when isAsleep. Coffee special setswake100.",
+      "confidence": "observed-static",
+      "unknowns": [],
+      "evidenceIDs": [
+        "ev_31ed426848787e31f620f5d629adccee34f78bb4f97dcb85ff6a63e0f391c6fa",
+        "ev_1f84e3276ad6ee541366ddb8e0048f198ae79c39bedf5811642b31739e149df7",
+        "ev_843c0ab69d9706c5d4d4a77783254da7da77804ca870fccc5ac63e691ccf8db9",
+        "ev_26249238d841754be799302a9daa20e8a54eab1f5b2f3a4876ba15da7418c383"
+      ]
+    },
+    {
+      "name": "shield-damage-semantics",
+      "kinds": [
+        "fumeshroom",
+        "gloomshroom",
+        "cabbagepult",
+        "kernelpult",
+        "melonpult",
+        "wintermelon",
+        "splitpea",
+        "starfruit"
+      ],
+      "parameters": {
+        "bypassShieldFlag": 1,
+        "hitShieldAndBodyFlag": 2,
+        "chillDamageFlag": 4,
+        "fumeGloomDamageFlags": 2,
+        "lobbedBackwardFlagsInclude": 1,
+        "backwardMovingStarFlagsInclude": 1
+      },
+      "units": {
+        "flags": "bitmask"
+      },
+      "Evidence": [
+        {
+          "file": "full/mechanisms/projectile-damage-flags.json",
+          "evidenceID": "ev_f2cbb22fee66b33f39ecbdfae82e418201244041a8b6062fafb16f516a2d732e",
+          "operation": "procedure_pseudo_code",
+          "address": "0x46D230"
+        },
+        {
+          "file": "full/mechanisms/zombie-take-damage.json",
+          "evidenceID": "ev_3dee5d0cb1d602b677cb3760b2e9c5844ae02792cd4685e30f013e5e6080ce64",
+          "operation": "procedure_pseudo_code",
+          "address": "0x5317C0"
+        },
+        {
+          "file": "full/mechanisms/plant-row-damage.json",
+          "evidenceID": "ev_9a6b4fa5e7770600f5552c91f1a3fd6ce27e67c6ce423f7390d21e174ff0a459",
+          "operation": "procedure_pseudo_code",
+          "address": "0x45ED00"
+        }
+      ],
+      "sourceBranch": "TakeDamage first shield unless flags&1; after shield damage flags&2 resetremaining=originalDamage before helmet/body. Fume/gloom pass2; lobbed/backwards and backward stars pass1.",
+      "confidence": "observed-static",
+      "unknowns": [],
+      "evidenceIDs": [
+        "ev_f2cbb22fee66b33f39ecbdfae82e418201244041a8b6062fafb16f516a2d732e",
+        "ev_3dee5d0cb1d602b677cb3760b2e9c5844ae02792cd4685e30f013e5e6080ce64",
+        "ev_9a6b4fa5e7770600f5552c91f1a3fd6ce27e67c6ce423f7390d21e174ff0a459"
+      ],
+      "implementationNotes": [
+        "Damage flags are distinct from damage-range target-category flags."
+      ]
+    },
+    {
+      "name": "plant-target-category-masks",
+      "kinds": [
+        "peashooter",
+        "sunflower",
+        "cherrybomb",
+        "wallnut",
+        "potatomine",
+        "snowpea",
+        "chomper",
+        "repeater",
+        "puffshroom",
+        "sunshroom",
+        "fumeshroom",
+        "gravebuster",
+        "hypnoshroom",
+        "scaredyshroom",
+        "iceshroom",
+        "doomshroom",
+        "lilypad",
+        "squash",
+        "threepeater",
+        "tanglekelp",
+        "jalapeno",
+        "spikeweed",
+        "torchwood",
+        "tallnut",
+        "seashroom",
+        "plantern",
+        "cactus",
+        "blover",
+        "splitpea",
+        "starfruit",
+        "pumpkin",
+        "magnetshroom",
+        "cabbagepult",
+        "flowerpot",
+        "kernelpult",
+        "coffeebean",
+        "garlic",
+        "umbrellaleaf",
+        "marigold",
+        "melonpult",
+        "gatlingpea",
+        "twinsunflower",
+        "gloomshroom",
+        "cattail",
+        "wintermelon",
+        "goldmagnet",
+        "spikerock",
+        "cobcannon",
+        "imitater"
+      ],
+      "parameters": {
+        "defaultMask": 1,
+        "overrides": {
+          "cherrybomb": 127,
+          "jalapeno": 127,
+          "cobcannon": 127,
+          "doomshroom": 127,
+          "melonpult": 13,
+          "cabbagepult": 13,
+          "kernelpult": 13,
+          "wintermelon": 13,
+          "potatomine": 77,
+          "squash": 13,
+          "puffshroom": 9,
+          "seashroom": 9,
+          "fumeshroom": 9,
+          "gloomshroom": 9,
+          "chomper": 9,
+          "cattail": 11,
+          "tanglekelp": 5
+        },
+        "cactusPrimaryMask": 2,
+        "cactusSecondaryMask": 1,
+        "knownMaskBits": {
+          "ground": 1,
+          "flying": 2,
+          "submerged": 4,
+          "offGroundProtectedPhases": 16,
+          "dying": 32,
+          "underground": 64,
+          "mindControlledOnly": 128
+        },
+        "bit8UsedByObservedEligibilityFunction": false
+      },
+      "units": {
+        "mask": "damage-range target bitmask"
+      },
+      "Evidence": [
+        {
+          "file": "full/mechanisms/plant-damage-range-flags.json",
+          "evidenceID": "ev_b29e13cb7d57d23664bf3346c572c01f90b0cb87f1a803722de05f99e8badd5f",
+          "operation": "procedure_pseudo_code",
+          "address": "0x45eb10"
+        },
+        {
+          "file": "full/mechanisms/zombie-damage-eligibility.json",
+          "evidenceID": "ev_788c10cea9e44edb33006ce52ea9c149520dd383b0e040eca25a5cc2a0fc2efa",
+          "operation": "procedure_pseudo_code",
+          "address": "0x531A80"
+        }
+      ],
+      "sourceBranch": "GetDamageRangeFlags0x45eb10 explicitly switches seed ids; cactus(param_1!=1)+1 yieldsprimary2/secondary1. These are target-category masks, distinct from TakeDamage flags. EffectedByDamage0x531a80 checksdyingbit0x20,signbitforallegiance, offgroundbit0x10,submergedbit4,undergroundbit0x40,flyingbit2,groundbit1.",
+      "confidence": "observed-static",
+      "unknowns": [
+        "Meaning/use of bit8 is not established by this eligibility function; retain numeric masks without inventing its semantics."
+      ],
+      "evidenceIDs": [
+        "ev_b29e13cb7d57d23664bf3346c572c01f90b0cb87f1a803722de05f99e8badd5f",
+        "ev_788c10cea9e44edb33006ce52ea9c149520dd383b0e040eca25a5cc2a0fc2efa"
+      ],
+      "implementationNotes": [
+        "Some Boss and protected phase constraints are evaluated before category bits."
+      ]
+    },
+    {
+      "name": "starfruit-five-directions",
+      "kinds": [
+        "starfruit"
+      ],
+      "parameters": {
+        "projectilesPerBurst": 5,
+        "projectileTypeId": 7,
+        "damage": 20,
+        "spawnOffset": [
+          25,
+          25
+        ],
+        "speed": 3.33,
+        "directions": [
+          [
+            -3.33,
+            0
+          ],
+          [
+            0,
+            3.33
+          ],
+          [
+            0,
+            -3.33
+          ],
+          [
+            "cos(30deg)*3.33",
+            "sin(30deg)*3.33"
+          ],
+          [
+            "cos(30deg)*3.33",
+            "-sin(30deg)*3.33"
+          ]
+        ],
+        "motionTypeId": 7
+      },
+      "units": {
+        "speedDirections": "px/update",
+        "spawnOffset": "px",
+        "damage": "HP"
+      },
+      "Evidence": [
+        {
+          "file": "full/mechanisms/plant-starfruit-fire.json",
+          "evidenceID": "ev_9fcfa450d0d65e948f99c4373fb2758bda7955470b1911a9c64d3b6c9e804e08",
+          "operation": "procedure_pseudo_code",
+          "address": "0x45F720"
+        },
+        {
+          "file": "full/mechanisms/plant-starfruit-launch.json",
+          "evidenceID": "ev_95b0ed11170ebfb4d9ae1ea59b8c4290735dadcfb53e79931069a6c1e82a2efd",
+          "operation": "procedure_pseudo_code",
+          "address": "0x45F6E0"
+        },
+        {
+          "file": "projectile-definitions.json",
+          "evidenceID": "ev_640ad3a6b16fa442a1ac499473e5640c814e05cb8d7949bba9950824a7911ae2",
+          "operation": "read_bytes",
+          "address": "0x69f1c0"
+        }
+      ],
+      "sourceBranch": "StarFruitFire0x45f720 createsfive type7 projectiles atx+25,y+25; branchesleft/up/down/right-diagonal±. Raw doubleconstant0x679998=0.5235987901687622radians and0x6796a0=3.3299999237060547.",
+      "confidence": "observed-static",
+      "unknowns": [],
+      "assemblyObservations": [
+        {
+          "address": "0x45f783..0x45f7c1",
+          "observation": "loadsangle0x679998 into trig helpers then multiplies0x6796a0; loops0..4"
+        }
+      ],
+      "evidenceIDs": [
+        "ev_9fcfa450d0d65e948f99c4373fb2758bda7955470b1911a9c64d3b6c9e804e08",
+        "ev_95b0ed11170ebfb4d9ae1ea59b8c4290735dadcfb53e79931069a6c1e82a2efd",
+        "ev_640ad3a6b16fa442a1ac499473e5640c814e05cb8d7949bba9950824a7911ae2"
+      ]
+    },
+    {
+      "name": "reanimation-phase-clock",
+      "kinds": [
+        "peashooter",
+        "sunflower",
+        "cherrybomb",
+        "wallnut",
+        "potatomine",
+        "snowpea",
+        "chomper",
+        "repeater",
+        "puffshroom",
+        "sunshroom",
+        "fumeshroom",
+        "gravebuster",
+        "hypnoshroom",
+        "scaredyshroom",
+        "iceshroom",
+        "doomshroom",
+        "lilypad",
+        "squash",
+        "threepeater",
+        "tanglekelp",
+        "jalapeno",
+        "spikeweed",
+        "torchwood",
+        "tallnut",
+        "seashroom",
+        "plantern",
+        "cactus",
+        "blover",
+        "splitpea",
+        "starfruit",
+        "pumpkin",
+        "magnetshroom",
+        "cabbagepult",
+        "flowerpot",
+        "kernelpult",
+        "coffeebean",
+        "garlic",
+        "umbrellaleaf",
+        "marigold",
+        "melonpult",
+        "gatlingpea",
+        "twinsunflower",
+        "gloomshroom",
+        "cattail",
+        "wintermelon",
+        "goldmagnet",
+        "spikerock",
+        "cobcannon",
+        "imitater"
+      ],
+      "parameters": {
+        "fullLastFrameLoopModes": [
+          1,
+          4,
+          5
+        ],
+        "positionForFullLastFrame": "frameStart+animTime*frameCount",
+        "positionForOtherModes": "frameStart+animTime*(frameCount-1)",
+        "beforeFrame": "floor(position), clamped to frameStart+frameCount-1",
+        "afterFrame": "min(before+1,last)",
+        "fraction": "position-floor(position)"
+      },
+      "units": {
+        "position": "sourceanimationframes",
+        "animTime": "normalizedloopfraction"
+      },
+      "Evidence": [
+        {
+          "file": "full/mechanisms/reanimation-frame-time.json",
+          "evidenceID": "ev_ef8c357920ec5b9c21a348de5da72ee42fd5795c692bddd7b746ac19ba50c978",
+          "operation": "procedure_pseudo_code",
+          "address": "0x472D90"
+        },
+        {
+          "file": "animation-update.json",
+          "evidenceID": "ev_e306e79a73dbad1b3237a9178806450ce9e7cbfc7a4abc30c7a65120ef1cf498",
+          "operation": "procedure_pseudo_code",
+          "address": "0x471bc0"
+        }
+      ],
+      "sourceBranch": "GetFrameTime0x472d90 usescount forloopmodes1/4/5,otherwisecount-1; clampslastframe. ReanimationUpdate uses0.01*rate/count.",
+      "confidence": "observed-static",
+      "unknowns": [],
+      "evidenceIDs": [
+        "ev_ef8c357920ec5b9c21a348de5da72ee42fd5795c692bddd7b746ac19ba50c978",
+        "ev_e306e79a73dbad1b3237a9178806450ce9e7cbfc7a4abc30c7a65120ef1cf498"
+      ]
+    },
+    {
+      "name": "plant-cost-overrides",
+      "kinds": [
+        "peashooter",
+        "sunflower",
+        "cherrybomb",
+        "wallnut",
+        "potatomine",
+        "snowpea",
+        "chomper",
+        "repeater",
+        "puffshroom",
+        "sunshroom",
+        "fumeshroom",
+        "gravebuster",
+        "hypnoshroom",
+        "scaredyshroom",
+        "iceshroom",
+        "doomshroom",
+        "lilypad",
+        "squash",
+        "threepeater",
+        "tanglekelp",
+        "jalapeno",
+        "spikeweed",
+        "torchwood",
+        "tallnut",
+        "seashroom",
+        "plantern",
+        "cactus",
+        "blover",
+        "splitpea",
+        "starfruit",
+        "pumpkin",
+        "magnetshroom",
+        "cabbagepult",
+        "flowerpot",
+        "kernelpult",
+        "coffeebean",
+        "garlic",
+        "umbrellaleaf",
+        "marigold",
+        "melonpult",
+        "gatlingpea",
+        "twinsunflower",
+        "gloomshroom",
+        "cattail",
+        "wintermelon",
+        "goldmagnet",
+        "spikerock",
+        "cobcannon",
+        "imitater"
+      ],
+      "parameters": {
+        "normalCost": "definition.sunCost",
+        "imitaterCost": "selectedTargetDefinition.sunCost",
+        "imitaterRefresh": "selectedTargetDefinition.refreshUpdates",
+        "survivalUpgradeEscalation": {
+          "gameModeIds": [
+            11,
+            12,
+            13,
+            14,
+            15
+          ],
+          "additionalSunPerExistingSameUpgrade": 50,
+          "kinds": [
+            "gatlingpea",
+            "wintermelon",
+            "twinsunflower",
+            "spikerock",
+            "cobcannon",
+            "goldmagnet",
+            "gloomshroom",
+            "cattail"
+          ]
+        }
+      },
+      "units": {
+        "costs": "sun",
+        "refresh": "updates"
+      },
+      "Evidence": [
+        {
+          "file": "full/mechanisms/plant-cost.json",
+          "evidenceID": "ev_ef106d3d7c44745c084758da5d8f066b7c458d13dfecde16188a888f5cd1eb71",
+          "operation": "procedure_pseudo_code",
+          "address": "0x467B00"
+        },
+        {
+          "file": "full/mechanisms/plant-refresh-time.json",
+          "evidenceID": "ev_4c865f66931be314bf8f7f01eb22fe6e2e83b407c83d98b812442e9dae3918fb",
+          "operation": "procedure_pseudo_code",
+          "address": "0x467E30"
+        },
+        {
+          "file": "full/mechanisms/board-current-plant-cost.json",
+          "evidenceID": "ev_fb9eae18608ebfb9ec68c463237c498d3d560687dd623e11fbb6536b862d9bd6",
+          "operation": "procedure_pseudo_code",
+          "address": "0x41DAE0"
+        }
+      ],
+      "sourceBranch": "GetCost table/defaultdelegates48tochosentarget. BoardGetCurrentPlantCost0x41dae0 inmode11..15 addsCountPlantType*0x32 for eightupgradeids.",
+      "confidence": "observed-static",
+      "unknowns": [],
+      "evidenceIDs": [
+        "ev_ef106d3d7c44745c084758da5d8f066b7c458d13dfecde16188a888f5cd1eb71",
+        "ev_4c865f66931be314bf8f7f01eb22fe6e2e83b407c83d98b812442e9dae3918fb",
+        "ev_fb9eae18608ebfb9ec68c463237c498d3d560687dd623e11fbb6536b862d9bd6"
+      ],
+      "implementationNotes": [
+        "Competitive1v1/2v2economicpolicymustexplicitlychoosewhethertouseoriginalsurvivalescalation; itisnotautomaticallyactiveinallclassicmodes."
+      ]
+    }
+  ],
+  "criticalDifferences": [
+    "COBBIG table damage300 is not explosion damage: original lob landing calls Board radius115 / rowrange1 / burn path.",
+    "Historical splash cap expression differs from native pseudocode; retain native formula and unresolved decompiler-flow limitations.",
+    "MagnetShroomAttractItem entry0x461610 now hasnative Evidence;0x4615d0 is independently proven GetFreeMagnetItem. Historical duplicate0x460610 comment is wrong."
+  ],
+  "globalUnknowns": [
+    "No original runtime controlled replay has established every frame, random sequence, collision boundary or high-density splash result.",
+    "Campaign silver/gold/diamond and reward values must not silently become sunlight/brain income in PvP.",
+    "Unknowns on individual groups remain required reconstruction work; a catalog count of49 does not prove all behavior is implemented."
+  ]
+}

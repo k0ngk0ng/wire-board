@@ -1,0 +1,242 @@
+{
+  "beforeDeriveAgain": {
+    "pulse1": "9d26ed08bc6a094a3f7bef7ca4a15e8e04da696605ff0ae3bc9def082c3098d1",
+    "pulse2": "21b7cb229367442116e2170846d5da915940eb5addf70db8c45531911f3b84e5"
+  },
+  "priorSevenSongDefinitionsUnchanged": true,
+  "independentProcessesIdentical": true,
+  "id": 20,
+  "stems": [
+    {
+      "channel": "pulse1",
+      "file": ".local/contra-audio-loops/output/loop-effect-14-pulse1-loop.wav",
+      "repeatFile": ".local/contra-audio-loops/output/loop-effect-14-pulse1-repeat.wav",
+      "sha256": "9d26ed08bc6a094a3f7bef7ca4a15e8e04da696605ff0ae3bc9def082c3098d1",
+      "sourceFile": ".local/contra-audio/stems/loop-effect-14-pulse1.wav",
+      "sourceSHA256": "1bb7144600f8335eca86d34054a661fd2c3866a0706119dd0b74700419e99936",
+      "blendSamples": 1411,
+      "changedFractionMaximum": 0.015260983365419974,
+      "periodChangedFractionMaximum": 0.017168583074770337,
+      "metrics": {
+        "passed": true,
+        "boundaryError": 0,
+        "tail16Error": 0,
+        "maximumStep": 1558,
+        "sourceMaximumStep": 1601,
+        "maximumCurvature": 1426,
+        "sourceMaximumCurvature": 1475,
+        "peak": 1406,
+        "localRMS": [
+          {
+            "offset": 0,
+            "rms": 745.5710931611466,
+            "referenceRMS": 774.2943234682837,
+            "differenceDB": -0.328340277926272,
+            "passed": true
+          },
+          {
+            "offset": 88,
+            "rms": 789.8552777397712,
+            "referenceRMS": 823.218579242598,
+            "differenceDB": -0.35935278121059755,
+            "passed": true
+          },
+          {
+            "offset": 176,
+            "rms": 727.0445002765898,
+            "referenceRMS": 796.0266790155581,
+            "differenceDB": -0.7873325977410395,
+            "passed": true
+          },
+          {
+            "offset": 264,
+            "rms": 690.3148273842273,
+            "referenceRMS": 793.0551274137036,
+            "differenceDB": -1.2051235116912191,
+            "passed": true
+          },
+          {
+            "offset": 352,
+            "rms": 668.2894319623207,
+            "referenceRMS": 800.6661106959037,
+            "differenceDB": -1.5697370669041588,
+            "passed": true
+          },
+          {
+            "offset": 440,
+            "rms": 662.6568529909458,
+            "referenceRMS": 816.773678934654,
+            "differenceDB": -1.8162608042911563,
+            "passed": true
+          },
+          {
+            "offset": 528,
+            "rms": 765.9520284685028,
+            "referenceRMS": 917.2183933250229,
+            "differenceDB": -1.5654236913944894,
+            "passed": true
+          },
+          {
+            "offset": 616,
+            "rms": 822.3249531735602,
+            "referenceRMS": 973.7522051111434,
+            "differenceDB": -1.4680997036953265,
+            "passed": true
+          },
+          {
+            "offset": 704,
+            "rms": 882.4305412080076,
+            "referenceRMS": 1032.2339792026632,
+            "differenceDB": -1.3619524072375917,
+            "passed": true
+          },
+          {
+            "offset": 792,
+            "rms": 930.8705678902444,
+            "referenceRMS": 1066.5934347900948,
+            "differenceDB": -1.182192141371668,
+            "passed": true
+          },
+          {
+            "offset": 880,
+            "rms": 939.5682014091101,
+            "referenceRMS": 1045.9065250634435,
+            "differenceDB": -0.9312912452272579,
+            "passed": true
+          },
+          {
+            "offset": 968,
+            "rms": 984.1081926516986,
+            "referenceRMS": 1043.1833321295105,
+            "differenceDB": -0.5063558406222236,
+            "passed": true
+          },
+          {
+            "offset": 1056,
+            "rms": 1029.3619754426777,
+            "referenceRMS": 1059.020600056604,
+            "differenceDB": -0.24672573354824556,
+            "passed": true
+          }
+        ]
+      }
+    },
+    {
+      "channel": "pulse2",
+      "file": ".local/contra-audio-loops/output/loop-effect-14-pulse2-loop.wav",
+      "repeatFile": ".local/contra-audio-loops/output/loop-effect-14-pulse2-repeat.wav",
+      "sha256": "21b7cb229367442116e2170846d5da915940eb5addf70db8c45531911f3b84e5",
+      "sourceFile": ".local/contra-audio/stems/loop-effect-14-pulse2.wav",
+      "sourceSHA256": "59002dd2660508fcc041c1f9bc293807b1a98d9e0b333a5b90a4ab407702bebf",
+      "blendSamples": 1411,
+      "changedFractionMaximum": 0.015260983365419974,
+      "periodChangedFractionMaximum": 0.017168583074770337,
+      "metrics": {
+        "passed": true,
+        "boundaryError": 0,
+        "tail16Error": 0,
+        "maximumStep": 1545,
+        "sourceMaximumStep": 1601,
+        "maximumCurvature": 1467,
+        "sourceMaximumCurvature": 1478,
+        "peak": 1329,
+        "localRMS": [
+          {
+            "offset": 0,
+            "rms": 1034.8579708491538,
+            "referenceRMS": 1053.2555252456712,
+            "differenceDB": -0.15305993902259102,
+            "passed": true
+          },
+          {
+            "offset": 88,
+            "rms": 1021.486980611145,
+            "referenceRMS": 1053.4796198399326,
+            "differenceDB": -0.2678660532091567,
+            "passed": true
+          },
+          {
+            "offset": 176,
+            "rms": 1004.0463179049976,
+            "referenceRMS": 1052.1269503006595,
+            "differenceDB": -0.40628794819334063,
+            "passed": true
+          },
+          {
+            "offset": 264,
+            "rms": 988.3383012580819,
+            "referenceRMS": 1052.168783534161,
+            "differenceDB": -0.543595734390501,
+            "passed": true
+          },
+          {
+            "offset": 352,
+            "rms": 973.1074812021905,
+            "referenceRMS": 1050.955292280537,
+            "differenceDB": -0.6684686019247723,
+            "passed": true
+          },
+          {
+            "offset": 440,
+            "rms": 963.7494708133011,
+            "referenceRMS": 1050.8342576467035,
+            "differenceDB": -0.7514013987844617,
+            "passed": true
+          },
+          {
+            "offset": 528,
+            "rms": 958.7235183839758,
+            "referenceRMS": 1049.7704068981227,
+            "differenceDB": -0.7880188932212905,
+            "passed": true
+          },
+          {
+            "offset": 616,
+            "rms": 961.2736195648916,
+            "referenceRMS": 1049.5350022286705,
+            "differenceDB": -0.762998058767162,
+            "passed": true
+          },
+          {
+            "offset": 704,
+            "rms": 968.7075353024985,
+            "referenceRMS": 1048.6093301417036,
+            "differenceDB": -0.6884207916790236,
+            "passed": true
+          },
+          {
+            "offset": 792,
+            "rms": 981.7054435540646,
+            "referenceRMS": 1048.3165225554424,
+            "differenceDB": -0.5702246323772924,
+            "passed": true
+          },
+          {
+            "offset": 880,
+            "rms": 996.6161728739878,
+            "referenceRMS": 1047.5514252241253,
+            "differenceDB": -0.4329484306195852,
+            "passed": true
+          },
+          {
+            "offset": 968,
+            "rms": 1012.5446711371102,
+            "referenceRMS": 1047.2480512284435,
+            "differenceDB": -0.29270736992390955,
+            "passed": true
+          },
+          {
+            "offset": 1056,
+            "rms": 1026.2156254486745,
+            "referenceRMS": 1046.7005817115298,
+            "differenceDB": -0.1716768494030443,
+            "passed": true
+          }
+        ]
+      }
+    }
+  ],
+  "periodTicks": 112,
+  "periodSamples": 82185,
+  "loopStartSample": 10273
+}

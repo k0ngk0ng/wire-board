@@ -3,7 +3,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { BoardProps } from "../../../web/src/game-api/module";
 import { Modal } from "../../../web/src/ui/board-host";
 import { Table } from "./Table";
-import { BAULK, H, sampleFlight, recentImpacts } from "./presentation";
+import { sampleFlight, recentImpacts } from "./presentation";
 import { ballName, colourNames, valueOf, type View, type Vec } from "./types";
 import { cueLeadMs } from "./playback";
 import { soundForImpact } from "./sounds";
@@ -381,6 +381,23 @@ export function Board({
       )}
       <div className="snooker-game-layout">
         <Table
+          controllerUser={room.seats[room.you]?.id ?? ""}
+          controllerScope={`${scope}:${room.you}`}
+          controlsEnabled={
+            !busy &&
+            !room.spectating &&
+            !room.seats[room.you]?.autoPlay &&
+            !room.seats[room.you]?.left
+          }
+          onControllerError={setError}
+          spin={{ top, side }}
+          onSpin={(value) => {
+            setTop(value.top);
+            setSide(value.side);
+          }}
+          onTogglePlace={() => {
+            if (d.controls.canPlace && !busy) setPlacing((v) => !v);
+          }}
           onReady={onReady}
           onLoadError={onLoadError}
           balls={d.phase === "rolling" ? frame.balls : d.balls}
@@ -407,7 +424,7 @@ export function Board({
         />
         <div className="snooker-controls">
           {["start_choice", "black_choice"].includes(d.phase) && (
-            <div className="snooker-decision">
+            <div className="snooker-decision" data-controller-group="board">
               <p>{phases[d.phase]}</p>
               {[0, 1].map((team) => (
                 <button
@@ -428,7 +445,7 @@ export function Board({
             </div>
           )}
           {d.phase === "black_player" && (
-            <div className="snooker-decision">
+            <div className="snooker-decision" data-controller-group="board">
               <p>由 {teamName(d.teams[d.turn])} 选择黑球先打者</p>
               {room.seats.map(
                 (seat, p) =>
@@ -445,7 +462,7 @@ export function Board({
             </div>
           )}
           {d.phase === "foul" && d.foul && (
-            <div className="snooker-decision">
+            <div className="snooker-decision" data-controller-group="board">
               <strong>对方获得 {d.foul.ruling.foul} 分</strong>
               <p>{d.foul.ruling.reasons.join("；")}</p>
               {d.foul.ruling.miss && <p>解球未中，可要求原位重打。</p>}
@@ -479,7 +496,7 @@ export function Board({
             </div>
           )}
           {d.phase === "concede" && (
-            <div className="snooker-decision">
+            <div className="snooker-decision" data-controller-group="board">
               <strong>{teamName(d.offerTeam)}提出认输本局</strong>
               <p>可以接受并结束本局，也可以继续打。</p>
               <button
@@ -500,36 +517,6 @@ export function Board({
           )}
           {d.phase === "aim" && (
             <>
-              <p className="snooker-turn">
-                {d.controls.canShoot ? "轮到你击球" : `等待 ${player(d.turn)}`}{" "}
-                · 下一位 {player(d.nextSeat)}
-              </p>
-              {d.inHand && (
-                <div className="snooker-placement">
-                  <button
-                    disabled={!d.controls.canPlace || busy}
-                    onClick={() => setPlacing((v) => !v)}
-                  >
-                    {placing ? "取消摆球" : "摆放白球"}
-                  </button>
-                  {placing && (
-                    <>
-                      <p>点击 D 区摆放白球，完成后瞄准并向后拉杆。</p>
-                      <button
-                        disabled={busy}
-                        onClick={() =>
-                          void send("place", { x: BAULK - 0.15, y: H / 2 })
-                        }
-                      >
-                        白球置于 D 区中点
-                      </button>
-                    </>
-                  )}
-                </div>
-              )}
-              {d.target === "colour" && (
-                <p>本杆可打任意彩球，按实际先碰到的彩球判定。</p>
-              )}
               {d.freeBall && (
                 <label>
                   自由球
@@ -558,31 +545,36 @@ export function Board({
                   </select>
                 </label>
               )}
-              <details className="snooker-spin">
-                <summary>击点 · 高低杆与侧旋</summary>
-                <CueTip
-                  top={top}
-                  side={side}
-                  disabled={
-                    !d.controls.canShoot ||
-                    busy ||
-                    !!room.seats[room.you]?.autoPlay
-                  }
-                  onChange={(value) => {
-                    setTop(value.top);
-                    setSide(value.side);
-                  }}
-                />
-              </details>
             </>
           )}
-          {d.phase === "rolling" && (
-            <p className="snooker-motion-notice">
-              球正在运动，停稳并复位后继续。
-            </p>
-          )}
+          <button
+            className="snooker-place-toggle"
+            data-controller-group="placement"
+            disabled={!d.controls.canPlace || busy || d.phase !== "aim"}
+            onClick={() => setPlacing((value) => !value)}
+          >
+            {placing ? "取消摆球" : "摆放白球"}
+          </button>
+          <section
+            className="snooker-spin"
+            aria-label="击点"
+            data-controller-group="spin"
+          >
+            <strong>击点</strong>
+            <CueTip
+              top={top}
+              side={side}
+              disabled={
+                !d.controls.canShoot || busy || !!room.seats[room.you]?.autoPlay
+              }
+              onChange={(value) => {
+                setTop(value.top);
+                setSide(value.side);
+              }}
+            />
+          </section>
           {d.phase === "frame_end" && (
-            <div className="snooker-decision">
+            <div className="snooker-decision" data-controller-group="board">
               <strong>
                 {teamName(d.results.at(-1)?.winner ?? activeTeam)}获胜 ·{" "}
                 {d.scores[0]} : {d.scores[1]}
@@ -631,32 +623,20 @@ export function Board({
           上手顺序：{d.order.map(player).join(" → ")}。连续进球由同一人继续。
         </p>
       )}
-      {mine && ["aim", "frame_end"].includes(d.phase) && (
-        <div className="snooker-secondary">
-          {d.phase === "concede" && (
-            <div className="snooker-decision">
-              <strong>{teamName(d.offerTeam)}提出认输本局</strong>
-              <p>可以接受并结束本局，也可以继续打。</p>
-              <button
-                disabled={!can}
-                onClick={() => void send("concede_reply", { choice: "accept" })}
-              >
-                接受认输本局
-              </button>
-              <button
-                disabled={!can}
-                onClick={() =>
-                  void send("concede_reply", { choice: "continue" })
-                }
-              >
-                继续本局
-              </button>
-            </div>
-          )}
-          {d.phase === "aim" && (
-            <button onClick={() => setConfirm("rerack")}>提议重新摆球</button>
-          )}
-          <button onClick={() => setConfirm("resign")}>弃赛本场</button>
+      {mine && (
+        <div className="snooker-secondary" data-controller-group="secondary">
+          <button
+            disabled={d.phase !== "aim"}
+            onClick={() => setConfirm("rerack")}
+          >
+            提议重新摆球
+          </button>
+          <button
+            disabled={!["aim", "frame_end"].includes(d.phase)}
+            onClick={() => setConfirm("resign")}
+          >
+            弃赛本场
+          </button>
           {d.controls.canConcede && (
             <button onClick={() => setConfirm("concede_frame")}>
               认输本局

@@ -1,0 +1,51 @@
+{
+  "scope": "Exact visual semantics of the pinned FCEUX 2.6.6 old PPU oracle; not a hardware subdot timing claim.",
+  "checks": [
+    {
+      "frame": 6500,
+      "emulatorFrame": 7899,
+      "hit": [
+        9,
+        87
+      ],
+      "maskFromLine": 87,
+      "controlFromLine": 88,
+      "pixelsCompared": 61440,
+      "mismatches": 0,
+      "mismatchRows": {},
+      "exampleMismatches": [],
+      "renderSHA256": "8bed4e4d444a27786a86070a365deaeb6521d94f3b1f00c59bd7d7386c427e19"
+    },
+    {
+      "frame": 6550,
+      "emulatorFrame": 7949,
+      "hit": [
+        9,
+        137
+      ],
+      "maskFromLine": 137,
+      "controlFromLine": 138,
+      "pixelsCompared": 61440,
+      "mismatches": 0,
+      "mismatchRows": {},
+      "exampleMismatches": [],
+      "renderSHA256": "5dbb530c3560cc22c7da8de776f016b41457047db469856934bb467e64f944f9"
+    },
+    {
+      "frame": 6600,
+      "emulatorFrame": 7999,
+      "hit": [
+        9,
+        187
+      ],
+      "maskFromLine": 187,
+      "controlFromLine": 188,
+      "pixelsCompared": 61440,
+      "mismatches": 0,
+      "mismatchRows": {},
+      "exampleMismatches": [],
+      "renderSHA256": "344f13700e8bbe33212352088ba7b9af751111adfa9f725314fa41539b133e57"
+    }
+  ],
+  "passed": true
+}

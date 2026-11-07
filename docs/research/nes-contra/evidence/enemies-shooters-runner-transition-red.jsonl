@@ -1,0 +1,9 @@
+{"Time":"2026-10-25T14:22:43.042384+08:00","Action":"start","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine"}
+{"Time":"2026-10-25T14:22:43.561305+08:00","Action":"run","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalRunnerFireTransition"}
+{"Time":"2026-10-25T14:22:43.561452+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalRunnerFireTransition","Output":"=== RUN   TestOriginalRunnerFireTransition\n"}
+{"Time":"2026-10-25T14:22:43.568275+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalRunnerFireTransition","Output":"    enemies_shooters_runner_transition_test.go:55: transition5: runner shooting transition has not been recovered\n"}
+{"Time":"2026-10-25T14:22:43.568392+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalRunnerFireTransition","Output":"--- FAIL: TestOriginalRunnerFireTransition (0.01s)\n"}
+{"Time":"2026-10-25T14:22:43.568417+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Test":"TestOriginalRunnerFireTransition","Elapsed":0.01}
+{"Time":"2026-10-25T14:22:43.568462+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\n"}
+{"Time":"2026-10-25T14:22:43.569382+08:00","Action":"output","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Output":"FAIL\tgithub.com/k0ngk0ng/wire-board/games/contra/engine\t0.527s\n"}
+{"Time":"2026-10-25T14:22:43.569457+08:00","Action":"fail","Package":"github.com/k0ngk0ng/wire-board/games/contra/engine","Elapsed":0.527}

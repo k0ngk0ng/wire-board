@@ -1,3 +1,4 @@
+import { useGameController } from "../../../web/src/controllers/use-game-controller";
 import {
   useCallback,
   useEffect,
@@ -14,8 +15,6 @@ import { TankMotion, type TankWorld, type TankPose } from "./prediction";
 import {
   LatestInput,
   NEUTRAL,
-  isFireKey,
-  keyMove,
   padDirection,
   type Control,
   type Move,
@@ -40,18 +39,6 @@ import "./style.css";
 
 const TEAM_LABEL = ["上方", "下方"];
 const DIR_NAMES = ["up", "right", "down", "left"];
-
-function isEditable(target: EventTarget | null): boolean {
-  const el = target as HTMLElement | null;
-  if (!el) return false;
-  const tag = el.tagName?.toLowerCase();
-  return (
-    tag === "input" ||
-    tag === "textarea" ||
-    tag === "select" ||
-    el.isContentEditable
-  );
-}
 
 function TankIcon({
   atlas,
@@ -362,6 +349,8 @@ export function Board(props: BoardProps<View>) {
     if (atlas) props.onReady?.();
   }, [atlas, props.onReady]);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const boardRef = useRef<HTMLDivElement>(null);
+  const pumpControls = useRef<() => void>(() => {});
   const inputRef = useRef(new LatestInput());
   const motion = useRef(new TankMotion());
   const world = useRef<TankWorld | null>(null);
@@ -395,6 +384,26 @@ export function Board(props: BoardProps<View>) {
   const enabledRef = useRef(enabled);
   enabledRef.current = enabled;
   suspendedRef.current = suspended;
+  const controller = useGameController({
+    gameId: "battlecity",
+    userId: mySeat?.id ?? "",
+    scope,
+    root: boardRef,
+    enabled: () => enabledRef.current,
+    menu: () =>
+      !spectator && !mySeat?.autoPlay && view?.phase === "select"
+        ? (boardRef.current?.querySelector<HTMLElement>(".bc-select") ?? null)
+        : null,
+    menuActions: {
+      up: "navUp",
+      down: "navDown",
+      left: "navLeft",
+      right: "navRight",
+      fire: "confirm",
+    },
+    changed: () => pumpControls.current(),
+    error: setError,
+  });
 
   useEffect(() => {
     const id = window.setInterval(() => setTick((value) => value + 1), 100);
@@ -418,6 +427,7 @@ export function Board(props: BoardProps<View>) {
   useEffect(() => {
     if (!view) return;
     inputRef.current.reset(myTank?.seq ?? 0);
+    controller.current?.clear();
     heldMoves.current = [];
     touchTimers.current.forEach(clearTimeout);
     touchTimers.current = [];
@@ -553,51 +563,52 @@ export function Board(props: BoardProps<View>) {
 
   useEffect(() => () => clearTouchTimers(), [clearTouchTimers]);
 
+  pumpControls.current = () => {
+    const actions =
+      controller.current?.sample(performance.now()) ?? new Set<string>();
+    const moves = [...actions].filter((name): name is Move =>
+      ["up", "down", "left", "right"].includes(name),
+    );
+    const fire = actions.has("fire");
+    const blocked =
+      !enabledRef.current ||
+      document.hidden ||
+      !!document.querySelector('[aria-modal="true"],dialog[open]');
+    const oldMove = heldMoves.current.at(-1),
+      oldFire = keysFire.current.size > 0;
+    heldMoves.current = blocked ? [] : moves;
+    keysFire.current = fire && !blocked ? new Set(["mapped"]) : new Set();
+    const touchBlocked =
+      blocked && (touchMove.current !== "none" || touchFire.current);
+    if (blocked) {
+      touchMove.current = "none";
+      touchFire.current = false;
+      clearTouchTimers();
+    }
+    if (
+      oldMove !== heldMoves.current.at(-1) ||
+      oldFire !== keysFire.current.size > 0 ||
+      touchBlocked
+    )
+      applyControls();
+  };
   useEffect(() => {
-    const isEnabled = () => enabledRef.current;
     const clear = () => {
+      controller.current?.clear();
       heldMoves.current = [];
       keysFire.current.clear();
       touchMove.current = "none";
       touchFire.current = false;
       clearTouchTimers();
       inputRef.current.release();
-    };
-    const down = (event: KeyboardEvent) => {
-      if (!isEnabled() || isEditable(event.target)) return;
-      const move = keyMove(event.key);
-      if (move) {
-        event.preventDefault();
-        if (!heldMoves.current.includes(move)) heldMoves.current.push(move);
-        applyControls();
-      }
-      if (isFireKey(event.key)) {
-        event.preventDefault();
-        keysFire.current.add(event.key);
-        applyControls();
-      }
-    };
-    const up = (event: KeyboardEvent) => {
-      const move = keyMove(event.key);
-      if (move) {
-        heldMoves.current = heldMoves.current.filter((value) => value !== move);
-        applyControls();
-      }
-      if (isFireKey(event.key)) {
-        keysFire.current.delete(event.key);
-        applyControls();
-      }
+      applyControls();
     };
     const visibility = () => {
       if (document.hidden) clear();
     };
-    window.addEventListener("keydown", down, { passive: false });
-    window.addEventListener("keyup", up);
     window.addEventListener("blur", clear);
     document.addEventListener("visibilitychange", visibility);
     return () => {
-      window.removeEventListener("keydown", down);
-      window.removeEventListener("keyup", up);
       window.removeEventListener("blur", clear);
       document.removeEventListener("visibilitychange", visibility);
       clear();
@@ -615,6 +626,7 @@ export function Board(props: BoardProps<View>) {
       "(prefers-reduced-motion: reduce)",
     ).matches;
     const frame = () => {
+      pumpControls.current();
       const current = curView.current;
       const ctx = canvasRef.current?.getContext("2d");
       if (current && ctx) {
@@ -758,6 +770,7 @@ export function Board(props: BoardProps<View>) {
   return (
     <div
       className="battlecity-board"
+      ref={boardRef}
       data-battlecity-phase={view?.phase ?? "loading"}
       data-battlecity-team-size={view?.teamSize ?? 0}
       data-battlecity-epoch={view?.epoch ?? ""}
@@ -835,10 +848,6 @@ export function Board(props: BoardProps<View>) {
           />
           {view.phase === "playing" && !spectator && (
             <div className="bc-controls">
-              <div className="bc-keyboard-hint">
-                键盘：WASD／方向键移动 · 空格／J 开火
-                {mySeat?.autoPlay ? " · 当前由电脑托管" : ""}
-              </div>
               <TouchPad enabled={enabled} onMove={setMove} onFire={setFire} />
             </div>
           )}

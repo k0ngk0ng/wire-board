@@ -1,0 +1,8 @@
+{
+  "source_is_original_execution": true,
+  "romSHA256": "6ba53139fa88b8de1ae527c438bda6f1541d1ee7df26d63dec5164a32d166bfe",
+  "librarySHA256": "0dbd637ed07319fee5ba1514f565d730e86cb0513ea1c14cc59c7b75c4a9bcb2",
+  "outputSHA256": "34ccedb60f81dd76def7f8093f4d6e1ffffdca4dffede6603e9a8bbc84109f7b",
+  "definitionCount": 129,
+  "scope": "Original per-slot lifetimes, internal requests and conditional end callbacks; no audio synthesis or media readiness claim."
+}
