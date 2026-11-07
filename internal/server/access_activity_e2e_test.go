@@ -18,6 +18,35 @@ import (
 	"time"
 )
 
+// Failure cases before the fix: one request changes later room/friend action
+// names, different routes share an action, concurrent requests race, and failed
+// requests or high-frequency inputs enter the meaningful activity history.
+func TestActivityCommandsKeepRequestLocalKindsThroughHTTP(t *testing.T) {
+	_, ts, root := adminServer(t)
+	player := newClient(t, ts.URL)
+	player.register("独立操作动态")
+	id := player.state()["user"].(map[string]any)["id"].(string)
+	rootID := root.state()["user"].(map[string]any)["id"].(string)
+	player.post("/api/rooms", map[string]any{"kind": "splendor", "name": "动态隔离验收", "capacity": 2}, 201)
+	for _, action := range []string{"add_bot", "ready", "start", "close", "leave"} {
+		player.command(current(player), action, nil, 200)
+	}
+	for _, action := range []string{"request", "remove"} {
+		player.post("/api/players/"+rootID+"/friend", map[string]any{"action": action}, 200)
+	}
+	_, data := root.request("GET", "/api/admin/users/"+id+"/activity", nil)
+	entries := data["entries"].([]any)
+	want := []string{"register", "create_room", "add_bot", "ready", "start", "close", "leave", "friend_request", "friend_remove"}
+	if len(entries) != len(want) {
+		t.Fatal("unexpected meaningful activity count", entries)
+	}
+	for i, action := range want {
+		if got := entries[len(entries)-1-i].(map[string]any)["action"]; got != action {
+			t.Fatalf("request %d: activity %v, want %s", i, got, action)
+		}
+	}
+}
+
 func TestAccessActivityHTTPPersistence(t *testing.T) {
 	dir := t.TempDir()
 	cfg := Config{DataDir: dir, InviteCode: "test-invite", AdminUsername: "AccessRoot", AdminPassword: "access-root-password-123", TrustedProxies: "127.0.0.1/32"}
