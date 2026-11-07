@@ -1,0 +1,39 @@
+{
+  "frame": "2166",
+  "phase": "result",
+  "players": [
+    {
+      "active": false,
+      "characterID": 3,
+      "computer": true,
+      "energy": 0,
+      "health": 0,
+      "seat": 0,
+      "slot": 0,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "active": false,
+      "characterID": 9,
+      "computer": true,
+      "energy": 0,
+      "health": 0,
+      "seat": 1,
+      "slot": 3,
+      "x": 0,
+      "y": 0
+    }
+  ],
+  "seats": [
+    {
+      "autoPlay": true,
+      "bot": false
+    },
+    {
+      "autoPlay": false,
+      "bot": true
+    }
+  ],
+  "status": "finished"
+}

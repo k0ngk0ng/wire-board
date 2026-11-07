@@ -1,4 +1,5 @@
-import type { GameClock } from "../../../web/src/game-api/module";
+import type { GameClock, GameAudioPort } from "../../../web/src/game-api/module";
+import { MatchAudio } from "./audio";
 import type { ControllerProfile } from "../../../web/src/controllers/input";
 import { loadAssets, assetURL } from "./assets";
 import { MDInput, mdBits, type MDButton } from "./input";
@@ -36,6 +37,9 @@ type ClientOptions = {
     enabled: boolean,
   ) => Set<string>;
   clearPhysical?: () => void;
+  audio?: GameAudioPort;
+  sound?: () => boolean;
+  paused?: () => boolean;
 };
 function buttonsForMask(mask: number) {
   return new Set(
@@ -73,8 +77,11 @@ export class NetworkClient {
   private raf = 0;
   private lastStep = 0;
   private painted = false;
+  private audio?: MatchAudio;
   constructor(options: ClientOptions) {
     this.options = options;
+    if (options.audio) this.audio = new MatchAudio(options.audio, options.assetsBase, options.epoch, options.arena);
+    document.addEventListener("visibilitychange", this.visibility);
     const context = options.canvas.getContext("2d", { alpha: false });
     if (!context) throw Error("浏览器无法显示比赛画面");
     this.context = context;
@@ -133,13 +140,14 @@ export class NetworkClient {
     this.abort.signal.throwIfAborted();
     this.options.onProgress({ percent: 92, label: "恢复比赛画面" });
     const asset = wasm.load(this.options.arena, raw);
-    const scene = new NetworkScene(wasm, asset, this.options.seat);
+    const scene = new NetworkScene(wasm, asset, this.options.seat, (view, codes) => this.audio?.consume(view, codes));
     this.scene = scene;
     try {
       const result = await this.options.loadCheckpoint();
       this.abort.signal.throwIfAborted();
       this.validate(result.data.view);
       scene.restore(result.data.checkpoint, result.data.view);
+      this.audio?.restore(result.data.view);
       this.view = result.data.view;
       this.version = result.version;
       this.transportBinding();
@@ -216,6 +224,7 @@ export class NetworkClient {
       this.view = view;
       this.transportBinding();
       if (!this.recovering) this.scene!.accept(view, this.transport.unapplied);
+      this.refreshAudio();
     } catch (error) {
       void this.recover(error);
     }
@@ -224,6 +233,7 @@ export class NetworkClient {
     if (this.closed || this.recovering || performance.now() < this.retryAt)
       return this.recovering ?? Promise.resolve();
     this.input.setEnabled(false);
+    this.audio?.suspend();
     this.transport.cancel();
     this.options.onConnection(false);
     const pending = (async () => {
@@ -231,6 +241,7 @@ export class NetworkClient {
       this.abort.signal.throwIfAborted();
       this.validate(result.data.view);
       this.scene!.restore(result.data.checkpoint, result.data.view);
+      this.audio?.restore(result.data.view);
       this.view = result.data.view;
       this.version = result.version;
       this.failures = 0;
@@ -284,6 +295,7 @@ export class NetworkClient {
         (waiting || this.transport.connected);
       this.options.onConnection(connected);
       const connection = connected ? "connected" : "recovering";
+      this.refreshAudio(connected);
       if (this.options.root.dataset.connection !== connection)
         this.options.root.dataset.connection = connection;
       if (!connected) {
@@ -322,6 +334,15 @@ export class NetworkClient {
     this.input.configure(profile);
     this.options.clearPhysical?.();
   }
+  refreshAudio(connected = this.transport.connected) {
+    if (this.view) this.audio?.sync(this.view, this.scene?.view,
+      this.options.sound?.() ?? false, connected && !this.recovering,
+      this.options.paused?.() ?? false);
+  }
+  private visibility = () => {
+    if (document.hidden) this.audio?.suspend();
+    else if (this.initialized && !this.closed) void this.recover(Error("恢复当前比赛声音"));
+  };
   pressPointer = (pointer: number, buttons: readonly string[]) =>
     this.input.pressPointer(pointer, buttons);
   releasePointer = (pointer: number, cancelled = false) =>
@@ -329,6 +350,8 @@ export class NetworkClient {
   dispose() {
     if (this.closed) return;
     this.closed = true;
+    document.removeEventListener("visibilitychange", this.visibility);
+    this.audio?.dispose();
     this.abort.abort();
     cancelAnimationFrame(this.raf);
     this.transport.dispose();

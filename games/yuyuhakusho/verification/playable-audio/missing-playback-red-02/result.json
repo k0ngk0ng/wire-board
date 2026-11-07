@@ -1,0 +1,34 @@
+{
+  "pass": false,
+  "scope": "Actual Board + real independent Go module/Wasm + platform native audio. Authentication/socket acceptance remains separate.",
+  "url": "http://127.0.0.1:49235/?audio",
+  "error": "RuntimeError('{\"success\":false,\"data\":null,\"error\":\"Wait timed out after 25000ms\"}\\n')",
+  "diagnostic": {
+    "calls": [],
+    "error": "",
+    "events": [
+      {
+        "at": 291.19999980926514,
+        "kind": "playing",
+        "paused": false,
+        "src": "data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQIAAACAgA==",
+        "time": 0.000147
+      }
+    ],
+    "frame": "1787",
+    "media": [
+      {
+        "paused": true,
+        "src": "data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQIAAACAgA==",
+        "time": 0
+      }
+    ],
+    "phase": "playing",
+    "visibility": []
+  },
+  "expected_missing_playback_red": true,
+  "source_sha256": {
+    "scripts/yuyuhakusho/check_playable_audio.py": "7bc4b1f32b402a50a73e8ae1fc2ee10d6882cccdebf6804ea03ff8a7c1b515ae",
+    "scripts/yuyuhakusho/platform_board_harness.tsx": "e3e180c4c39f259754cf397dfaf71eb29e993098f4a5a802ac0e63e1eadea0d4"
+  }
+}

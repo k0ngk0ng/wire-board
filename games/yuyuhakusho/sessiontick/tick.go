@@ -12,6 +12,12 @@ import (
 // latches do not own World.Controllers or fighter rule history; neither is reset.
 // Automation is host metadata carried in the same replay record as held input.
 func Advance(world engine.ChuWorldState, presentation renderstate.State, options engine.ChuSessionOptions, held [4]engine.Buttons, automated uint8, rules engine.ChuWorldLibrary, graphics renderstate.Library) (engine.ChuWorldState, renderstate.State, []engine.ChuWorldEvent, engine.WorldFrameOutcome, error) {
+	return AdvanceObserved(world, presentation, options, held, automated, rules, graphics, nil)
+}
+
+// AdvanceObserved exposes transient sound producers within the same rule and
+// presentation transaction. Callers publish observations only after success.
+func AdvanceObserved(world engine.ChuWorldState, presentation renderstate.State, options engine.ChuSessionOptions, held [4]engine.Buttons, automated uint8, rules engine.ChuWorldLibrary, graphics renderstate.Library, sound engine.WorldSoundHook) (engine.ChuWorldState, renderstate.State, []engine.ChuWorldEvent, engine.WorldFrameOutcome, error) {
 	before, beforePresentation := world, presentation
 	fail := func(err error) (engine.ChuWorldState, renderstate.State, []engine.ChuWorldEvent, engine.WorldFrameOutcome, error) {
 		return before, beforePresentation, nil, engine.WorldFrameOutcome{}, err
@@ -63,7 +69,7 @@ func Advance(world engine.ChuWorldState, presentation renderstate.State, options
 	}
 	var input [8]engine.Buttons
 	copy(input[:4], held[:])
-	next, events, outcome, err := engine.StepChuSessionFrame(world, input, rules)
+	next, events, outcome, err := engine.StepChuSessionFrameObserved(world, input, rules, sound)
 	if err != nil {
 		return fail(err)
 	}

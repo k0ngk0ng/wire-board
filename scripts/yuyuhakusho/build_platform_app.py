@@ -6,7 +6,8 @@ Use its dist as server.New's os.DirFS argument to exercise the actual host.
 from pathlib import Path
 import hashlib,json,os,shutil,subprocess
 ROOT=Path(__file__).resolve().parents[2]
-OUT=ROOT/'.local/md-yuyuhakusho/platform-app';PUBLIC=OUT/'public';DIST=OUT/'dist'
+OUT=Path(os.environ.get('YUYU_LOCAL_APP_OUT',ROOT/'.local/md-yuyuhakusho/platform-app')).resolve();PUBLIC=OUT/'public';DIST=OUT/'dist'
+assert OUT.is_relative_to(ROOT/'.local'), 'local review output must stay in this workspace'
 for path in [OUT,PUBLIC,OUT/'tmp']:path.mkdir(parents=True,exist_ok=True)
 # Keep the shared platform brand route in this isolated local public tree.
 shutil.copyfile(ROOT/'web/public/favicon.svg',PUBLIC/'favicon.svg')
@@ -21,6 +22,11 @@ for item in metadata['resources']:
 shutil.copyfile(descriptor,PUBLIC/'yuyuhakusho/data/runtime-resource-descriptor.json')
 runtime=PUBLIC/'yuyuhakusho/v1/runtime';runtime.mkdir(parents=True,exist_ok=True)
 for name in ['build.json','wasm_exec.js','client.wasm']:shutil.copyfile(ROOT/'.local/md-yuyuhakusho/platform-web'/name,runtime/name)
+audio=json.loads((ROOT/'games/yuyuhakusho/assets/audio-playback.json').read_bytes())
+for item in [*audio['music'].values(),*audio['effects'].values()]:
+ source=ROOT/'.local/md-yuyuhakusho/playable-audio/media'/item['file'];raw=source.read_bytes()
+ assert len(raw)==item['bytes'] and hashlib.sha256(raw).hexdigest()==item['sha256']
+ target=PUBLIC/'yuyuhakusho/audio'/item['file'];target.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(source,target)
 # A dedicated config keeps the production Vite/OSS pipeline and other game's
 # generated asset directories untouched. Relative assets are local to this run.
 config=OUT/'vite.config.mjs'

@@ -1,0 +1,980 @@
+{
+  "pass": false,
+  "scope": "Actual Board + real independent Go module/Wasm + platform native audio. Authentication/socket acceptance remains separate.",
+  "url": "http://127.0.0.1:50089/?audio",
+  "initial": {
+    "calls": [
+      {
+        "args": [
+          [
+            "/yuyuhakusho/audio/82.flac"
+          ],
+          {
+            "loop": true,
+            "playbackID": "aa06d449ff71daf561cebb35:music:130:1",
+            "startOffset": 0
+          }
+        ],
+        "at": 649.2999992370605,
+        "kind": "music"
+      },
+      {
+        "args": [
+          "yuyu-0",
+          [
+            "/yuyuhakusho/audio/58.flac"
+          ],
+          {
+            "playbackID": "aa06d449ff71daf561cebb35:92:0:88"
+          }
+        ],
+        "at": 2172.2999992370605,
+        "kind": "effect"
+      },
+      {
+        "args": [
+          "yuyu-1",
+          [
+            "/yuyuhakusho/audio/59.flac"
+          ],
+          {
+            "playbackID": "aa06d449ff71daf561cebb35:191:0:89"
+          }
+        ],
+        "at": 3819.5999994277954,
+        "kind": "effect"
+      }
+    ],
+    "error": "",
+    "events": [
+      {
+        "at": 239.89999961853027,
+        "kind": "playing",
+        "paused": false,
+        "src": "data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQIAAACAgA==",
+        "time": 0.000137
+      },
+      {
+        "at": 660.6999998092651,
+        "kind": "playing",
+        "paused": false,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/82.flac",
+        "time": 0
+      },
+      {
+        "at": 2175.199999809265,
+        "kind": "playing",
+        "paused": false,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/58.flac",
+        "time": 0
+      },
+      {
+        "at": 3076.199999809265,
+        "kind": "pause",
+        "paused": true,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/58.flac",
+        "time": 0.817732
+      },
+      {
+        "at": 3076.199999809265,
+        "kind": "ended",
+        "paused": true,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/58.flac",
+        "time": 0.817732
+      },
+      {
+        "at": 3822.5999994277954,
+        "kind": "playing",
+        "paused": false,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/59.flac",
+        "time": 0
+      },
+      {
+        "at": 4688.699999809265,
+        "kind": "pause",
+        "paused": true,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/59.flac",
+        "time": 0.784354
+      },
+      {
+        "at": 4688.699999809265,
+        "kind": "ended",
+        "paused": true,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/59.flac",
+        "time": 0.784354
+      }
+    ],
+    "frame": "284",
+    "media": [
+      {
+        "paused": true,
+        "src": "data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQIAAACAgA==",
+        "time": 0
+      },
+      {
+        "paused": false,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/82.flac",
+        "time": 4.637602
+      },
+      {
+        "paused": true,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/58.flac",
+        "time": 0.817732
+      },
+      {
+        "paused": true,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/59.flac",
+        "time": 0.784354
+      }
+    ],
+    "phase": "playing",
+    "visibility": []
+  },
+  "recovery": {
+    "calls": [
+      {
+        "args": [
+          [
+            "/yuyuhakusho/audio/82.flac"
+          ],
+          {
+            "loop": true,
+            "playbackID": "aa06d449ff71daf561cebb35:music:130:1",
+            "startOffset": 0
+          }
+        ],
+        "at": 649.2999992370605,
+        "kind": "music"
+      },
+      {
+        "args": [
+          "yuyu-0",
+          [
+            "/yuyuhakusho/audio/58.flac"
+          ],
+          {
+            "playbackID": "aa06d449ff71daf561cebb35:92:0:88"
+          }
+        ],
+        "at": 2172.2999992370605,
+        "kind": "effect"
+      },
+      {
+        "args": [
+          "yuyu-1",
+          [
+            "/yuyuhakusho/audio/59.flac"
+          ],
+          {
+            "playbackID": "aa06d449ff71daf561cebb35:191:0:89"
+          }
+        ],
+        "at": 3819.5999994277954,
+        "kind": "effect"
+      }
+    ],
+    "error": "",
+    "events": [
+      {
+        "at": 239.89999961853027,
+        "kind": "playing",
+        "paused": false,
+        "src": "data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQIAAACAgA==",
+        "time": 0.000137
+      },
+      {
+        "at": 660.6999998092651,
+        "kind": "playing",
+        "paused": false,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/82.flac",
+        "time": 0
+      },
+      {
+        "at": 2175.199999809265,
+        "kind": "playing",
+        "paused": false,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/58.flac",
+        "time": 0
+      },
+      {
+        "at": 3076.199999809265,
+        "kind": "pause",
+        "paused": true,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/58.flac",
+        "time": 0.817732
+      },
+      {
+        "at": 3076.199999809265,
+        "kind": "ended",
+        "paused": true,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/58.flac",
+        "time": 0.817732
+      },
+      {
+        "at": 3822.5999994277954,
+        "kind": "playing",
+        "paused": false,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/59.flac",
+        "time": 0
+      },
+      {
+        "at": 4688.699999809265,
+        "kind": "pause",
+        "paused": true,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/59.flac",
+        "time": 0.784354
+      },
+      {
+        "at": 4688.699999809265,
+        "kind": "ended",
+        "paused": true,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/59.flac",
+        "time": 0.784354
+      }
+    ],
+    "frame": "286",
+    "media": [
+      {
+        "paused": true,
+        "src": "data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQIAAACAgA==",
+        "time": 0
+      },
+      {
+        "paused": false,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/82.flac",
+        "time": 4.665216
+      },
+      {
+        "paused": true,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/58.flac",
+        "time": 0.817732
+      },
+      {
+        "paused": true,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/59.flac",
+        "time": 0.784354
+      }
+    ],
+    "phase": "playing",
+    "visibility": []
+  },
+  "muted": {
+    "calls": [
+      {
+        "args": [
+          [
+            "/yuyuhakusho/audio/82.flac"
+          ],
+          {
+            "loop": true,
+            "playbackID": "aa06d449ff71daf561cebb35:music:130:1",
+            "startOffset": 0
+          }
+        ],
+        "at": 649.2999992370605,
+        "kind": "music"
+      },
+      {
+        "args": [
+          "yuyu-0",
+          [
+            "/yuyuhakusho/audio/58.flac"
+          ],
+          {
+            "playbackID": "aa06d449ff71daf561cebb35:92:0:88"
+          }
+        ],
+        "at": 2172.2999992370605,
+        "kind": "effect"
+      },
+      {
+        "args": [
+          "yuyu-1",
+          [
+            "/yuyuhakusho/audio/59.flac"
+          ],
+          {
+            "playbackID": "aa06d449ff71daf561cebb35:191:0:89"
+          }
+        ],
+        "at": 3819.5999994277954,
+        "kind": "effect"
+      },
+      {
+        "args": [],
+        "at": 5421.799999237061,
+        "kind": "stop"
+      }
+    ],
+    "error": "",
+    "events": [
+      {
+        "at": 239.89999961853027,
+        "kind": "playing",
+        "paused": false,
+        "src": "data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQIAAACAgA==",
+        "time": 0.000137
+      },
+      {
+        "at": 660.6999998092651,
+        "kind": "playing",
+        "paused": false,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/82.flac",
+        "time": 0
+      },
+      {
+        "at": 2175.199999809265,
+        "kind": "playing",
+        "paused": false,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/58.flac",
+        "time": 0
+      },
+      {
+        "at": 3076.199999809265,
+        "kind": "pause",
+        "paused": true,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/58.flac",
+        "time": 0.817732
+      },
+      {
+        "at": 3076.199999809265,
+        "kind": "ended",
+        "paused": true,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/58.flac",
+        "time": 0.817732
+      },
+      {
+        "at": 3822.5999994277954,
+        "kind": "playing",
+        "paused": false,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/59.flac",
+        "time": 0
+      },
+      {
+        "at": 4688.699999809265,
+        "kind": "pause",
+        "paused": true,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/59.flac",
+        "time": 0.784354
+      },
+      {
+        "at": 4688.699999809265,
+        "kind": "ended",
+        "paused": true,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/59.flac",
+        "time": 0.784354
+      }
+    ],
+    "frame": "288",
+    "media": [
+      {
+        "paused": true,
+        "src": "data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQIAAACAgA==",
+        "time": 0
+      },
+      {
+        "paused": true,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/82.flac",
+        "time": 0
+      },
+      {
+        "paused": true,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/58.flac",
+        "time": 0
+      },
+      {
+        "paused": true,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/59.flac",
+        "time": 0
+      }
+    ],
+    "phase": "playing",
+    "visibility": []
+  },
+  "unmuted": {
+    "calls": [
+      {
+        "args": [
+          [
+            "/yuyuhakusho/audio/82.flac"
+          ],
+          {
+            "loop": true,
+            "playbackID": "aa06d449ff71daf561cebb35:music:130:1",
+            "startOffset": 0
+          }
+        ],
+        "at": 649.2999992370605,
+        "kind": "music"
+      },
+      {
+        "args": [
+          "yuyu-0",
+          [
+            "/yuyuhakusho/audio/58.flac"
+          ],
+          {
+            "playbackID": "aa06d449ff71daf561cebb35:92:0:88"
+          }
+        ],
+        "at": 2172.2999992370605,
+        "kind": "effect"
+      },
+      {
+        "args": [
+          "yuyu-1",
+          [
+            "/yuyuhakusho/audio/59.flac"
+          ],
+          {
+            "playbackID": "aa06d449ff71daf561cebb35:191:0:89"
+          }
+        ],
+        "at": 3819.5999994277954,
+        "kind": "effect"
+      },
+      {
+        "args": [],
+        "at": 5421.799999237061,
+        "kind": "stop"
+      },
+      {
+        "args": [
+          [
+            "/yuyuhakusho/audio/82.flac"
+          ],
+          {
+            "loop": true,
+            "playbackID": "aa06d449ff71daf561cebb35:music:130:3",
+            "startOffset": 5.089887122525349
+          }
+        ],
+        "at": 5778.39999961853,
+        "kind": "music"
+      }
+    ],
+    "error": "",
+    "events": [
+      {
+        "at": 239.89999961853027,
+        "kind": "playing",
+        "paused": false,
+        "src": "data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQIAAACAgA==",
+        "time": 0.000137
+      },
+      {
+        "at": 660.6999998092651,
+        "kind": "playing",
+        "paused": false,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/82.flac",
+        "time": 0
+      },
+      {
+        "at": 2175.199999809265,
+        "kind": "playing",
+        "paused": false,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/58.flac",
+        "time": 0
+      },
+      {
+        "at": 3076.199999809265,
+        "kind": "pause",
+        "paused": true,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/58.flac",
+        "time": 0.817732
+      },
+      {
+        "at": 3076.199999809265,
+        "kind": "ended",
+        "paused": true,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/58.flac",
+        "time": 0.817732
+      },
+      {
+        "at": 3822.5999994277954,
+        "kind": "playing",
+        "paused": false,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/59.flac",
+        "time": 0
+      },
+      {
+        "at": 4688.699999809265,
+        "kind": "pause",
+        "paused": true,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/59.flac",
+        "time": 0.784354
+      },
+      {
+        "at": 4688.699999809265,
+        "kind": "ended",
+        "paused": true,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/59.flac",
+        "time": 0.784354
+      },
+      {
+        "at": 5790.299999237061,
+        "kind": "playing",
+        "paused": false,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/82.flac",
+        "time": 0
+      }
+    ],
+    "frame": "314",
+    "media": [
+      {
+        "paused": true,
+        "src": "data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQIAAACAgA==",
+        "time": 0
+      },
+      {
+        "paused": false,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/82.flac",
+        "time": 0.060624
+      },
+      {
+        "paused": true,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/58.flac",
+        "time": 0
+      },
+      {
+        "paused": true,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/59.flac",
+        "time": 0
+      }
+    ],
+    "phase": "playing",
+    "visibility": []
+  },
+  "paused": {
+    "calls": [
+      {
+        "args": [
+          [
+            "/yuyuhakusho/audio/82.flac"
+          ],
+          {
+            "loop": true,
+            "playbackID": "aa06d449ff71daf561cebb35:music:130:1",
+            "startOffset": 0
+          }
+        ],
+        "at": 649.2999992370605,
+        "kind": "music"
+      },
+      {
+        "args": [
+          "yuyu-0",
+          [
+            "/yuyuhakusho/audio/58.flac"
+          ],
+          {
+            "playbackID": "aa06d449ff71daf561cebb35:92:0:88"
+          }
+        ],
+        "at": 2172.2999992370605,
+        "kind": "effect"
+      },
+      {
+        "args": [
+          "yuyu-1",
+          [
+            "/yuyuhakusho/audio/59.flac"
+          ],
+          {
+            "playbackID": "aa06d449ff71daf561cebb35:191:0:89"
+          }
+        ],
+        "at": 3819.5999994277954,
+        "kind": "effect"
+      },
+      {
+        "args": [],
+        "at": 5421.799999237061,
+        "kind": "stop"
+      },
+      {
+        "args": [
+          [
+            "/yuyuhakusho/audio/82.flac"
+          ],
+          {
+            "loop": true,
+            "playbackID": "aa06d449ff71daf561cebb35:music:130:3",
+            "startOffset": 5.089887122525349
+          }
+        ],
+        "at": 5778.39999961853,
+        "kind": "music"
+      },
+      {
+        "args": [],
+        "at": 5919.89999961853,
+        "kind": "stop"
+      },
+      {
+        "args": [
+          [
+            "/yuyuhakusho/audio/82.flac"
+          ],
+          {
+            "loop": true,
+            "playbackID": "aa06d449ff71daf561cebb35:music:130:5",
+            "startOffset": 5.231387122525349
+          }
+        ],
+        "at": 5929.5,
+        "kind": "music"
+      },
+      {
+        "args": [],
+        "at": 5936.699999809265,
+        "kind": "stop"
+      }
+    ],
+    "error": "",
+    "events": [
+      {
+        "at": 239.89999961853027,
+        "kind": "playing",
+        "paused": false,
+        "src": "data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQIAAACAgA==",
+        "time": 0.000137
+      },
+      {
+        "at": 660.6999998092651,
+        "kind": "playing",
+        "paused": false,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/82.flac",
+        "time": 0
+      },
+      {
+        "at": 2175.199999809265,
+        "kind": "playing",
+        "paused": false,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/58.flac",
+        "time": 0
+      },
+      {
+        "at": 3076.199999809265,
+        "kind": "pause",
+        "paused": true,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/58.flac",
+        "time": 0.817732
+      },
+      {
+        "at": 3076.199999809265,
+        "kind": "ended",
+        "paused": true,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/58.flac",
+        "time": 0.817732
+      },
+      {
+        "at": 3822.5999994277954,
+        "kind": "playing",
+        "paused": false,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/59.flac",
+        "time": 0
+      },
+      {
+        "at": 4688.699999809265,
+        "kind": "pause",
+        "paused": true,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/59.flac",
+        "time": 0.784354
+      },
+      {
+        "at": 4688.699999809265,
+        "kind": "ended",
+        "paused": true,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/59.flac",
+        "time": 0.784354
+      },
+      {
+        "at": 5790.299999237061,
+        "kind": "playing",
+        "paused": false,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/82.flac",
+        "time": 0
+      }
+    ],
+    "frame": "324",
+    "media": [
+      {
+        "paused": true,
+        "src": "data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQIAAACAgA==",
+        "time": 0
+      },
+      {
+        "paused": true,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/82.flac",
+        "time": 5.231387122525349
+      },
+      {
+        "paused": true,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/58.flac",
+        "time": 0
+      },
+      {
+        "paused": true,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/59.flac",
+        "time": 0
+      }
+    ],
+    "phase": "paused",
+    "visibility": []
+  },
+  "resumed": {
+    "calls": [
+      {
+        "args": [
+          [
+            "/yuyuhakusho/audio/82.flac"
+          ],
+          {
+            "loop": true,
+            "playbackID": "aa06d449ff71daf561cebb35:music:130:1",
+            "startOffset": 0
+          }
+        ],
+        "at": 649.2999992370605,
+        "kind": "music"
+      },
+      {
+        "args": [
+          "yuyu-0",
+          [
+            "/yuyuhakusho/audio/58.flac"
+          ],
+          {
+            "playbackID": "aa06d449ff71daf561cebb35:92:0:88"
+          }
+        ],
+        "at": 2172.2999992370605,
+        "kind": "effect"
+      },
+      {
+        "args": [
+          "yuyu-1",
+          [
+            "/yuyuhakusho/audio/59.flac"
+          ],
+          {
+            "playbackID": "aa06d449ff71daf561cebb35:191:0:89"
+          }
+        ],
+        "at": 3819.5999994277954,
+        "kind": "effect"
+      },
+      {
+        "args": [],
+        "at": 5421.799999237061,
+        "kind": "stop"
+      },
+      {
+        "args": [
+          [
+            "/yuyuhakusho/audio/82.flac"
+          ],
+          {
+            "loop": true,
+            "playbackID": "aa06d449ff71daf561cebb35:music:130:3",
+            "startOffset": 5.089887122525349
+          }
+        ],
+        "at": 5778.39999961853,
+        "kind": "music"
+      },
+      {
+        "args": [],
+        "at": 5919.89999961853,
+        "kind": "stop"
+      },
+      {
+        "args": [
+          [
+            "/yuyuhakusho/audio/82.flac"
+          ],
+          {
+            "loop": true,
+            "playbackID": "aa06d449ff71daf561cebb35:music:130:5",
+            "startOffset": 5.231387122525349
+          }
+        ],
+        "at": 5929.5,
+        "kind": "music"
+      },
+      {
+        "args": [],
+        "at": 5936.699999809265,
+        "kind": "stop"
+      },
+      {
+        "args": [
+          [
+            "/yuyuhakusho/audio/82.flac"
+          ],
+          {
+            "loop": true,
+            "playbackID": "aa06d449ff71daf561cebb35:music:130:7",
+            "startOffset": 5.238487121953145
+          }
+        ],
+        "at": 6161.699999809265,
+        "kind": "music"
+      },
+      {
+        "args": [
+          "yuyu-2",
+          [
+            "/yuyuhakusho/audio/7a.flac"
+          ],
+          {
+            "playbackID": "aa06d449ff71daf561cebb35:333:0:122"
+          }
+        ],
+        "at": 6195.89999961853,
+        "kind": "effect"
+      },
+      {
+        "args": [
+          "yuyu-3",
+          [
+            "/yuyuhakusho/audio/79.flac"
+          ],
+          {
+            "playbackID": "aa06d449ff71daf561cebb35:333:1:121"
+          }
+        ],
+        "at": 6196.199999809265,
+        "kind": "effect"
+      }
+    ],
+    "error": "",
+    "events": [
+      {
+        "at": 239.89999961853027,
+        "kind": "playing",
+        "paused": false,
+        "src": "data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQIAAACAgA==",
+        "time": 0.000137
+      },
+      {
+        "at": 660.6999998092651,
+        "kind": "playing",
+        "paused": false,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/82.flac",
+        "time": 0
+      },
+      {
+        "at": 2175.199999809265,
+        "kind": "playing",
+        "paused": false,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/58.flac",
+        "time": 0
+      },
+      {
+        "at": 3076.199999809265,
+        "kind": "pause",
+        "paused": true,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/58.flac",
+        "time": 0.817732
+      },
+      {
+        "at": 3076.199999809265,
+        "kind": "ended",
+        "paused": true,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/58.flac",
+        "time": 0.817732
+      },
+      {
+        "at": 3822.5999994277954,
+        "kind": "playing",
+        "paused": false,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/59.flac",
+        "time": 0
+      },
+      {
+        "at": 4688.699999809265,
+        "kind": "pause",
+        "paused": true,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/59.flac",
+        "time": 0.784354
+      },
+      {
+        "at": 4688.699999809265,
+        "kind": "ended",
+        "paused": true,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/59.flac",
+        "time": 0.784354
+      },
+      {
+        "at": 5790.299999237061,
+        "kind": "playing",
+        "paused": false,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/82.flac",
+        "time": 0
+      },
+      {
+        "at": 6164.299999237061,
+        "kind": "playing",
+        "paused": false,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/82.flac",
+        "time": 0
+      },
+      {
+        "at": 6203.5,
+        "kind": "playing",
+        "paused": false,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/7a.flac",
+        "time": 0
+      },
+      {
+        "at": 6203.699999809265,
+        "kind": "playing",
+        "paused": false,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/79.flac",
+        "time": 0
+      }
+    ],
+    "frame": "338",
+    "media": [
+      {
+        "paused": true,
+        "src": "data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQIAAACAgA==",
+        "time": 0
+      },
+      {
+        "paused": false,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/82.flac",
+        "time": 0.068457
+      },
+      {
+        "paused": true,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/58.flac",
+        "time": 0
+      },
+      {
+        "paused": true,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/59.flac",
+        "time": 0
+      },
+      {
+        "paused": false,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/7a.flac",
+        "time": 0.022022
+      },
+      {
+        "paused": false,
+        "src": "http://127.0.0.1:50089/yuyuhakusho/audio/79.flac",
+        "time": 0.022021
+      }
+    ],
+    "phase": "playing",
+    "visibility": []
+  },
+  "error": "RuntimeError('{\"success\":false,\"data\":null,\"error\":\"No tab with label `switch`; run `agent-browser tab` to list open tabs\"}\\n')",
+  "source_sha256": {
+    "scripts/yuyuhakusho/check_playable_audio.py": "7bc4b1f32b402a50a73e8ae1fc2ee10d6882cccdebf6804ea03ff8a7c1b515ae",
+    "scripts/yuyuhakusho/platform_board_harness.tsx": "e3e180c4c39f259754cf397dfaf71eb29e993098f4a5a802ac0e63e1eadea0d4"
+  }
+}

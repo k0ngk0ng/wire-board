@@ -129,6 +129,7 @@ type Frame struct {
 	View                                            View
 	Pixels                                          []byte
 	DrawRequests, SpritePixels, ArenaSpriteRequests int
+	SoundRequests                                   []uint16
 }
 
 func validateNetworkOptions(options engine.ChuSessionOptions) error {
@@ -303,6 +304,17 @@ func (s *Session) Step(held [8]engine.Buttons) (Frame, error) {
 	return frame, nil
 }
 func (s *Session) StepControlled(held [4]engine.Buttons, automated uint8) (Frame, error) {
+	return s.stepControlled(held, automated, false)
+}
+
+// StepControlledWithSounds publishes this successful tick's actual producer
+// requests. Media timing is frame based; no hardware scheduler is implied.
+// Requests are never retained in a save, checkpoint or authority replay ring.
+func (s *Session) StepControlledWithSounds(held [4]engine.Buttons, automated uint8) (Frame, error) {
+	return s.stepControlled(held, automated, true)
+}
+
+func (s *Session) stepControlled(held [4]engine.Buttons, automated uint8, sounds bool) (Frame, error) {
 	if s.computed == nil || s.legacy != nil {
 		return Frame{}, errors.New("controlled replay requires sole pixel-free presentation state")
 	}
@@ -311,7 +323,23 @@ func (s *Session) StepControlled(held [4]engine.Buttons, automated uint8) (Frame
 		return Frame{}, errors.New("session frame counter exhausted")
 	}
 	prior := *s.computed
-	world, visual, events, _, e := sessiontick.Advance(next.World, prior, next.Options, held, automated, s.assets.rules, s.assets.graphics)
+	var requests []uint16
+	var sound engine.WorldSoundHook
+	if sounds {
+		sound = func(op engine.WorldSoundOperation, _ engine.WorldSoundOwners, apply func() error) error {
+			if err := apply(); err != nil {
+				return err
+			}
+			// The first operation identifies one producer request even when the
+			// reference's unconsumed queue would reject it. Media playback owns
+			// its bounded lanes independently; rule queue bytes stay unchanged.
+			if op.Request.Sequence == 0 {
+				requests = append(requests, uint16(op.Request.Code))
+			}
+			return nil
+		}
+	}
+	world, visual, events, _, e := sessiontick.AdvanceObserved(next.World, prior, next.Options, held, automated, s.assets.rules, s.assets.graphics, sound)
 	if e != nil {
 		return Frame{}, e
 	}
@@ -331,6 +359,7 @@ func (s *Session) StepControlled(held [4]engine.Buttons, automated uint8) (Frame
 		return Frame{}, errors.New("temporary pixel slots differ from canonical shared presentation")
 	}
 	frame.View = sessionView(next, true)
+	frame.SoundRequests = requests
 	s.saved = next
 	s.computed = &visual
 	return frame, nil

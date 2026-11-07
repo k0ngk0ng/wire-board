@@ -36,6 +36,7 @@ export class NetworkScene {
     private wasm: NetworkWasm,
     private asset: number,
     seat: number,
+    private onSound?: (view: RuntimeView, codes: readonly number[]) => void,
   ) {
     this.localSeat = seat;
   }
@@ -221,6 +222,7 @@ export class NetworkScene {
         this.current = result.view;
         this.predictedFrame = frameNumber(result.view.frame);
         this.rendered = result.renderedFrame ?? "";
+        this.onSound?.(result.view, result.soundRequests ?? []);
         changed = true;
         if (result.view.completed || this.predictedFrame < next) break;
       }

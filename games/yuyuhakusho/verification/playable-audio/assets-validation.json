@@ -1,0 +1,13 @@
+{
+  "pass": true,
+  "clips": 143,
+  "wav_bytes": 281815656,
+  "flac_bytes": 141537925,
+  "all_pcm_sha256_equal": true,
+  "format": {
+    "sample_rate": 44100,
+    "channels": 2,
+    "bits": 16
+  },
+  "manifest_sha256": "b3fb0ac3f1af05f96577904abe0a4810eeda7b765fa53eb9a8b8a9e395b41814"
+}

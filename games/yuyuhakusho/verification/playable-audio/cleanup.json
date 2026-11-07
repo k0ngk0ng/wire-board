@@ -1,0 +1,42 @@
+{
+  "removed": [
+    {
+      "path": ".local/md-yuyuhakusho/platform-web/audio-profile-browser-03",
+      "bytes": 16618918
+    },
+    {
+      "path": ".local/md-yuyuhakusho/platform-web/audio-profile-browser-04",
+      "bytes": 21808488
+    },
+    {
+      "path": ".local/md-yuyuhakusho/platform-web/audio-profile-browser-05",
+      "bytes": 22802923
+    },
+    {
+      "path": ".local/md-yuyuhakusho/platform-web/audio-profile-browser-02",
+      "bytes": 16641589
+    },
+    {
+      "path": ".local/md-yuyuhakusho/platform-web/audio-profile-missing-playback-red-02",
+      "bytes": 16441899
+    },
+    {
+      "path": ".local/md-yuyuhakusho/platform-web/audio-profile-browser-01",
+      "bytes": 16686555
+    },
+    {
+      "path": ".local/md-yuyuhakusho/platform-web/audio-profile-browser-06",
+      "bytes": 21772703
+    },
+    {
+      "path": ".local/md-yuyuhakusho/playable-review/public",
+      "bytes": 147566773
+    }
+  ],
+  "retained": [
+    "review dist/data/browser",
+    "old review service",
+    "original recordings",
+    "reproducible acceptance evidence"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "pass": false,
+  "scope": "Actual Board + real independent Go module/Wasm + platform native audio. Authentication/socket acceptance remains separate.",
+  "url": "http://127.0.0.1:65510/?audio",
+  "error": "RuntimeError('{\"error\":\"Session name \\'aud953974\\' is too long. Socket path would be 114 bytes (max 103).\\\\nUse a shorter session name or set AGENT_BROWSER_SOCKET_DIR to a shorter path.\",\"success\":false}\\n')",
+  "expected_missing_playback_red": true,
+  "source_sha256": {
+    "scripts/yuyuhakusho/check_playable_audio.py": "e8e01fb7500217d98bb3d6edf982526e9feaaf21e36a16694c97bc7247acb0d0",
+    "scripts/yuyuhakusho/platform_board_harness.tsx": "e3e180c4c39f259754cf397dfaf71eb29e993098f4a5a802ac0e63e1eadea0d4"
+  }
+}
