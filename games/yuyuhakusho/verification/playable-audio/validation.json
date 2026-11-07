@@ -1,0 +1,549 @@
+{
+  "pass": true,
+  "delivery": "verified local playable review",
+  "scope": "Frame-driven original media; exact hardware scheduling research frozen by explicit user choice. No OSS upload/release/deployment performed.",
+  "sources": [
+    {
+      "path": "games/yuyuhakusho/assets/audio-playback.json",
+      "bytes": 44353,
+      "sha256": "b3fb0ac3f1af05f96577904abe0a4810eeda7b765fa53eb9a8b8a9e395b41814"
+    },
+    {
+      "path": "games/yuyuhakusho/cmd/platform-client-wasm/main_js.go",
+      "bytes": 9356,
+      "sha256": "ed532fda4ff1849049695a112a29847a3557d857a39edf30118bfc249acb00ce"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/chu_world.go",
+      "bytes": 61962,
+      "sha256": "42a867e07182f73dd2ee95bf4224b485cecc416050c48b73324072adff15de7f"
+    },
+    {
+      "path": "games/yuyuhakusho/engine/world_sound_live.go",
+      "bytes": 2477,
+      "sha256": "fadadce7e0e5c492558fd46025f9b9d04cfa7f92359ac3ae3562c45e23632209"
+    },
+    {
+      "path": "games/yuyuhakusho/runtimebridge/playable_audio_e2e_test.go",
+      "bytes": 2715,
+      "sha256": "a973c007d656b9efff6c2cd0291a8173cdd01639b9c78b597855cd95a2fc375d"
+    },
+    {
+      "path": "games/yuyuhakusho/runtimebridge/session.go",
+      "bytes": 16677,
+      "sha256": "e6d4c775016f19e728beb95f72e7d7e7035f8a1495605b2c519a8a2c6ac8d83c"
+    },
+    {
+      "path": "games/yuyuhakusho/sessiontick/tick.go",
+      "bytes": 3801,
+      "sha256": "17bb47419e4c5cc3abe3f43dd0a775ad7c1c51f567aace9e3b9e4b3ddaa011f0"
+    },
+    {
+      "path": "games/yuyuhakusho/web/Board.tsx",
+      "bytes": 9698,
+      "sha256": "0e811334e51f97c3b0f587693f4bcfb4a5a61d86257aee2cf9736adf44fb98cf"
+    },
+    {
+      "path": "games/yuyuhakusho/web/Cover.tsx",
+      "bytes": 3878,
+      "sha256": "d75e03c629d0eed62d040a0d842d4ce30d0aff6eea01ecd2f3e3e55a63659936"
+    },
+    {
+      "path": "games/yuyuhakusho/web/FAILURES.md",
+      "bytes": 3176,
+      "sha256": "79ffd1caf6f1c408909f10d81a89cd2c7d4a79c20df7d32d51a01fd7ed3860ed"
+    },
+    {
+      "path": "games/yuyuhakusho/web/Options.tsx",
+      "bytes": 1613,
+      "sha256": "87449c1efec8d6d41805506583e65b486843cd3311f9f671229b8a7d405071c9"
+    },
+    {
+      "path": "games/yuyuhakusho/web/Preparation.tsx",
+      "bytes": 2811,
+      "sha256": "66843d5fc158dc6bfde15f90761e98642fd1525befffdd615166f8400aae4d9c"
+    },
+    {
+      "path": "games/yuyuhakusho/web/assets.ts",
+      "bytes": 7557,
+      "sha256": "0772fc41b5b48af4dee0e9a5df1099a70cbda4bb509f2d25df382a7b76f7af84"
+    },
+    {
+      "path": "games/yuyuhakusho/web/audio.ts",
+      "bytes": 5122,
+      "sha256": "13bcde190a99d4e89dfd0910a2d72c46d05f3c2fd495f5c32f68fe0ddc653674"
+    },
+    {
+      "path": "games/yuyuhakusho/web/catalog.tsx",
+      "bytes": 391,
+      "sha256": "632bade9c69cf56510dd4f3f0234d7dff22ebbfd2b1879501968c9e41eb5fa39"
+    },
+    {
+      "path": "games/yuyuhakusho/web/input.ts",
+      "bytes": 5964,
+      "sha256": "5113279f9fc2be2dd84a10db73dc1edff361354e3192dbf176195f11b6fd5163"
+    },
+    {
+      "path": "games/yuyuhakusho/web/labels.ts",
+      "bytes": 679,
+      "sha256": "880083c93f07aa40a6a05bbca53af4b8eb7b717e7858bdbf63aed4ec22122a1c"
+    },
+    {
+      "path": "games/yuyuhakusho/web/module.tsx",
+      "bytes": 1629,
+      "sha256": "27fb2594505d3fd18f673cc1270f736891d1a01197c68b20e79815d44bb6d0b6"
+    },
+    {
+      "path": "games/yuyuhakusho/web/network-client.ts",
+      "bytes": 12378,
+      "sha256": "e62cf2c1949a52544d3346fc59a4a20010617176ceaf8b88ccc01b12f691dfa1"
+    },
+    {
+      "path": "games/yuyuhakusho/web/network-input.ts",
+      "bytes": 7935,
+      "sha256": "13ccfd4ceeb4c434657aa5306723f5ff2076dd810b235f9b5aab1b3fdf896922"
+    },
+    {
+      "path": "games/yuyuhakusho/web/network-scene.ts",
+      "bytes": 9100,
+      "sha256": "1e3f95a4f6b881107a08434c87ca707a64f9f9ec9e1fc1f76edb300eeec8a3a1"
+    },
+    {
+      "path": "games/yuyuhakusho/web/network.css",
+      "bytes": 4588,
+      "sha256": "fcd81e285b994e58ca81ea4e3d9bab03ee71f39f305cc1ccad8a86e1a3f59247"
+    },
+    {
+      "path": "games/yuyuhakusho/web/types.ts",
+      "bytes": 2018,
+      "sha256": "5151eb726b0da3885aaeb9856a4e3ad7c4cecc5ab10876db43fb558666fa84ac"
+    },
+    {
+      "path": "games/yuyuhakusho/web/wasm.ts",
+      "bytes": 6059,
+      "sha256": "532f815b32dbbae0e3028398849b8ca1e91c568698fb3845bcde1c6c41925a19"
+    },
+    {
+      "path": "rules/yuyuhakusho.md",
+      "bytes": 10061,
+      "sha256": "f532f40ac17da0a7c1e5f316f7f47b324f90f6ba19b0db10ba5c118548fa19ea"
+    },
+    {
+      "path": "scripts/yuyuhakusho/build_platform_app.py",
+      "bytes": 3660,
+      "sha256": "42851ee12dde9bbf8811ee2eecca95639042c9a2980dd4505b47a18ffa71768a"
+    },
+    {
+      "path": "scripts/yuyuhakusho/build_platform_web.py",
+      "bytes": 1423,
+      "sha256": "18c7d9c2c10d83aef91cb6c2aa1976d5568f3cd812b931ee3875a74882ba54a2"
+    },
+    {
+      "path": "scripts/yuyuhakusho/check_platform_app_build.mjs",
+      "bytes": 3318,
+      "sha256": "50a7aa944e7ff724cf974fb4dd62c0b1a57adb9cadd3a959ac90689f3f2142f2"
+    },
+    {
+      "path": "scripts/yuyuhakusho/check_playable_audio.py",
+      "bytes": 9947,
+      "sha256": "10e5fb1fa70cfa9184c30de52d1590d915e04297a397d0f101a0541929445215"
+    },
+    {
+      "path": "scripts/yuyuhakusho/check_playable_audio_assets.py",
+      "bytes": 1979,
+      "sha256": "e4ef8778950810a9899d29dc1a67650d915605c1b6a1a83d1c9bc9f072de8768"
+    },
+    {
+      "path": "scripts/yuyuhakusho/export_playable_audio.py",
+      "bytes": 3190,
+      "sha256": "763f1055a95fbccd57a6138dfc6f5f36ea6fbc658528296c17517f887b964765"
+    },
+    {
+      "path": "scripts/yuyuhakusho/platform_board_harness.tsx",
+      "bytes": 9031,
+      "sha256": "e3e180c4c39f259754cf397dfaf71eb29e993098f4a5a802ac0e63e1eadea0d4"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/FAILURES.md",
+      "bytes": 1221,
+      "sha256": "26b67e21ba9a3226b45d3f52b13252c9d2e8bb2253cfd4b902463747d2359f08"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/README.md",
+      "bytes": 3577,
+      "sha256": "6eaadf40924e10379afc392f67b238c33d253f2f12a58f1853cf107668102870"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/app-build-final.json",
+      "bytes": 937,
+      "sha256": "6069e8321783ba54c62a6a1b7537bbf9ab50b6dabc13afecca4971ffc1dd76fa"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/app-build.log",
+      "bytes": 10947,
+      "sha256": "c51ab8e24311a2eff2ddaa4e8b44b940462b5865bbf3f95bc6a22d53a4f16c34"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/assets-validation.json",
+      "bytes": 288,
+      "sha256": "48e5fc1d92f4831594e17416e71c48e405d78d5efc8cca53a340884b32aadf13"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/browser-01/SETUP_FAILURE.md",
+      "bytes": 262,
+      "sha256": "eaa13663af5e5047d8b794a38c760a80768626b7388852a8b47d6da731a3fc84"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/browser-01/build.log",
+      "bytes": 127,
+      "sha256": "3082ca10e4fd1206f65b6547a882a8cc6fdd94038b0520a038759ca752b091f1"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/browser-01/harness.log",
+      "bytes": 243,
+      "sha256": "0c44775c6f8206eefb5873286cb26e8c40af9f999ce734f6df5b5b333b20f0c0"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/browser-01/host.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/browser-01/result.json",
+      "bytes": 24122,
+      "sha256": "b591b71936d348c53c526da7f9b803784dbcc6fbed0099ebc3871ee1288544ea"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/browser-02/SETUP_FAILURE.md",
+      "bytes": 280,
+      "sha256": "e00de1e03e300a75e557f94e9d0ffb860dfa2e72e7e787fe1ea8b5a31a7b5ae4"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/browser-02/build.log",
+      "bytes": 127,
+      "sha256": "3082ca10e4fd1206f65b6547a882a8cc6fdd94038b0520a038759ca752b091f1"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/browser-02/failure.png",
+      "bytes": 84017,
+      "sha256": "6866cd7d53032f4dac53ed2772315bfbbee4d8a489d40802dcb444018bedc9ee"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/browser-02/harness.log",
+      "bytes": 242,
+      "sha256": "d89d8291c54ebd5736a041ee3e4fbbd385479649406a2aa828c6ead7abad12e3"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/browser-02/host.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/browser-02/native-performance.json",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/browser-02/result.json",
+      "bytes": 39148,
+      "sha256": "4503903dc084df36659227c50b1c76d6d913d5101917af95f189dbc94cb0bff2"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/browser-03/SETUP_FAILURE.md",
+      "bytes": 175,
+      "sha256": "85fdae5a2e305ac09c7255fe35b9151d19fc3e7957f73023a878c462ac553265"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/browser-03/build.log",
+      "bytes": 127,
+      "sha256": "3082ca10e4fd1206f65b6547a882a8cc6fdd94038b0520a038759ca752b091f1"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/browser-03/failure.png",
+      "bytes": 83728,
+      "sha256": "92decbe06dbd97a4139134a4f8cbd3c6ea62d27cd7dd0d5ddc5fecc3aecaa43c"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/browser-03/harness.log",
+      "bytes": 242,
+      "sha256": "888fa7cabb5a16c75ed11e89f7fc01b7d8d2a1add9c32056536951889968ab8a"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/browser-03/host.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/browser-03/native-performance.json",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/browser-03/result.json",
+      "bytes": 35824,
+      "sha256": "303f7d651a3ffc89ba4e8d7507fa25e038fde0b252ae0638f2acb5d294ecf7b0"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/browser-04/MEASUREMENT_CORRECTION.md",
+      "bytes": 312,
+      "sha256": "01b985f94c25eea7e3a79c9945fe4023ec54f2ff73b5b9c625959bc00db8cda8"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/browser-04/build.log",
+      "bytes": 127,
+      "sha256": "3082ca10e4fd1206f65b6547a882a8cc6fdd94038b0520a038759ca752b091f1"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/browser-04/failure.png",
+      "bytes": 82591,
+      "sha256": "06286d5b2f22dd1d3cfcc44e013ae9cb2a75f17855eb04d52e109312cc80d183"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/browser-04/harness.log",
+      "bytes": 242,
+      "sha256": "888fa7cabb5a16c75ed11e89f7fc01b7d8d2a1add9c32056536951889968ab8a"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/browser-04/host.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/browser-04/native-performance.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/browser-04/result.json",
+      "bytes": 44248,
+      "sha256": "3255bd4c7f4a8a0f38667973f4b30f774bef9efab2c0a17511817121368ed9bb"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/browser-05/INPUT_CORRECTION.md",
+      "bytes": 260,
+      "sha256": "352dac5e89eeeb2fef126e08ad55623354b1b16325fe36f054556aa199e22160"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/browser-05/build.log",
+      "bytes": 127,
+      "sha256": "79b7ae8b94042e4c1863f0f57df79a57c345fb84253cab6d50c490abe8a29c97"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/browser-05/failure.png",
+      "bytes": 82113,
+      "sha256": "09d45fe406b0c42f390f298aa20d11412526c8d60c78671ced20730c78617ea9"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/browser-05/harness.log",
+      "bytes": 242,
+      "sha256": "8b15960f755f19d24d73635873b71cbb85cdd2a8cd498d3fc4ce3cd568b1b126"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/browser-05/host.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/browser-05/result.json",
+      "bytes": 18971,
+      "sha256": "cccbf6728d8230d9d6446dad14e9b0d3a451f69afb5a1f7a077249098bcdb2c4"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/browser-06/build.log",
+      "bytes": 127,
+      "sha256": "79b7ae8b94042e4c1863f0f57df79a57c345fb84253cab6d50c490abe8a29c97"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/browser-06/check_playable_audio.executed.py.txt",
+      "bytes": 9900,
+      "sha256": "9ba068f665b1ec4aaba29a7ee5311bd9c254179c9faa4f331216a306af7fc1d4"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/browser-06/desktop.png",
+      "bytes": 81881,
+      "sha256": "2146ba43650a9ddcdb2d659b4ed2c73e8d7182a2232c756df9a34bf3808c0ff7"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/browser-06/harness.log",
+      "bytes": 242,
+      "sha256": "8b15960f755f19d24d73635873b71cbb85cdd2a8cd498d3fc4ce3cd568b1b126"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/browser-06/host.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/browser-06/native-pause.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/browser-06/native-performance.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/browser-06/native-resume.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/browser-06/result.json",
+      "bytes": 45779,
+      "sha256": "c570197b90b98f2ff9f69f90b3853205b1c760c88811162fae416bd28f01ea86"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/cleanup.json",
+      "bytes": 1078,
+      "sha256": "983a5a47ea53658950f8848f332ada69d2074873f8fd5f2e86d4e017fb71426e"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/export.log",
+      "bytes": 174,
+      "sha256": "f079da5f39b692255ea19cd66c35c12bea06a7eb7ad4663732edaf8acbd54afd"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/media-provenance.json",
+      "bytes": 41726,
+      "sha256": "895d6e029ed404aa95efde38aa06ba9e8d716a0fef8b6218cceea988060520ef"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/missing-api-red.jsonl",
+      "bytes": 1868,
+      "sha256": "d9bd1001d5b01631cf88d648ea526b2aac44cb1b8679efeb49342a95905c81e6"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/missing-assets-red.log",
+      "bytes": 977,
+      "sha256": "9271e3cdb825de7101a0bf6bb79499b3fdd0755e7ebf56f78df62f63382b85aa"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/missing-playback-red/SETUP_FAILURE.md",
+      "bytes": 200,
+      "sha256": "3665e1744c9de3e48cfce64e65945264067c77e739230fb23ef6420322fb1d10"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/missing-playback-red/build.log",
+      "bytes": 127,
+      "sha256": "7155d6b85e5df7e8fb4e5eed2ca26e780fff1656f13b78755b6499a89ea175c3"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/missing-playback-red/harness.log",
+      "bytes": 243,
+      "sha256": "500a497ccb65c566cd8d1549ef906a05e62e950a73f0ef8a9cf5224d71f33893"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/missing-playback-red/host.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/missing-playback-red/result.json",
+      "bytes": 739,
+      "sha256": "2c7b36fc98d7c4bd3f3d5c515a53058931206442ad7616c3cbee538564b61f2d"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/missing-playback-red-02/build.log",
+      "bytes": 127,
+      "sha256": "3082ca10e4fd1206f65b6547a882a8cc6fdd94038b0520a038759ca752b091f1"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/missing-playback-red-02/failure.png",
+      "bytes": 80820,
+      "sha256": "c33922edd6be6d416a9a05ec01cd075c5126647cb52cad0e761ec437cc6fc892"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/missing-playback-red-02/harness.log",
+      "bytes": 242,
+      "sha256": "676f1b7dcbff3efdd961f9724d3e49dc654989ab5f355909e8f5d093fd03717c"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/missing-playback-red-02/host.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/missing-playback-red-02/result.json",
+      "bytes": 1179,
+      "sha256": "e83f98ad119bd5bbd5eaf7ac0cd666dbc3b0580e11a60029c7fea57d97127d62"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/native-race.jsonl",
+      "bytes": 5258,
+      "sha256": "71640b647057bce222bb70535c86c6ab3c3e1f84ed1e8eee3407b858071d73ba"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/native.jsonl",
+      "bytes": 2783,
+      "sha256": "f4c8ebdf6f51ecfe96cde8573c8f38d52c63c8005f6499df25bebefbb692cd65"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/normal-app/arena-a-playing.json",
+      "bytes": 47225,
+      "sha256": "939acd6e929a1968fc9a9cee06fd4c9440e6450b70d5df30f3470bd224b30571"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/normal-app/arena-a-playing.png",
+      "bytes": 92300,
+      "sha256": "3ae6afcdee9ba8a0ae804a80b6db8f8a2d6902ce650b3ab0cc208bc508cc68b9"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/normal-app/arena-a-result.json",
+      "bytes": 74140,
+      "sha256": "a56e1f6f8f27b160b271d0368f8d692d496b080ad4c3626ad4641fff288f7f67"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/normal-app/playing-state.json",
+      "bytes": 581,
+      "sha256": "c8887ca1ba00f4d2d7627af0594015f87191b1bbdca826e3cf0fc86ebe56303c"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/normal-app/playing.json",
+      "bytes": 32689,
+      "sha256": "c69543ea40e9e97ef2c8dee177572eee7140d102e960b8df2bf238424a9c0535"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/normal-app/playing.png",
+      "bytes": 77474,
+      "sha256": "e45856857ed9f3902457f3e1a7e1c92c0407dbdd095fb428f4aba450c7c15601"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/normal-app/ready-for-review.png",
+      "bytes": 95655,
+      "sha256": "348d69fc60097eb31f51f07962c88c9abd9d0e80219776326bc2b3cdb6e41fd2"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/typescript.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/vet.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/playable-audio/world-sound-regression.jsonl",
+      "bytes": 44279,
+      "sha256": "ef63e5f6bc48f6700e17de805f27297196c1db7ba69811f17ee76cd617ab5a5d"
+    }
+  ],
+  "typecheck_passed": true,
+  "vet_passed": true,
+  "browser": {
+    "visible_fps": 59.59933864396804,
+    "p95_ms": 25.0
+  },
+  "normal_app": {
+    "complete_matches": 2,
+    "arena_a_visible_fps": 60.03679673900061,
+    "prepared_human_is_manual": true
+  },
+  "limits": [
+    "Media starts/mixing/priority and long BGM loop phase can differ from original.",
+    "No physical gamepad or Safari audio claim added in this change."
+  ]
+}

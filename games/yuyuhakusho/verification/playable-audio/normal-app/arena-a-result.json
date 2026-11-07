@@ -1,0 +1,2934 @@
+{
+  "events": [
+    {
+      "at": 125538.69999980928,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/82.flac",
+      "time": 0
+    },
+    {
+      "at": 127061.5999994278,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/58.flac",
+      "time": 0
+    },
+    {
+      "at": 127956.5,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/58.flac",
+      "time": 0.817732
+    },
+    {
+      "at": 127956.5,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/58.flac",
+      "time": 0.817732
+    },
+    {
+      "at": 128708.30000019072,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/59.flac",
+      "time": 0
+    },
+    {
+      "at": 129576.69999980928,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/59.flac",
+      "time": 0.784354
+    },
+    {
+      "at": 129576.69999980928,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/59.flac",
+      "time": 0.784354
+    },
+    {
+      "at": 130511.80000019072,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 0
+    },
+    {
+      "at": 130573.80000019072,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3b.flac",
+      "time": 0
+    },
+    {
+      "at": 130811.80000019072,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0
+    },
+    {
+      "at": 131561.8000001907,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0.684218
+    },
+    {
+      "at": 131561.89999961853,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0.684218
+    },
+    {
+      "at": 131576,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 0
+    },
+    {
+      "at": 131624.6999998093,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 131624.6999998093,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 131731.39999961853,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3b.flac",
+      "time": 1.084739
+    },
+    {
+      "at": 131731.39999961853,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3b.flac",
+      "time": 1.084739
+    },
+    {
+      "at": 132023.89999961853,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 0
+    },
+    {
+      "at": 132126.39999961853,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3d.flac",
+      "time": 0
+    },
+    {
+      "at": 132458.1999998093,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 0
+    },
+    {
+      "at": 132671.89999961853,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 132671.89999961853,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 132857,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3b.flac",
+      "time": 0
+    },
+    {
+      "at": 133121.0999994278,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 133121.0999994278,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 133175.39999961853,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3b.flac",
+      "time": 0
+    },
+    {
+      "at": 133358.3000001907,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7b.flac",
+      "time": 0
+    },
+    {
+      "at": 133566,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 133566.0999994278,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 133630,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3d.flac",
+      "time": 1.435193
+    },
+    {
+      "at": 133630,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3d.flac",
+      "time": 1.435193
+    },
+    {
+      "at": 133674.89999961853,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0
+    },
+    {
+      "at": 133992.0999994278,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 0
+    },
+    {
+      "at": 133992.5999994278,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3b.flac",
+      "time": 1.084739
+    },
+    {
+      "at": 133992.5999994278,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3b.flac",
+      "time": 1.084739
+    },
+    {
+      "at": 134038.89999961853,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7b.flac",
+      "time": 0.600794
+    },
+    {
+      "at": 134038.89999961853,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7b.flac",
+      "time": 0.600794
+    },
+    {
+      "at": 134057.5,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3b.flac",
+      "time": 0
+    },
+    {
+      "at": 134227.3000001907,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0
+    },
+    {
+      "at": 134334.0999994278,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3b.flac",
+      "time": 1.084739
+    },
+    {
+      "at": 134334.0999994278,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3b.flac",
+      "time": 1.084739
+    },
+    {
+      "at": 134440.6999998093,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0.684218
+    },
+    {
+      "at": 134440.6999998093,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0.684218
+    },
+    {
+      "at": 134490,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 0
+    },
+    {
+      "at": 134939.0999994278,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 0
+    },
+    {
+      "at": 134995.39999961853,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0.684218
+    },
+    {
+      "at": 134995.39999961853,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0.684218
+    },
+    {
+      "at": 135106.1999998093,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 135106.1999998093,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 135230.1999998093,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3b.flac",
+      "time": 1.084739
+    },
+    {
+      "at": 135230.1999998093,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3b.flac",
+      "time": 1.084739
+    },
+    {
+      "at": 135376.1999998093,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 0
+    },
+    {
+      "at": 135461.5999994278,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3e.flac",
+      "time": 0
+    },
+    {
+      "at": 135614,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 135614,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 136040.6999998093,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 136040.8000001907,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 136305.5,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 0
+    },
+    {
+      "at": 136376.89999961853,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3c.flac",
+      "time": 0
+    },
+    {
+      "at": 136455.8000001907,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0
+    },
+    {
+      "at": 136467.39999961853,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 136467.39999961853,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 137214.0999994278,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0.684218
+    },
+    {
+      "at": 137214.0999994278,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0.684218
+    },
+    {
+      "at": 137278.0999994278,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3e.flac",
+      "time": 1.752268
+    },
+    {
+      "at": 137278.0999994278,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3e.flac",
+      "time": 1.752268
+    },
+    {
+      "at": 137384.6999998093,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3c.flac",
+      "time": 0.951247
+    },
+    {
+      "at": 137384.8000001907,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3c.flac",
+      "time": 0.951247
+    },
+    {
+      "at": 137427.39999961853,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 137427.39999961853,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 137441.6999998093,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 0
+    },
+    {
+      "at": 137511.1999998093,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3b.flac",
+      "time": 0
+    },
+    {
+      "at": 137557.0999994278,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0
+    },
+    {
+      "at": 138323.5,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0.684218
+    },
+    {
+      "at": 138323.5,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0.684218
+    },
+    {
+      "at": 138561.3000001907,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 138561.3000001907,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 138664.6999998093,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3b.flac",
+      "time": 1.084739
+    },
+    {
+      "at": 138664.8000001907,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3b.flac",
+      "time": 1.084739
+    },
+    {
+      "at": 138724.3000001907,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 0
+    },
+    {
+      "at": 138791.0999994278,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/a6.flac",
+      "time": 0
+    },
+    {
+      "at": 138823.6999998093,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3d.flac",
+      "time": 0
+    },
+    {
+      "at": 139156.6999998093,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 0
+    },
+    {
+      "at": 139283.39999961853,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/a6.flac",
+      "time": 0.4339
+    },
+    {
+      "at": 139283.39999961853,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/a6.flac",
+      "time": 0.4339
+    },
+    {
+      "at": 139607.0999994278,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 0
+    },
+    {
+      "at": 139674.39999961853,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3b.flac",
+      "time": 0
+    },
+    {
+      "at": 139816.89999961853,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 139817,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 140264.6999998093,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 140264.8000001907,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 140328.6999998093,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3d.flac",
+      "time": 1.435193
+    },
+    {
+      "at": 140328.6999998093,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3d.flac",
+      "time": 1.435193
+    },
+    {
+      "at": 140691.39999961853,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3d.flac",
+      "time": 0
+    },
+    {
+      "at": 140734.0999994278,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 140734.0999994278,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 140774.39999961853,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0
+    },
+    {
+      "at": 140821.89999961853,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3b.flac",
+      "time": 1.084739
+    },
+    {
+      "at": 140821.89999961853,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3b.flac",
+      "time": 1.084739
+    },
+    {
+      "at": 141339.1999998093,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 0
+    },
+    {
+      "at": 141407.39999961853,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3c.flac",
+      "time": 0
+    },
+    {
+      "at": 141489.8000001907,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0
+    },
+    {
+      "at": 141523.3000001907,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0.684218
+    },
+    {
+      "at": 141523.3000001907,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0.684218
+    },
+    {
+      "at": 142206,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3d.flac",
+      "time": 1.435193
+    },
+    {
+      "at": 142206.0999994278,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3d.flac",
+      "time": 1.435193
+    },
+    {
+      "at": 142248.6999998093,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0.684218
+    },
+    {
+      "at": 142248.8000001907,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0.684218
+    },
+    {
+      "at": 142440.6999998093,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3c.flac",
+      "time": 0.951247
+    },
+    {
+      "at": 142440.6999998093,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3c.flac",
+      "time": 0.951247
+    },
+    {
+      "at": 142462,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 142462.0999994278,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 142557.6999998093,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3d.flac",
+      "time": 0
+    },
+    {
+      "at": 142808.5,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7a.flac",
+      "time": 0
+    },
+    {
+      "at": 142809.0999994278,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/79.flac",
+      "time": 0
+    },
+    {
+      "at": 143189.89999961853,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 0
+    },
+    {
+      "at": 143255.89999961853,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3b.flac",
+      "time": 0
+    },
+    {
+      "at": 143388.8000001907,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0
+    },
+    {
+      "at": 143422.0999994278,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7a.flac",
+      "time": 0.534036
+    },
+    {
+      "at": 143422.0999994278,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7a.flac",
+      "time": 0.534036
+    },
+    {
+      "at": 143661.6999998093,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 0
+    },
+    {
+      "at": 144062,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3d.flac",
+      "time": 1.435193
+    },
+    {
+      "at": 144062.0999994278,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3d.flac",
+      "time": 1.435193
+    },
+    {
+      "at": 144089.8000001907,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 0
+    },
+    {
+      "at": 144107.5999994278,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 0
+    },
+    {
+      "at": 144147.5999994278,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0.684218
+    },
+    {
+      "at": 144147.5999994278,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0.684218
+    },
+    {
+      "at": 144156.5999994278,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3b.flac",
+      "time": 0
+    },
+    {
+      "at": 144321.1999998093,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 144321.1999998093,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 144424.6999998093,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3b.flac",
+      "time": 1.084739
+    },
+    {
+      "at": 144424.8000001907,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3b.flac",
+      "time": 1.084739
+    },
+    {
+      "at": 144539.5999994278,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 0
+    },
+    {
+      "at": 144788.89999961853,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 144788.89999961853,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 144838.6999998093,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 0
+    },
+    {
+      "at": 144911.89999961853,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3c.flac",
+      "time": 0
+    },
+    {
+      "at": 145214,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 145214.0999994278,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 145214.0999994278,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 145214.0999994278,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 145322.5999994278,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3b.flac",
+      "time": 1.084739
+    },
+    {
+      "at": 145322.5999994278,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3b.flac",
+      "time": 1.084739
+    },
+    {
+      "at": 145640.6999998093,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 145640.6999998093,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 145918.0999994278,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3c.flac",
+      "time": 0.951247
+    },
+    {
+      "at": 145918.1999998093,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3c.flac",
+      "time": 0.951247
+    },
+    {
+      "at": 145961.0999994278,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 145961.0999994278,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 146056.8000001907,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3d.flac",
+      "time": 0
+    },
+    {
+      "at": 146140,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0
+    },
+    {
+      "at": 146657,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 0
+    },
+    {
+      "at": 146722.8000001907,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3c.flac",
+      "time": 0
+    },
+    {
+      "at": 146807.6999998093,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0
+    },
+    {
+      "at": 146899.39999961853,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0.684218
+    },
+    {
+      "at": 146899.39999961853,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0.684218
+    },
+    {
+      "at": 147561.0999994278,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3d.flac",
+      "time": 1.435193
+    },
+    {
+      "at": 147561.0999994278,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3d.flac",
+      "time": 1.435193
+    },
+    {
+      "at": 147561.0999994278,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0.684218
+    },
+    {
+      "at": 147561.0999994278,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0.684218
+    },
+    {
+      "at": 147754.0999994278,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3c.flac",
+      "time": 0.951247
+    },
+    {
+      "at": 147754.0999994278,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3c.flac",
+      "time": 0.951247
+    },
+    {
+      "at": 147775.0999994278,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 147775.0999994278,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 147890.8000001907,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 0
+    },
+    {
+      "at": 148907.5999994278,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3d.flac",
+      "time": 0
+    },
+    {
+      "at": 148990.8000001907,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0
+    },
+    {
+      "at": 149012.6999998093,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 149012.6999998093,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 149638.6999998093,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 0
+    },
+    {
+      "at": 149705.3000001907,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3c.flac",
+      "time": 0
+    },
+    {
+      "at": 149762.5,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0.684218
+    },
+    {
+      "at": 149762.5,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0.684218
+    },
+    {
+      "at": 149790.0999994278,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/0b.flac",
+      "time": 0
+    },
+    {
+      "at": 150425.1999998093,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3d.flac",
+      "time": 1.435193
+    },
+    {
+      "at": 150425.1999998093,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3d.flac",
+      "time": 1.435193
+    },
+    {
+      "at": 150739.5,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3c.flac",
+      "time": 0.951247
+    },
+    {
+      "at": 150739.5,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3c.flac",
+      "time": 0.951247
+    },
+    {
+      "at": 150761.3000001907,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 150761.39999961853,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 151016.8000001907,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/0b.flac",
+      "time": 1.168186
+    },
+    {
+      "at": 151016.89999961853,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/0b.flac",
+      "time": 1.168186
+    },
+    {
+      "at": 152305,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 0
+    },
+    {
+      "at": 152806.1999998093,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 0
+    },
+    {
+      "at": 153406.0999994278,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 153406.0999994278,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 153896.6999998093,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 153896.89999961853,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 153925.3000001907,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/5d.flac",
+      "time": 0
+    },
+    {
+      "at": 155540.0999994278,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/6f.flac",
+      "time": 0
+    },
+    {
+      "at": 155561.39999961853,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/5d.flac",
+      "time": 1.552018
+    },
+    {
+      "at": 155561.39999961853,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/5d.flac",
+      "time": 1.552018
+    },
+    {
+      "at": 156627.39999961853,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/6f.flac",
+      "time": 1.001293
+    },
+    {
+      "at": 156627.39999961853,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/6f.flac",
+      "time": 1.001293
+    },
+    {
+      "at": 157123.39999961853,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/41.flac",
+      "time": 0
+    },
+    {
+      "at": 158706.6999998093,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/8f.flac",
+      "time": 0
+    },
+    {
+      "at": 158761.3000001907,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/41.flac",
+      "time": 1.568707
+    },
+    {
+      "at": 158761.39999961853,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/41.flac",
+      "time": 1.568707
+    },
+    {
+      "at": 162942.1999998093,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/8f.flac",
+      "time": 4.172041
+    },
+    {
+      "at": 162942.3000001907,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/8f.flac",
+      "time": 4.172041
+    },
+    {
+      "at": 320072.39999961853,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/8a.flac",
+      "time": 0
+    },
+    {
+      "at": 321538.39999961853,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/58.flac",
+      "time": 0
+    },
+    {
+      "at": 322426,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/58.flac",
+      "time": 0.817732
+    },
+    {
+      "at": 322426,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/58.flac",
+      "time": 0.817732
+    },
+    {
+      "at": 323184.89999961853,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/59.flac",
+      "time": 0
+    },
+    {
+      "at": 324047.19999980927,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/59.flac",
+      "time": 0.784354
+    },
+    {
+      "at": 324047.19999980927,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/59.flac",
+      "time": 0.784354
+    },
+    {
+      "at": 324884.69999980927,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 0
+    },
+    {
+      "at": 325634.5999994278,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/74.flac",
+      "time": 0
+    },
+    {
+      "at": 325722.19999980927,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7a.flac",
+      "time": 0
+    },
+    {
+      "at": 326020,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 326020.0999994278,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 326169.19999980927,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/74.flac",
+      "time": 0.45059
+    },
+    {
+      "at": 326169.19999980927,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/74.flac",
+      "time": 0.45059
+    },
+    {
+      "at": 326170.19999980927,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 0
+    },
+    {
+      "at": 326234.30000019073,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3b.flac",
+      "time": 0
+    },
+    {
+      "at": 326283.69999980927,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0
+    },
+    {
+      "at": 326330.0999994278,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7a.flac",
+      "time": 0.534036
+    },
+    {
+      "at": 326330.0999994278,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7a.flac",
+      "time": 0.534036
+    },
+    {
+      "at": 327021.5,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 0
+    },
+    {
+      "at": 327033.89999961853,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0.684218
+    },
+    {
+      "at": 327033.89999961853,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0.684218
+    },
+    {
+      "at": 327289.80000019073,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 327289.89999961853,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 327398.69999980927,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3b.flac",
+      "time": 1.084739
+    },
+    {
+      "at": 327398.69999980927,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3b.flac",
+      "time": 1.084739
+    },
+    {
+      "at": 327470.30000019073,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 0
+    },
+    {
+      "at": 327498.80000019073,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 0
+    },
+    {
+      "at": 327898,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 0
+    },
+    {
+      "at": 328143.19999980927,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 328143.19999980927,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 328182.5999994278,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/74.flac",
+      "time": 0
+    },
+    {
+      "at": 328371.80000019073,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/74.flac",
+      "time": 0
+    },
+    {
+      "at": 328482.0999994278,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/74.flac",
+      "time": 0
+    },
+    {
+      "at": 328569.80000019073,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 328569.80000019073,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 328620,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 328620,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 328669.30000019073,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/74.flac",
+      "time": 0
+    },
+    {
+      "at": 328697.69999980927,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/74.flac",
+      "time": 0.45059
+    },
+    {
+      "at": 328697.80000019073,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/74.flac",
+      "time": 0.45059
+    },
+    {
+      "at": 328748.80000019073,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7a.flac",
+      "time": 0
+    },
+    {
+      "at": 328889.80000019073,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/74.flac",
+      "time": 0.45059
+    },
+    {
+      "at": 328889.80000019073,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/74.flac",
+      "time": 0.45059
+    },
+    {
+      "at": 328996.69999980927,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 328996.69999980927,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 328996.69999980927,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/74.flac",
+      "time": 0.45059
+    },
+    {
+      "at": 328996.69999980927,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/74.flac",
+      "time": 0.45059
+    },
+    {
+      "at": 329032.80000019073,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/74.flac",
+      "time": 0
+    },
+    {
+      "at": 329120.39999961853,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7a.flac",
+      "time": 0
+    },
+    {
+      "at": 329188.5999994278,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/74.flac",
+      "time": 0.45059
+    },
+    {
+      "at": 329188.69999980927,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/74.flac",
+      "time": 0.45059
+    },
+    {
+      "at": 329369.80000019073,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7a.flac",
+      "time": 0.534036
+    },
+    {
+      "at": 329369.80000019073,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7a.flac",
+      "time": 0.534036
+    },
+    {
+      "at": 329482.80000019073,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 0
+    },
+    {
+      "at": 329552.69999980927,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3b.flac",
+      "time": 0.001609
+    },
+    {
+      "at": 329552.69999980927,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/74.flac",
+      "time": 0.45059
+    },
+    {
+      "at": 329552.80000019073,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/74.flac",
+      "time": 0.45059
+    },
+    {
+      "at": 329600.0999994278,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3d.flac",
+      "time": 0
+    },
+    {
+      "at": 329721.80000019073,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7a.flac",
+      "time": 0.534036
+    },
+    {
+      "at": 329721.80000019073,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7a.flac",
+      "time": 0.534036
+    },
+    {
+      "at": 329821.19999980927,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7a.flac",
+      "time": 0
+    },
+    {
+      "at": 329822.30000019073,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/79.flac",
+      "time": 0
+    },
+    {
+      "at": 330270.5999994278,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3d.flac",
+      "time": 0
+    },
+    {
+      "at": 330426,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7a.flac",
+      "time": 0.534036
+    },
+    {
+      "at": 330426,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7a.flac",
+      "time": 0.534036
+    },
+    {
+      "at": 330520.39999961853,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7a.flac",
+      "time": 0
+    },
+    {
+      "at": 330520.5999994278,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/79.flac",
+      "time": 0
+    },
+    {
+      "at": 330597.19999980927,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 330597.19999980927,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 330682.0999994278,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3b.flac",
+      "time": 1.084739
+    },
+    {
+      "at": 330682.0999994278,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3b.flac",
+      "time": 1.084739
+    },
+    {
+      "at": 330982.5999994278,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/a3.flac",
+      "time": 0
+    },
+    {
+      "at": 331032.30000019073,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 0
+    },
+    {
+      "at": 331119.19999980927,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3d.flac",
+      "time": 1.435193
+    },
+    {
+      "at": 331119.30000019073,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3d.flac",
+      "time": 1.435193
+    },
+    {
+      "at": 331130.30000019073,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7a.flac",
+      "time": 0.534036
+    },
+    {
+      "at": 331130.30000019073,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7a.flac",
+      "time": 0.534036
+    },
+    {
+      "at": 331332.39999961853,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 0
+    },
+    {
+      "at": 331370.39999961853,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3c.flac",
+      "time": 0
+    },
+    {
+      "at": 331580.19999980927,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/a3.flac",
+      "time": 0.517347
+    },
+    {
+      "at": 331580.30000019073,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/a3.flac",
+      "time": 0.517347
+    },
+    {
+      "at": 331769.80000019073,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3d.flac",
+      "time": 1.435193
+    },
+    {
+      "at": 331769.80000019073,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3d.flac",
+      "time": 1.435193
+    },
+    {
+      "at": 331876.5999994278,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/79.flac",
+      "time": 1.985896
+    },
+    {
+      "at": 331876.5999994278,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/79.flac",
+      "time": 1.985896
+    },
+    {
+      "at": 332153.89999961853,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 332153.89999961853,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 332388.5999994278,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3c.flac",
+      "time": 0.951247
+    },
+    {
+      "at": 332388.69999980927,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3c.flac",
+      "time": 0.951247
+    },
+    {
+      "at": 332452.5,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 332452.5999994278,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 332481.69999980927,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3d.flac",
+      "time": 0
+    },
+    {
+      "at": 332585.0999994278,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/79.flac",
+      "time": 1.985896
+    },
+    {
+      "at": 332585.0999994278,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/79.flac",
+      "time": 1.985896
+    },
+    {
+      "at": 332585.89999961853,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0
+    },
+    {
+      "at": 333348.39999961853,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0.684218
+    },
+    {
+      "at": 333348.5,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0.684218
+    },
+    {
+      "at": 333468.69999980927,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 0
+    },
+    {
+      "at": 333632.0999994278,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 0
+    },
+    {
+      "at": 333699.89999961853,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3c.flac",
+      "time": 0
+    },
+    {
+      "at": 333898.19999980927,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 0
+    },
+    {
+      "at": 333988.39999961853,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3d.flac",
+      "time": 1.435193
+    },
+    {
+      "at": 333988.5,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3d.flac",
+      "time": 1.435193
+    },
+    {
+      "at": 334449.5999994278,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 0
+    },
+    {
+      "at": 334585.89999961853,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 334586,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 334735.39999961853,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3c.flac",
+      "time": 0.951247
+    },
+    {
+      "at": 334735.39999961853,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3c.flac",
+      "time": 0.951247
+    },
+    {
+      "at": 334756.5,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 334756.5999994278,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 334991.19999980927,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 334991.30000019073,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 335248.5999994278,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/74.flac",
+      "time": 0
+    },
+    {
+      "at": 335331.69999980927,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7a.flac",
+      "time": 0
+    },
+    {
+      "at": 335567.89999961853,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 335568.0999994278,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 335631.5999994278,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 0
+    },
+    {
+      "at": 335698.0999994278,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3b.flac",
+      "time": 0
+    },
+    {
+      "at": 335747.30000019073,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0
+    },
+    {
+      "at": 335780.5,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/74.flac",
+      "time": 0.45059
+    },
+    {
+      "at": 335780.5,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/74.flac",
+      "time": 0.45059
+    },
+    {
+      "at": 335929.80000019073,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7a.flac",
+      "time": 0.534036
+    },
+    {
+      "at": 335929.89999961853,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7a.flac",
+      "time": 0.534036
+    },
+    {
+      "at": 336505.80000019073,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0.684218
+    },
+    {
+      "at": 336505.80000019073,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0.684218
+    },
+    {
+      "at": 336598.0999994278,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 0
+    },
+    {
+      "at": 336648.19999980927,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3d.flac",
+      "time": 0
+    },
+    {
+      "at": 336767.5,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 336767.5,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 336847.5,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3b.flac",
+      "time": 1.084739
+    },
+    {
+      "at": 336847.5,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3b.flac",
+      "time": 1.084739
+    },
+    {
+      "at": 337398.5,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 0
+    },
+    {
+      "at": 337470.5,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3b.flac",
+      "time": 0
+    },
+    {
+      "at": 337619.5,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0
+    },
+    {
+      "at": 337721.80000019073,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 337721.80000019073,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 338148.5,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3d.flac",
+      "time": 1.435193
+    },
+    {
+      "at": 338148.5999994278,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3d.flac",
+      "time": 1.435193
+    },
+    {
+      "at": 338383.0999994278,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0.684218
+    },
+    {
+      "at": 338383.19999980927,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0.684218
+    },
+    {
+      "at": 338419.5999994278,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 0
+    },
+    {
+      "at": 338518,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 338518,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 338639.0999994278,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3b.flac",
+      "time": 1.084739
+    },
+    {
+      "at": 338639.19999980927,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3b.flac",
+      "time": 1.084739
+    },
+    {
+      "at": 338870.89999961853,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 0
+    },
+    {
+      "at": 338920.89999961853,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 0
+    },
+    {
+      "at": 338984,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3b.flac",
+      "time": 0
+    },
+    {
+      "at": 339018.89999961853,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 0
+    },
+    {
+      "at": 339081.89999961853,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3b.flac",
+      "time": 0
+    },
+    {
+      "at": 339297.39999961853,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 0
+    },
+    {
+      "at": 339520.5,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 339520.5,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 339970.5999994278,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 339970.69999980927,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 339981.19999980927,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 0
+    },
+    {
+      "at": 340047.80000019073,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 340047.80000019073,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 340048.5,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3b.flac",
+      "time": 0
+    },
+    {
+      "at": 340132.80000019073,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3b.flac",
+      "time": 1.084739
+    },
+    {
+      "at": 340132.80000019073,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3b.flac",
+      "time": 1.084739
+    },
+    {
+      "at": 340132.80000019073,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 340132.80000019073,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 340150.39999961853,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 0
+    },
+    {
+      "at": 340239.30000019073,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3b.flac",
+      "time": 1.084739
+    },
+    {
+      "at": 340239.30000019073,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3b.flac",
+      "time": 1.084739
+    },
+    {
+      "at": 340388.69999980927,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 340388.69999980927,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 341092.5,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 341092.5,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 341199.19999980927,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3b.flac",
+      "time": 1.084739
+    },
+    {
+      "at": 341199.19999980927,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3b.flac",
+      "time": 1.084739
+    },
+    {
+      "at": 341269.19999980927,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 341269.30000019073,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 341730.80000019073,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3d.flac",
+      "time": 0
+    },
+    {
+      "at": 341819.30000019073,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0
+    },
+    {
+      "at": 342283,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 0
+    },
+    {
+      "at": 342349.69999980927,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3c.flac",
+      "time": 0
+    },
+    {
+      "at": 342471.69999980927,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0
+    },
+    {
+      "at": 342585.89999961853,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0.684218
+    },
+    {
+      "at": 342585.89999961853,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0.684218
+    },
+    {
+      "at": 343226,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3d.flac",
+      "time": 1.435193
+    },
+    {
+      "at": 343226,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3d.flac",
+      "time": 1.435193
+    },
+    {
+      "at": 343226.0999994278,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0.684218
+    },
+    {
+      "at": 343226.0999994278,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0.684218
+    },
+    {
+      "at": 343375.30000019073,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3c.flac",
+      "time": 0.951247
+    },
+    {
+      "at": 343375.30000019073,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3c.flac",
+      "time": 0.951247
+    },
+    {
+      "at": 343398,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 343398,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 343781.39999961853,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 0
+    },
+    {
+      "at": 344850.5999994278,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3d.flac",
+      "time": 0
+    },
+    {
+      "at": 344917.5,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 344917.5999994278,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 344932.69999980927,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0
+    },
+    {
+      "at": 345700.5,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0.684218
+    },
+    {
+      "at": 345700.5999994278,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0.684218
+    },
+    {
+      "at": 345749.30000019073,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 0
+    },
+    {
+      "at": 345832.0999994278,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 0
+    },
+    {
+      "at": 346267.89999961853,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 0
+    },
+    {
+      "at": 346363.80000019073,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3d.flac",
+      "time": 1.435193
+    },
+    {
+      "at": 346363.89999961853,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3d.flac",
+      "time": 1.435193
+    },
+    {
+      "at": 346631.5,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/74.flac",
+      "time": 0
+    },
+    {
+      "at": 346781.80000019073,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/74.flac",
+      "time": 0
+    },
+    {
+      "at": 346874,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 346874.0999994278,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 346917.80000019073,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/74.flac",
+      "time": 0
+    },
+    {
+      "at": 346937.89999961853,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 346937.89999961853,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 347017.80000019073,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/74.flac",
+      "time": 0
+    },
+    {
+      "at": 347116.5,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7a.flac",
+      "time": 0
+    },
+    {
+      "at": 347151.30000019073,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/74.flac",
+      "time": 0.45059
+    },
+    {
+      "at": 347151.39999961853,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/74.flac",
+      "time": 0.45059
+    },
+    {
+      "at": 347300.69999980927,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/74.flac",
+      "time": 0.45059
+    },
+    {
+      "at": 347300.69999980927,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/74.flac",
+      "time": 0.45059
+    },
+    {
+      "at": 347365.5999994278,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 347365.5999994278,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 347449.89999961853,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/74.flac",
+      "time": 0.45059
+    },
+    {
+      "at": 347450.0999994278,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/74.flac",
+      "time": 0.45059
+    },
+    {
+      "at": 347535.39999961853,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/74.flac",
+      "time": 0.45059
+    },
+    {
+      "at": 347535.5,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/74.flac",
+      "time": 0.45059
+    },
+    {
+      "at": 347582.69999980927,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 0
+    },
+    {
+      "at": 347730.69999980927,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7a.flac",
+      "time": 0.534036
+    },
+    {
+      "at": 347730.80000019073,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7a.flac",
+      "time": 0.534036
+    },
+    {
+      "at": 348272.89999961853,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/a6.flac",
+      "time": 0
+    },
+    {
+      "at": 348371.5999994278,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/a6.flac",
+      "time": 0
+    },
+    {
+      "at": 348718.0999994278,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 348718.0999994278,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 348772.69999980927,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/a6.flac",
+      "time": 0.4339
+    },
+    {
+      "at": 348772.69999980927,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/a6.flac",
+      "time": 0.4339
+    },
+    {
+      "at": 348881,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/a6.flac",
+      "time": 0.4339
+    },
+    {
+      "at": 348881,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/a6.flac",
+      "time": 0.4339
+    },
+    {
+      "at": 348897,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3d.flac",
+      "time": 0
+    },
+    {
+      "at": 348982.19999980927,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0
+    },
+    {
+      "at": 349732.5,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0.684218
+    },
+    {
+      "at": 349732.5999994278,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7c.flac",
+      "time": 0.684218
+    },
+    {
+      "at": 349781.69999980927,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 0
+    },
+    {
+      "at": 349870.39999961853,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 0
+    },
+    {
+      "at": 350297.69999980927,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 0
+    },
+    {
+      "at": 350395.39999961853,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3d.flac",
+      "time": 1.435193
+    },
+    {
+      "at": 350395.5,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3d.flac",
+      "time": 1.435193
+    },
+    {
+      "at": 350471.0999994278,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/a6.flac",
+      "time": 0
+    },
+    {
+      "at": 350569.5,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/a6.flac",
+      "time": 0
+    },
+    {
+      "at": 350668.69999980927,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/a6.flac",
+      "time": 0
+    },
+    {
+      "at": 350771.19999980927,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/a6.flac",
+      "time": 0
+    },
+    {
+      "at": 350905.89999961853,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 350905.89999961853,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 350948.5999994278,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 0
+    },
+    {
+      "at": 350970,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/a6.flac",
+      "time": 0.4339
+    },
+    {
+      "at": 350970,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/a6.flac",
+      "time": 0.4339
+    },
+    {
+      "at": 350991.19999980927,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 350991.30000019073,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 351019.30000019073,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3c.flac",
+      "time": 0
+    },
+    {
+      "at": 351079.39999961853,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/a6.flac",
+      "time": 0.4339
+    },
+    {
+      "at": 351079.39999961853,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/a6.flac",
+      "time": 0.4339
+    },
+    {
+      "at": 351148.69999980927,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/0b.flac",
+      "time": 0
+    },
+    {
+      "at": 351167.80000019073,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/a6.flac",
+      "time": 0.4339
+    },
+    {
+      "at": 351167.80000019073,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/a6.flac",
+      "time": 0.4339
+    },
+    {
+      "at": 351268.5999994278,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/a6.flac",
+      "time": 0.4339
+    },
+    {
+      "at": 351268.5999994278,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/a6.flac",
+      "time": 0.4339
+    },
+    {
+      "at": 351397.30000019073,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 351397.39999961853,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 352067.19999980927,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3c.flac",
+      "time": 0.951247
+    },
+    {
+      "at": 352067.19999980927,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/3c.flac",
+      "time": 0.951247
+    },
+    {
+      "at": 352080.19999980927,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 352080.19999980927,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/76.flac",
+      "time": 1.051361
+    },
+    {
+      "at": 352381.19999980927,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/0b.flac",
+      "time": 1.168186
+    },
+    {
+      "at": 352381.19999980927,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/0b.flac",
+      "time": 1.168186
+    },
+    {
+      "at": 353470.69999980927,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 0
+    },
+    {
+      "at": 354071.39999961853,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 0
+    },
+    {
+      "at": 354575.30000019073,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 354575.30000019073,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 355183.80000019073,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/5d.flac",
+      "time": 0
+    },
+    {
+      "at": 355196.30000019073,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 355196.30000019073,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/7d.flac",
+      "time": 1.034671
+    },
+    {
+      "at": 356798.39999961853,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/5d.flac",
+      "time": 1.552018
+    },
+    {
+      "at": 356798.39999961853,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/5d.flac",
+      "time": 1.552018
+    },
+    {
+      "at": 356800.39999961853,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/6f.flac",
+      "time": 0
+    },
+    {
+      "at": 357882.0999994278,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/6f.flac",
+      "time": 1.001293
+    },
+    {
+      "at": 357882.0999994278,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/6f.flac",
+      "time": 1.001293
+    },
+    {
+      "at": 358400.39999961853,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/41.flac",
+      "time": 0
+    },
+    {
+      "at": 359982.30000019073,
+      "kind": "playing",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/8f.flac",
+      "time": 0
+    },
+    {
+      "at": 360064.5999994278,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/41.flac",
+      "time": 1.568707
+    },
+    {
+      "at": 360064.5999994278,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/41.flac",
+      "time": 1.568707
+    },
+    {
+      "at": 364239.8999996186,
+      "kind": "pause",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/8f.flac",
+      "time": 4.172041
+    },
+    {
+      "at": 364240,
+      "kind": "ended",
+      "src": "http://127.0.0.1:51080/yuyuhakusho/audio/8f.flac",
+      "time": 4.172041
+    }
+  ],
+  "finished": true,
+  "frame": "2573",
+  "phase": "result",
+  "seats": [
+    {
+      "autoPlay": false,
+      "bot": false
+    },
+    {
+      "autoPlay": false,
+      "bot": true
+    }
+  ],
+  "status": "finished"
+}

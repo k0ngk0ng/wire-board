@@ -33,6 +33,7 @@ export type RuntimeReply = {
   renderedFrame?: string;
   drawRequests?: number;
   spritePixels?: number;
+  soundRequests?: number[];
 };
 export interface NetworkWasm {
   request(

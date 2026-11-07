@@ -191,6 +191,9 @@ export function Board(props: BoardProps<NetworkView>) {
             physical?.sample(at, active, root.current!) ?? [],
           ),
         clearPhysical: () => physical?.clear(),
+        audio: props.audio,
+        sound: () => latest.current.sound,
+        paused: () => !!latest.current.clock.paused || !!latest.current.room.game?.paused,
       });
       owned = created;
       client.current = created;
@@ -220,6 +223,9 @@ export function Board(props: BoardProps<NetworkView>) {
       if (client.current === owned) client.current = undefined;
     };
   }, [identity, retry]);
+  useLayoutEffect(() => {
+    client.current?.refreshAudio();
+  }, [props.sound, props.clock.paused, props.room.game?.paused]);
   useLayoutEffect(() => {
     client.current?.update(
       props.data,

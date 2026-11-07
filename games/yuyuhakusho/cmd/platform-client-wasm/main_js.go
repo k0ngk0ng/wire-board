@@ -41,6 +41,7 @@ type reply struct {
 	RenderedFrame      string              `json:"renderedFrame,omitempty"`
 	DrawRequests       int                 `json:"drawRequests,omitempty"`
 	SpritePixels       int                 `json:"spritePixels,omitempty"`
+	SoundRequests      []uint16            `json:"soundRequests,omitempty"`
 }
 type entry struct {
 	asset   uint32
@@ -180,9 +181,10 @@ func main() {
 						break
 					}
 					var frame runtimebridge.Frame
-					frame, err = session.StepControlled(req.Held, req.Automated)
+					frame, err = session.StepControlledWithSounds(req.Held, req.Automated)
 					if err == nil {
 						err = copyPixels(frame)
+						out.SoundRequests = frame.SoundRequests
 					}
 				case "save":
 					var raw []byte
