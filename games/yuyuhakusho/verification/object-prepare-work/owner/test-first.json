@@ -1,0 +1,13 @@
+{
+  "test_first": true,
+  "direct_owner_api_exists": false,
+  "production_before_refactor_sha256": "c9777d253a71526e5e9a8cd99bc6bf5a830d9deff269e839baec831dcb6f812b",
+  "native_fixture_unchanged": true,
+  "actual_missing_api_red": true,
+  "files": {
+    "games/yuyuhakusho/engine/object_prepare_work_owner_test.go": "6bf61c050ab6a2496158fb20b0bf623cefb3fdd6ed3f6af8ba412e4aba73bd14",
+    "scripts/yuyuhakusho/verify_object_prepare_work_owner.py": "e1e7e65841896f9e66c6a82ea96654c0170fc5ea04676e764eaad7c70dabf33e",
+    "games/yuyuhakusho/verification/object-prepare-work/OWNER_FAILURES.md": "6c30de8393821ff4d1d339b1227f4139dc8e872e5bb216554db8a3e92c3ff34c",
+    "games/yuyuhakusho/verification/object-prepare-work/test-first.json": "0339694ccb90fd141ff84a979dbfc9d67061d3d9633baff864ceb533f246327a"
+  }
+}

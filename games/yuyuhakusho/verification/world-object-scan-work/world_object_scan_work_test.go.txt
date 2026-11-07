@@ -1,0 +1,271 @@
+package engine
+
+import (
+	"bytes"
+	"compress/gzip"
+	"encoding/json"
+	"errors"
+	"io"
+	"os"
+	"reflect"
+	"testing"
+)
+
+type objectScanNative struct {
+	Name, Kind string
+	Entry      [2]uint64
+	Reads      []struct {
+		ID     uint16
+		AtStep int `json:"at_step"`
+		Header MatchObjectHeader
+	}
+	Calls []struct {
+		ID          uint16
+		Behavior    uint32
+		SavedStride uint16    `json:"saved_stride"`
+		AfterStep   int       `json:"after_step"`
+		EntryClock  [2]uint64 `json:"entry_clock"`
+		ReturnClock [2]uint64 `json:"return_clock"`
+		HeaderAfter MatchObjectHeader `json:"header_after"`
+	}
+	Steps []struct {
+		ID             uint16
+		Before, After  [2]uint64
+		ObservedAfter  [2]uint64 `json:"observed_after"`
+		ExternalBefore bool      `json:"external_before"`
+		AfterInferred  bool      `json:"after_inferred"`
+		AuxVerified    bool      `json:"aux_verified"`
+	}
+}
+
+func objectScanFixture(t *testing.T) []objectScanNative {
+	t.Helper()
+	packed, err := os.ReadFile("../verification/world-object-scan-work/native-aux/native-world-object-scan.json.gz")
+	if err != nil {
+		t.Fatal(err)
+	}
+	z, err := gzip.NewReader(bytes.NewReader(packed))
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer z.Close()
+	raw, err := io.ReadAll(z)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var data struct {
+		Version int
+		Cases   []objectScanNative
+	}
+	if err := json.Unmarshal(raw, &data); err != nil {
+		t.Fatal(err)
+	}
+	if data.Version != 1 || len(data.Cases) != 79 {
+		t.Fatal("complete original scanner profile missing", data.Version, len(data.Cases))
+	}
+	return data.Cases
+}
+
+func TestWorldObjectScanWorkOriginalCompleteCalls(t *testing.T) {
+	natural, private, operations, external, aux := 0, 0, 0, 0, 0
+	for index, row := range objectScanFixture(t) {
+		clock := row.Entry
+		position, reads, calls := 0, 0, 0
+		prepare := func() {
+			if position >= len(row.Steps) {
+				t.Fatal("extra native scanner work", index, position)
+			}
+			step := row.Steps[position]
+			if clock != step.Before {
+				if !step.ExternalBefore {
+					t.Fatal("unobserved external scanner displacement", index, position, clock, step.Before)
+				}
+				// Explicit observed auxiliary feedback belongs to the external
+				// main clock; it is never charged as this scanner's CPU work.
+				clock = step.Before
+				external++
+			}
+		}
+		err := WalkWorldObjectsWork(func(id uint16) (MatchObjectHeader, error) {
+			prepare()
+			if reads >= len(row.Reads) || row.Reads[reads].ID != id || row.Reads[reads].AtStep != position {
+				t.Fatal("original header-read stage differs", index, position, id, reads)
+			}
+			header := row.Reads[reads].Header
+			reads++
+			return header, nil
+		}, func(id uint16, behavior uint32, stride uint16) error {
+			if calls >= len(row.Calls) {
+				t.Fatal("extra original callback", index, id)
+			}
+			want := row.Calls[calls]
+			if id != want.ID || behavior != want.Behavior || stride != want.SavedStride || position != want.AfterStep || clock != want.EntryClock {
+				t.Fatal("original callback latch/boundary differs", index, calls, id, behavior, stride, clock, want)
+			}
+			// The original callback is deliberately external to the scanner
+			// API. Test-only recorded entry/return clocks compose its real cost.
+			clock = want.ReturnClock
+			calls++
+			return nil
+		}, func(op WorldWorkOperation) error {
+			prepare()
+			want := row.Steps[position]
+			if op.ObjectID != want.ID || want.AfterInferred {
+				t.Fatal("scanner slot identity or unverified native boundary", index, position, op.ObjectID, want)
+			}
+			next, refresh, err := op.Work.Advance(clock[0], clock[1])
+			if err != nil {
+				return err
+			}
+			clock = [2]uint64{next, refresh}
+			if clock != want.After {
+				t.Fatal("native scanner quantum differs", index, position, op, clock, want.After)
+			}
+			if want.AuxVerified {
+				aux++
+			}
+			position++
+			return nil
+		})
+		if err != nil || position != len(row.Steps) || reads != len(row.Reads) || calls != len(row.Calls) {
+			t.Fatal("incomplete original scanner call", index, row.Name, err, position, reads, calls)
+		}
+		if row.Kind == "natural" {
+			natural++
+		} else {
+			private++
+		}
+		operations += position
+	}
+	if natural != 15 || private != 64 || operations != 51051 || aux != 39 || external == 0 {
+		t.Fatal("scanner native coverage changed", natural, private, operations, aux, external)
+	}
+	t.Logf("original private calls=%d natural complete passes=%d scanner operations=%d auxiliary boundary observations=%d", private, natural, operations, aux)
+}
+
+func TestWorldObjectScanWorkDynamicSlotsAndSavedStride(t *testing.T) {
+	headers := map[uint16]MatchObjectHeader{
+		0x8000: {Behavior: 11, Size: 64}, 0x8080: {Behavior: 99, Size: 64}, 0x9fc0: {Behavior: 55, Size: 64},
+	}
+	type called struct { ID uint16; Behavior uint32; Stride uint16 }
+	var calls []called
+	err := WalkWorldObjectsWork(func(id uint16) (MatchObjectHeader, error) { return headers[id], nil }, func(id uint16, behavior uint32, stride uint16) error {
+		calls = append(calls, called{id, behavior, stride})
+		switch id {
+		case 0x8000:
+			headers[id] = MatchObjectHeader{Behavior: 66, Size: 256}
+			headers[0x8040] = MatchObjectHeader{Behavior: 22, Size: 128}
+			headers[0x80c0] = MatchObjectHeader{Behavior: 33, Size: 192}
+		case 0x8040:
+			headers[id] = MatchObjectHeader{}
+			headers[0x9fc0] = MatchObjectHeader{}
+		case 0x80c0:
+			headers[0x8180] = MatchObjectHeader{Behavior: 44, Size: 256}
+		}
+		return nil
+	}, nil)
+	want := []called{{0x8000, 11, 64}, {0x8040, 22, 128}, {0x80c0, 33, 192}, {0x8180, 44, 256}}
+	if err != nil || !reflect.DeepEqual(calls, want) {
+		t.Fatal("dynamic future slots, skipped interior, or saved stride differs", calls, err)
+	}
+}
+
+func TestWorldObjectScanWorkSeparateReadLatches(t *testing.T) {
+	for _, initiallyEmpty := range []bool{false, true} {
+		header, changed, reads, calls := MatchObjectHeader{Behavior: 11, Size: 64}, false, 0, 0
+		if initiallyEmpty { header = MatchObjectHeader{} }
+		err := WalkWorldObjectsWork(func(id uint16) (MatchObjectHeader, error) {
+			if id != 0x8000 { return MatchObjectHeader{}, nil }
+			reads++
+			return header, nil
+		}, func(id uint16, behavior uint32, stride uint16) error {
+			calls++
+			if initiallyEmpty || id != 0x8000 || behavior != 11 || stride != 128 {
+				t.Fatal("old behavior and new stride were not separately latched", initiallyEmpty, id, behavior, stride)
+			}
+			return nil
+		}, func(op WorldWorkOperation) error {
+			if op.ObjectID == 0x8000 && op.Work.Phase == "objects-scan-behavior" && !changed {
+				header, changed = MatchObjectHeader{Behavior: 22, Size: 128}, true
+			}
+			if op.ObjectID == 0x8000 && op.Work.Phase == "objects-scan-call" {
+				header = MatchObjectHeader{Behavior: 33, Size: 256}
+			}
+			return nil
+		})
+		if err != nil || !changed || initiallyEmpty && (reads != 1 || calls != 0) || !initiallyEmpty && (reads != 2 || calls != 1) {
+			t.Fatal("read latch coverage missing", initiallyEmpty, reads, calls, changed, err)
+		}
+	}
+}
+
+func TestWorldObjectScanWorkClearedWorldStillScansToEnd(t *testing.T) {
+	cleared, reads, calls, last := false, 0, 0, uint16(0)
+	err := WalkWorldObjectsWork(func(id uint16) (MatchObjectHeader, error) {
+		reads++; last = id
+		if id == 0x8000 && !cleared { return MatchObjectHeader{Behavior: 0x353a, Size: 64}, nil }
+		return MatchObjectHeader{Size: 65535}, nil // Empty slots never read Size.
+	}, func(uint16, uint32, uint16) error { cleared = true; calls++; return nil }, nil)
+	if err != nil || !cleared || calls != 1 || reads != 129 || last != 0x9fc0 {
+		t.Fatal("scanner stopped at platform completion or read empty size", cleared, calls, reads, last, err)
+	}
+}
+
+func TestWorldObjectScanWorkErrorsStopImmediately(t *testing.T) {
+	read := func(uint16) (MatchObjectHeader, error) { return MatchObjectHeader{Behavior: 1, Size: 64}, nil }
+	var total int
+	if err := WalkWorldObjectsWork(read, func(uint16, uint32, uint16) error { return nil }, func(WorldWorkOperation) error { total++; return nil }); err != nil || total != 1026 {
+		t.Fatal("all-active scanner operation domain changed", total, err)
+	}
+	sentinel := errors.New("scanner external failure")
+	for fail := 0; fail < total; fail++ {
+		work, reads, calls, atRead, atCall := 0, 0, 0, -1, -1
+		err := WalkWorldObjectsWork(func(id uint16) (MatchObjectHeader, error) { reads++; return read(id) }, func(uint16, uint32, uint16) error { calls++; return nil }, func(WorldWorkOperation) error {
+			i := work; work++
+			if i == fail { atRead, atCall = reads, calls; return sentinel }
+			return nil
+		})
+		if !errors.Is(err, sentinel) || work != fail+1 || reads != atRead || calls != atCall {
+			t.Fatal("failed scanner work continued", fail, work, reads, calls, err)
+		}
+	}
+	for fail := 1; fail <= 256; fail++ {
+		reads, calls, work, atWork, atCall := 0, 0, 0, -1, -1
+		err := WalkWorldObjectsWork(func(id uint16) (MatchObjectHeader, error) {
+			reads++
+			if reads == fail { atWork, atCall = work, calls; return MatchObjectHeader{}, sentinel }
+			return read(id)
+		}, func(uint16, uint32, uint16) error { calls++; return nil }, func(WorldWorkOperation) error { work++; return nil })
+		if !errors.Is(err, sentinel) || reads != fail || work != atWork || calls != atCall {
+			t.Fatal("failed header read continued", fail, reads, work, calls, err)
+		}
+	}
+	for fail := 1; fail <= 128; fail++ {
+		calls, work, reads, atWork, atRead := 0, 0, 0, -1, -1
+		err := WalkWorldObjectsWork(func(id uint16) (MatchObjectHeader, error) { reads++; return read(id) }, func(uint16, uint32, uint16) error {
+			calls++
+			if calls == fail { atWork, atRead = work, reads; return sentinel }
+			return nil
+		}, func(WorldWorkOperation) error { work++; return nil })
+		if !errors.Is(err, sentinel) || calls != fail || work != atWork || reads != atRead {
+			t.Fatal("failed external callback continued", fail, calls, work, reads, err)
+		}
+	}
+}
+
+func TestWorldObjectScanWorkRejectsInvalidActiveStride(t *testing.T) {
+	for _, size := range []uint16{0, 1, 63, 65, 257, 512, 65535, 128} {
+		calls := 0
+		err := WalkWorldObjectsWork(func(id uint16) (MatchObjectHeader, error) {
+			if id == 0x9fc0 { return MatchObjectHeader{Behavior: 1, Size: size}, nil }
+			return MatchObjectHeader{}, nil
+		}, func(uint16, uint32, uint16) error { calls++; return nil }, nil)
+		if !errors.Is(err, ErrWorldObjectScanProfile) || calls != 0 {
+			t.Fatal("invalid active stride reached callback", size, calls, err)
+		}
+	}
+	if !errors.Is(WalkWorldObjectsWork(nil, func(uint16, uint32, uint16) error { return nil }, nil), ErrWorldObjectScanProfile) ||
+		!errors.Is(WalkWorldObjectsWork(func(uint16) (MatchObjectHeader, error) { return MatchObjectHeader{}, nil }, nil, nil), ErrWorldObjectScanProfile) {
+		t.Fatal("missing required scanner callback accepted")
+	}
+}

@@ -1,0 +1,104 @@
+{
+  "pass": true,
+  "test_first": true,
+  "native_calls": 320,
+  "native_work_boundaries": 117120,
+  "natural_calls": 2087,
+  "natural_reserved_counts": [
+    1,
+    2
+  ],
+  "source_target_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+  "direct_owner_api_verified": true,
+  "native_fixture_unchanged": true,
+  "native_calls_per_api": 320,
+  "native_apis_tested": 2,
+  "native_work_boundaries_per_api": 117120,
+  "scope": "Original complete preparation through caller-owned state and value wrapper; frozen native results/costs, live publication, direct-owner failure frontier and value rollback. Final owner refactor has native-only validation after the user prioritized playable sound delivery.",
+  "checks": {
+    "native": {
+      "mode": "native",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-json",
+        "-count=1",
+        "-timeout=5m",
+        "-run",
+        "^TestObjectPrepare(Work|Owner)",
+        "./games/yuyuhakusho/engine"
+      ],
+      "cwd": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho",
+      "environment": {
+        "TEST_TELEMETRY_DIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-telemetry",
+        "GOCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-cache",
+        "GOMODCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-mod",
+        "GOTMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+        "TMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+        "GOMAXPROCS": "2"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 3.156071186065674,
+      "output_sha256": "771892b364c0ef17d61bb929f97a1f1502f5b6f782d326de40ff271f31480dda",
+      "tests_passed": 89,
+      "top_level_passed": 9,
+      "failures": []
+    }
+  },
+  "legacy_validation_before_owner_refactor": {
+    "path": "games/yuyuhakusho/verification/object-prepare-work/owner/value-api-baseline-validation.json",
+    "sha256": "239480320e786b0a3d8cbcd3c9bb78fd764b47815f89f2eabf416134eada29ac"
+  },
+  "checks_not_rerun_after_owner_refactor": [
+    "race",
+    "wasm",
+    "vet"
+  ],
+  "sources": {
+    "games/yuyuhakusho/engine/object_prepare_work.go": "e064ce5a079277db104df8bb99bcb635216dda0e661d7abc488907615f650a75",
+    "games/yuyuhakusho/engine/object_prepare_work_test.go": "3ac49b4f015cedc72df34cb606e57a44242e829d2450241117ea1be3b204a236",
+    "games/yuyuhakusho/engine/main_work.go": "2349d6d86306c6244a80b988b3748b82df958b8eedf0d38cab5a4b7fc977498f",
+    "scripts/yuyuhakusho/verify_object_prepare_work.py": "75295bb9a3622a277bd8bd0bde4bb2a2bb73f82a2e9c2ee9f5ca901a7b46def2",
+    "scripts/yuyuhakusho/capture_object_prepare_work.py": "cb11062b25820401abcd1ed70f54c65234593985fc7b4c5a7a8158ec07a881fc",
+    "games/yuyuhakusho/engine/object_prepare_work_owner_test.go": "6bf61c050ab6a2496158fb20b0bf623cefb3fdd6ed3f6af8ba412e4aba73bd14",
+    "scripts/yuyuhakusho/verify_object_prepare_work_owner.py": "e1e7e65841896f9e66c6a82ea96654c0170fc5ea04676e764eaad7c70dabf33e"
+  },
+  "artifacts": {
+    "games/yuyuhakusho/verification/object-prepare-work/FAILURES.md": "d759197d40a4d1ff0ad9121b3f4033fc2543dd2b937afdcfcf23bc53382eb586",
+    "games/yuyuhakusho/verification/object-prepare-work/OWNER_FAILURES.md": "6c30de8393821ff4d1d339b1227f4139dc8e872e5bb216554db8a3e92c3ff34c",
+    "games/yuyuhakusho/verification/object-prepare-work/README.md": "e83bc73775759f43e9e61faadeb8c2934cc846b1a794abdc366c77bbad9689bc",
+    "games/yuyuhakusho/verification/object-prepare-work/capture.json": "842b49c6535b1e60a94d71d2a7edf8fc496bf0d903aad96b658ebe433cb7bf37",
+    "games/yuyuhakusho/verification/object-prepare-work/cleanup.json": "a53fc7e8c55f9ec99aaaba0dc3dc1160948f6f46d1f41dd69811edb106a8bf0c",
+    "games/yuyuhakusho/verification/object-prepare-work/native/command.json": "2e964274c389f6ddc63cef51e8f260c4b7e6782eb40763ab1cda3d6c1b5dd5a1",
+    "games/yuyuhakusho/verification/object-prepare-work/native/output.jsonl": "94548f3c8bb34421f12f26915de9d7465d6b4ca4297b5595f7081be86c2b3c33",
+    "games/yuyuhakusho/verification/object-prepare-work/native-object-prepare-work.json.gz": "40b83b1aad4d76c35ff577dea58d08a13acaf802631f72a9cebbdaa625ee9261",
+    "games/yuyuhakusho/verification/object-prepare-work/natural-calls.json.gz": "4bf9c06183813db8452db673bd2360bd801cc3640de47446946b89781b58b26b",
+    "games/yuyuhakusho/verification/object-prepare-work/owner/build-before-shared-fix/command.json": "6efddc1c82e36071bd9dfa074a5835aea1e2db575c60235dcc1563bcb574cae8",
+    "games/yuyuhakusho/verification/object-prepare-work/owner/build-before-shared-fix/output.jsonl": "8b9ab4733883736a6643a17fce9ced801387264680ff67ae69f3e5fb5d45a39c",
+    "games/yuyuhakusho/verification/object-prepare-work/owner/native/command.json": "928169d01e6d30a3e2e55e7280e9cffff49bea5e927e1d524e89166c308986d0",
+    "games/yuyuhakusho/verification/object-prepare-work/owner/native/output.jsonl": "771892b364c0ef17d61bb929f97a1f1502f5b6f782d326de40ff271f31480dda",
+    "games/yuyuhakusho/verification/object-prepare-work/owner/native-related-sources/command.json": "0691abdf19f374934369e0bd79268a3dd742b85ffb04496762fd14c206409dce",
+    "games/yuyuhakusho/verification/object-prepare-work/owner/native-related-sources/output.jsonl": "915ec815951c225123e9dac0755e4927e49ac657d6d18a762637c83b1a809201",
+    "games/yuyuhakusho/verification/object-prepare-work/owner/red/command.json": "6e7e6d0fc4067dad86c785665c4cf921e2ba3e1dab38655db131549c37e0e20b",
+    "games/yuyuhakusho/verification/object-prepare-work/owner/red/output.jsonl": "e2a8c03d21388a9df68a0fb31c3e65b7492f3583c89d4bd1bdfd59b83fd9c659",
+    "games/yuyuhakusho/verification/object-prepare-work/owner/test-first.json": "ee53d99a4bec5d7418ebd37e0932237c986e248b0e4bb8dcc19655b12dc4b277",
+    "games/yuyuhakusho/verification/object-prepare-work/owner/value-api-baseline-validation.json": "239480320e786b0a3d8cbcd3c9bb78fd764b47815f89f2eabf416134eada29ac",
+    "games/yuyuhakusho/verification/object-prepare-work/race/command.json": "5a570fd022d80195febba0788dbf8d1279dd233bb640c83c0c52d42afac565c6",
+    "games/yuyuhakusho/verification/object-prepare-work/race/output.jsonl": "d9937f429de604463a50ecf086e8997c018105fa0e381c6e40ec2a1cd9bfca65",
+    "games/yuyuhakusho/verification/object-prepare-work/red/command.json": "5defbd9961131acfe9243a81b6d537cf43abc6926d99a8d4559d4c9588934632",
+    "games/yuyuhakusho/verification/object-prepare-work/red/output.jsonl": "abd02c4ff121de5bf7724704da52db2834a5183669f263d868ceeacff707918d",
+    "games/yuyuhakusho/verification/object-prepare-work/test-first.json": "0339694ccb90fd141ff84a979dbfc9d67061d3d9633baff864ceb533f246327a",
+    "games/yuyuhakusho/verification/object-prepare-work/vet/command.json": "7370300a9ed21be4549f6b76247fc3649dd791247409e978c294a15a63f798d4",
+    "games/yuyuhakusho/verification/object-prepare-work/vet/output.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "games/yuyuhakusho/verification/object-prepare-work/wasm/command.json": "d02a05c5491de6ac4c774b04d03733ef9e4c0560671b37f9c8de4ab88049d134",
+    "games/yuyuhakusho/verification/object-prepare-work/wasm/output.jsonl": "5373270b25f59e98b80561b66d378c61541e0fa7fee0b9b8cab4845bf8025456"
+  },
+  "preflight": {
+    "shared_compile_failure": "owner/build-before-shared-fix/output.jsonl; concurrent chu_world.go undefined soundPort, resolved by Root before final full engine package native pass",
+    "related_sources_only": "owner/native-related-sources/command.json; already-started focused 89-test pass completed before final package pass"
+  },
+  "limits": [
+    "Actual World IRQ/audio composition is validated by the joint caller, not this independent object preparation evidence.",
+    "No new native capture or race/Wasm/vet run after the explicit delivery-priority direction. Original research fixtures and records remain unchanged."
+  ]
+}

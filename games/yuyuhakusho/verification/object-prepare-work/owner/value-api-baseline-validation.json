@@ -1,0 +1,150 @@
+{
+  "pass": true,
+  "test_first": true,
+  "scope": "Independent complete 125A preparation and MainWorkOperation costs; caller/IRQ/audio composition is owned by the joint main clock.",
+  "native_calls": 320,
+  "native_work_boundaries": 117120,
+  "natural_calls": 2087,
+  "natural_reserved_counts": [
+    1,
+    2
+  ],
+  "source_target_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+  "checks": {
+    "native": {
+      "mode": "native",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-json",
+        "-count=1",
+        "-timeout=5m",
+        "-run",
+        "^TestObjectPrepareWork",
+        "./games/yuyuhakusho/engine"
+      ],
+      "cwd": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho",
+      "environment": {
+        "TEST_TELEMETRY_DIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-telemetry",
+        "GOCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-cache",
+        "GOMODCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-mod",
+        "GOTMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+        "TMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+        "GOMAXPROCS": "2"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 3.167159080505371,
+      "output_sha256": "94548f3c8bb34421f12f26915de9d7465d6b4ca4297b5595f7081be86c2b3c33",
+      "tests_passed": 85,
+      "top_level_passed": 5,
+      "failures": []
+    },
+    "race": {
+      "mode": "race",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-json",
+        "-count=1",
+        "-timeout=5m",
+        "-run",
+        "^TestObjectPrepareWork",
+        "-race",
+        "./games/yuyuhakusho/engine"
+      ],
+      "cwd": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho",
+      "environment": {
+        "TEST_TELEMETRY_DIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-telemetry",
+        "GOCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-cache",
+        "GOMODCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-mod",
+        "GOTMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+        "TMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+        "GOMAXPROCS": "2"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 8.36124587059021,
+      "output_sha256": "d9937f429de604463a50ecf086e8997c018105fa0e381c6e40ec2a1cd9bfca65",
+      "tests_passed": 85,
+      "top_level_passed": 5,
+      "failures": []
+    },
+    "wasm": {
+      "mode": "wasm",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-json",
+        "-count=1",
+        "-timeout=5m",
+        "-run",
+        "^TestObjectPrepareWork",
+        "-exec",
+        "/opt/homebrew/Cellar/go/1.26.2/libexec/lib/wasm/go_js_wasm_exec",
+        "./games/yuyuhakusho/engine"
+      ],
+      "cwd": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho",
+      "environment": {
+        "TEST_TELEMETRY_DIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-telemetry",
+        "GOCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-cache",
+        "GOMODCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-mod",
+        "GOTMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+        "TMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+        "GOMAXPROCS": "1",
+        "GOOS": "js",
+        "GOARCH": "wasm"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 5.200902938842773,
+      "output_sha256": "5373270b25f59e98b80561b66d378c61541e0fa7fee0b9b8cab4845bf8025456",
+      "tests_passed": 85,
+      "top_level_passed": 5,
+      "failures": []
+    },
+    "vet": {
+      "mode": "vet",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "vet",
+        "./games/yuyuhakusho/engine"
+      ],
+      "cwd": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho",
+      "environment": {
+        "TEST_TELEMETRY_DIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-telemetry",
+        "GOCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-cache",
+        "GOMODCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-mod",
+        "GOTMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+        "TMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+        "GOMAXPROCS": "2"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 0.4583621025085449,
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "sources": {
+    "games/yuyuhakusho/engine/object_prepare_work.go": "c9777d253a71526e5e9a8cd99bc6bf5a830d9deff269e839baec831dcb6f812b",
+    "games/yuyuhakusho/engine/object_prepare_work_test.go": "3ac49b4f015cedc72df34cb606e57a44242e829d2450241117ea1be3b204a236",
+    "games/yuyuhakusho/engine/main_work.go": "2349d6d86306c6244a80b988b3748b82df958b8eedf0d38cab5a4b7fc977498f",
+    "scripts/yuyuhakusho/verify_object_prepare_work.py": "75295bb9a3622a277bd8bd0bde4bb2a2bb73f82a2e9c2ee9f5ca901a7b46def2",
+    "scripts/yuyuhakusho/capture_object_prepare_work.py": "cb11062b25820401abcd1ed70f54c65234593985fc7b4c5a7a8158ec07a881fc"
+  },
+  "artifacts": {
+    "games/yuyuhakusho/verification/object-prepare-work/FAILURES.md": "d759197d40a4d1ff0ad9121b3f4033fc2543dd2b937afdcfcf23bc53382eb586",
+    "games/yuyuhakusho/verification/object-prepare-work/README.md": "d4098b23b6af2c9525e8153b5f27b5b739204b2ac92dc7d4ae8557b7d925c4f6",
+    "games/yuyuhakusho/verification/object-prepare-work/capture.json": "842b49c6535b1e60a94d71d2a7edf8fc496bf0d903aad96b658ebe433cb7bf37",
+    "games/yuyuhakusho/verification/object-prepare-work/cleanup.json": "a53fc7e8c55f9ec99aaaba0dc3dc1160948f6f46d1f41dd69811edb106a8bf0c",
+    "games/yuyuhakusho/verification/object-prepare-work/native/command.json": "2e964274c389f6ddc63cef51e8f260c4b7e6782eb40763ab1cda3d6c1b5dd5a1",
+    "games/yuyuhakusho/verification/object-prepare-work/native/output.jsonl": "94548f3c8bb34421f12f26915de9d7465d6b4ca4297b5595f7081be86c2b3c33",
+    "games/yuyuhakusho/verification/object-prepare-work/native-object-prepare-work.json.gz": "40b83b1aad4d76c35ff577dea58d08a13acaf802631f72a9cebbdaa625ee9261",
+    "games/yuyuhakusho/verification/object-prepare-work/natural-calls.json.gz": "4bf9c06183813db8452db673bd2360bd801cc3640de47446946b89781b58b26b",
+    "games/yuyuhakusho/verification/object-prepare-work/race/command.json": "5a570fd022d80195febba0788dbf8d1279dd233bb640c83c0c52d42afac565c6",
+    "games/yuyuhakusho/verification/object-prepare-work/race/output.jsonl": "d9937f429de604463a50ecf086e8997c018105fa0e381c6e40ec2a1cd9bfca65",
+    "games/yuyuhakusho/verification/object-prepare-work/red/command.json": "5defbd9961131acfe9243a81b6d537cf43abc6926d99a8d4559d4c9588934632",
+    "games/yuyuhakusho/verification/object-prepare-work/red/output.jsonl": "abd02c4ff121de5bf7724704da52db2834a5183669f263d868ceeacff707918d",
+    "games/yuyuhakusho/verification/object-prepare-work/test-first.json": "0339694ccb90fd141ff84a979dbfc9d67061d3d9633baff864ceb533f246327a",
+    "games/yuyuhakusho/verification/object-prepare-work/vet/command.json": "7370300a9ed21be4549f6b76247fc3649dd791247409e978c294a15a63f798d4",
+    "games/yuyuhakusho/verification/object-prepare-work/vet/output.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "games/yuyuhakusho/verification/object-prepare-work/wasm/command.json": "d02a05c5491de6ac4c774b04d03733ef9e4c0560671b37f9c8de4ab88049d134",
+    "games/yuyuhakusho/verification/object-prepare-work/wasm/output.jsonl": "5373270b25f59e98b80561b66d378c61541e0fa7fee0b9b8cab4845bf8025456"
+  }
+}

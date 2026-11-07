@@ -1,0 +1,315 @@
+#!/usr/bin/env python3
+"""Freeze actual complete 3592 flow and independent original scanner quanta."""
+import argparse
+from collections import defaultdict
+import ctypes as C
+import gzip
+import json
+import os
+from pathlib import Path
+import subprocess
+
+from reference import ROOT, ReferenceSession, CPUHead, buttons_at, sha
+from research_audio_loops import ORIGINAL, OBSERVED
+
+BASE = ROOT/'games/yuyuhakusho/verification/world-object-scan-work'
+PCS = {0x3592, 0x3596, 0x359a, 0x359c, 0x359e, 0x35a2, 0x35a4,
+       0x35a6, 0x35aa, 0x35ac, 0x35ae, 0x35b2, 0x35b6, 0x35b8}
+FIELDS = ['kind', 'pass', 'pc', 'frame', 'cycle', 'refresh', 'a5', 'd0', 'sp',
+          'behavior', 'size', 'stage', 'sr', 'target', 'saved', 'after_pc',
+          'after_frame', 'after_cycle', 'after_refresh', 'after_a5', 'after_sp']
+
+
+class Event(C.Structure):
+    _fields_ = [(name, C.c_uint32) for name in FIELDS]
+
+
+def header(behavior=0, size=0, stage=0):
+    return {'Behavior': behavior, 'Size': size, 'Stage': stage}
+
+
+def clock(event, after=False):
+    prefix = 'after_' if after else ''
+    origin = (event[prefix+'frame']-1)*896040
+    return [origin+event[prefix+'cycle'], origin+event[prefix+'refresh']]
+
+
+def advance(before, cycles):
+    cycle, refresh = before
+    if cycle >= refresh:
+        refresh, cycle = cycle+896, cycle+14
+    return [cycle+cycles*7, refresh]
+
+
+def patterns():
+    result = [('empty', {})]
+    result.append(('all-64-RTS', {at: header(0x3b66, 64) for at in range(0x8000, 0xa000, 64)}))
+    for size in [64, 128, 192, 256]:
+        result.append((f'first-{size}', {0x8000: header(0x3b66, size)}))
+        result.append((f'last-{size}', {0xa000-size: header(0x3b66, size)}))
+        table = {0x8000: header(0x3556, size), 0x8000+size: header(0x3b66, 64)}
+        for at in range(0x8040, 0x8000+size, 64):
+            table[at] = header(0x3b66, 64)
+        result.append((f'clear-own-{size}', table))
+    table, at = {}, 0x8000
+    for i in range(48):
+        size = [64, 128, 192, 256][i%4]
+        table[at] = header(0x3b66, size, i)
+        at += size
+    result.append(('mixed-strides', table))
+    result.append(('clear-rest-then-scan-empties', {0x8000: header(0x353a, 64), 0x8040: header(0x3b66, 64), 0x9fc0: header(0x3b66, 64)}))
+    return result
+
+
+def main():
+    p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument('--out', type=Path, required=True)
+    a = p.parse_args()
+    out = a.out.resolve()
+    assert out.is_relative_to(BASE) and not out.exists()
+    out.mkdir(parents=True)
+    tmp = out/'tmp'
+    tmp.mkdir()
+    source = ROOT/'scripts/yuyuhakusho/world_object_scan_work_observer.c'
+    binary = tmp/'world-object-scan-work.dylib'
+    subprocess.run(['clang', '-dynamiclib', '-O2', '-fno-modules', str(source), '-o', str(binary)], cwd=ROOT,
+                   env=dict(os.environ, TMPDIR=str(tmp), CLANG_MODULE_CACHE_PATH=str(tmp/'clang-cache')), check=True)
+    bridge = C.CDLL(str(binary))
+    bridge.world_object_scan_work_attach.argtypes = [C.c_void_p]*5
+    bridge.world_object_scan_work_attach.restype = C.c_int
+    bridge.world_object_scan_work_attach_read.argtypes = [C.c_void_p]
+    bridge.world_object_scan_work_attach_read.restype = C.c_int
+    bridge.world_object_scan_work_detach_read.restype = C.c_int
+    bridge.world_object_scan_work_frame.argtypes = [C.c_uint, C.c_int]
+    bridge.world_object_scan_work_events.restype = C.POINTER(Event)
+    for name in ['count', 'complete', 'overflow', 'overlap', 'pending', 'size']:
+        getattr(bridge, 'world_object_scan_work_'+name).restype = C.c_uint
+    assert bridge.world_object_scan_work_size() == C.sizeof(Event)
+    inputs_path = ROOT/'docs/research/md-yuyuhakusho/inputs.json'
+    gold_path = ROOT/'docs/research/md-yuyuhakusho/frame-hashes.json'
+    inputs, gold = json.loads(inputs_path.read_bytes()), json.loads(gold_path.read_bytes())
+    selected = set(range(100, 105)) | set(range(2068, 2075)) | set(range(2393, 2401))
+    records, raw_private, identities, cost_sets, natural_raw = [], [], {}, defaultdict(set), []
+    for core_name, core in [('original', ORIGINAL), ('observed', OBSERVED)]:
+        with ReferenceSession(ROOT, out/core_name, core=core) as ref:
+            identities[core_name] = ref.identity
+            if core_name == 'observed':
+                get = ref.api('m68k_get_reg', C.c_uint, C.c_uint)
+                assert bridge.world_object_scan_work_attach(ref.ram_pointer,
+                    C.addressof(ref.cpu)+CPUHead.cycles.offset,
+                    C.addressof(ref.cpu)+CPUHead.refresh_cycles.offset,
+                    C.addressof(ref.cpu)+CPUHead.cycle_end.offset, C.cast(get, C.c_void_p))
+                read_slot = C.c_void_p.in_dll(ref.lib, 'z80_readmem')
+                assert bridge.world_object_scan_work_attach_read(C.addressof(read_slot))
+                set_hook = ref.api('set_cpu_hook', None, C.c_void_p)
+                set_hook(C.cast(bridge.world_object_scan_work_hook, C.c_void_p))
+            for frame in range(1, 2402):
+                if core_name == 'observed':
+                    bridge.world_object_scan_work_frame(frame, int(frame in selected))
+                result = ref.step(frame, buttons_at(inputs, frame))['reference']
+                assert result == gold[frame-1], ('passive observation changed original frame', core_name, frame)
+                if frame == 2400:
+                    checkpoint = ref.save()
+            if core_name == 'observed':
+                set_hook(None)
+                assert bridge.world_object_scan_work_detach_read()
+                assert not bridge.world_object_scan_work_overflow() and not bridge.world_object_scan_work_overlap()
+                assert not bridge.world_object_scan_work_pending()
+                events = bridge.world_object_scan_work_events()
+                natural_raw = [{name: getattr(events[i], name) for name in FIELDS}
+                               for i in range(bridge.world_object_scan_work_count())]
+                assert bridge.world_object_scan_work_complete() > 0
+            setreg = ref.api('m68k_set_reg', None, C.c_uint, C.c_uint)
+            run = ref.api('m68k_run', None, C.c_uint)
+            setirq = ref.api('m68k_set_irq', None, C.c_uint)
+
+            def write(address, value, size=2):
+                for i, b in enumerate((value&((1<<(size*8))-1)).to_bytes(size, 'big')):
+                    C.c_ubyte.from_address(ref.ram_pointer+(((address+i)&65535)^1)).value = b
+
+            def read_header(at):
+                data = ref.ram_cpu()
+                return header(int.from_bytes(data[at:at+4], 'big'),
+                              int.from_bytes(data[at+4:at+6], 'big'), int.from_bytes(data[at+6:at+8], 'big'))
+
+            for name, table in patterns():
+                for phase, entry in enumerate([[0, 0], [1, 896], [895, 896], [1008, 1008]]):
+                    def setup():
+                        ref.restore(checkpoint, restore_refresh_cycles=True)
+                        setirq(0)
+                        for at in range(0x8000, 0xa000, 4):
+                            write(at, 0, 4)
+                        for at, h in table.items():
+                            write(at, h['Behavior'], 4)
+                            write(at+4, h['Size'])
+                            write(at+6, h['Stage'])
+                        for reg in range(15):
+                            setreg(reg, 0x5a000000+reg*0x10001)
+                        setreg(17, 0x2700)
+                        setreg(15, 0xffff00)
+                        write(0xff00, 0x3d8, 4)
+                        setreg(16, 0x3592)
+                        ref.cpu.cycles, ref.cpu.refresh_cycles = entry
+                    setup()
+                    before = ref.ram_cpu()
+                    row = {'name': name+'/'+str(phase), 'kind': 'private', 'entry': entry,
+                           'reads': [], 'calls': [], 'steps': []}
+                    full_steps, slot, in_call = [], 0x8000, None
+                    for _ in range(20000):
+                        pc = ref.get_register(16)&0xffffff
+                        if pc == 0x3d8:
+                            break
+                        assert pc in PCS or pc == 0x3b66 or 0x353a <= pc <= 0x3574, (name, hex(pc))
+                        cycle, deadline = ref.cpu.cycles, ref.cpu.refresh_cycles
+                        if pc == 0x3596:
+                            slot = ref.get_register(13)&65535
+                        if pc in [0x3596, 0x359e]:
+                            row['reads'].append({'id': slot, 'at_step': len(row['steps']), 'header': read_header(slot)})
+                        if pc == 0x35a2:
+                            sp = ref.get_register(15)&65535
+                            stride = int.from_bytes(ref.ram_cpu()[sp:sp+2], 'big')
+                            in_call = {'id': slot, 'behavior': ref.get_register(8)&0xffffffff,
+                                       'saved_stride': stride, 'after_step': len(row['steps'])+1}
+                        if pc == 0x35a4:
+                            assert in_call is not None and ref.get_register(13)&65535 == in_call['id']
+                            in_call.update(return_clock=[cycle, deadline], header_after=read_header(in_call['id']))
+                            row['calls'].append(in_call)
+                            in_call = None
+                        run(cycle+1)
+                        after = [ref.cpu.cycles, ref.cpu.refresh_cycles]
+                        full_steps.append([pc, cycle, deadline, *after])
+                        if pc in PCS:
+                            cost = (after[0]-cycle-(14 if cycle >= deadline else 0))//7
+                            assert advance([cycle, deadline], cost) == after
+                            cost_sets[pc].add(cost)
+                            row['steps'].append({'id': slot, 'before': [cycle, deadline], 'after': after,
+                                                 'external_before': False, 'after_inferred': False})
+                            if pc == 0x35a2:
+                                in_call['entry_clock'] = after
+                    else:
+                        raise AssertionError(('private complete3592 step cap', name))
+                    assert in_call is None and ref.get_register(13)&65535 == 0xa000
+                    actual = ref.ram_cpu()
+                    assert all(a == b or 0x8000 <= i < 0xa000 or 0xfec0 <= i < 0xff04
+                               for i, (a, b) in enumerate(zip(before, actual)))
+                    stepped = (sha(actual), ref.cpu.cycles, ref.cpu.refresh_cycles,
+                               [ref.get_register(i) for i in range(21)])
+                    setup()
+                    run(stepped[1])
+                    whole = (sha(ref.ram_cpu()), ref.cpu.cycles, ref.cpu.refresh_cycles,
+                             [ref.get_register(i) for i in range(21)])
+                    assert whole == stepped, ('whole native call differs from stepping', core_name, name, phase)
+                    if core_name == 'original':
+                        records.append(row)
+                        raw_private.append(full_steps)
+                    else:
+                        position = next(i for i, r in enumerate(records) if r['name'] == row['name'] and r['kind'] == 'private')
+                        assert row == records[position] and full_steps == raw_private[position], ('cross core', name, phase)
+            print(json.dumps({'core': core_name, 'private_calls': len(patterns())*4,
+                              'natural_events': len(natural_raw)}), flush=True)
+
+    assert set(cost_sets) == PCS
+    # Keep complete original raw input even if the subsequent evidence adapter
+    # encounters a boundary outside its declared clock composition profile.
+    (out/'source-private-steps.json.gz').write_bytes(gzip.compress(json.dumps(raw_private, separators=(',', ':')).encode(), mtime=0))
+    (out/'source-natural-events.json.gz').write_bytes(gzip.compress(json.dumps({'fields': FIELDS, 'events': natural_raw}, separators=(',', ':')).encode(), mtime=0))
+    def natural_cost(event):
+        pc, values = event['pc'], cost_sets[event['pc']]
+        if len(values) == 1:
+            return next(iter(values))
+        assert values == {8, 10}, (hex(pc), values)
+        taken = event['d0'] == 0 if pc == 0x359a else event['a5'] < 0xffffa000
+        return 10 if taken else 8
+
+    grouped = defaultdict(list)
+    for event in natural_raw:
+        grouped[event['pass']].append(event)
+    exact, aux_verified, gaps, active_calls = 0, 0, [], 0
+    for number, events in sorted(grouped.items()):
+        ops = [e for e in events if e['kind'] == 0]
+        assert ops[0]['pc'] == 0x3592 and ops[-1]['pc'] in [0x35ac, 0x35b8]
+        assert ops[-1]['after_a5']&65535 == 0xa000
+        row = {'name': f'natural-{ops[0]["frame"]}-{number}', 'kind': 'natural', 'entry': clock(ops[0]),
+               'reads': [], 'calls': [], 'steps': []}
+        pending, slot = None, 0x8000
+        op_index = 0
+        for event_index, event in enumerate(events):
+            if event['kind'] == 3:
+                continue
+            if event['kind'] == 1:
+                assert pending is not None
+                pending['observed_entry_clock'] = clock(event)
+            elif event['kind'] == 2:
+                assert pending is not None and event['a5']&65535 == pending['id']
+                pending.update(return_clock=clock(event),
+                               header_after=header(event['behavior'], event['size'], event['stage']))
+                row['calls'].append(pending)
+                pending = None
+            else:
+                if event['pc'] == 0x3596:
+                    slot = event['a5']&65535
+                if event['pc'] in [0x3596, 0x359e]:
+                    row['reads'].append({'id': slot, 'at_step': op_index,
+                                         'header': header(event['behavior'], event['size'], event['stage'])})
+                before, observed = clock(event), clock(event, True)
+                after = advance(before, natural_cost(event))
+                foreign = after != observed
+                aux = []
+                for following in events[event_index+1:]:
+                    if following['kind'] != 3:
+                        break
+                    aux.append(following)
+                if foreign:
+                    assert observed[0] >= after[0] and observed[1] == after[1], (number, event, after, observed)
+                    assert aux and clock(aux[0]) == after, ('missing actual scanner end before auxiliary debt', number, event, after, aux[:1])
+                    assert sum(e['after_cycle']-e['cycle'] for e in aux) == observed[0]-after[0], ('unexplained host displacement', number, event, aux)
+                    aux_verified += 1
+                    gaps.append({'pass': number, 'after_step': op_index+1, 'scanner_end': after,
+                                 'observed_next_boundary': observed, 'next_pc': event['after_pc'],
+                                 'extra_master_cycles': observed[0]-after[0],
+                                 'auxiliary_reads': [{'before': clock(e), 'after': clock(e, True), 'target': (e['frame']-1)*896040+e['target']} for e in aux],
+                                 'kind': 'external-auxiliary-feedback'})
+                else:
+                    exact += 1
+                row['steps'].append({'id': slot, 'before': before, 'after': after,
+                                     'observed_after': observed, 'after_inferred': False,
+                                     'aux_verified': foreign,
+                                     'external_before': False})
+                if event['pc'] == 0x35a2:
+                    pending = {'id': slot, 'behavior': event['target'], 'saved_stride': event['saved'],
+                               'after_step': op_index+1, 'entry_clock': after}
+                    active_calls += 1
+                op_index += 1
+        assert pending is None
+        returns = {c['after_step']: c['return_clock'] for c in row['calls']}
+        cursor = row['entry']
+        for index, op in enumerate(row['steps']):
+            op['external_before'] = cursor != op['before']
+            cursor = returns.get(index+1, op['after'])
+        assert all(r['header']['Behavior'] == 0 or r['header']['Size'] in [64, 128, 192, 256]
+                   for r in row['reads']), ('natural typed header domain', row['name'])
+        records.append(row)
+
+    raw = (json.dumps({'version': 1, 'cases': records}, separators=(',', ':'))+'\n').encode()
+    fixture = out/'native-world-object-scan.json.gz'
+    fixture.write_bytes(gzip.compress(raw, mtime=0))
+    report = {'pass': True, 'cases': len(records), 'private_calls': len(patterns())*4,
+              'natural_complete_passes': len(grouped), 'natural_callback_intervals': active_calls,
+              'scanner_operations': sum(len(r['steps']) for r in records),
+              'natural_exact_uninterrupted_operations': exact, 'natural_aux_verified_boundaries': aux_verified,
+              'foreign_boundaries': gaps, 'private_whole_calls_equal_stepping': True,
+              'private_cross_core_equal': True, 'passive_2401_video_ram_controls_unchanged': True,
+              'cores': identities, 'fixture_sha256': sha(fixture.read_bytes()),
+              'cost_calibration': {f'{pc:x}': sorted(values) for pc, values in sorted(cost_sets.items())},
+              'sources': {str(path.relative_to(ROOT)): sha(path.read_bytes()) for path in [Path(__file__), source,
+                          inputs_path, gold_path, ROOT/'docs/research/md-yuyuhakusho/static/input-detail.txt']},
+              'scope': 'Complete actual3592 scanner flow with synchronous external callbacks; exact scanner quanta from whole native private calls and passive uninterrupted boundaries',
+              'limits': ['Callbacks are external and are not priced as zero. Their real original entry/return clocks are retained for test-only composition.',
+                         'Natural hook deltas include explicit external auxiliary feedback. The first delegated read actualMainBefore observes the scanner end, and all added host cycles are checked against delegated read actualMainBeforeAfter. They are not charged as scanner CPU cycles.',
+                         'No full-world callback timing, independent IRQ scheduling, or platform MatchComplete early-stop claim. Typed guards restrict active strides to64/128/192/256.']}
+    (out/'capture.json').write_text(json.dumps(report, indent=2)+'\n')
+    print(json.dumps(report), flush=True)
+
+
+if __name__ == '__main__':
+    main()
