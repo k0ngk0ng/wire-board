@@ -112,6 +112,19 @@ try:
     b('click',f'.escape-dials button:nth-child({index+1})');wait(lambda:device('pump')['dials'][index]!=old)
   b('find','role','button','click','--name','确认校准');wait(lambda:device('pump')['done'])
   b('screenshot',OUT/f'{scenario}-pump-{width}.png','--full')
+  find('storage');inspect('supply');wait(lambda:device('supply')['done'])
+  close_panel();js('document.querySelector(\'button[aria-label="物品栏"]\').scrollIntoView({behavior:"instant",block:"center"})');b('click','button[aria-label="物品栏"]');b('wait','[data-escape-inventory]')
+  wait(lambda:data()['power']<99 and data()['supplies']['cells']>0,seconds=60)
+  before=data()
+  if width==320:
+   point=js('''(()=>{const e=document.querySelector('[data-escape-inventory] button[aria-label="使用共享电池"]');e.scrollIntoView({behavior:"instant",block:"center"});const r=e.getBoundingClientRect();return[r.x+r.width/2,r.y+r.height/2]})()''')
+   tap=subprocess.run(['node','scripts/browser_touch.mjs',b('get','cdp-url')['cdpUrl'],BASE,'tap',*map(str,point+point)],cwd=ROOT,env=ENV,text=True,capture_output=True,timeout=20);assert tap.returncode==0,tap.stdout+tap.stderr
+  else:b('click','[data-escape-inventory] button[aria-label="使用共享电池"]')
+  wait(lambda:data()['supplies']['cells']==before['supplies']['cells']-1)
+  assert data()['power']>before['power'],'using an inventory battery did not restore team power'
+  wait(lambda:js('Number(document.querySelector(\'[data-escape-item="cells"] [data-escape-item-count]\').textContent)')==data()['supplies']['cells'])
+  b('screenshot',OUT/f'{scenario}-inventory-used-{width}.png','--full')
+  close_panel()
   find('power');inspect('power')
   control('button[aria-label="照明供电"]');wait(lambda:'lights' not in data()['circuits'])
   extra='pump' if scenario=='station' else 'lift'
