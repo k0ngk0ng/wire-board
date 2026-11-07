@@ -1,0 +1,35 @@
+{
+  "passed": true,
+  "artifacts": [
+    {
+      "path": "docs/research/escape-scene-discovery/interaction.json",
+      "bytes": 56278,
+      "sha256": "01654576724daa1c7a36f6834d0911100c8907e1915b232a7981cbaf3fdd41eb"
+    },
+    {
+      "path": "docs/research/escape-scene-discovery/browser.json",
+      "bytes": 61636,
+      "sha256": "eea0eaa59129275ac9a9fa34a7f3f4e688b61b987d09d5eed4e9a14662872dec"
+    },
+    {
+      "path": "docs/screenshots/escape-scene-discovery/archive-scene.png",
+      "bytes": 1738937,
+      "sha256": "3bbeb5fd2f9d8e3c4f54cd5d41d82e805ac7216bfd96e0ff020049f70c942e95"
+    },
+    {
+      "path": "docs/screenshots/escape-scene-discovery/station-scene.png",
+      "bytes": 1545982,
+      "sha256": "2625fb4ba16a4334e7608e707c6035d03cce4827a3a5ed6011b1efdd8292d93e"
+    },
+    {
+      "path": "docs/screenshots/escape-scene-discovery/station-inventory.png",
+      "bytes": 349474,
+      "sha256": "c27031cb764e469c9bb980cc505d5524ed776cfc040a2bca83e03bef1c1206cb"
+    },
+    {
+      "path": "docs/screenshots/escape-scene-discovery/archive-inventory-mobile.png",
+      "bytes": 80596,
+      "sha256": "32089adaa1945be66119dade219828b77f2019df18cdbaccc6c275898dd27c73"
+    }
+  ]
+}

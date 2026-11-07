@@ -44,6 +44,7 @@ import {
   roleNames,
   scenarioNames,
   type Device,
+  type Player,
   type Point,
   type View,
 } from "./types";
@@ -97,7 +98,9 @@ export function Board(props: BoardProps<View>) {
   const [art, setArt] = useState<Art>();
   const [selected, setSelected] = useState("");
   const [hovered, setHovered] = useState("");
-  const [modal, setModal] = useState<"map" | "journal" | null>(null);
+  const [modal, setModal] = useState<"map" | "journal" | "inventory" | null>(
+    null,
+  );
   const [error, setError] = useState("");
   const [worldWidth, setWorldWidth] = useState(1000);
   const [pressed, setPressed] = useState<string[]>([]);
@@ -356,6 +359,8 @@ export function Board(props: BoardProps<View>) {
       "[data-escape-dialog]",
     );
     if (!dialog) return;
+    if (modal === "inventory")
+      dialog.scrollIntoView({ block: "nearest", behavior: "instant" });
     dialog
       .querySelector<HTMLElement>("button:not(:disabled)")
       ?.focus({ preventScroll: true });
@@ -690,6 +695,12 @@ export function Board(props: BoardProps<View>) {
     (v, i) => v && !room.seats[i]?.bot && !room.seats[i]?.autoPlay,
   ).length;
   const imageBase = "/escape/v1/";
+  const modalTitle =
+    modal === "map"
+      ? "设施地图"
+      : modal === "inventory"
+        ? "物品栏"
+        : "调查笔记";
   return (
     <section
       ref={root}
@@ -801,17 +812,12 @@ export function Board(props: BoardProps<View>) {
                   aria-label={`前往${view.rooms?.find((r) => r.id === d.room)?.title ?? directionNames[d.direction] + "侧房间"}`}
                   disabled={!canControl}
                   onClick={() => travel(d.room)}
-                >
-                  <span>
-                    <ArrowUpRight size={13} />
-                    {directionNames[d.direction]}
-                  </span>
-                </button>
+                />
               ))}
               {current?.objects?.map((d) => (
                 <button
                   key={d.id}
-                  className={`escape-object-hit ${d.done ? "done" : ""}`}
+                  className="escape-object-hit"
                   data-escape-object={d.id}
                   style={{
                     left: `${d.x / 10}%`,
@@ -824,11 +830,7 @@ export function Board(props: BoardProps<View>) {
                   onFocus={() => setHovered(d.id)}
                   onBlur={() => setHovered("")}
                   onClick={() => select(d)}
-                >
-                  <span>
-                    {d.done ? <Check size={12} /> : <Sparkles size={12} />}
-                  </span>
-                </button>
+                />
               ))}
               {view.players
                 .filter(
@@ -1138,40 +1140,15 @@ export function Board(props: BoardProps<View>) {
                 <b>{view.journal?.length ?? 0}</b>
               </button>
               <button
-                aria-label="使用共享电池"
-                disabled={
-                  !canControl || view.supplies.cells < 1 || view.power >= 99
-                }
-                onClick={() => send({ type: "cell" })}
+                aria-label="物品栏"
+                onClick={() => {
+                  setSelected("");
+                  setModal("inventory");
+                }}
               >
-                <Battery size={18} />
-                <b>{view.supplies.cells}</b>
+                <Package size={17} />
+                <span>物品栏</span>
               </button>
-              <button
-                aria-label="使用急救包"
-                disabled={
-                  !canControl || view.supplies.meds < 1 || me?.hp === 100
-                }
-                onClick={() => send({ type: "med" })}
-              >
-                <Heart size={17} />
-                <b>{view.supplies.meds}</b>
-              </button>
-              <span
-                className="escape-pocket-resource"
-                aria-label={
-                  view.options.scenario === "station"
-                    ? `共享保险丝 ${view.supplies.fuses}`
-                    : `已运回档案 ${view.supplies.documents}`
-                }
-              >
-                <Package size={14} />
-                <b>
-                  {view.options.scenario === "station"
-                    ? view.supplies.fuses
-                    : view.supplies.documents}
-                </b>
-              </span>
               <button
                 aria-label="呼叫队友"
                 disabled={!me || room.spectating || view.phase !== "playing"}
@@ -1312,16 +1289,6 @@ export function Board(props: BoardProps<View>) {
               </div>
             ))}
           </div>
-          <div className="escape-supplies">
-            <Package size={14} />
-            <span>
-              保险丝 <b>{view.supplies.fuses}</b>
-            </span>
-            <FileText size={14} />
-            <span>
-              档案 <b>{view.supplies.documents}</b>
-            </span>
-          </div>
         </aside>
       </div>
       {error && (
@@ -1335,27 +1302,29 @@ export function Board(props: BoardProps<View>) {
       {modal && (
         <div className="escape-modal-shade" onClick={close}>
           <div
-            className={`escape-modal ${modal === "journal" ? "journal" : ""}`}
+            className={`escape-modal ${modal}`}
             data-escape-dialog
             role="dialog"
             aria-modal="true"
-            aria-label={modal === "map" ? "设施地图" : "调查笔记"}
+            aria-label={modalTitle}
             onClick={(e) => e.stopPropagation()}
           >
             <div className="escape-modal-heading">
               <span>
                 {modal === "map" ? (
                   <MapIcon size={21} />
+                ) : modal === "inventory" ? (
+                  <Package size={21} />
                 ) : (
                   <BookOpen size={21} />
                 )}
               </span>
               <div>
                 <small>{scenarioNames[view.options.scenario]}</small>
-                <h3>{modal === "map" ? "设施地图" : "调查笔记"}</h3>
+                <h3>{modalTitle}</h3>
               </div>
               <button
-                aria-label={modal === "map" ? "关闭设施地图" : "关闭调查笔记"}
+                aria-label={`关闭${modalTitle}`}
                 data-controller-cancel
                 className="escape-close"
                 onClick={close}
@@ -1449,6 +1418,13 @@ export function Board(props: BoardProps<View>) {
                   ))}
                 </div>
               </>
+            ) : modal === "inventory" ? (
+              <Inventory
+                view={view}
+                player={me}
+                canControl={canControl}
+                useItem={(type) => send({ type })}
+              />
             ) : (
               <div className="escape-journal-pages">
                 {view.journal?.length ? (
@@ -1481,6 +1457,88 @@ export function Board(props: BoardProps<View>) {
         </div>
       )}
     </section>
+  );
+}
+function Inventory({
+  view,
+  player,
+  canControl,
+  useItem,
+}: {
+  view: View;
+  player?: Player;
+  canControl: boolean;
+  useItem: (type: "cell" | "med") => void;
+}) {
+  const items = [
+    {
+      key: "cells",
+      name: "备用电池",
+      count: view.supplies.cells,
+      Icon: Battery,
+      description: "为全队恢复 30% 电力。",
+      action: "cell" as const,
+      label: "使用共享电池",
+      unavailable: view.power >= 99 ? "电力充足" : "使用电池",
+      disabled: view.power >= 99,
+    },
+    {
+      key: "meds",
+      name: "急救包",
+      count: view.supplies.meds,
+      Icon: Heart,
+      description: "为自己恢复 50 点生命。",
+      action: "med" as const,
+      label: "使用急救包",
+      unavailable: player?.hp === 100 ? "无需治疗" : "使用急救包",
+      disabled: player?.hp === 100,
+    },
+    view.options.scenario === "station"
+      ? {
+          key: "fuses",
+          name: "保险丝",
+          count: view.supplies.fuses,
+          Icon: Package,
+          description: "修复备用发电机时消耗两枚。",
+        }
+      : {
+          key: "documents",
+          name: "已运回档案",
+          count: view.supplies.documents,
+          Icon: FileText,
+          description: "已送达撤离装置，救生艇需要两份。",
+        },
+  ];
+  return (
+    <div className="escape-inventory" data-escape-inventory>
+      <h4>队伍物资</h4>
+      <div className="escape-inventory-grid">
+        {items.map((item) => (
+          <article key={item.key} data-escape-item={item.key}>
+            <div className="escape-item-heading">
+              <item.Icon size={21} />
+              <h4>{item.name}</h4>
+              <b data-escape-item-count>{item.count}</b>
+            </div>
+            <p>{item.description}</p>
+            {item.action && (
+              <button
+                aria-label={item.label}
+                disabled={!canControl || item.count < 1 || item.disabled}
+                onClick={() => useItem(item.action!)}
+              >
+                {item.count < 1 ? "暂无库存" : item.unavailable}
+              </button>
+            )}
+          </article>
+        ))}
+      </div>
+      <section className="escape-carried-item">
+        <h4>携带物</h4>
+        <p>{!player ? "观战中" : player.carry ? "密封档案" : "未携带物品"}</p>
+        {player?.carry && <small>送至撤离装置后交付。</small>}
+      </section>
+    </div>
   );
 }
 function MiniMap({ view, current }: { view: View; current: string }) {

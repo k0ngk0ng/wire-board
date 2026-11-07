@@ -1,0 +1,1890 @@
+{
+  "passed": true,
+  "scope": "native UI selects both scenarios, reads public clues, solves coupled pump, routes shared circuits, explicitly enables autoplay and reaches natural shared result",
+  "command": "python3 -B games/escape/tests/interaction.py",
+  "cases": [
+    {
+      "scenario": "station",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "publicClue": [
+        0,
+        0,
+        2
+      ],
+      "final": {
+        "capacity": 2,
+        "chat": null,
+        "clockOffsetMs": 0,
+        "closeReason": "",
+        "game": {
+          "actors": [],
+          "attention": [],
+          "data": {
+            "canAct": false,
+            "circuits": [
+              "lift",
+              "lights"
+            ],
+            "epoch": "c82f11d9eec4c9591cdfdad5",
+            "events": [
+              {
+                "actor": 0,
+                "at": 19724,
+                "id": 7,
+                "kind": "clue",
+                "room": "r6",
+                "text": "已记录「水务手册」，全队可查阅。"
+              },
+              {
+                "actor": 1,
+                "at": 31624,
+                "id": 8,
+                "kind": "relay",
+                "room": "r8",
+                "text": "联锁已接通，请留在装置附近等待另一端。"
+              },
+              {
+                "actor": 0,
+                "at": 33724,
+                "id": 9,
+                "kind": "solved",
+                "room": "r5",
+                "text": "「总排水阀」已恢复运转。"
+              },
+              {
+                "actor": 1,
+                "at": 40624,
+                "id": 10,
+                "kind": "relay",
+                "room": "r8",
+                "text": "联锁已接通，请留在装置附近等待另一端。"
+              },
+              {
+                "actor": 0,
+                "at": 46124,
+                "id": 11,
+                "kind": "power",
+                "room": "r7",
+                "text": "备用电池已接入。"
+              },
+              {
+                "actor": 1,
+                "at": 49624,
+                "id": 12,
+                "kind": "relay",
+                "room": "r8",
+                "text": "联锁已接通，请留在装置附近等待另一端。"
+              },
+              {
+                "actor": 0,
+                "at": 54524,
+                "id": 13,
+                "kind": "circuit",
+                "room": "r0",
+                "text": "配电线路已调整，请留意队友与撤离设备。"
+              },
+              {
+                "actor": 0,
+                "at": 54624,
+                "id": 14,
+                "kind": "circuit",
+                "room": "r0",
+                "text": "配电线路已调整，请留意队友与撤离设备。"
+              },
+              {
+                "actor": 0,
+                "at": 55124,
+                "id": 15,
+                "kind": "circuit",
+                "room": "r0",
+                "text": "配电线路已调整，请留意队友与撤离设备。"
+              },
+              {
+                "actor": 0,
+                "at": 55224,
+                "id": 16,
+                "kind": "circuit",
+                "room": "r0",
+                "text": "配电线路已调整，请留意队友与撤离设备。"
+              },
+              {
+                "actor": 0,
+                "at": 57124,
+                "id": 17,
+                "kind": "relay",
+                "room": "r3",
+                "text": "联锁已接通，请留在装置附近等待另一端。"
+              },
+              {
+                "actor": -1,
+                "at": 57124,
+                "id": 18,
+                "kind": "solved",
+                "room": "",
+                "text": "双端联锁完成，升降路线永久开启。"
+              },
+              {
+                "actor": 1,
+                "at": 58824,
+                "id": 19,
+                "kind": "ready",
+                "room": "r8",
+                "text": "一名队友已在撤离点就绪。"
+              },
+              {
+                "actor": -1,
+                "at": 60024,
+                "id": 20,
+                "kind": "warning",
+                "room": "r1",
+                "text": "设施出现异常，标记区域将在 12 秒后发生险情。"
+              },
+              {
+                "actor": 0,
+                "at": 70024,
+                "id": 21,
+                "kind": "ready",
+                "room": "r8",
+                "text": "一名队友已在撤离点就绪。"
+              },
+              {
+                "actor": -1,
+                "at": 70024,
+                "id": 22,
+                "kind": "victory",
+                "room": "",
+                "text": "所有队友已安全撤离。"
+              }
+            ],
+            "incident": {
+              "begins": 72024,
+              "ends": 89024,
+              "kind": "steam",
+              "room": "r1"
+            },
+            "journal": [
+              {
+                "key": "briefing",
+                "room": "r4",
+                "text": "供电、远端联锁可启动升降机；排水与信号校准可开启检修通道。全队在站台集合。",
+                "title": "最后一班"
+              },
+              {
+                "key": "power",
+                "room": "r1",
+                "text": "三路负载：3 · 2 · 4",
+                "title": "检修便笺",
+                "values": [
+                  2,
+                  1,
+                  3
+                ]
+              },
+              {
+                "key": "pump",
+                "room": "r6",
+                "text": "入水／旁路／排放：1 · 1 · 3",
+                "title": "水务手册",
+                "values": [
+                  0,
+                  0,
+                  2
+                ]
+              }
+            ],
+            "objectives": [
+              {
+                "done": true,
+                "id": "power",
+                "label": "修复备用供电"
+              },
+              {
+                "done": false,
+                "id": "pump",
+                "label": "恢复排水"
+              },
+              {
+                "done": true,
+                "id": "relay",
+                "label": "两端联锁同步"
+              },
+              {
+                "done": false,
+                "id": "signal",
+                "label": "校准备用信号"
+              }
+            ],
+            "options": {
+              "difficulty": "easy",
+              "scenario": "station",
+              "seed": "interaction-17"
+            },
+            "paused": false,
+            "phase": "finished",
+            "players": [
+              {
+                "appliedSeq": 41,
+                "dx": 0,
+                "dy": 0,
+                "facing": "down",
+                "focus": "r8-extract",
+                "hp": 100,
+                "ready": true,
+                "room": "r8",
+                "seat": 0,
+                "seq": 41,
+                "x": 460,
+                "y": 420
+              },
+              {
+                "appliedSeq": 25,
+                "dx": 0,
+                "dy": 0,
+                "facing": "left",
+                "focus": "r8-extract",
+                "hp": 100,
+                "ready": true,
+                "room": "r8",
+                "seat": 1,
+                "seq": 25,
+                "x": 460,
+                "y": 420
+              }
+            ],
+            "power": 99.1,
+            "protocol": 1,
+            "rally": null,
+            "reason": "全员撤离",
+            "remaining": 1429976,
+            "revision": 87,
+            "rooms": [
+              {
+                "doors": [
+                  {
+                    "direction": "east",
+                    "room": "r1",
+                    "x": 855,
+                    "y": 420
+                  },
+                  {
+                    "direction": "south",
+                    "room": "r3",
+                    "x": 500,
+                    "y": 565
+                  }
+                ],
+                "flood": 0,
+                "id": "r0",
+                "kind": "power",
+                "known": true,
+                "objects": [
+                  {
+                    "description": "需要两枚保险丝，并按检修便笺调节三路负载。",
+                    "dials": [
+                      2,
+                      1,
+                      3
+                    ],
+                    "done": true,
+                    "id": "r0-power",
+                    "kind": "power",
+                    "label": "备用发电机",
+                    "x": 470,
+                    "y": 410
+                  }
+                ],
+                "title": "备用机房",
+                "x": 0,
+                "y": 0
+              },
+              {
+                "doors": [
+                  {
+                    "direction": "west",
+                    "room": "r0",
+                    "x": 145,
+                    "y": 420
+                  },
+                  {
+                    "direction": "east",
+                    "room": "r2",
+                    "x": 855,
+                    "y": 420
+                  },
+                  {
+                    "direction": "south",
+                    "room": "r4",
+                    "x": 500,
+                    "y": 565
+                  }
+                ],
+                "flood": 0,
+                "id": "r1",
+                "kind": "signal",
+                "known": true,
+                "objects": [
+                  {
+                    "description": "设备校准顺序，记录后全队可在笔记中查看。",
+                    "done": true,
+                    "id": "r1-clue-power",
+                    "kind": "clue-power",
+                    "label": "检修便笺",
+                    "x": 365,
+                    "y": 370
+                  },
+                  {
+                    "description": "依照记录校准三路信号，排水后可开启检修通道。",
+                    "dials": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "done": false,
+                    "id": "r1-signal",
+                    "kind": "signal",
+                    "label": "信号校准台",
+                    "x": 670,
+                    "y": 410
+                  }
+                ],
+                "title": "信号控制室",
+                "x": 1,
+                "y": 0
+              },
+              {
+                "doors": [
+                  {
+                    "direction": "west",
+                    "room": "r1",
+                    "x": 145,
+                    "y": 420
+                  },
+                  {
+                    "direction": "south",
+                    "room": "r5",
+                    "x": 500,
+                    "y": 565
+                  }
+                ],
+                "flood": 0,
+                "id": "r2",
+                "kind": "records",
+                "known": true,
+                "objects": [
+                  {
+                    "description": "记录备用通道所需的信号顺序。",
+                    "done": false,
+                    "id": "r2-clue-signal",
+                    "kind": "clue-signal",
+                    "label": "信号日志",
+                    "x": 365,
+                    "y": 370
+                  },
+                  {
+                    "description": "独立备用电池，可补充全队电力。",
+                    "done": false,
+                    "id": "r2-battery",
+                    "kind": "battery",
+                    "label": "应急电源",
+                    "x": 680,
+                    "y": 400
+                  }
+                ],
+                "title": "调度档案室",
+                "x": 2,
+                "y": 0
+              },
+              {
+                "doors": [
+                  {
+                    "direction": "south",
+                    "room": "r6",
+                    "x": 500,
+                    "y": 565
+                  },
+                  {
+                    "direction": "north",
+                    "room": "r0",
+                    "x": 500,
+                    "y": 270
+                  },
+                  {
+                    "direction": "east",
+                    "room": "r4",
+                    "x": 855,
+                    "y": 420
+                  }
+                ],
+                "flood": 0,
+                "id": "r3",
+                "kind": "relay",
+                "known": true,
+                "objects": [
+                  {
+                    "description": "供电恢复后，与撤离室的另一位队友同时操作。必须留在装置附近维持联锁。",
+                    "done": false,
+                    "heldUntil": 69124,
+                    "id": "r3-relay",
+                    "kind": "relay",
+                    "label": "远端联锁",
+                    "x": 500,
+                    "y": 380
+                  }
+                ],
+                "title": "中继控制室",
+                "x": 0,
+                "y": 1
+              },
+              {
+                "doors": [
+                  {
+                    "direction": "south",
+                    "room": "r7",
+                    "x": 500,
+                    "y": 565
+                  },
+                  {
+                    "direction": "north",
+                    "room": "r1",
+                    "x": 500,
+                    "y": 270
+                  },
+                  {
+                    "direction": "west",
+                    "room": "r3",
+                    "x": 145,
+                    "y": 420
+                  }
+                ],
+                "flood": 0,
+                "id": "r4",
+                "kind": "entry",
+                "known": true,
+                "objects": [
+                  {
+                    "description": "调查设施，交换线索，一起找到撤离路线。点击门口可前往相邻房间。",
+                    "done": true,
+                    "id": "briefing",
+                    "kind": "briefing",
+                    "label": "值守记录",
+                    "x": 500,
+                    "y": 350
+                  }
+                ],
+                "title": "候车大厅",
+                "x": 1,
+                "y": 1
+              },
+              {
+                "doors": [
+                  {
+                    "direction": "south",
+                    "room": "r8",
+                    "x": 500,
+                    "y": 565
+                  },
+                  {
+                    "direction": "north",
+                    "room": "r2",
+                    "x": 500,
+                    "y": 270
+                  }
+                ],
+                "flood": 0,
+                "id": "r5",
+                "kind": "pump",
+                "known": true,
+                "objects": [
+                  {
+                    "description": "按水务手册校准压力。入水阀会同时改变旁路读数，旁路阀会同时改变排放读数；接通排水供电后减缓进水。",
+                    "dials": [
+                      0,
+                      0,
+                      2
+                    ],
+                    "done": true,
+                    "id": "r5-pump",
+                    "kind": "pump",
+                    "label": "总排水阀",
+                    "x": 470,
+                    "y": 410
+                  }
+                ],
+                "title": "排水泵房",
+                "x": 2,
+                "y": 1
+              },
+              {
+                "doors": [
+                  {
+                    "direction": "north",
+                    "room": "r3",
+                    "x": 500,
+                    "y": 270
+                  },
+                  {
+                    "direction": "east",
+                    "room": "r7",
+                    "x": 855,
+                    "y": 420
+                  }
+                ],
+                "flood": 1.9,
+                "id": "r6",
+                "kind": "medical",
+                "known": true,
+                "objects": [
+                  {
+                    "description": "补充共享急救包。倒地队友可就近救援。",
+                    "done": false,
+                    "id": "r6-medical",
+                    "kind": "medical",
+                    "label": "急救柜",
+                    "x": 350,
+                    "y": 395
+                  },
+                  {
+                    "description": "保留下来的阀门设定记录。",
+                    "done": true,
+                    "id": "r6-clue-pump",
+                    "kind": "clue-pump",
+                    "label": "水务手册",
+                    "x": 670,
+                    "y": 370
+                  }
+                ],
+                "title": "值班医务室",
+                "x": 0,
+                "y": 2
+              },
+              {
+                "doors": [
+                  {
+                    "direction": "north",
+                    "room": "r4",
+                    "x": 500,
+                    "y": 270
+                  },
+                  {
+                    "direction": "west",
+                    "room": "r6",
+                    "x": 145,
+                    "y": 420
+                  }
+                ],
+                "flood": 1.9,
+                "id": "r7",
+                "kind": "storage",
+                "known": true,
+                "objects": [
+                  {
+                    "description": "共享补给：保险丝、电池和急救包。每箱仅能领取一次。",
+                    "done": true,
+                    "id": "r7-supply",
+                    "kind": "supply",
+                    "label": "维修补给",
+                    "x": 340,
+                    "y": 395
+                  }
+                ],
+                "title": "工具库房",
+                "x": 1,
+                "y": 2
+              },
+              {
+                "doors": [
+                  {
+                    "direction": "north",
+                    "room": "r5",
+                    "x": 500,
+                    "y": 270
+                  }
+                ],
+                "flood": 1.9,
+                "id": "r8",
+                "kind": "exit",
+                "known": true,
+                "objects": [
+                  {
+                    "description": "供电恢复后，与远端联锁同时保持；联锁完成后永久开启。",
+                    "done": false,
+                    "heldUntil": 61624,
+                    "id": "r8-relay",
+                    "kind": "relay",
+                    "label": "撤离端联锁",
+                    "x": 700,
+                    "y": 365
+                  },
+                  {
+                    "description": "先交付携带物，再选择可用路线并集合。全队确认后共同撤离。",
+                    "done": false,
+                    "id": "r8-extract",
+                    "kind": "extract",
+                    "label": "撤离升降台",
+                    "x": 460,
+                    "y": 420
+                  }
+                ],
+                "title": "撤离站台",
+                "x": 2,
+                "y": 2
+              }
+            ],
+            "routes": [
+              {
+                "available": true,
+                "id": "lift",
+                "label": "货运升降机",
+                "reason": "备用供电 · 联锁与升降供电"
+              },
+              {
+                "available": false,
+                "id": "passage",
+                "label": "检修通道",
+                "reason": "排水供电 · 信号校准"
+              }
+            ],
+            "seed": "interaction-17",
+            "serverAt": 1794014920313,
+            "stats": {
+              "explored": 9,
+              "mistakes": 0,
+              "rescues": 0,
+              "route": "lift"
+            },
+            "supplies": {
+              "cells": 1,
+              "documents": 0,
+              "fuses": 2,
+              "meds": 1
+            },
+            "tick": 70024,
+            "votes": [
+              false,
+              false
+            ],
+            "water": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1.9,
+              1.9,
+              1.9
+            ],
+            "you": 0
+          },
+          "eliminated": null,
+          "finished": true,
+          "kind": "escape",
+          "log": [
+            "已记录「水务手册」，全队可查阅。",
+            "联锁已接通，请留在装置附近等待另一端。",
+            "「总排水阀」已恢复运转。",
+            "联锁已接通，请留在装置附近等待另一端。",
+            "备用电池已接入。",
+            "联锁已接通，请留在装置附近等待另一端。",
+            "配电线路已调整，请留意队友与撤离设备。",
+            "配电线路已调整，请留意队友与撤离设备。",
+            "配电线路已调整，请留意队友与撤离设备。",
+            "配电线路已调整，请留意队友与撤离设备。",
+            "联锁已接通，请留在装置附近等待另一端。",
+            "双端联锁完成，升降路线永久开启。",
+            "一名队友已在撤离点就绪。",
+            "设施出现异常，标记区域将在 12 秒后发生险情。",
+            "一名队友已在撤离点就绪。",
+            "所有队友已安全撤离。"
+          ],
+          "phase": "module",
+          "round": 1,
+          "systemDeadline": 0,
+          "turn": -1,
+          "winners": [
+            0,
+            1
+          ]
+        },
+        "host": "b651d847fec4bb872ca42b29",
+        "id": "f95fc8a8",
+        "kind": "escape",
+        "loading": null,
+        "locked": false,
+        "matchId": "deb7d1dc4827111ee0161bef",
+        "name": "密室机关与合作验收",
+        "options": {
+          "difficulty": "easy",
+          "scenario": "station",
+          "seed": "interaction-17"
+        },
+        "result": {
+          "catanOptions": {},
+          "cooperative": true,
+          "details": {
+            "documents": 0,
+            "elapsed": 70024,
+            "reason": "全员撤离",
+            "scenario": "station",
+            "seed": "interaction-17",
+            "stats": {
+              "explored": 9,
+              "mistakes": 0,
+              "rescues": 0,
+              "route": "lift"
+            }
+          },
+          "ended": 1794014920,
+          "id": "deb7d1dc4827111ee0161bef",
+          "kind": "escape",
+          "options": {
+            "difficulty": "easy",
+            "scenario": "station",
+            "seed": "interaction-17"
+          },
+          "outcome": "cleared",
+          "players": [
+            {
+              "id": "b651d847fec4bb872ca42b29",
+              "name": "密室体验",
+              "rank": 1,
+              "score": 1609,
+              "won": true
+            },
+            {
+              "bot": true,
+              "id": "bot-dd53c96c5f45c71b46a6a143",
+              "name": "电脑 1",
+              "rank": 1,
+              "score": 1609,
+              "won": true
+            }
+          ],
+          "rated": false,
+          "room": "密室机关与合作验收",
+          "sanguoshaOptions": {},
+          "splendorOptions": {},
+          "status": "finished",
+          "unratedReason": "computer"
+        },
+        "seats": [
+          {
+            "autoPlay": true,
+            "id": "b651d847fec4bb872ca42b29",
+            "left": false,
+            "name": "密室体验",
+            "network": {
+              "connected": true,
+              "connections": 1,
+              "rttMs": 0,
+              "sampledAt": 1794014920114
+            },
+            "ready": true
+          },
+          {
+            "bot": true,
+            "id": "bot-dd53c96c5f45c71b46a6a143",
+            "left": false,
+            "name": "电脑 1",
+            "ready": true
+          }
+        ],
+        "setupVersion": 4,
+        "spectating": false,
+        "spectatorCount": 0,
+        "status": "finished",
+        "turnDeadline": 0,
+        "updated": 1794014920,
+        "version": 738,
+        "you": 0
+      }
+    },
+    {
+      "scenario": "archive",
+      "viewport": [
+        320,
+        820
+      ],
+      "publicClue": [
+        0,
+        0,
+        2
+      ],
+      "final": {
+        "capacity": 2,
+        "chat": null,
+        "clockOffsetMs": 0,
+        "closeReason": "",
+        "game": {
+          "actors": [],
+          "attention": [],
+          "data": {
+            "canAct": false,
+            "circuits": [
+              "pump",
+              "lights"
+            ],
+            "epoch": "7a6e94787bad53a8d8af987e",
+            "events": [
+              {
+                "actor": 1,
+                "at": 7610,
+                "id": 4,
+                "kind": "document",
+                "room": "r1",
+                "text": "取走「星图原卷」，需要送至水闸。"
+              },
+              {
+                "actor": 1,
+                "at": 16210,
+                "id": 5,
+                "kind": "deposit",
+                "room": "r8",
+                "text": "密封档案已安全送达水闸。"
+              },
+              {
+                "actor": 0,
+                "at": 25110,
+                "id": 6,
+                "kind": "clue",
+                "room": "r6",
+                "text": "已记录「水务手册」，全队可查阅。"
+              },
+              {
+                "actor": 1,
+                "at": 27210,
+                "id": 7,
+                "kind": "document",
+                "room": "r7",
+                "text": "取走「潮汐档案」，需要送至水闸。"
+              },
+              {
+                "actor": 0,
+                "at": 39110,
+                "id": 8,
+                "kind": "solved",
+                "room": "r5",
+                "text": "「总排水阀」已恢复运转。"
+              },
+              {
+                "actor": 1,
+                "at": 41810,
+                "id": 9,
+                "kind": "deposit",
+                "room": "r8",
+                "text": "密封档案已安全送达水闸。"
+              },
+              {
+                "actor": 1,
+                "at": 41810,
+                "id": 10,
+                "kind": "ready",
+                "room": "r8",
+                "text": "一名队友已在撤离点就绪。"
+              },
+              {
+                "actor": 0,
+                "at": 48310,
+                "id": 11,
+                "kind": "supply",
+                "room": "r7",
+                "text": "已收集维修补给，资源由全队共享。"
+              },
+              {
+                "actor": 0,
+                "at": 48510,
+                "id": 12,
+                "kind": "power",
+                "room": "r7",
+                "text": "备用电池已接入。"
+              },
+              {
+                "actor": 0,
+                "at": 57510,
+                "id": 13,
+                "kind": "circuit",
+                "room": "r0",
+                "text": "配电线路已调整，请留意队友与撤离设备。"
+              },
+              {
+                "actor": 0,
+                "at": 57710,
+                "id": 14,
+                "kind": "circuit",
+                "room": "r0",
+                "text": "配电线路已调整，请留意队友与撤离设备。"
+              },
+              {
+                "actor": 0,
+                "at": 58010,
+                "id": 15,
+                "kind": "circuit",
+                "room": "r0",
+                "text": "配电线路已调整，请留意队友与撤离设备。"
+              },
+              {
+                "actor": 0,
+                "at": 58110,
+                "id": 16,
+                "kind": "circuit",
+                "room": "r0",
+                "text": "配电线路已调整，请留意队友与撤离设备。"
+              },
+              {
+                "actor": -1,
+                "at": 60010,
+                "id": 17,
+                "kind": "warning",
+                "room": "r1",
+                "text": "设施出现异常，标记区域将在 12 秒后发生险情。"
+              },
+              {
+                "actor": 0,
+                "at": 70460,
+                "id": 18,
+                "kind": "ready",
+                "room": "r8",
+                "text": "一名队友已在撤离点就绪。"
+              },
+              {
+                "actor": -1,
+                "at": 70460,
+                "id": 19,
+                "kind": "victory",
+                "room": "",
+                "text": "所有队友已安全撤离。"
+              }
+            ],
+            "incident": {
+              "begins": 72010,
+              "ends": 89010,
+              "kind": "surge",
+              "room": "r1"
+            },
+            "journal": [
+              {
+                "key": "briefing",
+                "room": "r4",
+                "text": "排水后，将两份密封档案送至水闸可乘艇离开；也可解开天文锁盘并联动观测台，启用穹顶吊笼。",
+                "title": "守馆人遗言"
+              },
+              {
+                "key": "pump",
+                "room": "r6",
+                "text": "入水／旁路／排放：1 · 1 · 3",
+                "title": "水务手册",
+                "values": [
+                  0,
+                  0,
+                  2
+                ]
+              }
+            ],
+            "objectives": [
+              {
+                "done": false,
+                "id": "power",
+                "label": "解开天文锁盘"
+              },
+              {
+                "done": true,
+                "id": "pump",
+                "label": "恢复排水"
+              },
+              {
+                "done": true,
+                "id": "documents",
+                "label": "运回两份档案",
+                "progress": "2 / 2"
+              },
+              {
+                "done": false,
+                "id": "relay",
+                "label": "启动穹顶联锁"
+              }
+            ],
+            "options": {
+              "difficulty": "easy",
+              "scenario": "archive",
+              "seed": "interaction-17"
+            },
+            "paused": false,
+            "phase": "finished",
+            "players": [
+              {
+                "appliedSeq": 40,
+                "dx": 0,
+                "dy": 0,
+                "facing": "down",
+                "focus": "r8-extract",
+                "hp": 100,
+                "ready": true,
+                "room": "r8",
+                "seat": 0,
+                "seq": 40,
+                "x": 460,
+                "y": 420
+              },
+              {
+                "appliedSeq": 22,
+                "dx": 0,
+                "dy": 0,
+                "facing": "down",
+                "focus": "r8-extract",
+                "hp": 100,
+                "ready": true,
+                "room": "r8",
+                "seat": 1,
+                "seq": 22,
+                "x": 460,
+                "y": 420
+              }
+            ],
+            "power": 97.6,
+            "protocol": 1,
+            "rally": null,
+            "reason": "全员撤离",
+            "remaining": 1429540,
+            "revision": 80,
+            "rooms": [
+              {
+                "doors": [
+                  {
+                    "direction": "east",
+                    "room": "r1",
+                    "x": 855,
+                    "y": 420
+                  },
+                  {
+                    "direction": "south",
+                    "room": "r3",
+                    "x": 500,
+                    "y": 565
+                  }
+                ],
+                "flood": 0,
+                "id": "r0",
+                "kind": "power",
+                "known": true,
+                "objects": [
+                  {
+                    "description": "按检修便笺转动三重星环，解开穹顶升降机。",
+                    "dials": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "done": false,
+                    "id": "r0-power",
+                    "kind": "power",
+                    "label": "天文锁盘",
+                    "x": 470,
+                    "y": 410
+                  }
+                ],
+                "title": "穹顶钟室",
+                "x": 0,
+                "y": 0
+              },
+              {
+                "doors": [
+                  {
+                    "direction": "west",
+                    "room": "r0",
+                    "x": 145,
+                    "y": 420
+                  },
+                  {
+                    "direction": "east",
+                    "room": "r2",
+                    "x": 855,
+                    "y": 420
+                  },
+                  {
+                    "direction": "south",
+                    "room": "r4",
+                    "x": 500,
+                    "y": 565
+                  }
+                ],
+                "flood": 0,
+                "id": "r1",
+                "kind": "signal",
+                "known": true,
+                "objects": [
+                  {
+                    "description": "设备校准顺序，记录后全队可在笔记中查看。",
+                    "done": false,
+                    "id": "r1-clue-power",
+                    "kind": "clue-power",
+                    "label": "检修便笺",
+                    "x": 365,
+                    "y": 370
+                  },
+                  {
+                    "description": "将星图原卷运至撤离室。",
+                    "done": true,
+                    "id": "r1-document",
+                    "kind": "document",
+                    "label": "星图原卷",
+                    "x": 670,
+                    "y": 395
+                  }
+                ],
+                "title": "星图收藏室",
+                "x": 1,
+                "y": 0
+              },
+              {
+                "doors": [
+                  {
+                    "direction": "west",
+                    "room": "r1",
+                    "x": 145,
+                    "y": 420
+                  },
+                  {
+                    "direction": "south",
+                    "room": "r5",
+                    "x": 500,
+                    "y": 565
+                  }
+                ],
+                "flood": 0,
+                "id": "r2",
+                "kind": "records",
+                "known": true,
+                "objects": [
+                  {
+                    "description": "记录备用通道所需的信号顺序。",
+                    "done": false,
+                    "id": "r2-clue-signal",
+                    "kind": "clue-signal",
+                    "label": "信号日志",
+                    "x": 365,
+                    "y": 370
+                  },
+                  {
+                    "description": "独立备用电池，可补充全队电力。",
+                    "done": false,
+                    "id": "r2-battery",
+                    "kind": "battery",
+                    "label": "应急电源",
+                    "x": 680,
+                    "y": 400
+                  }
+                ],
+                "title": "编目室",
+                "x": 2,
+                "y": 0
+              },
+              {
+                "doors": [
+                  {
+                    "direction": "south",
+                    "room": "r6",
+                    "x": 500,
+                    "y": 565
+                  },
+                  {
+                    "direction": "north",
+                    "room": "r0",
+                    "x": 500,
+                    "y": 270
+                  },
+                  {
+                    "direction": "east",
+                    "room": "r4",
+                    "x": 855,
+                    "y": 420
+                  }
+                ],
+                "flood": 0,
+                "id": "r3",
+                "kind": "relay",
+                "known": true,
+                "objects": [
+                  {
+                    "description": "供电恢复后，与撤离室的另一位队友同时操作。必须留在装置附近维持联锁。",
+                    "done": false,
+                    "id": "r3-relay",
+                    "kind": "relay",
+                    "label": "远端联锁",
+                    "x": 500,
+                    "y": 380
+                  }
+                ],
+                "title": "西翼观测台",
+                "x": 0,
+                "y": 1
+              },
+              {
+                "doors": [
+                  {
+                    "direction": "south",
+                    "room": "r7",
+                    "x": 500,
+                    "y": 565
+                  },
+                  {
+                    "direction": "north",
+                    "room": "r1",
+                    "x": 500,
+                    "y": 270
+                  },
+                  {
+                    "direction": "west",
+                    "room": "r3",
+                    "x": 145,
+                    "y": 420
+                  }
+                ],
+                "flood": 0,
+                "id": "r4",
+                "kind": "entry",
+                "known": true,
+                "objects": [
+                  {
+                    "description": "调查设施，交换线索，一起找到撤离路线。点击门口可前往相邻房间。",
+                    "done": true,
+                    "id": "briefing",
+                    "kind": "briefing",
+                    "label": "值守记录",
+                    "x": 500,
+                    "y": 350
+                  }
+                ],
+                "title": "月影阅览厅",
+                "x": 1,
+                "y": 1
+              },
+              {
+                "doors": [
+                  {
+                    "direction": "south",
+                    "room": "r8",
+                    "x": 500,
+                    "y": 565
+                  },
+                  {
+                    "direction": "north",
+                    "room": "r2",
+                    "x": 500,
+                    "y": 270
+                  }
+                ],
+                "flood": 0,
+                "id": "r5",
+                "kind": "pump",
+                "known": true,
+                "objects": [
+                  {
+                    "description": "按水务手册校准压力。入水阀会同时改变旁路读数，旁路阀会同时改变排放读数；接通排水供电后减缓进水。",
+                    "dials": [
+                      0,
+                      0,
+                      2
+                    ],
+                    "done": true,
+                    "id": "r5-pump",
+                    "kind": "pump",
+                    "label": "总排水阀",
+                    "x": 470,
+                    "y": 410
+                  }
+                ],
+                "title": "地下水务室",
+                "x": 2,
+                "y": 1
+              },
+              {
+                "doors": [
+                  {
+                    "direction": "north",
+                    "room": "r3",
+                    "x": 500,
+                    "y": 270
+                  },
+                  {
+                    "direction": "east",
+                    "room": "r7",
+                    "x": 855,
+                    "y": 420
+                  }
+                ],
+                "flood": 0.5,
+                "id": "r6",
+                "kind": "medical",
+                "known": true,
+                "objects": [
+                  {
+                    "description": "补充共享急救包。倒地队友可就近救援。",
+                    "done": false,
+                    "id": "r6-medical",
+                    "kind": "medical",
+                    "label": "急救柜",
+                    "x": 350,
+                    "y": 395
+                  },
+                  {
+                    "description": "保留下来的阀门设定记录。",
+                    "done": true,
+                    "id": "r6-clue-pump",
+                    "kind": "clue-pump",
+                    "label": "水务手册",
+                    "x": 670,
+                    "y": 370
+                  }
+                ],
+                "title": "守馆人休息室",
+                "x": 0,
+                "y": 2
+              },
+              {
+                "doors": [
+                  {
+                    "direction": "north",
+                    "room": "r4",
+                    "x": 500,
+                    "y": 270
+                  },
+                  {
+                    "direction": "west",
+                    "room": "r6",
+                    "x": 145,
+                    "y": 420
+                  }
+                ],
+                "flood": 0.5,
+                "id": "r7",
+                "kind": "storage",
+                "known": true,
+                "objects": [
+                  {
+                    "description": "共享补给：保险丝、电池和急救包。每箱仅能领取一次。",
+                    "done": true,
+                    "id": "r7-supply",
+                    "kind": "supply",
+                    "label": "维修补给",
+                    "x": 340,
+                    "y": 395
+                  },
+                  {
+                    "description": "密封档案一次只能携带一份；送到撤离室后可继续探索。",
+                    "done": true,
+                    "id": "r7-document",
+                    "kind": "document",
+                    "label": "潮汐档案",
+                    "x": 670,
+                    "y": 395
+                  }
+                ],
+                "title": "修复工坊",
+                "x": 1,
+                "y": 2
+              },
+              {
+                "doors": [
+                  {
+                    "direction": "north",
+                    "room": "r5",
+                    "x": 500,
+                    "y": 270
+                  }
+                ],
+                "flood": 0.5,
+                "id": "r8",
+                "kind": "exit",
+                "known": true,
+                "objects": [
+                  {
+                    "description": "供电恢复后，与远端联锁同时保持；联锁完成后永久开启。",
+                    "done": false,
+                    "id": "r8-relay",
+                    "kind": "relay",
+                    "label": "撤离端联锁",
+                    "x": 700,
+                    "y": 365
+                  },
+                  {
+                    "description": "先交付携带物，再选择可用路线并集合。全队确认后共同撤离。",
+                    "done": false,
+                    "id": "r8-extract",
+                    "kind": "extract",
+                    "label": "水闸码头",
+                    "x": 460,
+                    "y": 420
+                  }
+                ],
+                "title": "旧馆水闸",
+                "x": 2,
+                "y": 2
+              }
+            ],
+            "routes": [
+              {
+                "available": true,
+                "id": "boat",
+                "label": "水闸救生艇",
+                "reason": "排水供电 · 两份档案送达"
+              },
+              {
+                "available": false,
+                "id": "lift",
+                "label": "穹顶吊笼",
+                "reason": "天文锁盘 · 联锁与升降供电"
+              }
+            ],
+            "seed": "interaction-17",
+            "serverAt": 1794014991163,
+            "stats": {
+              "explored": 9,
+              "mistakes": 0,
+              "rescues": 0,
+              "route": "boat"
+            },
+            "supplies": {
+              "cells": 1,
+              "documents": 2,
+              "fuses": 4,
+              "meds": 1
+            },
+            "tick": 70460,
+            "votes": [
+              false,
+              false
+            ],
+            "water": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0.5,
+              0.5,
+              0.5
+            ],
+            "you": 0
+          },
+          "eliminated": null,
+          "finished": true,
+          "kind": "escape",
+          "log": [
+            "取走「星图原卷」，需要送至水闸。",
+            "密封档案已安全送达水闸。",
+            "已记录「水务手册」，全队可查阅。",
+            "取走「潮汐档案」，需要送至水闸。",
+            "「总排水阀」已恢复运转。",
+            "密封档案已安全送达水闸。",
+            "一名队友已在撤离点就绪。",
+            "已收集维修补给，资源由全队共享。",
+            "备用电池已接入。",
+            "配电线路已调整，请留意队友与撤离设备。",
+            "配电线路已调整，请留意队友与撤离设备。",
+            "配电线路已调整，请留意队友与撤离设备。",
+            "配电线路已调整，请留意队友与撤离设备。",
+            "设施出现异常，标记区域将在 12 秒后发生险情。",
+            "一名队友已在撤离点就绪。",
+            "所有队友已安全撤离。"
+          ],
+          "phase": "module",
+          "round": 1,
+          "systemDeadline": 0,
+          "turn": -1,
+          "winners": [
+            0,
+            1
+          ]
+        },
+        "host": "b651d847fec4bb872ca42b29",
+        "id": "7bc151fe",
+        "kind": "escape",
+        "loading": null,
+        "locked": false,
+        "matchId": "79279288efa5f9f285c31bdc",
+        "name": "密室机关与合作验收",
+        "options": {
+          "difficulty": "easy",
+          "scenario": "archive",
+          "seed": "interaction-17"
+        },
+        "result": {
+          "catanOptions": {},
+          "cooperative": true,
+          "details": {
+            "documents": 2,
+            "elapsed": 70460,
+            "reason": "全员撤离",
+            "scenario": "archive",
+            "seed": "interaction-17",
+            "stats": {
+              "explored": 9,
+              "mistakes": 0,
+              "rescues": 0,
+              "route": "boat"
+            }
+          },
+          "ended": 1794014991,
+          "id": "79279288efa5f9f285c31bdc",
+          "kind": "escape",
+          "options": {
+            "difficulty": "easy",
+            "scenario": "archive",
+            "seed": "interaction-17"
+          },
+          "outcome": "cleared",
+          "players": [
+            {
+              "id": "b651d847fec4bb872ca42b29",
+              "name": "密室体验",
+              "rank": 1,
+              "score": 1809,
+              "won": true
+            },
+            {
+              "bot": true,
+              "id": "bot-7d1c6c916b6913ff18f81bde",
+              "name": "电脑 1",
+              "rank": 1,
+              "score": 1809,
+              "won": true
+            }
+          ],
+          "rated": false,
+          "room": "密室机关与合作验收",
+          "sanguoshaOptions": {},
+          "splendorOptions": {},
+          "status": "finished",
+          "unratedReason": "computer"
+        },
+        "seats": [
+          {
+            "autoPlay": true,
+            "id": "b651d847fec4bb872ca42b29",
+            "left": false,
+            "name": "密室体验",
+            "network": {
+              "connected": true,
+              "connections": 1,
+              "rttMs": 0,
+              "sampledAt": 1794014990581
+            },
+            "ready": true
+          },
+          {
+            "bot": true,
+            "id": "bot-7d1c6c916b6913ff18f81bde",
+            "left": false,
+            "name": "电脑 1",
+            "ready": true
+          }
+        ],
+        "setupVersion": 4,
+        "spectating": false,
+        "spectatorCount": 0,
+        "status": "finished",
+        "turnDeadline": 0,
+        "updated": 1794014991,
+        "version": 742,
+        "you": 0
+      }
+    }
+  ],
+  "sourceSHA256": {
+    "games/escape/web/canvas.ts": "121caf76ca3a0d3d220c81c460caa3bbe11a5908d381f1cd1c98e47aa8899f2e",
+    "games/escape/web/catalog.tsx": "bafdec262e6650777f336113aed981f7f3bade504c8da17eb34ec84051f0c5c0",
+    "games/escape/web/art.ts": "3ae154ac20b513d82ceac772b28f2c6136323a5d04d4082fc8354c4108aacc61",
+    "games/escape/web/prediction.ts": "ae602ee8ca19d31ed4b63f54ad8b0340196cadc8e980b87a539272ab331d4b55",
+    "games/escape/web/types.ts": "e97c9d4ddf6590badc8521c9285b11d5a8de173ecccb23adcd35c26ff9c22dd2",
+    "games/escape/web/Board.tsx": "0de1be8215a68fb94a25cee13036d991d0c471d5bb21de16ff0e236ed8c32218",
+    "games/escape/web/Cover.tsx": "622cb2937af00af2ea26d330eb0176d0a554e98d2b3b752dd77fe414289d6d7a",
+    "games/escape/web/style.css": "a36f56d73359ac000fa17d81d2d1c4defdce7feb45dcbfb27170c2b50934d143",
+    "games/escape/web/module.tsx": "65e03c83fe3a24c4f65341a73506259a14f5b98c207a1f252235f88e29105331",
+    "games/escape/web/spacing.ts": "a27715ed8db8259a96ec583357371ad161e3a6825f8961a182b60747cbb3794e"
+  },
+  "scrollChecks": [
+    {
+      "cover": "<button aria-label=\"照明供电\" aria-pressed=\"true\"><i></i>照明</button>",
+      "delta": 160,
+      "height": 457,
+      "overflow": "visible",
+      "panel": {
+        "bottom": 729.078125,
+        "height": 458.6875,
+        "left": 824,
+        "right": 1146,
+        "top": 270.390625,
+        "width": 322,
+        "x": 824,
+        "y": 270.390625
+      },
+      "scroll": 0,
+      "target": {
+        "bottom": 653.078125,
+        "height": 34,
+        "left": 843,
+        "right": 933,
+        "top": 619.078125,
+        "width": 90,
+        "x": 843,
+        "y": 619.078125
+      },
+      "total": 457,
+      "visible": true,
+      "x": 985,
+      "y": 499.734375
+    },
+    {
+      "cover": "<button aria-label=\"排水供电\" aria-pressed=\"false\"><i></i>排水</button>",
+      "delta": 160,
+      "height": 457,
+      "overflow": "visible",
+      "panel": {
+        "bottom": 729.078125,
+        "height": 458.6875,
+        "left": 824,
+        "right": 1146,
+        "top": 270.390625,
+        "width": 322,
+        "x": 824,
+        "y": 270.390625
+      },
+      "scroll": 0,
+      "target": {
+        "bottom": 653.078125,
+        "height": 34,
+        "left": 940,
+        "right": 1030,
+        "top": 619.078125,
+        "width": 90,
+        "x": 940,
+        "y": 619.078125
+      },
+      "total": 457,
+      "visible": true,
+      "x": 985,
+      "y": 499.734375
+    },
+    {
+      "cover": "<button aria-label=\"排水供电\" aria-pressed=\"true\"><i></i>排水</button>",
+      "delta": 160,
+      "height": 457,
+      "overflow": "visible",
+      "panel": {
+        "bottom": 729.078125,
+        "height": 458.6875,
+        "left": 824,
+        "right": 1146,
+        "top": 270.390625,
+        "width": 322,
+        "x": 824,
+        "y": 270.390625
+      },
+      "scroll": 0,
+      "target": {
+        "bottom": 653.078125,
+        "height": 34,
+        "left": 940,
+        "right": 1030,
+        "top": 619.078125,
+        "width": 90,
+        "x": 940,
+        "y": 619.078125
+      },
+      "total": 457,
+      "visible": true,
+      "x": 985,
+      "y": 499.734375
+    },
+    {
+      "cover": "<button aria-label=\"照明供电\" aria-pressed=\"false\"><i></i>照明</button>",
+      "delta": 160,
+      "height": 457,
+      "overflow": "visible",
+      "panel": {
+        "bottom": 729.078125,
+        "height": 458.6875,
+        "left": 824,
+        "right": 1146,
+        "top": 270.390625,
+        "width": 322,
+        "x": 824,
+        "y": 270.390625
+      },
+      "scroll": 0,
+      "target": {
+        "bottom": 653.078125,
+        "height": 34,
+        "left": 843,
+        "right": 933,
+        "top": 619.078125,
+        "width": 90,
+        "x": 843,
+        "y": 619.078125
+      },
+      "total": 457,
+      "visible": true,
+      "x": 985,
+      "y": 499.734375
+    },
+    {
+      "cover": "<div class=\"escape-toolstrip\" data-game-controls=\"true\"><button aria-label=\"设施地图\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"17\" height=",
+      "delta": 160,
+      "height": 219,
+      "overflow": "auto",
+      "panel": {
+        "bottom": 520,
+        "height": 221,
+        "left": 25,
+        "right": 295,
+        "top": 299,
+        "width": 270,
+        "x": 25,
+        "y": 299
+      },
+      "scroll": 0,
+      "target": {
+        "bottom": 640,
+        "height": 34,
+        "left": 41,
+        "right": 115.65625,
+        "top": 606,
+        "width": 74.65625,
+        "x": 41,
+        "y": 606
+      },
+      "total": 406,
+      "visible": false,
+      "x": 160,
+      "y": 409.5
+    },
+    {
+      "cover": "<button aria-label=\"照明供电\" aria-pressed=\"true\"><i></i>照明</button>",
+      "delta": 160,
+      "height": 219,
+      "overflow": "auto",
+      "panel": {
+        "bottom": 520,
+        "height": 221,
+        "left": 25,
+        "right": 295,
+        "top": 299,
+        "width": 270,
+        "x": 25,
+        "y": 299
+      },
+      "scroll": 187,
+      "target": {
+        "bottom": 453,
+        "height": 34,
+        "left": 41,
+        "right": 115.65625,
+        "top": 419,
+        "width": 74.65625,
+        "x": 41,
+        "y": 419
+      },
+      "total": 406,
+      "visible": true,
+      "x": 160,
+      "y": 409.5
+    },
+    {
+      "cover": "<button aria-label=\"升降供电\" aria-pressed=\"false\"><i></i>升降</button>",
+      "delta": 160,
+      "height": 219,
+      "overflow": "auto",
+      "panel": {
+        "bottom": 520,
+        "height": 221,
+        "left": 25,
+        "right": 295,
+        "top": 299,
+        "width": 270,
+        "x": 25,
+        "y": 299
+      },
+      "scroll": 187,
+      "target": {
+        "bottom": 453,
+        "height": 34,
+        "left": 204.328125,
+        "right": 279,
+        "top": 419,
+        "width": 74.671875,
+        "x": 204.328125,
+        "y": 419
+      },
+      "total": 406,
+      "visible": true,
+      "x": 160,
+      "y": 409.5
+    },
+    {
+      "cover": "<button aria-label=\"升降供电\" aria-pressed=\"true\"><i></i>升降</button>",
+      "delta": 160,
+      "height": 219,
+      "overflow": "auto",
+      "panel": {
+        "bottom": 520,
+        "height": 221,
+        "left": 25,
+        "right": 295,
+        "top": 299,
+        "width": 270,
+        "x": 25,
+        "y": 299
+      },
+      "scroll": 187,
+      "target": {
+        "bottom": 453,
+        "height": 34,
+        "left": 204.328125,
+        "right": 279,
+        "top": 419,
+        "width": 74.671875,
+        "x": 204.328125,
+        "y": 419
+      },
+      "total": 406,
+      "visible": true,
+      "x": 160,
+      "y": 409.5
+    },
+    {
+      "cover": "<button aria-label=\"照明供电\" aria-pressed=\"false\"><i></i>照明</button>",
+      "delta": 160,
+      "height": 219,
+      "overflow": "auto",
+      "panel": {
+        "bottom": 520,
+        "height": 221,
+        "left": 25,
+        "right": 295,
+        "top": 299,
+        "width": 270,
+        "x": 25,
+        "y": 299
+      },
+      "scroll": 187,
+      "target": {
+        "bottom": 453,
+        "height": 34,
+        "left": 41,
+        "right": 115.65625,
+        "top": 419,
+        "width": 74.65625,
+        "x": 41,
+        "y": 419
+      },
+      "total": 406,
+      "visible": true,
+      "x": 160,
+      "y": 409.5
+    }
+  ]
+}
