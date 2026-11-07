@@ -436,7 +436,7 @@ try:
     b("open", base + "/?admin=1")
     b("wait", ".admin-tabs")
     time.sleep(0.5)
-    for label in ["游戏上架", "许愿审核", "用户与在线", "牌桌管理", "操作记录"]:
+    for label in ["游戏管理", "许愿管理", "用户管理", "牌桌管理", "操作记录"]:
         clicked = js(
             '(()=>{const x=[...document.querySelectorAll(".admin-tabs button")].find(b=>b.textContent.includes('
             + json.dumps(label)
@@ -445,13 +445,13 @@ try:
         check("admin tab " + label, clicked is True)
         wait_js('!!document.querySelector(".admin-list-refresh")')
         check("admin refresh " + label, True)
-        if label == "游戏上架":
+        if label == "游戏管理":
             check(
                 "admin game cards stay concise",
                 js('document.querySelectorAll(".admin-game-card p").length') == 0,
             )
     clicked = js(
-        '(()=>{const x=[...document.querySelectorAll(".admin-tabs button")].find(b=>b.textContent.includes("许愿审核"));if(!x)return false;x.click();return true})()'
+        '(()=>{const x=[...document.querySelectorAll(".admin-tabs button")].find(b=>b.textContent.includes("许愿管理"));if(!x)return false;x.click();return true})()'
     )
     check("admin wishes tab", clicked is True)
     b("wait", ".admin-wish-card")

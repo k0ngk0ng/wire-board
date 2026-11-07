@@ -45,7 +45,7 @@ try:
  report['ordinaryHistoryCount']=public['total']
  b('open',a.url)
  assert js('fetch("/api/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify('+json.dumps({'name':a.admin_name,'password':a.admin_password})+')}).then(r=>r.ok)')
- b('reload');b('wait','.admin-nav-button');b('click','.admin-nav-button');b('wait','.admin-tabs');b('find','role','button','click','--name','用户与在线','--exact')
+ b('reload');b('wait','.admin-nav-button');b('click','.admin-nav-button');b('wait','.admin-tabs');b('find','role','button','click','--name','用户管理','--exact')
  for width in [1440,320]:
   b('set','viewport',str(width),'900');b('fill','.admin-search input',name);b('click','.admin-user-name .player-link');b('wait','.profile-history article')
   data=js('fetch("/api/players/'+uid+'").then(r=>r.json())');assert data['user']['id']==uid and data['total']==2 and data['stats']['splendor']=={'played':1,'wins':expected_wins},data

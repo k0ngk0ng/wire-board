@@ -16,7 +16,6 @@ import (
 	"io/fs"
 	"log"
 	_ "modernc.org/sqlite"
-	"net"
 	"net/http"
 	"net/url"
 	"os"
@@ -31,7 +30,8 @@ import (
 
 type Config struct {
 	// Enabled by the production entrypoint; embedders may retain the pre-barrier protocol.
-	ClientLoading bool
+	ClientLoading  bool
+	TrustedProxies string
 
 	Modules                                             []gameapi.Module
 	DataDir, InviteCode, Origin                         string
@@ -421,7 +421,7 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /api/rooms/{id}/sync", s.moduleSyncSnapshot)
 	mux.HandleFunc("GET /api/version", s.version)
 	mux.HandleFunc("GET /api/wishes", s.listWishes)
-	mux.HandleFunc("POST /api/wishes", s.createWish)
+	mux.HandleFunc("POST /api/wishes", s.withActivity("wish", s.createWish))
 	mux.HandleFunc("POST /api/wishes/{id}/answer", s.answerWish)
 	mux.HandleFunc("GET /api/agent/wishes", s.agentWishes)
 	mux.HandleFunc("POST /api/agent/wishes/{id}", s.agentWishStatus)
@@ -430,6 +430,7 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("POST /api/controllers/{model}", s.saveController)
 	mux.HandleFunc("GET /api/admin", s.adminOverview)
 	mux.HandleFunc("GET /api/admin/audit", s.adminAudit)
+	mux.HandleFunc("GET /api/admin/users/{id}/activity", s.adminUserActivity)
 	mux.HandleFunc("POST /api/admin/games/{kind}", s.adminGame)
 	mux.HandleFunc("POST /api/admin/games/order", s.adminGameOrder)
 	mux.HandleFunc("POST /api/admin/users/{id}", s.adminManageUser)
@@ -439,7 +440,7 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /api/players/{id}", s.profile)
 	mux.HandleFunc("GET /api/friends", s.friends)
 	mux.HandleFunc("GET /api/leaderboard", s.leaderboard)
-	mux.HandleFunc("POST /api/players/{id}/friend", s.friendship)
+	mux.HandleFunc("POST /api/players/{id}/friend", s.withActivity("friend", s.friendship))
 	mux.HandleFunc("GET /api/catalog", func(w http.ResponseWriter, r *http.Request) {
 		catalog, ok := game.RailCatalog(r.URL.Query().Get("map"))
 		if !ok {
@@ -448,10 +449,10 @@ func (s *Server) Handler() http.Handler {
 		}
 		respond(w, 200, catalog)
 	})
-	mux.HandleFunc("POST /api/rooms", s.create)
-	mux.HandleFunc("POST /api/rooms/{id}", s.command)
+	mux.HandleFunc("POST /api/rooms", s.withActivity("create_room", s.create))
+	mux.HandleFunc("POST /api/rooms/{id}", s.withActivity("room", s.command))
 	mux.HandleFunc("POST /api/rooms/{id}/chat", s.chat)
-	mux.HandleFunc("POST /api/rooms/{id}/watch", s.watch)
+	mux.HandleFunc("POST /api/rooms/{id}/watch", s.withActivity("watch", s.watch))
 	mux.HandleFunc("GET /api/ws", s.socket)
 	mux.HandleFunc("/api/", func(w http.ResponseWriter, r *http.Request) { fail(w, 404, "接口不存在") })
 	mux.Handle("/", staticFiles(s.files))
@@ -548,7 +549,7 @@ func (s *Server) needUser(w http.ResponseWriter, r *http.Request) (User, bool) {
 func (s *Server) auth(w http.ResponseWriter, r *http.Request) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	host, _, _ := net.SplitHostPort(r.RemoteAddr)
+	host := s.clientIP(r)
 	now := time.Now()
 	b := s.limits[host]
 	if now.Sub(b.At) > time.Minute {
@@ -607,17 +608,39 @@ func (s *Server) auth(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-	if _, err := s.db.Exec(`INSERT INTO user_controls(user_id,created_at,last_login) VALUES(?,?,?) ON CONFLICT(user_id) DO UPDATE SET last_login=excluded.last_login`, u.ID, now.Unix(), now.Unix()); err != nil {
-		fail(w, 500, "无法更新账号状态")
-		return
-	}
-	s.seen(u.ID)
 	token := randomID(32)
 	expiry := time.Now().Add(30 * 24 * time.Hour)
-	if _, e := s.db.Exec("INSERT INTO sessions VALUES(?,?,?)", digest(token), u.ID, expiry.Unix()); e != nil {
+	tx, err := s.db.Begin()
+	if err != nil {
 		fail(w, 500, "无法创建会话")
 		return
 	}
+	defer tx.Rollback()
+	if _, err = tx.Exec(`INSERT INTO user_controls(user_id,created_at,last_login) VALUES(?,?,?) ON CONFLICT(user_id) DO UPDATE SET last_login=excluded.last_login`, u.ID, now.Unix(), now.Unix()); err == nil {
+		registered := ""
+		if r.URL.Path == "/api/register" {
+			registered = host
+		}
+		_, err = tx.Exec(`INSERT INTO user_access(user_id,registered_ip,last_login_ip) VALUES(?,?,?) ON CONFLICT(user_id) DO UPDATE SET last_login_ip=excluded.last_login_ip`, u.ID, registered, host)
+	}
+	action := "login"
+	if r.URL.Path == "/api/register" {
+		action = "register"
+	}
+	if err == nil {
+		err = activityInsert(tx, u.ID, action, "", host)
+	}
+	if err == nil {
+		_, err = tx.Exec("INSERT INTO sessions VALUES(?,?,?)", digest(token), u.ID, expiry.Unix())
+	}
+	if err == nil {
+		err = tx.Commit()
+	}
+	if err != nil {
+		fail(w, 500, "无法保存登录记录")
+		return
+	}
+	s.seen(u.ID)
 	_, _ = s.db.Exec("DELETE FROM sessions WHERE expires<?", now.Unix())
 	http.SetCookie(w, &http.Cookie{Name: "wb_session", Value: token, Path: "/", HttpOnly: true, Secure: s.cfg.SecureCookie, SameSite: http.SameSiteStrictMode, Expires: expiry, MaxAge: 30 * 86400})
 	respond(w, 200, u)
@@ -627,6 +650,7 @@ func (s *Server) logout(w http.ResponseWriter, r *http.Request) {
 	defer s.mu.Unlock()
 	if u, err := s.user(r); err == nil {
 		delete(s.presence, u.ID)
+		s.recordActivity(u.ID, "logout", "", s.clientIP(r))
 	}
 	if c, e := r.Cookie("wb_session"); e == nil {
 		_, _ = s.db.Exec("DELETE FROM sessions WHERE token=?", digest(c.Value))

@@ -44,7 +44,8 @@ func run() error {
 		return err
 	}
 	app, err := server.New(server.Config{
-		ClientLoading: true, Modules: modules, DataDir: dir, InviteCode: os.Getenv("INVITE_CODE"),
+		TrustedProxies: os.Getenv("TRUSTED_PROXIES"),
+		ClientLoading:  true, Modules: modules, DataDir: dir, InviteCode: os.Getenv("INVITE_CODE"),
 		Origin: os.Getenv("PUBLIC_ORIGIN"), AssetsBaseURL: os.Getenv("ASSETS_BASE_URL"),
 		SecureCookie:  os.Getenv("COOKIE_SECURE") == "true",
 		AdminUsername: os.Getenv("ADMIN_USERNAME"), AdminPassword: os.Getenv("ADMIN_PASSWORD"),
