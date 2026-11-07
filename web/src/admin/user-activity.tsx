@@ -6,6 +6,7 @@ const labels: Record<string, string> = {
   register: "注册账号",
   login: "登录",
   logout: "退出登录",
+  password_change: "修改密码",
   create_room: "创建牌桌",
   join: "加入牌桌",
   leave: "离开牌桌",

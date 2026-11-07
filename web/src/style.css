@@ -1836,6 +1836,9 @@ label small {
 .match-result-modal {
   width: 680px;
 }
+.results[data-outcome="failed"] h2 {
+  color: #913c31;
+}
 .match-result-modal .results {
   margin-bottom: 0;
   padding: 16px;

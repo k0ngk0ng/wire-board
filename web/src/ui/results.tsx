@@ -23,15 +23,15 @@ export function Results({
   const g = room.game!;
   const ResultDetails = gameModule(room.kind)?.ResultDetails;
   return (
-    <section className="results">
+    <section className="results" data-outcome={room.result?.outcome}>
       <div>
-        <span className="eyebrow">对局结算</span>
         <h2>
           <Crown size={25} />
           {room.result?.draw
             ? "本局和棋"
             : room.result?.cooperative
-              ? room.result.ratingPolicy === "coop_campaign_v1"
+              ? room.result.outcome ||
+                room.result.ratingPolicy === "coop_campaign_v1"
                 ? cooperativeOutcomeLabel(room.result)
                 : g.winners.length > 0
                   ? "全队胜利"

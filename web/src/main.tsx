@@ -1,4 +1,5 @@
 import { CompactRoomPanel } from "./ui/compact-room-panel";
+import { PasswordForm } from "./account/PasswordForm";
 import { NetworkSignal } from "./ui/network-signal";
 import type { NetworkInfo } from "./network-quality";
 import { isTransientSyncError, quietSyncError } from "./game-api/sync-error";
@@ -202,6 +203,8 @@ function App() {
   const [journalRoom, setJournalRoom] = useState("");
   const [closeTableRoom, setCloseTableRoom] = useState("");
   const [profileID, setProfileID] = useState("");
+  const [passwordEditing, setPasswordEditing] = useState(false);
+  useEffect(() => setPasswordEditing(false), [profileID, state?.user.id]);
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [wishOpen, setWishOpen] = useState(false);
   const [controllerSettingsOpen, setControllerSettingsOpen] = useState(false);
@@ -1247,33 +1250,58 @@ function App() {
             {profileID && (
               <GameFeedback>
                 <Modal
-                  title="玩家页面"
+                  title={passwordEditing ? "修改密码" : "玩家页面"}
                   className="player-profile-modal"
                   onClose={() => setProfileID("")}
                 >
-                  {profileID === state.user.id && (
-                    <div className="profile-account-actions">
-                      <button
-                        className="outline"
-                        aria-label="退出登录"
-                        disabled={busy}
-                        onClick={() =>
-                          void run(async () => {
-                            await api("/logout", {});
-                            setProfileID("");
-                          })
-                        }
-                      >
-                        <LogOut size={17} />
-                        退出登录
-                      </button>
-                    </div>
+                  {passwordEditing && profileID === state.user.id ? (
+                    <PasswordForm
+                      onCancel={() => setPasswordEditing(false)}
+                      onChanged={async () => {
+                        setPasswordEditing(false);
+                        setNotice("密码已修改，其他设备需要重新登录。");
+                        await refresh();
+                      }}
+                    />
+                  ) : (
+                    <>
+                      {profileID === state.user.id && (
+                        <div className="profile-account-actions">
+                          {state.user.passwordChangeAllowed !== false ? (
+                            <button
+                              className="outline"
+                              data-password-open
+                              onClick={() => setPasswordEditing(true)}
+                            >
+                              <Lock size={17} />
+                              修改密码
+                            </button>
+                          ) : (
+                            <small>密码由服务器配置管理</small>
+                          )}
+                          <button
+                            className="outline"
+                            aria-label="退出登录"
+                            disabled={busy}
+                            onClick={() =>
+                              void run(async () => {
+                                await api("/logout", {});
+                                setProfileID("");
+                              })
+                            }
+                          >
+                            <LogOut size={17} />
+                            退出登录
+                          </button>
+                        </div>
+                      )}
+                      <ProfilePage
+                        key={profileID}
+                        id={profileID}
+                        self={state.user.id}
+                      />
+                    </>
                   )}
-                  <ProfilePage
-                    key={profileID}
-                    id={profileID}
-                    self={state.user.id}
-                  />
                 </Modal>
               </GameFeedback>
             )}
