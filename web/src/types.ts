@@ -110,6 +110,7 @@ export type {
   SanguoshaState,
 } from "../../games/sanguosha/web/types";
 export type User = {
+  passwordChangeAllowed?: boolean;
   id: string;
   name: string;
   role?: "player" | "admin" | "superadmin";

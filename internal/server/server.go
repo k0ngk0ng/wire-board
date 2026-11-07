@@ -417,6 +417,7 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("POST /api/register", s.auth)
 	mux.HandleFunc("POST /api/login", s.auth)
 	mux.HandleFunc("POST /api/logout", s.logout)
+	mux.HandleFunc("POST /api/account/password", s.changePassword)
 	mux.HandleFunc("GET /api/state", s.state)
 	mux.HandleFunc("GET /api/rooms/{id}/sync", s.moduleSyncSnapshot)
 	mux.HandleFunc("GET /api/version", s.version)
@@ -786,7 +787,7 @@ func (s *Server) statePayload(r *http.Request) (int, []byte) {
 			rooms = append(rooms, summary(room))
 		}
 	}
-	out := map[string]any{"serverInstance": s.instance, "user": map[string]any{"id": u.ID, "name": u.Name, "role": s.role(u.ID)}, "availableGames": s.availableGames(), "rooms": rooms, "serverNow": time.Now().UnixMilli(), "assetsBaseURL": s.cfg.AssetsBaseURL, "version": s.cfg.Version, "railMaps": game.RailMapList()}
+	out := map[string]any{"serverInstance": s.instance, "user": map[string]any{"id": u.ID, "name": u.Name, "role": s.role(u.ID), "passwordChangeAllowed": s.passwordChangeAllowed(u)}, "availableGames": s.availableGames(), "rooms": rooms, "serverNow": time.Now().UnixMilli(), "assetsBaseURL": s.cfg.AssetsBaseURL, "version": s.cfg.Version, "railMaps": game.RailMapList()}
 	out["modules"] = s.cfg.Modules
 	out["network"] = s.networkFor(u.ID)
 	room := s.current(u.ID)

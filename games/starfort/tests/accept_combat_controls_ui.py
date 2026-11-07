@@ -77,7 +77,12 @@ def setup():
     b('open',w.BASE);w.OPENED=True
     w.REPORT['browserUserAgent']=js('navigator.userAgent')
     w.api('/register',{'name':w.MAIN,'password':'starfort-browser-test','invite':'starfort-browser'})
-    w.login('上架管理员');w.label('管理后台');b('wait','input[aria-label="搜索管理游戏"]')
+    w.login('上架管理员');w.label('管理后台')
+    wait('!!document.querySelector(".admin-tabs")')
+    if not js('!!document.querySelector(\'input[aria-label="搜索管理游戏"]\')'):
+        tab=js('[...document.querySelectorAll(".admin-tabs button")].find(e=>["游戏管理","游戏上架"].includes(e.textContent.trim()))?.textContent.trim()')
+        if tab: w.label(tab)
+    b('wait','input[aria-label="搜索管理游戏"]')
     b('fill','input[aria-label="搜索管理游戏"]','星垒')
     if '已下架' in js('document.querySelector(".admin-game-card").textContent'):
         w.click('.admin-game-card button');w.label('确认操作')

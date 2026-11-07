@@ -17,6 +17,36 @@ export default defineGame<View, Options>({
   },
   Board,
   Cover,
+  ResultDetails: ({ data }) => (
+    <section
+      className="sf-result-summary"
+      data-sf-result
+      data-outcome={data.phase}
+      aria-label="星垒结算"
+    >
+      <p>
+        {data.phase === "won"
+          ? "防线守住了全部敌潮。"
+          : `星核生命耗尽，第 ${data.wave} 波失守。`}
+      </p>
+      <dl>
+        <div>
+          <dt>守住波次</dt>
+          <dd>{data.completedWaves}</dd>
+        </div>
+        <div>
+          <dt>击败敌人</dt>
+          <dd>{data.kills}</dd>
+        </div>
+        <div>
+          <dt>星核生命</dt>
+          <dd>
+            {data.baseHP} / {data.baseMaxHP}
+          </dd>
+        </div>
+      </dl>
+    </section>
+  ),
   PlayerSummary: ({ room, data, seat }) => (
     <div className="sf-seat-summary">
       <small>

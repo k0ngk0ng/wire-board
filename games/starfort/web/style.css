@@ -1171,3 +1171,28 @@
 .starfort-board {
   scroll-margin-top: 90px;
 }
+.sf-result-summary dl {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin: 20px 0 0;
+  color: #344c3c;
+}
+.sf-result-summary dt {
+  font-size: 12px;
+}
+.sf-result-summary dd {
+  margin: 5px 0 0;
+  font-size: 20px;
+  font-weight: 700;
+}
+.starfort-board[data-phase="lost"] .sf-compact-countdown {
+  color: #813b31;
+  background: #f5e7e0;
+  font-weight: 700;
+}
+.starfort-board[data-phase="won"] .sf-compact-countdown {
+  color: #285c3b;
+  background: #e4f0df;
+  font-weight: 700;
+}

@@ -18,8 +18,8 @@ const phaseNames = {
   prepare: "整备防线",
   battle: "敌潮来袭",
   paused: "守望暂停",
-  won: "星光长明",
-  lost: "防线失守",
+  won: "全队胜利",
+  lost: "挑战失败",
 };
 const difficultyNames = { easy: "简单", normal: "普通", hard: "困难" };
 const priorityNames = {
