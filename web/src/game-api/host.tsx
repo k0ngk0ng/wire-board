@@ -1,6 +1,6 @@
 import type { GameSetupFormProps } from "../ui/create-room";
 import { useContext, useEffect, useState } from "react";
-import { ArrowRight, Check, Clock, Crown, Plus } from "lucide-react";
+import { X, ArrowRight, Check, Clock, Crown, Plus } from "lucide-react";
 import { AssetsContext } from "../ui/board-host";
 import type { Act, Room } from "../types";
 import "./host.css";
@@ -291,9 +291,10 @@ export function ModuleWaiting({
                     className="bot-remove"
                     disabled={busy}
                     aria-label={`移除${seat.name}`}
+                    title={`移除${seat.name}`}
                     onClick={() => command("remove_bot", { target: seat.id })}
                   >
-                    移除
+                    <X size={16} />
                   </button>
                 )}
               </div>

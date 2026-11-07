@@ -755,13 +755,16 @@ function App() {
                   <button
                     className="profile-nav"
                     aria-label="我的战绩与好友"
-                    title={`查看 ${state.user.name} 的玩家页面`}
+                    title="查看我的战绩与好友"
                     onClick={() => setProfileID(state.user.id)}
                   >
                     <span className="avatar" aria-hidden="true">
                       {state.user.name[0]}
                     </span>
-                    <span className="username">{state.user.name}</span>
+                    <span className="profile-nav-text">
+                      <span className="username">{state.user.name}</span>
+                      <small>战绩 · 好友</small>
+                    </span>
                   </button>
                 </div>
               </header>
@@ -1214,7 +1217,11 @@ function App() {
             )}
             {profileID && (
               <GameFeedback>
-                <Modal title="玩家页面" onClose={() => setProfileID("")}>
+                <Modal
+                  title="玩家页面"
+                  className="player-profile-modal"
+                  onClose={() => setProfileID("")}
+                >
                   {profileID === state.user.id && (
                     <div className="profile-account-actions">
                       <button

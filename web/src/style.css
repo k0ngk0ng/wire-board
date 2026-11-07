@@ -6177,3 +6177,83 @@ label small {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+/* Seat actions stay outside the content flow in every waiting room. */
+.waiting-seat {
+  position: relative;
+}
+.waiting-seat .bot-remove {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  margin: 0;
+  width: 28px;
+  height: 28px;
+  padding: 5px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+}
+.modal.player-profile-modal {
+  width: min(1100px, calc(100vw - 32px));
+  max-width: 1100px;
+}
+.profile-friends {
+  border: 1px solid #d6dfcf;
+  padding: 18px;
+  border-radius: 12px;
+  background: #f5f8ef;
+  color: #354b39;
+}
+.refresh-spinning {
+  animation: refresh-spin 0.8s linear infinite;
+}
+@keyframes refresh-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+button[aria-busy="true"] {
+  cursor: progress;
+  background: #e5ecdf;
+  color: #34523d;
+}
+button:active:not(:disabled) {
+  filter: brightness(0.94);
+}
+@media (prefers-reduced-motion: reduce) {
+  .refresh-spinning {
+    animation: none;
+  }
+}
+@media (max-width: 600px) {
+  .modal.player-profile-modal {
+    width: calc(100vw - 24px);
+  }
+  .profile-friends {
+    padding: 12px;
+  }
+}
+.profile-nav-text {
+  display: grid;
+  text-align: left;
+  min-width: 0;
+  gap: 2px;
+}
+.profile-nav-text small {
+  font-size: 10px;
+  white-space: nowrap;
+  color: #52664f;
+}
+/* Reserve the name/status row so badges and connection updates stay stable. */
+.waiting-seat h3 {
+  min-height: 20px;
+}
+@media (max-width: 600px) {
+  .waiting-seat h3 {
+    min-height: 42px;
+  }
+}
+button[aria-busy="true"] {
+  opacity: 1;
+}

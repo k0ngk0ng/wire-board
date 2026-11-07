@@ -1,5 +1,5 @@
 import type { GameSetupFormProps } from "../ui/create-room";
-import { ArrowRight, Bot, Check, Clock, Crown, Flag, Plus } from "lucide-react";
+import { X, ArrowRight, Bot, Check, Clock, Crown, Flag, Plus } from "lucide-react";
 import React, { useContext, useEffect, useState } from "react";
 import {
   catanPhases,
@@ -1578,9 +1578,10 @@ export function LegacyWaiting({
                     className="bot-remove"
                     disabled={busy}
                     aria-label={`移除${p.name}`}
+                    title={`移除${p.name}`}
                     onClick={() => command("remove_bot", { target: p.id })}
                   >
-                    移除
+                    <X size={16} />
                   </button>
                 )}
               </div>

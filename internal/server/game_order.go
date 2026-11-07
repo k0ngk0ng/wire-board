@@ -83,7 +83,7 @@ func (s *Server) adminGameOrder(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 		return nil
-	})
+	}, s.clientIP(r))
 	if err != nil {
 		fail(w, 500, "游戏顺序未保存，请重试")
 		return

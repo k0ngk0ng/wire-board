@@ -1,16 +1,15 @@
 import { ResetPasswordField } from "./admin/password-field";
-import { reorderVisible } from "./admin/game-order";
+import { GameSort } from "./admin/game-sort";
+import { UserActivity } from "./admin/user-activity";
+import { RefreshButton } from "./ui/refresh-button";
 import { CategoryFilter, matchesCategory } from "./ui/game-category";
 import { useEffect, useRef, useState } from "react";
 import {
   ArrowLeft,
-  ArrowUp,
-  ArrowDown,
   ShieldCheck,
   Users,
   Radio,
   Layers3,
-  RefreshCw,
   Search,
   Eye,
   EyeOff,
@@ -40,6 +39,8 @@ type ManagedUser = User & {
   lastSeen: number;
   lastLogin: number;
   createdAt: number;
+  registeredIP: string;
+  lastLoginIP: string;
 };
 type Game = { kind: string; name: string; enabled: boolean };
 type Overview = {
@@ -58,6 +59,7 @@ type Overview = {
   serverNow: number;
 };
 type Audit = {
+  ip: string;
   id: number;
   actor: string;
   action: string;
@@ -106,18 +108,6 @@ const date = (value: number) =>
         minute: "2-digit",
       })
     : "暂无记录";
-function ListRefresh({ onClick }: { onClick: () => void }) {
-  return (
-    <button
-      className="outline admin-list-refresh"
-      type="button"
-      onClick={onClick}
-    >
-      <RefreshCw size={15} />
-      刷新
-    </button>
-  );
-}
 async function request(path: string, body?: unknown) {
   const r = await fetch("/api" + path, {
     method: body === undefined ? "GET" : "POST",
@@ -140,13 +130,13 @@ export function AdminDashboard({
   onChange: () => Promise<void>;
 }) {
   const [data, setData] = useState<Overview>();
-  const [tab, setTab] = useState("games");
+  const [tab, setTab] = useState("users");
   const [query, setQuery] = useState("");
   const [gameQuery, setGameQuery] = useState("");
   const [gameCategory, setGameCategory] = useState("all");
-  const [orderDraft, setOrderDraft] = useState<string[] | null>(null);
-  const orderBase = useRef<string[]>([]),
-    draggedGame = useRef<string | null>(null);
+  const [sorting, setSorting] = useState(false);
+  const [activityUser, setActivityUser] = useState<ManagedUser>();
+  const [roomFilter, setRoomFilter] = useState("all");
   const [wishFilter, setWishFilter] = useState("all");
   const [onlineOnly, setOnlineOnly] = useState(false);
   const [decision, setDecision] = useState<Decision>();
@@ -182,58 +172,45 @@ export function AdminDashboard({
       setError((e as Error).message);
     }
   }
-  const orderedGames = data
-    ? [
-        ...(orderDraft ?? data.games.map((g) => g.kind)),
-        ...data.games
-          .map((g) => g.kind)
-          .filter((id) => orderDraft && !orderDraft.includes(id)),
-      ]
-        .map((id) => data.games.find((g) => g.kind === id))
-        .filter((g): g is Game => !!g)
-    : [];
-  const visibleGames = orderedGames.filter(
+  const visibleGames = (data?.games ?? []).filter(
     (g) =>
       matchesCategory(g.kind, gameCategory) &&
       `${g.name} ${g.kind}`
         .toLocaleLowerCase()
         .includes(gameQuery.trim().toLocaleLowerCase()),
   );
-  const orderChanged =
-    !!data &&
-    !!orderDraft &&
-    orderDraft.join(",") !== data.games.map((g) => g.kind).join(",");
-  function moveGame(from: string, to: string) {
-    if (busy || !data) return;
-    if (!orderDraft) orderBase.current = data.games.map((g) => g.kind);
-    setOrderDraft(
-      reorderVisible(
-        orderedGames.map((g) => g.kind),
-        visibleGames.map((g) => g.kind),
-        from,
-        to,
-      ),
-    );
-  }
-  async function saveOrder() {
-    if (!orderChanged || busy) return;
+  async function saveOrder(order: string[], expectedOrder: string[]) {
+    if (busy) return;
     setBusy(true);
     setError("");
     setNotice("");
     try {
-      await request("/admin/games/order", {
-        order: orderedGames.map((g) => g.kind),
-        expectedOrder: orderBase.current,
-      });
-      setOrderDraft(null);
+      await request("/admin/games/order", { order, expectedOrder });
       await refresh();
       await onChange();
+      setSorting(false);
       setNotice("游戏顺序已保存");
     } catch (e) {
       setError((e as Error).message);
+      throw e;
     } finally {
       setBusy(false);
     }
+  }
+  function metric(index: number) {
+    if (index < 2) {
+      setTab("users");
+      setOnlineOnly(index === 1);
+      setQuery("");
+    } else {
+      setTab("rooms");
+      setRoomFilter(index === 2 ? "playing" : "waiting");
+    }
+    requestAnimationFrame(() =>
+      document
+        .querySelector(".admin-tabs")
+        ?.scrollIntoView({ block: "start", behavior: "smooth" }),
+    );
   }
   useEffect(() => {
     void refresh();
@@ -366,10 +343,7 @@ export function AdminDashboard({
         {user.role === "superadmin" && (
           <small>永久权限 · 不可被停用或降权</small>
         )}
-        <button className="subtle" onClick={() => void refresh()}>
-          <RefreshCw size={15} />
-          刷新
-        </button>
+        <RefreshButton className="subtle" onRefresh={refresh} />
       </div>
       {(error || loadError) && (
         <div className="admin-message error" role="alert">
@@ -402,25 +376,21 @@ export function AdminDashboard({
             ].map(([Icon, label, value, description], i) => {
               const I = Icon as typeof Users;
               return (
-                <article key={i}>
+                <button type="button" key={i} onClick={() => metric(i)}>
                   <I size={22} />
                   <span>{label as string}</span>
                   <strong>{value as number}</strong>
                   <small>{description as string}</small>
-                </article>
+                </button>
               );
             })}
           </section>
           <nav className="admin-tabs" aria-label="管理分类">
             {[
-              ["games", "游戏上架", Layers3],
-              [
-                "wishes",
-                `许愿审核${data.wishStats.pending ? ` · ${data.wishStats.pending}` : ""}`,
-                Sparkles,
-              ],
-              ["users", "用户与在线", Users],
+              ["users", "用户管理", Users],
+              ["games", "游戏管理", Layers3],
               ["rooms", "牌桌管理", Activity],
+              ["wishes", "许愿管理", Sparkles],
               ["audit", "操作记录", ScrollText],
             ].map(([key, label, Icon]) => {
               const I = Icon as typeof Users;
@@ -429,7 +399,10 @@ export function AdminDashboard({
                   key={key as string}
                   className={tab === key ? "active" : ""}
                   aria-current={tab === key ? "page" : undefined}
-                  onClick={() => setTab(key as string)}
+                  onClick={() => {
+                    setTab(key as string);
+                    if (key === "rooms") setRoomFilter("all");
+                  }}
                 >
                   <I size={17} />
                   {label as string}
@@ -445,27 +418,10 @@ export function AdminDashboard({
                   <p>下架会隐藏入口、关闭等待牌桌；已经开始的对局可以继续。</p>
                 </div>
                 <div className="admin-order-actions">
-                  {orderDraft && (
-                    <>
-                      <button
-                        aria-label="取消游戏排序"
-                        className="subtle"
-                        disabled={busy}
-                        onClick={() => setOrderDraft(null)}
-                      >
-                        取消排序
-                      </button>
-                      <button
-                        className="primary"
-                        aria-label="保存游戏顺序"
-                        disabled={busy || !orderChanged}
-                        onClick={() => void saveOrder()}
-                      >
-                        保存顺序
-                      </button>
-                    </>
-                  )}
-                  <ListRefresh onClick={() => void refresh()} />
+                  <button className="outline" onClick={() => setSorting(true)}>
+                    游戏排序
+                  </button>
+                  <RefreshButton onRefresh={refresh} />
                 </div>
               </div>
               <CategoryFilter
@@ -495,37 +451,12 @@ export function AdminDashboard({
                 </p>
               )}
               <div className="admin-games">
-                {visibleGames.map((g, visibleIndex) => {
-                  const i = orderedGames.findIndex((x) => x.kind === g.kind);
+                {visibleGames.map((g) => {
+                  const i = data.games.findIndex((x) => x.kind === g.kind);
                   return (
                     <article
                       key={g.kind}
                       data-game-id={g.kind}
-                      draggable={!busy}
-                      onDragStart={(e) => {
-                        if ((e.target as Element).closest("button")) {
-                          e.preventDefault();
-                          return;
-                        }
-                        draggedGame.current = g.kind;
-                        e.dataTransfer.effectAllowed = "move";
-                        e.dataTransfer.setData("text/plain", g.kind);
-                      }}
-                      onDragOver={(e) => {
-                        if (draggedGame.current && !busy) {
-                          e.preventDefault();
-                          e.dataTransfer.dropEffect = "move";
-                        }
-                      }}
-                      onDrop={(e) => {
-                        e.preventDefault();
-                        if (draggedGame.current)
-                          moveGame(draggedGame.current, g.kind);
-                        draggedGame.current = null;
-                      }}
-                      onDragEnd={() => {
-                        draggedGame.current = null;
-                      }}
                       className={`admin-game-card ${!g.enabled ? "unpublished" : ""}`}
                     >
                       <div className={`admin-game-number tone-${i}`}>
@@ -538,40 +469,6 @@ export function AdminDashboard({
                           {g.enabled ? "已上架" : "已下架"}
                         </span>
                         <h3>{g.name}</h3>
-                      </div>
-                      <div className="admin-game-order-controls">
-                        <button
-                          type="button"
-                          className="icon-button"
-                          aria-label={`上移${g.name}`}
-                          title="上移"
-                          disabled={busy || visibleIndex === 0}
-                          onClick={() =>
-                            moveGame(
-                              g.kind,
-                              visibleGames[visibleIndex - 1].kind,
-                            )
-                          }
-                        >
-                          <ArrowUp size={18} />
-                        </button>
-                        <button
-                          type="button"
-                          className="icon-button"
-                          aria-label={`下移${g.name}`}
-                          title="下移"
-                          disabled={
-                            busy || visibleIndex === visibleGames.length - 1
-                          }
-                          onClick={() =>
-                            moveGame(
-                              g.kind,
-                              visibleGames[visibleIndex + 1].kind,
-                            )
-                          }
-                        >
-                          <ArrowDown size={18} />
-                        </button>
                       </div>
                       <button
                         className={g.enabled ? "outline" : "primary"}
@@ -604,7 +501,7 @@ export function AdminDashboard({
                     通过后，本地制作代理可以领取并推进状态；驳回时请写明原因，玩家会在「我的许愿」中看到。
                   </p>
                 </div>
-                <ListRefresh onClick={() => void refresh()} />
+                <RefreshButton onRefresh={refresh} />
               </div>
               <div className="admin-wish-summary" role="status">
                 <span>待审核 {data.wishStats.pending}</span>
@@ -785,7 +682,7 @@ export function AdminDashboard({
                     秒自动刷新。多个标签页按同一个玩家统计；离线玩家的托管状态也会保留显示。
                   </p>
                 </div>
-                <ListRefresh onClick={() => void refresh()} />
+                <RefreshButton onRefresh={refresh} />
               </div>
               <div className="admin-filter">
                 <label className="admin-search">
@@ -845,7 +742,21 @@ export function AdminDashboard({
                           最近登录 <b>{date(u.lastLogin)}</b>
                         </span>
                       </div>
+                      <div className="admin-user-ips">
+                        <span>
+                          注册 IP <b>{u.registeredIP || "暂无记录"}</b>
+                        </span>
+                        <span>
+                          最近登录 IP <b>{u.lastLoginIP || "暂无记录"}</b>
+                        </span>
+                      </div>
                       <div className="admin-user-actions">
+                        <button
+                          className="outline"
+                          onClick={() => setActivityUser(u)}
+                        >
+                          查看动态
+                        </button>
                         {protectedUser ? (
                           <span className="admin-protected">
                             <LockKeyhole size={15} />
@@ -908,54 +819,71 @@ export function AdminDashboard({
                     包括已下架游戏中尚未结束的牌桌。管理界面仅展示公开信息。
                   </p>
                 </div>
-                <ListRefresh onClick={() => void refresh()} />
+                <RefreshButton onRefresh={refresh} />
               </div>
+              <label className="admin-room-filter">
+                牌桌状态{" "}
+                <select
+                  aria-label="牌桌状态"
+                  value={roomFilter}
+                  onChange={(e) => setRoomFilter(e.target.value)}
+                >
+                  <option value="all">全部</option>
+                  <option value="playing">进行中</option>
+                  <option value="waiting">等待开局</option>
+                </select>
+              </label>
               <div className="admin-room-grid">
-                {data.rooms.map((room) => (
-                  <article className="admin-room-card" key={room.id}>
-                    <span className="admin-badge green">
-                      {room.status === "playing" ? "进行中" : "等待开局"}
-                    </span>
-                    <h3>{room.name}</h3>
-                    <p>
-                      {data.games.find((g) => g.kind === room.kind)?.name} ·{" "}
-                      {room.id.toUpperCase()}
-                    </p>
-                    <div className="admin-room-seats">
-                      {room.seats
-                        .filter((p) => !p.left)
-                        .map((p) => (
-                          <span key={p.id}>
-                            {p.bot ? "🤖 " : ""}
-                            {p.name}
-                            {p.autoPlay ? " · 托管" : ""}
-                          </span>
-                        ))}
-                    </div>
-                    <small>
-                      {room.seats.filter((p) => !p.left).length} /{" "}
-                      {room.capacity} 人 · {room.spectatorCount || 0} 人观战
-                    </small>
-                    <button
-                      className="outline danger"
-                      onClick={() =>
-                        setDecision({
-                          title: `结束牌桌 · ${room.name}`,
-                          text: "此操作会立即关闭牌桌，终止当前比赛，本局不计胜负与积分。玩家之后可以离开或重新开局。",
-                          path: `/admin/rooms/${room.id}/close`,
-                          body: {},
-                        })
-                      }
-                    >
-                      <CircleStop size={16} />
-                      结束牌桌
-                    </button>
-                  </article>
-                ))}
+                {data.rooms
+                  .filter(
+                    (room) =>
+                      roomFilter === "all" || room.status === roomFilter,
+                  )
+                  .map((room) => (
+                    <article className="admin-room-card" key={room.id}>
+                      <span className="admin-badge green">
+                        {room.status === "playing" ? "进行中" : "等待开局"}
+                      </span>
+                      <h3>{room.name}</h3>
+                      <p>
+                        {data.games.find((g) => g.kind === room.kind)?.name} ·{" "}
+                        {room.id.toUpperCase()}
+                      </p>
+                      <div className="admin-room-seats">
+                        {room.seats
+                          .filter((p) => !p.left)
+                          .map((p) => (
+                            <span key={p.id}>
+                              {p.bot ? "🤖 " : ""}
+                              {p.name}
+                              {p.autoPlay ? " · 托管" : ""}
+                            </span>
+                          ))}
+                      </div>
+                      <small>
+                        {room.seats.filter((p) => !p.left).length} /{" "}
+                        {room.capacity} 人 · {room.spectatorCount || 0} 人观战
+                      </small>
+                      <button
+                        className="outline danger"
+                        onClick={() =>
+                          setDecision({
+                            title: `结束牌桌 · ${room.name}`,
+                            text: "此操作会立即关闭牌桌，终止当前比赛，本局不计胜负与积分。玩家之后可以离开或重新开局。",
+                            path: `/admin/rooms/${room.id}/close`,
+                            body: {},
+                          })
+                        }
+                      >
+                        <CircleStop size={16} />
+                        结束牌桌
+                      </button>
+                    </article>
+                  ))}
               </div>
-              {!data.rooms.length && (
-                <p className="admin-empty">暂时没有活动牌桌。</p>
-              )}
+              {!data.rooms.some(
+                (room) => roomFilter === "all" || room.status === roomFilter,
+              ) && <p className="admin-empty">暂时没有活动牌桌。</p>}
             </section>
           )}
           {tab === "audit" && (
@@ -965,7 +893,7 @@ export function AdminDashboard({
                   <h2>管理操作记录</h2>
                   <p>记录操作人、时间与对象；不会记录密码内容。</p>
                 </div>
-                <ListRefresh onClick={() => void audit()} />
+                <RefreshButton onRefresh={() => audit()} />
               </div>
               <div className="admin-audit">
                 {logs.map((log) => (
@@ -975,7 +903,8 @@ export function AdminDashboard({
                       <strong>{actions[log.action] || log.action}</strong>
                       <p>{log.detail}</p>
                       <small>
-                        {log.actor} · {date(log.createdAt)}
+                        {log.actor} · {date(log.createdAt)} · IP：
+                        {log.ip || "暂无记录"}
                       </small>
                     </div>
                   </article>
@@ -992,6 +921,20 @@ export function AdminDashboard({
             </section>
           )}
         </>
+      )}
+      {sorting && data && (
+        <GameSort
+          games={data.games}
+          busy={busy}
+          onSave={saveOrder}
+          onClose={() => setSorting(false)}
+        />
+      )}
+      {activityUser && (
+        <UserActivity
+          user={activityUser}
+          onClose={() => setActivityUser(undefined)}
+        />
       )}
       {decision && (
         <div

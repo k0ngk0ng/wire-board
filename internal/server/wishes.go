@@ -497,7 +497,7 @@ func (s *Server) adminWish(w http.ResponseWriter, r *http.Request) {
 			return fmt.Errorf("wish %s disappeared", id)
 		}
 		return nil
-	})
+	}, s.clientIP(r))
 	if err != nil {
 		fail(w, 500, "审核结果未保存，请重试")
 		return
@@ -674,7 +674,7 @@ func (s *Server) agentWishStatus(w http.ResponseWriter, r *http.Request) {
 			return fmt.Errorf("wish %s disappeared", id)
 		}
 		return nil
-	})
+	}, s.clientIP(r))
 	if err != nil {
 		fail(w, 500, "状态未保存，请重试")
 		return
@@ -748,7 +748,7 @@ func (s *Server) agentWishQuestion(w http.ResponseWriter, r *http.Request) {
 		}
 		questionID, err = res.LastInsertId()
 		return err
-	})
+	}, s.clientIP(r))
 	if err != nil {
 		fail(w, 500, "追问未保存，请重试")
 		return
