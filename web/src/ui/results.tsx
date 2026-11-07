@@ -28,22 +28,22 @@ export function Results({
         <span className="eyebrow">对局结算</span>
         <h2>
           <Crown size={25} />
-          {room.result?.unrated
-            ? "练习结束"
-            : room.result?.draw
-              ? "本局和棋"
-              : room.result?.cooperative
-                ? room.result.ratingPolicy === "coop_campaign_v1"
-                  ? cooperativeOutcomeLabel(room.result)
-                  : g.winners.length > 0
-                    ? "全队胜利"
-                    : "合作挑战结束"
-                : `${g.winners.map((i) => room.seats[i]?.name).join("、")} 获胜`}
+          {room.result?.draw
+            ? "本局和棋"
+            : room.result?.cooperative
+              ? room.result.ratingPolicy === "coop_campaign_v1"
+                ? cooperativeOutcomeLabel(room.result)
+                : g.winners.length > 0
+                  ? "全队胜利"
+                  : "合作挑战结束"
+              : g.winners.length > 0
+                ? `${g.winners.map((i) => room.seats[i]?.name).join("、")} 获胜`
+                : "对局结束"}
         </h2>
         {!ResultDetails && (
           <p>
             {room.result?.unrated
-              ? "练习对局不计积分，成绩已保存。"
+              ? "本局不计积分，成绩已保存。"
               : room.result?.draw
                 ? "本局没有获胜方，积分保持不变。"
                 : room.result?.cooperative

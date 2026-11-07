@@ -1,0 +1,281 @@
+{
+  "passed": true,
+  "checks": [
+    "native creation selection reached server",
+    "own character and waiting arena persisted",
+    "bot character persisted",
+    "selections survive reload",
+    "selected thumbnails load after reload",
+    "second phone width updates server",
+    "desktop choice still persists",
+    "actual unranked match has a result",
+    "actual winner remains visible",
+    "rating explanation is separate",
+    "no browser runtime errors"
+  ],
+  "nativeTouches": [
+    {
+      "selector": "[data-arena-picker] summary",
+      "point": {
+        "hit": true,
+        "x": 160,
+        "y": 539.1796875
+      },
+      "events": [
+        {
+          "type": "touchStart",
+          "nativeTouch": true,
+          "render": {}
+        },
+        {
+          "type": "touchEnd",
+          "nativeTouch": true,
+          "render": {}
+        }
+      ]
+    },
+    {
+      "selector": "[data-arena-option=\"2\"] .yuyu-arena-image",
+      "point": {
+        "hit": true,
+        "x": 167.9921875,
+        "y": 277.046875
+      },
+      "events": [
+        {
+          "type": "touchStart",
+          "nativeTouch": true,
+          "render": {}
+        },
+        {
+          "type": "touchEnd",
+          "nativeTouch": true,
+          "render": {}
+        }
+      ]
+    },
+    {
+      "selector": "[data-arena-picker] summary",
+      "point": {
+        "hit": true,
+        "x": 160,
+        "y": 353.5859375
+      },
+      "events": [
+        {
+          "type": "touchStart",
+          "nativeTouch": true,
+          "render": {}
+        },
+        {
+          "type": "touchEnd",
+          "nativeTouch": true,
+          "render": {}
+        }
+      ]
+    },
+    {
+      "selector": "[data-arena-option=\"10\"] .yuyu-arena-image",
+      "point": {
+        "hit": true,
+        "x": 253.328125,
+        "y": 514.5625
+      },
+      "events": [
+        {
+          "type": "touchStart",
+          "nativeTouch": true,
+          "render": {}
+        },
+        {
+          "type": "touchEnd",
+          "nativeTouch": true,
+          "render": {}
+        }
+      ]
+    },
+    {
+      "selector": "[data-character-seat=\"0\"] summary",
+      "point": {
+        "hit": true,
+        "x": 160,
+        "y": 369.78125
+      },
+      "events": [
+        {
+          "type": "touchStart",
+          "nativeTouch": true,
+          "render": {}
+        },
+        {
+          "type": "touchEnd",
+          "nativeTouch": true,
+          "render": {}
+        }
+      ]
+    },
+    {
+      "selector": "[data-character-option=\"8\"] .yuyu-portrait",
+      "point": {
+        "hit": true,
+        "x": 72,
+        "y": 635.96875
+      },
+      "events": [
+        {
+          "type": "touchStart",
+          "nativeTouch": true,
+          "render": {}
+        },
+        {
+          "type": "touchEnd",
+          "nativeTouch": true,
+          "render": {}
+        }
+      ]
+    },
+    {
+      "selector": "[data-character-seat=\"1\"] summary",
+      "point": {
+        "hit": true,
+        "x": 160,
+        "y": 369.78125
+      },
+      "events": [
+        {
+          "type": "touchStart",
+          "nativeTouch": true,
+          "render": {}
+        },
+        {
+          "type": "touchEnd",
+          "nativeTouch": true,
+          "render": {}
+        }
+      ]
+    },
+    {
+      "selector": "[data-character-option=\"10\"] .yuyu-portrait",
+      "point": {
+        "hit": true,
+        "x": 200,
+        "y": 635.96875
+      },
+      "events": [
+        {
+          "type": "touchStart",
+          "nativeTouch": true,
+          "render": {}
+        },
+        {
+          "type": "touchEnd",
+          "nativeTouch": true,
+          "render": {}
+        }
+      ]
+    },
+    {
+      "selector": "[data-character-seat=\"0\"] summary",
+      "point": {
+        "hit": true,
+        "x": 195,
+        "y": 421.78125
+      },
+      "events": [
+        {
+          "type": "touchStart",
+          "nativeTouch": true,
+          "render": {}
+        },
+        {
+          "type": "touchEnd",
+          "nativeTouch": true,
+          "render": {}
+        }
+      ]
+    },
+    {
+      "selector": "[data-character-option=\"1\"] .yuyu-portrait",
+      "point": {
+        "hit": true,
+        "x": 162.25,
+        "y": 502.78125
+      },
+      "events": [
+        {
+          "type": "touchStart",
+          "nativeTouch": true,
+          "render": {}
+        },
+        {
+          "type": "touchEnd",
+          "nativeTouch": true,
+          "render": {}
+        }
+      ]
+    },
+    {
+      "selector": "[data-arena-picker] summary",
+      "point": {
+        "hit": true,
+        "x": 195,
+        "y": 321.5859375
+      },
+      "events": [
+        {
+          "type": "touchStart",
+          "nativeTouch": true,
+          "render": {}
+        },
+        {
+          "type": "touchEnd",
+          "nativeTouch": true,
+          "render": {}
+        }
+      ]
+    },
+    {
+      "selector": "[data-arena-option=\"6\"] .yuyu-arena-image",
+      "point": {
+        "hit": true,
+        "x": 94.328125,
+        "y": 501.8203125
+      },
+      "events": [
+        {
+          "type": "touchStart",
+          "nativeTouch": true,
+          "render": {}
+        },
+        {
+          "type": "touchEnd",
+          "nativeTouch": true,
+          "render": {}
+        }
+      ]
+    }
+  ],
+  "scope": "Normal built application, registered Go module, SQLite/HTTP/WS, native Chromium touch; no physical-phone claim",
+  "finalOptions": {
+    "arena": 14,
+    "teamBattle": false,
+    "characters": [
+      1,
+      10
+    ]
+  },
+  "settlement": {
+    "heading": "电脑 1 获胜",
+    "winnerSeats": [
+      1
+    ],
+    "rated": false,
+    "unrated": true
+  },
+  "sources": {
+    "scripts/yuyuhakusho/check_mobile_room_choices.py": "4a32a38c91306deef67a7dbd4dc7777a8c7f5d728bb4bf1a31ab21efaa17daea",
+    "games/yuyuhakusho/web/CharacterPicker.tsx": "b2492c519c49be0e665dcff5c66132ba8fae714b9a29b4e1da3623a7f65aea88",
+    "web/src/ui/results.tsx": "29917edda5e8760cde053da168f0e761094904b6667f473132b700d8293ee3db",
+    "web/dist/index.html": "c63c37d4e89290c0c1f1afa64f3c1a44f8d9ebee9ff8cb0d6b0966bbf579cdf7"
+  }
+}
