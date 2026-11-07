@@ -163,12 +163,13 @@ func (w *activityResponse) Write(data []byte) (int, error) {
 }
 func (s *Server) withActivity(action string, next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		requestAction := action
 		s.mu.Lock()
 		u, err := s.user(r)
 		s.mu.Unlock()
 		// Decode only the small command envelope; restore the body for the handler.
 		target := r.PathValue("id")
-		if action == "room" || action == "friend" {
+		if requestAction == "room" || requestAction == "friend" {
 			raw, e := io.ReadAll(r.Body)
 			if e != nil {
 				fail(w, 400, "请求内容过大或不可读")
@@ -180,28 +181,28 @@ func (s *Server) withActivity(action string, next http.HandlerFunc) http.Handler
 				Action string `json:"action"`
 			}
 			_ = json.Unmarshal(raw, &req)
-			if action == "room" {
+			if requestAction == "room" {
 				switch req.Type {
 				case "join", "leave", "ready", "start", "close", "add_bot", "remove_bot", "autoplay", "restart":
-					action = req.Type
+					requestAction = req.Type
 				default:
-					action = ""
+					requestAction = ""
 				}
 			} else {
-				action = "friend_" + req.Action
+				requestAction = "friend_" + req.Action
 			}
 		}
 		recorder := &activityResponse{ResponseWriter: w}
 		next(recorder, r)
-		if err == nil && action != "" && recorder.status >= 200 && recorder.status < 300 {
+		if err == nil && requestAction != "" && recorder.status >= 200 && recorder.status < 300 {
 			s.mu.Lock()
 			defer s.mu.Unlock()
-			if action == "create_room" {
+			if requestAction == "create_room" {
 				if room := s.current(u.ID); room != nil {
 					target = room.ID
 				}
 			}
-			s.recordActivity(u.ID, action, target, s.clientIP(r))
+			s.recordActivity(u.ID, requestAction, target, s.clientIP(r))
 		}
 	}
 }

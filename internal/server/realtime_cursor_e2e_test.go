@@ -60,10 +60,22 @@ func TestRealtimeCursorStreamIsolatesSlowConnection(t *testing.T) {
 	}
 	version := first["version"]
 	maximum := time.Duration(0)
+	var next map[string]any
 	for i := 0; i < 12; i++ {
 		start := time.Now()
 		streamSend(t, fastSocket, map[string]any{"type": "input", "roomId": f.id, "version": version, "nonce": fmt.Sprintf("cursor-fast-%d", i), "action": map[string]any{"drive": 1}})
-		ack := streamUntil(t, fastSocket, "ack")
+		// Broadcast and ACK use independent writers. Retain game frames that
+		// arrive before the ACK instead of discarding the final authoritative view.
+		var ack map[string]any
+		for ack == nil {
+			packet := streamRead(t, fastSocket)
+			switch packet["type"] {
+			case "game":
+				next = packet
+			case "ack":
+				ack = packet
+			}
+		}
 		elapsed := time.Since(start)
 		if elapsed > maximum {
 			maximum = elapsed
@@ -76,7 +88,9 @@ func TestRealtimeCursorStreamIsolatesSlowConnection(t *testing.T) {
 	if maximum > 500*time.Millisecond {
 		t.Fatal("slow stream delayed fast acknowledgements", maximum)
 	}
-	next := streamUntil(t, fastSocket, "game")
+	for next == nil || next["game"].(map[string]any)["data"].(map[string]any)["inputs"] != float64(13) {
+		next = streamUntil(t, fastSocket, "game")
+	}
 	data = next["game"].(map[string]any)["data"].(map[string]any)
 	if data["previous"] == "" || data["inputs"] != float64(13) {
 		t.Fatal("fast connection cursor lost", data)

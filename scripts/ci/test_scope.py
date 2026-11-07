@@ -31,6 +31,31 @@ scope = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(scope)
 
 class ScopeTests(unittest.TestCase):
+    # Failure inventory: either 49-case trajectory omitted/duplicated; whole
+    # campaigns repeated on all shards; wrong fixture index/count; missing
+    # single-shard coverage; race or unrelated-game checks acquire MD fixtures.
+    def test_md_trajectory_cases_partition_once_across_existing_shards(self):
+        expected = {
+            'TestRenderFrozenBridgeTrajectories': ('RENDERSTATE', './games/yuyuhakusho/renderstate'),
+            'TestSchema2FrozenWholeTrajectories': ('CLIENT_BRIDGE', './games/yuyuhakusho/runtimebridge'),
+        }
+        rows=json.loads((ROOT/'games/yuyuhakusho/renderstate/testdata/bridge-reference.json').read_text())['rows']
+        self.assertEqual(len(rows),49)
+        for name,(prefix,package) in expected.items():
+            cases=[]
+            for shard in range(16):
+                selected=[c for c in scope.go_commands(ROOT,'yuyuhakusho',shard,16) if '^'+name+'$' in c]
+                self.assertEqual(len(selected),1,(name,shard,selected))
+                self.assertEqual(selected[0][:3],['env',prefix+'_SHARDS=16',prefix+'_SHARD='+str(shard)])
+                self.assertEqual(selected[0][-1],package)
+                cases += [index for index in range(len(rows)) if index%16==shard]
+            self.assertEqual(sorted(cases),list(range(49)))
+            single=[c for c in scope.go_commands(ROOT,'yuyuhakusho') if '^'+name+'$' in c]
+            self.assertEqual(len(single),1)
+            self.assertEqual(single[0][:3],['env',prefix+'_SHARDS=1',prefix+'_SHARD=0'])
+            self.assertFalse(any(name in ' '.join(c) for c in scope.go_commands(ROOT,'yuyuhakusho',race=True)))
+            self.assertFalse(any(name in ' '.join(c) for c in scope.go_commands(ROOT,'shared')))
+
     def test_yuyuhakusho_build_binding_checks_run_only_once(self):
         self.assertEqual(scope.build_commands(ROOT,'yuyuhakusho',0),[['node','--test',str(ROOT/'games/yuyuhakusho/build/runtime-delivery.test.mjs')]])
         self.assertEqual(scope.build_commands(ROOT,'yuyuhakusho',1),[])

@@ -91,7 +91,9 @@ def go_commands(root, game, index=0, count=1, race=False):
     if count < 1 or not 0 <= index < count: raise ValueError('Invalid shard')
     games = game_names(root)
     if game not in (*games, 'shared'): raise ValueError(f'Unknown game: {game}')
-    grouped, special = {}, []
+    grouped, special, trajectories = {}, [], []
+    trajectory_prefixes = {'TestRenderFrozenBridgeTrajectories': 'RENDERSTATE',
+                           'TestSchema2FrozenWholeTrajectories': 'CLIENT_BRIDGE'}
     files = sorted([*root.glob('*_test.go'), *root.glob('internal/**/*_test.go'),
                     *(root/'games').glob('*_test.go')])
     if game != 'shared': files += sorted((root/'games'/game).rglob('*_test.go'))
@@ -103,6 +105,9 @@ def go_commands(root, game, index=0, count=1, race=False):
                 continue # Explicit campaign runner validates execution and provenance.
             owners = owner(relative, name, games)
             if (game == 'shared' and owners) or (game != 'shared' and game not in owners): continue
+            if game == 'yuyuhakusho' and not race and name in trajectory_prefixes:
+                trajectories.append(('./' + relative.parent.as_posix(), name, trajectory_prefixes[name]))
+                continue
             if int.from_bytes(hashlib.sha256(name.encode()).digest()[:8], 'big') % count != index: continue
             if race and game != 'shared':
                 selected_race = bool(re.search(r'Concurrent|AutoPlay|Timeout|Spectator|LongGameArtifact', name))
@@ -128,6 +133,12 @@ def go_commands(root, game, index=0, count=1, race=False):
     commands = [base + ['-run', '^(?:' + '|'.join(re.escape(n) for n in sorted(set(names))) + ')$', package]
                 for package, names in sorted(grouped.items())]
     commands += [base + ['-run', pattern, package] for package, pattern in special]
+    # These two 49-case campaigns already support fixture-level partitioning.
+    # Spread their complete case sets over the existing game matrix instead of
+    # placing each entire campaign on the one shard selected by its test name.
+    commands += [['env', prefix + '_SHARDS=' + str(count), prefix + '_SHARD=' + str(index)]
+                 + base + ['-run', '^' + name + '$', package]
+                 for package, name, prefix in trajectories]
     return commands
 
 def verification_env(game, backend, base=None):
