@@ -1,0 +1,10 @@
+{"core": "original", "private_calls": 64, "natural_events": 0}
+{"core": "observed", "private_calls": 64, "natural_events": 9855}
+Traceback (most recent call last):
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/capture_world_object_scan_work.py", line 294, in <module>
+    main()
+    ~~~~^^
+  File "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/scripts/yuyuhakusho/capture_world_object_scan_work.py", line 246, in main
+    assert event['after_pc'] not in PCS and observed[0] >= after[0], (number, event, after, observed)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: (1, {'kind': 0, 'pass': 1, 'pc': 13724, 'frame': 2068, 'cycle': 54696, 'refresh': 54654, 'a5': 4294934784, 'd0': 126380, 'sp': 4294966966, 'behavior': 126380, 'size': 64, 'stage': 0, 'sr': 8192, 'target': 4294965144, 'saved': 0, 'after_pc': 13726, 'after_frame': 2068, 'after_cycle': 54808, 'after_refresh': 55592, 'after_a5': 4294934784, 'after_sp': 4294966966}, [1852169418, 1852170272], [1852169488, 1852170272])

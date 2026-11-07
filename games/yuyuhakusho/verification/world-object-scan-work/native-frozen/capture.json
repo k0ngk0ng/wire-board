@@ -1,0 +1,683 @@
+{
+  "pass": true,
+  "cases": 79,
+  "private_calls": 64,
+  "natural_complete_passes": 15,
+  "natural_callback_intervals": 204,
+  "scanner_operations": 51051,
+  "natural_exact_uninterrupted_operations": 9408,
+  "natural_foreign_boundaries": 39,
+  "foreign_boundaries": [
+    {
+      "pass": 1,
+      "after_step": 30,
+      "scanner_end": [
+        1852169418,
+        1852170272
+      ],
+      "observed_next_boundary": [
+        1852169488,
+        1852170272
+      ],
+      "next_pc": 13726,
+      "extra_master_cycles": 70,
+      "kind": "external-host-displacement"
+    },
+    {
+      "pass": 1,
+      "after_step": 122,
+      "scanner_end": [
+        1852422545,
+        1852423049
+      ],
+      "observed_next_boundary": [
+        1852422615,
+        1852423049
+      ],
+      "next_pc": 13742,
+      "extra_master_cycles": 70,
+      "kind": "external-host-displacement"
+    },
+    {
+      "pass": 1,
+      "after_step": 166,
+      "scanner_end": [
+        1852426003,
+        1852426703
+      ],
+      "observed_next_boundary": [
+        1852426220,
+        1852426703
+      ],
+      "next_pc": 13722,
+      "extra_master_cycles": 217,
+      "kind": "external-host-displacement"
+    },
+    {
+      "pass": 1,
+      "after_step": 296,
+      "scanner_end": [
+        1852436202,
+        1852436832
+      ],
+      "observed_next_boundary": [
+        1852436342,
+        1852436832
+      ],
+      "next_pc": 13722,
+      "extra_master_cycles": 140,
+      "kind": "external-host-displacement"
+    },
+    {
+      "pass": 1,
+      "after_step": 403,
+      "scanner_end": [
+        1852531927,
+        1852532235
+      ],
+      "observed_next_boundary": [
+        1852532221,
+        1852532235
+      ],
+      "next_pc": 13718,
+      "extra_master_cycles": 294,
+      "kind": "external-host-displacement"
+    },
+    {
+      "pass": 1,
+      "after_step": 501,
+      "scanner_end": [
+        1852545689,
+        1852546151
+      ],
+      "observed_next_boundary": [
+        1852545906,
+        1852546151
+      ],
+      "next_pc": 84396,
+      "extra_master_cycles": 217,
+      "kind": "external-control-boundary"
+    },
+    {
+      "pass": 1,
+      "after_step": 578,
+      "scanner_end": [
+        1852596929,
+        1852597741
+      ],
+      "observed_next_boundary": [
+        1852597223,
+        1852597741
+      ],
+      "next_pc": 13742,
+      "extra_master_cycles": 294,
+      "kind": "external-host-displacement"
+    },
+    {
+      "pass": 2,
+      "after_step": 8,
+      "scanner_end": [
+        1853075752,
+        1853076186
+      ],
+      "observed_next_boundary": [
+        1853076039,
+        1853076186
+      ],
+      "next_pc": 13738,
+      "extra_master_cycles": 287,
+      "kind": "external-host-displacement"
+    },
+    {
+      "pass": 2,
+      "after_step": 276,
+      "scanner_end": [
+        1853335718,
+        1853335844
+      ],
+      "observed_next_boundary": [
+        1853336005,
+        1853335844
+      ],
+      "next_pc": 13722,
+      "extra_master_cycles": 287,
+      "kind": "external-host-displacement"
+    },
+    {
+      "pass": 2,
+      "after_step": 503,
+      "scanner_end": [
+        1853441663,
+        1853442125
+      ],
+      "observed_next_boundary": [
+        1853441950,
+        1853442125
+      ],
+      "next_pc": 84396,
+      "extra_master_cycles": 287,
+      "kind": "external-control-boundary"
+    },
+    {
+      "pass": 3,
+      "after_step": 179,
+      "scanner_end": [
+        1854204352,
+        1854204856
+      ],
+      "observed_next_boundary": [
+        1854204639,
+        1854204856
+      ],
+      "next_pc": 13750,
+      "extra_master_cycles": 287,
+      "kind": "external-host-displacement"
+    },
+    {
+      "pass": 3,
+      "after_step": 568,
+      "scanner_end": [
+        1854351408,
+        1854352094
+      ],
+      "observed_next_boundary": [
+        1854351695,
+        1854352094
+      ],
+      "next_pc": 13730,
+      "extra_master_cycles": 287,
+      "kind": "external-host-displacement"
+    },
+    {
+      "pass": 4,
+      "after_step": 157,
+      "scanner_end": [
+        1855168802,
+        1855169236
+      ],
+      "observed_next_boundary": [
+        1855169019,
+        1855169236
+      ],
+      "next_pc": 13742,
+      "extra_master_cycles": 217,
+      "kind": "external-host-displacement"
+    },
+    {
+      "pass": 4,
+      "after_step": 199,
+      "scanner_end": [
+        1855172225,
+        1855172981
+      ],
+      "observed_next_boundary": [
+        1855172302,
+        1855172981
+      ],
+      "next_pc": 13750,
+      "extra_master_cycles": 77,
+      "kind": "external-host-displacement"
+    },
+    {
+      "pass": 4,
+      "after_step": 331,
+      "scanner_end": [
+        1855182466,
+        1855183096
+      ],
+      "observed_next_boundary": [
+        1855182683,
+        1855183096
+      ],
+      "next_pc": 13722,
+      "extra_master_cycles": 217,
+      "kind": "external-host-displacement"
+    },
+    {
+      "pass": 4,
+      "after_step": 428,
+      "scanner_end": [
+        1855278240,
+        1855278982
+      ],
+      "observed_next_boundary": [
+        1855278527,
+        1855278982
+      ],
+      "next_pc": 13718,
+      "extra_master_cycles": 287,
+      "kind": "external-host-displacement"
+    },
+    {
+      "pass": 5,
+      "after_step": 52,
+      "scanner_end": [
+        1855852744,
+        1855853290
+      ],
+      "observed_next_boundary": [
+        1855853031,
+        1855853290
+      ],
+      "next_pc": 13722,
+      "extra_master_cycles": 287,
+      "kind": "external-host-displacement"
+    },
+    {
+      "pass": 5,
+      "after_step": 77,
+      "scanner_end": [
+        1855962210,
+        1855962210
+      ],
+      "observed_next_boundary": [
+        1855962427,
+        1855962210
+      ],
+      "next_pc": 13718,
+      "extra_master_cycles": 217,
+      "kind": "external-host-displacement"
+    },
+    {
+      "pass": 6,
+      "after_step": 582,
+      "scanner_end": [
+        1857087417,
+        1857087487
+      ],
+      "observed_next_boundary": [
+        1857087704,
+        1857087487
+      ],
+      "next_pc": 13750,
+      "extra_master_cycles": 287,
+      "kind": "external-host-displacement"
+    },
+    {
+      "pass": 7,
+      "after_step": 162,
+      "scanner_end": [
+        1857795336,
+        1857795658
+      ],
+      "observed_next_boundary": [
+        1857795413,
+        1857795658
+      ],
+      "next_pc": 13742,
+      "extra_master_cycles": 77,
+      "kind": "external-host-displacement"
+    },
+    {
+      "pass": 7,
+      "after_step": 206,
+      "scanner_end": [
+        1857798801,
+        1857799375
+      ],
+      "observed_next_boundary": [
+        1857799018,
+        1857799375
+      ],
+      "next_pc": 13722,
+      "extra_master_cycles": 217,
+      "kind": "external-host-displacement"
+    },
+    {
+      "pass": 7,
+      "after_step": 434,
+      "scanner_end": [
+        1857901337,
+        1857901967
+      ],
+      "observed_next_boundary": [
+        1857901407,
+        1857901967
+      ],
+      "next_pc": 13722,
+      "extra_master_cycles": 70,
+      "kind": "external-host-displacement"
+    },
+    {
+      "pass": 7,
+      "after_step": 479,
+      "scanner_end": [
+        1857904865,
+        1857905635
+      ],
+      "observed_next_boundary": [
+        1857905082,
+        1857905635
+      ],
+      "next_pc": 13722,
+      "extra_master_cycles": 217,
+      "kind": "external-host-displacement"
+    },
+    {
+      "pass": 8,
+      "after_step": 187,
+      "scanner_end": [
+        2143628674,
+        2143629178
+      ],
+      "observed_next_boundary": [
+        2143628744,
+        2143629178
+      ],
+      "next_pc": 13742,
+      "extra_master_cycles": 70,
+      "kind": "external-host-displacement"
+    },
+    {
+      "pass": 8,
+      "after_step": 231,
+      "scanner_end": [
+        2143632132,
+        2143632832
+      ],
+      "observed_next_boundary": [
+        2143632349,
+        2143632832
+      ],
+      "next_pc": 13722,
+      "extra_master_cycles": 217,
+      "kind": "external-host-displacement"
+    },
+    {
+      "pass": 8,
+      "after_step": 377,
+      "scanner_end": [
+        2143738098,
+        2143738784
+      ],
+      "observed_next_boundary": [
+        2143738385,
+        2143738784
+      ],
+      "next_pc": 13750,
+      "extra_master_cycles": 287,
+      "kind": "external-host-displacement"
+    },
+    {
+      "pass": 8,
+      "after_step": 621,
+      "scanner_end": [
+        2143789401,
+        2143790087
+      ],
+      "observed_next_boundary": [
+        2143789688,
+        2143790087
+      ],
+      "next_pc": 13750,
+      "extra_master_cycles": 287,
+      "kind": "external-host-displacement"
+    },
+    {
+      "pass": 10,
+      "after_step": 45,
+      "scanner_end": [
+        2145184770,
+        2145185092
+      ],
+      "observed_next_boundary": [
+        2145185064,
+        2145185092
+      ],
+      "next_pc": 13724,
+      "extra_master_cycles": 294,
+      "kind": "external-host-displacement"
+    },
+    {
+      "pass": 10,
+      "after_step": 92,
+      "scanner_end": [
+        2145236101,
+        2145236913
+      ],
+      "observed_next_boundary": [
+        2145236388,
+        2145236913
+      ],
+      "next_pc": 13718,
+      "extra_master_cycles": 287,
+      "kind": "external-host-displacement"
+    },
+    {
+      "pass": 10,
+      "after_step": 176,
+      "scanner_end": [
+        2145400279,
+        2145400293
+      ],
+      "observed_next_boundary": [
+        2145400566,
+        2145400293
+      ],
+      "next_pc": 13722,
+      "extra_master_cycles": 287,
+      "kind": "external-host-displacement"
+    },
+    {
+      "pass": 10,
+      "after_step": 609,
+      "scanner_end": [
+        2145560950,
+        2145561580
+      ],
+      "observed_next_boundary": [
+        2145561237,
+        2145561580
+      ],
+      "next_pc": 13742,
+      "extra_master_cycles": 287,
+      "kind": "external-host-displacement"
+    },
+    {
+      "pass": 11,
+      "after_step": 492,
+      "scanner_end": [
+        2146450157,
+        2146450955
+      ],
+      "observed_next_boundary": [
+        2146450444,
+        2146450955
+      ],
+      "next_pc": 13734,
+      "extra_master_cycles": 287,
+      "kind": "external-host-displacement"
+    },
+    {
+      "pass": 12,
+      "after_step": 40,
+      "scanner_end": [
+        2147014500,
+        2147015270
+      ],
+      "observed_next_boundary": [
+        2147014717,
+        2147015270
+      ],
+      "next_pc": 65202,
+      "extra_master_cycles": 217,
+      "kind": "external-control-boundary"
+    },
+    {
+      "pass": 12,
+      "after_step": 73,
+      "scanner_end": [
+        2147065754,
+        2147066188
+      ],
+      "observed_next_boundary": [
+        2147066041,
+        2147066188
+      ],
+      "next_pc": 13722,
+      "extra_master_cycles": 287,
+      "kind": "external-host-displacement"
+    },
+    {
+      "pass": 12,
+      "after_step": 132,
+      "scanner_end": [
+        2147233348,
+        2147233978
+      ],
+      "observed_next_boundary": [
+        2147233495,
+        2147233978
+      ],
+      "next_pc": 13742,
+      "extra_master_cycles": 147,
+      "kind": "external-host-displacement"
+    },
+    {
+      "pass": 12,
+      "after_step": 373,
+      "scanner_end": [
+        2147339398,
+        2147340014
+      ],
+      "observed_next_boundary": [
+        2147339615,
+        2147340014
+      ],
+      "next_pc": 13718,
+      "extra_master_cycles": 217,
+      "kind": "external-host-displacement"
+    },
+    {
+      "pass": 13,
+      "after_step": 45,
+      "scanner_end": [
+        2147872911,
+        2147872981
+      ],
+      "observed_next_boundary": [
+        2147873198,
+        2147872981
+      ],
+      "next_pc": 13724,
+      "extra_master_cycles": 287,
+      "kind": "external-host-displacement"
+    },
+    {
+      "pass": 13,
+      "after_step": 91,
+      "scanner_end": [
+        2147924207,
+        2147924207
+      ],
+      "observed_next_boundary": [
+        2147924277,
+        2147924207
+      ],
+      "next_pc": 13750,
+      "extra_master_cycles": 70,
+      "kind": "external-host-displacement"
+    },
+    {
+      "pass": 14,
+      "after_step": 548,
+      "scanner_end": [
+        2149114351,
+        2149114785
+      ],
+      "observed_next_boundary": [
+        2149114645,
+        2149114785
+      ],
+      "next_pc": 13750,
+      "extra_master_cycles": 294,
+      "kind": "external-host-displacement"
+    }
+  ],
+  "private_whole_calls_equal_stepping": true,
+  "private_cross_core_equal": true,
+  "passive_2401_video_ram_controls_unchanged": true,
+  "cores": {
+    "original": {
+      "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+      "core_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+      "core_name": "Genesis Plus GX",
+      "core_version": "v1.7.4 60bee4c",
+      "fps": 59.92274340431231,
+      "ram_bytes": 65536,
+      "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+      "teamplayer": false
+    },
+    "observed": {
+      "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+      "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+      "core_name": "Genesis Plus GX",
+      "core_version": "v1.7.460bee4c",
+      "fps": 59.92274340431231,
+      "ram_bytes": 65536,
+      "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+      "teamplayer": false
+    }
+  },
+  "fixture_sha256": "9c2b703c886de6df936f4e41cc3bd01a457b8acf006c2deea7b1df38a2a32659",
+  "cost_calibration": {
+    "3592": [
+      8
+    ],
+    "3596": [
+      16
+    ],
+    "359a": [
+      8,
+      10
+    ],
+    "359c": [
+      4
+    ],
+    "359e": [
+      16
+    ],
+    "35a2": [
+      16
+    ],
+    "35a4": [
+      12
+    ],
+    "35a6": [
+      10
+    ],
+    "35aa": [
+      8,
+      10
+    ],
+    "35ac": [
+      16
+    ],
+    "35ae": [
+      8
+    ],
+    "35b2": [
+      10
+    ],
+    "35b6": [
+      8,
+      10
+    ],
+    "35b8": [
+      16
+    ]
+  },
+  "sources": {
+    "scripts/yuyuhakusho/capture_world_object_scan_work.py": "495be7574189effcafcf302964f8781470eea63846ef613d13bf5cff08951f2f",
+    "scripts/yuyuhakusho/world_object_scan_work_observer.c": "32a0017f2e5892e18edba40b19293ad2948d89285e941f0de0a92c6815fb2356",
+    "docs/research/md-yuyuhakusho/inputs.json": "59383329affb09e87c6452c135d3ae20df19db9f1675acddc0972a080a8551b6",
+    "docs/research/md-yuyuhakusho/frame-hashes.json": "5dce10106326451b42952f473ec80adff118a7185cf64a7d6ef3fd52ff8ee1e8",
+    "docs/research/md-yuyuhakusho/static/input-detail.txt": "4ee837e2e89ba82c303c3a73db8a80c17a54b81ab30c43226ace06a363289758"
+  },
+  "scope": "Complete actual3592 scanner flow with synchronous external callbacks; exact scanner quanta from whole native private calls and passive uninterrupted boundaries",
+  "limits": [
+    "Callbacks are external and are not priced as zero. Their real original entry/return clocks are retained for test-only composition.",
+    "Natural hook deltas can include external host displacement even with a sequential next PC. Scanner end at those boundaries is inferred from independently observed private opcode cost; raw next-boundary clocks and explicit gaps are retained, without attributing the external cycles to scanner work.",
+    "No full-world callback timing, independent IRQ scheduling, or platform MatchComplete early-stop claim. Typed guards restrict active strides to64/128/192/256."
+  ]
+}

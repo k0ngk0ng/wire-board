@@ -1,0 +1,682 @@
+{"Time":"2026-11-07T09:16:32.054555+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-07T09:16:32.475209+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkOriginalCompleteCalls"}
+{"Time":"2026-11-07T09:16:32.476919+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkOriginalCompleteCalls","Output":"=== RUN   TestObjectPrepareWorkOriginalCompleteCalls\n"}
+{"Time":"2026-11-07T09:16:32.61677+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkOriginalCompleteCalls","Output":"    object_prepare_work_test.go:89: two-core complete original calls=320, work boundaries=117120; retained counts=1..80, refresh phases=4\n"}
+{"Time":"2026-11-07T09:16:32.616809+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkOriginalCompleteCalls","Output":"--- PASS: TestObjectPrepareWorkOriginalCompleteCalls (0.14s)\n"}
+{"Time":"2026-11-07T09:16:32.616816+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkOriginalCompleteCalls","Elapsed":0.14}
+{"Time":"2026-11-07T09:16:32.617051+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkFailureAtEveryOperation"}
+{"Time":"2026-11-07T09:16:32.617058+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkFailureAtEveryOperation","Output":"=== RUN   TestObjectPrepareWorkFailureAtEveryOperation\n"}
+{"Time":"2026-11-07T09:16:32.724825+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkFailureAtEveryOperation","Output":"--- PASS: TestObjectPrepareWorkFailureAtEveryOperation (0.11s)\n"}
+{"Time":"2026-11-07T09:16:32.726669+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkFailureAtEveryOperation","Elapsed":0.11}
+{"Time":"2026-11-07T09:16:32.726684+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkLiveOwnerAndReadLatch"}
+{"Time":"2026-11-07T09:16:32.726689+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkLiveOwnerAndReadLatch","Output":"=== RUN   TestObjectPrepareWorkLiveOwnerAndReadLatch\n"}
+{"Time":"2026-11-07T09:16:32.726692+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkLiveOwnerAndReadLatch","Output":"--- PASS: TestObjectPrepareWorkLiveOwnerAndReadLatch (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.726695+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkLiveOwnerAndReadLatch","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.726698+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkInvalidDomain"}
+{"Time":"2026-11-07T09:16:32.7267+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkInvalidDomain","Output":"=== RUN   TestObjectPrepareWorkInvalidDomain\n"}
+{"Time":"2026-11-07T09:16:32.726713+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkInvalidDomain","Output":"--- PASS: TestObjectPrepareWorkInvalidDomain (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.726717+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkInvalidDomain","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.72672+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls"}
+{"Time":"2026-11-07T09:16:32.726723+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls\n"}
+{"Time":"2026-11-07T09:16:32.726726+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/1"}
+{"Time":"2026-11-07T09:16:32.726732+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/1","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/1\n"}
+{"Time":"2026-11-07T09:16:32.726737+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/1","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/1\n"}
+{"Time":"2026-11-07T09:16:32.726759+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/1"}
+{"Time":"2026-11-07T09:16:32.726765+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/2"}
+{"Time":"2026-11-07T09:16:32.726767+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/2","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/2\n"}
+{"Time":"2026-11-07T09:16:32.72677+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/2","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/2\n"}
+{"Time":"2026-11-07T09:16:32.726771+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/2"}
+{"Time":"2026-11-07T09:16:32.726774+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/3"}
+{"Time":"2026-11-07T09:16:32.726776+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/3","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/3\n"}
+{"Time":"2026-11-07T09:16:32.726779+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/3","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/3\n"}
+{"Time":"2026-11-07T09:16:32.726782+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/3"}
+{"Time":"2026-11-07T09:16:32.726784+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/4"}
+{"Time":"2026-11-07T09:16:32.726786+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/4","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/4\n"}
+{"Time":"2026-11-07T09:16:32.726788+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/4","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/4\n"}
+{"Time":"2026-11-07T09:16:32.72679+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/4"}
+{"Time":"2026-11-07T09:16:32.726792+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/5"}
+{"Time":"2026-11-07T09:16:32.726794+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/5","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/5\n"}
+{"Time":"2026-11-07T09:16:32.726796+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/5","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/5\n"}
+{"Time":"2026-11-07T09:16:32.726798+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/5"}
+{"Time":"2026-11-07T09:16:32.726802+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/6"}
+{"Time":"2026-11-07T09:16:32.72732+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/6","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/6\n"}
+{"Time":"2026-11-07T09:16:32.727323+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/6","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/6\n"}
+{"Time":"2026-11-07T09:16:32.727325+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/6"}
+{"Time":"2026-11-07T09:16:32.727327+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/7"}
+{"Time":"2026-11-07T09:16:32.727328+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/7","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/7\n"}
+{"Time":"2026-11-07T09:16:32.727338+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/7","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/7\n"}
+{"Time":"2026-11-07T09:16:32.72734+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/7"}
+{"Time":"2026-11-07T09:16:32.727342+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/8"}
+{"Time":"2026-11-07T09:16:32.727344+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/8","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/8\n"}
+{"Time":"2026-11-07T09:16:32.727346+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/8","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/8\n"}
+{"Time":"2026-11-07T09:16:32.727347+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/8"}
+{"Time":"2026-11-07T09:16:32.727349+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/9"}
+{"Time":"2026-11-07T09:16:32.727358+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/9","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/9\n"}
+{"Time":"2026-11-07T09:16:32.72736+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/9","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/9\n"}
+{"Time":"2026-11-07T09:16:32.727362+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/9"}
+{"Time":"2026-11-07T09:16:32.727364+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/10"}
+{"Time":"2026-11-07T09:16:32.727366+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/10","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/10\n"}
+{"Time":"2026-11-07T09:16:32.727368+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/10","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/10\n"}
+{"Time":"2026-11-07T09:16:32.727369+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/10"}
+{"Time":"2026-11-07T09:16:32.727371+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/11"}
+{"Time":"2026-11-07T09:16:32.727374+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/11","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/11\n"}
+{"Time":"2026-11-07T09:16:32.727376+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/11","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/11\n"}
+{"Time":"2026-11-07T09:16:32.727377+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/11"}
+{"Time":"2026-11-07T09:16:32.727379+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/12"}
+{"Time":"2026-11-07T09:16:32.727382+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/12","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/12\n"}
+{"Time":"2026-11-07T09:16:32.727383+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/12","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/12\n"}
+{"Time":"2026-11-07T09:16:32.727385+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/12"}
+{"Time":"2026-11-07T09:16:32.727389+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/13"}
+{"Time":"2026-11-07T09:16:32.727394+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/13","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/13\n"}
+{"Time":"2026-11-07T09:16:32.727396+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/13","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/13\n"}
+{"Time":"2026-11-07T09:16:32.727398+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/13"}
+{"Time":"2026-11-07T09:16:32.727399+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/14"}
+{"Time":"2026-11-07T09:16:32.727401+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/14","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/14\n"}
+{"Time":"2026-11-07T09:16:32.727405+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/14","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/14\n"}
+{"Time":"2026-11-07T09:16:32.727407+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/14"}
+{"Time":"2026-11-07T09:16:32.727409+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/15"}
+{"Time":"2026-11-07T09:16:32.727412+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/15","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/15\n"}
+{"Time":"2026-11-07T09:16:32.727414+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/15","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/15\n"}
+{"Time":"2026-11-07T09:16:32.727416+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/15"}
+{"Time":"2026-11-07T09:16:32.727418+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/16"}
+{"Time":"2026-11-07T09:16:32.727419+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/16","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/16\n"}
+{"Time":"2026-11-07T09:16:32.727422+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/16","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/16\n"}
+{"Time":"2026-11-07T09:16:32.727423+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/16"}
+{"Time":"2026-11-07T09:16:32.727425+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/17"}
+{"Time":"2026-11-07T09:16:32.727427+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/17","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/17\n"}
+{"Time":"2026-11-07T09:16:32.727429+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/17","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/17\n"}
+{"Time":"2026-11-07T09:16:32.72743+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/17"}
+{"Time":"2026-11-07T09:16:32.727432+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/18"}
+{"Time":"2026-11-07T09:16:32.727438+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/18","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/18\n"}
+{"Time":"2026-11-07T09:16:32.72744+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/18","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/18\n"}
+{"Time":"2026-11-07T09:16:32.727441+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/18"}
+{"Time":"2026-11-07T09:16:32.727446+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/19"}
+{"Time":"2026-11-07T09:16:32.727448+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/19","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/19\n"}
+{"Time":"2026-11-07T09:16:32.72745+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/19","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/19\n"}
+{"Time":"2026-11-07T09:16:32.727452+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/19"}
+{"Time":"2026-11-07T09:16:32.727454+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/20"}
+{"Time":"2026-11-07T09:16:32.727456+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/20","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/20\n"}
+{"Time":"2026-11-07T09:16:32.727457+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/20","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/20\n"}
+{"Time":"2026-11-07T09:16:32.727459+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/20"}
+{"Time":"2026-11-07T09:16:32.727461+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/21"}
+{"Time":"2026-11-07T09:16:32.727463+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/21","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/21\n"}
+{"Time":"2026-11-07T09:16:32.727464+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/21","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/21\n"}
+{"Time":"2026-11-07T09:16:32.727466+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/21"}
+{"Time":"2026-11-07T09:16:32.727468+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/22"}
+{"Time":"2026-11-07T09:16:32.72747+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/22","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/22\n"}
+{"Time":"2026-11-07T09:16:32.727479+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/22","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/22\n"}
+{"Time":"2026-11-07T09:16:32.727481+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/22"}
+{"Time":"2026-11-07T09:16:32.727483+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/23"}
+{"Time":"2026-11-07T09:16:32.727486+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/23","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/23\n"}
+{"Time":"2026-11-07T09:16:32.727488+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/23","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/23\n"}
+{"Time":"2026-11-07T09:16:32.72749+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/23"}
+{"Time":"2026-11-07T09:16:32.727492+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/24"}
+{"Time":"2026-11-07T09:16:32.727493+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/24","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/24\n"}
+{"Time":"2026-11-07T09:16:32.727495+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/24","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/24\n"}
+{"Time":"2026-11-07T09:16:32.7275+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/24"}
+{"Time":"2026-11-07T09:16:32.727502+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/25"}
+{"Time":"2026-11-07T09:16:32.727503+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/25","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/25\n"}
+{"Time":"2026-11-07T09:16:32.727506+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/25","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/25\n"}
+{"Time":"2026-11-07T09:16:32.72751+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/25"}
+{"Time":"2026-11-07T09:16:32.727513+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/26"}
+{"Time":"2026-11-07T09:16:32.727514+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/26","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/26\n"}
+{"Time":"2026-11-07T09:16:32.727516+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/26","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/26\n"}
+{"Time":"2026-11-07T09:16:32.727517+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/26"}
+{"Time":"2026-11-07T09:16:32.727519+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/27"}
+{"Time":"2026-11-07T09:16:32.727521+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/27","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/27\n"}
+{"Time":"2026-11-07T09:16:32.727523+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/27","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/27\n"}
+{"Time":"2026-11-07T09:16:32.727524+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/27"}
+{"Time":"2026-11-07T09:16:32.727528+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/28"}
+{"Time":"2026-11-07T09:16:32.72753+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/28","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/28\n"}
+{"Time":"2026-11-07T09:16:32.727532+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/28","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/28\n"}
+{"Time":"2026-11-07T09:16:32.727533+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/28"}
+{"Time":"2026-11-07T09:16:32.727541+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/29"}
+{"Time":"2026-11-07T09:16:32.727543+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/29","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/29\n"}
+{"Time":"2026-11-07T09:16:32.727545+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/29","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/29\n"}
+{"Time":"2026-11-07T09:16:32.727546+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/29"}
+{"Time":"2026-11-07T09:16:32.727548+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/30"}
+{"Time":"2026-11-07T09:16:32.72755+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/30","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/30\n"}
+{"Time":"2026-11-07T09:16:32.727553+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/30","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/30\n"}
+{"Time":"2026-11-07T09:16:32.727556+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/30"}
+{"Time":"2026-11-07T09:16:32.727557+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/31"}
+{"Time":"2026-11-07T09:16:32.727559+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/31","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/31\n"}
+{"Time":"2026-11-07T09:16:32.727561+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/31","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/31\n"}
+{"Time":"2026-11-07T09:16:32.727562+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/31"}
+{"Time":"2026-11-07T09:16:32.727564+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/32"}
+{"Time":"2026-11-07T09:16:32.727566+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/32","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/32\n"}
+{"Time":"2026-11-07T09:16:32.727568+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/32","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/32\n"}
+{"Time":"2026-11-07T09:16:32.727569+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/32"}
+{"Time":"2026-11-07T09:16:32.727571+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/33"}
+{"Time":"2026-11-07T09:16:32.727576+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/33","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/33\n"}
+{"Time":"2026-11-07T09:16:32.727578+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/33","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/33\n"}
+{"Time":"2026-11-07T09:16:32.72758+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/33"}
+{"Time":"2026-11-07T09:16:32.727582+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/34"}
+{"Time":"2026-11-07T09:16:32.727584+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/34","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/34\n"}
+{"Time":"2026-11-07T09:16:32.727585+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/34","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/34\n"}
+{"Time":"2026-11-07T09:16:32.727587+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/34"}
+{"Time":"2026-11-07T09:16:32.727593+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/35"}
+{"Time":"2026-11-07T09:16:32.727595+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/35","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/35\n"}
+{"Time":"2026-11-07T09:16:32.727597+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/35","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/35\n"}
+{"Time":"2026-11-07T09:16:32.727598+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/35"}
+{"Time":"2026-11-07T09:16:32.7276+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/36"}
+{"Time":"2026-11-07T09:16:32.727602+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/36","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/36\n"}
+{"Time":"2026-11-07T09:16:32.727607+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/36","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/36\n"}
+{"Time":"2026-11-07T09:16:32.727608+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/36"}
+{"Time":"2026-11-07T09:16:32.72761+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/37"}
+{"Time":"2026-11-07T09:16:32.727612+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/37","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/37\n"}
+{"Time":"2026-11-07T09:16:32.727614+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/37","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/37\n"}
+{"Time":"2026-11-07T09:16:32.727616+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/37"}
+{"Time":"2026-11-07T09:16:32.727617+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/38"}
+{"Time":"2026-11-07T09:16:32.727619+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/38","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/38\n"}
+{"Time":"2026-11-07T09:16:32.727621+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/38","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/38\n"}
+{"Time":"2026-11-07T09:16:32.727622+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/38"}
+{"Time":"2026-11-07T09:16:32.727624+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/39"}
+{"Time":"2026-11-07T09:16:32.727626+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/39","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/39\n"}
+{"Time":"2026-11-07T09:16:32.727628+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/39","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/39\n"}
+{"Time":"2026-11-07T09:16:32.72763+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/39"}
+{"Time":"2026-11-07T09:16:32.727631+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/40"}
+{"Time":"2026-11-07T09:16:32.727633+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/40","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/40\n"}
+{"Time":"2026-11-07T09:16:32.727635+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/40","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/40\n"}
+{"Time":"2026-11-07T09:16:32.727636+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/40"}
+{"Time":"2026-11-07T09:16:32.727638+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/41"}
+{"Time":"2026-11-07T09:16:32.72764+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/41","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/41\n"}
+{"Time":"2026-11-07T09:16:32.727642+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/41","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/41\n"}
+{"Time":"2026-11-07T09:16:32.727643+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/41"}
+{"Time":"2026-11-07T09:16:32.727648+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/42"}
+{"Time":"2026-11-07T09:16:32.727649+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/42","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/42\n"}
+{"Time":"2026-11-07T09:16:32.727651+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/42","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/42\n"}
+{"Time":"2026-11-07T09:16:32.727653+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/42"}
+{"Time":"2026-11-07T09:16:32.727655+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/43"}
+{"Time":"2026-11-07T09:16:32.727656+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/43","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/43\n"}
+{"Time":"2026-11-07T09:16:32.727658+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/43","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/43\n"}
+{"Time":"2026-11-07T09:16:32.727663+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/43"}
+{"Time":"2026-11-07T09:16:32.727664+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/44"}
+{"Time":"2026-11-07T09:16:32.727666+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/44","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/44\n"}
+{"Time":"2026-11-07T09:16:32.727668+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/44","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/44\n"}
+{"Time":"2026-11-07T09:16:32.727669+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/44"}
+{"Time":"2026-11-07T09:16:32.727671+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/45"}
+{"Time":"2026-11-07T09:16:32.727673+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/45","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/45\n"}
+{"Time":"2026-11-07T09:16:32.727675+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/45","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/45\n"}
+{"Time":"2026-11-07T09:16:32.727677+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/45"}
+{"Time":"2026-11-07T09:16:32.727678+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/46"}
+{"Time":"2026-11-07T09:16:32.72768+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/46","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/46\n"}
+{"Time":"2026-11-07T09:16:32.727682+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/46","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/46\n"}
+{"Time":"2026-11-07T09:16:32.727683+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/46"}
+{"Time":"2026-11-07T09:16:32.727685+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/47"}
+{"Time":"2026-11-07T09:16:32.727689+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/47","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/47\n"}
+{"Time":"2026-11-07T09:16:32.727692+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/47","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/47\n"}
+{"Time":"2026-11-07T09:16:32.727696+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/47"}
+{"Time":"2026-11-07T09:16:32.727698+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/48"}
+{"Time":"2026-11-07T09:16:32.7277+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/48","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/48\n"}
+{"Time":"2026-11-07T09:16:32.727702+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/48","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/48\n"}
+{"Time":"2026-11-07T09:16:32.727703+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/48"}
+{"Time":"2026-11-07T09:16:32.727705+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/49"}
+{"Time":"2026-11-07T09:16:32.727706+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/49","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/49\n"}
+{"Time":"2026-11-07T09:16:32.727708+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/49","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/49\n"}
+{"Time":"2026-11-07T09:16:32.72771+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/49"}
+{"Time":"2026-11-07T09:16:32.727712+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/50"}
+{"Time":"2026-11-07T09:16:32.727713+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/50","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/50\n"}
+{"Time":"2026-11-07T09:16:32.727715+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/50","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/50\n"}
+{"Time":"2026-11-07T09:16:32.727717+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/50"}
+{"Time":"2026-11-07T09:16:32.727719+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/51"}
+{"Time":"2026-11-07T09:16:32.72772+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/51","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/51\n"}
+{"Time":"2026-11-07T09:16:32.727722+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/51","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/51\n"}
+{"Time":"2026-11-07T09:16:32.727723+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/51"}
+{"Time":"2026-11-07T09:16:32.727728+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/52"}
+{"Time":"2026-11-07T09:16:32.727733+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/52","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/52\n"}
+{"Time":"2026-11-07T09:16:32.727735+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/52","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/52\n"}
+{"Time":"2026-11-07T09:16:32.727737+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/52"}
+{"Time":"2026-11-07T09:16:32.727739+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/53"}
+{"Time":"2026-11-07T09:16:32.727741+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/53","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/53\n"}
+{"Time":"2026-11-07T09:16:32.727745+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/53","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/53\n"}
+{"Time":"2026-11-07T09:16:32.727747+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/53"}
+{"Time":"2026-11-07T09:16:32.727749+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/54"}
+{"Time":"2026-11-07T09:16:32.727751+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/54","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/54\n"}
+{"Time":"2026-11-07T09:16:32.727753+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/54","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/54\n"}
+{"Time":"2026-11-07T09:16:32.727754+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/54"}
+{"Time":"2026-11-07T09:16:32.727756+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/55"}
+{"Time":"2026-11-07T09:16:32.727758+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/55","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/55\n"}
+{"Time":"2026-11-07T09:16:32.72776+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/55","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/55\n"}
+{"Time":"2026-11-07T09:16:32.727761+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/55"}
+{"Time":"2026-11-07T09:16:32.727763+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/56"}
+{"Time":"2026-11-07T09:16:32.727765+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/56","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/56\n"}
+{"Time":"2026-11-07T09:16:32.727766+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/56","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/56\n"}
+{"Time":"2026-11-07T09:16:32.727768+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/56"}
+{"Time":"2026-11-07T09:16:32.72777+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/57"}
+{"Time":"2026-11-07T09:16:32.727771+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/57","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/57\n"}
+{"Time":"2026-11-07T09:16:32.727773+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/57","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/57\n"}
+{"Time":"2026-11-07T09:16:32.727777+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/57"}
+{"Time":"2026-11-07T09:16:32.727778+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/58"}
+{"Time":"2026-11-07T09:16:32.72778+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/58","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/58\n"}
+{"Time":"2026-11-07T09:16:32.727782+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/58","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/58\n"}
+{"Time":"2026-11-07T09:16:32.727784+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/58"}
+{"Time":"2026-11-07T09:16:32.727786+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/59"}
+{"Time":"2026-11-07T09:16:32.727788+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/59","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/59\n"}
+{"Time":"2026-11-07T09:16:32.727791+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/59","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/59\n"}
+{"Time":"2026-11-07T09:16:32.727793+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/59"}
+{"Time":"2026-11-07T09:16:32.727794+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/60"}
+{"Time":"2026-11-07T09:16:32.727796+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/60","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/60\n"}
+{"Time":"2026-11-07T09:16:32.727798+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/60","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/60\n"}
+{"Time":"2026-11-07T09:16:32.727799+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/60"}
+{"Time":"2026-11-07T09:16:32.727801+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/61"}
+{"Time":"2026-11-07T09:16:32.727803+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/61","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/61\n"}
+{"Time":"2026-11-07T09:16:32.727804+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/61","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/61\n"}
+{"Time":"2026-11-07T09:16:32.727806+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/61"}
+{"Time":"2026-11-07T09:16:32.727807+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/62"}
+{"Time":"2026-11-07T09:16:32.727809+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/62","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/62\n"}
+{"Time":"2026-11-07T09:16:32.727815+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/62","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/62\n"}
+{"Time":"2026-11-07T09:16:32.727817+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/62"}
+{"Time":"2026-11-07T09:16:32.730675+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/63"}
+{"Time":"2026-11-07T09:16:32.730677+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/63","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/63\n"}
+{"Time":"2026-11-07T09:16:32.73068+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/63","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/63\n"}
+{"Time":"2026-11-07T09:16:32.730682+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/63"}
+{"Time":"2026-11-07T09:16:32.730684+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/64"}
+{"Time":"2026-11-07T09:16:32.730686+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/64","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/64\n"}
+{"Time":"2026-11-07T09:16:32.730689+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/64","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/64\n"}
+{"Time":"2026-11-07T09:16:32.730691+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/64"}
+{"Time":"2026-11-07T09:16:32.730696+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/65"}
+{"Time":"2026-11-07T09:16:32.730702+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/65","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/65\n"}
+{"Time":"2026-11-07T09:16:32.730704+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/65","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/65\n"}
+{"Time":"2026-11-07T09:16:32.730705+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/65"}
+{"Time":"2026-11-07T09:16:32.730707+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/66"}
+{"Time":"2026-11-07T09:16:32.730709+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/66","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/66\n"}
+{"Time":"2026-11-07T09:16:32.730711+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/66","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/66\n"}
+{"Time":"2026-11-07T09:16:32.730712+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/66"}
+{"Time":"2026-11-07T09:16:32.730714+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/67"}
+{"Time":"2026-11-07T09:16:32.730716+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/67","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/67\n"}
+{"Time":"2026-11-07T09:16:32.730719+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/67","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/67\n"}
+{"Time":"2026-11-07T09:16:32.730723+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/67"}
+{"Time":"2026-11-07T09:16:32.730727+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/68"}
+{"Time":"2026-11-07T09:16:32.73073+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/68","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/68\n"}
+{"Time":"2026-11-07T09:16:32.730734+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/68","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/68\n"}
+{"Time":"2026-11-07T09:16:32.730737+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/68"}
+{"Time":"2026-11-07T09:16:32.73074+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/69"}
+{"Time":"2026-11-07T09:16:32.730744+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/69","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/69\n"}
+{"Time":"2026-11-07T09:16:32.73075+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/69","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/69\n"}
+{"Time":"2026-11-07T09:16:32.730753+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/69"}
+{"Time":"2026-11-07T09:16:32.730755+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/70"}
+{"Time":"2026-11-07T09:16:32.730757+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/70","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/70\n"}
+{"Time":"2026-11-07T09:16:32.730758+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/70","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/70\n"}
+{"Time":"2026-11-07T09:16:32.730762+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/70"}
+{"Time":"2026-11-07T09:16:32.730764+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/71"}
+{"Time":"2026-11-07T09:16:32.730765+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/71","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/71\n"}
+{"Time":"2026-11-07T09:16:32.730767+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/71","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/71\n"}
+{"Time":"2026-11-07T09:16:32.730769+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/71"}
+{"Time":"2026-11-07T09:16:32.73077+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/72"}
+{"Time":"2026-11-07T09:16:32.730772+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/72","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/72\n"}
+{"Time":"2026-11-07T09:16:32.730774+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/72","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/72\n"}
+{"Time":"2026-11-07T09:16:32.730775+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/72"}
+{"Time":"2026-11-07T09:16:32.730777+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/73"}
+{"Time":"2026-11-07T09:16:32.730779+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/73","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/73\n"}
+{"Time":"2026-11-07T09:16:32.73078+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/73","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/73\n"}
+{"Time":"2026-11-07T09:16:32.730782+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/73"}
+{"Time":"2026-11-07T09:16:32.730784+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/74"}
+{"Time":"2026-11-07T09:16:32.730785+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/74","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/74\n"}
+{"Time":"2026-11-07T09:16:32.730787+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/74","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/74\n"}
+{"Time":"2026-11-07T09:16:32.730789+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/74"}
+{"Time":"2026-11-07T09:16:32.730792+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/75"}
+{"Time":"2026-11-07T09:16:32.730797+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/75","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/75\n"}
+{"Time":"2026-11-07T09:16:32.730801+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/75","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/75\n"}
+{"Time":"2026-11-07T09:16:32.730802+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/75"}
+{"Time":"2026-11-07T09:16:32.730805+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/76"}
+{"Time":"2026-11-07T09:16:32.730807+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/76","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/76\n"}
+{"Time":"2026-11-07T09:16:32.730976+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/76","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/76\n"}
+{"Time":"2026-11-07T09:16:32.730978+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/76"}
+{"Time":"2026-11-07T09:16:32.73098+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/77"}
+{"Time":"2026-11-07T09:16:32.730982+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/77","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/77\n"}
+{"Time":"2026-11-07T09:16:32.730984+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/77","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/77\n"}
+{"Time":"2026-11-07T09:16:32.730985+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/77"}
+{"Time":"2026-11-07T09:16:32.730987+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/78"}
+{"Time":"2026-11-07T09:16:32.730989+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/78","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/78\n"}
+{"Time":"2026-11-07T09:16:32.73099+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/78","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/78\n"}
+{"Time":"2026-11-07T09:16:32.730992+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/78"}
+{"Time":"2026-11-07T09:16:32.730994+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/79"}
+{"Time":"2026-11-07T09:16:32.730995+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/79","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/79\n"}
+{"Time":"2026-11-07T09:16:32.730997+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/79","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/79\n"}
+{"Time":"2026-11-07T09:16:32.730999+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/79"}
+{"Time":"2026-11-07T09:16:32.731+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/80"}
+{"Time":"2026-11-07T09:16:32.731002+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/80","Output":"=== RUN   TestObjectPrepareWorkIndependentCalls/80\n"}
+{"Time":"2026-11-07T09:16:32.731007+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/80","Output":"=== PAUSE TestObjectPrepareWorkIndependentCalls/80\n"}
+{"Time":"2026-11-07T09:16:32.731008+08:00","Action":"pause","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/80"}
+{"Time":"2026-11-07T09:16:32.73101+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/1"}
+{"Time":"2026-11-07T09:16:32.731012+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/1","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/1\n"}
+{"Time":"2026-11-07T09:16:32.731014+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/41"}
+{"Time":"2026-11-07T09:16:32.731015+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/41","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/41\n"}
+{"Time":"2026-11-07T09:16:32.731017+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/39"}
+{"Time":"2026-11-07T09:16:32.731019+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/39","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/39\n"}
+{"Time":"2026-11-07T09:16:32.731022+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/38"}
+{"Time":"2026-11-07T09:16:32.731027+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/38","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/38\n"}
+{"Time":"2026-11-07T09:16:32.731028+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/37"}
+{"Time":"2026-11-07T09:16:32.73103+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/37","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/37\n"}
+{"Time":"2026-11-07T09:16:32.731032+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/1","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/1 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731034+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/1","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731035+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/36"}
+{"Time":"2026-11-07T09:16:32.731037+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/36","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/36\n"}
+{"Time":"2026-11-07T09:16:32.731039+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/40"}
+{"Time":"2026-11-07T09:16:32.73104+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/40","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/40\n"}
+{"Time":"2026-11-07T09:16:32.731042+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/36","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/36 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731044+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/36","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731046+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/40","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/40 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731048+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/40","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731049+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/39","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/39 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731051+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/39","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731052+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/38","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/38 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731054+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/38","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731056+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/37","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/37 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731058+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/37","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731059+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/41","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/41 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731061+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/41","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731065+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/35"}
+{"Time":"2026-11-07T09:16:32.731067+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/35","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/35\n"}
+{"Time":"2026-11-07T09:16:32.731068+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/34"}
+{"Time":"2026-11-07T09:16:32.73107+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/34","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/34\n"}
+{"Time":"2026-11-07T09:16:32.731072+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/35","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/35 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731073+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/35","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731075+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/33"}
+{"Time":"2026-11-07T09:16:32.731076+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/33","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/33\n"}
+{"Time":"2026-11-07T09:16:32.731078+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/34","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/34 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.73108+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/34","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731082+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/32"}
+{"Time":"2026-11-07T09:16:32.731083+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/32","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/32\n"}
+{"Time":"2026-11-07T09:16:32.731085+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/33","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/33 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731087+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/33","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731088+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/31"}
+{"Time":"2026-11-07T09:16:32.73109+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/31","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/31\n"}
+{"Time":"2026-11-07T09:16:32.731092+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/32","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/32 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731093+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/32","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731095+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/30"}
+{"Time":"2026-11-07T09:16:32.731096+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/30","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/30\n"}
+{"Time":"2026-11-07T09:16:32.731098+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/31","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/31 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.7311+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/31","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731103+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/29"}
+{"Time":"2026-11-07T09:16:32.731105+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/29","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/29\n"}
+{"Time":"2026-11-07T09:16:32.731107+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/28"}
+{"Time":"2026-11-07T09:16:32.731109+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/28","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/28\n"}
+{"Time":"2026-11-07T09:16:32.73111+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/27"}
+{"Time":"2026-11-07T09:16:32.731112+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/27","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/27\n"}
+{"Time":"2026-11-07T09:16:32.731114+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/26"}
+{"Time":"2026-11-07T09:16:32.731115+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/26","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/26\n"}
+{"Time":"2026-11-07T09:16:32.731117+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/25"}
+{"Time":"2026-11-07T09:16:32.731121+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/25","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/25\n"}
+{"Time":"2026-11-07T09:16:32.731123+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/24"}
+{"Time":"2026-11-07T09:16:32.731125+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/24","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/24\n"}
+{"Time":"2026-11-07T09:16:32.731126+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/23"}
+{"Time":"2026-11-07T09:16:32.731128+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/23","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/23\n"}
+{"Time":"2026-11-07T09:16:32.731129+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/22"}
+{"Time":"2026-11-07T09:16:32.731131+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/22","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/22\n"}
+{"Time":"2026-11-07T09:16:32.731133+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/21"}
+{"Time":"2026-11-07T09:16:32.731134+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/21","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/21\n"}
+{"Time":"2026-11-07T09:16:32.731136+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/20"}
+{"Time":"2026-11-07T09:16:32.731138+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/20","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/20\n"}
+{"Time":"2026-11-07T09:16:32.731139+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/19"}
+{"Time":"2026-11-07T09:16:32.731141+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/19","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/19\n"}
+{"Time":"2026-11-07T09:16:32.731143+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/18"}
+{"Time":"2026-11-07T09:16:32.731144+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/18","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/18\n"}
+{"Time":"2026-11-07T09:16:32.731146+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/17"}
+{"Time":"2026-11-07T09:16:32.731147+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/17","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/17\n"}
+{"Time":"2026-11-07T09:16:32.731149+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/16"}
+{"Time":"2026-11-07T09:16:32.731151+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/16","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/16\n"}
+{"Time":"2026-11-07T09:16:32.731152+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/15"}
+{"Time":"2026-11-07T09:16:32.731154+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/15","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/15\n"}
+{"Time":"2026-11-07T09:16:32.731155+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/14"}
+{"Time":"2026-11-07T09:16:32.731157+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/14","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/14\n"}
+{"Time":"2026-11-07T09:16:32.731159+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/13"}
+{"Time":"2026-11-07T09:16:32.73116+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/13","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/13\n"}
+{"Time":"2026-11-07T09:16:32.731162+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/12"}
+{"Time":"2026-11-07T09:16:32.731163+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/12","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/12\n"}
+{"Time":"2026-11-07T09:16:32.731165+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/11"}
+{"Time":"2026-11-07T09:16:32.731167+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/11","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/11\n"}
+{"Time":"2026-11-07T09:16:32.731168+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/10"}
+{"Time":"2026-11-07T09:16:32.73117+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/10","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/10\n"}
+{"Time":"2026-11-07T09:16:32.731171+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/9"}
+{"Time":"2026-11-07T09:16:32.731176+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/9","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/9\n"}
+{"Time":"2026-11-07T09:16:32.731177+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/8"}
+{"Time":"2026-11-07T09:16:32.731179+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/8","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/8\n"}
+{"Time":"2026-11-07T09:16:32.731181+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/7"}
+{"Time":"2026-11-07T09:16:32.731182+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/7","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/7\n"}
+{"Time":"2026-11-07T09:16:32.731185+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/6"}
+{"Time":"2026-11-07T09:16:32.731187+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/6","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/6\n"}
+{"Time":"2026-11-07T09:16:32.731188+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/5"}
+{"Time":"2026-11-07T09:16:32.73119+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/5","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/5\n"}
+{"Time":"2026-11-07T09:16:32.731191+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/4"}
+{"Time":"2026-11-07T09:16:32.731193+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/4","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/4\n"}
+{"Time":"2026-11-07T09:16:32.731197+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/3"}
+{"Time":"2026-11-07T09:16:32.731198+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/3","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/3\n"}
+{"Time":"2026-11-07T09:16:32.7312+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/2"}
+{"Time":"2026-11-07T09:16:32.731201+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/2","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/2\n"}
+{"Time":"2026-11-07T09:16:32.731202+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/61"}
+{"Time":"2026-11-07T09:16:32.731204+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/61","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/61\n"}
+{"Time":"2026-11-07T09:16:32.731209+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/80"}
+{"Time":"2026-11-07T09:16:32.73121+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/80","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/80\n"}
+{"Time":"2026-11-07T09:16:32.731212+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/79"}
+{"Time":"2026-11-07T09:16:32.731213+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/79","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/79\n"}
+{"Time":"2026-11-07T09:16:32.731215+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/78"}
+{"Time":"2026-11-07T09:16:32.731216+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/78","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/78\n"}
+{"Time":"2026-11-07T09:16:32.731218+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/77"}
+{"Time":"2026-11-07T09:16:32.731219+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/77","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/77\n"}
+{"Time":"2026-11-07T09:16:32.73122+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/76"}
+{"Time":"2026-11-07T09:16:32.731222+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/76","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/76\n"}
+{"Time":"2026-11-07T09:16:32.731224+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/75"}
+{"Time":"2026-11-07T09:16:32.731226+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/75","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/75\n"}
+{"Time":"2026-11-07T09:16:32.731229+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/74"}
+{"Time":"2026-11-07T09:16:32.73123+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/74","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/74\n"}
+{"Time":"2026-11-07T09:16:32.731232+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/73"}
+{"Time":"2026-11-07T09:16:32.731233+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/73","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/73\n"}
+{"Time":"2026-11-07T09:16:32.731235+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/72"}
+{"Time":"2026-11-07T09:16:32.731236+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/72","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/72\n"}
+{"Time":"2026-11-07T09:16:32.731238+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/71"}
+{"Time":"2026-11-07T09:16:32.731239+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/71","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/71\n"}
+{"Time":"2026-11-07T09:16:32.73124+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/70"}
+{"Time":"2026-11-07T09:16:32.731242+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/70","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/70\n"}
+{"Time":"2026-11-07T09:16:32.731243+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/69"}
+{"Time":"2026-11-07T09:16:32.731245+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/69","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/69\n"}
+{"Time":"2026-11-07T09:16:32.731246+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/68"}
+{"Time":"2026-11-07T09:16:32.731248+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/68","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/68\n"}
+{"Time":"2026-11-07T09:16:32.731249+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/67"}
+{"Time":"2026-11-07T09:16:32.731251+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/67","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/67\n"}
+{"Time":"2026-11-07T09:16:32.731252+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/66"}
+{"Time":"2026-11-07T09:16:32.731257+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/66","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/66\n"}
+{"Time":"2026-11-07T09:16:32.731259+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/65"}
+{"Time":"2026-11-07T09:16:32.73126+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/65","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/65\n"}
+{"Time":"2026-11-07T09:16:32.731262+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/64"}
+{"Time":"2026-11-07T09:16:32.731263+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/64","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/64\n"}
+{"Time":"2026-11-07T09:16:32.731265+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/30","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/30 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731267+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/30","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731268+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/29","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/29 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.73127+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/29","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731271+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/64","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/64 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731273+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/64","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731274+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/63"}
+{"Time":"2026-11-07T09:16:32.731276+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/63","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/63\n"}
+{"Time":"2026-11-07T09:16:32.731277+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/51"}
+{"Time":"2026-11-07T09:16:32.731279+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/51","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/51\n"}
+{"Time":"2026-11-07T09:16:32.73128+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/60"}
+{"Time":"2026-11-07T09:16:32.731281+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/60","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/60\n"}
+{"Time":"2026-11-07T09:16:32.731283+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/59"}
+{"Time":"2026-11-07T09:16:32.731284+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/59","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/59\n"}
+{"Time":"2026-11-07T09:16:32.731286+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/58"}
+{"Time":"2026-11-07T09:16:32.731287+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/58","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/58\n"}
+{"Time":"2026-11-07T09:16:32.731288+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/57"}
+{"Time":"2026-11-07T09:16:32.73129+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/57","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/57\n"}
+{"Time":"2026-11-07T09:16:32.731295+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/56"}
+{"Time":"2026-11-07T09:16:32.731296+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/56","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/56\n"}
+{"Time":"2026-11-07T09:16:32.731298+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/55"}
+{"Time":"2026-11-07T09:16:32.731299+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/55","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/55\n"}
+{"Time":"2026-11-07T09:16:32.731301+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/62"}
+{"Time":"2026-11-07T09:16:32.731302+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/62","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/62\n"}
+{"Time":"2026-11-07T09:16:32.731304+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/53"}
+{"Time":"2026-11-07T09:16:32.731305+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/53","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/53\n"}
+{"Time":"2026-11-07T09:16:32.731307+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/52"}
+{"Time":"2026-11-07T09:16:32.731308+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/52","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/52\n"}
+{"Time":"2026-11-07T09:16:32.731309+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/46"}
+{"Time":"2026-11-07T09:16:32.731311+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/46","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/46\n"}
+{"Time":"2026-11-07T09:16:32.731312+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/27","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/27 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731314+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/27","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731315+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/50"}
+{"Time":"2026-11-07T09:16:32.731317+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/50","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/50\n"}
+{"Time":"2026-11-07T09:16:32.731318+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/26","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/26 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.73132+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/26","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731322+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/25","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/25 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731323+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/25","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731325+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/49"}
+{"Time":"2026-11-07T09:16:32.731326+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/49","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/49\n"}
+{"Time":"2026-11-07T09:16:32.731327+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/48"}
+{"Time":"2026-11-07T09:16:32.731329+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/48","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/48\n"}
+{"Time":"2026-11-07T09:16:32.73133+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/47"}
+{"Time":"2026-11-07T09:16:32.731332+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/47","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/47\n"}
+{"Time":"2026-11-07T09:16:32.731333+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/44"}
+{"Time":"2026-11-07T09:16:32.731334+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/44","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/44\n"}
+{"Time":"2026-11-07T09:16:32.731336+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/50","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/50 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731337+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/50","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731339+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/54"}
+{"Time":"2026-11-07T09:16:32.73134+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/54","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/54\n"}
+{"Time":"2026-11-07T09:16:32.731342+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/43"}
+{"Time":"2026-11-07T09:16:32.731343+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/43","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/43\n"}
+{"Time":"2026-11-07T09:16:32.731345+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/42"}
+{"Time":"2026-11-07T09:16:32.731346+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/42","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/42\n"}
+{"Time":"2026-11-07T09:16:32.731347+08:00","Action":"cont","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/45"}
+{"Time":"2026-11-07T09:16:32.731349+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/45","Output":"=== CONT  TestObjectPrepareWorkIndependentCalls/45\n"}
+{"Time":"2026-11-07T09:16:32.73135+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/23","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/23 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731352+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/23","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731353+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/22","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/22 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731355+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/22","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731356+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/21","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/21 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731358+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/21","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731359+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/20","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/20 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731361+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/20","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731362+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/19","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/19 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731364+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/19","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731372+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/18","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/18 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731373+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/18","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731376+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/17","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/17 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731377+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/17","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731379+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/16","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/16 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.73138+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/16","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731382+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/15","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/15 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731383+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/15","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731385+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/14","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/14 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731387+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/14","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731388+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/13","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/13 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.73139+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/13","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731391+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/12","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/12 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731392+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/12","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731394+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/11","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/11 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731395+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/11","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731397+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/10","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/10 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731398+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/10","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.7314+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/9","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/9 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731401+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/9","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731403+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/8","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/8 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731404+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/8","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731406+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/7","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/7 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.73141+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/7","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731412+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/6","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/6 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731413+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/6","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731414+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/5","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/5 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731416+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/5","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731417+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/4","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/4 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731419+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/4","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.73142+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/3","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/3 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731422+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/3","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731423+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/2","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/2 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731425+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/2","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731426+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/61","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/61 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731428+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/61","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731429+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/80","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/80 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731431+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/80","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731432+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/79","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/79 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731434+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/79","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731435+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/78","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/78 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731437+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/78","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731438+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/77","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/77 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.73144+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/77","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731441+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/76","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/76 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731443+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/76","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731444+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/75","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/75 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731445+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/75","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731447+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/74","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/74 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731448+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/74","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.73145+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/73","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/73 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731451+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/73","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731453+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/72","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/72 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731454+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/72","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731455+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/71","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/71 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731457+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/71","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731458+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/70","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/70 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.73146+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/70","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731461+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/69","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/69 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731463+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/69","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731464+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/68","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/68 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731466+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/68","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731467+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/67","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/67 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731469+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/67","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.73147+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/66","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/66 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731472+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/66","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731473+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/65","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/65 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731475+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/65","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731476+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/28","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/28 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731478+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/28","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731479+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/63","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/63 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.73148+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/63","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731482+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/51","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/51 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731483+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/51","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731485+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/60","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/60 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731486+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/60","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731488+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/59","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/59 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731489+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/59","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731491+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/58","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/58 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731492+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/58","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731494+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/57","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/57 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731495+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/57","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731496+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/56","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/56 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731498+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/56","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731499+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/55","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/55 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731501+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/55","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731502+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/62","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/62 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731504+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/62","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731505+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/53","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/53 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731507+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/53","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731509+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/52","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/52 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.73151+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/52","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731512+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/46","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/46 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731513+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/46","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731514+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/24","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/24 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731518+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/24","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731524+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/49","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/49 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731526+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/49","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731527+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/48","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/48 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731529+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/48","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.73153+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/47","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/47 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731532+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/47","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731533+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/44","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/44 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731535+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/44","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731536+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/54","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/54 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731537+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/54","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731539+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/43","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/43 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.73154+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/43","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731542+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/42","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/42 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731543+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/42","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731545+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/45","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls/45 (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731554+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls/45","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731556+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls","Output":"--- PASS: TestObjectPrepareWorkIndependentCalls (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.731558+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareWorkIndependentCalls","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.731559+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareOwnerOriginalCompleteCalls"}
+{"Time":"2026-11-07T09:16:32.73156+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareOwnerOriginalCompleteCalls","Output":"=== RUN   TestObjectPrepareOwnerOriginalCompleteCalls\n"}
+{"Time":"2026-11-07T09:16:32.831265+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareOwnerOriginalCompleteCalls","Output":"    object_prepare_work_owner_test.go:36: same caller-owned pointer, complete original calls=320, work boundaries=117120\n"}
+{"Time":"2026-11-07T09:16:32.831287+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareOwnerOriginalCompleteCalls","Output":"--- PASS: TestObjectPrepareOwnerOriginalCompleteCalls (0.11s)\n"}
+{"Time":"2026-11-07T09:16:32.831295+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareOwnerOriginalCompleteCalls","Elapsed":0.11}
+{"Time":"2026-11-07T09:16:32.831301+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareOwnerLivePublication"}
+{"Time":"2026-11-07T09:16:32.831305+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareOwnerLivePublication","Output":"=== RUN   TestObjectPrepareOwnerLivePublication\n"}
+{"Time":"2026-11-07T09:16:32.831307+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareOwnerLivePublication","Output":"--- PASS: TestObjectPrepareOwnerLivePublication (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.831309+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareOwnerLivePublication","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.831311+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareOwnerErrorKeepsCompletedChanges"}
+{"Time":"2026-11-07T09:16:32.831313+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareOwnerErrorKeepsCompletedChanges","Output":"=== RUN   TestObjectPrepareOwnerErrorKeepsCompletedChanges\n"}
+{"Time":"2026-11-07T09:16:32.936505+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareOwnerErrorKeepsCompletedChanges","Output":"--- PASS: TestObjectPrepareOwnerErrorKeepsCompletedChanges (0.11s)\n"}
+{"Time":"2026-11-07T09:16:32.936525+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareOwnerErrorKeepsCompletedChanges","Elapsed":0.11}
+{"Time":"2026-11-07T09:16:32.936531+08:00","Action":"run","Package":"command-line-arguments","Test":"TestObjectPrepareOwnerInvalidDomain"}
+{"Time":"2026-11-07T09:16:32.936535+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareOwnerInvalidDomain","Output":"=== RUN   TestObjectPrepareOwnerInvalidDomain\n"}
+{"Time":"2026-11-07T09:16:32.93654+08:00","Action":"output","Package":"command-line-arguments","Test":"TestObjectPrepareOwnerInvalidDomain","Output":"--- PASS: TestObjectPrepareOwnerInvalidDomain (0.00s)\n"}
+{"Time":"2026-11-07T09:16:32.936543+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestObjectPrepareOwnerInvalidDomain","Elapsed":0}
+{"Time":"2026-11-07T09:16:32.936546+08:00","Action":"output","Package":"command-line-arguments","Output":"PASS\n"}
+{"Time":"2026-11-07T09:16:32.937447+08:00","Action":"output","Package":"command-line-arguments","Output":"ok  \tcommand-line-arguments\t0.883s\n"}
+{"Time":"2026-11-07T09:16:32.93747+08:00","Action":"pass","Package":"command-line-arguments","Elapsed":0.883}

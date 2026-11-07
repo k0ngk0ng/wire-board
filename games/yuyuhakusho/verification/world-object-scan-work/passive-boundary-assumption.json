@@ -1,0 +1,11 @@
+{
+  "reason": "First passive-boundary assertion incorrectly assumed external displacement must change PC. A natural sequential359C->359E boundary has70 extra master cycles; preserve the raw failure, do not charge them to scanner CPU cost.",
+  "inputs": {
+    "games/yuyuhakusho/verification/world-object-scan-work/capture_world_object_scan_work.py.first-passive-assumption.txt": "fbd6878ec55c22f6331f912d1b22848f0ccbe930dd8b228b7da65459dd2d1e5a",
+    "games/yuyuhakusho/verification/world-object-scan-work/world_object_scan_work_observer.c.first-passive-assumption.txt": "32a0017f2e5892e18edba40b19293ad2948d89285e941f0de0a92c6815fb2356"
+  },
+  "failure_log": {
+    "path": "games/yuyuhakusho/verification/world-object-scan-work/native-first.log",
+    "sha256": "b466d90d59c64f4eec9f92a3300d2b04e8efc5ecca66b3ce86807a51725c8b0e"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "pass": true,
+  "cases": 320,
+  "steps": 117120,
+  "cross_core_work_and_outcomes_equal": true,
+  "all_2400_video_ram_controls_equal_per_core": true,
+  "all_64_layer_heads_and_retained_link_bytes_equal": true,
+  "no_unowned_ram_writes": true,
+  "natural_calls": 2087,
+  "natural_reserved_counts": {
+    "1": 1200,
+    "2": 887
+  },
+  "identity": {
+    "original": {
+      "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+      "core_sha256": "1d08b724cf975de17af146f9ba4292946a609b26d03da3d0d9414c90983095da",
+      "core_name": "Genesis Plus GX",
+      "core_version": "v1.7.4 60bee4c",
+      "fps": 59.92274340431231,
+      "ram_bytes": 65536,
+      "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+      "teamplayer": false
+    },
+    "observed": {
+      "rom_sha256": "c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06",
+      "core_sha256": "e87739d0804e62423fda890377fa46a8932fe1a6fa0132b1ad7f13b8b3af7306",
+      "core_name": "Genesis Plus GX",
+      "core_version": "v1.7.460bee4c",
+      "fps": 59.92274340431231,
+      "ram_bytes": 65536,
+      "frontend_sha256": "25f316dad97ec6d5f91d747fe5708b2d73891b4b39106bf029dffd7354653f81",
+      "teamplayer": false
+    }
+  },
+  "fixture_sha256": "40b83b1aad4d76c35ff577dea58d08a13acaf802631f72a9cebbdaa625ee9261",
+  "natural_sha256": "4bf9c06183813db8452db673bd2360bd801cc3640de47446946b89781b58b26b",
+  "sources": {
+    "docs/research/md-yuyuhakusho/inputs.json": "59383329affb09e87c6452c135d3ae20df19db9f1675acddc0972a080a8551b6",
+    "docs/research/md-yuyuhakusho/frame-hashes.json": "5dce10106326451b42952f473ec80adff118a7185cf64a7d6ef3fd52ff8ee1e8",
+    "scripts/yuyuhakusho/capture_object_prepare_work.py": "cb11062b25820401abcd1ed70f54c65234593985fc7b4c5a7a8158ec07a881fc",
+    "docs/research/md-yuyuhakusho/static/input-detail.txt": "4ee837e2e89ba82c303c3a73db8a80c17a54b81ab30c43226ace06a363289758",
+    "docs/research/md-yuyuhakusho/static/sprite-submit.txt": "9eb200a81fe7539b57e15fbd969231758ee7fa4dbc0d44aa0aad016800eedda3",
+    "docs/research/md-yuyuhakusho/static/world-sprites-raster-source.txt": "906190c9163c37eb10b05f79689ff49b97997fb6c5f78c378cce970c350c4527"
+  },
+  "scope": "Complete original 125A under mask7, all 1..80 retained counts and four refresh phases. Natural counts are entry observations on the fixed 2400-frame scenario. H40 capacity80 is from the existing raster/source evidence; private counts are not claimed naturally reachable. Caller/IRQ/audio integration is separate."
+}

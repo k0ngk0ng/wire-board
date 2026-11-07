@@ -1,0 +1,32 @@
+{
+  "mode": "native-related-sources",
+  "command": [
+    "/opt/homebrew/bin/go",
+    "test",
+    "-json",
+    "-count=1",
+    "-timeout=5m",
+    "-run",
+    "^TestObjectPrepare(Work|Owner)",
+    "main_work.go",
+    "object_prepare_work.go",
+    "object_prepare_work_test.go",
+    "object_prepare_work_owner_test.go"
+  ],
+  "cwd": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/games/yuyuhakusho/engine",
+  "environment": {
+    "TEST_TELEMETRY_DIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-telemetry",
+    "GOCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-cache",
+    "GOMODCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-mod",
+    "GOTMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+    "TMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+    "GOMAXPROCS": "2"
+  },
+  "exit_code": 0,
+  "elapsed_seconds": 1.266597032546997,
+  "output_sha256": "915ec815951c225123e9dac0755e4927e49ac657d6d18a762637c83b1a809201",
+  "scope": "The four related Go sources and all frozen value/direct-owner native tests; full engine package preflight remains blocked by concurrent unrelated chu_world.go undefined soundPort.",
+  "tests_passed": 89,
+  "top_level_passed": 9,
+  "failures": []
+}

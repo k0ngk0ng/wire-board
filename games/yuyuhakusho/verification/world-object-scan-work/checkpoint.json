@@ -1,0 +1,104 @@
+{
+  "status": "parked_by_user_priority",
+  "stopped_at": "2026-11-07T01:15:02.004177+00:00",
+  "reason": "Prioritize stable playable audio; stop new precise timing implementation, capture and matrices.",
+  "production_api": "WalkWorldObjectsWork is unimplemented",
+  "production_file_exists": false,
+  "archived_test": {
+    "path": "games/yuyuhakusho/verification/world-object-scan-work/world_object_scan_work_test.go.txt",
+    "sha256": "961ae2dbbd387a40c4a430e2816848a66394951cb37592fa8129010c462c714e",
+    "removed_from_active_go_package": true
+  },
+  "test_first": {
+    "written_before_production": true,
+    "real_missing_api_red": true,
+    "binding_created_at_checkpoint": true,
+    "failure_log": "games/yuyuhakusho/verification/world-object-scan-work/missing-api-red.jsonl",
+    "failure_sha256": "2e2ad42b28ff895c506c21a809586437bebea73a81dbb80a57463189e783cead"
+  },
+  "primary_native_capture": {
+    "path": "games/yuyuhakusho/verification/world-object-scan-work/native-aux/capture.json",
+    "sha256": "c6d3cae941969e89bf6db1e15381bd216cb45814ad96a59c953a6941ccd4bb48",
+    "cases": 79,
+    "private_complete_calls": 64,
+    "natural_complete_passes": 15,
+    "natural_callbacks": 204,
+    "scanner_operations": 51051,
+    "natural_exact_uninterrupted": 9408,
+    "natural_auxiliary_verified": 39,
+    "controls_unchanged_frames": 2401
+  },
+  "pending": [
+    "Production typed scanner implementation",
+    "Activate archived test and perform Go differential/race/Wasm/vet checks",
+    "Root callback/IRQ integration with actual callback costs"
+  ],
+  "cleanup": [
+    {
+      "path": "games/yuyuhakusho/verification/world-object-scan-work/native-first/original",
+      "reason": "empty research frontend output"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/world-object-scan-work/native-first/observed",
+      "reason": "empty research frontend output"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/world-object-scan-work/native-first/tmp/world-object-scan-work.dylib",
+      "bytes": 34336,
+      "sha256": "1f993b86b48c43363a9c2791cf68dfb4bc1cfd6e1cafeedda447d563e1a6bf21",
+      "reason": "rebuildable observer binary or compiler cache; source retained"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/world-object-scan-work/native-frozen/original",
+      "reason": "empty research frontend output"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/world-object-scan-work/native-frozen/observed",
+      "reason": "empty research frontend output"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/world-object-scan-work/native-frozen/tmp/world-object-scan-work.dylib",
+      "bytes": 34336,
+      "sha256": "3b40d4f7b9e4f28993333de31ba8eb7bb61052b6c29fe3a54f19f5caa667b695",
+      "reason": "rebuildable observer binary or compiler cache; source retained"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/world-object-scan-work/native-aux/original",
+      "reason": "empty research frontend output"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/world-object-scan-work/native-aux/observed",
+      "reason": "empty research frontend output"
+    },
+    {
+      "path": "games/yuyuhakusho/verification/world-object-scan-work/native-aux/tmp/world-object-scan-work.dylib",
+      "bytes": 34640,
+      "sha256": "1a86c69ba261d777cfd1b28b913fcec2d72bda251be6d552f9dd93736e4c9aa8",
+      "reason": "rebuildable observer binary or compiler cache; source retained"
+    }
+  ],
+  "sources": {
+    "scripts/yuyuhakusho/capture_world_object_scan_work.py": "23807712ede381d72b3b8c2eb85e59097eb17ed2ab7e024282db02783b53f6c7",
+    "scripts/yuyuhakusho/world_object_scan_work_observer.c": "cf65182e595618f3306504616caf314662e98f5e8944d4450fbb435f52aa5aee"
+  },
+  "artifacts": {
+    "games/yuyuhakusho/verification/world-object-scan-work/PLAN.md": "c0afe3f58e8f9c0458b284512b07ad248753f240ce08f9d24aa11b1404f8050b",
+    "games/yuyuhakusho/verification/world-object-scan-work/README.md": "aca81f896402d79e078c7787b8842caea63314f134f6369219be5c12ddf5e8ce",
+    "games/yuyuhakusho/verification/world-object-scan-work/capture_world_object_scan_work.py.first-passive-assumption.txt": "fbd6878ec55c22f6331f912d1b22848f0ccbe930dd8b228b7da65459dd2d1e5a",
+    "games/yuyuhakusho/verification/world-object-scan-work/missing-api-red.jsonl": "2e2ad42b28ff895c506c21a809586437bebea73a81dbb80a57463189e783cead",
+    "games/yuyuhakusho/verification/world-object-scan-work/native-aux/capture.json": "c6d3cae941969e89bf6db1e15381bd216cb45814ad96a59c953a6941ccd4bb48",
+    "games/yuyuhakusho/verification/world-object-scan-work/native-aux/native-world-object-scan.json.gz": "4d8f5ed72296ef6be9efb89fd8aa8fe0bcc2feb49bb444138e08615eadf8f132",
+    "games/yuyuhakusho/verification/world-object-scan-work/native-aux/source-natural-events.json.gz": "2da463f72136d9ccc3ba66d0dd98c27c959b41a3fe9c135729d030159fb7f258",
+    "games/yuyuhakusho/verification/world-object-scan-work/native-aux/source-private-steps.json.gz": "b016f23bc5b058603ed99aa4cd3c3720c2305cfba5ed991eaa9d396409f7b988",
+    "games/yuyuhakusho/verification/world-object-scan-work/native-aux.log": "340d39a09d0a8c6eee26da7c5a80e145dd02b2f20fc57d145e908068231269d7",
+    "games/yuyuhakusho/verification/world-object-scan-work/native-first.log": "b466d90d59c64f4eec9f92a3300d2b04e8efc5ecca66b3ce86807a51725c8b0e",
+    "games/yuyuhakusho/verification/world-object-scan-work/native-frozen/capture.json": "9b02e764a2dfb305d95f71fcd3dfd1ebf9bb7569e8e2fe66100c06fb16c4a122",
+    "games/yuyuhakusho/verification/world-object-scan-work/native-frozen/native-world-object-scan.json.gz": "9c2b703c886de6df936f4e41cc3bd01a457b8acf006c2deea7b1df38a2a32659",
+    "games/yuyuhakusho/verification/world-object-scan-work/native-frozen/source-natural-events.json.gz": "3c2e69b1c0371a1f94ca843d7ed6c02fcec2fb60c97d5d7a7c55266cc9e3b548",
+    "games/yuyuhakusho/verification/world-object-scan-work/native-frozen/source-private-steps.json.gz": "b016f23bc5b058603ed99aa4cd3c3720c2305cfba5ed991eaa9d396409f7b988",
+    "games/yuyuhakusho/verification/world-object-scan-work/native-frozen.log": "eead1ae5b53682ba34c5a6b6f748d238ac6f2d2e33cbad0d679a19b2c9ace72f",
+    "games/yuyuhakusho/verification/world-object-scan-work/passive-boundary-assumption.json": "0f9a2f0d1da5f89d46da5f1a730e4c6bf811127a8a0bf7b6b5bc9e39e907059b",
+    "games/yuyuhakusho/verification/world-object-scan-work/world_object_scan_work_observer.c.first-passive-assumption.txt": "32a0017f2e5892e18edba40b19293ad2948d89285e941f0de0a92c6815fb2356",
+    "games/yuyuhakusho/verification/world-object-scan-work/world_object_scan_work_test.go.txt": "961ae2dbbd387a40c4a430e2816848a66394951cb37592fa8129010c462c714e"
+  }
+}

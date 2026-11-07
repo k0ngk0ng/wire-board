@@ -1,0 +1,12 @@
+{
+  "pass": true,
+  "removed_path": ".local/md-yuyuhakusho/object-prepare-work-native-v1",
+  "reason": "Duplicate native capture copied and byte-verified in durable verification artifacts",
+  "removed_files": {
+    ".local/md-yuyuhakusho/object-prepare-work-native-v1/capture.json": "842b49c6535b1e60a94d71d2a7edf8fc496bf0d903aad96b658ebe433cb7bf37",
+    ".local/md-yuyuhakusho/object-prepare-work-native-v1/native-object-prepare-work.json.gz": "40b83b1aad4d76c35ff577dea58d08a13acaf802631f72a9cebbdaa625ee9261",
+    ".local/md-yuyuhakusho/object-prepare-work-native-v1/natural-calls.json.gz": "4bf9c06183813db8452db673bd2360bd801cc3640de47446946b89781b58b26b"
+  },
+  "preserved_path": "games/yuyuhakusho/verification/object-prepare-work",
+  "shared_go_caches_unchanged": true
+}
