@@ -209,7 +209,9 @@ func runCursorTransportScenario(t *testing.T, enforceNativeLatency bool) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		if len(frames) > int(view.Frame-streamAfter)+6 {
+		// The accepted four-player batching fix retains 20 input frames,
+		// independently of the 120-frame reconnect recovery ring.
+		if len(frames) > int(view.Frame-streamAfter)+20 {
 			t.Fatal("connection repeated an oversized recovery ring", len(frames), view.Frame-streamAfter)
 		}
 		for _, input := range frames {
