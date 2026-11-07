@@ -1,0 +1,245 @@
+{
+  "passed": false,
+  "scope": "Actual production choice components; native CDP touch, real browser focus, local event sink",
+  "checks": [
+    "arena choices stay open after tap",
+    "create popup fits mobile viewport",
+    "touching arena image selects once",
+    "character choices stay open after tap",
+    "touching own character image selects once",
+    "arena choices stay open after tap",
+    "waiting arena label selects",
+    "character choices stay open after tap",
+    "host selects bot character",
+    "character choices stay open after tap"
+  ],
+  "nativeTouches": [
+    {
+      "selector": "[data-arena-picker] summary",
+      "point": {
+        "hit": true,
+        "x": 160,
+        "y": 197.0703125
+      },
+      "events": [
+        {
+          "type": "touchStart",
+          "nativeTouch": true,
+          "render": {}
+        },
+        {
+          "type": "touchEnd",
+          "nativeTouch": true,
+          "render": {}
+        }
+      ]
+    },
+    {
+      "selector": "[data-arena-option=\"10\"] .yuyu-arena-image",
+      "point": {
+        "hit": true,
+        "x": 241.328125,
+        "y": 358.046875
+      },
+      "events": [
+        {
+          "type": "touchStart",
+          "nativeTouch": true,
+          "render": {}
+        },
+        {
+          "type": "touchEnd",
+          "nativeTouch": true,
+          "render": {}
+        }
+      ]
+    },
+    {
+      "selector": "[data-character-seat=\"0\"] summary",
+      "point": {
+        "hit": true,
+        "x": 160,
+        "y": 305.265625
+      },
+      "events": [
+        {
+          "type": "touchStart",
+          "nativeTouch": true,
+          "render": {}
+        },
+        {
+          "type": "touchEnd",
+          "nativeTouch": true,
+          "render": {}
+        }
+      ]
+    },
+    {
+      "selector": "[data-character-option=\"8\"] .yuyu-portrait",
+      "point": {
+        "hit": true,
+        "x": 60,
+        "y": 571.453125
+      },
+      "events": [
+        {
+          "type": "touchStart",
+          "nativeTouch": true,
+          "render": {}
+        },
+        {
+          "type": "touchEnd",
+          "nativeTouch": true,
+          "render": {}
+        }
+      ]
+    },
+    {
+      "selector": "[data-arena-picker] summary",
+      "point": {
+        "hit": true,
+        "x": 160,
+        "y": 197.0703125
+      },
+      "events": [
+        {
+          "type": "touchStart",
+          "nativeTouch": true,
+          "render": {}
+        },
+        {
+          "type": "touchEnd",
+          "nativeTouch": true,
+          "render": {}
+        }
+      ]
+    },
+    {
+      "selector": "[data-arena-option=\"4\"] span:last-child",
+      "point": {
+        "hit": true,
+        "x": 241.3203125,
+        "y": 307.1875
+      },
+      "events": [
+        {
+          "type": "touchStart",
+          "nativeTouch": true,
+          "render": {}
+        },
+        {
+          "type": "touchEnd",
+          "nativeTouch": true,
+          "render": {}
+        }
+      ]
+    },
+    {
+      "selector": "[data-character-seat=\"1\"] summary",
+      "point": {
+        "hit": true,
+        "x": 160,
+        "y": 403.265625
+      },
+      "events": [
+        {
+          "type": "touchStart",
+          "nativeTouch": true,
+          "render": {}
+        },
+        {
+          "type": "touchEnd",
+          "nativeTouch": true,
+          "render": {}
+        }
+      ]
+    },
+    {
+      "selector": "[data-character-option=\"10\"]",
+      "point": {
+        "hit": true,
+        "x": 188,
+        "y": 313.75
+      },
+      "events": [
+        {
+          "type": "touchStart",
+          "nativeTouch": true,
+          "render": {}
+        },
+        {
+          "type": "touchEnd",
+          "nativeTouch": true,
+          "render": {}
+        }
+      ]
+    },
+    {
+      "selector": "[data-character-seat=\"0\"] summary",
+      "point": {
+        "hit": true,
+        "x": 160,
+        "y": 305.265625
+      },
+      "events": [
+        {
+          "type": "touchStart",
+          "nativeTouch": true,
+          "render": {}
+        },
+        {
+          "type": "touchEnd",
+          "nativeTouch": true,
+          "render": {}
+        }
+      ]
+    }
+  ],
+  "error": "AssertionError('character choices stay open after tap')",
+  "diagnostic": {
+    "active": "<body><div id=\"root\"><main style=\"max-width: 720px; margin: 0px auto; padding: 20px;\"><nav><button>创建</button><button>准备</button><button>切换禁用</button></nav><section aria-label=\"比赛准备\"><h1>比赛准备</h1><section class=\"yuyu-preparation\" aria-label=\"比赛准备\"><div class=\"yuyu-room-rules\"><div class=\"yuyu-arena-field\" data-arena-field=\"true\"><span>场地</span><details class=\"yuyu-character-picker\" data-arena-picker=\"true\" data-arena=\"4\"><summary class=\"yuyu-character-summary\" tabindex=\"0\" aria-label=\"场地：亚空间 1\" aria-disabled=\"false\"><span class=\"yuyu-arena-image\" aria-hidden=\"true\"><img alt=\"\" draggable=\"false\" src=\"./arena-previews-NP5PZJJ6.png\" style=\"left: -200%;\"></span><span>亚空间 1</span><span class=\"yuyu-character-chevron\" aria-hidden=\"true\">⌄</span></summary></details></div></div><div class=\"yuyu-roster\"><div class=\"yuyu-role\"><span>玩家（你）</span><details class=\"yuyu-character-picker\" data-character-seat=\"0\" data-character=\"8\"><summary class=\"yuyu-character-summary\" tabindex=\"0\" aria-label=\"玩家的角色：户愚吕兄\" aria-disabled=\"false\"><span class=\"yuyu-portrait\" aria-hidden=\"true\"><img alt=\"\" draggable=\"false\" src=\"./character-portraits-N2EUM6OL.png\" style=\"left: -800%;\"></span><span>户愚吕兄</span><span class=\"yuyu-character-chevron\" aria-hidden=\"true\">⌄</span></summary></details></div><div class=\"yuyu-role\"><span>电脑</span><details class=\"yuyu-character-picker\" data-character-seat=\"1\" data-character=\"10\"><summary class=\"yuyu-character-summary\" tabindex=\"0\" aria-label=\"电脑的角色：户愚吕弟\" aria-disabled=\"false\"><span class=\"yuyu-portrait\" aria-hidden=\"true\"><img alt=\"\" draggable=\"false\" src=\"./character-portraits-N2EUM6OL.png\" style=\"left: -1000%;\"></span><span>户愚吕弟</span><span class=\"yuyu-character-chevron\" aria-hidden=\"true\">⌄</span></summary></details></div></div></section></section><button id=\"outside\" style=\"margin-top: 24px;\">外部按钮</button></main></div><script type=\"module\" src=\"fixture.js\"></script></body>",
+    "details": [
+      {
+        "html": "<details class=\"yuyu-character-picker\" data-arena-picker=\"true\" data-arena=\"4\"><summary class=\"yuyu-character-summary\" tabindex=\"0\" aria-label=\"场地：亚空间 1\" aria-disabled=\"false\"><span class=\"yuyu-arena-image\" aria-hidden=\"true\"><img alt=\"\" draggable=\"false\" src=\"./arena-previews-NP5PZJJ6.png\" style=\"left: -200%;\"></span><span>亚空间 1</span><span class=\"yuyu-character-chevron\" aria-hidden=\"true\">⌄</span></summary></details>",
+        "open": false
+      },
+      {
+        "html": "<details class=\"yuyu-character-picker\" data-character-seat=\"0\" data-character=\"8\"><summary class=\"yuyu-character-summary\" tabindex=\"0\" aria-label=\"玩家的角色：户愚吕兄\" aria-disabled=\"false\"><span class=\"yuyu-portrait\" aria-hidden=\"true\"><img alt=\"\" draggable=\"false\" src=\"./character-portraits-N2EUM6OL.png\" style=\"left: -800%;\"></span><span>户愚吕兄</span><span class=\"yuyu-character-chevron\" aria-hidden=\"true\">⌄</span></summary></details>",
+        "open": false
+      },
+      {
+        "html": "<details class=\"yuyu-character-picker\" data-character-seat=\"1\" data-character=\"10\"><summary class=\"yuyu-character-summary\" tabindex=\"0\" aria-label=\"电脑的角色：户愚吕弟\" aria-disabled=\"false\"><span class=\"yuyu-portrait\" aria-hidden=\"true\"><img alt=\"\" draggable=\"false\" src=\"./character-portraits-N2EUM6OL.png\" style=\"left: -1000%;\"></span><span>户愚吕弟</span><span class=\"yuyu-character-chevron\" aria-hidden=\"true\">⌄</span></summary></details>",
+        "open": false
+      }
+    ],
+    "events": [
+      {
+        "arena": 10,
+        "characters": [
+          3,
+          9
+        ],
+        "teamBattle": false
+      },
+      {
+        "character": 8,
+        "seat": 0,
+        "type": "character"
+      },
+      {
+        "arena": 4,
+        "type": "arena"
+      },
+      {
+        "character": 10,
+        "seat": 1,
+        "type": "character"
+      }
+    ]
+  },
+  "sources": {
+    "scripts/yuyuhakusho/check_mobile_choices.py": "ea1ed1e357956bbeedaafee3a72f1caf887a6c6342827d6a04701f1dffedb859",
+    "scripts/yuyuhakusho/mobile_choices_fixture.tsx": "57c7813051b0a985f10b2d7759ec60054cfdd4a2fe0ccdc7be67c3ed4c1936db",
+    "games/yuyuhakusho/web/CharacterPicker.tsx": "bf031c7ec6acf563a4e4edc1e973353daf206526298bddc5d81a5759f7ae4d4c"
+  }
+}

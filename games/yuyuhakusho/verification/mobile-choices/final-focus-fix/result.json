@@ -1,0 +1,369 @@
+{
+  "passed": true,
+  "scope": "Actual production choice components; native CDP touch, real browser focus, local event sink",
+  "checks": [
+    "arena choices stay open after tap",
+    "create popup fits mobile viewport",
+    "touching arena image selects once",
+    "character choices stay open after tap",
+    "touching own character image selects once",
+    "arena choices stay open after tap",
+    "waiting arena label selects",
+    "character choices stay open after tap",
+    "host selects bot character",
+    "character choices stay open after tap",
+    "character choices stay open after tap",
+    "character choices stay open after tap",
+    "null-target touch blur preserves selection",
+    "outside touch dismisses menu",
+    "Escape dismisses menu",
+    "arena choices stay open after tap",
+    "native menu scroll does not select",
+    "disabled field does not open",
+    "arena choices stay open after tap",
+    "desktop mouse still selects",
+    "arena choices stay open after tap",
+    "keyboard toggle and Escape still work",
+    "no browser errors"
+  ],
+  "nativeTouches": [
+    {
+      "selector": "[data-arena-picker] summary",
+      "point": {
+        "hit": true,
+        "x": 160,
+        "y": 197.0703125
+      },
+      "events": [
+        {
+          "type": "touchStart",
+          "nativeTouch": true,
+          "render": {}
+        },
+        {
+          "type": "touchEnd",
+          "nativeTouch": true,
+          "render": {}
+        }
+      ]
+    },
+    {
+      "selector": "[data-arena-option=\"10\"] .yuyu-arena-image",
+      "point": {
+        "hit": true,
+        "x": 241.328125,
+        "y": 358.046875
+      },
+      "events": [
+        {
+          "type": "touchStart",
+          "nativeTouch": true,
+          "render": {}
+        },
+        {
+          "type": "touchEnd",
+          "nativeTouch": true,
+          "render": {}
+        }
+      ]
+    },
+    {
+      "selector": "[data-character-seat=\"0\"] summary",
+      "point": {
+        "hit": true,
+        "x": 160,
+        "y": 305.265625
+      },
+      "events": [
+        {
+          "type": "touchStart",
+          "nativeTouch": true,
+          "render": {}
+        },
+        {
+          "type": "touchEnd",
+          "nativeTouch": true,
+          "render": {}
+        }
+      ]
+    },
+    {
+      "selector": "[data-character-option=\"8\"] .yuyu-portrait",
+      "point": {
+        "hit": true,
+        "x": 60,
+        "y": 571.453125
+      },
+      "events": [
+        {
+          "type": "touchStart",
+          "nativeTouch": true,
+          "render": {}
+        },
+        {
+          "type": "touchEnd",
+          "nativeTouch": true,
+          "render": {}
+        }
+      ]
+    },
+    {
+      "selector": "[data-arena-picker] summary",
+      "point": {
+        "hit": true,
+        "x": 160,
+        "y": 197.0703125
+      },
+      "events": [
+        {
+          "type": "touchStart",
+          "nativeTouch": true,
+          "render": {}
+        },
+        {
+          "type": "touchEnd",
+          "nativeTouch": true,
+          "render": {}
+        }
+      ]
+    },
+    {
+      "selector": "[data-arena-option=\"4\"] span:last-child",
+      "point": {
+        "hit": true,
+        "x": 241.3203125,
+        "y": 307.1875
+      },
+      "events": [
+        {
+          "type": "touchStart",
+          "nativeTouch": true,
+          "render": {}
+        },
+        {
+          "type": "touchEnd",
+          "nativeTouch": true,
+          "render": {}
+        }
+      ]
+    },
+    {
+      "selector": "[data-character-seat=\"1\"] summary",
+      "point": {
+        "hit": true,
+        "x": 160,
+        "y": 403.265625
+      },
+      "events": [
+        {
+          "type": "touchStart",
+          "nativeTouch": true,
+          "render": {}
+        },
+        {
+          "type": "touchEnd",
+          "nativeTouch": true,
+          "render": {}
+        }
+      ]
+    },
+    {
+      "selector": "[data-character-option=\"10\"]",
+      "point": {
+        "hit": true,
+        "x": 188,
+        "y": 313.75
+      },
+      "events": [
+        {
+          "type": "touchStart",
+          "nativeTouch": true,
+          "render": {}
+        },
+        {
+          "type": "touchEnd",
+          "nativeTouch": true,
+          "render": {}
+        }
+      ]
+    },
+    {
+      "selector": "[data-character-seat=\"0\"] summary",
+      "point": {
+        "hit": true,
+        "x": 160,
+        "y": 305.265625
+      },
+      "events": [
+        {
+          "type": "touchStart",
+          "nativeTouch": true,
+          "render": {}
+        },
+        {
+          "type": "touchEnd",
+          "nativeTouch": true,
+          "render": {}
+        }
+      ]
+    },
+    {
+      "selector": "[data-character-option=\"1\"]",
+      "point": {
+        "hit": true,
+        "x": 124,
+        "y": 396.5625
+      },
+      "events": [
+        {
+          "type": "touchStart",
+          "nativeTouch": true,
+          "render": {}
+        },
+        {
+          "type": "touchEnd",
+          "nativeTouch": true,
+          "render": {}
+        }
+      ]
+    },
+    {
+      "selector": "[data-arena-picker] summary",
+      "point": {
+        "hit": true,
+        "x": 160,
+        "y": 197.0703125
+      },
+      "events": [
+        {
+          "type": "touchStart",
+          "nativeTouch": true,
+          "render": {}
+        },
+        {
+          "type": "touchEnd",
+          "nativeTouch": true,
+          "render": {}
+        }
+      ]
+    },
+    {
+      "selector": "#outside",
+      "point": {
+        "hit": true,
+        "x": 7,
+        "y": 7
+      },
+      "events": [
+        {
+          "type": "touchStart",
+          "nativeTouch": true,
+          "render": {}
+        },
+        {
+          "type": "touchEnd",
+          "nativeTouch": true,
+          "render": {}
+        }
+      ]
+    },
+    {
+      "selector": "[data-arena-picker] summary",
+      "point": {
+        "hit": true,
+        "x": 160,
+        "y": 197.0703125
+      },
+      "events": [
+        {
+          "type": "touchStart",
+          "nativeTouch": true,
+          "render": {}
+        },
+        {
+          "type": "touchEnd",
+          "nativeTouch": true,
+          "render": {}
+        }
+      ]
+    },
+    {
+      "selector": "[data-arena-picker] summary",
+      "point": {
+        "hit": true,
+        "x": 160,
+        "y": 180.0703125
+      },
+      "events": [
+        {
+          "type": "touchStart",
+          "nativeTouch": true,
+          "render": {}
+        },
+        {
+          "type": "touchEnd",
+          "nativeTouch": true,
+          "render": {}
+        }
+      ]
+    },
+    {
+      "selector": "[data-arena-picker] summary",
+      "point": {
+        "hit": true,
+        "x": 160,
+        "y": 197.0703125
+      },
+      "events": [
+        {
+          "type": "touchStart",
+          "nativeTouch": true,
+          "render": {}
+        },
+        {
+          "type": "touchEnd",
+          "nativeTouch": true,
+          "render": {}
+        }
+      ]
+    }
+  ],
+  "events": [
+    {
+      "arena": 10,
+      "characters": [
+        3,
+        9
+      ],
+      "teamBattle": false
+    },
+    {
+      "character": 8,
+      "seat": 0,
+      "type": "character"
+    },
+    {
+      "arena": 4,
+      "type": "arena"
+    },
+    {
+      "character": 10,
+      "seat": 1,
+      "type": "character"
+    },
+    {
+      "character": 1,
+      "seat": 0,
+      "type": "character"
+    },
+    {
+      "arena": 14,
+      "type": "arena"
+    }
+  ],
+  "sources": {
+    "scripts/yuyuhakusho/check_mobile_choices.py": "469be15ee5b280ee51b5d4f07e59a95fd35dcad48ac08fdd496b0cae82be4502",
+    "scripts/yuyuhakusho/mobile_choices_fixture.tsx": "fbca72170683ae2f020b683b5f8ae26e771ec2a13834477747912ecb9801d084",
+    "games/yuyuhakusho/web/CharacterPicker.tsx": "b2492c519c49be0e665dcff5c66132ba8fae714b9a29b4e1da3623a7f65aea88"
+  }
+}

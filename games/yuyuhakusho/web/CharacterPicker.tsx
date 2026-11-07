@@ -26,7 +26,7 @@ export function ImagePicker({ value, seat, label, disabled, onChange, choices, r
   const menu = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
   const [placement, setPlacement] = useState({ left: 16, top: 16, maxHeight: 360 });
-  const close = () => { if (root.current) root.current.open = false; setOpen(false); };
+  const close = () => setOpen(false);
   useEffect(() => {
     if (disabled) close();
   }, [disabled]);
@@ -34,8 +34,20 @@ export function ImagePicker({ value, seat, label, disabled, onChange, choices, r
     const outside = (event: PointerEvent) => {
       if (event.target instanceof Node && !root.current?.contains(event.target) && !menu.current?.contains(event.target)) close();
     };
+    const focusOutside = (event: FocusEvent) => {
+      // Touch browsers may leave focus on the body while activating an option.
+      // Dismiss only when another actual control receives focus.
+      const next = event.target;
+      if (next instanceof Node && next !== document.body && next !== document.documentElement && !root.current?.contains(next) && !menu.current?.contains(next)) close();
+    };
     document.addEventListener("pointerdown", outside);
-    return () => document.removeEventListener("pointerdown", outside);
+    document.addEventListener("focusin", focusOutside);
+    window.addEventListener("blur", close);
+    return () => {
+      document.removeEventListener("pointerdown", outside);
+      document.removeEventListener("focusin", focusOutside);
+      window.removeEventListener("blur", close);
+    };
   }, []);
   useLayoutEffect(() => {
     if (!open) return;
@@ -56,19 +68,14 @@ export function ImagePicker({ value, seat, label, disabled, onChange, choices, r
     document.addEventListener("scroll", place, true);
     return () => { window.removeEventListener("resize", place); document.removeEventListener("scroll", place, true); };
   }, [open]);
-  return <details ref={root} className="yuyu-character-picker" data-character-seat={kind === "character" ? seat : undefined}
+  return <details ref={root} open={open} className="yuyu-character-picker" data-character-seat={kind === "character" ? seat : undefined}
     data-character={kind === "character" ? value : undefined} data-arena-picker={kind === "arena" ? true : undefined}
     data-arena={kind === "arena" ? value : undefined}
-    onToggle={event => setOpen(event.currentTarget.open)}
-    onBlurCapture={event => {
-      const next = event.relatedTarget;
-      if (!(next instanceof Node) || (!root.current?.contains(next) && !menu.current?.contains(next))) close();
-    }}
     onKeyDown={event => {
       if (event.key === "Escape") { event.preventDefault(); event.stopPropagation(); close(); root.current?.querySelector("summary")?.focus(); }
     }}>
     <summary className="yuyu-character-summary" tabIndex={disabled ? -1 : 0} aria-label={`${label}：${selected}`} aria-disabled={disabled}
-      onClick={event => { if (disabled) event.preventDefault(); else setOpen(!root.current?.open); }}>
+      onClick={event => { event.preventDefault(); if (!disabled) setOpen(value => !value); }}>
       {renderImage(value)}
       <span>{selected}</span>
       {!disabled && <span className="yuyu-character-chevron" aria-hidden="true">⌄</span>}
