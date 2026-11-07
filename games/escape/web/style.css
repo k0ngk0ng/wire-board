@@ -252,45 +252,12 @@
   min-height: 44px;
   border-radius: 12px;
 }
-.escape-object-hit > span {
-  position: absolute;
-  bottom: 4px;
-  right: 2px;
-  display: grid;
-  place-items: center;
-  width: 21px;
-  height: 21px;
-  color: #f2d891;
-  background: #112e28dd;
-  border: 1px solid #bca673;
-  border-radius: 50%;
-  box-shadow: 0 0 14px #d4ad6126;
-}
-.escape-object-hit.done > span {
-  color: #c0deb2;
-  border-color: #83b89b;
-  background: #183b2edc;
-}
 .escape-hotspots button.escape-door-hit {
   width: 9%;
   height: 20%;
   min-width: 44px;
   min-height: 44px;
   border-radius: 45% 45% 6px 6px;
-}
-.escape-door-hit > span {
-  position: absolute;
-  bottom: -12px;
-  display: flex;
-  align-items: center;
-  gap: 3px;
-  padding: 2px 6px;
-  color: #efd8a3;
-  background: #17372ee8;
-  border-radius: 4px;
-  font-size: 10px;
-  white-space: nowrap;
-  border: 1px solid #9d9a6b;
 }
 .escape-hotspots button.escape-rescue-hit {
   min-height: 44px;
@@ -536,24 +503,6 @@
   font-size: 10px;
   color: #d3cda9;
   margin-left: auto;
-}
-.escape-supplies {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding-top: 13px;
-  margin-top: auto;
-  border-top: 1px solid #51624b;
-  color: #d4c6a0;
-  font-size: 9px;
-  flex-wrap: wrap;
-}
-.escape-supplies b {
-  font-weight: 500;
-  margin-left: 3px;
-}
-.escape-supplies svg:nth-of-type(2) {
-  margin-left: 8px;
 }
 .escape-touch-controls {
   display: none;
@@ -966,6 +915,72 @@
   gap: 16px;
   margin-top: 22px;
 }
+.escape-modal.inventory {
+  max-height: min(calc(100% - 20px), calc(100dvh - 36px));
+}
+.escape-inventory > h4 {
+  margin: 20px 0 12px;
+  font-size: 13px;
+  color: #dce2c7;
+}
+.escape-inventory-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+.escape-inventory-grid article {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  padding: 16px;
+  border: 1px solid #6e7e60;
+  border-radius: 9px;
+  background: #17352b;
+}
+.escape-item-heading {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.escape-item-heading svg {
+  flex-shrink: 0;
+  color: #e5ce99;
+}
+.escape-item-heading h4 {
+  font-size: 13px;
+  font-weight: 500;
+}
+.escape-item-heading b {
+  margin-left: auto;
+  color: #f4d899;
+  font-size: 20px;
+  font-weight: 500;
+}
+.escape-inventory p {
+  color: #d2dcc7;
+  font-size: 12px;
+  line-height: 1.8;
+}
+.escape-inventory-grid button {
+  min-height: 44px;
+  padding: 8px;
+  margin-top: auto;
+  font-size: 12px;
+}
+.escape-carried-item {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid #6b795c;
+}
+.escape-carried-item h4 {
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+.escape-carried-item small {
+  display: block;
+  margin-top: 5px;
+  font-size: 11px;
+}
 .escape-journal-pages > article {
   position: relative;
   padding: 18px;
@@ -1170,9 +1185,6 @@
   }
   .escape-plan-heading h3 {
     font-size: 15px;
-  }
-  .escape-supplies {
-    font-size: 8px;
   }
 }
 @container (max-width:650px) {
@@ -1613,8 +1625,7 @@
   border-color: #ddc58a;
   color: #f5e7bd;
 }
-.escape-field-team,
-.escape-pocket-resource {
+.escape-field-team {
   display: none;
 }
 .escape-modal-warning {
@@ -1664,13 +1675,12 @@
     font-size: 10px;
     color: #e1ddbd;
   }
-  .escape-pocket-resource {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 10px;
-    color: #e7d4a8;
-    flex-shrink: 0;
+  .escape-inventory-grid {
+    grid-template-columns: 1fr;
+  }
+  .escape-inventory-grid article {
+    padding: 13px;
+    gap: 9px;
   }
   .escape-map-plans {
     grid-template-columns: 1fr;

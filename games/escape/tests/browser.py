@@ -52,6 +52,33 @@ def wait(fn, seconds=25):
         time.sleep(.1)
     raise AssertionError('condition timed out')
 
+def inventory(scenario, width, fullscreen=False):
+    js('document.querySelector(\'button[aria-label="物品栏"]\').scrollIntoView({behavior:"instant",block:"center"})')
+    if width == 320:
+        point = js('''(()=>{const r=document.querySelector('button[aria-label="物品栏"]').getBoundingClientRect();return [r.x+r.width/2,r.y+r.height/2]})()''')
+        tap = subprocess.run(['node','scripts/browser_touch.mjs',b('get','cdp-url')['cdpUrl'],BASE,'tap',*map(str,point+point)],cwd=ROOT,env=ENV,text=True,capture_output=True,timeout=20)
+        assert tap.returncode == 0, tap.stdout+tap.stderr
+    else:
+        b('click', 'button[aria-label="物品栏"]')
+    b('wait', '[data-escape-inventory]')
+    b('press', 'Tab')
+    assert js('document.querySelector("[data-escape-dialog]").contains(document.activeElement)'), 'inventory keyboard focus escaped'
+    assert js('''(()=>{const r=document.querySelector('button[aria-label="关闭物品栏"]').getBoundingClientRect();return r.top>=0&&r.bottom<=innerHeight})()'''), 'inventory close button is outside the viewport'
+    supplies = room()['game']['data']['supplies']
+    expected = {'cells': '备用电池', 'meds': '急救包', **({'fuses': '保险丝'} if scenario == 'station' else {'documents': '已运回档案'})}
+    items = js('''[...document.querySelectorAll('[data-escape-item]')].map(e=>{const r=e.getBoundingClientRect(),p=e.closest('[data-escape-dialog]').getBoundingClientRect();return{key:e.dataset.escapeItem,text:e.innerText,count:Number(e.querySelector('[data-escape-item-count]').textContent),contained:r.left>=p.left&&r.right<=p.right}})''')
+    assert {i['key'] for i in items} == set(expected), items
+    assert all(expected[i['key']] in i['text'] and i['count'] == supplies[i['key']] and i['contained'] for i in items), items
+    assert '携带物' in js('document.querySelector("[data-escape-inventory]").innerText'), 'personal carried item must be distinct from shared supplies'
+    assert js('document.querySelector(\'[data-escape-inventory] button[aria-label="使用急救包"]\').disabled'), 'full health must not consume a medical pack'
+    if fullscreen:
+        assert js('!!document.querySelector("[data-escape-inventory]").closest("[data-game-fullscreen-surface][data-room-fullscreen]") || !!document.fullscreenElement?.contains(document.querySelector("[data-escape-inventory]"))'), 'inventory escaped fullscreen'
+    js('document.querySelector("[data-escape-inventory]").scrollIntoView({behavior:"instant",block:"center"})')
+    b('screenshot', OUT / f'{scenario}-inventory-{width}{"-fullscreen" if fullscreen else ""}.png', '--full')
+    b('click', 'button[aria-label="关闭物品栏"]')
+    assert not js('!!document.querySelector("[data-escape-inventory]")')
+    return items
+
 REPORT['sourceSHA256']={str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in [*(ROOT/'games/escape/web').glob('*'),ROOT/'games/escape/controls.json',ROOT/'games/escape/assets/manifest.json'] if p.is_file()}
 REPORT['distIndexSHA256']=hashlib.sha256((ROOT/'web/dist/index.html').read_bytes()).hexdigest()
 opened = False
@@ -76,9 +103,21 @@ try:
         assert state['phase'] == 'playing'
         overflow = js('document.documentElement.scrollWidth>innerWidth+1')
         assert not overflow, 'horizontal overflow'
+        scene_controls = js('''[...document.querySelectorAll('[data-escape-door],[data-escape-object]')].map(e=>{const s=getComputedStyle(e),r=e.getBoundingClientRect();return{label:e.getAttribute('aria-label'),text:e.textContent.trim(),children:e.children.length,title:e.getAttribute('title'),background:s.backgroundColor,border:s.borderTopColor,width:r.width,height:r.height}})''')
+        assert scene_controls and all(c['label'] and not c['text'] and not c['children'] and not c['title'] for c in scene_controls), 'scene hotspots must not show direction labels or icon badges'
+        assert all(c['width'] >= 44 and c['height'] >= 44 for c in scene_controls), 'hidden hotspots lost their touch target'
+        tools = js('''[...document.querySelectorAll('.escape-toolstrip button')].map(e=>{const r=e.getBoundingClientRect(),p=e.closest('.escape-toolstrip').getBoundingClientRect();return{label:e.getAttribute('aria-label'),text:e.innerText,contained:r.left>=p.left&&r.right<=p.right}})''')
+        assert all(t['contained'] for t in tools), 'resource names overflow toolbar'
+        assert [t['label'] for t in tools] == ['设施地图', '调查笔记', '物品栏', '呼叫队友'], 'toolbar must use one inventory entry instead of unexplained resource controls'
         b('screenshot', OUT / f'{scenario}-{width}.png', '--full')
+        items = inventory(scenario, width)
+        normal = js('getComputedStyle(document.querySelector(\'[data-escape-object="briefing"]\')).borderTopColor')
+        b('hover', '[data-escape-object="briefing"]')
+        wait(lambda: js('getComputedStyle(document.querySelector(\'[data-escape-object="briefing"]\')).borderTopColor') != normal)
+        b('screenshot', OUT / f'{scenario}-hover-{width}.png')
         b('click', '[data-escape-object="briefing"]')
         wait(lambda: len(room()['game']['data'].get('journal', [])) > 0)
+        assert js('!!document.querySelector(".escape-device-panel")'), 'clicking an unmarked prop did not open its investigation panel'
         js('document.querySelector(\'button[aria-label="设施地图"]\').scrollIntoView({behavior:"instant",block:"center"})')
         b('click', 'button[aria-label="设施地图"]')
         wait(lambda: js('!!document.querySelector("[data-escape-map]")'))
@@ -97,10 +136,11 @@ try:
         if width == 320:
             assert js('''[...document.querySelectorAll('[data-escape-field-health]')].length===2 && [...document.querySelectorAll('[data-escape-field-health]')].every(e=>{const r=e.getBoundingClientRect();return r.width>20&&r.height>10&&r.top>=0&&r.bottom<=innerHeight})'''), 'fullscreen health is not actually visible'
         b('screenshot', OUT / f'{scenario}-fullscreen-{width}.png')
+        inventory(scenario, width, fullscreen=True)
         b('click', 'button[aria-label="退出全屏"]')
         b('reload'); b('wait', '[data-escape-board][data-ready="true"]')
         assert room()['game']['data']['epoch'] == after['epoch'], 'reload reset room'
-        REPORT['cases'].append({'scenario': scenario, 'viewport': [width, height], 'entry': state, 'afterDoor': after, 'overflow': overflow})
+        REPORT['cases'].append({'scenario': scenario, 'viewport': [width, height], 'entry': state, 'afterDoor': after, 'overflow': overflow, 'sceneControls': scene_controls, 'toolbar': tools, 'inventory': items, 'hoverHighlight': True})
         command('close'); command('leave')
     REPORT['passed'] = True
 finally:
