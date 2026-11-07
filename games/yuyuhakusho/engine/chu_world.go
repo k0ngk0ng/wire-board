@@ -292,7 +292,7 @@ func stepChuWorldOverlay(state *ChuWorldState, object WorldObject, soundPort *wo
 			state.Objects[id] = old.MergeMatchOverlay(child)
 		}
 	}
-	state.SoundQueue, state.Match.ModeFlag, state.Clock.SlowFlag = next.SoundQueue, next.ModeFlag, next.SlowFlag
+	state.SoundQueue, state.Match.ModeFlag, state.Clock.SlowFlag = worldSoundQueueView(next.SoundQueue, soundPort), next.ModeFlag, next.SlowFlag
 	return chuWorldPresentation(object.ObjectID, out.Draw, out.ClearedBytes), nil
 }
 
@@ -321,7 +321,7 @@ func stepChuWorldMatch(state *ChuWorldState, object WorldObject, soundPort *worl
 	state.Clock.PauseFlags, state.Clock.PauseMask = next.PauseFlags, next.PauseMask
 	m.ModeFlag, m.Disabled, m.EligibleChannels = next.ModeFlag, next.Disabled, next.EligibleChannels
 	m.OpeningTicks, m.ResultTicks, m.WinnerCode, m.TeamResult = next.OpeningTicks, next.ResultTicks, next.WinnerCode, next.TeamResult
-	state.PendingSound, state.SoundQueue = next.PendingSound, next.SoundQueue
+	state.PendingSound, state.SoundQueue = next.PendingSound, worldSoundQueueView(next.SoundQueue, soundPort)
 	state.Palette.Flags, state.Palette.Status, state.Palette.Mode, state.Palette.Step, state.Palette.Target = next.PaletteFlags, next.PaletteStatus, next.PaletteMode, next.PaletteStep, next.PaletteTarget
 	state.Palette.Current, state.Palette.Secondary, state.VideoMode = next.CurrentColors, next.SecondaryColors, next.VideoMode
 	state.HeadToHead, state.WinsByCharacter, state.LossesByCharacter = next.HeadToHead, next.WinsByCharacter, next.LossesByCharacter
@@ -381,7 +381,7 @@ func stepChuWorldCollision(state *ChuWorldState, soundPort *worldSoundPort) erro
 		state.Objects[id] = o
 	}
 	state.EffectCursor, state.Buffers, state.Throws = next.Effects.Cursor, next.Buffers, next.Throws
-	state.PendingSound, state.SoundQueue = next.PendingSound, next.SoundQueue
+	state.PendingSound, state.SoundQueue = next.PendingSound, worldSoundQueueView(next.SoundQueue, soundPort)
 	state.SlowTicks, state.Clock.SlowFlag, state.ComboFlags = next.SlowTicks, next.SlowFlag, next.ComboFlags
 	return nil
 }
@@ -586,7 +586,7 @@ func stepChuWorldFighter(state *ChuWorldState, object WorldObject, view ChuWorld
 	}
 	state.EffectCursor, state.OccupiedLanes, state.Buffers, state.Throws = w.Pool.Cursor, w.OccupiedLanes, w.Buffers, w.Throws
 	state.DragonBankCursor = w.DragonBankCursor
-	state.PendingSound, state.SoundQueue, state.RandomSeed = w.PendingSound, w.SoundQueue, w.RandomSeed
+	state.PendingSound, state.SoundQueue, state.RandomSeed = w.PendingSound, worldSoundQueueView(w.SoundQueue, soundPort), w.RandomSeed
 	state.Clock.DurationRequest, state.Clock.AmplitudeRequest = w.GlobalF568, w.GlobalF56A
 	state.Stream, state.Stopped, state.Registration = w.Stream, w.Stopped, w.Registration
 	copy(state.LossesByCharacter[60:64], w.EndMarkers[:])
@@ -610,7 +610,7 @@ func stepChuWorldProjectile(state *ChuWorldState, object WorldObject, library An
 func stepChuWorldProjectileWithSound(state *ChuWorldState, object WorldObject, library AnimationLibrary, soundPort *worldSoundPort) ([]ChuWorldEvent, error) {
 	return stepWorldProjectile(state, object, func(projectile ChuProjectileState, environment ChuProjectileEnvironment) (ChuProjectileState, ChuProjectileOutcome, error) {
 		return stepChuProjectileWithSound(projectile, environment, library, soundPort)
-	})
+	}, soundPort)
 }
 
 func stepFighter0WorldProjectile(state *ChuWorldState, object WorldObject, library Fighter0ProjectileLibrary) ([]ChuWorldEvent, error) {
@@ -625,7 +625,7 @@ func stepFighter0WorldProjectileWithSound(state *ChuWorldState, object WorldObje
 	return stepWorldProjectile(state, object, func(projectile ChuProjectileState, environment ChuProjectileEnvironment) (ChuProjectileState, ChuProjectileOutcome, error) {
 		next, out, err := stepFighter0ProjectileWithSound(Fighter0ProjectileState{Kind: kind, Projectile: projectile}, environment, library, soundPort)
 		return next.Projectile, out, err
-	})
+	}, soundPort)
 }
 
 func stepFighter2WorldProjectile(state *ChuWorldState, object WorldObject, library AnimationLibrary, soundPort *worldSoundPort) ([]ChuWorldEvent, error) {
@@ -634,7 +634,7 @@ func stepFighter2WorldProjectile(state *ChuWorldState, object WorldObject, libra
 		next, out, err := stepFighter2ProjectileWithSound(Fighter2ProjectileState{Projectile: projectile, HitStopTicks: hitStop}, environment, library, soundPort)
 		hitStop = next.HitStopTicks
 		return next.Projectile, out, err
-	})
+	}, soundPort)
 	if err != nil {
 		return nil, err
 	}
@@ -666,7 +666,7 @@ func stepFighter8WorldProjectile(state *ChuWorldState, object WorldObject, libra
 	object.Body.Health, object.Shake = next.Health, next.Shake
 	object.ScreenX, object.ScreenY, object.ScreenOffsetX, object.ScreenOffsetY = next.ScreenX, next.ScreenY, next.ScreenOffsetX, next.ScreenOffsetY
 	state.Objects[object.ObjectID] = object
-	state.Buffers, state.PendingSound, state.SoundQueue = next.Buffers, next.PendingSound, next.SoundQueue
+	state.Buffers, state.PendingSound, state.SoundQueue = next.Buffers, next.PendingSound, worldSoundQueueView(next.SoundQueue, soundPort)
 	return chuWorldPresentation(object.ObjectID, out.Draw, out.ClearedBytes), nil
 }
 
@@ -706,7 +706,7 @@ func stepFighter1WorldLinear(state *ChuWorldState, object WorldObject, library A
 	}
 	object.Body.VelocityX, object.Body.VerticalVelocity, object.Body.Ground, object.ContactFlags = next.VelocityX, next.VelocityY, next.Ground, next.ContactFlags
 	state.Objects[object.ObjectID] = object
-	state.Buffers, state.PendingSound, state.SoundQueue = next.Visual.Buffers, next.Visual.PendingSound, next.Visual.SoundQueue
+	state.Buffers, state.PendingSound, state.SoundQueue = next.Visual.Buffers, next.Visual.PendingSound, worldSoundQueueView(next.Visual.SoundQueue, soundPort)
 	return chuWorldPresentation(object.ObjectID, out.Draw, out.ClearedBytes), nil
 }
 
@@ -728,11 +728,11 @@ func stepFighter1WorldWave(state *ChuWorldState, object WorldObject, library Ani
 	object.Aux48 = worldObjectHighWord(object.Aux48, next.Phase)
 	object.Body.Gravity = worldObjectHighWord(object.Body.Gravity, next.Remaining)
 	state.Objects[object.ObjectID] = object
-	state.Buffers, state.PendingSound, state.SoundQueue = next.Visual.Buffers, next.Visual.PendingSound, next.Visual.SoundQueue
+	state.Buffers, state.PendingSound, state.SoundQueue = next.Visual.Buffers, next.Visual.PendingSound, worldSoundQueueView(next.Visual.SoundQueue, soundPort)
 	return chuWorldPresentation(object.ObjectID, out.Draw, out.ClearedBytes), nil
 }
 
-func stepWorldProjectile(state *ChuWorldState, object WorldObject, step func(ChuProjectileState, ChuProjectileEnvironment) (ChuProjectileState, ChuProjectileOutcome, error)) ([]ChuWorldEvent, error) {
+func stepWorldProjectile(state *ChuWorldState, object WorldObject, step func(ChuProjectileState, ChuProjectileEnvironment) (ChuProjectileState, ChuProjectileOutcome, error), soundPort *worldSoundPort) ([]ChuWorldEvent, error) {
 	s := object.AsChuProjectile()
 	var err error
 	s.Pool, err = BuildWorldEffectPool(state.Objects, state.EffectCursor)
@@ -758,7 +758,7 @@ func stepWorldProjectile(state *ChuWorldState, object WorldObject, step func(Chu
 		return nil, err
 	}
 	state.Objects[object.ObjectID] = object
-	state.EffectCursor, state.Buffers, state.PendingSound, state.SoundQueue = next.Pool.Cursor, next.Buffers, next.PendingSound, next.SoundQueue
+	state.EffectCursor, state.Buffers, state.PendingSound, state.SoundQueue = next.Pool.Cursor, next.Buffers, next.PendingSound, worldSoundQueueView(next.SoundQueue, soundPort)
 	return chuWorldPresentation(object.ObjectID, out.Draw, out.ClearedBytes), nil
 }
 
@@ -795,7 +795,7 @@ func stepChuWorldAttachmentWithSound(state *ChuWorldState, object WorldObject, l
 		return nil, err
 	}
 	state.Objects[object.ObjectID] = object
-	state.Buffers, state.PendingSound, state.SoundQueue = next.Buffers, next.PendingSound, next.SoundQueue
+	state.Buffers, state.PendingSound, state.SoundQueue = next.Buffers, next.PendingSound, worldSoundQueueView(next.SoundQueue, soundPort)
 	return chuWorldPresentation(object.ObjectID, out.Draw, out.ClearedBytes), nil
 }
 
@@ -818,7 +818,7 @@ func stepChuWorldEffect(state *ChuWorldState, object WorldObject, library Effect
 		return nil, err
 	}
 	state.Objects[object.ObjectID] = object
-	state.EffectTileCursor, state.SoundQueue = world.TileCursor, world.SoundQueue
+	state.EffectTileCursor, state.SoundQueue = world.TileCursor, worldSoundQueueView(world.SoundQueue, soundPort)
 	return chuWorldPresentation(object.ObjectID, out.Draw, out.ClearedBytes), nil
 }
 
@@ -988,7 +988,7 @@ func stepChuWorldStartWithSound(state *ChuWorldState, object WorldObject, librar
 	state.Clock.PauseFlags, state.Match.ModeFlag, state.VideoMode = next.PauseFlags, next.ModeFlag, next.VideoMode
 	state.ResourceBusy, state.ResourceList = next.ResourceBusy, next.ResourceList
 	m.Disabled, state.SlowGate, state.Clock.SlowFlag, state.SlowTicks = next.Disabled, next.SlowGate, next.SlowFlag, next.SlowTicks
-	state.PendingSound, state.SoundQueue = next.PendingSound, next.SoundQueue
+	state.PendingSound, state.SoundQueue = next.PendingSound, worldSoundQueueView(next.SoundQueue, soundPort)
 	m.OpeningTicks, m.ResultTicks, m.WinnerCode, m.AttributeMask, m.Selected = next.OpeningTicks, next.ResultTicks, int16(next.WinnerCode), next.AttributeMask, next.Selected
 	state.Camera.X, state.Camera.Y, state.Camera.TargetX, state.Camera.TargetY, state.Camera.Left, state.Camera.Right = next.Camera[0], next.Camera[1], next.Camera[2], next.Camera[3], next.Bounds[0], next.Bounds[1]
 	state.Palette.Primary = next.PrimaryColors

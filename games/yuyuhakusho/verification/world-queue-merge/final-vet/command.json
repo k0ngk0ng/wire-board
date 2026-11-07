@@ -1,0 +1,49 @@
+{
+  "pass": true,
+  "mode": "vet",
+  "command": [
+    "/opt/homebrew/bin/go",
+    "vet",
+    "./games/yuyuhakusho/engine",
+    "./games/yuyuhakusho/audio/session",
+    "./games/yuyuhakusho/audio/scoreclock"
+  ],
+  "cwd": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho",
+  "exit_code": 0,
+  "elapsed_seconds": 1.5938403746113181,
+  "environment": {
+    "TEST_TELEMETRY_DIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-telemetry",
+    "GOCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-cache",
+    "GOMODCACHE": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/go-mod",
+    "GOTMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+    "TMPDIR": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/worktrees/yuyuhakusho/.local/md-yuyuhakusho/tmp",
+    "GOMAXPROCS": "2"
+  },
+  "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "sources": {
+    "games/yuyuhakusho/engine/world_sound_live.go": "fadadce7e0e5c492558fd46025f9b9d04cfa7f92359ac3ae3562c45e23632209",
+    "games/yuyuhakusho/engine/chu_actor.go": "1fd986e39cf3b50a37129f5376153ee90259f3b47006a10f53cea96082c1320d",
+    "games/yuyuhakusho/engine/chu_action.go": "90688fb013fe4e68092e5340b4a6964dd043121db03e2101dfc34a3b66d17624",
+    "games/yuyuhakusho/engine/chu_tail.go": "21edc734b148788c433c75da95e632c04eb73db15e6e1b3911516d9d6ff18edd",
+    "games/yuyuhakusho/engine/fighter4_world.go": "02b164be00cb504a8f4a7a35f2b3fd004f024c7748a1e7a2cabf2144f749adde",
+    "games/yuyuhakusho/engine/fighter5_world.go": "38a42cf8e86ea45a2ab94afab6e4977bcc93cf01f481277e417f8f0f380582f9",
+    "games/yuyuhakusho/engine/fighter7_world.go": "6c7ab3ddfe71f7c5a1ff878aef4307882af5385672aaf932bbe5845046983ede",
+    "games/yuyuhakusho/engine/world_queue_merge_test.go": "5ebf136fb3cce7bb2343aa4075f4f1854c79fc0f6d6682f868ec9c7c363fee95",
+    "games/yuyuhakusho/verification/world-queue-merge/verify.py": "a4bc7d06c61e473ae0862f80084b1013aa49e7b92a6bdbad9adff7b5345be448"
+  },
+  "test_first_sha256": "ff8b1a4679f74562b1ffd7aad0f7b4150973dfd22be8159381fb44d54646d1e5",
+  "shared_sources_before": {
+    "games/yuyuhakusho/engine/chu_world.go": "dfdda6314c0e1fa5fa726f60cb25b7cfb7785ef06782a13e7c96df648a1b5f59",
+    "games/yuyuhakusho/engine/arena_work.go": "3eadf3eab2fdc625961121351a8a202059c612ca53e570f45569aa1a5920f13b",
+    "games/yuyuhakusho/engine/chu_session.go": "5ea473fa08a99142142dae6fcdeae6091c68dd5caa0058453b9127e943da9e5e",
+    "games/yuyuhakusho/audio/session/world.go": "26d08b663ea1ec3a4b942cf5edfa22f1719310964e0bc62b10a0bd283d9670a0"
+  },
+  "shared_sources_after": {
+    "games/yuyuhakusho/engine/chu_world.go": "dfdda6314c0e1fa5fa726f60cb25b7cfb7785ef06782a13e7c96df648a1b5f59",
+    "games/yuyuhakusho/engine/arena_work.go": "3eadf3eab2fdc625961121351a8a202059c612ca53e570f45569aa1a5920f13b",
+    "games/yuyuhakusho/engine/chu_session.go": "5ea473fa08a99142142dae6fcdeae6091c68dd5caa0058453b9127e943da9e5e",
+    "games/yuyuhakusho/audio/session/world.go": "26d08b663ea1ec3a4b942cf5edfa22f1719310964e0bc62b10a0bd283d9670a0"
+  },
+  "shared_sources_stable": true,
+  "owned_sources_stable": true
+}

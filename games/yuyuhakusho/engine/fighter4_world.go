@@ -48,7 +48,7 @@ func stepFighter4WorldDragonHead(state *ChuWorldState, object WorldObject, libra
 	}
 	objects[object.ObjectID] = object
 	state.Objects, state.DragonHistory, state.EffectCursor = objects, history, next.Pool.Cursor
-	state.Buffers, state.PendingSound, state.SoundQueue = next.Visual.Buffers, next.Visual.PendingSound, next.Visual.SoundQueue
+	state.Buffers, state.PendingSound, state.SoundQueue = next.Visual.Buffers, next.Visual.PendingSound, worldSoundQueueView(next.Visual.SoundQueue, soundPort)
 	return chuWorldPresentation(object.ObjectID, out.Draw, out.ClearedBytes), nil
 }
 
@@ -98,6 +98,6 @@ func stepFighter4WorldBoost(state *ChuWorldState, object WorldObject, library An
 	parent.Body, parent.Energy, parent.AttackValue = parentNext.Body, parentNext.Energy, parentNext.AttackValue
 	parent.MovementSource, parent.StatusDelay, parent.StunTicks = parentNext.MovementSource, parentNext.StatusDelay, parentNext.StunTicks
 	state.Objects[parent.ObjectID], state.Objects[object.ObjectID] = parent, object
-	state.Buffers, state.PendingSound, state.SoundQueue = next.Visual.Buffers, next.Visual.PendingSound, next.Visual.SoundQueue
+	state.Buffers, state.PendingSound, state.SoundQueue = next.Visual.Buffers, next.Visual.PendingSound, worldSoundQueueView(next.Visual.SoundQueue, soundPort)
 	return chuWorldPresentation(object.ObjectID, out.Draw, out.ClearedBytes), nil
 }

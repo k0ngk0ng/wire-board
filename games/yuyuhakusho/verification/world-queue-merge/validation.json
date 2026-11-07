@@ -1,0 +1,134 @@
+{
+  "pass": true,
+  "completed_at": "2026-11-07T00:50:31.347365+00:00",
+  "frozen_inputs_unchanged": true,
+  "legacy_tests_unchanged": {
+    "games/yuyuhakusho/engine/world_sound_live_test.go": "48b6e642be1a06c077414e82f739413403f351bda363d6d67b461b2939da7d1b",
+    "games/yuyuhakusho/engine/chu_world_test.go": "5a5c5a4ef36902cf1cbb8b235d5364915e92740756e0279a82138d0174b681a4",
+    "games/yuyuhakusho/engine/chu_actor_test.go": "1de76b4906c3ff1892d9b2f87c257a39d88bb5166e7639459473b124150b5a48",
+    "games/yuyuhakusho/engine/chu_action_test.go": "bf295b5b965f9e77c4e14d5518dedee7ad0addeff21d7dbf56d45faa55027e49",
+    "games/yuyuhakusho/engine/chu_tail_test.go": "0f8475cee0b288f1862262ac896841238e6215e687db11426ffd5d8393dc641a",
+    "games/yuyuhakusho/engine/fighter4_dragon_world_test.go": "6defcbdf35d56a3a5761394333c24e6dbaf884f25df63a5d3cd1832294512cd2",
+    "games/yuyuhakusho/engine/fighter5_child_world_test.go": "97b71c94d5682e77c7691699b09da28c0af4fbd172347205b1c0f3e37f4c213c",
+    "games/yuyuhakusho/engine/fighter7_child_world_test.go": "f8db6bd22c26a701bdd7630759cbd05df1fb8bfc284534df0589b4bfc49df20c"
+  },
+  "checks": {
+    "native": {
+      "command_manifest": "games/yuyuhakusho/verification/world-queue-merge/final-native/command.json",
+      "sha256": "ebe3134d04d3e740a3dc6dc9c3e821bf4d64b28ab0684e76a39d87ec7e676289",
+      "tests_passed": 64,
+      "top_level_passed": 19,
+      "shared_sources_stable": true
+    },
+    "native-race": {
+      "command_manifest": "games/yuyuhakusho/verification/world-queue-merge/final-race/command.json",
+      "sha256": "5d3a0653630d35a98f94c06a3b8f645744a8aa1d0dd4b9b06500f78c49d49583",
+      "tests_passed": 37,
+      "top_level_passed": 9,
+      "shared_sources_stable": true
+    },
+    "wasm": {
+      "command_manifest": "games/yuyuhakusho/verification/world-queue-merge/final-wasm/command.json",
+      "sha256": "63e7dbd2e5b8cbf6c86f481829967cbc5ac46fea7b0f15a5ecd73200121f6971",
+      "tests_passed": 64,
+      "top_level_passed": 19,
+      "shared_sources_stable": true
+    },
+    "vet": {
+      "command_manifest": "games/yuyuhakusho/verification/world-queue-merge/final-vet/command.json",
+      "sha256": "8807a7013eed0c893c5fe299ffa1286a84e319ec676672aab42ad2b11c5da807",
+      "tests_passed": null,
+      "top_level_passed": null,
+      "shared_sources_stable": true
+    }
+  },
+  "whole_world_coverage": {
+    "chu-world-oracle": {
+      "original_passes": 2957,
+      "producer_operations": 352
+    },
+    "chu-world-fighter10": {
+      "original_passes": 2789,
+      "producer_operations": 344
+    },
+    "chu-world-fighter0-special": {
+      "original_passes": 1801,
+      "producer_operations": 300
+    },
+    "chu-world-fighter1-special": {
+      "original_passes": 1801,
+      "producer_operations": 356
+    },
+    "chu-world-fighter2-special": {
+      "original_passes": 1801,
+      "producer_operations": 228
+    },
+    "chu-world-fighter3-special": {
+      "original_passes": 1801,
+      "producer_operations": 308
+    },
+    "chu-world-fighter4-special": {
+      "original_passes": 1801,
+      "producer_operations": 476
+    },
+    "chu-world-fighter5-special": {
+      "original_passes": 1801,
+      "producer_operations": 348
+    },
+    "chu-world-fighter6-special": {
+      "original_passes": 2401,
+      "producer_operations": 460
+    },
+    "chu-world-fighter7-special": {
+      "original_passes": 3700,
+      "producer_operations": 868
+    },
+    "chu-world-fighter8-special": {
+      "original_passes": 1801,
+      "producer_operations": 292
+    }
+  },
+  "whole_world_original_passes": 24454,
+  "child_original_callbacks": {
+    "source4": 2607,
+    "source5": 6235,
+    "source7": 11323
+  },
+  "retained_native_manifest_inputs": {
+    "games/yuyuhakusho/engine/testdata/chu-world-oracle-manifest.json": "69f08d4e133995f3c269b9e1b384e0e57183649a95e826e3f98b3dbb6b20e708",
+    "games/yuyuhakusho/engine/testdata/chu-world-fighter10-manifest.json": "5bff14e814fbc5207b98c40e090d46bcffc4da04783c4bc9d5fa0194ab01d06a",
+    "games/yuyuhakusho/engine/testdata/chu-world-fighter0-special-manifest.json": "c5cfa944385901a7fcaff74458cd6ca05c6770b20672de64c118a48675d07664",
+    "games/yuyuhakusho/engine/testdata/chu-world-fighter1-special-manifest.json": "f4d02538ef39bcc165ff06df03d58eed08c00e69c2bde68a4d15c3ecaecb35c1",
+    "games/yuyuhakusho/engine/testdata/chu-world-fighter2-special-manifest.json": "8840e53bc02adec10bd2b9bb744e507864536b8584feb9f06887716d79950e4a",
+    "games/yuyuhakusho/engine/testdata/chu-world-fighter3-special-manifest.json": "f0ef3523619acaed8d1022bfe03bd0ced20597c567a0e6b34e2cebce573907b2",
+    "games/yuyuhakusho/engine/testdata/chu-world-fighter4-special-manifest.json": "3aebeb042d9f83ba54b1b1878bd672fe41a5afa65aedd2e06a8917df724eb3be",
+    "games/yuyuhakusho/engine/testdata/chu-world-fighter5-special-manifest.json": "70495df19da81f316fa84cacb148e29a83cd962759ed0bb6dcb96e3eaa15901f",
+    "games/yuyuhakusho/engine/testdata/chu-world-fighter6-special-manifest.json": "b186544b7911c0c354d6a3b12e1b305b0dcdfd999a94ade0927a76d6fc1610be",
+    "games/yuyuhakusho/engine/testdata/chu-world-fighter7-special-manifest.json": "5a7f55f23fc91af430f4d871cbf2d3d292dd620120e9056781881a22e782e839",
+    "games/yuyuhakusho/engine/testdata/chu-world-fighter8-special-manifest.json": "2ed1acbd78ad9f82c2b625a336d68a4e8a88b76bd9dbeaca7ea7be2e77aca45e"
+  },
+  "scope": "Canonical live queue merge; seven authorized production files, standalone pure APIs unchanged. Root owns chu_world.go merges and actual object/IRQ clock integration. No new native evidence or timing claim.",
+  "cleanup": "No task-specific build directories or caches were created. Preserve required pre-implementation failures and verification logs; shared Go cache/temp remain active for Root.",
+  "artifacts": {
+    "games/yuyuhakusho/verification/world-queue-merge/PLAN.md": "6f8f35ae39bff3199e2ae4b2f4e7025b1f80e640886213e4d976e86192ff1be7",
+    "games/yuyuhakusho/verification/world-queue-merge/README.md": "93ceedec21ac87af7e435b5f2d5ab33e3971d09957bb69d8716e0b79da168c25",
+    "games/yuyuhakusho/verification/world-queue-merge/final-native/command.json": "ebe3134d04d3e740a3dc6dc9c3e821bf4d64b28ab0684e76a39d87ec7e676289",
+    "games/yuyuhakusho/verification/world-queue-merge/final-native/output.jsonl": "d797baabcdb1b10760163140778fed7a5a89f3d8e0cf80f3ed9f3c75eae35a37",
+    "games/yuyuhakusho/verification/world-queue-merge/final-native.log": "b70df3702eb606970c7be2edb5f033eb1ff1a66b117eb4a8a20b6813fecfaa87",
+    "games/yuyuhakusho/verification/world-queue-merge/final-race/command.json": "5d3a0653630d35a98f94c06a3b8f645744a8aa1d0dd4b9b06500f78c49d49583",
+    "games/yuyuhakusho/verification/world-queue-merge/final-race/output.jsonl": "e9179feae5b2d3262c71cfa5a06328626210d1d7e92691b49bdc80b4136e8032",
+    "games/yuyuhakusho/verification/world-queue-merge/final-race.log": "07bac6328415aa2e36801b18418e8341ed2c23429aacdd1885c4d8b95bc9390f",
+    "games/yuyuhakusho/verification/world-queue-merge/final-vet/command.json": "8807a7013eed0c893c5fe299ffa1286a84e319ec676672aab42ad2b11c5da807",
+    "games/yuyuhakusho/verification/world-queue-merge/final-vet/output.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "games/yuyuhakusho/verification/world-queue-merge/final-vet.log": "f148d13db149f1335f6a6dc76c707f2f4029aaa3bd0c2985a497bd7438045daf",
+    "games/yuyuhakusho/verification/world-queue-merge/final-wasm/command.json": "63e7dbd2e5b8cbf6c86f481829967cbc5ac46fea7b0f15a5ecd73200121f6971",
+    "games/yuyuhakusho/verification/world-queue-merge/final-wasm/output.jsonl": "5f3c58d5182df8b0b394075123b669938128416921907b0b8f9cc936ed704f67",
+    "games/yuyuhakusho/verification/world-queue-merge/final-wasm.log": "eee1d17fbdba7647fc0f91d8bfcb310cc60ce52c847f616dabcad96f7d3293a7",
+    "games/yuyuhakusho/verification/world-queue-merge/first-green.jsonl": "c0a8b0dda1ed9fbcac7333e239dfa8a364f2a30d82f4a1f2fa3be73026621be1",
+    "games/yuyuhakusho/verification/world-queue-merge/missing-helper-red.jsonl": "e62aad7642dc62503cd669b21652e4fc984f20b0e7f27203a24ab964c8eebe01",
+    "games/yuyuhakusho/verification/world-queue-merge/private-signature-red.jsonl": "621c1abb8a50cbe044343e070ac946279f6f9d73c85dc377f42dfefd1f4735f9",
+    "games/yuyuhakusho/verification/world-queue-merge/stale-component-red.jsonl": "60d9b1f4e12ea3d45721527287c249d92574aa41cea7d7bb95f0f5c06c2d0809",
+    "games/yuyuhakusho/verification/world-queue-merge/test-first.json": "ff8b1a4679f74562b1ffd7aad0f7b4150973dfd22be8159381fb44d54646d1e5",
+    "games/yuyuhakusho/verification/world-queue-merge/verify.py": "a4bc7d06c61e473ae0862f80084b1013aa49e7b92a6bdbad9adff7b5345be448"
+  }
+}

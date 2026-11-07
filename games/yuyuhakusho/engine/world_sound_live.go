@@ -31,6 +31,18 @@ type worldSoundPort struct {
 	err      error
 }
 
+// worldSoundQueueView returns a temporary component view of the sole queue.
+// Consumers can run at any priced work boundary, including paths without an
+// enqueue and work after the last enqueue. Component merges therefore reread
+// this owner rather than treating an earlier value view as authoritative.
+// The nil-port path preserves the standalone pure-value API.
+func worldSoundQueueView(value [4]uint8, port *worldSoundPort) [4]uint8 {
+	if port == nil {
+		return value
+	}
+	return *port.owners.Queue
+}
+
 func enqueueWorldSound(queue *[4]uint8, code uint8, producer string, port *worldSoundPort) {
 	if port == nil {
 		_, _ = EnqueueSoundObserved(queue, code, nil)
@@ -46,8 +58,7 @@ func enqueueWorldSound(queue *[4]uint8, code uint8, producer string, port *world
 		}
 	}
 	_, port.err = EnqueueSoundObserved(port.owners.Queue, code, hook)
-	// Return a current value view so the existing component merge cannot overwrite
-	// a consumer that ran during the request. Nothing can yield between this copy
-	// and the next explicit enqueue operation in this limited producer boundary.
-	*queue = *port.owners.Queue
+	// This is a temporary view. Later work can run a consumer without another
+	// enqueue, so each component merge refreshes it from the canonical owner.
+	*queue = worldSoundQueueView(*queue, port)
 }

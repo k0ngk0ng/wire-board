@@ -161,7 +161,7 @@ func stepFighterActorWithSound(state ChuActorState, characterID uint8, view ChuA
 		if actionErr != nil {
 			return original, ChuActorEmissions{}, actionErr
 		}
-		state.acceptActorAction(action)
+		state.acceptActorAction(action, soundPort)
 		f = &state.Fighter
 		projection := ProjectFighter(ProjectionState{WorldX: f.Body.X, WorldY: f.Body.Y, ScreenX: f.ScreenX, ScreenY: f.ScreenY,
 			OffsetX: f.ScreenOffsetX, OffsetY: f.ScreenOffsetY, CameraX: view.CameraX, CameraY: view.CameraY, Shake: view.CameraShake})
@@ -183,6 +183,7 @@ func stepFighterActorWithSound(state ChuActorState, characterID uint8, view ChuA
 		return original, ChuActorEmissions{}, hudErr
 	}
 	f.DisplayedHealth, f.DisplayedEnergy, w.HUDCells, w.HUDCursor = hud.DisplayedHealth, hud.DisplayedEnergy, hud.Cells, hud.TransferCursor
+	w.SoundQueue = worldSoundQueueView(w.SoundQueue, soundPort)
 	return state, ChuActorEmissions{DrawRequested: true, ObjectID: f.ObjectID, HUDTransfers: transfers}, nil
 }
 
@@ -209,7 +210,13 @@ func (state ChuActorState) actorAction(view ChuActorView) (ChuActionState, error
 		Fighter5ChildExtras: f.Fighter5ChildExtras}, nil
 }
 
-func (state *ChuActorState) acceptActorAction(a ChuActionState) {
+func (state *ChuActorState) acceptActorAction(a ChuActionState, soundPorts ...*worldSoundPort) {
+	// Existing standalone value adapters omit the port. The live action path
+	// supplies the current transaction's queue owner, never a saved queue copy.
+	var soundPort *worldSoundPort
+	if len(soundPorts) != 0 {
+		soundPort = soundPorts[0]
+	}
 	f, w := &state.Fighter, &state.World
 	f.Body, f.Controls = a.Body, a.Controls
 	f.Energy = int32(uint32(uint16(a.Energy))<<16 | uint32(a.EnergyFraction))
@@ -227,6 +234,6 @@ func (state *ChuActorState) acceptActorAction(a ChuActionState) {
 		w.OtherEnergy[id] = resource.Energy
 		w.OtherHitStopTicks[id] = resource.HitStopTicks
 	}
-	w.OccupiedLanes, w.Buffers, w.PendingSound, w.SoundQueue, w.RandomSeed = a.OccupiedLanes, a.Buffers, a.PendingSound, a.SoundQueue, a.RandomSeed
+	w.OccupiedLanes, w.Buffers, w.PendingSound, w.SoundQueue, w.RandomSeed = a.OccupiedLanes, a.Buffers, a.PendingSound, worldSoundQueueView(a.SoundQueue, soundPort), a.RandomSeed
 	w.GlobalF568, w.GlobalF56A = a.GlobalF568, a.GlobalF56A
 }

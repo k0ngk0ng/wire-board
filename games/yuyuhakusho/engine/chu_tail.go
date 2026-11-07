@@ -179,7 +179,7 @@ func stepFighterActionTail(state ChuTailState, characterID uint8, aux48 int32, p
 	state.Body.Clock, state.Body.EnabledStages, state.Body.Attributes, state.Body.Auxiliary64 = a.Clock, a.EnabledStages, a.Attributes, a.Auxiliary64
 	state.GraphicOffsetX, state.GraphicOffsetY, state.GraphicParameter, state.TargetMask = a.GraphicOffsetX, a.GraphicOffsetY, a.GraphicParameter, a.Auxiliary94
 	state.AttackValue, state.StunDamage, state.EffectKind, state.Reaction = a.Value65, a.Value66, a.Value67, a.Value68
-	state.Buffers, state.PendingSound, state.SoundQueue = animation.Buffers, animation.PendingSound, animation.SoundQueue
+	state.Buffers, state.PendingSound, state.SoundQueue = animation.Buffers, animation.PendingSound, worldSoundQueueView(animation.SoundQueue, soundPort)
 	randomized := RandomizeAttackValue(AttackValueState{Seed: state.RandomSeed, Scale: state.AttackScale, Value: state.AttackValue})
 	state.RandomSeed, state.AttackValue = randomized.Seed, randomized.Value
 	return state, aux48, power, nil
