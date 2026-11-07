@@ -88,8 +88,8 @@
   border: 1px solid #a6b5a4;
 }
 
-/* A single shared chat moves into the surface for both native and page modes.
-   Games can reserve the bottom-right 56px square for this platform control. */
+/* A single shared chat moves into the surface for both fullscreen modes.
+   Its initial corner position can be moved locally by mouse or touch. */
 .game-fullscreen-surface[data-room-fullscreen] .table-chat {
   position: fixed;
   top: auto;
@@ -106,6 +106,13 @@
   border-radius: 50%;
   background: #174e43;
   color: #fff8de;
+  touch-action: none;
+  user-select: none;
+  cursor: grab;
+  z-index: 1;
+}
+.game-fullscreen-surface[data-room-fullscreen] .chat-toggle[data-chat-dragging] {
+  cursor: grabbing;
 }
 .game-fullscreen-surface[data-room-fullscreen] .chat-toggle > span {
   display: none;

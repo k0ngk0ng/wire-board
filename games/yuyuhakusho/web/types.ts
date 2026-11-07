@@ -64,7 +64,12 @@ export type LocalEvent = {
   at: number;
   frame?: bigint;
 };
-export type Progress = { percent: number; label: string };
+export type Progress = {
+  percent: number;
+  label: string;
+  loaded?: number;
+  total?: number;
+};
 export const FPS = 59.92274340431231;
 export const FRAME_MS = 1000 / FPS;
 // Bounded speculative lead covers the verified delayed four-player profile.

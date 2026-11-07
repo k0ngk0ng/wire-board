@@ -1,0 +1,171 @@
+{
+  "passed": true,
+  "cases": [
+    {
+      "mode": "native",
+      "mobile": false,
+      "pointer": {
+        "nativeTouch": false,
+        "nativeMouse": true,
+        "target": "[data-enter]",
+        "point": {
+          "x": 96,
+          "y": 200,
+          "id": 1
+        }
+      },
+      "geometry": [
+        {
+          "h": 500,
+          "hit": true,
+          "visible": true,
+          "w": 360,
+          "x": 908,
+          "y": 336
+        },
+        {
+          "h": 44,
+          "hit": true,
+          "visible": true,
+          "w": 44,
+          "x": 1224,
+          "y": 844
+        }
+      ],
+      "profile": {
+        "hit": true,
+        "inside": true,
+        "notInert": true,
+        "text": "玩家页面\n\n同桌玩家\n\n玩家资料操作"
+      },
+      "passed": true
+    },
+    {
+      "mode": "page",
+      "mobile": false,
+      "pointer": {
+        "nativeTouch": false,
+        "nativeMouse": true,
+        "target": "[data-enter]",
+        "point": {
+          "x": 96,
+          "y": 200,
+          "id": 1
+        }
+      },
+      "geometry": [
+        {
+          "h": 500,
+          "hit": true,
+          "visible": true,
+          "w": 360,
+          "x": 908,
+          "y": 336
+        },
+        {
+          "h": 44,
+          "hit": true,
+          "visible": true,
+          "w": 44,
+          "x": 1224,
+          "y": 844
+        }
+      ],
+      "profile": {
+        "hit": true,
+        "inside": true,
+        "notInert": true,
+        "text": "玩家页面\n\n同桌玩家\n\n玩家资料操作"
+      },
+      "passed": true
+    },
+    {
+      "mode": "native",
+      "mobile": true,
+      "pointer": {
+        "nativeTouch": true,
+        "nativeMouse": false,
+        "target": "[data-enter]",
+        "point": {
+          "x": 125.1875,
+          "y": 187,
+          "id": 1
+        }
+      },
+      "geometry": [
+        {
+          "h": 500,
+          "hit": true,
+          "visible": true,
+          "w": 296,
+          "x": 12,
+          "y": 136
+        },
+        {
+          "h": 44,
+          "hit": true,
+          "visible": true,
+          "w": 44,
+          "x": 264,
+          "y": 644
+        }
+      ],
+      "profile": {
+        "hit": true,
+        "inside": true,
+        "notInert": true,
+        "text": "玩家页面\n\n同桌玩家\n\n玩家资料操作"
+      },
+      "passed": true
+    },
+    {
+      "mode": "page",
+      "mobile": true,
+      "pointer": {
+        "nativeTouch": true,
+        "nativeMouse": false,
+        "target": "[data-enter]",
+        "point": {
+          "x": 125.1875,
+          "y": 187,
+          "id": 1
+        }
+      },
+      "geometry": [
+        {
+          "h": 500,
+          "hit": true,
+          "visible": true,
+          "w": 296,
+          "x": 12,
+          "y": 136
+        },
+        {
+          "h": 44,
+          "hit": true,
+          "visible": true,
+          "w": 44,
+          "x": 264,
+          "y": 644
+        }
+      ],
+      "profile": {
+        "hit": true,
+        "inside": true,
+        "notInert": true,
+        "text": "玩家页面\n\n同桌玩家\n\n玩家资料操作"
+      },
+      "passed": true
+    }
+  ],
+  "command": "python3 -B scripts/fullscreen/check-chat.py --out .local/loading-chat/chat-existing",
+  "sourceSHA256": {
+    "web/src/chat.tsx": "aedbecda5b0a9cd159e8ff859a4bdaa225a6f5b435ce22381a3b04014e246699",
+    "web/src/ui/room-fullscreen.tsx": "784ee306d1c335b52c6534ec405a241c566101cec6642dfffb8e0ce683480bd4",
+    "web/src/ui/room-fullscreen.css": "051df21f2cff9f772929e9f42bd68b306da3cbe7f32a9e968e62284ce0826fc0",
+    "scripts/fullscreen/check-chat.py": "5d0caf8a1f86a86ef97bdec8c44c38f3bbcbd260a6451ae6a34149bee4cea773",
+    "scripts/fullscreen/chat-harness.tsx": "0b90abb1c52d5f0c4b9a5617d77e691444b54d8423da7c0d942c4fc993045afb",
+    "web/src/main.tsx": "e576c8c142236801f312fb65c3c599ecc56e46732eb6240be790600d9a45a2d8",
+    "web/src/ui/game-overlay-root.ts": "9ecbb5d8e41483b7a2c553fa7ffb9d60b77c7086cedbba5bf6733be4e0eb5f14"
+  }
+}

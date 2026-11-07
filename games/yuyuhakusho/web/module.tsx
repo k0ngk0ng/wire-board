@@ -9,6 +9,7 @@ import type { NetworkView, GameOptions } from "./types";
 export default defineGame<NetworkView, GameOptions>({
   ...catalog,
   asyncBoard: true,
+  assetLoading: "board",
   preparationOwnsOptions: true,
   viewportFit: true,
   playerLayout: {

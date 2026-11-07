@@ -54,7 +54,13 @@ export function Board(props: BoardProps<NetworkView>) {
     !value.room.seats[value.room.you]?.left &&
     value.data.phase !== "result";
   useEffect(() => {
-    props.onLoadProgress?.(progress.percent, progress.label);
+    props.onLoadProgress?.(
+      progress.percent,
+      progress.label,
+      progress.loaded !== undefined && progress.total !== undefined
+        ? { loaded: progress.loaded, total: progress.total }
+        : undefined,
+    );
   }, [progress, props.onLoadProgress]);
   useEffect(() => {
     if (error) props.onLoadError?.(error);
@@ -193,7 +199,8 @@ export function Board(props: BoardProps<NetworkView>) {
         clearPhysical: () => physical?.clear(),
         audio: props.audio,
         sound: () => latest.current.sound,
-        paused: () => !!latest.current.clock.paused || !!latest.current.room.game?.paused,
+        paused: () =>
+          !!latest.current.clock.paused || !!latest.current.room.game?.paused,
       });
       owned = created;
       client.current = created;
