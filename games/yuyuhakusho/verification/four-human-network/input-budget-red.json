@@ -1,0 +1,8 @@
+{
+  "source": "four-human-03/one-slow-seat3.json",
+  "required_maximum_ms": 75,
+  "observed_ms": 151.89999961853027,
+  "before_code_change": true,
+  "cause": "Slow peer already at the fixed12-frame prediction cap; new local input waits for authority headroom.",
+  "plan": "Bound speculative replay to20 frames (about334ms), leaving authority correction and input ordering unchanged; do not add display buffering."
+}

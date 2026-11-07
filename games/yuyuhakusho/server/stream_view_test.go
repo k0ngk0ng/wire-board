@@ -65,7 +65,7 @@ func TestStreamDeltaCursorsKeepRecoveryRingAndMetadata(t *testing.T) {
 				match = moduleActionTest(t, module, context, match, map[string]any{"type": "input", "epoch": epoch, "sequence": tick, "buttons": engine.Buttons(1 << uint(tick%12))})
 				match = moduleTickTest(t, module, context, match, context.Now.UnixMilli())
 				view, next := streamDataTest(t, module, match, 0, cursor)
-				if view.Resync || view.Replay.FrameCount > 8 || view.Frame < initial.Frame {
+				if view.Resync || view.Replay.FrameCount > 22 || view.Frame < initial.Frame {
 					t.Fatal("regular stream repeats full recovery ring", view.Replay, view.Resync)
 				}
 				raw, _ := json.Marshal(view)

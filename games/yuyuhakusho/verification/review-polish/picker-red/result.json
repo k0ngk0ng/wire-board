@@ -1,0 +1,6 @@
+{
+  "pass": false,
+  "error": "AssertionError('missing portrait pickers: 0')",
+  "expected_missing_picker_red": true,
+  "checker_sha256": "6eebc83b0b5f77114bae72ea2f6a42642ee32e040d0708ced6e2e4e3e36d751d"
+}

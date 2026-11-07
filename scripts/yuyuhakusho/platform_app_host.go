@@ -72,13 +72,14 @@ func (l *shapedListener) disconnect() {
 func main() {
 	build := flag.String("build", "", "local-only app dist")
 	data := flag.String("data", "", "workspace database directory")
+	listen := flag.String("listen", "127.0.0.1:0", "local review listen address")
 	flag.Parse()
 	s, err := server.New(server.Config{DataDir: *data, InviteCode: "yuyu-local-e2e", ClientLoading: true, Modules: games.Modules()}, os.DirFS(*build))
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer s.Close()
-	direct, err := net.Listen("tcp", "127.0.0.1:0")
+	direct, err := net.Listen("tcp", *listen)
 	if err != nil {
 		log.Fatal(err)
 	}

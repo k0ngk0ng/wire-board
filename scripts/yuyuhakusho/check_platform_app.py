@@ -128,8 +128,8 @@ try:
     wait('fast','!!document.querySelector("[aria-label=比赛准备]")')
     snapshot('fast','preparation-first')
     room=state('fast')['room'];report['roomID']=room['id']
-    browser('fast','select','[aria-label=比赛准备] [aria-label=场地]','10')
-    browser('fast','select','[data-character-seat="0"]','8')
+    browser('fast','click','[data-arena-picker] summary');browser('fast','wait','--fn','document.querySelectorAll("[data-arena-option]").length===8');browser('fast','click','[data-arena-option="10"]')
+    browser('fast','click','[data-character-seat="0"] summary');browser('fast','wait','--fn','document.querySelectorAll("[data-character-option]").length===11');browser('fast','click','[data-character-option="8"]')
     register('slow',urls['shaped'])
     snapshot('slow','lobby-room')
     browser('slow','find','role','button','click','--name','加入')

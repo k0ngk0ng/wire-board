@@ -1,0 +1,20 @@
+{
+  "pass": false,
+  "error": "AssertionError('missing arena image picker: 0')",
+  "diagnostic": [
+    {
+      "open": false,
+      "options": 0,
+      "seat": "0",
+      "summary": "<summary class=\"yuyu-character-summary\" aria-label=\"玩家的角色：浦饭\" aria-disabled=\"false\"><span class=\"yuyu-portrait\" aria-hidden=\"true\"><img alt=\"\" draggable=\"false\" src=\"./character-portraits-N2EUM6OL.png\" style=\"left: -300%;\"></span><span>浦饭</span><span class=\"yuyu-character-chevron\" aria-hidden=\"true\">⌄</span></summary>"
+    },
+    {
+      "open": false,
+      "options": 0,
+      "seat": "1",
+      "summary": "<summary class=\"yuyu-character-summary\" aria-label=\"电脑的角色：酎\" aria-disabled=\"false\"><span class=\"yuyu-portrait\" aria-hidden=\"true\"><img alt=\"\" draggable=\"false\" src=\"./character-portraits-N2EUM6OL.png\" style=\"left: -900%;\"></span><span>酎</span><span class=\"yuyu-character-chevron\" aria-hidden=\"true\">⌄</span></summary>"
+    }
+  ],
+  "expected_missing_picker_red": true,
+  "checker_sha256": "e403e5450cb6239aa38561b8b41656c196f10c46543f0986912f6279a3d83fb7"
+}

@@ -4,7 +4,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {KeyboardController}from '../src/controllers/input.ts';
 import {GamepadSampler,defaultGamepadProfile,gamepadKey,mergeLogicalButtons}from '../src/controllers/gamepad.ts';
-const keyboard={up:'KeyW',down:'KeyS',left:'KeyA',right:'KeyD',mode:'KeyF',start:'Space',a:'KeyK',b:'KeyJ',c:'KeyL',x:'KeyU',y:'KeyI',z:'KeyO'};
+const keyboard={up:'KeyW',down:'KeyS',left:'KeyA',right:'KeyD',mode:'KeyF',start:'Space',a:'KeyJ',b:'KeyK',c:'KeyL',x:'KeyU',y:'KeyI',z:'KeyO'};
 const profile=()=>({revision:0,turboHz:10,keyboard:{...keyboard}});
 const pad=()=>({id:'Virtual MD standard',index:3,mapping:'standard',connected:true,axes:[0,0],buttons:Array(17).fill(0)});
 const sample=(s,p,t=0)=>[...s.sample(p,t)].sort();

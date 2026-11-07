@@ -1,0 +1,9 @@
+{
+  "scope": "Frozen NetworkScene + actual Go/Wasm and original terminal reference; not host auth/socket acceptance",
+  "pass": false,
+  "checks": [
+    "prediction_at_most_20_frames_without_authority_progress",
+    "bad_digest_requires_recovery_without_authority_mutation"
+  ],
+  "error": "Error: adjacent equal input runs are noncanonical"
+}

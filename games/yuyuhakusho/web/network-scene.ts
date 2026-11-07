@@ -197,7 +197,7 @@ export class NetworkScene {
     const limit = this.confirmedFrame + BigInt(MAX_PREDICTION);
     let changed = false,
       steps = 0;
-    const advance = (target: bigint) => {
+    const advance = (target: bigint, historical = false) => {
       while (
         this.predictedFrame < target &&
         this.predictedFrame < limit &&
@@ -211,7 +211,7 @@ export class NetworkScene {
         }
         const result = this.wasm.request(
           {
-            op: "step",
+            op: historical && next < target ? "advance" : "step",
             session: this.predicted,
             held: this.held,
             automated: this.automated,
@@ -221,15 +221,17 @@ export class NetworkScene {
         if (!result.view) throw Error("本地画面不可用");
         this.current = result.view;
         this.predictedFrame = frameNumber(result.view.frame);
-        this.rendered = result.renderedFrame ?? "";
-        this.onSound?.(result.view, result.soundRequests ?? []);
-        changed = true;
+        if (result.renderedFrame) {
+          this.rendered = result.renderedFrame;
+          this.onSound?.(result.view, result.soundRequests ?? []);
+          changed = true;
+        }
         if (result.view.completed || this.predictedFrame < next) break;
       }
     };
     // Correct to the previous local target without consuming native clock
-    // ticks. Packet age is not a reason to instantly spend all12 lead frames.
-    advance(this.replayTarget);
+    // ticks. Packet age is not a reason to instantly spend the whole prediction window.
+    advance(this.replayTarget, true);
     this.replayTarget = this.predictedFrame;
     this.inputTarget = this.queue[0]?.frame ?? this.predictedFrame;
     if (this.current?.completed) return changed;

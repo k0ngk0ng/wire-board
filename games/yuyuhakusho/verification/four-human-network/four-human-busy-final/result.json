@@ -1,0 +1,159 @@
+{
+  "pass": false,
+  "scope": "Four distinct signed-in human seats in independent Chromium browsers on this Mac; actual HTTP/SQLite/WebSocket and Go/Wasm. One real TCP connection is then delayed120ms per write. This does not claim four physical devices or arbitrary public networks.",
+  "budget": {
+    "minimum_visible_fps": 50,
+    "maximum_p95_ms": 40,
+    "maximum_input_visible_ms": 75
+  },
+  "stages": {
+    "normal": [
+      {
+        "seat": 0,
+        "hidden": false,
+        "visible_frames": 180,
+        "elapsed_ms": 3006.0,
+        "visible_fps": 59.880239520958085,
+        "p95_ms": 21.0,
+        "native_input_to_visible_ms": 47.90000057220459,
+        "input_ack_ms": 21.199999809265137,
+        "native_input_to_authority_ms": 67.10000038146973,
+        "local_before_ack": false,
+        "view_messages": 52,
+        "mean_view_bytes": 1761.1153846153845,
+        "max_view_bytes": 1810,
+        "incoming_view_bytes_per_second": 30465.06986027944,
+        "outgoing_input_bytes": 503,
+        "wire_checkpoints": 0
+      },
+      {
+        "seat": 1,
+        "hidden": false,
+        "visible_frames": 181,
+        "elapsed_ms": 3007.5,
+        "visible_fps": 60.18287614297589,
+        "p95_ms": 21.800000190734863,
+        "native_input_to_visible_ms": 39.80000019073486,
+        "input_ack_ms": 12.800000190734863,
+        "native_input_to_authority_ms": 63.80000019073486,
+        "local_before_ack": false,
+        "view_messages": 52,
+        "mean_view_bytes": 1761.1153846153845,
+        "max_view_bytes": 1810,
+        "incoming_view_bytes_per_second": 30449.875311720698,
+        "outgoing_input_bytes": 515,
+        "wire_checkpoints": 0
+      },
+      {
+        "seat": 2,
+        "hidden": false,
+        "visible_frames": 180,
+        "elapsed_ms": 3006.8999996185303,
+        "visible_fps": 59.862316679249616,
+        "p95_ms": 24.09999942779541,
+        "native_input_to_visible_ms": 42.30000019073486,
+        "input_ack_ms": 12.800000190734863,
+        "native_input_to_authority_ms": 99.80000019073486,
+        "local_before_ack": false,
+        "view_messages": 53,
+        "mean_view_bytes": 1760.9245283018868,
+        "max_view_bytes": 1822,
+        "incoming_view_bytes_per_second": 31038.27862976493,
+        "outgoing_input_bytes": 505,
+        "wire_checkpoints": 0
+      },
+      {
+        "seat": 3,
+        "hidden": false,
+        "visible_frames": 181,
+        "elapsed_ms": 3015.8999996185303,
+        "visible_fps": 60.015252502700356,
+        "p95_ms": 24.40000057220459,
+        "native_input_to_visible_ms": 22.0,
+        "input_ack_ms": 21.100000381469727,
+        "native_input_to_authority_ms": 37.70000076293945,
+        "local_before_ack": true,
+        "view_messages": 52,
+        "mean_view_bytes": 1761.1153846153845,
+        "max_view_bytes": 1810,
+        "incoming_view_bytes_per_second": 30365.065158520956,
+        "outgoing_input_bytes": 516,
+        "wire_checkpoints": 0
+      }
+    ]
+  },
+  "app_build": "d70d6d8c3a873111778be06aad9894197b2fbeb4256e0d59185cb32e2c2fbb2c",
+  "runtime": {
+    "wasm": {
+      "url": "/yuyuhakusho/v1/runtime/client.wasm",
+      "sha256": "23b9096a6dd8a6e5a8b3f3e81239989304e69b524325f3960f6c293aecf4ee49",
+      "bytes": 5058443
+    }
+  },
+  "urls": {
+    "direct": "http://127.0.0.1:57216/",
+    "shaped": "http://127.0.0.1:57217/"
+  },
+  "human_seats": 4,
+  "characters": [
+    3,
+    1,
+    0,
+    10
+  ],
+  "error": "AssertionError({'seat': 3, 'hidden': False, 'visible_frames': 165, 'elapsed_ms': 3010.0, 'visible_fps': 54.817275747508305, 'p95_ms': 46.69999980926514, 'native_input_to_visible_ms': 26.699999809265137, 'input_ack_ms': 155.9000005722046, 'native_input_to_authority_ms': 268.19999980926514, 'local_before_ack': True, 'view_messages': 58, 'mean_view_bytes': 1761.4827586206898, 'max_view_bytes': 1798, 'incoming_view_bytes_per_second': 33942.1926910299, 'outgoing_input_bytes': 515, 'wire_checkpoints': 0})",
+  "diagnostics": {
+    "0": {
+      "board": {
+        "authorityFrame": "675",
+        "connection": "connected",
+        "frame": "680",
+        "localX": "969",
+        "localY": "320",
+        "yuyuBoard": "true"
+      },
+      "text": "围桌\nWIRE BOARD\n游戏牌桌\n许愿池\n积分榜\n0ms\nF\nFourc1e40\n魔强统一战 / 牌桌 38B7793F\n四真人输入同步验收\n开启托管\n全屏\n对局日志\n玩法速查\n邀请朋友\n结束牌桌\nF\nFourc1e40\n你\n浦饭\n体力 223\n灵力 223\nF\nFourc1e41\n藏马\n体力 223\n灵力 223\nF\nFourc1e42\n幻海\n体力 223\n灵力 223\nF\nFourc1e43\n户愚吕弟\n体力 223\n灵力 223\n↑\n↓\n←\n→\nMODE\nSTART\nX\nY\nZ\nA\nB\nC\n对局进行中\n聊天"
+    },
+    "1": {
+      "board": {
+        "authorityFrame": "681",
+        "connection": "connected",
+        "frame": "686",
+        "localX": "1000",
+        "localY": "304",
+        "yuyuBoard": "true"
+      },
+      "text": "围桌\nWIRE BOARD\n游戏牌桌\n许愿池\n积分榜\n0ms\nF\nFourc1e41\n魔强统一战 / 牌桌 38B7793F\n四真人输入同步验收\n开启托管\n全屏\n对局日志\n玩法速查\n邀请朋友\nF\nFourc1e40\n浦饭\n体力 223\n灵力 223\nF\nFourc1e41\n你\n藏马\n体力 223\n灵力 223\nF\nFourc1e42\n幻海\n体力 223\n灵力 223\nF\nFourc1e43\n户愚吕弟\n体力 223\n灵力 223\n↑\n↓\n←\n→\nMODE\nSTART\nX\nY\nZ\nA\nB\nC\n对局进行中\n聊天"
+    },
+    "2": {
+      "board": {
+        "authorityFrame": "687",
+        "connection": "connected",
+        "frame": "692",
+        "localX": "1038",
+        "localY": "304",
+        "yuyuBoard": "true"
+      },
+      "text": "围桌\nWIRE BOARD\n游戏牌桌\n许愿池\n积分榜\n0ms\nF\nFourc1e42\n魔强统一战 / 牌桌 38B7793F\n四真人输入同步验收\n开启托管\n全屏\n对局日志\n玩法速查\n邀请朋友\nF\nFourc1e40\n浦饭\n体力 223\n灵力 223\nF\nFourc1e41\n藏马\n体力 223\n灵力 223\nF\nFourc1e42\n你\n幻海\n体力 223\n灵力 223\nF\nFourc1e43\n户愚吕弟\n体力 223\n灵力 223\n↑\n↓\n←\n→\nMODE\nSTART\nX\nY\nZ\nA\nB\nC\n对局进行中\n聊天"
+    },
+    "3": {
+      "board": {
+        "authorityFrame": "684",
+        "connection": "connected",
+        "frame": "687",
+        "localX": "1081",
+        "localY": "320",
+        "yuyuBoard": "true"
+      },
+      "text": "围桌\nWIRE BOARD\n游戏牌桌\n许愿池\n积分榜\n239ms\nF\nFourc1e43\n魔强统一战 / 牌桌 38B7793F\n四真人输入同步验收\n开启托管\n全屏\n对局日志\n玩法速查\n邀请朋友\nF\nFourc1e40\n浦饭\n体力 223\n灵力 223\nF\nFourc1e41\n藏马\n体力 223\n灵力 223\nF\nFourc1e42\n幻海\n体力 223\n灵力 223\nF\nFourc1e43\n你\n户愚吕弟\n体力 223\n灵力 223\n↑\n↓\n←\n→\nMODE\nSTART\nX\nY\nZ\nA\nB\nC\n对局进行中\n聊天"
+    }
+  },
+  "sources": {
+    "scripts/yuyuhakusho/check_four_human_network.py": "a6dd4ae30dabfdfe15b0c201134a5f9d7358cfa2060a906c42d24ca0e255e8d4",
+    "scripts/yuyuhakusho/platform_app_observer.js": "b07d9a383bd2927e2d188e604dfa43c4d084945d788810f5f3ff4480dd283a5c",
+    "scripts/yuyuhakusho/native_app_input.mjs": "b8d4e687b01e668d4b9c870397ba201ce6d94085919ee9ddb20b62abd168e459",
+    "games/yuyuhakusho/web/network-scene.ts": "206fb46f62319b34ae95372c9d76c1b3417c3c120d3b57e432742b4061ad8e14",
+    "games/yuyuhakusho/web/network-client.ts": "e62cf2c1949a52544d3346fc59a4a20010617176ceaf8b88ccc01b12f691dfa1",
+    "games/yuyuhakusho/web/types.ts": "39df0c7013eabce971b22416ca2bfc1e0e3aa79ea22488e32293f8ca69d2fcca"
+  }
+}

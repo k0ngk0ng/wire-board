@@ -1,0 +1,307 @@
+{
+  "pass": false,
+  "scope": "Four distinct signed-in human seats in independent Chromium browsers on this Mac; actual HTTP/SQLite/WebSocket and Go/Wasm. One real TCP connection is then delayed120ms per write. This does not claim four physical devices or arbitrary public networks.",
+  "budget": {
+    "minimum_visible_fps": 50,
+    "maximum_p95_ms": 40,
+    "maximum_input_visible_ms": 75
+  },
+  "stages": {
+    "normal": [
+      {
+        "seat": 0,
+        "hidden": false,
+        "visible_frames": 181,
+        "elapsed_ms": 3009.3999996185303,
+        "visible_fps": 60.14487938557302,
+        "p95_ms": 20.90000057220459,
+        "native_input_to_visible_ms": 25.09999942779541,
+        "input_ack_ms": 11.90000057220459,
+        "native_input_to_authority_ms": 75.0,
+        "local_before_ack": false,
+        "view_messages": 60,
+        "mean_view_bytes": 1759.9666666666667,
+        "max_view_bytes": 1798,
+        "incoming_view_bytes_per_second": 35089.38659313668,
+        "outgoing_input_bytes": 505,
+        "wire_checkpoints": 0
+      },
+      {
+        "seat": 1,
+        "hidden": false,
+        "visible_frames": 180,
+        "elapsed_ms": 3005.6000003814697,
+        "visible_fps": 59.888208669535025,
+        "p95_ms": 21.399999618530273,
+        "native_input_to_visible_ms": 33.0,
+        "input_ack_ms": 10.5,
+        "native_input_to_authority_ms": 52.70000076293945,
+        "local_before_ack": false,
+        "view_messages": 61,
+        "mean_view_bytes": 1759.9180327868853,
+        "max_view_bytes": 1798,
+        "incoming_view_bytes_per_second": 35718.325787321846,
+        "outgoing_input_bytes": 516,
+        "wire_checkpoints": 0
+      },
+      {
+        "seat": 2,
+        "hidden": false,
+        "visible_frames": 181,
+        "elapsed_ms": 3014.699999809265,
+        "visible_fps": 60.03914154358694,
+        "p95_ms": 21.100000381469727,
+        "native_input_to_visible_ms": 50.80000019073486,
+        "input_ack_ms": 9.700000762939453,
+        "native_input_to_authority_ms": 101.5,
+        "local_before_ack": false,
+        "view_messages": 61,
+        "mean_view_bytes": 1760.311475409836,
+        "max_view_bytes": 1810,
+        "incoming_view_bytes_per_second": 35618.469501706204,
+        "outgoing_input_bytes": 514,
+        "wire_checkpoints": 0
+      },
+      {
+        "seat": 3,
+        "hidden": false,
+        "visible_frames": 180,
+        "elapsed_ms": 3006.0,
+        "visible_fps": 59.880239520958085,
+        "p95_ms": 23.800000190734863,
+        "native_input_to_visible_ms": 33.80000019073486,
+        "input_ack_ms": 10.800000190734863,
+        "native_input_to_authority_ms": 57.20000076293945,
+        "local_before_ack": false,
+        "view_messages": 60,
+        "mean_view_bytes": 1759.9666666666667,
+        "max_view_bytes": 1798,
+        "incoming_view_bytes_per_second": 35129.0751829674,
+        "outgoing_input_bytes": 516,
+        "wire_checkpoints": 0
+      }
+    ],
+    "one-slow": [
+      {
+        "seat": 0,
+        "hidden": false,
+        "visible_frames": 181,
+        "elapsed_ms": 3011.6000003814697,
+        "visible_fps": 60.10094301270863,
+        "p95_ms": 20.899999618530273,
+        "native_input_to_visible_ms": 27.5,
+        "input_ack_ms": 21.600000381469727,
+        "native_input_to_authority_ms": 27.699999809265137,
+        "local_before_ack": true,
+        "view_messages": 60,
+        "mean_view_bytes": 1761.5666666666666,
+        "max_view_bytes": 1810,
+        "incoming_view_bytes_per_second": 35095.63022533274,
+        "outgoing_input_bytes": 517,
+        "wire_checkpoints": 0
+      },
+      {
+        "seat": 1,
+        "hidden": false,
+        "visible_frames": 180,
+        "elapsed_ms": 3006.8999996185303,
+        "visible_fps": 59.862316679249616,
+        "p95_ms": 21.199999809265137,
+        "native_input_to_visible_ms": 26.100000381469727,
+        "input_ack_ms": 19.699999809265137,
+        "native_input_to_authority_ms": 66.80000019073486,
+        "local_before_ack": true,
+        "view_messages": 60,
+        "mean_view_bytes": 1761.5666666666666,
+        "max_view_bytes": 1810,
+        "incoming_view_bytes_per_second": 35150.48721720338,
+        "outgoing_input_bytes": 516,
+        "wire_checkpoints": 0
+      },
+      {
+        "seat": 2,
+        "hidden": false,
+        "visible_frames": 180,
+        "elapsed_ms": 3006.199999809265,
+        "visible_fps": 59.876255741940156,
+        "p95_ms": 21.699999809265137,
+        "native_input_to_visible_ms": 33.89999961853027,
+        "input_ack_ms": 9.199999809265137,
+        "native_input_to_authority_ms": 48.30000019073486,
+        "local_before_ack": false,
+        "view_messages": 61,
+        "mean_view_bytes": 1761.295081967213,
+        "max_view_bytes": 1809,
+        "incoming_view_bytes_per_second": 35739.139114768375,
+        "outgoing_input_bytes": 516,
+        "wire_checkpoints": 0
+      },
+      {
+        "seat": 3,
+        "hidden": false,
+        "visible_frames": 169,
+        "elapsed_ms": 3009.6000003814697,
+        "visible_fps": 56.15364167283994,
+        "p95_ms": 27.399999618530273,
+        "native_input_to_visible_ms": 30.699999809265137,
+        "input_ack_ms": 153.89999961853027,
+        "native_input_to_authority_ms": 270.5999994277954,
+        "local_before_ack": true,
+        "view_messages": 58,
+        "mean_view_bytes": 1761.7241379310344,
+        "max_view_bytes": 1810,
+        "incoming_view_bytes_per_second": 33951.35565757861,
+        "outgoing_input_bytes": 515,
+        "wire_checkpoints": 0
+      }
+    ],
+    "busy-normal": [
+      {
+        "seat": 0,
+        "hidden": false,
+        "visible_frames": 182,
+        "elapsed_ms": 3061.699999809265,
+        "visible_fps": 59.444099686885735,
+        "p95_ms": 20.899999618530273,
+        "native_input_to_visible_ms": 34.79999923706055,
+        "input_ack_ms": 9,
+        "native_input_to_authority_ms": 65.59999942779541,
+        "local_before_ack": false,
+        "view_messages": 61,
+        "mean_view_bytes": 1797.377049180328,
+        "max_view_bytes": 1877,
+        "incoming_view_bytes_per_second": 35810.17082236347,
+        "outgoing_input_bytes": 4618,
+        "wire_checkpoints": 0
+      },
+      {
+        "seat": 1,
+        "hidden": false,
+        "visible_frames": 180,
+        "elapsed_ms": 3059.0,
+        "visible_fps": 58.84275907159202,
+        "p95_ms": 21.399999618530273,
+        "native_input_to_visible_ms": 35.80000019073486,
+        "input_ack_ms": 12.59999942779541,
+        "native_input_to_authority_ms": 55.30000019073486,
+        "local_before_ack": false,
+        "view_messages": 61,
+        "mean_view_bytes": 1797.360655737705,
+        "max_view_bytes": 1877,
+        "incoming_view_bytes_per_second": 35841.45145472376,
+        "outgoing_input_bytes": 4645,
+        "wire_checkpoints": 0
+      },
+      {
+        "seat": 2,
+        "hidden": false,
+        "visible_frames": 183,
+        "elapsed_ms": 3070.300000190735,
+        "visible_fps": 59.603296091141445,
+        "p95_ms": 21.199999809265137,
+        "native_input_to_visible_ms": 36.39999961853027,
+        "input_ack_ms": 9.399999618530273,
+        "native_input_to_authority_ms": 51.80000019073486,
+        "local_before_ack": false,
+        "view_messages": 62,
+        "mean_view_bytes": 1796.4032258064517,
+        "max_view_bytes": 1879,
+        "incoming_view_bytes_per_second": 36275.6082444976,
+        "outgoing_input_bytes": 4635,
+        "wire_checkpoints": 0
+      },
+      {
+        "seat": 3,
+        "hidden": false,
+        "visible_frames": 181,
+        "elapsed_ms": 3061.0999994277954,
+        "visible_fps": 59.12907125995032,
+        "p95_ms": 21.899999618530273,
+        "native_input_to_visible_ms": 20.199999809265137,
+        "input_ack_ms": 7.399999618530273,
+        "native_input_to_authority_ms": 26.0,
+        "local_before_ack": false,
+        "view_messages": 61,
+        "mean_view_bytes": 1797.5409836065573,
+        "max_view_bytes": 1878,
+        "incoming_view_bytes_per_second": 35820.45670526825,
+        "outgoing_input_bytes": 4656,
+        "wire_checkpoints": 0
+      }
+    ]
+  },
+  "app_build": "4eac2bec823065e7d9c2698ddf7cb8f3a1bde791e4ca2b594eb6928b9e929d2e",
+  "runtime": {
+    "wasm": {
+      "url": "/yuyuhakusho/v1/runtime/client.wasm",
+      "sha256": "486e4599cb8a9dafb3d23a007fa75c48bfa2c184f4c4c492eace0fca0ef772e8",
+      "bytes": 5060604
+    }
+  },
+  "urls": {
+    "direct": "http://127.0.0.1:57450/",
+    "shaped": "http://127.0.0.1:57451/"
+  },
+  "human_seats": 4,
+  "characters": [
+    3,
+    1,
+    0,
+    10
+  ],
+  "error": "AssertionError({'seat': 3, 'hidden': False, 'visible_frames': 29, 'elapsed_ms': 3048.800000190735, 'visible_fps': 9.511939122994535, 'p95_ms': 24.399999618530273, 'native_input_to_visible_ms': 30.100000381469727, 'input_ack_ms': 155.0999994277954, 'native_input_to_authority_ms': 279.1000003814697, 'local_before_ack': True, 'view_messages': 61, 'mean_view_bytes': 1794.8360655737704, 'max_view_bytes': 1866, 'incoming_view_bytes_per_second': 35910.8501683123, 'outgoing_input_bytes': 2046, 'wire_checkpoints': 0})",
+  "diagnostics": {
+    "0": {
+      "board": {
+        "authorityFrame": "1052",
+        "connection": "connected",
+        "frame": "1056",
+        "localX": "1044",
+        "localY": "320",
+        "yuyuBoard": "true"
+      },
+      "text": "围桌\nWIRE BOARD\n游戏牌桌\n许愿池\n积分榜\n0ms\nF\nFourd5730\n魔强统一战 / 牌桌 A2DE22CA\n四真人输入同步验收\n开启托管\n全屏\n对局日志\n玩法速查\n邀请朋友\n结束牌桌\nF\nFourd5730\n你\n浦饭\n体力 223\n灵力 223\nF\nFourd5731\n藏马\n体力 209\n灵力 175\nF\nFourd5732\n幻海\n体力 211\n灵力 223\nF\nFourd5733\n户愚吕弟\n体力 210\n灵力 199\n↑\n↓\n←\n→\nMODE\nSTART\nX\nY\nZ\nA\nB\nC\n对局进行中\n聊天"
+    },
+    "1": {
+      "board": {
+        "authorityFrame": "1058",
+        "connection": "connected",
+        "frame": "1062",
+        "localX": "941",
+        "localY": "304",
+        "yuyuBoard": "true"
+      },
+      "text": "围桌\nWIRE BOARD\n游戏牌桌\n许愿池\n积分榜\n0ms\nF\nFourd5731\n魔强统一战 / 牌桌 A2DE22CA\n四真人输入同步验收\n开启托管\n全屏\n对局日志\n玩法速查\n邀请朋友\nF\nFourd5730\n浦饭\n体力 223\n灵力 223\nF\nFourd5731\n你\n藏马\n体力 209\n灵力 175\nF\nFourd5732\n幻海\n体力 211\n灵力 223\nF\nFourd5733\n户愚吕弟\n体力 210\n灵力 199\n↑\n↓\n←\n→\nMODE\nSTART\nX\nY\nZ\nA\nB\nC\n对局进行中\n聊天"
+    },
+    "2": {
+      "board": {
+        "authorityFrame": "1064",
+        "connection": "connected",
+        "frame": "1067",
+        "localX": "1115",
+        "localY": "304",
+        "yuyuBoard": "true"
+      },
+      "text": "围桌\nWIRE BOARD\n游戏牌桌\n许愿池\n积分榜\n0ms\nF\nFourd5732\n魔强统一战 / 牌桌 A2DE22CA\n四真人输入同步验收\n开启托管\n全屏\n对局日志\n玩法速查\n邀请朋友\nF\nFourd5730\n浦饭\n体力 223\n灵力 223\nF\nFourd5731\n藏马\n体力 209\n灵力 175\nF\nFourd5732\n你\n幻海\n体力 211\n灵力 223\nF\nFourd5733\n户愚吕弟\n体力 210\n灵力 199\n↑\n↓\n←\n→\nMODE\nSTART\nX\nY\nZ\nA\nB\nC\n对局进行中\n聊天"
+    },
+    "3": {
+      "board": {
+        "authorityFrame": "894",
+        "connection": "recovering",
+        "frame": "899",
+        "localX": "1067",
+        "localY": "320",
+        "yuyuBoard": "true"
+      },
+      "text": "围桌\nWIRE BOARD\n游戏牌桌\n许愿池\n积分榜\n0ms\nF\nFourd5733\n魔强统一战 / 牌桌 A2DE22CA\n四真人输入同步验收\n开启托管\n全屏\n对局日志\n玩法速查\n邀请朋友\nF\nFourd5730\n浦饭\n体力 223\n灵力 223\nF\nFourd5731\n藏马\n体力 209\n灵力 175\nF\nFourd5732\n幻海\n体力 211\n灵力 223\nF\nFourd5733\n你\n户愚吕弟\n体力 210\n灵力 199\n\n正在恢复连接\n\n↑\n↓\n←\n→\nMODE\nSTART\nX\nY\nZ\nA\nB\nC\n对局进行中\n聊天"
+    }
+  },
+  "sources": {
+    "scripts/yuyuhakusho/check_four_human_network.py": "a6dd4ae30dabfdfe15b0c201134a5f9d7358cfa2060a906c42d24ca0e255e8d4",
+    "scripts/yuyuhakusho/platform_app_observer.js": "b07d9a383bd2927e2d188e604dfa43c4d084945d788810f5f3ff4480dd283a5c",
+    "scripts/yuyuhakusho/native_app_input.mjs": "b8d4e687b01e668d4b9c870397ba201ce6d94085919ee9ddb20b62abd168e459",
+    "games/yuyuhakusho/web/network-scene.ts": "511fe31bad133c02b611c5bf76d974fe0190edfb5aed16c0adf0ea84def173d0",
+    "games/yuyuhakusho/web/network-client.ts": "e62cf2c1949a52544d3346fc59a4a20010617176ceaf8b88ccc01b12f691dfa1",
+    "games/yuyuhakusho/web/types.ts": "39df0c7013eabce971b22416ca2bfc1e0e3aa79ea22488e32293f8ca69d2fcca"
+  }
+}

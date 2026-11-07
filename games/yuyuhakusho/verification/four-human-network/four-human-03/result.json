@@ -1,0 +1,194 @@
+{
+  "pass": true,
+  "scope": "Four distinct signed-in human seats in independent Chromium browsers on this Mac; actual HTTP/SQLite/WebSocket and Go/Wasm. One real TCP connection is then delayed120ms per write. This does not claim four physical devices or arbitrary public networks.",
+  "budget": {
+    "minimum_visible_fps": 50,
+    "maximum_p95_ms": 40
+  },
+  "stages": {
+    "normal": [
+      {
+        "seat": 0,
+        "hidden": false,
+        "visible_frames": 182,
+        "elapsed_ms": 3036.0999994277954,
+        "visible_fps": 59.94532460534929,
+        "p95_ms": 26.40000057220459,
+        "native_input_to_visible_ms": 31.600000381469727,
+        "input_ack_ms": 15.0,
+        "native_input_to_authority_ms": 126.30000019073486,
+        "local_before_ack": false,
+        "view_messages": 59,
+        "mean_view_bytes": 1761.9322033898304,
+        "max_view_bytes": 1810,
+        "incoming_view_bytes_per_second": 34239.3201869477,
+        "outgoing_input_bytes": 517,
+        "wire_checkpoints": 0
+      },
+      {
+        "seat": 1,
+        "hidden": false,
+        "visible_frames": 183,
+        "elapsed_ms": 3046.699999809265,
+        "visible_fps": 60.064988351809,
+        "p95_ms": 21.899999618530273,
+        "native_input_to_visible_ms": 33.69999980926514,
+        "input_ack_ms": 89.0,
+        "native_input_to_authority_ms": 135.79999923706055,
+        "local_before_ack": true,
+        "view_messages": 60,
+        "mean_view_bytes": 1762.25,
+        "max_view_bytes": 1810,
+        "incoming_view_bytes_per_second": 34704.76253212309,
+        "outgoing_input_bytes": 505,
+        "wire_checkpoints": 0
+      },
+      {
+        "seat": 2,
+        "hidden": false,
+        "visible_frames": 182,
+        "elapsed_ms": 3052.7000007629395,
+        "visible_fps": 59.61935334442102,
+        "p95_ms": 23.199999809265137,
+        "native_input_to_visible_ms": 28.899999618530273,
+        "input_ack_ms": 49.0,
+        "native_input_to_authority_ms": 123.19999980926514,
+        "local_before_ack": true,
+        "view_messages": 59,
+        "mean_view_bytes": 1761.2711864406779,
+        "max_view_bytes": 1810,
+        "incoming_view_bytes_per_second": 34040.3577076127,
+        "outgoing_input_bytes": 515,
+        "wire_checkpoints": 0
+      },
+      {
+        "seat": 3,
+        "hidden": false,
+        "visible_frames": 182,
+        "elapsed_ms": 3038.800000190735,
+        "visible_fps": 59.89206265255249,
+        "p95_ms": 25.100000381469727,
+        "native_input_to_visible_ms": 51.09999942779541,
+        "input_ack_ms": 25.0,
+        "native_input_to_authority_ms": 60.19999980926514,
+        "local_before_ack": false,
+        "view_messages": 59,
+        "mean_view_bytes": 1761.677966101695,
+        "max_view_bytes": 1810,
+        "incoming_view_bytes_per_second": 34203.96208815194,
+        "outgoing_input_bytes": 516,
+        "wire_checkpoints": 0
+      }
+    ],
+    "one-slow": [
+      {
+        "seat": 0,
+        "hidden": false,
+        "visible_frames": 181,
+        "elapsed_ms": 3007.300000190735,
+        "visible_fps": 60.186878591600525,
+        "p95_ms": 23.90000057220459,
+        "native_input_to_visible_ms": 39.30000019073486,
+        "input_ack_ms": 14.90000057220459,
+        "native_input_to_authority_ms": 107.40000057220459,
+        "local_before_ack": false,
+        "view_messages": 60,
+        "mean_view_bytes": 1761.1833333333334,
+        "max_view_bytes": 1811,
+        "incoming_view_bytes_per_second": 35138.163799187954,
+        "outgoing_input_bytes": 507,
+        "wire_checkpoints": 0
+      },
+      {
+        "seat": 1,
+        "hidden": false,
+        "visible_frames": 181,
+        "elapsed_ms": 3006.3999996185303,
+        "visible_fps": 60.20489622903351,
+        "p95_ms": 24.899999618530273,
+        "native_input_to_visible_ms": 39.39999961853027,
+        "input_ack_ms": 15.5,
+        "native_input_to_authority_ms": 64.19999980926514,
+        "local_before_ack": false,
+        "view_messages": 60,
+        "mean_view_bytes": 1761.1833333333334,
+        "max_view_bytes": 1811,
+        "incoming_view_bytes_per_second": 35148.682814465195,
+        "outgoing_input_bytes": 504,
+        "wire_checkpoints": 0
+      },
+      {
+        "seat": 2,
+        "hidden": false,
+        "visible_frames": 181,
+        "elapsed_ms": 3010.6000003814697,
+        "visible_fps": 60.12090612405025,
+        "p95_ms": 22.899999618530273,
+        "native_input_to_visible_ms": 42.0,
+        "input_ack_ms": 8.59999942779541,
+        "native_input_to_authority_ms": 60.40000057220459,
+        "local_before_ack": false,
+        "view_messages": 60,
+        "mean_view_bytes": 1760.6666666666667,
+        "max_view_bytes": 1798,
+        "incoming_view_bytes_per_second": 35089.35095549541,
+        "outgoing_input_bytes": 505,
+        "wire_checkpoints": 0
+      },
+      {
+        "seat": 3,
+        "hidden": false,
+        "visible_frames": 163,
+        "elapsed_ms": 3005.300000190735,
+        "visible_fps": 54.237513722308925,
+        "p95_ms": 32.0,
+        "native_input_to_visible_ms": 151.89999961853027,
+        "input_ack_ms": 178.0999994277954,
+        "native_input_to_authority_ms": 192.89999961853027,
+        "local_before_ack": true,
+        "view_messages": 60,
+        "mean_view_bytes": 1760.8333333333333,
+        "max_view_bytes": 1811,
+        "incoming_view_bytes_per_second": 35154.56027461312,
+        "outgoing_input_bytes": 517,
+        "wire_checkpoints": 0
+      }
+    ]
+  },
+  "urls": {
+    "direct": "http://127.0.0.1:55759/",
+    "shaped": "http://127.0.0.1:55760/"
+  },
+  "human_seats": 4,
+  "characters": [
+    3,
+    1,
+    0,
+    10
+  ],
+  "checkpoints": [
+    {
+      "seat": 0,
+      "requests": 2
+    },
+    {
+      "seat": 1,
+      "requests": 2
+    },
+    {
+      "seat": 2,
+      "requests": 2
+    },
+    {
+      "seat": 3,
+      "requests": 2
+    }
+  ],
+  "sources": {
+    "scripts/yuyuhakusho/check_four_human_network.py": "cdd310fdd522eff4421783326974343c5c45c650eee64f40555e9b6d0ccafb8e",
+    "scripts/yuyuhakusho/platform_app_observer.js": "b07d9a383bd2927e2d188e604dfa43c4d084945d788810f5f3ff4480dd283a5c",
+    "scripts/yuyuhakusho/native_app_input.mjs": "b8d4e687b01e668d4b9c870397ba201ce6d94085919ee9ddb20b62abd168e459",
+    "games/yuyuhakusho/web/network-scene.ts": "1e3f95a4f6b881107a08434c87ca707a64f9f9ec9e1fc1f76edb300eeec8a3a1",
+    "games/yuyuhakusho/web/network-client.ts": "e62cf2c1949a52544d3346fc59a4a20010617176ceaf8b88ccc01b12f691dfa1"
+  }
+}

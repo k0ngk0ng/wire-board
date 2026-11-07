@@ -1,0 +1,74 @@
+{
+  "pass": false,
+  "scope": "Four distinct signed-in human seats in independent Chromium browsers on this Mac; actual HTTP/SQLite/WebSocket and Go/Wasm. One real TCP connection is then delayed120ms per write. This does not claim four physical devices or arbitrary public networks.",
+  "budget": {
+    "minimum_visible_fps": 50,
+    "maximum_p95_ms": 40
+  },
+  "stages": {},
+  "urls": {
+    "direct": "http://127.0.0.1:55037/",
+    "shaped": "http://127.0.0.1:55038/"
+  },
+  "human_seats": 4,
+  "characters": [
+    3,
+    1,
+    0,
+    10
+  ],
+  "error": "AssertionError({'seat': 3, 'hidden': False, 'visible_frames': 180, 'elapsed_ms': 3005.5, 'visible_fps': 59.890201297621026, 'p95_ms': 24.09999942779541, 'native_input_to_visible_ms': None, 'input_ack_ms': 27.299999237060547, 'native_input_to_authority_ms': 58.19999980926514, 'local_before_ack': False, 'view_messages': 60, 'mean_view_bytes': 1760.5, 'max_view_bytes': 1798, 'incoming_view_bytes_per_second': 35145.56646148727, 'outgoing_input_bytes': 516, 'wire_checkpoints': 0})",
+  "diagnostics": {
+    "0": {
+      "board": {
+        "authorityFrame": "483",
+        "connection": "connected",
+        "frame": "488",
+        "localX": "939",
+        "localY": "320",
+        "yuyuBoard": "true"
+      },
+      "text": "围桌\nWIRE BOARD\n游戏牌桌\n许愿池\n积分榜\n0ms\nF\nFourad920\n魔强统一战 / 牌桌 41A81B09\n四真人输入同步验收\n开启托管\n全屏\n对局日志\n玩法速查\n邀请朋友\n结束牌桌\nF\nFourad920\n你\n浦饭\n体力 223\n灵力 223\nF\nFourad921\n藏马\n体力 223\n灵力 223\nF\nFourad922\n幻海\n体力 223\n灵力 223\nF\nFourad923\n户愚吕弟\n体力 223\n灵力 223\n↑\n↓\n←\n→\nMODE\nSTART\nX\nY\nZ\nA\nB\nC\n对局进行中\n聊天"
+    },
+    "1": {
+      "board": {
+        "authorityFrame": "492",
+        "connection": "connected",
+        "frame": "494",
+        "localX": "987",
+        "localY": "304",
+        "yuyuBoard": "true"
+      },
+      "text": "围桌\nWIRE BOARD\n游戏牌桌\n许愿池\n积分榜\n0ms\nF\nFourad921\n魔强统一战 / 牌桌 41A81B09\n四真人输入同步验收\n开启托管\n全屏\n对局日志\n玩法速查\n邀请朋友\nF\nFourad920\n浦饭\n体力 223\n灵力 223\nF\nFourad921\n你\n藏马\n体力 223\n灵力 223\nF\nFourad922\n幻海\n体力 223\n灵力 223\nF\nFourad923\n户愚吕弟\n体力 223\n灵力 223\n↑\n↓\n←\n→\nMODE\nSTART\nX\nY\nZ\nA\nB\nC\n对局进行中\n聊天"
+    },
+    "2": {
+      "board": {
+        "authorityFrame": "495",
+        "connection": "connected",
+        "frame": "499",
+        "localX": "1058",
+        "localY": "304",
+        "yuyuBoard": "true"
+      },
+      "text": "围桌\nWIRE BOARD\n游戏牌桌\n许愿池\n积分榜\n0ms\nF\nFourad922\n魔强统一战 / 牌桌 41A81B09\n四真人输入同步验收\n开启托管\n全屏\n对局日志\n玩法速查\n邀请朋友\nF\nFourad920\n浦饭\n体力 223\n灵力 223\nF\nFourad921\n藏马\n体力 223\n灵力 223\nF\nFourad922\n你\n幻海\n体力 223\n灵力 223\nF\nFourad923\n户愚吕弟\n体力 223\n灵力 223\n↑\n↓\n←\n→\nMODE\nSTART\nX\nY\nZ\nA\nB\nC\n对局进行中\n聊天"
+    },
+    "3": {
+      "board": {
+        "authorityFrame": "501",
+        "connection": "connected",
+        "frame": "505",
+        "localX": "1104",
+        "localY": "320",
+        "yuyuBoard": "true"
+      },
+      "text": "围桌\nWIRE BOARD\n游戏牌桌\n许愿池\n积分榜\n0ms\nF\nFourad923\n魔强统一战 / 牌桌 41A81B09\n四真人输入同步验收\n开启托管\n全屏\n对局日志\n玩法速查\n邀请朋友\nF\nFourad920\n浦饭\n体力 223\n灵力 223\nF\nFourad921\n藏马\n体力 223\n灵力 223\nF\nFourad922\n幻海\n体力 223\n灵力 223\nF\nFourad923\n你\n户愚吕弟\n体力 223\n灵力 223\n↑\n↓\n←\n→\nMODE\nSTART\nX\nY\nZ\nA\nB\nC\n对局进行中\n聊天"
+    }
+  },
+  "sources": {
+    "scripts/yuyuhakusho/check_four_human_network.py": "26983672faad0c93cfe17dc645b7f0a6eb5fa38dd5211a0fcf7d53e0c34325ec",
+    "scripts/yuyuhakusho/platform_app_observer.js": "b07d9a383bd2927e2d188e604dfa43c4d084945d788810f5f3ff4480dd283a5c",
+    "scripts/yuyuhakusho/native_app_input.mjs": "b8d4e687b01e668d4b9c870397ba201ce6d94085919ee9ddb20b62abd168e459",
+    "games/yuyuhakusho/web/network-scene.ts": "1e3f95a4f6b881107a08434c87ca707a64f9f9ec9e1fc1f76edb300eeec8a3a1",
+    "games/yuyuhakusho/web/network-client.ts": "e62cf2c1949a52544d3346fc59a4a20010617176ceaf8b88ccc01b12f691dfa1"
+  }
+}

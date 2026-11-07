@@ -1,0 +1,35 @@
+{
+  "pass": true,
+  "desktop": {
+    "captionDelta": 0,
+    "controlDelta": 0,
+    "overflow": false
+  },
+  "mobile": {
+    "captionDelta": 0,
+    "controlDelta": 0,
+    "overflow": false
+  },
+  "keyboard": {
+    "a": "J",
+    "b": "K",
+    "c": "L",
+    "down": "S",
+    "left": "A",
+    "mode": "F",
+    "right": "D",
+    "start": "空格",
+    "up": "W",
+    "x": "U",
+    "y": "I",
+    "z": "O"
+  },
+  "actual_room": {
+    "arena": 2,
+    "characters": [
+      3,
+      9
+    ]
+  },
+  "checker_sha256": "8deec81b8f7882b18fd40e8d9553be7b93a9dad915830dd3ae7ad24fdc6c4f2a"
+}

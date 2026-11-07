@@ -1,0 +1,49 @@
+{
+  "width": 1280,
+  "height": 88,
+  "bytes": 98924,
+  "sha256": "7d040c57acdf55613334387caec972e1aae5f1ba4f3387b88ca093ea6ca1525c",
+  "scenes": [
+    {
+      "arena": 0,
+      "source": "games/yuyuhakusho/verification/runtime-e2e/native/two-ai/0600.png",
+      "sha256": "0d75675af704c9dc55641035a91ad77febe78235fb8d857d874badbdd407cf0f"
+    },
+    {
+      "arena": 2,
+      "source": "games/yuyuhakusho/verification/additional-arena-e2e/native/render/2/duel/0600.png",
+      "sha256": "1261652ddf7bf6e4fa862ecc068f92d91cf4022ce810300783e1580ec78573e1"
+    },
+    {
+      "arena": 4,
+      "source": "games/yuyuhakusho/verification/additional-arena-e2e/native/render/4/duel/0600.png",
+      "sha256": "5d3868e3a6a35fbf3c1e5ca815200cc3ac5a35f8aa944baf25942e0f8c2f6d03"
+    },
+    {
+      "arena": 6,
+      "source": "games/yuyuhakusho/verification/additional-arena-e2e/native/render/6/duel/0600.png",
+      "sha256": "08bd6cec6105362fdd7101b98b6e6a1781be33aad22a0dc036b006a43cdb5b73"
+    },
+    {
+      "arena": 8,
+      "source": "games/yuyuhakusho/verification/additional-arena-e2e/native/render/8/duel/0600.png",
+      "sha256": "80f5038f7ffad5de8a66a67407d88ef84decb95a233c043b6e4bc1388e4e8020"
+    },
+    {
+      "arena": 10,
+      "source": "games/yuyuhakusho/verification/additional-arena-e2e/native/render/a/duel/0600.png",
+      "sha256": "f8dec413f5d9ea7df5dcaa038400391f5e8e5eb7db955eff11d7aa03bf5eee72"
+    },
+    {
+      "arena": 12,
+      "source": "games/yuyuhakusho/verification/additional-arena-e2e/native/render/c/duel/0600.png",
+      "sha256": "ffc9d25278c8a83963d6414a3e4d668868ddf20e9e720338f453b23209780b7b"
+    },
+    {
+      "arena": 14,
+      "source": "games/yuyuhakusho/verification/additional-arena-e2e/native/render/e/duel/0600.png",
+      "sha256": "aaaf1972a95b6b266244dc84a62e82b2452da3549a0200bd432550a7845d7290"
+    }
+  ],
+  "method": "Lossless PNG atlas; crop original HUD from existing verified independent gameplay renders, then nearest-neighbor half-size. No emulator execution."
+}

@@ -1,0 +1,232 @@
+{
+  "pass": true,
+  "native_pointer": true,
+  "configuration_labels": {
+    "a": "J",
+    "b": "K",
+    "c": "L",
+    "down": "S",
+    "left": "A",
+    "mode": "F",
+    "right": "D",
+    "start": "空格",
+    "up": "W",
+    "x": "U",
+    "y": "I",
+    "z": "O"
+  },
+  "geometry": {
+    "buttons": [
+      {
+        "height": 19.1875,
+        "name": "up",
+        "width": 19.1875
+      },
+      {
+        "height": 19.1875,
+        "name": "down",
+        "width": 19.1875
+      },
+      {
+        "height": 19.1875,
+        "name": "left",
+        "width": 19.1875
+      },
+      {
+        "height": 19.1875,
+        "name": "right",
+        "width": 19.1875
+      },
+      {
+        "height": 15.03125,
+        "name": "mode",
+        "width": 39.03125
+      },
+      {
+        "height": 18.546875,
+        "name": "start",
+        "width": 45.75
+      },
+      {
+        "height": 29.4375,
+        "name": "x",
+        "width": 29.4375
+      },
+      {
+        "height": 29.4375,
+        "name": "y",
+        "width": 29.4375
+      },
+      {
+        "height": 29.4375,
+        "name": "z",
+        "width": 29.4375
+      },
+      {
+        "height": 29.4375,
+        "name": "a",
+        "width": 29.4375
+      },
+      {
+        "height": 29.4375,
+        "name": "b",
+        "width": 29.4375
+      },
+      {
+        "height": 29.4375,
+        "name": "c",
+        "width": 29.4375
+      }
+    ],
+    "cover": {
+      "height": 171,
+      "width": 288
+    },
+    "width": 320
+  },
+  "events": [
+    {
+      "buttons": [
+        "up"
+      ],
+      "id": 1
+    },
+    {
+      "cancelled": false,
+      "id": 1
+    },
+    {
+      "buttons": [
+        "down"
+      ],
+      "id": 1
+    },
+    {
+      "cancelled": false,
+      "id": 1
+    },
+    {
+      "buttons": [
+        "left"
+      ],
+      "id": 1
+    },
+    {
+      "cancelled": false,
+      "id": 1
+    },
+    {
+      "buttons": [
+        "right"
+      ],
+      "id": 1
+    },
+    {
+      "cancelled": false,
+      "id": 1
+    },
+    {
+      "buttons": [
+        "mode"
+      ],
+      "id": 1
+    },
+    {
+      "cancelled": false,
+      "id": 1
+    },
+    {
+      "buttons": [
+        "start"
+      ],
+      "id": 1
+    },
+    {
+      "cancelled": false,
+      "id": 1
+    },
+    {
+      "buttons": [
+        "x"
+      ],
+      "id": 1
+    },
+    {
+      "cancelled": false,
+      "id": 1
+    },
+    {
+      "buttons": [
+        "y"
+      ],
+      "id": 1
+    },
+    {
+      "cancelled": false,
+      "id": 1
+    },
+    {
+      "buttons": [
+        "z"
+      ],
+      "id": 1
+    },
+    {
+      "cancelled": false,
+      "id": 1
+    },
+    {
+      "buttons": [
+        "a"
+      ],
+      "id": 1
+    },
+    {
+      "cancelled": false,
+      "id": 1
+    },
+    {
+      "buttons": [
+        "b"
+      ],
+      "id": 1
+    },
+    {
+      "cancelled": false,
+      "id": 1
+    },
+    {
+      "buttons": [
+        "c"
+      ],
+      "id": 1
+    },
+    {
+      "cancelled": false,
+      "id": 1
+    },
+    {
+      "remap": "a"
+    },
+    {
+      "buttons": [
+        "a"
+      ],
+      "id": 1
+    },
+    {
+      "cancelled": false,
+      "id": 1
+    },
+    {
+      "buttons": [
+        "b"
+      ],
+      "id": 1
+    },
+    {
+      "cancelled": false,
+      "id": 1
+    }
+  ]
+}

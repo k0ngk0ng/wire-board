@@ -1,0 +1,8 @@
+{
+  "initial_red_invalid": "Fatalf used%s for uint64; Go vet rejected the test before behavior.",
+  "correction": "Diagnostic format%s ->%d only, no assertion or expected input changes.",
+  "real_baseline_red": "stream-overlap-real-red.jsonl",
+  "baseline_overlap": 6,
+  "restored_overlap": 20,
+  "current_producer_sha256": "6174e409d21c3b09f693633f590375c19decae68ab62f64dd788907923f0c7a2"
+}

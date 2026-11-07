@@ -1,0 +1,10 @@
+{
+  "pass": false,
+  "desktop": {
+    "captionDelta": 0,
+    "controlDelta": 0,
+    "overflow": false
+  },
+  "error": "AssertionError({'captionDelta': 8, 'controlDelta': 8, 'overflow': False})",
+  "checker_sha256": "0de9d53750d22ccb6f28c190cc351e6e4e3b69ba0b744c41a4c14d112942ac66"
+}

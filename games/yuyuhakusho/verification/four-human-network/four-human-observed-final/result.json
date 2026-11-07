@@ -1,0 +1,828 @@
+{
+  "pass": false,
+  "scope": "Four distinct signed-in human seats in independent Chromium browsers on this Mac; actual HTTP/SQLite/WebSocket and Go/Wasm. One real TCP connection is then delayed120ms per write. This does not claim four physical devices or arbitrary public networks.",
+  "budget": {
+    "minimum_visible_fps": 50,
+    "maximum_p95_ms": 40,
+    "maximum_input_visible_ms": 75
+  },
+  "stages": {
+    "normal": [
+      {
+        "seat": 0,
+        "hidden": false,
+        "visible_frames": 180,
+        "elapsed_ms": 3007.5,
+        "visible_fps": 59.85037406483791,
+        "p95_ms": 21.59999942779541,
+        "native_input_to_visible_ms": 30.199999809265137,
+        "input_ack_ms": 14.5,
+        "native_input_to_authority_ms": 81.30000019073486,
+        "local_before_ack": false,
+        "view_messages": 60,
+        "mean_view_bytes": 1760.1666666666667,
+        "max_view_bytes": 1797,
+        "incoming_view_bytes_per_second": 35115.54447215295,
+        "outgoing_input_bytes": 515,
+        "wire_checkpoints": 0,
+        "recoveries": []
+      },
+      {
+        "seat": 1,
+        "hidden": false,
+        "visible_frames": 181,
+        "elapsed_ms": 3012.0,
+        "visible_fps": 60.092961487383796,
+        "p95_ms": 22.09999942779541,
+        "native_input_to_visible_ms": 25.5,
+        "input_ack_ms": 11.800000190734863,
+        "native_input_to_authority_ms": 82.0,
+        "local_before_ack": false,
+        "view_messages": 60,
+        "mean_view_bytes": 1759.95,
+        "max_view_bytes": 1798,
+        "incoming_view_bytes_per_second": 35058.764940239045,
+        "outgoing_input_bytes": 514,
+        "wire_checkpoints": 0,
+        "recoveries": []
+      },
+      {
+        "seat": 2,
+        "hidden": false,
+        "visible_frames": 181,
+        "elapsed_ms": 3014.6000003814697,
+        "visible_fps": 60.04113314439598,
+        "p95_ms": 21.800000190734863,
+        "native_input_to_visible_ms": 46.80000019073486,
+        "input_ack_ms": 18.300000190734863,
+        "native_input_to_authority_ms": 67.89999961853027,
+        "local_before_ack": false,
+        "view_messages": 60,
+        "mean_view_bytes": 1759.9666666666667,
+        "max_view_bytes": 1798,
+        "incoming_view_bytes_per_second": 35028.8595457565,
+        "outgoing_input_bytes": 516,
+        "wire_checkpoints": 0,
+        "recoveries": []
+      },
+      {
+        "seat": 3,
+        "hidden": false,
+        "visible_frames": 180,
+        "elapsed_ms": 3006.5999994277954,
+        "visible_fps": 59.86828977391635,
+        "p95_ms": 21.199999809265137,
+        "native_input_to_visible_ms": 30.5,
+        "input_ack_ms": 11.199999809265137,
+        "native_input_to_authority_ms": 45.69999980926514,
+        "local_before_ack": false,
+        "view_messages": 60,
+        "mean_view_bytes": 1760.1666666666667,
+        "max_view_bytes": 1797,
+        "incoming_view_bytes_per_second": 35126.056016796145,
+        "outgoing_input_bytes": 515,
+        "wire_checkpoints": 0,
+        "recoveries": []
+      }
+    ],
+    "one-slow": [
+      {
+        "seat": 0,
+        "hidden": false,
+        "visible_frames": 181,
+        "elapsed_ms": 3013.5,
+        "visible_fps": 60.06304961008794,
+        "p95_ms": 21.199999809265137,
+        "native_input_to_visible_ms": 45.40000057220459,
+        "input_ack_ms": 10.5,
+        "native_input_to_authority_ms": 62.10000038146973,
+        "local_before_ack": false,
+        "view_messages": 60,
+        "mean_view_bytes": 1760.3666666666666,
+        "max_view_bytes": 1782,
+        "incoming_view_bytes_per_second": 35049.61008793762,
+        "outgoing_input_bytes": 517,
+        "wire_checkpoints": 0,
+        "recoveries": []
+      },
+      {
+        "seat": 1,
+        "hidden": false,
+        "visible_frames": 181,
+        "elapsed_ms": 3012.199999809265,
+        "visible_fps": 60.08897151964048,
+        "p95_ms": 22.300000190734863,
+        "native_input_to_visible_ms": 25.600000381469727,
+        "input_ack_ms": 8.700000762939453,
+        "native_input_to_authority_ms": 37.80000019073486,
+        "local_before_ack": false,
+        "view_messages": 60,
+        "mean_view_bytes": 1760.85,
+        "max_view_bytes": 1799,
+        "incoming_view_bytes_per_second": 35074.36425426263,
+        "outgoing_input_bytes": 516,
+        "wire_checkpoints": 0,
+        "recoveries": []
+      },
+      {
+        "seat": 2,
+        "hidden": false,
+        "visible_frames": 180,
+        "elapsed_ms": 3008.4000005722046,
+        "visible_fps": 59.832469075177364,
+        "p95_ms": 21.699999809265137,
+        "native_input_to_visible_ms": 45.5,
+        "input_ack_ms": 16.399999618530273,
+        "native_input_to_authority_ms": 68.10000038146973,
+        "local_before_ack": false,
+        "view_messages": 60,
+        "mean_view_bytes": 1760.85,
+        "max_view_bytes": 1799,
+        "incoming_view_bytes_per_second": 35118.66772367535,
+        "outgoing_input_bytes": 516,
+        "wire_checkpoints": 0,
+        "recoveries": []
+      },
+      {
+        "seat": 3,
+        "hidden": false,
+        "visible_frames": 172,
+        "elapsed_ms": 3006.9000005722046,
+        "visible_fps": 57.20176925314074,
+        "p95_ms": 23.399999618530273,
+        "native_input_to_visible_ms": 28.300000190734863,
+        "input_ack_ms": 137.0,
+        "native_input_to_authority_ms": 256.4000005722046,
+        "local_before_ack": true,
+        "view_messages": 58,
+        "mean_view_bytes": 1760.4137931034484,
+        "max_view_bytes": 1782,
+        "incoming_view_bytes_per_second": 33956.566557108614,
+        "outgoing_input_bytes": 516,
+        "wire_checkpoints": 0,
+        "recoveries": []
+      }
+    ],
+    "busy-normal": [
+      {
+        "seat": 0,
+        "hidden": false,
+        "visible_frames": 182,
+        "elapsed_ms": 3057.4000005722046,
+        "visible_fps": 59.52770326615359,
+        "p95_ms": 21.300000190734863,
+        "native_input_to_visible_ms": 21.59999942779541,
+        "input_ack_ms": 26.800000190734863,
+        "native_input_to_authority_ms": 72.89999961853027,
+        "local_before_ack": true,
+        "view_messages": 61,
+        "mean_view_bytes": 1798.72131147541,
+        "max_view_bytes": 1879,
+        "incoming_view_bytes_per_second": 35887.3552624665,
+        "outgoing_input_bytes": 4643,
+        "wire_checkpoints": 0,
+        "recoveries": []
+      },
+      {
+        "seat": 1,
+        "hidden": false,
+        "visible_frames": 182,
+        "elapsed_ms": 3064.5,
+        "visible_fps": 59.389786262032956,
+        "p95_ms": 21.800000190734863,
+        "native_input_to_visible_ms": 21.700000762939453,
+        "input_ack_ms": 7.800000190734863,
+        "native_input_to_authority_ms": 44.60000038146973,
+        "local_before_ack": false,
+        "view_messages": 61,
+        "mean_view_bytes": 1799.360655737705,
+        "max_view_bytes": 1878,
+        "incoming_view_bytes_per_second": 35816.93587860989,
+        "outgoing_input_bytes": 4630,
+        "wire_checkpoints": 0,
+        "recoveries": []
+      },
+      {
+        "seat": 2,
+        "hidden": false,
+        "visible_frames": 184,
+        "elapsed_ms": 3075.300000190735,
+        "visible_fps": 59.83156114479499,
+        "p95_ms": 21.90000057220459,
+        "native_input_to_visible_ms": 37.70000076293945,
+        "input_ack_ms": 25.699999809265137,
+        "native_input_to_authority_ms": 104.60000038146973,
+        "local_before_ack": true,
+        "view_messages": 62,
+        "mean_view_bytes": 1798.8064516129032,
+        "max_view_bytes": 1878,
+        "incoming_view_bytes_per_second": 36265.0798273609,
+        "outgoing_input_bytes": 4629,
+        "wire_checkpoints": 0,
+        "recoveries": []
+      },
+      {
+        "seat": 3,
+        "hidden": false,
+        "visible_frames": 182,
+        "elapsed_ms": 3063.699999809265,
+        "visible_fps": 59.40529425574653,
+        "p95_ms": 19.600000381469727,
+        "native_input_to_visible_ms": 63.60000038146973,
+        "input_ack_ms": 18.899999618530273,
+        "native_input_to_authority_ms": 54.10000038146973,
+        "local_before_ack": false,
+        "view_messages": 66,
+        "mean_view_bytes": 1795.8030303030303,
+        "max_view_bytes": 1878,
+        "incoming_view_bytes_per_second": 38686.22907183432,
+        "outgoing_input_bytes": 4621,
+        "wire_checkpoints": 0,
+        "recoveries": []
+      }
+    ]
+  },
+  "app_build": "4eac2bec823065e7d9c2698ddf7cb8f3a1bde791e4ca2b594eb6928b9e929d2e",
+  "runtime": {
+    "wasm": {
+      "url": "/yuyuhakusho/v1/runtime/client.wasm",
+      "sha256": "486e4599cb8a9dafb3d23a007fa75c48bfa2c184f4c4c492eace0fca0ef772e8",
+      "bytes": 5060604
+    }
+  },
+  "urls": {
+    "direct": "http://127.0.0.1:57894/",
+    "shaped": "http://127.0.0.1:57895/"
+  },
+  "human_seats": 4,
+  "characters": [
+    3,
+    1,
+    0,
+    10
+  ],
+  "error": "AssertionError({'seat': 3, 'hidden': False, 'visible_frames': 21, 'elapsed_ms': 3034.800000190735, 'visible_fps': 6.919731118584475, 'p95_ms': 30.5, 'native_input_to_visible_ms': 31.0, 'input_ack_ms': 138.79999923706055, 'native_input_to_authority_ms': 271.4000005722046, 'local_before_ack': True, 'view_messages': 57, 'mean_view_bytes': 1800.4035087719299, 'max_view_bytes': 1878, 'incoming_view_bytes_per_second': 33815.407932499744, 'outgoing_input_bytes': 1538, 'wire_checkpoints': 0, 'recoveries': [{'at': 16361.60000038147, 'confirmed': '874', 'pending': 3, 'reason': 'Error: replay gap', 'transportConnected': True, 'view': '883'}, {'at': 18036.60000038147, 'confirmed': '895', 'pending': 0, 'reason': 'Error: replay gap', 'transportConnected': True, 'view': '982'}]})",
+  "diagnostics": {
+    "0": {
+      "board": {
+        "authorityFrame": "1063",
+        "connection": "connected",
+        "frame": "1065",
+        "localX": "1031",
+        "localY": "320",
+        "yuyuBoard": "true"
+      },
+      "fetches": [
+        {
+          "at": 3639,
+          "end": 3662.300000190735,
+          "status": 200,
+          "url": "/api/rooms/adc22886"
+        },
+        {
+          "at": 3662.5,
+          "end": 3663.800000190735,
+          "status": 200,
+          "url": "/game-load-manifest.json"
+        },
+        {
+          "at": 3664.6000003814697,
+          "end": 3666.699999809265,
+          "status": 200,
+          "url": "/assets/module-YVDpg_y-.js"
+        },
+        {
+          "at": 3664.699999809265,
+          "end": 3666.800000190735,
+          "status": 200,
+          "url": "/assets/module-BzWOSRc0.css"
+        },
+        {
+          "at": 3664.800000190735,
+          "end": 3667.800000190735,
+          "status": 200,
+          "url": "/assets/index-CGDExy_c.js"
+        },
+        {
+          "at": 3664.800000190735,
+          "end": 3667.8999996185303,
+          "status": 200,
+          "url": "/assets/index-CbRLozBK.css"
+        },
+        {
+          "at": 3664.8999996185303,
+          "end": 3668.699999809265,
+          "status": 200,
+          "url": "/assets/module-4rIte7rE.js"
+        },
+        {
+          "at": 3675.1000003814697,
+          "end": 3677.8999996185303,
+          "status": 200,
+          "url": "/api/controllers?game=yuyuhakusho"
+        },
+        {
+          "at": 3681.699999809265,
+          "end": 3683.6000003814697,
+          "status": 200,
+          "url": "/yuyuhakusho/data/runtime-resource-descriptor.json"
+        },
+        {
+          "at": 3684.199999809265,
+          "end": 3690.199999809265,
+          "status": 200,
+          "url": "/yuyuhakusho/data/chu-world-rules.json.gz"
+        },
+        {
+          "at": 3684.3999996185303,
+          "end": 3691.6000003814697,
+          "status": 200,
+          "url": "/yuyuhakusho/data/renderstate-metadata.json.gz"
+        },
+        {
+          "at": 3684.300000190735,
+          "end": 3694.8999996185303,
+          "status": 200,
+          "url": "/yuyuhakusho/data/world-sprites.json.gz"
+        },
+        {
+          "at": 3684.3999996185303,
+          "end": 3697.800000190735,
+          "status": 200,
+          "url": "/yuyuhakusho/data/hud-assets.json.gz"
+        },
+        {
+          "at": 3691.5,
+          "end": 3698,
+          "status": 200,
+          "url": "http://127.0.0.1:57894/yuyuhakusho/v1/runtime/build.json"
+        },
+        {
+          "at": 3684.3999996185303,
+          "end": 3698.5,
+          "status": 200,
+          "url": "/yuyuhakusho/data/arena-assets-default.json.gz"
+        },
+        {
+          "at": 3720,
+          "end": 3727.699999809265,
+          "status": 200,
+          "url": "http://127.0.0.1:57894/yuyuhakusho/v1/runtime/client.wasm"
+        },
+        {
+          "at": 4166.199999809265,
+          "end": 4174.800000190735,
+          "status": 200,
+          "url": "/api/rooms/adc22886/sync"
+        },
+        {
+          "at": 4217.800000190735,
+          "end": 4219.699999809265,
+          "status": 200,
+          "url": "/api/rooms/adc22886"
+        },
+        {
+          "at": 4388.10000038147,
+          "end": 4391.10000038147,
+          "status": 200,
+          "url": "/api/rooms/adc22886/sync"
+        },
+        {
+          "at": 9194.5,
+          "end": 9200.699999809263,
+          "status": 200,
+          "url": "/api/rooms/adc22886/sync"
+        }
+      ],
+      "recoveries": [],
+      "text": "围桌\nWIRE BOARD\n游戏牌桌\n许愿池\n积分榜\n0ms\nF\nFour40ea0\n魔强统一战 / 牌桌 ADC22886\n四真人输入同步验收\n开启托管\n全屏\n对局日志\n玩法速查\n邀请朋友\n结束牌桌\nF\nFour40ea0\n你\n浦饭\n体力 223\n灵力 223\nF\nFour40ea1\n藏马\n体力 223\n灵力 193\nF\nFour40ea2\n幻海\n体力 193\n灵力 223\nF\nFour40ea3\n户愚吕弟\n体力 210\n灵力 199\n↑\n↓\n←\n→\nMODE\nSTART\nX\nY\nZ\nA\nB\nC\n对局进行中\n聊天"
+    },
+    "1": {
+      "board": {
+        "authorityFrame": "1066",
+        "connection": "connected",
+        "frame": "1071",
+        "localX": "1018",
+        "localY": "304",
+        "yuyuBoard": "true"
+      },
+      "fetches": [
+        {
+          "at": 2439.0999994277954,
+          "end": 2440,
+          "status": 200,
+          "url": "/assets/module-YVDpg_y-.js"
+        },
+        {
+          "at": 2439.2999992370605,
+          "end": 2440.0999994277954,
+          "status": 200,
+          "url": "/assets/module-BzWOSRc0.css"
+        },
+        {
+          "at": 2439.2999992370605,
+          "end": 2440.8999996185303,
+          "status": 200,
+          "url": "/assets/index-CGDExy_c.js"
+        },
+        {
+          "at": 2439.2999992370605,
+          "end": 2441.5,
+          "status": 200,
+          "url": "/assets/index-CbRLozBK.css"
+        },
+        {
+          "at": 2439.2999992370605,
+          "end": 2441.699999809265,
+          "status": 200,
+          "url": "/assets/module-4rIte7rE.js"
+        },
+        {
+          "at": 2444.699999809265,
+          "end": 2447,
+          "status": 200,
+          "url": "/api/controllers?game=yuyuhakusho"
+        },
+        {
+          "at": 2448.699999809265,
+          "end": 2455.2999992370605,
+          "status": 200,
+          "url": "/yuyuhakusho/data/runtime-resource-descriptor.json"
+        },
+        {
+          "at": 2456.0999994277954,
+          "end": 2457.7999992370605,
+          "status": 200,
+          "url": "http://127.0.0.1:57894/yuyuhakusho/v1/runtime/build.json"
+        },
+        {
+          "at": 2456.7999992370605,
+          "end": 2459.0999994277954,
+          "status": 200,
+          "url": "/yuyuhakusho/data/chu-world-rules.json.gz"
+        },
+        {
+          "at": 2456.8999996185303,
+          "end": 2459.8999996185303,
+          "status": 200,
+          "url": "/yuyuhakusho/data/world-sprites.json.gz"
+        },
+        {
+          "at": 2456.8999996185303,
+          "end": 2463.5,
+          "status": 200,
+          "url": "/yuyuhakusho/data/hud-assets.json.gz"
+        },
+        {
+          "at": 2457,
+          "end": 2465.7999992370605,
+          "status": 200,
+          "url": "/yuyuhakusho/data/renderstate-metadata.json.gz"
+        },
+        {
+          "at": 2458.0999994277954,
+          "end": 2466.2999992370605,
+          "status": 200,
+          "url": "http://127.0.0.1:57894/yuyuhakusho/v1/runtime/client.wasm"
+        },
+        {
+          "at": 2457,
+          "end": 2473.5999994277954,
+          "status": 200,
+          "url": "/yuyuhakusho/data/arena-assets-default.json.gz"
+        },
+        {
+          "at": 2945.5999994277954,
+          "end": 2951.2999992370605,
+          "status": 200,
+          "url": "/api/rooms/adc22886/sync"
+        },
+        {
+          "at": 2999.699999809265,
+          "end": 3002.699999809265,
+          "status": 200,
+          "url": "/api/rooms/adc22886"
+        },
+        {
+          "at": 3152.2999992370605,
+          "end": 3155.199999809265,
+          "status": 200,
+          "url": "/api/state"
+        },
+        {
+          "at": 3161.0999994277954,
+          "end": 3164,
+          "status": 200,
+          "url": "/api/state"
+        },
+        {
+          "at": 3167,
+          "end": 3169.3999996185303,
+          "status": 200,
+          "url": "/api/state"
+        },
+        {
+          "at": 3214.3999996185303,
+          "end": 3246.0999994277954,
+          "status": 200,
+          "url": "/api/rooms/adc22886/sync"
+        }
+      ],
+      "recoveries": [],
+      "text": "围桌\nWIRE BOARD\n游戏牌桌\n许愿池\n积分榜\n0ms\nF\nFour40ea1\n魔强统一战 / 牌桌 ADC22886\n四真人输入同步验收\n开启托管\n全屏\n对局日志\n玩法速查\n邀请朋友\nF\nFour40ea0\n浦饭\n体力 223\n灵力 223\nF\nFour40ea1\n你\n藏马\n体力 223\n灵力 193\nF\nFour40ea2\n幻海\n体力 193\n灵力 223\nF\nFour40ea3\n户愚吕弟\n体力 210\n灵力 199\n↑\n↓\n←\n→\nMODE\nSTART\nX\nY\nZ\nA\nB\nC\n对局进行中\n聊天"
+    },
+    "2": {
+      "board": {
+        "authorityFrame": "1072",
+        "connection": "connected",
+        "frame": "1075",
+        "localX": "1173",
+        "localY": "304",
+        "yuyuBoard": "true"
+      },
+      "fetches": [
+        {
+          "at": 1570.0999994277954,
+          "end": 1584.8999996185305,
+          "status": 200,
+          "url": "/api/rooms/adc22886"
+        },
+        {
+          "at": 1585.0999994277954,
+          "end": 1586,
+          "status": 200,
+          "url": "/game-load-manifest.json"
+        },
+        {
+          "at": 1586.3999996185305,
+          "end": 1587,
+          "status": 200,
+          "url": "/assets/module-YVDpg_y-.js"
+        },
+        {
+          "at": 1586.5,
+          "end": 1587,
+          "status": 200,
+          "url": "/assets/module-BzWOSRc0.css"
+        },
+        {
+          "at": 1586.5,
+          "end": 1587.2999992370603,
+          "status": 200,
+          "url": "/assets/index-CGDExy_c.js"
+        },
+        {
+          "at": 1586.5,
+          "end": 1587.6999998092651,
+          "status": 200,
+          "url": "/assets/index-CbRLozBK.css"
+        },
+        {
+          "at": 1586.5,
+          "end": 1588.0999994277954,
+          "status": 200,
+          "url": "/assets/module-4rIte7rE.js"
+        },
+        {
+          "at": 1591.5999994277954,
+          "end": 1594,
+          "status": 200,
+          "url": "/api/controllers?game=yuyuhakusho"
+        },
+        {
+          "at": 1599.8999996185305,
+          "end": 1601.5,
+          "status": 200,
+          "url": "http://127.0.0.1:57894/yuyuhakusho/v1/runtime/build.json"
+        },
+        {
+          "at": 1601.7999992370603,
+          "end": 1603.2999992370603,
+          "status": 200,
+          "url": "http://127.0.0.1:57894/yuyuhakusho/v1/runtime/client.wasm"
+        },
+        {
+          "at": 1597.6999998092651,
+          "end": 1604.3999996185305,
+          "status": 200,
+          "url": "/yuyuhakusho/data/runtime-resource-descriptor.json"
+        },
+        {
+          "at": 1611.1999998092651,
+          "end": 1614.3999996185305,
+          "status": 200,
+          "url": "/yuyuhakusho/data/world-sprites.json.gz"
+        },
+        {
+          "at": 1610.8999996185305,
+          "end": 1615.5999994277954,
+          "status": 200,
+          "url": "/yuyuhakusho/data/chu-world-rules.json.gz"
+        },
+        {
+          "at": 1611.1999998092651,
+          "end": 1627.2999992370603,
+          "status": 200,
+          "url": "/yuyuhakusho/data/hud-assets.json.gz"
+        },
+        {
+          "at": 1611.1999998092651,
+          "end": 1627.6999998092651,
+          "status": 200,
+          "url": "/yuyuhakusho/data/renderstate-metadata.json.gz"
+        },
+        {
+          "at": 1611.1999998092651,
+          "end": 1629.7999992370603,
+          "status": 200,
+          "url": "/yuyuhakusho/data/arena-assets-default.json.gz"
+        },
+        {
+          "at": 2078.8999996185303,
+          "end": 2087,
+          "status": 200,
+          "url": "/api/rooms/adc22886/sync"
+        },
+        {
+          "at": 2137.8999996185303,
+          "end": 2147.8999996185303,
+          "status": 200,
+          "url": "/api/rooms/adc22886"
+        },
+        {
+          "at": 2282.0999994277954,
+          "end": 2284.5,
+          "status": 200,
+          "url": "/api/state"
+        },
+        {
+          "at": 2351.699999809265,
+          "end": 2381.5999994277954,
+          "status": 200,
+          "url": "/api/rooms/adc22886/sync"
+        }
+      ],
+      "recoveries": [],
+      "text": "围桌\nWIRE BOARD\n游戏牌桌\n许愿池\n积分榜\n0ms\nF\nFour40ea2\n魔强统一战 / 牌桌 ADC22886\n四真人输入同步验收\n开启托管\n全屏\n对局日志\n玩法速查\n邀请朋友\nF\nFour40ea0\n浦饭\n体力 223\n灵力 223\nF\nFour40ea1\n藏马\n体力 223\n灵力 193\nF\nFour40ea2\n你\n幻海\n体力 193\n灵力 223\nF\nFour40ea3\n户愚吕弟\n体力 210\n灵力 199\n↑\n↓\n←\n→\nMODE\nSTART\nX\nY\nZ\nA\nB\nC\n对局进行中\n聊天"
+    },
+    "3": {
+      "board": {
+        "authorityFrame": "895",
+        "connection": "recovering",
+        "frame": "899",
+        "localX": "1085",
+        "localY": "320",
+        "yuyuBoard": "true"
+      },
+      "fetches": [
+        {
+          "at": 763.1999998092651,
+          "end": 764.6000003814697,
+          "status": 200,
+          "url": "/assets/module-YVDpg_y-.js"
+        },
+        {
+          "at": 763.6000003814697,
+          "end": 764.8000001907349,
+          "status": 200,
+          "url": "/assets/module-BzWOSRc0.css"
+        },
+        {
+          "at": 763.6000003814697,
+          "end": 764.8999996185303,
+          "status": 200,
+          "url": "/assets/index-CGDExy_c.js"
+        },
+        {
+          "at": 763.6999998092651,
+          "end": 765.8000001907349,
+          "status": 200,
+          "url": "/assets/index-CbRLozBK.css"
+        },
+        {
+          "at": 763.8999996185303,
+          "end": 765.8000001907349,
+          "status": 200,
+          "url": "/assets/module-4rIte7rE.js"
+        },
+        {
+          "at": 768.6999998092651,
+          "end": 778.8000001907349,
+          "status": 200,
+          "url": "/api/controllers?game=yuyuhakusho"
+        },
+        {
+          "at": 785.5,
+          "end": 789.1999998092651,
+          "status": 200,
+          "url": "/yuyuhakusho/data/runtime-resource-descriptor.json"
+        },
+        {
+          "at": 789.6999998092651,
+          "end": 792.8999996185303,
+          "status": 200,
+          "url": "http://127.0.0.1:57895/yuyuhakusho/v1/runtime/build.json"
+        },
+        {
+          "at": 793.5,
+          "end": 798.5,
+          "status": 200,
+          "url": "/yuyuhakusho/data/world-sprites.json.gz"
+        },
+        {
+          "at": 793.6000003814697,
+          "end": 802.6000003814697,
+          "status": 200,
+          "url": "/yuyuhakusho/data/hud-assets.json.gz"
+        },
+        {
+          "at": 793.3999996185303,
+          "end": 804.3999996185303,
+          "status": 200,
+          "url": "/yuyuhakusho/data/chu-world-rules.json.gz"
+        },
+        {
+          "at": 793.6000003814697,
+          "end": 818.6000003814697,
+          "status": 200,
+          "url": "/yuyuhakusho/data/arena-assets-default.json.gz"
+        },
+        {
+          "at": 793.6000003814697,
+          "end": 818.6000003814697,
+          "status": 200,
+          "url": "/yuyuhakusho/data/renderstate-metadata.json.gz"
+        },
+        {
+          "at": 793.6999998092651,
+          "end": 829.1999998092651,
+          "status": 200,
+          "url": "http://127.0.0.1:57895/yuyuhakusho/v1/runtime/client.wasm"
+        },
+        {
+          "at": 1314.3000001907349,
+          "end": 1318.1999998092651,
+          "status": 200,
+          "url": "/api/rooms/adc22886/sync"
+        },
+        {
+          "at": 1373.6000003814695,
+          "end": 1378.6000003814695,
+          "status": 200,
+          "url": "/api/rooms/adc22886"
+        },
+        {
+          "at": 1396.1999998092651,
+          "end": 1402.3999996185305,
+          "status": 200,
+          "url": "/api/state"
+        },
+        {
+          "at": 1434.6999998092651,
+          "end": 1438.1999998092651,
+          "status": 200,
+          "url": "/api/rooms/adc22886/sync"
+        },
+        {
+          "at": 16362.60000038147,
+          "end": 16497,
+          "status": 200,
+          "url": "/api/rooms/adc22886/sync"
+        },
+        {
+          "at": 18037,
+          "end": 18174.5,
+          "status": 200,
+          "url": "/api/rooms/adc22886/sync"
+        }
+      ],
+      "recoveries": [
+        {
+          "at": 16361.60000038147,
+          "confirmed": "874",
+          "pending": 3,
+          "reason": "Error: replay gap",
+          "transportConnected": true,
+          "view": "883"
+        },
+        {
+          "at": 18036.60000038147,
+          "confirmed": "895",
+          "pending": 0,
+          "reason": "Error: replay gap",
+          "transportConnected": true,
+          "view": "982"
+        }
+      ],
+      "text": "围桌\nWIRE BOARD\n游戏牌桌\n许愿池\n积分榜\n0ms\nF\nFour40ea3\n魔强统一战 / 牌桌 ADC22886\n四真人输入同步验收\n开启托管\n全屏\n对局日志\n玩法速查\n邀请朋友\nF\nFour40ea0\n浦饭\n体力 223\n灵力 223\nF\nFour40ea1\n藏马\n体力 223\n灵力 193\nF\nFour40ea2\n幻海\n体力 193\n灵力 223\nF\nFour40ea3\n你\n户愚吕弟\n体力 210\n灵力 199\n\n正在恢复连接\n\n↑\n↓\n←\n→\nMODE\nSTART\nX\nY\nZ\nA\nB\nC\n对局进行中\n聊天"
+    }
+  },
+  "sources": {
+    "scripts/yuyuhakusho/check_four_human_network.py": "5cc163de7799aa2a912eb923bf9944ebf82bc2da35d8d37748bd8b67cfe23ae2",
+    "scripts/yuyuhakusho/platform_app_observer.js": "b07d9a383bd2927e2d188e604dfa43c4d084945d788810f5f3ff4480dd283a5c",
+    "scripts/yuyuhakusho/native_app_input.mjs": "b8d4e687b01e668d4b9c870397ba201ce6d94085919ee9ddb20b62abd168e459",
+    "games/yuyuhakusho/web/network-scene.ts": "511fe31bad133c02b611c5bf76d974fe0190edfb5aed16c0adf0ea84def173d0",
+    "games/yuyuhakusho/web/network-client.ts": "e62cf2c1949a52544d3346fc59a4a20010617176ceaf8b88ccc01b12f691dfa1",
+    "games/yuyuhakusho/web/types.ts": "39df0c7013eabce971b22416ca2bfc1e0e3aa79ea22488e32293f8ca69d2fcca"
+  }
+}

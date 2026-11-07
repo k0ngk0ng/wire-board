@@ -23,10 +23,10 @@ def js(code):return browser('eval',code)['result']
 opened=False;report={}
 try:
  browser('--profile',str(TMP/'profile'),'open',url);opened=True;browser('set','viewport','1100','1000');browser('snapshot','-i')
- assert js('document.querySelectorAll("[aria-label=比赛准备] [aria-label=场地] option").length')==8
- assert js('document.querySelectorAll("[data-character-seat] option").length')>=22
- browser('select','[aria-label=比赛准备] [aria-label=场地]','10');assert js('window.yuyuBoardProbe.prepare.at(-1)?.arena')==10
- browser('select','[data-character-seat="1"]','8');assert js('window.yuyuBoardProbe.prepare.at(-1)?.character')==8
+ browser('click','[aria-label=比赛准备] [data-arena-picker] summary');browser('wait','--fn','document.querySelectorAll("[data-arena-option]").length===8')
+ assert js('document.querySelectorAll("details[data-character-seat]").length')==2
+ browser('click','[data-arena-option="10"]');assert js('window.yuyuBoardProbe.prepare.at(-1)?.arena')==10
+ browser('click','[data-character-seat="1"] summary');browser('wait','--fn','document.querySelectorAll("[data-character-option]").length===11');browser('click','[data-character-option="8"]');assert js('window.yuyuBoardProbe.prepare.at(-1)?.character')==8
  if args.loading_review:js('yuyuBoardProbe.testGate=true')
  if args.performance_review or args.cursor_review:js('yuyuBoardProbe.pollMS=50')
  browser('click','#start-board');browser('wait','--fn','yuyuBoardProbe.ready || !!yuyuBoardProbe.error');assert not js('yuyuBoardProbe.error'),js('yuyuBoardProbe.error')

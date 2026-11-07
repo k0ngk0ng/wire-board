@@ -110,7 +110,7 @@ func TestControllerMDProfilesE2E(t *testing.T) {
 	if !reflect.DeepEqual(ids, []string{"classic-2", "md-6"}) {
 		t.Fatalf("controller models: %v", ids)
 	}
-	want := map[string]any{"up": "KeyW", "down": "KeyS", "left": "KeyA", "right": "KeyD", "mode": "KeyF", "start": "Space", "b": "KeyJ", "a": "KeyK", "c": "KeyL", "x": "KeyU", "y": "KeyI", "z": "KeyO"}
+	want := map[string]any{"up": "KeyW", "down": "KeyS", "left": "KeyA", "right": "KeyD", "mode": "KeyF", "start": "Space", "a": "KeyJ", "b": "KeyK", "c": "KeyL", "x": "KeyU", "y": "KeyI", "z": "KeyO"}
 	p := controllerProfileHTTP(t, a, "md-6")
 	if !reflect.DeepEqual(p["keyboard"], want) {
 		t.Fatalf("MD defaults: %v", p)

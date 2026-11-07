@@ -1,0 +1,11 @@
+✔ standard MD6 preset maps all six ordinary buttons plus mode/start and directions (1.619083ms)
+✔ MD U/I are continuous X/Y while FC named turbos keep their original phase (0.183416ms)
+✔ device profile identity, sparse attachment and source release remain independent for MD (0.133541ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 67.566125

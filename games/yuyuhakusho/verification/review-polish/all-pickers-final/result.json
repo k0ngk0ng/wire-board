@@ -1,0 +1,27 @@
+{
+  "pass": false,
+  "arena_selection": {
+    "count": 8,
+    "selected": 10,
+    "alignment": {
+      "captions": 0,
+      "controls": 0
+    }
+  },
+  "error": "AssertionError()",
+  "diagnostic": [
+    {
+      "open": false,
+      "options": 0,
+      "seat": "0",
+      "summary": "<summary class=\"yuyu-character-summary\" tabindex=\"0\" aria-label=\"玩家的角色：户愚吕兄\" aria-disabled=\"false\"><span class=\"yuyu-portrait\" aria-hidden=\"true\"><img alt=\"\" draggable=\"false\" src=\"./character-portraits-N2EUM6OL.png\" style=\"left: -800%;\"></span><span>户愚吕兄</span><span class=\"yuyu-character-chevron\" aria-hidden=\"true\">⌄</span></summary>"
+    },
+    {
+      "open": false,
+      "options": 0,
+      "seat": "1",
+      "summary": "<summary class=\"yuyu-character-summary\" tabindex=\"0\" aria-label=\"电脑的角色：户愚吕弟\" aria-disabled=\"false\"><span class=\"yuyu-portrait\" aria-hidden=\"true\"><img alt=\"\" draggable=\"false\" src=\"./character-portraits-N2EUM6OL.png\" style=\"left: -1000%;\"></span><span>户愚吕弟</span><span class=\"yuyu-character-chevron\" aria-hidden=\"true\">⌄</span></summary>"
+    }
+  ],
+  "checker_sha256": "e403e5450cb6239aa38561b8b41656c196f10c46543f0986912f6279a3d83fb7"
+}

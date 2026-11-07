@@ -1,0 +1,50 @@
+{
+  "pass": true,
+  "md_keyboard": {
+    "defaults": {
+      "a": "KeyJ",
+      "b": "KeyK",
+      "c": "KeyL",
+      "down": "KeyS",
+      "left": "KeyA",
+      "mode": "KeyF",
+      "right": "KeyD",
+      "start": "Space",
+      "up": "KeyW",
+      "x": "KeyU",
+      "y": "KeyI",
+      "z": "KeyO"
+    },
+    "profile": {
+      "a": "KeyJ",
+      "b": "KeyK",
+      "c": "KeyL",
+      "down": "KeyS",
+      "left": "KeyA",
+      "mode": "KeyF",
+      "right": "KeyD",
+      "start": "Space",
+      "up": "KeyW",
+      "x": "KeyU",
+      "y": "KeyI",
+      "z": "KeyO"
+    }
+  },
+  "real_selection_received": {
+    "characters": [
+      2,
+      9
+    ],
+    "room": "3070ce0a"
+  },
+  "restored_character": 1,
+  "mobile": {
+    "bottom": 431.390625,
+    "height": 740,
+    "left": 44,
+    "overflow": false,
+    "right": 316,
+    "top": 137.609375,
+    "width": 320
+  }
+}
