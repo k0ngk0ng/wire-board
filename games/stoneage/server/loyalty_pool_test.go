@@ -16,7 +16,7 @@ func TestArenaLoyaltyPoolDistribution(t *testing.T) {
 		s.makePool()
 		poolLow := 0
 		for _, pet := range s.Pool.Pets {
-			original, ok := petByID(sourceCatalog.Pets, pet.ID)
+			original, ok := petByID(eliteCatalog.Pets, pet.ID)
 			if !ok || pet.Weights != original.Weights || pet.Elements != original.Elements {
 				t.Fatal("loyalty changed species stats", pet)
 			}
@@ -64,10 +64,10 @@ func TestArenaLoyaltyPoolDistribution(t *testing.T) {
 		}
 	}
 	rate := float64(low) / float64(strong)
-	if ordinary == 0 || strong == 0 || rate < .15 || rate > .23 {
+	if ordinary != 0 || strong != 80000 || rate < .10 || rate > .16 {
 		t.Fatal("strong low-loyalty rate must remain near 20%, subject to the pool cap", ordinary, strong, low, rate)
 	}
-	if len(ordinaryValues) != 21 || len(highValues) != 21 || len(lowValues) != 11 {
+	if len(ordinaryValues) != 0 || len(highValues) != 21 || len(lowValues) != 11 {
 		t.Fatal("missing loyalty values or wrong bounds", ordinaryValues, highValues, lowValues)
 	}
 	t.Logf("4000 pools: ordinary=%d, strong=%d, low=%d (%.2f%% of strong candidates)", ordinary, strong, low, rate*100)

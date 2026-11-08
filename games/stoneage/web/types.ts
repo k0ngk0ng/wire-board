@@ -6,6 +6,7 @@ export type Options = {
 };
 export type Rider = { avatar: number; graphic: number };
 export type PetDefinition = {
+  stats?: { hp: number; attack: number; defense: number; speed: number };
   loyalty: number;
   id: number;
   name: string;
@@ -34,6 +35,13 @@ export type Magic = {
   status?: string;
 };
 export type Equipment = {
+  tier?: number;
+  maxTier?: number;
+  minHits?: number;
+  maxHits?: number;
+  critical?: number;
+  evade?: number;
+  resistances?: Record<string, number>;
   id: number;
   name: string;
   slot: string;
@@ -70,6 +78,7 @@ export type Pool = {
   tactics: Item[];
 };
 export type Loadout = {
+  elements?: number[];
   pet: number;
   ride: number;
   avatar: number;
@@ -96,6 +105,7 @@ export type Status = {
   immune: number;
 };
 export type Unit = {
+  charge?: { skill: number; remaining: number };
   loyalty: number;
   fled?: boolean;
   id: number;

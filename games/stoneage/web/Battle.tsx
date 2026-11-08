@@ -130,8 +130,9 @@ export function Battle({
       return id === (owner === "player" ? mine.body.id : mine.pet.id);
     let hostile = true;
     if (command.kind === "magic")
-      hostile =
-        data.self?.magic?.find((m) => m.id === command.id)?.kind === "damage";
+      hostile = ["damage", "control"].includes(
+        data.self?.magic?.find((m) => m.id === command.id)?.kind ?? "",
+      );
     if (command.kind === "item")
       hostile =
         data.self?.inventory?.find((i) => i.item.id === command.id)?.item
@@ -142,7 +143,7 @@ export function Battle({
     setUI(next);
     const plan = readyPlan(
       next,
-      mine.pet.hp > 0 && !mine.pet.fled,
+      mine.pet.hp > 0 && !mine.pet.fled && !mine.pet.charge,
       mine.pet.id,
     );
     if (!plan || !canAct || sending.current) return;
@@ -432,6 +433,11 @@ export function Battle({
                   )}
                 </span>
                 <span className="sa-unit-status">
+                  {unit.charge && (
+                    <abbr title={`蓄力中，剩余 ${unit.charge.remaining} 回合`}>
+                      蓄
+                    </abbr>
+                  )}
                   {Object.entries(statusNames).map(
                     ([key, name]) =>
                       Number(unit.status[key as keyof typeof unit.status]) >
@@ -736,7 +742,7 @@ function ActorDetails({
           (value, i) =>
             value > 0 && (
               <span key={i}>
-                {["地", "水", "火", "风"][i]} {value}
+                {["地", "水", "火", "风"][i]} {value / 10}
               </span>
             ),
         )}

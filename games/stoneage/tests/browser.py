@@ -75,6 +75,9 @@ try:
  wait(lambda:js('!!document.querySelector("[data-stoneage-selection]") && !document.querySelector(".game-loading")'),90)
  b('wait','[data-stoneage-selection]')
  candidate_loyalty=js('[...document.querySelectorAll(".sa-pet-choice")].map(e=>({id:Number(e.dataset.stoneagePet),loyalty:Number(e.querySelector("[data-stoneage-loyalty]")?.dataset.stoneageLoyalty)}))')
+ assert js('document.querySelectorAll(".sa-pet-choice .sa-pet-stats").length')==len(candidate_loyalty),'candidate four-dimensional stats missing'
+ stats=js('[...document.querySelectorAll(".sa-pet-choice")].map(e=>({id:Number(e.dataset.stoneagePet),values:[...e.querySelectorAll(".sa-pet-stats b")].map(n=>Number(n.textContent))}))')
+ assert stats==[{'id':p['id'],'values':[p['stats'][k] for k in ['hp','attack','defense','speed']]} for p in room()['game']['data']['pool']['pets']]
  assert candidate_loyalty==[{'id':p['id'],'loyalty':p['loyalty']} for p in room()['game']['data']['pool']['pets']],'candidate loyalty display differs from public pool'
  REPORT['candidateLoyalty']=candidate_loyalty
  assert js('[...document.querySelectorAll("[data-stoneage-selection] canvas")].every(e=>{const r=e.getBoundingClientRect();return Math.abs(r.width-r.height)<=1})'),'HD pixels changed the logical preview proportions'
@@ -93,6 +96,10 @@ try:
   b('fill',selector,str(value));b('press','Tab')
   assert js('document.querySelector('+json.dumps(selector)+').value')==str(value),(label,value)
  assert '剩余 0 / 480' in js('document.querySelector("[data-stoneage-points-left]").textContent')
+ b('click','[data-stoneage-tab="avatars"]')
+ for _ in range(3):b('click','button[aria-label="增加风属性"]')
+ assert js('[...document.querySelectorAll("[data-stoneage-element-value]")].map(e=>Number(e.textContent))')==[7,0,0,3]
+ assert '剩余 0 / 10' in js('document.querySelector("[data-stoneage-elements-left]").textContent')
  b('screenshot',CASE/'selection-desktop.png','--full')
  b('set','viewport','320','740')
  assert js('document.documentElement.scrollWidth<=innerWidth+1'),'mobile overflow'
@@ -112,6 +119,8 @@ try:
  REPORT['afterLock']=js('(async()=>{const s=await(await fetch("/api/state")).json();return {phase:s.room.game.data.phase,loading:s.room.loading,players:s.room.game.data.players.map(p=>({locked:p.locked,seat:p.seat})),errors:[...document.querySelectorAll(".error,.sa-error,[role=alert]")].map(e=>e.textContent)}})()')
  wait(lambda:room()['game']['data']['phase']!='selection',90)
  assert room()['game']['data']['self']['loadout']['points']==[233,107,81,59]
+ assert room()['game']['data']['self']['loadout']['elements']==[7,0,0,3]
+ assert room()['game']['data']['players'][0]['body']['elements']==[70,0,0,30]
  if FAIL_ASSET:
   wait(lambda:js('!!document.querySelector(".game-loading [role=alert]")'),40)
   assert room()['game']['data']['phase']=='arming','battle clock started before resources were ready'
@@ -173,8 +182,8 @@ try:
  wait(lambda:room()['game']['data']['players'][0]['submitted'])
  selected=room()['game']['data']['self']['plan'];assert selected['player']['target']==target and selected['pet']['target']==target,'scene targeting did not submit both commands'
  REPORT['resourcesBeforeReload']=js('performance.getEntriesByType("resource").filter(e=>e.name.startsWith("https://cdn.ichenj.com/stoneage/")).map(e=>({url:e.name,bytes:e.encodedBodySize,transferBytes:e.transferSize}))')
- hd=json.loads((ROOT/'games/stoneage/web/hd.json').read_text());extra=json.loads((ROOT/'games/stoneage/web/avatar-art.json').read_text());projectiles=json.loads((ROOT/'games/stoneage/web/projectile-art.json').read_text())
- approved={f'https://cdn.ichenj.com/stoneage/{hd["basePath"]}/{f}' for f in hd['resources']}|{f'https://cdn.ichenj.com/stoneage/{extra["basePath"]}/{f}' for f in extra['resources'] if f not in hd['resources']}|{f'https://cdn.ichenj.com/stoneage/{projectiles["basePath"]}/{f}' for f in projectiles['resources']}
+ hd=json.loads((ROOT/'games/stoneage/web/hd.json').read_text());extra=json.loads((ROOT/'games/stoneage/web/avatar-art.json').read_text());projectiles=json.loads((ROOT/'games/stoneage/web/projectile-art.json').read_text());elite=json.loads((ROOT/'games/stoneage/web/elite-art.json').read_text())
+ approved={f'https://cdn.ichenj.com/stoneage/{hd["basePath"]}/{f}' for f in hd['resources']}|{f'https://cdn.ichenj.com/stoneage/{extra["basePath"]}/{f}' for f in extra['resources'] if f not in hd['resources']}|{f'https://cdn.ichenj.com/stoneage/{projectiles["basePath"]}/{f}' for f in projectiles['resources']}|{f'https://cdn.ichenj.com/stoneage/{elite["basePath"]}/{f}' for f in elite['resources']}
  assert all(e['url'] in approved for e in REPORT['resourcesBeforeReload'] if '/assets/' in e['url']),'runtime fetched undeclared images or downgraded an existing HD asset'
  before=room()['game']['data']['round'];b('reload')
  wait(lambda:js('!!document.querySelector("[data-stoneage-battle]")'),90)

@@ -41,14 +41,15 @@ func TestStoneageBrowserFixture(t *testing.T) {
 			}
 			if sequence {
 				for attempt := 0; attempt < 100; attempt++ {
-					skill, bow := false, false
+					skill, charge, bow := false, false, false
 					for _, k := range state.Pool.Skills {
-						skill = skill || k.ID == 31
+						skill = skill || k.ID == 10
+						charge = charge || k.ID == 31
 					}
 					for _, w := range state.Pool.Weapons {
 						bow = bow || w.WeaponType == 4
 					}
-					if skill && bow {
+					if skill && charge && bow {
 						break
 					}
 					m, err = start(c, options)

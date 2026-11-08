@@ -144,7 +144,7 @@ func TestStoneageConfigurationAndCompletePools(t *testing.T) {
 		first := view(t, m, 0)
 		pool := first["pool"].(map[string]any)
 		hashes[string(raw(pool))] = true
-		for name, min := range map[string]int{"pets": 20, "rides": 6, "skills": 14, "hats": 4, "weapons": 6, "clothes": 4, "accessories": 6, "hpItems": 2, "mpItems": 2, "cureItems": 2, "tactics": 4} {
+		for name, min := range map[string]int{"pets": 20, "rides": 4, "skills": 14, "hats": 4, "weapons": 6, "clothes": 4, "accessories": 6, "hpItems": 2, "mpItems": 2, "cureItems": 2, "tactics": 4} {
 			if len(pool[name].([]any)) < min {
 				t.Fatalf("%s pool missing: %v", name, pool[name])
 			}

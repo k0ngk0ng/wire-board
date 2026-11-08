@@ -23,7 +23,7 @@ func TestStoneageNativeAttackContactTimelineE2E(t *testing.T) {
 		}
 		value := obj(t, event)
 		motions, ok := value["motions"].([]any)
-		if !ok || len(motions) != 1 || event.Target != 2 || event.Duration < 1400 {
+		if !ok || len(motions) != 1 || event.Target != 2 || event.Duration < 900 {
 			t.Fatal("missing readable native approach/attack/return timeline", event)
 		}
 		motion := motions[0].(map[string]any)
@@ -37,13 +37,13 @@ func TestStoneageNativeAttackContactTimelineE2E(t *testing.T) {
 		if impact != motion["attackStart"].(float64)+motion["contactOffset"].(float64) || impact < 500 || impact >= float64(event.Duration) {
 			t.Fatal("wrong native contact boundary", value)
 		}
-		// Native SPR timing uses the shared 1.25x server clock. A counter or
+		// Native SPR timing uses the shared 1.5x server clock. A counter or
 		// continuation parks at contact with only the short between-hit pause.
-		minimumHold := 260.0
+		minimumHold := 220.0
 		if motion["stay"] == true {
-			minimumHold = 80
+			minimumHold = 65
 		}
-		if motion["attackDuration"].(float64) < 96 || motion["postHold"].(float64) < minimumHold {
+		if motion["attackDuration"].(float64) < 80 || motion["postHold"].(float64) < minimumHold {
 			t.Fatal("native frames or scaled hold missing", motion)
 		}
 		report(t, "native-contact-timeline", end)

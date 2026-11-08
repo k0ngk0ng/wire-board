@@ -146,6 +146,18 @@ func decode(m gameapi.Match) (*State, error) {
 		}
 		s.Rules = rulesVersion
 	}
+	previewStats(s.Pool.Pets, 640)
+	previewStats(s.Pool.Rides, 400)
+	for i := range s.Pool.Skills {
+		if s.Pool.Skills[i].ID == 30 || s.Pool.Skills[i].ID == 31 {
+			for _, skill := range allSkills {
+				if skill.ID == s.Pool.Skills[i].ID {
+					s.Pool.Skills[i] = skill
+					break
+				}
+			}
+		}
+	}
 	n := len(s.Players)
 	if s.Rules != rulesVersion || s.Session == "" || s.Window < 1 || !slices.Contains([]string{"selection", "arming", "planning", "resolving", "finished"}, s.Phase) || len(s.Plans) != n || s.Round < 0 || s.Round > s.Options.MaxRounds || s.EventID < 0 {
 		return nil, errors.New("竞技场存档结构不合法")
@@ -153,7 +165,7 @@ func decode(m gameapi.Match) (*State, error) {
 	if _, e := configure(n, mustJSON(s.Options)); e != nil {
 		return nil, e
 	}
-	if len(s.Pool.Pets) != 20 || len(s.Pool.Rides) != 6 || len(s.Pool.Skills) != 14 || len(s.Pool.Weapons) != 6 || len(s.Pool.Hats) != 4 || len(s.Pool.Clothes) != 4 || len(s.Pool.Accessories) != 6 {
+	if len(s.Pool.Pets) != 20 || (len(s.Pool.Rides) != 6 && len(s.Pool.Rides) != 4) || len(s.Pool.Skills) != 14 || len(s.Pool.Weapons) != 6 || len(s.Pool.Hats) != 4 || len(s.Pool.Clothes) != 4 || len(s.Pool.Accessories) != 6 {
 		return nil, errors.New("竞技场候选池不完整")
 	}
 	if len(s.Events) > 256 || len(s.Log) > 100 {
@@ -224,6 +236,24 @@ func (s *State) envelope() (gameapi.Match, error) {
 	return gameapi.Match{Schema: schema, Data: b, Actors: actors, Attention: append([]int{}, owed...), TimeoutActors: owed, Deadline: deadline, SystemDeadline: s.ResolveAt, Result: s.Result, Log: append([]string(nil), s.Log...)}, e
 }
 func (s *State) validateLoadout(l Loadout) error {
+	if l.Elements != nil {
+		sum := 0
+		if len(l.Elements) != 4 {
+			return errors.New("地水火风必须恰好四项")
+		}
+		for _, v := range l.Elements {
+			if v < 0 || v > 10 {
+				return errors.New("元素属性超出范围")
+			}
+			sum += v
+		}
+		if l.Elements[0]*l.Elements[2] > 0 || l.Elements[1]*l.Elements[3] > 0 {
+			return errors.New("地与火、水与风不能同时分配")
+		}
+		if sum != 10 {
+			return errors.New("地水火风合计必须为 10")
+		}
+	}
 	if _, ok := petByID(s.Pool.Pets, l.Pet); !ok {
 		return errors.New("请选择本局提供的出战宠")
 	}
@@ -467,6 +497,11 @@ func acceptStale(c gameapi.Context, m gameapi.Match, b json.RawMessage) bool {
 	return c.Now.UnixMilli() < p.Deadline && (s.Phase == "selection" && !p.Locked && (a.Type == "loadout" || a.Type == "lock") || s.Phase == "arming" && !p.BattleReady && a.Type == "battle_ready" || s.Phase == "planning" && !p.Submitted && a.Type == "submit")
 }
 func publicPlayer(p Player, reveal bool) Player {
+	if p.Pet.Charge != nil {
+		charge := *p.Pet.Charge
+		charge.Target = -1
+		p.Pet.Charge = &charge
+	}
 	p.Inventory = nil
 	p.Magic = nil
 	if !reveal {

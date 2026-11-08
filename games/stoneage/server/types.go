@@ -19,13 +19,14 @@ type Rider struct {
 	Graphic int `json:"graphic"`
 }
 type PetDefinition struct {
-	Loyalty  int     `json:"loyalty"`
-	ID       int     `json:"id"`
-	Name     string  `json:"name"`
-	Graphic  int     `json:"graphic"`
-	Weights  [4]int  `json:"weights"`
-	Elements [4]int  `json:"elements"`
-	Riders   []Rider `json:"riders,omitempty"`
+	Stats    *CandidateStats `json:"stats,omitempty"`
+	Loyalty  int             `json:"loyalty"`
+	ID       int             `json:"id"`
+	Name     string          `json:"name"`
+	Graphic  int             `json:"graphic"`
+	Weights  [4]int          `json:"weights"`
+	Elements [4]int          `json:"elements"`
+	Riders   []Rider         `json:"riders,omitempty"`
 }
 type Skill struct {
 	ID          int    `json:"id"`
@@ -37,6 +38,17 @@ type Skill struct {
 	Status      string `json:"status,omitempty"`
 	Chance      int    `json:"chance,omitempty"`
 }
+type CandidateStats struct {
+	HP      int `json:"hp"`
+	Attack  int `json:"attack"`
+	Defense int `json:"defense"`
+	Speed   int `json:"speed"`
+}
+type ChargeState struct {
+	Skill     int `json:"skill"`
+	Target    int `json:"target"`
+	Remaining int `json:"remaining"`
+}
 type Magic struct {
 	ID     int    `json:"id"`
 	Name   string `json:"name"`
@@ -47,20 +59,28 @@ type Magic struct {
 	Status string `json:"status,omitempty"`
 }
 type Equipment struct {
-	ID                int    `json:"id"`
-	Name              string `json:"name"`
-	Slot              string `json:"slot"`
-	WeaponType        int    `json:"weaponType"`
-	Icon              string `json:"icon"`
-	Variant           int    `json:"variant"`
-	SourceDescription string `json:"sourceDescription,omitempty"`
-	Attack            int    `json:"attack"`
-	Defense           int    `json:"defense"`
-	Speed             int    `json:"speed"`
-	HP                int    `json:"hp"`
-	MP                int    `json:"mp"`
-	Resist            string `json:"resist,omitempty"`
-	Magic             *Magic `json:"magic,omitempty"`
+	Tier              int            `json:"tier,omitempty"`
+	MaxTier           int            `json:"maxTier,omitempty"`
+	Family            string         `json:"family,omitempty"`
+	MinHits           int            `json:"minHits,omitempty"`
+	MaxHits           int            `json:"maxHits,omitempty"`
+	Critical          int            `json:"critical,omitempty"`
+	Evade             int            `json:"evade,omitempty"`
+	Resistances       map[string]int `json:"resistances,omitempty"`
+	ID                int            `json:"id"`
+	Name              string         `json:"name"`
+	Slot              string         `json:"slot"`
+	WeaponType        int            `json:"weaponType"`
+	Icon              string         `json:"icon"`
+	Variant           int            `json:"variant"`
+	SourceDescription string         `json:"sourceDescription,omitempty"`
+	Attack            int            `json:"attack"`
+	Defense           int            `json:"defense"`
+	Speed             int            `json:"speed"`
+	HP                int            `json:"hp"`
+	MP                int            `json:"mp"`
+	Resist            string         `json:"resist,omitempty"`
+	Magic             *Magic         `json:"magic,omitempty"`
 }
 type Item struct {
 	ID          int    `json:"id"`
@@ -85,6 +105,7 @@ type Pool struct {
 	Tactics     []Item          `json:"tactics"`
 }
 type Loadout struct {
+	Elements    []int `json:"elements,omitempty"`
 	Pet         int   `json:"pet"`
 	Ride        int   `json:"ride"`
 	Avatar      int   `json:"avatar"`
@@ -112,23 +133,24 @@ type Status struct {
 	PoisonSource int `json:"poisonSource"`
 }
 type Unit struct {
-	Loyalty     int    `json:"loyalty"`
-	Fled        bool   `json:"fled,omitempty"`
-	TurnAttack  int    `json:"turnAttack,omitempty"`
-	TurnDefense int    `json:"turnDefense,omitempty"`
-	ID          int    `json:"id"`
-	Name        string `json:"name"`
-	Graphic     int    `json:"graphic"`
-	HP          int    `json:"hp"`
-	MaxHP       int    `json:"maxHp"`
-	MP          int    `json:"mp"`
-	MaxMP       int    `json:"maxMp"`
-	Attack      int    `json:"attack"`
-	Defense     int    `json:"defense"`
-	Speed       int    `json:"speed"`
-	Elements    [4]int `json:"elements"`
-	Status      Status `json:"status"`
-	Guard       bool   `json:"guard"`
+	Charge      *ChargeState `json:"charge,omitempty"`
+	Loyalty     int          `json:"loyalty"`
+	Fled        bool         `json:"fled,omitempty"`
+	TurnAttack  int          `json:"turnAttack,omitempty"`
+	TurnDefense int          `json:"turnDefense,omitempty"`
+	ID          int          `json:"id"`
+	Name        string       `json:"name"`
+	Graphic     int          `json:"graphic"`
+	HP          int          `json:"hp"`
+	MaxHP       int          `json:"maxHp"`
+	MP          int          `json:"mp"`
+	MaxMP       int          `json:"maxMp"`
+	Attack      int          `json:"attack"`
+	Defense     int          `json:"defense"`
+	Speed       int          `json:"speed"`
+	Elements    [4]int       `json:"elements"`
+	Status      Status       `json:"status"`
+	Guard       bool         `json:"guard"`
 }
 type InventoryItem struct {
 	Item  Item `json:"item"`

@@ -12,20 +12,23 @@ extra_path=BASE/'web/avatar-art.json'
 extra=json.loads(extra_path.read_text()) if extra_path.exists() else {'sprites':{},'resources':{},'avatars':[]}
 projectile_path=BASE/'web/projectile-art.json'
 projectiles=json.loads(projectile_path.read_text())
-art={'ui':art['ui'],'sprites':{**art['sprites'],**extra['sprites']},'resources':{**art['resources'],**extra['resources'],**projectiles['resources']}}
+elite_path=BASE/'web/elite-art.json'
+elite=json.loads(elite_path.read_text())
+elite_catalog=json.loads((BASE/'server/elite_source.json').read_text())
+art={'ui':art['ui'],'sprites':{**art['sprites'],**extra['sprites'],**elite['sprites']},'resources':{**art['resources'],**extra['resources'],**projectiles['resources'],**elite['resources']}}
 catalog=json.loads((BASE/'server/catalog_source.json').read_text())
 def frames(graphics):
     return {f['file'] for g in graphics for a in art['sprites'].get(str(g),[]) for f in a['frames']}
-pets={p['graphic'] for p in catalog['pets']+catalog['rides']}
+pets={p['graphic'] for p in catalog['pets']+catalog['rides']+elite_catalog['pets']+elite_catalog['rides']}
 riders={r['graphic'] for p in catalog['rides'] for r in p['riders']}
 people=set(map(int,art['sprites']))-pets-riders
-groups=[('宠物与骑宠本体动画',frames(pets)),('人物骑乘动画',frames(riders)),('人物与武器造型动画',frames(people)),('人物头像',{a['portrait'] for a in extra['avatars']}),('装备图标',{g['icon'] for g in catalog['equipment']}),('战斗菜单',{f for pair in art.get('ui',{}).values() for f in pair.values()}),('战斗背景',{'battle/battle_00.png'}),('原版箭矢、投影和投石',set(projectiles['resources']))]
+groups=[('宠物与骑宠本体动画',frames(pets)),('人物骑乘动画',frames(riders)),('人物与武器造型动画',frames(people)),('人物头像',{a['portrait'] for a in extra['avatars']}),('装备图标',{g['icon'] for g in catalog['equipment']+elite_catalog['equipment']}),('战斗菜单',{f for pair in art.get('ui',{}).values() for f in pair.values()}),('战斗背景',{'battle/battle_00.png'}),('原版箭矢、投影和投石',set(projectiles['resources']))]
 seen=set();rows=[]
 for name,files in groups:
     exclusive=files-seen;seen.update(files)
     rows.append(dict(category=name,uniqueImages=len(files),additionalImages=len(exclusive),bytes=sum(art['resources'][f]['bytes'] for f in exclusive)))
 assert seen==set(art['resources']), 'Unclassified original image references'
 total=sum(v['bytes'] for v in art['resources'].values())
-report=dict(scope='当前竞技场全部候选与可用造型；动画帧按 PNG 文件去重，非每局下载量',root='https://cdn.ichenj.com/stoneage',uniqueImages=len(seen),bytes=total,MiB=round(total/1048576,2),spriteVariants=len(art['sprites']),frameReferences=sum(len(a['frames']) for s in art['sprites'].values() for a in s),categories=rows,manifestSHA256=hashlib.sha256(art_path.read_bytes()).hexdigest(),avatarManifestSHA256=hashlib.sha256(extra_path.read_bytes()).hexdigest() if extra_path.exists() else None,projectileManifestSHA256=hashlib.sha256(projectile_path.read_bytes()).hexdigest(),assetsCopied=0,assetsUploaded=0)
+report=dict(scope='当前竞技场全部候选与可用造型；动画帧按 PNG 文件去重，非每局下载量',root='https://cdn.ichenj.com/stoneage',uniqueImages=len(seen),bytes=total,MiB=round(total/1048576,2),spriteVariants=len(art['sprites']),frameReferences=sum(len(a['frames']) for s in art['sprites'].values() for a in s),categories=rows,manifestSHA256=hashlib.sha256(art_path.read_bytes()).hexdigest(),avatarManifestSHA256=hashlib.sha256(extra_path.read_bytes()).hexdigest() if extra_path.exists() else None,projectileManifestSHA256=hashlib.sha256(projectile_path.read_bytes()).hexdigest(),eliteManifestSHA256=hashlib.sha256(elite_path.read_bytes()).hexdigest(),assetsCopied=0,assetsUploaded=0)
 (BASE/'asset-audit.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
 print(json.dumps(report,ensure_ascii=False,indent=2))
