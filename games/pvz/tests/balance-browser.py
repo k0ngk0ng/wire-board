@@ -71,7 +71,7 @@ try:
   labels=js('[...document.querySelectorAll("select[aria-label=植物大战僵尸分队] option")].map(e=>e.textContent)')
   if labels:assert all('植物' in v and '僵尸' in v and '防守' not in v and '进攻' not in v for v in labels),labels
   command('ready');command('start')
-  initial=room()['game']['data'];assert initial['snapshot']['rulesVersion']==3
+  initial=room()['game']['data'];assert initial['snapshot']['rulesVersion']>=3
   assert initial['players'][0]['money']==opening//(n//2),initial['players']
   b('wait','[data-pvz-board][data-ready=true]')
   if peer:b('wait','[data-pvz-board][data-ready=true]',env=peer)

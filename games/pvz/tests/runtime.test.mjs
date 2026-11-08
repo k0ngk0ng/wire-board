@@ -67,6 +67,32 @@ try {
   }
   assert.equal((await compare({ op: "step", id: "authority", ticks: 1000000 })).ok, false, "unbounded prediction accepted");
   assert.equal((await compare({ op: "load", id: "invalid", snapshot: {} })).ok, false, "invalid snapshot accepted");
+  // Controlled profile-4 entry snapshot; all subsequent transitions use the
+  // public runtime API and ordinary prices, phases and deployment cooldowns.
+  const opening = (await compare({ op: "new", id: "open", players: 2, epoch: "pvz-open-parity", options: { prepSeconds: 10, roundSeconds: 180 } })).state;
+  opening.rulesVersion = 4;
+  let opened = await compare({ op: "load", id: "open", snapshot: opening });
+  assert.ok(!opened.state.players[0].deck.includes("starfruit"));
+  const act = async (actor, action) => compare({ op: "apply", id: "open", actor, action: { ...action, epoch: opened.state.epoch, seq: opened.state.players[actor].seq + 1 } });
+  opened = await act(0, { type: "plant", kind: "starfruit", row: 0, col: 2 });
+  assert.ok(opened.ok);
+  opened = await compare({ op: "step", id: "open", ticks: 200 });
+  const wallet = opened.state.players[0].money;
+  opened = await act(0, { type: "deck", kinds: ["sunflower"], imitateKind: "squash" });
+  assert.ok(opened.ok);
+  assert.equal(opened.state.players[0].money, wallet);
+  opened = await act(1, { type: "spawn", kind: "flag", row: 1 });
+  assert.ok(opened.ok);
+  const paid = opened;
+  assert.equal((await act(1, { type: "spawn", kind: "backupdancer", row: 2 })).ok, false);
+  assert.equal((await compare({ op: "inspect", id: "open" })).digest, paid.digest);
+  opened = await compare({ op: "step", id: "open", ticks: 60 });
+  opened = await act(1, { type: "spawn", kind: "backupdancer", row: 2 });
+  assert.ok(opened.ok);
+  await compare({ op: "load", id: "open-restored", snapshot: opened.state });
+  const advanced = await compare({ op: "step", id: "open", ticks: 400 });
+  assert.equal((await compare({ op: "step", id: "open-restored", ticks: 400 })).digest, advanced.digest);
+  for (const id of ["open", "open-restored"]) assert.equal((await compare({ op: "drop", id })).ok, true);
   if (process.env.PVZ_RUNTIME_BALANCE_REPLAY) {
     const file = process.env.PVZ_RUNTIME_BALANCE_REPLAY;
     const replay = JSON.parse(readFileSync(file, "utf8"));

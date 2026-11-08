@@ -101,8 +101,9 @@ try:
         assert not js('document.documentElement.scrollWidth>innerWidth+1')
         if scene == 'day':
             b('click', '[data-pvz-card="sunflower"]')
-            rectangle = js('document.querySelector("[data-pvz-canvas]").getBoundingClientRect().toJSON()')
-            b('mouse', 'move', round(rectangle['left'] + rectangle['width'] * .1), round(rectangle['top'] + rectangle['height'] * .22))
+            b('scrollintoview', '[data-pvz-cell="0:0"]')
+            rectangle = js('document.querySelector("[data-pvz-cell=\\"0:0\\"]").getBoundingClientRect().toJSON()')
+            b('mouse', 'move', round(rectangle['left'] + rectangle['width'] / 2), round(rectangle['top'] + rectangle['height'] / 2))
             b('mouse', 'down'); b('mouse', 'up')
             wait(lambda: any(plant['kind'] == 'sunflower' and plant['owner'] == 0 for plant in room()['game']['data']['plants']))
         b('click', 'button[aria-label="卡册"]')
@@ -112,8 +113,10 @@ try:
         assert js('[...document.querySelectorAll("[data-pvz-book-card]")].every(e=>e.textContent.includes("阳光")&&e.textContent.includes("秒"))')
         text_audit = audit_text()
         first = initial['players'][0]['deck'][0]
+        if initial.get('rulesVersion', 0) >= 4:
+            b('click', '.pvz-book-modes button:nth-child(2)')
         b('click', '[data-pvz-book-card=' + json.dumps(first) + ']')
-        b('click', 'button[aria-label="保存卡组"]')
+        b('click', 'button[aria-label="保存快捷栏"]' if initial.get('rulesVersion', 0) >= 4 else 'button[aria-label="保存卡组"]')
         wait(lambda: first not in room()['game']['data']['players'][0]['deck'])
         b('click', 'button[aria-label="卡册"]')
         b('screenshot', OUT / f'{scene}-{width}-catalog.png')

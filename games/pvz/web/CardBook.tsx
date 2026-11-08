@@ -6,8 +6,16 @@ import { CardArt } from "./CardArt";
 import type { Art } from "./art";
 import { mapFor, terrainReason } from "./scene";
 import type { Side, View } from "./types";
+import { hasOpenRoster } from "./cards";
+import { OpenCardBook } from "./OpenCardBook";
 
-export function CardBook({ view, art, actor, canEdit, onClose, onSave }: { view: View; art: Art; actor: number; canEdit: boolean; onClose: () => void; onSave: (kinds: string[], imitateKind: string) => Promise<void> }) {
+export type CardBookProps = { view: View; art: Art; actor: number; canEdit: boolean; onClose: () => void; onSave: (kinds: string[], imitateKind: string) => Promise<void>; onUse?: (kind: string, imitateKind: string, signal: AbortSignal) => Promise<void> };
+
+export function CardBook(props: CardBookProps) {
+  return hasOpenRoster(props.view) && props.onUse ? <OpenCardBook {...props} onUse={props.onUse} /> : <LegacyCardBook {...props} />;
+}
+
+function LegacyCardBook({ view, art, actor, canEdit, onClose, onSave }: CardBookProps) {
   const player = view.players[actor], ownSide = player?.side ?? "plants";
   const overlayRoot = useGameOverlayRoot();
   const [side, setSide] = useState<Side>(ownSide);

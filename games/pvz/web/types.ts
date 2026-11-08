@@ -90,6 +90,7 @@ export type Mower = { row: number; state: "ready" | "moving" | "spent"; x: numbe
 export type Event = { id: number; type: string; tick: number; row?: number; x?: number; col?: number; kind?: string; owner?: number; target?: number };
 export type RoundResult = { attackTeam: number; breached: boolean; elapsedMS: number };
 export type View = {
+  rulesVersion?: number;
   protocol: number;
   options: Options;
   map: MapSpec;

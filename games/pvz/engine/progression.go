@@ -20,7 +20,7 @@ func UnlockSeconds(kind string) int {
 // EnableProgression selects the current versus profile for a newly created
 // match. Restore never calls it, so a saved match keeps its original economy.
 func EnableProgression(s *State) {
-	s.RulesVersion = 3
+	s.RulesVersion = 4
 	for i := range s.Players {
 		s.Players[i].Deck = s.startingDeck(s.Players[i].Side)
 		if s.Players[i].Side == "plants" {

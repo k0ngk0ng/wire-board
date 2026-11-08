@@ -30,7 +30,7 @@ func TestPVZEconomyNewMatchAndTeamSupplyE2E(t *testing.T) {
 		for _, n := range []int{2, 4} {
 			t.Run(fmt.Sprintf("%s-%d", q.scene, n), func(t *testing.T) {
 				s := economyStart(t, q.scene, n)
-				if s.RulesVersion != 3 {
+				if s.RulesVersion < 3 {
 					t.Fatal("new match did not select the balanced economy profile", s.RulesVersion)
 				}
 				money := balanceMoney(s)
@@ -127,7 +127,7 @@ func TestPVZEconomyProducerAndFormationE2E(t *testing.T) {
 					if balanceShooter(p.Kind) && !p.Asleep {
 						rows[p.Row] = true
 					}
-					if p.Kind == "sunflower" || p.Kind == "sunshroom" {
+					if p.Kind == "sunflower" || p.Kind == "sunshroom" || p.Kind == "twinsunflower" {
 						producers++
 					}
 				}

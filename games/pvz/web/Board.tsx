@@ -15,6 +15,7 @@ import { PvzEffects } from "./effects";
 import { ResourceDownloads, type DownloadProgress } from "./downloads";
 import { roundRow } from "./outcome";
 import { neededUnits } from "./entry-assets";
+import { hasOpenRoster, rackKinds, selectionUnits } from "./cards";
 import type { PvzAction, Spec, View } from "./types";
 
 type Predictor = Awaited<ReturnType<typeof createPredictor>>;
@@ -59,10 +60,10 @@ export function Board(props: BoardProps<View>) {
   const player = view.players?.[props.room.you];
   const watching = !!props.room.spectating || props.room.you < 0;
   const side = player?.side ?? "plants";
-  const cards = (player?.deck ?? []).map(kind => view.catalog?.[side]?.find(card => card.kind === kind)).filter((card): card is Spec => !!card);
+  const cards = rackKinds(view, props.room.you, selected).map(kind => view.catalog?.[side]?.find(card => card.kind === kind)).filter((card): card is Spec => !!card);
   const map = mapFor(view), stage = stageFor(view, art);
   const sceneID = props.data.map?.id ?? map.id;
-  const unitKey = neededUnits(view).sort().join("|");
+  const unitKey = neededUnits(view, selected, props.room.you).sort().join("|");
   const automated = !!props.room.seats[props.room.you]?.autoPlay;
   const usable = ready && !loadingUnits && !watching && !automated && !!view.canAct && ["prepare", "battle"].includes(view.phase) && !(side === "zombies" && view.phase === "prepare");
   controlsEnabled.current = usable && !bookOpen && !layers && !loadError;
@@ -280,6 +281,28 @@ export function Board(props: BoardProps<View>) {
     }
   };
 
+  const chooseFromBook = async (kind: string, imitateKind: string, signal: AbortSignal) => {
+    const p = latest.current, current = frame.current, own = current.players?.[p.room.you];
+    if (!hasOpenRoster(current) || !art || !own || p.room.spectating || p.room.seats[p.room.you]?.autoPlay || !current.canAct || !["prepare", "battle"].includes(current.phase) || own.side === "zombies" && current.phase !== "battle") throw Error("当前不能选用卡牌");
+    const kinds = selectionUnits(current, p.room.you, kind, imitateKind);
+    if (!kinds.length) throw Error("该卡牌尚未解锁或不属于本阵营");
+    const checkSelection = () => {
+      signal.throwIfAborted();
+      const next = latest.current, updated = frame.current;
+      if (next.room.id !== p.room.id || next.room.you !== p.room.you || next.room.spectating || updated.epoch !== current.epoch || next.room.seats[next.room.you]?.autoPlay || !updated.canAct || !["prepare", "battle"].includes(updated.phase)) throw new DOMException("Aborted", "AbortError");
+      return updated;
+    };
+    // Shared requests finish into the cache even if this dialog closes. A
+    // cancelled modal must not cancel another actor's in-flight sprite load.
+    await ensureUnits(art, kinds);
+    const updated = checkSelection();
+    if (kind === "imitater" && imitateKind !== updated.players[p.room.you].imitaterKind) {
+      await submit({ type: "deck", kinds: updated.players[p.room.you].deck, imitateKind });
+      checkSelection();
+    }
+    choose(kind);
+  };
+
   function renderCard(card: Spec) {
     const effective = card.kind === "imitater" ? view.catalog.plants.find(spec => spec.kind === player?.imitaterKind) ?? card : card;
     const locked=(card.unlockAt??0)>view.tick;
@@ -322,7 +345,7 @@ export function Board(props: BoardProps<View>) {
       <div ref={grid} className="pvz-grid-controls" role="grid" aria-label="草坪格子" data-controller-group="board">{Array.from({ length: map.rows }, (_, row) => side === "plants" || ["cell", "plant"].includes(view.catalog?.zombies.find(card => card.kind === selected)?.target ?? "") ? Array.from({ length: map.cols }, (_, col) => <button key={`${row}-${col}`} type="button" data-pvz-cell={`${row}:${col}`} aria-label={`第 ${row + 1} 行第 ${col + 1} 列`} style={{ left: `${(stage.left + col * stage.cellWidth) / stage.width * 100}%`, top: `${(stage.top + row * stage.cellHeight + (stage.roofSlope[col] ?? 0)) / stage.height * 100}%`, width: `${stage.cellWidth / stage.width * 100}%`, height: `${stage.cellHeight / stage.height * 100}%` }} disabled={!usable} onFocus={() => { paintState.current.hover = { row, col }; }} onClick={() => actAt(row, col)} />) : <button key={row} type="button" aria-label={`向第 ${row + 1} 行出兵`} style={{ left: "95.3%", top: `${(stage.top + row * stage.cellHeight) / stage.height * 100}%`, width: "4.7%", height: `${stage.cellHeight / stage.height * 100}%` }} disabled={!usable} onFocus={() => { paintState.current.hover = { row, col: 8 }; }} onClick={() => actAt(row, 8)} />)}<div className="pvz-pickups" data-controller-group="pickups">{view.pickups?.map(pickup => <button type="button" key={pickup.id} data-pvz-pickup={pickup.id} data-owner={pickup.owner} aria-label={`收取${pickup.amount}${pickup.kind === "sun" ? "阳光" : "金币"}`} disabled={!ready || watching || automated || view.players[pickup.owner]?.team !== player?.team} style={{ left: `${(stage.left + pickup.x / 1000 * stage.cellWidth) / stage.width * 100}%`, top: `${(stage.top + pickup.y / 1000 * stage.cellHeight + slopeAt(pickup.x, stage.roofSlope)) / stage.height * 100}%`, width: `${36 / stage.width * 100}%`, height: `${36 / stage.height * 100}%` }} onClick={() => { void submit({ type: "collect", pickupId: pickup.id }).catch(() => {}); }} />)}</div></div>
     </div>
     <div className="pvz-below"><span className="pvz-action-error" role="status" aria-live="polite">{error || (abilityPlant !== null ? "选择炮击目标" : "")}</span><span className="pvz-round-history">{view.rounds?.map((round, i) => { const row=roundRow(round,i);return <span key={i}>{row.attack}进攻 · {row.result} {row.time}</span>;})}</span></div>
-    {bookOpen && art && <CardBook view={view} art={art} actor={watching ? -1 : props.room.you} canEdit={!watching && !automated} onClose={() => setBookOpen(false)} onSave={(kinds, imitateKind) => submit({ type: "deck", kinds, imitateKind })} />}
+    {bookOpen && art && <CardBook view={view} art={art} actor={watching ? -1 : props.room.you} canEdit={!watching && !automated} onClose={() => setBookOpen(false)} onSave={(kinds, imitateKind) => submit({ type: "deck", kinds, imitateKind })} onUse={chooseFromBook} />}
     {layers && createPortal(<Modal title="植物管理" className="pvz-layer-modal" onClose={() => setLayers(null)}><div data-controller-group="plant-layers" className="pvz-layer-list">{plantsAt(view, layers.row, layers.col).map(plant => <div key={plant.id}><strong>{view.catalog.plants.find(spec => spec.kind === plant.kind)?.name ?? plant.kind}<small>{layerName(plant)} · {props.room.seats[plant.owner]?.name}</small></strong><span>{plant.hp} / {plant.maxHP}{plant.asleep ? " · 休眠" : ""}</span><button type="button" disabled={!usable || plant.owner !== props.room.you} onClick={() => { void submit({ type: "shovel", plantId: plant.id }).then(() => setLayers(null)).catch(() => {}); }}>铲除</button>{plant.kind === "cobcannon" && <button type="button" disabled={!usable || plant.owner !== props.room.you || plant.asleep || plant.readyAt > view.tick || (plant.chargeMS ?? 0) > view.tick * 50} onClick={() => { choose(null); setAbilityPlant(plant.id); paintState.current.selected = "__ability"; setLayers(null); }}>{Math.max(plant.readyAt * 50, plant.chargeMS ?? 0) > view.tick * 50 ? `装填 ${Math.ceil((Math.max(plant.readyAt * 50, plant.chargeMS ?? 0) - view.tick * 50) / 1000)} 秒` : "瞄准"}</button>}</div>)}</div></Modal>, overlayRoot)}
   </div>;
 }

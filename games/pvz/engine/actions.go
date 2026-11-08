@@ -40,7 +40,10 @@ func applyAction(s *State, actor int, a Action) error {
 	}
 	switch a.Type {
 	case "deck":
-		if s.Phase != "prepare" || len(a.Kinds) < 1 || len(a.Kinds) > MaxDeck || a.Kind != "" || a.PlantID != 0 {
+		if (s.Phase != "prepare" && !(s.RulesVersion >= 4 && s.Phase == "battle")) || len(a.Kinds) < 1 || len(a.Kinds) > MaxDeck || a.Kind != "" || a.PlantID != 0 {
+			if s.RulesVersion >= 4 {
+				return errors.New("快捷栏需要保留 1～10 张本阵营卡牌")
+			}
 			return errors.New("仅布阵时可选择至多10张卡")
 		}
 		seen := map[string]bool{}
@@ -59,13 +62,13 @@ func applyAction(s *State, actor int, a Action) error {
 			imitate = p.ImitaterKind
 		}
 		c, ok := PlantSpec(imitate)
-		if seen["imitater"] && (!ok || imitate == "imitater" || c.UpgradeFrom != "") {
+		if (seen["imitater"] || s.RulesVersion >= 4) && (!ok || imitate == "imitater" || c.UpgradeFrom != "") {
 			return errors.New("模仿者需要选择一种普通植物")
 		}
 		p.Deck = slices.Clone(a.Kinds)
 		p.ImitaterKind = imitate
 	case "plant":
-		if p.Side != "plants" || !slices.Contains(p.Deck, a.Kind) {
+		if p.Side != "plants" || !s.canUseCard(actor, a.Kind) {
 			return errors.New("请使用本人的植物卡组")
 		}
 		if a.Row < 0 || a.Row >= s.rowCount() || a.Col < 0 || a.Col >= Columns || a.PlantID != 0 {
@@ -139,7 +142,7 @@ func applyAction(s *State, actor int, a Action) error {
 			s.TeamCooldowns[p.Team][c.Kind] = s.Tick + 30
 		}
 	case "spawn":
-		if p.Side != "zombies" || s.Phase != "battle" || !slices.Contains(p.Deck, a.Kind) {
+		if p.Side != "zombies" || s.Phase != "battle" || !s.canUseCard(actor, a.Kind) {
 			return errors.New("请在开战后使用本人的僵尸卡组")
 		}
 		c, ok := ZombieSpec(a.Kind)
@@ -203,7 +206,11 @@ func applyAction(s *State, actor int, a Action) error {
 		for i := range s.Players {
 			q := &s.Players[i]
 			if q.Team == p.Team && q.Side == "zombies" {
-				for _, kind := range q.Deck {
+				kinds := q.Deck
+				if s.RulesVersion >= 4 {
+					kinds = rosterKinds("zombies")
+				}
+				for _, kind := range kinds {
 					q.Cooldowns[kind] = max(q.Cooldowns[kind], s.Tick+3000/TickMS)
 				}
 			}
