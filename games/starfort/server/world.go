@@ -58,6 +58,7 @@ type WaveEvent struct {
 	Wave        int    `json:"wave"`
 }
 type Objective struct {
+	Refunded    int     `json:"refunded,omitempty"`
 	Owner       int     `json:"owner"`
 	HP          float64 `json:"hp"`
 	MaxHP       float64 `json:"maxHP"`
@@ -666,7 +667,7 @@ func (s *State) validWorld() error {
 	}
 	objectiveIDs := map[string]bool{}
 	for _, o := range w.Objectives {
-		if o.ID == "" || len(o.ID) > 80 || objectiveIDs[o.ID] || !finite(o.HP) || !finite(o.MaxHP) || !finite(o.X) || !finite(o.Y) || !finite(o.Progress) || o.HP < 0 || o.MaxHP <= 0 || o.MaxHP > s.objectiveLimit() || o.HP > o.MaxHP || o.X < s.objectiveMin(o) || o.X > float64(m.Width) || o.Y < s.objectiveMin(o) || o.Y > float64(m.Height) || o.Progress < 0 || len(s.routePath(o.Route)) < 2 || o.Progress > pathDistance(s.routePath(o.Route)) || o.StartWave < 0 || o.EndWave < 0 || o.Sector < 1 || o.Sector > w.Stage || (o.Status != "failed" && o.HP <= 0) {
+		if o.Refunded < 0 || o.Refunded > o.Cost/5 || (o.Refunded > 0 && (!s.growing() || o.Status != "failed" || o.Owner < 0 || o.Owner >= len(s.Players))) || o.ID == "" || len(o.ID) > 80 || objectiveIDs[o.ID] || !finite(o.HP) || !finite(o.MaxHP) || !finite(o.X) || !finite(o.Y) || !finite(o.Progress) || o.HP < 0 || o.MaxHP <= 0 || o.MaxHP > s.objectiveLimit() || o.HP > o.MaxHP || o.X < s.objectiveMin(o) || o.X > float64(m.Width) || o.Y < s.objectiveMin(o) || o.Y > float64(m.Height) || o.Progress < 0 || len(s.routePath(o.Route)) < 2 || o.Progress > pathDistance(s.routePath(o.Route)) || o.StartWave < 0 || o.EndWave < 0 || o.Sector < 1 || o.Sector > w.Stage || (o.Status != "failed" && o.HP <= 0) {
 			return errors.New("无效支线状态")
 		}
 		objectiveIDs[o.ID] = true

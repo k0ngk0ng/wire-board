@@ -96,11 +96,20 @@ func (s *State) specializationHit(t *Tower, target Enemy, damage float64) bool {
 		if s.skillRoll(15) {
 			for i := range s.Enemies {
 				e := &s.Enemies[i]
-				if e.HP <= 0 || math.Hypot(e.X-target.X, e.Y-target.Y) > 75 {
+				if e.HP <= 0 || (s.growing() && e.ID != target.ID) || (!s.growing() && math.Hypot(e.X-target.X, e.Y-target.Y) > 75) {
 					continue
 				}
 				distance := 60.
-				if s.rebalanced() {
+				if s.growing() {
+					distance = 30
+					if heavy(*e) {
+						distance /= 2
+					}
+					if hasGuard(e.KnockbackGuards, t.ID, s.Tick) {
+						distance /= 2
+					}
+					e.KnockbackGuards = putGuard(s.freshGuards(e.KnockbackGuards), t.ID, s.Tick+8000/StepMS)
+				} else if s.rebalanced() {
 					distance = 40
 					if heavy(*e) {
 						if slices.ContainsFunc(e.KnockbackGuards, func(g KnockbackGuard) bool { return g.TowerID == t.ID && g.Until > s.Tick }) {
@@ -123,17 +132,25 @@ func (s *State) specializationHit(t *Tower, target Enemy, damage float64) bool {
 		}
 		return true
 	case t.Kind == "cannon" && t.Branch == "power":
-		if s.skillRoll(20) {
-			s.event(Event{Type: "blast", Skill: "blast", TowerID: t.ID, X: target.X, Y: target.Y, Owner: t.Owner, Kind: "cannon", Amount: 110})
+		g := areaGrowth{Chance: 20, Radius: 110, Damage: .75}
+		if s.growing() {
+			g = cannonGrowth(t.Level)
+		}
+		if s.skillRoll(uint64(g.Chance)) {
+			s.event(Event{Type: "blast", Skill: "blast", TowerID: t.ID, X: target.X, Y: target.Y, Owner: t.Owner, Kind: "cannon", Amount: g.Radius})
 			for i, e := range s.Enemies {
-				if e.HP > 0 && math.Hypot(e.X-target.X, e.Y-target.Y) <= 110 {
-					s.hitWithSkill(i, damage*.75, *t, "blast")
+				if e.HP > 0 && math.Hypot(e.X-target.X, e.Y-target.Y) <= g.Radius {
+					s.hitWithSkill(i, damage*g.Damage, *t, "blast")
 				}
 			}
 		}
 		return true
 	case t.Kind == "cannon" && t.Branch == "speed":
-		if now >= t.PassiveReadyAt && s.skillRoll(25) {
+		chance := 25
+		if s.growing() {
+			chance, _, _ = craterGrowth(t.Level)
+		}
+		if now >= t.PassiveReadyAt && s.skillRoll(uint64(chance)) {
 			s.makeCrater(t, target)
 		}
 		return true

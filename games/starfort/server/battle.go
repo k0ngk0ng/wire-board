@@ -442,7 +442,12 @@ func (s *State) fireTower(index int) bool {
 		}
 	} else {
 		s.hitWithSkill(target, damage, *t, skill)
-		if skill == "volley" {
+		if skill == "volley" && s.growing() {
+			g := volleyGrowth(t.Level)
+			for _, j := range s.nearbyTargets(enemy, g.Radius, g.Targets) {
+				s.hitWithSkill(j, baseDamage*g.Damage, *t, skill)
+			}
+		} else if skill == "volley" {
 			for j := range s.Enemies {
 				if j != target && s.Enemies[j].HP > 0 && math.Hypot(s.Enemies[j].X-enemy.X, s.Enemies[j].Y-enemy.Y) <= 75 {
 					s.hitWithSkill(j, baseDamage*.7, *t, skill)
@@ -474,7 +479,10 @@ func (s *State) hitWithSkill(index int, damage float64, t Tower, skill string) {
 					if heavy(*e) {
 						extra = 1.1
 					}
-					factor *= extra + .1*float64(t.Level-1)
+					if !s.growing() || !heavy(*e) {
+						extra += .1 * float64(t.Level-1)
+					}
+					factor *= extra
 				} else {
 					factor *= 1.15
 				}

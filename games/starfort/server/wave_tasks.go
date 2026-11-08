@@ -47,6 +47,9 @@ func (s *State) offerWaveTask() {
 	}
 	if kind == "convoy" {
 		baseHP, baseCost, growth, fraction, label = 6, 300, 2, 0, "护送星光补给车"
+		if s.growing() {
+			growth = 1.2
+		}
 	}
 	route := s.routePath(routeID)
 	progress := pathDistance(route) * fraction
@@ -67,6 +70,9 @@ func (s *State) offerWaveTask() {
 	}
 	if kind == "convoy" {
 		description = fmt.Sprintf("支付 %d 金币，护送速度 20 的补给车抵达星核；提前敌人 2 秒出发，该路敌人生命 ×1.2；送达修复 4 点生命，每人获得 %d 金币", cost, reward)
+	}
+	if s.growing() {
+		description += fmt.Sprintf("；失败向付款人退还 %d 金币（费用的 20%%）", cost/5)
 	}
 	s.World.Objectives = []Objective{{ID: fmt.Sprintf("task-%d-%s", s.Wave, kind), Kind: kind, Label: label, Description: description, HP: hp, MaxHP: hp, Route: routeID, Progress: progress, Sector: sector, X: p.X, Y: p.Y, Cost: cost, Reward: reward, Status: "available", Owner: -1}}
 }

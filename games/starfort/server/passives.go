@@ -103,11 +103,20 @@ func (s *State) makeCrater(t *Tower, target Enemy) bool {
 	s.CraterSerial++
 	p := pathPosition(s.routePath(target.Route), target.Progress)
 	c := Crater{ID: s.CraterSerial, TowerID: t.ID, Owner: t.Owner, Route: target.Route, Progress: target.Progress, X: p.X, Y: p.Y, Radius: 28, Total: 6, Remaining: 6, Workers: []int{}, ExemptEnemy: target.ID, CreatedMS: now}
+	if s.growing() {
+		_, _, work := craterGrowth(t.Level)
+		c.Total = work
+		c.Remaining = work
+	}
 	c.IgnoreHeavy = !s.rebalanced() && s.specialized() && t.Kind == "cannon" && t.Branch == "speed"
 	s.Craters = append(s.Craters, c)
 	t.PassiveReadyAt = now + 6000
 	if s.rebalanced() {
 		t.PassiveReadyAt = now + 10000
+	}
+	if s.growing() {
+		_, cd, _ := craterGrowth(t.Level)
+		t.PassiveReadyAt = now + cd
 	}
 	s.craterEvent("crater", &s.Craters[len(s.Craters)-1])
 	return true
@@ -120,6 +129,9 @@ func (s *State) blockAtCrater(e *Enemy, nextProgress float64) bool {
 	for i := range s.Craters {
 		c := &s.Craters[i]
 		if c.Remaining <= 0 || c.Route != e.Route || c.ExemptEnemy == e.ID || (c.IgnoreHeavy && heavy(*e)) {
+			continue
+		}
+		if s.growing() && e.Repairing != c.ID && hasGuard(e.CraterGuards, c.TowerID, s.Tick) {
 			continue
 		}
 		if e.Repairing == c.ID || (e.Progress <= c.Progress+.001 && nextProgress >= c.Progress) {
@@ -138,6 +150,9 @@ func (s *State) blockAtCrater(e *Enemy, nextProgress float64) bool {
 	e.X = chosen.X
 	e.Y = chosen.Y
 	if first {
+		if s.growing() {
+			e.CraterGuards = putGuard(s.freshGuards(e.CraterGuards), chosen.TowerID, s.Tick+4000/StepMS)
+		}
 		e.RepairSinceMS = s.ElapsedMS
 		target := viewEnemy(*e)
 		s.event(Event{Type: "repair_start", TargetID: e.ID, Target: &target, X: e.X, Y: e.Y, Kind: e.Kind, Owner: -1, CraterID: chosen.ID})
@@ -275,7 +290,7 @@ func (s *State) validCraters() error {
 	for _, c := range s.Craters {
 		path := s.routePath(c.Route)
 		p := pathPosition(path, c.Progress)
-		if c.ID < 1 || c.ID > s.CraterSerial || ids[c.ID].ID != 0 || c.TowerID < 1 || c.TowerID > s.TowerSerial || c.Owner < 0 || c.Owner >= len(s.Players) || len(path) < 2 || !finite(c.Progress) || c.Progress < 0 || c.Progress > pathDistance(path) || !finite(c.X) || !finite(c.Y) || math.Hypot(p.X-c.X, p.Y-c.Y) > .01 || c.Radius != 28 || c.Total != 6 || !finite(c.Remaining) || c.Remaining < 0 || c.Remaining > c.Total || c.CreatedMS < 0 || c.CreatedMS > s.ElapsedMS || c.FilledMS < 0 || c.FilledMS > s.ElapsedMS || (c.Remaining == 0) != (c.FilledMS > 0) || len(c.Workers) > MaxEnemies {
+		if c.ID < 1 || c.ID > s.CraterSerial || ids[c.ID].ID != 0 || c.TowerID < 1 || c.TowerID > s.TowerSerial || c.Owner < 0 || c.Owner >= len(s.Players) || len(path) < 2 || !finite(c.Progress) || c.Progress < 0 || c.Progress > pathDistance(path) || !finite(c.X) || !finite(c.Y) || math.Hypot(p.X-c.X, p.Y-c.Y) > .01 || c.Radius != 28 || ((!s.growing() && c.Total != 6) || (s.growing() && (!finite(c.Total) || c.Total < 5 || c.Total > 5+maxValue/20 || math.Trunc(c.Total) != c.Total))) || !finite(c.Remaining) || c.Remaining < 0 || c.Remaining > c.Total || c.CreatedMS < 0 || c.CreatedMS > s.ElapsedMS || c.FilledMS < 0 || c.FilledMS > s.ElapsedMS || (c.Remaining == 0) != (c.FilledMS > 0) || len(c.Workers) > MaxEnemies {
 			return errors.New("无效弹坑存档")
 		}
 		workers := map[int]bool{}

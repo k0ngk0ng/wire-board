@@ -31,6 +31,7 @@ func legacyStartMatch(m gameapi.Match) (gameapi.Match, error) {
 		return m, e
 	}
 	s.BalanceRules = 0
+	s.GrowthRules = 0
 	s.World.Objectives = nil
 	s.World.TaskOffersWave = 0
 	s.World.TaskAttempts = nil

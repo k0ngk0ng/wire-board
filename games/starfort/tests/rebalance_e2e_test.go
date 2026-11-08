@@ -336,7 +336,7 @@ func TestStarfortRebalanceTaskGrowthAndInactiveRoads(t *testing.T) {
 			baseHP, growth, low, high = 4, 1.5, .5, .6
 		}
 		if o.Kind == "convoy" {
-			baseHP, baseCost, growth, low, high = 6, 300, 2, 0, 0
+			baseHP, baseCost, growth, low, high = 6, 300, 1.2, 0, 0
 		}
 		if o.Cost != int(math.Round(baseCost*math.Pow(growth, float64(n)))) || math.Abs(o.MaxHP-baseHP*math.Pow(1.1, float64(n))) > 1e-7 {
 			t.Fatal("task growth", o.Kind, o.Cost, o.MaxHP)
@@ -361,7 +361,7 @@ func TestStarfortRebalanceStartAndRestore(t *testing.T) {
 		t.Run(fmt.Sprint(n), func(t *testing.T) {
 			b := newModuleRulesTable(t, n, map[string]any{"waves": 20}, starfort.Module())
 			raw := specializationRaw(b)
-			if raw["balanceRules"] != float64(1) || b.s.Schema != 6 {
+			if raw["balanceRules"] != float64(1) || raw["growthRules"] != float64(1) || b.s.Schema != 7 {
 				t.Fatal("new balance rules not enabled", b.s.Schema)
 			}
 			s := cadenceState(b)

@@ -56,6 +56,7 @@ export type WaveEvent = {
   wave: number;
 };
 export type Objective = Point & {
+  refunded?: number;
   hp: number;
   maxHP: number;
   route: string;
@@ -210,6 +211,7 @@ export type Event = Point & {
   tick: number;
 };
 export type View = {
+  growthRules?: number;
   balanceRules?: number;
   specializationRules?: number;
   iceWalls?: IceWall[];
@@ -251,6 +253,13 @@ export type View = {
     description: string;
   }[];
   controls: {
+    repair?: {
+      limit: number;
+      remaining: number;
+      maxAmount: number;
+      unitCost: number;
+      enabled: boolean;
+    };
     canAct: boolean;
     canReady: boolean;
     canPause: boolean;

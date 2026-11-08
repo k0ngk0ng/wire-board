@@ -199,6 +199,11 @@ func (s *State) finishObjective(index int, success bool, reason string) {
 		}
 		s.note("完成支线：%s", o.Label)
 	} else {
+		if s.growing() && o.Owner >= 0 && o.Owner < len(s.Players) {
+			old := s.Players[o.Owner].Gold
+			s.Players[o.Owner].Gold = min(maxValue, old+o.Cost/5)
+			o.Refunded = s.Players[o.Owner].Gold - old
+		}
 		s.note("支线失败：%s，%s", o.Label, reason)
 	}
 	s.event(Event{Type: "objective", X: o.X, Y: o.Y, Owner: -1, Kind: o.Status})

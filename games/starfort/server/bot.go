@@ -67,6 +67,9 @@ func botAction(ctx gameapi.Context, m gameapi.Match) (json.RawMessage, error) {
 			}
 			return nil, nil
 		}
+		if quote := s.repairControl(p); quote != nil && quote.Enabled && s.BaseHP <= s.BaseMaxHP/2 && s.Players[p].Gold >= quote.UnitCost*quote.MaxAmount+160 {
+			return json.Marshal(Action{Type: "repair_base", Amount: quote.MaxAmount, Epoch: s.Epoch})
+		}
 		for _, o := range s.World.Objectives {
 			if o.Status == "available" && s.Players[p].Gold >= o.Cost+160 && len(s.Towers) >= 6 {
 				return json.Marshal(Action{Type: "objective", ObjectiveID: o.ID, Epoch: s.Epoch})
