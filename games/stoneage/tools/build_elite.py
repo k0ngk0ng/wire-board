@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Index strong native pets and highest-tier crafted gear; images stay on CDN."""
-import argparse,hashlib,json,re,struct
+import argparse,hashlib,json,re,struct,math
 from pathlib import Path
 p=argparse.ArgumentParser();p.add_argument('--source',required=True);root=Path(p.parse_args().source).resolve()
 base=Path(__file__).resolve().parents[1];assets=root/'client/web/assets/original';data=root/'server/legacy/source/2.5/gmsv/data'
@@ -64,6 +64,19 @@ for family,entries in sorted(groups.items()):
   gear.append(item)
 needed={f['file'] for actions in art['sprites'].values() for action in actions for f in action['frames']}|{g['icon'] for g in gear}
 art['resources']={file:meta for file,meta in art['resources'].items() if file in needed}
+timing_path=base/'motion/metadata.json'
+timing=json.loads(timing_path.read_text())
+for graphic,actions in art['sprites'].items():
+ by_direction={}
+ for direction in [3,7]:
+  values={}
+  for name,action in [('attack',0),('hit',1),('dead',2)]:
+   a=next(a for a in actions if a['direction']==direction and a['action']==action);frames=a['frames'];frame_time=max(1,a['ticks'])*1000/60
+   contacts=[i for i,f in enumerate(frames) if f.get('sound',0)>=10000];contact=contacts[0] if contacts else len(frames)//2
+   values[name]={'duration':math.ceil(len(frames)*frame_time),'contactOffset':math.ceil(contact*frame_time),'ticks':a['ticks'],'frames':len(frames)}
+  by_direction[str(direction)]=values
+ timing['graphics'][graphic]=by_direction
+timing_path.write_text(json.dumps(timing,separators=(',',':'))+'\n')
 catalog={'pets':sorted(best.values(),key=lambda p:p['graphic']),'rides':rides,'equipment':gear,'sourceSHA256':hashlib.sha256((data/'itemset.txt').read_bytes()).hexdigest()}
 (base/'server/elite_source.json').write_text(json.dumps(catalog,ensure_ascii=False,separators=(',',':'))+'\n');(base/'web/elite-art.json').write_text(json.dumps(art,ensure_ascii=False,separators=(',',':'))+'\n')
 print(json.dumps({'pets':len(best),'rides':len(rides),'equipment':len(gear),'images':len(art['resources'])}))

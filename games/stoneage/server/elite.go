@@ -1,6 +1,10 @@
 package stoneage
 
-import _ "embed"
+import (
+	_ "embed"
+	"fmt"
+	"strconv"
+)
 
 //go:embed elite_source.json
 var eliteJSON []byte
@@ -26,4 +30,17 @@ func (s *State) gearRate(id int, critical bool) int {
 		}
 	}
 	return total
+}
+
+// New art must never silently use the old 120ms missing-timing fallback.
+func verifyEliteTiming() {
+	timingCatalog()
+	for _, pet := range eliteCatalog.Pets {
+		for _, direction := range []string{"3", "7"} {
+			t := nativeTiming.Graphics[strconv.Itoa(pet.Graphic)][direction]
+			if t.Attack.Duration <= 0 || t.Hit.Duration <= 0 || t.Dead.Duration <= 0 {
+				panic(fmt.Sprintf("missing elite native timing: %d/%s", pet.Graphic, direction))
+			}
+		}
+	}
 }

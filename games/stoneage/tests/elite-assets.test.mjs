@@ -2,6 +2,15 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 const read = (p) => JSON.parse(readFileSync(new URL(p, import.meta.url)));
+test("every elite pet has matching native server attack, hit and death timing",()=>{
+ const c=read('../server/elite_source.json'),art=read('../web/elite-art.json'),timing=read('../motion/metadata.json');
+ for(const pet of c.pets)for(const direction of [3,7])for(const [name,action] of [['attack',0],['hit',1],['dead',2]]){
+  const animation=art.sprites[pet.graphic].find(a=>a.direction===direction&&a.action===action),value=timing.graphics[pet.graphic]?.[direction]?.[name];
+  assert.ok(value,`${pet.name}:${direction}:${name} is missing; must not fall back to a 120ms animation`);
+  assert.equal(value.frames,animation.frames.length);assert.equal(value.ticks,animation.ticks);
+  assert.equal(value.duration,Math.ceil(animation.frames.length*(Math.max(1,animation.ticks)*1000/60)));
+ }
+});
 test("elite candidates use complete native art and highest-tier crafted identities", () => {
   const c = read("../server/elite_source.json"),
     a = read("../web/elite-art.json");

@@ -23,7 +23,7 @@ ENV=dict(os.environ,AGENT_BROWSER_SESSION='stoneage-'+uuid.uuid4().hex[:6],
     AGENT_BROWSER_RESTORE_SAVE='never',AGENT_BROWSER_ARGS='--mute-audio,--disable-breakpad,--disable-crash-reporter')
 for k in ['AGENT_BROWSER_SOCKET_DIR','AGENT_BROWSER_PROFILE','TMPDIR']:Path(ENV[k]).mkdir(parents=True,exist_ok=True)
 REPORT={'passed':False,'players':PLAYERS,'scope':'production web build and StoneAge module; native mouse, keyboard/touch and simulated narrow viewport; original CDN addresses','cases':[]}
-REPORT['sourceSHA256']={str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in [*(ROOT/'games/stoneage/web').glob('*'),*(ROOT/'games/stoneage/server').glob('*.go')] if p.is_file()}
+REPORT['sourceSHA256']={str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in [*(ROOT/'games/stoneage/web').glob('*'),*(ROOT/'games/stoneage/server').glob('*.go'),ROOT/'games/stoneage/motion/metadata.json',ROOT/'games/stoneage/server/elite_source.json'] if p.is_file()}
 REPORT['distIndexSHA256']=hashlib.sha256((ROOT/'web/dist/index.html').read_bytes()).hexdigest()
 def b(*args):
  p=subprocess.run(['agent-browser',*map(str,args),'--json'],cwd=ROOT,env=ENV,text=True,capture_output=True,timeout=60)

@@ -56,6 +56,7 @@ func catalog() {
 		if e := json.Unmarshal(eliteJSON, &eliteCatalog); e != nil {
 			panic(e)
 		}
+		verifyEliteTiming()
 		if e := json.Unmarshal(sourceJSON, &sourceCatalog); e != nil {
 			panic(e)
 		}
