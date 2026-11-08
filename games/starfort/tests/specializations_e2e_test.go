@@ -111,9 +111,15 @@ func specializationFarEnemy(b *rulesTable) {
 }
 
 func TestStarfortSpecializationBranchesHTTP(t *testing.T) {
+	specializationBranchesHTTP(t, preBalanceTestModule())
+}
+func TestStarfortRebalanceBranchesHTTP(t *testing.T) {
+	specializationBranchesHTTP(t, starfort.Module())
+}
+func specializationBranchesHTTP(t *testing.T, base gameapi.Module) {
 	for _, tc := range []struct{ kind, branch string }{{"frost", "freeze"}, {"frost", "speed"}, {"cannon", "power"}, {"cannon", "speed"}, {"arcane", "power"}, {"arcane", "magic"}, {"arrow", "volley"}, {"arrow", "heart"}} {
 		t.Run(tc.kind+"-"+tc.branch, func(t *testing.T) {
-			m := starfort.Module()
+			m := base
 			start := m.Start
 			m.Start = func(ctx gameapi.Context, raw json.RawMessage) (gameapi.Match, error) {
 				match, err := start(ctx, raw)
@@ -376,7 +382,7 @@ func TestStarfortSpecializationObjectiveRefresh(t *testing.T) {
 }
 
 func TestStarfortSpecializationRefreshHTTP(t *testing.T) {
-	m := starfort.Module()
+	m := preBalanceTestModule()
 	start := m.Start
 	m.Start = func(ctx gameapi.Context, raw json.RawMessage) (gameapi.Match, error) {
 		match, err := start(ctx, raw)

@@ -30,6 +30,10 @@ func legacyStartMatch(m gameapi.Match) (gameapi.Match, error) {
 	if e := json.Unmarshal(legacyInitialMaps, &archive); e != nil {
 		return m, e
 	}
+	s.BalanceRules = 0
+	s.World.Objectives = nil
+	s.World.TaskOffersWave = 0
+	s.World.TaskAttempts = nil
 	s.World.Layout = ""
 	s.SkillRules = 0
 	s.SpecializationRules = 0
@@ -57,4 +61,29 @@ func legacyTestModule() gameapi.Module {
 func newLegacyRulesTable(t *testing.T, n int, options map[string]any) *rulesTable {
 	t.Helper()
 	return newModuleRulesTable(t, n, options, legacyTestModule())
+}
+
+// Archived specialization/cadence cases exercise the previous saved rules.
+// Current starts are covered by TestStarfortRebalance* through Module directly.
+func preBalanceTestModule() gameapi.Module {
+	m := game.Module()
+	start := m.Start
+	m.Start = func(ctx gameapi.Context, raw json.RawMessage) (gameapi.Match, error) {
+		v, e := start(ctx, raw)
+		if e != nil {
+			return v, e
+		}
+		v, e = legacyStartMatch(v)
+		if e != nil {
+			return v, e
+		}
+		var s game.State
+		if e = json.Unmarshal(v.Data, &s); e != nil {
+			return v, e
+		}
+		s.SkillRules = 2
+		s.SpecializationRules = 1
+		return s.Envelope()
+	}
+	return m
 }

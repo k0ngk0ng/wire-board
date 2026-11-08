@@ -343,7 +343,27 @@ function drawLandscape(
       ctx.fillText(region.label, region.x + 26, region.y + region.height - 22);
     }
   }
-  for (const feature of map.features ?? []) {
+  const terrainFeatures = [...(map.features ?? [])];
+  for (const pad of map.pads) {
+    if (
+      pad.terrain === "highground" &&
+      !terrainFeatures.some(
+        (f) =>
+          f.kind === "highground" && Math.hypot(f.x - pad.x, f.y - pad.y) < 1,
+      )
+    ) {
+      terrainFeatures.push({
+        id: `pad-highground-${pad.id}`,
+        kind: "highground",
+        x: pad.x,
+        y: pad.y,
+        width: 95,
+        height: 70,
+        sector: pad.sector ?? 1,
+      });
+    }
+  }
+  for (const feature of terrainFeatures) {
     if (previous?.features?.some((old) => old.id === feature.id)) continue;
     if (feature.kind === "river") {
       ctx.fillStyle = palette.water.fill;
@@ -796,6 +816,8 @@ export function Battlefield({
   assets,
   selected,
   towerPanel,
+  placement,
+  onPlace,
   select,
 }: {
   onReady?: () => void;
@@ -807,6 +829,8 @@ export function Battlefield({
   assets: string;
   selected: number | null;
   towerPanel?: ReactNode;
+  placement?: "add" | "highground";
+  onPlace?: (point: Point, pad?: number) => void;
   select: (pad: number, toggle?: boolean) => void;
 }) {
   const canvas = useRef<HTMLCanvasElement>(null),
@@ -2211,6 +2235,7 @@ export function Battlefield({
         ref={container}
         data-assets-ready={loaded}
         data-overview={overview}
+        data-sf-placement={placement}
         onPointerDown={pointerDown}
         onPointerMove={pointerMove}
         onPointerUp={pointerUp}
@@ -2229,6 +2254,12 @@ export function Battlefield({
             const rect = canvas.current!.getBoundingClientRect();
             const x = event.clientX - rect.left,
               y = event.clientY - rect.top;
+            if (placement === "add") {
+              onPlace?.(
+                screenToWorld({ x, y }, camera.current, viewport.current),
+              );
+              return;
+            }
             const hit = [...drawnEnemies.current]
               .reverse()
               .find((e) => Math.hypot(e.point.x - x, e.point.y - y) <= 24);
@@ -2330,6 +2361,10 @@ export function Battlefield({
                   hoverRef.current = null;
                 }}
                 onClick={() => {
+                  if (placement === "highground") {
+                    onPlace?.({ x: pad.x, y: pad.y }, pad.id);
+                    return;
+                  }
                   const switchingFromEnemy = inspected.current !== null;
                   closeInspection();
                   select(pad.id, !switchingFromEnemy);
@@ -2397,13 +2432,17 @@ export function Battlefield({
                 ? ` · 永久减速 ${data.specializationRules === 1 && data.world?.event.id === "frost" ? 45 : 30}%`
                 : ""}
               {inspection.enemy.slowUntil > inspection.tick
-                ? ` · 临时减速 ${data.specializationRules === 1 && data.world?.event.id === "frost" ? 60 : 45}%`
+                ? ` · 临时减速 ${data.balanceRules === 1 ? Math.round((1 - (inspection.enemy.slowFactor ?? 1)) * 100) : data.specializationRules === 1 && data.world?.event.id === "frost" ? 60 : 45}%`
                 : ""}
               {(inspection.enemy.frozenUntil ?? 0) > inspection.tick
                 ? " · 冰封中"
                 : ""}
               {(inspection.enemy.silencedUntil ?? 0) > inspection.tick
                 ? " · 沉默中"
+                : ""}
+              {(inspection.enemy.recoveryUntil ?? 0) > inspection.tick &&
+              (inspection.enemy.frozenUntil ?? 0) <= inspection.tick
+                ? " · 冰封恢复中"
                 : ""}
               {inspection.enemy.repairing ? " · 填坑中" : ""}
             </p>

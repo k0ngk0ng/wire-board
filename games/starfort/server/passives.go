@@ -39,6 +39,9 @@ type PassiveView struct {
 }
 
 func (s *State) passiveView(t Tower) *PassiveView {
+	if s.rebalanced() {
+		return s.balancedPassive(t)
+	}
 	if s.World.Layout != "central" && s.SkillRules != 2 {
 		return nil
 	}
@@ -100,9 +103,12 @@ func (s *State) makeCrater(t *Tower, target Enemy) bool {
 	s.CraterSerial++
 	p := pathPosition(s.routePath(target.Route), target.Progress)
 	c := Crater{ID: s.CraterSerial, TowerID: t.ID, Owner: t.Owner, Route: target.Route, Progress: target.Progress, X: p.X, Y: p.Y, Radius: 28, Total: 6, Remaining: 6, Workers: []int{}, ExemptEnemy: target.ID, CreatedMS: now}
-	c.IgnoreHeavy = s.specialized() && t.Kind == "cannon" && t.Branch == "speed"
+	c.IgnoreHeavy = !s.rebalanced() && s.specialized() && t.Kind == "cannon" && t.Branch == "speed"
 	s.Craters = append(s.Craters, c)
 	t.PassiveReadyAt = now + 6000
+	if s.rebalanced() {
+		t.PassiveReadyAt = now + 10000
+	}
 	s.craterEvent("crater", &s.Craters[len(s.Craters)-1])
 	return true
 }
@@ -153,6 +159,9 @@ func (s *State) repairCraters() {
 				if e.Kind == "engineer" && !s.silenced(e) {
 					rate = 2
 				}
+				if s.rebalanced() && heavy(e) {
+					rate *= 4
+				}
 				work += rate * float64(StepMS) / 1000
 			}
 		}
@@ -198,6 +207,10 @@ func (s *State) focusDamage(t *Tower, target Enemy, damage float64) (float64, st
 	return damage, ""
 }
 func (s *State) onTowerHit(t *Tower, target Enemy, damage float64) {
+	if s.rebalanced() {
+		s.balancedHit(t, target, damage)
+		return
+	}
 	if s.specializationHit(t, target, damage) {
 		return
 	}

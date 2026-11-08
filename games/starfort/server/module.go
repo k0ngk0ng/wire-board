@@ -10,17 +10,19 @@ import (
 )
 
 type Action struct {
-	Type        string `json:"type"`
-	Choice      string `json:"choice,omitempty"`
-	ObjectiveID string `json:"objectiveId,omitempty"`
-	Priority    string `json:"priority,omitempty"`
-	Epoch       int    `json:"epoch"`
-	Pad         int    `json:"pad,omitempty"`
-	Tower       string `json:"tower,omitempty"`
-	TowerID     int    `json:"towerId,omitempty"`
-	Branch      string `json:"branch,omitempty"`
-	Target      int    `json:"target,omitempty"`
-	Amount      int    `json:"amount,omitempty"`
+	X           float64 `json:"x,omitempty"`
+	Y           float64 `json:"y,omitempty"`
+	Type        string  `json:"type"`
+	Choice      string  `json:"choice,omitempty"`
+	ObjectiveID string  `json:"objectiveId,omitempty"`
+	Priority    string  `json:"priority,omitempty"`
+	Epoch       int     `json:"epoch"`
+	Pad         int     `json:"pad,omitempty"`
+	Tower       string  `json:"tower,omitempty"`
+	TowerID     int     `json:"towerId,omitempty"`
+	Branch      string  `json:"branch,omitempty"`
+	Target      int     `json:"target,omitempty"`
+	Amount      int     `json:"amount,omitempty"`
 }
 
 func strict(raw json.RawMessage, v any) error {
@@ -68,7 +70,7 @@ func Module() gameapi.Module {
 			}
 			var o Options
 			_ = json.Unmarshal(normalized, &o)
-			s := &State{SpecializationRules: 1, SkillRules: 2, Options: o, Players: make([]Player, ctx.Players), Phase: "prepare", Epoch: 1, Wave: 1, BaseHP: 30, BaseMaxHP: 30, ServerAt: ctx.Now.UnixMilli(), NextAt: ctx.Now.UnixMilli() + int64(o.PrepSeconds)*1000, Towers: []Tower{}, Enemies: []Enemy{}, Events: []Event{}}
+			s := &State{BalanceRules: 1, SpecializationRules: 1, SkillRules: 2, Options: o, Players: make([]Player, ctx.Players), Phase: "prepare", Epoch: 1, Wave: 1, BaseHP: 30, BaseMaxHP: 30, ServerAt: ctx.Now.UnixMilli(), NextAt: ctx.Now.UnixMilli() + int64(o.PrepSeconds)*1000, Towers: []Tower{}, Enemies: []Enemy{}, Events: []Event{}}
 			for i := range s.Players {
 				s.Players[i].Gold = 300
 			}
@@ -180,6 +182,14 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 		if err := s.vote(kind, a.Choice, p, ctx.Now.UnixMilli()); err != nil {
 			return m, err
 		}
+	case "pad_reward":
+		if err := s.claimPad(p, Point{a.X, a.Y}, a.Pad); err != nil {
+			return m, err
+		}
+	case "skip_objective":
+		if err := s.skipTask(a.ObjectiveID); err != nil {
+			return m, err
+		}
 	case "objective":
 		if err := s.acceptObjective(a.ObjectiveID, p); err != nil {
 			return m, err
@@ -206,7 +216,7 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 		s.Players[a.Target].Gold += a.Amount
 		s.event(Event{Type: "gift", Owner: p, Amount: float64(a.Amount)})
 	case "ready":
-		if s.Phase != "prepare" || s.World.Choice != nil || s.World.BoonChoice != nil {
+		if s.Phase != "prepare" || s.World.Choice != nil || s.World.BoonChoice != nil || s.World.PadReward != nil {
 			return m, errors.New("请先完成波间选择")
 		}
 		s.Players[p].Ready = !s.Players[p].Ready
@@ -338,13 +348,13 @@ func (s *State) controls(p int) Controls {
 	c.CanPause = c.CanAct && s.Phase == "prepare"
 	c.CanRouteVote = c.CanPause && s.World.Choice != nil
 	c.CanBoonVote = c.CanPause && s.World.BoonChoice != nil
-	c.CanReady = c.CanPause && s.World.Choice == nil && s.World.BoonChoice == nil
+	c.CanReady = c.CanPause && s.World.Choice == nil && s.World.BoonChoice == nil && s.World.PadReward == nil
 	c.Objectives = []ObjectiveControl{}
 	c.Targets = []TargetControl{}
 	for _, o := range s.World.Objectives {
 		cost := o.Cost
 		afford := player && s.Players[p].Gold >= cost
-		c.Objectives = append(c.Objectives, ObjectiveControl{o.ID, cost, c.CanReady && o.Status == "available" && afford})
+		c.Objectives = append(c.Objectives, ObjectiveControl{o.ID, cost, c.CanPause && s.World.Choice == nil && s.World.BoonChoice == nil && o.Status == "available" && afford})
 	}
 	if !player {
 		return c
@@ -390,6 +400,7 @@ type ViewEnemy struct {
 }
 
 func viewEnemy(enemy Enemy) ViewEnemy {
+	enemy.KnockbackGuards = nil
 	capacity := enemy.MaxHP
 	if enemy.Kind == "shield" {
 		capacity += enemy.MaxHP * shieldRatio
@@ -498,9 +509,13 @@ func view(m gameapi.Match, p int) (any, error) {
 	}
 	specs := make([]ViewTowerSpec, 0, len(catalog))
 	for _, spec := range catalog {
+		if s.rebalanced() && spec.Kind == "frost" {
+			spec.Description = "命中减速与持续时间随等级提高；无冰墙及永久减速"
+		}
 		specs = append(specs, ViewTowerSpec{spec, s.passiveView(Tower{Kind: spec.Kind})})
 	}
 	return struct {
+		BalanceRules        int             `json:"balanceRules,omitempty"`
 		SpecializationRules int             `json:"specializationRules,omitempty"`
 		Options             Options         `json:"options"`
 		World               ViewWorld       `json:"world"`
@@ -526,6 +541,7 @@ func view(m gameapi.Match, p int) (any, error) {
 		Catalog             []ViewTowerSpec `json:"catalog"`
 		Controls            Controls        `json:"controls"`
 	}{
+		BalanceRules:        s.BalanceRules,
 		SpecializationRules: s.SpecializationRules,
 		Options:             s.Options,
 		World:               ViewWorld{World: s.World},

@@ -253,6 +253,10 @@ export class CombatPlayback {
               enemy.frozenUntil ?? 0,
               event.frozenUntil ?? 0,
             ),
+            recoveryUntil: Math.max(
+              enemy.recoveryUntil ?? 0,
+              event.recoveryUntil ?? 0,
+            ),
             silencedUntil: Math.max(
               enemy.silencedUntil ?? 0,
               event.silencedUntil ?? 0,

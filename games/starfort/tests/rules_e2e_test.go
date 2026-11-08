@@ -117,7 +117,7 @@ func rulesJSON(v any) json.RawMessage {
 }
 func newRulesTable(t *testing.T, n int, options any) *rulesTable {
 	t.Helper()
-	return newModuleRulesTable(t, n, options, starfort.Module())
+	return newModuleRulesTable(t, n, options, preBalanceTestModule())
 }
 func newModuleRulesTable(t *testing.T, n int, options any, m gameapi.Module) *rulesTable {
 	t.Helper()

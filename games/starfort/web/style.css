@@ -1196,3 +1196,45 @@
   background: #e4f0df;
   font-weight: 700;
 }
+
+.sf-placement-toolbar {
+  position: absolute;
+  bottom: 4.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 25;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: max-content;
+  max-width: calc(100% - 1rem);
+  padding: 0.65rem;
+  border-radius: 0.75rem;
+  background: #fff7df;
+  color: #283623;
+  box-shadow: 0 3px 14px #17221940;
+}
+.sf-placement-toolbar span {
+  font-size: 0.85rem;
+}
+.sf-world-viewport[data-sf-placement] {
+  cursor: crosshair;
+}
+
+.sf-reward-coordinates {
+  margin-top: 0.8rem;
+}
+.sf-reward-coordinates form {
+  display: grid;
+  gap: 0.6rem;
+  margin-top: 0.6rem;
+}
+.sf-reward-coordinates label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+.sf-reward-coordinates input {
+  max-width: 9rem;
+}

@@ -38,6 +38,8 @@ type Point struct {
 	Y float64 `json:"y"`
 }
 type Pad struct {
+	Route   string  `json:"route,omitempty"`
+	Custom  bool    `json:"custom,omitempty"`
 	ID      int     `json:"id"`
 	X       float64 `json:"x"`
 	Y       float64 `json:"y"`
@@ -75,6 +77,7 @@ var catalog = []TowerSpec{
 }
 
 type Tower struct {
+	ChainReadyAt   int64   `json:"chainReadyAt,omitempty"`
 	PassiveReadyAt int64   `json:"passiveReadyAt,omitempty"`
 	FocusTarget    int     `json:"focusTarget,omitempty"`
 	FocusHits      int     `json:"focusHits,omitempty"`
@@ -90,28 +93,31 @@ type Tower struct {
 	Priority       string  `json:"priority"`
 }
 type Enemy struct {
-	FrozenUntil   int64   `json:"frozenUntil,omitempty"`
-	SilencedUntil int64   `json:"silencedUntil,omitempty"`
-	Level         int     `json:"level,omitempty"`
-	Frostbound    bool    `json:"frostbound,omitempty"`
-	Repairing     int     `json:"repairing,omitempty"`
-	RepairSinceMS int64   `json:"repairSinceMS,omitempty"`
-	ID            int     `json:"id"`
-	Kind          string  `json:"kind"`
-	X             float64 `json:"x"`
-	Y             float64 `json:"y"`
-	Progress      float64 `json:"progress"`
-	HP            float64 `json:"hp"`
-	MaxHP         float64 `json:"maxHP"`
-	Shield        float64 `json:"shield"`
-	Speed         float64 `json:"speed"`
-	SlowUntil     int64   `json:"slowUntil"`
-	Armor         float64 `json:"armor"`
-	Reward        int     `json:"reward"`
-	Leak          int     `json:"leak"`
-	Route         string  `json:"route"`
-	Phase         int     `json:"phase"`
-	AbilityTick   int64   `json:"abilityTick"`
+	SlowFactor      float64          `json:"slowFactor,omitempty"`
+	RecoveryUntil   int64            `json:"recoveryUntil,omitempty"`
+	KnockbackGuards []KnockbackGuard `json:"knockbackGuards,omitempty"`
+	FrozenUntil     int64            `json:"frozenUntil,omitempty"`
+	SilencedUntil   int64            `json:"silencedUntil,omitempty"`
+	Level           int              `json:"level,omitempty"`
+	Frostbound      bool             `json:"frostbound,omitempty"`
+	Repairing       int              `json:"repairing,omitempty"`
+	RepairSinceMS   int64            `json:"repairSinceMS,omitempty"`
+	ID              int              `json:"id"`
+	Kind            string           `json:"kind"`
+	X               float64          `json:"x"`
+	Y               float64          `json:"y"`
+	Progress        float64          `json:"progress"`
+	HP              float64          `json:"hp"`
+	MaxHP           float64          `json:"maxHP"`
+	Shield          float64          `json:"shield"`
+	Speed           float64          `json:"speed"`
+	SlowUntil       int64            `json:"slowUntil"`
+	Armor           float64          `json:"armor"`
+	Reward          int              `json:"reward"`
+	Leak            int              `json:"leak"`
+	Route           string           `json:"route"`
+	Phase           int              `json:"phase"`
+	AbilityTick     int64            `json:"abilityTick"`
 }
 type WaveInfo struct {
 	Title       string `json:"title"`
@@ -136,6 +142,7 @@ type DamageGroup struct {
 }
 
 type Event struct {
+	RecoveryUntil int64         `json:"recoveryUntil,omitempty"`
 	StatusTargets []int         `json:"statusTargets,omitempty"`
 	FrozenUntil   int64         `json:"frozenUntil,omitempty"`
 	SilencedUntil int64         `json:"silencedUntil,omitempty"`
@@ -166,6 +173,8 @@ type Event struct {
 	Tick     int64      `json:"tick"`
 }
 type State struct {
+	BalanceRules        int       `json:"balanceRules,omitempty"`
+	SpawnNotBefore      int64     `json:"spawnNotBefore,omitempty"`
 	SpecializationRules int       `json:"specializationRules,omitempty"`
 	SkillRules          int       `json:"skillRules,omitempty"`
 	SkillRNG            uint64    `json:"skillRng,omitempty"`
@@ -286,6 +295,12 @@ func (s *State) actors() []int {
 	return a
 }
 func (s *State) valid() error {
+	if s.BalanceRules < 0 || s.BalanceRules > 1 || (s.rebalanced() && (s.SkillRules != 2 || s.SpecializationRules != 1)) {
+		return errors.New("无效平衡规则")
+	}
+	if err := s.validBalance(); err != nil {
+		return err
+	}
 	if s.SpecializationRules < 0 || s.SpecializationRules > 1 || (s.SpecializationRules == 1 && s.SkillRules != 2) {
 		return errors.New("无效专精规则")
 	}
@@ -414,6 +429,9 @@ func (s *State) Envelope() (gameapi.Match, error) {
 			schema = 5
 		}
 	}
+	if s.rebalanced() {
+		schema = 6
+	}
 	m := gameapi.Match{Schema: schema, Data: raw, Actors: s.actors(), Attention: []int{}, TimeoutActors: []int{}, Log: append([]string{}, s.Log...)}
 	if s.finished() {
 		r := &gameapi.Result{Cooperative: true, Ranks: make([]int, len(s.Players)), Winners: []int{}, Scores: make([]int, len(s.Players))}
@@ -439,7 +457,7 @@ func (s *State) Envelope() (gameapi.Match, error) {
 	return m, m.Validate(len(s.Players))
 }
 func decode(m gameapi.Match) (*State, error) {
-	if (m.Schema != 1 && m.Schema != 2 && m.Schema != 3 && m.Schema != 4 && m.Schema != 5) || len(m.Data) > maxSnapshotBytes {
+	if (m.Schema != 1 && m.Schema != 2 && m.Schema != 3 && m.Schema != 4 && m.Schema != 5 && m.Schema != 6) || len(m.Data) > maxSnapshotBytes {
 		return nil, errors.New("不支持的星垒存档")
 	}
 	var s State
@@ -452,8 +470,11 @@ func decode(m gameapi.Match) (*State, error) {
 	if (m.Schema == 3 || m.Schema == 4) && s.World.Layout != "central" {
 		return nil, errors.New("中央地图存档缺少布局标识")
 	}
-	if (m.Schema == 4 || m.Schema == 5) != (s.SkillRules == 2) {
+	if (m.Schema == 4 || m.Schema == 5 || m.Schema == 6) != (s.SkillRules == 2) {
 		return nil, errors.New("技能规则与存档版本不一致")
+	}
+	if (m.Schema == 6) != s.rebalanced() {
+		return nil, errors.New("平衡规则与存档版本不一致")
 	}
 	if m.Schema == 5 && s.World.Layout != "" {
 		return nil, errors.New("合作扩展地图存档布局不一致")

@@ -43,6 +43,9 @@ type BranchChoice struct {
 }
 
 func (s *State) branchChoices(t Tower) []BranchChoice {
+	if s.rebalanced() {
+		return s.balancedChoices(t)
+	}
 	if choices := s.specializationChoices(t); choices != nil {
 		return choices
 	}
@@ -131,6 +134,9 @@ func (s *State) crossIceWalls(e *Enemy, from, to float64) {
 	}
 }
 func (s *State) arrowSkillDamage(t *Tower, target Enemy, damage float64) (float64, string) {
+	if s.rebalanced() && t.Kind == "arrow" && t.Branch == "" {
+		return damage, ""
+	}
 	if s.SkillRules != 2 || t.Kind != "arrow" || t.Branch == "" {
 		return s.focusDamage(t, target, damage)
 	}
@@ -143,6 +149,9 @@ func (s *State) arrowSkillDamage(t *Tower, target Enemy, damage float64) (float6
 		if s.skillRoll(12) {
 			if target.Kind != "elite" && target.Kind != "boss" && target.Level > 0 && target.Level <= t.Level*2 {
 				return target.HP + target.Shield + 1, "execute"
+			}
+			if s.rebalanced() {
+				return damage * 2, "heart"
 			}
 			return damage * 3, "heart"
 		}

@@ -1,6 +1,9 @@
 package starfort
 
-import "math"
+import (
+	"math"
+	"slices"
+)
 
 // The flag is frozen at Start. Imported matches with no flag retain their
 // original branches, damage, control and objective cadence.
@@ -96,12 +99,26 @@ func (s *State) specializationHit(t *Tower, target Enemy, damage float64) bool {
 				if e.HP <= 0 || math.Hypot(e.X-target.X, e.Y-target.Y) > 75 {
 					continue
 				}
-				e.Progress = math.Max(0, e.Progress-60)
+				distance := 60.
+				if s.rebalanced() {
+					distance = 40
+					if heavy(*e) {
+						if slices.ContainsFunc(e.KnockbackGuards, func(g KnockbackGuard) bool { return g.TowerID == t.ID && g.Until > s.Tick }) {
+							continue
+						}
+						e.KnockbackGuards = slices.DeleteFunc(e.KnockbackGuards, func(g KnockbackGuard) bool {
+							return g.Until <= s.Tick || !slices.ContainsFunc(s.Towers, func(t Tower) bool { return t.ID == g.TowerID })
+						})
+						e.KnockbackGuards = append(e.KnockbackGuards, KnockbackGuard{t.ID, s.Tick + 8000/StepMS})
+						distance = 20
+					}
+				}
+				e.Progress = math.Max(0, e.Progress-distance)
 				p := pathPosition(s.routePath(e.Route), e.Progress)
 				e.X, e.Y = p.X, p.Y
 				e.Repairing, e.RepairSinceMS = 0, 0
 				v := viewEnemy(*e)
-				s.event(Event{Type: "knockback", Skill: "knockback", TowerID: t.ID, TargetID: e.ID, Target: &v, X: e.X, Y: e.Y, Owner: t.Owner, Kind: "arrow", Amount: 60})
+				s.event(Event{Type: "knockback", Skill: "knockback", TowerID: t.ID, TargetID: e.ID, Target: &v, X: e.X, Y: e.Y, Owner: t.Owner, Kind: "arrow", Amount: distance})
 			}
 		}
 		return true
@@ -125,6 +142,9 @@ func (s *State) specializationHit(t *Tower, target Enemy, damage float64) bool {
 			return true
 		}
 		t.PassiveReadyAt = now + 8000
+		if s.rebalanced() && t.Kind == "frost" {
+			t.PassiveReadyAt = now + 10000
+		}
 		_, radius, _ := s.towerStats(*t)
 		pad := s.World.Map.Pads[t.Pad]
 		indices := []int{}
@@ -140,6 +160,10 @@ func (s *State) specializationHit(t *Tower, target Enemy, damage float64) bool {
 			event.Type, event.Skill, event.FrozenUntil = "freeze", "freeze", s.Tick+2000/StepMS
 			for _, i := range indices {
 				s.Enemies[i].FrozenUntil = max(s.Enemies[i].FrozenUntil, event.FrozenUntil)
+				if s.rebalanced() {
+					s.Enemies[i].RecoveryUntil = s.Enemies[i].FrozenUntil + 10000/StepMS
+					event.RecoveryUntil = s.Enemies[i].RecoveryUntil
+				}
 			}
 		} else {
 			event.Type, event.Skill, event.SilencedUntil = "meteor", "meteor", s.Tick+3000/StepMS
@@ -159,6 +183,19 @@ func (s *State) specializationHit(t *Tower, target Enemy, damage float64) bool {
 }
 
 func (s *State) iceSlowFactor(e Enemy) float64 {
+	if s.rebalanced() {
+		factor := 1.
+		if e.SlowUntil > s.Tick {
+			factor = e.SlowFactor
+			if factor <= 0 {
+				factor = 1
+			}
+		}
+		if e.RecoveryUntil > s.Tick {
+			factor = math.Min(factor, math.Max(0, float64(s.Tick-e.FrozenUntil)/float64(10000/StepMS)))
+		}
+		return factor
+	}
 	factor := 1.
 	if e.SlowUntil > s.Tick {
 		factor = .55
