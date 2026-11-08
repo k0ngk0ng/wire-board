@@ -328,6 +328,8 @@ function ObjectiveCard({
           {objective.hp <= 0
             ? "目标被摧毁，本次任务已结束。"
             : "本局结束时未完成目标，本次任务已结束。"}
+          {!!objective.refunded &&
+            `已向付款人退还 ${objective.refunded} 金币。`}
         </p>
       )}
       {objective.status === "completed" && <p>奖励已发放给全队。</p>}
@@ -341,6 +343,62 @@ function ObjectiveCard({
         </button>
       )}
     </article>
+  );
+}
+function BaseRepair({
+  quote,
+  hp,
+  maxHP,
+  disabled,
+  send,
+}: {
+  quote: NonNullable<View["controls"]["repair"]>;
+  hp: number;
+  maxHP: number;
+  disabled: boolean;
+  send: (type: string, extra?: Record<string, unknown>) => Promise<void>;
+}) {
+  const [amount, setAmount] = useState(1);
+  const selected = Math.min(Math.max(1, amount), Math.max(1, quote.maxAmount));
+  const enabled = quote.enabled && !disabled;
+  return (
+    <section
+      className="sf-repair-panel"
+      data-sf-repair-panel
+      aria-label="星核修复"
+    >
+      <div>
+        <h3>星核修复</h3>
+        <span>
+          ♥ {hp}/{maxHP} · 本波全队剩余 {quote.remaining}/{quote.limit} 点
+        </span>
+      </div>
+      <form
+        onSubmit={(event) => {
+          event.preventDefault();
+          if (enabled) void send("repair_base", { amount: selected });
+        }}
+      >
+        <label>
+          修复生命
+          <input
+            data-sf-repair-amount
+            aria-label="修复生命值"
+            type="number"
+            inputMode="numeric"
+            min={1}
+            max={Math.max(1, quote.maxAmount)}
+            step={1}
+            value={selected}
+            disabled={!enabled}
+            onChange={(event) => setAmount(Number(event.target.value) || 1)}
+          />
+        </label>
+        <button data-sf-repair type="submit" disabled={!enabled}>
+          修复 {selected} 点 · {selected * quote.unitCost} 金币
+        </button>
+      </form>
+    </section>
   );
 }
 function Sprite({
@@ -1183,6 +1241,15 @@ export function Board({
           className="sf-tasks-dialog"
           onClose={() => setTasksOpen(false)}
         >
+          {data.controls.repair && (
+            <BaseRepair
+              quote={data.controls.repair}
+              hp={baseHP}
+              maxHP={data.baseMaxHP}
+              disabled={locked || room.spectating || finished}
+              send={send}
+            />
+          )}
           {data.specializationRules === 1 && data.balanceRules !== 1 && (
             <p data-sf-task-refresh>
               下次刷新：守过第 {(Math.floor(data.completedWaves / 15) + 1) * 15}{" "}

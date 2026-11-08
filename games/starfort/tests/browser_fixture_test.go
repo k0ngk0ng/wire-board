@@ -39,7 +39,7 @@ func scenarioModule() gameapi.Module {
 			delete(v, "scenario")
 		}
 		switch scenario {
-		case "rebalance-combat-frost", "rebalance-combat-arcane", "rebalance-tasks", "rebalance-reward", "rebalance-highground", "specialization-arrow", "specialization-frost", "specialization-cannon", "specialization-arcane", "density-observed", "density-central", "density-coop", "density-ceiling", "coop-growth", "coop-objectives", "ice-arrow", "ice-wall", "central-passives", "cadence", "cadence-speed", "vitality", "impact", "natural", "battle", "victory-ready", "defeat-ready", "advanced", "zero-gold", "growth-vote", "cleared-5", "cleared-10", "cleared-15", "stage2", "stage3", "stage4", "endless-rotation", "objectives", "objectives-clear", "objectives-fail", "legacy-save":
+		case "rebalance-growth-repair", "rebalance-growth-cannon", "rebalance-growth-arrow", "rebalance-growth-arcane", "rebalance-growth-refund", "rebalance-combat-frost", "rebalance-combat-arcane", "rebalance-tasks", "rebalance-reward", "rebalance-highground", "specialization-arrow", "specialization-frost", "specialization-cannon", "specialization-arcane", "density-observed", "density-central", "density-coop", "density-ceiling", "coop-growth", "coop-objectives", "ice-arrow", "ice-wall", "central-passives", "cadence", "cadence-speed", "vitality", "impact", "natural", "battle", "victory-ready", "defeat-ready", "advanced", "zero-gold", "growth-vote", "cleared-5", "cleared-10", "cleared-15", "stage2", "stage3", "stage4", "endless-rotation", "objectives", "objectives-clear", "objectives-fail", "legacy-save":
 		default:
 			return "", nil, errors.New("unknown test scenario")
 		}
@@ -124,6 +124,27 @@ func scenarioModule() gameapi.Module {
 			}
 		}
 		switch scenario {
+		case "rebalance-growth-repair":
+			s.NextAt = ctx.Now.Add(5 * time.Minute).UnixMilli()
+			s.BaseHP = 20
+			s.World.Objectives = []starfort.Objective{}
+		case "rebalance-growth-cannon", "rebalance-growth-arrow", "rebalance-growth-arcane", "rebalance-growth-refund":
+			kind := strings.TrimPrefix(scenario, "rebalance-growth-")
+			fixtureGrowthCombat(&s, kind)
+			if kind == "refund" {
+				e := s.Enemies[0]
+				s.Towers = nil
+				s.Players[0].Gold = 195
+				s.World.Objectives = []starfort.Objective{{ID: "refund-boundary", Kind: "mine", Label: "失败退款边界夹具", HP: .1, MaxHP: 1, Cost: 105, Status: "active", Owner: 0, StartWave: s.Wave, EndWave: s.Wave, Route: e.Route, Progress: e.Progress, X: e.X, Y: e.Y, Sector: 1}}
+			} else {
+				for _, tower := range s.Towers {
+					if tower.Kind == kind {
+						s.Towers = []starfort.Tower{tower}
+						break
+					}
+				}
+				s.World.Objectives = []starfort.Objective{}
+			}
 		case "rebalance-tasks":
 			s.NextAt = ctx.Now.Add(5 * time.Minute).UnixMilli()
 		case "rebalance-reward", "rebalance-highground":
@@ -474,6 +495,30 @@ func scenarioModule() gameapi.Module {
 		return after.Envelope()
 	}
 	return m
+}
+
+// One real pad and its closest road position work for every new six-pad map.
+func fixtureGrowthCombat(s *starfort.State, kind string) {
+	if kind == "refund" {
+		kind = "arrow"
+	}
+	route := s.World.Map.Routes[0]
+	pad := s.World.Map.Pads[0]
+	best, progress := math.Inf(1), 20.
+	for d := 20.; d < fixturePathLength(route.Points)-20; d += 5 {
+		x, y := fixturePathPosition(route.Points, d)
+		if distance := math.Hypot(x-pad.X, y-pad.Y); distance < best {
+			best, progress = distance, d
+		}
+	}
+	x, y := fixturePathPosition(route.Points, progress)
+	s.Phase, s.NextAt = "battle", 0
+	s.World.Event.ID = "calm"
+	s.WaveInfo = starfort.WaveInfo{Title: "成长说明边界夹具", Total: 1, Spawned: 1}
+	s.TowerSerial, s.EnemySerial = 1, 1
+	s.Towers = []starfort.Tower{{ID: 1, Pad: pad.ID, Owner: 0, Kind: kind, Level: 3, Spent: 1000, Priority: "first"}}
+	s.Enemies = []starfort.Enemy{{ID: 1, Kind: "shield", HP: 1000000, MaxHP: 1000000, Shield: 800000, Speed: .001, Leak: 1, Route: route.ID, Progress: progress, X: x, Y: y}}
+	s.Players[0].Gold = 100000
 }
 
 func fixturePathLength(points []starfort.Point) float64 {

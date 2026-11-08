@@ -28,7 +28,9 @@ func (s *State) balancedStats(t Tower) (float64, float64, int) {
 		damage *= 1.5
 	case "cannon/speed":
 		damage *= .5
-		rate *= 1.5
+		if !s.growing() {
+			rate *= 1.5
+		}
 	case "frost/freeze":
 		rate *= .5
 	case "frost/speed":
@@ -48,7 +50,17 @@ func (s *State) iceAttack(t Tower) (float64, int64) {
 	return 1 - slow, duration
 }
 
-func (s *State) balancedChoices(t Tower) []BranchChoice {
+func (s *State) balancedChoices(t Tower) (choices []BranchChoice) {
+	defer func() {
+		if s.growing() {
+			for i := range choices {
+				preview := t
+				preview.Branch = choices[i].ID
+				preview.Level = max(4, t.Level)
+				choices[i].Description = s.growthDescription(preview, choices[i].Description)
+			}
+		}
+	}()
 	switch t.Kind {
 	case "arrow":
 		return []BranchChoice{
@@ -113,6 +125,19 @@ func (s *State) balancedPassive(t Tower) *PassiveView {
 		p.Variant = "meteor"
 		p.TriggerChance = 15
 		p.CooldownMS = 8000
+	}
+	if s.growing() {
+		p.Description = s.growthDescription(t, p.Description)
+		switch t.Kind + "/" + t.Branch {
+		case "arrow/volley":
+			p.TriggerChance = volleyGrowth(t.Level).Chance
+		case "cannon/power":
+			p.TriggerChance = cannonGrowth(t.Level).Chance
+		case "cannon/speed":
+			chance, cd, _ := craterGrowth(t.Level)
+			p.TriggerChance = chance
+			p.CooldownMS = cd
+		}
 	}
 	if p.CooldownMS == 0 {
 		p.ReadyInMS = 0

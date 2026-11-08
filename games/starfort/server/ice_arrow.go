@@ -142,7 +142,11 @@ func (s *State) arrowSkillDamage(t *Tower, target Enemy, damage float64) (float6
 	}
 	switch t.Branch {
 	case "volley":
-		if s.skillRoll(25) {
+		chance := 25
+		if s.growing() {
+			chance = volleyGrowth(t.Level).Chance
+		}
+		if s.skillRoll(uint64(chance)) {
 			return damage, "volley"
 		}
 	case "heart":
