@@ -170,19 +170,24 @@ type Action struct {
 	Plan    *Plan    `json:"plan,omitempty"`
 }
 type Event struct {
-	Actors     []int    `json:"actors,omitempty"`
-	Effect     string   `json:"effect,omitempty"`
-	ID         int      `json:"id"`
-	Kind       string   `json:"kind"`
-	Actor      int      `json:"actor"`
-	Target     int      `json:"target"`
-	Name       string   `json:"name"`
-	Amount     int      `json:"amount"`
-	RideAmount int      `json:"rideAmount"`
-	Critical   bool     `json:"critical,omitempty"`
-	At         int      `json:"at"`
-	Duration   int      `json:"duration"`
-	Players    []Player `json:"players"`
+	Motions          []AttackMotion `json:"motions,omitempty"`
+	ImpactAt         *int           `json:"impactAt,omitempty"`
+	ReactionDuration int            `json:"reactionDuration,omitempty"`
+	OriginalTarget   *int           `json:"originalTarget,omitempty"`
+	RedirectReason   string         `json:"redirectReason,omitempty"`
+	Actors           []int          `json:"actors,omitempty"`
+	Effect           string         `json:"effect,omitempty"`
+	ID               int            `json:"id"`
+	Kind             string         `json:"kind"`
+	Actor            int            `json:"actor"`
+	Target           int            `json:"target"`
+	Name             string         `json:"name"`
+	Amount           int            `json:"amount"`
+	RideAmount       int            `json:"rideAmount"`
+	Critical         bool           `json:"critical,omitempty"`
+	At               int            `json:"at"`
+	Duration         int            `json:"duration"`
+	Players          []Player       `json:"players"`
 }
 type Playback struct {
 	StartedAt int64    `json:"startedAt"`

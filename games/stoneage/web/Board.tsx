@@ -18,6 +18,7 @@ import {
   neededAssets,
   petPreview,
   resourceRoot,
+  avatarAppearances,
 } from "./assets";
 import { Sprite } from "./Sprite";
 import { Battle } from "./Battle";
@@ -285,6 +286,10 @@ function Selection({ data, room, busy, time, send }: ExtendedProps) {
       structuredClone(data.self?.loadout ?? recommendedLoadout(data)),
     ),
     [tab, setTab] = useState("pets");
+  const content = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    content.current?.scrollTo({ top: 0 });
+  }, [tab]);
   const mine = data.players[room.you],
     disabled = busy || room.spectating || room.you < 0 || mine?.locked;
   const pool = data.pool,
@@ -316,6 +321,20 @@ function Selection({ data, room, busy, time, send }: ExtendedProps) {
   return (
     <div className="sa-selection" data-stoneage-selection>
       <aside className="sa-roster-preview">
+        <div
+          className="sa-companion sa-character-preview"
+          data-stoneage-character-preview={draft.avatar}
+        >
+          <div className="sa-companion-image">
+            <Sprite
+              graphic={draft.avatar}
+              progress={0}
+              time={time}
+              size={156}
+            />
+          </div>
+          <span>人物</span>
+        </div>
         <div className="sa-companion">
           <div className="sa-companion-image">
             <Sprite graphic={pet.graphic} progress={0} time={time} size={156} />
@@ -328,7 +347,9 @@ function Selection({ data, room, busy, time, send }: ExtendedProps) {
         <div className="sa-companion">
           <div className="sa-companion-image ride">
             <Sprite
-              graphic={ride.graphic}
+              graphic={
+                ride.riders!.find((r) => r.avatar === draft.avatar)!.graphic
+              }
               progress={0}
               time={time}
               size={130}
@@ -373,21 +394,6 @@ function Selection({ data, room, busy, time, send }: ExtendedProps) {
             </label>
           ))}
         </div>
-        <div className="sa-build">
-          <label htmlFor="sa-avatar">人物外观</label>
-          <select
-            id="sa-avatar"
-            value={draft.avatar}
-            disabled={disabled}
-            onChange={(e) => update({ avatar: Number(e.target.value) })}
-          >
-            {ride.riders!.map((r, i) => (
-              <option key={r.avatar} value={r.avatar}>
-                {i === 0 ? "猎手" : "旅人"}
-              </option>
-            ))}
-          </select>
-        </div>
         <div className="sa-selection-seats">
           {data.players.map((p) => (
             <span key={p.seat} className={`team-${p.team}`}>
@@ -407,6 +413,7 @@ function Selection({ data, room, busy, time, send }: ExtendedProps) {
           {[
             ["pets", "出战宠"],
             ["rides", "骑宠"],
+            ["avatars", "人物"],
             ["skills", "宠物技能"],
             ["equipment", "人物装备"],
             ["supplies", "物品补给"],
@@ -421,7 +428,7 @@ function Selection({ data, room, busy, time, send }: ExtendedProps) {
             </button>
           ))}
         </nav>
-        <div className="sa-choice-content">
+        <div className="sa-choice-content" ref={content}>
           {(tab === "pets" || tab === "rides") && (
             <>
               <div className="sa-section-line">
@@ -440,10 +447,50 @@ function Selection({ data, room, busy, time, send }: ExtendedProps) {
                     onClick={() =>
                       tab === "pets"
                         ? update({ pet: p.id })
-                        : update({ ride: p.id, avatar: p.riders![0].avatar })
+                        : update({
+                            ride: p.id,
+                            avatar: p.riders!.some(
+                              (r) => r.avatar === draft.avatar,
+                            )
+                              ? draft.avatar
+                              : p.riders![0].avatar,
+                          })
                     }
                   />
                 ))}
+              </div>
+            </>
+          )}
+          {tab === "avatars" && (
+            <>
+              <div className="sa-section-line">
+                <strong>人物外观</strong>
+                <span>选择 1 位</span>
+              </div>
+              <div
+                className="sa-avatar-grid"
+                role="group"
+                aria-label="人物外观"
+              >
+                {ride.riders!.map((rider) => {
+                  const avatar = avatarAppearances.find(
+                    (a) => a.id === rider.avatar,
+                  )!;
+                  return (
+                    <button
+                      key={avatar.id}
+                      className={`sa-avatar-choice ${draft.avatar === avatar.id ? "selected" : ""}`}
+                      data-stoneage-avatar={avatar.id}
+                      aria-label={`人物外观 ${avatar.family + 1}，配色 ${avatar.color + 1}`}
+                      aria-pressed={draft.avatar === avatar.id}
+                      disabled={disabled}
+                      onClick={() => update({ avatar: avatar.id })}
+                    >
+                      <img src={assetURL(avatar.portrait)} alt="" />
+                      {draft.avatar === avatar.id && <Check size={15} />}
+                    </button>
+                  );
+                })}
               </div>
             </>
           )}

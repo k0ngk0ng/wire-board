@@ -24,11 +24,11 @@ export function Sprite({
     const canvas = ref.current,
       animation = spriteAction(graphic, direction, dead ? 2 : action);
     if (!canvas || !animation?.frames.length) return;
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
     if (!ctx) return;
     ctx.setTransform(imagePixelScale, 0, 0, imagePixelScale, 0, 0);
     const frames = animation.frames;
-    const index = dead
+    const index = dead && progress === undefined
       ? frames.length - 1
       : progress === undefined
         ? Math.floor(time / ((Math.max(1, animation.ticks) * 1000) / 60)) %
@@ -50,6 +50,7 @@ export function Sprite({
       frame.width * scale,
       frame.height * scale,
     );
+    canvas.dataset.stoneageSpriteFrame = frame.file;
   }, [graphic, direction, action, time, progress, dead, size]);
   return (
     <canvas

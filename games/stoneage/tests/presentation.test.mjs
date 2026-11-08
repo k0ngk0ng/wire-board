@@ -109,3 +109,14 @@ test("new match and closed room discard the previous movie", () => {
   selection.room.game.data.session = "new";
   assert.equal(p.update(selection, 200, false).blocked, false);
 });
+test("native contact timing controls HP rather than half the movement movie", () => {
+  const p = createPlayback(),
+    source = snapshot();
+  source.room.game.data.events[0].duration = 2200;
+  source.room.game.data.events[0].impactAt = 1400;
+  source.room.game.data.playback.duration = 2450;
+  p.update(source, 100, true);
+  assert.equal(p.sample(1200).room.game.data.players[1].body.hp, 100);
+  assert.equal(p.sample(1499).room.game.data.players[1].body.hp, 100);
+  assert.equal(p.sample(1500).room.game.data.players[1].body.hp, 40);
+});

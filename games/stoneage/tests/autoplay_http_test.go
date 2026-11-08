@@ -8,7 +8,6 @@ import (
 	"testing"
 	"time"
 
-	game "github.com/k0ngk0ng/wire-board/games/stoneage/server"
 	"github.com/k0ngk0ng/wire-board/internal/gametest"
 )
 
@@ -16,7 +15,7 @@ func TestStoneageNativeAutoPlayAllModesHTTP(t *testing.T) {
 	for _, n := range []int{2, 4, 6, 8, 10} {
 		t.Run(fmt.Sprintf("%dv%d", n/2, n/2), func(t *testing.T) {
 			t.Parallel()
-			h := gametest.NewHTTP(t, 2, game.Module(), "stoneage")
+			h := gametest.NewHTTP(t, 2, acceleratedHTTPModule(), "stoneage")
 			a, b := h.People[0], h.People[1]
 			created := a.Request("POST", "/api/rooms", map[string]any{"kind": "stoneage", "name": "石器原生托管验收", "capacity": n}, 201)
 			id := created["id"].(string)
@@ -28,8 +27,8 @@ func TestStoneageNativeAutoPlayAllModesHTTP(t *testing.T) {
 			b.Command("ready", nil, 200)
 			a.Command("start", nil, 200)
 			h.Spectator.Request("POST", "/api/rooms/"+id+"/watch", map[string]any{}, 200)
-			a.Command("autoplay", map[string]any{"enabled": true}, 200)
-			b.Command("autoplay", map[string]any{"enabled": true}, 200)
+			nativeHTTPCommand(t, a, "autoplay", map[string]any{"enabled": true})
+			nativeHTTPCommand(t, b, "autoplay", map[string]any{"enabled": true})
 			phases := map[string]bool{}
 			reclaimed := false
 			restarted := false
@@ -42,11 +41,9 @@ func TestStoneageNativeAutoPlayAllModesHTTP(t *testing.T) {
 					break
 				}
 				if n == 4 && v.Phase == "planning" && !reclaimed {
-					b.Command("autoplay", map[string]any{"enabled": false}, 200)
-					if suggestion := httpSuggestion(t, b); suggestion != nil {
-						b.Action(suggestion, 200)
-					}
-					b.Command("autoplay", map[string]any{"enabled": true}, 200)
+					nativeHTTPCommand(t, b, "autoplay", map[string]any{"enabled": false})
+					nativeManualDecision(t, b)
+					nativeHTTPCommand(t, b, "autoplay", map[string]any{"enabled": true})
 					reclaimed = true
 					h.Record("manual handoff and resubmission through real session")
 				}
@@ -68,7 +65,7 @@ func TestStoneageNativeAutoPlayAllModesHTTP(t *testing.T) {
 				t.Fatal("computer match rated")
 			}
 			h.Record("native computer/autoplay complete match")
-			report(t, fmt.Sprintf("native-autoplay-%dv%d", n/2, n/2), map[string]any{"phases": phases, "reclaimed": reclaimed, "restarted": restarted, "room": r})
+			report(t, fmt.Sprintf("native-autoplay-%dv%d", n/2, n/2), map[string]any{"clockScale": 4, "phases": phases, "reclaimed": reclaimed, "restarted": restarted, "room": r})
 		})
 	}
 }

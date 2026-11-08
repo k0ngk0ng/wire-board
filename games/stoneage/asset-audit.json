@@ -1,11 +1,11 @@
 {
   "scope": "当前竞技场全部候选与可用造型；动画帧按 PNG 文件去重，非每局下载量",
   "root": "https://cdn.ichenj.com/stoneage",
-  "uniqueImages": 9477,
-  "bytes": 27407895,
-  "MiB": 26.14,
-  "spriteVariants": 165,
-  "frameReferences": 18199,
+  "uniqueImages": 23201,
+  "bytes": 82225060,
+  "MiB": 78.42,
+  "spriteVariants": 413,
+  "frameReferences": 42963,
   "categories": [
     {
       "category": "宠物与骑宠本体动画",
@@ -15,15 +15,21 @@
     },
     {
       "category": "人物骑乘动画",
-      "uniqueImages": 1096,
-      "additionalImages": 1096,
-      "bytes": 6592099
+      "uniqueImages": 5856,
+      "additionalImages": 5856,
+      "bytes": 36322129
     },
     {
       "category": "人物与武器造型动画",
-      "uniqueImages": 3616,
-      "additionalImages": 3616,
-      "bytes": 7769411
+      "uniqueImages": 12540,
+      "additionalImages": 12540,
+      "bytes": 32682737
+    },
+    {
+      "category": "人物头像",
+      "uniqueImages": 48,
+      "additionalImages": 40,
+      "bytes": 173809
     },
     {
       "category": "装备图标",
@@ -45,6 +51,7 @@
     }
   ],
   "manifestSHA256": "23c338bb9926fb43c2fdae5bd317561ec019f2438c972cff316eac7fbfb7df5c",
+  "avatarManifestSHA256": "a29e839e7e172fa3ba651313522103e8a257839cbee600472226c6ee64cca35f",
   "assetsCopied": 0,
   "assetsUploaded": 0
 }

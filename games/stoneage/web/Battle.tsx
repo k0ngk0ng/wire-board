@@ -5,6 +5,8 @@ import { useControllerCancel } from "../../../web/src/controllers/use-controller
 import { assetURL, nativeButtons, resourceRoot } from "./assets";
 import { Sprite } from "./Sprite";
 import { position, facing, eventPosition } from "./formation";
+import { sampleAttackMotion, impactOffset } from "./motion";
+import { pickSpriteTarget } from "./target-hit";
 import { statusNames } from "./types";
 import type { Command, Player, Unit, View, Equipment } from "./types";
 import {
@@ -71,7 +73,7 @@ export function Battle({
   const seen = useRef(-1);
   useEffect(() => {
     const impact = data.events
-      .filter((e) => elapsed >= e.at + e.duration / 2)
+      .filter((e) => elapsed >= e.at + impactOffset(e))
       .at(-1);
     if (seen.current < 0) {
       seen.current = impact?.id ?? 0;
@@ -90,7 +92,13 @@ export function Battle({
         ],
         { playbackID: `${data.session}:${impact.id}` },
       );
-  }, [event?.id, progress > 0.5, sound, audio, data.session]);
+  }, [
+    event?.id,
+    !!event && elapsed >= event.at + impactOffset(event),
+    sound,
+    audio,
+    data.session,
+  ]);
   const canAct =
     data.phase === "planning" &&
     !busy &&
@@ -193,7 +201,9 @@ export function Battle({
     data.phase === "arming"
       ? "等待全员就绪"
       : data.phase === "resolving"
-        ? (event?.name ?? "本回合结算")
+        ? event
+          ? `${event.name}${event.redirectReason ? ` · ${event.redirectReason}` : ""}`
+          : "本回合结算"
         : data.phase === "finished"
           ? "战斗结束"
           : room.spectating
@@ -217,6 +227,64 @@ export function Battle({
           e.preventDefault();
           cancel();
         }}
+        onClickCapture={(e) => {
+          if (
+            e.detail === 0 ||
+            !(e.target instanceof Element) ||
+            e.target.closest(
+              ".sa-field-menu,.sa-actor-details,.sa-scene-log,.sa-scene-log-button",
+            )
+          )
+            return;
+          const actors = [
+            ...e.currentTarget.querySelectorAll<HTMLButtonElement>(".sa-actor"),
+          ];
+          let id = pickSpriteTarget(
+            e.clientX,
+            e.clientY,
+            actors.map((actor) => {
+              const canvas = actor.querySelector("canvas")!,
+                ctx = canvas.getContext("2d")!;
+              return {
+                id: Number(actor.dataset.stoneageUnit),
+                depth: Number(actor.style.zIndex),
+                rect: canvas.getBoundingClientRect(),
+                width: canvas.width,
+                height: canvas.height,
+                alpha: (x: number, y: number) => {
+                  try {
+                    return ctx.getImageData(x, y, 1, 1).data[3];
+                  } catch {
+                    return 0;
+                  }
+                },
+              };
+            }),
+          );
+          if (id === null) {
+            const actor = e.target.closest<HTMLButtonElement>(".sa-actor"),
+              bars = actor
+                ?.querySelector(".sa-vitals")
+                ?.getBoundingClientRect();
+            if (
+              actor &&
+              bars &&
+              e.clientX >= bars.left &&
+              e.clientX <= bars.right &&
+              e.clientY >= bars.top &&
+              e.clientY <= bars.bottom
+            )
+              id = Number(actor.dataset.stoneageUnit);
+          }
+          if (id === null) {
+            if (e.target.closest(".sa-actor")) e.stopPropagation();
+            return;
+          }
+          e.stopPropagation();
+          if (ui.pending) {
+            if (canAct && legal(ui.pending, ui.owner, id)) finish(id);
+          } else setUI((old) => inspectActor(old, id));
+        }}
       >
         {data.players.map((p) => {
           const row = data.players.filter(
@@ -230,8 +298,13 @@ export function Battle({
                 !!event &&
                 ((event.kind === "combo" && event.actors?.includes(unit.id)) ||
                   (event.actor === unit.id &&
-                    ["attack", "counter"].includes(event.kind))),
-              hit = event?.target === unit.id && progress >= 0.5;
+                    ["attack", "counter", "miss"].includes(event.kind))),
+              hit =
+                event?.target === unit.id &&
+                elapsed >= event.at + impactOffset(event);
+            const directed =
+              event?.target === unit.id &&
+              ["attack", "counter", "combo", "miss"].includes(event.kind);
             let graphic = unit.graphic;
             if (!pet && p.riding)
               graphic =
@@ -241,7 +314,41 @@ export function Battle({
                   ?.graphic ?? graphic;
             const targetPos =
               eventPosition(data.players, event?.target ?? -1) ?? pos;
-            const move = active ? Math.sin(progress * Math.PI) * 0.65 : 0;
+            const nativeMotion = active
+              ? event?.motions?.find((m) => m.actor === unit.id)
+              : undefined;
+            const pose = nativeMotion
+              ? sampleAttackMotion(nativeMotion, elapsed - event!.at)
+              : undefined;
+            const distance = Math.hypot(
+              (targetPos.x - pos.x) * 6.4,
+              (targetPos.y - pos.y) * 4.8,
+            );
+            const move =
+              active && !pose
+                ? Math.sin(progress * Math.PI) *
+                  Math.max(0, 1 - 64 / Math.max(1, distance))
+                : 0;
+            const dx = pose
+                ? pose.offset[0] / 6.4
+                : (targetPos.x - pos.x) * move,
+              dy = pose ? pose.offset[1] / 4.8 : (targetPos.y - pos.y) * move;
+            const reactionProgress = hit
+              ? Math.min(
+                  1,
+                  Math.max(
+                    0,
+                    (elapsed - event!.at - impactOffset(event!)) /
+                      Math.max(1, event!.reactionDuration ?? 400),
+                  ),
+                )
+              : undefined;
+            const reacting =
+              hit &&
+              (event?.kind === "attack" ||
+                event?.kind === "counter" ||
+                event?.kind === "combo") &&
+              reactionProgress! < 1;
             const allowed =
               !!ui.pending && canAct && legal(ui.pending, ui.owner, unit.id);
             const identity = pet
@@ -251,16 +358,18 @@ export function Battle({
             return (
               <button
                 key={unit.id}
-                className={`sa-actor team-${p.team} ${allowed ? "targetable" : ""} ${hit ? "hit" : ""} ${unit.hp <= 0 ? "down" : ""}`}
+                className={`sa-actor team-${p.team} ${allowed ? "targetable" : ""} ${directed ? "receiving" : ""} ${hit ? "hit" : ""} ${unit.hp <= 0 ? "down" : ""}`}
                 style={{
-                  left: `${pos.x + (targetPos.x - pos.x) * move + (fleeing ? (p.team === 0 ? 1 : -1) * progress * 15 : 0)}%`,
-                  top: `${pos.y + (targetPos.y - pos.y) * move + (fleeing ? (p.team === 0 ? 1 : -1) * progress * 10 : 0)}%`,
+                  left: `${pos.x + dx + (fleeing ? (p.team === 0 ? 1 : -1) * progress * 15 : 0)}%`,
+                  top: `${pos.y + dy + (fleeing ? (p.team === 0 ? 1 : -1) * progress * 10 : 0)}%`,
                   opacity: fleeing ? 1 - progress : 1,
-                  zIndex: Math.round(pos.y + (targetPos.y - pos.y) * move),
+                  zIndex: Math.round(pos.y + dy),
                 }}
                 data-stoneage-unit={unit.id}
                 data-stoneage-direction={facing(p.team)}
                 data-stoneage-role={pet ? "pet" : "player"}
+                data-stoneage-motion={pose?.phase}
+                data-stoneage-current-target={directed ? "true" : undefined}
                 data-stoneage-riding={!pet && p.riding ? "true" : undefined}
                 data-stoneage-combining={
                   active && event?.kind === "combo" ? "true" : undefined
@@ -276,8 +385,22 @@ export function Battle({
                 <Sprite
                   graphic={graphic}
                   direction={facing(p.team)}
-                  action={active ? 0 : hit ? 1 : unit.guard ? 4 : 3}
-                  progress={active ? progress : undefined}
+                  action={
+                    active
+                      ? (pose?.action ?? 0)
+                      : reacting
+                        ? 1
+                        : unit.guard
+                          ? 10
+                          : 3
+                  }
+                  progress={
+                    active
+                      ? (pose?.progress ?? (pose ? undefined : progress))
+                      : hit && (reacting || unit.hp <= 0)
+                        ? reactionProgress
+                        : undefined
+                  }
                   dead={unit.hp <= 0}
                   time={time}
                   size={126}
@@ -482,7 +605,7 @@ export function Battle({
                 .filter(
                   (e) =>
                     !["status", "wait"].includes(e.kind) &&
-                    (!data.playback || elapsed >= e.at + e.duration / 2),
+                    (!data.playback || elapsed >= e.at + impactOffset(e)),
                 )
                 .map((e) => (
                   <li key={e.id}>
@@ -493,6 +616,7 @@ export function Battle({
                         : "状态"}{" "}
                     · {e.name}
                     {e.target >= 0 ? ` → ${actorName(e.target)}` : ""}
+                    {e.redirectReason ? `（${e.redirectReason}）` : ""}
                     {e.amount ? ` ${e.amount}` : ""}
                     {e.rideAmount ? `（骑宠 ${e.rideAmount}）` : ""}
                   </li>

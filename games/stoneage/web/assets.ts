@@ -1,10 +1,11 @@
 import source from "./art.json";
 import hd from "./hd.json";
+import appearances from "./avatar-art.json";
 import type { View, PetDefinition } from "./types";
 
 export const resourceRoot = "https://cdn.ichenj.com/stoneage";
 export const assetURL = (file: string) =>
-  `${resourceRoot}/${hd.basePath}/${file}`;
+  `${resourceRoot}/${enhancedResources[file] ? hd.basePath : appearances.basePath}/${file}`;
 export const imagePixelScale = hd.pixelScale;
 export type SpriteFrame = {
   file: string;
@@ -20,14 +21,23 @@ export type SpriteAction = {
   ticks: number;
   frames: SpriteFrame[];
 };
-const art = source as {
+const art = {
+  ...source,
+  sprites: { ...source.sprites, ...appearances.sprites },
+  resources: { ...source.resources, ...appearances.resources },
+} as {
   ui: Record<string, { normal: string; pressed: string }>;
   sprites: Record<string, SpriteAction[]>;
   resources: Record<string, { bytes: number; sha256: string }>;
 };
 export const nativeButtons = art.ui;
-const resources: Record<string, { bytes: number; sha256: string }> =
+export const avatarAppearances = appearances.avatars;
+const enhancedResources: Record<string, { bytes: number; sha256: string }> =
   hd.resources;
+const resources: Record<string, { bytes: number; sha256: string }> = {
+  ...art.resources,
+  ...enhancedResources,
+};
 const images = new Map<string, HTMLImageElement>();
 const inFlight = new Map<string, Promise<HTMLImageElement>>();
 export const imageFor = (file: string) => images.get(file);
@@ -47,6 +57,15 @@ export function neededAssets(v: View): string[] {
       const f = petPreview(p);
       if (f) files.add(f);
     }
+    for (const avatar of avatarAppearances) {
+      files.add(avatar.portrait);
+      files.add(avatar.preview);
+    }
+    for (const ride of v.pool.rides)
+      for (const rider of ride.riders ?? []) {
+        const frame = spriteAction(rider.graphic)?.frames[0];
+        if (frame) files.add(frame.file);
+      }
     for (const g of [
       ...v.pool.hats,
       ...v.pool.weapons,
@@ -147,6 +166,7 @@ export async function loadAssets(
             if (digest !== metadata.sha256)
               throw Error("石器素材版本与索引不一致，请重试");
             const image = new Image();
+            image.crossOrigin = "anonymous";
             image.src = assetURL(file);
             await image.decode();
             signal.throwIfAborted();

@@ -69,7 +69,7 @@ try:
  for width,height in [(1440,1000),(768,1000),(390,844),(320,740)]:
   b('set','viewport',width,height)
   for tab in ['equipment','skills','supplies']:cards(tab,width)
-  for tab in ['pets','rides']:
+  for tab in ['pets','rides','avatars']:
    b('click',f'[data-stoneage-tab="{tab}"]')
    assert js('document.documentElement.scrollWidth<=innerWidth+1')
   b('click','[data-stoneage-tab="equipment"]');b('screenshot',OUT/f'equipment-{width}.png','--full')

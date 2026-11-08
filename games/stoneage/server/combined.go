@@ -79,5 +79,5 @@ func (s *State) combinedAttack(actors []int, target int) {
 	}
 	s.event("combo", actors[0], target, fmt.Sprintf("%d人合击", len(actors)), lost, rideLost, anyCritical)
 	s.Events[len(s.Events)-1].Actors = append([]int(nil), actors...)
-	s.Events[len(s.Events)-1].Duration = 700
+	s.timeEvent(&s.Events[len(s.Events)-1])
 }

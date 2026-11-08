@@ -36,11 +36,18 @@ def api(path,body=None):
  assert 200<=r['status']<300,r;return r['body']
 def room():return api('/state')['room']
 def command(kind,**extra):
- r=room();return api('/rooms/'+r['id'],dict(type=kind,version=r['version'],nonce=uuid.uuid4().hex,**extra))
+ nonce=uuid.uuid4().hex
+ for attempt in range(12):
+  r=room()
+  try:return api('/rooms/'+r['id'],dict(type=kind,version=r['version'],nonce=nonce,**extra))
+  except AssertionError as e:
+   value=e.args[0]
+   if not isinstance(value,dict) or value.get('status')!=409 or value.get('body',{}).get('error')!='局面已更新，请根据最新画面重试' or attempt==11:raise
+
 def actor_point(unit):
  selector=f'.sa-actor[data-stoneage-unit="{unit}"]'
  js('document.querySelector('+json.dumps(selector)+').scrollIntoView({behavior:"instant",block:"center"})')
- point=js("(()=>{const e=document.querySelector(SELECTOR),r=e.getBoundingClientRect();for(const a of [.5,.8,.2,.95,.05])for(const b of [.5,.8,.2,.95,.05]){const x=r.x+r.width*a,y=r.y+r.height*b;if(x>0&&x<innerWidth&&y>0&&y<innerHeight&&document.elementFromPoint(x,y)?.closest('.sa-actor')===e)return[x,y]}return null})()".replace('SELECTOR',json.dumps(selector)))
+ point=js("(()=>{const wanted=UNIT,nodes=[...document.querySelectorAll('.sa-actor')].map(e=>{const c=e.querySelector('canvas');return {id:Number(e.dataset.stoneageUnit),depth:Number(e.style.zIndex),r:c.getBoundingClientRect(),c,pixels:c.getContext('2d').getImageData(0,0,c.width,c.height).data}}).sort((a,b)=>b.depth-a.depth),r=nodes.find(n=>n.id===wanted).r,points=[];for(const y of [.65,.5,.8,.35])for(const x of [.5,.65,.35])points.push([r.left+r.width*x,r.top+r.height*y]);for(let y=Math.max(3,Math.ceil(r.top));y<Math.min(innerHeight-3,r.bottom);y+=3)for(let x=Math.max(3,Math.ceil(r.left));x<Math.min(innerWidth-3,r.right);x+=3)points.push([x,y]);function visible(x,y){return nodes.find(n=>x>=n.r.left&&x<n.r.right&&y>=n.r.top&&y<n.r.bottom&&n.pixels[(Math.floor((y-n.r.top)*n.c.height/n.r.height)*n.c.width+Math.floor((x-n.r.left)*n.c.width/n.r.width))*4+3]>100)?.id}for(const [x,y] of points){if(x<3||y<3||x>=innerWidth-3||y>=innerHeight-3||document.elementFromPoint(x,y)?.closest('.sa-field-menu,.sa-actor-details,.sa-scene-log,.sa-scene-log-button'))continue;if([[-2,-2],[0,0],[2,2],[-2,2],[2,-2]].every(([dx,dy])=>visible(x+dx,y+dy)===wanted))return[x,y]}return null})()".replace('UNIT',str(unit)))
  assert point,('actor has no reachable pointer target',unit)
  return point
 
@@ -58,21 +65,21 @@ try:
  api('/login',{'name':'石器验收','password':'stoneage-browser-only'})
  existing=api('/state').get('room')
  if existing:
-  assert existing['kind']=='stoneage' and existing['name']=='石器浏览器验收'
+  assert existing['kind']=='stoneage' and existing['name'] in ['石器浏览器验收','石器对齐验收']
   if existing['status']=='playing':command('close')
   command('leave')
  api('/rooms',{'kind':'stoneage','name':'石器浏览器验收','capacity':PLAYERS,'options':{'turnSeconds':45}})
  for _ in range(PLAYERS-1):command('add_bot')
  command('ready');command('start')
  b('reload')
- wait(lambda:js('!!document.querySelector("[data-stoneage-selection]")'),90)
+ wait(lambda:js('!!document.querySelector("[data-stoneage-selection]") && !document.querySelector(".game-loading")'),90)
  b('wait','[data-stoneage-selection]')
  candidate_loyalty=js('[...document.querySelectorAll(".sa-pet-choice")].map(e=>({id:Number(e.dataset.stoneagePet),loyalty:Number(e.querySelector("[data-stoneage-loyalty]")?.dataset.stoneageLoyalty)}))')
  assert candidate_loyalty==[{'id':p['id'],'loyalty':p['loyalty']} for p in room()['game']['data']['pool']['pets']],'candidate loyalty display differs from public pool'
  REPORT['candidateLoyalty']=candidate_loyalty
  assert js('[...document.querySelectorAll("[data-stoneage-selection] canvas")].every(e=>{const r=e.getBoundingClientRect();return Math.abs(r.width-r.height)<=1})'),'HD pixels changed the logical preview proportions'
  js('performance.setResourceTimingBufferSize(20000)')
- b('click','[data-stoneage-tab="equipment"]')
+ b('click','[data-stoneage-tab="equipment"]');wait(lambda:js('document.querySelector(\'[data-stoneage-tab="equipment"]\').getAttribute("aria-pressed")=="true"'))
  for label in ['帽子','武器','衣服']:
   assert label in js('document.querySelector("[data-stoneage-selection]").innerText'),label
  b('click','[data-stoneage-tab="supplies"]')
@@ -144,7 +151,7 @@ try:
  b('screenshot',CASE/'battle-details.png','--full')
  click_actor(0);assert not js('!!document.querySelector("[data-stoneage-details]")'),'repeat actor click did not close details'
  click_actor(0);b('click','[data-stoneage-details]');assert not js('!!document.querySelector("[data-stoneage-details]")'),'details panel click did not close'
- click_actor(0);b('click','button[aria-label="关闭详情"]');assert not js('!!document.querySelector("[data-stoneage-details]")'),'details close button failed'
+ click_actor(0);wait(lambda:js('!!document.querySelector("[data-stoneage-details]")'));b('click','button[aria-label="关闭详情"]');assert not js('!!document.querySelector("[data-stoneage-details]")'),'details close button failed'
  gap=js('(()=>{const e=document.querySelector(\'.sa-actor[data-stoneage-unit="0"]\'),h=e.querySelector(\'[data-stoneage-bar="hp"]\').getBoundingClientRect(),m=e.querySelector(\'[data-stoneage-bar="mp"]\').getBoundingClientRect();return m.top-h.bottom})()')
  assert 0<=gap<=2,('HP/MP gap too large',gap);REPORT['hpMpGap']=gap
  b('screenshot',CASE/'battle-fullscreen.png','--full')
@@ -164,7 +171,9 @@ try:
  wait(lambda:room()['game']['data']['players'][0]['submitted'])
  selected=room()['game']['data']['self']['plan'];assert selected['player']['target']==target and selected['pet']['target']==target,'scene targeting did not submit both commands'
  REPORT['resourcesBeforeReload']=js('performance.getEntriesByType("resource").filter(e=>e.name.startsWith("https://cdn.ichenj.com/stoneage/")).map(e=>({url:e.name,bytes:e.encodedBodySize,transferBytes:e.transferSize}))')
- assert all('/assets/hd/arena-2x-gpt-image-2.5-v1/' in e['url'] for e in REPORT['resourcesBeforeReload'] if '/assets/' in e['url']),'runtime still fetched original image URLs'
+ hd=json.loads((ROOT/'games/stoneage/web/hd.json').read_text());extra=json.loads((ROOT/'games/stoneage/web/avatar-art.json').read_text())
+ approved={f'https://cdn.ichenj.com/stoneage/{hd["basePath"]}/{f}' for f in hd['resources']}|{f'https://cdn.ichenj.com/stoneage/{extra["basePath"]}/{f}' for f in extra['resources'] if f not in hd['resources']}
+ assert all(e['url'] in approved for e in REPORT['resourcesBeforeReload'] if '/assets/' in e['url']),'runtime fetched undeclared images or downgraded an existing HD asset'
  before=room()['game']['data']['round'];b('reload')
  wait(lambda:js('!!document.querySelector("[data-stoneage-battle]")'),90)
  assert room()['game']['data']['round']>=before,'reload reset match'
@@ -177,6 +186,9 @@ try:
  if FAIL_ASSET:REPORT['cases'].append('failed asset blocks clock and retries successfully')
  REPORT['passed']=True
 finally:
+ if not REPORT['passed']:
+  try:REPORT['failureUI']=js('({loading:!!document.querySelector(".game-loading"),tabs:[...document.querySelectorAll("[data-stoneage-tab]")].map(e=>[e.dataset.stoneageTab,e.getAttribute("aria-pressed")]),errors:[...document.querySelectorAll("[role=alert]")].map(e=>e.textContent)})');b('screenshot',CASE/'failure.png','--full')
+  except Exception:pass
  (CASE/'result.json').write_text(json.dumps(REPORT,ensure_ascii=False,indent=2)+'\n')
  try:b('close')
  except Exception:pass

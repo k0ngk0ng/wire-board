@@ -5,6 +5,7 @@ import type {
   RoomPresentation,
 } from "../../../web/src/game-api/module";
 import type { View } from "./types";
+import { impactOffset } from "./motion.ts";
 
 // Project only the visible frame. The latest server snapshot remains untouched
 // for authentication, actions, persistence and settlement.
@@ -22,7 +23,7 @@ export function createPlayback(): RoomPresentation {
     let players = playback.before;
     let boundary = playback.duration;
     for (const event of v.events) {
-      const impact = event.at + event.duration / 2;
+      const impact = event.at + impactOffset(event);
       if (elapsed >= impact) players = event.players;
       else {
         boundary = impact;
