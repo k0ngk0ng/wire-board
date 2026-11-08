@@ -46,7 +46,7 @@ func httpSelection(t *testing.T, h *gametest.HTTP) {
 func TestStoneageHTTPAllModesCompleteAndRestart(t *testing.T) {
 	for _, n := range []int{2, 4, 6, 8, 10} {
 		t.Run(fmt.Sprintf("%dv%d", n/2, n/2), func(t *testing.T) {
-			h := gametest.NewHTTP(t, n, stoneage.Module(), "stoneage")
+			h := gametest.NewHTTP(t, n, acceleratedHTTPModule(), "stoneage")
 			h.AssertPublished()
 			h.Start(map[string]any{})
 			first := gametest.Data(h.People[0].Room())["pool"]

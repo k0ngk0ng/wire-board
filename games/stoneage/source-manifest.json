@@ -14,8 +14,11 @@
     "pets": 72,
     "rides": 9,
     "equipment": 58,
-    "sprites": 165,
-    "bitmaps": 9477
+    "sprites": 413,
+    "bitmaps": 23201,
+    "avatars": 48,
+    "ridingVariants": 96,
+    "legacyHDBitmaps": 9477
   },
   "assetsCopied": 0,
   "assetsUploaded": 0

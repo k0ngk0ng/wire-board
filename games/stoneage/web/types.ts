@@ -133,6 +133,11 @@ export type Player = {
 export type Command = { kind: string; id: number; target: number };
 export type Plan = { player: Command; pet: Command };
 export type BattleEvent = {
+  motions?: import("./motion").AttackMotion[];
+  impactAt?: number;
+  reactionDuration?: number;
+  originalTarget?: number;
+  redirectReason?: string;
   actors?: number[];
   effect?: string;
   id: number;

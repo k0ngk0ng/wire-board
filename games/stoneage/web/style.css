@@ -127,6 +127,44 @@
   flex-direction: column;
   gap: 4px;
 }
+.sa-companion {
+  min-width: 0;
+}
+.sa-avatar-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+  gap: 10px;
+}
+.sa-root .sa-avatar-choice {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-items: center;
+  padding: 10px 4px;
+  min-width: 0;
+}
+.sa-avatar-choice > img {
+  width: 64px;
+  height: 72px;
+  object-fit: contain;
+}
+.sa-avatar-choice > svg {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  color: var(--sa-green);
+}
+.sa-battle-native .sa-actor.receiving:before {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  width: calc(var(--sa-sprite-size) * 0.48);
+  height: 12px;
+  border: 2px solid #fff1a5;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #402d18;
+  pointer-events: none;
+}
 .sa-companion > span:not(.sa-elements) {
   font-size: 11px;
   color: var(--sa-muted);
@@ -904,7 +942,7 @@
     border-right: 0;
     border-bottom: 1px solid var(--sa-line);
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 6px 14px;
     padding: 8px 12px;
   }
@@ -913,11 +951,13 @@
     height: 85px;
   }
   .sa-companion-image canvas {
-    width: 105px;
-    height: 105px;
+    width: 90px;
+    height: auto;
+    aspect-ratio: 1;
   }
   .sa-companion > strong {
-    font-size: 15px;
+    font-size: 12px;
+    text-align: center;
   }
   .sa-companion > span:not(.sa-elements) {
     font-size: 10px;
@@ -949,6 +989,10 @@
     font-size: 11px;
     padding: 13px 2px;
     min-height: 44px;
+  }
+  .sa-avatar-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 7px;
   }
   .sa-tabs button[aria-pressed="true"]:after {
     left: 5px;

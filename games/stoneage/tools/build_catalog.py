@@ -150,6 +150,8 @@ def main():
         counts=dict(pets=len(selected), rides=len(rides), equipment=len(gear), sprites=len(art), bitmaps=len(resources)),
         assetsCopied=0, assetsUploaded=0), ensure_ascii=False, indent=2) + '\n')
     print(json.dumps(dict(pets=len(selected), rides=len(rides), equipment=len(gear), sprites=len(art), bitmapReferences=len(resources), assetsCopied=0)))
+    from expand_avatars import expand
+    expand(source)
 
 
 if __name__ == '__main__':

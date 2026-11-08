@@ -266,12 +266,13 @@ func (s *State) event(kind string, actor, target int, name string, amount, rideA
 		last := s.Events[len(s.Events)-1]
 		at = last.At + last.Duration
 	}
-	duration := 480
+	duration := 900
 	if kind == "guard" || kind == "wait" || kind == "status" {
-		duration = 220
+		duration = 360
 	}
 	s.EventID++
 	s.Events = append(s.Events, Event{ID: s.EventID, Kind: kind, Actor: actor, Target: target, Name: name, Amount: amount, RideAmount: rideAmount, Critical: critical, At: at, Duration: duration, Players: clonePlayers(s.Players)})
+	s.timeEvent(&s.Events[len(s.Events)-1])
 }
 func (s *State) offense(id int) (int, int, int) {
 	u := *s.unit(id)
@@ -312,11 +313,12 @@ func (s *State) targets(actor, target int) []int {
 }
 
 type battleTurn struct {
-	id, speed, tie int
-	command        Command
-	loyaltyNote    string
-	betrayal       bool
-	combo          int
+	id, speed, tie  int
+	requestedTarget int
+	command         Command
+	loyaltyNote     string
+	betrayal        bool
+	combo           int
 }
 
 func (s *State) resolve(now time.Time) {
@@ -366,7 +368,7 @@ func (s *State) resolve(now time.Time) {
 			if c.Kind == "item" {
 				speed += work * 15 / 100
 			}
-			order = append(order, battleTurn{id: id, speed: speed, tie: s.randomN(1 << 30), command: c, loyaltyNote: loyaltyNote, betrayal: betrayal})
+			order = append(order, battleTurn{id: id, speed: speed, tie: s.randomN(1 << 30), command: c, loyaltyNote: loyaltyNote, betrayal: betrayal, requestedTarget: original.Target})
 		}
 	}
 	slices.SortFunc(order, func(a, b battleTurn) int {
@@ -443,7 +445,25 @@ func (s *State) resolve(now time.Time) {
 			if c.Kind == "skill" && c.ID == 2 {
 				s.event("guard", t.id, t.id, "防御", 0, 0, false)
 			} else {
+				firstEvent := len(s.Events)
 				s.attack(t.id, c, guardians, counterStyle, t.betrayal)
+				if t.loyaltyNote != "" {
+					for j := firstEvent; j < len(s.Events); j++ {
+						e := &s.Events[j]
+						if e.Actor != t.id || e.Kind != "attack" && e.Kind != "miss" {
+							continue
+						}
+						if e.Target != t.requestedTarget {
+							original := t.requestedTarget
+							e.OriginalTarget = &original
+						}
+						if e.RedirectReason != "" {
+							e.RedirectReason = "NONO · " + e.RedirectReason
+						} else {
+							e.RedirectReason = "NONO 随机指令"
+						}
+					}
+				}
 			}
 		case "item":
 			s.useItem(t.id, c)
@@ -567,6 +587,7 @@ func (s *State) attack(actor int, c Command, guardians map[int]int, counterStyle
 			}
 			if s.randomN(100) < evade {
 				s.event("miss", actor, actual, skill.Name, 0, 0, false)
+				s.targetReason(c.Target, target, actual, weapon.WeaponType)
 				continue
 			}
 			critical := s.randomN(100) < max(3, min(18, 5+(speed-defSpeed)/15))
@@ -589,6 +610,7 @@ func (s *State) attack(actor int, c Command, guardians map[int]int, counterStyle
 				s.Players[actual/2].Riding = false
 			}
 			s.event("attack", actor, actual, skill.Name, lost, rideLost, critical)
+			s.targetReason(c.Target, target, actual, weapon.WeaponType)
 			if skill.ID == 30 || skill.ID == 31 {
 				s.unit(actor).TurnDefense = 80
 			}
