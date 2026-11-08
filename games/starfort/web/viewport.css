@@ -673,25 +673,52 @@
   flex-wrap: wrap;
 }
 
-/* Keep the action groups together at the upper right. On narrow screens they
-   occupy a second row beneath the resource HUD, without covering its text. */
+/* Reserve a compact right column instead of lowering both action groups below
+   a full-width HUD. Resources can wrap within the remaining left column. */
 @media (max-width: 1100px) {
+  .starfort-board {
+    --sf-top-controls-width: 192px;
+  }
+  .starfort-board .sf-hud {
+    top: 8px;
+    left: 8px;
+    max-width: calc(100% - var(--sf-top-controls-width) - 24px);
+  }
+  .sf-compact-stats {
+    flex-wrap: wrap;
+    gap: 3px 8px;
+    max-width: 100%;
+  }
   .starfort-board .sf-field-actions {
-    top: 84px;
+    top: 8px;
     right: 8px;
     bottom: auto;
   }
   .starfort-board .sf-wave-controls {
-    top: 84px;
-    right: 200px;
+    top: 62px;
+    right: 8px;
     bottom: auto;
-    max-width: calc(100% - 216px);
+    width: var(--sf-top-controls-width);
+    max-width: var(--sf-top-controls-width);
   }
   .starfort-board .sf-control-buttons {
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+  }
+  .starfort-board .sf-wave-controls > div:first-child {
+    display: none;
+  }
+  .starfort-board .sf-control-buttons button {
+    min-width: 0;
+    white-space: normal;
+  }
+  .sf-control-buttons > :only-child,
+  .sf-control-buttons > [data-sf-open-choice] {
+    grid-column: 1 / -1;
   }
   .starfort-board .sf-overview-hint {
-    top: 172px;
+    top: 126px;
   }
 }
 .starfort-board > [data-sf-open-choice] {
@@ -700,18 +727,34 @@
 }
 @media (max-width: 1100px) {
   .starfort-board > [data-sf-open-choice] {
-    top: 172px;
+    top: 126px;
   }
 }
 
 @media (max-width: 600px) {
+  .starfort-board {
+    --sf-top-controls-width: 148px;
+  }
+  .starfort-board .sf-field-actions > button {
+    min-height: 40px;
+    padding: 5px 7px;
+    font-size: 12px;
+  }
   .starfort-board .sf-wave-controls {
-    top: 134px;
-    right: 8px;
-    max-width: calc(100% - 16px);
+    top: 56px;
+    padding: 5px;
   }
   .starfort-board .sf-overview-hint,
   .starfort-board > [data-sf-open-choice] {
-    top: 194px;
+    top: 126px;
+  }
+}
+@media (max-width: 360px) {
+  .sf-compact-stats {
+    gap: 3px 6px;
+    font-size: 11px;
+  }
+  .sf-compact-stats strong {
+    font-size: 13px;
   }
 }
