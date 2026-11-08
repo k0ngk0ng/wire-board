@@ -127,7 +127,7 @@ export default defineGame<View, Options>({
             <span>
               宠物{" "}
               <strong>
-                {p.pet.hp}/{p.pet.maxHp}
+                {p.pet.fled ? "已逃跑" : `${p.pet.hp}/${p.pet.maxHp}`}
               </strong>
             </span>
             <span className="sa-summary-ride">
@@ -159,6 +159,12 @@ export default defineGame<View, Options>({
         </li>
         <li>
           出战宠最多学习七项技能，含攻击与防御；同族技能选择一档。锁定后不能更换配置。
+        </li>
+        <li>
+          出战宠候选随机 0～100 忠诚度，骑宠固定为
+          100，双方共用相同结果，选定后不能修改。出战宠忠诚低于 80
+          可能拒令、改变目标或技能；低于 20 可能攻击主人，低于 10
+          还可能逃跑。骑宠不独立接收出战指令。
         </li>
         <li>
           每轮先选择人物与出战宠的指令，再按敏捷顺序逐个行动；相近敏捷存在随机波动。地克水、水克火、火克风、风克地。

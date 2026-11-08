@@ -1,6 +1,7 @@
 package stoneage_test
 
 import (
+	"encoding/json"
 	"net"
 	"net/http"
 	"os"
@@ -25,7 +26,38 @@ func TestStoneageBrowserFixture(t *testing.T) {
 	if e = os.MkdirAll(out, 0755); e != nil {
 		t.Fatal(e)
 	}
-	s, e := server.New(server.Config{DataDir: t.TempDir(), InviteCode: "stoneage-browser", AdminUsername: "石器验收", AdminPassword: "stoneage-browser-only", Modules: []gameapi.Module{stoneage.Module()}}, os.DirFS(filepath.Join(root, "web/dist")))
+	module := stoneage.Module()
+	if os.Getenv("WIRE_BOARD_STONEAGE_FORCE_ESCAPE") == "1" {
+		original := module.Start
+		module.Start = func(c gameapi.Context, options json.RawMessage) (gameapi.Match, error) {
+			m, err := original(c, options)
+			if err != nil {
+				return m, err
+			}
+			var state stoneage.State
+			if err = json.Unmarshal(m.Data, &state); err != nil {
+				return m, err
+			}
+			for i := range state.Pool.Pets {
+				state.Pool.Pets[i].Loyalty = 0
+			}
+			state.Random = 1 // third SplitMix draw is >=60: first pet flees.
+			m.Data, err = json.Marshal(state)
+			return m, err
+		}
+		bot := module.BotAction
+		module.BotAction = func(c gameapi.Context, m gameapi.Match) (json.RawMessage, error) {
+			var state stoneage.State
+			if err := json.Unmarshal(m.Data, &state); err != nil {
+				return nil, err
+			}
+			if state.Phase == "planning" && c.Actor == 1 {
+				return json.Marshal(stoneage.Action{Type: "submit", Session: state.Session, Window: state.Window, Plan: &stoneage.Plan{Player: stoneage.Command{Kind: "guard", Target: 2}, Pet: stoneage.Command{Kind: "wait", Target: 3}}})
+			}
+			return bot(c, m)
+		}
+	}
+	s, e := server.New(server.Config{DataDir: t.TempDir(), InviteCode: "stoneage-browser", AdminUsername: "石器验收", AdminPassword: "stoneage-browser-only", Modules: []gameapi.Module{module}}, os.DirFS(filepath.Join(root, "web/dist")))
 	if e != nil {
 		t.Fatal(e)
 	}

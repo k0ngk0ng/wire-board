@@ -5,7 +5,7 @@ package stoneage
 import "github.com/k0ngk0ng/wire-board/internal/gameapi"
 
 const schema = 1
-const rulesVersion = "stoneage-arena-v1"
+const rulesVersion = "stoneage-arena-v2"
 const pointBudget = 480
 
 type Options struct {
@@ -19,6 +19,7 @@ type Rider struct {
 	Graphic int `json:"graphic"`
 }
 type PetDefinition struct {
+	Loyalty  int     `json:"loyalty"`
 	ID       int     `json:"id"`
 	Name     string  `json:"name"`
 	Graphic  int     `json:"graphic"`
@@ -111,6 +112,8 @@ type Status struct {
 	PoisonSource int `json:"poisonSource"`
 }
 type Unit struct {
+	Loyalty     int    `json:"loyalty"`
+	Fled        bool   `json:"fled,omitempty"`
 	TurnDefense int    `json:"turnDefense,omitempty"`
 	ID          int    `json:"id"`
 	Name        string `json:"name"`

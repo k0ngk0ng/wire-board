@@ -17,7 +17,7 @@ import (
 func unitFromBuild(b [4]int) Unit {
 	v, a, d, q := b[0], b[1], b[2], b[3]
 	hp := v*4 + a + d + q
-	return Unit{HP: hp, MaxHP: hp, MP: 120, MaxMP: 120, Attack: int(float64(a) + float64(d+v)*.1 + float64(q)*.05), Defense: int(float64(d) + float64(a+v)*.1 + float64(q)*.05), Speed: q}
+	return Unit{Loyalty: 100, HP: hp, MaxHP: hp, MP: 120, MaxMP: 120, Attack: int(float64(a) + float64(d+v)*.1 + float64(q)*.05), Defense: int(float64(d) + float64(a+v)*.1 + float64(q)*.05), Speed: q}
 }
 func budget(weights [4]int, total int) [4]int {
 	sum := 0
@@ -117,12 +117,14 @@ func (s *State) initializePlayer(i int) {
 	p.Pet = unitFromBuild(budget(pet.Weights, 640))
 	p.Pet.ID = i*2 + 1
 	p.Pet.Name = pet.Name
+	p.Pet.Loyalty = pet.Loyalty
 	p.Pet.Graphic = pet.Graphic
 	p.Pet.Elements = pet.Elements
 	ride, _ := petByID(s.Pool.Rides, l.Ride)
 	p.Ride = unitFromBuild(budget(ride.Weights, 400))
 	p.Ride.ID = 100 + i
 	p.Ride.Name = ride.Name
+	p.Ride.Loyalty = ride.Loyalty
 	p.Ride.Graphic = ride.Graphic
 	p.Ride.Elements = ride.Elements
 	p.Riding = true
@@ -172,7 +174,7 @@ func (s *State) unit(id int) *Unit {
 }
 func (s *State) active(id int) bool {
 	u := s.unit(id)
-	return u != nil && u.HP > 0 && s.Players[id/2].Body.HP > 0 && !s.Players[id/2].Surrendered
+	return u != nil && u.HP > 0 && !u.Fled && s.Players[id/2].Body.HP > 0 && !s.Players[id/2].Surrendered
 }
 func (s *State) friendly(a, b int) bool {
 	return a >= 0 && b >= 0 && a/2 < len(s.Players) && b/2 < len(s.Players) && s.Players[a/2].Team == s.Players[b/2].Team
@@ -199,7 +201,7 @@ func (s *State) validatePlan(seat int, plan Plan) error {
 		alive := s.active(actor)
 		if !alive {
 			if c.Kind != "wait" {
-				return errors.New("倒下的宠物只能等待")
+				return errors.New("退场的宠物只能等待")
 			}
 			continue
 		}
@@ -314,6 +316,8 @@ func (s *State) resolve(now time.Time) {
 	type turn struct {
 		id, speed, tie int
 		command        Command
+		loyaltyNote    string
+		betrayal       bool
 	}
 	order := []turn{}
 	guardians := map[int]int{}
@@ -332,6 +336,7 @@ func (s *State) resolve(now time.Time) {
 				continue
 			}
 			u := s.unit(id)
+			c, loyaltyNote, betrayal := s.loyalCommand(id, c)
 			u.Guard = false
 			if (c.Kind == "guard" || c.Kind == "skill" && c.ID == 2) && u.Status.Stone == 0 && u.Status.Sleep == 0 && u.Status.Confusion == 0 {
 				u.Guard = true
@@ -348,7 +353,7 @@ func (s *State) resolve(now time.Time) {
 			if c.Kind == "item" {
 				speed += work * 15 / 100
 			}
-			order = append(order, turn{id, speed, s.randomN(1 << 30), c})
+			order = append(order, turn{id: id, speed: speed, tie: s.randomN(1 << 30), command: c, loyaltyNote: loyaltyNote, betrayal: betrayal})
 		}
 	}
 	slices.SortFunc(order, func(a, b turn) int {
@@ -383,7 +388,14 @@ func (s *State) resolve(now time.Time) {
 				continue
 			}
 		}
+		if t.loyaltyNote != "" && c.Kind != "flee" {
+			s.event("status", t.id, t.id, t.loyaltyNote, 0, 0, false)
+		}
 		switch c.Kind {
+		case "flee":
+			u.Fled = true
+			u.Guard = false
+			s.event("flee", t.id, t.id, "不服从：逃跑", 0, 0, false)
 		case "guard":
 			s.event("guard", t.id, t.id, "防御", 0, 0, false)
 		case "wait":
@@ -392,7 +404,7 @@ func (s *State) resolve(now time.Time) {
 			if c.Kind == "skill" && c.ID == 2 {
 				s.event("guard", t.id, t.id, "防御", 0, 0, false)
 			} else {
-				s.attack(t.id, c, guardians, counterStyle, false)
+				s.attack(t.id, c, guardians, counterStyle, t.betrayal)
 			}
 		case "item":
 			s.useItem(t.id, c)

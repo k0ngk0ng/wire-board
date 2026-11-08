@@ -1,16 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import {
-  ArrowLeft,
-  Clock3,
-  ScrollText,
-  Sparkles,
-  X,
-} from "lucide-react";
+import { ArrowLeft, Clock3, ScrollText, Sparkles, X } from "lucide-react";
 import type { BoardProps } from "../../../web/src/game-api/module";
 import { useControllerCancel } from "../../../web/src/controllers/use-controller-cancel";
 import { assetURL, nativeButtons, resourceRoot } from "./assets";
 import { Sprite } from "./Sprite";
-import { position, facing } from "./formation";
+import { position, facing, eventPosition } from "./formation";
 import { statusNames } from "./types";
 import type { Command, Player, Unit, View, Equipment } from "./types";
 import {
@@ -115,7 +109,7 @@ export function Battle({
     if (!mine) return false;
     const p = data.players[(id / 2) | 0],
       u = id % 2 ? p?.pet : p?.body;
-    if (!u || u.hp <= 0 || p.body.hp <= 0) return false;
+    if (!u || u.hp <= 0 || u.fled || p.body.hp <= 0) return false;
     if (
       command.kind === "guard" ||
       command.kind === "wait" ||
@@ -134,7 +128,11 @@ export function Battle({
   };
   const post = async (next: BattleInput) => {
     setUI(next);
-    const plan = readyPlan(next, mine.pet.hp > 0, mine.pet.id);
+    const plan = readyPlan(
+      next,
+      mine.pet.hp > 0 && !mine.pet.fled,
+      mine.pet.id,
+    );
     if (!plan || !canAct || sending.current) return;
     sending.current = true;
     setPosting(true);
@@ -222,6 +220,8 @@ export function Battle({
             (q) => q.team === p.team && q.seat < p.seat,
           ).length;
           return [p.body, p.pet].map((unit, pet) => {
+            const fleeing = event?.kind === "flee" && event.actor === unit.id;
+            if (unit.fled && !fleeing) return null;
             const pos = position(p.team, row, pet),
               active =
                 event?.actor === unit.id &&
@@ -234,31 +234,23 @@ export function Battle({
                   .find((r) => r.id === p.loadout?.ride)
                   ?.riders?.find((r) => r.avatar === p.loadout?.avatar)
                   ?.graphic ?? graphic;
-            const target = event
-                ? data.players[(event.target / 2) | 0]
-                : undefined,
-              targetRow = target
-                ? data.players.filter(
-                    (q) => q.team === target.team && q.seat < target.seat,
-                  ).length
-                : 0,
-              targetPos = target
-                ? position(target.team, targetRow, event!.target % 2)
-                : pos;
+            const targetPos =
+              eventPosition(data.players, event?.target ?? -1) ?? pos;
             const move = active ? Math.sin(progress * Math.PI) * 0.65 : 0;
             const allowed =
               !!ui.pending && canAct && legal(ui.pending, ui.owner, unit.id);
             const identity = pet
               ? `${room.seats[p.seat]?.name}的${unit.name}（出战宠）`
               : `${room.seats[p.seat]?.name}（人物）`;
-            const description = `${identity}，生命 ${unit.hp}/${unit.maxHp}${!pet ? `，气力 ${unit.mp}/${unit.maxMp}` : ""}${p.riding && !pet ? `，骑宠 ${p.ride.name} 生命 ${p.ride.hp}/${p.ride.maxHp}` : ""}`;
+            const description = `${identity}，生命 ${unit.hp}/${unit.maxHp}${pet ? `，忠诚 ${unit.loyalty}` : `，气力 ${unit.mp}/${unit.maxMp}`}${p.riding && !pet ? `，骑宠 ${p.ride.name} 生命 ${p.ride.hp}/${p.ride.maxHp}，忠诚 ${p.ride.loyalty}` : ""}`;
             return (
               <button
                 key={unit.id}
                 className={`sa-actor team-${p.team} ${allowed ? "targetable" : ""} ${hit ? "hit" : ""} ${unit.hp <= 0 ? "down" : ""}`}
                 style={{
-                  left: `${pos.x + (targetPos.x - pos.x) * move}%`,
-                  top: `${pos.y + (targetPos.y - pos.y) * move}%`,
+                  left: `${pos.x + (targetPos.x - pos.x) * move + (fleeing ? (p.team === 0 ? 1 : -1) * progress * 15 : 0)}%`,
+                  top: `${pos.y + (targetPos.y - pos.y) * move + (fleeing ? (p.team === 0 ? 1 : -1) * progress * 10 : 0)}%`,
+                  opacity: fleeing ? 1 - progress : 1,
                   zIndex: Math.round(pos.y + (targetPos.y - pos.y) * move),
                 }}
                 data-stoneage-unit={unit.id}
@@ -582,6 +574,15 @@ function ActorDetails({
         )}
         <dt>攻击</dt>
         <dd>{unit.attack}</dd>
+        {pet && (
+          <>
+            <dt>忠诚</dt>
+            <dd>
+              {unit.loyalty}
+              {unit.fled ? "（已逃跑）" : ""}
+            </dd>
+          </>
+        )}
         <dt>防御</dt>
         <dd>{unit.defense}</dd>
         <dt>速度</dt>
@@ -628,6 +629,7 @@ function ActorDetails({
             </strong>
             <p>
               生命 {player.ride.hp} / {player.ride.maxHp}
+              {` · 忠诚 ${player.ride.loyalty}`}
             </p>
             <p>
               攻击 {player.ride.attack} · 防御 {player.ride.defense} · 速度{" "}

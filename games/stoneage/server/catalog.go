@@ -146,6 +146,12 @@ func (s *State) makePool() {
 	catalog()
 	s.Pool.Pets = sample(s, sourceCatalog.Pets, 20)
 	s.Pool.Rides = sample(s, sourceCatalog.Rides, 6)
+	for i := range s.Pool.Pets {
+		s.Pool.Pets[i].Loyalty = s.randomN(101)
+	}
+	for i := range s.Pool.Rides {
+		s.Pool.Rides[i].Loyalty = 100
+	}
 	// Attack, guard, break and dismount are guaranteed; draw ten additional
 	// skills without replacement, keeping both control and direct damage.
 	s.Pool.Skills = []Skill{allSkills[0], allSkills[1], allSkills[2], allSkills[len(allSkills)-1]}

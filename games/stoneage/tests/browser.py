@@ -13,7 +13,7 @@ OUT=ROOT/'.local/stoneage/browser'
 PLAYERS=int(os.environ.get('STONEAGE_BROWSER_PLAYERS','2'))
 FAIL_ASSET=os.environ.get('STONEAGE_BROWSER_FAIL_ASSET')=='1'
 assert PLAYERS in (2,4,6,8,10)
-CASE=OUT/'hd-release' if PLAYERS==2 else OUT/'hd-release'/f'{PLAYERS//2}v{PLAYERS//2}'
+CASE=OUT/'loyalty-release' if PLAYERS==2 else OUT/'loyalty-release'/f'{PLAYERS//2}v{PLAYERS//2}'
 CASE.mkdir(parents=True,exist_ok=True)
 BASE=(OUT/'url').read_text().strip()
 ENV=dict(os.environ,AGENT_BROWSER_SESSION='stoneage-'+uuid.uuid4().hex[:6],
@@ -67,6 +67,9 @@ try:
  b('reload')
  wait(lambda:js('!!document.querySelector("[data-stoneage-selection]")'),90)
  b('wait','[data-stoneage-selection]')
+ candidate_loyalty=js('[...document.querySelectorAll(".sa-pet-choice")].map(e=>({id:Number(e.dataset.stoneagePet),loyalty:Number(e.querySelector("[data-stoneage-loyalty]")?.dataset.stoneageLoyalty)}))')
+ assert candidate_loyalty==[{'id':p['id'],'loyalty':p['loyalty']} for p in room()['game']['data']['pool']['pets']],'candidate loyalty display differs from public pool'
+ REPORT['candidateLoyalty']=candidate_loyalty
  assert js('[...document.querySelectorAll("[data-stoneage-selection] canvas")].every(e=>{const r=e.getBoundingClientRect();return Math.abs(r.width-r.height)<=1})'),'HD pixels changed the logical preview proportions'
  js('performance.setResourceTimingBufferSize(20000)')
  b('click','[data-stoneage-tab="equipment"]')
