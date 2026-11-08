@@ -27,6 +27,60 @@ func TestStoneageBrowserFixture(t *testing.T) {
 		t.Fatal(e)
 	}
 	module := stoneage.Module()
+	if os.Getenv("WIRE_BOARD_STONEAGE_FORCE_COMBO") == "1" {
+		start := module.Start
+		module.Start = func(c gameapi.Context, options json.RawMessage) (gameapi.Match, error) {
+			m, err := start(c, options)
+			if err != nil {
+				return m, err
+			}
+			var state stoneage.State
+			if err = json.Unmarshal(m.Data, &state); err != nil {
+				return m, err
+			}
+			for i := range state.Pool.Pets {
+				state.Pool.Pets[i].Loyalty = 100
+			}
+			m.Data, err = json.Marshal(state)
+			return m, err
+		}
+		apply := module.Apply
+		module.Apply = func(c gameapi.Context, m gameapi.Match, action json.RawMessage) (gameapi.Match, error) {
+			var previous stoneage.State
+			json.Unmarshal(m.Data, &previous)
+			next, err := apply(c, m, action)
+			if err != nil || previous.Phase != "arming" {
+				return next, err
+			}
+			var state stoneage.State
+			if err = json.Unmarshal(next.Data, &state); err != nil {
+				return next, err
+			}
+			if state.Phase == "planning" {
+				state.Random = 1 // ninth draw starts the two-member combination.
+				for i := range state.Players {
+					speed := 1000
+					if i != 0 {
+						speed = 10000
+					}
+					state.Players[i].Body.Speed, state.Players[i].Pet.Speed, state.Players[i].Ride.Speed = speed, speed, speed
+				}
+				next.Data, err = json.Marshal(state)
+			}
+			return next, err
+		}
+		bot := module.BotAction
+		module.BotAction = func(c gameapi.Context, m gameapi.Match) (json.RawMessage, error) {
+			var state stoneage.State
+			if err := json.Unmarshal(m.Data, &state); err != nil {
+				return nil, err
+			}
+			if state.Phase == "planning" && c.Actor != 0 {
+				return json.Marshal(stoneage.Action{Type: "submit", Session: state.Session, Window: state.Window, Plan: &stoneage.Plan{Player: stoneage.Command{Kind: "guard", Target: c.Actor * 2}, Pet: stoneage.Command{Kind: "guard", Target: c.Actor*2 + 1}}})
+			}
+			return bot(c, m)
+		}
+	}
 	if os.Getenv("WIRE_BOARD_STONEAGE_FORCE_ESCAPE") == "1" {
 		original := module.Start
 		module.Start = func(c gameapi.Context, options json.RawMessage) (gameapi.Match, error) {

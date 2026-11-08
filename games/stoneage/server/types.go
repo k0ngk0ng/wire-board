@@ -114,6 +114,7 @@ type Status struct {
 type Unit struct {
 	Loyalty     int    `json:"loyalty"`
 	Fled        bool   `json:"fled,omitempty"`
+	TurnAttack  int    `json:"turnAttack,omitempty"`
 	TurnDefense int    `json:"turnDefense,omitempty"`
 	ID          int    `json:"id"`
 	Name        string `json:"name"`
@@ -169,6 +170,7 @@ type Action struct {
 	Plan    *Plan    `json:"plan,omitempty"`
 }
 type Event struct {
+	Actors     []int    `json:"actors,omitempty"`
 	Effect     string   `json:"effect,omitempty"`
 	ID         int      `json:"id"`
 	Kind       string   `json:"kind"`

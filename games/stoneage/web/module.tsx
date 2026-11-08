@@ -111,7 +111,10 @@ export default defineGame<View, Options>({
     const p = data.players[seat];
     if (!p) return null;
     return (
-      <div className="sa-player-summary" data-stoneage-player={seat}>
+      <div
+        className={`sa-player-summary ${data.phase === "selection" ? "selecting" : ""}`}
+        data-stoneage-player={seat}
+      >
         {data.phase === "selection" ? (
           <span>
             {p.team === 0 ? "红队" : "蓝队"} · {p.locked ? "已锁定" : "选配中"}
@@ -161,13 +164,17 @@ export default defineGame<View, Options>({
           出战宠最多学习七项技能，含攻击与防御；同族技能选择一档。锁定后不能更换配置。
         </li>
         <li>
-          出战宠候选随机 0～100 忠诚度，骑宠固定为
-          100，双方共用相同结果，选定后不能修改。出战宠忠诚低于 80
-          可能拒令、改变目标或技能；低于 20 可能攻击主人，低于 10
-          还可能逃跑。骑宠不独立接收出战指令。
+          普通出战宠忠诚度为 80 至 100；原始种族权重较高的品种有 20% 概率为 20
+          至 30，每局最多三只。骑宠固定为
+          100，双方共用相同结果，选定后不能修改。 NONO 有 69%
+          概率随机使用已学技能，空槽会发呆；背水的本轮攻防可与随机出的连击或一击必杀叠加，下一轮清除。
         </li>
         <li>
           每轮先选择人物与出战宠的指令，再按敏捷顺序逐个行动；相近敏捷存在随机波动。地克水、水克火、火克风、风克地。
+        </li>
+        <li>
+          同队普通近战攻击同一目标，行动顺序连续时有 50% 起组概率自动合击。
+          人物和宠物均可参与；特殊技能、远程攻击、不能行动或本轮不服从不能参与。
         </li>
         <li>
           骑宠影响人物的攻击、防御和敏捷，并分担伤害。骑宠死亡或被落马术命中后退出骑乘，本场不能再次骑乘。

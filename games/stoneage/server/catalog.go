@@ -146,8 +146,20 @@ func (s *State) makePool() {
 	catalog()
 	s.Pool.Pets = sample(s, sourceCatalog.Pets, 20)
 	s.Pool.Rides = sample(s, sourceCatalog.Rides, 6)
+	low := 0
 	for i := range s.Pool.Pets {
-		s.Pool.Pets[i].Loyalty = s.randomN(101)
+		pet := &s.Pool.Pets[i]
+		weight := 0
+		for _, n := range pet.Weights {
+			weight += n
+		}
+		pet.Loyalty = 80 + s.randomN(21)
+		// Original species weights identify the stronger source varieties;
+		// loyalty does not change the arena's normalized 640-point stats.
+		if weight >= 100 && low < 3 && s.randomN(100) < 20 {
+			pet.Loyalty = 20 + s.randomN(11)
+			low++
+		}
 	}
 	for i := range s.Pool.Rides {
 		s.Pool.Rides[i].Loyalty = 100

@@ -79,11 +79,14 @@ export function Battle({
     }
     if (!impact || impact.id <= seen.current) return;
     seen.current = impact.id;
-    if (sound && ["attack", "counter", "magic", "item"].includes(impact.kind))
+    if (
+      sound &&
+      ["attack", "counter", "combo", "magic", "item"].includes(impact.kind)
+    )
       void audio.effect(
         "stoneage-impact",
         [
-          `${resourceRoot}/audio/se/${impact.kind === "attack" || impact.kind === "counter" ? "sam_01.wav" : "sap_01.wav"}`,
+          `${resourceRoot}/audio/se/${["attack", "counter", "combo"].includes(impact.kind) ? "sam_01.wav" : "sap_01.wav"}`,
         ],
         { playbackID: `${data.session}:${impact.id}` },
       );
@@ -224,8 +227,10 @@ export function Battle({
             if (unit.fled && !fleeing) return null;
             const pos = position(p.team, row, pet),
               active =
-                event?.actor === unit.id &&
-                ["attack", "counter"].includes(event.kind),
+                !!event &&
+                ((event.kind === "combo" && event.actors?.includes(unit.id)) ||
+                  (event.actor === unit.id &&
+                    ["attack", "counter"].includes(event.kind))),
               hit = event?.target === unit.id && progress >= 0.5;
             let graphic = unit.graphic;
             if (!pet && p.riding)
@@ -257,6 +262,9 @@ export function Battle({
                 data-stoneage-direction={facing(p.team)}
                 data-stoneage-role={pet ? "pet" : "player"}
                 data-stoneage-riding={!pet && p.riding ? "true" : undefined}
+                data-stoneage-combining={
+                  active && event?.kind === "combo" ? "true" : undefined
+                }
                 title={description}
                 aria-label={`${description}，${allowed ? "选择目标" : "查看详情"}`}
                 aria-expanded={ui.details === unit.id}
@@ -478,7 +486,12 @@ export function Battle({
                 )
                 .map((e) => (
                   <li key={e.id}>
-                    {e.actor >= 0 ? actorName(e.actor) : "状态"} · {e.name}
+                    {e.kind === "combo"
+                      ? e.actors?.map(actorName).join("、")
+                      : e.actor >= 0
+                        ? actorName(e.actor)
+                        : "状态"}{" "}
+                    · {e.name}
                     {e.target >= 0 ? ` → ${actorName(e.target)}` : ""}
                     {e.amount ? ` ${e.amount}` : ""}
                     {e.rideAmount ? `（骑宠 ${e.rideAmount}）` : ""}
