@@ -21,6 +21,7 @@ type MatchPlayer struct {
 	Won   bool `json:"won"`
 }
 type MatchRecord struct {
+	RoomID              string               `json:"roomId,omitempty"`
 	RatingPolicy        gameapi.RatingPolicy `json:"ratingPolicy,omitempty"`
 	Outcome             string               `json:"outcome,omitempty"`
 	UnratedReason       string               `json:"unratedReason,omitempty"`
@@ -56,7 +57,7 @@ func archiveGame(tx *sql.Tx, r *Room) error {
 	if id == "" {
 		id = fmt.Sprintf("%s:%d", r.ID, r.SetupVersion)
 	}
-	record := MatchRecord{ID: id, Room: r.Name, Kind: r.Kind, RailMap: r.RailMap, SanguoshaOptions: r.SanguoshaOptions, SplendorOptions: r.SplendorOptions, CatanOptions: r.CatanOptions, Status: r.Status, Ended: r.Updated, Players: []MatchPlayer{}}
+	record := MatchRecord{RoomID: r.ID, ID: id, Room: r.Name, Kind: r.Kind, RailMap: r.RailMap, SanguoshaOptions: r.SanguoshaOptions, SplendorOptions: r.SplendorOptions, CatanOptions: r.CatanOptions, Status: r.Status, Ended: r.Updated, Players: []MatchPlayer{}}
 	if r.Game.Splendor != nil {
 		record.SplendorOptions = r.Game.Splendor.Options
 		record.SplendorCatalog = r.Game.Splendor.Catalog

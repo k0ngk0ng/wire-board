@@ -1,6 +1,8 @@
 import { ResetPasswordField } from "./admin/password-field";
 import { GameSort } from "./admin/game-sort";
 import { UserActivity } from "./admin/user-activity";
+import { RoomHistory, type HistoryTarget } from "./admin/room-history";
+import { Modal } from "./ui/board-host";
 import { RefreshButton } from "./ui/refresh-button";
 import { CategoryFilter, matchesCategory } from "./ui/game-category";
 import { useEffect, useRef, useState } from "react";
@@ -36,6 +38,9 @@ type ManagedUser = User & {
   connections: number;
   activity: string;
   roomId?: string;
+  roomKind?: string;
+  roomName?: string;
+  roomGameName?: string;
   lastSeen: number;
   lastLogin: number;
   createdAt: number;
@@ -137,6 +142,8 @@ export function AdminDashboard({
   const [sorting, setSorting] = useState(false);
   const [activityUser, setActivityUser] = useState<ManagedUser>();
   const [roomFilter, setRoomFilter] = useState("all");
+  const [roomHistory, setRoomHistory] = useState(false);
+  const [historyTarget, setHistoryTarget] = useState<HistoryTarget>();
   const [wishFilter, setWishFilter] = useState("all");
   const [onlineOnly, setOnlineOnly] = useState(false);
   const [decision, setDecision] = useState<Decision>();
@@ -730,6 +737,7 @@ export function AdminDashboard({
                             {u.connections > 1
                               ? ` · ${u.connections} 个连接`
                               : ""}
+                            {u.roomGameName ? ` · ${u.roomGameName}` : ""}
                             {u.roomId ? ` · ${u.roomId.toUpperCase()}` : ""}
                           </p>
                         </div>
@@ -812,78 +820,102 @@ export function AdminDashboard({
           )}
           {tab === "rooms" && (
             <section>
-              <div className="admin-section-head">
-                <div>
-                  <h2>所有活动牌桌</h2>
-                  <p>
-                    包括已下架游戏中尚未结束的牌桌。管理界面仅展示公开信息。
-                  </p>
-                </div>
-                <RefreshButton onRefresh={refresh} />
-              </div>
-              <label className="admin-room-filter">
-                牌桌状态{" "}
-                <select
-                  aria-label="牌桌状态"
-                  value={roomFilter}
-                  onChange={(e) => setRoomFilter(e.target.value)}
+              <div className="admin-room-views">
+                <button
+                  className={roomHistory ? "outline" : "primary"}
+                  aria-pressed={!roomHistory}
+                  onClick={() => setRoomHistory(false)}
                 >
-                  <option value="all">全部</option>
-                  <option value="playing">进行中</option>
-                  <option value="waiting">等待开局</option>
-                </select>
-              </label>
-              <div className="admin-room-grid">
-                {data.rooms
-                  .filter(
+                  活动牌桌
+                </button>
+                <button
+                  className={roomHistory ? "primary" : "outline"}
+                  aria-pressed={roomHistory}
+                  onClick={() => setRoomHistory(true)}
+                >
+                  历史牌桌
+                </button>
+              </div>
+              {roomHistory ? (
+                <RoomHistory games={data.games} />
+              ) : (
+                <>
+                  <div className="admin-section-head">
+                    <div>
+                      <h2>所有活动牌桌</h2>
+                      <p>
+                        包括已下架游戏中尚未结束的牌桌。管理界面仅展示公开信息。
+                      </p>
+                    </div>
+                    <RefreshButton onRefresh={refresh} />
+                  </div>
+                  <label className="admin-room-filter">
+                    牌桌状态{" "}
+                    <select
+                      aria-label="牌桌状态"
+                      value={roomFilter}
+                      onChange={(e) => setRoomFilter(e.target.value)}
+                    >
+                      <option value="all">全部</option>
+                      <option value="playing">进行中</option>
+                      <option value="waiting">等待开局</option>
+                    </select>
+                  </label>
+                  <div className="admin-room-grid">
+                    {data.rooms
+                      .filter(
+                        (room) =>
+                          roomFilter === "all" || room.status === roomFilter,
+                      )
+                      .map((room) => (
+                        <article className="admin-room-card" key={room.id}>
+                          <span className="admin-badge green">
+                            {room.status === "playing" ? "进行中" : "等待开局"}
+                          </span>
+                          <h3>{room.name}</h3>
+                          <p>
+                            {data.games.find((g) => g.kind === room.kind)?.name}{" "}
+                            · {room.id.toUpperCase()}
+                          </p>
+                          <div className="admin-room-seats">
+                            {room.seats
+                              .filter((p) => !p.left)
+                              .map((p) => (
+                                <span key={p.id}>
+                                  {p.bot ? "🤖 " : ""}
+                                  {p.name}
+                                  {p.autoPlay ? " · 托管" : ""}
+                                </span>
+                              ))}
+                          </div>
+                          <small>
+                            {room.seats.filter((p) => !p.left).length} /{" "}
+                            {room.capacity} 人 · {room.spectatorCount || 0}{" "}
+                            人观战
+                          </small>
+                          <button
+                            className="outline danger"
+                            onClick={() =>
+                              setDecision({
+                                title: `结束牌桌 · ${room.name}`,
+                                text: "此操作会立即关闭牌桌，终止当前比赛，本局不计胜负与积分。玩家之后可以离开或重新开局。",
+                                path: `/admin/rooms/${room.id}/close`,
+                                body: {},
+                              })
+                            }
+                          >
+                            <CircleStop size={16} />
+                            结束牌桌
+                          </button>
+                        </article>
+                      ))}
+                  </div>
+                  {!data.rooms.some(
                     (room) =>
                       roomFilter === "all" || room.status === roomFilter,
-                  )
-                  .map((room) => (
-                    <article className="admin-room-card" key={room.id}>
-                      <span className="admin-badge green">
-                        {room.status === "playing" ? "进行中" : "等待开局"}
-                      </span>
-                      <h3>{room.name}</h3>
-                      <p>
-                        {data.games.find((g) => g.kind === room.kind)?.name} ·{" "}
-                        {room.id.toUpperCase()}
-                      </p>
-                      <div className="admin-room-seats">
-                        {room.seats
-                          .filter((p) => !p.left)
-                          .map((p) => (
-                            <span key={p.id}>
-                              {p.bot ? "🤖 " : ""}
-                              {p.name}
-                              {p.autoPlay ? " · 托管" : ""}
-                            </span>
-                          ))}
-                      </div>
-                      <small>
-                        {room.seats.filter((p) => !p.left).length} /{" "}
-                        {room.capacity} 人 · {room.spectatorCount || 0} 人观战
-                      </small>
-                      <button
-                        className="outline danger"
-                        onClick={() =>
-                          setDecision({
-                            title: `结束牌桌 · ${room.name}`,
-                            text: "此操作会立即关闭牌桌，终止当前比赛，本局不计胜负与积分。玩家之后可以离开或重新开局。",
-                            path: `/admin/rooms/${room.id}/close`,
-                            body: {},
-                          })
-                        }
-                      >
-                        <CircleStop size={16} />
-                        结束牌桌
-                      </button>
-                    </article>
-                  ))}
-              </div>
-              {!data.rooms.some(
-                (room) => roomFilter === "all" || room.status === roomFilter,
-              ) && <p className="admin-empty">暂时没有活动牌桌。</p>}
+                  ) && <p className="admin-empty">暂时没有活动牌桌。</p>}
+                </>
+              )}
             </section>
           )}
           {tab === "audit" && (
@@ -934,7 +966,24 @@ export function AdminDashboard({
         <UserActivity
           user={activityUser}
           onClose={() => setActivityUser(undefined)}
+          onHistory={(target) => {
+            setActivityUser(undefined);
+            setHistoryTarget(target);
+          }}
         />
+      )}
+      {historyTarget && data && (
+        <Modal
+          title={historyTarget.title ?? "历史牌桌"}
+          onClose={() => setHistoryTarget(undefined)}
+          className="admin-history-modal"
+        >
+          <RoomHistory
+            games={data.games}
+            initial={historyTarget}
+            heading={false}
+          />
+        </Modal>
       )}
       {decision && (
         <div

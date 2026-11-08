@@ -56,6 +56,9 @@ func (s *Server) initAccessActivity() error {
 	if err != nil {
 		return err
 	}
+	if err = s.initActivityRoomContext(); err != nil {
+		return err
+	}
 	rows, err := s.db.Query("PRAGMA table_info(admin_audit)")
 	if err != nil {
 		return err
@@ -82,8 +85,12 @@ func (s *Server) initAccessActivity() error {
 	}
 	return err
 }
-func activityInsert(tx *sql.Tx, id, action, target, ip string) error {
-	_, err := tx.Exec("INSERT INTO user_activity(user_id,action,target,ip,created_at) VALUES(?,?,?,?,?)", id, action, target, ip, time.Now().Unix())
+func activityInsert(tx *sql.Tx, id, action, target, ip string, contexts ...*activityRoom) error {
+	meta := activityRoom{}
+	if len(contexts) > 0 && contexts[0] != nil {
+		meta = *contexts[0]
+	}
+	_, err := tx.Exec("INSERT INTO user_activity(user_id,action,target,ip,created_at,room_id,room_kind,room_name,match_id) VALUES(?,?,?,?,?,?,?,?,?)", id, action, target, ip, time.Now().Unix(), meta.ID, meta.Kind, meta.Name, meta.MatchID)
 	return err
 }
 
@@ -108,7 +115,7 @@ func (s *Server) adminUserActivity(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-	rows, err := s.db.Query("SELECT id,action,target,ip,created_at FROM user_activity WHERE user_id=? AND (?=0 OR id<?) ORDER BY id DESC LIMIT 51", id, before, before)
+	rows, err := s.db.Query("SELECT id,action,target,ip,created_at,room_id,room_kind,room_name,match_id FROM user_activity WHERE user_id=? AND (?=0 OR id<?) ORDER BY id DESC LIMIT 51", id, before, before)
 	if err != nil {
 		fail(w, 500, "无法读取玩家动态")
 		return
@@ -118,14 +125,46 @@ func (s *Server) adminUserActivity(w http.ResponseWriter, r *http.Request) {
 	for rows.Next() {
 		var n, at int64
 		var action, target, ip string
-		if err = rows.Scan(&n, &action, &target, &ip, &at); err != nil {
+		meta := activityRoom{}
+		if err = rows.Scan(&n, &action, &target, &ip, &at, &meta.ID, &meta.Kind, &meta.Name, &meta.MatchID); err != nil {
 			break
 		}
-		entries = append(entries, map[string]any{"id": n, "action": action, "target": target, "ip": ip, "createdAt": at})
+		entry := map[string]any{"id": n, "action": action, "target": target, "ip": ip, "createdAt": at}
+		if meta.ID == "" && isRoomActivity(action) {
+			meta.ID = target
+		}
+		if meta.ID != "" {
+			entry["room"] = &meta
+		}
+		entries = append(entries, entry)
 	}
 	if err != nil || rows.Err() != nil {
 		fail(w, 500, "无法读取玩家动态")
 		return
+	}
+	rows.Close()
+	cache := map[string]activityRoom{}
+	for _, entry := range entries {
+		meta, ok := entry["room"].(*activityRoom)
+		if !ok {
+			continue
+		}
+		if meta.Kind == "" {
+			if known, exists := cache[meta.ID]; exists {
+				meta.Kind, meta.Name = known.Kind, known.Name
+			} else {
+				if current := s.activityRoomContext(meta.ID); current != nil {
+					meta.Kind, meta.Name = current.Kind, current.Name
+				} else {
+					_ = s.db.QueryRow("SELECT room_kind,room_name FROM user_activity WHERE room_id=? AND room_kind<>'' ORDER BY id DESC LIMIT 1", meta.ID).Scan(&meta.Kind, &meta.Name)
+				}
+				cache[meta.ID] = *meta
+			}
+		}
+		meta.GameName = s.gameNames[meta.Kind]
+		if meta.GameName == "" {
+			meta.GameName = meta.Kind
+		}
 	}
 	more := len(entries) > 50
 	if more {
@@ -136,11 +175,11 @@ func (s *Server) adminUserActivity(w http.ResponseWriter, r *http.Request) {
 
 // Record successful, meaningful player actions, never chat text, passwords,
 // private cards, controller input, or high-frequency gameplay frames.
-func (s *Server) recordActivity(id, action, target, ip string) {
+func (s *Server) recordActivity(id, action, target, ip string, contexts ...*activityRoom) {
 	tx, err := s.db.Begin()
 	if err == nil {
 		defer tx.Rollback()
-		if err = activityInsert(tx, id, action, target, ip); err == nil {
+		if err = activityInsert(tx, id, action, target, ip, contexts...); err == nil {
 			err = tx.Commit()
 		}
 	}
@@ -192,6 +231,12 @@ func (s *Server) withActivity(action string, next http.HandlerFunc) http.Handler
 				requestAction = "friend_" + req.Action
 			}
 		}
+		var context *activityRoom
+		if isRoomActivity(requestAction) && target != "" {
+			s.mu.Lock()
+			context = s.activityRoomContext(target)
+			s.mu.Unlock()
+		}
 		recorder := &activityResponse{ResponseWriter: w}
 		next(recorder, r)
 		if err == nil && requestAction != "" && recorder.status >= 200 && recorder.status < 300 {
@@ -200,9 +245,15 @@ func (s *Server) withActivity(action string, next http.HandlerFunc) http.Handler
 			if requestAction == "create_room" {
 				if room := s.current(u.ID); room != nil {
 					target = room.ID
+					context = s.activityRoomContext(target)
 				}
 			}
-			s.recordActivity(u.ID, requestAction, target, s.clientIP(r))
+			if isRoomActivity(requestAction) {
+				if current := s.activityRoomContext(target); current != nil {
+					context = current
+				}
+			}
+			s.recordActivity(u.ID, requestAction, target, s.clientIP(r), context)
 		}
 	}
 }

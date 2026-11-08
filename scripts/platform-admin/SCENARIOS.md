@@ -15,3 +15,9 @@
 重复执行：`python3 -B scripts/platform-admin/run-acceptance.py`。该命令构建真实前端、绑定同次构建的运行时标识，并启动使用生产游戏目录和独立 SQLite 的本地测试服务。
 HTTP 持久化和代理边界：`go test ./internal/server -run 'TestAccessActivity|TestClientIP' -count=1`。
 产物写入 `.local/platform-admin-acceptance/`，包括 JSON 测量与桌面／手机截图。
+## 动态与历史牌桌查询
+
+- 动态必须显示实际游戏、桌名和桌号；退出、关闭、换游戏、牌桌删除及重启后不能用当前牌桌替换旧记录。
+- 管理员能按游戏、牌桌号、对局号、桌名和玩家查历史；包含关闭对局及没有 roomId 的旧档案，分页不重复、不遗漏，同秒结束记录保持稳定。
+- 普通用户、未登录者和被撤销权限者不得读取管理员历史接口；响应只含公开结果，不包含口令、手牌、牌库或聊天。
+- 不猜测已经遗失的旧牌桌关联；可从对应玩家的历史继续查询。测试保留真实 HTTP 结果和桌面／320px 浏览器截图。
