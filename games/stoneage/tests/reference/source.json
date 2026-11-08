@@ -1,0 +1,10 @@
+{
+  "source": "stoneage/server/legacy/source/2.5/gmsv/battle/battle_event.c",
+  "sha256": "897ce8a6b546ff2afad4875306c24e4ea1e7e50bf5dbefd38f0b39271056e63e",
+  "functions": [
+    "float BATTLE_adjustRidePet3A",
+    "static int\tBATTLE_AttrCalc",
+    "int BATTLE_DamageCalc"
+  ],
+  "scope": "original active _BATTLE_NEWPOWER branch, physical base damage, rider coefficients and elemental adjustment; not full-engine parity"
+}

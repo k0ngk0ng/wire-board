@@ -62,12 +62,23 @@ export function GameBoard({
   ) : (
     board
   );
-  return <>
-    <NavigationController gameId={room.kind} userId={room.seats[room.you]?.id ?? ""}
-      enabled={!busy && !room.spectating && room.you >= 0 && !room.seats[room.you]?.autoPlay && !room.seats[room.you]?.left} />
-    {fitted}
-    <GameMobilePlayNotice enabled={module.mobilePlayNotice} />
-  </>;
+  return (
+    <>
+      <NavigationController
+        gameId={room.kind}
+        userId={room.seats[room.you]?.id ?? ""}
+        enabled={
+          !busy &&
+          !room.spectating &&
+          room.you >= 0 &&
+          !room.seats[room.you]?.autoPlay &&
+          !room.seats[room.you]?.left
+        }
+      />
+      {fitted}
+      <GameMobilePlayNotice enabled={module.mobilePlayNotice} />
+    </>
+  );
 }
 
 export function ModuleCreate({
@@ -504,6 +515,12 @@ export function ModulePlayers({ room }: { room: Room }) {
     <div
       className="players-strip module-players"
       data-player-density={compact ? "compact" : undefined}
+      data-player-flow={module?.playerLayout?.flow}
+      role={module?.playerLayout?.flow === "horizontal" ? "group" : undefined}
+      tabIndex={module?.playerLayout?.flow === "horizontal" ? 0 : undefined}
+      aria-label={
+        module?.playerLayout?.flow === "horizontal" ? "玩家信息" : undefined
+      }
       data-player-grouped={groups.length ? "true" : undefined}
     >
       {groups.length

@@ -216,6 +216,7 @@ export type GameModule<Data = unknown, Options = unknown> = {
   // Creation keeps Options; this waiting-room preparation owns its controls.
   preparationOwnsOptions?: boolean;
   playerLayout?: {
+    flow?: "horizontal";
     density?: "compact";
     groups?: (room: GameRoom, data: Data | undefined) => readonly PlayerGroup[];
   };

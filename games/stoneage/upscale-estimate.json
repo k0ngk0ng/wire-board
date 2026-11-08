@@ -1,0 +1,340 @@
+{
+  "scope": "当前竞技场全部可能使用的原始 PNG；仅头部读取和排布模拟，无合成图片或 API 调用",
+  "modelFamily": "gpt-image-2.5",
+  "models": [
+    "gpt-image-2.5-sunburst",
+    "gpt-image-2.5-flare"
+  ],
+  "uniqueFilePaths": 9477,
+  "distinctSHA256": 9474,
+  "duplicateFilePaths": 3,
+  "sourcePixels": 60785828,
+  "sourceDimensions": {
+    "maxWidth": 640,
+    "maxHeight": 480
+  },
+  "theoreticalAreaLowerBounds": [
+    {
+      "scale": 2,
+      "outputPixels": 243143312,
+      "requests": 30
+    },
+    {
+      "scale": 4,
+      "outputPixels": 972573248,
+      "requests": 118
+    }
+  ],
+  "requestAssumption": "每张独立 atlas 使用一次 edits 请求，n=1；不含试样、重试或返工",
+  "scenarios": [
+    {
+      "strategy": "global-tight-4K",
+      "scale": 2,
+      "sourceGutterPerEdge": 0,
+      "outputAtlas": [
+        2160,
+        3840
+      ],
+      "requests": 30,
+      "outputImages": 30,
+      "areaLowerBoundWithGutters": 30,
+      "candidateCounts": [
+        {
+          "size": [
+            2880,
+            2880
+          ],
+          "requests": 30
+        },
+        {
+          "size": [
+            3840,
+            2160
+          ],
+          "requests": 30
+        },
+        {
+          "size": [
+            2160,
+            3840
+          ],
+          "requests": 30
+        }
+      ],
+      "excludedCandidates": [],
+      "algorithm": "first-fit decreasing shelves; no rotation; validated coverage, bounds and non-overlap",
+      "provenMinimum": true
+    },
+    {
+      "strategy": "global-4K",
+      "scale": 2,
+      "sourceGutterPerEdge": 4,
+      "outputAtlas": [
+        2160,
+        3840
+      ],
+      "requests": 36,
+      "outputImages": 36,
+      "areaLowerBoundWithGutters": 36,
+      "candidateCounts": [
+        {
+          "size": [
+            2880,
+            2880
+          ],
+          "requests": 36
+        },
+        {
+          "size": [
+            3840,
+            2160
+          ],
+          "requests": 37
+        },
+        {
+          "size": [
+            2160,
+            3840
+          ],
+          "requests": 36
+        }
+      ],
+      "excludedCandidates": [],
+      "algorithm": "first-fit decreasing shelves; no rotation; validated coverage, bounds and non-overlap",
+      "provenMinimum": true
+    },
+    {
+      "strategy": "per-sprite-4K",
+      "scale": 2,
+      "sourceGutterPerEdge": 4,
+      "outputAtlas": [
+        2160,
+        3840
+      ],
+      "requests": 167,
+      "outputImages": 167,
+      "areaLowerBoundWithGutters": 36,
+      "candidateCounts": [
+        {
+          "size": [
+            2880,
+            2880
+          ],
+          "requests": 167
+        },
+        {
+          "size": [
+            3840,
+            2160
+          ],
+          "requests": 167
+        },
+        {
+          "size": [
+            2160,
+            3840
+          ],
+          "requests": 167
+        }
+      ],
+      "excludedCandidates": [],
+      "algorithm": "first-fit decreasing shelves; no rotation; validated coverage, bounds and non-overlap",
+      "provenMinimum": false
+    },
+    {
+      "strategy": "global-1440p",
+      "scale": 2,
+      "sourceGutterPerEdge": 4,
+      "outputAtlas": [
+        1440,
+        2560
+      ],
+      "requests": 82,
+      "outputImages": 82,
+      "areaLowerBoundWithGutters": 80,
+      "candidateCounts": [
+        {
+          "size": [
+            2560,
+            1440
+          ],
+          "requests": 82
+        },
+        {
+          "size": [
+            1440,
+            2560
+          ],
+          "requests": 82
+        }
+      ],
+      "excludedCandidates": [],
+      "algorithm": "first-fit decreasing shelves; no rotation; validated coverage, bounds and non-overlap",
+      "provenMinimum": false
+    },
+    {
+      "strategy": "global-tight-4K",
+      "scale": 4,
+      "sourceGutterPerEdge": 0,
+      "outputAtlas": [
+        2880,
+        2880
+      ],
+      "requests": 120,
+      "outputImages": 120,
+      "areaLowerBoundWithGutters": 118,
+      "candidateCounts": [
+        {
+          "size": [
+            2880,
+            2880
+          ],
+          "requests": 120
+        },
+        {
+          "size": [
+            3840,
+            2160
+          ],
+          "requests": 120
+        }
+      ],
+      "excludedCandidates": [
+        {
+          "size": [
+            2160,
+            3840
+          ],
+          "imagesTooLarge": [
+            "battle/battle_00.png"
+          ]
+        }
+      ],
+      "algorithm": "first-fit decreasing shelves; no rotation; validated coverage, bounds and non-overlap",
+      "provenMinimum": false
+    },
+    {
+      "strategy": "global-4K",
+      "scale": 4,
+      "sourceGutterPerEdge": 4,
+      "outputAtlas": [
+        2880,
+        2880
+      ],
+      "requests": 145,
+      "outputImages": 145,
+      "areaLowerBoundWithGutters": 141,
+      "candidateCounts": [
+        {
+          "size": [
+            2880,
+            2880
+          ],
+          "requests": 145
+        },
+        {
+          "size": [
+            3840,
+            2160
+          ],
+          "requests": 145
+        }
+      ],
+      "excludedCandidates": [
+        {
+          "size": [
+            2160,
+            3840
+          ],
+          "imagesTooLarge": [
+            "battle/battle_00.png"
+          ]
+        }
+      ],
+      "algorithm": "first-fit decreasing shelves; no rotation; validated coverage, bounds and non-overlap",
+      "provenMinimum": false
+    },
+    {
+      "strategy": "per-sprite-4K",
+      "scale": 4,
+      "sourceGutterPerEdge": 4,
+      "outputAtlas": [
+        2880,
+        2880
+      ],
+      "requests": 239,
+      "outputImages": 239,
+      "areaLowerBoundWithGutters": 141,
+      "candidateCounts": [
+        {
+          "size": [
+            2880,
+            2880
+          ],
+          "requests": 239
+        },
+        {
+          "size": [
+            3840,
+            2160
+          ],
+          "requests": 240
+        }
+      ],
+      "excludedCandidates": [
+        {
+          "size": [
+            2160,
+            3840
+          ],
+          "imagesTooLarge": [
+            "battle/battle_00.png"
+          ]
+        }
+      ],
+      "algorithm": "first-fit decreasing shelves; no rotation; validated coverage, bounds and non-overlap",
+      "provenMinimum": false
+    },
+    {
+      "strategy": "global-1440p",
+      "scale": 4,
+      "requests": null,
+      "reason": "不能在该尺寸内完整保留所有原图，必须切分大图或使用更大输出",
+      "excludedCandidates": [
+        {
+          "size": [
+            2560,
+            1440
+          ],
+          "imagesTooLarge": [
+            "battle/battle_00.png"
+          ]
+        },
+        {
+          "size": [
+            1440,
+            2560
+          ],
+          "imagesTooLarge": [
+            "battle/battle_00.png"
+          ]
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "面积下限忽略留白和几何排布；模拟结果是可排布数量，不是最优性或模型质量证明。",
+    "4K 输出属于超过 2560×1440 的实验分辨率。",
+    "n 最多 10 代表同一请求的多个输出；官方未承诺与多个输入一一对应编辑。",
+    "生成式增强不能保证坐标、透明边界、姿态和跨帧一致性，须先验证试样。"
+  ],
+  "sources": [
+    "https://developers.openai.com/api/docs/guides/image-generation",
+    "https://developers.openai.com/api/reference/resources/images/methods/edit",
+    "https://developers.openai.com/api/docs/models/gpt-image-2.5-sunburst",
+    "https://developers.openai.com/api/docs/models/gpt-image-2.5-flare"
+  ],
+  "manifestSHA256": "23c338bb9926fb43c2fdae5bd317561ec019f2438c972cff316eac7fbfb7df5c",
+  "assetsCopied": 0,
+  "generationAPICalls": 0
+}

@@ -168,6 +168,24 @@
 .module-players .player-panel:only-child {
   grid-column: 1 / -1;
 }
+.players-strip.module-players[data-player-flow="horizontal"] {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  align-items: stretch;
+  gap: 6px;
+  padding-bottom: 4px;
+  scroll-snap-type: x proximity;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+}
+.players-strip.module-players[data-player-flow="horizontal"] > .player-panel {
+  flex: 0 0 156px;
+  min-width: 156px;
+  scroll-snap-align: start;
+}
 .game-category {
   display: grid;
   gap: 6px;
