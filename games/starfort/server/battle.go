@@ -99,6 +99,17 @@ func (s *State) startWave(now int64) {
 	s.ServerAt = now
 	s.NextAt = 0
 	s.SpawnClock = 0
+	s.SpawnNotBefore = 0
+	if s.taskConvoyActive() {
+		s.SpawnNotBefore = s.ElapsedMS + 2000
+	}
+	if s.rebalanced() {
+		for i := range s.World.Objectives {
+			if s.World.Objectives[i].Status == "available" {
+				s.World.Objectives[i].Status = "skipped"
+			}
+		}
+	}
 	for i := range s.Players {
 		s.Players[i].Ready = false
 		s.Players[i].PauseVote = false
@@ -216,6 +227,9 @@ func (s *State) spawn() {
 	s.EnemySerial++
 	routes := s.activeRoutes()
 	route := routes[index%len(routes)]
+	boost := s.taskRouteBoost(route)
+	hp *= boost
+	shield *= boost
 	p := pathPosition(s.routePath(route), 0)
 	phase := 0
 	if kind == "boss" {
@@ -275,7 +289,7 @@ func (s *State) step(now int64) {
 	}
 	atMS = s.ElapsedMS
 	s.SpawnClock = max(0, s.SpawnClock-StepMS)
-	if s.WaveInfo.Spawned < s.WaveInfo.Total && s.SpawnClock <= 0 && len(s.Enemies) < MaxEnemies {
+	if s.WaveInfo.Spawned < s.WaveInfo.Total && s.ElapsedMS >= s.SpawnNotBefore && s.SpawnClock <= 0 && len(s.Enemies) < MaxEnemies {
 		s.spawn()
 		s.SpawnClock = 800
 		if s.WaveInfo.Rule == "swarm" {
@@ -309,6 +323,8 @@ func (s *State) step(now int64) {
 					spawned.Kind = "swarm"
 					spawned.Frostbound = false
 					spawned.FrozenUntil, spawned.SilencedUntil = 0, 0
+					spawned.RecoveryUntil = 0
+					spawned.KnockbackGuards = nil
 					spawned.HP = math.Max(1, e.MaxHP*.3)
 					spawned.MaxHP = spawned.HP
 					spawned.Shield, spawned.Armor = 0, 0
@@ -374,7 +390,7 @@ func (s *State) step(now int64) {
 		s.note("星核熄灭，共守住 %d 波，击败 %d 个敌人", s.CompletedWaves, s.Kills)
 		return
 	}
-	if s.WaveInfo.Spawned == s.WaveInfo.Total && len(s.Enemies) == 0 {
+	if s.WaveInfo.Spawned == s.WaveInfo.Total && len(s.Enemies) == 0 && !s.taskConvoyActive() {
 		s.CompletedWaves = s.Wave
 		s.onWaveCleared()
 		reward := s.rewardGold(40 + min(1000, s.Wave*3))
@@ -452,8 +468,16 @@ func (s *State) hitWithSkill(index int, damage float64, t Tower, skill string) {
 		factor := 1.
 		if t.Kind == "arcane" {
 			factor = 1.5
-			if s.specialized() && t.Branch == "power" && !heavy(*e) {
-				factor *= 1.15
+			if s.specialized() && t.Branch == "power" && (s.rebalanced() || !heavy(*e)) {
+				if s.rebalanced() {
+					extra := 1.2
+					if heavy(*e) {
+						extra = 1.1
+					}
+					factor *= extra + .1*float64(t.Level-1)
+				} else {
+					factor *= 1.15
+				}
 			}
 		}
 		absorbed := math.Min(e.Shield, damage*factor)
@@ -464,7 +488,15 @@ func (s *State) hitWithSkill(index int, damage float64, t Tower, skill string) {
 	actual := before - e.HP - e.Shield
 	s.Players[t.Owner].Damage = math.Min(maxValue, s.Players[t.Owner].Damage+actual)
 	if t.Kind == "frost" {
-		e.SlowUntil = max(e.SlowUntil, s.Tick+8)
+		if s.rebalanced() {
+			factor, duration := s.iceAttack(t)
+			if e.SlowUntil <= s.Tick || factor < e.SlowFactor {
+				e.SlowFactor = factor
+			}
+			e.SlowUntil = max(e.SlowUntil, s.Tick+duration)
+		} else {
+			e.SlowUntil = max(e.SlowUntil, s.Tick+8)
+		}
 	}
 	s.event(Event{Skill: skill, TowerID: t.ID, TargetID: e.ID, Type: "hit", X: e.X, Y: e.Y, Kind: e.Kind, Owner: t.Owner, Amount: actual})
 	if e.HP <= 0 {

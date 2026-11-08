@@ -55,6 +55,8 @@ func (s *State) enemyAbilities() {
 				guard.Kind = "shield"
 				guard.Frostbound = false
 				guard.FrozenUntil, guard.SilencedUntil = 0, 0
+				guard.RecoveryUntil = 0
+				guard.KnockbackGuards = nil
 				guard.Phase = 0
 				guard.AbilityTick = s.Tick
 				guard.HP = math.Max(1, e.MaxHP*.06)

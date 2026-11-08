@@ -39,7 +39,7 @@ func scenarioModule() gameapi.Module {
 			delete(v, "scenario")
 		}
 		switch scenario {
-		case "specialization-arrow", "specialization-frost", "specialization-cannon", "specialization-arcane", "density-observed", "density-central", "density-coop", "density-ceiling", "coop-growth", "coop-objectives", "ice-arrow", "ice-wall", "central-passives", "cadence", "cadence-speed", "vitality", "impact", "natural", "battle", "victory-ready", "defeat-ready", "advanced", "zero-gold", "growth-vote", "cleared-5", "cleared-10", "cleared-15", "stage2", "stage3", "stage4", "endless-rotation", "objectives", "objectives-clear", "objectives-fail", "legacy-save":
+		case "rebalance-combat-frost", "rebalance-combat-arcane", "rebalance-tasks", "rebalance-reward", "rebalance-highground", "specialization-arrow", "specialization-frost", "specialization-cannon", "specialization-arcane", "density-observed", "density-central", "density-coop", "density-ceiling", "coop-growth", "coop-objectives", "ice-arrow", "ice-wall", "central-passives", "cadence", "cadence-speed", "vitality", "impact", "natural", "battle", "victory-ready", "defeat-ready", "advanced", "zero-gold", "growth-vote", "cleared-5", "cleared-10", "cleared-15", "stage2", "stage3", "stage4", "endless-rotation", "objectives", "objectives-clear", "objectives-fail", "legacy-save":
 		default:
 			return "", nil, errors.New("unknown test scenario")
 		}
@@ -65,7 +65,11 @@ func scenarioModule() gameapi.Module {
 		if err != nil {
 			return gameapi.Match{}, err
 		}
-		match, err := start(ctx, body)
+		fixtureStart := start
+		if scenario != "natural" && (!strings.HasPrefix(scenario, "rebalance-") || strings.HasPrefix(scenario, "rebalance-combat-")) {
+			fixtureStart = preBalanceTestModule().Start
+		}
+		match, err := fixtureStart(ctx, body)
 		if err != nil {
 			return match, err
 		}
@@ -84,7 +88,7 @@ func scenarioModule() gameapi.Module {
 			dense.ServerAt = ctx.Now.UnixMilli()
 			return dense.Envelope()
 		}
-		if !strings.HasPrefix(scenario, "specialization-") && scenario != "coop-growth" && scenario != "coop-objectives" && scenario != "natural" && scenario != "central-passives" && scenario != "ice-arrow" && scenario != "ice-wall" {
+		if !strings.HasPrefix(scenario, "rebalance-") && !strings.HasPrefix(scenario, "specialization-") && scenario != "coop-growth" && scenario != "coop-objectives" && scenario != "natural" && scenario != "central-passives" && scenario != "ice-arrow" && scenario != "ice-wall" {
 			match, err = legacyStartMatch(match)
 			if err != nil {
 				return match, err
@@ -120,11 +124,27 @@ func scenarioModule() gameapi.Module {
 			}
 		}
 		switch scenario {
-		case "specialization-arrow", "specialization-frost", "specialization-cannon", "specialization-arcane":
+		case "rebalance-tasks":
+			s.NextAt = ctx.Now.Add(5 * time.Minute).UnixMilli()
+		case "rebalance-reward", "rebalance-highground":
+			s.NextAt = ctx.Now.Add(5 * time.Minute).UnixMilli()
+			s.World.Objectives = []starfort.Objective{}
+			kind := "add"
+			if scenario == "rebalance-highground" {
+				kind = "highground"
+			}
+			s.World.PadReward = &starfort.PadReward{Owner: 0, Kind: kind}
+		case "rebalance-combat-frost", "rebalance-combat-arcane", "specialization-arrow", "specialization-frost", "specialization-cannon", "specialization-arcane":
+			if strings.HasPrefix(scenario, "rebalance-combat-") {
+				s.BalanceRules = 1
+			}
 			if err = fixtureCadence(&s, 3, ""); err != nil {
 				return match, err
 			}
 			kind := strings.TrimPrefix(scenario, "specialization-")
+			if strings.HasPrefix(scenario, "rebalance-combat-") {
+				kind = strings.TrimPrefix(scenario, "rebalance-combat-")
+			}
 			for _, tower := range s.Towers {
 				if tower.Kind == kind {
 					s.Towers = []starfort.Tower{tower}

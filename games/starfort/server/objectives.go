@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"math"
+	"slices"
 )
 
 // The preview and accepted world use the same objective position, so choosing
@@ -89,6 +90,13 @@ func (s *State) acceptObjective(id string, p int) error {
 			return errors.New("目标已承接或金币不足")
 		}
 		s.Players[p].Gold -= o.Cost
+		if s.rebalanced() {
+			if s.World.TaskAttempts == nil {
+				s.World.TaskAttempts = map[string]int{}
+			}
+			s.World.TaskAttempts[o.Kind]++
+			o.Owner = p
+		}
 		o.Status = "active"
 		o.StartWave, o.EndWave = s.Wave, s.Wave
 		if o.Kind == "convoy" {
@@ -126,7 +134,11 @@ func (s *State) stepObjectives() {
 			radius = 90
 			path := s.convoyPath(o.Route)
 			length := pathDistance(path)
-			o.Progress = math.Min(length, o.Progress+90.*StepMS/1000)
+			speed := 90.
+			if s.rebalanced() {
+				speed = 20
+			}
+			o.Progress = math.Min(length, o.Progress+speed*StepMS/1000)
 			p := pathPosition(path, o.Progress)
 			o.X, o.Y = p.X, p.Y
 			arrived = o.Progress >= length
@@ -162,10 +174,24 @@ func (s *State) finishObjective(index int, success bool, reason string) {
 	if success {
 		o.Status = "completed"
 		if o.Kind == "beacon" {
-			s.World.Boons.Reach++
+			if s.rebalanced() {
+				s.World.BeaconSuccesses++
+			} else {
+				s.World.Boons.Reach++
+			}
 		} else {
 			for p := range s.Players {
 				s.Players[p].Gold = min(maxValue, s.Players[p].Gold+o.Reward)
+			}
+			if s.rebalanced() && o.Kind == "mine" {
+				s.World.MineSuccesses++
+				kind := "add"
+				if s.World.MineSuccesses%2 == 0 {
+					kind = "highground"
+				}
+				if (kind == "add" && len(s.World.Map.Pads) < 40) || (kind == "highground" && slices.ContainsFunc(s.World.Map.Pads, func(p Pad) bool { return p.Terrain == "plain" })) {
+					s.World.PadReward = &PadReward{Owner: o.Owner, Kind: kind}
+				}
 			}
 			if o.Kind == "convoy" {
 				s.BaseHP = min(s.BaseMaxHP, s.BaseHP+4)

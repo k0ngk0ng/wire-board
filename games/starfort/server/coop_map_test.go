@@ -20,12 +20,12 @@ func TestCooperativeExpansionWithCurrentSkills(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		if m.Schema != 5 || s.World.Layout != "" || len(s.World.Map.Routes) != 1 || s.SkillRules != 2 {
+		if m.Schema != 6 || s.World.Layout != "" || len(s.World.Map.Routes) != 1 || s.SkillRules != 2 {
 			t.Fatal("not a shared expanding world", m.Schema, s.World.Layout)
 		}
 		for _, kind := range []string{"arrow", "cannon", "frost", "arcane"} {
-			if s.passiveView(Tower{Kind: kind}) == nil {
-				t.Fatal("missing passive", kind)
+			if s.passiveView(Tower{Kind: kind}) != nil {
+				t.Fatal("removed passive remains", kind)
 			}
 		}
 		for _, wave := range []int{6, 11, 16} {

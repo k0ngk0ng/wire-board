@@ -58,6 +58,15 @@ func botAction(ctx gameapi.Context, m gameapi.Match) (json.RawMessage, error) {
 		if s.World.Choice != nil || s.World.BoonChoice != nil {
 			return nil, nil
 		}
+		if s.rebalanced() && s.World.PadReward != nil {
+			if s.World.PadReward.Owner == p {
+				if a := s.automaticPadReward(); a != nil {
+					a.Epoch = s.Epoch
+					return json.Marshal(a)
+				}
+			}
+			return nil, nil
+		}
 		for _, o := range s.World.Objectives {
 			if o.Status == "available" && s.Players[p].Gold >= o.Cost+160 && len(s.Towers) >= 6 {
 				return json.Marshal(Action{Type: "objective", ObjectiveID: o.ID, Epoch: s.Epoch})
@@ -168,7 +177,7 @@ func (s *State) investment(p int) *Action {
 		c, _ := spec(kind)
 		if s.Players[p].Gold >= c.Cost {
 			for _, pad := range []int{1, 5, 3, 0, 2, 4, 6, 7, 10, 14, 8, 9, 11, 12, 13, 15} {
-				if !occupied[pad] {
+				if pad < len(s.World.Map.Pads) && !occupied[pad] {
 					return &Action{Type: "build", Pad: pad, Tower: kind}
 				}
 			}
@@ -198,9 +207,15 @@ func (s *State) investment(p int) *Action {
 			a.Branch = "power"
 			if t.Kind == "arrow" && s.SkillRules == 2 {
 				a.Branch = "volley"
+				if s.rebalanced() && t.Pad%3 != 0 {
+					a.Branch = "heart"
+				}
 			}
 			if t.Kind == "frost" || t.Kind == "cannon" {
 				a.Branch = "speed"
+			}
+			if s.rebalanced() && t.Kind == "cannon" {
+				a.Branch = "power"
 			}
 			if s.specialized() && t.Kind == "frost" && t.Pad%2 == 0 {
 				a.Branch = "freeze"

@@ -32,6 +32,7 @@ const objectiveStatus = {
   active: "守护中",
   completed: "已完成",
   failed: "未守住",
+  skipped: "已跳过",
 };
 
 function RoutePreview({ map, label }: { map: MapData; label: string }) {
@@ -220,19 +221,23 @@ function ChoicePanel({
 }
 
 function ObjectiveCard({
+  balanced,
   objective,
   enabled,
   finished,
   wave,
   completedWaves,
+  routeLabel,
   route,
   send,
 }: {
+  balanced?: boolean;
   objective: Objective;
   enabled: boolean;
   finished: boolean;
   wave: number;
   completedWaves: number;
+  routeLabel?: string;
   route?: MapData["path"];
   send: (type: string, extra?: Record<string, unknown>) => Promise<void>;
 }) {
@@ -261,7 +266,10 @@ function ObjectiveCard({
       data-sf-objective-state={objective.status}
     >
       <div>
-        <h4>{objective.label}</h4>
+        <div>
+          <h4>{objective.label}</h4>
+          {balanced && routeLabel && <small>{routeLabel}</small>}
+        </div>
         <span>
           {finished && objective.status === "available"
             ? "本局未承接"
@@ -269,14 +277,16 @@ function ObjectiveCard({
         </span>
       </div>
       <p>{objective.description}</p>
-      <p className="sf-objective-reward">
-        奖励：
-        {objective.kind === "mine"
-          ? `每人 ${objective.reward} 金币`
-          : objective.kind === "beacon"
-            ? "全队防御塔永久增加 8% 射程"
-            : `每人 ${objective.reward} 金币，星核恢复 4 点生命`}
-      </p>
+      {!balanced && (
+        <p className="sf-objective-reward">
+          奖励：
+          {objective.kind === "mine"
+            ? `每人 ${objective.reward} 金币`
+            : objective.kind === "beacon"
+              ? `全队防御塔永久增加 ${balanced ? 5 : 8}% 射程`
+              : `每人 ${objective.reward} 金币，星核恢复 4 点生命`}
+        </p>
+      )}
       {active && (
         <p className="sf-objective-progress">
           {objective.kind === "convoy"
@@ -284,31 +294,35 @@ function ObjectiveCard({
             : `已守住 ${progress} / ${total} 波 · 守到第 ${objective.endWave} 波${wave === objective.endWave ? "，最后一波" : ""}`}
         </p>
       )}
-      {objective.status !== "available" && objective.maxHP > 0 && (
-        <div
-          className="sf-objective-health"
-          data-sf-objective-health={objective.id}
-        >
-          <span>
-            {objective.kind === "convoy" ? "补给队生命" : "据点生命"}{" "}
-            {Math.ceil(Math.max(0, objective.hp))} / {objective.maxHP}
-          </span>
+      {(balanced || objective.status !== "available") &&
+        objective.maxHP > 0 && (
           <div
-            className="sf-hp-track"
-            role="meter"
-            aria-label={`${objective.label}生命`}
-            aria-valuemin={0}
-            aria-valuemax={objective.maxHP}
-            aria-valuenow={Math.max(0, objective.hp)}
+            className="sf-objective-health"
+            data-sf-objective-health={objective.id}
           >
-            <i
-              style={{
-                width: `${Math.max(0, (objective.hp / objective.maxHP) * 100)}%`,
-              }}
-            />
+            <span>
+              {objective.kind === "convoy" ? "补给队生命" : "据点生命"}{" "}
+              {balanced
+                ? Number(Math.max(0, objective.hp).toFixed(2))
+                : Math.ceil(Math.max(0, objective.hp))}{" "}
+              / {Number(objective.maxHP.toFixed(2))}
+            </span>
+            <div
+              className="sf-hp-track"
+              role="meter"
+              aria-label={`${objective.label}生命`}
+              aria-valuemin={0}
+              aria-valuemax={objective.maxHP}
+              aria-valuenow={Math.max(0, objective.hp)}
+            >
+              <i
+                style={{
+                  width: `${Math.max(0, (objective.hp / objective.maxHP) * 100)}%`,
+                }}
+              />
+            </div>
           </div>
-        </div>
-      )}
+        )}
       {objective.status === "failed" && (
         <p>
           {objective.hp <= 0
@@ -372,6 +386,17 @@ export function Board({
   const [choiceOpen, setChoiceOpen] = useState(false);
   const [infoOpen, setInfoOpen] = useState(false);
   const [tasksOpen, setTasksOpen] = useState(false);
+  const [placing, setPlacing] = useState(false);
+  const [claimPoint, setClaimPoint] = useState({ x: 100, y: 100 });
+  const taskPrompt = useRef("");
+  const offeredTask =
+    data.balanceRules === 1 && data.phase === "prepare"
+      ? data.world?.objectives?.find((o) => o.status === "available")
+      : undefined;
+  const padReward = data.world?.padReward;
+  useEffect(() => {
+    if (!padReward) setPlacing(false);
+  }, [padReward]);
   const choiceKey = [
     room.id,
     data.world?.choice?.stage,
@@ -416,6 +441,27 @@ export function Board({
     setTasksOpen(false);
     setFailure("");
   }, [room.id]);
+  useEffect(() => {
+    const key = room.id + ":" + offeredTask?.id;
+    if (
+      offeredTask &&
+      !padReward &&
+      !room.spectating &&
+      !data.world?.choice &&
+      !data.world?.boonChoice &&
+      taskPrompt.current !== key
+    ) {
+      taskPrompt.current = key;
+      setTasksOpen(true);
+    }
+  }, [
+    room.id,
+    room.spectating,
+    offeredTask?.id,
+    padReward,
+    data.world?.choice,
+    data.world?.boonChoice,
+  ]);
   useEffect(() => {
     const id = window.setInterval(() => setNow(performance.now()), 500);
     return () => clearInterval(id);
@@ -478,6 +524,8 @@ export function Board({
     setFailure("");
     try {
       await act({ type, epoch: data.epoch, ...extra });
+      if (type === "objective" || type === "skip_objective")
+        setTasksOpen(false);
     } catch (error) {
       setFailure(
         error instanceof Error ? error.message : "操作未完成，请重试。",
@@ -701,6 +749,15 @@ export function Board({
       <div className="sf-layout">
         <section className="sf-map-section" aria-label="星垒战场">
           <Battlefield
+            placement={placing ? padReward?.kind : undefined}
+            onPlace={(point, pad) => {
+              void send(
+                "pad_reward",
+                padReward?.kind === "highground"
+                  ? { pad }
+                  : { x: point.x, y: point.y },
+              );
+            }}
             onReady={onReady}
             onLoadError={onLoadError}
             onEvents={playEvents}
@@ -1126,20 +1183,27 @@ export function Board({
           className="sf-tasks-dialog"
           onClose={() => setTasksOpen(false)}
         >
-          {data.specializationRules === 1 && (
+          {data.specializationRules === 1 && data.balanceRules !== 1 && (
             <p data-sf-task-refresh>
               下次刷新：守过第 {(Math.floor(data.completedWaves / 15) + 1) * 15}{" "}
               波
             </p>
           )}
           {world && world.objectives.length > 0 ? (
-            <section className="sf-objectives" aria-label="任务列表">
-              <p>
-                波间由一人支付金币承接。敌人靠近会攻击据点或补给队，需要沿线布塔守护；未承接不会影响正常闯关。
-              </p>
+            <section
+              className="sf-objectives"
+              aria-label="任务列表"
+              data-sf-task-offer={offeredTask ? offeredTask.id : undefined}
+            >
+              {data.balanceRules === 1 ? null : (
+                <p>
+                  波间由一人支付金币承接。敌人靠近会攻击据点或补给队，需要沿线布塔守护；未承接不会影响正常闯关。
+                </p>
+              )}
               <div className="sf-objective-grid">
                 {world.objectives.map((objective) => (
                   <ObjectiveCard
+                    balanced={data.balanceRules === 1}
                     key={objective.id}
                     objective={objective}
                     finished={finished}
@@ -1155,6 +1219,10 @@ export function Board({
                     }
                     wave={data.wave}
                     completedWaves={data.completedWaves}
+                    routeLabel={
+                      data.map.routes?.find((r) => r.id === objective.route)
+                        ?.label
+                    }
                     route={
                       data.map.routes?.find(
                         (route) => route.id === objective.route,
@@ -1168,12 +1236,120 @@ export function Board({
           ) : (
             <p>当前暂无任务。</p>
           )}
+          {offeredTask && !room.spectating && (
+            <button
+              data-sf-skip-task
+              className="sf-secondary"
+              disabled={locked}
+              onClick={() =>
+                void send("skip_objective", {
+                  objectiveId: offeredTask.id,
+                }).then(() => setTasksOpen(false))
+              }
+            >
+              本波跳过
+            </button>
+          )}
           {failure && (
             <p className="sf-error" role="alert">
               {failure}
             </p>
           )}
         </Modal>
+      )}
+      {padReward &&
+        padReward.owner === room.you &&
+        !placing &&
+        data.phase === "prepare" &&
+        !choosing && (
+          <Modal
+            title={padReward.kind === "add" ? "新增建造点" : "升级高地"}
+            onClose={() => setPlacing(true)}
+          >
+            <div data-sf-pad-reward>
+              {failure && (
+                <p className="sf-error" role="alert">
+                  {failure}
+                </p>
+              )}
+              <p>
+                {padReward.kind === "add"
+                  ? "在地图上选择新建造点。"
+                  : "选择一个普通建造点升级为高地。"}
+              </p>
+              <button
+                data-sf-choose-reward
+                onClick={() => {
+                  setTasksOpen(false);
+                  setPlacing(true);
+                }}
+              >
+                在地图上选择
+              </button>
+              {padReward.kind === "add" && (
+                <details className="sf-reward-coordinates">
+                  <summary>按坐标放置</summary>
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      void send("pad_reward", claimPoint);
+                    }}
+                  >
+                    <label>
+                      横坐标
+                      <input
+                        type="number"
+                        min={28}
+                        max={data.map.width - 28}
+                        step={1}
+                        value={claimPoint.x}
+                        onChange={(e) =>
+                          setClaimPoint({
+                            ...claimPoint,
+                            x: Number(e.target.value),
+                          })
+                        }
+                      />
+                    </label>
+                    <label>
+                      纵坐标
+                      <input
+                        type="number"
+                        min={28}
+                        max={data.map.height - 28}
+                        step={1}
+                        value={claimPoint.y}
+                        onChange={(e) =>
+                          setClaimPoint({
+                            ...claimPoint,
+                            y: Number(e.target.value),
+                          })
+                        }
+                      />
+                    </label>
+                    <button disabled={locked}>放置建造点</button>
+                  </form>
+                </details>
+              )}
+            </div>
+          </Modal>
+        )}
+      {placing && padReward && (
+        <div className="sf-placement-toolbar" role="status">
+          {failure && (
+            <span className="sf-error" role="alert">
+              {failure}
+            </span>
+          )}
+          <span>
+            {padReward.kind === "add"
+              ? "点选新建造点位置"
+              : "点选普通建造点升级高地"}
+          </span>
+          <button className="sf-secondary" onClick={() => setPlacing(false)}>
+            返回
+          </button>
+        </div>
       )}
       {infoOpen && (
         <Modal

@@ -26,6 +26,10 @@ func centralCase(t *testing.T, n int) *State {
 	if e != nil {
 		t.Fatal(e)
 	}
+	s.BalanceRules = 0 // Explicit archived rules; new rules have separate E2E coverage.
+	s.SkillRNG = 0
+	s.World.TaskAttempts = nil
+	s.World.TaskOffersWave = 0
 	s.initCentralWorld(s.World.Seed) // Explicit archived central-map fixture.
 	s.SpecializationRules = 0        // Archived starts predate the wish specializations.
 	return s

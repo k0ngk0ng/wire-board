@@ -66,13 +66,19 @@ export type Objective = Point & {
   description: string;
   sector: number;
   cost: number;
-  status: "available" | "active" | "completed" | "failed";
+  status: "available" | "active" | "completed" | "failed" | "skipped";
+  owner?: number;
   startWave: number;
   endWave: number;
   reward: number;
   baseAtStart: number;
 };
 export type World = {
+  taskOffersWave?: number;
+  taskAttempts?: Record<string, number>;
+  mineSuccesses?: number;
+  beaconSuccesses?: number;
+  padReward?: { owner: number; kind: "add" | "highground" };
   objectiveRefreshWave?: number;
   layout?: "central";
   seed: number;
@@ -153,6 +159,8 @@ export type Tower = {
   effectiveInterval?: number;
 };
 export type Enemy = Point & {
+  slowFactor?: number;
+  recoveryUntil?: number;
   frozenUntil?: number;
   silencedUntil?: number;
   level?: number;
@@ -174,6 +182,7 @@ export type Enemy = Point & {
   abilityTick?: number;
 };
 export type Event = Point & {
+  recoveryUntil?: number;
   statusTargets?: number[];
   frozenUntil?: number;
   silencedUntil?: number;
@@ -201,6 +210,7 @@ export type Event = Point & {
   tick: number;
 };
 export type View = {
+  balanceRules?: number;
   specializationRules?: number;
   iceWalls?: IceWall[];
   craters?: Crater[];
