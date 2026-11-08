@@ -89,7 +89,9 @@ try:
  wait(lambda:room()['game']['data']['self']['loadout'] is not None)
  wait(lambda:js('!document.querySelector("input[aria-label=体力加点]").disabled'))
  for label,value in zip(['体力加点','腕力加点','耐力加点','速度加点'],[233,107,81,59]):
-  b('fill',f'input[aria-label="{label}"]',str(value))
+  selector=f'input[aria-label="{label}"]'
+  b('fill',selector,str(value));b('press','Tab')
+  assert js('document.querySelector('+json.dumps(selector)+').value')==str(value),(label,value)
  assert '剩余 0 / 480' in js('document.querySelector("[data-stoneage-points-left]").textContent')
  b('screenshot',CASE/'selection-desktop.png','--full')
  b('set','viewport','320','740')
