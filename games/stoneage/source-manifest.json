@@ -1,0 +1,22 @@
+{
+  "format": 1,
+  "root": "https://cdn.ichenj.com/stoneage",
+  "inputs": {
+    "server/legacy/source/2.5/gmsv/data/enemybase.txt": "3868f26a02d60aa810a21f0abba76fe1334619862c7ba9fe21ad4417de39dc17",
+    "server/legacy/source/2.5/gmsv/data/petskill.txt": "c5a72c857da85b793bf5d4f1a9960db6f3f0eccd229f5ccef637d6eb0e91d242",
+    "server/legacy/source/2.5/gmsv/data/itemset.txt": "c997393a4806f01833de102939830fc0000bb2a9d445eb214b8501c2b28c4f5d",
+    "client/web/assets/original/sprites.json": "0fe2456f6618a086c9c825fa0d23ba9c6b7028cb86e9cafdcb399e063d6a4b8c",
+    "client/web/assets/original/manifest.json": "7467b9451ad1ec6c09525f1e99165085d3078ed49df1c9e376c3e63666f8f827",
+    "server/legacy/source/2.5/gmsv/char/char_base.c": "0fb9501a891989799a4e6d6b407f14bdf2dfbe903df8169ff64d57a67826b287",
+    "client/web/runtimeassets/index.html": "2861dfc42e39b34441422ed18b42c11089aaf714405d9a76e2a63c66917a6478"
+  },
+  "counts": {
+    "pets": 72,
+    "rides": 9,
+    "equipment": 58,
+    "sprites": 165,
+    "bitmaps": 9477
+  },
+  "assetsCopied": 0,
+  "assetsUploaded": 0
+}
