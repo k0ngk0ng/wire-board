@@ -44,7 +44,7 @@ func (s *State) iceAttack(t Tower) (float64, int64) {
 	if s.World.Event.ID == "frost" {
 		slow = math.Min(.9, slow+.15)
 	}
-	duration := int64(math.Ceil((1 + .2*float64(t.Level/2)) * 1000 / StepMS))
+	duration := int64(1000/StepMS) + int64(t.Level/2)
 	return 1 - slow, duration
 }
 
