@@ -14,6 +14,22 @@ func TestStoneageRandomLoyaltyHTTP(t *testing.T) {
 	h := gametest.NewHTTP(t, 4, game.Module(), "stoneage")
 	h.Start(map[string]any{})
 	v := httpView(t, h.People[0])
+	low := 0
+	for _, pet := range v.Pool.Pets {
+		weight := 0
+		for _, n := range pet.Weights {
+			weight += n
+		}
+		if pet.Loyalty < 80 {
+			low++
+			if weight < 100 || pet.Loyalty < 20 || pet.Loyalty > 30 {
+				t.Fatal("only stronger species may have NONO loyalty 20..30", pet)
+			}
+		}
+	}
+	if low > 3 {
+		t.Fatal("at least 17 candidates must have loyalty >=80", low)
+	}
 	for _, ride := range v.Pool.Rides {
 		if ride.Loyalty != 100 {
 			t.Fatal("ride loyalty must stay at 100")

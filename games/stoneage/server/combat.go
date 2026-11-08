@@ -284,6 +284,9 @@ func (s *State) offense(id int) (int, int, int) {
 	if u.Status.Rage > 0 {
 		a = a * 125 / 100
 	}
+	if u.TurnAttack > 0 {
+		a = a * u.TurnAttack / 100
+	}
 	if u.TurnDefense > 0 {
 		d = d * u.TurnDefense / 100
 	}
@@ -307,22 +310,27 @@ func (s *State) targets(actor, target int) []int {
 	}
 	return nil
 }
+
+type battleTurn struct {
+	id, speed, tie int
+	command        Command
+	loyaltyNote    string
+	betrayal       bool
+	combo          int
+}
+
 func (s *State) resolve(now time.Time) {
 	before := clonePlayers(s.Players)
 	s.Events = []Event{}
 	s.Playback = &Playback{StartedAt: now.UnixMilli(), Before: before}
 	s.Phase = "resolving"
 	s.Window++
-	type turn struct {
-		id, speed, tie int
-		command        Command
-		loyaltyNote    string
-		betrayal       bool
-	}
-	order := []turn{}
+	order := []battleTurn{}
 	guardians := map[int]int{}
 	counterStyle := map[int]bool{}
 	for i := range s.Players {
+		s.Players[i].Body.TurnAttack = 100
+		s.Players[i].Pet.TurnAttack = 100
 		s.Players[i].Body.TurnDefense = 100
 		s.Players[i].Pet.TurnDefense = 100
 	}
@@ -336,7 +344,12 @@ func (s *State) resolve(now time.Time) {
 				continue
 			}
 			u := s.unit(id)
+			s.preparePetSkill(id, c)
+			original := c
 			c, loyaltyNote, betrayal := s.loyalCommand(id, c)
+			if c != original {
+				s.preparePetSkill(id, c)
+			}
 			u.Guard = false
 			if (c.Kind == "guard" || c.Kind == "skill" && c.ID == 2) && u.Status.Stone == 0 && u.Status.Sleep == 0 && u.Status.Confusion == 0 {
 				u.Guard = true
@@ -353,16 +366,21 @@ func (s *State) resolve(now time.Time) {
 			if c.Kind == "item" {
 				speed += work * 15 / 100
 			}
-			order = append(order, turn{id: id, speed: speed, tie: s.randomN(1 << 30), command: c, loyaltyNote: loyaltyNote, betrayal: betrayal})
+			order = append(order, battleTurn{id: id, speed: speed, tie: s.randomN(1 << 30), command: c, loyaltyNote: loyaltyNote, betrayal: betrayal})
 		}
 	}
-	slices.SortFunc(order, func(a, b turn) int {
+	slices.SortFunc(order, func(a, b battleTurn) int {
 		if a.speed != b.speed {
 			return b.speed - a.speed
 		}
 		return a.tie - b.tie
 	})
-	for _, t := range order {
+	s.assignCombinedAttacks(order)
+	consumed := map[int]bool{}
+	for index, t := range order {
+		if consumed[t.id] {
+			continue
+		}
 		if s.outcome() != nil {
 			break
 		}
@@ -386,6 +404,27 @@ func (s *State) resolve(now time.Time) {
 				c = Command{Kind: "attack", Target: targets[s.randomN(len(targets))]}
 				s.attack(t.id, c, guardians, counterStyle, true)
 				continue
+			}
+		}
+		if t.combo != 0 {
+			actors := []int{}
+			for _, next := range order[index:] {
+				if next.combo != t.combo {
+					break
+				}
+				if s.combinedEligible(next) && !consumed[next.id] {
+					actors = append(actors, next.id)
+				}
+			}
+			if len(actors) >= 2 {
+				targets := s.targets(t.id, t.command.Target)
+				if len(targets) > 0 {
+					s.combinedAttack(actors, targets[0])
+					for _, actor := range actors {
+						consumed[actor] = true
+					}
+					continue
+				}
 			}
 		}
 		if t.loyaltyNote != "" && c.Kind != "flee" {
@@ -494,6 +533,9 @@ func (s *State) attack(actor int, c Command, guardians map[int]int, counterStyle
 			_, d, defSpeed := s.offense(actual)
 			defender := s.unit(actual)
 			power := skill.Power
+			if actor%2 == 1 && preparedAttackSkill(skill) {
+				power = 100
+			}
 			if skill.ID == 3 {
 				if defender.Guard {
 					power = 250
@@ -571,18 +613,29 @@ func (s *State) damage(source, target, amount int) (int, int) {
 	if u == nil || u.HP <= 0 || amount <= 0 {
 		return 0, 0
 	}
+	bodyDamage, rideDamage := s.partitionDamage(target, amount)
+	return s.applyDamageParts(source, target, bodyDamage, rideDamage)
+}
+func (s *State) partitionDamage(target, amount int) (int, int) {
+	u := s.unit(target)
 	p := &s.Players[target/2]
-	rideLost := 0
 	bodyDamage := amount
+	rideDamage := 0
 	if target%2 == 0 && p.Riding && p.Ride.HP > 0 {
 		// The classic partition has a +1 rounding term on both recipients.
 		bodyDamage = amount*max(1, p.Ride.Defense)/max(1, u.Defense+p.Ride.Defense) + 1
-		rideDamage := max(0, amount-bodyDamage+1)
-		rideLost = min(p.Ride.HP, rideDamage)
-		p.Ride.HP -= rideLost
-		if p.Ride.HP == 0 {
-			p.Riding = false
-		}
+		rideDamage = max(0, amount-bodyDamage+1)
+	}
+	return bodyDamage, rideDamage
+}
+func (s *State) applyDamageParts(source, target, bodyDamage, rideDamage int) (int, int) {
+	u := s.unit(target)
+	wasAlive := u.HP > 0
+	p := &s.Players[target/2]
+	rideLost := min(p.Ride.HP, rideDamage)
+	p.Ride.HP -= rideLost
+	if p.Ride.HP == 0 {
+		p.Riding = false
 	}
 	lost := min(u.HP, bodyDamage)
 	u.HP -= lost
@@ -592,7 +645,7 @@ func (s *State) damage(source, target, amount int) (int, int) {
 	}
 	if source >= 0 && source/2 < len(s.Players) {
 		s.Players[source/2].Damage += lost + rideLost
-		if u.HP == 0 {
+		if wasAlive && u.HP == 0 {
 			s.Players[source/2].Kills++
 		}
 	}

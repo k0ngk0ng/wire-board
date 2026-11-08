@@ -1,5 +1,33 @@
 package stoneage
 
+func preparedAttackSkill(skill Skill) bool {
+	return skill.Family == "balance" || skill.Status != "" || skill.ID == 20 || skill.ID == 210
+}
+
+// Native PETSKILL_Use applies these work-stat changes when accepting an order.
+// NONO invokes the replacement skill without clearing existing work stats:
+// e.g. backwater's attack/defense survive a replacement with combo or mighty.
+// Skills with their own attack modifiers overwrite that attack component.
+func (s *State) preparePetSkill(id int, command Command) {
+	u := s.unit(id)
+	if id%2 == 0 || command.Kind != "skill" || !s.active(id) || u.Status.Stone > 0 || u.Status.Sleep > 0 || u.Status.Confusion > 0 {
+		return
+	}
+	skill, ok := skillByID(s.Pool.Skills, command.ID)
+	if !ok {
+		return
+	}
+	if preparedAttackSkill(skill) {
+		u.TurnAttack = skill.Power
+	}
+	if skill.ID == 50 {
+		u.TurnDefense = 65
+	}
+	if skill.ID == 51 {
+		u.TurnDefense = 45
+	}
+}
+
 // Thresholds follow battle.c::BATTLE_PetLoyalCheck, with a roll in [1,100].
 func loyaltyMode(loyalty, roll int) string {
 	switch {
@@ -70,20 +98,20 @@ func (s *State) loyalCommand(id int, command Command) (Command, string, bool) {
 		return command, "不服从：擅自改变目标", false
 	case "random":
 		if command.Target == id || command.Kind == "guard" {
-			return wait, "不服从：发呆", false
+			return wait, "NONO：发呆", false
 		}
 		// The original draws a learned slot, including empty slots, out of seven.
 		skills := s.Players[id/2].Loadout.Skills
 		slot := s.randomN(7)
 		if slot >= len(skills) {
-			return wait, "不服从：发呆", false
+			return wait, "NONO：空技能槽，发呆", false
 		}
 		skill := skills[slot]
 		target := id
 		if skill != 2 {
 			target = enemy()
 		}
-		return Command{Kind: "skill", ID: skill, Target: target}, "不服从：擅自使用技能", false
+		return Command{Kind: "skill", ID: skill, Target: target}, "NONO：擅自使用技能", false
 	case "owner":
 		return Command{Kind: "attack", Target: id - 1}, "不服从：攻击主人", true
 	case "enemy":

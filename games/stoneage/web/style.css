@@ -323,8 +323,9 @@
   gap: 10px;
 }
 .sa-skill {
-  display: flex;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr) 16px;
+  align-items: start;
   gap: 10px;
   text-align: left;
   padding: 12px;
@@ -364,8 +365,9 @@
   gap: 10px;
 }
 .sa-gear {
-  display: flex;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  align-items: start;
   gap: 11px;
   min-height: 100px;
   padding: 11px;
@@ -407,8 +409,9 @@
   gap: 10px;
 }
 .sa-supply {
-  display: flex;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 25px minmax(0, 1fr);
+  align-items: start;
   gap: 12px;
   padding: 13px;
   text-align: left;
@@ -421,6 +424,8 @@
 .sa-supply > span {
   display: grid;
   gap: 6px;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 .sa-supply strong {
   font-size: 13px;
@@ -760,11 +765,17 @@
   line-height: 1.8;
 }
 .sa-player-summary {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px 9px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-auto-rows: min-content;
+  align-content: start;
+  gap: 3px;
+  line-height: 1.4;
   color: #385546;
   font-size: 11px;
+}
+.sa-player-summary:not(.selecting) {
+  min-height: calc(5.6em + 9px);
 }
 .sa-player-summary span {
   white-space: nowrap;
@@ -1422,6 +1433,8 @@
 }
 .sa-root .sa-field-choices > div > button {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  justify-content: stretch;
   gap: 5px;
   width: 100%;
   text-align: left;

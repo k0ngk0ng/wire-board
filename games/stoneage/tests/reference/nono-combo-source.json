@@ -1,0 +1,33 @@
+{
+  "sourceRoot": "stoneage/server/legacy/source/2.5/gmsv",
+  "inputs": [
+    {
+      "path": "battle/battle.c",
+      "sha256": "a8b276e7567ed7586f2b8730c4bbf7cf4e3917b753411504a549256fa0c9116b",
+      "functions": [
+        "BATTLE_PetLoyalCheck",
+        "BATTLE_PetRandomSkill",
+        "ComboCheck",
+        "ComboCheck2"
+      ]
+    },
+    {
+      "path": "battle/pet_skill.c",
+      "sha256": "b019abf35825a0034600110e1ed3bf1d993a4eeba59786ebc40494c742366e92",
+      "functions": [
+        "PETSKILL_PowerBalance",
+        "PETSKILL_ContinuationAttack",
+        "PETSKILL_Mighty"
+      ]
+    },
+    {
+      "path": "battle/battle_event.c",
+      "sha256": "897ce8a6b546ff2afad4875306c24e4ea1e7e50bf5dbefd38f0b39271056e63e",
+      "functions": [
+        "BATTLE_Combo",
+        "BATTLE_AttackSeq"
+      ]
+    }
+  ],
+  "scope": "Source reference for NONO prepared work-stat retention and automatic adjacent melee combined attacks. The arena finalizes loyalty at round scheduling, uses its existing skill/guard/ride damage primitives, and publishes a single combined impact; this is not a claim of whole-engine RNG equivalence."
+}
