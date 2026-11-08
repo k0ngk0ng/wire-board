@@ -111,7 +111,7 @@
 }
 .sa-selection {
   display: grid;
-  grid-template-columns: 210px minmax(0, 1fr);
+  grid-template-columns: 240px minmax(0, 1fr);
 }
 .sa-roster-preview {
   padding: 16px;
@@ -173,7 +173,7 @@
   font-size: 19px;
 }
 .sa-companion-image {
-  height: 142px;
+  height: 110px;
   width: 100%;
   display: flex;
   align-items: flex-end;
@@ -181,7 +181,12 @@
   background: radial-gradient(ellipse at 50% 90%, #b5ba913d, transparent 68%);
 }
 .sa-companion-image.ride {
-  height: 110px;
+  height: 100px;
+}
+.sa-companion-image canvas {
+  width: 110px;
+  height: auto;
+  aspect-ratio: 1;
 }
 .sa-sprite {
   width: var(--sa-logical-size);
@@ -270,6 +275,7 @@
   flex-direction: column;
 }
 .sa-tabs {
+  flex: none;
   display: flex;
   gap: 0;
   padding: 0 14px;
@@ -1193,6 +1199,7 @@
   align-items: center;
   justify-content: space-between;
   font-size: 12px;
+  white-space: nowrap;
 }
 .sa-points input {
   min-width: 0;

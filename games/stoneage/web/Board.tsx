@@ -372,14 +372,14 @@ function Selection({ data, room, busy, time, send }: ExtendedProps) {
             <label key={name}>
               {name}
               <input
-                type="number"
-                min={0}
-                max={data.pointBudget}
-                step={1}
+                type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
                 value={draft.points[i]}
                 aria-label={name + "加点"}
                 disabled={disabled}
                 onChange={(e) => {
+                  if (!/^\d*$/.test(e.target.value)) return;
                   const points = [...draft.points];
                   points[i] = Math.max(
                     0,
