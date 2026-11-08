@@ -43,6 +43,9 @@ func Suggest(v View) *Action {
 		slices.SortStableFunc(candidates, func(a, b Skill) int {
 			score := func(s Skill) int {
 				x := s.Power * max(1, s.Hits)
+				if s.Family == "charge" {
+					x /= s.ID - 28
+				}
 				if s.Status != "" {
 					x += 45
 				}
@@ -66,6 +69,7 @@ func Suggest(v View) *Action {
 			}
 		}
 		a.Type = "loadout"
+		l.Elements = [][]int{{7, 3, 0, 0}, {0, 7, 3, 0}, {0, 0, 7, 3}, {3, 0, 0, 7}}[seat%4]
 		a.Loadout = l
 		return a
 	}
@@ -161,7 +165,7 @@ func Suggest(v View) *Action {
 			handled = true
 		}
 	}
-	if p.Pet.HP > 0 && !p.Pet.Fled {
+	if p.Pet.HP > 0 && !p.Pet.Fled && p.Pet.Charge == nil {
 		score := -1
 		chosen := 1
 		for _, id := range v.Self.Loadout.Skills {
@@ -170,6 +174,9 @@ func Suggest(v View) *Action {
 				continue
 			}
 			value := skill.Power * max(1, skill.Hits)
+			if skill.Family == "charge" {
+				value /= skill.ID - 28
+			}
 			target := v.Players[enemy/2]
 			if id == 210 && target.Riding {
 				value += 150

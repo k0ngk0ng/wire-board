@@ -128,7 +128,12 @@ func (s *State) initializePlayer(i int) {
 	p.Ride.Graphic = ride.Graphic
 	p.Ride.Elements = ride.Elements
 	p.Riding = true
-	p.Body.Elements = [4]int{25, 25, 25, 25}
+	p.Body.Elements = [4]int{100, 0, 0, 0}
+	if len(l.Elements) == 4 {
+		for i, v := range l.Elements {
+			p.Body.Elements[i] = v * 10
+		}
+	}
 	p.Magic = []Magic{}
 	for _, g := range s.Pool.gear(l) {
 		p.Body.Attack += g.Attack
@@ -205,6 +210,9 @@ func (s *State) validatePlan(seat int, plan Plan) error {
 			}
 			continue
 		}
+		if pet == 1 && s.unit(actor).Charge != nil && c.Kind != "wait" {
+			return errors.New("宠物正在蓄力，本轮自动继续")
+		}
 		switch c.Kind {
 		case "wait":
 			if pet == 0 {
@@ -234,7 +242,7 @@ func (s *State) validatePlan(seat int, plan Plan) error {
 			if pet != 0 || !ok || magic.MP > s.Players[seat].Body.MP {
 				return errors.New("没有这项装备精灵或气力不足")
 			}
-			if !s.active(c.Target) || s.friendly(actor, c.Target) == (magic.Kind == "damage") {
+			if !s.active(c.Target) || s.friendly(actor, c.Target) == (magic.Kind == "damage" || magic.Kind == "control") {
 				return errors.New("精灵目标不合法")
 			}
 		case "item":
@@ -268,7 +276,7 @@ func (s *State) event(kind string, actor, target int, name string, amount, rideA
 	}
 	duration := 900
 	if kind == "guard" || kind == "wait" || kind == "status" {
-		duration = 150
+		duration = 180
 	}
 	s.EventID++
 	s.Events = append(s.Events, Event{ID: s.EventID, Kind: kind, Actor: actor, Target: target, Name: name, Amount: amount, RideAmount: rideAmount, Critical: critical, At: at, Duration: duration, Players: clonePlayers(s.Players)})
@@ -346,9 +354,16 @@ func (s *State) resolve(now time.Time) {
 				continue
 			}
 			u := s.unit(id)
-			s.preparePetSkill(id, c)
 			original := c
-			c, loyaltyNote, betrayal := s.loyalCommand(id, c)
+			loyaltyNote := ""
+			betrayal := false
+			if u.Charge != nil {
+				c = Command{Kind: "skill", ID: u.Charge.Skill, Target: u.Charge.Target}
+				original = c
+			} else {
+				s.preparePetSkill(id, c)
+				c, loyaltyNote, betrayal = s.loyalCommand(id, c)
+			}
 			if c != original {
 				s.preparePetSkill(id, c)
 			}
@@ -391,7 +406,7 @@ func (s *State) resolve(now time.Time) {
 		}
 		u := s.unit(t.id)
 		c := t.command
-		if u.Status.Stone > 0 || u.Status.Sleep > 0 {
+		if u.Status.Stone > 0 || u.Status.Sleep > 0 || (u.Charge != nil && u.Status.Confusion > 0) {
 			s.event("wait", t.id, t.id, "无法行动", 0, 0, false)
 			continue
 		}
@@ -445,6 +460,9 @@ func (s *State) resolve(now time.Time) {
 			if c.Kind == "skill" && c.ID == 2 {
 				s.event("guard", t.id, t.id, "防御", 0, 0, false)
 			} else {
+				if c.Kind == "skill" && (c.ID == 30 || c.ID == 31) && !s.advanceCharge(t.id, c) {
+					continue
+				}
 				firstEvent := len(s.Events)
 				s.attack(t.id, c, guardians, counterStyle, t.betrayal)
 				if t.loyaltyNote != "" {
@@ -517,7 +535,7 @@ func (s *State) attack(actor int, c Command, guardians map[int]int, counterStyle
 		weapon, _ = gearByID(s.Pool.Weapons, s.Players[actor/2].Loadout.Weapon)
 		switch weapon.WeaponType {
 		case 0:
-			hits = 2
+			hits = max(2, weapon.MaxHits)
 		case 4:
 			candidates := []int{}
 			for id := 0; id < len(s.Players)*2; id++ {
@@ -525,7 +543,11 @@ func (s *State) attack(actor int, c Command, guardians map[int]int, counterStyle
 					candidates = append(candidates, id)
 				}
 			}
-			hits = 1 + s.randomN(3)
+			low, high := weapon.MinHits, weapon.MaxHits
+			if low < 1 {
+				low, high = 1, 3
+			}
+			hits = low + s.randomN(max(1, high-low+1))
 			targets = sample(s, candidates, min(hits, len(candidates)))
 			hits = 1
 		case 17:
@@ -578,7 +600,7 @@ func (s *State) attack(actor int, c Command, guardians map[int]int, counterStyle
 			if defender.Status.Stone > 0 {
 				d *= 2
 			}
-			evade := max(0, min(35, (defSpeed-speed)/5))
+			evade := max(0, min(35, (defSpeed-speed)/5)) + s.gearRate(actual, false)
 			if counterStyle[actual] {
 				evade += 30
 			}
@@ -593,7 +615,7 @@ func (s *State) attack(actor int, c Command, guardians map[int]int, counterStyle
 				s.targetReason(c.Target, target, actual, weapon.WeaponType)
 				continue
 			}
-			critical := s.randomN(100) < max(3, min(18, 5+(speed-defSpeed)/15))
+			critical := s.randomN(100) < min(100, max(3, min(18, 5+(speed-defSpeed)/15))+s.gearRate(actor, true))
 			damage := physicalBase(float64(a*power)/100, float64(d)*.7, s.randomN(10000))
 			if critical {
 				damage = max(damage, a*power/100)
@@ -614,9 +636,7 @@ func (s *State) attack(actor int, c Command, guardians map[int]int, counterStyle
 			}
 			s.event("attack", actor, actual, skill.Name, lost, rideLost, critical)
 			s.targetReason(c.Target, target, actual, weapon.WeaponType)
-			if skill.ID == 30 || skill.ID == 31 {
-				s.unit(actor).TurnDefense = 80
-			}
+
 			if s.active(actual) && s.active(actor) && lost > 0 && skill.Status == "" && weapon.WeaponType < 4 {
 				chance := 5
 				if counterStyle[actual] {
@@ -664,6 +684,9 @@ func (s *State) applyDamageParts(source, target, bodyDamage, rideDamage int) (in
 	}
 	lost := min(u.HP, bodyDamage)
 	u.HP -= lost
+	if u.HP <= 0 {
+		u.Charge = nil
+	}
 	if lost > 0 && u.Status.Sleep > 0 {
 		u.Status.Sleep = 0
 		u.Status.Immune = max(u.Status.Immune, 1)
@@ -686,6 +709,7 @@ func (s *State) applyStatus(source, target int, kind string, chance int) {
 			if g.Resist == kind {
 				chance -= 25
 			}
+			chance = chance * (100 - min(100, g.Resistances[kind])) / 100
 		}
 	}
 	if s.randomN(100) >= max(0, chance) {
@@ -775,7 +799,7 @@ func (s *State) useMagic(actor int, c Command) {
 	if magic.Group {
 		targets = nil
 		for id := 0; id < len(s.Players)*2; id++ {
-			if s.active(id) && s.friendly(actor, id) {
+			if s.active(id) && s.friendly(actor, id) == (magic.Kind != "damage" && magic.Kind != "control") {
 				targets = append(targets, id)
 			}
 		}
@@ -793,7 +817,12 @@ func (s *State) useMagic(actor int, c Command) {
 			element[index] = 100
 			power = int(float64(power) * elementMultiplier(element, s.unit(target).Elements))
 		}
-		amount, r := s.effect(actor, target, magic.Kind, power)
+		amount, r := 0, 0
+		if magic.Kind == "control" {
+			s.applyStatus(actor, target, magic.Status, magic.Power)
+		} else {
+			amount, r = s.effect(actor, target, magic.Kind, power)
+		}
 		s.event("magic", actor, target, magic.Name, amount, r, false)
 		s.Events[len(s.Events)-1].Effect = magic.Kind
 	}

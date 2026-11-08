@@ -124,7 +124,7 @@ func (s *State) timeAttackSequence(first, actor, weapon int) {
 // Store the faster clock in the server timeline so reconnects, sound, HP and
 // command deadlines agree. No client-only timer or combat random draw changes.
 func (s *State) speedEventTimeline() {
-	scale := func(n int) int { return int(math.Round(float64(n) * .8)) }
+	scale := func(n int) int { return int(math.Round(float64(n) / 1.5)) }
 	at := 0
 	for i := range s.Events {
 		e := &s.Events[i]

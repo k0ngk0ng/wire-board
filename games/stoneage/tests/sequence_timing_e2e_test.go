@@ -26,7 +26,11 @@ func motionPoint(m map[string]any, key string) [2]float64 {
 func TestStoneageConsecutiveHitsStayAtContactE2E(t *testing.T) {
 	for _, mode := range []string{"pet-double", "pet-triple", "claw", "guardian"} {
 		t.Run(mode, func(t *testing.T) {
-			m, c, s := combatFixture(t, 31, 11, 20)
+			required := 10
+			if mode == "pet-triple" {
+				required = 11
+			}
+			m, c, s := combatFixture(t, required, 20)
 			if mode == "claw" {
 				for attempt := 0; attempt < 40; attempt++ {
 					has := false
@@ -36,12 +40,12 @@ func TestStoneageConsecutiveHitsStayAtContactE2E(t *testing.T) {
 					if has {
 						break
 					}
-					m, c, s = combatFixture(t, 31, 11, 20)
+					m, c, s = combatFixture(t, required, 20)
 				}
 			}
 			a, b := guards(0), guards(1)
 			actor, hits := 1, 2
-			a.Pet = game.Command{Kind: "skill", ID: 31, Target: 2}
+			a.Pet = game.Command{Kind: "skill", ID: 10, Target: 2}
 			if mode == "pet-triple" {
 				a.Pet.ID = 11
 				hits = 3
@@ -54,6 +58,9 @@ func TestStoneageConsecutiveHitsStayAtContactE2E(t *testing.T) {
 				for _, w := range s.Pool.Weapons {
 					if w.WeaponType == 0 {
 						s.Players[0].Loadout.Weapon = w.ID
+						if v, ok := obj(t, w)["maxHits"].(float64); ok && v > 0 {
+							hits = int(v)
+						}
 						found = true
 						break
 					}
@@ -191,9 +198,9 @@ func gameWeaponName(kind int) string {
 	return map[int]string{4: "bow", 17: "boomerang", 18: "axe", 19: "stone"}[kind]
 }
 func TestStoneageCounterStaysInSequenceE2E(t *testing.T) {
-	m, c, base := combatFixture(t, 31)
+	m, c, base := combatFixture(t, 10)
 	a, b := guards(0), guards(1)
-	a.Pet = game.Command{Kind: "skill", ID: 31, Target: 2}
+	a.Pet = game.Command{Kind: "skill", ID: 10, Target: 2}
 	for seed := uint64(1); seed < 100; seed++ {
 		var s game.State
 		json.Unmarshal(raw(base), &s)

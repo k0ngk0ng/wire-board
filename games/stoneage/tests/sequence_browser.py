@@ -53,7 +53,7 @@ def wait(fn,seconds=40):
   time.sleep(.15)
  raise AssertionError('condition timed out')
 CASE=OUT;CASE.mkdir(parents=True,exist_ok=True)
-REPORT={'passed':False,'scope':'controlled production-module fixture; 100 loyalty, 10000 HP, fixed seed, stone defenders; authenticated HTTP loadout; native combat clicks and production 1.25x timeline'}
+REPORT={'passed':False,'scope':'controlled production-module fixture; 100 loyalty, 10000 HP, fixed seed, stone defenders; authenticated HTTP loadout; native combat clicks and production 1.5x timeline'}
 REPORT['sourceSHA256']={str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in [*(ROOT/'games/stoneage/web').glob('*'),*(ROOT/'games/stoneage/server').glob('*.go')] if p.is_file()}
 REPORT['distIndexSHA256']=hashlib.sha256((ROOT/'web/dist/index.html').read_bytes()).hexdigest()
 try:
@@ -67,14 +67,14 @@ try:
  command('add_bot');command('ready');command('start');b('reload')
  wait(lambda:js('!!document.querySelector("[data-stoneage-auto-config]")&&!document.querySelector(".game-loading")'),90)
  b('click','[data-stoneage-auto-config]');wait(lambda:room()['game']['data']['self']['loadout'] is not None)
- data=room()['game']['data'];loadout=data['self']['loadout'];loadout['skills']=[1,2,31]
+ data=room()['game']['data'];loadout=data['self']['loadout'];loadout['skills']=[1,2,10,31]
  loadout['weapon']=next(w['id'] for w in data['pool']['weapons'] if w['weaponType']==4)
  command('action',action={'type':'lock','session':data['session'],'window':data['window'],'loadout':loadout});b('reload')
  wait(lambda:room()['game']['data']['phase']=='planning' and js('!!document.querySelector("[data-stoneage=planning] [data-stoneage-command=attack]:not(:disabled)")'),90)
  b('set','viewport','1440','1000');b('click','[data-fullscreen-toggle]')
  js('window.__sequenceFrames=[];window.__sequenceStart=performance.now();(function sample(){window.__sequenceFrames.push({at:Date.now(),actors:[...document.querySelectorAll(".sa-actor")].map(e=>({id:Number(e.dataset.stoneageUnit),phase:e.dataset.stoneageMotion,x:parseFloat(e.style.left)*6.4,y:parseFloat(e.style.top)*4.8,hp:e.querySelector("[data-stoneage-bar=hp] i").style.width})),projectiles:[...document.querySelectorAll("[data-stoneage-projectile]")].map(e=>({kind:e.dataset.stoneageProjectile,target:Number(e.dataset.stoneageProjectileTarget),phase:e.dataset.stoneageProjectilePhase,x:Number(e.dataset.stoneageProjectileX),y:Number(e.dataset.stoneageProjectileY)}))});if(performance.now()-window.__sequenceStart<18000)requestAnimationFrame(sample)})()')
  b('click','[data-stoneage-command="attack"]');b('wait','button[aria-label="取消选择目标"]');click_actor(2)
- b('wait','[data-stoneage-skill="31"]');b('click','[data-stoneage-skill="31"]');b('wait','button[aria-label="取消选择目标"]');click_actor(2)
+ b('wait','[data-stoneage-skill="10"]');b('click','[data-stoneage-skill="10"]');b('wait','button[aria-label="取消选择目标"]');click_actor(2)
  wait(lambda:room()['game']['data']['phase']=='resolving',5)
  data=room()['game']['data'];REPORT['events']=data['events'];REPORT['playback']=data['playback']
  wait(lambda:js('!!document.querySelector("[data-stoneage-projectile=arrow]")'),15)
@@ -84,11 +84,11 @@ try:
  bow=[e for e in data['events'] if e['actor']==0 and e['kind'] in ['attack','miss']]
  dual=[e for e in data['events'] if e['actor']==1 and e['kind'] in ['attack','miss']]
  assert len(bow)>=2 and len({e['target'] for e in bow})>=2,('fixture did not exercise scatter',bow)
- assert len(dual)==2 and all(e['target']==2 for e in dual),('double strike changed target',dual)
+ assert len(dual)==2 and all(e['target']==2 for e in dual),('continuous attack changed target',dual)
  assert all(abs(a['x']-517)<.1 and abs(a['y']-384)<.1 for f in frames for a in f['actors'] if a['id']==0),'bow user left formation'
  phases=[next(a for a in f['actors'] if a['id']==1).get('phase') for f in frames]
  runs=[p for i,p in enumerate(phases) if i==0 or phases[i-1]!=p]
- assert runs.count('approach')==1 and runs.count('return')==1,('double strike approached/returned between hits',runs)
+ assert runs.count('approach')==1 and runs.count('return')==1,('continuous attack approached/returned between hits',runs)
  for e in bow:
   visible=[(f,p) for f in frames for p in f['projectiles'] if p['target']==e['target'] and p['kind']=='arrow' and p['phase']=='flight']
   assert len(visible)>=4 and max(p['x'] for f,p in visible)-min(p['x'] for f,p in visible)>30,'arrow did not visibly fly'
@@ -101,6 +101,25 @@ try:
   assert all(abs(hp-expected['hp']/expected['maxHp']*100)<.001 for hp in before_hp),'HP changed ahead of arrow arrival'
  assert data['playback']['duration']<11000,'controlled round still has excessive pauses'
  REPORT['checks']={'scatterTargets':[e['target'] for e in bow],'dualTargets':[e['target'] for e in dual],'petPhaseRuns':runs,'roundDuration':data['playback']['duration'],'nativeArrowFrames':sum(len(f['projectiles']) for f in frames)}
+
+ # Double charge prepares for two complete rounds, then releases once.
+ charge_round=room()['game']['data']['round'];charge_history=[]
+ b('click','[data-stoneage-command="guard"]');b('wait','[data-stoneage-skill="31"]');b('click','[data-stoneage-skill="31"]');b('wait','button[aria-label="取消选择目标"]');click_actor(2)
+ for step in range(3):
+  wait(lambda:room()['game']['data']['phase']=='resolving',5)
+  current=room()['game']['data'];charge_history.append(current)
+  strikes=[e for e in current['events'] if e['actor']==1 and e['kind'] in ['attack','miss']]
+  assert len(strikes)==(1 if step==2 else 0),'double charge did not wait two rounds and strike once'
+  wait(lambda:room()['game']['data']['phase']=='planning' and room()['game']['data']['round']==charge_round+step+1,30)
+  wait(lambda:js('!!document.querySelector("[data-stoneage=planning] [data-stoneage-command=guard]:not(:disabled)")'))
+  if step<2:
+   assert room()['game']['data']['players'][0]['pet']['charge']['remaining']==1-step
+   if step==0:b('screenshot',CASE/'double-charge.png','--full')
+   b('click','[data-stoneage-command="guard"]')
+   wait(lambda:room()['game']['data']['players'][0]['submitted'],5)
+   assert not js('!!document.querySelector("[data-stoneage-choices=skills]")'),'charging pet still required another command'
+ assert not room()['game']['data']['players'][0]['pet'].get('charge'),'charge remained after release'
+ REPORT['chargeHistory']=charge_history
  b('set','viewport','320','740');b('screenshot',CASE/'mobile-after.png','--full')
  before=room()['game']['data'];b('reload');wait(lambda:js('!!document.querySelector("[data-stoneage-battle]")'),90)
  after=room()['game']['data'];assert after['round']==before['round'] and after['players'][1]['body']['hp']==before['players'][1]['body']['hp']

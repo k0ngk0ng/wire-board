@@ -2,6 +2,7 @@ import source from "./art.json";
 import hd from "./hd.json";
 import appearances from "./avatar-art.json";
 import projectiles from "./projectile-art.json";
+import elite from "./elite-art.json";
 import type { View, PetDefinition } from "./types";
 
 export const resourceRoot = "https://cdn.ichenj.com/stoneage";
@@ -24,11 +25,12 @@ export type SpriteAction = {
 };
 const art = {
   ...source,
-  sprites: { ...source.sprites, ...appearances.sprites },
+  sprites: { ...source.sprites, ...appearances.sprites, ...elite.sprites },
   resources: {
     ...source.resources,
     ...appearances.resources,
     ...projectiles.resources,
+    ...elite.resources,
   },
 } as {
   ui: Record<string, { normal: string; pressed: string }>;

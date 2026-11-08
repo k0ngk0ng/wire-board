@@ -45,6 +45,7 @@ func combatFixture(t *testing.T, required ...int) (gameapi.Match, gameapi.Contex
 		}
 		for i := range s.Players {
 			p := &s.Players[i]
+			p.Loadout.Accessories = nil
 			p.Pet.Loyalty = 100
 			p.Ride.Loyalty = 100
 			for _, weapon := range s.Pool.Weapons {

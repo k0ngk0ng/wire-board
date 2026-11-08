@@ -25,8 +25,8 @@ var allSkills = []Skill{
 	{10, "连续攻击", "combo", "连续攻击两次，每次威力降低。", 60, 2, "", 0},
 	{11, "三段攻击", "combo", "连续攻击三次，每次威力降低。", 45, 3, "", 0},
 	{20, "忠犬", "guardian", "守护主人，代替主人承受一次攻击，并攻击敌人。", 80, 1, "", 0},
-	{30, "突击", "charge", "提升攻击威力，出招后防御降低。", 190, 1, "", 0},
-	{31, "双重突击", "charge", "连续突击两次，出招后防御降低。", 110, 2, "", 0},
+	{30, "突击", "charge", "蓄力一回合，随后自动以 190% 威力攻击原目标一次。", 190, 1, "", 0},
+	{31, "双重突击", "charge", "蓄力两回合，随后自动以 210% 威力攻击原目标一次。", 210, 1, "", 0},
 	{40, "一击必杀", "mighty", "两倍威力攻击，命中率降低。", 200, 1, "", 0},
 	{50, "背水之战其之１", "balance", "本回合攻击提升 25%，防御降低 35%。", 125, 1, "", 0},
 	{51, "背水之战其之２", "balance", "本回合攻击提升 45%，防御降低 55%。", 145, 1, "", 0},
@@ -53,6 +53,9 @@ var allMagic = []Magic{
 
 func catalog() {
 	catalogOnce.Do(func() {
+		if e := json.Unmarshal(eliteJSON, &eliteCatalog); e != nil {
+			panic(e)
+		}
 		if e := json.Unmarshal(sourceJSON, &sourceCatalog); e != nil {
 			panic(e)
 		}
@@ -144,8 +147,10 @@ func sample[T any](s *State, values []T, n int) []T {
 }
 func (s *State) makePool() {
 	catalog()
-	s.Pool.Pets = sample(s, sourceCatalog.Pets, 20)
-	s.Pool.Rides = sample(s, sourceCatalog.Rides, 6)
+	s.Pool.Pets = sample(s, eliteCatalog.Pets, 20)
+	s.Pool.Rides = sample(s, eliteCatalog.Rides, 4)
+	previewStats(s.Pool.Pets, 640)
+	previewStats(s.Pool.Rides, 400)
 	low := 0
 	for i := range s.Pool.Pets {
 		pet := &s.Pool.Pets[i]
@@ -171,7 +176,7 @@ func (s *State) makePool() {
 	s.Pool.Skills = append(s.Pool.Skills, sample(s, rest, 10)...)
 	for _, slot := range []string{"hat", "weapon", "clothes", "accessory"} {
 		rows := []Equipment{}
-		for _, g := range sourceCatalog.Equipment {
+		for _, g := range eliteCatalog.Equipment {
 			if g.Slot == slot {
 				rows = append(rows, g)
 			}

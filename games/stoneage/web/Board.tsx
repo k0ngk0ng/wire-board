@@ -1,3 +1,4 @@
+import { adjustElementPoints } from "./element-input";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Check,
@@ -81,6 +82,7 @@ function recommendedLoadout(v: View): Loadout {
     ride: ride.id,
     avatar: ride.riders![0].avatar,
     points: [140, 120, 100, 120],
+    elements: [10, 0, 0, 0],
     skills,
     hat: p.hats[seat % p.hats.length].id,
     weapon: p.weapons[seat % p.weapons.length].id,
@@ -334,6 +336,9 @@ function Selection({ data, room, busy, time, send }: ExtendedProps) {
             />
           </div>
           <span>人物</span>
+          <Elements
+            values={(draft.elements ?? [10, 0, 0, 0]).map((v) => v * 10)}
+          />
         </div>
         <div className="sa-companion">
           <div className="sa-companion-image">
@@ -343,6 +348,7 @@ function Selection({ data, room, busy, time, send }: ExtendedProps) {
           <strong>{pet.name}</strong>
           <span>忠诚 {pet.loyalty}</span>
           <Elements values={pet.elements} />
+          <PetStats pet={pet} />
         </div>
         <div className="sa-companion">
           <div className="sa-companion-image ride">
@@ -359,6 +365,7 @@ function Selection({ data, room, busy, time, send }: ExtendedProps) {
           <strong>{ride.name}</strong>
           <span>忠诚 {ride.loyalty}</span>
           <Elements values={ride.elements} />
+          <PetStats pet={ride} />
         </div>
         <div className="sa-points">
           <div className="sa-section-line">
@@ -463,6 +470,71 @@ function Selection({ data, room, busy, time, send }: ExtendedProps) {
           )}
           {tab === "avatars" && (
             <>
+              <div className="sa-element-editor">
+                <div className="sa-section-line">
+                  <strong>人物属性</strong>
+                  <span data-stoneage-elements-left>
+                    剩余{" "}
+                    {10 -
+                      (draft.elements ?? [10, 0, 0, 0]).reduce(
+                        (a, b) => a + b,
+                        0,
+                      )}{" "}
+                    / 10
+                  </span>
+                </div>
+                {["地", "水", "火", "风"].map((name, i) => {
+                  const values = draft.elements ?? [10, 0, 0, 0];
+                  return (
+                    <div className={`sa-element-row element-${i}`} key={name}>
+                      <span>{name}</span>
+                      <button
+                        type="button"
+                        aria-label={"减少" + name + "属性"}
+                        disabled={disabled || values[i] === 0}
+                        onClick={() =>
+                          update({
+                            elements: adjustElementPoints(values, i, -1),
+                          })
+                        }
+                      >
+                        −
+                      </button>
+                      <span className="sa-element-meter" aria-hidden="true">
+                        {Array.from({ length: 10 }, (_, n) => (
+                          <i
+                            key={n}
+                            className={n < values[i] ? "filled" : ""}
+                          />
+                        ))}
+                      </span>
+                      <button
+                        type="button"
+                        aria-label={"增加" + name + "属性"}
+                        disabled={
+                          disabled ||
+                          values[(i + 2) % 4] > 0 ||
+                          values[i] === 10
+                        }
+                        onClick={() =>
+                          update({
+                            elements: adjustElementPoints(values, i, 1),
+                          })
+                        }
+                      >
+                        +
+                      </button>
+                      <output
+                        aria-label={name + "属性"}
+                        data-stoneage-element-value={i}
+                      >
+                        {values[i]}
+                      </output>
+                    </div>
+                  );
+                })}
+              </div>
+
               <div className="sa-section-line">
                 <strong>人物外观</strong>
                 <span>选择 1 位</span>
@@ -663,7 +735,9 @@ function Selection({ data, room, busy, time, send }: ExtendedProps) {
               className="sa-primary"
               disabled={
                 disabled ||
-                draft.points.reduce((a, b) => a + b, 0) !== data.pointBudget
+                draft.points.reduce((a, b) => a + b, 0) !== data.pointBudget ||
+                (draft.elements ?? [10, 0, 0, 0]).reduce((a, b) => a + b, 0) !==
+                  10
               }
               onClick={lock}
             >
@@ -683,7 +757,7 @@ function Elements({ values }: { values: number[] }) {
         (value, i) =>
           value > 0 && (
             <span className={`element-${i}`} key={i}>
-              {["地", "水", "火", "风"][i]} {value}
+              {["地", "水", "火", "风"][i]} {value / 10}
             </span>
           ),
       )}
@@ -715,13 +789,57 @@ function PetChoice({
         忠诚 {pet.loyalty}
       </span>
       <Elements values={pet.elements} />
+      <PetStats pet={pet} />
       {selected && <Check size={16} className="sa-chosen" />}
     </button>
+  );
+}
+function PetStats({ pet }: { pet: PetDefinition }) {
+  const stats = pet.stats;
+  if (!stats) return null;
+  return (
+    <span className="sa-pet-stats">
+      {[
+        ["生命", stats.hp],
+        ["攻击", stats.attack],
+        ["防御", stats.defense],
+        ["敏捷", stats.speed],
+      ].map(([name, value]) => (
+        <span key={String(name)}>
+          <small>{name}</small>
+          <b>{value}</b>
+        </span>
+      ))}
+    </span>
   );
 }
 function GearStats({ gear: g }: { gear: Equipment }) {
   return (
     <small className="sa-gear-stats">
+      {g.maxHits && g.maxHits > 1 ? (
+        <span>
+          {g.minHits === g.maxHits ? g.maxHits : `${g.minHits}～${g.maxHits}`}{" "}
+          次攻击
+        </span>
+      ) : null}
+      {!!g.critical && <span>会心 +{g.critical}%</span>}
+      {!!g.evade && <span>回避 +{g.evade}%</span>}
+      {Object.entries(g.resistances ?? {}).map(([kind, n]) => (
+        <span key={kind}>
+          {
+            (
+              {
+                poison: "毒",
+                stone: "石化",
+                sleep: "睡眠",
+                confusion: "混乱",
+                drunk: "酒醉",
+              } as Record<string, string>
+            )[kind]
+          }
+          抗性 {n}%
+        </span>
+      ))}
       {g.slot === "weapon" && <span>{weaponNames[g.weaponType]}</span>}
       {[
         ["攻", g.attack],
