@@ -1,7 +1,9 @@
 import type { View } from "./types";
+import { selectionUnits } from "./cards.ts";
 
-export function neededUnits(view: View) {
+export function neededUnits(view: View, selected: string | null = null, actor = -1) {
   const kinds = new Set<string>(["mower", "sun"]);
+  for (const kind of selectionUnits(view, actor, selected)) kinds.add(kind);
   const catalog = [
     ...(view.catalog?.plants ?? []),
     ...(view.catalog?.zombies ?? []),

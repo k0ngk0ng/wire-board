@@ -10,6 +10,12 @@ func BotAction(s *State, actor int) *Action {
 	if actor < 0 || actor >= len(s.Players) || s.Phase != "prepare" && s.Phase != "battle" {
 		return nil
 	}
+	if s.RulesVersion >= 4 {
+		visible := *s
+		visible.Players = append([]Player(nil), s.Players...)
+		visible.Players[actor].Deck = rosterKinds(s.Players[actor].Side)
+		s = &visible
+	}
 	p := s.Players[actor]
 	if p.Seq >= 2147483647 {
 		return nil
@@ -143,6 +149,11 @@ func botPlantAction(s *State, actor int, makeAction botActionMaker) *Action {
 			if !ok || effective == "imitater" || c.UpgradeFrom != "" {
 				continue
 			}
+		}
+		// Daytime mushrooms require a wake-up action; prefer active plants from
+		// the open pool instead of filling lanes with sleeping mushrooms.
+		if s.RulesVersion >= 4 && c.Mushroom && !s.Map.Night {
+			continue
 		}
 		if !botCardReady(s, actor, kind, c) || !specScene(c, s.Map.ID) {
 			continue

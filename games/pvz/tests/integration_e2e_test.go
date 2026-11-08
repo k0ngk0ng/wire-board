@@ -79,6 +79,14 @@ type integrationTable struct {
 
 func (c *integrationClient) request(method, path string, body any, want int) map[string]any {
 	c.t.Helper()
+	v, status := c.response(method, path, body)
+	if status != want {
+		c.t.Fatalf("%s %s = %d want %d: %v", method, path, status, want, v)
+	}
+	return v
+}
+func (c *integrationClient) response(method, path string, body any) (map[string]any, int) {
+	c.t.Helper()
 	raw, _ := json.Marshal(body)
 	req, err := http.NewRequest(method, c.base+path, bytes.NewReader(raw))
 	if err != nil {
@@ -96,10 +104,7 @@ func (c *integrationClient) request(method, path string, body any, want int) map
 	if err = json.NewDecoder(res.Body).Decode(&v); err != nil {
 		c.t.Fatal(method, path, err)
 	}
-	if res.StatusCode != want {
-		c.t.Fatalf("%s %s = %d want %d: %v", method, path, res.StatusCode, want, v)
-	}
-	return v
+	return v, res.StatusCode
 }
 func (c *integrationClient) state() map[string]any { return c.request("GET", "/api/state", nil, 200) }
 func (c *integrationClient) room() map[string]any {
@@ -115,13 +120,27 @@ func integrationData(r map[string]any) map[string]any {
 }
 func (c *integrationClient) command(kind string, extra map[string]any, want int) map[string]any {
 	c.t.Helper()
-	r := c.room()
-	c.serial++
-	q := map[string]any{"type": kind, "version": r["version"], "nonce": fmt.Sprintf("pvz-http-%020d", c.serial)}
-	for k, v := range extra {
-		q[k] = v
+	// The real 50ms clock can advance between GET and POST, particularly under
+	// -race. Retry transport version conflicts before asserting the game error;
+	// explicit conflict/nonce scenarios below continue to issue raw requests.
+	for range 20 {
+		r := c.room()
+		c.serial++
+		q := map[string]any{"type": kind, "version": r["version"], "nonce": fmt.Sprintf("pvz-http-%020d", c.serial)}
+		for k, v := range extra {
+			q[k] = v
+		}
+		v, status := c.response("POST", "/api/rooms/"+r["id"].(string), q)
+		if status == http.StatusConflict && want != http.StatusConflict {
+			continue
+		}
+		if status != want {
+			c.t.Fatalf("command %s = %d want %d: %v", kind, status, want, v)
+		}
+		return v
 	}
-	return c.request("POST", "/api/rooms/"+r["id"].(string), q, want)
+	c.t.Fatal("room version did not converge after 20 attempts")
+	return nil
 }
 func (c *integrationClient) action(a map[string]any, want int) map[string]any {
 	c.t.Helper()

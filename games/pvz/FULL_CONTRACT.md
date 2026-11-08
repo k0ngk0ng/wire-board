@@ -5,8 +5,8 @@
 ## 稳定协议
 
 - `Options` 增加 `scene: day|night|pool|fog|roof|roofnight`，默认 day；其余 mode/teams/roundSeconds/prepSeconds 不变。
-- `View` 增加 `map:{id,rows,cols:9,night,waterRows:number[],roof,fog}`。草地 5 行，泳池／浓雾 6 行，屋顶 5 行。逻辑坐标仍每格 1000；Y 使用行内同样的逻辑单位，绘制映射至原图。
-- `Player` 增加 `deck:string[]`（至多 10、不能重复）、`imitaterKind:string`，默认按场景提供可玩卡组。`deck` 动作 `{type:"deck",kinds:string[],imitateKind?:string,epoch,seq}` 仅布阵阶段可用，换卡不能清除冷却或退款。
+- `View` 公开不可变的 `rulesVersion`；增加 `map:{id,rows,cols:9,night,waterRows:number[],roof,fog}`。草地 5 行，泳池／浓雾 6 行，屋顶 5 行。逻辑坐标仍每格 1000；Y 使用行内同样的逻辑单位，绘制映射至原图。
+- `Player` 增加 `deck:string[]`（1～10 格快捷栏、不能重复）、`imitaterKind:string`，默认按场景提供常用快捷卡。`deck` 动作 `{type:"deck",kinds:string[],imitateKind?:string,epoch,seq}` 规则版本 4 在布阵与战斗阶段均可用，换卡不能清除冷却或退款。新对局的 `plant`／`spawn` 可使用本阵营完整目录，快捷栏不限制可用单位；版本 0／2／3 保留原携带限制及仅布阵改卡规则。
 - `plant`／`spawn` 保留原动作，模仿者增加 `imitateKind`，蹦极等格子目标允许 row+col。炮弹主动技能使用 `{type:"ability",plantId,row,col,epoch,seq}`。所有消费、归属与合法性由服务端决定。
 - `Spec` 增加 `target:cell|row|plant|area`、`layer:support|body|shell|instant`、`upgradeFrom?:string`、`waterOnly?:bool`、`roofOnly?:bool`、`scenes?:string[]` 等公开规则元数据；不让 UI 推测合法性。
 - `Plant` 增加 `layer,asleep,state,targetKind,imitated,uses,targetId,effectUntil,chargeMS`；花盆／睡莲、本体、南瓜可同格，铲子按 plantId 只操作本人一层。咖啡豆属于瞬时同格唤醒；升级要求本人原植物，玉米加农炮要求相邻两株本人玉米投手。

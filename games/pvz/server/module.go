@@ -33,36 +33,37 @@ type state struct {
 	Applied   []Applied    `json:"applied"`
 }
 type View struct {
-	Map         engine.MapInfo       `json:"map"`
-	Visibility  engine.Visibility    `json:"visibility"`
-	WireMode    string               `json:"wireMode"`
-	Pickups     []engine.Pickup      `json:"pickups"`
-	Graves      []engine.Grave       `json:"graves"`
-	Craters     []engine.Crater      `json:"craters"`
-	Terrain     []engine.Terrain     `json:"terrain"`
-	Ladders     []engine.Ladder      `json:"ladders"`
-	Protocol    int                  `json:"protocol"`
-	Options     engine.Options       `json:"options"`
-	Epoch       string               `json:"epoch"`
-	Round       int                  `json:"round"`
-	Phase       string               `json:"phase"`
-	Tick        int64                `json:"tick"`
-	ServerAt    int64                `json:"serverAt"`
-	PhaseUntil  int64                `json:"phaseUntil"`
-	Players     []engine.Player      `json:"players"`
-	Plants      []engine.Plant       `json:"plants"`
-	Zombies     []engine.Zombie      `json:"zombies"`
-	Projectiles []engine.Projectile  `json:"projectiles"`
-	Mowers      []engine.Mower       `json:"mowers"`
-	Events      []engine.Event       `json:"events"`
-	Rounds      []engine.RoundResult `json:"rounds"`
-	WinnerTeam  int                  `json:"winnerTeam"`
-	CanAct      bool                 `json:"canAct"`
-	Catalog     engine.Catalog       `json:"catalog"`
-	Snapshot    engine.State         `json:"snapshot"`
-	Revision    uint64               `json:"revision"`
-	Digest      string               `json:"digest"`
-	Actor       int                  `json:"actor"`
+	RulesVersion int                  `json:"rulesVersion"`
+	Map          engine.MapInfo       `json:"map"`
+	Visibility   engine.Visibility    `json:"visibility"`
+	WireMode     string               `json:"wireMode"`
+	Pickups      []engine.Pickup      `json:"pickups"`
+	Graves       []engine.Grave       `json:"graves"`
+	Craters      []engine.Crater      `json:"craters"`
+	Terrain      []engine.Terrain     `json:"terrain"`
+	Ladders      []engine.Ladder      `json:"ladders"`
+	Protocol     int                  `json:"protocol"`
+	Options      engine.Options       `json:"options"`
+	Epoch        string               `json:"epoch"`
+	Round        int                  `json:"round"`
+	Phase        string               `json:"phase"`
+	Tick         int64                `json:"tick"`
+	ServerAt     int64                `json:"serverAt"`
+	PhaseUntil   int64                `json:"phaseUntil"`
+	Players      []engine.Player      `json:"players"`
+	Plants       []engine.Plant       `json:"plants"`
+	Zombies      []engine.Zombie      `json:"zombies"`
+	Projectiles  []engine.Projectile  `json:"projectiles"`
+	Mowers       []engine.Mower       `json:"mowers"`
+	Events       []engine.Event       `json:"events"`
+	Rounds       []engine.RoundResult `json:"rounds"`
+	WinnerTeam   int                  `json:"winnerTeam"`
+	CanAct       bool                 `json:"canAct"`
+	Catalog      engine.Catalog       `json:"catalog"`
+	Snapshot     engine.State         `json:"snapshot"`
+	Revision     uint64               `json:"revision"`
+	Digest       string               `json:"digest"`
+	Actor        int                  `json:"actor"`
 }
 type delta struct {
 	Protocol   int                  `json:"protocol"`
@@ -272,7 +273,7 @@ func (s state) view(viewer int) View {
 	if r.Map.Fog {
 		wire = "projection"
 	}
-	return View{Protocol: 2, Map: r.Map, Visibility: engine.VisibilityFor(s.Runtime, viewer), WireMode: wire, Pickups: r.Pickups, Graves: r.Graves, Craters: r.Craters, Terrain: r.Terrain, Ladders: r.Ladders, Options: r.Options, Epoch: r.Epoch, Round: r.Round, Phase: r.Phase, Tick: r.Tick, ServerAt: s.ServerAt, PhaseUntil: s.phaseUntil(), Players: r.Players, Plants: r.Plants, Zombies: r.Zombies, Projectiles: r.Projectiles, Mowers: r.Mowers, Events: r.Events, Rounds: r.Rounds, WinnerTeam: r.WinnerTeam, CanAct: s.canAct(viewer), Catalog: engine.CatalogFor(r), Snapshot: r, Revision: s.Revision, Digest: engine.Digest(r), Actor: viewer}
+	return View{RulesVersion: r.RulesVersion, Protocol: 2, Map: r.Map, Visibility: engine.VisibilityFor(s.Runtime, viewer), WireMode: wire, Pickups: r.Pickups, Graves: r.Graves, Craters: r.Craters, Terrain: r.Terrain, Ladders: r.Ladders, Options: r.Options, Epoch: r.Epoch, Round: r.Round, Phase: r.Phase, Tick: r.Tick, ServerAt: s.ServerAt, PhaseUntil: s.phaseUntil(), Players: r.Players, Plants: r.Plants, Zombies: r.Zombies, Projectiles: r.Projectiles, Mowers: r.Mowers, Events: r.Events, Rounds: r.Rounds, WinnerTeam: r.WinnerTeam, CanAct: s.canAct(viewer), Catalog: engine.CatalogFor(r), Snapshot: r, Revision: s.Revision, Digest: engine.Digest(r), Actor: viewer}
 }
 
 func project(m gameapi.Match, viewer int) (any, error) {
