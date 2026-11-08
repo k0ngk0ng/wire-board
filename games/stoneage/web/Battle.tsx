@@ -7,6 +7,7 @@ import { Sprite } from "./Sprite";
 import { position, facing, eventPosition } from "./formation";
 import { sampleAttackMotion, impactOffset } from "./motion";
 import { pickSpriteTarget } from "./target-hit";
+import { Projectiles } from "./Projectiles";
 import { statusNames } from "./types";
 import type { Command, Player, Unit, View, Equipment } from "./types";
 import {
@@ -314,9 +315,9 @@ export function Battle({
                   ?.graphic ?? graphic;
             const targetPos =
               eventPosition(data.players, event?.target ?? -1) ?? pos;
-            const nativeMotion = active
-              ? event?.motions?.find((m) => m.actor === unit.id)
-              : undefined;
+            const nativeMotion = event?.motions?.find(
+              (m) => m.actor === unit.id,
+            );
             const pose = nativeMotion
               ? sampleAttackMotion(nativeMotion, elapsed - event!.at)
               : undefined;
@@ -386,20 +387,24 @@ export function Battle({
                   graphic={graphic}
                   direction={facing(p.team)}
                   action={
-                    active
-                      ? (pose?.action ?? 0)
-                      : reacting
-                        ? 1
-                        : unit.guard
-                          ? 10
-                          : 3
+                    reacting
+                      ? 1
+                      : nativeMotion
+                        ? pose?.action
+                        : active
+                          ? (pose?.action ?? 0)
+                          : unit.guard
+                            ? 10
+                            : 3
                   }
                   progress={
-                    active
-                      ? (pose?.progress ?? (pose ? undefined : progress))
-                      : hit && (reacting || unit.hp <= 0)
-                        ? reactionProgress
-                        : undefined
+                    reacting || (hit && unit.hp <= 0)
+                      ? reactionProgress
+                      : nativeMotion || active
+                        ? (pose?.progress ?? (pose ? undefined : progress))
+                        : hit && (reacting || unit.hp <= 0)
+                          ? reactionProgress
+                          : undefined
                   }
                   dead={unit.hp <= 0}
                   time={time}
@@ -453,6 +458,7 @@ export function Battle({
             );
           });
         })}
+        <Projectiles event={event} elapsed={elapsed} />
         <div
           className={`sa-field-menu ${ui.pending ? "picking" : ""}`}
           data-stoneage-field-menu
