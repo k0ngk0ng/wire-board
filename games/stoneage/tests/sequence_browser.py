@@ -54,7 +54,7 @@ def wait(fn,seconds=40):
  raise AssertionError('condition timed out')
 CASE=OUT;CASE.mkdir(parents=True,exist_ok=True)
 REPORT={'passed':False,'scope':'controlled production-module fixture; 100 loyalty, 10000 HP, fixed seed, stone defenders; authenticated HTTP loadout; native combat clicks and production 1.5x timeline'}
-REPORT['sourceSHA256']={str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in [*(ROOT/'games/stoneage/web').glob('*'),*(ROOT/'games/stoneage/server').glob('*.go')] if p.is_file()}
+REPORT['sourceSHA256']={str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in [*(ROOT/'games/stoneage/web').glob('*'),*(ROOT/'games/stoneage/server').glob('*.go'),ROOT/'games/stoneage/motion/metadata.json',ROOT/'games/stoneage/server/elite_source.json'] if p.is_file()}
 REPORT['distIndexSHA256']=hashlib.sha256((ROOT/'web/dist/index.html').read_bytes()).hexdigest()
 try:
  b('open',BASE);api('/login',{'name':'石器验收','password':'stoneage-browser-only'})
@@ -104,9 +104,10 @@ try:
 
  # Double charge prepares for two complete rounds, then releases once.
  charge_round=room()['game']['data']['round'];charge_history=[]
+ wait(lambda:js('!!document.querySelector("[data-stoneage=planning] [data-stoneage-command=guard]:not(:disabled)")'))
  b('click','[data-stoneage-command="guard"]');b('wait','[data-stoneage-skill="31"]');b('click','[data-stoneage-skill="31"]');b('wait','button[aria-label="取消选择目标"]');click_actor(2)
  for step in range(3):
-  wait(lambda:room()['game']['data']['phase']=='resolving',5)
+  wait(lambda:(current_phase:=room()['game']['data'])['phase']=='resolving' or current_phase['round']==charge_round+step+1,5)
   current=room()['game']['data'];charge_history.append(current)
   strikes=[e for e in current['events'] if e['actor']==1 and e['kind'] in ['attack','miss']]
   assert len(strikes)==(1 if step==2 else 0),'double charge did not wait two rounds and strike once'
@@ -120,6 +121,7 @@ try:
    assert not js('!!document.querySelector("[data-stoneage-choices=skills]")'),'charging pet still required another command'
  assert not room()['game']['data']['players'][0]['pet'].get('charge'),'charge remained after release'
  REPORT['chargeHistory']=charge_history
+ REPORT['checks']['chargeAttackCounts']=[sum(e['actor']==1 and e['kind'] in ['attack','miss'] for e in turn['events']) for turn in charge_history]
  b('set','viewport','320','740');b('screenshot',CASE/'mobile-after.png','--full')
  before=room()['game']['data'];b('reload');wait(lambda:js('!!document.querySelector("[data-stoneage-battle]")'),90)
  after=room()['game']['data'];assert after['round']==before['round'] and after['players'][1]['body']['hp']==before['players'][1]['body']['hp']
