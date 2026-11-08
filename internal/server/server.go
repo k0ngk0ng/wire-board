@@ -432,6 +432,7 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /api/admin", s.adminOverview)
 	mux.HandleFunc("GET /api/admin/audit", s.adminAudit)
 	mux.HandleFunc("GET /api/admin/users/{id}/activity", s.adminUserActivity)
+	mux.HandleFunc("GET /api/admin/rooms/history", s.adminRoomHistory)
 	mux.HandleFunc("POST /api/admin/games/{kind}", s.adminGame)
 	mux.HandleFunc("POST /api/admin/games/order", s.adminGameOrder)
 	mux.HandleFunc("POST /api/admin/users/{id}", s.adminManageUser)

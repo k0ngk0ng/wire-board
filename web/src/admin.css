@@ -908,3 +908,14 @@
   color: #52664f;
   background: #e5ecdf;
 }
+
+.admin-room-views { display:flex;gap:10px;margin-bottom:20px; }
+.admin-history-filters { display:grid;grid-template-columns:minmax(200px,1fr) minmax(140px,220px) minmax(120px,180px);gap:12px;margin:14px 0 20px; }
+.admin-history-filters label { display:grid;gap:6px;min-width:0;font-size:13px; }
+.admin-history-filters input,.admin-history-filters select { width:100%;min-width:0;padding:10px;border:1px solid #c6d1cb;border-radius:8px;background:#fff;color:#213e35;font:inherit; }
+.admin-history-identity { display:grid;gap:5px;overflow-wrap:anywhere; }
+.admin-history-card .admin-room-seats { overflow-wrap:anywhere; }
+.admin-history-modal { width:min(1000px,calc(100vw - 24px)); }
+.admin-user-activity small { display:block; }
+.admin-user-activity .subtle { margin:6px 0;padding:3px 0; }
+@media(max-width:600px){.admin-history-filters{grid-template-columns:1fr 1fr}.admin-history-filters label:first-child{grid-column:1/-1}.admin-history .admin-room-grid{grid-template-columns:minmax(0,1fr)}}

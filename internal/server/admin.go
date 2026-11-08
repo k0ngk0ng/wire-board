@@ -217,6 +217,9 @@ type adminUser struct {
 	Online       bool   `json:"online"`
 	Connections  int    `json:"connections"`
 	RoomID       string `json:"roomId,omitempty"`
+	RoomKind     string `json:"roomKind,omitempty"`
+	RoomName     string `json:"roomName,omitempty"`
+	RoomGameName string `json:"roomGameName,omitempty"`
 	Activity     string `json:"activity"`
 	RegisteredIP string `json:"registeredIP"`
 	LastLoginIP  string `json:"lastLoginIP"`
@@ -267,6 +270,9 @@ func (s *Server) adminOverview(w http.ResponseWriter, r *http.Request) {
 			}
 		} else if room := s.watching(u.ID); room != nil && room.Status == "playing" {
 			u.RoomID, u.Activity = room.ID, "观战中"
+		}
+		if room := s.rooms[u.RoomID]; room != nil {
+			u.RoomKind, u.RoomName, u.RoomGameName = room.Kind, room.Name, s.gameNames[room.Kind]
 		}
 		users = append(users, u)
 	}
