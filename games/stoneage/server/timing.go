@@ -10,16 +10,20 @@ import (
 )
 
 type AttackMotion struct {
-	Actor          int        `json:"actor"`
-	From           [2]float64 `json:"from"`
-	To             [2]float64 `json:"to"`
-	Approach       int        `json:"approach"`
-	AttackStart    int        `json:"attackStart"`
-	AttackDuration int        `json:"attackDuration"`
-	ContactOffset  int        `json:"contactOffset"`
-	ContactHold    int        `json:"contactHold"`
-	PostHold       int        `json:"postHold"`
-	ReturnDuration int        `json:"returnDuration"`
+	Actor          int         `json:"actor"`
+	From           [2]float64  `json:"from"`
+	To             [2]float64  `json:"to"`
+	Approach       int         `json:"approach"`
+	AttackStart    int         `json:"attackStart"`
+	AttackDuration int         `json:"attackDuration"`
+	ContactOffset  int         `json:"contactOffset"`
+	ContactHold    int         `json:"contactHold"`
+	PostHold       int         `json:"postHold"`
+	ReturnDuration int         `json:"returnDuration"`
+	Start          *[2]float64 `json:"start,omitempty"`
+	Stay           bool        `json:"stay,omitempty"`
+	Idle           bool        `json:"idle,omitempty"`
+	ReturnStart    *int        `json:"returnStart,omitempty"`
 }
 type spriteTiming struct{ Duration, ContactOffset, Ticks, Frames int }
 type actorTiming struct{ Attack, Hit, Dead spriteTiming }

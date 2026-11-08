@@ -1,6 +1,7 @@
 import source from "./art.json";
 import hd from "./hd.json";
 import appearances from "./avatar-art.json";
+import projectiles from "./projectile-art.json";
 import type { View, PetDefinition } from "./types";
 
 export const resourceRoot = "https://cdn.ichenj.com/stoneage";
@@ -24,13 +25,27 @@ export type SpriteAction = {
 const art = {
   ...source,
   sprites: { ...source.sprites, ...appearances.sprites },
-  resources: { ...source.resources, ...appearances.resources },
+  resources: {
+    ...source.resources,
+    ...appearances.resources,
+    ...projectiles.resources,
+  },
 } as {
   ui: Record<string, { normal: string; pressed: string }>;
   sprites: Record<string, SpriteAction[]>;
   resources: Record<string, { bytes: number; sha256: string }>;
 };
 export const nativeButtons = art.ui;
+export const projectileBitmaps: Record<
+  string,
+  {
+    file: string;
+    width: number;
+    height: number;
+    xoffset: number;
+    yoffset: number;
+  }
+> = projectiles.bitmaps;
 export const avatarAppearances = appearances.avatars;
 const enhancedResources: Record<string, { bytes: number; sha256: string }> =
   hd.resources;
@@ -74,6 +89,15 @@ export function neededAssets(v: View): string[] {
     ])
       files.add(g.icon);
   } else {
+    const weapons = v.players.map(
+      (p) => v.pool.weapons.find((w) => w.id === p.loadout?.weapon)?.weaponType,
+    );
+    for (const [id, frame] of Object.entries(projectileBitmaps))
+      if (
+        (Number(id) < 25700 && weapons.includes(4)) ||
+        (Number(id) >= 25700 && weapons.includes(19))
+      )
+        files.add(frame.file);
     files.add("battle/battle_00.png");
     for (const pair of Object.values(art.ui)) {
       files.add(pair.normal);

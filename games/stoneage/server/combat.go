@@ -268,7 +268,7 @@ func (s *State) event(kind string, actor, target int, name string, amount, rideA
 	}
 	duration := 900
 	if kind == "guard" || kind == "wait" || kind == "status" {
-		duration = 360
+		duration = 150
 	}
 	s.EventID++
 	s.Events = append(s.Events, Event{ID: s.EventID, Kind: kind, Actor: actor, Target: target, Name: name, Amount: amount, RideAmount: rideAmount, Critical: critical, At: at, Duration: duration, Players: clonePlayers(s.Players)})
@@ -483,8 +483,9 @@ func (s *State) resolve(now time.Time) {
 	if len(s.Events) == 0 {
 		s.event("wait", -1, -1, "本回合结束", 0, 0, false)
 	}
+	s.speedEventTimeline()
 	last := s.Events[len(s.Events)-1]
-	s.Playback.Duration = last.At + last.Duration + 250
+	s.Playback.Duration = last.At + last.Duration + 100
 	s.ResolveAt = now.UnixMilli() + int64(s.Playback.Duration)
 	s.Log = append(s.Log, fmt.Sprintf("第 %d 回合：双方指令已结算。", s.Round))
 	if len(s.Log) > 100 {
@@ -536,6 +537,8 @@ func (s *State) attack(actor int, c Command, guardians map[int]int, counterStyle
 			}
 		}
 	}
+	firstEvent := len(s.Events)
+	defer func() { s.timeAttackSequence(firstEvent, actor, weapon.WeaponType) }()
 	for _, target := range targets {
 		for hit := 0; hit < max(1, hits); hit++ {
 			if !s.active(actor) {

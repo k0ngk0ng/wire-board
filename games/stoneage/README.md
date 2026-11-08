@@ -50,7 +50,7 @@ PC 的四个战斗按钮在同一横行，人物目标确认后自动进入宠�
 
 选配阶段加载本局候选预览；锁定后加载已选人物、骑乘和出战宠动画。全部真人确认这些资源就绪后才开启首轮时限，电脑自动确认，观众不阻塞。攻击、扣血、落马和死亡使用同一服务器时间轴，刷新恢复当前进度。
 
-动作时序按原版 60Hz、SPR tick／帧数和 SoundNo 命中帧生成，保留接近、完整出手、命中停顿、20 tick 出手后停顿和返回。近战接近目标的 64px 范围，血量与音效在命中时更新；合击各成员对齐同一次命中。鼠标和触屏按可见非透明像素选中角色，生命条及键盘仍可操作。忠犬、NONO、散射或范围攻击改变实际目标时，在事件中保留原目标和原因。
+动作时序以原版 60Hz、SPR tick／帧数和 SoundNo 命中帧生成，并由服务端统一按 1.25 倍速度推进。保留接近、完整出手、命中停顿和返回；多段近战留在接触点连续攻击，全部结束后才返回，代挡和反击也保留当前位置。弓箭和投掷武器的人物不前进，投射物在出手帧发射、抵达后扣血；弓箭方向图及投影使用原始资源。防御／等待缩至 120ms，回合尾部收尾为 100ms。近战接近目标的 64px 范围，血量与音效在命中时更新；合击各成员对齐同一次命中。鼠标和触屏按可见非透明像素选中角色，生命条及键盘仍可操作。忠犬、NONO、散射或范围攻击改变实际目标时，在事件中保留原目标和原因。
 
 如需根据源仓库重新核查索引，从当前仓库执行：
 
@@ -61,7 +61,7 @@ python3 -B games/stoneage/tools/build_reference.py --source /path/to/stoneage
 
 两个入口只读取源目录，输出均位于本游戏目录。来源与数量见 `source-manifest.json`。
 
-全部候选与扩充造型共引用 23,201 张原始图片，原图合计 78.42 MiB，并非每局下载量。新增的 13,724 张头像、人物和骑乘动画沿用既有原始 CDN 地址，没有复制、上传或新增生图请求。分类统计见 [asset-audit.json](asset-audit.json)，扩充索引见 [avatar-assets.json](avatar-assets.json)。
+全部候选与扩充造型共引用 23,235 张原始图片，原图合计 78.42 MiB，并非每局下载量。新增的 13,724 张头像、人物和骑乘动画沿用既有原始 CDN 地址，没有复制、上传或新增生图请求。分类统计见 [asset-audit.json](asset-audit.json)，扩充索引见 [avatar-assets.json](avatar-assets.json)。
 
 首批高清版本覆盖 9,477 张图片，宽高均为原图的 2 倍，总计 413.73 MiB。图片保存在源 StoneAge 仓库的 `client/web/assets/hd/arena-2x-gpt-image-2.5-v1/`，发布地址沿用石器 CDN 根；`web/hd.json` 仅保存该版本地址、尺寸、字节数和摘要。扩充索引 `web/avatar-art.json` 单独记录新增原图，不改变这批高清资源的摘要。动画保留逻辑尺寸、偏移和 tick；加载容量按实际选用的高清或原图文件统计。客户端代码和服务器包不包含图片正文。
 
@@ -99,3 +99,5 @@ STONEAGE_BROWSER_PLAYERS=10 STONEAGE_BROWSER_FAIL_ASSET=1 \
 对齐验收在同一个普通浏览器夹具下运行 `python3 -B games/stoneage/tests/alignment_browser.py`，测量四种宽度下的选配图标／文字列、战斗菜单和玩家资源基线，并保留截图。合击浏览器验收需重新启动夹具，额外设置 `WIRE_BOARD_STONEAGE_FORCE_COMBO=1`，再运行 `python3 -B games/stoneage/tests/combined_browser.py`。该夹具只固定忠诚度、敏捷和首轮随机种子，记录明确标记为受控验证；没有生产调试入口。
 
 主要证据保存在 `.local/stoneage/verification/` 和 `.local/stoneage/browser/`。公共 HTTP 夹具额外在 `.local/poker/stoneage/http/` 保存真实协议轨迹。战斗分支记录明确标记为受控初始快照，不能替代完整对局和实际浏览器结果。
+
+连续攻击与弓箭的原速浏览器验收：启动夹具时设置 `WIRE_BOARD_STONEAGE_FORCE_SEQUENCE=1`，运行 `python3 -B games/stoneage/tests/sequence_browser.py`。夹具固定忠诚度、生命、随机种子及对手石化，使用正式规则与真实输入；输出逐帧角色位置、箭矢轨迹、命中和回合时长到 `.local/stoneage/browser/sequence/`。原版客户端对照摘要见 `tests/reference/sequence-source.json`。

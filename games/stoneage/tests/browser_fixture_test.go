@@ -27,7 +27,8 @@ func TestStoneageBrowserFixture(t *testing.T) {
 		t.Fatal(e)
 	}
 	module := stoneage.Module()
-	if os.Getenv("WIRE_BOARD_STONEAGE_FORCE_COMBO") == "1" {
+	sequence := os.Getenv("WIRE_BOARD_STONEAGE_FORCE_SEQUENCE") == "1"
+	if os.Getenv("WIRE_BOARD_STONEAGE_FORCE_COMBO") == "1" || sequence {
 		start := module.Start
 		module.Start = func(c gameapi.Context, options json.RawMessage) (gameapi.Match, error) {
 			m, err := start(c, options)
@@ -37,6 +38,27 @@ func TestStoneageBrowserFixture(t *testing.T) {
 			var state stoneage.State
 			if err = json.Unmarshal(m.Data, &state); err != nil {
 				return m, err
+			}
+			if sequence {
+				for attempt := 0; attempt < 100; attempt++ {
+					skill, bow := false, false
+					for _, k := range state.Pool.Skills {
+						skill = skill || k.ID == 31
+					}
+					for _, w := range state.Pool.Weapons {
+						bow = bow || w.WeaponType == 4
+					}
+					if skill && bow {
+						break
+					}
+					m, err = start(c, options)
+					if err != nil {
+						return m, err
+					}
+					if err = json.Unmarshal(m.Data, &state); err != nil {
+						return m, err
+					}
+				}
 			}
 			for i := range state.Pool.Pets {
 				state.Pool.Pets[i].Loyalty = 100
@@ -64,6 +86,20 @@ func TestStoneageBrowserFixture(t *testing.T) {
 						speed = 10000
 					}
 					state.Players[i].Body.Speed, state.Players[i].Pet.Speed, state.Players[i].Ride.Speed = speed, speed, speed
+					if sequence {
+						state.Random = 77
+						for _, u := range []*stoneage.Unit{&state.Players[i].Body, &state.Players[i].Pet, &state.Players[i].Ride} {
+							u.HP = 10000
+							u.MaxHP = 10000
+							u.Attack = 200
+							u.Defense = 80
+							u.Speed = 100
+						}
+						if i != 0 {
+							state.Players[i].Body.Status.Stone = 2
+							state.Players[i].Pet.Status.Stone = 2
+						}
+					}
 				}
 				next.Data, err = json.Marshal(state)
 			}

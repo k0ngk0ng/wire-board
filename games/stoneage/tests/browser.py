@@ -173,8 +173,8 @@ try:
  wait(lambda:room()['game']['data']['players'][0]['submitted'])
  selected=room()['game']['data']['self']['plan'];assert selected['player']['target']==target and selected['pet']['target']==target,'scene targeting did not submit both commands'
  REPORT['resourcesBeforeReload']=js('performance.getEntriesByType("resource").filter(e=>e.name.startsWith("https://cdn.ichenj.com/stoneage/")).map(e=>({url:e.name,bytes:e.encodedBodySize,transferBytes:e.transferSize}))')
- hd=json.loads((ROOT/'games/stoneage/web/hd.json').read_text());extra=json.loads((ROOT/'games/stoneage/web/avatar-art.json').read_text())
- approved={f'https://cdn.ichenj.com/stoneage/{hd["basePath"]}/{f}' for f in hd['resources']}|{f'https://cdn.ichenj.com/stoneage/{extra["basePath"]}/{f}' for f in extra['resources'] if f not in hd['resources']}
+ hd=json.loads((ROOT/'games/stoneage/web/hd.json').read_text());extra=json.loads((ROOT/'games/stoneage/web/avatar-art.json').read_text());projectiles=json.loads((ROOT/'games/stoneage/web/projectile-art.json').read_text())
+ approved={f'https://cdn.ichenj.com/stoneage/{hd["basePath"]}/{f}' for f in hd['resources']}|{f'https://cdn.ichenj.com/stoneage/{extra["basePath"]}/{f}' for f in extra['resources'] if f not in hd['resources']}|{f'https://cdn.ichenj.com/stoneage/{projectiles["basePath"]}/{f}' for f in projectiles['resources']}
  assert all(e['url'] in approved for e in REPORT['resourcesBeforeReload'] if '/assets/' in e['url']),'runtime fetched undeclared images or downgraded an existing HD asset'
  before=room()['game']['data']['round'];b('reload')
  wait(lambda:js('!!document.querySelector("[data-stoneage-battle]")'),90)

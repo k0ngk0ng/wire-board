@@ -1,8 +1,8 @@
 {
   "scope": "当前竞技场全部候选与可用造型；动画帧按 PNG 文件去重，非每局下载量",
   "root": "https://cdn.ichenj.com/stoneage",
-  "uniqueImages": 23201,
-  "bytes": 82225060,
+  "uniqueImages": 23235,
+  "bytes": 82231353,
   "MiB": 78.42,
   "spriteVariants": 413,
   "frameReferences": 42963,
@@ -48,10 +48,17 @@
       "uniqueImages": 1,
       "additionalImages": 1,
       "bytes": 95820
+    },
+    {
+      "category": "原版箭矢、投影和投石",
+      "uniqueImages": 34,
+      "additionalImages": 34,
+      "bytes": 6293
     }
   ],
   "manifestSHA256": "23c338bb9926fb43c2fdae5bd317561ec019f2438c972cff316eac7fbfb7df5c",
   "avatarManifestSHA256": "a29e839e7e172fa3ba651313522103e8a257839cbee600472226c6ee64cca35f",
+  "projectileManifestSHA256": "9e5b8421e509ccf8480c07e79414ee8034d192210b48575a61b5f8c9b412e748",
   "assetsCopied": 0,
   "assetsUploaded": 0
 }

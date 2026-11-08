@@ -1,0 +1,42 @@
+{
+  "sourceRoot": "stoneage",
+  "files": {
+    "reference/anson1788-stoneage/石器时代8.5客户端最新源代码/石器源码/oft/oft.cpp": "7db18a713260e394dc2f1bd65f5fd246315f24b94d1b61c6ea5e5fdc7778947e",
+    "client/web/runtimeassets/index.html": "2861dfc42e39b34441422ed18b42c11089aaf714405d9a76e2a63c66917a6478",
+    "client/web/assets/original/manifest.json": "7467b9451ad1ec6c09525f1e99165085d3078ed49df1c9e376c3e63666f8f827"
+  },
+  "nativeClient": {
+    "file": "reference/anson1788-stoneage/石器时代8.5客户端最新源代码/石器源码/oft/oft.cpp",
+    "branches": [
+      "ATT_BOW:5793",
+      "bow:2345",
+      "stick_bow:2119",
+      "monster VCT30:8167",
+      "monster VCT1:6341",
+      "get_next_flg:4216"
+    ],
+    "behavior": [
+      "ATT_BOW allocates a separate missile; shooter stays in formation",
+      "arrow/shadow bitmap directions 25630..25645 / 25650..25665",
+      "missile launches at the SPR sound/contact frame and applies damage at arrival",
+      "same-command hit tuples preserve contact position; counter uses the exchanged contact positions"
+    ]
+  },
+  "webReference": {
+    "file": "client/web/runtimeassets/index.html",
+    "symbols": [
+      "battleAttackSequenceSpec",
+      "battleCounterAttackMotionSpec",
+      "battleBowPlan",
+      "battleProjectileNativeFrames"
+    ]
+  },
+  "adaptation": [
+    "The arena retains its independent Go combat rules, per-hit HP snapshots and server timeline.",
+    "Animation clock is 1.25x native; short inter-hit recovery, 120ms passive events and 100ms round tail.",
+    "Arrow trajectories interpolate the native endpoints; no hidden 64-tick missile release wait.",
+    "Boomerang/throwing axe use simple vector silhouettes where this roster has no valid native projectile SPR; they do not make the actor approach."
+  ],
+  "imagesCopied": 0,
+  "imagesUploaded": 0
+}

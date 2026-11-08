@@ -170,6 +170,8 @@ type Action struct {
 	Plan    *Plan    `json:"plan,omitempty"`
 }
 type Event struct {
+	Sequence         int            `json:"sequence,omitempty"`
+	Projectiles      []Projectile   `json:"projectiles,omitempty"`
 	Motions          []AttackMotion `json:"motions,omitempty"`
 	ImpactAt         *int           `json:"impactAt,omitempty"`
 	ReactionDuration int            `json:"reactionDuration,omitempty"`
