@@ -32,3 +32,15 @@ export function position(team: number, row: number, pet: number) {
   const [x, y] = points[place[(team === 0 ? 0 : 10) + pet * 5 + row]];
   return { x: (x / 640) * 100, y: (y / 480) * 100 };
 }
+export function eventPosition(
+  players: readonly { team: number; seat: number }[],
+  target: number,
+) {
+  if (!Number.isInteger(target) || target < 0 || target >= players.length * 2)
+    return undefined;
+  const player = players[Math.floor(target / 2)];
+  const row = players.filter(
+    (p) => p.team === player.team && p.seat < player.seat,
+  ).length;
+  return position(player.team, row, target % 2);
+}

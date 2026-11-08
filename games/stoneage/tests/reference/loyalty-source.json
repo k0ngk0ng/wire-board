@@ -1,0 +1,6 @@
+{
+  "source": "stoneage/server/legacy/source/2.5/gmsv/battle/battle.c",
+  "sha256": "a8b276e7567ed7586f2b8730c4bbf7cf4e3917b753411504a549256fa0c9116b",
+  "function": "BATTLE_PetLoyalCheck",
+  "scope": "classic obedience threshold distribution; arena fixes the decision before guard registration and publishes it on the pet turn; rides do not receive separate commands"
+}

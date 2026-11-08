@@ -34,7 +34,8 @@ func Suggest(v View) *Action {
 		}
 		pool := v.Pool
 		ride := pool.Rides[seat%len(pool.Rides)]
-		l := &Loadout{Pet: pool.Pets[(seat*3)%len(pool.Pets)].ID, Ride: ride.ID, Avatar: ride.Riders[seat%len(ride.Riders)].Avatar, Points: [][]int{{140, 120, 100, 120}, {120, 180, 100, 80}, {110, 110, 80, 180}, {170, 70, 120, 120}}[seat%4], Hat: pool.Hats[seat%len(pool.Hats)].ID, Weapon: pool.Weapons[seat%len(pool.Weapons)].ID, Clothes: pool.Clothes[seat%len(pool.Clothes)].ID, Accessories: []int{pool.Accessories[seat%len(pool.Accessories)].ID, pool.Accessories[(seat+1)%len(pool.Accessories)].ID}, HPItem: pool.HPItems[seat%len(pool.HPItems)].ID, MPItem: pool.MPItems[seat%len(pool.MPItems)].ID, CureItem: pool.CureItems[seat%len(pool.CureItems)].ID, Tactics: []int{pool.Tactics[seat%len(pool.Tactics)].ID, pool.Tactics[(seat+1)%len(pool.Tactics)].ID}, Skills: []int{1, 2}}
+		pets := reliablePets(pool.Pets)
+		l := &Loadout{Pet: pets[(seat*3)%len(pets)].ID, Ride: ride.ID, Avatar: ride.Riders[seat%len(ride.Riders)].Avatar, Points: [][]int{{140, 120, 100, 120}, {120, 180, 100, 80}, {110, 110, 80, 180}, {170, 70, 120, 120}}[seat%4], Hat: pool.Hats[seat%len(pool.Hats)].ID, Weapon: pool.Weapons[seat%len(pool.Weapons)].ID, Clothes: pool.Clothes[seat%len(pool.Clothes)].ID, Accessories: []int{pool.Accessories[seat%len(pool.Accessories)].ID, pool.Accessories[(seat+1)%len(pool.Accessories)].ID}, HPItem: pool.HPItems[seat%len(pool.HPItems)].ID, MPItem: pool.MPItems[seat%len(pool.MPItems)].ID, CureItem: pool.CureItems[seat%len(pool.CureItems)].ID, Tactics: []int{pool.Tactics[seat%len(pool.Tactics)].ID, pool.Tactics[(seat+1)%len(pool.Tactics)].ID}, Skills: []int{1, 2}}
 		families := map[string]bool{"attack": true, "guard": true}
 		// Different seats cover burst, control and protection. Strongest
 		// variants within one family never occupy duplicate learning slots.
@@ -107,7 +108,7 @@ func Suggest(v View) *Action {
 			continue
 		}
 		for _, u := range []Unit{other.Body, other.Pet} {
-			if u.HP <= 0 {
+			if u.HP <= 0 || u.Fled {
 				continue
 			}
 			if u.Status.Stone > 0 || u.Status.Sleep > 0 || u.Status.Confusion > 0 {
@@ -160,7 +161,7 @@ func Suggest(v View) *Action {
 			handled = true
 		}
 	}
-	if p.Pet.HP > 0 {
+	if p.Pet.HP > 0 && !p.Pet.Fled {
 		score := -1
 		chosen := 1
 		for _, id := range v.Self.Loadout.Skills {

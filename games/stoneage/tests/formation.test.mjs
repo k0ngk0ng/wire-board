@@ -2,8 +2,19 @@
 // native left/upper opponents face lower-right (7); preserve the classic slots.
 import test from "node:test";
 import assert from "node:assert/strict";
-import { position, facing } from "../web/formation.ts";
+import { position, facing, eventPosition } from "../web/formation.ts";
 import { readFileSync } from "node:fs";
+test("system events have no actor target position; valid unit IDs keep native slots", () => {
+  const players = [
+    { team: 0, seat: 0 },
+    { team: 1, seat: 1 },
+  ];
+  assert.equal(eventPosition(players, -1), undefined);
+  assert.equal(eventPosition(players, 4), undefined);
+  assert.equal(eventPosition(players, NaN), undefined);
+  assert.deepEqual(eventPosition(players, 2), position(1, 0, 0));
+  assert.deepEqual(eventPosition(players, 3), position(1, 0, 1));
+});
 test("both formations face each other on the upper-left/lower-right diagonal", () => {
   assert.equal(facing(0), 3);
   assert.equal(facing(1), 7);

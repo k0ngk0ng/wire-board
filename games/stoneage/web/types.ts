@@ -6,6 +6,7 @@ export type Options = {
 };
 export type Rider = { avatar: number; graphic: number };
 export type PetDefinition = {
+  loyalty: number;
   id: number;
   name: string;
   graphic: number;
@@ -95,6 +96,8 @@ export type Status = {
   immune: number;
 };
 export type Unit = {
+  loyalty: number;
+  fled?: boolean;
   id: number;
   name: string;
   graphic: number;

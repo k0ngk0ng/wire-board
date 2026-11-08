@@ -120,6 +120,32 @@ func decode(m gameapi.Match) (*State, error) {
 	if e := json.Unmarshal(m.Data, &s); e != nil {
 		return nil, e
 	}
+	if s.Rules == "stoneage-arena-v1" {
+		// Legacy matches obeyed every order. Do not reroll their pool or RNG.
+		for i := range s.Pool.Pets {
+			s.Pool.Pets[i].Loyalty = 100
+		}
+		for i := range s.Pool.Rides {
+			s.Pool.Rides[i].Loyalty = 100
+		}
+		for i := range s.Players {
+			s.Players[i].Pet.Loyalty = 100
+			s.Players[i].Ride.Loyalty = 100
+		}
+		migrate := func(players []Player) {
+			for i := range players {
+				players[i].Pet.Loyalty = 100
+				players[i].Ride.Loyalty = 100
+			}
+		}
+		if s.Playback != nil {
+			migrate(s.Playback.Before)
+		}
+		for i := range s.Events {
+			migrate(s.Events[i].Players)
+		}
+		s.Rules = rulesVersion
+	}
 	n := len(s.Players)
 	if s.Rules != rulesVersion || s.Session == "" || s.Window < 1 || !slices.Contains([]string{"selection", "arming", "planning", "resolving", "finished"}, s.Phase) || len(s.Plans) != n || s.Round < 0 || s.Round > s.Options.MaxRounds || s.EventID < 0 {
 		return nil, errors.New("竞技场存档结构不合法")
@@ -133,6 +159,18 @@ func decode(m gameapi.Match) (*State, error) {
 	if len(s.Events) > 256 || len(s.Log) > 100 {
 		return nil, errors.New("竞技场事件超出范围")
 	}
+	for _, rows := range [][]PetDefinition{s.Pool.Pets, s.Pool.Rides} {
+		for _, p := range rows {
+			if p.Loyalty < 0 || p.Loyalty > 100 {
+				return nil, errors.New("宠物忠诚度存档不合法")
+			}
+		}
+	}
+	for _, ride := range s.Pool.Rides {
+		if ride.Loyalty != 100 {
+			return nil, errors.New("骑宠忠诚度必须为 100")
+		}
+	}
 	for i, p := range s.Players {
 		if p.Seat != i || p.Team != s.Options.Teams[i] || p.Deadline < 0 || len(p.Inventory) > 8 {
 			return nil, errors.New("竞技场席位存档不合法")
@@ -145,6 +183,11 @@ func decode(m gameapi.Match) (*State, error) {
 		if s.Phase != "selection" {
 			if p.Loadout == nil {
 				return nil, errors.New("参战配置缺失")
+			}
+			pet, _ := petByID(s.Pool.Pets, p.Loadout.Pet)
+			ride, _ := petByID(s.Pool.Rides, p.Loadout.Ride)
+			if p.Pet.Loyalty != pet.Loyalty || p.Ride.Loyalty != ride.Loyalty || p.Body.Fled || p.Ride.Fled {
+				return nil, errors.New("参战宠物忠诚度与候选不一致")
 			}
 			for _, u := range []Unit{p.Body, p.Pet, p.Ride} {
 				if u.MaxHP <= 0 || u.MaxHP > 100000 || u.HP < 0 || u.HP > u.MaxHP || u.MP < 0 || u.MP > u.MaxMP || u.Speed <= 0 || u.Attack <= 0 || u.Defense <= 0 {
@@ -386,10 +429,11 @@ func onTimer(c gameapi.Context, m gameapi.Match) (gameapi.Match, error) {
 	return s.envelope()
 }
 func restore(_ gameapi.Context, m gameapi.Match) (gameapi.Match, error) {
-	if _, e := decode(m); e != nil {
+	s, e := decode(m)
+	if e != nil {
 		return m, e
 	}
-	return m, nil
+	return s.envelope()
 }
 func reclaim(c gameapi.Context, m gameapi.Match) (gameapi.Match, error) {
 	s, e := decode(m)

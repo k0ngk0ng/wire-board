@@ -37,8 +37,16 @@ func combatFixture(t *testing.T, required ...int) (gameapi.Match, gameapi.Contex
 		}
 		json.Unmarshal(m.Data, &s)
 		s.Random = 77
+		for i := range s.Pool.Pets {
+			s.Pool.Pets[i].Loyalty = 100
+		}
+		for i := range s.Pool.Rides {
+			s.Pool.Rides[i].Loyalty = 100
+		}
 		for i := range s.Players {
 			p := &s.Players[i]
+			p.Pet.Loyalty = 100
+			p.Ride.Loyalty = 100
 			for _, weapon := range s.Pool.Weapons {
 				if weapon.WeaponType >= 1 && weapon.WeaponType <= 3 {
 					p.Loadout.Weapon = weapon.ID

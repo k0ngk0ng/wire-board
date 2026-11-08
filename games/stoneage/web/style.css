@@ -307,6 +307,10 @@
 .sa-pet-choice strong {
   font-size: 13px;
 }
+.sa-pet-loyalty {
+  font-size: 11px;
+  color: var(--sa-muted);
+}
 .sa-pet-choice .sa-chosen {
   position: absolute;
   top: 6px;
@@ -444,6 +448,9 @@
   gap: 6px;
   color: var(--sa-muted);
   font-size: 11px;
+}
+.sa-root .sa-selection-footer {
+  padding-right: 112px;
 }
 .sa-selection-footer > div,
 .sa-command-footer > div {

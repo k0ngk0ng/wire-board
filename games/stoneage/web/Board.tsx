@@ -62,6 +62,10 @@ function recommendedLoadout(v: View): Loadout {
   const p = v.pool,
     seat = Math.max(0, v.viewer),
     ride = p.rides[seat % p.rides.length];
+  const reliable = p.pets.filter((p) => p.loyalty >= 80);
+  const pets = reliable.length
+    ? reliable
+    : [p.pets.reduce((a, b) => (a.loyalty >= b.loyalty ? a : b))];
   const skills = [1, 2],
     families = new Set(["attack", "guard"]);
   for (const skill of p.skills) {
@@ -72,7 +76,7 @@ function recommendedLoadout(v: View): Loadout {
     }
   }
   return {
-    pet: p.pets[seat % p.pets.length].id,
+    pet: pets[seat % pets.length].id,
     ride: ride.id,
     avatar: ride.riders![0].avatar,
     points: [140, 120, 100, 120],
@@ -318,6 +322,7 @@ function Selection({ data, room, busy, time, send }: ExtendedProps) {
           </div>
           <span>出战宠</span>
           <strong>{pet.name}</strong>
+          <span>忠诚 {pet.loyalty}</span>
           <Elements values={pet.elements} />
         </div>
         <div className="sa-companion">
@@ -331,6 +336,7 @@ function Selection({ data, room, busy, time, send }: ExtendedProps) {
           </div>
           <span>骑宠</span>
           <strong>{ride.name}</strong>
+          <span>忠诚 {ride.loyalty}</span>
           <Elements values={ride.elements} />
         </div>
         <div className="sa-points">
@@ -651,12 +657,16 @@ function PetChoice({
   return (
     <button
       className={`sa-pet-choice ${selected ? "selected" : ""}`}
+      data-stoneage-pet={pet.id}
       disabled={disabled}
       aria-pressed={selected}
       onClick={onClick}
     >
       <img src={assetURL(petPreview(pet)!)} alt="" />
       <strong>{pet.name}</strong>
+      <span className="sa-pet-loyalty" data-stoneage-loyalty={pet.loyalty}>
+        忠诚 {pet.loyalty}
+      </span>
       <Elements values={pet.elements} />
       {selected && <Check size={16} className="sa-chosen" />}
     </button>
