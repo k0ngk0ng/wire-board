@@ -20,6 +20,7 @@ import {
   petPreview,
   resourceRoot,
   avatarAppearances,
+  previewDirection,
 } from "./assets";
 import { Sprite } from "./Sprite";
 import { Battle } from "./Battle";
@@ -330,6 +331,7 @@ function Selection({ data, room, busy, time, send }: ExtendedProps) {
           <div className="sa-companion-image">
             <Sprite
               graphic={draft.avatar}
+              direction={previewDirection}
               progress={0}
               time={time}
               size={156}
@@ -342,7 +344,13 @@ function Selection({ data, room, busy, time, send }: ExtendedProps) {
         </div>
         <div className="sa-companion">
           <div className="sa-companion-image">
-            <Sprite graphic={pet.graphic} progress={0} time={time} size={156} />
+            <Sprite
+              graphic={pet.graphic}
+              direction={previewDirection}
+              progress={0}
+              time={time}
+              size={156}
+            />
           </div>
           <span>出战宠</span>
           <strong>{pet.name}</strong>
@@ -356,6 +364,7 @@ function Selection({ data, room, busy, time, send }: ExtendedProps) {
               graphic={
                 ride.riders!.find((r) => r.avatar === draft.avatar)!.graphic
               }
+              direction={previewDirection}
               progress={0}
               time={time}
               size={130}
@@ -558,7 +567,12 @@ function Selection({ data, room, busy, time, send }: ExtendedProps) {
                       disabled={disabled}
                       onClick={() => update({ avatar: avatar.id })}
                     >
-                      <Sprite graphic={avatar.id} progress={0} size={76} />
+                      <Sprite
+                        graphic={avatar.id}
+                        direction={previewDirection}
+                        progress={0}
+                        size={76}
+                      />
                       {draft.avatar === avatar.id && <Check size={15} />}
                     </button>
                   );
