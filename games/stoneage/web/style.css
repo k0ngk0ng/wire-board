@@ -151,10 +151,10 @@
   padding: 10px 4px;
   min-width: 0;
 }
-.sa-avatar-choice > img {
-  width: 64px;
-  height: 72px;
-  object-fit: contain;
+.sa-avatar-choice > .sa-sprite {
+  width: 76px;
+  height: auto;
+  aspect-ratio: 1;
 }
 .sa-avatar-choice > svg {
   position: absolute;

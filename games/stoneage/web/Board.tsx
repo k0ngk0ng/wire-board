@@ -558,7 +558,7 @@ function Selection({ data, room, busy, time, send }: ExtendedProps) {
                       disabled={disabled}
                       onClick={() => update({ avatar: avatar.id })}
                     >
-                      <img src={assetURL(avatar.portrait)} alt="" />
+                      <Sprite graphic={avatar.id} progress={0} size={76} />
                       {draft.avatar === avatar.id && <Check size={15} />}
                     </button>
                   );

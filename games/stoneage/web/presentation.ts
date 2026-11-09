@@ -77,7 +77,10 @@ export function createPlayback(): RoomPresentation {
       )
         movie = undefined;
       if (v?.phase === "resolving" && v.playback) {
-        const elapsed = s.clock.serverNow - v.playback.startedAt;
+        // Metadata packets can reuse an older clock anchor. Count the time
+        // since receipt too, or every such update extends the completed movie.
+        const elapsed =
+          s.clock.serverNow + now - s.clock.receivedAt - v.playback.startedAt;
         movie = {
           room: s.room,
           clock: s.clock,
