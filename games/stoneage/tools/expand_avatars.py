@@ -53,7 +53,7 @@ def expand(source):
  for avatar in avatars:
   family=(avatar-100000)//20;color=(avatar-100000)%20//5
   face=manifest['faces'].get(str(30000+family*100+color*25))
-  preview=next(a for a in all_sprites[str(avatar)] if a['direction']==3 and a['action']==3)['frames'][0]['file']
+  preview=next(a for a in all_sprites[str(avatar)] if a['direction']==7 and a['action']==3)['frames'][0]['file']
   portrait=face['file'] if face else preview
   resource(portrait)
   people.append({'id':avatar,'portrait':portrait,'portraitKind':'face' if face else 'sprite','preview':preview,'family':family,'color':color})

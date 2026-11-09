@@ -49,6 +49,8 @@ export const projectileBitmaps: Record<
   }
 > = projectiles.bitmaps;
 export const avatarAppearances = appearances.avatars;
+// Selection previews face the viewer; battle directions remain team-specific.
+export const previewDirection = 7;
 const enhancedResources: Record<string, { bytes: number; sha256: string }> =
   hd.resources;
 const resources: Record<string, { bytes: number; sha256: string }> = {
@@ -66,7 +68,7 @@ export function spriteAction(graphic: number, direction = 3, action = 3) {
   );
 }
 export const petPreview = (pet: PetDefinition) =>
-  spriteAction(pet.graphic)?.frames[0]?.file;
+  spriteAction(pet.graphic, previewDirection)?.frames[0]?.file;
 export function neededAssets(v: View): string[] {
   const files = new Set<string>();
   if (v.phase === "selection") {
@@ -79,7 +81,7 @@ export function neededAssets(v: View): string[] {
     }
     for (const ride of v.pool.rides)
       for (const rider of ride.riders ?? []) {
-        const frame = spriteAction(rider.graphic)?.frames[0];
+        const frame = spriteAction(rider.graphic, previewDirection)?.frames[0];
         if (frame) files.add(frame.file);
       }
     for (const g of [

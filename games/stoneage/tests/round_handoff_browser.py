@@ -81,6 +81,15 @@ def tap(selector):
 
 
 REPORT = {'passed': False, 'scope': 'native scheduler and browser; controlled HP/loyalty/defenders; real mouse, keyboard, touch, fullscreen; no accelerated clock', 'avatars': [], 'rounds': []}
+ART = {}
+for name in ['art.json', 'avatar-art.json', 'elite-art.json']:
+    ART.update(json.loads((ROOT / 'games/stoneage/web' / name).read_text())['sprites'])
+
+
+def front_frame(graphic):
+    return next(a for a in ART[str(graphic)] if a['direction'] == 7 and a['action'] == 3)['frames'][0]['file']
+
+
 try:
     b('open', BASE)
     api('/login', {'name': '石器验收', 'password': 'stoneage-browser-only'})
@@ -97,6 +106,8 @@ try:
     b('reload')
     wait(lambda: js('!!document.querySelector("[data-stoneage-selection]")&&!document.querySelector(".game-loading")'), 90)
     pool = room()['game']['data']['pool']
+    cards = js('[...document.querySelectorAll("[data-stoneage-pet]")].map(e=>({id:Number(e.dataset.stoneagePet),url:e.querySelector("img").src}))')
+    assert all(card['url'].endswith(front_frame(next(p['graphic'] for p in pool['pets'] if p['id'] == card['id']))) for card in cards), 'pet cards face away from the viewer'
     for width in [1440, 320]:
         b('set', 'viewport', width, 1000 if width == 1440 else 740)
         for ride in pool['rides']:
@@ -109,6 +120,7 @@ try:
             models = js('[...document.querySelectorAll("[data-stoneage-avatar]")].map(e=>{const c=e.querySelector("canvas"),r=c.getBoundingClientRect(),pixels=c.getContext("2d").getImageData(0,0,c.width,c.height).data;return {avatar:Number(e.dataset.stoneageAvatar),width:r.width,height:r.height,visible:[...pixels].filter((v,i)=>i%4===3&&v>100).length,frame:c.dataset.stoneageSpriteFrame}})')
             for model in models:
                 assert model['visible'] > 100 and model['frame'], model
+                assert model['frame'] == front_frame(model['avatar']), ('appearance faces away', model)
                 assert model['width'] >= 60 and abs(model['width'] - model['height']) < 1, model
                 REPORT['avatars'].append(dict(viewport=width, ride=ride['id'], **model))
             selected = buttons[-1]['id']
