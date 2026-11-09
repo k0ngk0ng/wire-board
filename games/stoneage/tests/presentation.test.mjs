@@ -120,3 +120,33 @@ test("native contact timing controls HP rather than half the movement movie", ()
   assert.equal(p.sample(1499).room.game.data.players[1].body.hp, 100);
   assert.equal(p.sample(1500).room.game.data.players[1].body.hp, 40);
 });
+
+test("metadata updates with an unchanged clock cannot extend or restart a round", () => {
+  const p = createPlayback();
+  p.update(snapshot(), 100, true); // The round ends at client time 830.
+  for (const now of [350, 600, 800]) {
+    const metadata = snapshot();
+    metadata.room.name = `metadata at ${now}`;
+    p.update(metadata, now, false);
+  }
+  assert.equal(p.sample(831).blocked, false, "metadata extended the round");
+  assert.equal(
+    p.update(snapshot(), 1000, false).blocked,
+    false,
+    "an expired resolving snapshot restarted the wait",
+  );
+});
+
+test("a delayed render resumes at current time and reveals the next round on time", () => {
+  const p = createPlayback();
+  const frame = p.update(snapshot(), 500, true);
+  assert.equal(frame.room.game.data.players[1].body.hp, 40);
+  const next = snapshot(740, "planning", 4);
+  next.clock.receivedAt = 840;
+  assert.equal(
+    p.update(next, 840, false).room.game.data.phase,
+    "planning",
+    "render delay was added to the end of the old round",
+  );
+  assert.equal(p.sample(841).blocked, false);
+});

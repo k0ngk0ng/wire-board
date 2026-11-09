@@ -108,3 +108,5 @@ STONEAGE_BROWSER_PLAYERS=10 STONEAGE_BROWSER_FAIL_ASSET=1 \
 主要证据保存在 `.local/stoneage/verification/` 和 `.local/stoneage/browser/`。公共 HTTP 夹具额外在 `.local/poker/stoneage/http/` 保存真实协议轨迹。战斗分支记录明确标记为受控初始快照，不能替代完整对局和实际浏览器结果。
 
 连续攻击与弓箭的原速浏览器验收：启动夹具时设置 `WIRE_BOARD_STONEAGE_FORCE_SEQUENCE=1`，运行 `python3 -B games/stoneage/tests/sequence_browser.py`。夹具固定忠诚度、生命、随机种子及对手石化，使用正式规则与真实输入；输出逐帧角色位置、箭矢轨迹、命中、原版双重蓄力和回合时长到 `.local/stoneage/browser/sequence/`。原版客户端对照摘要见 `tests/reference/sequence-source.json`。
+
+统一人物模型与回合交接验收：启动上述原速夹具后，运行 `python3 -B games/stoneage/tests/round_handoff_browser.py`。脚本检查桌面、320px 手机下各骑宠的全部可选模型、鼠标／键盘／触屏选中和全屏操作，并测量连续四轮动画结束到指令解锁的延迟。报告和截图保存在 `.local/stoneage/round-handoff/browser/`。未加速的 HTTP 计时测试为 `go test ./games/stoneage/tests -run '^TestStoneageNativeRoundHandoffHTTP$' -count=1`；前端元数据更新与延迟渲染回归测试在 `tests/presentation.test.mjs`。

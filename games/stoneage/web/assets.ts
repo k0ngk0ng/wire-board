@@ -75,7 +75,6 @@ export function neededAssets(v: View): string[] {
       if (f) files.add(f);
     }
     for (const avatar of avatarAppearances) {
-      files.add(avatar.portrait);
       files.add(avatar.preview);
     }
     for (const ride of v.pool.rides)

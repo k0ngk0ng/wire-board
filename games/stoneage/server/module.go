@@ -61,6 +61,7 @@ func configure(n int, b json.RawMessage) (json.RawMessage, error) {
 func Module() gameapi.Module {
 	return gameapi.Module{
 		ID: "stoneage", Name: "石器竞技场", MinPlayers: 2, MaxPlayers: 10,
+		PreciseTimers: true,
 		Configure: configure, Prepare: prepare, Start: start, Apply: apply, View: makeView,
 		BotAction: botAction, Reclaim: reclaim, ReclaimOnCancel: true, Restore: restore, AcceptStale: acceptStale, OnTimer: onTimer,
 	}

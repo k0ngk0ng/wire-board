@@ -24,6 +24,11 @@ test("48 character appearances have visible portraits/previews and complete weap
     resources = { ...base.resources, ...extra.resources };
   for (const avatar of extra.avatars) {
     assert.ok(resources[avatar.portrait], String(avatar.id));
+    const standing = sprites[avatar.id].find(
+      (a) => a.direction === 3 && a.action === 3,
+    );
+    assert.equal(avatar.preview, standing.frames[0].file);
+    assert.ok(resources[standing.frames[0].file], String(avatar.id));
     for (let weapon = 0; weapon < 5; weapon++)
       for (const direction of [3, 7])
         for (const action of [0, 1, 2, 3, 4, 10])
