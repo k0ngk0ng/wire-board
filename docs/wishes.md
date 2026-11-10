@@ -44,6 +44,7 @@ WISH_IMAGE_PREFIX=bga/wishes
 
 - `GET /api/wishes`：当前登录用户自己的许愿，最多 100 条。
 - `POST /api/wishes`：
+  - 许愿正文去除首尾空白后需 2–10000 字。
   - JSON：`{"text":"想做一款……"}`。
   - 表单（可带图）：`multipart/form-data`，字段 `text`、可选 `image`。
   - 每个用户每小时最多提交 10 条。

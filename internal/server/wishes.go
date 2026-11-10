@@ -25,7 +25,7 @@ const (
 	wishBodyLimit      = 6 << 20
 	wishImageLimit     = 5 << 20
 	wishTextMinRunes   = 2
-	wishTextMaxRunes   = 2000
+	wishTextMaxRunes   = 10000
 	wishNoteMaxRunes   = 500
 	wishSubmitPerHour  = 10
 	wishListLimit      = 100
@@ -266,7 +266,7 @@ func (s *Server) createWish(w http.ResponseWriter, r *http.Request) {
 	}
 	text, valid := validWishText(text)
 	if !valid {
-		fail(w, 400, "许愿内容需 2–2000 字")
+		fail(w, 400, fmt.Sprintf("许愿内容需 %d–%d 字", wishTextMinRunes, wishTextMaxRunes))
 		return
 	}
 	if len(image) > 0 {
