@@ -39,7 +39,7 @@ func scenarioModule() gameapi.Module {
 			delete(v, "scenario")
 		}
 		switch scenario {
-		case "rebalance-growth-repair", "rebalance-growth-cannon", "rebalance-growth-arrow", "rebalance-growth-arcane", "rebalance-growth-refund", "rebalance-combat-frost", "rebalance-combat-arcane", "rebalance-tasks", "rebalance-reward", "rebalance-highground", "specialization-arrow", "specialization-frost", "specialization-cannon", "specialization-arcane", "density-observed", "density-central", "density-coop", "density-ceiling", "coop-growth", "coop-objectives", "ice-arrow", "ice-wall", "central-passives", "cadence", "cadence-speed", "vitality", "impact", "natural", "battle", "victory-ready", "defeat-ready", "advanced", "zero-gold", "growth-vote", "cleared-5", "cleared-10", "cleared-15", "stage2", "stage3", "stage4", "endless-rotation", "objectives", "objectives-clear", "objectives-fail", "legacy-save":
+		case "weather-calm", "weather-fog", "weather-frost", "weather-starlight", "weather-shop", "rebalance-growth-repair", "rebalance-growth-cannon", "rebalance-growth-arrow", "rebalance-growth-arcane", "rebalance-growth-refund", "rebalance-combat-frost", "rebalance-combat-arcane", "rebalance-tasks", "rebalance-reward", "rebalance-highground", "specialization-arrow", "specialization-frost", "specialization-cannon", "specialization-arcane", "density-observed", "density-central", "density-coop", "density-ceiling", "coop-growth", "coop-objectives", "ice-arrow", "ice-wall", "central-passives", "cadence", "cadence-speed", "vitality", "impact", "natural", "battle", "victory-ready", "defeat-ready", "advanced", "zero-gold", "growth-vote", "cleared-5", "cleared-10", "cleared-15", "stage2", "stage3", "stage4", "endless-rotation", "objectives", "objectives-clear", "objectives-fail", "legacy-save":
 		default:
 			return "", nil, errors.New("unknown test scenario")
 		}
@@ -66,7 +66,10 @@ func scenarioModule() gameapi.Module {
 			return gameapi.Match{}, err
 		}
 		fixtureStart := start
-		if scenario != "natural" && (!strings.HasPrefix(scenario, "rebalance-") || strings.HasPrefix(scenario, "rebalance-combat-")) {
+		if strings.HasPrefix(scenario, "rebalance-") {
+			fixtureStart = growthTestModule().Start
+		}
+		if scenario != "natural" && !strings.HasPrefix(scenario, "weather-") && (!strings.HasPrefix(scenario, "rebalance-") || strings.HasPrefix(scenario, "rebalance-combat-")) {
 			fixtureStart = preBalanceTestModule().Start
 		}
 		match, err := fixtureStart(ctx, body)
@@ -88,7 +91,7 @@ func scenarioModule() gameapi.Module {
 			dense.ServerAt = ctx.Now.UnixMilli()
 			return dense.Envelope()
 		}
-		if !strings.HasPrefix(scenario, "rebalance-") && !strings.HasPrefix(scenario, "specialization-") && scenario != "coop-growth" && scenario != "coop-objectives" && scenario != "natural" && scenario != "central-passives" && scenario != "ice-arrow" && scenario != "ice-wall" {
+		if !strings.HasPrefix(scenario, "weather-") && !strings.HasPrefix(scenario, "rebalance-") && !strings.HasPrefix(scenario, "specialization-") && scenario != "coop-growth" && scenario != "coop-objectives" && scenario != "natural" && scenario != "central-passives" && scenario != "ice-arrow" && scenario != "ice-wall" {
 			match, err = legacyStartMatch(match)
 			if err != nil {
 				return match, err
@@ -124,6 +127,25 @@ func scenarioModule() gameapi.Module {
 			}
 		}
 		switch scenario {
+		case "weather-calm", "weather-fog", "weather-frost", "weather-starlight", "weather-shop":
+			s.NextAt = ctx.Now.Add(5 * time.Minute).UnixMilli()
+			s.World.Objectives = []starfort.Objective{}
+			s.TowerSerial = 1
+			s.Towers = []starfort.Tower{{ID: 1, Pad: 1, Owner: 0, Kind: "arrow", Level: 4, Branch: "volley", Spent: 400, Priority: "first"}}
+			s.Players[0].Gold = 2000
+			id := strings.TrimPrefix(scenario, "weather-")
+			if id == "shop" {
+				s.Wave = 11
+				s.CompletedWaves = 10
+				s.Options.Mode = "endless"
+				s.World.PreparedWave = 11
+				s.World.TaskOffersWave = 11
+				s.World.Shop = &starfort.MerchantShop{Wave: 10, DamageTowers: []int{}, RangeTowers: []int{}}
+				s.BaseHP = 20
+				id = "calm"
+			}
+			labels := map[string]string{"calm": "无特殊天气", "fog": "薄雾", "frost": "寒潮", "starlight": "星辉"}
+			s.World.Event = starfort.WaveEvent{ID: id, Label: labels[id], Wave: s.Wave}
 		case "rebalance-growth-repair":
 			s.NextAt = ctx.Now.Add(5 * time.Minute).UnixMilli()
 			s.BaseHP = 20

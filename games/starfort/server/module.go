@@ -70,7 +70,7 @@ func Module() gameapi.Module {
 			}
 			var o Options
 			_ = json.Unmarshal(normalized, &o)
-			s := &State{GrowthRules: 1, BalanceRules: 1, SpecializationRules: 1, SkillRules: 2, Options: o, Players: make([]Player, ctx.Players), Phase: "prepare", Epoch: 1, Wave: 1, BaseHP: 30, BaseMaxHP: 30, ServerAt: ctx.Now.UnixMilli(), NextAt: ctx.Now.UnixMilli() + int64(o.PrepSeconds)*1000, Towers: []Tower{}, Enemies: []Enemy{}, Events: []Event{}}
+			s := &State{WeatherRules: 1, GrowthRules: 1, BalanceRules: 1, SpecializationRules: 1, SkillRules: 2, Options: o, Players: make([]Player, ctx.Players), Phase: "prepare", Epoch: 1, Wave: 1, BaseHP: 30, BaseMaxHP: 30, ServerAt: ctx.Now.UnixMilli(), NextAt: ctx.Now.UnixMilli() + int64(o.PrepSeconds)*1000, Towers: []Tower{}, Enemies: []Enemy{}, Events: []Event{}}
 			for i := range s.Players {
 				s.Players[i].Gold = 300
 			}
@@ -162,7 +162,7 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 			if (t.Level == 3 && !s.validBranch(chosen)) || (t.Level != 3 && a.Branch != "") {
 				return m, errors.New("请选择当前可用的升级分支；其他等级无需选择")
 			}
-			cost := upgradeCost(*t)
+			cost := s.upgradePrice(*t)
 			if s.Players[p].Gold < cost || t.Level >= maxValue || t.Spent > maxValue-cost {
 				return m, errors.New("金币不足或强化已达资源上限")
 			}
@@ -182,12 +182,20 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 		if err := s.vote(kind, a.Choice, p, ctx.Now.UnixMilli()); err != nil {
 			return m, err
 		}
+	case "shop":
+		if err := s.buyShop(p, a); err != nil {
+			return m, err
+		}
+	case "close_shop":
+		if err := s.closeShop(ctx.Now.UnixMilli()); err != nil {
+			return m, err
+		}
 	case "repair_base":
 		if err := s.repairBase(p, a.Amount); err != nil {
 			return m, err
 		}
 	case "pad_reward":
-		if err := s.claimPad(p, Point{a.X, a.Y}, a.Pad); err != nil {
+		if err := s.claimPadReward(p, Point{a.X, a.Y}, a.Pad, a.TowerID); err != nil {
 			return m, err
 		}
 	case "skip_objective":
@@ -331,6 +339,7 @@ type TargetControl struct {
 	Enabled bool `json:"enabled"`
 }
 type Controls struct {
+	Shop         *ShopControl       `json:"shop,omitempty"`
 	Repair       *RepairControl     `json:"repair,omitempty"`
 	CanRouteVote bool               `json:"canRouteVote"`
 	CanBoonVote  bool               `json:"canBoonVote"`
@@ -349,6 +358,7 @@ func (s *State) controls(p int) Controls {
 	c := Controls{Builds: []BuildControl{}, Upgrades: []UpgradeControl{}, Sells: []SellControl{}}
 	player := p >= 0 && p < len(s.Players) && !s.finished()
 	c.Repair = s.repairControl(p)
+	c.Shop = s.shopControl(p)
 	c.CanResume = player && s.Phase == "paused"
 	c.CanAct = player && s.Phase != "paused"
 	c.CanPause = c.CanAct && s.Phase == "prepare"
@@ -370,7 +380,7 @@ func (s *State) controls(p int) Controls {
 		occupied[t.Pad] = true
 		if t.Owner == p {
 			c.Targets = append(c.Targets, TargetControl{t.ID, c.CanAct})
-			cost := upgradeCost(t)
+			cost := s.upgradePrice(t)
 			var branches []BranchChoice
 			if t.Level == 3 {
 				branches = s.branchChoices(t)
@@ -407,6 +417,10 @@ type ViewEnemy struct {
 
 func viewEnemy(enemy Enemy) ViewEnemy {
 	enemy.KnockbackGuards = nil
+	enemy.CraterGuards = nil
+	enemy.FreezeGuards = nil
+	enemy.HeartGuards = nil
+	enemy.MeteorGuards = nil
 	capacity := enemy.MaxHP
 	if enemy.Kind == "shield" {
 		capacity += enemy.MaxHP * shieldRatio
@@ -520,7 +534,11 @@ func view(m gameapi.Match, p int) (any, error) {
 		}
 		specs = append(specs, ViewTowerSpec{spec, s.passiveView(Tower{Kind: spec.Kind})})
 	}
+	for i := range s.World.Objectives {
+		s.World.Objectives[i].Attacked = nil
+	}
 	return struct {
+		WeatherRules        int             `json:"weatherRules,omitempty"`
 		GrowthRules         int             `json:"growthRules,omitempty"`
 		BalanceRules        int             `json:"balanceRules,omitempty"`
 		SpecializationRules int             `json:"specializationRules,omitempty"`
@@ -548,6 +566,7 @@ func view(m gameapi.Match, p int) (any, error) {
 		Catalog             []ViewTowerSpec `json:"catalog"`
 		Controls            Controls        `json:"controls"`
 	}{
+		WeatherRules:        s.WeatherRules,
 		GrowthRules:         s.GrowthRules,
 		BalanceRules:        s.BalanceRules,
 		SpecializationRules: s.SpecializationRules,

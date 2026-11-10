@@ -99,7 +99,7 @@ func (s *State) acceptObjective(id string, p int) error {
 		}
 		o.Status = "active"
 		o.StartWave, o.EndWave = s.Wave, s.Wave
-		if o.Kind == "convoy" {
+		if o.Kind == "convoy" || (s.weathered() && o.Kind == "merchant") {
 			o.EndWave = 0
 		}
 		o.BaseAtStart = s.BaseHP
@@ -119,6 +119,10 @@ func (s *State) convoyPath(route string) []Point {
 }
 
 func (s *State) stepObjectives() {
+	if s.weathered() {
+		s.stepWeatherObjectives()
+		return
+	}
 	if s.BaseHP <= 0 {
 		s.failActiveObjectives("基地失守")
 		return
@@ -166,6 +170,10 @@ func (s *State) stepObjectives() {
 }
 
 func (s *State) finishObjective(index int, success bool, reason string) {
+	if s.weathered() {
+		s.finishWeatherObjective(index, success, reason)
+		return
+	}
 	o := &s.World.Objectives[index]
 	if o.Status != "active" {
 		return
@@ -210,8 +218,14 @@ func (s *State) finishObjective(index int, success bool, reason string) {
 }
 
 func (s *State) onWaveCleared() {
+	defer func() {
+		if s.weathered() && s.World.MerchantWave == s.Wave {
+			s.World.Shop = &MerchantShop{Wave: s.Wave, DamageTowers: []int{}, RangeTowers: []int{}}
+			s.World.MerchantWave = 0
+		}
+	}()
 	for i, o := range s.World.Objectives {
-		if o.Status == "active" && o.Kind != "convoy" && s.Wave >= o.EndWave {
+		if o.Status == "active" && o.Kind != "convoy" && !(s.weathered() && o.Kind == "merchant") && s.Wave >= o.EndWave {
 			s.finishObjective(i, o.HP > 0, "防守目标被摧毁")
 		}
 	}

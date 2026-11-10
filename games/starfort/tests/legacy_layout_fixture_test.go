@@ -31,6 +31,8 @@ func legacyStartMatch(m gameapi.Match) (gameapi.Match, error) {
 		return m, e
 	}
 	s.BalanceRules = 0
+	s.WeatherRules = 0
+	s.World.Event = game.WaveEvent{ID: "calm", Label: "晴空守望", Wave: s.Wave}
 	s.GrowthRules = 0
 	s.World.Objectives = nil
 	s.World.TaskOffersWave = 0
@@ -46,6 +48,30 @@ func legacyStartMatch(m gameapi.Match) (gameapi.Match, error) {
 	s.Craters = nil
 	s.CraterSerial = 0
 	return s.Envelope()
+}
+
+// Explicit schema-7 starts keep the previous task/growth suite independent of
+// the new schema-8 lottery. Later preparation uses the saved production rules.
+func growthTestModule() gameapi.Module {
+	m := game.Module()
+	start := m.Start
+	m.Start = func(ctx gameapi.Context, raw json.RawMessage) (gameapi.Match, error) {
+		v, err := start(ctx, raw)
+		if err != nil {
+			return v, err
+		}
+		var s game.State
+		if err := json.Unmarshal(v.Data, &s); err != nil {
+			return v, err
+		}
+		s.WeatherRules = 0
+		s.World.Event = game.WaveEvent{ID: "calm", Label: "晴空守望", Wave: s.Wave}
+		r := s.World.Map.Routes[0]
+		x, y := fixturePathPosition(r.Points, fixturePathLength(r.Points)*.75)
+		s.World.Objectives = []game.Objective{{ID: "task-1-mine", Kind: "mine", Label: "历史矿场任务", HP: 10, MaxHP: 10, Route: r.ID, Progress: fixturePathLength(r.Points) * .75, Sector: 1, X: x, Y: y, Cost: 100, Reward: 120, Status: "available", Owner: -1}}
+		return s.Envelope()
+	}
+	return m
 }
 func legacyTestModule() gameapi.Module {
 	m := game.Module()

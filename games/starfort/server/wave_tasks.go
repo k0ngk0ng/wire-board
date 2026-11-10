@@ -21,6 +21,10 @@ func (s *State) taskRandom(n int) int {
 	return int(s.SkillRNG % uint64(n))
 }
 func (s *State) offerWaveTask() {
+	if s.weathered() {
+		s.offerWeatherTask()
+		return
+	}
 	if !s.rebalanced() || s.World.TaskOffersWave == s.Wave {
 		return
 	}
@@ -81,6 +85,9 @@ func (s *State) taskRouteBoost(route string) float64 {
 	if s.rebalanced() {
 		for _, o := range s.World.Objectives {
 			if (o.Status == "active" || o.Status == "completed" || o.Status == "failed") && o.Route == route && o.StartWave == s.Wave {
+				if s.weathered() {
+					return 1.1
+				}
 				return 1.2
 			}
 		}
@@ -92,7 +99,7 @@ func (s *State) taskConvoyActive() bool {
 		return false
 	}
 	for _, o := range s.World.Objectives {
-		if o.Kind == "convoy" && o.Status == "active" {
+		if (o.Kind == "convoy" || (s.weathered() && o.Kind == "merchant")) && o.Status == "active" {
 			return true
 		}
 	}
@@ -148,6 +155,20 @@ func (s *State) automaticPadReward() *Action {
 	if r == nil {
 		return nil
 	}
+	tower := 0
+	if r.Kind == "move" {
+		for _, t := range s.Towers {
+			if tower == 0 || t.Owner == r.Owner {
+				tower = t.ID
+			}
+			if t.Owner == r.Owner {
+				break
+			}
+		}
+		if tower == 0 {
+			return nil
+		}
+	}
 	if r.Kind == "highground" {
 		for _, p := range s.World.Map.Pads {
 			if p.Terrain == "plain" {
@@ -167,7 +188,7 @@ func (s *State) automaticPadReward() *Action {
 			for _, side := range []float64{-1, 1} {
 				point := Point{p.X - dy/l*side*80, p.Y + dx/l*side*80}
 				if s.validRewardPoint(point) {
-					return &Action{Type: "pad_reward", X: point.X, Y: point.Y}
+					return &Action{Type: "pad_reward", TowerID: tower, X: point.X, Y: point.Y}
 				}
 			}
 		}
@@ -175,7 +196,7 @@ func (s *State) automaticPadReward() *Action {
 	for y := 32.; y < float64(s.World.Map.Height)-28; y += 32 {
 		for x := 32.; x < float64(s.World.Map.Width)-28; x += 32 {
 			if s.validRewardPoint(Point{x, y}) {
-				return &Action{Type: "pad_reward", X: x, Y: y}
+				return &Action{Type: "pad_reward", TowerID: tower, X: x, Y: y}
 			}
 		}
 	}
@@ -206,16 +227,16 @@ func (s *State) objectiveLimit() float64 {
 }
 func (s *State) validBalance() error {
 	w := s.World
-	if s.SpawnNotBefore < 0 || s.SpawnNotBefore > s.ElapsedMS+2000 || w.TaskOffersWave < 0 || w.TaskOffersWave > s.Wave || w.MineSuccesses < 0 || w.BeaconSuccesses < 0 || len(w.TaskAttempts) > 3 {
+	if s.SpawnNotBefore < 0 || s.SpawnNotBefore > s.ElapsedMS+2000 || w.TaskOffersWave < 0 || w.TaskOffersWave > s.Wave || w.MineSuccesses < 0 || w.BeaconSuccesses < 0 || len(w.TaskAttempts) > s.taskKindLimit() {
 		return errors.New("无效任务进度")
 	}
 	for kind, n := range w.TaskAttempts {
-		if !slices.Contains([]string{"mine", "beacon", "convoy"}, kind) || n < 0 || n > maxValue {
+		if (!slices.Contains([]string{"mine", "beacon", "convoy"}, kind) && !(s.weathered() && kind == "merchant")) || n < 0 || n > maxValue {
 			return errors.New("无效任务次数")
 		}
 	}
 	if r := w.PadReward; r != nil {
-		if !s.rebalanced() || r.Owner < 0 || r.Owner >= len(s.Players) || (r.Kind != "add" && r.Kind != "highground") || (r.Kind == "add" && len(w.Map.Pads) >= 40) {
+		if !s.rebalanced() || r.Owner < 0 || r.Owner >= len(s.Players) || (r.Kind != "add" && r.Kind != "highground" && !(s.weathered() && r.Kind == "move")) || (r.Kind == "add" && len(w.Map.Pads) >= 40) {
 			return errors.New("无效建造点奖励")
 		}
 	}

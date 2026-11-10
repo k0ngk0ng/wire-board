@@ -145,6 +145,8 @@ export function AdminDashboard({
   const [roomHistory, setRoomHistory] = useState(false);
   const [historyTarget, setHistoryTarget] = useState<HistoryTarget>();
   const [wishFilter, setWishFilter] = useState("all");
+  const [wishDetailID, setWishDetailID] = useState<string>();
+  const wishDetail = data?.wishes.find((w) => w.id === wishDetailID);
   const [onlineOnly, setOnlineOnly] = useState(false);
   const [decision, setDecision] = useState<Decision>();
   const [busy, setBusy] = useState(false);
@@ -541,137 +543,189 @@ export function AdminDashboard({
                 ))}
               </div>
               <div className="admin-wish-list">
-                {filteredWishes.map((wish) => (
-                  <article className="admin-wish-card" key={wish.id}>
-                    <header>
-                      <WishStatus wish={wish} />
-                      <small>
-                        {wish.userName} · {date(wish.createdAt)}
-                        {wish.reviewedByName
-                          ? ` · ${wish.reviewedByName} 审核`
-                          : ""}
-                      </small>
-                    </header>
-                    <p className="admin-wish-text">{wish.text}</p>
-                    {wish.imageUrl && (
-                      <a
-                        className="admin-wish-image"
-                        href={wish.imageUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        aria-label="查看许愿参考图"
-                      >
-                        <img
-                          src={wish.imageUrl}
-                          alt="许愿参考图"
-                          loading="lazy"
-                        />
-                      </a>
-                    )}
-                    {!!wish.questions?.length && (
-                      <div className="admin-wish-qa">
-                        <small>
-                          AI 已追问 {wish.questionCount} / 2 次
-                          {wish.needsAnswer ? " · 等待玩家回答" : ""}
-                        </small>
-                        {wish.questions.map((question) => (
-                          <div
-                            className="admin-wish-question"
-                            key={question.id}
-                          >
-                            <p>
-                              <b>AI 追问</b>
-                              {question.question}
-                            </p>
-                            <p>
-                              <b>玩家回答</b>
-                              {question.answer || "尚未回答"}
-                            </p>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                    {wish.note && (
-                      <div className="admin-wish-note">
-                        审核备注：{wish.note}
-                      </div>
-                    )}
-                    <div className="admin-wish-actions">
-                      {(wish.status === "pending" ||
-                        wish.status === "rejected") && (
-                        <button
-                          className="primary"
-                          onClick={() =>
-                            setDecision({
-                              title: `通过许愿 · ${wish.userName}`,
-                              text: "通过后，这条许愿会出现在本地代理的「已通过」列表中。可以附上排期或实现说明。",
-                              path: `/admin/wishes/${wish.id}`,
-                              body: { action: "approve" },
-                              note: true,
-                            })
-                          }
-                        >
-                          <Check size={16} />
-                          {wish.status === "rejected" ? "重新通过" : "通过"}
-                        </button>
-                      )}
-                      {wish.status === "approved" && (
-                        <button
-                          className="primary"
-                          onClick={() =>
-                            setDecision({
-                              title: `开始实现 · ${wish.userName}`,
-                              text: "标记为「正在实现」，本地代理可以据此识别并避免重复开工。",
-                              path: `/admin/wishes/${wish.id}`,
-                              body: { action: "start" },
-                              note: true,
-                            })
-                          }
-                        >
-                          <Hammer size={16} />
-                          开始实现
-                        </button>
-                      )}
-                      {wish.status === "in_progress" && (
-                        <button
-                          className="primary"
-                          onClick={() =>
-                            setDecision({
-                              title: `标记已实现 · ${wish.userName}`,
-                              text: "标记为「已实现」，本地代理和玩家都会看到最终状态。",
-                              path: `/admin/wishes/${wish.id}`,
-                              body: { action: "implement" },
-                              note: true,
-                            })
-                          }
-                        >
-                          <Trophy size={16} />
-                          标记已实现
-                        </button>
-                      )}
-                      {(wish.status === "pending" ||
-                        wish.status === "approved" ||
-                        wish.status === "in_progress") && (
-                        <button
-                          className="outline danger"
-                          onClick={() =>
-                            setDecision({
-                              title: `驳回许愿 · ${wish.userName}`,
-                              text: "请写下驳回原因，玩家会在自己的许愿记录中看到。之后仍可重新通过。",
-                              path: `/admin/wishes/${wish.id}`,
-                              body: { action: "reject" },
-                              note: true,
-                            })
-                          }
-                        >
-                          <XCircle size={16} />
-                          驳回
-                        </button>
-                      )}
-                    </div>
-                  </article>
-                ))}
+                <table>
+                  <thead>
+                    <tr>
+                      <th scope="col">内容</th>
+                      <th scope="col">提交者</th>
+                      <th scope="col">状态</th>
+                      <th scope="col">提交时间</th>
+                      <th scope="col">操作</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredWishes.map((wish) => {
+                      const chars = Array.from(
+                        wish.text.replace(/\s+/gu, " ").trim(),
+                      );
+                      const preview =
+                        chars.slice(0, 80).join("") +
+                        (chars.length > 80 ? "…" : "");
+                      return (
+                        <tr className="admin-wish-card" key={wish.id}>
+                          <td className="admin-wish-content">
+                            <p className="admin-wish-preview">{preview}</p>
+                          </td>
+                          <td className="admin-wish-author">{wish.userName}</td>
+                          <td className="admin-wish-state">
+                            <WishStatus wish={wish} />
+                          </td>
+                          <td className="admin-wish-created">
+                            <time
+                              dateTime={new Date(
+                                wish.createdAt * 1000,
+                              ).toISOString()}
+                            >
+                              {date(wish.createdAt)}
+                            </time>
+                          </td>
+                          <td className="admin-wish-view">
+                            <button
+                              className="outline"
+                              data-admin-wish-view
+                              aria-label={`查看 ${wish.userName} 的许愿详情`}
+                              onClick={() => setWishDetailID(wish.id)}
+                            >
+                              查看详情
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
               </div>
+              {wishDetail && (
+                <Modal
+                  title="许愿详情"
+                  className="admin-wish-detail"
+                  onClose={() => setWishDetailID(undefined)}
+                >
+                  <header>
+                    <WishStatus wish={wishDetail} />
+                    <small>
+                      {wishDetail.userName} · {date(wishDetail.createdAt)}
+                      {wishDetail.reviewedByName
+                        ? ` · ${wishDetail.reviewedByName} 审核`
+                        : ""}
+                    </small>
+                  </header>
+                  <p className="admin-wish-text">{wishDetail.text}</p>
+                  {wishDetail.imageUrl && (
+                    <a
+                      className="admin-wish-image"
+                      href={wishDetail.imageUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      aria-label="查看许愿参考图"
+                    >
+                      <img
+                        src={wishDetail.imageUrl}
+                        alt="许愿参考图"
+                        loading="lazy"
+                      />
+                    </a>
+                  )}
+                  {!!wishDetail.questions?.length && (
+                    <div className="admin-wish-qa">
+                      <small>
+                        AI 已追问 {wishDetail.questionCount} / 2 次
+                        {wishDetail.needsAnswer ? " · 等待玩家回答" : ""}
+                      </small>
+                      {wishDetail.questions.map((question) => (
+                        <div className="admin-wish-question" key={question.id}>
+                          <p>
+                            <b>AI 追问</b>
+                            {question.question}
+                          </p>
+                          <p>
+                            <b>玩家回答</b>
+                            {question.answer || "尚未回答"}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {wishDetail.note && (
+                    <div className="admin-wish-note">
+                      审核备注：{wishDetail.note}
+                    </div>
+                  )}
+                  <div className="admin-wish-actions">
+                    {(wishDetail.status === "pending" ||
+                      wishDetail.status === "rejected") && (
+                      <button
+                        className="primary"
+                        onClick={() =>
+                          setDecision({
+                            title: `通过许愿 · ${wishDetail.userName}`,
+                            text: "通过后，这条许愿会出现在本地代理的「已通过」列表中。可以附上排期或实现说明。",
+                            path: `/admin/wishes/${wishDetail.id}`,
+                            body: { action: "approve" },
+                            note: true,
+                          })
+                        }
+                      >
+                        <Check size={16} />
+                        {wishDetail.status === "rejected" ? "重新通过" : "通过"}
+                      </button>
+                    )}
+                    {wishDetail.status === "approved" && (
+                      <button
+                        className="primary"
+                        onClick={() =>
+                          setDecision({
+                            title: `开始实现 · ${wishDetail.userName}`,
+                            text: "标记为「正在实现」，本地代理可以据此识别并避免重复开工。",
+                            path: `/admin/wishes/${wishDetail.id}`,
+                            body: { action: "start" },
+                            note: true,
+                          })
+                        }
+                      >
+                        <Hammer size={16} />
+                        开始实现
+                      </button>
+                    )}
+                    {wishDetail.status === "in_progress" && (
+                      <button
+                        className="primary"
+                        onClick={() =>
+                          setDecision({
+                            title: `标记已实现 · ${wishDetail.userName}`,
+                            text: "标记为「已实现」，本地代理和玩家都会看到最终状态。",
+                            path: `/admin/wishes/${wishDetail.id}`,
+                            body: { action: "implement" },
+                            note: true,
+                          })
+                        }
+                      >
+                        <Trophy size={16} />
+                        标记已实现
+                      </button>
+                    )}
+                    {(wishDetail.status === "pending" ||
+                      wishDetail.status === "approved" ||
+                      wishDetail.status === "in_progress") && (
+                      <button
+                        className="outline danger"
+                        onClick={() =>
+                          setDecision({
+                            title: `驳回许愿 · ${wishDetail.userName}`,
+                            text: "请写下驳回原因，玩家会在自己的许愿记录中看到。之后仍可重新通过。",
+                            path: `/admin/wishes/${wishDetail.id}`,
+                            body: { action: "reject" },
+                            note: true,
+                          })
+                        }
+                      >
+                        <XCircle size={16} />
+                        驳回
+                      </button>
+                    )}
+                  </div>
+                </Modal>
+              )}
               {!filteredWishes.length && (
                 <p className="admin-empty">
                   没有符合条件的许愿。切换筛选或等待玩家提交。

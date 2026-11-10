@@ -94,13 +94,20 @@ func (s *State) prepare(now int64) {
 	s.worldPrepare(now)
 }
 func (s *State) startWave(now int64) {
+	if s.weathered() {
+		s.World.Shop = nil
+		if s.Options.Mode == "campaign" && s.CompletedWaves >= s.Options.Waves {
+			s.finishCampaign()
+			return
+		}
+	}
 	s.Phase = "battle"
 	s.Epoch++
 	s.ServerAt = now
 	s.NextAt = 0
 	s.SpawnClock = 0
 	s.SpawnNotBefore = 0
-	if s.taskConvoyActive() {
+	if s.taskConvoyActive() && !s.weathered() {
 		s.SpawnNotBefore = s.ElapsedMS + 2000
 	}
 	if s.rebalanced() {
@@ -325,6 +332,10 @@ func (s *State) step(now int64) {
 					spawned.FrozenUntil, spawned.SilencedUntil = 0, 0
 					spawned.RecoveryUntil = 0
 					spawned.KnockbackGuards = nil
+					spawned.CraterGuards = nil
+					spawned.FreezeGuards = nil
+					spawned.MeteorGuards = nil
+					spawned.HeartGuards = nil
 					spawned.HP = math.Max(1, e.MaxHP*.3)
 					spawned.MaxHP = spawned.HP
 					spawned.Shield, spawned.Armor = 0, 0
@@ -358,9 +369,11 @@ func (s *State) step(now int64) {
 		if !s.blockAtCrater(&e, nextProgress) {
 			e.Progress = nextProgress
 		}
+		s.taskContact(e, oldProgress, e.Progress)
 		if e.Progress >= pathDistance(s.routePath(e.Route)) {
-			s.BaseHP = max(0, s.BaseHP-e.Leak)
-			s.event(Event{TargetID: e.ID, Type: "base_hit", X: worldMap.Base.X, Y: worldMap.Base.Y, Kind: e.Kind, Owner: -1, Amount: float64(e.Leak)})
+			leak := s.leakDamage(e)
+			s.BaseHP = max(0, s.BaseHP-leak)
+			s.event(Event{TargetID: e.ID, Type: "base_hit", X: worldMap.Base.X, Y: worldMap.Base.Y, Kind: e.Kind, Owner: -1, Amount: float64(leak)})
 			continue
 		}
 		p := pathPosition(s.routePath(e.Route), e.Progress)
@@ -399,12 +412,19 @@ func (s *State) step(now int64) {
 		}
 		s.note("守住第 %d 波，每位玩家获得 %d 金币", s.Wave, reward)
 		if s.Options.Mode == "campaign" && s.CompletedWaves >= s.Options.Waves {
-			s.failActiveObjectives("战役结束前未完成护送")
-			s.Phase = "won"
-			s.Epoch++
-			s.NextAt = 0
-			s.event(Event{Type: "win", X: worldMap.Base.X, Y: worldMap.Base.Y, Owner: -1})
-			s.note("全队获胜，星光长明")
+			if s.weathered() && s.World.Shop != nil {
+				s.Phase = "prepare"
+				s.Epoch++
+				s.NextAt = now + int64(s.Options.PrepSeconds)*1000
+				s.ServerAt = now
+				for i := range s.Players {
+					s.Players[i].Ready = false
+					s.Players[i].PauseVote = false
+					s.Players[i].ResumeVote = false
+				}
+			} else {
+				s.finishCampaign()
+			}
 			return
 		}
 		s.Wave++
@@ -443,7 +463,7 @@ func (s *State) fireTower(index int) bool {
 	} else {
 		s.hitWithSkill(target, damage, *t, skill)
 		if skill == "volley" && s.growing() {
-			g := volleyGrowth(t.Level)
+			g := s.volleyArea(t.Level)
 			for _, j := range s.nearbyTargets(enemy, g.Radius, g.Targets) {
 				s.hitWithSkill(j, baseDamage*g.Damage, *t, skill)
 			}
@@ -465,13 +485,28 @@ func (s *State) hitWithSkill(index int, damage float64, t Tower, skill string) {
 	if e.HP <= 0 {
 		return
 	}
+	if s.weathered() {
+		if t.Kind == "cannon" && t.Branch == "power" && e.Repairing > 0 {
+			damage *= 1.5
+		}
+		if t.Kind == "arcane" && e.Armor > 0 {
+			damage *= 1.1
+			if t.Branch == "power" {
+				extra := 1.1 + .1*float64(t.Level-1)
+				if heavy(*e) {
+					extra -= .1
+				}
+				damage *= extra
+			}
+		}
+	}
 	if t.Kind != "arcane" && skill != "execute" {
 		damage *= 1 - e.Armor
 	}
 	before := e.HP + e.Shield
 	if e.Shield > 0 {
 		factor := 1.
-		if t.Kind == "arcane" {
+		if t.Kind == "arcane" && !s.weathered() {
 			factor = 1.5
 			if s.specialized() && t.Branch == "power" && (s.rebalanced() || !heavy(*e)) {
 				if s.rebalanced() {
@@ -493,6 +528,13 @@ func (s *State) hitWithSkill(index int, damage float64, t Tower, skill string) {
 		damage -= absorbed / factor
 	}
 	e.HP = math.Max(0, e.HP-damage)
+	if s.weathered() && skill == "cripple" {
+		_, percent := heartArea(t.Level)
+		if s.World.Event.ID == "fog" {
+			percent *= 1.05
+		}
+		e.HP = math.Max(0, e.HP*(1-percent))
+	}
 	actual := before - e.HP - e.Shield
 	s.Players[t.Owner].Damage = math.Min(maxValue, s.Players[t.Owner].Damage+actual)
 	if t.Kind == "frost" {

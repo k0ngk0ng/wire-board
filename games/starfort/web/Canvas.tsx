@@ -660,7 +660,7 @@ function drawFeatures(
             : "可承接";
     // The convoy moves only while its authoritative side objective is active.
     const bob =
-      objective.kind === "convoy" &&
+      (objective.kind === "convoy" || objective.kind === "merchant") &&
       objective.status === "active" &&
       !reduced &&
       view.phase === "battle"
@@ -669,7 +669,7 @@ function drawFeatures(
     const name =
       objective.kind === "beacon"
         ? "watchtower"
-        : objective.kind === "convoy"
+        : objective.kind === "convoy" || objective.kind === "merchant"
           ? "cart"
           : "mine";
     ctx.save();
@@ -829,7 +829,7 @@ export function Battlefield({
   assets: string;
   selected: number | null;
   towerPanel?: ReactNode;
-  placement?: "add" | "highground";
+  placement?: "add" | "highground" | "move";
   onPlace?: (point: Point, pad?: number) => void;
   select: (pad: number, toggle?: boolean) => void;
 }) {
@@ -2254,7 +2254,7 @@ export function Battlefield({
             const rect = canvas.current!.getBoundingClientRect();
             const x = event.clientX - rect.left,
               y = event.clientY - rect.top;
-            if (placement === "add") {
+            if (placement === "add" || placement === "move") {
               onPlace?.(
                 screenToWorld({ x, y }, camera.current, viewport.current),
               );
@@ -2306,6 +2306,21 @@ export function Battlefield({
           }
         }}
       >
+        {data.weatherRules === 1 && data.world?.event && (
+          <div
+            className={`sf-weather sf-weather-${data.world.event.id}`}
+            data-sf-weather={data.world.event.id}
+            role="img"
+            aria-label={`天气：${data.world.event.label}`}
+          >
+            {Array.from({ length: 12 }, (_, i) => (
+              <i
+                key={i}
+                style={{ left: `${i * 8.7}%`, animationDelay: `${-i * 0.6}s` }}
+              />
+            ))}
+          </div>
+        )}
         <canvas
           ref={canvas}
           data-starfort-canvas

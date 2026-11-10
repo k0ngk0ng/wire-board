@@ -43,7 +43,7 @@ func (s *State) balancedStats(t Tower) (float64, float64, int) {
 
 func (s *State) iceAttack(t Tower) (float64, int64) {
 	slow := math.Min(.9, .1*(1+.2*float64((t.Level-1)/2)))
-	if s.World.Event.ID == "frost" {
+	if s.World.Event.ID == "frost" && (!s.weathered() || t.Branch == "speed") {
 		slow = math.Min(.9, slow+.15)
 	}
 	duration := int64(1000/StepMS) + int64(t.Level/2)
@@ -51,6 +51,9 @@ func (s *State) iceAttack(t Tower) (float64, int64) {
 }
 
 func (s *State) balancedChoices(t Tower) (choices []BranchChoice) {
+	if s.weathered() {
+		return s.weatherChoices(t)
+	}
 	defer func() {
 		if s.growing() {
 			for i := range choices {
@@ -87,6 +90,9 @@ func (s *State) balancedChoices(t Tower) (choices []BranchChoice) {
 }
 
 func (s *State) balancedPassive(t Tower) *PassiveView {
+	if s.weathered() {
+		return s.weatherPassive(t)
+	}
 	if t.Branch == "" {
 		return nil
 	}
@@ -146,6 +152,10 @@ func (s *State) balancedPassive(t Tower) *PassiveView {
 }
 
 func (s *State) balancedHit(t *Tower, target Enemy, damage float64) {
+	if s.weathered() {
+		s.weatherHit(t, target, damage)
+		return
+	}
 	if t.Branch == "" {
 		return
 	}

@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import type { BoardProps } from "../../../web/src/game-api/module";
 import { Modal } from "../../../web/src/ui/board-host";
 import { Battlefield } from "./Canvas";
+import { MerchantShop } from "./MerchantShop";
 import { SkillBadge } from "./SkillBadge";
 import type { CombatStatus } from "./combat-timeline";
 import { assetURL, pickSound } from "./presentation";
@@ -289,7 +290,7 @@ function ObjectiveCard({
       )}
       {active && (
         <p className="sf-objective-progress">
-          {objective.kind === "convoy"
+          {objective.kind === "convoy" || objective.kind === "merchant"
             ? `护送进度 ${convoyProgress}% · 抵达星核后领取奖励`
             : `已守住 ${progress} / ${total} 波 · 守到第 ${objective.endWave} 波${wave === objective.endWave ? "，最后一波" : ""}`}
         </p>
@@ -301,7 +302,9 @@ function ObjectiveCard({
             data-sf-objective-health={objective.id}
           >
             <span>
-              {objective.kind === "convoy" ? "补给队生命" : "据点生命"}{" "}
+              {objective.kind === "convoy" || objective.kind === "merchant"
+                ? "补给队生命"
+                : "据点生命"}{" "}
               {balanced
                 ? Number(Math.max(0, objective.hp).toFixed(2))
                 : Math.ceil(Math.max(0, objective.hp))}{" "}
@@ -442,6 +445,10 @@ export function Board({
   clock,
 }: BoardProps<View>) {
   const [choiceOpen, setChoiceOpen] = useState(false);
+  const [selling, setSelling] = useState<number>();
+  const [shopOpen, setShopOpen] = useState(false);
+  const [movingTower, setMovingTower] = useState(0);
+  const shopPrompt = useRef("");
   const [infoOpen, setInfoOpen] = useState(false);
   const [tasksOpen, setTasksOpen] = useState(false);
   const [placing, setPlacing] = useState(false);
@@ -452,6 +459,30 @@ export function Board({
       ? data.world?.objectives?.find((o) => o.status === "available")
       : undefined;
   const padReward = data.world?.padReward;
+  const shop = data.controls.shop;
+  const saleTower = data.towers.find((t) => t.id === selling);
+  const confirmedSale = data.controls.sells.find((c) => c.towerId === selling);
+  useEffect(() => {
+    if (selling && !data.towers.some((t) => t.id === selling))
+      setSelling(undefined);
+  }, [selling, data.towers]);
+  useEffect(() => {
+    setSelling(undefined);
+    setShopOpen(false);
+  }, [room.id]);
+  useEffect(() => {
+    const key = room.id + ":" + shop?.wave;
+    if (
+      shop?.enabled &&
+      !padReward &&
+      shopPrompt.current !== key &&
+      !room.spectating
+    ) {
+      shopPrompt.current = key;
+      setShopOpen(true);
+    }
+    if (!shop) setShopOpen(false);
+  }, [room.id, room.spectating, shop?.wave, shop?.enabled, padReward]);
   useEffect(() => {
     if (!padReward) setPlacing(false);
   }, [padReward]);
@@ -503,6 +534,7 @@ export function Board({
     const key = room.id + ":" + offeredTask?.id;
     if (
       offeredTask &&
+      !shop &&
       !padReward &&
       !room.spectating &&
       !data.world?.choice &&
@@ -516,6 +548,7 @@ export function Board({
     room.id,
     room.spectating,
     offeredTask?.id,
+    shop?.wave,
     padReward,
     data.world?.choice,
     data.world?.boonChoice,
@@ -651,6 +684,15 @@ export function Board({
           <span data-sf-wave>
             第 <strong>{data.wave}</strong> 波
           </span>
+          {data.weatherRules === 1 && world?.event && (
+            <span
+              data-sf-weather-notice
+              role="status"
+              title={world.event.description}
+            >
+              {world.event.label}
+            </span>
+          )}
           <span>
             {room.spectating ? "击杀" : "金币"}{" "}
             <strong data-sf-own-gold>
@@ -813,7 +855,14 @@ export function Board({
                 "pad_reward",
                 padReward?.kind === "highground"
                   ? { pad }
-                  : { x: point.x, y: point.y },
+                  : {
+                      x: point.x,
+                      y: point.y,
+                      towerId:
+                        movingTower ||
+                        data.towers.find((t) => t.owner === room.you)?.id ||
+                        data.towers[0]?.id,
+                    },
               );
             }}
             onReady={onReady}
@@ -876,10 +925,7 @@ export function Board({
                         className="sf-secondary"
                         data-sf-sell
                         disabled={locked || !sale?.enabled}
-                        onClick={() => {
-                          void send("sell", { towerId: selectedTower.id });
-                          setSelected(null);
-                        }}
+                        onClick={() => setSelling(selectedTower.id)}
                       >
                         出售 · {sale?.refund ?? 0}
                       </button>
@@ -1138,9 +1184,7 @@ export function Board({
                               className="sf-secondary"
                               data-sf-sell
                               disabled={locked || !sale?.enabled}
-                              onClick={() =>
-                                void send("sell", { towerId: selectedTower.id })
-                              }
+                              onClick={() => setSelling(selectedTower.id)}
                             >
                               出售 · 返还 {sale?.refund ?? 0} 金币
                             </button>
@@ -1211,6 +1255,18 @@ export function Board({
                 )}
               </section>
             </Modal>
+          )}
+          {shop && (
+            <button
+              className="sf-secondary"
+              data-sf-open-shop
+              onClick={() => {
+                setTasksOpen(false);
+                setShopOpen(true);
+              }}
+            >
+              商店
+            </button>
           )}
           <button
             className="sf-secondary"
@@ -1330,7 +1386,13 @@ export function Board({
         data.phase === "prepare" &&
         !choosing && (
           <Modal
-            title={padReward.kind === "add" ? "新增建造点" : "升级高地"}
+            title={
+              padReward.kind === "add"
+                ? "新增建造点"
+                : padReward.kind === "move"
+                  ? "移动防御塔"
+                  : "升级高地"
+            }
             onClose={() => setPlacing(true)}
           >
             <div data-sf-pad-reward>
@@ -1342,8 +1404,31 @@ export function Board({
               <p>
                 {padReward.kind === "add"
                   ? "在地图上选择新建造点。"
-                  : "选择一个普通建造点升级为高地。"}
+                  : padReward.kind === "move"
+                    ? "选择一座防御塔，再选择新位置。"
+                    : "选择一个普通建造点升级为高地。"}
               </p>
+              {padReward.kind === "move" && (
+                <label>
+                  移动防御塔
+                  <select
+                    aria-label="移动防御塔"
+                    value={
+                      movingTower ||
+                      data.towers.find((t) => t.owner === room.you)?.id ||
+                      data.towers[0]?.id ||
+                      0
+                    }
+                    onChange={(e) => setMovingTower(Number(e.target.value))}
+                  >
+                    {data.towers.map((t) => (
+                      <option key={t.id} value={t.id}>
+                        {towerNames[t.kind]} · {t.level} 级 · 建造点 {t.pad + 1}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              )}
               <button
                 data-sf-choose-reward
                 onClick={() => {
@@ -1411,12 +1496,74 @@ export function Board({
           <span>
             {padReward.kind === "add"
               ? "点选新建造点位置"
-              : "点选普通建造点升级高地"}
+              : padReward.kind === "move"
+                ? "点选防御塔的新位置"
+                : "点选普通建造点升级高地"}
           </span>
           <button className="sf-secondary" onClick={() => setPlacing(false)}>
             返回
           </button>
         </div>
+      )}
+      {selling !== undefined && saleTower && (
+        <Modal title="出售防御塔" onClose={() => setSelling(undefined)}>
+          <div data-sf-sell-confirm>
+            <p>
+              出售 {towerNames[saleTower.kind]}（{saleTower.level} 级），返还{" "}
+              {confirmedSale?.refund ?? 0} 金币。塔的等级与专精将一并移除。
+            </p>
+            <div className="sf-sale-actions">
+              <button
+                data-sf-sell-cancel
+                className="sf-secondary"
+                onClick={() => setSelling(undefined)}
+              >
+                取消
+              </button>
+              <button
+                data-sf-sell-accept
+                disabled={locked || !confirmedSale?.enabled}
+                onClick={() =>
+                  void send("sell", { towerId: saleTower.id }).then(() => {
+                    setSelling(undefined);
+                    setSelected(null);
+                  })
+                }
+              >
+                确认出售
+              </button>
+            </div>
+          </div>
+        </Modal>
+      )}
+      {shopOpen && shop && (
+        <Modal
+          title="商人商店"
+          className="sf-shop-dialog"
+          onClose={() => setShopOpen(false)}
+        >
+          <MerchantShop
+            data={data}
+            you={room.you}
+            locked={!!locked || !!room.spectating}
+            send={send}
+          />
+          {failure && (
+            <p className="sf-error" role="alert">
+              {failure}
+            </p>
+          )}
+          {data.options.mode === "campaign" &&
+            data.completedWaves >= data.options.waves && (
+              <button
+                data-sf-shop-finish
+                disabled={locked || room.spectating}
+                onClick={() => void send("close_shop")}
+              >
+                结束战役
+              </button>
+            )}
+        </Modal>
       )}
       {infoOpen && (
         <Modal
