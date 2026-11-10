@@ -24,20 +24,40 @@ MULTI = {
 }
 PAIRED = {'TestBaseData', 'TestBotsDoNotUseOtherPlayersSecretsOrDeckOrder', 'TestBotHandlesSubstepsAndInvalidSeats'}
 WISH_PATHS = {'internal/server/wishes.go', 'internal/server/wish_test.go', 'web/src/wishes.tsx'}
-PLANNER_PATHS = {'scripts/ci/scope.py', 'scripts/ci/test_scope.py', '.github/workflows/build.yml'}
+FAST_COMPONENTS = {
+    'wishes': (WISH_PATHS, ['internal/server/wish_test.go']),
+    'profiles': ({'internal/server/profiles.go', 'internal/server/profiles_test.go'}, ['internal/server/profiles_test.go']),
+    'chat': ({'internal/server/chat.go', 'internal/server/chat_test.go'}, ['internal/server/chat_test.go']),
+    'network': ({'internal/server/network_status.go', 'internal/server/network_status_e2e_test.go'}, ['internal/server/network_status_e2e_test.go']),
+    'game-order': ({'internal/server/game_order.go', 'internal/server/game_order_e2e_test.go', 'web/src/game-order.ts'}, ['internal/server/game_order_e2e_test.go']),
+    'account-password': ({'internal/server/account_password.go', 'internal/server/account_password_e2e_test.go'}, ['internal/server/account_password_e2e_test.go']),
+}
+
+def ci_path(path):
+    return path.startswith(('.github/workflows/', 'scripts/ci/')) or path in {
+        'scripts/release-source.cjs', 'scripts/release-source.test.cjs',
+        'scripts/cdn_local_ready.py', 'scripts/test_cdn_local_ready.py',
+    }
 
 def game_names(root):
     return sorted(p.name for p in (root/'games').iterdir() if p.is_dir() and not p.name.startswith(('.', '_')))
 
-def plan(paths, games, manual='', legacy_sources=None, contra_campaigns=False):
+def plan(paths, games, manual='', legacy_sources=None, contra_campaigns=False, validation='auto'):
+    if validation not in ('auto', 'quick', 'full'): raise ValueError('Unknown validation mode: ' + validation)
+    if validation == 'full': manual = 'all'
     selected = {}
+    game_paths = set()
+    active_path = None
     # The user authorized human-only Contra delivery. Computer campaigns are
     # retained as explicit research, never inferred from rule changes or all.
     if contra_campaigns and 'contra' not in games:
         raise ValueError('Contra research requested without Contra sources')
     def add(game, backend=False):
-        if game in games: selected[game] = selected.get(game, False) or backend
+        if game in games:
+            selected[game] = selected.get(game, False) or backend
+            if active_path is not None: game_paths.add(active_path)
     for path in paths:
+        active_path = path
         if path.endswith('.md') or path.startswith('docs/'): continue
         parts = path.split('/')
         if path.startswith('internal/') and path.endswith('_test.go'):
@@ -61,6 +81,7 @@ def plan(paths, games, manual='', legacy_sources=None, contra_campaigns=False):
                     add(game, path.endswith('.go'))
         if path in ('internal/game/bot_test.go', 'internal/game/game_test.go'):
             for game in ('rail', 'splendor'): add(game, True)
+    active_path = None
     if manual:
         if manual not in (*games, 'all', 'shared'): raise ValueError(f'Unknown game: {manual}')
         if manual != 'shared':
@@ -68,14 +89,41 @@ def plan(paths, games, manual='', legacy_sources=None, contra_campaigns=False):
     rows = [{'game': g, 'backend': selected[g]} for g in sorted(selected)]
     matrix = []
     for row in rows:
-        count = (20 if row['game'] == 'catan' else 16 if row['game'] == 'yuyuhakusho' else 1) if row['backend'] else 1
+        count = 1
         matrix.extend({**row, 'shard': i, 'count': count} for i in range(count))
     campaigns = [{'mode': mode, 'players': players}
                  for mode in ('standard-terminal', 'assisted-clear') for players in (1, 2)] if contra_campaigns else []
     code_paths = {p for p in paths if not p.endswith('.md') and not p.startswith('docs/')}
-    wish_only = not manual and bool(code_paths & WISH_PATHS) and code_paths <= WISH_PATHS | PLANNER_PATHS
+    components = set()
+    shared = manual in ('shared', 'all')
+    frontend_checks = manual == 'all'
+    for path in sorted(code_paths - game_paths):
+        matched = {name for name, (sources, _) in FAST_COMPONENTS.items() if path in sources}
+        if matched:
+            components.update(matched)
+        elif ci_path(path):
+            components.add('ci')
+        elif path.startswith(('web/src/', 'web/tests/')):
+            frontend_checks = True
+        elif path in ('scripts/update.sh', 'scripts/test_update.py', 'compose.yaml', 'Dockerfile', '.env.example'):
+            components.add('deployment')
+        else:
+            shared = True
+    if validation == 'quick' and (shared or rows):
+        raise ValueError('Quick validation supports isolated platform components; use auto for shared core or games')
+    if shared:
+        components.difference_update(FAST_COMPONENTS) # The public suite already contains these tests.
+    if frontend_checks: components.add('frontend')
+    if validation == 'quick' and any(p.startswith('web/') and not p.endswith('.md') for p in paths):
+        components.add('typescript')
+    build_required = validation != 'quick' and bool(manual or any(not ci_path(p) for p in code_paths))
     return {'games': rows, 'matrix': {'include': matrix}, 'has_games': bool(rows),
-            'shared_scope': 'wishes' if wish_only else 'all',
+            'has_shared': shared, 'has_quick': bool(components),
+            'quick_components': sorted(components),
+            'quick_go': bool(components.intersection(FAST_COMPONENTS) or 'ci' in components),
+            'quick_node_deps': bool(components.intersection({'frontend', 'typescript'})),
+            'frontend_checks': frontend_checks, 'build_required': build_required,
+            'validation': validation,
             'contra_campaign_requested': bool(contra_campaigns),
             'contra_campaign_matrix': {'include': campaigns}, 'has_contra_campaigns': bool(campaigns)}
 
@@ -133,7 +181,8 @@ def go_commands(root, game, index=0, count=1, race=False):
                 special.append((package, '^' + name + '$/^' + game + suffix))
             else:
                 grouped.setdefault(package, []).append(name)
-    base = ['go', 'test', '-json', '-count=1', '-timeout=45m']
+    timeout = '150m' if game in ('catan', 'yuyuhakusho') and count == 1 else '45m'
+    base = ['go', 'test', '-json', '-count=1', '-timeout=' + timeout]
     if race: base.append('-race')
     commands = [base + ['-run', '^(?:' + '|'.join(re.escape(n) for n in sorted(set(names))) + ')$', package]
                 for package, names in sorted(grouped.items())]
@@ -146,11 +195,37 @@ def go_commands(root, game, index=0, count=1, race=False):
                  for package, name, prefix in trajectories]
     return commands
 
-def shared_commands(root, wish_only=False):
-    if wish_only:
-        return [['go', 'test', '-json', '-count=1', '-timeout=5m', '-run',
-                 '^(TestWish.*|TestAgent.*Wish.*)$', './internal/server']]
-    return go_commands(root, 'shared', race=True)
+def quick_commands(root, components):
+    commands = []
+    grouped = {}
+    for component in components:
+        if component in FAST_COMPONENTS:
+            for name in FAST_COMPONENTS[component][1]:
+                path = root/name
+                if not path.is_file(): raise ValueError('Missing fast-lane test file: ' + name)
+                tests = re.findall(r'^func ((?:Test|Example|Fuzz)\w*)\(', path.read_text(), re.M)
+                if not tests: raise ValueError('No fast-lane tests in: ' + name)
+                grouped.setdefault('./' + path.parent.relative_to(root).as_posix(), set()).update(tests)
+        elif component == 'ci':
+            commands += [
+                ['python3', '-B', 'scripts/ci/test_scope.py'],
+                ['python3', '-B', 'scripts/ci/check-plan.py'],
+                ['python3', '-B', 'scripts/ci/check-lanes.py'],
+                ['node', '--test', 'scripts/ci/baseline.test.cjs', 'scripts/release-source.test.cjs'],
+                ['python3', '-B', 'scripts/test_cdn_local_ready.py'],
+            ]
+        elif component == 'deployment':
+            commands += [['bash', '-n', 'scripts/update.sh'], ['python3', '-B', 'scripts/test_update.py']]
+        elif component == 'frontend':
+            commands += [['node', '--experimental-strip-types', '--test', *[str(p.relative_to(root)) for p in sorted((root/'web/tests').glob('*.test.mjs'))]]]
+        elif component == 'typescript':
+            commands += [['web/node_modules/.bin/tsc', '-b', 'web/tsconfig.json', '--pretty', 'false']]
+        else:
+            raise ValueError('Unknown fast-lane component: ' + component)
+    commands += [['go', 'test', '-json', '-count=1', '-timeout=5m', '-run',
+                  '^(?:' + '|'.join(sorted(names)) + ')$', package]
+                 for package, names in sorted(grouped.items())]
+    return commands
 
 def verification_env(game, backend, base=None):
     env = {k: v for k, v in (os.environ if base is None else base).items()
@@ -228,8 +303,12 @@ def run(args):
     output.mkdir(parents=True, exist_ok=True)
     if args.game == 'pvz' and args.shard == 0:
         (ROOT/'.local/pvz/ci-assets').mkdir(parents=True, exist_ok=True)
-    if args.game == 'shared':
-        commands = shared_commands(ROOT, wish_only=getattr(args, 'wish_only', False))
+    if args.game == 'quick':
+        receipt = json.loads(Path(args.plan).read_text())
+        commands = quick_commands(ROOT, receipt['quick_components'])
+        if not commands: raise ValueError('The fast lane has no selected checks')
+    elif args.game == 'shared':
+        commands = go_commands(ROOT, 'shared', race=True)
     else:
         commands = []
         if args.shard == 0:
@@ -306,11 +385,12 @@ def main():
     p.add_argument('--base', default='')
     p.add_argument('--head', default='HEAD')
     p.add_argument('--manual', default='')
+    p.add_argument('--validation', choices=['auto', 'quick', 'full'], default='auto')
     p.add_argument('--contra-campaigns', action='store_true', help='Opt into non-blocking Contra computer research campaigns')
     r = sub.add_parser('run')
-    r.add_argument('--game', required=True, choices=['shared', *game_names(ROOT)])
+    r.add_argument('--game', required=True, choices=['quick', 'shared', *game_names(ROOT)])
+    r.add_argument('--plan', default='.local/ci/plan.json')
     r.add_argument('--backend', action='store_true')
-    r.add_argument('--wish-only', action='store_true', help='Run only wish HTTP boundary checks for a wish-only plan')
     r.add_argument('--shard', type=int, default=0)
     r.add_argument('--count', type=int, default=1)
     sub.add_parser('pvz-tools', help='Bind the scoped PvZ media verifier executable')
@@ -337,7 +417,7 @@ def main():
                 old = subprocess.run(['git', 'show', args.base + ':' + path], cwd=ROOT, text=True, capture_output=True)
                 source = changed_test_source(old.stdout if old.returncode == 0 else '', source, retired=retired)
             legacy_sources[path] = source
-    result = plan(paths, game_names(ROOT), args.manual, legacy_sources, contra_campaigns=args.contra_campaigns)
+    result = plan(paths, game_names(ROOT), args.manual, legacy_sources, contra_campaigns=args.contra_campaigns, validation=args.validation)
     result.update(base=args.base, head=args.head, paths=changed_names(raw))
     out = ROOT/'.local/ci'
     out.mkdir(parents=True, exist_ok=True)
@@ -346,13 +426,15 @@ def main():
         with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
             f.write('matrix=' + json.dumps(result['matrix']) + '\n')
             f.write('has_games=' + str(result['has_games']).lower() + '\n')
-            f.write('shared_scope=' + result['shared_scope'] + '\n')
+            for key in ['has_shared', 'has_quick', 'quick_go', 'quick_node_deps', 'frontend_checks', 'build_required']:
+                f.write(key + '=' + str(result[key]).lower() + '\n')
             f.write('contra_campaign_matrix=' + json.dumps(result['contra_campaign_matrix']) + '\n')
             f.write('has_contra_campaigns=' + str(result['has_contra_campaigns']).lower() + '\n')
     if os.environ.get('GITHUB_STEP_SUMMARY'):
         with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as f:
             f.write('## Verification scope\n\nBaseline: `' + (args.base or 'bootstrap') + '`\n\n')
-            f.write('Shared platform checks always run. Selected games:\n\n')
+            f.write('Fast checks: ' + (', '.join(result['quick_components']) or 'none') + '\n\n')
+            f.write('Shared backend: ' + str(result['has_shared']).lower() + '; application build: ' + str(result['build_required']).lower() + '\n\nSelected games:\n\n')
             f.write('\n'.join('- ' + r['game'] + (': frontend/build and Go contracts; optional computer research listed separately' if r['game'] == 'contra' and r['backend'] else ': frontend, rules, full matches and race checks' if r['backend'] else ': frontend/assets only') for r in result['games']) or '- None')
             f.write('\n')
             if result['has_contra_campaigns']:

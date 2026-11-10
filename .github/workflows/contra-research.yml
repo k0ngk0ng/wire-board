@@ -1,0 +1,41 @@
+name: Optional Contra computer research
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+env:
+  GOCACHE: ${{ github.workspace }}/.local/go-build
+  GOMODCACHE: ${{ github.workspace }}/.local/go-mod
+  GOTELEMETRY: 'off'
+jobs:
+  research:
+    name: Experimental Contra computer ${{ matrix.mode }} (${{ matrix.players }} seats; non-gating)
+    runs-on: ubuntu-latest
+    # Temporary human-only delivery: failed research retains its own false
+    # report and artifacts but is not a prerequisite for the verified build.
+    continue-on-error: true
+    # Each process has a 90-minute test limit; allow setup and artifact upload.
+    timeout-minutes: 110
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix: ${{ fromJSON('{"include":[{"mode":"standard-terminal","players":1},{"mode":"standard-terminal","players":2},{"mode":"assisted-clear","players":1},{"mode":"assisted-clear","players":2}]}') }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+      - name: Run experimental computer checks without a delivery gate
+        env:
+          CAMPAIGN_MODE: ${{ matrix.mode }}
+          CAMPAIGN_PLAYERS: ${{ matrix.players }}
+        run: python3 -B scripts/contra/campaign_modes.py --mode "$CAMPAIGN_MODE" --players "$CAMPAIGN_PLAYERS" --out .local/ci/contra-campaign
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: contra-computer-research-${{ matrix.mode }}-${{ matrix.players }}
+          path: .local/ci/contra-campaign/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 7
