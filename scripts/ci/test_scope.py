@@ -31,6 +31,31 @@ scope = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(scope)
 
 class ScopeTests(unittest.TestCase):
+    # Failures: a wish-only edit runs all shared races; cancelled wish edits are
+    # missed; unrelated runtime edits/manual full checks incorrectly narrow;
+    # CI-planner edits prevent its own tested selection from taking effect.
+    def test_wish_only_changes_select_targeted_shared_checks(self):
+        for paths in [
+            ['internal/server/wishes.go'],
+            ['internal/server/wishes.go', 'internal/server/wish_test.go', 'web/src/wishes.tsx', 'docs/wishes.md'],
+            ['internal/server/wishes.go', 'scripts/ci/scope.py', 'scripts/ci/test_scope.py', '.github/workflows/build.yml'],
+        ]:
+            self.assertEqual(scope.plan(paths, scope.game_names(ROOT))['shared_scope'], 'wishes')
+        for extra in ['internal/server/server.go', 'web/src/main.tsx', 'games/rail/server/module.go']:
+            self.assertEqual(scope.plan(['internal/server/wishes.go', extra], scope.game_names(ROOT))['shared_scope'], 'all')
+        for paths in [[], ['scripts/ci/scope.py'], ['docs/wishes.md']]:
+            self.assertEqual(scope.plan(paths, scope.game_names(ROOT))['shared_scope'], 'all')
+        self.assertEqual(scope.plan(['internal/server/wishes.go'], scope.game_names(ROOT), manual='all')['shared_scope'], 'all')
+
+    def test_wish_shared_commands_do_not_run_global_races(self):
+        commands = scope.shared_commands(ROOT, wish_only=True)
+        self.assertEqual(len(commands), 1)
+        self.assertEqual(commands[0][-1], './internal/server')
+        self.assertNotIn('-race', commands[0])
+        self.assertIn('TestWish', ' '.join(commands[0]))
+        self.assertIn('TestAgent', ' '.join(commands[0]))
+        self.assertEqual(scope.shared_commands(ROOT), scope.go_commands(ROOT, 'shared', race=True))
+
     # Failure inventory: either 49-case trajectory omitted/duplicated; whole
     # campaigns repeated on all shards; wrong fixture index/count; missing
     # single-shard coverage; race or unrelated-game checks acquire MD fixtures.

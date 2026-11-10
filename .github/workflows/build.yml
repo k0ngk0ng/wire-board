@@ -26,6 +26,7 @@ jobs:
     outputs:
       matrix: ${{ steps.scope.outputs.matrix }}
       has_games: ${{ steps.scope.outputs.has_games }}
+      shared_scope: ${{ steps.scope.outputs.shared_scope }}
       verified_ancestor: ${{ steps.baseline.outputs.sha }}
       contra_campaign_matrix: ${{ steps.scope.outputs.contra_campaign_matrix }}
       has_contra_campaigns: ${{ steps.scope.outputs.has_contra_campaigns }}
@@ -163,7 +164,7 @@ jobs:
           retention-days: 1
   shared:
     name: Shared platform HTTP, persistence and race checks
-    needs: frontend
+    needs: [plan, frontend]
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
@@ -177,7 +178,12 @@ jobs:
           name: web-dist
           path: web/dist
       - name: Test only public platform behavior
-        run: python3 -B scripts/ci/scope.py run --game shared
+        env:
+          SHARED_SCOPE: ${{ needs.plan.outputs.shared_scope }}
+        run: |
+          args=(run --game shared)
+          if [ "$SHARED_SCOPE" = wishes ]; then args+=(--wish-only); fi
+          python3 -B scripts/ci/scope.py "${args[@]}"
       - name: Check formatting and static correctness
         run: |
           test -z "$(gofmt -l main.go main_test.go internal games)"

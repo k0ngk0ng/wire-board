@@ -23,6 +23,8 @@ MULTI = {
     'TestTimeoutAutoplayAllGamesContinueToNaturalFinish': LEGACY,
 }
 PAIRED = {'TestBaseData', 'TestBotsDoNotUseOtherPlayersSecretsOrDeckOrder', 'TestBotHandlesSubstepsAndInvalidSeats'}
+WISH_PATHS = {'internal/server/wishes.go', 'internal/server/wish_test.go', 'web/src/wishes.tsx'}
+PLANNER_PATHS = {'scripts/ci/scope.py', 'scripts/ci/test_scope.py', '.github/workflows/build.yml'}
 
 def game_names(root):
     return sorted(p.name for p in (root/'games').iterdir() if p.is_dir() and not p.name.startswith(('.', '_')))
@@ -70,7 +72,10 @@ def plan(paths, games, manual='', legacy_sources=None, contra_campaigns=False):
         matrix.extend({**row, 'shard': i, 'count': count} for i in range(count))
     campaigns = [{'mode': mode, 'players': players}
                  for mode in ('standard-terminal', 'assisted-clear') for players in (1, 2)] if contra_campaigns else []
+    code_paths = {p for p in paths if not p.endswith('.md') and not p.startswith('docs/')}
+    wish_only = not manual and bool(code_paths & WISH_PATHS) and code_paths <= WISH_PATHS | PLANNER_PATHS
     return {'games': rows, 'matrix': {'include': matrix}, 'has_games': bool(rows),
+            'shared_scope': 'wishes' if wish_only else 'all',
             'contra_campaign_requested': bool(contra_campaigns),
             'contra_campaign_matrix': {'include': campaigns}, 'has_contra_campaigns': bool(campaigns)}
 
@@ -140,6 +145,12 @@ def go_commands(root, game, index=0, count=1, race=False):
                  + base + ['-run', '^' + name + '$', package]
                  for package, name, prefix in trajectories]
     return commands
+
+def shared_commands(root, wish_only=False):
+    if wish_only:
+        return [['go', 'test', '-json', '-count=1', '-timeout=5m', '-run',
+                 '^(TestWish.*|TestAgent.*Wish.*)$', './internal/server']]
+    return go_commands(root, 'shared', race=True)
 
 def verification_env(game, backend, base=None):
     env = {k: v for k, v in (os.environ if base is None else base).items()
@@ -218,7 +229,7 @@ def run(args):
     if args.game == 'pvz' and args.shard == 0:
         (ROOT/'.local/pvz/ci-assets').mkdir(parents=True, exist_ok=True)
     if args.game == 'shared':
-        commands = go_commands(ROOT, 'shared', race=True)
+        commands = shared_commands(ROOT, wish_only=getattr(args, 'wish_only', False))
     else:
         commands = []
         if args.shard == 0:
@@ -299,6 +310,7 @@ def main():
     r = sub.add_parser('run')
     r.add_argument('--game', required=True, choices=['shared', *game_names(ROOT)])
     r.add_argument('--backend', action='store_true')
+    r.add_argument('--wish-only', action='store_true', help='Run only wish HTTP boundary checks for a wish-only plan')
     r.add_argument('--shard', type=int, default=0)
     r.add_argument('--count', type=int, default=1)
     sub.add_parser('pvz-tools', help='Bind the scoped PvZ media verifier executable')
@@ -334,6 +346,7 @@ def main():
         with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
             f.write('matrix=' + json.dumps(result['matrix']) + '\n')
             f.write('has_games=' + str(result['has_games']).lower() + '\n')
+            f.write('shared_scope=' + result['shared_scope'] + '\n')
             f.write('contra_campaign_matrix=' + json.dumps(result['contra_campaign_matrix']) + '\n')
             f.write('has_contra_campaigns=' + str(result['has_contra_campaigns']).lower() + '\n')
     if os.environ.get('GITHUB_STEP_SUMMARY'):
