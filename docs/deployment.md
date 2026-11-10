@@ -165,7 +165,7 @@ WantedBy=multi-user.target
 - 更新脚本不会改写 `.env`、Nginx 或证书配置，也不会自动更新自身。升级部署工具时，从所选 GitHub Release 取出 `update.sh` 和 `compose.yaml` 后替换。在线备份脚本需配合含 `sqlite3` 的新版镜像；不满足时会在停服前退出，自动回滚旧镜像不受此限制。
 - 二进制：先备份，停止进程，替换二进制，重新启动。
 - 当前版本只在启动时创建缺失表，不执行破坏性迁移。
-- main 提交触发 `Check main and build`，执行规则分片、竞态检查、扩展组合验收和构建。该工作流不发布镜像。版本 tag 触发 `Publish version tag`，复用相同提交的已验证构建产物。
+- main 提交触发 `Check main and build`，按模块选择快速检查、公共检查和受影响游戏任务。每个受影响游戏独立并行；仅修改 CI 或文档不构建应用。手动 `validation=quick` 只做定向验证，不上传 CDN 或打包。该工作流不发布镜像。版本 tag 触发 `Publish version tag`，复用相同提交的已验证构建产物，详见 [CI 检查范围](../scripts/ci/README.md)。
 
 ## 常见问题
 

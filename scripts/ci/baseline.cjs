@@ -7,9 +7,12 @@ async function baseline(api, currentRun, publishedSHA = '') {
     // ended. Only an already published release can certify that legacy case.
     if (run.conclusion !== 'success' && run.head_sha !== publishedSHA) continue;
     const jobs = await api.jobs(run.id);
-    if (!jobs.some(j => j.name === 'Test and Linux amd64 binary' && j.conclusion === 'success')) continue;
+    const aggregate = jobs.some(j => j.name === 'Selected checks passed' && j.conclusion === 'success');
+    const binary = jobs.some(j => j.name === 'Test and Linux amd64 binary' && j.conclusion === 'success');
+    if (!aggregate && !binary) continue;
     const artifacts = await api.artifacts(run.id);
-    if (!artifacts.some(a => a.name === 'wire-board-linux-amd64' && !a.expired && a.size_in_bytes > 0)) continue;
+    const artifactName = aggregate ? 'verification-plan' : 'wire-board-linux-amd64';
+    if (!artifacts.some(a => a.name === artifactName && !a.expired && a.size_in_bytes > 0)) continue;
     if (await api.ancestor(run.head_sha)) return run.head_sha;
   }
   return null;

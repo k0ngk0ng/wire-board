@@ -14,3 +14,14 @@ test('expired artifact cannot certify a baseline',async()=>assert.equal(await ba
 test('non-ancestor cannot hide changes',async()=>assert.equal(await baseline(fixture({ancestor:async()=>false}),3),null));
 test('foreign branch cannot certify a baseline',async()=>assert.equal(await baseline(fixture({runs:async()=>[{id:1,head_branch:'feature',event:'push',path:'.github/workflows/build.yml'}]}),3),null));
 test('API errors propagate',async()=>assert.rejects(baseline(fixture({jobs:async()=>{throw Error('unavailable')}}),3),/unavailable/));
+
+// CI-only/doc-only success must advance the verification baseline without
+// requiring a release binary; incomplete aggregates/artifacts must not.
+test('successful selected-lane aggregate advances a build-free baseline',async()=>{
+ const api=fixture({jobs:async()=>[{name:'Selected checks passed',conclusion:'success'}],artifacts:async()=>[{name:'verification-plan',expired:false,size_in_bytes:10}]});
+ assert.equal(await baseline(api,3),'a'.repeat(40));
+});
+test('an incomplete selected-lane aggregate cannot advance the baseline',async()=>{
+ const api=fixture({jobs:async()=>[{name:'Selected checks passed',conclusion:'failure'}],artifacts:async()=>[{name:'verification-plan',expired:false,size_in_bytes:10}]});
+ assert.equal(await baseline(api,3),null);
+});

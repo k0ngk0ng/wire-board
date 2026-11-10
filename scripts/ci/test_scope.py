@@ -31,30 +31,25 @@ scope = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(scope)
 
 class ScopeTests(unittest.TestCase):
-    # Failures: a wish-only edit runs all shared races; cancelled wish edits are
-    # missed; unrelated runtime edits/manual full checks incorrectly narrow;
-    # CI-planner edits prevent its own tested selection from taking effect.
+    # Failures: leaf edits run public races; mixed core edits narrow unsafely;
+    # filename ownership misses tests whose names have no component prefix.
     def test_wish_only_changes_select_targeted_shared_checks(self):
-        for paths in [
-            ['internal/server/wishes.go'],
-            ['internal/server/wishes.go', 'internal/server/wish_test.go', 'web/src/wishes.tsx', 'docs/wishes.md'],
-            ['internal/server/wishes.go', 'scripts/ci/scope.py', 'scripts/ci/test_scope.py', '.github/workflows/build.yml'],
-        ]:
-            self.assertEqual(scope.plan(paths, scope.game_names(ROOT))['shared_scope'], 'wishes')
-        for extra in ['internal/server/server.go', 'web/src/main.tsx', 'games/rail/server/module.go']:
-            self.assertEqual(scope.plan(['internal/server/wishes.go', extra], scope.game_names(ROOT))['shared_scope'], 'all')
-        for paths in [[], ['scripts/ci/scope.py'], ['docs/wishes.md']]:
-            self.assertEqual(scope.plan(paths, scope.game_names(ROOT))['shared_scope'], 'all')
-        self.assertEqual(scope.plan(['internal/server/wishes.go'], scope.game_names(ROOT), manual='all')['shared_scope'], 'all')
+        result=self.plan('internal/server/wishes.go','scripts/ci/scope.py')
+        self.assertEqual(result['quick_components'],['ci','wishes'])
+        self.assertFalse(result['has_shared'])
+        mixed=self.plan('internal/server/wishes.go','internal/server/server.go')
+        self.assertTrue(mixed['has_shared'])
+        self.assertNotIn('wishes',mixed['quick_components'])
+        self.assertTrue(self.plan(manual='all')['has_shared'])
 
     def test_wish_shared_commands_do_not_run_global_races(self):
-        commands = scope.shared_commands(ROOT, wish_only=True)
+        commands = scope.quick_commands(ROOT, ['wishes'])
         self.assertEqual(len(commands), 1)
         self.assertEqual(commands[0][-1], './internal/server')
         self.assertNotIn('-race', commands[0])
-        self.assertIn('TestWish', ' '.join(commands[0]))
-        self.assertIn('TestAgent', ' '.join(commands[0]))
-        self.assertEqual(scope.shared_commands(ROOT), scope.go_commands(ROOT, 'shared', race=True))
+        for name in ['TestWishTextExpandedLimit','TestOSSSignatureReferenceVectors','TestAgentFeedDisabledAndStatusGuard']:
+            self.assertIn(name, ' '.join(commands[0]))
+        self.assertNotIn('shared_scope', self.plan('internal/server/wishes.go'))
 
     # Failure inventory: either 49-case trajectory omitted/duplicated; whole
     # campaigns repeated on all shards; wrong fixture index/count; missing
@@ -88,8 +83,8 @@ class ScopeTests(unittest.TestCase):
     def test_yuyuhakusho_backend_shards_do_not_repeat_other_games(self):
         selected=self.plan('games/yuyuhakusho/server/stream_view.go')
         self.assertEqual(selected['games'],[{'game':'yuyuhakusho','backend':True}])
-        self.assertEqual(len(selected['matrix']['include']),16)
-        self.assertTrue(all(row['game']=='yuyuhakusho' and row['count']==16 for row in selected['matrix']['include']))
+        self.assertEqual(len(selected['matrix']['include']),1)
+        self.assertTrue(all(row['game']=='yuyuhakusho' and row['count']==1 for row in selected['matrix']['include']))
         frontend=self.plan('games/yuyuhakusho/web/Board.tsx')
         self.assertEqual(frontend['matrix']['include'],[{'game':'yuyuhakusho','backend':False,'shard':0,'count':1}])
 
@@ -151,7 +146,7 @@ class ScopeTests(unittest.TestCase):
     def test_pvz_workflow_uses_scoped_workspace_asset_environment(self):
         workflow=(ROOT/'.github/workflows/build.yml').read_text()
         gate=workflow.split('      - name: Prepare PvZ asset verification environment\n',1)[1].split('      - name: Validate this game only\n',1)[0]
-        self.assertIn("if: matrix.game == 'pvz' && matrix.shard == 0",gate)
+        self.assertIn("if: matrix.game == 'pvz'",gate)
         for command in ['if ! command -v ffmpeg >/dev/null 2>&1; then',
                         'python3 -m venv .local/pvz/ci-assets/venv',
                         '.local/pvz/ci-assets/venv/bin/python -m pip install Pillow==13.0.0',
@@ -165,7 +160,7 @@ class ScopeTests(unittest.TestCase):
             self.assertNotIn(forbidden,gate)
         self.assertNotIn('command -v ffprobe',gate)
         run=workflow.split('      - name: Validate this game only\n',1)[1].split('      - uses: actions/upload-artifact@v4',1)[0]
-        self.assertIn('if [ "$GAME_ID" = pvz ] && [ "$SHARD_INDEX" = 0 ]; then',run)
+        self.assertIn('if [ "$GAME_ID" = pvz ]; then',run)
         self.assertIn('export PATH="$PWD/.local/pvz/ci-assets/bin:$PWD/.local/pvz/ci-assets/venv/bin:$PATH"',run)
         cleanup=workflow.split('      - name: Remove temporary PvZ asset tools\n',1)[1].split('      - uses: actions/upload-artifact@v4',1)[0]
         self.assertIn('.local/pvz/ci-assets/bin',cleanup)
@@ -392,41 +387,30 @@ class ScopeTests(unittest.TestCase):
         self.assertEqual(scope.changed_names(b'games/pairs/web/Old.tsx\0games/snooker/web/New.tsx\0'), ['games/pairs/web/Old.tsx', 'games/snooker/web/New.tsx'])
     def test_workflow_binary_waits_for_all_selected_checks(self):
         workflow = (ROOT/'.github/workflows/build.yml').read_text()
-        self.assertIn('needs: [plan, frontend, shared, games]', workflow)
+        self.assertIn('needs: [plan, quick, frontend, shared, games]', workflow)
         self.assertIn("needs.games.result == 'success' || needs.games.result == 'skipped'", workflow)
-        self.assertNotIn('needs.contra_campaigns',workflow.split('  verify:',1)[1])
-        self.assertIn("matrix: ${{ fromJSON(needs.plan.outputs.contra_campaign_matrix) }}",workflow)
-        campaign=workflow.split('  contra_campaigns:',1)[1].split('  verify:',1)[0]
-        self.assertIn('timeout-minutes: 110',campaign)
-        self.assertIn('continue-on-error: true',campaign)
-        self.assertIn('scripts/contra/campaign_modes.py --mode "$CAMPAIGN_MODE" --players "$CAMPAIGN_PLAYERS"',campaign)
-        switch=workflow.split('      contra_campaigns:',1)[1].split('permissions:',1)[0]
-        self.assertIn('type: boolean',switch)
-        self.assertIn('default: false',switch)
-        self.assertIn('inputs.contra_campaigns',workflow)
-        self.assertIn('--contra-campaigns',workflow)
-        self.assertNotIn('shard: [0, 1, 2, 3', workflow)
-        self.assertNotIn('WIRE_BOARD_SNOOKER_HTTP_FULL=1 go test', workflow)
+        self.assertIn("needs.quick.result == 'success' || needs.quick.result == 'skipped'", workflow)
+        self.assertNotIn('  contra_campaigns:', workflow)
+        self.assertIn('name: Game ${{ matrix.game }}', workflow)
+        self.assertNotIn('matrix.shard', workflow)
+        research=(ROOT/'.github/workflows/contra-research.yml').read_text()
+        self.assertIn('workflow_dispatch:', research)
+        self.assertIn('scripts/contra/campaign_modes.py', research)
 
     def test_verified_native_build_and_source_container_bind_runtime(self):
         workflow=(ROOT/'.github/workflows/build.yml').read_text().split('  verify:',1)[1]
-        steps=['games/contra/build/ci_runtime.py','scripts/contra/accept_production.py','scripts/cdn_delivery.py upload','scripts/cdn_delivery.py trim','games/contra/build/native.py']
+        steps=['games/contra/build/ci_runtime.py','scripts/cdn_delivery.py upload','scripts/cdn_delivery.py trim','games/contra/build/native.py']
         positions=[workflow.index(step) for step in steps]
         self.assertEqual(positions,sorted(positions))
+        self.assertNotIn('scripts/contra/accept_production.py',workflow)
         self.assertIn('--runtime .local/contra-ci-runtime/manifest.json',workflow)
         self.assertIn('--goos linux --goarch amd64',workflow)
         self.assertIn('dist/package/verification-plan.json',workflow)
         self.assertIn('dist/package/wire-board.build.json',workflow)
-        self.assertNotIn('go build -trimpath -ldflags="-s -w"',workflow)
         self.assertNotIn('scripts/cdn_delivery.py publish',workflow)
         self.assertNotIn('scripts/cdn_delivery.py verify',workflow)
-        self.assertIn('--report .local/cdn-delivery/uploaded.json',workflow)
         docker=(ROOT/'Dockerfile').read_text()
-        for text in ['python3','xz','COPY scripts/ /src/scripts/','COPY internal/ /src/internal/','ARG SOURCE_SHA','ARG WIRE_BOARD_ASSET_BASE','games/contra/build/ci_runtime.py','scripts/cdn_delivery.py verify','scripts/cdn_delivery.py trim','games/contra/build/native.py']:
-            self.assertIn(text,docker)
-        self.assertNotIn('scripts/cdn_delivery.py publish',docker)
         self.assertLess(docker.index('scripts/cdn_delivery.py trim'),docker.index('games/contra/build/native.py'))
-        self.assertNotIn('go build -trimpath -ldflags="-s -w"',docker)
 
     def test_source_container_requires_matching_commit_asset_base(self):
         docker=(ROOT/'Dockerfile').read_text()

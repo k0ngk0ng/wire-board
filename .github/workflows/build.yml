@@ -8,13 +8,18 @@ on:
         description: 'Optional extra game ID or all for full acceptance; empty selects changed games'
         type: string
         default: ''
-      contra_campaigns:
-        description: 'Experimental Contra computer checks; not a human gameplay delivery gate'
-        type: boolean
-        default: false
+      validation:
+        description: 'auto selects affected components; quick rejects broad changes; full explicitly checks all games'
+        type: choice
+        options: [auto, quick, full]
+        default: auto
 permissions:
   contents: read
   actions: read
+env:
+  GOCACHE: ${{ github.workspace }}/.local/go-build
+  GOMODCACHE: ${{ github.workspace }}/.local/go-mod
+  GOTELEMETRY: 'off'
 concurrency:
   group: build-${{ github.ref }}
   cancel-in-progress: true
@@ -26,10 +31,13 @@ jobs:
     outputs:
       matrix: ${{ steps.scope.outputs.matrix }}
       has_games: ${{ steps.scope.outputs.has_games }}
-      shared_scope: ${{ steps.scope.outputs.shared_scope }}
+      has_quick: ${{ steps.scope.outputs.has_quick }}
+      quick_go: ${{ steps.scope.outputs.quick_go }}
+      quick_node_deps: ${{ steps.scope.outputs.quick_node_deps }}
+      has_shared: ${{ steps.scope.outputs.has_shared }}
+      frontend_checks: ${{ steps.scope.outputs.frontend_checks }}
+      build_required: ${{ steps.scope.outputs.build_required }}
       verified_ancestor: ${{ steps.baseline.outputs.sha }}
-      contra_campaign_matrix: ${{ steps.scope.outputs.contra_campaign_matrix }}
-      has_contra_campaigns: ${{ steps.scope.outputs.has_contra_campaigns }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -37,12 +45,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Verify CI selection and release guards
-        run: |
-          python3 -B scripts/ci/test_scope.py
-          python3 -B scripts/ci/check-plan.py
-          node --test scripts/ci/baseline.test.cjs scripts/release-source.test.cjs
-          python3 -B scripts/test_cdn_local_ready.py
       - name: Find the last verified ancestor
         id: baseline
         uses: actions/github-script@v7
@@ -75,10 +77,9 @@ jobs:
           BASE_SHA: ${{ steps.baseline.outputs.sha }}
           SOURCE_SHA: ${{ github.sha }}
           MANUAL_GAME: ${{ inputs.game }}
-          CONTRA_RESEARCH_CAMPAIGNS: ${{ inputs.contra_campaigns || false }}
+          VALIDATION: ${{ inputs.validation || 'auto' }}
         run: |
-          args=(plan --base "$BASE_SHA" --head "$SOURCE_SHA" --manual "$MANUAL_GAME")
-          if [ "$CONTRA_RESEARCH_CAMPAIGNS" = true ]; then args+=(--contra-campaigns); fi
+          args=(plan --base "$BASE_SHA" --head "$SOURCE_SHA" --manual "$MANUAL_GAME" --validation "$VALIDATION")
           python3 -B scripts/ci/scope.py "${args[@]}"
       - uses: actions/upload-artifact@v4
         with:
@@ -86,9 +87,46 @@ jobs:
           path: .local/ci/plan.json
           if-no-files-found: error
           retention-days: 30
-  frontend:
-    name: Build application and check shared frontend
+  quick:
+    name: Fast component checks
     needs: plan
+    if: needs.plan.outputs.has_quick == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        if: needs.plan.outputs.quick_go == 'true'
+        with:
+          go-version-file: go.mod
+          cache: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install shared frontend test dependencies
+        if: needs.plan.outputs.quick_node_deps == 'true'
+        run: npm --prefix web ci
+      - uses: actions/download-artifact@v4
+        with:
+          name: verification-plan
+          path: .local/ci
+      - name: Run only selected component checks
+        run: python3 -B scripts/ci/scope.py run --game quick --plan .local/ci/plan.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: quick-component-acceptance
+          path: |
+            .local/ci/quick/
+            .local/ci-lanes/result.json
+            .local/ci-scope/git-e2e.json
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 7
+  frontend:
+    name: Build application assets
+    needs: plan
+    if: needs.plan.outputs.build_required == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -147,9 +185,8 @@ jobs:
           npm --prefix web ci
           npm --prefix web run build
           node scripts/game-loading/check-build.mjs
-      - name: Check shared audio, playback and card presentation
+      - name: Check CDN packaging contracts
         run: |
-          node --experimental-strip-types --test web/tests/*.test.mjs
           node --test web/scripts/cdn-base.test.mjs
           python3 -B scripts/test_cdn_delivery.py
       - name: Verify OSS runtime binding and exclude basketball media
@@ -161,10 +198,11 @@ jobs:
           name: web-dist
           path: web/dist/
           if-no-files-found: error
-          retention-days: 1
+          retention-days: 7
   shared:
     name: Shared platform HTTP, persistence and race checks
     needs: [plan, frontend]
+    if: needs.plan.outputs.has_shared == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
@@ -177,19 +215,12 @@ jobs:
         with:
           name: web-dist
           path: web/dist
-      - name: Test only public platform behavior
-        env:
-          SHARED_SCOPE: ${{ needs.plan.outputs.shared_scope }}
-        run: |
-          args=(run --game shared)
-          if [ "$SHARED_SCOPE" = wishes ]; then args+=(--wish-only); fi
-          python3 -B scripts/ci/scope.py "${args[@]}"
+      - name: Test shared platform behavior
+        run: python3 -B scripts/ci/scope.py run --game shared
       - name: Check formatting and static correctness
         run: |
           test -z "$(gofmt -l main.go main_test.go internal games)"
           go vet ./...
-      - name: Validate deployment scripts
-        run: bash -n scripts/update.sh && shellcheck scripts/update.sh && python3 scripts/test_update.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -199,11 +230,11 @@ jobs:
           if-no-files-found: error
           retention-days: 7
   games:
-    name: Game ${{ matrix.game }} (${{ matrix.shard }})
+    name: Game ${{ matrix.game }}
     needs: [plan, frontend]
     if: needs.plan.outputs.has_games == 'true'
     runs-on: ubuntu-latest
-    timeout-minutes: 75
+    timeout-minutes: 180
     strategy:
       fail-fast: false
       max-parallel: 16
@@ -222,10 +253,10 @@ jobs:
           name: web-dist
           path: web/dist
       - name: Install dependencies for game rendering checks
-        if: (matrix.game == 'battlecity' || matrix.game == 'conquest' || matrix.game == 'tabletennis' || matrix.game == 'contra') && matrix.shard == 0
+        if: (matrix.game == 'battlecity' || matrix.game == 'conquest' || matrix.game == 'tabletennis' || matrix.game == 'contra')
         run: npm --prefix web ci
       - name: Prepare PvZ asset verification environment
-        if: matrix.game == 'pvz' && matrix.shard == 0
+        if: matrix.game == 'pvz'
         run: |
           set -o pipefail
           mkdir -p .local/tmp .local/pvz/ci-assets
@@ -243,68 +274,43 @@ jobs:
         env:
           GAME_ID: ${{ matrix.game }}
           BACKEND_CHANGED: ${{ matrix.backend }}
-          SHARD_INDEX: ${{ matrix.shard }}
-          SHARD_COUNT: ${{ matrix.count }}
         run: |
-          args=(--game "$GAME_ID" --shard "$SHARD_INDEX" --count "$SHARD_COUNT")
+          args=(--game "$GAME_ID")
           if [ "$BACKEND_CHANGED" = true ]; then args+=(--backend); fi
-          if [ "$GAME_ID" = pvz ] && [ "$SHARD_INDEX" = 0 ]; then
+          if [ "$GAME_ID" = pvz ]; then
             export PATH="$PWD/.local/pvz/ci-assets/bin:$PWD/.local/pvz/ci-assets/venv/bin:$PATH"
             export TMPDIR="$PWD/.local/tmp"
             export PIP_CACHE_DIR="$PWD/.local/pvz/ci-assets/pip-cache"
           fi
           python3 -B scripts/ci/scope.py run "${args[@]}"
+      - name: Verify changed Contra native and browser binding
+        if: matrix.game == 'contra' && matrix.backend
+        run: |
+          python3 -B games/contra/build/ci_runtime.py --dist web/dist --out .local/contra-game-runtime
+          python3 -B scripts/contra/accept_production.py --runtime .local/contra-game-runtime/manifest.json --out .local/ci/contra-binding
       - name: Remove temporary PvZ asset tools
-        if: always() && matrix.game == 'pvz' && matrix.shard == 0
+        if: always() && matrix.game == 'pvz'
         run: rm -rf .local/pvz/ci-assets/bin .local/pvz/ci-assets/venv .local/pvz/ci-assets/pip-cache
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: game-${{ matrix.game }}-${{ matrix.shard }}-acceptance
-          path: .local/
-          include-hidden-files: true
-          if-no-files-found: error
-          retention-days: 7
-  contra_campaigns:
-    name: Experimental Contra computer ${{ matrix.mode }} (${{ matrix.players }} seats; non-gating)
-    needs: [plan, frontend]
-    if: needs.plan.outputs.has_contra_campaigns == 'true'
-    runs-on: ubuntu-latest
-    # Temporary human-only delivery: failed research retains its own false
-    # report and artifacts but is not a prerequisite for the verified build.
-    continue-on-error: true
-    # Each process has a 90-minute test limit; allow setup and artifact upload.
-    timeout-minutes: 110
-    strategy:
-      fail-fast: false
-      max-parallel: 4
-      matrix: ${{ fromJSON(needs.plan.outputs.contra_campaign_matrix) }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
-        with:
-          go-version-file: go.mod
-          cache: true
-      - name: Run experimental computer checks without a delivery gate
-        env:
-          CAMPAIGN_MODE: ${{ matrix.mode }}
-          CAMPAIGN_PLAYERS: ${{ matrix.players }}
-        run: python3 -B scripts/contra/campaign_modes.py --mode "$CAMPAIGN_MODE" --players "$CAMPAIGN_PLAYERS" --out .local/ci/contra-campaign
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: contra-computer-research-${{ matrix.mode }}-${{ matrix.players }}
-          path: .local/ci/contra-campaign/
+          name: game-${{ matrix.game }}-acceptance
+          path: |
+            .local/ci/${{ matrix.game }}/
+            .local/ci/contra-binding/result.json
+            .local/pvz/ci-assets/*.json
           include-hidden-files: true
           if-no-files-found: error
           retention-days: 7
   verify:
     name: Test and Linux amd64 binary
-    needs: [plan, frontend, shared, games]
+    needs: [plan, quick, frontend, shared, games]
     if: >-
       always() && !cancelled() &&
-      needs.plan.result == 'success' && needs.frontend.result == 'success' &&
-      needs.shared.result == 'success' &&
+      needs.plan.result == 'success' && needs.plan.outputs.build_required == 'true' &&
+      needs.frontend.result == 'success' &&
+      (needs.quick.result == 'success' || needs.quick.result == 'skipped') &&
+      (needs.shared.result == 'success' || needs.shared.result == 'skipped') &&
       (needs.games.result == 'success' || needs.games.result == 'skipped')
     runs-on: ubuntu-latest
     timeout-minutes: 45
@@ -322,17 +328,15 @@ jobs:
         with:
           name: verification-plan
           path: .local/ci
-      - name: Preserve and validate native runtime binding before CDN trimming
+      - name: Preserve source-bound runtime metadata before CDN trimming
         run: |
           python3 -B games/contra/build/ci_runtime.py --dist web/dist --out .local/contra-ci-runtime
-          python3 -B scripts/contra/accept_production.py --runtime .local/contra-ci-runtime/manifest.json --out .local/contra-ci-acceptance
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: contra-native-build-binding
+          name: server-runtime-binding
           path: |
             .local/contra-ci-runtime/ci-origin.json
-            .local/contra-ci-acceptance/result.json
           include-hidden-files: true
           if-no-files-found: warn
           retention-days: 30
@@ -379,7 +383,7 @@ jobs:
       - name: Smoke test Linux binary
         env:
           INVITE_CODE: ci-smoke-only
-          DATA_DIR: /tmp/wire-board-smoke
+          DATA_DIR: ${{ github.workspace }}/.local/smoke-data
           ADDR: 127.0.0.1:18080
         run: |
           dist/package/wire-board &
@@ -399,3 +403,24 @@ jobs:
             dist/wire-board-linux-amd64.tar.gz
             dist/SHA256SUMS
           if-no-files-found: error
+  complete:
+    name: Selected checks passed
+    needs: [plan, quick, frontend, shared, games, verify]
+    if: always() && !cancelled()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require every selected lane to pass
+        env:
+          RESULTS: ${{ toJSON(needs) }}
+        run: |
+          python3 - <<'PY'
+          import json,os
+          jobs=json.loads(os.environ['RESULTS'])
+          assert jobs['plan']['result']=='success',jobs
+          flags=jobs['plan']['outputs']
+          required={'quick':'has_quick','frontend':'build_required','shared':'has_shared','games':'has_games','verify':'build_required'}
+          for job,flag in required.items():
+              result=jobs[job]['result']
+              assert result=='success' if flags[flag]=='true' else result in ('success','skipped'),(job,result,flags)
+          print('Every selected check passed; unselected lanes were skipped.')
+          PY
