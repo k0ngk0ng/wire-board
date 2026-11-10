@@ -34,7 +34,8 @@ INVITE = "wish-accept-code"
 ADMIN = "WishAdmin"
 ADMIN_PASSWORD = "wish-admin-password-123"
 AGENT_TOKEN = "wish-agent-token-acceptance-123"
-TEXT = "想做一款 2v2 深海潜艇对战，有热泉、随机补给和可破坏的珊瑚礁。"
+TEXT = "想做一款 2v2 深海潜艇对战，有热泉、随机补给和可破坏的珊瑚礁。\n" + "天气、地图与多人玩法细节。🌟" * 600 + "\n完整正文末尾验收标记"
+TEXT = TEXT.replace("\n", "\r\n")
 NOTE = "已排入下个制作周期"
 NOTE_START = "本周开始制作"
 NOTE_DONE = "已完成并部署"
@@ -162,7 +163,7 @@ env = dict(
 app = None
 socket_dir = ROOT / ".local/ab3"
 if len(str(socket_dir)) > 70:
-    socket_dir = Path("/tmp/wb-ab3")
+    raise RuntimeError("Set a shorter repository-local browser socket directory")
 browser_env = dict(
     os.environ,
     AGENT_BROWSER_SOCKET_DIR=str(socket_dir),
@@ -174,6 +175,7 @@ browser_env = dict(
 
 
 def b(*args):
+    report["lastBrowserCommand"] = list(args[:2])
     result = subprocess.run(
         ["agent-browser", *args, "--json"],
         env=browser_env, text=True, capture_output=True, timeout=60,
@@ -249,7 +251,7 @@ def fetch_bytes(url: str) -> tuple[int, bytes, str]:
 
 try:
     build = subprocess.run(
-        ["go", "build", "-o", str(binary), "."],
+        ["go", "build", "-o", str(binary), "./scripts/fixtures/wishes"],
         cwd=ROOT, env=env, text=True, capture_output=True, timeout=300,
     )
     check("build server", build.returncode == 0, (build.stdout + build.stderr)[-1200:])
@@ -328,6 +330,8 @@ try:
     check("OSS stored exact bytes", put["sha256"] == hashlib.sha256(PNG).hexdigest(), put)
     image_url = js('document.querySelector(".wish-item img")?.src || ""')
     check("image URL is CDN-style", image_url.startswith(oss_base + "/bga/wishes/"), image_url)
+    b("scrollintoview", ".wish-item img")
+    wait_js('document.querySelector(".wish-item img")?.naturalWidth>0')
     rendered = js(
         '(()=>{const i=document.querySelector(".wish-item img");'
         'return {loaded:!!i&&i.complete&&i.naturalWidth>0,w:i?.naturalWidth||0}})()'
@@ -458,8 +462,30 @@ try:
     b("click", ".admin-list-refresh")
     time.sleep(0.3)
     b("wait", ".admin-wish-card")
-    admin_text = js('document.querySelector(".admin-wish-text")?.textContent || ""')
-    check("admin sees wish", admin_text == TEXT, admin_text)
+    preview = js('document.querySelector(".admin-wish-preview")?.textContent || ""')
+    check("admin standard wish list", js('!!document.querySelector(".admin-wish-list table thead")'))
+    check("admin preview bounded", len(preview) <= 81 and preview.endswith("…") and "完整正文末尾验收标记" not in preview, preview)
+    check("list hides full content", js('!document.querySelector(".admin-wish-list .admin-wish-text, .admin-wish-list .admin-wish-image, .admin-wish-list .admin-wish-qa")'))
+    for width in [1280, 320]:
+        b("set", "viewport", str(width), "900")
+        b("scrollintoview", ".admin-wish-card")
+        geometry = js('(()=>{const r=document.querySelector(".admin-wish-card").getBoundingClientRect();return {left:r.left,right:r.right,height:r.height,scroll:document.documentElement.scrollWidth,width:innerWidth}})()')
+        check("compact list fits " + str(width), geometry["left"] >= 0 and geometry["right"] <= width+1 and geometry["height"] < 240 and geometry["scroll"] <= width+1, geometry)
+        b("screenshot", str(OUT / ("admin-wish-list-"+str(width)+".png")))
+        b("click", "[data-admin-wish-view]")
+        b("wait", ".admin-wish-detail")
+        admin_text = js('document.querySelector(".admin-wish-detail .admin-wish-text")?.textContent || ""')
+        check("full text preserved " + str(width), admin_text == TEXT)
+        check("detail fits viewport " + str(width), js('(()=>{const r=document.querySelector(".admin-wish-detail").getBoundingClientRect();return r.left>=0&&r.right<=innerWidth+1&&r.top>=0&&r.bottom<=innerHeight+1})()'))
+        b("screenshot", str(OUT / ("admin-wish-detail-"+str(width)+".png")))
+        b("press", "Escape")
+        wait_js('!document.querySelector(".admin-wish-detail")')
+        check("detail closes and returns focus " + str(width), js('document.activeElement?.hasAttribute("data-admin-wish-view")'))
+    b("set", "viewport", "1280", "900")
+    b("click", "[data-admin-wish-view]")
+    b("wait", ".admin-wish-detail")
+    b("scrollintoview", ".admin-wish-image img")
+    wait_js('document.querySelector(".admin-wish-image img")?.naturalWidth>0')
     check(
         "admin sees image",
         js(
@@ -474,13 +500,13 @@ try:
             'return !!q&&q.textContent.includes("更希望单人还是多人")&&q.textContent.includes("2 人合作")})()'
         ),
     )
-    wait_js('!!document.querySelector(".admin-wish-card .wish-status.in-progress")')
+    wait_js('!!document.querySelector(".admin-wish-detail .wish-status.in-progress")')
     check("admin sees pending AI work as in-progress", True)
     b("set", "viewport", "1280", "900")
     b("screenshot", str(OUT / "admin-wish-in-progress.png"))
     ratios = contrast_check([
-        [".admin-wish-text", ".admin-wish-card"],
-        [".admin-wish-card header small", ".admin-wish-card"],
+        [".admin-wish-text", ".admin-wish-detail"],
+        [".admin-wish-detail header small", ".admin-wish-detail"],
         [".wish-status.in-progress", ".wish-status.in-progress"],
         [".admin-wish-question p", ".admin-wish-qa"],
         [".admin-wish-actions .primary", ".admin-wish-actions .primary"],
@@ -496,11 +522,12 @@ try:
     )
     check("agent sees in-progress wish", status == 200 and len(feed.get("wishes", [])) == 1 and feed["wishes"][0]["status"] == "in_progress", feed)
 
+    b("scrollintoview", ".admin-wish-actions .primary")
     b("click", ".admin-wish-actions .primary")
     b("wait", ".admin-confirm textarea")
     b("fill", '.admin-confirm textarea[name="note"]', NOTE_DONE)
     b("click", ".admin-confirm button.primary")
-    wait_js('!!document.querySelector(".admin-wish-card .wish-status.implemented")')
+    wait_js('!!document.querySelector(".admin-wish-detail .wish-status.implemented")')
     check("admin marked implemented", True)
     b("screenshot", str(OUT / "admin-wish-implemented.png"))
     ratios = contrast_check([[".wish-status.implemented", ".wish-status.implemented"]])
@@ -551,6 +578,10 @@ try:
 
     report["passed"] = True
 except Exception as error:
+    try:
+        b("screenshot", str(OUT/"failure.png"))
+        report["failureDOM"] = js('({dialogs:[...document.querySelectorAll("[role=dialog]")].map(e=>({label:e.getAttribute("aria-label"),rect:e.getBoundingClientRect().toJSON()})),focus:document.activeElement?.outerHTML,confirm:!!document.querySelector(".admin-confirm")})')
+    except Exception: pass
     report["error"] = f"{type(error).__name__}: {error}"
     raise
 finally:

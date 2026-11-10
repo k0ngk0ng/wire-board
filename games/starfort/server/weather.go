@@ -1,0 +1,325 @@
+package starfort
+
+import (
+	"errors"
+	"fmt"
+	"math"
+)
+
+func (s *State) weathered() bool { return s.WeatherRules == 1 }
+
+func (s *State) weatherFor(wave int) WaveEvent {
+	if !s.weathered() {
+		return eventFor(wave, s.World.Seed)
+	}
+	id := []string{"calm", "fog", "frost", "starlight"}[(wave+int(s.World.Seed%4))%4]
+	e := WaveEvent{ID: id, Wave: wave}
+	switch id {
+	case "fog":
+		e.Label, e.Description = "薄雾", "防御塔射程 ×0.8；箭雨额外命中 1 个目标、击退增加 10；残废箭伤害增加 5%"
+	case "frost":
+		e.Label, e.Description = "寒潮", "敌人速度 ×0.85；冰封延长 2 秒、冷却减少 2 秒；攻速冰塔额外减速 15 个百分点"
+	case "starlight":
+		e.Label, e.Description = "星辉", "威力法师伤害 ×1.2；魔法法师流星雨概率增加 10 个百分点"
+	default:
+		e.Label, e.Description = "无特殊天气", "本波无额外天气效果"
+	}
+	return e
+}
+
+func (s *State) upgradePrice(t Tower) int {
+	base := upgradeCost(t)
+	if !s.weathered() || t.Level < 10 {
+		return base
+	}
+	extra := .1 + .05*float64(t.Level/10-1)
+	return int(math.Min(maxValue, math.Round(float64(base)*(1+extra))))
+}
+func (s *State) cannonArea(level int) areaGrowth {
+	g := cannonGrowth(level)
+	if s.weathered() {
+		g.Radius = 100 + 5*float64(max(1, level)/3)
+	}
+	return g
+}
+func (s *State) volleyArea(level int) areaGrowth {
+	if !s.weathered() {
+		return volleyGrowth(level)
+	}
+	level = max(1, level)
+	n := level - 1 - level/10
+	g := areaGrowth{Chance: min(100, 10+2*((n+2)/3)), Radius: 80 + 5*float64((n+1)/3), Damage: .3 + .03*float64(n/3), Targets: 3 + level/10}
+	if s.World.Event.ID == "fog" {
+		g.Targets++
+	}
+	return g
+}
+func (s *State) craterArea(level int) (int, int64, float64) {
+	if !s.weathered() {
+		return craterGrowth(level)
+	}
+	level = max(1, level)
+	n := level - 1 - level/10
+	return min(100, 10+2*((n+1)/2)), int64(max(StepMS, (20-n/2)*1000)), 5 + float64(level/10)
+}
+func heartArea(level int) (int, float64) {
+	n := max(1, level) - 1
+	return min(100, 10+(n+1)/2), math.Min(1, .1+.01*float64(n/2))
+}
+func meteorArea(level int) (float64, float64) {
+	n := max(1, level) - 1
+	return 30 + 3*float64((n+1)/2), .3 + .03*float64(n/2)
+}
+func (s *State) freezeTiming() (int64, int64) {
+	if s.World.Event.ID == "frost" {
+		return 4000, 8000
+	}
+	return 2000, 10000
+}
+func (s *State) weatherStats(t Tower) (float64, float64, int) {
+	plain := t
+	plain.Branch = ""
+	damage, radius, _ := stats(plain)
+	c, _ := spec(t.Kind)
+	rate := 1 + .04*float64(t.Level-1)
+	switch t.Kind + "/" + t.Branch {
+	case "arrow/volley":
+		rate *= .7
+	case "arrow/heart":
+		if s.World.Event.ID == "fog" {
+			damage *= 1.05
+		}
+	case "cannon/power":
+		damage *= 1.2
+	case "cannon/speed":
+		rate *= .8
+	case "frost/freeze":
+		rate *= .5
+	case "frost/speed":
+		rate *= 1.5
+	case "arcane/power":
+		rate *= .8
+	}
+	return damage, radius, max(StepMS, int(float64(c.Interval)/rate))
+}
+func (s *State) weatherChoices(t Tower) []BranchChoice {
+	level := max(4, t.Level)
+	choices := []BranchChoice{}
+	switch t.Kind {
+	case "cannon":
+		g := s.cannonArea(level)
+		chance, cd, work := s.craterArea(level)
+		choices = []BranchChoice{{"power", "威力专精", fmt.Sprintf("伤害 ×1.2；%d%% 概率在主目标半径 %.0f 内追加 %.0f%% 伤害；填坑中的敌人额外受到 50%% 伤害；升级依次增加概率、半径、伤害", g.Chance, g.Radius, g.Damage*100)}, {"speed", "阻滞专精", fmt.Sprintf("攻速 ×0.8；%d%% 概率生成工作量 %.0f 的弹坑，冷却 %.1f 秒；同敌人 4 秒内不受同塔其他弹坑影响，精英／星陨巨像填坑时间为 50%%；10 的倍数等级只加工作量，其余升级交替增加概率、减少冷却", chance, work, float64(cd)/1000)}}
+	case "arrow":
+		g := s.volleyArea(level)
+		chance, percent := heartArea(level)
+		push := 40
+		if s.World.Event.ID == "fog" {
+			push = 50
+		}
+		choices = []BranchChoice{{"volley", "风羽箭雨", fmt.Sprintf("攻速 ×0.7；%d%% 概率对主目标半径 %.0f 内最多 %d 个其他敌人造成 %.0f%% 伤害；独立 15%% 概率击退存活主目标 %d，精英／星陨巨像减半，同塔 8 秒免疫；升级依次增加概率、半径、伤害，10 的倍数等级只加目标", g.Chance, g.Radius, g.Targets, g.Damage*100, push)}, {"heart", "一箭残废", fmt.Sprintf("%d%% 概率追加目标剩余生命 %.0f%% 的伤害，同塔对同敌人 5 秒免疫；升级交替增加概率、伤害；薄雾下本塔伤害额外增加 5%%", chance, percent*100)}}
+	case "frost":
+		duration, cd := s.freezeTiming()
+		choices = []BranchChoice{{"freeze", "冰封专精", fmt.Sprintf("攻速 ×0.5；15%% 概率冰封射程内敌人 %.0f 秒，冷却 %.0f 秒，随后 8 秒逐渐恢复速度；同塔对同敌人 8 秒免疫，精英／星陨巨像完全有效；寒潮延长冰封 2 秒、冷却减少 2 秒", float64(duration)/1000, float64(cd)/1000)}, {"speed", "攻速专精", "攻速 ×1.5；减速及持续时间随等级提高，寒潮额外减速 15 个百分点；无冰墙及永久减速"}}
+	case "arcane":
+		radius, percent := meteorArea(level)
+		chance := 15
+		if s.World.Event.ID == "starlight" {
+			chance = 25
+		}
+		choices = []BranchChoice{{"power", "威力专精", fmt.Sprintf("攻速 ×0.8；忽略护甲，有护甲目标基础伤害 ×1.1；有护甲普通敌人额外 ×%.1f，精英／星陨巨像额外 ×%.1f，每级各加 0.1；星辉下本塔伤害 ×1.2", 1.1+.1*float64(level-1), 1+.1*float64(level-1))}, {"magic", "魔法专精", fmt.Sprintf("%d%% 概率对主目标半径 %.0f 与塔射程交集内敌人追加 %.0f%% 无视护甲伤害并沉默 3 秒；精英／星陨巨像另受 50%% 伤害；冷却 10 秒，同塔对同敌人 10 秒免疫；升级交替增加半径、伤害；无星链", chance, radius, percent*100)}}
+	}
+	return choices
+}
+func (s *State) weatherPassive(t Tower) *PassiveView {
+	if t.Branch == "" {
+		return nil
+	}
+	p := &PassiveView{ReadyInMS: max(0, t.PassiveReadyAt-s.ElapsedMS)}
+	for _, c := range s.weatherChoices(t) {
+		if c.ID == t.Branch {
+			p.Name, p.Description = c.Name, c.Description
+		}
+	}
+	switch t.Kind + "/" + t.Branch {
+	case "cannon/power":
+		p.Variant = "blast"
+		p.TriggerChance = s.cannonArea(t.Level).Chance
+	case "cannon/speed":
+		p.Variant = "crater"
+		p.TriggerChance, p.CooldownMS, _ = s.craterArea(t.Level)
+	case "arrow/volley":
+		p.Variant = "volley"
+		p.TriggerChance = s.volleyArea(t.Level).Chance
+	case "arrow/heart":
+		p.Variant = "heart"
+		p.TriggerChance, _ = heartArea(t.Level)
+	case "frost/freeze":
+		p.Variant = "freeze"
+		p.TriggerChance = 15
+		_, p.CooldownMS = s.freezeTiming()
+	case "frost/speed":
+		factor, duration := s.iceAttack(t)
+		p.Description = fmt.Sprintf("攻速 ×1.5；命中减速 %.0f%%，持续 %.1f 秒；寒潮额外减速 15 个百分点；无冰墙及永久减速", (1-factor)*100, float64(duration)*StepMS/1000)
+	case "arcane/magic":
+		p.Variant = "meteor"
+		p.TriggerChance = 15
+		if s.World.Event.ID == "starlight" {
+			p.TriggerChance = 25
+		}
+		p.CooldownMS = 10000
+	}
+	if p.CooldownMS == 0 {
+		p.ReadyInMS = 0
+	}
+	return p
+}
+
+func (s *State) weatherHit(t *Tower, target Enemy, damage float64) {
+	now := s.combatNow()
+	switch t.Kind + "/" + t.Branch {
+	case "arrow/volley":
+		if !s.skillRoll(15) {
+			return
+		}
+		for i := range s.Enemies {
+			e := &s.Enemies[i]
+			if e.ID != target.ID || e.HP <= 0 || hasGuard(e.KnockbackGuards, t.ID, s.Tick) {
+				continue
+			}
+			distance := 40.
+			if s.World.Event.ID == "fog" {
+				distance += 10
+			}
+			if heavy(*e) {
+				distance /= 2
+			}
+			e.KnockbackGuards = putGuard(s.freshGuards(e.KnockbackGuards), t.ID, s.Tick+8000/StepMS)
+			e.Progress = math.Max(0, e.Progress-distance)
+			p := pathPosition(s.routePath(e.Route), e.Progress)
+			e.X, e.Y = p.X, p.Y
+			e.Repairing, e.RepairSinceMS = 0, 0
+			v := viewEnemy(*e)
+			s.event(Event{Type: "knockback", Skill: "knockback", TowerID: t.ID, TargetID: e.ID, Target: &v, X: e.X, Y: e.Y, Owner: t.Owner, Kind: t.Kind, Amount: distance})
+		}
+	case "cannon/power":
+		g := s.cannonArea(t.Level)
+		if !s.skillRoll(uint64(g.Chance)) {
+			return
+		}
+		s.event(Event{Type: "blast", Skill: "blast", TowerID: t.ID, X: target.X, Y: target.Y, Owner: t.Owner, Kind: t.Kind, Amount: g.Radius})
+		for i, e := range s.Enemies {
+			if e.HP > 0 && math.Hypot(e.X-target.X, e.Y-target.Y) <= g.Radius {
+				s.hitWithSkill(i, damage*g.Damage, *t, "blast")
+			}
+		}
+	case "cannon/speed":
+		chance, _, _ := s.craterArea(t.Level)
+		if now >= t.PassiveReadyAt && s.skillRoll(uint64(chance)) {
+			s.makeCrater(t, target)
+		}
+	case "frost/freeze", "arcane/magic":
+		chance := 15
+		if t.Kind == "arcane" && s.World.Event.ID == "starlight" {
+			chance = 25
+		}
+		if now < t.PassiveReadyAt || !s.skillRoll(uint64(chance)) {
+			return
+		}
+		duration, cd := s.freezeTiming()
+		if t.Kind == "arcane" {
+			cd = 10000
+		}
+		t.PassiveReadyAt = now + cd
+		_, rangePX, _ := s.towerStats(*t)
+		pad := s.World.Map.Pads[t.Pad]
+		radius, percent := meteorArea(t.Level)
+		indices := []int{}
+		ids := []int{}
+		for i, e := range s.Enemies {
+			if e.HP <= 0 || math.Hypot(e.X-pad.X, e.Y-pad.Y) > rangePX {
+				continue
+			}
+			guards := e.FreezeGuards
+			if t.Kind == "arcane" {
+				guards = e.MeteorGuards
+				if math.Hypot(e.X-target.X, e.Y-target.Y) > radius {
+					continue
+				}
+			}
+			if hasGuard(guards, t.ID, s.Tick) {
+				continue
+			}
+			indices = append(indices, i)
+			ids = append(ids, e.ID)
+		}
+		event := Event{TowerID: t.ID, X: pad.X, Y: pad.Y, Owner: t.Owner, Kind: t.Kind, StatusTargets: ids, Amount: rangePX}
+		if t.Kind == "frost" {
+			event.Type, event.Skill, event.FrozenUntil = "freeze", "freeze", s.Tick+duration/StepMS
+			for _, i := range indices {
+				e := &s.Enemies[i]
+				e.FrozenUntil = max(e.FrozenUntil, event.FrozenUntil)
+				e.RecoveryUntil = e.FrozenUntil + 8000/StepMS
+				e.FreezeGuards = putGuard(s.freshGuards(e.FreezeGuards), t.ID, s.Tick+8000/StepMS)
+				event.RecoveryUntil = e.RecoveryUntil
+			}
+		} else {
+			event.Type, event.Skill, event.SilencedUntil = "meteor", "meteor", s.Tick+3000/StepMS
+			event.X, event.Y, event.Amount = target.X, target.Y, radius
+			for _, i := range indices {
+				e := &s.Enemies[i]
+				e.SilencedUntil = max(e.SilencedUntil, event.SilencedUntil)
+				e.MeteorGuards = putGuard(s.freshGuards(e.MeteorGuards), t.ID, s.Tick+10000/StepMS)
+			}
+		}
+		s.event(event)
+		if t.Kind == "arcane" {
+			for _, i := range indices {
+				extra := percent
+				if heavy(s.Enemies[i]) {
+					extra += .5
+				}
+				s.hitWithSkill(i, damage*extra, *t, "meteor")
+			}
+		}
+	}
+}
+func (s *State) leakDamage(e Enemy) int {
+	if !s.weathered() || !heavy(e) {
+		return e.Leak
+	}
+	base := 4
+	if e.Kind == "boss" {
+		if s.World.BossWards > 0 {
+			s.World.BossWards--
+			return 0
+		}
+		base = 8
+	}
+	return base + int(math.Round(2*math.Max(0, math.Min(1, e.HP/e.MaxHP))))
+}
+func (s *State) validWeather() error {
+	if s.WeatherRules < 0 || s.WeatherRules > 1 || (s.weathered() && !s.growing()) {
+		return errors.New("无效天气规则")
+	}
+	for _, e := range s.Enemies {
+		for _, guards := range [][]KnockbackGuard{e.FreezeGuards, e.HeartGuards, e.MeteorGuards} {
+			if len(guards) > 40 || (!s.weathered() && len(guards) > 0) {
+				return errors.New("无效技能保护")
+			}
+			seen := map[int]bool{}
+			for _, g := range guards {
+				if g.TowerID < 1 || g.TowerID > s.TowerSerial || g.Until < 0 || seen[g.TowerID] {
+					return errors.New("无效技能保护")
+				}
+				seen[g.TowerID] = true
+			}
+		}
+	}
+	for _, t := range s.Towers {
+		if t.ShopDamage < 0 || t.ShopRange < 0 || t.ShopDamage > maxValue || t.ShopRange > maxValue || (!s.weathered() && (t.ShopDamage != 0 || t.ShopRange != 0)) {
+			return errors.New("无效商店强化")
+		}
+	}
+	return s.validShop()
+}

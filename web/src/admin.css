@@ -660,24 +660,70 @@
   color: #fff;
 }
 .admin-wish-list {
-  display: grid;
-  gap: 14px;
-}
-.admin-wish-card {
-  padding: 18px 20px;
-  border: 1px solid #e0e3d8;
-  border-radius: 13px;
+  border: 1px solid #d9dfd1;
+  border-radius: 10px;
+  overflow: hidden;
   background: #fffdf8;
 }
-.admin-wish-card header {
+.admin-wish-list table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+.admin-wish-list th,
+.admin-wish-list td {
+  padding: 12px;
+  text-align: left;
+  vertical-align: middle;
+  border-bottom: 1px solid #e0e3d8;
+}
+.admin-wish-list th {
+  background: #edf1e6;
+  color: #3c5144;
+  font-size: 12px;
+}
+.admin-wish-list th:first-child {
+  width: 44%;
+}
+.admin-wish-list th:last-child {
+  width: 110px;
+}
+.admin-wish-list tr:last-child td {
+  border-bottom: 0;
+}
+.admin-wish-preview {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  color: #2d4036;
+  margin: 0;
+  line-height: 1.6;
+}
+.admin-wish-author {
+  overflow-wrap: anywhere;
+  color: #2d4036;
+}
+.admin-wish-created {
+  font-size: 12px;
+  color: #55664e;
+}
+.admin-wish-view button {
+  white-space: nowrap;
+}
+.admin-wish-detail {
+  width: min(760px, calc(100vw - 24px));
+}
+.admin-wish-detail > header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
   flex-wrap: wrap;
-  margin-bottom: 10px;
+  margin-bottom: 16px;
 }
-.admin-wish-card header small {
+.admin-wish-detail header small {
   color: #63725f;
   font-size: 11px;
 }
@@ -731,8 +777,50 @@
   line-height: 1.6;
 }
 @media (max-width: 700px) {
-  .admin-wish-card {
-    padding: 15px;
+  .admin-wish-list table,
+  .admin-wish-list tbody {
+    display: block;
+  }
+  .admin-wish-list thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+  .admin-wish-list .admin-wish-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px 12px;
+    padding: 14px;
+    border-bottom: 1px solid #e0e3d8;
+  }
+  .admin-wish-list .admin-wish-card:last-child {
+    border-bottom: 0;
+  }
+  .admin-wish-list td {
+    display: block;
+    padding: 0;
+    border: 0;
+    min-width: 0;
+  }
+  .admin-wish-content {
+    grid-column: 1 / -1;
+  }
+  .admin-wish-author {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  .admin-wish-state {
+    grid-column: 2;
+    grid-row: 2;
+  }
+  .admin-wish-created {
+    grid-column: 1;
+    align-self: center;
+  }
+  .admin-wish-view {
+    grid-column: 2;
   }
   .admin-wish-actions button {
     flex: 1;
@@ -909,13 +997,63 @@
   background: #e5ecdf;
 }
 
-.admin-room-views { display:flex;gap:10px;margin-bottom:20px; }
-.admin-history-filters { display:grid;grid-template-columns:minmax(200px,1fr) minmax(140px,220px) minmax(120px,180px);gap:12px;margin:14px 0 20px; }
-.admin-history-filters label { display:grid;gap:6px;min-width:0;font-size:13px; }
-.admin-history-filters input,.admin-history-filters select { width:100%;min-width:0;padding:10px;border:1px solid #c6d1cb;border-radius:8px;background:#fff;color:#213e35;font:inherit; }
-.admin-history-identity { display:grid;gap:5px;overflow-wrap:anywhere; }
-.admin-history-card .admin-room-seats { overflow-wrap:anywhere; }
-.admin-history-modal { width:min(1000px,calc(100vw - 24px)); }
-.admin-user-activity small { display:block; }
-.admin-user-activity .subtle { margin:6px 0;padding:3px 0; }
-@media(max-width:600px){.admin-history-filters{grid-template-columns:1fr 1fr}.admin-history-filters label:first-child{grid-column:1/-1}.admin-history .admin-room-grid{grid-template-columns:minmax(0,1fr)}}
+.admin-room-views {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.admin-history-filters {
+  display: grid;
+  grid-template-columns: minmax(200px, 1fr) minmax(140px, 220px) minmax(
+      120px,
+      180px
+    );
+  gap: 12px;
+  margin: 14px 0 20px;
+}
+.admin-history-filters label {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  font-size: 13px;
+}
+.admin-history-filters input,
+.admin-history-filters select {
+  width: 100%;
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid #c6d1cb;
+  border-radius: 8px;
+  background: #fff;
+  color: #213e35;
+  font: inherit;
+}
+.admin-history-identity {
+  display: grid;
+  gap: 5px;
+  overflow-wrap: anywhere;
+}
+.admin-history-card .admin-room-seats {
+  overflow-wrap: anywhere;
+}
+.admin-history-modal {
+  width: min(1000px, calc(100vw - 24px));
+}
+.admin-user-activity small {
+  display: block;
+}
+.admin-user-activity .subtle {
+  margin: 6px 0;
+  padding: 3px 0;
+}
+@media (max-width: 600px) {
+  .admin-history-filters {
+    grid-template-columns: 1fr 1fr;
+  }
+  .admin-history-filters label:first-child {
+    grid-column: 1/-1;
+  }
+  .admin-history .admin-room-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

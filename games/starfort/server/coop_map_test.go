@@ -20,7 +20,7 @@ func TestCooperativeExpansionWithCurrentSkills(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		if m.Schema != 7 || s.GrowthRules != 1 || s.World.Layout != "" || len(s.World.Map.Routes) != 1 || s.SkillRules != 2 {
+		if m.Schema != 8 || s.WeatherRules != 1 || s.GrowthRules != 1 || s.World.Layout != "" || len(s.World.Map.Routes) != 1 || s.SkillRules != 2 {
 			t.Fatal("not a shared expanding world", m.Schema, s.World.Layout)
 		}
 		for _, kind := range []string{"arrow", "cannon", "frost", "arcane"} {

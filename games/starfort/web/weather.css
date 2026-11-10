@@ -1,0 +1,120 @@
+.starfort-board .sf-weather {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 10%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 2;
+}
+.sf-weather i {
+  position: absolute;
+  pointer-events: none;
+}
+.sf-weather-calm {
+  background: linear-gradient(#fff2b824, transparent);
+}
+.sf-weather-fog {
+  background: linear-gradient(#e8f0e966, transparent);
+}
+.sf-weather-fog i {
+  top: 10%;
+  width: 30%;
+  height: 40%;
+  border-radius: 50%;
+  background: #eef3e947;
+  filter: blur(5px);
+  animation: sf-mist 9s ease-in-out infinite alternate;
+}
+.sf-weather-frost {
+  background: linear-gradient(#c9eff544, transparent);
+}
+.sf-weather-frost i {
+  top: -8px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #f6ffff;
+  box-shadow: 0 0 3px #85b4c7;
+  animation: sf-snow 3s linear infinite;
+}
+.sf-weather-starlight {
+  background: linear-gradient(#c9c1ff30, transparent);
+}
+.sf-weather-starlight i {
+  top: 25%;
+  width: 4px;
+  height: 9px;
+  border-radius: 50%;
+  background: #fff2bb;
+  box-shadow: 0 0 5px #ffe6a8;
+  animation: sf-star 2.5s ease-in-out infinite alternate;
+}
+@keyframes sf-mist {
+  to {
+    transform: translateX(25%);
+  }
+}
+@keyframes sf-snow {
+  to {
+    transform: translate(15px, 100px);
+  }
+}
+@keyframes sf-star {
+  to {
+    opacity: 0.35;
+    transform: scale(0.6);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .starfort-board .sf-weather i {
+    animation: none;
+  }
+  .starfort-board .sf-weather-frost i {
+    top: 35%;
+  }
+}
+.starfort-board .sf-shop-dialog {
+  width: min(680px, calc(100vw - 24px));
+}
+.starfort-board .sf-shop-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.starfort-board .sf-shop-item {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid #c1cbb4;
+  border-radius: 10px;
+  background: #f6f8ed;
+  color: #283c30;
+}
+.starfort-board .sf-shop-item h3,
+.starfort-board .sf-shop-item p {
+  margin: 0;
+}
+.starfort-board .sf-shop-item label {
+  display: grid;
+  gap: 4px;
+}
+.starfort-board .sf-shop-item button {
+  margin-top: auto;
+}
+.starfort-board .sf-shop-item select,
+.starfort-board .sf-shop-item input {
+  width: 100%;
+  min-height: 40px;
+}
+.starfort-board .sf-sale-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+}
+@media (max-width: 600px) {
+  .starfort-board .sf-shop-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -144,12 +144,24 @@ func (s *State) arrowSkillDamage(t *Tower, target Enemy, damage float64) (float6
 	case "volley":
 		chance := 25
 		if s.growing() {
-			chance = volleyGrowth(t.Level).Chance
+			chance = s.volleyArea(t.Level).Chance
 		}
 		if s.skillRoll(uint64(chance)) {
 			return damage, "volley"
 		}
 	case "heart":
+		if s.weathered() {
+			chance, _ := heartArea(t.Level)
+			if hasGuard(target.HeartGuards, t.ID, s.Tick) || !s.skillRoll(uint64(chance)) {
+				return damage, ""
+			}
+			for i := range s.Enemies {
+				if s.Enemies[i].ID == target.ID {
+					s.Enemies[i].HeartGuards = putGuard(s.freshGuards(s.Enemies[i].HeartGuards), t.ID, s.Tick+5000/StepMS)
+				}
+			}
+			return damage, "cripple"
+		}
 		if s.skillRoll(12) {
 			if target.Kind != "elite" && target.Kind != "boss" && target.Level > 0 && target.Level <= t.Level*2 {
 				return target.HP + target.Shield + 1, "execute"

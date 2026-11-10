@@ -125,7 +125,7 @@ export function objectivePoint(
 ): Point {
   if (
     !moving ||
-    current.kind !== "convoy" ||
+    (current.kind !== "convoy" && current.kind !== "merchant") ||
     current.status !== "active" ||
     previous?.status !== "active"
   )

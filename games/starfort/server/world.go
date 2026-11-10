@@ -58,6 +58,7 @@ type WaveEvent struct {
 	Wave        int    `json:"wave"`
 }
 type Objective struct {
+	Attacked    []int   `json:"attacked,omitempty"`
 	Refunded    int     `json:"refunded,omitempty"`
 	Owner       int     `json:"owner"`
 	HP          float64 `json:"hp"`
@@ -79,6 +80,11 @@ type Objective struct {
 	BaseAtStart int     `json:"baseAtStart"`
 }
 type World struct {
+	Shop                 *MerchantShop  `json:"shop,omitempty"`
+	MerchantWave         int            `json:"merchantWave,omitempty"`
+	BossWards            int            `json:"bossWards,omitempty"`
+	BeaconPower          float64        `json:"beaconPower,omitempty"`
+	BeaconReach          float64        `json:"beaconReach,omitempty"`
 	TaskOffersWave       int            `json:"taskOffersWave,omitempty"`
 	TaskAttempts         map[string]int `json:"taskAttempts,omitempty"`
 	MineSuccesses        int            `json:"mineSuccesses,omitempty"`
@@ -156,7 +162,7 @@ func (s *State) initWorld(seed int64) {
 	s.World = World{Seed: seed, Stage: 1, Map: initialMap(seed, false), Objectives: []Objective{}, Branches: []string{}, Forecast: []WaveEvent{}}
 	if s.rebalanced() {
 		s.World.Map.Pads = nil
-		addRoutePads(&s.World.Map, s.World.Map.Routes[0])
+		s.routePads(&s.World.Map, s.World.Map.Routes[0])
 	}
 	s.worldPrepare(s.ServerAt)
 }
@@ -203,16 +209,33 @@ func (s *State) towerStats(t Tower) (damage, radius float64, interval int) {
 	damage, radius, interval = stats(t)
 	if s.rebalanced() {
 		damage, radius, interval = s.balancedStats(t)
+		if s.weathered() {
+			damage, radius, interval = s.weatherStats(t)
+		}
 	}
 	damage *= 1 + .12*float64(s.World.Boons.Power)
-	radius *= 1 + .08*float64(s.World.Boons.Reach) + .05*float64(s.World.BeaconSuccesses)
+	if s.weathered() {
+		damage *= (1 + s.World.BeaconPower) * (1 + .05*float64(t.ShopDamage))
+		radius *= (1 + .08*float64(s.World.Boons.Reach) + s.World.BeaconReach) * (1 + .05*float64(t.ShopRange))
+		if t.Pad >= 0 && t.Pad < len(s.World.Map.Pads) {
+			p := s.World.Map.Pads[t.Pad]
+			for _, o := range s.World.Objectives {
+				if o.Kind == "beacon" && o.Status == "active" && math.Hypot(p.X-o.X, p.Y-o.Y) <= 80 {
+					damage *= 1.2
+					break
+				}
+			}
+		}
+	} else {
+		radius *= 1 + .08*float64(s.World.Boons.Reach) + .05*float64(s.World.BeaconSuccesses)
+	}
 	if t.Pad >= 0 && t.Pad < len(s.World.Map.Pads) && s.World.Map.Pads[t.Pad].Terrain == "highground" {
 		radius *= 1.15
 	}
 	if s.World.Event.ID == "fog" {
 		radius *= .8
 	}
-	if s.World.Event.ID == "starlight" && t.Kind == "arcane" {
+	if s.World.Event.ID == "starlight" && t.Kind == "arcane" && (!s.weathered() || t.Branch == "power") {
 		damage *= 1.2
 	}
 	damage = math.Min(maxValue, damage)
@@ -277,7 +300,7 @@ func (s *State) rotateRoutes() {
 			points := []Point{{X: 0, Y: 520}, {X: 250, Y: 520}, p[2], p[3], p[4], p[5]}
 			w.Map.Routes = append(w.Map.Routes, Route{ID: "shortcut", Label: "工兵开启的捷径", Sector: 1, Points: points, Active: true})
 			if s.rebalanced() {
-				addRoutePads(&w.Map, w.Map.Routes[len(w.Map.Routes)-1])
+				s.routePads(&w.Map, w.Map.Routes[len(w.Map.Routes)-1])
 			}
 		}
 	}
@@ -297,8 +320,8 @@ func (s *State) worldPrepare(now int64) {
 		return
 	}
 	w.PreparedWave = s.Wave
-	w.Event = eventFor(s.Wave, w.Seed)
-	w.Forecast = []WaveEvent{eventFor(s.Wave+1, w.Seed), eventFor(s.Wave+2, w.Seed)}
+	w.Event = s.weatherFor(s.Wave)
+	w.Forecast = []WaveEvent{s.weatherFor(s.Wave + 1), s.weatherFor(s.Wave + 2)}
 	s.rotateRoutes()
 	if s.rebalanced() {
 		s.offerExpansion(now)
@@ -449,7 +472,7 @@ func (s *State) expandedMap(stage int, kind string) Map {
 	if s.rebalanced() {
 		m.Pads = m.Pads[:oldPadCount]
 		m.Features = slices.DeleteFunc(m.Features, func(f Feature) bool { return f.Kind == "highground" && f.Sector == stage })
-		addRoutePads(&m, m.Routes[len(m.Routes)-1])
+		s.routePads(&m, m.Routes[len(m.Routes)-1])
 	} else {
 		m.Pads = placePads(m, 16+(stage-2)*8)
 	}
@@ -537,8 +560,13 @@ func (s *State) finishChoice(kind string, now int64) {
 		}
 		w.Stage = c.Stage
 		if s.rebalanced() && w.PadReward != nil && w.PadReward.Kind == "add" && len(w.Map.Pads) >= 40 {
-			w.PadReward = nil
-			s.note("全图已达 40 个建造点，新增点位奖励不再增加点位")
+			if s.weathered() {
+				w.PadReward.Kind = "move"
+				s.note("全图已达 40 个建造点，奖励改为移动一座防御塔")
+			} else {
+				w.PadReward = nil
+				s.note("全图已达 40 个建造点，新增点位奖励不再增加点位")
+			}
 		}
 		w.Branches = append(w.Branches, id)
 		w.Choice = nil
@@ -578,7 +606,7 @@ func (s *State) resolveChoices(now int64) {
 	defer func() {
 		if s.rebalanced() && s.World.PadReward != nil && s.World.Choice == nil && s.World.BoonChoice == nil && now >= s.NextAt {
 			if a := s.automaticPadReward(); a != nil {
-				_ = s.claimPad(s.World.PadReward.Owner, Point{a.X, a.Y}, a.Pad)
+				_ = s.claimPadReward(s.World.PadReward.Owner, Point{a.X, a.Y}, a.Pad, a.TowerID)
 			}
 		}
 	}()
@@ -667,11 +695,11 @@ func (s *State) validWorld() error {
 	}
 	objectiveIDs := map[string]bool{}
 	for _, o := range w.Objectives {
-		if o.Refunded < 0 || o.Refunded > o.Cost/5 || (o.Refunded > 0 && (!s.growing() || o.Status != "failed" || o.Owner < 0 || o.Owner >= len(s.Players))) || o.ID == "" || len(o.ID) > 80 || objectiveIDs[o.ID] || !finite(o.HP) || !finite(o.MaxHP) || !finite(o.X) || !finite(o.Y) || !finite(o.Progress) || o.HP < 0 || o.MaxHP <= 0 || o.MaxHP > s.objectiveLimit() || o.HP > o.MaxHP || o.X < s.objectiveMin(o) || o.X > float64(m.Width) || o.Y < s.objectiveMin(o) || o.Y > float64(m.Height) || o.Progress < 0 || len(s.routePath(o.Route)) < 2 || o.Progress > pathDistance(s.routePath(o.Route)) || o.StartWave < 0 || o.EndWave < 0 || o.Sector < 1 || o.Sector > w.Stage || (o.Status != "failed" && o.HP <= 0) {
+		if o.Refunded < 0 || o.Refunded > s.refundTask(o) || (o.Refunded > 0 && (!s.growing() || o.Status != "failed" || o.Owner < 0 || o.Owner >= len(s.Players))) || o.ID == "" || len(o.ID) > 80 || objectiveIDs[o.ID] || !finite(o.HP) || !finite(o.MaxHP) || !finite(o.X) || !finite(o.Y) || !finite(o.Progress) || o.HP < 0 || o.MaxHP <= 0 || o.MaxHP > s.objectiveLimit() || o.HP > o.MaxHP || o.X < s.objectiveMin(o) || o.X > float64(m.Width) || o.Y < s.objectiveMin(o) || o.Y > float64(m.Height) || o.Progress < 0 || len(s.routePath(o.Route)) < 2 || o.Progress > pathDistance(s.routePath(o.Route)) || o.StartWave < 0 || o.EndWave < 0 || o.Sector < 1 || o.Sector > w.Stage || (o.Status != "failed" && o.HP <= 0) {
 			return errors.New("无效支线状态")
 		}
 		objectiveIDs[o.ID] = true
-		if !slices.Contains([]string{"mine", "beacon", "convoy"}, o.Kind) || !slices.Contains([]string{"available", "active", "completed", "failed", "skipped"}, o.Status) || o.Cost < 0 || float64(o.Cost) > s.objectiveGoldLimit() || o.Reward < 0 || float64(o.Reward) > s.objectiveGoldLimit() {
+		if (!slices.Contains([]string{"mine", "beacon", "convoy"}, o.Kind) && !(s.weathered() && o.Kind == "merchant")) || !slices.Contains([]string{"available", "active", "completed", "failed", "skipped"}, o.Status) || o.Cost < 0 || float64(o.Cost) > s.objectiveGoldLimit() || o.Reward < 0 || float64(o.Reward) > s.objectiveGoldLimit() {
 			return errors.New("无效支线目标")
 		}
 	}

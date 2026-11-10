@@ -52,7 +52,7 @@ func specializationRawView(b *rulesTable) map[string]any {
 }
 
 func TestStarfortGrowthStartAndLegacy(t *testing.T) {
-	b := newModuleRulesTable(t, 1, map[string]any{}, starfort.Module())
+	b := newModuleRulesTable(t, 1, map[string]any{}, growthTestModule())
 	if specializationRaw(b)["growthRules"] != float64(1) || b.s.Schema != 7 {
 		t.Fatal("new growth rules require schema 7", b.s.Schema)
 	}
@@ -279,7 +279,7 @@ func TestStarfortGrowthCraterGuardRestore(t *testing.T) {
 func TestStarfortGrowthTaskRefundAndCosts(t *testing.T) {
 	for _, kind := range []string{"mine", "beacon", "convoy"} {
 		t.Run(kind, func(t *testing.T) {
-			b := newModuleRulesTable(t, 2, map[string]any{"mode": "endless"}, starfort.Module())
+			b := newModuleRulesTable(t, 2, map[string]any{"mode": "endless"}, growthTestModule())
 			s := cadenceState(b)
 			r := s.World.Map.Routes[0]
 			x, y := fixturePathPosition(r.Points, 100)
@@ -306,7 +306,7 @@ func TestStarfortGrowthTaskRefundAndCosts(t *testing.T) {
 			}
 		})
 	}
-	b := newModuleRulesTable(t, 1, map[string]any{"mode": "endless"}, starfort.Module())
+	b := newModuleRulesTable(t, 1, map[string]any{"mode": "endless"}, growthTestModule())
 	found := false
 	for wave := 1; wave <= 30; wave++ {
 		s := cadenceState(b)
@@ -330,7 +330,7 @@ func TestStarfortGrowthTaskRefundAndCosts(t *testing.T) {
 }
 
 func growthRepairModule() gameapi.Module {
-	m := starfort.Module()
+	m := growthTestModule()
 	start := m.Start
 	m.Start = func(ctx gameapi.Context, raw json.RawMessage) (gameapi.Match, error) {
 		v, e := start(ctx, raw)

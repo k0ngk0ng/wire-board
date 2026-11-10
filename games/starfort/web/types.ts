@@ -62,7 +62,7 @@ export type Objective = Point & {
   route: string;
   progress: number;
   id: string;
-  kind: "mine" | "beacon" | "convoy";
+  kind: "mine" | "beacon" | "convoy" | "merchant";
   label: string;
   description: string;
   sector: number;
@@ -75,11 +75,21 @@ export type Objective = Point & {
   baseAtStart: number;
 };
 export type World = {
+  shop?: {
+    wave: number;
+    repairUsed: number;
+    damageTowers: number[];
+    rangeTowers: number[];
+    shieldBought: boolean;
+  };
+  bossWards?: number;
+  beaconPower?: number;
+  beaconReach?: number;
   taskOffersWave?: number;
   taskAttempts?: Record<string, number>;
   mineSuccesses?: number;
   beaconSuccesses?: number;
-  padReward?: { owner: number; kind: "add" | "highground" };
+  padReward?: { owner: number; kind: "add" | "highground" | "move" };
   objectiveRefreshWave?: number;
   layout?: "central";
   seed: number;
@@ -211,6 +221,7 @@ export type Event = Point & {
   tick: number;
 };
 export type View = {
+  weatherRules?: number;
   growthRules?: number;
   balanceRules?: number;
   specializationRules?: number;
@@ -253,6 +264,21 @@ export type View = {
     description: string;
   }[];
   controls: {
+    shop?: {
+      wave: number;
+      limit: number;
+      enabled: boolean;
+      repairRemaining: number;
+      repairMax: number;
+      damageRemaining: number;
+      rangeRemaining: number;
+      shieldEnabled: boolean;
+      towers: {
+        towerId: number;
+        damageEnabled: boolean;
+        rangeEnabled: boolean;
+      }[];
+    };
     repair?: {
       limit: number;
       remaining: number;

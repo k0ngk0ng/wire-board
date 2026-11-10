@@ -77,6 +77,8 @@ var catalog = []TowerSpec{
 }
 
 type Tower struct {
+	ShopDamage     int     `json:"shopDamage,omitempty"`
+	ShopRange      int     `json:"shopRange,omitempty"`
 	ChainReadyAt   int64   `json:"chainReadyAt,omitempty"`
 	PassiveReadyAt int64   `json:"passiveReadyAt,omitempty"`
 	FocusTarget    int     `json:"focusTarget,omitempty"`
@@ -93,6 +95,9 @@ type Tower struct {
 	Priority       string  `json:"priority"`
 }
 type Enemy struct {
+	FreezeGuards    []KnockbackGuard `json:"freezeGuards,omitempty"`
+	HeartGuards     []KnockbackGuard `json:"heartGuards,omitempty"`
+	MeteorGuards    []KnockbackGuard `json:"meteorGuards,omitempty"`
 	CraterGuards    []KnockbackGuard `json:"craterGuards,omitempty"`
 	SlowFactor      float64          `json:"slowFactor,omitempty"`
 	RecoveryUntil   int64            `json:"recoveryUntil,omitempty"`
@@ -174,6 +179,7 @@ type Event struct {
 	Tick     int64      `json:"tick"`
 }
 type State struct {
+	WeatherRules        int       `json:"weatherRules,omitempty"`
 	GrowthRules         int       `json:"growthRules,omitempty"`
 	RepairWave          int       `json:"repairWave,omitempty"`
 	RepairedHP          int       `json:"repairedHP,omitempty"`
@@ -299,6 +305,9 @@ func (s *State) actors() []int {
 	return a
 }
 func (s *State) valid() error {
+	if err := s.validWeather(); err != nil {
+		return err
+	}
 	if s.BalanceRules < 0 || s.BalanceRules > 1 || (s.rebalanced() && (s.SkillRules != 2 || s.SpecializationRules != 1)) {
 		return errors.New("无效平衡规则")
 	}
@@ -442,6 +451,9 @@ func (s *State) Envelope() (gameapi.Match, error) {
 	if s.growing() {
 		schema = 7
 	}
+	if s.weathered() {
+		schema = 8
+	}
 	m := gameapi.Match{Schema: schema, Data: raw, Actors: s.actors(), Attention: []int{}, TimeoutActors: []int{}, Log: append([]string{}, s.Log...)}
 	if s.finished() {
 		r := &gameapi.Result{Cooperative: true, Ranks: make([]int, len(s.Players)), Winners: []int{}, Scores: make([]int, len(s.Players))}
@@ -467,7 +479,7 @@ func (s *State) Envelope() (gameapi.Match, error) {
 	return m, m.Validate(len(s.Players))
 }
 func decode(m gameapi.Match) (*State, error) {
-	if (m.Schema != 1 && m.Schema != 2 && m.Schema != 3 && m.Schema != 4 && m.Schema != 5 && m.Schema != 6 && m.Schema != 7) || len(m.Data) > maxSnapshotBytes {
+	if (m.Schema != 1 && m.Schema != 2 && m.Schema != 3 && m.Schema != 4 && m.Schema != 5 && m.Schema != 6 && m.Schema != 7 && m.Schema != 8) || len(m.Data) > maxSnapshotBytes {
 		return nil, errors.New("不支持的星垒存档")
 	}
 	var s State
@@ -480,13 +492,16 @@ func decode(m gameapi.Match) (*State, error) {
 	if (m.Schema == 3 || m.Schema == 4) && s.World.Layout != "central" {
 		return nil, errors.New("中央地图存档缺少布局标识")
 	}
-	if (m.Schema == 4 || m.Schema == 5 || m.Schema == 6 || m.Schema == 7) != (s.SkillRules == 2) {
+	if (m.Schema == 4 || m.Schema == 5 || m.Schema == 6 || m.Schema == 7 || m.Schema == 8) != (s.SkillRules == 2) {
 		return nil, errors.New("技能规则与存档版本不一致")
 	}
-	if (m.Schema == 7) != s.growing() {
+	if (m.Schema == 8) != s.weathered() {
+		return nil, errors.New("天气规则与存档版本不一致")
+	}
+	if (m.Schema == 7 || m.Schema == 8) != s.growing() {
 		return nil, errors.New("成长规则与存档版本不一致")
 	}
-	if (m.Schema == 6 || m.Schema == 7) != s.rebalanced() {
+	if (m.Schema == 6 || m.Schema == 7 || m.Schema == 8) != s.rebalanced() {
 		return nil, errors.New("平衡规则与存档版本不一致")
 	}
 	if m.Schema == 5 && s.World.Layout != "" {

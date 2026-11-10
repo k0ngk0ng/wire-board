@@ -97,7 +97,7 @@ type RepairControl struct {
 }
 
 func (s *State) repairControl(player int) *RepairControl {
-	if !s.growing() {
+	if !s.growing() || s.weathered() {
 		return nil
 	}
 	c := &RepairControl{Limit: s.BaseMaxHP / 10, UnitCost: 100}

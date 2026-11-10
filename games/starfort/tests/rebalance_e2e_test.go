@@ -13,7 +13,7 @@ import (
 )
 
 func TestStarfortRebalancePadRewardHTTP(t *testing.T) {
-	m := starfort.Module()
+	m := growthTestModule()
 	start := m.Start
 	m.Start = func(ctx gameapi.Context, raw json.RawMessage) (gameapi.Match, error) {
 		v, e := start(ctx, raw)
@@ -50,7 +50,7 @@ func TestStarfortRebalancePadRewardHTTP(t *testing.T) {
 }
 
 func TestStarfortRebalanceMixedAutoplayHTTP(t *testing.T) {
-	tb := newHost(t, 2, starfort.Module())
+	tb := newHost(t, 2, growthTestModule())
 	tb.start(nil)
 	a := tb.people[0]
 	peer := tb.people[1]
@@ -203,7 +203,7 @@ func TestStarfortRebalanceIceDurationExact(t *testing.T) {
 
 func TestStarfortRebalanceTasksAndConvoy(t *testing.T) {
 	t.Run("route-health-boost", func(t *testing.T) {
-		b := newModuleRulesTable(t, 2, map[string]any{"mode": "endless"}, starfort.Module())
+		b := newModuleRulesTable(t, 2, map[string]any{"mode": "endless"}, growthTestModule())
 		s := cadenceState(b)
 		if err := fixtureWorldStage(b.context(0), &s, 2); err != nil {
 			t.Fatal(err)
@@ -229,7 +229,7 @@ func TestStarfortRebalanceTasksAndConvoy(t *testing.T) {
 	})
 	for _, kind := range []string{"mine", "beacon", "convoy"} {
 		t.Run(kind, func(t *testing.T) {
-			b := newModuleRulesTable(t, 1, map[string]any{"mode": "endless"}, starfort.Module())
+			b := newModuleRulesTable(t, 1, map[string]any{"mode": "endless"}, growthTestModule())
 			s := cadenceState(b)
 			hp, cost, reward := 10., 100, 120
 			if kind == "beacon" {
@@ -302,7 +302,7 @@ func TestStarfortRebalanceTasksAndConvoy(t *testing.T) {
 }
 
 func TestStarfortRebalanceTaskGrowthAndInactiveRoads(t *testing.T) {
-	b := newModuleRulesTable(t, 1, map[string]any{"mode": "endless"}, starfort.Module())
+	b := newModuleRulesTable(t, 1, map[string]any{"mode": "endless"}, growthTestModule())
 	seen := map[string]bool{}
 	for wave := 1; wave <= 40; wave++ {
 		s := cadenceState(b)
@@ -359,7 +359,7 @@ func TestStarfortRebalanceTaskGrowthAndInactiveRoads(t *testing.T) {
 func TestStarfortRebalanceStartAndRestore(t *testing.T) {
 	for _, n := range []int{1, 2, 3, 4} {
 		t.Run(fmt.Sprint(n), func(t *testing.T) {
-			b := newModuleRulesTable(t, n, map[string]any{"waves": 20}, starfort.Module())
+			b := newModuleRulesTable(t, n, map[string]any{"waves": 20}, growthTestModule())
 			raw := specializationRaw(b)
 			if raw["balanceRules"] != float64(1) || raw["growthRules"] != float64(1) || b.s.Schema != 7 {
 				t.Fatal("new balance rules not enabled", b.s.Schema)
@@ -409,7 +409,7 @@ func TestStarfortRebalanceStartAndRestore(t *testing.T) {
 }
 
 func TestStarfortRebalanceTaskHTTP(t *testing.T) {
-	tb := newHost(t, 2, starfort.Module())
+	tb := newHost(t, 2, growthTestModule())
 	tb.start(nil)
 	a := tb.people[0]
 	initial := data(a.room())
@@ -441,7 +441,7 @@ func TestStarfortRebalanceTaskHTTP(t *testing.T) {
 func TestStarfortRebalanceNaturalCampaign(t *testing.T) {
 	for _, n := range []int{1, 2, 3, 4} {
 		t.Run(fmt.Sprint(n), func(t *testing.T) {
-			b := newModuleRulesTable(t, n, map[string]any{"waves": 20}, starfort.Module())
+			b := newModuleRulesTable(t, n, map[string]any{"waves": 20}, growthTestModule())
 			for sec := 0; sec < 20000 && b.s.Result == nil; sec++ {
 				b.botPass()
 				if b.s.Result == nil {
@@ -465,7 +465,7 @@ func TestStarfortRebalanceNaturalCampaign(t *testing.T) {
 func TestStarfortRebalanceNaturalModes(t *testing.T) {
 	for _, difficulty := range []string{"easy", "hard"} {
 		t.Run(difficulty, func(t *testing.T) {
-			b := newModuleRulesTable(t, 2, map[string]any{"waves": 10, "difficulty": difficulty}, starfort.Module())
+			b := newModuleRulesTable(t, 2, map[string]any{"waves": 10, "difficulty": difficulty}, growthTestModule())
 			for sec := 0; sec < 12000 && b.s.Result == nil; sec++ {
 				b.botPass()
 				if b.s.Result == nil {
@@ -478,7 +478,7 @@ func TestStarfortRebalanceNaturalModes(t *testing.T) {
 		})
 	}
 	t.Run("endless", func(t *testing.T) {
-		b := newModuleRulesTable(t, 1, map[string]any{"mode": "endless"}, starfort.Module())
+		b := newModuleRulesTable(t, 1, map[string]any{"mode": "endless"}, growthTestModule())
 		for sec := 0; sec < 20000 && b.s.Result == nil && b.view(0).CompletedWaves < 22; sec++ {
 			b.botPass()
 			if b.s.Result == nil {

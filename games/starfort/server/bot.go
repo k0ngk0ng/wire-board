@@ -65,7 +65,33 @@ func botAction(ctx gameapi.Context, m gameapi.Match) (json.RawMessage, error) {
 					return json.Marshal(a)
 				}
 			}
+			if s.World.PadReward.Kind == "move" && len(s.Towers) == 0 {
+				if investment := s.investment(p); investment != nil {
+					investment.Epoch = s.Epoch
+					return json.Marshal(investment)
+				}
+			}
 			return nil, nil
+		}
+		if quote := s.shopControl(p); quote != nil && quote.Enabled {
+			if quote.RepairMax > 0 && s.BaseHP <= s.BaseMaxHP-4 {
+				return json.Marshal(Action{Type: "shop", Choice: "repair", Amount: quote.RepairMax, Epoch: s.Epoch})
+			}
+			if s.Players[p].Gold >= 260 {
+				for _, c := range quote.Towers {
+					if c.DamageEnabled {
+						return json.Marshal(Action{Type: "shop", Choice: "damage", TowerID: c.TowerID, Epoch: s.Epoch})
+					}
+				}
+				for _, c := range quote.Towers {
+					if c.RangeEnabled {
+						return json.Marshal(Action{Type: "shop", Choice: "range", TowerID: c.TowerID, Epoch: s.Epoch})
+					}
+				}
+			}
+			if quote.ShieldEnabled && s.Players[p].Gold >= 1160 {
+				return json.Marshal(Action{Type: "shop", Choice: "shield", Epoch: s.Epoch})
+			}
 		}
 		if quote := s.repairControl(p); quote != nil && quote.Enabled && s.BaseHP <= s.BaseMaxHP/2 && s.Players[p].Gold >= quote.UnitCost*quote.MaxAmount+160 {
 			return json.Marshal(Action{Type: "repair_base", Amount: quote.MaxAmount, Epoch: s.Epoch})
@@ -189,7 +215,7 @@ func (s *State) investment(p int) *Action {
 	best := -1
 	value := -1.
 	for i, t := range owned {
-		cost := upgradeCost(t)
+		cost := s.upgradePrice(t)
 		if cost > s.Players[p].Gold {
 			continue
 		}
