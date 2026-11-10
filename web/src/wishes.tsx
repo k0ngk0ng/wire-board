@@ -55,6 +55,7 @@ const statuses: Record<
 
 const imageTypes = ["image/png", "image/jpeg", "image/webp", "image/gif"];
 const imageLimit = 5 * 1024 * 1024;
+const textLimit = 10000;
 
 function date(value: number) {
   return value
@@ -326,7 +327,7 @@ export function WishDialog({
             想实现什么游戏？
             <textarea
               value={text}
-              maxLength={2000}
+              maxLength={textLimit}
               rows={5}
               required
               placeholder="例如：一款 2v2 潜艇对战，能选择不同潜艇，地图里有深海热泉和随机补给……"
@@ -358,7 +359,9 @@ export function WishDialog({
                 可选，PNG／JPEG／WebP／GIF，最大 5 MB；也可直接粘贴截图
               </small>
             </div>
-            <span className="wish-counter">{text.length} / 2000</span>
+            <span className="wish-counter">
+              {text.length} / {textLimit}
+            </span>
           </div>
           {preview && (
             <figure className="wish-preview">
@@ -386,7 +389,10 @@ export function WishDialog({
             </div>
           )}
           <div className="wish-submit">
-            <button className="primary" disabled={busy || text.trim().length < 2}>
+            <button
+              className="primary"
+              disabled={busy || text.trim().length < 2}
+            >
               <Send size={16} />
               {busy ? "正在提交…" : "提交许愿"}
             </button>
@@ -396,7 +402,8 @@ export function WishDialog({
           <div className="wish-history-head">
             <h3>我的许愿</h3>
             <small>
-              只有管理员能看到全部许愿；AI 如有疑问最多追问 2 次，之后会开始实现。
+              只有管理员能看到全部许愿；AI 如有疑问最多追问 2
+              次，之后会开始实现。
             </small>
           </div>
           {loadError && (
@@ -424,7 +431,11 @@ export function WishDialog({
                       rel="noreferrer"
                       className="wish-image-link"
                     >
-                      <img src={wish.imageUrl} alt="许愿参考图" loading="lazy" />
+                      <img
+                        src={wish.imageUrl}
+                        alt="许愿参考图"
+                        loading="lazy"
+                      />
                     </a>
                   )}
                   {!!wish.questions?.length && (

@@ -3,6 +3,8 @@ package server
 // Failure scenarios covered here before implementation:
 // - anonymous or disabled users submit/read wishes; unknown JSON fields accepted
 // - empty/oversized wish text or oversized/spoofed/SVG uploads reach OSS
+// - JSON/form text above 2000 characters is rejected or truncated within the new limit
+// - text above 10000 characters is saved or reports the old limit
 // - OSS failure creates a wish row or exposes credentials/signature in responses
 // - non-admins review wishes; review updates are not audited
 // - rejected/pending wishes leak into the agent feed; a missing/wrong token works
@@ -222,7 +224,7 @@ func TestWishesRequireAuthAndValidateText(t *testing.T) {
 			t.Fatalf("text %q got %d", text, code)
 		}
 	}
-	if code, _ := alice.request("POST", "/api/wishes", map[string]any{"text": strings.Repeat("愿", 2001)}); code != 400 {
+	if code, _ := alice.request("POST", "/api/wishes", map[string]any{"text": strings.Repeat("愿", 10001)}); code != 400 {
 		t.Fatal("oversized text accepted")
 	}
 	if code, _ := alice.request("POST", "/api/wishes", map[string]any{"text": "想做一款潜水艇游戏", "position": "ignored"}); code != 400 {
@@ -247,6 +249,52 @@ func TestWishesRequireAuthAndValidateText(t *testing.T) {
 	bob.post("/api/wishes", map[string]any{"text": "想要一款六人航海游戏"}, 200)
 	if len(alice.wishes(t)) != 1 || len(bob.wishes(t)) != 1 {
 		t.Fatal("wish list leaked between users")
+	}
+}
+
+func TestWishTextExpandedLimit(t *testing.T) {
+	f := newWishFixture(t, nil)
+	alice := newClient(t, f.ts.URL)
+	alice.register("WishLongText")
+	accepted := 0
+	for _, format := range []string{"json", "multipart"} {
+		for _, length := range []int{2001, 10000, 10001} {
+			t.Run(format+"/"+strconv.Itoa(length), func(t *testing.T) {
+				text := strings.Repeat("愿", length)
+				var code int
+				var out map[string]any
+				if format == "json" {
+					code, out = alice.request("POST", "/api/wishes", map[string]any{"text": text})
+				} else {
+					body, contentType := multipartWish(t, text, "", nil)
+					code, out = alice.wishMultipart(t, body, contentType)
+				}
+				if length > 10000 {
+					if code != 400 || out["error"] != "许愿内容需 2–10000 字" {
+						t.Fatalf("oversized text: status=%d response=%v", code, out)
+					}
+				} else {
+					if code != 200 {
+						t.Fatalf("valid text: status=%d response=%v", code, out)
+					}
+					id := wishID(t, out)
+					found := false
+					for _, raw := range alice.wishes(t) {
+						wish := raw.(map[string]any)
+						if wish["id"] == id {
+							found = wish["text"] == text
+						}
+					}
+					if !found {
+						t.Fatal("submitted text was lost or truncated")
+					}
+					accepted++
+				}
+				if got := len(alice.wishes(t)); got != accepted {
+					t.Fatalf("saved %d wishes, want %d", got, accepted)
+				}
+			})
+		}
 	}
 }
 
