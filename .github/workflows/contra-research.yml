@@ -26,6 +26,9 @@ jobs:
         with:
           go-version-file: go.mod
           cache: true
+          cache-dependency-path: |
+            go.sum
+            scripts/ci/go-cache-version
       - name: Run experimental computer checks without a delivery gate
         env:
           CAMPAIGN_MODE: ${{ matrix.mode }}

@@ -83,6 +83,8 @@ with tempfile.TemporaryDirectory(dir=OUT,prefix='replay-') as tmp:
         check('contra-negative-acceptance-is-game-owned','accept_production.py' not in verify and 'accept_production.py' in game)
         check('research-is-not-on-main-pipeline','  contra_campaigns:' not in workflow and (ROOT/'.github/workflows/contra-research.yml').is_file())
         check('runtime-go-cache-uses-real-build-paths','.local/go-build' in workflow and '.local/go-mod' in workflow)
+        go_steps=[block.split('      - ',1)[0] for block in workflow.split('      - uses: actions/setup-go@v5')[1:]]
+        check('cache-key-isolated-from-old-default-paths',all('scripts/ci/go-cache-version' in block and 'go.sum' in block for block in go_steps))
         check('quick-result-does-not-wait-for-frontend','    needs: plan\n' in workflow.split('  quick:',1)[1].split('  frontend:',1)[0])
         check('aggregate-waits-for-required-lanes','needs: [plan, quick, frontend, shared, games, verify]' in workflow)
         block=workflow.split('      - name: Require every selected lane to pass\n',1)[1].split('        run: |\n',1)[1]
