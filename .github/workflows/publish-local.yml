@@ -1,0 +1,81 @@
+name: Publish local artifact
+run-name: Publish local ${{ inputs.version }}
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        required: true
+        type: string
+      source_sha:
+        required: true
+        type: string
+      archive_sha256:
+        required: true
+        type: string
+permissions:
+  contents: write
+  packages: write
+concurrency:
+  group: publish-verified-release
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      VERSION: ${{ inputs.version }}
+      SOURCE_SHA: ${{ inputs.source_sha }}
+      ARCHIVE_SHA256: ${{ inputs.archive_sha256 }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.source_sha }}
+          persist-credentials: false
+      - name: Download the local release artifact
+        run: |
+          [[ "$VERSION" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]
+          [[ "$SOURCE_SHA" =~ ^[a-f0-9]{40}$ ]]
+          [[ "$ARCHIVE_SHA256" =~ ^[a-f0-9]{64}$ ]]
+          gh release view "$VERSION" --json isDraft,targetCommitish > release.json
+          python3 - <<'PY'
+          import json,os
+          r=json.load(open('release.json'))
+          assert r['isDraft'] and r['targetCommitish']==os.environ['SOURCE_SHA']
+          PY
+          mkdir artifact image
+          gh release download "$VERSION" --pattern wire-board-linux-amd64.tar.gz --pattern SHA256SUMS --dir artifact
+          printf '%s  %s\n' "$ARCHIVE_SHA256" artifact/wire-board-linux-amd64.tar.gz | sha256sum --check
+          tar -xzf artifact/wire-board-linux-amd64.tar.gz -C image ./wire-board
+          python3 - <<'PY'
+          from pathlib import Path
+          source=Path('Dockerfile').read_text()
+          assert source.count('FROM alpine:')==1
+          runtime='FROM alpine:'+source.split('FROM alpine:',1)[1]
+          original='COPY --from=backend /wire-board /usr/local/bin/wire-board'
+          assert runtime.count(original)==1
+          Path('image/Dockerfile').write_text(runtime.replace(original,'COPY wire-board /usr/local/bin/wire-board'))
+          PY
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+      - name: Publish the unchanged local binary
+        uses: docker/build-push-action@v6
+        with:
+          context: image
+          platforms: linux/amd64
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository }}:${{ inputs.version }}
+            ghcr.io/${{ github.repository }}:sha-${{ inputs.source_sha }}
+            ghcr.io/${{ github.repository }}:latest
+          labels: |
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+            org.opencontainers.image.revision=${{ inputs.source_sha }}
+            org.opencontainers.image.version=${{ inputs.version }}
+      - name: Publish the release
+        run: gh release edit "$VERSION" --draft=false --latest
