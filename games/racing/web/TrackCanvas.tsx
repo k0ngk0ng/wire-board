@@ -10,6 +10,8 @@ import { seatColors, type Car, type View } from "./types";
 import type { Drive } from "./input";
 import type { SceneFrame } from "./chase-renderer";
 import type { ChasePose } from "./chase-camera";
+import { ClassicRenderer } from "./classic-renderer";
+import type { ClassicScenePack } from "./classic-loading";
 type Engine = {
   mode: string;
   resize: () => void;
@@ -18,6 +20,7 @@ type Engine = {
   stats: { calls: number; triangles: number };
 };
 export type TrackCanvasProps = {
+  classicAssets?: ClassicScenePack;
   data: View;
   clock: GameClock;
   seat: number;
@@ -30,6 +33,11 @@ export type TrackCanvasProps = {
   reduced: boolean;
   watch: number;
   rear: boolean;
+  cameraMode?: number;
+  drawDistance?: number;
+  mirrorVisible?: boolean;
+  hudVisible?: boolean;
+  viewScale?: number;
   onOpenMap: () => void;
 };
 export function TrackCanvas(props: TrackCanvasProps) {
@@ -93,6 +101,14 @@ export function TrackCanvas(props: TrackCanvasProps) {
       last = performance.now(),
       framesCount = 0,
       statsAt = last;
+    let ready = false;
+    const miniRoute = new Path2D();
+    props.data.track.points.forEach((point, index) =>
+      index
+        ? miniRoute.lineTo(point.x, point.y)
+        : miniRoute.moveTo(point.x, point.y),
+    );
+    miniRoute.closePath();
     let canvas = document.createElement("canvas");
     canvas.className = "racing-chase";
     canvas.setAttribute("aria-label", "车后追逐视角");
@@ -103,12 +119,32 @@ export function TrackCanvas(props: TrackCanvasProps) {
     const init = async () => {
       try {
         if (forceFallback) throw Error("compatibility renderer");
-        const { ChaseRenderer } = await import("./chase-renderer");
-        if (disposed) return;
-        engine = new ChaseRenderer(canvas, latest.current.data.track);
+        const pack = latest.current.classicAssets;
+        if (pack) {
+          engine = await ClassicRenderer.create(
+            canvas,
+            latest.current.data.track,
+            pack.files,
+            { timeOfDay: pack.timeOfDay, vehicles: pack.vehicles },
+          );
+          if (disposed) {
+            engine.dispose();
+            return;
+          }
+        } else {
+          const { ChaseRenderer } = await import("./chase-renderer");
+          if (disposed) return;
+          engine = new ChaseRenderer(canvas, latest.current.data.track);
+        }
         setMode("webgl");
       } catch (error) {
         if (disposed) return;
+        if (latest.current.classicAssets) {
+          const message = "三维画面未能初始化，请重新载入。";
+          setFailure(message);
+          latest.current.onLoadError?.(message);
+          return;
+        }
         const oldCanvas = canvas;
         oldCanvas.remove();
         try {
@@ -193,6 +229,9 @@ export function TrackCanvas(props: TrackCanvasProps) {
           cars,
           follow,
           rear: p.rear,
+          cameraMode: p.cameraMode,
+          drawDistance: p.drawDistance,
+          mirrorVisible: p.mirrorVisible,
           reduced: p.reduced,
           now,
         });
@@ -205,6 +244,7 @@ export function TrackCanvas(props: TrackCanvasProps) {
           canvas.dataset.renderY = String(car.y);
           canvas.dataset.angle = String(car.angle);
           canvas.dataset.rear = String(p.rear);
+          canvas.dataset.viewScale = String(p.viewScale ?? 1);
           canvas.dataset.renderer = engine?.mode ?? "";
           canvas.dataset.camera = JSON.stringify(pose);
           canvas.dataset.speed = String(car.speed);
@@ -213,9 +253,16 @@ export function TrackCanvas(props: TrackCanvasProps) {
             String(Math.min(1, car.speed / MAX_ROAD_SPEED)),
           );
           const speed = host.querySelector("[data-racing-speed]"),
-            gear = host.querySelector("[data-racing-gear]");
+            gear = host.querySelector("[data-racing-gear]"),
+            rpm = host.querySelector("[data-racing-rpm]");
           if (speed) speed.textContent = String(Math.round(car.speed * 0.36));
-          if (gear) gear.textContent = `D${automaticGear(car.speed)}`;
+          if (gear)
+            gear.textContent =
+              car.gear === -1
+                ? "R"
+                : `D${car.gear || automaticGear(car.speed)}`;
+          if (rpm)
+            rpm.textContent = String(Math.round((car.rpm ?? 0) / 100) * 100);
         }
         const m = mini.current,
           ctx = m?.getContext("2d");
@@ -234,14 +281,9 @@ export function TrackCanvas(props: TrackCanvasProps) {
             (h - d.track.height * s) / 2,
           );
           ctx.scale(s, s);
-          ctx.beginPath();
-          d.track.points.forEach((p, i) =>
-            i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y),
-          );
-          ctx.closePath();
           ctx.strokeStyle = "#8799a9";
           ctx.lineWidth = 3 / s;
-          ctx.stroke();
+          ctx.stroke(miniRoute);
           for (const c of cars) {
             ctx.fillStyle =
               c.seat === follow
@@ -253,7 +295,10 @@ export function TrackCanvas(props: TrackCanvasProps) {
           }
           ctx.restore();
         }
-        if (framesCount === 0) latest.current.onReady?.();
+        if (!ready) {
+          ready = true;
+          latest.current.onReady?.();
+        }
         framesCount++;
         if (now - statsAt >= 1000) {
           canvas.dataset.fps = String(
@@ -270,6 +315,13 @@ export function TrackCanvas(props: TrackCanvasProps) {
     void init();
     const lost = (e: Event) => {
       e.preventDefault();
+      if (latest.current.classicAssets) {
+        cancelAnimationFrame(raf);
+        const message = "三维画面已中断，请重新载入。";
+        setFailure(message);
+        latest.current.onLoadError?.(message);
+        return;
+      }
       setMode("loading");
       setForceFallback(true);
     };
@@ -284,7 +336,20 @@ export function TrackCanvas(props: TrackCanvasProps) {
     };
   }, [props.data.epoch, forceFallback]);
   return (
-    <div className="racing-chase-wrap" ref={holder} data-racing-renderer={mode}>
+    <div
+      className="racing-chase-wrap"
+      ref={holder}
+      data-racing-renderer={mode}
+      style={
+        props.classicAssets
+          ? {
+              width: `${(props.viewScale ?? 1) * 100}%`,
+              height: `calc(var(--racing-view-height) * ${props.viewScale ?? 1})`,
+              margin: "0 auto",
+            }
+          : undefined
+      }
+    >
       {mode === "loading" && (
         <span className="racing-scene-loading" role="status">
           正在进入赛道…
@@ -298,17 +363,28 @@ export function TrackCanvas(props: TrackCanvasProps) {
       )}
       <button
         className="racing-route-button"
+        hidden={props.hudVisible === false}
         onClick={props.onOpenMap}
         aria-label="查看赛道地图"
       >
         <canvas ref={mini} width={160} height={112} aria-hidden="true" />
         <span>赛道图</span>
       </button>
-      <div className="racing-speedometer" aria-label="自动挡速度表">
+      <div
+        hidden={props.hudVisible === false}
+        className="racing-speedometer"
+        aria-label="自动挡速度表"
+      >
         <span data-racing-speed>0</span>
         <small>km/h</small>
         <strong data-racing-gear>D1</strong>
-        <em>自动挡</em>
+        {props.data.physics === 3 ? (
+          <em>
+            <span data-racing-rpm>0</span> rpm
+          </em>
+        ) : (
+          <em>自动挡</em>
+        )}
       </div>
       {props.rear && <span className="racing-rear-indicator">向后看</span>}
       {mode === "canvas" && (

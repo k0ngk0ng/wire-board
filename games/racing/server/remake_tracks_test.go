@@ -10,7 +10,8 @@ import (
 )
 
 func TestRemakeFiveLongTracksAndLegacyGeometry(t *testing.T) {
-	tracks := Tracks()
+	// Explicit old-ID compatibility is not counted as delivered classic content.
+	tracks := legacyTracks()
 	if len(tracks) != 5 {
 		t.Fatalf("need exactly five selectable tracks, got %d", len(tracks))
 	}

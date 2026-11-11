@@ -19,8 +19,10 @@ const idleMS int64 = 15000
 const lostInputMS int64 = 750
 
 type Options struct {
-	Track string `json:"track"`
-	Laps  int    `json:"laps"`
+	Track     string   `json:"track"`
+	Laps      int      `json:"laps"`
+	Vehicles  []string `json:"vehicles,omitempty"`
+	TimeOfDay string   `json:"timeOfDay,omitempty"`
 }
 type Point struct {
 	X float64 `json:"x"`
@@ -34,15 +36,22 @@ type Scenery struct {
 	Kind   string  `json:"kind"`
 }
 type Track struct {
-	Props     []Scenery `json:"props,omitempty"`
-	ID        string    `json:"id"`
-	Name      string    `json:"name"`
-	Width     float64   `json:"width"`
-	Height    float64   `json:"height"`
-	RoadWidth float64   `json:"roadWidth"`
-	Points    []Point   `json:"points"`
+	Version   int           `json:"version,omitempty"`
+	Geometry  string        `json:"geometry,omitempty"`
+	Length    float64       `json:"length,omitempty"`
+	Road      []RoadSample  `json:"road,omitempty"`
+	Barriers  []RoadBarrier `json:"barriers,omitempty"`
+	Props     []Scenery     `json:"props,omitempty"`
+	ID        string        `json:"id"`
+	Name      string        `json:"name"`
+	Width     float64       `json:"width"`
+	Height    float64       `json:"height"`
+	RoadWidth float64       `json:"roadWidth"`
+	Points    []Point       `json:"points,omitempty"`
 }
 type Input struct {
+	Horn        bool     `json:"horn,omitempty"`
+	Protect     bool     `json:"protect,omitempty"`
 	BrakeAmount *float64 `json:"brakeAmount,omitempty"`
 	At          int64    `json:"at"`
 	Steer       float64  `json:"steer"`
@@ -51,33 +60,44 @@ type Input struct {
 	Drift       bool     `json:"drift"`
 }
 type Car struct {
-	BrakeAmount *float64 `json:"brakeAmount,omitempty"`
-	Seat        int      `json:"seat"`
-	X           float64  `json:"x"`
-	Y           float64  `json:"y"`
-	VX          float64  `json:"vx"`
-	VY          float64  `json:"vy"`
-	Angle       float64  `json:"angle"`
-	Speed       float64  `json:"speed"`
-	Steer       float64  `json:"steer"`
-	Throttle    float64  `json:"throttle"`
-	Brake       bool     `json:"brake"`
-	Drift       bool     `json:"drift"`
-	Skin        int      `json:"skin"`
-	Seq         int64    `json:"seq"`
-	Lap         int      `json:"lap"`
-	Checkpoint  int      `json:"checkpoint"`
-	Progress    float64  `json:"progress"`
-	Rank        int      `json:"rank"`
-	FinishAt    int64    `json:"finishAt"`
-	Offroad     bool     `json:"offroad"`
-	LastInputAt int64    `json:"lastInputAt"`
-	IdleAt      int64    `json:"idleAt"`
-	ResetUntil  int64    `json:"resetUntil"`
-	Gate        int      `json:"gate"`
-	LastReset   int64    `json:"lastReset"`
-	Applied     Input    `json:"applied"`
-	Pending     []Input  `json:"pending,omitempty"`
+	Horn        bool                `json:"horn,omitempty"`
+	Protected   bool                `json:"protected,omitempty"`
+	Vehicle     string              `json:"vehicle,omitempty"`
+	RPM         float64             `json:"rpm,omitempty"`
+	Gear        int                 `json:"gear,omitempty"`
+	Height      float64             `json:"height,omitempty"`
+	Pitch       float64             `json:"pitch,omitempty"`
+	Roll        float64             `json:"roll,omitempty"`
+	RouteIndex  int                 `json:"routeIndex"`
+	Motion      *ClassicMotionState `json:"motion,omitempty"`
+	Driver      *classicDriverState `json:"driver,omitempty"`
+	BrakeAmount *float64            `json:"brakeAmount,omitempty"`
+	Seat        int                 `json:"seat"`
+	X           float64             `json:"x"`
+	Y           float64             `json:"y"`
+	VX          float64             `json:"vx"`
+	VY          float64             `json:"vy"`
+	Angle       float64             `json:"angle"`
+	Speed       float64             `json:"speed"`
+	Steer       float64             `json:"steer"`
+	Throttle    float64             `json:"throttle"`
+	Brake       bool                `json:"brake"`
+	Drift       bool                `json:"drift"`
+	Skin        int                 `json:"skin"`
+	Seq         int64               `json:"seq"`
+	Lap         int                 `json:"lap"`
+	Checkpoint  int                 `json:"checkpoint"`
+	Progress    float64             `json:"progress"`
+	Rank        int                 `json:"rank"`
+	FinishAt    int64               `json:"finishAt"`
+	Offroad     bool                `json:"offroad"`
+	LastInputAt int64               `json:"lastInputAt"`
+	IdleAt      int64               `json:"idleAt"`
+	ResetUntil  int64               `json:"resetUntil"`
+	Gate        int                 `json:"gate"`
+	LastReset   int64               `json:"lastReset"`
+	Applied     Input               `json:"applied,omitzero"`
+	Pending     []Input             `json:"pending,omitempty"`
 }
 type Event struct {
 	ID        int     `json:"id"`
@@ -94,6 +114,7 @@ type Controls struct {
 	CanSkin  bool `json:"canSkin"`
 }
 type View struct {
+	Physics        int      `json:"physics,omitempty"`
 	Options        Options  `json:"options"`
 	Phase          string   `json:"phase"`
 	Epoch          string   `json:"epoch"`
@@ -107,6 +128,7 @@ type View struct {
 	Controls       Controls `json:"controls"`
 }
 type State struct {
+	Physics        int             `json:"physics,omitempty"`
 	Options        Options         `json:"options"`
 	Phase          string          `json:"phase"`
 	Epoch          string          `json:"epoch"`
@@ -134,6 +156,13 @@ func decode(m gameapi.Match) (State, error) {
 	if e := json.Unmarshal(m.Data, &s); e != nil {
 		return s, e
 	}
+	if s.Physics == 3 {
+		track, ok := classicTrackByGeometry(s.Track.Geometry)
+		if !ok || s.Track.ID != track.ID {
+			return s, errors.New("赛车赛道版本不可用")
+		}
+		s.Track = track
+	}
 	if len(s.Cars) < 2 || len(s.Cars) > 6 || len(s.Track.Points) < 16 || s.Epoch == "" {
 		return s, errors.New("赛车存档不完整")
 	}
@@ -152,7 +181,11 @@ func (s *State) emit(kind string, seat int, at int64, intensity float64) {
 	}
 }
 func (s *State) match() (gameapi.Match, error) {
-	b, e := json.Marshal(s)
+	saved := *s
+	if s.Physics == 3 {
+		saved.Track = compactTrack(s.Track)
+	}
+	b, e := json.Marshal(saved)
 	if e != nil {
 		return gameapi.Match{}, e
 	}
@@ -208,6 +241,10 @@ func rank(s *State) {
 func (s *State) finish() {
 	rank(s)
 	s.Phase = "finished"
+	for i := range s.Cars {
+		s.Cars[i].Horn = false
+		s.Cars[i].Applied.Horn = false
+	}
 	r := &gameapi.Result{Ranks: make([]int, len(s.Cars)), Winners: []int{}, Scores: make([]int, len(s.Cars))}
 	moved := false
 	for _, c := range s.Cars {

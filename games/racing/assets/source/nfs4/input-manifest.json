@@ -1,0 +1,460 @@
+{
+  "source": "NFS4 PC original resources; demo and selected original ISO members",
+  "files": [
+    {
+      "path": "Data/Cars/CCOR/CAR.VIV",
+      "bytes": 4498152,
+      "sha256": "af3bab4c0b19d7c30914aab9383535d75f1e7ddeb0a55ed4a705e06a3634230e"
+    },
+    {
+      "path": "Data/Cars/FM50/car.viv",
+      "bytes": 4707648,
+      "sha256": "21091039e879722daa0fd52702758594c976702e15eeaed5366087a6454d9893"
+    },
+    {
+      "path": "Data/Cars/LDIA/CAR.VIV",
+      "bytes": 3908288,
+      "sha256": "c56919b299c5fecc608e4e566cb4a0827e6301251bafd5147e2a1c487872b328"
+    },
+    {
+      "path": "Data/Cars/MCF1/CAR.VIV",
+      "bytes": 2792128,
+      "sha256": "5a8617bc830a7f9e87148f840ec820ea9a9a9283029a971bc336e6587c4e9d70"
+    },
+    {
+      "path": "Data/Cars/P911/car.viv",
+      "bytes": 4161008,
+      "sha256": "d48b44572c54e2f16a3d017d7b90f739a14f60c61471714c51b4613817819a8a"
+    },
+    {
+      "path": "Data/GameArt/SFX.FSH",
+      "bytes": 505884,
+      "sha256": "6039f20e2ad8d129459f29811ef4d75c6117b20dd4215c9368115c50c3b2226f"
+    },
+    {
+      "path": "Data/Tracks/Coastal/HEIGHTS.SIM",
+      "bytes": 4300,
+      "sha256": "c78d20f050a89bed54aef8fd784e0d70c5ce89ea0d90a6f9c28b2629f80bf51a"
+    },
+    {
+      "path": "Data/Tracks/Coastal/SKY.QFS",
+      "bytes": 464614,
+      "sha256": "5f4a2989fb8e3040a9e1633cf23c84149d9b932b6572d8f5001fe40c009379c3"
+    },
+    {
+      "path": "Data/Tracks/Coastal/SPDFA.BIN",
+      "bytes": 5913,
+      "sha256": "42f5a3fa8c75cbac79af2f88edecd3f00f2028b9812c839c3ab2ff00381059d2"
+    },
+    {
+      "path": "Data/Tracks/Coastal/SPDRA.BIN",
+      "bytes": 5913,
+      "sha256": "596c40adc3c965a29675be0d18cea8706ce9e95bd0b3329b1dc0ef1e49c46113"
+    },
+    {
+      "path": "Data/Tracks/Coastal/TR.CAM",
+      "bytes": 548,
+      "sha256": "10254845ccf802462f742d5dfc596c606a7a791b60aa6fda987df0ead21eb325"
+    },
+    {
+      "path": "Data/Tracks/Coastal/TR.FRD",
+      "bytes": 1710860,
+      "sha256": "d5822e2a0c9f67054076789b576171a13f3c639ff2ede75492735553ef424a95"
+    },
+    {
+      "path": "Data/Tracks/Coastal/TR.INI",
+      "bytes": 4155,
+      "sha256": "5b13df3900f6ca264542f8fed172eb46c67828b1c72ee7045cd8daf62e5932e1"
+    },
+    {
+      "path": "Data/Tracks/Coastal/TR0.QFS",
+      "bytes": 374450,
+      "sha256": "f4d2b8bbbeac590744990f5036e9b22749b09c7687d033a00d7b6c638e1fbf06"
+    },
+    {
+      "path": "Data/Tracks/Coastal/TR00.CAN",
+      "bytes": 1028,
+      "sha256": "4609ca8793d3c7d90836666370b76075b98c577e488edd3d3a02d23f04970888"
+    },
+    {
+      "path": "Data/Tracks/Coastal/TR00A.CAN",
+      "bytes": 1028,
+      "sha256": "5d00f7dfe6797153db223fb12a90f316f605eb6ca7d4589d569fb8bb94e9d882"
+    },
+    {
+      "path": "Data/Tracks/Coastal/TR01.CAN",
+      "bytes": 828,
+      "sha256": "47cd7c4e0ec00de7db29ad4f192a7372700396e3561b9cc2af458ad35dace305"
+    },
+    {
+      "path": "Data/Tracks/Coastal/TR02.CAN",
+      "bytes": 128,
+      "sha256": "12362a6e470d86e168f3e3e502e91220c08ac600b6823caf54e17392f6c6d0d5"
+    },
+    {
+      "path": "Data/Tracks/Coastal/TR03.CAN",
+      "bytes": 348,
+      "sha256": "d025154c7c48fecf23b0ab7330737aea34c449df9534508f391861d4d50d7a06"
+    },
+    {
+      "path": "Data/Tracks/Coastal/TR04.CAN",
+      "bytes": 1028,
+      "sha256": "ee274ae27b316b9f88d99d38db540ac8aa3b0ea7c68aef8a441c699231bfc805"
+    },
+    {
+      "path": "Data/Tracks/Coastal/TR05.CAN",
+      "bytes": 1028,
+      "sha256": "c924af94a18e1e203ab4deeaa196fb567f3fa8b5ae2beffea1a66229028dd3d1"
+    },
+    {
+      "path": "Data/Tracks/Coastal/TR06.CAN",
+      "bytes": 828,
+      "sha256": "37d5e2c89a6e40c9d15d9a42b69e3229c8e2943d862e7b6e40bd8cf2cc5e66a2"
+    },
+    {
+      "path": "Data/Tracks/Coastal/TRN.FRD",
+      "bytes": 1718838,
+      "sha256": "9c1ae9fd6821bcff0b48b04704fe23b8fe084661fc0ab20577985c3fa58910d4"
+    },
+    {
+      "path": "Data/Tracks/Coastal/TRN.INI",
+      "bytes": 3411,
+      "sha256": "166a057b40addb8e8f08ff404fc66867335c009abeb292d7b54085872ac78ac7"
+    },
+    {
+      "path": "Data/Tracks/Coastal/TRN0.QFS",
+      "bytes": 364658,
+      "sha256": "340be72626a8e85737aa02887e2ae2dedc3d87480149f40b374109001c58601d"
+    },
+    {
+      "path": "Data/Tracks/Coastal/TRNW.INI",
+      "bytes": 3121,
+      "sha256": "085714a0d0b7fa261b379f378cac21a750f7fd5f90ee22e310c2573b4731df5f"
+    },
+    {
+      "path": "Data/Tracks/Coastal/TRW.INI",
+      "bytes": 3792,
+      "sha256": "df2726eb34e2d845e5c6ffbfac2603a8342bca0e769239b2e6c21fe1c82c8f03"
+    },
+    {
+      "path": "Data/Tracks/France/heights.sim",
+      "bytes": 3892,
+      "sha256": "f85760a512e9404a60f852ecd0b03528bf16c3a302e601ba9aaf906eab6953f1"
+    },
+    {
+      "path": "Data/Tracks/France/sky.qfs",
+      "bytes": 620602,
+      "sha256": "fd92f4da67142175c15a2316aa58f4a7bd14db76132fff6cde96220e823f3723"
+    },
+    {
+      "path": "Data/Tracks/France/spdB.bin",
+      "bytes": 5352,
+      "sha256": "69cf048e0f50d1af150aa3270c8f6ff653dcbdc1c1633d10ba13b5c5e5bed6c9"
+    },
+    {
+      "path": "Data/Tracks/France/spdfa.bin",
+      "bytes": 5352,
+      "sha256": "1bc97f1d312763ff1e85bc4c4054f64a29c1c1ccbf0a5b5c104989da6ab5ce4a"
+    },
+    {
+      "path": "Data/Tracks/France/spdra.bin",
+      "bytes": 5352,
+      "sha256": "5e4272121db190ac6ab43aae9cdc2cb967cbee1954ae22fa8f3cd6e5f3eadb25"
+    },
+    {
+      "path": "Data/Tracks/France/Tr.cam",
+      "bytes": 752,
+      "sha256": "0291df6844cd1fc4ecaaf6b44b36f840d897008dbe8a15ff2ea5816d6d8b3756"
+    },
+    {
+      "path": "Data/Tracks/France/Tr.frd",
+      "bytes": 1531542,
+      "sha256": "80e7f345651f9c8315155ae982bc8272f6e73ea97cb235f87e905f00a23e0c71"
+    },
+    {
+      "path": "Data/Tracks/France/Tr.ini",
+      "bytes": 3843,
+      "sha256": "b164d23cb60e21353aa9e9c20afcf0073bbd02a1a77a61b2c8fd80399b6ad611"
+    },
+    {
+      "path": "Data/Tracks/France/tr.vis",
+      "bytes": 6875,
+      "sha256": "8e10ec80c4e71f88a248a555f74fa4c1e77ea36abc3ed689ff80a6b0f13bdc72"
+    },
+    {
+      "path": "Data/Tracks/France/TR0.qFS",
+      "bytes": 333166,
+      "sha256": "a2ede68c1c3481c5d4f4a96a5f038fb9035e7d3952080af2573f7437270dc12f"
+    },
+    {
+      "path": "Data/Tracks/France/Tr00.can",
+      "bytes": 1028,
+      "sha256": "f31caa9bc6822fc0d11e63dfed85b22328a64137b22211670eae1719153d2a15"
+    },
+    {
+      "path": "Data/Tracks/France/Tr00a.can",
+      "bytes": 1028,
+      "sha256": "831c14096df73ff70c5bc58a55b8509a108430aeb6c2f96fd59b2559339ffe85"
+    },
+    {
+      "path": "Data/Tracks/France/tr01.can",
+      "bytes": 828,
+      "sha256": "47cd7c4e0ec00de7db29ad4f192a7372700396e3561b9cc2af458ad35dace305"
+    },
+    {
+      "path": "Data/Tracks/France/tr02.can",
+      "bytes": 128,
+      "sha256": "12362a6e470d86e168f3e3e502e91220c08ac600b6823caf54e17392f6c6d0d5"
+    },
+    {
+      "path": "Data/Tracks/France/Tr03.can",
+      "bytes": 348,
+      "sha256": "d025154c7c48fecf23b0ab7330737aea34c449df9534508f391861d4d50d7a06"
+    },
+    {
+      "path": "Data/Tracks/France/tr04.can",
+      "bytes": 1028,
+      "sha256": "ee274ae27b316b9f88d99d38db540ac8aa3b0ea7c68aef8a441c699231bfc805"
+    },
+    {
+      "path": "Data/Tracks/France/Tr05.can",
+      "bytes": 1028,
+      "sha256": "c924af94a18e1e203ab4deeaa196fb567f3fa8b5ae2beffea1a66229028dd3d1"
+    },
+    {
+      "path": "Data/Tracks/France/Tr06.can",
+      "bytes": 828,
+      "sha256": "37d5e2c89a6e40c9d15d9a42b69e3229c8e2943d862e7b6e40bd8cf2cc5e66a2"
+    },
+    {
+      "path": "Data/Tracks/France/Trn.frd",
+      "bytes": 1541103,
+      "sha256": "3bec4aba475d3148de565bd34c94eb14da8a45443a7716c297601640e01ad22f"
+    },
+    {
+      "path": "Data/Tracks/France/TrN.ini",
+      "bytes": 3587,
+      "sha256": "50c1800422861c1396577c16818e41911dbfffe857f40e4a1c924fd6d61c80c7"
+    },
+    {
+      "path": "Data/Tracks/France/TRN0.qFS",
+      "bytes": 333097,
+      "sha256": "52d3c8dbd465486fef741fbdfe6fbf9f47277e2784f22d55c268387a0fdb89fc"
+    },
+    {
+      "path": "Data/Tracks/France/TrNW.ini",
+      "bytes": 3913,
+      "sha256": "c360e9b648515252189ec99c32b51bf8fab75cb8638dacd176f7c322ce133f3a"
+    },
+    {
+      "path": "Data/Tracks/France/TrW.ini",
+      "bytes": 3817,
+      "sha256": "848bc87ad49e9286c99b06e421d4b43a8dbf0d2644a065ab744d47dbc60b5e9f"
+    },
+    {
+      "path": "Data/Tracks/Park/HEIGHTS.SIM",
+      "bytes": 3756,
+      "sha256": "dc7742844a0a145e9a6d9edf48a137c30dcf61197b1a5bef9bc9c641c347e262"
+    },
+    {
+      "path": "Data/Tracks/Park/SKY.QFS",
+      "bytes": 703052,
+      "sha256": "ab0220935d92cfaea665231ed116b7c59f46e4125cf26dec4628af52ce22f05b"
+    },
+    {
+      "path": "Data/Tracks/Park/SPDFA.BIN",
+      "bytes": 5165,
+      "sha256": "0b84e09c20942a8bbb0f1cdb585075216cae304cfa6abbf191fa493906939ea7"
+    },
+    {
+      "path": "Data/Tracks/Park/SPDRA.BIN",
+      "bytes": 5165,
+      "sha256": "6d111e7afa6d8a2bfb115b6b05f4354e891065066c7fa03ce4a76967dc4df722"
+    },
+    {
+      "path": "Data/Tracks/Park/TR.CAM",
+      "bytes": 548,
+      "sha256": "2a71f3c6dfd5eeaff5e99b87ae82631f1584bf7b81039d8296692114823b4663"
+    },
+    {
+      "path": "Data/Tracks/Park/TR.FRD",
+      "bytes": 1721532,
+      "sha256": "f4c9440efdb5eba419dd1301d185c192926546da3c4205f7fa47a7e8616570b3"
+    },
+    {
+      "path": "Data/Tracks/Park/TR.INI",
+      "bytes": 3643,
+      "sha256": "3c368806a913d5dbf5414c87ecb31d73ec88df0c2f5668a03c886196989df771"
+    },
+    {
+      "path": "Data/Tracks/Park/TR0.QFS",
+      "bytes": 311319,
+      "sha256": "c5ce04145c54ac1945b10971e4c96e1606b164da1190e8e044e31590c2b23984"
+    },
+    {
+      "path": "Data/Tracks/Park/TR00.CAN",
+      "bytes": 1028,
+      "sha256": "4609ca8793d3c7d90836666370b76075b98c577e488edd3d3a02d23f04970888"
+    },
+    {
+      "path": "Data/Tracks/Park/TR00A.CAN",
+      "bytes": 1028,
+      "sha256": "5d00f7dfe6797153db223fb12a90f316f605eb6ca7d4589d569fb8bb94e9d882"
+    },
+    {
+      "path": "Data/Tracks/Park/TR01.CAN",
+      "bytes": 828,
+      "sha256": "47cd7c4e0ec00de7db29ad4f192a7372700396e3561b9cc2af458ad35dace305"
+    },
+    {
+      "path": "Data/Tracks/Park/TR02.CAN",
+      "bytes": 128,
+      "sha256": "12362a6e470d86e168f3e3e502e91220c08ac600b6823caf54e17392f6c6d0d5"
+    },
+    {
+      "path": "Data/Tracks/Park/TR03.CAN",
+      "bytes": 348,
+      "sha256": "d025154c7c48fecf23b0ab7330737aea34c449df9534508f391861d4d50d7a06"
+    },
+    {
+      "path": "Data/Tracks/Park/TR04.CAN",
+      "bytes": 1028,
+      "sha256": "ee274ae27b316b9f88d99d38db540ac8aa3b0ea7c68aef8a441c699231bfc805"
+    },
+    {
+      "path": "Data/Tracks/Park/TR05.CAN",
+      "bytes": 1028,
+      "sha256": "c924af94a18e1e203ab4deeaa196fb567f3fa8b5ae2beffea1a66229028dd3d1"
+    },
+    {
+      "path": "Data/Tracks/Park/TR06.CAN",
+      "bytes": 828,
+      "sha256": "37d5e2c89a6e40c9d15d9a42b69e3229c8e2943d862e7b6e40bd8cf2cc5e66a2"
+    },
+    {
+      "path": "Data/Tracks/Park/TRN.FRD",
+      "bytes": 1721635,
+      "sha256": "8f9ba3c7daca57fd92f35365e22aa5bb89a15bb5d512c1856554fa559f8ff313"
+    },
+    {
+      "path": "Data/Tracks/Park/TRN.INI",
+      "bytes": 3267,
+      "sha256": "ba53bab5c2d13080a6eb22ea3ee58e0df582026540e4542f2169f7b6d39f861e"
+    },
+    {
+      "path": "Data/Tracks/Park/TRNW.INI",
+      "bytes": 3780,
+      "sha256": "b151aee31233f71171d2a74136ae604b9160cabc9d6137394e2cffb78c1dd799"
+    },
+    {
+      "path": "Data/Tracks/Park/TRW.INI",
+      "bytes": 2970,
+      "sha256": "26e228e7f6c048ec603ca5f9ad72a8c4d973afe8beed60dab9c4ac5cc4f436c1"
+    },
+    {
+      "path": "Data/Tracks/UK/HEIGHTS.SIM",
+      "bytes": 3356,
+      "sha256": "fa5129400f2bcf175da1981c948364432be5fef654bbdc43e74247e3c3609e45"
+    },
+    {
+      "path": "Data/Tracks/UK/SKY.QFS",
+      "bytes": 595539,
+      "sha256": "fc0a08cc3fb39f73fcae0601a504221bf012ed22ef25f62491c4be7f57ec220b"
+    },
+    {
+      "path": "Data/Tracks/UK/SPDFA.BIN",
+      "bytes": 4615,
+      "sha256": "c1cc357f70347c3771cfb79cb5f70d229df1059cd28f5778043d97103f503564"
+    },
+    {
+      "path": "Data/Tracks/UK/SPDRA.BIN",
+      "bytes": 4615,
+      "sha256": "3900d9e09cf99cbee2a24ca05271a7c50697b09599698e0786f6535a5e5c4784"
+    },
+    {
+      "path": "Data/Tracks/UK/TR.CAM",
+      "bytes": 820,
+      "sha256": "cdb6614952f9c48a62f72370558a83e34cc46b6e3b69187b10fd2691fa474ccf"
+    },
+    {
+      "path": "Data/Tracks/UK/TR.FRD",
+      "bytes": 1315217,
+      "sha256": "8d586f2816822badae9a68b5eeea6dc05cd4384e1b999c24868fbdbd1e43a698"
+    },
+    {
+      "path": "Data/Tracks/UK/TR.INI",
+      "bytes": 3637,
+      "sha256": "ba5e7153b616f7f25b885ac02fbaf6be69c47d83bb76734ddd26be798b48345a"
+    },
+    {
+      "path": "Data/Tracks/UK/TR0.QFS",
+      "bytes": 264945,
+      "sha256": "059363eba57c4b855df4ee2bb25cafbc6fea211394428561d2a4ed74584bb936"
+    },
+    {
+      "path": "Data/Tracks/UK/TR00.CAN",
+      "bytes": 1028,
+      "sha256": "f31caa9bc6822fc0d11e63dfed85b22328a64137b22211670eae1719153d2a15"
+    },
+    {
+      "path": "Data/Tracks/UK/TR00A.CAN",
+      "bytes": 1028,
+      "sha256": "adae415f6f62f41a0fafa33298242dfff4c3d1e34d53f4bf7a098b670ecc5249"
+    },
+    {
+      "path": "Data/Tracks/UK/TR01.CAN",
+      "bytes": 828,
+      "sha256": "47cd7c4e0ec00de7db29ad4f192a7372700396e3561b9cc2af458ad35dace305"
+    },
+    {
+      "path": "Data/Tracks/UK/TR02.CAN",
+      "bytes": 128,
+      "sha256": "12362a6e470d86e168f3e3e502e91220c08ac600b6823caf54e17392f6c6d0d5"
+    },
+    {
+      "path": "Data/Tracks/UK/TR03.CAN",
+      "bytes": 348,
+      "sha256": "d025154c7c48fecf23b0ab7330737aea34c449df9534508f391861d4d50d7a06"
+    },
+    {
+      "path": "Data/Tracks/UK/TR04.CAN",
+      "bytes": 1028,
+      "sha256": "ee274ae27b316b9f88d99d38db540ac8aa3b0ea7c68aef8a441c699231bfc805"
+    },
+    {
+      "path": "Data/Tracks/UK/TR05.CAN",
+      "bytes": 1028,
+      "sha256": "c924af94a18e1e203ab4deeaa196fb567f3fa8b5ae2beffea1a66229028dd3d1"
+    },
+    {
+      "path": "Data/Tracks/UK/TR06.CAN",
+      "bytes": 828,
+      "sha256": "37d5e2c89a6e40c9d15d9a42b69e3229c8e2943d862e7b6e40bd8cf2cc5e66a2"
+    },
+    {
+      "path": "Data/Tracks/UK/TRN.FRD",
+      "bytes": 1315217,
+      "sha256": "42f02592f337e32635638a52641b4edb6e2e770e17ef409c0e5dee933f290e60"
+    },
+    {
+      "path": "Data/Tracks/UK/TRN.INI",
+      "bytes": 3096,
+      "sha256": "24eebe20910be1bb79320b9cd4f0440d8bc9b337c30ad6cb6b0f0d9e5467274b"
+    },
+    {
+      "path": "Data/Tracks/UK/TRN0.QFS",
+      "bytes": 263797,
+      "sha256": "637a79db82200a61131a6bfb1061f969b023244fbaf0c1eb671d86ac28d2edd6"
+    },
+    {
+      "path": "Data/Tracks/UK/TRNW.INI",
+      "bytes": 3102,
+      "sha256": "6c5455c9a83cd4d0f0e5caa4db336f601be8b7d9a493262f591a1ce239f47d45"
+    },
+    {
+      "path": "Data/Tracks/UK/TRW.INI",
+      "bytes": 3131,
+      "sha256": "f47ec25bfe78f37070c00063d696b3aa42360772f431f64f7c53ef536d8bf4d9"
+    }
+  ]
+}

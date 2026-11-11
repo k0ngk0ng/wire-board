@@ -1,0 +1,9 @@
+0148:Call advapi32.RegQueryValueExA(000000b0,0059148c "Language",00000000,0022fd24,0022fd20,0022fd28) ret=004f5cbd
+0148:Call advapi32.RegQueryValueExA(000000b4,0059218a "Variant",00000000,0022fcf4,0022fcf0,0022fcf8) ret=004fdaf7
+0148:Call advapi32.RegQueryValueExA(000000b4,0059222f "3D Device Description",00000000,00000000,0081df9c,0022fca0) ret=004fdf9c
+0148:Call advapi32.RegQueryValueExA(000000b8,00592216 "Thrash Driver",00000000,00000000,0022fcb8,0022fc90) ret=004fdee4
+0148:Call advapi32.RegQueryValueExA(000000b8,00592224 "D3D Device",00000000,0022fc9c,0022fc98,0022fc94) ret=004fdf1a
+0148:Call user32.MessageBoxA(00000000,0059333f "Your hard drive has less than 1MB free space.\nIf you encounter problems please refer to the reference card.",0059367e "Warning",00000031) ret=004fda06
+0148:Ret  user32.MessageBoxA() retval=00000001 ret=004fda06
+01e8:err:d3d:wined3d_check_gl_call >>>>>>> GL_INVALID_FRAMEBUFFER_OPERATION (0x506) from glClear @ /Users/gcenx/Documents/GitHub/wine/dlls/wined3d/context_gl.c / 2245.
+01e8:err:d3d:wined3d_check_gl_call >>>>>>> GL_INVALID_FRAMEBUFFER_OPERATION (0x506) from glClear @ /Users/gcenx/Documents/GitHub/wine/dlls/wined3d/context_gl.c / 2245.

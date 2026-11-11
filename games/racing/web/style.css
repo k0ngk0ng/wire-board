@@ -9,6 +9,47 @@
   background: #152530;
   box-shadow: 0 12px 36px #0b18232b;
 }
+.racing-resource-state {
+  min-height: 430px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 16px;
+}
+.racing-preparation {
+  display: flex;
+  gap: 18px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  padding: 14px 16px;
+  background: #edf3ee;
+  color: #203d37;
+  border: 1px solid #9caf9f;
+  border-radius: 10px;
+}
+.racing-preparation label {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  flex: 1 1 220px;
+}
+.racing-preparation select {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  color: #183b32;
+  background: #fff;
+}
+.racing-preparation > span {
+  font-size: 13px;
+  padding-bottom: 11px;
+  color: #33574b;
+}
+.racing-current-vehicle {
+  font-size: 13px;
+  color: #eff7fa;
+}
 .racing-board button:not(.icon-button),
 .racing-board select {
   color: #e7eff4;
@@ -688,5 +729,208 @@
   }
   .racing-wheel svg {
     transition: none;
+  }
+}
+
+/* Native scenes keep the road as the main surface; controls are touch overlays. */
+.racing-board [hidden] {
+  display: none !important;
+}
+.racing-board.is-classic {
+  position: relative;
+  width: min(100%, 1280px);
+  --racing-view-height: clamp(620px, 72dvh, 820px);
+}
+.is-classic .racing-stage {
+  background: #0a111b;
+}
+.is-classic .racing-hud {
+  position: absolute;
+  z-index: 3;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  padding: 8px 12px;
+  border: 0;
+  border-radius: 8px;
+  background: #101f30d9;
+  pointer-events: none;
+}
+.is-classic .racing-hud button {
+  pointer-events: auto;
+}
+.is-classic[data-mirror-visible="true"] .racing-hud {
+  top: 120px;
+}
+.is-classic .racing-status {
+  position: absolute;
+  z-index: 3;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 8px;
+  height: auto;
+  min-height: 30px;
+  max-width: calc(100% - 24px);
+  white-space: nowrap;
+  pointer-events: none;
+}
+.is-classic[data-phase="racing"] .racing-status,
+.is-classic[data-phase="countdown"] .racing-status {
+  display: none;
+}
+.is-classic .racing-controls {
+  position: absolute;
+  z-index: 4;
+  left: 0;
+  right: 0;
+  bottom: 10px;
+  background: transparent;
+  min-height: 0;
+  padding: 0 12px;
+  pointer-events: none;
+  grid-template-columns: 108px minmax(0, 1fr);
+  gap: 12px;
+}
+.is-classic .racing-controls > * {
+  pointer-events: auto;
+}
+.is-classic .racing-wheel {
+  width: 104px;
+  height: 104px;
+  background: #172c3abf;
+  color: #e4eef4;
+}
+.is-classic .racing-wheel svg {
+  width: 84px;
+  height: 84px;
+}
+.is-classic .racing-pedals {
+  max-width: 360px;
+  justify-self: end;
+}
+.is-classic .racing-pedals button {
+  background: #20384bd9;
+  min-height: 64px;
+}
+.is-classic .racing-view-controls {
+  position: absolute;
+  z-index: 4;
+  bottom: 126px;
+  right: 12px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  padding: 0;
+  gap: 6px;
+}
+.is-classic .racing-view-controls button {
+  min-width: 44px;
+  padding: 6px 8px;
+  background: #182e40d9;
+}
+.is-classic.has-touch .racing-route-button {
+  top: 90px;
+  bottom: auto;
+}
+.is-classic.has-touch .racing-speedometer {
+  top: 90px;
+  bottom: auto;
+}
+.is-classic .racing-watch {
+  position: absolute;
+  z-index: 3;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #142638e6;
+  padding: 6px;
+  border-radius: 8px;
+}
+.is-classic.has-touch .racing-status {
+  bottom: 178px;
+}
+@media (max-width: 600px) {
+  .racing-board.is-classic {
+    --racing-view-height: clamp(430px, 70dvh, 620px);
+  }
+  .is-classic .racing-hud {
+    left: 6px;
+    right: 6px;
+    top: 6px;
+    gap: 6px;
+    padding: 7px 8px;
+  }
+  .is-classic .racing-hud strong {
+    font-size: 16px;
+  }
+  .is-classic .racing-hud .racing-track-title strong {
+    font-size: 13px;
+  }
+  .is-classic[data-mirror-visible="true"] .racing-hud {
+    top: 65px;
+  }
+  .is-classic .racing-controls {
+    grid-template-columns: 90px minmax(0, 1fr);
+    gap: 10px;
+    padding: 0 8px;
+  }
+  .is-classic .racing-wheel {
+    width: 88px;
+    height: 88px;
+  }
+  .is-classic .racing-wheel svg {
+    width: 72px;
+    height: 72px;
+  }
+  .is-classic .racing-pedals {
+    gap: 5px;
+  }
+  .is-classic .racing-pedals button {
+    min-height: 60px;
+    font-size: 12px;
+  }
+  .is-classic .racing-view-controls {
+    bottom: 110px;
+    right: 8px;
+    gap: 4px;
+  }
+  .is-classic .racing-view-controls button {
+    min-width: 44px;
+    min-height: 44px;
+    font-size: 11px;
+    padding: 5px;
+  }
+  .is-classic.has-touch .racing-route-button {
+    top: 83px;
+    left: 8px;
+  }
+  .is-classic .racing-route-button canvas {
+    width: 78px;
+    height: 54px;
+  }
+  .is-classic.has-touch .racing-speedometer {
+    top: 83px;
+    right: 8px;
+    padding: 5px 8px;
+  }
+  .is-classic .racing-speedometer > [data-racing-speed] {
+    font-size: 36px;
+  }
+  .is-classic .racing-speedometer > strong {
+    font-size: 19px;
+  }
+  .is-classic .racing-speedometer > em {
+    font-size: 9px;
+  }
+}
+.is-classic.has-touch[data-mirror-visible="true"] .racing-route-button,
+.is-classic.has-touch[data-mirror-visible="true"] .racing-speedometer {
+  top: 206px;
+}
+@media (max-width: 600px) {
+  .is-classic.has-touch[data-mirror-visible="true"] .racing-route-button,
+  .is-classic.has-touch[data-mirror-visible="true"] .racing-speedometer {
+    top: 150px;
   }
 }

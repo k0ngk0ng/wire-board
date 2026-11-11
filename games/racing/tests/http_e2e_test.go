@@ -186,7 +186,7 @@ func TestRacingHTTPPublicationConfigurationAndInputIsolation(t *testing.T) {
 			track, lapCount := tracks[(n-2)%len(tracks)], laps[(n-2)%3]
 			options := map[string]any{"track": track, "laps": lapCount}
 			if n == 2 {
-				options, lapCount = map[string]any{}, 3
+				options, track, lapCount = map[string]any{}, "france", 3
 			}
 			h.Start(options)
 			c := h.People[0]

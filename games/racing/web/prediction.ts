@@ -2,6 +2,50 @@ import { MAX_ROAD_SPEED, ROAD_DRAG } from "./dynamics.ts";
 import type { Car, Point, Track } from "./types";
 import { brakeLevel, type Drive } from "./input.ts";
 import { clamp } from "./presentation.ts";
+import { classicVehicle, stepClassicMotion, type ClassicMotionState } from "./classic-motion.ts";
+import { classicRoadAt, classicRoadSurface, collideClassicRoad, type ClassicRuleTrack } from "./classic-road.ts";
+
+type PredictionDrive = Drive & { protected?: boolean; extrapolated?: boolean };
+
+function predictClassicCar(car: Car, input: PredictionDrive, track: ClassicRuleTrack, ms: number, serverNow: number): Car {
+  const c = { ...car };
+  const vehicle = classicVehicle(c.vehicle ?? "p911");
+  let motion: ClassicMotionState = {
+    x: c.x / 10, z: c.y / 10, vx: c.vx / 10, vz: c.vy / 10, angle: c.angle,
+    yawRate: 0, steering: 0, longAccel: 0, lateralAccel: 0,
+    rpm: c.rpm ?? vehicle.idleRPM, gear: c.gear ?? 1, shiftTimer: 0,
+    throttle: 0, brake: 0, handbrake: 0, reverseTimer: 0, ...c.motion,
+  };
+  motion.x = c.x / 10; motion.z = c.y / 10;
+  motion.vx = c.vx / 10; motion.vz = c.vy / 10; motion.angle = c.angle;
+  let remaining = clamp(ms, 0, 250) / 1000;
+  const protect = input.protected || (input.extrapolated && serverNow - c.lastInputAt > 750);
+  while (remaining > 1e-7) {
+    const dt = Math.min(.02, remaining);
+    remaining -= dt;
+    let road = classicRoadAt(track, c.x, c.y, c.height ?? 0, c.routeIndex ?? -1);
+    if (protect) { motion.throttle = 0; motion.brake = 1; motion.reverseTimer = 0; }
+    motion = stepClassicMotion(motion, {
+      steer: protect ? 0 : input.steer,
+      throttle: protect ? 0 : input.throttle,
+      brakeAmount: protect ? 1 : brakeLevel(input),
+      handbrake: protect ? false : input.drift,
+      allowReverse: !protect,
+    }, vehicle, classicRoadSurface(road, motion.angle), dt);
+    road = classicRoadAt(track, motion.x * 10, motion.z * 10, road.height, road.index);
+    motion = collideClassicRoad(track, motion, c.vehicle ?? "p911", road.height);
+    c.x = motion.x * 10; c.y = motion.z * 10;
+    c.vx = motion.vx * 10; c.vy = motion.vz * 10; c.angle = motion.angle;
+    road = classicRoadAt(track, c.x, c.y, road.height, road.index);
+    c.height = road.height;
+    c.routeIndex = road.index;
+    c.pitch = Math.atan(-(road.nx * Math.cos(c.angle) + road.nz * Math.sin(c.angle)) / Math.max(.1, road.ny));
+    c.roll = Math.atan(-(road.nx * Math.sin(c.angle) - road.nz * Math.cos(c.angle)) / Math.max(.1, road.ny));
+    c.offroad = road.side > road.right || road.side < -road.left;
+  }
+  return { ...c, motion, rpm: motion.rpm, gear: motion.gear, speed: Math.hypot(c.vx, c.vy),
+    steer: input.steer, throttle: input.throttle, brake: input.brake, brakeAmount: brakeLevel(input), drift: input.drift };
+}
 export function roadDistance(track: Pick<Track, "points">, p: Point) {
   let best = Infinity;
   for (let i = 0; i < track.points.length; i++) {
@@ -22,7 +66,7 @@ export function roadDistance(track: Pick<Track, "points">, p: Point) {
 // checkpoints, laps and results always remain the server's values.
 export function predictCar(
   car: Car,
-  input: Drive,
+  input: PredictionDrive,
   track: Track,
   ms: number,
   serverNow: number,
@@ -30,6 +74,8 @@ export function predictCar(
   const c = { ...car };
   const braking = brakeLevel(input);
   if (c.finishAt || c.resetUntil > serverNow) return c;
+  if (c.vehicle && track.version === 3 && track.road && track.barriers)
+    return predictClassicCar(c, input, track as ClassicRuleTrack, ms, serverNow);
   let remaining = clamp(ms, 0, 250) / 1000;
   while (remaining > 0) {
     const dt = Math.min(0.02, remaining);

@@ -1,0 +1,117 @@
+{
+  "date": "2026-11-11",
+  "purpose": "feasibility-and-original-demo-runtime",
+  "artifact": {
+    "name": "NFSHSD.EXE",
+    "local_path": ".local/racing-nfs-reference/NFSHSD.EXE",
+    "source": "https://archive.org/download/NeedForSpeedHighStakesDemo/NFSHSD.EXE",
+    "metadata": "https://archive.org/metadata/NeedForSpeedHighStakesDemo",
+    "archive_declared_version": "v2.02.001",
+    "bytes": 15083878,
+    "sha1": "7384f9807706f9c3ecf1baddfebac55a55dbf755",
+    "sha256": "1b5407ee0274dd799f2458a22c2a0fc5d2806329a27f7bb0cf09806aa153cecf",
+    "metadata_sha1_matches": true,
+    "format": "PE32 x86 InstallShield self-extracting archive",
+    "executed": true,
+    "inner_header_observed_paths": [
+      "Data\\Tracks\\France",
+      "Cars\\P911",
+      "Cars\\FM50"
+    ],
+    "game_payload_extracted": true,
+    "handling_measured": false
+  },
+  "rea": {
+    "version": "6.5.0",
+    "operation": "inspect_pe_resources",
+    "provider": "rea-pe-resources",
+    "evidence_id": "ev_1318bf4522a112140d08833a20d5865bd370052aab20cf1ee7b54afc2405ff27",
+    "bundle": "rea-evidence.json",
+    "scope": "installer PE resource inventory; not game code or runtime behavior"
+  },
+  "reference_commits": {
+    "OpenNFS/OpenNFS": "dcd9197033272f8be307a839105e74185809f9f9",
+    "OpenNFS/LibOpenNFS": "3ebd326c1ee3ac0858bd7fa522d077978cc1f016",
+    "e-rk/HighStakesRE": "a87d7c952e36251f5ba371550d09ee26684d82b3",
+    "e-rk/speedtools": "c7b1286fdc0c6983ad121712d90bf0dba7b6a975"
+  },
+  "runtime": {
+    "host": "macOS 26.6.2 arm64",
+    "compatibility_layer": "Wine 11.0 x86_64 via Rosetta",
+    "game_executable_sha256": "93b0015864ebcd0d270b476aa94c61483ebfd9f0777ab625b9096fec9c514f03",
+    "game_files": 112,
+    "game_bytes": 22739262,
+    "group_sizes": [
+      {
+        "group": "Executible_&_DLLs",
+        "files": 6,
+        "bytes": 2496000
+      },
+      {
+        "group": "Help_&_Readme_-_English",
+        "files": 2,
+        "bytes": 24727
+      },
+      {
+        "group": "3dSetup",
+        "files": 5,
+        "bytes": 655948
+      },
+      {
+        "group": "GameArt",
+        "files": 33,
+        "bytes": 1349381
+      },
+      {
+        "group": "Cars",
+        "files": 2,
+        "bytes": 8868656
+      },
+      {
+        "group": "Menus",
+        "files": 18,
+        "bytes": 58162
+      },
+      {
+        "group": "Text",
+        "files": 12,
+        "bytes": 373779
+      },
+      {
+        "group": "Tracks_-_France",
+        "files": 23,
+        "bytes": 4408489
+      },
+      {
+        "group": "Audio_-_SFX",
+        "files": 4,
+        "bytes": 2627108
+      },
+      {
+        "group": "Audio_-_Speech_-_English",
+        "files": 3,
+        "bytes": 744004
+      },
+      {
+        "group": "FeArt_-_English",
+        "files": 3,
+        "bytes": 664388
+      },
+      {
+        "group": "SaveData",
+        "files": 1,
+        "bytes": 468620
+      }
+    ],
+    "launch_arguments": [
+      "-PatchRestart"
+    ],
+    "visual_verified": false,
+    "screenshot_status": "blocked-by-locked-macos-session",
+    "observation": "CGSessionCopyCurrentDictionary reported CGSSessionScreenIsLocked=1; game process advanced beyond startup dialogs, Wine reported GL_INVALID_FRAMEBUFFER_OPERATION; no gameplay image verified",
+    "handling_measured": false,
+    "startup_static_evidence": "startup-decompile.json",
+    "startup_trace": "runtime-startup.log",
+    "process_status": "stopped-while-awaiting-host-unlock"
+  }
+}

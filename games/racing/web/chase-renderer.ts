@@ -8,6 +8,9 @@ export type SceneFrame = {
   cars: Car[];
   follow: number;
   rear: boolean;
+  cameraMode?: number;
+  drawDistance?: number;
+  mirrorVisible?: boolean;
   reduced: boolean;
   now: number;
 };

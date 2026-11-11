@@ -214,7 +214,20 @@ func updateProgress(s *State, c *Car, before Point, at int64) {
 		f := clamp(-old/cross, 0, 1)
 		x, y := before.X+(c.X-before.X)*f, before.Y+(c.Y-before.Y)*f
 		lateral := math.Abs((x-p.X)*(-v.Y) + (y-p.Y)*v.X)
-		if lateral > t.RoadWidth/2+CarRadius {
+		allowed := lateral <= t.RoadWidth/2+CarRadius
+		if s.Physics == 3 {
+			road := t.Road[i]
+			rl := math.Hypot(road.RX, road.RZ)
+			side := 0.
+			if rl > 1e-8 {
+				side = ((x-p.X)*road.RX + (y-p.Y)*road.RZ) / rl
+			}
+			// The vehicle must physically overlap the paved gate; a wheel on the
+			// shoulder is not a skipped checkpoint, while a detached shortcut is.
+			margin := ClassicVehicleBody(c.Vehicle).Width * 5
+			allowed = side >= -road.Left-margin && side <= road.Right+margin && math.Abs(c.Height-road.Height) < 20
+		}
+		if !allowed {
 			break
 		}
 		if i == 0 && c.Gate == n-1 {
@@ -229,6 +242,14 @@ func updateProgress(s *State, c *Car, before Point, at int64) {
 				c.Throttle = 0
 				c.Brake = true
 				c.BrakeAmount = nil
+				c.Horn = false
+				if c.Motion != nil {
+					c.Motion.VX = 0
+					c.Motion.VZ = 0
+					c.Motion.Throttle = 0
+					c.Motion.Brake = 1
+					c.Motion.YawRate = 0
+				}
 				s.emit("finish", c.Seat, at, 1)
 				s.Log = append(s.Log, fmt.Sprintf("玩家 %d 完成 %d 圈", c.Seat+1, c.Lap))
 				if s.FinishDeadline == 0 {
@@ -249,6 +270,13 @@ func updateProgress(s *State, c *Car, before Point, at int64) {
 		dx, dy := b.X-a.X, b.Y-a.Y
 		length := math.Hypot(dx, dy)
 		local := clamp(((c.X-a.X)*dx+(c.Y-a.Y)*dy)/length, 0, length)
+		if s.Physics == 3 {
+			segmentLength := total - arcs[i]
+			if i+1 < n {
+				segmentLength = arcs[i+1] - arcs[i]
+			}
+			local = clamp(((c.X-a.X)*dx+(c.Y-a.Y)*dy)/(length*length), 0, 1) * segmentLength
+		}
 		c.Progress = float64(c.Lap)*total + arcs[i] + local
 	}
 }
@@ -272,6 +300,7 @@ func advance(s *State, until int64) {
 				c.Applied = c.Pending[0]
 				c.Pending = c.Pending[1:]
 			}
+			c.Horn = c.Applied.Horn && !c.Applied.Protect && at-c.Applied.At <= lostInputMS && at >= c.ResetUntil && c.FinishAt == 0
 			if s.Phase == "countdown" || c.FinishAt > 0 {
 				continue
 			}
@@ -283,12 +312,23 @@ func advance(s *State, until int64) {
 			c.BrakeAmount = c.Applied.BrakeAmount
 			c.Drift = c.Applied.Drift
 			c.LastInputAt = c.Applied.At
-			stepCar(c, s.Track, stepMS, at)
+			if s.Physics == 3 {
+				drop := stepClassicCar(c, s.Track, stepMS, at)
+				if drop > 45 {
+					s.emit("collision", i, at, clamp(drop/200, 0, 1))
+				}
+			} else {
+				stepCar(c, s.Track, stepMS, at)
+			}
 			c.Steer, c.Throttle, c.Brake, c.Drift, c.LastInputAt = steer, throttle, brake, drift, last
 			c.BrakeAmount = pressure
 		}
 		if s.Phase != "countdown" {
-			collide(s, at)
+			if s.Physics == 3 {
+				collideClassicCars(s, at)
+			} else {
+				collide(s, at)
+			}
 			for i := range s.Cars {
 				updateProgress(s, &s.Cars[i], previous[i], at)
 			}

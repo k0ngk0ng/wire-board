@@ -10,7 +10,7 @@ import (
 )
 
 func TestVehicleSurfacesDriftAndSkins(t *testing.T) {
-	track := Tracks()[0]
+	track := legacyTracks()[0]
 	p := track.Points[3]
 	next := track.Points[4]
 	a := math.Atan2(next.Y-p.Y, next.X-p.X)
@@ -55,7 +55,7 @@ func TestVehicleSurfacesDriftAndSkins(t *testing.T) {
 	}
 }
 func TestOrderedGateProtection(t *testing.T) {
-	track := Tracks()[0]
+	track := legacyTracks()[0]
 	s := State{Options: Options{Track: track.ID, Laps: 1}, Track: track, Phase: "racing", StartAt: 1000, MaxRaceAt: 481000}
 	c := Car{Seat: 0, Checkpoint: 1, Gate: 0, Lap: 0}
 	p := track.Points[0]
@@ -137,7 +137,7 @@ func TestCapsuleContactMatchesCarSilhouette(t *testing.T) {
 // different fractions of one 20 ms step must not share first place merely
 // because the server publishes them in the same frame.
 func TestFinishRanksUseActualCrossingWithinStep(t *testing.T) {
-	tr := Tracks()[0]
+	tr := legacyTracks()[0]
 	p, v := tr.Points[0], tangent(tr, 0)
 	s := State{Track: tr, Options: Options{Track: tr.ID, Laps: 1}, Phase: "racing", Cars: []Car{
 		{Seat: 0, Checkpoint: 0, Gate: len(tr.Points) - 1, X: p.X + v.X*2, Y: p.Y + v.Y*2},

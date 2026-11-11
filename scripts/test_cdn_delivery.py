@@ -170,6 +170,29 @@ class FlacDelivery(unittest.TestCase):
   cdn.trim(self.dist,{'passed':True,'files':rows});self.assertFalse(p.exists())
   self.assertEqual(json.loads((self.dist/'cdn-assets-manifest.json').read_text())['files']['/'+row['path']]['mime'],'audio/flac')
 
+class GlbDelivery(unittest.TestCase):
+ # Pre-implementation failures: a real 3D scene is rejected, receives a generic
+ # MIME, changes bytes under transport gzip, or remains in the server package.
+ setUp=Delivery.setUp
+ def test_glb_uses_model_mime_lossless_transport_and_is_trimmed(self):
+  import struct
+  payload=b'{"asset":{"version":"2.0"}}'
+  payload+=b' '*((-len(payload))%4)
+  body=b'glTF'+struct.pack('<II',2,20+len(payload))+struct.pack('<I',len(payload))+b'JSON'+payload
+  p=self.dist/'racing/v3/tracks/france.glb';p.parent.mkdir(parents=True);p.write_bytes(body)
+  rows=cdn.inventory(self.dist,self.base);row=next(r for r in rows if r['path'].endswith('.glb'))
+  self.assertEqual(row['mime'],'model/gltf-binary');self.assertEqual(row['encoding'],'gzip')
+  self.assertEqual(row['bytes'],len(body));self.assertEqual(row['sha256'],cdn.sha(body));self.assertEqual(row['wireBytes'],len(gzip.compress(body,mtime=0)))
+  encoded=gzip.compress(body,mtime=0)
+  headers={'Content-Type':'model/gltf-binary','Content-Encoding':'gzip','Access-Control-Allow-Origin':'*'}
+  cdn.validate_response(row,encoded,headers)
+  for changed in [dict(headers,**{'Content-Type':'application/octet-stream'}),dict(headers,**{'Content-Encoding':'identity'})]:
+   with self.assertRaises(ValueError):cdn.validate_response(row,encoded,changed)
+  with self.assertRaises(ValueError):cdn.validate_response(row,gzip.compress(body+b'x',mtime=0),headers)
+  cdn.trim(self.dist,{'passed':True,'files':rows});self.assertFalse(p.exists())
+  entry=json.loads((self.dist/'cdn-assets-manifest.json').read_text())['files']['/racing/v3/tracks/france.glb']
+  self.assertEqual(entry['mime'],'model/gltf-binary');self.assertEqual(entry['sha256'],cdn.sha(body))
+
 class ServerPackageBoundary(unittest.TestCase):
  # Before implementation: untrimmed files, stale compiler inputs, forged binary
  # receipts and unverified redirect metadata must all prevent publication.

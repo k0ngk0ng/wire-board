@@ -1,6 +1,7 @@
 package server
 
 import (
+	"bytes"
 	"database/sql"
 	"encoding/json"
 	"errors"
@@ -179,6 +180,81 @@ revision INTEGER NOT NULL, PRIMARY KEY(user_id, model));`)
 	return err
 }
 
+// Only missing actions identify an older model. Existing empty bindings remain
+// intentional. This changes the decoded response, never the stored profile.
+func normalizeStoredControllerProfile(model controllerModel, p controllerProfile) (controllerProfile, error) {
+	if len(p.Keyboard) == 0 && len(model.Buttons) > 0 {
+		return p, validateControllerProfile(model, p)
+	}
+	missing := []string{}
+	for _, action := range model.Buttons {
+		if _, exists := p.Keyboard[action.ID]; !exists {
+			missing = append(missing, action.ID)
+			p.Keyboard[action.ID] = ""
+		}
+	}
+	// Validate before using defaults: unknown actions, invalid input shapes and
+	// conflicts in saved preferences must not be hidden by completion.
+	if err := validateControllerProfile(model, p); err != nil || len(missing) == 0 {
+		return p, err
+	}
+	usedKeys := map[string]bool{}
+	for _, code := range p.Keyboard {
+		usedKeys[code] = true
+	}
+	for _, codes := range p.KeyboardAlt {
+		for _, code := range codes {
+			usedKeys[code] = true
+		}
+	}
+	for _, action := range missing {
+		if code := model.Defaults.Keyboard[action]; code != "" && !usedKeys[code] {
+			p.Keyboard[action], usedKeys[code] = code, true
+		}
+		if _, exists := p.KeyboardAlt[action]; !exists {
+			for _, code := range model.Defaults.KeyboardAlt[action] {
+				if !usedKeys[code] {
+					if p.KeyboardAlt == nil {
+						p.KeyboardAlt = map[string][]string{}
+					}
+					p.KeyboardAlt[action] = append(p.KeyboardAlt[action], code)
+					usedKeys[code] = true
+				}
+			}
+		}
+	}
+	type physicalInput struct {
+		kind             string
+		index, direction int
+	}
+	input := func(b controllerGamepadBinding) physicalInput {
+		return physicalInput{b.Type, *b.Index, b.Direction}
+	}
+	for device, pad := range p.Gamepads {
+		used := map[physicalInput]bool{}
+		for _, bindings := range pad.Bindings {
+			for _, binding := range bindings {
+				used[input(binding)] = true
+			}
+		}
+		for _, action := range missing {
+			if _, exists := pad.Bindings[action]; exists {
+				continue
+			}
+			pad.Bindings[action] = []controllerGamepadBinding{}
+			if strings.HasPrefix(device, "standard:") {
+				for _, binding := range model.StandardGamepad[action] {
+					if !used[input(binding)] {
+						pad.Bindings[action] = append(pad.Bindings[action], binding)
+						used[input(binding)] = true
+					}
+				}
+			}
+		}
+	}
+	return p, validateControllerProfile(model, p)
+}
+
 func (s *Server) readControllerProfile(user string, model controllerModel) (controllerProfile, error) {
 	profile := model.Defaults
 	var data []byte
@@ -200,11 +276,16 @@ func (s *Server) readControllerProfile(user string, model controllerModel) (cont
 	}
 	// Decode into a fresh map: defaults are also returned as reset presets.
 	profile = controllerProfile{}
-	if err = json.Unmarshal(data, &profile); err != nil {
+	d := json.NewDecoder(bytes.NewReader(data))
+	d.DisallowUnknownFields()
+	if err = d.Decode(&profile); err != nil {
 		return profile, err
 	}
+	if err = d.Decode(new(any)); err != io.EOF {
+		return profile, errors.New("控制器配置格式不正确")
+	}
 	profile.Revision = revision
-	return profile, validateControllerProfile(model, profile)
+	return normalizeStoredControllerProfile(model, profile)
 }
 
 func (s *Server) controllers(w http.ResponseWriter, r *http.Request) {

@@ -34,11 +34,25 @@ export function interpolateCar(a: Car, b: Car, t: number): Car {
   if (Math.hypot(a.x - b.x, a.y - b.y) > 160 || a.resetUntil !== b.resetUntil)
     return { ...b };
   t = clamp(t, 0, 1);
+  const classic = a.vehicle && a.vehicle === b.vehicle;
+  const blend = (from: number | undefined, to: number | undefined) =>
+    (from ?? 0) + ((to ?? 0) - (from ?? 0)) * t;
   return {
     ...b,
     x: a.x + (b.x - a.x) * t,
     y: a.y + (b.y - a.y) * t,
     angle: a.angle + angleDelta(a.angle, b.angle) * t,
+    ...(classic ? {
+      height: blend(a.height, b.height),
+      pitch: blend(a.pitch, b.pitch),
+      roll: blend(a.roll, b.roll),
+      rpm: blend(a.rpm, b.rpm),
+      motion: a.motion && b.motion ? { ...b.motion,
+        steering: blend(a.motion.steering, b.motion.steering),
+        longAccel: blend(a.motion.longAccel, b.motion.longAccel),
+        lateralAccel: blend(a.motion.lateralAccel, b.motion.lateralAccel),
+      } : b.motion,
+    } : {}),
   };
 }
 export function extrapolateCar(c: Car, ms: number): Car {

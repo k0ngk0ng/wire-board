@@ -27,7 +27,7 @@ func configure(n int, raw json.RawMessage) (json.RawMessage, error) {
 	if n < 2 || n > 6 {
 		return nil, errors.New("极品飞车支持 2～6 人")
 	}
-	o := Options{Track: "metro", Laps: 3}
+	o := Options{Track: "france", Laps: 3, TimeOfDay: "day"}
 	if len(raw) > 0 {
 		if e := strict(raw, &o); e != nil {
 			return nil, errors.New("无效赛车设置")
@@ -39,10 +39,55 @@ func configure(n int, raw json.RawMessage) (json.RawMessage, error) {
 	if o.Laps != 1 && o.Laps != 3 && o.Laps != 5 {
 		return nil, errors.New("圈数可选 1、3 或 5 圈")
 	}
+	if o.TimeOfDay == "" {
+		o.TimeOfDay = "day"
+	}
+	if o.TimeOfDay != "day" && o.TimeOfDay != "night" {
+		return nil, errors.New("请选择白天或夜间")
+	}
+	if len(o.Vehicles) > 6 {
+		return nil, errors.New("车型席位超出范围")
+	}
+	if len(o.Vehicles) > n {
+		o.Vehicles = o.Vehicles[:n]
+	}
+	for len(o.Vehicles) < n {
+		defaults := [5]string{"p911", "fm50", "ldia", "mcf1", "ccor"}
+		o.Vehicles = append(o.Vehicles, defaults[len(o.Vehicles)%len(defaults)])
+	}
+	for _, id := range o.Vehicles {
+		if !validClassicVehicleID(id) {
+			return nil, errors.New("请选择有效车型")
+		}
+	}
 	return json.Marshal(o)
 }
 
+func prepare(ctx gameapi.PreparationContext, rawOptions, rawAction json.RawMessage) (json.RawMessage, error) {
+	if ctx.Actor < 0 || ctx.Actor >= ctx.Capacity {
+		return nil, errors.New("当前不能选择车型")
+	}
+	var action struct {
+		Type    string `json:"type"`
+		Vehicle string `json:"vehicle"`
+	}
+	if err := strict(rawAction, &action); err != nil || action.Type != "vehicle" || !validClassicVehicleID(action.Vehicle) {
+		return nil, errors.New("无效的车型选择")
+	}
+	configured, err := configure(ctx.Capacity, rawOptions)
+	if err != nil {
+		return nil, err
+	}
+	var options Options
+	_ = json.Unmarshal(configured, &options)
+	options.Vehicles[ctx.Actor] = action.Vehicle
+	return configure(ctx.Capacity, mustClassicJSON(options))
+}
+
+func mustClassicJSON(value any) json.RawMessage { b, _ := json.Marshal(value); return b }
+
 type Action struct {
+	Horn        bool     `json:"horn,omitempty"`
 	BrakeAmount *float64 `json:"brakeAmount,omitempty"`
 	Type        string   `json:"type"`
 	Epoch       string   `json:"epoch"`
@@ -55,7 +100,7 @@ type Action struct {
 }
 
 func Module() gameapi.Module {
-	return gameapi.Module{ID: "racing", Name: "极品飞车", MinPlayers: 2, MaxPlayers: 6, Realtime: true, Configure: configure, Start: start, Apply: apply, View: project, BotAction: botAction, Reclaim: reclaim, Restore: restore, AcceptStale: acceptStale, OnTimer: onTimer}
+	return gameapi.Module{ID: "racing", Name: "极品飞车", MinPlayers: 2, MaxPlayers: 6, Realtime: true, Configure: configure, Prepare: prepare, Start: start, Apply: apply, View: project, BotAction: botAction, Reclaim: reclaim, Restore: restore, AcceptStale: acceptStale, OnTimer: onTimer}
 }
 func start(ctx gameapi.Context, raw json.RawMessage) (gameapi.Match, error) {
 	oRaw, e := configure(ctx.Players, raw)
@@ -71,11 +116,23 @@ func start(ctx gameapi.Context, raw json.RawMessage) (gameapi.Match, error) {
 	}
 	now := ctx.Now.UnixMilli()
 	s := State{Options: o, Phase: "countdown", Epoch: hex.EncodeToString(token[:]), ServerAt: now, StartAt: now + 3000, MaxRaceAt: now + 1203000, Track: t, Cars: make([]Car, ctx.Players), Events: []Event{}, Log: []string{"极品飞车：3 秒后发车，首车完赛后保留 30 秒冲线时间"}}
+	if t.Version == 3 {
+		s.Physics = 3
+	}
 	p, v := t.Points[0], tangent(t, 0)
 	for i := range s.Cars {
 		behind := 50. + float64(i/2)*55
 		side := float64(i%2*2-1) * 22
 		c := Car{Seat: i, X: p.X - v.X*behind - v.Y*side, Y: p.Y - v.Y*behind + v.X*side, Angle: math.Atan2(v.Y, v.X), Checkpoint: 0, Gate: -1, Progress: -behind, Rank: i/2 + 1, LastInputAt: now, IdleAt: now + idleMS, Skin: i % 6, Applied: Input{At: now, Brake: true}}
+		if s.Physics == 3 {
+			c.Vehicle = o.Vehicles[i]
+			c.Height = t.Road[0].Height
+			classicPose(&c, t)
+			motion := classicMotionFromCar(c)
+			motion.Brake = 1
+			classicMotionToCar(&c, motion)
+			c.Applied.Protect = true
+		}
 		s.Cars[i] = c
 	}
 	rank(&s)
@@ -135,7 +192,7 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 		c.Drift = a.Drift
 		c.LastInputAt = at
 		c.IdleAt = at + idleMS
-		in := Input{At: at, Steer: a.Steer, Throttle: a.Throttle, Brake: a.Brake, BrakeAmount: a.BrakeAmount, Drift: a.Drift}
+		in := Input{At: at, Steer: a.Steer, Throttle: a.Throttle, Brake: a.Brake, BrakeAmount: a.BrakeAmount, Drift: a.Drift, Horn: a.Horn}
 		if len(c.Pending) > 0 && c.Pending[len(c.Pending)-1].At == at {
 			c.Pending[len(c.Pending)-1] = in
 		} else {
@@ -147,6 +204,7 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 	case "skin":
 		c.Skin = a.Skin
 	case "reset":
+		c.Horn = false
 		i := c.Gate
 		if i < 0 {
 			i = 0
@@ -161,7 +219,7 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 		c.LastReset = at
 		c.ResetUntil = at + 2000
 		c.Pending = nil
-		c.Applied = Input{At: at, Brake: true}
+		c.Applied = Input{At: at, Brake: true, Protect: true}
 		c.Steer = 0
 		c.Throttle = 0
 		c.Brake = true
@@ -169,6 +227,16 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 		c.Drift = false
 		c.LastInputAt = at
 		c.IdleAt = at + idleMS
+		if s.Physics == 3 {
+			c.RouteIndex = i
+			c.Height = s.Track.Road[i].Height
+			c.Motion = nil
+			c.Driver = nil
+			motion := classicMotionFromCar(*c)
+			motion.Brake = 1
+			classicMotionToCar(c, motion)
+			classicPose(c, s.Track)
+		}
 		s.emit("reset", ctx.Actor, at, 1)
 	}
 	return s.match()
@@ -203,15 +271,22 @@ func reclaim(ctx gameapi.Context, m gameapi.Match) (gameapi.Match, error) {
 	}
 	c := &s.Cars[ctx.Actor]
 	at := ctx.Now.UnixMilli()
+	c.Horn = false
 	c.Steer = 0
 	c.Throttle = 0
 	c.Brake = true
 	c.BrakeAmount = nil
 	c.Drift = false
 	c.Pending = nil
-	c.Applied = Input{At: at, Brake: true}
+	c.Applied = Input{At: at, Brake: true, Protect: true}
 	c.LastInputAt = at
 	c.IdleAt = at + idleMS
+	if c.Motion != nil {
+		c.Motion.Throttle = 0
+		c.Motion.Brake = 1
+		c.Motion.ReverseTimer = 0
+	}
+	c.Driver = nil
 	return s.match()
 }
 func restore(ctx gameapi.Context, m gameapi.Match) (gameapi.Match, error) {
@@ -229,10 +304,30 @@ func project(m gameapi.Match, seat int) (any, error) {
 	if e != nil {
 		return nil, e
 	}
-	v := View{Options: s.Options, Phase: s.Phase, Epoch: s.Epoch, ServerAt: s.ServerAt, StartAt: s.StartAt, FinishDeadline: s.FinishDeadline, MaxRaceAt: s.MaxRaceAt, Track: s.Track, Cars: s.Cars, Events: s.Events}
+	v := View{Physics: s.Physics, Options: s.Options, Phase: s.Phase, Epoch: s.Epoch, ServerAt: s.ServerAt, StartAt: s.StartAt, FinishDeadline: s.FinishDeadline, MaxRaceAt: s.MaxRaceAt, Track: s.Track, Cars: s.Cars, Events: s.Events}
+	if s.Physics == 3 {
+		v.Track = compactTrack(v.Track)
+		v.Events = append([]Event{}, v.Events...)
+		for i := range v.Events {
+			e := &v.Events[i]
+			e.X = math.Round(e.X*1000) / 1000
+			e.Y = math.Round(e.Y*1000) / 1000
+			e.Intensity = math.Round(e.Intensity*1000) / 1000
+		}
+	}
 	for i := range v.Cars {
+		c := &v.Cars[i]
+		c.Horn = s.Phase != "finished" && c.Applied.Horn && !c.Applied.Protect && s.ServerAt-c.Applied.At <= lostInputMS && s.ServerAt >= c.ResetUntil && c.FinishAt == 0
+		if s.Physics == 3 {
+			c := &v.Cars[i]
+			c.Protected = c.Applied.Protect || s.ServerAt-c.Applied.At > lostInputMS || s.ServerAt < c.ResetUntil
+		}
 		v.Cars[i].Pending = nil
 		v.Cars[i].Applied = Input{}
+		v.Cars[i].Driver = nil
+		if s.Physics == 3 {
+			compactClassicCar(&v.Cars[i])
+		}
 	}
 	if seat >= 0 && seat < len(s.Cars) && s.Result == nil && s.Cars[seat].FinishAt == 0 {
 		c := s.Cars[seat]
@@ -252,6 +347,7 @@ func repairSequences(s *State) bool {
 			continue
 		}
 		repaired = true
+		c.Horn = false
 		c.Seq = 0
 		c.Steer = 0
 		c.Throttle = 0
@@ -259,7 +355,13 @@ func repairSequences(s *State) bool {
 		c.BrakeAmount = nil
 		c.Drift = false
 		c.Pending = nil
-		c.Applied = Input{At: s.ServerAt, Brake: true}
+		c.Applied = Input{At: s.ServerAt, Brake: true, Protect: true}
+		if c.Motion != nil {
+			c.Motion.Throttle = 0
+			c.Motion.Brake = 1
+			c.Motion.ReverseTimer = 0
+		}
+		c.Driver = nil
 	}
 	if repaired {
 		digest := sha256.Sum256([]byte(s.Epoch + "\x00sequence-repair"))
