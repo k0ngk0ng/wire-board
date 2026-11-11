@@ -1,0 +1,262 @@
+// Native CDP input and passive compositor/network observations for an owned
+// agent-browser target. Never dispatches synthetic keyboard/touch DOM events or
+// writes gameplay state. Optional Gamepad API simulation replaces only the
+// browser hardware boundary; production mapping, sampling and HTTP stay real.
+const [endpoint, base, rawOptions] = process.argv.slice(2);
+const options = JSON.parse(rawOptions), socket = new WebSocket(endpoint);
+await new Promise((resolve, reject) => { socket.onopen = resolve; socket.onerror = reject; });
+let serial = 0, session, screen = false, pixelTrial = null;
+const pending = new Map(), packets = [], states = [], requests = [], exceptions = [], frameEvents = [], pixelFrames = [];
+const sent = new Map(), ackMS = [], held = new Map();
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const call = (method, params = {}, sessionId) => new Promise((resolve, reject) => {
+  const id = ++serial, timer = setTimeout(() => { pending.delete(id); reject(Error(`CDP timeout: ${method}`)); }, 20000);
+  pending.set(id, { resolve: (value) => { clearTimeout(timer); resolve(value); }, reject: (error) => { clearTimeout(timer); reject(error); } });
+  socket.send(JSON.stringify({ id, method, params, ...(sessionId ? { sessionId } : {}) }));
+});
+const send = (method, params = {}) => call(method, params, session);
+socket.onclose = () => { for (const p of pending.values()) p.reject(Error("CDP closed")); pending.clear(); };
+socket.onmessage = ({ data }) => {
+  const message = JSON.parse(data);
+  if (message.id) {
+    const p = pending.get(message.id); if (!p) return;
+    pending.delete(message.id); message.error ? p.reject(Error(JSON.stringify(message.error))) : p.resolve(message.result); return;
+  }
+  const p = message.params;
+  if (message.method === "Page.screencastFrame") {
+    const entry = { timestamp: p.metadata.timestamp * 1000, receivedAt: Date.now(), metadata: p.metadata };
+    frameEvents.push(entry);
+    if (pixelTrial && pixelTrial.frames.length < 16) {
+      const frame = { ...entry, data: p.data, trial: pixelTrial.index };
+      pixelTrial.frames.push(frame); pixelFrames.push(frame);
+    }
+    void send("Page.screencastFrameAck", { sessionId: p.sessionId }).catch((error) => exceptions.push({ error: error.message }));
+  }
+  if (message.method === "Runtime.exceptionThrown") exceptions.push({ at: Date.now(), ...p.exceptionDetails });
+  if (message.method === "Network.requestWillBeSent") requests.push({ at: Date.now(), url: p.request.url, method: p.request.method });
+  if (message.method === "Network.webSocketFrameSent" || message.method === "Network.webSocketFrameReceived") {
+    const direction = message.method.endsWith("Sent") ? "sent" : "received";
+    try {
+      const packet = JSON.parse(p.response.payloadData), at = Date.now();
+      if (packet.type === "input") { sent.set(packet.nonce, at); packets.push({ at, direction, ...packet }); }
+      else if (packet.type === "ack") { const start = sent.get(packet.nonce); if (start !== undefined) ackMS.push(at - start); packets.push({ at, direction, ...packet }); }
+      else if (packet.type === "network") packets.push({ at, direction, ...packet });
+      else if (packet.type === "state" || packet.type === "game") {
+        const state = typeof packet.state === "string" ? JSON.parse(packet.state) : packet.state;
+        const view = packet.type === "game" ? packet.game?.data : state?.room?.game?.data;
+        if (view?.cars) states.push({ at, bytes: Buffer.byteLength(JSON.stringify(view)), serverAt: view.serverAt,
+          phase: view.phase, epoch: view.epoch, cars: view.cars,
+          staticCounts: Object.fromEntries(["points", "road", "barriers", "props"].map((key) => [key, view.track?.[key]?.length ?? 0])) });
+      }
+    } catch { /* Binary protocol/other traffic is outside these observations. */ }
+  }
+};
+const evaluate = async (expression) => {
+  const result = await send("Runtime.evaluate", { expression, awaitPromise: true, returnByValue: true });
+  if (result.exceptionDetails) throw Error(JSON.stringify(result.exceptionDetails));
+  return result.result.value;
+};
+const key = async (value, down, repeat = false) => {
+  const functionKey = /^F([1-9]|1[0-2])$/.test(value);
+  const named = {Escape:27,Enter:13,Tab:9,Backspace:8};
+  const code = value === " " ? "Space" : value in named || value.startsWith("Arrow") || functionKey ? value : "Key" + value.toUpperCase();
+  const virtual = value === " " ? 32 : named[value] ?? (functionKey ? 111 + Number(value.slice(1)) : ({ ArrowLeft: 37, ArrowUp: 38, ArrowRight: 39, ArrowDown: 40 }[value] ?? value.toUpperCase().charCodeAt(0)));
+  if (down) held.set(value, true); else held.delete(value);
+  const timestamp = Date.now() / 1000;
+  await send("Input.dispatchKeyEvent", { type: down ? "keyDown" : "keyUp", key: value, code, windowsVirtualKeyCode: virtual, modifiers: 0, autoRepeat: repeat, timestamp });
+  return timestamp * 1000;
+};
+const gamepad = (action) => evaluate(`(()=>{
+  if(!window.__nfsGamepadProbe){const original=Object.getOwnPropertyDescriptor(navigator,'getGamepads');
+    const probe={pads:[],original,restore:()=>{if(original)Object.defineProperty(navigator,'getGamepads',original);else delete navigator.getGamepads;delete window.__nfsGamepadProbe}};
+    Object.defineProperty(navigator,'getGamepads',{configurable:true,value:()=>probe.pads});window.__nfsGamepadProbe=probe;}
+  const probe=window.__nfsGamepadProbe,action=${JSON.stringify(action)},index=2;
+  if(action.connected===false){probe.pads=[];return {simulation:true,connected:false}};
+  const values=action.buttons??{},axes=action.axes??[0,0,0,0];
+  const pad={id:'NFS acceptance standard Gamepad API simulation',index,mapping:'standard',connected:true,timestamp:performance.now(),
+    buttons:Array.from({length:24},(_,i)=>({value:values[i]??0,pressed:(values[i]??0)>=.5,touched:(values[i]??0)>0})),axes};
+  probe.pads=[null,null,pad];return {simulation:true,connected:true,index,buttons:values,axes}})()`);
+const sample = () => evaluate(`(async()=>{const state=await(await fetch('/api/state')).json(),c=document.querySelector('.racing-chase'),controls=document.querySelector('.racing-controls');
+  return {room:state.room,network:state.network,canvas:c?{...c.dataset,rect:c.getBoundingClientRect().toJSON()}:null,
+  board:document.querySelector('.racing-board')?{...document.querySelector('.racing-board').dataset}:null,
+  hud:document.querySelector('.racing-hud')?{rect:document.querySelector('.racing-hud').getBoundingClientRect().toJSON(),display:getComputedStyle(document.querySelector('.racing-hud')).display,visibility:getComputedStyle(document.querySelector('.racing-hud')).visibility}:null,
+  map:document.querySelector('canvas[aria-label="赛车赛道"]')?{...document.querySelector('canvas[aria-label="赛车赛道"]').dataset}:null,
+  audio:await Promise.all([...document.querySelectorAll('audio[data-platform-loop]')].map(async a=>{const source=a.currentSrc;let sourceSHA256=null;if(source.startsWith('data:audio/flac;base64,')){const bytes=Uint8Array.from(atob(source.split(',')[1]),c=>c.charCodeAt(0));sourceSHA256=[...new Uint8Array(await crypto.subtle.digest('SHA-256',bytes))].map(n=>n.toString(16).padStart(2,'0')).join('')};return {key:a.dataset.platformLoop,src:source.slice(0,100),sourceLength:source.length,sourceSHA256,paused:a.paused,readyState:a.readyState,time:a.currentTime,rate:a.playbackRate,volume:a.volume,muted:a.muted,error:a.error?.code??null}})),
+  visibility:document.visibilityState,focus:document.hasFocus(),
+  pointer:{coarse:matchMedia('(pointer:coarse)').matches,touchPoints:navigator.maxTouchPoints},
+  layout:(()=>{const visible=e=>{if(!e)return false;const r=e.getBoundingClientRect(),s=getComputedStyle(e);return r.width>0&&r.height>0&&s.display!=='none'&&s.visibility!=='hidden'},box=e=>e?e.getBoundingClientRect().toJSON():null;
+    const stage=document.querySelector('.racing-stage'),board=document.querySelector('.racing-board'),panel=document.querySelector('.racing-controls'),style=panel?getComputedStyle(panel):null;
+    return {width:innerWidth,height:innerHeight,scrollY,canvas:box(c),stage:box(stage),board:box(board),coarse:matchMedia('(pointer:coarse)').matches,
+      controls:[...document.querySelectorAll('.racing-board button,.racing-wheel,.racing-skins,.racing-skin-picker,.racing-settings')].filter(visible).map(e=>({label:e.getAttribute('aria-label')||e.textContent.trim(),class:e.className,box:box(e),withinStage:!!stage?.contains(e)})),
+      touch:[...document.querySelectorAll('.racing-wheel,.racing-pedals button')].filter(visible).map(e=>({label:e.getAttribute('aria-label'),box:box(e)})),
+      overlays:[...document.querySelectorAll('.racing-hud span,.racing-hud strong,.racing-speedometer,.racing-route-button,.racing-wheel,.racing-pedals button')].filter(visible).map(e=>({label:e.getAttribute('aria-label')||e.textContent.trim(),rect:box(e)})),
+      panel:panel?{withinStage:!!stage?.contains(panel),background:style.backgroundColor,backgroundImage:style.backgroundImage,position:style.position}:null,
+      paragraphs:[...document.querySelectorAll('.racing-board p,.racing-view-controls span,.racing-wheel small')].filter(visible).map(e=>e.textContent.trim())}})(),
+  controls:controls?{...controls.dataset}:null,activeClass:document.activeElement?.getAttribute('class'),selected:getSelection().toString(),
+  viewport:innerWidth,modal:document.querySelector('[role=dialog]')?.getAttribute('aria-label')}})()`);
+const screenshots = [], samples = [], touchInputs=[];
+function percentile(rows, quantile) { const ordered = rows.slice().sort((a, b) => a - b); return ordered[Math.max(0, Math.ceil(ordered.length * quantile) - 1)] ?? null; }
+let output;
+try {
+  const { targetInfos } = await call("Target.getTargets");
+  const targets = targetInfos.filter((target) => target.type === "page" && target.url.startsWith(base));
+  if (targets.length !== 1) throw Error("Exactly one owned fixture tab is required: " + JSON.stringify(targets.map((target) => target.url)));
+  ({ sessionId: session } = await call("Target.attachToTarget", { targetId: targets[0].targetId, flatten: true }));
+  await send("Page.enable"); await send("Runtime.enable"); await send("Network.enable"); await send("Page.bringToFront");
+  if (options.width) await send("Emulation.setDeviceMetricsOverride", { width: options.width, height: options.height ?? 1000, deviceScaleFactor: 1, mobile: !!options.touch });
+  await send("Emulation.setTouchEmulationEnabled", { enabled: !!options.touch, maxTouchPoints: 5 });
+  await evaluate(`(()=>{if(window.__nfsNativeProbe?.early){window.__nfsNativeProbe.events.length=0;return true}window.__nfsNativeProbe?.stop?.();const events=[];const listener=e=>events.push({key:e.key,type:e.type,at:performance.timeOrigin+e.timeStamp,received:performance.timeOrigin+performance.now()});
+    addEventListener('keydown',listener,true);addEventListener('keyup',listener,true);window.__nfsNativeProbe={events,stop:()=>{removeEventListener('keydown',listener,true);removeEventListener('keyup',listener,true)}};return true})()`);
+  if (options.mode === "sequence") {
+    samples.push({ name: "before", data: await sample() });
+    for (const action of options.actions ?? []) {
+      if (action.wait) { await sleep(action.wait); continue; }
+      if (action.waitFor === 'resettable') {
+        const deadline=Date.now()+8000;let ready=false;
+        while(Date.now()<deadline){ready=await evaluate("fetch('/api/state').then(r=>r.json()).then(s=>{const d=s.room.game.data,c=d.cars.find(c=>c.seat===s.room.you);return d.controls.canReset&&c.speed<=55})");if(ready)break;await sleep(80)}
+        if(!ready)throw Error('Actual brake input did not reach authoritative resettable speed');continue;
+      }
+      if (action.key) { await key(action.key, !!action.down, !!action.repeat); continue; }
+      if (action.gamepad) { await gamepad(action.gamepad); continue; }
+      if (action.gamepadStop) { await evaluate("window.__nfsGamepadProbe?.restore()"); continue; }
+      if (action.focus) { await evaluate(`new Promise((resolve,reject)=>{const start=performance.now(),find=()=>{const e=document.querySelector(${JSON.stringify(action.focus)}),r=e?.getBoundingClientRect();if(r?.width>0&&r?.height>0){e.focus({preventScroll:true});resolve(true);return}if(performance.now()-start>3000){reject(Error('focus target did not become visible'));return}requestAnimationFrame(find)};find()})`); continue; }
+      if (action.read) { samples.push({ name: action.read, data: await sample() }); continue; }
+      if (action.shot) { screenshots.push({ name: action.shot, data: (await send("Page.captureScreenshot", { format: "png", captureBeyondViewport: false })).data }); continue; }
+      if (action.scrollTo) { await evaluate(`document.querySelector(${JSON.stringify(action.scrollTo)}).scrollIntoView({block:'center'})`); continue; }
+      if (action.reduced !== undefined) { await send("Emulation.setEmulatedMedia", { features: [{ name: "prefers-reduced-motion", value: action.reduced ? "reduce" : "no-preference" }] }); continue; }
+      if (action.headers) { await send("Network.setExtraHTTPHeaders", { headers: action.headers }); continue; }
+      if (action.reload) { await send("Page.reload", { ignoreCache: false }); continue; }
+      if (action.disconnect) { await evaluate("fetch('/_test/disconnect',{method:'POST'}).then(r=>r.json())"); continue; }
+      if (action.freeze) {
+        // Stop this renderer's actual JS/input heartbeat. The authenticated
+        // production HTTP clock keeps advancing, observed outside the frozen
+        // page. Cookie values are never included in output.
+        const {cookies}=await send('Network.getCookies',{urls:[base]});
+        const cookie=cookies.map(row=>row.name+'='+row.value).join('; ');
+        await send('Page.setWebLifecycleState',{state:'frozen'});
+        try {await sleep(action.milliseconds??1200);const response=await fetch(base+'/api/state',{headers:{Cookie:cookie}});
+          samples.push({name:'frozen-authority',data:{status:response.status,state:await response.json(),method:'actual page lifecycle frozen; external authenticated production HTTP; real clock'}});
+        } finally {await send('Page.setWebLifecycleState',{state:'active'});}
+        await sleep(150);continue;
+      }
+      if (action.offline !== undefined) { await send("Network.emulateNetworkConditions", { offline: action.offline, latency: 0, downloadThroughput: -1, uploadThroughput: -1 }); continue; }
+      if (action.blur) {
+        const { targetId } = await call("Target.createTarget", { url: "about:blank" });
+        const { sessionId: temporary } = await call("Target.attachToTarget", { targetId, flatten: true });
+        try {
+          await call("Page.bringToFront", {}, temporary); await sleep(action.milliseconds ?? 350);
+          samples.push({ name: "blurred", data: await sample() });
+        } finally {
+          await call("Target.closeTarget", { targetId });
+          await send("Page.bringToFront");
+        }
+        await sleep(150); samples.push({ name: "returned", data: await sample() }); continue;
+      }
+      if (action.touch) {
+        const points = [];
+        for (const p of action.points ?? []) {
+          const xy = await evaluate(`new Promise((resolve,reject)=>{const start=performance.now(),find=()=>{const e=document.querySelector(${JSON.stringify(p.selector)}),r=e?.getBoundingClientRect();if(r?.width>0&&r?.height>0&&getComputedStyle(e).visibility!=='hidden'){const x=r.x+r.width*${p.x??.5},y=r.y+r.height*${p.y??.5},hit=document.elementFromPoint(x,y);resolve({x,y,target:hit?.getAttribute('aria-label')||hit?.className||hit?.tagName,expected:e.contains(hit)});return};if(performance.now()-start>3000){reject(Error('touch target did not become visible'));return}requestAnimationFrame(find)};find()})`);
+          touchInputs.push({selector:p.selector,id:p.id,...xy,at:Date.now()});
+          if(!xy.expected)throw Error('Actual touch target is covered/offscreen: '+JSON.stringify(touchInputs.at(-1)));
+          points.push({ x:xy.x,y:xy.y,id: p.id, radiusX: 4, radiusY: 4, force: 1 });
+        }
+        await send("Input.dispatchTouchEvent", { type: action.touch, touchPoints: points }); continue;
+      }
+      if (action.wheel) {
+        const xy = await evaluate(`(()=>{const r=document.querySelector(${JSON.stringify(action.wheel)}).getBoundingClientRect();return {x:r.x+r.width*.5,y:r.y+r.height*.5}})()`);
+        await send("Input.dispatchMouseEvent", { type: "mouseWheel", ...xy, deltaX: 0, deltaY: action.delta ?? -180 }); continue;
+      }
+      if (action.drag) {
+        const r = await evaluate(`document.querySelector(${JSON.stringify(action.drag)}).getBoundingClientRect().toJSON()`);
+        const x = r.x + r.width * .5, y = r.y + r.height * .5;
+        await send("Input.dispatchMouseEvent", { type: "mousePressed", x, y, button: "left", buttons: 1, clickCount: 1 });
+        await send("Input.dispatchMouseEvent", { type: "mouseMoved", x: x + (action.dx ?? 40), y: y + (action.dy ?? 20), button: "left", buttons: 1 });
+        await send("Input.dispatchMouseEvent", { type: "mouseReleased", x: x + (action.dx ?? 40), y: y + (action.dy ?? 20), button: "left", buttons: 0, clickCount: 1 }); continue;
+      }
+      throw Error("Unknown native action: " + JSON.stringify(action));
+    }
+    await sleep(250); samples.push({ name: "after", data: await sample() });
+    output = { samples };
+  } else if (options.mode === "performance") {
+    const duration = options.milliseconds ?? 6000;
+    const before = await sample();
+    const rows = await evaluate(`new Promise(resolve=>{const start=performance.now(),rows=[];const take=()=>{const c=document.querySelector('.racing-chase');
+      rows.push({at:performance.now(),frame:Number(c?.dataset.frameCounter),renderedAt:Number(c?.dataset.renderedAt),x:Number(c?.dataset.renderX),y:Number(c?.dataset.renderY),snapshotAt:Number(c?.dataset.snapshotAt)});
+      if(performance.now()-start<${duration})requestAnimationFrame(take);else resolve(rows)};requestAnimationFrame(take)})`);
+    const unique = rows.filter((row, index) => index === 0 || row.frame !== rows[index - 1].frame);
+    const intervals = unique.slice(1).map((row, index) => row.at - unique[index].at);
+    const elapsed = rows.at(-1).at - rows[0].at;
+    output = { before, after: await sample(), rows,
+      metrics: { elapsed, rafSamples: rows.length, actualDrawUpdates: unique.length - 1, fps: (unique.length - 1) * 1000 / elapsed,
+        p50MS: percentile(intervals, .5), p95MS: percentile(intervals, .95), p99MS: percentile(intervals, .99),
+        moved: Math.hypot(rows.at(-1).x - rows[0].x, rows.at(-1).y - rows[0].y) },
+      method: "Every display RAF sampled, counted only changed renderer frameCounter; total count and elapsed time retained, not merely intervals of drawn frames." };
+  } else if (options.mode === "audio") {
+    const before = await sample();
+    const rows = await evaluate(`new Promise(resolve=>{const start=performance.now(),rows=[];const take=()=>{rows.push({at:Date.now(),voices:[...document.querySelectorAll('audio[data-platform-loop^="racing-engine-"]')].map(a=>({key:a.dataset.platformLoop,paused:a.paused,readyState:a.readyState,time:a.currentTime,rate:a.playbackRate,volume:a.volume,muted:a.muted,error:a.error?.code??null}))});
+      if(performance.now()-start<${options.milliseconds ?? 12000})setTimeout(take,80);else resolve(rows)};take()})`);
+    output = { before, rows, after: await sample(), mediaEvents: await evaluate("window.__nfsMediaProbe?.events??[]") };
+  } else if (options.mode === "pixels") {
+    if (!await evaluate("window.__nfsNativeProbe?.early===true")) throw Error("Native-event observer must be installed before application controllers (AGENT_BROWSER_INIT_SCRIPTS)");
+    const initial = await sample(), own = initial.room.game.data.cars.find((car) => car.seat === initial.room.you);
+    if (!own || own.speed > 2) throw Error("Front-wheel pixel timing requires the controlled car at rest");
+    await evaluate("document.querySelector('.racing-chase').focus({preventScroll:true})");
+    await key("b", true); await sleep(500);
+    // A manually supplied rectangle is only for validating this measurement
+    // tool against legacy pages. Remake acceptance requires renderer projection.
+    const rect = await evaluate(`(()=>{const c=document.querySelector('.racing-chase'),r=c.getBoundingClientRect(),v=${options.validationRect ? JSON.stringify(options.validationRect) : "JSON.parse(c.dataset.vehicleRect||'null')"};if(!v)throw Error('actual projected vehicleRect missing');return {x:r.x+v.x,y:r.y+v.y,width:v.width,height:v.height,viewportWidth:innerWidth,viewportHeight:innerHeight}})()`);
+    if (rect.width < 20 || rect.height < 20 || rect.x < 0 || rect.y < 0 || rect.x + rect.width > rect.viewportWidth || rect.y + rect.height > rect.viewportHeight) throw Error("Vehicle pixel box is invalid/offscreen: " + JSON.stringify(rect));
+    await send("Page.startScreencast", { format: "png", everyNthFrame: 1, maxWidth: rect.viewportWidth, maxHeight: rect.viewportHeight }); screen = true;
+    const trials = [];
+    for (let index = 0; index < (options.trials ?? 8); index++) {
+      pixelTrial = { index, frames: [] };
+      await sleep(130);
+      if (pixelTrial.frames.length < 1) {
+        const data = (await send("Page.captureScreenshot", { format: "png", captureBeyondViewport: false })).data;
+        const baseline = { data, timestamp: Date.now(), receivedAt: Date.now(), metadata: {}, trial: index };
+        pixelTrial.frames.push(baseline); pixelFrames.push(baseline);
+      }
+      const baselineCount = pixelTrial.frames.length;
+      const downAt = await key(index % 2 ? "a" : "d", true);
+      await sleep(180);
+      const event = await evaluate(`window.__nfsNativeProbe.events.filter(e=>e.type==='keydown'&&e.key===${JSON.stringify(index % 2 ? "a" : "d")}).at(-1)`);
+      const state = await evaluate(`(()=>{const c=document.querySelector('.racing-chase');return {steering:Number(c.dataset.steering),renderedAt:Number(c.dataset.renderedAt),frameCounter:Number(c.dataset.frameCounter)}})()`);
+      trials.push({ index, downAt, event, state, baselineCount, frames: pixelTrial.frames.slice() });
+      pixelTrial = null;
+      await key(index % 2 ? "a" : "d", false); await sleep(350);
+    }
+    await send("Page.stopScreencast"); screen = false; await key("b", false);
+    const metrics = [];
+    for (const trial of trials) {
+      const before = trial.frames.slice(0, trial.baselineCount), after = trial.frames.slice(trial.baselineCount);
+      if (!trial.event || !before.length) throw Error("Missing native event/baseline for pixel trial");
+      const comparisons = await evaluate(`(async()=>{const rect=${JSON.stringify(rect)},frames=${JSON.stringify(trial.frames.map((frame) => ({ data: frame.data, timestamp: frame.timestamp })))},baselineCount=${trial.baselineCount};
+        const images=[];for(const frame of frames){const bytes=Uint8Array.from(atob(frame.data),c=>c.charCodeAt(0)),image=await createImageBitmap(new Blob([bytes],{type:'image/png'}));const c=new OffscreenCanvas(Math.ceil(rect.width),Math.ceil(rect.height)),ctx=c.getContext('2d');
+        const sx=image.width/rect.viewportWidth,sy=image.height/rect.viewportHeight;ctx.drawImage(image,rect.x*sx,rect.y*sy,rect.width*sx,rect.height*sy,0,0,c.width,c.height);images.push(ctx.getImageData(0,0,c.width,c.height).data);image.close();}
+        const difference=(a,b)=>{let sum=0,changed=0;for(let i=0;i<a.length;i+=4){let delta=0;for(let c=0;c<3;c++){const v=Math.abs(a[i+c]-b[i+c]);sum+=v;delta+=v;}if(delta>=24)changed++;}return {mean:sum/(a.length/4*3),changed,pixels:a.length/4}};
+        const baseline=images[baselineCount-1];return {noise:images.slice(0,baselineCount-1).map(a=>difference(a,baseline)),after:images.slice(baselineCount).map((image,i)=>({...difference(image,baseline),timestamp:frames[baselineCount+i].timestamp}))}})()`);
+      const noiseMean = Math.max(0, ...comparisons.noise.map((row) => row.mean));
+      const noiseChanged = Math.max(0, ...comparisons.noise.map((row) => row.changed));
+      const visible = comparisons.after.find((row) => row.timestamp >= trial.event.at && row.mean > Math.max(.03, noiseMean * 2.5 + .03) && row.changed > Math.max(10, noiseChanged * 2 + 4));
+      metrics.push({ index: trial.index, nativeEvent: trial.event, protocolSendAt: trial.downAt, steeringAfter: trial.state.steering,
+        noiseMean, noiseChanged, comparisons: comparisons.after, firstVisibleAt: visible?.timestamp ?? null,
+        latencyMS: visible ? visible.timestamp - trial.event.at : null });
+    }
+    const latencies = metrics.map((metric) => metric.latencyMS).filter((value) => value !== null);
+    output = { rect, rectSource: options.validationRect ? "supplied-harness-validation" : "renderer-projected", trials: metrics, metrics: { trials: metrics.length, visibleTrials: latencies.length, p50MS: percentile(latencies, .5), p95MS: percentile(latencies, .95), maxMS: Math.max(...latencies) },
+      method: "Native steering at rest with B/front camera; actual compositor PNG pixels inside projected own-vehicle bounds; preinput noise calibrated; native page event time and compositor frame timestamps share epoch clock. Dataset/ACK are separate observations." };
+  } else throw Error("Unknown probe mode: " + options.mode);
+  if(options.screenshot)screenshots.push({name:options.screenshot,data:(await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false})).data});
+  output = { ...output, screenshots, pixelFrames, packets, states, requests, exceptions, frameEvents, ackMS,touchInputs,
+    ackMetrics: { count: ackMS.length, p50MS: percentile(ackMS, .5), p95MS: percentile(ackMS, .95),
+      statuses: packets.filter((packet) => packet.type === "ack").reduce((counts, packet) => ({ ...counts, [packet.status]: (counts[packet.status] ?? 0) + 1 }), {}) } };
+} finally {
+  if (session) {
+    for (const value of held.keys()) { try { await key(value, false); } catch {} }
+    if (screen) { try { await send("Page.stopScreencast"); } catch {} }
+    try { await evaluate("if(!window.__nfsNativeProbe?.early)window.__nfsNativeProbe?.stop?.()"); } catch {}
+    try { await call("Target.detachFromTarget", { sessionId: session }); } catch {}
+  }
+  socket.close();
+}
+console.log(JSON.stringify(output));

@@ -59,6 +59,7 @@ BASE=re.compile(r'https://cdn\.ichenj\.com/bga/web/[a-f0-9]{40}/\Z')
 MIME={'.js':'text/javascript','.css':'text/css','.svg':'image/svg+xml','.png':'image/png','.webp':'image/webp','.jpg':'image/jpeg','.woff':'font/woff','.woff2':'font/woff2','.ttf':'font/ttf','.wasm':'application/wasm'}
 CONTRA_MIME={'.js':'text/javascript','.wasm':'application/wasm','.json':'application/json','.idx':'application/octet-stream','.rgb':'application/octet-stream','.wav':'audio/wav'}
 MIME['.gz']='application/gzip'
+MIME['.glb']='model/gltf-binary'
 MIME.update({'.jpeg':'image/jpeg','.gif':'image/gif','.json':'application/json','.txt':'text/plain','.md':'text/plain','.mp3':'audio/mpeg','.wav':'audio/wav','.ogg':'audio/ogg','.flac':'audio/flac','.idx':'application/octet-stream','.rgb':'application/octet-stream','.pvzr':'application/octet-stream'})
 SERVER_METADATA={'index.html','game-load-manifest.json','contra-delivery.json','cdn-assets-manifest.json'}
 SHA256=re.compile(r'[a-f0-9]{64}\Z')
@@ -149,7 +150,7 @@ def inventory(dist,base):
   data=p.read_bytes()
   if not data:raise ValueError('Empty public asset: '+rel)
   if p.suffix=='.pvzr':validate_pvzr(data)
-  encoding='gzip' if p.suffix in ('.js','.css','.svg','.json','.txt','.md') else ''
+  encoding='gzip' if p.suffix in ('.js','.css','.svg','.json','.txt','.md','.glb') else ''
   row={'url':base+rel,'path':rel,'bytes':len(data),'sha256':sha(data),'mime':MIME[p.suffix],'encoding':encoding,'wireBytes':len(gzip.compress(data,mtime=0)) if encoding else len(data)}
   if p.suffix in ('.mp3','.wav','.ogg','.flac'):row['requiresRange']=True
   rows.append(row)

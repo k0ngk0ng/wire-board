@@ -5,7 +5,7 @@ package racing
 import "testing"
 
 func TestRoadsideScenerySharesCollisionFootprint(t *testing.T) {
-	for _, track := range Tracks() {
+	for _, track := range legacyTracks() {
 		if len(track.Props) == 0 || len(track.Props) > 100 {
 			t.Fatalf("unbounded/missing scenery: %s", track.ID)
 		}

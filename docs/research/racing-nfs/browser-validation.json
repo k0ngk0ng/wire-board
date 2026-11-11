@@ -1,0 +1,877 @@
+{
+  "version": 1,
+  "passed": true,
+  "scope": "authenticated production HTTP/SQLite/clock and renderer; native CDP keyboard/touch/compositor PNG; no race-state injection, fake results or accelerated clock",
+  "identity": {
+    "distIndexSHA256": "bd452b9be413080ed84b5fdc3866216342c54e281d65a1a712e34a14ac19d7b1",
+    "racingWebServerSourceDigestSHA256": "86507088e55bef7e98ac5751a769cc98eca2e9862dc4469d2725eccc12f69708",
+    "sourcePathCount": 61,
+    "sourceBindingScope": [
+      "games/racing/web/**",
+      "games/racing/server/**"
+    ],
+    "allMappedReportsMatch": true,
+    "currentControls": {
+      "path": "games/racing/controls.json",
+      "sha256": "efc33d150dabdca40c28f2f559c8b3380225a1f4e2789c8b8dbd7098672299b0",
+      "bytes": 3974
+    },
+    "currentV3Manifest": {
+      "path": "games/racing/assets/public/racing/v3/manifest.json",
+      "sha256": "1d90786ff1c43d6505bc7ca43a90e602f5aa7aa17c9f6b33d0a6faaf03b005eb",
+      "bytes": 185413
+    }
+  },
+  "reports": {
+    "core": {
+      "path": ".local/racing-nfs-browser/full-final-02/report.json",
+      "sha256": "c85ca3932a72d1cf90eff517f4dfd20499e0a7a039ca335e348c2e07c1aa6bc3",
+      "bytes": 26625,
+      "runOverallPassed": false,
+      "sameDist": true,
+      "sameRecordedProductSources": true,
+      "harnessSHA256": {
+        "scripts/racing/check-nfs.py": "02cab8c1af1574b86aef6eb3e416a67b57b2efc5bddd6b87bbcd4db1f50d0d04",
+        "scripts/racing/nfs-browser-input.mjs": "ed6a0e5dc023cc47ed8ae9e6b73f0e56fc466f1e56bd4d7c241deb854b372547",
+        "games/racing/tests/browser_fixture_test.go": "ddd5ab3958c4ab566196ba9c18762cd3f8ec2f77d37cc9ec80101efac1daa0d4"
+      }
+    },
+    "scenes": {
+      "path": ".local/racing-nfs-browser/remaining-final-02/report.json",
+      "sha256": "8a6891ef3df8d37d3dc291a98076121e2693fb38059959610309d4888dc104c8",
+      "bytes": 33911,
+      "runOverallPassed": false,
+      "sameDist": true,
+      "sameRecordedProductSources": true,
+      "harnessSHA256": {
+        "scripts/racing/check-nfs.py": "bf8c5a182b71bae8d8d50c5abcec311bb2f5f2e3f755537ec61074a8792727ec",
+        "scripts/racing/nfs-browser-input.mjs": "7eba1a34b83f87399da6fe1fa743a6b5e1b6a3717bf5e8a012254e04aff01527",
+        "games/racing/tests/browser_fixture_test.go": "ddd5ab3958c4ab566196ba9c18762cd3f8ec2f77d37cc9ec80101efac1daa0d4"
+      }
+    },
+    "presentation": {
+      "path": ".local/racing-nfs-browser/experience-final-02/report.json",
+      "sha256": "f18742430db8a5420aa20d4ba437bba2f0f5fdf3afc44a09e09c0ed300eec54a",
+      "bytes": 46245,
+      "runOverallPassed": false,
+      "sameDist": true,
+      "sameRecordedProductSources": true,
+      "harnessSHA256": {
+        "scripts/racing/check-nfs.py": "89d98d5c4e17f2346c54b119fb4c88b4f16d9d66ea2c51506e95412d1f2d44e2",
+        "scripts/racing/nfs-browser-input.mjs": "4a707f5c563c94a0dd00f35b55f989c27595ad1d1717606425660ecd96be3ed1",
+        "games/racing/tests/browser_fixture_test.go": "ddd5ab3958c4ab566196ba9c18762cd3f8ec2f77d37cc9ec80101efac1daa0d4"
+      }
+    },
+    "vehicles": {
+      "path": ".local/racing-nfs-browser/vehicles-final-01/report.json",
+      "sha256": "98d06f519411da26f9cec12fcff8d206f1503ccf87955ca1a9b68ec014714826",
+      "bytes": 54073,
+      "runOverallPassed": true,
+      "sameDist": true,
+      "sameRecordedProductSources": true,
+      "harnessSHA256": {
+        "scripts/racing/check-nfs.py": "eae20df5e488537bef7f86390d286de0b7371d6322766c64b34a9d12a3c51670",
+        "scripts/racing/nfs-browser-input.mjs": "4a707f5c563c94a0dd00f35b55f989c27595ad1d1717606425660ecd96be3ed1",
+        "games/racing/tests/browser_fixture_test.go": "ddd5ab3958c4ab566196ba9c18762cd3f8ec2f77d37cc9ec80101efac1daa0d4"
+      }
+    },
+    "fullscreen": {
+      "path": ".local/racing-nfs-browser/fullscreen-final-01/report.json",
+      "sha256": "c285d6ad2fc9a654d4d8f7edb7a5c8a763991f15d2ef491f84f0021f8b9fc224",
+      "bytes": 20428,
+      "runOverallPassed": true,
+      "sameDist": true,
+      "sameRecordedProductSources": true,
+      "harnessSHA256": {
+        "scripts/racing/check-nfs.py": "fa5ac7c789fc308d1ff09fd575c80f3a5a8df5a27fde5cecba36fe3c53b047dc",
+        "scripts/racing/nfs-browser-input.mjs": "4a707f5c563c94a0dd00f35b55f989c27595ad1d1717606425660ecd96be3ed1",
+        "games/racing/tests/browser_fixture_test.go": "ddd5ab3958c4ab566196ba9c18762cd3f8ec2f77d37cc9ec80101efac1daa0d4"
+      }
+    }
+  },
+  "gates": [
+    {
+      "id": "layout",
+      "label": "桌面移除底面板、320画面内透明触控",
+      "passed": true,
+      "checks": [
+        {
+          "report": "core",
+          "checkIndex": 2,
+          "name": "revised-desktop-layout"
+        },
+        {
+          "report": "core",
+          "checkIndex": 8,
+          "name": "revised-touch-layout"
+        }
+      ]
+    },
+    {
+      "id": "keyboard",
+      "label": "C四视角及B恢复、F3/F5/F7/F11/F12边沿",
+      "passed": true,
+      "checks": [
+        {
+          "report": "core",
+          "checkIndex": 3,
+          "name": "native C edges cycle camera and B release restores selected view"
+        },
+        {
+          "report": "core",
+          "checkIndex": 4,
+          "name": "native F3/F5/F7/F11/F12 edges change drawing, HUD, real mirror and viewport"
+        }
+      ]
+    },
+    {
+      "id": "horn",
+      "label": "H真实原生FLAC保持/释放/失焦",
+      "passed": true,
+      "checks": [
+        {
+          "report": "core",
+          "checkIndex": 5,
+          "name": "native H playback, authority hold/release and blur"
+        }
+      ]
+    },
+    {
+      "id": "remapping",
+      "label": "标准Gamepad API仿真、公开改键、旧默认禁用",
+      "passed": true,
+      "checks": [
+        {
+          "report": "core",
+          "checkIndex": 6,
+          "name": "standard Gamepad API simulation uses production analog mapping, camera/horn and neutral disconnect lifecycle"
+        },
+        {
+          "report": "core",
+          "checkIndex": 7,
+          "name": "public keyboard and gamepad remapping saves and disables the old defaults"
+        }
+      ]
+    },
+    {
+      "id": "input",
+      "label": "键盘、权威R、真实多指、地图、刷新",
+      "passed": true,
+      "checks": [
+        {
+          "report": "scenes",
+          "checkIndex": 2,
+          "name": "native keyboard acceleration, steering, rear view and release"
+        },
+        {
+          "report": "scenes",
+          "checkIndex": 3,
+          "name": "native R uses authoritative low-speed reset"
+        },
+        {
+          "report": "scenes",
+          "checkIndex": 4,
+          "name": "320px native simultaneous throttle/steering, brake priority and cancellation"
+        },
+        {
+          "report": "scenes",
+          "checkIndex": 6,
+          "name": "shared route map opens, accepts native zoom and closes"
+        },
+        {
+          "report": "scenes",
+          "checkIndex": 7,
+          "name": "refresh preserves race identity, vehicle and deadline"
+        }
+      ]
+    },
+    {
+      "id": "scenes",
+      "label": "四条独立赛道、各昼夜、几何/贴图/字节/按需加载",
+      "passed": true,
+      "checks": [
+        {
+          "report": "scenes",
+          "checkIndex": 1,
+          "name": "selected original geometry and byte loading"
+        },
+        {
+          "report": "scenes",
+          "checkIndex": 13,
+          "name": "selected original geometry and byte loading"
+        },
+        {
+          "report": "scenes",
+          "checkIndex": 16,
+          "name": "selected original geometry and byte loading"
+        },
+        {
+          "report": "scenes",
+          "checkIndex": 19,
+          "name": "selected original geometry and byte loading"
+        },
+        {
+          "report": "scenes",
+          "checkIndex": 22,
+          "name": "selected original geometry and byte loading"
+        },
+        {
+          "report": "scenes",
+          "checkIndex": 25,
+          "name": "selected original geometry and byte loading"
+        },
+        {
+          "report": "scenes",
+          "checkIndex": 28,
+          "name": "selected original geometry and byte loading"
+        },
+        {
+          "report": "scenes",
+          "checkIndex": 31,
+          "name": "selected original geometry and byte loading"
+        }
+      ]
+    },
+    {
+      "id": "presentation",
+      "label": "按钮失焦repeat、托管/独立观战呈现与发动机",
+      "passed": true,
+      "checks": [
+        {
+          "report": "presentation",
+          "checkIndex": 2,
+          "name": "rear button Space/Enter focus loss blocks repeat until fresh press"
+        },
+        {
+          "report": "presentation",
+          "checkIndex": 3,
+          "name": "readonly presentation and advancing native engine during autoplay"
+        },
+        {
+          "report": "presentation",
+          "checkIndex": 4,
+          "name": "readonly presentation and advancing native engine during spectator"
+        }
+      ]
+    },
+    {
+      "id": "vehicles",
+      "label": "五车真实驾驶舱与B恢复",
+      "passed": true,
+      "checks": [
+        {
+          "report": "vehicles",
+          "checkIndex": 2,
+          "name": "original selected-vehicle cockpit and rear release p911"
+        },
+        {
+          "report": "vehicles",
+          "checkIndex": 11,
+          "name": "original selected-vehicle cockpit and rear release fm50"
+        },
+        {
+          "report": "vehicles",
+          "checkIndex": 20,
+          "name": "original selected-vehicle cockpit and rear release ldia"
+        },
+        {
+          "report": "vehicles",
+          "checkIndex": 24,
+          "name": "original selected-vehicle cockpit and rear release mcf1"
+        },
+        {
+          "report": "vehicles",
+          "checkIndex": 28,
+          "name": "original selected-vehicle cockpit and rear release ccor"
+        }
+      ]
+    },
+    {
+      "id": "audio",
+      "label": "P911/FM50原声SHA、解码/时钟/速率/升挡、静音/失焦/清理",
+      "passed": true,
+      "checks": [
+        {
+          "report": "vehicles",
+          "checkIndex": 3,
+          "name": "original FLAC native decode and advancing playback p911"
+        },
+        {
+          "report": "vehicles",
+          "checkIndex": 4,
+          "name": "original native engine follows RPM/load and upshift p911"
+        },
+        {
+          "report": "vehicles",
+          "checkIndex": 5,
+          "name": "public mute stops original engine channels p911"
+        },
+        {
+          "report": "vehicles",
+          "checkIndex": 6,
+          "name": "actual focus loss stops original engine channels p911"
+        },
+        {
+          "report": "vehicles",
+          "checkIndex": 8,
+          "name": "native original-engine owner cleanup p911"
+        },
+        {
+          "report": "vehicles",
+          "checkIndex": 12,
+          "name": "original FLAC native decode and advancing playback fm50"
+        },
+        {
+          "report": "vehicles",
+          "checkIndex": 13,
+          "name": "original native engine follows RPM/load and upshift fm50"
+        },
+        {
+          "report": "vehicles",
+          "checkIndex": 14,
+          "name": "public mute stops original engine channels fm50"
+        },
+        {
+          "report": "vehicles",
+          "checkIndex": 15,
+          "name": "actual focus loss stops original engine channels fm50"
+        },
+        {
+          "report": "vehicles",
+          "checkIndex": 17,
+          "name": "native original-engine owner cleanup fm50"
+        }
+      ]
+    },
+    {
+      "id": "performance",
+      "label": "六车PC/320、镜子关/开帧率与8KiB动态消息",
+      "passed": true,
+      "checks": [
+        {
+          "report": "vehicles",
+          "checkIndex": 36,
+          "name": "desktop-six-car-performance"
+        },
+        {
+          "report": "vehicles",
+          "checkIndex": 37,
+          "name": "desktop-six-car-mirror-performance"
+        },
+        {
+          "report": "vehicles",
+          "checkIndex": 38,
+          "name": "touch-six-car-mirror-performance"
+        },
+        {
+          "report": "vehicles",
+          "checkIndex": 39,
+          "name": "touch-six-car-performance"
+        }
+      ]
+    },
+    {
+      "id": "race",
+      "label": "真人托管/接管及真实时钟六车一圈自然完赛",
+      "passed": true,
+      "checks": [
+        {
+          "report": "vehicles",
+          "checkIndex": 40,
+          "name": "manual reclaim preserves the running race"
+        },
+        {
+          "report": "vehicles",
+          "checkIndex": 41,
+          "name": "real-clock six-car one-lap race completes naturally"
+        }
+      ]
+    },
+    {
+      "id": "latency",
+      "label": "正常/150ms真实TCP延迟的原生输入到车辆像素",
+      "passed": true,
+      "checks": [
+        {
+          "report": "vehicles",
+          "checkIndex": 45,
+          "name": "native input to real vehicle pixels normal"
+        },
+        {
+          "report": "vehicles",
+          "checkIndex": 46,
+          "name": "native input to real vehicle pixels rtt150"
+        },
+        {
+          "report": "vehicles",
+          "checkIndex": 47,
+          "name": "healthy-peer-alongside-rtt150"
+        }
+      ]
+    },
+    {
+      "id": "release",
+      "label": "真实断线与H无心跳1250ms过期",
+      "passed": true,
+      "checks": [
+        {
+          "report": "vehicles",
+          "checkIndex": 48,
+          "name": "actual socket interruption preserves race and releases held input"
+        },
+        {
+          "report": "vehicles",
+          "checkIndex": 52,
+          "name": "authority expires H after actual input heartbeat stops for 1250ms"
+        }
+      ]
+    },
+    {
+      "id": "fullscreen",
+      "label": "PC/320公共原生全屏、地图内置、ESC/按钮无残留退出",
+      "passed": true,
+      "checks": [
+        {
+          "report": "fullscreen",
+          "checkIndex": 2,
+          "name": "public fullscreen gameplay/map and clean exit desktop"
+        },
+        {
+          "report": "fullscreen",
+          "checkIndex": 3,
+          "name": "fullscreen-320-driving-layout"
+        },
+        {
+          "report": "fullscreen",
+          "checkIndex": 4,
+          "name": "public fullscreen gameplay/map and clean exit 320"
+        }
+      ]
+    }
+  ],
+  "budgets": {
+    "desktopFPS": 50,
+    "desktopP95MS": 35,
+    "touchFPS": 30,
+    "touchP95MS": 50,
+    "inputPixelP95MS": 80,
+    "dynamicBytes": 8192
+  },
+  "metrics": {
+    "performance": {
+      "desktop-six-car-performance": {
+        "fps": 60.00400026286924,
+        "p95MS": 18.300000190734863,
+        "updates": 360,
+        "elapsedMS": 5999.60000038147,
+        "maxDynamicBytes": 5202
+      },
+      "desktop-six-car-mirror-performance": {
+        "fps": 59.989002012483716,
+        "p95MS": 18.5,
+        "updates": 360,
+        "elapsedMS": 6001.10000038147,
+        "maxDynamicBytes": 5224
+      },
+      "touch-six-car-mirror-performance": {
+        "fps": 60.02400960002379,
+        "p95MS": 18.5,
+        "updates": 360,
+        "elapsedMS": 5997.60000038147,
+        "maxDynamicBytes": 5211
+      },
+      "touch-six-car-performance": {
+        "fps": 60.011002011312314,
+        "p95MS": 18.199999809265137,
+        "updates": 360,
+        "elapsedMS": 5998.900000572205,
+        "maxDynamicBytes": 5213
+      }
+    },
+    "inputToVehiclePixels": {
+      "native input to real vehicle pixels normal": {
+        "trials": 8,
+        "visibleTrials": 8,
+        "p50MS": 48.773193359375,
+        "p95MS": 62.869873046875,
+        "maxMS": 62.869873046875,
+        "connectionRTTMS": 0,
+        "ackP95MS": 28
+      },
+      "native input to real vehicle pixels rtt150": {
+        "trials": 8,
+        "visibleTrials": 8,
+        "p50MS": 30.624755859375,
+        "p95MS": 51.61474609375,
+        "maxMS": 51.61474609375,
+        "connectionRTTMS": 153,
+        "ackP95MS": 185
+      }
+    },
+    "race": {
+      "cars": 6,
+      "laps": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "secondsAfterStart": 191.72,
+      "finishSecondsAfterStart": [
+        186.945,
+        188.287,
+        188.878,
+        189.472,
+        190.905,
+        191.701
+      ],
+      "lastReset": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "beforeAbsoluteTimeout": true
+    },
+    "scenes": [
+      {
+        "track": "france",
+        "night": false,
+        "selectedBytes": 9507874,
+        "triangles": 38659,
+        "checkIndex": 1
+      },
+      {
+        "track": "coastal",
+        "night": false,
+        "selectedBytes": 11241574,
+        "triangles": 44087,
+        "checkIndex": 13
+      },
+      {
+        "track": "uk",
+        "night": false,
+        "selectedBytes": 8475650,
+        "triangles": 38527,
+        "checkIndex": 16
+      },
+      {
+        "track": "park",
+        "night": false,
+        "selectedBytes": 10245009,
+        "triangles": 45787,
+        "checkIndex": 19
+      },
+      {
+        "track": "france",
+        "night": true,
+        "selectedBytes": 8806909,
+        "triangles": 37703,
+        "checkIndex": 22
+      },
+      {
+        "track": "coastal",
+        "night": true,
+        "selectedBytes": 10552333,
+        "triangles": 43146,
+        "checkIndex": 25
+      },
+      {
+        "track": "uk",
+        "night": true,
+        "selectedBytes": 7540063,
+        "triangles": 37138,
+        "checkIndex": 28
+      },
+      {
+        "track": "park",
+        "night": true,
+        "selectedBytes": 9548128,
+        "triangles": 44328,
+        "checkIndex": 31
+      }
+    ]
+  },
+  "evidence": [
+    {
+      "path": ".local/racing-nfs-browser/full-final-02/traditional-H-horn.json",
+      "sha256": "33b4e73475172b6915962bebd639bae6fe3a4a8d099b08b21ce565a812c1445b",
+      "bytes": 422245
+    },
+    {
+      "path": ".local/racing-nfs-browser/full-final-02/standard-gamepad-production-drive.json",
+      "sha256": "993eab772203c4f756c12f4aa72c96fa5de464f7b402ac46db9ef6da16ec6bcd",
+      "bytes": 552426
+    },
+    {
+      "path": ".local/racing-nfs-browser/full-final-02/remapped-old-default-bypass.json",
+      "sha256": "4d0a0f13fafb331a0c7ea0d426d2802dde049e37154cc92dc3c1374b173bc543",
+      "bytes": 334994
+    },
+    {
+      "path": ".local/racing-nfs-browser/full-final-02/traditional-display-keys.json",
+      "sha256": "6bf920868a6dd8fccfc1db209d5cfab8d162996e04a386ab4245cff494aeeea9",
+      "bytes": 632096
+    },
+    {
+      "path": ".local/racing-nfs-browser/remaining-final-02/keyboard.json",
+      "sha256": "202f9289bb5213cb0973f5b1b3a52af6fcf007c82482330ee7271509609889df",
+      "bytes": 316153
+    },
+    {
+      "path": ".local/racing-nfs-browser/remaining-final-02/reset.json",
+      "sha256": "547521c73158f6ca232082ceb89f077c8a281bea1b274283378fbc1fd9de0ba4",
+      "bytes": 157287
+    },
+    {
+      "path": ".local/racing-nfs-browser/remaining-final-02/touch.json",
+      "sha256": "bec6965a3ad250700b9fddacad213f7daa4135f0ea663cd4a202195037beaaa7",
+      "bytes": 316262
+    },
+    {
+      "path": ".local/racing-nfs-browser/remaining-final-02/map-zoom.json",
+      "sha256": "499dcfd00543798235aa7d5b96fbe3c820e3f1e691783493bec40c73229e3022",
+      "bytes": 163668
+    },
+    {
+      "path": ".local/racing-nfs-browser/experience-final-02/rear-button-repeat-space.json",
+      "sha256": "41e1af8d8cf06bfa2989536c61e327bc32e927897f33e1d83b2d7066b813a865",
+      "bytes": 180415
+    },
+    {
+      "path": ".local/racing-nfs-browser/experience-final-02/rear-button-repeat-enter.json",
+      "sha256": "77bdc9f14a309408f86a1d4fca3025b974ef98ba9f37ac42dc96cc86c6e40bda",
+      "bytes": 182919
+    },
+    {
+      "path": ".local/racing-nfs-browser/experience-final-02/readonly-presentation-autoplay.json",
+      "sha256": "f8720ad08aa599dc4dae32c9a045b4c6bc5af8543cb77729500b6aa146969479",
+      "bytes": 123611
+    },
+    {
+      "path": ".local/racing-nfs-browser/experience-final-02/readonly-presentation-spectator.json",
+      "sha256": "b468b5faaf637dcac242811c1495830f639d87f08faee4462562f7db1538ff81",
+      "bytes": 131745
+    },
+    {
+      "path": ".local/racing-nfs-browser/vehicles-final-01/desktop-six-car-performance.json",
+      "sha256": "1ff19e65d039c21e92729ca6e7d7156a419ae530fbfefa688e14d209f326a8f0",
+      "bytes": 643651
+    },
+    {
+      "path": ".local/racing-nfs-browser/vehicles-final-01/desktop-six-car-mirror-performance.json",
+      "sha256": "52617e0179f88a61328620abd0023e353c66776d9ff1ed123a2ad9eadebea8c6",
+      "bytes": 651861
+    },
+    {
+      "path": ".local/racing-nfs-browser/vehicles-final-01/touch-six-car-mirror-performance.json",
+      "sha256": "d1a008c7ee2d04cb6fb51faeb7d9c139a3f4898f2eef9210b9db8f0b5fcc08bb",
+      "bytes": 644826
+    },
+    {
+      "path": ".local/racing-nfs-browser/vehicles-final-01/touch-six-car-performance.json",
+      "sha256": "a9363241533ee7836f10839404f32572704ac5919d4b832651a140ec390cff0a",
+      "bytes": 647459
+    },
+    {
+      "path": ".local/racing-nfs-browser/vehicles-final-01/pixel-response-normal.json",
+      "sha256": "68b927973d261c37bba1a363b7680add57a4c17649ea27b41bb85e62ae077286",
+      "bytes": 630098
+    },
+    {
+      "path": ".local/racing-nfs-browser/vehicles-final-01/pixel-response-rtt150.json",
+      "sha256": "616e8de1700866f7ecee3315988ef9a5abd9d9d7a826bc6107443900763796ef",
+      "bytes": 637028
+    },
+    {
+      "path": ".local/racing-nfs-browser/vehicles-final-01/paired-rtt.json",
+      "sha256": "898c653c77cd3889bc9d19c590f36d6af6500f76904b3231ea8215d2a874125f",
+      "bytes": 223
+    },
+    {
+      "path": ".local/racing-nfs-browser/vehicles-final-01/real-complete-race.json",
+      "sha256": "3f96be885cc4b899a4d5255a16af8bc2d11987f922800dc4efb55f68b6110ced",
+      "bytes": 19461
+    },
+    {
+      "path": ".local/racing-nfs-browser/vehicles-final-01/reconnect-releases-stale-input.json",
+      "sha256": "b9c3dceb88477b2c70507c7f8164586a03e413e480e37c946d454eca296129aa",
+      "bytes": 157591
+    },
+    {
+      "path": ".local/racing-nfs-browser/vehicles-final-01/horn-real-input-expiry.json",
+      "sha256": "28d990713a635e3e0d03d7009b349271ce3e3ef26ce5a43129c444235bcf569d",
+      "bytes": 77125
+    },
+    {
+      "path": ".local/racing-nfs-browser/vehicles-final-01/audio-idle-proof-p911.json",
+      "sha256": "65b25ecefbcdd4a8e047092ff50b541f13aa5113c0938ac271eddb8f69b01bbb",
+      "bytes": 2394
+    },
+    {
+      "path": ".local/racing-nfs-browser/vehicles-final-01/audio-shift-proof-p911.json",
+      "sha256": "0613522333ba24a23c79170318405b21bcc0bfb46ad380534a5650a008e05e2d",
+      "bytes": 822
+    },
+    {
+      "path": ".local/racing-nfs-browser/vehicles-final-01/audio-load-and-shift-p911.json",
+      "sha256": "a4d7f81b7a84989bd59f1aa6cfb6636580a42473e59453cb27c05e65a505e38f",
+      "bytes": 1165352
+    },
+    {
+      "path": ".local/racing-nfs-browser/vehicles-final-01/audio-idle-proof-fm50.json",
+      "sha256": "b5d268d88308561a16751ff5c3da435cb1b8a9f9de905893b1cef6853d866bcd",
+      "bytes": 2397
+    },
+    {
+      "path": ".local/racing-nfs-browser/vehicles-final-01/audio-shift-proof-fm50.json",
+      "sha256": "33cbf1685ee6571d2a7714a38931b4cfac32ba7d2fe9709216333207635cd840",
+      "bytes": 912
+    },
+    {
+      "path": ".local/racing-nfs-browser/vehicles-final-01/audio-load-and-shift-fm50.json",
+      "sha256": "55c11ffa7374e9eabfd2baa9056f1b8b0318580343826c977e7d614727158cfe",
+      "bytes": 1467464
+    },
+    {
+      "path": ".local/racing-nfs-browser/fullscreen-final-01/fullscreen-desktop.json",
+      "sha256": "3019ea00fafbe89f9154099a210ef09a350bfd4a1022fb5783aac5a2dec270a8",
+      "bytes": 671
+    },
+    {
+      "path": ".local/racing-nfs-browser/fullscreen-final-01/fullscreen-320.json",
+      "sha256": "05a988aa6f763518796999e049b00feae414ffdd6479eadd382701e37e89a19b",
+      "bytes": 664
+    },
+    {
+      "path": ".local/racing-nfs-browser/fullscreen-final-01/fullscreen-320-controls.json",
+      "sha256": "6525c1f09e05ef0701975cafbdfbc10b0eb82b8aafe1cac14a1b6a68570ba0ed",
+      "bytes": 135327
+    },
+    {
+      "path": ".local/racing-nfs-browser/vehicles-final-01/pixel-artifact-manifest.json",
+      "sha256": "f09b1afa60882d208283416806c8ab3d9f90ffc0a3b7690c146dc360a7f65c37",
+      "bytes": 54487
+    }
+  ],
+  "screenshots": [
+    {
+      "path": ".local/racing-nfs-browser/remaining-final-02/france-desktop.png",
+      "sha256": "3c3f52c7e52692e58a7e6a13a3bbe96f9569c2ac66e8b4a92e1c77e2e4ef8dd8",
+      "bytes": 953344
+    },
+    {
+      "path": ".local/racing-nfs-browser/remaining-final-02/france-night-desktop.png",
+      "sha256": "86ef7d6439ca11d6f7960b6bf74f9a208f70e67e9ab40e77134d5a8bcf9c55ec",
+      "bytes": 646525
+    },
+    {
+      "path": ".local/racing-nfs-browser/remaining-final-02/coastal-desktop.png",
+      "sha256": "bd1003e16c3e734755307db262ad7d6952092d5acdd432a493e5870fe3f7ce8b",
+      "bytes": 889012
+    },
+    {
+      "path": ".local/racing-nfs-browser/remaining-final-02/coastal-night-desktop.png",
+      "sha256": "0210ff26a5962e8ceb37085341e10641447f33aa35e981165f968e91e4502dcc",
+      "bytes": 640061
+    },
+    {
+      "path": ".local/racing-nfs-browser/remaining-final-02/uk-desktop.png",
+      "sha256": "0129001d17ee304ebf1b49deb5d79f1ccadf9ce084d8cd18d353438ab2e893c8",
+      "bytes": 956411
+    },
+    {
+      "path": ".local/racing-nfs-browser/remaining-final-02/uk-night-desktop.png",
+      "sha256": "c6a3f136337c592c4b95a9d59aa0646f0c3135f34ae41fd68d19e1ae72fcc603",
+      "bytes": 680658
+    },
+    {
+      "path": ".local/racing-nfs-browser/remaining-final-02/park-desktop.png",
+      "sha256": "32c6d9a49716ad85fa6fc76aa36eceb7a0d7c0e01a3815fa1b9207b0637f2b13",
+      "bytes": 1109631
+    },
+    {
+      "path": ".local/racing-nfs-browser/remaining-final-02/park-night-desktop.png",
+      "sha256": "df01617f4c8077943735ad48ddaf615dcf08623f7c110969dfae01eea914809e",
+      "bytes": 842886
+    },
+    {
+      "path": ".local/racing-nfs-browser/vehicles-final-01/p911-original-cockpit-cockpit.png",
+      "sha256": "f74b00f05968f7f12d371297f85f3bd97084691e22d4da3c45ec090b737d7316",
+      "bytes": 648808
+    },
+    {
+      "path": ".local/racing-nfs-browser/vehicles-final-01/fm50-original-cockpit-cockpit.png",
+      "sha256": "5502aab16aa20851459ce5f6047c8fc0cabc0101d75311fcc3eda66d5107efd4",
+      "bytes": 702864
+    },
+    {
+      "path": ".local/racing-nfs-browser/vehicles-final-01/ldia-original-cockpit-cockpit.png",
+      "sha256": "aa02d641b99097c8194e7a98f29bde3edd1952d17ff388509d923d6e9665971f",
+      "bytes": 686069
+    },
+    {
+      "path": ".local/racing-nfs-browser/vehicles-final-01/mcf1-original-cockpit-cockpit.png",
+      "sha256": "531b42f35454fbc73a7c38d7e0d2d521a950e9676702f99487e3d0710ace37e2",
+      "bytes": 844587
+    },
+    {
+      "path": ".local/racing-nfs-browser/vehicles-final-01/ccor-original-cockpit-cockpit.png",
+      "sha256": "b58bf526eb46d00c241bb4f0c08b6b074d533b4b647bd58e2a240905c4ef1361",
+      "bytes": 682720
+    },
+    {
+      "path": ".local/racing-nfs-browser/vehicles-final-01/touch-six-car-mirror-performance-scene.png",
+      "sha256": "1fb6bfc2abb7aa4b8f062a194af31d9856985407124f509f807b4516458dbb3f",
+      "bytes": 195580
+    },
+    {
+      "path": ".local/racing-nfs-browser/fullscreen-final-01/fullscreen-desktop-map.png",
+      "sha256": "209e1f7dcf9d127ee9f72ceb8fc210231f31dff6ed285fe240a9fd51e6c54f51",
+      "bytes": 261888
+    },
+    {
+      "path": ".local/racing-nfs-browser/fullscreen-final-01/fullscreen-320-controls-map.png",
+      "sha256": "f2c64580dcc3b6103b3d08cda12f47eaa5d399364775bc80221d2842f66584c5",
+      "bytes": 91056
+    }
+  ],
+  "pixelPNGCount": 251,
+  "harnessFixes": [
+    "CDP硬冻结仅放最后独立过期门槛；后续不再从hidden renderer测输入或帧率。",
+    "手机布局、截图与触摸在CDP coarse仿真连接存活时采集；等待目标真实可见并核对elementFromPoint命中。",
+    "R前按住真实S直到权威canReset；复位真实2秒结束后测触摸。持油门900ms只用于确认真实起步，不作为像素延迟。",
+    "公开改键选择器保留中文，保存按钮先滚入视口；新房间键盘输入前聚焦canvas。",
+    "会话前缀缩短，保持UNIX socket路径在限制内。",
+    "仅复用failed run中明确PASS的check；逐项绑定同一dist和已记录赛车web/server源码摘要，原run的passed=false保留。"
+  ],
+  "limitations": [
+    "320px Chromium触屏仿真不等同实体手机GPU测量。",
+    "Gamepad只替换navigator.getGamepads硬件入口；生产映射/采样/HTTP真实执行，未实测实体USB或蓝牙手柄。",
+    "Chrome以--mute-audio启动；验证原生HTMLAudio解码、currentTime、rate、volume和可信事件，未作扬声器听音。",
+    "使用双向有序TCP延迟与真实socket中断，未声称测试真实IP丢包。",
+    "浏览器验收不证明与Windows原版操控逐项等价；本轮未取得原版运行手感/音频输出对照测量。",
+    "本轮PC及320全屏均走native路径；未强制测试page fallback。",
+    "多阶段聚合通过；没有将任何failed run整体改记为通过。",
+    "本浏览器报告验证新建用户的默认配置与公开改键；旧用户控制器配置迁移由单列真实HTTP/SQLite E2E验证，不计入本报告的通过断言。"
+  ],
+  "cleanup": {
+    "allMappedRunsClosedFixtureAndBrowser": true,
+    "allMappedRunsCleanupErrors": [],
+    "taskSocketDirectoriesRemaining": []
+  },
+  "reproduce": [
+    "python3 -B scripts/racing/check-nfs.py --out .local/racing-nfs-browser/<new-full-name> --phase full",
+    "python3 -B scripts/racing/check-nfs.py --out .local/racing-nfs-browser/<new-fullscreen-name> --phase fullscreen"
+  ],
+  "separatePlatformValidation": {
+    "scope": "共享控制器旧配置迁移",
+    "method": "真实HTTP/SQLite E2E",
+    "includedInBrowserPass": false,
+    "coveredByRacingSourceHashes": false
+  }
+}

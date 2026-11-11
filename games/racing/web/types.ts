@@ -1,9 +1,13 @@
 import { CAR_MODELS } from "./car-definitions";
 import atlas from "../assets/public/racing/v1/atlas.json";
+import type { ClassicMotionState } from "./classic-motion";
+import type { ClassicBarrier, ClassicRoadSample } from "./classic-road";
 export type Point = { x: number; y: number };
 export type Options = {
-  track: "metro" | "harbor" | "woodland" | "coast" | "canyon";
+  track: "france" | "coastal" | "uk" | "park" | "metro" | "harbor" | "woodland" | "coast" | "canyon";
   laps: 1 | 3 | 5;
+  timeOfDay?: "day" | "night";
+  vehicles?: string[];
 };
 export type Scenery = {
   x: number;
@@ -13,6 +17,11 @@ export type Scenery = {
   kind: "building" | "container" | "tree" | "palm" | "rock";
 };
 export type Track = {
+  version?: number;
+  geometry?: string;
+  length?: number;
+  road?: ClassicRoadSample[];
+  barriers?: ClassicBarrier[];
   props?: Scenery[];
   id: string;
   name: string;
@@ -22,6 +31,16 @@ export type Track = {
   points: Point[];
 };
 export type Car = Point & {
+  vehicle?: string;
+  motion?: ClassicMotionState;
+  rpm?: number;
+  gear?: number;
+  height?: number;
+  pitch?: number;
+  roll?: number;
+  routeIndex?: number;
+  protected?: boolean;
+  horn?: boolean;
   seat: number;
   vx: number;
   vy: number;
@@ -52,6 +71,7 @@ export type RaceEvent = Point & {
   intensity: number;
 };
 export type View = {
+  physics?: number;
   options: Options;
   phase: "countdown" | "racing" | "finishing" | "finished";
   epoch: string;

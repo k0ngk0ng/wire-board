@@ -1,0 +1,8 @@
+click==8.5.1
+ffmpeg-python==0.2.0
+future==1.0.0
+kaitaistruct==0.11
+more-itertools==11.2.1
+parse==1.22.4
+pillow==13.0.0
+speedtools==0.38.0

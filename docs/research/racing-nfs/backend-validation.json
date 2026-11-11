@@ -1,0 +1,1184 @@
+{
+  "date": "2026-11-12",
+  "passed": true,
+  "scope": "Backend production Module/HTTP/restore/authentication/physics/AI/Go-TS contracts; browser and native-original runtime are outside this report.",
+  "runs": [
+    {
+      "command": "go test ./games/racing/... -count=1 -timeout=25m",
+      "passed": true,
+      "serverSeconds": 0.733,
+      "testsSeconds": 447.197,
+      "log": ".local/racing-nfs-backend/final-regression.log",
+      "compileBoundary": "Compiled before final finished-phase horn guard; includes all 60 genuine mixed-fleet and 75 explicit legacy natural cases."
+    },
+    {
+      "command": "go test ./games/racing/... -skip 'Test(ClassicNaturalCompleteRaces|RacingCompleteNaturalRaces)$' -count=1 -timeout=10m",
+      "passed": true,
+      "serverSeconds": 0.585,
+      "testsSeconds": 43.358,
+      "log": ".local/racing-nfs-backend/current-source-regression.log",
+      "compileBoundary": "Current source after the horn deadline fix. All tests except the two unchanged exhaustive natural matrices rerun."
+    }
+  ],
+  "mixedNatural": {
+    "passed": true,
+    "cases": 60,
+    "tracks": [
+      "france",
+      "coastal",
+      "uk",
+      "park"
+    ],
+    "players": [
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "laps": [
+      1,
+      3,
+      5
+    ],
+    "vehicleCycle": [
+      "p911",
+      "fm50",
+      "ldia",
+      "mcf1",
+      "ccor"
+    ],
+    "allCarsActuallyFinished": true,
+    "allResetCountsZero": true,
+    "maximumRaceMS": 988200,
+    "maximumFinishSpreadMS": 14724,
+    "unchangedMaxRaceMS": 1200000,
+    "unchangedFinishGraceMS": 30000,
+    "rows": [
+      {
+        "track": "france",
+        "players": 2,
+        "laps": 1,
+        "vehicles": [
+          "p911",
+          "fm50"
+        ],
+        "raceMS": 187880,
+        "finishSpreadMS": 1432,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--france-2-seats-1-laps.json"
+      },
+      {
+        "track": "france",
+        "players": 2,
+        "laps": 3,
+        "vehicles": [
+          "p911",
+          "fm50"
+        ],
+        "raceMS": 555280,
+        "finishSpreadMS": 3070,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--france-2-seats-3-laps.json"
+      },
+      {
+        "track": "france",
+        "players": 2,
+        "laps": 5,
+        "vehicles": [
+          "p911",
+          "fm50"
+        ],
+        "raceMS": 922680,
+        "finishSpreadMS": 4772,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--france-2-seats-5-laps.json"
+      },
+      {
+        "track": "france",
+        "players": 3,
+        "laps": 1,
+        "vehicles": [
+          "p911",
+          "fm50",
+          "ldia"
+        ],
+        "raceMS": 188460,
+        "finishSpreadMS": 2016,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--france-3-seats-1-laps.json"
+      },
+      {
+        "track": "france",
+        "players": 3,
+        "laps": 3,
+        "vehicles": [
+          "p911",
+          "fm50",
+          "ldia"
+        ],
+        "raceMS": 555860,
+        "finishSpreadMS": 3643,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--france-3-seats-3-laps.json"
+      },
+      {
+        "track": "france",
+        "players": 3,
+        "laps": 5,
+        "vehicles": [
+          "p911",
+          "fm50",
+          "ldia"
+        ],
+        "raceMS": 923260,
+        "finishSpreadMS": 5356,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--france-3-seats-5-laps.json"
+      },
+      {
+        "track": "france",
+        "players": 4,
+        "laps": 1,
+        "vehicles": [
+          "p911",
+          "fm50",
+          "ldia",
+          "mcf1"
+        ],
+        "raceMS": 189060,
+        "finishSpreadMS": 2614,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--france-4-seats-1-laps.json"
+      },
+      {
+        "track": "france",
+        "players": 4,
+        "laps": 3,
+        "vehicles": [
+          "p911",
+          "fm50",
+          "ldia",
+          "mcf1"
+        ],
+        "raceMS": 556460,
+        "finishSpreadMS": 4251,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--france-4-seats-3-laps.json"
+      },
+      {
+        "track": "france",
+        "players": 4,
+        "laps": 5,
+        "vehicles": [
+          "p911",
+          "fm50",
+          "ldia",
+          "mcf1"
+        ],
+        "raceMS": 923860,
+        "finishSpreadMS": 5954,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--france-4-seats-5-laps.json"
+      },
+      {
+        "track": "france",
+        "players": 5,
+        "laps": 1,
+        "vehicles": [
+          "p911",
+          "fm50",
+          "ldia",
+          "mcf1",
+          "ccor"
+        ],
+        "raceMS": 190520,
+        "finishSpreadMS": 4066,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--france-5-seats-1-laps.json"
+      },
+      {
+        "track": "france",
+        "players": 5,
+        "laps": 3,
+        "vehicles": [
+          "p911",
+          "fm50",
+          "ldia",
+          "mcf1",
+          "ccor"
+        ],
+        "raceMS": 557920,
+        "finishSpreadMS": 5705,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--france-5-seats-3-laps.json"
+      },
+      {
+        "track": "france",
+        "players": 5,
+        "laps": 5,
+        "vehicles": [
+          "p911",
+          "fm50",
+          "ldia",
+          "mcf1",
+          "ccor"
+        ],
+        "raceMS": 925320,
+        "finishSpreadMS": 7404,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--france-5-seats-5-laps.json"
+      },
+      {
+        "track": "france",
+        "players": 6,
+        "laps": 1,
+        "vehicles": [
+          "p911",
+          "fm50",
+          "ldia",
+          "mcf1",
+          "ccor",
+          "p911"
+        ],
+        "raceMS": 191300,
+        "finishSpreadMS": 4862,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--france-6-seats-1-laps.json"
+      },
+      {
+        "track": "france",
+        "players": 6,
+        "laps": 3,
+        "vehicles": [
+          "p911",
+          "fm50",
+          "ldia",
+          "mcf1",
+          "ccor",
+          "p911"
+        ],
+        "raceMS": 558700,
+        "finishSpreadMS": 6499,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--france-6-seats-3-laps.json"
+      },
+      {
+        "track": "france",
+        "players": 6,
+        "laps": 5,
+        "vehicles": [
+          "p911",
+          "fm50",
+          "ldia",
+          "mcf1",
+          "ccor",
+          "p911"
+        ],
+        "raceMS": 926100,
+        "finishSpreadMS": 8201,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--france-6-seats-5-laps.json"
+      },
+      {
+        "track": "coastal",
+        "players": 2,
+        "laps": 1,
+        "vehicles": [
+          "p911",
+          "fm50"
+        ],
+        "raceMS": 199980,
+        "finishSpreadMS": 1534,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--coastal-2-seats-1-laps.json"
+      },
+      {
+        "track": "coastal",
+        "players": 2,
+        "laps": 3,
+        "vehicles": [
+          "p911",
+          "fm50"
+        ],
+        "raceMS": 592560,
+        "finishSpreadMS": 3324,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--coastal-2-seats-3-laps.json"
+      },
+      {
+        "track": "coastal",
+        "players": 2,
+        "laps": 5,
+        "vehicles": [
+          "p911",
+          "fm50"
+        ],
+        "raceMS": 985160,
+        "finishSpreadMS": 5126,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--coastal-2-seats-5-laps.json"
+      },
+      {
+        "track": "coastal",
+        "players": 3,
+        "laps": 1,
+        "vehicles": [
+          "p911",
+          "fm50",
+          "ldia"
+        ],
+        "raceMS": 200560,
+        "finishSpreadMS": 2128,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--coastal-3-seats-1-laps.json"
+      },
+      {
+        "track": "coastal",
+        "players": 3,
+        "laps": 3,
+        "vehicles": [
+          "p911",
+          "fm50",
+          "ldia"
+        ],
+        "raceMS": 593160,
+        "finishSpreadMS": 3917,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--coastal-3-seats-3-laps.json"
+      },
+      {
+        "track": "coastal",
+        "players": 3,
+        "laps": 5,
+        "vehicles": [
+          "p911",
+          "fm50",
+          "ldia"
+        ],
+        "raceMS": 985760,
+        "finishSpreadMS": 5720,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--coastal-3-seats-5-laps.json"
+      },
+      {
+        "track": "coastal",
+        "players": 4,
+        "laps": 1,
+        "vehicles": [
+          "p911",
+          "fm50",
+          "ldia",
+          "mcf1"
+        ],
+        "raceMS": 201240,
+        "finishSpreadMS": 2795,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--coastal-4-seats-1-laps.json"
+      },
+      {
+        "track": "coastal",
+        "players": 4,
+        "laps": 3,
+        "vehicles": [
+          "p911",
+          "fm50",
+          "ldia",
+          "mcf1"
+        ],
+        "raceMS": 593820,
+        "finishSpreadMS": 4576,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--coastal-4-seats-3-laps.json"
+      },
+      {
+        "track": "coastal",
+        "players": 4,
+        "laps": 5,
+        "vehicles": [
+          "p911",
+          "fm50",
+          "ldia",
+          "mcf1"
+        ],
+        "raceMS": 986420,
+        "finishSpreadMS": 6379,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--coastal-4-seats-5-laps.json"
+      },
+      {
+        "track": "coastal",
+        "players": 5,
+        "laps": 1,
+        "vehicles": [
+          "p911",
+          "fm50",
+          "ldia",
+          "mcf1",
+          "ccor"
+        ],
+        "raceMS": 202480,
+        "finishSpreadMS": 4052,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--coastal-5-seats-1-laps.json"
+      },
+      {
+        "track": "coastal",
+        "players": 5,
+        "laps": 3,
+        "vehicles": [
+          "p911",
+          "fm50",
+          "ldia",
+          "mcf1",
+          "ccor"
+        ],
+        "raceMS": 595000,
+        "finishSpreadMS": 5762,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--coastal-5-seats-3-laps.json"
+      },
+      {
+        "track": "coastal",
+        "players": 5,
+        "laps": 5,
+        "vehicles": [
+          "p911",
+          "fm50",
+          "ldia",
+          "mcf1",
+          "ccor"
+        ],
+        "raceMS": 987600,
+        "finishSpreadMS": 7564,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--coastal-5-seats-5-laps.json"
+      },
+      {
+        "track": "coastal",
+        "players": 6,
+        "laps": 1,
+        "vehicles": [
+          "p911",
+          "fm50",
+          "ldia",
+          "mcf1",
+          "ccor",
+          "p911"
+        ],
+        "raceMS": 203080,
+        "finishSpreadMS": 4647,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--coastal-6-seats-1-laps.json"
+      },
+      {
+        "track": "coastal",
+        "players": 6,
+        "laps": 3,
+        "vehicles": [
+          "p911",
+          "fm50",
+          "ldia",
+          "mcf1",
+          "ccor",
+          "p911"
+        ],
+        "raceMS": 595600,
+        "finishSpreadMS": 6359,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--coastal-6-seats-3-laps.json"
+      },
+      {
+        "track": "coastal",
+        "players": 6,
+        "laps": 5,
+        "vehicles": [
+          "p911",
+          "fm50",
+          "ldia",
+          "mcf1",
+          "ccor",
+          "p911"
+        ],
+        "raceMS": 988200,
+        "finishSpreadMS": 8161,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--coastal-6-seats-5-laps.json"
+      },
+      {
+        "track": "uk",
+        "players": 2,
+        "laps": 1,
+        "vehicles": [
+          "p911",
+          "fm50"
+        ],
+        "raceMS": 158820,
+        "finishSpreadMS": 2266,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--uk-2-seats-1-laps.json"
+      },
+      {
+        "track": "uk",
+        "players": 2,
+        "laps": 3,
+        "vehicles": [
+          "p911",
+          "fm50"
+        ],
+        "raceMS": 467620,
+        "finishSpreadMS": 5673,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--uk-2-seats-3-laps.json"
+      },
+      {
+        "track": "uk",
+        "players": 2,
+        "laps": 5,
+        "vehicles": [
+          "p911",
+          "fm50"
+        ],
+        "raceMS": 775800,
+        "finishSpreadMS": 8540,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--uk-2-seats-5-laps.json"
+      },
+      {
+        "track": "uk",
+        "players": 3,
+        "laps": 1,
+        "vehicles": [
+          "p911",
+          "fm50",
+          "ldia"
+        ],
+        "raceMS": 159400,
+        "finishSpreadMS": 2853,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--uk-3-seats-1-laps.json"
+      },
+      {
+        "track": "uk",
+        "players": 3,
+        "laps": 3,
+        "vehicles": [
+          "p911",
+          "fm50",
+          "ldia"
+        ],
+        "raceMS": 468220,
+        "finishSpreadMS": 6271,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--uk-3-seats-3-laps.json"
+      },
+      {
+        "track": "uk",
+        "players": 3,
+        "laps": 5,
+        "vehicles": [
+          "p911",
+          "fm50",
+          "ldia"
+        ],
+        "raceMS": 776380,
+        "finishSpreadMS": 9126,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--uk-3-seats-5-laps.json"
+      },
+      {
+        "track": "uk",
+        "players": 4,
+        "laps": 1,
+        "vehicles": [
+          "p911",
+          "fm50",
+          "ldia",
+          "mcf1"
+        ],
+        "raceMS": 160020,
+        "finishSpreadMS": 3475,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--uk-4-seats-1-laps.json"
+      },
+      {
+        "track": "uk",
+        "players": 4,
+        "laps": 3,
+        "vehicles": [
+          "p911",
+          "fm50",
+          "ldia",
+          "mcf1"
+        ],
+        "raceMS": 468860,
+        "finishSpreadMS": 6903,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--uk-4-seats-3-laps.json"
+      },
+      {
+        "track": "uk",
+        "players": 4,
+        "laps": 5,
+        "vehicles": [
+          "p911",
+          "fm50",
+          "ldia",
+          "mcf1"
+        ],
+        "raceMS": 777000,
+        "finishSpreadMS": 9758,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--uk-4-seats-5-laps.json"
+      },
+      {
+        "track": "uk",
+        "players": 5,
+        "laps": 1,
+        "vehicles": [
+          "p911",
+          "fm50",
+          "ldia",
+          "mcf1",
+          "ccor"
+        ],
+        "raceMS": 161880,
+        "finishSpreadMS": 5325,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--uk-5-seats-1-laps.json"
+      },
+      {
+        "track": "uk",
+        "players": 5,
+        "laps": 3,
+        "vehicles": [
+          "p911",
+          "fm50",
+          "ldia",
+          "mcf1",
+          "ccor"
+        ],
+        "raceMS": 471980,
+        "finishSpreadMS": 10025,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--uk-5-seats-3-laps.json"
+      },
+      {
+        "track": "uk",
+        "players": 5,
+        "laps": 5,
+        "vehicles": [
+          "p911",
+          "fm50",
+          "ldia",
+          "mcf1",
+          "ccor"
+        ],
+        "raceMS": 781980,
+        "finishSpreadMS": 14724,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--uk-5-seats-5-laps.json"
+      },
+      {
+        "track": "uk",
+        "players": 6,
+        "laps": 1,
+        "vehicles": [
+          "p911",
+          "fm50",
+          "ldia",
+          "mcf1",
+          "ccor",
+          "p911"
+        ],
+        "raceMS": 162480,
+        "finishSpreadMS": 5928,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--uk-6-seats-1-laps.json"
+      },
+      {
+        "track": "uk",
+        "players": 6,
+        "laps": 3,
+        "vehicles": [
+          "p911",
+          "fm50",
+          "ldia",
+          "mcf1",
+          "ccor",
+          "p911"
+        ],
+        "raceMS": 472180,
+        "finishSpreadMS": 10228,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--uk-6-seats-3-laps.json"
+      },
+      {
+        "track": "uk",
+        "players": 6,
+        "laps": 5,
+        "vehicles": [
+          "p911",
+          "fm50",
+          "ldia",
+          "mcf1",
+          "ccor",
+          "p911"
+        ],
+        "raceMS": 781880,
+        "finishSpreadMS": 14629,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--uk-6-seats-5-laps.json"
+      },
+      {
+        "track": "park",
+        "players": 2,
+        "laps": 1,
+        "vehicles": [
+          "p911",
+          "fm50"
+        ],
+        "raceMS": 189260,
+        "finishSpreadMS": 2393,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--park-2-seats-1-laps.json"
+      },
+      {
+        "track": "park",
+        "players": 2,
+        "laps": 3,
+        "vehicles": [
+          "p911",
+          "fm50"
+        ],
+        "raceMS": 560960,
+        "finishSpreadMS": 6292,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--park-2-seats-3-laps.json"
+      },
+      {
+        "track": "park",
+        "players": 2,
+        "laps": 5,
+        "vehicles": [
+          "p911",
+          "fm50"
+        ],
+        "raceMS": 932660,
+        "finishSpreadMS": 10193,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--park-2-seats-5-laps.json"
+      },
+      {
+        "track": "park",
+        "players": 3,
+        "laps": 1,
+        "vehicles": [
+          "p911",
+          "fm50",
+          "ldia"
+        ],
+        "raceMS": 189860,
+        "finishSpreadMS": 2993,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--park-3-seats-1-laps.json"
+      },
+      {
+        "track": "park",
+        "players": 3,
+        "laps": 3,
+        "vehicles": [
+          "p911",
+          "fm50",
+          "ldia"
+        ],
+        "raceMS": 561560,
+        "finishSpreadMS": 6892,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--park-3-seats-3-laps.json"
+      },
+      {
+        "track": "park",
+        "players": 3,
+        "laps": 5,
+        "vehicles": [
+          "p911",
+          "fm50",
+          "ldia"
+        ],
+        "raceMS": 933260,
+        "finishSpreadMS": 10793,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--park-3-seats-5-laps.json"
+      },
+      {
+        "track": "park",
+        "players": 4,
+        "laps": 1,
+        "vehicles": [
+          "p911",
+          "fm50",
+          "ldia",
+          "mcf1"
+        ],
+        "raceMS": 190440,
+        "finishSpreadMS": 3571,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--park-4-seats-1-laps.json"
+      },
+      {
+        "track": "park",
+        "players": 4,
+        "laps": 3,
+        "vehicles": [
+          "p911",
+          "fm50",
+          "ldia",
+          "mcf1"
+        ],
+        "raceMS": 562140,
+        "finishSpreadMS": 7470,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--park-4-seats-3-laps.json"
+      },
+      {
+        "track": "park",
+        "players": 4,
+        "laps": 5,
+        "vehicles": [
+          "p911",
+          "fm50",
+          "ldia",
+          "mcf1"
+        ],
+        "raceMS": 933840,
+        "finishSpreadMS": 11371,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--park-4-seats-5-laps.json"
+      },
+      {
+        "track": "park",
+        "players": 5,
+        "laps": 1,
+        "vehicles": [
+          "p911",
+          "fm50",
+          "ldia",
+          "mcf1",
+          "ccor"
+        ],
+        "raceMS": 191200,
+        "finishSpreadMS": 4330,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--park-5-seats-1-laps.json"
+      },
+      {
+        "track": "park",
+        "players": 5,
+        "laps": 3,
+        "vehicles": [
+          "p911",
+          "fm50",
+          "ldia",
+          "mcf1",
+          "ccor"
+        ],
+        "raceMS": 562900,
+        "finishSpreadMS": 8229,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--park-5-seats-3-laps.json"
+      },
+      {
+        "track": "park",
+        "players": 5,
+        "laps": 5,
+        "vehicles": [
+          "p911",
+          "fm50",
+          "ldia",
+          "mcf1",
+          "ccor"
+        ],
+        "raceMS": 934600,
+        "finishSpreadMS": 12130,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--park-5-seats-5-laps.json"
+      },
+      {
+        "track": "park",
+        "players": 6,
+        "laps": 1,
+        "vehicles": [
+          "p911",
+          "fm50",
+          "ldia",
+          "mcf1",
+          "ccor",
+          "p911"
+        ],
+        "raceMS": 191900,
+        "finishSpreadMS": 5035,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--park-6-seats-1-laps.json"
+      },
+      {
+        "track": "park",
+        "players": 6,
+        "laps": 3,
+        "vehicles": [
+          "p911",
+          "fm50",
+          "ldia",
+          "mcf1",
+          "ccor",
+          "p911"
+        ],
+        "raceMS": 563600,
+        "finishSpreadMS": 8933,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--park-6-seats-3-laps.json"
+      },
+      {
+        "track": "park",
+        "players": 6,
+        "laps": 5,
+        "vehicles": [
+          "p911",
+          "fm50",
+          "ldia",
+          "mcf1",
+          "ccor",
+          "p911"
+        ],
+        "raceMS": 935300,
+        "finishSpreadMS": 12834,
+        "passed": true,
+        "file": ".local/racing-nfs-backend/module/TestClassicNaturalCompleteRaces--park-6-seats-5-laps.json"
+      }
+    ]
+  },
+  "legacyNatural": {
+    "passed": true,
+    "cases": 75,
+    "physics": 0,
+    "tracks": [
+      "metro",
+      "harbor",
+      "woodland",
+      "coast",
+      "canyon"
+    ],
+    "allCarsActuallyFinished": true,
+    "newTrackCountExcludesLegacy": true
+  },
+  "roadParity": {
+    "passed": true,
+    "tracks": 4,
+    "probes": 108,
+    "collisions": 96,
+    "numericFields": 147196,
+    "maxError": 8.312905919183322e-12
+  },
+  "motionParity": {
+    "status": "passed",
+    "fixtures": 24,
+    "samples": 14700,
+    "maximumErrors": {
+      "x": 9.094947017729282e-13,
+      "z": 1.7053025658242404e-13,
+      "vx": 1.8962609260597674e-13,
+      "vz": 1.1368683772161603e-13,
+      "angle": 1.1546319456101628e-14,
+      "yawRate": 1.8540724511240114e-14,
+      "steering": 0,
+      "longAccel": 8.881784197001252e-15,
+      "lateralAccel": 5.737632591262809e-13,
+      "rpm": 1.5006662579253316e-11,
+      "shiftTimer": 0,
+      "throttle": 0,
+      "brake": 0,
+      "handbrake": 0,
+      "reverseTimer": 0
+    }
+  },
+  "dynamicBudget": {
+    "limitBytes": 8192,
+    "movingMaximumBytes": 5169,
+    "collisionMaximumBytes": 7036,
+    "retainedEvents": 24,
+    "simultaneousHorns": 6,
+    "actualCollisions": 15,
+    "authorizedManualResets": 20,
+    "scope": "Six manual LDIA cars on UK: real drive collisions and valid low-speed reset workload, held horn flags, no event/state injection. Separate natural AI cases forbid all resets."
+  },
+  "horn": {
+    "passed": true,
+    "input": "drive.horn?:boolean; omitted=false; authenticated actor, same seq/epoch and pending-input ordering",
+    "view": "cars[].horn?:boolean, derived from applied input on the authoritative position timeline",
+    "clearedBy": [
+      "release",
+      "input expiry",
+      "protection",
+      "reclaim",
+      "legal reset",
+      "vehicle finish",
+      "race finish including unfinished-car deadlines"
+    ],
+    "deadlineCases": [
+      "race-limit",
+      "finish-deadline"
+    ],
+    "noMotionRankingOrClockEffect": true
+  },
+  "evidence": [
+    {
+      "path": ".local/racing-nfs-backend/final-regression.log",
+      "bytes": 127,
+      "sha256": "7f4b47c51c40c82838e307538962f5ed9817ae797ef6a0e34c41db9e935f2c16"
+    },
+    {
+      "path": ".local/racing-nfs-backend/current-source-regression.log",
+      "bytes": 126,
+      "sha256": "eebb0de37be05ea6e1ca5085da075b243d6b464b3daac3061a0e980100756af0"
+    },
+    {
+      "path": ".local/racing-nfs-backend/horn-budget-and-http-default.log",
+      "bytes": 727,
+      "sha256": "32ca0c862df3535daaf1ff5a1fb55d03744d2b2baad3d6dbf85ae552c9e74813"
+    },
+    {
+      "path": ".local/racing-nfs-backend/horn-deadline-before-implementation.log",
+      "bytes": 690,
+      "sha256": "497f6b448a8f4401bbf70fb10ada20cc403be781b1867aabf96b0cda559ba307"
+    },
+    {
+      "path": ".local/racing-nfs-backend/horn-deadline-after-implementation.log",
+      "bytes": 2015,
+      "sha256": "5b3ce5f953e1d62ce4da1c2fdf86714f7eb6ec2b94db1eda34b01896c4fd38fa"
+    },
+    {
+      "path": ".local/racing-nfs-backend/natural-mixed-audit.json",
+      "bytes": 21017,
+      "sha256": "7457a2cf0e609955c8794f7ba515ea2a0fb0fd5a75587eebd7b3dc31b85b0ecc"
+    },
+    {
+      "path": ".local/racing-nfs-backend/legacy-audit.json",
+      "bytes": 13888,
+      "sha256": "f87abd96761bccf0b3d93bc36662d7bce9ea8792d0152911da754a21374a33b3"
+    },
+    {
+      "path": ".local/racing-nfs-backend/road-parity-report.json",
+      "bytes": 137,
+      "sha256": "47e06e850c86b330d5c05319a82a5692570230e737a29302391104607e9bed62"
+    },
+    {
+      "path": ".local/racing-nfs-motion/parity-report.json",
+      "bytes": 533,
+      "sha256": "8a07fe7015e20b19a123bf1eb557cfa9bc633cdefe72025be06f02ce2feeb5a3"
+    },
+    {
+      "path": ".local/racing-nfs-backend/module/TestClassicHornStopsForUnfinishedCarAtRaceDeadline--race-limit.json",
+      "bytes": 10252,
+      "sha256": "6c0bd8e334e01f3ca99ca1b5e2758630e3ea092e3a93c3ce1602d63fea883288"
+    },
+    {
+      "path": ".local/racing-nfs-backend/module/TestClassicHornStopsForUnfinishedCarAtRaceDeadline--finish-deadline.json",
+      "bytes": 11449,
+      "sha256": "bfb4f2f53305ebe0696603d1c9cd87159004bc0be3988979f32ed7387b93ba33"
+    },
+    {
+      "path": ".local/racing-nfs-backend/module/TestClassicEveryVehicleNaturalRace--p911.json",
+      "bytes": 8250,
+      "sha256": "4c96a895abef07972e477b73785d950f609633a6bc6044ce1e148a2ff65bb30c"
+    },
+    {
+      "path": ".local/racing-nfs-backend/module/TestClassicEveryVehicleNaturalRace--fm50.json",
+      "bytes": 8249,
+      "sha256": "10d2c842279f643807489df16329140e4d3f73ef4a872cf6b2398c5d15be5923"
+    },
+    {
+      "path": ".local/racing-nfs-backend/module/TestClassicEveryVehicleNaturalRace--ldia.json",
+      "bytes": 8219,
+      "sha256": "a5b1cddb1b60478e35a410889270134332f71233c12e7367469d1c35f69e54cb"
+    },
+    {
+      "path": ".local/racing-nfs-backend/module/TestClassicEveryVehicleNaturalRace--mcf1.json",
+      "bytes": 8245,
+      "sha256": "cdc964f9ec5b992017c5143a15d0e2fb2468f3375030372ea43d3d922e0f23ec"
+    },
+    {
+      "path": ".local/racing-nfs-backend/module/TestClassicEveryVehicleNaturalRace--ccor.json",
+      "bytes": 8247,
+      "sha256": "fbd533a848d7b738bf5fd2d4aa9e7ee1e94e29998dab140878ad018bbd97446b"
+    },
+    {
+      "path": ".local/racing-nfs-backend/module/TestClassicMixedDrivingAssistanceRestoreAndReclaim.json",
+      "bytes": 26099,
+      "sha256": "ea720e3d466e1757ab4992630034eb922d3c447d061b464096881ad5435b6c96"
+    },
+    {
+      "path": ".local/racing-nfs-backend/module/TestClassicCollisionLoadKeepsAllEventsWithinBudget.json",
+      "bytes": 12473,
+      "sha256": "27bdc1aa3c958e410eeda3958978ddfbf7153f80c0f54bbd8bff6ceccb316700"
+    }
+  ],
+  "sourceSHA256": {
+    "games/racing/server/bot.go": "7cc3d010ad4b05badeeb0f1b2cd40b40a12265dd73cb22a24ec18df06611b337",
+    "games/racing/server/brake_pressure_test.go": "d3a2329b890b690125fec3f782ed282bb4739d1cb92aca03f3197b7fcf3e5006",
+    "games/racing/server/checkpoint_test.go": "35ecaa506e88b3868c6b5e867e00823e5ba32dbe035b198c67e789630d3f2d61",
+    "games/racing/server/classic_bot.go": "17e6db1e5be21ef59b0f2826092e6638c2d27549ef658c7e08f92b5bec0380c9",
+    "games/racing/server/classic_motion.go": "fb9c21ee08dc9fd88a187dafcd345d8220b88e2358b41472b0ec2afb53e5aca3",
+    "games/racing/server/classic_motion_contract_test.go": "cde931a233e60efe5ca26e01125a8f9980c5e44500081d92e7bcad729e3bdb6a",
+    "games/racing/server/classic_physics.go": "c3eebe34edeecde548e7d9f70e655e8ab7732a7a1e1ed3a1e6c3d582e66f6c3f",
+    "games/racing/server/classic_track.go": "c6cf01db57cc418aca371908acbf06d74a31763cfafadf5abf5f317501cfbb66",
+    "games/racing/server/data/car-bodies.json": "b6fef50f8c765ca58cea116534ac635b898b4637d8e88e8dde0619dd5923625d",
+    "games/racing/server/data/index.json": "0b8233e29195ebffa04a750f979d56134003bfdc2f0b13c0a2b00c541ccb2a2d",
+    "games/racing/server/data/rules/1221e1e0fca8872f64a6b899c2bb4c81666261ed9f4bc1f075ccce30922bde00.json": "4f2bb0910b077429682e149dd00574a150888755633d7c9d2971959d6677deb4",
+    "games/racing/server/data/rules/1dafb107dfa41d5c9f631e002bf40cdc08c3b252d79afecd015645d2b10edb72.json": "7b5a41349d0d611b1ff2f1cf67d7eb701bfadb3abd64221c8b753d27553776c1",
+    "games/racing/server/data/rules/8126825f6c2fcc07a1bed58eb497ae3eaa6f9f7d54843680e13ebe6492a39562.json": "3f29e0cc80785b4e22dba4bf983d93c7447cc49876f4421f95d4ff4976b5952e",
+    "games/racing/server/data/rules/c900ce1d7f008dd8f4c12e6f01f2b88d8f54c4ace60a406c6d3724009b47a82a.json": "5a4b842c6b55c09f319c1dda493c037e8d86b6efbc95dd5e1900bd32c0a310db",
+    "games/racing/server/module.go": "14a530ba9df1dedd1cc78ff7d589b9e0147f9b610e7b09b2f6ccb87841015c14",
+    "games/racing/server/physics.go": "d3262d0bf8292fa9613b44ee7cac5ffca5ddfe97a9baf05408a6eaf8d9a24809",
+    "games/racing/server/physics_test.go": "b7f0ff8f71ac9647fc4399f13ccf35a7defd8b9e75e988a62c8fb7bb6ad9ca7e",
+    "games/racing/server/remake_tracks_test.go": "3a5dbb4f73395574cd813ec24c8de06ae6d97125e6c9d5dbd0d4c1a3d3a3e98e",
+    "games/racing/server/scenery_test.go": "032e675aac626506af245c3e3d00cee37ec16750fcb5774e06e16df792c37844",
+    "games/racing/server/sequence_test.go": "719d8cf81debc0159178f6d2b870eed92328aab4d7cc5213435c56a8a8f3cc2b",
+    "games/racing/server/state.go": "5a29591eb94f8f7859d7ef01d61c97227b039c9cdc3464c6d86966833d24ced3",
+    "games/racing/server/steering_speed_test.go": "cab13784a0fc57d474520fea79932bf248e8fa2c7614a2752cf7637bb1539c2c",
+    "games/racing/server/tracks.go": "15bb6b609067e4e17b21c48e032f7d0773a6f13ad6362e6f9eaf423e83910c83",
+    "games/racing/tests/browser_fixture_test.go": "ddd5ab3958c4ab566196ba9c18762cd3f8ec2f77d37cc9ec80101efac1daa0d4",
+    "games/racing/tests/chase-camera.test.mjs": "2bd9ffd4a5e4588b24ceeafc87cc8662c7e121905daf31c1003d2361a34246b4",
+    "games/racing/tests/classic-assets.test.mjs": "33978732b6bb38967a38388af2127caa4774b6d22806218079ab7fa740e29e05",
+    "games/racing/tests/classic-attitude.test.mjs": "e7c2688719a75949f97faaa44f276ac501100fb3da4ccadda736b002bf86760d",
+    "games/racing/tests/classic-audio.test.mjs": "8465bd39f8d626cce0e2d4eeb524e111967b9e0d26d62d0b3420b6c41f59e9cb",
+    "games/racing/tests/classic-camera-clearance.test.mjs": "07b2e4522e2bfc4dabf14c91c6861b2993a499ca9b912d4825fc4d2976485083",
+    "games/racing/tests/classic-camera-modes.test.mjs": "53462255e9a7e21f01c6aa4d5d3718afdb79b6cdcba7c6b43a316339a509a934",
+    "games/racing/tests/classic-horn-input.test.mjs": "439d607d4121c42a1e23d49402ec4f5746de3e9fb54b2b8fb53bbfaa29a6569f",
+    "games/racing/tests/classic-images.test.mjs": "8975340ce5819ffa1ec8c6d3c2aa3f4d56f1feeaa6225b1a795be0e52f61fab4",
+    "games/racing/tests/classic-motion-parity.mjs": "73f574edd43ec5f29192c3c99aa4d2df0c0a50c1acea185fdc669bdbfa400169",
+    "games/racing/tests/classic-motion-scenarios.json": "9894692efb14e4a5202c6aa782fe755620fcbda3665a6751f4960fdcc40ba1ba",
+    "games/racing/tests/classic-paint.test.mjs": "70fdcf3016872a1a4d72f6c28f69bfa157607cf00e35785da3393cc9073b667d",
+    "games/racing/tests/classic-prediction.test.mjs": "7317c54a0df0d7cac70e206e25a08968ee763583e591b8373f9174507eadb041",
+    "games/racing/tests/classic_e2e_test.go": "1298c4b57f34028d53b11ab8d46cc3e84ac70a40f4d3d0a157ea46f219929c1b",
+    "games/racing/tests/classic_prediction_e2e_test.go": "1e027c2deaa8e0542574789cc406392904b39f227eb718988d59a85a82d2b654",
+    "games/racing/tests/http_e2e_test.go": "8b419479211afb059a957466e54c3248103713b97c4e4475775325f6a21f140f",
+    "games/racing/tests/input.test.mjs": "e9b31b8b1c7ac4d1675f38e3c307aecbfaaec760ea950c86098ca94c10fde6cb",
+    "games/racing/tests/lifecycle.test.mjs": "7e239843514f058827709cc966499e1ee3c44fd5557b4344651521a9b97a0bd6",
+    "games/racing/tests/module_e2e_test.go": "0bf345be2139d6bfbb895784eebf0335c481e776f4982f681c125469740d2b18",
+    "games/racing/tests/prediction.test.mjs": "d4fd8b47da918863356ebfadf97e5f841d276806a4da3c16ed2401899f5a552b",
+    "games/racing/tests/presentation.test.mjs": "37d10a16b482731c65ff29fc0dc085f9713d0ca4098bc29b9739910eb6160300",
+    "games/racing/tests/remote-pose.test.mjs": "1d786a0c09d85aa3c0864a4d62c02c2cdd11fc3e02973b2eb5d9de2e6e3c468e",
+    "games/racing/tests/stream-input.test.mjs": "69d40d6c9f9a90e5440e71e98bb11f859ca4ffae7fda424a7c721f30d9026335",
+    "games/racing/tests/timeline.test.mjs": "04e13f4f24e78ff38e0b202e9f087d811df8cddffdb7ce36734a4cf26071241a",
+    "games/racing/tests/vehicle-models.test.mjs": "e0a831b448fdae26635029c7ccbe53577979914073537370a64818edca247390",
+    "games/racing/web/classic-motion.ts": "1b416f75bccabdf7e65d8775233bfd37ca41d9205c744f4bef1a5c968d97c5d3",
+    "games/racing/web/classic-road.ts": "bed29272152e59193faa3428646a3d5a32110ddbfe07ed4dd935f6d4df33d757",
+    "scripts/racing/nfs-rules.py": "db552fe268dcb602e868b77e55762a47c1dc51e297f26e3fdd4c9cdc9abc22c8"
+  },
+  "limitations": [
+    "No original Windows gameplay/handling measurement is established here; the independent SI model uses original CARP parameters and explicit design choices.",
+    "Go-TS parity proves matching implementation outputs within the fixtures, not equivalence to the original binary.",
+    "Full-matrix run compiled before the final sound-only finish guard; current-source regression reran every remaining test. Physics, AI and race deadlines were unchanged by that guard.",
+    "No browser rendering, physical phone/GPU, speaker audibility or network latency acceptance is claimed by this backend report."
+  ]
+}

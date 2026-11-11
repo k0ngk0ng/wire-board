@@ -20,6 +20,9 @@ func botAction(ctx gameapi.Context, m gameapi.Match) (json.RawMessage, error) {
 	if c.FinishAt > 0 || c.Seq < 0 || c.Seq >= maxInputSequence {
 		return nil, nil
 	}
+	if s.Physics == 3 {
+		return classicBotAction(ctx, s)
+	}
 	t := s.Track
 	n := len(t.Points)
 	_, near, off, f := nearest(t, Point{c.X, c.Y})

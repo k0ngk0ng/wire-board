@@ -1,0 +1,418 @@
+[
+  {
+    "name": "p911-straight",
+    "vehicle": "p911",
+    "segments": [
+      {
+        "seconds": 35,
+        "input": {
+          "throttle": 1
+        }
+      }
+    ]
+  },
+  {
+    "name": "fm50-straight",
+    "vehicle": "fm50",
+    "segments": [
+      {
+        "seconds": 35,
+        "input": {
+          "throttle": 1
+        }
+      }
+    ]
+  },
+  {
+    "name": "p911-brake",
+    "vehicle": "p911",
+    "initial": {
+      "vx": 27.77777777777778,
+      "gear": 4,
+      "rpm": 3200
+    },
+    "segments": [
+      {
+        "seconds": 6,
+        "input": {
+          "brakeAmount": 1
+        }
+      }
+    ]
+  },
+  {
+    "name": "fm50-brake",
+    "vehicle": "fm50",
+    "initial": {
+      "vx": 27.77777777777778,
+      "gear": 4,
+      "rpm": 3800
+    },
+    "segments": [
+      {
+        "seconds": 6,
+        "input": {
+          "brakeAmount": 1
+        }
+      }
+    ]
+  },
+  {
+    "name": "p911-steering",
+    "vehicle": "p911",
+    "segments": [
+      {
+        "seconds": 0.1,
+        "input": {
+          "steer": 1
+        }
+      },
+      {
+        "seconds": 0.1,
+        "input": {}
+      }
+    ]
+  },
+  {
+    "name": "fm50-steering",
+    "vehicle": "fm50",
+    "segments": [
+      {
+        "seconds": 0.1,
+        "input": {
+          "steer": 1
+        }
+      },
+      {
+        "seconds": 0.1,
+        "input": {}
+      }
+    ]
+  },
+  {
+    "name": "p911-low-turn",
+    "vehicle": "p911",
+    "initial": {
+      "vx": 6,
+      "gear": 2,
+      "rpm": 1600
+    },
+    "segments": [
+      {
+        "seconds": 5,
+        "input": {
+          "steer": 1,
+          "throttle": 0.2
+        }
+      }
+    ]
+  },
+  {
+    "name": "p911-high-turn",
+    "vehicle": "p911",
+    "initial": {
+      "vx": 50,
+      "gear": 5,
+      "rpm": 4800
+    },
+    "segments": [
+      {
+        "seconds": 5,
+        "input": {
+          "steer": 1,
+          "throttle": 0.5
+        }
+      }
+    ]
+  },
+  {
+    "name": "p911-corner",
+    "vehicle": "p911",
+    "initial": {
+      "vx": 25,
+      "gear": 3,
+      "rpm": 3800
+    },
+    "segments": [
+      {
+        "seconds": 1,
+        "input": {
+          "steer": 0.6,
+          "throttle": 0.5
+        }
+      },
+      {
+        "seconds": 0.8,
+        "input": {
+          "steer": 0.6,
+          "throttle": 0.5
+        }
+      },
+      {
+        "seconds": 4,
+        "input": {}
+      }
+    ]
+  },
+  {
+    "name": "p911-handbrake",
+    "vehicle": "p911",
+    "initial": {
+      "vx": 25,
+      "gear": 3,
+      "rpm": 3800
+    },
+    "segments": [
+      {
+        "seconds": 1,
+        "input": {
+          "steer": 0.6,
+          "throttle": 0.5
+        }
+      },
+      {
+        "seconds": 0.8,
+        "input": {
+          "steer": 0.6,
+          "throttle": 0.5,
+          "handbrake": true
+        }
+      },
+      {
+        "seconds": 4,
+        "input": {}
+      }
+    ]
+  },
+  {
+    "name": "p911-shoulder",
+    "vehicle": "p911",
+    "initial": {
+      "vx": 55,
+      "gear": 6,
+      "rpm": 4100
+    },
+    "segments": [
+      {
+        "seconds": 1,
+        "input": {}
+      },
+      {
+        "seconds": 1,
+        "input": {},
+        "surface": {
+          "grip": 0.5
+        }
+      }
+    ]
+  },
+  {
+    "name": "p911-reverse",
+    "vehicle": "p911",
+    "segments": [
+      {
+        "seconds": 3,
+        "input": {
+          "brakeAmount": 1,
+          "allowReverse": true
+        }
+      }
+    ]
+  },
+  {
+    "name": "p911-protection",
+    "vehicle": "p911",
+    "segments": [
+      {
+        "seconds": 3,
+        "input": {
+          "brakeAmount": 1
+        }
+      }
+    ]
+  },
+  {
+    "name": "p911-reverse-forward",
+    "vehicle": "p911",
+    "initial": {
+      "vx": -5,
+      "gear": -1,
+      "rpm": 1500
+    },
+    "segments": [
+      {
+        "seconds": 5,
+        "input": {
+          "throttle": 1,
+          "allowReverse": true
+        }
+      }
+    ]
+  },
+  {
+    "name": "p911-flat",
+    "vehicle": "p911",
+    "initial": {
+      "vx": 20,
+      "gear": 3,
+      "rpm": 3000
+    },
+    "segments": [
+      {
+        "seconds": 2,
+        "input": {}
+      }
+    ]
+  },
+  {
+    "name": "p911-uphill",
+    "vehicle": "p911",
+    "initial": {
+      "vx": 20,
+      "gear": 3,
+      "rpm": 3000
+    },
+    "segments": [
+      {
+        "seconds": 2,
+        "input": {},
+        "surface": {
+          "grade": 0.1
+        }
+      }
+    ]
+  },
+  {
+    "name": "p911-downhill",
+    "vehicle": "p911",
+    "initial": {
+      "vx": 20,
+      "gear": 3,
+      "rpm": 3000
+    },
+    "segments": [
+      {
+        "seconds": 2,
+        "input": {},
+        "surface": {
+          "grade": -0.1
+        }
+      }
+    ]
+  },
+  {
+    "name": "p911-ice-corner",
+    "vehicle": "p911",
+    "initial": {
+      "vx": 25,
+      "gear": 3,
+      "rpm": 3800
+    },
+    "segments": [
+      {
+        "seconds": 2,
+        "input": {
+          "steer": 0.6,
+          "throttle": 0.5
+        },
+        "surface": {
+          "grip": 0.35
+        }
+      }
+    ]
+  },
+  {
+    "name": "ldia-straight",
+    "vehicle": "ldia",
+    "segments": [
+      {
+        "seconds": 90,
+        "input": {
+          "throttle": 1
+        }
+      }
+    ]
+  },
+  {
+    "name": "mcf1-straight",
+    "vehicle": "mcf1",
+    "segments": [
+      {
+        "seconds": 35,
+        "input": {
+          "throttle": 1
+        }
+      }
+    ]
+  },
+  {
+    "name": "ccor-straight",
+    "vehicle": "ccor",
+    "segments": [
+      {
+        "seconds": 35,
+        "input": {
+          "throttle": 1
+        }
+      }
+    ]
+  },
+  {
+    "name": "p911-shoulder-resistance",
+    "vehicle": "p911",
+    "initial": {
+      "vx": 55,
+      "gear": 6,
+      "rpm": 4100
+    },
+    "segments": [
+      {
+        "seconds": 1,
+        "input": {}
+      },
+      {
+        "seconds": 1,
+        "input": {},
+        "surface": {
+          "grip": 0.5,
+          "resistance": 5
+        }
+      }
+    ]
+  },
+  {
+    "name": "p911-grass-start",
+    "vehicle": "p911",
+    "segments": [
+      {
+        "seconds": 4,
+        "input": {
+          "throttle": 1
+        },
+        "surface": {
+          "grip": 0.4,
+          "resistance": 5,
+          "grade": 0.05
+        }
+      }
+    ]
+  },
+  {
+    "name": "p911-grass-reverse",
+    "vehicle": "p911",
+    "segments": [
+      {
+        "seconds": 3,
+        "input": {
+          "brakeAmount": 1,
+          "allowReverse": true
+        },
+        "surface": {
+          "grip": 0.4,
+          "resistance": 5,
+          "grade": 0.05
+        }
+      }
+    ]
+  }
+]

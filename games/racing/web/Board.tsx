@@ -11,10 +11,17 @@ import { LatestDrive, neutral, wheelSteer, type Drive } from "./input";
 import { TrackCanvas } from "./TrackCanvas";
 import { RaceMap } from "./RaceMap";
 import { RearViewHold } from "./chase-camera";
-import { Modal } from "../../../web/src/ui/board-host";
+import { api, Modal } from "../../../web/src/ui/board-host";
 import { ControlLifecycle } from "./lifecycle";
 import { soundDelay, RaceAudioQueue } from "./timeline";
 import { sources, skinNames, type View } from "./types";
+import { loadClassicScene, type ClassicScenePack } from "./classic-loading";
+import {
+  CLASSIC_CAMERA_MODES,
+  CLASSIC_DRAW_DISTANCES,
+} from "./classic-camera-modes";
+import { useClassicEngine } from "./use-classic-engine";
+import { useClassicHorn } from "./use-classic-horn";
 import "./style.css";
 const actionError = (error: unknown) =>
   error instanceof TypeError
@@ -39,6 +46,80 @@ const timeText = (ms: number) => {
   return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`;
 };
 export function Board(props: BoardProps<View>) {
+  return props.data.physics === 3 ? (
+    <ClassicBoard {...props} />
+  ) : (
+    <RaceBoard {...props} />
+  );
+}
+function ClassicBoard(props: BoardProps<View>) {
+  const [pack, setPack] = useState<ClassicScenePack | null>(null);
+  const [error, setError] = useState("");
+  const [attempt, setAttempt] = useState(0);
+  const latest = useRef(props);
+  latest.current = props;
+  const key = `${props.data.epoch}:${props.data.track.geometry}:${props.data.options.timeOfDay ?? "day"}`;
+  useEffect(() => {
+    const controller = new AbortController();
+    const p = latest.current;
+    setPack(null);
+    setError("");
+    const followed = p.data.cars.find(
+      (car) => car.seat === (p.room.you < 0 ? 0 : p.room.you),
+    );
+    void loadClassicScene(
+      p.data,
+      p.assets,
+      controller.signal,
+      (value) => {
+        latest.current.onLoadProgress?.(
+          value.total ? Math.min(96, (value.loaded / value.total) * 96) : 0,
+          value.label,
+          { loaded: value.loaded, total: value.total },
+        );
+      },
+      p.sound ? followed?.vehicle : undefined,
+    )
+      .then((value) => {
+        if (!controller.signal.aborted) setPack(value);
+      })
+      .catch((cause: unknown) => {
+        if (controller.signal.aborted) return;
+        const message =
+          cause instanceof Error ? cause.message : "赛车资源加载失败";
+        setError(message);
+        latest.current.onLoadError?.(message);
+      });
+    return () => controller.abort();
+  }, [key, props.assets, attempt]);
+  if (!pack)
+    return (
+      <div
+        className="racing-board racing-resource-state"
+        role={error ? "alert" : "status"}
+      >
+        <span>{error || "正在读取赛道与车型…"}</span>
+        {error && (
+          <button
+            type="button"
+            onClick={() => setAttempt((value) => value + 1)}
+          >
+            重新加载
+          </button>
+        )}
+      </div>
+    );
+  return (
+    <RaceBoard
+      {...props}
+      data={{ ...props.data, track: pack.track }}
+      classicAssets={pack}
+    />
+  );
+}
+function RaceBoard(
+  props: BoardProps<View> & { classicAssets?: ClassicScenePack },
+) {
   const { room, data: d, act, busy, clock, assets, audio, sound } = props;
   const [mobile, setMobile] = useState(isTouch),
     [suspended, setSuspended] = useState(false),
@@ -49,10 +130,28 @@ export function Board(props: BoardProps<View>) {
     [watch, setWatch] = useState(0),
     [rear, setRear] = useState(false),
     [mapOpen, setMapOpen] = useState(false),
+    [cameraMode, setCameraMode] = useState(0),
+    [drawDistance, setDrawDistance] = useState(2),
+    [hudVisible, setHudVisible] = useState(true),
+    [mirrorVisible, setMirrorVisible] = useState(false),
+    [viewSize, setViewSize] = useState(2),
+    [focused, setFocused] = useState(() => document.hasFocus()),
+    [viewerID, setViewerID] = useState(""),
     [reduced, setReduced] = useState(
       () => matchMedia("(prefers-reduced-motion: reduce)").matches,
     );
   const boardElement = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const coarse = matchMedia("(pointer: coarse)");
+    const update = () => setMobile(isTouch());
+    update();
+    coarse.addEventListener("change", update);
+    window.addEventListener("resize", update);
+    return () => {
+      coarse.removeEventListener("change", update);
+      window.removeEventListener("resize", update);
+    };
+  }, []);
   const mapWasOpen = useRef(false);
   useEffect(() => {
     if (d.phase === "finished") setMapOpen(false);
@@ -80,18 +179,58 @@ export function Board(props: BoardProps<View>) {
     throttles = useRef(new Set<number>()),
     brakes = useRef(new Set<number>()),
     drifts = useRef(new Set<number>()),
+    horns = useRef(new Set<number>()),
     pedalKeys = useRef({
       throttle: new Set<string>(),
       brake: new Set<string>(),
       drift: new Set<string>(),
+      horn: new Set<string>(),
     }),
     latest = useRef(props),
     paused = useRef(false),
     activeRef = useRef(false),
-    skinSent = useRef("");
+    skinSent = useRef(""),
+    audioFailure = useRef<{ epoch: number; serverAt: number } | null>(null);
   latest.current = props;
   const car = d.cars.find((c) => c.seat === room.you),
     spectating = !!room.spectating || room.you < 0;
+  const followedAudio = spectating ? d.cars.find((c) => c.seat === watch) : car;
+  useEffect(() => {
+    if (!spectating) return;
+    let alive = true;
+    void api("/state")
+      .then((state) => {
+        if (alive) setViewerID(state.user?.id ?? "");
+      })
+      .catch(() => {});
+    return () => {
+      alive = false;
+    };
+  }, [spectating, room.id]);
+  const audioRunning =
+    sound &&
+    (!audioFailure.current ||
+      audioFailure.current.epoch !== (clock.epoch ?? 0) ||
+      d.serverAt > audioFailure.current.serverAt) &&
+    focused &&
+    !document.hidden &&
+    clock.serverNow + now - clock.receivedAt - d.serverAt <= 1000 &&
+    d.phase !== "finished";
+  const stopClassicEngine = useClassicEngine(
+    props.classicAssets,
+    followedAudio,
+    assets,
+    audio,
+    !!props.classicAssets && audioRunning && !followedAudio?.finishAt,
+  );
+  const stopClassicHorn = useClassicHorn(
+    props.classicAssets,
+    d.cars,
+    spectating || room.seats[room.you]?.autoPlay ? null : room.you,
+    !!drive.horn && !suspended,
+    audio,
+    !!props.classicAssets && audioRunning,
+  );
   const enabled =
     room.status === "playing" &&
     !spectating &&
@@ -104,10 +243,10 @@ export function Board(props: BoardProps<View>) {
   activeRef.current = enabled;
   const controller = useGameController({
     gameId: "racing",
-    userId: room.seats[room.you]?.id ?? "",
+    userId: spectating ? viewerID : (room.seats[room.you]?.id ?? ""),
     scope,
     root: boardElement,
-    enabled: () => activeRef.current,
+    enabled: () => latest.current.room.status === "playing" && !mapOpen,
     menu: () =>
       mapOpen
         ? (boardElement.current?.querySelector<HTMLElement>(
@@ -159,7 +298,8 @@ export function Board(props: BoardProps<View>) {
       old.throttle === value.throttle &&
       old.brake === value.brake &&
       old.brakeAmount === value.brakeAmount &&
-      old.drift === value.drift
+      old.drift === value.drift &&
+      !!old.horn === !!value.horn
         ? old
         : { ...value },
     );
@@ -193,6 +333,12 @@ export function Board(props: BoardProps<View>) {
         drifts.current.size > 0 ||
         pedalKeys.current.drift.size > 0 ||
         !!values.get("drift"),
+      ...(d.physics === 3 &&
+      (horns.current.size > 0 ||
+        pedalKeys.current.horn.size > 0 ||
+        values.get("horn"))
+        ? { horn: true }
+        : {}),
     });
   };
   const release = () => {
@@ -206,18 +352,27 @@ export function Board(props: BoardProps<View>) {
     wheel.current = null;
     brakes.current.clear();
     drifts.current.clear();
+    horns.current.clear();
+    pedalKeys.current.horn.clear();
     pedalKeys.current.brake.clear();
     pedalKeys.current.drift.clear();
     setInput({ ...neutral });
   };
   const suspendInput = (networkFailure = false) => {
-    if (networkFailure) lifecycle.current.networkFailed();
-    else lifecycle.current.suspend();
+    if (networkFailure) {
+      lifecycle.current.networkFailed();
+      audioFailure.current = {
+        epoch: latest.current.clock.epoch ?? 0,
+        serverAt: latest.current.data.serverAt,
+      };
+    } else lifecycle.current.suspend();
     paused.current = true;
     setSuspended(true);
     release();
     latest.current.audio.stopLoop("racing-engine");
     latest.current.audio.stopLoop("racing-tires");
+    stopClassicEngine();
+    stopClassicHorn();
   };
   const wake = (touch = false) => {
     const p = latest.current;
@@ -294,7 +449,17 @@ export function Board(props: BoardProps<View>) {
     if (wasRear !== rearHold.current.active) setRear(rearHold.current.active);
     mapped.current = new Map(controller.current?.values ?? []);
     if (actions.size && paused.current) wake();
-    if (fresh("reset")) void reset();
+    if (fresh("reset") && activeRef.current) void reset();
+    if (d.physics === 3) {
+      if (fresh("camera"))
+        setCameraMode((value) => (value + 1) % CLASSIC_CAMERA_MODES.length);
+      if (fresh("drawDistance"))
+        setDrawDistance((value) => (value + 1) % CLASSIC_DRAW_DISTANCES.length);
+      if (fresh("hud")) setHudVisible((value) => !value);
+      if (fresh("mirror")) setMirrorVisible((value) => !value);
+      if (fresh("viewSmaller")) setViewSize((value) => Math.max(0, value - 1));
+      if (fresh("viewLarger")) setViewSize((value) => Math.min(2, value + 1));
+    }
     if (fresh("map")) {
       release();
       setMapOpen(true);
@@ -310,20 +475,32 @@ export function Board(props: BoardProps<View>) {
     compute();
   };
   useEffect(() => {
-    const suspend = () => suspendInput();
+    const suspend = () => {
+      setFocused(false);
+      suspendInput();
+    };
+    const focus = () => setFocused(true);
     const visibility = () => {
       if (document.hidden) suspend();
     };
     window.addEventListener("blur", suspend);
+    window.addEventListener("focus", focus);
     document.addEventListener("visibilitychange", visibility);
     return () => {
       window.removeEventListener("blur", suspend);
+      window.removeEventListener("focus", focus);
       document.removeEventListener("visibilitychange", visibility);
     };
   }, [scope]);
 
   useEffect(() => {
-    if (!enabled || !d.controls.canSkin || skinSent.current === scope) return;
+    if (
+      d.physics === 3 ||
+      !enabled ||
+      !d.controls.canSkin ||
+      skinSent.current === scope
+    )
+      return;
     skinSent.current = scope;
     if (skin !== car?.skin)
       void act({ type: "skin", epoch: d.epoch, skin }).catch((e) =>
@@ -331,6 +508,7 @@ export function Board(props: BoardProps<View>) {
       );
   }, [scope, enabled, d.controls.canSkin]);
   function chooseSkin(value: number) {
+    if (latest.current.data.physics === 3) return;
     if (!latest.current.data.controls.canSkin) return;
     setSkin(value);
     try {
@@ -342,7 +520,7 @@ export function Board(props: BoardProps<View>) {
   }
   async function reset() {
     const p = latest.current;
-    if (!p.data.controls.canReset) return;
+    if (!activeRef.current || !p.data.controls.canReset) return;
     try {
       await p.act({ type: "reset", epoch: p.data.epoch });
       setError("");
@@ -361,7 +539,7 @@ export function Board(props: BoardProps<View>) {
     for (const event of d.events) {
       if (event.id <= seen.current.id) continue;
       seen.current.id = event.id;
-      if (!sound || document.hidden) continue;
+      if (!audioRunning) continue;
       let file = "";
       if (event.type === "start") file = "start";
       else if (event.type === "collision")
@@ -381,15 +559,15 @@ export function Board(props: BoardProps<View>) {
         );
         if (delay !== null)
           eventTimers.current.enqueue(() => {
-            if (!document.hidden)
+            if (!document.hidden && document.hasFocus())
               void audio.playWithFallback(sources(assets, file + ".mp3"));
           }, delay);
       }
     }
   }, [d.events, scope, sound]);
   useEffect(() => {
-    if (!sound || suspended) eventTimers.current.clear();
-  }, [sound, suspended]);
+    if (!audioRunning) eventTimers.current.clear();
+  }, [audioRunning]);
   useEffect(
     () => () => {
       eventTimers.current.clear();
@@ -402,41 +580,35 @@ export function Board(props: BoardProps<View>) {
     countdown = Math.max(0, Math.ceil((d.startAt - serverNow) / 1000)),
     lastCount = useRef(countdown);
   useEffect(() => {
-    if (
-      countdown > 0 &&
-      countdown < lastCount.current &&
-      sound &&
-      !document.hidden
-    )
+    if (countdown > 0 && countdown < lastCount.current && audioRunning)
       void audio.playWithFallback(sources(assets, "countdown.mp3"));
     lastCount.current = countdown;
-  }, [countdown, sound]);
+  }, [countdown, audioRunning]);
   useEffect(() => {
     const followed = spectating ? d.cars.find((c) => c.seat === watch) : car;
-    const running =
-      sound &&
-      !document.hidden &&
-      !suspended &&
-      d.phase !== "finished" &&
-      followed &&
-      !followed.finishAt;
+    const running = audioRunning && followed && !followed.finishAt;
     if (!running) {
       audio.stopLoop("racing-engine");
       audio.stopLoop("racing-tires");
       return;
     }
     const speed = Math.min(1, followed.speed / MAX_ROAD_SPEED);
-    void audio.loop("racing-engine", sources(assets, "engine.mp3"), {
-      volume: 0.12 + speed * 0.16,
-      rate: 0.72 + speed * 0.7,
-    });
-    if ((spectating ? followed.drift : drive.drift) && followed.speed > 70)
+    if (d.physics === 3) audio.stopLoop("racing-engine");
+    else
+      void audio.loop("racing-engine", sources(assets, "engine.mp3"), {
+        volume: 0.12 + speed * 0.16,
+        rate: 0.72 + speed * 0.7,
+      });
+    if (
+      (enabled && !suspended ? drive.drift : followed.drift) &&
+      followed.speed > 70
+    )
       void audio.loop("racing-tires", sources(assets, "tires.mp3"), {
         volume: 0.12 + speed * 0.12,
         rate: 0.9 + speed * 0.12,
       });
     else audio.stopLoop("racing-tires");
-  }, [now, sound, suspended, d.phase, car?.speed, drive.drift, watch]);
+  }, [now, audioRunning, d.phase, car?.speed, drive.drift, watch]);
   const wheelStart = (e: ReactPointerEvent<HTMLDivElement>) => {
     if (!enabled || wheel.current || e.button !== 0) return;
     e.preventDefault();
@@ -460,7 +632,7 @@ export function Board(props: BoardProps<View>) {
     wheel.current = null;
     compute();
   };
-  const heldButton = (which: "throttle" | "brake" | "drift") => ({
+  const heldButton = (which: "throttle" | "brake" | "drift" | "horn") => ({
     onKeyDown: (e: ReactKeyboardEvent<HTMLButtonElement>) => {
       if (!enabled || (e.code !== "Space" && e.code !== "Enter")) return;
       e.preventDefault();
@@ -490,7 +662,9 @@ export function Board(props: BoardProps<View>) {
         ? throttles
         : which === "brake"
           ? brakes
-          : drifts
+          : which === "horn"
+            ? horns
+            : drifts
       ).current.add(e.pointerId);
       compute();
     },
@@ -499,7 +673,9 @@ export function Board(props: BoardProps<View>) {
         ? throttles
         : which === "brake"
           ? brakes
-          : drifts
+          : which === "horn"
+            ? horns
+            : drifts
       ).current.delete(e.pointerId);
       compute();
     },
@@ -508,7 +684,9 @@ export function Board(props: BoardProps<View>) {
         ? throttles
         : which === "brake"
           ? brakes
-          : drifts
+          : which === "horn"
+            ? horns
+            : drifts
       ).current.delete(e.pointerId);
       compute();
     },
@@ -517,7 +695,9 @@ export function Board(props: BoardProps<View>) {
         ? throttles
         : which === "brake"
           ? brakes
-          : drifts
+          : which === "horn"
+            ? horns
+            : drifts
       ).current.delete(e.pointerId);
       compute();
     },
@@ -543,15 +723,203 @@ export function Board(props: BoardProps<View>) {
                   : suspended
                     ? "操作已释放，点击方向盘或按键继续"
                     : "比赛进行中";
+  const drivingControls = (
+    <div
+      className={`racing-controls ${mobile ? "is-touch" : ""}`}
+      hidden={d.physics === 3 && (!mobile || spectating)}
+      data-game-controls
+      data-steer={drive.steer}
+      data-throttle={drive.throttle}
+      data-brake={drive.brake}
+      data-brake-amount={drive.brakeAmount ?? (drive.brake ? 1 : 0)}
+      data-drift={drive.drift}
+      data-horn={!!drive.horn}
+    >
+      <div
+        className="racing-wheel"
+        role="slider"
+        aria-label="方向盘"
+        aria-valuemin={-100}
+        aria-valuemax={100}
+        aria-valuenow={Math.round(drive.steer * 100)}
+        aria-valuetext={
+          drive.steer < -0.07
+            ? "向左转向"
+            : drive.steer > 0.07
+              ? "向右转向"
+              : "直行"
+        }
+        aria-disabled={!enabled}
+        tabIndex={enabled ? 0 : -1}
+        onPointerDown={wheelStart}
+        onPointerMove={wheelMove}
+        onPointerUp={wheelEnd}
+        onPointerCancel={wheelEnd}
+        onLostPointerCapture={wheelEnd}
+      >
+        <svg
+          viewBox="0 0 120 120"
+          aria-hidden="true"
+          style={{ transform: `rotate(${drive.steer * 100}deg)` }}
+        >
+          <circle
+            cx="60"
+            cy="60"
+            r="47"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="12"
+          />
+          <path
+            d="M17 52H103M60 59V106"
+            stroke="currentColor"
+            strokeWidth="10"
+          />
+          <circle
+            cx="60"
+            cy="58"
+            r="16"
+            fill="#d6e3db"
+            stroke="currentColor"
+            strokeWidth="5"
+          />
+          <path d="M60 9v8" stroke="#c17643" strokeWidth="6" />
+        </svg>
+        {d.physics !== 3 && <small>滑动转向</small>}
+      </div>
+      <div className="racing-pedals">
+        <button
+          type="button"
+          className={`racing-drift ${drive.drift ? "pressed" : ""}`}
+          aria-label="手刹"
+          aria-pressed={drive.drift}
+          disabled={!enabled}
+          {...heldButton("drift")}
+        >
+          手刹
+        </button>
+        <button
+          type="button"
+          className={drive.brake ? "pressed" : ""}
+          style={{
+            background: `linear-gradient(to top, #386d72 ${(drive.brakeAmount ?? 0) * 100}%, #2a4352 ${(drive.brakeAmount ?? 0) * 100}%)`,
+          }}
+          aria-label="刹车"
+          aria-pressed={drive.brake}
+          disabled={!enabled}
+          {...heldButton("brake")}
+        >
+          刹车
+        </button>
+        <button
+          type="button"
+          style={{
+            background: `linear-gradient(to top, #386d72 ${drive.throttle * 100}%, #2a4352 ${drive.throttle * 100}%)`,
+          }}
+          aria-label="油门"
+          aria-pressed={drive.throttle > 0}
+          className={drive.throttle > 0 ? "pressed" : ""}
+          disabled={!enabled}
+          {...heldButton("throttle")}
+        >
+          油门
+        </button>
+      </div>
+    </div>
+  );
+  const viewControls = (
+    <div className="racing-view-controls" data-game-controls>
+      {d.physics === 3 && (
+        <button
+          type="button"
+          aria-label="切换视角"
+          onClick={() =>
+            setCameraMode((value) => (value + 1) % CLASSIC_CAMERA_MODES.length)
+          }
+        >
+          视角
+        </button>
+      )}
+      <button
+        type="button"
+        aria-label="向后看"
+        aria-pressed={rear}
+        onPointerDown={(e) => {
+          e.preventDefault();
+          e.currentTarget.setPointerCapture(e.pointerId);
+          rearHold.current.press(`pointer:${e.pointerId}`);
+          setRear(rearHold.current.active);
+        }}
+        onPointerUp={(e) => {
+          rearHold.current.release(`pointer:${e.pointerId}`);
+          setRear(rearHold.current.active);
+        }}
+        onPointerCancel={(e) => {
+          rearHold.current.release(`pointer:${e.pointerId}`);
+          setRear(rearHold.current.active);
+        }}
+        onLostPointerCapture={(e) => {
+          rearHold.current.release(`pointer:${e.pointerId}`);
+          setRear(rearHold.current.active);
+        }}
+        onKeyDown={(e) => {
+          if (e.key === " " || e.key === "Enter") {
+            e.preventDefault();
+            if (e.repeat) return;
+            rearHold.current.press(`button:${e.code}`);
+            setRear(true);
+          }
+        }}
+        onKeyUp={(e) => {
+          if (e.key === " " || e.key === "Enter") {
+            rearHold.current.release(`button:${e.code}`);
+            setRear(rearHold.current.active);
+          }
+        }}
+        onBlur={() => {
+          rearHold.current.release("button:Space");
+          rearHold.current.release("button:Enter");
+          setRear(rearHold.current.active);
+        }}
+      >
+        向后看
+      </button>
+      {d.physics !== 3 && <span>自动挡 · 无需换挡</span>}
+      {d.physics === 3 && (
+        <button
+          type="button"
+          aria-label="喇叭"
+          aria-pressed={!!drive.horn}
+          disabled={!enabled}
+          {...heldButton("horn")}
+        >
+          喇叭
+        </button>
+      )}
+      <button
+        type="button"
+        aria-label="重置赛车"
+        disabled={!d.controls.canReset || !enabled}
+        onClick={() => void reset()}
+      >
+        {car && car.resetUntil > 0 && car.resetUntil + 3000 > serverNow
+          ? `重置 ${Math.ceil((car.resetUntil + 3000 - serverNow) / 1000)}秒`
+          : "重置"}{" "}
+      </button>
+    </div>
+  );
   return (
     <section
       ref={boardElement}
-      className="racing-board"
+      className={`racing-board ${d.physics === 3 ? "is-classic" : ""} ${mobile ? "has-touch" : ""}`}
+      data-hud-visible={hudVisible}
+      data-mirror-visible={mirrorVisible}
       data-phase={d.phase}
       data-epoch={d.epoch}
       data-tick={d.serverAt}
+      data-physics={d.physics ?? 0}
     >
-      <div className="racing-hud">
+      <div className="racing-hud" hidden={d.physics === 3 && !hudVisible}>
         <div className="racing-track-title">
           <button
             type="button"
@@ -600,10 +968,17 @@ export function Board(props: BoardProps<View>) {
         </span>
       </div>
       <div className="racing-stage">
+        {d.physics === 3 && drivingControls}
+        {d.physics === 3 && mobile && viewControls}
         <TrackCanvas
+          classicAssets={props.classicAssets}
           onInputFrame={() => pumpControls.current()}
           onReady={props.onReady}
-          onLoadError={props.onLoadError}
+          onLoadError={(message) => {
+            suspendInput();
+            setError(message);
+            props.onLoadError?.(message);
+          }}
           data={d}
           clock={clock}
           seat={spectating ? -1 : room.you}
@@ -613,6 +988,11 @@ export function Board(props: BoardProps<View>) {
           reduced={reduced}
           watch={watch}
           rear={rear}
+          cameraMode={cameraMode}
+          drawDistance={drawDistance}
+          mirrorVisible={mirrorVisible}
+          hudVisible={hudVisible}
+          viewScale={d.physics === 3 ? [0.65, 0.82, 1][viewSize] : 1}
           onOpenMap={() => {
             release();
             setMapOpen(true);
@@ -654,61 +1034,7 @@ export function Board(props: BoardProps<View>) {
           />
         </Modal>
       )}
-      <div className="racing-view-controls" data-game-controls>
-        <button
-          type="button"
-          aria-label="向后看"
-          aria-pressed={rear}
-          onPointerDown={(e) => {
-            e.preventDefault();
-            e.currentTarget.setPointerCapture(e.pointerId);
-            rearHold.current.press(`pointer:${e.pointerId}`);
-            setRear(rearHold.current.active);
-          }}
-          onPointerUp={(e) => {
-            rearHold.current.release(`pointer:${e.pointerId}`);
-            setRear(rearHold.current.active);
-          }}
-          onPointerCancel={(e) => {
-            rearHold.current.release(`pointer:${e.pointerId}`);
-            setRear(rearHold.current.active);
-          }}
-          onLostPointerCapture={(e) => {
-            rearHold.current.release(`pointer:${e.pointerId}`);
-            setRear(rearHold.current.active);
-          }}
-          onKeyDown={(e) => {
-            if (e.key === " " || e.key === "Enter") {
-              e.preventDefault();
-              rearHold.current.press("button");
-              setRear(true);
-            }
-          }}
-          onKeyUp={(e) => {
-            if (e.key === " " || e.key === "Enter") {
-              rearHold.current.release("button");
-              setRear(rearHold.current.active);
-            }
-          }}
-          onBlur={() => {
-            rearHold.current.release("button");
-            setRear(rearHold.current.active);
-          }}
-        >
-          向后看
-        </button>
-        <span>自动挡 · 无需换挡</span>
-        <button
-          type="button"
-          aria-label="重置赛车"
-          disabled={!d.controls.canReset || !enabled}
-          onClick={() => void reset()}
-        >
-          {car && car.resetUntil > 0 && car.resetUntil + 3000 > serverNow
-            ? `重置 ${Math.ceil((car.resetUntil + 3000 - serverNow) / 1000)}秒`
-            : "重置"}{" "}
-        </button>
-      </div>
+      {d.physics !== 3 && viewControls}
       {spectating ? (
         <label className="racing-watch">
           跟随车辆
@@ -726,139 +1052,48 @@ export function Board(props: BoardProps<View>) {
         </label>
       ) : (
         <>
-          <div
-            className={`racing-controls ${mobile ? "is-touch" : ""}`}
-            data-game-controls
-            data-steer={drive.steer}
-            data-throttle={drive.throttle}
-            data-brake={drive.brake}
-            data-brake-amount={drive.brakeAmount ?? (drive.brake ? 1 : 0)}
-            data-drift={drive.drift}
-          >
-            <div
-              className="racing-wheel"
-              role="slider"
-              aria-label="方向盘"
-              aria-valuemin={-100}
-              aria-valuemax={100}
-              aria-valuenow={Math.round(drive.steer * 100)}
-              aria-valuetext={
-                drive.steer < -0.07
-                  ? "向左转向"
-                  : drive.steer > 0.07
-                    ? "向右转向"
-                    : "直行"
-              }
-              aria-disabled={!enabled}
-              tabIndex={enabled ? 0 : -1}
-              onPointerDown={wheelStart}
-              onPointerMove={wheelMove}
-              onPointerUp={wheelEnd}
-              onPointerCancel={wheelEnd}
-              onLostPointerCapture={wheelEnd}
-            >
-              <svg
-                viewBox="0 0 120 120"
-                aria-hidden="true"
-                style={{ transform: `rotate(${drive.steer * 100}deg)` }}
-              >
-                <circle
-                  cx="60"
-                  cy="60"
-                  r="47"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="12"
-                />
-                <path
-                  d="M17 52H103M60 59V106"
-                  stroke="currentColor"
-                  strokeWidth="10"
-                />
-                <circle
-                  cx="60"
-                  cy="58"
-                  r="16"
-                  fill="#d6e3db"
-                  stroke="currentColor"
-                  strokeWidth="5"
-                />
-                <path d="M60 9v8" stroke="#c17643" strokeWidth="6" />
-              </svg>
-              <small>滑动转向</small>
-            </div>
-            <div className="racing-pedals">
-              <button
-                type="button"
-                className={`racing-drift ${drive.drift ? "pressed" : ""}`}
-                aria-label="手刹"
-                aria-pressed={drive.drift}
-                disabled={!enabled}
-                {...heldButton("drift")}
-              >
-                手刹
-              </button>
-              <button
-                type="button"
-                className={drive.brake ? "pressed" : ""}
-                style={{
-                  background: `linear-gradient(to top, #386d72 ${(drive.brakeAmount ?? 0) * 100}%, #2a4352 ${(drive.brakeAmount ?? 0) * 100}%)`,
-                }}
-                aria-label="刹车"
-                aria-pressed={drive.brake}
-                disabled={!enabled}
-                {...heldButton("brake")}
-              >
-                刹车
-              </button>
-              <button
-                type="button"
-                style={{
-                  background: `linear-gradient(to top, #386d72 ${drive.throttle * 100}%, #2a4352 ${drive.throttle * 100}%)`,
-                }}
-                aria-label="油门"
-                aria-pressed={drive.throttle > 0}
-                className={drive.throttle > 0 ? "pressed" : ""}
-                disabled={!enabled}
-                {...heldButton("throttle")}
-              >
-                油门
-              </button>
-            </div>
-          </div>
-          <div className="racing-settings">
-            <label>
-              车辆外观
-              <select
-                aria-label="车辆外观"
-                value={skin}
-                disabled={
-                  busy ||
-                  spectating ||
-                  (!d.controls.canSkin && d.phase !== "finished")
-                }
-                onChange={(e) => {
-                  const s = +e.target.value;
-                  setSkin(s);
-                  try {
-                    localStorage.setItem("racing.skin", String(s));
-                  } catch {}
-                  if (d.controls.canSkin)
-                    void act({ type: "skin", epoch: d.epoch, skin: s }).catch(
-                      (e) => setError(actionError(e)),
-                    );
-                }}
-              >
-                {skinNames.map((name, i) => (
-                  <option key={i} value={i}>
-                    {name}
-                  </option>
-                ))}
-              </select>
-            </label>
+          {d.physics !== 3 && drivingControls}
+          {d.physics !== 3 && (
+            <>
+              <div className="racing-settings">
+                <>
+                  <label>
+                    车辆外观
+                    <select
+                      aria-label="车辆外观"
+                      value={skin}
+                      disabled={
+                        busy ||
+                        spectating ||
+                        (!d.controls.canSkin && d.phase !== "finished")
+                      }
+                      onChange={(e) => {
+                        const s = +e.target.value;
+                        setSkin(s);
+                        try {
+                          localStorage.setItem("racing.skin", String(s));
+                        } catch {}
+                        if (d.controls.canSkin)
+                          void act({
+                            type: "skin",
+                            epoch: d.epoch,
+                            skin: s,
+                          }).catch((e) => setError(actionError(e)));
+                      }}
+                    >
+                      {skinNames.map((name, i) => (
+                        <option key={i} value={i}>
+                          {name}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                </>
 
-            <span>车型性能相同 · 重置前先减速</span>
-          </div>
+                {d.physics !== 3 && <span>车型性能相同 · 重置前先减速</span>}
+              </div>
+            </>
+          )}
         </>
       )}
       {error && (

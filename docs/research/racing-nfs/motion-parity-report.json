@@ -1,0 +1,22 @@
+{
+  "status": "passed",
+  "fixtures": 24,
+  "samples": 14700,
+  "maximumErrors": {
+    "x": 9.094947017729282e-13,
+    "z": 1.7053025658242404e-13,
+    "vx": 1.8962609260597674e-13,
+    "vz": 1.1368683772161603e-13,
+    "angle": 1.1546319456101628e-14,
+    "yawRate": 1.8540724511240114e-14,
+    "steering": 0,
+    "longAccel": 8.881784197001252e-15,
+    "lateralAccel": 5.737632591262809e-13,
+    "rpm": 1.5006662579253316e-11,
+    "shiftTimer": 0,
+    "throttle": 0,
+    "brake": 0,
+    "handbrake": 0,
+    "reverseTimer": 0
+  }
+}

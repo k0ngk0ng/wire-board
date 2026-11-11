@@ -4,7 +4,7 @@ import "math"
 
 // Tracks returns detached, immutable-in-practice road descriptions. Rendering,
 // gates, off-road detection and AI all consume this same sampled geometry.
-func Tracks() []Track {
+func legacyTracks() []Track {
 	return []Track{
 		makeTrack("metro", "霓虹城区", 6200, 4400, 200, []Point{{850, 650}, {2700, 450}, {5000, 650}, {5500, 1450}, {4400, 1900}, {5100, 3100}, {4200, 3750}, {2500, 3550}, {1400, 3800}, {650, 2750}, {1000, 1700}}),
 		makeTrack("harbor", "工业港湾", 6600, 4700, 190, []Point{{900, 750}, {2500, 550}, {5200, 650}, {5700, 1450}, {4750, 1900}, {5500, 2800}, {5100, 3850}, {3450, 4050}, {3300, 2900}, {2200, 2650}, {1500, 3650}, {650, 2900}, {650, 1600}}),
@@ -55,7 +55,10 @@ func makeTrack(id, name string, w, h, r float64, knots []Point) Track {
 	return t
 }
 func trackByID(id string) (Track, bool) {
-	for _, t := range Tracks() {
+	if track, ok := classicTrackByID(id); ok {
+		return track, true
+	}
+	for _, t := range legacyTracks() {
 		if t.ID == id {
 			return t, true
 		}
@@ -89,6 +92,11 @@ func nearest(t Track, p Point) (Point, int, float64, float64) {
 	return out, index, math.Sqrt(best), fraction
 }
 func pathLengths(t Track) ([]float64, float64) {
+	if t.Version == 3 {
+		if info := classicTrackInfoFor(t); info != nil {
+			return info.arcs, info.length
+		}
+	}
 	arcs := make([]float64, len(t.Points))
 	total := 0.
 	for i, p := range t.Points {

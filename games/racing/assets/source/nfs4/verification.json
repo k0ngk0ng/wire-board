@@ -1,0 +1,145 @@
+{
+  "assetE2E": {
+    "passed": true,
+    "tests": 6,
+    "cars": [
+      "P911",
+      "FM50",
+      "LDIA",
+      "MCF1",
+      "CCOR"
+    ],
+    "tracks": [
+      "France",
+      "Coastal",
+      "UK",
+      "Park"
+    ],
+    "failures": [],
+    "errors": []
+  },
+  "gltfValidator": {
+    "package": "gltf-validator@2.0.0-dev.3.10",
+    "reports": [
+      {
+        "path": "cars/ccor.glb",
+        "errors": 0,
+        "warnings": 0,
+        "infos": 0,
+        "messages": []
+      },
+      {
+        "path": "cars/fm50.glb",
+        "errors": 0,
+        "warnings": 0,
+        "infos": 0,
+        "messages": []
+      },
+      {
+        "path": "cars/ldia.glb",
+        "errors": 0,
+        "warnings": 0,
+        "infos": 0,
+        "messages": []
+      },
+      {
+        "path": "cars/mcf1.glb",
+        "errors": 0,
+        "warnings": 0,
+        "infos": 0,
+        "messages": []
+      },
+      {
+        "path": "cars/p911.glb",
+        "errors": 0,
+        "warnings": 0,
+        "infos": 0,
+        "messages": []
+      },
+      {
+        "path": "tracks/coastal-night.glb",
+        "errors": 0,
+        "warnings": 0,
+        "infos": 0,
+        "messages": []
+      },
+      {
+        "path": "tracks/coastal.glb",
+        "errors": 0,
+        "warnings": 0,
+        "infos": 0,
+        "messages": []
+      },
+      {
+        "path": "tracks/france-night.glb",
+        "errors": 0,
+        "warnings": 0,
+        "infos": 0,
+        "messages": []
+      },
+      {
+        "path": "tracks/france.glb",
+        "errors": 0,
+        "warnings": 0,
+        "infos": 0,
+        "messages": []
+      },
+      {
+        "path": "tracks/park-night.glb",
+        "errors": 0,
+        "warnings": 0,
+        "infos": 0,
+        "messages": []
+      },
+      {
+        "path": "tracks/park.glb",
+        "errors": 0,
+        "warnings": 0,
+        "infos": 0,
+        "messages": []
+      },
+      {
+        "path": "tracks/uk-night.glb",
+        "errors": 0,
+        "warnings": 0,
+        "infos": 0,
+        "messages": []
+      },
+      {
+        "path": "tracks/uk.glb",
+        "errors": 0,
+        "warnings": 0,
+        "infos": 0,
+        "messages": []
+      }
+    ]
+  },
+  "visualBuildManifestSha256": "358661894ef5b13825097ffd2df6cea7d01e628bfbb48f07bef8f5a4af495bcb",
+  "audioE2E": {
+    "passed": true,
+    "tests": 3,
+    "models": [
+      "P911",
+      "FM50",
+      "LDIA",
+      "MCF1",
+      "CCOR"
+    ],
+    "failures": [],
+    "errors": []
+  },
+  "audioManifestSha256": "8ab5a6d033b20e477ace8d3fa4579d31bfc34079451acf3bc35737b333afcfd0",
+  "publishedManifestSha256": "1d90786ff1c43d6505bc7ca43a90e602f5aa7aa17c9f6b33d0a6faaf03b005eb",
+  "cockpitE2E": {
+    "passed": true,
+    "tests": 4,
+    "failures": [],
+    "errors": []
+  },
+  "syntheticHornE2E": {
+    "passed": true,
+    "tests": 3,
+    "failures": [],
+    "errors": []
+  }
+}

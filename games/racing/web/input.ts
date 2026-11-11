@@ -4,6 +4,7 @@ export type Drive = {
   brake: boolean;
   brakeAmount?: number;
   drift: boolean;
+  horn?: boolean;
 };
 export const neutral: Drive = {
   steer: 0,
@@ -21,7 +22,7 @@ const same = (a: Drive, b: Drive) =>
   a.throttle === b.throttle &&
   a.brake === b.brake &&
   brakeLevel(a) === brakeLevel(b) &&
-  a.drift === b.drift;
+  a.drift === b.drift && !!a.horn === !!b.horn;
 export function wheelSteer(x: number, left: number, width: number) {
   const raw = clamp((x - left - width / 2) / Math.max(1, width * 0.42), -1, 1);
   return Math.abs(raw) < 0.07 ? 0 : raw;
@@ -77,6 +78,7 @@ export class LatestDrive {
       brake: !!v.brake && brakeLevel(v) > 0,
       brakeAmount: brakeLevel(v),
       drift: !!v.drift,
+      ...(v.horn ? { horn: true } : {}),
     };
   }
   next(now: number, window = 1): Request | null {
@@ -86,7 +88,7 @@ export class LatestDrive {
     )
       return null;
     const changed = !this.sent || !same(this.sent, this.value);
-    const released = changed && same(this.value, neutral);
+    const released = changed && (same(this.value, neutral) || (!!this.sent?.horn && !this.value.horn));
     if (!changed && same(this.value, neutral)) return null;
     if (!released && now - this.at < (changed ? 100 : 300)) return null;
     this.sent = { ...this.value };

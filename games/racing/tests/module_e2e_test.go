@@ -226,7 +226,7 @@ func TestRacingOptions(t *testing.T) {
 	}
 	var o game.Options
 	_ = json.Unmarshal(b, &o)
-	if o.Track != "metro" || o.Laps != 3 {
+	if o.Track != "france" || o.Laps != 3 {
 		t.Fatal(o)
 	}
 }

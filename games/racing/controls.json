@@ -146,22 +146,25 @@
     },
     {
       "id": "nextSkin",
-      "label": "下一款外观",
+      "label": "旧版下一款外观",
       "keys": [
         "BracketRight"
       ],
-      "gamepad": [
-        {
-          "type": "button",
-          "index": 5
-        }
-      ]
+      "gamepad": []
     },
     {
       "id": "previousSkin",
-      "label": "上一款外观",
+      "label": "旧版上一款外观",
       "keys": [
         "BracketLeft"
+      ],
+      "gamepad": []
+    },
+    {
+      "id": "camera",
+      "label": "切换视角",
+      "keys": [
+        "KeyC"
       ],
       "gamepad": [
         {
@@ -169,6 +172,75 @@
           "index": 4
         }
       ]
+    },
+    {
+      "id": "horn",
+      "label": "喇叭",
+      "keys": [
+        "KeyH"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 5
+        }
+      ],
+      "continuous": true
+    },
+    {
+      "id": "drawDistance",
+      "label": "切换最大绘距",
+      "keys": [
+        "F3"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 8
+        }
+      ]
+    },
+    {
+      "id": "hud",
+      "label": "显示或隐藏仪表",
+      "keys": [
+        "F5"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 10
+        }
+      ]
+    },
+    {
+      "id": "mirror",
+      "label": "显示或隐藏后视镜",
+      "keys": [
+        "F7"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 11
+        }
+      ]
+    },
+    {
+      "id": "viewSmaller",
+      "label": "缩小游戏视区",
+      "keys": [
+        "F11"
+      ],
+      "gamepad": []
+    },
+    {
+      "id": "viewLarger",
+      "label": "放大游戏视区",
+      "keys": [
+        "F12"
+      ],
+      "gamepad": []
     }
   ]
 }
