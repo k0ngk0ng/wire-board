@@ -70,7 +70,7 @@ func Module() gameapi.Module {
 			}
 			var o Options
 			_ = json.Unmarshal(normalized, &o)
-			s := &State{WeatherRules: 1, GrowthRules: 1, BalanceRules: 1, SpecializationRules: 1, SkillRules: 2, Options: o, Players: make([]Player, ctx.Players), Phase: "prepare", Epoch: 1, Wave: 1, BaseHP: 30, BaseMaxHP: 30, ServerAt: ctx.Now.UnixMilli(), NextAt: ctx.Now.UnixMilli() + int64(o.PrepSeconds)*1000, Towers: []Tower{}, Enemies: []Enemy{}, Events: []Event{}}
+			s := &State{WeatherRules: 2, GrowthRules: 1, BalanceRules: 1, SpecializationRules: 1, SkillRules: 2, Options: o, Players: make([]Player, ctx.Players), Phase: "prepare", Epoch: 1, Wave: 1, BaseHP: 30, BaseMaxHP: 30, ServerAt: ctx.Now.UnixMilli(), NextAt: ctx.Now.UnixMilli() + int64(o.PrepSeconds)*1000, Towers: []Tower{}, Enemies: []Enemy{}, Events: []Event{}}
 			for i := range s.Players {
 				s.Players[i].Gold = 300
 			}
@@ -180,6 +180,10 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 			kind = "boon"
 		}
 		if err := s.vote(kind, a.Choice, p, ctx.Now.UnixMilli()); err != nil {
+			return m, err
+		}
+	case "use_medical":
+		if err := s.useMedical(p); err != nil {
 			return m, err
 		}
 	case "shop":
@@ -339,6 +343,7 @@ type TargetControl struct {
 	Enabled bool `json:"enabled"`
 }
 type Controls struct {
+	Medical      *MedicalControl    `json:"medical,omitempty"`
 	Shop         *ShopControl       `json:"shop,omitempty"`
 	Repair       *RepairControl     `json:"repair,omitempty"`
 	CanRouteVote bool               `json:"canRouteVote"`
@@ -359,6 +364,7 @@ func (s *State) controls(p int) Controls {
 	player := p >= 0 && p < len(s.Players) && !s.finished()
 	c.Repair = s.repairControl(p)
 	c.Shop = s.shopControl(p)
+	c.Medical = s.medicalControl(p)
 	c.CanResume = player && s.Phase == "paused"
 	c.CanAct = player && s.Phase != "paused"
 	c.CanPause = c.CanAct && s.Phase == "prepare"
@@ -421,6 +427,8 @@ func viewEnemy(enemy Enemy) ViewEnemy {
 	enemy.FreezeGuards = nil
 	enemy.HeartGuards = nil
 	enemy.MeteorGuards = nil
+	enemy.MissGuards = nil
+	enemy.WeatherReadyAt, enemy.WeatherCheckAt = 0, 0
 	capacity := enemy.MaxHP
 	if enemy.Kind == "shield" {
 		capacity += enemy.MaxHP * shieldRatio

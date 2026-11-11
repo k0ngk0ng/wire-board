@@ -41,8 +41,8 @@ func weatherNear(t *testing.T, name string, got, want float64) {
 }
 func TestStarfortWeatherVersionAndForecast(t *testing.T) {
 	b := newModuleRulesTable(t, 1, map[string]any{"mode": "endless"}, starfort.Module())
-	if b.s.Schema != 8 || specializationRaw(b)["weatherRules"] != float64(1) || specializationRawView(b)["weatherRules"] != float64(1) {
-		t.Fatal("new games need schema 8 and public weatherRules")
+	if b.s.Schema != 9 || specializationRaw(b)["weatherRules"] != float64(2) || specializationRawView(b)["weatherRules"] != float64(2) {
+		t.Fatal("new games need schema 9 and public weatherRules")
 	}
 	seen := map[string]bool{}
 	for wave := 1; wave <= 40; wave++ {
@@ -383,6 +383,7 @@ func weatherTaskFixture(t *testing.T, kind string) *rulesTable {
 	t.Helper()
 	b := newModuleRulesTable(t, 2, map[string]any{"mode": "endless"}, starfort.Module())
 	s := cadenceState(b)
+	s.WeatherRules = 1 // Archived schema-8 fixture.
 	r := s.World.Map.Routes[0]
 	x, y := fixturePathPosition(r.Points, 300)
 	s.World.Objectives = []starfort.Objective{{ID: "weather-task", Kind: kind, Label: "任务边界夹具", HP: 10, MaxHP: 10, Cost: 100, Reward: 100, Status: "available", Owner: -1, Route: r.ID, Sector: 1, Progress: 300, X: x, Y: y}}
@@ -493,6 +494,7 @@ func weatherShopModule() gameapi.Module {
 		}
 		var s starfort.State
 		_ = json.Unmarshal(v.Data, &s)
+		s.WeatherRules = 1 // Archived schema-8 fixture.
 		s.Wave = 10
 		s.CompletedWaves = 9
 		s.Options.Mode = "endless"

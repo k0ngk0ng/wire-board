@@ -39,7 +39,7 @@ func scenarioModule() gameapi.Module {
 			delete(v, "scenario")
 		}
 		switch scenario {
-		case "weather-calm", "weather-fog", "weather-frost", "weather-starlight", "weather-shop", "rebalance-growth-repair", "rebalance-growth-cannon", "rebalance-growth-arrow", "rebalance-growth-arcane", "rebalance-growth-refund", "rebalance-combat-frost", "rebalance-combat-arcane", "rebalance-tasks", "rebalance-reward", "rebalance-highground", "specialization-arrow", "specialization-frost", "specialization-cannon", "specialization-arcane", "density-observed", "density-central", "density-coop", "density-ceiling", "coop-growth", "coop-objectives", "ice-arrow", "ice-wall", "central-passives", "cadence", "cadence-speed", "vitality", "impact", "natural", "battle", "victory-ready", "defeat-ready", "advanced", "zero-gold", "growth-vote", "cleared-5", "cleared-10", "cleared-15", "stage2", "stage3", "stage4", "endless-rotation", "objectives", "objectives-clear", "objectives-fail", "legacy-save":
+		case "weather-v2-sleep", "weather-v2-medical", "weather-v2-fog", "weather-v2-frost", "weather-v2-starlight", "weather-v2-calm", "weather-calm", "weather-fog", "weather-frost", "weather-starlight", "weather-shop", "rebalance-growth-repair", "rebalance-growth-cannon", "rebalance-growth-arrow", "rebalance-growth-arcane", "rebalance-growth-refund", "rebalance-combat-frost", "rebalance-combat-arcane", "rebalance-tasks", "rebalance-reward", "rebalance-highground", "specialization-arrow", "specialization-frost", "specialization-cannon", "specialization-arcane", "density-observed", "density-central", "density-coop", "density-ceiling", "coop-growth", "coop-objectives", "ice-arrow", "ice-wall", "central-passives", "cadence", "cadence-speed", "vitality", "impact", "natural", "battle", "victory-ready", "defeat-ready", "advanced", "zero-gold", "growth-vote", "cleared-5", "cleared-10", "cleared-15", "stage2", "stage3", "stage4", "endless-rotation", "objectives", "objectives-clear", "objectives-fail", "legacy-save":
 		default:
 			return "", nil, errors.New("unknown test scenario")
 		}
@@ -128,6 +128,7 @@ func scenarioModule() gameapi.Module {
 		}
 		switch scenario {
 		case "weather-calm", "weather-fog", "weather-frost", "weather-starlight", "weather-shop":
+			s.WeatherRules = 1 // Archived UI fixture.
 			s.NextAt = ctx.Now.Add(5 * time.Minute).UnixMilli()
 			s.World.Objectives = []starfort.Objective{}
 			s.TowerSerial = 1
@@ -144,6 +145,34 @@ func scenarioModule() gameapi.Module {
 				s.BaseHP = 20
 				id = "calm"
 			}
+			labels := map[string]string{"calm": "无特殊天气", "fog": "薄雾", "frost": "寒潮", "starlight": "星辉"}
+			s.World.Event = starfort.WaveEvent{ID: id, Label: labels[id], Wave: s.Wave}
+		case "weather-v2-sleep":
+			s.Phase, s.NextAt = "battle", 0
+			s.WaveInfo = starfort.WaveInfo{Total: 1, Spawned: 1, Title: "睡眠可视验收"}
+			r := s.World.Map.Routes[0]
+			d := fixturePathLength(r.Points) * .5
+			x, y := fixturePathPosition(r.Points, d)
+			s.EnemySerial = 1
+			s.Enemies = []starfort.Enemy{{ID: 1, Kind: "shield", HP: 1000, MaxHP: 1000, Shield: 800, Speed: 1, Leak: 1, Route: r.ID, Progress: d, X: x, Y: y}}
+			s.Towers = nil
+			s.World.Objectives = nil
+			s.World.Event = starfort.WaveEvent{ID: "starlight", Label: "星辉", Wave: s.Wave}
+			var enemy map[string]any
+			_ = json.Unmarshal(rulesJSON(s.Enemies[0]), &enemy)
+			enemy["sleepingUntil"] = s.Tick + 150 // Long-lived visual-only fixture; duration tested at module boundary.
+			enemy["weatherReadyAt"] = s.Tick + 150
+			s = v2Patch(s, map[string]any{"enemies": []any{enemy}})
+		case "weather-v2-medical":
+			v, e := v2MedicalModule().Start(ctx, body)
+			if e != nil {
+				return match, e
+			}
+			_ = json.Unmarshal(v.Data, &s)
+		case "weather-v2-calm", "weather-v2-fog", "weather-v2-frost", "weather-v2-starlight":
+			s.NextAt = ctx.Now.Add(5 * time.Minute).UnixMilli()
+			s.World.Objectives = nil
+			id := strings.TrimPrefix(scenario, "weather-v2-")
 			labels := map[string]string{"calm": "无特殊天气", "fog": "薄雾", "frost": "寒潮", "starlight": "星辉"}
 			s.World.Event = starfort.WaveEvent{ID: id, Label: labels[id], Wave: s.Wave}
 		case "rebalance-growth-repair":

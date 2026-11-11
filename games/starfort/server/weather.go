@@ -6,7 +6,7 @@ import (
 	"math"
 )
 
-func (s *State) weathered() bool { return s.WeatherRules == 1 }
+func (s *State) weathered() bool { return s.WeatherRules >= 1 }
 
 func (s *State) weatherFor(wave int) WaveEvent {
 	if !s.weathered() {
@@ -23,6 +23,16 @@ func (s *State) weatherFor(wave int) WaveEvent {
 		e.Label, e.Description = "星辉", "威力法师伤害 ×1.2；魔法法师流星雨概率增加 10 个百分点"
 	default:
 		e.Label, e.Description = "无特殊天气", "本波无额外天气效果"
+	}
+	if s.weatherV2() {
+		switch id {
+		case "fog":
+			e.Description = "除箭塔外射程减少 10%；敌人每秒 10% 概率倒退 3 秒，触发后 15 秒保护；箭雨多命中 1 个目标、击退增加 10，残废箭伤害增加 5%"
+		case "starlight":
+			e.Description = "除法师塔外攻速减少 10%；敌人每秒 10% 概率睡眠免伤 3 秒，触发后 15 秒保护；威力法师伤害 ×1.2，流星雨概率增加 10 个百分点"
+		case "frost":
+			e.Description = "敌速减少 10%；除冰塔外攻击 10% 概率 MISS，同塔同敌人落空后 10 秒内不再 MISS；冰封延长 2 秒、冷却减少 2 秒，攻速冰塔额外减速 15 个百分点"
+		}
 	}
 	return e
 }
@@ -99,6 +109,9 @@ func (s *State) weatherStats(t Tower) (float64, float64, int) {
 		rate *= 1.5
 	case "arcane/power":
 		rate *= .8
+	}
+	if s.weatherV2() && s.World.Event.ID == "starlight" && t.Kind != "arcane" {
+		rate *= .9
 	}
 	return damage, radius, max(StepMS, int(float64(c.Interval)/rate))
 }
@@ -285,6 +298,12 @@ func (s *State) weatherHit(t *Tower, target Enemy, damage float64) {
 	}
 }
 func (s *State) leakDamage(e Enemy) int {
+	if s.weatherV2() && e.BossGuard {
+		s.World.GuardLeakRemainder++
+		damage := s.World.GuardLeakRemainder / 2
+		s.World.GuardLeakRemainder %= 2
+		return damage
+	}
 	if !s.weathered() || !heavy(e) {
 		return e.Leak
 	}
@@ -294,16 +313,22 @@ func (s *State) leakDamage(e Enemy) int {
 			s.World.BossWards--
 			return 0
 		}
+		if s.weatherV2() {
+			return 7 + int(math.Round(3*math.Max(0, math.Min(1, e.HP/e.MaxHP))))
+		}
 		base = 8
 	}
 	return base + int(math.Round(2*math.Max(0, math.Min(1, e.HP/e.MaxHP))))
 }
 func (s *State) validWeather() error {
-	if s.WeatherRules < 0 || s.WeatherRules > 1 || (s.weathered() && !s.growing()) {
+	if s.WeatherRules < 0 || s.WeatherRules > 2 || (s.weathered() && !s.growing()) {
 		return errors.New("无效天气规则")
 	}
+	if err := s.validWeatherV2(); err != nil {
+		return err
+	}
 	for _, e := range s.Enemies {
-		for _, guards := range [][]KnockbackGuard{e.FreezeGuards, e.HeartGuards, e.MeteorGuards} {
+		for _, guards := range [][]KnockbackGuard{e.FreezeGuards, e.HeartGuards, e.MeteorGuards, e.MissGuards} {
 			if len(guards) > 40 || (!s.weathered() && len(guards) > 0) {
 				return errors.New("无效技能保护")
 			}

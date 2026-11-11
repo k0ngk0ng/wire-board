@@ -168,7 +168,7 @@ func (s *State) repairCraters() {
 		workers := []int{}
 		work := 0.
 		for _, e := range s.Enemies {
-			if e.HP > 0 && !s.frozen(e) && e.Repairing == c.ID {
+			if e.HP > 0 && !s.frozen(e) && !s.sleeping(e) && e.Repairing == c.ID {
 				workers = append(workers, e.ID)
 				rate := 1.
 				if e.Kind == "engineer" && !s.silenced(e) {

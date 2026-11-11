@@ -83,6 +83,17 @@ func (s *State) offerWeatherTask() {
 		baseHP, baseCost, low, span, mult, label = 4, 200, .5, .1, 1.3, "护送商人"
 		benefit = "商人速度 20，抵达星核后发放金币，当波过关后开放商店"
 	}
+	if s.weatherV2() {
+		if kind == "mine" {
+			low, span = .4, .1
+		}
+		if kind == "beacon" {
+			low, span = .5, .1
+		}
+		if kind == "convoy" {
+			benefit = fmt.Sprintf("补给车速度 40，开波后出发，抵达修复 %d 生命；星核已满血则获得医疗包，可在波间使用", 4+s.Wave/10)
+		}
+	}
 	fraction := low + span*float64(s.taskRandom(1001))/1000
 	path := s.routePath(routeID)
 	progress := pathDistance(path) * fraction
@@ -126,7 +137,7 @@ func (s *State) refundTask(o Objective) int {
 // Relative route progress is swept across the full simulation step, including
 // the objective's motion, so a one-unit contact cannot be skipped at high speed.
 func (s *State) taskContact(e Enemy, from, to float64) {
-	if !s.weathered() || e.HP <= 0 || heavy(e) || s.frozen(e) {
+	if !s.weathered() || e.HP <= 0 || heavy(e) || s.frozen(e) || s.sleeping(e) {
 		return
 	}
 	for i := range s.World.Objectives {
@@ -206,7 +217,15 @@ func (s *State) finishWeatherObjective(index int, success bool, reason string) {
 				s.World.BeaconPower += float64(n/2+1) / 100
 			}
 		case "convoy":
-			s.BaseHP = min(s.BaseMaxHP, s.BaseHP+4)
+			if s.weatherV2() {
+				if s.BaseHP == s.BaseMaxHP {
+					s.World.MedicalPacks = min(maxValue, s.World.MedicalPacks+1)
+				} else {
+					s.BaseHP = min(s.BaseMaxHP, s.BaseHP+4+s.Wave/10)
+				}
+			} else {
+				s.BaseHP = min(s.BaseMaxHP, s.BaseHP+4)
+			}
 		case "merchant":
 			s.World.MerchantWave = s.Wave
 		}

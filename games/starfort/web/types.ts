@@ -75,6 +75,8 @@ export type Objective = Point & {
   baseAtStart: number;
 };
 export type World = {
+  medicalPacks?: number;
+  guardLeakRemainder?: number;
   shop?: {
     wave: number;
     repairUsed: number;
@@ -170,6 +172,9 @@ export type Tower = {
   effectiveInterval?: number;
 };
 export type Enemy = Point & {
+  sleepingUntil?: number;
+  confusedUntil?: number;
+  bossGuard?: boolean;
   slowFactor?: number;
   recoveryUntil?: number;
   frozenUntil?: number;
@@ -264,6 +269,7 @@ export type View = {
     description: string;
   }[];
   controls: {
+    medical?: { count: number; heal: number; enabled: boolean };
     shop?: {
       wave: number;
       limit: number;

@@ -303,6 +303,7 @@ func (s *State) step(now int64) {
 			s.SpawnClock = 400
 		}
 	}
+	s.stepWeather()
 	s.enemyAbilities()
 	sort.Slice(boundary, func(i, j int) bool { return s.Towers[boundary[i]].ID < s.Towers[boundary[j]].ID })
 	for _, index := range boundary {
@@ -326,6 +327,7 @@ func (s *State) step(now int64) {
 			if e.Kind == "splitter" && !s.silenced(e) {
 				for child := 0; child < 2; child++ {
 					spawned := e
+					clearWeather(&spawned)
 					spawned.ID = 0
 					spawned.Kind = "swarm"
 					spawned.Frostbound = false
@@ -349,7 +351,11 @@ func (s *State) step(now int64) {
 		}
 		speed := e.Speed
 		if s.World.Event.ID == "frost" {
-			speed *= .85
+			if s.weatherV2() {
+				speed *= .9
+			} else {
+				speed *= .85
+			}
 		}
 		if e.Kind == "boss" && e.Phase == 2 && !s.abilitiesBlocked(e) {
 			speed *= 1.18
@@ -361,12 +367,15 @@ func (s *State) step(now int64) {
 			}
 		}
 		speed *= s.iceSlowFactor(e)
-		if s.frozen(e) {
+		if s.frozen(e) || s.sleeping(e) {
 			speed = 0
 		}
+		if s.weatherV2() && e.ConfusedUntil > s.Tick {
+			speed = -speed
+		}
 		oldProgress := e.Progress
-		nextProgress := e.Progress + speed*StepMS/1000
-		if !s.blockAtCrater(&e, nextProgress) {
+		nextProgress := math.Max(0, e.Progress+speed*StepMS/1000)
+		if speed < 0 || !s.blockAtCrater(&e, nextProgress) {
 			e.Progress = nextProgress
 		}
 		s.taskContact(e, oldProgress, e.Progress)
@@ -451,6 +460,10 @@ func (s *State) fireTower(index int) bool {
 	enemy := s.Enemies[target]
 	t.Angle = math.Atan2(enemy.Y-pad.Y, enemy.X-pad.X)
 	t.Cooldown = interval
+	if s.weatherMiss(*t, target) {
+		s.event(Event{TowerID: t.ID, TargetID: enemy.ID, Type: "shot", X: pad.X, Y: pad.Y, ToX: enemy.X, ToY: enemy.Y, Kind: t.Kind, Owner: t.Owner})
+		return true
+	}
 	baseDamage := damage
 	damage, skill := s.arrowSkillDamage(t, enemy, damage)
 	s.event(Event{Skill: skill, TowerID: t.ID, TargetID: enemy.ID, Type: "shot", X: pad.X, Y: pad.Y, ToX: enemy.X, ToY: enemy.Y, Kind: t.Kind, Owner: t.Owner})
@@ -503,6 +516,9 @@ func (s *State) hitWithSkill(index int, damage float64, t Tower, skill string) {
 	if t.Kind != "arcane" && skill != "execute" {
 		damage *= 1 - e.Armor
 	}
+	if s.sleeping(*e) {
+		damage = 0
+	}
 	before := e.HP + e.Shield
 	if e.Shield > 0 {
 		factor := 1.
@@ -528,7 +544,7 @@ func (s *State) hitWithSkill(index int, damage float64, t Tower, skill string) {
 		damage -= absorbed / factor
 	}
 	e.HP = math.Max(0, e.HP-damage)
-	if s.weathered() && skill == "cripple" {
+	if s.weathered() && skill == "cripple" && !s.sleeping(*e) {
 		_, percent := heartArea(t.Level)
 		if s.World.Event.ID == "fog" {
 			percent *= 1.05

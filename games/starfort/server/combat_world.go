@@ -48,11 +48,17 @@ func (s *State) enemyAbilities() {
 			s.Enemies[i].AbilityTick = s.Tick
 			s.event(Event{TargetID: e.ID, Type: "boss_phase", X: e.X, Y: e.Y, Kind: "boss", Owner: -1, Amount: 2})
 			s.note("首领进入第二阶段：召唤护盾护卫，移动速度提高 18%%")
-			for child := 0; child < 2 && len(s.Enemies) < MaxEnemies; child++ {
+			guards := 2
+			if s.weatherV2() {
+				guards = 4
+			}
+			for child := 0; child < guards && len(s.Enemies) < MaxEnemies; child++ {
 				guard := e
 				s.EnemySerial++
 				guard.ID = s.EnemySerial
+				clearWeather(&guard)
 				guard.Kind = "shield"
+				guard.BossGuard = s.weatherV2()
 				guard.Frostbound = false
 				guard.FrozenUntil, guard.SilencedUntil = 0, 0
 				guard.RecoveryUntil = 0
@@ -78,6 +84,12 @@ func (s *State) enemyAbilities() {
 }
 
 func (s *State) preferTarget(candidate, current Enemy, priority string) bool {
+	if s.weatherV2() && (candidate.BossGuard || current.BossGuard) {
+		if candidate.BossGuard != current.BossGuard {
+			return candidate.BossGuard
+		}
+		return candidate.ID < current.ID
+	}
 	switch priority {
 	case "strong":
 		a, b := candidate.HP+candidate.Shield, current.HP+current.Shield

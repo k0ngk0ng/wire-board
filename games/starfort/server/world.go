@@ -80,6 +80,8 @@ type Objective struct {
 	BaseAtStart int     `json:"baseAtStart"`
 }
 type World struct {
+	MedicalPacks         int            `json:"medicalPacks,omitempty"`
+	GuardLeakRemainder   int            `json:"guardLeakRemainder,omitempty"`
 	Shop                 *MerchantShop  `json:"shop,omitempty"`
 	MerchantWave         int            `json:"merchantWave,omitempty"`
 	BossWards            int            `json:"bossWards,omitempty"`
@@ -233,7 +235,13 @@ func (s *State) towerStats(t Tower) (damage, radius float64, interval int) {
 		radius *= 1.15
 	}
 	if s.World.Event.ID == "fog" {
-		radius *= .8
+		if s.weatherV2() {
+			if t.Kind != "arrow" {
+				radius *= .9
+			}
+		} else {
+			radius *= .8
+		}
 	}
 	if s.World.Event.ID == "starlight" && t.Kind == "arcane" && (!s.weathered() || t.Branch == "power") {
 		damage *= 1.2
