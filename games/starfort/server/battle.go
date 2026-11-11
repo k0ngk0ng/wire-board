@@ -551,7 +551,9 @@ func (s *State) hitWithSkill(index int, damage float64, t Tower, skill string) {
 		}
 		e.HP = math.Max(0, e.HP*(1-percent))
 	}
-	actual := before - e.HP - e.Shield
+	// Subtract the combined vitals: sequential subtraction can turn an
+	// immune hit with fractional shield into a tiny negative damage delta.
+	actual := math.Max(0, before-(e.HP+e.Shield))
 	s.Players[t.Owner].Damage = math.Min(maxValue, s.Players[t.Owner].Damage+actual)
 	if t.Kind == "frost" {
 		if s.rebalanced() {
