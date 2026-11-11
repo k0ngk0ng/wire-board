@@ -73,6 +73,9 @@ func botAction(ctx gameapi.Context, m gameapi.Match) (json.RawMessage, error) {
 			}
 			return nil, nil
 		}
+		if c := s.medicalControl(p); c != nil && c.Enabled && s.BaseMaxHP-s.BaseHP >= c.Heal {
+			return json.Marshal(Action{Type: "use_medical", Epoch: s.Epoch})
+		}
 		if quote := s.shopControl(p); quote != nil && quote.Enabled {
 			if quote.RepairMax > 0 && s.BaseHP <= s.BaseMaxHP-4 {
 				return json.Marshal(Action{Type: "shop", Choice: "repair", Amount: quote.RepairMax, Epoch: s.Epoch})

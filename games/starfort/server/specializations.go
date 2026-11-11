@@ -10,7 +10,7 @@ import (
 func (s *State) specialized() bool             { return s.SpecializationRules == 1 }
 func (s *State) frozen(e Enemy) bool           { return e.FrozenUntil > s.Tick }
 func (s *State) silenced(e Enemy) bool         { return e.SilencedUntil > s.Tick }
-func (s *State) abilitiesBlocked(e Enemy) bool { return s.frozen(e) || s.silenced(e) }
+func (s *State) abilitiesBlocked(e Enemy) bool { return s.frozen(e) || s.silenced(e) || s.sleeping(e) }
 func heavy(e Enemy) bool                       { return e.Kind == "elite" || e.Kind == "boss" }
 
 func (s *State) specializationChoices(t Tower) []BranchChoice {

@@ -95,6 +95,12 @@ type Tower struct {
 	Priority       string  `json:"priority"`
 }
 type Enemy struct {
+	SleepingUntil   int64            `json:"sleepingUntil,omitempty"`
+	ConfusedUntil   int64            `json:"confusedUntil,omitempty"`
+	WeatherReadyAt  int64            `json:"weatherReadyAt,omitempty"`
+	WeatherCheckAt  int64            `json:"weatherCheckAt,omitempty"`
+	BossGuard       bool             `json:"bossGuard,omitempty"`
+	MissGuards      []KnockbackGuard `json:"missGuards,omitempty"`
 	FreezeGuards    []KnockbackGuard `json:"freezeGuards,omitempty"`
 	HeartGuards     []KnockbackGuard `json:"heartGuards,omitempty"`
 	MeteorGuards    []KnockbackGuard `json:"meteorGuards,omitempty"`
@@ -454,6 +460,9 @@ func (s *State) Envelope() (gameapi.Match, error) {
 	if s.weathered() {
 		schema = 8
 	}
+	if s.weatherV2() {
+		schema = 9
+	}
 	m := gameapi.Match{Schema: schema, Data: raw, Actors: s.actors(), Attention: []int{}, TimeoutActors: []int{}, Log: append([]string{}, s.Log...)}
 	if s.finished() {
 		r := &gameapi.Result{Cooperative: true, Ranks: make([]int, len(s.Players)), Winners: []int{}, Scores: make([]int, len(s.Players))}
@@ -479,7 +488,7 @@ func (s *State) Envelope() (gameapi.Match, error) {
 	return m, m.Validate(len(s.Players))
 }
 func decode(m gameapi.Match) (*State, error) {
-	if (m.Schema != 1 && m.Schema != 2 && m.Schema != 3 && m.Schema != 4 && m.Schema != 5 && m.Schema != 6 && m.Schema != 7 && m.Schema != 8) || len(m.Data) > maxSnapshotBytes {
+	if (m.Schema < 1 || m.Schema > 9) || len(m.Data) > maxSnapshotBytes {
 		return nil, errors.New("不支持的星垒存档")
 	}
 	var s State
@@ -492,16 +501,16 @@ func decode(m gameapi.Match) (*State, error) {
 	if (m.Schema == 3 || m.Schema == 4) && s.World.Layout != "central" {
 		return nil, errors.New("中央地图存档缺少布局标识")
 	}
-	if (m.Schema == 4 || m.Schema == 5 || m.Schema == 6 || m.Schema == 7 || m.Schema == 8) != (s.SkillRules == 2) {
+	if (m.Schema >= 4) != (s.SkillRules == 2) {
 		return nil, errors.New("技能规则与存档版本不一致")
 	}
-	if (m.Schema == 8) != s.weathered() {
+	if (m.Schema >= 8) != s.weathered() || (m.Schema == 9) != s.weatherV2() {
 		return nil, errors.New("天气规则与存档版本不一致")
 	}
-	if (m.Schema == 7 || m.Schema == 8) != s.growing() {
+	if (m.Schema >= 7) != s.growing() {
 		return nil, errors.New("成长规则与存档版本不一致")
 	}
-	if (m.Schema == 6 || m.Schema == 7 || m.Schema == 8) != s.rebalanced() {
+	if (m.Schema >= 6) != s.rebalanced() {
 		return nil, errors.New("平衡规则与存档版本不一致")
 	}
 	if m.Schema == 5 && s.World.Layout != "" {

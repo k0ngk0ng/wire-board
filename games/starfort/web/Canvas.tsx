@@ -1637,6 +1637,7 @@ export function Battlefield({
       const enemyPositions = new Map<number, Point>();
       for (const enemy of v.enemies) {
         const icebound = (enemy.frozenUntil ?? 0) > statusTick;
+        const sleeping = (enemy.sleepingUntil ?? 0) > statusTick;
         const pendingKnockback = effects.current.some(
           (e) =>
             e.type === "knockback" && e.targetId === enemy.id && e.born > at,
@@ -1651,6 +1652,7 @@ export function Battlefield({
           destination ?? enemy,
           fraction,
           reduced,
+          (enemy.confusedUntil ?? 0) > statusTick,
         );
         const crater = enemy.repairing
           ? v.craters?.find((c) => c.id === enemy.repairing && c.remaining > 0)
@@ -1662,7 +1664,7 @@ export function Battlefield({
             workerIndex,
             workerCount,
             at,
-            reduced || v.phase !== "battle" || icebound,
+            reduced || v.phase !== "battle" || icebound || sleeping,
           );
           position.x = crater.x + pose.x;
           position.y = crater.y + pose.y;
@@ -1711,7 +1713,8 @@ export function Battlefield({
             viewport.current,
           ),
         });
-        const moving = !reduced && v.phase === "battle" && !crater && !icebound;
+        const moving =
+          !reduced && v.phase === "battle" && !crater && !icebound && !sleeping;
         const pose = moving ? Math.floor(at / 160 + enemy.id) % 3 : 0;
         const bob = moving
           ? Math.sin(at / (enemy.kind === "runner" ? 90 : 140) + enemy.id) * 1.5
@@ -1778,6 +1781,18 @@ export function Battlefield({
           ctx.stroke();
           ctx.restore();
         }
+        if (sleeping) {
+          ctx.save();
+          ctx.font = `bold ${Math.max(16, 13 / pixelScale)}px system-ui`;
+          ctx.textAlign = "center";
+          ctx.lineWidth = Math.max(4, 3 / pixelScale);
+          ctx.strokeStyle = "#f7f6eb";
+          ctx.fillStyle = "#443267";
+          const sy = y - size * 0.9 - (reduced ? 0 : Math.sin(at / 450) * 3);
+          ctx.strokeText("ZZZ", x, sy);
+          ctx.fillText("ZZZ", x, sy);
+          ctx.restore();
+        }
         if (enemy.frostbound) {
           ctx.save();
           ctx.strokeStyle = "#ecfbff";
@@ -1802,7 +1817,7 @@ export function Battlefield({
             workerIndex,
             workerCount,
             at,
-            reduced || v.phase !== "battle" || icebound,
+            reduced || v.phase !== "battle" || icebound || sleeping,
           );
         if (["healer", "banner", "engineer"].includes(enemy.kind)) {
           const label = silenced
@@ -2044,6 +2059,14 @@ export function Battlefield({
             )
           )
             circle(ctx, e.impact.x, e.impact.y, 8 + t * 15, "#ffefa870");
+        } else if (e.type === "miss") {
+          ctx.font = `bold ${Math.max(16, 13 / pixelScale)}px system-ui`;
+          ctx.textAlign = "center";
+          ctx.strokeStyle = "#f7f6eb";
+          ctx.fillStyle = "#3a4050";
+          ctx.lineWidth = Math.max(4, 3 / pixelScale);
+          ctx.strokeText("MISS", e.x, e.y - 28 - t * 12);
+          ctx.fillText("MISS", e.x, e.y - 28 - t * 12);
         } else if (
           [
             "build",
@@ -2306,7 +2329,7 @@ export function Battlefield({
           }
         }}
       >
-        {data.weatherRules === 1 && data.world?.event && (
+        {(data.weatherRules ?? 0) >= 1 && data.world?.event && (
           <div
             className={`sf-weather sf-weather-${data.world.event.id}`}
             data-sf-weather={data.world.event.id}
@@ -2451,6 +2474,12 @@ export function Battlefield({
                 : ""}
               {(inspection.enemy.frozenUntil ?? 0) > inspection.tick
                 ? " · 冰封中"
+                : ""}
+              {(inspection.enemy.sleepingUntil ?? 0) > inspection.tick
+                ? " · 睡眠免伤中"
+                : ""}
+              {(inspection.enemy.confusedUntil ?? 0) > inspection.tick
+                ? " · 迷途倒退中"
                 : ""}
               {(inspection.enemy.silencedUntil ?? 0) > inspection.tick
                 ? " · 沉默中"

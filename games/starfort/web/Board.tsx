@@ -684,7 +684,7 @@ export function Board({
           <span data-sf-wave>
             第 <strong>{data.wave}</strong> 波
           </span>
-          {data.weatherRules === 1 && world?.event && (
+          {(data.weatherRules ?? 0) >= 1 && world?.event && (
             <span
               data-sf-weather-notice
               role="status"
@@ -1255,6 +1255,17 @@ export function Board({
                 )}
               </section>
             </Modal>
+          )}
+          {data.controls.medical && !finished && !room.spectating && (
+            <button
+              className="sf-secondary"
+              data-sf-use-medical
+              disabled={locked || !data.controls.medical.enabled}
+              onClick={() => void send("use_medical")}
+              title={`恢复 ${data.controls.medical.heal} 点星核生命`}
+            >
+              医疗包 · {data.controls.medical.count}
+            </button>
           )}
           {shop && (
             <button

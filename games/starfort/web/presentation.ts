@@ -91,13 +91,14 @@ export function enemyPoint(
   current: Point & { id: number | string; progress: number; route?: string },
   fraction: number,
   reduced: boolean,
+  allowReverse = false,
 ): Point {
   if (
     reduced ||
     !previous ||
     previous.id !== current.id ||
     previous.route !== current.route ||
-    current.progress < previous.progress
+    (current.progress < previous.progress && !allowReverse)
   )
     return { x: current.x, y: current.y };
   const expected = pointOnPath(path, current.progress);
