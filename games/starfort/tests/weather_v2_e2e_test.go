@@ -157,6 +157,31 @@ func TestStarfortWeatherV2SleepDamageAndStatus(t *testing.T) {
 		})
 	}
 }
+
+// Natural solo wave 20 exposed zero-damage AoE groups failing save validation.
+// Freeze this exact public timer/save boundary before correcting compaction.
+func TestStarfortWeatherV2SleepingAreaSave(t *testing.T) {
+	b := v2Boundary(t, "cannon", "power", "slime", "slime", "slime")
+	s := cadenceState(b)
+	var enemies []any
+	for _, enemy := range s.Enemies {
+		var raw map[string]any
+		_ = json.Unmarshal(rulesJSON(enemy), &raw)
+		raw["hp"], raw["maxHP"] = 751.7981193371369, 751.7981193371369
+		raw["shield"] = 601.4384954697096
+		raw["sleepingUntil"] = 20
+		raw["weatherReadyAt"] = 80
+		enemies = append(enemies, raw)
+	}
+	s = v2Patch(s, map[string]any{"enemies": enemies})
+	cadenceSave(b, s)
+	b.timer(time.Second)
+	for _, e := range cadenceState(b).Enemies {
+		weatherNear(t, "sleeping area target immune", e.HP, 751.7981193371369)
+		weatherNear(t, "sleeping area shield immune", e.Shield, 601.4384954697096)
+	}
+	b.validate()
+}
 func TestStarfortWeatherV2Miss(t *testing.T) {
 	for _, kind := range []string{"arrow", "cannon", "frost", "arcane"} {
 		t.Run(kind, func(t *testing.T) {

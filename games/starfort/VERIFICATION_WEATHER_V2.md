@@ -9,6 +9,7 @@
 | 新局版本 9、版本 8 不迁移、版本与规则绑定 | `TestStarfortWeatherV2Version`，历史规则回归 |
 | 三种天气对四类塔的影响及豁免 | `TestStarfortWeatherV2TowerStats`、`TestStarfortWeatherV2FrostMovement` |
 | 三秒倒退／睡眠、十五秒保护、睡眠生命与护盾免伤且仍接受减速 | `TestStarfortWeatherV2Status`、`TestStarfortWeatherV2SleepDamageAndStatus` |
+| 小数生命／护盾的睡眠目标被范围攻击后仍可存档，贡献伤害不变为负数 | `TestStarfortWeatherV2SleepingAreaSave`，单人 20 波自然通关 |
 | 寒潮 MISS、同塔同敌人十秒保护、冰塔豁免 | `TestStarfortWeatherV2Miss` |
 | 四名守卫、范围内先攻击首名守卫、巨像 7～10／精英 4～6 漏怪、守卫累计漏怪 | `TestStarfortWeatherV2BossGuards`、`TestStarfortWeatherV2Leak` |
 | 矿场／瞭望塔新区间、补给成长治疗和满血转医疗包 | `TestStarfortWeatherV2ConvoyAndPositions` |
