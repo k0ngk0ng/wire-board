@@ -354,10 +354,12 @@ func TestStarfortWeatherV3TaskLottery(t *testing.T) {
 		}
 	}
 }
-func v3HTTPModule() gameapi.Module {
+func v3HTTPModule(weather string) gameapi.Module {
 	m := starfort.Module()
 	m.Start = func(ctx gameapi.Context, raw json.RawMessage) (gameapi.Match, error) {
 		b := v3BoundaryForHTTP(ctx, raw)
+		labels := map[string]string{"calm": "无特殊天气", "fog": "薄雾", "frost": "寒潮", "starlight": "星辉"}
+		b.World.Event = starfort.WaveEvent{ID: weather, Label: labels[weather], Wave: b.Wave}
 		return b.Envelope()
 	}
 	return m
@@ -376,18 +378,34 @@ func v3BoundaryForHTTP(ctx gameapi.Context, raw json.RawMessage) starfort.State 
 	return s
 }
 func TestStarfortWeatherV3HTTP(t *testing.T) {
-	tb := newHost(t, 2, v3HTTPModule())
-	tb.start(nil)
-	a := tb.people[0]
-	if data(a.room())["weatherRules"] != float64(3) {
-		t.Fatal("HTTP new rule missing")
+	// A random initial cold wave legitimately changes level-four cooldown to
+	// six seconds. Exercise every weather explicitly so restart expectations
+	// never depend on the room's random seed.
+	for _, tc := range []struct {
+		weather  string
+		cooldown float64
+	}{
+		{"calm", 8000}, {"fog", 8000}, {"frost", 6000}, {"starlight", 8000},
+	} {
+		t.Run(tc.weather, func(t *testing.T) {
+			tb := newHost(t, 2, v3HTTPModule(tc.weather))
+			tb.start(nil)
+			a := tb.people[0]
+			if data(a.room())["weatherRules"] != float64(3) {
+				t.Fatal("HTTP new rule missing")
+			}
+			initial := data(a.room())["towers"].([]any)[0].(map[string]any)
+			if initial["passive"].(map[string]any)["cooldownMS"] != tc.cooldown {
+				t.Fatal("wrong weather cooldown before restart", tc, initial)
+			}
+			a.act(map[string]any{"type": "target", "towerId": 1, "priority": "strong"}, 200)
+			tb.restart()
+			d := data(a.room())
+			tower := d["towers"].([]any)[0].(map[string]any)
+			if d["weatherRules"] != float64(3) || tower["priority"] != "strong" || tower["passive"].(map[string]any)["cooldownMS"] != tc.cooldown || tower["passiveReadyAt"] != float64(5000) {
+				t.Fatal("SQLite restore lost rules/cooldown", tc, tower)
+			}
+			tb.record("schema10 weather3 " + tc.weather + ": HTTP/SQLite restart preserves priority, weather-specific freeze cooldown and saved ready time")
+		})
 	}
-	a.act(map[string]any{"type": "target", "towerId": 1, "priority": "strong"}, 200)
-	tb.restart()
-	d := data(a.room())
-	tower := d["towers"].([]any)[0].(map[string]any)
-	if d["weatherRules"] != float64(3) || tower["priority"] != "strong" || tower["passive"].(map[string]any)["cooldownMS"] != float64(8000) {
-		t.Fatal("SQLite restore lost rules/cooldown", tower)
-	}
-	tb.record("schema10 weather3: real HTTP action and SQLite restart preserve priority, freeze growth and cooldown")
 }
