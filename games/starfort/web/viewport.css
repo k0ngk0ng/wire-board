@@ -798,3 +798,144 @@
     font-size: 13px;
   }
 }
+
+/* One flow for status and actions: optional medical/store buttons never share
+   a fixed absolute offset with preparation controls. */
+.starfort-board .sf-topbar {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  right: 8px;
+  z-index: 30;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 6px 8px;
+  pointer-events: none;
+}
+.starfort-board .sf-topbar .sf-hud {
+  position: static;
+  top: auto;
+  left: auto;
+  right: auto;
+  width: max-content;
+  max-width: 100%;
+  padding: 5px 7px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  pointer-events: auto;
+}
+.starfort-board .sf-topbar .sf-compact-stats {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+}
+.sf-topbar .sf-compact-stats > span,
+.sf-topbar .sf-compact-countdown {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  white-space: nowrap;
+}
+.starfort-board .sf-topbar .sf-compact-stats strong,
+.starfort-board .sf-topbar .sf-compact-countdown strong {
+  font-size: 13px;
+}
+.starfort-board .sf-topbar .sf-compact-countdown {
+  width: auto;
+  padding: 0;
+  font-size: 12px;
+}
+.starfort-board .sf-top-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: flex-end;
+  max-width: 100%;
+  gap: 6px;
+  margin-left: auto;
+  pointer-events: auto;
+}
+.starfort-board .sf-topbar .sf-wave-controls,
+.starfort-board .sf-topbar .sf-field-actions {
+  position: static;
+  top: auto;
+  right: auto;
+  bottom: auto;
+  left: auto;
+  width: auto;
+  max-width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.starfort-board .sf-topbar .sf-wave-controls > .sf-control-buttons {
+  display: flex;
+  flex-wrap: nowrap;
+  width: auto;
+  gap: 4px;
+}
+.starfort-board .sf-topbar .sf-field-actions {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.starfort-board .sf-topbar .sf-control-buttons button,
+.starfort-board .sf-topbar .sf-field-actions > button {
+  position: relative;
+  width: 40px;
+  min-width: 40px;
+  height: 40px;
+  min-height: 40px;
+  padding: 0;
+  flex: 0 0 40px;
+  border-radius: 8px;
+  border: 1px solid #afbd9e;
+  background: #f7f8ee;
+  color: #294a35;
+}
+.starfort-board .sf-topbar button:disabled {
+  opacity: 1;
+  background: #e3e8da;
+  color: #52604b;
+}
+.starfort-board .sf-topbar button[aria-pressed="true"] {
+  background: #345e43;
+  border-color: #345e43;
+  color: #fffdf1;
+}
+.sf-topbar .sf-icon-count {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  min-width: 13px;
+  height: 13px;
+  line-height: 13px;
+  border-radius: 7px;
+  background: #345e43;
+  color: #fffdf1;
+  font-size: 10px;
+  padding: 0 2px;
+  pointer-events: none;
+}
+.starfort-board .sf-map-navigation {
+  bottom: 10px;
+}
+@media (max-width: 600px) {
+  .starfort-board .sf-topbar .sf-control-buttons button,
+  .starfort-board .sf-topbar .sf-field-actions > button {
+    width: 36px;
+    min-width: 36px;
+    height: 36px;
+    min-height: 36px;
+    flex-basis: 36px;
+  }
+}

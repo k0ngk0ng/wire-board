@@ -1,4 +1,5 @@
 import { ResetPasswordField } from "./admin/password-field";
+import { WishContent } from "./admin/wish-content";
 import { GameSort } from "./admin/game-sort";
 import { UserActivity } from "./admin/user-activity";
 import { RoomHistory, type HistoryTarget } from "./admin/room-history";
@@ -98,6 +99,7 @@ const actions: Record<string, string> = {
   user_password: "重置密码",
   user_role: "调整权限",
   room_closed: "结束牌桌",
+  wish_edited: "编辑许愿",
   wish_approved: "通过许愿",
   wish_question: "AI 追问许愿",
   wish_in_progress: "开始实现许愿",
@@ -610,7 +612,11 @@ export function AdminDashboard({
                         : ""}
                     </small>
                   </header>
-                  <p className="admin-wish-text">{wishDetail.text}</p>
+                  <WishContent
+                    key={wishDetail.id}
+                    wish={wishDetail}
+                    onSaved={refresh}
+                  />
                   {wishDetail.imageUrl && (
                     <a
                       className="admin-wish-image"

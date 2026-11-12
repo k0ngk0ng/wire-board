@@ -106,7 +106,7 @@ def visibility(selector):
 
 
 def choose_visible_tower(prefer_kind=None):
-    w.click('[data-sf-camera-base]');stable()
+    # Camera controls were removed; navigate with the retained minimap.
     state=w.data();owned=[t['pad'] for t in state['towers'] if t['owner']==0 and (prefer_kind is None or t['kind']==prefer_kind)]
     value=js('''(()=>{const owned='''+json.dumps(owned)+''',towers=[...document.querySelectorAll('.sf-pad-occupied:not([hidden])')];return towers.find(e=>{const r=e.getBoundingClientRect(),hit=document.elementFromPoint(r.x+r.width/2,r.y+r.height*.35);return owned.includes(+e.dataset.sfPad)&&r.x>=0&&r.right<=innerWidth&&r.y>=0&&r.bottom<=innerHeight&&e.contains(hit)})?.dataset.sfPad})()''')
     if value is None:
@@ -152,7 +152,7 @@ def painted_tower_point(selector):
 
 
 def button_geometry(name):
-    selectors=['.chat-toggle','[data-sf-zoom-in]','[data-sf-zoom-out]','[data-sf-camera-base]','[data-sf-fit]','[data-sf-open-info]','.sf-select-pad']
+    selectors=['.chat-toggle','[data-sf-open-info]','[data-sf-open-tasks]','.sf-select-pad']
     values={s:visibility(s) for s in selectors}
     verify(name+' buttons visible and clickable',all(v.get('visible') and v.get('hit') for v in values.values()),values)
     pairs=[]

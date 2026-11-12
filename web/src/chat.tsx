@@ -55,11 +55,12 @@ export function Chat({
       list.current.scrollTop = list.current.scrollHeight;
   }, [open, latest]);
   useEffect(() => {
-    if (open) input.current?.focus();
+    if (open) input.current?.focus({ preventScroll: true });
   }, [open]);
   const close = () => {
+    input.current?.blur();
     setOpen(false);
-    toggle.current?.focus();
+    requestAnimationFrame(() => toggle.current?.focus({ preventScroll: true }));
   };
   const submit = async () => {
     const text = draft.trim();
@@ -85,6 +86,7 @@ export function Chat({
   const content = (
     <div
       className="table-chat"
+      data-chat-compact={position.compact || undefined}
       style={position.style}
       onKeyDown={(event) => {
         if (event.key !== "Escape") event.stopPropagation();
@@ -206,6 +208,8 @@ export function Chat({
       )}
       <button
         ref={toggle}
+        tabIndex={position.compact ? -1 : undefined}
+        aria-hidden={position.compact || undefined}
         className="chat-toggle"
         data-chat-draggable={position.draggable || undefined}
         data-chat-dragging={position.dragging || undefined}

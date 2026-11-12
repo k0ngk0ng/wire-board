@@ -39,7 +39,7 @@ func scenarioModule() gameapi.Module {
 			delete(v, "scenario")
 		}
 		switch scenario {
-		case "weather-v3-sleep", "weather-v3-fog", "weather-v3-frost", "weather-v3-starlight", "weather-v3-calm", "weather-v2-sleep", "weather-v2-medical", "weather-v2-fog", "weather-v2-frost", "weather-v2-starlight", "weather-v2-calm", "weather-calm", "weather-fog", "weather-frost", "weather-starlight", "weather-shop", "rebalance-growth-repair", "rebalance-growth-cannon", "rebalance-growth-arrow", "rebalance-growth-arcane", "rebalance-growth-refund", "rebalance-combat-frost", "rebalance-combat-arcane", "rebalance-tasks", "rebalance-reward", "rebalance-highground", "specialization-arrow", "specialization-frost", "specialization-cannon", "specialization-arcane", "density-observed", "density-central", "density-coop", "density-ceiling", "coop-growth", "coop-objectives", "ice-arrow", "ice-wall", "central-passives", "cadence", "cadence-speed", "vitality", "impact", "natural", "battle", "victory-ready", "defeat-ready", "advanced", "zero-gold", "growth-vote", "cleared-5", "cleared-10", "cleared-15", "stage2", "stage3", "stage4", "endless-rotation", "objectives", "objectives-clear", "objectives-fail", "legacy-save":
+		case "weather-toolbar", "weather-v3-sleep", "weather-v3-fog", "weather-v3-frost", "weather-v3-starlight", "weather-v3-calm", "weather-v2-sleep", "weather-v2-medical", "weather-v2-fog", "weather-v2-frost", "weather-v2-starlight", "weather-v2-calm", "weather-calm", "weather-fog", "weather-frost", "weather-starlight", "weather-shop", "rebalance-growth-repair", "rebalance-growth-cannon", "rebalance-growth-arrow", "rebalance-growth-arcane", "rebalance-growth-refund", "rebalance-combat-frost", "rebalance-combat-arcane", "rebalance-tasks", "rebalance-reward", "rebalance-highground", "specialization-arrow", "specialization-frost", "specialization-cannon", "specialization-arcane", "density-observed", "density-central", "density-coop", "density-ceiling", "coop-growth", "coop-objectives", "ice-arrow", "ice-wall", "central-passives", "cadence", "cadence-speed", "vitality", "impact", "natural", "battle", "victory-ready", "defeat-ready", "advanced", "zero-gold", "growth-vote", "cleared-5", "cleared-10", "cleared-15", "stage2", "stage3", "stage4", "endless-rotation", "objectives", "objectives-clear", "objectives-fail", "legacy-save":
 		default:
 			return "", nil, errors.New("unknown test scenario")
 		}
@@ -166,6 +166,17 @@ func scenarioModule() gameapi.Module {
 			if scenario == "weather-v3-sleep" {
 				s.WeatherRules = 3
 			}
+		case "weather-toolbar":
+			v, e := v2MedicalModule().Start(ctx, body)
+			if e != nil {
+				return match, e
+			}
+			_ = json.Unmarshal(v.Data, &s)
+			s.WeatherRules = 3
+			s.World.MedicalPacks = 2
+			s.Players[0].Gold = 123456789
+			s.World.Event = starfort.WaveEvent{ID: "calm", Label: "无特殊天气", Description: "本波无额外天气效果", Wave: s.Wave}
+			s.World.Shop = &starfort.MerchantShop{Wave: 20, DamageTowers: []int{}, RangeTowers: []int{}}
 		case "weather-v2-medical":
 			v, e := v2MedicalModule().Start(ctx, body)
 			if e != nil {

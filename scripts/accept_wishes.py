@@ -522,6 +522,44 @@ try:
     )
     check("agent sees in-progress wish", status == 200 and len(feed.get("wishes", [])) == 1 and feed["wishes"][0]["status"] == "in_progress", feed)
 
+    # Edit through the real controls before implementing the feature.
+    for width in [1280, 320]:
+        b("set", "viewport", str(width), "900")
+        b("click", "[data-admin-wish-edit]")
+        b("wait", ".admin-wish-editor textarea")
+        b("fill", ".admin-wish-editor textarea", "取消的草稿不会保存")
+        b("click", "[data-wish-edit-cancel]")
+        check("cancel preserves original " + str(width), js('document.querySelector(".admin-wish-text").textContent') == TEXT)
+        b("click", "[data-admin-wish-edit]")
+        draft = "管理界面修改许愿🌟\n保留原作者、参考图和问答。" + str(width)
+        b("fill", ".admin-wish-editor textarea", draft)
+        # Observe a real five-second refresh, rather than replacing the component.
+        js('(()=>{window.__editPoll=0;window.__wishBaseFetch??=window.fetch;window.fetch=(...a)=>{if(a[0]==="/api/admin")window.__editPoll++;return window.__wishBaseFetch(...a)}})()')
+        wait_js('window.__editPoll>0', timeout=10)
+        check("poll preserves draft " + str(width), js('document.querySelector(".admin-wish-editor textarea").value') == draft)
+        b("scrollintoview", "[data-wish-edit-save]")
+        check("editor fits " + str(width), js('(()=>{const e=document.querySelector(".admin-wish-editor"),r=e.getBoundingClientRect();return r.left>=0&&r.right<=innerWidth+1&&document.documentElement.scrollWidth<=innerWidth+1})()'))
+        b("screenshot", str(OUT / ("admin-wish-edit-"+str(width)+".png")))
+        if width == 1280:
+            # A second administrator saves after the editor was opened.
+            conflict = js('fetch("/api/admin").then(r=>r.json()).then(d=>fetch("/api/admin/wishes/'+first_id+'",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"edit",text:"另一位管理员刚保存的正文",expectedRevision:d.wishes[0].contentRevision})})).then(r=>r.status)')
+            check("competing edit saved", conflict == 200, conflict)
+            b("click", "[data-wish-edit-save]")
+            wait_js('!!document.querySelector(".admin-wish-editor [role=alert]")')
+            check("conflict keeps draft", js('document.querySelector(".admin-wish-editor textarea").value') == draft)
+            b("click", "[data-wish-edit-cancel]")
+            wait_js('document.querySelector(".admin-wish-text")?.textContent==="另一位管理员刚保存的正文"',timeout=10)
+            b("click", "[data-admin-wish-edit]")
+            b("fill", ".admin-wish-editor textarea", draft)
+        b("click", "[data-wish-edit-save]")
+        wait_js('!document.querySelector(".admin-wish-editor textarea")')
+        TEXT = draft
+        check("saved detail updates " + str(width), js('document.querySelector(".admin-wish-text").textContent') == TEXT)
+        check("saved preview updates " + str(width), js('document.querySelector(".admin-wish-preview").textContent') == " ".join(TEXT.split()))
+        check("edit keeps image and Q&A " + str(width), js('!!document.querySelector(".admin-wish-image img")&&document.querySelector(".admin-wish-question").textContent.includes("2 人合作")&&!!document.querySelector(".wish-status.in-progress")'))
+        b("screenshot", str(OUT / ("admin-wish-edited-"+str(width)+".png")))
+    b("set", "viewport", "1280", "900")
+
     b("scrollintoview", ".admin-wish-actions .primary")
     b("click", ".admin-wish-actions .primary")
     b("wait", ".admin-confirm textarea")

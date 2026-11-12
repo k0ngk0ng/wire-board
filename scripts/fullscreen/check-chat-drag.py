@@ -49,7 +49,7 @@ try:
    b('fill','textarea','延迟发送');b('press','Enter');wait('chatFixture.sent.length===1');drag(-20,20,mobile);b('focus','textarea');b('press','Enter');assert js('chatFixture.sent.length')==1
    js('chatFixture.finishSend();true');wait('document.querySelector("textarea").value===""');case['checks'].append('drag retains pending-send guard')
    click('.chat-toggle',mobile);boundary=drag(-200,-250,mobile);assert fits(visible());case['boundary']=boundary
-   b('set','viewport','740'if mobile else'640','360');assert fits(visible());click('.chat-toggle',mobile);assert fits(visible());click('.chat-toggle',mobile)
+   b('set','viewport','740'if mobile else'640','360');wait('(()=>{const r=document.querySelector(".chat-toggle").getBoundingClientRect();return r.left>=0&&r.top>=0&&r.right<=innerWidth+.5&&r.bottom<=innerHeight+.5})()');assert fits(visible());click('.chat-toggle',mobile);assert fits(visible());click('.chat-toggle',mobile)
    case['checks'].append('viewport resize clamps entry and composer')
    cancelled=drag(35,20,mobile,'cancel'if mobile else'up');assert not cancelled['after']['panel'];click('.chat-toggle',mobile);assert js('!!document.querySelector(".chat-panel")');click('.chat-toggle',mobile)
    case['checks'].append('cancel/drag does not swallow the next click')

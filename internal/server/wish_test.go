@@ -14,12 +14,14 @@ import (
 	"bytes"
 	"crypto/md5"
 	"crypto/sha256"
+	"database/sql"
 	"encoding/base64"
 	"encoding/json"
 	"io"
 	"mime/multipart"
 	"net/http"
 	"net/http/httptest"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"sync"
@@ -724,5 +726,149 @@ func TestWishRateLimitAndUnconfiguredUpload(t *testing.T) {
 	}
 	if code, _ := c.request("POST", "/api/wishes", map[string]any{"text": "超额愿望"}); code != 429 {
 		t.Fatalf("rate limit got %d", code)
+	}
+}
+
+// End-to-end edit coverage: real routes, authorization, SQLite transactions,
+// owner/admin/agent reads, restart and legacy-schema migration.
+func TestWishEditHTTP(t *testing.T) {
+	f := newWishFixture(t, nil)
+	root := newClient(t, f.ts.URL)
+	root.post("/api/login", map[string]string{"name": "WishRoot", "password": "wish-root-password-123"}, 200)
+	alice := newClient(t, f.ts.URL)
+	alice.register("WishEditor")
+	body, ct := multipartWish(t, "最初的许愿正文", "reference.png", onePixelPNG)
+	code, created := alice.wishMultipart(t, body, ct)
+	if code != 200 {
+		t.Fatal(code, created)
+	}
+	id := wishID(t, created)
+	path := "/api/admin/wishes/" + id
+	edit := func(text string, revision any) map[string]any {
+		return map[string]any{"action": "edit", "text": text, "expectedRevision": revision}
+	}
+	newClient(t, f.ts.URL).post(path, edit("匿名不能修改", 0), 401)
+	alice.post(path, edit("玩家不能修改", 0), 403)
+	root.post("/api/admin/wishes/missing", edit("不存在的许愿", 0), 404)
+	for _, req := range []map[string]any{
+		{"action": "edit", "expectedRevision": 0}, {"action": "edit", "text": "缺少版本"},
+		edit("短", 0), edit("  ", 0), edit(strings.Repeat("愿", 10001), 0), edit("负数版本", -1),
+		edit("非整数版本", 0.5), {"action": "edit", "text": "未知字段", "expectedRevision": 0, "status": "approved"},
+	} {
+		root.post(path, req, 400)
+	}
+	// Attach a real agent question/player answer before editing.
+	_, q := agentPost(t, f.ts.URL, "/api/agent/wishes/"+id+"/questions", "agent-token-for-wishes-only", map[string]string{"question": "希望几人一起玩？"})
+	if q["error"] != nil {
+		t.Fatal(q)
+	}
+	alice.post("/api/wishes/"+id+"/answer", map[string]any{"answer": "两个人合作"}, 200)
+	before := alice.wishes(t)[0].(map[string]any)
+	var revision float64
+	for i, action := range []string{"", "approve", "start", "implement", "reject"} {
+		if action != "" {
+			root.post(path, map[string]string{"action": action, "note": "保留审核备注"}, 200)
+		}
+		original := alice.wishes(t)[0].(map[string]any)
+		text := "修改后的许愿🌟" + strconv.Itoa(i)
+		if i == 0 {
+			text = "愿🌟"
+		}
+		if i == 4 {
+			text = strings.Repeat("愿🌟", 5000)
+		}
+		root.post(path, edit(" \n"+text+"\n ", revision), 200)
+		after := alice.wishes(t)[0].(map[string]any)
+		for _, key := range []string{"id", "userName", "imageUrl", "createdAt", "status", "note", "reviewedAt", "approvedAt", "reviewedByName", "questionCount", "needsAnswer"} {
+			if after[key] != original[key] {
+				t.Fatalf("edit changed %s: %v -> %v", key, original[key], after[key])
+			}
+		}
+		a, _ := json.Marshal(after["questions"])
+		b, _ := json.Marshal(before["questions"])
+		if !bytes.Equal(a, b) {
+			t.Fatal("edit changed Q&A")
+		}
+		revision++
+		if after["text"] != text || after["contentRevision"] != revision || after["editedByName"] != "WishRoot" || after["editedAt"].(float64) <= 0 {
+			t.Fatal("bad edit", after)
+		}
+		root.post(path, edit("过期的编辑不能覆盖", revision-1), 409)
+		root.post(path, edit(text, revision), 200) // no-op
+		if action != "reject" {
+			cursor := original["reviewedAt"]
+			if cursor == nil {
+				cursor = original["createdAt"]
+			}
+			c, feed := agentFeed(t, f.ts.URL, "?since="+strconv.FormatInt(int64(cursor.(float64)), 10), "agent-token-for-wishes-only")
+			if c != 200 || len(feed["wishes"].([]any)) != 1 || feed["wishes"].([]any)[0].(map[string]any)["text"] != text {
+				t.Fatal("edit missing from incremental feed", c, feed)
+			}
+		}
+	}
+	_, audit := root.request("GET", "/api/admin/audit", nil)
+	count := 0
+	for _, raw := range audit["entries"].([]any) {
+		a := raw.(map[string]any)
+		if a["action"] == "wish_edited" {
+			count++
+			if a["target"] != id || a["actor"] != "WishRoot" {
+				t.Fatal(a)
+			}
+		}
+	}
+	if count != 5 {
+		t.Fatalf("expected 5 edit audits, got %d", count)
+	}
+	// A transition in the same second must advance beyond the edit cursor.
+	last := alice.wishes(t)[0].(map[string]any)
+	root.post(path, map[string]string{"action": "approve"}, 200)
+	c, feed := agentFeed(t, f.ts.URL, "?since="+strconv.FormatInt(int64(last["editedAt"].(float64)), 10), "agent-token-for-wishes-only")
+	if c != 200 || len(feed["wishes"].([]any)) != 1 {
+		t.Fatal("transition after edit missed", c, feed)
+	}
+	// Disabled admin cannot submit a stale open editor.
+	if _, err := f.s.db.Exec("UPDATE user_controls SET disabled=1 WHERE role='superadmin'"); err != nil {
+		t.Fatal(err)
+	}
+	root.post(path, edit("停用管理员不能修改", revision), 401)
+}
+
+func TestWishEditLegacyRestart(t *testing.T) {
+	f := newWishFixture(t, nil)
+	root := newClient(t, f.ts.URL)
+	root.post("/api/login", map[string]string{"name": "WishRoot", "password": "wish-root-password-123"}, 200)
+	alice := newClient(t, f.ts.URL)
+	alice.register("WishEditPersist")
+	id := wishID(t, alice.post("/api/wishes", map[string]string{"text": "升级前原有的正文"}, 200))
+	f.ts.Close()
+	f.s.Close()
+	// Build the exact old column set while preserving the pre-upgrade row.
+	db, err := sql.Open("sqlite", filepath.Join(f.cfg.DataDir, "wire-board.db"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	_, err = db.Exec(`CREATE TABLE old_wishes AS SELECT id,user_id,user_name,text,image_url,status,review_note,reviewed_by,reviewed_by_name,created_at,reviewed_at FROM wishes; DROP TABLE wishes; ALTER TABLE old_wishes RENAME TO wishes;`)
+	db.Close()
+	if err != nil {
+		t.Fatal(err)
+	}
+	for i := 0; i < 2; i++ {
+		s, err := New(*f.cfg, fstest.MapFS{"index.html": {Data: []byte("Wire Board")}})
+		if err != nil {
+			t.Fatal(err)
+		}
+		ts := httptest.NewServer(s.Handler())
+		c := newClient(t, ts.URL)
+		c.post("/api/login", map[string]string{"name": "WishRoot", "password": "wish-root-password-123"}, 200)
+		if i == 0 {
+			c.post("/api/admin/wishes/"+id, map[string]any{"action": "edit", "text": "升级后编辑并持久保存", "expectedRevision": 0}, 200)
+		}
+		w := overview(t, c)["wishes"].([]any)[0].(map[string]any)
+		if w["text"] != "升级后编辑并持久保存" || w["contentRevision"] != float64(1) || w["editedByName"] != "WishRoot" {
+			t.Fatal(w)
+		}
+		ts.Close()
+		s.Close()
 	}
 }
