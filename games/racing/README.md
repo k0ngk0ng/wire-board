@@ -56,6 +56,8 @@ python3 -B scripts/racing/check-nfs.py --out .local/racing-nfs-browser/new-laten
 
 本轮触屏卡键与防选中验证见 [手机输入验收](../../docs/research/racing-nfs/MOBILE-SAFETY.md) 和 [机器记录](../../docs/research/racing-nfs/mobile-safety-validation.json)；可撞毁物件的规则验证另见 [物件验收记录](../../docs/research/racing-nfs/props-validation.json)，实际网页、观战、恢复和性能见 [物件网页验收](../../docs/research/racing-nfs/PROPS-BROWSER.md)。
 
+路肩计圈与复位位置回归见 [计圈验收](../../docs/research/racing-nfs/LAPS.md)：检查点范围包含两侧 3 m 路肩，复位不增加已完成圈数，实际三圈驾驶由正式页面与服务端共同核对。
+
 ## 画面与操作
 
 新版桌面场景取消底部方向盘、踏板和车辆设置，仪表叠加在赛道画面内；手机使用画面内的左侧双箭头、右侧双踏板与独立手刹。操作说明集中在平台「玩法速查」，不再重复占用画面下方空间。

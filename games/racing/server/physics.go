@@ -222,9 +222,10 @@ func updateProgress(s *State, c *Car, before Point, at int64) {
 			if rl > 1e-8 {
 				side = ((x-p.X)*road.RX + (y-p.Y)*road.RZ) / rl
 			}
-			// The vehicle must physically overlap the paved gate; a wheel on the
-			// shoulder is not a skipped checkpoint, while a detached shortcut is.
-			margin := ClassicVehicleBody(c.Vehicle).Width * 5
+			// The same 3 m shoulder used by the driving model belongs to the
+			// route. Requiring every dense sample to overlap the paving strands
+			// a legitimate lap (and its reset point) after a brief excursion.
+			margin := ClassicVehicleBody(c.Vehicle).Width*5 + 30
 			allowed = side >= -road.Left-margin && side <= road.Right+margin && math.Abs(c.Height-road.Height) < 20
 		}
 		if !allowed {
