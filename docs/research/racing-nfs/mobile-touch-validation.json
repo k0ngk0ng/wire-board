@@ -1,0 +1,2349 @@
+{
+  "passed": true,
+  "checkedAt": "2026-11-12T01:29:45.561566+00:00",
+  "scope": "Mobile layout and input only; racing rules, original models/textures/audio unchanged. Real authenticated registry/HTTP/SQLite, native CDP touch and compositor PNG pixels.",
+  "references": [
+    {
+      "title": "GRID Autosport official Arrow Touch Pro controls",
+      "url": "https://www.feralinteractive.com/en/support/ios/gridautosport/#faqs/ios_control_methods",
+      "localTextSHA256": "538c897bca78430d29a097b0ea817c61ee10746d54495b0d39c369a82460a2da"
+    },
+    {
+      "title": "Asphalt 8 official control customization",
+      "url": "https://gameloft.helpshift.com/hc/en/24-asphalt-8/faq/1828-how-do-i-customize-controls-i-want-to-choose-my-own-control-scheme/",
+      "localTextSHA256": "9e5661652949929f13f3ef6ef0b42ee84c760e88d91be1da421bdb2c8cb00b7d"
+    }
+  ],
+  "inputPixelBudgetMS": 80,
+  "pixelMetrics": {
+    "normal": {
+      "trials": 8,
+      "visibleTrials": 8,
+      "p50MS": 50.864990234375,
+      "p95MS": 52.9296875,
+      "maxMS": 52.9296875
+    },
+    "rtt150": {
+      "trials": 8,
+      "visibleTrials": 8,
+      "p50MS": 51.836181640625,
+      "p95MS": 54.172119140625,
+      "maxMS": 54.172119140625
+    }
+  },
+  "runs": {
+    "thumbs-release": {
+      "path": ".local/racing-mobile-research/thumbs-release/report.json",
+      "sha256": "3d3caaf070b469b484aef6134c88e9e0b0655cba099a633ca3c2c79219cdfb48",
+      "checks": [
+        {
+          "name": "shared creation and per-seat vehicle preparation",
+          "track": "france",
+          "night": false,
+          "vehicle": "p911"
+        },
+        {
+          "name": "selected original geometry and byte loading",
+          "track": "france",
+          "night": false,
+          "bytes": 8822163,
+          "triangles": "37246"
+        },
+        {
+          "name": "320px wheel-free separated thumb layout",
+          "layout": {
+            "width": 320,
+            "height": 844,
+            "scrollY": 313,
+            "canvas": {
+              "x": 13,
+              "y": 141,
+              "width": 294,
+              "height": 590.796875,
+              "top": 141,
+              "right": 307,
+              "bottom": 731.796875,
+              "left": 13
+            },
+            "stage": {
+              "x": 13,
+              "y": 141,
+              "width": 294,
+              "height": 590.796875,
+              "top": 141,
+              "right": 307,
+              "bottom": 731.796875,
+              "left": 13
+            },
+            "board": {
+              "x": 12,
+              "y": 140,
+              "width": 296,
+              "height": 592.796875,
+              "top": 140,
+              "right": 308,
+              "bottom": 732.796875,
+              "left": 12
+            },
+            "coarse": true,
+            "controls": [
+              {
+                "label": "车手与房间",
+                "class": "racing-room-link",
+                "box": {
+                  "x": 27,
+                  "y": 154,
+                  "width": 75.34375,
+                  "height": 26,
+                  "top": 154,
+                  "right": 102.34375,
+                  "bottom": 180,
+                  "left": 27
+                },
+                "withinStage": false
+              },
+              {
+                "label": "向左转向",
+                "class": "",
+                "box": {
+                  "x": 21,
+                  "y": 591.796875,
+                  "width": 62.5,
+                  "height": 76,
+                  "top": 591.796875,
+                  "right": 83.5,
+                  "bottom": 667.796875,
+                  "left": 21
+                },
+                "withinStage": true
+              },
+              {
+                "label": "向右转向",
+                "class": "",
+                "box": {
+                  "x": 91.5,
+                  "y": 591.796875,
+                  "width": 62.5,
+                  "height": 76,
+                  "top": 591.796875,
+                  "right": 154,
+                  "bottom": 667.796875,
+                  "left": 91.5
+                },
+                "withinStage": true
+              },
+              {
+                "label": "手刹",
+                "class": "racing-drift ",
+                "box": {
+                  "x": 255,
+                  "y": 675.796875,
+                  "width": 44,
+                  "height": 44,
+                  "top": 675.796875,
+                  "right": 299,
+                  "bottom": 719.796875,
+                  "left": 255
+                },
+                "withinStage": true
+              },
+              {
+                "label": "刹车",
+                "class": "",
+                "box": {
+                  "x": 166,
+                  "y": 591.796875,
+                  "width": 62.5,
+                  "height": 76,
+                  "top": 591.796875,
+                  "right": 228.5,
+                  "bottom": 667.796875,
+                  "left": 166
+                },
+                "withinStage": true
+              },
+              {
+                "label": "油门",
+                "class": "",
+                "box": {
+                  "x": 236.5,
+                  "y": 591.796875,
+                  "width": 62.5,
+                  "height": 76,
+                  "top": 591.796875,
+                  "right": 299,
+                  "bottom": 667.796875,
+                  "left": 236.5
+                },
+                "withinStage": true
+              },
+              {
+                "label": "切换视角",
+                "class": "",
+                "box": {
+                  "x": 21,
+                  "y": 675.796875,
+                  "width": 44,
+                  "height": 44,
+                  "top": 675.796875,
+                  "right": 65,
+                  "bottom": 719.796875,
+                  "left": 21
+                },
+                "withinStage": true
+              },
+              {
+                "label": "向后看",
+                "class": "",
+                "box": {
+                  "x": 67,
+                  "y": 675.796875,
+                  "width": 44,
+                  "height": 44,
+                  "top": 675.796875,
+                  "right": 111,
+                  "bottom": 719.796875,
+                  "left": 67
+                },
+                "withinStage": true
+              },
+              {
+                "label": "喇叭",
+                "class": "",
+                "box": {
+                  "x": 113,
+                  "y": 675.796875,
+                  "width": 44,
+                  "height": 44,
+                  "top": 675.796875,
+                  "right": 157,
+                  "bottom": 719.796875,
+                  "left": 113
+                },
+                "withinStage": true
+              },
+              {
+                "label": "重置赛车",
+                "class": "",
+                "box": {
+                  "x": 159,
+                  "y": 675.796875,
+                  "width": 44,
+                  "height": 44,
+                  "top": 675.796875,
+                  "right": 203,
+                  "bottom": 719.796875,
+                  "left": 159
+                },
+                "withinStage": true
+              },
+              {
+                "label": "查看赛道地图",
+                "class": "racing-route-button",
+                "box": {
+                  "x": 21,
+                  "y": 224,
+                  "width": 90,
+                  "height": 84,
+                  "top": 224,
+                  "right": 111,
+                  "bottom": 308,
+                  "left": 21
+                },
+                "withinStage": true
+              }
+            ],
+            "touch": [
+              {
+                "label": "向左转向",
+                "box": {
+                  "x": 21,
+                  "y": 591.796875,
+                  "width": 62.5,
+                  "height": 76,
+                  "top": 591.796875,
+                  "right": 83.5,
+                  "bottom": 667.796875,
+                  "left": 21
+                }
+              },
+              {
+                "label": "向右转向",
+                "box": {
+                  "x": 91.5,
+                  "y": 591.796875,
+                  "width": 62.5,
+                  "height": 76,
+                  "top": 591.796875,
+                  "right": 154,
+                  "bottom": 667.796875,
+                  "left": 91.5
+                }
+              },
+              {
+                "label": "手刹",
+                "box": {
+                  "x": 255,
+                  "y": 675.796875,
+                  "width": 44,
+                  "height": 44,
+                  "top": 675.796875,
+                  "right": 299,
+                  "bottom": 719.796875,
+                  "left": 255
+                }
+              },
+              {
+                "label": "刹车",
+                "box": {
+                  "x": 166,
+                  "y": 591.796875,
+                  "width": 62.5,
+                  "height": 76,
+                  "top": 591.796875,
+                  "right": 228.5,
+                  "bottom": 667.796875,
+                  "left": 166
+                }
+              },
+              {
+                "label": "油门",
+                "box": {
+                  "x": 236.5,
+                  "y": 591.796875,
+                  "width": 62.5,
+                  "height": 76,
+                  "top": 591.796875,
+                  "right": 299,
+                  "bottom": 667.796875,
+                  "left": 236.5
+                }
+              }
+            ],
+            "overlays": [
+              {
+                "label": "法国乡间",
+                "rect": {
+                  "x": 27,
+                  "y": 183,
+                  "width": 78.90625,
+                  "height": 15.59375,
+                  "top": 183,
+                  "right": 105.90625,
+                  "bottom": 198.59375,
+                  "left": 27
+                }
+              },
+              {
+                "label": "名次",
+                "rect": {
+                  "x": 111.90625,
+                  "y": 158.203125,
+                  "width": 56.359375,
+                  "height": 14,
+                  "top": 158.203125,
+                  "right": 168.265625,
+                  "bottom": 172.203125,
+                  "left": 111.90625
+                }
+              },
+              {
+                "label": "1 / 2",
+                "rect": {
+                  "x": 111.90625,
+                  "y": 175.203125,
+                  "width": 56.359375,
+                  "height": 19.1875,
+                  "top": 175.203125,
+                  "right": 168.265625,
+                  "bottom": 194.390625,
+                  "left": 111.90625
+                }
+              },
+              {
+                "label": "圈数",
+                "rect": {
+                  "x": 174.265625,
+                  "y": 158.203125,
+                  "width": 56.359375,
+                  "height": 14,
+                  "top": 158.203125,
+                  "right": 230.625,
+                  "bottom": 172.203125,
+                  "left": 174.265625
+                }
+              },
+              {
+                "label": "1 / 1",
+                "rect": {
+                  "x": 174.265625,
+                  "y": 175.203125,
+                  "width": 56.359375,
+                  "height": 19.1875,
+                  "top": 175.203125,
+                  "right": 230.625,
+                  "bottom": 194.390625,
+                  "left": 174.265625
+                }
+              },
+              {
+                "label": "用时",
+                "rect": {
+                  "x": 236.625,
+                  "y": 158.203125,
+                  "width": 56.359375,
+                  "height": 14,
+                  "top": 158.203125,
+                  "right": 292.984375,
+                  "bottom": 172.203125,
+                  "left": 236.625
+                }
+              },
+              {
+                "label": "0:00",
+                "rect": {
+                  "x": 236.625,
+                  "y": 175.203125,
+                  "width": 56.359375,
+                  "height": 19.1875,
+                  "top": 175.203125,
+                  "right": 292.984375,
+                  "bottom": 194.390625,
+                  "left": 236.625
+                }
+              },
+              {
+                "label": "向左转向",
+                "rect": {
+                  "x": 21,
+                  "y": 591.796875,
+                  "width": 62.5,
+                  "height": 76,
+                  "top": 591.796875,
+                  "right": 83.5,
+                  "bottom": 667.796875,
+                  "left": 21
+                }
+              },
+              {
+                "label": "向右转向",
+                "rect": {
+                  "x": 91.5,
+                  "y": 591.796875,
+                  "width": 62.5,
+                  "height": 76,
+                  "top": 591.796875,
+                  "right": 154,
+                  "bottom": 667.796875,
+                  "left": 91.5
+                }
+              },
+              {
+                "label": "手刹",
+                "rect": {
+                  "x": 255,
+                  "y": 675.796875,
+                  "width": 44,
+                  "height": 44,
+                  "top": 675.796875,
+                  "right": 299,
+                  "bottom": 719.796875,
+                  "left": 255
+                }
+              },
+              {
+                "label": "刹车",
+                "rect": {
+                  "x": 166,
+                  "y": 591.796875,
+                  "width": 62.5,
+                  "height": 76,
+                  "top": 591.796875,
+                  "right": 228.5,
+                  "bottom": 667.796875,
+                  "left": 166
+                }
+              },
+              {
+                "label": "油门",
+                "rect": {
+                  "x": 236.5,
+                  "y": 591.796875,
+                  "width": 62.5,
+                  "height": 76,
+                  "top": 591.796875,
+                  "right": 299,
+                  "bottom": 667.796875,
+                  "left": 236.5
+                }
+              },
+              {
+                "label": "查看赛道地图",
+                "rect": {
+                  "x": 21,
+                  "y": 224,
+                  "width": 90,
+                  "height": 84,
+                  "top": 224,
+                  "right": 111,
+                  "bottom": 308,
+                  "left": 21
+                }
+              },
+              {
+                "label": "自动挡速度表",
+                "rect": {
+                  "x": 202.71875,
+                  "y": 224,
+                  "width": 96.28125,
+                  "height": 63,
+                  "top": 224,
+                  "right": 299,
+                  "bottom": 287,
+                  "left": 202.71875
+                }
+              }
+            ],
+            "panel": {
+              "withinStage": true,
+              "background": "rgba(0, 0, 0, 0)",
+              "backgroundImage": "none",
+              "position": "absolute"
+            },
+            "paragraphs": []
+          }
+        },
+        {
+          "name": "native two-thumb steering, slide, brake priority, mixed keyboard and blur release",
+          "ack": {
+            "count": 9,
+            "p50MS": 2,
+            "p95MS": 5,
+            "statuses": {
+              "200": 9
+            }
+          }
+        },
+        {
+          "name": "orientation releases held thumbs and accepts fresh gesture"
+        },
+        {
+          "name": "direction button keyboard focus loss blocks repeat until new press"
+        },
+        {
+          "name": "landscape fullscreen keeps separate visible thumb controls",
+          "layout": {
+            "width": 844,
+            "height": 390,
+            "scrollY": 0,
+            "canvas": {
+              "x": 9,
+              "y": 45,
+              "width": 826,
+              "height": 328,
+              "top": 45,
+              "right": 835,
+              "bottom": 373,
+              "left": 9
+            },
+            "stage": {
+              "x": 9,
+              "y": 45,
+              "width": 826,
+              "height": 328,
+              "top": 45,
+              "right": 835,
+              "bottom": 373,
+              "left": 9
+            },
+            "board": {
+              "x": 8,
+              "y": 44,
+              "width": 828,
+              "height": 330,
+              "top": 44,
+              "right": 836,
+              "bottom": 374,
+              "left": 8
+            },
+            "coarse": true,
+            "controls": [
+              {
+                "label": "向左转向",
+                "class": "",
+                "box": {
+                  "x": 17,
+                  "y": 233,
+                  "width": 106,
+                  "height": 76,
+                  "top": 233,
+                  "right": 123,
+                  "bottom": 309,
+                  "left": 17
+                },
+                "withinStage": true
+              },
+              {
+                "label": "向右转向",
+                "class": "",
+                "box": {
+                  "x": 131,
+                  "y": 233,
+                  "width": 106,
+                  "height": 76,
+                  "top": 233,
+                  "right": 237,
+                  "bottom": 309,
+                  "left": 131
+                },
+                "withinStage": true
+              },
+              {
+                "label": "手刹",
+                "class": "racing-drift ",
+                "box": {
+                  "x": 735,
+                  "y": 317,
+                  "width": 44,
+                  "height": 44,
+                  "top": 317,
+                  "right": 779,
+                  "bottom": 361,
+                  "left": 735
+                },
+                "withinStage": true
+              },
+              {
+                "label": "刹车",
+                "class": "",
+                "box": {
+                  "x": 587,
+                  "y": 233,
+                  "width": 116,
+                  "height": 76,
+                  "top": 233,
+                  "right": 703,
+                  "bottom": 309,
+                  "left": 587
+                },
+                "withinStage": true
+              },
+              {
+                "label": "油门",
+                "class": "",
+                "box": {
+                  "x": 711,
+                  "y": 233,
+                  "width": 116,
+                  "height": 76,
+                  "top": 233,
+                  "right": 827,
+                  "bottom": 309,
+                  "left": 711
+                },
+                "withinStage": true
+              },
+              {
+                "label": "切换视角",
+                "class": "",
+                "box": {
+                  "x": 17,
+                  "y": 317,
+                  "width": 44,
+                  "height": 44,
+                  "top": 317,
+                  "right": 61,
+                  "bottom": 361,
+                  "left": 17
+                },
+                "withinStage": true
+              },
+              {
+                "label": "向后看",
+                "class": "",
+                "box": {
+                  "x": 63,
+                  "y": 317,
+                  "width": 44,
+                  "height": 44,
+                  "top": 317,
+                  "right": 107,
+                  "bottom": 361,
+                  "left": 63
+                },
+                "withinStage": true
+              },
+              {
+                "label": "喇叭",
+                "class": "",
+                "box": {
+                  "x": 109,
+                  "y": 317,
+                  "width": 44,
+                  "height": 44,
+                  "top": 317,
+                  "right": 153,
+                  "bottom": 361,
+                  "left": 109
+                },
+                "withinStage": true
+              },
+              {
+                "label": "重置赛车",
+                "class": "",
+                "box": {
+                  "x": 155,
+                  "y": 317,
+                  "width": 44,
+                  "height": 44,
+                  "top": 317,
+                  "right": 199,
+                  "bottom": 361,
+                  "left": 155
+                },
+                "withinStage": true
+              },
+              {
+                "label": "查看赛道地图",
+                "class": "racing-route-button",
+                "box": {
+                  "x": 25,
+                  "y": 107,
+                  "width": 76,
+                  "height": 52,
+                  "top": 107,
+                  "right": 101,
+                  "bottom": 159,
+                  "left": 25
+                },
+                "withinStage": true
+              }
+            ],
+            "touch": [
+              {
+                "label": "向左转向",
+                "box": {
+                  "x": 17,
+                  "y": 233,
+                  "width": 106,
+                  "height": 76,
+                  "top": 233,
+                  "right": 123,
+                  "bottom": 309,
+                  "left": 17
+                }
+              },
+              {
+                "label": "向右转向",
+                "box": {
+                  "x": 131,
+                  "y": 233,
+                  "width": 106,
+                  "height": 76,
+                  "top": 233,
+                  "right": 237,
+                  "bottom": 309,
+                  "left": 131
+                }
+              },
+              {
+                "label": "手刹",
+                "box": {
+                  "x": 735,
+                  "y": 317,
+                  "width": 44,
+                  "height": 44,
+                  "top": 317,
+                  "right": 779,
+                  "bottom": 361,
+                  "left": 735
+                }
+              },
+              {
+                "label": "刹车",
+                "box": {
+                  "x": 587,
+                  "y": 233,
+                  "width": 116,
+                  "height": 76,
+                  "top": 233,
+                  "right": 703,
+                  "bottom": 309,
+                  "left": 587
+                }
+              },
+              {
+                "label": "油门",
+                "box": {
+                  "x": 711,
+                  "y": 233,
+                  "width": 116,
+                  "height": 76,
+                  "top": 233,
+                  "right": 827,
+                  "bottom": 309,
+                  "left": 711
+                }
+              }
+            ],
+            "overlays": [
+              {
+                "label": "法国乡间",
+                "rect": {
+                  "x": 29,
+                  "y": 66.5,
+                  "width": 250,
+                  "height": 19.1875,
+                  "top": 66.5,
+                  "right": 279,
+                  "bottom": 85.6875,
+                  "left": 29
+                }
+              },
+              {
+                "label": "名次",
+                "rect": {
+                  "x": 291,
+                  "y": 57,
+                  "width": 166.65625,
+                  "height": 16,
+                  "top": 57,
+                  "right": 457.65625,
+                  "bottom": 73,
+                  "left": 291
+                }
+              },
+              {
+                "label": "2 / 2",
+                "rect": {
+                  "x": 291,
+                  "y": 76,
+                  "width": 166.65625,
+                  "height": 19.1875,
+                  "top": 76,
+                  "right": 457.65625,
+                  "bottom": 95.1875,
+                  "left": 291
+                }
+              },
+              {
+                "label": "圈数",
+                "rect": {
+                  "x": 469.65625,
+                  "y": 57,
+                  "width": 166.671875,
+                  "height": 16,
+                  "top": 57,
+                  "right": 636.328125,
+                  "bottom": 73,
+                  "left": 469.65625
+                }
+              },
+              {
+                "label": "1 / 1",
+                "rect": {
+                  "x": 469.65625,
+                  "y": 76,
+                  "width": 166.671875,
+                  "height": 19.1875,
+                  "top": 76,
+                  "right": 636.328125,
+                  "bottom": 95.1875,
+                  "left": 469.65625
+                }
+              },
+              {
+                "label": "用时",
+                "rect": {
+                  "x": 648.328125,
+                  "y": 57,
+                  "width": 166.671875,
+                  "height": 16,
+                  "top": 57,
+                  "right": 815,
+                  "bottom": 73,
+                  "left": 648.328125
+                }
+              },
+              {
+                "label": "0:06",
+                "rect": {
+                  "x": 648.328125,
+                  "y": 76,
+                  "width": 166.671875,
+                  "height": 19.1875,
+                  "top": 76,
+                  "right": 815,
+                  "bottom": 95.1875,
+                  "left": 648.328125
+                }
+              },
+              {
+                "label": "向左转向",
+                "rect": {
+                  "x": 17,
+                  "y": 233,
+                  "width": 106,
+                  "height": 76,
+                  "top": 233,
+                  "right": 123,
+                  "bottom": 309,
+                  "left": 17
+                }
+              },
+              {
+                "label": "向右转向",
+                "rect": {
+                  "x": 131,
+                  "y": 233,
+                  "width": 106,
+                  "height": 76,
+                  "top": 233,
+                  "right": 237,
+                  "bottom": 309,
+                  "left": 131
+                }
+              },
+              {
+                "label": "手刹",
+                "rect": {
+                  "x": 735,
+                  "y": 317,
+                  "width": 44,
+                  "height": 44,
+                  "top": 317,
+                  "right": 779,
+                  "bottom": 361,
+                  "left": 735
+                }
+              },
+              {
+                "label": "刹车",
+                "rect": {
+                  "x": 587,
+                  "y": 233,
+                  "width": 116,
+                  "height": 76,
+                  "top": 233,
+                  "right": 703,
+                  "bottom": 309,
+                  "left": 587
+                }
+              },
+              {
+                "label": "油门",
+                "rect": {
+                  "x": 711,
+                  "y": 233,
+                  "width": 116,
+                  "height": 76,
+                  "top": 233,
+                  "right": 827,
+                  "bottom": 309,
+                  "left": 711
+                }
+              },
+              {
+                "label": "查看赛道地图",
+                "rect": {
+                  "x": 25,
+                  "y": 107,
+                  "width": 76,
+                  "height": 52,
+                  "top": 107,
+                  "right": 101,
+                  "bottom": 159,
+                  "left": 25
+                }
+              },
+              {
+                "label": "自动挡速度表",
+                "rect": {
+                  "x": 714.71875,
+                  "y": 107,
+                  "width": 98.28125,
+                  "height": 61,
+                  "top": 107,
+                  "right": 813,
+                  "bottom": 168,
+                  "left": 714.71875
+                }
+              }
+            ],
+            "panel": {
+              "withinStage": true,
+              "background": "rgba(0, 0, 0, 0)",
+              "backgroundImage": "none",
+              "position": "absolute"
+            },
+            "paragraphs": []
+          }
+        },
+        {
+          "name": "native thumb-to-vehicle pixels normal",
+          "metrics": {
+            "trials": 8,
+            "visibleTrials": 8,
+            "p50MS": 50.864990234375,
+            "p95MS": 52.9296875,
+            "maxMS": 52.9296875
+          },
+          "ack": {
+            "count": 16,
+            "p50MS": 2,
+            "p95MS": 3,
+            "statuses": {
+              "200": 16
+            }
+          }
+        },
+        {
+          "name": "native thumb-to-vehicle pixels rtt150",
+          "metrics": {
+            "trials": 8,
+            "visibleTrials": 8,
+            "p50MS": 51.836181640625,
+            "p95MS": 54.172119140625,
+            "maxMS": 54.172119140625
+          },
+          "ack": {
+            "count": 16,
+            "p50MS": 155,
+            "p95MS": 160,
+            "statuses": {
+              "200": 16
+            }
+          }
+        },
+        {
+          "name": "departed scene detaches and stops observable drawing",
+          "detached": true,
+          "first": null,
+          "later": null,
+          "remainingScenes": 0
+        }
+      ],
+      "sourceSHA256": {
+        "games/racing/web/Board.tsx": "deac7a131412d9a889bc0a1d81d07348a229465981399ae736134d736a7ca68c",
+        "games/racing/web/Cover.tsx": "accd92c4dc22c51772d5c0dba0f8f43ff0ca3a6dae88f805e0c8b2bc06818ee1",
+        "games/racing/web/RaceMap.tsx": "72c1c52c3d95b7dc7253393d23479d878fc3ebaa40cfc7dcbb8a9e8e1dc801d9",
+        "games/racing/web/TrackCanvas.tsx": "a5a3e283b7532fe31d58551cd4f3649bcce53262658469afac2983009c4de71a",
+        "games/racing/web/car-definitions.ts": "b51b7d9621335f7eedea42bfc4a6675e39930ad401f5072f3fe22974d4094aab",
+        "games/racing/web/catalog.tsx": "77a91cbd1948019f0b237a880c72ff4d4c23d7e12abc0ccd15485756e34ef4dc",
+        "games/racing/web/chase-camera.ts": "707b8e96584ea1f6fab85c498f59febdd25e86313c15e313f94b22f185b91301",
+        "games/racing/web/chase-fallback.ts": "2b176d0d0be038d204a63a633c64c5edd68eabb326f7fe482e2a347aa4d1d77d",
+        "games/racing/web/chase-renderer.ts": "a5f0a2b3774d2e023d37224e05a3647e3f942c650d13a2f9080c0f552a3891e0",
+        "games/racing/web/classic-assets.ts": "5de32fd0213d15ea01bb5c9dc907fa65bd33cc99e84bd20ab51998d5bcb7f769",
+        "games/racing/web/classic-attitude.ts": "c4ec07ea3593e53c09a85df42644bb9f89676045a28677d1a1e7e33d25458b75",
+        "games/racing/web/classic-audio.ts": "9df3cd73513ed4e09ccb15b27e2e283a1c6bca2bbd82aedff66e2aab1b5f612b",
+        "games/racing/web/classic-camera-clearance.ts": "a49fe57ff3265b7c926cc7df2f12d95261da3a61ad4ed63e825d53c702e5562a",
+        "games/racing/web/classic-camera-modes.ts": "4f03dcd94ef4c1f94a1451f84874eb987cb06bb92db0c04f5f42f0bfc572ea9d",
+        "games/racing/web/classic-catalog.ts": "d63618d6963ea5dba73ffcb20c76bb889750991cc4738ac6d34bd8a7ee4fd5aa",
+        "games/racing/web/classic-horn.ts": "0bb3b7669cc26eabb34cf3eda6a7f9d7ed2639efd270d887ee66475c042797ed",
+        "games/racing/web/classic-images.ts": "e2e81e06d56f98b73abb3e203b00c1f85cdbc9a302a876583bed9d97ac401c09",
+        "games/racing/web/classic-loading.ts": "2d76605eb42e050d75620d0b8e59fe553adea22e0c95f740d60fbe6e6f25d4a6",
+        "games/racing/web/classic-media.ts": "5f54f578d508798b410ed45fefed54fa3e81dab370061e47bf729d1ac5e66216",
+        "games/racing/web/classic-motion.ts": "1b416f75bccabdf7e65d8775233bfd37ca41d9205c744f4bef1a5c968d97c5d3",
+        "games/racing/web/classic-paint.ts": "bb7fd090bff37f2a070c2630a01d2b7134af2781fb072171b3e0cde414509080",
+        "games/racing/web/classic-renderer.ts": "831540d1a5b222f283ba9943a1ec5e26ffb891fb7555079999ee1b70aef817db",
+        "games/racing/web/classic-road.ts": "bed29272152e59193faa3428646a3d5a32110ddbfe07ed4dd935f6d4df33d757",
+        "games/racing/web/classic-vehicles.json": "6c93191d3c097113db66ddf3755761e88f66a85850db6113533e2c35515b1359",
+        "games/racing/web/dynamics.ts": "705c52d4ec3fae3b203fa07b7d6c2cc544bbd81a841bbe1796fadd08897baade",
+        "games/racing/web/input.ts": "21f7168da1da99b0549c0451a859af6b542c28722845da5f9eea1c4b36127e4f",
+        "games/racing/web/lifecycle.ts": "7f05fc774e658fa489b10999daff5ce440a8fe2e87e50f1ccf8ee28d67aa4af2",
+        "games/racing/web/module.tsx": "48e53c3ccd50fe874676faeee8c8467856709d33f8ba1100818e588ae3ca4e9f",
+        "games/racing/web/prediction.ts": "a3917ab0560ec54992f79ed9bfca0a9257cc0bae87394332f5c0b556a92c43fa",
+        "games/racing/web/presentation.ts": "f66b4f2ce6c8828575be1bf79b043bb03b1e15a5fce8c83b9221ee40e316b71d",
+        "games/racing/web/remote-pose.ts": "e749bb21501630b75eb0abd263f3e53100e7bd62f645fb23dc549a49e44a4a7f",
+        "games/racing/web/scene-theme.ts": "7bf52f044b7c0575e8e8934961d2bc77c5ce74fd46e07373cfaa66b689b6540a",
+        "games/racing/web/style.css": "aa2121f7cd2ea826de9d3c1c4f0a8fa3affe5d45695227771d1011b2f8fe6622",
+        "games/racing/web/timeline.ts": "44c59f299e2199a4ae589ab5f0076b7b32d327d72d1ba96eaddcb0e82e9b8d8b",
+        "games/racing/web/types.ts": "c9ff70bad9d570b3afb3284f1c01c758e7b6c7df227e8053afe0cc96eec8773f",
+        "games/racing/web/use-classic-engine.ts": "b45c54fec253bc776456fc5673404815a0bdad23e488694f51fd9ebdf4706fd4",
+        "games/racing/web/use-classic-horn.ts": "46cae83ed14de329414fec2f5f6cbb2d69e01aa13fe0e4296b3c0d4725998783",
+        "games/racing/web/vehicle-model.ts": "090f463a37fd3eef01763a0d02fdbeab4ce74708da0ea74d41106b9f4971330a",
+        "games/racing/server/bot.go": "7cc3d010ad4b05badeeb0f1b2cd40b40a12265dd73cb22a24ec18df06611b337",
+        "games/racing/server/brake_pressure_test.go": "d3a2329b890b690125fec3f782ed282bb4739d1cb92aca03f3197b7fcf3e5006",
+        "games/racing/server/checkpoint_test.go": "35ecaa506e88b3868c6b5e867e00823e5ba32dbe035b198c67e789630d3f2d61",
+        "games/racing/server/classic_bot.go": "17e6db1e5be21ef59b0f2826092e6638c2d27549ef658c7e08f92b5bec0380c9",
+        "games/racing/server/classic_motion.go": "fb9c21ee08dc9fd88a187dafcd345d8220b88e2358b41472b0ec2afb53e5aca3",
+        "games/racing/server/classic_motion_contract_test.go": "cde931a233e60efe5ca26e01125a8f9980c5e44500081d92e7bcad729e3bdb6a",
+        "games/racing/server/classic_physics.go": "c3eebe34edeecde548e7d9f70e655e8ab7732a7a1e1ed3a1e6c3d582e66f6c3f",
+        "games/racing/server/classic_track.go": "c6cf01db57cc418aca371908acbf06d74a31763cfafadf5abf5f317501cfbb66",
+        "games/racing/server/data/car-bodies.json": "b6fef50f8c765ca58cea116534ac635b898b4637d8e88e8dde0619dd5923625d",
+        "games/racing/server/data/index.json": "0b8233e29195ebffa04a750f979d56134003bfdc2f0b13c0a2b00c541ccb2a2d",
+        "games/racing/server/data/rules/1221e1e0fca8872f64a6b899c2bb4c81666261ed9f4bc1f075ccce30922bde00.json": "4f2bb0910b077429682e149dd00574a150888755633d7c9d2971959d6677deb4",
+        "games/racing/server/data/rules/1dafb107dfa41d5c9f631e002bf40cdc08c3b252d79afecd015645d2b10edb72.json": "7b5a41349d0d611b1ff2f1cf67d7eb701bfadb3abd64221c8b753d27553776c1",
+        "games/racing/server/data/rules/8126825f6c2fcc07a1bed58eb497ae3eaa6f9f7d54843680e13ebe6492a39562.json": "3f29e0cc80785b4e22dba4bf983d93c7447cc49876f4421f95d4ff4976b5952e",
+        "games/racing/server/data/rules/c900ce1d7f008dd8f4c12e6f01f2b88d8f54c4ace60a406c6d3724009b47a82a.json": "5a4b842c6b55c09f319c1dda493c037e8d86b6efbc95dd5e1900bd32c0a310db",
+        "games/racing/server/module.go": "14a530ba9df1dedd1cc78ff7d589b9e0147f9b610e7b09b2f6ccb87841015c14",
+        "games/racing/server/physics.go": "d3262d0bf8292fa9613b44ee7cac5ffca5ddfe97a9baf05408a6eaf8d9a24809",
+        "games/racing/server/physics_test.go": "b7f0ff8f71ac9647fc4399f13ccf35a7defd8b9e75e988a62c8fb7bb6ad9ca7e",
+        "games/racing/server/remake_tracks_test.go": "3a5dbb4f73395574cd813ec24c8de06ae6d97125e6c9d5dbd0d4c1a3d3a3e98e",
+        "games/racing/server/scenery_test.go": "032e675aac626506af245c3e3d00cee37ec16750fcb5774e06e16df792c37844",
+        "games/racing/server/sequence_test.go": "719d8cf81debc0159178f6d2b870eed92328aab4d7cc5213435c56a8a8f3cc2b",
+        "games/racing/server/state.go": "5a29591eb94f8f7859d7ef01d61c97227b039c9cdc3464c6d86966833d24ced3",
+        "games/racing/server/steering_speed_test.go": "cab13784a0fc57d474520fea79932bf248e8fa2c7614a2752cf7637bb1539c2c",
+        "games/racing/server/tracks.go": "15bb6b609067e4e17b21c48e032f7d0773a6f13ad6362e6f9eaf423e83910c83"
+      },
+      "distSHA256": "d06f394e7f752fb64c0110672e4a21ab2e9cfe57a7273ef0a3d3264a98e6a209"
+    },
+    "controls-release": {
+      "path": ".local/racing-mobile-research/controls-release/report.json",
+      "sha256": "784ebd119364cdd7cb6454f48e1440e1a1bb38951fc19af59b457c84c479a421",
+      "checks": [
+        {
+          "name": "shared creation and per-seat vehicle preparation",
+          "track": "france",
+          "night": false,
+          "vehicle": "p911"
+        },
+        {
+          "name": "selected original geometry and byte loading",
+          "track": "france",
+          "night": false,
+          "bytes": 8822163,
+          "triangles": "37246"
+        },
+        {
+          "name": "revised-desktop-layout",
+          "layout": {
+            "board": {
+              "bottom": 972.390625,
+              "height": 722,
+              "left": 22,
+              "right": 1258,
+              "top": 250.390625,
+              "width": 1236,
+              "x": 22,
+              "y": 250.390625
+            },
+            "canvas": {
+              "bottom": 971.390625,
+              "height": 720,
+              "left": 23,
+              "right": 1257,
+              "top": 251.390625,
+              "width": 1234,
+              "x": 23,
+              "y": 251.390625
+            },
+            "controls": [
+              {
+                "box": {
+                  "bottom": 295.390625,
+                  "height": 26,
+                  "left": 45,
+                  "right": 120.34375,
+                  "top": 269.390625,
+                  "width": 75.34375,
+                  "x": 45,
+                  "y": 269.390625
+                },
+                "class": "racing-room-link",
+                "label": "车手与房间",
+                "withinStage": false
+              },
+              {
+                "box": {
+                  "bottom": 953.390625,
+                  "height": 126,
+                  "left": 39,
+                  "right": 187,
+                  "top": 827.390625,
+                  "width": 148,
+                  "x": 39,
+                  "y": 827.390625
+                },
+                "class": "racing-route-button",
+                "label": "查看赛道地图",
+                "withinStage": true
+              }
+            ],
+            "height": 1000,
+            "panel": {
+              "background": "rgba(0, 0, 0, 0)",
+              "backgroundImage": "none",
+              "position": "absolute",
+              "withinStage": true
+            },
+            "paragraphs": [],
+            "scrollY": 0,
+            "stage": {
+              "bottom": 971.390625,
+              "height": 720,
+              "left": 23,
+              "right": 1257,
+              "top": 251.390625,
+              "width": 1234,
+              "x": 23,
+              "y": 251.390625
+            },
+            "touch": [],
+            "width": 1280
+          }
+        },
+        {
+          "name": "native C edges cycle camera and B release restores selected view",
+          "modes": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "0",
+            "1",
+            "2"
+          ]
+        },
+        {
+          "name": "native F3/F5/F7/F11/F12 edges change drawing, HUD, real mirror and viewport",
+          "distance": [
+            "2",
+            "0",
+            "1",
+            "2"
+          ]
+        },
+        {
+          "name": "native H playback, authority hold/release and blur"
+        },
+        {
+          "name": "standard Gamepad API simulation uses production analog mapping, camera/horn and neutral disconnect lifecycle",
+          "simulation": "navigator.getGamepads hardware boundary only; no physical controller tested",
+          "ack": {
+            "count": 9,
+            "p50MS": 1,
+            "p95MS": 2,
+            "statuses": {
+              "200": 9
+            }
+          }
+        },
+        {
+          "name": "public keyboard and gamepad remapping saves and disables the old defaults"
+        },
+        {
+          "name": "revised-touch-layout",
+          "layout": {
+            "width": 320,
+            "height": 844,
+            "scrollY": 313,
+            "canvas": {
+              "x": 13,
+              "y": 141,
+              "width": 294,
+              "height": 590.796875,
+              "top": 141,
+              "right": 307,
+              "bottom": 731.796875,
+              "left": 13
+            },
+            "stage": {
+              "x": 13,
+              "y": 141,
+              "width": 294,
+              "height": 590.796875,
+              "top": 141,
+              "right": 307,
+              "bottom": 731.796875,
+              "left": 13
+            },
+            "board": {
+              "x": 12,
+              "y": 140,
+              "width": 296,
+              "height": 592.796875,
+              "top": 140,
+              "right": 308,
+              "bottom": 732.796875,
+              "left": 12
+            },
+            "coarse": true,
+            "controls": [
+              {
+                "label": "车手与房间",
+                "class": "racing-room-link",
+                "box": {
+                  "x": 27,
+                  "y": 154,
+                  "width": 75.34375,
+                  "height": 26,
+                  "top": 154,
+                  "right": 102.34375,
+                  "bottom": 180,
+                  "left": 27
+                },
+                "withinStage": false
+              },
+              {
+                "label": "向左转向",
+                "class": "",
+                "box": {
+                  "x": 21,
+                  "y": 591.796875,
+                  "width": 62.5,
+                  "height": 76,
+                  "top": 591.796875,
+                  "right": 83.5,
+                  "bottom": 667.796875,
+                  "left": 21
+                },
+                "withinStage": true
+              },
+              {
+                "label": "向右转向",
+                "class": "",
+                "box": {
+                  "x": 91.5,
+                  "y": 591.796875,
+                  "width": 62.5,
+                  "height": 76,
+                  "top": 591.796875,
+                  "right": 154,
+                  "bottom": 667.796875,
+                  "left": 91.5
+                },
+                "withinStage": true
+              },
+              {
+                "label": "手刹",
+                "class": "racing-drift ",
+                "box": {
+                  "x": 255,
+                  "y": 675.796875,
+                  "width": 44,
+                  "height": 44,
+                  "top": 675.796875,
+                  "right": 299,
+                  "bottom": 719.796875,
+                  "left": 255
+                },
+                "withinStage": true
+              },
+              {
+                "label": "刹车",
+                "class": "",
+                "box": {
+                  "x": 166,
+                  "y": 591.796875,
+                  "width": 62.5,
+                  "height": 76,
+                  "top": 591.796875,
+                  "right": 228.5,
+                  "bottom": 667.796875,
+                  "left": 166
+                },
+                "withinStage": true
+              },
+              {
+                "label": "油门",
+                "class": "",
+                "box": {
+                  "x": 236.5,
+                  "y": 591.796875,
+                  "width": 62.5,
+                  "height": 76,
+                  "top": 591.796875,
+                  "right": 299,
+                  "bottom": 667.796875,
+                  "left": 236.5
+                },
+                "withinStage": true
+              },
+              {
+                "label": "切换视角",
+                "class": "",
+                "box": {
+                  "x": 21,
+                  "y": 675.796875,
+                  "width": 44,
+                  "height": 44,
+                  "top": 675.796875,
+                  "right": 65,
+                  "bottom": 719.796875,
+                  "left": 21
+                },
+                "withinStage": true
+              },
+              {
+                "label": "向后看",
+                "class": "",
+                "box": {
+                  "x": 67,
+                  "y": 675.796875,
+                  "width": 44,
+                  "height": 44,
+                  "top": 675.796875,
+                  "right": 111,
+                  "bottom": 719.796875,
+                  "left": 67
+                },
+                "withinStage": true
+              },
+              {
+                "label": "喇叭",
+                "class": "",
+                "box": {
+                  "x": 113,
+                  "y": 675.796875,
+                  "width": 44,
+                  "height": 44,
+                  "top": 675.796875,
+                  "right": 157,
+                  "bottom": 719.796875,
+                  "left": 113
+                },
+                "withinStage": true
+              },
+              {
+                "label": "重置赛车",
+                "class": "",
+                "box": {
+                  "x": 159,
+                  "y": 675.796875,
+                  "width": 44,
+                  "height": 44,
+                  "top": 675.796875,
+                  "right": 203,
+                  "bottom": 719.796875,
+                  "left": 159
+                },
+                "withinStage": true
+              },
+              {
+                "label": "查看赛道地图",
+                "class": "racing-route-button",
+                "box": {
+                  "x": 21,
+                  "y": 224,
+                  "width": 90,
+                  "height": 84,
+                  "top": 224,
+                  "right": 111,
+                  "bottom": 308,
+                  "left": 21
+                },
+                "withinStage": true
+              }
+            ],
+            "touch": [
+              {
+                "label": "向左转向",
+                "box": {
+                  "x": 21,
+                  "y": 591.796875,
+                  "width": 62.5,
+                  "height": 76,
+                  "top": 591.796875,
+                  "right": 83.5,
+                  "bottom": 667.796875,
+                  "left": 21
+                }
+              },
+              {
+                "label": "向右转向",
+                "box": {
+                  "x": 91.5,
+                  "y": 591.796875,
+                  "width": 62.5,
+                  "height": 76,
+                  "top": 591.796875,
+                  "right": 154,
+                  "bottom": 667.796875,
+                  "left": 91.5
+                }
+              },
+              {
+                "label": "手刹",
+                "box": {
+                  "x": 255,
+                  "y": 675.796875,
+                  "width": 44,
+                  "height": 44,
+                  "top": 675.796875,
+                  "right": 299,
+                  "bottom": 719.796875,
+                  "left": 255
+                }
+              },
+              {
+                "label": "刹车",
+                "box": {
+                  "x": 166,
+                  "y": 591.796875,
+                  "width": 62.5,
+                  "height": 76,
+                  "top": 591.796875,
+                  "right": 228.5,
+                  "bottom": 667.796875,
+                  "left": 166
+                }
+              },
+              {
+                "label": "油门",
+                "box": {
+                  "x": 236.5,
+                  "y": 591.796875,
+                  "width": 62.5,
+                  "height": 76,
+                  "top": 591.796875,
+                  "right": 299,
+                  "bottom": 667.796875,
+                  "left": 236.5
+                }
+              }
+            ],
+            "overlays": [
+              {
+                "label": "法国乡间",
+                "rect": {
+                  "x": 27,
+                  "y": 183,
+                  "width": 78.90625,
+                  "height": 15.59375,
+                  "top": 183,
+                  "right": 105.90625,
+                  "bottom": 198.59375,
+                  "left": 27
+                }
+              },
+              {
+                "label": "名次",
+                "rect": {
+                  "x": 111.90625,
+                  "y": 158.203125,
+                  "width": 56.359375,
+                  "height": 14,
+                  "top": 158.203125,
+                  "right": 168.265625,
+                  "bottom": 172.203125,
+                  "left": 111.90625
+                }
+              },
+              {
+                "label": "2 / 2",
+                "rect": {
+                  "x": 111.90625,
+                  "y": 175.203125,
+                  "width": 56.359375,
+                  "height": 19.1875,
+                  "top": 175.203125,
+                  "right": 168.265625,
+                  "bottom": 194.390625,
+                  "left": 111.90625
+                }
+              },
+              {
+                "label": "圈数",
+                "rect": {
+                  "x": 174.265625,
+                  "y": 158.203125,
+                  "width": 56.359375,
+                  "height": 14,
+                  "top": 158.203125,
+                  "right": 230.625,
+                  "bottom": 172.203125,
+                  "left": 174.265625
+                }
+              },
+              {
+                "label": "1 / 1",
+                "rect": {
+                  "x": 174.265625,
+                  "y": 175.203125,
+                  "width": 56.359375,
+                  "height": 19.1875,
+                  "top": 175.203125,
+                  "right": 230.625,
+                  "bottom": 194.390625,
+                  "left": 174.265625
+                }
+              },
+              {
+                "label": "用时",
+                "rect": {
+                  "x": 236.625,
+                  "y": 158.203125,
+                  "width": 56.359375,
+                  "height": 14,
+                  "top": 158.203125,
+                  "right": 292.984375,
+                  "bottom": 172.203125,
+                  "left": 236.625
+                }
+              },
+              {
+                "label": "0:20",
+                "rect": {
+                  "x": 236.625,
+                  "y": 175.203125,
+                  "width": 56.359375,
+                  "height": 19.1875,
+                  "top": 175.203125,
+                  "right": 292.984375,
+                  "bottom": 194.390625,
+                  "left": 236.625
+                }
+              },
+              {
+                "label": "向左转向",
+                "rect": {
+                  "x": 21,
+                  "y": 591.796875,
+                  "width": 62.5,
+                  "height": 76,
+                  "top": 591.796875,
+                  "right": 83.5,
+                  "bottom": 667.796875,
+                  "left": 21
+                }
+              },
+              {
+                "label": "向右转向",
+                "rect": {
+                  "x": 91.5,
+                  "y": 591.796875,
+                  "width": 62.5,
+                  "height": 76,
+                  "top": 591.796875,
+                  "right": 154,
+                  "bottom": 667.796875,
+                  "left": 91.5
+                }
+              },
+              {
+                "label": "手刹",
+                "rect": {
+                  "x": 255,
+                  "y": 675.796875,
+                  "width": 44,
+                  "height": 44,
+                  "top": 675.796875,
+                  "right": 299,
+                  "bottom": 719.796875,
+                  "left": 255
+                }
+              },
+              {
+                "label": "刹车",
+                "rect": {
+                  "x": 166,
+                  "y": 591.796875,
+                  "width": 62.5,
+                  "height": 76,
+                  "top": 591.796875,
+                  "right": 228.5,
+                  "bottom": 667.796875,
+                  "left": 166
+                }
+              },
+              {
+                "label": "油门",
+                "rect": {
+                  "x": 236.5,
+                  "y": 591.796875,
+                  "width": 62.5,
+                  "height": 76,
+                  "top": 591.796875,
+                  "right": 299,
+                  "bottom": 667.796875,
+                  "left": 236.5
+                }
+              },
+              {
+                "label": "查看赛道地图",
+                "rect": {
+                  "x": 21,
+                  "y": 224,
+                  "width": 90,
+                  "height": 84,
+                  "top": 224,
+                  "right": 111,
+                  "bottom": 308,
+                  "left": 21
+                }
+              },
+              {
+                "label": "自动挡速度表",
+                "rect": {
+                  "x": 202.71875,
+                  "y": 224,
+                  "width": 96.28125,
+                  "height": 63,
+                  "top": 224,
+                  "right": 299,
+                  "bottom": 287,
+                  "left": 202.71875
+                }
+              }
+            ],
+            "panel": {
+              "withinStage": true,
+              "background": "rgba(0, 0, 0, 0)",
+              "backgroundImage": "none",
+              "position": "absolute"
+            },
+            "paragraphs": []
+          }
+        },
+        {
+          "name": "native keyboard acceleration, steering, rear view and release"
+        },
+        {
+          "name": "native R uses authoritative low-speed reset"
+        },
+        {
+          "name": "320px native simultaneous throttle/steering, brake priority and cancellation"
+        },
+        {
+          "name": "touch-contrast"
+        },
+        {
+          "name": "shared route map opens, accepts native zoom and closes"
+        },
+        {
+          "name": "refresh preserves race identity, vehicle and deadline"
+        },
+        {
+          "name": "departed scene detaches and stops observable drawing",
+          "detached": true,
+          "first": null,
+          "later": null,
+          "remainingScenes": 0
+        }
+      ],
+      "sourceSHA256": {
+        "games/racing/web/Board.tsx": "deac7a131412d9a889bc0a1d81d07348a229465981399ae736134d736a7ca68c",
+        "games/racing/web/Cover.tsx": "accd92c4dc22c51772d5c0dba0f8f43ff0ca3a6dae88f805e0c8b2bc06818ee1",
+        "games/racing/web/RaceMap.tsx": "72c1c52c3d95b7dc7253393d23479d878fc3ebaa40cfc7dcbb8a9e8e1dc801d9",
+        "games/racing/web/TrackCanvas.tsx": "a5a3e283b7532fe31d58551cd4f3649bcce53262658469afac2983009c4de71a",
+        "games/racing/web/car-definitions.ts": "b51b7d9621335f7eedea42bfc4a6675e39930ad401f5072f3fe22974d4094aab",
+        "games/racing/web/catalog.tsx": "77a91cbd1948019f0b237a880c72ff4d4c23d7e12abc0ccd15485756e34ef4dc",
+        "games/racing/web/chase-camera.ts": "707b8e96584ea1f6fab85c498f59febdd25e86313c15e313f94b22f185b91301",
+        "games/racing/web/chase-fallback.ts": "2b176d0d0be038d204a63a633c64c5edd68eabb326f7fe482e2a347aa4d1d77d",
+        "games/racing/web/chase-renderer.ts": "a5f0a2b3774d2e023d37224e05a3647e3f942c650d13a2f9080c0f552a3891e0",
+        "games/racing/web/classic-assets.ts": "5de32fd0213d15ea01bb5c9dc907fa65bd33cc99e84bd20ab51998d5bcb7f769",
+        "games/racing/web/classic-attitude.ts": "c4ec07ea3593e53c09a85df42644bb9f89676045a28677d1a1e7e33d25458b75",
+        "games/racing/web/classic-audio.ts": "9df3cd73513ed4e09ccb15b27e2e283a1c6bca2bbd82aedff66e2aab1b5f612b",
+        "games/racing/web/classic-camera-clearance.ts": "a49fe57ff3265b7c926cc7df2f12d95261da3a61ad4ed63e825d53c702e5562a",
+        "games/racing/web/classic-camera-modes.ts": "4f03dcd94ef4c1f94a1451f84874eb987cb06bb92db0c04f5f42f0bfc572ea9d",
+        "games/racing/web/classic-catalog.ts": "d63618d6963ea5dba73ffcb20c76bb889750991cc4738ac6d34bd8a7ee4fd5aa",
+        "games/racing/web/classic-horn.ts": "0bb3b7669cc26eabb34cf3eda6a7f9d7ed2639efd270d887ee66475c042797ed",
+        "games/racing/web/classic-images.ts": "e2e81e06d56f98b73abb3e203b00c1f85cdbc9a302a876583bed9d97ac401c09",
+        "games/racing/web/classic-loading.ts": "2d76605eb42e050d75620d0b8e59fe553adea22e0c95f740d60fbe6e6f25d4a6",
+        "games/racing/web/classic-media.ts": "5f54f578d508798b410ed45fefed54fa3e81dab370061e47bf729d1ac5e66216",
+        "games/racing/web/classic-motion.ts": "1b416f75bccabdf7e65d8775233bfd37ca41d9205c744f4bef1a5c968d97c5d3",
+        "games/racing/web/classic-paint.ts": "bb7fd090bff37f2a070c2630a01d2b7134af2781fb072171b3e0cde414509080",
+        "games/racing/web/classic-renderer.ts": "831540d1a5b222f283ba9943a1ec5e26ffb891fb7555079999ee1b70aef817db",
+        "games/racing/web/classic-road.ts": "bed29272152e59193faa3428646a3d5a32110ddbfe07ed4dd935f6d4df33d757",
+        "games/racing/web/classic-vehicles.json": "6c93191d3c097113db66ddf3755761e88f66a85850db6113533e2c35515b1359",
+        "games/racing/web/dynamics.ts": "705c52d4ec3fae3b203fa07b7d6c2cc544bbd81a841bbe1796fadd08897baade",
+        "games/racing/web/input.ts": "21f7168da1da99b0549c0451a859af6b542c28722845da5f9eea1c4b36127e4f",
+        "games/racing/web/lifecycle.ts": "7f05fc774e658fa489b10999daff5ce440a8fe2e87e50f1ccf8ee28d67aa4af2",
+        "games/racing/web/module.tsx": "48e53c3ccd50fe874676faeee8c8467856709d33f8ba1100818e588ae3ca4e9f",
+        "games/racing/web/prediction.ts": "a3917ab0560ec54992f79ed9bfca0a9257cc0bae87394332f5c0b556a92c43fa",
+        "games/racing/web/presentation.ts": "f66b4f2ce6c8828575be1bf79b043bb03b1e15a5fce8c83b9221ee40e316b71d",
+        "games/racing/web/remote-pose.ts": "e749bb21501630b75eb0abd263f3e53100e7bd62f645fb23dc549a49e44a4a7f",
+        "games/racing/web/scene-theme.ts": "7bf52f044b7c0575e8e8934961d2bc77c5ce74fd46e07373cfaa66b689b6540a",
+        "games/racing/web/style.css": "aa2121f7cd2ea826de9d3c1c4f0a8fa3affe5d45695227771d1011b2f8fe6622",
+        "games/racing/web/timeline.ts": "44c59f299e2199a4ae589ab5f0076b7b32d327d72d1ba96eaddcb0e82e9b8d8b",
+        "games/racing/web/types.ts": "c9ff70bad9d570b3afb3284f1c01c758e7b6c7df227e8053afe0cc96eec8773f",
+        "games/racing/web/use-classic-engine.ts": "b45c54fec253bc776456fc5673404815a0bdad23e488694f51fd9ebdf4706fd4",
+        "games/racing/web/use-classic-horn.ts": "46cae83ed14de329414fec2f5f6cbb2d69e01aa13fe0e4296b3c0d4725998783",
+        "games/racing/web/vehicle-model.ts": "090f463a37fd3eef01763a0d02fdbeab4ce74708da0ea74d41106b9f4971330a",
+        "games/racing/server/bot.go": "7cc3d010ad4b05badeeb0f1b2cd40b40a12265dd73cb22a24ec18df06611b337",
+        "games/racing/server/brake_pressure_test.go": "d3a2329b890b690125fec3f782ed282bb4739d1cb92aca03f3197b7fcf3e5006",
+        "games/racing/server/checkpoint_test.go": "35ecaa506e88b3868c6b5e867e00823e5ba32dbe035b198c67e789630d3f2d61",
+        "games/racing/server/classic_bot.go": "17e6db1e5be21ef59b0f2826092e6638c2d27549ef658c7e08f92b5bec0380c9",
+        "games/racing/server/classic_motion.go": "fb9c21ee08dc9fd88a187dafcd345d8220b88e2358b41472b0ec2afb53e5aca3",
+        "games/racing/server/classic_motion_contract_test.go": "cde931a233e60efe5ca26e01125a8f9980c5e44500081d92e7bcad729e3bdb6a",
+        "games/racing/server/classic_physics.go": "c3eebe34edeecde548e7d9f70e655e8ab7732a7a1e1ed3a1e6c3d582e66f6c3f",
+        "games/racing/server/classic_track.go": "c6cf01db57cc418aca371908acbf06d74a31763cfafadf5abf5f317501cfbb66",
+        "games/racing/server/data/car-bodies.json": "b6fef50f8c765ca58cea116534ac635b898b4637d8e88e8dde0619dd5923625d",
+        "games/racing/server/data/index.json": "0b8233e29195ebffa04a750f979d56134003bfdc2f0b13c0a2b00c541ccb2a2d",
+        "games/racing/server/data/rules/1221e1e0fca8872f64a6b899c2bb4c81666261ed9f4bc1f075ccce30922bde00.json": "4f2bb0910b077429682e149dd00574a150888755633d7c9d2971959d6677deb4",
+        "games/racing/server/data/rules/1dafb107dfa41d5c9f631e002bf40cdc08c3b252d79afecd015645d2b10edb72.json": "7b5a41349d0d611b1ff2f1cf67d7eb701bfadb3abd64221c8b753d27553776c1",
+        "games/racing/server/data/rules/8126825f6c2fcc07a1bed58eb497ae3eaa6f9f7d54843680e13ebe6492a39562.json": "3f29e0cc80785b4e22dba4bf983d93c7447cc49876f4421f95d4ff4976b5952e",
+        "games/racing/server/data/rules/c900ce1d7f008dd8f4c12e6f01f2b88d8f54c4ace60a406c6d3724009b47a82a.json": "5a4b842c6b55c09f319c1dda493c037e8d86b6efbc95dd5e1900bd32c0a310db",
+        "games/racing/server/module.go": "14a530ba9df1dedd1cc78ff7d589b9e0147f9b610e7b09b2f6ccb87841015c14",
+        "games/racing/server/physics.go": "d3262d0bf8292fa9613b44ee7cac5ffca5ddfe97a9baf05408a6eaf8d9a24809",
+        "games/racing/server/physics_test.go": "b7f0ff8f71ac9647fc4399f13ccf35a7defd8b9e75e988a62c8fb7bb6ad9ca7e",
+        "games/racing/server/remake_tracks_test.go": "3a5dbb4f73395574cd813ec24c8de06ae6d97125e6c9d5dbd0d4c1a3d3a3e98e",
+        "games/racing/server/scenery_test.go": "032e675aac626506af245c3e3d00cee37ec16750fcb5774e06e16df792c37844",
+        "games/racing/server/sequence_test.go": "719d8cf81debc0159178f6d2b870eed92328aab4d7cc5213435c56a8a8f3cc2b",
+        "games/racing/server/state.go": "5a29591eb94f8f7859d7ef01d61c97227b039c9cdc3464c6d86966833d24ced3",
+        "games/racing/server/steering_speed_test.go": "cab13784a0fc57d474520fea79932bf248e8fa2c7614a2752cf7637bb1539c2c",
+        "games/racing/server/tracks.go": "15bb6b609067e4e17b21c48e032f7d0773a6f13ad6362e6f9eaf423e83910c83"
+      },
+      "distSHA256": "d06f394e7f752fb64c0110672e4a21ab2e9cfe57a7273ef0a3d3264a98e6a209"
+    },
+    "fullscreen-release": {
+      "path": ".local/racing-mobile-research/fullscreen-release/report.json",
+      "sha256": "731ffe6cbbd595c87a9246043cc990f2c74fc516d18c9aba66ea1d42b8ac5a82",
+      "checks": [
+        {
+          "name": "shared creation and per-seat vehicle preparation",
+          "track": "france",
+          "night": false,
+          "vehicle": "p911"
+        },
+        {
+          "name": "selected original geometry and byte loading",
+          "track": "france",
+          "night": false,
+          "bytes": 8822163,
+          "triangles": "37246"
+        },
+        {
+          "name": "public fullscreen gameplay/map and clean exit desktop",
+          "mode": "native",
+          "exit": "Escape"
+        },
+        {
+          "name": "fullscreen-320-driving-layout",
+          "layout": {
+            "width": 320,
+            "height": 844,
+            "scrollY": 0,
+            "canvas": {
+              "x": 9,
+              "y": 45,
+              "width": 302,
+              "height": 782,
+              "top": 45,
+              "right": 311,
+              "bottom": 827,
+              "left": 9
+            },
+            "stage": {
+              "x": 9,
+              "y": 45,
+              "width": 302,
+              "height": 782,
+              "top": 45,
+              "right": 311,
+              "bottom": 827,
+              "left": 9
+            },
+            "board": {
+              "x": 8,
+              "y": 44,
+              "width": 304,
+              "height": 784,
+              "top": 44,
+              "right": 312,
+              "bottom": 828,
+              "left": 8
+            },
+            "coarse": true,
+            "controls": [
+              {
+                "label": "车手与房间",
+                "class": "racing-room-link",
+                "box": {
+                  "x": 23,
+                  "y": 58,
+                  "width": 75.34375,
+                  "height": 26,
+                  "top": 58,
+                  "right": 98.34375,
+                  "bottom": 84,
+                  "left": 23
+                },
+                "withinStage": false
+              },
+              {
+                "label": "向左转向",
+                "class": "",
+                "box": {
+                  "x": 17,
+                  "y": 687,
+                  "width": 64.5,
+                  "height": 76,
+                  "top": 687,
+                  "right": 81.5,
+                  "bottom": 763,
+                  "left": 17
+                },
+                "withinStage": true
+              },
+              {
+                "label": "向右转向",
+                "class": "pressed",
+                "box": {
+                  "x": 89.5,
+                  "y": 687,
+                  "width": 64.5,
+                  "height": 76,
+                  "top": 687,
+                  "right": 154,
+                  "bottom": 763,
+                  "left": 89.5
+                },
+                "withinStage": true
+              },
+              {
+                "label": "手刹",
+                "class": "racing-drift ",
+                "box": {
+                  "x": 211,
+                  "y": 771,
+                  "width": 44,
+                  "height": 44,
+                  "top": 771,
+                  "right": 255,
+                  "bottom": 815,
+                  "left": 211
+                },
+                "withinStage": true
+              },
+              {
+                "label": "刹车",
+                "class": "",
+                "box": {
+                  "x": 166,
+                  "y": 687,
+                  "width": 64.5,
+                  "height": 76,
+                  "top": 687,
+                  "right": 230.5,
+                  "bottom": 763,
+                  "left": 166
+                },
+                "withinStage": true
+              },
+              {
+                "label": "油门",
+                "class": "pressed",
+                "box": {
+                  "x": 238.5,
+                  "y": 687,
+                  "width": 64.5,
+                  "height": 76,
+                  "top": 687,
+                  "right": 303,
+                  "bottom": 763,
+                  "left": 238.5
+                },
+                "withinStage": true
+              },
+              {
+                "label": "切换视角",
+                "class": "",
+                "box": {
+                  "x": 17,
+                  "y": 771,
+                  "width": 44,
+                  "height": 44,
+                  "top": 771,
+                  "right": 61,
+                  "bottom": 815,
+                  "left": 17
+                },
+                "withinStage": true
+              },
+              {
+                "label": "向后看",
+                "class": "",
+                "box": {
+                  "x": 63,
+                  "y": 771,
+                  "width": 44,
+                  "height": 44,
+                  "top": 771,
+                  "right": 107,
+                  "bottom": 815,
+                  "left": 63
+                },
+                "withinStage": true
+              },
+              {
+                "label": "喇叭",
+                "class": "",
+                "box": {
+                  "x": 109,
+                  "y": 771,
+                  "width": 44,
+                  "height": 44,
+                  "top": 771,
+                  "right": 153,
+                  "bottom": 815,
+                  "left": 109
+                },
+                "withinStage": true
+              },
+              {
+                "label": "重置赛车",
+                "class": "",
+                "box": {
+                  "x": 155,
+                  "y": 771,
+                  "width": 44,
+                  "height": 44,
+                  "top": 771,
+                  "right": 199,
+                  "bottom": 815,
+                  "left": 155
+                },
+                "withinStage": true
+              },
+              {
+                "label": "查看赛道地图",
+                "class": "racing-route-button",
+                "box": {
+                  "x": 17,
+                  "y": 128,
+                  "width": 90,
+                  "height": 84,
+                  "top": 128,
+                  "right": 107,
+                  "bottom": 212,
+                  "left": 17
+                },
+                "withinStage": true
+              }
+            ],
+            "touch": [
+              {
+                "label": "向左转向",
+                "box": {
+                  "x": 17,
+                  "y": 687,
+                  "width": 64.5,
+                  "height": 76,
+                  "top": 687,
+                  "right": 81.5,
+                  "bottom": 763,
+                  "left": 17
+                }
+              },
+              {
+                "label": "向右转向",
+                "box": {
+                  "x": 89.5,
+                  "y": 687,
+                  "width": 64.5,
+                  "height": 76,
+                  "top": 687,
+                  "right": 154,
+                  "bottom": 763,
+                  "left": 89.5
+                }
+              },
+              {
+                "label": "手刹",
+                "box": {
+                  "x": 211,
+                  "y": 771,
+                  "width": 44,
+                  "height": 44,
+                  "top": 771,
+                  "right": 255,
+                  "bottom": 815,
+                  "left": 211
+                }
+              },
+              {
+                "label": "刹车",
+                "box": {
+                  "x": 166,
+                  "y": 687,
+                  "width": 64.5,
+                  "height": 76,
+                  "top": 687,
+                  "right": 230.5,
+                  "bottom": 763,
+                  "left": 166
+                }
+              },
+              {
+                "label": "油门",
+                "box": {
+                  "x": 238.5,
+                  "y": 687,
+                  "width": 64.5,
+                  "height": 76,
+                  "top": 687,
+                  "right": 303,
+                  "bottom": 763,
+                  "left": 238.5
+                }
+              }
+            ],
+            "overlays": [
+              {
+                "label": "法国乡间",
+                "rect": {
+                  "x": 23,
+                  "y": 87,
+                  "width": 81.453125,
+                  "height": 15.59375,
+                  "top": 87,
+                  "right": 104.453125,
+                  "bottom": 102.59375,
+                  "left": 23
+                }
+              },
+              {
+                "label": "名次",
+                "rect": {
+                  "x": 110.453125,
+                  "y": 62.203125,
+                  "width": 58.171875,
+                  "height": 14,
+                  "top": 62.203125,
+                  "right": 168.625,
+                  "bottom": 76.203125,
+                  "left": 110.453125
+                }
+              },
+              {
+                "label": "2 / 2",
+                "rect": {
+                  "x": 110.453125,
+                  "y": 79.203125,
+                  "width": 58.171875,
+                  "height": 19.1875,
+                  "top": 79.203125,
+                  "right": 168.625,
+                  "bottom": 98.390625,
+                  "left": 110.453125
+                }
+              },
+              {
+                "label": "圈数",
+                "rect": {
+                  "x": 174.625,
+                  "y": 62.203125,
+                  "width": 58.1875,
+                  "height": 14,
+                  "top": 62.203125,
+                  "right": 232.8125,
+                  "bottom": 76.203125,
+                  "left": 174.625
+                }
+              },
+              {
+                "label": "1 / 1",
+                "rect": {
+                  "x": 174.625,
+                  "y": 79.203125,
+                  "width": 58.1875,
+                  "height": 19.1875,
+                  "top": 79.203125,
+                  "right": 232.8125,
+                  "bottom": 98.390625,
+                  "left": 174.625
+                }
+              },
+              {
+                "label": "用时",
+                "rect": {
+                  "x": 238.8125,
+                  "y": 62.203125,
+                  "width": 58.171875,
+                  "height": 14,
+                  "top": 62.203125,
+                  "right": 296.984375,
+                  "bottom": 76.203125,
+                  "left": 238.8125
+                }
+              },
+              {
+                "label": "0:02",
+                "rect": {
+                  "x": 238.8125,
+                  "y": 79.203125,
+                  "width": 58.171875,
+                  "height": 19.1875,
+                  "top": 79.203125,
+                  "right": 296.984375,
+                  "bottom": 98.390625,
+                  "left": 238.8125
+                }
+              },
+              {
+                "label": "向左转向",
+                "rect": {
+                  "x": 17,
+                  "y": 687,
+                  "width": 64.5,
+                  "height": 76,
+                  "top": 687,
+                  "right": 81.5,
+                  "bottom": 763,
+                  "left": 17
+                }
+              },
+              {
+                "label": "向右转向",
+                "rect": {
+                  "x": 89.5,
+                  "y": 687,
+                  "width": 64.5,
+                  "height": 76,
+                  "top": 687,
+                  "right": 154,
+                  "bottom": 763,
+                  "left": 89.5
+                }
+              },
+              {
+                "label": "手刹",
+                "rect": {
+                  "x": 211,
+                  "y": 771,
+                  "width": 44,
+                  "height": 44,
+                  "top": 771,
+                  "right": 255,
+                  "bottom": 815,
+                  "left": 211
+                }
+              },
+              {
+                "label": "刹车",
+                "rect": {
+                  "x": 166,
+                  "y": 687,
+                  "width": 64.5,
+                  "height": 76,
+                  "top": 687,
+                  "right": 230.5,
+                  "bottom": 763,
+                  "left": 166
+                }
+              },
+              {
+                "label": "油门",
+                "rect": {
+                  "x": 238.5,
+                  "y": 687,
+                  "width": 64.5,
+                  "height": 76,
+                  "top": 687,
+                  "right": 303,
+                  "bottom": 763,
+                  "left": 238.5
+                }
+              },
+              {
+                "label": "查看赛道地图",
+                "rect": {
+                  "x": 17,
+                  "y": 128,
+                  "width": 90,
+                  "height": 84,
+                  "top": 128,
+                  "right": 107,
+                  "bottom": 212,
+                  "left": 17
+                }
+              },
+              {
+                "label": "自动挡速度表",
+                "rect": {
+                  "x": 206.71875,
+                  "y": 128,
+                  "width": 96.28125,
+                  "height": 63,
+                  "top": 128,
+                  "right": 303,
+                  "bottom": 191,
+                  "left": 206.71875
+                }
+              }
+            ],
+            "panel": {
+              "withinStage": true,
+              "background": "rgba(0, 0, 0, 0)",
+              "backgroundImage": "none",
+              "position": "absolute"
+            },
+            "paragraphs": []
+          }
+        },
+        {
+          "name": "public fullscreen gameplay/map and clean exit 320",
+          "mode": "native",
+          "exit": "button"
+        },
+        {
+          "name": "departed scene detaches and stops observable drawing",
+          "detached": true,
+          "first": null,
+          "later": null,
+          "remainingScenes": 0
+        }
+      ],
+      "sourceSHA256": {
+        "games/racing/web/Board.tsx": "deac7a131412d9a889bc0a1d81d07348a229465981399ae736134d736a7ca68c",
+        "games/racing/web/Cover.tsx": "accd92c4dc22c51772d5c0dba0f8f43ff0ca3a6dae88f805e0c8b2bc06818ee1",
+        "games/racing/web/RaceMap.tsx": "72c1c52c3d95b7dc7253393d23479d878fc3ebaa40cfc7dcbb8a9e8e1dc801d9",
+        "games/racing/web/TrackCanvas.tsx": "a5a3e283b7532fe31d58551cd4f3649bcce53262658469afac2983009c4de71a",
+        "games/racing/web/car-definitions.ts": "b51b7d9621335f7eedea42bfc4a6675e39930ad401f5072f3fe22974d4094aab",
+        "games/racing/web/catalog.tsx": "77a91cbd1948019f0b237a880c72ff4d4c23d7e12abc0ccd15485756e34ef4dc",
+        "games/racing/web/chase-camera.ts": "707b8e96584ea1f6fab85c498f59febdd25e86313c15e313f94b22f185b91301",
+        "games/racing/web/chase-fallback.ts": "2b176d0d0be038d204a63a633c64c5edd68eabb326f7fe482e2a347aa4d1d77d",
+        "games/racing/web/chase-renderer.ts": "a5f0a2b3774d2e023d37224e05a3647e3f942c650d13a2f9080c0f552a3891e0",
+        "games/racing/web/classic-assets.ts": "5de32fd0213d15ea01bb5c9dc907fa65bd33cc99e84bd20ab51998d5bcb7f769",
+        "games/racing/web/classic-attitude.ts": "c4ec07ea3593e53c09a85df42644bb9f89676045a28677d1a1e7e33d25458b75",
+        "games/racing/web/classic-audio.ts": "9df3cd73513ed4e09ccb15b27e2e283a1c6bca2bbd82aedff66e2aab1b5f612b",
+        "games/racing/web/classic-camera-clearance.ts": "a49fe57ff3265b7c926cc7df2f12d95261da3a61ad4ed63e825d53c702e5562a",
+        "games/racing/web/classic-camera-modes.ts": "4f03dcd94ef4c1f94a1451f84874eb987cb06bb92db0c04f5f42f0bfc572ea9d",
+        "games/racing/web/classic-catalog.ts": "d63618d6963ea5dba73ffcb20c76bb889750991cc4738ac6d34bd8a7ee4fd5aa",
+        "games/racing/web/classic-horn.ts": "0bb3b7669cc26eabb34cf3eda6a7f9d7ed2639efd270d887ee66475c042797ed",
+        "games/racing/web/classic-images.ts": "e2e81e06d56f98b73abb3e203b00c1f85cdbc9a302a876583bed9d97ac401c09",
+        "games/racing/web/classic-loading.ts": "2d76605eb42e050d75620d0b8e59fe553adea22e0c95f740d60fbe6e6f25d4a6",
+        "games/racing/web/classic-media.ts": "5f54f578d508798b410ed45fefed54fa3e81dab370061e47bf729d1ac5e66216",
+        "games/racing/web/classic-motion.ts": "1b416f75bccabdf7e65d8775233bfd37ca41d9205c744f4bef1a5c968d97c5d3",
+        "games/racing/web/classic-paint.ts": "bb7fd090bff37f2a070c2630a01d2b7134af2781fb072171b3e0cde414509080",
+        "games/racing/web/classic-renderer.ts": "831540d1a5b222f283ba9943a1ec5e26ffb891fb7555079999ee1b70aef817db",
+        "games/racing/web/classic-road.ts": "bed29272152e59193faa3428646a3d5a32110ddbfe07ed4dd935f6d4df33d757",
+        "games/racing/web/classic-vehicles.json": "6c93191d3c097113db66ddf3755761e88f66a85850db6113533e2c35515b1359",
+        "games/racing/web/dynamics.ts": "705c52d4ec3fae3b203fa07b7d6c2cc544bbd81a841bbe1796fadd08897baade",
+        "games/racing/web/input.ts": "21f7168da1da99b0549c0451a859af6b542c28722845da5f9eea1c4b36127e4f",
+        "games/racing/web/lifecycle.ts": "7f05fc774e658fa489b10999daff5ce440a8fe2e87e50f1ccf8ee28d67aa4af2",
+        "games/racing/web/module.tsx": "48e53c3ccd50fe874676faeee8c8467856709d33f8ba1100818e588ae3ca4e9f",
+        "games/racing/web/prediction.ts": "a3917ab0560ec54992f79ed9bfca0a9257cc0bae87394332f5c0b556a92c43fa",
+        "games/racing/web/presentation.ts": "f66b4f2ce6c8828575be1bf79b043bb03b1e15a5fce8c83b9221ee40e316b71d",
+        "games/racing/web/remote-pose.ts": "e749bb21501630b75eb0abd263f3e53100e7bd62f645fb23dc549a49e44a4a7f",
+        "games/racing/web/scene-theme.ts": "7bf52f044b7c0575e8e8934961d2bc77c5ce74fd46e07373cfaa66b689b6540a",
+        "games/racing/web/style.css": "aa2121f7cd2ea826de9d3c1c4f0a8fa3affe5d45695227771d1011b2f8fe6622",
+        "games/racing/web/timeline.ts": "44c59f299e2199a4ae589ab5f0076b7b32d327d72d1ba96eaddcb0e82e9b8d8b",
+        "games/racing/web/types.ts": "c9ff70bad9d570b3afb3284f1c01c758e7b6c7df227e8053afe0cc96eec8773f",
+        "games/racing/web/use-classic-engine.ts": "b45c54fec253bc776456fc5673404815a0bdad23e488694f51fd9ebdf4706fd4",
+        "games/racing/web/use-classic-horn.ts": "46cae83ed14de329414fec2f5f6cbb2d69e01aa13fe0e4296b3c0d4725998783",
+        "games/racing/web/vehicle-model.ts": "090f463a37fd3eef01763a0d02fdbeab4ce74708da0ea74d41106b9f4971330a",
+        "games/racing/server/bot.go": "7cc3d010ad4b05badeeb0f1b2cd40b40a12265dd73cb22a24ec18df06611b337",
+        "games/racing/server/brake_pressure_test.go": "d3a2329b890b690125fec3f782ed282bb4739d1cb92aca03f3197b7fcf3e5006",
+        "games/racing/server/checkpoint_test.go": "35ecaa506e88b3868c6b5e867e00823e5ba32dbe035b198c67e789630d3f2d61",
+        "games/racing/server/classic_bot.go": "17e6db1e5be21ef59b0f2826092e6638c2d27549ef658c7e08f92b5bec0380c9",
+        "games/racing/server/classic_motion.go": "fb9c21ee08dc9fd88a187dafcd345d8220b88e2358b41472b0ec2afb53e5aca3",
+        "games/racing/server/classic_motion_contract_test.go": "cde931a233e60efe5ca26e01125a8f9980c5e44500081d92e7bcad729e3bdb6a",
+        "games/racing/server/classic_physics.go": "c3eebe34edeecde548e7d9f70e655e8ab7732a7a1e1ed3a1e6c3d582e66f6c3f",
+        "games/racing/server/classic_track.go": "c6cf01db57cc418aca371908acbf06d74a31763cfafadf5abf5f317501cfbb66",
+        "games/racing/server/data/car-bodies.json": "b6fef50f8c765ca58cea116534ac635b898b4637d8e88e8dde0619dd5923625d",
+        "games/racing/server/data/index.json": "0b8233e29195ebffa04a750f979d56134003bfdc2f0b13c0a2b00c541ccb2a2d",
+        "games/racing/server/data/rules/1221e1e0fca8872f64a6b899c2bb4c81666261ed9f4bc1f075ccce30922bde00.json": "4f2bb0910b077429682e149dd00574a150888755633d7c9d2971959d6677deb4",
+        "games/racing/server/data/rules/1dafb107dfa41d5c9f631e002bf40cdc08c3b252d79afecd015645d2b10edb72.json": "7b5a41349d0d611b1ff2f1cf67d7eb701bfadb3abd64221c8b753d27553776c1",
+        "games/racing/server/data/rules/8126825f6c2fcc07a1bed58eb497ae3eaa6f9f7d54843680e13ebe6492a39562.json": "3f29e0cc80785b4e22dba4bf983d93c7447cc49876f4421f95d4ff4976b5952e",
+        "games/racing/server/data/rules/c900ce1d7f008dd8f4c12e6f01f2b88d8f54c4ace60a406c6d3724009b47a82a.json": "5a4b842c6b55c09f319c1dda493c037e8d86b6efbc95dd5e1900bd32c0a310db",
+        "games/racing/server/module.go": "14a530ba9df1dedd1cc78ff7d589b9e0147f9b610e7b09b2f6ccb87841015c14",
+        "games/racing/server/physics.go": "d3262d0bf8292fa9613b44ee7cac5ffca5ddfe97a9baf05408a6eaf8d9a24809",
+        "games/racing/server/physics_test.go": "b7f0ff8f71ac9647fc4399f13ccf35a7defd8b9e75e988a62c8fb7bb6ad9ca7e",
+        "games/racing/server/remake_tracks_test.go": "3a5dbb4f73395574cd813ec24c8de06ae6d97125e6c9d5dbd0d4c1a3d3a3e98e",
+        "games/racing/server/scenery_test.go": "032e675aac626506af245c3e3d00cee37ec16750fcb5774e06e16df792c37844",
+        "games/racing/server/sequence_test.go": "719d8cf81debc0159178f6d2b870eed92328aab4d7cc5213435c56a8a8f3cc2b",
+        "games/racing/server/state.go": "5a29591eb94f8f7859d7ef01d61c97227b039c9cdc3464c6d86966833d24ced3",
+        "games/racing/server/steering_speed_test.go": "cab13784a0fc57d474520fea79932bf248e8fa2c7614a2752cf7637bb1539c2c",
+        "games/racing/server/tracks.go": "15bb6b609067e4e17b21c48e032f7d0773a6f13ad6362e6f9eaf423e83910c83"
+      },
+      "distSHA256": "d06f394e7f752fb64c0110672e4a21ab2e9cfe57a7273ef0a3d3264a98e6a209"
+    }
+  },
+  "limitations": [
+    "Chromium touch emulation, not physical phone ergonomics or device GPU measurements.",
+    "Original racing physics and media are unchanged; this report does not replace the previous remake validation."
+  ]
+}
