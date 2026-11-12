@@ -10,7 +10,7 @@ const pending = new Map(), packets = [], states = [], requests = [], exceptions 
 const sent = new Map(), ackMS = [], held = new Map();
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const call = (method, params = {}, sessionId) => new Promise((resolve, reject) => {
-  const id = ++serial, timer = setTimeout(() => { pending.delete(id); reject(Error(`CDP timeout: ${method}`)); }, 20000);
+  const id = ++serial, timer = setTimeout(() => { pending.delete(id); reject(Error(`CDP timeout: ${method}`)); }, method==='Runtime.evaluate'&&params.awaitPromise?90000:20000);
   pending.set(id, { resolve: (value) => { clearTimeout(timer); resolve(value); }, reject: (error) => { clearTimeout(timer); reject(error); } });
   socket.send(JSON.stringify({ id, method, params, ...(sessionId ? { sessionId } : {}) }));
 });
@@ -45,7 +45,7 @@ socket.onmessage = ({ data }) => {
         const state = typeof packet.state === "string" ? JSON.parse(packet.state) : packet.state;
         const view = packet.type === "game" ? packet.game?.data : state?.room?.game?.data;
         if (view?.cars) states.push({ at, bytes: Buffer.byteLength(JSON.stringify(view)), serverAt: view.serverAt,
-          phase: view.phase, epoch: view.epoch, cars: view.cars,
+          phase: view.phase, epoch: view.epoch, cars: view.cars,props:view.props,events:view.events,
           staticCounts: Object.fromEntries(["points", "road", "barriers", "props"].map((key) => [key, view.track?.[key]?.length ?? 0])) });
       }
     } catch { /* Binary protocol/other traffic is outside these observations. */ }
@@ -194,6 +194,27 @@ try {
     }
     await sleep(250); samples.push({ name: "after", data: await sample() });
     output = { samples };
+  } else if(options.mode==='props-drive') {
+    const before=await sample();
+    await evaluate(`(()=>{const p={frames:[],driving:true};window.__nfsPropsProbe=p;const tick=()=>{const c=document.querySelector('.racing-chase');p.frames.push({at:Date.now(),frame:c?.dataset.frameCounter,broken:c?.dataset.propsBroken,animations:c?.dataset.propAnimations});if(p.frames.length>6000)p.frames.shift();if(p.driving)requestAnimationFrame(tick)};requestAnimationFrame(tick);return true})()`);
+    const drive=options.observeOnly?evaluate(`new Promise(resolve=>setTimeout(()=>{window.__nfsPropsProbe.driving=false;resolve({frames:window.__nfsPropsProbe.frames,rows:[],hit:null})},${options.milliseconds??18000}))`):evaluate(`(async()=>{const rows=[],started=performance.now(),index=${options.propIndex??1},target=${JSON.stringify(options.target??[320.48711373,131.324340898])},wanted=${options.speed??4},passDistance=${options.passDistance??0},wall=${!!options.wall};
+      const route=${options.followRoute?"await(await fetch('/racing/v3/tracks/uk.route.json')).json()":"null"};
+      const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));let room,hit=null,direction=null,minDistance=Infinity,maximumSpeed=0;
+      while(performance.now()-started<45000){const state=await(await fetch('/api/state')).json();room=state.room;const d=room.game.data,c=d.cars.find(c=>c.seat===room.you),bits=Uint8Array.from(atob(d.props.broken),x=>x.charCodeAt(0));
+        if(!direction){const dx=target[0]-c.x/10,dz=target[1]-c.y/10,n=Math.hypot(dx,dz);direction=[dx/n,dz/n]}
+        const distance=Math.hypot(c.x/10-target[0],c.y/10-target[1]),progress=(c.x/10-target[0])*direction[0]+(c.y/10-target[1])*direction[1];minDistance=Math.min(minDistance,distance);maximumSpeed=Math.max(maximumSpeed,c.speed/10);
+        rows.push({at:Date.now(),serverAt:d.serverAt,car:c,props:d.props,events:d.events,distance,progress});
+        const completed=passDistance?progress>=passDistance&&minDistance<1.35:wall?maximumSpeed>3&&d.events.some(e=>e.type==='collision'&&e.seat===room.you):(bits[index>>3]&(1<<(index&7)));
+        if(completed){hit=rows.at(-1);break}
+        let goal=target;if(route&&((25-(c.routeIndex??0)+route.points.length)%route.points.length)>8){const p=route.points[((c.routeIndex??0)+6)%route.points.length];goal=[p.x,p.z]}else if(passDistance&&progress>0)goal=[target[0]+direction[0]*(passDistance+10),target[1]+direction[1]*(passDistance+10)];
+        const dx=goal[0]-c.x/10,dz=goal[1]-c.y/10,diff=Math.atan2(Math.sin(Math.atan2(dz,dx)-c.angle),Math.cos(Math.atan2(dz,dx)-c.angle));const delta=Math.atan2(2*2.272*Math.sin(diff),Math.max(4,Math.hypot(dx,dz))),steer=clamp(delta/Math.atan(2.272/11),-1,1),v=c.speed/10,pressure=clamp((v-wanted-.5)/3,0,1),throttle=pressure>0?0:clamp(.18+(wanted-v)/4,0,1);
+        const action={type:'drive',epoch:d.epoch,seq:c.seq+1,steer,throttle,brake:pressure>0,brakeAmount:pressure,drift:false};const response=await fetch('/api/rooms/'+room.id,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'action',version:room.version,nonce:crypto.randomUUID(),action})});const result=await response.json();rows.at(-1).input={action,status:response.status};if(![200,409].includes(response.status))throw Error('normal drive rejected '+JSON.stringify(result));await new Promise(r=>setTimeout(r,100));}
+      if(room){const state=await(await fetch('/api/state')).json(),r=state.room,d=r.game.data,c=d.cars.find(c=>c.seat===r.you);await fetch('/api/rooms/'+r.id,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'action',version:r.version,nonce:crypto.randomUUID(),action:{type:'drive',epoch:d.epoch,seq:c.seq+1,steer:0,throttle:0,brake:true,brakeAmount:1,drift:false}})})}
+      await new Promise(r=>setTimeout(r,1900));window.__nfsPropsProbe.driving=false;return {rows,hit,elapsedMS:performance.now()-started,minDistance,maximumSpeed,completion:${JSON.stringify(options.wall?'fixed-wall-contact':options.passDistance?'passed-broken-position':'target-prop-broken')},frames:window.__nfsPropsProbe.frames}})()`);
+    let done=false,result,error;drive.then(v=>{result=v;done=true},e=>{error=e;done=true});let impactShot=false;
+    screenshots.push({name:'before',data:(await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false})).data});
+    while(!done){const frame=await evaluate('window.__nfsPropsProbe.frames.at(-1)');if(!impactShot&&frame?.animations&&JSON.parse(frame.animations).some(p=>p.phase==='animating')){screenshots.push({name:'impact',data:(await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false})).data});impactShot=true}await sleep(50)}
+    if(error)throw error;screenshots.push({name:'after',data:(await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false})).data});output={before,...result,after:await sample(),inputMethod:options.observeOnly?'passive independent observer; no driving input':'ordinary authenticated HTTP action/drive closed loop, original Start position, real clock; no snapshot mutation'};
   } else if (options.mode === "performance") {
     const duration = options.milliseconds ?? 6000;
     const before = await sample();

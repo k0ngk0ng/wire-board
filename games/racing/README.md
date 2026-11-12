@@ -54,7 +54,7 @@ python3 -B scripts/racing/check-nfs.py --out .local/racing-nfs-browser/new-laten
 
 浏览器记录区分桌面和 320px 触屏仿真，不将 Chrome 仿真声称为实体手机性能测试。main 按改动范围检查，tag 只复用同一提交的已验证构建。
 
-本轮触屏卡键与防选中验证见 [手机输入验收](../../docs/research/racing-nfs/MOBILE-SAFETY.md) 和 [机器记录](../../docs/research/racing-nfs/mobile-safety-validation.json)；可撞毁物件的规则验证另见 [物件验收记录](../../docs/research/racing-nfs/props-validation.json)。
+本轮触屏卡键与防选中验证见 [手机输入验收](../../docs/research/racing-nfs/MOBILE-SAFETY.md) 和 [机器记录](../../docs/research/racing-nfs/mobile-safety-validation.json)；可撞毁物件的规则验证另见 [物件验收记录](../../docs/research/racing-nfs/props-validation.json)，实际网页、观战、恢复和性能见 [物件网页验收](../../docs/research/racing-nfs/PROPS-BROWSER.md)。
 
 ## 画面与操作
 

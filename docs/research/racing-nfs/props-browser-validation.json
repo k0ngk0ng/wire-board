@@ -1,0 +1,456 @@
+{
+  "passed": true,
+  "distSHA256": "8788d89fb4685bf72d38fff10177974610e8412643262d370615effeda67bb5a",
+  "sameRacingSourceHashes": true,
+  "sourceFileCount": 70,
+  "reports": {
+    "safety-green-01": {
+      "path": ".local/racing-nfs-browser/safety-green-01/report.json",
+      "sha256": "8ef9ba92f79da9eef8fc80039e183d2937160f664252d1f835a65df7e4fb0238",
+      "overallPassed": true,
+      "acceptedChecks": [
+        {
+          "name": "shared creation and per-seat vehicle preparation",
+          "track": "france",
+          "night": false,
+          "vehicle": "p911"
+        },
+        {
+          "name": "selected original geometry and byte loading",
+          "track": "france",
+          "night": false,
+          "bytes": 9000532,
+          "triangles": "37096"
+        },
+        {
+          "name": "native two-finger lift clears left and preserves gas"
+        },
+        {
+          "name": "all held controls opt in to touch menu guard"
+        },
+        {
+          "name": "native held touchstart prevents callout defaults"
+        },
+        {
+          "name": "ordinary click controls do not suppress compatibility click"
+        },
+        {
+          "name": "board and descendants disable text selection and callout"
+        },
+        {
+          "name": "native release-loss simulation is exercised left-lift"
+        },
+        {
+          "name": "touch list releases only departed finger left-lift"
+        },
+        {
+          "name": "all lifted touches clear held state left-lift"
+        },
+        {
+          "name": "fresh gesture works after interrupted release left-lift"
+        },
+        {
+          "name": "native release-loss simulation is exercised gas-lift"
+        },
+        {
+          "name": "touch list releases only departed finger gas-lift"
+        },
+        {
+          "name": "all lifted touches clear held state gas-lift"
+        },
+        {
+          "name": "fresh gesture works after interrupted release gas-lift"
+        },
+        {
+          "name": "dragging steering outside releases it without cancelling gas"
+        },
+        {
+          "name": "button refocus blocks held key repeat ' '"
+        },
+        {
+          "name": "button refocus blocks held key repeat 'Enter'"
+        },
+        {
+          "name": "touch release preserves keyboard and Gamepad sources"
+        },
+        {
+          "name": "ordinary touch click still changes camera and opens map"
+        },
+        {
+          "name": "native HUD canvas button long press and HUD drag do not select"
+        },
+        {
+          "name": "board contextmenu and selectstart guard defaults"
+        },
+        {
+          "name": "native board contextmenu is prevented"
+        },
+        {
+          "name": "platform chat retains native editable selection"
+        },
+        {
+          "name": "platform editor contextmenu and selection defaults remain allowed"
+        },
+        {
+          "name": "departed scene detaches and stops observable drawing",
+          "detached": true,
+          "first": null,
+          "later": null,
+          "remainingScenes": 0
+        }
+      ]
+    },
+    "props-minimal-01": {
+      "path": ".local/racing-nfs-browser/props-minimal-01/report.json",
+      "sha256": "eda36d290122212df6b0becdd2d60f0199f1998eba3bd0f884db34faf783f001",
+      "overallPassed": true,
+      "acceptedChecks": [
+        {
+          "name": "shared creation and per-seat vehicle preparation",
+          "track": "france",
+          "night": false,
+          "vehicle": "p911"
+        },
+        {
+          "name": "selected original geometry and byte loading",
+          "track": "france",
+          "night": false,
+          "bytes": 9000532,
+          "triangles": "37096"
+        },
+        {
+          "name": "ordinary France prop1 low hit and original renderer animation",
+          "elapsedMS": 12174.5,
+          "event": {
+            "prop": 1,
+            "dir": 2.962,
+            "id": 2,
+            "type": "prop",
+            "at": 1794462462342,
+            "x": 0,
+            "y": 0,
+            "seat": 0,
+            "intensity": 0.22
+          },
+          "animationFrames": 23
+        },
+        {
+          "name": "departed scene detaches and stops observable drawing",
+          "detached": true,
+          "first": null,
+          "later": null,
+          "remainingScenes": 0
+        },
+        {
+          "name": "shared creation and per-seat vehicle preparation",
+          "track": "france",
+          "night": false,
+          "vehicle": "p911"
+        },
+        {
+          "name": "selected original geometry and byte loading",
+          "track": "france",
+          "night": false,
+          "bytes": 9000532,
+          "triangles": "37096"
+        },
+        {
+          "name": "ordinary France prop1 high hit and original renderer animation",
+          "elapsedMS": 6311.699999809265,
+          "event": {
+            "prop": 1,
+            "dir": 2.913,
+            "high": true,
+            "id": 2,
+            "type": "prop",
+            "at": 1794462473285,
+            "x": 0,
+            "y": 0,
+            "seat": 0,
+            "intensity": 0.654
+          },
+          "animationFrames": 87
+        },
+        {
+          "name": "departed scene detaches and stops observable drawing",
+          "detached": true,
+          "first": null,
+          "later": null,
+          "remainingScenes": 0
+        }
+      ]
+    },
+    "props-browser-01": {
+      "path": ".local/racing-nfs-browser/props-browser-01/report.json",
+      "sha256": "ce721dfed91c1ae55d5bbef6dc2a6cc5565b3510ff8445d887966ac98ec9327e",
+      "overallPassed": false,
+      "acceptedChecks": [
+        {
+          "name": "original-grid prop and once native CAN props-uk-day",
+          "event": {
+            "prop": 0,
+            "dir": 2.552,
+            "high": true,
+            "id": 2,
+            "type": "prop",
+            "at": 1794463014854,
+            "x": 0,
+            "y": 0,
+            "seat": 0,
+            "intensity": 0.627
+          }
+        },
+        {
+          "name": "independent observer sees same prop bit and original animation",
+          "event": {
+            "prop": 1,
+            "dir": 2.962,
+            "id": 2,
+            "type": "prop",
+            "at": 1794463036164,
+            "x": 0,
+            "y": 0,
+            "seat": 0,
+            "intensity": 0.22
+          }
+        },
+        {
+          "name": "following original-grid car passes destroyed prop without repeat hit",
+          "minDistance": 0.13458996608649818
+        },
+        {
+          "name": "refresh keeps broken prop hidden without replay or race reset"
+        },
+        {
+          "name": "original-grid prop and once native CAN props-france-night",
+          "event": {
+            "prop": 1,
+            "dir": 2.962,
+            "id": 2,
+            "type": "prop",
+            "at": 1794463036164,
+            "x": 0,
+            "y": 0,
+            "seat": 0,
+            "intensity": 0.22
+          }
+        },
+        {
+          "name": "original-grid prop and once native CAN props-uk-night",
+          "event": {
+            "prop": 0,
+            "dir": 2.548,
+            "high": true,
+            "id": 2,
+            "type": "prop",
+            "at": 1794463072736,
+            "x": 0,
+            "y": 0,
+            "seat": 0,
+            "intensity": 0.499
+          }
+        }
+      ]
+    },
+    "props-performance-01": {
+      "path": ".local/racing-nfs-browser/props-performance-01/report.json",
+      "sha256": "e1b23a93b1c52c33231b2c7cf2fe0a21e674857809ad3465fb71de2e3eec95e4",
+      "overallPassed": true,
+      "acceptedChecks": [
+        {
+          "name": "shared creation and per-seat vehicle preparation",
+          "track": "france",
+          "night": false,
+          "vehicle": "p911"
+        },
+        {
+          "name": "selected original geometry and byte loading",
+          "track": "france",
+          "night": false,
+          "bytes": 9689544,
+          "triangles": "38509"
+        },
+        {
+          "name": "props-desktop-six-car-performance",
+          "metrics": {
+            "elapsed": 5998.89999961853,
+            "rafSamples": 361,
+            "actualDrawUpdates": 360,
+            "fps": 60.01100202085255,
+            "p50MS": 16.600000381469727,
+            "p95MS": 18.199999809265137,
+            "p99MS": 18.699999809265137,
+            "moved": 69.46579468955926
+          },
+          "maxDynamicBytes": 5414,
+          "ack": {
+            "count": 0,
+            "p50MS": null,
+            "p95MS": null,
+            "statuses": {}
+          }
+        },
+        {
+          "name": "props-touch-six-car-performance",
+          "metrics": {
+            "elapsed": 5999.699999809265,
+            "rafSamples": 361,
+            "actualDrawUpdates": 360,
+            "fps": 60.00300015191504,
+            "p50MS": 16.699999809265137,
+            "p95MS": 18.300000190734863,
+            "p99MS": 18.59999942779541,
+            "moved": 15.385443640012516
+          },
+          "maxDynamicBytes": 5405,
+          "ack": {
+            "count": 0,
+            "p50MS": null,
+            "p95MS": null,
+            "statuses": {}
+          }
+        },
+        {
+          "name": "departed scene detaches and stops observable drawing",
+          "detached": true,
+          "first": null,
+          "later": null,
+          "remainingScenes": 0
+        }
+      ]
+    },
+    "props-wall-01": {
+      "path": ".local/racing-nfs-browser/props-wall-01/report.json",
+      "sha256": "dae1816bc993139e4226ad5b914a9fc065605fc51aee22e5dc5632fad67f58b9",
+      "overallPassed": true,
+      "acceptedChecks": [
+        {
+          "name": "shared creation and per-seat vehicle preparation",
+          "track": "uk",
+          "night": false,
+          "vehicle": "p911"
+        },
+        {
+          "name": "selected original geometry and byte loading",
+          "track": "uk",
+          "night": false,
+          "bytes": 8304624,
+          "triangles": "37038"
+        },
+        {
+          "name": "ordinary fixed wall contact remains solid without prop destruction",
+          "contacts": [
+            {
+              "edge": 9,
+              "kind": "wall",
+              "mappedToProp": false,
+              "capsuleCentrelineDistanceM": 0.9500768221064249,
+              "a": [
+                1143.985107,
+                909.8945620000001
+              ],
+              "b": [
+                1148.4631960000002,
+                909.194641
+              ]
+            }
+          ]
+        },
+        {
+          "name": "departed scene detaches and stops observable drawing",
+          "detached": true,
+          "first": null,
+          "later": null,
+          "remainingScenes": 0
+        }
+      ]
+    }
+  },
+  "minimalFranceOnceClipOfflineVerified": true,
+  "cleanupErrors": [],
+  "taskSocketDirectoriesRemaining": [],
+  "date": "2026-11-12",
+  "scope": "Frozen production racing build: native mobile safety, authenticated ordinary-drive prop hits, independent observer/follower/refresh, fixed wall geometry contact and six-car performance.",
+  "sourceSHA256": {
+    "games/racing/web/Board.tsx": "a13d9eb3b9e273279e6137f370916609a205f0d747e7f4ea4176397ae3677189",
+    "games/racing/web/Cover.tsx": "accd92c4dc22c51772d5c0dba0f8f43ff0ca3a6dae88f805e0c8b2bc06818ee1",
+    "games/racing/web/RaceMap.tsx": "72c1c52c3d95b7dc7253393d23479d878fc3ebaa40cfc7dcbb8a9e8e1dc801d9",
+    "games/racing/web/TrackCanvas.tsx": "e59e7bb207e560cecb00ee2ab1a48a7946654abf17a6fad1a356317e18bdc877",
+    "games/racing/web/car-definitions.ts": "b51b7d9621335f7eedea42bfc4a6675e39930ad401f5072f3fe22974d4094aab",
+    "games/racing/web/catalog.tsx": "77a91cbd1948019f0b237a880c72ff4d4c23d7e12abc0ccd15485756e34ef4dc",
+    "games/racing/web/chase-camera.ts": "707b8e96584ea1f6fab85c498f59febdd25e86313c15e313f94b22f185b91301",
+    "games/racing/web/chase-fallback.ts": "2b176d0d0be038d204a63a633c64c5edd68eabb326f7fe482e2a347aa4d1d77d",
+    "games/racing/web/chase-renderer.ts": "aba5f7fb7f78137a5c7d91bf80734ab0dabe37a0e826ef37850af0db074a0e79",
+    "games/racing/web/classic-assets.ts": "02a01fbef621425baf37149eab77a4db476b38d991b717bdfad6d6264f304cb7",
+    "games/racing/web/classic-attitude.ts": "c4ec07ea3593e53c09a85df42644bb9f89676045a28677d1a1e7e33d25458b75",
+    "games/racing/web/classic-audio.ts": "9df3cd73513ed4e09ccb15b27e2e283a1c6bca2bbd82aedff66e2aab1b5f612b",
+    "games/racing/web/classic-camera-clearance.ts": "a49fe57ff3265b7c926cc7df2f12d95261da3a61ad4ed63e825d53c702e5562a",
+    "games/racing/web/classic-camera-modes.ts": "4f03dcd94ef4c1f94a1451f84874eb987cb06bb92db0c04f5f42f0bfc572ea9d",
+    "games/racing/web/classic-catalog.ts": "d63618d6963ea5dba73ffcb20c76bb889750991cc4738ac6d34bd8a7ee4fd5aa",
+    "games/racing/web/classic-horn.ts": "0bb3b7669cc26eabb34cf3eda6a7f9d7ed2639efd270d887ee66475c042797ed",
+    "games/racing/web/classic-images.ts": "e2e81e06d56f98b73abb3e203b00c1f85cdbc9a302a876583bed9d97ac401c09",
+    "games/racing/web/classic-loading.ts": "419b310795d82bc0eae7ab23afab1429c790fea1b0df16228c4f981822c19f61",
+    "games/racing/web/classic-media.ts": "5f54f578d508798b410ed45fefed54fa3e81dab370061e47bf729d1ac5e66216",
+    "games/racing/web/classic-motion.ts": "1b416f75bccabdf7e65d8775233bfd37ca41d9205c744f4bef1a5c968d97c5d3",
+    "games/racing/web/classic-paint.ts": "bb7fd090bff37f2a070c2630a01d2b7134af2781fb072171b3e0cde414509080",
+    "games/racing/web/classic-prop-animation.ts": "7295e8aa21e26c61104b7b5272b48a7a1b2aa80132823bec4932e776bfe76d0c",
+    "games/racing/web/classic-renderer.ts": "dc1737c1a9c96ba42363b61efc1a9368d3cf0d601b147d5cd01abfde85b7d868",
+    "games/racing/web/classic-road.ts": "e7c40574ade651756539ab74227d669bee0cd9fad460866ac0056db9acf6c9b7",
+    "games/racing/web/classic-vehicles.json": "6c93191d3c097113db66ddf3755761e88f66a85850db6113533e2c35515b1359",
+    "games/racing/web/dynamics.ts": "705c52d4ec3fae3b203fa07b7d6c2cc544bbd81a841bbe1796fadd08897baade",
+    "games/racing/web/input.ts": "21f7168da1da99b0549c0451a859af6b542c28722845da5f9eea1c4b36127e4f",
+    "games/racing/web/lifecycle.ts": "7f05fc774e658fa489b10999daff5ce440a8fe2e87e50f1ccf8ee28d67aa4af2",
+    "games/racing/web/module.tsx": "48e53c3ccd50fe874676faeee8c8467856709d33f8ba1100818e588ae3ca4e9f",
+    "games/racing/web/prediction.ts": "73fd6fb46d082a88cc3b0bc6a6b47cf1be75d2eafbd3405f043e5afe6f1f7358",
+    "games/racing/web/presentation.ts": "f66b4f2ce6c8828575be1bf79b043bb03b1e15a5fce8c83b9221ee40e316b71d",
+    "games/racing/web/racing-touch-contacts.ts": "238b3869d3861c4ed5117f6bf265f9b169121bba5719dbdfbb5e17d2f84c77f9",
+    "games/racing/web/remote-pose.ts": "c4dc49391023ae63e53585f4ff58a8b12237abab3a606cdbad3c843308dbc824",
+    "games/racing/web/scene-theme.ts": "7bf52f044b7c0575e8e8934961d2bc77c5ce74fd46e07373cfaa66b689b6540a",
+    "games/racing/web/style.css": "f23d696fa5e5e63675c7880e645661bb90423e1a4fc78dfc5814f232c4dfdfb3",
+    "games/racing/web/timeline.ts": "44c59f299e2199a4ae589ab5f0076b7b32d327d72d1ba96eaddcb0e82e9b8d8b",
+    "games/racing/web/types.ts": "11aa458bbd1dd07b1c3f38ed3d7c157c58bc9e96d2fc4063a21d88caee8148b4",
+    "games/racing/web/use-classic-engine.ts": "b45c54fec253bc776456fc5673404815a0bdad23e488694f51fd9ebdf4706fd4",
+    "games/racing/web/use-classic-horn.ts": "46cae83ed14de329414fec2f5f6cbb2d69e01aa13fe0e4296b3c0d4725998783",
+    "games/racing/web/vehicle-model.ts": "090f463a37fd3eef01763a0d02fdbeab4ce74708da0ea74d41106b9f4971330a",
+    "games/racing/server/bot.go": "7cc3d010ad4b05badeeb0f1b2cd40b40a12265dd73cb22a24ec18df06611b337",
+    "games/racing/server/brake_pressure_test.go": "d3a2329b890b690125fec3f782ed282bb4739d1cb92aca03f3197b7fcf3e5006",
+    "games/racing/server/checkpoint_test.go": "35ecaa506e88b3868c6b5e867e00823e5ba32dbe035b198c67e789630d3f2d61",
+    "games/racing/server/classic_bot.go": "f56fa2295c25d38f4cbb69366312ccaa9d4373bb83b6ad3d574add0dd93d6c1a",
+    "games/racing/server/classic_motion.go": "fb9c21ee08dc9fd88a187dafcd345d8220b88e2358b41472b0ec2afb53e5aca3",
+    "games/racing/server/classic_motion_contract_test.go": "cde931a233e60efe5ca26e01125a8f9980c5e44500081d92e7bcad729e3bdb6a",
+    "games/racing/server/classic_physics.go": "523788c8e79b7b6046625da91a7db9556f3a36308b94327dff9b620da8371a3e",
+    "games/racing/server/classic_props.go": "8a238aa4fe3ce2b4cdcb7f9314748387f20b8a95c6d72b7608fe7c29cc0e005a",
+    "games/racing/server/classic_props_contract_test.go": "bf07a538908fde3f18642d1ee9322cc202e5699e50014e36e3786113d1eb0ada",
+    "games/racing/server/classic_track.go": "b76b631116645b053f3ad5e6af14c1b4fe6520fe1dea6c1eb4b2813e83c85a70",
+    "games/racing/server/data/car-bodies.json": "b6fef50f8c765ca58cea116534ac635b898b4637d8e88e8dde0619dd5923625d",
+    "games/racing/server/data/index.json": "0b8233e29195ebffa04a750f979d56134003bfdc2f0b13c0a2b00c541ccb2a2d",
+    "games/racing/server/data/prop-index.json": "e0300921c1941014ab3a89f0662940eaf0d5417db70c84d20b6a176df7b7173d",
+    "games/racing/server/data/props/1023b3cfa36a9957004621827ee488cc764df1fa3f37c8354966f3bf50fb5595.json": "ca4c3710897d32854ad6c3f9779ac1b22332c281147b748d57bdad46e4a5750e",
+    "games/racing/server/data/props/13a13f33e36e458e3b5538c4e7e967d4f56a7103a56c8bf8fa41a5994c64fcba.json": "2fc03aac9c4a9529c661040957bc4a1cea4895479294891472e91f94740e39e5",
+    "games/racing/server/data/props/96edba9c90dff6d8e72500a6026974df51b40c4bf69d1582c005e2e69182e222.json": "02d8379429930156b8acdf11e6320f7f8f77c5f327ecbb791b60830b6e614510",
+    "games/racing/server/data/props/a43bad377bdde4be2696f66ce5f437da62fe1ef4ef4e714031a1e86482f08f2a.json": "fe1c0f46b531c1da0d7ca16f0af4435c904aadb6d0d46a1bbcb2e14f214eba83",
+    "games/racing/server/data/rules/1221e1e0fca8872f64a6b899c2bb4c81666261ed9f4bc1f075ccce30922bde00.json": "4f2bb0910b077429682e149dd00574a150888755633d7c9d2971959d6677deb4",
+    "games/racing/server/data/rules/1dafb107dfa41d5c9f631e002bf40cdc08c3b252d79afecd015645d2b10edb72.json": "7b5a41349d0d611b1ff2f1cf67d7eb701bfadb3abd64221c8b753d27553776c1",
+    "games/racing/server/data/rules/8126825f6c2fcc07a1bed58eb497ae3eaa6f9f7d54843680e13ebe6492a39562.json": "3f29e0cc80785b4e22dba4bf983d93c7447cc49876f4421f95d4ff4976b5952e",
+    "games/racing/server/data/rules/c900ce1d7f008dd8f4c12e6f01f2b88d8f54c4ace60a406c6d3724009b47a82a.json": "5a4b842c6b55c09f319c1dda493c037e8d86b6efbc95dd5e1900bd32c0a310db",
+    "games/racing/server/module.go": "141dd10de66dcbe20bf1f1d212c6236585b824fa023367a797844186ac0ec213",
+    "games/racing/server/physics.go": "57fb08877828d978f0bb00d3fa90de142666796b9d853f319e6841f326b30421",
+    "games/racing/server/physics_test.go": "b7f0ff8f71ac9647fc4399f13ccf35a7defd8b9e75e988a62c8fb7bb6ad9ca7e",
+    "games/racing/server/remake_tracks_test.go": "3a5dbb4f73395574cd813ec24c8de06ae6d97125e6c9d5dbd0d4c1a3d3a3e98e",
+    "games/racing/server/scenery_test.go": "032e675aac626506af245c3e3d00cee37ec16750fcb5774e06e16df792c37844",
+    "games/racing/server/sequence_test.go": "719d8cf81debc0159178f6d2b870eed92328aab4d7cc5213435c56a8a8f3cc2b",
+    "games/racing/server/state.go": "45f1d88fefb538eaa1dd71520e4a92bad6c8e8f2c4b02ed4b1d6cff01ee41365",
+    "games/racing/server/steering_speed_test.go": "cab13784a0fc57d474520fea79932bf248e8fa2c7614a2752cf7637bb1539c2c",
+    "games/racing/server/tracks.go": "15bb6b609067e4e17b21c48e032f7d0773a6f13ad6362e6f9eaf423e83910c83"
+  },
+  "limitations": [
+    "Chromium 320px touch emulation; no physical iOS/Safari or specific hardware Gamepad claim.",
+    "Target prop driving uses ordinary authenticated HTTP drive actions and real time, never position/velocity/clock/bit/event writes. Native touch/keyboard/Gamepad boundary coverage belongs to the safety phase.",
+    "The original extended run stopped at a bad fixed-wall target distance gate. Only its six completed visual/world checks are accepted; the fixed-wall gate was independently rerun successfully using actual unmapped wall geometry.",
+    "Performance is local Chromium measurement, not a physical-phone GPU benchmark."
+  ],
+  "finalHarnessSHA256": {
+    "scripts/racing/check-nfs.py": "9ba990749df550ad8414b83ce733a986bbb8296ea2fbe95b27e240ad6f6dd69a",
+    "scripts/racing/nfs-browser-input.mjs": "df853a3406de3261eb186a32c55886e570d28d8789a0769b6a50945e1a1f9acf"
+  }
+}

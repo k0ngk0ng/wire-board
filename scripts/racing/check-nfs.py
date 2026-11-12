@@ -10,6 +10,7 @@ import argparse
 import base64
 import hashlib
 import json
+import math
 import os
 import re
 from pathlib import Path
@@ -19,6 +20,7 @@ import subprocess
 import time
 import traceback
 import uuid
+from concurrent.futures import ThreadPoolExecutor
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -586,6 +588,123 @@ class Acceptance:
         self.record("safety-failures",failures)
         self.report["safety"]={"passed":not failures,"failures":failures,"simulation":"native Chromium CDP touch; only pointer release delivery intentionally blocked; no physical iOS claim"}
         require(not failures,"mobile safety regression gates failed",failures)
+        self.close_room()
+
+    def props_minimal(self):
+        for speed in (4,13):
+            label='low'if speed<8 else'high'
+            self.create_ui('france',vehicle='p911',players=2)
+            self.enter('france',vehicle='p911')
+            self.browser('scrollintoview','.racing-chase')
+            value=self.native('props-france-'+label,mode='props-drive',speed=speed,propIndex=1,target=[320.48711373,131.324340898])
+            require(value['hit'] is not None,'ordinary original-grid drive did not hit France prop1')
+            events=[e for e in value['hit']['events']if e['type']=='prop'and e.get('prop')==1]
+            require(len(events)==1 and bool(events[0].get('high'))==(speed>=8),'first authoritative prop event absent/duplicate/wrong band',events)
+            frames=[{**f,'parsed':json.loads(f.get('animations')or'[]')}for f in value['frames']]
+            poses=[p for f in frames for p in f['parsed']if p.get('index')==1]
+            require(any(p['phase']=='animating'for p in poses),'original prop animation never appeared in actual renderer',poses)
+            require(value['after']['canvas']['propsCatalog']==value['hit']['props']['catalog']and 1 in json.loads(value['after']['canvas']['propsBroken']),'renderer did not confirm authority broken bit')
+            self.check('ordinary France prop1 '+label+' hit and original renderer animation',elapsedMS=value['elapsedMS'],event=events[0],animationFrames=sum(any(p.get('index')==1 and p['phase']=='animating'for p in f['parsed'])for f in frames))
+            self.close_room()
+
+    def props_motion(self,value,index,high):
+        require(value['hit'] is not None,'original-grid ordinary drive did not contact target')
+        events=[e for e in value['hit']['events']if e['type']=='prop'and e.get('prop')==index]
+        require(len(events)==1 and bool(events[0].get('high'))==high,'wrong or repeated authoritative prop band',events)
+        poses=[p for f in value['frames']for p in json.loads(f.get('animations')or'[]')if p.get('index')==index]
+        active=[p for p in poses if p['phase']=='animating']
+        transitions=[]
+        for p in poses:
+            if not transitions or transitions[-1]!=p['phase']:transitions.append(p['phase'])
+        require(active and transitions==['animating','complete'] and all(p['high']==high and p['duration']==(1.5 if high else .46875)for p in active),'native CAN did not play once through its original duration',transitions)
+        require(all(a['time']<=b['time']for a,b in zip(poses,poses[1:])),'prop clip replayed backwards')
+        require(index in json.loads(value['after']['canvas']['propsBroken']),'renderer lost confirmed prop bit')
+        return events[0]
+
+    def props_peer(self):
+        if not self.session('peer')['opened']:
+            self.browser('open',self.base,name='peer');self.session('peer')['opened']=True
+            self.api('/register',{'name':'后车验收'+self.run[-4:],'password':'racing-browser-test-only','invite':'racing-browser'},name='peer')
+            self.browser('reload',name='peer');self.browser('wait','.room-list',name='peer')
+        r=self.room();self.api('/rooms/'+r['id'],{'type':'join','version':r['version'],'nonce':uuid.uuid4().hex},name='peer')
+        self.browser('wait','.racing-preparation select[aria-label="车型"]',name='peer')
+        self.browser('select','.racing-preparation select[aria-label="车型"]','p911',name='peer')
+        self.wait(lambda:self.room()['options']['vehicles'][1]=='p911',description='second original P911')
+        self.command('ready',name='peer')
+
+    def props_browser(self):
+        self.reuse_report('.local/racing-nfs-browser/props-minimal-01/report.json',{'ordinary France prop1 low hit and original renderer animation','ordinary France prop1 high hit and original renderer animation'})
+        for track,night in (('uk',False),('france',True),('uk',True)):
+            index=1 if track=='france'else 0;target=[320.48711373,131.324340898]if track=='france'else[1054.520995969,942.43591291]
+            self.create_ui(track,night=night,vehicle='p911',players=2,bots=0)
+            self.props_peer();self.enter(track,night=night,vehicle='p911')
+            self.browser('scrollintoview','.racing-chase')
+            name='props-'+track+('-night'if night else'-day')
+            if track=='france':
+                self.browser('open',self.base,name='watcher');self.session('watcher')['opened']=True
+                self.api('/register',{'name':'物件观众'+self.run[-4:],'password':'racing-browser-test-only','invite':'racing-browser'},name='watcher')
+                self.browser('reload',name='watcher');self.api('/rooms/'+self.room()['id']+'/watch',{},name='watcher');self.browser('reload',name='watcher')
+                self.wait(lambda:self.js('document.querySelector(".racing-chase")?.dataset.propsCatalog&&!document.querySelector("[data-game-loading]")','watcher'),90,'observer original prop scene')
+                with ThreadPoolExecutor(max_workers=2)as pool:
+                    observer=pool.submit(self.native,name+'-observer',mode='props-drive',observeOnly=True,milliseconds=18000,session='watcher')
+                    value=self.native(name,mode='props-drive',speed=4,propIndex=index,target=target)
+                    seen=observer.result()
+                event=self.props_motion(value,index,False)
+                require(seen['after']['canvas']['propsCatalog']==value['after']['canvas']['propsCatalog']and index in json.loads(seen['after']['canvas']['propsBroken']),'observer failed to confirm same broken world')
+                require(any(p.get('index')==index and p['phase']=='animating'for f in seen['frames']for p in json.loads(f.get('animations')or'[]')),'observer missed actual native clip')
+                self.check('independent observer sees same prop bit and original animation',event=event)
+                lead=self.native(name+'-clear-lead-car',mode='props-drive',speed=10,propIndex=index,target=target,passDistance=15)
+                require(lead['hit']is not None,'lead car did not clear the broken target')
+                following=self.native(name+'-following-car',mode='props-drive',speed=10,propIndex=index,target=target,passDistance=3,session='peer')
+                require(following['hit']is not None and following['hit']['car']['speed']>10,'following car remains blocked by broken object',{'minDistance':following['minDistance'],'last':following['rows'][-1]})
+                require(len([e for e in following['hit']['events']if e['type']=='prop'and e.get('prop')==index])==1,'following car repeated first-hit event')
+                self.check('following original-grid car passes destroyed prop without repeat hit',minDistance=following['minDistance'])
+                identity=self.room()['game']['data'];self.browser('reload')
+                self.wait(lambda:self.js('document.querySelector(".racing-chase")?.dataset.propsCatalog&&!document.querySelector("[data-game-loading]")'),90,'restored destroyed prop scene')
+                restored=self.native(name+'-refresh', [{"wait":300},{"read":"restored"},{"shot":"hidden"}])
+                r=restored['samples'][-1]['data'];poses=json.loads(r['canvas']['propAnimations'])
+                require(any(p['index']==index and p['phase']=='hidden'for p in poses)and r['room']['game']['data']['epoch']==identity['epoch']and r['room']['game']['data']['maxRaceAt']==identity['maxRaceAt'],'refresh revived/replayed prop or reset race',poses)
+                self.check('refresh keeps broken prop hidden without replay or race reset')
+                self.browser('find','role','button','click','--name','离开观战','--exact',name='watcher')
+            else:
+                value=self.native(name,mode='props-drive',speed=13,propIndex=index,target=target,followRoute=True)
+                event=self.props_motion(value,index,True)
+            self.check('original-grid prop and once native CAN '+name,event=event)
+            self.close_room()
+            if self.room('peer'):self.command('leave',name='peer')
+        self.props_wall()
+        self.props_performance()
+
+    def props_performance(self):
+        self.create_ui('france',vehicle='p911',players=6);self.enter('france',vehicle='p911');self.browser('scrollintoview','.racing-chase')
+        hit=self.native('props-six-car-hit',mode='props-drive',speed=13,propIndex=1,target=[320.48711373,131.324340898]);self.props_motion(hit,1,True)
+        self.browser('find','role','button','click','--name','开启托管','--exact')
+        self.performance('props-desktop-six-car-performance');self.performance('props-touch-six-car-performance',touch=True);self.close_room()
+
+    def props_wall(self):
+        self.create_ui('uk',vehicle='p911',players=2);self.enter('uk',vehicle='p911');self.browser('scrollintoview','.racing-chase')
+        value=self.native('props-verified-fixed-wall',mode='props-drive',speed=13,propIndex=0,target=[1146,908],wall=True)
+        require(value['hit']is not None,'ordinary driving did not generate a collision')
+        entry=next(x for x in json.loads((ROOT/'games/racing/server/data/index.json').read_text())if x['id']=='uk')
+        path=ROOT/'games/racing/server/data/rules'/(entry['geometry']+'.json')
+        require(hashlib.sha256(path.read_bytes()).hexdigest()==entry['ruleSha256'],'fixed wall rule source changed')
+        rules=json.loads(path.read_text());catalog=json.loads((ROOT/'games/racing/assets/public/racing/v3/props/uk.json').read_text());mapped={edge for p in catalog['props']for edge in p['ruleEdges']}
+        c=value['hit']['car'];x,z=c['x']/10,c['y']/10;angle=c['angle'];width=1.89999998;length=4.57179165;extent=(length-width)/2
+        ends=[(x+sign*math.cos(angle)*extent,z+sign*math.sin(angle)*extent)for sign in(-1,1)]
+        def point_segment(p,a,b):
+            dx,dz=b[0]-a[0],b[1]-a[1];den=dx*dx+dz*dz;u=max(0,min(1,((p[0]-a[0])*dx+(p[1]-a[1])*dz)/den))if den else 0
+            return math.hypot(p[0]-a[0]-u*dx,p[1]-a[1]-u*dz)
+        contacts=[]
+        for i,w in enumerate(rules['barriers']):
+            if w['kind']!='wall'or i in mapped:continue
+            if c['height']+12.9999995<w['bottom']or c['height']>w['top']:continue
+            a=(w['a']['x']/10,w['a']['y']/10);b=(w['b']['x']/10,w['b']['y']/10)
+            distance=min(point_segment(p,a,b)for p in ends)
+            distance=min(distance,point_segment(a,*ends),point_segment(b,*ends))
+            if distance<=width/2+.08:contacts.append({'edge':i,'kind':w['kind'],'mappedToProp':False,'capsuleCentrelineDistanceM':distance,'a':a,'b':b})
+        require(contacts and value['before']['room']['game']['data']['props']['broken']==value['after']['room']['game']['data']['props']['broken']and c['speed']/10<value['maximumSpeed']*.95,'collision did not prove intact fixed-wall contact',{'contacts':contacts,'speed':c['speed']/10,'maxSpeed':value['maximumSpeed']})
+        self.record('props-fixed-wall-geometry-proof',{'ruleSHA256':entry['ruleSha256'],'geometry':entry['geometry'],'contacts':contacts,'collision':value['hit'],'bitsUnchanged':True})
+        self.check('ordinary fixed wall contact remains solid without prop destruction',contacts=contacts)
         self.close_room()
 
     def camera_keys(self):
@@ -1225,13 +1344,21 @@ class Acceptance:
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--out", required=True)
-    parser.add_argument("--phase", choices=("contract", "controls", "display", "presenter", "expiry", "audio-diagnostic", "safety", "thumbs", "thumb-layouts", "fullscreen", "smoke", "full", "remaining", "experience", "vehicles", "latency"), default="smoke")
+    parser.add_argument("--phase", choices=("contract", "controls", "display", "presenter", "expiry", "audio-diagnostic", "safety", "props-minimal", "props", "props-perf", "props-wall", "thumbs", "thumb-layouts", "fullscreen", "smoke", "full", "remaining", "experience", "vehicles", "latency"), default="smoke")
     parser.add_argument("--base", help="reuse an explicitly owned local Racing fixture URL")
     args = parser.parse_args()
     job = Acceptance(args)
     try:
         job.start_fixture()
-        if args.phase == "safety":
+        if args.phase == 'props-wall':
+            job.props_wall()
+        elif args.phase == 'props-perf':
+            job.props_performance()
+        elif args.phase == 'props':
+            job.props_browser()
+        elif args.phase == 'props-minimal':
+            job.props_minimal()
+        elif args.phase == "safety":
             job.safety_controls()
         elif args.phase in ("thumbs", "thumb-layouts"):
             job.thumb_controls()
