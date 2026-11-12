@@ -1,0 +1,1338 @@
+{
+  "schemaVersion": 1,
+  "passed": true,
+  "scope": "Public summary only: selected production-browser E2E reports, source/build identities, artifact SHA and measured values; no service address, cookie or complete room snapshot.",
+  "builds": {
+    "semantic27": {
+      "identity": {
+        "file": ".local/racing-followup/semantic-build-27ddd412-identity.json",
+        "sha256": "1d940a3e2043ee2c2b18277b74032847fa6b5ad66e200ee2efa071b3a12ac327",
+        "bytes": 11562
+      },
+      "indexSHA256": "27ddd412ec8422257aa1a4504ac0fde5900a607118e82b5d6f79543a615301e7"
+    },
+    "historicalNetwork87": {
+      "identity": {
+        "file": ".local/racing-followup/layout-build-87b510de-identity.json",
+        "sha256": "d0b61561505004f4ef050089ebd6d3e2c9b0b10a09066115f804a562029f3f42",
+        "bytes": 11638
+      },
+      "indexSHA256": "87b510def0e8ad29bf694ae9efbc729211daabfe668fd7907c6d08746aa62617"
+    },
+    "finalUIAndNetwork": {
+      "identity": {
+        "file": ".local/racing-followup/final-build-identity.json",
+        "sha256": "267d769e5214854b5fe4cdd1c198c70781dee75e47820b0e0ee05d1be37fadc9",
+        "bytes": 12042
+      },
+      "indexSHA256": "4bac7f3b039b253cc9373f33d9bf65e6b359dd443aa78efab4ec07ddf2a36012"
+    }
+  },
+  "semanticBinding": {
+    "sourceInputs": 94,
+    "byteIdenticalNonUIFiles": 90,
+    "reviewedUIOnlyChanges": [
+      "games/racing/web/ClassicGauges.tsx",
+      "games/racing/web/TrackCanvas.tsx",
+      "games/racing/web/classic-gauges.ts",
+      "games/racing/web/style.css"
+    ],
+    "unchanged90SHA256": "d06696aa60b24bc8379646930eebd7fcdef3d2d5d89b98fa95feb2f2d05b994b",
+    "note": "retained semantic proofs keep build27; final layout/network keep final4bac. Only markup/mode/gear formatting/DOM readout writes/CSS changed, not physics/laps/audio/controllers/prediction."
+  },
+  "budgets": {
+    "desktopFPSMinimum": 50,
+    "desktopFrameP95MaximumMS": 35,
+    "touchFPSMinimum": 30,
+    "touchFrameP95MaximumMS": 50,
+    "inputPixelP95MaximumMS": 80,
+    "dynamicViewMaximumBytes": 8192,
+    "compactCornerCanvasMaximumFraction": 0.08,
+    "readoutWorstWhiteRoadMinimumContrast": 4.5,
+    "stableAudioNearSilenceMaximumMS": 20
+  },
+  "circuits": [
+    {
+      "track": "france",
+      "passed": true,
+      "indexSHA256": "27ddd412ec8422257aa1a4504ac0fde5900a607118e82b5d6f79543a615301e7",
+      "summary": {
+        "lap": 3,
+        "finishBeforeOriginalDeadlineMS": 133747,
+        "firstOutsideM": 17.34222323761096,
+        "secondOutsideM": 17.148538543285277,
+        "firstRows": 3821,
+        "secondRows": 5666,
+        "resetSpeedMS": 22.3264,
+        "repeatAfterMS": 2137,
+        "firstElapsedMS": 419810.10000038147,
+        "remainingElapsedMS": 638780.7999992371
+      },
+      "recheck": {
+        "file": ".local/racing-nfs-browser/final-circuit-france-03-recheck-final.json",
+        "sha256": "cfa92176bc27680dc4c0596b1a52f61f7988b449f5857a1e5ac58fe23f541222",
+        "bytes": 12688
+      },
+      "native": {
+        "file": ".local/racing-nfs-browser/final-circuit-france-03/offroad-circuit-france.json",
+        "sha256": "2e7c63608fd3bb2e5a4b9cfdcf54d1e91bcfcbcf4070afad23f3ac7579e4e765",
+        "bytes": 34538507
+      },
+      "originalBrowserReport": {
+        "file": ".local/racing-nfs-browser/final-circuit-france-03/report.json",
+        "sha256": "be65479519f9872271d0fc026865f3a3eb7e322fdf8976bbc786fff025b9bca3",
+        "bytes": 27097
+      },
+      "originalReportPassed": false,
+      "qualification": "original report retains omitted-false autoPlay validator KeyError; complete E2E data passes separate strict SHA-bound replay"
+    },
+    {
+      "track": "coastal",
+      "passed": true,
+      "indexSHA256": "27ddd412ec8422257aa1a4504ac0fde5900a607118e82b5d6f79543a615301e7",
+      "summary": {
+        "lap": 3,
+        "finishBeforeOriginalDeadlineMS": 25689,
+        "firstOutsideM": 23.806493292304474,
+        "secondOutsideM": 23.810683709796137,
+        "firstRows": 4196,
+        "secondRows": 6275,
+        "resetSpeedMS": 10.7156,
+        "repeatAfterMS": 2166,
+        "firstElapsedMS": 466198,
+        "remainingElapsedMS": 699429.8999996185
+      },
+      "recheck": {
+        "file": ".local/racing-nfs-browser/final-circuit-coastal-03-recheck-final.json",
+        "sha256": "7f3d44b814828f3d9e1ae02a58d00f2acdd8f39c5102d76941707f5a58cc7e8d",
+        "bytes": 12676
+      },
+      "native": {
+        "file": ".local/racing-nfs-browser/final-circuit-coastal-03/offroad-circuit-coastal.json",
+        "sha256": "b24d46b21cc474dca9f7bf28922ea3f293743fb718b8d8565ff2bf79b2c107ce",
+        "bytes": 43790165
+      },
+      "originalBrowserReport": {
+        "file": ".local/racing-nfs-browser/final-circuit-coastal-03/report.json",
+        "sha256": "cd163666016f6e1a5fed9beabca31ddebd01213b3b7bef1b7989ed15cc079eed",
+        "bytes": 27102
+      },
+      "originalReportPassed": false,
+      "qualification": "original report retains omitted-false autoPlay validator KeyError; complete E2E data passes separate strict SHA-bound replay"
+    },
+    {
+      "track": "uk",
+      "passed": true,
+      "indexSHA256": "27ddd412ec8422257aa1a4504ac0fde5900a607118e82b5d6f79543a615301e7",
+      "summary": {
+        "lap": 3,
+        "finishBeforeOriginalDeadlineMS": 10582,
+        "firstOutsideM": 14.428342580711515,
+        "secondOutsideM": 14.466887040061415,
+        "firstRows": 4171,
+        "secondRows": 6452,
+        "resetSpeedMS": 15.8948,
+        "repeatAfterMS": 2166,
+        "firstElapsedMS": 462027,
+        "remainingElapsedMS": 718634.5999994278
+      },
+      "recheck": {
+        "file": ".local/racing-nfs-browser/final-circuit-uk-03-recheck-final.json",
+        "sha256": "8a8af9d75756047d0e0abd44bcfac3da734fe6b7ec0f59aa99cdb9e0c90a3c20",
+        "bytes": 12539
+      },
+      "native": {
+        "file": ".local/racing-nfs-browser/final-circuit-uk-03/offroad-circuit-uk.json",
+        "sha256": "daffb6fb9d9b31a709ae3b33e4d1457362745dc97aaecc11caf7ceb1fce296bf",
+        "bytes": 50577955
+      },
+      "originalBrowserReport": {
+        "file": ".local/racing-nfs-browser/final-circuit-uk-03/report.json",
+        "sha256": "e2b6b6e6227fcb48f1232a181631cd5c15f437854a76fcd86ca1f4838d1bc50c",
+        "bytes": 27019
+      },
+      "originalReportPassed": false,
+      "qualification": "original report retains omitted-false autoPlay validator KeyError; complete E2E data passes separate strict SHA-bound replay"
+    },
+    {
+      "track": "park",
+      "passed": true,
+      "indexSHA256": "27ddd412ec8422257aa1a4504ac0fde5900a607118e82b5d6f79543a615301e7",
+      "summary": {
+        "lap": 3,
+        "finishBeforeOriginalDeadlineMS": 233978,
+        "firstOutsideM": 22.50941615327185,
+        "secondOutsideM": 22.444311750465335,
+        "firstRows": 3245,
+        "secondRows": 5278,
+        "resetSpeedMS": 12.5945,
+        "repeatAfterMS": 2105,
+        "firstElapsedMS": 354410.10000038147,
+        "remainingElapsedMS": 602604.8000001907
+      },
+      "recheck": {
+        "file": ".local/racing-nfs-browser/final-circuit-park-03-recheck-final.json",
+        "sha256": "e82c43da014cf8e81e2cfca433504df4ea79bf25c0a06f8d5f801155437cb0cd",
+        "bytes": 12704
+      },
+      "native": {
+        "file": ".local/racing-nfs-browser/final-circuit-park-03/offroad-circuit-park.json",
+        "sha256": "16b6ceb1e877acf2266006915b27da5431f83d264ef515bfaca81f4ae853dfca",
+        "bytes": 34061261
+      },
+      "originalBrowserReport": {
+        "file": ".local/racing-nfs-browser/final-circuit-park-03/report.json",
+        "sha256": "8c7ac7bcb75285a86663d0e937ccca65626c9446a0c660145ccfa226d0e6dbaa",
+        "bytes": 27064
+      },
+      "originalReportPassed": false,
+      "qualification": "original report retains omitted-false autoPlay validator KeyError; complete E2E data passes separate strict SHA-bound replay"
+    }
+  ],
+  "rootIndependentCircuitReview": {
+    "file": ".local/racing-followup/root-circuit-review.json",
+    "sha256": "65299e5bb9ebab478d3aad609dfa7623ac9f8b870d15798b5b145133a94c4773",
+    "bytes": 1605
+  },
+  "cockpit": {
+    "passed": true,
+    "report": {
+      "file": ".local/racing-nfs-browser/final-cockpit-02/report.json",
+      "sha256": "4f6bc1943900b8abc4a76883057a729d58782f3ac9bd5c6c3196cf28d60c47d0",
+      "bytes": 32768
+    },
+    "indexSHA256": "27ddd412ec8422257aa1a4504ac0fde5900a607118e82b5d6f79543a615301e7",
+    "checks": 20,
+    "harnessSHA256": {
+      "scripts/racing/check-nfs.py": "536e30048f7f2540ce118fb5bb11bc1124aea4b6adbc52350afb0b8faa1ae184",
+      "scripts/racing/nfs-browser-input.mjs": "7aa55297b4f53a886e309609e08fd3b61e21939d49d25d77ef75ff2533ca79d5",
+      "games/racing/tests/browser_fixture_test.go": "7bc676113dce81f8e628b7572681c76a1f06eb20df72cc3faa4fb48a39991608"
+    }
+  },
+  "skidAndNeedles": {
+    "passed": true,
+    "report": {
+      "file": ".local/racing-nfs-browser/final-feedback-01/report.json",
+      "sha256": "ffb701eb9b88217efbc1fca70565b2cf383ce25afbd1d3714cf6908d7013e974",
+      "bytes": 25771
+    },
+    "indexSHA256": "27ddd412ec8422257aa1a4504ac0fde5900a607118e82b5d6f79543a615301e7",
+    "checks": 5,
+    "harnessSHA256": {
+      "scripts/racing/check-nfs.py": "255a334b7c72f812b530d21747b73044343753bf8b5e9523901d31ff0728117a",
+      "scripts/racing/nfs-browser-input.mjs": "7aa55297b4f53a886e309609e08fd3b61e21939d49d25d77ef75ff2533ca79d5",
+      "games/racing/tests/browser_fixture_test.go": "7bc676113dce81f8e628b7572681c76a1f06eb20df72cc3faa4fb48a39991608"
+    }
+  },
+  "inputSafety": {
+    "passed": true,
+    "report": {
+      "file": ".local/racing-nfs-browser/final-safety-01/report.json",
+      "sha256": "fdee2010f54aac43a216391e671c7f7bb15e56ec972fc17dfb898e6276628030",
+      "bytes": 27958
+    },
+    "indexSHA256": "27ddd412ec8422257aa1a4504ac0fde5900a607118e82b5d6f79543a615301e7",
+    "checks": 26,
+    "harnessSHA256": {
+      "scripts/racing/check-nfs.py": "255a334b7c72f812b530d21747b73044343753bf8b5e9523901d31ff0728117a",
+      "scripts/racing/nfs-browser-input.mjs": "7aa55297b4f53a886e309609e08fd3b61e21939d49d25d77ef75ff2533ca79d5",
+      "games/racing/tests/browser_fixture_test.go": "7bc676113dce81f8e628b7572681c76a1f06eb20df72cc3faa4fb48a39991608"
+    }
+  },
+  "audio": {
+    "passed": true,
+    "indexSHA256": "27ddd412ec8422257aa1a4504ac0fde5900a607118e82b5d6f79543a615301e7",
+    "independentReview": {
+      "file": ".local/racing-nfs-reference/final-continuous-review.json",
+      "sha256": "18ce22ff9067db98bb2c327c6eb50f63751bf36c3d93eed3ad60533b20192ec3",
+      "bytes": 11285
+    },
+    "selectedAnalysis": {
+      "file": ".local/racing-nfs-browser/final-continuous-selected-analysis-01/actual-continuous-audio.json",
+      "sha256": "4cb3571604e45db8a20fc0fb6cc2955cc82c20f715bc165a672248701de8a10d",
+      "bytes": 25122
+    },
+    "recordings": [
+      {
+        "model": "p911",
+        "durationSeconds": 36.0,
+        "voiceKeys": [
+          "racing-engine-p911-36",
+          "racing-engine-p911-37",
+          "racing-engine-p911-38",
+          "racing-engine-p911-39",
+          "racing-engine-p911-40"
+        ],
+        "allStartsExactlyOne": true,
+        "allOriginalSourceSHA256": true,
+        "uniqueNativeRunningSinkNoFallback": true,
+        "muteGestureRecoveryAndOwnerCleanup": true,
+        "parentRunPassed": false,
+        "captureSHA256": "7fdc0332207886a19455828b9a084840d567f5e3b6c97fdc7b4dbca7b2cee977",
+        "recording": ".local/racing-nfs-browser/final-continuous-five-01/audio-continuous-output-p911-voice-000.webm",
+        "recordingSHA256": "8024b389c1c0160d96064a977a318c8ed1dd43f157108768cd3099e258232720",
+        "wav": ".local/racing-nfs-browser/final-continuous-selected-analysis-01/p911-actual-continuous-mix-native-master.wav",
+        "wavSHA256": "5175b9be56c47b7443545b02480d02170d0a010654d840cab23abe0b17e7e666",
+        "stableNearSilenceMS": {
+          "idle": 0,
+          "held_load": 0
+        }
+      },
+      {
+        "model": "fm50",
+        "durationSeconds": 36.0,
+        "voiceKeys": [
+          "racing-engine-fm50-32",
+          "racing-engine-fm50-33",
+          "racing-engine-fm50-34",
+          "racing-engine-fm50-35",
+          "racing-engine-fm50-48",
+          "racing-engine-fm50-49",
+          "racing-engine-fm50-50",
+          "racing-engine-fm50-51"
+        ],
+        "allStartsExactlyOne": true,
+        "allOriginalSourceSHA256": true,
+        "uniqueNativeRunningSinkNoFallback": true,
+        "muteGestureRecoveryAndOwnerCleanup": true,
+        "parentRunPassed": false,
+        "captureSHA256": "c21081f08c2567350858022e12de41c005d4dd437d1579cd8c7b4a79ce72f8b4",
+        "recording": ".local/racing-nfs-browser/final-continuous-five-01/audio-continuous-output-fm50-voice-000.webm",
+        "recordingSHA256": "006b6e58a04e95b4f104b3e14e4c23c851cc6cf92bfdfc8fb5187c11db5084ec",
+        "wav": ".local/racing-nfs-browser/final-continuous-selected-analysis-01/fm50-actual-continuous-mix-native-master.wav",
+        "wavSHA256": "1f10eb7bc0644735aadeb24515d8eff3ca3c80c295b7ab4c61eb83c0b0032974",
+        "stableNearSilenceMS": {
+          "idle": 0,
+          "held_load": 0
+        }
+      },
+      {
+        "model": "ldia",
+        "durationSeconds": 36.0,
+        "voiceKeys": [
+          "racing-engine-ldia-41",
+          "racing-engine-ldia-42",
+          "racing-engine-ldia-43"
+        ],
+        "allStartsExactlyOne": true,
+        "allOriginalSourceSHA256": true,
+        "uniqueNativeRunningSinkNoFallback": true,
+        "muteGestureRecoveryAndOwnerCleanup": true,
+        "parentRunPassed": false,
+        "captureSHA256": "47723c716aa434a1007ffed282c349a25fc1905f79808de364841d3f3e4e23c1",
+        "recording": ".local/racing-nfs-browser/final-continuous-five-01/audio-continuous-output-ldia-voice-000.webm",
+        "recordingSHA256": "163ae84cf2f06071fecfa83d5680a1fc231b50a066d674a8b8077f27ea0cc120",
+        "wav": ".local/racing-nfs-browser/final-continuous-selected-analysis-01/ldia-actual-continuous-mix-native-master.wav",
+        "wavSHA256": "bf027f80748a014595e2ce8bd33b69541e96f1175f2ed0aee522162b59da101d",
+        "stableNearSilenceMS": {
+          "idle": 0,
+          "held_load": 0
+        }
+      },
+      {
+        "model": "mcf1",
+        "durationSeconds": 36.0,
+        "voiceKeys": [
+          "racing-engine-mcf1-24",
+          "racing-engine-mcf1-25",
+          "racing-engine-mcf1-26",
+          "racing-engine-mcf1-27",
+          "racing-engine-mcf1-28"
+        ],
+        "allStartsExactlyOne": true,
+        "allOriginalSourceSHA256": true,
+        "uniqueNativeRunningSinkNoFallback": true,
+        "muteGestureRecoveryAndOwnerCleanup": true,
+        "parentRunPassed": false,
+        "captureSHA256": "6f79b95c45eed2d410f698a591dd0a5c2271b3bfeeab38ceb42ade4939143de3",
+        "recording": ".local/racing-nfs-browser/final-continuous-five-01/audio-continuous-output-mcf1-voice-000.webm",
+        "recordingSHA256": "024776cb616c83687c6c7b28ef03adc40df0dfaa8f378da333cb1af8ed069671",
+        "wav": ".local/racing-nfs-browser/final-continuous-selected-analysis-01/mcf1-actual-continuous-mix-native-master.wav",
+        "wavSHA256": "cd9bea928bcdce7c97a17ede4c14676231c4e4ca4e4acfa4d0b605408b040aca",
+        "stableNearSilenceMS": {
+          "idle": 0,
+          "held_load": 0
+        }
+      },
+      {
+        "model": "ccor",
+        "durationSeconds": 36.0,
+        "voiceKeys": [
+          "racing-engine-ccor-24",
+          "racing-engine-ccor-25",
+          "racing-engine-ccor-26",
+          "racing-engine-ccor-27",
+          "racing-engine-ccor-29",
+          "racing-engine-ccor-30"
+        ],
+        "allStartsExactlyOne": true,
+        "allOriginalSourceSHA256": true,
+        "uniqueNativeRunningSinkNoFallback": true,
+        "muteGestureRecoveryAndOwnerCleanup": true,
+        "parentRunPassed": true,
+        "captureSHA256": "4155c2919c92c09d6cec4c27ba1414df5dd3a3ee838abdfe0651e5fccdcb3ec6",
+        "recording": ".local/racing-nfs-browser/final-ccor-isolated-01/audio-continuous-output-ccor-voice-000.webm",
+        "recordingSHA256": "7bba4be504568e6a0426c0b44b90c6ef0028e9da4e11c1629828b96324157c3d",
+        "wav": ".local/racing-nfs-browser/final-continuous-selected-analysis-01/ccor-actual-continuous-mix-native-master.wav",
+        "wavSHA256": "314065f1fa8847bb86a11846f330ae5816362feb4392385e85a8800938e975eb",
+        "stableNearSilenceMS": {
+          "idle": 0,
+          "held_load": 0
+        }
+      }
+    ]
+  },
+  "finalLayout": {
+    "passed": true,
+    "report": {
+      "file": ".local/racing-nfs-browser/final-gauge-layout-04/report.json",
+      "sha256": "a5f0eb2d63be88a0589e1a29a469e45e589e4387817a54cdf839f661608f01d0",
+      "bytes": 32676
+    },
+    "indexSHA256": "4bac7f3b039b253cc9373f33d9bf65e6b359dd443aa78efab4ec07ddf2a36012",
+    "checks": 16,
+    "harnessSHA256": {
+      "scripts/racing/check-nfs.py": "cff8ec78363c14684cfb08dc5218da576dc53cc0ba574e136ebd95b2024ce3bd",
+      "scripts/racing/nfs-browser-input.mjs": "f2a7598ba12d4bd23022e9599cd87471e3a4e22ecc7f617264cbb9c4553f1ca0",
+      "games/racing/tests/browser_fixture_test.go": "7bc676113dce81f8e628b7572681c76a1f06eb20df72cc3faa4fb48a39991608"
+    },
+    "summary": [
+      {
+        "name": "PC right-edge small analog dials bottom-align map and avoid chat actual paint",
+        "rightInsetPX": 16,
+        "bottomDifferencePX": 0.0,
+        "gearText": "1",
+        "gearFontPX": 12,
+        "chatPaintOverlap": false,
+        "cornerPaintFraction": 0.04921013227948824,
+        "readoutContrast": {
+          "speed": 11.588025676035985,
+          "rpm": 11.588025676035985,
+          "gear": 13.262674432788032
+        }
+      },
+      {
+        "name": "320x844 portrait compact numeric instruments and small map mirror-off",
+        "mode": "compact",
+        "topDifferencePX": 0,
+        "gaugeSizePX": [
+          108,
+          44
+        ],
+        "mapSizePX": [
+          74,
+          54
+        ],
+        "cornerFraction": 0.050364352453313714,
+        "gearText": "1",
+        "gearFontPX": 12,
+        "centralRoadClear": true,
+        "readoutContrast": {
+          "speed": 13.06308858070179,
+          "rpm": 9.764557541760308,
+          "gear": 13.262674432788032
+        }
+      },
+      {
+        "name": "320x844 portrait compact numeric instruments and small map mirror-on",
+        "mode": "compact",
+        "topDifferencePX": 0,
+        "gaugeSizePX": [
+          108,
+          44
+        ],
+        "mapSizePX": [
+          74,
+          54
+        ],
+        "cornerFraction": 0.050364352453313714,
+        "gearText": "1",
+        "gearFontPX": 12,
+        "centralRoadClear": true,
+        "readoutContrast": {
+          "speed": 13.06308858070179,
+          "rpm": 9.764557541760308,
+          "gear": 13.262674432788032
+        }
+      },
+      {
+        "name": "390x844 portrait compact numeric instruments and small map mirror-off",
+        "mode": "compact",
+        "topDifferencePX": 0,
+        "gaugeSizePX": [
+          108,
+          44
+        ],
+        "mapSizePX": [
+          74,
+          54
+        ],
+        "cornerFraction": 0.0406789000584457,
+        "gearText": "1",
+        "gearFontPX": 12,
+        "centralRoadClear": true,
+        "readoutContrast": {
+          "speed": 13.06308858070179,
+          "rpm": 9.764557541760308,
+          "gear": 13.262674432788032
+        }
+      },
+      {
+        "name": "390x844 portrait compact numeric instruments and small map mirror-on",
+        "mode": "compact",
+        "topDifferencePX": 0,
+        "gaugeSizePX": [
+          108,
+          44
+        ],
+        "mapSizePX": [
+          74,
+          54
+        ],
+        "cornerFraction": 0.0406789000584457,
+        "gearText": "1",
+        "gearFontPX": 12,
+        "centralRoadClear": true,
+        "readoutContrast": {
+          "speed": 13.06308858070179,
+          "rpm": 9.764557541760308,
+          "gear": 13.262674432788032
+        }
+      },
+      {
+        "name": "430x844 portrait compact numeric instruments and small map mirror-off",
+        "mode": "compact",
+        "topDifferencePX": 0,
+        "gaugeSizePX": [
+          108,
+          44
+        ],
+        "mapSizePX": [
+          74,
+          54
+        ],
+        "cornerFraction": 0.03665128619127285,
+        "gearText": "1",
+        "gearFontPX": 12,
+        "centralRoadClear": true,
+        "readoutContrast": {
+          "speed": 13.06308858070179,
+          "rpm": 9.764557541760308,
+          "gear": 13.262674432788032
+        }
+      },
+      {
+        "name": "430x844 portrait compact numeric instruments and small map mirror-on",
+        "mode": "compact",
+        "topDifferencePX": 0,
+        "gaugeSizePX": [
+          108,
+          44
+        ],
+        "mapSizePX": [
+          74,
+          54
+        ],
+        "cornerFraction": 0.03665128619127285,
+        "gearText": "1",
+        "gearFontPX": 12,
+        "centralRoadClear": true,
+        "readoutContrast": {
+          "speed": 13.06308858070179,
+          "rpm": 9.764557541760308,
+          "gear": 13.262674432788032
+        }
+      },
+      {
+        "name": "320x480 portrait compact numeric instruments and small map mirror-off",
+        "mode": "compact",
+        "topDifferencePX": 0,
+        "gaugeSizePX": [
+          108,
+          44
+        ],
+        "mapSizePX": [
+          74,
+          54
+        ],
+        "cornerFraction": 0.06919791172282867,
+        "gearText": "1",
+        "gearFontPX": 12,
+        "centralRoadClear": true,
+        "readoutContrast": {
+          "speed": 13.06308858070179,
+          "rpm": 9.764557541760308,
+          "gear": 13.262674432788032
+        }
+      },
+      {
+        "name": "320x480 portrait compact numeric instruments and small map mirror-on",
+        "mode": "compact",
+        "topDifferencePX": 0,
+        "gaugeSizePX": [
+          108,
+          44
+        ],
+        "mapSizePX": [
+          74,
+          54
+        ],
+        "cornerFraction": 0.06919791172282867,
+        "gearText": "1",
+        "gearFontPX": 12,
+        "centralRoadClear": true,
+        "readoutContrast": {
+          "speed": 13.06308858070179,
+          "rpm": 9.764557541760308,
+          "gear": 13.262674432788032
+        }
+      },
+      {
+        "name": "844x390 compact analog map HUD and mirror separation mirror-off",
+        "mode": "analog",
+        "topDifferencePX": 0,
+        "gaugeSizePX": [
+          160,
+          96
+        ],
+        "gearText": "1",
+        "gearFontPX": 12,
+        "cornerPaintFraction": 0.05624444616726795,
+        "centralRoadClear": true,
+        "readoutContrast": {
+          "speed": 11.588025676035985,
+          "rpm": 11.588025676035985,
+          "gear": 13.262674432788032
+        }
+      },
+      {
+        "name": "844x390 compact analog map HUD and mirror separation mirror-on",
+        "mode": "analog",
+        "topDifferencePX": 0,
+        "gaugeSizePX": [
+          160,
+          96
+        ],
+        "gearText": "1",
+        "gearFontPX": 12,
+        "cornerPaintFraction": 0.05624444616726795,
+        "centralRoadClear": true,
+        "readoutContrast": {
+          "speed": 11.588025676035985,
+          "rpm": 11.588025676035985,
+          "gear": 13.262674432788032
+        }
+      },
+      {
+        "name": "844x520 compact analog map HUD and mirror separation mirror-off",
+        "mode": "analog",
+        "topDifferencePX": 0,
+        "gaugeSizePX": [
+          160,
+          96
+        ],
+        "gearText": "1",
+        "gearFontPX": 12,
+        "cornerPaintFraction": 0.04218225125142047,
+        "centralRoadClear": true,
+        "readoutContrast": {
+          "speed": 11.588025676035985,
+          "rpm": 11.588025676035985,
+          "gear": 13.262674432788032
+        }
+      },
+      {
+        "name": "844x520 compact analog map HUD and mirror separation mirror-on",
+        "mode": "analog",
+        "topDifferencePX": 0,
+        "gaugeSizePX": [
+          160,
+          96
+        ],
+        "gearText": "1",
+        "gearFontPX": 12,
+        "cornerPaintFraction": 0.04218225125142047,
+        "centralRoadClear": true,
+        "readoutContrast": {
+          "speed": 11.588025676035985,
+          "rpm": 11.588025676035985,
+          "gear": 13.262674432788032
+        }
+      }
+    ],
+    "screenshots": [
+      {
+        "file": ".local/racing-nfs-browser/final-gauge-layout-04/gauge-layout-desktop-aligned.png",
+        "sha256": "a050ee1020b5576080e69b32cd5a5f2583520b4410f096ba453f07e6ca4414e2",
+        "bytes": 881760
+      },
+      {
+        "file": ".local/racing-nfs-browser/final-gauge-layout-04/gauge-layout-320-mirror-off.png",
+        "sha256": "6393346d8600cb407ac84692f6750144df10f2fd26b8e409b221f00c7bd375da",
+        "bytes": 171623
+      },
+      {
+        "file": ".local/racing-nfs-browser/final-gauge-layout-04/gauge-layout-320-mirror-on.png",
+        "sha256": "91b9cad2d5139b28e68588a91aa1753a7fab8ec458f31f02853c27312800dfc7",
+        "bytes": 167844
+      },
+      {
+        "file": ".local/racing-nfs-browser/final-gauge-layout-04/gauge-layout-390-mirror-off.png",
+        "sha256": "5b39eb933107d69e731ab8958e813e95a4710b22a1745643cbbf87e5cad843db",
+        "bytes": 204437
+      },
+      {
+        "file": ".local/racing-nfs-browser/final-gauge-layout-04/gauge-layout-390-mirror-on.png",
+        "sha256": "2d58273d131e8fe329e12489bb26c1fa5265e7411a601c404befaa76baa8df02",
+        "bytes": 206759
+      },
+      {
+        "file": ".local/racing-nfs-browser/final-gauge-layout-04/gauge-layout-430-mirror-off.png",
+        "sha256": "faff20672b2e966435c6f5eb795627f04df1fe27f40c6610e23a090de648776e",
+        "bytes": 222274
+      },
+      {
+        "file": ".local/racing-nfs-browser/final-gauge-layout-04/gauge-layout-430-mirror-on.png",
+        "sha256": "4ee5f19c1391dfc1a52e6b9e66e781afd586dfe718b1e6acd360a4fa4dee48ed",
+        "bytes": 228545
+      },
+      {
+        "file": ".local/racing-nfs-browser/final-gauge-layout-04/gauge-layout-320x480-mirror-off.png",
+        "sha256": "8fd968ea0a3d5672a372377e3729eca4d4555a6b7946a6d184dac2c84b6ffb1b",
+        "bytes": 122756
+      },
+      {
+        "file": ".local/racing-nfs-browser/final-gauge-layout-04/gauge-layout-320x480-mirror-on.png",
+        "sha256": "6ffa7957452d3555cbf6b72d27de3dd4a855aa5bfc20390d5fec5f4733be75f5",
+        "bytes": 122993
+      },
+      {
+        "file": ".local/racing-nfs-browser/final-gauge-layout-04/gauge-layout-844x390-mirror-off.png",
+        "sha256": "a895efc0be242dd2707af3f55bce79351c19143dce23a535025a36c0dda4bbe7",
+        "bytes": 246627
+      },
+      {
+        "file": ".local/racing-nfs-browser/final-gauge-layout-04/gauge-layout-844x390-mirror-on.png",
+        "sha256": "60a9bd9f2dab8fed57c338bc59af37da58ecf7af6f2f75b1f708b372f9c169d1",
+        "bytes": 276513
+      },
+      {
+        "file": ".local/racing-nfs-browser/final-gauge-layout-04/gauge-layout-844x520-mirror-off.png",
+        "sha256": "74a80eee2f4c08e9b6d08905aa707f4dfc5055aaa10e2b5e985028ba9c8839b4",
+        "bytes": 308550
+      },
+      {
+        "file": ".local/racing-nfs-browser/final-gauge-layout-04/gauge-layout-844x520-mirror-on.png",
+        "sha256": "6eebb99fcabb93636b88f0c2a08f0d8be20b8160dbd0a572421609229c9b4f05",
+        "bytes": 341207
+      }
+    ]
+  },
+  "finalPerformance": {
+    "passed": true,
+    "report": {
+      "file": ".local/racing-nfs-browser/final-feedback-perf-03/report.json",
+      "sha256": "cb89bd8fe6103352463dfcd057820f9be7f9a0cc63a2d7671a8150d3fdd0888b",
+      "bytes": 31087
+    },
+    "indexSHA256": "4bac7f3b039b253cc9373f33d9bf65e6b359dd443aa78efab4ec07ddf2a36012",
+    "checks": 7,
+    "harnessSHA256": {
+      "scripts/racing/check-nfs.py": "cff8ec78363c14684cfb08dc5218da576dc53cc0ba574e136ebd95b2024ce3bd",
+      "scripts/racing/nfs-browser-input.mjs": "f2a7598ba12d4bd23022e9599cd87471e3a4e22ecc7f617264cbb9c4553f1ca0",
+      "games/racing/tests/browser_fixture_test.go": "7bc676113dce81f8e628b7572681c76a1f06eb20df72cc3faa4fb48a39991608"
+    },
+    "measurements": [
+      {
+        "name": "feedback-desktop-six-car-performance",
+        "metrics": {
+          "elapsed": 6001.5,
+          "rafSamples": 361,
+          "actualDrawUpdates": 360,
+          "fps": 59.985003749062734,
+          "p50MS": 16.699999809265137,
+          "p95MS": 18.100000381469727,
+          "p99MS": 18.600000381469727,
+          "moved": 1206.692145944782
+        },
+        "dynamicViewBytesMaximum": 5333,
+        "ack": {
+          "count": 0,
+          "p50MS": null,
+          "p95MS": null,
+          "statuses": {}
+        },
+        "connectionRTT": null,
+        "applicationPayload": {
+          "method": "CDP WebSocket application payload bytes from original payloadData, UTF-8 text or decoded binary; excludes WebSocket/TCP/TLS headers and compressed wire-size claims",
+          "scope": "exact native performance/pixel observation window after scene ready; setup/bootstrap are outside this window",
+          "startAt": 1794507200145,
+          "endAt": 1794507206157,
+          "durationMS": 6012,
+          "directions": {
+            "sent": {
+              "messages": 0,
+              "payloadBytes": 0,
+              "bytesPerSecond": 0,
+              "messagesPerSecond": 0,
+              "p50PayloadBytes": null,
+              "p95PayloadBytes": null,
+              "maximumPayloadBytes": 0,
+              "types": {}
+            },
+            "received": {
+              "messages": 61,
+              "payloadBytes": 349170,
+              "bytesPerSecond": 58078.842315369264,
+              "messagesPerSecond": 10.146373918829008,
+              "p50PayloadBytes": 5813,
+              "p95PayloadBytes": 5844,
+              "maximumPayloadBytes": 5851,
+              "types": {
+                "game": {
+                  "messages": 60,
+                  "payloadBytes": 348830
+                },
+                "network": {
+                  "messages": 1,
+                  "payloadBytes": 340
+                }
+              }
+            }
+          },
+          "stateIntervals": {
+            "game": {
+              "messages": 60,
+              "intervals": 59,
+              "p50MS": 100,
+              "p95MS": 101,
+              "maximumMS": 101
+            },
+            "state": {
+              "messages": 0,
+              "intervals": 0,
+              "p50MS": null,
+              "p95MS": null,
+              "maximumMS": 0
+            },
+            "combined": {
+              "messages": 60,
+              "intervals": 59,
+              "p50MS": 100,
+              "p95MS": 101,
+              "maximumMS": 101
+            }
+          }
+        }
+      },
+      {
+        "name": "feedback-320-six-car-performance",
+        "metrics": {
+          "elapsed": 5999.199999809265,
+          "rafSamples": 361,
+          "actualDrawUpdates": 360,
+          "fps": 60.008001068716766,
+          "p50MS": 16.699999809265137,
+          "p95MS": 18.40000057220459,
+          "p99MS": 18.700000762939453,
+          "moved": 1404.8438484942465
+        },
+        "dynamicViewBytesMaximum": 5326,
+        "ack": {
+          "count": 0,
+          "p50MS": null,
+          "p95MS": null,
+          "statuses": {}
+        },
+        "connectionRTT": null,
+        "applicationPayload": {
+          "method": "CDP WebSocket application payload bytes from original payloadData, UTF-8 text or decoded binary; excludes WebSocket/TCP/TLS headers and compressed wire-size claims",
+          "scope": "exact native performance/pixel observation window after scene ready; setup/bootstrap are outside this window",
+          "startAt": 1794507206456,
+          "endAt": 1794507212474,
+          "durationMS": 6018,
+          "directions": {
+            "sent": {
+              "messages": 0,
+              "payloadBytes": 0,
+              "bytesPerSecond": 0,
+              "messagesPerSecond": 0,
+              "p50PayloadBytes": null,
+              "p95PayloadBytes": null,
+              "maximumPayloadBytes": 0,
+              "types": {}
+            },
+            "received": {
+              "messages": 61,
+              "payloadBytes": 348773,
+              "bytesPerSecond": 57954.968428049186,
+              "messagesPerSecond": 10.136257892987704,
+              "p50PayloadBytes": 5808,
+              "p95PayloadBytes": 5830,
+              "maximumPayloadBytes": 5844,
+              "types": {
+                "game": {
+                  "messages": 60,
+                  "payloadBytes": 348433
+                },
+                "network": {
+                  "messages": 1,
+                  "payloadBytes": 340
+                }
+              }
+            }
+          },
+          "stateIntervals": {
+            "game": {
+              "messages": 60,
+              "intervals": 59,
+              "p50MS": 100,
+              "p95MS": 101,
+              "maximumMS": 102
+            },
+            "state": {
+              "messages": 0,
+              "intervals": 0,
+              "p50MS": null,
+              "p95MS": null,
+              "maximumMS": 0
+            },
+            "combined": {
+              "messages": 60,
+              "intervals": 59,
+              "p50MS": 100,
+              "p95MS": 101,
+              "maximumMS": 102
+            }
+          }
+        }
+      }
+    ],
+    "healthyCompact": {
+      "name": "isolated healthy 320px real touch operation full screenshot",
+      "notices": [],
+      "throttle": "1",
+      "visibleCompactReadouts": {
+        "speed": "57",
+        "rpm": "3500",
+        "gear": "2"
+      }
+    },
+    "healthyScreenshot": {
+      "file": ".local/racing-nfs-browser/final-feedback-perf-03/feedback-320-healthy-operation-healthy-driving.png",
+      "sha256": "9e39c4006fdc8acea7b60f8989513016e6413e347a697dcdb22811a7ddea0682",
+      "bytes": 209040
+    },
+    "actualHandshakes": [
+      [
+        {
+          "at": 1794507192849,
+          "status": 101,
+          "statusText": "Switching Protocols",
+          "headers": {
+            "Upgrade": "websocket",
+            "Connection": "Upgrade"
+          },
+          "extensions": null,
+          "perMessageDeflateNegotiated": false
+        }
+      ]
+    ]
+  },
+  "finalNetwork": {
+    "passed": true,
+    "report": {
+      "file": ".local/racing-nfs-browser/final-latency-04/report.json",
+      "sha256": "897823a39cf533d554b240dab3c29a6b94147be087d11904cbb96a270e1a462f",
+      "bytes": 33798
+    },
+    "indexSHA256": "4bac7f3b039b253cc9373f33d9bf65e6b359dd443aa78efab4ec07ddf2a36012",
+    "checks": 8,
+    "harnessSHA256": {
+      "scripts/racing/check-nfs.py": "cff8ec78363c14684cfb08dc5218da576dc53cc0ba574e136ebd95b2024ce3bd",
+      "scripts/racing/nfs-browser-input.mjs": "f2a7598ba12d4bd23022e9599cd87471e3a4e22ecc7f617264cbb9c4553f1ca0",
+      "games/racing/tests/browser_fixture_test.go": "7bc676113dce81f8e628b7572681c76a1f06eb20df72cc3faa4fb48a39991608"
+    },
+    "measurements": [
+      {
+        "name": "native input to real vehicle pixels normal",
+        "metrics": {
+          "trials": 8,
+          "visibleTrials": 8,
+          "p50MS": 44.09814453125,
+          "p95MS": 78.10986328125,
+          "maxMS": 78.10986328125
+        },
+        "dynamicViewBytesMaximum": null,
+        "ack": {
+          "count": 20,
+          "p50MS": 0,
+          "p95MS": 27,
+          "statuses": {
+            "200": 20
+          }
+        },
+        "connectionRTT": {
+          "connected": true,
+          "connections": 1,
+          "rttMs": 0,
+          "sampledAt": 1794507357042
+        },
+        "applicationPayload": {
+          "method": "CDP WebSocket application payload bytes from original payloadData, UTF-8 text or decoded binary; excludes WebSocket/TCP/TLS headers and compressed wire-size claims",
+          "scope": "exact native performance/pixel observation window after scene ready; setup/bootstrap are outside this window",
+          "startAt": 1794507361723,
+          "endAt": 1794507371058,
+          "durationMS": 9335,
+          "directions": {
+            "sent": {
+              "messages": 20,
+              "payloadBytes": 5708,
+              "bytesPerSecond": 611.4622388859133,
+              "messagesPerSecond": 2.1424745581146225,
+              "p50PayloadBytes": 286,
+              "p95PayloadBytes": 287,
+              "maximumPayloadBytes": 287,
+              "types": {
+                "input": {
+                  "messages": 20,
+                  "payloadBytes": 5708
+                }
+              }
+            },
+            "received": {
+              "messages": 124,
+              "payloadBytes": 262981,
+              "bytesPerSecond": 28171.505088377075,
+              "messagesPerSecond": 13.28334226031066,
+              "p50PayloadBytes": 2588,
+              "p95PayloadBytes": 2603,
+              "maximumPayloadBytes": 2606,
+              "types": {
+                "game": {
+                  "messages": 100,
+                  "payloadBytes": 259150
+                },
+                "network": {
+                  "messages": 4,
+                  "payloadBytes": 1760
+                },
+                "ack": {
+                  "messages": 20,
+                  "payloadBytes": 2071
+                }
+              }
+            }
+          },
+          "stateIntervals": {
+            "game": {
+              "messages": 100,
+              "intervals": 99,
+              "p50MS": 89,
+              "p95MS": 117,
+              "maximumMS": 120
+            },
+            "state": {
+              "messages": 0,
+              "intervals": 0,
+              "p50MS": null,
+              "p95MS": null,
+              "maximumMS": 0
+            },
+            "combined": {
+              "messages": 100,
+              "intervals": 99,
+              "p50MS": 89,
+              "p95MS": 117,
+              "maximumMS": 120
+            }
+          }
+        }
+      },
+      {
+        "name": "native input to real vehicle pixels rtt150",
+        "metrics": {
+          "trials": 8,
+          "visibleTrials": 8,
+          "p50MS": 47.09619140625,
+          "p95MS": 49.403076171875,
+          "maxMS": 49.403076171875
+        },
+        "dynamicViewBytesMaximum": null,
+        "ack": {
+          "count": 19,
+          "p50MS": 146,
+          "p95MS": 173,
+          "statuses": {
+            "200": 19
+          }
+        },
+        "connectionRTT": {
+          "connected": true,
+          "connections": 1,
+          "rttMs": 151,
+          "sampledAt": 1794507360532
+        },
+        "applicationPayload": {
+          "method": "CDP WebSocket application payload bytes from original payloadData, UTF-8 text or decoded binary; excludes WebSocket/TCP/TLS headers and compressed wire-size claims",
+          "scope": "exact native performance/pixel observation window after scene ready; setup/bootstrap are outside this window",
+          "startAt": 1794507380448,
+          "endAt": 1794507389693,
+          "durationMS": 9245,
+          "directions": {
+            "sent": {
+              "messages": 19,
+              "payloadBytes": 5432,
+              "bytesPerSecond": 587.5608436992969,
+              "messagesPerSecond": 2.055164954029205,
+              "p50PayloadBytes": 286,
+              "p95PayloadBytes": 287,
+              "maximumPayloadBytes": 287,
+              "types": {
+                "input": {
+                  "messages": 19,
+                  "payloadBytes": 5432
+                }
+              }
+            },
+            "received": {
+              "messages": 130,
+              "payloadBytes": 281336,
+              "bytesPerSecond": 30431.15197404002,
+              "messagesPerSecond": 14.061654948620877,
+              "p50PayloadBytes": 2589,
+              "p95PayloadBytes": 2606,
+              "maximumPayloadBytes": 2607,
+              "types": {
+                "game": {
+                  "messages": 107,
+                  "payloadBytes": 277592
+                },
+                "ack": {
+                  "messages": 19,
+                  "payloadBytes": 1976
+                },
+                "network": {
+                  "messages": 4,
+                  "payloadBytes": 1768
+                }
+              }
+            }
+          },
+          "stateIntervals": {
+            "game": {
+              "messages": 107,
+              "intervals": 106,
+              "p50MS": 87,
+              "p95MS": 118,
+              "maximumMS": 127
+            },
+            "state": {
+              "messages": 0,
+              "intervals": 0,
+              "p50MS": null,
+              "p95MS": null,
+              "maximumMS": 0
+            },
+            "combined": {
+              "messages": 107,
+              "intervals": 106,
+              "p50MS": 87,
+              "p95MS": 118,
+              "maximumMS": 127
+            }
+          }
+        }
+      },
+      {
+        "name": "healthy-peer-alongside-rtt150",
+        "metrics": {
+          "elapsed": 5999.800000190735,
+          "rafSamples": 361,
+          "actualDrawUpdates": 360,
+          "fps": 60.00200006476141,
+          "p50MS": 16.699999809265137,
+          "p95MS": 18.09999942779541,
+          "p99MS": 18.699999809265137,
+          "moved": 853.9825989095264
+        },
+        "dynamicViewBytesMaximum": 2178,
+        "ack": {
+          "count": 0,
+          "p50MS": null,
+          "p95MS": null,
+          "statuses": {}
+        },
+        "connectionRTT": null,
+        "applicationPayload": {
+          "method": "CDP WebSocket application payload bytes from original payloadData, UTF-8 text or decoded binary; excludes WebSocket/TCP/TLS headers and compressed wire-size claims",
+          "scope": "exact native performance/pixel observation window after scene ready; setup/bootstrap are outside this window",
+          "startAt": 1794507398543,
+          "endAt": 1794507404549,
+          "durationMS": 6006,
+          "directions": {
+            "sent": {
+              "messages": 0,
+              "payloadBytes": 0,
+              "bytesPerSecond": 0,
+              "messagesPerSecond": 0,
+              "p50PayloadBytes": null,
+              "p95PayloadBytes": null,
+              "maximumPayloadBytes": 0,
+              "types": {}
+            },
+            "received": {
+              "messages": 62,
+              "payloadBytes": 161292,
+              "bytesPerSecond": 26855.144855144856,
+              "messagesPerSecond": 10.323010323010323,
+              "p50PayloadBytes": 2679,
+              "p95PayloadBytes": 2686,
+              "maximumPayloadBytes": 2690,
+              "types": {
+                "game": {
+                  "messages": 60,
+                  "payloadBytes": 160412
+                },
+                "network": {
+                  "messages": 2,
+                  "payloadBytes": 880
+                }
+              }
+            }
+          },
+          "stateIntervals": {
+            "game": {
+              "messages": 60,
+              "intervals": 59,
+              "p50MS": 100,
+              "p95MS": 102,
+              "maximumMS": 102
+            },
+            "state": {
+              "messages": 0,
+              "intervals": 0,
+              "p50MS": null,
+              "p95MS": null,
+              "maximumMS": 0
+            },
+            "combined": {
+              "messages": 60,
+              "intervals": 59,
+              "p50MS": 100,
+              "p95MS": 102,
+              "maximumMS": 102
+            }
+          }
+        }
+      }
+    ],
+    "interruptedSocketPreservesEpochDeadlineAndReleasesHeldInput": true,
+    "baselineMethod": "Before each new input actual rendered steering <=0.002 for >=250ms and >=6 draws, bounded 5s; original noise formula and 80ms budget unchanged; all eight sent trials retained.",
+    "actualHandshakes": [
+      [
+        {
+          "at": 1794507355231,
+          "status": 101,
+          "statusText": "Switching Protocols",
+          "headers": {
+            "Upgrade": "websocket",
+            "Connection": "Upgrade"
+          },
+          "extensions": null,
+          "perMessageDeflateNegotiated": false
+        }
+      ]
+    ]
+  },
+  "retainedRedEvidence": [
+    {
+      "reason": "normal pixel P95 83.64ms; old budget failure retained",
+      "report": {
+        "file": ".local/racing-nfs-browser/final-latency-01/report.json",
+        "sha256": "9bf98d9a3d55973a7712d5e2936b4b4559fef650c803203e3dffb4a8616fda7c",
+        "bytes": 26725
+      }
+    },
+    {
+      "reason": "peer pixel P95 142.16ms with already-moving baseline; all original sent trials retained",
+      "report": {
+        "file": ".local/racing-nfs-browser/final-latency-02/report.json",
+        "sha256": "64b3cf165416e9a240308f8fc5e5c329b466656333796a8326a6ce8fb51dd1f6",
+        "bytes": 29471
+      }
+    },
+    {
+      "reason": "whole run CCOR state-gap stop retained; selected first four plus explicit isolated CCOR independently reviewed",
+      "report": {
+        "file": ".local/racing-nfs-browser/final-continuous-five-01/report.json",
+        "sha256": "f50cf5b7ff2daa8f35f1b96bb288e87908ed05a54640da1bb6b2e3352947d881",
+        "bytes": 31571
+      }
+    },
+    {
+      "reason": "chat paint and large portrait layout rejected",
+      "report": {
+        "file": ".local/racing-nfs-browser/final-gauge-layout-01/report.json",
+        "sha256": "947557ab05eeb16e8b83d41b9b99e8a58882d2703ee6e7009caef0305ef5eff8",
+        "bytes": 26447
+      }
+    },
+    {
+      "reason": "right96 blank and large portrait dials rejected",
+      "report": {
+        "file": ".local/racing-nfs-browser/final-gauge-layout-02/report.json",
+        "sha256": "3fe6e6e1bae1aed8493db46f9367cd59972827730352dc3cab7d69423b630651",
+        "bytes": 26439
+      }
+    },
+    {
+      "reason": "short-landscape gear/pedal 0.8125px paint overlap retained",
+      "report": {
+        "file": ".local/racing-nfs-browser/final-gauge-layout-03/report.json",
+        "sha256": "a35f766210416329c308b0df9482628423c2b82bcb792fd5b7e46ccb1f7290ce",
+        "bytes": 29219
+      }
+    },
+    {
+      "reason": "driving script sampled after wall stop; original red retained",
+      "report": {
+        "file": ".local/racing-nfs-browser/final-cockpit-01/report.json",
+        "sha256": "7fa80c22b26ea322e2b36405fa687a55e791d43f925be4e0c2fe0b3f2136d6d9",
+        "bytes": 26334
+      }
+    }
+  ],
+  "transportProbes": [
+    {
+      "file": ".local/racing-followup/cdp-transport-probe/report-small-plain.json",
+      "sha256": "b40ea6caa8664558c53121736764c85a03e360fa8cb114ea8b0eadd44b870361",
+      "bytes": 264
+    },
+    {
+      "file": ".local/racing-followup/cdp-transport-probe/report-large-plain.json",
+      "sha256": "34b0316941f6929866b6548de4fa57e9481b55c35c79bc8d8e30ad7a77ef3db8",
+      "bytes": 258
+    },
+    {
+      "file": ".local/racing-followup/cdp-transport-probe/report-small-shot.json",
+      "sha256": "07f28bb8ec982c7636d4f257c123cba64b82536d8678d4b08b9d59aed53f8b04",
+      "bytes": 295
+    },
+    {
+      "file": ".local/racing-followup/cdp-transport-probe/report-large-shot.json",
+      "sha256": "ebed39ef14e04ea6838428624351bde1f9280163e7eaacb7645f06d1aae12933",
+      "bytes": 316
+    }
+  ],
+  "limitations": [
+    "Chromium touch emulation is not physical-phone/iOS GPU testing.",
+    "Gamepad simulation replaces the hardware boundary; no physical-controller claim.",
+    "Actual WebSocket application payload rates exclude frame/mask/TCP/TLS wire-overhead claims. Observed 101 handshakes have no negotiated extensions.",
+    "Six-car performance windows use autoplay and have zero manual upstream input; healthy touch and two-player input windows separately retain real upstream traffic.",
+    "Two-player rates are eight alternating steering presses plus baseline settling, not a universal upload ceiling.",
+    "Renderer movement in raw metrics uses world decimetres.",
+    "Audio is actual mixed-stream sampling plus native master once, not a speaker recording, offline substitute engine or claim that a model listened.",
+    "The original whole five-car run and original circuit reports remain red where documented; selected audio review and strict artifact replays do not rewrite original statuses."
+  ]
+}
