@@ -8,6 +8,10 @@ import type {
 } from "react";
 import type { BoardProps } from "../../../web/src/game-api/module";
 import { LatestDrive, neutral, type Drive } from "./input";
+import {
+  RacingTouchContacts,
+  type RacingTouchAction,
+} from "./racing-touch-contacts";
 import { TrackCanvas } from "./TrackCanvas";
 import { RaceMap } from "./RaceMap";
 import { RearViewHold } from "./chase-camera";
@@ -176,6 +180,7 @@ function RaceBoard(
     mappedPressed = useRef(new Set<string>()),
     pumpControls = useRef<() => void>(() => {}),
     steerPointers = useRef(new Map<number, -1 | 0 | 1>()),
+    touchContacts = useRef(new RacingTouchContacts()),
     steerKeys = useRef({ left: new Set<string>(), right: new Set<string>() }),
     throttles = useRef(new Set<number>()),
     brakes = useRef(new Set<number>()),
@@ -311,22 +316,27 @@ function RaceBoard(
       return;
     }
     const values = mapped.current;
+    const touches = touchContacts.current.actions;
     const pressure =
-      brakes.current.size > 0 || pedalKeys.current.brake.size > 0
+      brakes.current.size > 0 ||
+      pedalKeys.current.brake.size > 0 ||
+      touches.has("brake")
         ? 1
         : (values.get("brake") ?? 0);
     setInput({
       steer:
         Math.max(
           values.get("right") ?? 0,
-          steerKeys.current.right.size ||
+          touches.has("right") ||
+            steerKeys.current.right.size ||
             [...steerPointers.current.values()].includes(1)
             ? 1
             : 0,
         ) -
         Math.max(
           values.get("left") ?? 0,
-          steerKeys.current.left.size ||
+          touches.has("left") ||
+            steerKeys.current.left.size ||
             [...steerPointers.current.values()].includes(-1)
             ? 1
             : 0,
@@ -335,7 +345,9 @@ function RaceBoard(
         pressure > 0
           ? 0
           : Math.max(
-              throttles.current.size > 0 || pedalKeys.current.throttle.size > 0
+              throttles.current.size > 0 ||
+                pedalKeys.current.throttle.size > 0 ||
+                touches.has("throttle")
                 ? 1
                 : 0,
               values.get("throttle") ?? 0,
@@ -345,9 +357,11 @@ function RaceBoard(
       drift:
         drifts.current.size > 0 ||
         pedalKeys.current.drift.size > 0 ||
-        !!values.get("drift"),
+        !!values.get("drift") ||
+        touches.has("drift"),
       ...(d.physics === 3 &&
-      (horns.current.size > 0 ||
+      (touches.has("horn") ||
+        horns.current.size > 0 ||
         pedalKeys.current.horn.size > 0 ||
         values.get("horn"))
         ? { horn: true }
@@ -363,6 +377,7 @@ function RaceBoard(
     throttles.current.clear();
     pedalKeys.current.throttle.clear();
     steerPointers.current.clear();
+    touchContacts.current.clear();
     steerKeys.current.left.clear();
     steerKeys.current.right.clear();
     brakes.current.clear();
@@ -415,6 +430,132 @@ function RaceBoard(
     release();
     compute();
   }, [scope, enabled]);
+  const touchChanged = useRef<(event: TouchEvent) => void>(() => {});
+  const pointerEnded = useRef<(event: PointerEvent) => void>(() => {});
+  const touchActions = new Set<RacingTouchAction>([
+    "left",
+    "right",
+    "throttle",
+    "brake",
+    "drift",
+    "horn",
+    "rear",
+  ]);
+  const touchAction = (
+    element: EventTarget | Element | null,
+  ): RacingTouchAction | null => {
+    const button =
+      element instanceof Element
+        ? element.closest<HTMLButtonElement>("[data-racing-touch-action]")
+        : null;
+    const value = button?.dataset.racingTouchAction as
+      RacingTouchAction | undefined;
+    return button &&
+      boardElement.current?.contains(button) &&
+      !button.disabled &&
+      value &&
+      touchActions.has(value)
+      ? value
+      : null;
+  };
+  touchChanged.current = (event) => {
+    const contacts = touchContacts.current;
+    const wasOwned = contacts.size > 0;
+    if (event.type === "touchstart") {
+      for (const contact of Array.from(event.changedTouches)) {
+        const action = touchAction(contact.target);
+        if (action && (action === "rear" || activeRef.current)) {
+          if (action !== "rear") wake(true);
+          contacts.press(contact.identifier, action);
+        }
+      }
+    }
+    contacts.reconcile(
+      Array.from(event.touches, (contact) => contact.identifier),
+    );
+    for (const contact of Array.from(event.touches)) {
+      if (contacts.has(contact.identifier))
+        contacts.move(
+          contact.identifier,
+          touchAction(
+            document.elementFromPoint(contact.clientX, contact.clientY),
+          ),
+        );
+    }
+    if (!wasOwned && contacts.size === 0) return;
+    if (event.cancelable) event.preventDefault();
+    if (contacts.actions.has("rear")) rearHold.current.press("touch");
+    else rearHold.current.release("touch");
+    setRear(rearHold.current.active);
+    compute();
+  };
+  pointerEnded.current = (event) => {
+    steerPointers.current.delete(event.pointerId);
+    for (const held of [throttles, brakes, drifts, horns])
+      held.current.delete(event.pointerId);
+    rearHold.current.release(`pointer:${event.pointerId}`);
+    setRear(rearHold.current.active);
+    compute();
+  };
+  useEffect(() => {
+    const touch = (event: TouchEvent) => touchChanged.current(event);
+    const pointer = (event: PointerEvent) => pointerEnded.current(event);
+    const pointerMove = (event: PointerEvent) => {
+      if (event.pointerType !== "touch" && event.buttons === 0) pointer(event);
+    };
+    const editors =
+      'input,textarea,select,[contenteditable]:not([contenteditable="false"])';
+    const prevent = (event: Event) => {
+      if (
+        !(event.target instanceof Element) ||
+        !boardElement.current?.contains(event.target) ||
+        event.target.closest(editors)
+      )
+        return;
+      event.preventDefault();
+      touchContacts.current.clear();
+      steerPointers.current.clear();
+      for (const held of [throttles, brakes, drifts, horns])
+        held.current.clear();
+      rearHold.current.release("touch");
+      setRear(rearHold.current.active);
+      compute();
+    };
+    const selection = () => {
+      if (document.activeElement?.closest(editors)) return;
+      const value = document.getSelection();
+      const root = boardElement.current;
+      if (!value?.rangeCount || value.isCollapsed || !root) return;
+      for (let i = 0; i < value.rangeCount; i++) {
+        if (value.getRangeAt(i).intersectsNode(root)) {
+          value.removeAllRanges();
+          break;
+        }
+      }
+    };
+    for (const type of ["touchstart", "touchmove", "touchend", "touchcancel"])
+      document.addEventListener(type, touch as EventListener, {
+        capture: true,
+        passive: false,
+      });
+    for (const type of ["pointerup", "pointercancel", "lostpointercapture"])
+      window.addEventListener(type, pointer as EventListener, true);
+    window.addEventListener("pointermove", pointerMove, true);
+    document.addEventListener("contextmenu", prevent, true);
+    document.addEventListener("selectstart", prevent, true);
+    document.addEventListener("selectionchange", selection);
+    return () => {
+      for (const type of ["touchstart", "touchmove", "touchend", "touchcancel"])
+        document.removeEventListener(type, touch as EventListener, true);
+      for (const type of ["pointerup", "pointercancel", "lostpointercapture"])
+        window.removeEventListener(type, pointer as EventListener, true);
+      window.removeEventListener("pointermove", pointerMove, true);
+      document.removeEventListener("contextmenu", prevent, true);
+      document.removeEventListener("selectstart", prevent, true);
+      document.removeEventListener("selectionchange", selection);
+      touchContacts.current.clear();
+    };
+  }, [scope]);
   useEffect(() => {
     const query = matchMedia("(prefers-reduced-motion: reduce)"),
       change = () => setReduced(query.matches);
@@ -635,6 +776,8 @@ function RaceBoard(
     else audio.stopLoop("racing-tires");
   }, [now, audioRunning, d.phase, car?.speed, drive.drift, watch]);
   const steerButton = (side: "left" | "right") => ({
+    "data-game-hold-control": true,
+    "data-racing-touch-action": side,
     onKeyDown: (e: ReactKeyboardEvent<HTMLButtonElement>) => {
       if (!enabled || (e.code !== "Space" && e.code !== "Enter")) return;
       e.preventDefault();
@@ -653,9 +796,9 @@ function RaceBoard(
       compute();
     },
     onPointerDown: (e: ReactPointerEvent<HTMLButtonElement>) => {
-      if (!enabled || e.button !== 0) return;
+      if (e.pointerType === "touch" || !enabled || e.button !== 0) return;
       e.preventDefault();
-      wake(e.pointerType === "touch");
+      wake();
       e.currentTarget.setPointerCapture(e.pointerId);
       steerPointers.current.set(e.pointerId, side === "left" ? -1 : 1);
       compute();
@@ -686,6 +829,8 @@ function RaceBoard(
     },
   });
   const heldButton = (which: "throttle" | "brake" | "drift" | "horn") => ({
+    "data-game-hold-control": true,
+    "data-racing-touch-action": which,
     onKeyDown: (e: ReactKeyboardEvent<HTMLButtonElement>) => {
       if (!enabled || (e.code !== "Space" && e.code !== "Enter")) return;
       e.preventDefault();
@@ -707,9 +852,9 @@ function RaceBoard(
       compute();
     },
     onPointerDown: (e: ReactPointerEvent<HTMLButtonElement>) => {
-      if (!enabled || e.button !== 0) return;
+      if (e.pointerType === "touch" || !enabled || e.button !== 0) return;
       e.preventDefault();
-      wake(e.pointerType === "touch");
+      wake();
       e.currentTarget.setPointerCapture(e.pointerId);
       (which === "throttle"
         ? throttles
@@ -872,8 +1017,11 @@ function RaceBoard(
       <button
         type="button"
         aria-label="向后看"
+        data-game-hold-control
+        data-racing-touch-action="rear"
         aria-pressed={rear}
         onPointerDown={(e) => {
+          if (e.pointerType === "touch") return;
           e.preventDefault();
           e.currentTarget.setPointerCapture(e.pointerId);
           rearHold.current.press(`pointer:${e.pointerId}`);

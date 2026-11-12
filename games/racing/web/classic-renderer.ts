@@ -8,7 +8,8 @@ import { classicInlineImagePlugin } from "./classic-images";
 import { applyClassicRoadAttitude } from "./classic-attitude";
 import { CLASSIC_CAMERA_MODES, CLASSIC_DRAW_DISTANCES, classicCameraPlan, classicMirrorViewport } from "./classic-camera-modes";
 import { advanceClassicCameraLift, classicCameraClearance, type ClassicCameraBody } from "./classic-camera-clearance";
-import { classicRoadAt, classicTrackFromRoute, type ClassicRuleTrack, type NativeClassicRoute } from "./classic-road";
+import { classicRoadAt, classicTrackFromRoute, classicPropBroken, classicBarrierBroken, type ClassicPropWorld, type ClassicRuleTrack, type NativeClassicRoute } from "./classic-road";
+import { ClassicPropPlayback, ClassicPropClipPlayback, classicAmbientClipNames, validateClassicPropCatalog, type ClassicVisualPropCatalog, type ClassicPropPose } from "./classic-prop-animation";
 import { seatColors, type Car, type Track } from "./types";
 import type { SceneFrame } from "./chase-renderer";
 import type { ChasePose } from "./chase-camera";
@@ -49,6 +50,7 @@ type VehicleVisual = {
 };
 type Batch = { mesh: T.Mesh; pieces: T.Sphere[] };
 type TextureAnimation = { material: T.MeshBasicMaterial; frames?: T.Texture[]; interval?: number; scroll?: T.Texture; speed?: number; current: number };
+type PropVisual = { root: T.Object3D; meshes: T.Mesh[]; sphere: T.Sphere; phase: ClassicPropPose["phase"]; time: number };
 
 const clamp = (n: number, a: number, b: number) => Math.max(a, Math.min(b, n));
 const finite = (n: unknown, fallback = 0): number => typeof n === "number" && Number.isFinite(n) ? n : fallback;
@@ -82,6 +84,12 @@ export class ClassicRenderer {
   private readonly rayStatic: T.Mesh[] = [];
   private readonly barrierCells = new Map<string, number[]>();
   private readonly textureAnimations: TextureAnimation[] = [];
+  private readonly props = new Map<number, PropVisual>();
+  private propWorld?: ClassicPropWorld;
+  private propCatalog?: ClassicVisualPropCatalog;
+  private propPlayback?: ClassicPropPlayback;
+  private propClips?: ClassicPropClipPlayback;
+  private propMixer?: T.AnimationMixer;
   private readonly localCamera = new T.Vector3();
   private readonly raycaster = new T.Raycaster();
   private readonly rayHits: T.Intersection[] = [];
@@ -187,7 +195,11 @@ export class ClassicRenderer {
       ]);
       engine.registerTree(environment.scene);
       engine.environment = environment.parser.json.extras?.environment ?? {};
-      await engine.prepareTrack(environment);
+      const propCatalog = validateClassicPropCatalog(
+        JSON.parse(new TextDecoder().decode(get(`props/${track.id}.json`))),
+        track.id, engine.road.geometry, environment.parser.json.extras?.propsCatalogHash,
+      );
+      await engine.prepareTrack(environment, propCatalog);
       const ids = [...new Set(config.vehicles)];
       cars.forEach((gltf, index) => {
         engine.registerTree(gltf.scene);
@@ -264,11 +276,52 @@ export class ClassicRenderer {
     });
   }
 
-  private async prepareTrack(gltf: GLTF) {
+  private async prepareTrack(gltf: GLTF, catalog: ClassicVisualPropCatalog) {
     const raw = gltf.scene;
     raw.scale.setScalar(10);
     raw.updateMatrixWorld(true);
     const inverse = raw.matrixWorld.clone().invert();
+    this.propCatalog = catalog;
+    this.propPlayback = new ClassicPropPlayback(catalog);
+    const destructible: T.Object3D[] = [];
+    raw.traverse(object => { if (object.userData.destructible) destructible.push(object); });
+    if (destructible.length !== catalog.props.length) throw Error("原物件独立节点数量不一致");
+    const propMaterials = new Set<T.Material>();
+    for (const prop of catalog.props) {
+      const object = raw.getObjectByName(prop.node), motion = object?.getObjectByName(prop.motionNode);
+      if (!object?.parent || !object.userData.destructible || object.userData.propIndex !== prop.index ||
+          object.userData.propId !== prop.id || !motion || motion.parent !== object ||
+          motion.position.lengthSq() > 1e-12 || motion.quaternion.angleTo(new T.Quaternion()) > 1e-7 ||
+          motion.scale.distanceToSquared(new T.Vector3(1,1,1)) > 1e-12)
+        throw Error("原物件节点或局部动作原点不一致");
+      for (const speed of ["low", "high"] as const) {
+        const clip = gltf.animations.find(clip => clip.name === prop.clips[speed]);
+        if (!clip || Math.abs(clip.duration - catalog.animations[speed].duration) > 1e-7 ||
+            !clip.tracks.length || clip.tracks.some(track => !track.name.startsWith(`${prop.motionNode}.`)))
+          throw Error("原物件碰撞动作绑定不一致");
+      }
+      // Detach before static collection: original pivots and mesh bytes survive,
+      // while neither the batches nor their hidden ray copies retain this prop.
+      const wrapper = new T.Group(); wrapper.matrixAutoUpdate = false;
+      wrapper.matrix.multiplyMatrices(inverse, object.parent.matrixWorld);
+      object.removeFromParent(); wrapper.add(object); this.world.add(wrapper);
+      const meshes: T.Mesh[] = [];
+      object.traverse(node => {
+        if (!(node instanceof T.Mesh)) return;
+        meshes.push(node);
+        for (const material of Array.isArray(node.material) ? node.material : [node.material]) propMaterials.add(material);
+      });
+      if (!meshes.length) throw Error("原物件缺少原始几何");
+      this.props.set(prop.index, { root: wrapper, meshes, sphere: new T.Sphere(), phase: "standing", time: 0 });
+    }
+    for (const material of propMaterials) {
+      if (material.userData.originalBlend === "ADDITIVE") {
+        material.transparent = true; material.depthWrite = false; material.blending = T.AdditiveBlending;
+      }
+      await this.prepareTextureAnimation(material as T.MeshBasicMaterial, gltf);
+    }
+    this.propMixer = new T.AnimationMixer(this.world);
+    this.propClips = new ClassicPropClipPlayback(this.propMixer, gltf.animations, T.LoopOnce);
     const animated: T.Object3D[] = [];
     raw.traverse((object) => {
       if (object.userData.animated) animated.push(object);
@@ -284,7 +337,8 @@ export class ClassicRenderer {
     }
     if (gltf.animations.length) {
       this.mixer = new T.AnimationMixer(this.world);
-      for (const clip of gltf.animations) this.mixer.clipAction(clip).play();
+      const ambient = classicAmbientClipNames(catalog, gltf.parser.json.animations ?? []);
+      for (const clip of gltf.animations) if (ambient.has(clip.name)) this.mixer.clipAction(clip).play();
     }
     type Pending = { material: T.Material; geometries: T.BufferGeometry[]; pieces: T.Sphere[]; billboard: boolean };
     const pending = new Map<string, Pending>();
@@ -346,6 +400,10 @@ export class ClassicRenderer {
       this.world.add(mesh); this.batches.push({ mesh, pieces: group.pieces });
       await this.prepareTextureAnimation(group.material as T.MeshBasicMaterial, gltf);
     }
+    this.world.updateMatrixWorld(true);
+    for (const prop of this.props.values()) this.box.setFromObject(prop.root).getBoundingSphere(prop.sphere);
+    this.canvas.dataset.propsCatalog = catalog.catalogHash;
+    this.canvas.dataset.propsCount = String(catalog.props.length);
     this.makeLightGlows();
   }
 
@@ -558,6 +616,7 @@ export class ClassicRenderer {
       for(let z=Math.floor(Math.min(origin.z,desired.z)/100);z<=Math.floor(Math.max(origin.z,desired.z)/100);z++)
         for(const index of this.barrierCells.get(`${x},${z}`)??[])nearby.add(index);
     for(const index of nearby){
+      if (classicBarrierBroken(this.propWorld, index)) continue;
       const wall=this.road.barriers[index], wx=wall.b.x-wall.a.x,wz=wall.b.y-wall.a.y;
       const den=direction.x*wz-direction.z*wx;if(Math.abs(den)<1e-8)continue;
       const ax=wall.a.x-origin.x,az=wall.a.y-origin.z;
@@ -571,6 +630,11 @@ export class ClassicRenderer {
     for(let delta=-3;delta<=3;delta++){
       const max=this.raySegments.size,index=(segment+delta+max)%max;
       candidates.push(...this.raySegments.get(index)??[]);
+    }
+    for (const [index, prop] of this.props) {
+      if (classicPropBroken(this.propWorld, index) || prop.phase !== "standing" ||
+          prop.sphere.center.distanceTo(origin) > length + prop.sphere.radius + 20) continue;
+      candidates.push(...prop.meshes);
     }
     this.raycaster.set(origin,direction.clone().normalize());this.raycaster.near=2;this.raycaster.far=length;
     this.rayHits.length=0;this.raycaster.intersectObjects(candidates,false,this.rayHits);
@@ -654,6 +718,27 @@ export class ClassicRenderer {
     this.frustum.setFromProjectionMatrix(this.projection);
     for(const batch of this.batches)batch.mesh.visible=batch.pieces.some(sphere=>
       sphere.center.distanceToSquared(camera.position)<(camera.far+sphere.radius)**2&&this.frustum.intersectsSphere(sphere));
+    for (const prop of this.props.values()) prop.root.visible = prop.phase !== "hidden" &&
+      prop.sphere.center.distanceToSquared(camera.position) < (camera.far + prop.sphere.radius) ** 2 && this.frustum.intersectsSphere(prop.sphere);
+  }
+
+  private updateProps(frame: ClassicSceneFrame) {
+    this.propWorld = frame.propWorld;
+    if (!this.propPlayback || !this.propCatalog) return;
+    const poses = this.propPlayback.update(frame.propWorld, frame.propEvents ?? [], finite(frame.serverNow), frame.reduced);
+    const changed = this.propClips?.apply(poses);
+    if (changed) this.world.updateMatrixWorld(true);
+    for (const pose of poses) {
+      const visual = this.props.get(pose.index)!;
+      visual.root.visible = pose.phase !== "hidden";
+      if (changed && (visual.time !== pose.time || visual.phase !== pose.phase))
+        this.box.setFromObject(visual.root).getBoundingSphere(visual.sphere);
+      visual.phase = pose.phase; visual.time = pose.time;
+    }
+    const broken = JSON.stringify(this.propCatalog.props.filter(prop => classicPropBroken(frame.propWorld, prop.index)).map(prop => prop.index));
+    const animations = JSON.stringify(poses.filter(pose => pose.phase !== "standing"));
+    if (this.canvas.dataset.propsBroken !== broken) this.canvas.dataset.propsBroken = broken;
+    if (this.canvas.dataset.propAnimations !== animations) this.canvas.dataset.propAnimations = animations;
   }
 
   private renderMirror(visual: VehicleVisual) {
@@ -705,6 +790,7 @@ export class ClassicRenderer {
     if(this.canvas.clientWidth&&Math.abs(this.canvas.clientWidth-this.width)>.5)this.resize();
     this.elapsed+=dt;
     if(!frame.reduced)this.mixer?.update(dt);
+    this.updateProps(frame);
     const present=new Set<number>();
     for(const base of frame.cars){
       const car=base as VisualCar,id=car.vehicle??this.config.vehicles[car.seat%this.config.vehicles.length];present.add(car.seat);
@@ -788,6 +874,7 @@ export class ClassicRenderer {
   dispose(): void {
     if(this.disposed)return;this.disposed=true;
     this.mixer?.stopAllAction();this.mixer?.uncacheRoot(this.world);
+    this.propClips?.stop();this.propMixer?.uncacheRoot(this.world);
     this.geometries.forEach(geometry=>geometry.dispose());
     this.materials.forEach(material=>material.dispose());
     const images=new Set<unknown>();
@@ -795,6 +882,7 @@ export class ClassicRenderer {
     for(const image of images)if(image&&typeof (image as {close?:unknown}).close==="function")try{(image as ImageBitmap).close();}catch{/* An already closed shared bitmap needs no second release. */}
     this.environmentTarget?.dispose();this.mirrorTarget?.dispose();this.renderer.dispose();this.renderer.forceContextLoss();
     this.vehicles.clear();this.templates.clear();this.cockpitEyes.clear();this.painted.clear();this.originals.clear();
-    for(const key of ["classic","geometry","vehicle","steering","renderedAt","frameCounter","vehicleRect","triangles","drawCalls","decodedImages","followSeat","cameraClearance","cameraMode","cameraModeName","drawDistance","drawDistanceMetres","drawDistanceLimitMetres","mirrorVisible","mirrorFrame"])delete this.canvas.dataset[key];
+    this.props.clear();
+    for(const key of ["classic","geometry","vehicle","steering","renderedAt","frameCounter","vehicleRect","triangles","drawCalls","decodedImages","followSeat","cameraClearance","cameraMode","cameraModeName","drawDistance","drawDistanceMetres","drawDistanceLimitMetres","mirrorVisible","mirrorFrame","propsCatalog","propsCount","propsBroken","propAnimations"])delete this.canvas.dataset[key];
   }
 }

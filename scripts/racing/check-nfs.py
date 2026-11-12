@@ -61,6 +61,8 @@ class Acceptance:
           const events=[];
           const listener=e=>{events.push({key:e.key,type:e.type,label:e.target instanceof Element?e.target.closest('button')?.getAttribute('aria-label'):null,trusted:e.isTrusted,at:performance.timeOrigin+e.timeStamp,received:performance.timeOrigin+performance.now()});if(events.length>512)events.splice(0,events.length-512)};
           for(const type of ['keydown','keyup','pointerdown','pointerup','pointercancel'])addEventListener(type,listener,true);
+          const releaseFault=e=>{const p=window.__nfsSafetyProbe;if(!p?.blockPointerRelease)return;p.events.push({type:e.type,trusted:e.isTrusted,blocked:true,pointerId:e.pointerId,label:e.target instanceof Element?e.target.closest('[aria-label]')?.getAttribute('aria-label'):null,at:performance.timeOrigin+e.timeStamp});e.stopImmediatePropagation()};
+          for(const type of ['pointerup','pointercancel','lostpointercapture'])addEventListener(type,releaseFault,true);
           window.__nfsNativeProbe={events,early:true,stop:()=>{for(const type of ['keydown','keyup','pointerdown','pointerup','pointercancel'])removeEventListener(type,listener,true)}};
         })();\n""")
         self.env.update(AGENT_BROWSER_CONFIG=str(self.config), GOTOOLCHAIN="local",
@@ -489,6 +491,101 @@ class Acceptance:
             require(pixels["metrics"]["visibleTrials"]==8 and pixels["metrics"]["p95MS"]<=BUDGET["inputPixelP95MS"],"native thumb-to-vehicle pixels missed response budget",pixels["metrics"])
             require(all(r["nativeEvent"].get("trusted") and r["nativeEvent"]["type"]=="pointerdown" for r in pixels["trials"]),"thumb measurement substituted keyboard or synthetic input",pixels["trials"])
             self.check("native thumb-to-vehicle pixels "+label,metrics=pixels["metrics"],ack=pixels["ackMetrics"])
+        self.close_room()
+
+    def safety_controls(self):
+        # Safety failure inventory precedes the Board fix: a lifted steering
+        # finger sticks if WebKit/menu routing loses pointerup/cancel/capture;
+        # ending it must preserve the other finger, keyboard and Gamepad.
+        # HUD/canvas text must not enter selection/callout, while ordinary
+        # platform editors retain editing. Faults only suppress native pointer
+        # releases at window capture; native touchend/touches remain untouched.
+        self.report["limitations"] += [
+            "Safari/menu release loss is simulated by a pre-app window-capture blocker for pointerup/pointercancel/lostpointercapture only; touch events remain native CDP events.",
+            "Cancelable contextmenu/selectstart guard-boundary probes are explicitly synthetic and are separate from native long-press/drag/right-click evidence.",
+            "This is Chromium touch emulation, not physical iOS/Safari testing; unsupported -webkit-touch-callout is checked as a published CSS declaration, not claimed as a Safari computed result."]
+        failures=[]
+        def expect(name,condition,detail=None):
+            if condition:self.check(name)
+            else:failures.append({"name":name,"detail":detail})
+        def rows(value):return {r["name"]:r["data"] for r in value["samples"]}
+        def ctrl(row,steer,gas):return float(row["controls"]["steer"])==steer and float(row["controls"]["throttle"])==gas
+        self.create_ui("france",vehicle="p911",players=2)
+        self.enter("france",vehicle="p911")
+        self.browser("set","viewport","320","844")
+        self.browser("scrollintoview",".racing-chase")
+        left={"selector":'button[aria-label="向左转向"]',"id":1}
+        right={"selector":'button[aria-label="向右转向"]',"id":1}
+        gas={"selector":'button[aria-label="油门"]',"id":2}
+        def run(name,actions):
+            return self.native(name,[{"safetyStart":True},{"wait":150},{"scrollTo":".racing-chase"},{"wait":100},*actions],width=320,height=844,touch=True)
+        normal=run("safety-normal-two-finger",[{"safetyDOM":True},{"touch":"touchStart","points":[left,gas]},{"wait":220},{"read":"held"},
+            {"touch":"touchEnd","points":[left]},{"wait":180},{"read":"gas-only"},{"touch":"touchEnd","points":[]},{"wait":150},{"read":"released"}])
+        r=rows(normal)
+        expect("native two-finger lift clears left and preserves gas",ctrl(r["held"],-1,1) and ctrl(r["gas-only"],0,1) and ctrl(r["released"],0,0),{k:v["controls"]for k,v in r.items()})
+        dom=normal["safetyDOM"][0]
+        expect("all held controls opt in to touch menu guard",len(dom["held"])>=7 and all(x["marked"]for x in dom["held"]),dom["held"])
+        held_starts=[e for e in normal["safetyEvents"]if e["type"]=="touchstart"and e["trusted"]and e["label"]in("向左转向","油门")]
+        expect("native held touchstart prevents callout defaults",bool(held_starts)and all(e["defaultPrevented"]for e in held_starts),held_starts)
+        expect("ordinary click controls do not suppress compatibility click",len(dom["clickOnly"])>=3 and all(not x["marked"]for x in dom["clickOnly"]),dom["clickOnly"])
+        expect("board and descendants disable text selection and callout",not dom["violations"] and bool(dom["rootProtectionCSS"]),dom)
+        for name,ended,steer,throttle in (("left-lift",[left],0,1),("gas-lift",[gas],-1,0)):
+            value=run("safety-menu-loss-"+name,[{"touch":"touchStart","points":[left,gas]},{"wait":220},{"read":"held"},{"dropPointerReleases":True},
+                {"touch":"touchEnd","points":ended},{"wait":200},{"read":"one-remains"},{"shot":"stuck-check"},
+                {"touch":"touchEnd","points":[]},{"wait":160},{"read":"released"},{"dropPointerReleases":False},
+                {"touch":"touchStart","points":[right,gas]},{"wait":200},{"read":"fresh"},{"touch":"touchCancel","points":[]},{"blur":True,"milliseconds":100}])
+            r=rows(value);events=value["safetyEvents"]
+            expect("native release-loss simulation is exercised "+name,any(e.get("blocked")and e.get("trusted")for e in events)and any(e["type"]=="touchend"and e["trusted"]and len(e["activeTouches"])==1 for e in events),events)
+            expect("touch list releases only departed finger "+name,ctrl(r["one-remains"],steer,throttle),{"controls":r["one-remains"]["controls"],"activeTouches":r["one-remains"]["safety"]})
+            expect("all lifted touches clear held state "+name,ctrl(r["released"],0,0),r["released"]["controls"])
+            expect("fresh gesture works after interrupted release "+name,ctrl(r["fresh"],1,1),r["fresh"]["controls"])
+        drag=run("safety-drag-out",[{"touch":"touchStart","points":[left,gas]},{"wait":150},
+            {"touch":"touchMove","points":[{"selector":".racing-chase","id":1,"x":.5,"y":.5},gas]},{"wait":180},{"read":"outside"},
+            {"touch":"touchEnd","points":[{"selector":".racing-chase","id":1,"x":.5,"y":.5}]},{"wait":100},{"touch":"touchEnd","points":[]},{"wait":120},{"read":"released"}])
+        r=rows(drag)
+        expect("dragging steering outside releases it without cancelling gas",ctrl(r["outside"],0,1)and ctrl(r["released"],0,0),{k:v["controls"]for k,v in r.items()})
+        for key in (" ","Enter"):
+            value=run("safety-button-focus-"+("space"if key==" "else"enter"),[{"focus":left["selector"]},{"key":key,"down":True},{"wait":100},{"read":"held"},
+                {"focus":".racing-chase"},{"wait":100},{"focus":left["selector"]},{"key":key,"down":True,"repeat":True},{"wait":100},{"read":"repeat"},
+                {"key":key,"down":False},{"key":key,"down":True},{"wait":100},{"read":"fresh"},{"key":key,"down":False},{"wait":100}])
+            r=rows(value)
+            expect("button refocus blocks held key repeat "+repr(key),ctrl(r["held"],-1,0)and ctrl(r["repeat"],0,0)and ctrl(r["fresh"],-1,0),{k:v["controls"]for k,v in r.items()})
+        model=self.api("/controllers?game=racing")["models"][0]
+        brake=next(b["index"]for b in model["standardGamepad"]["brake"]if b["type"]=="button")
+        mixed=run("safety-mixed-sources",[{"focus":".racing-chase"},{"gamepad":{}},{"wait":180},{"key":"a","down":True},{"touch":"touchStart","points":[gas]},{"wait":180},{"read":"keyboard-gas"},
+            {"gamepad":{"buttons":{str(brake):.45}}},{"wait":180},{"read":"brake"},{"touch":"touchEnd","points":[]},{"wait":150},{"read":"touch-gone"},
+            {"gamepad":{"connected":False}},{"wait":150},{"read":"keyboard-remains"},{"key":"a","down":False},{"gamepadStop":True},{"wait":120}])
+        r=rows(mixed)
+        expect("touch release preserves keyboard and Gamepad sources",ctrl(r["keyboard-gas"],-1,1)and ctrl(r["brake"],-1,0)and r["touch-gone"]["controls"]["brake"]=="true"and ctrl(r["keyboard-remains"],-1,0)and r["keyboard-remains"]["controls"]["brake"]=="false",{k:v["controls"]for k,v in r.items()})
+        click=run("safety-ordinary-touch-click",[{"touch":"touchStart","points":[{"selector":'button[aria-label="切换视角"]',"id":1}]},{"touch":"touchEnd","points":[]},{"wait":180},{"read":"camera"},
+            {"touch":"touchStart","points":[{"selector":'button[aria-label="查看赛道地图"]',"id":1}]},{"touch":"touchEnd","points":[]},{"wait":180},{"read":"map"},
+            {"touch":"touchStart","points":[{"selector":'.racing-map-modal button[aria-label="关闭"]',"id":1}]},{"touch":"touchEnd","points":[]},{"wait":150},{"read":"closed"}])
+        r=rows(click)
+        expect("ordinary touch click still changes camera and opens map",r["camera"]["canvas"]["cameraMode"]!=r["before"]["canvas"]["cameraMode"]and r["map"].get("modal")=="赛道地图"and not r["closed"].get("modal"),{k:{"camera":v["canvas"]["cameraMode"],"modal":v.get("modal")}for k,v in r.items()})
+        hud=".racing-hud .racing-track-title strong"
+        targets=[hud,".racing-chase",left["selector"]]
+        actions=[]
+        for i,target in enumerate(targets):
+            actions += [{"nativeClick":".racing-chase"},{"touch":"touchStart","points":[{"selector":target,"id":1,"allowUnderlay":target==hud}]},{"wait":850},{"read":"long-"+str(i)},{"touch":"touchEnd","points":[]},{"wait":100}]
+        actions += [{"nativeClick":".racing-chase"},{"drag":hud,"dx":65,"dy":0},{"wait":100},{"read":"hud-drag"},{"shot":"selection-check"},{"guardProbe":targets}]
+        for target in targets:actions += [{"contextMenu":{"selector":target,"allowUnderlay":target==hud}},{"wait":100},{"key":"Escape","down":True},{"key":"Escape","down":False}]
+        selection=run("safety-selection-and-menu",actions);r=rows(selection)
+        expect("native HUD canvas button long press and HUD drag do not select",all(not r[k]["selected"]for k in ("long-0","long-1","long-2","hud-drag")),{k:r[k]["selected"]for k in ("long-0","long-1","long-2","hud-drag")})
+        expect("board contextmenu and selectstart guard defaults",len(selection["guardProbes"])==6 and all(e["defaultPrevented"]for e in selection["guardProbes"]),selection["guardProbes"])
+        native_menus=[e for e in selection["safetyEvents"]if e["type"]=="contextmenu"and e["trusted"]]
+        expect("native board contextmenu is prevented",len(native_menus)>=3 and all(e["defaultPrevented"]for e in native_menus),native_menus)
+        self.browser("click",".chat-toggle")
+        self.browser("wait",'textarea[aria-label="聊天消息"]')
+        self.browser("fill",'textarea[aria-label="聊天消息"]',"手机编辑选择验收")
+        self.browser("focus",'textarea[aria-label="聊天消息"]')
+        self.native("safety-editor-native-select",[{"focus":'textarea[aria-label="聊天消息"]'},{"selectEditorAll":True},{"wait":100}])
+        editor=self.js("""(()=>{const e=document.querySelector('textarea[aria-label="聊天消息"]'),s=getComputedStyle(e);return {length:e.value.length,start:e.selectionStart,end:e.selectionEnd,userSelect:s.userSelect,callout:s.getPropertyValue('-webkit-touch-callout'),insideBoard:!!e.closest('.racing-board')}})()""")
+        expect("platform chat retains native editable selection",not editor["insideBoard"]and editor["start"]==0 and editor["end"]==editor["length"]and editor["userSelect"]!="none",editor)
+        editprobe=self.native("safety-editor-guards",[{"safetyStart":True},{"guardProbe":['textarea[aria-label="聊天消息"]']}])
+        expect("platform editor contextmenu and selection defaults remain allowed",all(not e["defaultPrevented"]for e in editprobe["guardProbes"]),editprobe["guardProbes"])
+        self.record("safety-failures",failures)
+        self.report["safety"]={"passed":not failures,"failures":failures,"simulation":"native Chromium CDP touch; only pointer release delivery intentionally blocked; no physical iOS claim"}
+        require(not failures,"mobile safety regression gates failed",failures)
         self.close_room()
 
     def camera_keys(self):
@@ -1128,13 +1225,15 @@ class Acceptance:
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--out", required=True)
-    parser.add_argument("--phase", choices=("contract", "controls", "display", "presenter", "expiry", "audio-diagnostic", "thumbs", "thumb-layouts", "fullscreen", "smoke", "full", "remaining", "experience", "vehicles", "latency"), default="smoke")
+    parser.add_argument("--phase", choices=("contract", "controls", "display", "presenter", "expiry", "audio-diagnostic", "safety", "thumbs", "thumb-layouts", "fullscreen", "smoke", "full", "remaining", "experience", "vehicles", "latency"), default="smoke")
     parser.add_argument("--base", help="reuse an explicitly owned local Racing fixture URL")
     args = parser.parse_args()
     job = Acceptance(args)
     try:
         job.start_fixture()
-        if args.phase in ("thumbs", "thumb-layouts"):
+        if args.phase == "safety":
+            job.safety_controls()
+        elif args.phase in ("thumbs", "thumb-layouts"):
             job.thumb_controls()
         elif args.phase == "fullscreen":
             job.fullscreen_validation()

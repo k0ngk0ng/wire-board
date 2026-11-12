@@ -3,12 +3,15 @@ import type { Car, Point, Track } from "./types";
 import { brakeLevel, type Drive } from "./input.ts";
 import { clamp } from "./presentation.ts";
 import { classicVehicle, stepClassicMotion, type ClassicMotionState } from "./classic-motion.ts";
-import { classicRoadAt, classicRoadSurface, collideClassicRoad, type ClassicRuleTrack } from "./classic-road.ts";
+import { classicRoadAt, classicRoadSurface, collideClassicRoad, type ClassicRuleTrack, type ClassicPropWorld } from "./classic-road.ts";
 
 type PredictionDrive = Drive & { protected?: boolean; extrapolated?: boolean };
 
-function predictClassicCar(car: Car, input: PredictionDrive, track: ClassicRuleTrack, ms: number, serverNow: number): Car {
+function predictClassicCar(car: Car, input: PredictionDrive, track: ClassicRuleTrack, ms: number, serverNow: number, props?: ClassicPropWorld): Car {
   const c = { ...car };
+  // Speculative contact is local to this replay. Only server snapshots update
+  // confirmed world visibility and future authoritative collision filtering.
+  const predictedProps = props ? { ...props, broken: props.broken.slice() } : undefined;
   const vehicle = classicVehicle(c.vehicle ?? "p911");
   let motion: ClassicMotionState = {
     x: c.x / 10, z: c.y / 10, vx: c.vx / 10, vz: c.vy / 10, angle: c.angle,
@@ -33,7 +36,7 @@ function predictClassicCar(car: Car, input: PredictionDrive, track: ClassicRuleT
       allowReverse: !protect,
     }, vehicle, classicRoadSurface(road, motion.angle), dt);
     road = classicRoadAt(track, motion.x * 10, motion.z * 10, road.height, road.index);
-    motion = collideClassicRoad(track, motion, c.vehicle ?? "p911", road.height);
+    motion = collideClassicRoad(track, motion, c.vehicle ?? "p911", road.height, predictedProps);
     c.x = motion.x * 10; c.y = motion.z * 10;
     c.vx = motion.vx * 10; c.vy = motion.vz * 10; c.angle = motion.angle;
     road = classicRoadAt(track, c.x, c.y, road.height, road.index);
@@ -70,12 +73,13 @@ export function predictCar(
   track: Track,
   ms: number,
   serverNow: number,
+  props?: ClassicPropWorld,
 ): Car {
   const c = { ...car };
   const braking = brakeLevel(input);
   if (c.finishAt || c.resetUntil > serverNow) return c;
   if (c.vehicle && track.version === 3 && track.road && track.barriers)
-    return predictClassicCar(c, input, track as ClassicRuleTrack, ms, serverNow);
+    return predictClassicCar(c, input, track as ClassicRuleTrack, ms, serverNow, props);
   let remaining = clamp(ms, 0, 250) / 1000;
   while (remaining > 0) {
     const dt = Math.min(0.02, remaining);

@@ -8,6 +8,10 @@ export type ClassicManifest = {
   version: number;
   assets: ClassicAsset[];
   totalBytes?: number;
+  propCatalogs?: Record<
+    string,
+    { path: string; catalogHash: string; count: number }
+  >;
 };
 export type ClassicProgress = { loaded: number; total: number; cached: number };
 
@@ -22,7 +26,11 @@ export function classicResourceBase(value: string): string {
 }
 
 export function classicAssetURL(base: string, path: string): string {
-  if (!path || path.startsWith("/") || path.split("/").some((p) => p === ".." || !p))
+  if (
+    !path ||
+    path.startsWith("/") ||
+    path.split("/").some((p) => p === ".." || !p)
+  )
     throw Error("无效的赛车资源路径");
   return `${base.replace(/\/+$/, "")}/racing/v3/${path}`;
 }
@@ -42,6 +50,7 @@ export function selectClassicAssets(
   const name = track + (timeOfDay === "night" ? "-night" : "");
   const paths = new Set([
     `tracks/${name}.glb`,
+    `props/${track}.json`,
     `tracks/${track}.route.json`,
     `tracks/${name}-sky.png`,
     ...vehicles.map((id) => `cars/${id}.glb`),
@@ -155,7 +164,8 @@ export async function fetchClassicFiles(
             const { value, done } = await reader.read();
             if (done) break;
             size += value.byteLength;
-            if (size > file.bytes) throw Error(`赛车资源大小不匹配：${file.path}`);
+            if (size > file.bytes)
+              throw Error(`赛车资源大小不匹配：${file.path}`);
             chunks.push(value);
             loaded.set(file.path, size);
             notify();
@@ -188,7 +198,9 @@ export async function fetchClassicFiles(
       notify();
     }
   };
-  await Promise.all(Array.from({ length: Math.min(3, pending.length) }, worker));
+  await Promise.all(
+    Array.from({ length: Math.min(3, pending.length) }, worker),
+  );
   checkAbort();
   notify();
   return result;

@@ -93,8 +93,10 @@ const sample = () => evaluate(`(async()=>{const state=await(await fetch('/api/st
       panel:panel?{withinStage:!!stage?.contains(panel),background:style.backgroundColor,backgroundImage:style.backgroundImage,position:style.position}:null,
       paragraphs:[...document.querySelectorAll('.racing-board p,.racing-view-controls span,.racing-wheel small')].filter(visible).map(e=>e.textContent.trim())}})(),
   controls:controls?{...controls.dataset}:null,activeClass:document.activeElement?.getAttribute('class'),selected:getSelection().toString(),
+  safety:window.__nfsSafetyProbe?{activeTouches:window.__nfsSafetyProbe.activeTouches,blockPointerRelease:window.__nfsSafetyProbe.blockPointerRelease,blockedReleases:window.__nfsSafetyProbe.events.filter(e=>e.blocked).length}:null,
   viewport:innerWidth,modal:document.querySelector('[role=dialog]')?.getAttribute('aria-label')}})()`);
-const screenshots = [], samples = [], touchInputs=[];
+const screenshots = [], samples = [], touchInputs=[],guardProbes=[],safetyDOM=[];
+const targetPoint=(selector,allowUnderlay=false)=>evaluate(`new Promise((resolve,reject)=>{const start=performance.now(),take=()=>{const e=document.querySelector(${JSON.stringify(selector)}),r=e?.getBoundingClientRect();if(r?.width>0&&r?.height>0){const x=r.x+r.width*.5,y=r.y+r.height*.5;if(!${!!allowUnderlay}&&!e.contains(document.elementFromPoint(x,y))){reject(Error('native target covered/offscreen'));return}resolve({x,y});return}if(performance.now()-start>3000){reject(Error('native target not visible'));return}requestAnimationFrame(take)};take()})`);
 function percentile(rows, quantile) { const ordered = rows.slice().sort((a, b) => a - b); return ordered[Math.max(0, Math.ceil(ordered.length * quantile) - 1)] ?? null; }
 let output;
 try {
@@ -111,6 +113,17 @@ try {
     samples.push({ name: "before", data: await sample() });
     for (const action of options.actions ?? []) {
       if (action.wait) { await sleep(action.wait); continue; }
+      if(action.safetyStart){await evaluate(`(()=>{window.__nfsSafetyProbe?.stop?.();const events=[],p={events,activeTouches:[],blockPointerRelease:false};const types=['touchstart','touchmove','touchend','touchcancel','contextmenu','selectstart','selectionchange'];
+        const listen=e=>{if('touches'in e)p.activeTouches=[...e.touches].map(t=>({id:t.identifier,label:t.target instanceof Element?t.target.closest('[aria-label]')?.getAttribute('aria-label'):null}));const row={type:e.type,trusted:e.isTrusted,at:performance.timeOrigin+e.timeStamp,activeTouches:p.activeTouches.map(t=>({...t})),label:e.target instanceof Element?e.target.closest('[aria-label]')?.getAttribute('aria-label'):null,defaultPrevented:e.defaultPrevented};setTimeout(()=>{row.defaultPrevented=e.defaultPrevented;row.selected=getSelection().toString();events.push(row);if(events.length>1000)events.splice(0,events.length-1000)},0)};
+        for(const type of types)addEventListener(type,listen,{capture:true,passive:true});p.stop=()=>{p.blockPointerRelease=false;for(const type of types)removeEventListener(type,listen,true)};window.__nfsSafetyProbe=p;return true})()`);continue;}
+      if(action.dropPointerReleases!==undefined){await evaluate(`window.__nfsSafetyProbe.blockPointerRelease=${!!action.dropPointerReleases}`);continue;}
+      if(action.guardProbe){guardProbes.push(...await evaluate(`(()=>{return ${JSON.stringify(action.guardProbe)}.flatMap(selector=>{const e=document.querySelector(selector);if(!e)throw Error('missing guard target '+selector);return ['contextmenu','selectstart'].map(type=>{const event=new Event(type,{bubbles:true,cancelable:true});const accepted=e.dispatchEvent(event);return {selector,type,trusted:event.isTrusted,defaultPrevented:event.defaultPrevented,accepted,kind:'explicit synthetic cancelable guard-boundary probe; not native iOS'}})})})()`));continue;}
+      if(action.selectEditorAll){await send('Input.dispatchKeyEvent',{type:'keyDown',key:'a',code:'KeyA',windowsVirtualKeyCode:65,modifiers:4,commands:['selectAll']});await send('Input.dispatchKeyEvent',{type:'keyUp',key:'a',code:'KeyA',windowsVirtualKeyCode:65,modifiers:4});continue;}
+      if(action.nativeClick||action.contextMenu){const target=action.nativeClick||action.contextMenu,p=await targetPoint(typeof target==='string'?target:target.selector,target.allowUnderlay),button=action.contextMenu?'right':'left',buttons=action.contextMenu?2:1;await send('Input.dispatchMouseEvent',{type:'mousePressed',...p,button,buttons,clickCount:1});await send('Input.dispatchMouseEvent',{type:'mouseReleased',...p,button,buttons:0,clickCount:1});continue;}
+      if(action.safetyDOM){safetyDOM.push(await evaluate(`(async()=>{const root=document.querySelector('.racing-board'),nodes=[root,...root.querySelectorAll('*')],held=[...root.querySelectorAll('.racing-steering button,.racing-pedals button,button[aria-label="喇叭"],button[aria-label="向后看"]')];
+        const calloutSupported=CSS.supports('-webkit-touch-callout','none');const violations=nodes.filter(e=>!e.closest('input,textarea,select,[contenteditable=true]')).map(e=>{const s=getComputedStyle(e);return {tag:e.tagName,class:e.className,label:e.getAttribute('aria-label'),userSelect:s.userSelect,webkitUserSelect:s.webkitUserSelect,callout:s.getPropertyValue('-webkit-touch-callout')}}).filter(r=>r.userSelect!=='none'||(calloutSupported&&r.callout!=='none'));
+        const css=[];for(const sheet of [...document.styleSheets])if(sheet.href){const text=await(await fetch(sheet.href)).text();const blocks=text.match(/[^{}]+\\{[^{}]*-webkit-touch-callout\\s*:\\s*none[^{}]*\\}/g)||[];for(const block of blocks){const selector=block.slice(0,block.indexOf('{')).trim();let matches=false;try{matches=root.matches(selector)}catch{}if(matches)css.push({href:new URL(sheet.href).pathname,rule:block.slice(0,1200)})}}
+        return {checkedNodes:nodes.length,calloutSupported,violations,rootProtectionCSS:css,held:held.map(e=>({label:e.getAttribute('aria-label'),marked:e.hasAttribute('data-game-hold-control')})),clickOnly:[...root.querySelectorAll('button[aria-label="切换视角"],button[aria-label="查看赛道地图"],button[aria-label="重置赛车"]')].map(e=>({label:e.getAttribute('aria-label'),marked:e.hasAttribute('data-game-hold-control')}))}})()`));continue;}
       if (action.waitFor === 'resettable') {
         const deadline=Date.now()+8000;let ready=false;
         while(Date.now()<deadline){ready=await evaluate("fetch('/api/state').then(r=>r.json()).then(s=>{const d=s.room.game.data,c=d.cars.find(c=>c.seat===s.room.you);return d.controls.canReset&&c.speed<=55})");if(ready)break;await sleep(80)}
@@ -160,8 +173,8 @@ try {
         const points = [];
         for (const p of action.points ?? []) {
           const xy = await evaluate(`new Promise((resolve,reject)=>{const start=performance.now(),find=()=>{const e=document.querySelector(${JSON.stringify(p.selector)}),r=e?.getBoundingClientRect();if(r?.width>0&&r?.height>0&&getComputedStyle(e).visibility!=='hidden'){const x=r.x+r.width*${p.x??.5},y=r.y+r.height*${p.y??.5},hit=document.elementFromPoint(x,y);resolve({x,y,target:hit?.getAttribute('aria-label')||hit?.className||hit?.tagName,expected:e.contains(hit)});return};if(performance.now()-start>3000){reject(Error('touch target did not become visible'));return}requestAnimationFrame(find)};find()})`);
-          touchInputs.push({selector:p.selector,id:p.id,...xy,at:Date.now()});
-          if(!xy.expected)throw Error('Actual touch target is covered/offscreen: '+JSON.stringify(touchInputs.at(-1)));
+          touchInputs.push({selector:p.selector,id:p.id,...xy,allowUnderlay:!!p.allowUnderlay,at:Date.now()});
+          if(!xy.expected&&!p.allowUnderlay)throw Error('Actual touch target is covered/offscreen: '+JSON.stringify(touchInputs.at(-1)));
           points.push({ x:xy.x,y:xy.y,id: p.id, radiusX: 4, radiusY: 4, force: 1 });
         }
         await send("Input.dispatchTouchEvent", { type: action.touch, touchPoints: points }); continue;
@@ -259,11 +272,12 @@ try {
       method: "Native steering at rest with B/front camera; actual compositor PNG pixels inside projected own-vehicle bounds; preinput noise calibrated; native page event time and compositor frame timestamps share epoch clock. Dataset/ACK are separate observations." };
   } else throw Error("Unknown probe mode: " + options.mode);
   if(options.screenshot)screenshots.push({name:options.screenshot,data:(await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false})).data});
-  output = { ...output, screenshots, pixelFrames, packets, states, requests, exceptions, frameEvents, ackMS,touchInputs,
+  output = { ...output, screenshots, pixelFrames, packets, states, requests, exceptions, frameEvents, ackMS,touchInputs,guardProbes,safetyDOM,safetyEvents:await evaluate('window.__nfsSafetyProbe?.events??[]'),
     ackMetrics: { count: ackMS.length, p50MS: percentile(ackMS, .5), p95MS: percentile(ackMS, .95),
       statuses: packets.filter((packet) => packet.type === "ack").reduce((counts, packet) => ({ ...counts, [packet.status]: (counts[packet.status] ?? 0) + 1 }), {}) } };
 } finally {
   if (session) {
+    try {await send('Input.dispatchTouchEvent',{type:'touchCancel',touchPoints:[]});await evaluate('window.__nfsSafetyProbe?.stop?.()');}catch{}
     if(options.touchPixels){try{await send('Input.dispatchTouchEvent',{type:'touchCancel',touchPoints:[]});}catch{}}
     for (const value of held.keys()) { try { await key(value, false); } catch {} }
     if (screen) { try { await send("Page.stopScreencast"); } catch {} }

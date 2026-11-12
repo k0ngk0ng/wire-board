@@ -313,7 +313,7 @@ func advance(s *State, until int64) {
 			c.Drift = c.Applied.Drift
 			c.LastInputAt = c.Applied.At
 			if s.Physics == 3 {
-				drop := stepClassicCar(c, s.Track, stepMS, at)
+				drop := stepClassicCar(c, s.Track, stepMS, at, classicCollisionProps(s, i, at))
 				if drop > 45 {
 					s.emit("collision", i, at, clamp(drop/200, 0, 1))
 				}

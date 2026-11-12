@@ -18,18 +18,20 @@
 
 | 独立赛道 | 原 VROAD 点数 | 长度 | 高差 | 日景 GLB 字节 | 夜景 GLB 字节 |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| france | 973 | 4487.36 m | 188.18 m | 5580064 | 5608836 |
-| coastal | 1075 | 4955.41 m | 73.11 m | 7211276 | 7229172 |
-| uk | 839 | 3867.08 m | 27.86 m | 4610616 | 4609816 |
-| park | 939 | 4327.86 m | 69.50 m | 6238096 | 6237264 |
+| france | 973 | 4487.36 m | 188.18 m | 5725532 | 5754304 |
+| coastal | 1075 | 4955.41 m | 73.11 m | 7642188 | 7660080 |
+| uk | 839 | 3867.08 m | 27.86 m | 5047252 | 5046452 |
+| park | 939 | 4327.86 m | 69.50 m | 6458136 | 6457304 |
 
-日夜是同一路线的场景变体，不计作两条独立赛道。资源清单含五车及驾驶舱、八种场景、路线、离线碰撞数据、天空、原车循环声与下述自制喇叭，共 65 项、54,631,266 字节。该数字包含所有变体和辅助规则数据，不能当作首场下载量；网页应按当前赛道、当前昼夜和选中车型加载。
+日夜是同一路线的场景变体，不计作两条独立赛道。资源清单含五车及驾驶舱、八种场景、路线、离线碰撞数据、天空、原车循环声、下述自制喇叭及四份物件目录，共 69 项、57,259,676 字节。该数字包含所有变体和辅助规则数据，不能当作首场下载量；网页应按当前赛道、当前昼夜和选中车型加载。
 
 坐标、对象和材质的约定见 [CONTRACT.md](CONTRACT.md)。重要细节：原版左手系先反射 X，再平移到非负 X/Z；GLB 与路线使用同一 origin。车头为 +Z，四个轮心节点独立，轮轴为局部 X。道路原始 3D 高程、左右宽度、墙面、对象和原贴图分辨率均保留。France 首点的铺装横断面经原碰撞面验证为左 6 米、右 12 米；墙距是另一项数据。
 
 车身 TGA 的 alpha 是颜色标签，不能全部当作透明度。公开重建的区间说明为：223～230 对应 primary、160～182 对应 interior、96～118 对应 secondary、32～46 对应 driver；命中像素按原颜色组处理后设为不透明，0 继续透明、255 固定色不变。应在原像素上处理，避免 shader 插值导致分区串色。这来自公开重建的 `core/resources/car_texture.gd`，尚未作为原版运行行为直接测量。GLB 保留原 RGBA；渲染器需完成该处理。
 
 每轨还保留原生循环对象动画、正确的 billboard 旋转中心及原纹理动画元数据。循环动画作为 glTF AnimationClip 输出，64 Hz、原帧间距；billboard、additive、flipbook/UV scroll 由网页渲染器应用。对象破坏动画需要碰撞事件驱动，少量未解释的原碰撞类型保存在 route 的 `unresolved`，不能静默当作实体墙。
+
+已核实的普通可破坏物件分别为 France 29、Coastal 83、UK 108、Park 45。它们现在保留独立节点和原 TR02／TR03 一次性动作，配套 `props/<track>.json` 连接原身份、昼夜节点、旧路线物件和展开后的规则边；route 原字节与 geometryHash 不变。billboard 误继承 road attribute 的碰撞类型以及 special／mass 物件不进入该白名单。原 flag、逐对象原始字节偏移、稳定 ID、动画时钟与证据边界见 [PROPS.md](PROPS.md)。
 
 原车声音仅提取与负载/滑行表关联的 27 个前方发动机短循环，排除后方空间混音及其余整库内容。每个 FLAC 都与原循环区间 PCM 逐字节相同；五车音频及完整原控制表合计 1,171,725 字节。RPM 表下标映射标为社区重建依据；连续音高倍率是数学近似，原固定点 LUT、随机微调与精确对数音量包络未移植。不能据此声称原版音频输出已被实机验证。
 
@@ -55,10 +57,11 @@ python3 -m venv .local/racing-nfs-reference/asset-venv
 
 PYTHONWARNINGS=ignore::ResourceWarning .local/racing-nfs-reference/asset-venv/bin/python -B scripts/racing/nfs-assets.e2e.py --extended
 PYTHONWARNINGS=ignore::ResourceWarning .local/racing-nfs-reference/asset-venv/bin/python -B scripts/racing/nfs-cockpit.e2e.py
+PYTHONWARNINGS=ignore::ResourceWarning .local/racing-nfs-reference/asset-venv/bin/python -B scripts/racing/nfs-props.e2e.py
 PYTHONWARNINGS=ignore::ResourceWarning .local/racing-nfs-reference/asset-venv/bin/python -B scripts/racing/nfs-audio.e2e.py
 python3 -B scripts/racing/nfs-horn.e2e.py
 ```
 
 音频工具另需 PATH 中的 FFmpeg/FFprobe；本次为 FFmpeg 9.0.1。未使用 Blender，也未安装新的客户端几何解码运行时。
 
-验收结果见 [verification.json](verification.json)：六项真实资源 E2E、四项真实驾驶舱 E2E、三项真实音频 E2E 均通过；重复生成字节一致；驾驶舱加入后重新检查的 13 个 GLB 通过 Khronos `gltf-validator@2.0.0-dev.3.10`，错误、警告和提示均为 0。RGBA 图片与原始像素摘要匹配，无损 WebP 仅在整个 GLB 更小时采用；FLAC 解码后采样格式、帧数及 PCM 摘要均与对应原区间一致。这些离线验证不替代正式网页的画面、操控、加载和平台音频验证。
+验收结果见 [verification.json](verification.json)：六项真实资源 E2E、四项真实驾驶舱 E2E、四项真实物件 E2E、三项真实音频 E2E 均通过；重复生成字节一致；物件拆分后重新检查的 13 个 GLB 通过 Khronos `gltf-validator@2.0.0-dev.3.10`，错误、警告和提示均为 0。RGBA 图片与原始像素摘要匹配，无损 WebP 仅在整个 GLB 更小时采用；FLAC 解码后采样格式、帧数及 PCM 摘要均与对应原区间一致。这些离线验证不替代正式网页的画面、操控、加载和平台音频验证。

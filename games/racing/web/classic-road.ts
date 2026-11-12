@@ -41,6 +41,64 @@ export type ClassicRuleTrack = {
   road: ClassicRoadSample[];
   barriers: ClassicBarrier[];
 };
+export type ClassicPropSnapshot = { catalog: string; broken: string };
+export type ClassicPropCatalog = {
+  version: number;
+  unit: "metres" | "decimetres";
+  geometry: string;
+  catalogHash: string;
+  props: Array<{ index: number; ruleEdges: number[] }>;
+};
+export type ClassicPropWorld = {
+  catalog: string;
+  geometry: string;
+  byEdge: ReadonlyMap<number, number>;
+  broken: Uint8Array;
+};
+
+/** Decode one confirmed race snapshot; static catalogs never own mutable bits. */
+export function classicPropWorld(
+  catalog: ClassicPropCatalog,
+  state: ClassicPropSnapshot,
+  track?: ClassicRuleTrack,
+): ClassicPropWorld {
+  if (
+    catalog.version !== 1 ||
+    !["metres", "decimetres"].includes(catalog.unit) ||
+    !/^[a-f0-9]{64}$/.test(catalog.catalogHash) ||
+    catalog.catalogHash !== state.catalog ||
+    !/^[a-f0-9]{64}$/.test(catalog.geometry) ||
+    (track && catalog.geometry !== track.geometry) ||
+    !catalog.props.length || catalog.props.length > 108 ||
+    typeof state.broken !== "string"
+  ) throw new Error("赛道物件版本不一致");
+  let decoded: string;
+  try { decoded = atob(state.broken); } catch { throw new Error("赛道物件状态无效"); }
+  if (btoa(decoded) !== state.broken || decoded.length !== Math.ceil(catalog.props.length / 8))
+    throw new Error("赛道物件状态无效");
+  const broken = Uint8Array.from(decoded, c => c.charCodeAt(0));
+  const tail = catalog.props.length % 8;
+  if (tail && broken[broken.length - 1] >> tail)
+    throw new Error("赛道物件状态超出范围");
+  const byEdge = new Map<number, number>();
+  for (let index = 0; index < catalog.props.length; index++) {
+    const prop = catalog.props[index];
+    if (prop.index !== index || !Array.isArray(prop.ruleEdges) || !prop.ruleEdges.length)
+      throw new Error("赛道物件编号无效");
+    for (const edge of prop.ruleEdges) {
+      if (!Number.isInteger(edge) || edge < 0 || byEdge.has(edge) || (track && track.barriers[edge]?.kind !== "object"))
+        throw new Error("赛道物件碰撞引用无效");
+      byEdge.set(edge, index);
+    }
+  }
+  return { catalog: catalog.catalogHash, geometry: catalog.geometry, byEdge, broken };
+}
+export function classicPropBroken(world: ClassicPropWorld | undefined, index: number): boolean {
+  return !!world && index >= 0 && index >> 3 < world.broken.length && !!(world.broken[index >> 3] & (1 << (index & 7)));
+}
+export function classicBarrierBroken(world: ClassicPropWorld | undefined, edge: number): boolean {
+  return !!world && classicPropBroken(world, world.byEdge.get(edge) ?? -1);
+}
 export type ClassicRoadContact = {
   index: number;
   fraction: number;
@@ -407,7 +465,10 @@ export function collideClassicRoad(
   motion: ClassicMotionState,
   vehicle: string,
   height: number,
+  props?: ClassicPropWorld,
+  onBreak?: (index: number, vx: number, vz: number, closing: number) => void,
 ): ClassicMotionState {
+  if (props && props.geometry !== t.geometry) throw new Error("赛道物件版本不一致");
   const s = { ...motion },
     info = indexFor(t),
     body = classicVehicleBody(vehicle);
@@ -417,6 +478,8 @@ export function collideClassicRoad(
     const candidates =
       info.grid.get(`${Math.floor(x / 100)},${Math.floor(y / 100)}`) ?? [];
     for (const idx of candidates) {
+      const prop = props?.byEdge.get(idx) ?? -1;
+      if (classicPropBroken(props, prop)) continue;
       const wall = t.barriers[idx];
       if (
         height + body.height * 10 < wall.bottom + 0.05 ||
@@ -462,10 +525,15 @@ export function collideClassicRoad(
           ny = -ny;
         }
       }
+      const inward = s.vx * nx + s.vz * ny;
+      if (props && prop >= 0 && inward < -1e-3) {
+        props.broken[prop >> 3] |= 1 << (prop & 7);
+        onBreak?.(prop, s.vx, s.vz, -inward);
+        continue;
+      }
       const depth = radius - distance + 0.001;
       x += nx * depth;
       y += ny * depth;
-      const inward = s.vx * nx + s.vz * ny;
       if (inward < 0) {
         s.vx -= inward * nx * 1.1;
         s.vz -= inward * ny * 1.1;

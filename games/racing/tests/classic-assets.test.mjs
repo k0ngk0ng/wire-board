@@ -7,7 +7,7 @@ import { createHash } from 'node:crypto';
 import { ClassicAssetCache, selectClassicAssets, fetchClassicFiles, classicResourceBase } from '../web/classic-assets.ts';
 
 const record = (path, text) => ({path, bytes: Buffer.byteLength(text), sha256: createHash('sha256').update(text).digest('hex'), mime: 'application/octet-stream'});
-const paths = ['tracks/france.glb', 'tracks/france.route.json', 'tracks/france-sky.png', 'tracks/france-night.glb', 'tracks/france-night-sky.png', 'tracks/uk.glb', 'tracks/uk.route.json', 'tracks/uk-sky.png', 'cars/p911.glb', 'cars/fm50.glb', 'cars/ldia.glb'];
+const paths = ['props/france.json', 'props/uk.json', 'tracks/france.glb', 'tracks/france.route.json', 'tracks/france-sky.png', 'tracks/france-night.glb', 'tracks/france-night-sky.png', 'tracks/uk.glb', 'tracks/uk.route.json', 'tracks/uk-sky.png', 'cars/p911.glb', 'cars/fm50.glb', 'cars/ldia.glb'];
 const manifest = {version: 3, assets: paths.map(p => record(p, p))};
 
 test('new racing assets bind to the current build CDN base, never a legacy media directory',()=>{
@@ -19,14 +19,14 @@ test('new racing assets bind to the current build CDN base, never a legacy media
 
 test('selected daylight route and current cars only; duplicate cars deduplicated', () => {
   const files = selectClassicAssets(manifest, 'france', 'day', ['p911', 'fm50', 'p911']);
-  assert.deepEqual(new Set(files.map(f => f.path)), new Set(['tracks/france.glb', 'tracks/france.route.json', 'tracks/france-sky.png', 'cars/p911.glb', 'cars/fm50.glb']));
-  assert.equal(files.length, 5);
+  assert.deepEqual(new Set(files.map(f => f.path)), new Set(['props/france.json', 'tracks/france.glb', 'tracks/france.route.json', 'tracks/france-sky.png', 'cars/p911.glb', 'cars/fm50.glb']));
+  assert.equal(files.length, 6);
   assert(files.every(f => !f.path.includes('uk') && !f.path.includes('night')));
 });
 
 test('night shares the same rule route, but loads only night scene and sky', () => {
   const files = selectClassicAssets(manifest, 'france', 'night', ['p911']);
-  assert.deepEqual(new Set(files.map(f => f.path)), new Set(['tracks/france-night.glb', 'tracks/france.route.json', 'tracks/france-night-sky.png', 'cars/p911.glb']));
+  assert.deepEqual(new Set(files.map(f => f.path)), new Set(['props/france.json', 'tracks/france-night.glb', 'tracks/france.route.json', 'tracks/france-night-sky.png', 'cars/p911.glb']));
   assert.throws(() => selectClassicAssets(manifest, '../france', 'day', ['p911']));
   assert.throws(() => selectClassicAssets(manifest, 'france', 'snow', ['p911']));
   assert.throws(() => selectClassicAssets(manifest, 'france', 'day', ['unknown']));
@@ -77,4 +77,12 @@ test('verified byte cache stays bounded and evicts least recently used entries',
   await fetchClassicFiles([a], {base: '', cache, fetcher});
   assert.equal(calls.length, 3);
   assert(cache.bytes <= 8);
+});
+
+test('a selected scene cannot become ready without its exact props catalog',()=>{
+ const absent={...manifest,assets:manifest.assets.filter(a=>a.path!=='props/france.json')};
+ assert.throws(()=>selectClassicAssets(absent,'france','day',['p911']),/props|清单/);
+ const files=selectClassicAssets(manifest,'france','day',['p911']);
+ assert.equal(files.filter(f=>f.path.startsWith('props/')).length,1);
+ assert.equal(files.find(f=>f.path.startsWith('props/')).path,'props/france.json');
 });

@@ -1,0 +1,349 @@
+{
+  "date": "2026-11-12",
+  "passed": true,
+  "scope": "Numeric backend prop catalogs, actual Module first-hit/restore/packet E2E, Go-TS collision parity and real production-input prediction. Browser visual/animation/touch acceptance is separate.",
+  "catalogs": [
+    {
+      "track": "france",
+      "count": 29,
+      "catalog": "96edba9c90dff6d8e72500a6026974df51b40c4bf69d1582c005e2e69182e222",
+      "geometry": "1dafb107dfa41d5c9f631e002bf40cdc08c3b252d79afecd015645d2b10edb72",
+      "ruleSHA256": "7b5a41349d0d611b1ff2f1cf67d7eb701bfadb3abd64221c8b753d27553776c1",
+      "numericSHA256": "02d8379429930156b8acdf11e6320f7f8f77c5f327ecbb791b60830b6e614510",
+      "bitsetBytes": 4
+    },
+    {
+      "track": "coastal",
+      "count": 83,
+      "catalog": "1023b3cfa36a9957004621827ee488cc764df1fa3f37c8354966f3bf50fb5595",
+      "geometry": "8126825f6c2fcc07a1bed58eb497ae3eaa6f9f7d54843680e13ebe6492a39562",
+      "ruleSHA256": "3f29e0cc80785b4e22dba4bf983d93c7447cc49876f4421f95d4ff4976b5952e",
+      "numericSHA256": "ca4c3710897d32854ad6c3f9779ac1b22332c281147b748d57bdad46e4a5750e",
+      "bitsetBytes": 11
+    },
+    {
+      "track": "uk",
+      "count": 108,
+      "catalog": "a43bad377bdde4be2696f66ce5f437da62fe1ef4ef4e714031a1e86482f08f2a",
+      "geometry": "1221e1e0fca8872f64a6b899c2bb4c81666261ed9f4bc1f075ccce30922bde00",
+      "ruleSHA256": "4f2bb0910b077429682e149dd00574a150888755633d7c9d2971959d6677deb4",
+      "numericSHA256": "fe1c0f46b531c1da0d7ca16f0af4435c904aadb6d0d46a1bbcb2e14f214eba83",
+      "bitsetBytes": 14
+    },
+    {
+      "track": "park",
+      "count": 45,
+      "catalog": "13a13f33e36e458e3b5538c4e7e967d4f56a7103a56c8bf8fa41a5994c64fcba",
+      "geometry": "c900ce1d7f008dd8f4c12e6f01f2b88d8f54c4ace60a406c6d3724009b47a82a",
+      "ruleSHA256": "5a4b842c6b55c09f319c1dda493c037e8d86b6efbc95dd5e1900bd32c0a310db",
+      "numericSHA256": "2fc03aac9c4a9529c661040957bc4a1cea4895479294891472e91f94740e39e5",
+      "bitsetBytes": 6
+    }
+  ],
+  "totalVerifiedNormalType2Props": 265,
+  "immutableRoads": {
+    "passed": true,
+    "tracks": [
+      {
+        "track": "france",
+        "geometry": "1dafb107dfa41d5c9f631e002bf40cdc08c3b252d79afecd015645d2b10edb72",
+        "ruleSHA256": "7b5a41349d0d611b1ff2f1cf67d7eb701bfadb3abd64221c8b753d27553776c1",
+        "routeSHA256": "100127fcca68e15421eda7584c5e9dd33318baf4b9cf6a2cadc4fbd3bf966f43",
+        "unchanged": true
+      },
+      {
+        "track": "coastal",
+        "geometry": "8126825f6c2fcc07a1bed58eb497ae3eaa6f9f7d54843680e13ebe6492a39562",
+        "ruleSHA256": "3f29e0cc80785b4e22dba4bf983d93c7447cc49876f4421f95d4ff4976b5952e",
+        "routeSHA256": "edbe3cc7b39efa8424d48ace5104049ebafa37bf608007d1b8267d09a7cc3d61",
+        "unchanged": true
+      },
+      {
+        "track": "uk",
+        "geometry": "1221e1e0fca8872f64a6b899c2bb4c81666261ed9f4bc1f075ccce30922bde00",
+        "ruleSHA256": "4f2bb0910b077429682e149dd00574a150888755633d7c9d2971959d6677deb4",
+        "routeSHA256": "0fa4951c6e55de2943fcd7b632d1b68ee3bd1c04dfddbd88f4b5de92883d7943",
+        "unchanged": true
+      },
+      {
+        "track": "park",
+        "geometry": "c900ce1d7f008dd8f4c12e6f01f2b88d8f54c4ace60a406c6d3724009b47a82a",
+        "ruleSHA256": "5a4b842c6b55c09f319c1dda493c037e8d86b6efbc95dd5e1900bd32c0a310db",
+        "routeSHA256": "bde64d900d2006509b4d195f272e5e7fe55a24124079d1fe5bd315d2b6e95400",
+        "unchanged": true
+      }
+    ]
+  },
+  "protocol": {
+    "stateAndView": "props?:{catalog:full catalogHash,broken:standard base64}",
+    "bitOrder": "0-based index -> byte index>>3, bit 1<<(index&7), fixed ceil(count/8) length; unused high bits zero",
+    "event": "existing 24-event ring; type=prop, prop=0-based index (zero retained), dir=atan2(vZ,vX) rounded to .001 rad, high=normal closing speed>=8m/s; X=Y=0",
+    "highThresholdMS": 8,
+    "thresholdAuthority": "project reconstruction convention, not measured original runtime",
+    "legacy": "Missing v3 props uses per-geometry first catalog with intact bits. Restore leaves original bytes; first ordinary timer persists explicit version. Explicit unknown/mismatched catalogs, bad base64/length/tail are rejected. physics=0 has no props.",
+    "worldIsolation": "Static road/catalog/edge indices are shared read-only; every race owns its bits. Prediction clones bits and never writes confirmed visibility."
+  },
+  "runs": [
+    {
+      "command": "go test ./games/racing/... -count=1 -timeout=25m",
+      "passed": true,
+      "serverSeconds": 0.71,
+      "testsSeconds": 445.837
+    },
+    {
+      "command": "node --experimental-strip-types --test games/racing/tests/classic-props.test.mjs",
+      "passed": true,
+      "tests": 3
+    },
+    {
+      "command": "go test ./games/racing/server -run ^TestClassicPropCollisionClientParity$ -count=1 -timeout=3m -v",
+      "passed": true
+    },
+    {
+      "command": "./web/node_modules/.bin/tsc --noEmit --strict --target ES2022 --module ESNext --moduleResolution Bundler --allowImportingTsExtensions --resolveJsonModule --esModuleInterop --skipLibCheck games/racing/web/classic-road.ts games/racing/web/prediction.ts games/racing/web/types.ts",
+      "passed": true,
+      "scope": "Owned rule/prediction/types only, no dist build"
+    }
+  ],
+  "naturalRegression": {
+    "mixedCases": 60,
+    "legacyCases": 75,
+    "allCarsActuallyFinished": true,
+    "mixedResetCountsZero": true,
+    "maximumMixedRaceMS": 988200,
+    "maximumFinishSpreadMS": 14724,
+    "maxRaceMS": 1200000,
+    "finishGraceMS": 30000,
+    "mixedCasesWithPropBreaks": 0,
+    "note": "Basic computers avoid intact props; the 60-case matrix is race regression, not evidence that every computer struck breakables."
+  },
+  "collisionParity": {
+    "passed": true,
+    "probes": 6625,
+    "firstHitEvents": 2797,
+    "maximumError": 8.43947134399059e-12
+  },
+  "heightSeparatedTargetsNeverBroken": 1325,
+  "alreadyBrokenTargetsNeverReemitted": 1325,
+  "prediction": {
+    "passed": true,
+    "steps": 53,
+    "maximumPositionDM": 0.0011323498008056516,
+    "maximumRPM": 0.06069794325503608,
+    "realFirstHitTransition": true
+  },
+  "sixCarActualDriveStress": {
+    "maximumBytes": 7575,
+    "maximumEvents": 24,
+    "distinctPropEvents": 2,
+    "finalHeldHorns": 6,
+    "epochDigits": 13,
+    "limitBytes": 8192,
+    "scope": "six manual production cars, native-object first contact, held horns, collisions and authorized low-speed resets; no state/event injection"
+  },
+  "evidence": [
+    {
+      "path": ".local/racing-nfs-backend/props-state-before-implementation.log",
+      "bytes": 1510,
+      "sha256": "a19e4dd467b6435fc28d8e8115a18deeeb9a47a9d110572709ec11ca4d8d753f"
+    },
+    {
+      "path": ".local/racing-nfs-backend/props-contact-before-implementation.log",
+      "bytes": 2307,
+      "sha256": "4271c6c153f44a06d589ea85f613791b793ddbc59b3450b70f047e607ee8b5a8"
+    },
+    {
+      "path": ".local/racing-nfs-backend/props-parity-before-ts.log",
+      "bytes": 1111,
+      "sha256": "bab5bb7d687c7a1da42ca16d942456a958b08efea0149df77c84c68460f75573"
+    },
+    {
+      "path": ".local/racing-nfs-backend/props-client-before-implementation.log",
+      "bytes": 2105,
+      "sha256": "d0be10ea4c7b68f510e99ecd212cc973469748292148ef52928074a0f9ae655a"
+    },
+    {
+      "path": ".local/racing-nfs-backend/props-full-regression.log",
+      "bytes": 127,
+      "sha256": "c830fd386cceb55d138785d79715c43402e64834a8bd4915ff15f51eea8c073f"
+    },
+    {
+      "path": ".local/racing-nfs-backend/props-client-current.log",
+      "bytes": 381,
+      "sha256": "d3c159cf37a85068c67541ce803ad94fe0a6ba2377b7dc575311e41c4d2efa08"
+    },
+    {
+      "path": ".local/racing-nfs-backend/props-parity-after-ts.log",
+      "bytes": 304,
+      "sha256": "17c40768a567bd5958754146b64b220ed9f2cf9894335a651b8dc68e04e06657"
+    },
+    {
+      "path": ".local/racing-nfs-backend/props-six-car-budget.log",
+      "bytes": 177,
+      "sha256": "783ffb5d4b5badaa5473589dd6acb35e32a65df044f276700bb61dc39ea0fda1"
+    },
+    {
+      "path": ".local/racing-nfs-backend/props-typescript.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".local/racing-nfs-backend/props-parity/report.json",
+      "bytes": 105,
+      "sha256": "2d35957a41774f6efeb9f72a2363c6195a4b067e9d399bb8d998f47799289768"
+    },
+    {
+      "path": ".local/racing-nfs-backend/props-prediction/production.json",
+      "bytes": 167154,
+      "sha256": "e12828d7c980d5d055d9bfc97d79fd97b2e01a60338ae3857ba6da45f4a981e0"
+    },
+    {
+      "path": ".local/racing-nfs-backend/props-prediction/browser-parity.json",
+      "bytes": 153,
+      "sha256": "c5334ee56ee9d6228f14d296fdbe8ccb4c5151ac8604ccf66bc787d751f7bcf8"
+    },
+    {
+      "path": ".local/racing-nfs-backend/props-mixed-audit.json",
+      "bytes": 22457,
+      "sha256": "5c56fdaaf91355d3c921d137aebd427014a2cb8708850748eef879cfa8996284"
+    },
+    {
+      "path": ".local/racing-nfs-backend/props-immutable-road-check.json",
+      "bytes": 1334,
+      "sha256": "de560b01df4d2eb0c728e70a20e9c2ba9b7c78747b84606f4e41139385baab84"
+    },
+    {
+      "path": ".local/racing-nfs-backend/module/TestClassicPropRealContactAndPersistentWorld--low.json",
+      "bytes": 107899,
+      "sha256": "51eeedc75f787f6bf168753f56ba87e8e57484da337201ba8e6a8f2754154c2a"
+    },
+    {
+      "path": ".local/racing-nfs-backend/module/TestClassicPropRealContactAndPersistentWorld--high.json",
+      "bytes": 61010,
+      "sha256": "4c951222f79483f1a99e41d94a35ddf00207098012db9e5da80844ac46a19d0e"
+    },
+    {
+      "path": ".local/racing-nfs-backend/module/TestClassicPropZeroIndexNormalDrive.json",
+      "bytes": 51977,
+      "sha256": "6ba44e106c15f32266c5627fbeee35fbbd79c4321088fc8ca078d199baac4327"
+    },
+    {
+      "path": ".local/racing-nfs-backend/module/TestClassicPropSixCarDrivingPacketBudget.json",
+      "bytes": 13391,
+      "sha256": "3a3690b73e1fe8c8d7d6864b29b63412908e5de9807fa3dcf570a0b462d5e951"
+    }
+  ],
+  "sources": [
+    {
+      "path": "games/racing/server/classic_props.go",
+      "bytes": 6424,
+      "sha256": "8a238aa4fe3ce2b4cdcb7f9314748387f20b8a95c6d72b7608fe7c29cc0e005a"
+    },
+    {
+      "path": "games/racing/server/classic_props_contract_test.go",
+      "bytes": 2757,
+      "sha256": "bf07a538908fde3f18642d1ee9322cc202e5699e50014e36e3786113d1eb0ada"
+    },
+    {
+      "path": "games/racing/server/state.go",
+      "bytes": 9596,
+      "sha256": "45f1d88fefb538eaa1dd71520e4a92bad6c8e8f2c4b02ed4b1d6cff01ee41365"
+    },
+    {
+      "path": "games/racing/server/module.go",
+      "bytes": 11452,
+      "sha256": "141dd10de66dcbe20bf1f1d212c6236585b824fa023367a797844186ac0ec213"
+    },
+    {
+      "path": "games/racing/server/classic_track.go",
+      "bytes": 11583,
+      "sha256": "b76b631116645b053f3ad5e6af14c1b4fe6520fe1dea6c1eb4b2813e83c85a70"
+    },
+    {
+      "path": "games/racing/server/classic_physics.go",
+      "bytes": 5824,
+      "sha256": "523788c8e79b7b6046625da91a7db9556f3a36308b94327dff9b620da8371a3e"
+    },
+    {
+      "path": "games/racing/server/physics.go",
+      "bytes": 9418,
+      "sha256": "57fb08877828d978f0bb00d3fa90de142666796b9d853f319e6841f326b30421"
+    },
+    {
+      "path": "games/racing/server/classic_bot.go",
+      "bytes": 9961,
+      "sha256": "f56fa2295c25d38f4cbb69366312ccaa9d4373bb83b6ad3d574add0dd93d6c1a"
+    },
+    {
+      "path": "games/racing/server/data/prop-index.json",
+      "bytes": 1050,
+      "sha256": "e0300921c1941014ab3a89f0662940eaf0d5417db70c84d20b6a176df7b7173d"
+    },
+    {
+      "path": "games/racing/server/data/props/96edba9c90dff6d8e72500a6026974df51b40c4bf69d1582c005e2e69182e222.json",
+      "bytes": 8121,
+      "sha256": "02d8379429930156b8acdf11e6320f7f8f77c5f327ecbb791b60830b6e614510"
+    },
+    {
+      "path": "games/racing/server/data/props/1023b3cfa36a9957004621827ee488cc764df1fa3f37c8354966f3bf50fb5595.json",
+      "bytes": 22100,
+      "sha256": "ca4c3710897d32854ad6c3f9779ac1b22332c281147b748d57bdad46e4a5750e"
+    },
+    {
+      "path": "games/racing/server/data/props/a43bad377bdde4be2696f66ce5f437da62fe1ef4ef4e714031a1e86482f08f2a.json",
+      "bytes": 27016,
+      "sha256": "fe1c0f46b531c1da0d7ca16f0af4435c904aadb6d0d46a1bbcb2e14f214eba83"
+    },
+    {
+      "path": "games/racing/server/data/props/13a13f33e36e458e3b5538c4e7e967d4f56a7103a56c8bf8fa41a5994c64fcba.json",
+      "bytes": 11878,
+      "sha256": "2fc03aac9c4a9529c661040957bc4a1cea4895479294891472e91f94740e39e5"
+    },
+    {
+      "path": "games/racing/web/classic-road.ts",
+      "bytes": 15686,
+      "sha256": "e7c40574ade651756539ab74227d669bee0cd9fad460866ac0056db9acf6c9b7"
+    },
+    {
+      "path": "games/racing/web/prediction.ts",
+      "bytes": 6386,
+      "sha256": "73fd6fb46d082a88cc3b0bc6a6b47cf1be75d2eafbd3405f043e5afe6f1f7358"
+    },
+    {
+      "path": "games/racing/web/types.ts",
+      "bytes": 2659,
+      "sha256": "11aa458bbd1dd07b1c3f38ed3d7c157c58bc9e96d2fc4063a21d88caee8148b4"
+    },
+    {
+      "path": "games/racing/tests/classic_props_e2e_test.go",
+      "bytes": 14574,
+      "sha256": "7f65076498b02eb07a34840ef3e7597347d1941770a48d12123cc907cf3b720f"
+    },
+    {
+      "path": "games/racing/tests/classic-props.test.mjs",
+      "bytes": 5117,
+      "sha256": "1f71081a0450207134f4d89fff0b3497cbdf87ff1d420774313f388709be81b7"
+    },
+    {
+      "path": "games/racing/tests/classic-props-parity.mjs",
+      "bytes": 2022,
+      "sha256": "6dc35bd1747a002ef5cf5d6fa9206d3af290d18d0e5c29d223c11afca08b3a64"
+    },
+    {
+      "path": "games/racing/tests/classic-props-failures.md",
+      "bytes": 2647,
+      "sha256": "d166b382b71a9a970d03ad98b25bcf3a53cfd5c7a6bd975a1f87cb9c9b8a5606"
+    },
+    {
+      "path": "games/racing/CONTRACT.md",
+      "bytes": 18387,
+      "sha256": "15a6271ea6384a5b57d78455cc7e514b98196ab3edbac7ac47949a9cc9f883f2"
+    }
+  ],
+  "limitations": [
+    "Ordinary-drive first hits cover France low/high contacts and UK index0; remaining objects are checked by source conversion and numerical parity probes, not claimed as individually driven in the browser.",
+    "Original low/high clip timing uses the community 64Hz interpretation; original runtime threshold/output has not been measured.",
+    "Actual packet stress contains two distinct real prop breaks plus collision/reset events in a full 24-event ring; it is not labeled as 24 real prop breaks.",
+    "No browser visual, mirror/camera, mobile input, physical device, GPU or speaker audibility conclusion is included here."
+  ]
+}

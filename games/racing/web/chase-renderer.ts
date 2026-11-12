@@ -3,7 +3,8 @@ import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment
 import { chasePose, type ChasePose } from "./chase-camera";
 import { createVehicle, type VehicleModel } from "./vehicle-model";
 import { themeFor, type SceneTheme } from "./scene-theme";
-import { seatColors, type Car, type Track } from "./types";
+import { seatColors, type Car, type Track, type RaceEvent } from "./types";
+import type { ClassicPropWorld } from "./classic-road";
 export type SceneFrame = {
   cars: Car[];
   follow: number;
@@ -13,6 +14,9 @@ export type SceneFrame = {
   mirrorVisible?: boolean;
   reduced: boolean;
   now: number;
+  propWorld?: ClassicPropWorld;
+  propEvents?: RaceEvent[];
+  serverNow?: number;
 };
 function canvasTexture(
   width: number,
