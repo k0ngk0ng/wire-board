@@ -219,7 +219,7 @@ class Acceptance:
         self.report["distSHA256"] = hashlib.sha256((ROOT / "web/dist/index.html").read_bytes()).hexdigest()
         self.report["browser"] = self.js("({userAgent:navigator.userAgent,viewport:{width:innerWidth,height:innerHeight}})")
 
-    def create_ui(self, track="france", night=False, vehicle="p911", players=6, bots=None):
+    def create_ui(self, track="france", night=False, vehicle="p911", players=6, bots=None, laps=1):
         self.browser("click", ".lobby-create")
         self.browser("wait", "[role=dialog]")
         self.browser("fill", 'input[aria-label="搜索可选游戏"]', "极品飞车")
@@ -233,7 +233,7 @@ class Acceptance:
         self.browser("select", 'select[aria-label="赛道"]', track)
         self.browser("select", 'select[aria-label="时段"]', "night" if night else "day")
         self.browser("select", 'select[aria-label="座位上限"]', str(players))
-        self.browser("select", 'select[aria-label="比赛圈数"]', "1")
+        self.browser("select", 'select[aria-label="比赛圈数"]', str(laps))
         self.browser("fill", "input[name=name]", "极品飞车原版参考验收")
         self.browser("snapshot", "-i")
         self.screenshot("create-" + track + ("-night" if night else ""))
@@ -705,6 +705,33 @@ class Acceptance:
         require(contacts and value['before']['room']['game']['data']['props']['broken']==value['after']['room']['game']['data']['props']['broken']and c['speed']/10<value['maximumSpeed']*.95,'collision did not prove intact fixed-wall contact',{'contacts':contacts,'speed':c['speed']/10,'maxSpeed':value['maximumSpeed']})
         self.record('props-fixed-wall-geometry-proof',{'ruleSHA256':entry['ruleSha256'],'geometry':entry['geometry'],'contacts':contacts,'collision':value['hit'],'bitsUnchanged':True})
         self.check('ordinary fixed wall contact remains solid without prop destruction',contacts=contacts)
+        self.close_room()
+
+    def lap_reset(self):
+        self.create_ui('uk',vehicle='p911',players=2,bots=0,laps=3)
+        self.props_peer();self.enter('uk',vehicle='p911');self.browser('scrollintoview','.racing-chase')
+        approach=self.native('lap-shoulder-approach',mode='lap-shoulder-reset')
+        require(approach['stopped'],'normal shoulder drive did not reach reset test point')
+        before=self.room()['game']['data'];car=before['cars'][0]
+        require(car['lap']==0 and abs(car['gate']-car['routeIndex'])<=2,'checkpoint stuck after ordinary shoulder excursion',car)
+        reset=self.native('lap-native-R',[{'focus':'.racing-chase'},{'key':'r','down':True},{'wait':100},{'key':'r','down':False},{'wait':150},{'read':'reset'},{'shot':'reset'}])
+        after=self.room()['game']['data'];reset_car=after['cars'][0]
+        require(reset_car['lastReset']>car['lastReset'] and reset_car['lap']==car['lap'] and math.hypot(reset_car['x']-car['x'],reset_car['y']-car['y'])<150,'native R returned to stale checkpoint or changed lap')
+        require(before['epoch']==after['epoch'] and before['maxRaceAt']==after['maxRaceAt'],'reset changed race identity/deadline')
+        self.check('UK shoulder checkpoint follows car and native R preserves lap at nearby road',resetDistanceM=math.hypot(reset_car['x']-car['x'],reset_car['y']-car['y'])/10)
+        self.browser('find','role','button','click','--name','开启托管','--exact')
+        seen={0};records=[];deadline=time.monotonic()+850
+        while time.monotonic()<deadline:
+            data=self.room()['game']['data'];car=data['cars'][0];lap=car['lap']
+            if lap not in seen:
+                expected=str(min(lap+1,3))+'/3'
+                self.wait(lambda:self.js("[...document.querySelectorAll('.racing-hud>div')].find(e=>e.querySelector('span')?.textContent==='圈数')?.querySelector('strong')?.textContent.replace(/\\s/g,'')")==expected,10,'actual HUD lap '+str(lap))
+                records.append({'serverAt':data['serverAt'],'lap':lap,'finishAt':car['finishAt'],'events':data['events']});self.record('lap-transitions',records);self.screenshot('uk-lap-'+str(lap));seen.add(lap)
+                self.check('UK actual page lap '+str(lap),hud=expected,serverAt=data['serverAt'],finishAt=car['finishAt'])
+            if car['finishAt']:
+                require(lap==3 and {0,1,2,3}<=seen,'final finish skipped a lap transition');break
+            time.sleep(.5)
+        else:raise AssertionError('UK actual three-lap race did not finish')
         self.close_room()
 
     def camera_keys(self):
@@ -1344,13 +1371,15 @@ class Acceptance:
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--out", required=True)
-    parser.add_argument("--phase", choices=("contract", "controls", "display", "presenter", "expiry", "audio-diagnostic", "safety", "props-minimal", "props", "props-perf", "props-wall", "thumbs", "thumb-layouts", "fullscreen", "smoke", "full", "remaining", "experience", "vehicles", "latency"), default="smoke")
+    parser.add_argument("--phase", choices=("contract", "controls", "display", "presenter", "expiry", "audio-diagnostic", "safety", "laps", "props-minimal", "props", "props-perf", "props-wall", "thumbs", "thumb-layouts", "fullscreen", "smoke", "full", "remaining", "experience", "vehicles", "latency"), default="smoke")
     parser.add_argument("--base", help="reuse an explicitly owned local Racing fixture URL")
     args = parser.parse_args()
     job = Acceptance(args)
     try:
         job.start_fixture()
-        if args.phase == 'props-wall':
+        if args.phase == 'laps':
+            job.lap_reset()
+        elif args.phase == 'props-wall':
             job.props_wall()
         elif args.phase == 'props-perf':
             job.props_performance()

@@ -194,6 +194,15 @@ try {
     }
     await sleep(250); samples.push({ name: "after", data: await sample() });
     output = { samples };
+  } else if(options.mode==='lap-shoulder-reset') {
+    const before=await sample();
+    const result=await evaluate(`(async()=>{const route=await(await fetch('/racing/v3/tracks/uk.route.json')).json(),rows=[],start=performance.now(),clamp=(v,a,b)=>Math.max(a,Math.min(b,v));let stopped=false;
+      while(performance.now()-start<60000){const state=await(await fetch('/api/state')).json(),room=state.room,d=room.game.data,c=d.cars.find(c=>c.seat===room.you),index=c.routeIndex,i=(index+3)%route.points.length,p=route.points[i],r=Math.hypot(p.rx,p.rz),lane=i>=20&&i<=35?-p.leftWidth-1.8:Math.max(-p.leftWidth+1.2,Math.min(p.rightWidth-1.2,-2)),x=p.x+p.rx/r*lane,z=p.z+p.rz/r*lane,dx=x-c.x/10,dz=z-c.y/10,diff=Math.atan2(Math.sin(Math.atan2(dz,dx)-c.angle),Math.cos(Math.atan2(dz,dx)-c.angle)),steer=clamp(Math.atan2(2*2.272*Math.sin(diff),Math.max(4,Math.hypot(dx,dz)))/Math.atan(2.272/11),-1,1),braking=index>=65&&index<85,v=c.speed/10,wanted=Math.abs(diff)>.7?6:12,pressure=braking?1:clamp((v-wanted-.5)/3,0,1),throttle=pressure?0:clamp(.18+(wanted-v)/4,0,1);
+        rows.push({at:Date.now(),serverAt:d.serverAt,car:c});if(braking&&c.speed<3){stopped=true;break}
+        const response=await fetch('/api/rooms/'+room.id,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'action',version:room.version,nonce:crypto.randomUUID(),action:{type:'drive',epoch:d.epoch,seq:c.seq+1,steer,throttle,brake:pressure>0,brakeAmount:pressure,drift:false}})});if(![200,409].includes(response.status))throw Error('normal lap drive rejected '+response.status);await new Promise(r=>setTimeout(r,100))}
+      return {rows,stopped,elapsedMS:performance.now()-start}})()`);
+    screenshots.push({name:'stopped-before-reset',data:(await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false})).data});
+    output={before,...result,after:await sample(),inputMethod:'normal authenticated drive through UK shoulder from original grid, real clock; no state/clock mutation'};
   } else if(options.mode==='props-drive') {
     const before=await sample();
     await evaluate(`(()=>{const p={frames:[],driving:true};window.__nfsPropsProbe=p;const tick=()=>{const c=document.querySelector('.racing-chase');p.frames.push({at:Date.now(),frame:c?.dataset.frameCounter,broken:c?.dataset.propsBroken,animations:c?.dataset.propAnimations});if(p.frames.length>6000)p.frames.shift();if(p.driving)requestAnimationFrame(tick)};requestAnimationFrame(tick);return true})()`);
