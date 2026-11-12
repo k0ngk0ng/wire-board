@@ -13,6 +13,10 @@ import (
 )
 
 func main() {
+	webDir := os.Getenv("WIRE_BOARD_WISH_BROWSER_WEB")
+	if webDir == "" {
+		webDir = "web/dist"
+	}
 	s, err := server.New(server.Config{
 		DataDir: os.Getenv("DATA_DIR"), InviteCode: os.Getenv("INVITE_CODE"),
 		AdminUsername: os.Getenv("ADMIN_USERNAME"), AdminPassword: os.Getenv("ADMIN_PASSWORD"),
@@ -21,7 +25,7 @@ func main() {
 		WishImageBaseURL: os.Getenv("WISH_IMAGE_BASE_URL"), WishImagePrefix: os.Getenv("WISH_IMAGE_PREFIX"),
 		WishAgentToken: os.Getenv("WISH_AGENT_TOKEN"), Version: os.Getenv("WIRE_BOARD_VERSION"),
 		Modules: []gameapi.Module{starfort.Module()},
-	}, os.DirFS("web/dist"))
+	}, os.DirFS(webDir))
 	if err != nil {
 		log.Fatal(err)
 	}

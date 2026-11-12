@@ -44,20 +44,60 @@ type wishQuestion struct {
 	AnsweredAt int64  `json:"answeredAt,omitempty"`
 }
 
+// Content revisions are independent of review state and question/answer updates.
+func (s *Server) initWishEditing() error {
+	rows, err := s.db.Query("PRAGMA table_info(wishes)")
+	if err != nil {
+		return err
+	}
+	columns := map[string]bool{}
+	for rows.Next() {
+		var cid, nn, pk int
+		var name, kind string
+		var def any
+		if err = rows.Scan(&cid, &name, &kind, &nn, &def, &pk); err != nil {
+			break
+		}
+		columns[name] = true
+	}
+	if err == nil {
+		err = rows.Err()
+	}
+	rows.Close()
+	if err != nil {
+		return err
+	}
+	for _, c := range []struct{ name, definition string }{
+		{"content_revision", "INTEGER NOT NULL DEFAULT 0"},
+		{"edited_at", "INTEGER NOT NULL DEFAULT 0"},
+		{"edited_by_name", "TEXT NOT NULL DEFAULT ''"},
+	} {
+		if !columns[c.name] {
+			if _, err = s.db.Exec("ALTER TABLE wishes ADD COLUMN " + c.name + " " + c.definition); err != nil {
+				return err
+			}
+		}
+	}
+	return nil
+}
+
 type wish struct {
-	ID             string         `json:"id"`
-	UserName       string         `json:"userName"`
-	Text           string         `json:"text"`
-	ImageURL       string         `json:"imageUrl"`
-	Status         string         `json:"status"`
-	Note           string         `json:"note"`
-	CreatedAt      int64          `json:"createdAt"`
-	ReviewedAt     int64          `json:"reviewedAt,omitempty"`
-	ApprovedAt     int64          `json:"approvedAt,omitempty"`
-	ReviewedByName string         `json:"reviewedByName,omitempty"`
-	Questions      []wishQuestion `json:"questions,omitempty"`
-	QuestionCount  int            `json:"questionCount"`
-	NeedsAnswer    bool           `json:"needsAnswer"`
+	ContentRevision int64          `json:"contentRevision"`
+	EditedAt        int64          `json:"editedAt,omitempty"`
+	EditedByName    string         `json:"editedByName,omitempty"`
+	ID              string         `json:"id"`
+	UserName        string         `json:"userName"`
+	Text            string         `json:"text"`
+	ImageURL        string         `json:"imageUrl"`
+	Status          string         `json:"status"`
+	Note            string         `json:"note"`
+	CreatedAt       int64          `json:"createdAt"`
+	ReviewedAt      int64          `json:"reviewedAt,omitempty"`
+	ApprovedAt      int64          `json:"approvedAt,omitempty"`
+	ReviewedByName  string         `json:"reviewedByName,omitempty"`
+	Questions       []wishQuestion `json:"questions,omitempty"`
+	QuestionCount   int            `json:"questionCount"`
+	NeedsAnswer     bool           `json:"needsAnswer"`
 }
 
 func validWishURL(raw string) (*url.URL, bool) {
@@ -313,7 +353,7 @@ func (s *Server) createWish(w http.ResponseWriter, r *http.Request) {
 
 func scanWish(scanner interface{ Scan(...any) error }) (wish, error) {
 	var w wish
-	err := scanner.Scan(&w.ID, &w.UserName, &w.Text, &w.ImageURL, &w.Status, &w.Note, &w.CreatedAt, &w.ReviewedAt, &w.ReviewedByName)
+	err := scanner.Scan(&w.ID, &w.UserName, &w.Text, &w.ImageURL, &w.Status, &w.Note, &w.CreatedAt, &w.ReviewedAt, &w.ReviewedByName, &w.ContentRevision, &w.EditedAt, &w.EditedByName)
 	if w.Status == "approved" {
 		w.ApprovedAt = w.ReviewedAt
 	}
@@ -325,7 +365,7 @@ func (s *Server) listWishes(w http.ResponseWriter, r *http.Request) {
 	if !ok {
 		return
 	}
-	rows, err := s.db.Query("SELECT id,user_name,text,image_url,status,review_note,created_at,reviewed_at,COALESCE(reviewed_by_name,'') FROM wishes WHERE user_id=? ORDER BY created_at DESC,id DESC LIMIT ?", u.ID, wishListLimit)
+	rows, err := s.db.Query("SELECT id,user_name,text,image_url,status,review_note,created_at,reviewed_at,COALESCE(reviewed_by_name,''),content_revision,edited_at,edited_by_name FROM wishes WHERE user_id=? ORDER BY created_at DESC,id DESC LIMIT ?", u.ID, wishListLimit)
 	if err != nil {
 		fail(w, 500, "无法读取许愿")
 		return
@@ -388,7 +428,7 @@ func (s *Server) attachQuestions(list []wish) error {
 }
 
 func (s *Server) adminWishes() ([]wish, map[string]int, error) {
-	rows, err := s.db.Query(`SELECT id,user_name,text,image_url,status,review_note,created_at,reviewed_at,COALESCE(reviewed_by_name,'') FROM wishes
+	rows, err := s.db.Query(`SELECT id,user_name,text,image_url,status,review_note,created_at,reviewed_at,COALESCE(reviewed_by_name,''),content_revision,edited_at,edited_by_name FROM wishes
 ORDER BY CASE status WHEN 'pending' THEN 0 WHEN 'approved' THEN 1 WHEN 'in_progress' THEN 2 WHEN 'implemented' THEN 3 ELSE 4 END,created_at DESC,id DESC LIMIT ?`, wishAdminListLimit)
 	if err != nil {
 		return nil, nil, err
@@ -448,10 +488,60 @@ func (s *Server) adminWish(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	var req struct {
-		Action string `json:"action"`
-		Note   string `json:"note"`
+		Action           string  `json:"action"`
+		Note             string  `json:"note"`
+		Text             *string `json:"text"`
+		ExpectedRevision *int64  `json:"expectedRevision"`
 	}
 	if !decode(w, r, &req) {
+		return
+	}
+	if req.Action == "edit" {
+		if req.Text == nil || req.ExpectedRevision == nil || *req.ExpectedRevision < 0 || req.Note != "" {
+			fail(w, 400, "请提供许愿正文和有效内容版本")
+			return
+		}
+		updated, valid := validWishText(*req.Text)
+		if !valid {
+			fail(w, 400, "许愿正文需为 2～10000 字")
+			return
+		}
+		var revision int64
+		if err := s.db.QueryRow("SELECT content_revision FROM wishes WHERE id=?", id).Scan(&revision); err != nil {
+			fail(w, 500, "无法读取许愿版本")
+			return
+		}
+		if revision != *req.ExpectedRevision {
+			fail(w, 409, "许愿已被其他管理员修改，请取消编辑后查看最新内容；当前草稿仍保留")
+			return
+		}
+		if updated == text {
+			respond(w, 200, map[string]any{"ok": true})
+			return
+		}
+		err := s.adminCommit(actor, "wish_edited", id, owner+" · 正文版本 "+strconv.FormatInt(revision+1, 10), nil, func(tx *sql.Tx) error {
+			res, err := tx.Exec("UPDATE wishes SET text=?,content_revision=content_revision+1,edited_at=MAX(?,created_at+1,reviewed_at+1,edited_at+1),edited_by_name=? WHERE id=? AND content_revision=?", updated, time.Now().Unix(), actor.Name, id, revision)
+			if err != nil {
+				return err
+			}
+			n, err := res.RowsAffected()
+			if err != nil {
+				return err
+			}
+			if n != 1 {
+				return errors.New("wish content revision changed")
+			}
+			return nil
+		}, s.clientIP(r))
+		if err != nil {
+			fail(w, 500, "许愿修改未保存，请重试")
+			return
+		}
+		respond(w, 200, map[string]any{"ok": true})
+		return
+	}
+	if req.Text != nil || req.ExpectedRevision != nil {
+		fail(w, 400, "状态操作不能修改正文")
 		return
 	}
 	status := ""
@@ -485,7 +575,7 @@ func (s *Server) adminWish(w http.ResponseWriter, r *http.Request) {
 		// Keep review timestamps strictly increasing even when an admin advances
 		// through several states within one second, so the agent's since cursor
 		// cannot miss a transition.
-		res, err := tx.Exec("UPDATE wishes SET status=?,review_note=?,reviewed_by=?,reviewed_by_name=?,reviewed_at=MAX(?,reviewed_at+1) WHERE id=?", status, note, actor.ID, actor.Name, now, id)
+		res, err := tx.Exec("UPDATE wishes SET status=?,review_note=?,reviewed_by=?,reviewed_by_name=?,reviewed_at=MAX(?,reviewed_at+1,edited_at+1) WHERE id=?", status, note, actor.ID, actor.Name, now, id)
 		if err != nil {
 			return err
 		}
@@ -548,12 +638,12 @@ func (s *Server) agentWishes(w http.ResponseWriter, r *http.Request) {
 		}
 		limit = v
 	}
-	query := `SELECT id,user_name,text,image_url,status,review_note,created_at,reviewed_at,COALESCE(reviewed_by_name,'') FROM wishes
-WHERE status IN ('pending','approved','in_progress','implemented') AND (reviewed_at>? OR (status='pending' AND created_at>?)) ORDER BY created_at,id LIMIT ?`
+	query := `SELECT id,user_name,text,image_url,status,review_note,created_at,reviewed_at,COALESCE(reviewed_by_name,''),content_revision,edited_at,edited_by_name FROM wishes
+WHERE status IN ('pending','approved','in_progress','implemented') AND (MAX(reviewed_at,edited_at)>? OR (status='pending' AND created_at>?)) ORDER BY created_at,id LIMIT ?`
 	args := []any{since, since, limit}
 	if status != "" {
-		query = `SELECT id,user_name,text,image_url,status,review_note,created_at,reviewed_at,COALESCE(reviewed_by_name,'') FROM wishes
-WHERE status=? AND (reviewed_at>? OR (status='pending' AND created_at>?)) ORDER BY created_at,id LIMIT ?`
+		query = `SELECT id,user_name,text,image_url,status,review_note,created_at,reviewed_at,COALESCE(reviewed_by_name,''),content_revision,edited_at,edited_by_name FROM wishes
+WHERE status=? AND (MAX(reviewed_at,edited_at)>? OR (status='pending' AND created_at>?)) ORDER BY created_at,id LIMIT ?`
 		args = []any{status, since, since, limit}
 	}
 	rows, err := s.db.Query(query, args...)
@@ -662,7 +752,7 @@ func (s *Server) agentWishStatus(w http.ResponseWriter, r *http.Request) {
 	detail += " · " + note
 	actor := User{ID: "wish-agent", Name: "本地制作代理"}
 	err := s.adminCommit(actor, "wish_"+target, id, detail, nil, func(tx *sql.Tx) error {
-		res, err := tx.Exec("UPDATE wishes SET status=?,review_note=?,reviewed_by=?,reviewed_by_name=?,reviewed_at=MAX(?,reviewed_at+1) WHERE id=?", target, note, actor.ID, actor.Name, time.Now().Unix(), id)
+		res, err := tx.Exec("UPDATE wishes SET status=?,review_note=?,reviewed_by=?,reviewed_by_name=?,reviewed_at=MAX(?,reviewed_at+1,edited_at+1) WHERE id=?", target, note, actor.ID, actor.Name, time.Now().Unix(), id)
 		if err != nil {
 			return err
 		}

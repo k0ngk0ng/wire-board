@@ -219,6 +219,10 @@ func New(cfg Config, files fs.FS) (*Server, error) {
 		return nil, e
 	}
 	s := &Server{instance: randomID(16), newGame: game.New, db: db, cfg: cfg, rooms: map[string]*Room{}, watchers: map[chan struct{}]bool{}, limits: map[string]bucket{}, files: files, hiddenGames: map[string]bool{}, presence: map[string]time.Time{}, connections: map[chan struct{}]string{}}
+	if e = s.initWishEditing(); e != nil {
+		db.Close()
+		return nil, e
+	}
 	if e = s.initModules(); e != nil {
 		db.Close()
 		return nil, e
@@ -489,6 +493,10 @@ func (s *Server) Handler() http.Handler {
 			limit := int64(32768)
 			if r.Method == "POST" && r.URL.Path == "/api/wishes" {
 				limit = wishBodyLimit
+			}
+			if r.Method == "POST" && strings.HasPrefix(r.URL.Path, "/api/admin/wishes/") {
+				// 10000 Unicode code points can exceed the default 32 KiB JSON body.
+				limit = 128 << 10
 			}
 			r.Body = http.MaxBytesReader(w, r.Body, limit)
 		}

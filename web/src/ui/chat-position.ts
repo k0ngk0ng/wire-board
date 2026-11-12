@@ -10,29 +10,29 @@ import {
 type Point = { x: number; y: number };
 type Bounds = { left: number; right: number; top: number; bottom: number };
 function boundsFor(root: HTMLElement): Bounds {
-  const rect = root.getBoundingClientRect(),
-    viewport = window.visualViewport,
+  const viewport = window.visualViewport,
     style = getComputedStyle(root);
   const margin = (name: string) =>
     Math.max(12, parseFloat(style.getPropertyValue(name)) || 0);
   const left = viewport?.offsetLeft ?? 0,
     top = viewport?.offsetTop ?? 0;
+  const right = left + (viewport?.width ?? innerWidth),
+    bottom = top + (viewport?.height ?? innerHeight);
   const toolbar = root
     .querySelector(".game-fullscreen-toolbar")
     ?.getBoundingClientRect();
+  // The chat is a fixed viewport overlay. Safari can shrink the fullscreen
+  // root while panning the visual viewport for the keyboard; intersecting
+  // both rectangles subtracts that keyboard space twice and collapses chat.
+  const toolbarBottom =
+    toolbar && toolbar.top <= top + 12 && toolbar.bottom > top
+      ? toolbar.bottom + 8
+      : top;
   return {
-    left: Math.max(rect.left, left) + margin("padding-left"),
-    right:
-      Math.min(rect.right, left + (viewport?.width ?? innerWidth)) -
-      margin("padding-right"),
-    top: Math.max(
-      rect.top + margin("padding-top"),
-      top + 12,
-      toolbar ? toolbar.bottom + 8 : 0,
-    ),
-    bottom:
-      Math.min(rect.bottom, top + (viewport?.height ?? innerHeight)) -
-      margin("padding-bottom"),
+    left: left + margin("padding-left"),
+    right: right - margin("padding-right"),
+    top: Math.max(top + margin("padding-top"), toolbarBottom),
+    bottom: bottom - margin("padding-bottom"),
   };
 }
 const clamp = (
@@ -56,7 +56,8 @@ export function useChatPosition(
 ) {
   const [position, setPosition] = useState<Point>(),
     [dragging, setDragging] = useState(false),
-    [panelStyle, setPanelStyle] = useState<CSSProperties>();
+    [panelStyle, setPanelStyle] = useState<CSSProperties>(),
+    [compact, setCompact] = useState(false);
   const point = useRef<Point | undefined>(undefined),
     ignoreClick = useRef(false);
   const active = useRef<
@@ -87,24 +88,27 @@ export function useChatPosition(
   const measure = useRef(() => {});
   measure.current = () => {
     if (!target || !toggle.current) return;
+    const viewport = window.visualViewport;
+    if (viewport && (!(viewport.width > 0) || !(viewport.height > 0))) return;
     const bounds = boundsFor(target),
       rect = toggle.current.getBoundingClientRect();
-    let anchor = {
-      left: rect.left,
-      top: rect.top,
-      right: rect.right,
-      bottom: rect.bottom,
+    const preferred = point.current ?? {
+      x: bounds.right - rect.width,
+      y: bounds.bottom - rect.height,
     };
-    if (point.current) {
-      const next = clamp(point.current, bounds, rect.width, rect.height);
-      place(next);
-      anchor = {
-        left: next.x,
-        top: next.y,
-        right: next.x + rect.width,
-        bottom: next.y + rect.height,
-      };
-    }
+    const next = clamp(preferred, bounds, rect.width, rect.height);
+    // Resizing for the keyboard is temporary; retain the user's drag anchor.
+    setPosition((previous) =>
+      previous?.x === next.x && previous.y === next.y ? previous : next,
+    );
+    const anchor = {
+      left: next.x,
+      top: next.y,
+      right: next.x + rect.width,
+      bottom: next.y + rect.height,
+    };
+    const tight = open && bounds.bottom - bounds.top < 280;
+    setCompact(tight);
     if (!open || !panel.current) return;
     const width = Math.max(1, Math.min(360, bounds.right - bounds.left));
     const above = anchor.top - bounds.top - 8,
@@ -112,7 +116,7 @@ export function useChatPosition(
     const upward = above >= below,
       slot = upward ? above : below;
     const ideal = Math.max(1, Math.min(500, bounds.bottom - bounds.top));
-    const height = Math.min(ideal, slot >= 220 ? slot : ideal);
+    const height = tight ? ideal : Math.min(ideal, slot >= 180 ? slot : ideal);
     const left = Math.max(
       bounds.left,
       Math.min(anchor.right - width, bounds.right - width),
@@ -211,7 +215,8 @@ export function useChatPosition(
         ? { left: position.x, top: position.y, right: "auto", bottom: "auto" }
         : undefined,
     panelStyle: target && open ? panelStyle : undefined,
-    draggable: !!target,
+    compact: !!target && open && compact,
+    draggable: !!target && !compact,
     dragging,
     handlers: {
       onPointerDown,

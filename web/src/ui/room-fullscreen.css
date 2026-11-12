@@ -111,7 +111,8 @@
   cursor: grab;
   z-index: 1;
 }
-.game-fullscreen-surface[data-room-fullscreen] .chat-toggle[data-chat-dragging] {
+.game-fullscreen-surface[data-room-fullscreen]
+  .chat-toggle[data-chat-dragging] {
   cursor: grabbing;
 }
 .game-fullscreen-surface[data-room-fullscreen] .chat-toggle > span {
@@ -193,4 +194,64 @@
   .game-fullscreen-status
   .turn-clock {
   flex-shrink: 0;
+}
+
+/* Keep the editor available when a tablet keyboard reduces the visual viewport. */
+.game-fullscreen-surface[data-room-fullscreen] .chat-heading,
+.game-fullscreen-surface[data-room-fullscreen] .chat-compose {
+  flex-shrink: 0;
+}
+.game-fullscreen-surface[data-room-fullscreen]
+  .table-chat[data-chat-compact]
+  .chat-toggle {
+  visibility: hidden;
+  pointer-events: none;
+}
+.game-fullscreen-surface[data-room-fullscreen]
+  .table-chat[data-chat-compact]
+  .chat-heading {
+  padding: 6px 8px;
+}
+.game-fullscreen-surface[data-room-fullscreen]
+  .table-chat[data-chat-compact]
+  .chat-heading
+  small,
+.game-fullscreen-surface[data-room-fullscreen]
+  .table-chat[data-chat-compact]
+  .chat-compose
+  small {
+  display: none;
+}
+.game-fullscreen-surface[data-room-fullscreen]
+  .table-chat[data-chat-compact]
+  .chat-heading
+  .icon-button {
+  width: 28px;
+  min-height: 28px;
+  height: 28px;
+  padding: 0;
+}
+.game-fullscreen-surface[data-room-fullscreen]
+  .table-chat[data-chat-compact]
+  .chat-compose {
+  padding: 6px 8px;
+}
+.game-fullscreen-surface[data-room-fullscreen]
+  .table-chat[data-chat-compact]
+  .chat-compose
+  textarea {
+  height: 44px;
+  min-height: 44px;
+}
+.game-fullscreen-surface[data-room-fullscreen]
+  .table-chat[data-chat-compact]
+  .chat-compose
+  > div {
+  justify-content: flex-end;
+  margin-top: 5px;
+}
+.game-fullscreen-surface[data-room-fullscreen]
+  .table-chat[data-chat-compact]
+  .chat-messages {
+  padding: 0 8px;
 }

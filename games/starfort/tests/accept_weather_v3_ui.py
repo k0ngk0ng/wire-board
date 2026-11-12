@@ -46,11 +46,11 @@ try:
         for weather in ['calm', 'fog', 'frost', 'starlight']:
             scenario_ready('weather-v3-'+weather)
             check('schema 10 public weather '+weather+' '+str(width), w.data().get('weatherRules') == 3)
-            check('weather notice before wave '+str(width), c.visibility('[data-sf-weather-notice]')['visible'])
+            check('weather notice before wave '+weather+' '+str(width), c.visibility('[data-sf-weather-notice]').get('visible',False) == (weather != 'calm'))
             for fullscreen in [False, True]:
                 if fullscreen: enter_ready()
                 geometry = c.js('(()=>{const e=document.querySelector("[data-sf-weather]");if(!e)return null;const r=e.getBoundingClientRect(),parent=e.parentElement,p=parent.getBoundingClientRect();return {id:e.dataset.sfWeather,top:r.top-p.top-parent.clientTop,height:r.height,field:parent.clientHeight,pointer:getComputedStyle(e).pointerEvents}})()')
-                check('weather covers full battlefield '+weather+' '+str(width), geometry and geometry['id']==weather and geometry['top']>=-1 and abs(geometry['height']-geometry['field'])<=1 and geometry['pointer']=='none', geometry)
+                check('calm has no weather overlay '+str(width), geometry is None) if weather=='calm' else check('weather covers full battlefield '+weather+' '+str(width), geometry and geometry['id']==weather and geometry['top']>=-1 and abs(geometry['height']-geometry['field'])<=1 and geometry['pointer']=='none', geometry)
                 c.screenshot('weather-'+weather+'-'+str(width)+'-'+str(fullscreen))
                 if fullscreen: c.leave()
         scenario_ready('weather-v3-fog')

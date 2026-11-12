@@ -1,6 +1,6 @@
 # 游戏许愿池
 
-玩家可以在大厅顶栏打开「许愿池」，用文字描述想实现的游戏，并可上传或直接粘贴一张参考图。AI 制作代理可以直接处理待审核许愿：需求含糊时最多向提交者追问 2 次，问满或信息足够后开始实现；管理员仍可在「围桌管理室 → 许愿管理」审核条目。管理列表显示前 80 个字符的摘要；点击「查看详情」在浮层中阅读完整正文、参考图、问答和审核备注，并执行审核操作。
+玩家可以在大厅顶栏打开「许愿池」，用文字描述想实现的游戏，并可上传或直接粘贴一张参考图。AI 制作代理可以直接处理待审核许愿：需求含糊时最多向提交者追问 2 次，问满或信息足够后开始实现；管理员仍可在「围桌管理室 → 许愿管理」审核条目。管理列表显示前 80 个字符的摘要；点击「查看详情」在浮层中阅读完整正文、参考图、问答和审核备注，并执行审核操作。详情中的「编辑正文」支持保存和取消；编辑不会改变提交者、处理状态、参考图、审核记录或已有问答。
 
 ## 状态与追问
 
@@ -14,7 +14,7 @@
 
 AI 追问不改变主状态，单独记录在 `wish_questions` 中。每个许愿最多 2 个问题；同一时间只能有一个未回答的问题。玩家回答后 AI 才能继续追问或开始实现。未回答的追问会让代理跳过该条目，避免重复提问。
 
-管理员和代理的状态变化都会写入 `admin_audit`，操作记录中显示为「通过许愿」「AI 追问许愿」「开始实现许愿」「完成许愿」或「驳回许愿」。审核时间按秒严格递增，代理使用 `since` 增量轮询时不会漏掉同一秒内的连续状态变化。新游戏现在默认上架，管理员可随时下架。
+正文编辑以「编辑许愿」写入操作记录，同时记录编辑人、时间和内容版本；重复保存相同正文不增加版本。管理员和代理的状态变化都会写入 `admin_audit`，操作记录中显示为「通过许愿」「AI 追问许愿」「开始实现许愿」「完成许愿」或「驳回许愿」。审核时间按秒严格递增，代理使用 `since` 增量轮询时不会漏掉同一秒内的连续状态变化。新游戏现在默认上架，管理员可随时下架。
 
 ## 图片
 
@@ -61,7 +61,15 @@ WISH_IMAGE_PREFIX=bga/wishes
 {"action":"reject","note":"暂不考虑"}
 ```
 
-`action` 为 `approve`、`start`、`implement` 或 `reject`；`note` 可选，最多 500 字。状态依次为 `approved` → `in_progress` → `implemented`，也可以直接通过或驳回。
+编辑正文使用同一接口：
+
+```json
+{"action":"edit","text":"修改后的许愿正文","expectedRevision":0}
+```
+
+正文限制仍为 2～10000 个 Unicode 字符。`expectedRevision` 必须与读取的 `contentRevision` 一致，冲突返回 409；管理界面保留草稿，可取消编辑后查看最新内容。所有处理状态均可编辑。
+
+状态操作的 `action` 为 `approve`、`start`、`implement` 或 `reject`；`note` 可选，最多 500 字。状态依次为 `approved` → `in_progress` → `implemented`，也可以直接通过或驳回。
 
 ### 本地制作代理
 
@@ -76,10 +84,10 @@ curl -fsS \
 - 默认返回 `pending`、`approved`、`in_progress`、`implemented` 条目，按创建/审核时间升序。
 - `status=pending|approved|in_progress|implemented` 只返回对应状态；`rejected` 不向代理开放。
 - 每条包含 `questions`、`questionCount`、`needsAnswer`。`needsAnswer=true` 时表示已有未回答追问，代理必须等待，不能重复提问或开始实现。
-- `since=<unix-seconds>` 只返回创建（pending）或最近审核时间晚于该时刻的条目，适合轮询。
+- `since=<unix-seconds>` 只返回创建（pending）、最近审核或正文编辑时间晚于该时刻的条目，适合轮询。
 - `limit=1..200`，默认 100。
 - 也接受 `X-Wish-Token` 请求头；未配置令牌返回 503，令牌错误返回 401。
-- 返回字段：`id`、`userName`、`text`、`imageUrl`、`status`、`note`、`createdAt`、`reviewedAt`、`approvedAt`、`reviewedByName`、`questions`。`approvedAt` 只在当前状态为 `approved` 时给出；后续状态以 `status` 和最近一次 `reviewedAt` 为准。
+- 返回字段：`id`、`userName`、`text`、`imageUrl`、`status`、`note`、`createdAt`、`reviewedAt`、`approvedAt`、`reviewedByName`、`questions`、`contentRevision`、`editedAt`、`editedByName`。`approvedAt` 只在当前状态为 `approved` 时给出；后续状态以 `status` 和最近一次 `reviewedAt` 为准。
 
 追问（最多 2 次，且上一个问题必须已回答）：
 

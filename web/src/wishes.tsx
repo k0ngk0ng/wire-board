@@ -34,6 +34,9 @@ export type Wish = {
   status: "pending" | "approved" | "in_progress" | "implemented" | "rejected";
   note: string;
   createdAt: number;
+  contentRevision: number;
+  editedAt?: number;
+  editedByName?: string;
   reviewedAt?: number;
   approvedAt?: number;
   reviewedByName?: string;

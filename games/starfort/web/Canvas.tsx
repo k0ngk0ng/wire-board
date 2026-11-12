@@ -899,15 +899,9 @@ export function Battlefield({
   selectedRef.current = selected;
   const cursor = useRef<EventCursor | null>(null),
     effects = useRef<Effect[]>([]);
-  const [previewID, setPreviewID] = useState<string | null>(null);
-  const preview = data.world?.choice?.options.find(
-    (option) => option.id === previewID,
-  )?.map;
-  const renderMap = useRef<MapData>(preview ?? data.map);
-  renderMap.current = preview ?? data.map;
-  const previewRef = useRef(preview);
-  previewRef.current = preview;
-  terrainKey.current = JSON.stringify([data.map, preview ?? null]);
+  const renderMap = useRef<MapData>(data.map);
+  renderMap.current = data.map;
+  terrainKey.current = JSON.stringify(data.map);
   const camera = useRef<Camera>({ x: 480, y: 240, zoom: 0.3 });
   const viewport = useRef<Viewport>({ width: 0, height: 0 });
   const cameraRoom = useRef<string | null>(null);
@@ -970,16 +964,6 @@ export function Battlefield({
       focus({ x: world.x, y: world.y });
     }
   };
-  const zoom = (factor: number) =>
-    publishCamera(
-      zoomCamera(
-        camera.current,
-        factor,
-        { x: viewport.current.width / 2, y: viewport.current.height / 2 },
-        worldBounds(renderMap.current),
-        viewport.current,
-      ),
-    );
   const pointerPoint = (event: ReactPointerEvent) => {
     const rect = canvas.current!.getBoundingClientRect();
     return { x: event.clientX - rect.left, y: event.clientY - rect.top };
@@ -1372,28 +1356,7 @@ export function Battlefield({
           undefined,
           overview,
         );
-        if (previewRef.current) {
-          backgroundContext.save();
-          backgroundContext.globalAlpha = 0.58;
-          drawLandscape(
-            backgroundContext,
-            art.current,
-            previewRef.current,
-            pixelScale,
-            map,
-            overview,
-          );
-          backgroundContext.restore();
-        }
         drawRoutes(backgroundContext, map, pixelScale, undefined, overview);
-        if (previewRef.current)
-          drawRoutes(
-            backgroundContext,
-            previewRef.current,
-            pixelScale,
-            map,
-            overview,
-          );
         backgroundKey = cacheKey;
         backgroundArt = art.current;
       }
@@ -2100,20 +2063,9 @@ export function Battlefield({
       cancelAnimationFrame(frame);
       observer.disconnect();
     };
-  }, [
-    data.map.width,
-    data.map.height,
-    preview?.width,
-    preview?.height,
-    roomID,
-    reduced,
-  ]);
-  const bounds = worldBounds(preview ?? data.map);
-  const overview = isWorldOverview(
-    preview ?? data.map,
-    view.viewport,
-    view.camera,
-  );
+  }, [data.map.width, data.map.height, roomID, reduced]);
+  const bounds = worldBounds(data.map);
+  const overview = isWorldOverview(data.map, view.viewport, view.camera);
   const windowRect = cameraWindow(view.camera, {
     width: Math.max(1, view.viewport.width),
     height: Math.max(1, view.viewport.height),
@@ -2131,128 +2083,6 @@ export function Battlefield({
     data.map.path[data.map.path.length - 1] ?? { x: 860, y: 340 };
   return (
     <section className="sf-world-camera" aria-label="战场与地图导航">
-      <div className="sf-map-tools">
-        <div
-          className="sf-camera-toolbar"
-          data-controller-group="camera"
-          role="group"
-          aria-label="地图视角"
-        >
-          <button
-            className="sf-secondary"
-            data-sf-zoom-out
-            aria-label="缩小地图"
-            onClick={() => zoom(1 / 1.3)}
-          >
-            −
-          </button>
-          <output aria-label="地图缩放">
-            {Math.round(view.camera.zoom * 100)}%
-          </output>
-          <button
-            className="sf-secondary"
-            data-sf-zoom-in
-            aria-label="放大地图"
-            onClick={() => zoom(1.3)}
-          >
-            ＋
-          </button>
-          <button
-            className="sf-secondary"
-            data-sf-camera-base
-            onClick={() => {
-              const starter = fitCamera(
-                worldBounds({ width: 960, height: 640 }),
-                viewport.current,
-              );
-              publishCamera(
-                focusCamera(
-                  {
-                    ...camera.current,
-                    zoom: Math.max(camera.current.zoom, starter.zoom),
-                  },
-                  base,
-                  bounds,
-                  viewport.current,
-                ),
-              );
-            }}
-          >
-            回到星核
-          </button>
-          <button
-            className="sf-secondary"
-            data-sf-fit
-            onClick={() => publishCamera(fitCamera(bounds, viewport.current))}
-          >
-            全图
-          </button>
-        </div>
-        <details className="sf-entry-menu">
-          <summary>入口</summary>
-          <div className="sf-entry-list" aria-label="进攻入口">
-            {routes.map((route) => {
-              const enemies = data.enemies.filter(
-                (enemy) => (enemy.route ?? "main") === route.id,
-              ).length;
-              return (
-                <button
-                  key={route.id}
-                  className="sf-secondary"
-                  data-sf-entry={route.id}
-                  data-active={route.active}
-                  onClick={() => focus(route.points[0] ?? base)}
-                >
-                  <span aria-hidden="true">{route.active ? "●" : "○"}</span>{" "}
-                  {route.label}
-                  {enemies > 0
-                    ? ` · ${enemies} 敌人`
-                    : route.active
-                      ? " · 出怪"
-                      : " · 休整"}
-                </button>
-              );
-            })}
-          </div>
-        </details>
-        {!!data.world?.choice?.options.some((option) => option.map) && (
-          <details className="sf-preview-menu">
-            <summary>扩展预览</summary>
-            <div
-              className="sf-map-previews"
-              role="group"
-              aria-label="扩展地图预览"
-            >
-              <span>虚线为新道路：</span>
-              <button
-                className="sf-secondary"
-                aria-pressed={!preview}
-                onClick={() => setPreviewID(null)}
-              >
-                当前战场
-              </button>
-              {data.world.choice.options
-                .filter((option) => option.map)
-                .map((option) => (
-                  <button
-                    className="sf-secondary"
-                    key={option.id}
-                    aria-pressed={previewID === option.id}
-                    data-sf-preview={option.id}
-                    onClick={() => {
-                      setPreviewID(option.id);
-                      publishCamera(
-                        fitCamera(worldBounds(option.map!), viewport.current),
-                      );
-                    }}
-                  >
-                    预览{option.label}
-                  </button>
-                ))}
-            </div>
-          </details>
-        )}
-      </div>
       <div
         className={`sf-battlefield sf-world-viewport ${overview ? "sf-world-overview" : ""}`}
         ref={container}
@@ -2329,28 +2159,30 @@ export function Battlefield({
           }
         }}
       >
-        {(data.weatherRules ?? 0) >= 1 && data.world?.event && (
-          <div
-            className={`sf-weather sf-weather-${data.world.event.id}${(data.weatherRules ?? 0) >= 3 ? " sf-weather-field" : ""}`}
-            data-sf-weather={data.world.event.id}
-            role="img"
-            aria-label={`天气：${data.world.event.label}`}
-          >
-            {Array.from({ length: 12 }, (_, i) => (
-              <i
-                key={i}
-                style={{
-                  left: `${i * 8.7}%`,
-                  top:
-                    (data.weatherRules ?? 0) >= 3
-                      ? `${(i * 37 + 7) % 92}%`
-                      : undefined,
-                  animationDelay: `${-i * 0.6}s`,
-                }}
-              />
-            ))}
-          </div>
-        )}
+        {(data.weatherRules ?? 0) >= 1 &&
+          data.world?.event &&
+          data.world.event.id !== "calm" && (
+            <div
+              className={`sf-weather sf-weather-${data.world.event.id}${(data.weatherRules ?? 0) >= 3 ? " sf-weather-field" : ""}`}
+              data-sf-weather={data.world.event.id}
+              role="img"
+              aria-label={`天气：${data.world.event.label}`}
+            >
+              {Array.from({ length: 12 }, (_, i) => (
+                <i
+                  key={i}
+                  style={{
+                    left: `${i * 8.7}%`,
+                    top:
+                      (data.weatherRules ?? 0) >= 3
+                        ? `${(i * 37 + 7) % 92}%`
+                        : undefined,
+                    animationDelay: `${-i * 0.6}s`,
+                  }}
+                />
+              ))}
+            </div>
+          )}
         <canvas
           ref={canvas}
           data-starfort-canvas
@@ -2573,7 +2405,7 @@ export function Battlefield({
               fill={regionColors[region.biome] ?? regionColors.forest}
             />
           ))}
-          {(preview?.routes ?? routes).map((route) => (
+          {routes.map((route) => (
             <polyline
               key={route.id}
               points={route.points.map((p) => `${p.x},${p.y}`).join(" ")}
@@ -2625,11 +2457,6 @@ export function Battlefield({
             style={{ strokeWidth: 2 }}
           />
         </svg>
-        {preview && (
-          <p>
-            <strong>扩展方案预览</strong>
-          </p>
-        )}
       </div>
     </section>
   );
