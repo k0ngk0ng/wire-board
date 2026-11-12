@@ -100,6 +100,9 @@ type Car struct {
 	Pending     []Input             `json:"pending,omitempty"`
 }
 type Event struct {
+	Prop      *int    `json:"prop,omitempty"`
+	Dir       float64 `json:"dir,omitempty"`
+	High      bool    `json:"high,omitempty"`
 	ID        int     `json:"id"`
 	Type      string  `json:"type"`
 	At        int64   `json:"at"`
@@ -114,34 +117,36 @@ type Controls struct {
 	CanSkin  bool `json:"canSkin"`
 }
 type View struct {
-	Physics        int      `json:"physics,omitempty"`
-	Options        Options  `json:"options"`
-	Phase          string   `json:"phase"`
-	Epoch          string   `json:"epoch"`
-	ServerAt       int64    `json:"serverAt"`
-	StartAt        int64    `json:"startAt"`
-	FinishDeadline int64    `json:"finishDeadline"`
-	MaxRaceAt      int64    `json:"maxRaceAt"`
-	Track          Track    `json:"track"`
-	Cars           []Car    `json:"cars"`
-	Events         []Event  `json:"events"`
-	Controls       Controls `json:"controls"`
+	Props          *ClassicPropState `json:"props,omitempty"`
+	Physics        int               `json:"physics,omitempty"`
+	Options        Options           `json:"options"`
+	Phase          string            `json:"phase"`
+	Epoch          string            `json:"epoch"`
+	ServerAt       int64             `json:"serverAt"`
+	StartAt        int64             `json:"startAt"`
+	FinishDeadline int64             `json:"finishDeadline"`
+	MaxRaceAt      int64             `json:"maxRaceAt"`
+	Track          Track             `json:"track"`
+	Cars           []Car             `json:"cars"`
+	Events         []Event           `json:"events"`
+	Controls       Controls          `json:"controls"`
 }
 type State struct {
-	Physics        int             `json:"physics,omitempty"`
-	Options        Options         `json:"options"`
-	Phase          string          `json:"phase"`
-	Epoch          string          `json:"epoch"`
-	ServerAt       int64           `json:"serverAt"`
-	StartAt        int64           `json:"startAt"`
-	FinishDeadline int64           `json:"finishDeadline"`
-	MaxRaceAt      int64           `json:"maxRaceAt"`
-	Track          Track           `json:"track"`
-	Cars           []Car           `json:"cars"`
-	Events         []Event         `json:"events"`
-	EventID        int             `json:"eventId"`
-	Log            []string        `json:"log"`
-	Result         *gameapi.Result `json:"result,omitempty"`
+	Props          *ClassicPropState `json:"props,omitempty"`
+	Physics        int               `json:"physics,omitempty"`
+	Options        Options           `json:"options"`
+	Phase          string            `json:"phase"`
+	Epoch          string            `json:"epoch"`
+	ServerAt       int64             `json:"serverAt"`
+	StartAt        int64             `json:"startAt"`
+	FinishDeadline int64             `json:"finishDeadline"`
+	MaxRaceAt      int64             `json:"maxRaceAt"`
+	Track          Track             `json:"track"`
+	Cars           []Car             `json:"cars"`
+	Events         []Event           `json:"events"`
+	EventID        int               `json:"eventId"`
+	Log            []string          `json:"log"`
+	Result         *gameapi.Result   `json:"result,omitempty"`
 }
 
 func finite(v float64) bool           { return !math.IsNaN(v) && !math.IsInf(v, 0) }
@@ -162,6 +167,9 @@ func decode(m gameapi.Match) (State, error) {
 			return s, errors.New("赛车赛道版本不可用")
 		}
 		s.Track = track
+		if err := validateClassicPropState(&s); err != nil {
+			return s, err
+		}
 	}
 	if len(s.Cars) < 2 || len(s.Cars) > 6 || len(s.Track.Points) < 16 || s.Epoch == "" {
 		return s, errors.New("赛车存档不完整")

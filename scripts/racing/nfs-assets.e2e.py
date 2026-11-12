@@ -154,10 +154,13 @@ class OriginalConversion(unittest.TestCase):
 
     def test_native_ambient_loops_keep_keyframes_and_billboard_centres(self):
         doc, blob = glb(OUT/'tracks/france.glb')
-        self.assertEqual(len(doc['animations']), 2)
-        durations = sorted(doc['accessors'][animation['samplers'][0]['input']]['max'][0] for animation in doc['animations'])
+        ambient = [animation for animation in doc['animations'] if animation.get('extras',{}).get('trigger') != 'collision']
+        destruction = [animation for animation in doc['animations'] if animation.get('extras',{}).get('trigger') == 'collision']
+        self.assertEqual(len(ambient), 2)
+        self.assertEqual(len(destruction), 29*2)
+        durations = sorted(doc['accessors'][animation['samplers'][0]['input']]['max'][0] for animation in ambient)
         self.assertEqual(durations, [9.28125,37.3125])
-        for animation in doc['animations']:
+        for animation in ambient:
             self.assertEqual({channel['target']['path'] for channel in animation['channels']}, {'translation','rotation'})
             for sampler in animation['samplers']:
                 self.assertEqual(sampler['interpolation'], 'LINEAR')

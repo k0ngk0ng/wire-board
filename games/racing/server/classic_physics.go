@@ -38,7 +38,7 @@ func classicMotionToCar(c *Car, motion ClassicMotionState) {
 	c.Gear = motion.Gear
 }
 
-func stepClassicCar(c *Car, t Track, ms, at int64) float64 {
+func stepClassicCar(c *Car, t Track, ms, at int64, props *classicPropCollision) float64 {
 	road := classicPose(c, t)
 	motion := classicMotionFromCar(*c)
 	protect := c.Applied.Protect || at-c.LastInputAt > lostInputMS || at < c.ResetUntil
@@ -54,7 +54,7 @@ func stepClassicCar(c *Car, t Track, ms, at int64) float64 {
 	classicMotionToCar(c, next)
 	classicPose(c, t)
 	before := c.Speed
-	next = CollideClassicRoad(t, next, c.Vehicle, c.Height)
+	next = collideClassicRoadWithProps(t, next, c.Vehicle, c.Height, props)
 	classicMotionToCar(c, next)
 	classicPose(c, t)
 	if c.Driver == nil {

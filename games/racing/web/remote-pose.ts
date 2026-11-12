@@ -1,4 +1,5 @@
 import type { Car, Track } from "./types";
+import type { ClassicPropWorld } from "./classic-road.ts";
 import { interpolateCar } from "./presentation.ts";
 import { predictCar } from "./prediction.ts";
 export function remotePose(sample: {
@@ -9,6 +10,7 @@ export function remotePose(sample: {
   currentAt: number;
   visualAt: number;
   driving: boolean;
+  props?: ClassicPropWorld;
 }): Car {
   const { older, current, track, previousAt, currentAt, visualAt, driving } =
     sample;
@@ -28,6 +30,7 @@ export function remotePose(sample: {
       track,
       visualAt - currentAt,
       visualAt,
+      sample.props,
     );
   const span = currentAt - previousAt;
   return span > 0

@@ -1,7 +1,7 @@
 import { CAR_MODELS } from "./car-definitions";
 import atlas from "../assets/public/racing/v1/atlas.json";
 import type { ClassicMotionState } from "./classic-motion";
-import type { ClassicBarrier, ClassicRoadSample } from "./classic-road";
+import type { ClassicBarrier, ClassicRoadSample, ClassicPropSnapshot } from "./classic-road";
 export type Point = { x: number; y: number };
 export type Options = {
   track: "france" | "coastal" | "uk" | "park" | "metro" | "harbor" | "woodland" | "coast" | "canyon";
@@ -65,12 +65,16 @@ export type Car = Point & {
 };
 export type RaceEvent = Point & {
   id: number;
-  type: "start" | "lap" | "finish" | "collision" | "reset";
+  type: "start" | "lap" | "finish" | "collision" | "reset" | "prop";
+  prop?: number;
+  dir?: number;
+  high?: boolean;
   at: number;
   seat: number;
   intensity: number;
 };
 export type View = {
+  props?: ClassicPropSnapshot;
   physics?: number;
   options: Options;
   phase: "countdown" | "racing" | "finishing" | "finished";

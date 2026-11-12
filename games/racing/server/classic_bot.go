@@ -60,7 +60,7 @@ func classicAhead(t Track, index int, fraction, distance float64) (Point, int) {
 	return t.Points[index], index
 }
 
-func classicLaneCost(t Track, start int, offset float64, body ClassicBody) float64 {
+func classicLaneCost(t Track, start int, offset float64, body ClassicBody, props *ClassicPropState) float64 {
 	info := classicTrackInfoFor(t)
 	n := len(t.Points)
 	cost := 0.
@@ -80,6 +80,9 @@ func classicLaneCost(t Track, start int, offset float64, body ClassicBody) float
 		a, b, radius := classicCapsule(x, y, math.Atan2(tv.Y, tv.X), body)
 		radius += 3
 		for _, idx := range info.grid[[2]int{int(math.Floor(x / 100)), int(math.Floor(y / 100))}] {
+			if classicBrokenBarrier(props, idx) {
+				continue
+			}
 			wall := t.Barriers[idx]
 			if h+body.Height*10 < wall.Bottom+.05 || h > wall.Top-.05 {
 				continue
@@ -94,8 +97,8 @@ func classicLaneCost(t Track, start int, offset float64, body ClassicBody) float
 	return cost
 }
 
-func classicDrivingLane(t Track, road ClassicRoadContact, body ClassicBody) (float64, bool) {
-	base := classicLaneCost(t, road.Index, 0, body)
+func classicDrivingLane(t Track, road ClassicRoadContact, body ClassicBody, props *ClassicPropState) (float64, bool) {
+	base := classicLaneCost(t, road.Index, 0, body, props)
 	if base == 0 {
 		return 0, false
 	}
@@ -104,7 +107,7 @@ func classicDrivingLane(t Track, road ClassicRoadContact, body ClassicBody) (flo
 		if offset == 0 {
 			continue
 		}
-		cost := classicLaneCost(t, road.Index, offset, body) + math.Abs(offset) + math.Abs(offset-road.Side)*.05
+		cost := classicLaneCost(t, road.Index, offset, body, props) + math.Abs(offset) + math.Abs(offset-road.Side)*.05
 		if cost < bestCost {
 			best, bestCost = offset, cost
 		}
@@ -126,7 +129,7 @@ func classicBotAction(ctx gameapi.Context, s State) (json.RawMessage, error) {
 	target, targetIndex := classicAhead(t, road.Index, road.Fraction, look*10)
 	// The native centreline is a conservative racing line. Computers merge by
 	// yielding to the car ahead instead of carrying a fixed offset into walls.
-	lane, blockedLane := classicDrivingLane(t, road, ClassicVehicleBody(c.Vehicle))
+	lane, blockedLane := classicDrivingLane(t, road, ClassicVehicleBody(c.Vehicle), s.Props)
 	body := ClassicVehicleBody(c.Vehicle)
 	lane = clamp(lane, -math.Max(0, t.Road[targetIndex].Left-body.Width*5-5), math.Max(0, t.Road[targetIndex].Right-body.Width*5-5))
 	r := t.Road[targetIndex]

@@ -25,6 +25,7 @@ from speedtools.car_data import CarData
 from speedtools.carp_data import CarpData
 from speedtools.track_data import TrackData
 from speedtools.utils import create_pil_image, get_path_case_insensitive, make_horizon_texture
+from nfs_props import make_catalog
 
 
 TRACK_NAMES = {'france': '法国乡间', 'coastal': '滨海公路', 'uk': '凯尔特遗迹', 'park': '奇迪亚克森林'}
@@ -303,6 +304,36 @@ class GLB:
                          {'sampler':1,'target':{'node':node,'path':'rotation'}}],
             'extras': {'fps':64, 'sourceFrameDelay':animation.delay, 'sourceFrames':frames}})
 
+    def destruction_animation(self, node, animation, name):
+        frames = len(animation.locations)
+        if frames != len(animation.quaternions) or frames < 2:
+            raise ValueError('incomplete original destruction animation')
+        times = [index*animation.delay/64 for index in range(frames)]
+        locations = [vec(p) for p in animation.locations]
+        rotations = []
+        for q in animation.quaternions:
+            value = (-q.x, q.y, q.z, q.w)
+            length = math.sqrt(sum(v*v for v in value))
+            if length < 1e-12:
+                raise ValueError('invalid original destruction quaternion')
+            value = tuple(v/length for v in value)
+            if rotations and sum(a*b for a,b in zip(value,rotations[-1])) < 0:
+                value = tuple(-v for v in value)
+            rotations.append(value)
+        timeline = self.accessor(times,1)
+        self.doc['accessors'][timeline].update(min=[times[0]],max=[times[-1]])
+        translation = self.accessor(locations,3)
+        rotation = self.accessor(rotations,4)
+        for accessor in (timeline,translation,rotation):
+            self.doc['bufferViews'][self.doc['accessors'][accessor]['bufferView']].pop('target',None)
+        self.doc.setdefault('animations',[]).append({'name':name,
+            'samplers':[{'input':timeline,'output':translation,'interpolation':'LINEAR'},
+                        {'input':timeline,'output':rotation,'interpolation':'LINEAR'}],
+            'channels':[{'sampler':0,'target':{'node':node,'path':'translation'}},
+                        {'sampler':1,'target':{'node':node,'path':'rotation'}}],
+            'extras':{'trigger':'collision','loop':False,'clampWhenFinished':True,'coordinates':'object-local-relative',
+                      'fps':64,'sourceFrameDelay':animation.delay,'sourceFrames':frames}})
+
     def packed(self, doc, replacements=None):
         blob = bytearray()
         for index, original in enumerate(self.chunks):
@@ -516,6 +547,14 @@ def track_export(root, track, output):
     route['sourceFiles'] = [{'name': name, 'bytes': len(data), 'sha256': digest(data)}
                             for name in ('Tr.frd', 'heights.sim')
                             for data in [get_path_case_insensitive(directory, directory/name).read_bytes()]]
+    frozen_route = Path(__file__).resolve().parents[2]/'games/racing/assets/public/racing/v3/tracks'/f'{ident}.route.json'
+    if frozen_route.exists() and frozen_route.read_bytes() != encoded(route)+b'\n':
+        raise ValueError(f'{ident}: prop semantics cannot change the immutable original route')
+    catalog,numeric,audit = make_catalog(ident,directory,variants[0][1],variants[1][1],route)
+    for folder,value in [('props',catalog),('rules',numeric),('audit',audit)]:
+        (output/folder).mkdir(exist_ok=True)
+        suffix = '.json' if folder == 'props' else '.props.json'
+        (output/folder/(ident+suffix)).write_bytes(encoded(value)+b'\n')
     (output/f'tracks/{ident}.route.json').write_bytes(encoded(route)+b'\n')
     (output/f'tracks/{ident}.collision.json').write_bytes(encoded(collision)+b'\n')
     stats = {}
@@ -530,7 +569,7 @@ def track_export(root, track, output):
         env = environment(data, origin, sky_name)
         builder = GLB(name, {'origin': rounded(origin), 'sourceTransform': SOURCE_TRANSFORM,
                              'environment': env, 'track': ident, 'night': night,
-                             'geometryVersion': route['geometryVersion']}, unlit=True)
+                             'geometryVersion': route['geometryVersion'],'propsCatalogHash':catalog['catalogHash']}, unlit=True)
         # Consecutive road blocks are separate culling groups; original high-LOD
         # surfaces, decals and vertex lighting are all retained.
         for index, segment in enumerate(segments):
@@ -540,7 +579,25 @@ def track_export(root, track, output):
         animated = 0
         billboard = 0
         object_specs = []
+        prop_objects = {p['source']['nightObject' if night else 'dayObject']:p for p in catalog['props']}
         for index, obj in enumerate(objects):
+            if index in prop_objects:
+                prop=prop_objects[index]
+                mesh=builder.mesh(f"prop_{prop['index']}_mesh",[(obj.mesh,data.get_polygon_material,vec,vec)],root=False)
+                if mesh is None:
+                    raise ValueError('confirmed prop has no original geometry')
+                motion=len(builder.doc['nodes'])
+                builder.doc['nodes'].append({'name':prop['motionNode'],'children':[mesh],'translation':[0,0,0],'rotation':[0,0,0,1],
+                    'extras':{'propMotion':True,'propIndex':prop['index']}})
+                node=len(builder.doc['nodes'])
+                builder.doc['nodes'].append({'name':prop['node'],'translation':list(prop['position']),'children':[motion],
+                    'extras':{'propIndex':prop['index'],'propId':prop['id'],'object':index,'collisionType':2,
+                              'destructible':True,'segment':prop['source']['segment']}})
+                builder.doc['scenes'][0]['nodes'].append(node)
+                for action in obj.actions:
+                    speed='low' if action.action.name=='DESTROY_LOW_SPEED' else 'high'
+                    builder.destruction_animation(motion,action.animation,prop['clips'][speed])
+                continue
             is_billboard = any(p.billboard for p in obj.mesh.polygons)
             is_animated = any(str(a.action) == 'Action.DEFAULT_LOOP' for a in obj.actions)
             mapping = lambda p, o=obj: tuple(a-b for a, b in zip(object_point(o, p), origin))
@@ -562,9 +619,10 @@ def track_export(root, track, output):
         builder.mesh('static_objects', object_specs, extras={'staticObjects': len(object_specs)})
         item = builder.write(output/f'tracks/{name}.glb')
         item.update({'segments': len(segments), 'objects': len(objects),
+                     'destructibleObjects':len(catalog['props']),
                      'billboardObjects': billboard, 'animatedObjects': animated,
                      'sourcePolygons': sum(len(s.mesh.polygons) for s in segments)+sum(len(o.mesh.polygons) for o in objects),
-                     'unresolved': ['destruction actions require game collision events',
+                     'unresolved': ['destruction actions are one-shot collision clips; original speed threshold/direction mapping unverified',
                                     'billboard nodes require camera-facing update',
                                     'additive and texture-animation metadata require renderer application']})
         stats[name] = item
@@ -602,7 +660,7 @@ def main():
         for track in args.tracks:
             track_stats.update(track_export(root, track, staging))
         assets = []
-        for path in sorted(p for p in staging.rglob('*') if p.is_file()):
+        for path in sorted(p for p in staging.rglob('*') if p.is_file() and p.relative_to(staging).parts[0] not in ('rules','audit')):
             data = path.read_bytes()
             assets.append({'path': path.relative_to(staging).as_posix(), 'bytes': len(data), 'sha256': digest(data),
                            'mime': {'glb': 'model/gltf-binary', 'json': 'application/json', 'png': 'image/png'}[path.suffix[1:]]})

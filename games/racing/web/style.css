@@ -1085,3 +1085,22 @@
 [data-room-fullscreen] .is-classic .racing-pedals .racing-drift {
   right: 48px;
 }
+
+/* The entire painted race surface is gameplay, including HUD and canvas. */
+.racing-board,
+.racing-board * {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+.racing-board
+  :is(
+    input,
+    textarea,
+    select,
+    [contenteditable]:not([contenteditable="false"])
+  ) {
+  -webkit-user-select: text;
+  user-select: text;
+  -webkit-touch-callout: default;
+}

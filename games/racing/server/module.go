@@ -118,6 +118,7 @@ func start(ctx gameapi.Context, raw json.RawMessage) (gameapi.Match, error) {
 	s := State{Options: o, Phase: "countdown", Epoch: hex.EncodeToString(token[:]), ServerAt: now, StartAt: now + 3000, MaxRaceAt: now + 1203000, Track: t, Cars: make([]Car, ctx.Players), Events: []Event{}, Log: []string{"极品飞车：3 秒后发车，首车完赛后保留 30 秒冲线时间"}}
 	if t.Version == 3 {
 		s.Physics = 3
+		s.Props = newClassicPropState(classicProps.current[t.Geometry])
 	}
 	p, v := t.Points[0], tangent(t, 0)
 	for i := range s.Cars {
@@ -304,7 +305,7 @@ func project(m gameapi.Match, seat int) (any, error) {
 	if e != nil {
 		return nil, e
 	}
-	v := View{Physics: s.Physics, Options: s.Options, Phase: s.Phase, Epoch: s.Epoch, ServerAt: s.ServerAt, StartAt: s.StartAt, FinishDeadline: s.FinishDeadline, MaxRaceAt: s.MaxRaceAt, Track: s.Track, Cars: s.Cars, Events: s.Events}
+	v := View{Props: s.Props, Physics: s.Physics, Options: s.Options, Phase: s.Phase, Epoch: s.Epoch, ServerAt: s.ServerAt, StartAt: s.StartAt, FinishDeadline: s.FinishDeadline, MaxRaceAt: s.MaxRaceAt, Track: s.Track, Cars: s.Cars, Events: s.Events}
 	if s.Physics == 3 {
 		v.Track = compactTrack(v.Track)
 		v.Events = append([]Event{}, v.Events...)

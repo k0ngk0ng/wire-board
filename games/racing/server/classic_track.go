@@ -304,6 +304,10 @@ func classicCapsule(x, y, heading float64, body ClassicBody) (Point, Point, floa
 }
 
 func CollideClassicRoad(t Track, s ClassicMotionState, vehicle string, height float64) ClassicMotionState {
+	return collideClassicRoadWithProps(t, s, vehicle, height, nil)
+}
+
+func collideClassicRoadWithProps(t Track, s ClassicMotionState, vehicle string, height float64, props *classicPropCollision) ClassicMotionState {
 	info := classicTrackInfoFor(t)
 	if info == nil {
 		return s
@@ -313,6 +317,13 @@ func CollideClassicRoad(t Track, s ClassicMotionState, vehicle string, height fl
 	for pass := 0; pass < 2; pass++ {
 		candidates := info.grid[[2]int{int(math.Floor(x / 100)), int(math.Floor(y / 100))}]
 		for _, idx := range candidates {
+			prop := -1
+			if props != nil {
+				prop = props.catalog.byEdge[idx]
+				if classicPropBroken(props.state, prop) {
+					continue
+				}
+			}
 			wall := t.Barriers[idx]
 			if height+body.Height*10 < wall.Bottom+.05 || height > wall.Top-.05 {
 				continue
@@ -342,10 +353,14 @@ func CollideClassicRoad(t Track, s ClassicMotionState, vehicle string, height fl
 					ny = -ny
 				}
 			}
+			inward := s.VX*nx + s.VZ*ny
+			if prop >= 0 && inward < -1e-3 {
+				props.breakAt(prop, s.VX, s.VZ, -inward)
+				continue
+			}
 			depth := r - distance + .001
 			x += nx * depth
 			y += ny * depth
-			inward := s.VX*nx + s.VZ*ny
 			if inward < 0 {
 				s.VX -= inward * nx * 1.1
 				s.VZ -= inward * ny * 1.1

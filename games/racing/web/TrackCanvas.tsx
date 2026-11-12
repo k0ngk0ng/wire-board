@@ -1,5 +1,11 @@
 import { MAX_ROAD_SPEED } from "./dynamics";
-import { useEffect, useRef, useState, type MutableRefObject } from "react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type MutableRefObject,
+} from "react";
 import type { GameClock } from "../../../web/src/game-api/module";
 import { automaticGear } from "./chase-camera";
 import { predictCar } from "./prediction";
@@ -12,6 +18,7 @@ import type { SceneFrame } from "./chase-renderer";
 import type { ChasePose } from "./chase-camera";
 import { ClassicRenderer } from "./classic-renderer";
 import type { ClassicScenePack } from "./classic-loading";
+import { classicPropWorld, type ClassicRuleTrack } from "./classic-road";
 type Engine = {
   mode: string;
   resize: () => void;
@@ -45,6 +52,24 @@ export function TrackCanvas(props: TrackCanvasProps) {
     mini = useRef<HTMLCanvasElement>(null),
     latest = useRef(props);
   latest.current = props;
+  const propWorld = useMemo(() => {
+    const catalog = props.classicAssets?.propCatalog;
+    if (!catalog) return undefined;
+    return classicPropWorld(
+      catalog,
+      props.data.props ?? {
+        catalog: catalog.catalogHash,
+        broken: btoa(String.fromCharCode(0).repeat(Math.ceil(catalog.props.length / 8))),
+      },
+      props.classicAssets!.track as ClassicRuleTrack,
+    );
+  }, [
+    props.classicAssets,
+    props.data.props?.catalog,
+    props.data.props?.broken,
+  ]);
+  const confirmedProps = useRef(propWorld);
+  confirmedProps.current = propWorld;
   const [mode, setMode] = useState("loading"),
     [failure, setFailure] = useState(""),
     [forceFallback, setForceFallback] = useState(false);
@@ -76,6 +101,7 @@ export function TrackCanvas(props: TrackCanvasProps) {
               props.data.track,
               age,
               props.clock.serverNow,
+              confirmedProps.current,
             )
           : { ...c };
       const old = own.current;
@@ -196,6 +222,7 @@ export function TrackCanvas(props: TrackCanvasProps) {
                 d.track,
                 dt * 1000,
                 serverNow,
+                confirmedProps.current,
               );
             own.current = value;
             const k = Math.exp(-dt * 13);
@@ -220,6 +247,7 @@ export function TrackCanvas(props: TrackCanvasProps) {
                 currentAt: d.serverAt,
                 visualAt: visual,
                 driving: p.driving,
+                props: confirmedProps.current,
               })
             : { ...c };
         });
@@ -234,6 +262,9 @@ export function TrackCanvas(props: TrackCanvasProps) {
           mirrorVisible: p.mirrorVisible,
           reduced: p.reduced,
           now,
+          propWorld: confirmedProps.current,
+          propEvents: d.events,
+          serverNow,
         });
         if (car) {
           canvas.dataset.snapshotAt = String(d.serverAt);

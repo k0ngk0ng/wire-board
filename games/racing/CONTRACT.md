@@ -26,6 +26,22 @@ protected 是仅用于投影的保护标记，来自已应用保护输入、输�
 
 公开浮点进行小于毫米的位置量化，原始存档保持完整精度；24 条事件历史完整保留，仅量化公开坐标和强度。六车动态 JSON 的固定上限为 8 KiB/消息。
 
+## v3 可撞毁物件
+
+可撞毁白名单仅包括原数据中位置与属性一致的 normal/type 2 对象，France 29、Coastal 83、UK 108、Park 45，共 265 件。其他 type 2、billboard、special、type 1、墙和护栏继续原有碰撞。旧 route、geometryHash 和四份 hash-named 数值规则文件保持原字节；新增数值 catalog 通过 geometry 与原规则文件 SHA-256 绑定原 `Barriers[]` 的完整边索引，不能以空间邻近代替身份。
+
+State 与 View 顶层增加 `props?:{catalog:string,broken:string}`。catalog 为完整 64 位 catalogHash；broken 为标准 base64 字符串，解码长度固定为 `ceil(物件数/8)`，0-based index 使用第 `index>>3` 字节的 `1<<(index&7)` 位。全零位图也公开；UK 最大 108 件，14 个原始字节。catalog、静态道路和空间网格可共享，位图必须按比赛独立持有，不修改共享 `Track.Barriers`。
+
+首次真实接近接触由权威物理步置位，立即跳过该物件全部边的静态墙反弹；同一物件不重复触发，后续车辆和电脑选线不再受其阻挡。高度不相交、静止或远离接触不触发破坏；固定墙保留原有求解。客户端不能通过 drive 或额外动作提交破坏状态。
+
+共用原有 24 条事件环，新增 `type:"prop"` 与可选 `prop:number/dir:number/high:boolean`。prop 为 0-based index，0 必须保留；dir 为碰撞前世界速度的 `atan2(vZ,vX)`，以弧度量化到 0.001；high 在碰撞前法向接近速度不低于 8 m/s 时为 true。8 m/s 是本项目的重建约定，未作为原版实机阈值确认。事件 X/Y 为 0，由 catalog 定位物件；At、Seat 与单调事件 ID 沿用现有时间线。原始 low/high clip 的 6／17 帧、延时 6 和社区 64 Hz 标尺由渲染层解释，不能声称为原版运行测量。
+
+位图是当前世界状态的依据，事件只提供有界的动画信息。迟到观战、丢帧或已超出事件环时，按位图隐藏已破坏物件，不通过重播旧动画重建世界。客户端预测仅复制位图做本次局部接触推算，不得改已确认位图或提前隐藏公共场景物件。
+
+旧 v3 存档缺少 props 时，按原 geometry 固定首版 catalog、默认全部未破坏。没有序列修复的 Restore 保留原存档字节，首次正常 timer 保存才记录明确版本，不重置车况、epoch、检查点、排名或期限。已有明确版本不得静默换成最新 catalog；未知版本、几何不匹配、错误 base64、错误长度或未用高位非零均拒绝恢复。physics=0 不使用这套状态。
+
+实现前失败清单见 [classic-props-failures.md](tests/classic-props-failures.md)，普通 drive 接触与存档 E2E 在 `classic_props_e2e_test.go`，跨语言规则对照在 `classic_props_contract_test.go`。
+
 ## v3 驾驶和比赛
 
 3 秒发车、最长 20 分钟、首车后 30 秒、按实际过线时间与合法检查点进度排名的契约保持。使用独立 SI 双轴运动模型，车速由原始传动与阻力决定，不继承旧 90 m/s 统一上限。轮胎、变速、路肩、倒车和设计选择见 [MOTION.md](../../docs/research/racing-nfs/MOTION.md)，未将独立设计结果冒充原版实测。
