@@ -7,7 +7,7 @@ import type {
   FocusEvent as ReactFocusEvent,
 } from "react";
 import type { BoardProps } from "../../../web/src/game-api/module";
-import { LatestDrive, neutral, wheelSteer, type Drive } from "./input";
+import { LatestDrive, neutral, type Drive } from "./input";
 import { TrackCanvas } from "./TrackCanvas";
 import { RaceMap } from "./RaceMap";
 import { RearViewHold } from "./chase-camera";
@@ -175,7 +175,8 @@ function RaceBoard(
     mapped = useRef(new Map<string, number>()),
     mappedPressed = useRef(new Set<string>()),
     pumpControls = useRef<() => void>(() => {}),
-    wheel = useRef<{ id: number; steer: number } | null>(null),
+    steerPointers = useRef(new Map<number, -1 | 0 | 1>()),
+    steerKeys = useRef({ left: new Set<string>(), right: new Set<string>() }),
     throttles = useRef(new Set<number>()),
     brakes = useRef(new Set<number>()),
     drifts = useRef(new Set<number>()),
@@ -316,8 +317,20 @@ function RaceBoard(
         : (values.get("brake") ?? 0);
     setInput({
       steer:
-        wheel.current?.steer ??
-        (values.get("right") ?? 0) - (values.get("left") ?? 0),
+        Math.max(
+          values.get("right") ?? 0,
+          steerKeys.current.right.size ||
+            [...steerPointers.current.values()].includes(1)
+            ? 1
+            : 0,
+        ) -
+        Math.max(
+          values.get("left") ?? 0,
+          steerKeys.current.left.size ||
+            [...steerPointers.current.values()].includes(-1)
+            ? 1
+            : 0,
+        ),
       throttle:
         pressure > 0
           ? 0
@@ -349,7 +362,9 @@ function RaceBoard(
     setRear(false);
     throttles.current.clear();
     pedalKeys.current.throttle.clear();
-    wheel.current = null;
+    steerPointers.current.clear();
+    steerKeys.current.left.clear();
+    steerKeys.current.right.clear();
     brakes.current.clear();
     drifts.current.clear();
     horns.current.clear();
@@ -483,10 +498,20 @@ function RaceBoard(
     const visibility = () => {
       if (document.hidden) suspend();
     };
+    const orientation = matchMedia("(orientation: landscape)");
+    const rotate = () => {
+      if (!isTouch()) return;
+      lifecycle.current.suspend();
+      paused.current = true;
+      setSuspended(true);
+      release();
+    };
+    orientation.addEventListener("change", rotate);
     window.addEventListener("blur", suspend);
     window.addEventListener("focus", focus);
     document.addEventListener("visibilitychange", visibility);
     return () => {
+      orientation.removeEventListener("change", rotate);
       window.removeEventListener("blur", suspend);
       window.removeEventListener("focus", focus);
       document.removeEventListener("visibilitychange", visibility);
@@ -609,29 +634,57 @@ function RaceBoard(
       });
     else audio.stopLoop("racing-tires");
   }, [now, audioRunning, d.phase, car?.speed, drive.drift, watch]);
-  const wheelStart = (e: ReactPointerEvent<HTMLDivElement>) => {
-    if (!enabled || wheel.current || e.button !== 0) return;
-    e.preventDefault();
-    wake(e.pointerType === "touch");
-    e.currentTarget.setPointerCapture(e.pointerId);
-    const rect = e.currentTarget.getBoundingClientRect();
-    wheel.current = {
-      id: e.pointerId,
-      steer: wheelSteer(e.clientX, rect.left, rect.width),
-    };
-    compute();
-  };
-  const wheelMove = (e: ReactPointerEvent<HTMLDivElement>) => {
-    if (wheel.current?.id !== e.pointerId) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    wheel.current.steer = wheelSteer(e.clientX, rect.left, rect.width);
-    compute();
-  };
-  const wheelEnd = (e: ReactPointerEvent<HTMLDivElement>) => {
-    if (wheel.current?.id !== e.pointerId) return;
-    wheel.current = null;
-    compute();
-  };
+  const steerButton = (side: "left" | "right") => ({
+    onKeyDown: (e: ReactKeyboardEvent<HTMLButtonElement>) => {
+      if (!enabled || (e.code !== "Space" && e.code !== "Enter")) return;
+      e.preventDefault();
+      e.stopPropagation();
+      if (e.repeat && !steerKeys.current[side].has(e.code)) return;
+      wake();
+      steerKeys.current[side].add(e.code);
+      compute();
+    },
+    onKeyUp: (e: ReactKeyboardEvent<HTMLButtonElement>) => {
+      steerKeys.current[side].delete(e.code);
+      compute();
+    },
+    onBlur: () => {
+      steerKeys.current[side].clear();
+      compute();
+    },
+    onPointerDown: (e: ReactPointerEvent<HTMLButtonElement>) => {
+      if (!enabled || e.button !== 0) return;
+      e.preventDefault();
+      wake(e.pointerType === "touch");
+      e.currentTarget.setPointerCapture(e.pointerId);
+      steerPointers.current.set(e.pointerId, side === "left" ? -1 : 1);
+      compute();
+    },
+    onPointerMove: (e: ReactPointerEvent<HTMLButtonElement>) => {
+      if (!steerPointers.current.has(e.pointerId)) return;
+      const hit = document
+        .elementFromPoint(e.clientX, e.clientY)
+        ?.closest<HTMLButtonElement>(".racing-steering button");
+      const direction = hit?.dataset.steerDirection;
+      steerPointers.current.set(
+        e.pointerId,
+        direction === "left" ? -1 : direction === "right" ? 1 : 0,
+      );
+      compute();
+    },
+    onPointerUp: (e: ReactPointerEvent<HTMLButtonElement>) => {
+      steerPointers.current.delete(e.pointerId);
+      compute();
+    },
+    onPointerCancel: (e: ReactPointerEvent<HTMLButtonElement>) => {
+      steerPointers.current.delete(e.pointerId);
+      compute();
+    },
+    onLostPointerCapture: (e: ReactPointerEvent<HTMLButtonElement>) => {
+      steerPointers.current.delete(e.pointerId);
+      compute();
+    },
+  });
   const heldButton = (which: "throttle" | "brake" | "drift" | "horn") => ({
     onKeyDown: (e: ReactKeyboardEvent<HTMLButtonElement>) => {
       if (!enabled || (e.code !== "Space" && e.code !== "Enter")) return;
@@ -721,7 +774,7 @@ function RaceBoard(
                 : car && car.resetUntil > serverNow
                   ? `重置中 · ${Math.ceil((car.resetUntil - serverNow) / 1000)} 秒后起步`
                   : suspended
-                    ? "操作已释放，点击方向盘或按键继续"
+                    ? "操作已释放，按下方向或踏板继续"
                     : "比赛进行中";
   const drivingControls = (
     <div
@@ -735,57 +788,33 @@ function RaceBoard(
       data-drift={drive.drift}
       data-horn={!!drive.horn}
     >
-      <div
-        className="racing-wheel"
-        role="slider"
-        aria-label="方向盘"
-        aria-valuemin={-100}
-        aria-valuemax={100}
-        aria-valuenow={Math.round(drive.steer * 100)}
-        aria-valuetext={
-          drive.steer < -0.07
-            ? "向左转向"
-            : drive.steer > 0.07
-              ? "向右转向"
-              : "直行"
-        }
-        aria-disabled={!enabled}
-        tabIndex={enabled ? 0 : -1}
-        onPointerDown={wheelStart}
-        onPointerMove={wheelMove}
-        onPointerUp={wheelEnd}
-        onPointerCancel={wheelEnd}
-        onLostPointerCapture={wheelEnd}
-      >
-        <svg
-          viewBox="0 0 120 120"
-          aria-hidden="true"
-          style={{ transform: `rotate(${drive.steer * 100}deg)` }}
+      <div className="racing-steering" role="group" aria-label="转向">
+        <button
+          type="button"
+          aria-label="向左转向"
+          data-steer-direction="left"
+          aria-pressed={drive.steer < 0}
+          className={drive.steer < 0 ? "pressed" : ""}
+          disabled={!enabled}
+          {...steerButton("left")}
         >
-          <circle
-            cx="60"
-            cy="60"
-            r="47"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="12"
-          />
-          <path
-            d="M17 52H103M60 59V106"
-            stroke="currentColor"
-            strokeWidth="10"
-          />
-          <circle
-            cx="60"
-            cy="58"
-            r="16"
-            fill="#d6e3db"
-            stroke="currentColor"
-            strokeWidth="5"
-          />
-          <path d="M60 9v8" stroke="#c17643" strokeWidth="6" />
-        </svg>
-        {d.physics !== 3 && <small>滑动转向</small>}
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m15 5-7 7 7 7" />
+          </svg>
+        </button>
+        <button
+          type="button"
+          aria-label="向右转向"
+          data-steer-direction="right"
+          aria-pressed={drive.steer > 0}
+          className={drive.steer > 0 ? "pressed" : ""}
+          disabled={!enabled}
+          {...steerButton("right")}
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m9 5 7 7-7 7" />
+          </svg>
+        </button>
       </div>
       <div className="racing-pedals">
         <button
@@ -882,7 +911,7 @@ function RaceBoard(
           setRear(rearHold.current.active);
         }}
       >
-        向后看
+        后视
       </button>
       {d.physics !== 3 && <span>自动挡 · 无需换挡</span>}
       {d.physics === 3 && (
@@ -903,8 +932,8 @@ function RaceBoard(
         onClick={() => void reset()}
       >
         {car && car.resetUntil > 0 && car.resetUntil + 3000 > serverNow
-          ? `重置 ${Math.ceil((car.resetUntil + 3000 - serverNow) / 1000)}秒`
-          : "重置"}{" "}
+          ? `${Math.ceil((car.resetUntil + 3000 - serverNow) / 1000)}s`
+          : "复位"}{" "}
       </button>
     </div>
   );

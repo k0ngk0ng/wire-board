@@ -88,8 +88,8 @@ const sample = () => evaluate(`(async()=>{const state=await(await fetch('/api/st
     const stage=document.querySelector('.racing-stage'),board=document.querySelector('.racing-board'),panel=document.querySelector('.racing-controls'),style=panel?getComputedStyle(panel):null;
     return {width:innerWidth,height:innerHeight,scrollY,canvas:box(c),stage:box(stage),board:box(board),coarse:matchMedia('(pointer:coarse)').matches,
       controls:[...document.querySelectorAll('.racing-board button,.racing-wheel,.racing-skins,.racing-skin-picker,.racing-settings')].filter(visible).map(e=>({label:e.getAttribute('aria-label')||e.textContent.trim(),class:e.className,box:box(e),withinStage:!!stage?.contains(e)})),
-      touch:[...document.querySelectorAll('.racing-wheel,.racing-pedals button')].filter(visible).map(e=>({label:e.getAttribute('aria-label'),box:box(e)})),
-      overlays:[...document.querySelectorAll('.racing-hud span,.racing-hud strong,.racing-speedometer,.racing-route-button,.racing-wheel,.racing-pedals button')].filter(visible).map(e=>({label:e.getAttribute('aria-label')||e.textContent.trim(),rect:box(e)})),
+      touch:[...document.querySelectorAll('.racing-steering button,.racing-wheel,.racing-pedals button')].filter(visible).map(e=>({label:e.getAttribute('aria-label'),box:box(e)})),
+      overlays:[...document.querySelectorAll('.racing-hud span,.racing-hud strong,.racing-speedometer,.racing-route-button,.racing-steering button,.racing-wheel,.racing-pedals button')].filter(visible).map(e=>({label:e.getAttribute('aria-label')||e.textContent.trim(),rect:box(e)})),
       panel:panel?{withinStage:!!stage?.contains(panel),background:style.backgroundColor,backgroundImage:style.backgroundImage,position:style.position}:null,
       paragraphs:[...document.querySelectorAll('.racing-board p,.racing-view-controls span,.racing-wheel small')].filter(visible).map(e=>e.textContent.trim())}})(),
   controls:controls?{...controls.dataset}:null,activeClass:document.activeElement?.getAttribute('class'),selected:getSelection().toString(),
@@ -123,6 +123,10 @@ try {
       if (action.read) { samples.push({ name: action.read, data: await sample() }); continue; }
       if (action.shot) { screenshots.push({ name: action.shot, data: (await send("Page.captureScreenshot", { format: "png", captureBeyondViewport: false })).data }); continue; }
       if (action.scrollTo) { await evaluate(`document.querySelector(${JSON.stringify(action.scrollTo)}).scrollIntoView({block:'center'})`); continue; }
+      if(action.viewport){
+        await send('Emulation.setDeviceMetricsOverride',{...action.viewport,deviceScaleFactor:1,mobile:true,screenOrientation:{type:action.viewport.width>action.viewport.height?'landscapePrimary':'portraitPrimary',angle:action.viewport.width>action.viewport.height?90:0}});
+        continue;
+      }
       if (action.reduced !== undefined) { await send("Emulation.setEmulatedMedia", { features: [{ name: "prefers-reduced-motion", value: action.reduced ? "reduce" : "no-preference" }] }); continue; }
       if (action.headers) { await send("Network.setExtraHTTPHeaders", { headers: action.headers }); continue; }
       if (action.reload) { await send("Page.reload", { ignoreCache: false }); continue; }
@@ -217,13 +221,21 @@ try {
         pixelTrial.frames.push(baseline); pixelFrames.push(baseline);
       }
       const baselineCount = pixelTrial.frames.length;
-      const downAt = await key(index % 2 ? "a" : "d", true);
+      const label = index % 2 ? "向左转向" : "向右转向";
+      let downAt;
+      if(options.touchPixels){
+        const point=await evaluate(`(()=>{const e=document.querySelector('button[aria-label="${label}"]'),r=e.getBoundingClientRect(),x=r.x+r.width*.5,y=r.y+r.height*.5;if(!r.width||!e.contains(document.elementFromPoint(x,y)))throw Error('actual thumb target is not visible');return {x,y}})()`);
+        downAt=Date.now();
+        await send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{...point,id:1,radiusX:4,radiusY:4,force:1}],timestamp:downAt/1000});
+      }else downAt=await key(index % 2 ? "a" : "d",true);
       await sleep(180);
-      const event = await evaluate(`window.__nfsNativeProbe.events.filter(e=>e.type==='keydown'&&e.key===${JSON.stringify(index % 2 ? "a" : "d")}).at(-1)`);
+      const event = await evaluate(options.touchPixels?`window.__nfsNativeProbe.events.filter(e=>e.type==='pointerdown'&&e.label===${JSON.stringify(label)}).at(-1)`:`window.__nfsNativeProbe.events.filter(e=>e.type==='keydown'&&e.key===${JSON.stringify(index % 2 ? "a" : "d")}).at(-1)`);
       const state = await evaluate(`(()=>{const c=document.querySelector('.racing-chase');return {steering:Number(c.dataset.steering),renderedAt:Number(c.dataset.renderedAt),frameCounter:Number(c.dataset.frameCounter)}})()`);
       trials.push({ index, downAt, event, state, baselineCount, frames: pixelTrial.frames.slice() });
       pixelTrial = null;
-      await key(index % 2 ? "a" : "d", false); await sleep(350);
+      if(options.touchPixels)await send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+      else await key(index % 2 ? "a" : "d", false);
+      await sleep(350);
     }
     await send("Page.stopScreencast"); screen = false; await key("b", false);
     const metrics = [];
@@ -252,6 +264,7 @@ try {
       statuses: packets.filter((packet) => packet.type === "ack").reduce((counts, packet) => ({ ...counts, [packet.status]: (counts[packet.status] ?? 0) + 1 }), {}) } };
 } finally {
   if (session) {
+    if(options.touchPixels){try{await send('Input.dispatchTouchEvent',{type:'touchCancel',touchPoints:[]});}catch{}}
     for (const value of held.keys()) { try { await key(value, false); } catch {} }
     if (screen) { try { await send("Page.stopScreencast"); } catch {} }
     try { await evaluate("if(!window.__nfsNativeProbe?.early)window.__nfsNativeProbe?.stop?.()"); } catch {}

@@ -934,3 +934,154 @@
     top: 150px;
   }
 }
+
+/* Two thumbs: steering on the left, full-size brake/throttle on the right. */
+.racing-steering {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  width: 100%;
+  max-width: 220px;
+  align-self: end;
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  touch-action: none;
+}
+.racing-steering button {
+  min-width: 0;
+  min-height: 76px;
+  padding: 8px;
+  touch-action: none;
+}
+.racing-steering svg {
+  width: 30px;
+  height: 30px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
+.racing-steering button:focus-visible {
+  outline: 3px solid #81d9e0;
+  outline-offset: -3px;
+}
+.is-classic .racing-controls {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: end;
+  bottom: 64px;
+  gap: 12px;
+  padding: 0 8px;
+}
+.is-classic .racing-steering {
+  grid-row: 1;
+}
+.is-classic .racing-pedals {
+  position: relative;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-row: 1;
+  gap: 8px;
+  max-width: 240px;
+}
+.is-classic .racing-pedals button:not(.racing-drift) {
+  min-height: 76px;
+}
+.is-classic .racing-pedals .racing-drift {
+  position: absolute;
+  right: 0;
+  bottom: -52px;
+  width: 44px;
+  height: 44px;
+  min-height: 44px;
+  padding: 5px;
+  color: #fff1df;
+  background: #593d2bd9;
+}
+.is-classic .racing-view-controls {
+  left: 8px;
+  right: auto;
+  bottom: 12px;
+  gap: 2px;
+}
+.is-classic .racing-view-controls button {
+  width: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 4px;
+  font-size: 11px;
+  white-space: nowrap;
+}
+.racing-controls button.pressed {
+  color: #fff;
+  background: #386d72;
+  box-shadow: inset 0 2px 5px #163b4299;
+  transform: none;
+}
+[data-room-fullscreen] .racing-board.is-classic {
+  --racing-view-height: calc(
+    100dvh - 54px - max(8px, env(safe-area-inset-bottom))
+  );
+  width: 100%;
+  max-width: none;
+}
+@media (pointer: coarse) and (max-height: 500px) {
+  .racing-board.is-classic {
+    --racing-view-height: clamp(280px, 78dvh, 520px);
+  }
+  [data-room-fullscreen] .racing-board.is-classic {
+    --racing-view-height: calc(
+      100dvh - 54px - max(8px, env(safe-area-inset-bottom))
+    );
+  }
+  .is-classic .racing-hud {
+    padding: 6px 10px;
+    top: 6px;
+  }
+  .is-classic .racing-room-link {
+    display: none;
+  }
+  .is-classic .racing-hud strong,
+  .is-classic .racing-hud .racing-track-title strong {
+    font-size: 16px;
+  }
+  .is-classic.has-touch .racing-route-button,
+  .is-classic.has-touch .racing-speedometer {
+    top: 62px;
+  }
+  .is-classic .racing-route-button canvas {
+    width: 64px;
+    height: 40px;
+  }
+  .is-classic .racing-route-button span {
+    display: none;
+  }
+  .is-classic .racing-speedometer {
+    padding: 5px 8px;
+  }
+  .is-classic .racing-speedometer > [data-racing-speed] {
+    font-size: 34px;
+  }
+  .is-classic .racing-speedometer > strong {
+    font-size: 19px;
+  }
+  .is-classic[data-mirror-visible="true"] .racing-hud {
+    top: 62px;
+  }
+  .is-classic.has-touch[data-mirror-visible="true"] .racing-route-button,
+  .is-classic.has-touch[data-mirror-visible="true"] .racing-speedometer {
+    top: 114px;
+  }
+}
+
+/* Keep the platform's floating chat clear of the pedals in fullscreen. */
+[data-room-fullscreen] .is-classic .racing-controls {
+  bottom: 64px;
+}
+[data-room-fullscreen] .is-classic .racing-view-controls {
+  bottom: 12px;
+}
+
+[data-room-fullscreen] .is-classic .racing-pedals .racing-drift {
+  right: 48px;
+}

@@ -59,9 +59,9 @@ class Acceptance:
         native_probe = self.temp / "native-event-observer.js"
         native_probe.write_text("""(() => {
           const events=[];
-          const listener=e=>{events.push({key:e.key,type:e.type,at:performance.timeOrigin+e.timeStamp,received:performance.timeOrigin+performance.now()});if(events.length>512)events.splice(0,events.length-512)};
-          addEventListener('keydown',listener,true);addEventListener('keyup',listener,true);
-          window.__nfsNativeProbe={events,early:true,stop:()=>{removeEventListener('keydown',listener,true);removeEventListener('keyup',listener,true)}};
+          const listener=e=>{events.push({key:e.key,type:e.type,label:e.target instanceof Element?e.target.closest('button')?.getAttribute('aria-label'):null,trusted:e.isTrusted,at:performance.timeOrigin+e.timeStamp,received:performance.timeOrigin+performance.now()});if(events.length>512)events.splice(0,events.length-512)};
+          for(const type of ['keydown','keyup','pointerdown','pointerup','pointercancel'])addEventListener(type,listener,true);
+          window.__nfsNativeProbe={events,early:true,stop:()=>{for(const type of ['keydown','keyup','pointerdown','pointerup','pointercancel'])removeEventListener(type,listener,true)}};
         })();\n""")
         self.env.update(AGENT_BROWSER_CONFIG=str(self.config), GOTOOLCHAIN="local",
                         AGENT_BROWSER_INIT_SCRIPTS=str(native_probe),
@@ -343,7 +343,7 @@ class Acceptance:
         layout = observed or self.js("""(()=>{const visible=e=>{if(!e)return false;const r=e.getBoundingClientRect(),s=getComputedStyle(e);return r.width>0&&r.height>0&&s.display!=='none'&&s.visibility!=='hidden'},box=e=>e?e.getBoundingClientRect().toJSON():null;
           const canvas=document.querySelector('.racing-chase'),stage=document.querySelector('.racing-stage'),board=document.querySelector('.racing-board');
           const controls=[...document.querySelectorAll('.racing-board button,.racing-wheel,.racing-skins,.racing-skin-picker,.racing-settings')].filter(visible).map(e=>({label:e.getAttribute('aria-label')||e.textContent.trim(),class:e.className,box:box(e),withinStage:!!stage?.contains(e)}));
-          const touch=[...document.querySelectorAll('.racing-wheel,.racing-pedals button')].filter(visible).map(e=>({label:e.getAttribute('aria-label'),box:box(e)}));
+          const touch=[...document.querySelectorAll('.racing-steering button,.racing-wheel,.racing-pedals button')].filter(visible).map(e=>({label:e.getAttribute('aria-label'),box:box(e)}));
           const panel=document.querySelector('.racing-controls'),panelStyle=panel?getComputedStyle(panel):null;
           return {width:innerWidth,height:innerHeight,scrollY,canvas:box(canvas),stage:box(stage),board:box(board),controls,touch,
             panel:panel?{withinStage:!!stage?.contains(panel),background:panelStyle.backgroundColor,backgroundImage:panelStyle.backgroundImage,position:panelStyle.position}:null,
@@ -352,7 +352,7 @@ class Acceptance:
         c = layout["canvas"]
         require(c and c["width"] >= (280 if touch else 900) and c["height"] >= (380 if touch else 620), "actual driving viewport is too small", layout)
         if touch:
-            wanted = {"方向盘", "手刹", "刹车", "油门"}
+            wanted = {"向左转向", "向右转向", "手刹", "刹车", "油门"}
             require(wanted.issubset({p["label"] for p in layout["touch"]}), "necessary mobile driving controls disappeared", layout)
             panel = layout["panel"]
             alpha = re.findall(r"[\d.]+", panel["background"]) if panel else []
@@ -394,6 +394,102 @@ class Acceptance:
         self.record("revised-controls-failures", failures)
         require(not failures, "revised controls acceptance failed", failures)
         self.browser("set", "viewport", "1280", "1000")
+
+    def thumb_controls(self):
+        # MOBILE-TOUCH-PLAN failure inventory was written before this change.
+        self.create_ui("france", vehicle="p911", players=2)
+        self.enter("france", vehicle="p911")
+        self.browser("set", "viewport", "320", "844")
+        self.browser("scrollintoview", ".racing-chase")
+        self.browser("focus", ".racing-chase")
+        initial = self.native("thumb-layout", [{"wait":180},{"scrollTo":".racing-chase"},{"wait":150},{"read":"layout"},{"shot":"portrait"}], width=320,height=844,touch=True)
+        row = next(r["data"] for r in initial["samples"] if r["name"]=="layout")
+        layout = row["layout"]
+        wanted = {"向左转向","向右转向","刹车","油门","手刹"}
+        controls = {r["label"]:r["box"] for r in layout["controls"]}
+        require("方向盘" not in controls and wanted <= controls.keys(), "replace the mobile wheel with independent left/right thumb buttons", layout)
+        c=layout["canvas"];middle=(c["left"]+c["right"])/2
+        for label in wanted:
+            r=controls[label]; minimum=44 if label=="手刹" else 56
+            require(r["width"]>=minimum and r["height"]>=(44 if label=="手刹" else 64),"thumb target too small",{label:r})
+            require(r["left"]>=c["left"] and r["right"]<=c["right"] and r["top"]>=c["top"] and r["bottom"]<=c["bottom"],"thumb control outside real canvas",{label:r})
+        require(all(controls[k]["right"]<=middle for k in ("向左转向","向右转向")) and all(controls[k]["left"]>=middle for k in ("油门","刹车")),"left steering and right pedals must belong to separate thumbs",controls)
+        handbrake=controls["手刹"]
+        require(handbrake["width"]<=48 and handbrake["height"]<=48 and handbrake["top"]>=controls["油门"]["bottom"]+4 and c["right"]-handbrake["right"]<=16,"infrequent handbrake must be a small button at the lower-right edge",handbrake)
+        self.check("320px wheel-free separated thumb layout",layout=layout)
+        left={"selector":'button[aria-label="向左转向"]',"id":1,"x":.9}
+        right={"selector":'button[aria-label="向右转向"]',"id":1,"x":.1}
+        gas={"selector":'button[aria-label="油门"]',"id":2}
+        brake={"selector":'button[aria-label="刹车"]',"id":3}
+        v=self.native("thumb-native",[
+            {"touch":"touchStart","points":[left,gas]},{"wait":250},{"read":"left-gas"},
+            {"touch":"touchMove","points":[right,gas]},{"wait":180},{"read":"slide-right"},
+            {"touch":"touchStart","points":[right,gas,brake]},{"wait":180},{"read":"brake"},
+            {"touch":"touchCancel","points":[]},{"wait":160},{"read":"cancelled"},
+            {"key":"a","down":True},{"touch":"touchStart","points":[right,gas]},{"wait":160},{"read":"opposed"},
+            {"touch":"touchCancel","points":[]},{"wait":140},{"read":"keyboard-remains"},{"key":"a","down":False},
+            {"touch":"touchStart","points":[left,gas]},{"wait":160},{"blur":True,"milliseconds":200},{"wait":180},{"read":"blur-released"},
+            {"touch":"touchCancel","points":[]},{"wait":120},{"shot":"portrait-controls"}],width=320,height=844,touch=True)
+        rows={r["name"]:r["data"] for r in v["samples"]}
+        for name,steer,throttle in [("left-gas",-1,1),("slide-right",1,1),("brake",1,0),("cancelled",0,0),("opposed",0,1),("keyboard-remains",-1,0),("blur-released",0,0)]:
+            r=rows[name]["controls"]
+            require(float(r["steer"])==steer and float(r["throttle"])==throttle,"thumb input/composition/release incorrect at "+name,r)
+        require(rows["brake"]["controls"]["brake"]=="true","thumb service brake must override throttle",rows["brake"]["controls"])
+        require(v["ackMetrics"]["count"]>0 and all(int(k)<400 for k in v["ackMetrics"]["statuses"]),"thumb requests rejected by real authority",v["ackMetrics"])
+        self.check("native two-thumb steering, slide, brake priority, mixed keyboard and blur release",ack=v["ackMetrics"])
+        rotation=self.native("thumb-orientation",[{"wait":180},{"touch":"touchStart","points":[left,gas]},{"wait":150},{"read":"held"},
+            {"viewport":{"width":844,"height":390}},{"wait":250},{"read":"rotated"},{"touch":"touchCancel","points":[]},
+            {"touch":"touchStart","points":[right,gas]},{"wait":160},{"read":"fresh"},{"touch":"touchCancel","points":[]},{"wait":100}],width=320,height=844,touch=True)
+        rotated={r["name"]:r["data"] for r in rotation["samples"]}
+        require(rotated["rotated"]["controls"]["steer"]=="0" and rotated["rotated"]["controls"]["throttle"]=="0","orientation change retained held thumb input",rotated["rotated"]["controls"])
+        require(float(rotated["fresh"]["controls"]["steer"])==1 and float(rotated["fresh"]["controls"]["throttle"])==1,"fresh thumb gesture failed after rotation",rotated["fresh"]["controls"])
+        self.check("orientation releases held thumbs and accepts fresh gesture")
+        secondary=self.native("thumb-keyboard-cancel",[{"focus":'button[aria-label="向左转向"]'},{"key":" ","down":True},{"wait":130},{"read":"held"},
+            {"blur":True,"milliseconds":180},{"focus":'button[aria-label="向左转向"]'},{"key":" ","down":True,"repeat":True},{"wait":130},{"read":"repeat-blocked"},
+            {"key":" ","down":False},{"key":" ","down":True},{"wait":130},{"read":"fresh"},{"key":" ","down":False},{"wait":100}],width=320,height=844,touch=True)
+        keys={r["name"]:r["data"] for r in secondary["samples"]}
+        require(keys["held"]["controls"]["steer"]=="-1" and keys["repeat-blocked"]["controls"]["steer"]=="0" and keys["fresh"]["controls"]["steer"]=="-1","direction button resumed stale held keyboard input",{k:v["controls"]for k,v in keys.items()})
+        self.check("direction button keyboard focus loss blocks repeat until new press")
+        self.browser("focus",".racing-chase")
+        # The updated layout must remain reachable after rotation, including
+        # actual native fullscreen with the platform's toolbar and exit path.
+        self.browser("set","viewport","844","390")
+        self.browser("scrollintoview","[data-fullscreen-enter]")
+        self.browser("click","[data-fullscreen-enter]")
+        self.wait(lambda:self.js("!!document.querySelector('[data-room-fullscreen]')"),description="landscape fullscreen")
+        landscape=self.native("thumb-landscape",[{"wait":180},{"scrollTo":".racing-chase"},{"wait":150},{"read":"layout"},{"shot":"landscape"}],width=844,height=390,touch=True)
+        row=next(r["data"] for r in landscape["samples"] if r["name"]=="layout")
+        allbuttons=[r for r in row["layout"]["controls"] if r["withinStage"]]
+        for control in allbuttons:
+            r=control["box"]
+            require(r["left"]>=0 and r["right"]<=844 and r["top"]>=0 and r["bottom"]<=390,"landscape touch button clipped",control)
+        overlap=lambda a,b:max(0,min(a["right"],b["right"])-max(a["left"],b["left"]))*max(0,min(a["bottom"],b["bottom"])-max(a["top"],b["top"]))
+        require(all(overlap(a["box"],b["box"])<=1 for i,a in enumerate(allbuttons) for b in allbuttons[i+1:]),"landscape game buttons overlap",allbuttons)
+        chat=self.js("document.querySelector('.chat-toggle')?.getBoundingClientRect().toJSON()")
+        require(not chat or all(overlap(r["box"],chat)<=1 for r in allbuttons),"fullscreen chat overlaps mobile driving buttons",{"chat":chat,"controls":allbuttons})
+        self.check("landscape fullscreen keeps separate visible thumb controls",layout=row["layout"])
+        self.browser("click",'[data-game-fullscreen-surface] button[aria-label="退出全屏"]')
+        self.browser("set","viewport","320","844")
+        self.browser("scrollintoview",".racing-chase")
+        self.browser("focus",".racing-chase")
+        if self.args.phase=="thumb-layouts":
+            self.close_room()
+            return
+        # Normal input and the same actual two-way TCP delay as the original
+        # acceptance, measured with native pointer events and vehicle pixels.
+        for label in ("normal","rtt150"):
+            if label=="rtt150":
+                self.native("thumb-slow-transport",[{"headers":{"X-Acceptance-RTT":"150"}},{"reload":True},{"wait":2200}])
+                self.browser("wait",'.racing-chase[data-classic="3"]')
+                self.wait(lambda:(self.api("/state").get("network") or {}).get("rttMs",0)>=110,20,"actual 150ms transport RTT")
+            self.browser("focus",".racing-chase")
+            self.native("thumb-rest-"+label,[{"wait":1100}])
+            self.wait(lambda:self.room()["game"]["data"]["cars"][0]["speed"]<=2,10,"actual protected car at rest")
+            pixels=self.native("thumb-pixels-"+label,mode="pixels",width=320,height=844,touch=True,touchPixels=True,trials=8)
+            require(pixels["metrics"]["visibleTrials"]==8 and pixels["metrics"]["p95MS"]<=BUDGET["inputPixelP95MS"],"native thumb-to-vehicle pixels missed response budget",pixels["metrics"])
+            require(all(r["nativeEvent"].get("trusted") and r["nativeEvent"]["type"]=="pointerdown" for r in pixels["trials"]),"thumb measurement substituted keyboard or synthetic input",pixels["trials"])
+            self.check("native thumb-to-vehicle pixels "+label,metrics=pixels["metrics"],ack=pixels["ackMetrics"])
+        self.close_room()
 
     def camera_keys(self):
         self.browser("focus", ".racing-chase")
@@ -625,8 +721,8 @@ class Acceptance:
         self.wait(lambda: (lambda d: d["serverAt"] >= d["cars"][0]["resetUntil"])(self.room()["game"]["data"]), 10, "actual two-second reset wait")
         self.browser("set", "viewport", "320", "844")
         self.browser("scrollintoview", ".racing-chase")
-        value = self.native("touch", [{"touch": "touchStart", "points": [{"selector": 'button[aria-label="油门"]', "id": 1}, {"selector": '[aria-label="方向盘"]', "id": 2, "x": .72}]},
-            {"wait": 900}, {"read": "held"}, {"touch": "touchStart", "points": [{"selector": 'button[aria-label="油门"]', "id": 1}, {"selector": '[aria-label="方向盘"]', "id": 2, "x": .72}, {"selector": 'button[aria-label="刹车"]', "id": 3}]},
+        value = self.native("touch", [{"touch": "touchStart", "points": [{"selector": 'button[aria-label="油门"]', "id": 1}, {"selector": 'button[aria-label="向右转向"]', "id": 2, "x": .72}]},
+            {"wait": 900}, {"read": "held"}, {"touch": "touchStart", "points": [{"selector": 'button[aria-label="油门"]', "id": 1}, {"selector": 'button[aria-label="向右转向"]', "id": 2, "x": .72}, {"selector": 'button[aria-label="刹车"]', "id": 3}]},
             {"wait": 150}, {"read": "brake"}, {"touch": "touchCancel", "points": []}, {"wait": 250}, {"read": "released"}, {"shot": "320-controls"}], width=320, height=844, touch=True)
         sample = {r["name"]: r["data"] for r in value["samples"]}
         require(sample["held"]["controls"]["throttle"] == "1" and float(sample["held"]["controls"]["steer"]) > .1, "native multi-touch did not combine throttle and steering", sample)
@@ -829,7 +925,7 @@ class Acceptance:
             mode = self.js("""(()=>{const root=document.querySelector('[data-game-fullscreen-surface]');return {mode:root.dataset.roomFullscreen,nativeIsSurface:document.fullscreenElement===root,nativeIsPage:document.fullscreenElement===document.body||document.fullscreenElement===document.documentElement,containsTopbar:!!root.querySelector('.topbar'),sameCanvas:root.contains(window.__nfsFullscreenCanvas)}})()""")
             require(mode["mode"] in ("native", "page") and not mode["nativeIsPage"] and not mode["containsTopbar"] and mode["sameCanvas"] and (mode["mode"] != "native" or mode["nativeIsSurface"]), "fullscreen included the outer page or remounted the game", mode)
             if touch:
-                value = self.native("fullscreen-320-controls", [{"wait":150},{"touch":"touchStart","points":[{"selector":'button[aria-label="油门"]',"id":1},{"selector":'[aria-label="方向盘"]',"id":2,"x":.72}]},{"wait":450},{"read":"drive"},{"touch":"touchCancel","points":[]},
+                value = self.native("fullscreen-320-controls", [{"wait":150},{"touch":"touchStart","points":[{"selector":'button[aria-label="油门"]',"id":1},{"selector":'button[aria-label="向右转向"]',"id":2,"x":.72}]},{"wait":450},{"read":"drive"},{"touch":"touchCancel","points":[]},
                     {"touch":"touchStart","points":[{"selector":'button[aria-label="查看赛道地图"]',"id":3}]},{"touch":"touchEnd","points":[]},{"wait":200},{"read":"map"},{"shot":"map"}],width=320,height=844,touch=True)
                 rows = {row["name"]:row["data"] for row in value["samples"]}
                 require(rows["drive"]["controls"]["throttle"] == "1" and float(rows["drive"]["controls"]["steer"]) > .1 and value["ackMetrics"]["count"] > 0 and rows["map"].get("modal") == "赛道地图", "320px fullscreen lost touch driving or its map", rows["drive"]["controls"])
@@ -1032,13 +1128,15 @@ class Acceptance:
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--out", required=True)
-    parser.add_argument("--phase", choices=("contract", "controls", "display", "presenter", "expiry", "audio-diagnostic", "fullscreen", "smoke", "full", "remaining", "experience", "vehicles", "latency"), default="smoke")
+    parser.add_argument("--phase", choices=("contract", "controls", "display", "presenter", "expiry", "audio-diagnostic", "thumbs", "thumb-layouts", "fullscreen", "smoke", "full", "remaining", "experience", "vehicles", "latency"), default="smoke")
     parser.add_argument("--base", help="reuse an explicitly owned local Racing fixture URL")
     args = parser.parse_args()
     job = Acceptance(args)
     try:
         job.start_fixture()
-        if args.phase == "fullscreen":
+        if args.phase in ("thumbs", "thumb-layouts"):
+            job.thumb_controls()
+        elif args.phase == "fullscreen":
             job.fullscreen_validation()
         elif args.phase in ("remaining", "experience", "vehicles"):
             required = {"revised-desktop-layout", "native C edges cycle camera and B release restores selected view", "native F3/F5/F7/F11/F12 edges change drawing, HUD, real mirror and viewport", "native H playback, authority hold/release and blur", "standard Gamepad API simulation uses production analog mapping, camera/horn and neutral disconnect lifecycle", "public keyboard and gamepad remapping saves and disables the old defaults", "revised-touch-layout"}
