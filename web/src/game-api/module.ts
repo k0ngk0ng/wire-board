@@ -84,7 +84,9 @@ export type GameAudioPort = {
   loop: (
     key: string,
     sources: readonly string[],
-    options?: { volume?: number; rate?: number },
+    // Opt-in short-loop phase buffers still output through one platform-owned
+    // native HTMLAudio MediaStream; other games retain the file-loop path.
+    options?: { volume?: number; rate?: number; continuous?: boolean; seamOverlapMS?: number },
   ) => Promise<boolean>;
   stopLoop: (key: string) => void;
   // Owner-scoped native media lanes; default is finite playback. Sources are

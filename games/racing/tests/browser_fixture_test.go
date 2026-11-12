@@ -41,10 +41,21 @@ func TestRacingBrowserFixture(t *testing.T) {
 	if err = os.MkdirAll(out, 0755); err != nil {
 		t.Fatal(err)
 	}
+	dist := filepath.Join(root, "web/dist")
+	if selected := os.Getenv("WIRE_BOARD_RACING_BROWSER_DIST"); selected != "" {
+		dist, err = filepath.Abs(selected)
+		if err != nil {
+			t.Fatal(err)
+		}
+		relative, pathErr := filepath.Rel(root, dist)
+		if pathErr != nil || relative == "." || relative == ".." || strings.HasPrefix(relative, ".."+string(filepath.Separator)) {
+			t.Fatal("browser reference dist must remain inside repository")
+		}
+	}
 	s, err := server.New(server.Config{
 		DataDir: t.TempDir(), InviteCode: "racing-browser", AdminUsername: "赛车验收管理员",
 		AdminPassword: "racing-browser-test-only", AssetsBaseURL: os.Getenv("WIRE_BOARD_RACING_ASSETS"), Modules: games.Modules(), ClientLoading: true,
-	}, os.DirFS(filepath.Join(root, "web/dist")))
+	}, os.DirFS(dist))
 	if err != nil {
 		t.Fatal(err)
 	}

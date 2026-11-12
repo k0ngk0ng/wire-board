@@ -58,6 +58,8 @@ class Acceptance:
             self.env[key] = str(value)
         self.config = self.temp / "agent-browser.json"
         self.config.write_text("{}\n")
+        self.native_script=self.temp/'nfs-browser-input.mjs'
+        shutil.copyfile(ROOT/'scripts/racing/nfs-browser-input.mjs',self.native_script)
         native_probe = self.temp / "native-event-observer.js"
         native_probe.write_text("""(() => {
           const events=[];
@@ -76,6 +78,9 @@ class Acceptance:
         self.server = None
         self.log = None
         self.base = args.base
+        self.dist=(ROOT/args.dist).resolve()
+        require(self.dist.is_relative_to(ROOT) and (self.dist/'index.html').is_file(),'explicit dist must be an existing repository directory')
+        self.env['WIRE_BOARD_RACING_BROWSER_DIST']=str(self.dist)
         self.report = {"passed": False, "phase": args.phase, "budgets": BUDGET,
                        "scope": "production registry/auth/HTTP/SQLite/clock; native CDP keyboard/touch and compositor PNG frames; no gameplay injection",
                        "screenshots": [], "checks": [], "limitations": [
@@ -84,6 +89,9 @@ class Acceptance:
                            "Ordered TCP delay and interrupted sockets are measured; interruption is not described as IP packet loss.",
                            "Chrome output is muted by launch flag; native HTMLAudio decode/playback/rate/time are verified, not physical loudspeaker audibility."],
                        "command": "python3 -B scripts/racing/check-nfs.py " + " ".join(os.sys.argv[1:])}
+        if self.dist.name=='racing-audio-baseline-77366274-dist':
+            self.report['baselineBuiltFrom']='77366274'
+            self.report['sourceBindingNote']='Explicit old compiled frontend snapshot; current working source hashes are recorded but are not asserted to match this dist.'
         self.report["harnessSHA256"] = {
             path: hashlib.sha256((ROOT / path).read_bytes()).hexdigest()
             for path in ("scripts/racing/check-nfs.py", "scripts/racing/nfs-browser-input.mjs", "games/racing/tests/browser_fixture_test.go")
@@ -182,17 +190,28 @@ class Acceptance:
         require(path.exists() and path.stat().st_size > 2000, "empty page screenshot: " + name)
         self.report["screenshots"].append(name + ".png")
 
-    def native(self, name, actions=None, mode="sequence", session="main", **options):
+    def native(self, name, actions=None, mode="sequence", session="main", timeout_seconds=100, **options):
         endpoint = self.browser("get", "cdp-url", name=session)["cdpUrl"]
         spec = dict(mode=mode, actions=actions or [], **options)
-        result = subprocess.run(["node", "scripts/racing/nfs-browser-input.mjs", endpoint, self.base, json.dumps(spec)],
-                                cwd=ROOT, env=self.session(session)["env"], text=True, capture_output=True, timeout=100)
+        try:
+            result = subprocess.run(["node", str(self.native_script), endpoint, self.base, json.dumps(spec)],
+                                    cwd=ROOT, env=self.session(session)["env"], text=True, capture_output=True, timeout=timeout_seconds)
+        except subprocess.TimeoutExpired as error:
+            diagnostic={'stderr':(error.stderr.decode(errors='replace')if isinstance(error.stderr,bytes)else error.stderr),'stdoutTail':str(error.stdout)[-1000:]}
+            try:diagnostic['captureProbe']=self.js("window.__nfsAudioCaptureProbe?({entries:window.__nfsAudioCaptureProbe.entries.map(e=>({id:e.id,key:e.key,chunks:e.chunks.length,state:e.recorder.state,stoppedAt:e.stoppedAt,tracks:e.stream.getAudioTracks().map(t=>({readyState:t.readyState,muted:t.muted,enabled:t.enabled}))})),rows:window.__nfsAudioCaptureProbe.rows.length,events:window.__nfsAudioCaptureProbe.events.length,errors:window.__nfsAudioCaptureProbe.errors}):null",session)
+            except Exception as probe_error:diagnostic['probeError']=str(probe_error)
+            self.record(name+'-timeout',diagnostic);raise
         require(result.returncode == 0, "native probe failed: " + name, result.stdout[-2000:] + result.stderr[-3000:])
         value = json.loads(result.stdout)
         for image in value.pop("screenshots", []):
             image_name = name + "-" + image["name"] + ".png"
             (self.out / image_name).write_bytes(base64.b64decode(image["data"]))
             self.report["screenshots"].append(image_name)
+        audio_artifacts=[]
+        for index,clip in enumerate(value.pop('audioArtifacts',[])):
+            payload=base64.b64decode(clip.pop('data'));filename=name+'-voice-'+str(index).zfill(3)+'.webm'
+            (self.out/filename).write_bytes(payload);audio_artifacts.append({**clip,'file':filename,'bytes':len(payload),'sha256':hashlib.sha256(payload).hexdigest()})
+        if audio_artifacts:value['audioArtifacts']=audio_artifacts
         for index, frame in enumerate(value.get("pixelFrames", [])):
             filename = f"{name}-pixel-{index:03}.png"
             (self.out / filename).write_bytes(base64.b64decode(frame.pop("data")))
@@ -216,7 +235,24 @@ class Acceptance:
         self.browser("reload")
         self.browser("wait", ".room-list")
         self.report["base"] = self.base
-        self.report["distSHA256"] = hashlib.sha256((ROOT / "web/dist/index.html").read_bytes()).hexdigest()
+        self.report["distSHA256"] = hashlib.sha256((self.dist / "index.html").read_bytes()).hexdigest()
+        self.report['distDirectory']=str(self.dist.relative_to(ROOT))
+        candidate=ROOT/'.local/racing-followup/candidate-frontend-identity.json'
+        if self.args.build_identity:
+            selected=(ROOT/self.args.build_identity).resolve()
+            require(selected.is_relative_to(ROOT),'build identity must remain in repository')
+            identity=json.loads(selected.read_text())
+            require(identity['indexSHA256']==self.report['distSHA256'],'explicit frozen frontend identity differs from selected dist')
+            current_matches=all((ROOT/path).resolve().is_relative_to(ROOT)and hashlib.sha256((ROOT/path).read_bytes()).hexdigest()==sha for path,sha in identity['sourceSHA256'].items())
+            require(current_matches,'current sources drifted from explicit final build identity')
+            self.report['frozenBuildIdentity']={'file':str(selected.relative_to(ROOT)),'sha256':hashlib.sha256(selected.read_bytes()).hexdigest(),
+                                                'indexSHA256':identity['indexSHA256'],'sourceSHA256':identity['sourceSHA256'],
+                                                'currentWorkingTreeMatchesSnapshot':True,'scope':identity.get('scope')}
+        elif self.args.phase in ('audio-output','audio-all','feedback-contract','feedback')and self.dist==ROOT/'web/dist'and candidate.exists():
+            identity=json.loads(candidate.read_text());require(identity['indexSHA256']==self.report['distSHA256'],'candidate frontend build changed')
+            current_matches=all(hashlib.sha256((ROOT/path).read_bytes()).hexdigest()==sha for path,sha in identity['sourceSHA256'].items())
+            self.report['frontendCandidate']={'identity':str(candidate.relative_to(ROOT)),'identitySHA256':hashlib.sha256(candidate.read_bytes()).hexdigest(),'frozenBuiltSourceSHA256':identity['sourceSHA256'],'currentWorkingTreeMatchesSnapshot':current_matches,'scope':identity['scope']}
+            self.report['sourceBindingNote']='Candidate compiled frontend is bound to the explicit frozen build identity; auto-recorded current working-tree/Go sources are not asserted to be its built sources.'
         self.report["browser"] = self.js("({userAgent:navigator.userAgent,viewport:{width:innerWidth,height:innerHeight}})")
 
     def create_ui(self, track="france", night=False, vehicle="p911", players=6, bots=None, laps=1):
@@ -734,6 +770,382 @@ class Acceptance:
         else:raise AssertionError('UK actual three-lap race did not finish')
         self.close_room()
 
+    def offroad_circuit(self):
+        # Each track owns a separate <=24 minute fixture. The actual mesh and
+        # collision determine reachable offroad distance; this coverage target
+        # is never sent to gameplay as a rule or used to relax lap/reset checks.
+        track=self.args.track
+        require(self.args.circuit_plan,'circuits requires an explicit actual-terrain driving plan; old VROAD-only excursion windows are invalid')
+        plan_path=(ROOT/self.args.circuit_plan).resolve()
+        require(plan_path.is_relative_to(ROOT),'circuit plan must remain in repository')
+        plans=json.loads(plan_path.read_text());plan=plans[track];zone=plan['zone'];requested=plan['outsideM']
+        require(zone['end']>zone['start'] and zone['side']in(-1,1),'invalid excursion control plan')
+        require(isinstance(requested,(int,float))and requested>0,'driving plan must specify a real positive offroad coverage target')
+        self.report['circuitPlan']={'file':str(plan_path.relative_to(ROOT)),'sha256':hashlib.sha256(plan_path.read_bytes()).hexdigest(),'selected':plan}
+        self.create_ui(track,vehicle='p911',players=2,bots=0,laps=3)
+        self.props_peer();self.enter(track,vehicle='p911')
+        self.browser('scrollintoview','.racing-chase')
+        self.set_sound(False)
+        value=self.native('offroad-circuit-'+track,mode='offroad-circuit',track=track,zone=zone,
+                          outside=requested,speed=plan.get('speed',{'france':14,'coastal':17,'uk':12,'park':14}[track]),
+                          maxSeconds=1160,runtimeTimeoutMS=1170000,timeout_seconds=1250,
+                          progressPath=str(self.out/'circuit-progress.json'))
+        self.validate_offroad_circuit(value,track,requested)
+        self.close_room()
+
+    def validate_offroad_circuit(self,value,track,requested):
+        """Validate preserved E2E artifacts; does not read or mutate a live page."""
+        own=lambda row:next(c for c in row['room']['game']['data']['cars']if c['seat']==row['room']['you'])
+        initial=value['before']['room']['game']['data']
+        for label in ('first','second'):
+            leg=value.get(label)
+            require(leg and leg['completed'],'ordinary human-seat circuit did not complete '+label,leg and {k:v for k,v in leg.items()if k!='rows'})
+            require(leg['maximumOutsideM']>=requested and leg['returned'] and leg['phase']==4,
+                    'ordinary excursion failed to reach measured real-terrain target and return '+label,
+                    {k:leg.get(k)for k in ('maximumOutsideM','returned','phase','travelledM','elapsedMS')})
+            rows=leg['rows']
+            require(all(row['car']['seat']==value['before']['room']['you']for row in rows),'circuit observed a different seat')
+            for distance in [d for d in (3,10,20)if d<=requested]:
+                require(any(row['road']['outside']>=distance for row in rows),'missing actual edge excursion '+str(distance)+' m')
+            outside_index=next(i for i,row in enumerate(rows)if row['road']['outside']>=requested)
+            returned_index=next((i for i,row in enumerate(rows)if i>outside_index and row['phase']==4 and row['road']['outside']<.3),None)
+            require(returned_index is not None,'actual mesh excursion did not physically return to road')
+            require(all(row.get('input',{}).get('status',200)in(200,409)for row in rows),'ordinary drive request was rejected')
+            self.check(track+' '+label+' ordinary human-seat actual-terrain offroad and real return',
+                       requestedOutsideM=requested,maximumOutsideM=leg['maximumOutsideM'],travelledM=leg['travelledM'],elapsedMS=leg['elapsedMS'],
+                       outsideAt=rows[outside_index]['at'],returnedAt=rows[returned_index]['at'])
+        pre,reset,repeated,second,restored=(own(value[key])for key in ('preReset','reset','repeated','secondReset','restored'))
+        require(pre['lap']==reset['lap']==repeated['lap']==second['lap']==restored['lap']==1,
+                'native R or actual page reload cleared or fabricated the completed lap')
+        require(pre['speed']>80 and reset['lastReset']>pre['lastReset'] and reset['resetUntil']-reset['lastReset']==2000,
+                'native R failed at speed or did not retain exactly 2s reset period',{'before':pre,'reset':reset})
+        require(repeated['lastReset']==reset['lastReset'] and repeated['resetUntil']==reset['resetUntil'] and
+                any('正在复位'in notice for notice in value['repeated']['notices']),
+                'rapid native R was silently ignored, accepted during animation, or lacked busy feedback',value['repeated']['notices'])
+        require(2000<=second['lastReset']-reset['lastReset']<5000 and second['resetUntil']-second['lastReset']==2000,
+                'native R remained blocked after its 2s animation or retained extra 5s cooldown',{'first':reset,'second':second})
+        require(math.hypot(reset['x']-pre['x'],reset['y']-pre['y'])/10<20,
+                'native R teleported back to stale lap anchor',{'before':pre,'reset':reset})
+        for key in ('preReset','reset','repeated','secondReset','restored','after'):
+            state=value[key]['room']['game']['data']
+            require(all(state[field]==initial[field]for field in ('epoch','startAt','maxRaceAt')),
+                    'reset/reload changed epoch, start, or deadline '+key)
+            require(not value[key]['room']['seats'][value[key]['room']['you']].get('autoPlay',False),'circuit silently became autoplay '+key)
+        transitions=value['first']['transitions']+value['second']['transitions']
+        require({0,1,2,3}<={row['lap']for row in transitions},'actual three-lap transitions were skipped',transitions)
+        for row in transitions:
+            require(row['hud']==str(min(row['lap']+1,3))+'/3','actual HUD disagrees with completed laps',row)
+        final=own(value['after'])
+        require(final['lap']==3 and 0<final['finishAt']<initial['maxRaceAt'],'physical third lap did not finish before the original deadline',final)
+        self.check(track+' native high-speed R, rapid feedback, 2s re-R and real reload preserve lap/identity',
+                   speedBeforeResetMS=pre['speed']/10,reResetAfterMS=second['lastReset']-reset['lastReset'])
+        self.check(track+' ordinary human-seat actual HUD 1/3 to 2/3 to 3/3 and finish',transitions=transitions)
+
+    def audio_output_baseline(self,vehicle=None):
+        self.report['limitations'].append('Audio files are actual per-voice HTMLMediaElement.captureStream/MediaRecorder digital captures with volume/rate/lifecycle timeline; they are not hardware-speaker recordings or offline substitute engine synthesis.')
+        vehicle=vehicle or self.args.vehicle
+        self.create_ui('france',vehicle=vehicle,players=2)
+        self.set_sound(True);self.enter('france',vehicle=vehicle);self.browser('scrollintoview','.racing-chase');self.browser('focus','.racing-chase')
+        self.native('audio-output-wake-'+vehicle,[{'key':'ArrowLeft','down':True},{'wait':40},{'key':'ArrowLeft','down':False}])
+        self.wait(lambda:any(not a['paused']and a['readyState']>=3 for a in self.engine_media()),15,'native engine before digital capture')
+        capture=self.native('audio-native-output-'+vehicle,mode='audio-output',milliseconds=self.args.audio_ms,stationaryLoadMS=8000,captureOnly=self.args.audio_no_drive)
+        require(capture.get('audioArtifacts'),'native media capture produced no playable artifacts',capture.get('captureErrors'))
+        require(sum(a['bytes']for a in capture['audioArtifacts'])>4000,'native output capture is empty')
+        self.check('actual native engine output captured '+vehicle,clips=len(capture['audioArtifacts']),bytes=sum(a['bytes']for a in capture['audioArtifacts']))
+        self.close_room();self.set_sound(False)
+
+    def continuous_media(self):
+        return self.js("""[...document.querySelectorAll('audio[data-platform-continuous]')].map(a=>({key:a.dataset.platformContinuous,owner:a.dataset.continuousOwner,state:a.dataset.continuousState,context:a.dataset.contextState,voices:JSON.parse(a.dataset.continuousVoices||'[]'),paused:a.paused,muted:a.muted,volume:a.volume,rate:a.playbackRate,loop:a.loop,readyState:a.readyState,time:a.currentTime,error:a.error?.code??null,tracks:a.srcObject instanceof MediaStream?a.srcObject.getAudioTracks().map(t=>({id:t.id,readyState:t.readyState,enabled:t.enabled,muted:t.muted})):[]}))""")
+
+    def audio_continuous(self,vehicle=None):
+        vehicle=vehicle or self.args.vehicle
+        self.report['limitations'].append('Continuous audio artifacts clone the actual unique HTMLAudio.srcObject mixed stream. Voice gain/pitch are already rendered; only native master/muted/paused envelope may be applied once. This is not a speaker or operating-system loopback recording.')
+        self.create_ui('france',vehicle=vehicle,players=2)
+        self.set_sound(True);self.enter('france',vehicle=vehicle)
+        self.browser('scrollintoview','.racing-chase');self.browser('focus','.racing-chase')
+        self.native('continuous-wake-'+vehicle,[{'key':'ArrowLeft','down':True},{'wait':40},{'key':'ArrowLeft','down':False}])
+        self.wait(lambda:any(not a['paused']and a['readyState']>=3 and a['context']=='running'and a['state']=='playing'and a['voices']and
+                             all(v.get('sourceSha256')and len(v['sourceSha256'])==64 and v.get('starts',0)>=1 and v.get('rate')is not None and v.get('gain')is not None for v in a['voices'])
+                             for a in self.continuous_media()),15,'actual unique continuous mixed sink with original decoded warm voices')
+        capture=self.native('audio-continuous-output-'+vehicle,mode='audio-continuous',milliseconds=self.args.audio_ms,captureOnly=self.args.audio_no_drive)
+        require(len(capture['audioArtifacts'])==1 and capture['audioArtifacts'][0]['bytes']>4000,
+                'continuous recording missing or did not capture exactly one actual mixed stream')
+        require(not capture['captureErrors'] and capture['elementStillSame'] and capture['originalTrackStillLive'],
+                'capture changed native output or killed original mixed track',capture['captureErrors'])
+        rows=capture['mediaTimeline']
+        require(rows and all(r['nativeSinks']==1 and not r['fallbacks'] and r['rate']==1 and not r['loop']for r in rows),
+                'continuous path fell back, duplicated sinks, or altered native rate/loop')
+        require(all(r['connected'] and not r['paused'] and not r['muted'] and r['master']>0 and r['context']=='running'and r['state']=='playing'for r in rows),
+                'actual engine sink suspended or muted during requested audible capture')
+        require(all(len(r['sourceTracks'])==1 and r['sourceTracks'][0]['readyState']=='live'for r in rows),
+                'actual mixed track ended during ordinary drive')
+        require(all(r['voices'] and all(len(v['sourceSha256'])==64 and math.isfinite(v['rate']) and math.isfinite(v['gain'])for v in r['voices'])for r in rows),
+                'continuous voice inspection lacks actual original source identity/AudioParam values')
+        metadata=json.loads((ROOT/'games/racing/assets/public/racing/v3/audio'/vehicle/'engine.json').read_text())
+        sources={f"racing-engine-{vehicle}-{sample['patch']}":sample['sha256']for sample in metadata['samples']}
+        require(all(v['key']in sources and v['sourceSha256']==sources[v['key']]for row in rows for v in row['voices']),
+                'continuous mixed voice contains a different original FLAC source or vehicle')
+        by_key={}
+        for row in rows:
+            for voice in row['voices']:by_key.setdefault(voice['key'],[]).append(voice)
+        require(all(max(v['starts']for v in voices)-min(v['starts']for v in voices)==0 for voices in by_key.values()),
+                'ordinary gain/pitch change restarted original engine BufferSource',
+                {key:[min(v['starts']for v in voices),max(v['starts']for v in voices)]for key,voices in by_key.items()})
+        if not self.args.audio_no_drive:
+            require(any(max(v['rate']for v in voices)-min(v['rate']for v in voices)>.03 for voices in by_key.values()),
+                    'real W/handbrake/acceleration left every actual pitch AudioParam unchanged')
+        self.check('actual unique continuous native mixed stream captured '+vehicle,
+                   bytes=capture['audioArtifacts'][0]['bytes'],voiceKeys=list(by_key),captureErrors=[])
+        self.set_sound(False)
+        self.wait(lambda:not any(not a['paused']for a in self.continuous_media()),10,'continuous native sink pauses on platform mute')
+        self.record('continuous-muted-'+vehicle,self.continuous_media())
+        self.set_sound(True)
+        self.native('continuous-resume-'+vehicle,[{'key':'ArrowLeft','down':True},{'key':'ArrowLeft','down':False},{'wait':250}])
+        self.wait(lambda:any(not a['paused']and a['context']=='running'for a in self.continuous_media()),10,'continuous current engine resumes after real gesture')
+        self.record('continuous-resumed-'+vehicle,self.continuous_media())
+        self.js("window.__nfsContinuousLeaveProbe=[...document.querySelectorAll('audio[data-platform-continuous]')];true")
+        self.close_room()
+        self.wait(lambda:not any(not a['paused']for a in self.continuous_media()),10,'continuous owner cleanup stops actual native sink')
+        left=self.js("({sinks:[...document.querySelectorAll('audio[data-platform-continuous]')].map(a=>({paused:a.paused,owner:a.dataset.continuousOwner})),lastOwners:window.__nfsContinuousLeaveProbe.map(a=>({connected:a.isConnected,paused:a.paused,tracks:a.srcObject instanceof MediaStream?a.srcObject.getAudioTracks().map(t=>t.readyState):[]})),capturedOwner:{connected:window.__nfsContinuousCaptureProbe?.media.isConnected,paused:window.__nfsContinuousCaptureProbe?.media.paused,tracks:window.__nfsContinuousCaptureProbe?.media.srcObject instanceof MediaStream?window.__nfsContinuousCaptureProbe.media.srcObject.getAudioTracks().map(t=>t.readyState):[]}})")
+        self.record('continuous-left-'+vehicle,left)
+        require(all(a['paused']or'live'not in a['tracks']for a in left['lastOwners']),
+                'native audio owner was merely detached while its actual stream kept playing',left)
+        self.check('continuous platform mute gesture recovery and owner cleanup '+vehicle)
+        self.set_sound(False)
+
+    def cockpit_dynamics(self):
+        for vehicle in VEHICLES:
+            self.browser('set','viewport','1280','1000')
+            self.create_ui('france',vehicle=vehicle,players=2);self.enter('france',vehicle=vehicle)
+            self.browser('scrollintoview','.racing-chase');self.browser('focus','.racing-chase')
+            mode=int(self.js("document.querySelector('.racing-chase').dataset.cameraMode"))
+            actions=[]
+            for _ in range((3-mode)%4):actions.extend([{'key':'c','down':True},{'key':'c','down':False},{'wait':180}])
+            actions.extend([{'read':'neutral'},{'shot':'cockpit-neutral'},
+                            {'key':'w','down':True},{'key':' ','down':True},{'wait':5000},{'read':'loaded'},
+                            # Measure speed while still driving the original straight,
+                            # before the deliberate handbrake steering pixel comparison.
+                            {'key':' ','down':False},{'wait':650},{'read':'moving'},{'shot':'cockpit-moving'},
+                            {'key':' ','down':True},
+                            {'key':'a','down':True},{'wait':450},{'read':'left'},{'shot':'steering-left'},{'key':'a','down':False},
+                            {'key':'d','down':True},{'wait':550},{'read':'right'},{'shot':'steering-right'},{'key':'d','down':False},
+                            {'key':' ','down':False},
+                            {'key':'w','down':False},{'key':'s','down':True},{'wait':1200},{'key':'s','down':False}])
+            value=self.native('cockpit-original-'+vehicle,actions,compareShots=['steering-left','steering-right'])
+            rows={r['name']:r['data']for r in value['samples']}
+            parts={name:json.loads(rows[name]['canvas'].get('cockpitDynamics','[]'))for name in ('neutral','loaded','left','right','moving')}
+            expected={'steering','rpm'}|({'speed'}if vehicle!='mcf1'else set())
+            require(all({p['kind']for p in part}==expected for part in parts.values()),'original cockpit bindings incomplete '+vehicle,parts)
+            require(all(rows[name]['canvas']['cameraMode']=='3'for name in parts),'native C did not mount actual cockpit view')
+            get=lambda name,kind:next(p for p in parts[name]if p['kind']==kind)
+            left,right=get('left','steering'),get('right','steering')
+            require(left['part']==right['part']=='steering'and left['angle']*right['angle']<0 and abs(left['angle']-right['angle'])>.2,
+                    'original steering mesh did not turn both directions '+vehicle,{'left':left,'right':right})
+            require(get('loaded','rpm')['angle']>get('neutral','rpm')['angle']+.02,'original RPM needle did not follow actual loaded RPM '+vehicle)
+            if vehicle!='mcf1':require(get('moving','speed')['angle']>get('neutral','speed')['angle']+.01,'original MPH needle did not follow real acceleration '+vehicle)
+            require(value['pictureComparison']['changedPixels']>30 and value['pictureComparison']['meanChannelDifference']>.02,
+                    'original cockpit wheel rotation changed no actual visible pixels '+vehicle,value['pictureComparison'])
+            mobile=self.native('cockpit-320-'+vehicle,[{'wait':180},{'scrollTo':'.racing-chase'},{'wait':150},{'read':'cockpit-320'},{'shot':'original-cockpit'}],width=320,height=844,touch=True)
+            phone=next(r['data']for r in mobile['samples']if r['name']=='cockpit-320')
+            require(phone['viewport']==320 and phone['canvas']['cameraMode']=='3'and json.loads(phone['canvas'].get('cockpitDynamics','[]')),
+                    '320px original cockpit missing '+vehicle)
+            self.check('native C and actual original cockpit steering RPM MPH motion '+vehicle,
+                       originalParts=[{'part':p['part'],'kind':p['kind']}for p in parts['neutral']],pixels=value['pictureComparison'],
+                       noOriginalMPHNeedle=vehicle=='mcf1',geometryUVBindingTest='games/racing/tests/classic-cockpit-dynamics.test.mjs')
+            self.close_room()
+
+    def gauge_layout(self):
+        def overlap(a,b):
+            return max(0,min(a['right'],b['right'])-max(a['left'],b['left']))*max(0,min(a['bottom'],b['bottom'])-max(a['top'],b['top']))
+        def circle_hits(circle,rect):
+            x=max(rect['left'],min(circle['cx'],rect['right']));y=max(rect['top'],min(circle['cy'],rect['bottom']))
+            return math.hypot(x-circle['cx'],y-circle['cy'])<circle['r']-.5
+        def contrast(colors):
+            def rgba(value):
+                parts=[float(v)for v in re.findall(r'[\d.]+',value)]
+                require(len(parts)in(3,4),'computed instrument color is not RGB/RGBA',value)
+                return parts[:3]+[parts[3]if len(parts)==4 else 1]
+            fg,bg=rgba(colors['foreground']),rgba(colors['background'])
+            background=[v*bg[3]+255*(1-bg[3])for v in bg[:3]]
+            foreground=[v*fg[3]+background[i]*(1-fg[3])for i,v in enumerate(fg[:3])]
+            def luminance(rgb):
+                values=[v/255/12.92 if v/255<=.04045 else((v/255+.055)/1.055)**2.4 for v in rgb]
+                return sum(v*w for v,w in zip(values,(.2126,.7152,.0722)))
+            a,b=luminance(foreground),luminance(background)
+            return(max(a,b)+.05)/(min(a,b)+.05)
+        def inspect(row,label,compact=False):
+            require(row['gauges']and row['miniMap'],'visible map or instruments absent '+label)
+            gauge=row['gauges'];g=gauge['rect'];m=row['miniMap'];c=row['canvas']['rect'];gear=gauge['gear']
+            require(gauge['mode']==('compact'if compact else'analog'),'instrument DOM mode ignored viewport '+label,gauge)
+            require(gear and re.fullmatch(r'[1-8R]',gear['text'].strip()) and gear['fontSize']<=14 and gear['paintRect'],
+                    'gear must be small 1/2/.../R with actual visible text, without D prefix '+label,gear)
+            require({r['kind']for r in gauge['readouts']}=={'speed','rpm','gear'},'actual visible instrument readouts incomplete '+label,gauge['readouts'])
+            contrasts={r['kind']:contrast(r['colors'])for r in gauge['readouts']}
+            require(min(contrasts.values())>=4.5,'small instrument readout lacks 4.5:1 contrast over worst-case white road '+label,contrasts)
+            gauge['computedReadoutContrast']=contrasts
+            require(0<=c['right']-g['right']<=16.5,'instruments do not stay against actual game right edge '+label,{'insetPX':c['right']-g['right']})
+            require(g['left']>=c['left']and g['top']>=c['top']and g['bottom']<=c['bottom'],'instruments escape game canvas '+label)
+            require(m['width']>=44 and m['height']>=44 and row['miniMapAria'],'small map lost accessible touch target '+label)
+            require(overlap(g,m)<=1,'map and instruments overlap '+label)
+            if compact:
+                require(not gauge['dials'] and not gauge['needles'],'portrait fallback still renders visible analogue dials '+label)
+                require(g['width']<=130 and g['height']<=60 and m['width']<=74.5 and m['height']<=54.5,
+                        'portrait instruments or map still occupy the large rejected layout '+label,{'gauges':g,'map':m})
+                require(not row['miniMapLabel'],'compact map repeats a visible label '+label,row['miniMapLabel'])
+                fraction=(g['width']*g['height']+m['width']*m['height'])/(c['width']*c['height'])
+                require(fraction<=.08,'compact corner instruments exceed 8% of actual gameplay canvas '+label,fraction)
+            else:
+                require(len(gauge['dials'])==2 and all(d.get('circle')for d in gauge['dials']),'analogue mode lacks actual visible original SVG dials '+label)
+                if row['pointer']['coarse']and row['layout']['width']>row['layout']['height']:
+                    require(g['width']<=160.5 and m['width']<=80 and m['height']<=60,'short landscape analog instruments or map are still too large '+label,{'gauges':g,'map':m})
+                require(all(not circle_hits(d['circle'],gear['paintRect'])for d in gauge['dials']),'gear text paints over a dial '+label,gear)
+                fraction=(sum(math.pi*d['circle']['r']**2 for d in gauge['dials'])+m['width']*m['height'])/(c['width']*c['height'])
+            road={'left':c['left']+c['width']*.4,'right':c['left']+c['width']*.6,'top':c['top']+c['height']*.25,'bottom':c['top']+c['height']*.75}
+            require(overlap(road,g)<=1 and overlap(road,m)<=1,'corner instruments cover central road view '+label,{'road':road,'gauges':g,'map':m})
+            require(not any('同步'in text for text in row['notices']),'layout screenshot contains synchronization warning '+label,row['notices'])
+            return gauge,g,m,c,gear,fraction
+        self.browser('set','viewport','1280','1000');self.create_ui('france',vehicle='p911',players=2);self.enter('france',vehicle='p911')
+        self.browser('scrollintoview','.racing-chase')
+        desktop=self.native('gauge-layout-desktop',[{'wait':150},{'read':'aligned'},{'shot':'aligned'}])
+        pc=next(r['data']for r in desktop['samples']if r['name']=='aligned');gauge,g,m,c,gear,fraction=inspect(pc,'PC')
+        delta=g['bottom']-m['bottom'];require(abs(delta)<=2,'PC instruments do not align with lower-left map bottom',delta)
+        chat=pc['chatToggle'];chat_paint=False if not chat else any(circle_hits(d['circle'],chat)for d in gauge['dials'])or overlap(gear['paintRect'],chat)>1
+        require(not chat_paint,'PC chat overlaps actual dial circles or gear text paint',{'chat':chat,'gauges':gauge})
+        self.check('PC right-edge small analog dials bottom-align map and avoid chat actual paint',rightInsetPX=c['right']-g['right'],bottomDifferencePX=delta,gearText=gear['text'],gearFontPX=gear['fontSize'],chatPaintOverlap=False,cornerPaintFraction=fraction,readoutContrast=gauge['computedReadoutContrast'])
+        for index,(width,height) in enumerate(((320,844),(390,844),(430,844),(320,480))):
+            actions=[{'wait':180},{'scrollTo':'.racing-chase'},{'wait':150},{'focus':'.racing-chase'}]
+            if index:actions.extend([{'key':'F7','down':True},{'key':'F7','down':False},{'wait':180}])
+            actions.extend([{'read':'mirror-off'},{'shot':'mirror-off'},{'key':'F7','down':True},{'key':'F7','down':False},{'wait':180},{'read':'mirror-on'},{'shot':'mirror-on'}])
+            suffix=str(width)if height==844 else str(width)+'x'+str(height)
+            phone=self.native('gauge-layout-'+suffix,actions,width=width,height=height,touch=True)
+            for name in ('mirror-off','mirror-on'):
+                row=next(r['data']for r in phone['samples']if r['name']==name);gauge,g,m,c,gear,fraction=inspect(row,str(width)+'x'+str(height)+' '+name,compact=True)
+                require(row['viewport']==width and row['layout']['height']==height and row['pointer']['coarse'],'compact phone probe did not use its actual coarse viewport')
+                require(abs(g['top']-m['top'])<=2,'compact instruments and map top anchors differ',{'gauges':g,'map':m})
+                others=[r['box']for r in row['layout']['controls']if r['withinStage']and'racing-route-button'not in r['class']]+[r['rect']for r in row['layout']['hudParts']]
+                require(all(overlap(g,r)<=1 and overlap(m,r)<=1 for r in others),'compact instruments cover HUD text or operation buttons')
+                require(row['canvas']['mirrorVisible']==str(name=='mirror-on').lower(),'compact F7 did not change actual mirror state')
+                self.check(str(width)+'x'+str(height)+' portrait compact numeric instruments and small map '+name,mode=gauge['mode'],topDifferencePX=g['top']-m['top'],gaugeSizePX=[g['width'],g['height']],mapSizePX=[m['width'],m['height']],cornerFraction=fraction,gearText=gear['text'],gearFontPX=gear['fontSize'],centralRoadClear=True,notices=row['notices'],readoutContrast=gauge['computedReadoutContrast'])
+        for height in (390,520):
+            landscape=self.native('gauge-layout-844x'+str(height),[{'viewport':{'width':844,'height':height}},{'wait':180},{'scrollTo':'.racing-chase'},{'wait':150},{'focus':'.racing-chase'},
+                                  {'key':'F7','down':True},{'key':'F7','down':False},{'wait':180},{'read':'mirror-off'},{'shot':'mirror-off'},
+                                  {'key':'F7','down':True},{'key':'F7','down':False},{'wait':180},{'read':'mirror-on'},{'shot':'mirror-on'}],width=844,height=height,touch=True)
+            for name in ('mirror-off','mirror-on'):
+                row=next(r['data']for r in landscape['samples']if r['name']==name);gauge,g,m,c,gear,fraction=inspect(row,'844x'+str(height)+' '+name)
+                require(row['viewport']==844 and row['layout']['height']==height and row['pointer']['coarse'],'landscape probe did not use actual coarse viewport')
+                require(abs(g['top']-m['top'])<=2,'landscape instrument and map top anchors differ')
+                others=[r['box']for r in row['layout']['controls']if r['withinStage']and'racing-route-button'not in r['class']]+[r['rect']for r in row['layout']['hudParts']]
+                require(all(overlap(g,r)<=1 and overlap(m,r)<=1 for r in others),'landscape instruments cover HUD or operation buttons')
+                require(row['canvas']['mirrorVisible']==str(name=='mirror-on').lower(),'landscape F7 did not change actual mirror')
+                if name=='mirror-on':
+                    r=json.loads(row['canvas']['mirrorFrame'])['rect'];mirror={'left':c['left']+r['x'],'right':c['left']+r['x']+r['width'],'top':c['top']+r['y'],'bottom':c['top']+r['y']+r['height']}
+                    require(overlap(g,mirror)<=1 and overlap(m,mirror)<=1 and all(overlap(h['rect'],mirror)<=1 for h in row['layout']['hudParts']),'landscape actual mirror covers instruments or HUD')
+                self.check('844x'+str(height)+' compact analog map HUD and mirror separation '+name,mode=gauge['mode'],topDifferencePX=g['top']-m['top'],gaugeSizePX=[g['width'],g['height']],gearText=gear['text'],gearFontPX=gear['fontSize'],cornerPaintFraction=fraction,centralRoadClear=True,readoutContrast=gauge['computedReadoutContrast'])
+        self.close_room()
+
+    def feedback_contract(self):
+        self.create_ui('france',vehicle='p911',players=2);self.enter('france',vehicle='p911')
+        proof=self.js("""(()=>{const c=document.querySelector('.racing-chase'),g=document.querySelector('.racing-gauges');return {gauges:g?.getBoundingClientRect().toJSON(),needles:[...document.querySelectorAll('[data-racing-speed-needle],[data-racing-rpm-needle]')].map(e=>({tag:e.tagName,transform:e.getAttribute('transform'),value:e.dataset.value})),canvas:{...c.dataset}}})()""")
+        self.record('feedback-contract',proof);self.screenshot('feedback-baseline')
+        failures=[]
+        if not proof.get('gauges')or len(proof['needles'])!=2:failures.append('actual speed/RPM pointer gauges absent')
+        if any(k not in proof['canvas']for k in('skidSegments','skidWritten','skidCauses')):failures.append('actual skid geometry observation contract absent')
+        self.record('feedback-contract-failures',failures);require(not failures,'driving feedback baseline gaps',failures)
+        self.check('actual pointer gauges and skid geometry observation contract present');self.close_room()
+
+    def feedback_candidate(self):
+        self.create_ui('france',vehicle='p911',players=2);self.enter('france',vehicle='p911');self.browser('scrollintoview','.racing-chase');self.browser('focus','.racing-chase')
+        v=self.native('feedback-native-driving',[{'key':'w','down':True},{'wait':4500},{'read':'straight'},{'shot':'gauges-moving'},{'key':'w','down':False},{'key':'s','down':True},{'wait':1300},{'read':'braking'},{'shot':'brake-marks'},{'key':'s','down':False},{'key':'w','down':True},{'wait':2000},{'key':'d','down':True},{'key':' ','down':True},{'wait':800},{'read':'sliding'},{'shot':'slide-marks'},{'key':' ','down':False},{'key':'d','down':False},{'key':'w','down':False}],observeSkids=True,skidPixelShot={'sample':'braking','shot':'brake-marks'})
+        r={x['name']:x['data']for x in v['samples']}
+        for name,row in r.items():
+            gauge=row.get('gauges')
+            require(gauge and len(gauge['needles'])==2,'actual two-dial SVG needles missing '+name)
+            for needle in gauge['needles']:
+                maximum=400 if needle['kind']=='speed'else 10000
+                expected=-130+260*max(0,min(1,needle['value']/maximum))
+                actual=float(re.match(r'rotate\(([-\d.]+)',needle['transform']).group(1))
+                require(abs(actual-expected)<.05,'actual SVG needle does not match its current independent quantity',needle)
+        needle=lambda name,kind:next(n for n in r[name]['gauges']['needles']if n['kind']==kind)
+        require(needle('straight','speed')['value']>needle('before','speed')['value']+5 and
+                needle('braking','speed')['value']<needle('straight','speed')['value'] and
+                abs(needle('straight','rpm')['value']-needle('before','rpm')['value'])>100,
+                'real acceleration/braking did not move both independent gauge quantities')
+        require(int(r['braking']['canvas'].get('skidWritten',0))>int(r['straight']['canvas'].get('skidWritten',0)),'native hard braking did not write actual tire-mark geometry',{k:x['canvas'].get('skidWritten')for k,x in r.items()})
+        require('skidSample'in r['braking']['canvas'],'actual braking quad absent')
+        require(v['skidPixelProof']['darkerSamples']>=3,'actual world skid geometry has no verifiable darker road pixels in compositor screenshot',v['skidPixelProof'])
+        quad=json.loads(r['braking']['canvas']['skidSample'])
+        if self.args.build_identity:require('surface'in quad,'final build omitted actual terrain material from braking quad')
+        require(len(quad['vertices'])==18 and all(math.isfinite(x)for x in quad['vertices'])and quad.get('surface')not in(2,3,4,11,5,13,9,15),
+                'actual braking quad is invalid or paints known loose material',quad)
+        mobile=self.native('feedback-320-native',[{'wait':180},{'scrollTo':'.racing-chase'},{'wait':150},{'key':'F7','down':True},{'key':'F7','down':False},{'wait':180},{'read':'mirror'},{'shot':'gauges-mirror'},
+                           {'key':'F5','down':True},{'key':'F5','down':False},{'wait':150},{'read':'hidden'},{'shot':'gauges-hidden'},
+                           {'key':'F5','down':True},{'key':'F5','down':False},{'key':'F7','down':True},{'key':'F7','down':False},{'wait':120},{'read':'restored'}],width=320,height=844,touch=True)
+        phone={x['name']:x['data']for x in mobile['samples']}
+        gauge=phone['mirror']['gauges']['rect'];canvas=phone['mirror']['canvas']['rect']
+        require(gauge['width']>0 and gauge['left']>=0 and gauge['right']<=320 and gauge['top']>=canvas['top']-1 and gauge['bottom']<=canvas['bottom']+1,
+                '320px gauges are clipped or outside actual gameplay canvas',gauge)
+        mirror=json.loads(phone['mirror']['canvas']['mirrorFrame'])['rect']
+        rect={'left':canvas['left']+mirror['x'],'right':canvas['left']+mirror['x']+mirror['width'],
+              'top':canvas['top']+mirror['y'],'bottom':canvas['top']+mirror['y']+mirror['height']}
+        overlap=lambda a,b:max(0,min(a['right'],b['right'])-max(a['left'],b['left']))*max(0,min(a['bottom'],b['bottom'])-max(a['top'],b['top']))
+        require(overlap(gauge,rect)<=1 and all(overlap(gauge,c['box'])<=1 for c in phone['mirror']['layout']['touch']),
+                '320px pointer gauges overlap real F7 mirror or touch driving controls',{'gauges':gauge,'mirror':rect,'touch':phone['mirror']['layout']['touch']})
+        require(all(0<=c['box']['top']<c['box']['bottom']<=844 and 0<=c['box']['left']<c['box']['right']<=320 for c in phone['mirror']['layout']['touch']),
+                '320px feedback capture leaves actual touch driving controls outside viewport',phone['mirror']['layout']['touch'])
+        require(phone['hidden']['gauges']['hidden']and not phone['restored']['gauges']['hidden'],'F5 failed to hide/restore complete pointer instruments')
+        self.record('feedback-native-console',{'console':self.browser('console'),'errors':self.browser('errors')})
+        self.check('native acceleration braking independent SVG pointers, F5 and 320px F7 touch layout')
+        self.check('native hard brake and slide render actual tire marks',surface=quad.get('surface'),terrainSurfaceObserved='surface'in quad,
+                   visibleDarkenedQuadSamples=v['skidPixelProof']['darkerSamples']);self.close_room()
+
+    def audio_container_experiment(self):
+        self.create_ui('france',vehicle='ldia',players=2);self.set_sound(True);self.enter('france',vehicle='ldia');self.browser('focus','.racing-chase')
+        self.native('container-wake',[{'key':'ArrowLeft','down':True},{'key':'ArrowLeft','down':False},{'wait':1000}])
+        source=ROOT/'.local/racing-nfs-reference/audio-continuity-source/ldia-41-original-pcm.wav';wav=source.read_bytes();wav_sha=hashlib.sha256(wav).hexdigest()
+        require(wav_sha=='38c0101ca154a9fb566b45e0c89ad12f5f5cce540ac3ca54b32806cf8c7d5ec1','PCM container experiment file changed')
+        proof=self.native('ldia41-container',mode='audio-container',wavSource='data:audio/wav;base64,'+base64.b64encode(wav).decode(),wavSHA256=wav_sha,flacSHA256='d2a309bfd7e11ece716c36f9d70268d9e1ce326a40ff112416c15169ae43d8d0')
+        require(proof['elementStillSame']and len(proof['audioArtifacts'])==2,'controlled lane experiment replaced element or lost capture')
+        self.check('controlled original FLAC versus identical PCM WAV captured on same native lane',rate=proof['originalRate'],gain=proof['originalGain'])
+        self.close_room();self.set_sound(False)
+
+    def feedback_no_capture(self):
+        self.create_ui('france',vehicle='p911',players=2);self.set_sound(True);self.enter('france',vehicle='p911');self.browser('scrollintoview','.racing-chase');self.browser('focus','.racing-chase')
+        v=self.native('native-no-capture-control',[{'key':'w','down':True},{'key':' ','down':True},{'wait':8000},{'read':'held-load'},{'key':' ','down':False},{'wait':5000},{'read':'accelerated'},{'key':'w','down':False},{'key':'s','down':True},{'wait':1500},{'key':'s','down':False},{'read':'braking'},{'shot':'responsive'}])
+        r={x['name']:x['data']for x in v['samples']};before=int(r['before']['canvas']['frameCounter']);after=int(r['after']['canvas']['frameCounter'])
+        require(after-before>300 and v['ackMetrics']['count']>0 and all(int(s)<400 for s in v['ackMetrics']['statuses']),'native sound-enabled W/handbrake control stopped page or rejected input',v['ackMetrics'])
+        self.check('native sound-enabled load accelerate brake remains responsive without capture',frameAdvance=after-before,ack=v['ackMetrics']);self.close_room();self.set_sound(False)
+
+    def feedback_performance(self):
+        self.create_ui('france',vehicle='p911',players=6);self.enter('france',vehicle='p911')
+        handshake=self.native('feedback-perf-actual-ws-handshake',[{'reload':True},{'wait':1000}])
+        self.wait(lambda:self.js("document.querySelector('.racing-chase')?.dataset.classic==='3'&&!document.querySelector('[data-game-loading]')"),90,'actual six-car scene restored after handshake observation')
+        require(handshake['wsHandshakes'] and all(h['status']==101 for h in handshake['wsHandshakes']),'six-car actual WebSocket handshake was not observed')
+        self.check('actual six-car WebSocket handshake negotiation',handshakes=handshake['wsHandshakes'])
+        self.browser('scrollintoview','.racing-chase');self.browser('focus','.racing-chase')
+        marks=self.native('feedback-performance-create-marks',[{'key':'w','down':True},{'wait':4500},{'key':'w','down':False},
+                          {'key':'s','down':True},{'wait':1100},{'key':'s','down':False},{'read':'marks'}])
+        require(int(marks['samples'][-1]['data']['canvas'].get('skidWritten',0))>0,'performance scene omitted actual skid geometry')
+        self.browser('find','role','button','click','--name','开启托管','--exact')
+        self.performance('feedback-desktop-six-car-performance')
+        self.performance('feedback-320-six-car-performance',touch=True)
+        self.browser('find','role','button','click','--name','取消托管','--exact')
+        self.wait(lambda:not self.room()['seats'][0].get('autoPlay'),description='healthy screenshot manual reclaim')
+        gas={'selector':'button[aria-label="油门"]','id':7}
+        healthy=self.native('feedback-320-healthy-operation',[{'wait':180},{'scrollTo':'.racing-chase'},{'wait':150},{'focus':'.racing-chase'},
+                            {'touch':'touchStart','points':[gas]},{'wait':600},{'read':'healthy-driving'},{'shot':'healthy-driving'},
+                            {'touch':'touchEnd','points':[gas]},{'wait':120},{'read':'released'}],width=320,height=844,touch=True)
+        state=next(r['data']for r in healthy['samples']if r['name']=='healthy-driving')
+        require(float(state['controls']['throttle'])>.5 and not any('同步'in text for text in state['notices']),
+                'isolated 320px real touch operation is stale or did not apply throttle',{'notices':state['notices'],'controls':state['controls']})
+        require(all(p['expected']for p in healthy['touchInputs']),'actual isolated touch target was covered')
+        readouts={r['kind']:r['text'].strip()for r in state['gauges']['readouts']}
+        require(state['gauges']['mode']=='compact'and set(readouts)=={'speed','rpm','gear'}and int(readouts['rpm'].replace(',',''))>=500,
+                'healthy 320px operation did not update actual visible compact readouts',readouts)
+        car=next(c for c in state['room']['game']['data']['cars']if c['seat']==state['room']['you'])
+        if car['speed']>5:require(int(readouts['speed'].replace(',',''))>0,'moving car left compact speed frozen at zero',readouts)
+        self.check('isolated healthy 320px real touch operation full screenshot',notices=state['notices'],throttle=state['controls']['throttle'],visibleCompactReadouts=readouts)
+        self.close_room()
+
     def camera_keys(self):
         self.browser("focus", ".racing-chase")
         actions = [{"key": "b", "down": True}, {"wait": 160}, {"read": "B-initial"}, {"shot": "B-initial"}, {"key": "b", "down": False}, {"wait": 160},
@@ -1033,7 +1445,8 @@ class Acceptance:
             self.record(name + "-layout", layout)
             overlap = lambda r: max(0, min(r["right"], layout["mirror"]["right"]) - max(r["left"], layout["mirror"]["left"])) * max(0, min(r["bottom"], layout["mirror"]["bottom"]) - max(r["top"], layout["mirror"]["top"]))
             require(all(overlap(part["rect"]) <= 1 for part in layout["parts"]), "320px live mirror overlaps necessary HUD or driving controls", layout)
-        self.check(name, metrics=m, maxDynamicBytes=max(s["bytes"] for s in value["states"]), ack=value["ackMetrics"])
+        require(value['wsPayloadSummary']['directions']['received']['payloadBytes']>0,'moving race traffic observer saw no actual received WebSocket payload')
+        self.check(name, metrics=m, maxDynamicBytes=max(s["bytes"] for s in value["states"]), ack=value["ackMetrics"],network=value['wsPayloadSummary'])
         return value
 
     def models_and_complete_race(self, skip_presentation=False):
@@ -1310,7 +1723,9 @@ class Acceptance:
         self.browser("wait", '.racing-preparation select[aria-label="车型"]', name="peer")
         self.browser("select", '.racing-preparation select[aria-label="车型"]', "fm50", name="peer")
         self.wait(lambda: self.room("peer")["options"].get("vehicles", [])[1] == "fm50", description="peer vehicle")
-        self.native("peer-delay-setup", [{"headers": {"X-Acceptance-RTT": "150"}}, {"reload": True}, {"wait": 2000}], session="peer")
+        handshake=self.native("peer-delay-setup", [{"headers": {"X-Acceptance-RTT": "150"}}, {"reload": True}, {"wait": 2000}], session="peer")
+        require(handshake['wsHandshakes'] and all(h['status']==101 for h in handshake['wsHandshakes']),'two-player actual WebSocket handshake was not observed')
+        self.check('actual two-player WebSocket handshake negotiation',handshakes=handshake['wsHandshakes'])
         self.command("ready", name="peer")
         self.enter("france", vehicle="p911")
         self.wait(lambda: self.js('document.querySelector(".racing-chase")?.dataset.classic==="3"&&!document.querySelector("[data-game-loading]")', "peer"), 90, "slow peer scene")
@@ -1326,7 +1741,9 @@ class Acceptance:
             m = value["metrics"]
             require(value["rectSource"] == "renderer-projected", "remake pixel acceptance cannot use a guessed/manual crop")
             require(m["visibleTrials"] == m["trials"] == 8 and m["p95MS"] <= BUDGET["inputPixelP95MS"], "native input-to-pixel budget failed", m)
-            self.check("native input to real vehicle pixels " + name, metrics=m, connectionRTT=fast if session == "main" else slow, ack=value["ackMetrics"])
+            require(value['wsPayloadSummary']['directions']['sent']['messages']>0 and value['wsPayloadSummary']['directions']['received']['messages']>0,
+                    'two-player real input scenario lacks observed bidirectional WebSocket frames')
+            self.check("native input to real vehicle pixels " + name, metrics=m, connectionRTT=fast if session == "main" else slow, ack=value["ackMetrics"],network=value['wsPayloadSummary'])
         self.browser("find", "role", "button", "click", "--name", "开启托管", "--exact")
         self.wait(lambda: self.room()["seats"][0].get("autoPlay"), description="healthy peer autoplay")
         healthy = self.performance("healthy-peer-alongside-rtt150")
@@ -1371,13 +1788,44 @@ class Acceptance:
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--out", required=True)
-    parser.add_argument("--phase", choices=("contract", "controls", "display", "presenter", "expiry", "audio-diagnostic", "safety", "laps", "props-minimal", "props", "props-perf", "props-wall", "thumbs", "thumb-layouts", "fullscreen", "smoke", "full", "remaining", "experience", "vehicles", "latency"), default="smoke")
+    parser.add_argument('--dist',default='web/dist',help='existing repository-local compiled frontend; never rebuilds')
+    parser.add_argument('--build-identity',help='repository-local frozen indexSHA256/sourceSHA256 build identity; rejects source drift')
+    parser.add_argument('--vehicle',choices=VEHICLES,default='p911')
+    parser.add_argument('--track',choices=TRACKS,default='uk')
+    parser.add_argument('--circuit-plan',help='repository-local JSON with actual-terrain verified ordinary-driving zones, keyed by track')
+    parser.add_argument('--audio-ms',type=int,default=36000)
+    parser.add_argument('--audio-no-drive',action='store_true')
+    parser.add_argument("--phase", choices=("contract", "controls", "display", "presenter", "expiry", "audio-diagnostic", "audio-output", "audio-all", "audio-container", "audio-continuous", "audio-continuous-all", "feedback-contract", "feedback-no-capture", "feedback-perf", "feedback", "gauge-layout", "cockpit", "safety", "laps", "circuits", "props-minimal", "props", "props-perf", "props-wall", "thumbs", "thumb-layouts", "fullscreen", "smoke", "full", "remaining", "experience", "vehicles", "latency"), default="smoke")
     parser.add_argument("--base", help="reuse an explicitly owned local Racing fixture URL")
     args = parser.parse_args()
     job = Acceptance(args)
     try:
         job.start_fixture()
-        if args.phase == 'laps':
+        if args.phase=='circuits':
+            job.offroad_circuit()
+        elif args.phase=='audio-continuous-all':
+            for vehicle in VEHICLES:job.audio_continuous(vehicle)
+        elif args.phase=='audio-continuous':
+            job.audio_continuous()
+        elif args.phase=='gauge-layout':
+            job.gauge_layout()
+        elif args.phase=='cockpit':
+            job.cockpit_dynamics()
+        elif args.phase=='feedback-perf':
+            job.feedback_performance()
+        elif args.phase=='feedback-no-capture':
+            job.feedback_no_capture()
+        elif args.phase=='audio-container':
+            job.audio_container_experiment()
+        elif args.phase=='feedback':
+            job.feedback_candidate()
+        elif args.phase=='audio-all':
+            for vehicle in VEHICLES:job.audio_output_baseline(vehicle)
+        elif args.phase == 'feedback-contract':
+            job.feedback_contract()
+        elif args.phase == 'audio-output':
+            job.audio_output_baseline()
+        elif args.phase == 'laps':
             job.lap_reset()
         elif args.phase == 'props-wall':
             job.props_wall()

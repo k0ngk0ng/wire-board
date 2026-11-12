@@ -259,14 +259,12 @@ func ClassicRoadAt(t Track, x, y, height float64, hint int) ClassicRoadContact {
 }
 
 func ClassicSurfaceFor(road ClassicRoadContact, heading float64) ClassicRoadSurface {
-	excess := math.Max(0, math.Max(road.Side-road.Right, -road.Side-road.Left))
-	shoulder := clamp(excess/30, 0, 1)
 	ny := road.NY
 	if math.Abs(ny) < .1 {
 		ny = 1
 	}
 	grade := math.Atan(-(road.NX*math.Cos(heading) + road.NZ*math.Sin(heading)) / ny)
-	return ClassicRoadSurface{Grip: 1 - .6*shoulder, Resistance: 5 * shoulder, NormalY: math.Abs(ny), Grade: grade}
+	return ClassicRoadSurface{Grip: 1, Resistance: 0, NormalY: math.Abs(ny), Grade: grade}
 }
 
 func classicSegmentClosest(a, b, c, d Point) (Point, Point) {
@@ -373,11 +371,21 @@ func collideClassicRoadWithProps(t Track, s ClassicMotionState, vehicle string, 
 }
 
 func classicPose(c *Car, t Track) ClassicRoadContact {
-	road := ClassicRoadAt(t, c.X, c.Y, c.Height, c.RouteIndex)
+	ground := ClassicTerrainAt(t, c.X, c.Y, c.Height)
+	height := c.Height
+	if ground.Found {
+		height = ground.Height
+	}
+	road := ClassicRoadAt(t, c.X, c.Y, height, c.RouteIndex)
 	c.RouteIndex = road.Index
 	c.Height = road.Height
-	c.Pitch = math.Atan(-(road.NX*math.Cos(c.Angle) + road.NZ*math.Sin(c.Angle)) / math.Max(.1, road.NY))
-	c.Roll = math.Atan(-(road.NX*math.Sin(c.Angle) - road.NZ*math.Cos(c.Angle)) / math.Max(.1, road.NY))
+	nx, ny, nz := road.NX, road.NY, road.NZ
+	if ground.Found {
+		c.Height = ground.Height
+		nx, ny, nz = ground.NX, ground.NY, ground.NZ
+	}
+	c.Pitch = math.Atan(-(nx*math.Cos(c.Angle) + nz*math.Sin(c.Angle)) / math.Max(.1, ny))
+	c.Roll = math.Atan(-(nx*math.Sin(c.Angle) - nz*math.Cos(c.Angle)) / math.Max(.1, ny))
 	c.Offroad = road.Side > road.Right || road.Side < -road.Left
 	return road
 }

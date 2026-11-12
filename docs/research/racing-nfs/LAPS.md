@@ -1,32 +1,47 @@
-# 路肩计圈与复位回归
+# 连续计圈、当前位置复位与真实地表
 
-用户报告凯尔特遗迹三圈比赛一直显示 1/3，并且复位位置有时偏远。故障来自有效检查点范围：驾驶模型允许驶上两侧 3 m 路肩，但检查点只接受车身覆盖柏油路。839 个采样点中漏掉一个后，后续检查点全部等待；显示的已完成圈数保持 0，复位也回到过期的已通过检查点。
+本轮替代此前「两侧 3 m 路肩也接受全部密集门线」的修补。四条原路线不再把每个 VROAD 采样点当作必须依次通过的门，也不设横向距离、区段见证、最短路比例或额外反抄近路门槛；可行驶范围由实际场景与碰撞决定。
 
-修改使检查点与驾驶模型共用两侧 3 m 路肩范围，仍要求车身相交、正确高程、按序且正向经过全部门线。没有更改圈数显示公式、复位动作、赛道或运动参数，也没有增加协议字段。
+## 计圈和旧存档
 
-## 先行复现
+服务端按车辆当前局部道路投影维护连续的有符号绕行次数。原起步位置在起终点后方，第一次正向经过只是进入第一圈；完成一周后的正向跨越才增加已完成圈数。反向跨越抵消对应绕行，终点往返和静止不能反复领奖，已完成的 `lap` 不倒扣。圈数事件、完赛时间和首车后 30 秒期限仍由权威物理步生成。
 
-失败清单为 `games/racing/tests/lap-reset-failures.md`。生产 Module 从原起点以普通 `drive` 在 UK 第 20～35 点短暂驶上左侧路肩，然后正常返回道路。
+新 `lapTrack` 只写入存档，不出现在动态 View 或结算车辆投影。原有 `gate/checkpoint` 现在表示当前位置附近的道路点，供电脑和定位使用，不再是锁住整圈的稠密门线序列。连续性校验比较物理步起点与上次私有跟踪位置；真正积分和多车碰撞后的位移不受人为距离预算限制。外部跳改存档坐标会重新锚定，不当成已经开过的绕行。上下重叠道路依实际地表层区分。
 
-- 修复前：实际行驶 3,877.1 m，路线长 3,867.1 m；已完成圈数仍为 0，gate=20、checkpoint=21、routeIndex=1。
-- 修复前加入正常制动／复位：车辆回到约 209.1 m 以外的过期检查点。
-- 修复后：同样路线正常计圈；复位距离约 3.57 m，复位前后圈数与该动作提交时的进度相同；随后经 Restore 并继续普通驾驶，完成三圈且生成完赛时间。
+旧 v3 没有跟踪记录时保留已知圈数、比赛身份和期限，从当前物理相位继续；不会在 Restore 时推算过去漏掉了几圈。没有序号修复的 Restore 保持输入存档字节，下一次正常保存时才写入新跟踪记录。四份历史夹具直接来自旧代码原起点普通驾驶、离道返回并实际完成一周却仍为 lap0 的状态，位于 `games/racing/tests/fixtures/stale-v3-laps/`；没有修改它们的车位、进度或圈数。
 
-另有四条原路线共 28 项隔离几何检查，覆盖铺装路面、路肩内外、脱离路线的捷径、不同高程、逆向和静止。旧版逆向／终点捷径保护与同帧冲线顺序检查保留。
+## 行驶中复位
 
-## 重放与证据
+v3 的 R 不要求减速，也没有额外 5 秒冷却。发车前返回「发车后可复位」；复位后的 2 秒保护动画内返回「正在复位」，结束即可再次操作。公开 `controls.canReset` 使用同一规则。
+
+落点取车辆当前位置附近、同层道路的投影和合法可用车道，不使用过期 gate。复位保持已完成圈数和动作提交时的进度，不把位置重定位计入绕行，也不更改其他车辆或比赛期限。原输入被释放，车辆停稳并受保护。旧 physics=0 存档继续原有速度／冷却兼容规则。
+
+## 地面决定附着，不按离道距离惩罚
+
+当前赛道的原始 `collision.json` 提供真实顶点、面及 raw effect。服务端使用按原几何摘要和源 blob 摘要绑定的纯数值地表目录，客户端加载同一原始 blob；没有修改旧 route、规则几何或原 blob 字节。
+
+查询按水平三角面命中及参考高度选择实际层。原 raw effect0 为 not_driveable 装饰／树／屋顶等面，不作为轮胎地面；近竖直面也不作为 floor，原目录仍完整保留。车身高度、俯仰和侧倾来自实际命中地面的高度／法线；没有命中时使用中性回退。轮胎查询使用五车原四轮中心、轮径和 groundOffset，按车身朝向变换到世界位置；前后轴分别平均实际命中材质，实际接触法线提供坡度和法向载荷。
+
+附着参数使用原 EXE 中精确匹配的 32 个 float32 `SURFACE_FACTORS`，位置、摘要和原值在 `terrain-materials.json`。公开重建给出的干燥公式按 road factor1 归一为 `k*(1+k/4)/1.25`，其中 `k=(factor+1)/2`；数值字节匹配和公式语义依据分别说明，不声称已完成原版运行测量。未知／未命中不自动视作草地，碰撞摩擦表不冒充滚动阻力。
+
+此前按道路横向距离降低 grip、增加 resistance 的规则已删除，电脑离路后固定限到 9 m/s 的规则也已删除。保留模型自身滚阻、风阻和收油损失，不增加离道距离或低抓地到滚阻的惩罚倍率。实际材质与坡度仍会影响车辆附着和受力。
+
+## 验证范围
+
+实现前扩展清单为 `games/racing/tests/lap-reset-failures.md`，普通驾驶与复位测试为 `lap_topology_e2e_test.go`。真实驾驶从生产原起点开始，发送普通 `drive/reset`；没有 BotAction、车位、检查点、结果或时钟状态注入。
+
+当前稳定开放区：France 右侧 562～594、Coastal 左侧 8～17、UK 左侧 803～831、Park 右侧 176～192。外侧驾驶跟随局部道路 i+3，避免朝很远的目标横切真实草坡。四轨分别覆盖普通铺装一圈、离道返回一圈，以及离道返回、R／Restore、已完成首圈后的高速 R 和实际三圈。记录最远距离，不要求物理墙体外也能达到某个测试数字。20／100 m 及更远偏移的无横向门槛属性另以明确隔离的拓扑检查验证，不能把它们当实驾穿墙证据。
+
+四份旧故障状态还分别验证了不追补圈数的恢复、当前位置复位及后续普通驾驶完成一圈。其余覆盖包括倒车／静止终点往返、权威大碰撞位置校正、外部坐标跳改、不同地表层、原始轮位材质、Go／TypeScript 接触与预测对照、六车消息预算以及全部新旧赛道完整比赛。原生浏览器输入、HUD 和材质画面由浏览器验收另行记录，不能用 Module 时间推进代替真实时间浏览器结果。
+
+可重复执行：
 
 ```sh
 . scripts/env.sh
-export WIRE_BOARD_RACING_EVIDENCE="$PWD/.local/racing-laps/replay"
-go test ./games/racing/... -run 'TestClassicHumanLinesCountCompletedCircuit|TestClassicGateRoadShoulderAndProtection|TestOrderedGateProtection|TestFinishRanksUseActualCrossingWithinStep' -count=1 -v
-go test ./games/racing/... -count=1 -timeout=45m
-npm --prefix web run build
-python3 -B scripts/racing/check-nfs.py --out .local/racing-laps/browser-new --phase laps
+go test ./games/racing/... -count=1 -timeout=30m
+node --experimental-strip-types --test games/racing/tests/classic-terrain.test.mjs games/racing/tests/classic-prediction.test.mjs games/racing/tests/classic-props.test.mjs
 ```
 
-网页脚本从正常起点执行同样的路肩驾驶，用原生 R 键复位，再通过平台托管继续实际三圈比赛。它等待真实服务器时间，核对每次权威圈数与可见 HUD，保留 2/3、3/3 和最终完赛截图，不写入坐标、检查点、圈数、事件或时钟。复位前后比赛身份、时限和已完成圈数必须一致。
+本轮日志和逐场轨迹位于 `.local/racing-laps/continuous/`，最终摘要、来源与源码摘要见 [continuous-validation.json](continuous-validation.json)。最后连续性修正后的完整当前源码 Go 回归通过：server 1.011 秒、tests 516.442 秒；60 场真实混合车型与 75 场旧版自然比赛全部实际完赛。四轨普通／离道／R 与恢复后三圈共 12 场普通驾驶全部通过，France、Coastal、UK、Park 三圈场景实际最远离道分别为 16.563、23.815、14.876、22.414 m。六车、六喇叭与完整 24 条事件压力消息最大 7,595 字节。2,595 个真实地表／四轮 Go／TypeScript 采样最大差约 `4.55e-13`；9 项所属 Node 检查通过。
 
-本次针对性红／绿日志为 `.local/racing-laps/all-before.log`、`targeted-after.log`，轨迹在 `before/module/` 与 `after/module/`。完整回归和实际网页结果以同目录的 `full-regression.log` 与 `browser-01/report.json` 为准。
-
-完整 Go 回归通过（server 0.829 s，tests 470.681 s）；实际网页七项检查通过，观察到已完成圈数 1、2、3，仪表与权威状态一致，第三圈生成有效完赛时间。脚本在正常鉴权的 HTTP 驾驶后使用原生 R 键，再通过平台托管完成实际比赛；未使用实体手机测试。摘要与产物哈希见 [laps-validation.json](laps-validation.json)。
+这些是 Module 与数值实现结果。旧的 `.local/racing-laps/browser-01` 与 3 m 修补记录仅是历史证据，不能当作本轮最终浏览器验收；当前原生输入、HUD、地表画面与性能结论由最终浏览器记录说明。

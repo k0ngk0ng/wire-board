@@ -19,6 +19,9 @@ import type { ChasePose } from "./chase-camera";
 import { ClassicRenderer } from "./classic-renderer";
 import type { ClassicScenePack } from "./classic-loading";
 import { classicPropWorld, type ClassicRuleTrack } from "./classic-road";
+import { ClassicGauges, classicGaugeArc } from "./ClassicGauges";
+import { classicGaugeReading } from "./classic-gauges";
+import { classicVehicle } from "./classic-motion";
 type Engine = {
   mode: string;
   resize: () => void;
@@ -283,17 +286,27 @@ export function TrackCanvas(props: TrackCanvasProps) {
             "--race-speed",
             String(Math.min(1, car.speed / MAX_ROAD_SPEED)),
           );
-          const speed = host.querySelector("[data-racing-speed]"),
-            gear = host.querySelector("[data-racing-gear]"),
-            rpm = host.querySelector("[data-racing-rpm]");
-          if (speed) speed.textContent = String(Math.round(car.speed * 0.36));
-          if (gear)
-            gear.textContent =
-              car.gear === -1
-                ? "R"
-                : `D${car.gear || automaticGear(car.speed)}`;
-          if (rpm)
-            rpm.textContent = String(Math.round((car.rpm ?? 0) / 100) * 100);
+          const reading = classicGaugeReading(
+            d.physics === 3 ? car : {...car,gear:car.gear || automaticGear(car.speed)},
+            classicVehicle(car.vehicle ?? "p911").redlineRPM,
+          );
+          for (const [selector,value] of [
+            ["[data-racing-speed]",String(reading.speed)],
+            ["[data-racing-rpm]",String(reading.rpm)],
+            ["[data-racing-gear]",reading.gear],
+          ]) host.querySelectorAll(selector).forEach(element => { element.textContent = value; });
+          if (d.physics === 3) {
+            host.querySelectorAll("[data-racing-speed-needle]").forEach(needle => {
+              needle.setAttribute("transform",`rotate(${reading.speedAngle} 80 80)`);
+              needle.setAttribute("data-value",String(reading.speed));
+            });
+            host.querySelectorAll("[data-racing-rpm-needle]").forEach(needle => {
+              needle.setAttribute("transform",`rotate(${reading.rpmAngle} 80 80)`);
+              needle.setAttribute("data-value",String(reading.rpm));
+            });
+            host.querySelectorAll("[data-racing-redline]").forEach(redline => redline.setAttribute("d",classicGaugeArc(reading.redlineAngle)));
+            host.querySelectorAll(".racing-gauges").forEach(gauges => gauges.setAttribute("aria-label", `速度 ${reading.speed} 千米每小时，转速 ${reading.rpm} 转每分钟，挡位 ${reading.gear}`));
+          }
         }
         const m = mini.current,
           ctx = m?.getContext("2d");
@@ -401,22 +414,16 @@ export function TrackCanvas(props: TrackCanvasProps) {
         <canvas ref={mini} width={160} height={112} aria-hidden="true" />
         <span>赛道图</span>
       </button>
-      <div
+      {props.data.physics === 3 ? <ClassicGauges hidden={props.hudVisible === false} /> : <div
         hidden={props.hudVisible === false}
         className="racing-speedometer"
         aria-label="自动挡速度表"
       >
         <span data-racing-speed>0</span>
         <small>km/h</small>
-        <strong data-racing-gear>D1</strong>
-        {props.data.physics === 3 ? (
-          <em>
-            <span data-racing-rpm>0</span> rpm
-          </em>
-        ) : (
-          <em>自动挡</em>
-        )}
-      </div>
+        <strong data-racing-gear>1</strong>
+        <em>自动挡</em>
+      </div>}
       {props.rear && <span className="racing-rear-indicator">向后看</span>}
       {mode === "canvas" && (
         <span className="racing-render-note">简化画面</span>

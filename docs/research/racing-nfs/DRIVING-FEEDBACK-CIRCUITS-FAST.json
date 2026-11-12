@@ -1,0 +1,8 @@
+{
+  "_scope": "Ordinary human-seat browser control plan: paved cruise target 22 m/s, unchanged curvature braking preview and 4 m/s actual-terrain excursion. This is a driving input plan, not a game speed, lap, time or distance rule. All physical three-lap, native R, HUD, identity and deadline assertions remain unchanged.",
+  "_terrainReference": "docs/research/racing-nfs/DRIVING-FEEDBACK-CIRCUITS.json",
+  "france": {"outsideM": 10, "speed": 22, "zone": {"start": 562, "end": 594, "side": 1, "extra": 10}},
+  "coastal": {"outsideM": 20, "speed": 22, "zone": {"start": 8, "end": 17, "side": -1, "extra": 20}},
+  "uk": {"outsideM": 10, "speed": 22, "zone": {"start": 803, "end": 831, "side": -1, "extra": 10}},
+  "park": {"outsideM": 20, "speed": 22, "zone": {"start": 176, "end": 192, "side": 1, "extra": 20}}
+}

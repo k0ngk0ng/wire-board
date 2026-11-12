@@ -14,6 +14,7 @@ import {
   type NativeClassicRoute,
 } from "./classic-road";
 import { classicHornAssets } from "./classic-horn";
+import { classicTerrainForRoute } from "./classic-terrain-loading";
 import type { Track, View } from "./types";
 
 export type ClassicScenePack = {
@@ -120,10 +121,19 @@ export async function loadClassicScene(
   signal.throwIfAborted();
   const raw = JSON.parse(
     new TextDecoder().decode(files.get(`tracks/${data.track.id}.route.json`)!),
-  ) as NativeClassicRoute;
+  ) as NativeClassicRoute & { origin: number[]; sourceTransform: number[] };
   const track = classicTrackFromRoute(raw);
   if (track.geometry !== data.track.geometry || track.id !== data.track.id)
     throw Error("赛道规则与画面版本不一致，请重新载入");
+  const terrainPath = `tracks/${data.track.id}.collision.json`;
+  const terrainSource = manifest.assets.find((file) => file.path === terrainPath);
+  if (!terrainSource) throw Error("缺少当前赛道地表清单");
+  track.terrain = classicTerrainForRoute(
+    JSON.parse(new TextDecoder().decode(files.get(terrainPath)!)),
+    raw,
+    terrainSource.sha256,
+    track,
+  );
   const propCatalog = JSON.parse(
     new TextDecoder().decode(files.get(`props/${data.track.id}.json`)!),
   ) as ClassicPropCatalog & { track: string };

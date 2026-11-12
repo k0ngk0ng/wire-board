@@ -125,6 +125,8 @@ func classicBotAction(ctx gameapi.Context, s State) (json.RawMessage, error) {
 	road := ClassicRoadAt(t, c.X, c.Y, c.Height, c.RouteIndex)
 	speed := c.Speed / 10
 	cruise, lateralBudget, brakingBudget, accelerationBudget := classicFleetPace(s, speed)
+	tires := ClassicTerrainSurface(t, &c, ClassicSurfaceFor(road, c.Angle))
+	lateralBudget *= math.Min(tires.FrontGrip, tires.RearGrip)
 	look := clamp(4+speed*.35, 6, 24)
 	target, targetIndex := classicAhead(t, road.Index, road.Fraction, look*10)
 	// The native centreline is a conservative racing line. Computers merge by
@@ -217,10 +219,6 @@ func classicBotAction(ctx gameapi.Context, s State) (json.RawMessage, error) {
 	}
 	if math.Abs(diff) > 1.2 {
 		targetSpeed = math.Min(targetSpeed, 3.5)
-	}
-	excess := math.Max(0, math.Max(road.Side-road.Right, -road.Side-road.Left)) / 10
-	if excess > .3 {
-		targetSpeed = math.Min(targetSpeed, 9)
 	}
 	for _, other := range s.Cars {
 		if other.Seat == c.Seat || other.FinishAt > 0 || math.Abs(other.Height-c.Height) > 20 {

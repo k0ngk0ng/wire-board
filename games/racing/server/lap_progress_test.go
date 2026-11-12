@@ -1,50 +1,107 @@
 package racing
 
-// Isolated geometry failure cases are listed before implementation in
-// ../tests/lap-reset-failures.md. Driven Module coverage remains the primary gate.
+// Isolated numerical protections, listed before implementation in
+// ../tests/lap-reset-failures.md. Actual Module drive is the primary evidence.
 import (
+	"encoding/json"
+	"fmt"
+	"github.com/k0ngk0ng/wire-board/internal/gameapi"
 	"math"
 	"testing"
+	"time"
 )
 
-func TestClassicGateRoadShoulderAndProtection(t *testing.T) {
-	for _, id := range []string{"uk", "france", "coastal", "park"} {
-		track, _ := classicTrackByID(id)
-		for _, test := range []struct {
-			name                         string
-			shoulder, height             float64
-			reverse, stationary, allowed bool
-		}{
-			{"road", -10, 0, false, false, true},
-			{"near_shoulder", 15, 0, false, false, true},
-			{"outer_shoulder", 29, 0, false, false, true},
-			{"detached_shortcut", 65, 0, false, false, false},
-			{"different_elevation", 15, 100, false, false, false},
-			{"reverse", 15, 0, true, false, false},
-			{"stationary", 15, 0, false, true, false},
-		} {
-			t.Run(id+"/"+test.name, func(t *testing.T) {
-				i := 10
-				p, v, r := track.Points[i], tangent(track, i), track.Road[i]
-				l := math.Hypot(r.RX, r.RZ)
-				x, y := p.X-r.RX/l*(r.Left+test.shoulder), p.Y-r.RZ/l*(r.Left+test.shoulder)
-				height := r.Height - (r.NX*(x-p.X)+r.NZ*(y-p.Y))/math.Max(.1, r.NY) + test.height
-				before := Point{x - v.X*2, y - v.Y*2}
-				after := Point{x + v.X*2, y + v.Y*2}
-				if test.reverse {
-					before, after = after, before
+func TestClassicWindingHasNoLateralGate(t *testing.T) {
+	for _, id := range []string{"france", "coastal", "uk", "park"} {
+		for _, extra := range []float64{0, 100, 200, 1000} {
+			t.Run(fmt.Sprintf("%s-extra%.0f", id, extra), func(t *testing.T) {
+				ctx := gameapi.Context{Players: 2, Now: time.Unix(1000, 0)}
+				options, _ := json.Marshal(map[string]any{"track": id, "laps": 3})
+				m, err := Module().Start(ctx, options)
+				if err != nil {
+					t.Fatal(err)
 				}
-				if test.stationary {
-					before = after
+				s, err := decode(m)
+				if err != nil {
+					t.Fatal(err)
 				}
-				s := State{Physics: 3, Options: Options{Track: id, Laps: 3}, Track: track, Cars: []Car{{Seat: 0, Vehicle: "p911", Checkpoint: i, Gate: i - 1, X: after.X, Y: after.Y, Height: height}}}
-				updateProgress(&s, &s.Cars[0], before, 1020)
-				advanced := s.Cars[0].Checkpoint == i+1
-				if advanced != test.allowed {
-					t.Fatalf("gate advanced=%v want %v: %+v", advanced, test.allowed, s.Cars[0])
+				s.Phase = "racing"
+				c := &s.Cars[0]
+				at := s.StartAt
+				move := func(target Point, index int) {
+					origin := Point{c.X, c.Y}
+					steps := int(math.Ceil(dist(origin, target) / 10))
+					if steps < 1 {
+						steps = 1
+					}
+					for k := 1; k <= steps; k++ {
+						before := Point{c.X, c.Y}
+						f := float64(k) / float64(steps)
+						c.X = origin.X + (target.X-origin.X)*f
+						c.Y = origin.Y + (target.Y-origin.Y)*f
+						c.RouteIndex = index
+						r, p := s.Track.Road[index], s.Track.Points[index]
+						c.Height = r.Height - (r.NX*(c.X-p.X)+r.NZ*(c.Y-p.Y))/math.Max(.1, r.NY)
+						c.Speed = dist(before, Point{c.X, c.Y}) / .02
+						at += 20
+						updateProgress(&s, c, before, at)
+					}
 				}
-				if s.Cars[0].Lap != 0 || s.Cars[0].FinishAt != 0 {
-					t.Fatal("non-finish gate changed lap")
+				for i := 0; i <= len(s.Track.Points); i++ {
+					j := i % len(s.Track.Points)
+					p, r := s.Track.Points[j], s.Track.Road[j]
+					if extra > 0 && j >= 20 && j <= 35 {
+						l := math.Hypot(r.RX, r.RZ)
+						p.X -= r.RX / l * (r.Left + extra)
+						p.Y -= r.RZ / l * (r.Left + extra)
+					}
+					move(p, j)
+				}
+				if c.Lap != 1 {
+					t.Fatalf("continuous circuit blocked by lateral offset: lap=%d gate=%d checkpoint=%d", c.Lap, c.Gate, c.Checkpoint)
+				}
+				p, v := s.Track.Points[0], tangent(s.Track, 0)
+				for k := 0; k < 20; k++ {
+					move(Point{p.X - v.X*2, p.Y - v.Y*2}, len(s.Track.Points)-1)
+					move(Point{p.X + v.X*2, p.Y + v.Y*2}, 0)
+				}
+				if c.Lap != 1 {
+					t.Fatal("finish oscillation awarded or removed a lap", c.Lap)
+				}
+				c.Speed, c.VX, c.VY = 0, 0, 0
+				for k := 0; k < 10; k++ {
+					at += 20
+					updateProgress(&s, c, Point{c.X, c.Y}, at)
+				}
+				if c.Lap != 1 {
+					t.Fatal("stationary finish changed lap")
+				}
+				// Trust the authoritative engine step, including multi-car
+				// separation, when its origin matches the last tracked position.
+				beforeCorrection := Point{c.X, c.Y}
+				c.X, c.Y = s.Track.Points[3].X, s.Track.Points[3].Y
+				c.Height = s.Track.Road[3].Height
+				c.RouteIndex = 3
+				at += 20
+				updateProgress(&s, c, beforeCorrection, at)
+				if c.LapTrack.Turns != c.Lap {
+					t.Fatal("authoritative position correction lost winding")
+				}
+				before := Point{c.X, c.Y}
+				j := len(s.Track.Points) / 2
+				c.X = s.Track.Points[j].X
+				c.Y = s.Track.Points[j].Y
+				c.RouteIndex = j
+				// The next real engine step starts from the externally relocated
+				// point, which does not match the stored tracking origin.
+				before = Point{c.X, c.Y}
+				at += 20
+				updateProgress(&s, c, before, at)
+				if c.Lap != 1 {
+					t.Fatal("nonphysical jump changed lap")
+				}
+				if c.LapTrack.Turns != c.Lap-1 {
+					t.Fatal("external relocation did not reanchor without lap credit")
 				}
 			})
 		}

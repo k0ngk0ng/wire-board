@@ -195,6 +195,10 @@ func collide(s *State, at int64) {
 	}
 }
 func updateProgress(s *State, c *Car, before Point, at int64) {
+	if s.Physics == 3 {
+		updateClassicProgress(s, c, before, at)
+		return
+	}
 	t := s.Track
 	n := len(t.Points)
 	if c.FinishAt > 0 {
@@ -215,19 +219,6 @@ func updateProgress(s *State, c *Car, before Point, at int64) {
 		x, y := before.X+(c.X-before.X)*f, before.Y+(c.Y-before.Y)*f
 		lateral := math.Abs((x-p.X)*(-v.Y) + (y-p.Y)*v.X)
 		allowed := lateral <= t.RoadWidth/2+CarRadius
-		if s.Physics == 3 {
-			road := t.Road[i]
-			rl := math.Hypot(road.RX, road.RZ)
-			side := 0.
-			if rl > 1e-8 {
-				side = ((x-p.X)*road.RX + (y-p.Y)*road.RZ) / rl
-			}
-			// The same 3 m shoulder used by the driving model belongs to the
-			// route. Requiring every dense sample to overlap the paving strands
-			// a legitimate lap (and its reset point) after a brief excursion.
-			margin := ClassicVehicleBody(c.Vehicle).Width*5 + 30
-			allowed = side >= -road.Left-margin && side <= road.Right+margin && math.Abs(c.Height-road.Height) < 20
-		}
 		if !allowed {
 			break
 		}
@@ -271,13 +262,6 @@ func updateProgress(s *State, c *Car, before Point, at int64) {
 		dx, dy := b.X-a.X, b.Y-a.Y
 		length := math.Hypot(dx, dy)
 		local := clamp(((c.X-a.X)*dx+(c.Y-a.Y)*dy)/length, 0, length)
-		if s.Physics == 3 {
-			segmentLength := total - arcs[i]
-			if i+1 < n {
-				segmentLength = arcs[i+1] - arcs[i]
-			}
-			local = clamp(((c.X-a.X)*dx+(c.Y-a.Y)*dy)/(length*length), 0, 1) * segmentLength
-		}
 		c.Progress = float64(c.Lap)*total + arcs[i] + local
 	}
 }
