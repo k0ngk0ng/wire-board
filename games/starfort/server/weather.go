@@ -34,6 +34,14 @@ func (s *State) weatherFor(wave int) WaveEvent {
 			e.Description = "敌速减少 10%；除冰塔外攻击 10% 概率 MISS，同塔同敌人落空后 10 秒内不再 MISS；冰封延长 2 秒、冷却减少 2 秒，攻速冰塔额外减速 15 个百分点"
 		}
 	}
+	if s.weatherV3() {
+		switch id {
+		case "fog":
+			e.Description = "除箭塔外射程减少 10%；敌人每秒 10% 概率倒退 3 秒，触发后 15 秒保护；箭雨多命中 1 个目标、击退增加 10，残废箭伤害增加 10%"
+		case "starlight":
+			e.Description = "除法师塔外攻速减少 10%；敌人每秒 10% 概率睡眠 3 秒、承受半伤，其他负面效果翻倍，触发后 10 秒保护；威力法师伤害 ×1.2，流星雨概率增加 10 个百分点"
+		}
+	}
 	return e
 }
 
@@ -46,6 +54,10 @@ func (s *State) upgradePrice(t Tower) int {
 	return int(math.Min(maxValue, math.Round(float64(base)*(1+extra))))
 }
 func (s *State) cannonArea(level int) areaGrowth {
+	if s.weatherV3() {
+		n := max(1, level) - 1
+		return areaGrowth{Chance: min(100, 10+5*((n+2)/3)), Radius: 100 + 10*float64((n+1)/3), Damage: .2 + .05*float64(n/3)}
+	}
 	g := cannonGrowth(level)
 	if s.weathered() {
 		g.Radius = 100 + 5*float64(max(1, level)/3)
@@ -53,6 +65,15 @@ func (s *State) cannonArea(level int) areaGrowth {
 	return g
 }
 func (s *State) volleyArea(level int) areaGrowth {
+	if s.weatherV3() {
+		level = max(1, level)
+		n := level - 1 - level/10
+		g := areaGrowth{Chance: min(100, 10+5*((n+2)/3)), Radius: 200 + 50*float64((n+1)/3), Damage: .3 + .05*float64(n/3), Targets: 3 + level/10}
+		if s.World.Event.ID == "fog" {
+			g.Targets++
+		}
+		return g
+	}
 	if !s.weathered() {
 		return volleyGrowth(level)
 	}
@@ -65,6 +86,11 @@ func (s *State) volleyArea(level int) areaGrowth {
 	return g
 }
 func (s *State) craterArea(level int) (int, int64, float64) {
+	if s.weatherV3() {
+		level = max(1, level)
+		n := level - 1 - level/5
+		return min(100, 10+5*((n+1)/2)), int64(max(StepMS, (20-2*(n/2))*1000)), 5 + float64(level/5)
+	}
 	if !s.weathered() {
 		return craterGrowth(level)
 	}
@@ -80,7 +106,16 @@ func meteorArea(level int) (float64, float64) {
 	n := max(1, level) - 1
 	return 30 + 3*float64((n+1)/2), .3 + .03*float64(n/2)
 }
-func (s *State) freezeTiming() (int64, int64) {
+func (s *State) freezeTiming(level int) (int64, int64) {
+	if s.weatherV3() {
+		n := max(1, level) - 1
+		duration, cd := int64(2000+1000*((n+1)/3)), int64(10000-2000*(n/3))
+		if s.World.Event.ID == "frost" {
+			duration += 2000
+			cd -= 2000
+		}
+		return duration, max(StepMS, cd)
+	}
 	if s.World.Event.ID == "frost" {
 		return 4000, 8000
 	}
@@ -97,7 +132,7 @@ func (s *State) weatherStats(t Tower) (float64, float64, int) {
 		rate *= .7
 	case "arrow/heart":
 		if s.World.Event.ID == "fog" {
-			damage *= 1.05
+			damage *= s.heartFogBonus()
 		}
 	case "cannon/power":
 		damage *= 1.2
@@ -116,6 +151,9 @@ func (s *State) weatherStats(t Tower) (float64, float64, int) {
 	return damage, radius, max(StepMS, int(float64(c.Interval)/rate))
 }
 func (s *State) weatherChoices(t Tower) []BranchChoice {
+	if s.weatherV3() {
+		return s.weatherV3Choices(t)
+	}
 	level := max(4, t.Level)
 	choices := []BranchChoice{}
 	switch t.Kind {
@@ -125,17 +163,17 @@ func (s *State) weatherChoices(t Tower) []BranchChoice {
 		choices = []BranchChoice{{"power", "威力专精", fmt.Sprintf("伤害 ×1.2；%d%% 概率在主目标半径 %.0f 内追加 %.0f%% 伤害；填坑中的敌人额外受到 50%% 伤害；升级依次增加概率、半径、伤害", g.Chance, g.Radius, g.Damage*100)}, {"speed", "阻滞专精", fmt.Sprintf("攻速 ×0.8；%d%% 概率生成工作量 %.0f 的弹坑，冷却 %.1f 秒；同敌人 4 秒内不受同塔其他弹坑影响，精英／星陨巨像填坑时间为 50%%；10 的倍数等级只加工作量，其余升级交替增加概率、减少冷却", chance, work, float64(cd)/1000)}}
 	case "arrow":
 		g := s.volleyArea(level)
-		chance, percent := heartArea(level)
+		chance, percent := s.heartArea(level)
 		push := 40
 		if s.World.Event.ID == "fog" {
 			push = 50
 		}
 		choices = []BranchChoice{{"volley", "风羽箭雨", fmt.Sprintf("攻速 ×0.7；%d%% 概率对主目标半径 %.0f 内最多 %d 个其他敌人造成 %.0f%% 伤害；独立 15%% 概率击退存活主目标 %d，精英／星陨巨像减半，同塔 8 秒免疫；升级依次增加概率、半径、伤害，10 的倍数等级只加目标", g.Chance, g.Radius, g.Targets, g.Damage*100, push)}, {"heart", "一箭残废", fmt.Sprintf("%d%% 概率追加目标剩余生命 %.0f%% 的伤害，同塔对同敌人 5 秒免疫；升级交替增加概率、伤害；薄雾下本塔伤害额外增加 5%%", chance, percent*100)}}
 	case "frost":
-		duration, cd := s.freezeTiming()
+		duration, cd := s.freezeTiming(level)
 		choices = []BranchChoice{{"freeze", "冰封专精", fmt.Sprintf("攻速 ×0.5；15%% 概率冰封射程内敌人 %.0f 秒，冷却 %.0f 秒，随后 8 秒逐渐恢复速度；同塔对同敌人 8 秒免疫，精英／星陨巨像完全有效；寒潮延长冰封 2 秒、冷却减少 2 秒", float64(duration)/1000, float64(cd)/1000)}, {"speed", "攻速专精", "攻速 ×1.5；减速及持续时间随等级提高，寒潮额外减速 15 个百分点；无冰墙及永久减速"}}
 	case "arcane":
-		radius, percent := meteorArea(level)
+		radius, percent := s.meteorArea(level)
 		chance := 15
 		if s.World.Event.ID == "starlight" {
 			chance = 25
@@ -166,21 +204,18 @@ func (s *State) weatherPassive(t Tower) *PassiveView {
 		p.TriggerChance = s.volleyArea(t.Level).Chance
 	case "arrow/heart":
 		p.Variant = "heart"
-		p.TriggerChance, _ = heartArea(t.Level)
+		p.TriggerChance, _ = s.heartArea(t.Level)
 	case "frost/freeze":
 		p.Variant = "freeze"
-		p.TriggerChance = 15
-		_, p.CooldownMS = s.freezeTiming()
+		p.TriggerChance = s.freezeChance(t.Level)
+		_, p.CooldownMS = s.freezeTiming(t.Level)
 	case "frost/speed":
 		factor, duration := s.iceAttack(t)
 		p.Description = fmt.Sprintf("攻速 ×1.5；命中减速 %.0f%%，持续 %.1f 秒；寒潮额外减速 15 个百分点；无冰墙及永久减速", (1-factor)*100, float64(duration)*StepMS/1000)
 	case "arcane/magic":
 		p.Variant = "meteor"
-		p.TriggerChance = 15
-		if s.World.Event.ID == "starlight" {
-			p.TriggerChance = 25
-		}
-		p.CooldownMS = 10000
+		p.TriggerChance = s.meteorChance()
+		p.CooldownMS = s.meteorCooldown()
 	}
 	if p.CooldownMS == 0 {
 		p.ReadyInMS = 0
@@ -200,10 +235,7 @@ func (s *State) weatherHit(t *Tower, target Enemy, damage float64) {
 			if e.ID != target.ID || e.HP <= 0 || hasGuard(e.KnockbackGuards, t.ID, s.Tick) {
 				continue
 			}
-			distance := 40.
-			if s.World.Event.ID == "fog" {
-				distance += 10
-			}
+			distance := s.volleyPush() * float64(s.controlMultiplier(*e))
 			if heavy(*e) {
 				distance /= 2
 			}
@@ -232,23 +264,22 @@ func (s *State) weatherHit(t *Tower, target Enemy, damage float64) {
 			s.makeCrater(t, target)
 		}
 	case "frost/freeze", "arcane/magic":
-		chance := 15
-		if t.Kind == "arcane" && s.World.Event.ID == "starlight" {
-			chance = 25
+		chance := s.freezeChance(t.Level)
+		if t.Kind == "arcane" {
+			chance = s.meteorChance()
 		}
 		if now < t.PassiveReadyAt || !s.skillRoll(uint64(chance)) {
 			return
 		}
-		duration, cd := s.freezeTiming()
+		duration, cd := s.freezeTiming(t.Level)
 		if t.Kind == "arcane" {
-			cd = 10000
+			cd = s.meteorCooldown()
 		}
 		t.PassiveReadyAt = now + cd
 		_, rangePX, _ := s.towerStats(*t)
 		pad := s.World.Map.Pads[t.Pad]
-		radius, percent := meteorArea(t.Level)
+		radius, percent := s.meteorArea(t.Level)
 		indices := []int{}
-		ids := []int{}
 		for i, e := range s.Enemies {
 			if e.HP <= 0 || math.Hypot(e.X-pad.X, e.Y-pad.Y) > rangePX {
 				continue
@@ -264,33 +295,52 @@ func (s *State) weatherHit(t *Tower, target Enemy, damage float64) {
 				continue
 			}
 			indices = append(indices, i)
-			ids = append(ids, e.ID)
 		}
-		event := Event{TowerID: t.ID, X: pad.X, Y: pad.Y, Owner: t.Owner, Kind: t.Kind, StatusTargets: ids, Amount: rangePX}
-		if t.Kind == "frost" {
-			event.Type, event.Skill, event.FrozenUntil = "freeze", "freeze", s.Tick+duration/StepMS
+		// Group equal control durations so presentation receives exact per-target
+		// deadlines even when sleeping and awake enemies share the same attack.
+		for _, multiplier := range []int64{1, 2} {
+			group := []int{}
 			for _, i := range indices {
-				e := &s.Enemies[i]
-				e.FrozenUntil = max(e.FrozenUntil, event.FrozenUntil)
-				e.RecoveryUntil = e.FrozenUntil + 8000/StepMS
-				e.FreezeGuards = putGuard(s.freshGuards(e.FreezeGuards), t.ID, s.Tick+8000/StepMS)
-				event.RecoveryUntil = e.RecoveryUntil
+				if s.controlMultiplier(s.Enemies[i]) == multiplier {
+					group = append(group, i)
+				}
 			}
-		} else {
-			event.Type, event.Skill, event.SilencedUntil = "meteor", "meteor", s.Tick+3000/StepMS
-			event.X, event.Y, event.Amount = target.X, target.Y, radius
-			for _, i := range indices {
-				e := &s.Enemies[i]
-				e.SilencedUntil = max(e.SilencedUntil, event.SilencedUntil)
-				e.MeteorGuards = putGuard(s.freshGuards(e.MeteorGuards), t.ID, s.Tick+10000/StepMS)
+			if len(group) == 0 {
+				continue
 			}
+			event := Event{TowerID: t.ID, X: pad.X, Y: pad.Y, Owner: t.Owner, Kind: t.Kind, Amount: rangePX}
+			for _, i := range group {
+				event.StatusTargets = append(event.StatusTargets, s.Enemies[i].ID)
+			}
+			if t.Kind == "frost" {
+				event.Type, event.Skill, event.FrozenUntil = "freeze", "freeze", s.Tick+duration/StepMS*multiplier
+				for _, i := range group {
+					e := &s.Enemies[i]
+					e.FrozenUntil = max(e.FrozenUntil, event.FrozenUntil)
+					e.RecoveryUntil = e.FrozenUntil + 8000/StepMS*multiplier
+					e.FreezeGuards = putGuard(s.freshGuards(e.FreezeGuards), t.ID, s.Tick+8000/StepMS)
+					event.RecoveryUntil = e.RecoveryUntil
+				}
+			} else {
+				event.Type, event.Skill, event.SilencedUntil = "meteor", "meteor", s.Tick+3000/StepMS*multiplier
+				event.X, event.Y, event.Amount = target.X, target.Y, radius
+				for _, i := range group {
+					e := &s.Enemies[i]
+					e.SilencedUntil = max(e.SilencedUntil, event.SilencedUntil)
+					e.MeteorGuards = putGuard(s.freshGuards(e.MeteorGuards), t.ID, s.Tick+s.meteorProtection())
+				}
+			}
+			s.event(event)
 		}
-		s.event(event)
 		if t.Kind == "arcane" {
 			for _, i := range indices {
 				extra := percent
 				if heavy(s.Enemies[i]) {
-					extra += .5
+					if s.weatherV3() {
+						extra += 1
+					} else {
+						extra += .5
+					}
 				}
 				s.hitWithSkill(i, damage*extra, *t, "meteor")
 			}
@@ -321,7 +371,7 @@ func (s *State) leakDamage(e Enemy) int {
 	return base + int(math.Round(2*math.Max(0, math.Min(1, e.HP/e.MaxHP))))
 }
 func (s *State) validWeather() error {
-	if s.WeatherRules < 0 || s.WeatherRules > 2 || (s.weathered() && !s.growing()) {
+	if s.WeatherRules < 0 || s.WeatherRules > 3 || (s.weathered() && !s.growing()) {
 		return errors.New("无效天气规则")
 	}
 	if err := s.validWeatherV2(); err != nil {

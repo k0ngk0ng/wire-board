@@ -43,8 +43,8 @@ func v2Enemy(b *rulesTable, i int) map[string]any {
 func v2Field(v map[string]any, key string) float64 { x, _ := v[key].(float64); return x }
 func TestStarfortWeatherV2Version(t *testing.T) {
 	b := newModuleRulesTable(t, 1, map[string]any{}, starfort.Module())
-	if b.s.Schema != 9 || specializationRawView(b)["weatherRules"] != float64(2) {
-		t.Fatal("new games require schema 9/weatherRules 2")
+	if b.s.Schema != 10 || specializationRawView(b)["weatherRules"] != float64(3) {
+		t.Fatal("new games require schema 10/weatherRules 3")
 	}
 	old := weatherBoundary(t, "arrow", "volley", 4, "slime")
 	if old.s.Schema != 8 {

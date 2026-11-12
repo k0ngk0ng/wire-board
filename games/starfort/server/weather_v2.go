@@ -2,7 +2,7 @@ package starfort
 
 import "errors"
 
-func (s *State) weatherV2() bool       { return s.WeatherRules == 2 }
+func (s *State) weatherV2() bool       { return s.WeatherRules >= 2 }
 func (s *State) sleeping(e Enemy) bool { return s.weatherV2() && e.SleepingUntil > s.Tick }
 
 // Weather rolls use the server clock and saved RNG, once per enemy per second.
@@ -19,10 +19,14 @@ func (s *State) stepWeather() {
 		if s.Tick < e.WeatherReadyAt || !s.skillRoll(10) {
 			continue
 		}
-		e.WeatherReadyAt = s.Tick + 15000/StepMS
+		protection := int64(15000 / StepMS)
+		if s.weatherV3() && s.World.Event.ID == "starlight" {
+			protection = 10000 / StepMS
+		}
+		e.WeatherReadyAt = s.Tick + protection
 		kind := "confused"
 		if s.World.Event.ID == "fog" {
-			e.ConfusedUntil = s.Tick + 3000/StepMS
+			e.ConfusedUntil = s.Tick + 3000/StepMS*s.controlMultiplier(*e)
 			e.Repairing, e.RepairSinceMS = 0, 0
 		} else {
 			kind = "sleep"

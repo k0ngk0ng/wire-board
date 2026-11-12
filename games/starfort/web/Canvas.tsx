@@ -2331,7 +2331,7 @@ export function Battlefield({
       >
         {(data.weatherRules ?? 0) >= 1 && data.world?.event && (
           <div
-            className={`sf-weather sf-weather-${data.world.event.id}`}
+            className={`sf-weather sf-weather-${data.world.event.id}${(data.weatherRules ?? 0) >= 3 ? " sf-weather-field" : ""}`}
             data-sf-weather={data.world.event.id}
             role="img"
             aria-label={`天气：${data.world.event.label}`}
@@ -2339,7 +2339,14 @@ export function Battlefield({
             {Array.from({ length: 12 }, (_, i) => (
               <i
                 key={i}
-                style={{ left: `${i * 8.7}%`, animationDelay: `${-i * 0.6}s` }}
+                style={{
+                  left: `${i * 8.7}%`,
+                  top:
+                    (data.weatherRules ?? 0) >= 3
+                      ? `${(i * 37 + 7) % 92}%`
+                      : undefined,
+                  animationDelay: `${-i * 0.6}s`,
+                }}
               />
             ))}
           </div>
@@ -2476,7 +2483,9 @@ export function Battlefield({
                 ? " · 冰封中"
                 : ""}
               {(inspection.enemy.sleepingUntil ?? 0) > inspection.tick
-                ? " · 睡眠免伤中"
+                ? (data.weatherRules ?? 0) >= 3
+                  ? " · 睡眠中，承受半伤／负面效果翻倍"
+                  : " · 睡眠免伤中"
                 : ""}
               {(inspection.enemy.confusedUntil ?? 0) > inspection.tick
                 ? " · 迷途倒退中"
