@@ -370,12 +370,17 @@ func (s *State) step(now int64) {
 		if s.frozen(e) || s.sleeping(e) {
 			speed = 0
 		}
-		if s.weatherV2() && e.ConfusedUntil > s.Tick {
+		retreating := s.weatherV2() && e.ConfusedUntil > s.Tick
+		if retreating {
 			speed = -speed
+			// Retreat releases crater work even while freeze/sleep makes speed
+			// zero. Otherwise the enemy can rejoin the pit while immobilized,
+			// then move backwards with a stale repairing reference on thaw.
+			e.Repairing, e.RepairSinceMS = 0, 0
 		}
 		oldProgress := e.Progress
 		nextProgress := math.Max(0, e.Progress+speed*StepMS/1000)
-		if speed < 0 || !s.blockAtCrater(&e, nextProgress) {
+		if retreating || !s.blockAtCrater(&e, nextProgress) {
 			e.Progress = nextProgress
 		}
 		s.taskContact(e, oldProgress, e.Progress)
