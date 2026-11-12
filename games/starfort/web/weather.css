@@ -118,3 +118,48 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Full-field weather uses sparse, translucent marks over the world. Controls
+   stay above it, and all pointer input reaches the battlefield underneath. */
+.starfort-board .sf-weather-field {
+  inset: 0;
+  height: auto;
+}
+.sf-weather-field.sf-weather-calm {
+  background: none;
+}
+.sf-weather-field.sf-weather-fog {
+  background: #e8f0e908;
+}
+.sf-weather-field.sf-weather-fog i {
+  width: 38%;
+  height: 9%;
+  background: #eef3e91a;
+  filter: blur(12px);
+}
+.sf-weather-field.sf-weather-frost {
+  background: #c9eff508;
+}
+.sf-weather-field.sf-weather-frost i {
+  width: 3px;
+  height: 3px;
+  opacity: 0.65;
+  animation-name: sf-field-snow;
+  animation-duration: 7s;
+}
+.sf-weather-field.sf-weather-starlight {
+  background: #c9c1ff08;
+}
+.sf-weather-field.sf-weather-starlight i {
+  opacity: 0.65;
+}
+@keyframes sf-field-snow {
+  to {
+    transform: translate(25px, 40vh);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .starfort-board .sf-weather-field i {
+    animation: none;
+  }
+}

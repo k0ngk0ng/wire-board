@@ -209,7 +209,11 @@ func (s *State) iceSlowFactor(e Enemy) float64 {
 			}
 		}
 		if e.RecoveryUntil > s.Tick {
-			factor = math.Min(factor, math.Max(0, float64(s.Tick-e.FrozenUntil)/float64(s.recoveryMS()/StepMS)))
+			duration := s.recoveryMS() / StepMS
+			if s.weatherV3() {
+				duration = max(1, e.RecoveryUntil-e.FrozenUntil)
+			}
+			factor = math.Min(factor, math.Max(0, float64(s.Tick-e.FrozenUntil)/float64(duration)))
 		}
 		return factor
 	}

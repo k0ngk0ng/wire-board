@@ -39,7 +39,7 @@ func scenarioModule() gameapi.Module {
 			delete(v, "scenario")
 		}
 		switch scenario {
-		case "weather-v2-sleep", "weather-v2-medical", "weather-v2-fog", "weather-v2-frost", "weather-v2-starlight", "weather-v2-calm", "weather-calm", "weather-fog", "weather-frost", "weather-starlight", "weather-shop", "rebalance-growth-repair", "rebalance-growth-cannon", "rebalance-growth-arrow", "rebalance-growth-arcane", "rebalance-growth-refund", "rebalance-combat-frost", "rebalance-combat-arcane", "rebalance-tasks", "rebalance-reward", "rebalance-highground", "specialization-arrow", "specialization-frost", "specialization-cannon", "specialization-arcane", "density-observed", "density-central", "density-coop", "density-ceiling", "coop-growth", "coop-objectives", "ice-arrow", "ice-wall", "central-passives", "cadence", "cadence-speed", "vitality", "impact", "natural", "battle", "victory-ready", "defeat-ready", "advanced", "zero-gold", "growth-vote", "cleared-5", "cleared-10", "cleared-15", "stage2", "stage3", "stage4", "endless-rotation", "objectives", "objectives-clear", "objectives-fail", "legacy-save":
+		case "weather-v3-sleep", "weather-v3-fog", "weather-v3-frost", "weather-v3-starlight", "weather-v3-calm", "weather-v2-sleep", "weather-v2-medical", "weather-v2-fog", "weather-v2-frost", "weather-v2-starlight", "weather-v2-calm", "weather-calm", "weather-fog", "weather-frost", "weather-starlight", "weather-shop", "rebalance-growth-repair", "rebalance-growth-cannon", "rebalance-growth-arrow", "rebalance-growth-arcane", "rebalance-growth-refund", "rebalance-combat-frost", "rebalance-combat-arcane", "rebalance-tasks", "rebalance-reward", "rebalance-highground", "specialization-arrow", "specialization-frost", "specialization-cannon", "specialization-arcane", "density-observed", "density-central", "density-coop", "density-ceiling", "coop-growth", "coop-objectives", "ice-arrow", "ice-wall", "central-passives", "cadence", "cadence-speed", "vitality", "impact", "natural", "battle", "victory-ready", "defeat-ready", "advanced", "zero-gold", "growth-vote", "cleared-5", "cleared-10", "cleared-15", "stage2", "stage3", "stage4", "endless-rotation", "objectives", "objectives-clear", "objectives-fail", "legacy-save":
 		default:
 			return "", nil, errors.New("unknown test scenario")
 		}
@@ -147,7 +147,7 @@ func scenarioModule() gameapi.Module {
 			}
 			labels := map[string]string{"calm": "无特殊天气", "fog": "薄雾", "frost": "寒潮", "starlight": "星辉"}
 			s.World.Event = starfort.WaveEvent{ID: id, Label: labels[id], Wave: s.Wave}
-		case "weather-v2-sleep":
+		case "weather-v2-sleep", "weather-v3-sleep":
 			s.Phase, s.NextAt = "battle", 0
 			s.WaveInfo = starfort.WaveInfo{Total: 1, Spawned: 1, Title: "睡眠可视验收"}
 			r := s.World.Map.Routes[0]
@@ -163,16 +163,30 @@ func scenarioModule() gameapi.Module {
 			enemy["sleepingUntil"] = s.Tick + 150 // Long-lived visual-only fixture; duration tested at module boundary.
 			enemy["weatherReadyAt"] = s.Tick + 150
 			s = v2Patch(s, map[string]any{"enemies": []any{enemy}})
+			if scenario == "weather-v3-sleep" {
+				s.WeatherRules = 3
+			}
 		case "weather-v2-medical":
 			v, e := v2MedicalModule().Start(ctx, body)
 			if e != nil {
 				return match, e
 			}
 			_ = json.Unmarshal(v.Data, &s)
-		case "weather-v2-calm", "weather-v2-fog", "weather-v2-frost", "weather-v2-starlight":
+		case "weather-v3-calm", "weather-v3-fog", "weather-v3-frost", "weather-v3-starlight", "weather-v2-calm", "weather-v2-fog", "weather-v2-frost", "weather-v2-starlight":
+			s.WeatherRules = 2
+			if strings.HasPrefix(scenario, "weather-v3-") {
+				s.WeatherRules = 3
+				s.TowerSerial = 4
+				s.Towers = []starfort.Tower{}
+				for i, kind := range []string{"arrow", "cannon", "frost", "arcane"} {
+					branch := []string{"volley", "speed", "freeze", "magic"}[i]
+					s.Towers = append(s.Towers, starfort.Tower{ID: i + 1, Pad: i + 1, Owner: 0, Kind: kind, Level: 4, Branch: branch, Spent: 400, Priority: "first"})
+				}
+				s.Players[0].Gold = 2000
+			}
 			s.NextAt = ctx.Now.Add(5 * time.Minute).UnixMilli()
 			s.World.Objectives = nil
-			id := strings.TrimPrefix(scenario, "weather-v2-")
+			id := strings.TrimPrefix(strings.TrimPrefix(scenario, "weather-v2-"), "weather-v3-")
 			labels := map[string]string{"calm": "无特殊天气", "fog": "薄雾", "frost": "寒潮", "starlight": "星辉"}
 			s.World.Event = starfort.WaveEvent{ID: id, Label: labels[id], Wave: s.Wave}
 		case "rebalance-growth-repair":

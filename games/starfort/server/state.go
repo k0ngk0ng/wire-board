@@ -463,6 +463,9 @@ func (s *State) Envelope() (gameapi.Match, error) {
 	if s.weatherV2() {
 		schema = 9
 	}
+	if s.weatherV3() {
+		schema = 10
+	}
 	m := gameapi.Match{Schema: schema, Data: raw, Actors: s.actors(), Attention: []int{}, TimeoutActors: []int{}, Log: append([]string{}, s.Log...)}
 	if s.finished() {
 		r := &gameapi.Result{Cooperative: true, Ranks: make([]int, len(s.Players)), Winners: []int{}, Scores: make([]int, len(s.Players))}
@@ -488,7 +491,7 @@ func (s *State) Envelope() (gameapi.Match, error) {
 	return m, m.Validate(len(s.Players))
 }
 func decode(m gameapi.Match) (*State, error) {
-	if (m.Schema < 1 || m.Schema > 9) || len(m.Data) > maxSnapshotBytes {
+	if (m.Schema < 1 || m.Schema > 10) || len(m.Data) > maxSnapshotBytes {
 		return nil, errors.New("不支持的星垒存档")
 	}
 	var s State
@@ -504,7 +507,7 @@ func decode(m gameapi.Match) (*State, error) {
 	if (m.Schema >= 4) != (s.SkillRules == 2) {
 		return nil, errors.New("技能规则与存档版本不一致")
 	}
-	if (m.Schema >= 8) != s.weathered() || (m.Schema == 9) != s.weatherV2() {
+	if (m.Schema >= 8) != s.weathered() || (m.Schema >= 9) != s.weatherV2() || (m.Schema == 10) != s.weatherV3() {
 		return nil, errors.New("天气规则与存档版本不一致")
 	}
 	if (m.Schema >= 7) != s.growing() {

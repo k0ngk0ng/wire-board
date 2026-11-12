@@ -55,7 +55,11 @@ func (s *State) offerWeatherTask() {
 		s.World.TaskAttempts = map[string]int{}
 	}
 	// One saved roll gates all task kinds; viewing/reloading cannot reroll it.
-	if !s.skillRoll(25) {
+	chance := uint64(25)
+	if s.weatherV3() {
+		chance = 40
+	}
+	if !s.skillRoll(chance) {
 		return
 	}
 	routes := s.activeRoutes()

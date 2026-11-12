@@ -151,7 +151,7 @@ func (s *State) arrowSkillDamage(t *Tower, target Enemy, damage float64) (float6
 		}
 	case "heart":
 		if s.weathered() {
-			chance, _ := heartArea(t.Level)
+			chance, _ := s.heartArea(t.Level)
 			if hasGuard(target.HeartGuards, t.ID, s.Tick) || !s.skillRoll(uint64(chance)) {
 				return damage, ""
 			}

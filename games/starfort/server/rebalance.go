@@ -42,6 +42,14 @@ func (s *State) balancedStats(t Tower) (float64, float64, int) {
 }
 
 func (s *State) iceAttack(t Tower) (float64, int64) {
+	if s.weatherV3() && t.Branch == "speed" {
+		slow := .1 + .05*float64((max(1, t.Level)-1)/2)
+		if s.World.Event.ID == "frost" {
+			slow += .15
+		}
+		duration := int64(math.Ceil(float64(1000+500*(max(1, t.Level)/2)) / StepMS))
+		return 1 - math.Min(.9, slow), duration
+	}
 	slow := math.Min(.9, .1*(1+.2*float64((t.Level-1)/2)))
 	if s.World.Event.ID == "frost" && (!s.weathered() || t.Branch == "speed") {
 		slow = math.Min(.9, slow+.15)

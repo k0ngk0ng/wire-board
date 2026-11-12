@@ -9,7 +9,7 @@
 
 ## 数值与存档
 
-- 当前调整的数据见 [完整数据](../games/starfort/DATA.md)，实现前失败场景与计算口径见 [调整说明](../games/starfort/REBALANCE.md)、[成长修订](../games/starfort/GROWTH.md)、[天气与商人修订](../games/starfort/WEATHER.md) 和 [天气负面效果与补给修订](../games/starfort/WEATHER_V2.md)。新局使用独立平衡规则版本；旧局不得隐式切换地图、任务或技能。
+- 当前调整的数据见 [完整数据](../games/starfort/DATA.md)，实现前失败场景与计算口径见 [调整说明](../games/starfort/REBALANCE.md)、[成长修订](../games/starfort/GROWTH.md)、[天气与商人修订](../games/starfort/WEATHER.md)、[天气负面效果与补给修订](../games/starfort/WEATHER_V2.md) 和 [专精与全战场天气修订](../games/starfort/WEATHER_V3.md)。新局使用独立平衡规则版本；旧局不得隐式切换地图、任务或技能。
 
 ## 技能悬停说明
 

@@ -506,6 +506,9 @@ func (s *State) hitWithSkill(index int, damage float64, t Tower, skill string) {
 			damage *= 1.1
 			if t.Branch == "power" {
 				extra := 1.1 + .1*float64(t.Level-1)
+				if s.weatherV3() {
+					extra += .1
+				}
 				if heavy(*e) {
 					extra -= .1
 				}
@@ -516,9 +519,7 @@ func (s *State) hitWithSkill(index int, damage float64, t Tower, skill string) {
 	if t.Kind != "arcane" && skill != "execute" {
 		damage *= 1 - e.Armor
 	}
-	if s.sleeping(*e) {
-		damage = 0
-	}
+	damage *= s.sleepDamageFactor(*e)
 	before := e.HP + e.Shield
 	if e.Shield > 0 {
 		factor := 1.
@@ -544,10 +545,11 @@ func (s *State) hitWithSkill(index int, damage float64, t Tower, skill string) {
 		damage -= absorbed / factor
 	}
 	e.HP = math.Max(0, e.HP-damage)
-	if s.weathered() && skill == "cripple" && !s.sleeping(*e) {
-		_, percent := heartArea(t.Level)
+	if s.weathered() && skill == "cripple" && (!s.sleeping(*e) || s.weatherV3()) {
+		_, percent := s.heartArea(t.Level)
+		percent *= s.sleepDamageFactor(*e)
 		if s.World.Event.ID == "fog" {
-			percent *= 1.05
+			percent *= s.heartFogBonus()
 		}
 		e.HP = math.Max(0, e.HP*(1-percent))
 	}
@@ -558,6 +560,10 @@ func (s *State) hitWithSkill(index int, damage float64, t Tower, skill string) {
 	if t.Kind == "frost" {
 		if s.rebalanced() {
 			factor, duration := s.iceAttack(t)
+			if s.controlMultiplier(*e) == 2 {
+				factor = math.Max(.1, 1-2*(1-factor))
+				duration *= 2
+			}
 			if e.SlowUntil <= s.Tick || factor < e.SlowFactor {
 				e.SlowFactor = factor
 			}
