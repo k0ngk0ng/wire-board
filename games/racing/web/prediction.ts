@@ -4,6 +4,7 @@ import { brakeLevel, type Drive } from "./input.ts";
 import { clamp } from "./presentation.ts";
 import { classicVehicle, stepClassicMotion, type ClassicMotionState } from "./classic-motion.ts";
 import { classicRoadAt, classicRoadSurface, collideClassicRoad, type ClassicRuleTrack, type ClassicPropWorld } from "./classic-road.ts";
+import { classicTerrainSurface, classicTerrainAt } from "./classic-terrain.ts";
 
 type PredictionDrive = Drive & { protected?: boolean; extrapolated?: boolean };
 
@@ -34,16 +35,22 @@ function predictClassicCar(car: Car, input: PredictionDrive, track: ClassicRuleT
       brakeAmount: protect ? 1 : brakeLevel(input),
       handbrake: protect ? false : input.drift,
       allowReverse: !protect,
-    }, vehicle, classicRoadSurface(road, motion.angle), dt);
-    road = classicRoadAt(track, motion.x * 10, motion.z * 10, road.height, road.index);
-    motion = collideClassicRoad(track, motion, c.vehicle ?? "p911", road.height, predictedProps);
+    }, vehicle, classicTerrainSurface(track.terrain,c,classicRoadSurface(road, motion.angle)), dt);
+    let ground=classicTerrainAt(track.terrain,motion.x*10,motion.z*10,c.height??road.height);
+    road = classicRoadAt(track, motion.x * 10, motion.z * 10, ground.found?ground.height:c.height??road.height, road.index);
+    const groundHeight=ground.found?ground.height:road.height,beforeCollisionX=motion.x,beforeCollisionZ=motion.z;
+    motion = collideClassicRoad(track, motion, c.vehicle ?? "p911", groundHeight, predictedProps);
     c.x = motion.x * 10; c.y = motion.z * 10;
     c.vx = motion.vx * 10; c.vy = motion.vz * 10; c.angle = motion.angle;
-    road = classicRoadAt(track, c.x, c.y, road.height, road.index);
-    c.height = road.height;
+    if(motion.x!==beforeCollisionX||motion.z!==beforeCollisionZ){
+      ground=classicTerrainAt(track.terrain,c.x,c.y,groundHeight);
+      road = classicRoadAt(track, c.x, c.y, ground.found?ground.height:groundHeight, road.index);
+    }
+    c.height = ground.found?ground.height:road.height;
     c.routeIndex = road.index;
-    c.pitch = Math.atan(-(road.nx * Math.cos(c.angle) + road.nz * Math.sin(c.angle)) / Math.max(.1, road.ny));
-    c.roll = Math.atan(-(road.nx * Math.sin(c.angle) - road.nz * Math.cos(c.angle)) / Math.max(.1, road.ny));
+    const normal=ground.found?ground:road;
+    c.pitch = Math.atan(-(normal.nx * Math.cos(c.angle) + normal.nz * Math.sin(c.angle)) / Math.max(.1, normal.ny));
+    c.roll = Math.atan(-(normal.nx * Math.sin(c.angle) - normal.nz * Math.cos(c.angle)) / Math.max(.1, normal.ny));
     c.offroad = road.side > road.right || road.side < -road.left;
   }
   return { ...c, motion, rpm: motion.rpm, gear: motion.gear, speed: Math.hypot(c.vx, c.vy),

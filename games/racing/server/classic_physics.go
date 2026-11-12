@@ -50,13 +50,16 @@ func stepClassicCar(c *Car, t Track, ms, at int64, props *classicPropCollision) 
 		motion.ReverseTimer = 0
 	}
 	oldGear := motion.Gear
-	next := StepClassicMotion(motion, input, ClassicVehicle(c.Vehicle), ClassicSurfaceFor(road, c.Angle), float64(ms)/1000)
+	next := StepClassicMotion(motion, input, ClassicVehicle(c.Vehicle), ClassicTerrainSurface(t, c, ClassicSurfaceFor(road, c.Angle)), float64(ms)/1000)
 	classicMotionToCar(c, next)
 	classicPose(c, t)
 	before := c.Speed
+	beforeCollisionX, beforeCollisionZ := next.X, next.Z
 	next = collideClassicRoadWithProps(t, next, c.Vehicle, c.Height, props)
 	classicMotionToCar(c, next)
-	classicPose(c, t)
+	if next.X != beforeCollisionX || next.Z != beforeCollisionZ {
+		classicPose(c, t)
+	}
 	if c.Driver == nil {
 		c.Driver = &classicDriverState{}
 	}

@@ -25,6 +25,8 @@ export type ClassicMotionInput = {
   allowReverse?: boolean;
 };
 export type ClassicRoadSurface = {
+  frontGrip?: number;
+  rearGrip?: number;
   resistance?: number;
   grip?: number;
   grade?: number;
@@ -343,6 +345,8 @@ export function stepClassicMotion(
   if (grip <= 0) grip = 1;
   if (normalY <= 0) normalY = 1;
   const road = {
+    frontGrip: clamp(finite(surface.frontGrip,grip)>0?finite(surface.frontGrip,grip):grip,.1,1.5),
+    rearGrip: clamp(finite(surface.rearGrip,grip)>0?finite(surface.rearGrip,grip):grip,.1,1.5),
     grip: clamp(grip, 0.1, 1.5),
     normalY: clamp(normalY, 0.25, 1),
     grade: clamp(finite(surface.grade), -0.65, 0.65),
@@ -459,9 +463,9 @@ function motionStep(
       weight * 0.85,
     ),
     rearLoad = weight - frontLoad;
-  const mu = p.lateralGrip * 0.5 * road.grip,
-    frontLimit = mu * frontLoad,
-    rearLimit = mu * rearLoad;
+  const mu = p.lateralGrip * 0.5 * Math.min(road.frontGrip,road.rearGrip),
+    frontLimit = p.lateralGrip * 0.5 * road.frontGrip * frontLoad,
+    rearLimit = p.lateralGrip * 0.5 * road.rearGrip * rearLoad;
   const frontX = clamp(
     engineForce * p.frontDriveRatio - brakeForce * p.frontBrakeBias,
     -frontLimit,
@@ -505,7 +509,7 @@ function motionStep(
     0.00001,
     (topAcceleration - 0.13) / (p.maxSpeed * p.maxSpeed),
   );
-  const rolling = 0.13 * (1 + Math.max(0, 1 - road.grip) * 3);
+  const rolling = 0.13;
   let dragAcceleration =
     (rolling +
       road.resistance * clamp(Math.abs(u) / 6, 0, 1) +

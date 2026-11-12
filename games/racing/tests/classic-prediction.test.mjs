@@ -8,6 +8,8 @@ import {fileURLToPath} from 'node:url';
 import path from 'node:path';
 import {predictCar} from '../web/prediction.ts';
 import {classicTrackFromRoute} from '../web/classic-road.ts';
+import {classicTerrainFromCatalog} from '../web/classic-terrain.ts';
+import {createHash} from 'node:crypto';
 import {interpolateCar} from '../web/presentation.ts';
 
 test('browser motion follows production Module snapshots for all five prepared cars',()=>{
@@ -16,6 +18,8 @@ test('browser motion follows production Module snapshots for all five prepared c
  const env={...process.env,GOCACHE:path.join(root,'.local/go-build'),GOMODCACHE:path.join(root,'.local/go-mod'),GOTMPDIR:temp,TMPDIR:temp,GOTOOLCHAIN:'local',WIRE_BOARD_RACING_PREDICTION_EVIDENCE:out};
  execFileSync('go',['test','./games/racing/tests','-run','^TestClassicPredictionProductionTrace$','-count=1','-timeout=2m'],{cwd:root,env,encoding:'utf8',timeout:150000});
  const raw=JSON.parse(readFileSync(path.join(root,'games/racing/assets/public/racing/v3/tracks/france.route.json'))),track=classicTrackFromRoute(raw);
+ const collision=readFileSync(path.join(root,'games/racing/assets/public/racing/v3/tracks/france.collision.json'));
+ track.terrain=classicTerrainFromCatalog({...JSON.parse(collision),unit:'metres',geometry:track.geometry,sourceSha256:createHash('sha256').update(collision).digest('hex')},track);
  const data=JSON.parse(readFileSync(path.join(out,'production-trajectories.json')));
  let largestPosition=0,largestRPM=0;
  for(const row of data.rows){

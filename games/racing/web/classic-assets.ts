@@ -50,6 +50,7 @@ export function selectClassicAssets(
   const name = track + (timeOfDay === "night" ? "-night" : "");
   const paths = new Set([
     `tracks/${name}.glb`,
+    `tracks/${track}.collision.json`,
     `props/${track}.json`,
     `tracks/${track}.route.json`,
     `tracks/${name}-sky.png`,

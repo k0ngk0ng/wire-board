@@ -63,6 +63,25 @@ const flush = async () => {
   for (let i = 0; i < 6; i++) await Promise.resolve();
 };
 
+test("source loading retains the requested initial pitch even when the native load algorithm resets playbackRate", async () => {
+  const { port, voices } = setup((media, index) => {
+    if (!index) return;
+    let source = media.src;
+    Object.defineProperty(media, "src", {
+      get() { return source; },
+      set(value) {
+        source = value;
+        media.playbackRate = media.defaultPlaybackRate ?? 1;
+        queueMicrotask(() => { media.playbackRate = media.defaultPlaybackRate ?? 1; });
+      },
+    });
+  });
+  assert.equal(await port.loop("engine", ["engine.flac"], { volume: .2, rate: .875 }), true);
+  assert.equal(voices[1].playbackRate, .875);
+  assert.equal(voices[1].defaultPlaybackRate, .875);
+  assert.equal(voices[1].calls.length, 1);
+});
+
 test("adjustable effects use independent native looping voices and retain their position", async () => {
   const { audio, port, voices } = setup();
   assert.equal(

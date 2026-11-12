@@ -2,6 +2,7 @@ import type {
   ClassicMotionState,
   ClassicRoadSurface,
 } from "./classic-motion.ts";
+import type { ClassicTerrainWorld } from "./classic-terrain.ts";
 
 export type ClassicRulePoint = { x: number; y: number };
 export type ClassicRoadSample = {
@@ -29,6 +30,7 @@ export type ClassicBarrier = {
   segment: number;
 };
 export type ClassicRuleTrack = {
+  terrain?: ClassicTerrainWorld;
   version: number;
   id: string;
   name: string;
@@ -403,18 +405,13 @@ export function classicRoadSurface(
   road: ClassicRoadContact,
   heading: number,
 ): ClassicRoadSurface {
-  const excess = Math.max(
-      0,
-      Math.max(road.side - road.right, -road.side - road.left),
-    ),
-    shoulder = clamp(excess / 30, 0, 1);
   const ny = Math.abs(road.ny) < 0.1 ? 1 : road.ny;
   const grade = Math.atan(
     -(road.nx * Math.cos(heading) + road.nz * Math.sin(heading)) / ny,
   );
   return {
-    grip: 1 - 0.6 * shoulder,
-    resistance: 5 * shoulder,
+    grip: 1,
+    resistance: 0,
     normalY: Math.abs(ny),
     grade,
   };

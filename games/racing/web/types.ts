@@ -2,6 +2,7 @@ import { CAR_MODELS } from "./car-definitions";
 import atlas from "../assets/public/racing/v1/atlas.json";
 import type { ClassicMotionState } from "./classic-motion";
 import type { ClassicBarrier, ClassicRoadSample, ClassicPropSnapshot } from "./classic-road";
+import type { ClassicTerrainWorld } from "./classic-terrain";
 export type Point = { x: number; y: number };
 export type Options = {
   track: "france" | "coastal" | "uk" | "park" | "metro" | "harbor" | "woodland" | "coast" | "canyon";
@@ -17,6 +18,7 @@ export type Scenery = {
   kind: "building" | "container" | "tree" | "palm" | "rock";
 };
 export type Track = {
+  terrain?: ClassicTerrainWorld;
   version?: number;
   geometry?: string;
   length?: number;

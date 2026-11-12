@@ -1,6 +1,7 @@
 import { toneDataURL, type Sound } from "./audio-tones.ts";
 import { NativeAudioStream, normalizeStreamConfig } from "./audio-stream.ts";
 import { NativePCMStream, normalizePCMConfig } from "./audio-pcm-stream.ts";
+import { NativeContinuousLoops } from "./audio-continuous.ts";
 import type {
   GameAudioPCMStreamConfig,
   GameAudioPCMStreamHandle,
@@ -51,7 +52,7 @@ type TrackVoice = {
   loop: boolean;
   rate: number;
 };
-type LoopOptions = { volume?: number; rate?: number };
+type LoopOptions = { volume?: number; rate?: number; continuous?: boolean; seamOverlapMS?: number };
 type EffectOptions = { playbackID: string; startOffset?: number };
 type FiniteVoice = {
   owner: string;
@@ -87,6 +88,7 @@ export class GameAudio {
   private backgroundOwner?: string;
   private backgroundSources = "";
   private loops = new Map<string, LoopVoice>();
+  private continuous?: NativeContinuousLoops;
   // Stable keys name media lanes, not individual events. Keep cancelled event
   // identities so unmute or repeated snapshots cannot replay old one-shots.
   private tracks = new Map<string, TrackVoice>();
@@ -113,6 +115,7 @@ export class GameAudio {
     this.background?.setVolume(this.level);
     this.stream?.controller.setVolume(this.level);
     this.pcm?.controller.setVolume(this.level);
+    this.continuous?.setVolume(this.level);
     for (const voice of this.finite.values())
       voice.player.setVolume(this.level);
     for (const voice of this.loops.values())
@@ -161,6 +164,7 @@ export class GameAudio {
   async unlock(): Promise<boolean> {
     if (!this.available()) return false;
     void this.background?.unlock();
+    void this.continuous?.unlock();
     if (this.primed || this.task) return true;
     const media = this.element(),
       serial = this.serial;
@@ -185,6 +189,7 @@ export class GameAudio {
   }
   pause(owner: string) {
     this.pausedOwners.add(owner);
+    this.continuous?.pause(owner);
     if (this.task?.owner === owner) {
       this.task.generation++;
       this.media?.pause();
@@ -206,6 +211,7 @@ export class GameAudio {
   async resume(owner: string): Promise<boolean> {
     if (!this.pausedOwners.delete(owner) || !this.available()) return false;
     const pending: Promise<boolean>[] = [];
+    if (this.continuous?.owner === owner) pending.push(this.continuous.resume(owner));
     const task = this.task;
     if (task?.owner === owner && task.deferredStart) {
       task.deferredStart = false;
@@ -279,6 +285,7 @@ export class GameAudio {
     if (owner === undefined) this.pausedOwners.clear();
     else this.pausedOwners.delete(owner);
     this.stopEffects(owner);
+    if (owner === undefined || this.continuous?.owner === owner) { this.continuous?.stop();this.continuous = undefined; }
     if (owner === undefined || this.stream?.owner === owner)
       this.stream?.controller.stop();
     if (owner === undefined || this.pcm?.owner === owner)
@@ -368,6 +375,7 @@ export class GameAudio {
         options: LoopOptions = {},
       ) => this.startLoop(owner, key, sources, options),
       stopLoop: (key: string) => {
+        if (this.continuous?.owner === owner) this.continuous.stopKey(key);
         const voice = this.loops.get(key);
         if (voice?.owner === owner) this.releaseLoop(voice);
       },
@@ -677,11 +685,40 @@ export class GameAudio {
     };
     voice.frame = requestAnimationFrame(ramp);
   }
-  private startLoop(
+  private startLoop(owner: string, key: string, requested: readonly string[], options: LoopOptions): Promise<boolean> {
+    if (!this.available() || this.pausedOwners.has(owner) || !key) return Promise.resolve(false);
+    if (this.continuous && (this.continuous.owner !== owner || this.continuous.stopped)) { this.continuous.stop();this.continuous = undefined; }
+    if (!options.continuous) {
+      if (this.continuous?.owner === owner) this.continuous.stopKey(key);
+      return this.startNativeLoop(owner, key, requested, options);
+    }
+    const sources = [...new Set(requested.filter(Boolean))];
+    for (const voice of this.loops.values()) if (voice.owner !== owner) this.releaseLoop(voice);
+    if (!sources.length) {
+      this.continuous?.stopKey(key);
+      const old = this.loops.get(key);if (old?.owner === owner) this.releaseLoop(old);
+      return Promise.resolve(false);
+    }
+    if (!this.continuous) {
+      this.playbackSession();this.continuous = NativeContinuousLoops.prepare(owner, () => this.createElement(), () => this.available());
+    }
+    const backend = this.continuous;
+    if (!backend) return this.startNativeLoop(owner, key, sources, options, "unsupported-capability");
+    backend.setVolume(this.level);this.playbackSession();
+    if (backend.failed(key, sources)) return this.startNativeLoop(owner, key, sources, options, "decode-failed");
+    const previous = this.loops.get(key);if (previous) this.releaseLoop(previous);
+    return backend.loop(key, sources, options).then(ok => {
+      if (!ok && this.continuous === backend && backend.failed(key, sources) && this.available() && !this.pausedOwners.has(owner))
+        return this.startNativeLoop(owner, key, sources, options, "decode-failed");
+      return ok;
+    });
+  }
+  private startNativeLoop(
     owner: string,
     key: string,
     requested: readonly string[],
     options: LoopOptions,
+    fallback?: string,
   ): Promise<boolean> {
     if (!this.available() || this.pausedOwners.has(owner) || !key)
       return Promise.resolve(false);
@@ -702,6 +739,7 @@ export class GameAudio {
     if (!sources.length) return Promise.resolve(false);
     const media = this.createElement();
     media.dataset.platformLoop = key;
+    if (fallback) media.dataset.continuousFallback = fallback;
     media.loop = true;
     // Engine rate controls pitch as well as speed, including older Safari and
     // Firefox implementations. No Web Audio route is created.
@@ -752,7 +790,12 @@ export class GameAudio {
       };
       voice.starting = true;
       const generation = voice.generation;
+      // The native load algorithm restores playbackRate from this default.
+      // Configure it before src so an idle loop keeps its requested pitch even
+      // when no later RPM/control update arrives to tune it again.
+      media.defaultPlaybackRate = voice.rate;
       media.src = voice.sources[index];
+      this.tuneLoop(voice, {}, true);
       media.muted = this.silent;
       try {
         await media.play();

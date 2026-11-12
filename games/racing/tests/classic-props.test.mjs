@@ -9,12 +9,17 @@ import {fileURLToPath} from 'node:url';
 import path from 'node:path';
 import * as rules from '../web/classic-road.ts';
 import {predictCar} from '../web/prediction.ts';
+import {classicTerrainFromCatalog} from '../web/classic-terrain.ts';
+import {createHash} from 'node:crypto';
 
 const load=name=>JSON.parse(readFileSync(new URL(name,import.meta.url)));
 const catalogs=new Map(),tracks=new Map();
 for(const id of ['france','coastal','uk','park']){
  catalogs.set(id,load(`../assets/source/nfs4/props-rules/${id}.props.json`));
- tracks.set(id,rules.classicTrackFromRoute(load(`../assets/public/racing/v3/tracks/${id}.route.json`)));
+ const track=rules.classicTrackFromRoute(load(`../assets/public/racing/v3/tracks/${id}.route.json`));
+ const collision=readFileSync(new URL(`../assets/public/racing/v3/tracks/${id}.collision.json`,import.meta.url));
+ track.terrain=classicTerrainFromCatalog({...JSON.parse(collision),unit:'metres',geometry:track.geometry,sourceSha256:createHash('sha256').update(collision).digest('hex')},track);
+ tracks.set(id,track);
 }
 const wire=(catalog,bits=new Uint8Array(Math.ceil(catalog.props.length/8)))=>({catalog:catalog.catalogHash,broken:Buffer.from(bits).toString('base64')});
 

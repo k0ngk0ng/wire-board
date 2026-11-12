@@ -132,6 +132,7 @@ func start(ctx gameapi.Context, raw json.RawMessage) (gameapi.Match, error) {
 			motion := classicMotionFromCar(c)
 			motion.Brake = 1
 			classicMotionToCar(&c, motion)
+			initClassicLapTracker(&c, t, true)
 			c.Applied.Protect = true
 		}
 		s.Cars[i] = c
@@ -160,7 +161,14 @@ func validAction(ctx gameapi.Context, s State, raw json.RawMessage) (Action, err
 			return a, errors.New("输入已过期或超出范围")
 		}
 	case "reset":
-		if s.Phase == "countdown" || c.Speed > 55 || ctx.Now.UnixMilli() < c.ResetUntil || c.LastReset > 0 && ctx.Now.UnixMilli()-c.LastReset < 5000 {
+		if s.Physics == 3 {
+			if s.Phase == "countdown" {
+				return a, errors.New("发车后可复位")
+			}
+			if ctx.Now.UnixMilli() < c.ResetUntil {
+				return a, errors.New("正在复位")
+			}
+		} else if s.Phase == "countdown" || c.Speed > 55 || ctx.Now.UnixMilli() < c.ResetUntil || c.LastReset > 0 && ctx.Now.UnixMilli()-c.LastReset < 5000 {
 			return a, errors.New("请减速后复位，复位冷却 5 秒")
 		}
 	case "skin":
@@ -210,10 +218,14 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 		if i < 0 {
 			i = 0
 		}
-		p, v := s.Track.Points[i], tangent(s.Track, i)
-		c.X = p.X - v.X*5
-		c.Y = p.Y - v.Y*5
-		c.Angle = math.Atan2(v.Y, v.X)
+		if s.Physics == 3 {
+			resetClassicPosition(&s, c)
+		} else {
+			p, v := s.Track.Points[i], tangent(s.Track, i)
+			c.X = p.X - v.X*5
+			c.Y = p.Y - v.Y*5
+			c.Angle = math.Atan2(v.Y, v.X)
+		}
 		c.VX = 0
 		c.VY = 0
 		c.Speed = 0
@@ -229,8 +241,6 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 		c.LastInputAt = at
 		c.IdleAt = at + idleMS
 		if s.Physics == 3 {
-			c.RouteIndex = i
-			c.Height = s.Track.Road[i].Height
 			c.Motion = nil
 			c.Driver = nil
 			motion := classicMotionFromCar(*c)
@@ -326,13 +336,18 @@ func project(m gameapi.Match, seat int) (any, error) {
 		v.Cars[i].Pending = nil
 		v.Cars[i].Applied = Input{}
 		v.Cars[i].Driver = nil
+		v.Cars[i].LapTrack = nil
 		if s.Physics == 3 {
 			compactClassicCar(&v.Cars[i])
 		}
 	}
 	if seat >= 0 && seat < len(s.Cars) && s.Result == nil && s.Cars[seat].FinishAt == 0 {
 		c := s.Cars[seat]
-		v.Controls = Controls{CanDrive: true, CanReset: s.Phase != "countdown" && c.Speed <= 55 && s.ServerAt >= c.ResetUntil && (c.LastReset == 0 || s.ServerAt-c.LastReset >= 5000), CanSkin: true}
+		canReset := s.Phase != "countdown" && s.ServerAt >= c.ResetUntil
+		if s.Physics != 3 {
+			canReset = canReset && c.Speed <= 55 && (c.LastReset == 0 || s.ServerAt-c.LastReset >= 5000)
+		}
+		v.Controls = Controls{CanDrive: true, CanReset: canReset, CanSkin: true}
 	}
 	return v, nil
 }

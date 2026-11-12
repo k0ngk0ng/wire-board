@@ -60,6 +60,7 @@ type Input struct {
 	Drift       bool     `json:"drift"`
 }
 type Car struct {
+	LapTrack    *classicLapTracker  `json:"lapTrack,omitempty"`
 	Horn        bool                `json:"horn,omitempty"`
 	Protected   bool                `json:"protected,omitempty"`
 	Vehicle     string              `json:"vehicle,omitempty"`
@@ -170,6 +171,11 @@ func decode(m gameapi.Match) (State, error) {
 		if err := validateClassicPropState(&s); err != nil {
 			return s, err
 		}
+		for i := range s.Cars {
+			if err := validateClassicLapTracker(&s.Cars[i], s.Track); err != nil {
+				return s, err
+			}
+		}
 	}
 	if len(s.Cars) < 2 || len(s.Cars) > 6 || len(s.Track.Points) < 16 || s.Epoch == "" {
 		return s, errors.New("赛车存档不完整")
@@ -256,7 +262,11 @@ func (s *State) finish() {
 	r := &gameapi.Result{Ranks: make([]int, len(s.Cars)), Winners: []int{}, Scores: make([]int, len(s.Cars))}
 	moved := false
 	for _, c := range s.Cars {
-		moved = moved || c.Gate >= 0
+		if s.Physics == 3 {
+			moved = moved || c.Progress > 0 || c.Lap > 0
+		} else {
+			moved = moved || c.Gate >= 0
+		}
 		r.Ranks[c.Seat] = c.Rank
 		r.Scores[c.Seat] = int(math.Max(0, c.Progress))
 		if c.Rank == 1 {
@@ -271,7 +281,11 @@ func (s *State) finish() {
 			s.Cars[i].Rank = 1
 		}
 	}
-	r.Details, _ = json.Marshal(map[string]any{"track": s.Options.Track, "laps": s.Options.Laps, "cars": s.Cars, "reason": func() string {
+	resultCars := append([]Car(nil), s.Cars...)
+	for i := range resultCars {
+		resultCars[i].LapTrack = nil
+	}
+	r.Details, _ = json.Marshal(map[string]any{"track": s.Options.Track, "laps": s.Options.Laps, "cars": resultCars, "reason": func() string {
 		if s.ServerAt >= s.MaxRaceAt {
 			return "race_limit"
 		}

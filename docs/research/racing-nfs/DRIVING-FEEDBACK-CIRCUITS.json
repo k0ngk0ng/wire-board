@@ -1,0 +1,8 @@
+{
+  "_scope": "Ordinary human-seat browser driving intents verified against actual terrain and fixed collision by Module E2E; no gameplay distance limit or injected car state. Each route is driven twice, around native R and a real page reload, to physically finish three laps.",
+  "_reference": ".local/racing-laps/continuous/reachable-final/module/TestClassicContinuousOffroadLaps--<track>-offroad-reset-three.json",
+  "france": {"outsideM": 10, "speed": 14, "zone": {"start": 562, "end": 594, "side": 1, "extra": 10}},
+  "coastal": {"outsideM": 20, "speed": 17, "zone": {"start": 8, "end": 17, "side": -1, "extra": 20}},
+  "uk": {"outsideM": 10, "speed": 12, "zone": {"start": 803, "end": 831, "side": -1, "extra": 10}},
+  "park": {"outsideM": 20, "speed": 14, "zone": {"start": 176, "end": 192, "side": 1, "extra": 20}}
+}

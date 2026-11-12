@@ -8,6 +8,7 @@ import type {
 } from "react";
 import type { BoardProps } from "../../../web/src/game-api/module";
 import { LatestDrive, neutral, type Drive } from "./input";
+import { racingResetFeedback, racingResetSeconds } from "./racing-reset";
 import {
   RacingTouchContacts,
   type RacingTouchAction,
@@ -605,7 +606,7 @@ function RaceBoard(
     if (wasRear !== rearHold.current.active) setRear(rearHold.current.active);
     mapped.current = new Map(controller.current?.values ?? []);
     if (actions.size && paused.current) wake();
-    if (fresh("reset") && activeRef.current) void reset();
+    if (fresh("reset")) void reset();
     if (d.physics === 3) {
       if (fresh("camera"))
         setCameraMode((value) => (value + 1) % CLASSIC_CAMERA_MODES.length);
@@ -686,7 +687,21 @@ function RaceBoard(
   }
   async function reset() {
     const p = latest.current;
-    if (!activeRef.current || !p.data.controls.canReset) return;
+    const own = p.data.cars.find((value) => value.seat === p.room.you);
+    const feedback = racingResetFeedback({
+      active: activeRef.current,
+      canReset: p.data.controls.canReset,
+      physics: p.data.physics,
+      phase: p.data.phase,
+      spectating: p.room.you < 0,
+      autoPlay: !!p.room.seats[p.room.you]?.autoPlay,
+      finished: !!own?.finishAt,
+      busy: p.busy,
+    });
+    if (feedback) {
+      setError(feedback);
+      return;
+    }
     try {
       await p.act({ type: "reset", epoch: p.data.epoch });
       setError("");
@@ -1079,8 +1094,8 @@ function RaceBoard(
         disabled={!d.controls.canReset || !enabled}
         onClick={() => void reset()}
       >
-        {car && car.resetUntil > 0 && car.resetUntil + 3000 > serverNow
-          ? `${Math.ceil((car.resetUntil + 3000 - serverNow) / 1000)}s`
+        {car && racingResetSeconds(car.resetUntil, serverNow, d.physics) > 0
+          ? `${racingResetSeconds(car.resetUntil, serverNow, d.physics)}s`
           : "复位"}{" "}
       </button>
     </div>
@@ -1140,7 +1155,7 @@ function RaceBoard(
           {d.phase === "racing"
             ? `剩余 ${timeText(finishMs)}`
             : car?.offroad
-              ? "路外减速"
+              ? "路外"
               : ""}
         </span>
       </div>

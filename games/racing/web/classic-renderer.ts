@@ -10,6 +10,10 @@ import { CLASSIC_CAMERA_MODES, CLASSIC_DRAW_DISTANCES, classicCameraPlan, classi
 import { advanceClassicCameraLift, classicCameraClearance, type ClassicCameraBody } from "./classic-camera-clearance";
 import { classicRoadAt, classicTrackFromRoute, classicPropBroken, classicBarrierBroken, type ClassicPropWorld, type ClassicRuleTrack, type NativeClassicRoute } from "./classic-road";
 import { ClassicPropPlayback, ClassicPropClipPlayback, classicAmbientClipNames, validateClassicPropCatalog, type ClassicVisualPropCatalog, type ClassicPropPose } from "./classic-prop-animation";
+import { ClassicSkidRenderer } from "./classic-skid-renderer";
+import { classicSkidStrength, classicSkidOnSurface, type ClassicSkidContact } from "./classic-skids";
+import { classicTerrainAt } from "./classic-terrain";
+import { ClassicCockpitDynamics } from "./classic-cockpit-dynamics";
 import { seatColors, type Car, type Track } from "./types";
 import type { SceneFrame } from "./chase-renderer";
 import type { ChasePose } from "./chase-camera";
@@ -39,6 +43,7 @@ type VehicleVisual = {
   exterior: T.Object3D;
   cockpit?: T.Object3D;
   cockpitEye?: readonly number[];
+  cockpitDynamics?: ClassicCockpitDynamics;
   wheels: Wheel[];
   materials: T.Material[];
   spin: number;
@@ -70,6 +75,7 @@ export class ClassicRenderer {
   private readonly mirrorScreenCamera = new T.OrthographicCamera(-1, 1, 1, -1, 0, 1);
   private mirrorTarget?: T.WebGLRenderTarget;
   private readonly world = new T.Group();
+  private readonly skids = new ClassicSkidRenderer(this.scene);
   private readonly road: ClassicRuleTrack;
   private readonly geometries = new Set<T.BufferGeometry>();
   private readonly materials = new Set<T.Material>();
@@ -129,9 +135,10 @@ export class ClassicRenderer {
   private neighborLift = 0;
 
   private constructor(private readonly canvas: HTMLCanvasElement, private readonly track: Track, private readonly config: Config, route: NativeClassicRoute) {
-    this.road = classicTrackFromRoute(route);
+    this.road = { ...classicTrackFromRoute(route), terrain: track.terrain };
     const declared = (track as Track & { geometry?: string }).geometry;
     if (declared && declared !== this.road.geometry) throw Error("赛车画面与道路版本不一致");
+    if (this.road.terrain && this.road.terrain.geometry !== this.road.geometry) throw Error("赛车画面与地表版本不一致");
     this.renderer = new T.WebGLRenderer({ canvas, antialias: true, alpha: false, powerPreference: "high-performance" });
     // Main world, optional live mirror world, and its composite all count.
     this.renderer.info.autoReset = false;
@@ -576,7 +583,17 @@ export class ClassicRenderer {
     shadow.name = "contact_shadow"; shadow.rotation.x = -Math.PI/2; shadow.position.y = .08;
     shadow.scale.set(definition.dimensions[0]*11,definition.dimensions[2]*10.3,1); shadow.renderOrder = 1;
     road.add(shadow); materials.push(shadow.material); this.materials.add(shadow.material);
-    return { id,root,road,suspension,body,exterior,cockpit,cockpitEye:this.cockpitEyes.get(id),wheels,materials,spin:0,pitch:0,roll:0,pitchVelocity:0,rollVelocity:0,displayedSteering:0 };
+    // Native dial artwork supplies these approximate full-scale graduations;
+    // Tag-to-TAU excursion follows the pinned community CarMeter reconstruction;
+    // steering ratio/full-scale calibration remain independent choices, not an
+    // observation of the original Windows executable.
+    const scales: Record<string,{rpm:number;speed:number}> = {
+      p911:{rpm:8000,speed:320},fm50:{rpm:10000,speed:340},ldia:{rpm:10000,speed:400},
+      mcf1:{rpm:10000,speed:320},ccor:{rpm:7000,speed:320},
+    };
+    const scale=scales[id]??scales.p911;
+    const cockpitDynamics=cockpit?new ClassicCockpitDynamics(cockpit,{steeringRatio:14,maxRPM:scale.rpm,maxSpeedKmh:scale.speed}):undefined;
+    return { id,root,road,suspension,body,exterior,cockpit,cockpitDynamics,cockpitEye:this.cockpitEyes.get(id),wheels,materials,spin:0,pitch:0,roll:0,pitchVelocity:0,rollVelocity:0,displayedSteering:0 };
   }
 
   private releaseVehicleMaterials(root: T.Object3D) {
@@ -791,12 +808,13 @@ export class ClassicRenderer {
     this.elapsed+=dt;
     if(!frame.reduced)this.mixer?.update(dt);
     this.updateProps(frame);
+    this.skids.begin(frame.now,frame.reduced);
     const present=new Set<number>();
     for(const base of frame.cars){
       const car=base as VisualCar,id=car.vehicle??this.config.vehicles[car.seat%this.config.vehicles.length];present.add(car.seat);
       let visual=this.vehicles.get(car.seat);
       if(!visual||visual.id!==id){
-        if(visual){this.scene.remove(visual.root);this.releaseVehicleMaterials(visual.root);}
+        if(visual){this.scene.remove(visual.root);visual.cockpitDynamics?.dispose();this.releaseVehicleMaterials(visual.root);}
         visual=this.makeVehicle(id,car.seat);this.vehicles.set(car.seat,visual);this.scene.add(visual.root);
       }
       visual.exterior.visible=true;if(visual.cockpit)visual.cockpit.visible=false;
@@ -815,15 +833,31 @@ export class ClassicRenderer {
       const steering=clamp(finite(car.motion?.steering,car.steer),-1,1)/(1+.000055*u*u);
       const delta=steering*Math.atan(params.wheelbase/Math.max(1,params.turningRadius));
       visual.displayedSteering=steering;
+      visual.cockpitDynamics?.update({steeringAngle:delta,speedKmh:car.speed*.36,rpm:finite(car.rpm)});
       if(!frame.reduced)visual.spin+=u*dt;
       for(const wheel of visual.wheels){
         wheel.turn.rotation.y=wheel.front?-delta:0;
         wheel.node.quaternion.copy(wheel.base).multiply(new T.Quaternion().setFromAxisAngle(new T.Vector3(1,0,0),visual.spin/wheel.radius));
       }
+      const skid = classicSkidStrength(base,finite(frame.serverNow));
+      if (skid.front || skid.rear) visual.root.updateWorldMatrix(true,true);
+      const wheelContacts: ClassicSkidContact[] = skid.front || skid.rear ? visual.wheels.map((wheel,index) => {
+        wheel.turn.getWorldPosition(this.scratch);
+        const surface = classicTerrainAt(this.road.terrain,this.scratch.x,this.scratch.z,height);
+        const normalLength = Math.max(.1,Math.hypot(surface.nx,surface.ny,surface.nz));
+        const lift = .06/normalLength;
+        return { wheel:index, front:wheel.front, width:2.2, surface:surface.surface,
+          valid: classicSkidOnSurface(surface.found,surface.surface),
+          point: { x:this.scratch.x+surface.nx*lift, y:surface.height+surface.ny*lift, z:this.scratch.z+surface.nz*lift,
+            nx:surface.nx,ny:surface.ny,nz:surface.nz } };
+      }) : [];
+      this.skids.sample(base,wheelContacts,frame.now,finite(frame.serverNow));
     }
     for(const [seat,visual]of this.vehicles)if(!present.has(seat)){
-      this.scene.remove(visual.root);this.releaseVehicleMaterials(visual.root);this.vehicles.delete(seat);
+      this.scene.remove(visual.root);visual.cockpitDynamics?.dispose();this.releaseVehicleMaterials(visual.root);this.vehicles.delete(seat);
+      this.skids.remove(seat);
     }
+    this.skids.finish(this.canvas,frame.now);
     const followed=(frame.cars.find(car=>car.seat===frame.follow)??frame.cars[0])as VisualCar|undefined;
     if(!followed)return null;
     const distanceMode=Number.isInteger(frame.drawDistance)&&frame.drawDistance!>=0&&frame.drawDistance!<CLASSIC_DRAW_DISTANCES.length?frame.drawDistance!:2;
@@ -850,6 +884,8 @@ export class ClassicRenderer {
     this.canvas.dataset.classic="3";this.canvas.dataset.geometry=this.road.geometry;this.canvas.dataset.vehicle=visual.id;
     this.canvas.dataset.followSeat=String(followed.seat);
     this.canvas.dataset.steering=String(visual.displayedSteering);
+    if(visual.cockpit?.visible&&visual.cockpitDynamics)this.canvas.dataset.cockpitDynamics=JSON.stringify(visual.cockpitDynamics.inspect());
+    else delete this.canvas.dataset.cockpitDynamics;
     this.canvas.dataset.renderedAt=String(performance.now());this.canvas.dataset.frameCounter=String(++this.frameCounter);
     this.canvas.dataset.triangles=String(this.renderer.info.render.triangles);this.canvas.dataset.drawCalls=String(this.renderer.info.render.calls);
     this.projectVehicle(visual.cockpit?.visible?visual.cockpit:visual.exterior);
@@ -875,6 +911,8 @@ export class ClassicRenderer {
     if(this.disposed)return;this.disposed=true;
     this.mixer?.stopAllAction();this.mixer?.uncacheRoot(this.world);
     this.propClips?.stop();this.propMixer?.uncacheRoot(this.world);
+    this.skids.dispose();
+    for(const visual of this.vehicles.values())visual.cockpitDynamics?.dispose();
     this.geometries.forEach(geometry=>geometry.dispose());
     this.materials.forEach(material=>material.dispose());
     const images=new Set<unknown>();
@@ -883,6 +921,6 @@ export class ClassicRenderer {
     this.environmentTarget?.dispose();this.mirrorTarget?.dispose();this.renderer.dispose();this.renderer.forceContextLoss();
     this.vehicles.clear();this.templates.clear();this.cockpitEyes.clear();this.painted.clear();this.originals.clear();
     this.props.clear();
-    for(const key of ["classic","geometry","vehicle","steering","renderedAt","frameCounter","vehicleRect","triangles","drawCalls","decodedImages","followSeat","cameraClearance","cameraMode","cameraModeName","drawDistance","drawDistanceMetres","drawDistanceLimitMetres","mirrorVisible","mirrorFrame","propsCatalog","propsCount","propsBroken","propAnimations"])delete this.canvas.dataset[key];
+    for(const key of ["classic","geometry","vehicle","steering","renderedAt","frameCounter","vehicleRect","triangles","drawCalls","decodedImages","followSeat","cameraClearance","cameraMode","cameraModeName","drawDistance","drawDistanceMetres","drawDistanceLimitMetres","mirrorVisible","mirrorFrame","propsCatalog","propsCount","propsBroken","propAnimations","skidSegments","skidWritten","skidCauses","skidSample","cockpitDynamics"])delete this.canvas.dataset[key];
   }
 }

@@ -33,6 +33,8 @@ type ClassicMotionInput struct {
 }
 
 type ClassicRoadSurface struct {
+	FrontGrip  float64 `json:"frontGrip,omitempty"`
+	RearGrip   float64 `json:"rearGrip,omitempty"`
 	Resistance float64 `json:"resistance"`
 	Grip       float64 `json:"grip"`
 	Grade      float64 `json:"grade"`
@@ -295,6 +297,14 @@ func StepClassicMotion(s ClassicMotionState, in ClassicMotionInput, p ClassicVeh
 		road.Grip = 1
 	}
 	road.Grip = classicClamp(road.Grip, .1, 1.5)
+	if !finite(road.FrontGrip) || road.FrontGrip <= 0 {
+		road.FrontGrip = road.Grip
+	}
+	if !finite(road.RearGrip) || road.RearGrip <= 0 {
+		road.RearGrip = road.Grip
+	}
+	road.FrontGrip = classicClamp(road.FrontGrip, .1, 1.5)
+	road.RearGrip = classicClamp(road.RearGrip, .1, 1.5)
 	road.NormalY = classicFinite(road.NormalY, 1)
 	if road.NormalY <= 0 {
 		road.NormalY = 1
@@ -418,8 +428,8 @@ func classicMotionStep(s ClassicMotionState, in ClassicMotionInput, p ClassicVeh
 	weight := p.Mass * 9.81 * road.NormalY
 	frontLoad := classicClamp(weight*frontFraction-p.Mass*s.LongAccel*.48/p.Wheelbase, weight*.15, weight*.85)
 	rearLoad := weight - frontLoad
-	mu := p.LateralGrip * .5 * road.Grip
-	frontLimit, rearLimit := mu*frontLoad, mu*rearLoad
+	mu := p.LateralGrip * .5 * math.Min(road.FrontGrip, road.RearGrip)
+	frontLimit, rearLimit := p.LateralGrip*.5*road.FrontGrip*frontLoad, p.LateralGrip*.5*road.RearGrip*rearLoad
 	frontX := engineForce*p.FrontDriveRatio - brakeForce*p.FrontBrakeBias
 	rearX := engineForce*(1-p.FrontDriveRatio) - brakeForce*(1-p.FrontBrakeBias) - classicSign(u)*p.Mass*5*s.Handbrake
 	frontX = classicClamp(frontX, -frontLimit, frontLimit)
@@ -444,7 +454,7 @@ func classicMotionStep(s ClassicMotionState, in ClassicMotionInput, p ClassicVeh
 	topRPM := p.MaxSpeed * p.VelocityToRPM[topIndex]
 	topAcceleration := classicTorque(p, topRPM) * p.VelocityToRPM[topIndex] * (2 * math.Pi / 60) * p.GearEfficiency[topIndex] / p.Mass
 	dragCoefficient := math.Max(.00001, (topAcceleration-.13)/(p.MaxSpeed*p.MaxSpeed))
-	rolling := .13 * (1 + math.Max(0, 1-road.Grip)*3)
+	rolling := .13
 	// Rough-ground resistance builds with speed instead of exceeding available
 	// traction at a standstill; its full configured value remains above 6 m/s.
 	dragAcceleration := (rolling + road.Resistance*classicClamp(math.Abs(u)/6, 0, 1) + dragCoefficient*u*u) * classicSign(u)

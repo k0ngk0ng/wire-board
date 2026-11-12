@@ -1,0 +1,1068 @@
+{
+  "date": "2026-11-12",
+  "baselineCommit": "77366274",
+  "passed": true,
+  "scope": "Current backend lap/reset/terrain rules and owned Go/TS numerical parity, real original-grid ordinary-drive Module trajectories. Final browser/HUD/render/performance is separate.",
+  "finalFullRegression": {
+    "command": "go test ./games/racing/... -count=1 -timeout=30m",
+    "serverSeconds": 1.011,
+    "testsSeconds": 516.442,
+    "passed": true,
+    "compiledAfterLastContinuityFix": true,
+    "log": ".local/racing-laps/continuous/final-full-regression.log"
+  },
+  "policy": {
+    "lateralDistanceCutoff": null,
+    "mandatoryDenseGates": false,
+    "sectorCertificate": false,
+    "minimumPathLengthRatio": null,
+    "ordinaryPhysicalShortcuts": "governed by actual geometry/collisions",
+    "continuity": "Authoritative step origin must match previous private position; engine/collision post-step displacement has no distance cap.",
+    "newTracker": "private lapTrack persisted, omitted from View and result cars",
+    "resetV3": "allowed while moving after start; only ResetUntil two-second animation lock; nearby same-layer road projection; no positional winding credit or retroactive lap; no extra five-second cooldown",
+    "terrain": "actual frozen driveable triangle contacts and original four wheel positions; raw0 not_driveable and near-vertical faces are not floor; unknown/no-hit neutral; real contact height/normal drives body pose/grade/normal load; no lateral grip/drag/AI9m/s penalty",
+    "grip": "original 32-float table, k=(factor+1)/2 and relative dry-road k*(1+k/4)/1.25; front/rear actual wheel averages; original table bytes and community formula authority are distinguished"
+  },
+  "ordinaryDriving": [
+    {
+      "track": "france",
+      "scenario": "normal",
+      "passed": true,
+      "requiredOutsideM": 0.0,
+      "actualMaximumOutsideM": 0.0,
+      "completedLaps": 1,
+      "raceMS": 316900,
+      "legalResetActions": 0,
+      "file": ".local/racing-nfs-backend/module/TestClassicContinuousOffroadLaps--france-normal.json"
+    },
+    {
+      "track": "france",
+      "scenario": "offroad",
+      "passed": true,
+      "requiredOutsideM": 10.0,
+      "actualMaximumOutsideM": 16.56318739338639,
+      "completedLaps": 1,
+      "raceMS": 401000,
+      "legalResetActions": 0,
+      "file": ".local/racing-nfs-backend/module/TestClassicContinuousOffroadLaps--france-offroad.json"
+    },
+    {
+      "track": "france",
+      "scenario": "offroad-reset-three",
+      "passed": true,
+      "requiredOutsideM": 10.0,
+      "actualMaximumOutsideM": 16.56318739338639,
+      "completedLaps": 3,
+      "raceMS": 1037400,
+      "legalResetActions": 2,
+      "file": ".local/racing-nfs-backend/module/TestClassicContinuousOffroadLaps--france-offroad-reset-three.json"
+    },
+    {
+      "track": "coastal",
+      "scenario": "normal",
+      "passed": true,
+      "requiredOutsideM": 0.0,
+      "actualMaximumOutsideM": 0.0,
+      "completedLaps": 1,
+      "raceMS": 303200,
+      "legalResetActions": 0,
+      "file": ".local/racing-nfs-backend/module/TestClassicContinuousOffroadLaps--coastal-normal.json"
+    },
+    {
+      "track": "coastal",
+      "scenario": "offroad",
+      "passed": true,
+      "requiredOutsideM": 10.0,
+      "actualMaximumOutsideM": 23.811860136893266,
+      "completedLaps": 1,
+      "raceMS": 401200,
+      "legalResetActions": 0,
+      "file": ".local/racing-nfs-backend/module/TestClassicContinuousOffroadLaps--coastal-offroad.json"
+    },
+    {
+      "track": "coastal",
+      "scenario": "offroad-reset-three",
+      "passed": true,
+      "requiredOutsideM": 20.0,
+      "actualMaximumOutsideM": 23.81462930791821,
+      "completedLaps": 3,
+      "raceMS": 998100,
+      "legalResetActions": 2,
+      "file": ".local/racing-nfs-backend/module/TestClassicContinuousOffroadLaps--coastal-offroad-reset-three.json"
+    },
+    {
+      "track": "uk",
+      "scenario": "normal",
+      "passed": true,
+      "requiredOutsideM": 0.0,
+      "actualMaximumOutsideM": 0.0,
+      "completedLaps": 1,
+      "raceMS": 313500,
+      "legalResetActions": 0,
+      "file": ".local/racing-nfs-backend/module/TestClassicContinuousOffroadLaps--uk-normal.json"
+    },
+    {
+      "track": "uk",
+      "scenario": "offroad",
+      "passed": true,
+      "requiredOutsideM": 10.0,
+      "actualMaximumOutsideM": 14.876411032445365,
+      "completedLaps": 1,
+      "raceMS": 404400,
+      "legalResetActions": 0,
+      "file": ".local/racing-nfs-backend/module/TestClassicContinuousOffroadLaps--uk-offroad.json"
+    },
+    {
+      "track": "uk",
+      "scenario": "offroad-reset-three",
+      "passed": true,
+      "requiredOutsideM": 10.0,
+      "actualMaximumOutsideM": 14.876411032445365,
+      "completedLaps": 3,
+      "raceMS": 1034000,
+      "legalResetActions": 2,
+      "file": ".local/racing-nfs-backend/module/TestClassicContinuousOffroadLaps--uk-offroad-reset-three.json"
+    },
+    {
+      "track": "park",
+      "scenario": "normal",
+      "passed": true,
+      "requiredOutsideM": 0.0,
+      "actualMaximumOutsideM": 0.0,
+      "completedLaps": 1,
+      "raceMS": 303900,
+      "legalResetActions": 0,
+      "file": ".local/racing-nfs-backend/module/TestClassicContinuousOffroadLaps--park-normal.json"
+    },
+    {
+      "track": "park",
+      "scenario": "offroad",
+      "passed": true,
+      "requiredOutsideM": 10.0,
+      "actualMaximumOutsideM": 21.90252143881988,
+      "completedLaps": 1,
+      "raceMS": 320900,
+      "legalResetActions": 0,
+      "file": ".local/racing-nfs-backend/module/TestClassicContinuousOffroadLaps--park-offroad.json"
+    },
+    {
+      "track": "park",
+      "scenario": "offroad-reset-three",
+      "passed": true,
+      "requiredOutsideM": 20.0,
+      "actualMaximumOutsideM": 22.41405876885056,
+      "completedLaps": 3,
+      "raceMS": 1010900,
+      "legalResetActions": 2,
+      "file": ".local/racing-nfs-backend/module/TestClassicContinuousOffroadLaps--park-offroad-reset-three.json"
+    }
+  ],
+  "historicalSaves": [
+    {
+      "track": "france",
+      "oldLap": 0,
+      "oldGate": 549,
+      "oldRouteIndex": 1,
+      "futureCompletedLap": 1,
+      "fixture": {
+        "path": "games/racing/tests/fixtures/stale-v3-laps/france.json",
+        "bytes": 2873,
+        "sha256": "0825aa61f6125c40c7ee352afaaeb2cef4f815dbe732f1bc516081eff4955bf3"
+      },
+      "result": ".local/racing-nfs-backend/module/TestClassicHistoricalOffroadSaveCanContinue--france.json"
+    },
+    {
+      "track": "coastal",
+      "oldLap": 0,
+      "oldGate": 11,
+      "oldRouteIndex": 1,
+      "futureCompletedLap": 1,
+      "fixture": {
+        "path": "games/racing/tests/fixtures/stale-v3-laps/coastal.json",
+        "bytes": 2929,
+        "sha256": "8c760ecb6a8a854c6cd071658d8f884ab781bc3838a44319ee2398b96522f3ef"
+      },
+      "result": ".local/racing-nfs-backend/module/TestClassicHistoricalOffroadSaveCanContinue--coastal.json"
+    },
+    {
+      "track": "uk",
+      "oldLap": 0,
+      "oldGate": 555,
+      "oldRouteIndex": 1,
+      "futureCompletedLap": 1,
+      "fixture": {
+        "path": "games/racing/tests/fixtures/stale-v3-laps/uk.json",
+        "bytes": 2736,
+        "sha256": "92793a20e0754428782acf818eaa69ef4d9bff6452414f97f8a4d3469c3f3461"
+      },
+      "result": ".local/racing-nfs-backend/module/TestClassicHistoricalOffroadSaveCanContinue--uk.json"
+    },
+    {
+      "track": "park",
+      "oldLap": 0,
+      "oldGate": 179,
+      "oldRouteIndex": 1,
+      "futureCompletedLap": 1,
+      "fixture": {
+        "path": "games/racing/tests/fixtures/stale-v3-laps/park.json",
+        "bytes": 2882,
+        "sha256": "8ee7f0e9b0877ba73554f66bdbf68e82c05a024061f3c4351c5adea584164a67"
+      },
+      "result": ".local/racing-nfs-backend/module/TestClassicHistoricalOffroadSaveCanContinue--park.json"
+    }
+  ],
+  "naturalMatrix": {
+    "mixedCases": 60,
+    "legacyCases": 75,
+    "allActuallyFinished": true,
+    "mixedLastResetZero": true,
+    "maximumMixedRaceMS": 988340,
+    "maximumMixedFinishSpreadMS": 15483,
+    "unchangedRaceLimitMS": 1200000,
+    "unchangedFinishGraceMS": 30000
+  },
+  "dynamicBudgets": [
+    {
+      "test": "TestClassicCollisionLoadKeepsAllEventsWithinBudget",
+      "maximumBytes": 7444,
+      "maximumEvents": 24,
+      "file": ".local/racing-nfs-backend/module/TestClassicCollisionLoadKeepsAllEventsWithinBudget.json"
+    },
+    {
+      "test": "TestClassicPropSixCarDrivingPacketBudget",
+      "maximumBytes": 7595,
+      "maximumEvents": 24,
+      "file": ".local/racing-nfs-backend/module/TestClassicPropSixCarDrivingPacketBudget.json"
+    },
+    {
+      "test": "TestClassicSixCarDynamicBudgetDuringDriving",
+      "maximumBytes": 5273,
+      "maximumEvents": 1,
+      "file": ".local/racing-nfs-backend/module/TestClassicSixCarDynamicBudgetDuringDriving.json"
+    }
+  ],
+  "maximumMeasuredDynamicBytes": 7595,
+  "terrainParity": {
+    "passed": true,
+    "probes": 2595,
+    "tracks": 4,
+    "maximumError": 4.547473508864641e-13,
+    "scope": "Go frozen numeric terrain versus original client metre blobs; triangle layer/normal/raw effect and original four-wheel axle material factors"
+  },
+  "ownedNodeTests": {
+    "passed": true,
+    "tests": 9,
+    "log": ".local/racing-laps/continuous/floor-node-after.log"
+  },
+  "immutableOldGeometry": [
+    {
+      "track": "france",
+      "geometry": "1dafb107dfa41d5c9f631e002bf40cdc08c3b252d79afecd015645d2b10edb72",
+      "rule": {
+        "path": "games/racing/server/data/rules/1dafb107dfa41d5c9f631e002bf40cdc08c3b252d79afecd015645d2b10edb72.json",
+        "bytes": 571810,
+        "sha256": "7b5a41349d0d611b1ff2f1cf67d7eb701bfadb3abd64221c8b753d27553776c1"
+      },
+      "route": {
+        "path": "games/racing/assets/public/racing/v3/tracks/france.route.json",
+        "bytes": 582008,
+        "sha256": "100127fcca68e15421eda7584c5e9dd33318baf4b9cf6a2cadc4fbd3bf966f43"
+      }
+    },
+    {
+      "track": "coastal",
+      "geometry": "8126825f6c2fcc07a1bed58eb497ae3eaa6f9f7d54843680e13ebe6492a39562",
+      "rule": {
+        "path": "games/racing/server/data/rules/8126825f6c2fcc07a1bed58eb497ae3eaa6f9f7d54843680e13ebe6492a39562.json",
+        "bytes": 708833,
+        "sha256": "3f29e0cc80785b4e22dba4bf983d93c7447cc49876f4421f95d4ff4976b5952e"
+      },
+      "route": {
+        "path": "games/racing/assets/public/racing/v3/tracks/coastal.route.json",
+        "bytes": 708837,
+        "sha256": "edbe3cc7b39efa8424d48ace5104049ebafa37bf608007d1b8267d09a7cc3d61"
+      }
+    },
+    {
+      "track": "uk",
+      "geometry": "1221e1e0fca8872f64a6b899c2bb4c81666261ed9f4bc1f075ccce30922bde00",
+      "rule": {
+        "path": "games/racing/server/data/rules/1221e1e0fca8872f64a6b899c2bb4c81666261ed9f4bc1f075ccce30922bde00.json",
+        "bytes": 536644,
+        "sha256": "4f2bb0910b077429682e149dd00574a150888755633d7c9d2971959d6677deb4"
+      },
+      "route": {
+        "path": "games/racing/assets/public/racing/v3/tracks/uk.route.json",
+        "bytes": 529645,
+        "sha256": "0fa4951c6e55de2943fcd7b632d1b68ee3bd1c04dfddbd88f4b5de92883d7943"
+      }
+    },
+    {
+      "track": "park",
+      "geometry": "c900ce1d7f008dd8f4c12e6f01f2b88d8f54c4ace60a406c6d3724009b47a82a",
+      "rule": {
+        "path": "games/racing/server/data/rules/c900ce1d7f008dd8f4c12e6f01f2b88d8f54c4ace60a406c6d3724009b47a82a.json",
+        "bytes": 644547,
+        "sha256": "5a4b842c6b55c09f319c1dda493c037e8d86b6efbc95dd5e1900bd32c0a310db"
+      },
+      "route": {
+        "path": "games/racing/assets/public/racing/v3/tracks/park.route.json",
+        "bytes": 663397,
+        "sha256": "bde64d900d2006509b4d195f272e5e7fe55a24124079d1fe5bd315d2b6e95400"
+      }
+    }
+  ],
+  "terrainIndex": [
+    {
+      "id": "france",
+      "geometry": "1dafb107dfa41d5c9f631e002bf40cdc08c3b252d79afecd015645d2b10edb72",
+      "sha256": "e3aeb4d4ea5a9d2f72e56c88c39b8d0608ee9e24772ee7417b5c495666011c68",
+      "sourcePath": "tracks/france.collision.json",
+      "sourceSha256": "d8010f78c6b97f3523706190877e83ccdc8f622f2c6051125353239f1c6fe60a",
+      "materialsSha256": "4cd6cef6715f0bba8a45080970562c9608357fcd6f818719621e70465a943d05",
+      "wheelsSha256": "bbbc89fb2675b2708be04ae96d1ba0a42c32324d514a07aad2a0a24eb29fafe7"
+    },
+    {
+      "id": "coastal",
+      "geometry": "8126825f6c2fcc07a1bed58eb497ae3eaa6f9f7d54843680e13ebe6492a39562",
+      "sha256": "fe28d77ec0375f527669c9e1176925d0e61a5ef9742ae1f8e91f1e0996940b69",
+      "sourcePath": "tracks/coastal.collision.json",
+      "sourceSha256": "70c0343916eb62583bc03574657a713e334bd24e7177837943919459cda23b02",
+      "materialsSha256": "4cd6cef6715f0bba8a45080970562c9608357fcd6f818719621e70465a943d05",
+      "wheelsSha256": "bbbc89fb2675b2708be04ae96d1ba0a42c32324d514a07aad2a0a24eb29fafe7"
+    },
+    {
+      "id": "uk",
+      "geometry": "1221e1e0fca8872f64a6b899c2bb4c81666261ed9f4bc1f075ccce30922bde00",
+      "sha256": "e3cc2593c7219f226da9ed9c5885a49c33c6410ab179f4f874baa6ac61d165f7",
+      "sourcePath": "tracks/uk.collision.json",
+      "sourceSha256": "c2aa294bbc2148742d8be57241657b341432ea732896b687322aa623372312a7",
+      "materialsSha256": "4cd6cef6715f0bba8a45080970562c9608357fcd6f818719621e70465a943d05",
+      "wheelsSha256": "bbbc89fb2675b2708be04ae96d1ba0a42c32324d514a07aad2a0a24eb29fafe7"
+    },
+    {
+      "id": "park",
+      "geometry": "c900ce1d7f008dd8f4c12e6f01f2b88d8f54c4ace60a406c6d3724009b47a82a",
+      "sha256": "bfdd3ba68d8cd658f494a67e4aa2786c7f65c4e3db64994c20bee4921507de40",
+      "sourcePath": "tracks/park.collision.json",
+      "sourceSha256": "ab4f3f7b5bdd93316a1b8cb4862e2b21d358a562badd2ad45b77c138b5f51d3b",
+      "materialsSha256": "4cd6cef6715f0bba8a45080970562c9608357fcd6f818719621e70465a943d05",
+      "wheelsSha256": "bbbc89fb2675b2708be04ae96d1ba0a42c32324d514a07aad2a0a24eb29fafe7"
+    }
+  ],
+  "evidence": [
+    {
+      "path": ".local/racing-nfs-backend/module/TestClassicContinuousOffroadLaps--france-normal.json",
+      "bytes": 314300,
+      "sha256": "0bee5571bfa8124c86b1b7bcb886abb7df438ce048896d157879f9dc400a0ed3"
+    },
+    {
+      "path": ".local/racing-nfs-backend/module/TestClassicContinuousOffroadLaps--france-offroad.json",
+      "bytes": 395622,
+      "sha256": "ae0c7fa65d12ed086edc856719263d42f376d40a40b1cb650b7013e46534da18"
+    },
+    {
+      "path": ".local/racing-nfs-backend/module/TestClassicContinuousOffroadLaps--france-offroad-reset-three.json",
+      "bytes": 1016265,
+      "sha256": "7e5ff94f01c2d51dee7153efd3ea3f1cd9e29f0f9dd646af9a35cba7663543c7"
+    },
+    {
+      "path": ".local/racing-nfs-backend/module/TestClassicContinuousOffroadLaps--coastal-normal.json",
+      "bytes": 303180,
+      "sha256": "caae2087e7d23334ae04bade0d4174ed6476e5479bacdbfa94f94785f3f1f745"
+    },
+    {
+      "path": ".local/racing-nfs-backend/module/TestClassicContinuousOffroadLaps--coastal-offroad.json",
+      "bytes": 395105,
+      "sha256": "70d6ca3c59ffdb74fe69fd69d141c4b6e70aa4581ca23ad2839f483f72bf6998"
+    },
+    {
+      "path": ".local/racing-nfs-backend/module/TestClassicContinuousOffroadLaps--coastal-offroad-reset-three.json",
+      "bytes": 978515,
+      "sha256": "d3822dd69b9c889c789a134a100f943174fe09a6585e79ddf8b090b343997163"
+    },
+    {
+      "path": ".local/racing-nfs-backend/module/TestClassicContinuousOffroadLaps--uk-normal.json",
+      "bytes": 308949,
+      "sha256": "30dcdc5efc8e07ba5ec4a0886492b9178fd8c91d2d37d6c31f9d4183d8930df1"
+    },
+    {
+      "path": ".local/racing-nfs-backend/module/TestClassicContinuousOffroadLaps--uk-offroad.json",
+      "bytes": 392500,
+      "sha256": "dc25ff3b1d725ab18b2b7660b28b75e3be9e5070b7031dcf3abb71fcabb3f3e7"
+    },
+    {
+      "path": ".local/racing-nfs-backend/module/TestClassicContinuousOffroadLaps--uk-offroad-reset-three.json",
+      "bytes": 998281,
+      "sha256": "79b230a9b5c4d854b7822599bba7e51d790d444f1fe2800b8de6cabe33f0330e"
+    },
+    {
+      "path": ".local/racing-nfs-backend/module/TestClassicContinuousOffroadLaps--park-normal.json",
+      "bytes": 302683,
+      "sha256": "e20d273b04d3c02b3da2acb9cd6b9f615a6bd8e4103ca084c7aa3eb61de20b93"
+    },
+    {
+      "path": ".local/racing-nfs-backend/module/TestClassicContinuousOffroadLaps--park-offroad.json",
+      "bytes": 318537,
+      "sha256": "3d97a9b20a4b9e896e7953b6dfc02749f04dd2122091a312c58e505d05a71262"
+    },
+    {
+      "path": ".local/racing-nfs-backend/module/TestClassicContinuousOffroadLaps--park-offroad-reset-three.json",
+      "bytes": 990490,
+      "sha256": "97fdd326e81d60abb19455a18c099bcb2b8ac91446a0360e244d8aabf2ddf1ed"
+    },
+    {
+      "path": ".local/racing-nfs-backend/module/TestClassicHistoricalOffroadSaveCanContinue--france.json",
+      "bytes": 667798,
+      "sha256": "7d312c99ca5386030bfdb31bff89b163e66053e5c68ae6186b6321b8bbe1d75b"
+    },
+    {
+      "path": ".local/racing-nfs-backend/module/TestClassicHistoricalOffroadSaveCanContinue--coastal.json",
+      "bytes": 670492,
+      "sha256": "b2742b139ba1d32fd21419a556a48f76fdcc10e3f16e232723ec584c4666789f"
+    },
+    {
+      "path": ".local/racing-nfs-backend/module/TestClassicHistoricalOffroadSaveCanContinue--uk.json",
+      "bytes": 658056,
+      "sha256": "a09c0f9cf0be43ddb9333e2e33af4e1b53832e8dd0cebaf4f1ddd6bbb52b921d"
+    },
+    {
+      "path": ".local/racing-nfs-backend/module/TestClassicHistoricalOffroadSaveCanContinue--park.json",
+      "bytes": 642989,
+      "sha256": "1d8f3e13fdaf93335b07dfa9961146a5aaea3483abba7dbf4962a903c694ba9b"
+    },
+    {
+      "path": ".local/racing-nfs-backend/module/TestClassicCollisionLoadKeepsAllEventsWithinBudget.json",
+      "bytes": 13103,
+      "sha256": "7f9b677e3a1442dff789cf0741745f8708c141f2ac120dc05d17d9b3d9854d70"
+    },
+    {
+      "path": ".local/racing-nfs-backend/module/TestClassicPropSixCarDrivingPacketBudget.json",
+      "bytes": 13389,
+      "sha256": "40b7bca9c2116a289c8208c80ec439ff5490172852342c20444f95304eac9903"
+    },
+    {
+      "path": ".local/racing-nfs-backend/module/TestClassicSixCarDynamicBudgetDuringDriving.json",
+      "bytes": 156,
+      "sha256": "6aeaea802198d87373994a723a3b022211e62cca55681cd21f1183c2b50281c3"
+    },
+    {
+      "path": ".local/racing-laps/continuous/four-track-before.log",
+      "bytes": 1158,
+      "sha256": "6da233768e53a90807db8e129c541ce6d1eebf6cd055a201c0a12ac2aff2ce58"
+    },
+    {
+      "path": ".local/racing-laps/continuous/geometry-before.log",
+      "bytes": 3503,
+      "sha256": "01d9dfc3e4a8269f415cd48b7bbe7630d67e33a3670e7f65bd499a4bdcfe0a3f"
+    },
+    {
+      "path": ".local/racing-laps/continuous/terrain-distance-before.log",
+      "bytes": 298,
+      "sha256": "3c1e5b9acf1cf4bca82fa8cbf05529c0242439487dd628b959355fb9820e0317"
+    },
+    {
+      "path": ".local/racing-laps/continuous/terrain-contract-before.log",
+      "bytes": 1081,
+      "sha256": "ec0765f3b7910da8e782e6362f8f766092ef4d20619ed32309d9fccb2d0bf55c"
+    },
+    {
+      "path": ".local/racing-laps/continuous/terrain-client-before.log",
+      "bytes": 1534,
+      "sha256": "2a93e8d3d0c2fd06187ab7f008a4d9ce3fbb8526cb60aa125b915076fecfa472"
+    },
+    {
+      "path": ".local/racing-laps/continuous/terrain-pose-before.log",
+      "bytes": 306,
+      "sha256": "5064323359092267870e990d3e0f7722f10b14d9a14c0755bbc92db7fb2d2ab9"
+    },
+    {
+      "path": ".local/racing-laps/continuous/terrain-floor-before.log",
+      "bytes": 315,
+      "sha256": "2f59ebc73aa01fbc99605ac2958f9a45c56cbca8288c6984dac2ff6c23216336"
+    },
+    {
+      "path": ".local/racing-laps/continuous/moving-reset-before.log",
+      "bytes": 462,
+      "sha256": "861cc66783c845b7ec6526f1d977faca5c20727ff5feec63d0b9512ad0801e57"
+    },
+    {
+      "path": ".local/racing-laps/continuous/step-origin-before.log",
+      "bytes": 3483,
+      "sha256": "e6f059ab1c96ef2ddfa113600622ae363322450a1f8646f19e0232cd02fb8fc1"
+    },
+    {
+      "path": ".local/racing-laps/continuous/step-origin-after.log",
+      "bytes": 3156,
+      "sha256": "763e03712eaa9296e49f6d4041937829ef470ea41d0299fd41cf204c8acd2aae"
+    },
+    {
+      "path": ".local/racing-laps/continuous/final-full-regression.log",
+      "bytes": 127,
+      "sha256": "df559ef101b8818c6cdc5d474bc205e607fe5825658e38b31149ebc38830806f"
+    },
+    {
+      "path": ".local/racing-laps/continuous/final-mixed-audit.json",
+      "bytes": 15497,
+      "sha256": "1fa959064e7734809a0033056c761a00c23e4f2d5905306104681a33e7562fb8"
+    },
+    {
+      "path": ".local/racing-laps/continuous/terrain-parity/report.json",
+      "bytes": 250,
+      "sha256": "309af02e9318b92da05882246f4091dec40687431f5504fe82217b3aeb602ec9"
+    },
+    {
+      "path": ".local/racing-laps/continuous/floor-node-after.log",
+      "bytes": 857,
+      "sha256": "8e00f2de2d63d781390ecc05f05a151995c35c651aedbf1efcfa2f682840ba01"
+    },
+    {
+      "path": ".local/racing-nfs-backend/module/TestClassicMovingResetHasOnlyAnimationLock.json",
+      "bytes": 11241,
+      "sha256": "5cda71b865fb7e0776646f94d9f63e4b8c1c10817c26a9babf7240a7516dc98d"
+    }
+  ],
+  "sourceDigests": [
+    {
+      "path": "docs/research/racing-nfs/LAPS.md",
+      "bytes": 6488,
+      "sha256": "d05d0bffb9c9731749275abdb863ceb945f137e4d8bdc68ec9baa9b0a07d1188"
+    },
+    {
+      "path": "docs/research/racing-nfs/MOTION.md",
+      "bytes": 6104,
+      "sha256": "3f4bdc9ac645f91752836650cbdf435bebaac9da6d598a63cc97a4fb2f7f1c73"
+    },
+    {
+      "path": "games/racing/CONTRACT.md",
+      "bytes": 19658,
+      "sha256": "c30aad1bddb874d24946a6b6c5fce5c1e4247fb4e8641d70829cba09c669f6c1"
+    },
+    {
+      "path": "games/racing/server/bot.go",
+      "bytes": 3221,
+      "sha256": "7cc3d010ad4b05badeeb0f1b2cd40b40a12265dd73cb22a24ec18df06611b337"
+    },
+    {
+      "path": "games/racing/server/brake_pressure_test.go",
+      "bytes": 1289,
+      "sha256": "d3a2329b890b690125fec3f782ed282bb4739d1cb92aca03f3197b7fcf3e5006"
+    },
+    {
+      "path": "games/racing/server/checkpoint_test.go",
+      "bytes": 1590,
+      "sha256": "35ecaa506e88b3868c6b5e867e00823e5ba32dbe035b198c67e789630d3f2d61"
+    },
+    {
+      "path": "games/racing/server/classic_bot.go",
+      "bytes": 9950,
+      "sha256": "94a50bb822ecbea7277fe36c3099a5ad742864dfda2253e603ccee5d1809cefd"
+    },
+    {
+      "path": "games/racing/server/classic_laps.go",
+      "bytes": 5192,
+      "sha256": "85b668d5e19f632813e2ba35316f4b807ba6eb978dedbdb7c02aaafd2723ebe8"
+    },
+    {
+      "path": "games/racing/server/classic_motion.go",
+      "bytes": 19394,
+      "sha256": "0ecfdfdde0f0437fb9863301fe0b676cd11396a84a62e969364497944154ed98"
+    },
+    {
+      "path": "games/racing/server/classic_motion_contract_test.go",
+      "bytes": 9453,
+      "sha256": "cde931a233e60efe5ca26e01125a8f9980c5e44500081d92e7bcad729e3bdb6a"
+    },
+    {
+      "path": "games/racing/server/classic_physics.go",
+      "bytes": 5974,
+      "sha256": "74d7635ae833eb772a393de2031e1ce6d51fe352024ebdb6a00fd92f76151aa8"
+    },
+    {
+      "path": "games/racing/server/classic_props.go",
+      "bytes": 6424,
+      "sha256": "8a238aa4fe3ce2b4cdcb7f9314748387f20b8a95c6d72b7608fe7c29cc0e005a"
+    },
+    {
+      "path": "games/racing/server/classic_props_contract_test.go",
+      "bytes": 2757,
+      "sha256": "bf07a538908fde3f18642d1ee9322cc202e5699e50014e36e3786113d1eb0ada"
+    },
+    {
+      "path": "games/racing/server/classic_terrain.go",
+      "bytes": 9547,
+      "sha256": "dd762dc21282a9b278c2ce56f95cc8a089d9e623a0311fd47e4413bd3ef8d46d"
+    },
+    {
+      "path": "games/racing/server/classic_terrain_test.go",
+      "bytes": 6880,
+      "sha256": "ce8d9ea3f5b2194162315d6bb543aa60ac8baf5df72f7d87df8bbb56526987cf"
+    },
+    {
+      "path": "games/racing/server/classic_track.go",
+      "bytes": 11668,
+      "sha256": "fe31c70a5cc66e76031b9f84c313ec67861bb0ae17b35759d5585e640576fbef"
+    },
+    {
+      "path": "games/racing/server/data/car-bodies.json",
+      "bytes": 334,
+      "sha256": "b6fef50f8c765ca58cea116534ac635b898b4637d8e88e8dde0619dd5923625d"
+    },
+    {
+      "path": "games/racing/server/data/index.json",
+      "bytes": 1198,
+      "sha256": "0b8233e29195ebffa04a750f979d56134003bfdc2f0b13c0a2b00c541ccb2a2d"
+    },
+    {
+      "path": "games/racing/server/data/prop-index.json",
+      "bytes": 1050,
+      "sha256": "e0300921c1941014ab3a89f0662940eaf0d5417db70c84d20b6a176df7b7173d"
+    },
+    {
+      "path": "games/racing/server/data/props/1023b3cfa36a9957004621827ee488cc764df1fa3f37c8354966f3bf50fb5595.json",
+      "bytes": 22100,
+      "sha256": "ca4c3710897d32854ad6c3f9779ac1b22332c281147b748d57bdad46e4a5750e"
+    },
+    {
+      "path": "games/racing/server/data/props/13a13f33e36e458e3b5538c4e7e967d4f56a7103a56c8bf8fa41a5994c64fcba.json",
+      "bytes": 11878,
+      "sha256": "2fc03aac9c4a9529c661040957bc4a1cea4895479294891472e91f94740e39e5"
+    },
+    {
+      "path": "games/racing/server/data/props/96edba9c90dff6d8e72500a6026974df51b40c4bf69d1582c005e2e69182e222.json",
+      "bytes": 8121,
+      "sha256": "02d8379429930156b8acdf11e6320f7f8f77c5f327ecbb791b60830b6e614510"
+    },
+    {
+      "path": "games/racing/server/data/props/a43bad377bdde4be2696f66ce5f437da62fe1ef4ef4e714031a1e86482f08f2a.json",
+      "bytes": 27016,
+      "sha256": "fe1c0f46b531c1da0d7ca16f0af4435c904aadb6d0d46a1bbcb2e14f214eba83"
+    },
+    {
+      "path": "games/racing/server/data/rules/1221e1e0fca8872f64a6b899c2bb4c81666261ed9f4bc1f075ccce30922bde00.json",
+      "bytes": 536644,
+      "sha256": "4f2bb0910b077429682e149dd00574a150888755633d7c9d2971959d6677deb4"
+    },
+    {
+      "path": "games/racing/server/data/rules/1dafb107dfa41d5c9f631e002bf40cdc08c3b252d79afecd015645d2b10edb72.json",
+      "bytes": 571810,
+      "sha256": "7b5a41349d0d611b1ff2f1cf67d7eb701bfadb3abd64221c8b753d27553776c1"
+    },
+    {
+      "path": "games/racing/server/data/rules/8126825f6c2fcc07a1bed58eb497ae3eaa6f9f7d54843680e13ebe6492a39562.json",
+      "bytes": 708833,
+      "sha256": "3f29e0cc80785b4e22dba4bf983d93c7447cc49876f4421f95d4ff4976b5952e"
+    },
+    {
+      "path": "games/racing/server/data/rules/c900ce1d7f008dd8f4c12e6f01f2b88d8f54c4ace60a406c6d3724009b47a82a.json",
+      "bytes": 644547,
+      "sha256": "5a4b842c6b55c09f319c1dda493c037e8d86b6efbc95dd5e1900bd32c0a310db"
+    },
+    {
+      "path": "games/racing/server/data/terrain-index.json",
+      "bytes": 1844,
+      "sha256": "4e8e3655f15609fe9478ef9c6c561d5b054bdea10206678bdc6d89d52de3f6e0"
+    },
+    {
+      "path": "games/racing/server/data/terrain-materials.json",
+      "bytes": 1408,
+      "sha256": "4cd6cef6715f0bba8a45080970562c9608357fcd6f818719621e70465a943d05"
+    },
+    {
+      "path": "games/racing/server/data/terrain-wheels.json",
+      "bytes": 2270,
+      "sha256": "bbbc89fb2675b2708be04ae96d1ba0a42c32324d514a07aad2a0a24eb29fafe7"
+    },
+    {
+      "path": "games/racing/server/data/terrain/1221e1e0fca8872f64a6b899c2bb4c81666261ed9f4bc1f075ccce30922bde00.json",
+      "bytes": 401869,
+      "sha256": "e3cc2593c7219f226da9ed9c5885a49c33c6410ab179f4f874baa6ac61d165f7"
+    },
+    {
+      "path": "games/racing/server/data/terrain/1dafb107dfa41d5c9f631e002bf40cdc08c3b252d79afecd015645d2b10edb72.json",
+      "bytes": 545993,
+      "sha256": "e3aeb4d4ea5a9d2f72e56c88c39b8d0608ee9e24772ee7417b5c495666011c68"
+    },
+    {
+      "path": "games/racing/server/data/terrain/8126825f6c2fcc07a1bed58eb497ae3eaa6f9f7d54843680e13ebe6492a39562.json",
+      "bytes": 442023,
+      "sha256": "fe28d77ec0375f527669c9e1176925d0e61a5ef9742ae1f8e91f1e0996940b69"
+    },
+    {
+      "path": "games/racing/server/data/terrain/c900ce1d7f008dd8f4c12e6f01f2b88d8f54c4ace60a406c6d3724009b47a82a.json",
+      "bytes": 531131,
+      "sha256": "bfdd3ba68d8cd658f494a67e4aa2786c7f65c4e3db64994c20bee4921507de40"
+    },
+    {
+      "path": "games/racing/server/lap_progress_test.go",
+      "bytes": 3502,
+      "sha256": "252b96732cb089250378c3f04d7794a8ec2a566894ad601febda496a55753724"
+    },
+    {
+      "path": "games/racing/server/module.go",
+      "bytes": 11805,
+      "sha256": "86dbdfdf61a12a16acbbfa14cbfbfc75bac23088c3f3f41653ebfccefabb4c48"
+    },
+    {
+      "path": "games/racing/server/physics.go",
+      "bytes": 8805,
+      "sha256": "f0c98888d1f7a6f8280b9531f6b93cd67de32cef3b7ce59e7c583d6b5678ea33"
+    },
+    {
+      "path": "games/racing/server/physics_test.go",
+      "bytes": 8609,
+      "sha256": "b7f0ff8f71ac9647fc4399f13ccf35a7defd8b9e75e988a62c8fb7bb6ad9ca7e"
+    },
+    {
+      "path": "games/racing/server/remake_tracks_test.go",
+      "bytes": 2036,
+      "sha256": "3a5dbb4f73395574cd813ec24c8de06ae6d97125e6c9d5dbd0d4c1a3d3a3e98e"
+    },
+    {
+      "path": "games/racing/server/scenery_test.go",
+      "bytes": 1070,
+      "sha256": "032e675aac626506af245c3e3d00cee37ec16750fcb5774e06e16df792c37844"
+    },
+    {
+      "path": "games/racing/server/sequence_test.go",
+      "bytes": 3876,
+      "sha256": "719d8cf81debc0159178f6d2b870eed92328aab4d7cc5213435c56a8a8f3cc2b"
+    },
+    {
+      "path": "games/racing/server/state.go",
+      "bytes": 9982,
+      "sha256": "a0e267569a8fab2d9c97c15dbe17ecae48b563ef167930271b310f7e885fa81b"
+    },
+    {
+      "path": "games/racing/server/steering_speed_test.go",
+      "bytes": 1301,
+      "sha256": "cab13784a0fc57d474520fea79932bf248e8fa2c7614a2752cf7637bb1539c2c"
+    },
+    {
+      "path": "games/racing/server/tracks.go",
+      "bytes": 5206,
+      "sha256": "15bb6b609067e4e17b21c48e032f7d0773a6f13ad6362e6f9eaf423e83910c83"
+    },
+    {
+      "path": "games/racing/tests/browser_fixture_test.go",
+      "bytes": 3957,
+      "sha256": "7bc676113dce81f8e628b7572681c76a1f06eb20df72cc3faa4fb48a39991608"
+    },
+    {
+      "path": "games/racing/tests/chase-camera.test.mjs",
+      "bytes": 3043,
+      "sha256": "2bd9ffd4a5e4588b24ceeafc87cc8662c7e121905daf31c1003d2361a34246b4"
+    },
+    {
+      "path": "games/racing/tests/classic-assets.test.mjs",
+      "bytes": 6686,
+      "sha256": "15a98273bcfcd73b4a61c2462a9516cf7e6217544bba9e9d572d7aa2adc13578"
+    },
+    {
+      "path": "games/racing/tests/classic-attitude.test.mjs",
+      "bytes": 2994,
+      "sha256": "e7c2688719a75949f97faaa44f276ac501100fb3da4ccadda736b002bf86760d"
+    },
+    {
+      "path": "games/racing/tests/classic-audio-continuity-failures.md",
+      "bytes": 1582,
+      "sha256": "b902e4da0248430ea4db53d907f1ac5f0298c85a8711c53fb7252d633c182215"
+    },
+    {
+      "path": "games/racing/tests/classic-audio-continuity.test.mjs",
+      "bytes": 2500,
+      "sha256": "6f5b2efb72e22fd56e9713a5bd96e12074de92bf511f68e3cfa54d72286e6beb"
+    },
+    {
+      "path": "games/racing/tests/classic-audio.test.mjs",
+      "bytes": 1291,
+      "sha256": "8465bd39f8d626cce0e2d4eeb524e111967b9e0d26d62d0b3420b6c41f59e9cb"
+    },
+    {
+      "path": "games/racing/tests/classic-camera-clearance.test.mjs",
+      "bytes": 3012,
+      "sha256": "07b2e4522e2bfc4dabf14c91c6861b2993a499ca9b912d4825fc4d2976485083"
+    },
+    {
+      "path": "games/racing/tests/classic-camera-modes.test.mjs",
+      "bytes": 3034,
+      "sha256": "53462255e9a7e21f01c6aa4d5d3718afdb79b6cdcba7c6b43a316339a509a934"
+    },
+    {
+      "path": "games/racing/tests/classic-cockpit-dynamics-failures.md",
+      "bytes": 1428,
+      "sha256": "3903f511ff00b455bf512c43b5ebe3ce6a75a33c63c445ad43d618ccf6b1d163"
+    },
+    {
+      "path": "games/racing/tests/classic-cockpit-dynamics.test.mjs",
+      "bytes": 5775,
+      "sha256": "061904e29129efc761cd3dbce35de2e5dde5266b557a983884b1981bdc82f8ea"
+    },
+    {
+      "path": "games/racing/tests/classic-gauges-skids-failures.md",
+      "bytes": 1570,
+      "sha256": "d3a4af61c5b867f1921cf88298cd56afe4c6f504a3177147de6e16f937cf1841"
+    },
+    {
+      "path": "games/racing/tests/classic-gauges-skids.test.mjs",
+      "bytes": 7024,
+      "sha256": "c58a7a416ff24805482eed6730c79d473f74564b9b154f87bff8475c37cf33b7"
+    },
+    {
+      "path": "games/racing/tests/classic-horn-input.test.mjs",
+      "bytes": 938,
+      "sha256": "439d607d4121c42a1e23d49402ec4f5746de3e9fb54b2b8fb53bbfaa29a6569f"
+    },
+    {
+      "path": "games/racing/tests/classic-horn.test.mjs",
+      "bytes": 5179,
+      "sha256": "56a1d24888c1719cf55643eeb54eefd10dd6465a8608db3f1d45f5c577a5c098"
+    },
+    {
+      "path": "games/racing/tests/classic-images.test.mjs",
+      "bytes": 3824,
+      "sha256": "8975340ce5819ffa1ec8c6d3c2aa3f4d56f1feeaa6225b1a795be0e52f61fab4"
+    },
+    {
+      "path": "games/racing/tests/classic-media.test.mjs",
+      "bytes": 3451,
+      "sha256": "f5cba753c2a311abe47f5a1f7a599a16ef91ad95009bafaf7ed17ef47ec883e1"
+    },
+    {
+      "path": "games/racing/tests/classic-motion-failures.md",
+      "bytes": 2852,
+      "sha256": "6ae023a47e2537975385d525844d90c46e6a58eebc636225f31586c45fe63983"
+    },
+    {
+      "path": "games/racing/tests/classic-motion-parity.mjs",
+      "bytes": 3144,
+      "sha256": "73f574edd43ec5f29192c3c99aa4d2df0c0a50c1acea185fdc669bdbfa400169"
+    },
+    {
+      "path": "games/racing/tests/classic-motion-scenarios.json",
+      "bytes": 6464,
+      "sha256": "9894692efb14e4a5202c6aa782fe755620fcbda3665a6751f4960fdcc40ba1ba"
+    },
+    {
+      "path": "games/racing/tests/classic-paint.test.mjs",
+      "bytes": 1642,
+      "sha256": "70fdcf3016872a1a4d72f6c28f69bfa157607cf00e35785da3393cc9073b667d"
+    },
+    {
+      "path": "games/racing/tests/classic-prediction.test.mjs",
+      "bytes": 3386,
+      "sha256": "9a85f09f738703094d40c1cffe3699f1a8b147a9df8b1d29f4aff0d6890580a8"
+    },
+    {
+      "path": "games/racing/tests/classic-prop-animation-failures.md",
+      "bytes": 1487,
+      "sha256": "c77585204ab20370be88df76efc1c8ff31752da01c6c393bbac310d0024f068a"
+    },
+    {
+      "path": "games/racing/tests/classic-prop-animation.test.mjs",
+      "bytes": 8352,
+      "sha256": "560995bff6083c6f755b1ca24a06b2dad173e61ce69f29da2ca591bb54cd9745"
+    },
+    {
+      "path": "games/racing/tests/classic-props-failures.md",
+      "bytes": 2647,
+      "sha256": "d166b382b71a9a970d03ad98b25bcf3a53cfd5c7a6bd975a1f87cb9c9b8a5606"
+    },
+    {
+      "path": "games/racing/tests/classic-props-parity.mjs",
+      "bytes": 2022,
+      "sha256": "6dc35bd1747a002ef5cf5d6fa9206d3af290d18d0e5c29d223c11afca08b3a64"
+    },
+    {
+      "path": "games/racing/tests/classic-props.test.mjs",
+      "bytes": 5540,
+      "sha256": "79cbc570e3e86d0efecd59d7daada795cd8b8e6e8ec30252d46afc6bde4f04c8"
+    },
+    {
+      "path": "games/racing/tests/classic-skid-fog.test.mjs",
+      "bytes": 1961,
+      "sha256": "b8a0039d5eac2074b046e94e8975ad5406670c0a0ccdd67e7f7e44112a026081"
+    },
+    {
+      "path": "games/racing/tests/classic-terrain-parity.mjs",
+      "bytes": 1636,
+      "sha256": "6fabf0842adfcf7aaa003ced1da049be9dce1ad5d786575936cfa6d622d9d1db"
+    },
+    {
+      "path": "games/racing/tests/classic-terrain.test.mjs",
+      "bytes": 3007,
+      "sha256": "1f7973369f9000b3bbd0c45895f8c752ec6559e85a86a67388db4979ed5f7b06"
+    },
+    {
+      "path": "games/racing/tests/classic_e2e_test.go",
+      "bytes": 33464,
+      "sha256": "1298c4b57f34028d53b11ab8d46cc3e84ac70a40f4d3d0a157ea46f219929c1b"
+    },
+    {
+      "path": "games/racing/tests/classic_prediction_e2e_test.go",
+      "bytes": 2228,
+      "sha256": "1e027c2deaa8e0542574789cc406392904b39f227eb718988d59a85a82d2b654"
+    },
+    {
+      "path": "games/racing/tests/classic_props_e2e_test.go",
+      "bytes": 14574,
+      "sha256": "7f65076498b02eb07a34840ef3e7597347d1941770a48d12123cc907cf3b720f"
+    },
+    {
+      "path": "games/racing/tests/fixtures/stale-v3-laps/coastal.json",
+      "bytes": 2929,
+      "sha256": "8c760ecb6a8a854c6cd071658d8f884ab781bc3838a44319ee2398b96522f3ef"
+    },
+    {
+      "path": "games/racing/tests/fixtures/stale-v3-laps/france.json",
+      "bytes": 2873,
+      "sha256": "0825aa61f6125c40c7ee352afaaeb2cef4f815dbe732f1bc516081eff4955bf3"
+    },
+    {
+      "path": "games/racing/tests/fixtures/stale-v3-laps/park.json",
+      "bytes": 2882,
+      "sha256": "8ee7f0e9b0877ba73554f66bdbf68e82c05a024061f3c4351c5adea584164a67"
+    },
+    {
+      "path": "games/racing/tests/fixtures/stale-v3-laps/uk.json",
+      "bytes": 2736,
+      "sha256": "92793a20e0754428782acf818eaa69ef4d9bff6452414f97f8a4d3469c3f3461"
+    },
+    {
+      "path": "games/racing/tests/http_e2e_test.go",
+      "bytes": 18229,
+      "sha256": "8b419479211afb059a957466e54c3248103713b97c4e4475775325f6a21f140f"
+    },
+    {
+      "path": "games/racing/tests/input.test.mjs",
+      "bytes": 4967,
+      "sha256": "e9b31b8b1c7ac4d1675f38e3c307aecbfaaec760ea950c86098ca94c10fde6cb"
+    },
+    {
+      "path": "games/racing/tests/lap-reset-failures.md",
+      "bytes": 3255,
+      "sha256": "7bc25b19ab0fe900a063e9f4ede2fe6de2878f04fd81488eae784d0fed8e86d8"
+    },
+    {
+      "path": "games/racing/tests/lap_reset_e2e_test.go",
+      "bytes": 5284,
+      "sha256": "73cabfe63694f97d653d7784e6ba442c7405ebb800b7e3e4981f5175d7543f07"
+    },
+    {
+      "path": "games/racing/tests/lap_topology_e2e_test.go",
+      "bytes": 14899,
+      "sha256": "4d0141cda43061d4815c52ae90a7190bc4989078b56729370a38dce655bc38af"
+    },
+    {
+      "path": "games/racing/tests/lifecycle.test.mjs",
+      "bytes": 2630,
+      "sha256": "7e239843514f058827709cc966499e1ee3c44fd5557b4344651521a9b97a0bd6"
+    },
+    {
+      "path": "games/racing/tests/module_e2e_test.go",
+      "bytes": 13249,
+      "sha256": "0bf345be2139d6bfbb895784eebf0335c481e776f4982f681c125469740d2b18"
+    },
+    {
+      "path": "games/racing/tests/prediction.test.mjs",
+      "bytes": 5583,
+      "sha256": "d4fd8b47da918863356ebfadf97e5f841d276806a4da3c16ed2401899f5a552b"
+    },
+    {
+      "path": "games/racing/tests/presentation.test.mjs",
+      "bytes": 2495,
+      "sha256": "37d10a16b482731c65ff29fc0dc085f9713d0ca4098bc29b9739910eb6160300"
+    },
+    {
+      "path": "games/racing/tests/remote-pose.test.mjs",
+      "bytes": 1476,
+      "sha256": "1d786a0c09d85aa3c0864a4d62c02c2cdd11fc3e02973b2eb5d9de2e6e3c468e"
+    },
+    {
+      "path": "games/racing/tests/reset-feedback-failures.md",
+      "bytes": 851,
+      "sha256": "57f0c391dbad34888df2f034197c9514b1f46a1eab99bd6b58dcf7fdbe381ea7"
+    },
+    {
+      "path": "games/racing/tests/reset-feedback.test.mjs",
+      "bytes": 1817,
+      "sha256": "5575dac14c8391938b909031c7dd0c339ee1e63655bce15f962a542c94d13a0b"
+    },
+    {
+      "path": "games/racing/tests/stream-input.test.mjs",
+      "bytes": 1614,
+      "sha256": "69d40d6c9f9a90e5440e71e98bb11f859ca4ffae7fda424a7c721f30d9026335"
+    },
+    {
+      "path": "games/racing/tests/terrain-integration-failures.md",
+      "bytes": 1123,
+      "sha256": "f11faa641d5e1fbd2eaa5fbaad50085f8be84474690045cf06ac9a85fbbfa00a"
+    },
+    {
+      "path": "games/racing/tests/terrain-loading.test.mjs",
+      "bytes": 1856,
+      "sha256": "cc02fa2801be9ac5dabbf2f3e48bc62c15c3defe0badf786f50ecdabc5df4c7b"
+    },
+    {
+      "path": "games/racing/tests/timeline.test.mjs",
+      "bytes": 1728,
+      "sha256": "04e13f4f24e78ff38e0b202e9f087d811df8cddffdb7ce36734a4cf26071241a"
+    },
+    {
+      "path": "games/racing/tests/touch-contact-failures.md",
+      "bytes": 982,
+      "sha256": "412f893cc0c8de49b9b2e8d16ce86c5e081359ea374dda959b3e997cf13ff923"
+    },
+    {
+      "path": "games/racing/tests/touch-contacts.test.mjs",
+      "bytes": 2056,
+      "sha256": "53d59aec23a6274c2c55fea78b8b4af3e535fe2a695320f12b6122bccfb57f7b"
+    },
+    {
+      "path": "games/racing/tests/vehicle-models.test.mjs",
+      "bytes": 1167,
+      "sha256": "e0a831b448fdae26635029c7ccbe53577979914073537370a64818edca247390"
+    },
+    {
+      "path": "games/racing/web/classic-motion.ts",
+      "bytes": 18078,
+      "sha256": "29bc550eeceed9f1a3d7d8e6b225c937066c89d867ebf3bb127d4b34cb2aca44"
+    },
+    {
+      "path": "games/racing/web/classic-road.ts",
+      "bytes": 15608,
+      "sha256": "231a2e01f0a76c7f569208e8840013e9714e332340c6069a1af45e2b16c28096"
+    },
+    {
+      "path": "games/racing/web/classic-terrain-materials.json",
+      "bytes": 1408,
+      "sha256": "4cd6cef6715f0bba8a45080970562c9608357fcd6f818719621e70465a943d05"
+    },
+    {
+      "path": "games/racing/web/classic-terrain-wheels.json",
+      "bytes": 2270,
+      "sha256": "bbbc89fb2675b2708be04ae96d1ba0a42c32324d514a07aad2a0a24eb29fafe7"
+    },
+    {
+      "path": "games/racing/web/classic-terrain.ts",
+      "bytes": 5531,
+      "sha256": "473285bb09e5d68fcb86a02bf954dce0171b3ebfbb5745248c3d07a8cfed36a5"
+    },
+    {
+      "path": "games/racing/web/prediction.ts",
+      "bytes": 7003,
+      "sha256": "b379d0fd471e49efec590fe48f8711248400c891279b9041be0f9419d38d556f"
+    },
+    {
+      "path": "games/racing/web/types.ts",
+      "bytes": 2754,
+      "sha256": "e031da5ac8fbe6b251ff364d7bc35ac2ebe413c56c36fcd8d48360c0b38d6e1f"
+    }
+  ],
+  "limitations": [
+    "Geometric 20/100m offset checks do not claim physically driving through walls or beyond actual terrain; real-driver per-track distances are reported separately.",
+    "Old red fixtures were produced by the old VROAD/3m implementation through ordinary input; they are historical recovery evidence, not current-terrain reachability evidence.",
+    "Raw material-table bytes match the original executable; the grip-role/formula interpretation is supported by pinned community reconstruction, not original runtime measurement.",
+    "Module test clocks preserve 20ms physical steps and original deadlines but are not real-time browser input/HUD/performance proof."
+  ]
+}
