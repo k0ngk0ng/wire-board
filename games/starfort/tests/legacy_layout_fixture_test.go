@@ -31,6 +31,7 @@ func legacyStartMatch(m gameapi.Match) (gameapi.Match, error) {
 		return m, e
 	}
 	s.BalanceRules = 0
+	s.RevisionRules = 0
 	s.GeologyRules = 0
 	s.Geology = nil
 	s.GeoRNG = 0
@@ -67,6 +68,7 @@ func growthTestModule() gameapi.Module {
 		if err := json.Unmarshal(v.Data, &s); err != nil {
 			return v, err
 		}
+		s.RevisionRules = 0
 		s.GeologyRules = 0
 		s.Geology = nil
 		s.GeoRNG = 0
@@ -116,6 +118,26 @@ func preBalanceTestModule() gameapi.Module {
 		}
 		s.SkillRules = 2
 		s.SpecializationRules = 1
+		return s.Envelope()
+	}
+	return m
+}
+
+// Select the archived schema-11 rules for historical runtime matrices.
+// The current default is exercised independently by TestStarfortRevision*.
+func preRevisionTestModule() gameapi.Module {
+	m := game.Module()
+	start := m.Start
+	m.Start = func(ctx gameapi.Context, raw json.RawMessage) (gameapi.Match, error) {
+		v, err := start(ctx, raw)
+		if err != nil {
+			return v, err
+		}
+		var s game.State
+		if err = json.Unmarshal(v.Data, &s); err != nil {
+			return v, err
+		}
+		s.RevisionRules = 0
 		return s.Envelope()
 	}
 	return m

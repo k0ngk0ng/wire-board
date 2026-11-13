@@ -492,8 +492,16 @@ func (s *State) fireTower(index int) bool {
 		s.hitWithSkill(target, damage, *t, skill)
 		if skill == "volley" && s.growing() {
 			g := s.volleyArea(t.Level)
-			for _, j := range s.nearbyTargets(enemy, g.Radius, g.Targets) {
+			victims := s.nearbyTargets(enemy, g.Radius, g.Targets)
+			for _, j := range victims {
 				s.hitWithSkill(j, baseDamage*g.Damage, *t, skill)
+			}
+			if s.revised() && len(victims) > 0 {
+				e := Event{Type: "arrow_rain", TowerID: t.ID, Owner: t.Owner, Kind: t.Kind, X: enemy.X, Y: enemy.Y, VisualMS: 2000}
+				for _, j := range victims {
+					e.StatusTargets = append(e.StatusTargets, s.Enemies[j].ID)
+				}
+				s.event(e)
 			}
 		} else if skill == "volley" {
 			for j := range s.Enemies {
@@ -517,7 +525,18 @@ func (s *State) hitWithSkill(index int, damage float64, t Tower, skill string) {
 		if t.Kind == "cannon" && t.Branch == "power" && e.Repairing > 0 {
 			damage *= 1.5
 		}
-		if t.Kind == "arcane" && e.Armor > 0 {
+		if t.Kind == "arcane" && s.revised() {
+			if e.Armor > 0 || e.Shield > 0 {
+				damage *= 1.2
+			}
+			if t.Branch == "power" && (e.Armor > 0 || heavy(*e)) {
+				extra := 1.2 + .1*float64(t.Level-1)
+				if heavy(*e) {
+					extra -= .1
+				}
+				damage *= extra
+			}
+		} else if t.Kind == "arcane" && e.Armor > 0 {
 			damage *= 1.1
 			if t.Branch == "power" {
 				extra := 1.1 + .1*float64(t.Level-1)
@@ -532,13 +551,17 @@ func (s *State) hitWithSkill(index int, damage float64, t Tower, skill string) {
 		}
 	}
 	if t.Kind != "arcane" && skill != "execute" {
-		damage *= 1 - e.Armor
+		if s.revised() && t.Kind == "arrow" && e.Armor > 0 {
+			damage *= .8
+		} else {
+			damage *= 1 - e.Armor
+		}
 	}
 	geoFactor := s.geoVulnerability(*e)
 	damage *= geoFactor
 	damage *= s.sleepDamageFactor(*e)
 	before := e.HP + e.Shield
-	if e.Shield > 0 {
+	if e.Shield > 0 && !(s.revised() && t.Kind == "arcane") {
 		factor := 1.
 		if t.Kind == "arcane" && !s.weathered() {
 			factor = 1.5
@@ -578,6 +601,9 @@ func (s *State) hitWithSkill(index int, damage float64, t Tower, skill string) {
 	if t.Kind == "frost" {
 		if s.rebalanced() {
 			factor, duration := s.iceAttack(t)
+			if s.revised() && t.Branch == "speed" && e.WetUntil > s.Tick {
+				factor = math.Max(.1, factor-.2)
+			}
 			if s.controlMultiplier(*e) == 2 {
 				factor = math.Max(.1, 1-2*(1-factor))
 				duration *= 2
@@ -590,7 +616,7 @@ func (s *State) hitWithSkill(index int, damage float64, t Tower, skill string) {
 			e.SlowUntil = max(e.SlowUntil, s.Tick+8)
 		}
 	}
-	s.event(Event{Skill: skill, TowerID: t.ID, TargetID: e.ID, Type: "hit", X: e.X, Y: e.Y, Kind: e.Kind, Owner: t.Owner, Amount: actual})
+	s.event(Event{IgnoreShield: s.revised() && t.Kind == "arcane", Skill: skill, TowerID: t.ID, TargetID: e.ID, Type: "hit", X: e.X, Y: e.Y, Kind: e.Kind, Owner: t.Owner, Amount: actual})
 	if e.HP <= 0 {
 		s.Kills++
 		s.Players[t.Owner].Kills++

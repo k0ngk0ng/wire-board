@@ -40,7 +40,7 @@ func weatherNear(t *testing.T, name string, got, want float64) {
 	}
 }
 func TestStarfortWeatherVersionAndForecast(t *testing.T) {
-	b := newModuleRulesTable(t, 1, map[string]any{"mode": "endless"}, starfort.Module())
+	b := newModuleRulesTable(t, 1, map[string]any{"mode": "endless"}, preRevisionTestModule())
 	if b.s.Schema != 11 || specializationRaw(b)["weatherRules"] != float64(3) || specializationRawView(b)["weatherRules"] != float64(3) {
 		t.Fatal("new games need schema 11 and public weatherRules")
 	}
@@ -315,7 +315,7 @@ func TestStarfortWeatherArcaneArmor(t *testing.T) {
 }
 
 func TestStarfortWeatherTaskLottery(t *testing.T) {
-	b := newModuleRulesTable(t, 1, map[string]any{"mode": "endless"}, starfort.Module())
+	b := newModuleRulesTable(t, 1, map[string]any{"mode": "endless"}, preRevisionTestModule())
 	seen := map[string]int{}
 	offers := 0
 	for seed := int64(1); seed <= 240; seed++ {
@@ -385,7 +385,7 @@ func TestStarfortWeatherTaskLottery(t *testing.T) {
 
 func weatherTaskFixture(t *testing.T, kind string) *rulesTable {
 	t.Helper()
-	b := newModuleRulesTable(t, 2, map[string]any{"mode": "endless"}, starfort.Module())
+	b := newModuleRulesTable(t, 2, map[string]any{"mode": "endless"}, preRevisionTestModule())
 	s := cadenceState(b)
 	s.GeologyRules = 0
 	s.Geology = nil
@@ -492,7 +492,7 @@ func TestStarfortWeatherLeak(t *testing.T) {
 }
 
 func weatherShopModule() gameapi.Module {
-	m := starfort.Module()
+	m := preRevisionTestModule()
 	start := m.Start
 	m.Start = func(ctx gameapi.Context, raw json.RawMessage) (gameapi.Match, error) {
 		v, e := start(ctx, raw)
@@ -579,7 +579,7 @@ func TestStarfortWeatherShopHTTP(t *testing.T) {
 func TestStarfortWeatherNaturalCampaign(t *testing.T) {
 	for _, n := range []int{1, 2, 3, 4} {
 		t.Run(fmt.Sprint(n), func(t *testing.T) {
-			b := newModuleRulesTable(t, n, map[string]any{"waves": 20}, starfort.Module())
+			b := newModuleRulesTable(t, n, map[string]any{"waves": 20}, preRevisionTestModule())
 			for sec := 0; sec < 22000 && b.s.Result == nil; sec++ {
 				b.botPass()
 				if b.s.Result == nil {

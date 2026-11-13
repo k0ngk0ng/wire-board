@@ -7,7 +7,7 @@ Profiles production Canvas and real HTTP/WebSocket, with lightweight counters.
 import json,os,sys,time,shutil,subprocess
 from pathlib import Path
 import accept_combat_controls_ui as c
-w=c.w;w.OUT=c.ROOT/'.local/starfort-density/browser';w.OUT.mkdir(parents=True,exist_ok=True)
+w=c.w;w.OUT=c.ROOT/('.local/starfort-next/density' if '--revision' in sys.argv else '.local/starfort-density/browser');w.OUT.mkdir(parents=True,exist_ok=True)
 w.ENV.update(WIRE_BOARD_STARFORT_BROWSER_OUT=str(w.OUT),AGENT_BROWSER_PROFILE=str(w.OUT/'profile'),AGENT_BROWSER_INIT_SCRIPTS=str(c.ROOT/'games/starfort/tests/density_probe.js'))
 # Disable the detailed sprite recorder: copying every drawing would bias a profile.
 c.BASELINE=True;c.BASELINE_COMBAT=False
@@ -21,8 +21,10 @@ try:
   controller=subprocess.Popen(['node','games/starfort/tests/density_control.mjs',c.b('get','cdp-url')['cdpUrl'],w.BASE,str(rate)],cwd=c.ROOT,env=w.ENV,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True)
   assert controller.stdout.readline().strip()=='READY'
   calibration=c.js('(()=>{const at=performance.now();let value=0;for(let i=0;i<1000000;i++)value+=Math.sqrt(i);return {ms:performance.now()-at,value}})()')
-  for kind in (['observed'] if '--observed-only' in sys.argv else ['central','coop','observed','ceiling']):
-   w.scenario('density-'+kind,2 if kind=='observed' else 4);c.enter();c.b('wait','4000');c.js('window.__resetDensity()');c.b('wait','16000')
+  for kind in (['revision'] if '--revision' in sys.argv else ['observed'] if '--observed-only' in sys.argv else ['central','coop','observed','ceiling']):
+   w.scenario('revision-density' if kind=='revision' else 'density-'+kind,2 if kind=='observed' else 4);c.enter();
+   if kind=='revision':c.choose_visible_tower('arrow');c.stable()
+   c.b('wait','4000');c.js('window.__resetDensity()');c.b('wait','16000')
    c.activate('[data-sf-open-info]',width==320);c.b('wait','500')
    metrics=c.js('JSON.parse(JSON.stringify(window.__density))')
    sample=w.data();network=w.api('/state').get('network',{});latency=c.js('''(async()=>{let rows=[];for(let i=0;i<5;i++){const url='/healthz?density='+i+'&at='+Date.now();const start=performance.now();await (await fetch(url)).text();const entries=performance.getEntriesByName(new URL(url,location.href).href);rows.push({elapsed:performance.now()-start,network:entries.at(-1)?.duration});}return rows})()''')
@@ -36,13 +38,15 @@ try:
   for row in results:
    assert row['messageMaxBytes']<=192*1024, row
    assert row['drawCallsPerPaint']<=2000, row
+   if '--revision' in sys.argv:assert row['drawCallsPerPaint']>200 and row['enemies']==64 and row['towers']==40,row
    assert row['frameP95']<=34, row
    assert row['clickMS'] and max(row['clickMS'])<=200, row
+ assert not c.b('errors')['errors'], 'Canvas errors invalidate performance results'
  passed=True
 except Exception:
  import traceback;traceback.print_exc()
  if w.OPENED:
-  try:print(c.b("errors"));c.screenshot("failure")
+  try:w.artifact("browser-errors.json",c.b("errors"));c.screenshot("failure")
   except Exception:pass
 finally:
  if controller and controller.poll() is None:controller.communicate('stop',timeout=10)

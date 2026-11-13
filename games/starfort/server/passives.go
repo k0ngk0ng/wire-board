@@ -108,6 +108,10 @@ func (s *State) makeCrater(t *Tower, target Enemy) bool {
 		c.Total = work
 		c.Remaining = work
 	}
+	if s.revised() && s.geoVulnerability(target) > 1 {
+		c.Total *= 1.3
+		c.Remaining = c.Total
+	}
 	c.IgnoreHeavy = !s.rebalanced() && s.specialized() && t.Kind == "cannon" && t.Branch == "speed"
 	s.Craters = append(s.Craters, c)
 	t.PassiveReadyAt = now + 6000
@@ -294,7 +298,7 @@ func (s *State) validCraters() error {
 	for _, c := range s.Craters {
 		path := s.routePath(c.Route)
 		p := pathPosition(path, c.Progress)
-		if c.ID < 1 || c.ID > s.CraterSerial || ids[c.ID].ID != 0 || c.TowerID < 1 || c.TowerID > s.TowerSerial || c.Owner < 0 || c.Owner >= len(s.Players) || len(path) < 2 || !finite(c.Progress) || c.Progress < 0 || c.Progress > pathDistance(path) || !finite(c.X) || !finite(c.Y) || math.Hypot(p.X-c.X, p.Y-c.Y) > .01 || c.Radius != 28 || ((!s.growing() && c.Total != 6) || (s.growing() && (!finite(c.Total) || c.Total < 5 || c.Total > 5+maxValue/10 || math.Trunc(c.Total) != c.Total))) || !finite(c.Remaining) || c.Remaining < 0 || c.Remaining > c.Total || c.CreatedMS < 0 || c.CreatedMS > s.ElapsedMS || c.FilledMS < 0 || c.FilledMS > s.ElapsedMS || (c.Remaining == 0) != (c.FilledMS > 0) || len(c.Workers) > MaxEnemies {
+		if c.ID < 1 || c.ID > s.CraterSerial || ids[c.ID].ID != 0 || c.TowerID < 1 || c.TowerID > s.TowerSerial || c.Owner < 0 || c.Owner >= len(s.Players) || len(path) < 2 || !finite(c.Progress) || c.Progress < 0 || c.Progress > pathDistance(path) || !finite(c.X) || !finite(c.Y) || math.Hypot(p.X-c.X, p.Y-c.Y) > .01 || c.Radius != 28 || ((!s.growing() && c.Total != 6) || (s.growing() && (!finite(c.Total) || c.Total < 5 || c.Total > s.maxCraterWork() || (!s.revised() && math.Trunc(c.Total) != c.Total)))) || !finite(c.Remaining) || c.Remaining < 0 || c.Remaining > c.Total || c.CreatedMS < 0 || c.CreatedMS > s.ElapsedMS || c.FilledMS < 0 || c.FilledMS > s.ElapsedMS || (c.Remaining == 0) != (c.FilledMS > 0) || len(c.Workers) > MaxEnemies {
 			return errors.New("无效弹坑存档")
 		}
 		workers := map[int]bool{}

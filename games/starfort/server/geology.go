@@ -28,6 +28,7 @@ type GeoDisabled struct {
 	Floor   int    `json:"floor"`
 }
 type GeoZone struct {
+	Sweep         bool             `json:"sweep,omitempty"`
 	ID            int              `json:"id"`
 	Kind          string           `json:"kind"`
 	X             float64          `json:"x"`
@@ -67,7 +68,11 @@ func (s *State) startGeology() {
 	}
 	g := &Geology{Wave: s.Wave, StartedMS: s.ElapsedMS, Kind: "none", RoutePeaks: map[string]float64{}}
 	s.Geology = g
-	if s.geoRandom(100) >= 30 {
+	chance := 30
+	if s.revised() {
+		chance = 50
+	}
+	if s.geoRandom(100) >= chance {
 		return
 	}
 	g.Kind = []string{"earthquake", "flood", "typhoon"}[s.geoRandom(3)]
@@ -97,6 +102,10 @@ func (s *State) startGeology() {
 			g.Zones = append(g.Zones, z)
 		}
 	case "flood":
+		if s.revised() {
+			s.revisionFloods(g)
+			break
+		}
 		count := 1 + s.geoRandom(5)
 		fromBottom := s.geoRandom(2) == 1
 		for tries := 0; tries < 1024 && len(g.Zones) < count; tries++ {
@@ -119,12 +128,16 @@ func (s *State) startGeology() {
 		}
 	case "typhoon":
 		routes := s.activeRoutes()
-		for i := 0; i < 16 && len(routes) > 0; i++ {
+		count, minSpeed, diameterSpan := 16, 40, 91
+		if s.revised() {
+			count, minSpeed, diameterSpan = 20, 20, 291
+		}
+		for i := 0; i < count && len(routes) > 0; i++ {
 			route := routes[s.geoRandom(len(routes))]
 			length := pathDistance(s.routePath(route))
 			progress := length * (.1 + .3*float64(s.geoRandom(1001))/1000)
 			p := pathPosition(s.routePath(route), progress)
-			g.Zones = append(g.Zones, GeoZone{ID: i + 1, Kind: g.Kind, Route: route, Progress: progress, X: p.X, Y: p.Y, Radius: float64(60+s.geoRandom(91)) / 2, Speed: float64(40 + s.geoRandom(31)), CreatedMS: s.ElapsedMS + int64(5+s.geoRandom(146))*StepMS})
+			g.Zones = append(g.Zones, GeoZone{ID: i + 1, Kind: g.Kind, Route: route, Progress: progress, X: p.X, Y: p.Y, Radius: float64(60+s.geoRandom(diameterSpan)) / 2, Speed: float64(minSpeed + s.geoRandom(71-minSpeed)), CreatedMS: s.ElapsedMS + int64(5+s.geoRandom(146))*StepMS})
 		}
 		sort.SliceStable(g.Zones, func(i, j int) bool { return g.Zones[i].CreatedMS < g.Zones[j].CreatedMS })
 		for i := range g.Zones {
@@ -155,6 +168,15 @@ func (s *State) geoContains(z GeoZone, p Point) bool {
 	}
 	y := fromY + (z.Y-fromY)*t
 	top, bottom := math.Max(0, y), math.Min(float64(s.World.Map.Height), y+z.Height)
+	if z.Sweep {
+		top, bottom = z.Y, math.Min(z.Y+z.Height, float64(s.World.Map.Height)*t)
+		if z.FromBottom {
+			top, bottom = math.Max(z.Y, float64(s.World.Map.Height)*(1-t)), z.Y+z.Height
+		}
+		if top >= bottom {
+			return false
+		}
+	}
 
 	return p.X >= z.X && p.X <= z.X+z.Width && p.Y >= top && p.Y <= bottom
 }
@@ -282,7 +304,11 @@ func (s *State) stepGeology() {
 			s.quakeDisable()
 		}
 		s.event(Event{Type: "geology", Kind: g.Kind, Owner: -1})
-		s.note("本波地质效果：%s", map[string]string{"earthquake": "地震", "flood": "洪水", "typhoon": "台风"}[g.Kind])
+		label := "地质效果"
+		if s.revised() {
+			label = "自然灾害"
+		}
+		s.note("本波%s：%s", label, map[string]string{"earthquake": "地震", "flood": "洪水", "typhoon": "台风"}[g.Kind])
 	}
 	if !g.Triggered {
 		return
@@ -323,7 +349,13 @@ func (s *State) stepGeology() {
 			continue
 		}
 		for i, e := range s.Enemies {
-			if e.HP <= 0 || slices.Contains(z.EnemyHits, e.ID) || !s.geoContains(*z, Point{e.X, e.Y}) {
+			if e.HP <= 0 || !s.geoContains(*z, Point{e.X, e.Y}) {
+				continue
+			}
+			if s.revised() && z.Kind == "flood" {
+				s.Enemies[i].WetUntil = s.Tick + 5000/StepMS
+			}
+			if slices.Contains(z.EnemyHits, e.ID) {
 				continue
 			}
 			z.EnemyHits = append(z.EnemyHits, e.ID)
@@ -432,7 +464,7 @@ func (s *State) validGeology() error {
 	if g == nil {
 		return nil
 	}
-	if !s.geological() || g.Wave < 1 || g.Wave > s.Wave || g.StartedMS < 0 || g.TriggerMS < 0 || g.Recoveries < 0 || g.Recoveries > 3 || g.Bonus < 0 || g.Bonus > maxValue || !slices.Contains([]string{"none", "earthquake", "flood", "typhoon"}, g.Kind) || len(g.Zones) > 16 || len(g.Disabled) > 40 || len(g.RoutePeaks) > len(s.World.Map.Routes) {
+	if !s.geological() || g.Wave < 1 || g.Wave > s.Wave || g.StartedMS < 0 || g.TriggerMS < 0 || g.Recoveries < 0 || g.Recoveries > 3 || g.Bonus < 0 || g.Bonus > maxValue || !slices.Contains([]string{"none", "earthquake", "flood", "typhoon"}, g.Kind) || len(g.Zones) > s.geoZoneLimit() || len(g.Disabled) > 40 || len(g.RoutePeaks) > len(s.World.Map.Routes) {
 		return errors.New("无效地质状态")
 	}
 	for r, p := range g.RoutePeaks {
@@ -442,6 +474,9 @@ func (s *State) validGeology() error {
 	}
 	ids := map[int]bool{}
 	for _, z := range g.Zones {
+		if z.Sweep && (!s.revised() || z.Kind != "flood") {
+			return errors.New("无效洪水进入规则")
+		}
 		if z.ID < 1 || ids[z.ID] || z.Kind != g.Kind || !finite(z.X) || !finite(z.Y) || !finite(z.Progress) || !finite(z.Speed) || z.CreatedMS < 0 || z.ExpiresMS < 0 || len(z.EnemyHits) > 512 || len(z.ObjectiveHits) > 4 || len(z.TowerHits) > 40 || len(z.MissGuards) > 40 {
 			return errors.New("无效地质区域")
 		}
@@ -456,7 +491,7 @@ func (s *State) validGeology() error {
 				return errors.New("无效洪水范围")
 			}
 		case "typhoon":
-			if !finite(z.Radius) || z.Radius < 30 || z.Radius > 75 || z.Speed < 40 || z.Speed > 70 || z.Progress < 0 || len(s.routePath(z.Route)) < 2 {
+			if !finite(z.Radius) || z.Radius < 30 || z.Radius > s.typhoonMaxRadius() || z.Speed < s.typhoonMinSpeed() || z.Speed > 70 || z.Progress < 0 || len(s.routePath(z.Route)) < 2 {
 				return errors.New("无效台风")
 			}
 		default:

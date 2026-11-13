@@ -68,7 +68,9 @@ export function activeEffects<T extends TimedEvent>(
 ): T[] {
   if (reduced) return [];
   return effects.filter(
-    (event) => at - event.born < (event.type === "shot" ? FLIGHT_MS : 900),
+    (event) =>
+      at - event.born <
+      (event.type === "shot" ? FLIGHT_MS : (event.visualMS ?? 900)),
   );
 }
 
@@ -225,7 +227,9 @@ export class CombatPlayback {
       const applyDamage = (id: number, amount: number) => {
         const victim = enemies.get(id);
         if (!victim) return;
-        const absorbed = Math.min(victim.shield, amount),
+        const absorbed = event.ignoreShield
+            ? 0
+            : Math.min(victim.shield, amount),
           shield = victim.shield - absorbed;
         const hp = Math.max(0, victim.hp - (amount - absorbed));
         enemies.set(id, { ...victim, hp, shield, health: hp + shield });

@@ -18,6 +18,8 @@ type ShopTowerControl struct {
 	RangeEnabled  bool `json:"rangeEnabled"`
 }
 type ShopControl struct {
+	UnitCost        int                `json:"unitCost"`
+	Invulnerability bool               `json:"invulnerability,omitempty"`
 	Wave            int                `json:"wave"`
 	Limit           int                `json:"limit"`
 	Enabled         bool               `json:"enabled"`
@@ -34,18 +36,25 @@ func (s *State) shopControl(player int) *ShopControl {
 	if !s.weathered() || shop == nil {
 		return nil
 	}
-	c := &ShopControl{Wave: shop.Wave, Limit: shop.Wave / 10, Towers: []ShopTowerControl{}}
+	unitCost := 100
+	if s.revised() {
+		unitCost = shop.Wave * 10
+	}
+	c := &ShopControl{UnitCost: unitCost, Invulnerability: s.revised(), Wave: shop.Wave, Limit: shop.Wave / 10, Towers: []ShopTowerControl{}}
 	c.RepairRemaining = c.Limit - shop.RepairUsed
 	c.DamageRemaining = c.Limit - len(shop.DamageTowers)
 	c.RangeRemaining = c.Limit - len(shop.RangeTowers)
 	c.Enabled = player >= 0 && player < len(s.Players) && s.Phase == "prepare" && s.World.Choice == nil && s.World.BoonChoice == nil
 	if c.Enabled {
 		gold := s.Players[player].Gold
-		c.RepairMax = min(c.RepairRemaining, s.BaseMaxHP-s.BaseHP, gold/100)
+		c.RepairMax = min(c.RepairRemaining, s.BaseMaxHP-s.BaseHP, gold/c.UnitCost)
 		c.ShieldEnabled = !shop.ShieldBought && gold >= 1000
+		if s.revised() {
+			c.ShieldEnabled = s.InvulnerabilityPacks == 0 && gold >= 1000
+		}
 		for _, t := range s.Towers {
 			if t.Owner == player {
-				c.Towers = append(c.Towers, ShopTowerControl{TowerID: t.ID, DamageEnabled: gold >= 100 && c.DamageRemaining > 0 && !slices.Contains(shop.DamageTowers, t.ID), RangeEnabled: gold >= 100 && c.RangeRemaining > 0 && !slices.Contains(shop.RangeTowers, t.ID)})
+				c.Towers = append(c.Towers, ShopTowerControl{TowerID: t.ID, DamageEnabled: gold >= c.UnitCost && c.DamageRemaining > 0 && !slices.Contains(shop.DamageTowers, t.ID), RangeEnabled: gold >= c.UnitCost && c.RangeRemaining > 0 && !slices.Contains(shop.RangeTowers, t.ID)})
 			}
 		}
 	}
@@ -57,7 +66,7 @@ func (s *State) buyShop(player int, a Action) error {
 		return errors.New("商店仅在商人护送成功当波结束后的整备阶段开放")
 	}
 	shop := s.World.Shop
-	cost := 100
+	cost := c.UnitCost
 	switch a.Choice {
 	case "repair":
 		if a.Amount < 1 || a.Amount > c.RepairMax {
@@ -97,8 +106,12 @@ func (s *State) buyShop(player int, a Action) error {
 			return errors.New("金币不足或本店的星核庇护已售出")
 		}
 		cost = 1000
-		shop.ShieldBought = true
-		s.World.BossWards++
+		if s.revised() {
+			s.InvulnerabilityPacks = 1
+		} else {
+			shop.ShieldBought = true
+			s.World.BossWards++
+		}
 	default:
 		return errors.New("未知商店商品")
 	}

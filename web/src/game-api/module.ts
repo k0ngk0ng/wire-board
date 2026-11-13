@@ -50,10 +50,11 @@ export type GameAudioPort = {
   playWithFallback: (sources: readonly string[]) => Promise<boolean>;
   // Finite native voices: at most16 stable lanes/owner and32/platform.
   // IDs identify instances, not lanes; identical updates never restart a clip.
+  // reuseLoaded opts repeated short effects into native source/decoder reuse.
   effect: (
     lane: string,
     sources: readonly string[],
-    options: { playbackID: string; startOffset?: number },
+    options: { playbackID: string; startOffset?: number; reuseLoaded?: boolean },
   ) => Promise<boolean>;
   stopEffect: (lane: string, expectedPlaybackID?: string) => void;
   openStream: (

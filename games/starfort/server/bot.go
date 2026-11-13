@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"math"
+	"slices"
 
 	"github.com/k0ngk0ng/wire-board/internal/gameapi"
 )
@@ -18,6 +19,9 @@ func botAction(ctx gameapi.Context, m gameapi.Match) (json.RawMessage, error) {
 	p := ctx.Actor
 	if p < 0 || p >= len(s.Players) || s.finished() {
 		return nil, errors.New("当前不能托管")
+	}
+	if s.revised() && s.Phase == "battle" && s.InvulnerabilityPacks > 0 && s.BaseHP <= 10 && slices.ContainsFunc(s.Enemies, func(e Enemy) bool { return e.Progress/pathDistance(s.routePath(e.Route)) > .8 }) {
+		return json.Marshal(Action{Type: "use_invulnerability", Epoch: s.Epoch})
 	}
 	a := Action{Epoch: s.Epoch}
 	if s.Phase == "paused" {
@@ -57,6 +61,12 @@ func botAction(ctx gameapi.Context, m gameapi.Match) (json.RawMessage, error) {
 		}
 		if s.World.Choice != nil || s.World.BoonChoice != nil {
 			return nil, nil
+		}
+		if s.revised() {
+			if reward := s.automaticRevisionReward(p); reward != nil {
+				reward.Epoch = s.Epoch
+				return json.Marshal(reward)
+			}
 		}
 		if s.rebalanced() && s.World.PadReward != nil {
 			if s.World.PadReward.Owner == p {

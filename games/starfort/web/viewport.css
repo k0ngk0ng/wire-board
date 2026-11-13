@@ -939,3 +939,90 @@
     flex-basis: 36px;
   }
 }
+
+/* The shop occupies its own dock; its scroll never covers the battlefield. */
+.starfort-board.sf-has-shop {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 10px;
+}
+.starfort-board.sf-has-shop > .sf-layout {
+  grid-column: 1;
+  min-height: 0;
+}
+.starfort-board.sf-has-shop > .sf-topbar {
+  right: 350px;
+}
+.sf-shop-dock {
+  grid-column: 2;
+  grid-row: 1;
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+  padding: 12px;
+  border: 1px solid #78866b;
+  border-radius: 10px;
+  background: #fffdf1;
+  color: #253e29;
+  z-index: 3;
+}
+.sf-shop-dock > header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+.sf-shop-dock h2 {
+  margin: 0;
+  font-size: 18px;
+}
+.sf-shop-dock header button {
+  min-width: 36px;
+  font-size: 22px;
+}
+.sf-shop-dock .sf-shop-grid {
+  grid-template-columns: 1fr;
+}
+.sf-shop-dock .sf-shop-item {
+  min-width: 0;
+}
+.sf-shop-dock input,
+.sf-shop-dock select {
+  max-width: 100%;
+}
+.sf-topbar [data-sf-weather-notice] {
+  background: #fffdf1;
+  color: #253e29;
+  border-radius: 6px;
+}
+.sf-topbar [data-sf-weather-notice] > svg {
+  flex: none;
+}
+.sf-topbar [data-sf-weather-notice] > span {
+  font-weight: 700;
+}
+[data-sf-invulnerable] {
+  padding: 6px;
+  background: #fff3c9;
+  color: #433611;
+  border: 1px solid #87794b;
+  border-radius: 6px;
+}
+@media (max-width: 700px) {
+  .starfort-board.sf-has-shop {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(220px, 1fr) minmax(150px, 42%);
+    gap: 8px;
+  }
+  .starfort-board.sf-has-shop > .sf-topbar {
+    right: 0;
+  }
+  .sf-shop-dock {
+    grid-column: 1;
+    grid-row: 2;
+    padding: 8px;
+  }
+  .sf-shop-dock .sf-shop-item {
+    padding: 8px;
+  }
+}

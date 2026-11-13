@@ -55,7 +55,7 @@ export function MerchantShop({
               void send("shop", { choice: "repair", amount: selected })
             }
           >
-            修复 {selected} 点 · {selected * 100} 金币
+            修复 {selected} 点 · {selected * quote.unitCost} 金币
           </button>
         </section>
         {(["damage", "range"] as const).map((choice) => {
@@ -100,15 +100,25 @@ export function MerchantShop({
                 disabled={locked || !quote.enabled || !enabled}
                 onClick={() => void send("shop", { choice, towerId: id })}
               >
-                强化 · 100 金币
+                强化 · {quote.unitCost} 金币
               </button>
             </section>
           );
         })}
         <section className="sf-shop-item">
-          <h3>星核庇护</h3>
-          <p>免疫 1 次星陨巨像进入星核的扣血</p>
-          <p>当前剩余 {data.world?.bossWards ?? 0} 次</p>
+          <h3>{quote.invulnerability ? "星核无敌" : "星核庇护"}</h3>
+          <p>
+            {quote.invulnerability
+              ? "使用后星核无敌 10 秒，可在波间或战斗中使用"
+              : "免疫 1 次星陨巨像进入星核的扣血"}
+          </p>
+          <p>
+            当前剩余{" "}
+            {quote.invulnerability
+              ? (data.invulnerabilityPacks ?? 0)
+              : (data.world?.bossWards ?? 0)}{" "}
+            份
+          </p>
           <button
             data-sf-shop-buy="shield"
             disabled={locked || !quote.enabled || !quote.shieldEnabled}

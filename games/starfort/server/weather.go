@@ -47,6 +47,16 @@ func (s *State) weatherFor(wave int) WaveEvent {
 
 func (s *State) upgradePrice(t Tower) int {
 	base := upgradeCost(t)
+	if s.revised() {
+		factor := 1.
+		if t.Level >= 10 {
+			factor += .1 + .05*float64(t.Level/10-1)
+		}
+		if (t.Level+1)%10 == 0 {
+			factor *= 1 + float64(t.Level+1)/100
+		}
+		return int(math.Min(maxValue, math.Round(float64(base)*factor)))
+	}
 	if !s.weathered() || t.Level < 10 {
 		return base
 	}
@@ -54,6 +64,10 @@ func (s *State) upgradePrice(t Tower) int {
 	return int(math.Min(maxValue, math.Round(float64(base)*(1+extra))))
 }
 func (s *State) cannonArea(level int) areaGrowth {
+	if s.revised() {
+		n := max(1, level) - 1
+		return areaGrowth{Chance: min(100, 10+2*((n+2)/3)), Radius: 100 + 10*float64((n+1)/3), Damage: .2 + .02*float64(n/3)}
+	}
 	if s.weatherV3() {
 		n := max(1, level) - 1
 		return areaGrowth{Chance: min(100, 10+5*((n+2)/3)), Radius: 100 + 10*float64((n+1)/3), Damage: .2 + .05*float64(n/3)}
@@ -65,6 +79,15 @@ func (s *State) cannonArea(level int) areaGrowth {
 	return g
 }
 func (s *State) volleyArea(level int) areaGrowth {
+	if s.revised() {
+		l := max(1, level)
+		n := l - 1 - l/10
+		g := areaGrowth{Chance: min(100, 5+(n+2)/3), Radius: 120 + 20*float64((n+1)/3), Damage: .2 + .02*float64(n/3), Targets: 3 + l/10}
+		if s.World.Event.ID == "fog" {
+			g.Targets++
+		}
+		return g
+	}
 	if s.weatherV3() {
 		level = max(1, level)
 		n := level - 1 - level/10
@@ -86,6 +109,11 @@ func (s *State) volleyArea(level int) areaGrowth {
 	return g
 }
 func (s *State) craterArea(level int) (int, int64, float64) {
+	if s.revised() {
+		l := max(1, level)
+		n := l - 1 - l/5
+		return min(100, 10+2*((n+1)/2)), int64(max(StepMS, 20000-500*(n/2))), 5 + float64(l/5)
+	}
 	if s.weatherV3() {
 		level = max(1, level)
 		n := level - 1 - level/5
@@ -107,6 +135,15 @@ func meteorArea(level int) (float64, float64) {
 	return 30 + 3*float64((n+1)/2), .3 + .03*float64(n/2)
 }
 func (s *State) freezeTiming(level int) (int64, int64) {
+	if s.revised() {
+		n := max(1, level) - 1
+		d, cd := int64(2000+500*((n+1)/3)), int64(10000-100*(n/3))
+		if s.World.Event.ID == "frost" {
+			d += 2000
+			cd -= 2000
+		}
+		return d, max(StepMS, cd)
+	}
 	if s.weatherV3() {
 		n := max(1, level) - 1
 		duration, cd := int64(2000+1000*((n+1)/3)), int64(10000-2000*(n/3))
@@ -122,6 +159,9 @@ func (s *State) freezeTiming(level int) (int64, int64) {
 	return 2000, 10000
 }
 func (s *State) weatherStats(t Tower) (float64, float64, int) {
+	if s.revised() {
+		return s.revisionStats(t)
+	}
 	plain := t
 	plain.Branch = ""
 	damage, radius, _ := stats(plain)
@@ -151,6 +191,9 @@ func (s *State) weatherStats(t Tower) (float64, float64, int) {
 	return damage, radius, max(StepMS, int(float64(c.Interval)/rate))
 }
 func (s *State) weatherChoices(t Tower) []BranchChoice {
+	if s.revised() {
+		return s.revisionChoices(t)
+	}
 	if s.weatherV3() {
 		return s.weatherV3Choices(t)
 	}
@@ -211,7 +254,9 @@ func (s *State) weatherPassive(t Tower) *PassiveView {
 		_, p.CooldownMS = s.freezeTiming(t.Level)
 	case "frost/speed":
 		factor, duration := s.iceAttack(t)
-		p.Description = fmt.Sprintf("攻速 ×1.5；命中减速 %.0f%%，持续 %.1f 秒；寒潮额外减速 15 个百分点；无冰墙及永久减速", (1-factor)*100, float64(duration)*StepMS/1000)
+		if !s.revised() {
+			p.Description = fmt.Sprintf("攻速 ×1.5；命中减速 %.0f%%，持续 %.1f 秒；寒潮额外减速 15 个百分点；无冰墙及永久减速", (1-factor)*100, float64(duration)*StepMS/1000)
+		}
 	case "arcane/magic":
 		p.Variant = "meteor"
 		p.TriggerChance = s.meteorChance()
@@ -227,7 +272,11 @@ func (s *State) weatherHit(t *Tower, target Enemy, damage float64) {
 	now := s.combatNow()
 	switch t.Kind + "/" + t.Branch {
 	case "arrow/volley":
-		if !s.skillRoll(15) {
+		chance := uint64(15)
+		if s.revised() {
+			chance = 5
+		}
+		if !s.skillRoll(chance) {
 			return
 		}
 		for i := range s.Enemies {
@@ -239,7 +288,11 @@ func (s *State) weatherHit(t *Tower, target Enemy, damage float64) {
 			if heavy(*e) {
 				distance /= 2
 			}
-			e.KnockbackGuards = putGuard(s.freshGuards(e.KnockbackGuards), t.ID, s.Tick+8000/StepMS)
+			protection := int64(8000 / StepMS)
+			if s.revised() {
+				protection = 5000 / StepMS
+			}
+			e.KnockbackGuards = putGuard(s.freshGuards(e.KnockbackGuards), t.ID, s.Tick+protection)
 			e.Progress = math.Max(0, e.Progress-distance)
 			p := pathPosition(s.routePath(e.Route), e.Progress)
 			e.X, e.Y = p.X, p.Y
@@ -302,38 +355,47 @@ func (s *State) weatherHit(t *Tower, target Enemy, damage float64) {
 		// Group equal control durations so presentation receives exact per-target
 		// deadlines even when sleeping and awake enemies share the same attack.
 		for _, multiplier := range []int64{1, 2} {
-			group := []int{}
-			for _, i := range indices {
-				if s.controlMultiplier(s.Enemies[i]) == multiplier {
-					group = append(group, i)
+			for _, wet := range []bool{false, true} {
+				group := []int{}
+				for _, i := range indices {
+					if s.controlMultiplier(s.Enemies[i]) == multiplier && (s.revised() && t.Kind == "frost" && s.Enemies[i].WetUntil > s.Tick) == wet {
+						group = append(group, i)
+					}
 				}
-			}
-			if len(group) == 0 {
-				continue
-			}
-			event := Event{TowerID: t.ID, X: pad.X, Y: pad.Y, Owner: t.Owner, Kind: t.Kind, Amount: rangePX}
-			for _, i := range group {
-				event.StatusTargets = append(event.StatusTargets, s.Enemies[i].ID)
-			}
-			if t.Kind == "frost" {
-				event.Type, event.Skill, event.FrozenUntil = "freeze", "freeze", s.Tick+duration/StepMS*multiplier
+				if len(group) == 0 {
+					continue
+				}
+				event := Event{TowerID: t.ID, X: pad.X, Y: pad.Y, Owner: t.Owner, Kind: t.Kind, Amount: rangePX}
 				for _, i := range group {
-					e := &s.Enemies[i]
-					e.FrozenUntil = max(e.FrozenUntil, event.FrozenUntil)
-					e.RecoveryUntil = e.FrozenUntil + 8000/StepMS*multiplier
-					e.FreezeGuards = putGuard(s.freshGuards(e.FreezeGuards), t.ID, s.Tick+8000/StepMS)
-					event.RecoveryUntil = e.RecoveryUntil
+					event.StatusTargets = append(event.StatusTargets, s.Enemies[i].ID)
 				}
-			} else {
-				event.Type, event.Skill, event.SilencedUntil = "meteor", "meteor", s.Tick+3000/StepMS*multiplier
-				event.X, event.Y, event.Amount = target.X, target.Y, radius
-				for _, i := range group {
-					e := &s.Enemies[i]
-					e.SilencedUntil = max(e.SilencedUntil, event.SilencedUntil)
-					e.MeteorGuards = putGuard(s.freshGuards(e.MeteorGuards), t.ID, s.Tick+s.meteorProtection())
+				if t.Kind == "frost" {
+					d := duration
+					if wet {
+						d += 1000
+					}
+					event.Type, event.Skill, event.FrozenUntil = "freeze", "freeze", s.Tick+int64(math.Ceil(float64(d)/StepMS))*multiplier
+					for _, i := range group {
+						e := &s.Enemies[i]
+						e.FrozenUntil = max(e.FrozenUntil, event.FrozenUntil)
+						e.RecoveryUntil = e.FrozenUntil + 8000/StepMS*multiplier
+						e.FreezeGuards = putGuard(s.freshGuards(e.FreezeGuards), t.ID, s.Tick+8000/StepMS)
+						event.RecoveryUntil = e.RecoveryUntil
+					}
+				} else {
+					event.Type, event.Skill, event.SilencedUntil = "meteor", "meteor", s.Tick+3000/StepMS*multiplier
+					if s.revised() {
+						event.VisualMS = 3000
+					}
+					event.X, event.Y, event.Amount = target.X, target.Y, radius
+					for _, i := range group {
+						e := &s.Enemies[i]
+						e.SilencedUntil = max(e.SilencedUntil, event.SilencedUntil)
+						e.MeteorGuards = putGuard(s.freshGuards(e.MeteorGuards), t.ID, s.Tick+s.meteorProtection())
+					}
 				}
+				s.event(event)
 			}
-			s.event(event)
 		}
 		if t.Kind == "arcane" {
 			for _, i := range indices {
@@ -351,6 +413,9 @@ func (s *State) weatherHit(t *Tower, target Enemy, damage float64) {
 	}
 }
 func (s *State) leakDamage(e Enemy) int {
+	if s.revised() && s.Tick < s.InvulnerableUntil {
+		return 0
+	}
 	if s.weatherV2() && e.BossGuard {
 		s.World.GuardLeakRemainder++
 		damage := s.World.GuardLeakRemainder / 2

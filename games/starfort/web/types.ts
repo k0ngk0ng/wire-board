@@ -75,6 +75,11 @@ export type Objective = Point & {
   baseAtStart: number;
 };
 export type World = {
+  padRewards?: {
+    owner: number;
+    kind: "add" | "highground" | "move";
+    count: number;
+  }[];
   medicalPacks?: number;
   guardLeakRemainder?: number;
   shop?: {
@@ -164,6 +169,7 @@ export type GeoZone = Point & {
   createdMS: number;
   expiresMS?: number;
   fromBottom?: boolean;
+  sweep?: boolean;
   activated?: boolean;
   skipped?: boolean;
 };
@@ -226,6 +232,8 @@ export type Enemy = Point & {
   abilityTick?: number;
 };
 export type Event = Point & {
+  visualMS?: number;
+  ignoreShield?: boolean;
   recoveryUntil?: number;
   statusTargets?: number[];
   frozenUntil?: number;
@@ -254,6 +262,9 @@ export type Event = Point & {
   tick: number;
 };
 export type View = {
+  revisionRules?: number;
+  invulnerabilityPacks?: number;
+  invulnerableUntil?: number;
   geologyRules?: number;
   geology?: Geology;
   weatherRules?: number;
@@ -301,6 +312,8 @@ export type View = {
   controls: {
     medical?: { count: number; heal: number; enabled: boolean };
     shop?: {
+      unitCost: number;
+      invulnerability?: boolean;
       wave: number;
       limit: number;
       enabled: boolean;

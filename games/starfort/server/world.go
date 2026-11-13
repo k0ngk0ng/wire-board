@@ -80,6 +80,7 @@ type Objective struct {
 	BaseAtStart int     `json:"baseAtStart"`
 }
 type World struct {
+	PadRewards           []PadReward    `json:"padRewards,omitempty"`
 	MedicalPacks         int            `json:"medicalPacks,omitempty"`
 	GuardLeakRemainder   int            `json:"guardLeakRemainder,omitempty"`
 	Shop                 *MerchantShop  `json:"shop,omitempty"`

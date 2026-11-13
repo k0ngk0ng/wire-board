@@ -19,6 +19,9 @@ import {
   Store,
   ListTodo,
   Info,
+  Gift,
+  Shield,
+  Sun,
 } from "lucide-react";
 import { useControllerCancel } from "../../../web/src/controllers/use-controller-cancel";
 import { useEffect, useRef, useState } from "react";
@@ -486,7 +489,21 @@ export function Board({
     data.balanceRules === 1 && data.phase === "prepare"
       ? data.world?.objectives?.find((o) => o.status === "available")
       : undefined;
-  const padReward = data.world?.padReward;
+  const [rewardOpen, setRewardOpen] = useState(false);
+  const [rewardKind, setRewardKind] = useState("");
+  const rewards =
+    data.world?.padRewards?.filter((r) => r.owner === room.you) ?? [];
+  const storedReward = rewards.find((r) => r.kind === rewardKind) ?? rewards[0];
+  const padReward =
+    data.revisionRules === 1 && storedReward
+      ? {
+          ...storedReward,
+          kind:
+            storedReward.kind === "add" && data.map.pads.length >= 40
+              ? ("move" as const)
+              : storedReward.kind,
+        }
+      : data.world?.padReward;
   const shop = data.controls.shop;
   const saleTower = data.towers.find((t) => t.id === selling);
   const confirmedSale = data.controls.sells.find((c) => c.towerId === selling);
@@ -512,7 +529,10 @@ export function Board({
     if (!shop) setShopOpen(false);
   }, [room.id, room.spectating, shop?.wave, shop?.enabled, padReward]);
   useEffect(() => {
-    if (!padReward) setPlacing(false);
+    if (!padReward) {
+      setPlacing(false);
+      setRewardOpen(false);
+    }
   }, [padReward]);
   const choiceKey = [
     room.id,
@@ -551,7 +571,7 @@ export function Board({
         : { room: room.id, baseHP: status.baseHP },
     );
   const lastSound = useRef(0),
-    soundGeneration = useRef(0);
+    soundSequence = useRef(0);
   useEffect(() => {
     setSelected(null);
     setInfoOpen(false);
@@ -588,19 +608,16 @@ export function Board({
   useEffect(() => {
     const listener = () => {
       if (document.hidden) {
-        soundGeneration.current++;
         audio.stop();
       }
     };
     document.addEventListener("visibilitychange", listener);
     return () => {
-      soundGeneration.current++;
       document.removeEventListener("visibilitychange", listener);
       audio.stop();
     };
   }, [audio, room.id]);
   useEffect(() => {
-    soundGeneration.current++;
     if (!sound || data.phase === "paused") audio.stop();
   }, [sound, audio, assets, data.phase]);
   const playEvents = (events: Event[], at: number) => {
@@ -608,20 +625,19 @@ export function Board({
     const clip = pickSound(events, at, lastSound.current);
     if (!clip) return;
     lastSound.current = at;
-    const generation = soundGeneration.current;
     const clipURL = (base: string) =>
       ["expand", "objective", "event"].includes(clip)
         ? `${base.replace(/\/$/, "")}/starfort/world-v2/audio/${clip}.wav`
         : assetURL(base, `audio/${clip}.wav`);
-    void audio.play([clipURL(assets)]).then((ok) => {
-      if (
-        !ok &&
-        assets &&
-        generation === soundGeneration.current &&
-        !document.hidden
-      )
-        void audio.play([clipURL("")]);
-    });
+    const eventID = Math.max(...events.map((event) => event.id));
+    void audio.effect(
+      `starfort-${clip}`,
+      assets ? [clipURL(assets), clipURL("")] : [clipURL("")],
+      {
+        playbackID: `${++soundSequence.current}:${data.epoch}:${clip}:${eventID}`,
+        reuseLoaded: true,
+      },
+    );
   };
   const player = room.you >= 0 ? data.players[room.you] : undefined;
   const selectedTower = data.towers.find((t) => t.pad === selected);
@@ -707,7 +723,9 @@ export function Board({
       ? Snowflake
       : world?.event.id === "starlight"
         ? Sparkles
-        : CloudFog;
+        : world?.event.id === "calm"
+          ? Sun
+          : CloudFog;
   const ResourceIcon = room.spectating ? Skull : Coins;
   const resourceAmount = room.spectating ? data.kills : (player?.gold ?? 0);
   const readyCount = data.players.filter((p) => p.ready).length;
@@ -731,7 +749,11 @@ export function Board({
         : phaseNames[data.phase];
 
   return (
-    <div ref={root} className="starfort-board" data-phase={data.phase}>
+    <div
+      ref={root}
+      className={`starfort-board${shopOpen && shop ? " sf-has-shop" : ""}`}
+      data-phase={data.phase}
+    >
       <div className="sf-topbar">
         <div className="sf-hud">
           {geoLabel && (
@@ -762,14 +784,18 @@ export function Board({
             </span>
             {(data.weatherRules ?? 0) >= 1 &&
               world?.event &&
-              world.event.id !== "calm" && (
+              (world.event.id !== "calm" || data.revisionRules === 1) && (
                 <span
                   data-sf-weather-notice
                   role="status"
                   title={`${world.event.label}：${world.event.description}`}
                   aria-label={`${world.event.label}：${world.event.description}`}
                 >
-                  <WeatherIcon size={14} aria-hidden="true" />
+                  <WeatherIcon
+                    size={data.revisionRules === 1 ? 42 : 14}
+                    aria-hidden="true"
+                  />
+                  {data.revisionRules === 1 && <span>{world.event.label}</span>}
                 </span>
               )}
             <span
@@ -1220,6 +1246,46 @@ export function Board({
                 </section>
               </Modal>
             )}
+            {data.revisionRules === 1 && !finished && !room.spectating && (
+              <>
+                {padReward && (
+                  <button
+                    data-sf-rewards-open
+                    aria-label="领取矿场奖励"
+                    title={`领取矿场奖励，剩余 ${rewards.reduce((n, r) => n + r.count, 0)} 份`}
+                    onClick={() => {
+                      setRewardOpen(true);
+                      setPlacing(false);
+                    }}
+                  >
+                    <Gift size={18} aria-hidden="true" />
+                    <span className="sf-icon-count" aria-hidden="true">
+                      {rewards.reduce((n, r) => n + r.count, 0)}
+                    </span>
+                  </button>
+                )}
+                {(data.invulnerabilityPacks ?? 0) > 0 && (
+                  <button
+                    data-sf-invulnerability
+                    aria-label="使用星核无敌道具，持续 10 秒"
+                    title="星核无敌 10 秒"
+                    disabled={
+                      locked || !["prepare", "battle"].includes(data.phase)
+                    }
+                    onClick={() => void send("use_invulnerability")}
+                  >
+                    <Shield size={18} aria-hidden="true" />
+                  </button>
+                )}
+                {(data.invulnerableUntil ?? 0) > data.tick && (
+                  <span data-sf-invulnerable role="status">
+                    星核无敌{" "}
+                    {Math.ceil(((data.invulnerableUntil ?? 0) - data.tick) / 5)}{" "}
+                    秒
+                  </span>
+                )}
+              </>
+            )}
             {data.controls.medical && !finished && !room.spectating && (
               <button
                 className="sf-secondary"
@@ -1327,10 +1393,11 @@ export function Board({
               void send(
                 "pad_reward",
                 padReward?.kind === "highground"
-                  ? { pad }
+                  ? { pad, choice: storedReward?.kind }
                   : {
                       x: point.x,
                       y: point.y,
+                      choice: storedReward?.kind,
                       towerId:
                         movingTower ||
                         data.towers.find((t) => t.owner === room.you)?.id ||
@@ -1520,7 +1587,8 @@ export function Board({
       {padReward &&
         padReward.owner === room.you &&
         !placing &&
-        data.phase === "prepare" &&
+        (data.phase === "prepare" || data.phase === "battle") &&
+        (data.revisionRules !== 1 || rewardOpen) &&
         !choosing && (
           <Modal
             title={
@@ -1530,9 +1598,36 @@ export function Board({
                   ? "移动防御塔"
                   : "升级高地"
             }
-            onClose={() => setPlacing(true)}
+            onClose={() => {
+              if (data.revisionRules === 1) {
+                setRewardOpen(false);
+              } else setPlacing(true);
+            }}
           >
             <div data-sf-pad-reward>
+              {rewards.length > 0 && (
+                <label>
+                  领取奖励
+                  <select
+                    aria-label="领取奖励"
+                    value={storedReward?.kind}
+                    onChange={(e) => setRewardKind(e.target.value)}
+                  >
+                    {rewards.map((r) => (
+                      <option key={r.kind} value={r.kind}>
+                        {
+                          {
+                            add: "新增建造点",
+                            highground: "升级高地",
+                            move: "移动防御塔",
+                          }[r.kind]
+                        }{" "}
+                        · {r.count} 份
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              )}
               {failure && (
                 <p className="sf-error" role="alert">
                   {failure}
@@ -1581,7 +1676,10 @@ export function Board({
                   <form
                     onSubmit={(e) => {
                       e.preventDefault();
-                      void send("pad_reward", claimPoint);
+                      void send("pad_reward", {
+                        ...claimPoint,
+                        choice: storedReward?.kind,
+                      });
                     }}
                   >
                     <label>
@@ -1674,11 +1772,13 @@ export function Board({
         </Modal>
       )}
       {shopOpen && shop && (
-        <Modal
-          title="商人商店"
-          className="sf-shop-dialog"
-          onClose={() => setShopOpen(false)}
-        >
+        <aside className="sf-shop-dock" aria-label="商人商店">
+          <header>
+            <h2>商人商店</h2>
+            <button aria-label="收起商店" onClick={() => setShopOpen(false)}>
+              ×
+            </button>
+          </header>
           <MerchantShop
             data={data}
             you={room.you}
@@ -1700,7 +1800,7 @@ export function Board({
                 结束战役
               </button>
             )}
-        </Modal>
+        </aside>
       )}
       {infoOpen && (
         <Modal

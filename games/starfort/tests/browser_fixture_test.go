@@ -23,7 +23,7 @@ import (
 
 func scenarioModule() gameapi.Module {
 	m := starfort.Module()
-	configure, start, apply := m.Configure, m.Start, m.Apply
+	configure, start, apply, onTimer := m.Configure, m.Start, m.Apply, m.OnTimer
 	split := func(raw json.RawMessage) (string, json.RawMessage, error) {
 		v := map[string]json.RawMessage{}
 		if len(raw) > 0 {
@@ -39,7 +39,7 @@ func scenarioModule() gameapi.Module {
 			delete(v, "scenario")
 		}
 		switch scenario {
-		case "weather-geology-typhoon-live", "weather-geology-earthquake", "weather-geology-flood", "weather-geology-typhoon", "weather-toolbar", "weather-v3-sleep", "weather-v3-fog", "weather-v3-frost", "weather-v3-starlight", "weather-v3-calm", "weather-v2-sleep", "weather-v2-medical", "weather-v2-fog", "weather-v2-frost", "weather-v2-starlight", "weather-v2-calm", "weather-calm", "weather-fog", "weather-frost", "weather-starlight", "weather-shop", "rebalance-growth-repair", "rebalance-growth-cannon", "rebalance-growth-arrow", "rebalance-growth-arcane", "rebalance-growth-refund", "rebalance-combat-frost", "rebalance-combat-arcane", "rebalance-tasks", "rebalance-reward", "rebalance-highground", "specialization-arrow", "specialization-frost", "specialization-cannon", "specialization-arcane", "density-observed", "density-central", "density-coop", "density-ceiling", "coop-growth", "coop-objectives", "ice-arrow", "ice-wall", "central-passives", "cadence", "cadence-speed", "vitality", "impact", "natural", "battle", "victory-ready", "defeat-ready", "advanced", "zero-gold", "growth-vote", "cleared-5", "cleared-10", "cleared-15", "stage2", "stage3", "stage4", "endless-rotation", "objectives", "objectives-clear", "objectives-fail", "legacy-save":
+		case "revision-calm", "revision-frost", "revision-starlight", "revision-density", "revision-rain", "revision-meteor", "revision-shop", "revision-rewards", "revision-merchant", "weather-geology-typhoon-live", "weather-geology-earthquake", "weather-geology-flood", "weather-geology-typhoon", "weather-toolbar", "weather-v3-sleep", "weather-v3-fog", "weather-v3-frost", "weather-v3-starlight", "weather-v3-calm", "weather-v2-sleep", "weather-v2-medical", "weather-v2-fog", "weather-v2-frost", "weather-v2-starlight", "weather-v2-calm", "weather-calm", "weather-fog", "weather-frost", "weather-starlight", "weather-shop", "rebalance-growth-repair", "rebalance-growth-cannon", "rebalance-growth-arrow", "rebalance-growth-arcane", "rebalance-growth-refund", "rebalance-combat-frost", "rebalance-combat-arcane", "rebalance-tasks", "rebalance-reward", "rebalance-highground", "specialization-arrow", "specialization-frost", "specialization-cannon", "specialization-arcane", "density-observed", "density-central", "density-coop", "density-ceiling", "coop-growth", "coop-objectives", "ice-arrow", "ice-wall", "central-passives", "cadence", "cadence-speed", "vitality", "impact", "natural", "battle", "victory-ready", "defeat-ready", "advanced", "zero-gold", "growth-vote", "cleared-5", "cleared-10", "cleared-15", "stage2", "stage3", "stage4", "endless-rotation", "objectives", "objectives-clear", "objectives-fail", "legacy-save":
 		default:
 			return "", nil, errors.New("unknown test scenario")
 		}
@@ -66,10 +66,13 @@ func scenarioModule() gameapi.Module {
 			return gameapi.Match{}, err
 		}
 		fixtureStart := start
+		if !strings.HasPrefix(scenario, "revision-") && scenario != "natural" {
+			fixtureStart = preRevisionTestModule().Start
+		}
 		if strings.HasPrefix(scenario, "rebalance-") {
 			fixtureStart = growthTestModule().Start
 		}
-		if scenario != "natural" && !strings.HasPrefix(scenario, "weather-") && (!strings.HasPrefix(scenario, "rebalance-") || strings.HasPrefix(scenario, "rebalance-combat-")) {
+		if scenario != "natural" && !strings.HasPrefix(scenario, "revision-") && !strings.HasPrefix(scenario, "weather-") && (!strings.HasPrefix(scenario, "rebalance-") || strings.HasPrefix(scenario, "rebalance-combat-")) {
 			fixtureStart = preBalanceTestModule().Start
 		}
 		match, err := fixtureStart(ctx, body)
@@ -91,7 +94,7 @@ func scenarioModule() gameapi.Module {
 			dense.ServerAt = ctx.Now.UnixMilli()
 			return dense.Envelope()
 		}
-		if !strings.HasPrefix(scenario, "weather-") && !strings.HasPrefix(scenario, "rebalance-") && !strings.HasPrefix(scenario, "specialization-") && scenario != "coop-growth" && scenario != "coop-objectives" && scenario != "natural" && scenario != "central-passives" && scenario != "ice-arrow" && scenario != "ice-wall" {
+		if !strings.HasPrefix(scenario, "revision-") && !strings.HasPrefix(scenario, "weather-") && !strings.HasPrefix(scenario, "rebalance-") && !strings.HasPrefix(scenario, "specialization-") && scenario != "coop-growth" && scenario != "coop-objectives" && scenario != "natural" && scenario != "central-passives" && scenario != "ice-arrow" && scenario != "ice-wall" {
 			match, err = legacyStartMatch(match)
 			if err != nil {
 				return match, err
@@ -100,6 +103,108 @@ func scenarioModule() gameapi.Module {
 		var s starfort.State
 		if err = json.Unmarshal(match.Data, &s); err != nil {
 			return match, err
+		}
+
+		if scenario == "revision-density" {
+			raw, err := os.ReadFile(filepath.Join("..", "..", "..", ".local", "starfort-density", "starts", "ceiling.json"))
+			if err != nil {
+				return match, err
+			}
+			var dense starfort.State
+			if err = json.Unmarshal(raw, &dense); err != nil {
+				return match, err
+			}
+			dense.RevisionRules = 1
+			dense.GeologyRules = 1
+			dense.WeatherRules = 3
+			dense.GrowthRules = 1
+			dense.BalanceRules = 1
+			dense.SpecializationRules = 1
+			dense.SkillRules = 2
+			dense.World.Objectives = nil
+			dense.World.Event = starfort.WaveEvent{ID: "calm", Label: "无特殊天气", Wave: dense.Wave}
+			dense.World.TaskOffersWave = dense.Wave
+			for i := range dense.Towers {
+				t := &dense.Towers[i]
+				t.Kind = []string{"arrow", "cannon", "frost", "arcane"}[i%4]
+				t.Branch = []string{"volley", "power", "freeze", "magic"}[i%4]
+				t.Level = 100
+				t.Cooldown = 0
+			}
+			dense.ServerAt = ctx.Now.UnixMilli()
+			return dense.Envelope()
+		}
+		if strings.HasPrefix(scenario, "revision-") {
+			s.RevisionRules = 1
+			s.Phase = "prepare"
+			s.Wave = 20
+			s.CompletedWaves = 19
+			s.World.PreparedWave = 20
+			s.World.TaskOffersWave = 20
+			s.World.Objectives = nil
+			s.NextAt = ctx.Now.Add(15 * time.Minute).UnixMilli()
+			s.World.Event = starfort.WaveEvent{ID: "fog", Label: "薄雾", Description: "除箭塔外射程减少 10%", Wave: 20}
+			if scenario == "revision-calm" || scenario == "revision-frost" || scenario == "revision-starlight" {
+				id := strings.TrimPrefix(scenario, "revision-")
+				s.World.Event = starfort.WaveEvent{ID: id, Label: map[string]string{"calm": "无特殊天气", "frost": "寒潮", "starlight": "星辉"}[id], Wave: 20}
+			}
+
+			s.Towers = []starfort.Tower{{ID: 1, Pad: 0, Owner: 0, Kind: "arrow", Level: 4, Branch: "volley", Spent: 400, Priority: "first"}, {ID: 2, Pad: 1, Owner: 0, Kind: "arcane", Level: 4, Branch: "magic", Spent: 500, Priority: "first"}}
+			s.TowerSerial = 2
+			for i := range s.Players {
+				s.Players[i].Gold = 20000
+			}
+			if scenario == "revision-shop" {
+				s.CompletedWaves = 20
+				s.World.Shop = &starfort.MerchantShop{Wave: 20, DamageTowers: []int{}, RangeTowers: []int{}}
+			}
+			if scenario == "revision-rewards" {
+				s.World.PadRewards = []starfort.PadReward{{Owner: 0, Kind: "add", Count: 2}, {Owner: 0, Kind: "highground", Count: 1}}
+				if ctx.Players > 1 {
+					s.World.PadRewards = append(s.World.PadRewards, starfort.PadReward{Owner: 1, Kind: "highground", Count: 1})
+				}
+			}
+
+			if scenario == "revision-rain" || scenario == "revision-meteor" {
+				kind, branch := "arrow", "volley"
+				if scenario == "revision-meteor" {
+					kind, branch = "arcane", "magic"
+				}
+				s.Towers = s.Towers[:1]
+				s.Towers[0].Kind = kind
+				s.Towers[0].Branch = branch
+				s.Towers[0].Cooldown = 900
+				r := s.World.Map.Routes[0]
+				pad := s.World.Map.Pads[0]
+				best, d := math.Inf(1), 0.
+				for p := 0.; p < fixturePathLength(r.Points); p++ {
+					x, y := fixturePathPosition(r.Points, p)
+					if z := math.Hypot(x-pad.X, y-pad.Y); z < best {
+						best, d = z, p
+					}
+				}
+				s.Enemies = nil
+				for i := 0; i < 4; i++ {
+					progress := d + float64(i)*3
+					x, y := fixturePathPosition(r.Points, progress)
+					s.Enemies = append(s.Enemies, starfort.Enemy{ID: i + 1, Kind: "slime", HP: 100000000, MaxHP: 100000000, Speed: .001, Leak: 1, Route: r.ID, Progress: progress, X: x, Y: y, WeatherCheckAt: 10000})
+				}
+				s.EnemySerial = 4
+				s.Phase = "battle"
+				s.NextAt = 0
+				s.WaveInfo = starfort.WaveInfo{Total: 4, Spawned: 4, Title: "技能动画验收"}
+				s.SkillRNG = 5
+				s.World.Event.ID = "calm"
+				s.World.Event.Label = "无特殊天气"
+				s.Log = append(s.Log, "验收夹具：revision-effects 单次技能，随后保留十秒冷却")
+			}
+			if scenario == "revision-merchant" {
+				r := s.World.Map.Routes[0]
+				d := fixturePathLength(r.Points) * .55
+				x, y := fixturePathPosition(r.Points, d)
+				s.World.Objectives = []starfort.Objective{{ID: "merchant-ui", Kind: "merchant", Label: "护送商人", Status: "active", Owner: 0, HP: 4, MaxHP: 4, Route: r.ID, Progress: d, X: x, Y: y, Sector: r.Sector, StartWave: 20, EndWave: 20, Cost: 200, Reward: 260}}
+			}
+			return s.Envelope()
 		}
 		if strings.HasPrefix(scenario, "weather-geology-") {
 			s.TowerSerial = 1
@@ -216,6 +321,7 @@ func scenarioModule() gameapi.Module {
 			s.World.MedicalPacks = 2
 			s.Players[0].Gold = 123456789
 			s.World.Event = starfort.WaveEvent{ID: "calm", Label: "无特殊天气", Description: "本波无额外天气效果", Wave: s.Wave}
+			s.CompletedWaves = 20
 			s.World.Shop = &starfort.MerchantShop{Wave: 20, DamageTowers: []int{}, RangeTowers: []int{}}
 		case "weather-v2-medical":
 			v, e := v2MedicalModule().Start(ctx, body)
@@ -554,7 +660,10 @@ func scenarioModule() gameapi.Module {
 			return next, err
 		}
 		var before, after starfort.State
-		if json.Unmarshal(match.Data, &before) != nil || json.Unmarshal(next.Data, &after) != nil || before.Phase != "prepare" || after.Phase != "battle" {
+		if json.Unmarshal(match.Data, &before) != nil || json.Unmarshal(next.Data, &after) != nil {
+			return next, nil
+		}
+		if before.Phase != "prepare" || after.Phase != "battle" {
 			return next, nil
 		}
 		fixture := ""
@@ -612,6 +721,25 @@ func scenarioModule() gameapi.Module {
 			}
 		}
 		return after.Envelope()
+	}
+	m.OnTimer = func(ctx gameapi.Context, match gameapi.Match) (gameapi.Match, error) {
+		next, err := onTimer(ctx, match)
+		if err != nil {
+			return next, err
+		}
+		var s starfort.State
+		if json.Unmarshal(next.Data, &s) != nil {
+			return next, nil
+		}
+		for _, line := range s.Log {
+			if strings.Contains(line, "验收夹具：revision-effects") {
+				for i := range s.Towers {
+					s.Towers[i].Cooldown = 10000
+				}
+				return s.Envelope()
+			}
+		}
+		return next, nil
 	}
 	return m
 }

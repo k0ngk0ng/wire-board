@@ -1,3 +1,4 @@
+import { drawMerchant } from "./merchant-art";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { ReactNode, PointerEvent as ReactPointerEvent } from "react";
 import {
@@ -58,7 +59,12 @@ type Art = {
   worldAtlas: Atlas | null;
   worldSheet: HTMLImageElement | null;
 };
-type Effect = Event & { born: number; impact?: Point; impactTargetId?: number };
+type Effect = Event & {
+  born: number;
+  impact?: Point;
+  impactTargetId?: number;
+  rainPoints?: Map<number, Point>;
+};
 const colors = ["#b34f2d", "#386da7", "#8a5196", "#4f7641"];
 const towerNames: Record<string, string> = {
   arrow: "箭塔",
@@ -612,7 +618,7 @@ function drawFeatures(
   for (const feature of map.features ?? []) {
     if (feature.kind === "river" || feature.kind === "highground") continue;
     if (
-      view.world?.objectives.some(
+      view.world?.objectives?.some(
         (objective) =>
           objective.kind === feature.kind &&
           objective.sector === feature.sector,
@@ -682,7 +688,18 @@ function drawFeatures(
           : "mine";
     ctx.save();
     if (objective.status === "failed") ctx.globalAlpha = 0.55;
-    sprite(ctx, art, `prop-${name}`, position.x, position.y + bob, size, size);
+    if (objective.kind === "merchant" && view.revisionRules === 1)
+      drawMerchant(ctx, position.x, position.y + bob, size);
+    else
+      sprite(
+        ctx,
+        art,
+        `prop-${name}`,
+        position.x,
+        position.y + bob,
+        size,
+        size,
+      );
     ctx.restore();
     if (objective.status === "active" && objective.maxHP > 0) {
       const barWidth = Math.max(48, 32 / scale),
@@ -1903,6 +1920,39 @@ export function Battlefield({
               y: event.y,
             };
       }
+      // Merge overlapping rains by victim. Keep one small mark per target,
+      // and retain its last position after death without network duplication.
+      const rainVictims = new Set<number>();
+      for (const event of effects.current) {
+        if (event.type !== "arrow_rain" || event.born > at) continue;
+        event.rainPoints ??= new Map();
+        for (const id of event.statusTargets ?? []) {
+          const p =
+            enemyPositions.get(id) ??
+            lastEnemyPositions.get(id) ??
+            event.rainPoints.get(id) ??
+            current.destinations.get(id);
+          if (!p || rainVictims.has(id)) continue;
+          event.rainPoints.set(id, p);
+          rainVictims.add(id);
+          ctx.save();
+          ctx.strokeStyle = "#e5e8bc";
+          ctx.lineWidth = Math.max(2, 1 / pixelScale);
+          const phase = ((at - event.born) % 400) / 400;
+          for (let i = 0; i < 3; i++) {
+            const x = p.x + (i - 1) * 11,
+              y = p.y - 28 + phase * 22;
+            ctx.beginPath();
+            ctx.moveTo(x - 7, y - 18);
+            ctx.lineTo(x, y);
+            ctx.lineTo(x - 5, y - 2);
+            ctx.moveTo(x, y);
+            ctx.lineTo(x + 1, y - 6);
+            ctx.stroke();
+          }
+          ctx.restore();
+        }
+      }
       const accentIDs = new Set<number>();
       const accentTypes = new Set([
         "hit",
@@ -1944,9 +1994,13 @@ export function Battlefield({
           ...e,
           kind: towersByID.get(e.towerId ?? 0)?.kind ?? e.kind,
         };
-        if (["freeze", "meteor", "blast"].includes(e.type) && elapsed < 650) {
+        const visualMS = e.type === "meteor" ? (e.visualMS ?? 650) : 650;
+        if (
+          ["freeze", "meteor", "blast"].includes(e.type) &&
+          elapsed < visualMS
+        ) {
           ctx.save();
-          ctx.globalAlpha = 0.65 * (1 - elapsed / 650);
+          ctx.globalAlpha = 0.65 * (1 - elapsed / visualMS);
           ctx.strokeStyle =
             e.type === "freeze"
               ? "#c5f4ff"
@@ -1960,7 +2014,8 @@ export function Battlefield({
                 ? "#ac75e018"
                 : "#ffbb5b18";
           ctx.lineWidth = Math.max(2, 1.5 / pixelScale);
-          const radius = (e.amount ?? 90) * (0.85 + (elapsed / 650) * 0.15);
+          const radius =
+            (e.amount ?? 90) * (0.85 + (elapsed / visualMS) * 0.15);
           ctx.beginPath();
           ctx.arc(e.x, e.y, radius, 0, Math.PI * 2);
           ctx.fill();

@@ -45,7 +45,7 @@ func v2Enemy(b *rulesTable, i int) map[string]any {
 }
 func v2Field(v map[string]any, key string) float64 { x, _ := v[key].(float64); return x }
 func TestStarfortWeatherV2Version(t *testing.T) {
-	b := newModuleRulesTable(t, 1, map[string]any{}, starfort.Module())
+	b := newModuleRulesTable(t, 1, map[string]any{}, preRevisionTestModule())
 	if b.s.Schema != 11 || specializationRawView(b)["weatherRules"] != float64(3) {
 		t.Fatal("new games require schema 11/weatherRules 3")
 	}
@@ -310,7 +310,7 @@ func TestStarfortWeatherV2Leak(t *testing.T) {
 	}
 }
 func v2MedicalModule() gameapi.Module {
-	m := starfort.Module()
+	m := preRevisionTestModule()
 	start := m.Start
 	m.Start = func(ctx gameapi.Context, raw json.RawMessage) (gameapi.Match, error) {
 		v, e := start(ctx, raw)
@@ -392,7 +392,7 @@ func TestStarfortWeatherV2ConvoyAndPositions(t *testing.T) {
 			}
 		})
 	}
-	b := newModuleRulesTable(t, 1, map[string]any{"mode": "endless"}, starfort.Module())
+	b := newModuleRulesTable(t, 1, map[string]any{"mode": "endless"}, preRevisionTestModule())
 	seen := map[string]bool{}
 	for wave := 1; wave <= 120; wave++ {
 		s := cadenceState(b)

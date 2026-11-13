@@ -22,7 +22,7 @@ func v3Boundary(t *testing.T, kind, branch string, level int, enemies ...string)
 	return b
 }
 func TestStarfortWeatherV3Version(t *testing.T) {
-	b := newModuleRulesTable(t, 1, map[string]any{}, starfort.Module())
+	b := newModuleRulesTable(t, 1, map[string]any{}, preRevisionTestModule())
 	if b.s.Schema != 11 || cadenceState(b).WeatherRules != 3 {
 		t.Fatal("new games require schema 11/weatherRules 3")
 	}
@@ -307,7 +307,7 @@ func TestStarfortWeatherV3Knockback(t *testing.T) {
 	}
 }
 func TestStarfortWeatherV3TaskLottery(t *testing.T) {
-	b := newModuleRulesTable(t, 1, map[string]any{"mode": "endless"}, starfort.Module())
+	b := newModuleRulesTable(t, 1, map[string]any{"mode": "endless"}, preRevisionTestModule())
 	seen := map[string]bool{}
 	offered := 0
 	for wave := 1; wave <= 200; wave++ {
@@ -342,7 +342,7 @@ func TestStarfortWeatherV3TaskLottery(t *testing.T) {
 		roll    int
 		offered bool
 	}{{100, 24, true}, {29, 25, true}, {115, 39, true}, {40, 40, false}} {
-		x := newModuleRulesTable(t, 1, map[string]any{"mode": "endless"}, starfort.Module())
+		x := newModuleRulesTable(t, 1, map[string]any{"mode": "endless"}, preRevisionTestModule())
 		s := cadenceState(x)
 		s.SkillRNG = tc.seed
 		s.World.Objectives = nil
@@ -355,7 +355,7 @@ func TestStarfortWeatherV3TaskLottery(t *testing.T) {
 	}
 }
 func v3HTTPModule(weather string) gameapi.Module {
-	m := starfort.Module()
+	m := preRevisionTestModule()
 	m.Start = func(ctx gameapi.Context, raw json.RawMessage) (gameapi.Match, error) {
 		b := v3BoundaryForHTTP(ctx, raw)
 		labels := map[string]string{"calm": "无特殊天气", "fog": "薄雾", "frost": "寒潮", "starlight": "星辉"}
@@ -365,7 +365,7 @@ func v3HTTPModule(weather string) gameapi.Module {
 	return m
 }
 func v3BoundaryForHTTP(ctx gameapi.Context, raw json.RawMessage) starfort.State {
-	v, err := starfort.Module().Start(ctx, raw)
+	v, err := preRevisionTestModule().Start(ctx, raw)
 	if err != nil {
 		panic(err)
 	}
