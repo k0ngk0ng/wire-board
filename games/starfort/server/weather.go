@@ -284,6 +284,9 @@ func (s *State) weatherHit(t *Tower, target Enemy, damage float64) {
 			if e.HP <= 0 || math.Hypot(e.X-pad.X, e.Y-pad.Y) > rangePX {
 				continue
 			}
+			if s.geological() && t.Kind == "frost" && (e.ConfusedUntil > s.Tick || s.frozen(e) || s.sleeping(e) || e.Repairing > 0 || s.iceSlowFactor(e) <= 0 || s.geoMotion(Point{e.X, e.Y}) == 0) {
+				continue
+			}
 			guards := e.FreezeGuards
 			if t.Kind == "arcane" {
 				guards = e.MeteorGuards

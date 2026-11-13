@@ -246,6 +246,7 @@ func (s *State) towerStats(t Tower) (damage, radius float64, interval int) {
 	if s.World.Event.ID == "starlight" && t.Kind == "arcane" && (!s.weathered() || t.Branch == "power") {
 		damage *= 1.2
 	}
+	damage *= s.geoTowerFactor(t)
 	damage = math.Min(maxValue, damage)
 	return
 }

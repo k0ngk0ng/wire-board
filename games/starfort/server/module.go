@@ -70,7 +70,7 @@ func Module() gameapi.Module {
 			}
 			var o Options
 			_ = json.Unmarshal(normalized, &o)
-			s := &State{WeatherRules: 3, GrowthRules: 1, BalanceRules: 1, SpecializationRules: 1, SkillRules: 2, Options: o, Players: make([]Player, ctx.Players), Phase: "prepare", Epoch: 1, Wave: 1, BaseHP: 30, BaseMaxHP: 30, ServerAt: ctx.Now.UnixMilli(), NextAt: ctx.Now.UnixMilli() + int64(o.PrepSeconds)*1000, Towers: []Tower{}, Enemies: []Enemy{}, Events: []Event{}}
+			s := &State{GeologyRules: 1, WeatherRules: 3, GrowthRules: 1, BalanceRules: 1, SpecializationRules: 1, SkillRules: 2, Options: o, Players: make([]Player, ctx.Players), Phase: "prepare", Epoch: 1, Wave: 1, BaseHP: 30, BaseMaxHP: 30, ServerAt: ctx.Now.UnixMilli(), NextAt: ctx.Now.UnixMilli() + int64(o.PrepSeconds)*1000, Towers: []Tower{}, Enemies: []Enemy{}, Events: []Event{}}
 			for i := range s.Players {
 				s.Players[i].Gold = 300
 			}
@@ -546,6 +546,8 @@ func view(m gameapi.Match, p int) (any, error) {
 		s.World.Objectives[i].Attacked = nil
 	}
 	return struct {
+		GeologyRules        int             `json:"geologyRules,omitempty"`
+		Geology             *Geology        `json:"geology,omitempty"`
 		WeatherRules        int             `json:"weatherRules,omitempty"`
 		GrowthRules         int             `json:"growthRules,omitempty"`
 		BalanceRules        int             `json:"balanceRules,omitempty"`
@@ -574,6 +576,8 @@ func view(m gameapi.Match, p int) (any, error) {
 		Catalog             []ViewTowerSpec `json:"catalog"`
 		Controls            Controls        `json:"controls"`
 	}{
+		GeologyRules:        s.GeologyRules,
+		Geology:             s.viewGeology(),
 		WeatherRules:        s.WeatherRules,
 		GrowthRules:         s.GrowthRules,
 		BalanceRules:        s.BalanceRules,

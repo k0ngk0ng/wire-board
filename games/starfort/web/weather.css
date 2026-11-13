@@ -163,3 +163,18 @@
     animation: none;
   }
 }
+
+.sf-geology-notice {
+  position: absolute;
+  left: 10px;
+  top: 54px;
+  z-index: 4;
+  pointer-events: none;
+  background: #fff4d6;
+  color: #513a29;
+  border: 1px solid #806647;
+  border-radius: 5px;
+  padding: 2px 7px;
+  font-size: 12px;
+  font-weight: 700;
+}

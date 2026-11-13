@@ -41,8 +41,8 @@ func weatherNear(t *testing.T, name string, got, want float64) {
 }
 func TestStarfortWeatherVersionAndForecast(t *testing.T) {
 	b := newModuleRulesTable(t, 1, map[string]any{"mode": "endless"}, starfort.Module())
-	if b.s.Schema != 10 || specializationRaw(b)["weatherRules"] != float64(3) || specializationRawView(b)["weatherRules"] != float64(3) {
-		t.Fatal("new games need schema 10 and public weatherRules")
+	if b.s.Schema != 11 || specializationRaw(b)["weatherRules"] != float64(3) || specializationRawView(b)["weatherRules"] != float64(3) {
+		t.Fatal("new games need schema 11 and public weatherRules")
 	}
 	seen := map[string]bool{}
 	for wave := 1; wave <= 40; wave++ {

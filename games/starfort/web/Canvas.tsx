@@ -44,6 +44,7 @@ import {
   drawCombatAccent,
   drawIceWall,
 } from "./combat-art";
+import { drawGeology, drawDisabledTower } from "./geology-art";
 import { battlefieldPalette as palette } from "./palette";
 
 type Atlas = {
@@ -551,6 +552,13 @@ function drawOverview(
 ) {
   for (const pad of map.pads) {
     const tower = view.towers.find((item) => item.pad === pad.id);
+    if (
+      tower &&
+      !view.geology?.rewarded &&
+      view.geology?.disabled?.some((d) => d.towerId === tower.id)
+    ) {
+      drawDisabledTower(ctx, { x: pad.x, y: pad.y - 14 / scale }, scale);
+    }
     circle(
       ctx,
       pad.x,
@@ -842,6 +850,35 @@ export function Battlefield({
     worldAtlas: null,
     worldSheet: null,
   });
+  const geologyFrames = useRef({
+    current: data.geology,
+    previous: data.geology,
+    elapsedMS: data.elapsedMS,
+    at: performance.now(),
+    duration: 0,
+  });
+  useEffect(() => {
+    const prior = geologyFrames.current;
+    if (
+      prior.elapsedMS === data.elapsedMS &&
+      prior.current?.wave === data.geology?.wave
+    ) {
+      prior.current = data.geology;
+      return;
+    }
+    const continuous =
+      prior.current?.wave === data.geology?.wave &&
+      data.elapsedMS > prior.elapsedMS;
+    geologyFrames.current = {
+      previous: continuous ? prior.current : data.geology,
+      current: data.geology,
+      elapsedMS: data.elapsedMS,
+      at: performance.now(),
+      duration: continuous
+        ? Math.min(1000, data.elapsedMS - prior.elapsedMS)
+        : 0,
+    };
+  }, [data.geology, data.elapsedMS, roomID]);
   const state = useRef({
     data,
     previous: new Map<number, Enemy>(),
@@ -1369,6 +1406,20 @@ export function Battlefield({
         drawLandscape(ctx, art.current, map, pixelScale, undefined, overview);
         drawRoutes(ctx, map, pixelScale, undefined, overview);
       }
+      const geoFrames = geologyFrames.current;
+      const geoFraction =
+        v.phase === "battle" && geoFrames.duration > 0
+          ? Math.min(1, Math.max(0, (at - geoFrames.at) / geoFrames.duration))
+          : 1;
+      drawGeology(
+        ctx,
+        v.geology,
+        map,
+        v.elapsedMS - geoFrames.duration * (1 - geoFraction),
+        reduced,
+        geoFrames.previous,
+        geoFraction,
+      );
       if (overview) {
         drawOverview(ctx, map, v, pixelScale);
         return;
@@ -1527,6 +1578,15 @@ export function Battlefield({
               ctx.stroke();
               ctx.restore();
             }
+            if (
+              v.geology?.disabled?.some((d) => d.towerId === t.id) &&
+              !v.geology.rewarded
+            )
+              drawDisabledTower(
+                ctx,
+                { x: towerPoint.x, y: towerPoint.y - towerHeight - 8 },
+                pixelScale,
+              );
             if (t.level > 1) {
               ctx.font = `bold ${Math.max(13, 9 / pixelScale)}px system-ui`;
               ctx.textAlign = "center";
