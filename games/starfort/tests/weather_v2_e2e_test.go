@@ -17,6 +17,9 @@ func v2Patch(s starfort.State, patch map[string]any) starfort.State {
 	var raw map[string]any
 	_ = json.Unmarshal(rulesJSON(s), &raw)
 	raw["weatherRules"] = 2
+	raw["geologyRules"] = 0
+	raw["geology"] = nil
+	raw["geoRng"] = 0
 	for k, v := range patch {
 		raw[k] = v
 	}
