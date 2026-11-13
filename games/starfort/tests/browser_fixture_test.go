@@ -165,6 +165,9 @@ func scenarioModule() gameapi.Module {
 		}
 		switch scenario {
 		case "weather-calm", "weather-fog", "weather-frost", "weather-starlight", "weather-shop":
+			s.GeologyRules = 0
+			s.Geology = nil
+			s.GeoRNG = 0
 			s.WeatherRules = 1 // Archived UI fixture.
 			s.NextAt = ctx.Now.Add(5 * time.Minute).UnixMilli()
 			s.World.Objectives = []starfort.Objective{}
@@ -221,6 +224,9 @@ func scenarioModule() gameapi.Module {
 			}
 			_ = json.Unmarshal(v.Data, &s)
 		case "weather-v3-calm", "weather-v3-fog", "weather-v3-frost", "weather-v3-starlight", "weather-v2-calm", "weather-v2-fog", "weather-v2-frost", "weather-v2-starlight":
+			s.GeologyRules = 0
+			s.Geology = nil
+			s.GeoRNG = 0
 			s.WeatherRules = 2
 			if strings.HasPrefix(scenario, "weather-v3-") {
 				s.WeatherRules = 3

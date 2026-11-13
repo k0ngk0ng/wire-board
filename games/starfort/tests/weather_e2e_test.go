@@ -320,6 +320,9 @@ func TestStarfortWeatherTaskLottery(t *testing.T) {
 	offers := 0
 	for seed := int64(1); seed <= 240; seed++ {
 		s := cadenceState(b)
+		s.GeologyRules = 0
+		s.Geology = nil
+		s.GeoRNG = 0
 		s.WeatherRules = 1 // Archived schema-8 lottery remains 25%.
 		s.World.TaskOffersWave = 0
 		s.World.PreparedWave = 0
@@ -384,6 +387,9 @@ func weatherTaskFixture(t *testing.T, kind string) *rulesTable {
 	t.Helper()
 	b := newModuleRulesTable(t, 2, map[string]any{"mode": "endless"}, starfort.Module())
 	s := cadenceState(b)
+	s.GeologyRules = 0
+	s.Geology = nil
+	s.GeoRNG = 0
 	s.WeatherRules = 1 // Archived schema-8 fixture.
 	r := s.World.Map.Routes[0]
 	x, y := fixturePathPosition(r.Points, 300)
@@ -495,6 +501,9 @@ func weatherShopModule() gameapi.Module {
 		}
 		var s starfort.State
 		_ = json.Unmarshal(v.Data, &s)
+		s.GeologyRules = 0
+		s.Geology = nil
+		s.GeoRNG = 0
 		s.WeatherRules = 1 // Archived schema-8 fixture.
 		s.Wave = 10
 		s.CompletedWaves = 9
