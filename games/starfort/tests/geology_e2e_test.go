@@ -243,6 +243,28 @@ func TestStarfortGeologyLotteryAndGeometry(t *testing.T) {
 				t.Fatal("zone count", kind, zones)
 			}
 		}
+
+		// The shared 30% selection must become visible even when each spawn is
+		// killed immediately. A wave cannot clear before its final spawn.
+		interval := 800
+		if s.WaveInfo.Rule == "swarm" {
+			interval = 400
+		}
+		earliestClear := float64(max(1000, (s.WaveInfo.Total-1)*interval))
+		if len(zones) > 0 {
+			first := zones[0].(map[string]any)["createdMS"].(float64) - float64(s.ElapsedMS)
+			if first > earliestClear {
+				t.Fatal("selected event scheduled after earliest clear", kind, first, earliestClear)
+			}
+		}
+		if kind == "flood" && len(zones) > 1 {
+			direction := zones[0].(map[string]any)["fromBottom"]
+			for _, z := range zones[1:] {
+				if z.(map[string]any)["fromBottom"] != direction {
+					t.Fatal("flood event changed ingress direction")
+				}
+			}
+		}
 		for i, raw := range zones {
 			z := raw.(map[string]any)
 			created := z["createdMS"].(float64) - float64(s.ElapsedMS)
