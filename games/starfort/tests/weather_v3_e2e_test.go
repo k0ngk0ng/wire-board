@@ -23,8 +23,8 @@ func v3Boundary(t *testing.T, kind, branch string, level int, enemies ...string)
 }
 func TestStarfortWeatherV3Version(t *testing.T) {
 	b := newModuleRulesTable(t, 1, map[string]any{}, starfort.Module())
-	if b.s.Schema != 10 || cadenceState(b).WeatherRules != 3 {
-		t.Fatal("new games require schema 10/weatherRules 3")
+	if b.s.Schema != 11 || cadenceState(b).WeatherRules != 3 {
+		t.Fatal("new games require schema 11/weatherRules 3")
 	}
 	for _, version := range []int{1, 2, 3} {
 		old := weatherBoundary(t, "cannon", "power", 4, "slime")

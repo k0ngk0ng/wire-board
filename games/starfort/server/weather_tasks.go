@@ -85,7 +85,7 @@ func (s *State) offerWeatherTask() {
 		benefit = "补给车速度 40，抵达后星核恢复 4 点生命"
 	case "merchant":
 		baseHP, baseCost, low, span, mult, label = 4, 200, .5, .1, 1.3, "护送商人"
-		benefit = "商人速度 20，抵达星核后发放金币，当波过关后开放商店"
+		benefit = fmt.Sprintf("商人速度 %.0f，抵达星核后发放金币，当波过关后开放商店", s.escortSpeed("merchant"))
 	}
 	if s.weatherV2() {
 		if kind == "mine" {
@@ -97,6 +97,9 @@ func (s *State) offerWeatherTask() {
 		if kind == "convoy" {
 			benefit = fmt.Sprintf("补给车速度 40，开波后出发，抵达修复 %d 生命；星核已满血则获得医疗包，可在波间使用", 4+s.Wave/10)
 		}
+	}
+	if s.geological() && kind == "convoy" {
+		low, span = .4, .1
 	}
 	fraction := low + span*float64(s.taskRandom(1001))/1000
 	path := s.routePath(routeID)
@@ -118,6 +121,9 @@ func (s *State) offerWeatherTask() {
 func escort(kind string) bool { return kind == "convoy" || kind == "merchant" }
 func (s *State) escortSpeed(kind string) float64 {
 	if kind == "merchant" {
+		if s.geological() {
+			return 15
+		}
 		return 20
 	}
 	return 40
@@ -141,7 +147,7 @@ func (s *State) refundTask(o Objective) int {
 // Relative route progress is swept across the full simulation step, including
 // the objective's motion, so a one-unit contact cannot be skipped at high speed.
 func (s *State) taskContact(e Enemy, from, to float64) {
-	if !s.weathered() || e.HP <= 0 || heavy(e) || s.frozen(e) || s.sleeping(e) {
+	if !s.weathered() || e.HP <= 0 || heavy(e) || s.frozen(e) || s.sleeping(e) || (s.geological() && s.geoMotion(Point{e.X, e.Y}) == 0) {
 		return
 	}
 	for i := range s.World.Objectives {
@@ -151,7 +157,7 @@ func (s *State) taskContact(e Enemy, from, to float64) {
 		}
 		next := o.Progress
 		if escort(o.Kind) {
-			next = math.Min(pathDistance(s.convoyPath(o.Route)), next+s.escortSpeed(o.Kind)*StepMS/1000)
+			next = math.Min(pathDistance(s.convoyPath(o.Route)), next+s.escortSpeed(o.Kind)*s.geoMotion(Point{o.X, o.Y})*StepMS/1000)
 		}
 		a, b := from-o.Progress, to-next
 		if math.Min(a, b) > 1 || math.Max(a, b) < -1 {
@@ -179,7 +185,7 @@ func (s *State) stepWeatherObjectives() {
 		if escort(o.Kind) {
 			path := s.convoyPath(o.Route)
 			length := pathDistance(path)
-			o.Progress = math.Min(length, o.Progress+s.escortSpeed(o.Kind)*StepMS/1000)
+			o.Progress = math.Min(length, o.Progress+s.escortSpeed(o.Kind)*s.geoMotion(Point{o.X, o.Y})*StepMS/1000)
 			p := pathPosition(path, o.Progress)
 			o.X, o.Y = p.X, p.Y
 			if o.Progress >= length {

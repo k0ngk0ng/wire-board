@@ -31,6 +31,9 @@ func legacyStartMatch(m gameapi.Match) (gameapi.Match, error) {
 		return m, e
 	}
 	s.BalanceRules = 0
+	s.GeologyRules = 0
+	s.Geology = nil
+	s.GeoRNG = 0
 	s.WeatherRules = 0
 	s.World.Event = game.WaveEvent{ID: "calm", Label: "晴空守望", Wave: s.Wave}
 	s.GrowthRules = 0
@@ -64,6 +67,9 @@ func growthTestModule() gameapi.Module {
 		if err := json.Unmarshal(v.Data, &s); err != nil {
 			return v, err
 		}
+		s.GeologyRules = 0
+		s.Geology = nil
+		s.GeoRNG = 0
 		s.WeatherRules = 0
 		s.World.Event = game.WaveEvent{ID: "calm", Label: "晴空守望", Wave: s.Wave}
 		r := s.World.Map.Routes[0]

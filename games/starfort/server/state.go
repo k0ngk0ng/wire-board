@@ -77,6 +77,7 @@ var catalog = []TowerSpec{
 }
 
 type Tower struct {
+	FloodedAtMS    int64   `json:"floodedAtMS,omitempty"`
 	ShopDamage     int     `json:"shopDamage,omitempty"`
 	ShopRange      int     `json:"shopRange,omitempty"`
 	ChainReadyAt   int64   `json:"chainReadyAt,omitempty"`
@@ -185,6 +186,9 @@ type Event struct {
 	Tick     int64      `json:"tick"`
 }
 type State struct {
+	GeologyRules        int       `json:"geologyRules,omitempty"`
+	GeoRNG              uint64    `json:"geoRng,omitempty"`
+	Geology             *Geology  `json:"geology,omitempty"`
 	WeatherRules        int       `json:"weatherRules,omitempty"`
 	GrowthRules         int       `json:"growthRules,omitempty"`
 	RepairWave          int       `json:"repairWave,omitempty"`
@@ -311,6 +315,9 @@ func (s *State) actors() []int {
 	return a
 }
 func (s *State) valid() error {
+	if err := s.validGeology(); err != nil {
+		return err
+	}
 	if err := s.validWeather(); err != nil {
 		return err
 	}
@@ -466,6 +473,9 @@ func (s *State) Envelope() (gameapi.Match, error) {
 	if s.weatherV3() {
 		schema = 10
 	}
+	if s.geological() {
+		schema = 11
+	}
 	m := gameapi.Match{Schema: schema, Data: raw, Actors: s.actors(), Attention: []int{}, TimeoutActors: []int{}, Log: append([]string{}, s.Log...)}
 	if s.finished() {
 		r := &gameapi.Result{Cooperative: true, Ranks: make([]int, len(s.Players)), Winners: []int{}, Scores: make([]int, len(s.Players))}
@@ -491,7 +501,7 @@ func (s *State) Envelope() (gameapi.Match, error) {
 	return m, m.Validate(len(s.Players))
 }
 func decode(m gameapi.Match) (*State, error) {
-	if (m.Schema < 1 || m.Schema > 10) || len(m.Data) > maxSnapshotBytes {
+	if (m.Schema < 1 || m.Schema > 11) || len(m.Data) > maxSnapshotBytes {
 		return nil, errors.New("不支持的星垒存档")
 	}
 	var s State
@@ -507,7 +517,10 @@ func decode(m gameapi.Match) (*State, error) {
 	if (m.Schema >= 4) != (s.SkillRules == 2) {
 		return nil, errors.New("技能规则与存档版本不一致")
 	}
-	if (m.Schema >= 8) != s.weathered() || (m.Schema >= 9) != s.weatherV2() || (m.Schema == 10) != s.weatherV3() {
+	if (m.Schema == 11) != s.geological() {
+		return nil, errors.New("地质规则与存档版本不一致")
+	}
+	if (m.Schema >= 8) != s.weathered() || (m.Schema >= 9) != s.weatherV2() || (m.Schema >= 10) != s.weatherV3() {
 		return nil, errors.New("天气规则与存档版本不一致")
 	}
 	if (m.Schema >= 7) != s.growing() {

@@ -1,3 +1,4 @@
+import { geologyLabel } from "./geology-art";
 import {
   Heart,
   Waves,
@@ -700,6 +701,7 @@ export function Board({
   const serverNow =
     clock.serverNow + (clock.paused ? 0 : now - clock.receivedAt);
   const activeRoutes = data.map.routes?.filter((route) => route.active) ?? [];
+  const geoLabel = geologyLabel(data.geology);
   const WeatherIcon =
     world?.event.id === "frost"
       ? Snowflake
@@ -732,6 +734,15 @@ export function Board({
     <div ref={root} className="starfort-board" data-phase={data.phase}>
       <div className="sf-topbar">
         <div className="sf-hud">
+          {geoLabel && (
+            <span
+              className="sf-geology-notice"
+              data-sf-geology={data.geology?.kind}
+              role="status"
+            >
+              {geoLabel}
+            </span>
+          )}
           <div className="sf-compact-stats">
             <span
               aria-label={`星核生命 ${baseHP}/${data.baseMaxHP}`}

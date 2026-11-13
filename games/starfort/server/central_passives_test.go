@@ -28,6 +28,9 @@ func centralCase(t *testing.T, n int) *State {
 	}
 	s.BalanceRules = 0 // Explicit archived rules; new rules have separate E2E coverage.
 	s.GrowthRules = 0
+	s.GeologyRules = 0
+	s.Geology = nil
+	s.GeoRNG = 0
 	s.WeatherRules = 0
 	s.SkillRNG = 0
 	s.World.TaskAttempts = nil

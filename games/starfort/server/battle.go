@@ -101,6 +101,7 @@ func (s *State) startWave(now int64) {
 			return
 		}
 	}
+	s.startGeology()
 	s.Phase = "battle"
 	s.Epoch++
 	s.ServerAt = now
@@ -251,6 +252,9 @@ func (s *State) spawn() {
 	s.event(Event{TargetID: s.EnemySerial, Type: "spawn", X: p.X, Y: p.Y, Kind: kind, Owner: -1})
 }
 func (s *State) step(now int64) {
+	for _, e := range s.Enemies {
+		s.geoPeak(e)
+	}
 	s.Tick++
 	s.ElapsedMS += StepMS
 	// Physics and abilities still advance once per 200 ms. Towers whose saved
@@ -295,6 +299,7 @@ func (s *State) step(now int64) {
 		}
 	}
 	atMS = s.ElapsedMS
+	s.stepGeology()
 	s.SpawnClock = max(0, s.SpawnClock-StepMS)
 	if s.WaveInfo.Spawned < s.WaveInfo.Total && s.ElapsedMS >= s.SpawnNotBefore && s.SpawnClock <= 0 && len(s.Enemies) < MaxEnemies {
 		s.spawn()
@@ -367,6 +372,7 @@ func (s *State) step(now int64) {
 			}
 		}
 		speed *= s.iceSlowFactor(e)
+		speed *= s.geoMotion(Point{e.X, e.Y})
 		if s.frozen(e) || s.sleeping(e) {
 			speed = 0
 		}
@@ -383,6 +389,7 @@ func (s *State) step(now int64) {
 		if retreating || !s.blockAtCrater(&e, nextProgress) {
 			e.Progress = nextProgress
 		}
+		s.geoPeak(e)
 		s.taskContact(e, oldProgress, e.Progress)
 		if e.Progress >= pathDistance(s.routePath(e.Route)) {
 			leak := s.leakDamage(e)
@@ -420,7 +427,7 @@ func (s *State) step(now int64) {
 	if s.WaveInfo.Spawned == s.WaveInfo.Total && len(s.Enemies) == 0 && !s.taskConvoyActive() {
 		s.CompletedWaves = s.Wave
 		s.onWaveCleared()
-		reward := s.rewardGold(40 + min(1000, s.Wave*3))
+		reward := s.rewardGold(40+min(1000, s.Wave*3)) + s.finishGeology()
 		for i := range s.Players {
 			s.Players[i].Gold = min(maxValue, s.Players[i].Gold+reward)
 		}
@@ -451,6 +458,9 @@ func (s *State) step(now int64) {
 func (s *State) fireTower(index int) bool {
 	t := &s.Towers[index]
 	t.Cooldown = 0
+	if s.geoTowerDisabled(t.ID) {
+		return false
+	}
 	damage, radius, interval := s.towerStats(*t)
 	pad := s.World.Map.Pads[t.Pad]
 	target := -1
@@ -465,7 +475,7 @@ func (s *State) fireTower(index int) bool {
 	enemy := s.Enemies[target]
 	t.Angle = math.Atan2(enemy.Y-pad.Y, enemy.X-pad.X)
 	t.Cooldown = interval
-	if s.weatherMiss(*t, target) {
+	if s.geoMiss(*t, target) || s.weatherMiss(*t, target) {
 		s.event(Event{TowerID: t.ID, TargetID: enemy.ID, Type: "shot", X: pad.X, Y: pad.Y, ToX: enemy.X, ToY: enemy.Y, Kind: t.Kind, Owner: t.Owner})
 		return true
 	}
@@ -524,6 +534,8 @@ func (s *State) hitWithSkill(index int, damage float64, t Tower, skill string) {
 	if t.Kind != "arcane" && skill != "execute" {
 		damage *= 1 - e.Armor
 	}
+	geoFactor := s.geoVulnerability(*e)
+	damage *= geoFactor
 	damage *= s.sleepDamageFactor(*e)
 	before := e.HP + e.Shield
 	if e.Shield > 0 {
@@ -553,6 +565,7 @@ func (s *State) hitWithSkill(index int, damage float64, t Tower, skill string) {
 	if s.weathered() && skill == "cripple" && (!s.sleeping(*e) || s.weatherV3()) {
 		_, percent := s.heartArea(t.Level)
 		percent *= s.sleepDamageFactor(*e)
+		percent *= geoFactor
 		if s.World.Event.ID == "fog" {
 			percent *= s.heartFogBonus()
 		}

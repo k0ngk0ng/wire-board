@@ -165,3 +165,18 @@ python3 -B games/starfort/tests/accept_ice_arrow_ui.py
 ```
 
 `accept_inspection_ui.py` 使用真实 HTTP 房间、生产 Canvas、PC 鼠标及 320px 触屏仿真，检查敌人信息、塔旁面板、升级分支可见性、扩图投票、原塔保留和任务承接，产物保存在 `.local/inspection/browser/`。长路径工作区可用 `STARFORT_FOLLOWUP_SOCKET_DIR` 指定仓库内较短的浏览器 socket 目录。测试不代表手机真机验收。
+
+## 地质效果与防守奖励验收
+
+新局使用存档版本 11、`geologyRules=1`；版本 1～10 保留原有数值、任务与专精规则。地质计划使用独立、持久化的随机序列，不改变 40% 任务概率。计算口径和实现前失败场景见 [地质效果与防守奖励](GEOLOGY.md)。
+
+```sh
+. scripts/env.sh
+go test -count=1 -timeout=5m -run '^TestStarfortGeology' ./games/starfort/tests
+go test -race -count=1 -timeout=5m -run '^TestStarfortGeology.*HTTP$' ./games/starfort/tests
+npm --prefix web test -- starfort
+npm --prefix web run build
+python3 -B games/starfort/tests/accept_geology_ui.py --skip-build
+```
+
+公开模块／序列化验收覆盖奖励边界、300 波共用概率与区域几何、环境扣血、停攻恢复、台风数量与保护、护送速度和出生位置。真实 HTTP／SQLite 验收保留活动地震、停攻塔和历史最远距离。自然完整对局使用正常资源及每房间每秒最多一次电脑操作；浏览器覆盖桌面、320px 原生触屏仿真、全屏、减少动态效果、实际 Canvas 绘制与台风连续移动。记录位于 `.local/starfort-geology/`，公开模块重放保存在 `.local/starfort/rules/TestStarfortGeology*/`；触屏仿真不代表实体手机或 Safari 验收。

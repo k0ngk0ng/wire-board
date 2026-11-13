@@ -152,7 +152,35 @@ export type Crater = Point & {
   createdMS: number;
   filledMS?: number;
 };
+export type GeoZone = Point & {
+  id: number;
+  kind: "earthquake" | "flood" | "typhoon";
+  radius?: number;
+  width?: number;
+  height?: number;
+  route?: string;
+  progress?: number;
+  speed?: number;
+  createdMS: number;
+  expiresMS?: number;
+  fromBottom?: boolean;
+  activated?: boolean;
+  skipped?: boolean;
+};
+export type Geology = {
+  wave: number;
+  kind: "none" | "earthquake" | "flood" | "typhoon";
+  startedMS: number;
+  triggerMS: number;
+  triggered?: boolean;
+  rewarded?: boolean;
+  bonus?: number;
+  zones?: GeoZone[];
+  disabled?: { towerId: number; route: string }[];
+  routePeaks: Record<string, number>;
+};
 export type Tower = {
+  floodedAtMS?: number;
   passiveReadyAt?: number;
   focusTarget?: number;
   focusHits?: number;
@@ -226,6 +254,8 @@ export type Event = Point & {
   tick: number;
 };
 export type View = {
+  geologyRules?: number;
+  geology?: Geology;
   weatherRules?: number;
   growthRules?: number;
   balanceRules?: number;

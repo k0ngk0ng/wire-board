@@ -39,7 +39,7 @@ func scenarioModule() gameapi.Module {
 			delete(v, "scenario")
 		}
 		switch scenario {
-		case "weather-toolbar", "weather-v3-sleep", "weather-v3-fog", "weather-v3-frost", "weather-v3-starlight", "weather-v3-calm", "weather-v2-sleep", "weather-v2-medical", "weather-v2-fog", "weather-v2-frost", "weather-v2-starlight", "weather-v2-calm", "weather-calm", "weather-fog", "weather-frost", "weather-starlight", "weather-shop", "rebalance-growth-repair", "rebalance-growth-cannon", "rebalance-growth-arrow", "rebalance-growth-arcane", "rebalance-growth-refund", "rebalance-combat-frost", "rebalance-combat-arcane", "rebalance-tasks", "rebalance-reward", "rebalance-highground", "specialization-arrow", "specialization-frost", "specialization-cannon", "specialization-arcane", "density-observed", "density-central", "density-coop", "density-ceiling", "coop-growth", "coop-objectives", "ice-arrow", "ice-wall", "central-passives", "cadence", "cadence-speed", "vitality", "impact", "natural", "battle", "victory-ready", "defeat-ready", "advanced", "zero-gold", "growth-vote", "cleared-5", "cleared-10", "cleared-15", "stage2", "stage3", "stage4", "endless-rotation", "objectives", "objectives-clear", "objectives-fail", "legacy-save":
+		case "weather-geology-typhoon-live", "weather-geology-earthquake", "weather-geology-flood", "weather-geology-typhoon", "weather-toolbar", "weather-v3-sleep", "weather-v3-fog", "weather-v3-frost", "weather-v3-starlight", "weather-v3-calm", "weather-v2-sleep", "weather-v2-medical", "weather-v2-fog", "weather-v2-frost", "weather-v2-starlight", "weather-v2-calm", "weather-calm", "weather-fog", "weather-frost", "weather-starlight", "weather-shop", "rebalance-growth-repair", "rebalance-growth-cannon", "rebalance-growth-arrow", "rebalance-growth-arcane", "rebalance-growth-refund", "rebalance-combat-frost", "rebalance-combat-arcane", "rebalance-tasks", "rebalance-reward", "rebalance-highground", "specialization-arrow", "specialization-frost", "specialization-cannon", "specialization-arcane", "density-observed", "density-central", "density-coop", "density-ceiling", "coop-growth", "coop-objectives", "ice-arrow", "ice-wall", "central-passives", "cadence", "cadence-speed", "vitality", "impact", "natural", "battle", "victory-ready", "defeat-ready", "advanced", "zero-gold", "growth-vote", "cleared-5", "cleared-10", "cleared-15", "stage2", "stage3", "stage4", "endless-rotation", "objectives", "objectives-clear", "objectives-fail", "legacy-save":
 		default:
 			return "", nil, errors.New("unknown test scenario")
 		}
@@ -100,6 +100,43 @@ func scenarioModule() gameapi.Module {
 		var s starfort.State
 		if err = json.Unmarshal(match.Data, &s); err != nil {
 			return match, err
+		}
+		if strings.HasPrefix(scenario, "weather-geology-") {
+			s.TowerSerial = 1
+			s.Towers = []starfort.Tower{{ID: 1, Pad: 2, Kind: "arrow", Level: 4, Branch: "heart", Owner: 0, Spent: 400, Priority: "first"}}
+			r := s.World.Map.Routes[0]
+			d := fixturePathLength(r.Points) * .5
+			x, y := fixturePathPosition(r.Points, d)
+			s.EnemySerial = 1
+			s.Enemies = []starfort.Enemy{{ID: 1, Kind: "slime", Route: r.ID, Progress: d, X: x, Y: y, HP: 1000, MaxHP: 1000, Speed: 40, Leak: 1}}
+			s.WaveInfo = starfort.WaveInfo{Total: 1, Spawned: 1, Title: "地质效果验收"}
+			s.World.Objectives = nil
+			s.World.Event.ID = "calm"
+
+			s.Phase = "paused"
+			s.Tick, s.ElapsedMS = 25, 5000
+			kind := strings.TrimSuffix(strings.TrimPrefix(scenario, "weather-geology-"), "-live")
+			if strings.HasSuffix(scenario, "-live") {
+				s.Phase = "battle"
+				s.NextAt = 0
+				s.Enemies[0].HP = 1000000
+				s.Enemies[0].MaxHP = 1000000
+			}
+			e := s.Enemies[0]
+			z := map[string]any{"id": 1, "kind": kind, "x": e.X, "y": e.Y, "radius": 150, "width": 300, "height": 150, "createdMS": 1000, "expiresMS": 20000, "route": e.Route, "progress": e.Progress, "speed": 50, "activated": true}
+			if kind == "typhoon" {
+				z["radius"] = 75
+			}
+			if kind == "flood" {
+				z["x"] = e.X - 150
+				z["y"] = e.Y - 75
+			}
+			g := map[string]any{"wave": s.Wave, "startedMS": 0, "kind": kind, "triggerMS": 1000, "triggered": true, "zones": []any{z}, "routePeaks": map[string]float64{}}
+			if kind == "earthquake" {
+				g["disabled"] = []any{map[string]any{"towerId": s.Towers[0].ID, "route": e.Route}}
+			}
+			s = geoPatch(s, map[string]any{"geology": g})
+			return s.Envelope()
 		}
 		if scenario == "coop-growth" {
 			scenario = "growth-vote"
