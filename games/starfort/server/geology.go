@@ -75,7 +75,15 @@ func (s *State) startGeology() {
 	if g.Kind == "earthquake" {
 		seconds = 10
 	}
-	g.TriggerMS = s.ElapsedMS + int64(5+s.geoRandom(seconds*5-4))*StepMS
+	spawnInterval := 800
+	if s.WaveInfo.Rule == "swarm" {
+		spawnInterval = 400
+	}
+	// The last spawn is a lower bound on wave duration even with instant kills.
+	// Keep the first effect inside that bound so a selected event cannot vanish
+	// merely because the team cleared a short wave before its scheduled time.
+	latest := min(seconds*1000/StepMS, max(5, (s.WaveInfo.Total-1)*spawnInterval/StepMS))
+	g.TriggerMS = s.ElapsedMS + int64(5+s.geoRandom(latest-4))*StepMS
 	m := s.World.Map
 	switch g.Kind {
 	case "earthquake":
@@ -90,16 +98,13 @@ func (s *State) startGeology() {
 		}
 	case "flood":
 		count := 1 + s.geoRandom(5)
+		fromBottom := s.geoRandom(2) == 1
 		for tries := 0; tries < 1024 && len(g.Zones) < count; tries++ {
 			width := float64(200 + s.geoRandom(max(1, m.Width-199)))
 			height := float64(100 + s.geoRandom(min(301, m.Height-99)))
-			z := GeoZone{ID: len(g.Zones) + 1, Kind: g.Kind, Width: width, Height: height, X: float64(s.geoRandom(max(1, m.Width-int(width)+1))), Y: float64(s.geoRandom(max(1, m.Height-int(height)+1))), CreatedMS: g.TriggerMS, ExpiresMS: g.TriggerMS + int64(10000+s.geoRandom(51)*200), FromBottom: s.geoRandom(2) == 1}
+			z := GeoZone{ID: len(g.Zones) + 1, Kind: g.Kind, Width: width, Height: height, X: float64(s.geoRandom(max(1, m.Width-int(width)+1))), Y: float64(s.geoRandom(max(1, m.Height-int(height)+1))), CreatedMS: g.TriggerMS, ExpiresMS: g.TriggerMS + int64(10000+s.geoRandom(51)*200), FromBottom: fromBottom}
 			if z.X < m.Base.X+60 && z.X+z.Width > m.Base.X-60 {
-				if z.Y+z.Height < m.Base.Y-60 {
-					z.FromBottom = false
-				} else if z.Y > m.Base.Y+60 {
-					z.FromBottom = true
-				} else {
+				if (!fromBottom && z.Y+z.Height >= m.Base.Y-60) || (fromBottom && z.Y <= m.Base.Y+60) {
 					continue
 				}
 			}
@@ -126,6 +131,7 @@ func (s *State) startGeology() {
 			g.Zones[i].ID = i + 1
 		}
 		if len(g.Zones) > 0 {
+			g.Zones[0].CreatedMS = min(g.Zones[0].CreatedMS, s.ElapsedMS+int64(latest)*StepMS)
 			g.TriggerMS = g.Zones[0].CreatedMS
 		}
 	}
