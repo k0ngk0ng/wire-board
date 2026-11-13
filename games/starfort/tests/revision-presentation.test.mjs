@@ -1,0 +1,6 @@
+// Before implementation: the new rain/meteor visuals expire at 900ms, and
+// shield-bypassing grouped magic damage is wrongly displayed as shield loss.
+import test from 'node:test';import assert from 'node:assert/strict';
+import {activeEffects,CombatPlayback,FLIGHT_MS} from '../web/combat-timeline.ts';
+test('new two/three-second effects retain their declared lifetime',()=>{const rain={id:1,type:'arrow_rain',x:0,y:0,born:0,visualMS:2000},meteor={id:2,type:'meteor',x:0,y:0,born:0,visualMS:3000};assert.equal(activeEffects([rain,meteor],1900,false).length,2);assert.deepEqual(activeEffects([rain,meteor],2200,false).map(x=>x.id),[2]);assert.equal(activeEffects([meteor],3000,false).length,0);assert.equal(activeEffects([rain,meteor],100,true).length,0)});
+test('grouped magic bypasses shields in the presentation timeline',()=>{const initial={tick:0,elapsedMS:0,phase:'battle',baseHP:30,enemies:[{id:1,x:0,y:0,hp:100,maxHP:100,shield:80},{id:2,x:1,y:0,hp:100,maxHP:100,shield:80}]};const t=new CombatPlayback(initial,0);t.push({...initial,tick:5,elapsedMS:1000},[{id:1,type:'hit',tick:5,atMS:200,x:0,y:0,targetId:1,ignoreShield:true,damageGroups:[{amount:30,targets:[2]}]}],1000);const s=t.read(1500);assert.equal(s.enemies[1].shield,80);assert.equal(s.enemies[1].hp,70)});

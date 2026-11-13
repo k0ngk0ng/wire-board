@@ -57,7 +57,7 @@ func geoZone(b *rulesTable, kind string) map[string]any {
 	return map[string]any{"id": 1, "kind": kind, "x": e.X, "y": e.Y, "radius": 150, "width": 400, "height": 200, "createdMS": 0, "expiresMS": 20000, "route": e.Route, "progress": e.Progress, "speed": 40}
 }
 func TestStarfortGeologyVersion(t *testing.T) {
-	b := newModuleRulesTable(t, 1, map[string]any{}, starfort.Module())
+	b := newModuleRulesTable(t, 1, map[string]any{}, preRevisionTestModule())
 	if b.s.Schema != 11 || specializationRawView(b)["geologyRules"] != float64(1) {
 		t.Fatal("new games require schema11 and public geology rule")
 	}
@@ -212,7 +212,7 @@ func TestStarfortGeologyFreezeDirection(t *testing.T) {
 	}
 }
 func TestStarfortGeologyLotteryAndGeometry(t *testing.T) {
-	b := newModuleRulesTable(t, 1, map[string]any{"mode": "endless"}, starfort.Module())
+	b := newModuleRulesTable(t, 1, map[string]any{"mode": "endless"}, preRevisionTestModule())
 	counts := map[string]int{}
 	for wave := 1; wave <= 300; wave++ {
 		s := cadenceState(b)
@@ -305,7 +305,7 @@ func TestStarfortGeologyLotteryAndGeometry(t *testing.T) {
 	t.Log(counts)
 }
 func TestStarfortGeologyEscortAndHTTP(t *testing.T) {
-	m := starfort.Module()
+	m := preRevisionTestModule()
 	start := m.Start
 	m.Start = func(ctx gameapi.Context, raw json.RawMessage) (gameapi.Match, error) {
 		v, err := start(ctx, raw)
@@ -329,7 +329,7 @@ func TestStarfortGeologyEscortAndHTTP(t *testing.T) {
 		t.Fatal("restart changed plan")
 	}
 	tb.record("schema11 new rule and world preserved across SQLite restart")
-	b := newModuleRulesTable(t, 1, map[string]any{"mode": "endless"}, starfort.Module())
+	b := newModuleRulesTable(t, 1, map[string]any{"mode": "endless"}, preRevisionTestModule())
 	seen := map[string]bool{}
 	for wave := 1; wave < 200; wave++ {
 		s := cadenceState(b)
@@ -428,7 +428,7 @@ func TestStarfortGeologyNaturalCampaigns(t *testing.T) {
 		difficulty string
 	}{{1, 10, "normal"}, {2, 20, "normal"}, {4, 10, "hard"}} {
 		t.Run(fmt.Sprintf("%dp-%dw-%s", tc.n, tc.waves, tc.difficulty), func(t *testing.T) {
-			b := newModuleRulesTable(t, tc.n, map[string]any{"waves": tc.waves, "difficulty": tc.difficulty}, starfort.Module())
+			b := newModuleRulesTable(t, tc.n, map[string]any{"waves": tc.waves, "difficulty": tc.difficulty}, preRevisionTestModule())
 			for i := 0; i < 18000 && b.s.Result == nil; i++ {
 				b.botPass()
 				b.timer(time.Second)
@@ -507,7 +507,7 @@ func TestStarfortGeologyTyphoonBudgetAndProtection(t *testing.T) {
 		t.Fatal("single route budget", active, skipped)
 	}
 	// Use a legitimate current-map pad within the largest wind circle.
-	b = newModuleRulesTable(t, 1, map[string]any{}, starfort.Module())
+	b = newModuleRulesTable(t, 1, map[string]any{}, preRevisionTestModule())
 	s = cadenceState(b)
 	r = s.World.Map.Routes[0]
 	best := math.Inf(1)
@@ -563,7 +563,7 @@ func TestStarfortGeologyTyphoonBudgetAndProtection(t *testing.T) {
 }
 
 func TestStarfortGeologyMidWaveHTTP(t *testing.T) {
-	m := starfort.Module()
+	m := preRevisionTestModule()
 	start := m.Start
 	m.Start = func(ctx gameapi.Context, raw json.RawMessage) (gameapi.Match, error) {
 		v, err := start(ctx, raw)

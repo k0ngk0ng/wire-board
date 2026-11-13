@@ -71,8 +71,20 @@ export function drawGeology(
       );
       const fromY = zone.fromBottom ? map.height : -zone.height!;
       const y = fromY + (zone.y - fromY) * fraction;
-      const top = Math.max(0, y),
+      let top = Math.max(0, y),
         bottom = Math.min(map.height, y + zone.height!);
+      if (zone.sweep) {
+        top = zone.y;
+        bottom = Math.min(zone.y + zone.height!, map.height * fraction);
+        if (zone.fromBottom) {
+          top = Math.max(zone.y, map.height * (1 - fraction));
+          bottom = zone.y + zone.height!;
+        }
+      }
+      if (top >= bottom) {
+        ctx.restore();
+        continue;
+      }
       ctx.fillStyle = "#2584b877";
       ctx.strokeStyle = "#1f5e86";
       ctx.beginPath();

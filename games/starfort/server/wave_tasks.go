@@ -8,6 +8,7 @@ import (
 )
 
 type PadReward struct {
+	Count int    `json:"count,omitempty"`
 	Owner int    `json:"owner"`
 	Kind  string `json:"kind"`
 }
@@ -120,7 +121,7 @@ func (s *State) skipTask(id string) error {
 }
 func (s *State) claimPad(owner int, p Point, pad int) error {
 	r := s.World.PadReward
-	if !s.rebalanced() || s.Phase != "prepare" || s.World.Choice != nil || s.World.BoonChoice != nil || r == nil || r.Owner != owner {
+	if !s.rebalanced() || (s.Phase != "prepare" && !(s.revised() && s.Phase == "battle")) || s.World.Choice != nil || s.World.BoonChoice != nil || r == nil || r.Owner != owner {
 		return errors.New("当前没有可领取的建塔点奖励")
 	}
 	if r.Kind == "highground" {
@@ -204,7 +205,7 @@ func (s *State) automaticPadReward() *Action {
 }
 func (s *State) validRewardPoint(p Point) bool {
 	m := s.World.Map
-	return p.X >= 28 && p.Y >= 28 && p.X <= float64(m.Width)-28 && p.Y <= float64(m.Height)-28 && math.Hypot(p.X-m.Base.X, p.Y-m.Base.Y) >= 55 && !slices.ContainsFunc(m.Pads, func(q Pad) bool { return math.Hypot(p.X-q.X, p.Y-q.Y) < 48 })
+	return p.X >= 28 && p.Y >= 28 && p.X <= float64(m.Width)-28 && p.Y <= float64(m.Height)-28 && math.Hypot(p.X-m.Base.X, p.Y-m.Base.Y) >= 55 && (!s.revised() || roadDistance(m, p) >= 45) && !slices.ContainsFunc(m.Pads, func(q Pad) bool { return math.Hypot(p.X-q.X, p.Y-q.Y) < 48 })
 }
 
 func (s *State) minimumPads() int {

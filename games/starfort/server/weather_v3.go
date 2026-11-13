@@ -25,6 +25,9 @@ func (s *State) sleepDamageFactor(e Enemy) float64 {
 	return 0
 }
 func (s *State) freezeChance(level int) int {
+	if s.revised() {
+		return min(100, 15+(max(1, level)+1)/3)
+	}
 	if s.weatherV3() {
 		return min(100, 15+5*((max(1, level)+1)/3))
 	}
@@ -47,6 +50,9 @@ func (s *State) meteorCooldown() int64 {
 	return 10000
 }
 func (s *State) meteorProtection() int64 {
+	if s.revised() {
+		return 5000 / StepMS
+	}
 	if s.weatherV3() {
 		return 8000 / StepMS
 	}
@@ -56,6 +62,9 @@ func (s *State) volleyPush() float64 {
 	push := 40.
 	if s.weatherV3() {
 		push = 60
+	}
+	if s.revised() {
+		push = 50
 	}
 	if s.World.Event.ID == "fog" {
 		push += 10
@@ -69,6 +78,10 @@ func (s *State) heartFogBonus() float64 {
 	return 1.05
 }
 func (s *State) heartArea(level int) (int, float64) {
+	if s.revised() {
+		n := max(1, level) - 1
+		return min(100, 2+n/2), math.Min(1, .05+.01*float64((n+1)/2))
+	}
 	if !s.weatherV3() {
 		return heartArea(level)
 	}
@@ -76,6 +89,10 @@ func (s *State) heartArea(level int) (int, float64) {
 	return min(100, 10+5*((n+1)/2)), math.Min(1, .1+.05*float64(n/2))
 }
 func (s *State) meteorArea(level int) (float64, float64) {
+	if s.revised() {
+		n := max(1, level) - 1
+		return 200 + 10*float64((n+1)/2), .3 + .02*float64(n/2)
+	}
 	if !s.weatherV3() {
 		return meteorArea(level)
 	}

@@ -59,6 +59,9 @@ func (s *State) offerWeatherTask() {
 	if s.weatherV3() {
 		chance = 40
 	}
+	if s.revised() {
+		chance = 50
+	}
 	if !s.skillRoll(chance) {
 		return
 	}
@@ -105,7 +108,21 @@ func (s *State) offerWeatherTask() {
 	path := s.routePath(routeID)
 	progress := pathDistance(path) * fraction
 	p := pathPosition(path, progress)
+	if s.revised() {
+		if kind == "mine" {
+			baseHP = 10
+		}
+		if kind == "beacon" {
+			baseHP = 7
+		}
+		if kind == "convoy" {
+			benefit = fmt.Sprintf("补给车速度 30，抵达修复 %d 生命；满血时获得医疗包", 4+s.Wave/10)
+		}
+	}
 	hp := scaledTask(baseHP, 1.2, attempt)
+	if s.revised() && !escort(kind) {
+		hp = float64(baseHP)
+	}
 	cost := int(math.Round(scaledTask(baseCost, growth, attempt)))
 	reward := int(math.Min(maxValue, math.Round(float64(cost)*mult)))
 	sector := 1
@@ -125,6 +142,9 @@ func (s *State) escortSpeed(kind string) float64 {
 			return 15
 		}
 		return 20
+	}
+	if s.revised() {
+		return 30
 	}
 	return 40
 }
@@ -215,8 +235,12 @@ func (s *State) finishWeatherObjective(index int, success bool, reason string) {
 			if len(s.World.Map.Pads) >= 40 {
 				kind = "move"
 			}
-			if kind != "highground" || slices.ContainsFunc(s.World.Map.Pads, func(p Pad) bool { return p.Terrain == "plain" }) {
-				s.World.PadReward = &PadReward{Owner: o.Owner, Kind: kind}
+			if s.revised() || kind != "highground" || slices.ContainsFunc(s.World.Map.Pads, func(p Pad) bool { return p.Terrain == "plain" }) {
+				if s.revised() {
+					s.addPadReward(o.Owner, kind)
+				} else {
+					s.World.PadReward = &PadReward{Owner: o.Owner, Kind: kind}
+				}
 			}
 		case "beacon":
 			s.World.BeaconSuccesses++
@@ -251,12 +275,19 @@ func (s *State) finishWeatherObjective(index int, success bool, reason string) {
 	s.event(Event{Type: "objective", X: o.X, Y: o.Y, Owner: -1, Kind: o.Status})
 }
 
-func (s *State) claimPadReward(owner int, p Point, pad, tower int) error {
+func (s *State) claimPadReward(owner int, p Point, pad, tower int, kinds ...string) error {
+	if s.revised() && s.World.PadReward == nil {
+		kind := ""
+		if len(kinds) > 0 {
+			kind = kinds[0]
+		}
+		return s.claimRevisionReward(owner, p, pad, tower, kind)
+	}
 	r := s.World.PadReward
 	if r == nil || r.Kind != "move" {
 		return s.claimPad(owner, p, pad)
 	}
-	if !s.weathered() || s.Phase != "prepare" || s.World.Choice != nil || s.World.BoonChoice != nil || r.Owner != owner {
+	if !s.weathered() || (s.Phase != "prepare" && !(s.revised() && s.Phase == "battle")) || s.World.Choice != nil || s.World.BoonChoice != nil || r.Owner != owner {
 		return errors.New("当前没有可领取的移动奖励")
 	}
 	index := -1

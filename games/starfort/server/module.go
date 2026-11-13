@@ -70,7 +70,7 @@ func Module() gameapi.Module {
 			}
 			var o Options
 			_ = json.Unmarshal(normalized, &o)
-			s := &State{GeologyRules: 1, WeatherRules: 3, GrowthRules: 1, BalanceRules: 1, SpecializationRules: 1, SkillRules: 2, Options: o, Players: make([]Player, ctx.Players), Phase: "prepare", Epoch: 1, Wave: 1, BaseHP: 30, BaseMaxHP: 30, ServerAt: ctx.Now.UnixMilli(), NextAt: ctx.Now.UnixMilli() + int64(o.PrepSeconds)*1000, Towers: []Tower{}, Enemies: []Enemy{}, Events: []Event{}}
+			s := &State{RevisionRules: 1, GeologyRules: 1, WeatherRules: 3, GrowthRules: 1, BalanceRules: 1, SpecializationRules: 1, SkillRules: 2, Options: o, Players: make([]Player, ctx.Players), Phase: "prepare", Epoch: 1, Wave: 1, BaseHP: 30, BaseMaxHP: 30, ServerAt: ctx.Now.UnixMilli(), NextAt: ctx.Now.UnixMilli() + int64(o.PrepSeconds)*1000, Towers: []Tower{}, Enemies: []Enemy{}, Events: []Event{}}
 			for i := range s.Players {
 				s.Players[i].Gold = 300
 			}
@@ -182,6 +182,10 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 		if err := s.vote(kind, a.Choice, p, ctx.Now.UnixMilli()); err != nil {
 			return m, err
 		}
+	case "use_invulnerability":
+		if err := s.useInvulnerability(p); err != nil {
+			return m, err
+		}
 	case "use_medical":
 		if err := s.useMedical(p); err != nil {
 			return m, err
@@ -199,7 +203,7 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 			return m, err
 		}
 	case "pad_reward":
-		if err := s.claimPadReward(p, Point{a.X, a.Y}, a.Pad, a.TowerID); err != nil {
+		if err := s.claimPadReward(p, Point{a.X, a.Y}, a.Pad, a.TowerID, a.Choice); err != nil {
 			return m, err
 		}
 	case "skip_objective":
@@ -537,6 +541,18 @@ func view(m gameapi.Match, p int) (any, error) {
 	}
 	specs := make([]ViewTowerSpec, 0, len(catalog))
 	for _, spec := range catalog {
+		if s.revised() {
+			if spec.Kind == "arrow" {
+				spec.Range = 120
+				spec.Description = "快速单体攻击；对有护甲敌人造成 80% 伤害"
+			}
+			if spec.Kind == "cannon" {
+				spec.Range = 200
+			}
+			if spec.Kind == "arcane" {
+				spec.Description = "无视护甲、穿透护盾直接扣生命；有护甲或护盾时基础伤害 ×1.2"
+			}
+		}
 		if s.rebalanced() && spec.Kind == "frost" {
 			spec.Description = "命中减速与持续时间随等级提高；无冰墙及永久减速"
 		}
@@ -545,37 +561,45 @@ func view(m gameapi.Match, p int) (any, error) {
 	for i := range s.World.Objectives {
 		s.World.Objectives[i].Attacked = nil
 	}
+	controls := s.controls(p)
+	if s.revised() {
+		s.World.PadReward = s.rewardFor(p, "")
+	}
 	return struct {
-		GeologyRules        int             `json:"geologyRules,omitempty"`
-		Geology             *Geology        `json:"geology,omitempty"`
-		WeatherRules        int             `json:"weatherRules,omitempty"`
-		GrowthRules         int             `json:"growthRules,omitempty"`
-		BalanceRules        int             `json:"balanceRules,omitempty"`
-		SpecializationRules int             `json:"specializationRules,omitempty"`
-		Options             Options         `json:"options"`
-		World               ViewWorld       `json:"world"`
-		Players             []Player        `json:"players"`
-		Phase               string          `json:"phase"`
-		Epoch               int             `json:"epoch"`
-		Wave                int             `json:"wave"`
-		CompletedWaves      int             `json:"completedWaves"`
-		BaseHP              int             `json:"baseHP"`
-		BaseMaxHP           int             `json:"baseMaxHP"`
-		Kills               int             `json:"kills"`
-		Tick                int64           `json:"tick"`
-		ServerAt            int64           `json:"serverAt"`
-		NextAt              int64           `json:"nextAt"`
-		ElapsedMS           int64           `json:"elapsedMS"`
-		WaveInfo            WaveInfo        `json:"waveInfo"`
-		Events              []ViewEvent     `json:"events"`
-		Craters             []Crater        `json:"craters,omitempty"`
-		IceWalls            []ViewIceWall   `json:"iceWalls,omitempty"`
-		Enemies             []ViewEnemy     `json:"enemies"`
-		Towers              []ViewTower     `json:"towers"`
-		Map                 Map             `json:"map"`
-		Catalog             []ViewTowerSpec `json:"catalog"`
-		Controls            Controls        `json:"controls"`
+		RevisionRules        int             `json:"revisionRules,omitempty"`
+		InvulnerabilityPacks int             `json:"invulnerabilityPacks,omitempty"`
+		InvulnerableUntil    int64           `json:"invulnerableUntil,omitempty"`
+		GeologyRules         int             `json:"geologyRules,omitempty"`
+		Geology              *Geology        `json:"geology,omitempty"`
+		WeatherRules         int             `json:"weatherRules,omitempty"`
+		GrowthRules          int             `json:"growthRules,omitempty"`
+		BalanceRules         int             `json:"balanceRules,omitempty"`
+		SpecializationRules  int             `json:"specializationRules,omitempty"`
+		Options              Options         `json:"options"`
+		World                ViewWorld       `json:"world"`
+		Players              []Player        `json:"players"`
+		Phase                string          `json:"phase"`
+		Epoch                int             `json:"epoch"`
+		Wave                 int             `json:"wave"`
+		CompletedWaves       int             `json:"completedWaves"`
+		BaseHP               int             `json:"baseHP"`
+		BaseMaxHP            int             `json:"baseMaxHP"`
+		Kills                int             `json:"kills"`
+		Tick                 int64           `json:"tick"`
+		ServerAt             int64           `json:"serverAt"`
+		NextAt               int64           `json:"nextAt"`
+		ElapsedMS            int64           `json:"elapsedMS"`
+		WaveInfo             WaveInfo        `json:"waveInfo"`
+		Events               []ViewEvent     `json:"events"`
+		Craters              []Crater        `json:"craters,omitempty"`
+		IceWalls             []ViewIceWall   `json:"iceWalls,omitempty"`
+		Enemies              []ViewEnemy     `json:"enemies"`
+		Towers               []ViewTower     `json:"towers"`
+		Map                  Map             `json:"map"`
+		Catalog              []ViewTowerSpec `json:"catalog"`
+		Controls             Controls        `json:"controls"`
 	}{
+		RevisionRules: s.RevisionRules, InvulnerabilityPacks: s.InvulnerabilityPacks, InvulnerableUntil: s.InvulnerableUntil,
 		GeologyRules:        s.GeologyRules,
 		Geology:             s.viewGeology(),
 		WeatherRules:        s.WeatherRules,
@@ -604,6 +628,6 @@ func view(m gameapi.Match, p int) (any, error) {
 		Towers:              towers,
 		Map:                 s.mapData(),
 		Catalog:             specs,
-		Controls:            s.controls(p),
+		Controls:            controls,
 	}, nil
 }

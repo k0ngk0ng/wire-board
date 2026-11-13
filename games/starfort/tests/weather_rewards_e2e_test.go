@@ -220,7 +220,7 @@ func TestStarfortWeatherFinalMerchantShop(t *testing.T) {
 func TestStarfortWeatherNaturalModes(t *testing.T) {
 	for _, difficulty := range []string{"easy", "hard"} {
 		t.Run(difficulty, func(t *testing.T) {
-			b := newModuleRulesTable(t, 2, map[string]any{"waves": 10, "difficulty": difficulty}, starfort.Module())
+			b := newModuleRulesTable(t, 2, map[string]any{"waves": 10, "difficulty": difficulty}, preRevisionTestModule())
 			for sec := 0; sec < 16000 && b.s.Result == nil; sec++ {
 				b.botPass()
 				if b.s.Result == nil {
@@ -233,7 +233,7 @@ func TestStarfortWeatherNaturalModes(t *testing.T) {
 		})
 	}
 	t.Run("endless", func(t *testing.T) {
-		b := newModuleRulesTable(t, 1, map[string]any{"mode": "endless"}, starfort.Module())
+		b := newModuleRulesTable(t, 1, map[string]any{"mode": "endless"}, preRevisionTestModule())
 		for sec := 0; sec < 22000 && b.s.Result == nil && b.view(0).CompletedWaves < 22; sec++ {
 			b.botPass()
 			if b.s.Result == nil {
@@ -259,7 +259,7 @@ func TestStarfortWeatherFogHeart(t *testing.T) {
 
 func TestStarfortWeatherPadsAndMixedAutoplay(t *testing.T) {
 	t.Run("even-road-pads", func(t *testing.T) {
-		b := newModuleRulesTable(t, 4, map[string]any{"mode": "endless"}, starfort.Module())
+		b := newModuleRulesTable(t, 4, map[string]any{"mode": "endless"}, preRevisionTestModule())
 		s := cadenceState(b)
 		for stage := 1; stage <= 4; stage++ {
 			old := append([]starfort.Pad{}, s.World.Map.Pads...)
@@ -299,7 +299,7 @@ func TestStarfortWeatherPadsAndMixedAutoplay(t *testing.T) {
 		b.validate()
 	})
 	t.Run("explicit-autoplay-and-takeover-http", func(t *testing.T) {
-		tb := newHost(t, 2, starfort.Module())
+		tb := newHost(t, 2, preRevisionTestModule())
 		tb.start(nil)
 		a, p := tb.people[0], tb.people[1]
 		a.act(map[string]any{"type": "build", "pad": 0, "tower": "arrow"}, 200)

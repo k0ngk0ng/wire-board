@@ -17,6 +17,7 @@ type Clip = {
   alternatives?: readonly string[];
   startOffset?: number;
   loopStartSeconds?: number;
+  reuseLoaded?: boolean;
 };
 type Task = {
   owner: string;
@@ -53,7 +54,11 @@ type TrackVoice = {
   rate: number;
 };
 type LoopOptions = { volume?: number; rate?: number; continuous?: boolean; seamOverlapMS?: number };
-type EffectOptions = { playbackID: string; startOffset?: number };
+type EffectOptions = {
+  playbackID: string;
+  startOffset?: number;
+  reuseLoaded?: boolean;
+};
 type FiniteVoice = {
   owner: string;
   playbackID: string;
@@ -156,7 +161,7 @@ export class GameAudio {
       const session = (
         navigator as Navigator & { audioSession?: { type: string } }
       ).audioSession;
-      if (session) session.type = "playback";
+      if (session && session.type !== "playback") session.type = "playback";
     } catch {
       /* HTML media remains the fallback where Audio Session is absent. */
     }
@@ -306,7 +311,7 @@ export class GameAudio {
       this.backgroundSources = "";
     }
   }
-  private stopEffects(owner?: string) {
+  private stopEffects(owner?: string, keepLoadedSource = false) {
     if (owner !== undefined && (this.task?.owner ?? this.mediaOwner) !== owner)
       return;
     this.serial++;
@@ -318,8 +323,10 @@ export class GameAudio {
       this.media.onloadedmetadata = null;
       this.media.muted = true;
       this.media.pause();
-      this.media.removeAttribute("src");
-      this.media.load();
+      if (!keepLoadedSource) {
+        this.media.removeAttribute("src");
+        this.media.load();
+      }
     }
   }
   dispose() {
@@ -910,7 +917,7 @@ export class GameAudio {
       return false;
     if (this.task && !this.media?.paused && this.task.priority > priority)
       return false;
-    this.stopEffects();
+    this.stopEffects(undefined, clips.length === 1 && !!clips[0].reuseLoaded);
     this.playbackSession();
     const task: Task = {
       owner,
@@ -990,16 +997,33 @@ export class GameAudio {
     media.onerror = () => {
       if (this.task === task && !task.starting) this.stopEffects(task.owner);
     };
-    for (const src of [
+    const sources = [
       clip.src,
       clip.fallback,
       ...(clip.alternatives ?? []),
-    ].filter((s): s is string => !!s)) {
+    ].filter((s): s is string => !!s);
+    const loadedSourceMatches = (source: string) => {
+      if (media.src === source) return true;
+      try {
+        return media.src === new URL(
+          source,
+          typeof document === "undefined" ? undefined : document.baseURI,
+        ).href;
+      } catch {
+        return false;
+      }
+    };
+    if (clip.reuseLoaded && !media.error) {
+      const cached = sources.findIndex(loadedSourceMatches);
+      if (cached > 0) sources.unshift(...sources.splice(cached, 1));
+    }
+    for (const src of sources) {
       if (this.task !== task || !this.available()) return false;
       task.starting = true;
       const generation = task.generation;
       this.mediaOwner = task.owner;
-      media.src = src;
+      if (!clip.reuseLoaded || media.error || !loadedSourceMatches(src))
+        media.src = src;
       const loadedSource = media.src;
       media.onloadedmetadata =
         clip.startOffset === undefined && clip.loopStartSeconds === undefined
@@ -1178,7 +1202,9 @@ private startFinite(
       !options.playbackID.trim() ||
       options.playbackID.length > 256 ||
       (options.startOffset !== undefined &&
-        (!Number.isFinite(options.startOffset) || options.startOffset < 0))
+        (!Number.isFinite(options.startOffset) || options.startOffset < 0)) ||
+      (options.reuseLoaded !== undefined &&
+        typeof options.reuseLoaded !== "boolean")
     )
       return Promise.resolve(false);
     const key = JSON.stringify([owner, lane]);
@@ -1204,8 +1230,10 @@ private startFinite(
           .length >= 16)
     )
       return Promise.resolve(false);
-    previous?.player.dispose();
-    const player = new GameAudio(this.factory);
+    const reusable =
+      options.reuseLoaded === true && previous?.sources === identity;
+    if (!reusable) previous?.player.dispose();
+    const player = reusable ? previous.player : new GameAudio(this.factory);
     player.setVolume(this.level);
     const media = player.element();
     media.dataset.platformEffectLane = lane;
@@ -1224,7 +1252,8 @@ private startFinite(
           src: sources[0],
           fallback: sources[1],
           alternatives: sources.slice(2),
-          startOffset: options.startOffset,
+          startOffset: options.startOffset ?? (options.reuseLoaded ? 0 : undefined),
+          reuseLoaded: options.reuseLoaded,
         },
       ],
       owner,
