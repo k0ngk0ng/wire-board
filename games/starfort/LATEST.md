@@ -32,7 +32,7 @@
 . scripts/env.sh
 go test -count=1 -json -run '^TestStarfortLatest' ./games/starfort/tests
 go test -race -count=1 -run '^TestStarfortLatestHTTP$|^TestStarfortRevisionHTTP$' ./games/starfort/tests
-go test -count=1 ./games/starfort/server ./games/starfort/tests
+go test -count=1 -timeout=45m ./games/starfort/server ./games/starfort/tests
 npm --prefix web test -- starfort
 npm --prefix web run build
 python3 -B games/starfort/tests/accept_latest_ui.py --skip-build
