@@ -91,7 +91,11 @@ func (s *State) heartFogBonus() float64 {
 func (s *State) heartArea(level int) (int, float64) {
 	if s.revised() {
 		n := max(1, level) - 1
-		return min(100, 2+n/2), math.Min(1, .05+.01*float64((n+1)/2))
+		base := 2
+		if s.publicRules() {
+			base = 5
+		}
+		return min(100, base+n/2), math.Min(1, .05+.01*float64((n+1)/2))
 	}
 	if !s.weatherV3() {
 		return heartArea(level)

@@ -10,7 +10,7 @@ import (
 // RevisionRules is independent of weather/geology: archived saves retain their
 // original rules, RNG streams and deadlines when opened by a newer server.
 func (s *State) revised() bool { return s.RevisionRules >= 1 }
-func (s *State) tuned() bool   { return s.RevisionRules == 2 }
+func (s *State) tuned() bool   { return s.RevisionRules >= 2 }
 
 func (s *State) revisionStats(t Tower) (damage, radius float64, interval int) {
 	plain := t
@@ -70,7 +70,7 @@ func (s *State) revisionChoices(t Tower) []BranchChoice {
 		g := s.volleyArea(l)
 		chance, percent := s.heartArea(l)
 		return []BranchChoice{
-			{"volley", "风羽箭雨", fmt.Sprintf("伤害 ×0.5；%d%% 概率对主目标半径 %.0f 内最多 %d 个其他敌人追加 %.0f%% 伤害，箭雨持续 2 秒；独立 5%% 概率击退存活主目标 %.0f，精英／首领减半，同塔保护 5 秒；升级依次增加概率 1、半径 20、伤害 2 个百分点，10 的倍数等级只加目标 1", g.Chance, g.Radius, g.Targets, g.Damage*100, s.volleyPush())},
+			{"volley", "风羽箭雨", fmt.Sprintf("伤害 ×0.5；%d%% 概率对主目标半径 %.0f 内最多 %d 个其他敌人追加 %.0f%% 伤害，箭雨持续 %d 秒；独立 5%% 概率击退存活主目标 %.0f，精英／首领减半，同塔保护 5 秒；升级依次增加概率 1、半径 20、伤害 2 个百分点，10 的倍数等级只加目标 1", g.Chance, g.Radius, g.Targets, g.Damage*100, s.volleyVisualMS()/1000, s.volleyPush())},
 			{"heart", "一箭残废", fmt.Sprintf("伤害 ×0.5；%d%% 概率追加目标剩余生命 %.0f%% 的伤害，同塔同敌人保护 5 秒；升级交替增加伤害 1、概率 1 个百分点；薄雾下本塔伤害增加 %.0f%%", chance, percent*100, (s.revisionHeartBonus()-1)*100)},
 		}
 	case "frost":
@@ -81,7 +81,7 @@ func (s *State) revisionChoices(t Tower) []BranchChoice {
 		factor, slow := s.iceAttack(preview)
 		return []BranchChoice{
 			{"freeze", "冰封专精", fmt.Sprintf("伤害 ×0.6，攻速 ×0.5；%d%% 概率冰封射程内敌人 %.1f 秒，冷却 %.1f 秒；随后 8 秒逐渐恢复速度，同塔同敌人保护 8 秒；精英／首领完全有效；升级依次增加概率 1、时长 0.5 秒、减少冷却 0.1 秒；寒潮时长额外增加 2 秒、冷却减少 2 秒；湿润额外冰封 %.0f 秒", s.freezeChance(l), float64(duration)/1000, float64(cd)/1000, float64(s.wetFreezeMS())/1000)},
-			{"speed", "攻速专精", fmt.Sprintf("伤害 ×0.4，攻速 ×0.8；命中减速 %.0f%%，持续 %.1f 秒，精英／首领完全有效；升级交替延长 0.5 秒、增加减速 2 个百分点；寒潮额外减速 15、湿润额外减速 %.0f 个百分点", (1-factor)*100, float64(slow)*StepMS/1000, s.wetSlowBonus()*100)},
+			{"speed", "攻速专精", fmt.Sprintf("伤害 ×0.4，攻速 ×0.8；命中减速 %.0f%%，持续 %.1f 秒，精英／首领完全有效；升级交替延长 0.5 秒、增加减速 %.0f 个百分点；寒潮额外减速 15、湿润额外减速 %.0f 个百分点", (1-factor)*100, float64(slow)*StepMS/1000, s.iceSlowStep()*100, s.wetSlowBonus()*100)},
 		}
 	case "arcane":
 		radius, percent := s.meteorArea(l)
@@ -165,7 +165,7 @@ func (s *State) useInvulnerability(owner int) error {
 	return nil
 }
 func (s *State) validRevision() error {
-	if s.RevisionRules < 0 || s.RevisionRules > 2 || s.revised() && !s.geological() || s.InvulnerabilityPacks < 0 || s.InvulnerabilityPacks > 1 || s.InvulnerableUntil < 0 || (!s.revised() && (s.InvulnerabilityPacks != 0 || s.InvulnerableUntil != 0 || len(s.World.PadRewards) > 0)) {
+	if s.RevisionRules < 0 || s.RevisionRules > 3 || s.revised() && !s.geological() || s.InvulnerabilityPacks < 0 || s.InvulnerabilityPacks > 1 || s.InvulnerableUntil < 0 || (!s.revised() && (s.InvulnerabilityPacks != 0 || s.InvulnerableUntil != 0 || len(s.World.PadRewards) > 0)) {
 		return errors.New("无效修订规则或无敌状态")
 	}
 	if len(s.World.PadRewards) > 12 || s.revised() && s.World.PadReward != nil {

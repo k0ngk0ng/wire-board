@@ -184,7 +184,7 @@ func (b *rulesTable) validate() {
 		b.t.Fatalf("invalid public resources: %+v", v)
 	}
 	for _, p := range v.Players {
-		if p.Gold < 0 {
+		if p.Gold < 0 && b.s.Schema < 14 {
 			b.t.Fatal("negative gold")
 		}
 	}

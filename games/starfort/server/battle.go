@@ -104,6 +104,7 @@ func (s *State) startWave(now int64) {
 			return
 		}
 	}
+	s.startPublicEvent()
 	s.startGeology()
 	s.Phase = "battle"
 	s.Epoch++
@@ -420,6 +421,7 @@ func (s *State) step(now int64) {
 	s.repairCraters()
 	s.stepObjectives()
 	if s.BaseHP == 0 {
+		s.settlePublicEvent()
 		s.Phase = "lost"
 		s.Epoch++
 		s.NextAt = 0
@@ -427,13 +429,21 @@ func (s *State) step(now int64) {
 		s.note("星核熄灭，共守住 %d 波，击败 %d 个敌人", s.CompletedWaves, s.Kills)
 		return
 	}
+	if s.publicRules() && s.WaveInfo.Spawned == s.WaveInfo.Total && len(s.Enemies) == 0 {
+		for i, o := range s.World.Objectives {
+			if o.Status == "active" && o.Kind == "convoy" {
+				s.finishObjective(i, true, "")
+			}
+		}
+	}
 	if s.WaveInfo.Spawned == s.WaveInfo.Total && len(s.Enemies) == 0 && !s.taskConvoyActive() {
 		s.CompletedWaves = s.Wave
 		s.onWaveCleared()
 		reward := s.rewardGold(40+min(1000, s.Wave*3)) + s.finishGeology()
 		for i := range s.Players {
-			s.Players[i].Gold = min(maxValue, s.Players[i].Gold+reward)
+			s.combatGold(i, reward)
 		}
+		s.settlePublicEvent()
 		s.note("守住第 %d 波，每位玩家获得 %d 金币", s.Wave, reward)
 		if s.Options.Mode == "campaign" && s.CompletedWaves >= s.Options.Waves {
 			if s.weathered() && s.World.Shop != nil {
@@ -500,7 +510,7 @@ func (s *State) fireTower(index int) bool {
 				s.hitWithSkill(j, baseDamage*g.Damage, *t, skill)
 			}
 			if s.revised() && len(victims) > 0 {
-				e := Event{Type: "arrow_rain", TowerID: t.ID, Owner: t.Owner, Kind: t.Kind, X: enemy.X, Y: enemy.Y, VisualMS: 2000}
+				e := Event{Type: "arrow_rain", TowerID: t.ID, Owner: t.Owner, Kind: t.Kind, X: enemy.X, Y: enemy.Y, VisualMS: s.volleyVisualMS()}
 				for _, j := range victims {
 					e.StatusTargets = append(e.StatusTargets, s.Enemies[j].ID)
 				}
@@ -623,9 +633,7 @@ func (s *State) hitWithSkill(index int, damage float64, t Tower, skill string) {
 	if e.HP <= 0 {
 		s.Kills++
 		s.Players[t.Owner].Kills++
-		for i := range s.Players {
-			s.Players[i].Gold = min(maxValue, s.Players[i].Gold+s.rewardGold(e.Reward))
-		}
-		s.event(Event{Skill: skill, TowerID: t.ID, TargetID: e.ID, Type: "death", X: e.X, Y: e.Y, Kind: e.Kind, Owner: t.Owner, Amount: float64(s.rewardGold(e.Reward))})
+		reward := s.deathGold(*e)
+		s.event(Event{Skill: skill, TowerID: t.ID, TargetID: e.ID, Type: "death", X: e.X, Y: e.Y, Kind: e.Kind, Owner: t.Owner, Amount: float64(reward)})
 	}
 }

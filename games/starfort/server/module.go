@@ -70,7 +70,7 @@ func Module() gameapi.Module {
 			}
 			var o Options
 			_ = json.Unmarshal(normalized, &o)
-			s := &State{RevisionRules: 2, GeologyRules: 1, WeatherRules: 3, GrowthRules: 1, BalanceRules: 1, SpecializationRules: 1, SkillRules: 2, Options: o, Players: make([]Player, ctx.Players), Phase: "prepare", Epoch: 1, Wave: 1, BaseHP: 30, BaseMaxHP: 30, ServerAt: ctx.Now.UnixMilli(), NextAt: ctx.Now.UnixMilli() + int64(o.PrepSeconds)*1000, Towers: []Tower{}, Enemies: []Enemy{}, Events: []Event{}}
+			s := &State{RevisionRules: 3, GeologyRules: 1, WeatherRules: 3, GrowthRules: 1, BalanceRules: 1, SpecializationRules: 1, SkillRules: 2, Options: o, Players: make([]Player, ctx.Players), Phase: "prepare", Epoch: 1, Wave: 1, BaseHP: 30, BaseMaxHP: 30, ServerAt: ctx.Now.UnixMilli(), NextAt: ctx.Now.UnixMilli() + int64(o.PrepSeconds)*1000, Towers: []Tower{}, Enemies: []Enemy{}, Events: []Event{}}
 			for i := range s.Players {
 				s.Players[i].Gold = 300
 			}
@@ -379,7 +379,7 @@ func (s *State) controls(p int) Controls {
 	c.Targets = []TargetControl{}
 	for _, o := range s.World.Objectives {
 		cost := o.Cost
-		afford := player && s.Players[p].Gold >= cost
+		afford := player && s.canPayTask(p, cost)
 		c.Objectives = append(c.Objectives, ObjectiveControl{o.ID, cost, c.CanPause && s.World.Choice == nil && s.World.BoonChoice == nil && o.Status == "available" && afford})
 	}
 	if !player {
@@ -566,6 +566,7 @@ func view(m gameapi.Match, p int) (any, error) {
 		s.World.PadReward = s.rewardFor(p, "")
 	}
 	return struct {
+		PublicEvent          *PublicEvent    `json:"publicEvent,omitempty"`
 		RevisionRules        int             `json:"revisionRules,omitempty"`
 		InvulnerabilityPacks int             `json:"invulnerabilityPacks,omitempty"`
 		InvulnerableUntil    int64           `json:"invulnerableUntil,omitempty"`
@@ -599,7 +600,7 @@ func view(m gameapi.Match, p int) (any, error) {
 		Catalog              []ViewTowerSpec `json:"catalog"`
 		Controls             Controls        `json:"controls"`
 	}{
-		RevisionRules: s.RevisionRules, InvulnerabilityPacks: s.InvulnerabilityPacks, InvulnerableUntil: s.InvulnerableUntil,
+		PublicEvent: s.PublicEvent, RevisionRules: s.RevisionRules, InvulnerabilityPacks: s.InvulnerabilityPacks, InvulnerableUntil: s.InvulnerableUntil,
 		GeologyRules:        s.GeologyRules,
 		Geology:             s.viewGeology(),
 		WeatherRules:        s.WeatherRules,

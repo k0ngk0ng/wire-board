@@ -475,6 +475,18 @@ export function Board({
   audio,
   clock,
 }: BoardProps<View>) {
+  const [bossOpen, setBossOpen] = useState(false);
+  const bossKey = `sf-boss:${room.id}:${data.wave}`;
+  const bossPreview = (data.revisionRules ?? 0) >= 3 && data.phase === "prepare" && data.waveInfo.boss;
+  const dismissBoss = () => {
+    try { sessionStorage.setItem(bossKey, "closed"); } catch { /* Storage may be disabled. */ }
+    setBossOpen(false);
+  };
+  useEffect(() => {
+    let closed = false;
+    try { closed = sessionStorage.getItem(bossKey) === "closed"; } catch { /* Keep play available. */ }
+    setBossOpen(bossPreview && !closed);
+  }, [bossKey, bossPreview]);
   const [choiceOpen, setChoiceOpen] = useState(false);
   const [selling, setSelling] = useState<number>();
   const [shopOpen, setShopOpen] = useState(false);
@@ -582,6 +594,7 @@ export function Board({
     const key = room.id + ":" + offeredTask?.id;
     if (
       offeredTask &&
+      !bossPreview &&
       !shop &&
       !padReward &&
       !room.spectating &&
@@ -596,6 +609,7 @@ export function Board({
     room.id,
     room.spectating,
     offeredTask?.id,
+    bossPreview,
     shop?.wave,
     padReward,
     data.world?.choice,
@@ -751,12 +765,12 @@ export function Board({
   return (
     <div
       ref={root}
-      className={`starfort-board${shopOpen && shop ? " sf-has-shop" : ""}`}
+      className={`starfort-board${(data.revisionRules ?? 0) >= 3 ? " sf-public-rules" : ""}${shopOpen && shop ? " sf-has-shop" : ""}`}
       data-phase={data.phase}
     >
       <div className="sf-topbar">
         <div className="sf-hud">
-          {geoLabel && (
+          {geoLabel && (data.revisionRules ?? 0) < 3 && (
             <span
               className="sf-geology-notice"
               data-sf-geology={data.geology?.kind}
@@ -1315,6 +1329,7 @@ export function Board({
                 <Store size={18} aria-hidden="true" />
               </button>
             )}
+            {bossPreview && <button className="sf-secondary" data-sf-boss-open aria-label="查看星陨巨像来袭" title="星陨巨像来袭" onClick={() => setBossOpen(true)}><Skull size={18} aria-hidden="true" /></button>}
             <button
               className="sf-secondary"
               data-sf-open-tasks
@@ -1342,6 +1357,20 @@ export function Board({
           </div>
         </div>
       </div>
+      {(data.revisionRules ?? 0) >= 3 && <div className="sf-wave-notices" data-sf-notices>
+        {data.publicEvent && !data.publicEvent.settled && data.publicEvent.kind !== "none" &&
+          data.elapsedMS - data.publicEvent.startedMS < 10000 && <span data-sf-public-event={data.publicEvent.kind} role="status" title={data.publicEvent.kind === "tax" ? "波末扣除本波非任务收入的 20%" : "波末增加本波非任务收入的 30%"}>{data.publicEvent.kind === "tax" ? "征税" : "发钱"}</span>}
+        {geoLabel && <span data-sf-geology={data.geology?.kind} role="status">{geoLabel}</span>}
+      </div>}
+      {bossOpen && bossPreview && <Modal title="星陨巨像来袭" onClose={dismissBoss}>
+        <div data-sf-boss-dialog className="sf-boss-preview">
+          <Skull size={64} aria-hidden="true" />
+          <p>第 {data.wave} 波 · 星陨巨像</p>
+          <p>击败后每人额外获得 <strong>{data.wave * 10}</strong> 金币</p>
+          <p>半血召唤 4 名守卫，防御塔优先拦截守卫。</p>
+          <button data-sf-boss-dismiss onClick={dismissBoss}>布置防线</button>
+        </div>
+      </Modal>}
       {world && choiceOpen && choosing && !finished && (
         <Modal
           title="战区决策"

@@ -44,7 +44,7 @@ func (s *State) balancedStats(t Tower) (float64, float64, int) {
 func (s *State) iceAttack(t Tower) (float64, int64) {
 	if s.revised() && t.Branch == "speed" {
 		n := max(1, t.Level) - 1
-		slow := .1 + .02*float64(n/2)
+		slow := .1 + s.iceSlowStep()*float64(n/2)
 		if s.World.Event.ID == "frost" {
 			slow += .15
 		}

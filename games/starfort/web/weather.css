@@ -178,3 +178,29 @@
   font-size: 12px;
   font-weight: 700;
 }
+
+/* Reserved beside the HUD, above the map: notices never cover roads. */
+.starfort-board [data-sf-weather-notice] { font-size: 12px; }
+.sf-wave-notices { min-height: 44px; display: flex; align-items: center; gap: 18px; padding: 0 10px; color: #513a29; background: #fff4d6; }
+.sf-wave-notices [data-sf-public-event] { font-size: 36px; font-weight: 800; line-height: 1.2; }
+.sf-wave-notices [data-sf-geology] { font-size: 24px; font-weight: 700; line-height: 1.2; }
+.sf-boss-preview { display: grid; justify-items: center; gap: 12px; text-align: center; }
+.sf-boss-preview p { margin: 0; }
+.sf-boss-preview > svg { color: #72422d; }
+
+.starfort-board.sf-public-rules {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto 44px minmax(0, 1fr);
+}
+.starfort-board.sf-public-rules > .sf-topbar { position: static; grid-column: 1; grid-row: 1; padding: 8px; }
+.sf-public-rules > .sf-wave-notices { grid-column: 1; grid-row: 2; }
+.starfort-board.sf-public-rules > .sf-layout { grid-column: 1; grid-row: 3; }
+.starfort-board.sf-public-rules.sf-has-shop { grid-template-columns: minmax(0, 1fr) 340px; }
+.sf-public-rules > .sf-shop-dock { grid-column: 2; grid-row: 1 / 4; }
+@media (max-width: 700px) {
+  .starfort-board.sf-public-rules.sf-has-shop { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto 44px minmax(180px, 1fr) minmax(150px, 35%); }
+  .sf-public-rules > .sf-shop-dock { grid-column: 1; grid-row: 4; }
+}
+
+.sf-wave-notices:empty { background: transparent; }
