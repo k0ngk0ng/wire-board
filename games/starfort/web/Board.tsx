@@ -476,8 +476,8 @@ export function Board({
   clock,
 }: BoardProps<View>) {
   const [bossOpen, setBossOpen] = useState(false);
-  const bossKey = `sf-boss:${room.id}:${data.wave}`;
-  const bossPreview = (data.revisionRules ?? 0) >= 3 && data.phase === "prepare" && data.waveInfo.boss;
+  const bossKey = `sf-boss:${room.id}:${room.matchId ?? data.world?.seed}:${data.wave}`;
+  const bossPreview = (data.revisionRules ?? 0) >= 3 && data.phase === "prepare" && data.completedWaves < data.wave && data.waveInfo.boss;
   const dismissBoss = () => {
     try { sessionStorage.setItem(bossKey, "closed"); } catch { /* Storage may be disabled. */ }
     setBossOpen(false);
