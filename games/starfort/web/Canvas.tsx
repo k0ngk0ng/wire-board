@@ -45,7 +45,7 @@ import {
   drawCombatAccent,
   drawIceWall,
 } from "./combat-art";
-import { drawGeology, drawDisabledTower } from "./geology-art";
+import { drawGeology, drawDisabledTower, drawFloodAura } from "./geology-art";
 import { battlefieldPalette as palette } from "./palette";
 
 type Atlas = {
@@ -558,6 +558,8 @@ function drawOverview(
 ) {
   for (const pad of map.pads) {
     const tower = view.towers.find((item) => item.pad === pad.id);
+    if ((view.revisionRules ?? 0) >= 2 && tower?.floodedAtMS)
+      drawFloodAura(ctx, pad, 14 / scale, view.elapsedMS - tower.floodedAtMS);
     if (
       tower &&
       !view.geology?.rewarded &&
@@ -688,7 +690,7 @@ function drawFeatures(
           : "mine";
     ctx.save();
     if (objective.status === "failed") ctx.globalAlpha = 0.55;
-    if (objective.kind === "merchant" && view.revisionRules === 1)
+    if (objective.kind === "merchant" && (view.revisionRules ?? 0) >= 1)
       drawMerchant(ctx, position.x, position.y + bob, size);
     else
       sprite(
@@ -1556,6 +1558,8 @@ export function Battlefield({
                 12 + pose.glow * 15,
                 `rgba(255,235,160,${pose.glow * 0.6})`,
               );
+            if ((v.revisionRules ?? 0) >= 2 && t.floodedAtMS)
+              drawFloodAura(ctx, pad, towerSize, effectClock - t.floodedAtMS);
             ctx.save();
             ctx.shadowColor = "#243b2d40";
             ctx.shadowBlur = 4;

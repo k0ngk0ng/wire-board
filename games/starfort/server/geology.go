@@ -72,6 +72,9 @@ func (s *State) startGeology() {
 	if s.revised() {
 		chance = 50
 	}
+	if s.tuned() {
+		chance = 70
+	}
 	if s.geoRandom(100) >= chance {
 		return
 	}
@@ -92,7 +95,11 @@ func (s *State) startGeology() {
 	m := s.World.Map
 	switch g.Kind {
 	case "earthquake":
-		count := 1 + s.geoRandom(4)
+		limit := 4
+		if s.tuned() {
+			limit = 5
+		}
+		count := 1 + s.geoRandom(limit)
 		for tries := 0; tries < 512 && len(g.Zones) < count; tries++ {
 			r := float64(75 + s.geoRandom(126))
 			z := GeoZone{ID: len(g.Zones) + 1, Kind: g.Kind, Radius: r, X: r + float64(s.geoRandom(max(1, int(float64(m.Width)-2*r)))), Y: r + float64(s.geoRandom(max(1, int(float64(m.Height)-2*r)))), CreatedMS: g.TriggerMS}
@@ -203,7 +210,11 @@ func (s *State) geoTowerFactor(t Tower) float64 {
 	if !s.geological() || t.FloodedAtMS == 0 {
 		return 1
 	}
-	return .8 + .2*math.Max(0, math.Min(1, float64(s.ElapsedMS-t.FloodedAtMS)/10000))
+	penalty := .2
+	if s.tuned() {
+		penalty = .3
+	}
+	return 1 - penalty + penalty*math.Max(0, math.Min(1, float64(s.ElapsedMS-t.FloodedAtMS)/10000))
 }
 func (s *State) geoRoad(p Pad) string {
 	if p.Route != "" {
@@ -242,6 +253,9 @@ func (s *State) quakeDisable() {
 	for _, r := range roads {
 		ids := byRoad[r]
 		floor := int(math.Ceil(float64(len(ids)) * .1))
+		if s.tuned() {
+			floor = max(1, min(2, floor))
+		}
 		count := (len(ids) + 1) / 2
 		for j := 0; j < count; j++ {
 			k := j + s.geoRandom(len(ids)-j)
@@ -439,7 +453,17 @@ func (s *State) finishGeology() int {
 	} else if peak <= .7 {
 		bonus = s.Wave * 5
 	}
-	g.Bonus = bonus
+	if s.tuned() {
+		bonus = 0
+		for _, v := range g.RoutePeaks {
+			if v <= .5 {
+				bonus += s.Wave * 10
+			} else if v <= .7 {
+				bonus += s.Wave * 5
+			}
+		}
+	}
+	g.Bonus = min(maxValue, bonus)
 	g.Rewarded = true
 	g.Zones = nil
 	g.Disabled = nil

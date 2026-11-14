@@ -15,6 +15,10 @@ func (s *State) recoveryMS() int64 {
 }
 
 func (s *State) routePads(m *Map, r Route) {
+	if s.tuned() {
+		s.inwardPads(m, r)
+		return
+	}
 	if !s.weathered() {
 		addRoutePads(m, r)
 		return
@@ -62,6 +66,9 @@ func (s *State) offerWeatherTask() {
 	if s.revised() {
 		chance = 50
 	}
+	if s.tuned() {
+		chance = 70
+	}
 	if !s.skillRoll(chance) {
 		return
 	}
@@ -103,6 +110,9 @@ func (s *State) offerWeatherTask() {
 	}
 	if s.geological() && kind == "convoy" {
 		low, span = .4, .1
+	}
+	if s.tuned() && kind == "merchant" {
+		growth = 1.1
 	}
 	fraction := low + span*float64(s.taskRandom(1001))/1000
 	path := s.routePath(routeID)

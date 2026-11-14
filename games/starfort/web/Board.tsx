@@ -495,7 +495,7 @@ export function Board({
     data.world?.padRewards?.filter((r) => r.owner === room.you) ?? [];
   const storedReward = rewards.find((r) => r.kind === rewardKind) ?? rewards[0];
   const padReward =
-    data.revisionRules === 1 && storedReward
+    (data.revisionRules ?? 0) >= 1 && storedReward
       ? {
           ...storedReward,
           kind:
@@ -784,7 +784,7 @@ export function Board({
             </span>
             {(data.weatherRules ?? 0) >= 1 &&
               world?.event &&
-              (world.event.id !== "calm" || data.revisionRules === 1) && (
+              (world.event.id !== "calm" || (data.revisionRules ?? 0) >= 1) && (
                 <span
                   data-sf-weather-notice
                   role="status"
@@ -792,10 +792,10 @@ export function Board({
                   aria-label={`${world.event.label}：${world.event.description}`}
                 >
                   <WeatherIcon
-                    size={data.revisionRules === 1 ? 42 : 14}
+                    size={(data.revisionRules ?? 0) >= 1 ? 42 : 14}
                     aria-hidden="true"
                   />
-                  {data.revisionRules === 1 && <span>{world.event.label}</span>}
+                  {(data.revisionRules ?? 0) >= 1 && <span>{world.event.label}</span>}
                 </span>
               )}
             <span
@@ -1246,7 +1246,7 @@ export function Board({
                 </section>
               </Modal>
             )}
-            {data.revisionRules === 1 && !finished && !room.spectating && (
+            {(data.revisionRules ?? 0) >= 1 && !finished && !room.spectating && (
               <>
                 {padReward && (
                   <button
@@ -1588,7 +1588,7 @@ export function Board({
         padReward.owner === room.you &&
         !placing &&
         (data.phase === "prepare" || data.phase === "battle") &&
-        (data.revisionRules !== 1 || rewardOpen) &&
+        ((data.revisionRules ?? 0) < 1 || rewardOpen) &&
         !choosing && (
           <Modal
             title={
@@ -1599,7 +1599,7 @@ export function Board({
                   : "升级高地"
             }
             onClose={() => {
-              if (data.revisionRules === 1) {
+              if ((data.revisionRules ?? 0) >= 1) {
                 setRewardOpen(false);
               } else setPlacing(true);
             }}

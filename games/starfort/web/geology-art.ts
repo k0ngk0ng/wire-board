@@ -153,3 +153,35 @@ export function drawDisabledTower(
   ctx.fillText("ZZZ", point.x, point.y);
   ctx.restore();
 }
+
+// The footprint follows the same world transform as the tower. Fade on the
+// authoritative simulation clock, so pause/reconnect cannot restart the debuff.
+export function drawFloodAura(
+  ctx: CanvasRenderingContext2D,
+  point: { x: number; y: number },
+  size: number,
+  ageMS: number,
+) {
+  if (ageMS < 0 || ageMS >= 10000) return;
+  ctx.save();
+  ctx.translate(point.x, point.y + 10);
+  ctx.scale(1, 0.48);
+  ctx.globalAlpha = 0.85 * (1 - ageMS / 10000);
+  ctx.strokeStyle = "#b45de8";
+  ctx.lineWidth = 3;
+  for (const radius of [size * 0.56, size * 0.7]) {
+    ctx.beginPath();
+    ctx.arc(0, 0, radius, 0, Math.PI * 2);
+    ctx.stroke();
+  }
+  for (let i = 0; i < 8; i++) {
+    const angle = i * Math.PI / 4;
+    const r = size * 0.63;
+    ctx.save();
+    ctx.translate(Math.cos(angle) * r, Math.sin(angle) * r);
+    ctx.rotate(angle + Math.PI / 4);
+    ctx.strokeRect(-3, -3, 6, 6);
+    ctx.restore();
+  }
+  ctx.restore();
+}

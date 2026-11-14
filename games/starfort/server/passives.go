@@ -109,7 +109,7 @@ func (s *State) makeCrater(t *Tower, target Enemy) bool {
 		c.Remaining = work
 	}
 	if s.revised() && s.geoVulnerability(target) > 1 {
-		c.Total *= 1.3
+		c.Total *= s.quakeCraterFactor()
 		c.Remaining = c.Total
 	}
 	c.IgnoreHeavy = !s.rebalanced() && s.specialized() && t.Kind == "cannon" && t.Branch == "speed"

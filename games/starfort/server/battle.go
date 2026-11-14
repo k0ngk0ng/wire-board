@@ -81,6 +81,9 @@ func (s *State) describeWave() {
 	s.WaveInfo = WaveInfo{Title: fmt.Sprintf("第 %d 波 · %s", s.Wave, title), Description: description, Rule: rule, Total: min(MaxWaveEnemies, 9+s.Wave*2), Boss: boss}
 }
 func (s *State) prepare(now int64) {
+	if s.tuned() {
+		s.BaseMaxHP = s.expectedBaseMaxHP()
+	}
 	s.Phase = "prepare"
 	s.Epoch++
 	s.ServerAt = now
@@ -602,7 +605,7 @@ func (s *State) hitWithSkill(index int, damage float64, t Tower, skill string) {
 		if s.rebalanced() {
 			factor, duration := s.iceAttack(t)
 			if s.revised() && t.Branch == "speed" && e.WetUntil > s.Tick {
-				factor = math.Max(.1, factor-.2)
+				factor = math.Max(.1, factor-s.wetSlowBonus())
 			}
 			if s.controlMultiplier(*e) == 2 {
 				factor = math.Max(.1, 1-2*(1-factor))

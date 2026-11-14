@@ -351,7 +351,7 @@ func (s *State) valid() error {
 	if err := s.validWorld(); err != nil {
 		return err
 	}
-	if len(s.Players) < 1 || len(s.Players) > 4 || !validOptions(s.Options) || !slices.Contains([]string{"prepare", "battle", "paused", "won", "lost"}, s.Phase) || s.Epoch < 1 || s.Wave < 1 || s.CompletedWaves < 0 || s.CompletedWaves > s.Wave || s.BaseMaxHP != 30 || s.BaseHP < 0 || s.BaseHP > s.BaseMaxHP || s.Cursor < 0 || s.Cursor >= len(s.Players) || s.Tick < 0 || s.ElapsedMS != s.Tick*StepMS || s.ServerAt < 0 || s.NextAt < 0 {
+	if len(s.Players) < 1 || len(s.Players) > 4 || !validOptions(s.Options) || !slices.Contains([]string{"prepare", "battle", "paused", "won", "lost"}, s.Phase) || s.Epoch < 1 || s.Wave < 1 || s.CompletedWaves < 0 || s.CompletedWaves > s.Wave || s.BaseMaxHP != s.expectedBaseMaxHP() || s.BaseHP < 0 || s.BaseHP > s.BaseMaxHP || s.Cursor < 0 || s.Cursor >= len(s.Players) || s.Tick < 0 || s.ElapsedMS != s.Tick*StepMS || s.ServerAt < 0 || s.NextAt < 0 {
 		return errors.New("无效星垒存档")
 	}
 	if (s.Phase == "lost") != (s.BaseHP == 0) || (s.Phase == "won" && (s.Options.Mode != "campaign" || s.CompletedWaves != s.Options.Waves)) || len(s.Towers) > len(s.World.Map.Pads) || len(s.Enemies) > MaxEnemies || len(s.Events) > MaxEvents || len(s.Log) > 40 {
@@ -488,6 +488,9 @@ func (s *State) Envelope() (gameapi.Match, error) {
 	if s.revised() {
 		schema = 12
 	}
+	if s.tuned() {
+		schema = 13
+	}
 	m := gameapi.Match{Schema: schema, Data: raw, Actors: s.actors(), Attention: []int{}, TimeoutActors: []int{}, Log: append([]string{}, s.Log...)}
 	if s.finished() {
 		r := &gameapi.Result{Cooperative: true, Ranks: make([]int, len(s.Players)), Winners: []int{}, Scores: make([]int, len(s.Players))}
@@ -513,7 +516,7 @@ func (s *State) Envelope() (gameapi.Match, error) {
 	return m, m.Validate(len(s.Players))
 }
 func decode(m gameapi.Match) (*State, error) {
-	if (m.Schema < 1 || m.Schema > 12) || len(m.Data) > maxSnapshotBytes {
+	if (m.Schema < 1 || m.Schema > 13) || len(m.Data) > maxSnapshotBytes {
 		return nil, errors.New("不支持的星垒存档")
 	}
 	var s State
@@ -529,7 +532,7 @@ func decode(m gameapi.Match) (*State, error) {
 	if (m.Schema >= 4) != (s.SkillRules == 2) {
 		return nil, errors.New("技能规则与存档版本不一致")
 	}
-	if (m.Schema == 12) != s.revised() {
+	if (m.Schema >= 12) != s.revised() || (m.Schema == 13) != s.tuned() {
 		return nil, errors.New("修订规则与存档版本不一致")
 	}
 	if (m.Schema >= 11) != s.geological() {

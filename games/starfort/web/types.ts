@@ -322,6 +322,7 @@ export type View = {
       damageRemaining: number;
       rangeRemaining: number;
       shieldEnabled: boolean;
+      shieldCost?: number;
       towers: {
         towerId: number;
         damageEnabled: boolean;

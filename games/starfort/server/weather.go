@@ -42,6 +42,14 @@ func (s *State) weatherFor(wave int) WaveEvent {
 			e.Description = "除法师塔外攻速减少 10%；敌人每秒 10% 概率睡眠 3 秒、承受半伤，其他负面效果翻倍，触发后 10 秒保护；威力法师伤害 ×1.2，流星雨概率增加 10 个百分点"
 		}
 	}
+	if s.tuned() {
+		switch id {
+		case "fog":
+			e.Description = "除箭塔外射程减少 10%；敌人每秒 10% 概率倒退 3 秒，触发后 15 秒保护；箭雨多命中 1 个目标、击退增加 20，残废箭伤害增加 30%"
+		case "starlight":
+			e.Description = "除法师塔外攻速减少 10%；敌人每秒 10% 概率睡眠 3 秒、承受半伤，其他负面效果翻倍，触发后 10 秒保护；威力法师伤害 ×1.2，流星雨概率增加 15 个百分点"
+		}
+	}
 	return e
 }
 
@@ -372,7 +380,7 @@ func (s *State) weatherHit(t *Tower, target Enemy, damage float64) {
 				if t.Kind == "frost" {
 					d := duration
 					if wet {
-						d += 1000
+						d += s.wetFreezeMS()
 					}
 					event.Type, event.Skill, event.FrozenUntil = "freeze", "freeze", s.Tick+int64(math.Ceil(float64(d)/StepMS))*multiplier
 					for _, i := range group {

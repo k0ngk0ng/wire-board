@@ -124,7 +124,7 @@ export function MerchantShop({
             disabled={locked || !quote.enabled || !quote.shieldEnabled}
             onClick={() => void send("shop", { choice: "shield" })}
           >
-            购买 · 1000 金币
+            购买 · {quote.shieldCost ?? 1000} 金币
           </button>
         </section>
       </div>

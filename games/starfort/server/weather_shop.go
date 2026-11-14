@@ -18,6 +18,7 @@ type ShopTowerControl struct {
 	RangeEnabled  bool `json:"rangeEnabled"`
 }
 type ShopControl struct {
+	ShieldCost      int                `json:"shieldCost"`
 	UnitCost        int                `json:"unitCost"`
 	Invulnerability bool               `json:"invulnerability,omitempty"`
 	Wave            int                `json:"wave"`
@@ -40,7 +41,7 @@ func (s *State) shopControl(player int) *ShopControl {
 	if s.revised() {
 		unitCost = shop.Wave * 10
 	}
-	c := &ShopControl{UnitCost: unitCost, Invulnerability: s.revised(), Wave: shop.Wave, Limit: shop.Wave / 10, Towers: []ShopTowerControl{}}
+	c := &ShopControl{ShieldCost: s.shieldCost(), UnitCost: unitCost, Invulnerability: s.revised(), Wave: shop.Wave, Limit: shop.Wave / 10, Towers: []ShopTowerControl{}}
 	c.RepairRemaining = c.Limit - shop.RepairUsed
 	c.DamageRemaining = c.Limit - len(shop.DamageTowers)
 	c.RangeRemaining = c.Limit - len(shop.RangeTowers)
@@ -48,9 +49,9 @@ func (s *State) shopControl(player int) *ShopControl {
 	if c.Enabled {
 		gold := s.Players[player].Gold
 		c.RepairMax = min(c.RepairRemaining, s.BaseMaxHP-s.BaseHP, gold/c.UnitCost)
-		c.ShieldEnabled = !shop.ShieldBought && gold >= 1000
+		c.ShieldEnabled = !shop.ShieldBought && gold >= c.ShieldCost
 		if s.revised() {
-			c.ShieldEnabled = s.InvulnerabilityPacks == 0 && gold >= 1000
+			c.ShieldEnabled = s.InvulnerabilityPacks == 0 && gold >= c.ShieldCost
 		}
 		for _, t := range s.Towers {
 			if t.Owner == player {
@@ -105,7 +106,7 @@ func (s *State) buyShop(player int, a Action) error {
 		if !c.ShieldEnabled {
 			return errors.New("金币不足或本店的星核庇护已售出")
 		}
-		cost = 1000
+		cost = c.ShieldCost
 		if s.revised() {
 			s.InvulnerabilityPacks = 1
 		} else {
