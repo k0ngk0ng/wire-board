@@ -181,7 +181,9 @@ def go_commands(root, game, index=0, count=1, race=False):
                 special.append((package, '^' + name + '$/^' + game + suffix))
             else:
                 grouped.setdefault(package, []).append(name)
-    timeout = '150m' if game in ('catan', 'yuyuhakusho') and count == 1 else '45m'
+    # Full Starfort regression exceeded45m on the hosted runner without a
+    # failing assertion. Preserve every campaign and the existing shard limits.
+    timeout = '150m' if game in ('catan', 'yuyuhakusho') and count == 1 else '90m' if game == 'starfort' and count == 1 else '45m'
     base = ['go', 'test', '-json', '-count=1', '-timeout=' + timeout]
     if race: base.append('-race')
     commands = [base + ['-run', '^(?:' + '|'.join(re.escape(n) for n in sorted(set(names))) + ')$', package]

@@ -305,3 +305,41 @@ func TestStarfortPublicRewardChoiceClock(t *testing.T) {
 		t.Fatal("did not resume countdown")
 	}
 }
+
+// PUBLIC_EVENTS.md: settlement must use each player's earned income, even
+// after spending, and retain independent rounding and negative balances.
+func TestStarfortPublicPerPlayerIncomeSettlement(t *testing.T) {
+	for _, tc := range []struct {
+		kind string
+		want []int
+	}{{"tax", []int{16, -1}}, {"grant", []int{91, 121}}} {
+		b := newModuleRulesTable(t, 2, map[string]any{"mode": "endless"}, starfort.Module())
+		s := cadenceState(b)
+		s.Phase = "battle"
+		s.NextAt = 0
+		s.World.Objectives = nil
+		s.World.Choice = nil
+		s.World.BoonChoice = nil
+		s.WaveInfo.Total = 1
+		s.WaveInfo.Spawned = 1
+		s.Players[0].Gold = 3
+		s.Players[1].Gold = 5
+		s = publicLedger(s, tc.kind, []int{107, 203}, false)
+		cadenceSave(b, s)
+		b.timer(time.Second)
+		after := cadenceState(b)
+		for i, want := range tc.want {
+			if after.Players[i].Gold != want {
+				t.Fatalf("%s seat%d gold%d want%d", tc.kind, i, after.Players[i].Gold, want)
+			}
+		}
+		b.validate()
+		b.view(0)
+		b.timer(time.Second)
+		for i, want := range tc.want {
+			if cadenceState(b).Players[i].Gold != want {
+				t.Fatal("duplicate settlement")
+			}
+		}
+	}
+}

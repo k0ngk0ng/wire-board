@@ -31,6 +31,25 @@ scope = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(scope)
 
 class ScopeTests(unittest.TestCase):
+    # Failure inventory before the Starfort timeout change: the full campaign
+    # matrix still expires at45m; race or shard commands get the wrong limit;
+    # other games inherit the longer timeout; or old/new campaigns disappear.
+    def test_starfort_unsharded_suite_retains_campaigns_with_adequate_time(self):
+        for race in [False, True]:
+            commands = scope.go_commands(ROOT, 'starfort', race=race)
+            self.assertTrue(commands)
+            self.assertTrue(all('-timeout=90m' in c for c in commands))
+        full = ' '.join(' '.join(c) for c in scope.go_commands(ROOT, 'starfort'))
+        for name in ['TestStarfortPublicNatural', 'TestStarfortLatestNatural',
+                     'TestStarfortWorldNaturalCampaigns', 'TestStarfortWorldEndlessForty',
+                     'TestStarfortPublicRewardChoiceClock']:
+            self.assertIn(name, full)
+        for game in ['shared', 'rail']:
+            self.assertTrue(all('-timeout=45m' in c for c in scope.go_commands(ROOT, game)))
+        for shard in range(4):
+            self.assertTrue(all('-timeout=45m' in c for c in scope.go_commands(ROOT, 'starfort', shard, 4)))
+
+
     # Failures: leaf edits run public races; mixed core edits narrow unsafely;
     # filename ownership misses tests whose names have no component prefix.
     def test_wish_only_changes_select_targeted_shared_checks(self):
