@@ -39,7 +39,7 @@ func scenarioModule() gameapi.Module {
 			delete(v, "scenario")
 		}
 		switch scenario {
-		case "public-reward", "public-earthquake", "public-tax", "public-grant", "public-boss", "public-starlight", "public-debt", "latest-shop", "latest-flood", "revision-calm", "revision-frost", "revision-starlight", "revision-density", "revision-rain", "revision-meteor", "revision-shop", "revision-rewards", "revision-merchant", "weather-geology-typhoon-live", "weather-geology-earthquake", "weather-geology-flood", "weather-geology-typhoon", "weather-toolbar", "weather-v3-sleep", "weather-v3-fog", "weather-v3-frost", "weather-v3-starlight", "weather-v3-calm", "weather-v2-sleep", "weather-v2-medical", "weather-v2-fog", "weather-v2-frost", "weather-v2-starlight", "weather-v2-calm", "weather-calm", "weather-fog", "weather-frost", "weather-starlight", "weather-shop", "rebalance-growth-repair", "rebalance-growth-cannon", "rebalance-growth-arrow", "rebalance-growth-arcane", "rebalance-growth-refund", "rebalance-combat-frost", "rebalance-combat-arcane", "rebalance-tasks", "rebalance-reward", "rebalance-highground", "specialization-arrow", "specialization-frost", "specialization-cannon", "specialization-arcane", "density-observed", "density-central", "density-coop", "density-ceiling", "coop-growth", "coop-objectives", "ice-arrow", "ice-wall", "central-passives", "cadence", "cadence-speed", "vitality", "impact", "natural", "battle", "victory-ready", "defeat-ready", "advanced", "zero-gold", "growth-vote", "cleared-5", "cleared-10", "cleared-15", "stage2", "stage3", "stage4", "endless-rotation", "objectives", "objectives-clear", "objectives-fail", "legacy-save":
+		case "public-boss-cleared", "public-reward", "public-earthquake", "public-tax", "public-grant", "public-boss", "public-starlight", "public-debt", "latest-shop", "latest-flood", "revision-calm", "revision-frost", "revision-starlight", "revision-density", "revision-rain", "revision-meteor", "revision-shop", "revision-rewards", "revision-merchant", "weather-geology-typhoon-live", "weather-geology-earthquake", "weather-geology-flood", "weather-geology-typhoon", "weather-toolbar", "weather-v3-sleep", "weather-v3-fog", "weather-v3-frost", "weather-v3-starlight", "weather-v3-calm", "weather-v2-sleep", "weather-v2-medical", "weather-v2-fog", "weather-v2-frost", "weather-v2-starlight", "weather-v2-calm", "weather-calm", "weather-fog", "weather-frost", "weather-starlight", "weather-shop", "rebalance-growth-repair", "rebalance-growth-cannon", "rebalance-growth-arrow", "rebalance-growth-arcane", "rebalance-growth-refund", "rebalance-combat-frost", "rebalance-combat-arcane", "rebalance-tasks", "rebalance-reward", "rebalance-highground", "specialization-arrow", "specialization-frost", "specialization-cannon", "specialization-arcane", "density-observed", "density-central", "density-coop", "density-ceiling", "coop-growth", "coop-objectives", "ice-arrow", "ice-wall", "central-passives", "cadence", "cadence-speed", "vitality", "impact", "natural", "battle", "victory-ready", "defeat-ready", "advanced", "zero-gold", "growth-vote", "cleared-5", "cleared-10", "cleared-15", "stage2", "stage3", "stage4", "endless-rotation", "objectives", "objectives-clear", "objectives-fail", "legacy-save":
 		default:
 			return "", nil, errors.New("unknown test scenario")
 		}
@@ -85,7 +85,7 @@ func scenarioModule() gameapi.Module {
 			}
 			s.TowerSerial = 4
 			s.WaveInfo = starfort.WaveInfo{Title: "第10波 · 星陨巨像", Total: 1, Boss: true}
-			if scenario != "public-boss" && scenario != "public-debt" && scenario != "public-reward" {
+			if scenario != "public-boss" && scenario != "public-boss-cleared" && scenario != "public-debt" && scenario != "public-reward" {
 				s.Phase = "battle"
 				s.NextAt = 0
 				s.Tick = 5
@@ -106,6 +106,10 @@ func scenarioModule() gameapi.Module {
 				s.World.Event = starfort.WaveEvent{ID: "calm", Label: "晴空", Wave: 10}
 				p := s.World.Map.Pads[0]
 				s.Geology = &starfort.Geology{Wave: 10, Kind: "earthquake", Triggered: true, StartedMS: 1000, TriggerMS: 1000, Recoveries: 3, RoutePeaks: map[string]float64{}, Zones: []starfort.GeoZone{{ID: 1, Kind: "earthquake", X: p.X, Y: p.Y, Radius: 75, CreatedMS: 1000}}, Disabled: []starfort.GeoDisabled{{TowerID: 1, Route: s.World.Map.Routes[0].ID, Floor: 1}}}
+			}
+			if scenario == "public-boss-cleared" {
+				s.CompletedWaves = 10
+				s.World.Shop = &starfort.MerchantShop{Wave: 10}
 			}
 			if scenario == "public-reward" {
 				s.NextAt = ctx.Now.UnixMilli() + int64(s.Options.PrepSeconds)*1000
