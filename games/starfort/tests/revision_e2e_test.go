@@ -58,7 +58,7 @@ func revBoundary(t *testing.T, kind, branch string, level int, kinds ...string) 
 	return b
 }
 func TestStarfortRevisionVersion(t *testing.T) {
-	b := newModuleRulesTable(t, 1, map[string]any{}, starfort.Module())
+	b := newModuleRulesTable(t, 1, map[string]any{}, preLatestModule())
 	if b.s.Schema != 12 || specializationRawView(b)["revisionRules"] != float64(1) {
 		t.Fatal("new schema12/revision1 required")
 	}
@@ -148,7 +148,7 @@ func TestStarfortRevisionUpgradePrice(t *testing.T) {
 	}
 }
 func TestStarfortRevisionDisastersAndTasks(t *testing.T) {
-	b := newModuleRulesTable(t, 1, map[string]any{"mode": "endless"}, starfort.Module())
+	b := newModuleRulesTable(t, 1, map[string]any{"mode": "endless"}, preLatestModule())
 	counts := map[string]int{}
 	tasks := 0
 	seen := map[string]bool{}
@@ -289,7 +289,7 @@ func TestStarfortRevisionPowerAndShop(t *testing.T) {
 	}
 }
 func TestStarfortRevisionDeferredRewards(t *testing.T) {
-	b := newModuleRulesTable(t, 2, map[string]any{}, starfort.Module())
+	b := newModuleRulesTable(t, 2, map[string]any{}, preLatestModule())
 	s := cadenceState(b)
 	s.World.Objectives = nil
 	s = revPatch(s, map[string]any{"world": func() map[string]any {
@@ -314,7 +314,7 @@ func TestStarfortRevisionDeferredRewards(t *testing.T) {
 	b.validate()
 }
 func TestStarfortRevisionHTTP(t *testing.T) {
-	m := starfort.Module()
+	m := preLatestModule()
 	start := m.Start
 	m.Start = func(ctx gameapi.Context, raw json.RawMessage) (gameapi.Match, error) {
 		match, e := start(ctx, raw)
@@ -354,13 +354,15 @@ func TestStarfortRevisionHTTP(t *testing.T) {
 	}
 	tb.record("schema12 revision1 invulnerability/rewards survive HTTP SQLite restart; mixed autoplay/manual takeover preserves deadlines")
 }
-func TestStarfortRevisionNatural(t *testing.T) {
+func TestStarfortRevisionNatural(t *testing.T) { revisionNatural(t, preLatestModule()) }
+
+func revisionNatural(t *testing.T, module gameapi.Module) {
 	for _, tc := range []struct {
 		n, waves   int
 		difficulty string
 	}{{1, 20, "normal"}, {2, 20, "normal"}, {3, 20, "normal"}, {4, 20, "normal"}, {2, 10, "hard"}, {2, 10, "easy"}} {
 		t.Run(fmt.Sprintf("%dp-%dw-%s", tc.n, tc.waves, tc.difficulty), func(t *testing.T) {
-			b := newModuleRulesTable(t, tc.n, map[string]any{"waves": tc.waves, "difficulty": tc.difficulty}, starfort.Module())
+			b := newModuleRulesTable(t, tc.n, map[string]any{"waves": tc.waves, "difficulty": tc.difficulty}, module)
 			for sec := 0; sec < 22000 && b.s.Result == nil; sec++ {
 				b.botPass()
 				if b.s.Result == nil {

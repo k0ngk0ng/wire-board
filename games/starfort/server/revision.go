@@ -9,7 +9,8 @@ import (
 
 // RevisionRules is independent of weather/geology: archived saves retain their
 // original rules, RNG streams and deadlines when opened by a newer server.
-func (s *State) revised() bool { return s.RevisionRules == 1 }
+func (s *State) revised() bool { return s.RevisionRules >= 1 }
+func (s *State) tuned() bool   { return s.RevisionRules == 2 }
 
 func (s *State) revisionStats(t Tower) (damage, radius float64, interval int) {
 	plain := t
@@ -27,7 +28,7 @@ func (s *State) revisionStats(t Tower) (damage, radius float64, interval int) {
 	case "arrow/volley", "arrow/heart":
 		damage *= .5
 		if t.Branch == "heart" && s.World.Event.ID == "fog" {
-			damage *= 1.1
+			damage *= s.revisionHeartBonus()
 		}
 	case "cannon/speed":
 		rate *= .8
@@ -38,7 +39,16 @@ func (s *State) revisionStats(t Tower) (damage, radius float64, interval int) {
 		damage *= .4
 		rate *= .8
 	case "arcane/power":
-		rate *= .8
+		if s.tuned() {
+			rate *= .6
+		} else {
+			rate *= .8
+		}
+	case "arcane/magic":
+		if s.tuned() {
+			damage *= .8
+			rate *= .6
+		}
 	}
 	if s.World.Event.ID == "starlight" && t.Kind != "arcane" {
 		rate *= .9
@@ -54,14 +64,14 @@ func (s *State) revisionChoices(t Tower) []BranchChoice {
 		chance, cd, work := s.craterArea(l)
 		return []BranchChoice{
 			{"power", "威力专精", fmt.Sprintf("伤害 ×1.0；%d%% 概率在主目标半径 %.0f 内追加 %.0f%% 伤害；精英／首领完全有效；填坑中的敌人额外受伤 50%%；升级依次增加概率 2、半径 10、伤害 2 个百分点", g.Chance, g.Radius, g.Damage*100)},
-			{"speed", "阻滞专精", fmt.Sprintf("攻速 ×0.8；%d%% 概率生成工作量 %.0f 的弹坑，冷却 %.1f 秒；同塔同敌人保护 4 秒，精英／首领填坑减半；5 的倍数等级只加工作量 1，其余升级交替增加概率 2、减少冷却 0.5 秒；地震区新弹坑工作量增加 30%%", chance, work, float64(cd)/1000)},
+			{"speed", "阻滞专精", fmt.Sprintf("攻速 ×0.8；%d%% 概率生成工作量 %.0f 的弹坑，冷却 %.1f 秒；同塔同敌人保护 4 秒，精英／首领填坑减半；5 的倍数等级只加工作量 1，其余升级交替增加概率 2、减少冷却 0.5 秒；地震区新弹坑工作量增加 %.0f%%", chance, work, float64(cd)/1000, (s.quakeCraterFactor()-1)*100)},
 		}
 	case "arrow":
 		g := s.volleyArea(l)
 		chance, percent := s.heartArea(l)
 		return []BranchChoice{
 			{"volley", "风羽箭雨", fmt.Sprintf("伤害 ×0.5；%d%% 概率对主目标半径 %.0f 内最多 %d 个其他敌人追加 %.0f%% 伤害，箭雨持续 2 秒；独立 5%% 概率击退存活主目标 %.0f，精英／首领减半，同塔保护 5 秒；升级依次增加概率 1、半径 20、伤害 2 个百分点，10 的倍数等级只加目标 1", g.Chance, g.Radius, g.Targets, g.Damage*100, s.volleyPush())},
-			{"heart", "一箭残废", fmt.Sprintf("伤害 ×0.5；%d%% 概率追加目标剩余生命 %.0f%% 的伤害，同塔同敌人保护 5 秒；升级交替增加伤害 1、概率 1 个百分点；薄雾下本塔伤害增加 10%%", chance, percent*100)},
+			{"heart", "一箭残废", fmt.Sprintf("伤害 ×0.5；%d%% 概率追加目标剩余生命 %.0f%% 的伤害，同塔同敌人保护 5 秒；升级交替增加伤害 1、概率 1 个百分点；薄雾下本塔伤害增加 %.0f%%", chance, percent*100, (s.revisionHeartBonus()-1)*100)},
 		}
 	case "frost":
 		duration, cd := s.freezeTiming(l)
@@ -70,14 +80,14 @@ func (s *State) revisionChoices(t Tower) []BranchChoice {
 		preview.Branch = "speed"
 		factor, slow := s.iceAttack(preview)
 		return []BranchChoice{
-			{"freeze", "冰封专精", fmt.Sprintf("伤害 ×0.6，攻速 ×0.5；%d%% 概率冰封射程内敌人 %.1f 秒，冷却 %.1f 秒；随后 8 秒逐渐恢复速度，同塔同敌人保护 8 秒；精英／首领完全有效；升级依次增加概率 1、时长 0.5 秒、减少冷却 0.1 秒；寒潮时长额外增加 2 秒、冷却减少 2 秒；湿润额外冰封 1 秒", s.freezeChance(l), float64(duration)/1000, float64(cd)/1000)},
-			{"speed", "攻速专精", fmt.Sprintf("伤害 ×0.4，攻速 ×0.8；命中减速 %.0f%%，持续 %.1f 秒，精英／首领完全有效；升级交替延长 0.5 秒、增加减速 2 个百分点；寒潮额外减速 15、湿润额外减速 20 个百分点", (1-factor)*100, float64(slow)*StepMS/1000)},
+			{"freeze", "冰封专精", fmt.Sprintf("伤害 ×0.6，攻速 ×0.5；%d%% 概率冰封射程内敌人 %.1f 秒，冷却 %.1f 秒；随后 8 秒逐渐恢复速度，同塔同敌人保护 8 秒；精英／首领完全有效；升级依次增加概率 1、时长 0.5 秒、减少冷却 0.1 秒；寒潮时长额外增加 2 秒、冷却减少 2 秒；湿润额外冰封 %.0f 秒", s.freezeChance(l), float64(duration)/1000, float64(cd)/1000, float64(s.wetFreezeMS())/1000)},
+			{"speed", "攻速专精", fmt.Sprintf("伤害 ×0.4，攻速 ×0.8；命中减速 %.0f%%，持续 %.1f 秒，精英／首领完全有效；升级交替延长 0.5 秒、增加减速 2 个百分点；寒潮额外减速 15、湿润额外减速 %.0f 个百分点", (1-factor)*100, float64(slow)*StepMS/1000, s.wetSlowBonus()*100)},
 		}
 	case "arcane":
 		radius, percent := s.meteorArea(l)
 		return []BranchChoice{
-			{"power", "威力专精", fmt.Sprintf("攻速 ×0.8；无视护甲、穿透护盾直接扣生命；有护甲或护盾时基础伤害 ×1.2；有护甲的普通敌人额外 ×%.1f，精英／首领额外 ×%.1f，每级各加 0.1；星辉伤害 ×1.2", 1.2+.1*float64(l-1), 1.1+.1*float64(l-1))},
-			{"magic", "魔法专精", fmt.Sprintf("无视护甲、穿透护盾直接扣生命；有护甲或护盾时基础伤害 ×1.2；%d%% 概率对主目标半径 %.0f 与塔射程交集内敌人追加 %.0f%% 伤害并沉默 3 秒，流星雨持续 3 秒；精英／首领另受 100%% 伤害；冷却 5 秒，同塔同敌人保护 5 秒；升级交替增加半径 10、伤害 2 个百分点", s.meteorChance(), radius, percent*100)},
+			{"power", "威力专精", fmt.Sprintf("攻速 ×%.1f；无视护甲、穿透护盾直接扣生命；有护甲或护盾时基础伤害 ×1.2；有护甲的普通敌人额外 ×%.1f，精英／首领额外 ×%.1f，每级各加 0.1；星辉伤害 ×1.2", s.magePowerRate(), 1.2+.1*float64(l-1), 1.1+.1*float64(l-1))},
+			{"magic", "魔法专精", fmt.Sprintf("%s无视护甲、穿透护盾直接扣生命；有护甲或护盾时基础伤害 ×1.2；%d%% 概率对主目标半径 %.0f 与塔射程交集内敌人追加 %.0f%% 伤害并沉默 3 秒，流星雨持续 3 秒；精英／首领另受 100%% 伤害；冷却 5 秒，同塔同敌人保护 5 秒；升级交替增加半径 10、伤害 2 个百分点", s.mageMagicDescription(), s.meteorChance(), radius, percent*100)},
 		}
 	}
 	return nil
@@ -155,7 +165,7 @@ func (s *State) useInvulnerability(owner int) error {
 	return nil
 }
 func (s *State) validRevision() error {
-	if s.RevisionRules < 0 || s.RevisionRules > 1 || s.revised() && !s.geological() || s.InvulnerabilityPacks < 0 || s.InvulnerabilityPacks > 1 || s.InvulnerableUntil < 0 || (!s.revised() && (s.InvulnerabilityPacks != 0 || s.InvulnerableUntil != 0 || len(s.World.PadRewards) > 0)) {
+	if s.RevisionRules < 0 || s.RevisionRules > 2 || s.revised() && !s.geological() || s.InvulnerabilityPacks < 0 || s.InvulnerabilityPacks > 1 || s.InvulnerableUntil < 0 || (!s.revised() && (s.InvulnerabilityPacks != 0 || s.InvulnerableUntil != 0 || len(s.World.PadRewards) > 0)) {
 		return errors.New("无效修订规则或无敌状态")
 	}
 	if len(s.World.PadRewards) > 12 || s.revised() && s.World.PadReward != nil {
@@ -234,7 +244,7 @@ func (s *State) typhoonMinSpeed() float64 {
 
 func (s *State) maxCraterWork() float64 {
 	if s.revised() {
-		return (5 + float64(maxValue)/5) * 1.3
+		return (5 + float64(maxValue)/5) * s.quakeCraterFactor()
 	}
 	return 5 + maxValue/10
 }

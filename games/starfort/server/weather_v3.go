@@ -39,7 +39,11 @@ func (s *State) meteorChance() int {
 		chance = 20
 	}
 	if s.World.Event.ID == "starlight" {
-		chance += 10
+		if s.tuned() {
+			chance += 15
+		} else {
+			chance += 10
+		}
 	}
 	return chance
 }
@@ -67,11 +71,18 @@ func (s *State) volleyPush() float64 {
 		push = 50
 	}
 	if s.World.Event.ID == "fog" {
-		push += 10
+		if s.tuned() {
+			push += 20
+		} else {
+			push += 10
+		}
 	}
 	return push
 }
 func (s *State) heartFogBonus() float64 {
+	if s.tuned() {
+		return 1.3
+	}
 	if s.weatherV3() {
 		return 1.1
 	}

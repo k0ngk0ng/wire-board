@@ -52,7 +52,7 @@ func TestStarfortRevisionInvulnerabilityLeaks(t *testing.T) {
 			t.Fatal("deadline", until)
 		}
 	}
-	b := newModuleRulesTable(t, 1, map[string]any{}, starfort.Module())
+	b := newModuleRulesTable(t, 1, map[string]any{}, preLatestModule())
 	s := cadenceState(b)
 	s.World.Objectives = nil
 	s.InvulnerabilityPacks = 1
@@ -214,7 +214,7 @@ func TestStarfortRevisionMagePowerTargets(t *testing.T) {
 }
 
 func TestStarfortRevisionMineRewardsAccumulate(t *testing.T) {
-	b := newModuleRulesTable(t, 2, map[string]any{}, starfort.Module())
+	b := newModuleRulesTable(t, 2, map[string]any{}, preLatestModule())
 	s := cadenceState(b)
 	s.World.MineSuccesses = 1
 	s.World.PadRewards = []starfort.PadReward{{Owner: 0, Kind: "add", Count: 2}}

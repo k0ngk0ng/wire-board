@@ -20,7 +20,7 @@ func TestCooperativeExpansionWithCurrentSkills(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		if m.Schema != 12 || s.RevisionRules != 1 || s.WeatherRules != 3 || s.GrowthRules != 1 || s.World.Layout != "" || len(s.World.Map.Routes) != 1 || s.SkillRules != 2 {
+		if m.Schema != 13 || s.RevisionRules != 2 || s.WeatherRules != 3 || s.GrowthRules != 1 || s.World.Layout != "" || len(s.World.Map.Routes) != 1 || s.SkillRules != 2 {
 			t.Fatal("not a shared expanding world", m.Schema, s.World.Layout)
 		}
 		for _, kind := range []string{"arrow", "cannon", "frost", "arcane"} {
@@ -31,6 +31,7 @@ func TestCooperativeExpansionWithCurrentSkills(t *testing.T) {
 		for _, wave := range []int{6, 11, 16} {
 			oldPads := append([]Pad{}, s.World.Map.Pads...)
 			s.Wave = wave
+			s.BaseMaxHP = 30 + wave/10
 			s.CompletedWaves = wave - 1
 			s.describeWave()
 			s.worldPrepare(s.ServerAt)

@@ -39,7 +39,7 @@ func scenarioModule() gameapi.Module {
 			delete(v, "scenario")
 		}
 		switch scenario {
-		case "revision-calm", "revision-frost", "revision-starlight", "revision-density", "revision-rain", "revision-meteor", "revision-shop", "revision-rewards", "revision-merchant", "weather-geology-typhoon-live", "weather-geology-earthquake", "weather-geology-flood", "weather-geology-typhoon", "weather-toolbar", "weather-v3-sleep", "weather-v3-fog", "weather-v3-frost", "weather-v3-starlight", "weather-v3-calm", "weather-v2-sleep", "weather-v2-medical", "weather-v2-fog", "weather-v2-frost", "weather-v2-starlight", "weather-v2-calm", "weather-calm", "weather-fog", "weather-frost", "weather-starlight", "weather-shop", "rebalance-growth-repair", "rebalance-growth-cannon", "rebalance-growth-arrow", "rebalance-growth-arcane", "rebalance-growth-refund", "rebalance-combat-frost", "rebalance-combat-arcane", "rebalance-tasks", "rebalance-reward", "rebalance-highground", "specialization-arrow", "specialization-frost", "specialization-cannon", "specialization-arcane", "density-observed", "density-central", "density-coop", "density-ceiling", "coop-growth", "coop-objectives", "ice-arrow", "ice-wall", "central-passives", "cadence", "cadence-speed", "vitality", "impact", "natural", "battle", "victory-ready", "defeat-ready", "advanced", "zero-gold", "growth-vote", "cleared-5", "cleared-10", "cleared-15", "stage2", "stage3", "stage4", "endless-rotation", "objectives", "objectives-clear", "objectives-fail", "legacy-save":
+		case "latest-shop", "latest-flood", "revision-calm", "revision-frost", "revision-starlight", "revision-density", "revision-rain", "revision-meteor", "revision-shop", "revision-rewards", "revision-merchant", "weather-geology-typhoon-live", "weather-geology-earthquake", "weather-geology-flood", "weather-geology-typhoon", "weather-toolbar", "weather-v3-sleep", "weather-v3-fog", "weather-v3-frost", "weather-v3-starlight", "weather-v3-calm", "weather-v2-sleep", "weather-v2-medical", "weather-v2-fog", "weather-v2-frost", "weather-v2-starlight", "weather-v2-calm", "weather-calm", "weather-fog", "weather-frost", "weather-starlight", "weather-shop", "rebalance-growth-repair", "rebalance-growth-cannon", "rebalance-growth-arrow", "rebalance-growth-arcane", "rebalance-growth-refund", "rebalance-combat-frost", "rebalance-combat-arcane", "rebalance-tasks", "rebalance-reward", "rebalance-highground", "specialization-arrow", "specialization-frost", "specialization-cannon", "specialization-arcane", "density-observed", "density-central", "density-coop", "density-ceiling", "coop-growth", "coop-objectives", "ice-arrow", "ice-wall", "central-passives", "cadence", "cadence-speed", "vitality", "impact", "natural", "battle", "victory-ready", "defeat-ready", "advanced", "zero-gold", "growth-vote", "cleared-5", "cleared-10", "cleared-15", "stage2", "stage3", "stage4", "endless-rotation", "objectives", "objectives-clear", "objectives-fail", "legacy-save":
 		default:
 			return "", nil, errors.New("unknown test scenario")
 		}
@@ -64,6 +64,42 @@ func scenarioModule() gameapi.Module {
 		scenario, body, err := split(raw)
 		if err != nil {
 			return gameapi.Match{}, err
+		}
+		if strings.HasPrefix(scenario, "latest-") {
+			match, err := start(ctx, body)
+			if err != nil {
+				return match, err
+			}
+			var s starfort.State
+			if err = json.Unmarshal(match.Data, &s); err != nil {
+				return match, err
+			}
+			s.Wave, s.CompletedWaves, s.BaseMaxHP, s.BaseHP = 20, 20, 32, 30
+			s.World.PreparedWave, s.World.TaskOffersWave = 20, 20
+			s.World.Objectives, s.World.Choice, s.World.BoonChoice = nil, nil, nil
+			s.World.Event = starfort.WaveEvent{ID: "fog", Label: "薄雾", Wave: 20}
+			s.NextAt = ctx.Now.Add(15 * time.Minute).UnixMilli()
+			s.Towers = []starfort.Tower{{ID: 1, Pad: 0, Owner: 0, Kind: "arrow", Level: 4, Branch: "volley", Spent: 400, Priority: "first", Cooldown: 10000}}
+			s.TowerSerial = 1
+			for i := range s.Players {
+				s.Players[i].Gold = 20000
+			}
+			if scenario == "latest-shop" {
+				s.World.Shop = &starfort.MerchantShop{Wave: 20}
+			}
+			if scenario == "latest-flood" {
+				s.Tick, s.ElapsedMS = 5, 1000
+				s.Towers[0].FloodedAtMS = 1000
+				s.Phase = "battle"
+				s.NextAt = 0
+				s.WaveInfo = starfort.WaveInfo{Total: 1, Spawned: 1, Title: "洪水恢复验收", Rule: "elite"}
+				path := s.World.Map.Routes[0]
+				p := fixturePathLength(path.Points) * .2
+				x, y := fixturePathPosition(path.Points, p)
+				s.Enemies = []starfort.Enemy{{ID: 1, Kind: "slime", Route: path.ID, Progress: p, X: x, Y: y, HP: 1000000, MaxHP: 1000000, Speed: .001, Reward: 1, Leak: 1, WeatherCheckAt: 10000}}
+				s.EnemySerial = 1
+			}
+			return s.Envelope()
 		}
 		fixtureStart := start
 		if !strings.HasPrefix(scenario, "revision-") && scenario != "natural" {
@@ -800,6 +836,9 @@ func fixtureClearedWave(ctx gameapi.Context, s *starfort.State, wave int, resolv
 	s.Phase = "battle"
 	s.NextAt = 0
 	s.Wave = wave
+	if s.RevisionRules == 2 {
+		s.BaseMaxHP = 30 + wave/10
+	}
 	s.CompletedWaves = wave - 1
 	s.Enemies = []starfort.Enemy{}
 	s.WaveInfo = starfort.WaveInfo{Title: fmt.Sprintf("第 %d 波已清场", wave), Description: "测试夹具：跳过前序战斗，后续结算由真实系统计时器完成", Rule: "elite", Total: 1, Spawned: 1}
