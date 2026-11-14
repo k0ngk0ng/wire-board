@@ -189,49 +189,50 @@ type Event struct {
 	Tick     int64      `json:"tick"`
 }
 type State struct {
-	RevisionRules        int       `json:"revisionRules,omitempty"`
-	InvulnerabilityPacks int       `json:"invulnerabilityPacks,omitempty"`
-	InvulnerableUntil    int64     `json:"invulnerableUntil,omitempty"`
-	GeologyRules         int       `json:"geologyRules,omitempty"`
-	GeoRNG               uint64    `json:"geoRng,omitempty"`
-	Geology              *Geology  `json:"geology,omitempty"`
-	WeatherRules         int       `json:"weatherRules,omitempty"`
-	GrowthRules          int       `json:"growthRules,omitempty"`
-	RepairWave           int       `json:"repairWave,omitempty"`
-	RepairedHP           int       `json:"repairedHP,omitempty"`
-	BalanceRules         int       `json:"balanceRules,omitempty"`
-	SpawnNotBefore       int64     `json:"spawnNotBefore,omitempty"`
-	SpecializationRules  int       `json:"specializationRules,omitempty"`
-	SkillRules           int       `json:"skillRules,omitempty"`
-	SkillRNG             uint64    `json:"skillRng,omitempty"`
-	IceWalls             []IceWall `json:"iceWalls,omitempty"`
-	IceWallSerial        int       `json:"iceWallSerial,omitempty"`
-	Craters              []Crater  `json:"craters,omitempty"`
-	CraterSerial         int       `json:"craterSerial,omitempty"`
-	Options              Options   `json:"options"`
-	World                World     `json:"world"`
-	Players              []Player  `json:"players"`
-	Phase                string    `json:"phase"`
-	Epoch                int       `json:"epoch"`
-	Wave                 int       `json:"wave"`
-	CompletedWaves       int       `json:"completedWaves"`
-	BaseHP               int       `json:"baseHP"`
-	BaseMaxHP            int       `json:"baseMaxHP"`
-	Kills                int       `json:"kills"`
-	Tick                 int64     `json:"tick"`
-	ServerAt             int64     `json:"serverAt"`
-	NextAt               int64     `json:"nextAt"`
-	ElapsedMS            int64     `json:"elapsedMS"`
-	Towers               []Tower   `json:"towers"`
-	Enemies              []Enemy   `json:"enemies"`
-	WaveInfo             WaveInfo  `json:"waveInfo"`
-	Events               []Event   `json:"events"`
-	SpawnClock           int       `json:"spawnClock"`
-	TowerSerial          int       `json:"towerSerial"`
-	EnemySerial          int       `json:"enemySerial"`
-	EventSerial          int       `json:"eventSerial"`
-	Cursor               int       `json:"cursor"`
-	Log                  []string  `json:"log"`
+	PublicEvent          *PublicEvent `json:"publicEvent,omitempty"`
+	RevisionRules        int          `json:"revisionRules,omitempty"`
+	InvulnerabilityPacks int          `json:"invulnerabilityPacks,omitempty"`
+	InvulnerableUntil    int64        `json:"invulnerableUntil,omitempty"`
+	GeologyRules         int          `json:"geologyRules,omitempty"`
+	GeoRNG               uint64       `json:"geoRng,omitempty"`
+	Geology              *Geology     `json:"geology,omitempty"`
+	WeatherRules         int          `json:"weatherRules,omitempty"`
+	GrowthRules          int          `json:"growthRules,omitempty"`
+	RepairWave           int          `json:"repairWave,omitempty"`
+	RepairedHP           int          `json:"repairedHP,omitempty"`
+	BalanceRules         int          `json:"balanceRules,omitempty"`
+	SpawnNotBefore       int64        `json:"spawnNotBefore,omitempty"`
+	SpecializationRules  int          `json:"specializationRules,omitempty"`
+	SkillRules           int          `json:"skillRules,omitempty"`
+	SkillRNG             uint64       `json:"skillRng,omitempty"`
+	IceWalls             []IceWall    `json:"iceWalls,omitempty"`
+	IceWallSerial        int          `json:"iceWallSerial,omitempty"`
+	Craters              []Crater     `json:"craters,omitempty"`
+	CraterSerial         int          `json:"craterSerial,omitempty"`
+	Options              Options      `json:"options"`
+	World                World        `json:"world"`
+	Players              []Player     `json:"players"`
+	Phase                string       `json:"phase"`
+	Epoch                int          `json:"epoch"`
+	Wave                 int          `json:"wave"`
+	CompletedWaves       int          `json:"completedWaves"`
+	BaseHP               int          `json:"baseHP"`
+	BaseMaxHP            int          `json:"baseMaxHP"`
+	Kills                int          `json:"kills"`
+	Tick                 int64        `json:"tick"`
+	ServerAt             int64        `json:"serverAt"`
+	NextAt               int64        `json:"nextAt"`
+	ElapsedMS            int64        `json:"elapsedMS"`
+	Towers               []Tower      `json:"towers"`
+	Enemies              []Enemy      `json:"enemies"`
+	WaveInfo             WaveInfo     `json:"waveInfo"`
+	Events               []Event      `json:"events"`
+	SpawnClock           int          `json:"spawnClock"`
+	TowerSerial          int          `json:"towerSerial"`
+	EnemySerial          int          `json:"enemySerial"`
+	EventSerial          int          `json:"eventSerial"`
+	Cursor               int          `json:"cursor"`
+	Log                  []string     `json:"log"`
 	eventAtMS            *int64
 }
 
@@ -321,6 +322,9 @@ func (s *State) actors() []int {
 	return a
 }
 func (s *State) valid() error {
+	if err := s.validPublicEvent(); err != nil {
+		return err
+	}
 	if err := s.validRevision(); err != nil {
 		return err
 	}
@@ -358,7 +362,7 @@ func (s *State) valid() error {
 		return errors.New("无效战场状态")
 	}
 	for _, p := range s.Players {
-		if p.Gold < 0 || p.Gold > maxValue || p.Kills < 0 || !finite(p.Damage) || p.Damage < 0 {
+		if (p.Gold < 0 && !s.publicRules()) || p.Gold < -maxValue || p.Gold > maxValue || p.Kills < 0 || !finite(p.Damage) || p.Damage < 0 {
 			return errors.New("无效玩家资源")
 		}
 	}
@@ -491,6 +495,9 @@ func (s *State) Envelope() (gameapi.Match, error) {
 	if s.tuned() {
 		schema = 13
 	}
+	if s.publicRules() {
+		schema = 14
+	}
 	m := gameapi.Match{Schema: schema, Data: raw, Actors: s.actors(), Attention: []int{}, TimeoutActors: []int{}, Log: append([]string{}, s.Log...)}
 	if s.finished() {
 		r := &gameapi.Result{Cooperative: true, Ranks: make([]int, len(s.Players)), Winners: []int{}, Scores: make([]int, len(s.Players))}
@@ -516,7 +523,7 @@ func (s *State) Envelope() (gameapi.Match, error) {
 	return m, m.Validate(len(s.Players))
 }
 func decode(m gameapi.Match) (*State, error) {
-	if (m.Schema < 1 || m.Schema > 13) || len(m.Data) > maxSnapshotBytes {
+	if (m.Schema < 1 || m.Schema > 14) || len(m.Data) > maxSnapshotBytes {
 		return nil, errors.New("不支持的星垒存档")
 	}
 	var s State
@@ -532,7 +539,7 @@ func decode(m gameapi.Match) (*State, error) {
 	if (m.Schema >= 4) != (s.SkillRules == 2) {
 		return nil, errors.New("技能规则与存档版本不一致")
 	}
-	if (m.Schema >= 12) != s.revised() || (m.Schema == 13) != s.tuned() {
+	if (m.Schema >= 12) != s.revised() || (m.Schema >= 13) != s.tuned() || (m.Schema == 14) != s.publicRules() {
 		return nil, errors.New("修订规则与存档版本不一致")
 	}
 	if (m.Schema >= 11) != s.geological() {

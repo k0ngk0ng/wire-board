@@ -45,7 +45,7 @@ import {
   drawCombatAccent,
   drawIceWall,
 } from "./combat-art";
-import { drawGeology, drawDisabledTower, drawFloodAura } from "./geology-art";
+import { drawGeology, drawDisabledTower, drawFloodAura, drawAttackSlowAura, towerLabelPoint } from "./geology-art";
 import { battlefieldPalette as palette } from "./palette";
 
 type Atlas = {
@@ -1560,6 +1560,8 @@ export function Battlefield({
               );
             if ((v.revisionRules ?? 0) >= 2 && t.floodedAtMS)
               drawFloodAura(ctx, pad, towerSize, effectClock - t.floodedAtMS);
+            if ((v.revisionRules ?? 0) >= 3 && v.world?.event.id === "starlight" && t.kind !== "arcane")
+              drawAttackSlowAura(ctx, pad, towerSize, effectClock, reduced);
             ctx.save();
             ctx.shadowColor = "#243b2d40";
             ctx.shadowBlur = 4;
@@ -1607,7 +1609,22 @@ export function Battlefield({
                 ctx,
                 { x: towerPoint.x, y: towerPoint.y - towerHeight - 8 },
                 pixelScale,
+                (v.revisionRules ?? 0) >= 3 ? effectClock : 0,
+                reduced,
               );
+            if ((v.revisionRules ?? 0) >= 3) {
+              ctx.font = `bold ${Math.max(11, 9 / pixelScale)}px system-ui`;
+              ctx.textAlign = "center";ctx.lineWidth = 3;ctx.strokeStyle = "#263c32";ctx.fillStyle = "#fff2b8";
+              const label = towerLabelPoint(ctx, map, pad, pad.y + 24, `#${t.id}`, towerSize);
+              ctx.strokeText(`#${t.id}`,label.x,label.y);
+              ctx.fillText(`#${t.id}`,label.x,label.y);
+              if (t.kind === "arcane" && v.world?.event.id === "starlight") {
+                ctx.font = `bold ${Math.max(12, 10 / pixelScale)}px system-ui`;
+                const stars = towerLabelPoint(ctx, map, pad, pad.y - towerHeight - 12, "✦ ✦ ✦", towerSize);
+                ctx.strokeText("✦ ✦ ✦",stars.x,stars.y);
+                ctx.fillText("✦ ✦ ✦",stars.x,stars.y);
+              }
+            }
             if (t.level > 1) {
               ctx.font = `bold ${Math.max(13, 9 / pixelScale)}px system-ui`;
               ctx.textAlign = "center";

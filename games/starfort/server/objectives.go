@@ -86,7 +86,7 @@ func (s *State) acceptObjective(id string, p int) error {
 		if o.ID != id {
 			continue
 		}
-		if o.Status != "available" || s.Players[p].Gold < o.Cost {
+		if o.Status != "available" || !s.canPayTask(p, o.Cost) {
 			return errors.New("目标已承接或金币不足")
 		}
 		s.Players[p].Gold -= o.Cost

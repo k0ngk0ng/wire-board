@@ -262,6 +262,7 @@ export type Event = Point & {
   tick: number;
 };
 export type View = {
+  publicEvent?: { wave: number; kind: "none" | "tax" | "grant"; startedMS: number; earned: number[]; settled: boolean };
   revisionRules?: number;
   invulnerabilityPacks?: number;
   invulnerableUntil?: number;

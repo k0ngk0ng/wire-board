@@ -301,10 +301,8 @@ func (s *State) geoEnemyDamage(i int, amount float64, kind string) {
 	s.event(Event{Type: "hit", Skill: kind, TargetID: e.ID, X: e.X, Y: e.Y, Owner: -1, Amount: amount})
 	if e.HP <= 0 {
 		s.Kills++
-		for j := range s.Players {
-			s.Players[j].Gold = min(maxValue, s.Players[j].Gold+s.rewardGold(e.Reward))
-		}
-		s.event(Event{Type: "death", Skill: kind, TargetID: e.ID, X: e.X, Y: e.Y, Owner: -1, Amount: float64(s.rewardGold(e.Reward))})
+		reward := s.deathGold(*e)
+		s.event(Event{Type: "death", Skill: kind, TargetID: e.ID, X: e.X, Y: e.Y, Owner: -1, Amount: float64(reward)})
 	}
 }
 func (s *State) stepGeology() {

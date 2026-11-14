@@ -142,15 +142,19 @@ export function drawDisabledTower(
   ctx: CanvasRenderingContext2D,
   point: Point,
   zoom: number,
+  elapsedMS = 0,
+  reduced = false,
 ) {
   ctx.save();
+  const y=point.y-(reduced?0:Math.sin(elapsedMS/450)*3/zoom);
+  const text=elapsedMS ? "Zzz..." : "ZZZ";
   ctx.font = `bold ${Math.max(16, 11 / zoom)}px system-ui`;
   ctx.textAlign = "center";
   ctx.lineWidth = 4;
   ctx.strokeStyle = "#263c32";
   ctx.fillStyle = "#fff2b8";
-  ctx.strokeText("ZZZ", point.x, point.y);
-  ctx.fillText("ZZZ", point.x, point.y);
+  ctx.strokeText(text, point.x, y);
+  ctx.fillText(text, point.x, y);
   ctx.restore();
 }
 
@@ -184,4 +188,47 @@ export function drawFloodAura(
     ctx.restore();
   }
   ctx.restore();
+}
+
+// Cyan rays echo the wish reference. The thin ellipse leaves roads readable.
+export function drawAttackSlowAura(ctx: CanvasRenderingContext2D, point: Point, size: number, elapsedMS: number, reduced: boolean) {
+  ctx.save();
+  ctx.translate(point.x, point.y + 10);
+  ctx.scale(1, .48);
+  ctx.strokeStyle = "#72eced";
+  ctx.lineWidth = 3;
+  const pulse = reduced ? 1 : .9 + .1 * Math.sin(elapsedMS / 380);
+  ctx.globalAlpha = .85;
+  ctx.beginPath(); ctx.arc(0, 0, size * .65 * pulse, 0, Math.PI * 2); ctx.stroke();
+  for (let i = 0; i < 12; i++) {
+    const a = i * Math.PI / 6 + (reduced ? 0 : elapsedMS / 5000);
+    ctx.beginPath();ctx.moveTo(Math.cos(a)*size*.55,Math.sin(a)*size*.55);
+    ctx.lineTo(Math.cos(a)*size*.75,Math.sin(a)*size*.75);ctx.stroke();
+  }
+  ctx.restore();
+}
+
+// Keep annotations off every road, including crossings and narrow zoom views.
+export function towerLabelPoint(ctx: CanvasRenderingContext2D, map: MapData, point: Point, preferredY: number, text: string, size: number): Point {
+  const width = ctx.measureText(text).width / 2 + 3;
+  const height = parseFloat(ctx.font.match(/[\d.]+px/)?.[0] ?? "12") + 3;
+  const candidates = [{x:point.x,y:preferredY}, {x:point.x,y:preferredY-height*2}, {x:point.x,y:preferredY-height*4},
+    {x:point.x+size*.7,y:point.y-size*.5},{x:point.x-size*.7,y:point.y-size*.5},
+    {x:point.x,y:point.y+18},{x:point.x,y:point.y}];
+  const distance = (p: Point) => {
+    let best = Infinity;
+    for (const path of (map.routes?.map(r=>r.points) ?? [map.path])) for(let i=1;i<path.length;i++) {
+      const a=path[i-1],b=path[i],dx=b.x-a.x,dy=b.y-a.y;
+      const t=Math.max(0,Math.min(1,((p.x-a.x)*dx+(p.y-a.y)*dy)/(dx*dx+dy*dy||1)));
+      best=Math.min(best,Math.hypot(p.x-a.x-t*dx,p.y-a.y-t*dy));
+    }
+    return best;
+  };
+  let fallback=candidates[0], best=-Infinity;
+  for(const p of candidates) {
+    const clear=Math.min(...[-width,width].flatMap(x=>[0,-height].map(y=>distance({x:p.x+x,y:p.y+y}))));
+    if(clear>=36 && p.x-width>=0 && p.x+width<=map.width && p.y-height>=0 && p.y<=map.height)return p;
+    if(clear>best){best=clear;fallback=p;}
+  }
+  return fallback;
 }

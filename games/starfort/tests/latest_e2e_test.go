@@ -40,7 +40,7 @@ func latestBoundary(t *testing.T, k, b string, l int, kinds ...string) *rulesTab
 	return r
 }
 func TestStarfortLatestVersionAndHealth(t *testing.T) {
-	b := newModuleRulesTable(t, 1, map[string]any{"mode": "endless"}, starfort.Module())
+	b := newModuleRulesTable(t, 1, map[string]any{"mode": "endless"}, prePublicModule())
 	if b.s.Schema != 13 || specializationRawView(b)["revisionRules"] != float64(2) {
 		t.Fatal("new schema13/revision2 required", b.s.Schema)
 	}
@@ -133,7 +133,7 @@ func TestStarfortLatestPerRouteRewards(t *testing.T) {
 	}
 }
 func TestStarfortLatestDisastersAndTasks(t *testing.T) {
-	b := newModuleRulesTable(t, 1, map[string]any{"mode": "endless"}, starfort.Module())
+	b := newModuleRulesTable(t, 1, map[string]any{"mode": "endless"}, prePublicModule())
 	counts := map[string]int{}
 	tasks := 0
 	merchantCosts := map[int]bool{}
@@ -342,7 +342,7 @@ func TestStarfortLatestShopAndWeather(t *testing.T) {
 	}
 }
 func TestStarfortLatestHTTP(t *testing.T) {
-	m := starfort.Module()
+	m := prePublicModule()
 	start := m.Start
 	m.Start = func(ctx gameapi.Context, raw json.RawMessage) (gameapi.Match, error) {
 		x, e := start(ctx, raw)
@@ -379,7 +379,7 @@ func TestStarfortLatestHTTP(t *testing.T) {
 	}
 	tb.record("schema13 health, invulnerability and mixed manual/autoplay survive SQLite restart")
 }
-func TestStarfortLatestNatural(t *testing.T) { revisionNatural(t, starfort.Module()) }
+func TestStarfortLatestNatural(t *testing.T) { revisionNatural(t, prePublicModule()) }
 
 func TestStarfortLatestInwardPads(t *testing.T) {
 	for seed := int64(1); seed <= 9; seed++ {
