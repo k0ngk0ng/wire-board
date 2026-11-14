@@ -189,6 +189,8 @@ type Event struct {
 	Tick     int64      `json:"tick"`
 }
 type State struct {
+	RewardChoosing       []int        `json:"rewardChoosing,omitempty"`
+	RewardRemainingMS    int64        `json:"rewardRemainingMS,omitempty"`
 	PublicEvent          *PublicEvent `json:"publicEvent,omitempty"`
 	RevisionRules        int          `json:"revisionRules,omitempty"`
 	InvulnerabilityPacks int          `json:"invulnerabilityPacks,omitempty"`
@@ -512,6 +514,9 @@ func (s *State) Envelope() (gameapi.Match, error) {
 		m.Result = r
 	} else if s.Phase == "prepare" {
 		m.SystemDeadline = s.NextAt
+		if len(s.RewardChoosing) > 0 {
+			m.SystemDeadline = s.ServerAt + 1000
+		}
 		for i, p := range s.Players {
 			if !p.Ready {
 				m.Attention = append(m.Attention, i)

@@ -516,6 +516,11 @@ export function Board({
               : storedReward.kind,
         }
       : data.world?.padReward;
+  const selectingReward = !!data.rewardChoosing?.length;
+  useEffect(() => {
+    if ((data.revisionRules ?? 0) >= 3 && data.phase === "prepare")
+      setRewardOpen(data.rewardChoosing?.includes(room.you) ?? false);
+  }, [data.rewardChoosing, data.phase, data.revisionRules, room.you]);
   const shop = data.controls.shop;
   const saleTower = data.towers.find((t) => t.id === selling);
   const confirmedSale = data.controls.sells.find((c) => c.towerId === selling);
@@ -713,7 +718,7 @@ export function Board({
     </button>
   ));
 
-  const remaining = Math.max(
+  const remaining = selectingReward ? Math.ceil((data.rewardRemainingMS ?? 0)/1000) : Math.max(
     0,
     Math.ceil(
       (data.nextAt -
@@ -850,7 +855,7 @@ export function Board({
             {data.phase === "prepare" ? (
               <>
                 <Timer size={14} aria-hidden="true" />
-                <strong>{choiceRemaining}秒</strong>
+                <strong>{selectingReward ? "奖励选择" : `${choiceRemaining}秒`}</strong>
               </>
             ) : data.phase === "battle" ? (
               <>
@@ -1268,7 +1273,8 @@ export function Board({
                     aria-label="领取矿场奖励"
                     title={`领取矿场奖励，剩余 ${rewards.reduce((n, r) => n + r.count, 0)} 份`}
                     onClick={() => {
-                      setRewardOpen(true);
+                      if ((data.revisionRules ?? 0) >= 3 && data.phase === "prepare") void send("reward_selection",{choice:"open"});
+                      else setRewardOpen(true);
                       setPlacing(false);
                     }}
                   >
@@ -1630,6 +1636,7 @@ export function Board({
             onClose={() => {
               if ((data.revisionRules ?? 0) >= 1) {
                 setRewardOpen(false);
+                if ((data.revisionRules ?? 0) >= 3) void send("reward_selection",{choice:"close"});
               } else setPlacing(true);
             }}
           >
