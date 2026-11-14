@@ -243,6 +243,10 @@ func TestStarfortPublicHTTP(t *testing.T) {
 		s.Players[0].Gold = -200
 		s.NextAt = ctx.Now.Add(5 * time.Minute).UnixMilli()
 		s.World.Objectives = nil
+		s.World.PadRewards = []starfort.PadReward{{Owner: 0, Kind: "add", Count: 1}}
+		s.RewardChoosing = []int{0}
+		s.RewardRemainingMS = 12345
+		s.NextAt = ctx.Now.UnixMilli() + 12345
 		s = publicLedger(s, "tax", []int{101, 202}, true)
 		return s.Envelope()
 	}
@@ -252,7 +256,7 @@ func TestStarfortPublicHTTP(t *testing.T) {
 	before := data(a.room())
 	tb.restart()
 	after := data(a.room())
-	if after["revisionRules"] != float64(3) || after["players"].([]any)[0].(map[string]any)["gold"] != float64(-200) || string(rulesJSON(before["publicEvent"])) != string(rulesJSON(after["publicEvent"])) {
+	if after["rewardRemainingMS"] != float64(12345) || fmt.Sprint(after["rewardChoosing"]) != "[0]" || after["revisionRules"] != float64(3) || after["players"].([]any)[0].(map[string]any)["gold"] != float64(-200) || string(rulesJSON(before["publicEvent"])) != string(rulesJSON(after["publicEvent"])) {
 		t.Fatal("HTTP SQLite restart lost debt/ledger")
 	}
 	peer := tb.people[1]
@@ -265,3 +269,39 @@ func TestStarfortPublicHTTP(t *testing.T) {
 	tb.record("schema14 debt and public ledger persist across authenticated HTTP SQLite restart and mixed autoplay/manual takeover")
 }
 func TestStarfortPublicNatural(t *testing.T) { revisionNatural(t, starfort.Module()) }
+
+func TestStarfortPublicRewardChoiceClock(t *testing.T) {
+	b := newModuleRulesTable(t, 2, map[string]any{}, starfort.Module())
+	s := cadenceState(b)
+	s.World.Choice = nil
+	s.World.BoonChoice = nil
+	s.World.Objectives = nil
+	s.World.PadRewards = []starfort.PadReward{{Owner: 0, Kind: "add", Count: 1}, {Owner: 1, Kind: "add", Count: 1}}
+	cadenceSave(b, s)
+	remaining := s.NextAt - b.now.UnixMilli()
+	b.action(0, map[string]any{"type": "reward_selection", "choice": "open"}, true)
+	b.action(1, map[string]any{"type": "reward_selection", "choice": "open"}, true)
+	for i := 0; i < 4; i++ {
+		b.timer(10 * time.Second)
+		q := cadenceState(b)
+		v := specializationRawView(b)
+		if q.Phase != "prepare" || q.NextAt-b.now.UnixMilli() != remaining || v["rewardRemainingMS"] != float64(remaining) {
+			t.Fatal("reward time consumed", q.NextAt, b.now, v)
+		}
+	}
+	b.validate()
+	b.view(0)
+	b.action(0, map[string]any{"type": "reward_selection", "choice": "close"}, true)
+	b.timer(5 * time.Second)
+	if cadenceState(b).NextAt-b.now.UnixMilli() != remaining {
+		t.Fatal("other chooser lost hold")
+	}
+	b.action(1, map[string]any{"type": "reward_selection", "choice": "close"}, true)
+	if cadenceState(b).NextAt-b.now.UnixMilli() != remaining {
+		t.Fatal("closing reset budget")
+	}
+	b.timer(time.Duration(remaining) * time.Millisecond)
+	if cadenceState(b).Phase != "battle" {
+		t.Fatal("did not resume countdown")
+	}
+}

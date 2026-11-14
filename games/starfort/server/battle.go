@@ -104,6 +104,8 @@ func (s *State) startWave(now int64) {
 			return
 		}
 	}
+	s.RewardChoosing = nil
+	s.RewardRemainingMS = 0
 	s.startPublicEvent()
 	s.startGeology()
 	s.Phase = "battle"

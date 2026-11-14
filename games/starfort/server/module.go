@@ -202,9 +202,19 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 		if err := s.repairBase(p, a.Amount); err != nil {
 			return m, err
 		}
+	case "reward_selection":
+		if a.Choice != "open" && a.Choice != "close" {
+			return m, errors.New("无效奖励选择")
+		}
+		if err := s.selectReward(p, a.Choice == "open", ctx.Now.UnixMilli()); err != nil {
+			return m, err
+		}
 	case "pad_reward":
 		if err := s.claimPadReward(p, Point{a.X, a.Y}, a.Pad, a.TowerID, a.Choice); err != nil {
 			return m, err
+		}
+		if s.publicRules() {
+			_ = s.selectReward(p, false, ctx.Now.UnixMilli())
 		}
 	case "skip_objective":
 		if err := s.skipTask(a.ObjectiveID); err != nil {
@@ -238,6 +248,9 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 	case "ready":
 		if s.Phase != "prepare" || s.World.Choice != nil || s.World.BoonChoice != nil || s.World.PadReward != nil {
 			return m, errors.New("请先完成波间选择")
+		}
+		if s.publicRules() {
+			_ = s.selectReward(p, false, ctx.Now.UnixMilli())
 		}
 		s.Players[p].Ready = !s.Players[p].Ready
 		s.Players[p].PauseVote = false
@@ -300,7 +313,10 @@ func timer(ctx gameapi.Context, m gameapi.Match) (gameapi.Match, error) {
 	if ctx.Actor != -1 || ctx.Players != len(s.Players) || m.SystemDeadline == 0 || now < m.SystemDeadline {
 		return m, errors.New("系统事件尚未到期")
 	}
-	if s.Phase == "prepare" {
+	if s.Phase == "prepare" && len(s.RewardChoosing) > 0 {
+		s.NextAt = now + s.RewardRemainingMS
+		s.ServerAt = now
+	} else if s.Phase == "prepare" {
 		s.resolveChoices(now)
 		if s.World.Choice == nil && s.World.BoonChoice == nil && now >= s.NextAt {
 			s.startWave(now)
@@ -566,6 +582,8 @@ func view(m gameapi.Match, p int) (any, error) {
 		s.World.PadReward = s.rewardFor(p, "")
 	}
 	return struct {
+		RewardChoosing       []int           `json:"rewardChoosing,omitempty"`
+		RewardRemainingMS    int64           `json:"rewardRemainingMS,omitempty"`
 		PublicEvent          *PublicEvent    `json:"publicEvent,omitempty"`
 		RevisionRules        int             `json:"revisionRules,omitempty"`
 		InvulnerabilityPacks int             `json:"invulnerabilityPacks,omitempty"`
@@ -600,7 +618,7 @@ func view(m gameapi.Match, p int) (any, error) {
 		Catalog              []ViewTowerSpec `json:"catalog"`
 		Controls             Controls        `json:"controls"`
 	}{
-		PublicEvent: s.PublicEvent, RevisionRules: s.RevisionRules, InvulnerabilityPacks: s.InvulnerabilityPacks, InvulnerableUntil: s.InvulnerableUntil,
+		RewardChoosing: s.RewardChoosing, RewardRemainingMS: s.RewardRemainingMS, PublicEvent: s.PublicEvent, RevisionRules: s.RevisionRules, InvulnerabilityPacks: s.InvulnerabilityPacks, InvulnerableUntil: s.InvulnerableUntil,
 		GeologyRules:        s.GeologyRules,
 		Geology:             s.viewGeology(),
 		WeatherRules:        s.WeatherRules,

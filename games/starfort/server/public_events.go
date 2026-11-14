@@ -75,6 +75,17 @@ func (s *State) settlePublicEvent() {
 	}
 }
 func (s *State) validPublicEvent() error {
+	if s.RewardRemainingMS < 0 || s.RewardRemainingMS > int64(s.Options.PrepSeconds)*1000 || len(s.RewardChoosing) > len(s.Players) || len(s.RewardChoosing) == 0 && s.RewardRemainingMS != 0 || len(s.RewardChoosing) > 0 && (!s.publicRules() || s.Phase != "prepare" && s.Phase != "paused") {
+		return errors.New("无效奖励选择计时")
+	}
+	seen := map[int]bool{}
+	for _, owner := range s.RewardChoosing {
+		if owner < 0 || owner >= len(s.Players) || seen[owner] || s.rewardFor(owner, "") == nil {
+			return errors.New("无效奖励选择玩家")
+		}
+		seen[owner] = true
+	}
+
 	e := s.PublicEvent
 	if e == nil {
 		return nil
@@ -107,4 +118,32 @@ func (s *State) volleyVisualMS() int {
 		return 3000
 	}
 	return 2000
+}
+
+func (s *State) selectReward(owner int, open bool, now int64) error {
+	if !s.publicRules() {
+		return errors.New("当前规则不支持奖励计时")
+	}
+	if !open {
+		s.RewardChoosing = slices.DeleteFunc(s.RewardChoosing, func(p int) bool { return p == owner })
+		if len(s.RewardChoosing) == 0 {
+			if s.RewardRemainingMS > 0 && s.Phase == "prepare" {
+				s.NextAt = now + s.RewardRemainingMS
+			}
+			s.RewardRemainingMS = 0
+		}
+		return nil
+	}
+	if s.Phase != "prepare" || s.World.Choice != nil || s.World.BoonChoice != nil || s.rewardFor(owner, "") == nil {
+		return errors.New("当前没有可选择的波间奖励")
+	}
+	if slices.Contains(s.RewardChoosing, owner) {
+		return nil
+	}
+	if len(s.RewardChoosing) == 0 {
+		s.RewardRemainingMS = max(int64(0), s.NextAt-now)
+		s.ServerAt = now
+	}
+	s.RewardChoosing = append(s.RewardChoosing, owner)
+	return nil
 }
