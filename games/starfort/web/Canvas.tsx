@@ -1,3 +1,4 @@
+import { MapNotices } from "./MapNotices";
 import { drawMerchant } from "./merchant-art";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { ReactNode, PointerEvent as ReactPointerEvent } from "react";
@@ -843,6 +844,7 @@ export function Battlefield({
   assets,
   selected,
   towerPanel,
+  notices,
   placement,
   onPlace,
   select,
@@ -856,6 +858,7 @@ export function Battlefield({
   assets: string;
   selected: number | null;
   towerPanel?: ReactNode;
+  notices?: ReactNode;
   placement?: "add" | "highground" | "move";
   onPlace?: (point: Point, pad?: number) => void;
   select: (pad: number, toggle?: boolean) => void;
@@ -2319,6 +2322,7 @@ export function Battlefield({
               ))}
             </div>
           )}
+        {notices && <MapNotices map={data.map} camera={view.camera} viewport={view.viewport}>{notices}</MapNotices>}
         <canvas
           ref={canvas}
           data-starfort-canvas

@@ -1,4 +1,4 @@
-import { geologyLabel } from "./geology-art";
+import { activeDisasterLabel, bossEntry, shouldPromptTask, taskPromptKey } from "./wave-notices";
 import {
   Heart,
   Waves,
@@ -475,18 +475,19 @@ export function Board({
   audio,
   clock,
 }: BoardProps<View>) {
-  const [bossOpen, setBossOpen] = useState(false);
+  const [bossClosedKey, setBossClosedKey] = useState<string>();
+  const [bossReopenKey, setBossReopenKey] = useState<string>();
   const bossKey = `sf-boss:${room.id}:${room.matchId ?? data.world?.seed}:${data.wave}`;
-  const bossPreview = (data.revisionRules ?? 0) >= 3 && data.phase === "prepare" && data.completedWaves < data.wave && data.waveInfo.boss;
+  const bossPreview = data.phase === "prepare" && data.completedWaves < data.wave && data.waveInfo.boss;
+  let storedBossClosed = false;
+  try { storedBossClosed = sessionStorage.getItem(bossKey) === "closed"; } catch { /* Storage may be disabled. */ }
+  const bossOpen = bossPreview && (bossReopenKey === bossKey || !(bossClosedKey === bossKey || storedBossClosed));
+  const bossRoute = bossEntry(data.map, data.waveInfo);
   const dismissBoss = () => {
-    try { sessionStorage.setItem(bossKey, "closed"); } catch { /* Storage may be disabled. */ }
-    setBossOpen(false);
+    try { sessionStorage.setItem(bossKey, "closed"); } catch { /* Keep play available. */ }
+    setBossClosedKey(bossKey);
+    setBossReopenKey(undefined);
   };
-  useEffect(() => {
-    let closed = false;
-    try { closed = sessionStorage.getItem(bossKey) === "closed"; } catch { /* Keep play available. */ }
-    setBossOpen(bossPreview && !closed);
-  }, [bossKey, bossPreview]);
   const [choiceOpen, setChoiceOpen] = useState(false);
   const [selling, setSelling] = useState<number>();
   const [shopOpen, setShopOpen] = useState(false);
@@ -596,30 +597,17 @@ export function Board({
     setFailure("");
   }, [room.id]);
   useEffect(() => {
-    const key = room.id + ":" + offeredTask?.id;
-    if (
-      offeredTask &&
-      !bossPreview &&
-      !shop &&
-      !padReward &&
-      !room.spectating &&
-      !data.world?.choice &&
-      !data.world?.boonChoice &&
-      taskPrompt.current !== key
-    ) {
+    if (!offeredTask || !shouldPromptTask({
+      phase: data.phase, spectating: room.spectating, bossOpen,
+      worldChoice: !!(data.world?.choice || data.world?.boonChoice), rewardOpen, placing,
+    })) return;
+    const key = taskPromptKey(room.id, room.matchId ?? data.world?.seed, data.wave, offeredTask.id);
+    if (taskPrompt.current !== key) {
       taskPrompt.current = key;
       setTasksOpen(true);
     }
-  }, [
-    room.id,
-    room.spectating,
-    offeredTask?.id,
-    bossPreview,
-    shop?.wave,
-    padReward,
-    data.world?.choice,
-    data.world?.boonChoice,
-  ]);
+  }, [room.id, room.matchId, room.spectating, data.world?.seed, data.phase, data.wave,
+      offeredTask?.id, bossOpen, rewardOpen, placing, data.world?.choice, data.world?.boonChoice]);
   useEffect(() => {
     const id = window.setInterval(() => setNow(performance.now()), 500);
     return () => clearInterval(id);
@@ -736,7 +724,13 @@ export function Board({
   const serverNow =
     clock.serverNow + (clock.paused ? 0 : now - clock.receivedAt);
   const activeRoutes = data.map.routes?.filter((route) => route.active) ?? [];
-  const geoLabel = geologyLabel(data.geology);
+  const noticeElapsed = data.elapsedMS + (data.phase === "battle" ? Math.max(0, Math.min(1000, serverNow - data.serverAt)) : 0);
+  const geoLabel = activeDisasterLabel(data.geology, noticeElapsed);
+  const publicNotice = data.publicEvent && !data.publicEvent.settled && data.publicEvent.kind !== "none" && noticeElapsed - data.publicEvent.startedMS < 10000 ? data.publicEvent.kind : null;
+  const notices = publicNotice || geoLabel ? <>
+    {publicNotice && <span data-sf-public-event={publicNotice} role="status" title={publicNotice === "tax" ? "波末扣除本波非任务收入的 20%" : "波末增加本波非任务收入的 30%"}>{publicNotice === "tax" ? "征税" : "发钱"}</span>}
+    {geoLabel && <span data-sf-geology={data.geology?.kind} role="status">{geoLabel}</span>}
+  </> : null;
   const WeatherIcon =
     world?.event.id === "frost"
       ? Snowflake
@@ -770,20 +764,11 @@ export function Board({
   return (
     <div
       ref={root}
-      className={`starfort-board${(data.revisionRules ?? 0) >= 3 ? " sf-public-rules" : ""}${shopOpen && shop ? " sf-has-shop" : ""}`}
+      className={`starfort-board${shopOpen && shop ? " sf-has-shop" : ""}`}
       data-phase={data.phase}
     >
       <div className="sf-topbar">
         <div className="sf-hud">
-          {geoLabel && (data.revisionRules ?? 0) < 3 && (
-            <span
-              className="sf-geology-notice"
-              data-sf-geology={data.geology?.kind}
-              role="status"
-            >
-              {geoLabel}
-            </span>
-          )}
           <div className="sf-compact-stats">
             <span
               aria-label={`星核生命 ${baseHP}/${data.baseMaxHP}`}
@@ -1335,7 +1320,7 @@ export function Board({
                 <Store size={18} aria-hidden="true" />
               </button>
             )}
-            {bossPreview && <button className="sf-secondary" data-sf-boss-open aria-label="查看星陨巨像来袭" title="星陨巨像来袭" onClick={() => setBossOpen(true)}><Skull size={18} aria-hidden="true" /></button>}
+            {bossPreview && <button className="sf-secondary" data-sf-boss-open aria-label="查看星陨巨像来袭" title="星陨巨像来袭" onClick={() => setBossReopenKey(bossKey)}><Skull size={18} aria-hidden="true" /></button>}
             <button
               className="sf-secondary"
               data-sf-open-tasks
@@ -1363,17 +1348,12 @@ export function Board({
           </div>
         </div>
       </div>
-      {(data.revisionRules ?? 0) >= 3 && <div className="sf-wave-notices" data-sf-notices>
-        {data.publicEvent && !data.publicEvent.settled && data.publicEvent.kind !== "none" &&
-          data.elapsedMS - data.publicEvent.startedMS < 10000 && <span data-sf-public-event={data.publicEvent.kind} role="status" title={data.publicEvent.kind === "tax" ? "波末扣除本波非任务收入的 20%" : "波末增加本波非任务收入的 30%"}>{data.publicEvent.kind === "tax" ? "征税" : "发钱"}</span>}
-        {geoLabel && <span data-sf-geology={data.geology?.kind} role="status">{geoLabel}</span>}
-      </div>}
       {bossOpen && bossPreview && <Modal title="星陨巨像来袭" onClose={dismissBoss}>
         <div data-sf-boss-dialog className="sf-boss-preview">
           <Skull size={64} aria-hidden="true" />
-          <p>第 {data.wave} 波 · 星陨巨像</p>
-          <p>击败后每人额外获得 <strong>{data.wave * 10}</strong> 金币</p>
-          <p>半血召唤 4 名守卫，防御塔优先拦截守卫。</p>
+          <p>第 {data.wave} 波{bossRoute && <> · <strong data-sf-boss-route data-route-id={bossRoute.id}>{bossRoute.label}</strong></>}</p>
+          {(data.revisionRules ?? 0) >= 3 && <p>击败后每人额外获得 <strong>{data.wave * 10}</strong> 金币</p>}
+          <p>半血召唤 {(data.weatherRules ?? 0) >= 2 ? 4 : 2} 名守卫{(data.weatherRules ?? 0) >= 2 ? "，防御塔优先拦截守卫" : ""}。</p>
           <button data-sf-boss-dismiss onClick={dismissBoss}>布置防线</button>
         </div>
       </Modal>}
@@ -1423,6 +1403,7 @@ export function Board({
       <div className="sf-layout">
         <section className="sf-map-section" aria-label="星垒战场">
           <Battlefield
+            notices={notices}
             placement={placing ? padReward?.kind : undefined}
             onPlace={(point, pad) => {
               void send(
