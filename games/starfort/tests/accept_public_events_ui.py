@@ -13,7 +13,7 @@ checks=[];passed=False
 def check(name,ok,evidence=None):
  checks.append({'name':name,'passed':bool(ok),'evidence':evidence});print(('PASS ' if ok else 'FAIL ')+name,flush=True);assert ok,(name,evidence)
 def scene(name):
- w.scenario('public-'+name);c.wait('document.querySelector(".room-heading h1, .room-page h1")?.textContent.includes('+json.dumps('public-'+name)+')');c.wait('document.querySelector(".sf-battlefield")?.dataset.assetsReady==="true"');c.wait('!document.querySelector("[data-game-loading]")');c.js('document.querySelector(".sf-battlefield").scrollIntoView({block:"center",behavior:"instant"})');c.stable()
+ w.scenario('public-'+name);c.wait('document.querySelector(".room-heading h1, .room-page h1")?.textContent.includes('+json.dumps('public-'+name)+')');c.wait('document.querySelector(".sf-battlefield")?.dataset.assetsReady==="true"');c.wait('!document.querySelector("[data-game-loading]")');c.js('document.querySelector(".sf-battlefield").scrollIntoView({block:"center",behavior:"instant"})');c.js('new Promise(resolve=>{let last="",stable=0,n=0;function f(){const r=document.querySelector(".sf-battlefield").getBoundingClientRect(),v=JSON.stringify([r.x,r.y,r.width,r.height]);stable=last===v?stable+1:0;last=v;if(stable>=20||++n>=180)resolve(stable>=20);else requestAnimationFrame(f)}f()})');c.stable()
 def contrast():
  return c.js('(()=>{const e=document.querySelector("[data-sf-public-event]"),a=getComputedStyle(e),b=getComputedStyle(e);const lum=s=>{const v=s.match(/[0-9.]+/g).slice(0,3).map(Number).map(x=>{x/=255;return x<=.04045?x/12.92:((x+.055)/1.055)**2.4});return .2126*v[0]+.7152*v[1]+.0722*v[2]};const f=lum(a.color),g=lum(b.backgroundColor);return (Math.max(f,g)+.05)/(Math.min(f,g)+.05)})()')
 def enter(touch):
