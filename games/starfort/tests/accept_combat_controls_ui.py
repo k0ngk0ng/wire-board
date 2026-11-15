@@ -136,6 +136,8 @@ def native(mode, *coordinates):
 
 
 def activate(selector, touch=False):
+    if js('!!document.querySelector('+json.dumps(selector)+')?.hasAttribute("data-sf-overflow") && document.querySelector(".sf-topbar")?.dataset.actionsOpen!=="true"'):
+        activate('[data-sf-toolbar-more]', touch)
     wait('!!document.querySelector('+json.dumps(selector)+')&&!document.querySelector('+json.dumps(selector)+').disabled')
     visible=visibility(selector)
     verify('native activation is visible and hittable: '+selector,visible.get('visible') and visible.get('hit'),visible)

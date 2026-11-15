@@ -1,4 +1,5 @@
-import { activeDisasterLabel, bossEntry, shouldPromptTask, taskPromptKey } from "./wave-notices";
+import { useCompactToolbar } from "./use-compact-toolbar";
+import { bossEntry, shouldPromptTask, taskPromptKey } from "./wave-notices";
 import {
   Heart,
   Waves,
@@ -22,6 +23,7 @@ import {
   Gift,
   Shield,
   Sun,
+  MoreHorizontal,
 } from "lucide-react";
 import { useControllerCancel } from "../../../web/src/controllers/use-controller-cancel";
 import { useEffect, useRef, useState } from "react";
@@ -561,7 +563,9 @@ export function Board({
   const [towerDetails, setTowerDetails] = useState(false);
   const [selected, setSelected] = useState<number | null>(null);
   const root = useRef<HTMLDivElement>(null);
+  const toolbar = useCompactToolbar(root);
   useControllerCancel(root, () => {
+    if (toolbar.open) { toolbar.close(true); return; }
     setSelected(null);
     setTowerDetails(false);
   });
@@ -580,6 +584,8 @@ export function Board({
     room: room.id,
     baseHP: data.baseHP,
   });
+  const [geoStatus, setGeoStatus] = useState<{ room: string; label: string | null }>({ room: room.id, label: null });
+  const updateDisaster = (label: string | null) => setGeoStatus((previous) => previous.room === room.id && previous.label === label ? previous : { room: room.id, label });
   const baseHP =
     combatStatus.room === room.id ? combatStatus.baseHP : data.baseHP;
   const updateCombatStatus = (status: CombatStatus) =>
@@ -725,7 +731,7 @@ export function Board({
     clock.serverNow + (clock.paused ? 0 : now - clock.receivedAt);
   const activeRoutes = data.map.routes?.filter((route) => route.active) ?? [];
   const noticeElapsed = data.elapsedMS + (data.phase === "battle" ? Math.max(0, Math.min(1000, serverNow - data.serverAt)) : 0);
-  const geoLabel = activeDisasterLabel(data.geology, noticeElapsed);
+  const geoLabel = geoStatus.room === room.id ? geoStatus.label : null;
   const publicNotice = data.publicEvent && !data.publicEvent.settled && data.publicEvent.kind !== "none" && noticeElapsed - data.publicEvent.startedMS < 10000 ? data.publicEvent.kind : null;
   const notices = publicNotice || geoLabel ? <>
     {publicNotice && <span data-sf-public-event={publicNotice} role="status" title={publicNotice === "tax" ? "波末扣除本波非任务收入的 20%" : "波末增加本波非任务收入的 30%"}>{publicNotice === "tax" ? "征税" : "发钱"}</span>}
@@ -767,7 +773,7 @@ export function Board({
       className={`starfort-board${shopOpen && shop ? " sf-has-shop" : ""}`}
       data-phase={data.phase}
     >
-      <div className="sf-topbar">
+      <div className="sf-topbar" data-actions-open={toolbar.open} onKeyDownCapture={(event) => { if (event.key === "Escape" && toolbar.open) { event.preventDefault(); event.stopPropagation(); toolbar.close(true); } }}>
         <div className="sf-hud">
           <div className="sf-compact-stats">
             <span
@@ -799,7 +805,7 @@ export function Board({
                     size={(data.revisionRules ?? 0) >= 1 ? 42 : 14}
                     aria-hidden="true"
                   />
-                  {(data.revisionRules ?? 0) >= 1 && <span>{world.event.label}</span>}
+                  {(data.revisionRules ?? 0) >= 1 && <><span className="sf-weather-long">{world.event.label}</span><span className="sf-weather-short" aria-hidden="true">{({ calm: "晴空", fog: "薄雾", frost: "寒潮", starlight: "星辉", surge: "突袭" } as const)[world.event.id]}</span></>}
                 </span>
               )}
             <span
@@ -1347,6 +1353,7 @@ export function Board({
             </button>
           </div>
         </div>
+        <button data-sf-toolbar-more className="sf-toolbar-more" hidden={!toolbar.visible} aria-label="更多操作" title="更多操作" aria-expanded={toolbar.open} onClick={toolbar.toggle}><MoreHorizontal size={18} aria-hidden="true" /></button>
       </div>
       {bossOpen && bossPreview && <Modal title="星陨巨像来袭" onClose={dismissBoss}>
         <div data-sf-boss-dialog className="sf-boss-preview">
@@ -1425,6 +1432,7 @@ export function Board({
             onLoadError={onLoadError}
             onEvents={playEvents}
             onCombatState={updateCombatStatus}
+            onDisasterChange={updateDisaster}
             roomID={room.id}
             data={data}
             assets={assets}

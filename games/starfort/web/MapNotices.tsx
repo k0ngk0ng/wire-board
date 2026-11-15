@@ -13,7 +13,7 @@ export function MapNotices({ map, camera, viewport, children }: {
   useLayoutEffect(() => {
     const element = node.current, field = element?.closest(".sf-battlefield"), board = element?.closest(".starfort-board");
     if (!element || !field || !board) return;
-    const controls = [...board.querySelectorAll(".sf-topbar, .sf-map-navigation")];
+    const controls = [...board.querySelectorAll(".sf-topbar, .sf-map-navigation, [data-sf-invulnerable]")];
     const update = () => {
       const origin = field.getBoundingClientRect(), size = element.getBoundingClientRect();
       const avoid = controls.map((control) => { const r = control.getBoundingClientRect(); return { left: r.left - origin.left - 6, right: r.right - origin.left + 6, top: r.top - origin.top - 6, bottom: r.bottom - origin.top + 6 }; });

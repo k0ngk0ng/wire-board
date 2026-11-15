@@ -187,7 +187,41 @@
   line-height: 1.15;
 }
 .sf-wave-notices [data-sf-public-event] { font-size: 36px; }
-.sf-wave-notices [data-sf-geology] { font-size: 84px; }
+.sf-wave-notices [data-sf-geology] { font-size: 16px; font-weight: 700; }
 .sf-boss-preview { display: grid; justify-items: center; gap: 12px; text-align: center; }
 .sf-boss-preview p { margin: 0; }
 .sf-boss-preview > svg { color: #72422d; }
+
+.sf-weather-short, .sf-toolbar-more { display: none; }
+@media (max-width: 600px) {
+  .starfort-board .sf-topbar { flex-wrap: nowrap; align-items: center; gap: 3px; }
+  .starfort-board .sf-topbar .sf-hud { flex: 0 0 auto; flex-wrap: nowrap; max-width: calc(100% - 34px); overflow-x: auto; padding: 3px 4px; gap: 2px; }
+  .starfort-board .sf-topbar .sf-compact-stats { flex-wrap: nowrap; gap: 3px; font-size: 10px; }
+  .starfort-board .sf-topbar .sf-compact-stats > span { flex-shrink: 0; gap: 2px; }
+  .starfort-board .sf-topbar .sf-compact-stats strong, .starfort-board .sf-topbar .sf-compact-countdown strong { font-size: 11px; }
+  .starfort-board .sf-topbar .sf-compact-stats small { font-size: 10px; }
+  .starfort-board .sf-topbar .sf-compact-stats svg, .starfort-board .sf-topbar .sf-compact-countdown svg { width: 12px; height: 12px; flex-shrink: 0; }
+  .starfort-board .sf-topbar [data-sf-weather-notice] > svg { width: 14px; height: 14px; }
+  .starfort-board .sf-topbar [data-sf-weather-notice] { font-size: 10px; }
+  .sf-topbar .sf-weather-long { display: none; }
+  .sf-topbar .sf-weather-short { display: inline; }
+  .starfort-board .sf-topbar .sf-compact-countdown { font-size: 10px; gap: 2px; }
+  .starfort-board[data-phase="prepare"] .sf-compact-countdown > svg { display: none; }
+  .starfort-board .sf-top-controls, .starfort-board .sf-topbar .sf-wave-controls, .starfort-board .sf-topbar .sf-control-buttons, .starfort-board .sf-topbar .sf-field-actions { display: contents; }
+  .starfort-board .sf-topbar .sf-top-controls button, .starfort-board .sf-topbar .sf-toolbar-more {
+    width: 28px; min-width: 28px; height: 32px; min-height: 32px; flex: 0 0 28px; padding: 0;
+    border: 1px solid #afbd9e; border-radius: 6px; background: #f7f8ee; color: #294a35;
+    align-items: center; justify-content: center; pointer-events: auto;
+  }
+  .starfort-board .sf-topbar .sf-top-controls button > svg { width: 16px; height: 16px; }
+  .starfort-board .sf-topbar .sf-toolbar-more:not([hidden]) { display: inline-flex; }
+  .starfort-board .sf-topbar .sf-toolbar-more[aria-expanded="true"] { background: #345e43; color: #fffdf1; border-color: #345e43; }
+  .starfort-board .sf-topbar .sf-top-controls button[data-sf-overflow] {
+    display: none; position: absolute; right: 0; top: calc(100% + 6px + var(--sf-overflow-index) * 40px);
+    width: 184px; max-width: calc(100vw - 32px); height: 36px; padding: 0 10px; gap: 8px; justify-content: flex-start; z-index: 32;
+    box-shadow: 0 2px 5px #1b3d2430;
+  }
+  .starfort-board .sf-topbar[data-actions-open="true"] .sf-top-controls button[data-sf-overflow] { display: flex; }
+  .sf-topbar [data-sf-overflow]::after { content: attr(title); font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .starfort-board .sf-topbar [data-sf-invulnerable] { position: absolute; top: calc(100% + 4px); left: 0; font-size: 11px; padding: 3px 5px; }
+}

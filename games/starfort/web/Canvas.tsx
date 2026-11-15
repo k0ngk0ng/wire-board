@@ -1,3 +1,4 @@
+import { activeDisasterLabel } from "./wave-notices";
 import { MapNotices } from "./MapNotices";
 import { drawMerchant } from "./merchant-art";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
@@ -839,6 +840,7 @@ export function Battlefield({
   onLoadError,
   onEvents,
   onCombatState,
+  onDisasterChange,
   roomID,
   data,
   assets,
@@ -853,6 +855,7 @@ export function Battlefield({
   onLoadError?: (message: string) => void;
   onEvents?: (events: Event[], at: number) => void;
   onCombatState?: (state: CombatStatus) => void;
+  onDisasterChange?: (label: string | null) => void;
   roomID: string;
   data: View;
   assets: string;
@@ -917,6 +920,10 @@ export function Battlefield({
   const soundEvents = useRef<Effect[]>([]);
   const onEventsRef = useRef(onEvents);
   onEventsRef.current = onEvents;
+  const onDisasterRef = useRef(onDisasterChange);
+  onDisasterRef.current = onDisasterChange;
+  const disasterRoom = useRef(roomID); disasterRoom.current = roomID;
+  const disasterStatus = useRef<{ room: string; label: string | null }>({ room: "", label: null });
   const onCombatStateRef = useRef(onCombatState);
   onCombatStateRef.current = onCombatState;
   useEffect(
@@ -1433,11 +1440,17 @@ export function Battlefield({
         v.phase === "battle" && geoFrames.duration > 0
           ? Math.min(1, Math.max(0, (at - geoFrames.at) / geoFrames.duration))
           : 1;
+      const geologyMS = v.elapsedMS - geoFrames.duration * (1 - geoFraction);
+      const disasterLabel = activeDisasterLabel(v.geology, geologyMS);
+      if (disasterStatus.current.room !== disasterRoom.current || disasterStatus.current.label !== disasterLabel) {
+        disasterStatus.current = { room: disasterRoom.current, label: disasterLabel };
+        onDisasterRef.current?.(disasterLabel);
+      }
       drawGeology(
         ctx,
         v.geology,
         map,
-        v.elapsedMS - geoFrames.duration * (1 - geoFraction),
+        geologyMS,
         reduced,
         geoFrames.previous,
         geoFraction,

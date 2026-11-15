@@ -28,7 +28,7 @@ try:
   for full in [False,True]:
    if full:enter(touch)
    check('700 visible '+str(width)+str(full),'700' in c.js('document.querySelector("[data-sf-shop-buy=shield]").textContent'))
-   check('42px weather survives new rules '+str(width)+str(full),c.js('document.querySelector("[data-sf-weather-notice] svg").getBoundingClientRect().width')>=42)
+   check('weather remains visible in compact toolbar '+str(width)+str(full),c.js('document.querySelector("[data-sf-weather-notice] svg").getBoundingClientRect().width')>=(14 if touch else 42))
    check('no horizontal overflow '+str(width)+str(full),c.js('document.documentElement.scrollWidth<=innerWidth+1'))
    c.screenshot('shop-'+str(width)+'-'+str(full))
    if full:c.leave()
