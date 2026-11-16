@@ -20,6 +20,7 @@ import {
 import { GameLoading } from "./game-api/loading";
 import { Runtime } from "./game-api/runtime";
 import { VersionUpdateNotice } from "./VersionUpdateNotice";
+import { ReleaseVersionLink } from "./releases/link";
 import { installControlContextMenuGuard } from "./control-context-menu";
 import { revealGameOnEntry } from "./game-entry-scroll";
 import { CategoryFilter, matchesCategory } from "./ui/game-category";
@@ -115,10 +116,7 @@ import type { Act, Room, State } from "./types";
 import { AssetsContext, Modal, api } from "./ui/board-host";
 import { WishDialog } from "./wishes";
 
-const versionLabel = (version?: string) => {
-  const value = (version || "dev").trim();
-  return value.startsWith("v") ? value : `v${value}`;
-};
+const ReleaseHistory = React.lazy(() => import("./releases"));
 
 const statusName: Record<string, string> = {
   waiting: "等待入座",
@@ -710,9 +708,10 @@ function App() {
                   </span>
                   <span className="nav-caption">
                     让相聚，多一局。
-                    <em className="app-version">
-                      {versionLabel(state.version)}
-                    </em>
+                    <ReleaseVersionLink
+                      className="app-version"
+                      version={state.version}
+                    />
                   </span>
                 </nav>
                 <div className="header-right">
@@ -1498,6 +1497,9 @@ function Auth({
             <Lock size={14} />
             只属于你和朋友的游戏空间
           </div>
+          <a href="/releases" data-release-entry>
+            更新日志
+          </a>
         </div>
       </section>
     </main>
@@ -1737,7 +1739,9 @@ function Lobby({
           <Users size={16} />
           好友相聚，不必排队
         </span>
-        <small className="lobby-version">{versionLabel(state.version)}</small>
+        <small className="lobby-version">
+          <ReleaseVersionLink version={state.version} />
+        </small>
       </div>
     </main>
   );
@@ -1745,8 +1749,18 @@ function Lobby({
 
 createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <App />
-    <VersionUpdateNotice />
+    {/^\/releases(?:\/|$)/.test(location.pathname) ? (
+      <React.Suspense
+        fallback={<main className="loading">正在加载更新日志…</main>}
+      >
+        <ReleaseHistory />
+      </React.Suspense>
+    ) : (
+      <>
+        <App />
+        <VersionUpdateNotice />
+      </>
+    )}
   </React.StrictMode>,
 );
 

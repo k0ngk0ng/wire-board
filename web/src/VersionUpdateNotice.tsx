@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { ReleaseVersionLink } from "./releases/link";
 import {
   VersionMonitor,
   isEntryAsset,
@@ -71,7 +72,10 @@ export function VersionUpdateNotice() {
     >
       <div>
         <strong>
-          发现新版本 {update.version === "dev" ? "" : update.version}
+          发现新版本{" "}
+          {update.version !== "dev" && (
+            <ReleaseVersionLink version={update.version} />
+          )}
         </strong>
         <p>刷新即可更新，可以等本局结束后再操作。</p>
       </div>

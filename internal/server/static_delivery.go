@@ -52,6 +52,22 @@ func staticFiles(files fs.FS) http.Handler {
 			http.Error(w, "Asset delivery unavailable", http.StatusServiceUnavailable)
 			return
 		}
+		if r.URL.Path == "/releases" || strings.HasPrefix(r.URL.Path, "/releases/") {
+			w.Header().Set("Cache-Control", "no-store")
+			if r.Method != http.MethodGet && r.Method != http.MethodHead {
+				w.Header().Set("Allow", "GET, HEAD")
+				http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+				return
+			}
+			html, err := fs.ReadFile(files, "index.html")
+			if err != nil {
+				http.Error(w, "Release history unavailable", http.StatusServiceUnavailable)
+				return
+			}
+			w.Header().Set("Content-Type", "text/html; charset=utf-8")
+			http.ServeContent(w, r, "index.html", time.Time{}, bytes.NewReader(html))
+			return
+		}
 		if delivery != nil && !serverMetadataPath(r.URL.Path) {
 			w.Header().Set("Cache-Control", "no-store")
 			if r.Method != http.MethodGet && r.Method != http.MethodHead {

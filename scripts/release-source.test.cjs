@@ -9,6 +9,7 @@ const SHA='a'.repeat(40), OTHER='b'.repeat(40);
 function fixture(options={}) {
   const runs=options.runs || [{id:11,head_sha:SHA,head_branch:'main',event:'push',path:'.github/workflows/build.yml',status:'in_progress',conclusion:null}];
   const releases=options.releases || [];
+  const history=options.history ?? [{version:'v1.8.0',date:'2026-11-16',title:'版本日志',body:'新增版本详情。'}];
   let polls=0;
   const actions={
     listWorkflowRuns:async()=>({data:{workflow_runs:++polls===1 && options.delay?[]:runs}}),
@@ -19,6 +20,7 @@ function fixture(options={}) {
     getCommit:async()=>{if(options.noTag)throw Object.assign(Error('missing tag'),{status:404});return {data:{sha:options.tagSHA||SHA}}},
     listReleases:()=>{},
     getCombinedStatusForRef:async()=>({data:{statuses:options.statuses??[{context:'cdn-local-readback',state:'success',description:'run 11; sha256='+'c'.repeat(64)}]}}),
+    updateRelease:async(args)=>{Object.assign(releases.find(r=>r.id===args.release_id),args);return {data:releases.find(r=>r.id===args.release_id)}},
     createRelease:async(args)=>{releases.push({...args,id:77,tag_name:args.tag_name});return {data:releases.at(-1)}}
   };
   const github={rest:{actions,repos},paginate:async(method)=>{
@@ -28,7 +30,7 @@ function fixture(options={}) {
     throw Error('unexpected API');
   }};
   const context={repo:{owner:'owner',repo:'repo'},eventName:options.manual?'workflow_dispatch':'push',ref:'refs/tags/v1.8.0',sha:SHA};
-  return {github,context,releases,sleep:async()=>{},attempts:2,info:()=>{},inputs:options.manual?{source_run:'11',source_sha:SHA,version:'v1.8.0'}:{}};
+  return {github,context,releases,history,sleep:async()=>{},attempts:2,info:()=>{},inputs:options.manual?{source_run:'11',source_sha:SHA,version:'v1.8.0'}:{}};
 }
 test('tag selects exact main binary while other checks run, without compiling',async()=>{
  const f=fixture();const r=await resolveRelease(f);assert.deepEqual(r,{run:'11',sha:SHA,version:'v1.8.0'});assert.equal(f.releases[0].draft,true);
@@ -72,4 +74,23 @@ test('manual tagless publication requires an author-created matching draft',asyn
 });
 test('manual release run must be attached to the version tag, never main',async()=>{
  const f=fixture({manual:true});f.context.ref='refs/heads/main';await assert.rejects(resolveRelease(f),/tag/i);
+});
+
+test('publication uses the archived title and complete notes',async()=>{
+ const f=fixture();await resolveRelease(f);assert.equal(f.releases[0].name,'v1.8.0 · 版本日志');assert.equal(f.releases[0].body,'新增版本详情。');assert.notEqual(f.releases[0].generate_release_notes,true);
+});
+for(const [name,history] of Object.entries({
+ 'missing notes':[],
+ 'empty notes':[{version:'v1.8.0',date:'2026-11-16',title:'标题',body:'  '}],
+ 'duplicate versions':Array(2).fill({version:'v1.8.0',date:'2026-11-16',title:'标题',body:'内容'}),
+ 'invalid date':[{version:'v1.8.0',date:'2026-02-30',title:'标题',body:'内容'}],
+ 'blank title':[{version:'v1.8.0',date:'2026-11-16',title:' ',body:'内容'}],
+}))test('publication rejects '+name,async()=>{
+ const f=fixture({history});await assert.rejects(resolveRelease(f),/history|notes/i);assert.equal(f.releases.length,0);
+});
+test('matching draft is synchronized to the archived notes before publishing',async()=>{
+ const f=fixture({releases:[{id:2,tag_name:'v1.8.0',draft:true,target_commitish:'main',body:'过期正文'}]});await resolveRelease(f);assert.equal(f.releases[0].body,'新增版本详情。');assert.equal(f.releases[0].name,'v1.8.0 · 版本日志');
+});
+test('checked-in release archive is complete, ordered and valid',()=>{
+ const {validateHistory}=require('./release-source.cjs');const history=require('../web/src/releases/history.json');validateHistory(history);const {execFileSync}=require('node:child_process');for(const version of execFileSync('git',['tag'],{encoding:'utf8'}).trim().split('\n').filter(v=>/^v\d+\.\d+\.\d+$/.test(v)))assert.ok(history.some(r=>r.version===version),version);
 });

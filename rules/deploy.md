@@ -25,7 +25,7 @@
 ## 正式版本发布
 
 1. 确认待发布提交已推送至 main，并等待该 SHA 的必需检查及 Linux 构建成功；在本地完成同一次构建的 CDN 回读并记录成功状态。
-2. 选择未发布的 `vX.Y.Z` 版本号。创建指向已验证 SHA 的版本 tag，并通过推送 tag 触发 `.github/workflows/publish-verified.yml`。
+2. 选择未发布的 `vX.Y.Z` 版本号。构建前在 `web/src/releases/history.json` 顶部记录版本号、日期、标题和完整更新内容，按版本号倒序排列，保留已有记录。网站详情与 GitHub Release 使用同一份正文；发布门禁拒绝缺失、空白、重复、无效日期或顺序错误的日志。历史记录和维护方法见[版本更新日志](../docs/release-history.md)。创建指向已验证 SHA 的版本 tag，并通过推送 tag 触发 `.github/workflows/publish-verified.yml`。
 3. 核对 Actions 的 ref 是该版本 tag，运行名称包含版本号。禁止用 `workflow_dispatch --ref main` 代替正式 tag 发布。
 4. 发布任务复用同一 SHA 的 `wire-board-linux-amd64`，验证 `SHA256SUMS`，再打包运行镜像。tag 不重新编译应用，不重复规则分片、完整对局或扩展组合矩阵，也不重复上传客户端资产。
 5. 检查容器启动、`/healthz` 和 SQLite 备份工具。核对版本 tag、Release、版本镜像及 `latest` 对应同一发布提交，再确认发布成功。

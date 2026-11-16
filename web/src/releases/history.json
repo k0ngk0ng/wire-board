@@ -1,0 +1,878 @@
+[
+  {
+    "version": "v1.59.0",
+    "date": "2026-11-16",
+    "title": "版本更新日志",
+    "body": "- 网站新增更新日志列表，可按版本号、标题或更新内容搜索。\n- 点击大厅、对局顶部或更新提醒中的版本号，可在新标签页查看该版本的详细更新内容。详情支持直接打开、刷新和分享。\n- 补齐 145 个历史版本的记录，保留已有发布说明；早期仅有对比链接的版本补充对应 Git 提交记录。\n- 登录页增加更新日志入口，无需登录即可查看。\n- 后续正式发布必须先在仓库记录该版本的标题、日期和完整更新内容，网站与 GitHub Release 使用同一份日志。"
+  },
+  {
+    "version": "v1.58.1",
+    "date": "2026-11-15",
+    "title": "星垒战场浮层与波前提示",
+    "body": "恢复星垒状态栏和操作按钮的战场内浮层布局，移除额外占位行与空白提示条。事件提示改为地图左侧独立浮层，优先避开道路、HUD 和小地图，出现与消失不改变战场尺寸、缩放或焦点。\n\n星陨巨像的波前提示显示实际出现路线；生成任务后在波前主动询问，关闭首领提示后继续询问任务。灾害文字随实际效果生成和结束显示／关闭。现有存档与玩法规则保持不变。\n\n手机顶部状态与按钮保持单行，空间不足的次要操作收进「更多」。台风等灾害名称缩为 16px 通知字号，与画面中的实际效果同步结束。\n\n源码提交：`478addc40d958acb24cfd7ddb39c9bb8a14b46a3`。\n\n验证：120 项桌面／320px 触屏与全屏浏览器检查、76 项前端测试通过；最终 main 检查与 Linux 构建通过。CDN 在本地回读并绑定同一次构建 `43674523636`。"
+  },
+  {
+    "version": "v1.58.0",
+    "date": "2026-11-14",
+    "title": "星垒公共事件与任务欠款",
+    "body": "星垒新增逐波公共事件：共用 30% 概率触发征税或发钱，波末按每位玩家非任务收入独立结算。星陨巨像增加波前提示与击杀额外奖励，任务支持欠款承接，冰塔／残废箭成长及箭雨效果按最新许愿调整。\n\n增加星辉攻速减益光圈、法师三颗星辉、动态停攻提示及塔编号；提示与道路分区，桌面和 320px 触屏／全屏适配。新局启用存档版本 14，旧存档保留原规则。\n\n源码提交：`c5deb8fa1cd82a42d8be8111a66c374892df942f`。\n\n验证：54 项桌面／320px 触屏与全屏浏览器检查、68 项前端测试通过；最终 main 检查与 Linux 构建通过。CDN 在本地回读并绑定同一次构建 `43615729676`。"
+  },
+  {
+    "version": "v1.57.0",
+    "date": "2026-11-14",
+    "title": "星垒生命成长与逐路奖励",
+    "body": "星垒按最新许愿调整生命成长、逐路防守奖励、自然灾害、商人与天气专精。\n\n- 星核生命上限从 30 起，每到 10 的倍数波增加 1；上限增长不自动回血。\n- 每条实际出兵道路分别取 50%／70% 进度对应的最高奖励，再求和发给每位玩家。\n- 自然灾害与任务各共用一次 70% 判定；地震最多 5 坑，区域内新炮塔弹坑工作量增加 80%；湿润额外冰封 2 秒或额外减速 50 个百分点。\n- 洪水塔伤害从 70% 在 10 秒内恢复，塔基紫色光圈随恢复消退。塔位优先生成在道路靠近星核的一侧，保留每路 6 点、1 个高地和全图 40 点上限。\n- 无敌道具降至 700 金币，商人任务费用每次增长 10%；更新薄雾箭塔加成和星辉流星雨概率，以及法师塔专精伤害／攻速。\n- 新局使用存档版本 13，版本 1～12 保留原有地图和规则。\n\n验证：六组正常资源完整对局、公开 Module／HTTP／SQLite 与竞态检查、1,011 项本地规则及集成通过记录、68 项前端测试，以及 28 项桌面／320px 触屏／全屏真实浏览器检查通过。发布前核验同一次 CI 构建的服务器包和本地 CDN 回读。\n\n数值与复跑说明：https://github.com/k0ngk0ng/wire-board/blob/42a49d04727ca42d8c6541dd32b07112b9c269dc/games/starfort/LATEST.md\n\n发布来源：提交 `6ca2bd103a4dd7181cd65e7642bfbad0912fe484`，构建 https://github.com/k0ngk0ng/wire-board/actions/runs/43578595313 。已在本地完成同次构建的 3,858 个 CDN 文件回读。"
+  },
+  {
+    "version": "v1.56.0",
+    "date": "2026-11-13",
+    "title": "星垒自然灾害与专精修订",
+    "body": "星垒按最新许愿修订自然灾害、任务、商店和四塔专精，并修复高频音效反复重载媒体源的问题。\n\n- 自然灾害与任务分别共用一次 50% 判定；洪水调整为 2～6 条并加入湿润增益，台风最多计划 20 个，地震中的新弹坑增加填坑工作量。\n- 矿场奖励按付款人累计，可在后续准备或战斗阶段领取；商店按波数定价，使用独立区域，新增团队共享的 10 秒星核无敌道具。\n- 更新四塔伤害、攻速、射程、成长循环和法师穿盾规则；箭雨持续 2 秒、流星雨持续 3 秒。天气图标显示中文名称，商人改为持电话的西装形象。\n- 新局使用存档版本 12；版本 1～11 继续沿用保存时的规则。修复合法空任务列表导致的 Canvas 绘制中断。\n- 高频音效复用已载入的原生媒体播放器；预热后不再重复设置音源或调用 load。物理 iPhone 的实际改善仍需实机回归。\n\n验证：六组正常经济完整对局、规则及竞态检查、68 项星垒前端测试、147 项音频测试、46 项 PC／320px／全屏页面检查、8 项原生音效页面检查，以及 40 塔／64 敌人的性能预算验收通过。\n\n发布来源：提交 626f693d90c7fa6aaf9cd570c4fb31b059906d3d，构建 https://github.com/k0ngk0ng/wire-board/actions/runs/43478703725 。发布前完成同一次构建的本地 CDN 摘要、MIME、CORS 和音频 Range 回读。\n\n完整数值与冲突口径见 [修订说明](https://github.com/k0ngk0ng/wire-board/blob/626f693d90c7fa6aaf9cd570c4fb31b059906d3d/games/starfort/REVISION.md)：两类升级加价同时执行；冰封 CD 按随升级缩短处理。"
+  },
+  {
+    "version": "v1.55.0",
+    "date": "2026-11-13",
+    "title": "星垒地质效果与防守奖励",
+    "body": "星垒新增逐波防守奖励与地震、洪水、台风三类地质效果，并调整冰封目标、补给车出生位置和商人速度。\n\n- 每波按所有道路的历史最远推进距离，额外发放较高的一档防守奖励。\n- 地质效果共用 30% 概率；包含区域减速、环境扣血、停攻与恢复、台风移动和独立 MISS 保护。快速清波时，选中的效果仍会开始出现。\n- 冰封只影响向星核移动的敌人；补给车从道路 40%～50% 处出发，商人速度为 15。\n- 新开对局启用新规则；既有存档继续原有规则。桌面、320px 触屏仿真、全屏、减少动态效果及 HTTP／SQLite 恢复均已验收。\n\n发布复用同一提交的已验证 Linux amd64 构建，客户端资源完成本地 CDN 回读后再发布。"
+  },
+  {
+    "version": "v1.54.4",
+    "date": "2026-11-12",
+    "title": "版本更新",
+    "body": "- fix(racing): restore offroad laps and responsive driving feedback\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.54.3...v1.54.4"
+  },
+  {
+    "version": "v1.54.3",
+    "date": "2026-11-12",
+    "title": "星垒紧凑界面与许愿编辑",
+    "body": "星垒的顶部操作改为带悬停说明的图标按钮，状态栏压缩显示；移除「无特殊天气」和左下地图工具栏，保留滚轮、双指缩放、拖动及小地图定位。统一布局避免商店与医疗包同时出现时重叠。\n\n修复全屏聊天在软键盘缩小并平移可见视区时被压成一条线的问题，保持输入、发送和关闭按钮可用，收起键盘后恢复面板。\n\n管理后台许愿详情新增正文编辑、保存与取消，保留提交者、状态、参考图、审核和问答记录；编辑写入审计日志，并检查内容版本以防覆盖并发修改。\n\n验证包含真实 HTTP／SQLite 与竞态、许愿桌面及 320px 浏览器验收、星垒按钮布局与原生鼠标／触摸操作、天气与技能悬停回归、全屏聊天键盘视区／旋转／拖动验收。软键盘几何由 Chromium 夹具模拟，尚未在实体 iPad／Safari 验收。"
+  },
+  {
+    "version": "v1.54.2",
+    "date": "2026-11-12",
+    "title": "修复星垒薄雾与弹坑卡局",
+    "body": "修复薄雾倒退与冰封／睡眠叠加时，敌人残留弹坑工作引用，导致战斗计时器反复校验失败、整盘停止推进的问题。已有对局从保存的波次、塔和金币继续，无需重开。\n\n验证包含线上第 25 波存档完整重放、真实 HTTP／SQLite 重启、规则版本 9／10 控制组合、竞态及星垒完整 CI；同一构建的 CDN 资源已在本地回读通过。"
+  },
+  {
+    "version": "v1.54.1",
+    "date": "2026-11-12",
+    "title": "版本更新",
+    "body": "修复驶上路肩后漏判检查点，导致经过终点不累计圈数、复位回跳过远的问题。检查点现与驾驶模型共用两侧 3 米路肩范围，保留按序正向、高程和捷径检查。\n\n验证：凯尔特遗迹实际三圈、原生 R 复位、存档恢复及完整赛车回归通过。网页已核对 1/3 → 2/3 → 3/3 和最终完赛；复位不增加或清除已完成圈数。\n\n修复对后续检查点生效；旧局已漏计的历史圈数不自动补算，建议刷新后新开一局。\n\n构建来源：[main 成功构建 43208140885](https://github.com/k0ngk0ng/wire-board/actions/runs/43208140885)，提交 `7736627403ff0ab2d35e4523b6dda1c6dfcc5a20`。本地 CDN 回读及二进制边界校验已通过；正式版本复用同一构建。"
+  },
+  {
+    "version": "v1.54.0",
+    "date": "2026-11-12",
+    "title": "星垒专精成长与全战场天气",
+    "body": "星垒新局更新四类防御塔的专精成长与天气增益，随机任务共用 40% 生成概率；星辉睡眠改为承受半伤并强化负面效果，天气动画覆盖整个战场且保留道路视野。历史存档沿用保存时的规则。\n\n验证覆盖公开模块、HTTP／SQLite 恢复、正常资源 1～4 人完整对局、竞态、前端与桌面／320px 触屏／全屏浏览器。发布复用同一提交的成功 CI 构建，并在本地完成 CDN 摘要、大小、MIME、CORS 和音频 Range 回读。"
+  },
+  {
+    "version": "v1.53.2",
+    "date": "2026-11-12",
+    "title": "版本更新",
+    "body": "修复手机赛车左转、油门在触摸松开通知中断后残留的问题；比赛区域禁止文字选择和长按呼出，聊天编辑保留正常选择。\n\n补齐四条赛道共 265 件经原始数据确认的可撞毁物件，使用原碰撞动画，并在联机、刷新和恢复后保持破坏状态。固定墙保留碰撞。\n\n验证：赛车前端 106 项、完整 Go 回归及 320px 浏览器触屏验收通过。浏览器验证为 Chromium 仿真，未声称实体 iOS 或具体手柄实测。\n\n构建来源：[main 成功构建 43166936783](https://github.com/k0ngk0ng/wire-board/actions/runs/43166936783)，提交 `803da3f9920f0cf7b884855f801180769c45d048`。3857 项 CDN 资源已在本地完成摘要、MIME、CORS 和音频 Range 回读；tag 发布复用该构建二进制。"
+  },
+  {
+    "version": "v1.53.1",
+    "date": "2026-11-12",
+    "title": "版本更新",
+    "body": "- fix(racing): replace mobile wheel with two-thumb button controls\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.53.0...v1.53.1"
+  },
+  {
+    "version": "v1.53.0",
+    "date": "2026-11-11",
+    "title": "版本更新",
+    "body": "- fix(ci): install Three.js for racing geometry checks\n- feat(racing): recreate five NFS4 cars and four 3D tracks\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.52.0...v1.53.0"
+  },
+  {
+    "version": "v1.52.0",
+    "date": "2026-11-11",
+    "title": "星垒天气、四守卫与补给医疗包",
+    "body": "星垒新局更新天气负面效果与睡眠 ZZZ、星陨巨像四名守卫与优先攻击、补给车成长治疗及满血医疗包，并调整任务位置与巨像漏怪伤害。旧存档保留原规则。\n\n验证覆盖公开模块与 HTTP／SQLite 恢复、正常资源完整对局、竞态、前端以及桌面／320px 触屏／全屏浏览器；发布使用同一提交的成功 CI 构建，并在本地完成 CDN 回读。"
+  },
+  {
+    "version": "v1.51.0",
+    "date": "2026-11-10",
+    "title": "星垒天气与商人任务、许愿列表优化",
+    "body": "星垒新局采用独立规则版本 8，加入四种天气提示与战场效果，重调四塔专精、任务、塔位和升级费用。商人护送成功且当波过关后开放商店；售塔需要确认，精英和星陨巨像按剩余生命比例扣除星核生命。旧存档继续使用原规则。\n\n许愿管理改为标准列表，显示提交者、状态、时间和前 80 个字符的摘要；点击「查看详情」在浮层中阅读完整正文、参考图、问答和备注，并完成审核操作。桌面和 320px 窄屏均可使用。\n\n验证：完整规则与历史存档回归、服务端和新增边界竞态检查通过；1／2／3／4 人普通战役、简单／困难及 22 波无尽自然对局通过；前端 66 项、星垒浏览器 76 项、许愿管理浏览器 73 项检查通过。触屏验收使用 Chromium 仿真。"
+  },
+  {
+    "version": "v1.50.2",
+    "date": "2026-11-10",
+    "title": "提高许愿字数上限",
+    "body": "许愿正文上限从 2000 字提高到 10000 字，输入框计数和服务端校验同步更新。\n\n已验证 JSON 和表单提交的 2001、10000、10001 字边界，以及长文本保存与读取。本次经本地定向验证后直接构建发布，未重复执行完整 CI。"
+  },
+  {
+    "version": "v1.50.1",
+    "date": "2026-11-09",
+    "title": "石器回合等待与模型预览修复",
+    "body": "修复石器竞技场动画结束后仍长时间停在「本回合结算」的问题：网络状态更新不再延长播放时间，回合交接使用精确系统计时。人物外观选项统一显示原版角色模型；人物、出战宠与骑宠的选配预览统一朝向观看者。\n\n验证：前端时钟回归、未加速 HTTP 回合计时、桌面／320px 手机模型与触屏操作、全屏连续回合及原版近战／箭矢动画。"
+  },
+  {
+    "version": "v1.50.0",
+    "date": "2026-11-08",
+    "title": "星垒专精成长与任务退款",
+    "body": "星垒新局增加专精等级成长、任务失败退还 20% 金币、补给车费用每次增长 20%，并提供基地修复。修复每波全队最多 3 点，每点 100 金币；旧存档保留原规则。\n\n通过规则回归、真实 HTTP/SQLite 恢复、竞态、正常资源自然通关、66 项前端测试及桌面/320px 触屏浏览器验收。"
+  },
+  {
+    "version": "v1.49.1",
+    "date": "2026-11-08",
+    "title": "石器对战、牌桌查询与界面更新",
+    "body": "人物属性恢复原版创建规则：共 10 点，地／火、水／风互斥，使用刻度条和加减按钮，点数用完时可转移。480 点能力分配保持独立。宠物候选直接显示实际生命、攻击、防御、敏捷。\n\n新局从 112 种完整动画强宠中随机 20 种；五种强骑宠中随机四种，骑宠忠诚固定 100。装备只抽原版各类别最高阶，武器、帽子和衣服为合成 20 阶，饰品按自身类别的实际最高阶；原图直接复用既有 CDN，没有新增生图请求或素材上传。\n\n突击蓄力一轮后发动一次 190% 攻击，双重突击蓄力两轮后发动一次 210% 攻击；人物继续下指令，宠物自动完成蓄力，未发动目标保密并支持恢复。\n\n连续攻击与爪连击留在接触点完成后再返回，代挡／反击保留当前位置；弓箭和投掷武器的人物留在阵位，投射物抵达后扣血。整体播放为原版基准的 1.5 倍，防御／等待 120ms，回合收尾 100ms。\n\n验证包括原版源码对照、测试先行、完整对局、真实 HTTP／SQLite 与竞态、10 点属性约束、蓄力与恢复、最高阶与强宠候选、原图摘要／MIME／CORS 回读，以及浏览器逐帧动画、手机／全屏和四种宽度的对齐测量。新候选池仅对新局生效，既有配置不重抽。\n\n管理后台的玩家状态和动态加入游戏名、桌名及桌号，并提供跳转记录入口。牌桌管理新增历史查询，支持游戏、状态、桌号／对局号、桌名与玩家搜索、稳定分页和旧档案；仅返回公开结果并校验管理员权限。旧动态可恢复的关联自动补齐，缺少关联的可转查玩家历史。\n\n同版包含植物大战僵尸完整卡牌与可编辑快捷栏，以及星垒手机 HUD 与顶部操作布局调整。"
+  },
+  {
+    "version": "v1.49.0",
+    "date": "2026-11-08",
+    "title": "星垒塔位、任务与专精调整",
+    "body": "星垒新增每路 6 个初始建塔点（含 1 个高地），全图最多 40 个。任务改为逐波随机生成在出兵道路，承接后该路敌人生命提高 20%，矿场可奖励自选建塔点与高地。\n\n重设箭塔、炮塔、冰塔和法师塔专精，加入冰塔等级减速及冰封后的速度恢复。新规则仅用于新开对局，旧对局保留原地图与技能。\n\n验证：1～4 人普通难度 20 波自然通关、简单／困难及无尽模式、完整回归与竞态检查、66 项前端测试及 40 项桌面／触屏浏览器检查通过。正式包使用同一提交的已验证构建，并在本地核验 CDN 资源。"
+  },
+  {
+    "version": "v1.48.2",
+    "date": "2026-11-08",
+    "title": "石器动作、人物外观与对战机制",
+    "body": "普通出战宠忠诚度为 80 至 100，原始种族权重较高的品种有 20% 概率抽到 20 至 30，每局最多三只低忠诚候选；骑宠固定 100，人物与宠物的竞技属性预算不变，已有存档不重抽。补齐 NONO 的背水与随机技能叠加及降防代价，并加入按原版条件自动触发的合击。\n\n攻击按原版 60Hz、SPR 帧数和命中帧分段播放，保留接近、出手、命中停顿与返回。修复固定前进 65% 导致看似打到前排宠物的问题，按真实图像像素点选角色；代挡、NONO、散射等改目标行为记录原因。\n\n人物扩充至 48 种外观、96 种骑乘映射，每种骑宠提供 8 至 12 种外观，使用头像点选并预览人物和骑乘造型。统一装备、补给、技能和战斗菜单的列及玩家资源基线，修复手机预览比例、属性输入和桌面导航留白。新增 13,724 张图片直接引用已有原始 CDN，保留原先 9,477 张高清资源，本次没有新增生图请求。\n\n验证覆盖全部人数完整对局、真实 HTTP 与 SQLite 恢复、托管与竞态、4,000 局忠诚分布、NONO 实际伤害、合击边界、原速浏览器动作及命中目标、四种视口和加载失败重试。完整 HTTP 矩阵使用仅测试代码中的 4 倍时钟；浏览器使用生产原速。"
+  },
+  {
+    "version": "v1.48.1",
+    "date": "2026-11-08",
+    "title": "石器竞技场与高清素材",
+    "body": "新增石器竞技场，支持 1v1 至 5v5。每局共用随机候选，玩家自由分配 480 点属性，选择一只出战宠、一只骑宠、宠物技能、分组保底装备与有限补给；每轮先收指令，再按敏捷逐个行动。支持电脑、托管、观战、重连和恢复。\n\n战斗菜单在画面内选择目标，PC 按钮横向排列，人物选完自动进入宠物技能；角色通过悬停和点击详情辨认。手机的 10 人信息横向滑动，游戏区可全屏放大。\n\n接入 9,477 张 2 倍高清图片，沿用石器 CDN 根下的独立版本，保留原始图片、逻辑尺寸、帧偏移和动画时序。图片逐个通过 OSS/CDN 摘要、MIME 与 CORS 回读，服务器包只包含代码与资源元数据。\n\n验证覆盖全部人数的完整 HTTP 对局、电脑与托管、重启、原版 C 基础公式对照、竞态检查，以及 1v1／5v5 的桌面、320px 触屏、画面内选目标、详情、高清加载失败重试和全屏。公共检查与同提交的 CI 构建通过后发布，保留本地 CDN 回读证明。\n\n出战宠候选独立随机 0 至 100 忠诚度，双方共用同一结果；骑宠固定 100。低忠诚度按原版分段影响指令、反咬与逃跑，选定后不可重抽。旧存档迁移为 100，保持原有随机流和期限；修复回合结束事件的前端目标边界，验证逃跑后的连续人物指令。"
+  },
+  {
+    "version": "v1.48.0",
+    "date": "2026-11-08",
+    "title": "版本更新",
+    "body": "- feat(stoneage): add fair turn-based arena with HD sprites\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.47.0...v1.48.0"
+  },
+  {
+    "version": "v1.47.0",
+    "date": "2026-11-07",
+    "title": "玩家自助改密与清晰结算",
+    "body": "玩家可在自己的「玩家页面 → 修改密码」中校验原密码并设置新密码。修改后保留当前浏览器登录与牌桌，撤销其他旧会话；并发修改、写入失败及重启保留已有 HTTP/SQLite/WebSocket 验收覆盖。服务器配置管理的专用管理员仍通过私有配置维护密码。\n\n合作对局直接使用已记录的成功／失败结果显示标题，星垒失败时明确显示「挑战失败」、守住波次、击败敌人和星核生命，避免将结束画面误认为卡住。结算可自动弹出、关闭重开，并支持刷新及全屏查看。\n\n本地验证：改密 HTTP 和竞态、261 项公共前端测试、66 项星垒前端测试及 32 项桌面/320px 触屏浏览器检查通过。\n\n提交：`a434b64209f0c11a7cae561a260c056270174be4`。"
+  },
+  {
+    "version": "v1.46.3",
+    "date": "2026-11-07",
+    "title": "星垒对局停滞热修复",
+    "body": "修复星垒威力炮塔先击杀主目标、追加爆破再次命中幸存怪物时，伤害事件包含重复目标 ID，导致房间计时推进反复回滚、对局停住的问题。\n\n追加伤害按技能和命中批次分别保存，保留每次真实伤害。已用故障对局的公开存档补充 60 秒续跑、真实 HTTP/SQLite 提交与重启恢复验收，并覆盖护甲、护盾、精英及首领等组合。\n\n提交：`9ffbeab3aba1581fe6bdb846bad3bfd432b02612`。"
+  },
+  {
+    "version": "v1.46.2",
+    "date": "2026-11-07",
+    "title": "版本更新",
+    "body": "游戏加载页同时显示百分比和已加载大小／总大小；《魔强统一战》补齐程序、Wasm 与当前场地素材的字节进度，缓存复用和画面初始化保留容量显示。\n\n全屏聊天浮动按钮支持鼠标和触屏拖动，限制在可见安全区域内；移动后聊天面板保持可见，草稿、未读消息和发送状态保留。\n\n相应要求已写入加载与界面规范，并完成冷／缓存加载、双真人等待、原生／网页全屏、鼠标／触屏、尺寸变化及真实房间验收。"
+  },
+  {
+    "version": "v1.46.1",
+    "date": "2026-11-07",
+    "title": "版本更新",
+    "body": "修复《魔强统一战》手机选人、选择场地时菜单提前关闭的问题；创建房间与比赛准备界面均支持正常触屏选择并保存。\n\n结算页始终显示实际获胜玩家、胜方或和局，不再用「练习结束」覆盖胜负；不计积分时单独说明。\n\n已验证原生触屏、焦点切换、菜单滚动、外部关闭、桌面键鼠、服务器保存与刷新恢复，并完成真实对局的赢家显示验收。"
+  },
+  {
+    "version": "v1.46.0",
+    "date": "2026-11-07",
+    "title": "版本更新",
+    "body": "新增《幽游白书：魔强统一战》：支持 11 位角色、8 个场地、2 至 4 人联机及电脑玩家。\n\n加入 MD 六键控制器（默认 A=J、B=K），角色头像与场地图示；修正准备界面的对齐。联机采用本地预测与有序按键回放，音乐和音效以无损压缩资源按需加载。\n\n修正平台并发操作时玩家动态类型串写。\n\n发布前完成四真人联机、慢连接、桌面与手机界面、音频及精确构建的 CDN 回读检查。"
+  },
+  {
+    "version": "v1.45.0",
+    "date": "2026-11-07",
+    "title": "版本更新",
+    "body": "电脑移除按钮改为座位卡片右上角图标，避免撑开布局。玩家页面在 PC 上加宽，头像入口标明「战绩 · 好友」，好友与申请移到战绩之前。\n\n管理后台菜单调整为用户管理、游戏管理、牌桌管理、许愿管理、操作记录。统计卡片可跳转并筛选列表；刷新按钮显示等待状态；游戏排序独立为与创建房间一致的封面拖动界面，支持鼠标、触屏和键盘。\n\n新增注册和逐次登录 IP 记录、管理员可查看的玩家动态，以及管理操作 IP。真实 IP 只接受配置的反向代理；升级前未记录的历史 IP 显示「暂无记录」。补充界面元素对齐规范。\n\n验证：生产目录 29 款游戏、214 项浏览器检查；28 款支持电脑的游戏在桌面和 320px 手机宽度下验证添加／移除；公共平台竞态、212 项公共前端检查、TypeScript 与 go vet 通过。发布使用同一提交的 CI 构建，执行本地 CDN 回读后再部署。"
+  },
+  {
+    "version": "v1.44.1",
+    "date": "2026-11-07",
+    "title": "版本更新",
+    "body": "- Merge escape scene discovery and inventory\n- fix(escape): hide scene markers and consolidate inventory\n- docs: record game image generation workflow\n- docs(yuyuhakusho): distinguish video modes and live World owners\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.44.0...v1.44.1"
+  },
+  {
+    "version": "v1.44.0",
+    "date": "2026-11-06",
+    "title": "版本更新",
+    "body": "新增「密室逃脱」，可选择「封锁站」和「沉没档案馆」。2～4 个角色分头调查、交换线索、校准机关、分配有限电力并共同撤离；地图、机关目标与险情按编号生成，每个密室提供两条撤离路线。\n\n- 原创场景、设备、四套角色与四向行走动画，配合局部照明、积水、浮尘和原生音效。\n- 支持电脑伙伴、主动托管、呼叫与救援、暂停、存档重连、桌面与手机，以及平台统一全屏。\n- 54 组完整电脑路线矩阵、2,000 个生成编号、实际界面通关和 HTTP／SQLite 恢复验收；400 ms RTT 慢端、原生触屏、虚拟标准 Gamepad 与四人画面均保留可复现记录。\n\n[玩法与复现](https://github.com/k0ngk0ng/wire-board/blob/v1.44.0/games/escape/README.md) · [验收记录与实际截图](https://github.com/k0ngk0ng/wire-board/blob/v1.44.0/docs/escape-verification.md)\n\n本版本复用同一提交的已验证 CI 构建；前端模块和素材使用提交版本的不可变 CDN 地址。"
+  },
+  {
+    "version": "v1.43.1",
+    "date": "2026-11-06",
+    "title": "植物大战僵尸对战平衡调整",
+    "body": "植物大战僵尸对战经济调整，缓解开局阳光不足、无法覆盖多路的问题。\n\n- 初始团队阳光调整为：白天草坪 500、泳池 600、屋顶和夜间屋顶 700、夜晚草坪 300、浓雾 400；2v2 均分到独立钱包。\n- 增加分场景基础补给。产阳光植物首次 3～6 秒生产，此后每 18～20 秒生产；收益仍归种植者。\n- 屋顶默认牌组补充樱桃炸弹、火爆辣椒；僵尸默认牌组增加远程等应对手段。全部单位仍可从卡册选择。\n- 首回合阵营选项直接显示「植物／僵尸」。\n- 新经济仅用于新对局；旧存档保持原有经济和换边配置。\n\n完成 1152 场新经济规则仿真、288 场旧规则回放、442 项 Go 检查、43 项针对性竞态检查、原生／Wasm 对照，以及真实浏览器钱包、生产计时和实战开局验收。固定策略的 3 分钟守住率从 21.0% 提升至 61.5%；该数据不是真人胜率，夜间短局仍更有利于植物。\n\n[完整参数、测量方法与结果](https://github.com/k0ngk0ng/wire-board/blob/v1.43.1/games/pvz/BALANCE.md)。"
+  },
+  {
+    "version": "v1.43.0",
+    "date": "2026-11-06",
+    "title": "星垒专精与周期任务",
+    "body": "星垒增加周期任务和防御塔专精，改善长期对局中的成长选择与控场手段。\n\n- 每守过 15 波刷新已开放任务，正在执行的护送继续保留。\n- 冰塔增加寒潮减速强化与范围冰封：15% 概率冻结 2 秒，冷却 8 秒，精英和首领有效。\n- 炮塔威力专精有 20% 概率追加范围爆破；攻速专精有 25% 概率留下弹坑，精英和首领可以通过该弹坑。\n- 法师威力专精强化普通敌人的破盾效率；魔法专精有 15% 概率触发射程内流星雨并沉默 3 秒，冷却 8 秒。\n- 风羽箭雨增加独立 15% 击退判定，精英和首领均受影响。\n- 技能概率、冷却和分支效果在桌面与手机界面可直接查看；冻结、沉默与击退沿战斗命中时钟显示。\n\n新机制从新开对局启用，已有对局继续使用存档中的规则。\n\n本地验证：星垒完整规则与对局回归、新增规则竞态检查、66 项前端测试和 56 项浏览器检查通过。自然资源下完成 1／2／4 人 20 波对局。浏览器覆盖桌面鼠标与 320px 触屏仿真。\n\n源码提交：`fb5981aaf381e7c75117dc6ba3546e7486e23e57`。"
+  },
+  {
+    "version": "v1.42.0",
+    "date": "2026-11-06",
+    "title": "植物大战僵尸完整对战版",
+    "body": "新增植物大战僵尸完整攻防对战，以 PC 初代 1.0.0.1051 为基准。\n\n- 支持 1v1、2v2、独立资源、个人十槽卡组、两回合交换攻守，以及电脑与主动托管。\n- 提供 49 张常规植物卡、33 种僵尸和白天、夜晚、泳池、浓雾、屋顶、夜间屋顶六种场景。\n- 恢复原版分层动画、受损与附属姿态、音效和无损场景音乐；支持手机、全屏、键盘及手柄导航。\n- 修复浓雾目标信息过滤、双格玉米炮、层叠升级与预测时序，并增加完整对局、音画、网络及高密度验收。\n\n公开资源使用不可变 CDN 地址，服务器包与镜像不携带客户端素材。实现依据、原版对照范围和复跑方法见仓库 `games/pvz/README.md`。\n\n发布复用同一提交的已验证 Linux 构建，不在 tag 阶段重新编译。"
+  },
+  {
+    "version": "v1.41.4",
+    "date": "2026-11-01",
+    "title": "Snooker fullscreen layout and pocket collision fixes",
+    "body": "- Check Snooker cue-tip visibility inside rounded control bounds\n- Reserve fixed Snooker mobile status and control-panel space\n- Keep the full Snooker cue-tip control visible in short fullscreen viewports\n- Stabilize Snooker fullscreen controls and close middle-pocket collision gaps\n\nKeep Snooker scores and the complete table visible in fullscreen, with stable table dimensions through charging, ball motion and respotting. Remove table zoom/pan controls, leave the cue-tip control expanded, keep placement/actions in fixed areas and remove repeated instructions.\n\nClose the collision gaps beside both middle pockets with cushion facings. Grazing rolling balls now meet a pocket jaw instead of escaping the table; centered pots and solid-cushion rebounds remain valid.\n\nValidation: 300+ pocket geometry/angle/power/spin cases; complete Snooker server and match tests; 16 frontend checks; real browser mouse shots, touch pinch, fullscreen entry/exit, readable scores and per-frame geometry on desktop, 320px portrait and mobile landscape. The browser test uses a labelled synthetic colour-ball opening with production HTTP, SQLite, physics and input handling."
+  },
+  {
+    "version": "v1.41.3",
+    "date": "2026-11-01",
+    "title": "Fix Tetris freeze after top-edge rotation",
+    "body": "- Fix Tetris snapshot validation after top-edge rotation\n\nFix a Tetris freeze after a top-edge SRS rotation gives the padded piece origin a negative Y coordinate. Snapshot validation now checks occupied cells against the board, accepting legal negative origins while rejecting out-of-bounds cells and collisions.\n\nValidated with a regression written before the fix, real HTTP input and SQLite restart, the original incident snapshot, complete Tetris tests and targeted race checks. The HTTP regression uses an explicit synthetic opening with production rotation, timers, persistence and input handling."
+  },
+  {
+    "version": "v1.41.2",
+    "date": "2026-10-31",
+    "title": "版本更新",
+    "body": "修复宝石确认操作、细化斯诺克瞄准、调整高速赛车转向，并补上管理员查看用户战绩的入口。\n\n- 璀璨宝石：购买确认框居中，打开后聚焦可用确认按钮；键盘、手柄可购买保留卡，取消和全屏中的焦点正常。修复短按确认键在两帧之间被吞掉的问题。\n- 斯诺克：左右瞄准调为原来的四分之一，保留精细调整；蓄力仍按原方式由上下键调整。\n- 极品飞车：车速升高时转向响应收紧，客户端预测与服务端保持一致；键盘、鼠标、手柄共用车辆规则。\n- 管理后台：用户列表点击用户名查看分游戏统计和对局历史；管理员可查看中止记录，普通用户的历史可见性保持原样。\n\n本地验证包括宝石键盘与模拟手柄完整对局、斯诺克实际控制、赛车 75 场完整比赛及延迟预测、管理员历史权限和手机／桌面页面。所有本次必需检查通过后生成并发布同一提交的构建。"
+  },
+  {
+    "version": "v1.41.1",
+    "date": "2026-10-31",
+    "title": "星垒操作区与任务窗口优化",
+    "body": "星垒操作区与信息查看优化。\n\n- 准备、暂停、建造、任务和情报移到战场右上角；窄屏分行显示，避开资源栏。\n- “任务”使用独立按钮和弹窗，统一替换界面中的“战区支线”称呼，保留承接、奖励与进度。\n- 再次点击同一座塔或同一敌人收起菜单；点击其他对象切换查看。\n- 浮层避开所选对象，短屏长菜单支持触屏滚动，滚动不会拖动地图。\n- 核对任务弹窗层级和静止鼠标下的技能说明稳定性。\n\n已通过星垒前端检查及本地 PC、平板、320px 触屏仿真、普通／全屏交互验收。本次不修改游戏规则。tag 复用同一提交在 main 上通过验证的构建发布。\n\n刷新页面即可使用。"
+  },
+  {
+    "version": "v1.41.0",
+    "date": "2026-10-29",
+    "title": "版本更新",
+    "body": "控制器设置统一支持实体手柄，并按用户、游戏和手柄型号独立保存键位。\n\n- 支持浏览器标准手柄预设、自定义按钮与摇杆映射、死区、连发和模拟输入；处理断开、失焦及键盘／手柄混合输入。\n- 各游戏接入实际操作；棋牌和地图支持方向导航、选择与原有确认流程，斯诺克支持瞄准、力度、摆球和击点调整。\n- 全屏入口统一置左，离开房间／观战置右，合并重复玩家页面入口。\n- 修复星垒技能说明悬停闪烁。\n- 整理 `rules/deploy.md`，迁移应用启动检查，补齐正式魂斗罗注册路径的控制器配置。\n- 所有客户端素材通过不可变 CDN 目录分发，服务器只保留入口和清单；实际二进制约从 108 MB 降至 26 MB，发布包不再收集研究素材。\n\n验收覆盖真实房间、PC、320px 手机和全屏，手柄来源采用虚拟 Gamepad API，键鼠与触屏使用原生浏览器输入。具体实体型号未逐一实机认证。\n\n本版本复用同一提交在 main 上通过检查后生成的 Linux 构建产物；版本 tag 不重新编译应用。"
+  },
+  {
+    "version": "v1.40.1",
+    "date": "2026-10-29",
+    "title": "版本更新",
+    "body": "- Predict Contra input locally and organize development policies\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.40.0...v1.40.1"
+  },
+  {
+    "version": "v1.40.0",
+    "date": "2026-10-28",
+    "title": "星垒后期性能优化",
+    "body": "优化星垒 40 波以后的密集战斗，降低网络和画面负载，并明确敌人数量上限。\n\n- 常规出兵从第 18 波起封顶为每波 44 个，同屏最多 64 个敌人，召唤和分裂也计入上限。后期提高属性和编队难度，不无限增加数量。\n- 范围伤害按组传输，同一目标状态去重，网络只保留完整的一秒仿真批次。保留全部伤害、技能判定和存档恢复能力。\n- 限制重复粒子，范围攻击使用一次爆炸并保持正确的弹道落点；跳过视区外绘制。\n- 满塔中央地图实测消息约 714 KB 降至 153 KB，绘制调用从每帧约 6700 次降至约 900 次。12 组 PC／触屏仿真密集场景通过预算，最极端场景约 185 KB／条。测试机未复现用户现场的两秒延迟，这些结果不代表所有实体设备。\n- 资源发布增加有限重试和 HTTPS 连接复用，继续核对 SHA-256、MIME、CORS 与分段读取，不放宽不可变资源校验。\n\n已通过星垒规则、完整对局、HTTP、竞态、63 项前端检查及命中动画／技能回归。tag 复用同一提交在 main 上验证通过的构建发布。\n\n升级后刷新页面。已有存档继续原地图与规则；合作扩图用于新开对局。"
+  },
+  {
+    "version": "v1.39.2",
+    "date": "2026-10-28",
+    "title": "版本更新",
+    "body": "- Reduce Contra realtime traffic and isolate slow peers\n- Retry transient CDN requests without weakening immutable asset verification\n- Restore Starfort cooperative expansion and anchored battlefield inspection\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.39.1...v1.39.2"
+  },
+  {
+    "version": "v1.39.1",
+    "date": "2026-10-28",
+    "title": "修复魂斗罗开局资源404",
+    "body": "修复魂斗罗开局加载 404：运行程序、关卡和音频由游戏加载器使用当前提交的 CDN 地址加载，避免公共图片预加载器误用旧素材目录及站点地址。音频完整保留，运行资源仍不进入服务器镜像。\n\n新增真实模块与公共加载器组合回归测试，覆盖生产裁剪后站点不存在运行资源的场景。"
+  },
+  {
+    "version": "v1.39.0",
+    "date": "2026-10-28",
+    "title": "魂斗罗真人版与手机游玩提示",
+    "body": "新增魂斗罗真人玩法，支持单人挑战和双人合作，复用平台控制器设置、全屏、音频和结算。真人通关共同加分，失败共同扣分；电脑玩家与托管暂不开放。\n\n热血篮球和魂斗罗增加统一手机提示：建议使用电脑游玩，手机可能出现卡顿，组合按键需要多指操作。手机操作仍保留，PC 不显示此提示。\n\n本版本复用同一提交在 main 上通过检查的 Linux amd64 构建，不在 tag 阶段重新编译。电脑通关不作为本次真人版交付门槛。\n\n验证记录：https://github.com/k0ngk0ng/wire-board/actions/runs/40664018262"
+  },
+  {
+    "version": "v1.38.0",
+    "date": "2026-10-27",
+    "title": "版本更新",
+    "body": "星垒新增寒霜冰墙与箭塔技能分支，新开局启用；旧存档保留原规则。\n\n- 冰塔命中后在前方生成冰墙：持续 6 秒、冷却 8 秒。敌人经过时有 30% 概率永久减速 30%，直到死亡，不重复叠加；冰墙消失或卖塔后仍保留减速。\n- 箭塔升到 4 级时二选一。箭雨每箭有 25% 概率对附近敌人造成 70% 攻击伤害；一箭穿心每箭有 12% 概率秒杀等级不高于塔等级两倍的普通敌人，高等级敌人、精英和首领按 3 倍伤害结算。\n- 敌人等级等于出场波次。技能图标、说明、触发特效和升级分支同步更新，手机选择前即可看清概率与效果。\n- 随机结果由服务端决定并随存档保存。冰墙图像缓存复用，网络只携带必要的当前状态和近期事件，保持命中、状态变化与伤害时间同步。\n\n已通过规则、保存恢复、电脑完整对局及 PC／320px 触屏仿真验收，并保留可复跑记录。"
+  },
+  {
+    "version": "v1.37.1",
+    "date": "2026-10-27",
+    "title": "版本更新",
+    "body": "修复星垒 v1.37.0 引入的手机性能回归，并增加技能冷却图标。\n\n- 网络更新仅保留最近 3 秒的完整动画事件及必要游标，移除存档专用计数器、日志和重复地图，减少历史数据反复发送；存档与游戏规则保持兼容。\n- 缓存静态地形和道路绘制，仅在地图、镜头、尺寸或素材变化时重绘，降低手机主线程负担。\n- 防御塔技能显示独立图标与环形冷却进度。PC 悬停、键盘聚焦或手机点击可查看说明；箭塔显示蓄势次数进度。\n- 将即时游戏存档与网络更新分离、控制消息大小和验证操作响应的要求补入 AGENTS.md。\n\n已保留真实房间的只读数据取样、本地 PC／320px 手机布局验收、动画时序与规则检查记录。正式发布复用同一提交在 main 上通过的验证构建。"
+  },
+  {
+    "version": "v1.37.0",
+    "date": "2026-10-26",
+    "title": "版本更新",
+    "body": "星垒更新：固定路线、塔技能与战斗表现。\n\n- 新对局采用中央星核，按参战人数设置 1～4 条固定路线；旧存档保留原地图与布局。\n- 炮塔震地弹留下弹坑，后续敌人合力填平后继续前进；兵越多，填得越快。箭塔、冰塔、法师塔分别加入追猎重矢、霜环与星链。\n- 补充后坐、弹道拖尾、命中、爆土与填坑动画。射击按真实攻击间隔播放，命中与生命变化保持同步；道路增加土路纹理和草边。\n- 压缩左上状态栏，点塔使用不遮暗战场的升级／出售面板；PC 悬停和键盘聚焦可查看射程。修复星核遮挡与全屏聊天入口。\n\n已通过星垒规则、完整对局、竞态检查，以及 PC／320px 手机的实际操作和逐帧动画验收。正式 tag 复用同一提交在 main 上验证通过的构建。"
+  },
+  {
+    "version": "v1.36.1",
+    "date": "2026-10-26",
+    "title": "版本更新",
+    "body": "星垒扩大普通模式的地图视区，全屏画布填满可用游戏区域。准备、暂停、建造和情报入口放入战场，支线、队友支援及手册在情报弹窗查看，底部不再堆叠信息面板。\n\n增强草地、棕色道路和蓝色河流的区分，给塔、敌人和血条增加清楚轮廓。保留原有素材版本、游戏规则及计时；切换全屏不重挂棋盘，退出恢复此前镜头。\n\n验证覆盖 5 种桌面／窄屏／横屏尺寸，以及原生和页面回退全屏。229 项浏览器检查、30 项星垒前端测试通过，包含真实鼠标／触摸、建塔升级、情报与战区弹窗、倒计时文字和退出恢复。1920×1080 全屏画布为 1900×1024，320×740 为 300×684。\n\nmain 按公共平台与星垒前端范围检查；tag 复用同一提交的已验证构建，不重复完整游戏对局。"
+  },
+  {
+    "version": "v1.36.0",
+    "date": "2026-10-25",
+    "title": "版本更新",
+    "body": "修复乒乓球快速上抽漏判、近身长球难接和球拍随来球缩放的问题。球拍保持固定屏幕尺寸，鼠标与触屏挥拍都按连续移动路径检查触球。\n\n- 管理后台支持拖动或上下调整游戏顺序，保存后用于玩家创建列表；保留既有上下架设置。\n- 公共玩家栏显示实际往返延迟与信号格，顶部显示当前连接质量。\n- 即时游戏短暂断线静默等待并恢复，规则和权限错误仍正常提示；不自动接管真人。\n- 构建素材下载增加总超时与逐项进度，继续验证原有内容摘要。\n\n验证包括乒乓球规则、24 场自然完整对局、HTTP／WebSocket／SQLite 和竞态检查，以及 PC、390px、320px 原生浏览器输入、低球上抽、近身长球、250ms 延迟和重连。手机为 Chromium 触摸模拟。发布复用同一提交在 main 上通过检查的 Linux 产物。"
+  },
+  {
+    "version": "v1.35.2",
+    "date": "2026-10-24",
+    "title": "版本更新",
+    "body": "- Make table tennis paddles follow both axes and synchronize visible motion\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.35.1...v1.35.2"
+  },
+  {
+    "version": "v1.35.1",
+    "date": "2026-10-24",
+    "title": "版本更新",
+    "body": "- Use direct mouse and touch velocity for table tennis hits\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.35.0...v1.35.1"
+  },
+  {
+    "version": "v1.35.0",
+    "date": "2026-10-24",
+    "title": "版本更新",
+    "body": "- Record verified Conquest random-start and action-playback acceptance\n- Merge branch 'main' into feat/conquest-round-flow\n- Merge branch 'main' into feat/conquest-round-flow\n- Randomize Conquest starts and show readable sequential actions while preserving original costs\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.34.0...v1.35.0"
+  },
+  {
+    "version": "v1.34.0",
+    "date": "2026-10-24",
+    "title": "版本更新",
+    "body": "- Compare prediction coordinates across CPU rounding differences\n- Add first-person table tennis with doubles and direct paddle controls\n- Require explicit human choice for realtime autoplay\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.33.3...v1.34.0"
+  },
+  {
+    "version": "v1.33.3",
+    "date": "2026-10-24",
+    "title": "版本更新",
+    "body": "- Add adjustable Conquest troop counts, resource feedback and full-screen map sizing\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.33.2...v1.33.3"
+  },
+  {
+    "version": "v1.33.2",
+    "date": "2026-10-24",
+    "title": "版本更新",
+    "body": "- Group chess and card games under the shared 棋牌类 category\n- Reuse verified game assets on warm room starts\n- Add secure random password generation to admin reset dialog\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.33.1...v1.33.2"
+  },
+  {
+    "version": "v1.33.1",
+    "date": "2026-10-24",
+    "title": "游戏区全屏",
+    "body": "修正全屏范围和入口位置：只有开局后才显示全屏按钮，与「开启托管」放在同一组房间操作中，等待房间不再显示；游戏区右上角只在全屏时显示退出按钮。全屏只包含游戏本身，上方玩家栏、房间标题和平台菜单不进入全屏；保留游戏操作、必要倒计时、结算和游戏弹窗。\n\n泡泡堂与疯狂坦克利用腾出的空间放大游戏画面。璀璨宝石、车票之旅和卡坦岛的动画／弹窗图层随游戏进入全屏。ESC 和退出按钮恢复普通布局，手机保留网页铺满回退。\n\n验证覆盖 25 款游戏的开局、按钮位置、游戏区全屏及 320px 布局，并验证疯狂坦克全屏键盘发射、泡泡堂键盘放水泡和游戏内弹窗。声音控制继续保留 v1.33.0 的音量、静音和试听功能。"
+  },
+  {
+    "version": "v1.33.0",
+    "date": "2026-10-24",
+    "title": "全屏与声音控制",
+    "body": "所有游戏新增全屏按钮，支持 ESC 退出，并保留游戏操作区。疯狂坦克在 PC 全屏下支持更宽的战场视野；手机浏览器不支持原生全屏时使用网页铺满模式。\n\n右上角声音入口改为喇叭按钮，音量、静音和试听音效合并到弹出面板。取消背景音乐固定 15% 的音量限制，未设置音量时默认 50%，可调整至 100%；音量即时生效，并在浏览器保存、同步同源标签页。\n\n已验证 25 款游戏的全屏开局与控件保留、疯狂坦克全屏键盘发射，以及泡泡堂实际音乐播放、手机触摸、跨标签页音量同步和全屏声音面板。公共前端 144 项测试、疯狂坦克前端 35 项测试及构建检查通过。手机项使用 Chromium 触摸仿真，未覆盖实体 iPhone。"
+  },
+  {
+    "version": "v1.32.0",
+    "date": "2026-10-24",
+    "title": "版本更新",
+    "body": "- Verify Conquest maps against merged shared room layout\n- Merge branch 'main' into feat/conquest-map-ux\n- Add USA and China maps and default Conquest rooms to the world map\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.31.2...v1.32.0"
+  },
+  {
+    "version": "v1.31.2",
+    "date": "2026-10-24",
+    "title": "热血篮球修复与大厅适配",
+    "body": "修复热血篮球持篮筐时比赛卡死，以及错误恢复导致 `sync` 和音乐请求反复发生的问题。原版动作与 AI 保持可维护的 Go/Wasm 实现；确定性引擎错误会保留画面、停止自动重试并给出准确提示。\n\n- 真实故障存档可继续完成比赛，并通过连续输入、存档恢复及 WebSocket 验收。\n- 原生媒体播放音乐 060 的检查通过；故障观察窗口没有重复检查点或媒体重置。\n- PC 创建房间弹窗随窗口扩大：1280×900 首屏 24 款游戏，1920×1080 显示当前全部 25 款；手机布局保持紧凑。\n- 修复手机长电脑名撑开座位／玩家栏，以及电脑准备状态样式丢失；完整名称仍可查看。\n\n图片、音频和 Wasm 继续使用 OSS，不进入镜像。本版本通过版本 tag 发布，复用 main 同一提交的已验证构建。已有页面请刷新后使用新版。\n\n同时包含此前已合入 main 并通过验证的征服时代地图交互改进。"
+  },
+  {
+    "version": "v1.31.1",
+    "date": "2026-10-23",
+    "title": "热血篮球同步优化",
+    "body": "热血篮球保留原有 Go/Wasm 引擎和原版 AI，常规同步改为压缩输入、帧号、必要事件及状态校验。完整状态仅在进入、重连或失步恢复时获取，减少重复传输和 JS/Wasm 全量状态转换。\n\n- 游戏视图平均从 54,596 字节降至 912 字节，减少约 98.3%。\n- 修复检查点响应较慢时输入无法接续的问题，并平滑普通移动的画面校正。\n- 原有图片、音频和更新后的 Wasm 继续使用 OSS 不可变地址，不进入容器镜像。\n\n验证覆盖篮球完整对局、平台鉴权与竞态、正式页面加载、PC／320px 触屏交互、1 秒检查点延迟及断线恢复。桌面 Chromium 模拟 300 ms RTT 和 CPU 降速 4 倍时，连续操作的游戏消息约 15–21 KB/秒，期间未重复获取完整状态；该测量不代表所有实体手机。\n\n本版本由版本 tag 发布，复用 main 同一提交验证通过的构建。已打开的页面请刷新后使用新的同步协议。"
+  },
+  {
+    "version": "v1.31.0",
+    "date": "2026-10-23",
+    "title": "征服时代",
+    "body": "新增「征服时代」：世界与欧洲地图共用区域征服规则，支持 2～8 席、三档电脑难度、可选战争迷雾、同时规划、君主与城防、海路调兵，以及真人托管和观战。\n\n支持 PC 鼠标／键盘和手机触屏。暂停对局可保存 30 天，恢复保留剩余操作时间；地图按选择加载，结算关闭后保留最终棋盘位置。\n\n验证：84 个完整电脑对局组合、14 场真实 HTTP 完整对局、63 项浏览器验收，以及公共平台存档、竞态和编译检查。正式发布复用同一提交在 main 上通过的 Linux amd64 构建。\n\n规则研究以官方旧版桌面程序为交叉参考，运行时使用 Go 与 React/TypeScript，不依赖 Java；地图和音效均有独立来源记录。"
+  },
+  {
+    "version": "v1.30.2",
+    "date": "2026-10-23",
+    "title": "版本更新",
+    "body": "- Preserve poker selections and improve hints, controls and bomb planning\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.30.1...v1.30.2"
+  },
+  {
+    "version": "v1.30.1",
+    "date": "2026-10-23",
+    "title": "版本更新",
+    "body": "- Restore normal navigation when leaving compact poker tables\n- Fit mobile poker tables to viewport and conserve bot bombs\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.30.0...v1.30.1"
+  },
+  {
+    "version": "v1.30.0",
+    "date": "2026-10-22",
+    "title": "版本更新",
+    "body": "- Improve game controls, poker tables and bots; retire lane battle\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.29.1...v1.30.0"
+  },
+  {
+    "version": "v1.29.1",
+    "date": "2026-10-22",
+    "title": "版本更新",
+    "body": "- fix: preserve update notices for pages opened before CDN migration\n- docs: record CDN delivery and settlement browser verification\n- fix: allow trusted CDN modules and precompress static delivery\n- fix: keep settlement ready and deliver frontend modules from immutable CDN\n- fix: overlap poker hand rows while preserving readable card indexes\n- fix: keep poker tables and hand areas stable throughout play\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.29.0...v1.29.1"
+  },
+  {
+    "version": "v1.29.0",
+    "date": "2026-10-22",
+    "title": "版本更新",
+    "body": "首页改为按需加载游戏，进入对局后显示统一加载页面：淡化封面背景、真实进度条和玩家加载状态。全部真人加载完成后才推进对局与计时，电脑自动就绪、观战者不阻塞；失败可重试，已开局刷新或重连不重新暂停全员。\n\n带内容摘要的脚本和样式增加 gzip、ETag 与长期缓存。首页静态资源由约 4.56 MB 降至约 0.62 MB（未压缩）。\n\n验收覆盖 25 款游戏开局、共享平台持久化与竞态、双真人资源失败和重试、320px 手机布局及重连。tag 复用同一提交在 main 上通过验证的构建。"
+  },
+  {
+    "version": "v1.28.0",
+    "date": "2026-10-21",
+    "title": "版本更新",
+    "body": "疯狂坦克降低补给频率：第 8 个行动回合首次投放，之后间隔 8～12 回合；去掉箱子附加的中文牌和外框。修复快速触碰后驶离无法拾取，保留 180ms 画面同步与库存校验。\n\n恢复 14 车独立主／副弹体及已核验的多弹、一次锁定、地雷、波动光束、离子炮、移动限制和同队治疗。各炮弹分别命中、扣血；存档恢复不重复伤害。隐藏地雷和友方状态伤害计分已复核。未确认的原版公式、范围和时长明确保留为平台参数。\n\n网页每 60 秒及切回时检查线上版本，提示刷新或稍后处理，不自动中断对局。旧页面需先刷新一次以启用检测。泡泡堂摇杆／放泡按钮补齐原生触摸和选区拦截，兼顾 iPhone Safari 等浏览器；聊天复制保留。\n\n验收：28 种主副弹浏览器场景、锁定／地雷／离子光束原生画面、补给快接触、320／390px 操作、版本定时器、完整对局和竞态均通过；218 项相关前端检查通过。17 个 v5 素材经 OSS／CDN 逐项读回核对。实体 iPhone 尚未实测。"
+  },
+  {
+    "version": "v1.27.0",
+    "date": "2026-10-21",
+    "title": "版本更新",
+    "body": "泡泡堂加入可核验的 112 张 2002 年经典地图及预览、开战前八角色选择和原始能力、八种骑乘状态与木箱推动；拾取音效仅对拾取者播放。旧版进行中存档保留原规则。\n\n疯狂坦克恢复彩色选车图和原版补给素材，加入随机运输补给及简单／普通／困难电脑难度；高抛炮弹离开地图时镜头停在顶部。天气调查已留档，本版保留风力，未加入尚未实现的天气效果。\n\n公共修复：换地图草稿的准备状态显示一致；手机游戏按钮禁止长按复制菜单，聊天输入保留复制粘贴。\n\n验证：泡泡堂 448 组经典地图／人数组合自然结算、694 次一致恢复；疯狂坦克 34 局完整对战；规则与竞态、两游戏 86 项前端检查、公共平台与 123 项公共前端检查通过。桌面与窄屏浏览器保留操作、截图和 JSON 证据；实体 iPhone 尚未实测。720 个 v4 素材已通过 OSS／CDN 摘要读回校验。"
+  },
+  {
+    "version": "v1.26.2",
+    "date": "2026-10-21",
+    "title": "修复疯狂坦克左右贴图",
+    "body": "修复疯狂坦克左右贴图与移动、瞄准方向相反的问题。\n\n- 统一修正 14 辆坦克全部动作的原生左右图块标签和索引，包括待机、移动、普通弹、特殊弹和受击等动作。\n- 同步修正左右朝向的坡面选帧，保留原始图像、矩形、锚点和动作时序。\n- 修正素材生成器和来源检查，避免重新生成时再次交换左右。已发布图集保持不变。\n\n验证：23 项前端检查、8,288 个原生方向帧的来源像素检查、14 车双向实际画布像素比对，以及桌面／320px 原生移动和开炮、CDN 失败后的本地素材回退。未修改服务器移动和弹道规则。\n\n版本 tag 发布复用同一提交在 main 上已经验证的 Linux amd64 构建。"
+  },
+  {
+    "version": "v1.26.1",
+    "date": "2026-10-21",
+    "title": "版本更新",
+    "body": "热血篮球增加开局加载进度：所有未托管真人的必要资源加载完成后才开始比赛。加载失败可重试，观战者和电脑不阻塞开局，刷新或重连不暂停已经开始的比赛。\n\n篮球图片、音频和 Wasm 改为从 OSS 分发，不再打包进容器。开局仅加载当前球场，背景音乐按场景播放；Wasm 使用内容摘要固定版本并与服务端源码校验绑定。\n\n已验证手机与 PC 加载界面、失败重试、双人等待、托管接管、SQLite 恢复，以及现有控制器和房间准备流程。真实游戏平台域名的 OSS 跨域读取与球场绘制已通过验证。\n\nLinux amd64 镜像由约 383 MB 降至约 112 MB。\n\n验证构建：[main #39588229010](https://github.com/k0ngk0ng/wire-board/actions/runs/39588229010)。发布提交：`b4559c7d9a0e96a42a956e4255e40fb89ac17cc2`。\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.26.0...v1.26.1"
+  },
+  {
+    "version": "v1.26.0",
+    "date": "2026-10-21",
+    "title": "版本更新",
+    "body": "新增热血篮球，使用可维护的 Go 游戏逻辑与浏览器 Wasm，保留原版 AI、动作、场地和战役流程。\n\n- 支持单人、双人合作与双人对战，准备阶段用图片选择场地和球员。\n- 开放 8 个场地、8 支球队、每队 4 名球员；对战不使用装备，战役包含装备、奖励和结局。\n- 实时输入与快照复用平台 WebSocket，支持本地预测、观战、手动托管和检查点恢复。\n- 新增按用户、控制器型号独立保存的控制器设置，提供 FC 布局和 Turbo A／B。\n- 图片和声音通过 OSS 不可变版本发布，保留校验过的本地回退。\n\n验证覆盖原版来源对照、完整比赛与战役、恢复、Native/Wasm 一致性、PC／手机及 50／150／300 ms 延迟下的真实浏览器输入。发布复用 main 对应提交的已验证构建。\n\n封面人物出处与处理方式见 [素材说明](https://github.com/k0ngk0ng/wire-board/blob/v1.26.0/games/basketball/assets/COVER.md)。\n\n验证提交：`120c0f912bb585b466835f18e6a6691506826135`\n\n- [main 验证与构建](https://github.com/k0ngk0ng/wire-board/actions/runs/39569178854)\n- [Release v1.26.0：tag 发布](https://github.com/k0ngk0ng/wire-board/actions/runs/39573509268)\n- [完整变更](https://github.com/k0ngk0ng/wire-board/compare/v1.25.1...v1.26.0)"
+  },
+  {
+    "version": "v1.25.1",
+    "date": "2026-10-21",
+    "title": "赛车极速、电脑与操控优化",
+    "body": "极品飞车道路实际极速从约 112 km/h 提高到 324 km/h，并同步修正阻力、前端预测、自动挡、镜头与引擎音效。电脑提高直道巡航速度，提前观察弯道和避让车辆；不改变操作权限或比赛规则。\n\n- 踏板从左到右统一为「手刹、刹车、油门」。油门按住才加速，松开惯性滑行；移除自动加速，单独转方向盘不会加速。\n- 平台所有游戏在开局布局稳定后自动定位到主要游戏区；玩家操作优先，快照不会抢回滚动位置。\n- 泡泡堂取消重复自动滚动；俄罗斯方块适配视区高度，让 HUD、本人棋盘和按键在验收视区内完整显示。\n\n验证：赛车 75 组自然完整对局、规则／HTTP／恢复／竞态检查、151 项公共及相关前端检查、13 项俄罗斯方块前端检查，以及桌面和 320px 原生触屏验收。正常键盘驾驶实测超过旧极速，松油门后服务端 throttle 为 0；六款其他游戏验证自动定位和手动滚动保持。\n\n版本 tag 发布复用同一提交在 main 上通过检查的 Linux amd64 构建。"
+  },
+  {
+    "version": "v1.25.0",
+    "date": "2026-10-21",
+    "title": "极品飞车重制",
+    "body": "赛车重制为「极品飞车」：车后追逐视角、5 条长赛道和 6 款经典车型外观，支持保时捷 911 Turbo、兰博基尼 Countach、法拉利 F40、日产 GT-R R34、丰田 Supra A80、宝马 M3 E46。\n\n- 全部自动挡；新增按住 B 回看、R 低速重置、空格手刹，手机提供方向盘和多指操作按钮。\n- 五条赛道为霓虹城区、工业港湾、林间山道、滨海公路、赤岩峡谷；支持 2～6 人、1／3／5 圈和电脑／托管对战。\n- 泡泡堂手机操作改为摇杆，保持四向走格。修改地图后可直接「保存并准备」，电脑保持准备状态。\n- 修复地图与结算弹窗焦点、断线后的旧按键、手机首屏控制布局和赛车对手移动顿挫。\n\n验证：75 组赛车自然完整比赛、149 项前端检查、HTTP／恢复／竞态检查、五赛道六车型真实浏览器验收、320px 触屏及 WebGL 兼容画面。车型与场景为风格化原创模型，车型性能一致。\n\n发布流程：复用同一提交在 main 上通过检查的 Linux amd64 构建；版本 tag 触发发布。"
+  },
+  {
+    "version": "v1.24.1",
+    "date": "2026-10-20",
+    "title": "手机按键与坦克贴图修正",
+    "body": "修复手机长按屏幕按键时可能选中文字的问题，并纠正坦克大战方向素材。泡泡堂移除此前误加入经典掉落池的自定义被动护盾；原版盾牌是限时消耗品，已有存档资源保留兼容。\n\n- 平台按钮统一禁止文字选择和 WebKit 长按菜单；六款游戏的方向盘、方向键组、开火／蓄力等操作区一起保护，保留聊天输入、普通正文和原有手势。\n- 坦克大战按原 ROM 的车型基址、四个独立方向和两履带帧生成新 v2 图集，纠正镜像、错取图块和预测位置已转向但贴图仍用旧方向的问题。声音和已发布 v1 对象保持不变。\n- 泡泡堂经典规则后续木箱只掉落速度、容量与射程；旧局已有护盾保留，绘制为盾形回退，不再显示单个“盾”字。\n- 敌方踩泡未复现有效接触漏判：实际八真人房的桌面键盘和 320px 原生触屏均可在水柱消退后击破，归属正确。补充了未消退水柱会困住接近者的说明，没有猜测修改碰撞半径。\n\n验证：六游戏 320px／390px 浏览器检查、197 项公共与相关游戏前端检查、泡泡堂竞态与完整对局检查通过；困泡接触 66 个定向场景通过。坦克原 ROM OAM／PPU 对照，旧版 64/80 帧不一致，新版 80/80 像素一致；新两素材经 OSS／CDN 回读校验。\n\n触屏证据来自 Chromium 原生 CDP 输入；WebKit 长按菜单通过样式声明防护，本次没有实体 iPhone 自动化证据。\n\n提交：24a45f806c5d9f9e0b5ceb2df152ff99c58e1f88\nmain 验证构建：https://github.com/k0ngk0ng/wire-board/actions/runs/39516383785\n版本 tag 发布：https://github.com/k0ngk0ng/wire-board/actions/runs/39518445504\n\ntag 复用同一提交已验证的二进制，不重新编译。生产通过既有备份／回滚脚本更新，核对二进制、版本、健康及游戏上下架设置后，保留最近两份可读备份与当前／回滚镜像，清理更早备份和围桌历史镜像。"
+  },
+  {
+    "version": "v1.24.0",
+    "date": "2026-10-20",
+    "title": "实时游戏优化与街机游戏重构",
+    "body": "实时游戏改用双向 WebSocket 和内存推进：普通移动不逐条写库，每秒保存检查点，开局、结算、控制切换等关键节点立即持久化。泡泡堂增加原包人物选择和地形修正，疯狂坦克完成基于原版资料的操作、画面与规则重构。\n\n- 泡泡堂、赛车、坦克大战、俄罗斯方块、街霸方块使用直接输入确认与精简快照；取消空闲倒计时托管，保留手动托管和电脑。\n- 泡泡堂与坦克大战增加有界本机运动显示；断线丢弃旧按键，重启接受检查点版本并清理旧控制。\n- 泡泡堂提供泡泡帽、飞行帽、熊耳帽、条纹帽四套原包人物，红蓝各四套，选择只改变外观并持久保存。修复高树可走、纵向灌木误画为杉树、边缘人物错位及选择弹窗的键盘交接。\n- 禁止并清理人物身份数字角标；素材失败回退也遵守同一规范。\n- 疯狂坦克改为按住蓄力、松手／满力发射；使用原生动作、方向、锚点与坡度帧，统一出膛、飞行、命中和坠落时间轴；修正道具、地火／毒和出生射界。\n\n验证：平台计数负载样本中，4 房间、32 名登录用户、2 秒 320 次输入的快照写入从 400 次降至 8 次，普通动作日志新增 0、输入错误 0。保留真实断线、进程崩溃、慢连接及 PC／320px 浏览器验收；96 个不可变素材对象完成 OSS／CDN SHA-256 校验。\n\n发布提交：f3e8ae6ffe53186e1edab89f58367fe477cc9c29\nmain 验证与构建：https://github.com/k0ngk0ng/wire-board/actions/runs/39463545571\n版本 tag 发布：https://github.com/k0ngk0ng/wire-board/actions/runs/39465479760\n\n发布只复用上述同一提交已验证的 Linux amd64 产物，没有在 tag 重新编译或重复游戏矩阵。生产更新通过既有 SQLite 备份／回滚脚本执行，核对健康、版本和游戏上下架设置后完成限定备份／镜像清理。"
+  },
+  {
+    "version": "v1.23.0",
+    "date": "2026-10-20",
+    "title": "版本更新",
+    "body": "泡泡大作战重构并更名为「泡泡堂」：新增连续移动、困泡、队友救援和对手击破，重建小区10，修复隐形障碍、穿泡、连爆、误托管及延迟放泡。接入历史客户端音频与可核验的还原图集，保留旧存档规则兼容。\n\n重新绘制俄罗斯方块、街霸方块、泡泡堂、疯狂坦克、坦克大战五款手绘封面。\n\n验证：泡泡堂规则、HTTP、完整电脑对局及竞态检查通过；26项本地真实浏览器验收通过，包含PC键鼠、触屏、320px布局、恢复、结算、静音和图片失败回退。四款仅修改封面的游戏按前端影响范围验证。\n\n此版本由版本tag触发发布，复用相同提交在main上通过的已验证构建，不重新编译应用。资源来源与精度边界见仓库验收及素材文档。"
+  },
+  {
+    "version": "v1.22.4",
+    "date": "2026-10-20",
+    "title": "版本更新",
+    "body": "- fix(fortressblue): restore cross-map range and shell proportions\n- docs(fortressblue): record v1.22.3 item release\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.22.3...v1.22.4"
+  },
+  {
+    "version": "v1.22.3",
+    "date": "2026-10-20",
+    "title": "版本更新",
+    "body": "- feat(fortressblue): add original item cards and effects\n- docs(fortressblue): record Steam, REA and local client provenance\n- docs(fortressblue): record v1.22.2 deployment\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.22.2...v1.22.3"
+  },
+  {
+    "version": "v1.22.2",
+    "date": "2026-10-20",
+    "title": "版本更新",
+    "body": "- fix(fortressblue): animate the first shot and show the projectile\n- test(fortressblue): reverify original client media provenance\n- docs(fortressblue): record v1.22.1 deployment\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.22.1...v1.22.2"
+  },
+  {
+    "version": "v1.22.1",
+    "date": "2026-10-20",
+    "title": "版本更新",
+    "body": "- fix(fortressblue): make aiming, controls and map selection usable\n- docs(fortressblue): record v1.22.0 deployment\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.22.0...v1.22.1"
+  },
+  {
+    "version": "v1.22.0",
+    "date": "2026-10-20",
+    "title": "版本更新",
+    "body": "- test(fortressblue): verify media without ffprobe in CI\n- test(fortressblue): verify dist when fallback checkout is absent\n- build(fortressblue): fetch fallback media concurrently\n- docs(fortressblue): note CI fallback restore\n- build(fortressblue): restore published fallback media in CI\n- feat(fortressblue): rebuild with original Fortress 2 BLUE assets\n- docs: record v1.21.2 direct version-label fix [skip ci]\n- fix(ui): avoid double v prefix in version label\n- docs(wishes): record v1.21.1 release and version display [skip ci]\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.21.1...v1.22.0"
+  },
+  {
+    "version": "v1.21.1",
+    "date": "2026-10-19",
+    "title": "版本更新",
+    "body": "## What's Changed\n* docs(wishes): v1.21.0 部署记录 by @k0ngk0ng in https://github.com/k0ngk0ng/wire-board/pull/13\n\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.21.0...v1.21.1"
+  },
+  {
+    "version": "v1.21.0",
+    "date": "2026-10-19",
+    "title": "版本更新",
+    "body": "## What's Changed\n* docs(fortressblue): v1.20.0 部署记录 by @k0ngk0ng in https://github.com/k0ngk0ng/wire-board/pull/10\n* feat: 许愿追问、粘贴截图、AI 处理待审核许愿；新游戏默认上架 by @k0ngk0ng in https://github.com/k0ngk0ng/wire-board/pull/11\n* test(server): 修正默认上架后的隐藏战绩用例 by @k0ngk0ng in https://github.com/k0ngk0ng/wire-board/pull/12\n\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.20.0...v1.21.0"
+  },
+  {
+    "version": "v1.20.0",
+    "date": "2026-10-19",
+    "title": "版本更新",
+    "body": "## What's Changed\n* docs(bubbleparty): v1.19.0 部署记录 by @k0ngk0ng in https://github.com/k0ngk0ng/wire-board/pull/8\n* feat(fortressblue): 疯狂坦克 5v5 回合制炮兵对战 by @k0ngk0ng in https://github.com/k0ngk0ng/wire-board/pull/9\n\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.19.0...v1.20.0"
+  },
+  {
+    "version": "v1.19.0",
+    "date": "2026-10-19",
+    "title": "版本更新",
+    "body": "## What's Changed\n* feat(bubbleparty): 泡泡堂风格实时水泡团队战 by @k0ngk0ng in https://github.com/k0ngk0ng/wire-board/pull/7\n\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.18.1...v1.19.0"
+  },
+  {
+    "version": "v1.18.1",
+    "date": "2026-10-19",
+    "title": "版本更新",
+    "body": "## What's Changed\n* feat(wishes): 代理推进许愿状态 by @k0ngk0ng in https://github.com/k0ngk0ng/wire-board/pull/5\n* feat(admin): 每个列表页增加刷新按钮 by @k0ngk0ng in https://github.com/k0ngk0ng/wire-board/pull/6\n\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.18.0...v1.18.1"
+  },
+  {
+    "version": "v1.18.0",
+    "date": "2026-10-19",
+    "title": "版本更新",
+    "body": "## What's Changed\n* feat(wishes): 游戏许愿池、OSS 参考图与审核流 by @k0ngk0ng in https://github.com/k0ngk0ng/wire-board/pull/3\n* feat(wishes): 正在实现与已实现状态 by @k0ngk0ng in https://github.com/k0ngk0ng/wire-board/pull/4\n\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.17.0...v1.18.0"
+  },
+  {
+    "version": "v1.17.0",
+    "date": "2026-10-19",
+    "title": "版本更新",
+    "body": "## What's Changed\n* feat(battlecity): 坦克大战（1v1/2v2/3v3 双基地实时对战） by @k0ngk0ng in https://github.com/k0ngk0ng/wire-board/pull/2\n\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.16.0...v1.17.0"
+  },
+  {
+    "version": "v1.16.0",
+    "date": "2026-10-18",
+    "title": "版本更新",
+    "body": "## What's Changed\n* feat(spf2t): add realtime puzzle fighter game by @k0ngk0ng in https://github.com/k0ngk0ng/wire-board/pull/1\n\n## New Contributors\n* @k0ngk0ng made their first contribution in https://github.com/k0ngk0ng/wire-board/pull/1\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.15.0...v1.16.0"
+  },
+  {
+    "version": "v1.15.0",
+    "date": "2026-10-18",
+    "title": "版本更新",
+    "body": "- feat(tetris): add realtime block battle game\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.14.3...v1.15.0"
+  },
+  {
+    "version": "v1.14.3",
+    "date": "2026-10-17",
+    "title": "版本更新",
+    "body": "调整退出登录入口，并稳定璀璨宝石回合切换时的布局。\n\n- 顶部不再直接显示退出按钮；点击自己的头像或姓名打开玩家页面后，才显示「退出登录」。查看其他玩家时不显示该入口。\n- 宝石拿取与跳过操作在不可用时保留布局占位，同时隐藏、禁用且不可聚焦，避免回合切换挤动棋盘。\n- 回合标题不再因较长昵称换行而增高。\n\n真实两人对局在 1440、851、850、390、320px 下逐帧验证，牌桌与宝石池高度、市场和手牌区位置变化均为 0px；退出入口、关闭资料不退出及手机实际退出验证通过。公共回合栏 702 个布局组合、宝石 15 项和公共前端 65 项检查通过。"
+  },
+  {
+    "version": "v1.14.2",
+    "date": "2026-10-17",
+    "title": "版本更新",
+    "body": "修复宝石动画反馈与手机创建房间的自动聚焦。\n\n- 宝石头像滚出可视区域时，用带姓名和席位的临时标记承接飞行动画；拿取、付款、归还保持正确玩家与方向。\n- 减少动态效果设置下保留静态淡出反馈，避免筹码停留在错误起点。\n- 确认购买浮层中的牌时，从实际确认的牌面发出动画。\n- 手机打开或返回创建步骤时不自动聚焦搜索和房间名称，手动输入正常；电脑保留输入框焦点。\n\n本地宝石动画、桌面自然完整局、手机滚动、减少动态效果、刷新不重播和创建焦点检查通过；宝石 15 项与公共前端 65 项检查及生产构建通过。游戏规则与上下架设置保持原样。"
+  },
+  {
+    "version": "v1.14.1",
+    "date": "2026-10-15",
+    "title": "版本更新",
+    "body": "修复对局操作偶发卡住和页面跳动，并将创建房间统一改为两步。\n\n- 创建房间先选择游戏，再进入该游戏的房间设置与规则选项；支持返回选择、保留公共草稿和按游戏重置规则。\n- 回合提示在「请行动」「等待其他玩家」「对局进行中」之间切换时保留相同布局高度。\n- 修复动画计时器提前触发后未再次唤醒的问题，落子不再等待约 15 秒的轮询才解除操作锁。\n- 胜负、和局结算改为可关闭的浮层，关闭后可重新查看；后续状态更新不强制重开，结算不再把棋盘向下推移。\n\n本次未修改游戏规则或电脑策略。完成公共前端、相关动画前端及实际浏览器验收；tag 发布复用同一提交在 main 上验证通过的构建。"
+  },
+  {
+    "version": "v1.14.0",
+    "date": "2026-10-15",
+    "title": "版本更新",
+    "body": "新增中国象棋、国际象棋、军棋、五子棋、围棋和逐风赛车，继续在同一仓库按游戏独立维护。\n\n- 军棋支持两人陆战棋与四国对家；手机默认显示完整棋盘，放大后操作。封面使用坦克，棋子仅用颜色区分阵营，不加数字角标。\n- 围棋支持 9／13／19 路、面积计分、禁自杀和全局同形禁着。双停着后双方确认死子与计分，有争议可继续对弈。\n- 新棋类均支持基本电脑、真人托管、取消托管和恢复对局；真人和局积分变化为 0，不计胜场，保留历史。\n- 逐风赛车支持 2～6 人、三条赛道、电脑对手、PC 键盘及手机触屏操作。\n- 图片与音效提供 OSS 版本目录和本地回退，沿用统一房间界面与平台静音。\n- 六款新游戏默认下架，仅管理员可以上架；部署保留现有游戏的管理设置。\n\n本版本由版本 tag 触发发布，复用同一提交在 main 上通过检查后生成的构建，不在 tag 阶段重复游戏验收或重新编译应用。"
+  },
+  {
+    "version": "v1.13.1",
+    "date": "2026-10-15",
+    "title": "版本更新",
+    "body": "斯诺克手机操作改为在球桌上点击或拖动瞄准，可反复调整方向；通过独立力度条向右滑动调力度，松开击球，拉回起点取消。触摸球桌不再锁定方向或误触击球。PC 保留鼠标悬停瞄准和向后拉杆。白球击点仍可连续点击或拖动调整。\n\n修复连连看快速连续点选时丢失点击的问题。消除请求等待确认期间，可以继续选择下一组；确认上一组不会清掉下一组选中的图案。触屏直接处理抬手，避免重复的兼容点击；房间结束后清除未提交的点选。\n\n验收覆盖 PC、390px／320px 原生触摸、反复瞄准和击点调整、力度取消及服务端方向／力度／旋转值；连连看覆盖 180 毫秒延迟下的 35 毫秒连续点选、请求拒绝后恢复和完整通关。前端 351 项测试通过。\n\nmain 检查改为公共平台加变更游戏，区分前端与服务端规则；不再为单游戏修改固定运行全游戏完整对局。基于已验证祖先保留前序未验证改动，检查范围和结果可在 Actions 产物中核验，全部必需检查通过后才生成可发布构建。全量验收保留手动入口。\n\n由版本 tag 触发发布，复用同一提交在 main 上已验证的构建。游戏上下架设置保持不变。"
+  },
+  {
+    "version": "v1.13.0",
+    "date": "2026-10-14",
+    "title": "版本更新",
+    "body": "新增「连连看」：1～6 人同时竞速，每局随机地图和难度，使用相同初始棋盘，最先清空者获胜。保留经典图案、闪电连线、石块／木箱／冰封，以及提示、重排、破障锤；支持电脑玩家、120 秒超时托管和重连恢复。\n\n图片、音效和背景音乐已迁移到独立 OSS 路径，并提供本地回退。连连看默认下架，需管理员在后台上架后玩家才能创建房间。\n\n大厅优先展示房间；游戏卡片集中到创建弹窗。房间支持名称／房间号／游戏名称搜索，以及分类、游戏和状态筛选。\n\n验证包括 210 个样本与原引擎的棋盘／重排一致性，1～6 人完整 HTTP 竞速，电脑和超时托管，桌面与 320px 手机原生触屏／键盘、CDN 回退及减少动态效果。所有 67 个素材完成 OSS／CDN 校验。\n\n斯诺克改进：PC 悬停即可瞄准，向后拉杆的距离决定力度，松开击球；白球击点改为球面红点，可直接点选和拖动。缩短手机瞄准提示栏，首局自动随机开球。删除彩球提名默认黑球的设置，红球得分后按实际先碰到的彩球识别目标，保留最后清彩顺序及其他犯规规则。"
+  },
+  {
+    "version": "v1.12.3",
+    "date": "2026-10-14",
+    "title": "版本更新",
+    "body": "修复斯诺克桌外瞄准中断和手机出杆动画缺失。\n\n- 按住后移出球桌仍可调整方向和蓄力，桌外松手照常击球；Esc、取消手势、失焦和视图缩放仍可中止。\n- 松手立即显示本地运杆反馈；服务器确认后完整播放权威球路，拒绝时收回动作并提示。\n- 电脑、其他玩家与观战者的新击球也从出杆开始播放。公共分数、换手与结束结果随本地播放结束显示，聊天与托管权限保持实时。\n- 刷新、重连及后台恢复同步当前进度，不重播旧杆。减少动态效果时保留静态出杆提示。\n- 画布只在尺寸改变时重新分配，降低手机动画开销；每杆在服务端保留运杆阶段的完整时长，避免电脑连击超前。\n\n验证覆盖 250 毫秒延迟、四倍 CPU 降速下的手动、电脑、观战、拒绝确认、刷新接续和减少动态效果；桌面与手机桌外手势、338 项前端测试及斯诺克规则／旧存档兼容检查通过。"
+  },
+  {
+    "version": "v1.12.2",
+    "date": "2026-10-14",
+    "title": "版本更新",
+    "body": "修复斯诺克洞口遮挡，补齐超时托管与结束原因说明。\n\n- 瞄准放大镜、蓄力条和彩球复位提示移到球桌外；移除原右上角的操作屏蔽区域。\n- 待操作阶段显示 120 秒倒计时，超时自动托管；球运动时不计时，取消托管可恢复手动操作。旧对局一次性补上计时，后续重启保留期限。\n- 结束界面与对局日志显示具体结束原因及适用规则，区分黑球进球、黑球犯规、主动宣告、认输、三次解球未中和弃赛。旧版已结束的房间也可显示原因，比分和结果不变。\n\n验证：真实 120 秒超时与接管、旧存档迁移、斯诺克规则及平台生命周期测试、331 项前端测试；浏览器覆盖桌面、390px 和 320px 的洞口无遮挡、手势操作、复位反馈与结束说明。\n\n通过版本 tag 发布同一 main 提交的已验证构建，保留管理员的游戏上下架设置。"
+  },
+  {
+    "version": "v1.12.1",
+    "date": "2026-10-14",
+    "title": "版本更新",
+    "body": "斯诺克现在支持电脑玩家与托管，并改用球桌内直接击球操作。\n\n- 按住鼠标或手指瞄准、蓄力，松开击球；力度条实时变化，移出球桌或按 Esc 取消。移除独立方向、力度和击球菜单控件。\n- 「移动视图」支持拖动平移，滚轮／双指支持缩放；调整视图不会误击。保留键盘瞄准与空格蓄力。\n- 单打、双打和全部赛制支持电脑席位及托管，覆盖摆球、犯规、黑球决胜、局间准备与手动接管。\n- 仓库规范要求所有游戏支持电脑玩家、托管、PC 和手机操作。\n\n验证：六种人数／赛制组合完成 18 局自然电脑对局，真实 HTTP 单打／双打各完成 1 局；331 项前端测试通过，31 个浏览器检查点覆盖桌面及 320px／390px、音效和动作时序。\n\n由版本 tag 发布同一 main 提交的已验证构建，保留管理员的游戏上下架设置。"
+  },
+  {
+    "version": "v1.12.0",
+    "date": "2026-10-14",
+    "title": "版本更新",
+    "body": "- feat: add 2D snooker singles and doubles\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.11.3...v1.12.0"
+  },
+  {
+    "version": "v1.11.3",
+    "date": "2026-10-14",
+    "title": "版本更新",
+    "body": "- fix: prioritize ordinary poker responses and preserve held bombs\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.11.2...v1.11.3"
+  },
+  {
+    "version": "v1.11.2",
+    "date": "2026-10-14",
+    "title": "版本更新",
+    "body": "- fix: align Shanghai poker rules, card artwork and spoken feedback\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.11.1...v1.11.2"
+  },
+  {
+    "version": "v1.11.1",
+    "date": "2026-10-13",
+    "title": "版本更新",
+    "body": "- art: give each poker game a distinct illustrated cover\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.11.0...v1.11.1"
+  },
+  {
+    "version": "v1.11.0",
+    "date": "2026-10-13",
+    "title": "版本更新",
+    "body": "- fix: keep turn-based Dota in the board game category\n- feat: add Shanghai Shengji, Jiangsu Guandan and Doudizhu\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.10.2...v1.11.0"
+  },
+  {
+    "version": "v1.10.2",
+    "date": "2026-10-13",
+    "title": "版本更新",
+    "body": "修正星垒 PC 战场过宽、过矮的问题，并简化怪物血条。\n\n- PC 战场使用受限宽度的 16:9 区域，按窗口高度调整尺寸；保留手机当前高度与布局。\n- 怪物统一显示一条血条，合并生命与护盾；护盾受到伤害时同一条血条同步下降，重连后满值稳定。\n- 大厅名称统一为「游戏大厅」，登录提示、游戏筛选和后台通用文案也统一使用「游戏」。\n\n版本 tag 复用同一提交在 main 上验证通过的构建发布。"
+  },
+  {
+    "version": "v1.10.1",
+    "date": "2026-10-13",
+    "title": "版本更新",
+    "body": "星垒支持直接使用鼠标滚轮缩放战场，小地图支持连续拖动定位。强手棋也补齐滚轮缩放和鼠标拖动，并将地图交互要求写入 AGENTS.md。\n\n- 星垒显著显示下一波自动开始的倒计时，区分投票期限，暂停时明确提示不会开战。\n- 扩展地图和团队强化改用可关闭、可重开的决策弹窗；建造操作使用弹窗，情报和支线折叠，压缩 PC 和手机的主要战场布局。\n- 子弹、命中特效、护盾／血条变化和死亡显示使用统一时间轴；重连不重播历史攻击。\n- 手机空建造点缩小为 18px 标记并保留 32px 触摸范围；建成后隐藏圆圈及编号，整个塔身可点击升级，卖塔后恢复空点；拖动不会误开操作面板。\n- 修复宽屏紧凑战场中，从总览定位区域时放大不足的问题。\n\n发布由版本 tag 触发，复用同一提交在 main 上通过验证的构建，不重复编译或运行完整测试矩阵。"
+  },
+  {
+    "version": "v1.10.0",
+    "date": "2026-10-13",
+    "title": "版本更新",
+    "body": "星垒升级为成长战场：第 6／11／16 波开放新区，地图扩大到约三倍，建造点从 16 个增至 40 个。每局有保存的布局种子，路线分支由全队投票决定；旧塔、等级和投入保留。无尽后期轮换入口和天气。\n\n新增六种地形、天气预告、团队强化、功能敌人、首领阶段及真实防守／移动护送支线。支持目标优先级、大地图拖动缩放、小地图、入口定位和简洁总览；总览点选后放大，不误建塔。新增 44 个图片和声音文件已上传 OSS，并完成 MIME、哈希及解码回读。\n\n旧存档继续进行，当前旧波次保持原天气行为，下一准备阶段接入新机制。修复单人矿场成功仍亏损、按钮禁用过渡对比度不足等验收发现的问题。\n\n首页全部游戏使用统一中文卡片模板，移除英文标语、副标题及「基础版」角标，规范写入 AGENTS.md；人数来自模块元数据，兵线争锋准确显示 2／4／6 人。\n\n验证：1／2／4 人自然 20 波、双人无尽 40 波，520 种地图构造组合，HTTP 并发／重启／迁移和针对性竞态检查，298 项前端测试，以及扩展、原版、首页和其他游戏共 110 个浏览器检查点。真机手势和任意波数的长期平衡未作保证。\n\n通过 v1.10.0 tag 复用 main 的同提交已验证构建发布，保留全部既有游戏上下架设置。"
+  },
+  {
+    "version": "v1.9.0",
+    "date": "2026-10-13",
+    "title": "版本更新",
+    "body": "新增「星垒 · 合作塔防」：1–4 人共同守城，支持 10／20 波闯关、无尽模式和三档难度。四种防御塔、升级专精、金币支援、特殊敌潮、精英与首领、波间一致暂停／恢复及存档重连。\n\n原创卡通 SVG 素材导出为 WebP 图集，通过 Canvas 呈现敌人移动、瞄准、弹道、受击和升级效果。57 个图片与声音成品已上传 OSS 并逐一回读验证，支持减少动态效果和平台统一静音。\n\n平台新增合作结算：全队成功或全队失败，合作局不计竞争积分。修复系统定时推进阻塞机器人行动、空闲机器人重复写库的问题。\n\n验证：星垒 22 个真实浏览器检查点，286 项前端测试，1／2／4 人正常完整闯关、无尽超过 20 波、失败、并发、幂等、定时、暂停、托管、重启、战绩和既有游戏回归。无尽长期平衡仍待玩家实玩调优。\n\n星垒默认下架，只有管理员上架后才向玩家开放。发布由 v1.9.0 tag 触发，复用 main 同一提交的已验证构建；升级保留已有游戏上下架设置。"
+  },
+  {
+    "version": "v1.8.4",
+    "date": "2026-10-13",
+    "title": "版本更新",
+    "body": "修复强手棋手机玩家栏横向裁切导致后排席位现金不可见的问题。公共模块玩家栏改为自动换行，手机两列显示；强手棋为每位玩家明确标注「现金」，当前席位显示「你的现金」，金额字号增大到 22px。\n\n零现金仍显示，买地、交易、偿债和破产后按服务端状态更新；观战可查看所有玩家现金。关键公开资源的显示和验收规范已写入 AGENTS.md。\n\n验证：320px／390px 手机、桌面、三人及六人局、第三席位、观战、现金为零、买地／交易／偿债／破产，共新增 10 个现金检查点。检查真实可见性、金额与服务端一致、文字对比度，而不只检查 DOM 文本存在。\n\n由 v1.8.4 tag 复用 main 同一提交的已验证构建，升级保留游戏上下架设置。"
+  },
+  {
+    "version": "v1.8.3",
+    "date": "2026-10-13",
+    "title": "版本更新",
+    "body": "大厅按游戏筛选牌桌改用下拉选择，避免游戏增多后标签拥挤。游戏目录新增名称搜索，首批展示 6 款，支持继续展开。\n\n创建房间保留统一插画卡片，增加搜索、稳定卡片宽度和限高滚动列表；搜索框回车不会误建房间。移除铁路、卡坦和卡卡颂覆盖公共选择区的旧样式。\n\n管理后台增加游戏搜索，手机游戏卡片改为单列。个人战绩按游戏分批展示，避免长列表挤占好友和对局历史。规范已写入 AGENTS.md。\n\n验证：额外注册 30 个测试游戏，完成桌面／320px 手机搜索、筛选、创建和管理验收；控件文字对比度至少 4.5:1。七个既有游戏浏览器回归通过，277 项前端测试通过。\n\n由 v1.8.3 tag 发布同一提交的已验证构建，保留游戏上下架设置。"
+  },
+  {
+    "version": "v1.8.2",
+    "date": "2026-10-13",
+    "title": "版本更新",
+    "body": "所有游戏统一使用平台原生媒体播放器，支持时声明 playback 音频会话，音量由设备媒体音量控制。\n\n「试听音效」旁增加「静音／取消静音」，统一控制所有游戏、回合提示和试听。静音立即停止声音并清空队列；刷新保留偏好，同源标签页同步，取消静音不补播历史声音。\n\n七个公共提示音已上传 OSS；加载失败时使用同旋律 WAV 备用。强手棋保留自己的事件与音效映射，复用平台播放器。规范已写入 AGENTS.md。\n\n验证：277 项前端测试通过，六个既有游戏与强手棋共 43 个浏览器检查点通过；手机实体静音开关仍需真机确认。\n\n发布由 v1.8.2 tag 触发，复用 main 同一提交的已验证构建；保留服务器游戏上下架设置。"
+  },
+  {
+    "version": "v1.8.1",
+    "date": "2026-10-12",
+    "title": "版本更新",
+    "body": "统一强手棋的创建弹窗、等待房间、玩家栏和回合提示；大厅、创建选项和等待房间改为同一张手绘式 SVG 插画封面。\n\n新增服务端事件驱动的掷骰与棋子逐格移动动画，覆盖跨起点、后退和直接入狱。刷新／重连不重播历史动作，支持减少动态效果。棋子放大为桌面 34px、手机 26px，同格编号单独显示。\n\n修正璀璨宝石浅色桌面上的文字和按钮对比度，覆盖禁用、选中及按钮启用时的状态切换；手机聊天入口不再遮挡棋盘或卡牌。统一布局、封面、颜色对比度和动画规范已写入 AGENTS.md。\n\n版本发布由 tag 触发，Actions 显示 Release v1.8.1，禁止在 main ref 上手动发布。main 继续运行完整检查，tag 只复用同一提交的已验证构建产物。\n\n升级保留管理员的游戏上下架设置。"
+  },
+  {
+    "version": "v1.8.0",
+    "date": "2026-10-12",
+    "title": "版本更新",
+    "body": "新增经典强手棋（Monopoly），支持 2～6 人、电脑与托管、买地收租、拍卖、建设、抵押、玩家交易和破产结算。提供中文桌面／手机棋盘、观战、刷新恢复和完整对局记录。\n\n所有新增游戏默认下架。管理员在「管理后台 → 游戏上架」确认后，玩家才能看到并创建牌桌；服务端同时阻止绕过入口创建。已有游戏的上下架设置保留，重启不会覆盖管理选择。\n\n强手棋图片和音效已上传阿里云 OSS，沿用现有 CDN 地址。游戏实现独立维护在 `games/monopoly/`，通过注册入口接入同一仓库。\n\n发布前验收：强手棋 114 项服务端测试／子测试（含竞态检查）、宿主与管理流程 20 项、强手棋浏览器 21 个检查点、旧游戏和接入浏览器 16 个检查点、前端 265 项；31 个媒体文件通过 CDN 回读、摘要及解码检查。完整电脑局自然结算并验证刷新恢复。\n\n升级后强手棋仍为下架状态，需要管理员手动上架。"
+  },
+  {
+    "version": "v1.7.0",
+    "date": "2026-10-12",
+    "title": "版本更新",
+    "body": "本版按游戏拆分维护目录，并修复三国杀中无可用响应仍反复询问的问题。\n\n- 六款游戏的规则、前端组件、专属类型和规则测试归入各自的 `games/<id>/`，继续使用同一个仓库和部署服务。\n- 新游戏通过后端注册和自动发现的前端模块接入，大厅、创建房间和战绩支持新模块。\n- 三国杀无懈只询问当前确实能响应的玩家；无人能响应时直接结算，反无懈后重新筛选资格。\n- 求桃、协助和部分牌／装备响应在没有可用选项时自动跳过，保留看破、龙魂、蛊惑、八卦阵等合法机会。\n- 无牌玩家和观众不再收到无懈响应按钮，也不会因为其他人的响应超时而被托管。兼容旧存档中的空响应窗口。\n\n现有复杂房间配置继续通过兼容层维护。开发接口与验证说明见仓库 `docs/game-development.md` 和 `docs/sanguosha-response-eligibility.md`。\n\n镜像：`ghcr.io/k0ngk0ng/wire-board:v1.7.0`\n\n更新：`./update.sh v1.7.0`。沿用现有在线备份与健康检查流程，保留配置和数据卷。\n\n验证来源和最终构建信息见附件 `verification.json`。"
+  },
+  {
+    "version": "v1.6.1",
+    "date": "2026-10-11",
+    "title": "版本更新",
+    "body": "调整创建房间的选项样式。\n\n- 璀璨宝石：固定图标列，修正贸易站等图标随文字长度偏移的问题。\n- 卡坦岛：扩展使用卡片选择；普通与双人剧本改为卡片，更多剧本可展开。\n- 三国杀：武将扩展包改为卡片选择，统一边框、圆角、间距和选中状态。\n- 游戏类型选中标记移至封面角落，避免挤压中文名称。\n\n保留原有游戏规则、组合限制和键盘操作。320／390 像素手机及桌面浏览器验证、18 项卡坦剧本切换与真实创建、265 项前端测试及生产构建通过。\n\n镜像：`ghcr.io/k0ngk0ng/wire-board:v1.6.1`；更新：`./update.sh v1.6.1`。"
+  },
+  {
+    "version": "v1.6.0",
+    "date": "2026-10-11",
+    "title": "版本更新",
+    "body": "本版补齐璀璨宝石、卡坦岛的扩展玩法与兼容组合，并完善铁路手机操作和三国杀 3v3。\n\n- 璀璨宝石：东方、城市、贸易站、要塞及组合；筹码、发展卡与贵族动画和手机交互。\n- 卡坦岛：主要扩展、Helpers、适用二至六人及兼容组合；12 个工作包完成，18 类主组合、12 类海图嵌套与 25 种商队配方完成。修复组合开关切换、基础目标隔离及海盗组合提示。\n- 铁路：手机地图与摸牌栏布局、明暗牌动画、日志和完整局结算；320／390 像素浏览器完整局通过。\n- 三国杀：3v3 官方配置、选将、阵营胜利及存档恢复；自然完整浏览器局通过。\n\n采用的本站补充规则在游戏说明与对应版本记录中标注；基础玩法保持原有规则。\n\n验证：前端 265 项测试、生产构建与本地页面验收通过。后端基线完整检查已通过；本次发布复用已成功构建的同提交产物，经校验、容器启动及 SQLite 工具检查后发布。见[轻量发布记录](https://github.com/k0ngk0ng/wire-board/actions/runs/38144415042)。\n\n提交：`44f4956b06fc48033e816f85098af222aefeb611`。发布使用同一提交的固定镜像 `ghcr.io/k0ngk0ng/wire-board:v1.6.0`（同 `sha-44f4956`）；运行目录执行 `./update.sh v1.6.0`，脚本先在线备份，再切换容器。"
+  },
+  {
+    "version": "v1.5.0",
+    "date": "2026-10-04",
+    "title": "版本更新",
+    "body": "三国杀现在可以在开局前选择身份局扩展或独立基础国战，中间公开出牌区也同步放大。\n\n- 身份局：军争160张牌、风火林山、八位经典神将、界限突破标准将；包可独立组合，经典标准局仍为默认。\n- 基础国战：60将、108张专用牌、同势力双将、暗将与亮将、野心家及势力共同计分。支持私有情报、电脑/托管、超时处理与断线恢复。\n- 桌面中间牌宽112px，手机76px，牌名和点数一起放大；牌多时在展示区横向滚动。\n- 全部新增画像和卡图已上传素材服务并核验摘要。手机与桌面验收通过，现有房间继续保留原规则配置。\n\n验证：全量Go竞态测试、go vet、前端生产构建、发布脚本检查通过；包含逐将定向测试、多组4/8人完整对局、隐藏信息隔离、保存恢复及HTTP阵营计分。本次范围不含3v3或后续国战包。"
+  },
+  {
+    "version": "v1.4.0",
+    "date": "2026-10-03",
+    "title": "版本更新",
+    "body": "- Add five Ticket to Ride maps with map-specific rules and artwork\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.3.6...v1.4.0"
+  },
+  {
+    "version": "v1.3.6",
+    "date": "2026-10-03",
+    "title": "版本更新",
+    "body": "- Fix Splendor overlay contrast and mobile payment readability\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.3.5...v1.3.6"
+  },
+  {
+    "version": "v1.3.5",
+    "date": "2026-10-03",
+    "title": "版本更新",
+    "body": "- Close waiting and active rooms after a day without gameplay\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.3.4...v1.3.5"
+  },
+  {
+    "version": "v1.3.4",
+    "date": "2026-10-03",
+    "title": "版本更新",
+    "body": "- Add voluntary autoplay for every game and animate noble arrivals\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.3.3...v1.3.4"
+  },
+  {
+    "version": "v1.3.3",
+    "date": "2026-10-03",
+    "title": "版本更新",
+    "body": "- Improve Splendor token motion, noble displays and room invitations\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.3.2...v1.3.3"
+  },
+  {
+    "version": "v1.3.2",
+    "date": "2026-10-03",
+    "title": "版本更新",
+    "body": "- Animate Splendor card acquisitions, randomize starting seat and improve readability\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.3.1...v1.3.2"
+  },
+  {
+    "version": "v1.3.1",
+    "date": "2026-10-03",
+    "title": "版本更新",
+    "body": "- Use in-app table close confirmation and document asset deployment paths\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.3.0...v1.3.1"
+  },
+  {
+    "version": "v1.3.0",
+    "date": "2026-10-03",
+    "title": "版本更新",
+    "body": "- Add classic Sanguosha, platform ratings and tabletop branding\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.2.1...v1.3.0"
+  },
+  {
+    "version": "v1.2.1",
+    "date": "2026-10-03",
+    "title": "版本更新",
+    "body": "大厅卡片改为宽屏最多三列、中等屏两列、手机一列。统一卡片高度、中英文标题布局和底部按钮位置，人数与时长保持完整，解决标题换行引起的高低不齐。\n\n四款游戏首页封面统一为本地 SVG 插画：卡卡颂不再使用原版地块图作封面，卡坦岛补齐背景与构图。游戏内原版素材和规则保持不变。\n\n验证：TypeScript/Vite 构建通过；使用真实构建文件检查 1440px、900px、390px 和 320px，卡片及按钮对齐，手机无横向溢出。"
+  },
+  {
+    "version": "v1.2.0",
+    "date": "2026-10-03",
+    "title": "版本更新",
+    "body": "新增卡卡颂 Carcassonne 基础版（2–5 人）：72 张地块、道路/城市/修道院/农民、区域多数与并列计分、完整终局结算。支持地块旋转预览和确认、随从派遣、电脑玩家、观战、聊天、120 秒回合与超时移出、保存恢复和个人战绩。地图支持手型拖动、滚轮缩放、全图适配与手机布局；可选原版素材通过外部素材服务加载。\n\n卡坦岛同时移除数字下的概率圆点和港口常驻文字，保留港口悬停说明。\n\n验证：完整 Go 竞态测试、规则与联机/重启/战绩测试、静态检查、TypeScript/Vite 构建、更新脚本 7 项测试；Chrome 实测桌面及 320px/390px 手机布局、地图拖动/滚轮与地块放置计分。\n\n部署继续使用在线 SQLite 备份后切换单容器，保留现有账户、对局与配置。"
+  },
+  {
+    "version": "v1.1.1",
+    "date": "2026-10-03",
+    "title": "版本更新",
+    "body": "新增卡坦岛 CATAN 基础版，支持 3–4 人真人与电脑混合对局。\n\n- 随机岛屿、蛇形起始建设、掷骰生产、强盗与同时弃牌、港口和玩家交易、发展卡、最长道路与最大骑士军队，自己的回合达到 10 分获胜。\n- 玩家交易由发起者选择已同意的玩家确认成交；资源和发展卡种类对其他玩家及观众保密。\n- 接入观战、牌桌聊天、个人战绩、120 秒计时、超时处理、自动保存与断线恢复。\n- BGA 地形、卡牌、港口与棋子通过独立素材服务器加载；桌面与手机布局、地图缩放拖动、中文说明和彩色日志。\n- 璀璨宝石按参考图重排：桌面公共宝石右侧单列，手机贵族、横排宝石、三排发展卡和个人资源依次显示；筹码与永久折扣按颜色合并对齐，保留长方形卡牌与原始素材颜色。\n- 璀璨宝石保留可购买卡的高亮边框，卡面不显示遮挡数字的文字徽标。\n\n验证：Go race 全量测试、go vet、TypeScript/Vite 构建、更新脚本测试；Chrome 实测开局、建设、掷骰、交易、日志和窄屏布局，36 张素材校验通过。\n\n使用已有更新脚本选择 v1.1.1。账号和进行中的对局保留，浏览器刷新后显示新版大厅。"
+  },
+  {
+    "version": "v1.1.0",
+    "date": "2026-10-03",
+    "title": "版本更新",
+    "body": "- Add Catan base game with trading, private views, bots and BGA artwork support\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.0.15...v1.1.0"
+  },
+  {
+    "version": "v1.0.15",
+    "date": "2026-10-02",
+    "title": "版本更新",
+    "body": "移除璀璨宝石市场牌和本人预留牌上的「可购买」文字徽标，仅保留金色外框，避免遮挡数字。前端构建及 GitHub CI 检查通过。"
+  },
+  {
+    "version": "v1.0.14",
+    "date": "2026-10-02",
+    "title": "版本更新",
+    "body": "璀璨宝石在本人可行动时，以金色外框提示可购买的市场牌和预留牌。\n\n铁路修正手机列车牌比例和路线坐标，车厢围绕印刷格位中心旋转；关闭城市名同时去除底图文字和白底。自己与对手摸公开牌、暗牌均有飞牌，本人增加的手牌颜色会摇动高亮。领取新目的地增加确认，地图背景与路线分别使用拖动、点击指针。\n\n大厅显示全部等待中和进行中的房间，结束后不再允许新观战。新增真人玩家资料、战绩、独立分页历史，以及好友申请、接受和移除。升级会收录仍保留的结束对局，已删除或覆盖的旧记录无法恢复。\n\n验证：完整 Go race 测试、go vet、前端构建、部署脚本检查和真实双账号浏览器验证；覆盖 320px、390px 手机及 1440px 桌面。"
+  },
+  {
+    "version": "v1.0.13",
+    "date": "2026-10-02",
+    "title": "版本更新",
+    "body": "铁路地图现在可用滚轮围绕鼠标位置缩放，并直接按住拖动；保留手机触摸浏览，增加城市名开关和立体车厢图集支持。\n\n- 两款游戏的公开日志增加颜色标记，铁路记录具体摸牌、支付、线路得分、市场重置和最后一轮。\n- 本人的目的地卡实时显示完成状态与数量，结算前对其他玩家及观战者保密。\n- 摸暗牌会播放背面牌从牌堆飞向对应玩家的动画，不暴露颜色。\n- 目的地选择面板可收起查看地图，展开后保留选择。\n- 后台轮到本人行动时，浏览器标题交替提醒；回到页面、回合结束或离桌后恢复。\n\n验证：完整 Go race 测试、go vet、前端生产构建；桌面鼠标滚轮与拖动、手机触摸及 320/390px 布局、秘密信息隔离、标题提醒状态切换。"
+  },
+  {
+    "version": "v1.0.12",
+    "date": "2026-10-02",
+    "title": "版本更新",
+    "body": "- Expand Splendor board and action logs; move update backups online\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.0.11...v1.0.12"
+  },
+  {
+    "version": "v1.0.11",
+    "date": "2026-10-02",
+    "title": "界面布局调整",
+    "body": "- Align held gems and permanent discounts in matching color columns"
+  },
+  {
+    "version": "v1.0.10",
+    "date": "2026-10-02",
+    "title": "版本更新",
+    "body": "- Add table spectators and chat, clarify Splendor cards and animate markets\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.0.9...v1.0.10"
+  },
+  {
+    "version": "v1.0.9",
+    "date": "2026-10-02",
+    "title": "版本更新",
+    "body": "- Confirm blind Splendor reservations in the card dialog\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.0.8...v1.0.9"
+  },
+  {
+    "version": "v1.0.8",
+    "date": "2026-10-02",
+    "title": "版本更新",
+    "body": "- Show each Splendor player current gem token total\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.0.7...v1.0.8"
+  },
+  {
+    "version": "v1.0.7",
+    "date": "2026-10-02",
+    "title": "版本更新",
+    "body": "- Restore game logs and stabilize mobile turn countdown layout\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.0.6...v1.0.7"
+  },
+  {
+    "version": "v1.0.6",
+    "date": "2026-10-02",
+    "title": "版本更新",
+    "body": "- Remove redundant color labels from train cards\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.0.5...v1.0.6"
+  },
+  {
+    "version": "v1.0.5",
+    "date": "2026-10-02",
+    "title": "版本更新",
+    "body": "- Fix reserved Splendor card artwork obscured by overflowing costs\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.0.4...v1.0.5"
+  },
+  {
+    "version": "v1.0.4",
+    "date": "2026-10-02",
+    "title": "版本更新",
+    "body": "- Add basic computer players for solo and mixed game rooms\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.0.3...v1.0.4"
+  },
+  {
+    "version": "v1.0.3",
+    "date": "2026-10-02",
+    "title": "版本更新",
+    "body": "- Add timed turns, simultaneous rail setup, CDN artwork and safe image cleanup\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.0.2...v1.0.3"
+  },
+  {
+    "version": "v1.0.2",
+    "date": "2026-10-02",
+    "title": "版本更新",
+    "body": "- Add GHCR deployment updater with backups and rollback\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.0.1...v1.0.2"
+  },
+  {
+    "version": "v1.0.1",
+    "date": "2026-10-02",
+    "title": "版本更新",
+    "body": "- Allow players to choose gold substitutions when buying development cards\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/compare/v1.0.0...v1.0.1"
+  },
+  {
+    "version": "v1.0.0",
+    "date": "2026-10-02",
+    "title": "版本更新",
+    "body": "- Verify published containers and document tested game interfaces\n- Build private board game lobby with Splendor, Ticket to Ride and amd64 CI\n\n**Full Changelog**: https://github.com/k0ngk0ng/wire-board/commits/v1.0.0"
+  }
+]

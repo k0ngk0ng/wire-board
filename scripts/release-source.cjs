@@ -1,11 +1,15 @@
 // Resolves a release to an existing, verified binary. No build/test dispatches.
-async function resolveRelease({github, context, inputs={}, sleep=(ms)=>new Promise(r=>setTimeout(r,ms)), attempts=20, info=()=>{}}) {
+async function resolveRelease({github, context, inputs={}, history=require('../web/src/releases/history.json'), sleep=(ms)=>new Promise(r=>setTimeout(r,ms)), attempts=20, info=()=>{}}) {
   const manual=context.eventName==='workflow_dispatch';
   const version=manual?inputs.version:context.ref.replace(/^refs\/tags\//,'');
   if(!/^v\d+\.\d+\.\d+$/.test(version||'')) throw Error('Expected a stable vX.Y.Z version tag');
   if(manual && context.ref!==`refs/tags/${version}`) throw Error('Dispatch publication on the version tag, never main');
   if(!manual && (context.eventName!=='push'||context.ref!==`refs/tags/${version}`)) throw Error('Expected a tag push');
   if(manual && (!/^\d+$/.test(inputs.source_run||'')||! /^[0-9a-f]{40}$/.test(inputs.source_sha||''))) throw Error('Invalid manual source inputs');
+  validateHistory(history);
+  const notes=history.find(entry=>entry.version===version);
+  if(!notes) throw Error('Release history is missing notes for '+version);
+  const releaseContent={name:`${version} · ${notes.title}`,body:notes.body};
   const repo=context.repo;
   let tagSHA;
   try { tagSHA=(await github.rest.repos.getCommit({...repo,ref:`refs/tags/${version}`})).data.sha; }
@@ -48,8 +52,27 @@ async function resolveRelease({github, context, inputs={}, sleep=(ms)=>new Promi
   // commit here can unnecessarily require privileges GITHUB_TOKEN cannot hold.
   if(!release) {
     if(!tagSHA) throw Error('Create the matching draft or version tag before manual publication');
-    await github.rest.repos.createRelease({...repo,tag_name:version,name:`Wire Board ${version}`,draft:true,generate_release_notes:true});
+    await github.rest.repos.createRelease({...repo,tag_name:version,...releaseContent,draft:true});
   }
+  if(release) await github.rest.repos.updateRelease({...repo,release_id:release.id,...releaseContent});
   return {run:String(selected.id),sha,version};
 }
-module.exports={resolveRelease};
+function validateHistory(history) {
+  if(!Array.isArray(history)||!history.length) throw Error('Release history must contain notes');
+  const versions=new Set();
+  let previous;
+  for(const entry of history) {
+    if(!entry||!/^v\d+\.\d+\.\d+$/.test(entry.version||'')||versions.has(entry.version)||
+       typeof entry.title!=='string'||!entry.title.trim()||typeof entry.body!=='string'||!entry.body.trim()||
+       !/^\d{4}-\d{2}-\d{2}$/.test(entry.date||'')||!Number.isFinite(Date.parse(entry.date))||
+       new Date(entry.date).toISOString().slice(0,10)!==entry.date) throw Error('Invalid release history notes');
+    const parts=entry.version.slice(1).split('.').map(Number);
+    if(previous) {
+      const difference=parts.map((part,index)=>part-previous[index]).find(part=>part!==0);
+      if(difference===undefined||difference>=0) throw Error('Release history must be ordered newest first');
+    }
+    previous=parts;
+    versions.add(entry.version);
+  }
+}
+module.exports={resolveRelease,validateHistory};
