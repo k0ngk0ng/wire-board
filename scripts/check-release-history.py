@@ -1,6 +1,7 @@
 import argparse
 import json
 import os
+import re
 from pathlib import Path
 import shutil
 import subprocess
@@ -127,9 +128,17 @@ try:
     check('historical Markdown and long compare links render at 320px')
     browser('open', base + '/releases')
     browser('wait', '[data-release-list]')
+    placeholder = js('(()=>{const e=document.querySelector(".release-search input");return {color:getComputedStyle(e,"::placeholder").color,background:getComputedStyle(e).backgroundColor,opacity:getComputedStyle(e,"::placeholder").opacity}})()')
+    def luminance(color):
+        values = [float(v) / 255 for v in re.findall(r'[\d.]+', color)[:3]]
+        values = [v / 12.92 if v <= .04045 else ((v + .055) / 1.055) ** 2.4 for v in values]
+        return sum(v * weight for v, weight in zip(values, (.2126, .7152, .0722)))
+    foreground, background = luminance(placeholder['color']), luminance(placeholder['background'])
+    ratio = (max(foreground, background) + .05) / (min(foreground, background) + .05)
+    assert ratio >= 4.5 and float(placeholder['opacity']) == 1, placeholder
     screenshot('list-320')
     fit()
-    check('version list fits 320px')
+    check('version list fits 320px with readable search hint', placeholderContrast=ratio, **placeholder)
     browser('open', base + '/')
     browser('wait', 'a[data-release-entry]')
     assert js('document.querySelector("a[data-release-entry]").getAttribute("href")') == '/releases'

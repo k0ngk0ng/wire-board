@@ -31,6 +31,16 @@ scope = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(scope)
 
 class ScopeTests(unittest.TestCase):
+    def test_release_history_browser_runner_selects_frontend_checks(self):
+        result = self.plan('scripts/check-release-history.py')
+        self.assertEqual(result['quick_components'], ['frontend'])
+        self.assertTrue(result['build_required'])
+        self.assertFalse(result['has_shared'])
+        self.assertEqual(result['games'], [])
+        mixed = self.plan('scripts/check-release-history.py', 'internal/server/static_delivery.go')
+        self.assertTrue(mixed['has_shared'])
+        self.assertTrue(mixed['frontend_checks'])
+
     # Failure inventory before the Starfort timeout change: the full campaign
     # matrix still expires at45m; race or shard commands get the wrong limit;
     # other games inherit the longer timeout; or old/new campaigns disappear.

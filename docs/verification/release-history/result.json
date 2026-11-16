@@ -125,7 +125,11 @@
       "name": "historical Markdown and long compare links render at 320px"
     },
     {
-      "name": "version list fits 320px"
+      "name": "version list fits 320px with readable search hint",
+      "placeholderContrast": 5.843236586357646,
+      "background": "rgb(255, 254, 250)",
+      "color": "rgb(89, 105, 80)",
+      "opacity": "1"
     },
     {
       "name": "logged-out website exposes update history"

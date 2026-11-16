@@ -103,7 +103,7 @@ def plan(paths, games, manual='', legacy_sources=None, contra_campaigns=False, v
             components.update(matched)
         elif ci_path(path):
             components.add('ci')
-        elif path.startswith(('web/src/', 'web/tests/')):
+        elif path.startswith(('web/src/', 'web/tests/')) or path == 'scripts/check-release-history.py':
             frontend_checks = True
         elif path in ('scripts/update.sh', 'scripts/test_update.py', 'compose.yaml', 'Dockerfile', '.env.example'):
             components.add('deployment')

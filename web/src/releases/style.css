@@ -45,6 +45,10 @@
   color: #263e31;
   background: #fffefa;
 }
+.release-search input::placeholder {
+  color: #596950;
+  opacity: 1;
+}
 .release-search button {
   flex: 0 0 auto;
 }
