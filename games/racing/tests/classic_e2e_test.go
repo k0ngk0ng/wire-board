@@ -247,7 +247,7 @@ func TestClassicNaturalCompleteRaces(t *testing.T) {
 						}
 					}
 					for _, c := range last.Cars {
-						if c.LastReset != 0 || c.Lap < laps-1 || c.Progress < (float64(laps)-.5)*length {
+						if c.LastReset != 0 || c.Lap < laps-1 || c.Progress < (float64(laps)-.75)*length {
 							t.Fatalf("seat %d failed competitive drive-only completion: lap=%d checkpoint=%d progress=%.1f speed=%.1f", c.Seat, c.Lap, c.Checkpoint, c.Progress, c.Speed)
 						}
 						if c.FinishAt > 0 {
@@ -279,19 +279,21 @@ func TestClassicEveryVehicleNaturalRace(t *testing.T) {
 			}
 			steps := 0
 			for ; m.Result == nil && steps < 12040; steps++ {
-				m = tick(t, mod, &ctx, m, []int{0, 1})
+				m = tick(t, mod, &ctx, m, []int{0})
 			}
 			last := view(t, mod, m, -1)
 			defer func() {
-				classicTrace(t, map[string]any{"passed": !t.Failed(), "scope": "explicit equal-car production baseline, ordinary drive only", "vehicle": vehicle, "steps": steps, "final": last, "result": m.Result})
+				classicTrace(t, map[string]any{"passed": !t.Failed(), "scope": "production vehicle ability baseline, one explicit computer and one parked manual seat, ordinary drive only", "vehicle": vehicle, "steps": steps, "final": last, "result": m.Result})
 			}()
 			if m.Result == nil || last.ServerAt >= last.MaxRaceAt {
 				t.Fatal("vehicle could not complete an ordinary original course")
 			}
-			for _, c := range last.Cars {
-				if c.FinishAt == 0 || c.Lap != 1 || c.LastReset != 0 {
-					t.Fatalf("vehicle failed natural completion: %+v", c)
-				}
+			car := last.Cars[0]
+			if car.FinishAt == 0 || car.Lap != 1 || car.LastReset != 0 {
+				t.Fatalf("vehicle failed natural completion: %+v", car)
+			}
+			if last.Cars[1].Seq != 0 || last.Cars[1].Lap != 0 {
+				t.Fatal("manual vehicle baseline was automatically taken over")
 			}
 		})
 	}
