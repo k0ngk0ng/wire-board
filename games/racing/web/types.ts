@@ -5,7 +5,7 @@ import type { ClassicBarrier, ClassicRoadSample, ClassicPropSnapshot } from "./c
 import type { ClassicTerrainWorld } from "./classic-terrain";
 export type Point = { x: number; y: number };
 export type Options = {
-  track: "france" | "coastal" | "uk" | "park" | "metro" | "harbor" | "woodland" | "coast" | "canyon";
+  track: "france" | "coastal" | "uk" | "park" | "germany" | "metro" | "harbor" | "woodland" | "coast" | "canyon";
   laps: 1 | 3 | 5;
   timeOfDay?: "day" | "night";
   vehicles?: string[];

@@ -1,12 +1,14 @@
 {
-  "scope": "本轮赛车物理、电脑策略、本地预测及其回归与 lint 工具；不代表全仓库 lint",
+  "scope": "赛车物理、电脑策略、八车五赛道目录、选择预览、离线资源适配及回归与 lint 工具；不代表全仓库 lint",
   "rules": [
     "目录必须为 server/web/tests/build",
     "Go 文件为 snake_case，脚本为 kebab-case",
     "绑定、函数和类型采用 CamelCase，禁止下划线命名",
     "代码禁止注释，Go 编译器资源指令除外",
     "JavaScript/TypeScript 禁止 eval 和 Function 构造器",
-    "Go 包名必须匹配目录"
+    "Go 包名必须匹配目录",
+    "Python 绑定使用 snake_case 或常量 UPPER_SNAKE_CASE，类使用 PascalCase，禁用注释及 eval/exec",
+    "CSS 类和自定义属性使用 kebab-case，禁用注释"
   ],
   "files": [
     "games/racing/server/classic_bot.go",
@@ -34,6 +36,21 @@
     "games/racing/tests/classic_e2e_test.go",
     "games/racing/web/classic-skids.ts",
     "games/racing/tests/flight-presentation.test.mjs",
-    "games/racing/tests/module_e2e_test.go"
+    "games/racing/tests/module_e2e_test.go",
+    "games/racing/build/prepare_content.py",
+    "games/racing/build/render-previews.mjs",
+    "games/racing/build/lint_python.py",
+    "games/racing/server/classic_vehicles.go",
+    "games/racing/server/classic_motion.go",
+    "games/racing/web/classic-catalog.ts",
+    "games/racing/web/classic-motion.ts",
+    "games/racing/web/classic-assets.ts",
+    "games/racing/web/module.tsx",
+    "games/racing/web/style.css",
+    "games/racing/tests/content-assets.test.mjs",
+    "games/racing/tests/content_catalog_e2e_test.go",
+    "games/racing/build/check_content.py",
+    "games/racing/web/catalog.tsx",
+    "scripts/racing/check-nfs.py"
   ]
 }

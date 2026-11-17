@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Production-page acceptance for the NFS4 reference remake.
 
 Failure inventory and frozen budgets precede the implementation in
@@ -22,18 +21,15 @@ import traceback
 import uuid
 from concurrent.futures import ThreadPoolExecutor
 
-
 ROOT = Path(__file__).resolve().parents[2]
 TRACKS = ("france", "coastal", "uk", "park")
 VEHICLES = ("p911", "fm50", "ldia", "mcf1", "ccor")
 BUDGET = {"desktopFPS": 50, "desktopP95MS": 35, "touchFPS": 30,
           "touchP95MS": 50, "inputPixelP95MS": 80, "dynamicBytes": 8192}
 
-
 def require(condition, message, detail=None):
     if not condition:
         raise AssertionError(message + ("\n" + json.dumps(detail, ensure_ascii=False) if detail is not None else ""))
-
 
 class Acceptance:
     def __init__(self, args):
@@ -161,8 +157,7 @@ class Acceptance:
         return self.api("/state", name=name).get("room")
 
     def command(self, kind, name="main", **extra):
-        # A timer may advance after GET /state. A 409 means this command did
-        # not apply; retry with a fresh revision and nonce, never change intent.
+
         for _ in range(12):
             room = self.room(name)
             result = self.request("/rooms/" + room["id"], dict(type=kind, version=room["version"], nonce=uuid.uuid4().hex, **extra), name)
@@ -263,7 +258,7 @@ class Acceptance:
         self.browser("click", ".choose-games button")
         self.browser("wait", 'select[aria-label="赛道"]')
         actual = self.js('[...document.querySelectorAll("select[aria-label=赛道] option")].map(e=>e.value)')
-        require(set(actual) == set(TRACKS), "creation must expose exactly four original routes", actual)
+        require(set(actual) == {item["id"] for item in json.loads((ROOT/"games/racing/server/data/index.json").read_text())}, "creation must expose the complete original route catalog", actual)
         periods = self.js('[...document.querySelectorAll("select[aria-label=时段] option")].map(e=>e.value)')
         require(set(periods) == {"day", "night"}, "original day/night selection missing", periods)
         self.browser("select", 'select[aria-label="赛道"]', track)
@@ -279,7 +274,7 @@ class Acceptance:
             self.command("add_bot")
         self.browser("wait", '.racing-preparation select[aria-label="车型"]')
         ids = self.js('[...document.querySelectorAll(".racing-preparation select[aria-label=车型] option")].map(e=>e.value)')
-        require(set(ids) == set(VEHICLES), "waiting room must expose five genuine vehicles", ids)
+        require(set(ids) == {item["id"] for item in json.loads((ROOT/"games/racing/web/classic-vehicles.json").read_text())}, "waiting room must expose the complete genuine vehicle catalog", ids)
         if self.js('document.querySelector(".racing-preparation select[aria-label=车型]").value') == vehicle:
             other = next(value for value in VEHICLES if value != vehicle)
             self.browser("select", '.racing-preparation select[aria-label="车型"]', other)
@@ -333,13 +328,13 @@ class Acceptance:
         require(max(r["loaded"] for r in rows) == max(r["total"] for r in rows), "renderer became ready before all selected bytes completed", rows)
         for request in data["requests"]:
             path = request["url"]
-            if "/tracks/" in path:
+            if "/racing/v3/tracks/" in path:
                 basename = path.rsplit("/", 1)[-1]
                 require(basename.startswith(track + ".") or basename.startswith(track + "-"), "unselected route preloaded", data["requests"])
                 require(night or "-night" not in basename, "unselected night scene preloaded", data["requests"])
             if "/racing/v3/audio/" in path:
                 audio_owner = path.split("/racing/v3/audio/", 1)[1].split("/", 1)[0]
-                require(audio_owner not in VEHICLES or audio_owner == vehicle, "unfollowed vehicle engine audio preloaded", data["requests"])
+                require(audio_owner not in {item["id"] for item in json.loads((ROOT/"games/racing/web/classic-vehicles.json").read_text())} or audio_owner == vehicle, "unfollowed vehicle engine audio preloaded", data["requests"])
         if self.js("innerWidth") == 320:
             self.browser("scrollintoview", ".racing-chase")
             self.visible_controls("first-touch-entry")
@@ -407,12 +402,7 @@ class Acceptance:
         return layout
 
     def revised_controls_contract(self):
-        # New failure inventory, written before the revised product build:
-        # below-canvas panels, tiny/cropped game view, touch overlay escaping the
-        # canvas, C repeat/edge errors, B restoring the wrong view, silent/stuck
-        # H, rejected authority horn, stale-input expiry, blur, gamepad analog
-        # loss, unarmed reconnect, disconnected holds, and default-key bypass
-        # after a public settings remap. No gameplay clock/state is injected.
+
         failures = []
         def attempt(name, callback):
             try:
@@ -436,7 +426,7 @@ class Acceptance:
         self.browser("set", "viewport", "1280", "1000")
 
     def thumb_controls(self):
-        # MOBILE-TOUCH-PLAN failure inventory was written before this change.
+
         self.create_ui("france", vehicle="p911", players=2)
         self.enter("france", vehicle="p911")
         self.browser("set", "viewport", "320", "844")
@@ -491,8 +481,7 @@ class Acceptance:
         require(keys["held"]["controls"]["steer"]=="-1" and keys["repeat-blocked"]["controls"]["steer"]=="0" and keys["fresh"]["controls"]["steer"]=="-1","direction button resumed stale held keyboard input",{k:v["controls"]for k,v in keys.items()})
         self.check("direction button keyboard focus loss blocks repeat until new press")
         self.browser("focus",".racing-chase")
-        # The updated layout must remain reachable after rotation, including
-        # actual native fullscreen with the platform's toolbar and exit path.
+
         self.browser("set","viewport","844","390")
         self.browser("scrollintoview","[data-fullscreen-enter]")
         self.browser("click","[data-fullscreen-enter]")
@@ -515,8 +504,7 @@ class Acceptance:
         if self.args.phase=="thumb-layouts":
             self.close_room()
             return
-        # Normal input and the same actual two-way TCP delay as the original
-        # acceptance, measured with native pointer events and vehicle pixels.
+
         for label in ("normal","rtt150"):
             if label=="rtt150":
                 self.native("thumb-slow-transport",[{"headers":{"X-Acceptance-RTT":"150"}},{"reload":True},{"wait":2200}])
@@ -532,12 +520,7 @@ class Acceptance:
         self.close_room()
 
     def safety_controls(self):
-        # Safety failure inventory precedes the Board fix: a lifted steering
-        # finger sticks if WebKit/menu routing loses pointerup/cancel/capture;
-        # ending it must preserve the other finger, keyboard and Gamepad.
-        # HUD/canvas text must not enter selection/callout, while ordinary
-        # platform editors retain editing. Faults only suppress native pointer
-        # releases at window capture; native touchend/touches remain untouched.
+
         self.report["limitations"] += [
             "Safari/menu release loss is simulated by a pre-app window-capture blocker for pointerup/pointercancel/lostpointercapture only; touch events remain native CDP events.",
             "Cancelable contextmenu/selectstart guard-boundary probes are explicitly synthetic and are separate from native long-press/drag/right-click evidence.",
@@ -771,9 +754,7 @@ class Acceptance:
         self.close_room()
 
     def offroad_circuit(self):
-        # Each track owns a separate <=24 minute fixture. The actual mesh and
-        # collision determine reachable offroad distance; this coverage target
-        # is never sent to gameplay as a rule or used to relax lap/reset checks.
+
         track=self.args.track
         require(self.args.circuit_plan,'circuits requires an explicit actual-terrain driving plan; old VROAD-only excursion windows are invalid')
         plan_path=(ROOT/self.args.circuit_plan).resolve()
@@ -923,8 +904,7 @@ class Acceptance:
             for _ in range((3-mode)%4):actions.extend([{'key':'c','down':True},{'key':'c','down':False},{'wait':180}])
             actions.extend([{'read':'neutral'},{'shot':'cockpit-neutral'},
                             {'key':'w','down':True},{'key':' ','down':True},{'wait':5000},{'read':'loaded'},
-                            # Measure speed while still driving the original straight,
-                            # before the deliberate handbrake steering pixel comparison.
+
                             {'key':' ','down':False},{'wait':650},{'read':'moving'},{'shot':'cockpit-moving'},
                             {'key':' ','down':True},
                             {'key':'a','down':True},{'wait':450},{'read':'left'},{'shot':'steering-left'},{'key':'a','down':False},
@@ -1196,9 +1176,7 @@ class Acceptance:
             self.set_sound(False)
 
     def horn_expiry(self):
-        # The CDP hard-freeze operation leaves this Chrome headless tab hidden
-        # even after active. Keep this fault as the last independent gate so no
-        # later gameplay or frame measurement runs in an invisible renderer.
+
         self.browser("set", "viewport", "1280", "1000")
         self.create_ui("france", vehicle="p911", players=2)
         self.enter("france", vehicle="p911")
@@ -1339,8 +1317,7 @@ class Acceptance:
         require(rows["old-pad"]["controls"].get("horn") == "false" and rows["new-pad"]["controls"].get("horn") == "true" and rows["released"]["controls"].get("horn") == "false", "saved physical button mapping retained old default or failed release", rows)
         self.screenshot("controller-remapped-play")
         self.check("public keyboard and gamepad remapping saves and disables the old defaults")
-        # Restore through the same public UI so later canonical C/B/H and
-        # front-wheel latency stages test the default platform profile.
+
         self.browser("click", 'button[aria-label="控制器设置"]')
         self.browser("wait", ".controller-settings [data-controller-model]")
         self.browser("select", "[data-controller-model]", model["id"])
@@ -1494,8 +1471,7 @@ class Acceptance:
         self.browser("press", "Escape", name=session)
 
     def rear_button_repeat(self):
-        # Fresh Space/Enter may hold rear view. Losing element focus cancels;
-        # repeated native keydown after refocus must stay cancelled until up.
+
         self.browser("set", "viewport", "320", "844")
         self.native("rear-button-touch-mode", [{"wait": 100}], width=320, height=844, touch=True)
         self.browser("scrollintoview", ".racing-chase")
@@ -1710,8 +1686,7 @@ class Acceptance:
 
     def network_and_pixels(self):
         self.browser("set", "viewport", "1280", "1000")
-        # Keep both cars at rest for causal front-wheel pixel measurement.
-        # Six-car moving load is separately checked in the complete-race gate.
+
         self.create_ui("france", vehicle="p911", players=2, bots=0)
         self.browser("open", self.base, name="peer")
         self.session("peer")["opened"] = True
@@ -1778,12 +1753,10 @@ class Acceptance:
         if self.log:
             self.log.close()
         self.record("report", self.report)
-        # The report and screenshots are retained; only this run's disposable
-        # profile/caches/socket directory is removed after its browser closes.
+
         if not self.report.get("cleanupErrors"):
             shutil.rmtree(self.temp, ignore_errors=True)
             shutil.rmtree(Path(self.env["AGENT_BROWSER_SOCKET_DIR"]), ignore_errors=True)
-
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
@@ -1895,7 +1868,6 @@ def main():
     finally:
         job.finish()
     return 0 if job.report["passed"] else 1
-
 
 if __name__ == "__main__":
     raise SystemExit(main())

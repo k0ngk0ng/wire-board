@@ -15,8 +15,8 @@ export type ClassicManifest = {
 };
 export type ClassicProgress = { loaded: number; total: number; cached: number };
 
-const TRACKS = new Set(["france", "coastal", "uk", "park"]);
-const VEHICLES = new Set(["p911", "fm50", "ldia", "mcf1", "ccor"]);
+const TRACKS = new Set(["france", "coastal", "uk", "park", "germany"]);
+const VEHICLES = new Set(["p911", "fm50", "ldia", "mcf1", "ccor", "bmw5", "jxkr", "mclk"]);
 
 export function classicResourceBase(value: string): string {
   if (value === "/") return "";
@@ -72,8 +72,6 @@ export function selectClassicAssets(
   return result;
 }
 
-// Only fully verified bytes enter this bounded LRU. An aborted consumer never
-// owns another consumer's request, and a failed request cannot poison retries.
 export class ClassicAssetCache {
   private entries = new Map<string, ArrayBuffer>();
   private capacity: number;

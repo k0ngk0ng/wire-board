@@ -2,8 +2,6 @@ package racing
 
 import "math"
 
-// ClassicMotionState is an independent SI motion state: metres, seconds and radians.
-// Angle zero points along +X; positive steering rotates toward +Z.
 type ClassicMotionState struct {
 	X            float64 `json:"x"`
 	Z            float64 `json:"z"`
@@ -24,12 +22,11 @@ type ClassicMotionState struct {
 }
 
 type ClassicMotionInput struct {
-	Steer       float64 `json:"steer"`
-	Throttle    float64 `json:"throttle"`
-	BrakeAmount float64 `json:"brakeAmount"`
-	Handbrake   bool    `json:"handbrake"`
-	// Only intentional, current player/bot input may request reversing.
-	AllowReverse bool `json:"allowReverse"`
+	Steer        float64 `json:"steer"`
+	Throttle     float64 `json:"throttle"`
+	BrakeAmount  float64 `json:"brakeAmount"`
+	Handbrake    bool    `json:"handbrake"`
+	AllowReverse bool    `json:"allowReverse"`
 }
 
 type ClassicRoadSurface struct {
@@ -54,9 +51,10 @@ type ClassicVehicleParams struct {
 	TorqueCurve                                    [21]float64
 }
 
-// ClassicVehicle preserves the base CARP data shipped in the NFS4 public demo.
-// The physical interpretation below is independent; these are not measured runs.
 func ClassicVehicle(id string) ClassicVehicleParams {
+	if params, ok := classicExtraVehicles[id]; ok {
+		return params
+	}
 	switch id {
 	case "fm50":
 		return ClassicVehicleParams{
@@ -280,10 +278,6 @@ func cleanClassicState(s ClassicMotionState, p ClassicVehicleParams) ClassicMoti
 	s.ReverseTimer = classicClamp(classicFinite(s.ReverseTimer, 0), 0, 1)
 	return s
 }
-
-// StepClassicMotion advances at most 100 ms in fixed steps no longer than 20 ms.
-// Tyre stiffness, CG height, low-speed blend and drag fit are explicit design
-// choices, rather than claims about unrecovered original executable formulas.
 func StepClassicMotion(s ClassicMotionState, in ClassicMotionInput, p ClassicVehicleParams, road ClassicRoadSurface, dt float64) ClassicMotionState {
 	if !validClassicVehicle(p) {
 		p = ClassicVehicle(p.ID)
@@ -424,7 +418,6 @@ func classicMotionStep(s ClassicMotionState, in ClassicMotionInput, p ClassicVeh
 	brakeForce := p.Mass * p.MaxBraking * s.Brake * classicSign(u)
 	frontFraction := classicClamp(p.FrontGripBias, .3, .65)
 	a, b := p.Wheelbase*(1-frontFraction), p.Wheelbase*frontFraction
-	// Use the original bias as a static axle-load proxy; 0.48 m CG height is chosen.
 	weight := p.Mass * 9.81 * road.NormalY
 	frontLoad := classicClamp(weight*frontFraction-p.Mass*s.LongAccel*.48/p.Wheelbase, weight*.15, weight*.85)
 	rearLoad := weight - frontLoad
@@ -441,7 +434,6 @@ func classicMotionStep(s ClassicMotionState, in ClassicMotionInput, p ClassicVeh
 	denom := math.Max(math.Abs(u), 1)
 	alphaFront := math.Atan2(v+a*s.YawRate, denom) - delta*classicSign(u)
 	alphaRear := math.Atan2(v-b*s.YawRate, denom)
-	// Ten times axle load is an independently chosen cornering stiffness.
 	frontY := 0.
 	if frontYLimit > 1e-6 {
 		frontY = -frontYLimit * math.Tanh(frontLoad*10*alphaFront/frontYLimit)
@@ -455,8 +447,6 @@ func classicMotionStep(s ClassicMotionState, in ClassicMotionInput, p ClassicVeh
 	topAcceleration := classicTorque(p, topRPM) * p.VelocityToRPM[topIndex] * (2 * math.Pi / 60) * p.GearEfficiency[topIndex] / p.Mass
 	dragCoefficient := math.Max(.00001, (topAcceleration-.13)/(p.MaxSpeed*p.MaxSpeed))
 	rolling := .13
-	// Rough-ground resistance builds with speed instead of exceeding available
-	// traction at a standstill; its full configured value remains above 6 m/s.
 	dragAcceleration := (rolling + road.Resistance*classicClamp(math.Abs(u)/6, 0, 1) + dragCoefficient*u*u) * classicSign(u)
 	if s.Throttle < .05 {
 		dragAcceleration += p.GasOffFactor * (1 + p.GearRatios[gearIndex]*.35) * classicSign(u)
@@ -468,7 +458,6 @@ func classicMotionStep(s ClassicMotionState, in ClassicMotionInput, p ClassicVeh
 	inertia := p.Mass * p.Wheelbase * p.Wheelbase * .35
 	nextYaw := s.YawRate + (a*frontY*math.Cos(delta)-b*rearY)/inertia*dt
 	nextYaw *= math.Exp(-(.18 + .18*(1-s.Handbrake)) * dt)
-	// Blend to the kinematic bicycle near walking speed to avoid tyre-force chatter.
 	beta := math.Atan(b / p.Wheelbase * math.Tan(delta))
 	kinYaw := nextU * math.Tan(delta) / p.Wheelbase
 	kinV := nextU * math.Tan(beta)

@@ -9,7 +9,7 @@ import (
 	"math"
 )
 
-//go:embed data/index.json data/car-bodies.json data/rules/*.json
+//go:embed data/index.json data/car-bodies.json data/extra-vehicles.json data/rules/*.json
 var classicRuleFiles embed.FS
 
 type RoadSample struct {
@@ -400,7 +400,8 @@ func validClassicVehicleID(id string) bool {
 	case "p911", "fm50", "ldia", "mcf1", "ccor":
 		return true
 	}
-	return false
+	_, ok := classicExtraVehicles[id]
+	return ok
 }
 
 func classicGeometryError(id string) error { return fmt.Errorf("赛车赛道版本不可用：%s", id) }

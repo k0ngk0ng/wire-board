@@ -3,6 +3,7 @@ import type {
   ClassicRoadSurface,
 } from "./classic-motion.ts";
 import type { ClassicTerrainWorld } from "./classic-terrain.ts";
+import extra from "./classic-extra-vehicles.json" with { type: "json" };
 
 export type ClassicRulePoint = { x: number; y: number };
 export type ClassicRoadSample = {
@@ -275,6 +276,7 @@ const BODIES: Record<
   ldia: { width: 1.99999988, height: 1.25818837, length: 4.46999979 },
   mcf1: { width: 1.89999998, height: 1.28496265, length: 4.92000055 },
   ccor: { width: 2, height: 1.28402138, length: 4.55999994 },
+  ...extra.bodies,
 };
 export function classicVehicleBody(id: string) {
   return Object.hasOwn(BODIES, id) ? BODIES[id] : BODIES.p911;

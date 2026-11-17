@@ -2,6 +2,8 @@
 
 本目录记录离线工具契约、依赖和可重复验收，不保存原始安装包、ISO、VIV 或 FRD 副本。输入保存在仓库内 `.local/racing-nfs-reference/`：试玩提供 P911、FM50、France；补充原盘按文件范围取得 LDIA、MCF1、CCOR、Coastal、UK、Park。原文件摘要与取得范围分别见调研清单和 `.local/racing-nfs-reference/additional/acquisition-manifest.json`。完整 ISO 未下载，不能声称已核验整张光盘的字节摘要。
 
+本轮新增 BMW5、JXKR、MCLK 与 Germany，原始范围输入保存在仓库内 `.local/racing-content/source/`，取得记录见 [content-inputs.json](content-inputs.json)。新增菜单图与迷你赛道模型的来源见 [content-previews.json](content-previews.json)，离线命令见 [内容生成](../../../build/README.md)。下表及原始验收数字记录最初五车／四赛道基线；当前总清单为八车、五条独立赛道的十种日夜场景与十三张缩略图，共 114 项、71,788,589 字节。
+
 发布候选资产位于 `games/racing/assets/public/racing/v3/`，不与旧 v1/v2 对象混写。它们是原版资源的派生产物，包含 EA 的美术与声音内容；工具许可证不改变原资源的权利归属。
 
 | 车型 | 原名称 | 外观三角面 | 驾驶舱三角面 | GLB 字节 |

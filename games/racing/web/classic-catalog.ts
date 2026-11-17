@@ -1,4 +1,4 @@
-import vehicles from "./classic-vehicles.json";
+import vehicles from "./classic-vehicles.json" with { type: "json" };
 import type { ClassicPalette } from "./classic-paint";
 
 export type ClassicVehicleDefinition = {
@@ -19,4 +19,5 @@ export const classicTrackNames = {
   coastal: "海豚湾",
   uk: "凯尔特遗迹",
   park: "金迪亚克公园",
+  germany: "德国乡间公路",
 } as const;

@@ -1,4 +1,5 @@
-/** SI motion shared by the original-game reference driving model. */
+import extra from "./classic-extra-vehicles.json" with { type: "json" };
+
 export type ClassicMotionState = {
   x: number;
   z: number;
@@ -60,8 +61,7 @@ export type ClassicVehicleParams = {
   torqueCurve: number[];
 };
 
-/** Base CARP values shipped in the demo; physical interpretation is independent. */
-const CLASSIC_VEHICLES: Record<string, ClassicVehicleParams> = {
+const classicVehicleParameters: Record<string, ClassicVehicleParams> = {
   p911: {
     id: "p911",
     mass: 1500.0,
@@ -220,11 +220,12 @@ const CLASSIC_VEHICLES: Record<string, ClassicVehicleParams> = {
       372.845001, 338.950012, 305.054993, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     ],
   },
+  ...extra.vehicles,
 };
 export function classicVehicle(id: string): ClassicVehicleParams {
-  const p = Object.hasOwn(CLASSIC_VEHICLES, id)
-    ? CLASSIC_VEHICLES[id]
-    : CLASSIC_VEHICLES.p911;
+  const p = Object.hasOwn(classicVehicleParameters, id)
+    ? classicVehicleParameters[id]
+    : classicVehicleParameters.p911;
   return {
     ...p,
     gearRatios: [...p.gearRatios],
@@ -321,8 +322,6 @@ function cleanState(
   };
 }
 
-/** Fixed 20 ms maximum steps. Stiffness, CG height, low-speed stability and drag
- * fitting are design choices, not claims about recovered original formulas. */
 export function stepClassicMotion(
   state: ClassicMotionState,
   input: ClassicMotionInput,

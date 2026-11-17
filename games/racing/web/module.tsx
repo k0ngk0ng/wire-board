@@ -14,9 +14,21 @@ import {
 } from "./classic-catalog";
 import { classicLegacySounds } from "./classic-loading";
 function OptionsForm({ value, onChange, disabled }: OptionsProps<Options>) {
+  const previewTrack = Object.hasOwn(classicTrackNames, value.track)
+    ? value.track as keyof typeof classicTrackNames
+    : "france";
   return (
     <div className="racing-options">
-      <label>
+      <div className="racing-track-choice">
+        <img
+          className="racing-track-preview"
+          data-racing-preview="track"
+          src={`/racing/v3/previews/tracks/${previewTrack}.webp`}
+          alt={`${classicTrackNames[previewTrack]}路线缩略图`}
+          width={384}
+          height={216}
+        />
+        <label>
         赛道
         <select
           aria-label="赛道"
@@ -32,7 +44,8 @@ function OptionsForm({ value, onChange, disabled }: OptionsProps<Options>) {
             </option>
           ))}
         </select>
-      </label>
+        </label>
+      </div>
       <label>
         时段
         <select
@@ -82,6 +95,14 @@ function Preparation({
   const vehicle = classicVehicleByID(id);
   return (
     <div className="racing-preparation">
+      <img
+        className="racing-vehicle-preview"
+        data-racing-preview="vehicle"
+        src={`/racing/v3/previews/cars/${vehicle.id}.webp`}
+        alt={`${vehicle.name}外观缩略图`}
+        width={381}
+        height={178}
+      />
       <label>
         车型
         <select
@@ -147,7 +168,7 @@ export default defineGame<View, Options>({
       <p>
         2～6 人的追车视角竞速，全自动挡。3 秒发车灯后同时起步，按所选的 1、3 或
         5
-        圈比赛，按最终过线先后排名。五款经典车型具有各自的动力、传动、制动和抓地特性，可在等待房间选择。
+        圈比赛，按最终过线先后排名。{classicVehicles.length} 款经典车型具有各自的动力、传动、制动和抓地特性，可在等待房间选择。
       </p>
       <p>
         沿赛道正向绕行一周后增加圈数；离开路面再返回仍能继续计圈。附着由轮胎下的实际地面材质决定，坡度影响行驶。车身可以相撞，没有攻击或防御道具。

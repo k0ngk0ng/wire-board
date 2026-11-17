@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFileSync, mkdirSync, writeFileSync } from "node:fs";
+import { readFileSync, mkdirSync, writeFileSync, renameSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
@@ -8,6 +8,7 @@ import path from "node:path";
 const root = fileURLToPath(new URL("../../../", import.meta.url));
 const require = createRequire(new URL("../../../web/package.json", import.meta.url));
 const ts = require("typescript");
+const postcss = require("postcss");
 const config = JSON.parse(readFileSync(new URL("./lint-rules.json", import.meta.url), "utf8"));
 const out = path.join(root, ".local/racing-dynamics/evidence");
 const temp = path.join(root, ".local/racing-dynamics/tmp");
@@ -35,19 +36,43 @@ function inspectGo(inputs) {
   }));
 }
 
+function inspectPython(inputs) {
+  return JSON.parse(execFileSync("python3", ["-B", "games/racing/build/lint_python.py"], { cwd: root, input: JSON.stringify(inputs), encoding: "utf8" }));
+}
+
+function inspectCSS(source) {
+  const errors = [];
+  try {
+    const file = postcss.parse(source);
+    file.walkComments(() => errors.push("no-comments"));
+    file.walkRules(rule => {
+      for (const match of rule.selector.matchAll(/\.([A-Za-z_][\w-]*)/g)) {
+        if (!/^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$/.test(match[1])) errors.push("kebab-case-class");
+      }
+    });
+    file.walkDecls(decl => { if (decl.prop.startsWith("--") && !/^--[a-z][a-z0-9-]*$/.test(decl.prop)) errors.push("kebab-case-property"); });
+  } catch { errors.push("syntax"); }
+  return errors;
+}
+
 const results = [];
 const goInputs = [];
+const pythonInputs = [];
 for (const file of config.files) {
   const relative = file.replace("games/racing/", "");
-  assert(/^(server|web|tests|build)\//.test(relative), `directory: ${file}`);
+  assert(/^(server|web|tests|build)\//.test(relative) || /^scripts\/racing\//.test(file), `directory: ${file}`);
   const name = path.basename(file);
-  assert(file.endsWith(".go") ? /^[a-z][a-z0-9_]*\.go$/.test(name) : /^[a-z][a-z0-9.-]*\.(ts|mjs)$/.test(name), `filename: ${file}`);
+  assert(file.startsWith("scripts/racing/") ? /^[a-z][a-z0-9-]*\.py$/.test(name) : /\.(go|py)$/.test(file) ? /^[a-z][a-z0-9_]*\.(go|py)$/.test(name) : /^[a-z][a-z0-9.-]*\.(ts|tsx|mjs|css)$/.test(name), `filename: ${file}`);
   const source = readFileSync(path.join(root, file), "utf8");
   if (file.endsWith(".go")) goInputs.push({ path: file, source });
+  else if (file.endsWith(".py")) pythonInputs.push({ path: file, source });
+  else if (file.endsWith(".css")) results.push({ file, errors: inspectCSS(source) });
   else results.push({ file, errors: inspectScript(source) });
 }
 const goResults = inspectGo(goInputs);
 for (let i = 0; i < goInputs.length; i++) results.push({ file: goInputs[i].path, errors: goResults[i] });
+const pythonResults = inspectPython(pythonInputs);
+for (let i = 0; i < pythonInputs.length; i++) results.push({ file: pythonInputs[i].path, errors: pythonResults[i] });
 let examples = 0;
 if (process.argv.includes("--self-test")) {
   const samples = [
@@ -61,8 +86,13 @@ if (process.argv.includes("--self-test")) {
   const fixtures = ["package racing\nfunc driveCar() {}", "package racing\nfunc bad_name() {}", "package racing\n// forbidden\nfunc driveCar() {}", "package wrong\nfunc driveCar() {}", "package racing\nvar bad_name = 1"];
   const checked = inspectGo(fixtures.map(source => ({ path: "games/racing/server/fixture.go", source })));
   for (let i = 0; i < checked.length; i++) { assert.equal(checked[i].length > 0, i > 0); examples++; }
+  const python = inspectPython(["def drive_car(max_speed):\n return max_speed", "def wrongName():\n pass", "# forbidden\npass", "eval('1')"].map(source => ({ source })));
+  for (let i = 0; i < python.length; i++) { assert.equal(python[i].length > 0, i > 0); examples++; }
+  for (const [source, invalid] of [[".racing-preview {color:#203d37}", false], [".bad_name {color:#000}", true], ["/* forbidden */ .racing-preview {}", true]]) { assert.equal(inspectCSS(source).length > 0, invalid); examples++; }
 }
 const passed = results.every(row => row.errors.length === 0);
-writeFileSync(path.join(out, "lint.json"), `${JSON.stringify({ passed, scope: config.scope, files: results, examples }, null, 2)}\n`);
+const report = path.join(out, `lint-${process.pid}.json`);
+writeFileSync(report, `${JSON.stringify({ passed, scope: config.scope, languages: ["go", "typescript", "javascript", "python", "css"], files: results, examples }, null, 2)}\n`);
+renameSync(report, path.join(out, "lint.json"));
 assert(passed, JSON.stringify(results.filter(row => row.errors.length)));
 console.log(`Validated ${results.length} registered racing files and ${examples} positive/negative examples.`);
