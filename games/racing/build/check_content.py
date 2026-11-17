@@ -1,4 +1,6 @@
 import argparse
+import hashlib
+import sys
 import importlib.util
 import json
 from pathlib import Path
@@ -69,6 +71,8 @@ def main():
     args.phase = 'content'
     args.build_identity = None
     job = browser_module.Acceptance(args)
+    job.report['command'] = 'python3 -B games/racing/build/check_content.py ' + ' '.join(sys.argv[1:])
+    job.report['harnessSHA256']['games/racing/build/check_content.py'] = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
     try:
         job.start_fixture()
         choices(job, 1280)
