@@ -41,9 +41,9 @@ class ScopeTests(unittest.TestCase):
         self.assertTrue(mixed['has_shared'])
         self.assertTrue(mixed['frontend_checks'])
 
-    # Failure inventory before the Starfort timeout change: the full campaign
-    # matrix still expires at45m; race or shard commands get the wrong limit;
-    # other games inherit the longer timeout; or old/new campaigns disappear.
+
+
+
     def test_starfort_unsharded_suite_retains_campaigns_with_adequate_time(self):
         for race in [False, True]:
             commands = scope.go_commands(ROOT, 'starfort', race=race)
@@ -60,8 +60,8 @@ class ScopeTests(unittest.TestCase):
             self.assertTrue(all('-timeout=45m' in c for c in scope.go_commands(ROOT, 'starfort', shard, 4)))
 
 
-    # Failures: leaf edits run public races; mixed core edits narrow unsafely;
-    # filename ownership misses tests whose names have no component prefix.
+
+
     def test_wish_only_changes_select_targeted_shared_checks(self):
         result=self.plan('internal/server/wishes.go','scripts/ci/scope.py')
         self.assertEqual(result['quick_components'],['ci','wishes'])
@@ -80,9 +80,9 @@ class ScopeTests(unittest.TestCase):
             self.assertIn(name, ' '.join(commands[0]))
         self.assertNotIn('shared_scope', self.plan('internal/server/wishes.go'))
 
-    # Failure inventory: either 49-case trajectory omitted/duplicated; whole
-    # campaigns repeated on all shards; wrong fixture index/count; missing
-    # single-shard coverage; race or unrelated-game checks acquire MD fixtures.
+
+
+
     def test_md_trajectory_cases_partition_once_across_existing_shards(self):
         expected = {
             'TestRenderFrozenBridgeTrajectories': ('RENDERSTATE', './games/yuyuhakusho/renderstate'),
@@ -124,7 +124,7 @@ class ScopeTests(unittest.TestCase):
         commands=' '.join(' '.join(c) for c in scope.go_commands(ROOT,'shared',race=True))
         self.assertIn('TestStartupRejectsUnboundBuildBeforeDatabase',commands)
         self.assertFalse((ROOT/'contra_startup_test.go').exists())
-        # The deleted historical root test is still an application contract.
+
         self.assertEqual(scope.owner(Path('contra_startup_test.go'),'TestContraStartupRejectsUnboundBuildBeforeDatabase',scope.game_names(ROOT)),set())
         self.assertIn('TestContraProductionRegistrationRequiresIdentities',commands)
         self.assertNotIn('TestBotStandardCampaignE2E',commands)
@@ -227,8 +227,8 @@ class ScopeTests(unittest.TestCase):
                 result=json.loads((root/'.local/pvz/ci-assets/prepare-result.json').read_text())
                 self.assertFalse(result['passed']);self.assertIn('errorType',result)
 
-    # Long campaigns run once through the explicit verified runner, not through
-    # inherited diagnostic variables on ordinary/race test selections.
+
+
     def test_contra_campaigns_are_explicit_and_scoped(self):
         regular=' '.join(' '.join(c) for c in scope.go_commands(ROOT,'contra'))
         self.assertNotIn('TestBotStandardCampaignE2E',regular)
@@ -258,8 +258,8 @@ class ScopeTests(unittest.TestCase):
                 self.assertFalse(run.called,'ordinary game job repeated campaign execution')
 
     def test_human_delivery_keeps_backend_checks_without_computer_campaigns(self):
-        # Temporary user-authorized human-only delivery keeps rule and runtime
-        # checks, while computer campaign research requires a separate opt-in.
+
+
         initialization=['games/contra/runtime/bridge.go','games/contra/runtime/bundle_protocol_test.go',
                         'games/contra/build/cmd/probe/main.go','games/contra/server/production_native.go',
                         'games/contra/server/production_assets_native.go','games/contra/server/production_native_test.go',
@@ -288,9 +288,9 @@ class ScopeTests(unittest.TestCase):
             self.assertFalse(self.plan(manual=game)['contra_campaign_requested'])
             self.assertTrue(self.plan(manual=game,contra_campaigns=True)['contra_campaign_requested'])
 
-    # New failures: rule/AI data under engine is labelled frontend-only; root
-    # registry tests disappear; adding broad Production/Review race prefixes
-    # accidentally pulls optional engine prototypes or unrelated games.
+
+
+
     def test_contra_rule_and_ai_data_select_only_its_backend(self):
         for path in ['games/contra/engine/leveldata/stage-8.json',
                      'games/contra/engine/audio_control_data.json',
@@ -318,8 +318,8 @@ class ScopeTests(unittest.TestCase):
         actual=scope.go_commands(ROOT,'shared',race=True)
         self.assertTrue(any(c[-1]=='./games' and 'TestAllIndependentGamesSupportComputers' in ' '.join(c) for c in actual))
 
-    # Colocated browser tests must not silently disappear from the selected
-    # game's required checks; discovery must not fan out to other games.
+
+
     def test_contra_frontend_includes_colocated_runtime_checks(self):
         found = {str(p.relative_to(ROOT)) for p in scope.frontend_tests(ROOT, 'contra')}
         for path in ['games/contra/tests/background.test.mjs',
@@ -331,7 +331,7 @@ class ScopeTests(unittest.TestCase):
         self.assertEqual(scope.frontend_tests(ROOT, 'missing-game'), [])
 
     def test_contra_race_covers_room_transport_and_restore(self):
-        # Naming heuristics must not omit HTTP/WS, SQLite or paused replay races.
+
         commands = scope.go_commands(ROOT, 'contra', race=True)
         flat = '\n'.join(' '.join(command) for command in commands)
         for name in ['TestContraHTTPLoadingStreamAndSQLiteRestore',
@@ -355,6 +355,10 @@ class ScopeTests(unittest.TestCase):
 
     def plan(self, *paths, manual='', contra_campaigns=False):
         return scope.plan(paths, scope.game_names(ROOT), manual, contra_campaigns=contra_campaigns)
+    def test_racing_lint_tool_does_not_start_driving_rules(self):
+        self.assertEqual(self.plan('games/racing/build/lint_go.go')['games'], [{'game': 'racing', 'backend': False}])
+        self.assertEqual(self.plan('games/racing/server/classic_motion.go')['games'], [{'game': 'racing', 'backend': True}])
+
     def test_mobile_and_pairs_frontend_do_not_start_rules(self):
         p = self.plan('games/snooker/web/Table.tsx', 'games/pairs/web/input.ts', 'scripts/snooker/check-gesture.py')
         self.assertEqual([r['game'] for r in p['games']], ['pairs', 'snooker'])
@@ -373,8 +377,8 @@ class ScopeTests(unittest.TestCase):
     def test_docs_do_not_request_complete_games(self):
         self.assertEqual(self.plan('games/snooker/README.md', 'docs/research/chess-family.md', 'AGENTS.md')['games'], [])
     def test_explicit_full_and_one_game_selection(self):
-        # Compare the actual catalog, so adding a game does not require updating
-        # a magic count and cannot silently omit the new entry from full runs.
+
+
         catalog = sorted(p.name for p in (ROOT/'games').iterdir()
                          if p.is_dir() and not p.name.startswith(('.', '_')))
         self.assertEqual(self.plan(manual='all')['games'],
@@ -398,8 +402,8 @@ class ScopeTests(unittest.TestCase):
         self.assertIn('^TestBotsFinishBothGames$/^rail-', flat)
         self.assertNotIn('TestCatan', flat)
     def test_basketball_full_acceptance_only_for_backend_changes(self):
-        # Failure inventory: full game gates silently stay skipped in main;
-        # asset/frontend changes or shared checks start expensive game runs.
+
+
         expected = {'BASKETBALL_PREPARATION_MATRIX', 'BASKETBALL_SELECTION_ADMISSION', 'BASKETBALL_FULL_HTTP'}
         self.assertTrue(all(scope.verification_env('basketball', True, {})[key] == '1' for key in expected))
         for game, backend in [('basketball', False), ('shared', True), ('racing', True)]:
@@ -451,8 +455,8 @@ class ScopeTests(unittest.TestCase):
 
 
 class RetiredGameScopeTests(unittest.TestCase):
-    # Removing only a retired ID from a shared scenario table must not force
-    # every surviving game's full rule matrix. Any actual scenario edit must.
+
+
     def test_retired_table_member_does_not_change_surviving_scenarios(self):
         before = 'func TestTimeoutAutoplayAllGamesContinueToNaturalFinish(t *testing.T) { for _, kind := range []string{"splendor", "dota"} { play(kind) } }'
         after = before.replace(', "dota"', '')

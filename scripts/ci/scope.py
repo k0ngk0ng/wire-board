@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+
 """Changed-game CI planning and test ownership; no cross-game rule execution."""
 import argparse
 import hashlib
@@ -13,7 +13,7 @@ import sys
 ROOT = Path(__file__).resolve().parents[2]
 POKER = ('doudizhu', 'guandan', 'shengji')
 LEGACY = ('splendor', 'rail', 'catan', 'carcassonne', 'sanguosha')
-# Old mixed-package scenarios are run with an exact game subtest selector.
+
 MULTI = {
     'TestBotsFinishBothGames': ('splendor', 'rail'),
     'TestSoloGamesAIContinuationPersistenceAndRematch': ('splendor', 'rail'),
@@ -33,6 +33,8 @@ FAST_COMPONENTS = {
     'account-password': ({'internal/server/account_password.go', 'internal/server/account_password_e2e_test.go'}, ['internal/server/account_password_e2e_test.go']),
 }
 
+LINT_TOOL_FILES = {'games/racing/build/lint_go.go'}
+
 def ci_path(path):
     return path.startswith(('.github/workflows/', 'scripts/ci/')) or path in {
         'scripts/release-source.cjs', 'scripts/release-source.test.cjs',
@@ -48,8 +50,8 @@ def plan(paths, games, manual='', legacy_sources=None, contra_campaigns=False, v
     selected = {}
     game_paths = set()
     active_path = None
-    # The user authorized human-only Contra delivery. Computer campaigns are
-    # retained as explicit research, never inferred from rule changes or all.
+
+
     if contra_campaigns and 'contra' not in games:
         raise ValueError('Contra research requested without Contra sources')
     def add(game, backend=False):
@@ -67,10 +69,10 @@ def plan(paths, games, manual='', legacy_sources=None, contra_campaigns=False, v
                 for game in owner(Path(path), name, games):
                     add(game, True)
         if len(parts) > 2 and parts[0] == 'games':
-            # Contra keeps rule tables and visual-AI fixtures under engine,
-            # including JSON/gzip/indexed images rather than Go files alone.
+
+
             engine_data = parts[1] == 'contra' and parts[2] == 'engine'
-            add(parts[1], path.endswith('.go') or parts[2] == 'server' or engine_data or '/tests/testdata/' in path)
+            add(parts[1], (path.endswith('.go') and path not in LINT_TOOL_FILES) or parts[2] == 'server' or engine_data or '/tests/testdata/' in path)
             continue
         if path.startswith(('web/src/poker/', 'scripts/poker/', 'internal/gametest/poker_', 'internal/gametest/browser_e2e')):
             for game in POKER: add(game, path.endswith('.go'))
@@ -112,7 +114,7 @@ def plan(paths, games, manual='', legacy_sources=None, contra_campaigns=False, v
     if validation == 'quick' and (shared or rows):
         raise ValueError('Quick validation supports isolated platform components; use auto for shared core or games')
     if shared:
-        components.difference_update(FAST_COMPONENTS) # The public suite already contains these tests.
+        components.difference_update(FAST_COMPONENTS)
     if frontend_checks: components.add('frontend')
     if validation == 'quick' and any(p.startswith('web/') and not p.endswith('.md') for p in paths):
         components.add('typescript')
@@ -133,7 +135,7 @@ def changed_names(raw):
 def owner(path, name, games):
     parts = path.parts
     if len(parts) == 1 or parts[:2] == ('internal', 'production'):
-        return set() # Application startup contracts, not game rule campaigns.
+        return set()
     if parts[0] == 'games' and len(parts) > 2: return {parts[1]}
     if name in MULTI: return set(MULTI[name])
     if name in PAIRED: return {'rail', 'splendor'}
@@ -152,10 +154,10 @@ def go_commands(root, game, index=0, count=1, race=False):
     if game != 'shared': files += sorted((root/'games'/game).rglob('*_test.go'))
     for file in files:
         relative = file.relative_to(root)
-        if relative.parts[:2] == ('internal', 'gametest'): continue # opt-in browser servers
+        if relative.parts[:2] == ('internal', 'gametest'): continue
         for name in re.findall(r'^func ((?:Test|Example|Fuzz)\w*)\(', file.read_text(), re.M):
             if name == 'TestBotStandardCampaignE2E' and relative.parts[:2] == ('games', 'contra'):
-                continue # Explicit campaign runner validates execution and provenance.
+                continue
             owners = owner(relative, name, games)
             if (game == 'shared' and owners) or (game != 'shared' and game not in owners): continue
             if game == 'yuyuhakusho' and not race and name in trajectory_prefixes:
@@ -181,17 +183,17 @@ def go_commands(root, game, index=0, count=1, race=False):
                 special.append((package, '^' + name + '$/^' + game + suffix))
             else:
                 grouped.setdefault(package, []).append(name)
-    # Full Starfort regression exceeded45m on the hosted runner without a
-    # failing assertion. Preserve every campaign and the existing shard limits.
+
+
     timeout = '150m' if game in ('catan', 'yuyuhakusho') and count == 1 else '90m' if game == 'starfort' and count == 1 else '45m'
     base = ['go', 'test', '-json', '-count=1', '-timeout=' + timeout]
     if race: base.append('-race')
     commands = [base + ['-run', '^(?:' + '|'.join(re.escape(n) for n in sorted(set(names))) + ')$', package]
                 for package, names in sorted(grouped.items())]
     commands += [base + ['-run', pattern, package] for package, pattern in special]
-    # These two 49-case campaigns already support fixture-level partitioning.
-    # Spread their complete case sets over the existing game matrix instead of
-    # placing each entire campaign on the one shard selected by its test name.
+
+
+
     commands += [['env', prefix + '_SHARDS=' + str(count), prefix + '_SHARD=' + str(index)]
                  + base + ['-run', '^' + name + '$', package]
                  for package, name, prefix in trajectories]
@@ -336,8 +338,8 @@ def run(args):
     print(f'PASS {args.game}: {len(commands)} scoped checks', flush=True)
 
 def test_blocks(source):
-    # Mask Go comments/string literals before matching braces or declarations.
-    # Original bodies are retained for comparison, including literal changes.
+
+
     literals = re.compile(r"//[^\n]*|/\*[\s\S]*?\*/|`[^`]*`|\"(?:\\.|[^\"\\])*\"|'(?:\\.|[^'\\])*'")
     masked = literals.sub(lambda match: re.sub(r'[^\n]', ' ', match.group()), source)
     blocks, spans = {}, []
@@ -365,8 +367,8 @@ def test_blocks(source):
     return blocks, ''.join(outside).strip()
 
 def changed_test_source(before, after, retired=()):
-    # A retired table member has no surviving rules to verify. Ignore exactly
-    # that deletion, while keeping all changes to scenario bodies and helpers.
+
+
     if retired:
         def table(match):
             members = re.findall(r'"([^"\\]*)"', match.group(1))
@@ -375,7 +377,7 @@ def changed_test_source(before, after, retired=()):
         before = re.sub(pattern, table, before)
         after = re.sub(pattern, table, after)
     old, new = test_blocks(before), test_blocks(after)
-    # Imports, helpers and fixtures can affect every test in a mixed file.
+
     if old is None or new is None or old[1] != new[1]: return before + '\n' + after
     names = sorted(name for name in old[0].keys() | new[0].keys() if old[0].get(name) != new[0].get(name))
     return '\n'.join('func ' + name + '(' for name in names)
@@ -403,7 +405,7 @@ def main():
         return
     if args.base:
         subprocess.run(['git', 'merge-base', '--is-ancestor', args.base, args.head], cwd=ROOT, check=True)
-        # No rename folding: both old and new owners must be validated.
+
         raw = subprocess.check_output(['git', 'diff', '--no-renames', '--name-only', '-z', args.base, args.head], cwd=ROOT)
     else:
         raw = subprocess.check_output(['git', 'ls-files', '-z'], cwd=ROOT)
