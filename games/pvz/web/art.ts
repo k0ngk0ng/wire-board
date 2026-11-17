@@ -1,3 +1,4 @@
+import { codeMediaBase } from "../../../web/src/media-assets";
 import { ResourceDownloads, runDownloads } from "./downloads";
 export type SpriteFrame = { x: number; y: number; w: number; h: number; duration?: number };
 export type SpriteDefinition = {
@@ -43,7 +44,7 @@ export function assetURL(base: string, path: string) {
 }
 
 export async function loadArt(_legacyAssets: string, signal: AbortSignal, progress: (n: number, label: string) => void, scene = "day", kinds: string[] = [], downloads?: ResourceDownloads): Promise<Art> {
-  const base = assetURL(import.meta.env.BASE_URL, "pvz/classic-v2");
+  const base = assetURL(codeMediaBase(import.meta.env.BASE_URL), "pvz/classic-v2");
   if(!downloads)progress(5, "读取草坪与角色资源");
   const manifest = downloads ? JSON.parse(new TextDecoder().decode(await downloads.bytes(assetURL(base,"manifest.json"),"/pvz/classic-v2/manifest.json",signal))) as ArtManifest : await (async()=>{const response=await fetch(assetURL(base,"manifest.json"),{signal});if(!response.ok)throw Error(`原版资源清单加载失败（${response.status}）`);return response.json() as Promise<ArtManifest>})() ;
   if ((!manifest.background && !manifest.maps?.[scene]?.background) || !manifest.sprites) throw new Error("原版资源清单不完整");
@@ -136,8 +137,8 @@ export async function previewFrame(art: Art, kind: string, signal?: AbortSignal)
   const definition = art.manifest.sprites[kind];
   if (!definition) return null;
   const preview = definition.preview ?? definition;
-  // A thumbnail may be shared by a deck slot and an open catalog. Retiring one
-  // view must not cancel the other view's in-flight image.
+
+
   await loadAsset(art, preview.src);
   if (signal?.aborted) throw new DOMException("Aborted", "AbortError");
   return spriteFrame(art, kind, 0, undefined, preview);

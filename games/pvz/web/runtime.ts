@@ -1,3 +1,4 @@
+import { codeMediaBase } from "../../../web/src/media-assets";
 import type { PvzAction, View } from "./types";
 import type { ResourceDownloads } from "./downloads";
 
@@ -20,7 +21,7 @@ const MAX_PENDING = 32;
 const url = (base: string, file: string) => `${base.replace(/\/$/, "")}/${file.replace(/^\//, "")}`;
 
 async function loadRuntime(_legacyAssets: string, downloads?: ResourceDownloads): Promise<Port> {
-  const base = url(import.meta.env.BASE_URL, "pvz/v1/runtime");
+  const base = url(codeMediaBase(import.meta.env.BASE_URL), "pvz/v1/runtime");
   const previous = loaded.get(base); if (previous) { downloads?.planned("runtime"); return previous; }
   const pending = (async () => {
     const manifest = downloads ? JSON.parse(new TextDecoder().decode(await downloads.bytes(url(base,"build.json"),"/pvz/v1/runtime/build.json",AbortSignal.timeout(45000)))) as {sourceSHA256:string;files:Record<string,{sha256:string;bytes:number}>} : await(async()=>{const response=await fetch(url(base,"build.json"),{signal:AbortSignal.timeout(45000)});if(!response.ok)throw Error("植物大战僵尸运行时版本加载失败");return response.json() as Promise<{sourceSHA256:string;files:Record<string,{sha256:string;bytes:number}>}>})();
@@ -66,9 +67,9 @@ export type Predictor = {
   dispose(): void;
 };
 
-/** Replays confirmed operations in the shared Go engine, then overlays only a
- * bounded window of this client's pending actions. Confirmed events are the
- * sole source of audio; prediction never publishes an outcome or rating. */
+
+
+
 export async function createPredictor(assets: string, downloads?: ResourceDownloads): Promise<Predictor> {
   const port = await loadRuntime(assets,downloads);
   const identity = `pvz-${++instanceSerial}`;
@@ -123,8 +124,8 @@ export async function createPredictor(assets: string, downloads?: ResourceDownlo
     if (disposed || recovering || performance.now() - lastRecovery < 1000) return;
     lastRecovery = performance.now();
     recovering = (async () => {
-      // The existing authenticated state endpoint supplies a fresh full View.
-      // No alternate input route or client-authored authority is introduced.
+
+
       const response = await fetch("/api/state", { cache: "no-store", signal: AbortSignal.timeout(10000) });
       if (!response.ok) throw Error("恢复对局失败");
       const state = await response.json();
@@ -134,8 +135,8 @@ export async function createPredictor(assets: string, downloads?: ResourceDownlo
   const alignClock = (now: number) => {
     if (!authority) return;
     const elapsed = anchorTick + Math.max(0, now - anchorAt) / TICK_MS;
-    // An authority packet can catch up to the browser, but cannot restart its
-    // fractional clock. Duplicate confirmations never add a display buffer.
+
+
     if (elapsed < authority.tick) anchorTick += authority.tick - Math.floor(elapsed);
   };
   const accept = (view: View, recovery = false) => {
@@ -152,7 +153,7 @@ export async function createPredictor(assets: string, downloads?: ResourceDownlo
       alignClock(now);targetTick=Math.max(targetTick,authority.tick);rebuild();return;
     }
     if (packet.snapshot) {
-      // Ordinary HTTP refreshes can race a newer ordered socket update.
+
       if (!recovery && authority?.epoch === packet.epoch && packet.tick < authority.tick) return;
       const changed = !authority || authority.epoch !== packet.epoch || recovery;
       authority = load(authID, packet.snapshot);
@@ -200,9 +201,9 @@ export async function createPredictor(assets: string, downloads?: ResourceDownlo
       displayedTick = timeTick;
       const fraction = Math.max(0, Math.min(1, timeTick - projected!.tick));
       if (!fraction || metadata?.phase !== "battle") return cached as View;
-      // RAF only extrapolates disclosed position deltas from the current
-      // integer tick. No next-tick simulation, JSON snapshot, digest, collision
-      // or event is evaluated here. Entity/health changes remain at that tick.
+
+
+
       return {
         ...cached!, tick: timeTick,
         zombies: projected!.zombies.map(z => ({ ...z, x: z.x + ((z as typeof z & Motion).motionX ?? 0) * fraction })),

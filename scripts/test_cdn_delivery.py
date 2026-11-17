@@ -32,7 +32,7 @@ class LocalReadbackPolicy(unittest.TestCase):
  def invoke(self,action,ci):
   with patch.object(sys,'argv',['cdn_delivery.py',action,'--dist',str(self.dist),'--report',str(self.report)]),patch.dict(os.environ,{'GITHUB_ACTIONS':'true' if ci else ''}):cdn.main()
  def test_actions_upload_never_reads_cdn_or_claims_cdn_verified(self):
-  with patch.object(cdn,'publish') as upload,patch.object(cdn,'verify',side_effect=AssertionError('CDN read from Actions')):
+  with patch.object(cdn,'publish',return_value={}) as upload,patch.object(cdn,'verify',side_effect=AssertionError('CDN read from Actions')):
    self.invoke('upload',True)
   self.assertEqual(upload.call_count,1);r=json.loads(self.report.read_text());self.assertTrue(r['passed']);self.assertEqual(r['stage'],'uploaded');self.assertFalse(r['cdnVerified'])
   cdn.trim(self.dist,r);self.assertTrue((self.dist/'cdn-assets-manifest.json').is_file())
@@ -85,9 +85,9 @@ class GeneralMediaDelivery(unittest.TestCase):
   self.assertFalse(path.exists())
   self.assertEqual(json.loads((self.dist/'cdn-assets-manifest.json').read_bytes())['files']['/yuyuhakusho/data/rules.json.gz']['sha256'],cdn.sha(raw))
 
- # Failure inventory: ordinary game media remains embedded; audio loses Range;
- # client maps/loaders are skipped; metadata leaks; mismatched verification trims
- # originals; generated redirects point outside the immutable commit namespace.
+
+
+
  setUp=Delivery.setUp
  def media(self):
   payloads={'snooker/v1/ball.webp':b'RIFF-image','snooker/v1/music.mp3':b'ID3'+bytes(range(128)),
@@ -171,8 +171,8 @@ class FlacDelivery(unittest.TestCase):
   self.assertEqual(json.loads((self.dist/'cdn-assets-manifest.json').read_text())['files']['/'+row['path']]['mime'],'audio/flac')
 
 class GlbDelivery(unittest.TestCase):
- # Pre-implementation failures: a real 3D scene is rejected, receives a generic
- # MIME, changes bytes under transport gzip, or remains in the server package.
+
+
  setUp=Delivery.setUp
  def test_glb_uses_model_mime_lossless_transport_and_is_trimmed(self):
   import struct
@@ -194,8 +194,8 @@ class GlbDelivery(unittest.TestCase):
   self.assertEqual(entry['mime'],'model/gltf-binary');self.assertEqual(entry['sha256'],cdn.sha(body))
 
 class ServerPackageBoundary(unittest.TestCase):
- # Before implementation: untrimmed files, stale compiler inputs, forged binary
- # receipts and unverified redirect metadata must all prevent publication.
+
+
  def setUp(self):
   self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup);self.root=Path(self.temp.name)
   self.dist=self.root/'web/dist';(self.dist/'assets').mkdir(parents=True)
@@ -346,10 +346,10 @@ class FlacRangeHTTP(WaveRangeHTTP):
  def test_real_range_response_and_failure_boundaries(self):
   self.exercise('audio/flac','flac')
 
-# Network failures declared before the retry implementation: transient request
-# errors abort all assets; ambiguous PUT is repeated over an immutable object;
-# permanent authorization/checksum errors retry or are accepted; retries never
-# terminate; a failed Range probe skips the full content contract on retry.
+
+
+
+
 class NetworkRecovery(unittest.TestCase):
  def test_transient_failures_are_bounded_and_permanent_errors_fail_closed(self):
   from unittest.mock import Mock,patch
@@ -371,12 +371,13 @@ class NetworkRecovery(unittest.TestCase):
   import io
   from unittest.mock import patch
   from urllib.error import HTTPError,URLError
-  body=b'asset';response=io.BytesIO(body);response.headers={}
-  row={'url':'https://cdn.ichenj.com/bga/asset','path':'asset','encoding':'','sha256':cdn.sha(body),'mime':'application/octet-stream'}
+  body=b'asset';response=io.BytesIO(body);response.headers={'Content-Type':'application/octet-stream'}
+  row={'url':'https://cdn.ichenj.com/bga/asset','path':'asset','bytes':len(body),'encoding':'','sha256':cdn.sha(body),'mime':'application/octet-stream'}
   with tempfile.TemporaryDirectory() as temp:
    dist=Path(temp);(dist/'asset').write_bytes(body)
    with patch.object(cdn,'credentials',return_value=('test','test')),patch.object(cdn.time,'sleep'),patch.object(cdn,'urlopen',side_effect=[HTTPError('url',404,'missing',{},None),URLError(TimeoutError()),response]) as request:
-    cdn.publish(dist,[row],'bucket','example.invalid')
+    stats=cdn.publish(dist,[row],'bucket','example.invalid')
+    self.assertEqual(stats['uploadedObjects'],1);self.assertEqual(stats['uploadedBytes'],len(body));self.assertEqual(stats['putRequests'],1)
     self.assertEqual([c.args[0].get_method() for c in request.call_args_list],['GET','PUT','GET'])
     self.assertEqual(request.call_args_list[1].args[0].get_header('X-oss-forbid-overwrite'),'true')
  def test_range_network_retry_still_checks_full_body_and_range(self):
@@ -392,8 +393,8 @@ class NetworkRecovery(unittest.TestCase):
   with patch.object(cdn.time,'sleep'),patch.object(cdn,'urlopen',side_effect=[response(body),URLError(TimeoutError()),response(body),response(body[:64],True)]) as request:
    self.assertEqual(cdn.verify(row),row);self.assertEqual(request.call_count,4)
 
-# Before connection reuse: each full/Range read performs another TLS handshake;
-# unread error bodies poison later responses; retries must not skip verification.
+
+
 class TLSReuse(unittest.TestCase):
  def test_full_and_range_reads_reuse_a_verified_tls_connection(self):
   self.exercise(False)

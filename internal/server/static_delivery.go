@@ -47,6 +47,19 @@ func staticFiles(files fs.FS) http.Handler {
 	}
 	var cache sync.Map
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if strings.HasPrefix(r.URL.Path, "/_media/") {
+			request := r.Clone(r.Context())
+			target := *r.URL
+			target.Path = strings.TrimPrefix(target.Path, "/_media")
+			target.RawPath = ""
+			request.URL = &target
+			r = request
+			if serverMetadataPath(r.URL.Path) {
+				http.NotFound(w, r)
+				return
+			}
+		}
+
 		if deliveryErr != nil {
 			w.Header().Set("Cache-Control", "no-store")
 			http.Error(w, "Asset delivery unavailable", http.StatusServiceUnavailable)

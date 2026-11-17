@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+
 """Upload immutable compiled assets; run CDN readback locally before release.
 Actions may upload and package candidates. Tags require the local readback gate.
 """
@@ -11,9 +11,9 @@ from contextlib import contextmanager
 from io import BytesIO
 from urllib.error import HTTPError,URLError
 from http.client import IncompleteRead,HTTPSConnection,HTTPException
-# urllib's default HTTPS opener sends Connection: close. Reuse one verified
-# TLS connection per worker/host so a manifest does not need hundreds of
-# independent handshakes across regions. Preserve configured proxy handling.
+
+
+
 _connections=threading.local()
 _https_proxy=getproxies().get('https')
 def close_connections():
@@ -67,9 +67,9 @@ PVZR_MAX_COMPRESSED_BYTES=16*1024*1024
 PVZR_MAX_DECODED_BYTES=64*1024*1024
 def sha(data):return hashlib.sha256(data).hexdigest()
 def validate_pvzr(data):
- # .pvzr is one canonical, already-compressed application payload, not an
- # HTTP Content-Encoding sidecar. Verify the stored bytes without adding an
- # uncompressed copy or allowing an unbounded expansion during publication.
+
+
+
  if len(data)>PVZR_MAX_COMPRESSED_BYTES or not data.startswith(b'\x1f\x8b\x08'):
   raise ValueError('Invalid PvZ native animation container')
  try:
@@ -135,8 +135,8 @@ def inventory(dist,base):
    if canonical.is_file():
     if canonical.suffix not in MIME or gzip.decompress(p.read_bytes())!=canonical.read_bytes():raise ValueError('Invalid precompressed asset: '+rel)
     continue
-   # Canonical gzip JSON is an application payload, not an HTTP sidecar.
-   # Its compressed bytes are authenticated by the game resource descriptor.
+
+
    if not p.name.endswith('.json.gz'):raise ValueError('Invalid precompressed asset: '+rel)
    descriptor=p.parent/'runtime-resource-descriptor.json'
    if not descriptor.is_file():raise ValueError('Invalid precompressed asset: '+rel)
@@ -156,7 +156,23 @@ def inventory(dist,base):
   rows.append(row)
  rows.extend(runtime_rows)
  if not rows:raise ValueError('No published assets')
+ load_manifest=dist/'game-load-manifest.json'
+ delivery=dist/'cdn-assets-manifest.json'
+ delivery_document=json.loads(delivery.read_bytes()) if delivery.exists() else None
+ mapping={path.lstrip('/'):record for path,record in delivery_document['files'].items()} if delivery_document is not None else json.loads(load_manifest.read_bytes()).get('assetMap') if load_manifest.exists() else None
+ if mapping is not None:
+  if set(mapping)!={row['path'] for row in rows}:raise ValueError('Asset mapping does not exactly match inventory')
+  for row in rows:
+   record=mapping[row['path']]
+   if set(record)!={'url','bytes','sha256','mime','encoding'} or any(record.get(key)!=row[key] for key in ('bytes','sha256','mime','encoding')):raise ValueError('Mapped asset identity differs')
+   validate_asset_url(record['url']);row['url']=record['url']
+   if delivery_document is not None:row['previouslyPublished']=delivery_document.get('objects',{}).get(row['url'],{}).get('verified') is True
  return rows
+
+def validate_asset_url(url):
+ if not isinstance(url,str) or not re.fullmatch(r'https://cdn\.ichenj\.com/bga/web/[a-f0-9]{40}/[A-Za-z0-9._/-]+',url):raise ValueError('Invalid published asset URL')
+ if Path(urlsplit(url).path).as_posix()!=urlsplit(url).path or any(part.startswith('.') for part in urlsplit(url).path.split('/') if part):raise ValueError('Private published asset URL')
+ return url
 
 def decoded(body,headers):
  if headers.get('Content-Encoding')=='gzip':
@@ -184,12 +200,20 @@ def validate_range_response(row,expected,body,headers,status):
  if headers.get('Content-Encoding') not in (None,'','identity') or body!=expected:raise ValueError('CDN audio range bytes differ: '+row['url'])
  validate_headers(row,headers)
 
+def inventory_base(manifest,rows):
+ if 'assetBase' in manifest:return manifest['assetBase']
+ if 'assetMap' in manifest or not rows:raise ValueError('Missing publication base')
+ first=rows[0]
+ if not first.get('path') or not first['url'].endswith(first['path']):raise ValueError('Invalid legacy publication base')
+ base=first['url'][:-len(first['path'])]
+ if not BASE.fullmatch(base) or any(row['url']!=base+row['path'] for row in rows):raise ValueError('Invalid legacy publication identity')
+ return base
+
 def trim(dist,report):
  rows=report.get('files',[])
  if not report.get('passed') or not rows:raise ValueError('No verified CDN inventory')
- first=rows[0]
- if not first.get('path') or not first['url'].endswith(first['path']):raise ValueError('Invalid verified asset URL')
- base=first['url'][:-len(first['path'])]
+ load_manifest=json.loads((dist/'game-load-manifest.json').read_bytes()) if (dist/'game-load-manifest.json').exists() else {}
+ base=inventory_base(load_manifest,rows)
  if inventory(dist,base)!=rows:raise ValueError('Verified assets differ from packaging input')
  if 'manifestSHA256' in report and sha((dist/'game-load-manifest.json').read_bytes())!=report['manifestSHA256']:raise ValueError('Manifest changed after verification')
  if 'indexSHA256' in report and sha((dist/'index.html').read_bytes())!=report['indexSHA256']:raise ValueError('Entry changed after verification')
@@ -201,7 +225,13 @@ def trim(dist,report):
   contra_prefix=json.loads(raw)['prefix']
  elif report.get('contraDeliverySHA256'):raise ValueError('Verified Contra delivery receipt is missing')
  manifest={'version':1,'assetBase':base,'files':{'/'+row['path']:{key:row[key] for key in ('url','bytes','sha256','mime')} for row in rows}}
- (dist/'cdn-assets-manifest.json').write_text(json.dumps(manifest,separators=(',',':'))+'\n')
+ delivery_path=dist/'cdn-assets-manifest.json'
+ previous=json.loads(delivery_path.read_bytes()) if delivery_path.exists() else {}
+ if report.get('cdnManifestSHA256') and sha(delivery_path.read_bytes())!=report['cdnManifestSHA256']:raise ValueError('Delivery mapping changed after verification')
+ if 'objects' in previous or 'assetObjects' in load_manifest:
+  manifest['objects']=previous.get('objects',load_manifest.get('assetObjects',{}))
+  for row in rows:manifest['files']['/'+row['path']]['encoding']=row['encoding']
+ delivery_path.write_text(json.dumps(manifest,separators=(',',':'),sort_keys=True)+'\n')
  for row in rows:
   target=dist/row['path'];target.unlink()
   compressed=target.with_suffix(target.suffix+'.gz')
@@ -225,8 +255,15 @@ def verify_server_package(root,dist,binary,report):
  if 'contra-delivery.json' in actual or report.get('contraDeliverySHA256'):
   if 'contra-delivery.json' not in actual or report.get('contraDeliverySHA256')!=sha(actual['contra-delivery.json'].read_bytes()):raise ValueError('Server runtime receipt differs from CDN verification')
  manifest=json.loads(actual['cdn-assets-manifest.json'].read_bytes())
- rows=report['files'];first=rows[0];base=first['url'][:-len(first['path'])]
+ rows=report['files'];load_manifest=json.loads((dist/'game-load-manifest.json').read_bytes());base=inventory_base(load_manifest,rows)
  expected={'version':1,'assetBase':base,'files':{'/'+r['path']:{k:r[k] for k in ('url','bytes','sha256','mime')} for r in rows}}
+ if report.get('cdnManifestSHA256'):
+  if sha(actual['cdn-assets-manifest.json'].read_bytes())!=report['cdnManifestSHA256']:raise ValueError('Embedded delivery mapping changed')
+  expected['objects']=manifest.get('objects',{})
+  for row in rows:expected['files']['/'+row['path']]['encoding']=row['encoding']
+ elif 'assetObjects' in load_manifest:
+  expected['objects']=load_manifest['assetObjects']
+  for row in rows:expected['files']['/'+row['path']]['encoding']=row['encoding']
  if not BASE.fullmatch(base) or manifest!=expected:raise ValueError('Server redirects differ from verified CDN assets')
  receipt=json.loads(binary.with_suffix(binary.suffix+'.build.json').read_bytes())
  data=binary.read_bytes()
@@ -246,8 +283,8 @@ def credentials():
  return read('OSS_ACCESS_KEY_ID','oss-access-key-id'),read('OSS_ACCESS_KEY_SECRET','oss-access-key-secret')
 
 def retry_request(action,label):
- # Restart the complete object operation, including its immutable-content check.
- # A PUT may have committed before a timeout; upload must GET it before retrying.
+
+
  for attempt in range(1,5):
   try:return action()
   except (URLError,TimeoutError,ConnectionError,IncompleteRead) as error:
@@ -262,23 +299,28 @@ def retry_request(action,label):
 
 def publish(dist,rows,bucket,endpoint):
  key_id,secret=credentials()
+ attempts={}
  def upload(row):
   key=row['url'].removeprefix('https://cdn.ichenj.com/')
   url='https://'+endpoint+'/'+key
-  # Never replace an existing immutable object. Verify identical re-runs.
+
   date=formatdate(usegmt=True)
   canonical=f'GET\n\n\n{date}\n/{bucket}/{key}'
   signature=base64.b64encode(hmac.new(secret.encode(),canonical.encode(),hashlib.sha1).digest()).decode()
   get=Request(url,headers={'Date':date,'Authorization':f'OSS {key_id}:{signature}'})
   try:
    with urlopen(get,timeout=45) as r:
-    existing=decoded(r.read(),r.headers)
-    if row.get('encoding') and r.headers.get('Content-Encoding')!=row['encoding']:raise ValueError('Immutable encoding differs: '+key)
-   if sha(existing)!=row['sha256']:raise ValueError('Immutable object already differs: '+key)
-   return
+    stored=r.read();existing=decoded(stored,r.headers)
+    if r.headers.get('Content-Encoding','') not in ({row['encoding']} if row.get('encoding') else {'','identity'}):raise ValueError('Immutable encoding differs: '+key)
+   mime=r.headers.get('Content-Type','').split(';')[0].lower()
+   if mime!=row['mime'] and not (row['mime']=='text/javascript' and mime=='application/javascript'):raise ValueError('Immutable MIME differs: '+key)
+   if len(existing)!=row['bytes'] or sha(existing)!=row['sha256']:raise ValueError('Immutable object already differs: '+key)
+   submitted=attempts.get(row['url'])
+   return (True,len(stored),0,row['bytes']) if submitted else (False,0,len(stored),row['bytes'])
   except HTTPError as e:
    if e.code!=404:raise
    e.close()
+   if row.get('previouslyPublished'):raise ValueError('Previously published object is missing: '+key)
   body=(dist/row['path']).read_bytes()
   if row['encoding']:body=gzip.compress(body,mtime=0)
   md5=base64.b64encode(hashlib.md5(body).digest()).decode();date=formatdate(usegmt=True)
@@ -286,10 +328,19 @@ def publish(dist,rows,bucket,endpoint):
   signature=base64.b64encode(hmac.new(secret.encode(),canonical.encode(),hashlib.sha1).digest()).decode()
   request=Request(url,data=body,method='PUT',headers={'Content-MD5':md5,'Content-Type':row['mime'],'Date':date,'x-oss-forbid-overwrite':'true','Cache-Control':'public, max-age=31536000, immutable','Authorization':f'OSS {key_id}:{signature}'})
   if row['encoding']:request.add_header('Content-Encoding',row['encoding'])
+  previous=attempts.get(row['url'],(0,0));attempts[row['url']]=(previous[0]+1,previous[1]+len(body))
   with urlopen(request,timeout=45) as r:
    if r.status!=200:raise ValueError('Upload failed: '+key)
- with concurrent.futures.ThreadPoolExecutor(max_workers=6) as pool:list(pool.map(lambda row:retry_request(lambda:upload(row),row["url"]),rows))
- print(f'Published or confirmed {len(rows)} immutable OSS assets',flush=True)
+  return True,len(body),0,row['bytes']
+ unique={}
+ for row in rows:
+  previous=unique.get(row['url'])
+  if previous is not None and any(previous[key]!=row[key] for key in ('sha256','bytes','mime','encoding')):raise ValueError('One URL has conflicting identities')
+  unique[row['url']]=row
+ with concurrent.futures.ThreadPoolExecutor(max_workers=6) as pool:results=list(pool.map(lambda row:retry_request(lambda:upload(row),row["url"]),unique.values()))
+ stats={'logicalFiles':len(rows),'reusedObjects':sum(not created for created,size,reused,raw in results),'reusedBytes':sum(raw for created,size,reused,raw in results if not created),'reusedWireBytes':sum(reused for created,size,reused,raw in results),'uploadedObjects':sum(created for created,size,reused,raw in results),'uploadedBytes':sum(size for created,size,reused,raw in results),'putRequests':sum(count for count,size in attempts.values()),'submittedBytes':sum(size for count,size in attempts.values())}
+ print(json.dumps(stats),flush=True)
+ return stats
 
 def verify(row):
  return retry_request(lambda:verify_once(row),row["url"])
@@ -320,10 +371,12 @@ def main():
    if f['url'] not in known or f['bytes']!=known[f['url']]['bytes']:raise ValueError('Manifest does not match compiled assets')
  if manifest['entry'] not in known:raise ValueError('Entry is not bound to CDN inventory')
  args.report.parent.mkdir(parents=True,exist_ok=True);report={'passed':False,'stage':'uploading' if args.action=='upload' else 'verifying','cdnVerified':False,'files':rows,'indexSHA256':sha((args.dist/'index.html').read_bytes()),'manifestSHA256':sha((args.dist/'game-load-manifest.json').read_bytes())}
+ delivery=args.dist/'cdn-assets-manifest.json'
+ if delivery.exists():report['cdnManifestSHA256']=sha(delivery.read_bytes())
  receipt=args.dist/'contra-delivery.json'
  if receipt.exists():report['contraDeliverySHA256']=sha(receipt.read_bytes())
  args.report.write_text(json.dumps(report,indent=2)+'\n')
- if args.action in ('upload','publish'):publish(args.dist,rows,'stoneage-assets','stoneage-assets.oss-cn-shanghai.aliyuncs.com')
+ if args.action in ('upload','publish'):report['publication']=publish(args.dist,rows,'stoneage-assets','stoneage-assets.oss-cn-shanghai.aliyuncs.com')
  if args.action=='upload':
   if inventory(args.dist,base)!=rows or receipt.exists() and sha(receipt.read_bytes())!=report.get('contraDeliverySHA256'):raise ValueError('Local assets changed during upload')
   report.update(passed=True,stage='uploaded');args.report.write_text(json.dumps(report,indent=2)+'\n');print(f'Uploaded {len(rows)} immutable OSS assets; CDN readback awaits local verification');return

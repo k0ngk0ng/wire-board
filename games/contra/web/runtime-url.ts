@@ -1,8 +1,7 @@
-type RuntimeBuildMeta = ImportMeta & { env?: { BASE_URL?: string } };
+import { codeMediaBase } from "../../../web/src/media-assets";
 
-// Vite binds this root to the application commit. Standalone esbuild fixtures
-// have no Vite environment and serve the same layout from their local root.
-const runtimeAssetBase = (import.meta as RuntimeBuildMeta).env?.BASE_URL || "/";
+type RuntimeBuildMeta = ImportMeta & { env?: { BASE_URL?: string } };
+const runtimeAssetBase = codeMediaBase((import.meta as RuntimeBuildMeta).env?.BASE_URL || "/");
 
 export function runtimeManifestURL(
   runtimeBuildID: string,

@@ -1,6 +1,3 @@
-// Failure inventory before implementation: runtime manifests use the platform
-// image root; nested room routes alter local paths; Vite's commit root is lost;
-// standalone esbuild has no import.meta.env and throws instead of using /.
 import test from "node:test";
 import assert from "node:assert/strict";
 import { build } from "../../../web/node_modules/esbuild/lib/main.js";
@@ -27,11 +24,11 @@ async function resolver(base) {
   ).runtimeManifestURL;
 }
 
-test("production manifest follows the compiled commit asset root", async () => {
+test("production manifest follows the verified current server catalog", async () => {
   const url = await resolver(commitBase);
   assert.equal(
     url(runtimeID, "https://PUBLIC_HOST/rooms/example"),
-    `${commitBase}contra/runtime-${runtimeID}/manifest.json`,
+    `https://PUBLIC_HOST/_media/contra/runtime-${runtimeID}/manifest.json`,
   );
 });
 

@@ -9,8 +9,10 @@ const root = fileURLToPath(new URL("../../../", import.meta.url));
 const require = createRequire(new URL("../../../web/package.json", import.meta.url));
 const ts = require("typescript");
 const postcss = require("postcss");
-const config = JSON.parse(readFileSync(new URL("./lint-rules.json", import.meta.url), "utf8"));
-const out = path.join(root, ".local/racing-dynamics/evidence");
+const selectedConfig = process.argv.indexOf("--config");
+const configPath = selectedConfig < 0 ? new URL("./lint-rules.json", import.meta.url) : path.join(root, process.argv[selectedConfig + 1]);
+const config = JSON.parse(readFileSync(configPath, "utf8"));
+const out = path.join(root, config.evidenceDirectory ?? ".local/racing-dynamics/evidence");
 const temp = path.join(root, ".local/racing-dynamics/tmp");
 mkdirSync(out, { recursive: true });
 mkdirSync(temp, { recursive: true });
@@ -20,7 +22,7 @@ function inspectScript(source) {
   const file = ts.createSourceFile("source.ts", source, ts.ScriptTarget.Latest, true);
   function visit(node) {
     if (ts.getLeadingCommentRanges(source, node.pos)?.length || ts.getTrailingCommentRanges(source, node.end)?.length) errors.push("no-comments");
-    if ((ts.isFunctionDeclaration(node) || ts.isVariableDeclaration(node) || ts.isTypeAliasDeclaration(node) || ts.isInterfaceDeclaration(node)) && node.name && ts.isIdentifier(node.name) && node.name.text.includes("_")) errors.push("camel-case-binding");
+    if ((ts.isFunctionDeclaration(node) || ts.isVariableDeclaration(node) || ts.isTypeAliasDeclaration(node) || ts.isInterfaceDeclaration(node)) && node.name && ts.isIdentifier(node.name) && (node.name.text.includes("_") && !(config.allowUpperSnakeConstants && /^[A-Z][A-Z0-9_]*$/.test(node.name.text)))) errors.push("camel-case-binding");
     if (ts.isCallExpression(node) && ts.isIdentifier(node.expression) && node.expression.text === "eval") errors.push("no-eval");
     if (ts.isNewExpression(node) && ts.isIdentifier(node.expression) && node.expression.text === "Function") errors.push("no-function-constructor");
     ts.forEachChild(node, visit);
@@ -32,7 +34,7 @@ function inspectScript(source) {
 function inspectGo(inputs) {
   return JSON.parse(execFileSync("go", ["run", "games/racing/build/lint_go.go"], {
     cwd: root, input: JSON.stringify(inputs), encoding: "utf8",
-    env: { ...process.env, GOCACHE: path.join(root, ".local/go-build"), GOMODCACHE: path.join(root, ".local/go-mod"), GOTMPDIR: temp, TMPDIR: temp, GOTOOLCHAIN: "local" },
+    env: { ...process.env, GOCACHE: path.join(root, ".local/go-build"), GOMODCACHE: path.join(root, ".local/go-mod"), GOTMPDIR: temp, TMPDIR: temp, GOTOOLCHAIN: "local", GOTELEMETRY: "off" },
   }));
 }
 
@@ -60,9 +62,9 @@ const goInputs = [];
 const pythonInputs = [];
 for (const file of config.files) {
   const relative = file.replace("games/racing/", "");
-  assert(/^(server|web|tests|build)\//.test(relative) || /^scripts\/racing\//.test(file), `directory: ${file}`);
+  assert(config.directories ? config.directories.some(directory => file.startsWith(directory)) : /^(server|web|tests|build)\//.test(relative) || /^scripts\/racing\//.test(file), `directory: ${file}`);
   const name = path.basename(file);
-  assert(file.startsWith("scripts/racing/") ? /^[a-z][a-z0-9-]*\.py$/.test(name) : /\.(go|py)$/.test(file) ? /^[a-z][a-z0-9_]*\.(go|py)$/.test(name) : /^[a-z][a-z0-9.-]*\.(ts|tsx|mjs|css)$/.test(name), `filename: ${file}`);
+  assert(config.reactPascalCase && /^[A-Z][A-Za-z0-9]*\.tsx$/.test(name) || (file.startsWith("scripts/racing/") ? /^[a-z][a-z0-9-]*\.py$/.test(name) : /\.(go|py)$/.test(file) ? /^[a-z][a-z0-9_]*\.(go|py)$/.test(name) : /^[a-z][a-z0-9.-]*\.(ts|tsx|mjs|css)$/.test(name)), `filename: ${file}`);
   const source = readFileSync(path.join(root, file), "utf8");
   if (file.endsWith(".go")) goInputs.push({ path: file, source });
   else if (file.endsWith(".py")) pythonInputs.push({ path: file, source });
@@ -95,4 +97,4 @@ const report = path.join(out, `lint-${process.pid}.json`);
 writeFileSync(report, `${JSON.stringify({ passed, scope: config.scope, languages: ["go", "typescript", "javascript", "python", "css"], files: results, examples }, null, 2)}\n`);
 renameSync(report, path.join(out, "lint.json"));
 assert(passed, JSON.stringify(results.filter(row => row.errors.length)));
-console.log(`Validated ${results.length} registered racing files and ${examples} positive/negative examples.`);
+console.log(`Validated ${results.length} registered files and ${examples} positive/negative examples.`);

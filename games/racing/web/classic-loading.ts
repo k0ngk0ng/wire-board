@@ -63,10 +63,11 @@ export async function loadClassicScene(
     new TextDecoder().decode(codeManifestBytes),
   ) as {
     assetBase: string;
+    mediaBase?: string;
     games: Record<string, { bytes: number }[]>;
     media: Record<string, number>;
   };
-  const base = classicResourceBase(codeManifest.assetBase);
+  const base = classicResourceBase(codeManifest.mediaBase ?? codeManifest.assetBase);
   const response = await fetch(classicAssetURL(base, "manifest.json"), {
     signal,
     cache: "force-cache",

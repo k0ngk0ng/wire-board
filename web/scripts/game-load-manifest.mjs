@@ -25,9 +25,9 @@ export function gameLoadManifest() {
         if (c?.type !== "chunk") return seen;
         for (const css of c.viteMetadata?.importedCss ?? []) seen.add(css);
         for (const imp of c.imports) graph(imp, seen);
-        // Lazy imports can be mutually exclusive maps or optional renderers.
-        // Their owning Board loads the selected branch and reports ready only
-        // after initialization. Preloading every branch defeats that contract.
+
+
+
         return seen;
       }
       const records = (files) =>
@@ -37,6 +37,7 @@ export function gameLoadManifest() {
         }));
       const homeFiles = graph(entry.fileName);
       const home = {
+        files: records(homeFiles),
         bytes: [...homeFiles].reduce(
           (n, f) => n + statSync(path.join(dir, f)).size,
           0,

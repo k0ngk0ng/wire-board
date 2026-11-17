@@ -7,11 +7,11 @@ import tokenize
 
 
 def valid_name(name, kind):
-    if name == '_' or name.startswith('__') and name.endswith('__'):
+    if re.fullmatch(r'do_(GET|POST|PUT|HEAD|PATCH|DELETE|OPTIONS)', name) or name in ['_', 'setUp', 'tearDown', 'setUpClass', 'tearDownClass'] or name.startswith('__') and name.endswith('__'):
         return True
     if kind == 'class':
         return re.fullmatch(r'[A-Z][A-Za-z0-9]*', name) is not None
-    return re.fullmatch(r'[a-z][a-z0-9_]*|[A-Z][A-Z0-9_]*', name) is not None
+    return re.fullmatch(r'_?[a-z][a-z0-9_]*|[A-Z][A-Z0-9_]*', name) is not None
 
 
 def inspect_source(source):

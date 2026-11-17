@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+
 """Read back exact CI assets locally, then optionally open the release gate."""
 import argparse
 import hashlib
@@ -35,6 +35,8 @@ def local_readback_proof(dist, report, source_sha, source_run):
     for name, key in [('index.html', 'indexSHA256'), ('game-load-manifest.json', 'manifestSHA256')]:
         if cdn.sha((dist / name).read_bytes()) != report.get(key):
             raise ValueError('Entry metadata changed after local verification')
+    if report.get('cdnManifestSHA256') and cdn.sha((dist / 'cdn-assets-manifest.json').read_bytes()) != report['cdnManifestSHA256']:
+        raise ValueError('Delivery mapping changed after local verification')
     receipt = dist / 'contra-delivery.json'
     if receipt.exists() or report.get('contraDeliverySHA256'):
         if not receipt.is_file() or cdn.sha(receipt.read_bytes()) != report.get('contraDeliverySHA256'):

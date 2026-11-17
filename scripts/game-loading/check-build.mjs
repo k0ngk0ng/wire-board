@@ -1,4 +1,3 @@
-// Run after npm --prefix web run build. Build/network contract, not a source snapshot.
 import { readFileSync, statSync, readdirSync } from "node:fs";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
@@ -30,7 +29,7 @@ assert(
 for (const [kind, files] of Object.entries(manifest.games)) {
   assert(files.length, kind);
   for (const f of files)
-    assert.equal(statSync(dir + f.url.slice((manifest.assetBase ?? "/").length)).size, f.bytes, f.url);
+    assert.equal(statSync(dir + (f.path ?? f.url.slice((manifest.assetBase ?? "/").length))).size, f.bytes, f.url);
 }
 console.log(
   JSON.stringify(

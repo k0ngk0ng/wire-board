@@ -6,7 +6,7 @@ export function Cover() {
   const id = useId();
   const assets = useContext(AssetsContext).replace(/\/+$/, "");
   const officialCDN = /^https:\/\/cdn\.ichenj\.com(?:\/|$)/.test(assets);
-  const heroes = !assets || officialCDN ? cover.url : assets + cover.localPath;
+  const heroes = !assets || officialCDN || assets.endsWith("/_media") ? cover.url : assets + cover.localPath;
   return (
     <svg
       viewBox="0 0 640 380"

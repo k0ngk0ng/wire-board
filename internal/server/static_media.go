@@ -12,18 +12,22 @@ import (
 )
 
 type deliveredAsset struct {
-	URL    string `json:"url"`
-	Bytes  int64  `json:"bytes"`
-	SHA256 string `json:"sha256"`
-	MIME   string `json:"mime"`
+	URL      string `json:"url"`
+	Bytes    int64  `json:"bytes"`
+	SHA256   string `json:"sha256"`
+	MIME     string `json:"mime"`
+	Encoding string `json:"encoding,omitempty"`
+	Verified bool   `json:"verified,omitempty"`
 }
 type deliveredAssets struct {
 	Version   int                       `json:"version"`
 	AssetBase string                    `json:"assetBase"`
 	Files     map[string]deliveredAsset `json:"files"`
+	Objects   map[string]deliveredAsset `json:"objects,omitempty"`
 }
 
 var immutableMediaBase = regexp.MustCompile(`^https://cdn\.ichenj\.com/bga/web/[a-f0-9]{40}/$`)
+var immutableMediaURL = regexp.MustCompile(`^(https://cdn\.ichenj\.com/bga/web/[a-f0-9]{40}/)([A-Za-z0-9._/-]+)$`)
 var mediaPath = regexp.MustCompile(`^/[A-Za-z0-9._/-]+$`)
 var mediaHash = regexp.MustCompile(`^[a-f0-9]{64}$`)
 
@@ -35,8 +39,6 @@ func serverMetadataPath(name string) bool {
 	return false
 }
 
-// Absence is the local-development mode. A present production manifest must be
-// valid in full; never silently fall back to local media on malformed metadata.
 func readDeliveredAssets(files fs.FS) (*deliveredAssets, error) {
 	raw, err := fs.ReadFile(files, "cdn-assets-manifest.json")
 	if errors.Is(err, fs.ErrNotExist) {
@@ -55,7 +57,7 @@ func readDeliveredAssets(files fs.FS) (*deliveredAssets, error) {
 		return nil, errors.New("invalid CDN asset manifest")
 	}
 	for name, asset := range manifest.Files {
-		if !mediaPath.MatchString(name) || path.Clean(name) != name || serverMetadataPath(name) || asset.URL != manifest.AssetBase+strings.TrimPrefix(name, "/") || asset.Bytes <= 0 || !mediaHash.MatchString(asset.SHA256) || asset.MIME == "" {
+		if !mediaPath.MatchString(name) || path.Clean(name) != name || serverMetadataPath(name) || !validDeliveredAsset(asset) || asset.Bytes <= 0 || !mediaHash.MatchString(asset.SHA256) || asset.MIME == "" {
 			return nil, errors.New("invalid CDN asset entry")
 		}
 		for _, part := range strings.Split(strings.TrimPrefix(name, "/"), "/") {
@@ -64,5 +66,27 @@ func readDeliveredAssets(files fs.FS) (*deliveredAssets, error) {
 			}
 		}
 	}
+	for url, asset := range manifest.Objects {
+		if url != asset.URL || !validDeliveredAsset(asset) {
+			return nil, errors.New("invalid historical CDN object")
+		}
+	}
 	return &manifest, nil
+}
+
+func validDeliveredAsset(asset deliveredAsset) bool {
+	parts := immutableMediaURL.FindStringSubmatch(asset.URL)
+	if len(parts) != 3 || asset.Bytes <= 0 || !mediaHash.MatchString(asset.SHA256) || asset.MIME == "" || (asset.Encoding != "" && asset.Encoding != "gzip") {
+		return false
+	}
+	name := "/" + parts[2]
+	if !mediaPath.MatchString(name) || path.Clean(name) != name || serverMetadataPath(name) {
+		return false
+	}
+	for _, part := range strings.Split(strings.TrimPrefix(name, "/"), "/") {
+		if strings.HasPrefix(part, ".") {
+			return false
+		}
+	}
+	return true
 }

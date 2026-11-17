@@ -136,6 +136,8 @@ function Logo() {
   );
 }
 
+import { mediaAssetsBase } from "./media-assets";
+
 function App() {
   useGameRegistry();
   useEffect(() => installControlContextMenuGuard(document), []);
@@ -150,6 +152,7 @@ function App() {
     history.replaceState(null, "", url);
   };
   const [state, setState] = useState<State>();
+  const mediaBase = mediaAssetsBase(state?.assetsBaseURL || "", location.origin);
   const [streamInputs] = useState(() => new StreamInputs());
   const serverInstance = useRef<string | undefined>(undefined);
   const snapshotGeneration = useRef(0);
@@ -262,8 +265,8 @@ function App() {
     audio.setEnabled(sound);
   }, [audio, sound]);
   useEffect(() => {
-    audio.setAssetsBase(state?.assetsBaseURL || "");
-  }, [audio, state?.assetsBaseURL]);
+    audio.setAssetsBase(mediaBase);
+  }, [audio, mediaBase]);
   useEffect(() => {
     previewRequest.current++;
     audio.stop();
@@ -673,7 +676,7 @@ function App() {
   const boardBusy = busy || autoPlay || presented.blocked;
   return (
     <ProfileContext.Provider value={setProfileID}>
-      <AssetsContext.Provider value={state.assetsBaseURL || ""}>
+      <AssetsContext.Provider value={mediaBase}>
         <RailMapsContext.Provider value={state.railMaps || []}>
           <div
             data-table-layout={compactPoker ? "poker" : undefined}
@@ -681,10 +684,10 @@ function App() {
             style={
               state.assetsBaseURL
                 ? ({
-                    "--splendor-cards": `url("${state.assetsBaseURL}/splendor/cards.webp")`,
-                    "--splendor-nobles": `url("${state.assetsBaseURL}/splendor/nobles.webp")`,
-                    "--splendor-tokens": `url("${state.assetsBaseURL}/splendor/tokens.webp")`,
-                    "--rail-cards": `url("${state.assetsBaseURL}/rail/train-cards.webp")`,
+                    "--splendor-cards": `url("${mediaBase}/splendor/cards.webp")`,
+                    "--splendor-nobles": `url("${mediaBase}/splendor/nobles.webp")`,
+                    "--splendor-tokens": `url("${mediaBase}/splendor/tokens.webp")`,
+                    "--rail-cards": `url("${mediaBase}/rail/train-cards.webp")`,
                   } as React.CSSProperties)
                 : undefined
             }
@@ -1027,7 +1030,7 @@ function App() {
                     <GameLoading
                       key={`${room.id}:${room.matchId ?? room.setupVersion}:${room.you}`}
                       room={room}
-                      assets={state.assetsBaseURL || ""}
+                      assets={mediaBase}
                     >
                       {(loadEvents, loading) => (
                         <>
@@ -1107,7 +1110,7 @@ function App() {
                                   loadEvents={loadEvents}
                                   act={act}
                                   busy={boardBusy || loading}
-                                  assets={state.assetsBaseURL || ""}
+                                  assets={mediaBase}
                                   sound={sound && volume > 0 && !loading}
                                   audio={gameAudio}
                                   inputWindow={streamInputs.connected ? 8 : 1}
