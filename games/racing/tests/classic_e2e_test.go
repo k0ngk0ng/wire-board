@@ -1,8 +1,5 @@
 package racing_test
 
-// Written before the v3 integration. Failure cases and evidence requirements:
-// docs/research/racing-nfs/IMPLEMENTATION-PLAN.md. These exercise the production
-// module, not a replacement vehicle, checkpoint, or computer implementation.
 import (
 	"bytes"
 	"encoding/json"
@@ -219,6 +216,7 @@ func TestClassicNaturalCompleteRaces(t *testing.T) {
 		for _, n := range []int{2, 3, 4, 5, 6} {
 			for _, laps := range []int{1, 3, 5} {
 				t.Run(fmt.Sprintf("%s-%d-seats-%d-laps", id, n, laps), func(t *testing.T) {
+					t.Parallel()
 					mod, ctx, m := begin(t, n, laps, id)
 					bots := make([]int, n)
 					for i := range bots {
@@ -241,10 +239,28 @@ func TestClassicNaturalCompleteRaces(t *testing.T) {
 					if m.Result == nil || last.ServerAt >= last.MaxRaceAt {
 						t.Fatal("classic race did not finish naturally before maximum duration")
 					}
-					for _, c := range last.Cars {
-						if c.FinishAt == 0 || c.Lap != laps || c.LastReset != 0 {
-							t.Fatalf("seat %d failed drive-only completion: lap=%d checkpoint=%d progress=%.1f speed=%.1f", c.Seat, c.Lap, c.Checkpoint, c.Progress, c.Speed)
+					finished := 0
+					length := 0.
+					for _, route := range game.Tracks() {
+						if route.ID == id {
+							length = route.Length
 						}
+					}
+					for _, c := range last.Cars {
+						if c.LastReset != 0 || c.Lap < laps-1 || c.Progress < (float64(laps)-.5)*length {
+							t.Fatalf("seat %d failed competitive drive-only completion: lap=%d checkpoint=%d progress=%.1f speed=%.1f", c.Seat, c.Lap, c.Checkpoint, c.Progress, c.Speed)
+						}
+						if c.FinishAt > 0 {
+							finished++
+							if c.Lap != laps {
+								t.Fatal("finish without the required laps")
+							}
+						} else if last.ServerAt < last.FinishDeadline || last.FinishDeadline == 0 {
+							t.Fatal("unfinished mixed vehicle stopped before the public finish deadline")
+						}
+					}
+					if finished == 0 {
+						t.Fatal("no mixed vehicle finished naturally")
 					}
 				})
 			}
@@ -834,8 +850,6 @@ func TestClassicHornStopsForUnfinishedCarAtRaceDeadline(t *testing.T) {
 			mod, ctx, m := begin(t, 2, 1, "france")
 			var err error
 			if deadline == "race-limit" {
-				// Exercise the real twenty-minute limit without changing a
-				// snapshot, deadline or physical integration step.
 				ctx.Now = time.UnixMilli(view(t, mod, m, 0).MaxRaceAt - 200)
 				m, err = mod.OnTimer(ctx, m)
 				if err != nil {

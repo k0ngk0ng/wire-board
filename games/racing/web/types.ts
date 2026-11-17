@@ -33,6 +33,8 @@ export type Track = {
   points: Point[];
 };
 export type Car = Point & {
+	verticalSpeed?: number;
+	airborne?: boolean;
   vehicle?: string;
   motion?: ClassicMotionState;
   rpm?: number;

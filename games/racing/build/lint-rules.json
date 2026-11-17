@@ -1,0 +1,39 @@
+{
+  "scope": "本轮赛车物理、电脑策略、本地预测及其回归与 lint 工具；不代表全仓库 lint",
+  "rules": [
+    "目录必须为 server/web/tests/build",
+    "Go 文件为 snake_case，脚本为 kebab-case",
+    "绑定、函数和类型采用 CamelCase，禁止下划线命名",
+    "代码禁止注释，Go 编译器资源指令除外",
+    "JavaScript/TypeScript 禁止 eval 和 Function 构造器",
+    "Go 包名必须匹配目录"
+  ],
+  "files": [
+    "games/racing/server/classic_bot.go",
+    "games/racing/server/classic_driver.go",
+    "games/racing/server/classic_collision.go",
+    "games/racing/server/classic_flight.go",
+    "games/racing/server/classic_flight_test.go",
+    "games/racing/server/classic_laps.go",
+    "games/racing/server/classic_physics.go",
+    "games/racing/server/classic_track.go",
+    "games/racing/server/competitive_dynamics_test.go",
+    "games/racing/server/module.go",
+    "games/racing/server/physics.go",
+    "games/racing/server/state.go",
+    "games/racing/web/classic-flight.ts",
+    "games/racing/web/classic-road.ts",
+    "games/racing/web/prediction.ts",
+    "games/racing/web/types.ts",
+    "games/racing/tests/competitive_pace_e2e_test.go",
+    "games/racing/tests/dynamics_prediction_e2e_test.go",
+    "games/racing/tests/dynamics-prediction-parity.mjs",
+    "games/racing/tests/dynamics-lint.test.mjs",
+    "games/racing/build/lint_go.go",
+    "games/racing/build/lint.mjs",
+    "games/racing/tests/classic_e2e_test.go",
+    "games/racing/web/classic-skids.ts",
+    "games/racing/tests/flight-presentation.test.mjs",
+    "games/racing/tests/module_e2e_test.go"
+  ]
+}

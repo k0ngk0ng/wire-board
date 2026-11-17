@@ -20,6 +20,8 @@ v3 的实现前失败清单与预算见 [IMPLEMENTATION-PLAN.md](../../docs/rese
 
 每辆车额外公开 `vehicle/rpm/gear/height/pitch/roll/routeIndex/motion/protected?/horn?`。gear 为 -1 或 1～原车自动挡数量；pitch 上坡为正，roll 以模型局部 +X 侧抬高为正。模型车头为局部 +Z；世界行驶 angle 为 0 时朝 +X，正值朝 +Z 转向，模型 yaw 为 `π/2-angle`。motion 独立使用米/秒/弧度，包含 x/z/vx/vz/angle/yawRate/steering/longAccel/lateralAccel/rpm/gear/shiftTimer/throttle/brake/handbrake/reverseTimer。外部 Car 的 x/y/vx/vy、道路高程/路宽与 progress 仍为分米。motion 的滤波状态与原始输入分开持久化。
 
+车辆还可包含 `verticalSpeed?:number` 和 `airborne?:boolean`，分别表示分米／秒的垂直速度和离地状态，零值／false 省略。旧存档缺少字段时按接地状态恢复。坡顶离地由地面高度变化、垂直惯性和重力共同决定，空中不施加轮胎转向／制动力；落地以相对地面的垂直接近速度计算冲击。车身高度、姿态和垂直运动进入同一权威与预测时间线；连续腾空不清除有效绕行，显式复位清除垂直运动。
+
 protected 是仅用于投影的保护标记，来自已应用保护输入、输入超时或复位期限，客户端不能设置它。保护制动强制油门零、全刹、禁止倒车。有效手动输入可立即进行新的本地预测，远端预测必须保留保护含义。
 
 公开 `horn` 由已应用输入派生，与位置使用同一权威时间线，不能从最新待执行输入提前投影。保护、输入过期、取消托管、合法复位和比赛结束会清除喇叭；false 省略，旧输入和旧存档继续兼容。客户端据此驱动声音播放，不据此判断碰撞或比赛结果。
@@ -53,6 +55,8 @@ v3 `reset` 在发车后允许行驶中使用，不要求减速或额外 5 秒冷
 附着与坡度来自当前赛道真实 terrain mesh、五车原四轮中心／轮径／groundOffset 和 raw effect，不按离路横向距离判草地或加阻力。原 effect0 not_driveable 及近竖直装饰面不作为 floor，命中层按参考高度选择；未知／未命中保持中性回退。车身高度和姿态也使用实际接触面；前后轴分别应用实际轮胎材质与接触法线，保留模型滚阻／风阻，不加离道距离或低抓地到滚阻倍率。原参数字节及公开重建公式的依据见 [LAPS.md](../../docs/research/racing-nfs/LAPS.md) 和 [MOTION.md](../../docs/research/racing-nfs/MOTION.md)。道路、墙和车的接触按高度分层。
 
 电脑只发送正常 drive。它们用公开车型能力选择保守行驶包络，以曲率、制动距离和转向建立延迟预看；按原生左右宽度和真实车身胶囊检测前方可行侧，不能假定 VROAD 参考线永远畅通。受阻时正常倒车/前进恢复，禁止改坐标、reset 或注入完赛。测试覆盖真实混合车型，不能用全部 P911 替代五车型验收。
+
+电脑的油门、极速和横向加速度不再统一受最慢车型限制。转向候选使用自身车辆的短时物理预演选择，仍提交正常模拟输入。车车碰撞按双方质量分配冲量，并加入偏心偏航与切向摩擦，双方各获得一次碰撞事件；护墙接触消耗切向速度。高速移动使用有界分段检查接触，沿用实际车身尺寸、高度分层与可撞毁物件位图。实现前失败清单与本轮验收入口见 [dynamics-failures.md](tests/dynamics-failures.md)。
 
 ## 版本兼容边界
 - 正常新界面仅提供 `france/coastal/uk/park` 四条原版近似路线，新比赛冻结 `physics=3`，使用有独立传动、制动和抓地参数的经典车型。旧 `metro/harbor/woodland/coast/canyon` ID 仅保留显式旧请求和历史房间的 `physics=0` 兼容，不计作新版交付赛道。未带 `physics` 的历史快照不被升级，不替换已保存几何。

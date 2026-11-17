@@ -58,7 +58,7 @@ export type ClassicPropWorld = {
   broken: Uint8Array;
 };
 
-/** Decode one confirmed race snapshot; static catalogs never own mutable bits. */
+
 export function classicPropWorld(
   catalog: ClassicPropCatalog,
   state: ClassicPropSnapshot,
@@ -187,7 +187,7 @@ function hull(vertices: number[][]): [number, number][] {
   return [...lower.slice(0, -1), ...upper.slice(0, -1)];
 }
 
-/** The same native-to-rule transform as scripts/racing/nfs-rules.py. */
+
 export function classicTrackFromRoute(
   route: NativeClassicRoute,
 ): ClassicRuleTrack {
@@ -531,13 +531,39 @@ export function collideClassicRoad(
       const depth = radius - distance + 0.001;
       x += nx * depth;
       y += ny * depth;
-      if (inward < 0) {
+      if (inward < -1e-4) {
         s.vx -= inward * nx * 1.1;
         s.vz -= inward * ny * 1.1;
+        const tangent = -s.vx * ny + s.vz * nx;
+        const loss = Math.min(Math.abs(tangent) * .28, .8 + (-inward) * .75);
+        s.vx += Math.sign(tangent) * ny * loss;
+        s.vz -= Math.sign(tangent) * nx * loss;
+        const lever = (p.x - x) * ny - (p.y - y) * nx;
+        s.yawRate = clamp(s.yawRate + lever / 10 * (-inward) * .025, -2.4, 2.4);
+        s.longAccel = -Math.min(30, -inward * 3 + loss * 2);
       }
     }
   }
   s.x = x / 10;
   s.z = y / 10;
+  return s;
+}
+
+export function sweepClassicRoad(
+  track: ClassicRuleTrack,
+  before: ClassicMotionState,
+  next: ClassicMotionState,
+  vehicle: string,
+  height: number,
+  dt: number,
+  props?: ClassicPropWorld,
+): ClassicMotionState {
+  const steps = Math.min(80, Math.max(1, Math.ceil(Math.hypot(next.x - before.x, next.z - before.z) / .35)));
+  let s = { ...next, x: before.x, z: before.z };
+  for (let i = 0; i < steps; i++) {
+    s.x += s.vx * dt / steps;
+    s.z += s.vz * dt / steps;
+    s = collideClassicRoad(track, s, vehicle, height, props);
+  }
   return s;
 }

@@ -3,15 +3,17 @@ import type { Car, Point, Track } from "./types";
 import { brakeLevel, type Drive } from "./input.ts";
 import { clamp } from "./presentation.ts";
 import { classicVehicle, stepClassicMotion, type ClassicMotionState } from "./classic-motion.ts";
-import { classicRoadAt, classicRoadSurface, collideClassicRoad, type ClassicRuleTrack, type ClassicPropWorld } from "./classic-road.ts";
+import { classicRoadAt, classicRoadSurface, sweepClassicRoad, type ClassicRuleTrack, type ClassicPropWorld } from "./classic-road.ts";
 import { classicTerrainSurface, classicTerrainAt } from "./classic-terrain.ts";
+
+import { stepClassicFlight, stepClassicAirMotion, type ClassicFlightGround } from "./classic-flight.ts";
 
 type PredictionDrive = Drive & { protected?: boolean; extrapolated?: boolean };
 
 function predictClassicCar(car: Car, input: PredictionDrive, track: ClassicRuleTrack, ms: number, serverNow: number, props?: ClassicPropWorld): Car {
   const c = { ...car };
-  // Speculative contact is local to this replay. Only server snapshots update
-  // confirmed world visibility and future authoritative collision filtering.
+
+
   const predictedProps = props ? { ...props, broken: props.broken.slice() } : undefined;
   const vehicle = classicVehicle(c.vehicle ?? "p911");
   let motion: ClassicMotionState = {
@@ -20,38 +22,58 @@ function predictClassicCar(car: Car, input: PredictionDrive, track: ClassicRuleT
     rpm: c.rpm ?? vehicle.idleRPM, gear: c.gear ?? 1, shiftTimer: 0,
     throttle: 0, brake: 0, handbrake: 0, reverseTimer: 0, ...c.motion,
   };
-  motion.x = c.x / 10; motion.z = c.y / 10;
-  motion.vx = c.vx / 10; motion.vz = c.vy / 10; motion.angle = c.angle;
+  for (const [carKey, motionKey] of [["x", "x"], ["y", "z"], ["vx", "vx"], ["vy", "vz"]] as const) {
+    if (Math.abs(c[carKey] - motion[motionKey] * 10) < .002) c[carKey] = motion[motionKey] * 10;
+    else motion[motionKey] = c[carKey] / 10;
+  }
+  motion.angle = c.angle;
   let remaining = clamp(ms, 0, 250) / 1000;
   const protect = input.protected || (input.extrapolated && serverNow - c.lastInputAt > 750);
   while (remaining > 1e-7) {
     const dt = Math.min(.02, remaining);
     remaining -= dt;
-    let road = classicRoadAt(track, c.x, c.y, c.height ?? 0, c.routeIndex ?? -1);
+    const groundAt = (x: number, y: number, height: number): ClassicFlightGround => {
+      const terrain = classicTerrainAt(track.terrain, x, y, height);
+      const road = classicRoadAt(track, x, y, terrain.found ? terrain.height : height, c.routeIndex ?? -1);
+      const normal = terrain.found ? terrain : road;
+      const cs = Math.cos(motion.angle), sn = Math.sin(motion.angle);
+      const pitch = Math.atan(-(normal.nx * cs + normal.nz * sn) / Math.max(.1, normal.ny));
+      const roll = Math.atan(-(normal.nx * sn - normal.nz * cs) / Math.max(.1, normal.ny));
+      return { height: normal.height, pitch, roll, supported: terrain.found || !track.terrain,
+        verticalSpeed: Math.tan(pitch) * (motion.vx * cs + motion.vz * sn) * 10 + Math.tan(roll) * (motion.vx * sn - motion.vz * cs) * 10 };
+    };
+    const oldGround = groundAt(c.x, c.y, c.height ?? 0);
+    const road = classicRoadAt(track, c.x, c.y, oldGround.height, c.routeIndex ?? -1);
+    const flight = { height: c.height ?? oldGround.height, verticalSpeed: c.airborne ? c.verticalSpeed ?? 0 : oldGround.verticalSpeed,
+      pitch: c.pitch ?? oldGround.pitch, roll: c.roll ?? oldGround.roll, airborne: !!c.airborne, impact: 0 };
     if (protect) { motion.throttle = 0; motion.brake = 1; motion.reverseTimer = 0; }
-    motion = stepClassicMotion(motion, {
+    const before = { ...motion };
+    motion = c.airborne ? stepClassicAirMotion(motion, dt) : stepClassicMotion(motion, {
       steer: protect ? 0 : input.steer,
       throttle: protect ? 0 : input.throttle,
       brakeAmount: protect ? 1 : brakeLevel(input),
       handbrake: protect ? false : input.drift,
       allowReverse: !protect,
     }, vehicle, classicTerrainSurface(track.terrain,c,classicRoadSurface(road, motion.angle)), dt);
-    let ground=classicTerrainAt(track.terrain,motion.x*10,motion.z*10,c.height??road.height);
-    road = classicRoadAt(track, motion.x * 10, motion.z * 10, ground.found?ground.height:c.height??road.height, road.index);
-    const groundHeight=ground.found?ground.height:road.height,beforeCollisionX=motion.x,beforeCollisionZ=motion.z;
-    motion = collideClassicRoad(track, motion, c.vehicle ?? "p911", groundHeight, predictedProps);
+    const nextFlight = stepClassicFlight(flight, groundAt(motion.x * 10, motion.z * 10, flight.height), Math.hypot(motion.vx, motion.vz) * 10, dt);
+    if (nextFlight.impact > 30) {
+      const factor = Math.exp(-Math.min(10, nextFlight.impact / 10 - 3) * .035);
+      motion.vx *= factor;
+      motion.vz *= factor;
+      motion.longAccel = -Math.min(30, nextFlight.impact / 5);
+    }
+    motion = sweepClassicRoad(track, before, motion, c.vehicle ?? "p911", nextFlight.height, dt, predictedProps);
     c.x = motion.x * 10; c.y = motion.z * 10;
     c.vx = motion.vx * 10; c.vy = motion.vz * 10; c.angle = motion.angle;
-    if(motion.x!==beforeCollisionX||motion.z!==beforeCollisionZ){
-      ground=classicTerrainAt(track.terrain,c.x,c.y,groundHeight);
-      road = classicRoadAt(track, c.x, c.y, ground.found?ground.height:groundHeight, road.index);
-    }
-    c.height = ground.found?ground.height:road.height;
-    c.routeIndex = road.index;
-    const normal=ground.found?ground:road;
-    c.pitch = Math.atan(-(normal.nx * Math.cos(c.angle) + normal.nz * Math.sin(c.angle)) / Math.max(.1, normal.ny));
-    c.roll = Math.atan(-(normal.nx * Math.sin(c.angle) - normal.nz * Math.cos(c.angle)) / Math.max(.1, normal.ny));
-    c.offroad = road.side > road.right || road.side < -road.left;
+    const finalGround = groundAt(c.x, c.y, nextFlight.height);
+    c.height = nextFlight.airborne ? nextFlight.height : finalGround.height;
+    c.verticalSpeed = nextFlight.verticalSpeed;
+    c.airborne = nextFlight.airborne;
+    c.pitch = nextFlight.airborne ? nextFlight.pitch : finalGround.pitch;
+    c.roll = nextFlight.airborne ? nextFlight.roll : finalGround.roll;
+    const finalRoad = classicRoadAt(track, c.x, c.y, c.height, road.index);
+    c.routeIndex = finalRoad.index;
+    c.offroad = finalRoad.side > finalRoad.right || finalRoad.side < -finalRoad.left;
   }
   return { ...c, motion, rpm: motion.rpm, gear: motion.gear, speed: Math.hypot(c.vx, c.vy),
     steer: input.steer, throttle: input.throttle, brake: input.brake, brakeAmount: brakeLevel(input), drift: input.drift };
@@ -72,8 +94,8 @@ export function roadDistance(track: Pick<Track, "points">, p: Point) {
   }
   return best;
 }
-// Cosmetic, bounded replay of the driving equations. Authoritative collisions,
-// checkpoints, laps and results always remain the server's values.
+
+
 export function predictCar(
   car: Car,
   input: PredictionDrive,

@@ -1,4 +1,5 @@
 type SkidCar = {
+  airborne?: boolean;
   vx: number; vy: number; angle: number; speed: number;
   brake: boolean; brakeAmount?: number; drift: boolean; offroad: boolean;
   finishAt: number; protected?: boolean; resetUntil: number;
@@ -12,17 +13,15 @@ const clamp = (value: number, low = 0, high = 1) => Math.max(low, Math.min(high,
 const finite = (value: number | undefined, fallback = 0) => Number.isFinite(value) ? value! : fallback;
 const looseSurfaces = new Set([2,3,4,11,5,13,9,15]);
 
-/** Unknown native IDs stay unknown; VROAD distance is not a material label. */
 export function classicSkidOnSurface(found: boolean, surface: number): boolean {
   return found && !looseSurfaces.has(surface);
 }
 
-/** Motion and applied pedal state, never steering input alone, create rubber. */
 export function classicSkidStrength(car: SkidCar, serverNow: number): ClassicSkidStrength {
   const none: ClassicSkidStrength = { front: 0, rear: 0, cause: "none" };
   if (![car.vx,car.vy,car.angle].every(Number.isFinite)) return none;
   const speed = Math.hypot(finite(car.vx), finite(car.vy)) / 10;
-  if (speed < 3 || car.protected || car.finishAt || car.resetUntil > serverNow) return none;
+  if (car.airborne || speed < 3 || car.protected || car.finishAt || car.resetUntil > serverNow) return none;
   const forward = (car.vx * Math.cos(car.angle) + car.vy * Math.sin(car.angle)) / 10;
   const side = Math.abs((-car.vx * Math.sin(car.angle) + car.vy * Math.cos(car.angle)) / 10);
   const slip = speed >= 5 && side > 1.3 ? clamp((Math.atan2(side, Math.max(1, Math.abs(forward))) - .13) / .25) : 0;
@@ -35,7 +34,6 @@ export function classicSkidStrength(car: SkidCar, serverNow: number): ClassicSki
   return none;
 }
 
-/** A six-vertex strip in world decimetres; each end uses its own road normal. */
 export function classicSkidQuad(a: ClassicSkidPoint, b: ClassicSkidPoint, width: number): number[] | null {
   const dx = b.x - a.x, dy = b.y - a.y, dz = b.z - a.z;
   if (![...Object.values(a), ...Object.values(b), width].every(Number.isFinite) || Math.hypot(dx, dy, dz) < 1e-5 || width <= 0) return null;
@@ -49,7 +47,6 @@ export function classicSkidQuad(a: ClassicSkidPoint, b: ClassicSkidPoint, width:
   return [...al,...ar,...bl,...bl,...ar,...br];
 }
 
-/** Bounded shared history for every visible vehicle, with per-wheel continuity. */
 export class ClassicSkidTrail {
   readonly capacity: number;
   readonly lifetime: number;

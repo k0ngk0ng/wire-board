@@ -1,4 +1,3 @@
-// Package racing owns the complete pure racing rules, vehicle simulation and AI.
 package racing
 
 import (
@@ -60,45 +59,47 @@ type Input struct {
 	Drift       bool     `json:"drift"`
 }
 type Car struct {
-	LapTrack    *classicLapTracker  `json:"lapTrack,omitempty"`
-	Horn        bool                `json:"horn,omitempty"`
-	Protected   bool                `json:"protected,omitempty"`
-	Vehicle     string              `json:"vehicle,omitempty"`
-	RPM         float64             `json:"rpm,omitempty"`
-	Gear        int                 `json:"gear,omitempty"`
-	Height      float64             `json:"height,omitempty"`
-	Pitch       float64             `json:"pitch,omitempty"`
-	Roll        float64             `json:"roll,omitempty"`
-	RouteIndex  int                 `json:"routeIndex"`
-	Motion      *ClassicMotionState `json:"motion,omitempty"`
-	Driver      *classicDriverState `json:"driver,omitempty"`
-	BrakeAmount *float64            `json:"brakeAmount,omitempty"`
-	Seat        int                 `json:"seat"`
-	X           float64             `json:"x"`
-	Y           float64             `json:"y"`
-	VX          float64             `json:"vx"`
-	VY          float64             `json:"vy"`
-	Angle       float64             `json:"angle"`
-	Speed       float64             `json:"speed"`
-	Steer       float64             `json:"steer"`
-	Throttle    float64             `json:"throttle"`
-	Brake       bool                `json:"brake"`
-	Drift       bool                `json:"drift"`
-	Skin        int                 `json:"skin"`
-	Seq         int64               `json:"seq"`
-	Lap         int                 `json:"lap"`
-	Checkpoint  int                 `json:"checkpoint"`
-	Progress    float64             `json:"progress"`
-	Rank        int                 `json:"rank"`
-	FinishAt    int64               `json:"finishAt"`
-	Offroad     bool                `json:"offroad"`
-	LastInputAt int64               `json:"lastInputAt"`
-	IdleAt      int64               `json:"idleAt"`
-	ResetUntil  int64               `json:"resetUntil"`
-	Gate        int                 `json:"gate"`
-	LastReset   int64               `json:"lastReset"`
-	Applied     Input               `json:"applied,omitzero"`
-	Pending     []Input             `json:"pending,omitempty"`
+	VerticalSpeed float64             `json:"verticalSpeed,omitempty"`
+	Airborne      bool                `json:"airborne,omitempty"`
+	LapTrack      *classicLapTracker  `json:"lapTrack,omitempty"`
+	Horn          bool                `json:"horn,omitempty"`
+	Protected     bool                `json:"protected,omitempty"`
+	Vehicle       string              `json:"vehicle,omitempty"`
+	RPM           float64             `json:"rpm,omitempty"`
+	Gear          int                 `json:"gear,omitempty"`
+	Height        float64             `json:"height,omitempty"`
+	Pitch         float64             `json:"pitch,omitempty"`
+	Roll          float64             `json:"roll,omitempty"`
+	RouteIndex    int                 `json:"routeIndex"`
+	Motion        *ClassicMotionState `json:"motion,omitempty"`
+	Driver        *classicDriverState `json:"driver,omitempty"`
+	BrakeAmount   *float64            `json:"brakeAmount,omitempty"`
+	Seat          int                 `json:"seat"`
+	X             float64             `json:"x"`
+	Y             float64             `json:"y"`
+	VX            float64             `json:"vx"`
+	VY            float64             `json:"vy"`
+	Angle         float64             `json:"angle"`
+	Speed         float64             `json:"speed"`
+	Steer         float64             `json:"steer"`
+	Throttle      float64             `json:"throttle"`
+	Brake         bool                `json:"brake"`
+	Drift         bool                `json:"drift"`
+	Skin          int                 `json:"skin"`
+	Seq           int64               `json:"seq"`
+	Lap           int                 `json:"lap"`
+	Checkpoint    int                 `json:"checkpoint"`
+	Progress      float64             `json:"progress"`
+	Rank          int                 `json:"rank"`
+	FinishAt      int64               `json:"finishAt"`
+	Offroad       bool                `json:"offroad"`
+	LastInputAt   int64               `json:"lastInputAt"`
+	IdleAt        int64               `json:"idleAt"`
+	ResetUntil    int64               `json:"resetUntil"`
+	Gate          int                 `json:"gate"`
+	LastReset     int64               `json:"lastReset"`
+	Applied       Input               `json:"applied,omitzero"`
+	Pending       []Input             `json:"pending,omitempty"`
 }
 type Event struct {
 	Prop      *int    `json:"prop,omitempty"`

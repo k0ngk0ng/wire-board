@@ -2,8 +2,6 @@ package racing
 
 import "math"
 
-// Driving telemetry is persisted for the explicit computer/assisted driver.
-// Collecting it never takes over a human seat or writes race progress.
 type classicDriverState struct {
 	ForwardUntil int64   `json:"forwardUntil,omitempty"`
 	BlockedAt    int64   `json:"blockedAt,omitempty"`
@@ -50,24 +48,37 @@ func stepClassicCar(c *Car, t Track, ms, at int64, props *classicPropCollision) 
 		motion.ReverseTimer = 0
 	}
 	oldGear := motion.Gear
-	next := StepClassicMotion(motion, input, ClassicVehicle(c.Vehicle), ClassicTerrainSurface(t, c, ClassicSurfaceFor(road, c.Angle)), float64(ms)/1000)
+	dt := float64(ms) / 1000
+	flight := classicFlightFromCar(*c)
+	if !flight.Airborne {
+		flight.VerticalSpeed = classicFlightGroundAt(*c, t).VerticalSpeed
+	}
+	next := motion
+	if flight.Airborne {
+		next = StepClassicAirMotion(motion, dt)
+	} else {
+		next = StepClassicMotion(motion, input, ClassicVehicle(c.Vehicle), ClassicTerrainSurface(t, c, ClassicSurfaceFor(road, c.Angle)), dt)
+	}
+	classicMotionToCar(c, next)
+	ground := classicFlightGroundAt(*c, t)
+	flight = StepClassicFlight(flight, ground, c.Speed, dt)
+	classicFlightToCar(c, flight)
+	next = classicMotionFromCar(*c)
+	before := c.Speed
+	if flight.Impact > 30 {
+		before += flight.Impact * .5
+	}
+	next = sweepClassicRoadWithProps(t, motion, next, c.Vehicle, c.Height, dt, props)
 	classicMotionToCar(c, next)
 	classicPose(c, t)
-	before := c.Speed
-	beforeCollisionX, beforeCollisionZ := next.X, next.Z
-	next = collideClassicRoadWithProps(t, next, c.Vehicle, c.Height, props)
-	classicMotionToCar(c, next)
-	if next.X != beforeCollisionX || next.Z != beforeCollisionZ {
-		classicPose(c, t)
-	}
 	if c.Driver == nil {
 		c.Driver = &classicDriverState{}
 	}
 	driver := c.Driver
 	forward := c.VX*math.Cos(c.Angle) + c.VY*math.Sin(c.Angle)
-	if c.Gear > 0 && forward > 45 {
+	if c.Gear > 0 && (forward > 45 || driver.BlockedAt > 0 && math.Hypot(c.X-driver.OriginX, c.Y-driver.OriginY) > 20) {
 		c.Driver = &classicDriverState{}
-	} else if !protect && c.Speed < 15 && input.Throttle > .7 && !input.Handbrake && c.Gear > 0 && driver.BlockedAt == 0 {
+	} else if !protect && c.Speed < 40 && input.Throttle > .1 && !input.Handbrake && c.Gear > 0 && driver.BlockedAt == 0 {
 		driver.BlockedAt = at
 		driver.OriginX = c.X
 		driver.OriginY = c.Y
@@ -78,7 +89,7 @@ func stepClassicCar(c *Car, t Track, ms, at int64, props *classicPropCollision) 
 	if c.Gear > 0 && oldGear < 0 && driver.ForwardUntil > at {
 		driver.ForwardUntil = mathMaxInt64(driver.ForwardUntil, at+1500)
 	}
-	if c.Gear < 0 && c.Speed < 10 && driver.ReverseAt > 0 && at-driver.ReverseAt > 1800 && at >= driver.ForwardUntil {
+	if c.Gear < 0 && c.Speed < 10 && driver.ReverseAt > 0 && at-driver.ReverseAt > 6500 && at >= driver.ForwardUntil {
 		driver.ForwardUntil = at + 2500
 	}
 	if c.Gear > 0 && c.Speed < 15 && driver.ReverseAt > 0 && at-driver.ReverseAt > 4500 {
@@ -97,72 +108,6 @@ func mathMaxInt64(a, b int64) int64 {
 	return b
 }
 
-func collideClassicCars(s *State, at int64) {
-	for pass := 0; pass < 3; pass++ {
-		for i := range s.Cars {
-			a := &s.Cars[i]
-			if a.FinishAt > 0 {
-				continue
-			}
-			for j := i + 1; j < len(s.Cars); j++ {
-				b := &s.Cars[j]
-				if b.FinishAt > 0 || math.Hypot(a.X-b.X, a.Y-b.Y) > 55 {
-					continue
-				}
-				abody, bbody := ClassicVehicleBody(a.Vehicle), ClassicVehicleBody(b.Vehicle)
-				if a.Height+abody.Height*10 < b.Height || b.Height+bbody.Height*10 < a.Height {
-					continue
-				}
-				aa, az, ar := classicCapsule(a.X, a.Y, a.Angle, abody)
-				ba, bz, br := classicCapsule(b.X, b.Y, b.Angle, bbody)
-				p, q := classicSegmentClosest(aa, az, ba, bz)
-				dx, dy := q.X-p.X, q.Y-p.Y
-				distance := math.Hypot(dx, dy)
-				depth := ar + br - distance
-				if depth <= 0 {
-					continue
-				}
-				nx, ny := 0., 0.
-				if distance > 1e-7 {
-					nx = dx / distance
-					ny = dy / distance
-				} else {
-					nx = b.X - a.X
-					ny = b.Y - a.Y
-					l := math.Hypot(nx, ny)
-					if l > 1e-7 {
-						nx /= l
-						ny /= l
-					} else {
-						nx = -math.Sin(a.Angle)
-						ny = math.Cos(a.Angle)
-					}
-				}
-				ia, ib := 1/ClassicVehicle(a.Vehicle).Mass, 1/ClassicVehicle(b.Vehicle).Mass
-				a.X -= nx * (depth + .001) * ia / (ia + ib)
-				a.Y -= ny * (depth + .001) * ia / (ia + ib)
-				b.X += nx * (depth + .001) * ib / (ia + ib)
-				b.Y += ny * (depth + .001) * ib / (ia + ib)
-				relative := (a.VX-b.VX)*nx + (a.VY-b.VY)*ny
-				if relative > 0 {
-					impulse := relative * 1.15 / (ia + ib)
-					a.VX -= impulse * ia * nx
-					a.VY -= impulse * ia * ny
-					b.VX += impulse * ib * nx
-					b.VY += impulse * ib * ny
-					if relative > 45 {
-						s.emit("collision", i, at, clamp(relative/200, 0, 1))
-					}
-				}
-				classicMotionToCar(a, classicMotionFromCar(*a))
-				classicMotionToCar(b, classicMotionFromCar(*b))
-				classicPose(a, s.Track)
-				classicPose(b, s.Track)
-			}
-		}
-	}
-}
-
 func compactClassicCar(c *Car) {
 	q := func(n, scale float64) float64 { return math.Round(n*scale) / scale }
 	c.X = q(c.X, 1000)
@@ -170,24 +115,24 @@ func compactClassicCar(c *Car) {
 	c.VX = q(c.VX, 1000)
 	c.VY = q(c.VY, 1000)
 	c.Speed = q(c.Speed, 1000)
-	c.Height = q(c.Height, 1000)
-	c.Angle = q(c.Angle, 1e6)
+	c.Height = q(c.Height, 1e6)
+	c.Angle = q(c.Angle, 1e8)
 	c.Pitch = q(c.Pitch, 1e6)
 	c.Roll = q(c.Roll, 1e6)
 	c.RPM = q(c.RPM, 10)
 	c.Progress = q(c.Progress, 1000)
 	if c.Motion != nil {
 		m := *c.Motion
-		m.X = q(m.X, 1e5)
-		m.Z = q(m.Z, 1e5)
-		m.VX = q(m.VX, 1e5)
-		m.VZ = q(m.VZ, 1e5)
-		m.Angle = q(m.Angle, 1e6)
-		m.YawRate = q(m.YawRate, 1e6)
-		m.Steering = q(m.Steering, 1e6)
+		m.X = q(m.X, 1e7)
+		m.Z = q(m.Z, 1e7)
+		m.VX = q(m.VX, 1e7)
+		m.VZ = q(m.VZ, 1e7)
+		m.Angle = q(m.Angle, 1e8)
+		m.YawRate = q(m.YawRate, 1e8)
+		m.Steering = q(m.Steering, 1e8)
 		m.LongAccel = q(m.LongAccel, 1e5)
 		m.LateralAccel = q(m.LateralAccel, 1e5)
-		m.RPM = q(m.RPM, 10)
+		m.RPM = q(m.RPM, 1e4)
 		m.ShiftTimer = q(m.ShiftTimer, 1e6)
 		m.Throttle = q(m.Throttle, 1e6)
 		m.Brake = q(m.Brake, 1e6)
@@ -195,4 +140,5 @@ func compactClassicCar(c *Car) {
 		m.ReverseTimer = q(m.ReverseTimer, 1e6)
 		c.Motion = &m
 	}
+	c.VerticalSpeed = q(c.VerticalSpeed, 1e6)
 }

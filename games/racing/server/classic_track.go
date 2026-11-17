@@ -9,8 +9,6 @@ import (
 	"math"
 )
 
-// Numeric server rule data only. Client models, textures and audio are excluded.
-//
 //go:embed data/index.json data/car-bodies.json data/rules/*.json
 var classicRuleFiles embed.FS
 
@@ -98,7 +96,6 @@ func loadClassicRules() classicRuleRegistry {
 	if err := json.Unmarshal(indexBytes, &index); err != nil {
 		panic(err)
 	}
-	// Retained hash-named versions remain available to old v3 saved matches.
 	entries, err := classicRuleFiles.ReadDir("data/rules")
 	if err != nil {
 		panic(err)
@@ -174,9 +171,6 @@ func compactTrack(t Track) Track {
 	t.Props = nil
 	return t
 }
-
-// Tracks includes the delivered original routes and explicit legacy-ID routes.
-// Legacy IDs are compatibility branches, not additional delivered v3 courses.
 func Tracks() []Track {
 	result := make([]Track, 0, len(classicRules.current)+5)
 	for _, id := range classicRules.current {
@@ -359,9 +353,16 @@ func collideClassicRoadWithProps(t Track, s ClassicMotionState, vehicle string, 
 			depth := r - distance + .001
 			x += nx * depth
 			y += ny * depth
-			if inward < 0 {
+			if inward < -1e-4 {
 				s.VX -= inward * nx * 1.1
 				s.VZ -= inward * ny * 1.1
+				tangent := -s.VX*ny + s.VZ*nx
+				loss := math.Min(math.Abs(tangent)*.28, .8+(-inward)*.75)
+				s.VX += classicSign(tangent) * ny * loss
+				s.VZ -= classicSign(tangent) * nx * loss
+				lever := (p.X-x)*ny - (p.Y-y)*nx
+				s.YawRate = clamp(s.YawRate+lever/10*(-inward)*.025, -2.4, 2.4)
+				s.LongAccel = -math.Min(30, -inward*3+loss*2)
 			}
 		}
 	}
@@ -378,6 +379,10 @@ func classicPose(c *Car, t Track) ClassicRoadContact {
 	}
 	road := ClassicRoadAt(t, c.X, c.Y, height, c.RouteIndex)
 	c.RouteIndex = road.Index
+	if c.Airborne {
+		c.Offroad = road.Side > road.Right || road.Side < -road.Left
+		return road
+	}
 	c.Height = road.Height
 	nx, ny, nz := road.NX, road.NY, road.NZ
 	if ground.Found {

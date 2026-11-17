@@ -1,7 +1,5 @@
 package racing_test
 
-// Failure scenarios are specified in ../CONTRACT.md before implementation.
-// These are production Module flows, not a duplicate physics or lap algorithm.
 import (
 	"bytes"
 	"encoding/json"
@@ -103,6 +101,7 @@ func TestRacingCompleteNaturalRaces(t *testing.T) {
 		for n := 2; n <= 6; n++ {
 			for _, laps := range []int{1, 3, 5} {
 				t.Run(fmt.Sprintf("%s-%d-seats-%d-laps", track, n, laps), func(t *testing.T) {
+					t.Parallel()
 					mod, ctx, m := begin(t, n, laps, track)
 					initial := view(t, mod, m, -1)
 					bots := make([]int, n)
@@ -314,9 +313,6 @@ func TestRacingSkinDuringRaceIsCosmetic(t *testing.T) {
 	}
 	trace(t, view(t, mod, changed, 0))
 }
-
-// Additional requested classic models: all six choices remain cosmetic, retain
-// progress and input state, and reject unlisted IDs through the real module API.
 func TestRacingSixClassicModelsRemainCosmetic(t *testing.T) {
 	mod, ctx, m := begin(t, 2, 1, "metro")
 	ctx.Actor = 0
@@ -339,9 +335,6 @@ func TestRacingSixClassicModelsRemainCosmetic(t *testing.T) {
 		t.Fatal("unknown classic model accepted")
 	}
 }
-
-// Before AI tuning: do not merely raise a car cap while bots keep cruising at
-// the old speed; stronger drivers must still use ordinary inputs and finish.
 func TestRacingBotUsesSportsCarSpeed(t *testing.T) {
 	mod, ctx, m := begin(t, 2, 1, "metro")
 	fastest := 0.0
@@ -368,9 +361,6 @@ func TestRacingBotUsesSportsCarSpeed(t *testing.T) {
 		}
 	}
 }
-
-// Optional pressure must traverse production Apply/View/restore and remain
-// attached to its own queued input; invalid values cannot change the race.
 func TestRacingBrakePressureContract(t *testing.T) {
 	mod, ctx, m := begin(t, 2, 1, "metro")
 	ctx.Actor = 0
@@ -417,7 +407,6 @@ func TestRacingBrakePressureContract(t *testing.T) {
 	if err = json.Unmarshal(reclaimed.Data, &state); err != nil {
 		t.Fatal(err)
 	}
-	// Decode into a fresh value because omitted optional fields must mean legacy full brake.
 	var cleared map[string]any
 	_ = json.Unmarshal(reclaimed.Data, &cleared)
 	car := cleared["cars"].([]any)[0].(map[string]any)

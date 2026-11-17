@@ -243,6 +243,8 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 		if s.Physics == 3 {
 			c.Motion = nil
 			c.Driver = nil
+			c.Airborne = false
+			c.VerticalSpeed = 0
 			motion := classicMotionFromCar(*c)
 			motion.Brake = 1
 			classicMotionToCar(c, motion)
@@ -351,10 +353,6 @@ func project(m gameapi.Match, seat int) (any, error) {
 	}
 	return v, nil
 }
-
-// This path only handles impossible/exhausted old snapshots, never ordinary
-// packet loss. A fresh epoch prevents replay of old low sequence numbers. Keep
-// gameplay and every deadline intact so one bad room cannot block startup.
 func repairSequences(s *State) bool {
 	repaired := false
 	for i := range s.Cars {

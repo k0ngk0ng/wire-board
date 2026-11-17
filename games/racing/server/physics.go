@@ -30,8 +30,6 @@ func stepCar(c *Car, t Track, ms, at int64) {
 		drift = false
 	}
 	forward := c.VX*math.Cos(c.Angle) + c.VY*math.Sin(c.Angle)
-	// Full steering remains useful at low speed, but loses authority as road
-	// speed rises. Inputs from keyboard, mouse and gamepad share this rule.
 	speedForSteering := math.Abs(forward)
 	yaw := steer * 1.65 * math.Min(speedForSteering/65, 1) / (1 + math.Pow(speedForSteering/220, 2))
 	if drift {
@@ -80,7 +78,6 @@ func stepCar(c *Car, t Track, ms, at int64) {
 		c.Y = clamp(c.Y, CarRadius, t.Height-CarRadius)
 		c.VY *= -.3
 	}
-	// Circle obstacles use the visible object's footprint against the car capsule.
 	for _, obstacle := range t.Props {
 		dx, dy := obstacle.X-c.X, obstacle.Y-c.Y
 		if math.Hypot(dx, dy) > obstacle.Radius+CarRadius+10 {
@@ -107,9 +104,6 @@ func stepCar(c *Car, t Track, ms, at int64) {
 	}
 	c.Speed = math.Hypot(c.VX, c.VY)
 }
-
-// contact returns the separating normal and penetration for two radius-13
-// capsules with a 20-unit center segment, matching the 26 x 46 painted body.
 func contact(a, b Car) (float64, float64, float64) {
 	da := Point{math.Cos(a.Angle) * 20, math.Sin(a.Angle) * 20}
 	db := Point{math.Cos(b.Angle) * 20, math.Sin(b.Angle) * 20}
@@ -139,8 +133,6 @@ func contact(a, b Car) (float64, float64, float64) {
 	if distance > 1e-6 {
 		return dx / distance, dy / distance, CarRadius*2 - distance
 	}
-	// Intersecting axes have no unique nearest normal. Select a stable normal
-	// and separate by their complete projected extents rather than only radii.
 	nx, ny := b.X-a.X, b.Y-a.Y
 	l := math.Hypot(nx, ny)
 	if l > 1e-6 {
@@ -273,6 +265,7 @@ func advance(s *State, until int64) {
 	for s.ServerAt+stepMS <= end && s.Result == nil {
 		at := s.ServerAt + stepMS
 		previous := make([]Point, len(s.Cars))
+		previousCars := append([]Car{}, s.Cars...)
 		if s.Phase == "countdown" && at >= s.StartAt {
 			s.Phase = "racing"
 			s.emit("start", -1, s.StartAt, 1)
@@ -310,7 +303,7 @@ func advance(s *State, until int64) {
 		}
 		if s.Phase != "countdown" {
 			if s.Physics == 3 {
-				collideClassicCars(s, at)
+				collideClassicCars(s, at, previousCars)
 			} else {
 				collide(s, at)
 			}

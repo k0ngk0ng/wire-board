@@ -6,8 +6,6 @@ import (
 	"math"
 )
 
-// A signed route winding, not a collection of mandatory road-sample gates.
-// This is persisted privately and never sent as dynamic client telemetry.
 type classicLapTracker struct {
 	Version int     `json:"v"`
 	Arc     float64 `json:"arc"`
@@ -80,19 +78,13 @@ func updateClassicProgress(s *State, c *Car, before Point, at int64) {
 	arc, height, index := classicAlong(t, c)
 	distance := math.Hypot(c.X-p.X, c.Y-p.Y)
 	delta := arc - p.Arc
-	// The engine supplies the physical-step origin. Genuine integration and
-	// multi-car collision corrections are trusted at any displacement; a saved
-	// position changed outside that pipeline no longer matches this origin.
 	continuous := math.Hypot(before.X-p.X, before.Y-p.Y) <= 1e-6
 	if math.Abs(c.Height-height) >= 20 {
-		// A real field may differ from the extrapolated VROAD plane. Compare
-		// actual surfaces at this position; overlapping bridge layers remain
-		// distinct, without any lateral-distance restriction.
 		if ground := ClassicTerrainAt(t, c.X, c.Y, height); ground.Found {
 			height = ground.Height
 		}
 	}
-	valid := continuous && math.Abs(c.Height-height) < 20
+	valid := continuous && (math.Abs(c.Height-height) < 20 || c.Airborne)
 	oldArc := p.Arc
 	p.Arc, p.X, p.Y = arc, c.X, c.Y
 	c.Gate, c.Checkpoint = index, (index+1)%len(t.Points)
@@ -138,7 +130,6 @@ func updateClassicProgress(s *State, c *Car, before Point, at int64) {
 }
 
 func resetClassicPosition(s *State, c *Car) {
-	// Project onto the CURRENT same-layer road segment, never a stale gate.
 	road := ClassicRoadAt(s.Track, c.X, c.Y, c.Height, c.RouteIndex)
 	c.RouteIndex = road.Index
 	oldArc, _, _ := classicAlong(s.Track, c)
@@ -148,7 +139,6 @@ func resetClassicPosition(s *State, c *Car) {
 	}
 	p := Point{road.X, road.Y}
 	v := tangent(s.Track, road.Index)
-	// Existing legal-lane clearance handles original walls on the VROAD line.
 	lane, _ := classicDrivingLane(s.Track, road, ClassicVehicleBody(c.Vehicle), s.Props)
 	l := math.Hypot(road.RX, road.RZ)
 	if l > 1e-8 {
