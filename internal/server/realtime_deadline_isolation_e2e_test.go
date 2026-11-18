@@ -162,7 +162,11 @@ func TestDeadlineRoomBlockedRulesDoNotStopOtherRoomOrOverwriteClose(t *testing.T
 	if err != nil {
 		t.Fatal(err)
 	}
-	if err = os.WriteFile(filepath.Join("..", "..", ".local/pal/verification/mixed-room-isolation.json"), append(out, '\n'), 0600); err != nil {
+	evidence := filepath.Join("..", "..", ".local", "pal", "verification", "mixed-room-isolation.json")
+	if err = os.MkdirAll(filepath.Dir(evidence), 0755); err != nil {
+		t.Fatal(err)
+	}
+	if err = os.WriteFile(evidence, append(out, '\n'), 0600); err != nil {
 		t.Fatal(err)
 	}
 }

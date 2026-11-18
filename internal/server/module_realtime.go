@@ -96,15 +96,14 @@ func computeRealtimeModuleFrame(next *Room, module gameapi.Module, now time.Time
 		if !next.Seats[actor].computerControlled() || !slices.Contains(next.Module.Actors, actor) {
 			continue
 		}
-		ctx := moduleContext(next, actor, next.Version, now)
-		action, err := module.BotAction(ctx, *next.Module)
+		action, err := module.BotAction(moduleContext(next, actor, next.Version, now), *next.Module)
 		if err != nil {
 			return event, fmt.Errorf("actor %d proposal: %w", actor, err)
 		}
 		if action == nil {
 			continue
 		}
-		if err = applyModuleRules(next, module, ctx, action); err != nil {
+		if err = applyModuleRules(next, module, moduleContext(next, actor, next.Version, now), action); err != nil {
 			return event, fmt.Errorf("actor %d action: %w", actor, err)
 		}
 		seat := next.Seats[actor]
