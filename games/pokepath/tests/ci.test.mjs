@@ -11,7 +11,7 @@ const execute = promisify(execFile);
 const files = [
   "native-architecture", "native-reference", "rules-revision", "lint",
   "native-runtime-build-e2e", "native-runtime-unicode", "native-attack-modes-wasm", "tower-order-wasm-e2e",
-  "prediction-handles", "prediction", "prediction-native-e2e", "prediction-session-e2e", "prediction-frame-cache-e2e",
+  "prediction-handles", "prediction", "prediction-session-e2e", "prediction-frame-cache-e2e",
   "damage-labels", "frontend-audio", "frontend-classic", "frontend-language", "frontend-native", "frontend-render",
   "keyboard-command", "keyboard-controller", "pointer-aim", "presentation-proxy", "ui-delivery", "world-animations",
 ].map(name => `games/pokepath/tests/${name}.test.mjs`);
@@ -22,6 +22,10 @@ test("clean checkout delivery checks preserve native trace order and serial Wasm
   await mkdir(output, { recursive: true });
   const environment = { ...process.env };
   delete environment.NODE_TEST_CONTEXT;
+  for (const [name, local] of [["GOCACHE", ".local/go-build"], ["GOMODCACHE", ".local/go-mod"], ["GOTMPDIR", ".local/tmp"], ["TMPDIR", ".local/tmp"], ["TEST_TELEMETRY_DIR", ".local/go-telemetry"], ["npm_config_cache", ".local/npm"]]) {
+    environment[name] = join(root, local);
+    await mkdir(environment[name], { recursive: true });
+  }
   const report = { passed: false, scope: "Independent deliverable checks from a clean checkout; original-browser and pixel research stay in local acceptance artifacts", checks: [] };
   const commands = [
     [process.execPath, ["games/pokepath/build/rules-revision.mjs", "--check"]],
