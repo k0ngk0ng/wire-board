@@ -2,7 +2,7 @@
 """Upload immutable compiled assets; run CDN readback locally before release.
 Actions may upload and package candidates. Tags require the local readback gate.
 """
-import argparse,base64,concurrent.futures,gzip,hashlib,hmac,json,os,re,shutil,time,threading,zlib
+import argparse,base64,concurrent.futures,gzip,hashlib,hmac,json,os,re,shutil,sys,time,threading,zlib
 from email.utils import formatdate
 from pathlib import Path
 from urllib.request import Request,urlopen as standard_urlopen,getproxies,proxy_bypass
@@ -296,7 +296,7 @@ def retry_request(action,label):
     if isinstance(error,HTTPError):error.close()
     raise
    if isinstance(error,HTTPError):error.close()
-   print(f'Retrying {label} after {type(error).__name__} ({attempt}/4)',flush=True)
+   print(f'Retrying {label} after {type(error).__name__} ({attempt}/4)',file=sys.stderr,flush=True)
    time.sleep(2**(attempt-1))
 
 def publish(dist,rows,bucket,endpoint):

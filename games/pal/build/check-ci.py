@@ -89,10 +89,12 @@ def prepare_tools(target):
 def command(args, env, label):
     print('PAL CI:', label, flush=True)
     path = PROOF / (label + '.log')
-    with path.open('w') as log:
-        status = subprocess.run(args, cwd=ROOT, env=env, stdout=log, stderr=subprocess.STDOUT, check=False).returncode
+    diagnostics = PROOF / (label + '.stderr.log')
+    with path.open('w') as log, diagnostics.open('w') as errors:
+        status = subprocess.run(args, cwd=ROOT, env=env, stdout=log, stderr=errors, check=False).returncode
     if status != 0:
-        print('\n'.join(path.read_text(errors='replace').splitlines()[-35:]), file=sys.stderr)
+        for stream in [path, diagnostics]:
+            print('\n'.join(stream.read_text(errors='replace').splitlines()[-35:]), file=sys.stderr)
         raise ValueError(f'{label} failed; see {path.relative_to(ROOT)}')
     return path
 
@@ -133,6 +135,7 @@ def main():
     report = {'passed':False,'profile':'original-98','toolchainPlatform':platform.system()+'-'+platform.machine(),'historicalArtifactMode':specification['historicalArtifactMode'],'checks':[]}
     receipt = PROOF / 'result.json'
     try:
+        command([sys.executable,'-B','scripts/ci/pal-release-e2e.py'],env,'ci-output-regression')
         sdk, optimizer = prepare_tools(report['toolchainPlatform'])
         env.update(PAL_WASI_SDK=str(sdk), PAL_WASM_OPT=str(optimizer))
         command([sys.executable,'-B','games/pal/assets/fetch.py'],env,'source-data')
