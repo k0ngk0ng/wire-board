@@ -40,7 +40,7 @@ FROM alpine:3.23 AS runtime-base
 RUN apk add --no-cache sqlite && addgroup -g 10001 board && adduser -D -u 10001 -G board board && mkdir /data && chown board:board /data
 
 FROM runtime-base AS runtime
-LABEL io.github.k0ngk0ng.wire-board.storage-generation="2"
+LABEL io.github.k0ngk0ng.wire-board.storage-generation="3"
 COPY --from=backend /wire-board /usr/local/bin/wire-board
 COPY --from=backend /src/.local/pal/container-runtime/pal /usr/local/bin/pal
 COPY --from=backend /src/games/pal/native/upstream/LICENSE /usr/local/share/licenses/wire-board/LICENSE.SDLPAL

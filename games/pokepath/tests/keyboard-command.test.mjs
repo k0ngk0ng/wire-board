@@ -1,0 +1,28 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import { createRequire } from "node:module";
+import { mkdir } from "node:fs/promises";
+const require = createRequire(new URL("../../../web/package.json", import.meta.url));
+const directory = new URL("../../../.local/pokepath/native-ui-test/", import.meta.url);
+await mkdir(directory, { recursive: true });
+await require("esbuild").build({ entryPoints: [new URL("../web/keyboard-command.ts", import.meta.url).pathname], outfile: new URL("keyboard-command.mjs", directory).pathname, bundle: true, platform: "node", format: "esm" });
+const { keyboardCommand } = await import(new URL("keyboard-command.mjs", directory));
+test("original keyboard mappings preserve modifiers and French layout", () => {
+  const read = (key, rest = {}, language = 8) => keyboardCommand({ key, ...rest }, language);
+  assert.deepEqual(read("1"), { type: "select", slot: 0 });
+  assert.deepEqual(read("0"), { type: "select", slot: 9 });
+  assert.deepEqual(read("3", { ctrlKey: true }), { type: "action", action: { type: "saveTeam", slot: 2 } });
+  assert.deepEqual(read("F5"), { type: "action", action: { type: "loadTeam", slot: 4 } });
+  assert.deepEqual(read("2", { altKey: true }), { type: "aim", slot: 1 });
+  assert.deepEqual(read("q"), { type: "panel", panel: "profile" });
+  assert.deepEqual(read("a", {}, 2), { type: "panel", panel: "profile" });
+  assert.deepEqual(read("z", {}, 2), { type: "panel", panel: "routes" });
+  assert.deepEqual(read("w", {}, 2), { type: "damage" });
+  assert.deepEqual(read("z"), { type: "damage" });
+  assert.deepEqual(read("x"), { type: "ranges" });
+  assert.deepEqual(read("Shift"), { type: "action", action: { type: "speed" } });
+  assert.equal(read("F11"), undefined);
+  assert.equal(read("s", { repeat: true }), undefined);
+  assert.equal(read("s", { typing: true }), undefined);
+  assert.equal(read("s", { ctrlKey: true }), undefined);
+});

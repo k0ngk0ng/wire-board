@@ -29,6 +29,7 @@
 
 | 游戏 | 规范文件 |
 | --- | --- |
+| 宝可梦：巡径守卫 | [pokepath.md](rules/pokepath.md) |
 | 热血篮球 | [basketball.md](rules/basketball.md) |
 | 坦克大战 | [battlecity.md](rules/battlecity.md) |
 | 泡泡堂 | [bubbleparty.md](rules/bubbleparty.md) |

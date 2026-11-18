@@ -1,0 +1,1460 @@
+.pokepath-board { min-height: 420px; border: 0; border-radius: 0; background: #111; color: #d4d4d4; font-family: NGC, monospace; }
+.pokepath-classic-viewport { position: relative; width: 100%; height: 100%; min-height: 0; overflow: hidden; background: #111; color: #d4d4d4; }
+.pokepath-classic-scene { position: absolute; left: 50%; top: 50%; width: 1238px; height: 674px; transform: translate(-50%, -50%) scale(var(--pp-scene-scale, 1)); transform-origin: center; overflow: hidden; background: #2a2b2d; color: #d4d4d4; font: 16px NGC, monospace; }
+.pokepath-classic-scene button { appearance: none; min-width: 0; min-height: 0; margin: 0; padding: 0; border: 0; border-radius: 0; background: none; color: inherit; font: inherit; line-height: normal; box-shadow: none; text-shadow: 1px 1px #000; }
+.pokepath-classic-scene button:hover { background-color: #ffffff0a; }
+.pokepath-classic-scene button:disabled { color: #d4d4d4; background-color: transparent; cursor: default; }
+.pokepath-classic-scene button[aria-pressed="true"] { color: inherit; border-color: inherit; box-shadow: none; }
+.pokepath-trainer { position: absolute; inset: 0 auto 0 0; width: 259px; background: #2a2b2d; color: #d4d4d4; }
+.pokepath-trainer-heading { position: relative; height: 103px; border-bottom: 1px solid #000; }
+.pokepath-trainer-portrait { position: absolute; left: 6px; top: 14px; width: 80px; height: 80px; filter: drop-shadow(3px 3px 0 #000); }
+.pokepath-trainer-name { position: absolute; left: 92px; top: 13px; max-width: 158px; overflow: hidden; white-space: nowrap; color: #d4d4d4; font: 700 13px NGC, monospace; filter: drop-shadow(1px 1px 0 #000); }
+.pokepath-trainer-stars { position: absolute; left: 90px; top: 32px; font-size: 10px; line-height: 13px; color: #ebbe35; }
+.pokepath-trainer-ribbons { position: absolute; left: 150px; top: 32px; display: flex; align-items: center; gap: 4px; color: #b3b24c; font-size: 10px; line-height: 14px; }
+.pokepath-trainer-ribbons img { width: 11px; height: 10px; object-fit: cover; filter: drop-shadow(1px 1px #000); }
+.pokepath-trainer-gold { position: absolute; left: 92px; top: 49px; color: #70ac4c; font-size: 10px; }
+.pokepath-trainer-hearts { position: absolute; left: 90px; top: 65px; display: flex; flex-wrap: wrap; gap: 1px; width: 140px; filter: drop-shadow(1px 1px #000); }
+.pokepath-trainer-hearts > span { width: 17px; height: 14px; background-position: center; background-repeat: no-repeat; background-size: 90%; }
+.pokepath-classic-party { position: absolute; top: 103px; left: 0; right: 0; bottom: -1px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(5, minmax(0, 1fr)); }
+.pokepath-classic-card { position: relative; overflow: hidden; border-right: 1px solid #000; border-bottom: 1px solid #000; background-color: rgba(0, 0, 0, 0.15); }
+.pokepath-classic-card:nth-child(2), .pokepath-classic-card:nth-child(3), .pokepath-classic-card:nth-child(6), .pokepath-classic-card:nth-child(7), .pokepath-classic-card:nth-child(10) { background-color: #0000000d; }
+.pokepath-classic-party > .pokepath-classic-card.locked { background-color: rgba(0, 0, 0, 0.55); }
+.pokepath-classic-card::before { content: ""; position: absolute; left: 50%; top: 50%; width: 45px; height: 45px; box-sizing: content-box; transform: translate(-50%, -45%) rotate(45deg); border: 1px solid #ffffff1a; background: #ffffff0d; }
+.pokepath-card-name { position: absolute; top: 12px; left: 0; width: 100%; text-align: center; font-size: 12px; font-weight: 700; color: #888; text-shadow: 1px 1px #000; }
+.pokepath-card-level { position: absolute; top: 28px; width: 100%; text-align: center; font-size: 9px; color: #d4d4d4; text-shadow: 1px 1px #000; }
+.pokepath-classic-card .pokepath-card-portrait { position: absolute; left: 50%; bottom: 25px; display: grid; place-items: center; width: 60px; height: 60px; transform: translateX(-50%); cursor: pointer; }
+.pokepath-classic-card .pokepath-card-portrait img { display: block; width: auto; height: auto; max-width: 60px; max-height: 60px; }
+.pokepath-classic-card .pokepath-card-portrait:hover { transform: translateX(-50%) scale(1.1); background: none; }
+.pokepath-card-buttons { position: absolute; left: 0; bottom: 0; display: flex; justify-content: space-evenly; width: 100%; height: 25px; }
+.pokepath-card-buttons > button, .pokepath-classic-card .pokepath-card-add { position: relative; top: -4px; display: grid; place-items: center; width: 24px; height: 22px; border: 0; border-radius: 4px; outline: 1px solid #111; color: #d4d4d4; font-size: 9px; text-shadow: 1px 1px #000; cursor: pointer; box-shadow: 0 3px #111, inset 0 0 2px #ffffff40; }
+.pokepath-card-buttons .deploy { background-color: #9d3829; background-image: linear-gradient(#b23d27, #9d3829); background-repeat: no-repeat; background-position: center; background-size: 50%, 100%; }
+.pokepath-card-buttons .info { background: linear-gradient(#5162ab, #3d4e8e); }
+.pokepath-card-buttons .upgrade { background: linear-gradient(#59ae4b, #32892d); }
+.pokepath-card-buttons .item { background: linear-gradient(#fbcd2b, #d9af1e); }
+.pokepath-card-buttons button:disabled { filter: brightness(0.65); }
+.pokepath-classic-card .pokepath-card-add { position: absolute; top: auto; left: 50%; bottom: 4px; transform: translateX(-50%); background: linear-gradient(#363636, #1a1a1a); font-size: 17px; }
+.pokepath-card-lock { display: flex; align-items: center; justify-content: center; line-height: 48px; font-size: 30px; opacity: 0.5; filter: grayscale(1); pointer-events: none; }
+.pokepath-card-requirement { position: absolute; left: 0; bottom: 8px; width: 100%; text-align: center; color: #ebbe35; font-size: 10px; line-height: 14px; text-shadow: 1px 1px #000; }
+.pokepath-central { position: absolute; left: 259px; top: 0; width: 720px; height: 674px; }
+.pokepath-classic-top, .pokepath-classic-bottom { position: absolute; left: 0; width: 720px; height: 26px; border-block: 1px solid #000; background: #3d3d3f; color: #d4d4d4; box-shadow: inset 0 2px #5a5a5c, inset 0 -2px #2a2a2b; }
+.pokepath-classic-top { top: 0; z-index: 2; }
+.pokepath-classic-bottom { bottom: 0; z-index: 2; }
+.pokepath-formations-save, .pokepath-formations-load { position: absolute; top: -1px; display: flex; justify-content: space-between; align-items: center; width: 220px; height: 26px; }
+.pokepath-formations-save { left: 10px; }
+.pokepath-formations-load { right: 10px; }
+.pokepath-formations-save button, .pokepath-formations-load button { display: grid; place-items: center; width: 17%; height: 100%; outline: 1px solid #000; font-size: 10px; font-weight: 700; box-shadow: inset 2px 2px #ffffff33, inset -2px -2px #0003; }
+.pokepath-formations-save button { background: #70ac4c; }
+.pokepath-formations-load button { background: #2d70e3; }
+.pokepath-formations-load button:disabled { background: #2254aa; color: #a0a0a0; }
+.pokepath-classic-route { position: absolute; left: 50%; top: -1px; display: flex; align-items: center; width: 170px; height: 26px; transform: translateX(-50%); border-inline: 1px solid #000; background: #0003; }
+.pokepath-classic-route > div { width: 65%; text-align: center; font-size: 9px; font-weight: 700; line-height: 11px; }
+.pokepath-classic-route > span { width: 35%; text-align: center; color: #ebbe35; font-size: 10px; line-height: 13px; }
+.pokepath-central > .pokepath-stage { position: absolute; left: 0; top: 25px; width: 720px; height: 624px; }
+.pokepath-central .pokepath-camera { scrollbar-width: none; }
+.pokepath-central .pokepath-camera::-webkit-scrollbar { display: none; }
+.pokepath-central .pokepath-map-tools { display: none; }
+.pokepath-wave-income { position: absolute; left: 278px; top: 0; line-height: 26px; white-space: nowrap; font-size: 8px; }
+.pokepath-terrain-counts { position: absolute; right: 15px; top: -1px; display: flex; justify-content: space-around; align-items: center; width: 190px; height: 26px; }
+.pokepath-terrain-counts > span { position: relative; display: grid; place-items: center; isolation: isolate; width: 36px; height: 36px; padding-top: 5px; color: #fff; font-size: 11px; text-shadow: 1px 1px #000; }
+.pokepath-terrain-counts > span::before { content: ""; position: absolute; left: 4px; top: 4px; z-index: -1; width: 28px; height: 28px; transform: rotate(45deg); border: 1px solid #000; background: #409552; box-shadow: inset 4px 4px #6fc7a1, 2px 2px #0005; }
+.pokepath-terrain-counts > span[data-terrain="2"]::before { background: #2f6f48; box-shadow: inset 4px 4px #409552, 2px 2px #0005; }
+.pokepath-terrain-counts > span[data-terrain="3"]::before { background: #2c75b2; box-shadow: inset 4px 4px #5ea1d9, 2px 2px #0005; }
+.pokepath-terrain-counts > span[data-terrain="4"]::before { background: #8c6b5e; box-shadow: inset 4px 4px #b89184, 2px 2px #0005; }
+.pokepath-monitor { position: absolute; left: 978px; top: 0; width: 260px; height: 674px; border-left: 1px solid #000; background: linear-gradient(#3d3d3f, #2a2b2d); color: #d4d4d4; }
+.pokepath-classic-menu { position: absolute; left: 0; top: 0; z-index: 8; display: flex; width: 259px; height: 38px; background: #c73838; color: #d4d4d4; box-shadow: inset 0 2px #ffffff4d; outline: 1px solid #000; }
+.pokepath-classic-menu > button { display: grid; place-items: center; flex: 1; height: 38px; }
+.pokepath-classic-menu > button img { width: 20px; height: 20px; object-fit: contain; filter: brightness(0) invert(0.9); }
+.pokepath-classic-menu > button[aria-pressed="true"] { background: #0003; box-shadow: inset 0 3px 5px #0006; }
+.pokepath-enemy-info { position: absolute; left: 0; top: 37px; width: 259px; height: 496px; outline: 1px solid #000; }
+.pokepath-enemy-preview { position: absolute; left: 10px; right: 10px; top: 10px; display: flex; align-items: center; justify-content: center; height: 47px; border: 1px solid #000; background: #3d3d3f; box-shadow: inset 0 2px #ffffff1a, inset 0 -2px #0006, 0 4px #0006; }
+.pokepath-enemy-preview > button { position: relative; top: -4px; display: grid; place-items: center; width: 34px; height: 34px; }
+.pokepath-enemy-preview img { width: auto; height: auto; max-width: 34px; max-height: 34px; }
+.pokepath-enemy-preview span { position: absolute; bottom: -5px; left: 0; width: 100%; text-align: center; color: #d4d4d4; font-size: 8px; }
+.pokepath-enemy-info > h3 { position: absolute; left: 10px; right: 10px; top: 73px; padding-bottom: 4px; border-bottom: 4px solid #d4d4d4; color: #d4d4d4; text-align: center; font-size: 16px; font-weight: 700; line-height: normal; text-shadow: 1px 1px #000; filter: drop-shadow(1px 1px #000); }
+.pokepath-enemy-info > dl { position: absolute; left: 5px; right: 5px; top: 100px; display: flex; flex-direction: column; margin: 0; padding: 6px; }
+.pokepath-enemy-info > dl > div { display: flex; align-items: center; justify-content: space-between; height: 16px; padding: 1.5px 5px; color: #d4d4d4; font-size: 9px; font-weight: 700; }
+.pokepath-enemy-info dt, .pokepath-enemy-info dd { margin: 0; }
+.pokepath-enemy-info dd { color: #c88d30; text-shadow: inherit; }
+.pokepath-enemy-info .weak dd { color: #70ac4c; }
+.pokepath-enemy-info .strong dd { color: #a33635; }
+.pokepath-classic-controls { position: absolute; left: 0; bottom: 0; display: grid; grid-template-columns: 50px 159px 50px; grid-template-rows: 50px 1px 89px; width: 259px; height: 140px; }
+.pokepath-classic-controls button { display: grid; place-items: center; border: 1px solid #000; color: #d4d4d4; background: #6b7280; box-shadow: inset 2px 2px #ffffff33, inset -2px -3px #0006; text-shadow: 1px 1px #000; }
+.pokepath-classic-controls .pause { grid-column: 1; grid-row: 1; font-size: 16px; }
+.pokepath-classic-controls .auto { grid-column: 2; grid-row: 1; font-size: 16px; font-weight: 700; background: #2c70e3; }
+.pokepath-classic-controls .auto[aria-pressed="true"] { background: #70ac4c; }
+.pokepath-classic-controls .speed { grid-column: 3; grid-row: 1; font-size: 20px; }
+.pokepath-classic-controls .wave { grid-column: 1 / -1; grid-row: 3; background: #a33635; color: #d4d4d4; font-size: 18px; font-weight: 700; line-height: 26px; }
+.pokepath-classic-controls .wave:disabled { background: #792827; color: #bcbcbc; }
+.pokepath-classic-scene .pokepath-overlay { padding: 0; background: #0009; }
+.pokepath-classic-scene .pokepath-panel { border-radius: 0; border: 1px solid #000; background: #2a2b2d; color: #d4d4d4; box-shadow: none; }
+.pokepath-classic-scene .pokepath-panel > header { border: 0; border-radius: 0; background: #a33635; color: #d4d4d4; }
+.pokepath-classic-scene .pokepath-panel input, .pokepath-classic-scene .pokepath-panel select, .pokepath-classic-scene .pokepath-panel textarea { border-color: #111; border-radius: 3px; background: #3d3d3f; color: #d4d4d4; }
+.pokepath-classic-scene .pokepath-panel button { min-height: 26px; padding: 4px 10px; border: 1px solid #111; border-radius: 2px; background: #3d3d3f; color: #d4d4d4; font-size: 10px; }
+.pokepath-classic-scene .pokepath-panel button.primary { background: #a33635; }
+.pokepath-classic-scene .pokepath-panel button:disabled { filter: brightness(0.7); }
+.pokepath-classic-scene .pokepath-offer, .pokepath-classic-scene .pokepath-collection-card, .pokepath-classic-scene .pokepath-route-grid > button { border: 1px solid #111; border-radius: 2px; background: #333; color: #d4d4d4; }
+.pokepath-classic-scene .pokepath-offer h3, .pokepath-classic-scene .pokepath-offer p, .pokepath-classic-scene .pokepath-collection-card strong, .pokepath-classic-scene .pokepath-collection-card span, .pokepath-classic-scene .pokepath-collection-card small { color: #d4d4d4; }
+
+@media (max-width: 700px) {
+  .pokepath-classic-viewport { overflow-y: auto; overflow-x: hidden; }
+  .pokepath-classic-scene { position: relative; left: auto; top: auto; display: flex; flex-direction: column; width: 100%; height: auto; min-height: 100%; transform: none; }
+  .pokepath-trainer { position: relative; order: 5; width: 100%; }
+  .pokepath-classic-party { position: relative; inset: auto; display: grid; grid-template-columns: none; grid-template-rows: 114px; grid-auto-flow: column; grid-auto-columns: 129.5px; width: 100%; height: 115px; overflow-x: auto; }
+  .pokepath-central, .pokepath-monitor { display: contents; }
+  .pokepath-classic-top { position: relative; order: 2; width: 100%; height: 32px; overflow-x: auto; }
+  .pokepath-formations-save, .pokepath-formations-load { position: relative; left: auto; right: auto; top: 0; height: 30px; flex-shrink: 0; }
+  .pokepath-classic-top { display: flex; gap: 8px; }
+  .pokepath-classic-route { position: relative; left: auto; top: 0; order: -1; flex-shrink: 0; width: 150px; height: 30px; transform: none; }
+  .pokepath-classic-route > div { font-size: 12px; line-height: 13px; }
+  .pokepath-classic-menu { position: sticky; order: 1; top: 0; left: 0; width: 100%; height: 44px; overflow-x: auto; flex-shrink: 0; }
+  .pokepath-classic-menu > button { flex: 1 0 40px; min-width: 40px; height: 44px; }
+  .pokepath-classic-menu > button img { width: 24px; height: 24px; }
+  .pokepath-classic-controls { position: relative; left: auto; bottom: auto; order: 3; display: grid; grid-template-columns: 48px minmax(60px, 1fr) 48px minmax(110px, 1.4fr); grid-template-rows: 48px; width: 100%; height: 48px; }
+  .pokepath-classic-controls .pause, .pokepath-classic-controls .auto, .pokepath-classic-controls .speed, .pokepath-classic-controls .wave { grid-row: 1; font-size: 14px; }
+  .pokepath-classic-controls .wave { grid-column: 4; }
+  .pokepath-central > .pokepath-stage { position: relative; left: auto; top: auto; order: 4; width: 100%; height: clamp(320px, 52dvh, 470px); flex: 0 0 auto; }
+  .pokepath-central .pokepath-map-tools { display: flex; background: #2a2b2de8; border-color: #111; border-radius: 3px; }
+  .pokepath-central .pokepath-map-tools button { min-width: 38px; min-height: 38px; color: #d4d4d4; font-size: 13px; }
+  .pokepath-classic-bottom { position: relative; order: 4; left: auto; bottom: auto; width: 100%; height: 30px; flex-shrink: 0; }
+  .pokepath-wave-income { left: 8px; font-size: 8px; line-height: 28px; }
+  .pokepath-terrain-counts { right: 3px; width: 160px; }
+  .pokepath-enemy-info { position: relative; order: 6; left: auto; top: auto; width: 100%; height: 350px; }
+  .pokepath-classic-scene > .pokepath-overlay { position: fixed; inset: 0; z-index: 40; padding: 8px; }
+}
+
+.pokepath-board .pokepath-classic-viewport { flex: 1; }
+.pokepath-board .pokepath-central-panel { position: absolute; z-index: 10; left: 259px; top: 25px; width: 720px; height: 624px; overflow: hidden; background: #2a2b2d; color: #d4d4d4; }
+.pokepath-classic-scene .pokepath-central-close { display: none; }
+.pokepath-box-counts { position: absolute; left: 22px; top: 15px; color: #c4c4c4; font-size: 8px; line-height: 15px; }
+.pokepath-section-overlay { display: flex; }
+.pokepath-classic-scene .pokepath-section-overlay > .pokepath-panel { width: 100%; height: 100%; min-height: 0; border: 0; border-radius: 0; }
+.pokepath-classic-scene .pokepath-section-overlay .pokepath-panel > header { height: 30px; min-height: 30px; padding: 4px 10px; }
+.pokepath-classic-scene .pokepath-section-overlay .pokepath-panel > header h2 { font-size: 14px; }
+.pokepath-classic-scene .pokepath-section-overlay .pokepath-panel-body { flex: 1; padding: 15px; font-size: 11px; }
+.pokepath-details-overlay { position: absolute; z-index: 30; inset: 0; display: grid; place-items: center; background: #0009; color: #d4d4d4; }
+.pokepath-details { position: relative; width: 608px; height: 578px; border: 4px solid var(--pp-unit-color); border-radius: 5px; background: #2a2b2d; color: #d4d4d4; box-shadow: 0 0 18px #0006; font-size: 12px; line-height: normal; text-shadow: 1px 1px #000; }
+.pokepath-details > header { position: absolute; left: 0; top: 0; display: flex; justify-content: space-between; align-items: center; width: 600px; height: 24px; padding: 0 6px; background: var(--pp-unit-color); color: #d4d4d4; font-size: 14px; }
+.pokepath-details > header button { font-size: 18px; }
+.pokepath-details-title { position: absolute; left: 38px; right: 38px; top: 38px; display: grid; grid-template-columns: 32px 1fr 32px; align-items: center; height: 30px; }
+.pokepath-details-title h2 { margin: 0; color: #d4d4d4; text-align: center; font-size: 20px; font-weight: 400; }
+.pokepath-details-title button, .pokepath-details-target button { color: var(--pp-unit-color); font-size: 23px; text-shadow: -1px -1px #000, 1px 1px #000; }
+.pokepath-details-stats { position: absolute; left: 30px; right: 30px; top: 74px; margin: 0; padding: 0; }
+.pokepath-details-stats > div { display: flex; align-items: center; justify-content: space-between; width: 100%; height: 26px; border-bottom: 1px solid #d4d4d4; padding: 0 10px; font-size: 12px; }
+.pokepath-details-stats dt { font-weight: 700; }
+.pokepath-details-stats dd { margin: 0; }
+.pokepath-details-stats .pokepath-details-target { display: grid; grid-template-columns: 20px 1fr 20px; align-items: center; width: 320px; height: 24px; }
+.pokepath-classic-scene .pokepath-details-target select { appearance: none; height: 24px; min-height: 0; padding: 0; border: 0; background: transparent; color: #d4d4d4; text-align: center; font-size: 12px; }
+.pokepath-details-target select option { background: #2a2b2d; color: #d4d4d4; }
+.pokepath-details-target button { font-size: 15px; }
+.pokepath-details-ability, .pokepath-details-item { position: absolute; left: 19px; right: 19px; display: grid; place-items: start center; height: 106px; border: 1px solid #000; border-bottom: 4px solid var(--pp-unit-color); background: #1e1e1e; color: #d4d4d4; }
+.pokepath-details-ability { top: 275px; }
+.pokepath-details-item { top: 403px; border-bottom-color: #aaa; }
+.pokepath-details-ability > strong, .pokepath-details-item > strong { position: absolute; left: 10px; top: -12px; display: grid; place-items: center; min-width: 52px; height: 24px; padding: 0 8px; border: 1px solid #000; background: var(--pp-unit-color); color: #d4d4d4; font-size: 11px; }
+.pokepath-details-item > strong { background: #aaa; }
+.pokepath-details-ability > p, .pokepath-details-item > p { width: 100%; margin: 24px 0 0; padding: 0 28px; color: #d4d4d4; text-align: center; font-size: 11px; line-height: 18px; }
+.pokepath-details-item > button { position: absolute; right: 6px; bottom: 6px; width: 23px; height: 23px; border: 1px solid #aaa; border-radius: 2px; font-size: 21px; }
+.pokepath-details-item-portrait { position: absolute; left: 10px; top: 30px; display: grid; place-items: center; width: 50px; height: 50px; }
+.pokepath-details-item-portrait img { width: 40px; height: 40px; object-fit: contain; }
+.pokepath-details-upgrades { position: absolute; left: 94px; right: 94px; bottom: 12px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 23px; height: 34px; }
+.pokepath-classic-scene .pokepath-details-upgrades > button { border: 1px solid #000; border-radius: 5px; background: var(--pp-unit-color); color: #d4d4d4; font-size: 10px; line-height: 13px; }
+.pokepath-classic-scene .pokepath-details-upgrades > button:disabled { background: var(--pp-unit-color); filter: brightness(0.8); }
+.pokepath-details-index { position: absolute; left: 36px; bottom: 8px; font-size: 8px; }
+.pokepath-details-mobile-portrait { display: none; }
+.pokepath-profile-name { display: flex; gap: 12px; align-items: end; margin-bottom: 18px; }
+.pokepath-profile-name label { display: grid; gap: 8px; }
+.pokepath-achievements { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 9px; }
+.pokepath-achievements > button { display: grid; align-content: start; gap: 8px; min-height: 88px; text-align: left; }
+.pokepath-achievements > button span { color: #d4d4d4; font-size: 9px; line-height: 16px; }
+.pokepath-classic-scene .pokepath-achievements > button.unlocked { border-color: #70ac4c; background: #354331; }
+.pokepath-damage-table > div { display: grid; grid-template-columns: 50px 1fr 120px; align-items: center; min-height: 52px; border-bottom: 1px solid #555; }
+.pokepath-damage-table img { width: auto; height: auto; max-width: 40px; max-height: 40px; }
+
+@media (max-width: 700px) {
+  .pokepath-board .pokepath-central-panel { position: fixed; z-index: 20; inset: 44px 0 0; width: 100%; height: auto; overflow-y: auto; }
+  .pokepath-classic-scene .pokepath-central-close { position: sticky; left: calc(100% - 38px); top: 0; z-index: 25; display: grid; place-items: center; width: 38px; height: 38px; border: 1px solid #000; background: #a33635; color: #d4d4d4; font-size: 24px; }
+  .pokepath-details-overlay { position: fixed; z-index: 30; overflow-y: auto; place-items: start center; padding: 8px; }
+  .pokepath-details { width: 100%; max-width: 608px; min-height: 578px; height: 578px; font-size: 11px; }
+  .pokepath-details > header { width: 100%; }
+  .pokepath-details-title { left: 8px; right: 8px; }
+  .pokepath-details-title h2 { font-size: 16px; }
+  .pokepath-details-stats { left: 10px; right: 10px; }
+  .pokepath-details-stats .pokepath-details-target { width: 200px; }
+  .pokepath-details-ability, .pokepath-details-item { left: 8px; right: 8px; }
+  .pokepath-details-upgrades { left: 32px; right: 16px; gap: 8px; height: 42px; }
+  .pokepath-details-index { left: 8px; font-size: 6px; }
+  .pokepath-achievements { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+.pokepath-board .pokepath-classic-scene { font-family: var(--pp-font, NGC), monospace; }
+.pokepath-board .pokepath-trainer-name { font-family: var(--pp-font, NGC), monospace; }
+.pokepath-details-growth { position: absolute; right: 16px; top: 68px; z-index: 2; display: flex; align-items: center; gap: 4px; transform: translateY(-100%); }
+.pokepath-classic-scene .pokepath-details-growth > button, .pokepath-classic-scene .pokepath-details-growth > select { height: 24px; min-height: 24px; max-width: 110px; padding: 3px 5px; border: 1px solid #111; border-radius: 2px; background: #333; color: #d4d4d4; font-size: 9px; }
+.pokepath-details-readonly { position: absolute; inset: 0; filter: grayscale(60%) brightness(.95); pointer-events: none; }
+.pokepath-details-overlay.pokepath-draft-overlay { position: fixed; }
+.pokepath-draft {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 408px;
+  height: 208px;
+  transform: translate(-50%, -50%);
+  border: 4px solid var(--pp-sceneHeader, #a33635);
+  border-radius: 5px;
+  outline: none;
+  background: #2a2b2c;
+  color: var(--pp-white, #d4d4d4);
+  box-shadow: 0 0 20px #000, inset 1px 1px 1px #000, inset -1px -1px 1px #000;
+}
+.pokepath-draft-header {
+  position: absolute;
+  inset: -1px -1px auto;
+  height: 25px;
+  background: var(--pp-sceneHeader, #a33635);
+}
+.pokepath-draft-header span { position: absolute; top: 7px; left: 8px; font-size: 13px; }
+.pokepath-draft[data-draft-font="Lexend"] .pokepath-draft-header span { top: 2px; }
+.pokepath-draft[data-draft-font="DynaPuff"] .pokepath-draft-header span { top: 1px; font-size: 15px; }
+.pokepath-draft[data-draft-font="Unown"] .pokepath-draft-header span { top: 3px; }
+.pokepath-draft-body { position: absolute; inset: 24px 0 0; background: var(--pp-sceneBackground, #2a2b2c); }
+.pokepath-draft-round {
+  position: absolute;
+  inset: 20px 40px auto;
+  padding-bottom: 3px;
+  border-bottom: 4px solid currentColor;
+  font-size: 20px;
+  font-weight: 400;
+  letter-spacing: normal;
+  text-align: center;
+  filter: drop-shadow(1px 1px #000);
+}
+.pokepath-draft[data-draft-font="Lexend"] .pokepath-draft-round { top: 15px; }
+.pokepath-draft-offers {
+  position: absolute;
+  bottom: 49px;
+  left: 50%;
+  display: grid;
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  width: 330px;
+  height: 71px;
+  transform: translateX(-50%);
+}
+.pokepath-draft-offers > article { position: relative; }
+.pokepath-draft-offers > article:first-child { --pp-choice-offset: 7.5px; --pp-info-offset: 5px; }
+.pokepath-draft-offers > article:last-child { --pp-choice-offset: -7.5px; --pp-info-offset: -5px; }
+.pokepath-classic-scene .pokepath-draft-choice {
+  position: absolute;
+  top: 0;
+  left: calc(50% - 40px + var(--pp-choice-offset, 0px));
+  width: 80px;
+  height: 50px;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: inherit;
+  text-shadow: inherit;
+}
+.pokepath-classic-scene .pokepath-draft-choice:hover { background-color: transparent; }
+.pokepath-classic-scene .pokepath-draft-choice:not(:disabled):hover { filter: brightness(1.2) drop-shadow(0 0 2px var(--pp-white)); }
+.pokepath-draft-choice span { position: absolute; inset: auto 0 0; font-size: 8px; }
+.pokepath-classic-scene .pokepath-draft-info,
+.pokepath-classic-scene .pokepath-draft-actions button {
+  position: relative;
+  width: 90px;
+  height: 18px;
+  border-radius: 3px;
+  outline: 1px solid #000;
+  color: inherit;
+  font-size: 8px;
+  line-height: 20px;
+  text-shadow: inherit;
+  transition: filter .2s, transform .2s;
+}
+.pokepath-classic-scene .pokepath-draft-info {
+  position: absolute;
+  top: 56px;
+  left: calc(50% - 45px + var(--pp-info-offset, 0px));
+  background: linear-gradient(39deg, #2c70e3, #3966b3);
+}
+.pokepath-draft-info span, .pokepath-draft-actions span { position: absolute; inset: 0; pointer-events: none; }
+.pokepath-classic-scene .pokepath-draft-choice:disabled,
+.pokepath-classic-scene .pokepath-draft-info:disabled { color: inherit; opacity: 1; }
+.pokepath-classic-scene .pokepath-draft-info:not(:disabled):hover { filter: brightness(1.2); }
+.pokepath-classic-scene .pokepath-draft[data-draft-font="Lexend"] .pokepath-draft-info,
+.pokepath-classic-scene .pokepath-draft[data-draft-font="Lexend"] .pokepath-draft-actions button { font-size: 9px; line-height: 18px; }
+.pokepath-draft-actions { position: absolute; inset: auto 0 12px; display: flex; justify-content: center; gap: 10px; height: 20px; }
+.pokepath-classic-scene .pokepath-draft-actions [data-draft-reroll] { background: linear-gradient(39deg, #d48c17, #b4640f); }
+.pokepath-classic-scene .pokepath-draft-actions [data-draft-restart] { background: linear-gradient(39deg, #e61537, #e82c4b); }
+.pokepath-classic-scene .pokepath-draft-actions button:not(:disabled):hover { filter: brightness(1.2); transform: scale(1.05); }
+.pokepath-classic-scene .pokepath-draft-actions button:disabled { opacity: 1; filter: grayscale(1) opacity(.5); }
+@media (max-width: 700px) {
+  .pokepath-details-overlay.pokepath-draft-overlay { place-items: center; }
+  .pokepath-draft { width: min(408px, calc(100% - 16px)); height: 256px; }
+  .pokepath-draft-round { inset-inline: 24px; font-size: 15px; }
+  .pokepath-draft-offers { width: calc(100% - 12px); bottom: 65px; height: 96px; }
+  .pokepath-draft-offers > article:is(:first-child,:last-child) { --pp-choice-offset: 0px; --pp-info-offset: 0px; }
+  .pokepath-classic-scene .pokepath-draft-choice { left: 3px; width: calc(100% - 6px); height: 54px; }
+  .pokepath-classic-scene .pokepath-draft-info { left: 3px; top: 61px; width: calc(100% - 6px); height: 36px; line-height: 36px; }
+  .pokepath-draft-actions { bottom: 12px; height: 36px; }
+  .pokepath-classic-scene .pokepath-draft-actions button { height: 36px; line-height: 36px; }
+  .pokepath-classic-scene .pokepath-draft[data-draft-font="Lexend"] .pokepath-draft-info,
+  .pokepath-classic-scene .pokepath-draft[data-draft-font="Lexend"] .pokepath-draft-actions button { line-height: 36px; }
+}
+
+.pokepath-enemy-info > dl > div { height: 19px; }
+.pokepath-details-title { top: 41px; }
+.pokepath-details-stats { top: 69px; }
+
+.pokepath-classic-scene .pokepath-formations-load button:disabled { background: #2d70e3; color: #d4d4d4; filter: brightness(0.7); }
+.pokepath-classic-scene .pokepath-action-error { border: 1px solid #111; border-radius: 2px; background: #a33635; color: #d4d4d4; }
+.pokepath-classic-scene .pokepath-action-error button { background: #7a2929; color: #d4d4d4; }
+
+.game-viewport-fit[data-fit-active] .pokepath-board { min-height: 0; max-height: 100%; }
+
+.pokepath-classic-inventory .pokepath-box-counts { position: absolute; top: 15px; left: 15px; right: 95px; padding: 2px 8px; color: var(--pp-white); font-size: 7px; font-weight: 700; letter-spacing: 1px; line-height: 11px; }
+.pokepath-classic-inventory[data-pokepath-font="Lexend"] .pokepath-box-counts, .pokepath-classic-inventory[data-pokepath-font="DynaPuff"] .pokepath-box-counts { font-size: 10px; }
+.pokepath-classic-inventory[data-pokepath-font="Rubik"] .pokepath-box-counts { font-size: 9px; font-weight: 100; }
+.pokepath-inventory-team { box-sizing: content-box; position: absolute; left: 50%; top: 7px; transform: translateX(-50%); display: flex; flex-wrap: wrap; justify-content: center; align-content: flex-start; gap: 8px; width: 450px; height: 20px; padding: 5px; }
+.pokepath-classic-scene .pokepath-inventory-team > button { box-sizing: content-box; width: 36px; height: 36px; flex: 0 0 auto; border: 0; background-position: center; background-repeat: no-repeat; filter: drop-shadow(0 1px 1px rgba(0,0,0,.5)); }
+.pokepath-classic-scene .pokepath-inventory-team > button:hover { filter: brightness(1.1); background-color: transparent; }
+.pokepath-inventory-grid { box-sizing: content-box; position: absolute; top: 50px; left: 15px; right: 15px; display: flex; flex-wrap: wrap; justify-content: flex-start; align-content: flex-start; gap: 10px; height: 305px; padding: 15px 16px; overflow-y: auto; outline: 1px solid #000; border: 0; border-radius: 2px; background: rgba(128,128,128,.1); backdrop-filter: blur(15px); }
+.pokepath-inventory-grid::-webkit-scrollbar { width: 16px; }
+.pokepath-inventory-grid::-webkit-scrollbar-track { outline: 1px solid #000; background: var(--pp-scrollBarColor1); }
+.pokepath-inventory-grid::-webkit-scrollbar-thumb { background: var(--pp-scrollBarColor2); box-shadow: inset 0 2px #ffffff33; }
+.pokepath-classic-scene .pokepath-inventory-grid > button { box-sizing: content-box; position: relative; flex: 0 0 auto; padding: 0; overflow: hidden; border: 1px solid #000; background-color: rgba(100,100,100,.25); background-size: 75% 75%, auto; background-position: center, center; background-repeat: no-repeat, no-repeat; color: var(--pp-white); touch-action: none; cursor: grab; }
+.pokepath-classic-scene .pokepath-inventory-grid > button:disabled { border-color: #000; background-color: rgba(100,100,100,.25); pointer-events: none; }
+.pokepath-classic-scene .pokepath-inventory-grid > button.selected { border-color: var(--pp-white); box-shadow: none; }
+.pokepath-classic-scene .pokepath-inventory-grid > button:hover { border-color: var(--pp-white); transform: translateY(-2px); }
+.pokepath-classic-scene .pokepath-inventory-grid > button:active { border-color: var(--pp-white); filter: brightness(.8); transform: translateY(0) scale(.95); }
+.pokepath-inventory-owner { position: absolute; right: -5px; bottom: -3px; width: 20px; height: 20px; background-position: center; background-size: contain; background-repeat: no-repeat; pointer-events: none; }
+.pokepath-inventory-description { box-sizing: content-box; position: absolute; left: 20px; right: 20px; bottom: 95px; height: 90px; padding: 10px; outline: 1px solid #000; border: 0; border-bottom: 4px solid #999; background: var(--pp-descriptionBackground, rgba(30,30,30,.9)); color: var(--pp-white); }
+.pokepath-inventory-description > strong { box-sizing: content-box; position: absolute; left: 15px; top: -12px; height: 20px; min-width: 0; padding: 1px 15px; border: 1px solid #000; background: #999; color: var(--pp-white); font-size: 10px; font-weight: 700; line-height: 24px; text-align: center; text-transform: uppercase; }
+.pokepath-inventory-description > p { position: absolute; left: 10px; right: 10px; top: 21px; bottom: 10px; margin: 0; color: var(--pp-white); font-size: 11px; line-height: 1.65; text-align: center; }
+.pokepath-classic-scene .pokepath-inventory-equipped-action { display: none; }
+.pokepath-inventory-filter { position: absolute; right: 50px; bottom: 50px; width: 300px; height: 40px; display: flex; flex-wrap: wrap; color: var(--pp-white); font-size: 14px; line-height: 44px; text-shadow: -1px -1px #000, 0 -1px #000, 1px -1px #000, 1px 0 #000, 1px 1px #000, 0 1px #000, -1px 1px #000, -1px 0 #000; }
+.pokepath-classic-scene .pokepath-inventory-search { all: unset; box-sizing: border-box; position: absolute; left: 60px; bottom: 59px; width: 265px; height: 20px; outline: 1px solid #000; border-radius: 4px; background: var(--pp-white); color: #333; text-align: center; text-indent: 4px; font-size: 16px; line-height: normal; text-shadow: none; }
+.pokepath-classic-scene .pokepath-inventory-search:focus-visible { outline: 1px solid #000; outline-offset: 0; box-shadow: inset 0 0 0 1px var(--pp-arrowHover, #a33635); }
+.pokepath-classic-scene .pokepath-inventory-filter > button { position: relative; display: block; width: 10%; height: auto; font-weight: 700; line-height: 44px; text-shadow: inherit; text-align: center; }
+.pokepath-inventory-sort-value { position: relative; width: 80%; text-align: center; }
+.pokepath-classic-scene .pokepath-inventory-size { position: absolute; right: 20px; top: 18px; width: 20px; height: 20px; background-size: 90%; background-repeat: no-repeat; filter: invert(1); }
+.pokepath-classic-inventory .pokepath-box-terrains { position: absolute; left: 5%; right: 5%; top: auto; bottom: 20px; display: flex; justify-content: space-between; gap: 4px; height: 24px; }
+.pokepath-classic-scene .pokepath-classic-inventory .pokepath-box-terrains > button { box-sizing: content-box; position: relative; flex: 1 1 0; min-width: 0; height: 100%; border-radius: 0; background: var(--pp-buttonRed); color: var(--pp-white); font-size: 8px; font-weight: 700; line-height: 27px; text-align: center; box-shadow: inset 1px 1px rgba(255,255,255,.2), inset -1px -1px rgba(0,0,0,.3); text-shadow: inherit; }
+.pokepath-classic-scene .pokepath-classic-inventory .pokepath-box-terrains > button[aria-pressed="true"] { background: var(--pp-buttonGreen); pointer-events: none; }
+.pokepath-classic-inventory[data-pokepath-font="Lexend"] .pokepath-inventory-filter > button { font-size: 17px; line-height: 40px; }
+.pokepath-classic-inventory[data-pokepath-font="Unown"] .pokepath-inventory-filter > button { font-size: 17px; line-height: 46px; }
+.pokepath-classic-scene .pokepath-classic-inventory[data-pokepath-font="Lexend"] .pokepath-box-terrains > button { font-size: 10px; line-height: 26px; }
+.pokepath-inventory-drag { position: absolute; z-index: 100000; width: 44px; height: 44px; pointer-events: none; transform: scale(1.05); filter: drop-shadow(4px 4px 1px #222); background-position: center; background-size: contain; background-repeat: no-repeat; }
+.pokepath-classic-scene[data-inventory-drag] { cursor: grabbing; }
+.pokepath-classic-card[data-inventory-drop="allowed"], .pokepath-classic-card[data-inventory-drop="target"] { transition: box-shadow .12s ease, transform .12s ease; cursor: pointer; }
+.pokepath-classic-card[data-inventory-drop="blocked"] { filter: grayscale(1) brightness(.8); cursor: not-allowed; }
+.pokepath-rich-admin { display: inline-block; background: linear-gradient(90deg, #f00, #f90, #ff0, #0c6, #0cf, #36f, #93f, #f09, #f00); background-size: 300% 100%; background-clip: text; -webkit-background-clip: text; color: transparent; -webkit-text-fill-color: transparent; text-shadow: none; animation: pokepath-rich-rainbow 3s linear infinite; }
+@keyframes pokepath-rich-rainbow { from { background-position: 0% 50%; } to { background-position: 300% 50%; } }
+@media (max-width: 700px) {
+  .pokepath-board .pokepath-classic-inventory { display: flex; flex-direction: column; gap: 8px; padding: 10px 8px 18px; }
+  .pokepath-classic-inventory .pokepath-box-counts { position: relative; top: auto; left: auto; right: auto; flex: 0 0 38px; padding: 4px 0; font-size: 9px; }
+  .pokepath-inventory-team { position: relative; left: auto; right: auto; top: auto; transform: none; justify-content: flex-start; flex-wrap: nowrap; width: 100%; height: 42px; flex: 0 0 auto; padding: 0; overflow-x: auto; }
+  .pokepath-inventory-grid { position: relative; inset: auto; height: 180px; min-height: 180px; flex: 0 0 auto; padding: 8px; gap: 6px; }
+  .pokepath-inventory-description { position: relative; inset: auto; flex: 0 0 auto; height: 110px; margin-top: 20px; }
+  .pokepath-inventory-description > p { bottom: 42px; }
+  .pokepath-classic-scene .pokepath-inventory-equipped-action { position: absolute; right: 8px; bottom: 6px; display: block; min-height: 32px; min-width: 60px; padding: 3px 8px; border: 1px solid #000; border-radius: 2px; background: var(--pp-buttonBlue); color: var(--pp-white); font-size: 11px; }
+  .pokepath-inventory-filter { position: relative; inset: auto; display: flex; gap: 0; width: 100%; height: 38px; flex: 0 0 auto; }
+  .pokepath-classic-scene .pokepath-inventory-search { position: relative; inset: auto; width: 100%; height: 32px; flex: 0 0 auto; }
+  .pokepath-classic-scene .pokepath-inventory-filter > button { width: 10%; height: 38px; line-height: 38px; }
+  .pokepath-inventory-sort-value { width: 80%; min-width: 0; overflow: hidden; font-size: 11px; line-height: 38px; white-space: nowrap; }
+  .pokepath-classic-inventory .pokepath-box-terrains { position: relative; inset: auto; display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); width: 100%; height: 82px; flex: 0 0 auto; }
+  .pokepath-classic-scene .pokepath-classic-inventory .pokepath-box-terrains > button { box-sizing: border-box; height: 38px; font-size: 9px; line-height: 38px; }
+  .pokepath-classic-scene .pokepath-inventory-size { right: 54px; top: 8px; width: 38px; height: 38px; }
+  .pokepath-classic-scene .pokepath-classic-inventory .pokepath-central-close { position: absolute; left: auto; right: 8px; top: 8px; }
+}
+
+
+.pokepath-classic-routes > nav { position: absolute; z-index: 10; top: 25px; left: 50%; display: flex; gap: 14px; transform: translateX(-50%); }
+.pokepath-classic-scene .pokepath-classic-routes > nav > button { position: relative; width: 250px; height: 32px; line-height: 34px; text-align: center; font-size: 11px; font-weight: 700; text-shadow: inherit; outline: 1px solid #000; border-radius: 2px; background: var(--pp-buttonRed, #a33635); color: var(--pp-white, #d4d4d4); box-shadow: inset 1px 1px rgba(255,255,255,.2), inset -1px -2px rgba(0,0,0,.3); transition: filter .1s; }
+.pokepath-classic-routes > nav > button:hover { filter: brightness(1.15); }
+.pokepath-classic-routes > nav > button:disabled { filter: brightness(.8); }
+.pokepath-world-grid, .pokepath-route-list { position: absolute; left: 50%; width: 720px; transform: translate(-50%, -50%); }
+.pokepath-world-grid { top: 46.5%; display: grid; grid-template-columns: repeat(9, 1fr); grid-template-rows: repeat(6, 1fr); height: 416px; }
+.pokepath-classic-scene .pokepath-route-tile { position: relative; display: block; width: 100%; height: 100%; cursor: pointer; outline: 1px solid #000; background-color: transparent; background-size: contain; background-position: center; background-repeat: no-repeat; text-shadow: inherit; }
+.pokepath-classic-scene .pokepath-route-tile:hover { background-color: transparent; filter: brightness(1.2); }
+.pokepath-classic-scene .pokepath-route-tile:disabled { pointer-events: none; }
+.pokepath-classic-scene .pokepath-route-tile.wide.world { z-index: 1; }
+.pokepath-classic-scene .pokepath-route-tile.locked { filter: brightness(.5); }
+.pokepath-classic-scene .pokepath-route-tile.active { filter: brightness(.8); }
+.pokepath-route-tile-name { position: absolute; bottom: 0; left: 0; right: 0; padding: 4px 0; font-size: 7px; line-height: 11px; text-align: center; color: var(--pp-white); background: #000c; opacity: 0; pointer-events: none; }
+.pokepath-route-tile:hover .pokepath-route-tile-name { opacity: 1; }
+.pokepath-route-record-box { box-sizing: content-box; position: absolute; top: 0; right: 0; left: 0; height: 12px; background: var(--pp-map1); border-bottom: 2px solid #000; filter: var(--pp-starFilter, none); }
+.pokepath-route-tile.selected .pokepath-route-record-box { background: var(--pp-red); }
+.pokepath-route-tile.completed .pokepath-route-record-box { background: var(--pp-blue); }
+.pokepath-route-record { position: absolute; left: 0; top: 2px; width: 100%; font-size: 9px; color: var(--pp-stars); text-align: center; }
+.pokepath-route-requires { position: absolute; top: 40%; left: 0; right: 0; font-size: 10px; line-height: 29px; text-align: center; color: var(--pp-stars); filter: var(--pp-starFilter, none); }
+.pokepath-route-star { position: relative; top: -3px; letter-spacing: 3px; vertical-align: middle; }
+.pokepath-world-grid > div { position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--pp-map2, #555); background: var(--pp-map1, #252527); outline: 1px solid #000; font-size: 20px; font-weight: 700; }
+.pokepath-secret-routes { position: absolute; left: 50%; top: calc(50% + 210px); transform: translateX(-50%); display: flex; flex-wrap: wrap; justify-content: center; align-content: flex-start; gap: 10px; width: 720px; max-height: 130px; padding: 8px; overflow-y: auto; }
+.pokepath-classic-scene .pokepath-route-tile.secret { width: 80px; height: 69.3px; flex: 0 0 auto; }
+.pokepath-route-list { top: 346px; height: 88%; display: block; overflow-x: hidden; overflow-y: auto; padding-bottom: 14px; }
+.pokepath-route-list::-webkit-scrollbar { width: 14px; }
+.pokepath-route-list::-webkit-scrollbar-track { outline: 1px solid #000; background: var(--pp-scrollBarColor1); }
+.pokepath-route-list::-webkit-scrollbar-thumb { background: var(--pp-scrollBarColor2); box-shadow: inset 0 2px rgba(255,255,255,.2); }
+.pokepath-route-group { width: 564px; margin: 0 auto 18px; padding-top: 4px; }
+.pokepath-route-group.secret { margin-top: 6px; padding-top: 10px; }
+.pokepath-route-group > .pokepath-route-group-title { position: relative; height: 26px; margin: 0; border-radius: 2px; outline: 1px solid #000; background: var(--pp-mapTitle); color: var(--pp-white); box-shadow: inset 1px 1px rgba(255,255,255,.2), inset -1px -2px rgba(0,0,0,.3); line-height: 28px; text-align: center; font-size: 12px; font-weight: 700; letter-spacing: 1px; }
+.pokepath-route-group.secret > .pokepath-route-group-title { background: var(--pp-mapTitleSecret); }
+.pokepath-route-group > div { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 8px; }
+.pokepath-classic-scene .pokepath-route-tile.group { width: 135px; height: 117px; background-size: cover; transition: transform .15s; }
+.pokepath-classic-scene .pokepath-route-tile.group:hover { transform: translateY(2px); }
+.pokepath-route-tile.group .pokepath-route-tile-name { padding-top: 8px; opacity: 1; font-size: 8px; line-height: 9px; }
+.pokepath-route-tile.group .pokepath-route-record-box { height: 18px; }
+.pokepath-route-tile.group .pokepath-route-record { top: 3px; font-size: 10px; }
+.pokepath-route-ribbons { display: inline-flex; align-items: center; gap: 3px; margin-left: 8px; filter: var(--pp-ribbonFilter, none); }
+.pokepath-route-ribbons img { width: 12px; height: 12px; object-fit: contain; image-rendering: auto; filter: drop-shadow(1px 1px #000) var(--pp-ribbonFilter); }
+.pokepath-route-ribbons > span { font-size: 9px; color: var(--pp-white); }
+.pokepath-classic-scene .pokepath-classic-routes[data-pokepath-font="Lexend"] > nav > button { line-height: 30px; font-size: 14px; }
+.pokepath-classic-routes[data-pokepath-theme="halloween"] { --pp-ribbonFilter: brightness(.8) hue-rotate(-90deg); }
+.pokepath-classic-routes[data-pokepath-theme="monochrome"] { --pp-ribbonFilter: brightness(.5) hue-rotate(-60deg); --pp-starFilter: grayscale(1) brightness(1.4); }
+.pokepath-classic-routes[data-pokepath-font="Lexend"] > nav > button > span { position: absolute; inset: 0; }
+.pokepath-classic-scene .pokepath-classic-routes[data-pokepath-font="Lexend"] .pokepath-route-group-title { line-height: 25px; font-size: 15px; }
+.pokepath-classic-routes[data-pokepath-font="Lexend"] .pokepath-route-record { top: -2px; font-size: 11px; }
+.pokepath-classic-routes[data-pokepath-font="Lexend"] .pokepath-route-tile.group .pokepath-route-record { top: 0; font-size: 11px; }
+.pokepath-classic-routes[data-pokepath-font="Lexend"] .pokepath-route-tile-name { line-height: 12px; }
+.pokepath-classic-routes[data-pokepath-font="Lexend"] .pokepath-route-tile.group .pokepath-route-tile-name { font-size: 11px; }
+.pokepath-classic-routes[data-pokepath-font="Lexend"] .pokepath-route-ribbons img { width: 16px; height: 13px; }
+.pokepath-classic-routes[data-pokepath-font="Lexend"] .pokepath-route-ribbons > span { font-size: 11px; }
+@media (max-width: 700px) {
+  .pokepath-classic-routes > nav { top: 5px; left: 8px; right: 44px; transform: none; gap: 8px; }
+  .pokepath-classic-scene .pokepath-classic-routes > nav > button { width: auto; height: 38px; flex: 1 1 0; font-size: 9px; }
+  .pokepath-world-grid { top: 62px; left: 0; width: 100%; height: auto; min-height: 220px; aspect-ratio: 720 / 416; transform: none; }
+  .pokepath-world-grid .pokepath-route-record, .pokepath-world-grid .pokepath-route-requires { font-size: 6px; }
+  .pokepath-world-grid .pokepath-route-star { letter-spacing: 0; }
+  .pokepath-secret-routes { top: 310px; left: 0; transform: none; width: 100%; }
+  .pokepath-route-list { top: 53px; left: 0; transform: none; width: 100%; height: calc(100% - 53px); padding: 8px; }
+  .pokepath-route-group { width: 100%; }
+}
+.pokepath-classic-dex > nav { position: absolute; inset: 0 0 auto; display: flex; height: 40px; }
+.pokepath-classic-scene .pokepath-classic-dex > nav > button { position: relative; flex: 1; height: 40px; line-height: 44px; text-align: center; color: var(--pp-white); text-shadow: inherit; outline: 1px solid #000; background: var(--pp-dexTab1); box-shadow: inset 1px 1px rgba(255,255,255,.2), inset -1px -2px rgba(0,0,0,.3); transition: filter .2s; }
+.pokepath-classic-dex > nav > button > span { position: absolute; inset: 0; }
+.pokepath-classic-scene .pokepath-classic-dex > nav > button[aria-pressed="true"] { background: linear-gradient(var(--pp-dexTab2), var(--pp-dexTab3)); }
+.pokepath-classic-dex > nav > button:hover { filter: brightness(1.2); }
+.pokepath-dex-list { position: absolute; inset: 39px 0 40px; overflow: hidden auto; border-block: 1px solid #000; outline: 1px solid #333; background-color: rgba(0,0,0,.2); box-shadow: inset 1px 1px 1px #000, inset -1px -1px 1px #000; }
+.pokepath-dex-list.tutorials { bottom: 0; }
+.pokepath-dex-list::-webkit-scrollbar { width: 14px; }
+.pokepath-dex-list::-webkit-scrollbar-track { outline: 1px solid #000; background: var(--pp-scrollBarColor1); }
+.pokepath-dex-list::-webkit-scrollbar-thumb { background: var(--pp-scrollBarColor2); box-shadow: inset 0 2px rgba(255,255,255,.2); }
+.pokepath-dex-list > article { position: relative; min-height: 40px; border-bottom: 1px solid #222; background: var(--pp-dexColor); color: var(--pp-white); }
+.pokepath-classic-scene .pokepath-dex-list > article > button { position: relative; display: block; width: 100%; height: 39px; text-align: left; text-shadow: inherit; }
+.pokepath-classic-scene .pokepath-dex-list > article > button:hover { background-color: transparent; }
+.pokepath-classic-scene .pokepath-dex-list > article.selected > button { height: 45px; }
+.pokepath-dex-sprite { position: absolute; top: 2px; left: 5px; width: 36px; height: 36px; background-position: center; background-repeat: no-repeat; filter: drop-shadow(1px 1px #000); }
+.pokepath-dex-list > article.locked .pokepath-dex-sprite { filter: grayscale(1) brightness(0) drop-shadow(1px 1px #000); }
+.pokepath-dex-list > article > button > strong { position: absolute; top: 0; left: 51px; right: 70px; height: 40px; overflow: hidden; color: var(--pp-white); text-overflow: ellipsis; white-space: nowrap; font-size: 13px; font-weight: 400; line-height: 44px; transition: text-indent .2s; }
+.pokepath-dex-list > article.locked > button > strong { color: #777; }
+.pokepath-dex-list > article > button > strong:hover { text-indent: 10px; }
+.pokepath-dex-list > article > button > small { position: absolute; top: 0; right: 10px; height: 40px; font-size: 9px; line-height: 40px; text-align: right; color: #aaa; }
+.pokepath-dex-search { position: absolute; bottom: 10px; left: 60px; width: 265px; height: 20px; }
+.pokepath-classic-scene .pokepath-dex-search > input { all: unset; box-sizing: border-box; display: block; width: 100%; height: 100%; background: var(--pp-white); color: #333; text-indent: 4px; border-radius: 4px; outline: 1px solid #000; text-align: center; text-shadow: none; }
+.pokepath-classic-scene .pokepath-dex-search > input:focus-visible { outline: 1px solid #000; outline-offset: 0; box-shadow: inset 0 0 0 1px var(--pp-arrowHover, #a33635); }
+.pokepath-classic-scene .pokepath-dex-submit { display: none; }
+.pokepath-dex-sort { position: absolute; right: 50px; bottom: 0; display: flex; width: 300px; height: 40px; font-size: 14px; line-height: 44px; }
+.pokepath-classic-scene .pokepath-dex-sort > button { display: block; width: 10%; line-height: 44px; text-shadow: inherit; font-weight: 700; text-align: center; }
+.pokepath-dex-sort-value { position: relative; width: 80%; text-align: center; }
+.pokepath-dex-expanded { position: relative; margin: 0 5px 5px; padding: 5px; outline: 1px solid #333; border-radius: 3px; background: rgba(0,0,0,.35); color: var(--pp-white); font-size: 9px; line-height: 14px; }
+.pokepath-dex-expanded > dl { margin: 0; }
+.pokepath-dex-expanded > dl > div { position: relative; display: flex; flex-wrap: wrap; min-height: 16px; padding-top: 4px; border-bottom: 1px solid #555; }
+.pokepath-dex-expanded:not(:has(> .pokepath-dex-description)) > dl > div:last-child { border-bottom: 0; }
+.pokepath-dex-expanded dt { width: 40%; text-indent: 8px; text-align: left; line-height: 24px; }
+.pokepath-dex-expanded dd { width: 59%; margin: 0; text-align: right; line-height: 24px; }
+.pokepath-dex-expanded .extra { color: var(--pp-menuColorText); }
+.pokepath-dex-description { position: relative; margin-top: 5px; padding: 20px; border-radius: 3px; outline: 1px solid #444; background-color: rgba(0,0,0,.3); font-size: 9px; line-height: 13px; text-align: center; }
+.pokepath-dex-description > div:first-child { position: relative; margin-bottom: 14px; color: #26a69a; font-size: 12px; }
+.pokepath-classic-dex[data-pokepath-font="Unown"] .pokepath-dex-description > div:first-child { top: 10px; margin-bottom: 30px; font-size: 18px; }
+.pokepath-classic-dex[data-pokepath-font="Unown"] .pokepath-dex-description > div:last-child { font-size: 16px; line-height: 24px; }
+.pokepath-dex-tutorial > p { position: relative; width: 100%; padding: 8px 10px; color: var(--pp-white); font-size: 10px; line-height: 18px; text-align: left; }
+.pokepath-dex-text-line { display: block; margin-bottom: 8px; }
+.pokepath-dex-text-line.empty { height: 12px; }
+.pokepath-classic-scene .pokepath-dex-illustration { position: relative; display: block; width: 100%; height: 200px; background-position: center; background-repeat: no-repeat; background-size: contain; }
+.pokepath-dex-illustration.top { top: 20px; margin-bottom: 40px; }
+.pokepath-dex-illustration.bottom { top: 7px; margin-bottom: 28px; }
+.pokepath-dex-tag-hint { text-decoration: underline; text-underline-offset: 2px; cursor: help; }
+.pokepath-dex-shake { display: inline-block; color: #b4b3ba; font-weight: 700; }
+.pokepath-dex-shake-word, .pokepath-dex-shake-letter, .pokepath-dex-reverse { display: inline-block; }
+.pokepath-dex-reverse { transform: rotate(180deg); }
+.pokepath-dex-shake-letter { animation: pokepath-dex-shake .5s infinite alternate; animation-delay: var(--pp-shake-delay); }
+@keyframes pokepath-dex-shake {
+  0% { transform: translate(0,0) rotate(0deg); }
+  25% { transform: translate(-.3px,.3px) rotate(-.3deg); }
+  50% { transform: translate(.3px,-.3px) rotate(.3deg); }
+  75% { transform: translate(-.3px,-.3px) rotate(-.15deg); }
+  100% { transform: translate(.3px,.3px) rotate(.15deg); }
+}
+.pokepath-dex-expanded [data-rank="1"] { background: repeating-linear-gradient(-45deg, rgba(255,215,80,.3) 0 8px, rgba(255,190,40,.1) 8px 16px); }
+.pokepath-dex-expanded [data-rank="2"] { background: repeating-linear-gradient(-45deg, rgba(220,220,220,.3) 0 8px, rgba(170,170,170,.1) 8px 16px); }
+.pokepath-dex-expanded [data-rank="3"] { background: repeating-linear-gradient(-45deg, rgba(220,140,60,.3) 0 8px, rgba(160,90,30,.21) 8px 16px); }
+@media (max-width: 700px) {
+  .pokepath-classic-dex > nav { right: 38px; }
+  .pokepath-classic-scene .pokepath-classic-dex > nav > button { font-size: 11px; }
+  .pokepath-dex-list:not(.tutorials) { bottom: 80px; }
+  .pokepath-classic-scene .pokepath-dex-list > article > button { height: 44px; }
+  .pokepath-dex-list > article > button > strong { font-size: 11px; }
+  .pokepath-dex-search { left: 8px; right: 8px; bottom: 44px; width: auto; height: 30px; }
+  .pokepath-dex-search:has(.pokepath-dex-submit) > input { width: calc(100% - 42px); }
+  .pokepath-classic-scene .pokepath-dex-submit { position: absolute; right: 0; top: 0; display: block; width: 36px; height: 30px; background: var(--pp-buttonBlue); }
+  .pokepath-dex-sort { left: 8px; right: 8px; width: auto; font-size: 11px; }
+}
+
+.pokepath-details .pokepath-details-aim { position: absolute; left: 20px; bottom: 20px; width: 30px; height: 30px; border: 1px solid #111; border-radius: 2px; background: #2968d3; color: #d4d4d4; font-size: 22px; }
+
+.pokepath-board .pokepath-classic-scene, .pokepath-board .pokepath-trainer-name { font-family: var(--pp-font, PressStart2P), sans-serif; }
+.pokepath-classic-scene { text-shadow: -1px -1px #000, 0 -1px #000, 1px -1px #000, 1px 0 #000, 1px 1px #000, 0 1px #000, -1px 1px #000, -1px 0 #000; }
+.pokepath-profile-player { position: absolute; top: 15px; left: 28px; width: 210px; height: 110px; }
+.pokepath-profile-player .pokepath-profile-portrait { position: absolute; top: 0; left: 65px; width: 80px; height: 80px; filter: drop-shadow(3px 3px #000); }
+.pokepath-profile-portrait > img { width: 80px; height: 80px; object-fit: contain; image-rendering: auto; }
+.pokepath-profile-player > button.previous, .pokepath-profile-player > button.next { position: absolute; top: 15px; display: block; width: 30px; height: 65px; color: var(--pp-white, #d4d4d4); font-size: 24px; font-weight: 700; line-height: 65px; text-align: center; filter: drop-shadow(1px 2px #000); }
+.pokepath-profile-player > button.previous { left: 10px; }
+.pokepath-profile-player > button.next { right: 10px; }
+.pokepath-classic-scene .pokepath-profile-player input { all: unset; box-sizing: border-box; position: absolute; left: 25px; bottom: 8px; width: 160px; padding-bottom: 3px; border-bottom: 4px solid var(--pp-red, #a33635); background: transparent; color: var(--pp-white, #d4d4d4); font-family: inherit; font-size: 13px; font-weight: 700; text-align: center; text-transform: uppercase; filter: drop-shadow(1px 1px #000); text-shadow: -1px -1px #000, 0 -1px #000, 1px -1px #000, 1px 0 #000, 1px 1px #000, 0 1px #000, -1px 1px #000, -1px 0 #000; }
+.pokepath-profile-picker { position: absolute; z-index: 5; top: 80px; left: -20px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; width: 250px; max-height: 270px; padding: 8px; overflow-y: auto; border: 1px solid #000; background: #333; }
+.pokepath-profile-picker > button { width: 100%; aspect-ratio: 1; border: 1px solid transparent; }
+.pokepath-profile-picker > button[aria-pressed="true"] { border-color: #d4d4d4; }
+.pokepath-profile-picker img { width: 100%; height: auto; }
+.pokepath-profile-badges { box-sizing: content-box; position: absolute; top: 18px; right: 38px; display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; width: 400px; padding: 10px; outline: 1px solid #000; background: #444; filter: drop-shadow(4px 4px #000); }
+.pokepath-profile-badges > button { position: relative; width: 24px; height: 24px; background-size: contain; background-repeat: no-repeat; filter: drop-shadow(1px 1px #000) grayscale(1) brightness(0.5); }
+.pokepath-profile-badges > button.unlocked { filter: drop-shadow(2px 2px #000); }
+.pokepath-profile-badges img { display: block; width: 24px; height: 24px; object-fit: contain; object-position: left top; image-rendering: auto; }
+.pokepath-profile-statistics { position: absolute; top: 140px; left: 20px; right: 20px; bottom: 15px; display: flex; flex-direction: column; margin: 0; padding: 4px; overflow-y: auto; border: 1px solid #000; background: #2a2a2b; }
+.pokepath-profile-statistics > div { position: relative; display: flex; align-items: center; box-sizing: content-box; width: 100%; height: 20px; margin-bottom: 1px; border-bottom: 1px solid #0000004d; background: #3d3d3f; color: var(--pp-white, #d4d4d4); font-size: 10px; text-shadow: -1px -1px #000, 0 -1px #000, 1px -1px #000, 1px 0 #000, 1px 1px #000, 0 1px #000, -1px 1px #000, -1px 0 #000; }
+.pokepath-profile-statistics > div:nth-child(even) { background: #333335; }
+.pokepath-profile-statistics dt { box-sizing: content-box; width: 55%; padding-top: 3px; color: #bbb; text-transform: uppercase; text-indent: 12px; }
+.pokepath-profile-statistics dd { box-sizing: content-box; width: 45%; margin: 0; padding: 3px 12px 0 0; text-align: right; color: var(--pp-white, #d4d4d4); }
+.pokepath-profile-statistics dd > button { display: block; width: 100%; color: var(--pp-menuColorText, #c88d30); font-size: inherit; line-height: inherit; text-align: inherit; text-shadow: inherit; }
+.pokepath-classic-profile[data-pokepath-font="Lexend"] .pokepath-profile-player input { bottom: 4px; }
+.pokepath-classic-profile[data-pokepath-font="Lexend"] .pokepath-profile-player > button.previous, .pokepath-classic-profile[data-pokepath-font="Lexend"] .pokepath-profile-player > button.next { top: 8px; }
+.pokepath-classic-profile[data-pokepath-font="Lexend"] .pokepath-profile-statistics dt, .pokepath-classic-profile[data-pokepath-font="Lexend"] .pokepath-profile-statistics dd { padding-top: 1px; }
+.pokepath-classic-profile[data-pokepath-font="Unown"] .pokepath-profile-statistics dt, .pokepath-classic-profile[data-pokepath-font="Unown"] .pokepath-profile-statistics dd { font-size: 12px; padding-top: 1px; }
+.pokepath-profile-player input:focus { border-bottom-color: var(--pp-stars, #ebbe35); }
+.pokepath-profile-record-confirm { position: absolute; z-index: 10; left: 50%; top: 50%; display: grid; gap: 20px; width: 300px; padding: 20px; transform: translate(-50%, -50%); border: 4px solid #a33635; border-radius: 4px; background: #2a2b2d; color: #d4d4d4; box-shadow: 0 0 0 900px #0009; font-size: 12px; }
+.pokepath-profile-record-confirm > div { display: flex; gap: 10px; }
+.pokepath-profile-record-confirm button { min-height: 30px; padding: 5px 10px; border: 1px solid #000; background: #a33635; color: #d4d4d4; font-size: 10px; }
+@media (max-width: 700px) {
+  .pokepath-profile-player { left: 6px; width: 170px; }
+  .pokepath-profile-player .pokepath-profile-portrait { left: 45px; }
+  .pokepath-classic-scene .pokepath-profile-player input { left: 5px; }
+  .pokepath-profile-badges { top: 155px; left: 10px; right: 10px; width: auto; min-height: 85px; }
+  .pokepath-profile-statistics { top: 300px; left: 8px; right: 8px; }
+  .pokepath-profile-statistics > div { font-size: 9px; }
+  .pokepath-profile-statistics dt { text-indent: 4px; }
+}
+
+.pokepath-trainer-portrait img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.pokepath-classic-menu > button:disabled img { opacity: 0.4; }
+.pokepath-classic-scene button, .pokepath-card-name, .pokepath-card-level, .pokepath-enemy-info > h3, .pokepath-enemy-info > dl { text-shadow: -1px -1px #000, 0 -1px #000, 1px -1px #000, 1px 0 #000, 1px 1px #000, 0 1px #000, -1px 1px #000, -1px 0 #000; }
+.pokepath-classic-scene { background: var(--pp-sceneBackground, #2a2b2d); color: var(--pp-white, #d4d4d4); }
+.pokepath-trainer { background: var(--pp-uiBackground1, #2a2b2d); color: var(--pp-white, #d4d4d4); }
+.pokepath-monitor { background: var(--pp-uiBackground3, #2a2b2d); color: var(--pp-white, #d4d4d4); }
+.pokepath-enemy-info { background: linear-gradient(var(--pp-uiBackground4, #3d3d3f), var(--pp-uiBackground3, #2a2b2d)); }
+.pokepath-classic-top, .pokepath-classic-bottom { background: var(--pp-barBackground, #3d3d3f); box-shadow: inset 0 2px var(--pp-barShadow1, #5a5a5c), inset 0 -2px var(--pp-barShadow2, #2a2a2b); }
+.pokepath-classic-menu { background: var(--pp-uiSection, #c73838); }
+.pokepath-trainer-gold { color: var(--pp-money, #70ac4c); }
+.pokepath-trainer-stars, .pokepath-card-requirement { color: var(--pp-stars, #ebbe35); }
+.pokepath-classic-controls .wave { background: var(--pp-buttonRed, #a33635); }
+.pokepath-classic-scene .pokepath-classic-controls :is(.auto, .pause, .speed) { background: var(--pp-rocket1, #6b7280); transition: transform .05s; }
+.pokepath-classic-scene .pokepath-classic-controls .auto { background: var(--pp-autoWave1, #2c70e3); }
+.pokepath-classic-scene .pokepath-classic-controls .auto[aria-pressed="true"] { background: var(--pp-autoWave2, #70ac4c); }
+.pokepath-classic-scene .pokepath-classic-controls :is(.auto, .pause, .speed):not(:disabled):hover { filter: brightness(1.15); }
+.pokepath-classic-scene .pokepath-classic-controls :is(.auto, .pause, .speed):not(:disabled):active { padding-top: 3px; transform: none; }
+.pokepath-board .pokepath-central-panel { background-color: var(--pp-sceneBackground, #2a2b2d); color: var(--pp-white, #d4d4d4); }
+.pokepath-profile-badges { background: var(--pp-profile4, #444); }
+.pokepath-profile-statistics { background: var(--pp-profile1, #2a2a2b); }
+.pokepath-profile-statistics > div { background: var(--pp-profile2, #3d3d3f); }
+.pokepath-profile-statistics > div:nth-child(even) { background: var(--pp-profile3, #333335); }
+.pokepath-wave-manager { position: absolute; left: 3px; top: 0; display: flex; align-items: center; gap: 3px; width: 265px; height: 24px; }
+.pokepath-wave-manager > button { flex: 1; height: 24px; border-inline: 1px solid #111; background: #a33635; color: #d4d4d4; font-size: 10px; }
+.pokepath-wave-manager > button:nth-child(2), .pokepath-wave-manager > button:nth-child(4) { background: #2968d3; }
+.pokepath-wave-manager > button[aria-pressed="true"] { background: #70ac4c; }
+.pokepath-classic-scene .pokepath-wave-manager > input { width: 42px; height: 22px; min-height: 0; padding: 0; border: 1px solid #111; border-radius: 0; background: #333; color: #d4d4d4; text-align: center; font-size: 10px; appearance: textfield; }
+.pokepath-wave-manager input::-webkit-inner-spin-button, .pokepath-wave-manager input::-webkit-outer-spin-button { appearance: none; margin: 0; }
+.pokepath-enemy-passive { position: absolute; left: 10px; right: 10px; bottom: 16px; height: 132px; padding: 6px 7px; border: 1px solid #000; border-radius: 2px; background: #0003; color: #d4d4d4; }
+.pokepath-enemy-passive > strong { display: block; padding-bottom: 4px; border-bottom: 1px solid #ffffff4d; color: var(--pp-menuColorText, #c88d30); text-align: center; font-size: 11px; }
+.pokepath-enemy-passive > p { margin-top: 12px; font-size: 8px; line-height: 15px; }
+@media (max-width: 700px) {
+  .pokepath-wave-manager { position: relative; width: 265px; }
+  .pokepath-classic-bottom:has(.pokepath-wave-manager) { height: 56px; }
+  .pokepath-classic-bottom:has(.pokepath-wave-manager) .pokepath-wave-income { top: 26px; }
+  .pokepath-classic-bottom:has(.pokepath-wave-manager) .pokepath-terrain-counts { top: 25px; }
+}
+
+.pokepath-settings-list {
+  position: absolute;
+  inset: 15px 10px 15px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  padding: 12px 12px 22px;
+  overflow: hidden auto;
+}
+.pokepath-settings-list::-webkit-scrollbar { width: 14px; }
+.pokepath-settings-list::-webkit-scrollbar-track { outline: 1px solid #000; background: var(--pp-scrollBarColor1); }
+.pokepath-settings-list::-webkit-scrollbar-thumb { background: var(--pp-scrollBarColor2); box-shadow: inset 0 2px #fff3; }
+.pokepath-settings-list::-webkit-scrollbar-thumb:hover { box-shadow: inset 0 0 10px #fff3; }
+.pokepath-settings-card {
+  position: relative;
+  flex: 0 0 auto;
+  min-height: var(--pp-settings-card-height);
+  padding: 40px 20px 20px;
+  border: 1px solid #000;
+  background: var(--pp-menuSection);
+  color: var(--pp-white);
+  box-shadow: inset 0 2px #5a5a5c, inset 0 -2px #2a2a2b, 2px 2px rgba(0,0,0,.3);
+}
+.pokepath-settings-card[data-settings-section="official"] { --pp-settings-card-height: 138px; }
+.pokepath-settings-card[data-settings-section="settings"] { --pp-settings-card-height: 673px; }
+.pokepath-settings-card[data-settings-section="audio"] { --pp-settings-card-height: 306px; }
+.pokepath-settings-card[data-settings-section="shortcuts"] { --pp-settings-card-height: 422px; }
+.pokepath-settings-card[data-settings-section="data"] { --pp-settings-card-height: 220px; }
+.pokepath-settings-card[data-settings-section="credits"] { --pp-settings-card-height: 7973px; }
+.pokepath-settings-card > h2 {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 30px;
+  padding-inline: 10px;
+  outline: 1px solid #000;
+  background: var(--pp-menuTitle);
+  box-shadow: inset 1px 1px rgba(255,255,255,.3), inset -1px -2px rgba(0,0,0,.4);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 30px;
+  text-transform: uppercase;
+}
+.pokepath-settings-content, .pokepath-settings-shortcuts { display: grid; gap: 8px; }
+.pokepath-settings-row, .pokepath-settings-credit {
+  position: relative;
+  display: flex;
+  font-size: 12px;
+  line-height: 25px;
+}
+.pokepath-settings-row { min-height: 20px; height: 20px; }
+.pokepath-setting-label {
+  flex: 0 0 55%;
+  min-width: 0;
+  color: var(--pp-white);
+  font: inherit;
+  text-transform: uppercase;
+}
+.pokepath-setting-value, .pokepath-setting-detail {
+  min-width: 0;
+  color: var(--pp-menuColorText);
+  text-transform: uppercase;
+}
+.pokepath-setting-value { flex: 0 0 35%; text-align: center; }
+.pokepath-setting-detail { flex: 0 0 45%; text-align: right; }
+.pokepath-setting-detail a { color: var(--pp-link); font-weight: 800; text-decoration: none; padding-bottom: 2px; }
+.pokepath-setting-detail a:hover { filter: brightness(1.2); }
+.pokepath-classic-scene .pokepath-setting-arrow {
+  position: relative;
+  flex: 0 0 5%;
+  color: var(--pp-white);
+  line-height: inherit;
+  text-shadow: inherit;
+  transition: color .1s;
+}
+.pokepath-setting-arrow > span, .pokepath-setting-buttons > button > span { position: absolute; inset: 0 0 auto; pointer-events: none; }
+.pokepath-classic-scene .pokepath-setting-arrow:hover { color: var(--pp-arrowHover); background: none; }
+.pokepath-classic-scene .pokepath-setting-arrow:disabled { color: var(--pp-white); }
+.pokepath-classic-scene [data-settings-font="Lexend"] .pokepath-setting-arrow { font-size: 18px; font-weight: 700; line-height: 18px; }
+.pokepath-classic-scene [data-settings-font="Rubik"] .pokepath-setting-arrow { font-size: 17px; }
+.pokepath-classic-scene [data-settings-font="DynaPuff"] .pokepath-setting-arrow { font-size: 18px; line-height: 24px; }
+.pokepath-classic-scene [data-settings-font="Unown"] .pokepath-setting-arrow { font-size: 18px; font-weight: 700; line-height: 20px; }
+[data-settings-font="Rubik"] .pokepath-setting-value { font-size: 14px; }
+.pokepath-setting-options, .pokepath-setting-range { align-items: center; }
+.pokepath-setting-buttons { flex: 0 0 45%; display: flex; gap: 3px; min-width: 0; }
+.pokepath-classic-scene .pokepath-setting-buttons > button {
+  position: relative;
+  flex: 1;
+  height: 20px;
+  border: 1px solid #000;
+  background: linear-gradient(39deg, var(--pp-menuButton1), var(--pp-menuButton2));
+  color: var(--pp-white);
+  box-shadow: inset 1px 1px rgba(255,255,255,.15), inset -1px -1px rgba(0,0,0,.35);
+  font-size: 8px;
+  font-weight: 700;
+  line-height: 20px;
+  text-transform: uppercase;
+  text-shadow: inherit;
+  transition: filter .1s, transform .1s;
+}
+.pokepath-classic-scene [data-settings-font="Lexend"] .pokepath-setting-buttons > button { line-height: 18px; }
+.pokepath-classic-scene [data-settings-font="Rubik"] .pokepath-setting-buttons > button { font-size: 9px; font-weight: 100; }
+.pokepath-classic-scene .pokepath-setting-buttons > [aria-pressed="true"] { background: var(--pp-menuButtonOn); }
+.pokepath-classic-scene .pokepath-setting-buttons > [aria-pressed="true"]:first-child { background: var(--pp-menuButtonOff); }
+.pokepath-classic-scene .pokepath-setting-buttons > button:not(:disabled):hover { filter: brightness(1.2); }
+.pokepath-classic-scene .pokepath-setting-buttons > button:not(:disabled):active { transform: translateY(1px); }
+.pokepath-setting-slider {
+  flex: 0 0 45%;
+  min-width: 0;
+  height: 12px;
+  margin: 0;
+  padding: 0;
+  appearance: none;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+.pokepath-setting-slider:disabled { cursor: default; }
+.pokepath-setting-slider::-webkit-slider-runnable-track { height: 8px; border: 1px solid #000; background: var(--pp-slider); }
+.pokepath-setting-slider::-webkit-slider-thumb {
+  width: 10px;
+  height: 14px;
+  margin-top: -4px;
+  appearance: none;
+  border: 1px solid #000;
+  background: var(--pp-sliderGrab);
+  box-shadow: inset 1px 1px rgba(255,255,255,.25), inset -1px -1px rgba(0,0,0,.4), 1px 1px rgba(0,0,0,.5);
+}
+.pokepath-setting-slider::-moz-range-track { height: 8px; border: 1px solid #000; background: var(--pp-slider); box-shadow: inset 1px 1px #111, inset -1px -1px #4a4a4a; }
+.pokepath-setting-slider::-moz-range-thumb {
+  width: 10px;
+  height: 14px;
+  border: 1px solid #000;
+  border-radius: 0;
+  background: var(--pp-sliderGrab);
+  box-shadow: inset 1px 1px rgba(255,255,255,.25), inset -1px -1px rgba(0,0,0,.4), 1px 1px rgba(0,0,0,.5);
+}
+.pokepath-setting-range > output { position: absolute; inset-inline-start: 55%; width: 45%; pointer-events: none; }
+.pokepath-settings-version { position: absolute; right: 10px; bottom: 10px; font-size: 10px; }
+.pokepath-settings-credit-group { padding-top: 10px; }
+.pokepath-settings-credit-group > h3 { padding: 14px 0 12px; border-top: 2px dashed #bf3e3e; color: #bf3e3e; font-size: 14px; text-align: center; text-transform: uppercase; }
+.pokepath-settings-disclaimer { display: grid; gap: 14px; padding-top: 10px; color: #888; font-size: 10px; line-height: 14px; text-align: justify; }
+@media (max-width: 700px) {
+  .pokepath-settings-list { inset: 44px 0 0; gap: 16px; padding: 0 8px 16px; }
+  .pokepath-settings-card { min-height: auto; padding-inline: 10px; }
+  .pokepath-settings-card[data-settings-section="data"] { min-height: 74px; }
+  .pokepath-settings-row { min-height: 38px; height: auto; align-items: center; font-size: 10px; line-height: 16px; }
+  .pokepath-settings-credit { font-size: 10px; line-height: 19px; }
+  .pokepath-setting-label { flex-basis: 48%; padding-right: 4px; overflow-wrap: anywhere; }
+  .pokepath-setting-detail, .pokepath-setting-buttons, .pokepath-setting-slider { flex-basis: 52%; }
+  .pokepath-setting-detail { overflow-wrap: anywhere; }
+  .pokepath-setting-value { flex-basis: 28%; }
+  .pokepath-setting-slider { height: 38px; }
+  .pokepath-setting-range > output { inset-inline-start: 48%; width: 52%; }
+  .pokepath-classic-scene .pokepath-setting-arrow { flex-basis: 12%; min-height: 38px; }
+  .pokepath-classic-scene .pokepath-setting-buttons > button { min-height: 36px; overflow-wrap: anywhere; line-height: 12px; }
+  .pokepath-setting-arrow > span, .pokepath-setting-buttons > button > span { position: static; }
+}
+
+.pokepath-fast-picker { position: absolute; z-index: 20; inset: 0; display: flex; flex-wrap: wrap; align-content: start; overflow-y: auto; overflow-x: hidden; background: linear-gradient(30deg, #464646, #323232); color: #d4d4d4; border: 1px solid #000; }
+.pokepath-fast-picker.item { background-image: linear-gradient(#555b, #555b); }
+.pokepath-classic-scene .pokepath-fast-picker > button { position: relative; display: grid; place-items: center; width: 30px; height: 30px; color: #d4d4d4; font-size: 14px; }
+.pokepath-classic-scene .pokepath-fast-picker.item > button { width: 24px; height: 24px; }
+.pokepath-fast-picker > button > img { width: auto; height: auto; max-width: 28px; max-height: 28px; object-fit: contain; }
+.pokepath-fast-picker.item > button > img { width: 24px; height: 24px; }
+.pokepath-fast-picker > button > .equipped { position: absolute; right: 0; bottom: 0; color: #70ac4c; font-size: 7px; }
+.pokepath-fast-empty { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #d4d4d4; font-size: 10px; white-space: nowrap; }
+
+.pokepath-card-field, .pokepath-card-shape { position: absolute; top: 45px; z-index: 3; width: 16px; height: 15px; border: 1px solid #111; border-radius: 3px; color: #fff; font-size: 9px; font-weight: 700; line-height: 13px; text-align: center; box-shadow: inset 0 1px #ffffff33, 0 2px #111; }
+.pokepath-card-field { right: 8px; background: linear-gradient(#bb4a42, #7f2c2a); }
+.pokepath-card-field.deployed { background: linear-gradient(#66b94d, #2f8231); }
+.pokepath-card-shape { left: 8px; background: linear-gradient(#276fdb, #1457ba); font-size: 8px; }
+.pokepath-card-fast-target { position: absolute; left: 7px; right: 7px; bottom: 32px; z-index: 5; display: grid; grid-template-columns: 15px minmax(0, 1fr) 15px; align-items: center; height: 14px; border-block: 1px dashed #ffffff2e; background: #0f0f0f48; }
+.pokepath-card-fast-target > span { overflow: hidden; color: #f2f2f2; font-size: 6px; text-align: center; white-space: nowrap; }
+.pokepath-card-fast-target > button { height: 12px; color: #db4b42; font-size: 9px; }
+
+.pokepath-classic-card .pokepath-card-add { bottom: 7px; font-size: 9px; }
+.pokepath-card-lock { text-shadow: none; }
+.pokepath-terrain-counts { top: 0; height: 26px; overflow: hidden; }
+.pokepath-card-name, .pokepath-details-title h2, .pokepath-dex-list > article > button > strong, .pokepath-route-list > button > strong { text-transform: uppercase; }
+.pokepath-damage-monitor { position: absolute; z-index: 3; inset: 37px 0 141px; }
+.pokepath-damage-rows { height: 462px; outline: 1px solid #000; background: #333; }
+.pokepath-damage-rows > article { position: relative; height: 10%; background: var(--pp-uiAlterDamage, #333); }
+.pokepath-damage-rows > article:nth-child(even) { background: var(--pp-uiBackground2, #333); }
+.pokepath-damage-portrait { position: absolute; left: 10px; bottom: 0; display: grid; place-items: center; width: 40px; height: 40px; }
+.pokepath-damage-portrait img { width: auto; height: auto; max-width: 40px; max-height: 40px; }
+.pokepath-damage-number { position: absolute; left: 65px; right: 10px; top: 14px; color: var(--pp-white, #d4d4d4); font-size: 10px; text-shadow: -1px -1px #000, 1px 1px #000; }
+.pokepath-damage-number small { position: absolute; right: 0; top: 2px; font-size: 8px; text-align: right; }
+.pokepath-damage-bar { position: absolute; bottom: 8px; left: 55px; right: 10px; height: 8px; outline: 1px solid #000; background: #0008; }
+.pokepath-damage-bar > span { position: absolute; height: 100%; transition: width .1s; }
+.pokepath-damage-bar > .previous { transition: none; }
+.pokepath-classic-scene .pokepath-damage-mode { display: block; width: 100%; height: 34px; border: 0; outline: 1px solid #000; background: var(--pp-uiMusic, #6b7280); color: var(--pp-white, #d4d4d4); box-shadow: inset 2px 2px #ffffff26, inset -2px -3px #0006; font-size: 14px; line-height: 36px; text-align: center; }
+@media (max-width: 700px) {
+  .pokepath-damage-monitor { position: relative; inset: auto; order: 6; width: 100%; flex: 0 0 auto; }
+  .pokepath-monitor:has(.pokepath-damage-monitor) .pokepath-enemy-info { display: none; }
+}
+
+
+.pokepath-classic-challenge[data-pokepath-theme="halloween"] { --pp-challenge-ribbon-filter: brightness(.8) hue-rotate(-90deg); }
+.pokepath-classic-challenge[data-pokepath-theme="monochrome"] { --pp-challenge-ribbon-filter: brightness(.5) hue-rotate(-60deg); }
+.pokepath-challenge-route {
+  position: absolute;
+  inset: 26px 50px auto;
+  padding-bottom: 5px;
+  border-bottom: 4px solid var(--pp-challengeColor1);
+  filter: drop-shadow(2px 2px #000);
+  font-size: 16px;
+  letter-spacing: 1px;
+  text-align: center;
+  text-transform: uppercase;
+}
+.pokepath-challenge-rules {
+  position: absolute;
+  inset: 70px 20px auto;
+  display: grid;
+  justify-items: center;
+  padding: 20px;
+  border: 1px solid #000;
+  background: rgba(30,30,30,.55);
+  backdrop-filter: blur(20px);
+}
+.pokepath-classic-scene .pokepath-challenge-rule {
+  position: relative;
+  display: grid;
+  grid-template-columns: 70% 30%;
+  width: 90%;
+  height: 32px;
+  padding-top: 4px;
+  border-bottom: 1px solid rgba(255,255,255,.1);
+  font-size: 10px;
+  line-height: 27px;
+  text-shadow: inherit;
+  text-transform: uppercase;
+  transition: background-color .1s, border-color .1s;
+}
+.pokepath-classic-scene .pokepath-challenge-rule:hover {
+  border-bottom-color: var(--pp-challengeColor1);
+  background: rgba(60,60,60,.25);
+}
+.pokepath-challenge-label { padding-left: 10px; text-align: left; }
+.pokepath-challenge-result { padding-right: 10px; color: var(--pp-red, #a33635); font-weight: 700; text-align: right; }
+.pokepath-challenge-result[data-enabled="true"] { color: var(--pp-green, #70ac4c); }
+.pokepath-challenge-ribbons {
+  position: absolute;
+  top: 9px;
+  left: -38px;
+  display: flex;
+  justify-content: center;
+  gap: 2px;
+  width: 32px;
+  height: 16px;
+  filter: drop-shadow(1px 1px #000) var(--pp-challenge-ribbon-filter);
+}
+.pokepath-challenge-ribbons > span { position: relative; width: 14px; height: 14px; background-size: contain; background-repeat: no-repeat; }
+.pokepath-challenge-ribbons > span:not(.earned) { filter: brightness(.5) grayscale(100%); }
+.pokepath-challenge-info {
+  position: absolute;
+  inset: auto 20px 170px;
+  height: 94px;
+  padding: 10px;
+  border-bottom: 4px solid var(--pp-challengeColor1);
+  outline: 1px solid #000;
+  background: var(--pp-descriptionBackground);
+}
+.pokepath-challenge-info h2 {
+  position: absolute;
+  top: -12px;
+  left: 15px;
+  height: 22px;
+  padding-inline: 12px;
+  border: 1px solid #000;
+  background: var(--pp-challengeColor1);
+  font-size: 10px;
+  line-height: 20px;
+  text-transform: uppercase;
+}
+.pokepath-challenge-info p { position: absolute; padding: 12px; font-size: 10px; line-height: 14px; text-transform: uppercase; }
+.pokepath-challenge-warning, .pokepath-challenge-debuff { font-size: 7px; line-height: 7px; }
+.pokepath-challenge-warning { color: var(--pp-red, #a33635); }
+.pokepath-challenge-debuff { color: var(--pp-green, #70ac4c); }
+.pokepath-classic-scene [data-challenge-submit] {
+  position: absolute;
+  bottom: 130px;
+  left: 50%;
+  width: 85%;
+  height: 26px;
+  transform: translateX(-50%);
+  border-radius: 2px;
+  outline: 1px solid #000;
+  background: var(--pp-challengeColor1);
+  box-shadow: inset 1px 1px rgba(255,255,255,.2), inset -1px -2px rgba(0,0,0,.3);
+  color: var(--pp-white);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 26px;
+  text-shadow: inherit;
+  text-transform: uppercase;
+  transition: filter .1s;
+}
+.pokepath-classic-scene [data-challenge-submit] > span { position: absolute; inset: 0; pointer-events: none; }
+.pokepath-classic-scene [data-challenge-submit]:disabled { background: var(--pp-challengeColor1); color: var(--pp-white); filter: brightness(.8); }
+.pokepath-classic-scene [data-challenge-submit]:not(:disabled):hover { filter: brightness(1.15); }
+.pokepath-classic-scene [data-challenge-submit]:not(:disabled):active { transform: translate(-50%, 1px); }
+.pokepath-challenge-rewards {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 39px;
+  width: 524px;
+  height: 102px;
+  transform: translateX(-50%);
+  border: 1px solid #000;
+  background: rgba(30,30,30,.3);
+}
+.pokepath-challenge-reward-position { position: relative; min-width: 0; }
+.pokepath-classic-scene .pokepath-challenge-reward {
+  position: relative;
+  display: block;
+  width: 82px;
+  height: 72px;
+  border: 1px solid rgba(255,255,255,.1);
+  outline: 1px solid #000;
+  background-color: rgba(255,255,255,.05);
+  background-position: center 30%;
+  background-repeat: no-repeat;
+  background-size: 32px;
+  color: var(--pp-white);
+  text-shadow: inherit;
+  transition: filter .1s, transform .1s, background-color .1s;
+}
+.pokepath-classic-scene .pokepath-challenge-reward:hover {
+  transform: translateY(-2px);
+  border-color: var(--pp-red, #a33635);
+  background-color: rgba(163,54,53,.15);
+}
+.pokepath-classic-scene .pokepath-challenge-reward[data-unavailable] { filter: brightness(.6); }
+.pokepath-classic-scene .pokepath-challenge-reward[data-reward-claimed] { pointer-events: none; }
+.pokepath-challenge-claim {
+  position: absolute;
+  inset: auto -10px 4px;
+  height: 18px;
+  font-size: 9px;
+  line-height: 18px;
+  letter-spacing: 1px;
+  text-align: center;
+  text-transform: uppercase;
+}
+.pokepath-challenge-claim img { position: relative; width: 10px; height: 10px; image-rendering: auto; }
+.pokepath-challenge-reward-tip {
+  position: absolute;
+  z-index: 2;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  width: 200px;
+  padding: 7px 9px;
+  transform: translateX(-50%);
+  border: 1px solid var(--pp-white);
+  background: var(--pp-tooltip);
+  font-size: 9px;
+  line-height: 14px;
+  text-align: center;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+.pokepath-challenge-reward-tip > strong { display: block; padding-bottom: 3px; border-bottom: 1px solid currentColor; }
+.pokepath-challenge-reward-tip > p { padding-top: 3px; }
+@media (max-width: 700px) {
+  .pokepath-board .pokepath-classic-challenge { display: flex; flex-direction: column; gap: 16px; padding: 46px 10px 16px; }
+  .pokepath-classic-challenge .pokepath-challenge-route { position: static; font-size: 12px; }
+  .pokepath-challenge-rules { position: static; padding: 8px; }
+  .pokepath-classic-scene .pokepath-challenge-rule { grid-template-columns: 65% 35%; width: calc(100% - 34px); height: auto; min-height: 38px; margin-left: 34px; padding: 4px 0; align-items: center; font-size: 9px; line-height: 15px; }
+  .pokepath-challenge-ribbons { left: -34px; top: 50%; transform: translateY(-50%); }
+  .pokepath-challenge-info { position: relative; inset: auto; height: auto; margin-top: 8px; }
+  .pokepath-challenge-info p { position: static; padding: 8px 0 0; }
+  .pokepath-classic-scene [data-challenge-submit] { position: relative; inset: auto; width: 100%; min-height: 38px; transform: none; line-height: 38px; }
+  .pokepath-classic-scene [data-challenge-submit]:not(:disabled):active { transform: translateY(1px); }
+  .pokepath-challenge-rewards { position: static; display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 6px; width: 100%; height: auto; padding: 8px; transform: none; }
+  .pokepath-classic-scene .pokepath-challenge-reward { width: 100%; height: 62px; background-size: 26px; }
+  .pokepath-challenge-claim { left: 0; right: 0; font-size: 7px; letter-spacing: 0; }
+  .pokepath-challenge-reward-tip { width: 150px; }
+  .pokepath-challenge-reward-position:first-child .pokepath-challenge-reward-tip { left: 0; transform: none; }
+  .pokepath-challenge-reward-position:last-child .pokepath-challenge-reward-tip { left: auto; right: 0; transform: none; }
+  .pokepath-classic-scene .pokepath-classic-challenge .pokepath-central-close { position: absolute; top: 4px; left: auto; right: 8px; }
+}
+
+.pokepath-classic-bottom { border-bottom-width: 0; }
+.pokepath-challenge-status {
+  position: absolute;
+  left: 12px;
+  bottom: 5px;
+  color: var(--pp-stars, #ebbe35);
+  font-size: 12px;
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+.pokepath-challenge-clock {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 2px 6px;
+  border: 1px solid #000;
+  background: #2a2a2b;
+  color: #fff;
+  font: 10px monospace;
+  letter-spacing: normal;
+  text-shadow: 1px 1px #000;
+  box-shadow: 1px 1px #5a5a5c;
+}
+@media (max-width: 700px) {
+  .pokepath-classic-bottom[data-challenge-active] { height: 56px; }
+  .pokepath-classic-bottom[data-challenge-active] .pokepath-terrain-counts { top: 27px; }
+  .pokepath-challenge-status { top: 7px; bottom: auto; max-width: calc(100% - 126px); overflow: hidden; text-overflow: ellipsis; font-size: 10px; }
+  .pokepath-challenge-clock { top: 3px; right: 10px; left: auto; transform: none; }
+}
+
+.pokepath-details-overlay.pokepath-result-overlay { position: fixed; }
+.pokepath-result {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 348px;
+  height: 308px;
+  transform: translate(-50%, -50%);
+  outline: none;
+  border: 4px solid var(--pp-sceneHeader);
+  border-radius: 5px;
+  background: #2a2b2c;
+  color: var(--pp-white);
+  box-shadow: 0 0 20px #000, inset 1px 1px 1px #000, inset -1px -1px 1px #000;
+}
+.pokepath-result.victory { width: 448px; height: 238px; }
+.pokepath-result-header { position: absolute; inset: -1px -1px auto; height: 25px; background: var(--pp-sceneHeader); }
+.pokepath-result-title { position: absolute; top: 7px; left: 8px; font-size: 13px; }
+.pokepath-result[data-result-font="Lexend"] .pokepath-result-title { top: 2px; }
+.pokepath-result[data-result-font="DynaPuff"] .pokepath-result-title { top: 1px; font-size: 15px; }
+.pokepath-result[data-result-font="Unown"] .pokepath-result-title { top: 3px; }
+.pokepath-classic-scene .pokepath-result-header button {
+  position: absolute;
+  top: 5px;
+  right: 8px;
+  display: block;
+  text-shadow: inherit;
+  cursor: pointer;
+  transition: filter .2s;
+}
+.pokepath-classic-scene .pokepath-result[data-result-font="Lexend"] .pokepath-result-header button,
+.pokepath-classic-scene .pokepath-result[data-result-font="DynaPuff"] .pokepath-result-header button { top: 0; }
+.pokepath-classic-scene .pokepath-result[data-result-font="Unown"] .pokepath-result-header button { top: 1px; }
+.pokepath-classic-scene .pokepath-result[data-result-font="Rubik"] .pokepath-result-header button { top: 4px; font-size: 16px; }
+.pokepath-classic-scene .pokepath-result-header button:hover { background: none; filter: brightness(1.2); }
+.pokepath-result-body { position: absolute; inset: 24px 0 0; background: var(--pp-sceneBackground); text-align: center; }
+.pokepath-result-prompt { position: absolute; inset: 18px 10px auto; font-size: 14px; line-height: 20px; }
+.pokepath-result-text { position: absolute; inset: auto 10px 10px; color: var(--pp-red); font-size: 10px; line-height: 16px; }
+.pokepath-result-portrait {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  width: 100px;
+  height: 100px;
+  transform: translate(-50%, -50%);
+  background-size: contain;
+  image-rendering: pixelated;
+}
+.pokepath-result-portrait.spooky { width: 120px; height: 120px; }
+.pokepath-result.victory .pokepath-result-portrait { top: 93px; background-repeat: no-repeat; background-position: center; }
+.pokepath-result-team {
+  position: absolute;
+  top: 105px;
+  left: 50%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: min(400px, 100%);
+  height: 32px;
+  transform: translateX(-50%);
+}
+.pokepath-result-member { width: 40px; height: 50px; background-position: bottom; background-repeat: no-repeat; }
+.pokepath-classic-scene .pokepath-result-body > button {
+  position: absolute;
+  bottom: 55px;
+  width: 142px;
+  height: 26px;
+  border: 1px solid #000;
+  border-radius: 4px;
+  color: var(--pp-white);
+  font-size: 12px;
+  line-height: 26px;
+  text-shadow: inherit;
+  transition: filter .2s;
+}
+.pokepath-classic-scene .pokepath-result-body > [data-result-restart] { left: 20px; background: var(--pp-red); }
+.pokepath-classic-scene .pokepath-result-body > [data-result-retry] { right: 20px; background: #2d70e3; }
+.pokepath-classic-scene .pokepath-result-body > button > span { position: absolute; inset: 0; pointer-events: none; }
+.pokepath-classic-scene .pokepath-result-body > button:disabled { opacity: 1; filter: brightness(.8); }
+.pokepath-classic-scene .pokepath-result-body > button:not(:disabled):hover { filter: brightness(1.2); }
+.pokepath-result-rules {
+  position: absolute;
+  top: 230px;
+  left: 50%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 302px;
+  height: 122px;
+  padding: 10px 0;
+  transform: translateX(-50%);
+  border: 1px solid #000;
+  border-radius: 5px;
+  outline: 3px solid #888;
+  background: rgba(0,0,0,.7);
+  box-shadow: 0 0 10px #000;
+}
+.pokepath-result.defeat .pokepath-result-rules { top: 299px; }
+.pokepath-result-rule { position: relative; top: 7px; width: 100%; color: #666; font-size: 8px; text-shadow: none; }
+.pokepath-result-rule[data-enabled="true"] { color: var(--pp-stars); }
+@media (max-width: 700px) {
+  .pokepath-result { width: min(348px, calc(100% - 16px)); }
+  .pokepath-result.victory { width: min(448px, calc(100% - 16px)); }
+  .pokepath-result.has-rules { margin-top: -63px; }
+  .pokepath-classic-scene .pokepath-result-header button[data-result-continue] { top: 0; right: 3px; width: 38px; height: 38px; z-index: 1; }
+  .pokepath-classic-scene .pokepath-result-body > button { width: calc(50% - 15px); height: 39px; line-height: 39px; font-size: 9px; }
+  .pokepath-classic-scene .pokepath-result-body > [data-result-restart] { left: 8px; }
+  .pokepath-classic-scene .pokepath-result-body > [data-result-retry] { right: 8px; }
+  .pokepath-result-prompt { font-size: 11px; }
+  .pokepath-result-text { font-size: 9px; }
+  .pokepath-result-rules { width: min(302px, calc(100% - 10px)); }
+  .pokepath-result-member { width: min(40px,10%); }
+}
+
+.pokepath-panel-layer { display: contents; }
+@property --pp-shop-light { syntax: "<color>"; inherits: false; initial-value: #e8d8b0; }
+@property --pp-shop-dark { syntax: "<color>"; inherits: false; initial-value: #d4bd8c; }
+.pokepath-board .pokepath-classic-shop {
+  background-color: var(--pp-shop-light);
+  background-image:
+    linear-gradient(45deg, var(--pp-shop-dark) 25%, transparent 25%),
+    linear-gradient(-45deg, var(--pp-shop-dark) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--pp-shop-dark) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--pp-shop-dark) 75%);
+  background-size: 64px 64px;
+  background-position: 0 0, 0 32px, 32px -32px, -32px 0;
+  overflow: hidden;
+}
+.pokepath-classic-shop[data-shop-theme="classic"] { --pp-shop-palette-animation: ppShopClassic; }
+.pokepath-classic-shop[data-shop-theme="halloween"] { --pp-shop-palette-animation: ppShopHalloween; }
+.pokepath-classic-shop[data-shop-theme="monochrome"] { --pp-shop-palette-animation: ppShopMonochrome; }
+.pokepath-classic-shop[data-shop-animated] { animation: ppShopTravel 8s linear infinite, var(--pp-shop-palette-animation, ppShopOriginal) 30s linear infinite; }
+@keyframes ppShopTravel {
+  from { background-position: 0 0, 0 32px, 32px -32px, -32px 0; }
+  to { background-position: 64px 64px, 64px 96px, 96px 32px, 32px 64px; }
+}
+@keyframes ppShopOriginal {
+  0%, 100% { --pp-shop-light: #e8d8b0; --pp-shop-dark: #d4bd8c; }
+  16.66% { --pp-shop-light: #c9b3df; --pp-shop-dark: #8d55c4; }
+  33.33% { --pp-shop-light: #afd6a5; --pp-shop-dark: #4caa45; }
+  50% { --pp-shop-light: #e5aaaa; --pp-shop-dark: #d43f3f; }
+  66.66% { --pp-shop-light: #a9c9eb; --pp-shop-dark: #397fd0; }
+  83.33% { --pp-shop-light: #ead09a; --pp-shop-dark: #d39b18; }
+}
+@keyframes ppShopClassic { from,to { --pp-shop-light: #304459; --pp-shop-dark: #233142; } }
+@keyframes ppShopHalloween { from,to { --pp-shop-light: #483f39; --pp-shop-dark: #2d2724; } }
+@keyframes ppShopMonochrome { from,to { --pp-shop-light: #333; --pp-shop-dark: #999; } }
+.pokepath-shop-slots { position: absolute; inset: 20px; display: flex; flex-wrap: wrap; place-content: center; gap: 15px; }
+.pokepath-classic-scene .pokepath-shop-tile {
+  position: relative;
+  display: block;
+  flex: 0 0 auto;
+  width: 23%;
+  height: 27%;
+  border: 1px solid rgba(255,255,255,.1);
+  outline: 3px solid #000;
+  --pp-shop-pool: var(--pp-shopPool1);
+  background-color: var(--pp-shop-pool);
+  background-position: center 35%;
+  background-repeat: no-repeat;
+  background-size: 128px;
+  box-shadow: 7px 7px #111;
+  backdrop-filter: blur(25px);
+  image-rendering: pixelated;
+  transition: filter .1s;
+}
+.pokepath-classic-scene .pokepath-shop-tile[data-shop-stock="2"],
+.pokepath-classic-scene .pokepath-shop-tile[data-shop-stock="3"] { --pp-shop-pool: var(--pp-shopPool2); }
+.pokepath-classic-scene .pokepath-shop-tile[data-shop-stock="6"],
+.pokepath-classic-scene .pokepath-shop-tile[data-shop-stock="7"] { --pp-shop-pool: var(--pp-shopPool3); }
+.pokepath-classic-scene .pokepath-shop-tile.pokepath-shop-egg { width: 48%; --pp-shop-pool: var(--pp-shopPool4); }
+.pokepath-shop-tile::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(-45deg, rgba(255,255,255,.12) 0px 4px, transparent 4px 14px);
+  pointer-events: none;
+  z-index: 0;
+}
+.pokepath-shop-tile::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: inherit;
+  background-color: transparent;
+  pointer-events: none;
+  z-index: 1;
+}
+.pokepath-classic-scene .pokepath-shop-tile:not([data-shop-unaffordable]):hover { filter: brightness(1.2); }
+.pokepath-classic-scene .pokepath-shop-tile[data-shop-unaffordable] { filter: brightness(.8); }
+.pokepath-classic-scene .pokepath-shop-tile:disabled { opacity: 1; background-color: var(--pp-shop-pool); }
+.pokepath-shop-price {
+  position: absolute;
+  inset: auto 6px 6px;
+  z-index: 2;
+  height: 32px;
+  border: 1px solid #000;
+  border-radius: 5px;
+  background: rgba(0,0,0,.7);
+  color: var(--pp-white, #d4d4d4);
+  font-size: 9px;
+  font-weight: 700;
+  font-synthesis: weight;
+  line-height: 32px;
+  text-align: center;
+  text-transform: uppercase;
+}
+[data-shop-font="Lexend"] .pokepath-shop-price { font-size: 14px; line-height: 30px; }
+[data-shop-font="Rubik"] .pokepath-shop-price { font-size: 11px; line-height: 30px; }
+[data-shop-font="DynaPuff"] .pokepath-shop-price, [data-shop-font="Unown"] .pokepath-shop-price { font-size: 13px; }
+.pokepath-shop-tooltip {
+  position: absolute;
+  z-index: 3;
+  left: 0;
+  top: 0;
+  width: max-content;
+  min-width: 180px;
+  max-width: min(310px, calc(100% - 8px));
+  border: 2px solid var(--pp-shop-tooltip-accent, #111);
+  padding: 10px;
+  background: rgba(0,0,0,.9);
+  color: var(--pp-white);
+  font-size: 10px;
+  line-height: 14px;
+  pointer-events: none;
+}
+.pokepath-shop-tooltip > strong { display: block; margin-bottom: 6px; color: var(--pp-shop-tooltip-accent); font-size: 11px; }
+@media (max-width: 700px) {
+  .pokepath-board .pokepath-classic-shop { overflow-y: auto; }
+  .pokepath-shop-slots { position: relative; inset: auto; padding: 46px 12px 14px; gap: 12px; }
+  .pokepath-classic-scene .pokepath-shop-tile { width: calc(50% - 6px); height: 140px; background-size: 94px; }
+  .pokepath-classic-scene .pokepath-shop-tile.pokepath-shop-egg { width: 100%; }
+}
+
+.pokepath-details-overlay.pokepath-hatch-overlay { position: fixed; }
+.pokepath-hatch {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 208px;
+  height: 208px;
+  transform: translate(-50%, -50%);
+  outline: none;
+  border: 4px solid var(--pp-hatch-color);
+  border-radius: 5px;
+  background: #2a2b2c;
+  color: var(--pp-white);
+  box-shadow: 0 0 20px #000, inset 1px 1px 1px #000, inset -1px -1px 1px #000;
+}
+.pokepath-hatch-header { position: absolute; inset: -1px -1px auto; height: 25px; background: var(--pp-hatch-color); }
+.pokepath-hatch-title { position: absolute; top: 7px; left: 8px; font-size: 13px; }
+.pokepath-hatch[data-shop-font="Lexend"] .pokepath-hatch-title { top: 2px; }
+.pokepath-hatch[data-shop-font="DynaPuff"] .pokepath-hatch-title { top: 1px; font-size: 15px; }
+.pokepath-hatch[data-shop-font="Unown"] .pokepath-hatch-title { top: 3px; }
+.pokepath-hatch-body { position: absolute; inset: 24px 0 0; background: var(--pp-sceneBackground); text-align: center; }
+.pokepath-hatch-prompt { position: absolute; inset: 14px 10px auto; font-size: 10px; line-height: 12px; }
+.pokepath-hatch-name { position: absolute; inset: 42px 0 auto; font-size: 10px; font-weight: 400; }
+.pokepath-hatch-body { text-shadow: -1px -1px #000, 0 -1px #000, 1px -1px #000, 1px 0 #000, 1px 1px #000, 0 1px #000, -1px 1px #000, -1px 0 #000; }
+.pokepath-hatch[data-shop-font="Lexend"] .pokepath-hatch-prompt { inset: 15px 5px auto; }
+.pokepath-hatch[data-shop-font="Rubik"] .pokepath-hatch-prompt { inset: 18px 0 auto; font-size: 9px; }
+.pokepath-hatch[data-shop-font="DynaPuff"] .pokepath-hatch-prompt { top: 15px; }
+.pokepath-hatch:is([data-shop-font="Lexend"],[data-shop-font="DynaPuff"]) .pokepath-hatch-name { top: 30px; font-size: 16px; }
+.pokepath-hatch[data-shop-font="Rubik"] .pokepath-hatch-name { top: 30px; font-size: 15px; }
+.pokepath-hatch-art {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 40px;
+  height: 40px;
+  transform: translate(-50%, -50%);
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.pokepath-classic-scene .pokepath-hatch-body > button {
+  position: absolute;
+  inset: auto 6px 6px;
+  height: 32px;
+  border: 1px solid #000;
+  background: var(--pp-hatch-color);
+  color: var(--pp-white);
+  box-shadow: inset 1px 1px rgba(255,255,255,.2);
+  font-size: 11px;
+  line-height: 32px;
+  font-weight: 700;
+  font-synthesis: weight;
+  text-shadow: inherit;
+}
+.pokepath-classic-scene .pokepath-hatch-body > button:hover { filter: brightness(1.2); }
+.pokepath-hatch-body > button > span { position: absolute; inset: 0; pointer-events: none; }
+.pokepath-classic-scene [data-shop-font="Lexend"] .pokepath-hatch-body > button,
+.pokepath-classic-scene [data-shop-font="DynaPuff"] .pokepath-hatch-body > button { font-size: 15px; }
+.pokepath-classic-scene [data-shop-font="Rubik"] .pokepath-hatch-body > button { font-size: 17px; }
+@media (max-width: 700px) {
+  .pokepath-classic-scene .pokepath-hatch-body > button { height: 42px; line-height: 42px; }
+}
+
+.pokepath-classic-box, .pokepath-box-rename-body { --pp-box-stroke: -1px -1px #000, 0 -1px #000, 1px -1px #000, 1px 0 #000, 1px 1px #000, 0 1px #000, -1px 1px #000, -1px 0 #000; }
+@media (min-width: 701px) {
+  .pokepath-board .pokepath-classic-box { left: 50%; top: 50%; width: 722px; height: 626px; transform: translate(-50%,-50%); border: 1px solid #000; }
+}
+.pokepath-box-stats { position: absolute; inset: 15px 95px auto 15px; pointer-events: none; }
+.pokepath-box-stats > div { padding: 2px 8px; color: var(--pp-white); font-size: 7px; font-weight: 700; font-synthesis: weight; line-height: 11px; letter-spacing: 1px; text-shadow: var(--pp-box-stroke); }
+[data-box-font="DynaPuff"] .pokepath-box-stats { top: 14px; }
+[data-box-font="DynaPuff"] .pokepath-box-stats > div, [data-box-font="Lexend"] .pokepath-box-stats > div { font-size: 10px; }
+[data-box-font="Rubik"] .pokepath-box-stats > div { font-size: 9px; font-weight: 100; }
+.pokepath-classic-scene .pokepath-classic-box > .pokepath-box-name {
+  position: absolute;
+  inset: 13px 175px auto;
+  height: 30px;
+  padding: 4px 10px 6px;
+  border-bottom: 2px solid var(--pp-box-name-color);
+  background: rgba(128,128,128,.15);
+  color: var(--pp-box-name-color);
+  clip-path: polygon(5% 0, 95% 0, 100% 50%, 95% 100%, 5% 100%, 0 50%);
+  backdrop-filter: blur(10px);
+  font-size: 16px;
+  font-weight: 700;
+  font-synthesis: weight;
+  line-height: 23px;
+  letter-spacing: 1px;
+  text-align: center;
+  text-shadow: var(--pp-box-stroke);
+  transition: background-color .2s;
+}
+.pokepath-classic-scene .pokepath-classic-box > .pokepath-box-name > span { position: absolute; inset: 4px 10px auto; }
+.pokepath-classic-scene .pokepath-classic-box > .pokepath-box-name:hover { background-color: rgba(128,128,128,.3); }
+.pokepath-classic-scene .pokepath-classic-box > .pokepath-box-favorite { position: absolute; top: 7px; right: 50px; width: 34px; height: 34px; display: grid; place-items: center; color: #fc0; background: none; filter: grayscale(1); font-size: 24px; line-height: normal; text-shadow: var(--pp-box-stroke); transition: transform .2s, filter .2s; }
+.pokepath-classic-scene .pokepath-classic-box > .pokepath-box-favorite[aria-pressed="true"] { filter: grayscale(0); }
+.pokepath-classic-scene .pokepath-classic-box > .pokepath-box-favorite:not(:disabled):active { transform: scale(1.5) rotate(-20deg); filter: brightness(1.5); }
+.pokepath-classic-scene .pokepath-box-size { position: absolute; right: 20px; top: 18px; width: 20px; height: 20px; background-size: 90%; background-repeat: no-repeat; filter: invert(1); }
+.pokepath-classic-scene .pokepath-box-size:hover { background-color: transparent; }
+.pokepath-box-toolbar { position: absolute; inset: 55px 10px auto; display: flex; justify-content: center; gap: 10px; }
+.pokepath-classic-scene .pokepath-box-toolbar > button {
+  position: relative;
+  width: 22%;
+  height: 24px;
+  border-radius: 2px;
+  outline: 1px solid #000;
+  overflow: hidden;
+  background: var(--pp-box-button, var(--pp-empty));
+  color: var(--pp-white);
+  box-shadow: inset 1px 1px rgba(255,255,255,.2), inset -1px -2px rgba(0,0,0,.3);
+  font-size: 10px;
+  font-weight: 700;
+  font-synthesis: weight;
+  line-height: 24px;
+  text-align: center;
+  text-shadow: var(--pp-box-stroke);
+  transition: filter .1s, box-shadow .1s;
+}
+.pokepath-classic-scene .pokepath-box-toolbar > button[data-box-command="team"] { --pp-box-button: var(--pp-buttonGreen); }
+.pokepath-classic-scene .pokepath-box-toolbar > button[data-box-command="box"] { --pp-box-button: var(--pp-buttonRed); }
+.pokepath-classic-scene .pokepath-box-toolbar > button[data-box-command="data"] { --pp-box-button: var(--pp-buttonBlue); }
+.pokepath-box-toolbar > button > span { position: absolute; inset: 0; pointer-events: none; }
+.pokepath-classic-scene .pokepath-box-toolbar > button:disabled { opacity: 1; filter: brightness(.8); background: var(--pp-box-button, var(--pp-empty)); color: var(--pp-white); }
+.pokepath-classic-scene .pokepath-box-toolbar > button:not(:disabled):hover { filter: brightness(1.15); box-shadow: inset 1px 1px #fff5, inset -1px -2px #0006, 0 0 10px #0005; }
+.pokepath-classic-scene .pokepath-box-toolbar > button:not(:disabled):active { transform: translateY(1px); }
+.pokepath-classic-scene [data-box-font="Rubik"] .pokepath-box-toolbar > button { font-size: 12px; line-height: 26px; }
+.pokepath-box-grid { position: absolute; inset: 90px 15px 95px; display: flex; flex-wrap: wrap; align-content: flex-start; gap: 16px; padding: 12px; border-radius: 2px; background: rgba(128,128,128,.1); outline: 1px solid #000; overflow: hidden auto; }
+.pokepath-box-grid::-webkit-scrollbar { width: 16px; }
+.pokepath-box-grid::-webkit-scrollbar-track { outline: 1px solid #000; background: var(--pp-scrollBarColor1); }
+.pokepath-box-grid::-webkit-scrollbar-thumb { background: var(--pp-scrollBarColor2); box-shadow: inset 0 2px #fff3; }
+.pokepath-classic-scene .pokepath-classic-box .pokepath-box-unit {
+  position: relative;
+  display: block;
+  flex: 0 0 auto;
+  width: var(--pp-box-size);
+  height: var(--pp-box-size);
+  border: 1px solid rgba(185,185,185,.24);
+  outline: 1px solid rgba(0,0,0,.55);
+  background-color: rgba(255,255,255,.015);
+  background-position: center;
+  background-repeat: no-repeat;
+  color: var(--pp-white);
+  z-index: 1;
+  touch-action: pan-y;
+}
+.pokepath-classic-scene .pokepath-classic-box .pokepath-box-unit[data-box-current] { border-color: #fc0; background-color: rgba(255,204,0,.15); filter: drop-shadow(0 0 6px rgba(255,204,0,.4)); }
+.pokepath-classic-scene .pokepath-classic-box .pokepath-box-unit[data-box-clear-tint] { background-color: transparent; }
+.pokepath-classic-scene .pokepath-classic-box .pokepath-box-unit[data-box-member] { --pp-box-member: 112,172,76; background-color: rgba(var(--pp-box-member),.15); outline-color: rgb(var(--pp-box-member)); border-color: rgba(var(--pp-box-member),.75); }
+.pokepath-classic-scene .pokepath-classic-box .pokepath-box-unit[data-box-member="special"] { --pp-box-member: 215,148,223; }
+.pokepath-classic-box .pokepath-box-unit[data-box-member]::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background: repeating-linear-gradient(0deg,rgba(0,0,0,.1) 0 1px,transparent 1px 2px); box-shadow: inset 0 0 8px rgba(var(--pp-box-member),.3); }
+.pokepath-classic-box .pokepath-box-unit::after { content: ""; position: absolute; inset: 0; border: 1px solid rgba(255,255,255,.08); box-shadow: inset 0 0 0 1px rgba(0,0,0,.32); pointer-events: none; }
+.pokepath-classic-box .pokepath-box-unit[data-box-member]::after { z-index: 2; width: 6px; height: 6px; background: rgb(var(--pp-box-member)); }
+.pokepath-classic-scene .pokepath-classic-box .pokepath-box-unit:hover { transform: scale(1.05); z-index: 2; }
+.pokepath-classic-scene .pokepath-classic-box .pokepath-box-unit[data-box-inverted]:not([data-box-moving]) { transform: scaleY(-1); }
+.pokepath-classic-scene .pokepath-classic-box .pokepath-box-unit[data-box-dim] { filter: brightness(.3); }
+.pokepath-classic-scene .pokepath-classic-box .pokepath-box-unit:focus-visible { outline: 2px solid #fc0; outline-offset: 2px; }
+.pokepath-box-unit-label { --pp-unit-label: 5px; position: absolute; inset: auto -10% -4px; color: var(--pp-white); font-size: calc(var(--pp-unit-label) * var(--pp-box-scale)); text-align: center; text-transform: uppercase; text-shadow: var(--pp-box-stroke); }
+[data-box-font="Lexend"] .pokepath-box-unit-label, [data-box-font="Rubik"] .pokepath-box-unit-label, [data-box-font="Unown"] .pokepath-box-unit-label { --pp-unit-label: 6px; bottom: -5px; }
+[data-box-font="DynaPuff"] .pokepath-box-unit-label { --pp-unit-label: 7px; bottom: -6px; }
+.pokepath-box-unit-fav { position: absolute; top: 0; right: 0; font-size: 10px; text-shadow: none; }
+.pokepath-box-unit-shiny, .pokepath-box-unit-item { position: absolute; background-position: center; background-repeat: no-repeat; background-size: contain; }
+.pokepath-box-unit-shiny { bottom: 4px; left: 0; width: 18px; height: 18px; filter: drop-shadow(0 0 1px #000); }
+.pokepath-box-unit-item { bottom: 5px; right: 1px; width: 15px; height: 15px; z-index: 4; filter: drop-shadow(1px 1px #000); }
+.pokepath-box-unit-shape { box-sizing: content-box; position: absolute; top: 1px; left: 1px; width: 8px; height: 8px; padding: 0 1px; z-index: 3; border: 1px solid #000c; border-radius: 2px; background: linear-gradient(var(--pp-box-shape-light),var(--pp-box-shape-dark)); color: #fff; font-size: 5px; font-weight: 700; font-synthesis: weight; line-height: 9px; text-align: center; text-shadow: 1px 1px #000; }
+[data-box-attack-shape="circle"] { --pp-box-shape-light: #276fdb; --pp-box-shape-dark: #1457ba; }
+[data-box-attack-shape="donut"] { --pp-box-shape-light: #aed636; --pp-box-shape-dark: #8eb320; }
+[data-box-attack-shape="cross"] { --pp-box-shape-light: #21c49e; --pp-box-shape-dark: #139174; }
+[data-box-attack-shape="xShape"] { --pp-box-shape-light: #9933b8; --pp-box-shape-dark: #9e21c4; }
+[data-box-attack-shape="vShape"] { --pp-box-shape-light: #ff6a18; --pp-box-shape-dark: #caa872; }
+[data-box-attack-shape="star"] { --pp-box-shape-light: #2b2b29; --pp-box-shape-dark: #2e2d2d; }
+[data-box-attack-shape="horizontalLine"] { --pp-box-shape-light: #d6456b; --pp-box-shape-dark: #a82f4f; }
+[data-box-attack-shape="area"] { --pp-box-shape-light: #fc0352; --pp-box-shape-dark: #c70e49; }
+[data-box-attack-shape="aura"] { --pp-box-shape-light: #e65aa2; --pp-box-shape-dark: #a34073; }
+[data-box-attack-shape="stream"] { --pp-box-shape-light: #42c8d8; --pp-box-shape-dark: #187d9c; }
+[data-box-attack-shape="cone"] { --pp-box-shape-light: #70bdf2; --pp-box-shape-dark: #397fbd; }
+[data-box-attack-shape="sweep"] { --pp-box-shape-light: #f3a448; --pp-box-shape-dark: #bd6528; }
+[data-box-attack-shape="waves"] { --pp-box-shape-light: #9a7ce8; --pp-box-shape-dark: #6142ae; }
+.pokepath-classic-scene .pokepath-classic-box > .pokepath-box-search { position: absolute; left: 60px; bottom: 59px; width: 265px; height: 20px; min-height: 0; padding: 0; border: 0; border-radius: 4px; outline: 1px solid #000; background: var(--pp-white); color: #333; text-align: center; text-indent: 4px; }
+.pokepath-classic-scene .pokepath-classic-box > .pokepath-box-search:focus-visible { outline: 2px solid #fc0; }
+.pokepath-box-filter { position: absolute; bottom: 50px; right: 50px; width: 300px; height: 40px; display: flex; align-items: flex-start; color: var(--pp-white); font-size: 14px; line-height: 44px; text-align: center; text-shadow: var(--pp-box-stroke); }
+.pokepath-box-filter > span { width: 80%; }
+.pokepath-classic-scene .pokepath-box-filter > button { width: 10%; line-height: 44px; font-weight: 700; font-synthesis: weight; text-shadow: inherit; background: none; }
+.pokepath-classic-scene .pokepath-box-filter > button:hover { color: var(--pp-arrowHover); }
+.pokepath-classic-scene [data-box-font="Lexend"] .pokepath-box-filter > button { line-height: 40px; font-size: 17px; }
+.pokepath-classic-scene :is([data-box-font="DynaPuff"],[data-box-font="Unown"]) .pokepath-box-filter > button { line-height: 46px; font-size: 17px; }
+.pokepath-classic-box .pokepath-box-terrains { position: absolute; inset: auto 5% 20px; height: 24px; display: flex; gap: 4px; }
+.pokepath-classic-scene .pokepath-classic-box .pokepath-box-terrains > button { position: relative; box-sizing: content-box; flex: 1 1 0; height: 100%; border: 1px solid #000; background: var(--pp-buttonRed); color: var(--pp-white); box-shadow: inset 1px 1px rgba(255,255,255,.2), inset -1px -1px rgba(0,0,0,.3); font-size: 8px; font-weight: 700; font-synthesis: weight; line-height: 27px; text-shadow: var(--pp-box-stroke); transition: filter .1s, transform .1s; }
+.pokepath-classic-box .pokepath-box-terrains > button > span { position: absolute; inset: 0; pointer-events: none; }
+.pokepath-classic-scene .pokepath-classic-box .pokepath-box-terrains > button[aria-pressed="true"] { background: var(--pp-buttonGreen); }
+.pokepath-classic-scene .pokepath-classic-box .pokepath-box-terrains > button:not([aria-pressed="true"]):hover { filter: brightness(1.2); transform: translateY(-2px); }
+.pokepath-classic-scene .pokepath-classic-box:is([data-box-font="Lexend"],[data-box-font="Rubik"]) .pokepath-box-terrains > button { font-size: 10px; line-height: 26px; }
+.pokepath-classic-scene .pokepath-classic-box[data-box-font="DynaPuff"] .pokepath-box-terrains > button { font-size: 9px; line-height: 25px; }
+.pokepath-box-ghost { position: absolute; z-index: 29; pointer-events: none; transform: translate(-50%,-50%) scale(1.26); background-position: center; background-repeat: no-repeat; image-rendering: pixelated; filter: drop-shadow(6px 6px 2px #222); }
+.pokepath-details-overlay.pokepath-box-rename-overlay { position: fixed; }
+.pokepath-box-rename { position: absolute; top: 50%; left: 50%; width: min(408px,calc(100% - 12px)); height: 138px; transform: translate(-50%,-50%); border: 4px solid var(--pp-box-rename-color); border-radius: 5px; background: #2a2b2c; color: var(--pp-white); box-shadow: 0 0 20px #000, inset 1px 1px 1px #000, inset -1px -1px 1px #000; }
+.pokepath-box-rename-head { position: absolute; inset: -1px -1px auto; height: 25px; padding: 7px 8px 0; background: var(--pp-box-rename-color); font-size: 13px; }
+.pokepath-box-rename[data-box-font="Lexend"] .pokepath-box-rename-head { padding-top: 2px; }
+.pokepath-box-rename[data-box-font="DynaPuff"] .pokepath-box-rename-head { padding-top: 1px; font-size: 15px; }
+.pokepath-box-rename[data-box-font="Unown"] .pokepath-box-rename-head { padding-top: 3px; }
+.pokepath-box-rename-body { position: absolute; inset: 24px 0 0; background: var(--pp-sceneBackground); }
+.pokepath-classic-scene .pokepath-box-rename-body > input { position: absolute; top: 30px; left: 50%; width: min(300px,90%); min-height: 0; transform: translateX(-50%); padding: 0 0 2px; border: 0; border-bottom: 3px solid var(--pp-box-rename-color); border-radius: 0; background: transparent; color: var(--pp-white); text-align: center; text-shadow: var(--pp-box-stroke); text-transform: uppercase; }
+.pokepath-classic-scene .pokepath-box-rename-body > input:focus-visible { outline: none; }
+.pokepath-box-rename[data-box-font="Lexend"] .pokepath-box-rename-body > input { top: 25px; }
+.pokepath-box-rename[data-box-font="DynaPuff"] .pokepath-box-rename-body > input { top: 23px; }
+.pokepath-classic-scene .pokepath-box-rename-body > button { position: absolute; bottom: 15px; width: 154px; height: 26px; border: 1px solid #000; border-radius: 4px; background: var(--pp-box-rename-color); color: var(--pp-white); font-size: 12px; line-height: 26px; text-shadow: var(--pp-box-stroke); }
+.pokepath-classic-scene .pokepath-box-rename-body > button[data-box-rename-restore] { left: 30px; }
+.pokepath-classic-scene .pokepath-box-rename-body > button[data-box-rename-accept] { right: 30px; }
+.pokepath-classic-scene .pokepath-box-rename-body > button:hover { filter: brightness(1.2); }
+@media (max-width: 700px) {
+  .pokepath-board .pokepath-classic-box { min-height: 340px; }
+  .pokepath-box-stats { inset: 7px 42px auto 8px; }
+  .pokepath-box-stats > div { padding: 0; font-size: 7px; }
+  .pokepath-classic-scene .pokepath-classic-box > .pokepath-box-name { inset: 38px 86px auto 8px; font-size: 10px; }
+  .pokepath-classic-scene .pokepath-classic-box > .pokepath-box-favorite { top: 37px; right: 46px; }
+  .pokepath-classic-scene .pokepath-box-size { top: 39px; right: 6px; width: 32px; height: 32px; }
+  .pokepath-box-toolbar { inset: 76px 6px auto; gap: 3px; }
+  .pokepath-classic-scene .pokepath-classic-box .pokepath-box-toolbar > button { flex: 1 1 0; height: 37px; padding: 0 1px; font-size: 8px; line-height: 12px; overflow-wrap: anywhere; }
+  .pokepath-box-toolbar > button > span { position: static; }
+  .pokepath-box-grid { inset: 126px 8px 135px; padding: 7px; gap: 14px 8px; }
+  .pokepath-classic-scene .pokepath-classic-box > .pokepath-box-search { inset: auto auto 95px 8px; width: calc(46% - 8px); height: 33px; font-size: 12px; }
+  .pokepath-box-filter { inset: auto 8px 93px 48%; width: auto; height: 36px; font-size: 9px; line-height: 36px; }
+  .pokepath-classic-scene .pokepath-classic-box .pokepath-box-filter > button { flex: 0 0 28px; height: 36px; line-height: 36px; }
+  .pokepath-box-filter > span { flex: 1; min-width: 0; line-height: 12px; align-self: center; }
+  .pokepath-classic-box .pokepath-box-terrains { height: 76px; inset: auto 8px 8px; display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); }
+  .pokepath-classic-scene .pokepath-classic-box .pokepath-box-terrains > button { box-sizing: border-box; }
+  .pokepath-classic-scene .pokepath-box-rename-body > button { width: calc(50% - 18px); height: 35px; bottom: 7px; font-size: 9px; }
+  .pokepath-classic-scene .pokepath-box-rename-body > button[data-box-rename-restore] { left: 8px; }
+  .pokepath-classic-scene .pokepath-box-rename-body > button[data-box-rename-accept] { right: 8px; }
+}

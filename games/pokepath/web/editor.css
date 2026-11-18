@@ -1,0 +1,56 @@
+.pokepath-editor { width: min(900px, 100%); }
+.pokepath-editor-body { display: grid; gap: 18px; }
+.pokepath-editor h3 { font-size: 15px; }
+.pokepath-editor-parameters { display: grid; grid-template-columns: minmax(0, 1.7fr) repeat(3, minmax(0, 1fr)); gap: 12px; align-items: end; }
+.pokepath-editor-parameters label { display: grid; gap: 5px; min-width: 0; font-size: 13px; font-weight: 600; }
+.pokepath-editor-parameters input, .pokepath-editor-parameters select { width: 100%; min-width: 0; font-weight: 400; }
+.pokepath-editor-percent { display: flex; align-items: center; gap: 5px; }
+.pokepath-editor-percent > span { color: #4c6048; }
+.pokepath-editor-sequence { min-width: 0; }
+.pokepath-editor-sequence-heading { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 9px; }
+.pokepath-editor-sequence-heading > div { display: flex; gap: 6px; }
+.pokepath-editor-groups { display: grid; gap: 7px; margin: 0; padding: 0; list-style: none; }
+.pokepath-editor-group { display: grid; grid-template-columns: minmax(0, 1fr) 142px 128px; align-items: center; gap: 9px; padding: 8px; border: 1px solid #bdcbb4; border-radius: 8px; background: #edf2e4; color: #293d32; }
+.pokepath-editor-group > select { min-width: 0; width: 100%; }
+.pokepath-editor-counter { display: grid; grid-template-columns: 38px minmax(0, 1fr) 38px; min-width: 0; }
+.pokepath-editor-counter > input { min-width: 0; width: 100%; text-align: center; border-radius: 0 !important; padding-inline: 3px !important; appearance: textfield; }
+.pokepath-editor-counter > input::-webkit-inner-spin-button, .pokepath-editor-counter > input::-webkit-outer-spin-button { appearance: none; margin: 0; }
+.pokepath-editor-counter > button { min-width: 0; padding-inline: 4px; font-size: 18px; }
+.pokepath-editor-counter > button:first-child { border-radius: 6px 0 0 6px; }
+.pokepath-editor-counter > button:last-child { border-radius: 0 6px 6px 0; }
+.pokepath-editor-row-actions { display: grid; grid-template-columns: 36px 36px minmax(0, 1fr); gap: 4px; }
+.pokepath-editor-row-actions > button { min-width: 0; padding-inline: 4px; }
+.pokepath-editor-preview { min-width: 0; padding: 12px; border: 1px solid #c0cdb7; border-radius: 8px; background: #fafbf2; color: #293d32; }
+.pokepath-editor-preview > div { display: flex; align-items: baseline; flex-wrap: wrap; justify-content: space-between; gap: 5px 12px; }
+.pokepath-editor-preview > div > span, .pokepath-editor-preview > p { color: #4e6249; font-size: 12px; }
+.pokepath-editor-preview > ol { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; padding: 0; list-style: none; }
+.pokepath-editor-preview li { display: flex; align-items: baseline; gap: 8px; max-width: 100%; padding: 4px 8px; border: 1px solid #becdb3; border-radius: 5px; background: #e9efdd; color: #2f4834; overflow-wrap: anywhere; }
+.pokepath-editor-preview li > strong { white-space: nowrap; font-variant-numeric: tabular-nums; }
+.pokepath-editor-sharing { min-width: 0; padding-top: 12px; border-top: 1px solid var(--pp-line, #b4c3aa); }
+.pokepath-editor-sharing > summary { width: fit-content; padding: 4px 0; font-weight: 600; cursor: pointer; }
+.pokepath-editor-sharing > label { display: grid; gap: 5px; margin-top: 9px; font-size: 13px; }
+.pokepath-editor-sharing textarea { width: 100%; min-width: 0; resize: vertical; max-height: 200px; font: 12px/1.5 ui-monospace, monospace; overflow-wrap: anywhere; }
+.pokepath-editor-sharing > div { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; margin-top: 7px; }
+.pokepath-editor-sharing [role="status"] { color: #31583c; }
+.pokepath-editor-error { padding: 9px 11px; border: 1px solid #b18b6d; border-radius: 7px; background: #fff2df; color: #764027; }
+.pokepath-editor-wait { color: #4e6249; }
+.pokepath-editor-footer { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; flex-shrink: 0; gap: 8px; padding: 12px 16px; border-top: 1px solid var(--pp-line, #b4c3aa); background: #e8eedf; color: #293d32; }
+.pokepath-editor-footer > div { display: flex; gap: 6px; margin-right: auto; }
+.pokepath-editor-footer > button.primary { min-width: 132px; }
+
+@media (max-width: 540px) {
+  .pokepath-editor-parameters { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .pokepath-editor-route, .pokepath-editor-hearts { grid-column: 1 / -1; }
+  .pokepath-editor-group { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+  .pokepath-editor-counter { grid-template-columns: 44px minmax(0, 1fr) 44px; }
+  .pokepath-editor-row-actions { grid-template-columns: 1fr 1fr 1.3fr; }
+  .pokepath-editor button, .pokepath-editor input, .pokepath-editor select { min-height: 44px; }
+  .pokepath-editor .pokepath-panel-close { width: 44px; }
+  .pokepath-editor-sequence-heading > div { width: 100%; }
+  .pokepath-editor-sequence-heading > div > button { flex: 1; }
+  .pokepath-editor-preview { padding: 9px; }
+  .pokepath-editor-footer { padding: 9px 12px; }
+  .pokepath-editor-footer > div { width: 100%; margin: 0; }
+  .pokepath-editor-footer > div > button { flex: 1; }
+  .pokepath-editor-footer > button.primary { flex: 1; }
+}

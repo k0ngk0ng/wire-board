@@ -1,0 +1,400 @@
+{
+  "version": "1.7.3",
+  "method": "static-literal-facts-only",
+  "sourceFiles": [
+    {
+      "path": "src/js/game/data/abilityData.js",
+      "bytes": 537321,
+      "sha256": "a771b4ce5b0291ee40b769de4582fa0c25f64f436faf989827743a697c6f3d2a"
+    },
+    {
+      "path": "src/js/game/data/achievementReworkData.js",
+      "bytes": 39877,
+      "sha256": "a928964892da0c91cbffdcb1f1d40b05cc7071c819ba9156158a538c9371614d"
+    },
+    {
+      "path": "src/js/game/data/enemyData.js",
+      "bytes": 195414,
+      "sha256": "9a545e4657d6f3c0f3ab611514d8af902aaead0c74df31c3007c03ab7cf9ad9a"
+    },
+    {
+      "path": "src/js/game/data/itemData.js",
+      "bytes": 403233,
+      "sha256": "e6b8356b2c87e4d5876e4169fb3e472d14861a24feee32cace9e730cdee63bb2"
+    },
+    {
+      "path": "src/js/game/data/passiveData.js",
+      "bytes": 102479,
+      "sha256": "6024296fadfa7e8e738e5df9f04a7d77f9fb00be52516db8e8e83474e5a442af"
+    },
+    {
+      "path": "src/js/game/data/pokemonData.js",
+      "bytes": 448436,
+      "sha256": "8f6c41a75401c76301a4b342659847a789cc0ec95d6a2744cfd3c133be01a0b0"
+    },
+    {
+      "path": "src/js/game/data/projectileData.js",
+      "bytes": 6378,
+      "sha256": "3a71265403370cf1e58a119df655c3db0917dc923c58063ebcdeb9ad4903174a"
+    },
+    {
+      "path": "src/js/game/data/routeData.js",
+      "bytes": 234214,
+      "sha256": "238462e695c48b717de65fd4d102ce76ebe05babd20644ce6b14916e0f19122e"
+    },
+    {
+      "path": "src/js/game/data/songData.js",
+      "bytes": 7722,
+      "sha256": "41073f9b7b6be67e946e45a84263d132c32776e03d5c8a0e37fc2e0484746c06"
+    },
+    {
+      "path": "src/js/game/data/tutorialData.js",
+      "bytes": 173000,
+      "sha256": "e2535cb5b1ac178f27b1a246d162ab05e34f3d4e793e804112438e2e2d0760d9"
+    },
+    {
+      "path": "src/js/game/data/waveData.js",
+      "bytes": 2944834,
+      "sha256": "8d085d89266c55a4fb6e88ca6bee44e9144b667e56a7ff11e2e543ffd93094f1"
+    },
+    {
+      "path": "src/js/game/data/weatherData.js",
+      "bytes": 12396,
+      "sha256": "dcc4ae6332815aaf873e16e386bea208f3c9a780823ec526324e349693a2447f"
+    }
+  ],
+  "factFiles": [
+    {
+      "path": "data/upgrade-costs.json",
+      "bytes": 5374,
+      "sha256": "5142d429d449a693d49b63cc9df01f88c7b7aff05aae2e96bcf0aeaa58e6fa89"
+    },
+    {
+      "path": "data/theme-colors.json",
+      "bytes": 14314,
+      "sha256": "05a21ec4a50f8ea78aaa5f9ad46d5e2316107a966825e43401650b436a6a2052"
+    }
+  ],
+  "priceFacts": {
+    "path": "src/js/game/component/Pokemon.js",
+    "bytes": 37383,
+    "sha256": "93284976b7048504c4b800de6aa3eefa5abffbe7a0932f74812080bf4879f79a"
+  },
+  "catalog": {
+    "path": "data/catalog.json",
+    "bytes": 9537352,
+    "sha256": "079104e3dc897689396a25f6b01dffcb9478c2f7e56cacdb8ba6cbdb982fd8a7"
+  },
+  "counts": {
+    "species": 517,
+    "enemies": 347,
+    "routes": 47,
+    "items": 197,
+    "abilities": 254,
+    "passives": 85,
+    "achievements": 39,
+    "weather": 11,
+    "projectiles": 62,
+    "collection": 257,
+    "waves": 4007,
+    "songs": 41,
+    "tutorials": 29,
+    "themes": 4
+  },
+  "publicFiles": [
+    {
+      "path": "catalog.json",
+      "bytes": 2135618,
+      "sha256": "29d7336cec418e230b1525cacf16455cbd9ef4261bf84351c7bb0d4eda5dcc47",
+      "mime": "application/json"
+    },
+    {
+      "path": "routes/0.json",
+      "bytes": 49321,
+      "sha256": "6739ccd13d43369855cf960910e3fd8492b466f753464203c5ca7963864c7544",
+      "mime": "application/json"
+    },
+    {
+      "path": "routes/1.json",
+      "bytes": 56334,
+      "sha256": "6519405afcd214978381ff88b5cba2aba93e26c1c505e370758981956b32682d",
+      "mime": "application/json"
+    },
+    {
+      "path": "routes/2.json",
+      "bytes": 79323,
+      "sha256": "7566f610720d9e2e89b5c17876387660cc89623e8fa979b38178efded738e711",
+      "mime": "application/json"
+    },
+    {
+      "path": "routes/3.json",
+      "bytes": 50599,
+      "sha256": "97dca9cafe9a8b3c6a5a70e188584dbf344e547b3b32cd86cbda63aafc62ec39",
+      "mime": "application/json"
+    },
+    {
+      "path": "routes/4.json",
+      "bytes": 42932,
+      "sha256": "9dd29ccba697378124704327e7cf8849f8ae9a50cd2530ac90873cbb1aa36046",
+      "mime": "application/json"
+    },
+    {
+      "path": "routes/5.json",
+      "bytes": 67279,
+      "sha256": "1aae7b823c450876b18a949c95267b44bd23669dce873b6608c7f41f05d7b805",
+      "mime": "application/json"
+    },
+    {
+      "path": "routes/6.json",
+      "bytes": 47841,
+      "sha256": "5412b383a60f8e9a1917e1799d757897ee8b481cedc608642885a572433cc01a",
+      "mime": "application/json"
+    },
+    {
+      "path": "routes/7.json",
+      "bytes": 49362,
+      "sha256": "f1a977b66b52e22c6299074ae7b5c092e93eb378fed1c353e1e0e8bbf0b481bc",
+      "mime": "application/json"
+    },
+    {
+      "path": "routes/8.json",
+      "bytes": 52001,
+      "sha256": "977eb9a44f8e608c724e07055cc08bbf240c28b3cea517c2327956f5d97cacca",
+      "mime": "application/json"
+    },
+    {
+      "path": "routes/9.json",
+      "bytes": 75857,
+      "sha256": "09311bf7e61104e35c649b310b2d9c34f585a92739deb54bb0c8981567d7451c",
+      "mime": "application/json"
+    },
+    {
+      "path": "routes/10.json",
+      "bytes": 65137,
+      "sha256": "f590a6d0afa921f71655a4db2b07e063927e82383e8b4596b802e88bfa4b4d48",
+      "mime": "application/json"
+    },
+    {
+      "path": "routes/11.json",
+      "bytes": 50474,
+      "sha256": "4c8bb6ce4befadc8959e8e66dbbcfa5c0254e7107a1ccb2adc6a92f7e4895f8f",
+      "mime": "application/json"
+    },
+    {
+      "path": "routes/12.json",
+      "bytes": 74364,
+      "sha256": "fc50168e55c65c0dfa80fa4ba6a6aaf719391c45d549633772e7b2ce508fe770",
+      "mime": "application/json"
+    },
+    {
+      "path": "routes/13.json",
+      "bytes": 71947,
+      "sha256": "c176ee4920732c2831c8b4fdad5bc217d0df44accb516cb993acb9bb1fbfad94",
+      "mime": "application/json"
+    },
+    {
+      "path": "routes/14.json",
+      "bytes": 73129,
+      "sha256": "f8704f622394cf847147ad81f6c655a52239326c12f17c1f1070ebe0dc585971",
+      "mime": "application/json"
+    },
+    {
+      "path": "routes/15.json",
+      "bytes": 81341,
+      "sha256": "830f7566365ee0987df5ef466c32f601da3bbc97fa5ab151bd0cb0ead6949fa5",
+      "mime": "application/json"
+    },
+    {
+      "path": "routes/16.json",
+      "bytes": 55799,
+      "sha256": "3da764ec52a5b84dce5f17dda533f0fe4f8e56bbbc260dc2ccef35615956064e",
+      "mime": "application/json"
+    },
+    {
+      "path": "routes/17.json",
+      "bytes": 81662,
+      "sha256": "d9476c9bee80e97b209571dce9663f835ce644c0284917741b26b09eb6d50231",
+      "mime": "application/json"
+    },
+    {
+      "path": "routes/18.json",
+      "bytes": 86884,
+      "sha256": "54070b4687ea62ec67a9233748a7eb3fcde4e6589df0c6f9fa8bed57ed8a5887",
+      "mime": "application/json"
+    },
+    {
+      "path": "routes/19.json",
+      "bytes": 89599,
+      "sha256": "b583272a75ab750743e0aee47091d12e9912354ab320ddfd8630d2a083e2f028",
+      "mime": "application/json"
+    },
+    {
+      "path": "routes/20.json",
+      "bytes": 2671,
+      "sha256": "9abdc1d0db73144e7ee60b6d1c76e047da610cfb0ca507268a5b3e850769c0f1",
+      "mime": "application/json"
+    },
+    {
+      "path": "routes/21.json",
+      "bytes": 58412,
+      "sha256": "ffff75898e7447f7e380993813d2f05ea459e47f3ea419cbf70454c894c369a9",
+      "mime": "application/json"
+    },
+    {
+      "path": "routes/22.json",
+      "bytes": 64055,
+      "sha256": "6fc16f85e152c32dcd92bf31f90fecd997b025f0d216ce38d119d4447c6b6bde",
+      "mime": "application/json"
+    },
+    {
+      "path": "routes/23.json",
+      "bytes": 55577,
+      "sha256": "519ddcefbdf491a3a4208d6ff2eb5e95873694fcf48e435bda21c5aeefe16aaa",
+      "mime": "application/json"
+    },
+    {
+      "path": "routes/24.json",
+      "bytes": 75553,
+      "sha256": "ed85879095de84f17164490d9b939fcb712b590ca1070df4750aa218fe71fe3a",
+      "mime": "application/json"
+    },
+    {
+      "path": "routes/25.json",
+      "bytes": 59351,
+      "sha256": "9a175ae585c5e324954bbf577976edc6df3f3c6a9ab8c533c9066ffc6208b32a",
+      "mime": "application/json"
+    },
+    {
+      "path": "routes/26.json",
+      "bytes": 117614,
+      "sha256": "277541a98fc08bafdf090a68ebfb272d99086477b1c64fa236f34249d653a92f",
+      "mime": "application/json"
+    },
+    {
+      "path": "routes/27.json",
+      "bytes": 64123,
+      "sha256": "a872c6b1f65450520a1d997a0dc338f4b7bf67f49c3a5917c1a99877a89b3852",
+      "mime": "application/json"
+    },
+    {
+      "path": "routes/28.json",
+      "bytes": 73708,
+      "sha256": "64de3f0751eca15db34b368953f29c28947dd95564f391c4882a0ffd1012f74d",
+      "mime": "application/json"
+    },
+    {
+      "path": "routes/29.json",
+      "bytes": 61582,
+      "sha256": "97a90b7061c3f72cf91b9b2d648e5e5116df36607d42c0fdb8c4c4eb5da5841b",
+      "mime": "application/json"
+    },
+    {
+      "path": "routes/30.json",
+      "bytes": 3156,
+      "sha256": "5964bd9725abb4518901ef2a5d487baf428d5cf7093bbea4ba5c936265376846",
+      "mime": "application/json"
+    },
+    {
+      "path": "routes/31.json",
+      "bytes": 3444,
+      "sha256": "7aba3701d2aa76437a13a246c0696b2a00fb21481fd2a77dfff518b7ada83936",
+      "mime": "application/json"
+    },
+    {
+      "path": "routes/32.json",
+      "bytes": 2960,
+      "sha256": "f4b6826e0fb7b0960916966c741df6877a6c5761b4006768868a2a047143ad5e",
+      "mime": "application/json"
+    },
+    {
+      "path": "routes/33.json",
+      "bytes": 2667,
+      "sha256": "fb60da8066371d4b82da3a2d91215219d958f85b96399bab043d43f40eff6949",
+      "mime": "application/json"
+    },
+    {
+      "path": "routes/34.json",
+      "bytes": 45381,
+      "sha256": "a5d8ab04113670d5d5e6461a9e1ba8432a0d2cd27803665543814d661fdf66e8",
+      "mime": "application/json"
+    },
+    {
+      "path": "routes/35.json",
+      "bytes": 6437,
+      "sha256": "3c4110ad21dda4d66a254735effc5915dfb0ee32c67ede49edd40524462ce8b1",
+      "mime": "application/json"
+    },
+    {
+      "path": "routes/36.json",
+      "bytes": 44879,
+      "sha256": "78524ac57148e3cc119ce84175876a472f9036db5d3629881e50856c541edf28",
+      "mime": "application/json"
+    },
+    {
+      "path": "routes/37.json",
+      "bytes": 51706,
+      "sha256": "00d827ac677cb78fb3f59c95fffc5bca4259a7350fe587fae7251ce2145b9006",
+      "mime": "application/json"
+    },
+    {
+      "path": "routes/38.json",
+      "bytes": 44926,
+      "sha256": "a47dea156efb02b9e44253b189bbe225bb64d1af477d1dc71fb12d2555295920",
+      "mime": "application/json"
+    },
+    {
+      "path": "routes/39.json",
+      "bytes": 73749,
+      "sha256": "f3984de0594d10b5ee86eb6c3fe64b3590d01f9bcd2782f9615a7c0146c22c35",
+      "mime": "application/json"
+    },
+    {
+      "path": "routes/40.json",
+      "bytes": 77793,
+      "sha256": "a4c177c3b7248e1fd84ba8a68bfb537a8390c8764bb3afbaca935621af9b403e",
+      "mime": "application/json"
+    },
+    {
+      "path": "routes/41.json",
+      "bytes": 88244,
+      "sha256": "7e447c8608ae058e63c59ef89a29da05dcd5e138200f2bd5e3cc21f0b6878d95",
+      "mime": "application/json"
+    },
+    {
+      "path": "routes/42.json",
+      "bytes": 71682,
+      "sha256": "bb3ec375509e1ac48a7ce2bd627cd100cb806863f328d39e024861eb3e4dc890",
+      "mime": "application/json"
+    },
+    {
+      "path": "routes/43.json",
+      "bytes": 66187,
+      "sha256": "822e164d44f4b2cb993c7e1c5ac7272e7976742c0f8091bbfa591f928461ca34",
+      "mime": "application/json"
+    },
+    {
+      "path": "routes/44.json",
+      "bytes": 69325,
+      "sha256": "5cdba2c2911e76e57cbf7ed848fad0ce7e5dc2532600f98383e6276bb51bfe8b",
+      "mime": "application/json"
+    },
+    {
+      "path": "routes/45.json",
+      "bytes": 96650,
+      "sha256": "5aac33d1c22af5fd2230cd0044268a2f602b91c2694dfc2743ba99b8cac370e4",
+      "mime": "application/json"
+    },
+    {
+      "path": "routes/46.json",
+      "bytes": 3300,
+      "sha256": "1c05362d648dbd049a3d93e0d1c5f40163475895b6f519905aa11803f1747bb7",
+      "mime": "application/json"
+    },
+    {
+      "path": "ui-text.json",
+      "bytes": 129359,
+      "sha256": "ea0bef6415b2b0c36d063d6741d8ebcdd626f02dcacea2191e2e5ce7bf96f9c0",
+      "mime": "application/json"
+    }
+  ]
+}

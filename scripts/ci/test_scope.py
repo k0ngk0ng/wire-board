@@ -31,6 +31,28 @@ scope = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(scope)
 
 class ScopeTests(unittest.TestCase):
+    def test_pokepath_frontend_uses_clean_serial_delivery_entry(self):
+        with tempfile.TemporaryDirectory(dir=ROOT/'.local/tmp') as folder:
+            root=Path(folder)
+            base=root/'games/pokepath/tests'
+            base.mkdir(parents=True)
+            for name in ['ci.test.mjs','tower-order-reference.test.mjs','native-architecture.test.mjs']:
+                (base/name).write_text('')
+            self.assertEqual(scope.frontend_tests(root,'pokepath'),[base/'ci.test.mjs'])
+            (base/'ci.test.mjs').unlink()
+            with self.assertRaises(FileNotFoundError):
+                scope.frontend_tests(root,'pokepath')
+
+    def test_pokepath_delivery_installs_dependencies_and_keeps_other_games(self):
+        workflow=(ROOT/'.github/workflows/build.yml').read_text()
+        start=workflow.index('      - name: Install dependencies for game rendering checks')
+        finish=workflow.index('      - name: Prepare PvZ asset verification environment',start)
+        self.assertIn("matrix.game == 'pokepath'",workflow[start:finish])
+        self.assertTrue(scope.frontend_tests(ROOT,'contra'))
+        result=self.plan('games/pokepath/engine/combat.go')
+        self.assertEqual(result['games'],[{'game':'pokepath','backend':True}])
+        self.assertFalse(result['has_shared'])
+
     def test_release_history_browser_runner_selects_frontend_checks(self):
         result = self.plan('scripts/check-release-history.py')
         self.assertEqual(result['quick_components'], ['frontend'])

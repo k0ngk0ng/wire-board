@@ -1,0 +1,55 @@
+{
+  "root": "games/pokepath/",
+  "additionalTargets": [
+    "web/src/controllers/NavigationController.tsx",
+    "web/tests/fullscreen-shortcut.test.mjs",
+    "web/tests/platform-audio-call-volume.test.mjs",
+    "scripts/cdn_delivery.py",
+    "scripts/asset_reuse.py",
+    "scripts/asset_reuse_e2e_test.py"
+  ],
+  "languages": {
+    "typescript": {
+      "extensions": [".ts", ".tsx"],
+      "filename": "^(?:[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:\\.d)?\\.ts|[A-Z][A-Za-z0-9]*\\.tsx|(?:catalog|module)\\.tsx)$",
+      "directory": "^games/pokepath/(?:web|engine|tests|build)/",
+      "comments": false
+    },
+    "javascript": {
+      "extensions": [".mjs", ".js"],
+      "filename": "^[a-z][a-z0-9]*(?:[-.][a-z0-9]+)*\\.(?:mjs|js)$",
+      "directory": "^games/pokepath/(?:web|engine|tests|build|server)/",
+      "comments": false
+    },
+    "go": {
+      "extensions": [".go"],
+      "filename": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*\\.go$",
+      "directory": "^games/pokepath/(?:server|tests|build|engine|cmd/browser)/",
+      "comments": false,
+      "prohibitedEngineSelectors": { "math": ["Hypot"] }
+    },
+    "python": {
+      "extensions": [".py"],
+      "filename": "^[a-z][a-z0-9]*(?:[-_][a-z0-9]+)*\\.py$",
+      "directory": "^games/pokepath/(?:build|tests)/",
+      "comments": false,
+      "frameworkMethods": ["setUp", "tearDown", "setUpClass", "tearDownClass", "do_GET", "do_HEAD", "do_POST"]
+    },
+    "css": {
+      "extensions": [".css"],
+      "filename": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*\\.css$",
+      "directory": "^games/pokepath/web/",
+      "comments": false
+    },
+    "html": {
+      "extensions": [".html"],
+      "filename": "^index\\.html$",
+      "directory": "^games/pokepath/(?:web/|assets/public/pokepath/v1/)",
+      "comments": false
+    }
+  },
+  "identifiers": "^(?:_?[A-Za-z][A-Za-z0-9]*|_)$",
+  "prohibitedConstructors": ["Audio", "AudioContext", "webkitAudioContext", "Function"],
+  "prohibitedCalls": ["eval"],
+  "prohibitedStorageMethods": ["clear"]
+}

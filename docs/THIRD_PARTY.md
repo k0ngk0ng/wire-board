@@ -1,5 +1,9 @@
 # 数据与素材来源
 
+## 宝可梦：巡径守卫
+
+「宝可梦：巡径守卫」的规则事实与图形、音频素材参考 PokéPath TD v1.7.3，网页为 <https://pokepathtd.org/>，实际游戏来源为 <https://pokepath-game.pages.dev/>。平台使用自行编写的 Go 规则与原生 React／Canvas 界面，不嵌入原网页、不执行上游游戏程序。上游素材署名包括 KHYDRA、Nox、Raguto、Noelle、Innerthunder，以及 PMD Collab、PokéSprite、BDRAGON1727、Kiranshastry、Freepik、Media Factory、Sokudo 等贡献者；逐文件来源、摘要与派生处理见 `games/pokepath/assets/manifest.json`。宝可梦角色及相关素材归各自权利人所有；不将源站可访问推断为额外授权或开源许可。
+
 ## 游戏规则数据
 
 - Splendor 90 张发展卡及 10 位贵族数据，取自 [filipmlynarski/splendor-ai](https://github.com/filipmlynarski/splendor-ai) 的 `environment/cards.csv` 和 `environment/nobles.csv`。来源许可证：MIT，完整文本见 [splendor-data-LICENSE](splendor-data-LICENSE)。本项目仅使用 CSV 数据，自行实现 Go 规则引擎。

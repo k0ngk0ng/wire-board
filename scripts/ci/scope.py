@@ -247,6 +247,10 @@ def verification_env(game, backend, base=None):
 
 def frontend_tests(root, game):
     base = root/'games'/game
+    if game == 'pokepath':
+        entry=base/'tests/ci.test.mjs'
+        if not entry.is_file(): raise FileNotFoundError('Missing Pokepath clean delivery entry')
+        return [entry]
     return sorted([*(base/'tests').glob('*.test.mjs'),
                    *(base/'web').glob('*.test.mjs')])
 

@@ -1,0 +1,21 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import { createRequire } from "node:module";
+import { mkdir } from "node:fs/promises";
+const require = createRequire(new URL("../../../web/package.json", import.meta.url));
+const directory = new URL("../../../.local/pokepath/native-ui-test/", import.meta.url);
+await mkdir(directory, { recursive: true });
+await require("esbuild").build({ entryPoints: [new URL("../web/keyboard-controller.ts", import.meta.url).pathname], outfile: new URL("keyboard-controller.mjs", directory).pathname, bundle: true, platform: "node", format: "esm" });
+const { controllerCommand } = await import(new URL("keyboard-controller.mjs", directory));
+test("mapped shortcuts resolve independently of physical key codes", () => {
+  assert.deepEqual(controllerCommand("profile"), { type: "panel", panel: "profile" });
+  assert.deepEqual(controllerCommand("speed"), { type: "action", action: { type: "speed" } });
+  assert.deepEqual(controllerCommand("damage"), { type: "damage" });
+  assert.deepEqual(controllerCommand("ranges"), { type: "ranges" });
+  assert.deepEqual(controllerCommand("select0"), { type: "select", slot: 0 });
+  assert.deepEqual(controllerCommand("select9"), { type: "select", slot: 9 });
+  assert.deepEqual(controllerCommand("load4"), { type: "action", action: { type: "loadTeam", slot: 4 } });
+  assert.deepEqual(controllerCommand("previousDetails"), { type: "details", direction: -1 });
+  assert.deepEqual(controllerCommand("nextDetails"), { type: "details", direction: 1 });
+  for (const action of ["select10", "select-1", "load5", "select00", "KeyQ", "navRight", "confirm", "constructor", "__proto__", ""]) assert.equal(controllerCommand(action), undefined);
+});

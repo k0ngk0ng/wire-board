@@ -1,0 +1,3319 @@
+{
+  "evidence_id": "ev_3f1f93b25cb6caeddde6e44feab209b54e75c89dc8e633a8b3477fa57324b0c2",
+  "operation": "analyze_web_bundle",
+  "authority": "external-service",
+  "confidence": "observed",
+  "parameters": {
+    "cdp_endpoint": "http://127.0.0.1:55759",
+    "allowed_origins": [
+      "https://pokepath-game.pages.dev"
+    ],
+    "target_id": "D67CD3D36304907C10DF67B6164608DF",
+    "observation_ms": 250,
+    "include_accessibility_text": false,
+    "include_console_text": false,
+    "include_json_body_shapes": false,
+    "include_websocket_shapes": false,
+    "include_storage_keys": false,
+    "include_storage_fingerprints": false,
+    "include_script_sources": true,
+    "fetch_source_maps": false
+  },
+  "capture": {
+    "target_url": "https://pokepath-game.pages.dev/",
+    "scripts_observed": 62,
+    "scripts_analyzed": 62,
+    "source_artifacts": [
+      {
+        "sha256": "2b03faa6cee7d3e83e6cffc651e4cfb0bdaa3ec4d87053eb051e9691ac8c52e2",
+        "bytes": 1302,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "088a3efc2e391b976019cc0606f746cbbdc4a756edc37223d56538f0d3b9429a",
+        "bytes": 5508,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "0c9f30d9c95cc231c469bd3f877aedb0f7860a2f15e9c86a965d60e238eef85c",
+        "bytes": 112,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "6424c7863de67828447cf79ed80a57b2ffae060d60c3a8570f412d14c822b22b",
+        "bytes": 119311,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "ffd0159bfb976f1ad117418fb3777fe0f6a9574d61b3c2ffb9dfe9e7308ffa02",
+        "bytes": 45451,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "3c45a1242ec6b50ae11aebdbb3d3a164fc50ac618421bf255bd30fafb95681f0",
+        "bytes": 69198,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "83ca6fb4acdd398cba50e64133310802ad89d3d30f795865c9303e84856142b6",
+        "bytes": 15687,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "62f3bb6f94e282d5989da7903ef8d3dea1537ef786448207d2d2bbc3153a87e3",
+        "bytes": 7860,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "9a545e4657d6f3c0f3ab611514d8af902aaead0c74df31c3007c03ab7cf9ad9a",
+        "bytes": 195414,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "e6b8356b2c87e4d5876e4169fb3e472d14861a24feee32cace9e730cdee63bb2",
+        "bytes": 403233,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "91608d72e46ad838b79048d7e9cdf34943921694f9c3e8f7c2c8f1e88c1a8b23",
+        "bytes": 13110,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "a771b4ce5b0291ee40b769de4582fa0c25f64f436faf989827743a697c6f3d2a",
+        "bytes": 537321,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "ed7e7752ed824e14d067616c6a193e7adc6768f46a35b8ccc1861f0068bdbfc7",
+        "bytes": 10615,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "93284976b7048504c4b800de6aa3eefa5abffbe7a0932f74812080bf4879f79a",
+        "bytes": 37383,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "3c19d76dd06b5a64749c8a7e19b00e624a337c11e13a77d462442d802372c43e",
+        "bytes": 26454,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "ff57285bcb1ad4d6f8c18ec35a6aa37bcc5737b5a0eef8c6f6f0e4c9884da636",
+        "bytes": 15298,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "50baeda31afaad98f421688b74e6d7e5749c1762ab011965e0fde407472e3161",
+        "bytes": 2994,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "8e61b104e83c043353c11ed981b60e2f8e3d429c2e4ab7c507696fce5b7ebf77",
+        "bytes": 1447,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "8d085d89266c55a4fb6e88ca6bee44e9144b667e56a7ff11e2e543ffd93094f1",
+        "bytes": 2944834,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "9227e7c7e1e8ed0f95d1ed1b3edecce7ddcad8f5f2f1bf885b8eaee4fdef9be9",
+        "bytes": 35598,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "73b493736b6b75c6027fa8f1c26b8809e125994aca2b8674416506a5bb14cc44",
+        "bytes": 1410,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "238462e695c48b717de65fd4d102ce76ebe05babd20644ce6b14916e0f19122e",
+        "bytes": 234214,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "6970449475f202648667366e9c57bd4cc4365af9611bb44ba21671c718f7cf52",
+        "bytes": 14299,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "db0d514f886020639a7ae8c394b164bb15717338909db6c21bf4a996cf4ef1c0",
+        "bytes": 1242,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "32558c709d41a5e825878924c2a4d52718d04521a97bbc2029d0a66fcc9e7e53",
+        "bytes": 15856,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "67fb475b9dd6ff62379e05f499530cc01de886e2ce19fef0c3afb25476e0f2dc",
+        "bytes": 18974,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "e2535cb5b1ac178f27b1a246d162ab05e34f3d4e793e804112438e2e2d0760d9",
+        "bytes": 173000,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "c037a236c92761ccc00cb78db27f76d33a8f754771513fff8d5a6c8ffc39cc51",
+        "bytes": 10887,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "a68967924092bd131eb049248726957b62fa011099a60b472095b490a66b60d9",
+        "bytes": 365,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "a928964892da0c91cbffdcb1f1d40b05cc7071c819ba9156158a538c9371614d",
+        "bytes": 39877,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "511cc646c9ab5fc5c62699029128258361e0de40bfdfacc1f51e73b19fca78d8",
+        "bytes": 17286,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "97ec07e972b5d23ff998167a3d7a1dcff956f70ca674d42a3d7c28489eb22ee3",
+        "bytes": 2834,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "fd5e262b083b2e636b1f614b3384f10e4080b13ebba2207d8d2eebc0b965cd08",
+        "bytes": 8779,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "ad192713018ad93813bc78ded1bf5d87bb427412b7c668ed05cda68c298afd9d",
+        "bytes": 20408,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "a24987fe70adac442c735890e6109ed1337d95df712b4befb5fc21a0ba8cd10c",
+        "bytes": 829,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "e15a1a338b02c7c79e65e9e7d132e26cfc7ae355f3e838f41e16abce30db4699",
+        "bytes": 16533,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "3dc627a2a2cd1c30cf1889754b11d1f4f6c54ec3fdf3f5f60bb41581d3b10cf0",
+        "bytes": 15523,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "16052d87822adbb9954220cb9cbfc8be2b33f637cf7d898872ee73bed7589519",
+        "bytes": 19122,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "dcc4ae6332815aaf873e16e386bea208f3c9a780823ec526324e349693a2447f",
+        "bytes": 12396,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "cbc4ff233a6f97c7a303f065ca55b8fc26f5cbf532e39b0886560ba3d1793c63",
+        "bytes": 8251,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "aad71f00dc67478fca5dec58cd3664b3f04c90315529d4ebdf23ec4bc7840650",
+        "bytes": 159519,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "2e21ccca950dd8fd5a0fa1c16458c86cec9a53e46667e5e31883077e4b86a2cb",
+        "bytes": 4144,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "760d18214b8941df2b26947ad0fbdb3fa4a0d84aa66eab8f6fa845681f2a64aa",
+        "bytes": 7145,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "bf1dc68113c966e47fe20236201e5690ab086583ae8da5e6c261116297ef7df6",
+        "bytes": 6306,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "06484f234241fea0b763a8b0ccaf53dac3012c382ed9dcaae7f1872342bac0d3",
+        "bytes": 3194,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "89de43d70b470b4b5f209cc8bfcb636ffdad85ffd8c47ca42c0b3c3aaed492f3",
+        "bytes": 82477,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "ffd58a0f68e1ba304cad0af2f0d4c5452969d99f843a6ea750fca3b20360654e",
+        "bytes": 39857,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "2c431bd716c6cac7f661454f0d1a3a4e911817fbdbba325b8b95da201c454467",
+        "bytes": 100128,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "67f26aa76a4cd0f82e19c470c5a93e0323270b5adfa5a7997c3ccf96db3aa421",
+        "bytes": 8554,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "d6c5531032369c03cf0f667c1fb6fe95f1ec4416eff43ed9ae03bfd72ad9b805",
+        "bytes": 56334,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "6024296fadfa7e8e738e5df9f04a7d77f9fb00be52516db8e8e83474e5a442af",
+        "bytes": 102479,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "8f6c41a75401c76301a4b342659847a789cc0ec95d6a2744cfd3c133be01a0b0",
+        "bytes": 448436,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "5b5d60609d52f975d2221229232127baa24c924788e6defbe3dcb0e5f0d3ad49",
+        "bytes": 6296,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "279dcab521cb901949947eeda00641f3f7d6495594f05b3a6b0caf7465292e5c",
+        "bytes": 629,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "fb61143fb044d0d52cc618b3d95bd0bb7f9503cb7aff9c91b6ba3de3f949e74e",
+        "bytes": 799,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "8eb2d53756027a6ff6c9b461752242263e1f790146ec8da8b9d7fd7ddd8315bb",
+        "bytes": 100282,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "8336f31911a8cf6173d4a51e8dc48fa51e1e749d37824d06d63b6d946930d0a3",
+        "bytes": 3173,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "3a71265403370cf1e58a119df655c3db0917dc923c58063ebcdeb9ad4903174a",
+        "bytes": 6378,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "41073f9b7b6be67e946e45a84263d132c32776e03d5c8a0e37fc2e0484746c06",
+        "bytes": 7722,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "b8c17a8ccf8729c34bf5e47fe8460b3659893c75fba2db6b1d5715104d0a2961",
+        "bytes": 355,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "30c8189e8751771615283fcf5a93dbb14658fd649aac155f4d7f0c7157796ff7",
+        "bytes": 1847,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      },
+      {
+        "sha256": "a9b99d3a9dee9f5fb511ecd5fe25c9293208face24431048143fa535399a2a24",
+        "bytes": 370350,
+        "media_type": "text/javascript",
+        "charset": "utf-8",
+        "text_available": true
+      }
+    ]
+  },
+  "completeness": {
+    "status": "complete",
+    "parsed_scripts": 62,
+    "parse_failures": 0,
+    "visited_ast_nodes": 1107842
+  },
+  "chunks": {
+    "nodes": [
+      {
+        "script_key": "scr_04de578b7ba3a3558b04238b1cf4828a847d6a525ebbfa8bb9828fd6ddba400c",
+        "url": "https://pokepath-game.pages.dev/src/js/utils/Input.js",
+        "artifact_sha256": "2b03faa6cee7d3e83e6cffc651e4cfb0bdaa3ec4d87053eb051e9691ac8c52e2",
+        "bytes": 1302
+      },
+      {
+        "script_key": "scr_098063a7c1daf64dcee2108a3342a77cf37a3bd1b11d1e72241dda0ce0b4d8cd",
+        "url": "https://pokepath-game.pages.dev/src/js/utils/Utility.js",
+        "artifact_sha256": "088a3efc2e391b976019cc0606f746cbbdc4a756edc37223d56538f0d3b9429a",
+        "bytes": 5508
+      },
+      {
+        "script_key": "scr_0d1701a45cce00b088f6c931708dd4daf82981149d9e3d6ef7584cf5cc5b7030",
+        "url": "https://pokepath-game.pages.dev/src/js/config.js",
+        "artifact_sha256": "0c9f30d9c95cc231c469bd3f877aedb0f7860a2f15e9c86a965d60e238eef85c",
+        "bytes": 112
+      },
+      {
+        "script_key": "scr_123439b5cf5cafddfb051c4b6ed3a29b34cd75dfd268da8d3cd26dbb208a743b",
+        "url": "https://pokepath-game.pages.dev/src/js/game/UI.js",
+        "artifact_sha256": "6424c7863de67828447cf79ed80a57b2ffae060d60c3a8570f412d14c822b22b",
+        "bytes": 119311
+      },
+      {
+        "script_key": "scr_1382c32e974eb881d1ef5c8642c86df406f5d3bdf29dbc2169154e6945b22538",
+        "url": "https://pokepath-game.pages.dev/src/js/game/scenes/BoxScene.js",
+        "artifact_sha256": "ffd0159bfb976f1ad117418fb3777fe0f6a9574d61b3c2ffb9dfe9e7308ffa02",
+        "bytes": 45451
+      },
+      {
+        "script_key": "scr_1bee011d416a85539393f839465ad9e68c7f288a3dea463b93956620d50062a4",
+        "url": "https://pokepath-game.pages.dev/src/js/game/Game.js",
+        "artifact_sha256": "3c45a1242ec6b50ae11aebdbb3d3a164fc50ac618421bf255bd30fafb95681f0",
+        "bytes": 69198
+      },
+      {
+        "script_key": "scr_1eae1dde4f2ffc15e5978145e7ec004d60fa89b2d0a115455a9401b08a14a5c7",
+        "url": "https://pokepath-game.pages.dev/src/js/game/scenes/ChallengeScene.js",
+        "artifact_sha256": "83ca6fb4acdd398cba50e64133310802ad89d3d30f795865c9303e84856142b6",
+        "bytes": 15687
+      },
+      {
+        "script_key": "scr_1fc4e35754603d73de2ca49fffeaf4fa391b1ba56d28d0878faab18f21725a3f",
+        "url": "https://pokepath-game.pages.dev/src/js/game/scenes/ShopScene.js",
+        "artifact_sha256": "62f3bb6f94e282d5989da7903ef8d3dea1537ef786448207d2d2bbc3153a87e3",
+        "bytes": 7860
+      },
+      {
+        "script_key": "scr_23ebbebc48bff3d0f89f649fb7469721f95c04ca4384c6732f7e233602c21cc1",
+        "url": "https://pokepath-game.pages.dev/src/js/game/data/enemyData.js",
+        "artifact_sha256": "9a545e4657d6f3c0f3ab611514d8af902aaead0c74df31c3007c03ab7cf9ad9a",
+        "bytes": 195414
+      },
+      {
+        "script_key": "scr_25ddcd9e73950b230e7887087d65d031ca562331d373f283f7c52cefabc922fe",
+        "url": "https://pokepath-game.pages.dev/src/js/game/data/itemData.js",
+        "artifact_sha256": "e6b8356b2c87e4d5876e4169fb3e472d14861a24feee32cace9e730cdee63bb2",
+        "bytes": 403233
+      },
+      {
+        "script_key": "scr_2766c041f40a74819d7a948db422f42062e43b935a594d1a8bf92a28b2025033",
+        "url": "https://pokepath-game.pages.dev/src/js/game/scenes/TutorialScene.js",
+        "artifact_sha256": "91608d72e46ad838b79048d7e9cdf34943921694f9c3e8f7c2c8f1e88c1a8b23",
+        "bytes": 13110
+      },
+      {
+        "script_key": "scr_2c37bcc30f6d1c2b40e235f28a9e51859a1f9a4a4aa948d317f233a675773215",
+        "url": "https://pokepath-game.pages.dev/src/js/game/data/abilityData.js",
+        "artifact_sha256": "a771b4ce5b0291ee40b769de4582fa0c25f64f436faf989827743a697c6f3d2a",
+        "bytes": 537321
+      },
+      {
+        "script_key": "scr_2ce9cefe303ebb2d33cbfc22b45367421a918767187cbf25b6e12a9f22e9f337",
+        "url": "https://pokepath-game.pages.dev/src/js/game/scenes/DefeatScene.js",
+        "artifact_sha256": "ed7e7752ed824e14d067616c6a193e7adc6768f46a35b8ccc1861f0068bdbfc7",
+        "bytes": 10615
+      },
+      {
+        "script_key": "scr_2fc616c71080f744b568772ee3a154188500b804bbacbbdc89424509463d7db6",
+        "url": "https://pokepath-game.pages.dev/src/js/game/component/Pokemon.js",
+        "artifact_sha256": "93284976b7048504c4b800de6aa3eefa5abffbe7a0932f74812080bf4879f79a",
+        "bytes": 37383
+      },
+      {
+        "script_key": "scr_3431b60f324a2bbe5dd0e2d36a7a1dcc86cba08330f8934a773e3937ad0877cc",
+        "url": "https://pokepath-game.pages.dev/src/js/game/scenes/InventoryScene.js",
+        "artifact_sha256": "3c19d76dd06b5a64749c8a7e19b00e624a337c11e13a77d462442d802372c43e",
+        "bytes": 26454
+      },
+      {
+        "script_key": "scr_3c23eb728a025719e4f077d4c23780736555fba2d207eb2816b553636ae47434",
+        "url": "https://pokepath-game.pages.dev/src/js/game/core/Player.js",
+        "artifact_sha256": "ff57285bcb1ad4d6f8c18ec35a6aa37bcc5737b5a0eef8c6f6f0e4c9884da636",
+        "bytes": 15298
+      },
+      {
+        "script_key": "scr_3d1dbaff81777f3f82ddcf802542c0443ff6c1e2b9eadb6eff2a795f41d785b7",
+        "url": "https://pokepath-game.pages.dev/src/js/game/scenes/ChangePokemonName.js",
+        "artifact_sha256": "50baeda31afaad98f421688b74e6d7e5749c1762ab011965e0fde407472e3161",
+        "bytes": 2994
+      },
+      {
+        "script_key": "scr_40149b52df6c9833872d9e2b76d1e886e5776b1827e3f096f73c15991da2c765",
+        "url": "https://pokepath-game.pages.dev/src/js/game/component/Piece.js",
+        "artifact_sha256": "8e61b104e83c043353c11ed981b60e2f8e3d429c2e4ab7c507696fce5b7ebf77",
+        "bytes": 1447
+      },
+      {
+        "script_key": "scr_412f908818558bf8e5bb0e091428a3c0e9b823615bb9e4bbc8c302e6ffc07187",
+        "url": "https://pokepath-game.pages.dev/src/js/game/data/waveData.js",
+        "artifact_sha256": "8d085d89266c55a4fb6e88ca6bee44e9144b667e56a7ff11e2e543ffd93094f1",
+        "bytes": 2944834
+      },
+      {
+        "script_key": "scr_4276a6d39a5ea6119f0cfd872ecbbcd1dbe3fde980d409fc58650e9883df7357",
+        "url": "https://pokepath-game.pages.dev/src/js/game/core/Area.js",
+        "artifact_sha256": "9227e7c7e1e8ed0f95d1ed1b3edecce7ddcad8f5f2f1bf885b8eaee4fdef9be9",
+        "bytes": 35598
+      },
+      {
+        "script_key": "scr_455252ecbc9febc078192b9c6c60ba0c0c10716f4c4ce6690a72cd39662be42f",
+        "url": "https://pokepath-game.pages.dev/src/js/utils/GameScene.js",
+        "artifact_sha256": "73b493736b6b75c6027fa8f1c26b8809e125994aca2b8674416506a5bb14cc44",
+        "bytes": 1410
+      },
+      {
+        "script_key": "scr_4646c88ba54d16b1c4b45f0cfb7ce595738a71de9ff656b10a6b4378cfe00089",
+        "url": "https://pokepath-game.pages.dev/src/js/game/data/routeData.js",
+        "artifact_sha256": "238462e695c48b717de65fd4d102ce76ebe05babd20644ce6b14916e0f19122e",
+        "bytes": 234214
+      },
+      {
+        "script_key": "scr_531da69463ae760b7821532a47e4cdc1f4bf1e6ea0d01e232d0722ab6ef0bad5",
+        "url": "https://pokepath-game.pages.dev/src/js/game/core/Shop.js",
+        "artifact_sha256": "6970449475f202648667366e9c57bd4cc4365af9611bb44ba21671c718f7cf52",
+        "bytes": 14299
+      },
+      {
+        "script_key": "scr_554a7fa5fbe70821f36d75bda2a54d577b33c73b5bd9bfd9af4c334e154c79f2",
+        "url": "https://pokepath-game.pages.dev/src/js/utils/Sprite.js",
+        "artifact_sha256": "db0d514f886020639a7ae8c394b164bb15717338909db6c21bf4a996cf4ef1c0",
+        "bytes": 1242
+      },
+      {
+        "script_key": "scr_562cd3e3b50ab92e2d9ed5d8e25e0406217a27efc2054b149fef5f5b0485e32c",
+        "url": "https://pokepath-game.pages.dev/src/js/utils/KeyController.js",
+        "artifact_sha256": "32558c709d41a5e825878924c2a4d52718d04521a97bbc2029d0a66fcc9e7e53",
+        "bytes": 15856
+      },
+      {
+        "script_key": "scr_5747ae7f94da41f334515ae2a83a5696070caec6c911fab625333abb89d6320c",
+        "url": "https://pokepath-game.pages.dev/src/js/game/scenes/EditorScene.js",
+        "artifact_sha256": "67fb475b9dd6ff62379e05f499530cc01de886e2ce19fef0c3afb25476e0f2dc",
+        "bytes": 18974
+      },
+      {
+        "script_key": "scr_58cc81a2c271253d120c7634d6d24bd4c476bba155e3422da29331bfc3034a9f",
+        "url": "https://pokepath-game.pages.dev/src/js/game/data/tutorialData.js",
+        "artifact_sha256": "e2535cb5b1ac178f27b1a246d162ab05e34f3d4e793e804112438e2e2d0760d9",
+        "bytes": 173000
+      },
+      {
+        "script_key": "scr_5d759e3e3ed25ba9cabb4fe2860130e05789682c4f6eed5242a22991a45e8734",
+        "url": "https://pokepath-game.pages.dev/src/js/game/scenes/ProfileScene.js",
+        "artifact_sha256": "c037a236c92761ccc00cb78db27f76d33a8f754771513fff8d5a6c8ffc39cc51",
+        "bytes": 10887
+      },
+      {
+        "script_key": "scr_62cfd75f68796b4a0dd6805725f46430802dadb78757d64f003c30b0c566364d",
+        "url": "https://pokepath-game.pages.dev/src/js/game/controller/ThemeController.js",
+        "artifact_sha256": "a68967924092bd131eb049248726957b62fa011099a60b472095b490a66b60d9",
+        "bytes": 365
+      },
+      {
+        "script_key": "scr_63a405a3c19ea9415308eed6274f7e4013cbd78bd701a4773705f8f683fac104",
+        "url": "https://pokepath-game.pages.dev/src/js/game/data/achievementReworkData.js",
+        "artifact_sha256": "a928964892da0c91cbffdcb1f1d40b05cc7071c819ba9156158a538c9371614d",
+        "bytes": 39877
+      },
+      {
+        "script_key": "scr_65bce95a6f46bac23c09faf9cb094ca0e39f37665f4fecf238852ed600293dea",
+        "url": "https://pokepath-game.pages.dev/src/js/game/Init.js",
+        "artifact_sha256": "511cc646c9ab5fc5c62699029128258361e0de40bfdfacc1f51e73b19fca78d8",
+        "bytes": 17286
+      },
+      {
+        "script_key": "scr_68c3f837243dc55c5b5b68636542374658d3fc21481123aae0b85a9aa93d0aad",
+        "url": "https://pokepath-game.pages.dev/src/js/game/core/Team.js",
+        "artifact_sha256": "97ec07e972b5d23ff998167a3d7a1dcff956f70ca674d42a3d7c28489eb22ee3",
+        "bytes": 2834
+      },
+      {
+        "script_key": "scr_69f43e353f3235116cab893cc918823022f6dca71d7832aa7bcced089776dc46",
+        "url": "https://pokepath-game.pages.dev/src/js/game/scenes/DraftScene.js",
+        "artifact_sha256": "fd5e262b083b2e636b1f614b3384f10e4080b13ebba2207d8d2eebc0b965cd08",
+        "bytes": 8779
+      },
+      {
+        "script_key": "scr_747f3532aa657d5cb03077e2d1e519ae1192fb700d65c5ccf36bb93710b0cdb8",
+        "url": "https://pokepath-game.pages.dev/src/js/game/component/PlacementTile.js",
+        "artifact_sha256": "ad192713018ad93813bc78ded1bf5d87bb427412b7c668ed05cda68c298afd9d",
+        "bytes": 20408
+      },
+      {
+        "script_key": "scr_76edaaf92f0fbb96b7bf79f1378376ca2bfe41de1172fea05ecbd2c32fb9b993",
+        "url": "https://pokepath-game.pages.dev/src/js/game/core/Box.js",
+        "artifact_sha256": "a24987fe70adac442c735890e6109ed1337d95df712b4befb5fc21a0ba8cd10c",
+        "bytes": 829
+      },
+      {
+        "script_key": "scr_76ef9d3d5f8beb5dfc0b379845bc956d3da954e10455af3d30526550fedc8804",
+        "url": "https://pokepath-game.pages.dev/src/js/game/core/TeamManager.js",
+        "artifact_sha256": "e15a1a338b02c7c79e65e9e7d132e26cfc7ae355f3e838f41e16abce30db4699",
+        "bytes": 16533
+      },
+      {
+        "script_key": "scr_7ce6f9edbc73900b9934cb79e5f305472678ed75de5996cffe52824db740e1d0",
+        "url": "https://pokepath-game.pages.dev/src/js/game/scenes/MapScene.js",
+        "artifact_sha256": "3dc627a2a2cd1c30cf1889754b11d1f4f6c54ec3fdf3f5f60bb41581d3b10cf0",
+        "bytes": 15523
+      },
+      {
+        "script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+        "url": "https://pokepath-game.pages.dev/src/js/game/Main.js",
+        "artifact_sha256": "16052d87822adbb9954220cb9cbfc8be2b33f637cf7d898872ee73bed7589519",
+        "bytes": 19122
+      },
+      {
+        "script_key": "scr_8a6cb76c5a20a6d55a231eea8742c30eb73686fa3e19a268fd7f70aee47834d4",
+        "url": "https://pokepath-game.pages.dev/src/js/game/data/weatherData.js",
+        "artifact_sha256": "dcc4ae6332815aaf873e16e386bea208f3c9a780823ec526324e349693a2447f",
+        "bytes": 12396
+      },
+      {
+        "script_key": "scr_8cc3c5c9be3b7039c3d4c21e0cec34b8821779615e0b9f7e8643153df8358869",
+        "url": "https://pokepath-game.pages.dev/src/js/file/audio.js",
+        "artifact_sha256": "cbc4ff233a6f97c7a303f065ca55b8fc26f5cbf532e39b0886560ba3d1793c63",
+        "bytes": 8251
+      },
+      {
+        "script_key": "scr_96c1af1eb6444f55925526d2669c5f7be55bdc3cf902b92de6415df57c892697",
+        "url": "https://pokepath-game.pages.dev/src/js/file/text.js",
+        "artifact_sha256": "aad71f00dc67478fca5dec58cd3664b3f04c90315529d4ebdf23ec4bc7840650",
+        "bytes": 159519
+      },
+      {
+        "script_key": "scr_9c7d9d0d00cb4f1b2ef599691196d85e4f5cfab431502627723a9ce25be15475",
+        "url": "https://pokepath-game.pages.dev/src/js/file/data.js",
+        "artifact_sha256": "2e21ccca950dd8fd5a0fa1c16458c86cec9a53e46667e5e31883077e4b86a2cb",
+        "bytes": 4144
+      },
+      {
+        "script_key": "scr_9ed860d7176d48be15d526c79876c16c5d59293217963215ba7c01fed2160ce9",
+        "url": "https://pokepath-game.pages.dev/src/js/utils/Tooltip.js",
+        "artifact_sha256": "760d18214b8941df2b26947ad0fbdb3fa4a0d84aa66eab8f6fa845681f2a64aa",
+        "bytes": 7145
+      },
+      {
+        "script_key": "scr_a7550be71ac97a740636901e54b5b0d29502590b1d60d451f177f2aa3bf1e358",
+        "url": "https://pokepath-game.pages.dev/src/js/game/scenes/NewGameScene.js",
+        "artifact_sha256": "bf1dc68113c966e47fe20236201e5690ab086583ae8da5e6c261116297ef7df6",
+        "bytes": 6306
+      },
+      {
+        "script_key": "scr_aa69c0675d5f63b8f1b6cbba329659fe45a81740bed5ae4f7c1615fced64b019",
+        "url": "https://pokepath-game.pages.dev/src/js/game/data/tagsData.js",
+        "artifact_sha256": "06484f234241fea0b763a8b0ccaf53dac3012c382ed9dcaae7f1872342bac0d3",
+        "bytes": 3194
+      },
+      {
+        "script_key": "scr_b133defb80724f2e968f8bb0b1d5db017f56f0e185d74ad7ea6716b040a4286f",
+        "url": "https://pokepath-game.pages.dev/src/js/game/scenes/PokemonScene.js",
+        "artifact_sha256": "89de43d70b470b4b5f209cc8bfcb636ffdad85ffd8c47ca42c0b3c3aaed492f3",
+        "bytes": 82477
+      },
+      {
+        "script_key": "scr_b26fc1a3284f5076ac7a6ae6a29879fefe32f734ab0138de6ddbdb1dde0dd8f5",
+        "url": "https://pokepath-game.pages.dev/src/js/game/scenes/DexScene.js",
+        "artifact_sha256": "ffd58a0f68e1ba304cad0af2f0d4c5452969d99f843a6ea750fca3b20360654e",
+        "bytes": 39857
+      },
+      {
+        "script_key": "scr_c27e000693eb7cae4c96a221f55d747a1e7bfab4e5563eb5302a976b97f1dc3f",
+        "url": "https://pokepath-game.pages.dev/src/js/game/component/Enemy.js",
+        "artifact_sha256": "2c431bd716c6cac7f661454f0d1a3a4e911817fbdbba325b8b95da201c454467",
+        "bytes": 100128
+      },
+      {
+        "script_key": "scr_c28d9227c9ef74c70db18e63f3dc29288e0e3a65b2e7a3c23f4754f8fc478f35",
+        "url": "https://pokepath-game.pages.dev/src/js/game/scenes/FinalScene.js",
+        "artifact_sha256": "67f26aa76a4cd0f82e19c470c5a93e0323270b5adfa5a7997c3ccf96db3aa421",
+        "bytes": 8554
+      },
+      {
+        "script_key": "scr_d332a1c65bb8a1886235b1e0b7e82b1cb1e4c5faaac35695a4258df9b532bf59",
+        "url": "https://pokepath-game.pages.dev/src/js/game/scenes/MenuScene.js",
+        "artifact_sha256": "d6c5531032369c03cf0f667c1fb6fe95f1ec4416eff43ed9ae03bfd72ad9b805",
+        "bytes": 56334
+      },
+      {
+        "script_key": "scr_da7aac55550f3b71de8898366343241f73cffe0388d22d844bf2eef926e33a41",
+        "url": "https://pokepath-game.pages.dev/src/js/game/data/passiveData.js",
+        "artifact_sha256": "6024296fadfa7e8e738e5df9f04a7d77f9fb00be52516db8e8e83474e5a442af",
+        "bytes": 102479
+      },
+      {
+        "script_key": "scr_de4a1db0fd553e3ce645640fda6cedfe9fcef3159294ad3cb5ab0531a97d8db5",
+        "url": "https://pokepath-game.pages.dev/src/js/game/data/pokemonData.js",
+        "artifact_sha256": "8f6c41a75401c76301a4b342659847a789cc0ec95d6a2744cfd3c133be01a0b0",
+        "bytes": 448436
+      },
+      {
+        "script_key": "scr_e1323036f74baa2a5ca8bc0a11866672f2131a58f4e6b3b548b0f97c37eace4e",
+        "url": "https://pokepath-game.pages.dev/src/js/utils/Redeem.js",
+        "artifact_sha256": "5b5d60609d52f975d2221229232127baa24c924788e6defbe3dcb0e5f0d3ad49",
+        "bytes": 6296
+      },
+      {
+        "script_key": "scr_e39d333808ec2fb7ffafce3847af07ce400e0333737e9bdf8e453c9e4fad9eec",
+        "url": "https://pokepath-game.pages.dev/src/js/utils/Element.js",
+        "artifact_sha256": "279dcab521cb901949947eeda00641f3f7d6495594f05b3a6b0caf7465292e5c",
+        "bytes": 629
+      },
+      {
+        "script_key": "scr_e5d1251fc9f69eb65290d0a8facefda7eaf002a1a10b7837890e4f078ea2c45f",
+        "url": "https://pokepath-game.pages.dev/src/js/utils/SectionScene.js",
+        "artifact_sha256": "fb61143fb044d0d52cc618b3d95bd0bb7f9503cb7aff9c91b6ba3de3f949e74e",
+        "bytes": 799
+      },
+      {
+        "script_key": "scr_ec4ea474430e246a253ea9df65bf2b33f5a8e8a8cf5c810e05fc6a9c05b39f55",
+        "url": "https://pokepath-game.pages.dev/src/js/game/component/Projectile.js",
+        "artifact_sha256": "8eb2d53756027a6ff6c9b461752242263e1f790146ec8da8b9d7fd7ddd8315bb",
+        "bytes": 100282
+      },
+      {
+        "script_key": "scr_ec90f4972f00dcaca17489340066a7f1bd6299165e58e088fa1184e326aa5bd4",
+        "url": "https://pokepath-game.pages.dev/src/js/game/controller/ItemController.js",
+        "artifact_sha256": "8336f31911a8cf6173d4a51e8dc48fa51e1e749d37824d06d63b6d946930d0a3",
+        "bytes": 3173
+      },
+      {
+        "script_key": "scr_eecdc2b67170e7dea69367af13ec3fab7c0490f61fb7392c8091022ac0d9f235",
+        "url": "https://pokepath-game.pages.dev/src/js/game/data/projectileData.js",
+        "artifact_sha256": "3a71265403370cf1e58a119df655c3db0917dc923c58063ebcdeb9ad4903174a",
+        "bytes": 6378
+      },
+      {
+        "script_key": "scr_eeed0b304c65247cf95d1e71186bb6833e7a052c2f4d20c91dab93f9e84eb254",
+        "url": "https://pokepath-game.pages.dev/src/js/game/data/songData.js",
+        "artifact_sha256": "41073f9b7b6be67e946e45a84263d132c32776e03d5c8a0e37fc2e0484746c06",
+        "bytes": 7722
+      },
+      {
+        "script_key": "scr_f09871348edb985360e3a3c2653b65b3b74f2b70823b4c99e62ee730d468065a",
+        "url": "https://pokepath-game.pages.dev/src/js/bootstrap.js",
+        "artifact_sha256": "b8c17a8ccf8729c34bf5e47fe8460b3659893c75fba2db6b1d5715104d0a2961",
+        "bytes": 355
+      },
+      {
+        "script_key": "scr_f398cda1c131fc55de55879dc9b802ae69aa237f0e52c07ac169afa8925f1936",
+        "url": "https://pokepath-game.pages.dev/src/js/file/redeemProtocol.js",
+        "artifact_sha256": "30c8189e8751771615283fcf5a93dbb14658fd649aac155f4d7f0c7157796ff7",
+        "bytes": 1847
+      },
+      {
+        "script_key": "scr_f588475ca0ab464d28a18f63b364d3979c025f2aadd3672d4483f12ef64c25ea",
+        "url": "https://pokepath-game.pages.dev/src/js/game/component/Tower.js",
+        "artifact_sha256": "a9b99d3a9dee9f5fb511ecd5fe25c9293208face24431048143fa535399a2a24",
+        "bytes": 370350
+      }
+    ],
+    "edges": [
+      {
+        "from_script_key": "scr_04de578b7ba3a3558b04238b1cf4828a847d6a525ebbfa8bb9828fd6ddba400c",
+        "kind": "static_import",
+        "specifier": "./Element.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/Element.js",
+        "location": {
+          "script_key": "scr_04de578b7ba3a3558b04238b1cf4828a847d6a525ebbfa8bb9828fd6ddba400c",
+          "line": 1,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_04de578b7ba3a3558b04238b1cf4828a847d6a525ebbfa8bb9828fd6ddba400c",
+        "kind": "static_import",
+        "specifier": "../file/audio.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/audio.js",
+        "location": {
+          "script_key": "scr_04de578b7ba3a3558b04238b1cf4828a847d6a525ebbfa8bb9828fd6ddba400c",
+          "line": 2,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_098063a7c1daf64dcee2108a3342a77cf37a3bd1b11d1e72241dda0ce0b4d8cd",
+        "kind": "static_import",
+        "specifier": "../game/data/tagsData.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/data/tagsData.js",
+        "location": {
+          "script_key": "scr_098063a7c1daf64dcee2108a3342a77cf37a3bd1b11d1e72241dda0ce0b4d8cd",
+          "line": 1,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_123439b5cf5cafddfb051c4b6ed3a29b34cd75dfd268da8d3cd26dbb208a743b",
+        "kind": "static_import",
+        "specifier": "../utils/Element.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/Element.js",
+        "location": {
+          "script_key": "scr_123439b5cf5cafddfb051c4b6ed3a29b34cd75dfd268da8d3cd26dbb208a743b",
+          "line": 1,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_123439b5cf5cafddfb051c4b6ed3a29b34cd75dfd268da8d3cd26dbb208a743b",
+        "kind": "static_import",
+        "specifier": "../file/text.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/text.js",
+        "location": {
+          "script_key": "scr_123439b5cf5cafddfb051c4b6ed3a29b34cd75dfd268da8d3cd26dbb208a743b",
+          "line": 2,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_123439b5cf5cafddfb051c4b6ed3a29b34cd75dfd268da8d3cd26dbb208a743b",
+        "kind": "static_import",
+        "specifier": "../file/audio.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/audio.js",
+        "location": {
+          "script_key": "scr_123439b5cf5cafddfb051c4b6ed3a29b34cd75dfd268da8d3cd26dbb208a743b",
+          "line": 3,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_123439b5cf5cafddfb051c4b6ed3a29b34cd75dfd268da8d3cd26dbb208a743b",
+        "kind": "static_import",
+        "specifier": "../utils/GameScene.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/GameScene.js",
+        "location": {
+          "script_key": "scr_123439b5cf5cafddfb051c4b6ed3a29b34cd75dfd268da8d3cd26dbb208a743b",
+          "line": 4,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_123439b5cf5cafddfb051c4b6ed3a29b34cd75dfd268da8d3cd26dbb208a743b",
+        "kind": "static_import",
+        "specifier": "./data/pokemonData.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/data/pokemonData.js",
+        "location": {
+          "script_key": "scr_123439b5cf5cafddfb051c4b6ed3a29b34cd75dfd268da8d3cd26dbb208a743b",
+          "line": 5,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_123439b5cf5cafddfb051c4b6ed3a29b34cd75dfd268da8d3cd26dbb208a743b",
+        "kind": "static_import",
+        "specifier": "./data/itemData.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/data/itemData.js",
+        "location": {
+          "script_key": "scr_123439b5cf5cafddfb051c4b6ed3a29b34cd75dfd268da8d3cd26dbb208a743b",
+          "line": 6,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_123439b5cf5cafddfb051c4b6ed3a29b34cd75dfd268da8d3cd26dbb208a743b",
+        "kind": "static_import",
+        "specifier": "./component/Pokemon.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/component/Pokemon.js",
+        "location": {
+          "script_key": "scr_123439b5cf5cafddfb051c4b6ed3a29b34cd75dfd268da8d3cd26dbb208a743b",
+          "line": 7,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_123439b5cf5cafddfb051c4b6ed3a29b34cd75dfd268da8d3cd26dbb208a743b",
+        "kind": "static_import",
+        "specifier": "./data/weatherData.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/data/weatherData.js",
+        "location": {
+          "script_key": "scr_123439b5cf5cafddfb051c4b6ed3a29b34cd75dfd268da8d3cd26dbb208a743b",
+          "line": 8,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_123439b5cf5cafddfb051c4b6ed3a29b34cd75dfd268da8d3cd26dbb208a743b",
+        "kind": "static_import",
+        "specifier": "../file/data.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/data.js",
+        "location": {
+          "script_key": "scr_123439b5cf5cafddfb051c4b6ed3a29b34cd75dfd268da8d3cd26dbb208a743b",
+          "line": 9,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_123439b5cf5cafddfb051c4b6ed3a29b34cd75dfd268da8d3cd26dbb208a743b",
+        "kind": "static_import",
+        "specifier": "./data/songData.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/data/songData.js",
+        "location": {
+          "script_key": "scr_123439b5cf5cafddfb051c4b6ed3a29b34cd75dfd268da8d3cd26dbb208a743b",
+          "line": 10,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_123439b5cf5cafddfb051c4b6ed3a29b34cd75dfd268da8d3cd26dbb208a743b",
+        "kind": "static_import",
+        "specifier": "./data/passiveData.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/data/passiveData.js",
+        "location": {
+          "script_key": "scr_123439b5cf5cafddfb051c4b6ed3a29b34cd75dfd268da8d3cd26dbb208a743b",
+          "line": 11,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_1382c32e974eb881d1ef5c8642c86df406f5d3bdf29dbc2169154e6945b22538",
+        "kind": "static_import",
+        "specifier": "../../utils/GameScene.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/GameScene.js",
+        "location": {
+          "script_key": "scr_1382c32e974eb881d1ef5c8642c86df406f5d3bdf29dbc2169154e6945b22538",
+          "line": 1,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_1382c32e974eb881d1ef5c8642c86df406f5d3bdf29dbc2169154e6945b22538",
+        "kind": "static_import",
+        "specifier": "../../utils/SectionScene.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/SectionScene.js",
+        "location": {
+          "script_key": "scr_1382c32e974eb881d1ef5c8642c86df406f5d3bdf29dbc2169154e6945b22538",
+          "line": 2,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_1382c32e974eb881d1ef5c8642c86df406f5d3bdf29dbc2169154e6945b22538",
+        "kind": "static_import",
+        "specifier": "../../utils/Element.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/Element.js",
+        "location": {
+          "script_key": "scr_1382c32e974eb881d1ef5c8642c86df406f5d3bdf29dbc2169154e6945b22538",
+          "line": 3,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_1382c32e974eb881d1ef5c8642c86df406f5d3bdf29dbc2169154e6945b22538",
+        "kind": "static_import",
+        "specifier": "../../file/text.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/text.js",
+        "location": {
+          "script_key": "scr_1382c32e974eb881d1ef5c8642c86df406f5d3bdf29dbc2169154e6945b22538",
+          "line": 4,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_1382c32e974eb881d1ef5c8642c86df406f5d3bdf29dbc2169154e6945b22538",
+        "kind": "static_import",
+        "specifier": "../../file/audio.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/audio.js",
+        "location": {
+          "script_key": "scr_1382c32e974eb881d1ef5c8642c86df406f5d3bdf29dbc2169154e6945b22538",
+          "line": 5,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_1382c32e974eb881d1ef5c8642c86df406f5d3bdf29dbc2169154e6945b22538",
+        "kind": "static_import",
+        "specifier": "../../utils/Input.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/Input.js",
+        "location": {
+          "script_key": "scr_1382c32e974eb881d1ef5c8642c86df406f5d3bdf29dbc2169154e6945b22538",
+          "line": 6,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_1382c32e974eb881d1ef5c8642c86df406f5d3bdf29dbc2169154e6945b22538",
+        "kind": "static_import",
+        "specifier": "./ChangePokemonName.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/scenes/ChangePokemonName.js",
+        "location": {
+          "script_key": "scr_1382c32e974eb881d1ef5c8642c86df406f5d3bdf29dbc2169154e6945b22538",
+          "line": 7,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_1382c32e974eb881d1ef5c8642c86df406f5d3bdf29dbc2169154e6945b22538",
+        "kind": "static_import",
+        "specifier": "../data/abilityData.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/data/abilityData.js",
+        "location": {
+          "script_key": "scr_1382c32e974eb881d1ef5c8642c86df406f5d3bdf29dbc2169154e6945b22538",
+          "line": 8,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_1382c32e974eb881d1ef5c8642c86df406f5d3bdf29dbc2169154e6945b22538",
+        "kind": "static_import",
+        "specifier": "../data/pokemonData.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/data/pokemonData.js",
+        "location": {
+          "script_key": "scr_1382c32e974eb881d1ef5c8642c86df406f5d3bdf29dbc2169154e6945b22538",
+          "line": 9,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_1bee011d416a85539393f839465ad9e68c7f288a3dea463b93956620d50062a4",
+        "kind": "static_import",
+        "specifier": "./component/Tower.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/component/Tower.js",
+        "location": {
+          "script_key": "scr_1bee011d416a85539393f839465ad9e68c7f288a3dea463b93956620d50062a4",
+          "line": 1,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_1bee011d416a85539393f839465ad9e68c7f288a3dea463b93956620d50062a4",
+        "kind": "static_import",
+        "specifier": "../file/text.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/text.js",
+        "location": {
+          "script_key": "scr_1bee011d416a85539393f839465ad9e68c7f288a3dea463b93956620d50062a4",
+          "line": 2,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_1bee011d416a85539393f839465ad9e68c7f288a3dea463b93956620d50062a4",
+        "kind": "static_import",
+        "specifier": "../file/audio.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/audio.js",
+        "location": {
+          "script_key": "scr_1bee011d416a85539393f839465ad9e68c7f288a3dea463b93956620d50062a4",
+          "line": 3,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_1eae1dde4f2ffc15e5978145e7ec004d60fa89b2d0a115455a9401b08a14a5c7",
+        "kind": "static_import",
+        "specifier": "../../utils/GameScene.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/GameScene.js",
+        "location": {
+          "script_key": "scr_1eae1dde4f2ffc15e5978145e7ec004d60fa89b2d0a115455a9401b08a14a5c7",
+          "line": 1,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_1eae1dde4f2ffc15e5978145e7ec004d60fa89b2d0a115455a9401b08a14a5c7",
+        "kind": "static_import",
+        "specifier": "../../utils/SectionScene.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/SectionScene.js",
+        "location": {
+          "script_key": "scr_1eae1dde4f2ffc15e5978145e7ec004d60fa89b2d0a115455a9401b08a14a5c7",
+          "line": 2,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_1eae1dde4f2ffc15e5978145e7ec004d60fa89b2d0a115455a9401b08a14a5c7",
+        "kind": "static_import",
+        "specifier": "../../utils/Element.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/Element.js",
+        "location": {
+          "script_key": "scr_1eae1dde4f2ffc15e5978145e7ec004d60fa89b2d0a115455a9401b08a14a5c7",
+          "line": 3,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_1eae1dde4f2ffc15e5978145e7ec004d60fa89b2d0a115455a9401b08a14a5c7",
+        "kind": "static_import",
+        "specifier": "../../file/text.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/text.js",
+        "location": {
+          "script_key": "scr_1eae1dde4f2ffc15e5978145e7ec004d60fa89b2d0a115455a9401b08a14a5c7",
+          "line": 4,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_1eae1dde4f2ffc15e5978145e7ec004d60fa89b2d0a115455a9401b08a14a5c7",
+        "kind": "static_import",
+        "specifier": "../data/routeData.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/data/routeData.js",
+        "location": {
+          "script_key": "scr_1eae1dde4f2ffc15e5978145e7ec004d60fa89b2d0a115455a9401b08a14a5c7",
+          "line": 5,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_1eae1dde4f2ffc15e5978145e7ec004d60fa89b2d0a115455a9401b08a14a5c7",
+        "kind": "static_import",
+        "specifier": "../../file/data.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/data.js",
+        "location": {
+          "script_key": "scr_1eae1dde4f2ffc15e5978145e7ec004d60fa89b2d0a115455a9401b08a14a5c7",
+          "line": 6,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_1eae1dde4f2ffc15e5978145e7ec004d60fa89b2d0a115455a9401b08a14a5c7",
+        "kind": "static_import",
+        "specifier": "../../file/audio.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/audio.js",
+        "location": {
+          "script_key": "scr_1eae1dde4f2ffc15e5978145e7ec004d60fa89b2d0a115455a9401b08a14a5c7",
+          "line": 7,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_1eae1dde4f2ffc15e5978145e7ec004d60fa89b2d0a115455a9401b08a14a5c7",
+        "kind": "static_import",
+        "specifier": "../data/itemData.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/data/itemData.js",
+        "location": {
+          "script_key": "scr_1eae1dde4f2ffc15e5978145e7ec004d60fa89b2d0a115455a9401b08a14a5c7",
+          "line": 8,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_1eae1dde4f2ffc15e5978145e7ec004d60fa89b2d0a115455a9401b08a14a5c7",
+        "kind": "static_import",
+        "specifier": "../data/pokemonData.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/data/pokemonData.js",
+        "location": {
+          "script_key": "scr_1eae1dde4f2ffc15e5978145e7ec004d60fa89b2d0a115455a9401b08a14a5c7",
+          "line": 9,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_1eae1dde4f2ffc15e5978145e7ec004d60fa89b2d0a115455a9401b08a14a5c7",
+        "kind": "static_import",
+        "specifier": "../component/Pokemon.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/component/Pokemon.js",
+        "location": {
+          "script_key": "scr_1eae1dde4f2ffc15e5978145e7ec004d60fa89b2d0a115455a9401b08a14a5c7",
+          "line": 10,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_1fc4e35754603d73de2ca49fffeaf4fa391b1ba56d28d0878faab18f21725a3f",
+        "kind": "static_import",
+        "specifier": "../../utils/GameScene.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/GameScene.js",
+        "location": {
+          "script_key": "scr_1fc4e35754603d73de2ca49fffeaf4fa391b1ba56d28d0878faab18f21725a3f",
+          "line": 1,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_1fc4e35754603d73de2ca49fffeaf4fa391b1ba56d28d0878faab18f21725a3f",
+        "kind": "static_import",
+        "specifier": "../../utils/SectionScene.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/SectionScene.js",
+        "location": {
+          "script_key": "scr_1fc4e35754603d73de2ca49fffeaf4fa391b1ba56d28d0878faab18f21725a3f",
+          "line": 2,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_1fc4e35754603d73de2ca49fffeaf4fa391b1ba56d28d0878faab18f21725a3f",
+        "kind": "static_import",
+        "specifier": "../../utils/Element.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/Element.js",
+        "location": {
+          "script_key": "scr_1fc4e35754603d73de2ca49fffeaf4fa391b1ba56d28d0878faab18f21725a3f",
+          "line": 3,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_1fc4e35754603d73de2ca49fffeaf4fa391b1ba56d28d0878faab18f21725a3f",
+        "kind": "static_import",
+        "specifier": "../../file/text.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/text.js",
+        "location": {
+          "script_key": "scr_1fc4e35754603d73de2ca49fffeaf4fa391b1ba56d28d0878faab18f21725a3f",
+          "line": 4,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_1fc4e35754603d73de2ca49fffeaf4fa391b1ba56d28d0878faab18f21725a3f",
+        "kind": "static_import",
+        "specifier": "../../file/audio.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/audio.js",
+        "location": {
+          "script_key": "scr_1fc4e35754603d73de2ca49fffeaf4fa391b1ba56d28d0878faab18f21725a3f",
+          "line": 5,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_23ebbebc48bff3d0f89f649fb7469721f95c04ca4384c6732f7e233602c21cc1",
+        "kind": "static_import",
+        "specifier": "./passiveData.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/data/passiveData.js",
+        "location": {
+          "script_key": "scr_23ebbebc48bff3d0f89f649fb7469721f95c04ca4384c6732f7e233602c21cc1",
+          "line": 1,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_2766c041f40a74819d7a948db422f42062e43b935a594d1a8bf92a28b2025033",
+        "kind": "static_import",
+        "specifier": "../../utils/GameScene.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/GameScene.js",
+        "location": {
+          "script_key": "scr_2766c041f40a74819d7a948db422f42062e43b935a594d1a8bf92a28b2025033",
+          "line": 1,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_2766c041f40a74819d7a948db422f42062e43b935a594d1a8bf92a28b2025033",
+        "kind": "static_import",
+        "specifier": "../../utils/Element.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/Element.js",
+        "location": {
+          "script_key": "scr_2766c041f40a74819d7a948db422f42062e43b935a594d1a8bf92a28b2025033",
+          "line": 2,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_2766c041f40a74819d7a948db422f42062e43b935a594d1a8bf92a28b2025033",
+        "kind": "static_import",
+        "specifier": "../../file/text.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/text.js",
+        "location": {
+          "script_key": "scr_2766c041f40a74819d7a948db422f42062e43b935a594d1a8bf92a28b2025033",
+          "line": 3,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_2766c041f40a74819d7a948db422f42062e43b935a594d1a8bf92a28b2025033",
+        "kind": "static_import",
+        "specifier": "../../file/audio.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/audio.js",
+        "location": {
+          "script_key": "scr_2766c041f40a74819d7a948db422f42062e43b935a594d1a8bf92a28b2025033",
+          "line": 4,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_2ce9cefe303ebb2d33cbfc22b45367421a918767187cbf25b6e12a9f22e9f337",
+        "kind": "static_import",
+        "specifier": "../../utils/GameScene.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/GameScene.js",
+        "location": {
+          "script_key": "scr_2ce9cefe303ebb2d33cbfc22b45367421a918767187cbf25b6e12a9f22e9f337",
+          "line": 1,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_2ce9cefe303ebb2d33cbfc22b45367421a918767187cbf25b6e12a9f22e9f337",
+        "kind": "static_import",
+        "specifier": "../../utils/Element.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/Element.js",
+        "location": {
+          "script_key": "scr_2ce9cefe303ebb2d33cbfc22b45367421a918767187cbf25b6e12a9f22e9f337",
+          "line": 2,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_2ce9cefe303ebb2d33cbfc22b45367421a918767187cbf25b6e12a9f22e9f337",
+        "kind": "static_import",
+        "specifier": "../../file/text.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/text.js",
+        "location": {
+          "script_key": "scr_2ce9cefe303ebb2d33cbfc22b45367421a918767187cbf25b6e12a9f22e9f337",
+          "line": 3,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_2ce9cefe303ebb2d33cbfc22b45367421a918767187cbf25b6e12a9f22e9f337",
+        "kind": "static_import",
+        "specifier": "../../file/data.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/data.js",
+        "location": {
+          "script_key": "scr_2ce9cefe303ebb2d33cbfc22b45367421a918767187cbf25b6e12a9f22e9f337",
+          "line": 4,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_2ce9cefe303ebb2d33cbfc22b45367421a918767187cbf25b6e12a9f22e9f337",
+        "kind": "static_import",
+        "specifier": "../../file/audio.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/audio.js",
+        "location": {
+          "script_key": "scr_2ce9cefe303ebb2d33cbfc22b45367421a918767187cbf25b6e12a9f22e9f337",
+          "line": 5,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_2fc616c71080f744b568772ee3a154188500b804bbacbbdc89424509463d7db6",
+        "kind": "static_import",
+        "specifier": "../data/pokemonData.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/data/pokemonData.js",
+        "location": {
+          "script_key": "scr_2fc616c71080f744b568772ee3a154188500b804bbacbbdc89424509463d7db6",
+          "line": 1,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_2fc616c71080f744b568772ee3a154188500b804bbacbbdc89424509463d7db6",
+        "kind": "static_import",
+        "specifier": "../data/projectileData.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/data/projectileData.js",
+        "location": {
+          "script_key": "scr_2fc616c71080f744b568772ee3a154188500b804bbacbbdc89424509463d7db6",
+          "line": 2,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_2fc616c71080f744b568772ee3a154188500b804bbacbbdc89424509463d7db6",
+        "kind": "static_import",
+        "specifier": "../../file/audio.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/audio.js",
+        "location": {
+          "script_key": "scr_2fc616c71080f744b568772ee3a154188500b804bbacbbdc89424509463d7db6",
+          "line": 3,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_3431b60f324a2bbe5dd0e2d36a7a1dcc86cba08330f8934a773e3937ad0877cc",
+        "kind": "static_import",
+        "specifier": "../../utils/SectionScene.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/SectionScene.js",
+        "location": {
+          "script_key": "scr_3431b60f324a2bbe5dd0e2d36a7a1dcc86cba08330f8934a773e3937ad0877cc",
+          "line": 1,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_3431b60f324a2bbe5dd0e2d36a7a1dcc86cba08330f8934a773e3937ad0877cc",
+        "kind": "static_import",
+        "specifier": "../../utils/Element.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/Element.js",
+        "location": {
+          "script_key": "scr_3431b60f324a2bbe5dd0e2d36a7a1dcc86cba08330f8934a773e3937ad0877cc",
+          "line": 2,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_3431b60f324a2bbe5dd0e2d36a7a1dcc86cba08330f8934a773e3937ad0877cc",
+        "kind": "static_import",
+        "specifier": "../../file/text.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/text.js",
+        "location": {
+          "script_key": "scr_3431b60f324a2bbe5dd0e2d36a7a1dcc86cba08330f8934a773e3937ad0877cc",
+          "line": 3,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_3431b60f324a2bbe5dd0e2d36a7a1dcc86cba08330f8934a773e3937ad0877cc",
+        "kind": "static_import",
+        "specifier": "../../file/audio.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/audio.js",
+        "location": {
+          "script_key": "scr_3431b60f324a2bbe5dd0e2d36a7a1dcc86cba08330f8934a773e3937ad0877cc",
+          "line": 4,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_3431b60f324a2bbe5dd0e2d36a7a1dcc86cba08330f8934a773e3937ad0877cc",
+        "kind": "static_import",
+        "specifier": "../../utils/Input.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/Input.js",
+        "location": {
+          "script_key": "scr_3431b60f324a2bbe5dd0e2d36a7a1dcc86cba08330f8934a773e3937ad0877cc",
+          "line": 5,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_3431b60f324a2bbe5dd0e2d36a7a1dcc86cba08330f8934a773e3937ad0877cc",
+        "kind": "static_import",
+        "specifier": "../data/itemData.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/data/itemData.js",
+        "location": {
+          "script_key": "scr_3431b60f324a2bbe5dd0e2d36a7a1dcc86cba08330f8934a773e3937ad0877cc",
+          "line": 6,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_3c23eb728a025719e4f077d4c23780736555fba2d207eb2816b553636ae47434",
+        "kind": "static_import",
+        "specifier": "../data/itemData.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/data/itemData.js",
+        "location": {
+          "script_key": "scr_3c23eb728a025719e4f077d4c23780736555fba2d207eb2816b553636ae47434",
+          "line": 1,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_3c23eb728a025719e4f077d4c23780736555fba2d207eb2816b553636ae47434",
+        "kind": "static_import",
+        "specifier": "../data/routeData.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/data/routeData.js",
+        "location": {
+          "script_key": "scr_3c23eb728a025719e4f077d4c23780736555fba2d207eb2816b553636ae47434",
+          "line": 2,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_3c23eb728a025719e4f077d4c23780736555fba2d207eb2816b553636ae47434",
+        "kind": "static_import",
+        "specifier": "../../utils/Redeem.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/Redeem.js",
+        "location": {
+          "script_key": "scr_3c23eb728a025719e4f077d4c23780736555fba2d207eb2816b553636ae47434",
+          "line": 3,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_3c23eb728a025719e4f077d4c23780736555fba2d207eb2816b553636ae47434",
+        "kind": "static_import",
+        "specifier": "../data/achievementReworkData.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/data/achievementReworkData.js",
+        "location": {
+          "script_key": "scr_3c23eb728a025719e4f077d4c23780736555fba2d207eb2816b553636ae47434",
+          "line": 4,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_3d1dbaff81777f3f82ddcf802542c0443ff6c1e2b9eadb6eff2a795f41d785b7",
+        "kind": "static_import",
+        "specifier": "../../utils/GameScene.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/GameScene.js",
+        "location": {
+          "script_key": "scr_3d1dbaff81777f3f82ddcf802542c0443ff6c1e2b9eadb6eff2a795f41d785b7",
+          "line": 1,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_3d1dbaff81777f3f82ddcf802542c0443ff6c1e2b9eadb6eff2a795f41d785b7",
+        "kind": "static_import",
+        "specifier": "../../utils/Element.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/Element.js",
+        "location": {
+          "script_key": "scr_3d1dbaff81777f3f82ddcf802542c0443ff6c1e2b9eadb6eff2a795f41d785b7",
+          "line": 2,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_3d1dbaff81777f3f82ddcf802542c0443ff6c1e2b9eadb6eff2a795f41d785b7",
+        "kind": "static_import",
+        "specifier": "../../file/text.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/text.js",
+        "location": {
+          "script_key": "scr_3d1dbaff81777f3f82ddcf802542c0443ff6c1e2b9eadb6eff2a795f41d785b7",
+          "line": 3,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_3d1dbaff81777f3f82ddcf802542c0443ff6c1e2b9eadb6eff2a795f41d785b7",
+        "kind": "static_import",
+        "specifier": "../../file/audio.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/audio.js",
+        "location": {
+          "script_key": "scr_3d1dbaff81777f3f82ddcf802542c0443ff6c1e2b9eadb6eff2a795f41d785b7",
+          "line": 4,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_3d1dbaff81777f3f82ddcf802542c0443ff6c1e2b9eadb6eff2a795f41d785b7",
+        "kind": "static_import",
+        "specifier": "../../utils/Input.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/Input.js",
+        "location": {
+          "script_key": "scr_3d1dbaff81777f3f82ddcf802542c0443ff6c1e2b9eadb6eff2a795f41d785b7",
+          "line": 5,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_3d1dbaff81777f3f82ddcf802542c0443ff6c1e2b9eadb6eff2a795f41d785b7",
+        "kind": "static_import",
+        "specifier": "../../file/data.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/data.js",
+        "location": {
+          "script_key": "scr_3d1dbaff81777f3f82ddcf802542c0443ff6c1e2b9eadb6eff2a795f41d785b7",
+          "line": 6,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_40149b52df6c9833872d9e2b76d1e886e5776b1827e3f096f73c15991da2c765",
+        "kind": "static_import",
+        "specifier": "../../utils/Sprite.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/Sprite.js",
+        "location": {
+          "script_key": "scr_40149b52df6c9833872d9e2b76d1e886e5776b1827e3f096f73c15991da2c765",
+          "line": 1,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_412f908818558bf8e5bb0e091428a3c0e9b823615bb9e4bbc8c302e6ffc07187",
+        "kind": "static_import",
+        "specifier": "./enemyData.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/data/enemyData.js",
+        "location": {
+          "script_key": "scr_412f908818558bf8e5bb0e091428a3c0e9b823615bb9e4bbc8c302e6ffc07187",
+          "line": 1,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_4276a6d39a5ea6119f0cfd872ecbbcd1dbe3fde980d409fc58650e9883df7357",
+        "kind": "static_import",
+        "specifier": "../data/routeData.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/data/routeData.js",
+        "location": {
+          "script_key": "scr_4276a6d39a5ea6119f0cfd872ecbbcd1dbe3fde980d409fc58650e9883df7357",
+          "line": 1,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_4276a6d39a5ea6119f0cfd872ecbbcd1dbe3fde980d409fc58650e9883df7357",
+        "kind": "static_import",
+        "specifier": "../component/PlacementTile.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/component/PlacementTile.js",
+        "location": {
+          "script_key": "scr_4276a6d39a5ea6119f0cfd872ecbbcd1dbe3fde980d409fc58650e9883df7357",
+          "line": 2,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_4276a6d39a5ea6119f0cfd872ecbbcd1dbe3fde980d409fc58650e9883df7357",
+        "kind": "static_import",
+        "specifier": "../../utils/Element.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/Element.js",
+        "location": {
+          "script_key": "scr_4276a6d39a5ea6119f0cfd872ecbbcd1dbe3fde980d409fc58650e9883df7357",
+          "line": 3,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_4276a6d39a5ea6119f0cfd872ecbbcd1dbe3fde980d409fc58650e9883df7357",
+        "kind": "static_import",
+        "specifier": "../component/Enemy.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/component/Enemy.js",
+        "location": {
+          "script_key": "scr_4276a6d39a5ea6119f0cfd872ecbbcd1dbe3fde980d409fc58650e9883df7357",
+          "line": 4,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_4276a6d39a5ea6119f0cfd872ecbbcd1dbe3fde980d409fc58650e9883df7357",
+        "kind": "static_import",
+        "specifier": "../../file/text.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/text.js",
+        "location": {
+          "script_key": "scr_4276a6d39a5ea6119f0cfd872ecbbcd1dbe3fde980d409fc58650e9883df7357",
+          "line": 5,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_4276a6d39a5ea6119f0cfd872ecbbcd1dbe3fde980d409fc58650e9883df7357",
+        "kind": "static_import",
+        "specifier": "../../file/data.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/data.js",
+        "location": {
+          "script_key": "scr_4276a6d39a5ea6119f0cfd872ecbbcd1dbe3fde980d409fc58650e9883df7357",
+          "line": 6,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_4276a6d39a5ea6119f0cfd872ecbbcd1dbe3fde980d409fc58650e9883df7357",
+        "kind": "static_import",
+        "specifier": "../../file/audio.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/audio.js",
+        "location": {
+          "script_key": "scr_4276a6d39a5ea6119f0cfd872ecbbcd1dbe3fde980d409fc58650e9883df7357",
+          "line": 7,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_4276a6d39a5ea6119f0cfd872ecbbcd1dbe3fde980d409fc58650e9883df7357",
+        "kind": "static_import",
+        "specifier": "../data/enemyData.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/data/enemyData.js",
+        "location": {
+          "script_key": "scr_4276a6d39a5ea6119f0cfd872ecbbcd1dbe3fde980d409fc58650e9883df7357",
+          "line": 8,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_4276a6d39a5ea6119f0cfd872ecbbcd1dbe3fde980d409fc58650e9883df7357",
+        "kind": "static_import",
+        "specifier": "../component/Tower.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/component/Tower.js",
+        "location": {
+          "script_key": "scr_4276a6d39a5ea6119f0cfd872ecbbcd1dbe3fde980d409fc58650e9883df7357",
+          "line": 9,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_4276a6d39a5ea6119f0cfd872ecbbcd1dbe3fde980d409fc58650e9883df7357",
+        "kind": "static_import",
+        "specifier": "../data/pokemonData.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/data/pokemonData.js",
+        "location": {
+          "script_key": "scr_4276a6d39a5ea6119f0cfd872ecbbcd1dbe3fde980d409fc58650e9883df7357",
+          "line": 11,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_4276a6d39a5ea6119f0cfd872ecbbcd1dbe3fde980d409fc58650e9883df7357",
+        "kind": "static_import",
+        "specifier": "../component/Piece.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/component/Piece.js",
+        "location": {
+          "script_key": "scr_4276a6d39a5ea6119f0cfd872ecbbcd1dbe3fde980d409fc58650e9883df7357",
+          "line": 12,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_455252ecbc9febc078192b9c6c60ba0c0c10716f4c4ce6690a72cd39662be42f",
+        "kind": "static_import",
+        "specifier": "./Element.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/Element.js",
+        "location": {
+          "script_key": "scr_455252ecbc9febc078192b9c6c60ba0c0c10716f4c4ce6690a72cd39662be42f",
+          "line": 1,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_455252ecbc9febc078192b9c6c60ba0c0c10716f4c4ce6690a72cd39662be42f",
+        "kind": "static_import",
+        "specifier": "../file/audio.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/audio.js",
+        "location": {
+          "script_key": "scr_455252ecbc9febc078192b9c6c60ba0c0c10716f4c4ce6690a72cd39662be42f",
+          "line": 2,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_4646c88ba54d16b1c4b45f0cfb7ce595738a71de9ff656b10a6b4378cfe00089",
+        "kind": "static_import",
+        "specifier": "./waveData.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/data/waveData.js",
+        "location": {
+          "script_key": "scr_4646c88ba54d16b1c4b45f0cfb7ce595738a71de9ff656b10a6b4378cfe00089",
+          "line": 1,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_4646c88ba54d16b1c4b45f0cfb7ce595738a71de9ff656b10a6b4378cfe00089",
+        "kind": "static_import",
+        "specifier": "./songData.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/data/songData.js",
+        "location": {
+          "script_key": "scr_4646c88ba54d16b1c4b45f0cfb7ce595738a71de9ff656b10a6b4378cfe00089",
+          "line": 2,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_531da69463ae760b7821532a47e4cdc1f4bf1e6ea0d01e232d0722ab6ef0bad5",
+        "kind": "static_import",
+        "specifier": "../component/Pokemon.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/component/Pokemon.js",
+        "location": {
+          "script_key": "scr_531da69463ae760b7821532a47e4cdc1f4bf1e6ea0d01e232d0722ab6ef0bad5",
+          "line": 1,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_531da69463ae760b7821532a47e4cdc1f4bf1e6ea0d01e232d0722ab6ef0bad5",
+        "kind": "static_import",
+        "specifier": "../../file/data.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/data.js",
+        "location": {
+          "script_key": "scr_531da69463ae760b7821532a47e4cdc1f4bf1e6ea0d01e232d0722ab6ef0bad5",
+          "line": 2,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_531da69463ae760b7821532a47e4cdc1f4bf1e6ea0d01e232d0722ab6ef0bad5",
+        "kind": "static_import",
+        "specifier": "../data/itemData.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/data/itemData.js",
+        "location": {
+          "script_key": "scr_531da69463ae760b7821532a47e4cdc1f4bf1e6ea0d01e232d0722ab6ef0bad5",
+          "line": 3,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_531da69463ae760b7821532a47e4cdc1f4bf1e6ea0d01e232d0722ab6ef0bad5",
+        "kind": "static_import",
+        "specifier": "../data/pokemonData.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/data/pokemonData.js",
+        "location": {
+          "script_key": "scr_531da69463ae760b7821532a47e4cdc1f4bf1e6ea0d01e232d0722ab6ef0bad5",
+          "line": 4,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_531da69463ae760b7821532a47e4cdc1f4bf1e6ea0d01e232d0722ab6ef0bad5",
+        "kind": "static_import",
+        "specifier": "../../file/audio.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/audio.js",
+        "location": {
+          "script_key": "scr_531da69463ae760b7821532a47e4cdc1f4bf1e6ea0d01e232d0722ab6ef0bad5",
+          "line": 5,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_562cd3e3b50ab92e2d9ed5d8e25e0406217a27efc2054b149fef5f5b0485e32c",
+        "kind": "static_import",
+        "specifier": "../file/data.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/data.js",
+        "location": {
+          "script_key": "scr_562cd3e3b50ab92e2d9ed5d8e25e0406217a27efc2054b149fef5f5b0485e32c",
+          "line": 1,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_562cd3e3b50ab92e2d9ed5d8e25e0406217a27efc2054b149fef5f5b0485e32c",
+        "kind": "static_import",
+        "specifier": "../file/audio.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/audio.js",
+        "location": {
+          "script_key": "scr_562cd3e3b50ab92e2d9ed5d8e25e0406217a27efc2054b149fef5f5b0485e32c",
+          "line": 2,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_5747ae7f94da41f334515ae2a83a5696070caec6c911fab625333abb89d6320c",
+        "kind": "static_import",
+        "specifier": "../../utils/SectionScene.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/SectionScene.js",
+        "location": {
+          "script_key": "scr_5747ae7f94da41f334515ae2a83a5696070caec6c911fab625333abb89d6320c",
+          "line": 1,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_5747ae7f94da41f334515ae2a83a5696070caec6c911fab625333abb89d6320c",
+        "kind": "static_import",
+        "specifier": "../../utils/Element.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/Element.js",
+        "location": {
+          "script_key": "scr_5747ae7f94da41f334515ae2a83a5696070caec6c911fab625333abb89d6320c",
+          "line": 2,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_5747ae7f94da41f334515ae2a83a5696070caec6c911fab625333abb89d6320c",
+        "kind": "static_import",
+        "specifier": "../../file/text.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/text.js",
+        "location": {
+          "script_key": "scr_5747ae7f94da41f334515ae2a83a5696070caec6c911fab625333abb89d6320c",
+          "line": 3,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_5747ae7f94da41f334515ae2a83a5696070caec6c911fab625333abb89d6320c",
+        "kind": "static_import",
+        "specifier": "../../file/audio.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/audio.js",
+        "location": {
+          "script_key": "scr_5747ae7f94da41f334515ae2a83a5696070caec6c911fab625333abb89d6320c",
+          "line": 4,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_5747ae7f94da41f334515ae2a83a5696070caec6c911fab625333abb89d6320c",
+        "kind": "static_import",
+        "specifier": "../data/routeData.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/data/routeData.js",
+        "location": {
+          "script_key": "scr_5747ae7f94da41f334515ae2a83a5696070caec6c911fab625333abb89d6320c",
+          "line": 6,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_5747ae7f94da41f334515ae2a83a5696070caec6c911fab625333abb89d6320c",
+        "kind": "static_import",
+        "specifier": "../data/enemyData.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/data/enemyData.js",
+        "location": {
+          "script_key": "scr_5747ae7f94da41f334515ae2a83a5696070caec6c911fab625333abb89d6320c",
+          "line": 7,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_5d759e3e3ed25ba9cabb4fe2860130e05789682c4f6eed5242a22991a45e8734",
+        "kind": "static_import",
+        "specifier": "../../utils/GameScene.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/GameScene.js",
+        "location": {
+          "script_key": "scr_5d759e3e3ed25ba9cabb4fe2860130e05789682c4f6eed5242a22991a45e8734",
+          "line": 1,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_5d759e3e3ed25ba9cabb4fe2860130e05789682c4f6eed5242a22991a45e8734",
+        "kind": "static_import",
+        "specifier": "../../utils/SectionScene.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/SectionScene.js",
+        "location": {
+          "script_key": "scr_5d759e3e3ed25ba9cabb4fe2860130e05789682c4f6eed5242a22991a45e8734",
+          "line": 2,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_5d759e3e3ed25ba9cabb4fe2860130e05789682c4f6eed5242a22991a45e8734",
+        "kind": "static_import",
+        "specifier": "../../utils/Element.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/Element.js",
+        "location": {
+          "script_key": "scr_5d759e3e3ed25ba9cabb4fe2860130e05789682c4f6eed5242a22991a45e8734",
+          "line": 4,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_5d759e3e3ed25ba9cabb4fe2860130e05789682c4f6eed5242a22991a45e8734",
+        "kind": "static_import",
+        "specifier": "../../utils/Input.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/Input.js",
+        "location": {
+          "script_key": "scr_5d759e3e3ed25ba9cabb4fe2860130e05789682c4f6eed5242a22991a45e8734",
+          "line": 5,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_5d759e3e3ed25ba9cabb4fe2860130e05789682c4f6eed5242a22991a45e8734",
+        "kind": "static_import",
+        "specifier": "../../file/text.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/text.js",
+        "location": {
+          "script_key": "scr_5d759e3e3ed25ba9cabb4fe2860130e05789682c4f6eed5242a22991a45e8734",
+          "line": 6,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_5d759e3e3ed25ba9cabb4fe2860130e05789682c4f6eed5242a22991a45e8734",
+        "kind": "static_import",
+        "specifier": "../../file/audio.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/audio.js",
+        "location": {
+          "script_key": "scr_5d759e3e3ed25ba9cabb4fe2860130e05789682c4f6eed5242a22991a45e8734",
+          "line": 7,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_5d759e3e3ed25ba9cabb4fe2860130e05789682c4f6eed5242a22991a45e8734",
+        "kind": "static_import",
+        "specifier": "../data/pokemonData.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/data/pokemonData.js",
+        "location": {
+          "script_key": "scr_5d759e3e3ed25ba9cabb4fe2860130e05789682c4f6eed5242a22991a45e8734",
+          "line": 9,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_5d759e3e3ed25ba9cabb4fe2860130e05789682c4f6eed5242a22991a45e8734",
+        "kind": "static_import",
+        "specifier": "../data/itemData.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/data/itemData.js",
+        "location": {
+          "script_key": "scr_5d759e3e3ed25ba9cabb4fe2860130e05789682c4f6eed5242a22991a45e8734",
+          "line": 10,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_5d759e3e3ed25ba9cabb4fe2860130e05789682c4f6eed5242a22991a45e8734",
+        "kind": "static_import",
+        "specifier": "../data/achievementReworkData.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/data/achievementReworkData.js",
+        "location": {
+          "script_key": "scr_5d759e3e3ed25ba9cabb4fe2860130e05789682c4f6eed5242a22991a45e8734",
+          "line": 11,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_65bce95a6f46bac23c09faf9cb094ca0e39f37665f4fecf238852ed600293dea",
+        "kind": "static_import",
+        "specifier": "../utils/Element.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/Element.js",
+        "location": {
+          "script_key": "scr_65bce95a6f46bac23c09faf9cb094ca0e39f37665f4fecf238852ed600293dea",
+          "line": 1,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_65bce95a6f46bac23c09faf9cb094ca0e39f37665f4fecf238852ed600293dea",
+        "kind": "static_import",
+        "specifier": "../file/text.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/text.js",
+        "location": {
+          "script_key": "scr_65bce95a6f46bac23c09faf9cb094ca0e39f37665f4fecf238852ed600293dea",
+          "line": 2,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_65bce95a6f46bac23c09faf9cb094ca0e39f37665f4fecf238852ed600293dea",
+        "kind": "static_import",
+        "specifier": "../file/audio.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/audio.js",
+        "location": {
+          "script_key": "scr_65bce95a6f46bac23c09faf9cb094ca0e39f37665f4fecf238852ed600293dea",
+          "line": 3,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_65bce95a6f46bac23c09faf9cb094ca0e39f37665f4fecf238852ed600293dea",
+        "kind": "static_import",
+        "specifier": "./Main.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/Main.js",
+        "location": {
+          "script_key": "scr_65bce95a6f46bac23c09faf9cb094ca0e39f37665f4fecf238852ed600293dea",
+          "line": 4,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_68c3f837243dc55c5b5b68636542374658d3fc21481123aae0b85a9aa93d0aad",
+        "kind": "static_import",
+        "specifier": "../component/Pokemon.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/component/Pokemon.js",
+        "location": {
+          "script_key": "scr_68c3f837243dc55c5b5b68636542374658d3fc21481123aae0b85a9aa93d0aad",
+          "line": 1,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_68c3f837243dc55c5b5b68636542374658d3fc21481123aae0b85a9aa93d0aad",
+        "kind": "static_import",
+        "specifier": "../data/pokemonData.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/data/pokemonData.js",
+        "location": {
+          "script_key": "scr_68c3f837243dc55c5b5b68636542374658d3fc21481123aae0b85a9aa93d0aad",
+          "line": 2,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_69f43e353f3235116cab893cc918823022f6dca71d7832aa7bcced089776dc46",
+        "kind": "static_import",
+        "specifier": "../../utils/GameScene.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/GameScene.js",
+        "location": {
+          "script_key": "scr_69f43e353f3235116cab893cc918823022f6dca71d7832aa7bcced089776dc46",
+          "line": 1,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_69f43e353f3235116cab893cc918823022f6dca71d7832aa7bcced089776dc46",
+        "kind": "static_import",
+        "specifier": "../../utils/Element.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/Element.js",
+        "location": {
+          "script_key": "scr_69f43e353f3235116cab893cc918823022f6dca71d7832aa7bcced089776dc46",
+          "line": 2,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_69f43e353f3235116cab893cc918823022f6dca71d7832aa7bcced089776dc46",
+        "kind": "static_import",
+        "specifier": "../../file/text.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/text.js",
+        "location": {
+          "script_key": "scr_69f43e353f3235116cab893cc918823022f6dca71d7832aa7bcced089776dc46",
+          "line": 3,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_69f43e353f3235116cab893cc918823022f6dca71d7832aa7bcced089776dc46",
+        "kind": "static_import",
+        "specifier": "../../file/audio.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/audio.js",
+        "location": {
+          "script_key": "scr_69f43e353f3235116cab893cc918823022f6dca71d7832aa7bcced089776dc46",
+          "line": 4,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_76edaaf92f0fbb96b7bf79f1378376ca2bfe41de1172fea05ecbd2c32fb9b993",
+        "kind": "static_import",
+        "specifier": "../component/Pokemon.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/component/Pokemon.js",
+        "location": {
+          "script_key": "scr_76edaaf92f0fbb96b7bf79f1378376ca2bfe41de1172fea05ecbd2c32fb9b993",
+          "line": 1,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_76ef9d3d5f8beb5dfc0b379845bc956d3da954e10455af3d30526550fedc8804",
+        "kind": "static_import",
+        "specifier": "../../file/audio.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/audio.js",
+        "location": {
+          "script_key": "scr_76ef9d3d5f8beb5dfc0b379845bc956d3da954e10455af3d30526550fedc8804",
+          "line": 1,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_76ef9d3d5f8beb5dfc0b379845bc956d3da954e10455af3d30526550fedc8804",
+        "kind": "static_import",
+        "specifier": "../component/Tower.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/component/Tower.js",
+        "location": {
+          "script_key": "scr_76ef9d3d5f8beb5dfc0b379845bc956d3da954e10455af3d30526550fedc8804",
+          "line": 2,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_76ef9d3d5f8beb5dfc0b379845bc956d3da954e10455af3d30526550fedc8804",
+        "kind": "static_import",
+        "specifier": "../../file/data.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/data.js",
+        "location": {
+          "script_key": "scr_76ef9d3d5f8beb5dfc0b379845bc956d3da954e10455af3d30526550fedc8804",
+          "line": 3,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_76ef9d3d5f8beb5dfc0b379845bc956d3da954e10455af3d30526550fedc8804",
+        "kind": "static_import",
+        "specifier": "../data/routeData.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/data/routeData.js",
+        "location": {
+          "script_key": "scr_76ef9d3d5f8beb5dfc0b379845bc956d3da954e10455af3d30526550fedc8804",
+          "line": 4,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_7ce6f9edbc73900b9934cb79e5f305472678ed75de5996cffe52824db740e1d0",
+        "kind": "static_import",
+        "specifier": "../../utils/SectionScene.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/SectionScene.js",
+        "location": {
+          "script_key": "scr_7ce6f9edbc73900b9934cb79e5f305472678ed75de5996cffe52824db740e1d0",
+          "line": 1,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_7ce6f9edbc73900b9934cb79e5f305472678ed75de5996cffe52824db740e1d0",
+        "kind": "static_import",
+        "specifier": "../../utils/Element.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/Element.js",
+        "location": {
+          "script_key": "scr_7ce6f9edbc73900b9934cb79e5f305472678ed75de5996cffe52824db740e1d0",
+          "line": 2,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_7ce6f9edbc73900b9934cb79e5f305472678ed75de5996cffe52824db740e1d0",
+        "kind": "static_import",
+        "specifier": "../../file/text.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/text.js",
+        "location": {
+          "script_key": "scr_7ce6f9edbc73900b9934cb79e5f305472678ed75de5996cffe52824db740e1d0",
+          "line": 3,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_7ce6f9edbc73900b9934cb79e5f305472678ed75de5996cffe52824db740e1d0",
+        "kind": "static_import",
+        "specifier": "../data/routeData.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/data/routeData.js",
+        "location": {
+          "script_key": "scr_7ce6f9edbc73900b9934cb79e5f305472678ed75de5996cffe52824db740e1d0",
+          "line": 4,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_7ce6f9edbc73900b9934cb79e5f305472678ed75de5996cffe52824db740e1d0",
+        "kind": "static_import",
+        "specifier": "../../file/data.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/data.js",
+        "location": {
+          "script_key": "scr_7ce6f9edbc73900b9934cb79e5f305472678ed75de5996cffe52824db740e1d0",
+          "line": 5,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_7ce6f9edbc73900b9934cb79e5f305472678ed75de5996cffe52824db740e1d0",
+        "kind": "static_import",
+        "specifier": "../../file/audio.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/audio.js",
+        "location": {
+          "script_key": "scr_7ce6f9edbc73900b9934cb79e5f305472678ed75de5996cffe52824db740e1d0",
+          "line": 6,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+        "kind": "static_import",
+        "specifier": "../utils/Element.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/Element.js",
+        "location": {
+          "script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+          "line": 1,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+        "kind": "static_import",
+        "specifier": "../utils/Utility.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/Utility.js",
+        "location": {
+          "script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+          "line": 2,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+        "kind": "static_import",
+        "specifier": "../utils/KeyController.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/KeyController.js",
+        "location": {
+          "script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+          "line": 3,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+        "kind": "static_import",
+        "specifier": "../utils/Tooltip.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/Tooltip.js",
+        "location": {
+          "script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+          "line": 4,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+        "kind": "static_import",
+        "specifier": "./UI.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/UI.js",
+        "location": {
+          "script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+          "line": 5,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+        "kind": "static_import",
+        "specifier": "./Game.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/Game.js",
+        "location": {
+          "script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+          "line": 6,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+        "kind": "static_import",
+        "specifier": "./scenes/BoxScene.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/scenes/BoxScene.js",
+        "location": {
+          "script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+          "line": 9,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+        "kind": "static_import",
+        "specifier": "./scenes/InventoryScene.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/scenes/InventoryScene.js",
+        "location": {
+          "script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+          "line": 10,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+        "kind": "static_import",
+        "specifier": "./scenes/MapScene.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/scenes/MapScene.js",
+        "location": {
+          "script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+          "line": 11,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+        "kind": "static_import",
+        "specifier": "./scenes/PokemonScene.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/scenes/PokemonScene.js",
+        "location": {
+          "script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+          "line": 12,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+        "kind": "static_import",
+        "specifier": "./scenes/ShopScene.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/scenes/ShopScene.js",
+        "location": {
+          "script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+          "line": 13,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+        "kind": "static_import",
+        "specifier": "./scenes/MenuScene.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/scenes/MenuScene.js",
+        "location": {
+          "script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+          "line": 14,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+        "kind": "static_import",
+        "specifier": "./scenes/ChallengeScene.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/scenes/ChallengeScene.js",
+        "location": {
+          "script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+          "line": 15,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+        "kind": "static_import",
+        "specifier": "./scenes/ProfileScene.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/scenes/ProfileScene.js",
+        "location": {
+          "script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+          "line": 16,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+        "kind": "static_import",
+        "specifier": "./scenes/DefeatScene.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/scenes/DefeatScene.js",
+        "location": {
+          "script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+          "line": 17,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+        "kind": "static_import",
+        "specifier": "./scenes/NewGameScene.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/scenes/NewGameScene.js",
+        "location": {
+          "script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+          "line": 18,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+        "kind": "static_import",
+        "specifier": "./scenes/TutorialScene.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/scenes/TutorialScene.js",
+        "location": {
+          "script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+          "line": 19,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+        "kind": "static_import",
+        "specifier": "./scenes/FinalScene.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/scenes/FinalScene.js",
+        "location": {
+          "script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+          "line": 20,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+        "kind": "static_import",
+        "specifier": "./scenes/DraftScene.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/scenes/DraftScene.js",
+        "location": {
+          "script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+          "line": 21,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+        "kind": "static_import",
+        "specifier": "./scenes/EditorScene.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/scenes/EditorScene.js",
+        "location": {
+          "script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+          "line": 22,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+        "kind": "static_import",
+        "specifier": "./scenes/DexScene.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/scenes/DexScene.js",
+        "location": {
+          "script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+          "line": 23,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+        "kind": "static_import",
+        "specifier": "./core/Player.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/core/Player.js",
+        "location": {
+          "script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+          "line": 26,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+        "kind": "static_import",
+        "specifier": "./core/Team.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/core/Team.js",
+        "location": {
+          "script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+          "line": 27,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+        "kind": "static_import",
+        "specifier": "./core/Box.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/core/Box.js",
+        "location": {
+          "script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+          "line": 28,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+        "kind": "static_import",
+        "specifier": "./core/Area.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/core/Area.js",
+        "location": {
+          "script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+          "line": 29,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+        "kind": "static_import",
+        "specifier": "./core/Shop.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/core/Shop.js",
+        "location": {
+          "script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+          "line": 30,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+        "kind": "static_import",
+        "specifier": "./controller/ItemController.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/controller/ItemController.js",
+        "location": {
+          "script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+          "line": 33,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+        "kind": "static_import",
+        "specifier": "./controller/ThemeController.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/controller/ThemeController.js",
+        "location": {
+          "script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+          "line": 34,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+        "kind": "static_import",
+        "specifier": "./core/TeamManager.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/core/TeamManager.js",
+        "location": {
+          "script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+          "line": 35,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+        "kind": "static_import",
+        "specifier": "./data/pokemonData.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/data/pokemonData.js",
+        "location": {
+          "script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+          "line": 39,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+        "kind": "static_import",
+        "specifier": "./component/Pokemon.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/component/Pokemon.js",
+        "location": {
+          "script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+          "line": 40,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+        "kind": "static_import",
+        "specifier": "../file/data.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/data.js",
+        "location": {
+          "script_key": "scr_7faf166e557e9d9e38ce075d9314091ef78dacdeda234a3a82eb0fa9b1f5fab6",
+          "line": 41,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_9c7d9d0d00cb4f1b2ef599691196d85e4f5cfab431502627723a9ce25be15475",
+        "kind": "static_import",
+        "specifier": "../game/data/pokemonData.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/data/pokemonData.js",
+        "location": {
+          "script_key": "scr_9c7d9d0d00cb4f1b2ef599691196d85e4f5cfab431502627723a9ce25be15475",
+          "line": 1,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_9c7d9d0d00cb4f1b2ef599691196d85e4f5cfab431502627723a9ce25be15475",
+        "kind": "static_import",
+        "specifier": "../game/data/achievementReworkData.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/data/achievementReworkData.js",
+        "location": {
+          "script_key": "scr_9c7d9d0d00cb4f1b2ef599691196d85e4f5cfab431502627723a9ce25be15475",
+          "line": 3,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_9c7d9d0d00cb4f1b2ef599691196d85e4f5cfab431502627723a9ce25be15475",
+        "kind": "static_import",
+        "specifier": "../utils/Redeem.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/Redeem.js",
+        "location": {
+          "script_key": "scr_9c7d9d0d00cb4f1b2ef599691196d85e4f5cfab431502627723a9ce25be15475",
+          "line": 4,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_9ed860d7176d48be15d526c79876c16c5d59293217963215ba7c01fed2160ce9",
+        "kind": "static_import",
+        "specifier": "../file/text.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/text.js",
+        "location": {
+          "script_key": "scr_9ed860d7176d48be15d526c79876c16c5d59293217963215ba7c01fed2160ce9",
+          "line": 1,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_a7550be71ac97a740636901e54b5b0d29502590b1d60d451f177f2aa3bf1e358",
+        "kind": "static_import",
+        "specifier": "../../utils/GameScene.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/GameScene.js",
+        "location": {
+          "script_key": "scr_a7550be71ac97a740636901e54b5b0d29502590b1d60d451f177f2aa3bf1e358",
+          "line": 1,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_a7550be71ac97a740636901e54b5b0d29502590b1d60d451f177f2aa3bf1e358",
+        "kind": "static_import",
+        "specifier": "../../utils/Element.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/Element.js",
+        "location": {
+          "script_key": "scr_a7550be71ac97a740636901e54b5b0d29502590b1d60d451f177f2aa3bf1e358",
+          "line": 2,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_a7550be71ac97a740636901e54b5b0d29502590b1d60d451f177f2aa3bf1e358",
+        "kind": "static_import",
+        "specifier": "../../utils/Input.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/Input.js",
+        "location": {
+          "script_key": "scr_a7550be71ac97a740636901e54b5b0d29502590b1d60d451f177f2aa3bf1e358",
+          "line": 3,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_a7550be71ac97a740636901e54b5b0d29502590b1d60d451f177f2aa3bf1e358",
+        "kind": "static_import",
+        "specifier": "../../file/text.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/text.js",
+        "location": {
+          "script_key": "scr_a7550be71ac97a740636901e54b5b0d29502590b1d60d451f177f2aa3bf1e358",
+          "line": 4,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_a7550be71ac97a740636901e54b5b0d29502590b1d60d451f177f2aa3bf1e358",
+        "kind": "static_import",
+        "specifier": "../../file/data.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/data.js",
+        "location": {
+          "script_key": "scr_a7550be71ac97a740636901e54b5b0d29502590b1d60d451f177f2aa3bf1e358",
+          "line": 5,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_a7550be71ac97a740636901e54b5b0d29502590b1d60d451f177f2aa3bf1e358",
+        "kind": "static_import",
+        "specifier": "../component/Pokemon.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/component/Pokemon.js",
+        "location": {
+          "script_key": "scr_a7550be71ac97a740636901e54b5b0d29502590b1d60d451f177f2aa3bf1e358",
+          "line": 6,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_a7550be71ac97a740636901e54b5b0d29502590b1d60d451f177f2aa3bf1e358",
+        "kind": "static_import",
+        "specifier": "../data/pokemonData.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/data/pokemonData.js",
+        "location": {
+          "script_key": "scr_a7550be71ac97a740636901e54b5b0d29502590b1d60d451f177f2aa3bf1e358",
+          "line": 7,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_a7550be71ac97a740636901e54b5b0d29502590b1d60d451f177f2aa3bf1e358",
+        "kind": "static_import",
+        "specifier": "../../file/audio.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/audio.js",
+        "location": {
+          "script_key": "scr_a7550be71ac97a740636901e54b5b0d29502590b1d60d451f177f2aa3bf1e358",
+          "line": 8,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_b133defb80724f2e968f8bb0b1d5db017f56f0e185d74ad7ea6716b040a4286f",
+        "kind": "static_import",
+        "specifier": "../../utils/GameScene.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/GameScene.js",
+        "location": {
+          "script_key": "scr_b133defb80724f2e968f8bb0b1d5db017f56f0e185d74ad7ea6716b040a4286f",
+          "line": 1,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_b133defb80724f2e968f8bb0b1d5db017f56f0e185d74ad7ea6716b040a4286f",
+        "kind": "static_import",
+        "specifier": "../../utils/Element.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/Element.js",
+        "location": {
+          "script_key": "scr_b133defb80724f2e968f8bb0b1d5db017f56f0e185d74ad7ea6716b040a4286f",
+          "line": 2,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_b133defb80724f2e968f8bb0b1d5db017f56f0e185d74ad7ea6716b040a4286f",
+        "kind": "static_import",
+        "specifier": "../../file/text.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/text.js",
+        "location": {
+          "script_key": "scr_b133defb80724f2e968f8bb0b1d5db017f56f0e185d74ad7ea6716b040a4286f",
+          "line": 3,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_b133defb80724f2e968f8bb0b1d5db017f56f0e185d74ad7ea6716b040a4286f",
+        "kind": "static_import",
+        "specifier": "../../file/audio.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/audio.js",
+        "location": {
+          "script_key": "scr_b133defb80724f2e968f8bb0b1d5db017f56f0e185d74ad7ea6716b040a4286f",
+          "line": 4,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_b133defb80724f2e968f8bb0b1d5db017f56f0e185d74ad7ea6716b040a4286f",
+        "kind": "static_import",
+        "specifier": "../data/pokemonData.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/data/pokemonData.js",
+        "location": {
+          "script_key": "scr_b133defb80724f2e968f8bb0b1d5db017f56f0e185d74ad7ea6716b040a4286f",
+          "line": 5,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_b133defb80724f2e968f8bb0b1d5db017f56f0e185d74ad7ea6716b040a4286f",
+        "kind": "static_import",
+        "specifier": "../data/itemData.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/data/itemData.js",
+        "location": {
+          "script_key": "scr_b133defb80724f2e968f8bb0b1d5db017f56f0e185d74ad7ea6716b040a4286f",
+          "line": 6,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_b133defb80724f2e968f8bb0b1d5db017f56f0e185d74ad7ea6716b040a4286f",
+        "kind": "static_import",
+        "specifier": "../../utils/Input.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/Input.js",
+        "location": {
+          "script_key": "scr_b133defb80724f2e968f8bb0b1d5db017f56f0e185d74ad7ea6716b040a4286f",
+          "line": 7,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_b133defb80724f2e968f8bb0b1d5db017f56f0e185d74ad7ea6716b040a4286f",
+        "kind": "static_import",
+        "specifier": "./ChangePokemonName.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/scenes/ChangePokemonName.js",
+        "location": {
+          "script_key": "scr_b133defb80724f2e968f8bb0b1d5db017f56f0e185d74ad7ea6716b040a4286f",
+          "line": 8,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_b26fc1a3284f5076ac7a6ae6a29879fefe32f734ab0138de6ddbdb1dde0dd8f5",
+        "kind": "static_import",
+        "specifier": "../../utils/SectionScene.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/SectionScene.js",
+        "location": {
+          "script_key": "scr_b26fc1a3284f5076ac7a6ae6a29879fefe32f734ab0138de6ddbdb1dde0dd8f5",
+          "line": 1,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_b26fc1a3284f5076ac7a6ae6a29879fefe32f734ab0138de6ddbdb1dde0dd8f5",
+        "kind": "static_import",
+        "specifier": "../../utils/Element.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/Element.js",
+        "location": {
+          "script_key": "scr_b26fc1a3284f5076ac7a6ae6a29879fefe32f734ab0138de6ddbdb1dde0dd8f5",
+          "line": 2,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_b26fc1a3284f5076ac7a6ae6a29879fefe32f734ab0138de6ddbdb1dde0dd8f5",
+        "kind": "static_import",
+        "specifier": "../../utils/Input.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/Input.js",
+        "location": {
+          "script_key": "scr_b26fc1a3284f5076ac7a6ae6a29879fefe32f734ab0138de6ddbdb1dde0dd8f5",
+          "line": 3,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_b26fc1a3284f5076ac7a6ae6a29879fefe32f734ab0138de6ddbdb1dde0dd8f5",
+        "kind": "static_import",
+        "specifier": "../../file/text.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/text.js",
+        "location": {
+          "script_key": "scr_b26fc1a3284f5076ac7a6ae6a29879fefe32f734ab0138de6ddbdb1dde0dd8f5",
+          "line": 4,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_b26fc1a3284f5076ac7a6ae6a29879fefe32f734ab0138de6ddbdb1dde0dd8f5",
+        "kind": "static_import",
+        "specifier": "../../file/audio.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/audio.js",
+        "location": {
+          "script_key": "scr_b26fc1a3284f5076ac7a6ae6a29879fefe32f734ab0138de6ddbdb1dde0dd8f5",
+          "line": 5,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_b26fc1a3284f5076ac7a6ae6a29879fefe32f734ab0138de6ddbdb1dde0dd8f5",
+        "kind": "static_import",
+        "specifier": "../data/pokemonData.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/data/pokemonData.js",
+        "location": {
+          "script_key": "scr_b26fc1a3284f5076ac7a6ae6a29879fefe32f734ab0138de6ddbdb1dde0dd8f5",
+          "line": 7,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_b26fc1a3284f5076ac7a6ae6a29879fefe32f734ab0138de6ddbdb1dde0dd8f5",
+        "kind": "static_import",
+        "specifier": "../data/enemyData.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/data/enemyData.js",
+        "location": {
+          "script_key": "scr_b26fc1a3284f5076ac7a6ae6a29879fefe32f734ab0138de6ddbdb1dde0dd8f5",
+          "line": 8,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_b26fc1a3284f5076ac7a6ae6a29879fefe32f734ab0138de6ddbdb1dde0dd8f5",
+        "kind": "static_import",
+        "specifier": "../data/tutorialData.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/data/tutorialData.js",
+        "location": {
+          "script_key": "scr_b26fc1a3284f5076ac7a6ae6a29879fefe32f734ab0138de6ddbdb1dde0dd8f5",
+          "line": 9,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_c27e000693eb7cae4c96a221f55d747a1e7bfab4e5563eb5302a976b97f1dc3f",
+        "kind": "static_import",
+        "specifier": "../../utils/Sprite.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/Sprite.js",
+        "location": {
+          "script_key": "scr_c27e000693eb7cae4c96a221f55d747a1e7bfab4e5563eb5302a976b97f1dc3f",
+          "line": 1,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_c27e000693eb7cae4c96a221f55d747a1e7bfab4e5563eb5302a976b97f1dc3f",
+        "kind": "static_import",
+        "specifier": "../../file/audio.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/audio.js",
+        "location": {
+          "script_key": "scr_c27e000693eb7cae4c96a221f55d747a1e7bfab4e5563eb5302a976b97f1dc3f",
+          "line": 2,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_c27e000693eb7cae4c96a221f55d747a1e7bfab4e5563eb5302a976b97f1dc3f",
+        "kind": "static_import",
+        "specifier": "../data/enemyData.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/data/enemyData.js",
+        "location": {
+          "script_key": "scr_c27e000693eb7cae4c96a221f55d747a1e7bfab4e5563eb5302a976b97f1dc3f",
+          "line": 3,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_c28d9227c9ef74c70db18e63f3dc29288e0e3a65b2e7a3c23f4754f8fc478f35",
+        "kind": "static_import",
+        "specifier": "../../utils/GameScene.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/GameScene.js",
+        "location": {
+          "script_key": "scr_c28d9227c9ef74c70db18e63f3dc29288e0e3a65b2e7a3c23f4754f8fc478f35",
+          "line": 1,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_c28d9227c9ef74c70db18e63f3dc29288e0e3a65b2e7a3c23f4754f8fc478f35",
+        "kind": "static_import",
+        "specifier": "../../utils/Element.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/Element.js",
+        "location": {
+          "script_key": "scr_c28d9227c9ef74c70db18e63f3dc29288e0e3a65b2e7a3c23f4754f8fc478f35",
+          "line": 2,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_c28d9227c9ef74c70db18e63f3dc29288e0e3a65b2e7a3c23f4754f8fc478f35",
+        "kind": "static_import",
+        "specifier": "../../file/text.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/text.js",
+        "location": {
+          "script_key": "scr_c28d9227c9ef74c70db18e63f3dc29288e0e3a65b2e7a3c23f4754f8fc478f35",
+          "line": 3,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_c28d9227c9ef74c70db18e63f3dc29288e0e3a65b2e7a3c23f4754f8fc478f35",
+        "kind": "static_import",
+        "specifier": "../../file/data.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/data.js",
+        "location": {
+          "script_key": "scr_c28d9227c9ef74c70db18e63f3dc29288e0e3a65b2e7a3c23f4754f8fc478f35",
+          "line": 4,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_c28d9227c9ef74c70db18e63f3dc29288e0e3a65b2e7a3c23f4754f8fc478f35",
+        "kind": "static_import",
+        "specifier": "../../file/audio.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/audio.js",
+        "location": {
+          "script_key": "scr_c28d9227c9ef74c70db18e63f3dc29288e0e3a65b2e7a3c23f4754f8fc478f35",
+          "line": 5,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_c28d9227c9ef74c70db18e63f3dc29288e0e3a65b2e7a3c23f4754f8fc478f35",
+        "kind": "static_import",
+        "specifier": "../data/enemyData.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/data/enemyData.js",
+        "location": {
+          "script_key": "scr_c28d9227c9ef74c70db18e63f3dc29288e0e3a65b2e7a3c23f4754f8fc478f35",
+          "line": 6,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_d332a1c65bb8a1886235b1e0b7e82b1cb1e4c5faaac35695a4258df9b532bf59",
+        "kind": "static_import",
+        "specifier": "../../utils/SectionScene.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/SectionScene.js",
+        "location": {
+          "script_key": "scr_d332a1c65bb8a1886235b1e0b7e82b1cb1e4c5faaac35695a4258df9b532bf59",
+          "line": 1,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_d332a1c65bb8a1886235b1e0b7e82b1cb1e4c5faaac35695a4258df9b532bf59",
+        "kind": "static_import",
+        "specifier": "../../utils/GameScene.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/GameScene.js",
+        "location": {
+          "script_key": "scr_d332a1c65bb8a1886235b1e0b7e82b1cb1e4c5faaac35695a4258df9b532bf59",
+          "line": 2,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_d332a1c65bb8a1886235b1e0b7e82b1cb1e4c5faaac35695a4258df9b532bf59",
+        "kind": "static_import",
+        "specifier": "../../utils/Element.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/Element.js",
+        "location": {
+          "script_key": "scr_d332a1c65bb8a1886235b1e0b7e82b1cb1e4c5faaac35695a4258df9b532bf59",
+          "line": 3,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_d332a1c65bb8a1886235b1e0b7e82b1cb1e4c5faaac35695a4258df9b532bf59",
+        "kind": "static_import",
+        "specifier": "../../file/text.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/text.js",
+        "location": {
+          "script_key": "scr_d332a1c65bb8a1886235b1e0b7e82b1cb1e4c5faaac35695a4258df9b532bf59",
+          "line": 4,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_d332a1c65bb8a1886235b1e0b7e82b1cb1e4c5faaac35695a4258df9b532bf59",
+        "kind": "static_import",
+        "specifier": "../../file/audio.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/audio.js",
+        "location": {
+          "script_key": "scr_d332a1c65bb8a1886235b1e0b7e82b1cb1e4c5faaac35695a4258df9b532bf59",
+          "line": 5,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_d332a1c65bb8a1886235b1e0b7e82b1cb1e4c5faaac35695a4258df9b532bf59",
+        "kind": "static_import",
+        "specifier": "../../utils/Input.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/Input.js",
+        "location": {
+          "script_key": "scr_d332a1c65bb8a1886235b1e0b7e82b1cb1e4c5faaac35695a4258df9b532bf59",
+          "line": 6,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_d332a1c65bb8a1886235b1e0b7e82b1cb1e4c5faaac35695a4258df9b532bf59",
+        "kind": "static_import",
+        "specifier": "../../utils/Redeem.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/Redeem.js",
+        "location": {
+          "script_key": "scr_d332a1c65bb8a1886235b1e0b7e82b1cb1e4c5faaac35695a4258df9b532bf59",
+          "line": 7,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_d332a1c65bb8a1886235b1e0b7e82b1cb1e4c5faaac35695a4258df9b532bf59",
+        "kind": "static_import",
+        "specifier": "../data/pokemonData.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/data/pokemonData.js",
+        "location": {
+          "script_key": "scr_d332a1c65bb8a1886235b1e0b7e82b1cb1e4c5faaac35695a4258df9b532bf59",
+          "line": 8,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_d332a1c65bb8a1886235b1e0b7e82b1cb1e4c5faaac35695a4258df9b532bf59",
+        "kind": "static_import",
+        "specifier": "../../config.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/config.js",
+        "location": {
+          "script_key": "scr_d332a1c65bb8a1886235b1e0b7e82b1cb1e4c5faaac35695a4258df9b532bf59",
+          "line": 9,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_d332a1c65bb8a1886235b1e0b7e82b1cb1e4c5faaac35695a4258df9b532bf59",
+        "kind": "static_import",
+        "specifier": "../controller/ThemeController.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/controller/ThemeController.js",
+        "location": {
+          "script_key": "scr_d332a1c65bb8a1886235b1e0b7e82b1cb1e4c5faaac35695a4258df9b532bf59",
+          "line": 10,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_de4a1db0fd553e3ce645640fda6cedfe9fcef3159294ad3cb5ab0531a97d8db5",
+        "kind": "static_import",
+        "specifier": "./projectileData.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/data/projectileData.js",
+        "location": {
+          "script_key": "scr_de4a1db0fd553e3ce645640fda6cedfe9fcef3159294ad3cb5ab0531a97d8db5",
+          "line": 1,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_de4a1db0fd553e3ce645640fda6cedfe9fcef3159294ad3cb5ab0531a97d8db5",
+        "kind": "static_import",
+        "specifier": "./abilityData.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/data/abilityData.js",
+        "location": {
+          "script_key": "scr_de4a1db0fd553e3ce645640fda6cedfe9fcef3159294ad3cb5ab0531a97d8db5",
+          "line": 2,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_e1323036f74baa2a5ca8bc0a11866672f2131a58f4e6b3b548b0f97c37eace4e",
+        "kind": "static_import",
+        "specifier": "../file/redeemProtocol.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/redeemProtocol.js",
+        "location": {
+          "script_key": "scr_e1323036f74baa2a5ca8bc0a11866672f2131a58f4e6b3b548b0f97c37eace4e",
+          "line": 1,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_e5d1251fc9f69eb65290d0a8facefda7eaf002a1a10b7837890e4f078ea2c45f",
+        "kind": "static_import",
+        "specifier": "./Element.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/Element.js",
+        "location": {
+          "script_key": "scr_e5d1251fc9f69eb65290d0a8facefda7eaf002a1a10b7837890e4f078ea2c45f",
+          "line": 1,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_e5d1251fc9f69eb65290d0a8facefda7eaf002a1a10b7837890e4f078ea2c45f",
+        "kind": "static_import",
+        "specifier": "../file/audio.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/audio.js",
+        "location": {
+          "script_key": "scr_e5d1251fc9f69eb65290d0a8facefda7eaf002a1a10b7837890e4f078ea2c45f",
+          "line": 2,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_ec4ea474430e246a253ea9df65bf2b33f5a8e8a8cf5c810e05fc6a9c05b39f55",
+        "kind": "static_import",
+        "specifier": "../../utils/Sprite.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/Sprite.js",
+        "location": {
+          "script_key": "scr_ec4ea474430e246a253ea9df65bf2b33f5a8e8a8cf5c810e05fc6a9c05b39f55",
+          "line": 1,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_ec4ea474430e246a253ea9df65bf2b33f5a8e8a8cf5c810e05fc6a9c05b39f55",
+        "kind": "static_import",
+        "specifier": "./Tower.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/component/Tower.js",
+        "location": {
+          "script_key": "scr_ec4ea474430e246a253ea9df65bf2b33f5a8e8a8cf5c810e05fc6a9c05b39f55",
+          "line": 2,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_ec4ea474430e246a253ea9df65bf2b33f5a8e8a8cf5c810e05fc6a9c05b39f55",
+        "kind": "static_import",
+        "specifier": "../../file/audio.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/audio.js",
+        "location": {
+          "script_key": "scr_ec4ea474430e246a253ea9df65bf2b33f5a8e8a8cf5c810e05fc6a9c05b39f55",
+          "line": 3,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_ec4ea474430e246a253ea9df65bf2b33f5a8e8a8cf5c810e05fc6a9c05b39f55",
+        "kind": "static_import",
+        "specifier": "../data/projectileData.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/data/projectileData.js",
+        "location": {
+          "script_key": "scr_ec4ea474430e246a253ea9df65bf2b33f5a8e8a8cf5c810e05fc6a9c05b39f55",
+          "line": 4,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_f09871348edb985360e3a3c2653b65b3b74f2b70823b4c99e62ee730d468065a",
+        "kind": "static_import",
+        "specifier": "./game/Init.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/Init.js",
+        "location": {
+          "script_key": "scr_f09871348edb985360e3a3c2653b65b3b74f2b70823b4c99e62ee730d468065a",
+          "line": 1,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_f09871348edb985360e3a3c2653b65b3b74f2b70823b4c99e62ee730d468065a",
+        "kind": "static_import",
+        "specifier": "./file/data.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/data.js",
+        "location": {
+          "script_key": "scr_f09871348edb985360e3a3c2653b65b3b74f2b70823b4c99e62ee730d468065a",
+          "line": 2,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_f588475ca0ab464d28a18f63b364d3979c025f2aadd3672d4483f12ef64c25ea",
+        "kind": "static_import",
+        "specifier": "./Projectile.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/component/Projectile.js",
+        "location": {
+          "script_key": "scr_f588475ca0ab464d28a18f63b364d3979c025f2aadd3672d4483f12ef64c25ea",
+          "line": 1,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_f588475ca0ab464d28a18f63b364d3979c025f2aadd3672d4483f12ef64c25ea",
+        "kind": "static_import",
+        "specifier": "../../utils/Sprite.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/utils/Sprite.js",
+        "location": {
+          "script_key": "scr_f588475ca0ab464d28a18f63b364d3979c025f2aadd3672d4483f12ef64c25ea",
+          "line": 2,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_f588475ca0ab464d28a18f63b364d3979c025f2aadd3672d4483f12ef64c25ea",
+        "kind": "static_import",
+        "specifier": "../../file/audio.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/file/audio.js",
+        "location": {
+          "script_key": "scr_f588475ca0ab464d28a18f63b364d3979c025f2aadd3672d4483f12ef64c25ea",
+          "line": 3,
+          "column": 0
+        }
+      },
+      {
+        "from_script_key": "scr_f588475ca0ab464d28a18f63b364d3979c025f2aadd3672d4483f12ef64c25ea",
+        "kind": "static_import",
+        "specifier": "../data/projectileData.js",
+        "resolved_url": "https://pokepath-game.pages.dev/src/js/game/data/projectileData.js",
+        "location": {
+          "script_key": "scr_f588475ca0ab464d28a18f63b364d3979c025f2aadd3672d4483f12ef64c25ea",
+          "line": 4,
+          "column": 0
+        }
+      }
+    ]
+  },
+  "limitations": [
+    "Artifact identity is unavailable for this observation.",
+    "Static bundle findings are observations or bounded inferences; REA does not execute captured JavaScript.",
+    "Bare string arguments of unbound HTTP-method-named calls are low-confidence endpoint candidates; form, translation, storage and other APIs can use the same syntax. URL-shaped findings still do not prove network execution.",
+    "Endpoint candidates are deduplicated by script, value and detector; basis retains only the first matching source coordinate. They are not a complete call-site inventory or a runtime occurrence count. completeness.status=\"complete\" describes examination of captured source, not a call-site census.",
+    "String-built routes and endpoints, encrypted configuration, and server-side behavior may remain unknown.",
+    "Page-declared WebMCP metadata is untrusted and is never registered or invoked as an REA tool."
+  ]
+}

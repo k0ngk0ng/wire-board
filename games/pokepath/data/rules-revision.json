@@ -1,0 +1,475 @@
+{
+  "format": 1,
+  "version": "1.7.3",
+  "rulesRevision": "d6a01ea5b411fb7c3c2f897823ce338fe74f4850745dcce577aa92a446ba83ac",
+  "rulesVersion": "pokepath-native-1/d6a01ea5b411fb7c3c2f897823ce338fe74f4850745dcce577aa92a446ba83ac/1a87b0c593060ef3bc849dbd033590a9c247c5ba1e485f0ced16f6b1fd50454b",
+  "factsSHA256": "1a87b0c593060ef3bc849dbd033590a9c247c5ba1e485f0ced16f6b1fd50454b",
+  "engine": {
+    "format": 1,
+    "normalization": "gofmt-go-v1",
+    "files": [
+      {
+        "path": "games/pokepath/engine/abilities.go",
+        "bytes": 72883,
+        "sha256": "9649397a9893a8123cce2b1316fea341c699e07a428086a7aeb3bee6f9c2abb8"
+      },
+      {
+        "path": "games/pokepath/engine/actions.go",
+        "bytes": 11905,
+        "sha256": "08f3341b0d938cd7c377016c2fd72fa650123910b8e2a45cd7886290dbec2ef2"
+      },
+      {
+        "path": "games/pokepath/engine/ai.go",
+        "bytes": 18101,
+        "sha256": "f1daaa0e06ff8c4555a60694e6d39811397f02a85f45e604b41589d99ce2faa5"
+      },
+      {
+        "path": "games/pokepath/engine/attack_modes.go",
+        "bytes": 33282,
+        "sha256": "16feefaeec1c036727a8d3cc7b7c5336136524b8673dace7e2046bb117ed2ff5"
+      },
+      {
+        "path": "games/pokepath/engine/beams.go",
+        "bytes": 3558,
+        "sha256": "02cd6b218f92ae10ff5147f988d2b23c775070511ee6a21d2d608f7ddb45725c"
+      },
+      {
+        "path": "games/pokepath/engine/catalog.go",
+        "bytes": 466,
+        "sha256": "3b939b8fa4cd2b9c223aaf03cb20c74d7b11dbeb51f274b0d213a82bb36422b3"
+      },
+      {
+        "path": "games/pokepath/engine/challenges.go",
+        "bytes": 13163,
+        "sha256": "dcb45e79e5baf9287ab364ae550e07c275b680473ae0b91193ce1ae80cd73a35"
+      },
+      {
+        "path": "games/pokepath/engine/clock.go",
+        "bytes": 14920,
+        "sha256": "0e35d3e359dea78fbbc7bd52653f5493cb31c6816c9c87cc7d0517bb2f5320e6"
+      },
+      {
+        "path": "games/pokepath/engine/combat.go",
+        "bytes": 31640,
+        "sha256": "09e4969bee8e0d49f9d56f001ceef1033faddfc89f7ce3e557f1b243b5df60c1"
+      },
+      {
+        "path": "games/pokepath/engine/combat_counters.go",
+        "bytes": 2221,
+        "sha256": "e1928349f92e5a76e3ba1f667903425492a3bee2965b0c58f9c932d64bbce3d3"
+      },
+      {
+        "path": "games/pokepath/engine/combat_order.go",
+        "bytes": 2370,
+        "sha256": "681797fea64b8b4c2bfac6addc5aeed27d5972c493000d600b9d975733d8570f"
+      },
+      {
+        "path": "games/pokepath/engine/damage_events.go",
+        "bytes": 1491,
+        "sha256": "2264e7b544bcf338b3b7fbf00188a5f9a6bae713df3436da684dc671dbaca29d"
+      },
+      {
+        "path": "games/pokepath/engine/dex_stats.go",
+        "bytes": 2997,
+        "sha256": "a47361bf98be4fb8e4bdcb881e07226b7713870b11e8b32e29086ac987f4d3a8"
+      },
+      {
+        "path": "games/pokepath/engine/editor.go",
+        "bytes": 9428,
+        "sha256": "a4d346d3775b062d42b826bebdc44bf5e6dd7e991c6b1d1b37769d8103f14659"
+      },
+      {
+        "path": "games/pokepath/engine/effects.go",
+        "bytes": 44120,
+        "sha256": "0ae998edc1f86d12ae22cf9a5477de9b0b2d726ab93ff6166ec372dd58ae4e36"
+      },
+      {
+        "path": "games/pokepath/engine/flying_control.go",
+        "bytes": 541,
+        "sha256": "41cbd4498a4cf9190480df43e2f9dbf4d81bfb39b7dd5804d2b2f5b07516dd23"
+      },
+      {
+        "path": "games/pokepath/engine/geometry.go",
+        "bytes": 1288,
+        "sha256": "59ded22fe1ad7915b660ce61d2bc731ee6be0b6e8a8d3adeac1574ee1ae9efea"
+      },
+      {
+        "path": "games/pokepath/engine/healing.go",
+        "bytes": 4328,
+        "sha256": "55b73e116ae6baf38976fe3e745a16a4cfda990cbfb8dd21bb5c7eb7bc1b13eb"
+      },
+      {
+        "path": "games/pokepath/engine/inventory.go",
+        "bytes": 635,
+        "sha256": "87935735b33196be6732a8e89010530fabe023094fcc9f017d41667796570cae"
+      },
+      {
+        "path": "games/pokepath/engine/map_visibility.go",
+        "bytes": 508,
+        "sha256": "7e247649f44d198051fb930d4548bac0ff360b81dd4474e9845700cc6bfb0c7f"
+      },
+      {
+        "path": "games/pokepath/engine/passive_events.go",
+        "bytes": 4881,
+        "sha256": "f98b4a7169dc2373d96ec8e7e81271dd0f847cf23c1573de88adf8fa43f1f950"
+      },
+      {
+        "path": "games/pokepath/engine/persistent_areas.go",
+        "bytes": 4884,
+        "sha256": "64fa8fe75d391a162e38b3159c02d53e07d288528f8981b0f9c2acc62b950196"
+      },
+      {
+        "path": "games/pokepath/engine/profile.go",
+        "bytes": 7699,
+        "sha256": "b055aea9b9e7d2f109bc92e523b8c81d635d0e19ed1d4abe5843c46779d3521b"
+      },
+      {
+        "path": "games/pokepath/engine/progression.go",
+        "bytes": 81284,
+        "sha256": "f7002644477d2040787f970dacc359b3667c21d7d39ccaa47c86ab75f2c99b52"
+      },
+      {
+        "path": "games/pokepath/engine/projectile_links.go",
+        "bytes": 6212,
+        "sha256": "a529a3fb3594c6df980e77697c73a7204380e0c2e175939f639f8cee9abc1154"
+      },
+      {
+        "path": "games/pokepath/engine/projectile_motion.go",
+        "bytes": 11268,
+        "sha256": "a74e3787b36a7b5e39d865e1e3754efe5e78f8455b654601b989482ac2622e6a"
+      },
+      {
+        "path": "games/pokepath/engine/resources.go",
+        "bytes": 9537600,
+        "sha256": "9b576647fc1aec3d0ca623fa245dc5bd4a6a6f65b97f56a62753e0f7c8a04b88"
+      },
+      {
+        "path": "games/pokepath/engine/resources_darwin.go",
+        "bytes": 80,
+        "sha256": "bb59bc294f428b79eaed3ea98bead6a08f6f3140d4ec479564f1885600de7019"
+      },
+      {
+        "path": "games/pokepath/engine/resources_js.go",
+        "bytes": 70,
+        "sha256": "edc81e18e0bd4bd87e4eb036abe750f6498b7ff30327a2aeae330f321840ac88"
+      },
+      {
+        "path": "games/pokepath/engine/resources_linux.go",
+        "bytes": 80,
+        "sha256": "bb59bc294f428b79eaed3ea98bead6a08f6f3140d4ec479564f1885600de7019"
+      },
+      {
+        "path": "games/pokepath/engine/resources_shared.go",
+        "bytes": 7600,
+        "sha256": "6873c40bdd8b0964242c4ed8ac8fb87f467ce003ad916aab7f70c0673d4cb806"
+      },
+      {
+        "path": "games/pokepath/engine/resources_windows.go",
+        "bytes": 80,
+        "sha256": "bb59bc294f428b79eaed3ea98bead6a08f6f3140d4ec479564f1885600de7019"
+      },
+      {
+        "path": "games/pokepath/engine/results.go",
+        "bytes": 3236,
+        "sha256": "561606c779a3dd6b8aa799eebe0908dea031e60807a8074d51c8aa921ed05a6b"
+      },
+      {
+        "path": "games/pokepath/engine/settings.go",
+        "bytes": 5237,
+        "sha256": "443a4754509c6c6677cf1cc5f39484400adc36c40f946efe6eb6fdcda4f14e7c"
+      },
+      {
+        "path": "games/pokepath/engine/shape_auras.go",
+        "bytes": 759,
+        "sha256": "593a637a765db877e225c80e9df4519ca65839beac33e111fb601791bcf61164"
+      },
+      {
+        "path": "games/pokepath/engine/spawn.go",
+        "bytes": 2533,
+        "sha256": "3300678dd5276871b8e48e5e6ca51ce1683d64398f386a96388890fbfdd9bf3f"
+      },
+      {
+        "path": "games/pokepath/engine/state.go",
+        "bytes": 17049,
+        "sha256": "44cb7eefb8b3c6d44f9b6126334bb20f36fad88c05efbc089f44ecdea200ffca"
+      },
+      {
+        "path": "games/pokepath/engine/targeting.go",
+        "bytes": 4734,
+        "sha256": "21b5d2c909f1339ffce001795f151a6b9ac5ffefdcb9826d23d0713429e2c841"
+      },
+      {
+        "path": "games/pokepath/engine/types.go",
+        "bytes": 22421,
+        "sha256": "0c97cbfa26dc23b0be84a94cfd749acb2510bd8cb548e9e2aa354917a4581569"
+      },
+      {
+        "path": "games/pokepath/engine/vector_length.go",
+        "bytes": 373,
+        "sha256": "83be4ca1bf1abcaa8df3727fd93ef7c6ee404079aaef5445e01342f047619578"
+      },
+      {
+        "path": "games/pokepath/engine/view_lists.go",
+        "bytes": 3761,
+        "sha256": "62a1c04587efe519350d2e18ede4e52d20a59baf980bf115a5ae7066d21f7ef7"
+      },
+      {
+        "path": "games/pokepath/engine/world_abilities.go",
+        "bytes": 73653,
+        "sha256": "06bab633af0a78dddd6aa62174ea624f062aa4e9f73c1a4a37fca866846193e1"
+      }
+    ]
+  },
+  "catalog": {
+    "path": "games/pokepath/data/catalog.json",
+    "bytes": 9537352,
+    "sha256": "079104e3dc897689396a25f6b01dffcb9478c2f7e56cacdb8ba6cbdb982fd8a7"
+  },
+  "clientData": {
+    "sha256": "e8a28cfb4594b467a2069be77b082d2d3f4ffbe379c37fda9a5e122ceec24209",
+    "files": [
+      {
+        "path": "catalog.json",
+        "bytes": 2135618,
+        "sha256": "29d7336cec418e230b1525cacf16455cbd9ef4261bf84351c7bb0d4eda5dcc47"
+      },
+      {
+        "path": "routes/0.json",
+        "bytes": 49321,
+        "sha256": "6739ccd13d43369855cf960910e3fd8492b466f753464203c5ca7963864c7544"
+      },
+      {
+        "path": "routes/1.json",
+        "bytes": 56334,
+        "sha256": "6519405afcd214978381ff88b5cba2aba93e26c1c505e370758981956b32682d"
+      },
+      {
+        "path": "routes/10.json",
+        "bytes": 65137,
+        "sha256": "f590a6d0afa921f71655a4db2b07e063927e82383e8b4596b802e88bfa4b4d48"
+      },
+      {
+        "path": "routes/11.json",
+        "bytes": 50474,
+        "sha256": "4c8bb6ce4befadc8959e8e66dbbcfa5c0254e7107a1ccb2adc6a92f7e4895f8f"
+      },
+      {
+        "path": "routes/12.json",
+        "bytes": 74364,
+        "sha256": "fc50168e55c65c0dfa80fa4ba6a6aaf719391c45d549633772e7b2ce508fe770"
+      },
+      {
+        "path": "routes/13.json",
+        "bytes": 71947,
+        "sha256": "c176ee4920732c2831c8b4fdad5bc217d0df44accb516cb993acb9bb1fbfad94"
+      },
+      {
+        "path": "routes/14.json",
+        "bytes": 73129,
+        "sha256": "f8704f622394cf847147ad81f6c655a52239326c12f17c1f1070ebe0dc585971"
+      },
+      {
+        "path": "routes/15.json",
+        "bytes": 81341,
+        "sha256": "830f7566365ee0987df5ef466c32f601da3bbc97fa5ab151bd0cb0ead6949fa5"
+      },
+      {
+        "path": "routes/16.json",
+        "bytes": 55799,
+        "sha256": "3da764ec52a5b84dce5f17dda533f0fe4f8e56bbbc260dc2ccef35615956064e"
+      },
+      {
+        "path": "routes/17.json",
+        "bytes": 81662,
+        "sha256": "d9476c9bee80e97b209571dce9663f835ce644c0284917741b26b09eb6d50231"
+      },
+      {
+        "path": "routes/18.json",
+        "bytes": 86884,
+        "sha256": "54070b4687ea62ec67a9233748a7eb3fcde4e6589df0c6f9fa8bed57ed8a5887"
+      },
+      {
+        "path": "routes/19.json",
+        "bytes": 89599,
+        "sha256": "b583272a75ab750743e0aee47091d12e9912354ab320ddfd8630d2a083e2f028"
+      },
+      {
+        "path": "routes/2.json",
+        "bytes": 79323,
+        "sha256": "7566f610720d9e2e89b5c17876387660cc89623e8fa979b38178efded738e711"
+      },
+      {
+        "path": "routes/20.json",
+        "bytes": 2671,
+        "sha256": "9abdc1d0db73144e7ee60b6d1c76e047da610cfb0ca507268a5b3e850769c0f1"
+      },
+      {
+        "path": "routes/21.json",
+        "bytes": 58412,
+        "sha256": "ffff75898e7447f7e380993813d2f05ea459e47f3ea419cbf70454c894c369a9"
+      },
+      {
+        "path": "routes/22.json",
+        "bytes": 64055,
+        "sha256": "6fc16f85e152c32dcd92bf31f90fecd997b025f0d216ce38d119d4447c6b6bde"
+      },
+      {
+        "path": "routes/23.json",
+        "bytes": 55577,
+        "sha256": "519ddcefbdf491a3a4208d6ff2eb5e95873694fcf48e435bda21c5aeefe16aaa"
+      },
+      {
+        "path": "routes/24.json",
+        "bytes": 75553,
+        "sha256": "ed85879095de84f17164490d9b939fcb712b590ca1070df4750aa218fe71fe3a"
+      },
+      {
+        "path": "routes/25.json",
+        "bytes": 59351,
+        "sha256": "9a175ae585c5e324954bbf577976edc6df3f3c6a9ab8c533c9066ffc6208b32a"
+      },
+      {
+        "path": "routes/26.json",
+        "bytes": 117614,
+        "sha256": "277541a98fc08bafdf090a68ebfb272d99086477b1c64fa236f34249d653a92f"
+      },
+      {
+        "path": "routes/27.json",
+        "bytes": 64123,
+        "sha256": "a872c6b1f65450520a1d997a0dc338f4b7bf67f49c3a5917c1a99877a89b3852"
+      },
+      {
+        "path": "routes/28.json",
+        "bytes": 73708,
+        "sha256": "64de3f0751eca15db34b368953f29c28947dd95564f391c4882a0ffd1012f74d"
+      },
+      {
+        "path": "routes/29.json",
+        "bytes": 61582,
+        "sha256": "97a90b7061c3f72cf91b9b2d648e5e5116df36607d42c0fdb8c4c4eb5da5841b"
+      },
+      {
+        "path": "routes/3.json",
+        "bytes": 50599,
+        "sha256": "97dca9cafe9a8b3c6a5a70e188584dbf344e547b3b32cd86cbda63aafc62ec39"
+      },
+      {
+        "path": "routes/30.json",
+        "bytes": 3156,
+        "sha256": "5964bd9725abb4518901ef2a5d487baf428d5cf7093bbea4ba5c936265376846"
+      },
+      {
+        "path": "routes/31.json",
+        "bytes": 3444,
+        "sha256": "7aba3701d2aa76437a13a246c0696b2a00fb21481fd2a77dfff518b7ada83936"
+      },
+      {
+        "path": "routes/32.json",
+        "bytes": 2960,
+        "sha256": "f4b6826e0fb7b0960916966c741df6877a6c5761b4006768868a2a047143ad5e"
+      },
+      {
+        "path": "routes/33.json",
+        "bytes": 2667,
+        "sha256": "fb60da8066371d4b82da3a2d91215219d958f85b96399bab043d43f40eff6949"
+      },
+      {
+        "path": "routes/34.json",
+        "bytes": 45381,
+        "sha256": "a5d8ab04113670d5d5e6461a9e1ba8432a0d2cd27803665543814d661fdf66e8"
+      },
+      {
+        "path": "routes/35.json",
+        "bytes": 6437,
+        "sha256": "3c4110ad21dda4d66a254735effc5915dfb0ee32c67ede49edd40524462ce8b1"
+      },
+      {
+        "path": "routes/36.json",
+        "bytes": 44879,
+        "sha256": "78524ac57148e3cc119ce84175876a472f9036db5d3629881e50856c541edf28"
+      },
+      {
+        "path": "routes/37.json",
+        "bytes": 51706,
+        "sha256": "00d827ac677cb78fb3f59c95fffc5bca4259a7350fe587fae7251ce2145b9006"
+      },
+      {
+        "path": "routes/38.json",
+        "bytes": 44926,
+        "sha256": "a47dea156efb02b9e44253b189bbe225bb64d1af477d1dc71fb12d2555295920"
+      },
+      {
+        "path": "routes/39.json",
+        "bytes": 73749,
+        "sha256": "f3984de0594d10b5ee86eb6c3fe64b3590d01f9bcd2782f9615a7c0146c22c35"
+      },
+      {
+        "path": "routes/4.json",
+        "bytes": 42932,
+        "sha256": "9dd29ccba697378124704327e7cf8849f8ae9a50cd2530ac90873cbb1aa36046"
+      },
+      {
+        "path": "routes/40.json",
+        "bytes": 77793,
+        "sha256": "a4c177c3b7248e1fd84ba8a68bfb537a8390c8764bb3afbaca935621af9b403e"
+      },
+      {
+        "path": "routes/41.json",
+        "bytes": 88244,
+        "sha256": "7e447c8608ae058e63c59ef89a29da05dcd5e138200f2bd5e3cc21f0b6878d95"
+      },
+      {
+        "path": "routes/42.json",
+        "bytes": 71682,
+        "sha256": "bb3ec375509e1ac48a7ce2bd627cd100cb806863f328d39e024861eb3e4dc890"
+      },
+      {
+        "path": "routes/43.json",
+        "bytes": 66187,
+        "sha256": "822e164d44f4b2cb993c7e1c5ac7272e7976742c0f8091bbfa591f928461ca34"
+      },
+      {
+        "path": "routes/44.json",
+        "bytes": 69325,
+        "sha256": "5cdba2c2911e76e57cbf7ed848fad0ce7e5dc2532600f98383e6276bb51bfe8b"
+      },
+      {
+        "path": "routes/45.json",
+        "bytes": 96650,
+        "sha256": "5aac33d1c22af5fd2230cd0044268a2f602b91c2694dfc2743ba99b8cac370e4"
+      },
+      {
+        "path": "routes/46.json",
+        "bytes": 3300,
+        "sha256": "1c05362d648dbd049a3d93e0d1c5f40163475895b6f519905aa11803f1747bb7"
+      },
+      {
+        "path": "routes/5.json",
+        "bytes": 67279,
+        "sha256": "1aae7b823c450876b18a949c95267b44bd23669dce873b6608c7f41f05d7b805"
+      },
+      {
+        "path": "routes/6.json",
+        "bytes": 47841,
+        "sha256": "5412b383a60f8e9a1917e1799d757897ee8b481cedc608642885a572433cc01a"
+      },
+      {
+        "path": "routes/7.json",
+        "bytes": 49362,
+        "sha256": "f1a977b66b52e22c6299074ae7b5c092e93eb378fed1c353e1e0e8bbf0b481bc"
+      },
+      {
+        "path": "routes/8.json",
+        "bytes": 52001,
+        "sha256": "977eb9a44f8e608c724e07055cc08bbf240c28b3cea517c2327956f5d97cacca"
+      },
+      {
+        "path": "routes/9.json",
+        "bytes": 75857,
+        "sha256": "09311bf7e61104e35c649b310b2d9c34f585a92739deb54bb0c8981567d7451c"
+      }
+    ]
+  },
+  "generatorSHA256": "10fee953a764b58e81d9a0290e93a030e6b47d6558b4da7045c3ac723c08295f",
+  "revisionFileSHA256": "e366771469364580c488dc3681f4ce4f0bc266b7a9810db45b2be522a49516bf"
+}

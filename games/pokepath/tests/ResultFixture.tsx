@@ -1,0 +1,24 @@
+import { createRoot } from "react-dom/client";
+import { I18nProvider } from "../web/I18n";
+import { AssetStore } from "../web/assets";
+import { ResultPanel } from "../web/ResultPanel";
+import type { Action, Catalog, View } from "../web/types";
+
+const data = Reflect.get(window, "oracleData") as { catalog: Catalog; dictionary: unknown; input: { view: View }; parameters: { language: string; theme: string; font: string; phase: View["phase"]; wave: string; challenge: string } };
+const { view } = data.input;
+const { language, theme, font, phase, wave, challenge } = data.parameters;
+view.phase = phase;
+view.wave = Number(wave);
+view.route = challenge === "full" && phase === "route_complete" ? 21 : 0;
+view.health = phase === "defeat" || phase === "practice_complete" && view.wave === 2 ? 0 : 12;
+if (phase === "practice_complete") view.wave = 1;
+view.progression!.settings = { ...view.progression!.settings, language: Number(language), theme, font };
+view.progression!.custom = phase === "practice_complete";
+if (challenge === "full") view.progression!.challenge = { active: true, levelCap: 50, slotLimit: 6, toughEnemies: 50, draft: true, noItems: false, permadeath: true, mirror: true };
+const store = new AssetStore(new URL("/pokepath/v1/", location.href), () => {});
+await store.initialize();
+await store.font(font);
+const actions: Action[] = [];
+Reflect.set(window, "resultActions", actions);
+createRoot(document.getElementById("root")!).render(<section className="pokepath-board"><div className="pokepath-classic-scene"><I18nProvider language={Number(language)} dictionary={data.dictionary} catalog={data.catalog}><ResultPanel view={view} assets={{ catalog: data.catalog, images: store.images, urls: store.urls, ready: true, version: 0 }} store={store} disabled={false} onAct={action => actions.push(action)} /></I18nProvider></div></section>);
+await new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));

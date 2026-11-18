@@ -1,0 +1,2 @@
+export const targetOptions = [["first", "最前"], ["last", "最後"], ["highHP", "最高生命"], ["lowHP", "最低生命"], ["highArmor", "最高護甲"], ["noArmor", "無護甲"], ["faster", "最快"], ["slower", "最慢"], ["poisoned", "已中毒"], ["notPoisoned", "未中毒"], ["burned", "已灼傷"], ["notBurned", "未灼傷"], ["stuned", "已眩暈"], ["notStuned", "未眩暈"], ["slowed", "已減速"], ["notSlowed", "未減速"], ["cursed", "已詛咒"], ["curseable", "未詛咒"], ["nightmared", "夢魘"], ["random", "隨機"], ["invisible", "隱形"]];
+export const fixedTargets: Record<string, string> = { area: "範圍", aura: "氣場", bombardment: "轟炸", orbital: "軌道", allies: "同伴" };
