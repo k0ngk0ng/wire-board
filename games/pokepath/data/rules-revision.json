@@ -1,8 +1,8 @@
 {
   "format": 1,
   "version": "1.7.3",
-  "rulesRevision": "d6a01ea5b411fb7c3c2f897823ce338fe74f4850745dcce577aa92a446ba83ac",
-  "rulesVersion": "pokepath-native-1/d6a01ea5b411fb7c3c2f897823ce338fe74f4850745dcce577aa92a446ba83ac/1a87b0c593060ef3bc849dbd033590a9c247c5ba1e485f0ced16f6b1fd50454b",
+  "rulesRevision": "401d71da4e3677ea2f18c69822760e066026d1e96ed303234a43b5e8a7d5a616",
+  "rulesVersion": "pokepath-native-1/401d71da4e3677ea2f18c69822760e066026d1e96ed303234a43b5e8a7d5a616/1a87b0c593060ef3bc849dbd033590a9c247c5ba1e485f0ced16f6b1fd50454b",
   "factsSHA256": "1a87b0c593060ef3bc849dbd033590a9c247c5ba1e485f0ced16f6b1fd50454b",
   "engine": {
     "format": 1,
@@ -125,8 +125,8 @@
       },
       {
         "path": "games/pokepath/engine/progression.go",
-        "bytes": 81284,
-        "sha256": "f7002644477d2040787f970dacc359b3667c21d7d39ccaa47c86ab75f2c99b52"
+        "bytes": 81227,
+        "sha256": "36c00deb4c8fdbce68c84cb7c6874657b34550c62c0b2d968b0f652ef378dfe0"
       },
       {
         "path": "games/pokepath/engine/projectile_links.go",
@@ -471,5 +471,5 @@
     ]
   },
   "generatorSHA256": "10fee953a764b58e81d9a0290e93a030e6b47d6558b4da7045c3ac723c08295f",
-  "revisionFileSHA256": "e366771469364580c488dc3681f4ce4f0bc266b7a9810db45b2be522a49516bf"
+  "revisionFileSHA256": "3262d2a6d6c512fcf17d42da6f7630f22b863e4e82bf20112c868e7a069d577e"
 }

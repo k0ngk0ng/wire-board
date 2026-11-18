@@ -2119,9 +2119,9 @@ func progressionAchievementFor(state *State, enemy Enemy, metrics EncounterProgr
 	case "diancie":
 		return "28", metrics.Criticals == 0
 	case "zamazenta":
-		return "29", 4-float64(max(0, enemy.ReceivedHits-1))*0.02 > -0.1
+		return "29", enemy.ReceivedHits < 205
 	case "zacian":
-		return "30", -1+float64(max(0, enemy.ReceivedHits-1))*0.02 < -0.9
+		return "30", enemy.ReceivedHits < 5
 	case "virizion":
 		return "32", !enemy.PassiveFlags["justifiedTriggered"]
 	case "landorus":

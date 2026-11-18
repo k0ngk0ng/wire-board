@@ -3,6 +3,7 @@ package pokepath_test
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"math"
 	"os"
 	"path/filepath"
@@ -1255,5 +1256,36 @@ func TestNativeProgressionSpecialEvolutionItemsAndShedinjaE2E(t *testing.T) {
 	progressionAct(t, state, 2, engine.Action{Type: "upgrade", PokemonID: inkay})
 	if progressionMember(state, inkay).Species != "malamar" {
 		t.Fatal("equipped Inkay did not evolve on the next level")
+	}
+}
+
+func TestNativeProgressionShieldAndSwordAchievementHitBoundariesE2E(t *testing.T) {
+	for _, scenario := range []struct {
+		key      string
+		id       string
+		hits     int
+		unlocked bool
+	}{
+		{"zamazenta", "29", 0, true},
+		{"zamazenta", "29", 204, true},
+		{"zamazenta", "29", 205, false},
+		{"zamazenta", "29", 206, false},
+		{"zacian", "30", 0, true},
+		{"zacian", "30", 4, true},
+		{"zacian", "30", 5, false},
+		{"zacian", "30", 6, false},
+		{"zacian", "30", 50, false},
+	} {
+		t.Run(fmt.Sprintf("%s-%d", scenario.key, scenario.hits), func(t *testing.T) {
+			state := progressionNew(t)
+			spec := engine.CatalogData().Enemies[scenario.key]
+			enemy := engine.Enemy{ID: state.NextID, Key: scenario.key, Species: scenario.key, EnemyEffectState: engine.EnemyEffectState{HP: 0, MaxHP: spec.Health, Boss: true, PassiveID: spec.PassiveID, ReceivedHits: scenario.hits, PassiveFlags: map[string]bool{"spawned": true}, PassiveCounters: map[string]int{}}}
+			state.NextID++
+			state.Progression.Encounters[enemy.ID] = engine.EncounterProgress{Observed: true}
+			engine.RecordProgressionEnemyDefeat(state, enemy)
+			if state.Progression.Achievements[scenario.id] != scenario.unlocked {
+				t.Fatal("integer passive charge boundary produced the wrong achievement", scenario.hits)
+			}
+		})
 	}
 }

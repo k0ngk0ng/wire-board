@@ -1,6 +1,6 @@
 package engine
 
-const NativeRulesRevision = "d6a01ea5b411fb7c3c2f897823ce338fe74f4850745dcce577aa92a446ba83ac"
+const NativeRulesRevision = "401d71da4e3677ea2f18c69822760e066026d1e96ed303234a43b5e8a7d5a616"
 
 func RulesVersion() string {
 	return "pokepath-native-1/" + NativeRulesRevision + "/" + CatalogData().Source.SourceSHA256
