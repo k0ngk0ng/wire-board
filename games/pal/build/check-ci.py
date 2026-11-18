@@ -18,6 +18,7 @@ PROOF = LOCAL / 'ci'
 MANIFEST = ROOT / 'games/pal/assets/source-manifest.json'
 NATIVE_OUTPUT = LOCAL / 'dense-battle-candidate/campaign'
 PRODUCTION_OUTPUT = LOCAL / 'server-package-ci'
+PUBLISHED_OUTPUT = LOCAL / 'ci-published-rule-input/pal'
 TOOLCHAINS = {
     'Linux-x86_64': [
         ('WebAssembly/wasi-sdk', 'wasi-sdk-34', 'wasi-sdk-34.0-x86_64-linux', 192383077, 'b761e3a0721dbae9c09a0059e5fdb2bf917d1b4a8a7b430fb3b5aafb0984b2c4'),
@@ -111,7 +112,7 @@ def passed_events(log, names):
 
 
 def plan():
-    return {'profile':'original-98','historicalArtifactMode':'local-research','nativeOutputDirectory':NATIVE_OUTPUT.relative_to(ROOT).as_posix(),'validateProductionBundle':True,'preparedOriginalCount':len(json.loads(MANIFEST.read_bytes())['files']),'toolchains':toolchains(),'checks':[{'package':pkg,'tests':tests} for pkg,tests in CHECKS.items()]}
+    return {'profile':'original-98','historicalArtifactMode':'local-research','nativeOutputDirectory':NATIVE_OUTPUT.relative_to(ROOT).as_posix(),'validateProductionBundle':True,'requiredRuntime':'verified-server-publication','preparedOriginalCount':len(json.loads(MANIFEST.read_bytes())['files']),'toolchains':toolchains(),'checks':[{'package':pkg,'tests':tests} for pkg,tests in CHECKS.items()]}
 
 
 def main():
@@ -123,7 +124,7 @@ def main():
         print(json.dumps(specification,indent=2))
         return
     required_path = LOCAL / 'native' / 'rules.wasm'
-    if any(path.exists() for path in [PROOF,required_path,NATIVE_OUTPUT,PRODUCTION_OUTPUT,LOCAL/'authority-prepared']):
+    if any(path.exists() for path in [PROOF,required_path,NATIVE_OUTPUT,PRODUCTION_OUTPUT,PUBLISHED_OUTPUT,LOCAL/'authority-prepared']):
         parser.error('use a clean checkout so PAL CI does not overwrite local cores or evidence')
     (ROOT/'.local/tmp').mkdir(parents=True,exist_ok=True)
     PROOF.mkdir(parents=True)
@@ -136,18 +137,30 @@ def main():
         env.update(PAL_WASI_SDK=str(sdk), PAL_WASM_OPT=str(optimizer))
         command([sys.executable,'-B','games/pal/assets/fetch.py'],env,'source-data')
         command([sys.executable,'-B','games/pal/build/native.py','--out',str(NATIVE_OUTPUT)],env,'native-build')
-        required_path.parent.mkdir(parents=True,exist_ok=True)
-        shutil.copyfile(NATIVE_OUTPUT/'rules.wasm',required_path)
         command([sys.executable,'-B','games/pal/build/authority.py'],env,'authority-build')
-        report['nativeSHA256'] = sha(required_path)
-        if report['nativeSHA256'] != sha(NATIVE_OUTPUT/'rules.wasm'):
-            raise ValueError('PAL CI test core differs from the production build input')
+        report['sourceCoreSHA256'] = sha(NATIVE_OUTPUT/'rules.wasm')
         report['authoritySHA256'] = sha(LOCAL/'authority-prepared/authority.zip')
         report['sourceManifestSHA256'] = sha(MANIFEST)
-        production_log = command([sys.executable,'-B','games/pal/build/server-package.py','--core',str(NATIVE_OUTPUT/'rules.wasm'),'--out',str(PRODUCTION_OUTPUT)],env,'production-bundle')
-        production = json.loads(production_log.read_bytes())
-        if not production['passed'] or production['identity']['buildID'] != report['nativeSHA256'] or production['identity']['profile'] != 'original-98' or production['identity']['purpose'] != 'campaign' or not all(production[key] for key in ['singlePlayer','supportsSave','supportsCheckpoint']):
-            raise ValueError('PAL CI production package differs from the tested original campaign core')
+        rebuilt_log = command([sys.executable,'-B','games/pal/build/server-package.py','--core',str(NATIVE_OUTPUT/'rules.wasm'),'--out',str(PRODUCTION_OUTPUT)],env,'source-bundle')
+        rebuilt = json.loads(rebuilt_log.read_bytes())
+        if not rebuilt['passed'] or rebuilt['identity']['buildID'] != report['sourceCoreSHA256']:
+            raise ValueError('PAL CI source core failed to open its own rebuilt rule bundle')
+        production_log = command([sys.executable,'-B','games/pal/build/prepare-server.py','--out',str(PUBLISHED_OUTPUT)],env,'production-bundle')
+        distribution = json.loads(production_log.read_bytes())
+        production = distribution['runtime']
+        published = json.loads((ROOT/'games/pal/assets/server-release.json').read_bytes())
+        pin = published['catalogs'][published['current']]
+        core = PUBLISHED_OUTPUT/'cores'/(pin['currentCore']+'.wasm')
+        if not distribution['passed'] or distribution['assetID'] != published['current'] or not production['passed'] or production['identity']['buildID'] != pin['currentCore'] or production['identity']['resourceID'] != rebuilt['identity']['resourceID'] or production['identity']['profile'] != 'original-98' or production['identity']['purpose'] != 'campaign' or not all(production[key] for key in ['singlePlayer','supportsSave','supportsCheckpoint']):
+            raise ValueError('PAL CI did not select the source-bound production publication')
+        if sha(PUBLISHED_OUTPUT/'authority.zip') != report['authoritySHA256'] or sha(core) != pin['currentCore']:
+            raise ValueError('PAL CI production package differs from the rebuilt rules or published core')
+        required_path.parent.mkdir(parents=True,exist_ok=True)
+        shutil.copyfile(core,required_path)
+        report['nativeSHA256'] = sha(required_path)
+        if report['nativeSHA256'] != pin['currentCore']:
+            raise ValueError('PAL CI test core differs from the published original campaign core')
+        report['serverPublicationID'] = published['current']
         report['productionBundle'] = production
         report['nativeOutputDirectory'] = NATIVE_OUTPUT.relative_to(ROOT).as_posix()
         for package,names in CHECKS.items():

@@ -350,7 +350,7 @@ jobs:
         if: always() && matrix.game == 'pvz'
         run: rm -rf .local/pvz/ci-assets/bin .local/pvz/ci-assets/venv .local/pvz/ci-assets/pip-cache
       - uses: actions/upload-artifact@v4
-        if: always()
+        if: always() && (matrix.game != 'pal' || !matrix.backend)
         with:
           name: game-${{ matrix.game }}-acceptance
           path: |

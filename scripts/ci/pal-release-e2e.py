@@ -13,6 +13,7 @@ plan = json.loads(result.stdout)
 assert plan['profile'] == 'original-98' and plan['preparedOriginalCount'] >= 15
 assert plan['nativeOutputDirectory'] == '.local/pal/dense-battle-candidate/campaign'
 assert plan['validateProductionBundle'] is True
+assert plan['requiredRuntime'] == 'verified-server-publication'
 checks = {n: group['package'] for group in plan['checks'] for n in group['tests']}
 assert checks['TestOriginalHiddenSearchEventInventoryPreserved'] == './games/pal/tests'
 assert checks['TestPALOriginalSoloPrivateSaveRestartHTTP'] == checks['TestPALOriginalManualCheckpointReloadAndOldPageHTTP'] == './internal/server'
@@ -26,6 +27,10 @@ assert "if: matrix.game == 'pal' && matrix.backend" in workflow
 assert 'python3 -B games/pal/build/check-ci.py' in workflow
 assert 'runtime-candidates/audio' not in workflow and 'publish-server.py' not in workflow
 assert 'name: pal-clean-ci' in workflow
+pal_upload = workflow.split('      - name: Validate PAL from clean source and original resources',1)[1].split('      - name: Verify changed Contra',1)[0]
+generic_upload = workflow.split('name: game-${{ matrix.game }}-acceptance',1)[0].rsplit('      - uses: actions/upload-artifact@v4',1)[1]
+assert "if: always() && matrix.game == 'pal' && matrix.backend" in pal_upload
+assert "if: always() && (matrix.game != 'pal' || !matrix.backend)" in generic_upload
 spec = importlib.util.spec_from_file_location('ci_scope', ROOT / 'scripts/ci/scope.py')
 scope = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(scope)
