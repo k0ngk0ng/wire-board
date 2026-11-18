@@ -81,13 +81,24 @@ func TestPALOriginalManualCheckpointReloadAndOldPageHTTP(t *testing.T) {
 		b, _ := json.Marshal(v)
 		var out map[string]any
 		json.Unmarshal(b, &out)
-		for _, key := range []string{"epoch", "seq", "appliedSeq", "discardedSeq", "controlAt"} {
+		for _, key := range []string{"epoch", "seq", "appliedSeq", "discardedSeq", "controlAt", "local"} {
 			delete(out, key)
 		}
 		return out
 	}
+	beforeLocal := before["local"].(map[string]any)
+	afterLocal := after["local"].(map[string]any)
+	if beforeLocal["core"] == nil || beforeLocal["core"] != afterLocal["core"] || afterLocal["generation"].(float64) <= beforeLocal["generation"].(float64) {
+		t.Fatal("PAL manual reload lost its original core or retained old local inputs", beforeLocal, afterLocal)
+	}
 	if !reflect.DeepEqual(normalize(frozen), normalize(after)) {
-		t.Fatal("PAL manual reload changed the saved original page, drawing, party or resources")
+		different := []string{}
+		for key, value := range normalize(frozen) {
+			if !reflect.DeepEqual(value, normalize(after)[key]) {
+				different = append(different, key)
+			}
+		}
+		t.Fatal("PAL manual reload changed the saved original page, drawing, party or resources", different)
 	}
 	owner.command(current(owner), "action", oldPage, 400)
 	time.Sleep(250 * time.Millisecond)
