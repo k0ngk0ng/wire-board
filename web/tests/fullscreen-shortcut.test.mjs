@@ -15,7 +15,9 @@ test("F11 uses the shared game fullscreen lifecycle and retains game keyboard fo
   const temporary = join(output, `temporary-${randomUUID().slice(0, 8)}`);
   const require = createRequire(new URL("../package.json", import.meta.url));
   const execute = promisify(execFile);
-  const environment = { ...process.env, TMPDIR: join(root, ".local/tmp"), AGENT_BROWSER_SOCKET_DIR: join(root, ".local/ab"), AGENT_BROWSER_PROFILE: join(temporary, "profile"), AGENT_BROWSER_NO_VERSION_CHECK: "1", AGENT_BROWSER_ARGS: "--mute-audio,--disable-breakpad,--disable-crash-reporter" };
+  const flags = ["--mute-audio", "--disable-breakpad", "--disable-crash-reporter"];
+  if (process.env.GITHUB_ACTIONS === "true") flags.push("--no-sandbox");
+  const environment = { ...process.env, TMPDIR: join(root, ".local/tmp"), AGENT_BROWSER_SOCKET_DIR: join(root, ".local/ab"), AGENT_BROWSER_PROFILE: join(temporary, "profile"), AGENT_BROWSER_NO_VERSION_CHECK: "1", AGENT_BROWSER_ARGS: flags.join(",") };
   const report = { command: "node --test web/tests/fullscreen-shortcut.test.mjs", passed: false, checks: [] };
   await mkdir(temporary, { recursive: true });
   let server;

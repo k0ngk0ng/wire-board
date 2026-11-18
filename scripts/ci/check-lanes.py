@@ -7,7 +7,7 @@ silently use the fast lane; docs/CI-only edits build release assets; a cancelled
 predecessor is missed; a failed required lane still certifies the aggregate;
 Contra research/negative startup tests run on every application package.
 """
-import json, os, shutil, subprocess, tempfile
+import json, os, re, shutil, subprocess, tempfile
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[2]
@@ -85,7 +85,14 @@ with tempfile.TemporaryDirectory(dir=OUT,prefix='replay-') as tmp:
         check('runtime-go-cache-uses-real-build-paths','.local/go-build' in workflow and '.local/go-mod' in workflow)
         go_steps=[block.split('      - ',1)[0] for block in workflow.split('      - uses: actions/setup-go@v5')[1:]]
         check('cache-key-isolated-from-old-default-paths',all('scripts/ci/go-cache-version' in block and 'go.sum' in block for block in go_steps))
-        check('quick-result-does-not-wait-for-frontend','    needs: plan\n' in workflow.split('  quick:',1)[1].split('  frontend:',1)[0])
+        quick=workflow.split('  quick:',1)[1].split('  frontend:',1)[0]
+        check('quick-result-does-not-wait-for-frontend','    needs: plan\n' in quick)
+        browser=quick.partition('      - name: Prepare browser for frontend checks\n')[2].split('\n      - ',1)[0]
+        check('frontend-browser-test-has-runner-dependency',
+              bool(re.search(r'agent-browser@\d+\.\d+\.\d+\b',browser))
+              and "if: needs.plan.outputs.frontend_checks == 'true'" in browser
+              and 'GITHUB_PATH' in browser and 'AGENT_BROWSER_EXECUTABLE_PATH' in browser
+              and quick.index('Prepare browser for frontend checks') < quick.index('Run only selected component checks'))
         check('aggregate-waits-for-required-lanes','needs: [plan, quick, frontend, shared, games, verify]' in workflow)
         block=workflow.split('      - name: Require every selected lane to pass\n',1)[1].split('        run: |\n',1)[1]
         shell='\n'.join(line[10:] if line.startswith('          ') else line for line in block.splitlines())+'\n'
