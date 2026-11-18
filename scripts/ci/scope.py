@@ -72,7 +72,10 @@ def plan(paths, games, manual='', legacy_sources=None, contra_campaigns=False, v
 
 
             engine_data = parts[1] == 'contra' and parts[2] == 'engine'
-            add(parts[1], (path.endswith('.go') and path not in LINT_TOOL_FILES) or parts[2] == 'server' or engine_data or '/tests/testdata/' in path)
+            pal_rules = parts[1] == 'pal' and (parts[2] in ('native', 'engine', 'resources', 'build') or path in {
+                'games/pal/assets/source-manifest.json', 'games/pal/assets/authority-release.json', 'games/pal/assets/server-release.json',
+            })
+            add(parts[1], (path.endswith('.go') and path not in LINT_TOOL_FILES) or parts[2] == 'server' or engine_data or pal_rules or '/tests/testdata/' in path)
             continue
         if path.startswith(('web/src/poker/', 'scripts/poker/', 'internal/gametest/poker_', 'internal/gametest/browser_e2e')):
             for game in POKER: add(game, path.endswith('.go'))
@@ -215,6 +218,8 @@ def quick_commands(root, components):
                 ['python3', '-B', 'scripts/ci/test_scope.py'],
                 ['python3', '-B', 'scripts/ci/check-plan.py'],
                 ['python3', '-B', 'scripts/ci/check-lanes.py'],
+                ['python3', '-B', 'scripts/ci/release-image-e2e.py'],
+                ['python3', '-B', 'scripts/ci/pal-release-e2e.py'],
                 ['node', '--test', 'scripts/ci/baseline.test.cjs', 'scripts/release-source.test.cjs'],
                 ['python3', '-B', 'scripts/test_cdn_local_ready.py'],
             ]

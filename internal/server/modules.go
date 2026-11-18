@@ -39,7 +39,7 @@ func (s *Server) createModule(w http.ResponseWriter, user User, module gameapi.M
 		hash = string(value)
 	}
 	now := time.Now().Unix()
-	r := &Room{ID: randomID(4), Name: name, Kind: module.ID, Options: options, Host: user.ID, Capacity: capacity, Seats: []Seat{{User: user}}, Version: 1, Status: "waiting", Password: hash, Updated: now, LastActive: now}
+	r := &Room{ID: randomID(4), Name: name, Kind: module.ID, Options: options, Host: user.ID, Capacity: capacity, Seats: []Seat{{User: user}}, Version: 1, Status: "waiting", Password: hash, Updated: now, LastActive: now, SupportsSave: module.SupportsSave}
 	if err = s.save(r); err != nil {
 		fail(w, 500, "无法保存房间")
 		return
@@ -136,6 +136,9 @@ func (r *Room) setModule(match gameapi.Match, module gameapi.Module) error {
 		match.Log = []string{}
 	}
 	r.Module = &match
+	// A consent applies only to this unchanged position. Timers, computer moves,
+	// handover and ordinary actions all publish their state through this boundary.
+	r.SaveVotes = nil
 	r.observeChallengeEligibility(match)
 	r.TurnDeadline = match.Deadline
 	if r.TurnDeadline > 0 {
@@ -177,6 +180,10 @@ func (s *Server) startModule(r *Room, actor int, now time.Time) error {
 	if err = m.ValidateMatch(match, len(r.Seats)); err != nil {
 		return err
 	}
+	if m.SupportsCheckpoint && !match.Unrated {
+		return errors.New("可回退存档仅适用于非竞技对局")
+	}
+	r.SupportsCheckpoint, r.Checkpoint = m.SupportsCheckpoint, nil
 	r.Status = "playing"
 	r.MatchID, r.SetupVersion, r.Rated = randomID(12), r.Version+1, !match.HasComputerPlayers && !match.Unrated
 	r.RatingPolicy, r.RatingStarted, r.RatingUnratedReason = m.RatingPolicy, m.RatingPolicy != "", ""
@@ -192,34 +199,38 @@ func (s *Server) startModule(r *Room, actor int, now time.Time) error {
 }
 
 func (s *Server) applyModule(r *Room, actor, version int, action json.RawMessage, now time.Time) error {
-	if r.Loading != nil || r.Module == nil || r.Module.Result != nil || !slices.Contains(r.Module.Actors, actor) {
+	return s.applyModuleContext(r, moduleContext(r, actor, version, now), action)
+}
+
+func (s *Server) applyModuleContext(r *Room, ctx gameapi.Context, action json.RawMessage) error {
+	return applyModuleRules(r, s.modules[r.Kind], ctx, action)
+}
+
+func applyModuleRules(r *Room, module gameapi.Module, ctx gameapi.Context, action json.RawMessage) error {
+	if len(r.SaveVotes) != 0 && module.SaveControl != nil {
+		return errors.New("正在确认保存，请先同意或取消保存")
+	}
+	if r.Loading != nil || r.Module == nil || r.Module.Result != nil || !slices.Contains(r.Module.Actors, ctx.Actor) {
 		return errors.New("当前不能执行游戏行动")
 	}
-	match, err := s.modules[r.Kind].Apply(moduleContext(r, actor, version, now), *r.Module, action)
+	match, err := module.Apply(ctx, *r.Module, action)
 	if err != nil {
 		return err
 	}
 	// An accepted input may advance game physics, but must not postpone an
 	// already scheduled room frame (and starve controlled seats indefinitely).
-	if s.modules[r.Kind].Realtime && match.Result == nil && r.Module.SystemDeadline > 0 && match.SystemDeadline > r.Module.SystemDeadline {
+	if module.Realtime && match.Result == nil && r.Module.SystemDeadline > 0 && match.SystemDeadline > r.Module.SystemDeadline {
 		match.SystemDeadline = r.Module.SystemDeadline
 	}
-	if err = s.modules[r.Kind].ValidateMatch(match, len(r.Seats)); err != nil {
+	if err = module.ValidateMatch(match, len(r.Seats)); err != nil {
 		return err
 	}
-	return s.setModule(r, match)
+	return setModuleResult(r, module, match)
 }
 
 func (s *Server) moduleView(r *Room, viewer int) (map[string]any, error) {
 	// View callbacks receive a detached snapshot, just like action callbacks.
-	raw, err := json.Marshal(r.Module)
-	if err != nil {
-		return nil, err
-	}
-	var match gameapi.Match
-	if err = json.Unmarshal(raw, &match); err != nil {
-		return nil, err
-	}
+	match := cloneModuleMatch(*r.Module)
 	data, err := s.modules[r.Kind].View(match, viewer)
 	if err != nil {
 		return nil, err
@@ -243,6 +254,9 @@ func moduleViewData(r *Room, match gameapi.Match, data any) map[string]any {
 		deadline = 0
 	}
 	view := map[string]any{"kind": r.Kind, "data": data, "actors": actors, "attention": attention, "eliminated": match.Eliminated, "systemDeadline": deadline, "finished": match.Result != nil, "winners": r.Game.Winners, "log": r.Game.Log, "phase": "module", "turn": r.Game.Turn, "round": 1}
+	if match.Restartable {
+		view["restartable"] = true
+	}
 	if match.Paused {
 		view["paused"] = true
 		view["pauseExpiresAt"] = time.Unix(r.LastActive, 0).Add(pausedRoomIdleLimit).UnixMilli()

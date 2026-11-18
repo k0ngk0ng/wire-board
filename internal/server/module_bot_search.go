@@ -26,12 +26,24 @@ type moduleBotSearch struct {
 }
 
 func cloneBotRoom(room *Room) (*Room, error) {
-	raw, err := json.Marshal(room)
+	// The host has already validated module envelopes. Detach their opaque
+	// bytes directly instead of repeatedly scanning them as part of Room JSON.
+	serialized := room
+	if room != nil && room.Module != nil {
+		metadata := *room
+		metadata.Module = nil
+		serialized = &metadata
+	}
+	raw, err := json.Marshal(serialized)
 	if err != nil {
 		return nil, err
 	}
 	var next Room
 	err = json.Unmarshal(raw, &next)
+	if err == nil && room != nil && room.Module != nil {
+		match := cloneModuleMatch(*room.Module)
+		next.Module = &match
+	}
 	return &next, err
 }
 

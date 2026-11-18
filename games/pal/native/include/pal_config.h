@@ -1,0 +1,13 @@
+#ifndef PAL_HEADLESS_CONFIG_H
+#define PAL_HEADLESS_CONFIG_H
+#define PAL_PREFIX "./"
+#define PAL_SAVE_PREFIX "./"
+#define PAL_DEFAULT_WINDOW_WIDTH 320
+#define PAL_DEFAULT_WINDOW_HEIGHT 200
+#define PAL_HAS_JOYSTICKS 0
+#define PAL_HAS_NATIVEMIDI 0
+#define PAL_HAS_CONFIG_PAGE 0
+#define PAL_PLATFORM "wire-board"
+#define PAL_CREDIT ""
+#define PAL_PORTYEAR "2026"
+#endif

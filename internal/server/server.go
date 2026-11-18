@@ -57,6 +57,13 @@ type Seat struct {
 	Left            bool `json:"left"`
 }
 type Room struct {
+	SupportsCheckpoint  bool                 `json:"supportsCheckpoint,omitempty"`
+	Checkpoint          *SavedCheckpoint     `json:"checkpoint,omitempty"`
+	SupportsSave        bool                 `json:"supportsSave,omitempty"`
+	SavedAt             int64                `json:"savedAt,omitempty"`
+	SaveClock           int64                `json:"saveClock,omitempty"`
+	SaveVotes           []string             `json:"saveVotes,omitempty"`
+	ResumeJoined        []string             `json:"resumeJoined,omitempty"`
 	RatingPolicy        gameapi.RatingPolicy `json:"ratingPolicy,omitempty"`
 	RatingStarted       bool                 `json:"ratingStarted,omitempty"`
 	RatingUnratedReason string               `json:"ratingUnratedReason,omitempty"`
@@ -148,6 +155,9 @@ type Server struct {
 	inputQueues         map[string]*realtimeInputQueue
 	inputClosing        bool
 	inputBatchDelay     time.Duration
+	deadlineFrames      map[string]bool
+	deadlineRetries     map[string]int
+	deadlineWG          sync.WaitGroup
 	botContext          context.Context
 	botWake             chan struct{}
 	botSlots            chan struct{}
@@ -169,7 +179,7 @@ type Server struct {
 	hiddenGames         map[string]bool
 	presence            map[string]time.Time
 	connections         map[chan struct{}]string
-	streamFrames        map[chan struct{}]chan struct{}
+	streamFrames        map[chan struct{}]chan streamFrameNotice
 	streamNetworks      map[chan struct{}]chan struct{}
 	networkSamples      map[chan struct{}]networkSample
 }
@@ -284,9 +294,13 @@ func New(cfg Config, files fs.FS) (*Server, error) {
 						return nil, err
 					}
 					if !reflect.DeepEqual(match, *r.Module) {
+						votes := slices.Clone(r.SaveVotes)
 						if err = s.setModule(&r, match); err != nil {
 							db.Close()
 							return nil, err
+						}
+						if module.SaveControl != nil && match.Paused {
+							r.SaveVotes = votes
 						}
 						r.Version++
 						moduleMigrated = true
@@ -352,6 +366,7 @@ func (s *Server) Close() error {
 	s.cancel()
 	<-s.done
 	s.inputWG.Wait()
+	s.deadlineWG.Wait()
 	s.mu.Lock()
 	err := s.flushRealtimeCheckpoints(time.Now())
 	s.mu.Unlock()
@@ -369,6 +384,17 @@ func (s *Server) runTimers(ctx context.Context) {
 	// Player timeouts, idle rooms and bot pacing keep their separate slow clock.
 	systemClock := time.NewTicker(50 * time.Millisecond)
 	defer systemClock.Stop()
+	var deadlineClock <-chan time.Time
+	s.mu.Lock()
+	for _, module := range s.modules {
+		if module.RealtimeDeadlineFrames {
+			deadlines := time.NewTicker(5 * time.Millisecond)
+			defer deadlines.Stop()
+			deadlineClock = deadlines.C
+			break
+		}
+	}
+	s.mu.Unlock()
 	for {
 		select {
 		case <-ctx.Done():
@@ -377,13 +403,22 @@ func (s *Server) runTimers(ctx context.Context) {
 			s.mu.Lock()
 			s.collectModuleBotSearches(time.Now())
 			s.mu.Unlock()
-		case now := <-systemClock.C:
+		case <-systemClock.C:
 			s.mu.Lock()
-			s.expireRealtimeModuleTimers(now)
+			// Ticker values describe their scheduled wakeup, which may be old
+			// after waiting for another callback or the host lock. Rules and
+			// input leases must observe the current clock once work can run.
+			now := time.Now()
+			s.expireRealtimeModuleTimersAtCadence(now, realtimeDefaultFrames)
 			s.expireModuleTimersAtCadence(now, true)
 			s.mu.Unlock()
-		case now := <-ticker.C:
+		case <-deadlineClock:
 			s.mu.Lock()
+			s.scheduleDeadlineFrames(ctx, time.Now())
+			s.mu.Unlock()
+		case <-ticker.C:
+			s.mu.Lock()
+			now := time.Now()
 			s.expireIdleRooms(now)
 			s.expireModuleTimers(now)
 			s.expireSetups(now)
@@ -423,6 +458,8 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("POST /api/logout", s.logout)
 	mux.HandleFunc("POST /api/account/password", s.changePassword)
 	mux.HandleFunc("GET /api/state", s.state)
+	mux.HandleFunc("GET /api/saves", s.savedGames)
+	mux.HandleFunc("POST /api/saves/{id}/resume", s.withActivity("resume_saved_game", s.resumeSavedGame))
 	mux.HandleFunc("GET /api/rooms/{id}/sync", s.moduleSyncSnapshot)
 	mux.HandleFunc("GET /api/version", s.version)
 	mux.HandleFunc("GET /api/wishes", s.listWishes)
@@ -679,6 +716,9 @@ func seatIndex(room *Room, id string) int {
 }
 func (s *Server) current(id string) *Room {
 	for _, r := range s.rooms {
+		if r.Status == "saved" || r.Status == "restoring" && !slices.Contains(r.ResumeJoined, id) {
+			continue
+		}
 		if seatIndex(r, id) >= 0 {
 			return r
 		}
@@ -687,7 +727,7 @@ func (s *Server) current(id string) *Room {
 }
 func summary(r *Room) map[string]any {
 	if len(r.Options) > 0 {
-		return withChallengeSummary(r, map[string]any{"loading": r.loadingView(), "clockOffsetMs": r.ClockOffsetMS, "matchId": r.MatchID, "setupVersion": r.SetupVersion, "id": r.ID, "name": r.Name, "kind": r.Kind, "options": r.Options, "host": r.Host, "capacity": r.Capacity, "seats": r.Seats, "status": r.Status, "closeReason": r.CloseReason, "locked": r.Password != "", "version": r.Version, "updated": r.Updated, "spectatorCount": len(r.Spectators)})
+		return withCheckpointSummary(r, withChallengeSummary(r, map[string]any{"supportsSave": r.SupportsSave, "saveVotes": append([]string{}, r.SaveVotes...), "resumeJoined": append([]string{}, r.ResumeJoined...), "loading": r.loadingView(), "clockOffsetMs": r.ClockOffsetMS, "matchId": r.MatchID, "setupVersion": r.SetupVersion, "id": r.ID, "name": r.Name, "kind": r.Kind, "options": r.Options, "host": r.Host, "capacity": r.Capacity, "seats": r.Seats, "status": r.Status, "closeReason": r.CloseReason, "locked": r.Password != "", "version": r.Version, "updated": r.Updated, "spectatorCount": len(r.Spectators)}))
 	}
 
 	result := map[string]any{"loading": r.loadingView(), "clockOffsetMs": r.ClockOffsetMS, "matchId": r.MatchID, "catanRiversWorldMap": r.CatanRiversWorldMap, "id": r.ID, "name": r.Name, "kind": r.Kind, "railMap": r.RailMap, "sanguoshaOptions": r.SanguoshaOptions, "splendorOptions": r.SplendorOptions, "catanOptions": r.CatanOptions, "catanSeafarers": r.CatanSeafarers, "catanTransportSea": r.CatanTransportSea, "catanBaseConfiguration": r.CatanBaseConfiguration, "catanCitiesKnights": r.CatanCitiesKnights, "catanHarbors": r.CatanHarbors, "catanFriendlyRobber": r.CatanFriendlyRobber, "catanNewWorldMap": r.CatanNewWorldMap, "host": r.Host, "capacity": r.Capacity, "seats": r.Seats, "status": r.Status, "closeReason": r.CloseReason, "locked": r.Password != "", "version": r.Version, "updated": r.Updated, "spectatorCount": len(r.Spectators)}
@@ -792,12 +832,13 @@ func (s *Server) statePayload(r *http.Request) (int, []byte) {
 	s.seen(u.ID)
 	rooms := []any{}
 	for _, room := range s.rooms {
-		if !s.hiddenGames[room.Kind] && (room.Status == "waiting" || room.Status == "playing") {
+		if !s.hiddenGames[room.Kind] && (room.Status == "waiting" || room.Status == "playing") && (room.SavedAt == 0 || seatIndex(room, u.ID) >= 0) {
 			rooms = append(rooms, summary(room))
 		}
 	}
 	out := map[string]any{"serverInstance": s.instance, "user": map[string]any{"id": u.ID, "name": u.Name, "role": s.role(u.ID), "passwordChangeAllowed": s.passwordChangeAllowed(u)}, "availableGames": s.availableGames(), "rooms": rooms, "serverNow": time.Now().UnixMilli(), "assetsBaseURL": s.cfg.AssetsBaseURL, "version": s.cfg.Version, "railMaps": game.RailMapList()}
 	out["modules"] = s.cfg.Modules
+	out["saves"] = s.savedGamesFor(u.ID)
 	out["network"] = s.networkFor(u.ID)
 	room := s.current(u.ID)
 	if room == nil {
@@ -1146,13 +1187,18 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		respond(w, 200, map[string]int{"version": room.Version})
 		return
 	}
+	if len(room.SaveVotes) != 0 && s.modules[room.Kind].SaveControl != nil && req.Type != "save" && req.Type != "save_cancel" && req.Type != "close" {
+		fail(w, 400, "正在确认保存，请先同意或取消保存")
+		return
+	}
 	if req.Type == "action" && room.Module != nil && s.modules[room.Kind].Realtime {
 		// Release the host lock while the room collects concurrent inputs. The
 		// batch revalidates session, seat, control, epoch/sequence and version.
 		input := streamInput{ServerInstance: req.ServerInstance, Type: "input", RoomID: room.ID, Version: req.Version, Nonce: req.Nonce, Action: req.RawAction}
 		locked = false
 		s.mu.Unlock()
-		ack := s.submitRealtimeInput(r, u.ID, input)
+		receivedAt, _ := r.Context().Value(realtimeReceivedKey{}).(time.Time)
+		ack := s.submitRealtimeInput(r, u.ID, input, receivedAt)
 		if ack.Status == 200 {
 			respond(w, 200, map[string]any{"version": ack.Version, "durable": ack.Durable})
 		} else {
@@ -1163,6 +1209,10 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 	var prior int
 	if e := s.db.QueryRow("SELECT version FROM actions WHERE room_id=? AND user_id=? AND nonce=?", room.ID, u.ID, req.Nonce).Scan(&prior); e == nil {
 		respond(w, 200, map[string]int{"version": prior})
+		return
+	}
+	if room.Status == "saved" || room.Status == "restoring" && req.Type != "leave" {
+		fail(w, 400, "请从存档入口确认继续游戏")
 		return
 	}
 	parallelSetup := req.Type == "action" && req.Action.Type == "keep" && room.Status == "playing" && room.Game.Rail != nil && room.Game.Rail.Setup && room.SetupVersion > 0 && req.Version >= room.SetupVersion && req.Version <= room.Version
@@ -1179,14 +1229,12 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 	// or an eliminated seat from leaving. The match's start revision excludes
 	// delayed requests from waiting rooms or a previous race; permissions and
 	// elimination are still checked by the ordinary command handlers below.
-	realtimeControl := (req.Type == "close" || req.Type == "leave") && room.Status == "playing" && room.Module != nil && s.modules[room.Kind].Realtime && room.SetupVersion > 0 && req.Version >= room.SetupVersion && req.Version <= room.Version
+	realtimeControl := (req.Type == "close" || req.Type == "leave" || req.Type == "save" || req.Type == "save_cancel" || req.Type == "load_checkpoint" || req.Type == "restart") && room.Status == "playing" && room.Module != nil && s.modules[room.Kind].Realtime && room.SetupVersion > 0 && req.Version >= room.SetupVersion && req.Version <= room.Version
 	parallelModule := false
 	if room.Module != nil && req.Type == "action" && req.Version >= room.SetupVersion && req.Version < room.Version && room.Status == "playing" {
 		actor := seatIndex(room, u.ID)
 		if module := s.modules[room.Kind]; actor >= 0 && (!room.Seats[actor].AutoPlay || s.moduleInputReleaseAllowed(room, actor, req.Version, req.RawAction, time.Now())) && module.AcceptStale != nil {
-			raw, _ := json.Marshal(room.Module)
-			var match gameapi.Match
-			_ = json.Unmarshal(raw, &match)
+			match := cloneModuleMatch(*room.Module)
 			parallelModule = module.AcceptStale(moduleContext(room, actor, req.Version, time.Now()), match, req.RawAction)
 		}
 	}
@@ -1206,6 +1254,12 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 	now := time.Now()
 	var err error
 	switch req.Type {
+	case "save", "save_cancel":
+		err = s.voteSaveGame(&next, idx, req.Type == "save", now)
+	case "load_checkpoint":
+		err = s.loadCheckpoint(&next, idx, now)
+	case "restart":
+		err = s.restartCheckpointJourney(&next, idx, now)
 	case "load_begin", "load_ready":
 		err = s.clientLoadCommand(&next, idx, req.Type, req.LoadToken, req.LoadBuild, req.LoadClient, now)
 	case "prepare":
@@ -1245,6 +1299,14 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 	case "leave":
 		if idx < 0 {
 			err = errors.New("你不在此房间")
+			break
+		}
+		if next.Status == "restoring" {
+			next.ResumeJoined = slices.DeleteFunc(next.ResumeJoined, func(id string) bool { return id == u.ID })
+			next.Seats[idx].Ready = false
+			if len(next.ResumeJoined) == 0 {
+				next.Status = "saved"
+			}
 			break
 		}
 		if next.Status == "playing" && (next.Module == nil || !slices.Contains(next.Module.Eliminated, idx)) {
@@ -2033,6 +2095,9 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		fail(w, 400, err.Error())
 		return
 	}
+	if req.Type != "save" && req.Type != "save_cancel" && next.Status == "playing" {
+		next.SaveVotes = nil
+	}
 	next.Version++
 	next.BotAt = now.Add(900 * time.Millisecond).UnixMilli()
 	next.Updated = time.Now().Unix()
@@ -2097,12 +2162,15 @@ func (s *Server) broadcastGameChange(room *Room) {
 		if !seated && spectatorIndex(room, userID) < 0 {
 			continue
 		}
-		target := connection
 		if frames := s.streamFrames[connection]; frames != nil {
-			target = frames
+			select {
+			case frames <- streamFrameNotice{immediate: s.modules[room.Kind].RealtimeDeadlineFrames}:
+			default:
+			}
+			continue
 		}
 		select {
-		case target <- struct{}{}:
+		case connection <- struct{}{}:
 		default:
 		}
 	}

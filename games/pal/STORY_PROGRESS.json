@@ -1,0 +1,421 @@
+{
+  "scope": "仙剑奇侠传 98 柔情篇 Windows 简体版，单人主线剧情",
+  "total": 24,
+  "completed": 4,
+  "next": 5,
+  "reportFormat": "剧情进度 a/24；本段完成内容；验证结果；下一段",
+  "completionRule": "ordinary original gameplay reaches the defined endpoint, required party/items/resources verified, fresh-runtime saved continuation and reproducible E2E; key visual boundaries checked; functional work does not increase story count",
+  "authoritySHA256": "7ca83b5bcf13e71c1020ef287d9817e5675adf2cbdf7c627644f4cb3566dd03a",
+  "evidenceArchive": ".local/pal/verification/story-stage-4",
+  "evidenceSHA256": {
+    "1": [
+      {
+        "file": "campaign-return-medicine-1.json",
+        "sha256": "62a884b800544b122b3d828f15d4c421ad52ab3231e43647d04cf6d8f413d646"
+      }
+    ],
+    "2": [
+      {
+        "file": "campaign-night-lesson-1.json",
+        "sha256": "99fda7fdc50429ebf5a693c37801a0cf5795dc38d6a0ef1c77fe36aa3d2a963f"
+      },
+      {
+        "file": "campaign-first-party-1.json",
+        "sha256": "087d9ed9de9ade488503d95560fef7524c1d7eba87469fc9b26ef31e5cc4eb71"
+      },
+      {
+        "file": "campaign-homecoming-1.json",
+        "sha256": "55a44e89cb66246bbf00927f6a8f80bf092825fd696e1cc7acdca5c743346e95"
+      },
+      {
+        "file": "campaign-ambush-1.json",
+        "sha256": "d39c903e00366522402759c14db2fec488ad6fc1c1e5403bef378008691dd0c8"
+      }
+    ],
+    "3": [
+      {
+        "file": "campaign-departure-1.json",
+        "sha256": "e1de1160fa1e5bb81af65a6d4039e54910a134e193bbd88ca8d5d960f89151f8"
+      },
+      {
+        "file": "campaign-yueru-meeting-1.json",
+        "sha256": "4d3b2aafd1a8265e9df3f58aeab5d6ebd4c23287f40d8f1ea4996a3f01f94c29"
+      }
+    ],
+    "4": [
+      {
+        "file": "campaign-tournament-1.json",
+        "sha256": "bb1c529ca747876666540c90dd1954512813ee3e4bca515e90278680345668d2"
+      },
+      {
+        "file": "solo-duel-party-change.json",
+        "sha256": "043b721fad772733f6fe63c1d930539c1f98b9b7d8ba65d5b7a2621e8403608f"
+      },
+      {
+        "file": "companion-browser-result.json",
+        "sha256": "ffdc424db8bd293da5d4df8c1d070769d74ef42a5859ab38992cb7f95229998f"
+      }
+    ]
+  },
+  "stages": [
+    {
+      "id": 1,
+      "title": "余杭开场与仙灵岛求药",
+      "exitCriteria": "完成六石像、初遇灵儿、取得紫金丹并治好李大娘",
+      "status": "complete",
+      "evidence": [
+        "campaign-return-medicine-1.json"
+      ]
+    },
+    {
+      "id": 2,
+      "title": "酒剑仙授艺与仙灵岛变故",
+      "exitCriteria": "学剑、灵儿入队、返岛告别姥姥、第二次客栈伏击后回房",
+      "status": "complete",
+      "evidence": [
+        "campaign-night-lesson-1.json",
+        "campaign-first-party-1.json",
+        "campaign-homecoming-1.json",
+        "campaign-ambush-1.json"
+      ]
+    },
+    {
+      "id": 3,
+      "title": "告别余杭与苏州初遇",
+      "exitCriteria": "打开远行包袱、渡船、初遇月如、两场战斗、受伤恢复及入城",
+      "status": "complete",
+      "evidence": [
+        "campaign-departure-1.json",
+        "campaign-yueru-meeting-1.json"
+      ]
+    },
+    {
+      "id": 4,
+      "title": "苏州比武招亲与林府夜变",
+      "exitCriteria": "完成招亲、林府剧情、灵儿失踪及月如正式同行",
+      "status": "complete",
+      "evidence": [
+        "campaign-tournament-1.json",
+        "solo-duel-party-change.json",
+        "companion-browser-result.json"
+      ]
+    },
+    {
+      "id": 5,
+      "title": "隐龙窟寻人",
+      "exitCriteria": "洞内救人、蛇妖与狐妖剧情结束，继续寻找灵儿",
+      "status": "planned",
+      "evidence": [],
+      "developmentStatus": "complete",
+      "developmentEvidence": [
+        "development-health/hp-9999/campaign-hidden-dragon-1.json"
+      ]
+    },
+    {
+      "id": 6,
+      "title": "白河村重逢与求医",
+      "exitCriteria": "找到灵儿、完成韩医仙的治疗与药材任务",
+      "status": "planned",
+      "evidence": [],
+      "developmentStatus": "complete",
+      "developmentEvidence": [
+        "development-health/hp-9999/campaign-white-river-full-1.json",
+        "solo-medicine-browser/result.json"
+      ]
+    },
+    {
+      "id": 7,
+      "title": "玉佛寺",
+      "exitCriteria": "完成寺内事件、守关战与玉佛珠剧情",
+      "status": "planned",
+      "evidence": [],
+      "developmentStatus": "complete",
+      "developmentEvidence": [
+        "development-health/hp-9999/campaign-jade-temple-1.json",
+        "development-health/hp-9999/jade-temple-bead-equipment-1.json",
+        "solo-jade-bead-browser/result.json"
+      ]
+    },
+    {
+      "id": 8,
+      "title": "黑水镇与将军墓",
+      "exitCriteria": "经过尸妖区域和墓内机关，到达血池前",
+      "status": "planned",
+      "evidence": [],
+      "developmentStatus": "complete",
+      "developmentEvidence": [
+        "development-health/hp-9999/campaign-ghost-tomb-1.json"
+      ],
+      "candidateStatus": "complete",
+      "candidateEvidence": [
+        "runtime-candidates/scene-wave/development-health/hp-9999/campaign-ghost-tomb-1.json"
+      ]
+    },
+    {
+      "id": 9,
+      "title": "血池与赤鬼王",
+      "exitCriteria": "战胜赤鬼王、取得土灵珠并完成战后交代",
+      "status": "planned",
+      "evidence": [],
+      "developmentStatus": "complete",
+      "developmentEvidence": [
+        "development-health/hp-9999/campaign-blood-pool-1.json"
+      ],
+      "candidateStatus": "complete",
+      "candidateEvidence": [
+        "runtime-candidates/scene-wave/development-health/hp-9999/campaign-blood-pool-1.json"
+      ]
+    },
+    {
+      "id": 10,
+      "title": "鬼阴山救援",
+      "exitCriteria": "完成拜月教、石长老及灵儿再次被带走的剧情",
+      "status": "planned",
+      "evidence": [],
+      "developmentStatus": "complete",
+      "developmentEvidence": [
+        "runtime-candidates/scene-wave/development-health/hp-9999/campaign-ghost-mountain-1.json",
+        "candidate-scene-wave/solo-ghost-mountain-browser/result.json"
+      ]
+    },
+    {
+      "id": 11,
+      "title": "扬州女飞贼案",
+      "exitCriteria": "完成追查、缉盗和官府事件，恢复离城条件",
+      "status": "planned",
+      "evidence": [],
+      "developmentStatus": "complete",
+      "developmentEvidence": [
+        "runtime-candidates/scene-wave/development-health/hp-9999/campaign-yangzhou-1.json",
+        "candidate-scene-wave/solo-yangzhou-browser/result.json"
+      ],
+      "optionalBountyAccepted": false
+    },
+    {
+      "id": 12,
+      "title": "蛤蟆山",
+      "exitCriteria": "完成山路、金蟾鬼母及后续苗人冲突，继续前往京城",
+      "status": "planned",
+      "evidence": [],
+      "developmentStatus": "complete",
+      "developmentEvidence": [
+        "runtime-candidates/scene-wave/development-health/hp-9999/campaign-toad-mountain-1.json",
+        "candidate-scene-wave/solo-gaijiao-browser/result.json"
+      ]
+    },
+    {
+      "id": 13,
+      "title": "京城尚书府",
+      "exitCriteria": "完成刘晋元病情、林天南试剑及府内求助剧情",
+      "status": "planned",
+      "evidence": [],
+      "developmentStatus": "complete",
+      "candidateStatus": "complete",
+      "developmentEvidence": [
+        ".local/pal/verification/capital-manor-stage.json"
+      ],
+      "candidateEvidence": [
+        ".local/pal/verification/capital-manor-stage.json"
+      ]
+    },
+    {
+      "id": 14,
+      "title": "彩依与毒娘子",
+      "exitCriteria": "完成林中事件、彩依剧情、雷灵珠及赴蜀山交代",
+      "status": "planned",
+      "evidence": [],
+      "developmentStatus": "complete",
+      "candidateStatus": "complete",
+      "developmentEvidence": [
+        ".local/pal/verification/caiyi-forest-stage.json"
+      ],
+      "candidateEvidence": [
+        ".local/pal/verification/caiyi-forest-stage.json"
+      ]
+    },
+    {
+      "id": 15,
+      "title": "蜀山与入塔",
+      "exitCriteria": "完成剑圣、酒剑仙和锁妖塔前的剧情，进入锁妖塔",
+      "status": "planned",
+      "evidence": [],
+      "developmentStatus": "complete",
+      "candidateStatus": "complete",
+      "developmentEvidence": [
+        ".local/pal/verification/shu-tower-stage.json"
+      ],
+      "candidateEvidence": [
+        ".local/pal/verification/shu-tower-stage.json"
+      ]
+    },
+    {
+      "id": 16,
+      "title": "锁妖塔前半",
+      "exitCriteria": "完成塔内人物、姜婉儿、蜀山弟子亡魂与解谜路线",
+      "status": "planned",
+      "evidence": [],
+      "developmentStatus": "complete",
+      "candidateStatus": "complete",
+      "developmentEvidence": [
+        ".local/pal/verification/tower-upper-stage.json"
+      ],
+      "candidateEvidence": [
+        ".local/pal/verification/tower-upper-stage.json"
+      ]
+    },
+    {
+      "id": 17,
+      "title": "锁妖塔底与月如牺牲",
+      "exitCriteria": "完成镇狱明王、龙柱、救出灵儿和塔毁剧情",
+      "status": "planned",
+      "evidence": [],
+      "developmentStatus": "complete",
+      "candidateStatus": "complete",
+      "developmentEvidence": [
+        ".local/pal/verification/tower-bottom-stage.json"
+      ],
+      "candidateEvidence": [
+        ".local/pal/verification/tower-bottom-stage.json"
+      ]
+    },
+    {
+      "id": 18,
+      "title": "圣姑救治与神木林",
+      "exitCriteria": "接取圣药任务、遇见阿奴，完成凤凰蛋与风灵珠相关事件",
+      "status": "planned",
+      "evidence": [],
+      "developmentStatus": "complete",
+      "candidateStatus": "complete",
+      "developmentEvidence": [
+        ".local/pal/verification/sacred-tree-stage.json"
+      ],
+      "candidateEvidence": [
+        ".local/pal/verification/sacred-tree-stage.json"
+      ]
+    },
+    {
+      "id": 19,
+      "title": "大理与麒麟洞",
+      "exitCriteria": "完成大理相关主线，取得麒麟角和火灵珠",
+      "status": "planned",
+      "evidence": [],
+      "developmentStatus": "complete",
+      "candidateStatus": "complete",
+      "developmentEvidence": [
+        ".local/pal/verification/dali-kirin-stage.json"
+      ],
+      "candidateEvidence": [
+        ".local/pal/verification/dali-kirin-stage.json"
+      ]
+    },
+    {
+      "id": 20,
+      "title": "女娲神殿与十年前的南绍",
+      "exitCriteria": "进入过去，完成巫后、王宫及水魔兽相关事件",
+      "status": "planned",
+      "evidence": [],
+      "developmentStatus": "complete",
+      "candidateStatus": "complete",
+      "developmentEvidence": [
+        ".local/pal/verification/temple-past-stage.json"
+      ],
+      "candidateEvidence": [
+        ".local/pal/verification/temple-past-stage.json"
+      ]
+    },
+    {
+      "id": 21,
+      "title": "十年前的余杭与水灵珠",
+      "exitCriteria": "完成幼年逍遥、木剑与水灵珠事件，返回现实",
+      "status": "planned",
+      "evidence": [],
+      "developmentStatus": "complete",
+      "candidateStatus": "complete",
+      "developmentEvidence": [
+        ".local/pal/verification/old-yuhang-stage.json"
+      ],
+      "candidateEvidence": [
+        ".local/pal/verification/old-yuhang-stage.json"
+      ]
+    },
+    {
+      "id": 22,
+      "title": "圣药、忆如出生与试炼窟",
+      "exitCriteria": "完成圣药交付、忆如出生、三十六只傀儡虫任务及休养后的交代",
+      "status": "planned",
+      "evidence": [],
+      "developmentStatus": "complete",
+      "candidateStatus": "complete",
+      "developmentEvidence": [
+        ".local/pal/verification/sacred-medicine-stage.json"
+      ],
+      "candidateEvidence": [
+        ".local/pal/verification/sacred-medicine-stage.json"
+      ]
+    },
+    {
+      "id": 23,
+      "title": "灵儿归来与祭天祈雨",
+      "exitCriteria": "完成神殿、五灵珠祭坛、祈雨及进入最终区域的剧情",
+      "status": "planned",
+      "evidence": [],
+      "developmentStatus": "complete",
+      "candidateStatus": "complete",
+      "developmentEvidence": [
+        ".local/pal/verification/rain-prayer-stage.json"
+      ],
+      "candidateEvidence": [
+        ".local/pal/verification/rain-prayer-stage.json"
+      ]
+    },
+    {
+      "id": 24,
+      "title": "南绍地底、拜月决战与结局",
+      "exitCriteria": "完成最终路线、拜月教主战斗、水魔兽相关结局演出和原版谢幕",
+      "status": "planned",
+      "evidence": []
+    }
+  ],
+  "optionalContent": [
+    "桃花林／桃源村／木道人／寿葫芦",
+    "试炼窟深处女娲遗迹与五系召唤",
+    "灵葫咒、炼蛊及地区可选人物／道具事件"
+  ],
+  "optionalContentAuditedComplete": false,
+  "fullGameComplete": false,
+  "developmentValidation": {
+    "mode": "development-only HP9999, scene-wave candidate",
+    "completed": 23,
+    "total": 24,
+    "next": 24,
+    "countsAsOriginalDifficultyAcceptance": false,
+    "runtimeSHA256": "b1b85663da36e2a28a3fd0ee6ce33b8b8d08877a391ee05bc758f01fd5f116fb",
+    "evidenceArchive": ".local/pal/verification/development-health-stage-23",
+    "summary": ".local/pal/verification/rain-prayer-stage.json",
+    "promoted": false
+  },
+  "candidateValidation": {
+    "mode": "development-only HP9999, scene-wave candidate replay",
+    "completed": 23,
+    "total": 24,
+    "next": 24,
+    "status": "passed-through-rain-prayer",
+    "countsAsOriginalDifficultyAcceptance": false,
+    "runtimeSHA256": "b1b85663da36e2a28a3fd0ee6ce33b8b8d08877a391ee05bc758f01fd5f116fb",
+    "evidenceDirectory": ".local/pal/verification/runtime-candidates/scene-wave/development-health/hp-9999",
+    "summary": ".local/pal/verification/rain-prayer-stage.json",
+    "promoted": false,
+    "evidenceArchive": ".local/pal/verification/development-health-stage-23",
+    "previousStageSummary": ".local/pal/verification/sacred-medicine-stage.json"
+  },
+  "retainedDevelopmentValidation": {
+    "mode": "development-only HP9999",
+    "completed": 9,
+    "total": 24,
+    "next": 10,
+    "countsAsOriginalDifficultyAcceptance": false,
+    "runtimeSHA256": "68d893938bc623a69a33d9ca402741b04a7be2191c7349f4081b5e94b755bec7",
+    "evidenceArchive": ".local/pal/verification/development-health-stage-9",
+    "summary": ".local/pal/verification/blood-pool-stage.json"
+  }
+}

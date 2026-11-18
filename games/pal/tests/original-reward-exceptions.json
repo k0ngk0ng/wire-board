@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "records": {
+    "2576": {
+      "scene": 157,
+      "map": 156,
+      "event": 2576,
+      "x": 1408,
+      "y": 592,
+      "item": 134,
+      "script": 37887,
+      "mapSHA256": "cff69df4accd86785a7a3ec2d834d20b29b6eb0a0782e8c75efc372fc707cf5c",
+      "referenceURL": "https://gamegene.cn/wiki/363",
+      "referenceText": ".local/pal/hidden-items-research/tower-text-guide.md",
+      "referenceSHA256": "1f8817512bb1d016738a8e33cefc959841aedf9668ccebe0f9395f63dc2edcfa",
+      "referenceQuote": "化尸水（拿不到）",
+      "classification": "original-unreachable"
+    }
+  }
+}

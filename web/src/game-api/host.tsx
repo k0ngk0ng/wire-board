@@ -4,7 +4,7 @@ import { X, ArrowRight, Check, Clock, Crown, Plus } from "lucide-react";
 import { AssetsContext } from "../ui/board-host";
 import type { Act, Room } from "../types";
 import "./host.css";
-import type { GameAudioPort, GameClock, PlayerGroup } from "./module";
+import type { GameAudioPort, GameClock, GameControllerBindings, PlayerGroup } from "./module";
 import { PlayerName } from "../profiles";
 import { gameModule, gameName } from "./registry";
 import { GameViewportFit } from "./viewport-fit";
@@ -20,6 +20,7 @@ export function GameBoard({
   busy,
   assets,
   sound,
+  audioEnabled,
   audio,
   clock,
   inputWindow,
@@ -31,6 +32,7 @@ export function GameBoard({
   busy: boolean;
   assets: string;
   sound: boolean;
+  audioEnabled?: boolean;
   audio: GameAudioPort;
   clock: GameClock;
   inputWindow?: number;
@@ -39,6 +41,7 @@ export function GameBoard({
     "onReady" | "onLoadProgress" | "onLoadError" | "loadSizes"
   >;
 }) {
+  const [controllerBindings, setControllerBindings] = useState<GameControllerBindings>();
   const module = gameModule(room.kind);
   if (!module) return <p role="alert">尚未安装此游戏的界面：{room.kind}</p>;
   const Board = module.Board;
@@ -53,12 +56,16 @@ export function GameBoard({
       busy={busy}
       assets={assets}
       sound={sound}
+      audioEnabled={audioEnabled}
       audio={audio}
       clock={clock}
+      controllerBindings={controllerBindings}
     />
   );
   const fitted = module.viewportFit ? (
-    <GameViewportFit enabled={!room.loading}>{board}</GameViewportFit>
+    <GameViewportFit enabled={!room.loading} aspect={module.viewportAspect}>
+      {board}
+    </GameViewportFit>
   ) : (
     board
   );
@@ -66,6 +73,7 @@ export function GameBoard({
     <>
       <NavigationController
         gameId={room.kind}
+        onProfileChange={setControllerBindings}
         userId={room.seats[room.you]?.id ?? ""}
         enabled={
           !busy &&

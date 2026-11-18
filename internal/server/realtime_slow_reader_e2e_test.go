@@ -87,9 +87,25 @@ func TestRealtimeSlowSnapshotReaderDoesNotBlockOtherUsers(t *testing.T) {
 // kernel buffers force bootstrap write backpressure; concurrent actions must
 // still commit in memory and the blocked socket must time out and unregister.
 func TestRealtimeSlowWebSocketDoesNotBlockActions(t *testing.T) {
+	testRealtimeSlowWebSocketDoesNotBlockActions(t, false)
+}
+
+func TestRealtimeSlowDeadlineWebSocketDoesNotBlockActions(t *testing.T) {
+	testRealtimeSlowWebSocketDoesNotBlockActions(t, true)
+}
+
+func testRealtimeSlowWebSocketDoesNotBlockActions(t *testing.T, deadlineFrames bool) {
 	module := realtimeFixture(true, time.Hour, 0, "")
 	module.View = func(gameapi.Match, int) (any, error) {
 		return map[string]any{"padding": strings.Repeat("w", 4<<20)}, nil
+	}
+	if deadlineFrames {
+		module.RealtimeDeadlineFrames = true
+		module.SyncSnapshot = module.View
+		module.StreamView = func(match gameapi.Match, viewer int, _ string) (gameapi.StreamViewResult, error) {
+			value, err := module.View(match, viewer)
+			return gameapi.StreamViewResult{Data: value}, err
+		}
 	}
 	f := newRealtimeTable(t, module, false)
 	other := newClient(t, f.ts.URL)
@@ -181,5 +197,9 @@ func TestRealtimeSlowWebSocketDoesNotBlockActions(t *testing.T) {
 	if !removed {
 		t.Fatal("blocked stream did not time out and release subscription")
 	}
-	streamEvidence(t, "slow-websocket-reader", map[string]any{"passed": true, "blockedFrameBytes": 4 << 20, "otherRequestMS": float64(latency.Microseconds()) / 1000, "acceptedActions": 12, "subscriptionRemoved": removed})
+	evidence := "slow-websocket-reader"
+	if deadlineFrames {
+		evidence = "slow-deadline-websocket-reader"
+	}
+	streamEvidence(t, evidence, map[string]any{"passed": true, "blockedFrameBytes": 4 << 20, "otherRequestMS": float64(latency.Microseconds()) / 1000, "acceptedActions": 12, "subscriptionRemoved": removed, "deadlineFrames": deadlineFrames})
 }

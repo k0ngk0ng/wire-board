@@ -1,0 +1,152 @@
+{
+  "sourceCommit": "ec8dfcb15eb78ce2e851332650b88c723e8eb760",
+  "referenceSourceSHA256": "fdcb5f1c4e14712fe96b2214bac6a12f3fa01abcfeeb88cb096886e306e14a0c",
+  "reference": "SDLPAL yj1.c YJ2_Decompress; GPL-3.0; copyright Wei Mingzhi and SDLPAL development team; portions by Lou Yihua",
+  "command": "python3 -B games/pal/tests/resource_oracle.py",
+  "vectors": [
+    {
+      "archive": "map.mkf",
+      "chunk": 1,
+      "size": 65536,
+      "sha256": "d26e69e7c5d8a631d2060b19af4da36544c87e6da3781a4976e47da40b699ca0"
+    },
+    {
+      "archive": "map.mkf",
+      "chunk": 75,
+      "size": 65536,
+      "sha256": "dc5fe0b7b86b8245065215e0ddb84981202b7a87f838be7d32f967435c2f71a3"
+    },
+    {
+      "archive": "map.mkf",
+      "chunk": 150,
+      "size": 65536,
+      "sha256": "ee5f3cd9e1366bab118ab85b4eaf033f8f29e9879a4b2d891b2ae7e3c3943451"
+    },
+    {
+      "archive": "map.mkf",
+      "chunk": 225,
+      "size": 65536,
+      "sha256": "028e64f3d3a7dc1514f8553c32b701b9cac16d5ba7a56ba54bc017ec5b525642"
+    },
+    {
+      "archive": "mgo.mkf",
+      "chunk": 1,
+      "size": 2224,
+      "sha256": "608721bc55d51890a1193e110c3aa51eea60f22bd34acc7222f9ca7cf1d119a8"
+    },
+    {
+      "archive": "mgo.mkf",
+      "chunk": 212,
+      "size": 816,
+      "sha256": "3698c4da64a1418648730fe931daf0dc12393aa1730c72aa9e3a397760231a61"
+    },
+    {
+      "archive": "mgo.mkf",
+      "chunk": 424,
+      "size": 724,
+      "sha256": "aa650bfea0a85fb24386d8375ca43a0b6c3cff877d651c025226b3d5e2d358ab"
+    },
+    {
+      "archive": "mgo.mkf",
+      "chunk": 636,
+      "size": 3610,
+      "sha256": "16f827b6b370dfb17ecbeb2873bc19775ea03b6764f2e06dfcbd762b4eb69a35"
+    },
+    {
+      "archive": "abc.mkf",
+      "chunk": 1,
+      "size": 2208,
+      "sha256": "59ba3608a9a131594700dd98699c75a4ea5f31e458b1410ca37135e23b88dbb3"
+    },
+    {
+      "archive": "abc.mkf",
+      "chunk": 51,
+      "size": 6636,
+      "sha256": "dd1ec0deb5467b72fa430f67195445c3a657d7b86eba694511a41a2c2ed886d7"
+    },
+    {
+      "archive": "abc.mkf",
+      "chunk": 102,
+      "size": 6938,
+      "sha256": "146a58f52c8cb9ff677f26301b269aa700aa7eeed085a9f80216dc2f631e31af"
+    },
+    {
+      "archive": "abc.mkf",
+      "chunk": 153,
+      "size": 19058,
+      "sha256": "d47c7a789acaa640d77e47bb9959593f301646932d819e50e8416c6d0f431567"
+    },
+    {
+      "archive": "f.mkf",
+      "chunk": 1,
+      "size": 8974,
+      "sha256": "3e8a26348a468b7eff156b2e55d0143ff655837f5671a6cbcb5076cefd97b477"
+    },
+    {
+      "archive": "f.mkf",
+      "chunk": 6,
+      "size": 9414,
+      "sha256": "d81f42497063110dcdbe208382a6fe97576bcfe129b10a9f7364f4a55c87dfc0"
+    },
+    {
+      "archive": "f.mkf",
+      "chunk": 12,
+      "size": 19588,
+      "sha256": "504524ec0a17efff57ed21a60ef3680e89e5a5929be0dc9b9ca5ba035ed95ea9"
+    },
+    {
+      "archive": "f.mkf",
+      "chunk": 18,
+      "size": 17968,
+      "sha256": "bbd80c42d14a8c9452c952ee6091135c6b1434662dac01e1b9358bec10b34c5b"
+    },
+    {
+      "archive": "fire.mkf",
+      "chunk": 1,
+      "size": 8348,
+      "sha256": "ddb8df5b76355e08a46a9cc397768ff8d0057268d9733496f51722ccaad86d17"
+    },
+    {
+      "archive": "fire.mkf",
+      "chunk": 18,
+      "size": 37128,
+      "sha256": "295e0eb3c8201f2d5d08bfe102ed114f4427360ee1748b282d87ac423224b3ad"
+    },
+    {
+      "archive": "fire.mkf",
+      "chunk": 36,
+      "size": 65376,
+      "sha256": "214ad75827a9891ebb410a90ee93978dbb9cf65c54dd046e597bffd58c3d5f11"
+    },
+    {
+      "archive": "fire.mkf",
+      "chunk": 54,
+      "size": 56400,
+      "sha256": "de8a2a72b89d123691c31084b64b5584e53c95fccdf0b840cb68338269ae5ef8"
+    },
+    {
+      "archive": "fbp.mkf",
+      "chunk": 1,
+      "size": 64000,
+      "sha256": "b34f8fbec66e8c75560c5a27b13279044bca7868dcc0a0868fea067eca3401cf"
+    },
+    {
+      "archive": "fbp.mkf",
+      "chunk": 26,
+      "size": 64000,
+      "sha256": "8e87ffada143fc2df104fffea22acd9fad9796b3de28135d724ebf9964b8355c"
+    },
+    {
+      "archive": "fbp.mkf",
+      "chunk": 52,
+      "size": 64000,
+      "sha256": "237910e0f40013006c57c9231c476605c9f56981fe6b479d440b4ca3283a4e7d"
+    },
+    {
+      "archive": "fbp.mkf",
+      "chunk": 77,
+      "size": 64000,
+      "sha256": "35983746b61f5947520f9c6b2e8b4bc2f5601443828117967923285fa781d810"
+    }
+  ]
+}

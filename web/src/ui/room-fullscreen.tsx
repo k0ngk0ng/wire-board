@@ -96,9 +96,9 @@ function useRoomFullscreen(
     const overflow = document.documentElement.style.overflow;
     document.documentElement.style.overflow = "hidden";
     root.scrollTop = 0;
-    root
-      .querySelector<HTMLElement>("[data-fullscreen-board]")
-      ?.focus({ preventScroll: true });
+    const gameFocus = root.querySelector<HTMLElement>("[data-game-focus]") ??
+      root.querySelector<HTMLElement>("[data-fullscreen-board]");
+    gameFocus?.focus({ preventScroll: true });
     return () => {
       siblings.forEach(([element, inert]) => {
         element.inert = inert;
@@ -171,6 +171,8 @@ export function GameFullscreen({
   result,
   status,
   toolbarActions,
+  toolbarOverlay,
+  preserveWhileLoading = false,
   onReadyChange,
   onChatTargetChange,
 }: {
@@ -181,20 +183,22 @@ export function GameFullscreen({
   result?: ReactNode;
   status?: ReactNode;
   toolbarActions?: ReactNode;
+  toolbarOverlay?: boolean;
+  preserveWhileLoading?: boolean;
   onReadyChange: (ready: boolean) => void;
   onChatTargetChange?: (target: HTMLElement | null) => void;
 }) {
   const [root, setRoot] = useState<HTMLDivElement | null>(null);
   const board = useRef<HTMLDivElement>(null);
   const [rightInset, setRightInset] = useState(0);
-  const fullscreen = useRoomFullscreen(enabled ? scope : undefined, root);
+  const fullscreen = useRoomFullscreen(enabled || preserveWhileLoading ? scope : undefined, root);
   useLayoutEffect(() => {
     onChatTargetChange?.(fullscreen.active ? root : null);
     return () => onChatTargetChange?.(null);
   }, [fullscreen.active, root, onChatTargetChange]);
   useImperativeHandle(ref, () => ({
     enter: () => {
-      if (!fullscreen.active) void fullscreen.toggle();
+      if (enabled && !fullscreen.active) void fullscreen.toggle();
     },
   }));
   useEffect(() => {
@@ -232,6 +236,12 @@ export function GameFullscreen({
       className="game-fullscreen-surface"
       data-game-fullscreen-surface
       data-room-fullscreen={fullscreen.mode || undefined}
+      data-fullscreen-toolbar-overlay={toolbarOverlay || undefined}
+      onKeyDown={(event) => {
+        if (event.key !== "F11" || (!enabled && !fullscreen.active)) return;
+        event.preventDefault();
+        if (!event.repeat && !fullscreen.pending) void fullscreen.toggle();
+      }}
     >
       <GameOverlayRoot.Provider value={root}>
         {fullscreen.active && (

@@ -21,6 +21,10 @@ export type GameRoom = {
   version: number;
   you: number;
   spectating?: boolean;
+  supportsSave?: boolean;
+  supportsCheckpoint?: boolean;
+  checkpointSavedAt?: number;
+  saveVotes?: string[];
   turnDeadline?: number;
   options?: unknown;
   seats: {
@@ -32,6 +36,7 @@ export type GameRoom = {
     left?: boolean;
   }[];
   game?: {
+    restartable?: boolean;
     paused?: boolean;
     pauseExpiresAt?: number;
     data?: unknown;
@@ -45,7 +50,8 @@ export type GameRoom = {
   };
 };
 export type GameAudioPort = {
-  play: (sources: readonly string[]) => Promise<boolean>;
+  prepare: (sources: readonly string[], options?: { signal?: AbortSignal }) => Promise<boolean>;
+  play: (sources: readonly string[], options?: { volume?: number }) => Promise<boolean>;
   // Alternatives for one clip; unlike play(), these are not a playlist.
   playWithFallback: (sources: readonly string[]) => Promise<boolean>;
   // Finite native voices: at most16 stable lanes/owner and32/platform.
@@ -54,7 +60,11 @@ export type GameAudioPort = {
   effect: (
     lane: string,
     sources: readonly string[],
-    options: { playbackID: string; startOffset?: number; reuseLoaded?: boolean },
+    options: {
+      playbackID: string;
+      startOffset?: number;
+      reuseLoaded?: boolean;
+    },
   ) => Promise<boolean>;
   stopEffect: (lane: string, expectedPlaybackID?: string) => void;
   openStream: (
@@ -73,6 +83,7 @@ export type GameAudioPort = {
     // once and elapsed positions wrap only within the suffix. A stable
     // playbackID prevents snapshot refreshes from restarting the same track.
     options?: {
+      volume?: number;
       loop?: boolean;
       startOffset?: number;
       playbackID?: string;
@@ -87,7 +98,12 @@ export type GameAudioPort = {
     sources: readonly string[],
     // Opt-in short-loop phase buffers still output through one platform-owned
     // native HTMLAudio MediaStream; other games retain the file-loop path.
-    options?: { volume?: number; rate?: number; continuous?: boolean; seamOverlapMS?: number },
+    options?: {
+      volume?: number;
+      rate?: number;
+      continuous?: boolean;
+      seamOverlapMS?: number;
+    },
   ) => Promise<boolean>;
   stopLoop: (key: string) => void;
   // Owner-scoped native media lanes; default is finite playback. Sources are
@@ -144,6 +160,11 @@ export type RoomPresentation = {
   sample: (now: number) => PresentationFrame;
 };
 
+export type GameControllerBindings = {
+  keyboard: Readonly<Record<string, string>>;
+  keyboardAlt?: Readonly<Record<string, readonly string[]>>;
+};
+
 export type BoardProps<Data = unknown> = {
   onReady?: () => void;
   onLoadProgress?: (
@@ -156,14 +177,15 @@ export type BoardProps<Data = unknown> = {
   room: GameRoom;
   data: Data;
   act: (action: Record<string, unknown>) => Promise<void>;
-  // Bounded reliable input pipeline; HTTP fallback remains one request.
   inputWindow?: number;
   command: (type: string, extra?: Record<string, unknown>) => Promise<void>;
   busy: boolean;
   assets: string;
   sound: boolean;
+  audioEnabled?: boolean;
   audio: GameAudioPort;
   clock: GameClock;
+  controllerBindings?: GameControllerBindings;
 };
 export type OptionsProps<Options = unknown> = {
   value: Options;
@@ -202,6 +224,7 @@ export type GameModule<Data = unknown, Options = unknown> = {
   // Continuous controls stay responsive while an earlier request is in flight.
   // The module must coalesce input and validate its own sequence/epoch on server.
   realtime?: boolean;
+  streamInputOnly?: boolean;
   // Allow only input cleanup during manual autoplay, never a gameplay action.
   // The server must independently declare and validate the same capability.
   isInputRelease?: (action: Record<string, unknown>) => boolean;
@@ -225,6 +248,11 @@ export type GameModule<Data = unknown, Options = unknown> = {
   };
   // Reserve only the measured visible remainder for the playable surface.
   viewportFit?: boolean;
+  // Reserve a game's full-width aspect in ordinary pages instead of reducing
+  // its playable surface to accommodate the surrounding page controls.
+  viewportAspect?: number;
+  // Overlay fullscreen platform actions without reserving playable space.
+  fullscreenToolbarOverlay?: boolean;
   Rules?: ComponentType;
   Cover?: ComponentType;
   PlayerSummary?: ComponentType<{

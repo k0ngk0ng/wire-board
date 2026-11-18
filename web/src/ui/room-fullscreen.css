@@ -49,6 +49,37 @@
   background: #f6f5ef;
   color: #293b35;
 }
+.game-fullscreen-surface[data-room-fullscreen][data-fullscreen-toolbar-overlay] {
+  padding: 0;
+  overflow: hidden;
+  --game-fullscreen-toolbar-bottom: calc(max(8px, env(safe-area-inset-top)) + 40px);
+}
+[data-room-fullscreen][data-fullscreen-toolbar-overlay]
+  > .game-fullscreen-toolbar {
+  position: absolute;
+  top: max(8px, env(safe-area-inset-top));
+  right: max(8px, env(safe-area-inset-right));
+  max-width: calc(100% - 16px);
+  min-height: 32px;
+  border-radius: 7px;
+  background: rgba(0, 0, 0, 0.58);
+  color: #fff;
+}
+[data-room-fullscreen][data-fullscreen-toolbar-overlay]
+  > .game-fullscreen-board {
+  width: 100%;
+  height: 100%;
+}
+[data-room-fullscreen][data-fullscreen-toolbar-overlay]
+  .game-fullscreen-toolbar button {
+  background: rgba(0, 0, 0, 0.58);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.55);
+}
+[data-room-fullscreen][data-fullscreen-toolbar-overlay]
+  .saved-game-control > span {
+  color: #fff;
+}
 @media (max-width: 600px) {
   .room-page[data-table-layout="poker"] .game-fullscreen-surface {
     height: 100%;

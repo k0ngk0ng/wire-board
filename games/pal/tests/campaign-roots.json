@@ -1,0 +1,451 @@
+{
+  "version": 1,
+  "candidates": {
+    "audio": {
+      "profile": "hp-9999",
+      "coreSHA256": "2bacd1cb805bdda815f581f9b9d893ddbab6e73df1827a5bb0290f98201b13aa",
+      "roots": {
+        "campaign-tower-bottom-state.json": {
+          "sha256": "ab9235877708d2aad0f6b2f5629e8a8590a52a510bb2ef1568d86604c3993244",
+          "report": "campaign-tower-bottom.json",
+          "reportSHA256": "c3fae9ddc36f43e52eae23b36fbc1292722643798920a401625749bd54291f15"
+        },
+        "campaign-sacred-tree-state.json": {
+          "sha256": "5698c228948e757cdef8057174137f52874ea825f5c2152dc14ab309dc15922d",
+          "report": "campaign-sacred-tree.json",
+          "reportSHA256": "278b8b3dfad7106d4f03d9c54e77556e6b5c07b1c1770b4d1f3611d0dcaf1b1d"
+        },
+        "campaign-dali-kirin-state.json": {
+          "sha256": "4b0fd065d3e1fafc8ac7f29f5709b7b3fe9118bce68359eabad24a80c4c066c5",
+          "report": "campaign-dali-kirin.json",
+          "reportSHA256": "dc321c5118e5198e274819e6f47c9a794ae2698abfc60a9163894d5434788ef3"
+        },
+        "campaign-temple-past-state.json": {
+          "sha256": "13fb789e37d8a79bd8b7c8a9971b234f22d8b60411ded3786c1292223193950c",
+          "report": "campaign-temple-past.json",
+          "reportSHA256": "2b493eaede0ec6831ecd034bc33365f6ec0470e33f533ba2d8e5a7956721e9d7"
+        },
+        "campaign-old-yuhang-state.json": {
+          "sha256": "12f026dce466dd3c86ba93fb11943072307263f95255804682b280ae18f36504",
+          "report": "campaign-old-yuhang.json",
+          "reportSHA256": "9e81746e637e283b5e853d257ff25dd932334ccd6aafa6c595a808f97b28d947"
+        },
+        "sacred-medicine-trial-entry-state.json": {
+          "sha256": "06a50a1406000d680da14fdac1bee269e2c7f94cc895a66b797e85f774d322af",
+          "report": "sacred-medicine-trial-entry.json",
+          "reportSHA256": "bb089656a7a3d17628ce1a9feab1f48b61211f449367a83e926f3b07c7781bdb"
+        },
+        "campaign-sacred-medicine-state.json": {
+          "sha256": "e1aa010903198a762ab416ee2a8538cc44b6fbf8bfa9ebb6e5ecacf0c30051f9",
+          "report": "campaign-sacred-medicine.json",
+          "reportSHA256": "af62f99ad9e3e94afd853119c6e254077860e343d1f7bde1ec1cf302990aa3ce"
+        },
+        "campaign-rain-prayer-state.json": {
+          "sha256": "69f396f50f78874c9ef573e43ba25d44895b49016d84f7b0e0f6391a4510b164",
+          "report": "campaign-rain-prayer.json",
+          "reportSHA256": "671034eb7f9407e38d5033684873cf67ae98bd5c0d238bd830ab0771d7887a9f"
+        },
+        "campaign-finale-state.json": {
+          "sha256": "f456bb9246a93443a3dc00c58f244dc48a657f527b8ff2692ce17a3daa42038f",
+          "report": "campaign-finale.json",
+          "reportSHA256": "d848505c1fa7ee978f137d9ed1377dba5bef581855712811ce33e0b2f23958f2"
+        },
+        "campaign-homecoming-state.json": {
+          "sha256": "8995b73afcc85da275ef92067979c6d3769ec4425cf8795e30ed3715c38f9479",
+          "report": "campaign-homecoming.json",
+          "reportSHA256": "0ed36cf65550db93ffa3e9151528440cef13ab59fb2bf16ef3d337cc57c9e8e2"
+        },
+        "campaign-ambush-state.json": {
+          "sha256": "c64a5113e61d761f0034a575153c21422409e2858bd753b90fa5086671285930",
+          "report": "campaign-ambush.json",
+          "reportSHA256": "5b8348399e64933e255d530f543bd598a65b3b49c40ae9e2e0a5e3050c0b49e6"
+        },
+        "campaign-first-party-state.json": {
+          "sha256": "2c72595d1b59dc46977f8069ec24afb44d45c69bbb5b41150c81c8fca654f2c7",
+          "report": "campaign-first-party.json",
+          "reportSHA256": "70a51965e539b1b5f62c3e4fa5d62f07dc2062e6dd5815024f323250849bdd99"
+        },
+        "hidden-island-entry-state.json": {
+          "sha256": "0daadb2b029f8d4953dc6a3e785a17255fa8e38241fe20470d4cc5cafc3cdf0e",
+          "report": "hidden-island-entry.json",
+          "reportSHA256": "55e305b5bee156adf979d4f3e47f13a546a19a9f19f550bc81f1143199e291df"
+        },
+        "campaign-yueru-meeting-state.json": {
+          "sha256": "e625a99205050f2c62581a8d3cefdf3a0deda981d5434a59f11d2f0ba455c2ed",
+          "report": "campaign-yueru-meeting.json",
+          "reportSHA256": "51167db47818baacdb4f8ec26e21a8a7484d18959dafee12b1bc54857782393a"
+        },
+        "campaign-tournament-state.json": {
+          "sha256": "dcfebb2d647e2f604eeca08a2ba662cca181cb4111e4d5acd88d362477a0acaf",
+          "report": "campaign-tournament.json",
+          "reportSHA256": "74dcd2c80c6fbef61736235574b0784acd8d345ea69f1f5fb619e7f420b9d210"
+        },
+        "tournament-ling-illness-state.json": {
+          "sha256": "4176af01dc8700b3a823a7bda8ca79dee8f8aabc20dc9267c180675030979916",
+          "report": "campaign-tournament.json",
+          "reportSHA256": "74dcd2c80c6fbef61736235574b0784acd8d345ea69f1f5fb619e7f420b9d210"
+        },
+        "tournament-manor-state.json": {
+          "sha256": "23107462145afb30b5a56c836c80987e0cabf2eee60541fdebb51a2906607fe0",
+          "report": "campaign-tournament.json",
+          "reportSHA256": "74dcd2c80c6fbef61736235574b0784acd8d345ea69f1f5fb619e7f420b9d210"
+        },
+        "hidden-dragon-cave-party-state.json": {
+          "sha256": "6bbdf1104c393d813e49bd7ffcfb2863576dfebea1a7a679203bb504fef439db",
+          "report": "campaign-hidden-dragon.json",
+          "reportSHA256": "a1982dbb69eab17f4eb3b3e840ea3395a933291781224ac7deaea72e7d9f035b"
+        },
+        "hidden-dragon-stair-1-state.json": {
+          "sha256": "3e82a607260309d02e2864f9f665275893d82f96d6cbf02eeebfcf0f7cdadb56",
+          "report": "campaign-hidden-dragon.json",
+          "reportSHA256": "a1982dbb69eab17f4eb3b3e840ea3395a933291781224ac7deaea72e7d9f035b"
+        },
+        "hidden-dragon-stair-2-state.json": {
+          "sha256": "5ee9f0a87420bc7e266336074505643a78ad12b93862acb32f9054b2921e7338",
+          "report": "campaign-hidden-dragon.json",
+          "reportSHA256": "a1982dbb69eab17f4eb3b3e840ea3395a933291781224ac7deaea72e7d9f035b"
+        },
+        "hidden-dragon-stair-4-state.json": {
+          "sha256": "162fdc0246ad2a46926fb457b8369ecd3d7a64a801d3679b6bea8f5fbb9e4227",
+          "report": "campaign-hidden-dragon.json",
+          "reportSHA256": "a1982dbb69eab17f4eb3b3e840ea3395a933291781224ac7deaea72e7d9f035b"
+        },
+        "hidden-dragon-snake-victory-state.json": {
+          "sha256": "0310eb01279e95b818486f1ee44f707236c05ccb689de0411a8170e45b0c4f6d",
+          "report": "campaign-hidden-dragon.json",
+          "reportSHA256": "a1982dbb69eab17f4eb3b3e840ea3395a933291781224ac7deaea72e7d9f035b"
+        },
+        "hidden-dragon-open-door-state.json": {
+          "sha256": "774bc5ac764761d0005e4594f6db5c6d2d68f7eba46c6585d3476629328ccc21",
+          "report": "campaign-hidden-dragon.json",
+          "reportSHA256": "a1982dbb69eab17f4eb3b3e840ea3395a933291781224ac7deaea72e7d9f035b"
+        },
+        "hidden-dragon-stair-6-state.json": {
+          "sha256": "a0943f244d6d10ba6e474e061d5b4eb5ba910122f1c21a2d638da5a347e07606",
+          "report": "campaign-hidden-dragon.json",
+          "reportSHA256": "a1982dbb69eab17f4eb3b3e840ea3395a933291781224ac7deaea72e7d9f035b"
+        },
+        "campaign-hidden-dragon-state.json": {
+          "sha256": "7eda5973793995bea90506b498e2f69ac98fee50428aeb78c0faa1615d350513",
+          "report": "campaign-hidden-dragon.json",
+          "reportSHA256": "a1982dbb69eab17f4eb3b3e840ea3395a933291781224ac7deaea72e7d9f035b"
+        },
+        "campaign-white-river-prescription-state.json": {
+          "sha256": "c0401e3e265b6c5511767d7d490a7318c9f9c5cbffd64f618d86ef06b94abfb8",
+          "report": "campaign-white-river-full.json",
+          "reportSHA256": "2560af5fd1397e40147e7108d40ec16ab70d9b5c5198cf2efa8d5f640e4f37ad"
+        },
+        "campaign-white-river-state.json": {
+          "sha256": "58855488ff7a9ac0cd742fdd947ebb737321cb84da9eec72923c20dbc64d480b",
+          "report": "campaign-white-river-full.json",
+          "reportSHA256": "2560af5fd1397e40147e7108d40ec16ab70d9b5c5198cf2efa8d5f640e4f37ad"
+        },
+        "jade-temple-aura-state.json": {
+          "sha256": "f0e591f5a9ca00d2bdb18c20bd77c13f518ed6189d334f686a9e63356c84acd8",
+          "report": "campaign-jade-temple.json",
+          "reportSHA256": "54b921a1d73303a4f1ef4d07424966ae54541c82f1727c5285270891a5226ca1"
+        },
+        "white-river-ginkgo-search-state.json": {
+          "sha256": "f9f8be470e971af283c6a650b1c30ac3fc51001482e3489b99545f88d796a972",
+          "report": "campaign-white-river-full.json",
+          "reportSHA256": "2560af5fd1397e40147e7108d40ec16ab70d9b5c5198cf2efa8d5f640e4f37ad"
+        },
+        "blood-pool-complete-state.json": {
+          "sha256": "d73f63023c66edcb3b4839618c32bb8684a6d5eadeb67452270760e5eeb438ea",
+          "report": "campaign-blood-pool.json",
+          "reportSHA256": "8c5d8432f889eaff8a565b30f2b74db0ac50c96130070e0533731d83f7f07767"
+        },
+        "blood-pool-earth-orb-escape-complete-state.json": {
+          "sha256": "f69a1b63e31821258da2517a507426b787d664775904f9117077c9e64fa9f94f",
+          "report": "campaign-earth-orb-escaped.json",
+          "reportSHA256": "f0edd3a5187f993df9e18379aa3fbb9facf8f22938edb090388247e74cfc5c62"
+        },
+        "ghost-tomb-waypoint-2-state.json": {
+          "sha256": "d8b0ab011a3c0b33d14b2f72aa9e93ed49618045e5de31dd10d15f42a8a2e400",
+          "report": "campaign-ghost-tomb.json",
+          "reportSHA256": "5bb000c017faef8e0076c7143e9ac3ff73d4f94e98d45a963fa8d4e487f58b7f"
+        },
+        "ghost-tomb-waypoint-31-state.json": {
+          "sha256": "9e8765cb7f3d4253eb8d383fd30b0ff70d3785a809c5702a4ebaabbfbdb28a0c",
+          "report": "campaign-ghost-tomb.json",
+          "reportSHA256": "5bb000c017faef8e0076c7143e9ac3ff73d4f94e98d45a963fa8d4e487f58b7f"
+        },
+        "ghost-mountain-route-11-state.json": {
+          "sha256": "61225792586efe32ec654315832c0bf30e1ec0588b137da4240e0ee3d819e408",
+          "report": "campaign-ghost-mountain.json",
+          "reportSHA256": "b87dce0a4edc37d962dfb58411d131c3d952cc77e32bd53e5291438eaa14455a"
+        },
+        "ghost-mountain-route-12-state.json": {
+          "sha256": "1c275191f802dfb613db1fde6d5059def73319b9cffa593a6aedb9128222ab98",
+          "report": "campaign-ghost-mountain.json",
+          "reportSHA256": "b87dce0a4edc37d962dfb58411d131c3d952cc77e32bd53e5291438eaa14455a"
+        },
+        "ghost-mountain-route-13-state.json": {
+          "sha256": "03663b119f7dbb7b8e40bae581d563bbc6a4bded7e08185e365e26febb6a3e81",
+          "report": "campaign-ghost-mountain.json",
+          "reportSHA256": "b87dce0a4edc37d962dfb58411d131c3d952cc77e32bd53e5291438eaa14455a"
+        },
+        "ghost-mountain-route-15-state.json": {
+          "sha256": "bc4ef459f82e31f8fdae1b80eeea4c7807ef40b3d21ced12afac09cfbd6b2248",
+          "report": "campaign-ghost-mountain.json",
+          "reportSHA256": "b87dce0a4edc37d962dfb58411d131c3d952cc77e32bd53e5291438eaa14455a"
+        },
+        "ghost-mountain-route-17-state.json": {
+          "sha256": "39268727306d9fc659e350dda04f71b907a361646ea86b41b3d5bad5691a9248",
+          "report": "campaign-ghost-mountain.json",
+          "reportSHA256": "b87dce0a4edc37d962dfb58411d131c3d952cc77e32bd53e5291438eaa14455a"
+        },
+        "ghost-mountain-route-18-state.json": {
+          "sha256": "7f783679f118d7097ae9c1c4ea4d0e49111f2bc8bc4b1de41a09793fa9ac9227",
+          "report": "campaign-ghost-mountain.json",
+          "reportSHA256": "b87dce0a4edc37d962dfb58411d131c3d952cc77e32bd53e5291438eaa14455a"
+        },
+        "yangzhou-step-2-state.json": {
+          "sha256": "8fdbe795adb3b5abb48db9d994c915f092f49d313a1177ae94077353757ef491",
+          "report": "campaign-yangzhou.json",
+          "reportSHA256": "abc14f0624a4600cce2fbb62272c25aa464d27d996fbb098981a6eb7c20784ee"
+        },
+        "yangzhou-step-5-state.json": {
+          "sha256": "e193243324f5971decfad13824b6848b3cee17fe8b0b73c5a5f129195e56ef5d",
+          "report": "campaign-yangzhou.json",
+          "reportSHA256": "abc14f0624a4600cce2fbb62272c25aa464d27d996fbb098981a6eb7c20784ee"
+        },
+        "yangzhou-step-22-state.json": {
+          "sha256": "3be0ff3e5875698e96da279b286d1a7173ae3f2bb9761511554539a59c970b8c",
+          "report": "campaign-yangzhou.json",
+          "reportSHA256": "abc14f0624a4600cce2fbb62272c25aa464d27d996fbb098981a6eb7c20784ee"
+        },
+        "yangzhou-step-24-state.json": {
+          "sha256": "773f2a6861457c62d5b07484b8e3b8bbc5de7435989d88a6a7f525751f523aa9",
+          "report": "campaign-yangzhou.json",
+          "reportSHA256": "abc14f0624a4600cce2fbb62272c25aa464d27d996fbb098981a6eb7c20784ee"
+        },
+        "yangzhou-step-47-state.json": {
+          "sha256": "f6cac71ba5ab08be196737418420ba0ffdd650bf02ca523322057bd9229b90b1",
+          "report": "campaign-yangzhou.json",
+          "reportSHA256": "abc14f0624a4600cce2fbb62272c25aa464d27d996fbb098981a6eb7c20784ee"
+        },
+        "toad-mountain-step-1-state.json": {
+          "sha256": "64f2ecddcaf58e188c929fdbba22b368329e726adf1e76eb0bdbcdb049014382",
+          "report": "campaign-toad-mountain.json",
+          "reportSHA256": "e377a0ad0b5ecdc9b043f00023a8c2678308781b335a81dab06c4fd8bda9317f"
+        },
+        "toad-mountain-step-2-state.json": {
+          "sha256": "ee2a7f6e763ec37d9fb6c507054fe62d65f95b80ae2d2b562fae3e2b811ff9a2",
+          "report": "campaign-toad-mountain.json",
+          "reportSHA256": "e377a0ad0b5ecdc9b043f00023a8c2678308781b335a81dab06c4fd8bda9317f"
+        },
+        "toad-mountain-step-8-state.json": {
+          "sha256": "a64271ffcb754c40d01e317c8a8cdf83dd728a7d7b96b1858757ec2bc3512d67",
+          "report": "campaign-toad-mountain.json",
+          "reportSHA256": "e377a0ad0b5ecdc9b043f00023a8c2678308781b335a81dab06c4fd8bda9317f"
+        },
+        "toad-mountain-step-10-state.json": {
+          "sha256": "e13b5e493f503e5ac99e96c7324c5ac2737a871de9854e752e0c7be944c2a617",
+          "report": "campaign-toad-mountain.json",
+          "reportSHA256": "e377a0ad0b5ecdc9b043f00023a8c2678308781b335a81dab06c4fd8bda9317f"
+        },
+        "capital-manor-step-19-state.json": {
+          "sha256": "09e2c0187ff536050032d810ab4c9f14f5195b775bb595aae16f62a6aa64aeab",
+          "report": "campaign-capital-manor.json",
+          "reportSHA256": "a73239fc3ba142e39cc91847d5c36cd0565fd34a332042e5724737d2f69375bc"
+        },
+        "capital-manor-step-27-state.json": {
+          "sha256": "b35bb1b5d2509c9ef4335db722d40dc7d42dba5fce7c2808bbd7437845994b4a",
+          "report": "campaign-capital-manor.json",
+          "reportSHA256": "a73239fc3ba142e39cc91847d5c36cd0565fd34a332042e5724737d2f69375bc"
+        },
+        "capital-manor-step-33-state.json": {
+          "sha256": "5bf75c616cc31dce364af8ae71b2390db7eee034b46a8f07c3a7224c43bd8626",
+          "report": "campaign-capital-manor.json",
+          "reportSHA256": "a73239fc3ba142e39cc91847d5c36cd0565fd34a332042e5724737d2f69375bc"
+        },
+        "toad-mountain-step-18-state.json": {
+          "sha256": "10d5bb97afadd591c0ceddcb0f7af620835f5c628a1f30dff45867fd74329290",
+          "report": "campaign-toad-mountain.json",
+          "reportSHA256": "e377a0ad0b5ecdc9b043f00023a8c2678308781b335a81dab06c4fd8bda9317f"
+        },
+        "capital-manor-step-34-state.json": {
+          "sha256": "06ebe411e2841ddf1603f3854d467774f3d9f1df793f3dc93953e74fb37c6deb",
+          "report": "campaign-capital-manor.json",
+          "reportSHA256": "a73239fc3ba142e39cc91847d5c36cd0565fd34a332042e5724737d2f69375bc"
+        },
+        "capital-manor-step-15-state.json": {
+          "sha256": "e7aeb569dd76d9e83dd772b99bece739c9ecc598cfdeb8a682d3780c9824fdc3",
+          "report": "campaign-capital-manor.json",
+          "reportSHA256": "a73239fc3ba142e39cc91847d5c36cd0565fd34a332042e5724737d2f69375bc"
+        },
+        "sacred-tree-field-175-step-0-state.json": {
+          "sha256": "849b741bac7cffba6213a0c0ce8ad5e29409a784a617ee0d7cc8b0cc52f7f9d5",
+          "report": "campaign-sacred-tree.json",
+          "reportSHA256": "278b8b3dfad7106d4f03d9c54e77556e6b5c07b1c1770b4d1f3611d0dcaf1b1d"
+        },
+        "sacred-tree-field-177-step-0-state.json": {
+          "sha256": "bd27c6325341b93b7c8ee2364a8d7b7c5740687cc411863dfa99010bea319c2b",
+          "report": "campaign-sacred-tree.json",
+          "reportSHA256": "278b8b3dfad7106d4f03d9c54e77556e6b5c07b1c1770b4d1f3611d0dcaf1b1d"
+        },
+        "sacred-tree-field-185-step-8-state.json": {
+          "sha256": "522b605d6ec9c7aee5443d15796d3d0d4120f6b8e98155647dbcd9707c76780c",
+          "report": "campaign-sacred-tree.json",
+          "reportSHA256": "278b8b3dfad7106d4f03d9c54e77556e6b5c07b1c1770b4d1f3611d0dcaf1b1d"
+        },
+        "sacred-tree-field-189-step-5-state.json": {
+          "sha256": "6063c19c2b7efbcfed61b3e69c56050bfcea06376c29e32e4847882c95f40402",
+          "report": "campaign-sacred-tree.json",
+          "reportSHA256": "278b8b3dfad7106d4f03d9c54e77556e6b5c07b1c1770b4d1f3611d0dcaf1b1d"
+        },
+        "sacred-tree-field-187-step-2-state.json": {
+          "sha256": "5a4ce2f3d543d6a7af2b6b3010ab6e732281705f4f29455427ee0959850ef292",
+          "report": "campaign-sacred-tree.json",
+          "reportSHA256": "278b8b3dfad7106d4f03d9c54e77556e6b5c07b1c1770b4d1f3611d0dcaf1b1d"
+        },
+        "sacred-tree-monkey-3302-fed-state.json": {
+          "sha256": "e012725965e43055f15d49ae044fcb9493168f7cf36df33a73326b489948fcb8",
+          "report": "campaign-sacred-tree.json",
+          "reportSHA256": "278b8b3dfad7106d4f03d9c54e77556e6b5c07b1c1770b4d1f3611d0dcaf1b1d"
+        },
+        "sacred-tree-monkey-3301-fed-state.json": {
+          "sha256": "64f80938778bdc1bcbdb9d96465dbf371271712545c1b8ddd89d25a90daff37e",
+          "report": "campaign-sacred-tree.json",
+          "reportSHA256": "278b8b3dfad7106d4f03d9c54e77556e6b5c07b1c1770b4d1f3611d0dcaf1b1d"
+        },
+        "peach-quest-v1-field-181-state.json": {
+          "sha256": "77201d9ad23a65929c3abdc810b8c4168afbb0b0c77587c880e13bcf211635f3",
+          "report": "peach-quest-v1-result.json",
+          "reportSHA256": "367257969ab7d889ec975cd64c1af3baae678706cd968c28d3db30575deba5c9"
+        },
+        "peach-quest-v1-field-190-state.json": {
+          "sha256": "48e0720818d0f02d084f02f4dc02a4511e99619d26b9f938f0777e44608b55cb",
+          "report": "peach-quest-v1-result.json",
+          "reportSHA256": "367257969ab7d889ec975cd64c1af3baae678706cd968c28d3db30575deba5c9"
+        },
+        "peach-quest-v1-field-176-state.json": {
+          "sha256": "5422ff116f5297bd0a6791b8b0eeee6cc0a628a313506994276d1fcdf98fa21a",
+          "report": "peach-quest-v1-result.json",
+          "reportSHA256": "367257969ab7d889ec975cd64c1af3baae678706cd968c28d3db30575deba5c9"
+        },
+        "peach-quest-v1-field-191-state.json": {
+          "sha256": "ce549fb1a63b199e2a9baec1e6f8fb3593bf6ef8a6553dcdeacc33775008964d",
+          "report": "peach-quest-v1-result.json",
+          "reportSHA256": "367257969ab7d889ec975cd64c1af3baae678706cd968c28d3db30575deba5c9"
+        },
+        "temple-past-field-263-step-18-state.json": {
+          "sha256": "b8cb1a62a825e7e84d36ac569d5856ee23a95b261eb3f9931e494253ff18f56e",
+          "report": "campaign-temple-past.json",
+          "reportSHA256": "2b493eaede0ec6831ecd034bc33365f6ec0470e33f533ba2d8e5a7956721e9d7"
+        },
+        "temple-past-field-264-step-18-state.json": {
+          "sha256": "db6946089c0cf54c0c26545d6c7d7e03faa38b9fa92c001d5e5a7cef94eaa235",
+          "report": "campaign-temple-past.json",
+          "reportSHA256": "2b493eaede0ec6831ecd034bc33365f6ec0470e33f533ba2d8e5a7956721e9d7"
+        },
+        "temple-past-field-262-step-16-state.json": {
+          "sha256": "447588ee43f8ed8f5b38e5af72ace0f61f3de4c502c7b7985cdf51ca959d0f83",
+          "report": "campaign-temple-past.json",
+          "reportSHA256": "2b493eaede0ec6831ecd034bc33365f6ec0470e33f533ba2d8e5a7956721e9d7"
+        },
+        "temple-past-field-253-step-32-state.json": {
+          "sha256": "ecaf7b6871cfa5a7a35f1a4a0d5f3d200f7cdbb44fb66d7137f5efa2b0512031",
+          "report": "campaign-temple-past.json",
+          "reportSHA256": "2b493eaede0ec6831ecd034bc33365f6ec0470e33f533ba2d8e5a7956721e9d7"
+        },
+        "temple-past-field-251-step-32-state.json": {
+          "sha256": "f97d139a1f6febf6196aa3e64b2bb79d7732b26ab5ab132811d40da0b6679bf0",
+          "report": "campaign-temple-past.json",
+          "reportSHA256": "2b493eaede0ec6831ecd034bc33365f6ec0470e33f533ba2d8e5a7956721e9d7"
+        },
+        "old-yuhang-field-269-step-3-state.json": {
+          "sha256": "538aba91c3a609d35507ca8c9a4bb0b3be0a12bcfff372acf38f4d9bd76765dd",
+          "report": "campaign-old-yuhang.json",
+          "reportSHA256": "9e81746e637e283b5e853d257ff25dd932334ccd6aafa6c595a808f97b28d947"
+        },
+        "regional-hidden-v18-226-state.json": {
+          "sha256": "daa66af1d8b57791cceddd8f7d5f394e8fc41b73467097dc211d0cd1d1afc958",
+          "report": "regional-hidden-v18-226-result.json",
+          "reportSHA256": "475eb8a62e27383674b3771fbb3701d68a4769783034acfa14bfadedad8fb32e"
+        },
+        "regional-hidden-v18-227-state.json": {
+          "sha256": "8961ea947d75839f809d6576776d899ee177c5ff232f250d7017cef08f999fcb",
+          "report": "regional-hidden-v18-227-result.json",
+          "reportSHA256": "f2a431ed0c9da8aa667588bc8a7fdae858ce7aaf4d8f2fa79f2d909e52c38add"
+        },
+        "prayer-field-229-phase-0-step-4-orb-0-state.json": {
+          "sha256": "e6710e1e3dd8d8c66ffa183ab8bb8134a927109c0f408fe437d76a846d662667",
+          "report": "campaign-rain-prayer.json",
+          "reportSHA256": "671034eb7f9407e38d5033684873cf67ae98bd5c0d238bd830ab0771d7887a9f"
+        },
+        "finale-field-280-step-3-state.json": {
+          "sha256": "2013f6cd9d3ef13b8e76aea8743c40464641356f086ce83704299c78f086dc53",
+          "report": "campaign-finale.json",
+          "reportSHA256": "d848505c1fa7ee978f137d9ed1377dba5bef581855712811ce33e0b2f23958f2"
+        },
+        "finale-field-286-step-6-state.json": {
+          "sha256": "85c01b80b046e5a7e2eca13d7b395dd683dc10182a75e5b2bbebfff094886fa4",
+          "report": "campaign-finale.json",
+          "reportSHA256": "d848505c1fa7ee978f137d9ed1377dba5bef581855712811ce33e0b2f23958f2"
+        },
+        "finale-field-288-step-5-state.json": {
+          "sha256": "e46923c45682621ab5db2260daedb4337614e58d9155ccaba445bb5ad3f015fc",
+          "report": "campaign-finale.json",
+          "reportSHA256": "d848505c1fa7ee978f137d9ed1377dba5bef581855712811ce33e0b2f23958f2"
+        },
+        "finale-field-289-step-4-state.json": {
+          "sha256": "c7e4fa8e3ba502b3df3b39f81af0d381d81884d841ca2c7f05142464e4c7c652",
+          "report": "campaign-finale.json",
+          "reportSHA256": "d848505c1fa7ee978f137d9ed1377dba5bef581855712811ce33e0b2f23958f2"
+        },
+        "finale-field-292-step-0-state.json": {
+          "sha256": "c2ee01007f2a52f4486d374a54a835bef764685491c2f2c9e30463072973de18",
+          "report": "campaign-finale.json",
+          "reportSHA256": "d848505c1fa7ee978f137d9ed1377dba5bef581855712811ce33e0b2f23958f2"
+        },
+        "finale-field-293-step-1-state.json": {
+          "sha256": "61f687a96d60fcf83b70f56a0069882e0b782b1c3e2f1c5fe103c0474b9e1558",
+          "report": "campaign-finale.json",
+          "reportSHA256": "d848505c1fa7ee978f137d9ed1377dba5bef581855712811ce33e0b2f23958f2"
+        },
+        "finale-field-294-step-2-state.json": {
+          "sha256": "4eeb1f5dd50a047f90f610515764dbed84b8509306cbbe7a1733a095c53f05d6",
+          "report": "campaign-finale.json",
+          "reportSHA256": "d848505c1fa7ee978f137d9ed1377dba5bef581855712811ce33e0b2f23958f2"
+        },
+        "tower-upper-step-3-state.json": {
+          "sha256": "84f28b89b60cf17cba5614754d88e04d4b9a2bd5a22887fe1562e151f9cc38fe",
+          "report": "campaign-tower-upper.json",
+          "reportSHA256": "55b7703fb4c009a715fe4085307c3fae2b7aee06566cfc3410668a5a9ff048ba"
+        },
+        "shu-tower-step-6-state.json": {
+          "sha256": "c770f74d82303abc9316392cf8a7394a4e32aa4cbb0aa5e27563e3eb740403d3",
+          "report": "campaign-shu-tower.json",
+          "reportSHA256": "b71d892e47c19540ed0a0e2d4537faae3bf98e6e1a0bfead813bf0418aac331a"
+        },
+        "tower-seven-star-repeated-state.json": {
+          "sha256": "47df9903e5349229bd91e840b3a5f2e08e0187e06dec5a3127c96fbd0bd5c4fb",
+          "report": "campaign-tower-upper.json",
+          "reportSHA256": "55b7703fb4c009a715fe4085307c3fae2b7aee06566cfc3410668a5a9ff048ba"
+        },
+        "yueru-injury-state.json": {
+          "sha256": "72a12876db33764d9a3b37beeb492ebbe9f7cafaf71e532fe8288b471b1cf400",
+          "report": "campaign-yueru-meeting.json",
+          "reportSHA256": "51167db47818baacdb4f8ec26e21a8a7484d18959dafee12b1bc54857782393a"
+        },
+        "white-river-fish-caught-state.json": {
+          "sha256": "46df1214d1191b195e5ba9c18418f7add877abf0b95990adecfea38a223ba242",
+          "report": "campaign-white-river-full.json",
+          "reportSHA256": "2560af5fd1397e40147e7108d40ec16ab70d9b5c5198cf2efa8d5f640e4f37ad"
+        },
+        "market-harbor-entry-state.json": {
+          "sha256": "ed212af7b9e71896635cdf2dbcdd377bdf86bd10efc7cb10abb4c8e2dfca815c",
+          "report": "market-harbor-entry.json",
+          "reportSHA256": "b1053920b319aeb2a396a9126a461cd0ebe76166e72f04b11076909fe3bd9906"
+        },
+        "campaign-white-river-fishing-state.json": {
+          "sha256": "895f4bb9d725535d490033dca0b35398f2f91f3bcf40dbf81935240d3cbc87ea",
+          "report": "campaign-white-river-full.json",
+          "reportSHA256": "2560af5fd1397e40147e7108d40ec16ab70d9b5c5198cf2efa8d5f640e4f37ad"
+        }
+      }
+    }
+  }
+}

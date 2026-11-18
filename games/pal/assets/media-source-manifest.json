@@ -1,0 +1,105 @@
+{
+  "repository": "kunruiw1991/pal98-rouqing",
+  "commit": "ec8dfcb15eb78ce2e851332650b88c723e8eb760",
+  "variant": "仙剑奇侠传 98 柔情篇 Windows 简体版附加媒体",
+  "files": [
+    {
+      "path": "1.avi",
+      "sourcePath": "Win98/1.avi",
+      "size": 9079428,
+      "gitBlobSHA1": "7c85188e852e59b2a632dde285ce34347fc0a4d6",
+      "sha256": "c9e68039ab02bebadb36cdce2308502db42b457bd821114ee487cfbe092f76da"
+    },
+    {
+      "path": "2.avi",
+      "sourcePath": "Win98/2.avi",
+      "size": 31872668,
+      "gitBlobSHA1": "da56ddc7da3682f70e6774c2f997880ff7f756f4",
+      "sha256": "51f60a923bf1199910b12db84e1b58d63b4f45c1f653a447153ef26cbda3720d"
+    },
+    {
+      "path": "3.avi",
+      "sourcePath": "Win98/3.avi",
+      "size": 20245444,
+      "gitBlobSHA1": "2b1829d643af75946a62d2dd49679f660130ac13",
+      "sha256": "28a97b9f3812ffa32185dea996e2928c1090e9786953f9d7cc9107ad54fc3cc0"
+    },
+    {
+      "path": "4.avi",
+      "sourcePath": "Win98/4.avi",
+      "size": 7825060,
+      "gitBlobSHA1": "fd5a2c01b3f4f4aff3af2fba3eb35f39e92d781b",
+      "sha256": "600616fa3aa551ae3b783715325066051a4c46151ee8daeb4e0e4243b869aa73"
+    },
+    {
+      "path": "5.avi",
+      "sourcePath": "Win98/5.avi",
+      "size": 82833972,
+      "gitBlobSHA1": "9a785ce923c9c6f4e7885bd9860352e8dc331e22",
+      "sha256": "30c6a574b2625140ca5ad1b456e8fb30ae9026b1684f90381630caff4e24f069"
+    },
+    {
+      "path": "6.avi",
+      "sourcePath": "Win98/6.avi",
+      "size": 36953012,
+      "gitBlobSHA1": "e38328b2da8c9a3573643b4e8b5681817a68bfb6",
+      "sha256": "53a8c472d50263d512bae327e7064e9b88ff459788dc5bbee8fd7f8a55300217"
+    },
+    {
+      "path": "cd/02.ogg",
+      "sourcePath": "Win98/CD/02.ogg",
+      "size": 2122265,
+      "gitBlobSHA1": "b70ddb485e39b51f99f9eee0a56f043720fedc72",
+      "sha256": "cab22f5780522d97e4836c220a4c92c9d9dad2c0f6f17269457d4b27d30b4b2e"
+    },
+    {
+      "path": "cd/03.ogg",
+      "sourcePath": "Win98/CD/03.ogg",
+      "size": 1803334,
+      "gitBlobSHA1": "59754d941f2d14fdaeed1a5a058b46562744e752",
+      "sha256": "d9075fb04cf92ac80e1c6b56756b309710498137dbd51c69ac9b6ecc8dc92f5c"
+    },
+    {
+      "path": "cd/04.ogg",
+      "sourcePath": "Win98/CD/04.ogg",
+      "size": 1804962,
+      "gitBlobSHA1": "8a2f72939ff8953265247488c257df56a7b409c3",
+      "sha256": "a8d815ebe5a66fb7149d46ad8b961931172546a941e34cf52e5cad4ff651bb45"
+    },
+    {
+      "path": "cd/05.ogg",
+      "sourcePath": "Win98/CD/05.ogg",
+      "size": 2112360,
+      "gitBlobSHA1": "7146552c11a3ce571ddf1d50460b1577f4306c4c",
+      "sha256": "cbd58e557f836dbd25ac8e71076aea349aae405e604df375e7c1c52ba9278b9e"
+    },
+    {
+      "path": "cd/06.ogg",
+      "sourcePath": "Win98/CD/06.ogg",
+      "size": 1781263,
+      "gitBlobSHA1": "bfdb225d9dc635f0d09d89c7be737f5179ab2499",
+      "sha256": "959168e2cb3a4e57964e18b8b2b69a904cceb42ea766bc562005306625a10040"
+    },
+    {
+      "path": "cd/07.ogg",
+      "sourcePath": "Win98/CD/07.ogg",
+      "size": 1835139,
+      "gitBlobSHA1": "55bf2acb3119f37e01b46fa3d50b64324b1cb265",
+      "sha256": "c26712c201f770f37140daffcdbf5099422daab4d69e8e6318b908cd8133b6b2"
+    },
+    {
+      "path": "cd/08.ogg",
+      "sourcePath": "Win98/CD/08.ogg",
+      "size": 1373673,
+      "gitBlobSHA1": "8bac716db20fcc03b0da308f68a4ef4dc94ffd72",
+      "sha256": "5cb5c50f07e07a5781a0449668a460d805e48794e252e88153a257e938c474f5"
+    },
+    {
+      "path": "cd/09.ogg",
+      "sourcePath": "Win98/CD/09.ogg",
+      "size": 2537416,
+      "gitBlobSHA1": "eb5a23eef6da2fb17145f569b30a658aa1e720a4",
+      "sha256": "4c0d5da3d08d94a4a896d8a6f36935790e733c866853787645e21621a75dddea"
+    }
+  ]
+}

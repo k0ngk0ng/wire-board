@@ -2,6 +2,7 @@ import { toneDataURL, type Sound } from "./audio-tones.ts";
 import { NativeAudioStream, normalizeStreamConfig } from "./audio-stream.ts";
 import { NativePCMStream, normalizePCMConfig } from "./audio-pcm-stream.ts";
 import { NativeContinuousLoops } from "./audio-continuous.ts";
+import { NativeAudioPreparation } from "./audio-preparation.ts";
 import type {
   GameAudioPCMStreamConfig,
   GameAudioPCMStreamHandle,
@@ -13,6 +14,7 @@ import type {
 export type { Sound } from "./audio-tones.ts";
 type Clip = {
   src: string;
+  volume?: number;
   fallback?: string;
   alternatives?: readonly string[];
   startOffset?: number;
@@ -28,7 +30,8 @@ type Task = {
   pendingLoopRestart?: number;
   deferredStart?: boolean;
 };
-type MusicOptions = {
+type PlaybackOptions = { volume?: number };
+type MusicOptions = PlaybackOptions & {
   loop?: boolean;
   startOffset?: number;
   playbackID?: string;
@@ -102,12 +105,15 @@ export class GameAudio {
   private factory: () => HTMLAudioElement;
   private allowed = true;
   private level = 1;
+  private clipVolume = 1;
   private primed = false;
   private serial = 0;
   private task?: Task;
   private assets = "";
+  private preparation: NativeAudioPreparation;
   constructor(factory: () => HTMLAudioElement = () => new Audio()) {
     this.factory = factory;
+    this.preparation = new NativeAudioPreparation(factory);
   }
   get enabled() {
     return this.allowed && this.level > 0;
@@ -116,7 +122,7 @@ export class GameAudio {
     if (!Number.isFinite(value)) return;
     this.level = Math.max(0, Math.min(1, value));
     if (this.level === 0) this.stop();
-    if (this.media) this.media.volume = this.level;
+    if (this.media) this.media.volume = this.level * this.clipVolume;
     this.background?.setVolume(this.level);
     this.stream?.controller.setVolume(this.level);
     this.pcm?.controller.setVolume(this.level);
@@ -127,13 +133,17 @@ export class GameAudio {
       voice.media.volume = voice.volume * this.level;
     for (const voice of this.tracks.values()) voice.audio.setVolume(this.level);
   }
+  private setClipVolume(value: number) {
+    this.clipVolume = value;
+    if (this.media) this.media.volume = this.level * value;
+  }
   private createElement() {
     const media = this.factory();
     media.dataset.platformAudio = "";
     media.preload = "none";
     media.hidden = true;
     media.muted = !this.allowed || this.silent;
-    media.volume = this.level;
+    media.volume = this.level * this.clipVolume;
     if (typeof document !== "undefined") document.body.append(media);
     return media;
   }
@@ -287,6 +297,7 @@ export class GameAudio {
     return (await Promise.all(pending)).some(Boolean);
   }
   stop(owner?: string) {
+    if (owner !== undefined) this.preparation.cancel(owner);
     if (owner === undefined) this.pausedOwners.clear();
     else this.pausedOwners.delete(owner);
     this.stopEffects(owner);
@@ -331,6 +342,7 @@ export class GameAudio {
   }
   dispose() {
     this.stop();
+    this.preparation.cancel();
     this.tracks.clear();
     this.background?.dispose();
     this.media?.remove();
@@ -339,12 +351,16 @@ export class GameAudio {
   }
   channel(owner: string) {
     return {
-      play: (sources: readonly string[]) =>
-        this.start(
-          sources.map((src) => ({ src })),
+      prepare: (sources: readonly string[], options: { signal?: AbortSignal } = {}) => this.preparation.prepare(owner, sources, options.signal),
+      play: (sources: readonly string[], options: PlaybackOptions = {}) => {
+        if (!options || (options.volume !== undefined && !Number.isFinite(options.volume))) return Promise.resolve(false);
+        const volume = Math.max(0, Math.min(1, options.volume ?? 1));
+        return this.start(
+          sources.map((src) => ({ src, volume })),
           owner,
           1,
-        ),
+        );
+      },
       playWithFallback: (sources: readonly string[]) =>
         sources.length
           ? this.start([{ src: sources[0], fallback: sources[1] }], owner, 1)
@@ -841,6 +857,8 @@ export class GameAudio {
     owner: string,
     options: MusicOptions,
   ): Promise<boolean> {
+    if (!options || (options.volume !== undefined && !Number.isFinite(options.volume)))
+      return Promise.resolve(false);
     if (
       options.startOffset !== undefined &&
       (!Number.isFinite(options.startOffset) || options.startOffset < 0)
@@ -855,6 +873,7 @@ export class GameAudio {
       return Promise.resolve(false);
     if (!this.available() || this.pausedOwners.has(owner) || !sources.length)
       return Promise.resolve(false);
+    const volume = Math.max(0, Math.min(1, options.volume ?? 1));
     const loopStart = options.loopStartSeconds ?? 0;
     const key = JSON.stringify([
       sources,
@@ -867,8 +886,10 @@ export class GameAudio {
       this.backgroundSources === key &&
       this.background?.media &&
       !this.background.media.paused
-    )
+    ) {
+      this.background.setClipVolume(volume);
       return Promise.resolve(true);
+    }
     this.background ??= new GameAudio(this.factory);
     this.background.setVolume(this.level);
     const media = this.background.element();
@@ -880,6 +901,7 @@ export class GameAudio {
       [
         {
           src: sources[0],
+          volume,
           fallback: sources[1],
           startOffset: options.startOffset,
           loopStartSeconds: loopStart > 0 ? loopStart : undefined,
@@ -985,6 +1007,7 @@ export class GameAudio {
       return false;
     }
     const media = this.element();
+    this.setClipVolume(clip.volume ?? 1);
     media.onended = () => {
       if (this.task !== task || task.starting) return;
       if (clip.loopStartSeconds !== undefined) {

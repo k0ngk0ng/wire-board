@@ -1,0 +1,735 @@
+{
+  "repository": "kunruiw1991/pal98-rouqing",
+  "commit": "ec8dfcb15eb78ce2e851332650b88c723e8eb760",
+  "variant": "仙剑奇侠传 98 柔情篇 Windows 简体版",
+  "files": [
+    {
+      "path": "abc.mkf",
+      "sourcePath": "Win98/ABC.MKF",
+      "size": 932346,
+      "gitBlobSHA1": "de4ae477532dd7678c8796f32ec8ad97f578962c",
+      "sha256": "f9685ba8d22e851a4be492c6b74fbc671d89112d64394e7af86ec7a23751529c"
+    },
+    {
+      "path": "ball.mkf",
+      "sourcePath": "Win98/BALL.MKF",
+      "size": 145070,
+      "gitBlobSHA1": "fd0011a4efd0cee5663a66a9696ed74b7a1d724e",
+      "sha256": "b9925833a9d921aa6bea9d0d199dbbe170968716d951036a142c1dd303f99bd0"
+    },
+    {
+      "path": "data.mkf",
+      "sourcePath": "Win98/DATA.MKF",
+      "size": 63978,
+      "gitBlobSHA1": "23a0ffe41addafe23cbe7f9e35864beb18ef68bd",
+      "sha256": "c0bc968e5322b06fe669dd6e34483dd1f12dd223ac25b03b6dc74d3742635c1b"
+    },
+    {
+      "path": "f.mkf",
+      "sourcePath": "Win98/F.MKF",
+      "size": 173198,
+      "gitBlobSHA1": "8afcb5b36622a5acce378d5b44c5e200a7dcda06",
+      "sha256": "eb492e6dcd0eefb6fbc1751d775bc8667b46d3cd5231974caa1eef309f3152d7"
+    },
+    {
+      "path": "fbp.mkf",
+      "sourcePath": "Win98/FBP.MKF",
+      "size": 1242530,
+      "gitBlobSHA1": "a2ff1551e9c650cfc07f1760025a94593b3e2c92",
+      "sha256": "29bbc71c10c58a555e5b45b853dfeef3fa0d299ceeb8e7556b6c1d6bc40c4d84"
+    },
+    {
+      "path": "fire.mkf",
+      "sourcePath": "Win98/FIRE.MKF",
+      "size": 764381,
+      "gitBlobSHA1": "54dbf13f175850ef010b82f03095d0bae5627f1a",
+      "sha256": "5a23940d3daab5bfa95efd3b92b4d1ae481fc4f7ad38374ec66b16c7e7d5d9cf"
+    },
+    {
+      "path": "gop.mkf",
+      "sourcePath": "Win98/GOP.MKF",
+      "size": 16437766,
+      "gitBlobSHA1": "bd14f4e639501bbc9f7c174296389f3b2d4dc3db",
+      "sha256": "5745d016a8d9c280b90a8b92d2871210a2dd0a0c04a79d4c8e65f4d0396aa04b"
+    },
+    {
+      "path": "m.msg",
+      "sourcePath": "Win98/M.MSG",
+      "size": 224455,
+      "gitBlobSHA1": "10f047b825ae0577b37f303b7be38a1ba82ae45c",
+      "sha256": "5e553754fa0dcdab3b25590a01cb3f08a510c17ee9d59afd1c9f62b02841b846"
+    },
+    {
+      "path": "map.mkf",
+      "sourcePath": "Win98/MAP.MKF",
+      "size": 1646918,
+      "gitBlobSHA1": "62423d857a4a766609eaadc6ba525d91a191763c",
+      "sha256": "bef63043ffcbe9b6de6cbe295891134d7cea74952cb6701b5566049d0eb015e2"
+    },
+    {
+      "path": "mgo.mkf",
+      "sourcePath": "Win98/MGO.MKF",
+      "size": 1443503,
+      "gitBlobSHA1": "281c66d65aea22abd138fb0eafa5c225177f2c4e",
+      "sha256": "0df639e22da1cf766c821de0b07d8c0bb58602c50ff5a2eea233a9e3c9f6e789"
+    },
+    {
+      "path": "mus.mkf",
+      "sourcePath": "Win98/MUS.MKF",
+      "size": 331284,
+      "gitBlobSHA1": "8abe385c33a6c41b68c8835b5d4a59673dc80623",
+      "sha256": "8367c9d34331f67b20b12380e809a38d3313cae199f260d272d07fcf55e11a21"
+    },
+    {
+      "path": "musics/001.mid",
+      "sourcePath": "Win98/Musics/001.MID",
+      "size": 906,
+      "gitBlobSHA1": "741ee0b3e4bb26799895086f7910c46037231bfa",
+      "sha256": "78b55481e7dbb839075f36e197256fb2841f61690c691997d4664c72e4e8d098"
+    },
+    {
+      "path": "musics/002.mid",
+      "sourcePath": "Win98/Musics/002.MID",
+      "size": 1522,
+      "gitBlobSHA1": "f627310415023fc67a835407fff75cefbe3c98e3",
+      "sha256": "2a0aefc088ccec44de3e1ebf30033c8ec033a88a3c2e8721e4eb3c529b7c8c37"
+    },
+    {
+      "path": "musics/003.mid",
+      "sourcePath": "Win98/Musics/003.MID",
+      "size": 1182,
+      "gitBlobSHA1": "2bfe34a7baf262a253ade13c714171634cd3c666",
+      "sha256": "966a481e38f8bb9bdba9101be68ce64d74f866d2421e8aeeb64a894d2b66c8db"
+    },
+    {
+      "path": "musics/004.mid",
+      "sourcePath": "Win98/Musics/004.MID",
+      "size": 7042,
+      "gitBlobSHA1": "ff7cc4023f438663ed0159088ff651ebfe6aa4f9",
+      "sha256": "97287a99cf9a1b0adf2feae957e3dc76980371043d04d30cfd075b5a1c59482e"
+    },
+    {
+      "path": "musics/005.mid",
+      "sourcePath": "Win98/Musics/005.MID",
+      "size": 20826,
+      "gitBlobSHA1": "a867ed1cf7ccb8b6eab00812d5c5c37a24a0e916",
+      "sha256": "e5463e3292334df1623d51a3cd3d536e14f4f4571a2a73b5a3a74aa88a327521"
+    },
+    {
+      "path": "musics/006.mid",
+      "sourcePath": "Win98/Musics/006.MID",
+      "size": 3306,
+      "gitBlobSHA1": "d98e8e1b4f39c3418548c3ecf417c84525183408",
+      "sha256": "82b687607649ed46256003960a15b251208d7e62dd2e56625e410ae44cb6bfac"
+    },
+    {
+      "path": "musics/007.mid",
+      "sourcePath": "Win98/Musics/007.MID",
+      "size": 3306,
+      "gitBlobSHA1": "d98e8e1b4f39c3418548c3ecf417c84525183408",
+      "sha256": "82b687607649ed46256003960a15b251208d7e62dd2e56625e410ae44cb6bfac"
+    },
+    {
+      "path": "musics/008.mid",
+      "sourcePath": "Win98/Musics/008.MID",
+      "size": 2126,
+      "gitBlobSHA1": "7ec0ffa180fbba20edf5455c71fc49d8c1be42cd",
+      "sha256": "a5b417d3de77b77e0380c5f4233a88c2fcaaaaeaf865d44e818d0af13c1ae758"
+    },
+    {
+      "path": "musics/009.mid",
+      "sourcePath": "Win98/Musics/009.MID",
+      "size": 9490,
+      "gitBlobSHA1": "c0a2d7be837c4715eb804906403c8e6cb1c6c763",
+      "sha256": "26f520a7ffb9c81ec95f4170107b559cf5fed4c246c2c1cc100b3b2b0e768da9"
+    },
+    {
+      "path": "musics/010.mid",
+      "sourcePath": "Win98/Musics/010.MID",
+      "size": 2490,
+      "gitBlobSHA1": "b6abf846e41bc12173d4fc16754708efa7794ca1",
+      "sha256": "4a1819f9036794d8f55e379a221d01b2fa860179769b05f063dc824be6719925"
+    },
+    {
+      "path": "musics/011.mid",
+      "sourcePath": "Win98/Musics/011.MID",
+      "size": 3912,
+      "gitBlobSHA1": "79eb2c0526de232d9a9a5306b7abc4f868be3f49",
+      "sha256": "f81a94282898bffe96700b66734f1ea1f0c9fa7bd1836b1c8fb80f689e094a2c"
+    },
+    {
+      "path": "musics/012.mid",
+      "sourcePath": "Win98/Musics/012.MID",
+      "size": 3646,
+      "gitBlobSHA1": "18de0e8ede563b96b0df9384d5d453121aa24e7d",
+      "sha256": "888be01df8c420425de9ba89feac43890881a90e391757fa005e8021f3983459"
+    },
+    {
+      "path": "musics/013.mid",
+      "sourcePath": "Win98/Musics/013.MID",
+      "size": 9932,
+      "gitBlobSHA1": "613fbf9e76c77ccd6ccdff364b9e775c97dc0214",
+      "sha256": "557f52f212b643232da44ebc2204dd7ad44091b0ddde3d66ce6ad716c32de34a"
+    },
+    {
+      "path": "musics/014.mid",
+      "sourcePath": "Win98/Musics/014.MID",
+      "size": 12418,
+      "gitBlobSHA1": "205d99f8295cd627a042e364dd078d98416d265e",
+      "sha256": "fb95ec123ca6d3798fcdbcf33e51452c5f8577bb61058d5d63cba7a79c00c9a9"
+    },
+    {
+      "path": "musics/015.mid",
+      "sourcePath": "Win98/Musics/015.MID",
+      "size": 4354,
+      "gitBlobSHA1": "8b5a395e52b7f201388d2ff36074015fd0863743",
+      "sha256": "fcda1678630aa1e3cb316879130e841df2e8b957a1135aa85a9a1ab43fdcab3b"
+    },
+    {
+      "path": "musics/016.mid",
+      "sourcePath": "Win98/Musics/016.MID",
+      "size": 10392,
+      "gitBlobSHA1": "26f2f2b5c84c2f5d8664bef9a2e39a314cebdede",
+      "sha256": "4a86b93a8ad0e36c25dba4077cb7b82e8240fa42d6b5ee750fa12868ff731ca0"
+    },
+    {
+      "path": "musics/017.mid",
+      "sourcePath": "Win98/Musics/017.MID",
+      "size": 10066,
+      "gitBlobSHA1": "ba13eb337e196d9e07e39bf400d7080380401fa3",
+      "sha256": "e2992c1070c78556a12e0e47b43207c610397b8b0511172bac261a53e8603366"
+    },
+    {
+      "path": "musics/018.mid",
+      "sourcePath": "Win98/Musics/018.MID",
+      "size": 19510,
+      "gitBlobSHA1": "6fb63f3f503c043e9992ece699bcc5e65c6669b6",
+      "sha256": "ecddfce7fd0e520f5cf4cfdeda56f10859f5155c24d4f7014bc0082d1b36ac54"
+    },
+    {
+      "path": "musics/019.mid",
+      "sourcePath": "Win98/Musics/019.MID",
+      "size": 6702,
+      "gitBlobSHA1": "25d7eab06f4fc8eb0cb660a5180c59ec22da71fd",
+      "sha256": "729c12c8f0cdec9d60d60b2e70cc3199ca1a58fbffc07f5a93a0469bb39dcdce"
+    },
+    {
+      "path": "musics/020.mid",
+      "sourcePath": "Win98/Musics/020.MID",
+      "size": 30864,
+      "gitBlobSHA1": "193192641b827c7d505849664afc369deca1dadf",
+      "sha256": "f63a032b8abad312b8ce927eafd20bfe047f3256f839905acef0f95996774770"
+    },
+    {
+      "path": "musics/021.mid",
+      "sourcePath": "Win98/Musics/021.MID",
+      "size": 9970,
+      "gitBlobSHA1": "8ee5ddb521103f6a813beeddd3cb208455d8966a",
+      "sha256": "2a7e2f679341035bbf073521bdc70c3f29de0f38ad4c9c425c8a45dfd6e03ca1"
+    },
+    {
+      "path": "musics/022.mid",
+      "sourcePath": "Win98/Musics/022.MID",
+      "size": 8814,
+      "gitBlobSHA1": "44f640d2290be2f7b6ddc57f3583c672da1f0b80",
+      "sha256": "3b15902acfdf7d2c68b601c0a21c20865c097da06b73200308fcdf6264504d3a"
+    },
+    {
+      "path": "musics/023.mid",
+      "sourcePath": "Win98/Musics/023.MID",
+      "size": 11244,
+      "gitBlobSHA1": "392e089d3108baadbe601ea86eb980ef64047766",
+      "sha256": "0ec5209b9219139a740d57886df3fe5b781ee89c582e8a095fd8ed023bc3358f"
+    },
+    {
+      "path": "musics/024.mid",
+      "sourcePath": "Win98/Musics/024.MID",
+      "size": 7784,
+      "gitBlobSHA1": "044638cdcb59f4eabd6f64383c0cd83b21b95c3e",
+      "sha256": "091c48ee603b6b2a051f02bd90f2785f5d479fe76caece8f71d564db84623962"
+    },
+    {
+      "path": "musics/025.mid",
+      "sourcePath": "Win98/Musics/025.MID",
+      "size": 11598,
+      "gitBlobSHA1": "19b6ffc3aaf2fd9c506abd51540e56f2a4d8d2bf",
+      "sha256": "a1b9955247c4819e05713c9b281d8ddc0820a51d5e4030bc2f6890b22bfd536f"
+    },
+    {
+      "path": "musics/026.mid",
+      "sourcePath": "Win98/Musics/026.MID",
+      "size": 6796,
+      "gitBlobSHA1": "fc60c761104278d519d71815591b7c97e2f0b584",
+      "sha256": "ca486dad1a92ebc7463a44332e60d05acc4d8647796537bb2d897f980b81419e"
+    },
+    {
+      "path": "musics/027.mid",
+      "sourcePath": "Win98/Musics/027.MID",
+      "size": 7900,
+      "gitBlobSHA1": "b99c11e1633f084dec79f57977a4403ef35ff3d8",
+      "sha256": "e56e372a09b007d15e3baa4f86542f7a9314c3887578b3ededabc0ac4bf4d949"
+    },
+    {
+      "path": "musics/028.mid",
+      "sourcePath": "Win98/Musics/028.MID",
+      "size": 1172,
+      "gitBlobSHA1": "c7d9a64e396217d65cc90698e4bd0a1887a509cc",
+      "sha256": "f4d3ed28fe0bbca0f15301bbd7e050da90cf469457e822bb7bdf035146bc1430"
+    },
+    {
+      "path": "musics/029.mid",
+      "sourcePath": "Win98/Musics/029.mid",
+      "size": 10166,
+      "gitBlobSHA1": "a2e62ba39f422c36cbce21bfdc3715039e6a515c",
+      "sha256": "8ec350f4a255a9f19b2b80cf13c7b47e68e1cd6e55b6819ffc04adf1731b5834"
+    },
+    {
+      "path": "musics/030.mid",
+      "sourcePath": "Win98/Musics/030.MID",
+      "size": 1020,
+      "gitBlobSHA1": "c7db716c9cd4b8273f4221a449dba3475bd32016",
+      "sha256": "8d37001cd19585469de59d1be37cae03d20b0dc7efb3aebc2dbc27388b2e896e"
+    },
+    {
+      "path": "musics/031.mid",
+      "sourcePath": "Win98/Musics/031.MID",
+      "size": 6162,
+      "gitBlobSHA1": "d8bc292718ea2da23bc1cba047852e717ecec5d5",
+      "sha256": "dc05fc066cc1c9cd9d8e9fb534d02b99cef4e48f7953ad0b5a4f99ba3fce638d"
+    },
+    {
+      "path": "musics/032.mid",
+      "sourcePath": "Win98/Musics/032.MID",
+      "size": 8052,
+      "gitBlobSHA1": "2b2156712361d1cc6c88b5889ed9efd2f11f0450",
+      "sha256": "46e4061048d506003b4c54c0f0944f0f02166856eef7a743a1bdb819cecb2494"
+    },
+    {
+      "path": "musics/033.mid",
+      "sourcePath": "Win98/Musics/033.MID",
+      "size": 950,
+      "gitBlobSHA1": "5034f67ed1285efa60815c70c3ce544e7c93e6ce",
+      "sha256": "cfd8c9e68e73e4c8f42a249c27bd6bbf65490d0efdb4492b35439c8ee55ccdf7"
+    },
+    {
+      "path": "musics/034.mid",
+      "sourcePath": "Win98/Musics/034.MID",
+      "size": 6086,
+      "gitBlobSHA1": "9cd81fdd9cadc41f9e2cfe6ace21d2a933a48491",
+      "sha256": "439ba58e3f41114d181b73d2eed9e96d0da2e93b06e52205ee81aedf2837394b"
+    },
+    {
+      "path": "musics/035.mid",
+      "sourcePath": "Win98/Musics/035.MID",
+      "size": 6192,
+      "gitBlobSHA1": "c2059346b73b605324fd838731844b4d6e33791e",
+      "sha256": "e70ba2e4bbd50835cb566675bed2686dd29ecb3d746bc8a992076902e609915f"
+    },
+    {
+      "path": "musics/036.mid",
+      "sourcePath": "Win98/Musics/036.MID",
+      "size": 2506,
+      "gitBlobSHA1": "9de4b6200dcf21655070314a8febb32ef531f71a",
+      "sha256": "c57ce045c4a03cfcc706ce34845e0a57e50e0bd1c2193bdbf6fdb4c0be7d2479"
+    },
+    {
+      "path": "musics/037.mid",
+      "sourcePath": "Win98/Musics/037.MID",
+      "size": 24548,
+      "gitBlobSHA1": "ef40eda85f42a94b3d78fe106e372ca44666138b",
+      "sha256": "e547c76731f4a4962fbd845278144313facaf15f863f6720ad3a891d7ef79889"
+    },
+    {
+      "path": "musics/038.mid",
+      "sourcePath": "Win98/Musics/038.MID",
+      "size": 24548,
+      "gitBlobSHA1": "ef40eda85f42a94b3d78fe106e372ca44666138b",
+      "sha256": "e547c76731f4a4962fbd845278144313facaf15f863f6720ad3a891d7ef79889"
+    },
+    {
+      "path": "musics/039.mid",
+      "sourcePath": "Win98/Musics/039.MID",
+      "size": 27250,
+      "gitBlobSHA1": "fc62e9c78df1139e33e9fffb634db6a0c9ba09af",
+      "sha256": "483983dcd52489705ddbe7798198ab2d5d1b37aa2aedb4fdf6bff7d95ae49d31"
+    },
+    {
+      "path": "musics/040.mid",
+      "sourcePath": "Win98/Musics/040.MID",
+      "size": 8084,
+      "gitBlobSHA1": "b895e48e13acaa7d2af3c996282442862271ee08",
+      "sha256": "f08dddd5ce226bcdce6e406bc5e76d4bed1d901e222f166994659bf501c0244c"
+    },
+    {
+      "path": "musics/041.mid",
+      "sourcePath": "Win98/Musics/041.MID",
+      "size": 8084,
+      "gitBlobSHA1": "b895e48e13acaa7d2af3c996282442862271ee08",
+      "sha256": "f08dddd5ce226bcdce6e406bc5e76d4bed1d901e222f166994659bf501c0244c"
+    },
+    {
+      "path": "musics/042.mid",
+      "sourcePath": "Win98/Musics/042.MID",
+      "size": 6346,
+      "gitBlobSHA1": "3e4d368ca5ff4a0dcd8da8df79f57dbd28c16d04",
+      "sha256": "ca1a0a32e13c47a10fb9f6450329c46aef53826f64ac92803b6b49e795d2bbd3"
+    },
+    {
+      "path": "musics/043.mid",
+      "sourcePath": "Win98/Musics/043.MID",
+      "size": 12394,
+      "gitBlobSHA1": "89b6e07fb377b6cb7b1968962951cd73da9d9bb7",
+      "sha256": "70386bb2a4c33e1ff5b24796fb4ee9a3a77aad1bfa994ae6133bca80cab18ed1"
+    },
+    {
+      "path": "musics/044.mid",
+      "sourcePath": "Win98/Musics/044.MID",
+      "size": 9350,
+      "gitBlobSHA1": "1f0e36d385795db852096b61417b8dc42b4f561d",
+      "sha256": "6adac7fd50c2fa15dfb6d580c774e23f5efc6b405862f51e7a854c61a17a4951"
+    },
+    {
+      "path": "musics/045.mid",
+      "sourcePath": "Win98/Musics/045.MID",
+      "size": 31034,
+      "gitBlobSHA1": "427cd983800aeaf38536b1d75172b068c5ebe70c",
+      "sha256": "0d8a2996dc79cced81a4f213fdc87919baf82ee0e6731e067e88be4b9156f37f"
+    },
+    {
+      "path": "musics/046.mid",
+      "sourcePath": "Win98/Musics/046.MID",
+      "size": 31034,
+      "gitBlobSHA1": "427cd983800aeaf38536b1d75172b068c5ebe70c",
+      "sha256": "0d8a2996dc79cced81a4f213fdc87919baf82ee0e6731e067e88be4b9156f37f"
+    },
+    {
+      "path": "musics/047.mid",
+      "sourcePath": "Win98/Musics/047.MID",
+      "size": 6256,
+      "gitBlobSHA1": "ab2b25c5c1acea8e7398dbd59d5ee924d54f415d",
+      "sha256": "7533318b497f5e755e0905ee5e95bd51eee25c55f2693049309ff519071355a9"
+    },
+    {
+      "path": "musics/048.mid",
+      "sourcePath": "Win98/Musics/048.MID",
+      "size": 6336,
+      "gitBlobSHA1": "3d679a850d552f28bc0f7e65a58785dc38c2711d",
+      "sha256": "6a3bdc286ae42f610ae50c3d3ba030bf1f32451a153ee7d4b8c1a5ccce849c7e"
+    },
+    {
+      "path": "musics/049.mid",
+      "sourcePath": "Win98/Musics/049.MID",
+      "size": 8148,
+      "gitBlobSHA1": "e6d8fb888103bffcfd838f782b3b7ae86bfc496b",
+      "sha256": "19e51259a93a648f93d52ba60c2c18e22a32d89a7aeb0f571ccb73af6c834120"
+    },
+    {
+      "path": "musics/050.mid",
+      "sourcePath": "Win98/Musics/050.MID",
+      "size": 12556,
+      "gitBlobSHA1": "923c48add3efe18486aef0da971c544dc3e5990f",
+      "sha256": "7a0f61e4f5c2d78486925e80a0ae2fd8d2484178ff077567e4a21612a8d60699"
+    },
+    {
+      "path": "musics/051.mid",
+      "sourcePath": "Win98/Musics/051.MID",
+      "size": 3358,
+      "gitBlobSHA1": "ea4dc60dcf1b021353d625ff1256f2a80af9ede3",
+      "sha256": "85eff2979248b1daeecece67335e03b7abc7a8e699f65640d5d792aed6105c50"
+    },
+    {
+      "path": "musics/052.mid",
+      "sourcePath": "Win98/Musics/052.MID",
+      "size": 15630,
+      "gitBlobSHA1": "8389dc4223a9871847f261d3747e20fec07f94b8",
+      "sha256": "610a5df7ad39a24eb0c9c3ffe57a14e775db677c820df6bba04f2870fc34658c"
+    },
+    {
+      "path": "musics/053.mid",
+      "sourcePath": "Win98/Musics/053.MID",
+      "size": 18070,
+      "gitBlobSHA1": "3a2d9e5bb951c830869172040b58850c94f93187",
+      "sha256": "65f9e8f52696690d92102e2e7eae2d6a6039637f3b42993a1669b3812d6d31f1"
+    },
+    {
+      "path": "musics/054.mid",
+      "sourcePath": "Win98/Musics/054.MID",
+      "size": 13526,
+      "gitBlobSHA1": "c04a8dafa551ce483b93bbc605aec0eaca96c749",
+      "sha256": "e31da84cca79d023bd04fbd982d3e34a26b7afb3fbd5d43e67123ad69c4c61b0"
+    },
+    {
+      "path": "musics/055.mid",
+      "sourcePath": "Win98/Musics/055.MID",
+      "size": 7704,
+      "gitBlobSHA1": "4238de7d5413d85dd0f9077609f64863bd84860e",
+      "sha256": "ff628aaab55e731df2153c54f896b0a0563d5981dd70b85a1e32bd22f898d57a"
+    },
+    {
+      "path": "musics/056.mid",
+      "sourcePath": "Win98/Musics/056.MID",
+      "size": 13162,
+      "gitBlobSHA1": "fc43aa192e8048bbfe50109780cada310e4b995e",
+      "sha256": "5a5199868a3e11cc9114e2cd63f157282ce11ff293d259700b93ec6c48d7303b"
+    },
+    {
+      "path": "musics/057.mid",
+      "sourcePath": "Win98/Musics/057.MID",
+      "size": 6328,
+      "gitBlobSHA1": "99945a4ebf358e04bb5a4d2f1638f4f052f8bba2",
+      "sha256": "65387f2f661aff19e3d60ebb35ccdbfb4742342ceb8b829e353380448b23acf5"
+    },
+    {
+      "path": "musics/058.mid",
+      "sourcePath": "Win98/Musics/058.MID",
+      "size": 7488,
+      "gitBlobSHA1": "e5afcb45f69923034ba06833a8495c3d695a2503",
+      "sha256": "58982f77a79b8159496b0cbddf922d163ac97f7e4709c2ed33b89bf0e3141a35"
+    },
+    {
+      "path": "musics/059.mid",
+      "sourcePath": "Win98/Musics/059.MID",
+      "size": 9330,
+      "gitBlobSHA1": "ea8cd40d1901f2ff1a605f632ac0c3032d3017c7",
+      "sha256": "0705facc3ac21f04ea662e05175ea8ea9a7bb53750a18bdf94a4e023a463a1e5"
+    },
+    {
+      "path": "musics/060.mid",
+      "sourcePath": "Win98/Musics/060.MID",
+      "size": 6172,
+      "gitBlobSHA1": "45f0f6e3a4ada8d3d850ac172900e94fcf9db92d",
+      "sha256": "54733dd8cc6fde53575cf5425bf8ddfe6e4df73bbbe6fdb0037f3881ce7de1b9"
+    },
+    {
+      "path": "musics/061.mid",
+      "sourcePath": "Win98/Musics/061.MID",
+      "size": 336,
+      "gitBlobSHA1": "3324ce437d6a597a54c84bab867aa992173e523e",
+      "sha256": "8ce7c19050a94fbad4e9789dbe7305e816225c9f932b095106c351380f9618a9"
+    },
+    {
+      "path": "musics/062.mid",
+      "sourcePath": "Win98/Musics/062.MID",
+      "size": 3698,
+      "gitBlobSHA1": "58b618d177bce682f027d0e6e0fe7aace11eca4e",
+      "sha256": "912c75a777605138e5c02094c0f0d4b8d494695d21ebbe88e730919bd5d4ea01"
+    },
+    {
+      "path": "musics/063.mid",
+      "sourcePath": "Win98/Musics/063.MID",
+      "size": 1818,
+      "gitBlobSHA1": "3d27215e601434456cc0fda37e2ada26a433b770",
+      "sha256": "75375a1fbf402b0a4cf868acac5f9073b3cc43ccb2a06150ac01c5b608ef3a8d"
+    },
+    {
+      "path": "musics/064.mid",
+      "sourcePath": "Win98/Musics/064.MID",
+      "size": 4792,
+      "gitBlobSHA1": "93cf5f8656ed3ab2d88dd9f0cab3fe80d0521fdf",
+      "sha256": "5c4c55c4c76072b7403cd8654d3849caafd341c1acccefdded2396d241035df9"
+    },
+    {
+      "path": "musics/065.mid",
+      "sourcePath": "Win98/Musics/065.MID",
+      "size": 5510,
+      "gitBlobSHA1": "9b62a46dfe53b48f37615cae72c06274d2cf9afe",
+      "sha256": "2ed72ad74a90f2a593d583405dbe04d37ae11a0d6f57572f991bf782be694f80"
+    },
+    {
+      "path": "musics/066.mid",
+      "sourcePath": "Win98/Musics/066.MID",
+      "size": 15652,
+      "gitBlobSHA1": "ee87a12d269c95052f1820c59177e9cec5cd5de2",
+      "sha256": "e67023262024d333dd95f8db42d0033e94312c30fd111c54db51d623230b9661"
+    },
+    {
+      "path": "musics/067.mid",
+      "sourcePath": "Win98/Musics/067.MID",
+      "size": 3780,
+      "gitBlobSHA1": "4264fab91bb33404893bd6d0162485a9dec31a79",
+      "sha256": "17dafed416337a02ab0cd70121af6294adfd485fa38a483433a1aed6060d0f04"
+    },
+    {
+      "path": "musics/068.mid",
+      "sourcePath": "Win98/Musics/068.MID",
+      "size": 16472,
+      "gitBlobSHA1": "57b38e5e7033cd195d3776413f4ecf76abdbb9fa",
+      "sha256": "2aa8fb204c5f1182c7562c4e21e4be95429abb0845e37fb2b10fe6898fc6e277"
+    },
+    {
+      "path": "musics/069.mid",
+      "sourcePath": "Win98/Musics/069.MID",
+      "size": 3268,
+      "gitBlobSHA1": "2a8d1e07613babd018c022c0edb317eea5702c3e",
+      "sha256": "93bda2fe5868f0b8f1d9fb57a515eb2c9354f518064732a239963b36c5c3b317"
+    },
+    {
+      "path": "musics/070.mid",
+      "sourcePath": "Win98/Musics/070.MID",
+      "size": 4048,
+      "gitBlobSHA1": "3b9164a2a9b3179bab57da467f804650ec58561a",
+      "sha256": "672491192fea09fa8d22326296314c28030299c4302687bc8ab409096189f51e"
+    },
+    {
+      "path": "musics/071.mid",
+      "sourcePath": "Win98/Musics/071.MID",
+      "size": 7224,
+      "gitBlobSHA1": "a0c430cb822d6637214fe43ac4ec2fa22e1900df",
+      "sha256": "452a7af15db7834bbf2f9c452cb6d8016cbcecb5e2a63f0e4c3ce39c907d4b52"
+    },
+    {
+      "path": "musics/072.mid",
+      "sourcePath": "Win98/Musics/072.MID",
+      "size": 2698,
+      "gitBlobSHA1": "8b4d9695b53fcfc884fd0a58a484680ed42987f9",
+      "sha256": "b7c490d195d47529fe7d26a0fe1662a9591462760b30522adb3a1130c7ef2fcc"
+    },
+    {
+      "path": "musics/073.mid",
+      "sourcePath": "Win98/Musics/073.MID",
+      "size": 12842,
+      "gitBlobSHA1": "ca52eded8a879aa26dd2e633d855923f3cbdd63b",
+      "sha256": "53883ca4e44094f83587c4e29fe473fb54aac1ef5703fc1ad02330191713cce6"
+    },
+    {
+      "path": "musics/074.mid",
+      "sourcePath": "Win98/Musics/074.MID",
+      "size": 1812,
+      "gitBlobSHA1": "4489d57edbded4f5d3143d941b2a9349b2021e7d",
+      "sha256": "dac9f18eb66941ee2487718ca73b5847ad9d5d0a5e148454e11db9dbc7bb5bac"
+    },
+    {
+      "path": "musics/075.mid",
+      "sourcePath": "Win98/Musics/075.MID",
+      "size": 10270,
+      "gitBlobSHA1": "33a4a9385a48277d846c5336ac094c1a73dd33cd",
+      "sha256": "63ffeea7ad8b8113f72ebc9be3feab13a670f059a583e0da67b3840f1f39ca23"
+    },
+    {
+      "path": "musics/076.mid",
+      "sourcePath": "Win98/Musics/076.MID",
+      "size": 9558,
+      "gitBlobSHA1": "89906c55080980f36f1d9608aa55fc39527ad0a4",
+      "sha256": "811992b0804088b32c79e7a08087aa5e2e3aa4351d832e49ccc65f77a3450f15"
+    },
+    {
+      "path": "musics/077.mid",
+      "sourcePath": "Win98/Musics/077.MID",
+      "size": 5180,
+      "gitBlobSHA1": "b3eda48af75328d472ff6eb5c9e7380496b33a49",
+      "sha256": "8b3b79de91dd6ec5fa1fc9cda30daae6c2ab2e361e9ab3a3616002b17c46691b"
+    },
+    {
+      "path": "musics/078.mid",
+      "sourcePath": "Win98/Musics/078.MID",
+      "size": 6666,
+      "gitBlobSHA1": "2f23f9b87df8df2e3464c579684cc0c78dfafb92",
+      "sha256": "15e4b780c6e3d94399c92791d11ea7c8daa2244cbaebb0fc6ab09f5f2b2a4e39"
+    },
+    {
+      "path": "musics/079.mid",
+      "sourcePath": "Win98/Musics/079.MID",
+      "size": 5726,
+      "gitBlobSHA1": "1f8e8dce9ce3bd27be2e04caba9eef5da7d28b9f",
+      "sha256": "38263010a323ceafb2605265dad45fc3135a822d59823de29fba0f5b5df0037c"
+    },
+    {
+      "path": "musics/080.mid",
+      "sourcePath": "Win98/Musics/080.MID",
+      "size": 13990,
+      "gitBlobSHA1": "706e6a7bb343e7904881bae74bfa66e9c8d30534",
+      "sha256": "205b336b0090979c06c290399bddf6d9492194db8b72124ed305a57546de2c53"
+    },
+    {
+      "path": "musics/081.mid",
+      "sourcePath": "Win98/Musics/081.MID",
+      "size": 8046,
+      "gitBlobSHA1": "a50291c4faa94393622a71cb9366fde4d46ac39d",
+      "sha256": "7086133947c20e75c83535d7f9a4732231c6dd4561b3e0a7369b4e649df198ed"
+    },
+    {
+      "path": "musics/082.mid",
+      "sourcePath": "Win98/Musics/082.MID",
+      "size": 7736,
+      "gitBlobSHA1": "c4dad38f44f2b917698fb9310db78eba6ee26c06",
+      "sha256": "0bd57bcacc2edd3d2ba73597088df4818d4e8f7213202ad7b874d339d78125e7"
+    },
+    {
+      "path": "musics/083.mid",
+      "sourcePath": "Win98/Musics/083.MID",
+      "size": 2568,
+      "gitBlobSHA1": "51431d0e7f5259dca15c5c1c8c17476cf4860d93",
+      "sha256": "dee0f2c1989569952c1365fbe6e76ab71377b172c078989a91c5f3bdd1ac0658"
+    },
+    {
+      "path": "musics/084.mid",
+      "sourcePath": "Win98/Musics/084.MID",
+      "size": 10324,
+      "gitBlobSHA1": "0c5d989dc4396ebe20071483ecf180db9e4b68d5",
+      "sha256": "b8d34dd2ff1687fb134034663abb581649ea1c55425dac9e464eb90ab8ef9fa0"
+    },
+    {
+      "path": "musics/085.mid",
+      "sourcePath": "Win98/Musics/085.MID",
+      "size": 3700,
+      "gitBlobSHA1": "853dd80707d9a7002a353f5fdf505d5e9ccf4fc8",
+      "sha256": "0cb59fb91a0626230d4793ea17393f260913f528fa51a15d88f72d9529bb04b4"
+    },
+    {
+      "path": "musics/086.mid",
+      "sourcePath": "Win98/Musics/086.MID",
+      "size": 13918,
+      "gitBlobSHA1": "749d8a1b5329089774d4fe3ce4169b1bff259b97",
+      "sha256": "0ae7a7f3c32e67347a23cc7b0dc52bda41de49216de9ee689699fa805da0f101"
+    },
+    {
+      "path": "musics/087.mid",
+      "sourcePath": "Win98/Musics/087.MID",
+      "size": 3480,
+      "gitBlobSHA1": "a2ac015d15357f3f5e5bfcc6ca5f86bf8590e35d",
+      "sha256": "792f20f4d187445bb3125dc6cc7a414920a2e4d33bbcb3b461eac4d01b69da1a"
+    },
+    {
+      "path": "pat.mkf",
+      "sourcePath": "Win98/PAT.MKF",
+      "size": 8488,
+      "gitBlobSHA1": "66c47c238ab9f91d7cfb0734a3648f62824b317c",
+      "sha256": "b2d6a3db53a3e80106a4c041c7f94dfaf9dcb065517fce79b1ff3d413494d997"
+    },
+    {
+      "path": "rgm.mkf",
+      "sourcePath": "Win98/RGM.MKF",
+      "size": 453202,
+      "gitBlobSHA1": "e1c747a60b24cee345696ecca13e55bd94368131",
+      "sha256": "fbeb7cbafd374af8c07088ab18996edcadd6ec52b8bb0a0af644c2cee4e26bac"
+    },
+    {
+      "path": "rng.mkf",
+      "sourcePath": "Win98/RNG.MKF",
+      "size": 4085342,
+      "gitBlobSHA1": "7b2296039634b3d369fe15149a87ccf18e4d7b04",
+      "sha256": "5d62cad87b330d2e1ec00d7c1acc4de96b8324e547fa8095aab0f64a9811d7bd"
+    },
+    {
+      "path": "sounds.mkf",
+      "sourcePath": "Win98/SOUNDS.MKF",
+      "size": 18112888,
+      "gitBlobSHA1": "e3236e1c19edcfca48a63706e09e54d539aa6c90",
+      "sha256": "039a5cc64be937168ce458c8288fbd61fb3d2854e9445a775ab67f6af2276e01"
+    },
+    {
+      "path": "sss.mkf",
+      "sourcePath": "Win98/SSS.MKF",
+      "size": 574838,
+      "gitBlobSHA1": "8312da829ce4986df40c73d37620324b457a4e60",
+      "sha256": "ce448a90c9797648eea315fe589b2bd434139ffc423bf0a5954dae6f4c8b4756"
+    },
+    {
+      "path": "word.dat",
+      "sourcePath": "Win98/WORD.DAT",
+      "size": 5650,
+      "gitBlobSHA1": "2a7f44278dd6f91be3508da061a8cf275431e38c",
+      "sha256": "be56e77c7ecd61306133913a1987b1dddf656528ae870c2de1ee8ccda7ff3ebf"
+    }
+  ]
+}

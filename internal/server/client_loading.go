@@ -29,6 +29,9 @@ func (s *Server) frontendBuild() string {
 	return hex.EncodeToString(sum[:])
 }
 func (r *Room) gameNow(now time.Time) time.Time {
+	if (r.Status == "saved" || r.Status == "restoring") && r.SaveClock > 0 {
+		return time.UnixMilli(r.SaveClock)
+	}
 	if r.Loading != nil {
 		return time.UnixMilli(r.Loading.FrozenAt)
 	}

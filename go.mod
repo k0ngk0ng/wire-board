@@ -5,7 +5,10 @@ go 1.26.0
 require (
 	github.com/coder/websocket v1.8.14
 	github.com/corentings/chess/v2 v2.6.0
+	github.com/klauspost/compress v1.20.4
+	github.com/tetratelabs/wazero v1.11.0
 	golang.org/x/crypto v0.48.0
+	golang.org/x/text v0.34.0
 	modernc.org/sqlite v1.46.1
 )
 

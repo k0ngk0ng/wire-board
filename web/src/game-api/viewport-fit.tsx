@@ -4,9 +4,11 @@ import { viewportFitHeight } from "./viewport-fit-core";
 /** Optional platform surface; games retain their own proportional layout. */
 export function GameViewportFit({
   enabled,
+  aspect,
   children,
 }: {
   enabled: boolean;
+  aspect?: number;
   children: ReactNode;
 }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -69,6 +71,8 @@ export function GameViewportFit({
         documentTop: rect.top + window.scrollY,
         occlusionTop,
         bottomPadding: 8,
+        minimumHeight:
+          aspect && aspect > 0 ? Math.ceil(rect.width / aspect) : undefined,
         previousHeight,
         reason,
       });
@@ -139,7 +143,7 @@ export function GameViewportFit({
       window.visualViewport?.removeEventListener("resize", layout);
       window.visualViewport?.removeEventListener("scroll", scroll);
     };
-  }, [enabled]);
+  }, [enabled, aspect]);
   return (
     <div ref={ref} className="game-viewport-fit" data-game-viewport-fit>
       {children}

@@ -1,0 +1,180 @@
+package server
+
+// HTTP/SQLite acceptance before any persistence-specific fixes. Failures:
+// approvals acknowledged without durable storage; failed partial/final votes
+// mutate shared native state; save consumes a pending action; restart loses
+// approvals or accepts old pages; resumed consent cannot finish original combat.
+// The Wasm is an explicit original PAL_StartBattle fixture, not campaign progress.
+import (
+	"context"
+	"encoding/json"
+	"net/http/httptest"
+	"os"
+	"path/filepath"
+	"reflect"
+	"testing"
+	"testing/fstest"
+	"time"
+
+	"github.com/k0ngk0ng/wire-board/games/pal/engine"
+	pal "github.com/k0ngk0ng/wire-board/games/pal/server"
+	"github.com/k0ngk0ng/wire-board/internal/gameapi"
+)
+
+func TestPALOriginalCooperativeConsentHTTP(t *testing.T) {
+	root := filepath.Join("..", "..")
+	wasm, e := os.ReadFile(filepath.Join(root, ".local/pal/battle-fixtures/team-1-party-3/rules.wasm"))
+	if e != nil {
+		t.Fatal(e)
+	}
+	newRuntime := func() *engine.Runtime {
+		t.Helper()
+		r, e := engine.NewRuntime(context.Background(), wasm, os.DirFS(filepath.Join(root, ".local/pal/original-98")))
+		if e != nil {
+			t.Fatal(e)
+		}
+		return r
+	}
+	runtime := newRuntime()
+	cfg := Config{DataDir: t.TempDir(), InviteCode: "test-invite", Modules: []gameapi.Module{pal.NewModule(runtime)}}
+	files := fstest.MapFS{"index.html": {Data: []byte("original cooperative magic verification")}}
+	s, e := New(cfg, files)
+	if e != nil {
+		t.Fatal(e)
+	}
+	ts := httptest.NewServer(s.Handler())
+	t.Cleanup(func() { ts.Close(); s.Close(); runtime.Close(context.Background()) })
+	a, b, c := newClient(t, ts.URL), newClient(t, ts.URL), newClient(t, ts.URL)
+	a.register("合击队友甲")
+	b.register("合击队友乙")
+	c.register("合击队友丙")
+	r := a.post("/api/rooms", map[string]any{"kind": "pal", "name": "原版合击存档", "capacity": 3}, 201)
+	b.command(r, "join", nil, 200)
+	c.command(current(a), "join", nil, 200)
+	for _, client := range []*testClient{a, b, c} {
+		client.command(current(client), "ready", nil, 200)
+	}
+	a.command(current(a), "start", nil, 200)
+	id := r["id"].(string)
+	data := func(client *testClient) map[string]any {
+		return current(client)["game"].(map[string]any)["data"].(map[string]any)
+	}
+	wait := func(predicate func(map[string]any) bool) map[string]any {
+		t.Helper()
+		until := time.Now().Add(45 * time.Second)
+		for time.Now().Before(until) {
+			d := data(a)
+			if predicate(d) {
+				return d
+			}
+			time.Sleep(40 * time.Millisecond)
+		}
+		t.Fatal("original cooperative HTTP checkpoint unavailable", data(a)["phase"])
+		return nil
+	}
+	wait(func(d map[string]any) bool {
+		if d["phase"] != "battle" {
+			return false
+		}
+		battle := d["battle"].(map[string]any)
+		return battle["state"] == float64(1) && battle["current"] == float64(0)
+	})
+	input := func(direction int, keys uint32) {
+		t.Helper()
+		room := current(a)
+		d := room["game"].(map[string]any)["data"].(map[string]any)
+		a.command(room, "action", map[string]any{"type": "input", "epoch": d["epoch"], "seq": d["seq"].(float64) + 1, "direction": direction, "keys": keys, "controlAt": d["controlAt"]}, 200)
+	}
+	input(3, 0)
+	wait(func(d map[string]any) bool { return d["battle"].(map[string]any)["selected"] == float64(2) })
+	input(4, 2)
+	d := wait(func(d map[string]any) bool { return d["phase"] == "cooperation" })
+	p := d["cooperation"].(map[string]any)
+	oldPage := current(c)
+	vote := func(client *testClient, status int) map[string]any {
+		t.Helper()
+		latest := data(client)
+		return client.command(current(client), "action", map[string]any{"type": "coop_accept", "epoch": latest["epoch"], "prompt": p["id"]}, status)
+	}
+	fail := func(name string) {
+		t.Helper()
+		if _, e = s.db.Exec("CREATE TRIGGER " + name + " BEFORE UPDATE ON rooms BEGIN SELECT RAISE(ABORT,'cooperative rollback'); END"); e != nil {
+			t.Fatal(e)
+		}
+	}
+	drop := func(name string) {
+		t.Helper()
+		if _, e = s.db.Exec("DROP TRIGGER " + name); e != nil {
+			t.Fatal(e)
+		}
+	}
+	fail("fail_coop_partial")
+	vote(b, 500)
+	drop("fail_coop_partial")
+	if data(a)["cooperation"].(map[string]any)["approved"].([]any)[1] != false {
+		t.Fatal("failed partial vote retained approval")
+	}
+	if receipt := vote(b, 200); receipt["durable"] != true {
+		t.Fatal("cooperative approval was not durable", receipt)
+	}
+	// The initiating owner already consented by selecting the action, but must
+	// still pass the platform actor gate when cancelling the pending request.
+	latest := data(a)
+	if receipt := a.command(current(a), "action", map[string]any{"type": "coop_cancel", "epoch": latest["epoch"], "prompt": p["id"]}, 200); receipt["durable"] != true {
+		t.Fatal("initiator cancellation was not durable")
+	}
+	if data(a)["cooperation"] != nil {
+		t.Fatal("initiator could not cancel cooperative request over HTTP")
+	}
+	input(3, 0)
+	wait(func(d map[string]any) bool { return d["battle"].(map[string]any)["selected"] == float64(2) })
+	input(4, 2)
+	d = wait(func(d map[string]any) bool { return d["phase"] == "cooperation" })
+	p = d["cooperation"].(map[string]any)
+	vote(b, 200)
+	before := data(a)
+	fail("fail_coop_final")
+	vote(c, 500)
+	drop("fail_coop_final")
+	if !reflect.DeepEqual(before["battle"], data(a)["battle"]) || !reflect.DeepEqual(before["cooperation"], data(a)["cooperation"]) {
+		t.Fatal("failed final vote committed native cooperative action")
+	}
+	for _, client := range []*testClient{a, b, c} {
+		client.command(current(client), "save", nil, 200)
+	}
+	if a.state()["room"] != nil || b.state()["room"] != nil || c.state()["room"] != nil {
+		t.Fatal("cooperative save retained seats")
+	}
+	ts.Close()
+	if e = s.Close(); e != nil {
+		t.Fatal(e)
+	}
+	runtime.Close(context.Background())
+	runtime = newRuntime()
+	cfg.Modules = []gameapi.Module{pal.NewModule(runtime)}
+	s, e = New(cfg, files)
+	if e != nil {
+		t.Fatal(e)
+	}
+	ts = httptest.NewServer(s.Handler())
+	a.base, b.base, c.base = ts.URL, ts.URL, ts.URL
+	for _, client := range []*testClient{a, b, c} {
+		client.post("/api/saves/"+id+"/resume", map[string]any{}, 200)
+	}
+	resumed := data(a)
+	if resumed["epoch"] == before["epoch"] || !reflect.DeepEqual(resumed["cooperation"], before["cooperation"]) || !reflect.DeepEqual(resumed["battle"], before["battle"]) {
+		t.Fatal("fresh server lost saved original cooperative request")
+	}
+	c.command(oldPage, "action", map[string]any{"type": "coop_accept", "epoch": d["epoch"], "prompt": p["id"]}, 409)
+	if receipt := vote(c, 200); receipt["durable"] != true {
+		t.Fatal("final cooperative commit was not durable", receipt)
+	}
+	finished := wait(func(d map[string]any) bool { return d["cash"] == float64(3) })
+	if finished["cooperation"] != nil {
+		t.Fatal("approved request remained after original reward")
+	}
+	report, _ := json.MarshalIndent(map[string]any{"passed": true, "scope": "authenticated HTTP + original PAL_StartBattle + SQLite partial/final rollback + save + fresh runtime/server restart + original roster + actual cooperative victory; not full campaign", "room": id, "request": p, "cash": finished["cash"]}, "", "  ")
+	if e = os.WriteFile(filepath.Join(root, ".local/pal/verification/coop-consent-http.json"), report, 0600); e != nil {
+		t.Fatal(e)
+	}
+}

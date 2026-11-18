@@ -26,6 +26,11 @@ import { revealGameOnEntry } from "./game-entry-scroll";
 import { CategoryFilter, matchesCategory } from "./ui/game-category";
 import { refreshQueue } from "./refresh-queue";
 import {
+  RestoringSavedGame,
+  SaveGameControl,
+  SavedGames,
+} from "./ui/saved-games";
+import {
   mergeStreamState,
   mergeStreamGame,
   mergeNetworkState,
@@ -293,8 +298,13 @@ function App() {
       !previousRoom.current.spectating &&
       !data.room
     ) {
-      setNotice("你已离开这张牌桌，可以创建或加入其他房间。");
+      setNotice(
+        data.saves?.some((save) => save.id === previousRoom.current?.id)
+          ? ""
+          : "你已离开这张牌桌，可以创建或加入其他房间。",
+      );
     }
+    if (data.room && data.room.id !== previousRoom.current?.id) setNotice("");
     previousRoom.current = data.room;
     if (resyncRequired.current || document.hidden) {
       setPresentationEpoch((v) => v + 1);
@@ -481,7 +491,8 @@ function App() {
       setNotice("当前由电脑托管，取消托管后即可继续操作。");
       return;
     }
-    if (gameModule(state.room.kind)?.realtime) {
+    const module = gameModule(state.room.kind);
+    if (module?.realtime) {
       if (
         busy ||
         state.room.status !== "playing" ||
@@ -499,6 +510,8 @@ function App() {
             nonce: crypto.randomUUID(),
             action,
           });
+        } else if (module.streamInputOnly) {
+          throw new Error("实时连接尚未就绪");
         } else {
           await command(state.room, "action", {
             action,
@@ -834,6 +847,9 @@ function App() {
                   else void run(() => api(`/rooms/${r.id}/watch`, {}));
                 }}
                 busy={busy}
+                onResumeSave={(id) =>
+                  void run(() => api(`/saves/${id}/resume`, {}))
+                }
               />
             ) : (
               <main
@@ -886,6 +902,12 @@ function App() {
                           {autoPlay ? "取消托管" : "开启托管"}
                         </button>
                       )}
+                      <SaveGameControl
+                        room={room}
+                        userID={state.user.id}
+                        busy={busy}
+                        command={roomCommand}
+                      />
                       {room.game && (
                         <button
                           className="subtle"
@@ -987,7 +1009,9 @@ function App() {
                       </button>
                     </div>
                   )}
-                {room.status === "waiting" ? (
+                {room.status === "restoring" ? (
+                  <RestoringSavedGame room={room} />
+                ) : room.status === "waiting" ? (
                   <Waiting
                     room={room}
                     busy={busy}
@@ -1028,7 +1052,7 @@ function App() {
                 ) : (
                   <>
                     <GameLoading
-                      key={`${room.id}:${room.matchId ?? room.setupVersion}:${room.you}`}
+                      key={`${room.id}:${room.supportsCheckpoint ? "checkpoint" : room.matchId ?? room.setupVersion}:${room.you}`}
                       room={room}
                       assets={mediaBase}
                     >
@@ -1049,28 +1073,46 @@ function App() {
                                 ref={gameFullscreen}
                                 onReadyChange={setGameFullscreenReady}
                                 onChatTargetChange={setChatFullscreenTarget}
-                                scope={`${room.id}:${room.matchId ?? room.setupVersion}`}
+                                scope={`${room.id}:${room.supportsCheckpoint ? "checkpoint" : room.matchId ?? room.setupVersion}`}
                                 enabled={!loading && !!room.game}
+                                preserveWhileLoading={!!room.supportsCheckpoint}
+                                toolbarOverlay={
+                                  gameModule(room.kind)?.fullscreenToolbarOverlay
+                                }
                                 toolbarActions={
-                                  autoPlay &&
-                                  canAutoPlay &&
-                                  isIndependentGame(room.kind) &&
-                                  gameModule(room.kind)?.viewportFit ? (
+                                  room.supportsSave ||
+                                  (autoPlay &&
+                                    canAutoPlay &&
+                                    isIndependentGame(room.kind) &&
+                                    gameModule(room.kind)?.viewportFit) ? (
                                     <>
-                                      <span role="status">托管中</span>
-                                      <button
-                                        className="subtle"
-                                        data-viewport-resume
-                                        disabled={busy}
-                                        onClick={() =>
-                                          roomCommand("autoplay", {
-                                            enabled: false,
-                                          })
-                                        }
-                                      >
-                                        <Hand size={16} />
-                                        取消托管
-                                      </button>
+                                      <SaveGameControl
+                                        room={room}
+                                        userID={state.user.id}
+                                        busy={busy}
+                                        command={roomCommand}
+                                      />
+                                      {autoPlay &&
+                                        canAutoPlay &&
+                                        isIndependentGame(room.kind) &&
+                                        gameModule(room.kind)?.viewportFit && (
+                                          <>
+                                            <span role="status">托管中</span>
+                                            <button
+                                              className="subtle"
+                                              data-viewport-resume
+                                              disabled={busy}
+                                              onClick={() =>
+                                                roomCommand("autoplay", {
+                                                  enabled: false,
+                                                })
+                                              }
+                                            >
+                                              <Hand size={16} />
+                                              取消托管
+                                            </button>
+                                          </>
+                                        )}
                                     </>
                                   ) : undefined
                                 }
@@ -1112,8 +1154,9 @@ function App() {
                                   busy={boardBusy || loading}
                                   assets={mediaBase}
                                   sound={sound && volume > 0 && !loading}
+                                  audioEnabled={sound && volume > 0}
                                   audio={gameAudio}
-                                  inputWindow={streamInputs.connected ? 8 : 1}
+                                  inputWindow={streamInputs.connected ? 8 : gameModule(room.kind)?.streamInputOnly ? 0 : 1}
                                   clock={presented.clock}
                                   command={(type, extra) =>
                                     run(() => command(room, type, extra))
@@ -1514,12 +1557,14 @@ function Lobby({
   onJoin,
   onWatch,
   busy,
+  onResumeSave,
 }: {
   state: State;
   onCreate: (v: string) => void;
   onJoin: (r: Room) => void;
   onWatch: (r: Room) => void;
   busy: boolean;
+  onResumeSave: (id: string) => void;
 }) {
   const [filter, setFilter] = useState("all");
   const [roomQuery, setRoomQuery] = useState("");
@@ -1729,6 +1774,11 @@ function Lobby({
           </div>
         )}
       </section>
+      <SavedGames
+        saves={state.saves ?? []}
+        busy={busy}
+        onResume={onResumeSave}
+      />
       <div className="lobby-note">
         <span>
           <Check size={16} />

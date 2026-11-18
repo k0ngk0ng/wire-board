@@ -1,0 +1,76 @@
+{
+  "userScope": "单人 98 原版＋个人长期存档",
+  "archivedPeerOnlyCases": [
+    {
+      "previousPath": "games/pal/tests/coop_consent_e2e_test.go",
+      "archive": "games/pal/tests/research/multiplayer/tests-coop_consent_e2e_test.go.txt",
+      "sha256": "511301bcb64615db047884ab4874295de530b6d3620c1678f8496dce33e09c79",
+      "reason": "user-confirmed single-player scope; only removed peer-consent/other-seat scenarios, retained current solo equivalents"
+    },
+    {
+      "previousPath": "games/pal/tests/reclaim_other_actor_e2e_test.go",
+      "archive": "games/pal/tests/research/multiplayer/tests-reclaim_other_actor_e2e_test.go.txt",
+      "sha256": "66cd6c132bf60633de9140a4f691bdacccb34e1c71a6a1e5f6bddb0f9a9073a1",
+      "reason": "user-confirmed single-player scope; only removed peer-consent/other-seat scenarios, retained current solo equivalents"
+    },
+    {
+      "previousPath": "internal/server/pal_coop_e2e_test.go",
+      "archive": "games/pal/tests/research/multiplayer/server-pal_coop_e2e_test.go.txt",
+      "sha256": "f3a37fc496bfa357f6f0ff97c26c1b0f7f8b5325957a5bb01e9348f9f302396f",
+      "reason": "user-confirmed single-player scope; only removed peer-consent/other-seat scenarios, retained current solo equivalents"
+    },
+    {
+      "previousPath": "internal/server/pal_native_e2e_test.go",
+      "archive": "games/pal/tests/research/multiplayer/server-pal_native_e2e_test.go.txt",
+      "sha256": "0c8d7ca0c9c71e92ccad853634f6ab75e45eeb165d9797909ef07aabdbe7ac82",
+      "reason": "user-confirmed single-player scope; only removed peer-consent/other-seat scenarios, retained current solo equivalents"
+    },
+    {
+      "previousPath": "internal/server/pal_field_control_e2e_test.go",
+      "archive": "games/pal/tests/research/multiplayer/server-pal_field_control_e2e_test.go.txt",
+      "sha256": "b84612b6fe8dd698eb5228cc4aa5aa19db7c3d7446f2a1a8cb39cdd34fd44230",
+      "reason": "retired only the idle other-seat test; kept and converted the solo field-autoplay/save scenario"
+    },
+    {
+      "previousPath": "internal/server/pal_rescue_bot_e2e_test.go",
+      "archive": "games/pal/tests/research/multiplayer/server-pal_rescue_bot_e2e_test.go.txt",
+      "sha256": "7c3f2d96ddd701a8be51ba46dc2d90bee0d9590d1914479ed0f910ec46a7565d",
+      "reason": "single-player rescue magic/save replacement retains real original battle, private restart, mana and manual reclaim"
+    }
+  ],
+  "convertedCurrentSoloTests": [
+    "games/pal/tests/campaign_inn_e2e_test.go",
+    "games/pal/tests/campaign_medicine_e2e_test.go",
+    "games/pal/tests/stream_view_e2e_test.go",
+    "games/pal/tests/campaign_harbor_e2e_test.go",
+    "games/pal/tests/field_bot_kitchen_e2e_test.go",
+    "games/pal/tests/menu_cooperation_e2e_test.go",
+    "games/pal/tests/battle_cooperation_e2e_test.go",
+    "games/pal/tests/campaign_island_landing_e2e_test.go",
+    "games/pal/tests/campaign_homecoming_e2e_test.go",
+    "games/pal/tests/field_bot_continuous_e2e_test.go",
+    "games/pal/tests/field_bot_e2e_test.go",
+    "games/pal/tests/campaign_maze_e2e_test.go",
+    "games/pal/tests/campaign_village_e2e_test.go",
+    "games/pal/tests/campaign_fairy_meeting_e2e_test.go",
+    "games/pal/tests/campaign_fairy_rumor_e2e_test.go",
+    "games/pal/tests/field_bot_wine_e2e_test.go",
+    "games/pal/tests/battle_bot_recovery_e2e_test.go",
+    "games/pal/tests/battle_bot_rescue_e2e_test.go",
+    "games/pal/tests/field_bot_delivery_e2e_test.go",
+    "games/pal/tests/input_freshness_e2e_test.go",
+    "games/pal/tests/input_timeline_e2e_test.go",
+    "games/pal/tests/campaign_ambush_e2e_test.go",
+    "games/pal/tests/campaign_return_medicine_e2e_test.go",
+    "games/pal/tests/campaign_return_island_e2e_test.go",
+    "games/pal/tests/campaign_night_lesson_e2e_test.go",
+    "games/pal/tests/cooperation_e2e_test.go",
+    "games/pal/tests/campaign_departure_e2e_test.go",
+    "games/pal/tests/campaign_drunkard_e2e_test.go",
+    "games/pal/tests/battle_bot_e2e_test.go",
+    "games/pal/tests/input_direction_e2e_test.go",
+    "games/pal/tests/campaign_first_party_e2e_test.go",
+    "games/pal/tests/campaign_palace_medicine_e2e_test.go",
+    "internal/server/pal_battle_bot_e2e_test.go"
+  ]
+}

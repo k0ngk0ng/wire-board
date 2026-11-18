@@ -121,7 +121,13 @@ func TestModuleRealtimeCloseAndOrdinaryWebSocketScopesHTTP(t *testing.T) {
 	trace = append(trace, map[string]any{"event": "close", "notifications": assertRealtimeNotices(t, clients, all, func() { f.a.command(current(f.a), "close", nil, 200) })})
 	closed := current(f.a)
 	trace = append(trace, map[string]any{"event": "closed_frame", "notifications": assertRealtimeNotices(t, clients, nil, func() { f.frame(time.UnixMilli(f.s.rooms[f.id].Module.SystemDeadline)) })})
-	if !reflect.DeepEqual(closed, current(f.a)) {
+	afterClosedFrame := current(f.a)
+	if !reflect.DeepEqual(closed, afterClosedFrame) {
+		for key, before := range closed {
+			if !reflect.DeepEqual(before, afterClosedFrame[key]) {
+				t.Log("changed closed-room field", key, "before", before, "after", afterClosedFrame[key])
+			}
+		}
 		t.Fatal("closed frame mutated room")
 	}
 	// Register the identical host fixture without Realtime: ordinary action and

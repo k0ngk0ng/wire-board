@@ -3,6 +3,7 @@ package server
 import (
 	"encoding/json"
 	"reflect"
+	"slices"
 	"time"
 
 	"github.com/k0ngk0ng/wire-board/internal/gameapi"
@@ -11,11 +12,15 @@ import (
 // Real-time play has no turn obligation or idle takeover. The game's independent
 // SystemDeadline still drives starts, selection stages, simulation and results.
 func (s *Server) setModule(room *Room, match gameapi.Match) error {
-	if s.modules[room.Kind].Realtime {
+	return setModuleResult(room, s.modules[room.Kind], match)
+}
+
+func setModuleResult(room *Room, module gameapi.Module, match gameapi.Match) error {
+	if module.Realtime {
 		match.Deadline = 0
 		match.TimeoutActors = nil
 	}
-	return room.setModule(match, s.modules[room.Kind])
+	return room.setModule(match, module)
 }
 
 // Old timeout takeovers must not silently become manual autoplay after upgrade.
@@ -46,8 +51,12 @@ func (s *Server) migrateRealtimeControl(room *Room) (bool, error) {
 	if err := module.ValidateMatch(match, len(room.Seats)); err != nil {
 		return false, err
 	}
+	votes := slices.Clone(room.SaveVotes)
 	if err := s.setModule(room, match); err != nil {
 		return false, err
+	}
+	if module.SaveControl != nil && match.Paused {
+		room.SaveVotes = votes
 	}
 	after, _ := json.Marshal(room)
 	return !reflect.DeepEqual(before, after), nil

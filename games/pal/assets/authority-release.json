@@ -1,0 +1,70 @@
+{
+  "format": 1,
+  "archiveSHA256": "c63f058aa4c050deafa5d68171027a4f420ce7b58d6bd2276d846f3a7312c508",
+  "resourceID": "58b3fddfd1bcdc37b6816cfd3ddba8a821683ff6f13b4cd5cbbab6f8ffe7255c",
+  "archiveBytes": 584355,
+  "files": {
+    "abc.mkf": {
+      "bytes": 9122,
+      "sha256": "2214857dcc74698fa0d4937c092aad9c24289f99b74f5292aaa04db6074507f3"
+    },
+    "ball.mkf": {
+      "bytes": 14817,
+      "sha256": "3481362864a7355c252325c3b6312b97cad2e127a32d8c55ba02ab0635e3ed63"
+    },
+    "data.mkf": {
+      "bytes": 29790,
+      "sha256": "907b8a62844c77fddee590ff7f7d5787de5404c7ca08a415aa914399aa5894bb"
+    },
+    "f.mkf": {
+      "bytes": 1419,
+      "sha256": "d5825c137def67cb2fa9a66a03d98a337c5162dc313d67f77bce74ea8b7c2439"
+    },
+    "fbp.mkf": {
+      "bytes": 7916,
+      "sha256": "2c14d2edbeafe1279a30e9950b8c12cddac6677e84de7f94dbfd9cd5bbbab3ee"
+    },
+    "fire.mkf": {
+      "bytes": 6309,
+      "sha256": "10a9fe70b17a49cd004e20aa8cbcc3c476bc824a1ff2a76242edcc1180b56814"
+    },
+    "gop.mkf": {
+      "bytes": 8936,
+      "sha256": "5d3c2b13a7cdbc6dbf8bff7f0f9f0c71d5f0020bb9e5f1380efb9a4208691925"
+    },
+    "m.msg": {
+      "bytes": 224455,
+      "sha256": "5e553754fa0dcdab3b25590a01cb3f08a510c17ee9d59afd1c9f62b02841b846"
+    },
+    "map.mkf": {
+      "bytes": 281074,
+      "sha256": "d9b97bb505334764ac0e4ddbd6d11d96eed873a147212f9793429cbc3460cdf7"
+    },
+    "mgo.mkf": {
+      "bytes": 41809,
+      "sha256": "9508a8216fce7eed5e5ab4598bb1fd4c4680f69f86f9ea566064105addefbb48"
+    },
+    "pat.mkf": {
+      "bytes": 8488,
+      "sha256": "516539ebb64c74717e3fefdd3e9f7401f49c943b9f1406f6d845653d29d571a4"
+    },
+    "rgm.mkf": {
+      "bytes": 9661,
+      "sha256": "2114890a1d664daf25ef5b3f85ee6403998eee408b3c7bc3e6c342809de82ef2"
+    },
+    "rng.mkf": {
+      "bytes": 42604,
+      "sha256": "ab842cf886ae9e172fda5637d8e093e5db45c4257b92cd68269d352188f15a44"
+    },
+    "sss.mkf": {
+      "bytes": 574838,
+      "sha256": "ce448a90c9797648eea315fe589b2bd434139ffc423bf0a5954dae6f4c8b4756"
+    },
+    "word.dat": {
+      "bytes": 5650,
+      "sha256": "be56e77c7ecd61306133913a1987b1dddf656528ae870c2de1ee8ccda7ff3ebf"
+    }
+  },
+  "sourceManifestSHA256": "ef9fffc69c3755a68dd6eb9726e11a683a8076a3296c22613f23cc557e97233b",
+  "scope": "server-only authority tables, collision/height, sprite metrics and original rule text; no client media"
+}

@@ -148,6 +148,22 @@ def prepare(dist, baseline):
     file.write_text(json.dumps(manifest, separators=(',', ':')) + '\n')
     originals = {str(p.relative_to(dist)): p.read_bytes() for p in (dist / 'assets').rglob('*') if p.is_file() and p.suffix in ['.js', '.css']}
     html = (dist / 'index.html').read_bytes()
+    def write_programs(rows):
+        for path, source in originals.items():
+            data = rewritten(source, path, rows, base)
+            (dist / path).write_bytes(data)
+            (dist / (path + '.gz')).write_bytes(gzip.compress(data, mtime=0))
+        (dist / 'index.html').write_bytes(rewritten(html, 'index.html', rows, base))
+    candidates = plan(cdn.inventory(dist, base), baseline)
+    published = {path.lstrip('/'): normalized(record) for path, record in baseline.get('files', {}).items()}
+    seeded = False
+    for row in candidates:
+        previous = published.get(row['path'])
+        if row['path'] in originals and previous is not None and row['mime'] == previous['mime'] and row['encoding'] == previous['encoding'] and row['url'] != previous['url']:
+            row['url'] = previous['url']
+            seeded = True
+    if seeded:
+        write_programs(candidates)
     previous_urls = None
     for iteration in range(16):
         rows = plan(cdn.inventory(dist, base), baseline)
@@ -155,11 +171,7 @@ def prepare(dist, baseline):
         if urls == previous_urls:
             break
         previous_urls = urls
-        for path, source in originals.items():
-            data = rewritten(source, path, rows, base)
-            (dist / path).write_bytes(data)
-            (dist / (path + '.gz')).write_bytes(gzip.compress(data, mtime=0))
-        (dist / 'index.html').write_bytes(rewritten(html, 'index.html', rows, base))
+        write_programs(rows)
     else:
         raise ValueError('Published program references did not converge')
     rows = plan(cdn.inventory(dist, base), baseline)

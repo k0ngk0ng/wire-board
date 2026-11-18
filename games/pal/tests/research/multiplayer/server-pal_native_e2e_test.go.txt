@@ -1,0 +1,151 @@
+package server
+
+// Native PAL HTTP acceptance declared before platform integration: authentic
+// all-seat reading, bot reading without bypassing humans, private projection,
+// original-roster saved continuation, SQLite rollback, restart and old-page
+// rejection. This covers the actual opening, not full-game acceptance.
+import (
+	"context"
+	"encoding/json"
+	"net/http/httptest"
+	"os"
+	"path/filepath"
+	"reflect"
+	"testing"
+	"testing/fstest"
+	"time"
+
+	"github.com/k0ngk0ng/wire-board/games/pal/engine"
+	pal "github.com/k0ngk0ng/wire-board/games/pal/server"
+	"github.com/k0ngk0ng/wire-board/internal/gameapi"
+)
+
+func TestPALOriginalSharedSaveHTTP(t *testing.T) {
+	root := filepath.Join("..", "..")
+	wasm, e := os.ReadFile(filepath.Join(root, ".local", "pal", "native", "rules.wasm"))
+	if e != nil {
+		t.Fatal("build original rule core", e)
+	}
+	runtime, e := engine.NewRuntime(context.Background(), wasm, os.DirFS(filepath.Join(root, ".local", "pal", "original-98")))
+	if e != nil {
+		t.Fatal(e)
+	}
+	t.Cleanup(func() { runtime.Close(context.Background()) })
+	module := pal.NewModule(runtime)
+	cfg := Config{DataDir: t.TempDir(), InviteCode: "test-invite", Modules: []gameapi.Module{module, savedGameFixture()}}
+	files := fstest.MapFS{"index.html": {Data: []byte("native multiplayer save")}}
+	s, e := New(cfg, files)
+	if e != nil {
+		t.Fatal(e)
+	}
+	ts := httptest.NewServer(s.Handler())
+	t.Cleanup(func() { ts.Close(); s.Close() })
+	a, b, stranger := newClient(t, ts.URL), newClient(t, ts.URL), newClient(t, ts.URL)
+	a.register("仙剑原队友甲")
+	b.register("仙剑原队友乙")
+	stranger.register("仙剑陌生玩家")
+	r := a.post("/api/rooms", map[string]any{"kind": "pal", "name": "原版共读与存档", "capacity": 3}, 201)
+	b.command(r, "join", nil, 200)
+	a.command(current(a), "add_bot", nil, 200)
+	a.command(current(a), "ready", nil, 200)
+	b.command(current(b), "ready", nil, 200)
+	a.command(current(a), "start", nil, 200)
+	id := r["id"].(string)
+	data := func(c *testClient) map[string]any {
+		return current(c)["game"].(map[string]any)["data"].(map[string]any)
+	}
+	until := time.Now().Add(120 * time.Second)
+	for time.Now().Before(until) {
+		d := data(a)
+		if d["phase"] == "dialogue" && d["dialogue"].(map[string]any)["read"].([]any)[2] == true {
+			break
+		}
+		time.Sleep(50 * time.Millisecond)
+	}
+	d := data(a)
+	if d["phase"] != "dialogue" {
+		t.Fatal("actual server clock did not reach original opening", d)
+	}
+	dialogue := d["dialogue"].(map[string]any)
+	if dialogue["text"] != "李大娘∶\n李逍遥！你皮痒啊？\n敢说老娘是什么鬼婆！" || dialogue["read"].([]any)[2] != true {
+		t.Fatal("bot did not read original opening without skipping humans", dialogue)
+	}
+	oldPage := current(a)
+	if _, e = s.db.Exec("CREATE TRIGGER fail_pal_read BEFORE UPDATE ON rooms BEGIN SELECT RAISE(ABORT,'native read rollback'); END"); e != nil {
+		t.Fatal(e)
+	}
+	a.command(current(a), "action", map[string]any{"type": "read", "epoch": d["epoch"], "prompt": dialogue["id"]}, 500)
+	if _, e = s.db.Exec("DROP TRIGGER fail_pal_read"); e != nil {
+		t.Fatal(e)
+	}
+	if data(a)["dialogue"].(map[string]any)["read"].([]any)[0] != false {
+		t.Fatal("failed reader transaction retained confirmation")
+	}
+	if receipt := a.command(current(a), "action", map[string]any{"type": "read", "epoch": d["epoch"], "prompt": dialogue["id"]}, 200); receipt["durable"] != true {
+		t.Fatal("shared reading confirmation was acknowledged without durable storage", receipt)
+	}
+	if data(b)["dialogue"].(map[string]any)["id"] != dialogue["id"] {
+		t.Fatal("one human skipped teammate")
+	}
+	a.command(current(a), "save", nil, 200)
+	paused := current(a)
+	before := data(a)
+	if _, e = s.db.Exec("CREATE TRIGGER fail_pal_save BEFORE UPDATE ON rooms BEGIN SELECT RAISE(ABORT,'native save rollback'); END"); e != nil {
+		t.Fatal(e)
+	}
+	b.command(current(b), "save", nil, 500)
+	if _, e = s.db.Exec("DROP TRIGGER fail_pal_save"); e != nil {
+		t.Fatal(e)
+	}
+	if !reflect.DeepEqual(before, data(a)) {
+		t.Fatal("failed native save changed shared progress")
+	}
+	b.command(current(b), "save", nil, 200)
+	if a.state()["room"] != nil || b.state()["room"] != nil {
+		t.Fatal("native save retained seats")
+	}
+	if len(stranger.state()["saves"].([]any)) != 0 {
+		t.Fatal("stranger discovered native save")
+	}
+	stranger.post("/api/saves/"+id+"/resume", map[string]any{}, 404)
+	other := a.post("/api/rooms", map[string]any{"kind": "saved-fixture", "name": "保存后切换游戏", "capacity": 1}, 201)
+	a.command(other, "leave", nil, 200)
+	ts.Close()
+	if e = s.Close(); e != nil {
+		t.Fatal(e)
+	}
+	s, e = New(cfg, files)
+	if e != nil {
+		t.Fatal(e)
+	}
+	ts = httptest.NewServer(s.Handler())
+	a.base, b.base, stranger.base = ts.URL, ts.URL, ts.URL
+	a.post("/api/saves/"+id+"/resume", map[string]any{}, 200)
+	if b.state()["room"] != nil {
+		t.Fatal("pending native resume occupied absent teammate")
+	}
+	b.post("/api/saves/"+id+"/resume", map[string]any{}, 200)
+	resumed := data(a)
+	if resumed["epoch"] == before["epoch"] || resumed["dialogue"].(map[string]any)["id"] != dialogue["id"] || !reflect.DeepEqual(resumed["dialogue"].(map[string]any)["read"], before["dialogue"].(map[string]any)["read"]) {
+		t.Fatal("restore lost original reader confirmations", before, resumed)
+	}
+	a.command(oldPage, "action", map[string]any{"type": "read", "epoch": d["epoch"], "prompt": dialogue["id"]}, 409)
+	a.command(paused, "save", nil, 409)
+	b.command(current(b), "action", map[string]any{"type": "read", "epoch": resumed["epoch"], "prompt": dialogue["id"]}, 200)
+	until = time.Now().Add(15 * time.Second)
+	for time.Now().Before(until) {
+		next := data(a)
+		if next["phase"] == "dialogue" && next["dialogue"].(map[string]any)["id"] != dialogue["id"] {
+			break
+		}
+		time.Sleep(50 * time.Millisecond)
+	}
+	next := data(a)
+	if next["phase"] != "dialogue" || next["dialogue"].(map[string]any)["id"] == dialogue["id"] {
+		t.Fatal("original missing reader did not continue the saved script")
+	}
+	report, _ := json.MarshalIndent(map[string]any{"test": t.Name(), "passed": true, "room": id, "originalMessage": dialogue["text"], "scope": "actual native PAL + authenticated HTTP + realtime ticker + SQLite save rollback + restart; original humans and bot, private save, switching games and preserved reading confirmations"}, "", "  ")
+	if e = os.WriteFile(filepath.Join(root, ".local", "pal", "verification", "shared-save-http.json"), report, 0600); e != nil {
+		t.Fatal(e)
+	}
+}

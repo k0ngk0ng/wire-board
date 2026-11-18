@@ -28,12 +28,33 @@ type realtimeFrame struct {
 	TimerAt     int64           `json:"timerAt,omitempty"`
 }
 
+type realtimeFrameCadence uint8
+
+const (
+	realtimeAllFrames realtimeFrameCadence = iota
+	realtimeDefaultFrames
+	realtimeDeadlineFrames
+)
+
+func realtimeFrameDue(room *Room, module gameapi.Module, now time.Time) bool {
+	return room.Status == "playing" && room.Loading == nil && room.Module != nil && module.Realtime && module.OnTimer != nil &&
+		(!room.Module.Paused || module.OnPausedTimer != nil) && room.Module.Result == nil &&
+		room.Module.SystemDeadline > 0 && room.Module.SystemDeadline <= room.gameNow(now).UnixMilli()
+}
+
 // Called with s.mu held. The module chooses its frame frequency through the
 // persisted SystemDeadline; a 50 ms wakeup never changes ordinary game pacing.
 func (s *Server) expireRealtimeModuleTimers(now time.Time) {
+	s.expireRealtimeModuleTimersAtCadence(now, realtimeAllFrames)
+}
+
+func (s *Server) expireRealtimeModuleTimersAtCadence(now time.Time, cadence realtimeFrameCadence) {
 	for _, room := range s.rooms {
 		module := s.modules[room.Kind]
-		if !module.Realtime || room.Status != "playing" || room.Loading != nil || room.Module == nil || (room.Module.Paused && module.OnPausedTimer == nil) || room.Module.Result != nil || room.Module.SystemDeadline == 0 || room.Module.SystemDeadline > room.gameNow(now).UnixMilli() {
+		if cadence != realtimeAllFrames && module.RealtimeDeadlineFrames != (cadence == realtimeDeadlineFrames) {
+			continue
+		}
+		if !realtimeFrameDue(room, module, now) {
 			continue
 		}
 		if err := s.runRealtimeModuleFrame(room, now); err != nil {
@@ -52,14 +73,18 @@ func (s *Server) runRealtimeModuleFrame(room *Room, now time.Time) error {
 	if room.Status != "playing" || room.Module == nil || room.Module.Result != nil || room.Loading != nil || !module.Realtime || module.OnTimer == nil || (room.Module.Paused && module.OnPausedTimer == nil) {
 		return errors.New("missing realtime clock capability")
 	}
-	raw, err := json.Marshal(room)
+	candidate, err := cloneBotRoom(room)
 	if err != nil {
 		return err
 	}
-	var next Room
-	if err = json.Unmarshal(raw, &next); err != nil {
+	event, err := computeRealtimeModuleFrame(candidate, module, now)
+	if err != nil {
 		return err
 	}
+	return s.commitRealtimeModuleFrame(room, candidate, event, now)
+}
+
+func computeRealtimeModuleFrame(next *Room, module gameapi.Module, now time.Time) (realtimeFrame, error) {
 	event := realtimeFrame{Type: "realtime_frame", Deadline: next.Module.SystemDeadline, Timeouts: []int{}, Inputs: []realtimeInput{}}
 	// Snapshot the candidate list: a previous input can remove an actor, but
 	// cannot make the same actor run twice or reorder the loop underneath us.
@@ -71,15 +96,16 @@ func (s *Server) runRealtimeModuleFrame(room *Room, now time.Time) error {
 		if !next.Seats[actor].computerControlled() || !slices.Contains(next.Module.Actors, actor) {
 			continue
 		}
-		action, err := module.BotAction(moduleContext(&next, actor, next.Version, now), *next.Module)
+		ctx := moduleContext(next, actor, next.Version, now)
+		action, err := module.BotAction(ctx, *next.Module)
 		if err != nil {
-			return fmt.Errorf("actor %d proposal: %w", actor, err)
+			return event, fmt.Errorf("actor %d proposal: %w", actor, err)
 		}
 		if action == nil {
 			continue
 		}
-		if err = s.applyModule(&next, actor, next.Version, action, now); err != nil {
-			return fmt.Errorf("actor %d action: %w", actor, err)
+		if err = applyModuleRules(next, module, ctx, action); err != nil {
+			return event, fmt.Errorf("actor %d action: %w", actor, err)
 		}
 		seat := next.Seats[actor]
 		event.Inputs = append(event.Inputs, realtimeInput{Actor: actor, Action: action, Bot: seat.Bot, AutoPlay: seat.AutoPlay})
@@ -88,8 +114,9 @@ func (s *Server) runRealtimeModuleFrame(room *Room, now time.Time) error {
 		}
 	}
 	if next.Module.Result == nil && next.Module.SystemDeadline != 0 && next.Module.SystemDeadline <= next.gameNow(now).UnixMilli() {
-		ctx := moduleContext(&next, -1, next.Version, now)
+		ctx := moduleContext(next, -1, next.Version, now)
 		var match gameapi.Match
+		var err error
 		if next.Module.Paused {
 			match, err = runPausedPresentationTimer(module, ctx, *next.Module)
 			event.PausedTimer, event.TimerAt = true, ctx.Now.UnixMilli()
@@ -97,28 +124,32 @@ func (s *Server) runRealtimeModuleFrame(room *Room, now time.Time) error {
 			match, err = module.OnTimer(ctx, *next.Module)
 		}
 		if err != nil {
-			return err
+			return event, err
 		}
 		if match.SystemDeadline != 0 && match.SystemDeadline <= next.gameNow(now).UnixMilli() {
-			return errors.New("realtime timer must clear or advance its deadline")
+			return event, errors.New("realtime timer must clear or advance its deadline")
 		}
 		if err = module.ValidateMatch(match, len(next.Seats)); err != nil {
-			return err
+			return event, err
 		}
-		if err = s.setModule(&next, match); err != nil {
-			return err
+		if err = setModuleResult(next, module, match); err != nil {
+			return event, err
 		}
 		event.Timer = true
 	}
 	next.Version++
 	next.Updated = now.Unix()
+	return event, nil
+}
+
+func (s *Server) commitRealtimeModuleFrame(room, next *Room, event realtimeFrame, now time.Time) error {
 	s.realtimeCheckpoint(room)
-	if !realtimeCritical(room, &next) {
-		s.rooms[next.ID] = &next
-		s.broadcastGameChange(&next)
+	if !realtimeCritical(room, next) {
+		s.rooms[next.ID] = next
+		s.broadcastGameChange(next)
 		return nil
 	}
-	snapshot, err := json.Marshal(&next)
+	snapshot, err := json.Marshal(next)
 	if err != nil {
 		return err
 	}
@@ -130,12 +161,12 @@ func (s *Server) runRealtimeModuleFrame(room *Room, now time.Time) error {
 		job:     &queuedRealtimeInput{input: streamInput{Nonce: fmt.Sprintf("frame-%d", next.Version)}},
 		version: next.Version, record: record, at: now.Unix(),
 	}
-	if err = s.persistRealtimeInputBatch(room, &next, snapshot, []realtimeJournalEntry{entry}); err != nil {
+	if err = s.persistRealtimeInputBatch(room, next, snapshot, []realtimeJournalEntry{entry}); err != nil {
 		return err
 	}
 
-	s.rooms[next.ID] = &next
-	s.realtimeSaved(&next)
-	s.broadcastGameChange(&next)
+	s.rooms[next.ID] = next
+	s.realtimeSaved(next)
+	s.broadcastGameChange(next)
 	return nil
 }

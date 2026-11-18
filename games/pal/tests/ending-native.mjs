@@ -1,0 +1,55 @@
+import assert from "node:assert/strict";
+import fs from "node:fs/promises";
+import { create, digest, root, wasm } from "./native-vm.mjs";
+
+const vm = await create();
+assert.equal(typeof vm.e.wb_probe_ending, "function", "missing actual original ending integration fixture");
+assert.equal(typeof vm.e.wb_ending_info, "function", "missing saved ending presentation state");
+const info = (v) => Array.from(new Uint32Array(v.e.memory.buffer, v.e.wb_ending_info(), 9));
+const frames = { 4: 200, 5: 2294, 6: 2196 };
+const observed = { 4: [], 5: [], 6: [] };
+const saved = [];
+let event = vm.step("wb_probe_ending"), totalMS = 0, previousClip = 4;
+for (let i = 0; i < 5000 && event.kind !== 3; i++) {
+  const current = info(vm);
+  const [version, clip, frame, count, numerator, denominator, elapsed, serial, finished] = current;
+  assert.equal(version, 1);
+  assert.ok(frames[clip]);
+  assert.ok(clip === previousClip || clip === previousClip + 1);
+  previousClip = clip;
+  assert.equal(frame, observed[clip].length);
+  assert.equal(count, frames[clip]);
+  assert.deepEqual([numerator, denominator, finished], [15, 1, 0]);
+  assert.equal(serial, clip - 3);
+  assert.equal(elapsed, Math.floor(frame * 1000 / 15));
+  assert.equal(event.kind, 1);
+  assert.equal(event.value, Math.floor((frame + 1) * 1000 / 15) - elapsed);
+  totalMS += event.value;
+  observed[clip].push(frame);
+  if ([0, 14, Math.floor(count / 2), count - 1].includes(frame)) {
+    const snapshot = vm.snapshot();
+    const resumed = await create();
+    resumed.restore(snapshot);
+    assert.deepEqual(info(resumed), current);
+    const baseline = vm.step("wb_probe_ending"), restored = resumed.step("wb_probe_ending");
+    assert.deepEqual(restored, baseline);
+    assert.deepEqual(info(resumed), info(vm));
+    assert.equal(digest(resumed.snapshot()), digest(vm.snapshot()));
+    saved.push({ clip, frame });
+    event = baseline;
+  } else event = vm.step("wb_probe_ending");
+}
+assert.equal(event.kind, 3);
+assert.equal(info(vm)[8], 1);
+for (const clip of [4, 5, 6]) assert.equal(observed[clip].length, frames[clip]);
+assert.equal(saved.length, 12);
+const skip = await create();
+skip.step("wb_probe_ending");
+const skipped = skip.step("wb_probe_ending", 0, 0, 2);
+assert.equal(skipped.kind, 1);
+assert.equal(skipped.value, 500);
+skip.step("wb_probe_ending");
+assert.equal(info(skip)[1], 5);
+assert.equal(info(skip)[2], 0);
+assert.equal(skip.e.wb_build_info !== undefined, true);
+await fs.writeFile(root + ".local/pal/verification/ending-native.json", JSON.stringify({ passed: true, scope: "actual original PAL_EndingScreen AVI order, every authoritative frame, input skip and twelve whole-memory fresh-instance continuations; independent ending fixture, not a complete campaign or browser/audio acceptance", coreSHA256: digest(wasm), frames: Object.fromEntries(Object.entries(observed).map(([clip, values]) => [clip, values.length])), saved, totalMS }, null, 2) + "\n");

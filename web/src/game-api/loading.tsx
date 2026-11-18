@@ -8,6 +8,7 @@ import {
 } from "react";
 import type { Room } from "../types";
 import type { BoardProps } from "./module";
+import { createPortal } from "react-dom";
 import { api } from "../ui/board-host";
 import { gameModule, gameName } from "./registry";
 import { ModuleCover } from "./host";
@@ -61,10 +62,16 @@ export function GameLoading({
     alive = useRef(false),
     failed = useRef(false);
   const token = room.loading?.token;
+  const retained = useRef(false);
   // A completed gate disappearing must not recreate this local load session.
   const generation = useRef(token);
-  if (token && generation.current !== token) generation.current = token;
+  if (token && generation.current !== token) {
+    retained.current = !!room.supportsCheckpoint && !!host.current?.querySelector("[data-room-fullscreen]");
+    generation.current = token;
+  }
   const identity = `${room.id}:${room.matchId ?? room.setupVersion}:${room.you}:${generation.current ?? ""}`;
+  const surfaceIdentity = useRef(identity);
+  if (!retained.current) surfaceIdentity.current = identity;
   const onReady = useCallback(() => complete.current(), []);
   const onLoadError = useCallback((message: string) => {
     if (alive.current) {
@@ -95,7 +102,7 @@ export function GameLoading({
     const abort = new AbortController();
     alive.current = true;
     failed.current = false;
-    setMounted(false);
+    if (!retained.current) setMounted(false);
     setReady(false);
     setError("");
     setProgress({ percent: 0, label: "准备加载" });
@@ -103,7 +110,9 @@ export function GameLoading({
       gate = initial.loading,
       client = crypto.randomUUID();
     let done = false,
-      build = "";
+      build = "",
+      assetsReady = false,
+      boardReady = false;
     async function send(type: string) {
       const r = latest.current;
       return api("/rooms/" + r.id, {
@@ -116,6 +125,8 @@ export function GameLoading({
       });
     }
     complete.current = () => {
+      boardReady = true;
+      if (!assetsReady) return;
       if (done || failed.current || abort.signal.aborted) return;
       done = true;
       void (async () => {
@@ -164,7 +175,9 @@ export function GameLoading({
       build = result.build;
       setLoadSizes(result.media);
       abort.signal.throwIfAborted();
+      assetsReady = true;
       setMounted(true);
+      if (boardReady) complete.current();
     })().catch((e) => {
       if (!abort.signal.aborted) setError(e.message);
     });
@@ -177,7 +190,7 @@ export function GameLoading({
   const asyncBoard = gameModule(room.kind)?.asyncBoard;
   useEffect(() => {
     if (mounted && !asyncBoard) onReady();
-  }, [mounted, asyncBoard, onReady]);
+  }, [mounted, asyncBoard, onReady, identity]);
   const blocked = !ready || !!room.loading || !!error;
   useEffect(() => {
     if (
@@ -190,11 +203,10 @@ export function GameLoading({
       return revealGameOnEntry(surface);
     }
   }, [blocked]);
-  return (
-    <>
-      {blocked && (
+  const target = retained.current ? host.current?.querySelector<HTMLElement>("[data-room-fullscreen]") : null;
+  const cover = blocked && (
         <section
-          className="game-loading"
+          className={`game-loading${target ? " game-loading-fullscreen" : ""}`}
           data-game-loading={room.kind}
           aria-label={`${gameName(room.kind)}加载`}
         >
@@ -269,14 +281,17 @@ export function GameLoading({
             )}
           </div>
         </section>
-      )}
+      );
+  return (
+    <>
+      {target ? createPortal(cover, target) : cover}
       {mounted && (
         <div
           ref={host}
-          className={`game-ready-surface${blocked ? " game-loading-staging" : ""}`}
-          inert={blocked || undefined}
-          aria-hidden={blocked || undefined}
-          key={`${identity}:${attempt}`}
+          className={`game-ready-surface${blocked && !retained.current ? " game-loading-staging" : ""}`}
+          inert={blocked && !retained.current || undefined}
+          aria-hidden={blocked && !retained.current || undefined}
+          key={`${surfaceIdentity.current}:${attempt}`}
         >
           <LoadBoundary failed={onLoadError}>
             {children(

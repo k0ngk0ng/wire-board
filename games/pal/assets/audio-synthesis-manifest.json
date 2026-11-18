@@ -1,0 +1,100 @@
+{
+  "version": 1,
+  "soundFont": {
+    "name": "TimGM6mb 1.3",
+    "license": "GPL-2.0-only",
+    "upstream": "https://github.com/musescore/musescore-old/commit/90c33ef9d87b3f5ff92efd3b07d89eb455fb1fef",
+    "archives": [
+      {
+        "url": "https://deb.debian.org/debian/pool/main/t/timgm6mb-soundfont/timgm6mb-soundfont_1.3.orig.tar.gz",
+        "path": "timgm6mb-soundfont_1.3.orig.tar.gz",
+        "size": 5560953,
+        "sha256": "af8f3a00e416dfb262bcaa904a1c84df04a51b72bbc1313aed012bc754bdf99b",
+        "member": "timgm6mb-soundfont_1.3/TimGM6mb.sf2",
+        "output": "TimGM6mb.sf2",
+        "outputSize": 5969788,
+        "outputSHA256": "c5378b62028c920cb11e4803327983fee2f2cdff5dc89c708e39da417e51c854"
+      },
+      {
+        "url": "https://deb.debian.org/debian/pool/main/t/timgm6mb-soundfont/timgm6mb-soundfont_1.3-5.debian.tar.xz",
+        "path": "timgm6mb-soundfont_1.3-5.debian.tar.xz",
+        "size": 12960,
+        "sha256": "993893c5b6265a3f7972a38d055d450d08873d097a2a2c41b010bd1858cc068c",
+        "member": "debian/copyright",
+        "output": "copyright",
+        "outputSize": 2307,
+        "outputSHA256": "6ef01652619cf29b289a9403cd2ab59550fa3e2c30844c67292eea5421f993e9"
+      }
+    ]
+  },
+  "renderer": {
+    "name": "TiMidity++",
+    "versionLine": "TiMidity++ version 2.15.0",
+    "config": "soundfont TimGM6mb.sf2\n",
+    "arguments": [
+      "-c",
+      "timidity.cfg",
+      "-OwS1l",
+      "-s",
+      "44100",
+      "-A",
+      "70",
+      "-p",
+      "256",
+      "-S",
+      "0",
+      "--no-polyphony-reduction",
+      "--preserve-silence",
+      "-EFreverb=d",
+      "-EFchorus=d",
+      "-EFdelay=d",
+      "-EFresamp=l",
+      "-EFns=0"
+    ]
+  },
+  "unmappedRequests": {
+    "musics/042.mid": {
+      "sourceSHA256": "ca1a0a32e13c47a10fb9f6450329c46aef53826f64ac92803b6b49e795d2bbd3",
+      "warnings": [
+        "No instrument mapped to drum set 16, program 26",
+        "No instrument mapped to drum set 0, program 26 - this instrument will not be heard"
+      ]
+    },
+    "musics/043.mid": {
+      "sourceSHA256": "70386bb2a4c33e1ff5b24796fb4ee9a3a77aad1bfa994ae6133bca80cab18ed1",
+      "warnings": [
+        "No instrument mapped to drum set 16, program 26",
+        "No instrument mapped to drum set 0, program 26 - this instrument will not be heard"
+      ]
+    },
+    "musics/049.mid": {
+      "sourceSHA256": "19e51259a93a648f93d52ba60c2c18e22a32d89a7aeb0f571ccb73af6c834120",
+      "warnings": [
+        "No instrument mapped to drum set 0, program 95 - this instrument will not be heard"
+      ]
+    },
+    "musics/054.mid": {
+      "sourceSHA256": "e31da84cca79d023bd04fbd982d3e34a26b7afb3fbd5d43e67123ad69c4c61b0",
+      "warnings": [
+        "No instrument mapped to drum set 16, program 1",
+        "No instrument mapped to drum set 0, program 1 - this instrument will not be heard"
+      ]
+    },
+    "musics/064.mid": {
+      "sourceSHA256": "5c4c55c4c76072b7403cd8654d3849caafd341c1acccefdded2396d241035df9",
+      "warnings": [
+        "No instrument mapped to drum set 16, program 89",
+        "No instrument mapped to drum set 16, program 92",
+        "No instrument mapped to drum set 0, program 89 - this instrument will not be heard",
+        "No instrument mapped to drum set 0, program 92 - this instrument will not be heard"
+      ]
+    },
+    "musics/066.mid": {
+      "sourceSHA256": "e67023262024d333dd95f8db42d0033e94312c30fd111c54db51d623230b9661",
+      "warnings": [
+        "No instrument mapped to drum set 16, program 25",
+        "No instrument mapped to drum set 0, program 25 - this instrument will not be heard"
+      ]
+    }
+  }
+}

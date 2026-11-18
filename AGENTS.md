@@ -9,6 +9,7 @@
 | [通用规范](rules/common.md) | 所有开发：测试、工作区、游戏接入、积分和电脑玩家 |
 | [发布与部署规范](rules/deploy.md) | 检查范围、构建产物、版本发布、服务器更新、备份／回滚和清理 |
 | [即时游戏开发规范](rules/realtime.md) | 即时操作、本地预测、服务器校正、慢连接隔离和响应延迟验收 |
+| [存档与续玩规范](rules/saved-games.md) | 可选接入、原账号权限、席位释放、冻结时钟、事务与幂等、版本兼容和续玩验收 |
 | [扑克牌游戏开发规范](rules/poker.md) | 选牌、牌面、手牌布局、牌桌稳定性和手机交互 |
 | [复刻游戏开发规范](rules/recreation.md) | 原版对照、独立规则实现、平台席位与原版角色映射 |
 | [界面与交互开发规范](rules/ui.md) | 公共界面、视觉、动画、全屏和游戏目录 |
@@ -53,6 +54,7 @@
 | 星垒 | [starfort.md](rules/starfort.md) |
 | 石器竞技场 | [stoneage.md](rules/stoneage.md) |
 | 密室逃脱 | [escape.md](rules/escape.md) |
+| 仙剑奇侠传 | [pal.md](rules/pal.md) |
 | 植物大战僵尸 | [pvz.md](rules/pvz.md) |
 | 乒乓球 | [tabletennis.md](rules/tabletennis.md) |
 | 俄罗斯方块 | [tetris.md](rules/tetris.md) |

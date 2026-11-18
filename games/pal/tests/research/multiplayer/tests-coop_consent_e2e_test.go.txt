@@ -1,0 +1,255 @@
+package pal_test
+
+// Test first. Isolated original battle failures: selecting coop commits other
+// owners' turns without consent; non-HP contributors are omitted despite losing
+// their separate command; any seat can spoof/duplicate/approve a stale request;
+// input/timers advance pending combat; save/restart/reclaim loses partial votes;
+// cancel consumes HP or invalidates an earlier command; full approval changes
+// original combat, duplicates cost/rewards or cannot finish the real battle.
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"os"
+	"path/filepath"
+	"reflect"
+	"slices"
+	"testing"
+	"time"
+
+	pal "github.com/k0ngk0ng/wire-board/games/pal/server"
+	"github.com/k0ngk0ng/wire-board/internal/gameapi"
+)
+
+func TestOriginalCooperativeMagicConsentSaveAndCancel(t *testing.T) {
+	for _, players := range []int{2, 3} {
+		t.Run(fmt.Sprint(players), func(t *testing.T) {
+			m := originalBattleModule(t)
+			c := gameapi.Context{Players: players, Actor: 0, Now: time.Unix(1800000000, 0)}
+			g, e := m.Start(c, raw(map[string]any{}))
+			if e != nil {
+				t.Fatal(e)
+			}
+			tick := func() {
+				t.Helper()
+				c.Now = time.UnixMilli(g.SystemDeadline)
+				g, e = m.OnTimer(c, g)
+				if e != nil {
+					t.Fatal(e)
+				}
+			}
+			until := func(predicate func(pal.View) bool) {
+				t.Helper()
+				for i := 0; i < 512; i++ {
+					if predicate(view(t, m, g, 0)) {
+						return
+					}
+					tick()
+				}
+				t.Fatal("original cooperative battle checkpoint unavailable", view(t, m, g, 0).Phase)
+			}
+			input := func(direction int, keys uint32) {
+				t.Helper()
+				c.Actor = 0
+				v := view(t, m, g, 0)
+				g = apply(t, m, c, g, pal.Action{Type: "input", Epoch: v.Epoch, Seq: v.Seq + 1, Direction: direction, Keys: keys})
+			}
+			propose := func() {
+				t.Helper()
+				until(func(v pal.View) bool { return v.Battle != nil && v.Battle.State == 1 && v.Battle.Current == 0 })
+				input(3, 0)
+				until(func(v pal.View) bool { return v.Battle.Selected == 2 })
+				input(4, 2)
+				until(func(v pal.View) bool { return v.Cooperation != nil })
+			}
+			vote := func(actor int, kind string) {
+				t.Helper()
+				c.Actor = actor
+				v := view(t, m, g, actor)
+				g = apply(t, m, c, g, pal.Action{Type: kind, Epoch: v.Epoch, Prompt: v.Cooperation.ID})
+			}
+			propose()
+			v := view(t, m, g, 0)
+			p := v.Cooperation
+			if v.Phase != "cooperation" || p.Initiator != 0 || p.Name == "" || p.HPCost <= 0 || !slices.Equal(p.AffectedRoles, []int{0, 1, 2}) || !slices.Equal(p.Contributors, []int{0, 2}) || len(p.Required) != players || !p.Approved[0] {
+				t.Fatal("wrong original cooperative consent projection", p)
+			}
+			want := []int{1}
+			if players == 3 {
+				want = append(want, 2)
+			}
+			if !slices.Equal(g.Actors, p.Required) || !slices.Equal(g.Attention, want) {
+				t.Fatal("wrong cooperative actors", g.Actors, g.Attention)
+			}
+			originalHP := []int{v.Battle.Players[0].HP, v.Battle.Players[1].HP, v.Battle.Players[2].HP}
+			c.Now = c.Now.Add(time.Hour)
+			g, e = m.OnTimer(c, g)
+			if e != nil {
+				t.Fatal(e)
+			}
+			if !reflect.DeepEqual(view(t, m, g, 0).Cooperation, p) || !reflect.DeepEqual(view(t, m, g, 0).Battle, v.Battle) {
+				t.Fatal("timer advanced unapproved cooperative command")
+			}
+			for _, bad := range []pal.Action{{Type: "input", Epoch: v.Epoch, Seq: 100, Direction: 4, Keys: 2}, {Type: "coop_accept", Epoch: v.Epoch, Prompt: p.ID + 1}, {Type: "coop_accept", Epoch: v.Epoch, Prompt: p.ID}} {
+				c.Actor = 0
+				before := bytes.Clone(g.Data)
+				if _, e = m.Apply(c, g, raw(bad)); e == nil || !bytes.Equal(before, g.Data) {
+					t.Fatal("bad/stale/duplicate cooperative input accepted", bad)
+				}
+			}
+			c.Actor = 1
+			bot, e := m.BotAction(c, g)
+			if e != nil || len(bot) == 0 {
+				t.Fatal("owned bot did not answer visible cooperative request", e)
+			}
+			var botAction pal.Action
+			if e = json.Unmarshal(bot, &botAction); e != nil || botAction.Type != "coop_accept" || botAction.Prompt != p.ID {
+				t.Fatal("bot bypassed original consent", string(bot), e)
+			}
+			if players == 3 {
+				vote(1, "coop_accept")
+				if view(t, m, g, 0).Battle.Players[0].Action == 4 {
+					t.Fatal("one teammate bypassed final owner")
+				}
+			}
+			beforeReclaim := view(t, m, g, 0)
+			c.Actor = 0
+			if bot, e := m.BotAction(c, g); e != nil || len(bot) != 0 {
+				t.Fatal("approved owner submitted another bot vote", e)
+			}
+			g, e = m.Reclaim(c, g)
+			if e != nil {
+				t.Fatal(e)
+			}
+			afterReclaim := view(t, m, g, 0)
+			if beforeReclaim.Epoch == afterReclaim.Epoch || !reflect.DeepEqual(beforeReclaim.Cooperation, afterReclaim.Cooperation) || !reflect.DeepEqual(beforeReclaim.Battle, afterReclaim.Battle) {
+				t.Fatal("reclaim erased another owner's cooperative approval")
+			}
+			// Preserve partially approved request through save and a fresh runtime.
+			beforeSave := view(t, m, g, 0)
+			g, e = m.SaveControl(c, g, true)
+			if e != nil {
+				t.Fatal(e)
+			}
+			frozen := bytes.Clone(g.Data)
+			c.Now = c.Now.Add(time.Hour)
+			paused, e := m.OnTimer(c, g)
+			if e != nil || !bytes.Equal(paused.Data, frozen) {
+				t.Fatal("saving cooperative request advanced", e)
+			}
+			m = originalBattleModule(t)
+			g, e = m.Restore(c, g)
+			if e != nil {
+				t.Fatal(e)
+			}
+			g, e = m.ResumeSaved(c, g)
+			if e != nil {
+				t.Fatal(e)
+			}
+			afterSave := view(t, m, g, 0)
+			if !reflect.DeepEqual(beforeSave.Cooperation, afterSave.Cooperation) || !reflect.DeepEqual(beforeSave.Battle, afterSave.Battle) || afterSave.Epoch == beforeSave.Epoch {
+				t.Fatal("fresh saved runtime lost cooperative votes/commands")
+			}
+			c.Actor = players - 1
+			if _, e = m.Apply(c, g, raw(pal.Action{Type: "coop_accept", Epoch: beforeSave.Epoch, Prompt: p.ID})); e == nil {
+				t.Fatal("pre-save cooperative packet accepted")
+			}
+			// Any affected owner, including the initiating/already-approved owner,
+			// can cancel. No character resources or earlier commands are consumed.
+			vote(0, "coop_cancel")
+			v = view(t, m, g, 0)
+			if v.Cooperation != nil || v.Phase != "battle" || v.Battle.State != 1 || v.Battle.Players[0].Action == 4 {
+				t.Fatal("cancel committed original cooperative action")
+			}
+			for i, p := range v.Battle.Players {
+				if p.HP != originalHP[i] {
+					t.Fatal("cancel spent original HP")
+				}
+			}
+			propose()
+			v = view(t, m, g, 0)
+			if v.Cooperation.ID == p.ID {
+				t.Fatal("new proposal reused cancelled consent")
+			}
+			c.Actor = 1
+			if _, e = m.Apply(c, g, raw(pal.Action{Type: "coop_accept", Epoch: v.Epoch, Prompt: p.ID})); e == nil {
+				t.Fatal("cancelled proposal was approved")
+			}
+			for actor := 1; actor < players; actor++ {
+				vote(actor, "coop_accept")
+			}
+			v = view(t, m, g, 0)
+			if v.Cooperation != nil || v.Battle.Players[0].Action != 4 {
+				t.Fatal("all owners did not submit actual native cooperative action")
+			}
+			until(func(v pal.View) bool { return v.Cash == 3 })
+			v = view(t, m, g, 0)
+			report, _ := json.MarshalIndent(map[string]any{"passed": true, "scope": "isolated original cooperative magic, affected owners including noncontributors, cancel, partial votes saved into a fresh runtime, actual cooperative battle reward; not full campaign", "players": players, "request": p, "cash": v.Cash}, "", "  ")
+			if e = os.WriteFile(filepath.Join("..", "..", "..", fmt.Sprintf(".local/pal/verification/coop-consent-%d.json", players)), report, 0600); e != nil {
+				t.Fatal(e)
+			}
+		})
+	}
+}
+
+func TestOriginalCooperativeMagicUnassignedSeat(t *testing.T) {
+	m := battleModuleFrom(t, ".local/pal/battle-fixtures/team-1-party-2-roles-0-2/rules.wasm")
+	c := gameapi.Context{Players: 3, Actor: 0, Now: time.Unix(1800000000, 0)}
+	g, e := m.Start(c, raw(map[string]any{}))
+	if e != nil {
+		t.Fatal(e)
+	}
+	tick := func() {
+		t.Helper()
+		c.Now = time.UnixMilli(g.SystemDeadline)
+		g, e = m.OnTimer(c, g)
+		if e != nil {
+			t.Fatal(e)
+		}
+	}
+	until := func(predicate func(pal.View) bool) {
+		t.Helper()
+		for i := 0; i < 512; i++ {
+			if predicate(view(t, m, g, 0)) {
+				return
+			}
+			tick()
+		}
+		t.Fatal("two-role original cooperative checkpoint unavailable")
+	}
+	input := func(direction int, keys uint32) {
+		t.Helper()
+		v := view(t, m, g, 0)
+		g = apply(t, m, c, g, pal.Action{Type: "input", Epoch: v.Epoch, Seq: v.Seq + 1, Direction: direction, Keys: keys})
+	}
+	until(func(v pal.View) bool { return v.Battle != nil && v.Battle.State == 1 })
+	input(3, 0)
+	until(func(v pal.View) bool { return v.Battle.Selected == 2 })
+	input(4, 2)
+	until(func(v pal.View) bool { return v.Cooperation != nil })
+	v := view(t, m, g, 0)
+	p := v.Cooperation
+	if len(v.Party) != 2 || !slices.Equal(p.Required, []int{0, 1}) || !slices.Equal(p.AffectedRoles, []int{0, 2}) || !slices.Equal(g.Actors, []int{0, 1}) || !slices.Equal(g.Attention, []int{1}) {
+		t.Fatal("spectating account blocks actual party", p, g.Actors)
+	}
+	c.Actor = 2
+	for _, kind := range []string{"coop_accept", "coop_cancel"} {
+		if _, e = m.Apply(c, g, raw(pal.Action{Type: kind, Epoch: v.Epoch, Prompt: p.ID})); e == nil {
+			t.Fatal("unassigned seat altered cooperative request")
+		}
+	}
+	bot, e := m.BotAction(c, g)
+	if e != nil || len(bot) != 0 {
+		t.Fatal("unassigned bot voted in cooperative request", e)
+	}
+	c.Actor = 1
+	g = apply(t, m, c, g, pal.Action{Type: "coop_accept", Epoch: v.Epoch, Prompt: p.ID})
+	if view(t, m, g, 0).Cooperation != nil {
+		t.Fatal("unassigned third seat prevented original cooperative action")
+	}
+	until(func(v pal.View) bool { return v.Cash == 3 })
+	report, _ := json.MarshalIndent(map[string]any{"passed": true, "scope": "three platform seats and two actual original roles, unassigned seat cannot approve/cancel or block cooperative action", "request": p, "cash": view(t, m, g, 0).Cash}, "", "  ")
+	if e = os.WriteFile(filepath.Join("..", "..", "..", ".local/pal/verification/coop-unassigned-seat.json"), report, 0600); e != nil {
+		t.Fatal(e)
+	}
+}

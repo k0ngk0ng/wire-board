@@ -54,6 +54,10 @@ func (s *Server) watch(w http.ResponseWriter, r *http.Request) {
 		}
 		next.Spectators = append(next.Spectators[:index], next.Spectators[index+1:]...)
 	} else {
+		if room.SavedAt > 0 && seatIndex(room, u.ID) < 0 {
+			fail(w, 403, "续档房间仅限原参与玩家进入")
+			return
+		}
 		if s.hiddenGames[room.Kind] {
 			fail(w, 403, "该桌游已下架，暂时不能加入观战")
 			return

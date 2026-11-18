@@ -1,0 +1,137 @@
+package server
+
+// Authenticated HTTP regression: another original human cancels idle autoplay
+// without invalidating the leader's current epoch, accepted short walk or
+// release. Uses the original opening checkpoint, production ticker and SQLite.
+import (
+	"fmt"
+	"net/http/httptest"
+	"testing"
+	"testing/fstest"
+	"time"
+
+	"github.com/k0ngk0ng/wire-board/internal/gameapi"
+)
+
+func TestPALIdleReclaimKeepsHumanFieldInputHTTP(t *testing.T) {
+	for _, players := range []int{2, 3} {
+		t.Run(fmt.Sprint(players), func(t *testing.T) {
+			module := palFieldCheckpointModule(palBoardModule(t))
+			s, err := New(Config{DataDir: t.TempDir(), InviteCode: "test-invite", Modules: []gameapi.Module{module}}, fstest.MapFS{"index.html": {Data: []byte("original PAL idle reclaim HTTP")}})
+			if err != nil {
+				t.Fatal(err)
+			}
+			ts := httptest.NewServer(s.Handler())
+			defer func() { ts.Close(); s.Close() }()
+			clients := make([]*testClient, players)
+			for i := range clients {
+				clients[i] = newClient(t, ts.URL)
+				clients[i].register(fmt.Sprintf("独立接管队友%d", i))
+			}
+			a := clients[0]
+			r := a.post("/api/rooms", map[string]any{"kind": "pal", "name": "接管不打断队友", "capacity": players}, 201)
+			for _, client := range clients[1:] {
+				client.command(current(a), "join", nil, 200)
+			}
+			for _, client := range clients {
+				client.command(current(client), "ready", nil, 200)
+			}
+			a.command(current(a), "start", nil, 200)
+			for _, client := range clients[1:] {
+				setAutoPlay(client, current(client), true, 200)
+			}
+			r = current(a)
+			d := r["game"].(map[string]any)["data"].(map[string]any)
+			epoch, x, y := d["epoch"], d["x"].(float64), d["y"].(float64)
+			a.command(r, "action", map[string]any{"type": "input", "epoch": epoch, "seq": d["seq"].(float64) + 1, "direction": 0, "keys": 4, "controlAt": d["controlAt"]}, 200)
+			r = current(a)
+			d = r["game"].(map[string]any)["data"].(map[string]any)
+			a.command(r, "action", map[string]any{"type": "input", "epoch": epoch, "seq": d["seq"].(float64) + 1, "direction": 4}, 200)
+			for _, client := range clients[1:] {
+				setAutoPlay(client, current(client), false, 200)
+			}
+			for until := time.Now().Add(3 * time.Second); ; {
+				d = current(a)["game"].(map[string]any)["data"].(map[string]any)
+				if d["epoch"] != epoch || d["seq"].(float64) < 2 {
+					t.Fatal("idle account reclaimed another human's input epoch or sequence", epoch, d["epoch"], d["seq"])
+				}
+				if d["x"] == x-16 && d["y"] == y+8 {
+					break
+				}
+				if time.Now().After(until) {
+					t.Fatal("accepted human walk vanished during teammate reclaim", d["x"], d["y"])
+				}
+				time.Sleep(20 * time.Millisecond)
+			}
+			time.Sleep(350 * time.Millisecond)
+			d = current(a)["game"].(map[string]any)["data"].(map[string]any)
+			if d["x"] != x-16 || d["y"] != y+8 {
+				t.Fatal("teammate reclaim replayed the released walk")
+			}
+			realtimeEvidence := map[string]any{"passed": true, "scope": "actual original inn checkpoint, original human accounts, HTTP short input and release, idle autoplay cancellation, production ticker and SQLite; not full campaign", "players": players, "room": r["id"], "epochPreserved": true, "oneOriginalStep": true, "stoppedAfterRelease": true}
+			streamEvidence(t, fmt.Sprintf("pal-idle-reclaim-%d", players), realtimeEvidence)
+		})
+	}
+}
+
+func TestPALFieldAutoplaySavedContinuationHTTP(t *testing.T) {
+	module := palFieldCheckpointModule(palBoardModule(t))
+	cfg := Config{DataDir: t.TempDir(), InviteCode: "test-invite", Modules: []gameapi.Module{module}}
+	files := fstest.MapFS{"index.html": {Data: []byte("original PAL field autoplay HTTP")}}
+	s, err := New(cfg, files)
+	if err != nil {
+		t.Fatal(err)
+	}
+	ts := httptest.NewServer(s.Handler())
+	defer func() { ts.Close(); s.Close() }()
+	a := newClient(t, ts.URL)
+	a.register("探索托管存档玩家")
+	r := a.post("/api/rooms", map[string]any{"kind": "pal", "name": "原版探索托管续玩", "capacity": 3}, 201)
+	id := r["id"].(string)
+	for i := 0; i < 2; i++ {
+		a.command(current(a), "add_bot", nil, 200)
+	}
+	a.command(current(a), "ready", nil, 200)
+	a.command(current(a), "start", nil, 200)
+	setAutoPlay(a, current(a), true, 200)
+	data := func() map[string]any {
+		return current(a)["game"].(map[string]any)["data"].(map[string]any)
+	}
+	wait := func(predicate func(map[string]any) bool) map[string]any {
+		t.Helper()
+		for until := time.Now().Add(45 * time.Second); ; {
+			d := data()
+			if predicate(d) {
+				return d
+			}
+			if time.Now().After(until) {
+				t.Fatal("original field autoplay checkpoint unavailable", d["phase"], d["scene"], d["x"], d["y"], d["cash"])
+			}
+			time.Sleep(40 * time.Millisecond)
+		}
+	}
+	wait(func(d map[string]any) bool { return d["scene"] == float64(2) && d["x"].(float64) < 1344 })
+	a.command(current(a), "save", nil, 200)
+	if a.state()["room"] != nil {
+		t.Fatal("field autoplay save did not release the original human seat")
+	}
+	ts.Close()
+	if err = s.Close(); err != nil {
+		t.Fatal(err)
+	}
+	cfg.Modules = []gameapi.Module{palBoardModule(t)}
+	s, err = New(cfg, files)
+	if err != nil {
+		t.Fatal(err)
+	}
+	ts = httptest.NewServer(s.Handler())
+	a.base = ts.URL
+	a.post("/api/saves/"+id+"/resume", map[string]any{}, 200)
+	d := wait(func(d map[string]any) bool { return d["cash"] == float64(500) && d["phase"] == "field" })
+	setAutoPlay(a, current(a), false, 200)
+	after := data()
+	if after["cash"] != d["cash"] || len(after["party"].([]any)) != 1 || current(a)["seats"].([]any)[0].(map[string]any)["autoPlay"] == true {
+		t.Fatal("manual reclaim changed original reward/party or left autoplay enabled")
+	}
+	streamEvidence(t, "pal-field-autoplay-save", map[string]any{"passed": true, "scope": "authenticated HTTP, production ticker, explicit human autoplay with two added bots, SQLite save and fresh-runtime server restart, original guest reward and manual reclaim; not full campaign bots", "cash": after["cash"], "partyCount": len(after["party"].([]any)), "savedSeatReleased": true})
+}

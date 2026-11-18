@@ -9,6 +9,7 @@ export function viewportFitHeight(input: {
   occlusionTop?: number;
   bottomPadding: number;
   previousHeight?: number;
+  minimumHeight?: number;
   reason: "layout" | "scroll";
 }): number | undefined {
   const { viewportHeight, documentTop, bottomPadding, occlusionTop } = input;
@@ -18,9 +19,15 @@ export function viewportFitHeight(input: {
     occlusionTop !== undefined && Number.isFinite(occlusionTop)
       ? Math.min(viewportHeight, occlusionTop)
       : viewportHeight;
-  const height = Math.floor(bottom - documentTop - bottomPadding);
+  const minimum = Number.isFinite(input.minimumHeight)
+    ? Math.max(0, input.minimumHeight!)
+    : 0;
+  const height = Math.max(
+    minimum,
+    Math.floor(bottom - documentTop - bottomPadding),
+  );
   if (height <= 0) return;
   return input.reason === "scroll" && input.previousHeight !== undefined
-    ? Math.min(height, input.previousHeight)
+    ? Math.max(minimum, Math.min(height, input.previousHeight))
     : height;
 }

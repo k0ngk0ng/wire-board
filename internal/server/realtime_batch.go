@@ -6,17 +6,17 @@ import (
 	"log"
 	"net/http"
 	"time"
-
-	"github.com/k0ngk0ng/wire-board/internal/gameapi"
 )
 
 type queuedRealtimeInput struct {
-	request *http.Request
-	userID  string
-	input   streamInput
-	at      time.Time
-	result  chan streamAck
+	request    *http.Request
+	userID     string
+	input      streamInput
+	at         time.Time
+	receivedAt time.Time
+	result     chan streamAck
 }
+type realtimeReceivedKey struct{}
 type realtimeInputQueue struct {
 	pending     []*queuedRealtimeInput
 	outstanding int
@@ -24,8 +24,12 @@ type realtimeInputQueue struct {
 
 // A short per-room collection window orders concurrent inputs in memory.
 // Every accepted command keeps its own nonce, version and acknowledgement.
-func (s *Server) submitRealtimeInput(r *http.Request, userID string, input streamInput) streamAck {
-	job := &queuedRealtimeInput{request: r, userID: userID, input: input, at: time.Now(), result: make(chan streamAck, 1)}
+func (s *Server) submitRealtimeInput(r *http.Request, userID string, input streamInput, receivedAt time.Time) streamAck {
+	now := time.Now()
+	if receivedAt.IsZero() {
+		receivedAt = now
+	}
+	job := &queuedRealtimeInput{request: r, userID: userID, input: input, at: now, receivedAt: receivedAt, result: make(chan streamAck, 1)}
 	s.inputMu.Lock()
 	if s.inputClosing {
 		s.inputMu.Unlock()
@@ -148,7 +152,7 @@ func (s *Server) commitRealtimeInputs(roomID string, jobs []*queuedRealtimeInput
 			answers[i] = prior
 			continue
 		}
-		next, record, status, err := s.prepareRealtimeInput(candidate, user, job.input, time.Now())
+		next, record, status, err := s.prepareRealtimeInput(candidate, user, job.input, time.Now(), job.receivedAt)
 		if err != nil {
 			answers[i].Status, answers[i].Error = status, err.Error()
 			continue
@@ -223,7 +227,7 @@ func (s *Server) persistRealtimeInputBatch(before, after *Room, snapshot []byte,
 // Shares the ordinary module Apply/ValidateMatch path. Rechecking ownership and
 // stale-version permission at commit time prevents queued controls surviving a
 // takeover, departure, close or rematch. A failed callback owns only its clone.
-func (s *Server) prepareRealtimeInput(room *Room, user User, input streamInput, now time.Time) (next *Room, record []byte, status int, err error) {
+func (s *Server) prepareRealtimeInput(room *Room, user User, input streamInput, now, receivedAt time.Time) (next *Room, record []byte, status int, err error) {
 	status = 400
 	defer func() {
 		if recovered := recover(); recovered != nil {
@@ -246,14 +250,7 @@ func (s *Server) prepareRealtimeInput(room *Room, user User, input streamInput, 
 	if input.Version != room.Version {
 		allowed := false
 		if input.Version >= room.SetupVersion && input.Version < room.Version && module.AcceptStale != nil {
-			raw, e := json.Marshal(room.Module)
-			if e != nil {
-				return nil, nil, 500, e
-			}
-			var match gameapi.Match
-			if e = json.Unmarshal(raw, &match); e != nil {
-				return nil, nil, 500, e
-			}
+			match := cloneModuleMatch(*room.Module)
 			allowed = module.AcceptStale(moduleContext(room, actor, input.Version, now), match, input.Action)
 		}
 		if !allowed {
@@ -264,11 +261,13 @@ func (s *Server) prepareRealtimeInput(room *Room, user User, input streamInput, 
 	if err != nil {
 		return nil, nil, 500, err
 	}
-	record, err = json.Marshal(map[string]any{"type": "action", "nonce": input.Nonce, "version": input.Version, "action": input.Action, "appliedAt": now.UnixMilli()})
+	record, err = json.Marshal(map[string]any{"type": "action", "nonce": input.Nonce, "version": input.Version, "action": input.Action, "appliedAt": now.UnixMilli(), "receivedAt": receivedAt.UnixMilli()})
 	if err != nil {
 		return nil, nil, 400, err
 	}
-	if err = s.applyModule(next, actor, input.Version, input.Action, now); err != nil {
+	ctx := moduleContext(next, actor, input.Version, now)
+	ctx.InputReceivedAt = next.gameNow(receivedAt)
+	if err = s.applyModuleContext(next, ctx, input.Action); err != nil {
 		return nil, nil, 400, err
 	}
 	next.Version++

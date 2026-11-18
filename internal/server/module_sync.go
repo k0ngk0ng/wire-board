@@ -1,8 +1,6 @@
 package server
 
 import (
-	"encoding/json"
-	"github.com/k0ngk0ng/wire-board/internal/gameapi"
 	"net/http"
 	"time"
 )
@@ -35,17 +33,8 @@ func (s *Server) moduleSyncSnapshot(w http.ResponseWriter, r *http.Request) {
 	}
 	seat := seatIndex(room, user.ID)
 	id, version, instance := room.ID, room.Version, s.instance
-	raw, err := json.Marshal(room.Module)
+	match := cloneModuleMatch(*room.Module)
 	s.mu.Unlock()
-	if err != nil {
-		fail(w, 500, "无法读取同步状态")
-		return
-	}
-	var match gameapi.Match
-	if err = json.Unmarshal(raw, &match); err != nil {
-		fail(w, 500, "无法读取同步状态")
-		return
-	}
 	value, err := module.SyncSnapshot(match, seat)
 	if err != nil {
 		fail(w, 500, "无法读取同步状态")

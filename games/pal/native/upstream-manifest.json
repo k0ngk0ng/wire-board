@@ -1,0 +1,307 @@
+{
+  "repository": "sdlpal/sdlpal",
+  "commit": "170accc3e9bd69c22eaffe27f4ac2288980b2869",
+  "license": "GPL-3.0-only",
+  "files": [
+    {
+      "path": "LICENSE",
+      "size": 35062,
+      "sha256": "5be661f26e54b8436d20156d80e0d531abcefebce970a9845242cd50b98f9585"
+    },
+    {
+      "path": "adplug/opltypes.h",
+      "size": 1221,
+      "sha256": "365c580f63fe33b5ce6d62c483e49f34b6ab46129f1f7340310624f6f792e3b3"
+    },
+    {
+      "path": "ascii.h",
+      "size": 43957,
+      "sha256": "fb3a8ba21cde4b167949c6f429f8cf2b8ce080cde0d6cd43db2f32edfdbae9d6"
+    },
+    {
+      "path": "audio.h",
+      "size": 3895,
+      "sha256": "6a70cb847630e9e4cda2f6fcb3588100835a8cb66f118cc755d2ec95cccb623e"
+    },
+    {
+      "path": "aviplay.h",
+      "size": 1203,
+      "sha256": "bc45aea5bb020d84eb86ea16e7a4fecaecf172b37f3b71bb9687cec3144cade8"
+    },
+    {
+      "path": "battle.c",
+      "size": 49450,
+      "sha256": "45f38a01d08b864151390c99bcbb4622e3ba78a5da80a3657c276bf1c2fea33f"
+    },
+    {
+      "path": "battle.h",
+      "size": 9332,
+      "sha256": "3234d15bfcb91e9ce1e8c5ddba56d57bed7150d743a1119af6b05a185a310284"
+    },
+    {
+      "path": "common.h",
+      "size": 7217,
+      "sha256": "48f7ccfe8c287d5518b603ac8c7afe8af868cf42f547d072b175d73d588276ce"
+    },
+    {
+      "path": "defines.h",
+      "size": 977,
+      "sha256": "e62d2edeff7868e15b0622153a89f2f539fe3076010a3bbda97192d00c9c59d8"
+    },
+    {
+      "path": "ending.h",
+      "size": 1266,
+      "sha256": "9643e3dae87229494c0d0a1d0ab8d8801387971183b941cb3bb0d8a049d50598"
+    },
+    {
+      "path": "fight.c",
+      "size": 144742,
+      "sha256": "6d71434242de081d3cd2d5a0578d05485948e7c6cd507407805d0eafa3e761f5"
+    },
+    {
+      "path": "fight.h",
+      "size": 1992,
+      "sha256": "39882bb03b9e23b3c9c17d373fb3458972f42c55cdf7d77d735e9b762278eafe"
+    },
+    {
+      "path": "font.c",
+      "size": 16397,
+      "sha256": "8b1f8f9c9325024bca8c99f15dab3a8122d9d278e471614f4d5ddab944a461d6"
+    },
+    {
+      "path": "font.h",
+      "size": 2306,
+      "sha256": "d1f20f316d5942a017c8bcf76bb231c115bf241d4436ace649dfd71d7807d4e8"
+    },
+    {
+      "path": "fontglyph.h",
+      "size": 5562982,
+      "sha256": "483a1fa25c0233d1200c5d753b7cf2766de4ee6cdad3bdf7f9f7e50473e53895"
+    },
+    {
+      "path": "fontglyph_cn.h",
+      "size": 1883642,
+      "sha256": "6774d073da6c87fa44e37c62821bea5bff8511b7c5d14407804b51219adeae63"
+    },
+    {
+      "path": "game.c",
+      "size": 1874,
+      "sha256": "b5ecb8b2d7d0602d44985d8469a189c073009445db235dc8bc8439063cc876e4"
+    },
+    {
+      "path": "game.h",
+      "size": 1020,
+      "sha256": "697d2405e16c8229b5c2f93bd8a3da578ed18e8d0371225a8bab99bb77af459b"
+    },
+    {
+      "path": "global.c",
+      "size": 54495,
+      "sha256": "6e7162374dca7af62e3e67b5ab1359f1dc0e040ac3a94612ae32f3ca37d82ddc"
+    },
+    {
+      "path": "global.h",
+      "size": 25072,
+      "sha256": "07f307f91af62291fba50a345075c54adf170a33d1eba1f389852abf9c44d28c"
+    },
+    {
+      "path": "input.h",
+      "size": 2375,
+      "sha256": "97276a5e438234b413abafb346c0ae2e6be0aefd7c80fca89fcdaf28f73569a6"
+    },
+    {
+      "path": "itemmenu.c",
+      "size": 12791,
+      "sha256": "7026d7875f79a57cf21fd80135d13022ff792698720ef6f56de864d208742a74"
+    },
+    {
+      "path": "itemmenu.h",
+      "size": 1203,
+      "sha256": "12abc823407d6e64364f0a164dad38c23afb5d32efd0ccff7e5089c28b7c149a"
+    },
+    {
+      "path": "magicmenu.c",
+      "size": 12159,
+      "sha256": "d3744426d40167d4130aeaa0fac686264df285e44d73cc3648dba56f3645d312"
+    },
+    {
+      "path": "magicmenu.h",
+      "size": 1243,
+      "sha256": "38cb6d462e62d0d04c15c2812cca584156a730503f705b85e1ee9c9395ff8b89"
+    },
+    {
+      "path": "main.h",
+      "size": 1557,
+      "sha256": "3ef0df2d2834cba1b486d6e5b4133e35d7d708d8e5425eaceec94a80472f7496"
+    },
+    {
+      "path": "map.c",
+      "size": 8136,
+      "sha256": "0b707730f6e89b2d99f7a8564382c226381c3cec2f13867ad54c816805b1357f"
+    },
+    {
+      "path": "map.h",
+      "size": 3246,
+      "sha256": "c41782d6e68c272d492a9d00b5c3143ce53f58d40f9e9355c5b6151a8870bef2"
+    },
+    {
+      "path": "midi.h",
+      "size": 1608,
+      "sha256": "c00c6c8ef12755cae37adae6f6dfea43fb5a057b8d41e3179a13d201907b7117"
+    },
+    {
+      "path": "native_midi/native_midi.h",
+      "size": 3262,
+      "sha256": "de5f069b10a2bbe1147386f36e2750943e03f93a2aea3472bfa43902d409946f"
+    },
+    {
+      "path": "palcfg.c",
+      "size": 37762,
+      "sha256": "ef6cc2958faba2af1fdd373f23efe80a3c6901ee649a7bd61caf83bf97a872f1"
+    },
+    {
+      "path": "palcfg.h",
+      "size": 7519,
+      "sha256": "82b89d1ae9a1a47c45063e388fa8f8bf566b087764725060da070bc135491214"
+    },
+    {
+      "path": "palcommon.c",
+      "size": 23866,
+      "sha256": "919f428112e70c11b8db208e9bba486c8ab056aa4a893a8d4d6bae9b21b9aae6"
+    },
+    {
+      "path": "palcommon.h",
+      "size": 6833,
+      "sha256": "92ca376598778230c7433449ede5e597cc23ef91ea246b2720b10da045ff86ba"
+    },
+    {
+      "path": "paldebug.h",
+      "size": 1143,
+      "sha256": "8eef24da5f715a64527b5ca11d73c871c213941668e7c6a32ae7c7d619e31e6f"
+    },
+    {
+      "path": "palette.c",
+      "size": 13758,
+      "sha256": "88a3160fac6bddd28355a28b788b76b848b9853d06eb75b8abe2116b9ee7795d"
+    },
+    {
+      "path": "palette.h",
+      "size": 1566,
+      "sha256": "75b9115f6df07cba22d81ef5adecc0c1550976be53526318b8536413597e1685"
+    },
+    {
+      "path": "play.c",
+      "size": 15072,
+      "sha256": "cebae8fd459ed0133b3269ed79c15be28e456877f95dfe36f24b3609880f3f32"
+    },
+    {
+      "path": "play.h",
+      "size": 1273,
+      "sha256": "a900332162fa060022384040f7b8905faf3d8b88ed602f37519c2e15d6f4e2c7"
+    },
+    {
+      "path": "players.h",
+      "size": 1722,
+      "sha256": "c0d75c09cfeb3227e6b16eedcc6ae14eff7c8eedcb07786d460af6bf860fc774"
+    },
+    {
+      "path": "res.c",
+      "size": 8520,
+      "sha256": "5bec5dd52c950fe1a6cdafb7fab414f55cd5958adc7c9ddce4e7f6cbfe3ec9d9"
+    },
+    {
+      "path": "res.h",
+      "size": 1560,
+      "sha256": "eef5290d1a0d43b916520e44217d23113e2cd2160eaa2fd499246c858c296fcd"
+    },
+    {
+      "path": "resampler.h",
+      "size": 2310,
+      "sha256": "297b11861c09b6b167b0cf8f9724baafd7e124cd5be4b86076040812d267443b"
+    },
+    {
+      "path": "rngplay.h",
+      "size": 1055,
+      "sha256": "ba525d5fa768eecbfb04b75b5523164ea5da3161e2bd4241e782e7a40f001e0d"
+    },
+    {
+      "path": "scene.c",
+      "size": 21586,
+      "sha256": "c7081a7290058948694be4e58f4badae5293bda7efc0356645fa7c3c2e66d280"
+    },
+    {
+      "path": "scene.h",
+      "size": 1484,
+      "sha256": "ccb01a71bd2b903ebd2ee307206dff31528f491739fd1ab293cb14d6368a68c3"
+    },
+    {
+      "path": "script.c",
+      "size": 98331,
+      "sha256": "f7425fe985d557bc4bbead5242c55fb8df047c7bf81cc2d9e838c13291f2ef06"
+    },
+    {
+      "path": "script.h",
+      "size": 1214,
+      "sha256": "85215db61c0d8b3a1b3838cce36662665aac62c77163326c09d684198b3a38f5"
+    },
+    {
+      "path": "text.c",
+      "size": 61734,
+      "sha256": "8e3c1be5111ea6bed1d0a8a480a2818235d0b3c22a6f73540f5701ac26cbc456"
+    },
+    {
+      "path": "text.h",
+      "size": 4229,
+      "sha256": "2f5882d230010793a400ba2d9dd87bec448fb91b4458f7f9b0031269448eaa71"
+    },
+    {
+      "path": "ui.c",
+      "size": 20450,
+      "sha256": "15a03e60ebe4c51ae45d479740b8dfdf8029805cc6bf8ca8fc39926d62cf2242"
+    },
+    {
+      "path": "ui.h",
+      "size": 7708,
+      "sha256": "a62d0df9fb689afe5636cc1578e67185c5f2d0900838d72b9808dc5052df19ce"
+    },
+    {
+      "path": "uibattle.c",
+      "size": 49811,
+      "sha256": "b5bd5104def667c9ae134481c4843450ec1513feb61141f7196f9047dc7814d3"
+    },
+    {
+      "path": "uibattle.h",
+      "size": 4115,
+      "sha256": "ab66ceed9bc8f97560aad52608c731553714c9a7078a555fa7ac0f751a9222f1"
+    },
+    {
+      "path": "uigame.c",
+      "size": 53717,
+      "sha256": "f981b6a698b6248107ec7934b60ca988055bbab458e516e9aa2b113f8b5419c1"
+    },
+    {
+      "path": "uigame.h",
+      "size": 1550,
+      "sha256": "9e7bb2bc29c7d22f40cc5cafa69591e80e13c60dc23f217c00c5e431eb1dbd0c"
+    },
+    {
+      "path": "util.h",
+      "size": 6386,
+      "sha256": "d61ffb6c542ead05f92400c225d241de5a8dabdca5eca43be5dc8a637db2f121"
+    },
+    {
+      "path": "video.c",
+      "size": 32849,
+      "sha256": "1ccfff8e985db13ab596c852c68c15b290fa33c4ca51415ec10452f8c3a67033"
+    },
+    {
+      "path": "video.h",
+      "size": 2865,
+      "sha256": "efb88049348add9beede8b456b0e6b20898464247d6b980e9bf74edf19dd7ae1"
+    },
+    {
+      "path": "yj1.c",
+      "size": 11595,
+      "sha256": "fdcb5f1c4e14712fe96b2214bac6a12f3fa01abcfeeb88cb096886e306e14a0c"
+    }
+  ]
+}

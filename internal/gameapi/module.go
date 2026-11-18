@@ -33,6 +33,7 @@ type Context struct {
 	Actor, Players            int
 	Version, RequestedVersion int
 	Now                       time.Time
+	InputReceivedAt           time.Time
 }
 
 // PreparationContext describes an authenticated waiting-room participant.
@@ -48,6 +49,8 @@ type PreparationContext struct {
 // can act now; TimeoutActors owe a decision at Deadline (Unix milliseconds).
 // These lists differ for optional responses and simultaneous actions.
 type Match struct {
+	PreserveSavedCheckpoint bool `json:"preserveSavedCheckpoint,omitempty"`
+	Restartable             bool `json:"restartable,omitempty"`
 	// Unrated declares a practice/casual match before its first action. For a
 	// versioned challenge, the host latches this exclusion for the whole match.
 	Unrated bool `json:"unrated,omitempty"`
@@ -115,7 +118,21 @@ type StreamViewResult struct {
 }
 
 type Module struct {
-	Controls *ControllerDefinition `json:"-"`
+	Controls           *ControllerDefinition                      `json:"-"`
+	SupportsCheckpoint bool                                       `json:"supportsCheckpoint,omitempty"`
+	RestoreCheckpoint  func(Context, Match, Match) (Match, error) `json:"-"`
+	// SupportsSave opts into long-lived, original-roster save-and-exit. The host
+	// preserves the match identity and freezes its logical clock while saved.
+	SupportsSave bool `json:"supportsSave,omitempty"`
+	// ResumeSaved clears game-owned transient inputs when a saved match resumes.
+	// It must preserve progress and decision budgets; realtime games must supply it.
+	ResumeSaved func(Context, Match) (Match, error) `json:"-"`
+	// SaveControl optionally freezes gameplay on the first human save approval
+	// and releases that temporary pause when any original human declines. It
+	// must preserve progress and remaining budgets, clear transient controls,
+	// and return a paused match with no timers when saving is true. ResumeSaved
+	// must also clear this pause after the original roster confirms continuation.
+	SaveControl func(Context, Match, bool) (Match, error) `json:"-"`
 	// RatingPolicy is trusted registration metadata, frozen by the host when a
 	// new match starts. An empty value preserves existing cooperative behavior.
 	RatingPolicy RatingPolicy                                                         `json:"ratingPolicy,omitempty"`
@@ -153,7 +170,8 @@ type Module struct {
 	// Realtime opts into the fast SystemDeadline clock. Each due frame submits
 	// all controlled actors through BotAction/Apply, then OnTimer, atomically.
 	// Callbacks must stay bounded; asynchronous BotSearch cannot run in a frame.
-	Realtime bool `json:"-"`
+	Realtime               bool `json:"-"`
+	RealtimeDeadlineFrames bool `json:"-"`
 	// BotAction is a fast pure fallback; use BotSearch for expensive computation.
 	// BotAction may return nil, nil when no decision is available. The host
 	// tries the remaining controlled actors without persisting an idle action.
@@ -189,6 +207,12 @@ type Module struct {
 }
 
 func (m Module) Validate() error {
+	if m.SupportsCheckpoint && (!m.SupportsSave || m.ResumeSaved == nil || m.RestoreCheckpoint == nil || m.MinPlayers != 1 || m.MaxPlayers != 1 || m.RatingPolicy != "") || !m.SupportsCheckpoint && m.RestoreCheckpoint != nil {
+		return errors.New("checkpoint reload requires single-player noncompetitive save support")
+	}
+	if m.SupportsSave && m.Realtime && m.ResumeSaved == nil || !m.SupportsSave && (m.ResumeSaved != nil || m.SaveControl != nil) {
+		return errors.New("saved-game resume capability is incomplete")
+	}
 	if m.RatingPolicy != "" && m.RatingPolicy != RatingCoopCampaignV1 {
 		return errors.New("unknown module rating policy")
 	}
@@ -206,6 +230,9 @@ func (m Module) Validate() error {
 	}
 	if m.Realtime && (m.OnTimer == nil || m.BotSearch != nil) {
 		return fmt.Errorf("invalid realtime registration: %s", m.ID)
+	}
+	if m.RealtimeDeadlineFrames && (!m.Realtime || m.StreamView == nil) {
+		return fmt.Errorf("deadline frames require realtime stream projection: %s", m.ID)
 	}
 	if m.OnPausedTimer != nil && !m.Realtime {
 		return fmt.Errorf("paused timer requires realtime registration: %s", m.ID)
@@ -290,6 +317,9 @@ func (m Match) validate(players int, pausedTimer bool) error {
 
 // ValidateMatch also checks that the host can service requested capabilities.
 func (module Module) ValidateMatch(match Match, players int) error {
+	if (match.PreserveSavedCheckpoint || match.Restartable) && (!module.SupportsCheckpoint || !match.Unrated || players != 1 || match.Result != nil) || match.Restartable && !match.PreserveSavedCheckpoint {
+		return errors.New("invalid failed checkpoint journey")
+	}
 	if err := match.validate(players, module.Realtime && module.OnPausedTimer != nil); err != nil {
 		return err
 	}

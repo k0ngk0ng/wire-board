@@ -1,0 +1,14 @@
+{
+  "7ca83b5bcf13e71c1020ef287d9817e5675adf2cbdf7c627644f4cb3566dd03a": {
+    "format": 1,
+    "profile": "original-98",
+    "purpose": "campaign",
+    "sourceCommit": "170accc3e9bd69c22eaffe27f4ac2288980b2869"
+  },
+  "68d893938bc623a69a33d9ca402741b04a7be2191c7349f4081b5e94b755bec7": {
+    "format": 1,
+    "profile": "development-health:9999",
+    "purpose": "campaign",
+    "sourceCommit": "170accc3e9bd69c22eaffe27f4ac2288980b2869"
+  }
+}

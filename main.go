@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"path/filepath"
 	"syscall"
 	"time"
 
@@ -27,10 +28,19 @@ func main() {
 }
 
 func run() error {
-	modules, err := production.Modules()
+	rulesDirectory := os.Getenv("PAL_RULES_DIR")
+	if rulesDirectory == "" {
+		executable, err := os.Executable()
+		if err != nil {
+			return err
+		}
+		rulesDirectory = filepath.Join(filepath.Dir(executable), "pal")
+	}
+	registry, err := production.Open(context.Background(), os.DirFS(rulesDirectory))
 	if err != nil {
 		return err
 	}
+	defer registry.Close(context.Background())
 	dir := os.Getenv("DATA_DIR")
 	if dir == "" {
 		dir = "data"
@@ -45,7 +55,7 @@ func run() error {
 	}
 	app, err := server.New(server.Config{
 		TrustedProxies: os.Getenv("TRUSTED_PROXIES"),
-		ClientLoading:  true, Modules: modules, DataDir: dir, InviteCode: os.Getenv("INVITE_CODE"),
+		ClientLoading:  true, Modules: registry.Modules, DataDir: dir, InviteCode: os.Getenv("INVITE_CODE"),
 		Origin: os.Getenv("PUBLIC_ORIGIN"), AssetsBaseURL: os.Getenv("ASSETS_BASE_URL"),
 		SecureCookie:  os.Getenv("COOKIE_SECURE") == "true",
 		AdminUsername: os.Getenv("ADMIN_USERNAME"), AdminPassword: os.Getenv("ADMIN_PASSWORD"),

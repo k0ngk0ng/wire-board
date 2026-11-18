@@ -1,0 +1,254 @@
+{
+  "reference": "pinned SDLPAL PAL_RLEBlitToSurface; two-fill transparency observation",
+  "runtimeSHA256": "5e6703f373655e2a812108660ca485ecc9a6fe76e2a906d78e49ddcf83f9271e",
+  "vectors": [
+    {
+      "archive": "mgo.mkf",
+      "chunk": 2,
+      "frame": 0,
+      "width": 22,
+      "height": 50,
+      "sha256": "f6de7827e9019568821f1004912bc6cacd589f99081df59f7e6ec4868428e140"
+    },
+    {
+      "archive": "mgo.mkf",
+      "chunk": 2,
+      "frame": 3,
+      "width": 22,
+      "height": 50,
+      "sha256": "526cc69da8a011d8fe29fd3fd1a59eb37fd6f1a44f74262245ddf614cafcff48"
+    },
+    {
+      "archive": "mgo.mkf",
+      "chunk": 2,
+      "frame": 6,
+      "width": 22,
+      "height": 50,
+      "sha256": "caf2bc0e4d1f94dfca5108ba2f3d969c59597c321fdf7fc763ee0c92e5ac8246"
+    },
+    {
+      "archive": "mgo.mkf",
+      "chunk": 2,
+      "frame": 9,
+      "width": 22,
+      "height": 50,
+      "sha256": "9f143f486d8f1207230d843200e9e588de0aaa1cbfb9aca0f94a383233a8a3c1"
+    },
+    {
+      "archive": "mgo.mkf",
+      "chunk": 193,
+      "frame": 0,
+      "width": 45,
+      "height": 31,
+      "sha256": "457379947c7477a4f165b0e11ca3185f51b5ef9b33ac635e7da09c373adabc05"
+    },
+    {
+      "archive": "mgo.mkf",
+      "chunk": 193,
+      "frame": 1,
+      "width": 45,
+      "height": 63,
+      "sha256": "dbbc4dbfab34ab52b6af5131566985fdb930415076be131aa68e5199f5584bab"
+    },
+    {
+      "archive": "mgo.mkf",
+      "chunk": 193,
+      "frame": 2,
+      "width": 45,
+      "height": 41,
+      "sha256": "7368ce1844a5ce63a5a263f8d72fb322aae78d53c15850a1222addceb2f9bd63"
+    },
+    {
+      "archive": "mgo.mkf",
+      "chunk": 193,
+      "frame": 3,
+      "width": 45,
+      "height": 54,
+      "sha256": "e6d45667b4e1827d0082c7f82e7b68751819abc6b8866a2c65ccc2729b805d9b"
+    },
+    {
+      "archive": "gop.mkf",
+      "chunk": 12,
+      "frame": 0,
+      "width": 32,
+      "height": 15,
+      "sha256": "0748bfd1b3acfeb8ebd73ac49fde7267f2ab992f8a35e9cfd09f597824d60f5b"
+    },
+    {
+      "archive": "gop.mkf",
+      "chunk": 12,
+      "frame": 8,
+      "width": 32,
+      "height": 15,
+      "sha256": "17383fa07963e0326db3d72b8a6e2ee708fe787e3dbb11e24ab05b6c84585e95"
+    },
+    {
+      "archive": "gop.mkf",
+      "chunk": 12,
+      "frame": 32,
+      "width": 32,
+      "height": 15,
+      "sha256": "c8f82f84531c7a6b9a3058d15708b39ea3fe40d4735e28d4e6fdd48994a226eb"
+    },
+    {
+      "archive": "gop.mkf",
+      "chunk": 12,
+      "frame": 64,
+      "width": 32,
+      "height": 15,
+      "sha256": "ff657f4dfa5840a806073d9d7430d6e4bc13cb84e0312e85d9f3deb1cdf318aa"
+    },
+    {
+      "archive": "gop.mkf",
+      "chunk": 20,
+      "frame": 0,
+      "width": 32,
+      "height": 15,
+      "sha256": "0748bfd1b3acfeb8ebd73ac49fde7267f2ab992f8a35e9cfd09f597824d60f5b"
+    },
+    {
+      "archive": "gop.mkf",
+      "chunk": 20,
+      "frame": 4,
+      "width": 32,
+      "height": 15,
+      "sha256": "f7a7a95a45806dd5ec7288b35d4fbed5504f2a91f5e7a6a78cc570e21f4b5ba9"
+    },
+    {
+      "archive": "gop.mkf",
+      "chunk": 20,
+      "frame": 8,
+      "width": 32,
+      "height": 15,
+      "sha256": "9dacb9411cfa8ce35cf5831f7495cc76744c48705777a34c28e2fcdac8a3f90e"
+    },
+    {
+      "archive": "gop.mkf",
+      "chunk": 20,
+      "frame": 12,
+      "width": 32,
+      "height": 15,
+      "sha256": "43ee4acf086dd01e4b336b37baac6fe5bc00b3330332f0d7b1ac0f9ae0bc7a20"
+    },
+    {
+      "archive": "f.mkf",
+      "chunk": 1,
+      "frame": 0,
+      "width": 56,
+      "height": 63,
+      "sha256": "8a5f7e1cd1e2bc8e8e1ca5b38c7cdb3159c7541c974fea701b1283d151497fa1"
+    },
+    {
+      "archive": "f.mkf",
+      "chunk": 1,
+      "frame": 1,
+      "width": 56,
+      "height": 63,
+      "sha256": "fa8ced4482596d0a0179b0fb8bfe21486bb569637e241890963d67af207f4a7b"
+    },
+    {
+      "archive": "f.mkf",
+      "chunk": 1,
+      "frame": 2,
+      "width": 56,
+      "height": 63,
+      "sha256": "5099c51c40236b5775c461c5ead40a9bde5ba77d5616c0b52b25b71519f5df28"
+    },
+    {
+      "archive": "f.mkf",
+      "chunk": 1,
+      "frame": 3,
+      "width": 56,
+      "height": 63,
+      "sha256": "e3837c95fee2ec58fbbc0e2c9727968a7ec780c570efc76a45352d7b036d53aa"
+    },
+    {
+      "archive": "abc.mkf",
+      "chunk": 1,
+      "frame": 0,
+      "width": 43,
+      "height": 20,
+      "sha256": "494ad6273df40746479fec041b33ad0b3b8a6c219f34890f4e51f3d8179eddb5"
+    },
+    {
+      "archive": "abc.mkf",
+      "chunk": 1,
+      "frame": 1,
+      "width": 43,
+      "height": 20,
+      "sha256": "df8d30ff3d4fa0e6f085a388bf707ee09787691b22155cb153456aa841b678cf"
+    },
+    {
+      "archive": "abc.mkf",
+      "chunk": 1,
+      "frame": 2,
+      "width": 43,
+      "height": 61,
+      "sha256": "c61d71193d85db00cb1e0065546abb9b9365e8581e42ad5519cacc3fd6dc3fda"
+    },
+    {
+      "archive": "abc.mkf",
+      "chunk": 2,
+      "frame": 0,
+      "width": 25,
+      "height": 77,
+      "sha256": "a5e680c8484f8d5b64f277f1e524dc34e6e0ca2b462537fab5419651ab3b25e2"
+    },
+    {
+      "archive": "abc.mkf",
+      "chunk": 2,
+      "frame": 1,
+      "width": 25,
+      "height": 77,
+      "sha256": "83947355ff705cf69cbeeb1b036c8183c00a42001c6165940e5e6cbf743ac01b"
+    },
+    {
+      "archive": "abc.mkf",
+      "chunk": 2,
+      "frame": 2,
+      "width": 25,
+      "height": 77,
+      "sha256": "e39c6b21b102adcd5088e94ce3c22e4678d8660cd21d1a5abcb0020dee9fe9e8"
+    },
+    {
+      "archive": "data.mkf",
+      "chunk": 9,
+      "frame": 0,
+      "width": 22,
+      "height": 20,
+      "sha256": "3f0eb660abd0f1e3cb635f2a536bdb82040909390924cb9eae7b2b7d2cde8d2e"
+    },
+    {
+      "archive": "data.mkf",
+      "chunk": 9,
+      "frame": 1,
+      "width": 16,
+      "height": 20,
+      "sha256": "3dc20aa8e2b9bc997d2eb7ae3839b5767e9b45b30066592cba08055ec06f86d8"
+    },
+    {
+      "archive": "data.mkf",
+      "chunk": 9,
+      "frame": 2,
+      "width": 33,
+      "height": 20,
+      "sha256": "a6cd9cb07fd7be8adf8ecb0bd33612abaa44a9dfba08d6a916473382eed795d7"
+    },
+    {
+      "archive": "rgm.mkf",
+      "chunk": 7,
+      "frame": -1,
+      "width": 78,
+      "height": 91,
+      "sha256": "63fa23d9638f43b211ee8a035d5e2aa99766ef80d2b202d631b617d8c809e7d4"
+    },
+    {
+      "archive": "ball.mkf",
+      "chunk": 20,
+      "frame": -1,
+      "width": 48,
+      "height": 47,
+      "sha256": "259fc98fce565422076c999e322e50ab0ca2968e463e002b0e3728ac5287bb0d"
+    }
+  ]
+}

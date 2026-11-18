@@ -13,7 +13,7 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 DIGEST = "ghcr.io/k0ngk0ng/wire-board@sha256:" + "a" * 64
 MOCK_DOCKER = r'''#!/usr/bin/env python3
-import json, os, pathlib, subprocess, sys
+import json, os, pathlib, shutil, subprocess, sys
 p = pathlib.Path(os.environ['FIXTURE'])
 a = sys.argv[1:]
 with (p / 'calls').open('a') as f: f.write(json.dumps(a) + '\n')
@@ -34,7 +34,11 @@ if scenario == 'clean':
 if a[0] == 'pull':
     sys.exit(1 if scenario == 'pull-failure' else 0)
 if a[:2] == ['image', 'inspect']:
-    print(os.environ['DIGEST']); sys.exit(0)
+    if 'storage-generation' in a[3]:
+        print(os.environ['OLD_STORAGE_GENERATION' if a[-1] == 'sha256:old-image' else 'TARGET_STORAGE_GENERATION'])
+    else:
+        print(os.environ['DIGEST'])
+    sys.exit(0)
 if a[0] == 'run':
     mounts = [a[i+1] for i, value in enumerate(a) if value == '--mount']
     source = pathlib.Path(next(x.split('source=')[1].split(',target=')[0] for x in mounts if 'target=/source,' in x))
@@ -43,13 +47,23 @@ if a[0] == 'run':
         (snapshot / 'wire-board.db').write_text('incomplete')
         sys.exit(1)
     # Exercise the same real SQLite CLI backup API with WAL, without Docker.
-    subprocess.run(['sqlite3', '-readonly', str(source / 'wire-board.db'), '.timeout 5000', '.backup ' + str(snapshot / 'wire-board.db')], check=True)
+    source_db = source / 'wire-board.db'
+    if a[-1] == 'stopped':
+        stable = snapshot / 'stopped-source'
+        stable.mkdir()
+        shutil.copyfile(source_db, stable / source_db.name)
+        wal = source / 'wire-board.db-wal'
+        if wal.is_file():
+            shutil.copyfile(wal, stable / wal.name)
+        source_db = stable / source_db.name
+    subprocess.run(['sqlite3', '-readonly', str(source_db), '.timeout 5000', '.backup ' + str(snapshot / 'wire-board.db')], check=True)
     subprocess.run(['sqlite3', str(snapshot / 'wire-board.db'), 'PRAGMA journal_mode=DELETE;'], check=True, stdout=subprocess.DEVNULL)
     check = subprocess.check_output(['sqlite3', '-readonly', str(snapshot / 'wire-board.db'), 'PRAGMA quick_check;'], text=True)
     sys.exit(0 if check.strip() == 'ok' else 1)
 if a[0] == 'inspect':
     fmt = a[a.index('--format') + 1]
     if '.Mounts' in fmt: print(p / 'volume')
+    elif fmt == '{{.State.Status}}': print('exited' if scenario == 'stopped-upgrade' else 'running')
     elif fmt == '{{.Image}}': print('sha256:new-image' if (p / 'started').exists() else 'sha256:old-image')
     else: print('healthy')
     sys.exit(0)
@@ -57,7 +71,7 @@ if a[0] == 'compose':
     if 'version' in a: sys.exit(0)
     if 'config' in a: sys.exit(1 if scenario == 'config-failure' else 0)
     if 'ps' in a:
-        if scenario != 'initial' or (p / 'started').exists(): print('container-id')
+        if scenario not in ('initial', 'no-current') or (p / 'started').exists(): print('container-id')
     if 'up' in a:
         if scenario == 'upgrade':
             assert list((p / 'backups').glob('*.tar.gz')), 'compression was not completed before switch'
@@ -65,8 +79,15 @@ if a[0] == 'compose':
         image_file = a[a.index('-f') - 1]
         image = pathlib.Path(image_file).read_text().strip()
         with (p / 'images').open('a') as f: f.write(image + '\n')
+        if scenario == 'format-failure' and 'old-image' not in image:
+            (p / 'started').touch()
+            subprocess.run(['sqlite3', str(p / 'volume/wire-board.db'), "INSERT INTO state VALUES ('PAL save committed during startup')"], check=True)
+            sys.exit(1)
+        if scenario == 'before-format-start' and 'old-image' not in image: sys.exit(1)
         if scenario == 'startup-failure' and 'old-image' not in image: sys.exit(1)
         (p / 'started').touch()
+    if 'stop' in a:
+        (p / 'stopped').touch()
     sys.exit(0)
 sys.exit(2)
 '''
@@ -100,8 +121,9 @@ class UpdateTests(unittest.TestCase):
             target.write_text(source)
             target.chmod(0o755)
 
-    def run_update(self, scenario, tag='latest'):
-        env = dict(os.environ, FIXTURE=str(self.path), SCENARIO=scenario, DIGEST=DIGEST)
+    def run_update(self, scenario, tag='latest', *, current_generation='', target_generation=''):
+        env = dict(os.environ, FIXTURE=str(self.path), SCENARIO=scenario, DIGEST=DIGEST,
+                   OLD_STORAGE_GENERATION=current_generation, TARGET_STORAGE_GENERATION=target_generation)
         env['PATH'] = str(self.path / 'bin') + os.pathsep + env['PATH']
         result = subprocess.run(['bash', str(self.path / 'update.sh'), tag], env=env,
                                 capture_output=True, text=True)
@@ -152,12 +174,32 @@ class UpdateTests(unittest.TestCase):
         backup_call = next(a for a in calls if a[0] == 'run')
         self.assertIn('none', backup_call)
         self.assertIn('--read-only', backup_call)
+        self.assertEqual(backup_call[backup_call.index('--tmpfs') + 1], '/tmp:rw,noexec,nosuid,size=32m')
         self.assertTrue(any('target=/source,readonly' in a for a in backup_call))
         self.assertLess(next(i for i,a in enumerate(calls) if a[0]=='pull'), calls.index(backup_call))
         self.assertLess(calls.index(backup_call), next(i for i,a in enumerate(calls) if 'up' in a))
         self.assertFalse(any('stop' in a for a in calls))
         self.assertEqual((self.path / '.previous-image').read_text().strip(), 'sha256:old-image')
         self.assertIn(('last action before switching',), self.db.execute('SELECT value FROM state').fetchall())
+
+    def test_stopped_database_backup_recovers_committed_wal_from_private_copy(self):
+        wal = self.path / 'volume/wire-board.db-wal'
+        self.assertGreater(wal.stat().st_size, 0)
+        self.db.execute("INSERT INTO state VALUES ('committed in WAL')")
+        self.db.commit()
+        result = self.run_update('stopped-upgrade')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        calls = [json.loads(line) for line in (self.path / 'calls').read_text().splitlines()]
+        backup_call = next(a for a in calls if a[0] == 'run')
+        self.assertEqual(backup_call[-1], 'stopped')
+        self.assertIn('cp "$source_db-wal"', backup_call[-3])
+        self.assertTrue(any('target=/source,readonly' in a for a in backup_call))
+        with tarfile.open(next((self.path / 'backups').glob('*.tar.gz'))) as archive:
+            backup = self.path / 'wal-backup.db'
+            backup.write_bytes(archive.extractfile('./wire-board.db').read())
+        with sqlite3.connect(backup) as db:
+            self.assertEqual(db.execute('SELECT value FROM state').fetchall(),
+                             [('existing accounts and games',), ('committed in WAL',)])
 
     def test_preparation_failures_leave_running_service_untouched(self):
         for scenario in ['backup-failure', 'config-failure']:
@@ -176,6 +218,71 @@ class UpdateTests(unittest.TestCase):
                          [f'WIRE_BOARD_IMAGE={DIGEST}', 'WIRE_BOARD_VERSION=latest', 'WIRE_BOARD_IMAGE=sha256:old-image', 'WIRE_BOARD_VERSION=v0.0.0'])
         self.assertEqual((self.path / '.image.env').read_text(), 'WIRE_BOARD_IMAGE=previous\nWIRE_BOARD_VERSION=v0.0.0\n')
         self.assertTrue(list((self.path / 'backups').glob('*.tar.gz')))
+        self.assertFalse((self.path / '.storage-generation').exists())
+
+    def test_failed_format_upgrade_never_starts_old_image_with_new_save(self):
+        result = self.run_update('format-failure', target_generation='1')
+        self.assertNotEqual(result.returncode, 0)
+        self.assertEqual((self.path / 'images').read_text().splitlines(),
+                         [f'WIRE_BOARD_IMAGE={DIGEST}', 'WIRE_BOARD_VERSION=latest'])
+        self.assertTrue((self.path / 'stopped').is_file())
+        self.assertEqual((self.path / '.storage-generation').read_text(), '1\n')
+        self.assertEqual(self.db.execute('SELECT value FROM state').fetchall(),
+                         [('existing accounts and games',), ('PAL save committed during startup',)])
+        self.assertEqual((self.path / '.image.env').read_text(), 'WIRE_BOARD_IMAGE=previous\nWIRE_BOARD_VERSION=v0.0.0\n')
+        with tarfile.open(next((self.path / 'backups').glob('*.tar.gz'))) as archive:
+            backup = self.path / 'restored.db'
+            backup.write_bytes(archive.extractfile('./wire-board.db').read())
+        with sqlite3.connect(backup) as db:
+            self.assertEqual(db.execute('PRAGMA quick_check').fetchone()[0], 'ok')
+            self.assertEqual(db.execute('SELECT value FROM state').fetchall(), [('existing accounts and games',)])
+
+    def test_failed_format_upgrade_keeps_unreplaced_previous_container_running(self):
+        result = self.run_update('before-format-start', target_generation='1')
+        self.assertNotEqual(result.returncode, 0)
+        self.assertEqual((self.path / 'images').read_text().splitlines(),
+                         [f'WIRE_BOARD_IMAGE={DIGEST}', 'WIRE_BOARD_VERSION=latest'])
+        self.assertFalse((self.path / 'stopped').exists())
+        self.assertEqual((self.path / '.storage-generation').read_text(), '1\n')
+
+    def test_storage_downgrade_rejected_before_backup_and_switch(self):
+        for scenario, generation in [('upgrade', '1'), ('no-current', '')]:
+            with self.subTest(scenario=scenario):
+                if not generation:
+                    (self.path / '.storage-generation').write_text('1\n')
+                (self.path / 'calls').unlink(missing_ok=True)
+                result = self.run_update(scenario, 'v1.60.0', current_generation=generation)
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn('Storage generation', result.stderr)
+                calls = [json.loads(line) for line in (self.path / 'calls').read_text().splitlines()]
+                self.assertFalse(any(a[0] == 'run' or 'stop' in a or 'up' in a for a in calls))
+
+    def test_preparation_failure_does_not_record_unattempted_generation(self):
+        result = self.run_update('backup-failure', target_generation='1')
+        self.assertNotEqual(result.returncode, 0)
+        self.assertFalse((self.path / '.storage-generation').exists())
+
+    def test_successful_upgrade_records_generation_and_compatible_failure_rolls_back(self):
+        success = self.run_update('upgrade', target_generation='1')
+        self.assertEqual(success.returncode, 0, success.stderr)
+        self.assertEqual((self.path / '.storage-generation').read_text(), '1\n')
+        for name in ('started', 'images'):
+            (self.path / name).unlink()
+        failure = self.run_update('startup-failure', current_generation='1', target_generation='1')
+        self.assertNotEqual(failure.returncode, 0)
+        self.assertIn('WIRE_BOARD_IMAGE=sha256:old-image', (self.path / 'images').read_text())
+        self.assertEqual((self.path / '.storage-generation').read_text(), '1\n')
+
+    def test_malformed_storage_generation_stops_before_update(self):
+        for field in ['image', 'marker']:
+            with self.subTest(field=field):
+                (self.path / 'calls').unlink(missing_ok=True)
+                if field == 'marker':
+                    (self.path / '.storage-generation').write_text('08\n')
+                result = self.run_update('upgrade', target_generation='invalid' if field == 'image' else '1')
+                self.assertNotEqual(result.returncode, 0)
+                calls = [json.loads(line) for line in (self.path / 'calls').read_text().splitlines()] if (self.path / 'calls').exists() else []
+                self.assertFalse(any(a[0] == 'run' or 'stop' in a or 'up' in a for a in calls))
 
 
 if __name__ == '__main__':

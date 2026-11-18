@@ -60,6 +60,8 @@ MIME={'.js':'text/javascript','.css':'text/css','.svg':'image/svg+xml','.png':'i
 CONTRA_MIME={'.js':'text/javascript','.wasm':'application/wasm','.json':'application/json','.idx':'application/octet-stream','.rgb':'application/octet-stream','.wav':'audio/wav'}
 MIME['.gz']='application/gzip'
 MIME['.glb']='model/gltf-binary'
+MIME['.ico']='image/x-icon'
+MIME['.otf']='font/otf'
 MIME.update({'.jpeg':'image/jpeg','.gif':'image/gif','.json':'application/json','.txt':'text/plain','.md':'text/plain','.mp3':'audio/mpeg','.wav':'audio/wav','.ogg':'audio/ogg','.flac':'audio/flac','.idx':'application/octet-stream','.rgb':'application/octet-stream','.pvzr':'application/octet-stream'})
 SERVER_METADATA={'index.html','game-load-manifest.json','contra-delivery.json','cdn-assets-manifest.json'}
 SHA256=re.compile(r'[a-f0-9]{64}\Z')

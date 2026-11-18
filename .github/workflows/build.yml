@@ -305,6 +305,7 @@ jobs:
           fi
           .local/pvz/ci-assets/venv/bin/python -B scripts/ci/scope.py pvz-tools
       - name: Validate this game only
+        if: matrix.game != 'pal' || !matrix.backend
         env:
           GAME_ID: ${{ matrix.game }}
           BACKEND_CHANGED: ${{ matrix.backend }}
@@ -317,6 +318,20 @@ jobs:
             export PIP_CACHE_DIR="$PWD/.local/pvz/ci-assets/pip-cache"
           fi
           python3 -B scripts/ci/scope.py run "${args[@]}"
+      - name: Validate PAL from clean source and original resources
+        if: matrix.game == 'pal' && matrix.backend
+        run: python3 -B games/pal/build/check-ci.py
+      - uses: actions/upload-artifact@v4
+        if: always() && matrix.game == 'pal' && matrix.backend
+        with:
+          name: pal-clean-ci
+          path: |
+            .local/pal/ci/
+            .local/pal/verification/solo-save-http.json
+            .local/pal/verification/authority-http.json
+            .local/saved-games/pal-checkpoint-dialogue.json
+          include-hidden-files: true
+          if-no-files-found: error
       - name: Verify changed Contra native and browser binding
         if: matrix.game == 'contra' && matrix.backend
         run: |
@@ -399,6 +414,7 @@ jobs:
           GOARCH: amd64
         run: |
           mkdir -p dist/package
+          python3 -B games/pal/build/prepare-server.py --out dist/package/pal
           python3 -B games/contra/build/native.py --runtime .local/contra-ci-runtime/manifest.json --out dist/package/wire-board --goos linux --goarch amd64
           test -s dist/package/wire-board.build.json
           python3 -B scripts/cdn_delivery.py check-package --binary dist/package/wire-board --report .local/cdn-delivery/uploaded.json
@@ -407,6 +423,7 @@ jobs:
           cp scripts/update.sh dist/package/update.sh
           mkdir -p dist/package/docs
           cp docs/deployment.md docs/admin.md docs/THIRD_PARTY.md dist/package/docs/
+          cp games/pal/native/upstream/LICENSE dist/package/docs/LICENSE.SDLPAL
           tar -C dist/package -czf dist/wire-board-linux-amd64.tar.gz .
           cd dist && sha256sum wire-board-linux-amd64.tar.gz > SHA256SUMS
       - uses: actions/upload-artifact@v4

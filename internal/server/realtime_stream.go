@@ -52,7 +52,10 @@ type streamAck struct {
 	Error   string `json:"error,omitempty"`
 }
 
+type streamFrameNotice struct{ immediate bool }
+
 func (s *Server) streamCommand(r *http.Request, raw []byte) streamAck {
+	receivedAt := time.Now()
 	var input streamInput
 	decoder := json.NewDecoder(bytes.NewReader(raw))
 	decoder.DisallowUnknownFields()
@@ -71,7 +74,7 @@ func (s *Server) streamCommand(r *http.Request, raw []byte) streamAck {
 		return streamAck{Type: "ack", Nonce: input.Nonce, Status: 400, Error: "该游戏不使用实时输入"}
 	}
 	body, _ := json.Marshal(map[string]any{"type": "action", "version": input.Version, "nonce": input.Nonce, "action": input.Action, "serverInstance": input.ServerInstance})
-	request := r.Clone(r.Context())
+	request := r.Clone(context.WithValue(r.Context(), realtimeReceivedKey{}, receivedAt))
 	request.Method = http.MethodPost
 	request.Body = io.NopCloser(bytes.NewReader(body))
 	request.ContentLength = int64(len(body))
@@ -137,7 +140,7 @@ func (s *Server) streamGameCursor(r *http.Request, previous streamConnectionCurs
 	}
 	// Both the match (including Data) and public envelope are deep snapshots
 	// from one room version. No room-owned pointers escape the platform lock.
-	match := cloneStreamMatch(*room.Module)
+	match := cloneModuleMatch(*room.Module)
 	rawEnvelope, err := json.Marshal(envelope(streamModuleViewData(room, match)))
 	s.mu.Unlock()
 	if err != nil {
@@ -159,7 +162,7 @@ func (s *Server) streamGameCursor(r *http.Request, previous streamConnectionCurs
 // Copy every reference owned by Match without scanning or JSON-encoding the
 // opaque game payload under the shared platform lock. Clone preserves nil vs
 // explicit empty actor/attention slices, which have different host semantics.
-func cloneStreamMatch(match gameapi.Match) gameapi.Match {
+func cloneModuleMatch(match gameapi.Match) gameapi.Match {
 	match.Data = slices.Clone(match.Data)
 	match.Actors = slices.Clone(match.Actors)
 	match.TimeoutActors = slices.Clone(match.TimeoutActors)
@@ -186,12 +189,12 @@ func (s *Server) streamSocket(w http.ResponseWriter, r *http.Request, user User)
 	conn.SetReadLimit(16 * 1024)
 	ctx, cancel := context.WithCancel(r.Context())
 	defer cancel()
-	changed, frames := make(chan struct{}, 1), make(chan struct{}, 1)
+	changed, frames := make(chan struct{}, 1), make(chan streamFrameNotice, 1)
 	networkChanged := make(chan struct{}, 1)
 	replies := make(chan streamAck, 32)
 	s.mu.Lock()
 	if s.streamFrames == nil {
-		s.streamFrames = make(map[chan struct{}]chan struct{})
+		s.streamFrames = make(map[chan struct{}]chan streamFrameNotice)
 	}
 	if s.streamNetworks == nil {
 		s.streamNetworks = make(map[chan struct{}]chan struct{})
@@ -258,6 +261,21 @@ func (s *Server) streamSocket(w http.ResponseWriter, r *http.Request, user User)
 	defer push.Stop()
 	pending := false
 	cursor := streamConnectionCursor{}
+	pushFrame := func() bool {
+		pending = false
+		packet, nextCursor, valid := s.streamGameCursor(r, cursor)
+		if !valid {
+			return false
+		}
+		if packet == nil {
+			return state()
+		}
+		if !write(packet) {
+			return false
+		}
+		cursor = nextCursor
+		return true
+	}
 	for {
 		select {
 		case <-ctx.Done():
@@ -276,23 +294,13 @@ func (s *Server) streamSocket(w http.ResponseWriter, r *http.Request, user User)
 				return
 			}
 			pending = false
-		case <-frames:
+		case frame := <-frames:
 			pending = true
-		case <-push.C:
-			if !pending {
-				continue
-			}
-			pending = false
-			packet, nextCursor, valid := s.streamGameCursor(r, cursor)
-			if !valid {
+			if frame.immediate && !pushFrame() {
 				return
 			}
-			if packet != nil {
-				if !write(packet) {
-					return
-				}
-				cursor = nextCursor
-			} else if !state() {
+		case <-push.C:
+			if pending && !pushFrame() {
 				return
 			}
 		}
@@ -316,6 +324,9 @@ func streamModuleViewData(r *Room, match gameapi.Match) map[string]any {
 		deadline = 0
 	}
 	view := map[string]any{"kind": r.Kind, "data": nil, "actors": actors, "attention": attention, "eliminated": match.Eliminated, "systemDeadline": deadline, "finished": match.Result != nil, "winners": r.Game.Winners, "log": r.Game.Log, "phase": "module", "turn": r.Game.Turn, "round": 1}
+	if match.Restartable {
+		view["restartable"] = true
+	}
 	if match.Paused {
 		view["paused"] = true
 		view["pauseExpiresAt"] = time.Unix(r.LastActive, 0).Add(pausedRoomIdleLimit).UnixMilli()

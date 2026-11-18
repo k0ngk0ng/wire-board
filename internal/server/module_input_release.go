@@ -2,7 +2,6 @@ package server
 
 import (
 	"encoding/json"
-	"github.com/k0ngk0ng/wire-board/internal/gameapi"
 	"time"
 )
 
@@ -23,13 +22,6 @@ func (s *Server) moduleInputReleaseAllowed(r *Room, actor, version int, action j
 	if !seat.AutoPlay || seat.Bot || seat.Left {
 		return false
 	}
-	raw, e := json.Marshal(r.Module)
-	if e != nil {
-		return false
-	}
-	var detached gameapi.Match
-	if e = json.Unmarshal(raw, &detached); e != nil {
-		return false
-	}
+	detached := cloneModuleMatch(*r.Module)
 	return m.IsInputRelease(moduleContext(r, actor, version, now), detached, append(json.RawMessage(nil), action...))
 }

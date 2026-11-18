@@ -130,6 +130,7 @@ export type ChatMessage = {
   sentAt: number;
 };
 export type State = {
+  saves?: SavedGame[];
   network?: import("./network-quality").NetworkInfo;
   networkAt?: number;
   availableGames: string[];
@@ -143,8 +144,19 @@ export type State = {
   assetsBaseURL?: string;
   version?: string;
 };
+export type SavedGame = {
+  id: string;
+  name: string;
+  kind: string;
+  savedAt: number;
+  version: number;
+  status: "saved" | "restoring";
+  players: User[];
+  joined: string[];
+};
 export type Act = (action: Record<string, unknown>) => Promise<void>;
 export type GameHeader = {
+  restartable?: boolean;
   paused?: boolean;
   pauseExpiresAt?: number;
   data?: unknown;
@@ -161,6 +173,11 @@ export type GameHeader = {
   log: string[];
 };
 export type RoomBase = {
+  supportsSave?: boolean;
+  supportsCheckpoint?: boolean;
+  checkpointSavedAt?: number;
+  saveVotes?: string[];
+  resumeJoined?: string[];
   ratingPolicy?: string;
   ratingStarted?: boolean;
   ratingEligible?: boolean;

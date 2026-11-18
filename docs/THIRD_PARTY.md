@@ -47,3 +47,9 @@ Carcassonne / 卡卡颂的名称、商标和商业美术归各自权利人。可
 ## 疯狂坦克
 
 疯狂坦克使用官方《Fortress 2 BLUE》网页客户端公开资源包中的原版坦克、地图、炮弹、爆炸与音乐，经用户明确授权仅在本私有平台使用；原始媒体不提交 Git，而由 OSS 不可变目录 `bga/v20261002-1/fortressblue/v2/` 发布并提供同源回退。版权归 CCR / 原权利方所有，不再对外分发。封面仍为 wire-board contributors 原创 SVG。来源、解码方法、许可说明与逐文件 SHA-256 见 `games/fortressblue/assets/README.md`、`sources.json` 和 `manifest.json`。
+
+## 仙剑奇侠传 98 柔情篇
+
+服务端规则核心基于 [SDLPAL](https://github.com/sdlpal/sdlpal)，固定上游源码、许可证和逐文件摘要见 `games/pal/native/upstream-manifest.json`；本项目的适配与构建源码保存在 `games/pal/native/` 和 `games/pal/build/`。SDLPAL 使用 GPL-3.0，完整许可见 `games/pal/native/upstream/LICENSE`；应用包同时保留 `docs/LICENSE.SDLPAL`，运行镜像保留于 `/usr/local/share/licenses/wire-board/`。YJ2 解压移植的声明另见 `games/pal/resources/LICENSE.SDLPAL`。
+
+原版 98 游戏数据与媒体的来源、固定版本和摘要分别见 `games/pal/assets/source-manifest.json` 与 `media-source-manifest.json`；图像、音频、影片和字体的派生对象按独立发布清单从 OSS/CDN 加载。服务端分发包仅含经过剥离验证的计算规则、文本和规则核心。原版商业内容的权利归原权利人，不因 SDLPAL 的代码许可而改变。

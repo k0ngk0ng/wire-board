@@ -9,6 +9,7 @@ import sys
 import tempfile
 import threading
 import unittest
+import shutil
 from unittest.mock import patch
 from urllib.error import HTTPError
 from io import BytesIO
@@ -136,6 +137,39 @@ class AssetReuseE2E(unittest.TestCase):
         rows = {row['path']: row for row in self.prepare()}
         self.assertEqual(rows['assets/parent.js']['url'], NEW + 'assets/parent.js')
         self.assertIn((NEW + 'assets/child.js').encode(), (self.dist / 'assets/parent.js').read_bytes())
+
+    def cyclic_baseline(self):
+        self.put('assets/app.js', b'import "./parent.js";export const ready=true;')
+        self.put('assets/parent.js', b'import "./child.js";export const parent=true;')
+        self.put('assets/child.js', b'import "./app.js";export const version=1;')
+        first = self.root / 'cyclic-first'
+        shutil.copytree(self.dist, first)
+        manifest_path = first / 'game-load-manifest.json'
+        manifest_path.write_text(manifest_path.read_text().replace(NEW, OLD))
+        index_path = first / 'index.html'
+        index_path.write_text(index_path.read_text().replace(NEW, OLD))
+        reuse.prepare(first, self.baseline)
+        return json.loads((first / 'cdn-assets-manifest.json').read_bytes())
+
+    def test_unchanged_cyclic_programs_reuse_the_published_dependency_closure(self):
+        baseline = self.cyclic_baseline()
+        summary = reuse.prepare(self.dist, baseline)
+        current = json.loads((self.dist / 'cdn-assets-manifest.json').read_bytes())
+        self.assertEqual(summary['newObjects'], 0)
+        self.assertEqual(summary['uploadBytes'], 0)
+        for path in ['assets/app.js', 'assets/parent.js', 'assets/child.js']:
+            self.assertEqual(current['files']['/' + path]['url'], baseline['files']['/' + path]['url'])
+            self.assertNotIn(NEW.encode(), (self.dist / path).read_bytes())
+
+    def test_changed_cyclic_dependency_moves_its_real_consumers_without_reusing_stale_code(self):
+        baseline = self.cyclic_baseline()
+        self.put('assets/child.js', b'import "./app.js";export const version=2;')
+        summary = reuse.prepare(self.dist, baseline)
+        current = json.loads((self.dist / 'cdn-assets-manifest.json').read_bytes())
+        self.assertEqual(summary['newObjects'], 3)
+        for path in ['assets/app.js', 'assets/parent.js', 'assets/child.js']:
+            self.assertEqual(current['files']['/' + path]['url'], NEW + path)
+            self.assertIn(NEW.encode(), (self.dist / path).read_bytes())
 
     def test_missing_known_published_object_is_not_silently_recreated(self):
         row = {'path': 'images/original.webp', **self.record(OLD + 'images/original.webp', self.body, 'image/webp'), 'wireBytes': len(self.body), 'previouslyPublished': True}

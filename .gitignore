@@ -14,6 +14,7 @@ config/secrets
 config/secrets/
 .image.env
 .previous-image
+.storage-generation
 .update.*
 backups/
 dist/

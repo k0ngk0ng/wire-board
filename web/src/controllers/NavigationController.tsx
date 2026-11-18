@@ -15,15 +15,20 @@ export function NavigationController({
   gameId,
   userId,
   enabled,
+  onProfileChange,
 }: {
   gameId: string;
   userId: string;
   enabled: boolean;
+  onProfileChange?: (profile: ControllerProfile | undefined) => void;
 }) {
   const root = useContext(GameOverlayRoot);
   const allowed = useRef(enabled);
+  const profileChanged = useRef(onProfileChange);
   allowed.current = enabled;
+  profileChanged.current = onProfileChange;
   useEffect(() => {
+    profileChanged.current?.(undefined);
     if (!root || !userId) return;
     let alive = true,
       frame = 0,
@@ -63,6 +68,7 @@ export function NavigationController({
       if (!alive || next.revision < revision) return;
       revision = next.revision;
       profile = next;
+      profileChanged.current?.(next);
       keyboard?.configure(next);
       physical?.configure(next);
       navigation.clear();
@@ -156,6 +162,7 @@ export function NavigationController({
       .catch(() => {});
     return () => {
       alive = false;
+      profileChanged.current?.(undefined);
       cancelAnimationFrame(frame);
       clear();
       physical?.dispose();

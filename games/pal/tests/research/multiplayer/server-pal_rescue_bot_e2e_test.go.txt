@@ -1,0 +1,168 @@
+package server
+
+// Actual original campaign checkpoint + authenticated HTTP/SQLite/ticker.
+// Failures: automatic magic does not spend mana; partial save keeps advancing;
+// another account can resume; restart calls Start/replays the checkpoint;
+// original accounts/owners or autoplay are lost; stale casting input duplicates
+// the command; the battle restarts or the original reward is repeated.
+import (
+	"encoding/json"
+	"net/http/httptest"
+	"os"
+	"reflect"
+	"sync/atomic"
+	"testing"
+	"testing/fstest"
+	"time"
+
+	"github.com/k0ngk0ng/wire-board/internal/gameapi"
+)
+
+func TestPALOriginalRescueMagicAutoplaySaveHTTP(t *testing.T) {
+	checkpoint, err := os.ReadFile("../../.local/pal/verification/first-party-joining-state.json")
+	if err != nil {
+		t.Fatal("run original first-party E2E first", err)
+	}
+	var starts atomic.Int32
+	module := func() gameapi.Module {
+		m := palBoardModuleAt(t, ".local/pal/native/rules.wasm")
+		resume := m.ResumeSaved
+		m.Start = func(c gameapi.Context, _ json.RawMessage) (gameapi.Match, error) {
+			starts.Add(1)
+			return resume(c, gameapi.Match{Schema: 1, Data: append(json.RawMessage(nil), checkpoint...)})
+		}
+		return m
+	}
+	cfg := Config{DataDir: t.TempDir(), InviteCode: "test-invite", Modules: []gameapi.Module{module()}}
+	files := fstest.MapFS{"index.html": {Data: []byte("original rescue magic save")}}
+	s, err := New(cfg, files)
+	if err != nil {
+		t.Fatal(err)
+	}
+	ts := httptest.NewServer(s.Handler())
+	defer func() { ts.Close(); s.Close() }()
+	a, b, c, stranger := newClient(t, ts.URL), newClient(t, ts.URL), newClient(t, ts.URL), newClient(t, ts.URL)
+	for i, client := range []*testClient{a, b, c, stranger} {
+		client.register([]string{"救援原玩家甲", "救援原玩家乙", "救援原玩家丙", "救援旁观者"}[i])
+	}
+	r := a.post("/api/rooms", map[string]any{"kind": "pal", "name": "原版救援法术存档", "capacity": 3}, 201)
+	id := r["id"].(string)
+	b.command(r, "join", nil, 200)
+	c.command(current(a), "join", nil, 200)
+	for _, client := range []*testClient{a, b, c} {
+		client.command(current(client), "ready", nil, 200)
+	}
+	a.command(current(a), "start", nil, 200)
+	data := func(client *testClient) map[string]any {
+		return current(client)["game"].(map[string]any)["data"].(map[string]any)
+	}
+	initial := data(a)
+	cash := initial["cash"].(float64)
+	t.Log("original rescue cash before", cash)
+	mana := func(d map[string]any) []any {
+		var result []any
+		for _, p := range d["party"].([]any) {
+			m := p.(map[string]any)
+			result = append(result, []any{m["role"], m["mp"], m["controller"]})
+		}
+		return result
+	}
+	beforeMana := mana(initial)
+	for _, client := range []*testClient{a, b, c} {
+		r = current(client)
+		client.post("/api/rooms/"+id, map[string]any{"type": "autoplay", "version": r["version"], "nonce": randomID(12), "enabled": true}, 200)
+	}
+	wait := func(budget time.Duration, predicate func(map[string]any) bool) map[string]any {
+		t.Helper()
+		until := time.Now().Add(budget)
+		for time.Now().Before(until) {
+			d := data(a)
+			if d["cash"].(float64) < cash {
+				t.Fatal("rescue HTTP bots restarted after defeat")
+			}
+			if predicate(d) {
+				return d
+			}
+			time.Sleep(40 * time.Millisecond)
+		}
+		d := data(a)
+		t.Fatal("rescue HTTP checkpoint unavailable", "phase", d["phase"], "cash", d["cash"], "expected victory cash", cash+96, "party", d["party"])
+		return nil
+	}
+	wait(60*time.Second, func(d map[string]any) bool { return d["battle"] != nil && !reflect.DeepEqual(mana(d), beforeMana) })
+	oldPage := current(a)
+	a.command(current(a), "save", nil, 200)
+	paused := data(a)
+	pausedMana := mana(paused)
+	if reflect.DeepEqual(pausedMana, beforeMana) || paused["battle"] == nil {
+		t.Fatal("HTTP save did not capture an original spell")
+	}
+	time.Sleep(180 * time.Millisecond)
+	if !reflect.DeepEqual(paused, data(a)) {
+		t.Fatal("partial original-player save advanced magic")
+	}
+	b.command(current(b), "save", nil, 200)
+	c.command(current(c), "save", nil, 200)
+	for _, client := range []*testClient{a, b, c} {
+		if client.state()["room"] != nil {
+			t.Fatal("saved rescue retained a human seat")
+		}
+	}
+	if len(stranger.state()["saves"].([]any)) != 0 {
+		t.Fatal("stranger discovered original rescue save")
+	}
+	stranger.post("/api/saves/"+id+"/resume", map[string]any{}, 404)
+	ts.Close()
+	if err = s.Close(); err != nil {
+		t.Fatal(err)
+	}
+	cfg.Modules = []gameapi.Module{module()}
+	s, err = New(cfg, files)
+	if err != nil {
+		t.Fatal(err)
+	}
+	ts = httptest.NewServer(s.Handler())
+	for _, client := range []*testClient{a, b, c, stranger} {
+		client.base = ts.URL
+	}
+	a.post("/api/saves/"+id+"/resume", map[string]any{}, 200)
+	if b.state()["room"] != nil || c.state()["room"] != nil {
+		t.Fatal("pending rescue resume occupied absent original players")
+	}
+	b.post("/api/saves/"+id+"/resume", map[string]any{}, 200)
+	c.post("/api/saves/"+id+"/resume", map[string]any{}, 200)
+	resumed := data(a)
+	if !reflect.DeepEqual(mana(resumed), pausedMana) || resumed["cash"] != paused["cash"] || resumed["epoch"] == paused["epoch"] || starts.Load() != 1 {
+		t.Fatal("HTTP restore replayed/reset original spell", starts.Load())
+	}
+	a.command(oldPage, "action", map[string]any{"type": "input", "epoch": paused["epoch"], "seq": 999, "direction": 4, "keys": 32768, "controlAt": paused["controlAt"]}, 400)
+	for _, seat := range current(a)["seats"].([]any) {
+		if seat.(map[string]any)["autoPlay"] != true {
+			t.Fatal("rescue restore lost original human autoplay")
+		}
+	}
+	r = current(a)
+	a.post("/api/rooms/"+id, map[string]any{"type": "autoplay", "version": r["version"], "nonce": randomID(12), "enabled": false}, 200)
+	a.command(oldPage, "action", map[string]any{"type": "input", "epoch": paused["epoch"], "seq": 999, "direction": 4, "keys": 32768, "controlAt": paused["controlAt"]}, 409)
+	r = current(a)
+	a.post("/api/rooms/"+id, map[string]any{"type": "autoplay", "version": r["version"], "nonce": randomID(12), "enabled": true}, 200)
+	// Actual original healing animations, combat and the joining script run
+	// on the real ticker. The victory reward can precede the final field by
+	// more than a minute; this is a completion deadline, not a latency budget.
+	continuedAt := time.Now()
+	finished := wait(120*time.Second, func(d map[string]any) bool { return d["phase"] == "field" && d["cash"] == cash+96 })
+	t.Log("original rescue continuation wall time", time.Since(continuedAt))
+	if len(finished["party"].([]any)) != 2 {
+		t.Fatal("HTTP rescue lost original joining roles")
+	}
+	for i, p := range finished["party"].([]any) {
+		v := p.(map[string]any)
+		if v["role"] != float64(i) || v["controller"] != float64(i) {
+			t.Fatal("HTTP rescue changed role owners", finished["party"])
+		}
+	}
+	report, _ := json.MarshalIndent(map[string]any{"passed": true, "players": 3, "checkpointStarts": starts.Load(), "cashBefore": cash, "cashAfter": finished["cash"], "scope": "actual original joining checkpoint, three authenticated human autoplay seats, original spell mana, paused all-original-player save, SQLite restart, private continuation and original rescue victory/party; checkpoint entry is test-only, not full autoplay"}, "", "  ")
+	if err := os.WriteFile("../../.local/pal/verification/rescue-magic-save-http.json", report, 0600); err != nil {
+		t.Fatal(err)
+	}
+}

@@ -1,0 +1,103 @@
+package pal_test
+
+// Test before changing reclaim: an idle seat cancelling autoplay erases another
+// human's queued walking/attack, resets their epoch/sequence, releases their
+// native inputs or changes the next deadline. Uses actual GameMain/PAL_StartBattle
+// and ordinary module inputs; battle entry is an explicit original fixture.
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"reflect"
+	"testing"
+	"time"
+
+	pal "github.com/k0ngk0ng/wire-board/games/pal/server"
+	"github.com/k0ngk0ng/wire-board/internal/gameapi"
+)
+
+func TestOriginalIdleReclaimPreservesCurrentHumanInput(t *testing.T) {
+	for _, players := range []int{2, 3} {
+		for _, phase := range []string{"field", "battle"} {
+			t.Run(fmt.Sprintf("%d/%s", players, phase), func(t *testing.T) {
+				c := gameapi.Context{Players: players, Actor: 0, Now: time.Unix(1800000000, 0), Automated: make([]bool, players)}
+				for seat := 1; seat < players; seat++ {
+					c.Automated[seat] = true
+				}
+				var m gameapi.Module
+				var g gameapi.Match
+				if phase == "field" {
+					m, _ = nativeModule(t)
+					g = originalInn(t, m, &c)
+				} else {
+					m = originalBattleModule(t)
+					var err error
+					g, err = m.Start(c, raw(map[string]any{}))
+					if err != nil {
+						t.Fatal(err)
+					}
+					for frame := 0; frame < 256; frame++ {
+						v := view(t, m, g, 0)
+						if v.Battle != nil && v.Battle.State == 1 && v.Battle.Current == 0 {
+							break
+						}
+						c.Now = time.UnixMilli(g.SystemDeadline)
+						g, err = m.OnTimer(c, g)
+						if err != nil {
+							t.Fatal(err)
+						}
+					}
+				}
+				start := view(t, m, g, 0)
+				c.Actor = 0
+				direction, keys := 4, uint32(2)
+				if phase == "field" {
+					direction, keys = 0, 4
+				}
+				g = apply(t, m, c, g, pal.Action{Type: "input", Epoch: start.Epoch, Seq: start.Seq + 1, Direction: direction, Keys: keys})
+				g = apply(t, m, c, g, pal.Action{Type: "input", Epoch: start.Epoch, Seq: start.Seq + 2, Direction: 4})
+				before, deadline := view(t, m, g, 0), g.SystemDeadline
+				var stored struct {
+					Native []byte `json:"native"`
+				}
+				if err := json.Unmarshal(g.Data, &stored); err != nil {
+					t.Fatal(err)
+				}
+				originalNative := bytes.Clone(stored.Native)
+				for seat := 1; seat < players; seat++ {
+					c.Actor = seat
+					var err error
+					g, err = m.Reclaim(c, g)
+					if err != nil {
+						t.Fatal(err)
+					}
+					c.Automated[seat] = false
+					after := view(t, m, g, 0)
+					if !reflect.DeepEqual(before, after) || g.SystemDeadline != deadline {
+						t.Fatal("idle reclaim changed another human's pending input or deadline", "seq", before.Seq, after.Seq, "epoch", before.Epoch, after.Epoch)
+					}
+					if err = json.Unmarshal(g.Data, &stored); err != nil || !bytes.Equal(originalNative, stored.Native) {
+						t.Fatal("idle reclaim changed another human's native input state", err)
+					}
+				}
+				c.Actor = 0
+				for frame := 0; frame < 16; frame++ {
+					c.Now = time.UnixMilli(g.SystemDeadline)
+					var err error
+					g, err = m.OnTimer(c, g)
+					if err != nil {
+						t.Fatal(err)
+					}
+					v := view(t, m, g, 0)
+					if phase == "field" && v.X == start.X-16 && v.Y == start.Y+8 {
+						return
+					}
+					if phase == "battle" && v.Battle != nil && v.Battle.Action == 2 && v.Battle.State != 1 {
+						return
+					}
+				}
+				t.Fatal("current human's accepted input disappeared after idle reclaim")
+			})
+		}
+	}
+}

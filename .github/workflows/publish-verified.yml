@@ -51,26 +51,59 @@ jobs:
           path: verified-build
           run-id: ${{ steps.source.outputs.run }}
           github-token: ${{ github.token }}
+      - uses: actions/download-artifact@v4
+        with:
+          name: server-package-boundary
+          path: verified-build/server-boundary
+          run-id: ${{ steps.source.outputs.run }}
+          github-token: ${{ github.token }}
       - name: Validate artifact and prepare unchanged runtime image
         run: |
           cd verified-build
           sha256sum --check SHA256SUMS
           mkdir image
-          tar -xzf wire-board-linux-amd64.tar.gz -C image ./wire-board
+          tar -xzf wire-board-linux-amd64.tar.gz -C image ./wire-board ./pal ./docs/LICENSE.SDLPAL ./docs/THIRD_PARTY.md
           test -x image/wire-board
           python3 - <<'PY'
+          from hashlib import sha256
+          import json
           from pathlib import Path
+          import re
           source = Path('../Dockerfile').read_text()
           marker = 'FROM alpine:'
           if source.count(marker) != 1:
               raise SystemExit('Expected one Alpine runtime stage')
           runtime = marker + source.split(marker, 1)[1]
-          original = 'COPY --from=backend /wire-board /usr/local/bin/wire-board'
-          if runtime.count(original) != 1:
-              raise SystemExit('Unexpected runtime binary layout')
-          Path('image/Dockerfile').write_text(runtime.replace(original, 'COPY wire-board /usr/local/bin/wire-board'))
+          base, stage, _ = runtime.partition('FROM runtime-base AS runtime\n')
+          base_lines = [line for line in base.splitlines() if line.strip()]
+          if not stage or len(base_lines) != 2 or not re.fullmatch(r'FROM alpine:3\.\d+(?:\.\d+)?(?:@sha256:[a-f0-9]{64})? AS runtime-base', base_lines[0]) or base_lines[1] != 'RUN apk add --no-cache sqlite && addgroup -g 10001 board && adduser -D -u 10001 -G board board && mkdir /data && chown board:board /data':
+              raise SystemExit('Unexpected runtime base inputs')
+          release = json.loads(Path('../games/pal/assets/server-release.json').read_bytes())
+          pin = release['catalogs'][release['current']]
+          packaged = sha256(Path('image/pal/manifest.json').read_bytes()).hexdigest()
+          if pin.get('cdnVerified') is not True or pin.get('assetID') != packaged or release['current'] != packaged:
+              raise SystemExit('PAL source publication differs from the packaged rules')
+          replacements = {
+              'COPY --from=backend /wire-board /usr/local/bin/wire-board': 'COPY wire-board /usr/local/bin/wire-board',
+              'COPY --from=backend /src/.local/pal/container-runtime/pal /usr/local/bin/pal': 'COPY pal /usr/local/bin/pal',
+              'COPY --from=backend /src/games/pal/native/upstream/LICENSE /usr/local/share/licenses/wire-board/LICENSE.SDLPAL': 'COPY docs/LICENSE.SDLPAL /usr/local/share/licenses/wire-board/LICENSE.SDLPAL',
+              'COPY --from=backend /src/docs/THIRD_PARTY.md /usr/local/share/licenses/wire-board/THIRD_PARTY.md': 'COPY docs/THIRD_PARTY.md /usr/local/share/licenses/wire-board/THIRD_PARTY.md',
+          }
+          for original, replacement in replacements.items():
+              if runtime.count(original) != 1:
+                  raise SystemExit('Unexpected verified runtime layout')
+              runtime = runtime.replace(original, replacement)
+          Path('image/Dockerfile').write_text(runtime)
           PY
       - uses: docker/setup-buildx-action@v3
+      - name: Build the runtime base for comparison
+        uses: docker/build-push-action@v6
+        with:
+          context: verified-build/image
+          target: runtime-base
+          platforms: linux/amd64
+          load: true
+          tags: wire-board-release:runtime-base
       - name: Package the verified binary
         uses: docker/build-push-action@v6
         with:
@@ -82,9 +115,31 @@ jobs:
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
             org.opencontainers.image.revision=${{ steps.source.outputs.sha }}
             org.opencontainers.image.version=${{ steps.source.outputs.version }}
-      - name: Check container startup and backup tool
+      - name: Verify actual image layers and retained PAL rules
+        id: image-boundary
         run: |
-          docker run -d --name release-smoke -e INVITE_CODE=release-smoke-only -p 127.0.0.1:18081:8080 wire-board-release:verified
+          image_id=$(docker image inspect --format '{{.Id}}' wire-board-release:verified)
+          docker image inspect --format '{{json .RootFS.Layers}}' wire-board-release:runtime-base > verified-build/runtime-base.json
+          trap 'rm -f verified-build/runtime-image.tar' EXIT
+          docker image save --output verified-build/runtime-image.tar wire-board-release:verified
+          python3 -B scripts/ci/check-release-image.py \
+            --image verified-build/runtime-image.tar \
+            --image-id "$image_id" \
+            --base-rootfs verified-build/runtime-base.json \
+            --package verified-build/image \
+            --server-boundary verified-build/server-boundary/server-package.json \
+            --out verified-build/runtime-image-boundary.json
+          printf 'image-id=%s\n' "$image_id" >> "$GITHUB_OUTPUT"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: runtime-image-boundary
+          path: verified-build/runtime-image-boundary.json
+          if-no-files-found: error
+      - name: Check container startup and backup tool
+        env:
+          VERIFIED_IMAGE: ${{ steps.image-boundary.outputs.image-id }}
+        run: |
+          docker run -d --name release-smoke -e INVITE_CODE=release-smoke-only -p 127.0.0.1:18081:8080 "$VERIFIED_IMAGE"
           trap 'docker rm -f -v release-smoke' EXIT
           for _attempt in $(seq 1 30); do
             if curl --fail --silent http://127.0.0.1:18081/healthz; then break; fi
@@ -102,10 +157,11 @@ jobs:
           SOURCE_SHA: ${{ steps.source.outputs.sha }}
           VERSION: ${{ steps.source.outputs.version }}
           REPOSITORY: ${{ github.repository }}
+          VERIFIED_IMAGE: ${{ steps.image-boundary.outputs.image-id }}
         run: |
           repo="ghcr.io/${REPOSITORY,,}"
           for tag in "sha-${SOURCE_SHA:0:7}" "$VERSION" latest; do
-            docker tag wire-board-release:verified "$repo:$tag"
+            docker tag "$VERIFIED_IMAGE" "$repo:$tag"
             docker push "$repo:$tag"
           done
       - name: Publish the matching release and source tag

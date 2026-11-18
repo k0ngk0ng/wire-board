@@ -1,0 +1,17 @@
+{
+  "repository": "sdlpal/sdlpal",
+  "commit": "170accc3e9bd69c22eaffe27f4ac2288980b2869",
+  "license": "GPL-3.0-only",
+  "files": [
+    {
+      "path": "rngplay.c",
+      "size": 11031,
+      "sha256": "ee75fbf9685b3aa32708480d8ed7ec66a0e5bf2bf302c294b94723953e9bda26"
+    },
+    {
+      "path": "ending.c",
+      "size": 10766,
+      "sha256": "ddaaf5014cbc173cbdf2dadf369f29cecba2244b1eaf0ff30b52f63c6c697971"
+    }
+  ]
+}
