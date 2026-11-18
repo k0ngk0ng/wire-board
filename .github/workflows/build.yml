@@ -355,6 +355,7 @@ jobs:
           name: game-${{ matrix.game }}-acceptance
           path: |
             .local/ci/${{ matrix.game }}/
+            .local/pokepath/verification/ci/
             .local/ci/contra-binding/result.json
             .local/pvz/ci-assets/*.json
           include-hidden-files: true

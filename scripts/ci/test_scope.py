@@ -32,7 +32,9 @@ spec.loader.exec_module(scope)
 
 class ScopeTests(unittest.TestCase):
     def test_pokepath_frontend_uses_clean_serial_delivery_entry(self):
-        with tempfile.TemporaryDirectory(dir=ROOT/'.local/tmp') as folder:
+        temporary=ROOT/'.local/tmp'
+        temporary.mkdir(parents=True,exist_ok=True)
+        with tempfile.TemporaryDirectory(dir=temporary) as folder:
             root=Path(folder)
             base=root/'games/pokepath/tests'
             base.mkdir(parents=True)
