@@ -4,11 +4,13 @@ import type { FieldState, FieldActor } from "./field-rules";
 export class FieldCorrection {
   private base?: PalView;
   private offset?: { x: number; y: number; at: number };
+  private direction?: [number, number];
   current?: FieldState;
   clear() {
     this.base = undefined;
     this.offset = undefined;
     this.current = undefined;
+    this.direction = undefined;
   }
   update(view: PalView, at: number, confirmed: boolean) {
     const old = this.current ?? this.base?.field;
@@ -18,12 +20,21 @@ export class FieldCorrection {
       !view.raster &&
       this.base.scene === view.scene &&
       this.base.epoch === view.epoch;
-    if (!compatible) this.offset = undefined;
-    else if (confirmed && old && view.field) {
+    if (!compatible) {
+      this.offset = undefined;
+      this.direction = undefined;
+    } else if (!confirmed && this.base?.field && view.field) {
+      const x = view.field.camera[0] - this.base.field.camera[0],
+        y = view.field.camera[1] - this.base.field.camera[1];
+      if (x || y) this.direction = [x, y];
+    } else if (confirmed && old && view.field) {
       const x = old.camera[0] - view.field.camera[0],
         y = old.camera[1] - view.field.camera[1];
       this.offset =
-        (x || y) && Math.abs(x) <= 64 && Math.abs(y) <= 32
+        (x || y) &&
+        Math.abs(x) <= 64 &&
+        Math.abs(y) <= 32 &&
+        (!this.direction || x * this.direction[0] + y * this.direction[1] > 0)
           ? { x, y, at }
           : undefined;
     }

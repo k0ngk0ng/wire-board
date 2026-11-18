@@ -49,6 +49,15 @@ assert.equal(
   undefined,
   "correction must not cross the original scene boundary",
 );
+const forward = new FieldCorrection();
+forward.update(field(0), 0, false);
+forward.update(field(16), 100, false);
+forward.update(field(32), 200, true);
+assert.equal(
+  forward.current,
+  undefined,
+  "ordinary forward native frames must preserve the original movement cadence",
+);
 await fs.writeFile(
   ".local/pal/verification/local-first/field-correction.json",
   JSON.stringify({
