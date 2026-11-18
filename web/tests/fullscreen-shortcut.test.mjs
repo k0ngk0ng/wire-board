@@ -6,7 +6,7 @@ import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
-import { join } from "node:path";
+import { join, resolve, dirname } from "node:path";
 import { createHash, randomUUID } from "node:crypto";
 
 test("F11 uses the shared game fullscreen lifecycle and retains game keyboard focus", { timeout: 120000 }, async () => {
@@ -17,13 +17,18 @@ test("F11 uses the shared game fullscreen lifecycle and retains game keyboard fo
   const execute = promisify(execFile);
   const flags = ["--mute-audio", "--disable-breakpad", "--disable-crash-reporter"];
   if (process.env.GITHUB_ACTIONS === "true") flags.push("--no-sandbox");
-  const environment = { ...process.env, TMPDIR: join(root, ".local/tmp"), AGENT_BROWSER_SOCKET_DIR: join(root, ".local/ab"), AGENT_BROWSER_PROFILE: join(temporary, "profile"), AGENT_BROWSER_NO_VERSION_CHECK: "1", AGENT_BROWSER_ARGS: flags.join(",") };
+  const common = (await execute("git", ["rev-parse", "--git-common-dir"], { cwd: root })).stdout.trim();
+  const socketRoot = join(dirname(resolve(root, common)), ".local/ab");
+  const environment = { ...process.env, TMPDIR: join(root, ".local/tmp"), AGENT_BROWSER_SOCKET_DIR: socketRoot, AGENT_BROWSER_PROFILE: join(temporary, "profile"), AGENT_BROWSER_NO_VERSION_CHECK: "1", AGENT_BROWSER_ARGS: flags.join(",") };
   const report = { command: "node --test web/tests/fullscreen-shortcut.test.mjs", passed: false, checks: [] };
   await mkdir(temporary, { recursive: true });
   let server;
   let session;
   const browser = async (...args) => {
-    const result = await execute("agent-browser", ["--session", session, ...args, "--json"], { cwd: root, env: environment, timeout: 45000, maxBuffer: 4 << 20 });
+    let result;
+    try {
+      result = await execute("agent-browser", ["--session", session, ...args, "--json"], { cwd: root, env: environment, timeout: 45000, maxBuffer: 4 << 20 });
+    } catch (error) { throw Error(`${error.message}\n${error.stdout ?? ""}\n${error.stderr ?? ""}`); }
     const value = JSON.parse(result.stdout);
     assert.equal(value.success, true, JSON.stringify(value));
     return value.data;
@@ -43,7 +48,7 @@ test("F11 uses the shared game fullscreen lifecycle and retains game keyboard fo
       response.end(files.get(name));
     });
     await new Promise(resolve => server.listen(0, "127.0.0.1", resolve));
-    session = (await execute("agent-browser", ["session", "id", "--scope", "worktree", "--prefix", "fullscreen-shortcut"], { cwd: root, env: environment })).stdout.trim();
+    session = (await execute("agent-browser", ["session", "id", "--scope", "worktree", "--prefix", "fs"], { cwd: root, env: environment })).stdout.trim();
     await browser("open", `http://127.0.0.1:${server.address().port}`);
     await browser("wait", "[data-game-focus]");
     await browser("focus", "[data-game-focus]");
