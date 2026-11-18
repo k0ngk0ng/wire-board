@@ -25,6 +25,8 @@ assert all(tool['sha256'] and tool['bytes'] > 0 for target in plan['toolchains']
 workflow = (ROOT / '.github/workflows/build.yml').read_text()
 assert "if: matrix.game == 'pal' && matrix.backend" in workflow
 assert 'python3 -B games/pal/build/check-ci.py' in workflow
+dependency_step = workflow.split('      - name: Install dependencies for game rendering checks',1)[1].split('      - name:',1)[0]
+assert "matrix.game == 'pal'" in dependency_step
 assert 'runtime-candidates/audio' not in workflow and 'publish-server.py' not in workflow
 assert 'name: pal-clean-ci' in workflow
 pal_upload = workflow.split('      - name: Validate PAL from clean source and original resources',1)[1].split('      - name: Verify changed Contra',1)[0]
