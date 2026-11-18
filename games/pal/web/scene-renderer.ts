@@ -279,7 +279,7 @@ export class SceneRenderer {
     return this.raw.get(name)!;
   }
 
-  async prepare(frame: SceneFrame) {
+  async prepare(frame: SceneFrame, previews: SceneFrame[] = []) {
     if (frame.ending?.clip) {
       await this.ending.prepare(frame.ending);
       return;
@@ -289,6 +289,11 @@ export class SceneRenderer {
       files = new Set<string>(["palettes.json"]);
     const addAtlas = (group: string, id: number) =>
       metadata.add(`atlases/${group}/${id}.json`);
+    const menuAtlases = new Map<string, { group: string; id: number }>();
+    for (const asset of [{group:"data",id:9},{group:"data",id:12},{group:"fbp",id:0},{group:"fbp",id:1}]) {
+      addAtlas(asset.group, asset.id);
+      menuAtlases.set(`${asset.group}/${asset.id}`, asset);
+    }
     const addScene = (scene: RasterBase | SceneFrame) => {
       if (scene.sceneReady !== false) {
         metadata.add(`maps/${scene.map}.json`);
@@ -302,6 +307,21 @@ export class SceneRenderer {
           addAtlas(a.group, a.id);
         }
     };
+    for (const preview of previews) {
+      if (preview.raster) {
+        for (const node of preview.raster.nodes) if (node[0] === 1) {
+          const asset = uiAsset({ source: node[5], id: node[6] });
+          addAtlas(asset.group, asset.id);
+          menuAtlases.set(`${asset.group}/${asset.id}`, asset);
+        }
+      } else {
+        for (const op of preview.overlay ?? []) if (op.kind === 1) {
+          const asset = uiAsset(op);
+          addAtlas(asset.group, asset.id);
+          menuAtlases.set(`${asset.group}/${asset.id}`, asset);
+        }
+      }
+    }
     if (frame.raster) {
       for (const node of frame.raster.nodes)
         if (node[0] === 1) {
@@ -357,6 +377,7 @@ export class SceneRenderer {
     await Promise.all([
       ...[...files].map((name) => this.bytes(name)),
       this.prepareBattle(frame.battleAssets),
+      ...[...menuAtlases.values()].map(asset => this.atlas(asset.group, asset.id)),
     ]);
     await this.loadFont();
   }

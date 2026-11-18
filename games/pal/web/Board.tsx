@@ -11,8 +11,8 @@ import { SceneRenderer, type SceneLoadProgress } from "./scene-renderer";
 import { PalStage } from "./Stage";
 import { PalControls } from "./Controls";
 import { PalInput, palInputAllowed } from "./input";
-import { FieldPrediction } from "./field-prediction";
-import { SelectionPrediction } from "./selection-prediction";
+import { LocalClient } from "./local-client";
+import { FieldCorrection } from "./field-correction";
 import { PalAudioAssets } from "./audio-assets";
 import { PalAudioDirector, type PalAudioMemory } from "./audio";
 import { endingPublication } from "./ending-assets";
@@ -21,14 +21,23 @@ import type { PalView } from "./view";
 import "./board.css";
 
 export function Board(props: BoardProps<PalView>) {
+  const [localData, setLocalData] = useState<PalView>();
   const root = useRef<HTMLDivElement>(null),
     canvas = useRef<HTMLCanvasElement>(null),
-    latest = useRef(props);
-  latest.current = props;
+    latest = useRef(props),
+    authority = useRef(props);
+  authority.current = props;
+  const displayed = props.room.seats[props.room.you]?.autoPlay
+    ? props.data
+    : (localData ?? props.data);
+  latest.current = {
+    ...props,
+    data: { ...displayed, controlAt: props.data.controlAt },
+  };
   const renderer = useRef<SceneRenderer | undefined>(undefined),
     audioDirector = useRef<PalAudioDirector | undefined>(undefined),
-    prediction = useRef(new FieldPrediction()),
-    selection = useRef(new SelectionPrediction()),
+    localClient = useRef<LocalClient | undefined>(undefined),
+    correction = useRef(new FieldCorrection()),
     input = useRef<PalInput | undefined>(undefined),
     readyRef = useRef(false),
     paintNumber = useRef(0),
@@ -47,26 +56,42 @@ export function Board(props: BoardProps<PalView>) {
   });
   const user = props.room.seats[props.room.you]?.id ?? "spectator";
   const loadingGeneration = useRef(props.room.loading?.token ?? "");
-  if (props.room.loading?.token) loadingGeneration.current = props.room.loading.token;
+  if (props.room.loading?.token)
+    loadingGeneration.current = props.room.loading.token;
   const audioIdentity = `${props.room.id}:${props.room.matchId ?? ""}:${props.room.you}:${user}:${loadingGeneration.current}`;
-  const audioMemory = useRef<PalAudioMemory & { identity: string }>({ identity: audioIdentity, floor: 0 });
-  if (audioMemory.current.identity !== audioIdentity) audioMemory.current = { identity: audioIdentity, floor: 0 };
+  const audioMemory = useRef<PalAudioMemory & { identity: string }>({
+    identity: audioIdentity,
+    floor: 0,
+  });
+  if (audioMemory.current.identity !== audioIdentity)
+    audioMemory.current = { identity: audioIdentity, floor: 0 };
   const transportPaused = props.inputWindow === 0;
-  const battleAssetKey = props.data.battleAssets?.join() ?? "";
-  const enabled = () =>
+  const battleAssetKey = latest.current.data.battleAssets?.join() ?? "";
+  const running = () =>
     readyRef.current &&
     !error &&
     !handover &&
     !transportPaused &&
-    (latest.current.data.phase !== "battle" ||
-      !latest.current.data.battleAssets?.length ||
-      !!renderer.current?.battleReady(latest.current.data.battleAssets)) &&
-    palInputAllowed(latest.current) &&
     document.hasFocus() &&
     !document.hidden &&
+    !latest.current.room.loading &&
+    latest.current.room.status === "playing" &&
+    !latest.current.room.game?.paused &&
+    !latest.current.room.seats[latest.current.room.you]?.autoPlay &&
     ![...document.querySelectorAll('[aria-modal="true"],dialog[open]')].some(
       (e) => e.getClientRects().length && !e.closest("[inert]"),
     );
+  const enabled = () =>
+    running() &&
+    (!localClient.current || localClient.current.usable()) &&
+    latest.current.data.local?.generation ===
+      authority.current.data.local?.generation &&
+    (latest.current.data.phase !== "battle" ||
+      !latest.current.data.battleAssets?.length ||
+      !!renderer.current?.battleReady(latest.current.data.battleAssets)) &&
+    palInputAllowed(latest.current);
+  const runningRef = useRef(running);
+  runningRef.current = running;
   const enabledRef = useRef(enabled);
   enabledRef.current = enabled;
   const paint = async () => {
@@ -76,14 +101,13 @@ export function Board(props: BoardProps<PalView>) {
       let seen = -1;
       while (seen !== paintNumber.current) {
         seen = paintNumber.current;
-        const { data: current, room } = latest.current,
-          number = seen,
-          allowed = enabledRef.current();
+        const { data: current } = latest.current,
+          number = seen;
         await renderer.current.paint(
           canvas.current,
-          allowed ? selection.current.frame(current, room.you) : current,
+          current,
           () => number === paintNumber.current,
-          allowed ? prediction.current.current : undefined,
+          correction.current.current,
         );
       }
     } finally {
@@ -105,15 +129,10 @@ export function Board(props: BoardProps<PalView>) {
       controller: GameController | undefined,
       audioAssets: PalAudioAssets | undefined,
       ownedAudio: PalAudioDirector | undefined,
+      local: LocalClient | undefined,
       changedProfile: ControllerProfile | undefined;
     readyRef.current = false;
-    prediction.current.clear();
-    selection.current.clear();
-    prediction.current.update(
-      latest.current.data,
-      latest.current.room.you,
-      performance.now(),
-    );
+    setLocalData(undefined);
     setReady(false);
     setError("");
     setProfile(undefined);
@@ -135,9 +154,17 @@ export function Board(props: BoardProps<PalView>) {
       if (!alive) return;
       parts.set(part, value);
       if (!parts.has("visual") || (audioAssets && !parts.has("audio"))) return;
-      const loaded = [...parts.values()].reduce((sum, item) => sum + item.loaded, 0),
+      const loaded = [...parts.values()].reduce(
+          (sum, item) => sum + item.loaded,
+          0,
+        ),
         total = [...parts.values()].reduce((sum, item) => sum + item.total, 0),
-        combined = { percent: total ? loaded / total * 100 : 0, loaded, total, label: value.label };
+        combined = {
+          percent: total ? (loaded / total) * 100 : 0,
+          loaded,
+          total,
+          label: value.label,
+        };
       setProgress(combined);
       latest.current.onLoadProgress?.(combined.percent, combined.label, {
         loaded,
@@ -165,18 +192,9 @@ export function Board(props: BoardProps<PalView>) {
         (message) => {
           if (alive) setError(message);
         },
-        (action, at) => {
-          const { data, room } = latest.current;
-          prediction.current.update(data, room.you, at);
-          const moved = prediction.current.input(action, at);
-          const selected = selection.current.input(data, room.you, action, at);
-          if (moved || selected) redraw();
-        },
-        () => {
-          const moved = prediction.current.clear();
-          const selected = selection.current.clear();
-          if (moved || selected) redraw();
-        },
+        (action) => local?.submit(action),
+        undefined,
+        () => runningRef.current(),
       );
       input.current = owned;
       controller = new GameController(
@@ -205,34 +223,92 @@ export function Board(props: BoardProps<PalView>) {
       );
       owned.controller = controller;
       owned.update();
+      if (authority.current.data.local && authority.current.room.you === 0) {
+        local = new LocalClient(
+          authority.current.room.id,
+          (frame, reason) => {
+            if (!alive) return;
+            if (reason === "reset") correction.current.clear();
+            correction.current.update(
+              frame,
+              performance.now(),
+              reason === "confirm",
+            );
+            latest.current = { ...latest.current, data: frame };
+            setLocalData(frame);
+            redraw();
+          },
+          (action) => owned?.commitLocal(action),
+          (message) => {
+            if (alive) setError(message);
+          },
+          async (frames) => {
+            if (frames.length && renderer.current)
+              await renderer.current.prepare(frames[0], frames.slice(1));
+          },
+        );
+        localClient.current = local;
+        local.accept(
+          authority.current.data,
+          authority.current.clock,
+          authority.current.room.seats[authority.current.room.you]?.network
+            ?.rttMs ?? 0,
+        );
+        await local.start();
+        if (!alive) return;
+      }
       const base = (latest.current.assets || "").replace(/\/$/, "") + "/pal/v1";
       const scene = new SceneRenderer(base, {
         signal: abort.signal,
-        progress: value => report("visual", value),
+        progress: (value) => report("visual", value),
         publication: visualPublication(),
         endingPublication: endingPublication(),
-        prepareEndingAudio: url => latest.current.audio.prepare([url], { signal: abort.signal }),
+        prepareEndingAudio: (url) =>
+          latest.current.audio.prepare([url], { signal: abort.signal }),
       });
       renderer.current = scene;
       if (latest.current.data.audio) {
-        audioAssets = new PalAudioAssets(latest.current.data.audio.assetID, latest.current.audio, {
-          signal: abort.signal,
-          progress: value => report("audio", value),
-        });
-        ownedAudio = new PalAudioDirector(audioAssets, latest.current.audio, audioIdentity, () => {
-          const current = latest.current,
-            paused = !!current.clock.paused || !!current.room.game?.paused || !!current.room.loading;
-          return {
-            audio: current.data.audio,
-            now: current.clock.serverNow + (paused ? 0 : Math.max(0, performance.now() - current.clock.receivedAt)),
-            ready: readyRef.current,
-            paused,
-            quiet: document.hidden || current.inputWindow === 0 || !(current.audioEnabled ?? (current.sound || paused)),
-          };
-        }, audioMemory.current);
+        audioAssets = new PalAudioAssets(
+          latest.current.data.audio.assetID,
+          latest.current.audio,
+          {
+            signal: abort.signal,
+            progress: (value) => report("audio", value),
+          },
+        );
+        ownedAudio = new PalAudioDirector(
+          audioAssets,
+          latest.current.audio,
+          audioIdentity,
+          () => {
+            const current = latest.current,
+              paused =
+                !!current.clock.paused ||
+                !!current.room.game?.paused ||
+                !!current.room.loading;
+            return {
+              audio: current.data.audio,
+              now:
+                current.clock.serverNow +
+                (paused
+                  ? 0
+                  : Math.max(0, performance.now() - current.clock.receivedAt)),
+              ready: readyRef.current,
+              paused,
+              quiet:
+                document.hidden ||
+                current.inputWindow === 0 ||
+                !(current.audioEnabled ?? (current.sound || paused)),
+            };
+          },
+          audioMemory.current,
+        );
         audioDirector.current = ownedAudio;
       }
-      await Promise.all([scene.prepare(latest.current.data), audioAssets?.prepare(latest.current.data.audio)]);
+      await Promise.all([
+        scene.prepare(latest.current.data, local?.previews),
+        audioAssets?.prepare(latest.current.data.audio),
+      ]);
       if (!alive) return;
       await scene.paint(canvas.current!, latest.current.data);
       await audioAssets?.prepare(latest.current.data.audio);
@@ -242,12 +318,17 @@ export function Board(props: BoardProps<PalView>) {
       latest.current.onReady?.();
       const tick = (at: number) => {
         if (!alive) return;
+        local?.setActive(runningRef.current());
+        if (correction.current.sample(at)) redraw();
+        if (local && root.current)
+          root.current.dataset.palLocalState = JSON.stringify({
+            ...local.status(),
+            enabled: enabledRef.current(),
+            phase: latest.current.data.phase,
+            controlAt: latest.current.data.controlAt,
+          });
         owned?.sample(at);
         ownedAudio?.update();
-        const allowed = enabledRef.current(), { data, room } = latest.current;
-        const moved = allowed ? prediction.current.sample(at) : prediction.current.clear();
-        const selected = allowed ? selection.current.update(data, room.you, at) : selection.current.clear();
-        if (moved || selected) redraw();
         frame = requestAnimationFrame(tick);
       };
       frame = requestAnimationFrame(tick);
@@ -263,11 +344,13 @@ export function Board(props: BoardProps<PalView>) {
       abort.abort();
       cancelAnimationFrame(frame);
       owned?.dispose();
+      local?.dispose();
+      correction.current.clear();
+      if (localClient.current === local) localClient.current = undefined;
       ownedAudio?.dispose();
       audioAssets?.dispose();
-      if (audioDirector.current === ownedAudio) audioDirector.current = undefined;
-      prediction.current.clear();
-      selection.current.clear();
+      if (audioDirector.current === ownedAudio)
+        audioDirector.current = undefined;
       controller?.dispose();
       window.removeEventListener("controller-settings-changed", changed);
       if (input.current === owned) input.current = undefined;
@@ -276,6 +359,7 @@ export function Board(props: BoardProps<PalView>) {
   }, [audioIdentity, props.assets, retry]);
   useLayoutEffect(() => {
     input.current?.interrupt();
+    localClient.current?.recover();
     audioDirector.current?.resync();
     redraw();
   }, [props.clock.epoch, transportPaused]);
@@ -286,18 +370,31 @@ export function Board(props: BoardProps<PalView>) {
     void scene.prepareBattle(latest.current.data.battleAssets).catch((e) => {
       if (active) setError(e instanceof Error ? e.message : "战斗素材未就绪");
     });
-    return () => { active = false; };
+    return () => {
+      active = false;
+    };
   }, [battleAssetKey, ready]);
   useEffect(() => {
-    prediction.current.update(props.data, props.room.you, performance.now());
-    selection.current.update(props.data, props.room.you, performance.now());
+    localClient.current?.accept(
+      props.data,
+      props.clock,
+      props.room.seats[props.room.you]?.network?.rttMs ?? 0,
+    );
     input.current?.update();
     audioDirector.current?.update();
-    redraw();
-  }, [props.data, props.room.version]);
+    if (!localClient.current) redraw();
+  }, [
+    props.data,
+    props.room.version,
+    props.room.seats[props.room.you]?.network?.rttMs,
+  ]);
   useEffect(() => {
     const changed = () => {
-      if (document.hidden && latest.current.data.audio) audioMemory.current.floor = Math.max(audioMemory.current.floor, latest.current.data.audio.serial);
+      if (document.hidden && latest.current.data.audio)
+        audioMemory.current.floor = Math.max(
+          audioMemory.current.floor,
+          latest.current.data.audio.serial,
+        );
       setAudioVisibility((value) => value + 1);
     };
     document.addEventListener("visibilitychange", changed);
@@ -306,23 +403,45 @@ export function Board(props: BoardProps<PalView>) {
   useEffect(() => {
     const ending = props.data.ending;
     let alive = true;
-    if (!ready || !props.sound || transportPaused || !ending?.clip || props.clock.paused || props.room.game?.paused || props.room.loading || document.hidden) {
+    if (
+      !ready ||
+      !props.sound ||
+      transportPaused ||
+      !ending?.clip ||
+      props.clock.paused ||
+      props.room.game?.paused ||
+      props.room.loading ||
+      document.hidden
+    ) {
       props.audio.stopTrack("pal-ending");
       return;
     }
-    let playing = false, pending = false, attempts = 0;
+    let playing = false,
+      pending = false,
+      attempts = 0;
     const id = `${props.room.matchId}:${props.data.epoch}:${ending.serial}:${audioVisibility}:${performance.now()}`;
     const start = async () => {
       if (pending || playing || !alive) return;
       pending = true;
       await renderer.current?.prepare(latest.current.data);
       const current = latest.current.data.ending;
-      if (!alive || document.hidden || !current || current.clip !== ending.clip || current.serial !== ending.serial) {
+      if (
+        !alive ||
+        document.hidden ||
+        !current ||
+        current.clip !== ending.clip ||
+        current.serial !== ending.serial
+      ) {
         pending = false;
         return;
       }
       const source = await renderer.current?.endingAudioSource(ending.clip);
-      if (!alive || !source || document.hidden || latest.current.data.ending?.serial !== ending.serial) {
+      if (
+        !alive ||
+        !source ||
+        document.hidden ||
+        latest.current.data.ending?.serial !== ending.serial
+      ) {
         pending = false;
         return;
       }
@@ -333,7 +452,11 @@ export function Board(props: BoardProps<PalView>) {
       });
       pending = false;
     };
-    const gesture = () => { void start().catch(() => { pending = false; }); };
+    const gesture = () => {
+      void start().catch(() => {
+        pending = false;
+      });
+    };
     document.addEventListener("pointerdown", gesture, true);
     document.addEventListener("keydown", gesture, true);
     gesture();
@@ -343,7 +466,21 @@ export function Board(props: BoardProps<PalView>) {
       document.removeEventListener("keydown", gesture, true);
       props.audio.stopTrack("pal-ending");
     };
-  }, [ready, props.audio, props.sound, transportPaused, props.clock.epoch, props.clock.paused, props.room.game?.paused, props.room.loading, props.room.matchId, props.data.epoch, props.data.ending?.clip, props.data.ending?.serial, audioVisibility]);
+  }, [
+    ready,
+    props.audio,
+    props.sound,
+    transportPaused,
+    props.clock.epoch,
+    props.clock.paused,
+    props.room.game?.paused,
+    props.room.loading,
+    props.room.matchId,
+    props.data.epoch,
+    props.data.ending?.clip,
+    props.data.ending?.serial,
+    audioVisibility,
+  ]);
   useEffect(() => {
     const panel = root.current?.querySelector<HTMLElement>(
       "[data-pal-menu-panel]",
@@ -361,9 +498,9 @@ export function Board(props: BoardProps<PalView>) {
     panel.addEventListener("controller-cancel", cancel);
     return () => panel.removeEventListener("controller-cancel", cancel);
   }, [props.data.phase, handover]);
-  const { data, room } = props,
+  const { data, room } = latest.current,
     seat = room.you,
-    can = ready && !error && palInputAllowed(props),
+    can = ready && !error && palInputAllowed(latest.current),
     read = data.phase === "dialogue";
   let panel;
   if (data.cooperation) {
@@ -499,7 +636,12 @@ export function Board(props: BoardProps<PalView>) {
       data-pal-board
       data-pal-phase={data.phase}
       data-pal-dialog-position={data.dialogue?.position}
+      data-pal-dialog-id={data.dialogue?.id}
       data-pal-menu-kind={data.phase === "menu" ? data.menu.kind : undefined}
+      data-pal-menu-selected={data.menu.selected}
+      data-pal-battle-menu={data.battle?.menu}
+      data-pal-battle-state={data.battle?.state}
+      data-pal-battle-selected={data.battle?.selected}
       data-pal-ready={ready}
       data-loaded-bytes={progress.loaded}
       data-total-bytes={progress.total}

@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 const [endpoint, prefix, probe, heldResponseMS, ...assetURLs] = process.argv.slice(2);
 if (!/^http:\/\/127\.0\.0\.1:\d+$/.test(prefix)) throw Error("Expected owned local page");
-if (probe && !["selection-performance-page.js", "continuous-performance-page.js", "dense-battle-page.js", "summon-battle-page.js"].includes(probe)) throw Error("Unknown performance probe");
+if (probe && !["selection-performance-page.js", "continuous-performance-page.js", "dense-battle-page.js", "summon-battle-page.js", "local-performance-page.js"].includes(probe)) throw Error("Unknown performance probe");
 const summon = probe === "summon-battle-page.js";
 const saveSummon = summon && process.env.PAL_OBSERVE_SUMMON_SAVE === "1";
 const socket = new WebSocket(endpoint);
@@ -59,6 +59,7 @@ socket.onmessage = ({ data }) => {
       const frame = value.game?.data ?? value.state?.room?.game?.data;
       const record = { at: now, type: value.type, bytes: Buffer.byteLength(p.response.payloadData) };
       if (frame) Object.assign(record, { epoch: frame.epoch, seq: frame.seq, appliedSeq: frame.appliedSeq, x: frame.x, y: frame.y, phase: frame.phase, ...(probe ? { discardedSeq: frame.discardedSeq, menuSelected: frame.menu?.selected, battleSelected: frame.battle?.selected, battleState: frame.battle?.state, battleMenu: frame.battle?.menu } : {}) });
+      if (frame?.local) Object.assign(record, { local: { ...frame.local, records: frame.local.records?.map(row => ({ revision: row.revision, appliedSeq: row.appliedSeq, operations: row.operations.length })) } });
       if (value.type === "network") {
         record.connectionRTTMS = value.self?.rttMs;
         record.connectionSampledAt = value.self?.sampledAt;

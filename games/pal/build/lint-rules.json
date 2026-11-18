@@ -5,8 +5,8 @@
         ".ts",
         ".tsx"
       ],
-      "filename": "^(?:[a-z][a-z0-9]*(?:-[a-z0-9]+)*\\.ts|[A-Z][A-Za-z0-9]*\\.tsx|saved-games\\.tsx)$",
-      "directory": "^(?:games/pal/web/|games/pal/tests/story-shake-probe\\.ts$|web/src/ui/saved-games\\.tsx$|web/src/audio-preparation\\.ts$)",
+      "filename": "^(?:[a-z][a-z0-9]*(?:-[a-z0-9]+)*\\.ts|[A-Z][A-Za-z0-9]*\\.tsx|module\\.tsx|saved-games\\.tsx|vite\\.config\\.ts)$",
+      "directory": "^(?:games/pal/web/|games/pal/tests/story-shake-probe\\.ts$|web/vite\\.config\\.ts$|web/src/ui/saved-games\\.tsx$|web/src/audio-preparation\\.ts$)",
       "comments": false
     },
     "javascript": {
@@ -14,7 +14,7 @@
         ".mjs",
         ".js"
       ],
-      "filename": "^(?:[a-z][a-z0-9]*(?:-[a-z0-9]+)*\\.(?:mjs|js)|audio-preparation\\.test\\.mjs)$",
+      "filename": "^(?:[a-z][a-z0-9]*(?:-[a-z0-9]+)*\\.(?:mjs|js)|audio-preparation\\.test\\.mjs|field-correction\\.test\\.mjs)$",
       "directory": "^(?:games/pal/(?:tests|build)/|web/tests/audio-preparation\\.test\\.mjs$)",
       "comments": false
     },
@@ -327,6 +327,28 @@
     "games/pal/tests/summon-wind-evidence.py",
     "internal/server/pal_summon_browser_trace_test.go",
     "games/pal/tests/parallel-summon-browser.py",
-    "games/pal/tests/parallel-summon-evidence.py"
+    "games/pal/tests/parallel-summon-evidence.py",
+    "games/pal/engine/client_checkpoint.go",
+    "games/pal/engine/local_replay_e2e_test.go",
+    "games/pal/server/local_sync.go",
+    "games/pal/web/input.ts",
+    "games/pal/web/module.tsx",
+    "games/pal/web/local-client.ts",
+    "games/pal/web/local-simulation.ts",
+    "games/pal/web/local-types.ts",
+    "games/pal/web/local-worker.ts",
+    "games/pal/web/native-frame.ts",
+    "games/pal/web/native-runtime.ts",
+    "games/pal/tests/local-first-browser.py",
+    "games/pal/tests/local-native-e2e.mjs",
+    "games/pal/tests/local-performance-page.js",
+    "games/pal/tests/local-simulation-e2e.mjs",
+    "internal/server/pal_local_first_e2e_test.go",
+    "internal/server/pal_worker_policy_test.go",
+    "web/vite.config.ts",
+    "games/pal/tests/local-stages-browser.py",
+    "internal/server/pal_local_first_browser_test.go",
+    "games/pal/web/field-correction.ts",
+    "games/pal/tests/field-correction.test.mjs"
   ]
 }

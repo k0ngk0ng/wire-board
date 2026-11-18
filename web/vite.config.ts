@@ -13,7 +13,8 @@ export default defineConfig({
   base: assetBase(process.env.WIRE_BOARD_ASSET_BASE),
   publicDir: preparePublicAssets(root, [prepareBasketballDelivery(root), prepareContraDelivery(root), preparePvZRuntime(root), prepareYuYuDelivery(root)]),
   plugins: [react(), gameLoadManifest()],
-  resolve: { dedupe: ["react", "react-dom", "lucide-react", "three"] },
+  resolve: { dedupe: ["react", "react-dom", "lucide-react", "three", "fflate"] },
+  worker: { format: "es" },
   server: {
     proxy: {
       "/api": { target: "http://127.0.0.1:8080", ws: true },

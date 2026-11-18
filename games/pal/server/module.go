@@ -17,6 +17,7 @@ import (
 )
 
 const tickMS = 50
+const fieldTickMS = 100
 const battleTickMS = 40
 const maxInputAgeMS = 500
 
@@ -37,6 +38,7 @@ type Dialogue struct {
 	Read     []bool `json:"read"`
 }
 type View struct {
+	Local         *LocalView            `json:"local,omitempty"`
 	Audio         *AudioView            `json:"audio,omitempty"`
 	GameOver      *engine.GameOverState `json:"gameOver,omitempty"`
 	Ending        *engine.EndingState   `json:"ending,omitempty"`
@@ -116,6 +118,7 @@ type BattleEnemy struct {
 	ColorShift int `json:"colorShift"`
 }
 type Action struct {
+	Boundary  string `json:"boundary,omitempty"`
 	ControlAt int64  `json:"controlAt,omitempty"`
 	Type      string `json:"type"`
 	Epoch     uint64 `json:"epoch"`
@@ -149,6 +152,7 @@ type levelChange struct {
 }
 type state struct {
 	Native      []byte           `json:"native"`
+	Local       *localState      `json:"local,omitempty"`
 	Audio       *audioMemory     `json:"audio,omitempty"`
 	BattleBot   *battleBotMemory `json:"battleBot,omitempty"`
 	FieldBot    *fieldBotMemory  `json:"fieldBot,omitempty"`
@@ -210,7 +214,7 @@ func newModule(runtime campaignRuntime) gameapi.Module {
 	a := adapter{runtime}
 	return gameapi.Module{ID: "pal", Name: "仙剑奇侠传", MinPlayers: 1, MaxPlayers: 1, SupportsSave: true, SupportsCheckpoint: true, Realtime: true, RealtimeDeadlineFrames: true,
 		Controls:  controls(),
-		Configure: configure, Start: a.start, Apply: a.apply, View: a.view, SyncSnapshot: a.view, StreamView: a.streamView,
+		Configure: configure, Start: a.start, Apply: a.apply, View: a.view, SyncSnapshot: a.syncView, StreamView: a.streamView,
 		OnTimer: a.timer, AcceptStale: a.acceptStale, SaveControl: a.saveControl, ResumeSaved: a.resume, RestoreCheckpoint: a.restoreCheckpoint,
 		BotAction: a.botAction, Reclaim: a.reclaim, Restore: a.restore, IsInputRelease: a.isRelease}
 }
@@ -249,10 +253,13 @@ func decode(m gameapi.Match) (state, error) {
 		return s, e
 	}
 	s = decoded
+	if !validLocalState(s.Local) {
+		return s, errors.New("仙剑本地同步状态无效")
+	}
 	if s.Players != 1 {
 		return s, errors.New("仙剑当前仅支持单人存档")
 	}
-	if s.Players < 1 || s.Players > 3 || len(s.Controls) != s.Players || s.Public.Epoch == 0 || s.Public.Leader < 0 || s.Public.Leader >= s.Players || len(s.Native) == 0 || len(s.Native) > 32<<20 || s.ServerAt <= 0 || s.Saving != m.Paused || s.TickLeftMS < 0 || s.TickLeftMS > tickMS {
+	if s.Players < 1 || s.Players > 3 || len(s.Controls) != s.Players || s.Public.Epoch == 0 || s.Public.Leader < 0 || s.Public.Leader >= s.Players || len(s.Native) == 0 || len(s.Native) > 32<<20 || s.ServerAt <= 0 || s.Saving != m.Paused || s.TickLeftMS < 0 || s.TickLeftMS > fieldTickMS {
 		return s, errors.New("仙剑存档结构无效")
 	}
 	if s.Public.Phase != "field" && s.Public.Phase != "dialogue" && s.Public.Phase != "script" && s.Public.Phase != "battle" && s.Public.Phase != "menu" && s.Public.Phase != "system" && s.Public.Phase != "cooperation" && s.Public.Phase != "ending" && s.Public.Phase != "finished" && s.Public.Phase != "gameover" {
@@ -337,6 +344,9 @@ func decode(m gameapi.Match) (state, error) {
 	return s, nil
 }
 func (s state) tickInterval() int64 {
+	if s.Public.Phase == "field" {
+		return min(fieldTickMS, max(1, int64(s.RemainingMS)))
+	}
 	if s.Public.Phase == "battle" && s.Public.Battle != nil {
 		return min(battleTickMS, max(1, int64(s.RemainingMS)))
 	}
@@ -387,6 +397,9 @@ func (s state) match() (gameapi.Match, error) {
 		} else if s.Public.Phase == "system" {
 			m.Actors = append(m.Actors, s.Public.Leader)
 			m.Attention = append(m.Attention, s.Public.Leader)
+		}
+		if len(m.Actors) == 0 && s.Local != nil {
+			m.Actors = []int{0}
 		}
 	}
 	return m, nil
@@ -528,6 +541,9 @@ func (a adapter) observe(s *state, native *engine.Continuation, encode bool, now
 	}
 	if encode {
 		s.Native, e = native.Encode()
+		if e == nil {
+			s.recordReplay(native)
+		}
 	}
 	return e
 }
@@ -539,7 +555,10 @@ func validAction(c gameapi.Context, s state, raw json.RawMessage) (Action, error
 	if e := strict(raw, &action, 4096); e != nil {
 		return action, e
 	}
-	if s.Saving || action.Epoch != s.Public.Epoch {
+	if action.Type == "local_input" || action.Type == "local_release" {
+		return action, validLocalAction(c, s, action)
+	}
+	if s.Saving || action.Epoch != s.Public.Epoch || action.Boundary != "" {
 		return action, errors.New("游戏已暂停或操作已过期")
 	}
 	switch action.Type {
@@ -577,8 +596,17 @@ func (a adapter) apply(c gameapi.Context, m gameapi.Match, raw json.RawMessage) 
 	if e != nil {
 		return m, e
 	}
+	if s.Local != nil && s.Local.Seq > 0 && action.Type != "local_input" && action.Type != "local_release" && len(c.Automated) == s.Players && c.Automated[c.Actor] {
+		if e = a.release(&s); e != nil {
+			return m, e
+		}
+	}
 	pruneAudio(&s, c.Now.UnixMilli())
 	switch action.Type {
+	case "local_input", "local_release":
+		if e = a.queueLocal(c, &s, action); e != nil {
+			return m, e
+		}
 	case "coop_accept", "coop_cancel":
 		s.Revision++
 		response := uint32(2)
@@ -706,6 +734,12 @@ func (a adapter) timer(c gameapi.Context, m gameapi.Match) (gameapi.Match, error
 		return m, nil
 	}
 	pruneAudio(&s, c.Now.UnixMilli())
+	if e = a.expireLocal(&s, c.Now.UnixMilli()); e != nil {
+		return m, e
+	}
+	if e = a.drainLocal(&s, c.Now.UnixMilli()); e != nil {
+		return m, e
+	}
 	if s.Public.Phase == "gameover" {
 		return m, nil
 	}
@@ -738,6 +772,9 @@ func (a adapter) timer(c gameapi.Context, m gameapi.Match) (gameapi.Match, error
 	ctrl.Edges = slices.DeleteFunc(ctrl.Edges, func(edge keyEdge) bool { return edge.Until < c.Now.UnixMilli() })
 	start := c.Now.UnixMilli() - elapsed
 	advanced, e := native.AdvanceScheduled(ctx, s.RemainingMS, uint32(elapsed), func(offset uint32) engine.Input {
+		if s.Local != nil && s.Local.Seq > 0 {
+			return s.localInput(native.InputBoundary(), start+int64(offset))
+		}
 		at := start + int64(offset)
 		for len(ctrl.Levels) > 0 && ctrl.Levels[0].At <= at {
 			level := ctrl.Levels[0]
@@ -773,9 +810,15 @@ func (a adapter) timer(c gameapi.Context, m gameapi.Match) (gameapi.Match, error
 			s.Public.Epoch++
 			s.clearControls()
 		}
+		if advanced.InputReset && s.Local != nil {
+			s.Local.Direction, s.Local.Until = 4, 0
+		}
 	}
 	s.RemainingMS = advanced.RemainingMS
 	s.ServerAt = c.Now.UnixMilli()
+	if e = a.drainLocal(&s, c.Now.UnixMilli()); e != nil {
+		return m, e
+	}
 	return s.match()
 }
 func (a adapter) view(m gameapi.Match, viewer int) (any, error) {
@@ -790,17 +833,17 @@ func (s state) publicView(viewer int) View {
 	v.Audio = cloneAudio(s.Public.Audio)
 	v.ControlAt = s.ServerAt
 	if viewer >= 0 && viewer < s.Players {
+		v.Local = s.localView()
 		v.Seq = s.Controls[viewer].Seq
 		v.AppliedSeq = s.Controls[viewer].AppliedSeq
 		v.DiscardedSeq = s.Controls[viewer].DiscardedSeq
+		if s.Local != nil && s.Local.Seq > 0 {
+			v.Seq, v.AppliedSeq, v.DiscardedSeq = s.Local.Seq, s.Local.AppliedSeq, s.Local.DiscardedSeq
+		}
 	}
 	return v
 }
 
-func (a adapter) streamView(m gameapi.Match, viewer int, _ string) (gameapi.StreamViewResult, error) {
-	v, e := a.view(m, viewer)
-	return gameapi.StreamViewResult{Data: v}, e
-}
 func (a adapter) acceptStale(c gameapi.Context, m gameapi.Match, raw json.RawMessage) bool {
 	s, e := decode(m)
 	if e != nil {
@@ -815,7 +858,7 @@ func (a adapter) isRelease(c gameapi.Context, m gameapi.Match, raw json.RawMessa
 		return false
 	}
 	action, e := validAction(c, s, raw)
-	return e == nil && action.Type == "input" && action.Direction == 4 && action.Keys == 0
+	return e == nil && (action.Type == "input" || action.Type == "local_input" || action.Type == "local_release") && action.Direction == 4 && action.Keys == 0
 }
 func (a adapter) release(s *state) error {
 	ctx, cancel := execution()
@@ -833,6 +876,7 @@ func (a adapter) release(s *state) error {
 	}
 	s.Public.Epoch++
 	s.clearControls()
+	s.resetLocal(native)
 	releaseBotItemInput(s.FieldBot)
 	resetBattleBotInput(s.BattleBot)
 	return nil
@@ -900,6 +944,9 @@ func (a adapter) restoreCheckpoint(c gameapi.Context, saved, active gameapi.Matc
 		return saved, err
 	}
 	next.Public.Epoch = max(next.Public.Epoch, current.Public.Epoch+1)
+	if next.Local != nil && current.Local != nil {
+		next.Local.Generation = max(next.Local.Generation, current.Local.Generation+1)
+	}
 	return next.match()
 }
 func (a adapter) reclaim(c gameapi.Context, m gameapi.Match) (gameapi.Match, error) {

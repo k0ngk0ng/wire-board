@@ -28,6 +28,7 @@ export type GameRoom = {
   turnDeadline?: number;
   options?: unknown;
   seats: {
+    network?: import("../network-quality").NetworkInfo;
     id: string;
     name: string;
     ready: boolean;

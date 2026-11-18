@@ -43,6 +43,16 @@ func TestPALOriginalSoloPrivateSaveRestartHTTP(t *testing.T) {
 			copy := make(map[string]any, len(source))
 			for key, value := range source {
 				if key != "controlAt" {
+					if key == "local" {
+						metadata := make(map[string]any)
+						for name, entry := range value.(map[string]any) {
+							if name != "serverAt" {
+								metadata[name] = entry
+							}
+						}
+						copy[key] = metadata
+						continue
+					}
 					copy[key] = value
 				}
 			}

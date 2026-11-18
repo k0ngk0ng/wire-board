@@ -8,6 +8,7 @@ import (
 type Continuation struct {
 	runtime *Runtime
 	state   *Snapshot
+	replay  []ReplayOperation
 }
 
 type ContinuationAdvance struct {
@@ -57,6 +58,7 @@ func (c *Continuation) Step(ctx context.Context, response uint32) error {
 	next, err := c.runtime.captureWithMemory(ctx, module, c.state.Entry, event, c.state.Memory)
 	if err == nil {
 		*c.state = next
+		c.replay = append(c.replay, ReplayOperation{Kind: "step", Response: response})
 	}
 	return err
 }
@@ -73,15 +75,27 @@ func (c *Continuation) ReleaseInputs(ctx context.Context) error {
 	next, err := c.runtime.captureWithMemory(ctx, module, c.state.Entry, c.state.Event, c.state.Memory)
 	if err == nil {
 		*c.state = next
+		c.replay = append(c.replay, ReplayOperation{Kind: "release"})
 	}
 	return err
 }
 
 func (c *Continuation) AdvanceScheduled(ctx context.Context, remainingMS, elapsedMS uint32, inputAt func(uint32) Input) (ContinuationAdvance, error) {
-	next, err := c.runtime.advanceScheduledValidated(ctx, *c.state, remainingMS, elapsedMS, inputAt, c.state.Memory)
+	operation := ReplayOperation{Kind: "advance", RemainingMS: remainingMS, ElapsedMS: elapsedMS}
+	if inputAt == nil {
+		return ContinuationAdvance{}, errors.New("missing native input schedule")
+	}
+	next, err := c.runtime.advanceScheduledValidated(ctx, *c.state, remainingMS, elapsedMS, func(at uint32) Input {
+		input := inputAt(at)
+		operation.Inputs = append(operation.Inputs, ReplayInput{at, input.Direction, input.Keys, input.Response})
+		return input
+	}, c.state.Memory)
 	if err != nil {
 		return ContinuationAdvance{}, err
 	}
 	*c.state = next.Snapshot
+	if next.Steps > 0 {
+		c.replay = append(c.replay, operation)
+	}
 	return ContinuationAdvance{Audio: next.Audio, RemainingMS: next.RemainingMS, Steps: next.Steps, InputReset: next.InputReset}, nil
 }

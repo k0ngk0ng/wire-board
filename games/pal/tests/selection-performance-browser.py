@@ -30,7 +30,8 @@ fixture = local / ('battle-board-browser' if args.mode == 'battle' else 'perform
 base = (fixture / 'url').read_text().strip()
 out = local / 'performance' / (f'{"continuous" if args.continuous else "selection"}-{args.mode}-{args.run}' + (f'-{args.scope}' if args.scope else ''))
 out.mkdir(exist_ok=False)
-environment = dict(os.environ, AGENT_BROWSER_SOCKET_DIR=str(ROOT / '.local/psb'), TMPDIR=str(ROOT / '.local/tmp'), AGENT_BROWSER_PROFILE=str(out / 'profile'), AGENT_BROWSER_NO_VERSION_CHECK='1', AGENT_BROWSER_ARGS='--mute-audio,--disable-breakpad,--disable-crash-reporter')
+socket_root = Path(subprocess.check_output(['git','rev-parse','--git-common-dir'],cwd=ROOT,text=True).strip()).resolve().parent/'.local/pal-lf-ab'
+environment = dict(os.environ, AGENT_BROWSER_SOCKET_DIR=str(socket_root), TMPDIR=str(ROOT / '.local/tmp'), AGENT_BROWSER_PROFILE=str(out / 'profile'), AGENT_BROWSER_NO_VERSION_CHECK='1', AGENT_BROWSER_ARGS='--mute-audio,--disable-breakpad,--disable-crash-reporter')
 Path(environment['AGENT_BROWSER_SOCKET_DIR']).mkdir(exist_ok=True)
 session = subprocess.check_output(['agent-browser', 'session', 'id', '--scope', 'worktree', '--prefix', 'ps'], cwd=ROOT, env=environment, text=True).strip() + '-' + args.mode[0]
 if args.keep_open:
@@ -249,7 +250,7 @@ try:
         const bytes=await response.arrayBuffer();
         const digest=await crypto.subtle.digest("SHA-256",bytes);
         return {name,sha256:Array.from(new Uint8Array(digest),b=>b.toString(16).padStart(2,"0")).join(""),
-                prediction:new TextDecoder().decode(bytes).includes(":main-menu"),
+                prediction:(new TextDecoder().decode(bytes).includes(":main-menu") || new TextDecoder().decode(bytes).includes("PALNET01")),
                 bytes:bytes.byteLength};
     })()''')
     assert report['clientBundle']['prediction'] == (args.continuous or args.run == 'optimized'), report['clientBundle']

@@ -53,3 +53,5 @@ Carcassonne / 卡卡颂的名称、商标和商业美术归各自权利人。可
 服务端规则核心基于 [SDLPAL](https://github.com/sdlpal/sdlpal)，固定上游源码、许可证和逐文件摘要见 `games/pal/native/upstream-manifest.json`；本项目的适配与构建源码保存在 `games/pal/native/` 和 `games/pal/build/`。SDLPAL 使用 GPL-3.0，完整许可见 `games/pal/native/upstream/LICENSE`；应用包同时保留 `docs/LICENSE.SDLPAL`，运行镜像保留于 `/usr/local/share/licenses/wire-board/`。YJ2 解压移植的声明另见 `games/pal/resources/LICENSE.SDLPAL`。
 
 原版 98 游戏数据与媒体的来源、固定版本和摘要分别见 `games/pal/assets/source-manifest.json` 与 `media-source-manifest.json`；图像、音频、影片和字体的派生对象按独立发布清单从 OSS/CDN 加载。服务端分发包仅含经过剥离验证的计算规则、文本和规则核心。原版商业内容的权利归原权利人，不因 SDLPAL 的代码许可而改变。
+
+浏览器本地规则使用 [fflate 0.8.3](https://github.com/101arrowz/fflate) 解压网络检查点及原版规则数据，采用 MIT 许可证。完整文本见 [LICENSE.fflate](LICENSE.fflate)，前端公开资源同时保留该许可。

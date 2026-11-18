@@ -2,7 +2,7 @@ import type { GameController } from "../../../web/src/controllers/game-controlle
 import type { ControllerSink } from "../../../web/src/controllers/pointer-controller";
 import type { BoardProps } from "../../../web/src/game-api/module";
 import type { PalView } from "./view";
-import type { LocalFieldInput } from "./field-prediction";
+import type { LocalInputRequest } from "./local-types";
 
 type Action = Record<string, unknown> & { epoch: number };
 const keys: Record<string, number> = {
@@ -61,8 +61,6 @@ export function palInputAllowed(props: BoardProps<PalView>) {
   );
 }
 
-// This adapts platform logical actions to the original PAL input protocol.
-// Each short press is retained; only neutral/continuous updates may coalesce.
 export class PalInput implements ControllerSink {
   controller?: GameController;
   private epoch = 0;
@@ -82,18 +80,22 @@ export class PalInput implements ControllerSink {
   private controlAt = 0;
   private clockSeenAt = 0;
   private discardedSeq = 0;
+  private localDirty = false;
+  private previews = new Map<number, number>();
   constructor(
     private current: () => BoardProps<PalView>,
     private enabled: () => boolean,
     private error: (message: string) => void,
-    private local?: (input: LocalFieldInput, at: number) => void,
+    private local?: (input: LocalInputRequest, at: number) => void,
     private stopLocal?: () => void,
+    private active?: () => boolean,
   ) {}
   update(at = performance.now()) {
     const data = this.current().data;
-    if (this.epoch !== data.epoch) {
-      this.epoch = data.epoch;
-      this.sequence = data.seq;
+    const epoch = data.local?.generation ?? data.epoch;
+    if (this.epoch !== epoch) {
+      this.epoch = epoch;
+      this.sequence = data.local?.seq ?? data.seq;
       this.queue = [];
       this.previous.clear();
       this.direction = 4;
@@ -101,11 +103,12 @@ export class PalInput implements ControllerSink {
       this.sentAt = 0;
       this.repeatAt = 0;
       this.decided.clear();
+      this.previews.clear();
       this.controlAt = data.controlAt;
       this.clockSeenAt = at;
       this.discardedSeq = data.discardedSeq ?? 0;
       this.clear(at);
-    } else this.sequence = Math.max(this.sequence, data.seq);
+    } else this.sequence = Math.max(this.sequence, data.local?.seq ?? data.seq);
     if (this.controlAt !== data.controlAt) {
       this.controlAt = data.controlAt;
       this.clockSeenAt = at;
@@ -127,8 +130,11 @@ export class PalInput implements ControllerSink {
       p.room.seats[seat]?.left
     )
       return false;
+    if (p.data.local) return p.data.leader === seat;
     return (
-      ((p.data.phase === "field" || p.data.phase === "menu" || p.data.phase === "ending") &&
+      ((p.data.phase === "field" ||
+        p.data.phase === "menu" ||
+        p.data.phase === "ending") &&
         p.data.leader === seat) ||
       (p.data.phase === "battle" &&
         !!p.data.battle &&
@@ -138,27 +144,87 @@ export class PalInput implements ControllerSink {
     );
   }
   private fresh(at: number) {
-    return this.controlAt > 0 && at - this.clockSeenAt <= 500;
+    return (
+      this.controlAt > 0 &&
+      at - this.clockSeenAt <= (this.current().data.local ? 1000 : 500)
+    );
   }
-  clear(at = performance.now()) {
+  clear(at = performance.now(), interrupted = false) {
     const release = this.direction !== 4;
+    const localRelease =
+      interrupted && this.localDirty && !!this.current().data.local;
+    if (interrupted) this.localDirty = false;
     this.direction = 4;
-    // Discard unsent physical actions on interruption; an existing neutral
-    // release retains the clock/sequence captured when it was created.
     this.queue = this.queue.filter(
-      (a) => a.type !== "input" || (a.direction === 4 && !a.keys),
+      (a) =>
+        (a.type !== "input" && a.type !== "local_input") ||
+        (a.direction === 4 && !a.keys),
     );
     this.stopLocal?.();
     for (const id of this.pointers.keys()) this.blocked.add(id);
     this.previous.clear();
     this.controller?.clear();
     this.cancelVersion = this.controller?.cancelVersion ?? 0;
-    if (release && !this.disposed && this.releaseAllowed())
-      this.input(4, 0, at);
+    if ((release || localRelease) && !this.disposed && this.releaseAllowed())
+      this.input(4, 0, at, localRelease);
   }
   pressPointer(id: number, buttons: readonly string[]) {
     this.pointers.set(id, buttons);
     this.sample(performance.now());
+  }
+  preview(button: string) {
+    const at = performance.now();
+    this.update(at);
+    if (
+      !this.current().data.local ||
+      !this.enabled() ||
+      !this.fresh(at) ||
+      !keys[button]
+    )
+      return undefined;
+    const seq = ++this.sequence;
+    this.previews.set(seq, this.epoch);
+    this.localDirty = true;
+    this.local?.(
+      {
+        epoch: this.epoch,
+        seq,
+        direction: 4,
+        keys: keys[button],
+        preview: true,
+      },
+      at,
+    );
+    return seq;
+  }
+  previewValid(seq: number) {
+    return this.previews.get(seq) === this.epoch && !!this.active?.();
+  }
+  commitPreview(seq: number) {
+    if (!this.previewValid(seq)) {
+      this.cancelPreview(seq);
+      return false;
+    }
+    this.previews.delete(seq);
+    this.local?.(
+      { epoch: this.epoch, seq, direction: 4, keys: 0, commitPreview: true },
+      performance.now(),
+    );
+    return true;
+  }
+  cancelPreview(seq: number) {
+    if (!this.previews.delete(seq)) return;
+    this.local?.(
+      { epoch: this.epoch, seq, direction: 4, keys: 0, cancelPreview: true },
+      performance.now(),
+    );
+  }
+  holdPreview(id: number, button: string) {
+    const at = performance.now();
+    this.direction = directions[button];
+    this.directionAt = at - 100;
+    this.input(this.direction, 0, at);
+    this.pressPointer(id, [button]);
   }
   releasePointer(id: number, _cancelled: boolean) {
     this.pointers.delete(id);
@@ -175,6 +241,10 @@ export class PalInput implements ControllerSink {
     target?: number,
   ) {
     if (!this.enabled()) return;
+    if (this.current().data.local && type === "system_close") {
+      this.input(4, 1, performance.now());
+      return;
+    }
     const data = this.current().data,
       prompt = data.cooperation?.id;
     this.enqueue({
@@ -201,7 +271,7 @@ export class PalInput implements ControllerSink {
       !previous.keys
     )
       this.queue[this.queue.length - 1] = action;
-    else if (this.queue.length < 32) this.queue.push(action);
+    else if (this.queue.length < 64) this.queue.push(action);
     else {
       this.error("操作过快，请稍候再试。");
       return false;
@@ -213,12 +283,21 @@ export class PalInput implements ControllerSink {
     const window = Math.max(1, Math.min(8, this.current().inputWindow ?? 1));
     while (!this.disposed && this.inFlight < window && this.queue.length) {
       const action = this.queue.shift()!;
-      if (action.epoch !== this.current().data.epoch) continue;
+      if (
+        action.epoch !==
+        (this.current().data.local?.generation ?? this.current().data.epoch)
+      )
+        continue;
       this.inFlight++;
       void this.current()
         .act(action)
         .catch((error) => {
-          if (!this.disposed && action.epoch === this.current().data.epoch) {
+          if (
+            !this.disposed &&
+            action.epoch ===
+              (this.current().data.local?.generation ??
+                this.current().data.epoch)
+          ) {
             this.decided.clear();
             if (error && typeof error === "object" && error.transientSync) {
               this.clear();
@@ -235,7 +314,12 @@ export class PalInput implements ControllerSink {
         });
     }
   }
-  private input(direction: number, mask: number, at: number) {
+  private input(
+    direction: number,
+    mask: number,
+    at: number,
+    interrupt = false,
+  ) {
     this.sentAt = at;
     const action = {
       type: "input",
@@ -244,11 +328,22 @@ export class PalInput implements ControllerSink {
       direction,
       keys: mask,
       controlAt: this.current().data.controlAt,
+      ...(interrupt ? { interrupt: true } : {}),
     };
-    if (this.enqueue(action)) this.local?.(action, at);
+    if (this.current().data.local) {
+      if (mask || direction !== 4) this.localDirty = true;
+      this.local?.(action, at);
+    } else if (this.enqueue(action)) this.local?.(action, at);
+  }
+  commitLocal(action: Action) {
+    return this.enqueue(action);
   }
   private edge(buttons: Set<string>, at: number) {
     const { data, room } = this.current();
+    if (data.local && data.phase === "dialogue") {
+      if (buttons.has("confirm")) this.input(4, 2, at);
+      return;
+    }
     if (data.phase === "dialogue") {
       const d = data.dialogue,
         key = `${this.epoch}:read:${d?.id}`;
@@ -267,9 +362,6 @@ export class PalInput implements ControllerSink {
     let mask = 0;
     for (const b of buttons) mask |= keys[b] ?? 0;
     if (mask) {
-      // The first direction edge is a pulse. A neutral release can wait behind
-      // an HTTP ACK, so that edge must never establish a held server level.
-      // Only an actual field hold surviving a full original frame renews it.
       const held =
         data.phase === "field" && at - this.directionAt >= 100
           ? this.direction
@@ -287,7 +379,7 @@ export class PalInput implements ControllerSink {
       this.previous.clear();
     }
     if (!this.enabled() || !this.fresh(at)) {
-      this.clear(at);
+      this.clear(at, !this.active?.() || !this.fresh(at));
       return;
     }
     const buttons = new Set(physical);
@@ -325,22 +417,28 @@ export class PalInput implements ControllerSink {
         this.repeatAt = at + 140;
       }
       if (rising.size) this.edge(rising, at);
-      else if (phase === "field" && dir !== 4 && at - this.sentAt >= 100)
+      else if (
+        phase === "field" &&
+        dir !== 4 &&
+        (at - this.sentAt >= 100 ||
+          (this.sentAt === this.directionAt && at - this.directionAt >= 80))
+      )
         this.input(dir, 0, at);
       else if (dir === 4 && previousDirection !== 4) this.input(4, 0, at);
     } else this.edge(rising, at);
     this.previous = buttons;
   }
   dispose() {
-    this.disposed = true;
     this.interrupt();
+    this.disposed = true;
     this.pointers.clear();
     this.blocked.clear();
   }
   interrupt() {
+    for (const sequence of this.previews.keys()) this.cancelPreview(sequence);
     this.queue = [];
     this.direction = 4;
     this.decided.clear();
-    this.clear();
+    this.clear(performance.now(), true);
   }
 }

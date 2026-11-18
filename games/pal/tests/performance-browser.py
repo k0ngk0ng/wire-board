@@ -15,7 +15,8 @@ assert args.tag.replace('-','').isalnum()
 OUT=ROOT/'.local/pal/performance'/args.tag;OUT.mkdir(parents=True,exist_ok=True)
 FIXTURE=ROOT/('.local/pal/cdn-performance-board-browser' if os.environ.get('PAL_VISUAL_CDN')=='1' else '.local/pal/performance-board-browser')
 BASE=(FIXTURE/'url').read_text().strip()
-ENV=dict(os.environ,AGENT_BROWSER_SOCKET_DIR=str(ROOT/'.local/pal-perf-ab'),TMPDIR=str(ROOT/'.local/tmp'),AGENT_BROWSER_NO_VERSION_CHECK='1',AGENT_BROWSER_ARGS='--mute-audio,--disable-breakpad,--disable-crash-reporter')
+socket_root=Path(subprocess.check_output(['git','rev-parse','--git-common-dir'],cwd=ROOT,text=True).strip()).resolve().parent/'.local/pal-lf-ab'
+ENV=dict(os.environ,AGENT_BROWSER_SOCKET_DIR=str(socket_root),TMPDIR=str(ROOT/'.local/tmp'),AGENT_BROWSER_NO_VERSION_CHECK='1',AGENT_BROWSER_ARGS='--mute-audio,--disable-breakpad,--disable-crash-reporter')
 Path(ENV['AGENT_BROWSER_SOCKET_DIR']).mkdir(parents=True,exist_ok=True)
 SESSION=subprocess.check_output(['agent-browser','session','id','--scope','worktree','--prefix','pp'],cwd=ROOT,env=ENV,text=True).strip()
 REPORT={'passed':False,'measurementComplete':False,'fullPerformanceAcceptance':False,'scope':SCOPE+' Current production rule-only bundle and original inn from new game; actual keyboard/touch-to-camera-pixel, rAF, RTT/ACK, game bytes and timer callbacks. Not menu/battle or complete performance acceptance.','budgets':{'responseP50MS':33,'responseP95MS':50,'responseMaxMS':100,'rafP95MS':35,'fieldGameP95Bytes':4096,'ruleP95MS':20},'cases':[],'fixture':json.loads((FIXTURE/'identity.json').read_text())}
@@ -137,6 +138,8 @@ try:
         assert player.data()['phase']=='field' and player.data()['scene']==2
         assert player.room()['capacity']==1 and len(player.room()['seats'])==1
         player.b('click','[data-fullscreen-enter]');player.b('wait','[data-room-fullscreen]')
+        if not args.baseline:
+            wait(lambda:player.js('(()=>{const raw=document.querySelector("[data-pal-board]")?.dataset.palLocalState;if(!raw)return true;const state=JSON.parse(raw);return state.ready&&state.active})()'),'local native replica did not become ready')
         assert not player.js('document.querySelector("[data-pal-direction],[data-pal-action]")!==null')
     assert room_ids[0]!=room_ids[1]
     REPORT['roomIDs']=room_ids

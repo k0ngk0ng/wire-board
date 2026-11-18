@@ -1,6 +1,7 @@
 import type { SceneFrame } from "./scene-renderer";
 import type { FieldState } from "./field-rules";
 import type { PalAudioState } from "./audio-types";
+import type { LocalMeta } from "./local-types";
 export type PalPartyMember = {
   role: number;
   name: string;
@@ -11,6 +12,7 @@ export type PalPartyMember = {
   maxMP: number;
 };
 export type PalView = SceneFrame & {
+  local?: LocalMeta;
   audio?: PalAudioState;
   gameOver?: { stage: number; slot: number };
   field?: FieldState;

@@ -31,9 +31,9 @@ TOOLCHAINS = {
 }
 CHECKS = {
     './games/pal/resources': ['TestArchiveBoundaries', 'Test98TablesRejectIncompleteData', 'TestOriginal98Tables', 'TestOriginal98Decompression', 'TestOriginal98RuleBundle', 'TestOriginal98Pixels', 'TestOriginalVisualExport', 'TestOriginalRNGRuleAndVisualArchives', 'TestOriginalRNGAllFramesAndSavedPixels'],
-    './games/pal/engine': ['TestNativeOriginalOpeningSaveRestore', 'TestNativeCampaignReachesOriginalInn', 'TestNativeTimedBatchMatchesOriginalSteps', 'TestOriginalOwnedContinuation', 'TestOriginalFieldMenusSaveAndSystemBoundary', 'TestOriginalFieldPredictionProjection'],
+    './games/pal/engine': ['TestNativeOriginalOpeningSaveRestore', 'TestNativeCampaignReachesOriginalInn', 'TestNativeTimedBatchMatchesOriginalSteps', 'TestOriginalOwnedContinuation', 'TestOriginalFieldMenusSaveAndSystemBoundary', 'TestOriginalFieldPredictionProjection', 'TestOriginalLocalReplayCheckpointAndNativeOperations'],
     './games/pal/tests': ['TestOriginalHiddenSearchEventInventoryPreserved', 'TestOriginalYuhangHiddenItemsSearchSaveAndNoDuplication', 'TestOriginalYuhangVillageHiddenItemsAndHerbsSave', 'TestOriginalCampaignHammerAndIslandLandingSave'],
-    './internal/server': ['TestPALControllerProfilesHTTP', 'TestPALOriginalSoloPrivateSaveRestartHTTP', 'TestPALOriginalManualCheckpointReloadAndOldPageHTTP', 'TestPALAuthorityArchiveRestartAndManualCheckpointHTTP'],
+    './internal/server': ['TestPALControllerProfilesHTTP', 'TestPALOriginalSoloPrivateSaveRestartHTTP', 'TestPALOriginalManualCheckpointReloadAndOldPageHTTP', 'TestPALAuthorityArchiveRestartAndManualCheckpointHTTP', 'TestPALLocalFirstNativeQueueReplayPrivacyAndResume', 'TestPALWorkerContentPolicy'],
 }
 
 
@@ -171,6 +171,10 @@ def main():
             log = command(['go','test','-json','-count=1','-timeout=8m',package,'-run',pattern],env,label)
             verified = passed_events(log,names)
             report['checks'].append({'package':package,'passed':verified,'logSHA256':sha(log)})
+        for name, evidence in [('local-native-e2e','native-browser-replay'),('local-simulation-e2e','local-simulation-e2e'),('field-correction.test','field-correction')]:
+            log = command(['node', 'games/pal/tests/'+name+'.mjs'],env,name)
+            shutil.copyfile(LOCAL/'verification/local-first'/(evidence+'.json'), PROOF/(evidence+'.json'))
+            report['checks'].append({'package':'browser-native','passed':{name:'pass'},'logSHA256':sha(log)})
         report['passed'] = True
     finally:
         receipt.write_text(json.dumps(report,indent=2)+'\n')

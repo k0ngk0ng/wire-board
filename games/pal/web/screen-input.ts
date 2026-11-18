@@ -15,6 +15,7 @@ type Press = {
   held: boolean;
   consumed: boolean;
   timer?: ReturnType<typeof setTimeout>;
+  preview?: number;
 };
 type Plan = {
   boundary: string;
@@ -74,7 +75,8 @@ export function screenRows(view: PalView): Row[] {
     (view.phase === "battle" && b?.state === 1 && b.menu === 1);
   const misc =
     view.phase === "battle" && b?.state === 1 && (b.menu === 4 || b.menu === 5);
-  const roles = view.phase === "menu" && (view.menu.kind === 6 || view.menu.kind === 7);
+  const roles =
+    view.phase === "menu" && (view.menu.kind === 6 || view.menu.kind === 7);
   if (!item && !magic && !misc && !roles) return [];
   const ops = screenUI(view),
     glyphs = new Map<string, UICommand>();
@@ -91,7 +93,8 @@ export function screenRows(view: PalView): Row[] {
         if (
           [...name].every(
             (char, i) =>
-              glyphs.get(`${first.x + i * 16}:${first.y}`)?.id === char.codePointAt(0),
+              glyphs.get(`${first.x + i * 16}:${first.y}`)?.id ===
+              char.codePointAt(0),
           )
         ) {
           rows.push({
@@ -155,7 +158,7 @@ function distance(a: Point, b: Point) {
   return Math.hypot(a.x - b.x, a.y - b.y);
 }
 function boundary(v: PalView) {
-  return `${v.epoch}:${v.phase}:${v.dialogue?.id ?? ""}:${v.menu.kind}:${v.battle?.current ?? ""}:${v.battle?.state ?? ""}:${v.battle?.menu ?? ""}:${v.ending?.serial ?? ""}`;
+  return `${v.epoch}:${v.scene}:${v.phase}:${v.dialogue?.id ?? ""}:${v.menu.kind}:${v.battle?.current ?? ""}:${v.battle?.state ?? ""}:${v.battle?.menu ?? ""}:${v.ending?.serial ?? ""}`;
 }
 
 function selection(view: PalView): string {
@@ -203,7 +206,8 @@ export class PalScreenInput {
     if (!this.enabled() || e.button !== 0) return;
     const v = this.view();
     if (e.pointerType === "mouse" && v.phase === "field") return;
-    if (!["dialogue", "field", "menu", "battle", "ending"].includes(v.phase)) return;
+    if (!["dialogue", "field", "menu", "battle", "ending"].includes(v.phase))
+      return;
     e.preventDefault();
     this.plan = undefined;
     const point = this.point(e),
@@ -227,32 +231,44 @@ export class PalScreenInput {
       this.multipleAt = performance.now();
       for (const [id, held] of this.presses) {
         clearTimeout(held.timer);
+        if (held.preview !== undefined) {
+          this.input.cancelPreview(held.preview);
+          held.preview = undefined;
+        }
         if (held.held) this.input.releasePointer(id, true);
         held.consumed = true;
       }
       return;
     }
+    if (p.field && !p.centre && p.direction)
+      p.preview = this.input.preview(p.direction);
     if (
       v.phase === "dialogue" ||
       v.phase === "ending" ||
       (v.phase === "menu" && v.menu.kind === 13)
-    ) return;
+    )
+      return;
     p.timer = setTimeout(
       () => {
         if (
           !this.presses.has(e.pointerId) ||
-          p.boundary !== boundary(this.view()) ||
-          !this.enabled() ||
+          (p.preview === undefined
+            ? p.boundary !== boundary(this.view()) || !this.enabled()
+            : !this.input.previewValid(p.preview)) ||
           this.multiple
         )
           return;
         p.consumed = true;
         if (p.field && !p.centre && p.direction) {
           p.held = true;
-          this.input.pressPointer(e.pointerId, [p.direction]);
+          if (p.preview !== undefined) {
+            if (!this.input.commitPreview(p.preview)) return;
+            p.preview = undefined;
+            this.input.holdPreview(e.pointerId, p.direction);
+          } else this.input.pressPointer(e.pointerId, [p.direction]);
         } else this.input.pulse("cancel");
       },
-      p.field && !p.centre ? 140 : 450,
+      p.field && !p.centre ? 80 : 450,
     );
   };
   private move = (e: PointerEvent) => {
@@ -264,7 +280,12 @@ export class PalScreenInput {
       if (!p.field) clearTimeout(p.timer);
     }
     if (p.field && !p.centre && !this.multiple) {
-      p.direction = fieldDirection(p.last, screenPartyCentre(this.view()));
+      const direction = fieldDirection(p.last, screenPartyCentre(this.view()));
+      if (p.preview !== undefined && direction !== p.direction) {
+        this.input.cancelPreview(p.preview);
+        p.preview = this.input.preview(direction);
+      }
+      p.direction = direction;
       if (p.held) this.input.pressPointer(e.pointerId, [p.direction]);
     }
   };
@@ -272,6 +293,7 @@ export class PalScreenInput {
     const p = this.presses.get(id);
     if (!p) return;
     clearTimeout(p.timer);
+    if (p.preview !== undefined) this.input.cancelPreview(p.preview);
     if (p.held) this.input.releasePointer(id, cancelled);
     this.presses.delete(id);
   }
@@ -280,7 +302,15 @@ export class PalScreenInput {
     if (!p) return;
     e.preventDefault();
     const v = this.view(),
-      valid = p.boundary === boundary(v) && this.enabled();
+      valid =
+        p.preview === undefined
+          ? p.boundary === boundary(v) && this.enabled()
+          : this.input.previewValid(p.preview);
+    if (p.preview !== undefined && valid && !this.multiple) {
+      this.input.commitPreview(p.preview);
+      p.preview = undefined;
+      p.consumed = true;
+    }
     this.finish(e.pointerId, false);
     if (this.multiple) {
       if (this.presses.size === 0) {
@@ -482,7 +512,12 @@ export class PalScreenInput {
     if (this.disposed) return;
     const v = this.view();
     for (const [id, p] of this.presses)
-      if (!this.enabled() || p.boundary !== boundary(v)) this.finish(id, true);
+      if (
+        p.preview === undefined
+          ? !this.enabled() || p.boundary !== boundary(v)
+          : !this.input.previewValid(p.preview)
+      )
+        this.finish(id, true);
     if (!this.presses.size) this.multiple = false;
     const plan = this.plan;
     if (plan) {
@@ -494,8 +529,7 @@ export class PalScreenInput {
       )
         this.plan = undefined;
       else if (
-        v.seq > plan.sent &&
-        v.seq === v.appliedSeq &&
+        (v.local || (v.seq > plan.sent && v.seq === v.appliedSeq)) &&
         selection(v) !== plan.observed
       ) {
         const key = plan.next(v);
