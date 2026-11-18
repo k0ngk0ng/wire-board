@@ -1,10 +1,5 @@
 package pal_test
 
-// E2E before any hidden-loot changes: map-baked search spots disappear because
-// they have no actor sprite; facing/search cannot reach them; original rewards
-// or quantities change; saves lose a picked/unpicked state; reopening the game
-// allows farming; original forced inn dialogue/party is replaced; invisible loot gets an
-// added public actor/marker. All coordinates are test walkthrough data only.
 import (
 	"bytes"
 	"encoding/json"
@@ -24,8 +19,6 @@ type hiddenInnSpot struct {
 	Cash               uint32
 }
 
-// Original centered loot notices use palette color zero (black on a light
-// box). The bot's colored-menu text filter intentionally excludes that color.
 func hiddenNoticeText(v pal.View) string {
 	var text strings.Builder
 	if v.Raster == nil {
@@ -94,7 +87,11 @@ func TestOriginalYuhangHiddenItemsSearchSaveAndNoDuplication(t *testing.T) {
 		}
 		normalize := func(v pal.View) pal.View {
 			v.Epoch, v.Seq, v.AppliedSeq, v.DiscardedSeq, v.ControlAt = 0, 0, 0, 0, 0
+			v.Local = nil
 			return v
+		}
+		if before.Local == nil || visible().Local == nil || before.Local.Core != visible().Local.Core || before.Local.Generation == visible().Local.Generation {
+			t.Fatal("hidden item save did not restore the same core with a fresh local control generation", name)
 		}
 		if !bytes.Equal(raw(normalize(before)), raw(normalize(visible()))) {
 			t.Fatal("hidden item save changed native continuation", name)
@@ -252,7 +249,6 @@ func TestOriginalYuhangHiddenItemsSearchSaveAndNoDuplication(t *testing.T) {
 				t.Fatal("hidden search spot became a public actor", q.Event)
 			}
 		}
-		// Choose a real adjacent stance using current public collision answers.
 		stance, direction, best := [2]int{}, -1, int(^uint(0)>>1)
 		for d, delta := range [][2]int{{-16, 8}, {-16, -8}, {16, -8}, {16, 8}} {
 			x, y := q.X-delta[0], q.Y-delta[1]

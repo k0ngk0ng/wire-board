@@ -1,10 +1,5 @@
 package pal_test
 
-// E2E first: original outdoor herbs become unsearchable or fail to disappear;
-// map-baked rewards gain invented markers; several spots sharing one script
-// incorrectly share claimed state; inventory quantities or timed notices change;
-// acquisition-time saves replay or lose rewards; old searches cross a resume.
-// Coordinates and event IDs are walkthrough evidence, never production bot data.
 import (
 	"bytes"
 	"encoding/json"
@@ -55,7 +50,11 @@ func TestOriginalYuhangVillageHiddenItemsAndHerbsSave(t *testing.T) {
 		}
 		normalize := func(v pal.View) pal.View {
 			v.Epoch, v.Seq, v.AppliedSeq, v.DiscardedSeq, v.ControlAt = 0, 0, 0, 0, 0
+			v.Local = nil
 			return v
+		}
+		if before.Local == nil || visible().Local == nil || before.Local.Core != visible().Local.Core || before.Local.Generation == visible().Local.Generation {
+			t.Fatal("outdoor hidden item save did not restore the same core with a fresh local control generation", name)
 		}
 		if !bytes.Equal(raw(normalize(before)), raw(normalize(visible()))) {
 			t.Fatal("outdoor hidden item save changed native continuation", name)
@@ -82,8 +81,6 @@ func TestOriginalYuhangVillageHiddenItemsAndHerbsSave(t *testing.T) {
 			v = visible()
 		}
 		if v.Dialogue != nil {
-			// Once the item is gone, ordinary search can reach a nearby NPC.
-			// Preserve that original conversation rather than masking the NPC.
 			if lastPrompt != v.Dialogue.ID {
 				lastPrompt = v.Dialogue.ID
 				readings = append(readings, v.Dialogue.Text)
@@ -224,10 +221,6 @@ func TestOriginalYuhangVillageHiddenItemsAndHerbsSave(t *testing.T) {
 		}
 		if direction < 0 {
 			if q.Event == 145 {
-				// The source contains this reward, but its own cell and all
-				// four mode-1 search stances are blocked in the real map.
-				// Retain it as unresolved original content; never move it or
-				// treat a static reward record as a collected gameplay item.
 				du, dv := q.X-v.X, q.Y-v.Y
 				u, z := (du/16+dv/8)/2, (dv/8-du/16)/2
 				if u < -8 || u > 8 || z < -8 || z > 8 || v.Field.Cells[(z+8)*17+u+8]&1 == 0 {

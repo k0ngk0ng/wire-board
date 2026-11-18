@@ -349,6 +349,8 @@
     "games/pal/tests/local-stages-browser.py",
     "internal/server/pal_local_first_browser_test.go",
     "games/pal/web/field-correction.ts",
-    "games/pal/tests/field-correction.test.mjs"
+    "games/pal/tests/field-correction.test.mjs",
+    "games/pal/tests/hidden_items_e2e_test.go",
+    "games/pal/tests/hidden_village_items_e2e_test.go"
   ]
 }
