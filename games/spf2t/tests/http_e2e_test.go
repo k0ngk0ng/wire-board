@@ -1,9 +1,5 @@
 package spf2t_test
 
-// Real HTTP/SQLite acceptance for the production spf2t module. The failure
-// inventory is ../CONTRACT.md: unpublished creation, select/input privacy,
-// nonce replay, concurrent seats, restart preservation and autoplay reclaim.
-
 import (
 	"sync"
 	"testing"
@@ -114,9 +110,9 @@ func TestSPF2THTTPSpectatorPrivacyAndIdempotence(t *testing.T) {
 	if len(replayed["gems"].([]any)) != afterGems {
 		t.Fatalf("nonce replay changed gems: %d -> %d", afterGems, len(replayed["gems"].([]any)))
 	}
-	h.People[0].Action(spf2tBatch(epoch, 1, "hardDrop"), 400)
-	h.People[0].Action(spf2tBatch(epoch, 1<<20, "hardDrop"), 400)
-	h.People[0].Action(spf2tBatch(epoch, 2, "teleport"), 400)
+	h.People[0].RejectAction(spf2tBatch(epoch, 1, "hardDrop"))
+	h.People[0].RejectAction(spf2tBatch(epoch, 1<<20, "hardDrop"))
+	h.People[0].RejectAction(spf2tBatch(epoch, 2, "teleport"))
 	h.Record("privacy, nonce replay and sequence bounds")
 }
 

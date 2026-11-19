@@ -86,6 +86,41 @@ func (c *Client) Action(action map[string]any, status int) map[string]any {
 	r := c.Room()
 	return c.Request("POST", "/api/rooms/"+r["id"].(string), c.ActionRequest(action), status)
 }
+func (c *Client) RejectAction(action map[string]any) map[string]any {
+	c.t.Helper()
+	id := c.Room()["id"].(string)
+	for attempt := 0; attempt < 8; attempt++ {
+		raw, err := json.Marshal(c.ActionRequest(action))
+		if err != nil {
+			c.t.Fatal(err)
+		}
+		request, err := http.NewRequest(http.MethodPost, c.Base+"/api/rooms/"+id, bytes.NewReader(raw))
+		if err != nil {
+			c.t.Fatal(err)
+		}
+		request.Header.Set("Content-Type", "application/json")
+		response, err := c.HTTP.Do(request)
+		if err != nil {
+			c.t.Fatal(err)
+		}
+		var data map[string]any
+		err = json.NewDecoder(response.Body).Decode(&data)
+		response.Body.Close()
+		if err != nil {
+			c.t.Fatal(err)
+		}
+		if response.StatusCode == http.StatusConflict {
+			continue
+		}
+		if response.StatusCode != http.StatusBadRequest {
+			c.t.Fatalf("invalid input accepted or rejected for another reason: %d %v", response.StatusCode, data)
+		}
+		return data
+	}
+	c.t.Fatal("room version kept advancing before invalid input validation")
+	return nil
+}
+
 func (c *Client) Command(kind string, extra map[string]any, status int) map[string]any {
 	r := c.Room()
 	c.serial++
@@ -129,7 +164,7 @@ func NewHTTP(t *testing.T, n int, module gameapi.Module, kind string) *HTTP {
 			}
 			dir = parent
 		}
-		if kind == "tetris" {
+		if kind == "tetris" || kind == "spf2t" {
 			dir = filepath.Join(dir, ".local", kind, "verification", "http")
 		} else {
 			dir = filepath.Join(dir, ".local", "poker", kind, "http")

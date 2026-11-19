@@ -1,10 +1,7 @@
 package tetris_test
 
 import (
-	"bytes"
-	"encoding/json"
 	"fmt"
-	"net/http"
 	"sync"
 	"testing"
 	"time"
@@ -58,39 +55,6 @@ func seatAutoPlay(room map[string]any, seat int) bool {
 	return value
 }
 
-func rejectTetrisInput(t *testing.T, client *gametest.Client, id string, action map[string]any) {
-	t.Helper()
-	for attempt := 0; attempt < 8; attempt++ {
-		raw, err := json.Marshal(client.ActionRequest(action))
-		if err != nil {
-			t.Fatal(err)
-		}
-		request, err := http.NewRequest(http.MethodPost, client.Base+"/api/rooms/"+id, bytes.NewReader(raw))
-		if err != nil {
-			t.Fatal(err)
-		}
-		request.Header.Set("Content-Type", "application/json")
-		response, err := client.HTTP.Do(request)
-		if err != nil {
-			t.Fatal(err)
-		}
-		var data map[string]any
-		err = json.NewDecoder(response.Body).Decode(&data)
-		response.Body.Close()
-		if err != nil {
-			t.Fatal(err)
-		}
-		if response.StatusCode == http.StatusConflict {
-			continue
-		}
-		if response.StatusCode != http.StatusBadRequest {
-			t.Fatalf("invalid input accepted or rejected for another reason: %d %v", response.StatusCode, data)
-		}
-		return
-	}
-	t.Fatal("room version kept advancing before invalid input validation")
-}
-
 func TestTetrisHTTPSpectatorPrivacyAndIdempotence(t *testing.T) {
 	h := gametest.NewHTTP(t, 2, game.Module(), "tetris")
 	h.AssertUnpublished()
@@ -133,9 +97,9 @@ func TestTetrisHTTPSpectatorPrivacyAndIdempotence(t *testing.T) {
 	if replayed != after {
 		t.Fatalf("nonce replay changed score: %d -> %d", after, replayed)
 	}
-	rejectTetrisInput(t, h.People[0], id, tetrisBatch(epoch, 1, "hardDrop"))
-	rejectTetrisInput(t, h.People[0], id, tetrisBatch(epoch, 1<<20, "hardDrop"))
-	rejectTetrisInput(t, h.People[0], id, tetrisBatch(epoch, 2, "teleport"))
+	h.People[0].RejectAction(tetrisBatch(epoch, 1, "hardDrop"))
+	h.People[0].RejectAction(tetrisBatch(epoch, 1<<20, "hardDrop"))
+	h.People[0].RejectAction(tetrisBatch(epoch, 2, "teleport"))
 	h.Record("privacy, nonce replay and sequence bounds")
 }
 

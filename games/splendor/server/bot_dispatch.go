@@ -74,8 +74,6 @@ func (s *State) gemBot(player int) (Action, error) {
 			}
 		}
 	}
-	// Compare points per estimated action, not raw printed cost. A seven-token
-	// card can be a better plan than another free, zero-point development.
 	target := Card{Cost: make([]int, 5)}
 	best := -1
 	for _, c := range cards {
@@ -124,8 +122,6 @@ func (s *State) gemBot(player int) (Action, error) {
 			score := 120 + c.Points*140
 			if c.Color >= 0 && c.Color < 5 {
 				score += max(0, 24-p.Bonus[c.Color]*6)
-				// A permanent discount that helps a planned card or noble is
-				// worth more than collecting another unrelated cheap card.
 				score += min(3, max(0, target.Cost[c.Color]-p.Bonus[c.Color])) * 12
 				for _, noble := range g.Nobles {
 					if noble.Cost[c.Color] > p.Bonus[c.Color] {
@@ -139,7 +135,6 @@ func (s *State) gemBot(player int) (Action, error) {
 			choices = append(choices, botChoice{a, score})
 		}
 	}
-	// Enumerate the small set of legal take patterns, preferring useful colors.
 	available := 0
 	for i := 0; i < 5; i++ {
 		if g.Bank[i] > 0 {
@@ -179,11 +174,9 @@ func (s *State) gemBot(player int) (Action, error) {
 					continue
 				}
 				score := -80 - gemMissing(p, c, p.Tokens)*10 - len(p.Reserved)*30
-				if g.Bank[5] > 0 && sum(p.Tokens) < 10 {
+				if g.Bank[5] > 0 {
 					held := append([]int{}, p.Tokens...)
 					held[5]++
-					// Gold is valuable when it advances our chosen purchase,
-					// especially a color unavailable in the public bank.
 					if gemMissing(p, target, held) < gemMissing(p, target, p.Tokens) {
 						score += 150
 						if gemMissing(p, target, held) == 0 {
@@ -194,8 +187,6 @@ func (s *State) gemBot(player int) (Action, error) {
 				if c.ID == target.ID {
 					score += 60
 				}
-				// Only public bonuses, tokens, owned cards and score matter.
-				// Never inspect opponents' reserved identities or deck order.
 				for other, opponent := range g.Players {
 					if other == player || opponent.Eliminated || !g.gemCardAccessible(c.ID, other) {
 						continue

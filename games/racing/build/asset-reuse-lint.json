@@ -17,7 +17,9 @@
     "games/stoneage/",
     "games/tabletennis/",
     "web/",
-    "games/tetris/"
+    "games/tetris/",
+    "games/spf2t/",
+    "games/splendor/"
   ],
   "allowUpperSnakeConstants": true,
   "evidenceDirectory": ".local/asset-reuse/lint",
@@ -112,7 +114,10 @@
     "scripts/fortressblue/verify-assets.py",
     "scripts/fortressblue/test_fetch_assets.py",
     "games/racing/tests/dynamics-lint.test.mjs",
-    "games/tetris/tests/http_test.go"
+    "games/tetris/tests/http_test.go",
+    "games/spf2t/tests/http_e2e_test.go",
+    "games/splendor/server/bot_dispatch.go",
+    "games/splendor/server/bot_progress_e2e_test.go"
   ],
   "rules": [
     "Go 文件 snake_case；Python 文件沿用 snake_case 或 kebab-case；JS/TS 文件 kebab-case；React TSX 组件允许 PascalCase",
