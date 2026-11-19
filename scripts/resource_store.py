@@ -276,7 +276,7 @@ def hydrate(registry, root, origin, local=False, paths=None, client=None):
         finally:
             temporary.unlink(missing_ok=True)
         return path
-    with ThreadPoolExecutor(max_workers=8) as pool:
+    with ThreadPoolExecutor(max_workers=32) as pool:
         return list(pool.map(download, selected))
 
 

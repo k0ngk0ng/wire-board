@@ -79,3 +79,36 @@ func TestStaticMediaExternalRegistryHTTP(t *testing.T) {
 		}
 	}
 }
+
+func TestStaticMediaConfiguredOriginHTTP(t *testing.T) {
+	for _, origin := range []string{"https://cdn.example.invalid", "https://mirror.example.invalid"} {
+		for _, foreign := range []bool{false, true} {
+			base := origin + "/bga/"
+			target := base + "splendor/" + strings.Repeat("a", 64) + ".webp"
+			if foreign {
+				target = "https://foreign.example.invalid/bga/splendor/" + strings.Repeat("a", 64) + ".webp"
+			}
+			raw, err := json.Marshal(deliveredAssets{Version: 1, AssetBase: base, Files: map[string]deliveredAsset{"/splendor/cards.webp": {URL: target, Bytes: 5, SHA256: strings.Repeat("a", 64), MIME: "image/webp"}}})
+			if err != nil {
+				t.Fatal(err)
+			}
+			site := httptest.NewServer(staticFiles(fstest.MapFS{"cdn-assets-manifest.json": {Data: raw}}))
+			client := site.Client()
+			client.CheckRedirect = func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse }
+			response, err := client.Get(site.URL + "/bga/splendor/cards.webp")
+			if err != nil {
+				site.Close()
+				t.Fatal(err)
+			}
+			response.Body.Close()
+			site.Close()
+			expected := http.StatusTemporaryRedirect
+			if foreign {
+				expected = http.StatusServiceUnavailable
+			}
+			if response.StatusCode != expected || (!foreign && response.Header.Get("Location") != target) {
+				t.Fatalf("configured origin: %d %v", response.StatusCode, response.Header)
+			}
+		}
+	}
+}

@@ -28,8 +28,8 @@ type deliveredAssets struct {
 	Objects   map[string]deliveredAsset `json:"objects,omitempty"`
 }
 
-var immutableMediaBase = regexp.MustCompile(`^https://cdn\.ichenj\.com/bga/(?:web/[a-f0-9]{40}/)?$`)
-var immutableMediaURL = regexp.MustCompile(`^(https://cdn\.ichenj\.com/bga/(?:web/[a-f0-9]{40}/)?)([A-Za-z0-9._/-]+)$`)
+var immutableMediaBase = regexp.MustCompile(`^https://[A-Za-z0-9.-]+(?::[0-9]+)?/bga/(?:web/[a-f0-9]{40}/)?$`)
+var immutableMediaURL = regexp.MustCompile(`^(https://[A-Za-z0-9.-]+(?::[0-9]+)?/bga/(?:web/[a-f0-9]{40}/)?)([A-Za-z0-9._/-]+)$`)
 var mediaPath = regexp.MustCompile(`^/[A-Za-z0-9._/-]+$`)
 var mediaHash = regexp.MustCompile(`^[a-f0-9]{64}$`)
 
@@ -66,7 +66,7 @@ func readDeliveredAssets(files fs.FS) (*deliveredAssets, error) {
 	}
 	aliases := map[string]deliveredAsset{}
 	for name, asset := range manifest.Files {
-		if !mediaPath.MatchString(name) || path.Clean(name) != name || serverMetadataPath(name) || !validDeliveredAsset(asset) || asset.Bytes <= 0 || !mediaHash.MatchString(asset.SHA256) || asset.MIME == "" {
+		if !mediaPath.MatchString(name) || path.Clean(name) != name || serverMetadataPath(name) || !validDeliveredAsset(asset, manifest.AssetBase) || asset.Bytes <= 0 || !mediaHash.MatchString(asset.SHA256) || asset.MIME == "" {
 			return nil, errors.New("invalid CDN asset entry")
 		}
 		for _, part := range strings.Split(strings.TrimPrefix(name, "/"), "/") {
@@ -82,16 +82,17 @@ func readDeliveredAssets(files fs.FS) (*deliveredAssets, error) {
 		manifest.Files[name] = asset
 	}
 	for url, asset := range manifest.Objects {
-		if url != asset.URL || !validDeliveredAsset(asset) {
+		if url != asset.URL || !validDeliveredAsset(asset, manifest.AssetBase) {
 			return nil, errors.New("invalid historical CDN object")
 		}
 	}
 	return &manifest, nil
 }
 
-func validDeliveredAsset(asset deliveredAsset) bool {
+func validDeliveredAsset(asset deliveredAsset, base string) bool {
 	parts := immutableMediaURL.FindStringSubmatch(asset.URL)
-	if len(parts) != 3 || asset.Bytes <= 0 || !mediaHash.MatchString(asset.SHA256) || asset.MIME == "" || (asset.Encoding != "" && asset.Encoding != "gzip") {
+	origin := strings.SplitN(base, "/bga/", 2)[0]
+	if len(parts) != 3 || !strings.HasPrefix(asset.URL, origin+"/bga/") || asset.Bytes <= 0 || !mediaHash.MatchString(asset.SHA256) || asset.MIME == "" || (asset.Encoding != "" && asset.Encoding != "gzip") {
 		return false
 	}
 	name := "/" + parts[2]

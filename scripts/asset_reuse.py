@@ -13,7 +13,7 @@ import cdn_delivery as cdn
 from resource_store import configuration, OWNERS
 
 ROOT = Path(__file__).resolve().parents[1]
-URL = re.compile(r'https://cdn\.ichenj\.com/bga/(?:web/[a-f0-9]{40}/|[a-z_][a-z0-9_-]*/)[A-Za-z0-9._/-]+\Z')
+URL = re.compile(re.escape(configuration()['CDN_ORIGIN']) + r'/bga/(?:web/[a-f0-9]{40}/|[a-z_][a-z0-9_-]*/)[A-Za-z0-9._/-]+\Z')
 ENCODED = {'.js', '.css', '.svg', '.json', '.txt', '.md', '.glb'}
 
 
@@ -272,7 +272,7 @@ def published_baseline():
         elif not receipt_path.is_file():
             raise ValueError('Incomplete baseline cache')
         previous = json.loads((folder / 'game-load-manifest.json').read_bytes())
-        if previous.get('sourceSHA') != sha and previous['assetBase'] != 'https://cdn.ichenj.com/bga/web/' + sha + '/':
+        if previous.get('sourceSHA') != sha and previous['assetBase'] != configuration()['CDN_ORIGIN'] + '/bga/web/' + sha + '/':
             raise ValueError('Ancestor artifact is not bound to its source')
         rows = cdn.inventory(folder, previous['assetBase'])
         receipt = {'sourceSHA': sha, 'sourceRun': source_run, 'files': rows}

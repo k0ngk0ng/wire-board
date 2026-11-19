@@ -1,5 +1,6 @@
 import hashlib
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -16,6 +17,30 @@ WORK.mkdir(parents=True, exist_ok=True)
 
 
 class CanonicalPublicationE2E(unittest.TestCase):
+    def test_configured_cdn_origin_reaches_publication_cli_and_validators(self):
+        with tempfile.TemporaryDirectory(dir=WORK) as name:
+            dist=Path(name)
+            (dist/'splendor').mkdir()
+            (dist/'splendor/cards.webp').write_bytes(b'generated pixels')
+            (dist/'assets').mkdir()
+            (dist/'assets/app-abcdefgh.js').write_bytes(b'export const ready=true;')
+            origin='https://custom-cdn.example.invalid'
+            base=origin+'/bga/'
+            (dist/'index.html').write_text('<script src="'+base+'assets/app-abcdefgh.js"></script>')
+            (dist/'game-load-manifest.json').write_text(json.dumps({'sourceSHA':'a'*40,'assetBase':base,'entry':base+'assets/app-abcdefgh.js','games':{},'owners':{'assets/app-abcdefgh.js':'_common'}}))
+            env={**os.environ,'PUBLIC_ORIGIN':'https://app.example.invalid','CDN_ORIGIN':origin}
+            command=[sys.executable,'-B','scripts/asset_reuse.py','--dist',str(dist)]
+            baseline=dist.parent/(dist.name+'-baseline.json')
+            baseline.write_text(json.dumps({'version':1,'files':{}}))
+            try:
+                subprocess.run([*command,'--baseline',str(baseline)],cwd=ROOT,env=env,check=True,capture_output=True)
+                manifest=json.loads((dist/'cdn-assets-manifest.json').read_text())
+                self.assertEqual(manifest['files']['/splendor/cards.webp']['url'],base+'splendor/'+hashlib.sha256(b'generated pixels').hexdigest()+'.webp')
+                code="import asset_reuse as reuse,cdn_delivery as cdn; from pathlib import Path; import sys; rows=cdn.inventory(Path(sys.argv[1]),sys.argv[2]); assert len(rows)==2; [reuse.valid_url(row['url']) for row in rows]; [cdn.validate_asset_url(row['url']) for row in rows]"
+                subprocess.run([sys.executable,'-B','-c',code,str(dist),base],cwd=ROOT/'scripts',env=env,check=True,capture_output=True)
+            finally:
+                baseline.unlink(missing_ok=True)
+
     def test_real_cli_places_every_game_and_shared_object_under_its_owner(self):
         with tempfile.TemporaryDirectory(dir=WORK) as name:
             dist = Path(name)

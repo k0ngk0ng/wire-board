@@ -56,7 +56,7 @@ def urlopen(request,timeout=60):
   connection.close();connections.pop(key,None)
   raise URLError(error) from error
 
-BASE=re.compile(r'https://cdn\.ichenj\.com/bga/(?:web/[a-f0-9]{40}/)?\Z')
+BASE=re.compile(re.escape(configuration()['CDN_ORIGIN'])+r'/bga/(?:web/[a-f0-9]{40}/)?\Z')
 MIME={'.js':'text/javascript','.css':'text/css','.svg':'image/svg+xml','.png':'image/png','.webp':'image/webp','.jpg':'image/jpeg','.woff':'font/woff','.woff2':'font/woff2','.ttf':'font/ttf','.wasm':'application/wasm'}
 CONTRA_MIME={'.js':'text/javascript','.wasm':'application/wasm','.json':'application/json','.idx':'application/octet-stream','.rgb':'application/octet-stream','.wav':'audio/wav'}
 MIME['.gz']='application/gzip'
@@ -173,7 +173,7 @@ def inventory(dist,base):
  return rows
 
 def validate_asset_url(url):
- if not isinstance(url,str) or not re.fullmatch(r'https://cdn\.ichenj\.com/bga/(?:web/[a-f0-9]{40}/|[a-z_][a-z0-9_-]*/)[A-Za-z0-9._/-]+',url):raise ValueError('Invalid published asset URL')
+ if not isinstance(url,str) or not re.fullmatch(re.escape(configuration()['CDN_ORIGIN'])+r'/bga/(?:web/[a-f0-9]{40}/|[a-z_][a-z0-9_-]*/)[A-Za-z0-9._/-]+',url):raise ValueError('Invalid published asset URL')
  if Path(urlsplit(url).path).as_posix()!=urlsplit(url).path or any(part.startswith('.') for part in urlsplit(url).path.split('/') if part):raise ValueError('Private published asset URL')
  return url
 
@@ -308,7 +308,7 @@ def publish(dist,rows,bucket,endpoint):
  key_id,secret=credentials()
  attempts={}
  def upload(row):
-  key=row['url'].removeprefix('https://cdn.ichenj.com/')
+  key=urlsplit(row['url']).path.lstrip('/')
   url='https://'+endpoint+'/'+key
 
   date=formatdate(usegmt=True)
