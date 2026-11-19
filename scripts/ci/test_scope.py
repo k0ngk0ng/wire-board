@@ -469,12 +469,13 @@ class ScopeTests(unittest.TestCase):
         docker=(ROOT/'Dockerfile').read_text()
         self.assertLess(docker.index('scripts/cdn_delivery.py trim'),docker.index('games/contra/build/native.py'))
 
-    def test_source_container_requires_matching_commit_asset_base(self):
+    def test_source_container_requires_configured_stable_asset_base(self):
         docker=(ROOT/'Dockerfile').read_text()
         line=next(line for line in docker.splitlines() if line.startswith('RUN node --input-type=module -e '))
         command=shlex.split(line.removeprefix('RUN '))
-        for source,base,passed in [('', '', False),('a'*40,'https://cdn.ichenj.com/bga/web/'+'b'*40+'/',False),('a'*40,'https://cdn.ichenj.com/bga/web/'+'a'*40+'/',True)]:
-            result=subprocess.run(command,cwd=ROOT,env={'PATH':os.environ['PATH'],'SOURCE_SHA':source,'WIRE_BOARD_ASSET_BASE':base},capture_output=True,text=True)
+        origin='https://cdn.example.invalid'
+        for source,base,passed in [('', origin+'/bga/', False),('a'*40,origin+'/bga/web/'+'a'*40+'/',False),('a'*40,origin+'/bga/',True),('a'*40,'https://other.example.invalid/bga/',False)]:
+            result=subprocess.run(command,cwd=ROOT,env={'PATH':os.environ['PATH'],'SOURCE_SHA':source,'WIRE_BOARD_ASSET_BASE':base,'CDN_ORIGIN':origin},capture_output=True,text=True)
             self.assertEqual(result.returncode==0,passed,(source,base,result.stderr))
 
 

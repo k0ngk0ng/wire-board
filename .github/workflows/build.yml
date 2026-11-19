@@ -58,6 +58,8 @@ jobs:
           script: |
             const {baseline} = require('./scripts/ci/baseline.cjs');
             const repo = context.repo;
+            const {execFileSync} = require('node:child_process');
+            const ancestors = new Set(execFileSync('git', ['rev-list', context.sha], {encoding:'utf8'}).trim().split('\n'));
             let publishedSHA = '';
             try {
               const release = (await github.rest.repos.getLatestRelease(repo)).data;
@@ -71,10 +73,7 @@ jobs:
               },
               jobs: async run_id => await github.paginate(github.rest.actions.listJobsForWorkflowRun, {...repo, run_id, per_page:100}),
               artifacts: async run_id => await github.paginate(github.rest.actions.listWorkflowRunArtifacts, {...repo, run_id, per_page:100}),
-              ancestor: async base => {
-                const {data} = await github.rest.repos.compareCommitsWithBasehead({...repo, basehead:`${base}...${context.sha}`});
-                return ['ahead','identical'].includes(data.status);
-              },
+              ancestor: async base => ancestors.has(base),
             };
             core.setOutput('sha', await baseline(api, context.runId, publishedSHA) || '');
       - name: Plan changed games, including cancelled predecessor commits

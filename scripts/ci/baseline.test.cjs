@@ -29,3 +29,8 @@ test('other ancestry API failures still propagate',async()=>{
  const api=fixture({ancestor:async()=>{const error=new Error('service unavailable');error.status=503;throw error;}});
  await assert.rejects(baseline(api,3),/service unavailable/);
 });
+
+test('disconnected historical runs do not request jobs or artifacts',async()=>{
+ const api=fixture({ancestor:async()=>false,jobs:async()=>{throw Error('disconnected jobs queried');},artifacts:async()=>{throw Error('disconnected artifacts queried');}});
+ assert.equal(await baseline(api,3),null);
+});
