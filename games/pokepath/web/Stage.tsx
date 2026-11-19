@@ -51,7 +51,7 @@ export const Stage = forwardRef<StageHandle, { view: View; assets: Assets; selec
   }), []);
   useEffect(() => {
     if (!root.current || !canvas.current || !wrapper.current) return;
-    const controller = attachMapViewport({ canvas: canvas.current, wrapper: wrapper.current });
+    const controller = attachMapViewport({ canvas: canvas.current, wrapper: wrapper.current, initialMode: "fill" });
     const cursorPoint = () => {
       if (keyboardCursor.current) return keyboardCursor.current;
       const state = current.current;
@@ -120,12 +120,7 @@ export const Stage = forwardRef<StageHandle, { view: View; assets: Assets; selec
     const element = root.current;
     const events = ["controller-direction", "controller-reveal", "click", "pointerdown", "pointermove", "pointerup", "pointercancel", "lostpointercapture", "pointerleave", "wheel"];
     for (const name of events) element.addEventListener(name, capture, { capture: true, passive: false });
-    const fit = () => {
-      const ratio = Math.min(wrapper.current!.clientWidth / canvas.current!.width, wrapper.current!.clientHeight / canvas.current!.height);
-      if (window.innerWidth > 700 && !current.current.assets.ready && ratio >= 0.75) controller.fit();
-      else controller.update();
-    };
-    fit();
+    controller.update();
     return () => {
       for (const name of events) element.removeEventListener(name, capture, true);
       controller.destroy();

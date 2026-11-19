@@ -447,11 +447,14 @@ export function Board(props: BoardProps<StreamView>) {
       const hotspot = value.progression?.hotspots.find(hotspot => location.x >= hotspot.x && location.x <= hotspot.x + hotspot.width && location.y >= hotspot.y && location.y <= hotspot.y + hotspot.height);
       if (hotspot) { act({ type: hotspot.kind === "bell" ? "bell" : "secret", name: hotspot.key, x: location.x, y: location.y }); return; }
     }
-    if (!placing || selected === undefined || !controlRef.current) return;
+    if (!placing || selected === undefined || !controlRef.current) {
+      if (controlRef.current && value.team.some(pokemon => pokemon.tileID < 0)) setError("先选择下方队伍中的宝可梦，再点地图上的可建造位置");
+      return;
+    }
     const preview = placementPreview(value, selected);
     if (!preview) return;
     const tile = siteAt(value.tiles, location, preview.tileSize, touch);
-    if (!tile || !siteAllowsDeployment(preview.sites[tile.id])) return;
+    if (!tile || !siteAllowsDeployment(preview.sites[tile.id])) { setError("这里不能部署，请点亮起的可建造位置"); return; }
     if (value.team.find(pokemon => pokemon.id === selected)?.tileID !== tile.id) act({ type: "deploy", pokemonID: selected, tileID: tile.id });
     setPlacing(false);
   }, [selected, placing, aiming, panel, details, act, placementPreview]);
@@ -507,7 +510,7 @@ export function Board(props: BoardProps<StreamView>) {
   if (!view) return <section className="pokepath-board"><div className="pokepath-sync-status" role="status">正在同步战场</div>{error && <div role="alert">{error}</div>}</section>;
 
   const detailsPokemon = detailEntry && inspection?.id === detailEntry.id ? { ...detailEntry, combatStats: detailEntry.combatStats ?? inspection.combatStats, combatRangeType: detailEntry.combatRangeType ?? inspection.combatRangeType, combatRangeHalfWidth: detailEntry.combatRangeHalfWidth ?? inspection.combatRangeHalfWidth, combatInnerRange: detailEntry.combatInnerRange ?? inspection.combatInnerRange } : detailEntry;
-  const select = (id: number) => { setAiming(undefined); setSelected(id); setPlacing(controlRef.current); setDetails(undefined); setPanel("team"); };
+  const select = (id: number) => { setError(""); setAiming(undefined); setSelected(id); setPlacing(controlRef.current); setDetails(undefined); setPanel("team"); };
   const openPanel = (next: Panel) => { if (challengeLocksPanel(view, next)) return; if (next === "routes" && panel !== "routes") act({ type: "mapOpen" }); setPanel(next); setDetails(undefined); setPlacing(false); };
   const openDetails = (id: number) => { setDetailToken(undefined); setSelected(id); setDetails(id); setPlacing(false); };
   const inspectCandidate = (id: number) => {

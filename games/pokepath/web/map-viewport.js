@@ -2,9 +2,10 @@ const canvasProperties = ["position", "display", "left", "top", "right", "bottom
 const wrapperProperties = ["overflow", "touch-action", "overscroll-behavior", "--scroll-pct", "--scroll-pct-h", "--scroll-pct-v"];
 const buttons = "[data-map-zoom-in],[data-map-zoom-out],[data-map-fit],[data-map-reset]";
 
-export function attachMapViewport({ canvas, wrapper, onChange, minimumScale, maximumScale = 4, dragThreshold = 7 } = {}) {
+export function attachMapViewport({ canvas, wrapper, onChange, minimumScale, maximumScale = 4, dragThreshold = 7, initialMode = "native" } = {}) {
   if (!canvas || !wrapper || canvas.parentElement !== wrapper || typeof canvas.getBoundingClientRect !== "function") throw Error("Map viewport requires the original canvas and its parent");
   if (!Number.isFinite(maximumScale) || maximumScale <= 0 || !Number.isFinite(dragThreshold) || dragThreshold < 0) throw Error("Invalid map viewport bounds");
+  if (!["native", "fit", "fill"].includes(initialMode)) throw Error("Invalid initial map view");
   const view = canvas.ownerDocument.defaultView;
   const pointers = new Map();
   const cancelled = new Set();
@@ -14,6 +15,11 @@ export function attachMapViewport({ canvas, wrapper, onChange, minimumScale, max
   let height = canvas.height;
   let scale = 1;
   let fitted = false;
+  let filled = false;
+  let viewportWidth = wrapper.clientWidth;
+  let viewportHeight = wrapper.clientHeight;
+  let marginX = 0;
+  let marginY = 0;
   let destroyed = false;
   let pinch;
   let suppressClick;
@@ -24,7 +30,8 @@ export function attachMapViewport({ canvas, wrapper, onChange, minimumScale, max
     if (element.style.getPropertyValue(name) !== value || element.style.getPropertyPriority(name) !== "important") element.style.setProperty(name, value, "important");
   };
   const fitScale = () => Math.min(wrapper.clientWidth / Math.max(1, width), wrapper.clientHeight / Math.max(1, height), maximumScale);
-  const minScale = () => Number.isFinite(minimumScale) && minimumScale > 0 ? Math.min(minimumScale, maximumScale) : Math.max(0.02, Math.min(0.25, fitScale()));
+  const fillScale = () => Math.min(Math.max(wrapper.clientWidth / Math.max(1, width), wrapper.clientHeight / Math.max(1, height)), maximumScale);
+  const minScale = () => Math.max(0.02, Math.min(maximumScale, Math.max(fitScale(), Number.isFinite(minimumScale) ? minimumScale : 0)));
   const clampScale = value => Math.max(minScale(), Math.min(maximumScale, value));
   const parentScale = () => {
     const rect = wrapper.getBoundingClientRect();
@@ -55,7 +62,11 @@ export function attachMapViewport({ canvas, wrapper, onChange, minimumScale, max
     setStyle(wrapper, "overflow", "auto");
     setStyle(wrapper, "touch-action", "none");
     setStyle(wrapper, "overscroll-behavior", "contain");
-    const properties = { position: "relative", display: "block", left: "0px", top: "0px", right: "auto", bottom: "auto", width: `${width * scale}px`, height: `${height * scale}px`, "max-width": "none", "max-height": "none", transform: "none", "transform-origin": "0px 0px", margin: "0px" };
+    viewportWidth = wrapper.clientWidth;
+    viewportHeight = wrapper.clientHeight;
+    marginX = Math.max(0, (viewportWidth - width * scale) / 2);
+    marginY = Math.max(0, (viewportHeight - height * scale) / 2);
+    const properties = { position: "relative", display: "block", left: "0px", top: "0px", right: "auto", bottom: "auto", width: `${width * scale}px`, height: `${height * scale}px`, "max-width": "none", "max-height": "none", transform: "none", "transform-origin": "0px 0px", margin: `${marginY}px ${marginX}px` };
     for (const [name, value] of Object.entries(properties)) setStyle(canvas, name, value);
     constrain();
   };
@@ -73,23 +84,23 @@ export function attachMapViewport({ canvas, wrapper, onChange, minimumScale, max
   const zoomBy = (factor, point) => {
     if (!Number.isFinite(factor) || factor <= 0) return;
     fitted = false;
+    filled = false;
     zoomTo(scale * factor, point);
   };
   const reset = () => {
     fitted = false;
-    scale = clampScale(1);
-    apply();
-    wrapper.scrollTo(0, 0);
-    constrain();
-    notify();
+    filled = false;
+    zoomTo(1, center(), { x: width / 2, y: height / 2 });
   };
   const fit = () => {
     fitted = true;
-    scale = clampScale(fitScale());
-    apply();
-    wrapper.scrollTo(0, 0);
-    constrain();
-    notify();
+    filled = false;
+    zoomTo(fitScale(), center(), { x: width / 2, y: height / 2 });
+  };
+  const fill = () => {
+    fitted = false;
+    filled = true;
+    zoomTo(fillScale(), center(), { x: width / 2, y: height / 2 });
   };
   const release = id => {
     try { if (wrapper.hasPointerCapture?.(id)) wrapper.releasePointerCapture(id); } catch {}
@@ -106,16 +117,19 @@ export function attachMapViewport({ canvas, wrapper, onChange, minimumScale, max
   };
   const update = () => {
     if (destroyed) return;
+    const anchor = { x: (wrapper.scrollLeft + viewportWidth / 2 - marginX) / scale, y: (wrapper.scrollTop + viewportHeight / 2 - marginY) / scale };
     if (canvas.width !== width || canvas.height !== height) {
       width = canvas.width;
       height = canvas.height;
       cancel();
-      if (fitted) fit();
+      if (initialMode === "fill") fill();
+      else if (initialMode === "fit") fit();
       else reset();
     } else {
-      scale = clampScale(fitted ? fitScale() : scale);
-      apply();
-      notify();
+      if (viewportWidth !== wrapper.clientWidth || viewportHeight !== wrapper.clientHeight) cancel();
+      if (fitted) fit();
+      else if (filled) fill();
+      else zoomTo(scale, center(), anchor);
     }
   };
   const consume = (event, prevent = true) => {
@@ -184,11 +198,14 @@ export function attachMapViewport({ canvas, wrapper, onChange, minimumScale, max
       if (pointers.size >= 2 && pinch) {
         const [first, second] = [...pointers.values()];
         fitted = false;
+        filled = false;
         zoomTo(pinch.scale * distance(first, second) / pinch.distance, midpoint(first, second), pinch.anchor);
         return consume(event);
       }
       if (!pointer.moved && Math.hypot(pointer.x - pointer.startX, pointer.y - pointer.startY) < dragThreshold) return false;
       pointer.moved = true;
+      fitted = false;
+      filled = false;
       try { wrapper.setPointerCapture(pointer.id); } catch {}
       const outer = parentScale();
       wrapper.scrollLeft = pointer.left + (pointer.startX - pointer.x) / Math.max(0.0001, outer.x);
@@ -225,13 +242,15 @@ export function attachMapViewport({ canvas, wrapper, onChange, minimumScale, max
     resize = new view.ResizeObserver(update);
     resize.observe(wrapper);
   }
-  apply();
-  notify();
+  if (initialMode === "fill") fill();
+  else if (initialMode === "fit") fit();
+  else { scale = clampScale(1); apply(); notify(); }
 
   return {
     handleEvent,
     zoomBy,
     fit,
+    fill,
     reset,
     update,
     logicalPoint,

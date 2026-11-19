@@ -109,6 +109,11 @@ test("real mouse, wheel and touch preserve map coordinates and suppress drag cli
     await browser("click", "[data-map-fit]");
     const fitted = await evaluate("window.viewport.state");
     assert.ok(fitted.scale < 1 && fitted.maxScrollLeft < 2 && fitted.maxScrollTop < 2, JSON.stringify(fitted));
+    const fitCenters = await evaluate("(()=>{const a=document.querySelector('canvas').getBoundingClientRect(),b=document.querySelector('#wrapper').getBoundingClientRect();return{canvasX:Math.round((a.left+a.width/2)*1000),canvasY:Math.round((a.top+a.height/2)*1000),wrapperX:Math.round((b.left+b.width/2)*1000),wrapperY:Math.round((b.top+b.height/2)*1000)}})()");
+    assert.ok(Math.abs(fitCenters.canvasX-fitCenters.wrapperX)<=2000 && Math.abs(fitCenters.canvasY-fitCenters.wrapperY)<=2000, `fitted map is not centered: ${JSON.stringify(fitCenters)}`);
+    for (let count=0;count<6;count++) await browser("click", "[data-map-zoom-out]");
+    assert.equal(Math.round((await evaluate("window.viewport.state")).scale*1000000),Math.round(fitted.scale*1000000),"zoom-out shrinks below a useful whole-map scale");
+    report.checks.push({name:"fit-centered-and-minimum-useful-scale",fitCenters});
     await browser("click", "[data-map-reset]");
     assert.equal((await evaluate("window.viewport.state")).scale, 1);
     await evaluate("document.querySelector('#wrapper').style.scale='0.8';document.querySelector('#wrapper').scrollTo(180,120)");

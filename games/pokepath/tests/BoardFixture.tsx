@@ -7,6 +7,7 @@ import type { BoardProps } from "../../../web/src/game-api/module";
 import type { Action, RuleState, View } from "../web/types";
 import "../web/style.css";
 import "../web/classic.css";
+import "../web/mobile.css";
 
 const base = new URL("/pokepath/v1/", location.href);
 const native = await loadNativeRuntime<RuleState, View, Action>({ baseURL: new URL("native/", base), catalogBaseURL: base });

@@ -30,7 +30,8 @@ const verifyChallenge = process.argv.includes("--challenge");
 const verifyBox = process.argv.includes("--box");
 const verifyMaps = process.argv.includes("--maps");
 const verifyRange = process.argv.includes("--range");
-const verifyResult = process.argv.includes("--result-victory") ? "victory" : process.argv.includes("--result-defeat") ? "defeat" : undefined;
+const verifyMobileUX = process.argv.includes("--mobile-ux");
+const verifyResult = process.argv.includes("--result-victory") ? "victory" : process.argv.includes("--result-defeat") ? "defeat" : process.argv.includes("--result-restart") ? "restart" : undefined;
 
 function browser(label, ...args) {
   let session = sessions.get(label);
@@ -339,6 +340,60 @@ async function challengeAcceptance() {
   report.checks.push({ name: "four-authenticated-human-challenge-seats", players, localRuleChoice: true, rewardSlot: 3, rewardGold: 500000, picked: chosen, replacedRunningWave: true, rerolled: true, restarted: true, staleRestartStatus: staleRestart.status, staleStatus: stale.status, recoveredCollection: 30, frozenTime, displayedFrozenTime: renderTime, surrenderedWithEnemies: true, spectatorReadOnly: true, mutedByPlatform: true });
 }
 
+async function mobileUXAcceptance() {
+  const account = { name: `手机${owner}`, password: "native-browser-test-password" };
+  accounts.set("a", account);
+  openAccount("a", account);
+  browser("a", "set", "viewport", "390", "640");
+  roomID = api("a", "/api/rooms", { kind: "pokepath", capacity: 1, name: "手机战场布局验收", options: { starter: "charmander" } }).id;
+  command("a", "ready"); command("a", "start");
+  browser("a", "reload"); await waitCanvas("a");
+  await waitFor(() => !room("a").loading, "mobile ready");
+  const measure = () => evaluate("a", `(()=>{const bounds=s=>document.querySelector(s)?.getBoundingClientRect().toJSON();return {width:innerWidth,height:innerHeight,overflow:document.documentElement.scrollWidth>innerWidth,board:bounds('.pokepath-board'),map:bounds('.pokepath-stage'),camera:bounds('.pokepath-camera'),canvas:bounds('[data-pokepath-canvas]'),scene:bounds('.pokepath-classic-scene')}})()`);
+  await waitFor(() => evaluate("a", "document.querySelector('.pokepath-stage').getBoundingClientRect().bottom <= innerHeight"), "entry reveals the usable phone battlefield");
+  const normal = measure();
+  evaluate("a", "Boolean(window.__mobileUXCanvas=document.querySelector('[data-pokepath-canvas]'))");
+  const epoch = data("a").epoch;
+  checkpoint("a", "mobile-portrait-before-scroll");
+  assert.ok(normal.camera.height >= 300, `normal phone battlefield is a strip: ${JSON.stringify(normal)}`);
+  assert.ok(normal.scene.height <= normal.board.height + 2, `phone UI is nested inside a second scrolling screen: ${JSON.stringify(normal)}`);
+  assert.equal(normal.overflow, false);
+  const current = data("a");
+  const geometry = evaluate("a", "(()=>{const r=document.querySelector('[data-pokepath-canvas]').getBoundingClientRect(),b=document.querySelector('.pokepath-camera').getBoundingClientRect(),c=document.querySelector('[data-pokepath-canvas]');return {left:r.left,top:r.top,width:r.width,height:r.height,logicalWidth:c.width,logicalHeight:c.height,bounds:b.toJSON()}})()");
+  const candidate = current.tiles.find(tile=>{const x=geometry.left+(tile.x+12)*geometry.width/geometry.logicalWidth,y=geometry.top+(tile.y+12)*geometry.height/geometry.logicalHeight;return tile.terrain===1&&x>geometry.bounds.left+20&&x<geometry.bounds.right-20&&y>geometry.bounds.top+20&&y<geometry.bounds.bottom-64;});
+  assert.ok(candidate);
+  canvasClick("a",candidate.x+12,candidate.y+12,true);
+  await waitFor(()=>evaluate("a","document.querySelector('.pokepath-action-error')?.textContent.includes('选择')"),"blank map tap explains choosing a partner",5000);
+  assert.equal(data("a").towers.length,0);
+  const first=current.team[0].id;
+  touchControl("a",`[data-pokemon-id="${first}"] .pokepath-card-name`);
+  await waitFor(()=>inspector("a")===first,"whole card tap chooses the deployment");
+  canvasClick("a",candidate.x+12,candidate.y+12,true);
+  await waitFor(()=>data("a").towers.some(tower=>tower.pokemonID===first&&tower.tileID===candidate.id),"phone card and terrain touch deploy the real partner");
+  report.checks.push({name:"discoverable-phone-deployment",pokemonID:first,tileID:candidate.id});
+  browser("a", "find", "role", "button", "click", "--name", "玩法速查", "--exact");
+  browser("a", "wait", ".rules-modal");
+  const rules = evaluate("a", "document.querySelector('.rules-modal').textContent");
+  for (const detail of ["宝可梦就是塔", "精灵球", "下一波", "重新开始", "第 1 波", "重试", "第 25 波"]) assert.ok(rules.includes(detail), `missing playable quick reference: ${detail}`);
+  assert.equal(evaluate("a", "document.documentElement.scrollWidth<=innerWidth"), true);
+  checkpoint("a", "mobile-gameplay-quick-reference");
+  browser("a", "press", "Escape");
+  await waitFor(() => !evaluate("a", "Boolean(document.querySelector('.rules-modal'))"), "quick reference closes without changing the battlefield");
+  report.checks.push({name:"phone-gameplay-quick-reference",rules});
+  click("a", "[data-fullscreen-toggle]");
+  await waitFor(() => evaluate("a", "Boolean(document.querySelector('[data-room-fullscreen]'))"), "mobile fullscreen");
+  const portrait = measure(); checkpoint("a", "mobile-portrait-fullscreen");
+  assert.ok(portrait.camera.height >= 300, JSON.stringify(portrait));
+  browser("a", "set", "viewport", "844", "390");
+  await waitFor(() => evaluate("a", "innerWidth===844"), "landscape size");
+  const landscape = measure(); checkpoint("a", "mobile-landscape-fullscreen");
+  assert.ok(landscape.camera.width >= 500 && landscape.camera.height >= 240, JSON.stringify(landscape));
+  assert.equal(evaluate("a", "Boolean(document.querySelector('.pokepath-map-tools')?.getBoundingClientRect().width)"), true);
+  assert.equal(evaluate("a", "window.__mobileUXCanvas===document.querySelector('[data-pokepath-canvas]')"), true);
+  assert.equal(data("a").epoch, epoch);
+  report.checks.push({name:"mobile-normal-portrait-landscape-map-space",normal,portrait,landscape});
+}
+
 async function resultAcceptance(kind) {
   const seats = ["a", "b"];
   for (const label of [...seats, "s"]) {
@@ -350,43 +405,52 @@ async function resultAcceptance(kind) {
   roomID = api("a", "/api/rooms", { kind: "pokepath", capacity: 2, name: "路线结算验收", options: { starter: "charmander" } }).id;
   assert.equal(request("b", `/api/rooms/${roomID}`, { type: "join", version: room("a").version, nonce: randomUUID() }).status, 200);
   for (const label of seats) { browser(label, "reload"); browser(label, "wait", ".waiting-cover"); command(label, "ready"); }
-  writeFileSync(join(output, `result-${kind}`), "result\n");
+  if (kind !== "restart") writeFileSync(join(output, `result-${kind}`), "result\n");
   command("a", "start");
   for (const label of seats) await waitCanvas(label);
   await waitFor(() => seats.every(label => !room(label).loading), "both original seats loaded the authoritative result");
   api("s", `/api/rooms/${roomID}/watch`, {});
   browser("s", "reload"); await waitCanvas("s");
   matchID = room("a").matchId;
-  const action = kind === "victory" ? { type: "continueRoute" } : { type: "retry", mode: "retry" };
-  const target = kind === "victory" ? "[data-result-continue]" : "[data-result-retry]";
-  for (const label of [...seats, "s"]) browser(label, "wait", `[data-route-result="${kind}"]`);
+  if (kind === "restart") {
+    command("a", "action", { action: { type: "speed", value: 2.5, epoch: data("a").epoch } });
+    command("a", "action", { action: { type: "auto", epoch: data("a").epoch } });
+    await waitFor(() => seats.every(label => data(label).phase === "defeat"), "live third-wave defeat", 300000);
+    assert.equal(data("a").wave, 3);
+  }
+  const action = kind === "victory" ? { type: "continueRoute" } : { type: "retry", mode: kind === "restart" ? "restart" : "retry" };
+  const target = kind === "victory" ? "[data-result-continue]" : kind === "restart" ? "[data-result-restart]" : "[data-result-retry]";
+  for (const label of [...seats, "s"]) browser(label, "wait", `[data-route-result="${kind === "restart" ? "defeat" : kind}"]`);
   const spectator = room("s");
   const blocked = request("s", `/api/rooms/${roomID}`, { type: "action", version: spectator.version, nonce: randomUUID(), action: { ...action, epoch: spectator.game.data.epoch } });
   assert.ok(blocked.status >= 400);
   assert.equal(evaluate("s", `document.querySelector('${target}').disabled`), true);
   const from = data("a");
-  assert.equal(from.towers.length, 1);
+  const lockedRetry = kind === "restart" ? evaluate("b", "({disabled:document.querySelector('[data-result-retry]').disabled,color:getComputedStyle(document.querySelector('[data-result-retry]')).backgroundColor})") : null;
+  if (lockedRetry) assert.equal(lockedRetry.disabled, true);
+  assert.equal(from.towers.length, kind === "restart" ? 0 : 1);
   checkpoint("a", `authoritative-${kind}-desktop`);
-  if (kind === "defeat") {
+  if (kind !== "victory") {
     browser("b", "set", "viewport", "320", "740");
     assert.equal(evaluate("b", "(()=>{const r=document.querySelector('.pokepath-result').getBoundingClientRect();return r.left>=0&&r.right<=innerWidth&&document.documentElement.scrollWidth===innerWidth})()"), true);
     checkpoint("b", "defeat-checkpoint-mobile");
     touchControl("b", target);
   } else click("a", target);
-  const nextWave = kind === "victory" ? 1 : 25;
-  const nextHealth = kind === "victory" ? 14 : 7;
+  const nextWave = kind === "defeat" ? 25 : 1;
+  const nextHealth = kind === "defeat" ? 7 : 14;
   await waitFor(() => seats.every(label => {
     const next = data(label);
-    return next.phase === "prepare" && next.wave === nextWave && next.health === nextHealth && next.gold === from.gold && next.epoch > from.epoch && next.towers[0]?.id === from.towers[0].id;
+    return next.phase === "prepare" && next.wave === nextWave && next.health === nextHealth && next.gold === from.gold && next.epoch > from.epoch && next.towers[0]?.id === from.towers[0]?.id;
   }), "one result action continued the route for every seat");
   await waitFor(() => [...seats, "s"].every(label => !evaluate(label, "Boolean(document.querySelector('[data-route-result]'))")), "the shared result closes for all observers");
+  if (lockedRetry) assert.equal(lockedRetry.color, "rgb(78, 81, 89)", "locked retry still looks like an enabled blue action");
   const after = room("b");
   const stale = request("b", `/api/rooms/${roomID}`, { type: "action", version: after.version, nonce: randomUUID(), action: { ...action, epoch: from.epoch } });
   assert.ok(stale.status >= 400, "stale confirmation was accepted");
   click("a", '.pokepath-classic-controls .wave');
   await waitFor(() => seats.every(label => data(label).waveActive && data(label).wave === nextWave), "the confirmed route started a fresh real wave");
   for (const label of [...seats, "s"]) assert.equal(evaluate(label, "window.__nativeAudioAttempts.length"), 0);
-  report.checks.push({ name: "shared-route-result", kind, confirmedWith: kind === "victory" ? "mouse" : "touch", wave: nextWave, health: nextHealth, spectatorStatus: blocked.status, staleStatus: stale.status, tower: from.towers[0].id });
+  report.checks.push({ name: "shared-route-result", kind, confirmedWith: kind === "victory" ? "mouse" : "touch", wave: nextWave, health: nextHealth, spectatorStatus: blocked.status, staleStatus: stale.status, tower: from.towers[0]?.id ?? null });
 }
 
 async function boxAcceptance() {
@@ -564,6 +628,7 @@ try {
   report.runtime = { engine: runtimeManifest.engine, abi: runtimeManifest.abi, sourceSHA256: runtimeManifest.sourceSHA256, buildSHA256: runtimeManifest.buildSHA256, goVersion: runtimeManifest.goVersion };
   await startFixture();
   if (verifyChallenge) await challengeAcceptance();
+  else if (verifyMobileUX) await mobileUXAcceptance();
   else if (verifyResult) await resultAcceptance(verifyResult);
   else if (verifyBox) await boxAcceptance();
   else if (verifyMaps) await mapAcceptance();
