@@ -149,6 +149,33 @@ class ResourceStoreE2E(unittest.TestCase):
             store.hydrate(registry, self.root, self.origin, local=True)
         self.assertFalse(target.exists())
 
+    def test_manifest_urls_use_configured_origin_and_verified_game_identity(self):
+        record=store.publish(self.client,'splendor','cards.webp',b'generated pixels')
+        entry={**record,'url':'https://archive.example.invalid/'+record['key']}
+        self.assertEqual(store.published_url(entry,'splendor','https://configured.example.invalid'),'https://configured.example.invalid/'+record['key'])
+        self.assertEqual(store.published_url({**record,'file':'cards.webp'},'splendor','https://configured.example.invalid'),'https://configured.example.invalid/'+record['key'])
+        self.assertEqual(store.published_url({'sha256':record['sha256'],'output':'games/splendor/cards.webp'},'splendor','https://configured.example.invalid'),'https://configured.example.invalid/'+record['key'])
+        for changed in [dict(entry,url=entry['url']+'?token=bad'),dict(entry,url=entry['url'].replace('/splendor/','/_common/')),dict(entry,sha256='f'*64)]:
+            with self.assertRaises(ValueError):
+                store.published_url(changed,'splendor','https://configured.example.invalid')
+
+    def test_game_restore_includes_shared_go_compile_inputs_but_not_foreign_test_media(self):
+        source=self.root/'games/yuyuhakusho/data'
+        source.mkdir(parents=True)
+        (source/'embed.go').write_text('package data\nimport "embed"\n//go:embed rules/*.gz\nvar rules embed.FS\n')
+        (source/'embed_test.go').write_text('package data\nimport _ "embed"\n//go:embed fixtures/*.gz\nvar fixture []byte\n')
+        paths=['games/splendor/card.webp','games/yuyuhakusho/data/rules/world.json.gz','games/yuyuhakusho/data/fixtures/large.json.gz','games/yuyuhakusho/assets/public/art.webp']
+        registry={'version':1,'files':{name:store.publish(self.client,store.owner_for(name),name,b'generated '+name.encode()) for name in paths}}
+        selected=store.hydration_paths(registry,self.root,'splendor')
+        self.assertEqual(selected,set(paths[:2]))
+        store.hydrate(registry,self.root,self.origin,local=True,paths=selected)
+        self.assertTrue((self.root/paths[0]).is_file())
+        self.assertTrue((self.root/paths[1]).is_file())
+        self.assertFalse((self.root/paths[2]).exists())
+        self.assertFalse((self.root/paths[3]).exists())
+        with self.assertRaises(ValueError):
+            store.hydration_paths(registry,self.root,'unknown-game')
+
     def test_signed_oss_hydration_restores_private_sources_without_cdn_access(self):
         self.private_reads=True
         record=store.publish(self.client,'splendor','cards.webp',b'generated private resource')

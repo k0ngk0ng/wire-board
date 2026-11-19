@@ -101,7 +101,14 @@
     "web/src/version-update.ts",
     "web/tests/version-update.test.mjs",
     "scripts/ci/baseline.cjs",
-    "scripts/ci/baseline.test.cjs"
+    "scripts/ci/baseline.test.cjs",
+    "scripts/battlecity/verify-assets.py",
+    "scripts/spf2t/verify-assets.py",
+    "scripts/tetris/verify-assets.py",
+    "scripts/pairs/verify-assets.py",
+    "scripts/snooker/verify-assets.py",
+    "scripts/poker/verify_oss.py",
+    "scripts/fortressblue/verify-assets.py"
   ],
   "rules": [
     "Go 文件 snake_case；Python 文件沿用 snake_case 或 kebab-case；JS/TS 文件 kebab-case；React TSX 组件允许 PascalCase",

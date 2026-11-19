@@ -1,13 +1,15 @@
-#!/usr/bin/env python3
 """Verify the tetris original audio manifest, WAV headers, local fallback and dist bytes."""
 import argparse
 import hashlib
 import json
 import struct
 import urllib.request
+import sys
 from pathlib import Path
 
 root = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(root / "scripts"))
+from resource_store import configuration, published_url
 parser = argparse.ArgumentParser()
 parser.add_argument("--dist", action="store_true")
 parser.add_argument("--oss", action="store_true")
@@ -20,7 +22,7 @@ sha = lambda data: hashlib.sha256(data).hexdigest()
 assert manifest["version"] == "tetris/v1"
 assert manifest["generator"] == "scripts/tetris/prepare-audio.mjs"
 assert manifest["license"].startswith("项目原创")
-assert manifest["prefix"] == "bga/v20261002-1/tetris/v1/"
+assert manifest["prefix"] == "bga/tetris/"
 assert len(manifest["entries"]) == 9
 assert sha((root / manifest["generator"]).read_bytes()) == manifest["generatorSha256"]
 
@@ -35,6 +37,7 @@ def check_wav(data):
 
 results = []
 for entry in manifest["entries"]:
+    target = published_url(entry, "tetris", configuration()["CDN_ORIGIN"])
     data = (root / entry["output"]).read_bytes()
     assert sha(data) == entry["sha256"], entry["file"]
     assert len(data) == entry["bytes"], entry["file"]
@@ -48,7 +51,7 @@ for entry in manifest["entries"]:
         assert packaged.exists(), f"missing dist fallback {packaged}"
         assert sha(packaged.read_bytes()) == entry["sha256"], packaged
     if args.oss:
-        url = "https://cdn.ichenj.com/" + manifest["prefix"] + entry["file"]
+        url = target
         with urllib.request.urlopen(url, timeout=40) as response:
             assert sha(response.read()) == entry["sha256"], url
     results.append(

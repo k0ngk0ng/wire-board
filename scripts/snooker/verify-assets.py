@@ -1,15 +1,19 @@
-#!/usr/bin/env python3
 """Validate originals, generated assets and (optionally) every immutable OSS object."""
 from pathlib import Path
+import sys
 import argparse,concurrent.futures,hashlib,json,urllib.request,subprocess,array,math
 root=Path(__file__).resolve().parents[2]
+sys.path.insert(0,str(root/"scripts"))
+from resource_store import configuration, published_url
+
 parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--oss',action='store_true');parser.add_argument('--decode-audio',action='store_true');parser.add_argument('--dist',action='store_true');args=parser.parse_args()
 sha=lambda b:hashlib.sha256(b).hexdigest()
 source=json.loads((root/'games/snooker/assets/source-manifest.json').read_text())
 for e in source['entries']:assert sha((root/e['path']).read_bytes())==e['sha256'],e['path']
 assert sha((root/source['licenseFile']).read_bytes())==source['licenseSHA256']
-manifest=json.loads((root/'games/snooker/assets/manifest.json').read_text());base='https://cdn.ichenj.com/bga/v20261002-1'
+manifest=json.loads((root/'games/snooker/assets/manifest.json').read_text());base=configuration()['CDN_ORIGIN']
 def check(e):
+ target=published_url(e,"snooker",base)
  assert (root/e['output']).relative_to(root/'games/snooker/assets/public').as_posix()==e['urlPath'].lstrip('/'),'wrong public directory'
  data=(root/e['output']).read_bytes();assert sha(data)==e['sha256'];assert sha((root/e['source']).read_bytes())==e['sourceSHA256'];mime='image/webp' if e['type']=='image' else 'audio/mpeg'
  if mime=='image/webp':assert data[:4]==b'RIFF' and data[8:12]==b'WEBP'
@@ -21,7 +25,7 @@ def check(e):
   samples=array.array('f');samples.frombytes(decoded.stdout);peak=max(abs(v) for v in samples);rms=math.sqrt(sum(v*v for v in samples)/len(samples));assert .005<peak<.99 and rms>.0001,(e['name'],peak,rms)
   result.update(seconds=len(samples)/44100,peak=peak,rms=rms)
  if args.oss:
-  url=base+e['urlPath']
+  url=target
   with urllib.request.urlopen(url,timeout=40) as r:download=r.read();content_type=r.headers.get_content_type()
   assert sha(download)==e['sha256'],url
   assert content_type==mime,(url,content_type)

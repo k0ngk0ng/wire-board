@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Verify the SPF2T manifest and available local/CDN objects.
 
 A clean checkout has no commercial media (it is OSS-only), so --dist passes
@@ -10,12 +9,15 @@ import hashlib
 import json
 import subprocess
 import urllib.request
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "scripts"))
+from resource_store import configuration, published_url
 META = ROOT / "games/spf2t/assets/manifest.json"
-DEFAULT_PACK = ROOT / ".local/spf2t-pack"
-CDN = "https://cdn.ichenj.com/bga/v20261002-1"
+DEFAULT_PACK = ROOT / ".local/spf2t/pack"
+CDN = configuration()["CDN_ORIGIN"]
 
 
 def sha(path):
@@ -53,12 +55,12 @@ def main():
     parser.add_argument("--pack", type=Path, default=DEFAULT_PACK)
     args = parser.parse_args()
     manifest = json.loads(META.read_text())
-    assert manifest["prefix"] == "bga/v20261002-1/spf2t/v1/"
-    assert manifest["cdnBase"] == CDN
+    assert manifest["prefix"] == "bga/spf2t/"
     assert manifest["entries"], "empty manifest"
     objects = []
     local_present = 0
     for entry in manifest["entries"]:
+        target = published_url(entry, "spf2t", CDN)
         relative = entry["urlPath"].lstrip("/")
         pack_path = args.pack / relative
         local_path = ROOT / "games/spf2t/assets/public" / relative
@@ -75,7 +77,7 @@ def main():
             for path in candidates:
                 verify_media(path, entry)
         if args.oss:
-            with urllib.request.urlopen(CDN + entry["urlPath"], timeout=40) as response:
+            with urllib.request.urlopen(target, timeout=40) as response:
                 data = response.read()
                 assert len(data) == entry["bytes"], f"bytes {entry['urlPath']}"
                 assert hashlib.sha256(data).hexdigest() == entry["sha256"], f"sha {entry['urlPath']}"

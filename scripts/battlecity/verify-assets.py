@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Verify battlecity's local/CDN asset pack against the committed manifest."""
 from __future__ import annotations
 
@@ -7,15 +6,18 @@ import hashlib
 import json
 import subprocess
 import urllib.request
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "scripts"))
+from resource_store import configuration, published_url
 META = ROOT / "games/battlecity/assets/manifest.json"
-PACK = ROOT / ".local/battlecity-pack/battlecity/v1"
+PACK = ROOT / ".local/battlecity/pack/battlecity/v1"
 LOCAL = ROOT / "games/battlecity/assets/public/battlecity/v1"
 DIST = ROOT / "web/dist/battlecity/v1"
-PREFIX = "bga/v20261002-1/battlecity/v1/"
-CDN = "https://cdn.ichenj.com/bga/v20261002-1"
+PREFIX = "bga/battlecity/"
+CDN = configuration()["CDN_ORIGIN"]
 EXPECTED_AUDIO = {
     "bgm-battle", "bgm-start", "sfx-fire", "sfx-brick", "sfx-steel",
     "sfx-explode", "sfx-powerup", "sfx-shield", "sfx-base", "sfx-win", "sfx-lose",
@@ -79,11 +81,11 @@ def main() -> None:
     args = parser.parse_args()
     manifest = json.loads(META.read_text())
     assert manifest["prefix"] == PREFIX
-    assert manifest["cdnBase"] == CDN
     assert manifest["entries"], "empty manifest"
     total = 0
     local_present = 0
     for entry in manifest["entries"]:
+        target = published_url(entry, "battlecity", CDN)
         candidates = choose(entry, args)
         if candidates:
             local_present += 1
@@ -95,7 +97,7 @@ def main() -> None:
                 if entry["kind"] in ("bgm", "sfx"):
                     audio_check(path, entry["duration"])
         if args.oss:
-            with urllib.request.urlopen(CDN + entry["urlPath"], timeout=45) as response:
+            with urllib.request.urlopen(target, timeout=45) as response:
                 data = response.read()
                 assert len(data) == entry["bytes"], f"bytes {entry['urlPath']}"
                 assert sha(data) == entry["sha256"], f"sha {entry['urlPath']}"
@@ -129,7 +131,6 @@ def main() -> None:
                      "powerup-star", "tank-balanced-top-up-0", "tank-armor-bottom-left-1"):
             assert name in meta["frames"], f"missing frame {name}"
 
-    # Corrected native four-direction atlas is independent of unchanged v1 audio.
     v2 = json.loads((META.parent / "manifest-v2.json").read_text())
     assert v2["version"] == "battlecity/v2"
     assert v2["generatorSha256"] == sha((ROOT / v2["generator"]).read_bytes())
@@ -137,8 +138,9 @@ def main() -> None:
     assert corrected["version"] == 2 and len(corrected["frames"]) == 101
     v2_present = 0
     for entry in v2["entries"]:
+        target = published_url(entry, "battlecity", CDN)
         assert entry["urlPath"] == "/battlecity/v2/" + entry["file"]
-        paths = [ROOT / ".local/battlecity-pack/battlecity/v2" / entry["file"],
+        paths = [ROOT / ".local/battlecity/pack/battlecity/v2" / entry["file"],
                  ROOT / "games/battlecity/assets/public" / entry["urlPath"].lstrip("/")]
         if args.dist:
             paths.append(ROOT / "web/dist" / entry["urlPath"].lstrip("/"))
@@ -148,7 +150,7 @@ def main() -> None:
             assert path.stat().st_size == entry["bytes"] and sha(path.read_bytes()) == entry["sha256"], path
             media_signature(path, entry["kind"])
         if args.oss:
-            with urllib.request.urlopen(CDN + entry["urlPath"], timeout=45) as response:
+            with urllib.request.urlopen(target, timeout=45) as response:
                 data = response.read()
                 assert len(data) == entry["bytes"] and sha(data) == entry["sha256"], entry["urlPath"]
                 assert response.headers.get_content_type() == {"atlas": "image/webp", "atlas-meta": "application/json"}[entry["kind"]]

@@ -2,6 +2,7 @@ import argparse
 import base64
 from concurrent.futures import ThreadPoolExecutor
 from email.utils import formatdate
+import fnmatch
 import hashlib
 import gzip
 import hmac
@@ -19,6 +20,7 @@ import urllib.request
 ROOT = Path(__file__).resolve().parents[1]
 RESOURCE_SUFFIXES = {'.png', '.webp', '.jpg', '.jpeg', '.gif', '.svg', '.bmp', '.ico', '.tif', '.tiff', '.avif', '.wav', '.mp3', '.ogg', '.flac', '.aac', '.m4a', '.mp4', '.webm', '.mov', '.woff', '.woff2', '.ttf', '.otf', '.wasm', '.gz', '.xz', '.zip', '.7z', '.tar', '.rar', '.glb', '.gltf', '.rgba', '.rgb', '.pvzr', '.fflate', '.bin', '.rom', '.nes', '.sfc', '.smc', '.mdx', '.exe', '.dll', '.so', '.dylib', '.pdf'}
 CONFIG_NAMES = ['PUBLIC_ORIGIN', 'CDN_ORIGIN', 'OSS_BUCKET', 'OSS_ENDPOINT', 'ASSETS_BASE_URL']
+RESOURCE_KEY = re.compile(r'bga/([a-z0-9_-]+)/([a-f0-9]{64})(-gzip)?(\.[a-z0-9]+)')
 OWNERS = {'_common'} | {path.name for path in (ROOT / 'games').iterdir() if path.is_dir()}
 MIME = {'.webp': 'image/webp', '.svg': 'image/svg+xml', '.wasm': 'application/wasm', '.wav': 'audio/wav', '.flac': 'audio/flac', '.glb': 'model/gltf-binary', '.pvzr': 'application/octet-stream', '.fflate': 'application/octet-stream', '.rgba': 'application/octet-stream', '.rgb': 'application/octet-stream', '.gz': 'application/gzip', '.xz': 'application/x-xz'}
 
@@ -82,12 +84,30 @@ def object_key(owner, body, suffix, encoding=''):
 
 
 def validate_record(record):
-    match = re.fullmatch(r'bga/([a-z0-9_-]+)/([a-f0-9]{64})(-gzip)?(\.[a-z0-9]+)', record.get('key', ''))
+    match = RESOURCE_KEY.fullmatch(record.get('key', ''))
     if not match or match[1] not in OWNERS or match[2] != record.get('sha256') or type(record.get('bytes')) is not int or record['bytes'] <= 0 or not isinstance(record.get('mime'), str):
         raise ValueError('Invalid resource record')
     if bool(match[3]) != (record.get('encoding', '') == 'gzip') or record.get('encoding', '') not in ['', 'gzip']:
         raise ValueError('Resource encoding differs from its immutable key')
     return record
+
+
+def published_url(entry, owner, origin):
+    target = urllib.parse.urlsplit(origin)
+    if target.scheme != 'https' or not target.netloc or target.username or target.password or target.path not in ['', '/'] or target.query or target.fragment:
+        raise ValueError('Invalid configured CDN origin')
+    if 'url' in entry:
+        source = urllib.parse.urlsplit(entry['url'])
+        if source.scheme != 'https' or not source.netloc or source.username or source.password or source.query or source.fragment:
+            raise ValueError('Invalid published resource URL')
+        key = source.path.lstrip('/')
+    else:
+        suffix = Path(entry.get('file') or entry.get('output', '')).suffix.lower()
+        key = entry.get('key') or 'bga/' + owner + '/' + entry['sha256'] + ('-gzip' if entry.get('encoding') == 'gzip' else '') + suffix
+    match = RESOURCE_KEY.fullmatch(key)
+    if not match or owner not in OWNERS or match[1] != owner or match[2] != entry['sha256'] or bool(match[3]) != (entry.get('encoding', '') == 'gzip') or entry.get('encoding', '') not in ['', 'gzip']:
+        raise ValueError('Published resource belongs to another game')
+    return origin.rstrip('/') + '/' + key
 
 
 def validate_body(record, body, mime):
@@ -249,6 +269,33 @@ def destination(root, path):
     return target
 
 
+def hydration_paths(registry, root, game):
+    if game is None:
+        return None
+    if game not in OWNERS:
+        raise ValueError('Unknown resource game')
+    selected = {name for name in registry['files'] if owner_for(name) in [game, '_common']}
+    sources = [*Path(root).glob('*.go'), *(Path(root) / 'games').rglob('*.go'), *(Path(root) / 'internal').rglob('*.go')]
+    for source in sources:
+        if source.name.endswith('_test.go'):
+            continue
+        directives = re.findall(r'^\s*//go:embed[ \t]+(.+)$', source.read_text(), re.M)
+        if not directives:
+            continue
+        prefix = source.parent.relative_to(root).as_posix()
+        prefix = '' if prefix == '.' else prefix + '/'
+        for directive in directives:
+            for pattern in shlex.split(directive):
+                parts = pattern.removeprefix('all:').split('/')
+                for name in registry['files']:
+                    if not name.startswith(prefix):
+                        continue
+                    relative = name[len(prefix):].split('/')
+                    if len(relative) >= len(parts) and all(fnmatch.fnmatchcase(value, mask) for value, mask in zip(relative, parts)):
+                        selected.add(name)
+    return selected
+
+
 def hydrate(registry, root, origin, local=False, paths=None, client=None):
     url = urllib.parse.urlsplit(origin)
     if url.scheme != 'https' and not (local and url.scheme == 'http' and url.hostname in ['127.0.0.1', 'localhost']):
@@ -314,7 +361,7 @@ def main():
         return
     if args.action == 'hydrate':
         registry = json.loads(args.registry.read_text())
-        paths = None if not args.game else {path for path in registry['files'] if owner_for(path) in [args.game, '_common']}
+        paths = hydration_paths(registry, ROOT, args.game)
         client = None
         if args.oss:
             config = configuration(required=CONFIG_NAMES[:4])

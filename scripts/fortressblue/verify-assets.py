@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Verify the original Fortress 2 BLUE media pack (local, dist and CDN)."""
 from __future__ import annotations
 
@@ -10,16 +9,19 @@ import json
 import shutil
 import subprocess
 import urllib.request
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "scripts"))
+from resource_store import configuration, published_url
 MANIFEST = ROOT / "games/fortressblue/assets/manifest.json"
 CATALOG = ROOT / "games/fortressblue/maps/catalog.json"
 TANKS = ROOT / "games/fortressblue/data/tanks.json"
 ITEMS = ROOT / "games/fortressblue/data/items.json"
 LOCAL = ROOT / "games/fortressblue/assets/public"
 DIST = ROOT / "web/dist"
-CDN = "https://cdn.ichenj.com/bga/v20261002-1"
+CDN = configuration()["CDN_ORIGIN"]
 
 
 def sha(data: bytes) -> str:
@@ -45,9 +47,6 @@ def media_check(path: Path, entry: dict):
             minimum = 1.0 if "audio/maps/" in entry["file"] else 0.05
             assert duration >= minimum, f"duration {path}: {duration}"
         else:
-            # Minimal CI runners do not ship ffprobe. The immutable object is
-            # already byte/SHA verified; keep a conservative size floor so a
-            # truncated or empty clip still fails.
             minimum_bytes = 400_000 if "audio/maps/" in entry["file"] else 1_000
             assert len(data) >= minimum_bytes, f"short media {path}: {len(data)}"
     else:
@@ -98,6 +97,7 @@ def main():
     v5_spec.loader.exec_module(v5_module)
     v5_result = v5_module.verify(dist=args.dist)
     for entry in entries:
+        target = published_url(entry, "fortressblue", CDN)
         rel = entry["output"].removeprefix("games/fortressblue/assets/public/")
         local = LOCAL / rel
         if local.is_file():
@@ -107,7 +107,7 @@ def main():
         if args.dist:
             media_check(DIST / rel, entry)
         if args.oss:
-            with urllib.request.urlopen(CDN + entry["urlPath"], timeout=60) as response:
+            with urllib.request.urlopen(target, timeout=60) as response:
                 data = response.read()
             assert sha(data) == entry["sha256"], f"cdn sha {entry['urlPath']}"
             assert len(data) == entry["bytes"], f"cdn bytes {entry['urlPath']}"
