@@ -8,12 +8,8 @@ import (
 	"strings"
 )
 
-var frontendAssetAttribute = regexp.MustCompile(`(?:src|href)=["']((?:https://cdn\.ichenj\.com/bga/web/[a-f0-9]{40})?/assets/[^"']+)["']`)
+var frontendAssetAttribute = regexp.MustCompile(`(?:src|href)=["']((?:https://cdn\.ichenj\.com/bga/(?:web/[a-f0-9]{40}/assets|[a-z_][a-z0-9_-]*)|/assets)/[^"']+\.(?:js|css))["']`)
 
-// Read only the small entry document, never rooms, game snapshots or SQLite.
-// Asset identity detects a cached old page even if its first API response is
-// already served by the new release. Release version also covers backend-only
-// changes whose frontend bundle happens to remain identical.
 func (s *Server) version(w http.ResponseWriter, r *http.Request) {
 	html, err := fs.ReadFile(s.files, "index.html")
 	if err != nil {
@@ -30,11 +26,9 @@ func (s *Server) version(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	sort.Strings(assets)
-	// Older open pages only accept /assets/ identities. Keep those stable while
-	// exposing the actual CDN locations separately for diagnostics.
 	identities := make([]string, len(assets))
 	for i, asset := range assets {
-		identities[i] = asset[strings.LastIndex(asset, "/assets/"):]
+		identities[i] = "/assets/" + asset[strings.LastIndex(asset, "/")+1:]
 	}
 	sort.Strings(identities)
 	respond(w, http.StatusOK, map[string]any{"version": s.cfg.Version, "assets": identities, "assetURLs": assets, "build": s.frontendBuild()})

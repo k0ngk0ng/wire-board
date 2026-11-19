@@ -1,8 +1,9 @@
-export function assetBase(value) {
+export function assetBase(value, origin = process.env.CDN_ORIGIN) {
   if (!value || value === "/") return "/";
-  if (!/^https:\/\/cdn\.ichenj\.com\/bga\/web\/[a-f0-9]{40}\/$/.test(value))
+  const url = new URL(value);
+  if (url.protocol !== "https:" || url.pathname !== "/bga/" || url.username || url.password || url.search || url.hash || (origin && url.origin !== origin.replace(/\/$/, "")))
     throw new Error(
-      "Expected an immutable CDN base bound to a full commit SHA",
+      "Expected the configured stable CDN bga root",
     );
   return value;
 }

@@ -1,6 +1,6 @@
 {
   "passed": true,
-  "assetsBaseURL": "https://cdn.ichenj.com/bga/v20261002-1",
+  "assetsBaseURL": "https://cdn.ichenj.com/bga",
   "manifestSHA256": "dc49412c54503504a7f12c694b7fddcf46f74d467cf7872141389757510cf85b",
   "anchor": {
     "path": "bga/v20261002-1/snooker/v1/cover.webp",

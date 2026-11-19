@@ -10,7 +10,7 @@ import re
 import urllib.request
 
 ROOT = Path(__file__).resolve().parents[3]
-PREFIX = 'bga/v20261002-1/pal/visual-v1/'
+PREFIX = 'bga/pal/'
 RELEASE = ROOT / 'games/pal/assets/visual-release.json'
 spec = importlib.util.spec_from_file_location('pal_ending_publication', ROOT / 'games/pal/assets/publish-ending.py')
 ending = importlib.util.module_from_spec(spec)
@@ -82,7 +82,7 @@ def plan(raw, media, verification, published=None):
     rows = audio.assign_urls(rows, known, asset_id, prefix=PREFIX)
     objects = audio.unique_objects(rows)
     fresh = [row for row in objects if not row['reused']]
-    pin = {'version': 1, 'assetID': asset_id, 'assetsBaseURL': 'https://cdn.ichenj.com/' + PREFIX + asset_id, 'objects': len(objects), 'logicalFiles': len(rows), 'bytes': sum(row['bytes'] for row in objects), 'reusedObjects': len(objects) - len(fresh), 'newObjects': len(fresh), 'uploadBytes': sum(len(gzip.compress((media / row['path']).read_bytes(), mtime=0)) if row['encoding'] else row['bytes'] for row in fresh), 'files': {row['path']: {key: row[key] for key in ['url', 'bytes', 'sha256', 'mime', 'encoding']} for row in rows}}
+    pin = {'version': 1, 'assetID': asset_id, 'assetsBaseURL': audio.configuration()['CDN_ORIGIN'] + '/' + PREFIX.rstrip('/'), 'objects': len(objects), 'logicalFiles': len(rows), 'bytes': sum(row['bytes'] for row in objects), 'reusedObjects': len(objects) - len(fresh), 'newObjects': len(fresh), 'uploadBytes': sum(len(gzip.compress((media / row['path']).read_bytes(), mtime=0)) if row['encoding'] else row['bytes'] for row in fresh), 'files': {row['path']: {key: row[key] for key in ['url', 'bytes', 'sha256', 'mime', 'encoding']} for row in rows}}
     return pin, sorted(rows, key=lambda row: row['path'])
 
 
@@ -136,7 +136,7 @@ def main():
         key, secret = cdn.credentials()
         client = classic.OSSClient(key, secret)
         anchor = json.loads((ROOT / 'games/snooker/assets/manifest.json').read_text())['entries'][0]
-        report['anchor'] = classic.verify_anchor(client, 'bga/v20261002-1' + anchor['urlPath'], anchor['sha256'])
+        report['anchor'] = classic.verify_anchor(client, classic.publication_path(anchor), anchor['sha256'])
         ending.write(args.report, report)
         cdn.publish(args.media, fresh, audio.BUCKET, audio.ENDPOINT)
         report['stage'] = 'uploaded'

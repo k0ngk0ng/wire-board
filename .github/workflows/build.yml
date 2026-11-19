@@ -18,6 +18,11 @@ permissions:
   actions: read
   statuses: read
 env:
+  PUBLIC_ORIGIN: ${{ vars.PUBLIC_ORIGIN }}
+  CDN_ORIGIN: ${{ vars.CDN_ORIGIN }}
+  OSS_BUCKET: ${{ vars.OSS_BUCKET }}
+  OSS_ENDPOINT: ${{ vars.OSS_ENDPOINT }}
+  ASSETS_BASE_URL: ${{ vars.ASSETS_BASE_URL }}
   GOCACHE: ${{ github.workspace }}/.local/go-build
   GOMODCACHE: ${{ github.workspace }}/.local/go-mod
   GOTELEMETRY: 'off'
@@ -189,13 +194,15 @@ jobs:
           path: .local/verified-game-media
           run-id: ${{ steps.media-source.outputs.run }}
           github-token: ${{ github.token }}
+      - name: Restore resources outside Git
+        run: python3 -B scripts/resource_store.py hydrate
       - name: Restore verified game media
         run: |
           python3 -B scripts/fortressblue/test_fetch_assets.py
           python3 -B scripts/fortressblue/fetch-assets.py --restore-from .local/verified-game-media
       - name: Check game boundaries and compile application
         env:
-          WIRE_BOARD_ASSET_BASE: https://cdn.ichenj.com/bga/web/${{ github.sha }}/
+          WIRE_BOARD_ASSET_BASE: ${{ vars.CDN_ORIGIN }}/bga/
         run: |
           python3 -B scripts/check_game_boundaries.py
           npm --prefix web ci
@@ -213,6 +220,9 @@ jobs:
           node --test web/scripts/cdn-base.test.mjs
           python3 -B scripts/test_cdn_delivery.py
           python3 -B scripts/asset_reuse_e2e_test.py
+          python3 -B scripts/resource_store_e2e_test.py
+          python3 -B scripts/canonical_publication_e2e_test.py
+          python3 -B scripts/resource_store.py check
           node games/racing/build/lint.mjs --config games/racing/build/asset-reuse-lint.json --self-test
       - uses: actions/upload-artifact@v4
         if: always()

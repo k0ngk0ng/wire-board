@@ -11,6 +11,7 @@ from contextlib import contextmanager
 from io import BytesIO
 from urllib.error import HTTPError,URLError
 from http.client import IncompleteRead,HTTPSConnection,HTTPException
+from resource_store import configuration
 
 
 
@@ -55,7 +56,7 @@ def urlopen(request,timeout=60):
   connection.close();connections.pop(key,None)
   raise URLError(error) from error
 
-BASE=re.compile(r'https://cdn\.ichenj\.com/bga/web/[a-f0-9]{40}/\Z')
+BASE=re.compile(r'https://cdn\.ichenj\.com/bga/(?:web/[a-f0-9]{40}/)?\Z')
 MIME={'.js':'text/javascript','.css':'text/css','.svg':'image/svg+xml','.png':'image/png','.webp':'image/webp','.jpg':'image/jpeg','.woff':'font/woff','.woff2':'font/woff2','.ttf':'font/ttf','.wasm':'application/wasm'}
 CONTRA_MIME={'.js':'text/javascript','.wasm':'application/wasm','.json':'application/json','.idx':'application/octet-stream','.rgb':'application/octet-stream','.wav':'audio/wav'}
 MIME['.gz']='application/gzip'
@@ -172,7 +173,7 @@ def inventory(dist,base):
  return rows
 
 def validate_asset_url(url):
- if not isinstance(url,str) or not re.fullmatch(r'https://cdn\.ichenj\.com/bga/web/[a-f0-9]{40}/[A-Za-z0-9._/-]+',url):raise ValueError('Invalid published asset URL')
+ if not isinstance(url,str) or not re.fullmatch(r'https://cdn\.ichenj\.com/bga/(?:web/[a-f0-9]{40}/|[a-z_][a-z0-9_-]*/)[A-Za-z0-9._/-]+',url):raise ValueError('Invalid published asset URL')
  if Path(urlsplit(url).path).as_posix()!=urlsplit(url).path or any(part.startswith('.') for part in urlsplit(url).path.split('/') if part):raise ValueError('Private published asset URL')
  return url
 
@@ -187,7 +188,7 @@ def validate_headers(row,headers):
  compatible={row['mime']}
  if row['mime']=='text/javascript':compatible.add('application/javascript')
  if mime not in compatible:raise ValueError('CDN MIME mismatch: '+row['url'])
- if headers.get('Access-Control-Allow-Origin') not in ('*','https://PUBLIC_HOST'):raise ValueError('CDN CORS missing: '+row['url'])
+ if headers.get('Access-Control-Allow-Origin') not in ('*',configuration()['PUBLIC_ORIGIN']):raise ValueError('CDN CORS missing: '+row['url'])
 
 def validate_response(row,body,headers):
  if row.get('encoding') and headers.get('Content-Encoding')!=row['encoding']:raise ValueError('CDN compression missing: '+row['url'])
@@ -227,8 +228,10 @@ def trim(dist,report):
   contra_prefix=json.loads(raw)['prefix']
  elif report.get('contraDeliverySHA256'):raise ValueError('Verified Contra delivery receipt is missing')
  manifest={'version':1,'assetBase':base,'files':{'/'+row['path']:{key:row[key] for key in ('url','bytes','sha256','mime')} for row in rows}}
+ if load_manifest.get('sourceSHA'):manifest['sourceSHA']=load_manifest['sourceSHA']
  delivery_path=dist/'cdn-assets-manifest.json'
  previous=json.loads(delivery_path.read_bytes()) if delivery_path.exists() else {}
+ if previous.get('external'):manifest['external']=previous['external']
  if report.get('cdnManifestSHA256') and sha(delivery_path.read_bytes())!=report['cdnManifestSHA256']:raise ValueError('Delivery mapping changed after verification')
  if 'objects' in previous or 'assetObjects' in load_manifest:
   manifest['objects']=previous.get('objects',load_manifest.get('assetObjects',{}))
@@ -259,6 +262,8 @@ def verify_server_package(root,dist,binary,report):
  manifest=json.loads(actual['cdn-assets-manifest.json'].read_bytes())
  rows=report['files'];load_manifest=json.loads((dist/'game-load-manifest.json').read_bytes());base=inventory_base(load_manifest,rows)
  expected={'version':1,'assetBase':base,'files':{'/'+r['path']:{k:r[k] for k in ('url','bytes','sha256','mime')} for r in rows}}
+ if manifest.get('external'):expected['external']=manifest['external']
+ if load_manifest.get('sourceSHA'):expected['sourceSHA']=load_manifest['sourceSHA']
  if report.get('cdnManifestSHA256'):
   if sha(actual['cdn-assets-manifest.json'].read_bytes())!=report['cdnManifestSHA256']:raise ValueError('Embedded delivery mapping changed')
   expected['objects']=manifest.get('objects',{})
@@ -347,12 +352,24 @@ def publish(dist,rows,bucket,endpoint):
 def verify(row):
  return retry_request(lambda:verify_once(row),row["url"])
 
+def external_inventory(dist):
+ delivery=dist/'cdn-assets-manifest.json'
+ if not delivery.is_file():return []
+ document=json.loads(delivery.read_bytes())
+ rows=[]
+ for path,record in document.get('external',{}).items():
+  validate_asset_url(record['url'])
+  row={**record,'path':path.lstrip('/'),'previouslyPublished':True}
+  if row['mime'].startswith('audio/'):row['requiresRange']=True
+  rows.append(row)
+ return rows
+
 def verify_once(row):
- with urlopen(Request(row['url'],headers={'Origin':'https://PUBLIC_HOST','Accept-Encoding':'identity' if row.get('requiresRange') else 'gzip'}),timeout=60) as r:
+ with urlopen(Request(row['url'],headers={'Origin':configuration()['PUBLIC_ORIGIN'],'Accept-Encoding':'identity' if row.get('requiresRange') else 'gzip'}),timeout=60) as r:
   body=r.read();validate_response(row,body,r.headers)
   if row.get('requiresRange'):expected=body[:64]
  if row.get('requiresRange'):
-  with urlopen(Request(row['url'],headers={'Origin':'https://PUBLIC_HOST','Accept-Encoding':'identity','Range':f'bytes=0-{len(expected)-1}'}),timeout=60) as r:
+  with urlopen(Request(row['url'],headers={'Origin':configuration()['PUBLIC_ORIGIN'],'Accept-Encoding':'identity','Range':f'bytes=0-{len(expected)-1}'}),timeout=60) as r:
    validate_range_response(row,expected,r.read(),r.headers,r.status)
  return row
 
@@ -372,17 +389,19 @@ def main():
   for f in files:
    if f['url'] not in known or f['bytes']!=known[f['url']]['bytes']:raise ValueError('Manifest does not match compiled assets')
  if manifest['entry'] not in known:raise ValueError('Entry is not bound to CDN inventory')
- args.report.parent.mkdir(parents=True,exist_ok=True);report={'passed':False,'stage':'uploading' if args.action=='upload' else 'verifying','cdnVerified':False,'files':rows,'indexSHA256':sha((args.dist/'index.html').read_bytes()),'manifestSHA256':sha((args.dist/'game-load-manifest.json').read_bytes())}
+ external=external_inventory(args.dist)
+ args.report.parent.mkdir(parents=True,exist_ok=True);report={'passed':False,'stage':'uploading' if args.action=='upload' else 'verifying','cdnVerified':False,'files':rows,'externalFiles':external,'indexSHA256':sha((args.dist/'index.html').read_bytes()),'manifestSHA256':sha((args.dist/'game-load-manifest.json').read_bytes())}
  delivery=args.dist/'cdn-assets-manifest.json'
  if delivery.exists():report['cdnManifestSHA256']=sha(delivery.read_bytes())
  receipt=args.dist/'contra-delivery.json'
  if receipt.exists():report['contraDeliverySHA256']=sha(receipt.read_bytes())
  args.report.write_text(json.dumps(report,indent=2)+'\n')
- if args.action in ('upload','publish'):report['publication']=publish(args.dist,rows,'stoneage-assets','stoneage-assets.oss-cn-shanghai.aliyuncs.com')
+ if args.action in ('upload','publish'):report['publication']=publish(args.dist,rows+external,configuration()['OSS_BUCKET'],configuration()['OSS_ENDPOINT'])
  if args.action=='upload':
   if inventory(args.dist,base)!=rows or receipt.exists() and sha(receipt.read_bytes())!=report.get('contraDeliverySHA256'):raise ValueError('Local assets changed during upload')
   report.update(passed=True,stage='uploaded');args.report.write_text(json.dumps(report,indent=2)+'\n');print(f'Uploaded {len(rows)} immutable OSS assets; CDN readback awaits local verification');return
- with concurrent.futures.ThreadPoolExecutor(max_workers=6) as pool:list(pool.map(verify,rows))
+ unique={row['url']:row for row in rows+external}
+ with concurrent.futures.ThreadPoolExecutor(max_workers=6) as pool:list(pool.map(verify,unique.values()))
  if inventory(args.dist,base)!=rows or receipt.exists() and sha(receipt.read_bytes())!=report.get('contraDeliverySHA256'):raise ValueError('Local assets changed during CDN verification')
  report.update(passed=True,stage='verified',cdnVerified=True,verificationLocation='local');args.report.write_text(json.dumps(report,indent=2)+'\n');print(f'Locally verified {len(rows)} CDN assets; MIME, CORS and SHA-256 passed')
 if __name__=='__main__':main()

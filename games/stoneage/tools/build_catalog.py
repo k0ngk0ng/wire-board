@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+
 """Read existing StoneAge tables/indices; emit rule and URL metadata only.
 
 Never copies, downloads or uploads a bitmap/audio file. The source repository
@@ -7,11 +7,14 @@ is read-only. Run from Wire Board with --source pointing to the StoneAge repo.
 import argparse
 import hashlib
 import json
+import sys
 from pathlib import Path
 import re
 import struct
 
 ROOT = Path(__file__).resolve().parents[3]
+sys.path.insert(0,str(ROOT/'scripts'))
+from resource_store import configuration
 
 
 def main():
@@ -42,14 +45,14 @@ def main():
         graphic = int(row[36])
         if row[37].strip() != '1' or graphic in graphics or not complete(graphic):
             continue
-        # Capture species weights/elements; equal-budget statistics are derived
-        # by the independent server, not copied from random grown MMORPG pets.
+
+
         pets.append(dict(id=int(row[6]), name=row[0].strip(), graphic=graphic,
                          weights=[int(float(v)) for v in row[9:13]],
                          elements=[int(v) for v in row[15:19]]))
         graphics.add(graphic)
-    # Spread across the entire verified classic collection, keeping familiar
-    # early species as well as later families. Deduplicate by graphic above.
+
+
     selected = pets[:24] + [p for i, p in enumerate(pets[24:]) if i % 3 == 0][:48]
     selected_by_graphic = {p['graphic']: p for p in pets}
     native = (source / 'server/legacy/source/2.5/gmsv/char/char_base.c').read_bytes().decode('gb18030')
@@ -67,7 +70,7 @@ def main():
     rides = []
     for pet, variants in ride_maps.items():
         item = dict(selected_by_graphic[pet])
-        # Two verified rider appearances for every mount, including originals.
+
         item['riders'] = [dict(avatar=k, graphic=v) for k, v in sorted(variants.items())[:2]]
         rides.append(item)
         used.update(v['graphic'] for v in item['riders'])
@@ -90,8 +93,8 @@ def main():
                     sourceDescription=row[2].strip())
 
     gear = []
-    # Use actual original tiered equipment, preserving original names/icons.
-    # Arena stat budgets and attached magic are explicit in catalog.go.
+
+
     for kind in (0, 1, 2, 3, 4, 17, 18, 19):
         choices = [r for r in items if int(r[19]) == kind and int(r[16]) % 100 in (40, 50, 60)]
         for i, row in enumerate(choices[:3]):
@@ -146,7 +149,7 @@ def main():
     (out / 'web').mkdir(parents=True, exist_ok=True)
     (out / 'server/catalog_source.json').write_text(json.dumps(dict(pets=selected, rides=rides, equipment=gear), ensure_ascii=False, separators=(',', ':')) + '\n')
     (out / 'web/art.json').write_text(json.dumps(dict(sprites=art, resources=resources, ui=ui), ensure_ascii=False, separators=(',', ':')) + '\n')
-    (out / 'source-manifest.json').write_text(json.dumps(dict(format=1, root='https://cdn.ichenj.com/stoneage', inputs=provenance,
+    (out / 'source-manifest.json').write_text(json.dumps(dict(format=1, root=configuration()['CDN_ORIGIN']+'/bga/stoneage', inputs=provenance,
         counts=dict(pets=len(selected), rides=len(rides), equipment=len(gear), sprites=len(art), bitmaps=len(resources)),
         assetsCopied=0, assetsUploaded=0), ensure_ascii=False, indent=2) + '\n')
     print(json.dumps(dict(pets=len(selected), rides=len(rides), equipment=len(gear), sprites=len(art), bitmapReferences=len(resources), assetsCopied=0)))

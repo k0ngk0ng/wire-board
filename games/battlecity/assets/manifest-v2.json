@@ -1,6 +1,6 @@
 {
   "version": "battlecity/v2",
-  "prefix": "bga/v20261002-1/battlecity/v2/",
+  "prefix": "bga/battlecity/",
   "cdnBase": "https://cdn.ichenj.com/bga/v20261002-1",
   "license": "User-provided commercial media from Battle City (J).nes. The project does not claim redistribution rights; the deployer confirms authorization. Media is uploaded to OSS and is not committed to Git, Releases or images.",
   "source": {
@@ -14,14 +14,16 @@
       "urlPath": "/battlecity/v2/atlas.webp",
       "kind": "atlas",
       "sha256": "640c854f1a4b561e07c51a557dffaeaeed267526eeb0a34033136aa7f7d7dc83",
-      "bytes": 4032
+      "bytes": 4032,
+      "url": "https://cdn.ichenj.com/bga/battlecity/640c854f1a4b561e07c51a557dffaeaeed267526eeb0a34033136aa7f7d7dc83.webp"
     },
     {
       "file": "atlas.json",
       "urlPath": "/battlecity/v2/atlas.json",
       "kind": "atlas-meta",
       "sha256": "c3cdc32c71135b290ae8767b2ebd779cbd54a84472cdbce25a6116d42297fdd4",
-      "bytes": 41486
+      "bytes": 41486,
+      "url": "https://cdn.ichenj.com/bga/battlecity/c3cdc32c71135b290ae8767b2ebd779cbd54a84472cdbce25a6116d42297fdd4.json"
     }
   ]
 }

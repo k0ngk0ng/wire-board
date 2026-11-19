@@ -14,11 +14,12 @@ import urllib.request
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / 'scripts'))
 import cdn_delivery as cdn
+from resource_store import configuration
 
-PREFIX = 'bga/v20261002-1/pal/audio-v1/'
+PREFIX = 'bga/pal/'
 BUCKET = 'stoneage-assets'
 ENDPOINT = 'stoneage-assets.oss-cn-shanghai.aliyuncs.com'
-ORIGIN = 'https://PUBLIC_HOST'
+ORIGIN = configuration()['PUBLIC_ORIGIN']
 
 
 def sha(data):
@@ -35,7 +36,7 @@ def identity(row):
 
 
 def assign_urls(rows, published, asset_id, prefix=PREFIX):
-    if not re.fullmatch(r'bga/[a-z0-9-]+/pal/[a-z0-9-]+/', prefix):
+    if prefix != 'bga/pal/':
         raise ValueError('unsafe immutable publication prefix')
     if published.get('version') != 1 or not isinstance(published.get('catalogs'), dict):
         raise ValueError('invalid retained audio publications')
@@ -54,7 +55,8 @@ def assign_urls(rows, published, asset_id, prefix=PREFIX):
             url = file['url']
             if not url.startswith('https://cdn.ichenj.com/bga/') or any(part in url for part in ['?', '#', '\\', '/../']):
                 raise ValueError('unsafe retained audio URL')
-            known.append((path, file))
+            if url.startswith(configuration()['CDN_ORIGIN'] + '/bga/pal/'):
+                known.append((path, file))
     result = []
     assigned = {}
     for row in rows:
@@ -65,11 +67,9 @@ def assign_urls(rows, published, asset_id, prefix=PREFIX):
             url, reused = existing['url'], True
         elif key in assigned:
             url, reused = assigned[key], False
-        elif row['path'] == 'index.json':
-            url, reused = 'https://cdn.ichenj.com/' + prefix + asset_id + '/index.json', False
         else:
-            suffix = '.mid.gz' if row['path'].endswith('.mid.gz') else Path(row['path']).suffix
-            url, reused = 'https://cdn.ichenj.com/' + prefix + 'objects/' + row['sha256'] + suffix, False
+            suffix = Path(row['path']).suffix
+            url, reused = configuration()['CDN_ORIGIN'] + '/' + prefix + row['sha256'] + ('-gzip' if row['encoding'] else '') + suffix, False
         assigned[key] = url
         result.append({**row, 'url': url, 'reused': reused})
     return result
@@ -104,7 +104,7 @@ def plan(raw, media, verification, published=None):
             if group == 'music':
                 metadata[item['midiPath']] = {'originalSHA256': item['sourceSHA256']}
     rows = []
-    base = 'https://cdn.ichenj.com/' + PREFIX + identity
+    base = configuration()['CDN_ORIGIN'] + '/' + PREFIX.rstrip('/')
     for name, file in sorted(index['files'].items()):
         if not re.fullmatch(r'(?:sounds/\d+\.(?:flac|wav)|music/\d+\.flac|cd/0[2-9]\.ogg|midi/\d+\.mid\.gz)', name):
             raise ValueError('unsafe audio object path')
@@ -195,7 +195,7 @@ def main():
         key, secret = cdn.credentials()
         client = classic.OSSClient(key, secret)
         known = json.loads((ROOT / 'games/snooker/assets/manifest.json').read_text())['entries'][0]
-        report['anchor'] = classic.verify_anchor(client, 'bga/v20261002-1' + known['urlPath'], known['sha256'])
+        report['anchor'] = classic.verify_anchor(client, classic.publication_path(known), known['sha256'])
         write(args.report, report)
         cdn.publish(args.media, fresh, BUCKET, ENDPOINT)
         report['stage'] = 'uploaded'

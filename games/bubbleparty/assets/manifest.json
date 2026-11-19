@@ -1,6 +1,6 @@
 {
   "version": "bubbleparty/v1",
-  "prefix": "bga/v20261002-1/bubbleparty/v1/",
+  "prefix": "bga/bubbleparty/",
   "generator": "scripts/bubbleparty/prepare-audio.mjs",
   "generatorSha256": "851ab1759d6bef5c8914d19a6a3ce64186009810e24937bedd6b23c51f7596b6",
   "license": "项目原创，离线合成，无外部采样",

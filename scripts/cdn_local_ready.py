@@ -28,9 +28,10 @@ def local_readback_proof(dist, report, source_sha, source_run):
         raise ValueError('Invalid exact source identity')
     if not report.get('passed') or report.get('stage') != 'verified' or report.get('cdnVerified') is not True or report.get('verificationLocation') != 'local':
         raise ValueError('A successful local CDN readback is required')
-    base = 'https://cdn.ichenj.com/bga/web/' + source_sha + '/'
     manifest = json.loads((dist / 'game-load-manifest.json').read_bytes())
-    if manifest.get('assetBase') != base or cdn.inventory(dist, base) != report.get('files'):
+    base = manifest.get('assetBase', '')
+    bound = manifest.get('sourceSHA') == source_sha if base.endswith('/bga/') else base == 'https://cdn.ichenj.com/bga/web/' + source_sha + '/'
+    if not bound or cdn.inventory(dist, base) != report.get('files'):
         raise ValueError('CDN report differs from the exact build assets')
     for name, key in [('index.html', 'indexSHA256'), ('game-load-manifest.json', 'manifestSHA256')]:
         if cdn.sha((dist / name).read_bytes()) != report.get(key):

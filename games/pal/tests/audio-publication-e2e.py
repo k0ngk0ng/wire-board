@@ -21,9 +21,10 @@ def main():
     pin, rows = module.plan(raw, MEDIA, verification)
     assert pin['assetID'] == hashlib.sha256(raw).hexdigest()
     assert len(rows) == 546 and sum(row['requiresRange'] for row in rows) == 458
-    assert len({row['url'] for row in rows}) == 546
-    assert all(row['url'] == pin['assetsBaseURL'] + '/' + row['path'] for row in rows)
-    assert rows[0]['url'].startswith('https://cdn.ichenj.com/bga/v20261002-1/pal/audio-v1/' + pin['assetID'] + '/')
+    assert len({row['url'] for row in rows}) == 538
+    assert pin['objects'] == 538 and pin['logicalFiles'] == 546
+    assert all(row['url'] == pin['assetsBaseURL'] + '/' + row['sha256'] + ('-gzip' if row['encoding'] else '') + Path(row['path']).suffix for row in rows)
+    assert pin['assetsBaseURL'] == 'https://cdn.ichenj.com/bga/pal'
     assert next(row for row in rows if row['path'] == 'index.json')['encoding'] == 'gzip'
     assert all(not row['encoding'] for row in rows if row['requiresRange'])
     assert sum(row['bytes'] for row in rows) == 475155573

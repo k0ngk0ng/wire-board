@@ -8,6 +8,7 @@ import argparse,concurrent.futures,hashlib,json,os,re,subprocess,sys,urllib.requ
 ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT/'scripts'))
 import cdn_delivery as cdn
+from resource_store import configuration
 
 def plan_audio(raw,media):
  catalog=json.loads(raw);digest=hashlib.sha256(raw).hexdigest()
@@ -25,14 +26,14 @@ def plan_audio(raw,media):
 
 def verify_audio(row):
  def operation():
-  request=urllib.request.Request(row['url'],headers={'Origin':'https://PUBLIC_HOST','Accept-Encoding':'identity'})
+  request=urllib.request.Request(row['url'],headers={'Origin':configuration()['PUBLIC_ORIGIN'],'Accept-Encoding':'identity'})
   with urllib.request.urlopen(request,timeout=90)as response:
    data=response.read();cdn.validate_response(row,data,response.headers)
   if data[:4]!=b'fLaC'or data[4]&127!=0 or int.from_bytes(data[5:8],'big')!=34:raise ValueError('Invalid FLAC stream info')
   packed=int.from_bytes(data[18:26],'big')
   actual=(packed>>44,(packed>>41&7)+1,(packed>>36&31)+1,packed&((1<<36)-1))
   if actual!=(44100,2,16,row['frames']):raise ValueError('FLAC sample metadata differs')
-  with urllib.request.urlopen(urllib.request.Request(row['url'],headers={'Origin':'https://PUBLIC_HOST','Accept-Encoding':'identity','Range':'bytes=0-63'}),timeout=45)as response:
+  with urllib.request.urlopen(urllib.request.Request(row['url'],headers={'Origin':configuration()['PUBLIC_ORIGIN'],'Accept-Encoding':'identity','Range':'bytes=0-63'}),timeout=45)as response:
    cdn.validate_range_response(row,data[:64],response.read(),response.headers,response.status)
   pcm=subprocess.check_output(['ffmpeg','-v','error','-i','pipe:0','-f','s16le','-acodec','pcm_s16le','pipe:1'],input=data,cwd=ROOT)
   if len(pcm)!=row['frames']*4 or cdn.sha(pcm)!=row['pcm_sha256']:raise ValueError('Decoded PCM differs')

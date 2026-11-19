@@ -21,13 +21,15 @@ type deliveredAsset struct {
 }
 type deliveredAssets struct {
 	Version   int                       `json:"version"`
+	SourceSHA string                    `json:"sourceSHA,omitempty"`
 	AssetBase string                    `json:"assetBase"`
 	Files     map[string]deliveredAsset `json:"files"`
+	External  map[string]deliveredAsset `json:"external,omitempty"`
 	Objects   map[string]deliveredAsset `json:"objects,omitempty"`
 }
 
-var immutableMediaBase = regexp.MustCompile(`^https://cdn\.ichenj\.com/bga/web/[a-f0-9]{40}/$`)
-var immutableMediaURL = regexp.MustCompile(`^(https://cdn\.ichenj\.com/bga/web/[a-f0-9]{40}/)([A-Za-z0-9._/-]+)$`)
+var immutableMediaBase = regexp.MustCompile(`^https://cdn\.ichenj\.com/bga/(?:web/[a-f0-9]{40}/)?$`)
+var immutableMediaURL = regexp.MustCompile(`^(https://cdn\.ichenj\.com/bga/(?:web/[a-f0-9]{40}/)?)([A-Za-z0-9._/-]+)$`)
 var mediaPath = regexp.MustCompile(`^/[A-Za-z0-9._/-]+$`)
 var mediaHash = regexp.MustCompile(`^[a-f0-9]{64}$`)
 
@@ -56,6 +58,13 @@ func readDeliveredAssets(files fs.FS) (*deliveredAssets, error) {
 	if decoder.Decode(new(any)) != io.EOF || manifest.Version != 1 || !immutableMediaBase.MatchString(manifest.AssetBase) || len(manifest.Files) == 0 {
 		return nil, errors.New("invalid CDN asset manifest")
 	}
+	for name, asset := range manifest.External {
+		if previous, ok := manifest.Files[name]; ok && previous != asset {
+			return nil, errors.New("conflicting external CDN asset")
+		}
+		manifest.Files[name] = asset
+	}
+	aliases := map[string]deliveredAsset{}
 	for name, asset := range manifest.Files {
 		if !mediaPath.MatchString(name) || path.Clean(name) != name || serverMetadataPath(name) || !validDeliveredAsset(asset) || asset.Bytes <= 0 || !mediaHash.MatchString(asset.SHA256) || asset.MIME == "" {
 			return nil, errors.New("invalid CDN asset entry")
@@ -65,6 +74,12 @@ func readDeliveredAssets(files fs.FS) (*deliveredAssets, error) {
 				return nil, errors.New("private CDN asset path")
 			}
 		}
+		if strings.Contains(asset.URL, "/bga/") {
+			aliases["/"+strings.SplitN(asset.URL, "/bga/", 2)[1]] = asset
+		}
+	}
+	for name, asset := range aliases {
+		manifest.Files[name] = asset
 	}
 	for url, asset := range manifest.Objects {
 		if url != asset.URL || !validDeliveredAsset(asset) {

@@ -116,10 +116,11 @@ docker compose logs -f
 
 ## 本地开发与验证
 
-需要 Go 1.26+、Node 22+ 和带 `lzma` 支持的 Python 3。以下命令从仓库根目录执行，缓存和临时文件均存放在仓库 `.local` 中。前端构建同时准备魂斗罗的运行清单和无损音频源码包；后端必须链接这份清单的真实身份。
+需要 Go 1.26+、Node 22+ 和带 `lzma` 支持的 Python 3。先在 Git 忽略的 `.local/business.json` 配置业务变量，字段与 GitHub 仓库变量一致，详见 [资源外置与配置](docs/asset-reuse.md)。以下命令从仓库根目录执行，缓存和临时文件均存放在仓库 `.local` 中。前端构建同时准备魂斗罗的运行清单和无损音频源码包；后端必须链接这份清单的真实身份。
 
 ```sh
 . scripts/env.sh
+python3 -B scripts/resource_store.py hydrate
 npm --prefix web ci
 npm --prefix web run build
 
@@ -133,7 +134,7 @@ INVITE_CODE=local-friends ADDR=127.0.0.1:18080 DATA_DIR="$PWD/.local/data" .loca
 
 前端开发：将后端监听 `127.0.0.1:8080`，运行 `npm --prefix web run dev`，通过 Vite 开发地址访问。第一次运行 Go 前需要先构建前端以满足 embed。
 
-直接执行未注入运行身份的 `go build` 或 `go run` 会在服务启动时被拒绝。修改魂斗罗引擎或构建输入后，重新执行前端构建和上述原生构建命令，不复用旧清单。需要从源码构建 Docker 镜像时，传入匹配的 `SOURCE_SHA` 和 `WIRE_BOARD_ASSET_BASE=https://cdn.ichenj.com/bga/web/<SOURCE_SHA>/`；构建只验证该提交已发布的 CDN 对象，不负责上传资源。
+直接执行未注入运行身份的 `go build` 或 `go run` 会在服务启动时被拒绝。修改魂斗罗引擎或构建输入后，重新执行前端构建和上述原生构建命令，不复用旧清单。需要从源码构建 Docker 镜像时，传入匹配的 `SOURCE_SHA` 和 `WIRE_BOARD_ASSET_BASE=${CDN_ORIGIN}/bga/` 及对应的业务配置参数；构建只验证该提交已发布的 CDN 对象，不负责上传资源。
 
 魂斗罗当前交付单人／双人真人模式，暂不开放电脑与托管。以下电脑长战役命令仅用于后续研发，不是本次交付门槛；CI 需要显式开启默认关闭的 `contra_campaigns` 开关。正常生命数模式检查自然通关或失败结算，辅助模式使用测试补命检查八关通关。每次执行使用新的证据目录：
 

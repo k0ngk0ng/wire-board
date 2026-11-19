@@ -1,7 +1,7 @@
 {
   "version": 1,
   "game": "racing",
-  "assetsBaseURL": "https://cdn.ichenj.com/bga/v20261002-1",
+  "assetsBaseURL": "https://cdn.ichenj.com/bga",
   "entries": [
     {
       "name": "cars",
@@ -19,7 +19,8 @@
       ],
       "generator": "scripts/racing/prepare-assets.py",
       "width": 1152,
-      "height": 1600
+      "height": 1600,
+      "url": "https://cdn.ichenj.com/bga/racing/68d5a6efeae1d78525f2d9e99d4987491a15766b6f4189f2afce06f2a5eb1bfa.webp"
     },
     {
       "name": "scenery",
@@ -109,7 +110,8 @@
       ],
       "generator": "scripts/racing/prepare-assets.py",
       "width": 1024,
-      "height": 1280
+      "height": 1280,
+      "url": "https://cdn.ichenj.com/bga/racing/f1705ff58aa5be7b62b1b396ff29fae6f82099d314cf1c55acf0e8ed47f75b73.webp"
     },
     {
       "name": "atlas",
@@ -201,7 +203,8 @@
           "sha256": "9bceb2b1a8a46d9eaffb4c77d5c4114ff7af8fcd36e586feb1f91bfe2af0e671"
         }
       ],
-      "generator": "scripts/racing/prepare-assets.py"
+      "generator": "scripts/racing/prepare-assets.py",
+      "url": "https://cdn.ichenj.com/bga/racing/69d6fae91188927aad27731813abc877370631b8f2365b1da67594dc5f85427f.json"
     },
     {
       "name": "cover",
@@ -219,7 +222,8 @@
       ],
       "generator": "scripts/racing/prepare-assets.py",
       "width": 1040,
-      "height": 640
+      "height": 640,
+      "url": "https://cdn.ichenj.com/bga/racing/89b7ff45eb8d331ce9439f0205600073e468ce64d98f26817c8f1a4f8c4c1f5a.webp"
     },
     {
       "name": "engine",
@@ -242,7 +246,8 @@
       "generator": "scripts/racing/prepare-assets.py",
       "loop": true,
       "sampleRate": 44100,
-      "channels": 1
+      "channels": 1,
+      "url": "https://cdn.ichenj.com/bga/racing/9b1ea6995bcca8d8f9fac60f3bfdc75d26b132c269a64b26f717cc103e71c7a7.mp3"
     },
     {
       "name": "tires",
@@ -265,7 +270,8 @@
       "generator": "scripts/racing/prepare-assets.py",
       "loop": true,
       "sampleRate": 44100,
-      "channels": 1
+      "channels": 1,
+      "url": "https://cdn.ichenj.com/bga/racing/9ab305a82c4ea4d5dd7d2c9ba7320fd08a2c0f873996390ab8859203b034cfbd.mp3"
     },
     {
       "name": "collision-light",
@@ -288,7 +294,8 @@
       "generator": "scripts/racing/prepare-assets.py",
       "loop": false,
       "sampleRate": 44100,
-      "channels": 1
+      "channels": 1,
+      "url": "https://cdn.ichenj.com/bga/racing/6b2b7419e12e49b94c6ffbe8c8d53a46abe978614e146e2e1355de22385eca8b.mp3"
     },
     {
       "name": "collision-heavy",
@@ -311,7 +318,8 @@
       "generator": "scripts/racing/prepare-assets.py",
       "loop": false,
       "sampleRate": 44100,
-      "channels": 1
+      "channels": 1,
+      "url": "https://cdn.ichenj.com/bga/racing/fe0eea06bd7c550d3b0fe3f290530b0cf6f32b30c4f013cb12d91dc10a146f1a.mp3"
     },
     {
       "name": "countdown",
@@ -334,7 +342,8 @@
       "generator": "scripts/racing/prepare-assets.py",
       "loop": false,
       "sampleRate": 44100,
-      "channels": 1
+      "channels": 1,
+      "url": "https://cdn.ichenj.com/bga/racing/07e32fd0773bf4950113c6babf5b65b747a57698d324cc9c2b64076d8c30a483.mp3"
     },
     {
       "name": "start",
@@ -357,7 +366,8 @@
       "generator": "scripts/racing/prepare-assets.py",
       "loop": false,
       "sampleRate": 44100,
-      "channels": 1
+      "channels": 1,
+      "url": "https://cdn.ichenj.com/bga/racing/abce8d8babeef2fc7b6db7c2f24263f6ac51ecf509f52fe0badc574343461190.mp3"
     },
     {
       "name": "lap",
@@ -380,7 +390,8 @@
       "generator": "scripts/racing/prepare-assets.py",
       "loop": false,
       "sampleRate": 44100,
-      "channels": 1
+      "channels": 1,
+      "url": "https://cdn.ichenj.com/bga/racing/9698c251b6c41bf68323a3161c527dd259fd81b748045f75d05c5a61846022ea.mp3"
     },
     {
       "name": "finish",
@@ -403,7 +414,8 @@
       "generator": "scripts/racing/prepare-assets.py",
       "loop": false,
       "sampleRate": 44100,
-      "channels": 1
+      "channels": 1,
+      "url": "https://cdn.ichenj.com/bga/racing/a6a0de7c8c12b72eaebe186c5edf63723bea084d20cc4e9bbb55bf03350e48fc.mp3"
     },
     {
       "name": "attribution",
@@ -431,7 +443,8 @@
           "sha256": "f9e70b81d8cc07c4e07c9f2eff1d94fd371a06070b18cb67c651c41158ec2975"
         }
       ],
-      "generator": "scripts/racing/prepare-assets.py"
+      "generator": "scripts/racing/prepare-assets.py",
+      "url": "https://cdn.ichenj.com/bga/racing/c07deaf9ae43ad882669d2ba5e47e01c03058d126cf4752d050e7d89c756977b.json"
     }
   ]
 }

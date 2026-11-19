@@ -1,7 +1,7 @@
 {
   "version": 1,
   "game": "pairs",
-  "prefix": "bga/v20261002-1/pairs/v1/",
+  "prefix": "bga/pairs/",
   "entries": [
     {
       "file": "audio/bg.mp3",
@@ -13,7 +13,8 @@
       "output": "games/pairs/assets/public/pairs/v1/audio/bg.mp3",
       "urlPath": "/pairs/v1/audio/bg.mp3",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "original unchanged"
+      "conversion": "original unchanged",
+      "url": "https://cdn.ichenj.com/bga/pairs/16ca4682884680600ccbbadc8ae63baa9776e23d28266b3fd5e3086f481c965b.mp3"
     },
     {
       "file": "audio/effectAmazing.mp3",
@@ -25,7 +26,8 @@
       "output": "games/pairs/assets/public/pairs/v1/audio/effectAmazing.mp3",
       "urlPath": "/pairs/v1/audio/effectAmazing.mp3",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "original unchanged"
+      "conversion": "original unchanged",
+      "url": "https://cdn.ichenj.com/bga/pairs/9922052aeb0d8251b8c8d19b193d1e8b5f19cc0aa453681d53c7b37097d730a6.mp3"
     },
     {
       "file": "audio/effectGood.mp3",
@@ -37,7 +39,8 @@
       "output": "games/pairs/assets/public/pairs/v1/audio/effectGood.mp3",
       "urlPath": "/pairs/v1/audio/effectGood.mp3",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "original unchanged"
+      "conversion": "original unchanged",
+      "url": "https://cdn.ichenj.com/bga/pairs/c74e752f4bc42236aade6c46048dc43e7a1e09f40412a0550f810a6eeaed3b00.mp3"
     },
     {
       "file": "audio/effectGreat.mp3",
@@ -49,7 +52,8 @@
       "output": "games/pairs/assets/public/pairs/v1/audio/effectGreat.mp3",
       "urlPath": "/pairs/v1/audio/effectGreat.mp3",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "original unchanged"
+      "conversion": "original unchanged",
+      "url": "https://cdn.ichenj.com/bga/pairs/504ef8e2c3498b1846e2b71e1d1e726244fd482e874b2929a905410ca1da69f9.mp3"
     },
     {
       "file": "audio/elec.wav",
@@ -61,7 +65,8 @@
       "output": "games/pairs/assets/public/pairs/v1/audio/elec.wav",
       "urlPath": "/pairs/v1/audio/elec.wav",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "original unchanged"
+      "conversion": "original unchanged",
+      "url": "https://cdn.ichenj.com/bga/pairs/627d3a879aa3b5704bdec977b7fb7e77805a2c09f93954fa0ab3150c01e48fe5.wav"
     },
     {
       "file": "audio/end.wav",
@@ -73,7 +78,8 @@
       "output": "games/pairs/assets/public/pairs/v1/audio/end.wav",
       "urlPath": "/pairs/v1/audio/end.wav",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "original unchanged"
+      "conversion": "original unchanged",
+      "url": "https://cdn.ichenj.com/bga/pairs/8601f139feace3d89b3fb5c50f9906fa7c3827192824c47f62e16c40bdd3b9e4.wav"
     },
     {
       "file": "audio/itemboom.wav",
@@ -85,7 +91,8 @@
       "output": "games/pairs/assets/public/pairs/v1/audio/itemboom.wav",
       "urlPath": "/pairs/v1/audio/itemboom.wav",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "original unchanged"
+      "conversion": "original unchanged",
+      "url": "https://cdn.ichenj.com/bga/pairs/97f9739cbd92e70ccb2b189eef0aa235c1bca513864d9b544cd1267c65a07748.wav"
     },
     {
       "file": "audio/sel.wav",
@@ -97,7 +104,8 @@
       "output": "games/pairs/assets/public/pairs/v1/audio/sel.wav",
       "urlPath": "/pairs/v1/audio/sel.wav",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "original unchanged"
+      "conversion": "original unchanged",
+      "url": "https://cdn.ichenj.com/bga/pairs/3b4100d60ad53df644b81c3125260944b9160391a6c5e005448fb148e343a064.wav"
     },
     {
       "file": "audio/start.wav",
@@ -109,7 +117,8 @@
       "output": "games/pairs/assets/public/pairs/v1/audio/start.wav",
       "urlPath": "/pairs/v1/audio/start.wav",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "original unchanged"
+      "conversion": "original unchanged",
+      "url": "https://cdn.ichenj.com/bga/pairs/7f8be906643dac88e6daff8e4f2ff3399e380b257acb2523d218240fc1a1a8fa.wav"
     },
     {
       "file": "effects/lightning-1.png",
@@ -121,7 +130,8 @@
       "output": "games/pairs/assets/public/pairs/v1/effects/lightning-1.webp",
       "urlPath": "/pairs/v1/effects/lightning-1.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/65c46911d84ee436d7ecbeed44a29a5fc3aff98e6a01b13013d39b4a8f9717e0.webp"
     },
     {
       "file": "effects/lightning-2.png",
@@ -133,7 +143,8 @@
       "output": "games/pairs/assets/public/pairs/v1/effects/lightning-2.webp",
       "urlPath": "/pairs/v1/effects/lightning-2.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/2a8afbf4ee24cb1a72147d9f4e7688e8f84f60e0d1a8b617cad291c529c8d792.webp"
     },
     {
       "file": "effects/lightning-3.png",
@@ -145,7 +156,8 @@
       "output": "games/pairs/assets/public/pairs/v1/effects/lightning-3.webp",
       "urlPath": "/pairs/v1/effects/lightning-3.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/215d9cc7a90a6df82421f1bb828be71818a811abf45326c7ef767784c40389c8.webp"
     },
     {
       "file": "effects/lightning-4.png",
@@ -157,7 +169,8 @@
       "output": "games/pairs/assets/public/pairs/v1/effects/lightning-4.webp",
       "urlPath": "/pairs/v1/effects/lightning-4.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/3e88acf959d8a3dafc215ed4be27295ef171140184a08ccb0ff455ce7f469b06.webp"
     },
     {
       "file": "effects/lightning-5.png",
@@ -169,7 +182,8 @@
       "output": "games/pairs/assets/public/pairs/v1/effects/lightning-5.webp",
       "urlPath": "/pairs/v1/effects/lightning-5.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/94feb1db82c5a3d9980a690ce5a27368644d05ea1f4450a1b62b89b0cedf672d.webp"
     },
     {
       "file": "icons/1.png",
@@ -181,7 +195,8 @@
       "output": "games/pairs/assets/public/pairs/v1/icons/1.webp",
       "urlPath": "/pairs/v1/icons/1.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/42b01fcb1e2b721f94c5ff9b45ad28f32f3d3506d688c42677bb72106faa7979.webp"
     },
     {
       "file": "icons/10.png",
@@ -193,7 +208,8 @@
       "output": "games/pairs/assets/public/pairs/v1/icons/10.webp",
       "urlPath": "/pairs/v1/icons/10.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/82a8af654278cccd205073a177ea3ecfb25b9f6ffab63967dfbeb386ba6ffd0b.webp"
     },
     {
       "file": "icons/11.png",
@@ -205,7 +221,8 @@
       "output": "games/pairs/assets/public/pairs/v1/icons/11.webp",
       "urlPath": "/pairs/v1/icons/11.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/1eb31d715ba1d79fce73e198d7bd23f061319b88407d1d3c82ad56f8979eb741.webp"
     },
     {
       "file": "icons/12.png",
@@ -217,7 +234,8 @@
       "output": "games/pairs/assets/public/pairs/v1/icons/12.webp",
       "urlPath": "/pairs/v1/icons/12.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/cb29e3d62b552590463158c00906aaa6a950f5b7e6d9b94a8c03bcde86616e69.webp"
     },
     {
       "file": "icons/13.png",
@@ -229,7 +247,8 @@
       "output": "games/pairs/assets/public/pairs/v1/icons/13.webp",
       "urlPath": "/pairs/v1/icons/13.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/eefdd0b48ce9b5c2ce562211bbb4438d802dfea4bc45806e9b1bea54ae1c989c.webp"
     },
     {
       "file": "icons/14.png",
@@ -241,7 +260,8 @@
       "output": "games/pairs/assets/public/pairs/v1/icons/14.webp",
       "urlPath": "/pairs/v1/icons/14.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/0ac835e3cd5526ca1b68c6ac72bbe9b729957f6556318f274b5ce1e86a89e8b0.webp"
     },
     {
       "file": "icons/15.png",
@@ -253,7 +273,8 @@
       "output": "games/pairs/assets/public/pairs/v1/icons/15.webp",
       "urlPath": "/pairs/v1/icons/15.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/c35d0aa5b30df5c6bd6994b57b0232a7ad0b14d9bd8f621ac9ee80e4a83d7b10.webp"
     },
     {
       "file": "icons/16.png",
@@ -265,7 +286,8 @@
       "output": "games/pairs/assets/public/pairs/v1/icons/16.webp",
       "urlPath": "/pairs/v1/icons/16.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/16008b9a3908264fe1820e2c5d1bd62bdb8342ffb100f7a8fc52001213d9282f.webp"
     },
     {
       "file": "icons/17.png",
@@ -277,7 +299,8 @@
       "output": "games/pairs/assets/public/pairs/v1/icons/17.webp",
       "urlPath": "/pairs/v1/icons/17.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/032e3dc5dea9d00ab1f5244da52627d7e241e63847a946d030c1fa65a8feb02a.webp"
     },
     {
       "file": "icons/18.png",
@@ -289,7 +312,8 @@
       "output": "games/pairs/assets/public/pairs/v1/icons/18.webp",
       "urlPath": "/pairs/v1/icons/18.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/e8f0db35e33a3875ffa8c720fa1a0531a2a552695c448d66b89b88589139ea15.webp"
     },
     {
       "file": "icons/19.png",
@@ -301,7 +325,8 @@
       "output": "games/pairs/assets/public/pairs/v1/icons/19.webp",
       "urlPath": "/pairs/v1/icons/19.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/e013968ee81e544d76b18628a717756b8c6221f9694fcf293c67ec096f9382fd.webp"
     },
     {
       "file": "icons/2.png",
@@ -313,7 +338,8 @@
       "output": "games/pairs/assets/public/pairs/v1/icons/2.webp",
       "urlPath": "/pairs/v1/icons/2.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/ecaf7c3b39c9f6f2719aa44b739775510b4f8de9d3af9325fc2dfdc9b89417ec.webp"
     },
     {
       "file": "icons/20.png",
@@ -325,7 +351,8 @@
       "output": "games/pairs/assets/public/pairs/v1/icons/20.webp",
       "urlPath": "/pairs/v1/icons/20.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/405a4727c00916fae9d5feef9a9e2c93db83c674affe7f243ff91941abb73449.webp"
     },
     {
       "file": "icons/21.png",
@@ -337,7 +364,8 @@
       "output": "games/pairs/assets/public/pairs/v1/icons/21.webp",
       "urlPath": "/pairs/v1/icons/21.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/a8a557ebfe83bc6681d0f1ec429bebedbd62b98d7ff7fd4af826df5b2e68fa6f.webp"
     },
     {
       "file": "icons/22.png",
@@ -349,7 +377,8 @@
       "output": "games/pairs/assets/public/pairs/v1/icons/22.webp",
       "urlPath": "/pairs/v1/icons/22.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/8f6122195d8ecf5fe4ffee27af9be5b9758f4ca84be5a618422e0a0456f7c974.webp"
     },
     {
       "file": "icons/23.png",
@@ -361,7 +390,8 @@
       "output": "games/pairs/assets/public/pairs/v1/icons/23.webp",
       "urlPath": "/pairs/v1/icons/23.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/7e1cb90a6a4d45d307c6f4e5fac3129725534b3ccd7361a7478538816f825992.webp"
     },
     {
       "file": "icons/24.png",
@@ -373,7 +403,8 @@
       "output": "games/pairs/assets/public/pairs/v1/icons/24.webp",
       "urlPath": "/pairs/v1/icons/24.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/986f00893c43ddc73a666b9d28bbf49584a91890041ac2067fe8ea223683d86d.webp"
     },
     {
       "file": "icons/25.png",
@@ -385,7 +416,8 @@
       "output": "games/pairs/assets/public/pairs/v1/icons/25.webp",
       "urlPath": "/pairs/v1/icons/25.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/afb9009daea61324a08b88ca6256aa30b2ed9485dfc36ec60e7ae3065b88071d.webp"
     },
     {
       "file": "icons/26.png",
@@ -397,7 +429,8 @@
       "output": "games/pairs/assets/public/pairs/v1/icons/26.webp",
       "urlPath": "/pairs/v1/icons/26.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/3334a6158a20e8cb8add5100997341db700a0ec733fb6ab52d71549bf0c23fba.webp"
     },
     {
       "file": "icons/27.png",
@@ -409,7 +442,8 @@
       "output": "games/pairs/assets/public/pairs/v1/icons/27.webp",
       "urlPath": "/pairs/v1/icons/27.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/5bba3089b38c0b4f80453f58de5604b03b66a0fcfb9daf6a490a8212762158cf.webp"
     },
     {
       "file": "icons/28.png",
@@ -421,7 +455,8 @@
       "output": "games/pairs/assets/public/pairs/v1/icons/28.webp",
       "urlPath": "/pairs/v1/icons/28.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/bc5af3cb0f91f55c850f0450f2a5760a98ad4c25863d88af4e0447b0c72e8931.webp"
     },
     {
       "file": "icons/29.png",
@@ -433,7 +468,8 @@
       "output": "games/pairs/assets/public/pairs/v1/icons/29.webp",
       "urlPath": "/pairs/v1/icons/29.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/f9c91003c1b67c0658bca374fa302c313680db91d68c0274ee1ce9dbbb3dc92d.webp"
     },
     {
       "file": "icons/3.png",
@@ -445,7 +481,8 @@
       "output": "games/pairs/assets/public/pairs/v1/icons/3.webp",
       "urlPath": "/pairs/v1/icons/3.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/5215b2fd5d9459cff439d0295d0b66e55861ddc5ca85149a14e7d547a10ea7e1.webp"
     },
     {
       "file": "icons/30.png",
@@ -457,7 +494,8 @@
       "output": "games/pairs/assets/public/pairs/v1/icons/30.webp",
       "urlPath": "/pairs/v1/icons/30.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/dfddf1b5b72d99d61378add0436987395128df09f6aa9d52302f7f89f930c749.webp"
     },
     {
       "file": "icons/31.png",
@@ -469,7 +507,8 @@
       "output": "games/pairs/assets/public/pairs/v1/icons/31.webp",
       "urlPath": "/pairs/v1/icons/31.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/325ce48ad74fe4b445a33886091521153c03846e2858b02b40c3c9297c54c781.webp"
     },
     {
       "file": "icons/32.png",
@@ -481,7 +520,8 @@
       "output": "games/pairs/assets/public/pairs/v1/icons/32.webp",
       "urlPath": "/pairs/v1/icons/32.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/3cc068ba50cf7a5dc438021e94c2951f8ef8f5b8cbb18f4580cca76afedcf150.webp"
     },
     {
       "file": "icons/33.png",
@@ -493,7 +533,8 @@
       "output": "games/pairs/assets/public/pairs/v1/icons/33.webp",
       "urlPath": "/pairs/v1/icons/33.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/a001505903b50ad30a81cd8af05a7dd9c30c3b788050332922ee0b75bcda38ba.webp"
     },
     {
       "file": "icons/34.png",
@@ -505,7 +546,8 @@
       "output": "games/pairs/assets/public/pairs/v1/icons/34.webp",
       "urlPath": "/pairs/v1/icons/34.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/bc1a30870a8003ee770fb855edd7d5fa110af32143273eb797755fdaa97f9a78.webp"
     },
     {
       "file": "icons/35.png",
@@ -517,7 +559,8 @@
       "output": "games/pairs/assets/public/pairs/v1/icons/35.webp",
       "urlPath": "/pairs/v1/icons/35.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/d41bea9f3247aac18503f6ca1fb36e29adc3602ca52ef400cff009dea2c0abed.webp"
     },
     {
       "file": "icons/36.png",
@@ -529,7 +572,8 @@
       "output": "games/pairs/assets/public/pairs/v1/icons/36.webp",
       "urlPath": "/pairs/v1/icons/36.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/4af78034c16bc5f2e6b1352e5e0957b381d25f511e87d8e29a133aa74223f5b5.webp"
     },
     {
       "file": "icons/37.png",
@@ -541,7 +585,8 @@
       "output": "games/pairs/assets/public/pairs/v1/icons/37.webp",
       "urlPath": "/pairs/v1/icons/37.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/b09e28bf73004782381bee88cd3b8a40925a60bd617f4afe03d9a057db751b0c.webp"
     },
     {
       "file": "icons/38.png",
@@ -553,7 +598,8 @@
       "output": "games/pairs/assets/public/pairs/v1/icons/38.webp",
       "urlPath": "/pairs/v1/icons/38.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/f2e8ed660e11cb94352232664f174e73107fe17ade5aad30e03cf0ed490071c9.webp"
     },
     {
       "file": "icons/39.png",
@@ -565,7 +611,8 @@
       "output": "games/pairs/assets/public/pairs/v1/icons/39.webp",
       "urlPath": "/pairs/v1/icons/39.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/0b674e794e1e0d4cfb86d5a3f7bc06f9f2493955937167d8e4eef766bbb486bd.webp"
     },
     {
       "file": "icons/4.png",
@@ -577,7 +624,8 @@
       "output": "games/pairs/assets/public/pairs/v1/icons/4.webp",
       "urlPath": "/pairs/v1/icons/4.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/2a110fbc049546c5cd6c646e49f9c772e9469f9f831feb463affcf80bb5771b9.webp"
     },
     {
       "file": "icons/40.png",
@@ -589,7 +637,8 @@
       "output": "games/pairs/assets/public/pairs/v1/icons/40.webp",
       "urlPath": "/pairs/v1/icons/40.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/2bd3e95a2805f9ab564b7d7ef96e1122250f9e69fcf99cf68cdc829aa92dc633.webp"
     },
     {
       "file": "icons/41.png",
@@ -601,7 +650,8 @@
       "output": "games/pairs/assets/public/pairs/v1/icons/41.webp",
       "urlPath": "/pairs/v1/icons/41.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/a946d8b6350f0fe9a1e43c582229674346a0abcc0009f6e5d36d9fb19f88c942.webp"
     },
     {
       "file": "icons/42.png",
@@ -613,7 +663,8 @@
       "output": "games/pairs/assets/public/pairs/v1/icons/42.webp",
       "urlPath": "/pairs/v1/icons/42.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/6be400e84794e04c049fdfef21a8cfe66631bfd01019a65307bab5194752c656.webp"
     },
     {
       "file": "icons/43.png",
@@ -625,7 +676,8 @@
       "output": "games/pairs/assets/public/pairs/v1/icons/43.webp",
       "urlPath": "/pairs/v1/icons/43.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/151e2a68ffedd1fa90767a7ccc174b110d40c0ff10fb44ac7a0813e2dcbf2d9d.webp"
     },
     {
       "file": "icons/44.png",
@@ -637,7 +689,8 @@
       "output": "games/pairs/assets/public/pairs/v1/icons/44.webp",
       "urlPath": "/pairs/v1/icons/44.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/c9c89e679a34effe2ea73067d4b1c3b3a943ecd6534771537e171e1b502964c0.webp"
     },
     {
       "file": "icons/45.png",
@@ -649,7 +702,8 @@
       "output": "games/pairs/assets/public/pairs/v1/icons/45.webp",
       "urlPath": "/pairs/v1/icons/45.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/d56ff8e921faedd9080c0425304699dd159377dd28501f3d489f0e9b23a5ad57.webp"
     },
     {
       "file": "icons/46.png",
@@ -661,7 +715,8 @@
       "output": "games/pairs/assets/public/pairs/v1/icons/46.webp",
       "urlPath": "/pairs/v1/icons/46.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/a52bba6988229e1910dd878f05151e22b886c10ad89896202d7255c120b6e8fe.webp"
     },
     {
       "file": "icons/47.png",
@@ -673,7 +728,8 @@
       "output": "games/pairs/assets/public/pairs/v1/icons/47.webp",
       "urlPath": "/pairs/v1/icons/47.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/262f5f48d6b1790bfcf12ee54a9667929cc873d9bd134bad88c561a5160d31b4.webp"
     },
     {
       "file": "icons/48.png",
@@ -685,7 +741,8 @@
       "output": "games/pairs/assets/public/pairs/v1/icons/48.webp",
       "urlPath": "/pairs/v1/icons/48.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/ddfe58785db002f0828f319975599f78e4104c5a092f173b09a3ec7f3d481fb9.webp"
     },
     {
       "file": "icons/49.png",
@@ -697,7 +754,8 @@
       "output": "games/pairs/assets/public/pairs/v1/icons/49.webp",
       "urlPath": "/pairs/v1/icons/49.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/cd613a53d5d852e0e87ba72c3157c5f6520459733a9f2c449ba11b98ff0bd4d6.webp"
     },
     {
       "file": "icons/5.png",
@@ -709,7 +767,8 @@
       "output": "games/pairs/assets/public/pairs/v1/icons/5.webp",
       "urlPath": "/pairs/v1/icons/5.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/bbc1ad088673fa9da6335d3c98600e6de8d76f198b23ed16265628d3ac98b7da.webp"
     },
     {
       "file": "icons/50.png",
@@ -721,7 +780,8 @@
       "output": "games/pairs/assets/public/pairs/v1/icons/50.webp",
       "urlPath": "/pairs/v1/icons/50.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/0285939ed40ba4a116c0d9f7b86ba775dc01812505b35c68b975a699c2a18a1b.webp"
     },
     {
       "file": "icons/51.png",
@@ -733,7 +793,8 @@
       "output": "games/pairs/assets/public/pairs/v1/icons/51.webp",
       "urlPath": "/pairs/v1/icons/51.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/ae4505fff34e8a02594dc79458ac8660db166a5023a687caf895bcd517194ab2.webp"
     },
     {
       "file": "icons/6.png",
@@ -745,7 +806,8 @@
       "output": "games/pairs/assets/public/pairs/v1/icons/6.webp",
       "urlPath": "/pairs/v1/icons/6.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/2eb718d871f08a09260f66187db67ec3329e077e11c99e2009cc3c3c17c7bb1c.webp"
     },
     {
       "file": "icons/7.png",
@@ -757,7 +819,8 @@
       "output": "games/pairs/assets/public/pairs/v1/icons/7.webp",
       "urlPath": "/pairs/v1/icons/7.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/5a43f5e29b1b99056744d029567f3d75d799cb06545b8f0f07e08fae9abe9dcd.webp"
     },
     {
       "file": "icons/8.png",
@@ -769,7 +832,8 @@
       "output": "games/pairs/assets/public/pairs/v1/icons/8.webp",
       "urlPath": "/pairs/v1/icons/8.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/5bba1f6b7acc2900e875821d84837e4326570e019832d3ec56826da1874bf6f8.webp"
     },
     {
       "file": "icons/9.png",
@@ -781,7 +845,8 @@
       "output": "games/pairs/assets/public/pairs/v1/icons/9.webp",
       "urlPath": "/pairs/v1/icons/9.webp",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "lossless WebP"
+      "conversion": "lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/a36c602a1847337f888eeb54b531cebda6fbce5e71cb69ded879eed2440425cc.webp"
     },
     {
       "file": "audio/bg-legacy-2015.mp3",
@@ -794,7 +859,8 @@
       "output": "games/pairs/assets/public/pairs/v1/audio/bg-legacy-2015.mp3",
       "urlPath": "/pairs/v1/audio/bg-legacy-2015.mp3",
       "license": "Not established by upstream; public recreation, not an official Tencent asset release",
-      "conversion": "original unchanged"
+      "conversion": "original unchanged",
+      "url": "https://cdn.ichenj.com/bga/pairs/22873010eeeef1f06414250abf7d6e2e3b27a7fa111d31c36723bbfeb69de72c.mp3"
     },
     {
       "file": "cover.webp",
@@ -806,7 +872,8 @@
       "sha256": "698146bc401e1ca4680110eb3873f00584890ebb93daa92227f64e71e89703bd",
       "bytes": 18686,
       "license": "Project original SVG",
-      "conversion": "SVG rendered with resvg, lossless WebP"
+      "conversion": "SVG rendered with resvg, lossless WebP",
+      "url": "https://cdn.ichenj.com/bga/pairs/698146bc401e1ca4680110eb3873f00584890ebb93daa92227f64e71e89703bd.webp"
     }
   ]
 }

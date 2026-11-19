@@ -4,9 +4,9 @@ import catalog from "../assets/audio-catalog.json" with { type: "json" };
 import playback from "../assets/audio-playback.json" with { type: "json" };
 
 export type BasketballAudioOptions = {
-  /** CDN root; the game appends its immutable versioned asset path. */
+
   assetsBase?: string;
-  /** Explicit research fixture directory; never a production fallback. */
+
   localBase?: string;
 };
 
@@ -28,8 +28,8 @@ type MusicRendition = {
   loopStartSeconds?: number;
 };
 const music = new Map<number, MusicRendition>();
-// The same integer sample metadata is embedded by the server. Never infer a
-// loop region from a filename, the preview, or the source scene's video clock.
+
+
 for (const [id, rendition] of Object.entries(playback.music)) {
   const entry = rendition as Record<string, unknown>;
   if (
@@ -83,7 +83,7 @@ export type BasketballMusicState = {
   paused: boolean;
 };
 
-/** Original event selection only; playback, lifecycle and mute belong to the platform. */
+
 export class BasketballAudio {
   private readonly port: GameAudioPort;
   private readonly options: BasketballAudioOptions;
@@ -100,14 +100,20 @@ export class BasketballAudio {
   private sources(file: string): string[] {
     if (this.options.localBase && !this.options.assetsBase)
       return [`${this.options.localBase.replace(/\/+$/, "")}/${file}`];
+    if (!this.options.assetsBase) {
+      const files: Record<string, { url: string }> = release.files;
+      const published = files[`${assetPath}/${file}`];
+      if (!published) throw Error("篮球音频发布记录不完整");
+      return [published.url];
+    }
     const root = (this.options.assetsBase || release.assetsBaseURL).replace(/\/+$/, "");
     return [`${root}${assetPath}/${file}`];
   }
 
-  /** Call once for each new engine event batch, not for snapshot rendering.
-   * Supplying a monotonically increasing sequence also rejects repeated/old
-   * batches. Media promises never delay issuing later controls in this batch.
-   */
+
+
+
+
   async consume(
     soundIDs: readonly number[],
     sequence?: number,
@@ -148,11 +154,11 @@ export class BasketballAudio {
         } else if (effects.has(id))
           played = this.port.playWithFallback(this.sources(effects.get(id)!));
         else if (music.has(id)) {
-          // Only the separately verified original-PCM derivative loops. The
-          // untouched 133-second research recording is never hard-looped.
+
+
           const track = music.get(id)!;
-          // Original $80E7 clears pause bit $40 for a new music command.
-          // The same ID is a fresh request too, not a deduplicated UI refresh.
+
+
           if (this.paused) {
             void this.port.resume();
             this.paused = false;
@@ -185,9 +191,9 @@ export class BasketballAudio {
     return report;
   }
 
-  /** Call after establishing the snapshot watermark. Only current background
-   * state is restored; past effects never pass through consume(). Positions
-   * use the authoritative server media wall clock, at playbackRate=1. */
+
+
+
   async restoreMusic(
     state: BasketballMusicState,
     serverNow = state.at,
@@ -242,7 +248,7 @@ export class BasketballAudio {
     }
   }
 
-  /** Stop the previous session and establish the restored event watermark. */
+
   reset(lastSequence = -1): void {
     if (this.disposed) return;
     this.lastSequence =

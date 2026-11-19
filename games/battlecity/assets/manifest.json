@@ -1,6 +1,6 @@
 {
   "version": "battlecity/v1",
-  "prefix": "bga/v20261002-1/battlecity/v1/",
+  "prefix": "bga/battlecity/",
   "cdnBase": "https://cdn.ichenj.com/bga/v20261002-1",
   "generator": "scripts/battlecity/prepare_assets.py",
   "generatorSha256": "4d0b88739bfcf03f5785b502b5a58216f81ea455af57bf217bd3c4d8cdae3604",
@@ -14,14 +14,16 @@
       "kind": "atlas",
       "width": 502,
       "height": 70,
-      "frames": 101
+      "frames": 101,
+      "url": "https://cdn.ichenj.com/bga/battlecity/e3ec54dfa9fa4131faa81625e545dab8ff1f59f73c177f32dde660fda84fc551.webp"
     },
     {
       "file": "atlas.json",
       "urlPath": "/battlecity/v1/atlas.json",
       "bytes": 44859,
       "sha256": "12d35161299b051c71f2fbf834ab7cc3d53a9ad4e2c53b3e77bb78a085f2c1c2",
-      "kind": "atlas-meta"
+      "kind": "atlas-meta",
+      "url": "https://cdn.ichenj.com/bga/battlecity/12d35161299b051c71f2fbf834ab7cc3d53a9ad4e2c53b3e77bb78a085f2c1c2.json"
     },
     {
       "file": "audio/bgm-battle.mp3",
@@ -30,7 +32,8 @@
       "sha256": "0082af8e08f285bb755732efe3d4cfeacaba265b90851f303551be3dcece563c",
       "kind": "bgm",
       "duration": 15.347,
-      "event": "bgm-battle"
+      "event": "bgm-battle",
+      "url": "https://cdn.ichenj.com/bga/battlecity/0082af8e08f285bb755732efe3d4cfeacaba265b90851f303551be3dcece563c.mp3"
     },
     {
       "file": "audio/bgm-start.mp3",
@@ -39,7 +42,8 @@
       "sha256": "7755f373d56a8a193a438feb0713a3e45d105c799717591f854608db634c436f",
       "kind": "bgm",
       "duration": 4.306,
-      "event": "bgm-start"
+      "event": "bgm-start",
+      "url": "https://cdn.ichenj.com/bga/battlecity/7755f373d56a8a193a438feb0713a3e45d105c799717591f854608db634c436f.mp3"
     },
     {
       "file": "audio/sfx-base.mp3",
@@ -48,7 +52,8 @@
       "sha256": "34629cf13f7419e037ffe45e8907975fadb8894b099e469d9a561dd2c3b1d5c2",
       "kind": "sfx",
       "duration": 0.749,
-      "event": "sfx-base"
+      "event": "sfx-base",
+      "url": "https://cdn.ichenj.com/bga/battlecity/34629cf13f7419e037ffe45e8907975fadb8894b099e469d9a561dd2c3b1d5c2.mp3"
     },
     {
       "file": "audio/sfx-brick.mp3",
@@ -57,7 +62,8 @@
       "sha256": "fe1cc84a887a883f5b2160c908f458894b6adbc32de206b735afc97ac440c80f",
       "kind": "sfx",
       "duration": 0.259,
-      "event": "sfx-brick"
+      "event": "sfx-brick",
+      "url": "https://cdn.ichenj.com/bga/battlecity/fe1cc84a887a883f5b2160c908f458894b6adbc32de206b735afc97ac440c80f.mp3"
     },
     {
       "file": "audio/sfx-explode.mp3",
@@ -66,7 +72,8 @@
       "sha256": "807cb56017dc908674c96faa6d6d9f5264b838f7dbe8d8ef742e6fcfdc540431",
       "kind": "sfx",
       "duration": 0.749,
-      "event": "sfx-explode"
+      "event": "sfx-explode",
+      "url": "https://cdn.ichenj.com/bga/battlecity/807cb56017dc908674c96faa6d6d9f5264b838f7dbe8d8ef742e6fcfdc540431.mp3"
     },
     {
       "file": "audio/sfx-fire.mp3",
@@ -75,7 +82,8 @@
       "sha256": "3ec1384218a47607c1dd80eca355141186894bc6b866cad7d49f93a8601aa4ff",
       "kind": "sfx",
       "duration": 0.417,
-      "event": "sfx-fire"
+      "event": "sfx-fire",
+      "url": "https://cdn.ichenj.com/bga/battlecity/3ec1384218a47607c1dd80eca355141186894bc6b866cad7d49f93a8601aa4ff.mp3"
     },
     {
       "file": "audio/sfx-lose.mp3",
@@ -84,7 +92,8 @@
       "sha256": "2ab8eb7e52d833dd7a11a9b3d35885337c667443ffa7859ef42e9cd0d60dba49",
       "kind": "sfx",
       "duration": 1.804,
-      "event": "sfx-lose"
+      "event": "sfx-lose",
+      "url": "https://cdn.ichenj.com/bga/battlecity/2ab8eb7e52d833dd7a11a9b3d35885337c667443ffa7859ef42e9cd0d60dba49.mp3"
     },
     {
       "file": "audio/sfx-powerup.mp3",
@@ -93,7 +102,8 @@
       "sha256": "cb85c4123427d262223b7274b9d41116fbc50899d7d998e873189d828bd45099",
       "kind": "sfx",
       "duration": 2.367,
-      "event": "sfx-powerup"
+      "event": "sfx-powerup",
+      "url": "https://cdn.ichenj.com/bga/battlecity/cb85c4123427d262223b7274b9d41116fbc50899d7d998e873189d828bd45099.mp3"
     },
     {
       "file": "audio/sfx-shield.mp3",
@@ -102,7 +112,8 @@
       "sha256": "d45ba7dde2ed4f7919f35f02eadf291d465775230edafe30fbce41fa79ef25f5",
       "kind": "sfx",
       "duration": 0.652,
-      "event": "sfx-shield"
+      "event": "sfx-shield",
+      "url": "https://cdn.ichenj.com/bga/battlecity/d45ba7dde2ed4f7919f35f02eadf291d465775230edafe30fbce41fa79ef25f5.mp3"
     },
     {
       "file": "audio/sfx-steel.mp3",
@@ -111,7 +122,8 @@
       "sha256": "42260d9105abc81f688ec324bf77b7ffb93527e0f3a5686a924d67d28615ab0f",
       "kind": "sfx",
       "duration": 0.351,
-      "event": "sfx-steel"
+      "event": "sfx-steel",
+      "url": "https://cdn.ichenj.com/bga/battlecity/42260d9105abc81f688ec324bf77b7ffb93527e0f3a5686a924d67d28615ab0f.mp3"
     },
     {
       "file": "audio/sfx-win.mp3",
@@ -120,7 +132,8 @@
       "sha256": "8a78e3c086761243c4e5c6e97b282ecd65895fcf93f0701d605467d2205253bb",
       "kind": "sfx",
       "duration": 1.833,
-      "event": "sfx-win"
+      "event": "sfx-win",
+      "url": "https://cdn.ichenj.com/bga/battlecity/8a78e3c086761243c4e5c6e97b282ecd65895fcf93f0701d605467d2205253bb.mp3"
     }
   ]
 }

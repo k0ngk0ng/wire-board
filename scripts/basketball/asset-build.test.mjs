@@ -1,3 +1,4 @@
+import { createPNG } from "../test-fixtures/png.mjs";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { mkdtempSync, mkdirSync, readFileSync, writeFileSync, rmSync, symlinkSync, existsSync } from "node:fs";
@@ -92,7 +93,7 @@ test("music76 accepts only its exact intro-loop delivery filename", t => {
 
 test('application artifact rejects all basketball media, including the pinned cover', async t => {
   const f=fixture(t), output=await materializeBasketballAssets(f.dir,{packageDirectory:f.pkg});
-  const image=Buffer.from('','base64');
+  const image=createPNG();
   const digest=sha(image), localPath='/basketball/v1/cover/heroes-'+digest+'.png';
   const cover={schema:1,game:'basketball',sha256:digest,bytes:image.length,mime:'image/png',width:1,height:1,localPath,url:'https://cdn.ichenj.com/bga/basketball/cover-'+digest+'/heroes.png'};
   writeFileSync(path.join(f.dir,'games/basketball/assets/cover-manifest.json'),JSON.stringify(cover));
@@ -133,4 +134,23 @@ test('exhausted network retries remain bounded and fail without fallback',async 
   const f=fixture(t),counts=new Map();
   await assert.rejects(materializeBasketballAssets(f.dir,{fetchImpl:async url=>{counts.set(url,(counts.get(url)??0)+1);throw new TypeError('fetch failed');}}));
   assert.ok([...counts.values()].every(n=>n===3));assert.throws(()=>verifyBasketballAssets(f.dir));
+});
+
+
+test("canonical per-file publications retain the original content pin and download game content URLs", async t => {
+  const f = fixture(t);
+  const files = Object.fromEntries(f.entries.map(e => [e.urlPath, {url: "https://cdn.ichenj.com/bga/basketball/" + e.sha256 + path.extname(e.urlPath), sha256:e.sha256, bytes:e.bytes, mime:e.mime}]));
+  f.pin.assetsBaseURL = "https://cdn.ichenj.com/bga";
+  f.pin.files = files;
+  writeFileSync(f.pinFile, encode(f.pin));
+  const calls = [];
+  await materializeBasketballAssets(f.dir, {fetchImpl: async url => {
+    calls.push(url);
+    const entry = f.entries.find(e => files[e.urlPath].url === url);
+    assert.ok(entry, url);
+    const [body, mime] = f.files.get(entry.urlPath);
+    return new Response(body, {headers:{"Content-Type":mime}});
+  }});
+  assert.equal(calls.length, f.entries.length);
+  assert.ok(calls.every(url => url.startsWith("https://cdn.ichenj.com/bga/basketball/") && !url.includes("/v1")));
 });

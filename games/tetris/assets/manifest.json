@@ -1,6 +1,6 @@
 {
   "version": "tetris/v1",
-  "prefix": "bga/v20261002-1/tetris/v1/",
+  "prefix": "bga/tetris/",
   "generator": "scripts/tetris/prepare-audio.mjs",
   "generatorSha256": "0c4c73edd798e85cf02d3fa91e3eab430685fc6d42600823a1ef1f0800e017ce",
   "license": "项目原创，离线合成，无外部采样",

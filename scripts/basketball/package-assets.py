@@ -1,9 +1,12 @@
-#!/usr/bin/env python3
+
 """Build a deterministic manifest-selected public payload. No upload or runtime edits."""
-import argparse,gzip,hashlib,io,json,re,tarfile
+import argparse,gzip,hashlib,io,json,re,tarfile,sys
 from pathlib import Path,PurePosixPath
 
 ROOT=Path(__file__).resolve().parents[2]
+sys.path.insert(0,str(ROOT/'scripts'))
+from resource_store import configuration
+CONFIG=configuration()
 ROM_SHA='0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b'
 MIME={'.png':'image/png','.json':'application/json','.mp3':'audio/mpeg','.wav':'audio/wav'}
 PRIVATE={'verification','limitations','license','tool','processing','captures','runs','source_scripts'}
@@ -191,10 +194,10 @@ def archive(files):
 def build_package(root,output):
  root=Path(root).resolve();output=inside_output(root,output,True);c=collect(root)
  entries=[{'urlPath':'/'+p,'output':'public/'+p,'sha256':sha(b),'bytes':len(b),'mime':MIME[Path(p).suffix]} for p,b in sorted(c.files.items())]
- identity=sha(encoded({'sourceROM':ROM_SHA,'entries':entries}));prefix='bga/basketball/v1-'+identity
+ identity=sha(encoded({'sourceROM':ROM_SHA,'entries':entries}));prefix='bga/basketball'
  provenance=encoded({'sourceROM':ROM_SHA,'inputs':sorted(c.provenance.values(),key=lambda v:v['input']),'scope':'source records retained separately; package integrity is not release/listening acceptance'})
  packed=archive(c.files)
- manifest={'schema':1,'game':'basketball','sourceROM':ROM_SHA,'contentSHA256':identity,'ossBucket':'stoneage-assets','ossPrefix':prefix,'assetsBaseURL':'https://cdn.ichenj.com/'+prefix,'entries':entries,'archiveSHA256':sha(packed),'provenanceSHA256':sha(provenance),'acceptanceInherited':False}
+ manifest={'schema':1,'game':'basketball','sourceROM':ROM_SHA,'contentSHA256':identity,'ossBucket':CONFIG['OSS_BUCKET'],'ossPrefix':prefix,'assetsBaseURL':CONFIG['CDN_ORIGIN']+'/bga','entries':entries,'archiveSHA256':sha(packed),'provenanceSHA256':sha(provenance),'acceptanceInherited':False}
  output.mkdir(parents=True)
  for p,b in c.files.items():target=output/'public'/p;target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(b)
  (output/'provenance.json').write_bytes(provenance);(output/'asset-package.tar.gz').write_bytes(packed);(output/'package-manifest.json').write_bytes(encoded(manifest))
@@ -210,7 +213,7 @@ def verify_package(package,root=ROOT):
   files[rel]=data
  actual={str(f.relative_to(p/'public')) for f in (p/'public').rglob('*') if f.is_file() or f.is_symlink()};require(actual==set(files),'unlisted public payload')
  identity=sha(encoded({'sourceROM':ROM_SHA,'entries':entries}));require(identity==m['contentSHA256'],'content identity differs')
- prefix='bga/basketball/v1-'+identity;require(m['ossBucket']=='stoneage-assets' and m['ossPrefix']==prefix and m['assetsBaseURL']=='https://cdn.ichenj.com/'+prefix,'OSS target differs')
+ prefix='bga/basketball';require(m['ossBucket']==CONFIG['OSS_BUCKET'] and m['ossPrefix']==prefix and m['assetsBaseURL']==CONFIG['CDN_ORIGIN']+'/bga','OSS target differs')
  require(sha(read_under(p,'provenance.json'))==m['provenanceSHA256'],'provenance differs')
  require(sha(read_under(p,'asset-package.tar.gz'))==m['archiveSHA256'] and sha(archive(files))==m['archiveSHA256'],'archive differs')
  return m

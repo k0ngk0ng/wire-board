@@ -1,6 +1,6 @@
-// Failures: a warm/cold release copies media into dist; default CDN resolves to
-// missing same-origin fallback; music preloads unrelated tracks; Wasm pin does
-// not match compiled code. Browser E2E will measure actual fetches and readiness.
+
+
+
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
@@ -8,7 +8,7 @@ import { resolveBasketballAssetsBase } from "../web/asset-base.ts";
 import release from "../assets/release-manifest.json" with { type: "json" };
 import { BasketballAudio } from "../web/audio.ts";
 test("default production assets use pinned OSS without local fallback", async () => {
-  assert.equal(resolveBasketballAssetsBase(""), release.assetsBaseURL);
+  assert.equal(resolveBasketballAssetsBase(""), "/bga");
   const calls = [];
   const port = {
     music: async (s) => {
@@ -22,7 +22,7 @@ test("default production assets use pinned OSS without local fallback", async ()
   assert.equal(calls.length, 0);
   await sound.consume([66], 1);
   assert.deepEqual(calls, [
-    [release.assetsBaseURL + "/basketball/v1/audio/music-066-loop.mp3"],
+    [release.files["/basketball/v1/audio/music-066-loop.mp3"].url],
   ]);
 });
 test("production collector never materializes basketball media or cover", () => {

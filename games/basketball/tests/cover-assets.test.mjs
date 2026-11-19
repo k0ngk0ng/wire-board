@@ -1,6 +1,7 @@
-// Failure inventory before implementation: cold builds omit the cover; CDN
-// errors or wrong MIME/hash/dimensions become a publishable fallback; corrupted
-// caches survive; hostile pins or cache symlinks escape the checkout.
+import { createPNG } from "../../../scripts/test-fixtures/png.mjs";
+
+
+
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
@@ -22,10 +23,7 @@ import {
 const root = fileURLToPath(new URL("../../../", import.meta.url));
 const parent = path.join(root, ".local/basketball-cover-tests");
 mkdirSync(parent, { recursive: true });
-const png = Buffer.from(
-  "",
-  "base64",
-);
+const png = createPNG();
 const sha = (b) => createHash("sha256").update(b).digest("hex");
 function fixture(t) {
   const dir = mkdtempSync(path.join(parent, "case-"));

@@ -1,16 +1,20 @@
-#!/usr/bin/env python3
+
 """Read-only CDN routing/compression audit; optional cold/warm browser evidence.
 Does not log in, create rooms, upload assets or modify the deployed application.
 """
 import argparse, concurrent.futures, gzip, json, os, shutil, subprocess, time
 from pathlib import Path
+import sys
 from urllib.request import Request, urlopen
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / 'scripts'))
+from resource_store import configuration
+
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--browser', action='store_true')
 args = parser.parse_args()
-origin = 'https://PUBLIC_HOST'
+origin = configuration()['PUBLIC_ORIGIN']
 out = ROOT / '.local/game-loading-online'
 out.mkdir(parents=True, exist_ok=True)
 

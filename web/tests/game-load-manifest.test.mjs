@@ -1,6 +1,6 @@
-// Failure scenarios before the fix: all alternative maps are preloaded through
-// dynamicImports; a static dependency/CSS is dropped; legacy room-ui loses its
-// explicit preload; CDN URLs stop matching the entry; no real byte sizes.
+
+
+
 import test from "node:test";
 import assert from "node:assert/strict";
 import {
@@ -85,34 +85,42 @@ test("preload static programs only; lazy maps load on selection and legacy shell
       ]),
       "assets/optional.js": chunk("assets/optional.js", ["/optional.ts"]),
       "assets/modern.css": { type: "asset", fileName: "assets/modern.css" },
+      "assets/modern-cover.png": { type: "asset", fileName: "assets/modern-cover.png", originalFileNames: [path.join(fixture, "games/modern/assets/cover.png")] },
+      "assets/controller.woff2": { type: "asset", fileName: "assets/controller.woff2", originalFileNames: ["/web/src/controllers/font.woff2"] },
     };
+    bundle["assets/modern.js"].viteMetadata.importedAssets = new Set(["assets/modern-cover.png"]);
+    bundle["assets/shared.js"].viteMetadata.importedAssets = new Set(["assets/controller.woff2"]);
     writeFileSync(
       path.join(out, "index.html"),
       '<script src="/assets/home.js"></script>',
     );
     for (const name of Object.keys(bundle))
-      writeFileSync(path.join(out, name), "/* " + name + " */");
+      writeFileSync(path.join(out, name), "export const ready = true;");
     const plugin = gameLoadManifest();
     plugin.configResolved({
-      base: "https://cdn.ichenj.com/bga/web/0123456789012345678901234567890123456789/",
+      base: "https://cdn.ichenj.com/bga/",
     });
     plugin.writeBundle({ dir: out }, bundle);
     const manifest = JSON.parse(
       readFileSync(path.join(out, "game-load-manifest.json")),
     );
+    assert.equal(manifest.owners["assets/modern-cover.png"], "modern");
+    assert.equal(manifest.owners["assets/controller.woff2"], "_common");
     const modernURLs = manifest.games.modern.map((f) => path.basename(f.url));
     assert.deepEqual(modernURLs.sort(), [
+      "controller.woff2",
+      "modern-cover.png",
       "modern.css",
       "modern.js",
       "shared.js",
     ]);
     assert.deepEqual(
       manifest.games.legacy.map((f) => path.basename(f.url)).sort(),
-      ["legacy-static.js", "legacy.js", "room-ui.js", "shared.js"],
+      ["controller.woff2", "legacy-static.js", "legacy.js", "room-ui.js", "shared.js"],
     );
     assert.ok(
       manifest.entry.startsWith(
-        "https://cdn.ichenj.com/bga/web/0123456789012345678901234567890123456789/",
+        "https://cdn.ichenj.com/bga/",
       ),
     );
     assert.ok(
@@ -122,7 +130,7 @@ test("preload static programs only; lazy maps load on selection and legacy shell
           (f) =>
             f.bytes > 0 &&
             f.url.startsWith(
-              "https://cdn.ichenj.com/bga/web/0123456789012345678901234567890123456789/",
+              "https://cdn.ichenj.com/bga/",
             ),
         ),
     );

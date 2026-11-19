@@ -1,3 +1,4 @@
+import { silenceDataURL } from "./audio-silence.ts";
 import { toneDataURL, type Sound } from "./audio-tones.ts";
 import { NativeAudioStream, normalizeStreamConfig } from "./audio-stream.ts";
 import { NativePCMStream, normalizePCMConfig } from "./audio-pcm-stream.ts";
@@ -82,23 +83,22 @@ type LoopVoice = {
   rate: number;
   frame?: number;
 };
-const SILENCE =
-  "data:audio/wav;base64,";
+const SILENCE = silenceDataURL();
 
-// Native effect and optional music channels share media-volume behavior,
-// gesture unlock and mute cancellation; game rules only select clip URLs.
+
+
 export class GameAudio {
   private media?: HTMLAudioElement;
-  // A finite clip can finish and release its Task while its source remains
-  // loaded. Retain that source's owner for later room/dispose cleanup.
+
+
   private mediaOwner?: string;
   private background?: GameAudio;
   private backgroundOwner?: string;
   private backgroundSources = "";
   private loops = new Map<string, LoopVoice>();
   private continuous?: NativeContinuousLoops;
-  // Stable keys name media lanes, not individual events. Keep cancelled event
-  // identities so unmute or repeated snapshots cannot replay old one-shots.
+
+
   private tracks = new Map<string, TrackVoice>();
   private silent = false;
   private pausedOwners = new Set<string>();
@@ -473,8 +473,8 @@ export class GameAudio {
     const loopStart = voice.clip.loopStartSeconds;
     if (media.ended && !media.loop && loopStart === undefined) return false;
     if (media.readyState === 0) {
-      // next() installed the source-bound metadata handler for every track.
-      // Updating the shared Clip makes the latest seek win, including fallback.
+
+
       voice.clip.startOffset = offset;
       task.pendingLoopRestart = undefined;
       return true;
@@ -499,8 +499,8 @@ export class GameAudio {
       return false;
     }
     voice.clip.startOffset = offset;
-    // A paused suffix may be waiting to restart at its loop head. An explicit
-    // authority resync supersedes that pending position without resuming it.
+
+
     task.pendingLoopRestart = undefined;
     return true;
   }
@@ -608,8 +608,8 @@ export class GameAudio {
     }
     if (previous?.paused) return Promise.resolve(false);
     if (!previous && this.tracks.size >= 64) {
-      // Bound retained lanes/tombstones. Never evict live media or this owner's
-      // current event identities to make an arbitrary event-as-key request fit.
+
+
       const retired = [...this.tracks.entries()].find(
         ([, v]) => v.owner !== owner && v.stopped,
       );
@@ -645,8 +645,8 @@ export class GameAudio {
       rate,
     };
     this.tracks.set(id, voice);
-    // Reuse native one-shot playback, metadata seek, fallback, pause-generation
-    // guards and intro/suffix looping. No game priority or timing rules live here.
+
+
     voice.pending = audio.start([clip], owner, 1);
     return voice.pending;
   }
@@ -746,8 +746,8 @@ export class GameAudio {
     if (!this.available() || this.pausedOwners.has(owner) || !key)
       return Promise.resolve(false);
     const sources = [...new Set(requested.filter(Boolean))];
-    // A channel represents the current room. Do not let a previous room's
-    // continuous sounds survive a new owner, even when it uses different keys.
+
+
     for (const voice of this.loops.values())
       if (voice.owner !== owner) this.releaseLoop(voice);
     const previous = this.loops.get(key);
@@ -764,8 +764,8 @@ export class GameAudio {
     media.dataset.platformLoop = key;
     if (fallback) media.dataset.continuousFallback = fallback;
     media.loop = true;
-    // Engine rate controls pitch as well as speed, including older Safari and
-    // Firefox implementations. No Web Audio route is created.
+
+
     const pitch = media as HTMLAudioElement & {
       mozPreservesPitch?: boolean;
       webkitPreservesPitch?: boolean;
@@ -813,9 +813,9 @@ export class GameAudio {
       };
       voice.starting = true;
       const generation = voice.generation;
-      // The native load algorithm restores playbackRate from this default.
-      // Configure it before src so an idle loop keeps its requested pitch even
-      // when no later RPM/control update arrives to tune it again.
+
+
+
       media.defaultPlaybackRate = voice.rate;
       media.src = voice.sources[index];
       this.tuneLoop(voice, {}, true);
@@ -823,8 +823,8 @@ export class GameAudio {
       try {
         await media.play();
         if (!this.loopCurrent(voice)) {
-          // A cancelled play promise may resolve after the element was removed.
-          // This voice has its own element, so pausing it cannot affect a successor.
+
+
           this.releaseLoop(voice);
           return false;
         }
@@ -1011,8 +1011,8 @@ export class GameAudio {
     media.onended = () => {
       if (this.task !== task || task.starting) return;
       if (clip.loopStartSeconds !== undefined) {
-        // Native loop would repeat the intro. Keep this source/owner loaded and
-        // return only to its verified suffix; pause retains a pending boundary.
+
+
         task.pendingLoopRestart = clip.loopStartSeconds;
         void this.restartMusicSuffix(task, media);
       } else void this.next(task);
@@ -1052,9 +1052,9 @@ export class GameAudio {
         clip.startOffset === undefined && clip.loopStartSeconds === undefined
           ? null
           : () => {
-              // A cancelled source's metadata must never seek a newer owner's clip.
-              // Owner pause deliberately keeps this handler: resume must retain the
-              // intended position even when metadata arrived while playback paused.
+
+
+
               if (
                 this.task !== task ||
                 !this.available() ||
@@ -1094,15 +1094,15 @@ export class GameAudio {
               }
             };
       if (clip.startOffset !== undefined) {
-        // HTML media permits a default start position before metadata. The
-        // metadata handler performs duration-aware wrapping before audible play.
+
+
         try {
           media.currentTime = clip.startOffset;
         } catch {
           /* Seek on metadata. */
         }
       }
-      // A cached finite duration can expire before play() is requested.
+
       if (media.readyState >= 1) media.onloadedmetadata?.(new Event("loadedmetadata"));
       if (this.task !== task) return false;
       media.muted = this.silent;
@@ -1244,8 +1244,8 @@ private startFinite(
         return Promise.resolve(true);
       return previous.pending;
     }
-    // Stable lanes retain only their latest instance, including an ended token.
-    // Instance IDs must not become lane names or create an unbounded media pool.
+
+
     if (
       !previous &&
       (this.finite.size >= 32 ||

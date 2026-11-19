@@ -10,7 +10,7 @@ import re
 import urllib.request
 
 ROOT = Path(__file__).resolve().parents[3]
-PREFIX = 'bga/v20261002-1/pal/ending-v1/'
+PREFIX = 'bga/pal/'
 RELEASE = ROOT / 'games/pal/assets/ending-release.json'
 spec = importlib.util.spec_from_file_location('pal_audio_publication', ROOT / 'games/pal/assets/publish-audio.py')
 audio = importlib.util.module_from_spec(spec)
@@ -48,7 +48,7 @@ def plan(raw, media, verification, published=None):
     if len(index['files']) != 320:
         raise ValueError('incomplete original ending export')
     asset_id = sha(raw)
-    base = 'https://cdn.ichenj.com/' + PREFIX + asset_id
+    base = audio.configuration()['CDN_ORIGIN'] + '/' + PREFIX.rstrip('/')
     rows = {}
     for name, file in sorted(index['files'].items()):
         path = media / name
@@ -165,7 +165,7 @@ def main():
         key, secret = cdn.credentials()
         client = classic.OSSClient(key, secret)
         anchor = json.loads((ROOT / 'games/snooker/assets/manifest.json').read_text())['entries'][0]
-        report['anchor'] = classic.verify_anchor(client, 'bga/v20261002-1' + anchor['urlPath'], anchor['sha256'])
+        report['anchor'] = classic.verify_anchor(client, classic.publication_path(anchor), anchor['sha256'])
         write(args.report, report)
         cdn.publish(args.media, fresh, audio.BUCKET, audio.ENDPOINT)
         report['stage'] = 'uploaded'

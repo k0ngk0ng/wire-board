@@ -72,7 +72,7 @@ test('all 27 original effects use one platform OSS request per ID',async()=>{
 test('controls keep order and resume never starts music again',async()=>{
   const p=port(),a=new BasketballAudio(p);
   await a.consume([66,19,253,255,253,255,0],1);
-  assert.deepEqual(p.calls,[['music',[release.assetsBaseURL+'/basketball/v1/audio/music-066-loop.mp3'],{loop:true}],['effect',release.assetsBaseURL+'/basketball/v1/audio/sound-019.wav'],['pause'],['resume'],['pause'],['resume'],['stop']]);
+  assert.deepEqual(p.calls,[['music',[release.files['/basketball/v1/audio/music-066-loop.mp3'].url],{loop:true}],['effect',release.files['/basketball/v1/audio/sound-019.wav'].url],['pause'],['resume'],['pause'],['resume'],['stop']]);
 });
 
 test('events are deduplicated and reset establishes the recovery watermark',async()=>{
@@ -98,7 +98,7 @@ test('platform failures resolve as reports and cannot break the simulation',asyn
   const p=port();p.playWithFallback=()=>{throw Error('blocked');};p.resume=async()=>{throw Error('cancelled');};
   const a=new BasketballAudio(p);
   assert.deepEqual(await a.consume([19,255,66],1),{ignored:false,unsupported:[],failed:[19,255]});
-  assert.deepEqual(p.calls,[['music',[release.assetsBaseURL+'/basketball/v1/audio/music-066-loop.mp3'],{loop:true}]]);
+  assert.deepEqual(p.calls,[['music',[release.files['/basketball/v1/audio/music-066-loop.mp3'].url],{loop:true}]]);
 });
 
 test('all calls issue synchronously without a slow media promise delaying later controls',async()=>{
@@ -120,13 +120,13 @@ test('each original Court selects its own verified continuous music',async()=>{
 test('the finite original ending75 plays once',async()=>{
   const p=port(),a=new BasketballAudio(p);
   assert.deepEqual(await a.consume([75],1),{ignored:false,unsupported:[],failed:[]});
-  assert.deepEqual(p.calls,[['music',[release.assetsBaseURL+'/basketball/v1/audio/music-075.mp3'],{loop:false}]]);
+  assert.deepEqual(p.calls,[['music',[release.files['/basketball/v1/audio/music-075.mp3'].url],{loop:false}]]);
 });
 
 test('restored court animations and special balls use their original extra effects',async()=>{
   const p=port(),a=new BasketballAudio(p);
   assert.deepEqual(await a.consume([13,14,30,46],1),{ignored:false,unsupported:[],failed:[]});
-  assert.deepEqual(p.calls,[13,14,30,46].map(id=>['effect',`${release.assetsBaseURL}/basketball/v1/audio/sound-${String(id).padStart(3,'0')}.wav`]));
+  assert.deepEqual(p.calls,[13,14,30,46].map(id=>['effect',release.files[`/basketball/v1/audio/sound-${String(id).padStart(3,'0')}.wav`].url]));
 });
 
 test('a missing compressed rendition cannot silently fall back to a large WAV master',async()=>{
@@ -151,8 +151,8 @@ test('captured running, jump and running-release original requests have explicit
   }
 });
 
-// Music76 failures recorded before registration: missing/invalid central loop
-// metadata, intro restart on recovery, stale revision, and unversioned saves.
+
+
 test('original ending76 uses one verified MP3 and the platform suffix option',async()=>{
   const entry=playback.music['76'];assert.ok(entry,'verified76 delivery entry missing');
   const p=port(),a=new BasketballAudio(p,{assetsBase:'/cdn',localBase:'/audio'});

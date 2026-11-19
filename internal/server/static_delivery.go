@@ -47,10 +47,11 @@ func staticFiles(files fs.FS) http.Handler {
 	}
 	var cache sync.Map
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if strings.HasPrefix(r.URL.Path, "/_media/") {
+		if strings.HasPrefix(r.URL.Path, "/_media/") || strings.HasPrefix(r.URL.Path, "/bga/") {
 			request := r.Clone(r.Context())
 			target := *r.URL
 			target.Path = strings.TrimPrefix(target.Path, "/_media")
+			target.Path = strings.TrimPrefix(target.Path, "/bga")
 			target.RawPath = ""
 			request.URL = &target
 			r = request

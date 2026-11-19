@@ -1,6 +1,10 @@
-# 可选外部素材
+# 素材与资源目录
 
-在部署服务器私有 `.env` 中设置 `ASSETS_BASE_URL=https://assets.example.com/games/version`。不设置时显示内置替代图形。该地址必须为 HTTPS，不能含查询参数。修改后重新执行更新脚本。
+资源文件不进入 Git。游戏资源使用 `bga/<game-id>/`，公共资源使用 `bga/_common/`；实际对象以内容摘要命名，不含日期、发布版本或应用提交号。下面的文件名与版本标记描述逻辑素材和原始资料，不是新的 OSS 目录规范。
+
+业务域名和服务配置在本地 `.local/business.json` 与 GitHub 仓库变量中维护。恢复源码所需资源使用 `python3 -B scripts/resource_store.py hydrate`；发布单款游戏的素材使用 `python3 -B scripts/resource_store.py publish --game <game-id> --manifest <清单路径>`，默认仅预检，实际发布增加 `--execute`。地址、缓存复用和验收见 [资源外置与配置](asset-reuse.md)。
+
+在部署服务器私有配置中设置 `ASSETS_BASE_URL=${CDN_ORIGIN}/bga`。不设置时显示内置替代图形。该地址必须为 HTTPS，不能含查询参数。修改后重新执行更新脚本。
 
 素材目录包含：
 
@@ -33,7 +37,7 @@ python3 scripts/upload_assets.py .local/asset-pack \
 
 每次使用新的版本目录；上传前检查文件完整性，上传后核对 CDN 文件，再修改部署配置。密钥、实际服务地址与图片均不要提交。素材使用长期不可变缓存，验证完成后可删除本地临时素材。
 
-补充新游戏素材时，上传目录必须以部署中实际的 `ASSETS_BASE_URL` 路径为准，包含其中已有的版本目录。例如基地址为 `https://assets.example.com/games/version`，三国杀的上传前缀应为 `games/version/sanguosha/v1`。不要改动共用基地址来修复单个游戏，否则会影响其他游戏。验证时使用与线上相同的基地址打开游戏，确认图片元素已解码显示；只验证另一个可访问的图片目录不足以证明页面可用。
+补充新游戏素材时，上传目录必须以部署中实际的 `ASSETS_BASE_URL` 路径为准，包含其中已有的版本目录。例如三国杀的实际对象前缀为 `bga/sanguosha/`，由清单记录逻辑文件名到内容地址的映射。不要改动共用基地址来修复单个游戏，否则会影响其他游戏。验证时使用与线上相同的基地址打开游戏，确认图片元素已解码显示；只验证另一个可访问的图片目录不足以证明页面可用。
 
 铁路新增地图使用 `rail/maps/v1/{europe,india,switzerland,nordiccountries,legendaryasia}/`：每个目录有 `map.webp`、`preview.webp` 和 `tickets/{id}.webp`。欧洲另有 `station-{blue,red,green,yellow,black}.webp`。共 247 个文件；列车牌与车厢沿用 `rail/` 现有素材。印度、北欧底图为 1125×1744，目的地卡为 161×250；其余底图为 1744×1125，目的地卡为 250×161，显示时保持比例。
 

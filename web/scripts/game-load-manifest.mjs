@@ -1,8 +1,9 @@
 import { assetBase, assetURL } from "./cdn-base.mjs";
-import { readFileSync, writeFileSync, readdirSync, statSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync, readdirSync, statSync } from "node:fs";
 import { createHash } from "node:crypto";
 import { gzipSync } from "node:zlib";
 import path from "node:path";
+import { execFileSync } from "node:child_process";
 export function gameLoadManifest() {
   let base = "/";
   return {
@@ -24,6 +25,7 @@ export function gameLoadManifest() {
         const c = bundle[file];
         if (c?.type !== "chunk") return seen;
         for (const css of c.viteMetadata?.importedCss ?? []) seen.add(css);
+        for (const asset of c.viteMetadata?.importedAssets ?? []) seen.add(asset);
         for (const imp of c.imports) graph(imp, seen);
 
 
@@ -74,6 +76,24 @@ export function gameLoadManifest() {
         }
       }
       const media = {};
+      const owners = {};
+      const candidates = new Map();
+      for (const chunk of chunks) {
+        const games = new Set(Object.keys(chunk.modules).flatMap(module => module.match(/\/games\/([^/]+)\//)?.[1] ?? []));
+        const owner = games.size === 1 ? [...games][0] : "_common";
+        owners[chunk.fileName] = owner;
+        for (const css of chunk.viteMetadata?.importedCss ?? []) {
+          if (!candidates.has(css)) candidates.set(css, new Set());
+          candidates.get(css).add(owner);
+        }
+      }
+      for (const [file, games] of candidates) owners[file] = games.size === 1 ? [...games][0] : "_common";
+      for (const asset of Object.values(bundle).filter(file => file.type === "asset" && !owners[file.fileName])) {
+        const sources = asset.originalFileNames ?? (asset.originalFileName ? [asset.originalFileName] : []);
+        const games = new Set(sources.map(source => source.match(/(?:^|\/)games\/([^/]+)\//)?.[1] ?? "_common"));
+        if (!games.size) for (const chunk of chunks) if (chunk.viteMetadata?.importedAssets?.has(asset.fileName)) games.add(owners[chunk.fileName] ?? "_common");
+        owners[asset.fileName] = games.size === 1 ? [...games][0] : "_common";
+      }
       function walk(rel = "") {
         for (const f of readdirSync(path.join(dir, rel), {
           withFileTypes: true,
@@ -88,6 +108,13 @@ export function gameLoadManifest() {
         }
       }
       walk();
+      const externalPath = new URL("../../assets/external-resources.json", import.meta.url);
+      const externalRaw = existsSync(externalPath) ? readFileSync(externalPath) : undefined;
+      if (externalRaw) {
+        const external = JSON.parse(externalRaw);
+        const providedOwners = new Set(Object.keys(media).map(file => file.split("/")[1]));
+        for (const [file, record] of Object.entries(external.files)) if (!file.startsWith("/stoneage/") && !providedOwners.has(file.split("/")[1]) && !media[file]) media[file] = record.bytes;
+      }
       const build = createHash("sha256")
         .update(readFileSync(path.join(dir, "index.html")))
         .digest("hex");
@@ -95,11 +122,14 @@ export function gameLoadManifest() {
         path.join(dir, "game-load-manifest.json"),
         JSON.stringify({
           build,
+          sourceSHA: process.env.GITHUB_SHA || process.env.SOURCE_SHA || execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim(),
           entry: assetURL(base, entry.fileName),
           assetBase: base,
           games,
           media,
           home,
+          owners,
+          externalRegistrySHA256: externalRaw ? createHash("sha256").update(externalRaw).digest("hex") : undefined,
         }),
       );
       for (const f of Object.keys(bundle).filter((f) => /\.(js|css)$/.test(f)))

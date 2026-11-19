@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+
 """Publish generated HD files to their own immutable StoneAge CDN version."""
 import argparse
 from email.utils import formatdate
@@ -14,13 +14,14 @@ from urllib.error import HTTPError, URLError
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / 'scripts'))
 import cdn_delivery as cdn
+from resource_store import configuration
 
 spec = importlib.util.spec_from_file_location('classic_publish', ROOT / 'scripts/publish-classic-game-assets.py')
 common = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(common)
 VERSION = 'arena-2x-gpt-image-2.5-v1'
-common.PREFIX = 'stoneage/assets/hd/' + VERSION
-common.CDN = 'https://cdn.ichenj.com/' + common.PREFIX
+common.PREFIX = 'bga/stoneage'
+common.CDN = configuration()['CDN_ORIGIN'] + '/' + common.PREFIX
 
 
 class Client(common.OSSClient):
@@ -28,12 +29,12 @@ class Client(common.OSSClient):
         for attempt in range(5):
             try:
                 url = path if cdn else common.ENDPOINT + '/' + path
-                headers = ({'Origin': 'https://PUBLIC_HOST', 'Accept-Encoding': 'identity'}
+                headers = ({'Origin': configuration()['PUBLIC_ORIGIN'], 'Accept-Encoding': 'identity'}
                            if cdn else common.oss_headers(method, path, body, mime, self.key, self.secret, formatdate(usegmt=True)))
                 with globals()['cdn'].urlopen(Request(url, data=body, method=method, headers=headers), timeout=45) as r:
                     data = r.read()
                     if cdn:
-                        assert r.headers.get('Access-Control-Allow-Origin') in ('*', 'https://PUBLIC_HOST'), 'HD CDN CORS mismatch'
+                        assert r.headers.get('Access-Control-Allow-Origin') in ('*', configuration()['PUBLIC_ORIGIN']), 'HD CDN CORS mismatch'
                     return data, r.headers.get_content_type()
             except HTTPError as error:
                 error.close()
@@ -68,10 +69,10 @@ def main():
         assert len(data) == row['bytes'] and cdn.sha(data) == row['sha256']
         assert hd['resources'][file]['sha256'] == row['sha256']
         assert common.media_dimensions(data, 'image/png') == tuple(row['physicalSize'])
-        entries.append(dict(urlPath='/' + file, bytes=len(data), sha256=row['sha256'], data=data, mime='image/png'))
+        entries.append(dict(game='stoneage',urlPath='/' + file, bytes=len(data), sha256=row['sha256'], data=data, mime='image/png'))
     for file in ('manifest.json', 'arena-animation-index.json'):
         data = (folder / file).read_bytes()
-        entries.append(dict(urlPath='/' + file, bytes=len(data), sha256=cdn.sha(data), data=data, mime='application/json'))
+        entries.append(dict(game='stoneage',urlPath='/' + file, bytes=len(data), sha256=cdn.sha(data), data=data, mime='application/json'))
     common.ensure_unique(entries)
     target = ROOT / '.local/stoneage/release/hd-publish.json'
     report = dict(passed=False, mode='publish' if args.publish else 'preflight',

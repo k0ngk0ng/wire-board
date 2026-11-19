@@ -89,26 +89,26 @@
         "games/pal/native/upstream/yj1.c": "fdcb5f1c4e14712fe96b2214bac6a12f3fa01abcfeeb88cb096886e306e14a0c",
         "games/pal/native/upstream-manifest.json": "03284ac017ab61b363e2d11b96db047309b685a8dfa2e42c475735477ac79364"
       },
-      "assetsBaseURL": "https://cdn.ichenj.com/bga/v20261002-1/pal/server-rule-v1/a9234deb9d91a84e0d273f0d0ef3e90e81a7fbdf052c41ed4fcb0c91a35566ac",
+      "assetsBaseURL": "https://cdn.ichenj.com/bga/pal",
       "objects": 3,
       "bytes": 1529597,
       "files": {
         "authority.zip": {
-          "url": "https://cdn.ichenj.com/bga/v20261002-1/pal/server-rule-v1/objects/c63f058aa4c050deafa5d68171027a4f420ce7b58d6bd2276d846f3a7312c508.zip",
+          "url": "https://cdn.ichenj.com/bga/pal/c63f058aa4c050deafa5d68171027a4f420ce7b58d6bd2276d846f3a7312c508.zip",
           "bytes": 584355,
           "sha256": "c63f058aa4c050deafa5d68171027a4f420ce7b58d6bd2276d846f3a7312c508",
           "mime": "application/zip",
           "encoding": ""
         },
         "cores/4aeeca84606436fc071b1b9004014ca11767ec048e8c3be5d411c6c0370d6ba3.wasm": {
-          "url": "https://cdn.ichenj.com/bga/v20261002-1/pal/server-rule-v1/objects/4aeeca84606436fc071b1b9004014ca11767ec048e8c3be5d411c6c0370d6ba3.wasm",
+          "url": "https://cdn.ichenj.com/bga/pal/4aeeca84606436fc071b1b9004014ca11767ec048e8c3be5d411c6c0370d6ba3-gzip.wasm",
           "bytes": 944952,
           "sha256": "4aeeca84606436fc071b1b9004014ca11767ec048e8c3be5d411c6c0370d6ba3",
           "mime": "application/wasm",
           "encoding": "gzip"
         },
         "manifest.json": {
-          "url": "https://cdn.ichenj.com/bga/v20261002-1/pal/server-rule-v1/objects/a9234deb9d91a84e0d273f0d0ef3e90e81a7fbdf052c41ed4fcb0c91a35566ac.json",
+          "url": "https://cdn.ichenj.com/bga/pal/a9234deb9d91a84e0d273f0d0ef3e90e81a7fbdf052c41ed4fcb0c91a35566ac-gzip.json",
           "bytes": 290,
           "sha256": "a9234deb9d91a84e0d273f0d0ef3e90e81a7fbdf052c41ed4fcb0c91a35566ac",
           "mime": "application/json",
@@ -207,33 +207,33 @@
         "games/pal/native/upstream/yj1.c": "fdcb5f1c4e14712fe96b2214bac6a12f3fa01abcfeeb88cb096886e306e14a0c",
         "games/pal/native/upstream-manifest.json": "03284ac017ab61b363e2d11b96db047309b685a8dfa2e42c475735477ac79364"
       },
-      "assetsBaseURL": "https://cdn.ichenj.com/bga/v20261002-1/pal/server-rule-v1/0245efd5cc4dc948d9250e12391fc623ab9c16008be079f1da94ad3c93210764",
+      "assetsBaseURL": "https://cdn.ichenj.com/bga/pal",
       "objects": 4,
       "bytes": 2442662,
       "files": {
         "authority.zip": {
-          "url": "https://cdn.ichenj.com/bga/v20261002-1/pal/server-rule-v1/objects/c63f058aa4c050deafa5d68171027a4f420ce7b58d6bd2276d846f3a7312c508.zip",
+          "url": "https://cdn.ichenj.com/bga/pal/c63f058aa4c050deafa5d68171027a4f420ce7b58d6bd2276d846f3a7312c508.zip",
           "bytes": 584355,
           "sha256": "c63f058aa4c050deafa5d68171027a4f420ce7b58d6bd2276d846f3a7312c508",
           "mime": "application/zip",
           "encoding": ""
         },
         "cores/4aeeca84606436fc071b1b9004014ca11767ec048e8c3be5d411c6c0370d6ba3.wasm": {
-          "url": "https://cdn.ichenj.com/bga/v20261002-1/pal/server-rule-v1/objects/4aeeca84606436fc071b1b9004014ca11767ec048e8c3be5d411c6c0370d6ba3.wasm",
+          "url": "https://cdn.ichenj.com/bga/pal/4aeeca84606436fc071b1b9004014ca11767ec048e8c3be5d411c6c0370d6ba3-gzip.wasm",
           "bytes": 944952,
           "sha256": "4aeeca84606436fc071b1b9004014ca11767ec048e8c3be5d411c6c0370d6ba3",
           "mime": "application/wasm",
           "encoding": "gzip"
         },
         "cores/7ca83b5bcf13e71c1020ef287d9817e5675adf2cbdf7c627644f4cb3566dd03a.wasm": {
-          "url": "https://cdn.ichenj.com/bga/v20261002-1/pal/server-rule-v1/objects/7ca83b5bcf13e71c1020ef287d9817e5675adf2cbdf7c627644f4cb3566dd03a.wasm",
+          "url": "https://cdn.ichenj.com/bga/pal/7ca83b5bcf13e71c1020ef287d9817e5675adf2cbdf7c627644f4cb3566dd03a-gzip.wasm",
           "bytes": 912991,
           "sha256": "7ca83b5bcf13e71c1020ef287d9817e5675adf2cbdf7c627644f4cb3566dd03a",
           "mime": "application/wasm",
           "encoding": "gzip"
         },
         "manifest.json": {
-          "url": "https://cdn.ichenj.com/bga/v20261002-1/pal/server-rule-v1/objects/0245efd5cc4dc948d9250e12391fc623ab9c16008be079f1da94ad3c93210764.json",
+          "url": "https://cdn.ichenj.com/bga/pal/0245efd5cc4dc948d9250e12391fc623ab9c16008be079f1da94ad3c93210764-gzip.json",
           "bytes": 364,
           "sha256": "0245efd5cc4dc948d9250e12391fc623ab9c16008be079f1da94ad3c93210764",
           "mime": "application/json",
@@ -334,40 +334,40 @@
         "games/pal/native/upstream/yj1.c": "fdcb5f1c4e14712fe96b2214bac6a12f3fa01abcfeeb88cb096886e306e14a0c",
         "games/pal/native/upstream-manifest.json": "03284ac017ab61b363e2d11b96db047309b685a8dfa2e42c475735477ac79364"
       },
-      "assetsBaseURL": "https://cdn.ichenj.com/bga/v20261002-1/pal/server-rule-v1/0a180f28b03ce560341e7b0f693c92f8f83bb367983af1d0ad00c1cc7a56297c",
+      "assetsBaseURL": "https://cdn.ichenj.com/bga/pal",
       "objects": 5,
       "bytes": 3388563,
       "files": {
         "authority.zip": {
-          "url": "https://cdn.ichenj.com/bga/v20261002-1/pal/server-rule-v1/objects/c63f058aa4c050deafa5d68171027a4f420ce7b58d6bd2276d846f3a7312c508.zip",
+          "url": "https://cdn.ichenj.com/bga/pal/c63f058aa4c050deafa5d68171027a4f420ce7b58d6bd2276d846f3a7312c508.zip",
           "bytes": 584355,
           "sha256": "c63f058aa4c050deafa5d68171027a4f420ce7b58d6bd2276d846f3a7312c508",
           "mime": "application/zip",
           "encoding": ""
         },
         "cores/4aeeca84606436fc071b1b9004014ca11767ec048e8c3be5d411c6c0370d6ba3.wasm": {
-          "url": "https://cdn.ichenj.com/bga/v20261002-1/pal/server-rule-v1/objects/4aeeca84606436fc071b1b9004014ca11767ec048e8c3be5d411c6c0370d6ba3.wasm",
+          "url": "https://cdn.ichenj.com/bga/pal/4aeeca84606436fc071b1b9004014ca11767ec048e8c3be5d411c6c0370d6ba3-gzip.wasm",
           "bytes": 944952,
           "sha256": "4aeeca84606436fc071b1b9004014ca11767ec048e8c3be5d411c6c0370d6ba3",
           "mime": "application/wasm",
           "encoding": "gzip"
         },
         "cores/7ca83b5bcf13e71c1020ef287d9817e5675adf2cbdf7c627644f4cb3566dd03a.wasm": {
-          "url": "https://cdn.ichenj.com/bga/v20261002-1/pal/server-rule-v1/objects/7ca83b5bcf13e71c1020ef287d9817e5675adf2cbdf7c627644f4cb3566dd03a.wasm",
+          "url": "https://cdn.ichenj.com/bga/pal/7ca83b5bcf13e71c1020ef287d9817e5675adf2cbdf7c627644f4cb3566dd03a-gzip.wasm",
           "bytes": 912991,
           "sha256": "7ca83b5bcf13e71c1020ef287d9817e5675adf2cbdf7c627644f4cb3566dd03a",
           "mime": "application/wasm",
           "encoding": "gzip"
         },
         "cores/fa8d77a39ca3d3fac62b9c033dc4c300face4ec3d9ef1afddfbd7a9fe87c3ea6.wasm": {
-          "url": "https://cdn.ichenj.com/bga/v20261002-1/pal/server-rule-v1/objects/fa8d77a39ca3d3fac62b9c033dc4c300face4ec3d9ef1afddfbd7a9fe87c3ea6.wasm",
+          "url": "https://cdn.ichenj.com/bga/pal/fa8d77a39ca3d3fac62b9c033dc4c300face4ec3d9ef1afddfbd7a9fe87c3ea6-gzip.wasm",
           "bytes": 945829,
           "sha256": "fa8d77a39ca3d3fac62b9c033dc4c300face4ec3d9ef1afddfbd7a9fe87c3ea6",
           "mime": "application/wasm",
           "encoding": "gzip"
         },
         "manifest.json": {
-          "url": "https://cdn.ichenj.com/bga/v20261002-1/pal/server-rule-v1/objects/0a180f28b03ce560341e7b0f693c92f8f83bb367983af1d0ad00c1cc7a56297c.json",
+          "url": "https://cdn.ichenj.com/bga/pal/0a180f28b03ce560341e7b0f693c92f8f83bb367983af1d0ad00c1cc7a56297c-gzip.json",
           "bytes": 436,
           "sha256": "0a180f28b03ce560341e7b0f693c92f8f83bb367983af1d0ad00c1cc7a56297c",
           "mime": "application/json",

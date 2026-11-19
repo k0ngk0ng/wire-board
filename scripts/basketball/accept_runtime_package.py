@@ -11,7 +11,7 @@ OUT = ROOT / '.local/basketball/runtime-package'
 OUT.mkdir(parents=True, exist_ok=True)
 env = dict(os.environ)
 checks = []
-public_origin = os.environ.get("BASKETBALL_PUBLIC_ORIGIN", "https://PUBLIC_HOST")
+public_origin = os.environ["PUBLIC_ORIGIN"]
 app = None
 data = OUT / ('data-' + uuid.uuid4().hex[:8])
 

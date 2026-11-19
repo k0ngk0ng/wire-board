@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { ArrowLeft, Clock3, ScrollText, Sparkles, X } from "lucide-react";
 import type { BoardProps } from "../../../web/src/game-api/module";
 import { useControllerCancel } from "../../../web/src/controllers/use-controller-cancel";
-import { assetURL, nativeButtons, resourceRoot } from "./assets";
+import { assetURL, audioURL, nativeButtons } from "./assets";
 import { Sprite } from "./Sprite";
 import { position, facing, eventPosition } from "./formation";
 import { sampleAttackMotion, impactOffset } from "./motion";
@@ -89,7 +89,7 @@ export function Battle({
       void audio.effect(
         "stoneage-impact",
         [
-          `${resourceRoot}/audio/se/${["attack", "counter", "combo"].includes(impact.kind) ? "sam_01.wav" : "sap_01.wav"}`,
+          audioURL(["attack", "counter", "combo"].includes(impact.kind) ? "audio/se/sam_01.wav" : "audio/se/sap_01.wav"),
         ],
         { playbackID: `${data.session}:${impact.id}` },
       );

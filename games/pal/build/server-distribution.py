@@ -11,7 +11,7 @@ import zlib
 
 ROOT = Path(__file__).resolve().parents[3]
 RELEASE = ROOT / 'games/pal/assets/server-release.json'
-PREFIX = 'bga/v20261002-1/pal/server-rule-v1/'
+PREFIX = 'bga/pal/'
 spec = importlib.util.spec_from_file_location('pal_audio_publication', ROOT / 'games/pal/assets/publish-audio.py')
 audio = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(audio)
@@ -98,7 +98,7 @@ def plan(folder, proof, previous=None):
     rows = audio.assign_urls(rows, previous, asset_id, prefix=PREFIX)
     objects = audio.unique_objects(rows)
     fresh = [row for row in objects if not row['reused']]
-    pin = {'version': 1, 'assetID': asset_id, 'currentCore': manifest['current'], 'retainedCores': manifest['retained'], 'sources': proof['sources'], 'assetsBaseURL': 'https://cdn.ichenj.com/' + PREFIX + asset_id, 'objects': len(objects), 'bytes': sum(row['bytes'] for row in objects), 'reusedObjects': len(objects) - len(fresh), 'newObjects': len(fresh), 'uploadBytes': sum(len(gzip.compress(files[row['path']], mtime=0)) if row['encoding'] else row['bytes'] for row in fresh), 'files': {row['path']: {key: row[key] for key in ['url', 'bytes', 'sha256', 'mime', 'encoding']} for row in rows}}
+    pin = {'version': 1, 'assetID': asset_id, 'currentCore': manifest['current'], 'retainedCores': manifest['retained'], 'sources': proof['sources'], 'assetsBaseURL': audio.configuration()['CDN_ORIGIN'] + '/' + PREFIX.rstrip('/'), 'objects': len(objects), 'bytes': sum(row['bytes'] for row in objects), 'reusedObjects': len(objects) - len(fresh), 'newObjects': len(fresh), 'uploadBytes': sum(len(gzip.compress(files[row['path']], mtime=0)) if row['encoding'] else row['bytes'] for row in fresh), 'files': {row['path']: {key: row[key] for key in ['url', 'bytes', 'sha256', 'mime', 'encoding']} for row in rows}}
     return pin, rows
 
 

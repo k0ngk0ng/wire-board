@@ -334,7 +334,7 @@ class WaveRangeHTTP(unittest.TestCase):
    row={'url':f'http://127.0.0.1:{server.server_port}/tone.{extension}','bytes':len(payload),'sha256':cdn.sha(payload),'mime':expected_mime,'encoding':'','requiresRange':True}
    self.assertEqual(cdn.verify(row),row)
    self.assertEqual([r['range'] for r in state['requests']],[None,'bytes=0-63'])
-   self.assertEqual(state['requests'][-1]['encoding'],'identity');self.assertEqual(state['requests'][-1]['origin'],'https://PUBLIC_HOST')
+   self.assertEqual(state['requests'][-1]['encoding'],'identity');self.assertEqual(state['requests'][-1]['origin'],cdn.configuration()['PUBLIC_ORIGIN'])
    for mode in ['status','range','body','mime','cors','encoding','full-body']:
     with self.subTest(mode=mode):
      state.update(mode=mode,requests=[])

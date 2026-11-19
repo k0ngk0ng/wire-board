@@ -18,6 +18,12 @@ permissions:
 concurrency:
   group: publish-verified-release
   cancel-in-progress: false
+env:
+  PUBLIC_ORIGIN: ${{ vars.PUBLIC_ORIGIN }}
+  CDN_ORIGIN: ${{ vars.CDN_ORIGIN }}
+  OSS_BUCKET: ${{ vars.OSS_BUCKET }}
+  OSS_ENDPOINT: ${{ vars.OSS_ENDPOINT }}
+  ASSETS_BASE_URL: ${{ vars.ASSETS_BASE_URL }}
 jobs:
   publish:
     runs-on: ubuntu-latest

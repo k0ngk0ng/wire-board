@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+
 """Preflight/publish the four verified classic-game v4 manifests immutably.
 
 Default is offline preflight. --publish binds to a known bucket object before
@@ -24,12 +24,14 @@ import time
 import urllib.error
 import urllib.request
 import zlib
+from resource_store import configuration, OWNERS
 
 ROOT=Path(__file__).resolve().parents[1]
-BUCKET='stoneage-assets'
-ENDPOINT='https://stoneage-assets.oss-cn-shanghai.aliyuncs.com'
-PREFIX='bga/v20261002-1'
-CDN='https://cdn.ichenj.com/'+PREFIX
+CONFIG=configuration()
+BUCKET=CONFIG['OSS_BUCKET']
+ENDPOINT='https://'+CONFIG['OSS_ENDPOINT']
+PREFIX='bga'
+CDN=CONFIG['CDN_ORIGIN']+'/bga'
 BUBBLE_MANIFESTS=[
  ('games/bubbleparty/assets/manifest-classic-v4.json','bubbleparty','/bubbleparty/v4/classic/',478),
  ('games/bubbleparty/assets/manifest-characters-v4.json','bubbleparty','/bubbleparty/v4/characters/',120),
@@ -153,8 +155,19 @@ def verify_anchor(client,path,expected):
  return {'path':path,'sha256':expected,'verified':True}
 
 
+def publication_path(entry):
+ owner=entry.get('game') or entry['urlPath'].strip('/').split('/')[0]
+ if owner not in OWNERS:
+  parts=PREFIX.split('/')
+  owner=parts[1] if len(parts)>1 and parts[1] in OWNERS else '_common'
+ suffix=Path(entry['urlPath']).suffix
+ check(bool(re.fullmatch('[a-f0-9]{64}',entry['sha256'])),'invalid canonical resource digest')
+ return 'bga/'+owner+'/'+entry['sha256']+suffix
+
+
 def publish_one(client,entry):
- path=PREFIX+entry['urlPath'];status='existing'
+ verify_bytes(entry['data'],entry,entry['urlPath'])
+ path=publication_path(entry);status='existing'
  try:
   existing,mime=client.read_oss(path);verify_bytes(existing,entry,'existing '+path)
   check(mime==entry['mime'],'existing OSS MIME mismatch: '+path)
@@ -166,10 +179,10 @@ def publish_one(client,entry):
    conflict.close()
    if conflict.code!=409:raise
    status='existing-after-create-race'
- # A successful PUT or a concurrent creation is never trusted without readback.
+
  data,mime=client.read_oss(path);verify_bytes(data,entry,'OSS '+path)
  check(mime==entry['mime'],'OSS MIME mismatch: '+path)
- data,mime=client.read_cdn(CDN+entry['urlPath']);verify_bytes(data,entry,'CDN '+path)
+ data,mime=client.read_cdn(CONFIG['CDN_ORIGIN']+'/'+path);verify_bytes(data,entry,'CDN '+path)
  check(mime==entry['mime'],'CDN MIME mismatch: '+path)
  return {'path':path,'urlPath':entry['urlPath'],'sha256':entry['sha256'],'bytes':entry['bytes'],'mime':entry['mime'],'status':status,'ossVerified':True,'cdnVerified':True}
 
@@ -212,7 +225,7 @@ def main():
   check(1<=args.workers<=8,'workers must be 1..8')
   entries,bindings=load_entries(dist=args.dist)
   report.update(manifests=bindings,expectedObjects=len(entries),expectedBytes=sum(e['bytes']for e in entries))
-  # Existing specialized verifiers also check native sprite frames/catalogs.
+
   subprocess.run([sys.executable,'-B',str(ROOT/'scripts/bubbleparty/verify-assets.py')]+(['--dist']if args.dist else []),cwd=ROOT,check=True)
   subprocess.run([sys.executable,'-B',str(ROOT/'scripts/fortressblue/verify-supply-assets.py')]+(['--dist']if args.dist else []),cwd=ROOT,check=True)
   report['localVerified']=True;write_report(target,report)
@@ -222,7 +235,7 @@ def main():
    check(bool(key and secret),'missing OSS credential material')
    client=OSSClient(key,secret)
    known=json.loads((ROOT/'games/snooker/assets/manifest.json').read_text())['entries'][0]
-   report['anchor']=verify_anchor(client,PREFIX+known['urlPath'],known['sha256'])
+   report['anchor']=verify_anchor(client,publication_path(known),known['sha256'])
    def progress(results,errors):
     report.update(objects=results,errors=errors);write_report(target,report)
     if len(results)%25==0 or errors:print(f'Verified {len(results)}/{len(entries)} objects; errors={len(errors)}',flush=True)

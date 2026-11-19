@@ -3,12 +3,14 @@ FROM golang:1.26-alpine AS go-toolchain
 FROM node:22-alpine AS frontend
 COPY --from=go-toolchain /usr/local/go /usr/local/go
 ENV PATH="/usr/local/go/bin:${PATH}"
-# Source builds reuse the same already-published commit assets as CI.
-# Missing or mismatched arguments fail before any build can embed local assets.
 ARG SOURCE_SHA
 ARG WIRE_BOARD_ASSET_BASE
-ENV SOURCE_SHA=${SOURCE_SHA} WIRE_BOARD_ASSET_BASE=${WIRE_BOARD_ASSET_BASE}
-RUN node --input-type=module -e 'import assert from "node:assert/strict"; assert.match(process.env.SOURCE_SHA, /^[a-f0-9]{40}$/, "SOURCE_SHA must be the published source commit"); assert.equal(process.env.WIRE_BOARD_ASSET_BASE, "https://cdn.ichenj.com/bga/web/" + process.env.SOURCE_SHA + "/", "WIRE_BOARD_ASSET_BASE must match SOURCE_SHA");'
+ARG PUBLIC_ORIGIN
+ARG CDN_ORIGIN
+ARG OSS_BUCKET
+ARG OSS_ENDPOINT
+ENV SOURCE_SHA=${SOURCE_SHA} GITHUB_SHA=${SOURCE_SHA} WIRE_BOARD_ASSET_BASE=${WIRE_BOARD_ASSET_BASE} PUBLIC_ORIGIN=${PUBLIC_ORIGIN} CDN_ORIGIN=${CDN_ORIGIN} OSS_BUCKET=${OSS_BUCKET} OSS_ENDPOINT=${OSS_ENDPOINT}
+RUN node --input-type=module -e 'import assert from "node:assert/strict"; assert.match(process.env.SOURCE_SHA, /^[a-f0-9]{40}$/, "SOURCE_SHA must be the published source commit"); assert.equal(process.env.WIRE_BOARD_ASSET_BASE, process.env.CDN_ORIGIN + "/bga/", "WIRE_BOARD_ASSET_BASE must use the configured stable bga root");'
 RUN apk add --no-cache python3 xz ca-certificates
 WORKDIR /src/web
 COPY web/package.json web/package-lock.json ./
@@ -18,7 +20,10 @@ COPY games/ /src/games/
 COPY scripts/ /src/scripts/
 COPY internal/ /src/internal/
 COPY go.mod go.sum /src/
+COPY assets/ /src/assets/
+RUN python3 -B /src/scripts/resource_store.py hydrate
 RUN npm run build
+RUN cd /src && python3 -B -c 'import sys; from pathlib import Path; sys.path.insert(0,"scripts"); from asset_reuse import prepare; prepare(Path("web/dist"),{"version":1,"files":{}})'
 
 FROM go-toolchain AS backend
 RUN apk add --no-cache python3 xz ca-certificates
@@ -27,6 +32,13 @@ COPY go.mod go.sum ./
 RUN go mod download
 COPY . .
 COPY --from=frontend /src/web/dist ./web/dist
+COPY --from=frontend /src/games/ ./games/
+COPY --from=frontend /src/assets/ ./assets/
+ARG PUBLIC_ORIGIN
+ARG CDN_ORIGIN
+ARG OSS_BUCKET
+ARG OSS_ENDPOINT
+ENV PUBLIC_ORIGIN=${PUBLIC_ORIGIN} CDN_ORIGIN=${CDN_ORIGIN} OSS_BUCKET=${OSS_BUCKET} OSS_ENDPOINT=${OSS_ENDPOINT}
 ARG TARGETOS=linux
 ARG TARGETARCH=amd64
 RUN python3 -B games/pal/build/prepare-server.py --out .local/pal/container-runtime/pal \

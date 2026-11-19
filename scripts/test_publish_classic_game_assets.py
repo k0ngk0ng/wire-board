@@ -50,11 +50,11 @@ class PublisherChecks(unittest.TestCase):
    with self.assertRaises(ValueError):pub.validate_entry(root,'bubbleparty',e)
   with self.assertRaises(ValueError):pub.ensure_unique([entry(),entry()])
  def test_put_signature_includes_no_overwrite_and_never_embeds_key_in_url(self):
-  h=pub.oss_headers('PUT','bga/v20261002-1/bubbleparty/v4/test.png',b'x','image/png','test-key','test-secret','Mon, 01 Jan 2024 00:00:00 GMT')
+  h=pub.oss_headers('PUT','bga/bubbleparty/'+'a'*64+'.png',b'x','image/png','test-key','test-secret','Mon, 01 Jan 2024 00:00:00 GMT')
   self.assertEqual(h['x-oss-forbid-overwrite'],'true');self.assertEqual(h['Cache-Control'],'public, max-age=31536000, immutable')
   self.assertTrue(h['Authorization'].startswith('OSS test-key:'));self.assertNotIn('test-secret',json.dumps(h))
  def test_matching_existing_is_reused_conflicting_existing_never_written(self):
-  e=entry();key=pub.PREFIX+e['urlPath'];client=FakeOSS({key:e['data']})
+  e=entry();key=pub.publication_path(e);client=FakeOSS({key:e['data']})
   result=pub.publish_one(client,e);self.assertEqual(result['status'],'existing');self.assertEqual(client.puts,[])
   client=FakeOSS({key:b'wrong'})
   with self.assertRaises(ValueError):pub.publish_one(client,e)

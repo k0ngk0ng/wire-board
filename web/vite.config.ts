@@ -12,6 +12,7 @@ import { preparePokepathNative } from "../games/pokepath/build/browser-runtime.m
 const root = fileURLToPath(new URL("../", import.meta.url));
 export default defineConfig({
   base: assetBase(process.env.WIRE_BOARD_ASSET_BASE),
+  define: { "import.meta.env.VITE_CDN_ORIGIN": JSON.stringify(process.env.CDN_ORIGIN || "") },
   publicDir: preparePublicAssets(root, [prepareBasketballDelivery(root), prepareContraDelivery(root), preparePvZRuntime(root), prepareYuYuDelivery(root), preparePokepathNative()]),
   plugins: [react(), gameLoadManifest()],
   resolve: { dedupe: ["react", "react-dom", "lucide-react", "three", "fflate"] },

@@ -10,9 +10,10 @@ from urllib.parse import urlsplit
 from urllib.request import urlopen
 
 import cdn_delivery as cdn
+from resource_store import configuration, OWNERS
 
 ROOT = Path(__file__).resolve().parents[1]
-URL = re.compile(r'https://cdn\.ichenj\.com/bga/web/[a-f0-9]{40}/[A-Za-z0-9._/-]+\Z')
+URL = re.compile(r'https://cdn\.ichenj\.com/bga/(?:web/[a-f0-9]{40}/|[a-z_][a-z0-9_-]*/)[A-Za-z0-9._/-]+\Z')
 ENCODED = {'.js', '.css', '.svg', '.json', '.txt', '.md', '.glb'}
 
 
@@ -53,7 +54,26 @@ def objects(baseline):
     return result
 
 
-def plan(rows, baseline):
+def plan(rows, baseline, owners=None):
+    if owners is not None:
+        canonical = []
+        for original in rows:
+            row = dict(original)
+            path = row['path']
+            owner = owners.get(path, path.split('/')[0] if path.split('/')[0] in OWNERS else '_common')
+            if Path(path).name == 'wasm_exec.js':
+                owner = '_common'
+            if owner not in OWNERS:
+                raise ValueError('Unknown resource owner')
+            base = row['url'].split('/bga/')[0] + '/bga/'
+            filename = Path(path).name
+            if path.startswith('assets/') and re.search(r'-[A-Za-z0-9_-]{8,}\.(?:js|css)$', filename):
+                key = filename
+            else:
+                key = row['sha256'] + ('-gzip' if row.get('encoding') == 'gzip' else '') + Path(path).suffix
+            row['url'] = base + owner + '/' + key
+            canonical.append(row)
+        return canonical
     known = objects(baseline)
     by_identity = {}
     for url, row in sorted(known.items()):
@@ -146,6 +166,9 @@ def prepare(dist, baseline):
     manifest.pop('assetMap', None)
     manifest.pop('assetObjects', None)
     file.write_text(json.dumps(manifest, separators=(',', ':')) + '\n')
+    owners = manifest.get('owners', {}) if base.endswith('/bga/') else None
+    def assign(rows):
+        return plan(rows, baseline, owners=owners)
     originals = {str(p.relative_to(dist)): p.read_bytes() for p in (dist / 'assets').rglob('*') if p.is_file() and p.suffix in ['.js', '.css']}
     html = (dist / 'index.html').read_bytes()
     def write_programs(rows):
@@ -154,19 +177,19 @@ def prepare(dist, baseline):
             (dist / path).write_bytes(data)
             (dist / (path + '.gz')).write_bytes(gzip.compress(data, mtime=0))
         (dist / 'index.html').write_bytes(rewritten(html, 'index.html', rows, base))
-    candidates = plan(cdn.inventory(dist, base), baseline)
+    candidates = assign(cdn.inventory(dist, base))
     published = {path.lstrip('/'): normalized(record) for path, record in baseline.get('files', {}).items()}
     seeded = False
     for row in candidates:
         previous = published.get(row['path'])
-        if row['path'] in originals and previous is not None and row['mime'] == previous['mime'] and row['encoding'] == previous['encoding'] and row['url'] != previous['url']:
+        if row['path'] in originals and previous is not None and row['mime'] == previous['mime'] and row['encoding'] == previous['encoding'] and row['url'] != previous['url'] and owners is None:
             row['url'] = previous['url']
             seeded = True
     if seeded:
         write_programs(candidates)
     previous_urls = None
     for iteration in range(16):
-        rows = plan(cdn.inventory(dist, base), baseline)
+        rows = assign(cdn.inventory(dist, base))
         urls = {row['path']: row['url'] for row in rows}
         if urls == previous_urls:
             break
@@ -174,7 +197,7 @@ def prepare(dist, baseline):
         write_programs(rows)
     else:
         raise ValueError('Published program references did not converge')
-    rows = plan(cdn.inventory(dist, base), baseline)
+    rows = assign(cdn.inventory(dist, base))
     by_path = {row['path']: row for row in rows}
     for group in groups + [home_group]:
         for record, path in group:
@@ -193,8 +216,20 @@ def prepare(dist, baseline):
     old_urls = set(objects(baseline))
     unique = {row['url']: row for row in rows}
     summary = {'logicalFiles': len(rows), 'reusedObjects': sum(url in old_urls for url in unique), 'reusedBytes': sum(row['bytes'] for url, row in unique.items() if url in old_urls), 'newObjects': sum(url not in old_urls for url in unique), 'uploadBytes': sum(row['wireBytes'] for url, row in unique.items() if url not in old_urls)}
-    manifest.update(mediaBase='/_media', entry=by_path[entry]['url'], entryPath=entry, assetPlan=summary, build=cdn.sha((dist / 'index.html').read_bytes()))
+    manifest.update(mediaBase='/bga' if owners is not None else '/_media', entry=by_path[entry]['url'], entryPath=entry, assetPlan=summary, build=cdn.sha((dist / 'index.html').read_bytes()))
     delivery = {'version': 1, 'assetBase': base, 'files': {'/' + row['path']: normalized(row) for row in rows}, 'objects': known}
+    external = dict(manifest.get('external', {}))
+    if manifest.get('externalRegistrySHA256'):
+        external_raw = (ROOT / 'assets/external-resources.json').read_bytes()
+        if cdn.sha(external_raw) != manifest['externalRegistrySHA256']:
+            raise ValueError('External resource registry changed after the build')
+        origin = base.split('/bga/')[0]
+        for path, record in json.loads(external_raw)['files'].items():
+            external[path] = {**record, 'url': origin + '/' + record['key']}
+    if external:
+        delivery['external'] = {path: normalized(record) for path, record in external.items()}
+    if manifest.get('sourceSHA'):
+        delivery['sourceSHA'] = manifest['sourceSHA']
     delivery_path.write_text(json.dumps(delivery, separators=(',', ':'), sort_keys=True) + '\n')
     file.write_text(json.dumps(manifest, separators=(',', ':'), sort_keys=True) + '\n')
     return summary
@@ -213,12 +248,13 @@ def successful_readback(sha, required=True):
 
 
 def published_baseline():
-    with urlopen('https://PUBLIC_HOST/cdn-assets-manifest.json', timeout=30) as response:
+    with urlopen(configuration()['PUBLIC_ORIGIN'] + '/cdn-assets-manifest.json', timeout=30) as response:
         baseline = json.load(response)
     base = baseline['assetBase']
     if not cdn.BASE.fullmatch(base):
         raise ValueError('Invalid deployed asset base')
-    successful_readback(base.rstrip('/').split('/')[-1])
+    source_sha = baseline.get('sourceSHA') or base.rstrip('/').split('/')[-1]
+    successful_readback(source_sha)
     objects(baseline)
     sha = os.environ.get('VERIFIED_ANCESTOR', '')
     source_run = successful_readback(sha, required=False) if re.fullmatch('[a-f0-9]{40}', sha) else None
@@ -236,7 +272,7 @@ def published_baseline():
         elif not receipt_path.is_file():
             raise ValueError('Incomplete baseline cache')
         previous = json.loads((folder / 'game-load-manifest.json').read_bytes())
-        if previous['assetBase'] != 'https://cdn.ichenj.com/bga/web/' + sha + '/':
+        if previous.get('sourceSHA') != sha and previous['assetBase'] != 'https://cdn.ichenj.com/bga/web/' + sha + '/':
             raise ValueError('Ancestor artifact is not bound to its source')
         rows = cdn.inventory(folder, previous['assetBase'])
         receipt = {'sourceSHA': sha, 'sourceRun': source_run, 'files': rows}

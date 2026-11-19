@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+
 """Upload a prepared artwork directory to OSS. Credentials never enter the bundle."""
 import argparse
 import base64
@@ -9,6 +9,7 @@ from email.utils import formatdate
 import urllib.error
 import urllib.parse
 import urllib.request
+from resource_store import ObjectStore, publish, OWNERS
 
 
 def collect_assets(directory, include_audio=False):
@@ -54,36 +55,19 @@ def main():
     if '/' in endpoint or not endpoint.endswith('.aliyuncs.com'):
         parser.error('endpoint must be an OSS bucket hostname')
     prefix = args.prefix.strip('/')
-    if not prefix or '..' in prefix.split('/'):
-        parser.error('a nonempty object prefix is required')
+    parts = prefix.split('/')
+    if len(parts) != 2 or parts[0] != 'bga' or parts[1] not in OWNERS:
+        parser.error('expected bga/<game-id> or bga/_common')
     try:
         files = collect_assets(args.directory, args.include_audio)
     except ValueError as error:
         parser.error(str(error))
     if not files:
         parser.error('no supported media found')
+    client = ObjectStore('https://' + endpoint, args.bucket, key_id, secret)
     for path, content_type in files:
-        relative = path.relative_to(args.directory).as_posix()
-        object_key = prefix + '/' + relative
-        body = path.read_bytes()
-        checksum = base64.b64encode(hashlib.md5(body).digest()).decode()
-        date = formatdate(usegmt=True)
-        canonical = f'PUT\n{checksum}\n{content_type}\n{date}\n/{args.bucket}/{object_key}'
-        signature = base64.b64encode(hmac.new(secret.encode(), canonical.encode(), hashlib.sha1).digest()).decode()
-        request = urllib.request.Request('https://' + endpoint + '/' + urllib.parse.quote(object_key, safe='/'),
-            data=body, method='PUT', headers={
-                'Content-MD5': checksum, 'Content-Type': content_type, 'Date': date,
-                'Cache-Control': 'public, max-age=31536000, immutable',
-                'Authorization': f'OSS {key_id}:{signature}',
-            })
-        try:
-            with urllib.request.urlopen(request, timeout=45) as response:
-                if response.status != 200:
-                    raise RuntimeError(f'Upload failed: HTTP {response.status}')
-        except urllib.error.HTTPError as error:
-            raise SystemExit(f'Upload failed for {relative}: HTTP {error.code}; check OSS permissions and endpoint.') from None
-        print(f'Uploaded {relative} ({len(body)} bytes)')
-    print(f'Uploaded {len(files)} media files. Credentials were not included.')
+        record = publish(client, parts[1], path.name, path.read_bytes(), mime=content_type)
+        print(f'Verified {record["key"]} ({record["bytes"]} bytes)')
 
 
 if __name__ == '__main__':

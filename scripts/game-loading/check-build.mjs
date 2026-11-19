@@ -1,7 +1,7 @@
 import { readFileSync, statSync, readdirSync } from "node:fs";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-const dir = "web/dist/";
+const dir = (process.argv[2] ?? "web/dist").replace(/\/$/, "") + "/";
 const html = readFileSync(dir + "index.html");
 const manifest = JSON.parse(readFileSync(dir + "game-load-manifest.json"));
 assert.equal(manifest.build, createHash("sha256").update(html).digest("hex"));

@@ -27,8 +27,8 @@ async function resolver(base) {
 test("production manifest follows the verified current server catalog", async () => {
   const url = await resolver(commitBase);
   assert.equal(
-    url(runtimeID, "https://PUBLIC_HOST/rooms/example"),
-    `https://PUBLIC_HOST/_media/contra/runtime-${runtimeID}/manifest.json`,
+    url(runtimeID, "https://board.example/rooms/example"),
+    `https://board.example/_media/contra/runtime-${runtimeID}/manifest.json`,
   );
 });
 

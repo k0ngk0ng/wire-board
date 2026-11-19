@@ -3,11 +3,17 @@ import hd from "./hd.json";
 import appearances from "./avatar-art.json";
 import projectiles from "./projectile-art.json";
 import elite from "./elite-art.json";
+import audio from "./canonical-audio.json";
 import type { View, PetDefinition } from "./types";
 
-export const resourceRoot = "https://cdn.ichenj.com/stoneage";
-export const assetURL = (file: string) =>
-  `${resourceRoot}/${enhancedResources[file] ? hd.basePath : appearances.basePath}/${file}`;
+const cdnOrigin = import.meta.env.VITE_CDN_ORIGIN || "";
+export const resourceRoot = `${cdnOrigin}/bga/stoneage`;
+export const assetURL = (file: string) => {
+  const record = enhancedResources[file] || art.resources[file];
+  if (!record) throw Error(`资源清单缺少 ${file}`);
+  return `${resourceRoot}/${record.sha256}${file.slice(file.lastIndexOf("."))}`;
+};
+export const audioURL = (path: keyof typeof audio) => `${cdnOrigin}/${audio[path].key}`;
 export const imagePixelScale = hd.pixelScale;
 export type SpriteFrame = {
   file: string;
@@ -49,7 +55,7 @@ export const projectileBitmaps: Record<
   }
 > = projectiles.bitmaps;
 export const avatarAppearances = appearances.avatars;
-// Selection previews face the viewer; battle directions remain team-specific.
+
 export const previewDirection = 7;
 const enhancedResources: Record<string, { bytes: number; sha256: string }> =
   hd.resources;

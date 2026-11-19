@@ -52,7 +52,14 @@ export function loadBasketballAssetPin(directory) {
   }
   const entries = pin.entries.map(e => ({ ...e, output: "public" + e.urlPath }));
   assert(hash(encode({ sourceROM: ROM, entries })) === pin.contentSHA256, "Pinned content hash differs");
-  assert(pin.assetsBaseURL === "https://cdn.ichenj.com/bga/basketball/v1-" + pin.contentSHA256, "Pinned CDN target differs");
+  if (pin.files) {
+    assert(new URL(pin.assetsBaseURL).pathname === "/bga", "Pinned CDN root differs");
+    assert(Object.keys(pin.files).length === pin.entries.length, "Pinned resource map differs");
+    for (const entry of pin.entries) {
+      const record = pin.files[entry.urlPath], url = record && new URL(record.url);
+      assert(record && record.sha256 === entry.sha256 && record.bytes === entry.bytes && record.mime === entry.mime && url.origin === new URL(pin.assetsBaseURL).origin && url.pathname === "/bga/basketball/" + entry.sha256 + (record.encoding === "gzip" ? "-gzip" : "") + path.extname(entry.urlPath), "Pinned resource URL differs");
+    }
+  } else assert(pin.assetsBaseURL === "https://cdn.ichenj.com/bga/basketball/v1-" + pin.contentSHA256, "Pinned CDN target differs");
   return pin;
 }
 function context(directory) {
@@ -93,13 +100,16 @@ export function verifyBasketballAssets(directory, suppliedPublicRoot) {
 function valid(c) { try { return verifyBasketballAssets(c.root); } catch { return false; } }
 function verifiedPackage(c, input) {
   const pkg = within(c.root, input), record = JSON.parse(readFileSync(within(c.root, path.join(pkg, "package-manifest.json")), "utf8"));
-  assert(record.sourceROM === c.pin.sourceROM && record.contentSHA256 === c.pin.contentSHA256 && record.assetsBaseURL === c.pin.assetsBaseURL, "Candidate package does not match committed pin");
-  assert(record.ossBucket === "stoneage-assets" && record.ossPrefix === "bga/basketball/v1-" + c.pin.contentSHA256, "Candidate package OSS target differs");
+  assert(record.sourceROM === c.pin.sourceROM && record.contentSHA256 === c.pin.contentSHA256, "Candidate package does not match committed pin");
+  if (!c.pin.files) {
+    assert(record.assetsBaseURL === c.pin.assetsBaseURL, "Candidate package CDN root differs");
+    assert(record.ossBucket === "stoneage-assets" && record.ossPrefix === "bga/basketball/v1-" + c.pin.contentSHA256, "Candidate package OSS target differs");
+  }
   const entries = c.pin.entries.map(e => ({ ...e, output: "public" + e.urlPath })); assert(hash(encode(entries)) === hash(encode(record.entries)), "Candidate public object list differs");
   verifyBasketballPublicFiles(c.root, path.join(pkg, "public")); return pkg;
 }
 async function downloadOnce(c, entry, target, fetchImpl) {
-  const response = await fetchImpl(c.pin.assetsBaseURL + entry.urlPath, { redirect: "error", signal: AbortSignal.timeout(60_000) });
+  const response = await fetchImpl(c.pin.files?.[entry.urlPath]?.url ?? c.pin.assetsBaseURL + entry.urlPath, { redirect: "error", signal: AbortSignal.timeout(60_000) });
   if (response.status === 429 || response.status >= 500) {
     await response.body?.cancel().catch(() => {});
     const error = new Error("Temporary asset service response " + response.status);
@@ -108,8 +118,8 @@ async function downloadOnce(c, entry, target, fetchImpl) {
   }
   assert(response.ok && response.status === 200 && response.body, "Pinned asset download failed: " + entry.urlPath);
   assert((response.headers.get("content-type") ?? "").split(";")[0].trim().toLowerCase() === entry.mime, "Downloaded asset MIME differs: " + entry.urlPath);
-  // Fetch exposes decoded bytes while Content-Length may describe compressed
-  // transfer bytes. The streamed decoded count/hash below always stays exact.
+
+
   const declared = response.headers.get("content-length"), encoding = response.headers.get("content-encoding");
   if (declared !== null && (!encoding || encoding === "identity")) assert(Number(declared) === entry.bytes, "Downloaded asset length header differs");
   const fd = openSync(target, "wx"), reader = response.body.getReader(), digest = createHash("sha256"); let bytes = 0;
@@ -126,8 +136,8 @@ async function download(c, entry, target, fetchImpl) {
   for (let attempt = 0; attempt < 3; attempt++) {
     try { return await downloadOnce(c, entry, target, fetchImpl); }
     catch (error) {
-      // Each attempt creates its own file exclusively. Drop partial bytes before
-      // retrying the same immutable object; never retry an integrity mismatch.
+
+
       rmSync(target, { force: true });
       const transient = error instanceof TypeError || ["AbortError", "TimeoutError"].includes(error.name) || error.retryableAssetTransfer === true;
       if (!transient || attempt === 2) {
@@ -152,7 +162,7 @@ export async function materializeBasketballAssets(directory, { packageDirectory,
         else await download(c, entry, target, fetchImpl);
       }
     });
-    // Await all workers before deleting a failed staging tree.
+
     const results = await Promise.allSettled(workers), failed = results.find(r => r.status === "rejected"); if (failed) throw failed.reason;
     verifyBasketballPublicFiles(c.root, publicRoot);
     writeFileSync(path.join(stage, "build.json"), encode({ schema: 1, contentSHA256: c.pin.contentSHA256, pinSHA256: hash(encode(c.pin)), objects: c.pin.entries.length }));
@@ -162,8 +172,8 @@ export async function materializeBasketballAssets(directory, { packageDirectory,
     return verifyBasketballAssets(c.root);
   } finally { rmSync(stage, { recursive: true, force: true }); }
 }
-/** Synchronous Vite/public-collector hook. Only this Node module and the
- * committed compact pin are required in a clean checkout or Docker frontend. */
+
+
 export function prepareBasketballAssets(directory, { packageDirectory = process.env.BASKETBALL_ASSET_PACKAGE } = {}) {
   const c = context(directory); if (packageDirectory) verifiedPackage(c, packageDirectory);
   if (valid(c)) return c.publicRoot;

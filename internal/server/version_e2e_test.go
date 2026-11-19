@@ -1,8 +1,5 @@
 package server
 
-// Failure cases: version checks require authentication or read room state;
-// release version isn't paired with its actual entry assets; a cache hides a
-// deployment; unrelated external assets/configuration leak into the response.
 import (
 	"encoding/json"
 	"net/http"
@@ -65,7 +62,6 @@ func TestPublicVersionCDNAssetsHTTP(t *testing.T) {
 	}
 }
 
-// External compiled modules must pass CSP without trusting arbitrary image hosts.
 func TestFrontendCDNPolicyHTTP(t *testing.T) {
 	s, e := New(Config{DataDir: t.TempDir(), InviteCode: "cdn-csp-test", AssetsBaseURL: "https://images.example.test/media"}, fstest.MapFS{"index.html": {Data: []byte("page")}})
 	if e != nil {
@@ -82,5 +78,27 @@ func TestFrontendCDNPolicyHTTP(t *testing.T) {
 	}
 	if strings.Contains(csp, "script-src 'self' 'wasm-unsafe-eval' https://images.example.test") || strings.Contains(csp, "'unsafe-eval'") {
 		t.Fatal("unexpected script trust", csp)
+	}
+}
+
+func TestPublicVersionCanonicalGameAssetsHTTP(t *testing.T) {
+	base := "https://cdn.ichenj.com/bga/_common/"
+	files := fstest.MapFS{"index.html": {Data: []byte(`<script type="module" src="` + base + `index-abcdefgh.js"></script><link rel="stylesheet" href="` + base + `index-abcdefgh.css">`)}}
+	s, err := New(Config{DataDir: t.TempDir(), InviteCode: "canonical-version-test"}, files)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer s.Close()
+	response := httptest.NewRecorder()
+	s.Handler().ServeHTTP(response, httptest.NewRequest("GET", "/api/version", nil))
+	var got struct {
+		Assets    []string `json:"assets"`
+		AssetURLs []string `json:"assetURLs"`
+	}
+	if err = json.Unmarshal(response.Body.Bytes(), &got); err != nil {
+		t.Fatal(err)
+	}
+	if !reflect.DeepEqual(got.Assets, []string{"/assets/index-abcdefgh.css", "/assets/index-abcdefgh.js"}) || !reflect.DeepEqual(got.AssetURLs, []string{base + "index-abcdefgh.css", base + "index-abcdefgh.js"}) {
+		t.Fatal(got)
 	}
 }

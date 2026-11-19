@@ -114,10 +114,11 @@ class PackagingTests(unittest.TestCase):
  def test_publish_plan_never_connects_and_collision_preflight(self):
   publish=load('publish_assets');self.fixture();pack.build_package(self.root,self.root/'out')
   plan=publish.publication_plan(self.root/'out',self.root);self.assertEqual(plan['writesPerformed'],0)
+  self.assertEqual(plan['prefix'],'bga/basketball')
   class Transport:
    def __init__(self):self.puts=[]
    def get(self,path,cdn=False):
-    if path.endswith('music-075.mp3'):return b'collision','audio/mpeg'
+    if path.endswith('.mp3'):return b'collision','audio/mpeg'
     return None,None
    def put(self,path,data,mime):self.puts.append(path)
   client=Transport()
@@ -132,6 +133,7 @@ class PackagingTests(unittest.TestCase):
     if path in self.objects:raise AssertionError('immutable overwrite')
     self.objects[path]=(data,mime)
   client=Store();result=publish.publish_verified(self.root/'out',client,self.root)
+  self.assertTrue(all(path.startswith('bga/basketball/') and '/v1' not in path for path in client.objects))
   self.assertEqual(result['writesPerformed'],plan['objects']);self.assertEqual(len([r for r in client.readbacks if r[1]]),plan['objects'])
   self.assertEqual(publish.publish_verified(self.root/'out',client,self.root)['writesPerformed'],0)
   client.corrupt_cdn=True

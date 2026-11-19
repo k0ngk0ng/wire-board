@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+
 """Restore immutable Fortress 2 BLUE media inputs for a clean build.
 
 Matching media may come from a verified cache or the canonical CDN. Every file
@@ -17,7 +17,10 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 MANIFEST = ROOT / "games/fortressblue/assets/manifest.json"
-BASE = "https://cdn.ichenj.com/bga/v20261002-1"
+sys.path.insert(0, str(ROOT / "scripts"))
+from resource_store import configuration
+
+BASE = configuration()["CDN_ORIGIN"] + "/bga"
 TRANSFER_TIMEOUT = 45
 DOWNLOAD_ATTEMPTS = 4
 RETRY_DELAY = 1
@@ -31,10 +34,10 @@ def fetch(url: str) -> bytes:
     last = None
     for attempt in range(DOWNLOAD_ATTEMPTS):
         try:
-            # A socket idle timeout does not bound a slowly trickling body.
-            # curl bounds the complete transfer and uses the reachable IPv4
-            # route consistently on hosted runners. Bytes still pass the
-            # manifest length and SHA-256 checks before being written.
+
+
+
+
             result = subprocess.run(
                 ["curl", "--ipv4", "--fail", "--location", "--silent", "--show-error",
                  "--connect-timeout", str(min(10, TRANSFER_TIMEOUT)),
@@ -45,7 +48,7 @@ def fetch(url: str) -> bytes:
             if result.returncode:
                 raise RuntimeError(result.stderr.decode(errors="replace").strip())
             return result.stdout
-        except Exception as error:  # noqa: BLE001 - retry timeouts and transient 5xx
+        except Exception as error:
             last = error
             print(f"download attempt {attempt + 1}/{DOWNLOAD_ATTEMPTS}: {url}: {error}", file=sys.stderr, flush=True)
             if attempt + 1 < DOWNLOAD_ATTEMPTS:
@@ -103,7 +106,11 @@ def main() -> None:
             data = target.read_bytes()
             if len(data) == entry["bytes"] and sha(data) == entry["sha256"]:
                 return False
-        url = BASE + entry["urlPath"]
+        registry = json.loads((ROOT / "assets/external-resources.json").read_text())["files"]
+        record = registry[entry["urlPath"]]
+        if record["sha256"] != entry["sha256"] or record["bytes"] != entry["bytes"]:
+            raise ValueError("Canonical Fortress media differs from its source manifest")
+        url = configuration()["CDN_ORIGIN"] + "/" + record["key"]
         data = fetch(url)
         if len(data) != entry["bytes"] or sha(data) != entry["sha256"]:
             raise RuntimeError(f"asset mismatch: {url}")

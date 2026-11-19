@@ -18,7 +18,7 @@ import {
   loadAssets,
   neededAssets,
   petPreview,
-  resourceRoot,
+  audioURL,
   avatarAppearances,
   previewDirection,
 } from "./assets";
@@ -103,14 +103,14 @@ export function Board(props: BoardProps<View>) {
     [progress, setProgress] = useState({ loaded: 0, total: 0 });
   const stage = data.phase === "selection" ? "selection" : "battle",
     key = `${data.session}:${stage}`;
-  const resources = useMemo(() => neededAssets(data), [key]); // The pool and locked loadouts are immutable within each stage.
+  const resources = useMemo(() => neededAssets(data), [key]);
   const sent = useRef("");
   useEffect(() => {
     const controller = new AbortController();
     setError("");
     setLoaded("");
-    // The host has already read and verified these code files. Include those
-    // completed bytes while adding streamed/cached StoneAge image bytes.
+
+
     void fetch("/game-load-manifest.json", {
       cache: "force-cache",
       signal: controller.signal,
@@ -225,7 +225,7 @@ function Arena(props: BoardProps<View>) {
   )?.name;
   useEffect(() => {
     if (battle)
-      void audio.music([`${resourceRoot}/audio/bgm/sabgm_b0.wav`], {
+      void audio.music([audioURL("audio/bgm/sabgm_b0.wav")], {
         loop: true,
         playbackID: `stoneage:${data.session}`,
       });
