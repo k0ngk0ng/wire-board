@@ -33,7 +33,7 @@ def normalized(record):
     valid_url(value['url'])
     if type(value['bytes']) is not int or value['bytes'] <= 0 or not re.fullmatch('[a-f0-9]{64}', value['sha256']) or not isinstance(value['mime'], str) or not value['mime']:
         raise ValueError('Invalid published asset identity')
-    value['encoding'] = record.get('encoding', 'gzip' if PurePosixPath(urlsplit(value['url']).path).suffix in ENCODED else '')
+    value['encoding'] = record.get('encoding', 'gzip' if 'key' not in record and PurePosixPath(urlsplit(value['url']).path).suffix in ENCODED else '')
     if value['encoding'] not in ['', 'gzip']:
         raise ValueError('Invalid published encoding')
     return value

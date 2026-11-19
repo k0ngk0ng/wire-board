@@ -8,6 +8,7 @@ import unittest
 
 import cdn_delivery as cdn
 import cdn_local_ready as ready
+import asset_reuse as reuse
 
 ROOT = Path(__file__).resolve().parents[1]
 WORK = ROOT / '.local/resource-cleanup/canonical-tests'
@@ -61,6 +62,11 @@ class CanonicalPublicationE2E(unittest.TestCase):
             self.assertEqual(proof['sourceSHA'], 'a' * 40)
             with self.assertRaises(ValueError):
                 ready.local_readback_proof(dist, report, 'b' * 40, 123)
+
+
+    def test_source_registry_identity_encoding_is_not_inferred_from_json_extension(self):
+        value = {'key': 'bga/splendor/' + 'a' * 64 + '.json', 'url': 'https://cdn.ichenj.com/bga/splendor/' + 'a' * 64 + '.json', 'bytes': 10, 'sha256': 'a' * 64, 'mime': 'application/json'}
+        self.assertEqual(reuse.normalized(value)['encoding'], '')
 
 
 if __name__ == '__main__':
