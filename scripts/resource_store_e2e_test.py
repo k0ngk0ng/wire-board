@@ -28,10 +28,17 @@ class ResourceStoreE2E(unittest.TestCase):
         self.objects = {}
         self.puts = 0
         self.private_reads = False
+        self.read_failures = {}
+        self.read_counts = {}
         fixture = self
 
         class Handler(BaseHTTPRequestHandler):
             def do_GET(self):
+                fixture.read_counts[self.path]=fixture.read_counts.get(self.path,0)+1
+                failures=fixture.read_failures.get(self.path,[])
+                if failures:
+                    self.send_error(failures.pop(0))
+                    return
                 if fixture.private_reads:
                     canonical='GET\n\n\n'+self.headers.get('Date','')+'\n/fixture'+self.path
                     signature=base64.b64encode(hmac.new(b'test-secret',canonical.encode(),hashlib.sha1).digest()).decode()
@@ -147,6 +154,28 @@ class ResourceStoreE2E(unittest.TestCase):
         self.objects['/' + record['key']] = (b'wrong bytes', 'image/webp')
         with self.assertRaises(ValueError):
             store.hydrate(registry, self.root, self.origin, local=True)
+        self.assertFalse(target.exists())
+
+    def test_source_restore_retries_temporary_http_errors_but_not_access_errors(self):
+        record=store.publish(self.client,'splendor','cards.webp',b'generated pixels')
+        key='/'+record['key']
+        registry={'version':1,'files':{'games/splendor/card.webp':record}}
+        before=self.read_counts[key]
+        self.read_failures[key]=[503]
+        with patch('time.sleep') as sleep:
+            store.hydrate(registry,self.root,self.origin,local=True)
+            sleep.assert_called_once_with(1)
+        target=self.root/'games/splendor/card.webp'
+        self.assertEqual(target.read_bytes(),b'generated pixels')
+        self.assertEqual(self.read_counts[key]-before,2)
+        target.unlink()
+        before=self.read_counts[key]
+        self.read_failures[key]=[403]
+        with patch('time.sleep') as sleep:
+            with self.assertRaises(store.urllib.error.HTTPError):
+                store.hydrate(registry,self.root,self.origin,local=True)
+            sleep.assert_not_called()
+        self.assertEqual(self.read_counts[key]-before,1)
         self.assertFalse(target.exists())
 
     def test_manifest_urls_use_configured_origin_and_verified_game_identity(self):

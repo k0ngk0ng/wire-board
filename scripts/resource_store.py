@@ -6,6 +6,7 @@ import fnmatch
 import hashlib
 import gzip
 import hmac
+import http.client
 import json
 import mimetypes
 import os
@@ -13,6 +14,7 @@ from pathlib import Path
 import re
 import shlex
 import subprocess
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -307,14 +309,25 @@ def hydrate(registry, root, origin, local=False, paths=None, client=None):
         path, record, target = item
         if target.is_file() and len(target.read_bytes()) == record['bytes'] and hashlib.sha256(target.read_bytes()).hexdigest() == record['sha256']:
             return path
-        if client is None:
-            with urllib.request.urlopen(origin.rstrip('/') + '/' + record['key'], timeout=60) as response:
-                body = validate_body(record, response.read(), response.headers.get_content_type())
-        else:
-            response = client.get(record['key'])
-            if response is None:
-                raise ValueError('Missing source resource: ' + record['key'])
-            body = validate_body(record, *response)
+        for attempt in range(4):
+            try:
+                if client is None:
+                    with urllib.request.urlopen(origin.rstrip('/') + '/' + record['key'], timeout=60) as response:
+                        body = validate_body(record, response.read(), response.headers.get_content_type())
+                else:
+                    response = client.get(record['key'])
+                    if response is None:
+                        raise ValueError('Missing source resource: ' + record['key'])
+                    body = validate_body(record, *response)
+                break
+            except (urllib.error.URLError, TimeoutError, ConnectionError, http.client.IncompleteRead) as error:
+                transient = not isinstance(error, urllib.error.HTTPError) or error.code in [408, 429, 500, 502, 503, 504]
+                if isinstance(error, urllib.error.HTTPError):
+                    error.close()
+                if not transient or attempt == 3:
+                    error.add_note('Source request failed: ' + record['key'])
+                    raise
+                time.sleep(2 ** attempt)
         target.parent.mkdir(parents=True, exist_ok=True)
         temporary = target.with_name(target.name + '.resource-tmp')
         try:
