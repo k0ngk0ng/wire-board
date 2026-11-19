@@ -22,8 +22,8 @@ parser.add_argument('--out', type=Path, required=True)
 args = parser.parse_args()
 dist = args.dist.resolve()
 out = args.out.resolve()
-if not dist.is_relative_to(ROOT) or not out.is_relative_to(ROOT) or out.exists():
-    raise ValueError('Build and new evidence directory must stay inside the repository')
+if not dist.is_relative_to(ROOT) or not out.is_relative_to(ROOT / '.local/splendor') or out.exists():
+    raise ValueError('Build must stay inside the repository and new browser evidence inside .local/splendor')
 out.mkdir(parents=True)
 config = configuration()
 temporary = out / 'temporary'
