@@ -24,9 +24,10 @@ import time
 import urllib.error
 import urllib.request
 import zlib
+ROOT=Path(__file__).resolve().parents[1]
+sys.path.insert(0,str(ROOT/"scripts"))
 from resource_store import configuration, OWNERS
 
-ROOT=Path(__file__).resolve().parents[1]
 CONFIG=configuration()
 BUCKET=CONFIG['OSS_BUCKET']
 ENDPOINT='https://'+CONFIG['OSS_ENDPOINT']

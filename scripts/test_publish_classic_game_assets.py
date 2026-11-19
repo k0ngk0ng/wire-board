@@ -4,6 +4,9 @@ No real network or credentials are used by these targeted checks.
 import importlib.util
 import hashlib
 import json
+import os
+import subprocess
+import sys
 from pathlib import Path
 import tempfile
 import threading
@@ -37,6 +40,11 @@ def entry(index=0):
  return {'urlPath':f'/bubbleparty/v4/classic/test-{index}.png','sha256':hashlib.sha256(data).hexdigest(),'bytes':len(data),'mime':'image/png','data':data}
 
 class PublisherChecks(unittest.TestCase):
+ def test_nested_game_tool_loads_publisher_with_repository_configuration(self):
+  code="import importlib.util,sys; spec=importlib.util.spec_from_file_location('nested_publisher',sys.argv[1]); module=importlib.util.module_from_spec(spec); spec.loader.exec_module(module); assert module.CDN=='https://configured.example.invalid/bga'"
+  env={**os.environ,'PYTHONPATH':'','GITHUB_ACTIONS':'true','PUBLIC_ORIGIN':'https://app.example.invalid','CDN_ORIGIN':'https://configured.example.invalid','OSS_BUCKET':'fixture','OSS_ENDPOINT':'fixture.example.invalid'}
+  result=subprocess.run([sys.executable,'-B','-c',code,str(ROOT/'scripts/publish-classic-game-assets.py')],cwd=ROOT/'scripts/bubbleparty',env=env,text=True,capture_output=True)
+  self.assertEqual(result.returncode,0,result.stdout+result.stderr)
  def test_invalid_paths_sizes_hashes_and_duplicates_rejected_locally(self):
   parent=ROOT/'.local/classic-game-assets/test-tmp';parent.mkdir(parents=True,exist_ok=True)
   with tempfile.TemporaryDirectory(dir=parent) as d:
