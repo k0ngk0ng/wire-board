@@ -1,6 +1,3 @@
-// Authored before baseline selection: cancelled/failed predecessors must not
-// hide unverified changes; reject unrelated branches, missing/expired artifacts,
-// non-ancestors and current run; API errors must fail instead of skipping tests.
 const {test}=require('node:test');
 const assert=require('node:assert/strict');
 const {baseline}=require('./baseline.cjs');
@@ -15,8 +12,6 @@ test('non-ancestor cannot hide changes',async()=>assert.equal(await baseline(fix
 test('foreign branch cannot certify a baseline',async()=>assert.equal(await baseline(fixture({runs:async()=>[{id:1,head_branch:'feature',event:'push',path:'.github/workflows/build.yml'}]}),3),null));
 test('API errors propagate',async()=>assert.rejects(baseline(fixture({jobs:async()=>{throw Error('unavailable')}}),3),/unavailable/));
 
-// CI-only/doc-only success must advance the verification baseline without
-// requiring a release binary; incomplete aggregates/artifacts must not.
 test('successful selected-lane aggregate advances a build-free baseline',async()=>{
  const api=fixture({jobs:async()=>[{name:'Selected checks passed',conclusion:'success'}],artifacts:async()=>[{name:'verification-plan',expired:false,size_in_bytes:10}]});
  assert.equal(await baseline(api,3),'a'.repeat(40));
@@ -24,4 +19,13 @@ test('successful selected-lane aggregate advances a build-free baseline',async()
 test('an incomplete selected-lane aggregate cannot advance the baseline',async()=>{
  const api=fixture({jobs:async()=>[{name:'Selected checks passed',conclusion:'failure'}],artifacts:async()=>[{name:'verification-plan',expired:false,size_in_bytes:10}]});
  assert.equal(await baseline(api,3),null);
+});
+
+test('history rewrite with no common ancestor requests bootstrap coverage',async()=>{
+ const api=fixture({ancestor:async()=>{const error=new Error('No common ancestor');error.status=404;throw error;}});
+ assert.equal(await baseline(api,3),null);
+});
+test('other ancestry API failures still propagate',async()=>{
+ const api=fixture({ancestor:async()=>{const error=new Error('service unavailable');error.status=503;throw error;}});
+ await assert.rejects(baseline(api,3),/service unavailable/);
 });
