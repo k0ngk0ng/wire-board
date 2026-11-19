@@ -129,7 +129,11 @@ func NewHTTP(t *testing.T, n int, module gameapi.Module, kind string) *HTTP {
 			}
 			dir = parent
 		}
-		dir = filepath.Join(dir, ".local", "poker", kind, "http")
+		if kind == "tetris" {
+			dir = filepath.Join(dir, ".local", kind, "verification", "http")
+		} else {
+			dir = filepath.Join(dir, ".local", "poker", kind, "http")
+		}
 		if e = os.MkdirAll(dir, 0755); e != nil {
 			t.Error(e)
 			return

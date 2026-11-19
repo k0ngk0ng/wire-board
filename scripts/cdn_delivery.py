@@ -11,6 +11,7 @@ from contextlib import contextmanager
 from io import BytesIO
 from urllib.error import HTTPError,URLError
 from http.client import IncompleteRead,HTTPSConnection,HTTPException
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 from resource_store import configuration
 
 

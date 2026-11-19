@@ -1,12 +1,10 @@
 package tetris_test
 
-// Real HTTP/SQLite acceptance for the production tetris module. Failure
-// inventory: unpublished game creation, invalid options, private queue leakage,
-// nonce replay dropping a second piece, stale/future sequence acceptance,
-// concurrent seats losing a board, restart resetting the clock, and autoplay
-// not restoring the returned seat.
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
+	"net/http"
 	"sync"
 	"testing"
 	"time"
@@ -60,6 +58,39 @@ func seatAutoPlay(room map[string]any, seat int) bool {
 	return value
 }
 
+func rejectTetrisInput(t *testing.T, client *gametest.Client, id string, action map[string]any) {
+	t.Helper()
+	for attempt := 0; attempt < 8; attempt++ {
+		raw, err := json.Marshal(client.ActionRequest(action))
+		if err != nil {
+			t.Fatal(err)
+		}
+		request, err := http.NewRequest(http.MethodPost, client.Base+"/api/rooms/"+id, bytes.NewReader(raw))
+		if err != nil {
+			t.Fatal(err)
+		}
+		request.Header.Set("Content-Type", "application/json")
+		response, err := client.HTTP.Do(request)
+		if err != nil {
+			t.Fatal(err)
+		}
+		var data map[string]any
+		err = json.NewDecoder(response.Body).Decode(&data)
+		response.Body.Close()
+		if err != nil {
+			t.Fatal(err)
+		}
+		if response.StatusCode == http.StatusConflict {
+			continue
+		}
+		if response.StatusCode != http.StatusBadRequest {
+			t.Fatalf("invalid input accepted or rejected for another reason: %d %v", response.StatusCode, data)
+		}
+		return
+	}
+	t.Fatal("room version kept advancing before invalid input validation")
+}
+
 func TestTetrisHTTPSpectatorPrivacyAndIdempotence(t *testing.T) {
 	h := gametest.NewHTTP(t, 2, game.Module(), "tetris")
 	h.AssertUnpublished()
@@ -102,9 +133,9 @@ func TestTetrisHTTPSpectatorPrivacyAndIdempotence(t *testing.T) {
 	if replayed != after {
 		t.Fatalf("nonce replay changed score: %d -> %d", after, replayed)
 	}
-	h.People[0].Action(tetrisBatch(epoch, 1, "hardDrop"), 400)
-	h.People[0].Action(tetrisBatch(epoch, 1<<20, "hardDrop"), 400)
-	h.People[0].Action(tetrisBatch(epoch, 2, "teleport"), 400)
+	rejectTetrisInput(t, h.People[0], id, tetrisBatch(epoch, 1, "hardDrop"))
+	rejectTetrisInput(t, h.People[0], id, tetrisBatch(epoch, 1<<20, "hardDrop"))
+	rejectTetrisInput(t, h.People[0], id, tetrisBatch(epoch, 2, "teleport"))
 	h.Record("privacy, nonce replay and sequence bounds")
 }
 

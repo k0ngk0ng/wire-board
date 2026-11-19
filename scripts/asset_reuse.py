@@ -6,13 +6,15 @@ import os
 from pathlib import Path, PurePosixPath
 import re
 import subprocess
+import sys
 from urllib.parse import urlsplit
 from urllib.request import urlopen
 
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts"))
 import cdn_delivery as cdn
 from resource_store import configuration, OWNERS
 
-ROOT = Path(__file__).resolve().parents[1]
 URL = re.compile(re.escape(configuration()['CDN_ORIGIN']) + r'/bga/(?:web/[a-f0-9]{40}/|[a-z_][a-z0-9_-]*/)[A-Za-z0-9._/-]+\Z')
 ENCODED = {'.js', '.css', '.svg', '.json', '.txt', '.md', '.glb'}
 

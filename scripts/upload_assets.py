@@ -5,10 +5,12 @@ import base64
 import hashlib
 import hmac
 from pathlib import Path
+import sys
 from email.utils import formatdate
 import urllib.error
 import urllib.parse
 import urllib.request
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 from resource_store import ObjectStore, publish, OWNERS
 
 

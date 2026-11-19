@@ -21,13 +21,19 @@ func inspectSource(input sourceInput) []string {
 		return []string{"syntax"}
 	}
 	want := "racing"
+	if strings.HasPrefix(input.Path, "games/") {
+		parts := strings.Split(input.Path, "/")
+		if len(parts) > 2 {
+			want = parts[1]
+		}
+	}
 	if strings.HasPrefix(input.Path, "internal/server/") {
 		want = "server"
 	}
 	if strings.Contains(input.Path, "/build/") {
 		want = "main"
 	} else if strings.Contains(input.Path, "/tests/") {
-		want = "racing_test"
+		want += "_test"
 	}
 	if f.Name.Name != want {
 		errors = append(errors, "package-directory")

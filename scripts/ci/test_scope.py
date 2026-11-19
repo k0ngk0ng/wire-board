@@ -31,6 +31,12 @@ scope = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(scope)
 
 class ScopeTests(unittest.TestCase):
+    def test_stoneage_namespace_checks_install_their_build_dependency(self):
+        workflow=(ROOT/'.github/workflows/build.yml').read_text()
+        block=workflow.split('      - name: Install dependencies for game rendering checks',1)[1].split('      - name: Prepare PvZ asset verification environment',1)[0]
+        self.assertIn("matrix.game == 'stoneage'",block)
+        self.assertIn('npm --prefix web ci',block)
+
     def test_clean_jobs_restore_external_resources_before_validation(self):
         workflow=(ROOT/'.github/workflows/build.yml').read_text()
         for job,following,validation in [('shared','games','Test shared platform behavior'),('games','verify','Install dependencies for game rendering checks'),('verify','complete','Preserve source-bound runtime metadata')]:
