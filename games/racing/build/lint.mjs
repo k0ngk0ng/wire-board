@@ -12,8 +12,8 @@ const postcss = require("postcss");
 const selectedConfig = process.argv.indexOf("--config");
 const configPath = selectedConfig < 0 ? new URL("./lint-rules.json", import.meta.url) : path.join(root, process.argv[selectedConfig + 1]);
 const config = JSON.parse(readFileSync(configPath, "utf8"));
-const out = path.join(root, config.evidenceDirectory ?? ".local/racing-dynamics/evidence");
-const temp = path.join(root, ".local/racing-dynamics/tmp");
+const out = path.join(root, config.evidenceDirectory ?? ".local/racing/dynamics/evidence");
+const temp = path.join(root, ".local/racing/dynamics/tmp");
 mkdirSync(out, { recursive: true });
 mkdirSync(temp, { recursive: true });
 
@@ -65,7 +65,7 @@ for (const file of config.files) {
   assert(config.directories ? config.directories.some(directory => file.startsWith(directory)) : /^(server|web|tests|build)\//.test(relative) || /^scripts\/racing\//.test(file), `directory: ${file}`);
   const name = path.basename(file);
   const pythonFilename = new RegExp(config.pythonFilename ?? (file.startsWith("scripts/racing/") ? "^[a-z][a-z0-9-]*\\.py$" : "^[a-z][a-z0-9_]*\\.py$"));
-  assert(config.reactPascalCase && /^[A-Z][A-Za-z0-9]*\.tsx$/.test(name) || (file.endsWith(".py") ? pythonFilename.test(name) : file.endsWith(".go") ? /^[a-z][a-z0-9_]*\.go$/.test(name) : /^[a-z][a-z0-9.-]*\.(ts|tsx|mjs|css)$/.test(name)), `filename: ${file}`);
+  assert(config.reactPascalCase && /^[A-Z][A-Za-z0-9]*\.tsx$/.test(name) || (file.endsWith(".py") ? pythonFilename.test(name) : file.endsWith(".go") ? /^[a-z][a-z0-9_]*\.go$/.test(name) : /^[a-z][a-z0-9.-]*\.(ts|tsx|mjs|cjs|css)$/.test(name)), `filename: ${file}`);
   const source = readFileSync(path.join(root, file), "utf8");
   if (file.endsWith(".go")) goInputs.push({ path: file, source });
   else if (file.endsWith(".py")) pythonInputs.push({ path: file, source });
