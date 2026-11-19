@@ -21,7 +21,7 @@ test("F11 uses the shared game fullscreen lifecycle and retains game keyboard fo
   const socketRoot = join(dirname(resolve(root, common)), ".local/ab");
   const environment = { ...process.env, TMPDIR: join(root, ".local/tmp"), AGENT_BROWSER_SOCKET_DIR: socketRoot, AGENT_BROWSER_PROFILE: join(temporary, "profile"), AGENT_BROWSER_NO_VERSION_CHECK: "1", AGENT_BROWSER_ARGS: flags.join(",") };
   const report = { command: "node --test web/tests/fullscreen-shortcut.test.mjs", passed: false, checks: [] };
-  await mkdir(temporary, { recursive: true });
+  for (const path of [temporary, environment.TMPDIR, environment.AGENT_BROWSER_SOCKET_DIR, environment.AGENT_BROWSER_PROFILE]) await mkdir(path, { recursive: true });
   let server;
   let session;
   const browser = async (...args) => {

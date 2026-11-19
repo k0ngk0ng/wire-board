@@ -9,5 +9,6 @@
 - 进入后优先聚焦游戏声明的输入目标；空格继续交给游戏。
 - ESC 退出并传递给游戏，焦点、滚动和 inert 恢复。
 - 进入、退出与尺寸变化不重新挂载游戏。
+- 干净检出没有临时目录、浏览器 socket 目录和 profile 时，入口必须先显式创建，再启动浏览器；已有目录下重复执行同样通过，不依赖开发机历史状态。
 
 执行 `node --test web/tests/fullscreen-shortcut.test.mjs`。产物保留在 `.local/fullscreen-shortcut/`；浏览器强制静音，临时文件只在仓库内。
