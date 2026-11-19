@@ -144,6 +144,8 @@ try:
         browser('scrollintoview', '.splendor-board')
         report['viewports'].append(artwork())
         browser('screenshot', '--full', str(out / ('splendor-' + str(width) + '.png')))
+    if js('!!document.querySelector(".version-update-notice")'):
+        raise ValueError('A current page must not display a stale-version update overlay')
     room = api('/state')['room']
     if room['game']['turn'] != room['you']:
         command('action', peer_actor=True, action={'type': 'take', 'tokens': [1, 1, 1, 0, 0, 0]})

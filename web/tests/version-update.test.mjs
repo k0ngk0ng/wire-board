@@ -1,7 +1,7 @@
-// Failure inventory precedes implementation: cached old page's first response
-// is already new; CSS-only deploy; backend-only version changes; rollbacks;
-// overlapping checks, failed requests, malformed data, and late replies after
-// teardown. Detection must never reload the page itself.
+
+
+
+
 import test from "node:test";
 import assert from "node:assert/strict";
 import { VersionMonitor } from "../src/version-update.ts";
@@ -100,4 +100,15 @@ test("CDN-loaded entry and backwards-compatible asset identities match", async (
  const notices=[];let info={version:'v2',assets:['/assets/index-abcdefgh.js']};
  const m=new VersionMonitor([full],async()=>info,x=>notices.push(x));await m.check();assert.equal(notices.length,0);
  info={version:'v3',assets:['/assets/index-ijklmnop.js']};await m.check();assert.equal(notices[0]?.version,'v3');
+});
+
+test("canonical game namespace entries match compatible identities without a false update", async () => {
+  const notices = [];
+  let info = { version: "v1", assets: ["/assets/index-abcdefgh.js", "/assets/index-abcdefgh.css"] };
+  const monitor = new VersionMonitor(["https://cdn.example/bga/_common/index-abcdefgh.js", "https://cdn.example/bga/_common/index-abcdefgh.css"], async () => info, value => notices.push(value));
+  await monitor.check();
+  assert.deepEqual(notices, []);
+  info = { version: "v2", assets: ["/assets/index-ijklmnop.js", "/assets/index-abcdefgh.css"] };
+  await monitor.check();
+  assert.equal(notices.at(-1)?.version, "v2");
 });

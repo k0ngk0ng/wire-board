@@ -1,6 +1,7 @@
 export function isEntryAsset(path: string) {
   return (
     /^\/assets\/[^/?#]+\.(js|css)$/.test(path) ||
+    /^https:\/\/[^/]+\/bga\/[a-z_][a-z0-9_-]*\/[^/?#]+\.(js|css)$/.test(path) ||
     /^https:\/\/cdn\.ichenj\.com\/bga\/web\/[a-f0-9]{40}\/assets\/[^/?#]+\.(js|css)$/.test(
       path,
     )
@@ -11,7 +12,9 @@ const assetKey = (assets: string[]) =>
   [
     ...new Set(
       assets.map((path) =>
-        path.replace(
+        /^https:\/\/[^/]+\/bga\/[a-z_][a-z0-9_-]*\/[^/?#]+\.(js|css)$/.test(path)
+          ? "/assets/" + path.slice(path.lastIndexOf("/") + 1)
+          : path.replace(
           /^https:\/\/cdn\.ichenj\.com\/bga\/web\/[a-f0-9]{40}(?=\/assets\/)/,
           "",
         ),
