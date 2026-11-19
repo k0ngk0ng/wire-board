@@ -227,7 +227,7 @@ def prepare(dist, baseline):
         for path, record in json.loads(external_raw)['files'].items():
             external[path] = {**record, 'url': origin + '/' + record['key']}
     if external:
-        delivery['external'] = {path: normalized(record) for path, record in external.items()}
+        delivery['external'] = {path: normalized(record) for path, record in external.items() if path.lstrip('/') not in by_path}
     if manifest.get('sourceSHA'):
         delivery['sourceSHA'] = manifest['sourceSHA']
     delivery_path.write_text(json.dumps(delivery, separators=(',', ':'), sort_keys=True) + '\n')

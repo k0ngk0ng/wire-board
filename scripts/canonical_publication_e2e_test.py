@@ -27,7 +27,7 @@ class CanonicalPublicationE2E(unittest.TestCase):
             (dist / 'splendor/cards.webp').write_bytes(image)
             base = 'https://cdn.ichenj.com/bga/'
             (dist / 'index.html').write_text('<script src="' + base + 'assets/app-abcdefgh.js"></script>')
-            (dist / 'game-load-manifest.json').write_text(json.dumps({'sourceSHA': 'a' * 40, 'assetBase': base, 'entry': base + 'assets/app-abcdefgh.js', 'games': {'splendor': [{'url': base + 'assets/app-abcdefgh.js', 'bytes': len(code)}]}, 'owners': {'assets/app-abcdefgh.js': '_common'}, 'external': {'/splendor/nobles.webp': {'url': base + 'splendor/' + 'b' * 64 + '.webp', 'bytes': 7, 'sha256': 'b' * 64, 'mime': 'image/webp', 'encoding': ''}}, 'media': {'/splendor/cards.webp': len(image)}}))
+            (dist / 'game-load-manifest.json').write_text(json.dumps({'sourceSHA': 'a' * 40, 'assetBase': base, 'entry': base + 'assets/app-abcdefgh.js', 'games': {'splendor': [{'url': base + 'assets/app-abcdefgh.js', 'bytes': len(code)}]}, 'owners': {'assets/app-abcdefgh.js': '_common'}, 'external': {'/splendor/cards.webp': {'url': base + 'splendor/' + 'c' * 64 + '.webp', 'bytes': 9, 'sha256': 'c' * 64, 'mime': 'image/webp', 'encoding': ''}, '/splendor/nobles.webp': {'url': base + 'splendor/' + 'b' * 64 + '.webp', 'bytes': 7, 'sha256': 'b' * 64, 'mime': 'image/webp', 'encoding': ''}}, 'media': {'/splendor/cards.webp': len(image)}}))
             baseline = dist / 'baseline.json'
             baseline.write_text(json.dumps({'version': 1, 'files': {}}))
             baseline_copy = WORK / ('baseline-' + dist.name + '.json')
@@ -38,6 +38,7 @@ class CanonicalPublicationE2E(unittest.TestCase):
                 manifest = json.loads((dist / 'cdn-assets-manifest.json').read_text())
                 self.assertEqual(manifest['files']['/splendor/cards.webp']['url'], base + 'splendor/' + hashlib.sha256(image).hexdigest() + '.webp')
                 self.assertEqual(manifest['files']['/assets/app-abcdefgh.js']['url'], base + '_common/app-abcdefgh.js')
+                self.assertNotIn('/splendor/cards.webp', manifest['external'])
                 self.assertEqual(manifest['external']['/splendor/nobles.webp']['url'], base + 'splendor/' + 'b' * 64 + '.webp')
                 self.assertEqual(json.loads((dist / 'game-load-manifest.json').read_text())['sourceSHA'], 'a' * 40)
                 before = {str(path.relative_to(dist)): path.read_bytes() for path in dist.rglob('*') if path.is_file()}
