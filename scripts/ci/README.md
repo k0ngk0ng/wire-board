@@ -52,3 +52,5 @@ actionlint .github/workflows/build.yml .github/workflows/contra-research.yml
 `check-lanes.py` 创建临时 Git 仓库、生成真实提交、调用计划 CLI，并实际执行选中的 Go 测试。它还运行工作流的最终汇总脚本，验证失败、漏跑和跳过的任务不会被标记为通过。结果保存在 `.local/ci-lanes/result.json`；临时仓库在结束时删除。CI 的 `quick-component-acceptance` 保留执行日志和重放结果。
 
 发布仍复用同一提交的已验证二进制，不重复运行功能测试。构建流水线本身不会创建版本、发布镜像或更新服务器。
+
+卡坦岛服务端全量验收在单个游戏作业内分为 20 份，最多同时执行 2 份。普通与竞态用例分别按测试名稳定分配，所有用例覆盖一次；前端与素材检查仅在第 0 份执行。任一分片失败会使整个作业失败。完整分配和汇总记录保存在 `.local/ci/catan/partitions.json`，真实进程重放由 `python3 -B scripts/ci/partition_e2e_test.py` 验证。

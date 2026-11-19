@@ -1,6 +1,7 @@
 
 """Changed-game CI planning and test ownership; no cross-game rule execution."""
 import argparse
+from concurrent.futures import ThreadPoolExecutor, as_completed
 import hashlib
 import json
 import os
@@ -216,6 +217,7 @@ def quick_commands(root, components):
         elif component == 'ci':
             commands += [
                 ['python3', '-B', 'scripts/ci/test_scope.py'],
+                ['python3', '-B', 'scripts/ci/partition_e2e_test.py'],
                 ['python3', '-B', 'scripts/ci/check-plan.py'],
                 ['python3', '-B', 'scripts/ci/check-lanes.py'],
                 ['python3', '-B', 'scripts/ci/release-image-e2e.py'],
@@ -311,7 +313,38 @@ def build_commands(root, game, index=0):
              for name in ('identity_test.py', 'media_test.py', 'media_archive_test.py', 'builder_inputs_test.py', 'runtime_assets_test.py', 'delivery_test.py', 'ci_runtime_test.py')]
             + [['node', '--test', str(root/'games/contra/build/runtime-delivery.test.mjs')]])
 
+def run_catan_partitions(args):
+    output = ROOT/'.local/ci/catan'
+    output.mkdir(parents=True, exist_ok=True)
+    destination = output/'partitions.json'
+    report = {'passed': False, 'partitions': 20, 'workers': 2, 'completed': [], 'failed': []}
+    destination.write_text(json.dumps(report, indent=2)+'\n')
+    try:
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            futures = {pool.submit(run, argparse.Namespace(**{**vars(args), 'shard': index, 'count': 20})): index for index in range(20)}
+            try:
+                for future in as_completed(futures):
+                    index = futures[future]
+                    try:
+                        future.result()
+                    except Exception:
+                        report['failed'].append(index)
+                        for pending in futures:
+                            pending.cancel()
+                        raise
+                    report['completed'].append(index)
+                    destination.write_text(json.dumps(report, indent=2)+'\n')
+            finally:
+                destination.write_text(json.dumps(report, indent=2)+'\n')
+        report['passed'] = True
+    finally:
+        destination.write_text(json.dumps(report, indent=2)+'\n')
+    print('PASS catan: all 20 backend partitions and selected frontend checks', flush=True)
+
+
 def run(args):
+    if args.game == 'catan' and args.backend and args.count == 1:
+        return run_catan_partitions(args)
     output = ROOT/'.local/ci'/args.game
     output.mkdir(parents=True, exist_ok=True)
     if args.game == 'pvz' and args.shard == 0:
