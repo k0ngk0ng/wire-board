@@ -249,7 +249,7 @@ def destination(root, path):
     return target
 
 
-def hydrate(registry, root, origin, local=False, paths=None):
+def hydrate(registry, root, origin, local=False, paths=None, client=None):
     url = urllib.parse.urlsplit(origin)
     if url.scheme != 'https' and not (local and url.scheme == 'http' and url.hostname in ['127.0.0.1', 'localhost']):
         raise ValueError('Expected HTTPS CDN origin')
@@ -260,9 +260,14 @@ def hydrate(registry, root, origin, local=False, paths=None):
         path, record, target = item
         if target.is_file() and len(target.read_bytes()) == record['bytes'] and hashlib.sha256(target.read_bytes()).hexdigest() == record['sha256']:
             return path
-        with urllib.request.urlopen(origin.rstrip('/') + '/' + record['key'], timeout=60) as response:
-            body = response.read()
-            body = validate_body(record, body, response.headers.get_content_type())
+        if client is None:
+            with urllib.request.urlopen(origin.rstrip('/') + '/' + record['key'], timeout=60) as response:
+                body = validate_body(record, response.read(), response.headers.get_content_type())
+        else:
+            response = client.get(record['key'])
+            if response is None:
+                raise ValueError('Missing source resource: ' + record['key'])
+            body = validate_body(record, *response)
         target.parent.mkdir(parents=True, exist_ok=True)
         temporary = target.with_name(target.name + '.resource-tmp')
         try:
@@ -280,6 +285,7 @@ def main():
     parser.add_argument('action', choices=['hydrate', 'check', 'publish', 'export-env'])
     parser.add_argument('--registry', type=Path, default=ROOT / 'assets/resources.json')
     parser.add_argument('--game')
+    parser.add_argument('--oss', action='store_true')
     parser.add_argument('--manifest', type=Path)
     parser.add_argument('--pack', type=Path)
     parser.add_argument('--execute', action='store_true')
@@ -309,7 +315,13 @@ def main():
     if args.action == 'hydrate':
         registry = json.loads(args.registry.read_text())
         paths = None if not args.game else {path for path in registry['files'] if owner_for(path) in [args.game, '_common']}
-        restored = hydrate(registry, ROOT, config['CDN_ORIGIN'], paths=paths)
+        client = None
+        if args.oss:
+            config = configuration(required=CONFIG_NAMES[:4])
+            key = os.environ.get('OSS_ACCESS_KEY_ID') or (ROOT / 'config/secrets/oss-access-key-id').read_text().strip()
+            secret = os.environ.get('OSS_ACCESS_KEY_SECRET') or (ROOT / 'config/secrets/oss-access-key-secret').read_text().strip()
+            client = ObjectStore('https://' + config['OSS_ENDPOINT'], config['OSS_BUCKET'], key, secret)
+        restored = hydrate(registry, ROOT, config['CDN_ORIGIN'], paths=paths, client=client)
         print(json.dumps({'passed': True, 'restored': len(restored)}))
         return
     paths = subprocess.check_output(['git', 'ls-files', '-z'], cwd=ROOT).decode().split('\0')[:-1]

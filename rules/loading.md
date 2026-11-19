@@ -27,6 +27,7 @@
 - 图片（含 SVG）、音效、音乐、视频、字体、客户端二进制、压缩包和生成的公开地图／图集数据，不得进入 Git 当前树及任何分支、标签历史，也不得把载荷改成 Base64 或代码中的字节表来规避。图形绘制源码、服务端规则数据及只含路径、摘要、大小、类型的清单可以保留。测试中的小型图案在运行时生成。
 - 当前源码资源通过 `assets/resources.json` 恢复，历史资源通过 `assets/resource-history.json` 登记，运行中使用的外部资源由 `assets/external-resources.json` 定位。清单不含资源正文。恢复时校验 SHA-256、大小和 MIME，拒绝路径逃逸和符号链接。
 - 本地业务配置从 Git 忽略的 `.local/business.json` 读取；执行 `. scripts/env.sh` 时生成并加载 `.local/business.env`。GitHub 测试和发布只读取仓库变量 `PUBLIC_ORIGIN`、`CDN_ORIGIN`、`OSS_BUCKET`、`OSS_ENDPOINT` 和 `ASSETS_BASE_URL`，不得回退到写在代码中的线上站点域名。
+- 本地执行 `python3 -B scripts/resource_store.py hydrate` 从配置的 CDN 恢复源码资源。GitHub 各独立检查及打包作业执行 `hydrate --oss`，通过仓库变量定位 OSS，并使用仓库 secret 签名读取；游戏作业加 `--game <game-id>`。恢复仍须校验摘要、大小和 MIME，不以 CDN 回读替代源码恢复，也不在 CI 中执行 CDN 回读验收。
 - 旧逻辑路径仅用于恢复工作区和兼容跳转，不作为新的 OSS Key。应用的 `/bga/<逻辑路径>` 按清单跳转到游戏或公共资源的内容地址，不返回资源正文。缺失的旧素材不能因为同属 CDN 域名而被强制改写到另一份发布清单。
 - 重写 Git 历史前保全工作区并校验备份；改写后扫描全部分支、标签及对象，验证无资源载荷和业务站点域名，再从远端空目录执行普通克隆测量下载量。Git 清理不联动删除已经发布的 OSS 对象。
 

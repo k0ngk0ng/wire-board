@@ -1,6 +1,7 @@
 import gzip
 import base64
 import hashlib
+import hmac
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import importlib.util
 import json
@@ -26,10 +27,17 @@ class ResourceStoreE2E(unittest.TestCase):
         self.root = Path(self.directory.name)
         self.objects = {}
         self.puts = 0
+        self.private_reads = False
         fixture = self
 
         class Handler(BaseHTTPRequestHandler):
             def do_GET(self):
+                if fixture.private_reads:
+                    canonical='GET\n\n\n'+self.headers.get('Date','')+'\n/fixture'+self.path
+                    signature=base64.b64encode(hmac.new(b'test-secret',canonical.encode(),hashlib.sha1).digest()).decode()
+                    if self.headers.get('Authorization')!='OSS test-key:'+signature:
+                        self.send_error(403)
+                        return
                 row = fixture.objects.get(self.path)
                 if row is None:
                     self.send_error(404)
@@ -140,6 +148,24 @@ class ResourceStoreE2E(unittest.TestCase):
         with self.assertRaises(ValueError):
             store.hydrate(registry, self.root, self.origin, local=True)
         self.assertFalse(target.exists())
+
+    def test_signed_oss_hydration_restores_private_sources_without_cdn_access(self):
+        self.private_reads=True
+        record=store.publish(self.client,'splendor','cards.webp',b'generated private resource')
+        registry={'version':1,'files':{'games/splendor/cards.webp':record}}
+        store.hydrate(registry,self.root,'https://unreachable.example.invalid',client=self.client)
+        target=self.root/'games/splendor/cards.webp'
+        self.assertEqual(target.read_bytes(),b'generated private resource')
+        target.unlink()
+        self.objects['/'+record['key']]=(b'corrupted','image/webp')
+        with self.assertRaises(ValueError):
+            store.hydrate(registry,self.root,'https://unreachable.example.invalid',client=self.client)
+        self.assertFalse(target.exists())
+        self.objects.clear()
+        with self.assertRaises(ValueError):
+            store.hydrate(registry,self.root,'https://unreachable.example.invalid',client=self.client)
+        self.assertFalse(target.exists())
+        self.assertEqual(self.puts,1)
 
     def test_manifest_rejects_paths_outside_checkout_and_unknown_owners(self):
         record = store.publish(self.client, 'splendor', 'cards.webp', b'generated resource')

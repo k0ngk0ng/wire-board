@@ -31,6 +31,19 @@ scope = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(scope)
 
 class ScopeTests(unittest.TestCase):
+    def test_clean_jobs_restore_external_resources_before_validation(self):
+        workflow=(ROOT/'.github/workflows/build.yml').read_text()
+        for job,following,validation in [('shared','games','Test shared platform behavior'),('games','verify','Install dependencies for game rendering checks'),('verify','complete','Preserve source-bound runtime metadata')]:
+            block=workflow.split('  '+job+':',1)[1].split('  '+following+':',1)[0]
+            restore='python3 -B scripts/resource_store.py hydrate --oss'
+            if job=='games':
+                restore+=' --game "${{ matrix.game }}"'
+            self.assertIn(restore,block,job)
+            self.assertLess(block.index(restore),block.index(validation),job)
+        research=(ROOT/'.github/workflows/contra-research.yml').read_text()
+        self.assertIn('CDN_ORIGIN: ${{ vars.CDN_ORIGIN }}',research)
+        self.assertLess(research.index('scripts/resource_store.py hydrate --oss --game contra'),research.index('scripts/contra/campaign_modes.py'))
+
     def test_pokepath_frontend_uses_clean_serial_delivery_entry(self):
         temporary=ROOT/'.local/tmp'
         temporary.mkdir(parents=True,exist_ok=True)

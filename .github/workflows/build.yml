@@ -194,7 +194,10 @@ jobs:
           run-id: ${{ steps.media-source.outputs.run }}
           github-token: ${{ github.token }}
       - name: Restore resources outside Git
-        run: python3 -B scripts/resource_store.py hydrate
+        env:
+          OSS_ACCESS_KEY_ID: ${{ secrets.OSS_ACCESS_KEY_ID }}
+          OSS_ACCESS_KEY_SECRET: ${{ secrets.OSS_ACCESS_KEY_SECRET }}
+        run: python3 -B scripts/resource_store.py hydrate --oss
       - name: Restore verified game media
         run: |
           python3 -B scripts/fortressblue/test_fetch_assets.py
@@ -264,6 +267,11 @@ jobs:
         with:
           name: web-dist
           path: web/dist
+      - name: Restore resources outside Git
+        env:
+          OSS_ACCESS_KEY_ID: ${{ secrets.OSS_ACCESS_KEY_ID }}
+          OSS_ACCESS_KEY_SECRET: ${{ secrets.OSS_ACCESS_KEY_SECRET }}
+        run: python3 -B scripts/resource_store.py hydrate --oss
       - name: Test shared platform behavior
         run: python3 -B scripts/ci/scope.py run --game shared
       - name: Check formatting and static correctness
@@ -304,6 +312,11 @@ jobs:
         with:
           name: web-dist
           path: web/dist
+      - name: Restore resources outside Git
+        env:
+          OSS_ACCESS_KEY_ID: ${{ secrets.OSS_ACCESS_KEY_ID }}
+          OSS_ACCESS_KEY_SECRET: ${{ secrets.OSS_ACCESS_KEY_SECRET }}
+        run: python3 -B scripts/resource_store.py hydrate --oss --game "${{ matrix.game }}"
       - name: Install dependencies for game rendering checks
         if: (matrix.game == 'battlecity' || matrix.game == 'conquest' || matrix.game == 'tabletennis' || matrix.game == 'contra' || matrix.game == 'racing' || matrix.game == 'pal' || matrix.game == 'pokepath')
         run: npm --prefix web ci
@@ -399,6 +412,11 @@ jobs:
         with:
           name: verification-plan
           path: .local/ci
+      - name: Restore resources outside Git
+        env:
+          OSS_ACCESS_KEY_ID: ${{ secrets.OSS_ACCESS_KEY_ID }}
+          OSS_ACCESS_KEY_SECRET: ${{ secrets.OSS_ACCESS_KEY_SECRET }}
+        run: python3 -B scripts/resource_store.py hydrate --oss
       - name: Preserve source-bound runtime metadata before CDN trimming
         run: |
           python3 -B games/contra/build/ci_runtime.py --dist web/dist --out .local/contra-ci-runtime
