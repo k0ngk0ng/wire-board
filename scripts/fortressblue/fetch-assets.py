@@ -10,6 +10,7 @@ import argparse
 import concurrent.futures
 import hashlib
 import json
+import os
 import subprocess
 import sys
 import time
@@ -18,7 +19,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 MANIFEST = ROOT / "games/fortressblue/assets/manifest.json"
 sys.path.insert(0, str(ROOT / "scripts"))
-from resource_store import configuration
+from resource_store import configuration, hydrate, ObjectStore
 
 BASE = configuration()["CDN_ORIGIN"] + "/bga"
 TRANSFER_TIMEOUT = 45
@@ -90,9 +91,22 @@ def restore_media(source, entries):
     return restored
 
 
+def restore_oss(client, entries, origin):
+    external = json.loads((ROOT / 'assets/external-resources.json').read_text())['files']
+    files = {}
+    for entry in entries:
+        media_paths(entry)
+        record = external[entry['urlPath']]
+        if record['sha256'] != entry['sha256'] or record['bytes'] != entry['bytes']:
+            raise ValueError('Canonical Fortress media differs from its source manifest')
+        files[entry['output']] = record
+    return hydrate({'version': 1, 'files': files}, ROOT, origin, client=client)
+
+
 def main() -> None:
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--restore-from",type=Path)
+    parser.add_argument("--oss",action="store_true")
     args=parser.parse_args()
     manifest = json.loads(MANIFEST.read_text())
     entries = manifest["entries"]
@@ -100,6 +114,14 @@ def main() -> None:
         raise SystemExit("empty asset manifest")
     if args.restore_from:
         print(f"Verified media cache restored: {restore_media(args.restore_from,entries)} objects",flush=True)
+    if args.oss:
+        config = configuration(required=['PUBLIC_ORIGIN', 'CDN_ORIGIN', 'OSS_BUCKET', 'OSS_ENDPOINT'])
+        key_id = os.environ.get('OSS_ACCESS_KEY_ID') or (ROOT / 'config/secrets/oss-access-key-id').read_text().strip()
+        secret = os.environ.get('OSS_ACCESS_KEY_SECRET') or (ROOT / 'config/secrets/oss-access-key-secret').read_text().strip()
+        client = ObjectStore('https://' + config['OSS_ENDPOINT'], config['OSS_BUCKET'], key_id, secret)
+        restored = restore_oss(client, entries, config['CDN_ORIGIN'])
+        print(f'fallback media ready: {len(restored)} objects, source=OSS', flush=True)
+        return
     def ensure(entry):
         target = media_paths(entry)
         if target.is_file():

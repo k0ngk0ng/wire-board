@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Real local HTTP checks for the build downloader.
 
 Failure inventory, before implementation: a trickling response never reaches
@@ -7,6 +6,8 @@ cannot recover; redirects or binary bytes are corrupted; retry count is
 unbounded. Existing manifest length/SHA checks must remain in place.
 """
 import importlib.util
+import json
+import hashlib
 import threading
 import time
 import unittest
@@ -43,6 +44,7 @@ class DownloadHTTPTests(unittest.TestCase):
                 data = b"\x00\xffmedia\x00" if self.path != "/slow" else b"x" * 40
                 self.send_response(200)
                 self.send_header("Content-Length", str(len(data)))
+                self.send_header("Content-Type", "application/octet-stream")
                 self.end_headers()
                 try:
                     if self.path == "/slow":
@@ -68,6 +70,31 @@ class DownloadHTTPTests(unittest.TestCase):
         self.thread.join()
         self.server.server_close()
 
+    def test_signed_oss_restore_uses_canonical_registry_without_cdn_access(self):
+        parent=Path(__file__).resolve().parents[2]/'.local/fortressblue/media-tests'
+        parent.mkdir(parents=True,exist_ok=True)
+        with tempfile.TemporaryDirectory(dir=parent) as name:
+            root=Path(name)
+            body=b"\x00\xffmedia\x00"
+            entry={'urlPath':'/fortressblue/v2/media.webp','output':'games/fortressblue/assets/public/fortressblue/v2/media.webp','sha256':hashlib.sha256(body).hexdigest(),'bytes':len(body)}
+            record={'key':'bga/fortressblue/'+entry['sha256']+'.webp','sha256':entry['sha256'],'bytes':len(body),'mime':'application/octet-stream'}
+            path=root/'assets/external-resources.json'
+            path.parent.mkdir(parents=True)
+            path.write_text(json.dumps({'version':1,'files':{entry['urlPath']:record}}))
+            client=fetch_assets.ObjectStore(self.base,'fixture','test-key','test-secret',local=True)
+            with patch.object(fetch_assets,'ROOT',root):
+                fetch_assets.restore_oss(client,[entry],'https://unreachable.example.invalid')
+                self.assertEqual((root/entry['output']).read_bytes(),body)
+                self.assertEqual(self.counts['/'+record['key']],1)
+                fetch_assets.restore_oss(client,[entry],'https://unreachable.example.invalid')
+                self.assertEqual(self.counts['/'+record['key']],1)
+                (root/entry['output']).unlink()
+                record['sha256']='f'*64
+                path.write_text(json.dumps({'version':1,'files':{entry['urlPath']:record}}))
+                with self.assertRaises(ValueError):
+                    fetch_assets.restore_oss(client,[entry],'https://unreachable.example.invalid')
+                self.assertFalse((root/entry['output']).exists())
+
     def test_binary_redirect_preserves_bytes(self):
         self.assertEqual(fetch_assets.fetch(self.base + "/redirect"), b"\x00\xffmedia\x00")
 
@@ -87,12 +114,9 @@ class DownloadHTTPTests(unittest.TestCase):
         self.assertLess(time.monotonic() - began, 1.5)
 
 
-# Cache failure inventory before implementation: a different commit's program
-# is restored, mismatched media is copied, missing artifacts skip validation,
-# or a symlink/traversal writes outside the explicit public asset directory.
 class VerifiedMediaCacheTests(unittest.TestCase):
     def setUp(self):
-        parent=Path(__file__).resolve().parents[2]/".local/fortress-media-tests";parent.mkdir(parents=True,exist_ok=True)
+        parent=Path(__file__).resolve().parents[2]/".local/fortressblue/media-tests";parent.mkdir(parents=True,exist_ok=True)
         self.temp=tempfile.TemporaryDirectory(dir=parent);self.addCleanup(self.temp.cleanup)
         self.root=Path(self.temp.name);self.source=self.root/"artifact";self.source.mkdir()
         self.body=b"immutable media";self.relative="fortressblue/v2/image.webp"
