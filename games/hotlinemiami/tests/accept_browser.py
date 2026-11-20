@@ -109,7 +109,8 @@ def endpoint(client):
 def native(client, name, touch=False, **extra):
     path = OUT / (name + '-native.json')
     path.unlink(missing_ok=True)
-    result = subprocess.run(['node', str(HERE / 'native-input.mjs'), endpoint(client), URLS[client], json.dumps(dict(touch=touch, output=str(path), **extra))], cwd=ROOT, env=ENV, text=True, capture_output=True, timeout=45)
+    inputs = {'endpoint': endpoint(client), 'pageURL': URLS[client], 'options': dict(touch=touch, output=str(path), **extra)}
+    result = subprocess.run(['node', str(HERE / 'native-input.mjs'), '--stdin'], cwd=ROOT, env=ENV, input=json.dumps(inputs), text=True, capture_output=True, timeout=45)
     (OUT / (name + '-native.log')).write_text(result.stderr)
     observation = json.loads(path.read_text()) if path.exists() else {}
     if result.returncode != 0:
@@ -333,7 +334,13 @@ try:
         assert len({entry['id'] for entry in catalogue[key]}) == len(catalogue[key]), 'duplicate content identity: ' + key
     REPORT['catalogue'] = {key: [{'id': entry['id'], 'name': entry['name']} for entry in catalogue[key]] for key in ['maps', 'characters', 'weapons']}
     cases = [(entry['id'], [2, 3, 4][index % 3], [1440, 390, 320][index % 3], [1000, 844, 760][index % 3]) for index, entry in enumerate(catalogue['maps'])]
+    selected_maps = set(filter(None, os.environ.get('HOTLINE_BROWSER_MAP_FILTER', '').split(',')))
+    assert selected_maps.issubset({entry['id'] for entry in catalogue['maps']}), 'unknown filtered map'
+    REPORT['partial'] = bool(selected_maps)
+    REPORT['selectedMaps'] = sorted(selected_maps) if selected_maps else [entry['id'] for entry in catalogue['maps']]
     for index, (map_id, count, width, height) in enumerate(cases):
+        if selected_maps and map_id not in selected_maps:
+            continue
         set_network('main', 40, 10)
         set_network('peer', 40, 10)
         browser('main', 'set', 'viewport', width, height)
@@ -404,6 +411,8 @@ try:
         command('main', 'start')
         wait_for(loaded, 60)
         wait_for(lambda: input_ready('main') and input_ready('peer'), 60)
+        initial_view = room()['game']['data']
+        assert initial_view['players'][0]['character'] == character and initial_view['players'][0]['weapon'] == weapon
         peer_attack = native('peer', map_id + '-peer-attack')
         browser('main', 'scrollintoview', '[data-hotlinemiami-board]')
         audit = viewport_audit('main')
@@ -411,7 +420,7 @@ try:
         contrast = visual_audit('main')
         assert contrast and all(item['contrast'] >= 4.5 for item in contrast), contrast
         before = room()['game']['data']
-        assert before['players'][0]['character'] == character and before['players'][0]['weapon'] == weapon
+        assert before['players'][0]['character'] == character
         entry = {'map': map_id, 'players': count, 'viewport': [width, height], 'loadout': {'character': character, 'weapon': weapon}, 'peerAttack': peer_attack, 'images': preview_images, 'layout': audit, 'contrast': contrast, 'epoch': before['epoch'], 'transport': {'injectedRTTMS': 40, 'perDirectionJitterMS': 10, 'httpRoundTripMS': measured_http_round_trip('main'), 'httpProbeIncludesApplicationAndBrowserQueue': True}}
         REPORT['cases'].append(entry)
         save()

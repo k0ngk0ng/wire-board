@@ -1,9 +1,10 @@
 import assert from "node:assert/strict";
-import { mkdirSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve, sep } from "node:path";
 
-const [endpoint, pageURL, encoded = "{}"] = process.argv.slice(2);
-const options = JSON.parse(encoded);
+const argumentsList = process.argv.slice(2);
+const inputConfig = argumentsList[0] === "--stdin" ? JSON.parse(readFileSync(0, "utf8")) : { endpoint: argumentsList[0], pageURL: argumentsList[1], options: JSON.parse(argumentsList[2] ?? "{}") };
+const { endpoint, pageURL, options } = inputConfig;
 const outputFile = resolve(options.output ?? ".local/hotlinemiami/browser/native-last.json");
 assert.ok(outputFile.startsWith(resolve(".local/hotlinemiami") + sep), "native report must remain in the game workspace");
 mkdirSync(dirname(outputFile), { recursive: true });
@@ -15,6 +16,7 @@ const sent = new Map();
 const sentInputs = new Map();
 let ordinal = 0;
 let session;
+let navigationStart = 0;
 await new Promise((resolve, reject) => {
   socket.onopen = resolve;
   socket.onerror = reject;
@@ -56,7 +58,8 @@ socket.onmessage = ({ data }) => {
       sentInputs.delete(sequence);
     }
   }
-  if (network.messages.length < 300) network.messages.push({ incoming, bytes, type: body.type, at, serverFrame: body.game?.data?.frame, serverNow: body.serverNow, receivedSeq: body.game?.data?.players?.[body.game?.data?.you]?.receivedSeq, appliedSeq: body.game?.data?.players?.[body.game?.data?.you]?.appliedSeq });
+  const action = !incoming && body.action ? Object.fromEntries(["seq", "life", "moveX", "moveY", "aim", "fire", "throw", "pickup", "finish", "interact"].map(key => [key, body.action[key]])) : undefined;
+  if (network.messages.length < 600) network.messages.push({ incoming, bytes, type: body.type, at, localAt: message.params.timestamp * 1000 - navigationStart, action, serverFrame: body.game?.data?.frame, serverNow: body.serverNow, receivedSeq: body.game?.data?.players?.[body.game?.data?.you]?.receivedSeq, appliedSeq: body.game?.data?.players?.[body.game?.data?.you]?.appliedSeq });
 };
 const call = (method, params = {}, sessionId = session) => new Promise((resolve, reject) => {
   const id = ++ordinal;
@@ -86,6 +89,9 @@ try {
   assert.ok(target, "production room target missing");
   session = (await call("Target.attachToTarget", { targetId: target.targetId, flatten: true }, undefined)).sessionId;
   await call("Page.bringToFront");
+  await call("Performance.enable");
+  navigationStart = ((await call("Performance.getMetrics")).metrics.find(metric => metric.name === "NavigationStart")?.value ?? 0) * 1000;
+  network.navigationStart = navigationStart;
   await call("Network.enable");
   await call("Media.enable").catch(() => {});
   await evaluate(`(() => {
@@ -187,21 +193,26 @@ try {
     await call("Input.dispatchKeyEvent", { type: "keyDown", code: "KeyD", key: "d", windowsVirtualKeyCode: 68 });
     for (let index = 0; index < 8; index++) {
       await wait(17);
-      const frame = await evaluate("document.querySelector('[data-hotlinemiami-canvas]').__hotlineFrame");
+      const observed = await evaluate("(()=>{const canvas=document.querySelector('[data-hotlinemiami-canvas]');return {frame:canvas.__hotlineFrame,rect:canvas.getBoundingClientRect().toJSON()}})()");
+      const frame = observed.frame;
       if (!frame.inputEnabled || !frame.local.alive) continue;
-      const expected = (Math.round(Math.atan2(rectangle.height * 0.3 - frame.local.screenY, rectangle.width * 0.2 - frame.local.screenX) * 1024 / (Math.PI * 2)) + 1024) % 1024;
+      const pointerX = rectangle.x + rectangle.width * 0.2;
+      const pointerY = rectangle.y + rectangle.height * 0.3;
+      const expected = (Math.round(Math.atan2(pointerY - observed.rect.y - frame.local.screenY, pointerX - observed.rect.x - frame.local.screenX) * 1024 / (Math.PI * 2)) + 1024) % 1024;
       const error = Math.min((frame.local.aim - expected + 1024) % 1024, (expected - frame.local.aim + 1024) % 1024);
-      cameraAimChecks.push({ expected, actual: frame.local.aim, error });
+      cameraAimChecks.push({ at: frame.now, life: frame.local.life, x: frame.local.x, y: frame.local.y, screenX: frame.local.screenX, screenY: frame.local.screenY, serverFrame: frame.serverFrame, predictedFrame: frame.predictedFrame, pointerX, pointerY, rect: observed.rect, expected, actual: frame.local.aim, error });
     }
     await call("Input.dispatchKeyEvent", { type: "keyUp", code: "KeyD", key: "d", windowsVirtualKeyCode: 68 });
   }
   let quickTap;
   let unarmed;
-  {
+  const interruptedAttacks = [];
+  for (let attempt = 0; attempt < 6; attempt++) {
     await playable();
     const before = await evaluate('fetch("/api/state").then(response=>response.json()).then(state=>({you:state.room.you,data:state.room.game.data}))');
     const player = before.data.players[before.you];
     const timing = await evaluate(`JSON.parse(window.hotlineMotion.weapons()).find(weapon=>weapon.id===${JSON.stringify(player.weapon)})??JSON.parse(window.hotlineMotion.unarmed())`);
+    if (!player.alive) { interruptedAttacks.push({ life: player.life, reason: "authority-already-dead" }); continue; }
     if (player.alive && (timing.melee || player.ammo > 0)) {
       if (options.touch) {
         const rectangle = await evaluate("document.querySelector('[data-hotlinemiami-stick=aim]').getBoundingClientRect().toJSON()");
@@ -218,8 +229,15 @@ try {
       await wait(240);
       const after = await evaluate('fetch("/api/state").then(response=>response.json()).then(state=>state.room.game.data)');
       const fires = after.events.filter((event) => event.type === "fire" && event.seat === before.you && event.id > before.data.eventId);
-      quickTap = { beforeAmmo: player.ammo, beforeLife: player.life, melee: !!timing.melee, afterAmmo: after.players[before.you].ammo, life: after.players[before.you].life, events: fires };
+      const afterPlayer = after.players[before.you];
+      quickTap = { beforeAmmo: player.ammo, beforeLife: player.life, melee: !!timing.melee, afterAmmo: afterPlayer.ammo, life: afterPlayer.life, alive: afterPlayer.alive, events: fires };
+      if (fires.length === 0 && (!afterPlayer.alive || afterPlayer.life !== player.life || afterPlayer.downUntil > player.downUntil)) {
+        interruptedAttacks.push(quickTap);
+        quickTap = undefined;
+        continue;
+      }
     }
+    break;
   }
   if (options.unarmed) {
     const rectangle = await evaluate("document.querySelector('[data-hotlinemiami-canvas]').getBoundingClientRect().toJSON()");
@@ -248,7 +266,7 @@ try {
   const elapsed = observation.frames.at(-1).at - observation.frames[0].at;
   const counts = observation.frames.map((entry) => entry.drawCount);
   const changes = counts.slice(1).filter((count, index) => count !== counts[index]).length;
-  const result = { ...observation, touch: !!options.touch, quickTap, unarmed, cameraAimChecks, browserVersion, network, media, measurement: "trusted native DOM event to rendered canvas pixel response; excludes physical display panel latency", summary: { responses: responseTimes.length, responseP95: percentile(responseTimes, 0.95), frameP95: percentile(intervals, 0.95), frameP99: percentile(intervals, 0.99), visibleFPS: changes * 1000 / elapsed, elapsed, visibleUpdates: changes, sentBytesPerSecond: network.sentBytes * 1000 / elapsed, receivedBytesPerSecond: network.receivedBytes * 1000 / elapsed, receivedMessagesPerSecond: network.receivedMessages * 1000 / elapsed, gameMessagesPerSecond: (network.messageTypes['in:game'] ?? 0) * 1000 / elapsed, ackP95MS: percentile(network.acks.map(entry => entry.microseconds / 1000), 0.95), appliedP95MS: percentile(network.applications.map(entry => entry.microseconds / 1000), 0.95), maxPredictionLeadFrames: Math.max(0, ...observation.frames.map(entry => entry.predictedFrame - entry.serverFrame)), maxPendingInputs: Math.max(0, ...observation.frames.map(entry => entry.pending ?? 0)) } };
+  const result = { ...observation, touch: !!options.touch, quickTap, interruptedAttacks, unarmed, cameraAimChecks, browserVersion, network, media, measurement: "trusted native DOM event to rendered canvas pixel response; excludes physical display panel latency", summary: { responses: responseTimes.length, responseP95: percentile(responseTimes, 0.95), frameP95: percentile(intervals, 0.95), frameP99: percentile(intervals, 0.99), visibleFPS: changes * 1000 / elapsed, elapsed, visibleUpdates: changes, sentBytesPerSecond: network.sentBytes * 1000 / elapsed, receivedBytesPerSecond: network.receivedBytes * 1000 / elapsed, receivedMessagesPerSecond: network.receivedMessages * 1000 / elapsed, gameMessagesPerSecond: (network.messageTypes['in:game'] ?? 0) * 1000 / elapsed, ackP95MS: percentile(network.acks.map(entry => entry.microseconds / 1000), 0.95), appliedP95MS: percentile(network.applications.map(entry => entry.microseconds / 1000), 0.95), maxPredictionLeadFrames: Math.max(0, ...observation.frames.map(entry => entry.predictedFrame - entry.serverFrame)), maxPendingInputs: Math.max(0, ...observation.frames.map(entry => entry.pending ?? 0)) } };
   writeFileSync(outputFile, JSON.stringify(result));
   console.log(JSON.stringify({ output: outputFile, summary: result.summary }));
   assert.ok(observation.events.some((entry) => entry.trusted), "no trusted native events observed");

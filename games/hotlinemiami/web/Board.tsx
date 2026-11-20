@@ -8,6 +8,7 @@ import { EventCursor, MotionPrediction } from "./prediction";
 import { BattleRenderer } from "./renderer";
 import { AttackPresentation } from "./attack";
 import { ActionFeedback } from "./feedback";
+import { aimAngle, preparePredictedInput } from "./camera-input";
 import { TouchControls } from "./TouchControls";
 import { isMeleeWeapon, mapNames, playerColors, weaponNames, type GameEvent, type GameInput, type Player, type View } from "./types";
 import "./style.css";
@@ -25,10 +26,6 @@ type CanvasState = HTMLCanvasElement & {
 
 function sameInput(a: GameInput, b: GameInput) {
   return a.moveX === b.moveX && a.moveY === b.moveY && a.aim === b.aim && a.fire === b.fire && !a.throw && !a.pickup && !a.finish && !a.interact;
-}
-
-function aimAngle(x: number, y: number) {
-  return (Math.round(Math.atan2(y, x) * 1024 / (Math.PI * 2)) + 1024) % 1024;
 }
 
 export function Board(props: BoardProps<View>) {
@@ -108,14 +105,19 @@ export function Board(props: BoardProps<View>) {
   }
 
   function issue(input: GameInput, now: number) {
-    const action = channel.current?.push(input);
+    const action = channel.current?.push(input, prepared => {
+      const assets = loaded.current;
+      if (!prediction.current || !assets) return;
+      const point = pointer.current.positioned ? { x: pointer.current.screenX, y: pointer.current.screenY } : undefined;
+      preparePredictedInput(prediction.current, prepared, now, point, { width: assets.rules.width / 256, height: assets.rules.height / 256 });
+      if (point) pointer.current.aim = prepared.aim;
+    });
     if (!action) return;
-    prediction.current?.input(action, now);
     feedback.current.push(action, now);
     if (input.fire && attack.current?.fire(action.seq, prediction.current?.predictedFrame ?? latest.current.data.frame)) {
       flash.current = now + 65;
     }
-    last.current.input = { ...input, throw: false, pickup: false, finish: false, interact: false };
+    last.current.input = { ...input, aim: action.aim, throw: false, pickup: false, finish: false, interact: false };
     last.current.at = now;
   }
 
@@ -239,7 +241,15 @@ export function Board(props: BoardProps<View>) {
       const current = latest.current;
       const currentPlayer = current.data.players[current.room.you];
       const local = currentPlayer && prediction.current ? prediction.current.sample(now) : currentPlayer;
-      if (local && canControl()) local.aim = pointer.current.aim;
+      if (local && canControl()) {
+        if (pointer.current.positioned && renderer.current) {
+          const point = renderer.current.pointFromPointer(pointer.current.screenX, pointer.current.screenY, local);
+          pointer.current.x = point.x;
+          pointer.current.y = point.y;
+          pointer.current.aim = aimAngle(Math.round(point.x * 256) - local.x, Math.round(point.y * 256) - local.y);
+        }
+        local.aim = pointer.current.aim;
+      }
       if (renderer.current && canvas.current) {
         const between = previous.current ? Math.max(1, current.data.frame - previous.current.frame) * 1000 / 60 : 33;
         const blend = Math.min(1, Math.max(0, (now - received.current.at) / between));

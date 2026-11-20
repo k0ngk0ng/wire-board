@@ -49,16 +49,18 @@ export class InputChannel {
     this.flush();
   }
 
-  push(input: GameInput): InputAction | undefined {
+  push(input: GameInput, prepare?: (action: InputAction) => void): InputAction | undefined {
     if (this.disposed || !this.binding.enabled || this.binding.window < 1) return;
     const action: InputAction = { type: "input", epoch: this.binding.epoch, life: this.binding.life, seq: ++this.sequence, viewFrame: this.binding.frame ?? 0, ...input };
     const tail = this.queue.at(-1);
-    if (tail && !hasEdge(tail) && !hasEdge(action) && tail.fire === action.fire) this.queue[this.queue.length - 1] = action;
-    else if (this.queue.length < 64) this.queue.push(action);
-    else {
+    const merge = tail && !hasEdge(tail) && !hasEdge(action) && tail.fire === action.fire;
+    if (!merge && this.queue.length >= 64) {
       this.error("连接积压，请等待恢复");
       return;
     }
+    prepare?.(action);
+    if (merge) this.queue[this.queue.length - 1] = action;
+    else this.queue.push(action);
     this.flush();
     return action;
   }

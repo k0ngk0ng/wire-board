@@ -81,6 +81,66 @@ test("first local input consumes one visible step without accelerating high refr
   }
 });
 
+test("respawn neutral heartbeats do not consume the first visible movement step", () => {
+  const p = new MotionPrediction(motion);
+  p.confirm(player({ life: 2, x: 40, y: 440, appliedSeq: 24 }), 190, 5990, "epoch");
+  p.input(input({ seq: 25, moveX: 0, moveY: 0 }), 5990);
+  assert.equal(p.sample(5990).y, 440);
+  assert.equal(p.predictedFrame, 190);
+  assert.equal(p.pendingCount, 0);
+  p.input(input({ seq: 26, moveX: 0, moveY: 1000 }), 6001);
+  assert.equal(p.sample(6007).y, 441);
+});
+
+test("stationary aim changes remain immediate without reserving movement frames", () => {
+  const p = new MotionPrediction(motion);
+  p.confirm(player({ life: 2, x: 40, y: 440, appliedSeq: 24 }), 190, 5990, "epoch");
+  p.input(input({ seq: 25, moveX: 0, moveY: 0, aim: 875 }), 5990);
+  const aimed = p.sample(5990);
+  assert.equal(aimed.aim, 875);
+  assert.equal(p.predictedFrame, 190);
+  assert.equal(p.pendingCount, 0);
+  p.input(input({ seq: 26, moveX: 0, moveY: 1000, aim: 875 }), 6001);
+  assert.equal(p.sample(6007).y, 441);
+});
+
+test("authority advancing twice beyond an unapplied direction preserves immediate movement replay", () => {
+  const p = new MotionPrediction(motion);
+  p.confirm(player({ life: 2, x: 40, y: 440, appliedSeq: 24 }), 190, 5990, "epoch");
+  p.input(input({ seq: 26, moveX: 0, moveY: 1000 }), 6001);
+  assert.equal(p.sample(6007).y, 441);
+  p.confirm(player({ life: 2, x: 40, y: 440, appliedSeq: 24 }), 192, 6024, "epoch");
+  assert.equal(p.sample(6024).y, 441);
+  assert.equal(p.predictedFrame, 193);
+  p.confirm(player({ life: 2, x: 40, y: 440, appliedSeq: 25 }), 194, 6041, "epoch");
+  assert.equal(p.sample(6041).y, 441);
+  assert.equal(p.predictedFrame, 195);
+  p.confirm(player({ life: 2, x: 40, y: 441, appliedSeq: 26 }), 196, 6074, "epoch");
+  assert.equal(p.sample(6074).y, 441);
+});
+
+test("120 Hz direction and aim changes do not accelerate rules or exceed nine predicted frames", () => {
+  const p = new MotionPrediction(motion);
+  p.confirm(player(), 0, 0, "epoch");
+  for (let at = 8; at <= 200; at += 8) {
+    p.input(input({ seq: at, moveX: at % 16 ? 1000 : -1000, aim: at % 1024 }), at - 1);
+    p.sample(at);
+    assert.ok(p.predictedFrame <= Math.trunc(at * 60 / 1000) + 1);
+    assert.ok(p.predictedFrame <= 9);
+  }
+});
+
+test("the 150 ms bound includes its adjacent logical frames", () => {
+  const p = new MotionPrediction(motion);
+  p.confirm(player(), 0, 0, "epoch");
+  p.input(input(), 0);
+  assert.equal(p.sample(134).x, 8);
+  assert.equal(p.sample(150).x, 9);
+  p.input(input({ seq: 2, moveX: 0, moveY: 1000 }), 151);
+  assert.equal(p.sample(167).x, 9);
+  assert.equal(p.predictedFrame, 9);
+});
+
 test("event cursor skips initial history and out-of-order duplicates", () => {
   const events = new EventCursor();
   assert.deepEqual(events.consume("e", [{ id: 1 }, { id: 2 }]), []);

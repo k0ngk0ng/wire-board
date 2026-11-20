@@ -119,3 +119,13 @@ test("ownership suspension isolates old errors and in-flight credits from resume
   assert.equal(sent[2].pickup, true);
   assert.equal(sent[2].seq, 4);
 });
+
+test("local final-pose preparation completes before the same input reaches the wire", () => {
+  const sent = [];
+  const channel = new InputChannel(async action => { sent.push({ ...action }); });
+  channel.update(binding());
+  channel.push(emptyInput(), action => { action.aim = 875; });
+  assert.equal(sent.length, 1);
+  assert.equal(sent[0].aim, 875);
+  assert.equal(sent[0].seq, 1);
+});
