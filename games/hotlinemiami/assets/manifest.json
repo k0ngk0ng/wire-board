@@ -10,21 +10,33 @@
     },
     {
       "file": "hotlinemiami/hotline-motion.wasm",
-      "bytes": 3311986,
-      "sha256": "409c9c36266365704c3a516f7a0b3ec2472a73cd22f4a733528827a1d363e4ab",
+      "bytes": 3336159,
+      "sha256": "39a16095621809aa1ffaff2fe1983f9624c7efde89dab585d0025da148d3a76c",
       "mime": "application/wasm"
     },
     {
       "file": "hotlinemiami/manifest.json",
-      "bytes": 108185,
-      "sha256": "63364bc3bbe45eaa7b353f53eeb64615feca95c364621e43dfd7866a23b94f66",
+      "bytes": 195227,
+      "sha256": "502ba7097b7e3a57c316639520e73438979fc1b835336f6ebb0c3bb087c7cb9d",
       "mime": "application/json"
+    },
+    {
+      "file": "hotlinemiami/runtime/axe.flac",
+      "bytes": 22094,
+      "sha256": "7b693b2e5c860e63cb27f1868f25efaf9cac582db1fdeb41a77e8b72848aa3b7",
+      "mime": "audio/flac"
     },
     {
       "file": "hotlinemiami/runtime/bat.flac",
       "bytes": 22094,
       "sha256": "7b693b2e5c860e63cb27f1868f25efaf9cac582db1fdeb41a77e8b72848aa3b7",
       "mime": "audio/flac"
+    },
+    {
+      "file": "hotlinemiami/runtime/beard-walk.png",
+      "bytes": 681,
+      "sha256": "625737f1e577370f60d0ece95d2936fd1e8bc93b94aba03d6e23c82a852a5944",
+      "mime": "image/png"
     },
     {
       "file": "hotlinemiami/runtime/bodyguard-walk.png",
@@ -39,10 +51,22 @@
       "mime": "audio/flac"
     },
     {
+      "file": "hotlinemiami/runtime/double-barrel.flac",
+      "bytes": 63216,
+      "sha256": "372b1f50608759991b68968e318a22bdad3fa59bb0bf2bb961f7e3cd57ceea8d",
+      "mime": "audio/flac"
+    },
+    {
       "file": "hotlinemiami/runtime/down.flac",
       "bytes": 27458,
       "sha256": "348b841007c83ee7ad6a9081ec09d63c2d719ac6f440107af2c5ccca8edb7150",
       "mime": "audio/flac"
+    },
+    {
+      "file": "hotlinemiami/runtime/expansion-sprites.png",
+      "bytes": 19802,
+      "sha256": "5af88201f7ecdd5d8536efa0f31afd9b7f94666821c7f607138272e983e83b13",
+      "mime": "image/png"
     },
     {
       "file": "hotlinemiami/runtime/father-walk.png",
@@ -75,9 +99,27 @@
       "mime": "audio/flac"
     },
     {
+      "file": "hotlinemiami/runtime/machete.flac",
+      "bytes": 22532,
+      "sha256": "4ac5152da974b5f89c05265b0fb32e1e3feebc7d5ca6f06eacf41909dfc1ff22",
+      "mime": "audio/flac"
+    },
+    {
+      "file": "hotlinemiami/runtime/magnum.flac",
+      "bytes": 62904,
+      "sha256": "6c14fc06c610a69f6185b31582df13ed3b0cba535d53b1483864f4e2e91d2b17",
+      "mime": "audio/flac"
+    },
+    {
       "file": "hotlinemiami/runtime/map-full-house.png",
       "bytes": 49190,
       "sha256": "1eb0cd8a027bf6f286b71bf55fdfca1521407585d97d05d633191c5d0c89002e",
+      "mime": "image/png"
+    },
+    {
+      "file": "hotlinemiami/runtime/map-neighbors.png",
+      "bytes": 34494,
+      "sha256": "4a11fc0679e55085c899472c930c0cd47e9aa94d8376bd112cfd706dbaf4819e",
       "mime": "image/png"
     },
     {
@@ -87,10 +129,28 @@
       "mime": "image/png"
     },
     {
+      "file": "hotlinemiami/runtime/map-overdose.png",
+      "bytes": 55466,
+      "sha256": "bad38d0335adcf98c522cb53ce220725259a979bb07bd9ab993a17f8c8bfeab5",
+      "mime": "image/png"
+    },
+    {
       "file": "hotlinemiami/runtime/map-push-it.png",
       "bytes": 35556,
       "sha256": "c4ae393c27e8263dd65219f3d28febab0247103164d46ad0cf4626f6aaf2fbd1",
       "mime": "image/png"
+    },
+    {
+      "file": "hotlinemiami/runtime/map-tension.png",
+      "bytes": 71155,
+      "sha256": "184fa4361c8dfbf7ff34c93444e736aa225c00173bf5d0bef003040a64d2a570",
+      "mime": "image/png"
+    },
+    {
+      "file": "hotlinemiami/runtime/mp5.flac",
+      "bytes": 41937,
+      "sha256": "95388894f31dfd559292092829b961772783dd0dbe0d9574a9ea3510753ebdf7",
+      "mime": "audio/flac"
     },
     {
       "file": "hotlinemiami/runtime/music.ogg",
@@ -111,6 +171,12 @@
       "mime": "audio/flac"
     },
     {
+      "file": "hotlinemiami/runtime/portrait-beard.png",
+      "bytes": 3395,
+      "sha256": "8135b1bbda32c41045efd33454d572b45e6b9e82347b37574abdc332fa19229e",
+      "mime": "image/png"
+    },
+    {
       "file": "hotlinemiami/runtime/portrait-biker.png",
       "bytes": 3108,
       "sha256": "d298bee460ee782716db696ad827401d0e030e225bdd444dff171f34b642aa5c",
@@ -129,9 +195,21 @@
       "mime": "image/png"
     },
     {
+      "file": "hotlinemiami/runtime/portrait-hobo.png",
+      "bytes": 3843,
+      "sha256": "5e68d1b60cf3aa12a214c15431f9de9c470c13ad80c2ba788bf842e44b8cfa3c",
+      "mime": "image/png"
+    },
+    {
       "file": "hotlinemiami/runtime/portrait-jacket.png",
       "bytes": 1645,
       "sha256": "39355764a7d5240ab447e498519d908301c07365660873070d6445e55fd6287e",
+      "mime": "image/png"
+    },
+    {
+      "file": "hotlinemiami/runtime/portrait-producer.png",
+      "bytes": 874,
+      "sha256": "edca2d473bd8dbc71b10ccfb4e0f1e463e2ac0f47d3e9eb1b357d111802fc44c",
       "mime": "image/png"
     },
     {
@@ -147,15 +225,33 @@
       "mime": "image/png"
     },
     {
+      "file": "hotlinemiami/runtime/preview-neighbors.png",
+      "bytes": 10506,
+      "sha256": "85af8c0c5231286021b1fd0cefe94a8b6fc708ab589e41e682989a2d9fd3321f",
+      "mime": "image/png"
+    },
+    {
       "file": "hotlinemiami/runtime/preview-no-talk.png",
       "bytes": 13426,
       "sha256": "e2a41d13be5a7d08b3e1ccafa757f870d95faf4ba3ad3ceaae5d198965d2027e",
       "mime": "image/png"
     },
     {
+      "file": "hotlinemiami/runtime/preview-overdose.png",
+      "bytes": 17966,
+      "sha256": "1e2eab43ed721692e4ce2dc31816ce63f4026f773816a0089b737aa63cdbea36",
+      "mime": "image/png"
+    },
+    {
       "file": "hotlinemiami/runtime/preview-push-it.png",
       "bytes": 12621,
       "sha256": "7e43b659e1b62684589c95dd93232ffc010ac8ec309e03de773ce43fa81e3281",
+      "mime": "image/png"
+    },
+    {
+      "file": "hotlinemiami/runtime/preview-tension.png",
+      "bytes": 24796,
+      "sha256": "809140405872b5a15754de536094d53f7e08c535defe558640c586747f97566b",
       "mime": "image/png"
     },
     {
@@ -183,9 +279,21 @@
       "mime": "audio/flac"
     },
     {
+      "file": "hotlinemiami/runtime/weapon-axe.png",
+      "bytes": 302,
+      "sha256": "900f2d8221ad0525e6c4708b85cee655f96569789c92869499b2bd164b8796e7",
+      "mime": "image/png"
+    },
+    {
       "file": "hotlinemiami/runtime/weapon-bat.png",
       "bytes": 238,
       "sha256": "2c1e64dd77d32cc29616f4e053ec0582f8c799ac1296e9ca9191a83932ccb99d",
+      "mime": "image/png"
+    },
+    {
+      "file": "hotlinemiami/runtime/weapon-double-barrel.png",
+      "bytes": 278,
+      "sha256": "6d1408212ca7ac79b08ae60af067c865b5325fa6f7adeedb0a8cd320929a9bdc",
       "mime": "image/png"
     },
     {
@@ -196,14 +304,32 @@
     },
     {
       "file": "hotlinemiami/runtime/weapon-knife.png",
-      "bytes": 156,
-      "sha256": "8d50d7b2c795bd291f1c446783d817afc7a919dfc7e7d921baa2ca95b2c3615f",
+      "bytes": 193,
+      "sha256": "63f8e0458df2dc7ec6ede39499857c94c2172dbedf2b3d06cd661807516f3134",
       "mime": "image/png"
     },
     {
       "file": "hotlinemiami/runtime/weapon-m16.png",
       "bytes": 244,
       "sha256": "5b8f1af764d0ab11f4e6495dfbc76d1d6da5a9ed815e1feadccf0562cb378bd7",
+      "mime": "image/png"
+    },
+    {
+      "file": "hotlinemiami/runtime/weapon-machete.png",
+      "bytes": 229,
+      "sha256": "60983d2340892eb260864d9fdb46023f6f341b5164d2f9a2756b3534dead651a",
+      "mime": "image/png"
+    },
+    {
+      "file": "hotlinemiami/runtime/weapon-magnum.png",
+      "bytes": 286,
+      "sha256": "78ac48a11a55afc3b636da9a86e6e3d42b2607365a37eae65112f628ed2801f4",
+      "mime": "image/png"
+    },
+    {
+      "file": "hotlinemiami/runtime/weapon-mp5.png",
+      "bytes": 283,
+      "sha256": "cccc0af4b190ebf9bb3970dcbc529d095fd6a3a2ee36fe8a1b06043fe2d9b82b",
       "mime": "image/png"
     },
     {

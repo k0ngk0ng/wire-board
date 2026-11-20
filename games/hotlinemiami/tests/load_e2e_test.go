@@ -14,7 +14,7 @@ import (
 func TestEightLiveRoomsAndSlowReceiver(t *testing.T) {
 	harness := newHTTPRoom(t, 8)
 	for index, person := range harness.people {
-		person.request("POST", "/api/rooms", map[string]any{"kind": "hotlinemiami", "name": fmt.Sprintf("并行验收%d", index), "capacity": 4, "options": map[string]any{"map": []string{"no-talk", "full-house", "push-it"}[index%3]}}, 201)
+		person.request("POST", "/api/rooms", map[string]any{"kind": "hotlinemiami", "name": fmt.Sprintf("并行验收%d", index), "capacity": 4, "options": map[string]any{"map": []string{"no-talk", "full-house", "push-it", "overdose", "tension", "neighbors"}[index%6]}}, 201)
 		for range 3 {
 			person.command("add_bot", nil, 200)
 		}

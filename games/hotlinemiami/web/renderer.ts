@@ -1,5 +1,5 @@
 import type { LoadedAssets } from "./assets";
-import { playerColors, type GameEvent, type Player, type View } from "./types.ts";
+import { isMeleeWeapon, playerColors, type GameEvent, type Player, type View } from "./types.ts";
 import type { FeedbackPulse } from "./feedback.ts";
 
 export type DrawPlayer = Pick<Player, "x" | "y" | "aim" | "life" | "alive">;
@@ -286,12 +286,15 @@ export class BattleRenderer {
     }
     if (flash > at) {
       const angle = displayed.aim * Math.PI * 2 / 1024;
-      const length = player.weapon === "knife" || player.weapon === "bat" || player.weapon === "katana" ? 24 : 18;
+      const length = isMeleeWeapon(player.weapon) ? 24 : 18;
       ctx.strokeStyle = "#ffe9a2";
       ctx.lineWidth = 3;
       ctx.beginPath();
-      ctx.moveTo(x + Math.cos(angle) * 9, y + Math.sin(angle) * 9);
-      ctx.lineTo(x + Math.cos(angle) * length, y + Math.sin(angle) * length);
+      if (!player.weapon) ctx.arc(x + Math.cos(angle) * 14, y + Math.sin(angle) * 14, 8, angle - Math.PI / 2, angle + Math.PI / 2);
+      else {
+        ctx.moveTo(x + Math.cos(angle) * 9, y + Math.sin(angle) * 9);
+        ctx.lineTo(x + Math.cos(angle) * length, y + Math.sin(angle) * length);
+      }
       ctx.stroke();
     }
     ctx.textAlign = "center";

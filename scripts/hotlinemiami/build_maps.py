@@ -7,7 +7,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 ORIGINAL = ROOT / ".local/hotlinemiami/research/original/gog-linux-2.0.0.4"
 METADATA = ORIGINAL / "metadata"
-SELECTION = [("no-talk", "不许交谈", 17, "rmApartment1Upstairs"), ("full-house", "满屋", 31, "rmHouse2Downstairs"), ("push-it", "夜店", 33, "rmHouse3Downstairs")]
+SELECTION = [("no-talk", "不许交谈", 17, "rmApartment1Upstairs"), ("full-house", "满屋", 31, "rmHouse2Downstairs"), ("push-it", "夜店", 33, "rmHouse3Downstairs"), ("overdose", "过量", 20, "rmApartment2Upstairs"), ("tension", "紧绷", 49, "rmHouse5Upstairs"), ("neighbors", "邻居", 35, "rmBuildingFloor3")]
 
 
 def read_rooms(data):
@@ -145,6 +145,8 @@ def recover_maps():
                 walls.append(bounds)
         spawns = select_spawns(room, walls, doors)
         weapons = ["pistol", "uzi", "m16", "shotgun", "knife", "bat", "katana"]
+        if identity in ["overdose", "tension", "neighbors"]:
+            weapons = ["magnum", "mp5", "double-barrel", "axe", "machete", "pistol", "uzi", "m16"]
         weapon_spawns = [{**point, "weapon": weapons[index % len(weapons)]} for index, point in enumerate(spawns)]
         arenas.append({"id": identity, "name": name, "width": room["width"], "height": room["height"], "walls": walls, "doors": doors, "spawns": spawns, "weaponSpawns": weapon_spawns, "sourceRoomId": room_id, "sourceRoomName": source_name, "sourceRoomOffset": room["sourceOffset"], "coordinateScale": 1})
     return arenas

@@ -32,8 +32,8 @@ func generate(check bool) error {
 	if err = json.Unmarshal(raw, &maps); err != nil {
 		return err
 	}
-	if len(maps) != 3 {
-		return fmt.Errorf("应包含三张原版规则地图")
+	if len(maps) != 6 {
+		return fmt.Errorf("应包含六张原版规则地图")
 	}
 	buffer := &bytes.Buffer{}
 	fmt.Fprintln(buffer, "package engine\n\nvar recoveredMaps = []Map{")

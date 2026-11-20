@@ -17,8 +17,8 @@ func TestRecoveredMapRulesMatchSource(t *testing.T) {
 	if err = json.Unmarshal(raw, &source); err != nil {
 		t.Fatal(err)
 	}
-	if len(source) != 3 || len(engine.Maps()) != 3 {
-		t.Fatal("three recovered maps must be registered")
+	if len(source) != 6 || len(engine.Maps()) != 6 {
+		t.Fatal("six recovered maps must be registered")
 	}
 	for _, original := range source {
 		world := engine.MapByID(original.ID)
@@ -62,10 +62,16 @@ func TestRecoveredMapRulesMatchSource(t *testing.T) {
 }
 
 func TestRecoveredMapComputerMatches(t *testing.T) {
-	for _, world := range engine.Maps() {
+	for mapIndex, world := range engine.Maps() {
 		for _, count := range []int{2, 3, 4} {
 			t.Run(world.ID+string(rune('0'+count)), func(t *testing.T) {
-				s, err := engine.New(engine.Options{Map: world.ID, RoundSeconds: 180}, count, 91)
+				weapons := make([]string, count)
+				characters := make([]string, count)
+				for seat := range weapons {
+					weapons[seat] = engine.Weapons()[(mapIndex*3+count+seat)%len(engine.Weapons())].ID
+					characters[seat] = engine.Characters()[(mapIndex+count+seat)%len(engine.Characters())]
+				}
+				s, err := engine.New(engine.Options{Map: world.ID, RoundSeconds: 180, Weapons: weapons, Characters: characters}, count, 91)
 				if err != nil {
 					t.Fatal(err)
 				}
@@ -84,7 +90,7 @@ func TestRecoveredMapComputerMatches(t *testing.T) {
 				if kills == 0 {
 					t.Fatal("computers never reached combat on recovered map")
 				}
-				t.Logf("map=%s players=%d frames=%d kills=%d", world.ID, count, s.Frame, kills)
+				t.Logf("map=%s players=%d frames=%d kills=%d weapons=%v characters=%v", world.ID, count, s.Frame, kills, weapons, characters)
 			})
 		}
 	}

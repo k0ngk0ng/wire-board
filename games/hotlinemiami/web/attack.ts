@@ -6,8 +6,9 @@ export class AttackPresentation {
   private player: AttackPlayer | undefined;
   private pending: { seq: number; frame: number }[] = [];
 
-  constructor(weapons: WeaponTiming[]) {
+  constructor(weapons: WeaponTiming[], unarmed?: WeaponTiming) {
     this.weapons = new Map(weapons.map(weapon => [weapon.id, weapon]));
+    if (unarmed) this.weapons.set("", unarmed);
   }
 
   confirm(player: AttackPlayer) {

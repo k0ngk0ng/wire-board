@@ -118,7 +118,7 @@ function resources(manifest) {
 
 function validateAssets(manifest) {
   if (manifest.version !== 1 || !manifest.images || !Object.keys(manifest.images).length) throw Error("Incomplete Hotline assets manifest");
-  for (const [key, count] of [["maps", 3], ["characters", 5], ["weapons", 7]]) if (!Array.isArray(manifest[key]) || manifest[key].length !== count) throw Error("Incomplete Hotline " + key + ": expected " + count);
+  for (const [key, count] of [["maps", 6], ["characters", 8], ["weapons", 12]]) if (!Array.isArray(manifest[key]) || manifest[key].length !== count) throw Error("Incomplete Hotline " + key + ": expected " + count);
 }
 
 function verifyRuntime(directory, runtime, expected) {

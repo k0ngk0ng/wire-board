@@ -9,7 +9,7 @@ import { BattleRenderer } from "./renderer";
 import { AttackPresentation } from "./attack";
 import { ActionFeedback } from "./feedback";
 import { TouchControls } from "./TouchControls";
-import { mapNames, playerColors, weaponNames, type GameEvent, type GameInput, type Player, type View } from "./types";
+import { isMeleeWeapon, mapNames, playerColors, weaponNames, type GameEvent, type GameInput, type Player, type View } from "./types";
 import "./style.css";
 
 type Metrics = {
@@ -198,7 +198,7 @@ export function Board(props: BoardProps<View>) {
       loaded.current = assets;
       renderer.current = new BattleRenderer(canvas.current, assets);
       prediction.current = new MotionPrediction(assets.motion);
-      attack.current = new AttackPresentation(assets.weapons);
+      attack.current = new AttackPresentation(assets.weapons, assets.unarmed);
       const currentPlayer = latest.current.data.players[latest.current.room.you];
       if (currentPlayer) prediction.current.confirm(currentPlayer, latest.current.data.frame, performance.now(), identity, JSON.stringify(latest.current.data.doors));
       if (currentPlayer) attack.current.confirm(currentPlayer);
@@ -261,7 +261,7 @@ export function Board(props: BoardProps<View>) {
           now, local: local ? { ...local, ...screen } : null,
           frame: current.data.frame, serverFrame: current.data.frame, predictedFrame: prediction.current?.predictedFrame ?? current.data.frame,
           receivedSeq: currentPlayer?.receivedSeq ?? 0, appliedSeq: currentPlayer?.appliedSeq ?? 0,
-          inputEnabled: canControl(), inputWindow: current.inputWindow ?? 0, pending: prediction.current?.pendingCount ?? 0,
+          attackFlashUntil: flash.current, inputEnabled: canControl(), inputWindow: current.inputWindow ?? 0, pending: prediction.current?.pendingCount ?? 0,
           drawCount: ++drawCount.current,
           feedback: pulses,
         };
@@ -326,7 +326,7 @@ export function Board(props: BoardProps<View>) {
     <div className="hm-battle-heading">
       <div><span className="hm-map-label">{mapNames[data.mapId] ?? "混战"}</span><strong>{room.spectating ? "观战中" : player && !player.alive ? "等待复活" : "自由混战"}</strong></div>
       <time className={seconds <= 30 ? "hm-timer hm-timer-final" : "hm-timer"} aria-label={`剩余 ${timer}`}>{timer}</time>
-      <div className="hm-ammo"><strong>{player ? weaponNames[player.weapon] ?? player.weapon : "自由视角"}</strong><span>{player ? ["", "knife", "bat", "katana"].includes(player.weapon) ? "近战" : `${player.ammo} 发` : `${data.players.length} 人`}</span></div>
+      <div className="hm-ammo"><strong>{player ? weaponNames[player.weapon] ?? player.weapon : "自由视角"}</strong><span>{player ? isMeleeWeapon(player.weapon) ? "近战" : `${player.ammo} 发` : `${data.players.length} 人`}</span></div>
     </div>
     <div className="hm-score-strip" aria-label="实时比分">
       {data.players.map(candidate => <div key={candidate.seat} className={candidate.seat === seat ? "hm-score hm-score-self" : "hm-score"} style={{ "--hm-player-color": playerColors[candidate.seat % 4] } as React.CSSProperties}>

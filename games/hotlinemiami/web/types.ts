@@ -115,29 +115,6 @@ export type AssetManifest = {
 
 export type MotionFunction = (x: number, y: number, aim: number, moveX: number, moveY: number, frames: number, doors?: string, brokenGlass?: string) => number[];
 
-export const characterNames: Record<string, string> = {
-  jacket: "鸡头主角",
-  biker: "骑士",
-  bodyguard: "女保镖",
-  father: "黑帮首领",
-  richter: "鼠面刺客",
-};
-
-export const weaponNames: Record<string, string> = {
-  pistol: "手枪",
-  uzi: "Uzi 冲锋枪",
-  m16: "M16 步枪",
-  shotgun: "霰弹枪",
-  knife: "小刀",
-  bat: "棒球棒",
-  katana: "武士刀",
-  "": "徒手",
-};
-
-export const mapNames: Record<string, string> = {
-  "no-talk": "无声行动",
-  "full-house": "满屋杀机",
-  "push-it": "霓虹夜店",
-};
+export { characterNames, weaponNames, mapNames, isMeleeWeapon } from "./content.ts";
 
 export const playerColors = ["#5dd8cf", "#f487b6", "#e9d37a", "#9da4ed"];

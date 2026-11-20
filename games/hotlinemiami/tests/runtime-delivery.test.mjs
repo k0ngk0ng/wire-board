@@ -15,7 +15,7 @@ const ts = require("typescript");
 const digest = bytes => createHash("sha256").update(bytes).digest("hex");
 const results = [];
 
-function fixture() {
+function fixture(counts = { maps: 6, characters: 8, weapons: 12 }) {
   const directory = mkdtempSync(path.join(output, "workspace-"));
   for (const folder of ["games/hotlinemiami/engine", "games/hotlinemiami/cmd/motion", "games/hotlinemiami/data", ".local/hotlinemiami/assets/images"]) mkdirSync(path.join(directory, folder), { recursive: true });
   writeFileSync(path.join(directory, "go.mod"), "module fixture.test/hotline\n\ngo 1.26.0\n");
@@ -24,7 +24,7 @@ function fixture() {
   writeFileSync(path.join(directory, "games/hotlinemiami/cmd/motion/main_js.go"), 'package main\nimport ("syscall/js"; "fixture.test/hotline/games/hotlinemiami/engine")\nfunc main() {js.Global().Set("fixtureVersion", engine.Value()); select {}}\n');
   const image = Buffer.from("fixture image bytes");
   writeFileSync(path.join(directory, ".local/hotlinemiami/assets/images/fixture.png"), image);
-  const source = { version: 1, sourceSHA256: "a".repeat(64), images: { fixture: { file: "images/fixture.png", bytes: image.length, sha256: digest(image), width: 1, height: 1 } }, sprites: {}, maps: Array.from({ length: 3 }, (_, index) => ({ id: `map-${index}`, image: "fixture" })), characters: Array.from({ length: 5 }, (_, index) => ({ id: `character-${index}`, image: "fixture" })), weapons: Array.from({ length: 7 }, (_, index) => ({ id: `weapon-${index}`, image: "fixture" })) };
+  const source = { version: 1, sourceSHA256: "a".repeat(64), images: { fixture: { file: "images/fixture.png", bytes: image.length, sha256: digest(image), width: 1, height: 1 } }, sprites: {}, maps: Array.from({ length: counts.maps }, (_, index) => ({ id: `map-${index}`, image: "fixture" })), characters: Array.from({ length: counts.characters }, (_, index) => ({ id: `character-${index}`, image: "fixture" })), weapons: Array.from({ length: counts.weapons }, (_, index) => ({ id: `weapon-${index}`, image: "fixture" })) };
   writeFileSync(path.join(directory, ".local/hotlinemiami/assets/manifest.json"), JSON.stringify(source));
   return { directory, source };
 }
@@ -122,6 +122,38 @@ test("hydrated formal resources remain verifiable without local research assets"
   }
 });
 
+test("the previous three-map five-character seven-weapon source cannot satisfy the expanded release", () => {
+  const { directory } = fixture({ maps: 3, characters: 5, weapons: 7 });
+  try {
+    assert.throws(() => prepareHotlineDelivery(directory), /Incomplete Hotline maps: expected 6/);
+    assert.equal(existsSync(path.join(directory, ".local/hotlinemiami/delivery/public/hotlinemiami/manifest.json")), false);
+    results.push({ scenario: "previous-source-content-rejected", passed: true });
+  } finally {
+    rmSync(directory, { recursive: true, force: true });
+  }
+});
+
+test("a fully hydrated previous content manifest is rejected despite valid runtime and resource hashes", () => {
+  const { directory } = fixture();
+  try {
+    const publicRoot = prepareHotlineDelivery(directory);
+    const hydrated = path.join(directory, "games/hotlinemiami/assets/public/hotlinemiami");
+    cpSync(path.join(publicRoot, "hotlinemiami"), hydrated, { recursive: true });
+    const previous = JSON.parse(readFileSync(path.join(hydrated, "manifest.json"), "utf8"));
+    previous.maps = previous.maps.slice(0, 3);
+    previous.characters = previous.characters.slice(0, 5);
+    previous.weapons = previous.weapons.slice(0, 7);
+    writeFileSync(path.join(hydrated, "manifest.json"), JSON.stringify(previous));
+    renameSync(path.join(directory, ".local/hotlinemiami/assets"), path.join(directory, ".local/hotlinemiami/assets-backup"));
+    rmSync(publicRoot, { recursive: true });
+    assert.throws(() => prepareHotlineDelivery(directory), /Incomplete Hotline maps: expected 6/);
+    assert.equal(existsSync(path.join(publicRoot, "hotlinemiami/manifest.json")), false);
+    results.push({ scenario: "previous-hydrated-content-rejected", passed: true });
+  } finally {
+    rmSync(directory, { recursive: true, force: true });
+  }
+});
+
 test("output symlinks cannot redirect delivery into another local directory", () => {
   const { directory } = fixture();
   try {
@@ -151,5 +183,5 @@ test("resource symlinks are rejected even when they point inside the asset root"
 });
 
 test.after(() => {
-  writeFileSync(path.join(output, "result.json"), JSON.stringify({ passed: results.length === 6 && results.every(row => row.passed), cases: results }, null, 2) + "\n");
+  writeFileSync(path.join(output, "result.json"), JSON.stringify({ passed: results.length === 8 && results.every(row => row.passed), cases: results }, null, 2) + "\n");
 });

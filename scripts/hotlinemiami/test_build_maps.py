@@ -20,11 +20,11 @@ class MapRecoveryTest(unittest.TestCase):
 
     def test_native_map_has_source_collisions_and_safe_spawns(self):
         maps = MAPS.recover_maps()
-        self.assertEqual([m["id"] for m in maps], ["no-talk", "full-house", "push-it"])
-        self.assertEqual([m["sourceRoomId"] for m in maps], [17, 31, 33])
+        self.assertEqual([m["id"] for m in maps], ["no-talk", "full-house", "push-it", "overdose", "tension", "neighbors"])
+        self.assertEqual([m["sourceRoomId"] for m in maps], [17, 31, 33, 20, 49, 35])
+        self.assertEqual([len(m["doors"]) for m in maps], [7, 7, 10, 9, 6, 2])
         for arena in maps:
             self.assertGreater(len(arena["walls"]), 60)
-            self.assertGreaterEqual(len(arena["doors"]), 3)
             self.assertEqual(len(arena["spawns"]), 8)
             for spawn in arena["spawns"]:
                 self.assertTrue(MAPS.walkable(spawn["x"], spawn["y"], arena["walls"], 10))

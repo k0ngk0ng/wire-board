@@ -16,7 +16,7 @@ func (s *State) attack(seat int, viewFrame int64) []damage {
 	}
 	weapon, ok := WeaponByID(p.Weapon)
 	if !ok {
-		weapon = Weapon{ID: "", Cooldown: 22, Range: 25 * Unit, Melee: true}
+		weapon = UnarmedWeapon()
 	}
 	if !weapon.Melee && p.Ammo <= 0 {
 		return nil

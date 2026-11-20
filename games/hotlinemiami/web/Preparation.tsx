@@ -42,7 +42,7 @@ export function Options({ value, onChange, disabled, capacity }: OptionsProps<Ga
   const { manifest, error } = useManifest("");
   useEffect(() => {
     if (value.characters.length === capacity && value.weapons.length === capacity) return;
-    const characters = Array.from({ length: capacity }, (_, seat) => value.characters[seat] ?? Object.keys(characterNames)[seat % 5]);
+    const characters = Array.from({ length: capacity }, (_, seat) => value.characters[seat] ?? Object.keys(characterNames)[seat % Object.keys(characterNames).length]);
     const weapons = Array.from({ length: capacity }, (_, seat) => value.weapons[seat] ?? "pistol");
     onChange({ ...value, characters, weapons });
   }, [capacity, value, onChange]);

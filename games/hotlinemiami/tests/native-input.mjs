@@ -99,14 +99,14 @@ try {
       for (let index = 0; index < pixels.length; index += 16) value = Math.imul(value ^ pixels[index], 16777619);
       return value >>> 0;
     };
-    probe.arm = (kind, x, y) => { probe.pending = { kind, x, y, before: structuredClone(canvas.__hotlineFrame.local), hash: hash(), at: null, armedAt: performance.now() }; };
+    probe.arm = (kind, x, y) => { probe.pending = { kind, x, y, before: structuredClone(canvas.__hotlineFrame.local), beforeFlash: canvas.__hotlineFrame.attackFlashUntil ?? 0, hash: hash(), at: null, armedAt: performance.now() }; };
     const listener = (event) => {
       if (!event.isTrusted) return;
       const current = probe.pending;
       const at = performance.now();
       const entry = { type: event.type, at, trusted: event.isTrusted, key: event.code ?? null };
       probe.events.push(entry);
-      if (current && current.at === null && ((current.kind === 'key' && event.type === 'keydown') || (current.kind === 'aim' && event.type === 'pointermove') || (current.kind === 'touch' && event.type === 'pointermove'))) current.at = at;
+      if (current && current.at === null && ((current.kind === 'key' && event.type === 'keydown') || (current.kind === 'aim' && event.type === 'pointermove') || (current.kind === 'touch' && event.type === 'pointermove') || (current.kind === 'attack' && event.type === 'pointerdown'))) current.at = at;
     };
     const types = ['keydown', 'keyup', 'pointerdown', 'pointermove', 'pointerup', 'pointercancel'];
     for (const type of types) document.addEventListener(type, listener, true);
@@ -124,7 +124,7 @@ try {
       if (pending?.at !== null && pending && local && local.life === pending.before.life) {
         const dx = local.x - pending.before.x;
         const dy = local.y - pending.before.y;
-        const changed = pending.kind === 'aim' ? local.aim !== pending.before.aim : dx * pending.x + dy * pending.y > 0;
+        const changed = pending.kind === 'attack' ? frame.attackFlashUntil > frame.now && frame.attackFlashUntil > pending.beforeFlash : pending.kind === 'aim' ? local.aim !== pending.before.aim : dx * pending.x + dy * pending.y > 0;
         if (changed) {
           const visibleAt = performance.now();
           const afterHash = hash();
@@ -196,21 +196,50 @@ try {
     await call("Input.dispatchKeyEvent", { type: "keyUp", code: "KeyD", key: "d", windowsVirtualKeyCode: 68 });
   }
   let quickTap;
-  if (!options.touch) {
+  let unarmed;
+  {
+    await playable();
     const before = await evaluate('fetch("/api/state").then(response=>response.json()).then(state=>({you:state.room.you,data:state.room.game.data}))');
     const player = before.data.players[before.you];
-    if (player.alive && player.ammo > 0) {
-      const rectangle = await evaluate("document.querySelector('[data-hotlinemiami-canvas]').getBoundingClientRect().toJSON()");
-      const point = { x: rectangle.x + rectangle.width * 0.8, y: rectangle.y + rectangle.height * 0.5, button: "left", clickCount: 1 };
-      await call("Input.dispatchMouseEvent", { type: "mousePressed", ...point, buttons: 1 });
-      await call("Input.dispatchMouseEvent", { type: "mouseReleased", ...point, buttons: 0 });
+    const timing = await evaluate(`JSON.parse(window.hotlineMotion.weapons()).find(weapon=>weapon.id===${JSON.stringify(player.weapon)})??JSON.parse(window.hotlineMotion.unarmed())`);
+    if (player.alive && (timing.melee || player.ammo > 0)) {
+      if (options.touch) {
+        const rectangle = await evaluate("document.querySelector('[data-hotlinemiami-stick=aim]').getBoundingClientRect().toJSON()");
+        const point = { x: rectangle.x + rectangle.width / 2, y: rectangle.y + rectangle.height / 2, radiusX: 4, radiusY: 4, force: 1, id: 1 };
+        await call("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [point] });
+        await call("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [{ ...point, x: point.x + rectangle.width * 0.42 }] });
+        await call("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+      } else {
+        const rectangle = await evaluate("document.querySelector('[data-hotlinemiami-canvas]').getBoundingClientRect().toJSON()");
+        const point = { x: rectangle.x + rectangle.width * 0.8, y: rectangle.y + rectangle.height * 0.5, button: "left", clickCount: 1 };
+        await call("Input.dispatchMouseEvent", { type: "mousePressed", ...point, buttons: 1 });
+        await call("Input.dispatchMouseEvent", { type: "mouseReleased", ...point, buttons: 0 });
+      }
       await wait(240);
       const after = await evaluate('fetch("/api/state").then(response=>response.json()).then(state=>state.room.game.data)');
       const fires = after.events.filter((event) => event.type === "fire" && event.seat === before.you && event.id > before.data.eventId);
-      quickTap = { beforeAmmo: player.ammo, afterAmmo: after.players[before.you].ammo, life: after.players[before.you].life, events: fires };
-      assert.ok(fires.length > 0, "native mouse short press/release lost its fire edge");
-      assert.ok(after.players[before.you].life !== player.life || after.players[before.you].ammo < player.ammo, "native short fire had no authoritative ammo effect");
+      quickTap = { beforeAmmo: player.ammo, beforeLife: player.life, melee: !!timing.melee, afterAmmo: after.players[before.you].ammo, life: after.players[before.you].life, events: fires };
     }
+  }
+  if (options.unarmed) {
+    const rectangle = await evaluate("document.querySelector('[data-hotlinemiami-canvas]').getBoundingClientRect().toJSON()");
+    const point = { x: rectangle.x + rectangle.width * 0.8, y: rectangle.y + rectangle.height * 0.5, clickCount: 1 };
+    await call("Input.dispatchMouseEvent", { type: "mousePressed", ...point, button: "right", buttons: 2 });
+    await call("Input.dispatchMouseEvent", { type: "mouseReleased", ...point, button: "right", buttons: 0 });
+    let state;
+    for (let attempt = 0; attempt < 100; attempt++) {
+      state = await evaluate('fetch("/api/state").then(response=>response.json()).then(state=>({you:state.room.you,data:state.room.game.data}))');
+      if (state.data.players[state.you].weapon === "" && state.data.players[state.you].ammo === 0) break;
+      await wait(20);
+    }
+    assert.equal(state.data.players[state.you].weapon, "", "legal native throw did not release the weapon");
+    await wait(150);
+    await arm("attack");
+    await call("Input.dispatchMouseEvent", { type: "mousePressed", ...point, button: "left", buttons: 1 });
+    await call("Input.dispatchMouseEvent", { type: "mouseReleased", ...point, button: "left", buttons: 0 });
+    await wait(240);
+    const after = await evaluate('fetch("/api/state").then(response=>response.json()).then(state=>state.room.game.data)');
+    unarmed = { weapon: after.players[state.you].weapon, ammo: after.players[state.you].ammo, events: after.events.filter(event => event.id > state.data.eventId && event.type === "fire" && event.seat === state.you && !event.weapon) };
   }
   await wait(options.observeMS ?? 2200);
   const observation = await evaluate(`(() => { const probe=window.__hotlineNativeProbe;probe.stop();const canvas=document.querySelector('[data-hotlinemiami-canvas]');return { events:probe.events,responses:probe.responses,frames:probe.frames,final:canvas.__hotlineFrame,metrics:canvas.__hotlineMetrics,rendered:canvas.width>0&&canvas.height>0 }; })()`);
@@ -219,11 +248,17 @@ try {
   const elapsed = observation.frames.at(-1).at - observation.frames[0].at;
   const counts = observation.frames.map((entry) => entry.drawCount);
   const changes = counts.slice(1).filter((count, index) => count !== counts[index]).length;
-  const result = { ...observation, touch: !!options.touch, quickTap, cameraAimChecks, browserVersion, network, media, measurement: "trusted native DOM event to rendered canvas pixel response; excludes physical display panel latency", summary: { responses: responseTimes.length, responseP95: percentile(responseTimes, 0.95), frameP95: percentile(intervals, 0.95), frameP99: percentile(intervals, 0.99), visibleFPS: changes * 1000 / elapsed, elapsed, visibleUpdates: changes, sentBytesPerSecond: network.sentBytes * 1000 / elapsed, receivedBytesPerSecond: network.receivedBytes * 1000 / elapsed, receivedMessagesPerSecond: network.receivedMessages * 1000 / elapsed, gameMessagesPerSecond: (network.messageTypes['in:game'] ?? 0) * 1000 / elapsed, ackP95MS: percentile(network.acks.map(entry => entry.microseconds / 1000), 0.95), appliedP95MS: percentile(network.applications.map(entry => entry.microseconds / 1000), 0.95), maxPredictionLeadFrames: Math.max(0, ...observation.frames.map(entry => entry.predictedFrame - entry.serverFrame)), maxPendingInputs: Math.max(0, ...observation.frames.map(entry => entry.pending ?? 0)) } };
+  const result = { ...observation, touch: !!options.touch, quickTap, unarmed, cameraAimChecks, browserVersion, network, media, measurement: "trusted native DOM event to rendered canvas pixel response; excludes physical display panel latency", summary: { responses: responseTimes.length, responseP95: percentile(responseTimes, 0.95), frameP95: percentile(intervals, 0.95), frameP99: percentile(intervals, 0.99), visibleFPS: changes * 1000 / elapsed, elapsed, visibleUpdates: changes, sentBytesPerSecond: network.sentBytes * 1000 / elapsed, receivedBytesPerSecond: network.receivedBytes * 1000 / elapsed, receivedMessagesPerSecond: network.receivedMessages * 1000 / elapsed, gameMessagesPerSecond: (network.messageTypes['in:game'] ?? 0) * 1000 / elapsed, ackP95MS: percentile(network.acks.map(entry => entry.microseconds / 1000), 0.95), appliedP95MS: percentile(network.applications.map(entry => entry.microseconds / 1000), 0.95), maxPredictionLeadFrames: Math.max(0, ...observation.frames.map(entry => entry.predictedFrame - entry.serverFrame)), maxPendingInputs: Math.max(0, ...observation.frames.map(entry => entry.pending ?? 0)) } };
   writeFileSync(outputFile, JSON.stringify(result));
   console.log(JSON.stringify({ output: outputFile, summary: result.summary }));
   assert.ok(observation.events.some((entry) => entry.trusted), "no trusted native events observed");
   assert.ok(observation.rendered, "canvas has no pixels");
+  assert.ok(quickTap?.events.length > 0, "native short press/release lost its fire edge");
+  assert.ok(quickTap.life !== quickTap.beforeLife || (quickTap.melee ? quickTap.afterAmmo === quickTap.beforeAmmo : quickTap.afterAmmo < quickTap.beforeAmmo), "native attack violated its authoritative ammunition rule");
+  if (options.unarmed) {
+    assert.ok(unarmed?.events.length > 0 && unarmed.weapon === "" && unarmed.ammo === 0, "native unarmed attack did not reach authority");
+    assert.ok(observation.responses.some(entry => entry.kind === "attack"), "native unarmed attack did not immediately draw a punch arc");
+  }
   assert.ok(responseTimes.length >= (options.minimumResponses ?? 8), `too few visible native responses: ${responseTimes.length}`);
   if (!options.touch) assert.ok(observation.responses.filter(entry => entry.kind === "key").length >= 4, "keyboard responses must be measured separately from pointer aim");
   assert.ok(cameraAimChecks.every(entry => entry.error <= 2), "moving camera changed a stationary mouse target");

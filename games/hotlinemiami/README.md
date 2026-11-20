@@ -6,9 +6,9 @@
 
 | 内容 | 实现 |
 | --- | --- |
-| 地图 | No Talk、Full House、Push It 的独立楼层，来自原版房间 17、31、33 |
-| 造型 | Jacket、Biker、Bodyguard、The Father、Richter，属性及碰撞体一致 |
-| 武器 | 手枪、Uzi、M16、霰弹枪、小刀、棒球棒、武士刀 |
+| 地图 | No Talk、Full House、Push It、Overdose、Tension、Neighbors 的独立楼层，来自原版房间 17、31、33、20、49、35 |
+| 造型 | Jacket、Biker、Bodyguard、The Father、Richter、Producer、Beard、Hobo，属性及碰撞体一致 |
+| 武器 | 手枪、Uzi、M16、霰弹枪、小刀、棒球棒、武士刀、马格南、MP5、双管霰弹枪、消防斧、砍刀 |
 | 战斗 | 有限弹药、投掷、拾取、击倒、处决、门、玻璃、连续弹丸碰撞与互杀 |
 | 复活 | 2 秒复活，800 ms 出生保护，攻击或投掷解除保护 |
 | 操作 | 键鼠、手机双摇杆、公共改键与实体手柄映射 |
@@ -45,7 +45,7 @@ node games/hotlinemiami/build/runtime-delivery.mjs
 
 ```sh
 mkdir -p .local/hotlinemiami/go-cache .local/hotlinemiami/go-mod .local/hotlinemiami/tmp .local/hotlinemiami/verification
-GOCACHE="$PWD/.local/hotlinemiami/go-cache" GOMODCACHE="$PWD/.local/hotlinemiami/go-mod" GOTMPDIR="$PWD/.local/hotlinemiami/tmp" TMPDIR="$PWD/.local/hotlinemiami/tmp" GOTOOLCHAIN=local GOTELEMETRY=off go test -json -count=1 -timeout=6m ./games/hotlinemiami/engine ./games/hotlinemiami/tests > .local/hotlinemiami/verification/go-final.jsonl
+GOCACHE="$PWD/.local/hotlinemiami/go-cache" GOMODCACHE="$PWD/.local/hotlinemiami/go-mod" GOTMPDIR="$PWD/.local/hotlinemiami/tmp" TMPDIR="$PWD/.local/hotlinemiami/tmp" GOTOOLCHAIN=local GOTELEMETRY=off go test -json -count=1 -timeout=12m ./games/hotlinemiami/engine ./games/hotlinemiami/tests > .local/hotlinemiami/verification/go-final.jsonl
 node --test games/hotlinemiami/tests/*.test.mjs
 node games/hotlinemiami/build/lint.mjs
 python3 -B games/hotlinemiami/tests/accept_browser.py
@@ -66,4 +66,4 @@ python3 -B games/hotlinemiami/tests/accept_browser.py
 
 验证边界和复跑入口分别记录在 `tests/server-scenarios.md`、`tests/engine-scenarios.md`、`tests/web-scenarios.md`、`tests/browser-scenarios.md` 和 `tests/lint-scenarios.md`。结果统一位于 `.local/hotlinemiami/verification/` 与 `.local/hotlinemiami/browser/reports/`，包含测试 JSON、帧与输入记录、网络配置、CSV、截图和源码摘要。
 
-Go 完整比赛验证覆盖 3 张地图的 2／3／4 人自然对局，正式 HTTP 验证覆盖席位权限、真实 WebSocket、重复请求、托管接管和 SQLite 恢复。浏览器验证分别记录实际 WebSocket RTT、输入 ACK、权威应用、显示帧和原生事件到像素响应，不以 HTTP 耗时或稳定帧率替代操作延迟。
+Go 完整比赛验证覆盖 6 张地图的 2／3／4 人自然对局，正式 HTTP 验证覆盖席位权限、真实 WebSocket、重复请求、托管接管和 SQLite 恢复。浏览器验证分别记录实际 WebSocket RTT、输入 ACK、权威应用、显示帧和原生事件到像素响应，不以 HTTP 耗时或稳定帧率替代操作延迟。

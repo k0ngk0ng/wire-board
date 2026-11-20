@@ -20,11 +20,11 @@ node games/hotlinemiami/build/runtime-delivery.mjs
 
 `prepareHotlineDelivery(root)` 为 Vite 提供公共根目录 `.local/hotlinemiami/delivery/public/`。游戏文件位于该目录的 `hotlinemiami/`，包括素材、`hotline-motion.wasm`、`wasm-exec.js`、`go-runtime-LICENSE.txt` 和合并后的 `manifest.json`。
 
-素材优先从 `.local/hotlinemiami/assets/manifest.json` 读取；研究素材不存在时，可使用 `games/hotlinemiami/assets/public/hotlinemiami/manifest.json` 中已恢复的正式资源。清单必须包含 3 张地图、5 个角色、7 类武器以及非空图片集合。缺失、损坏或不完整资源会明确失败，不发布空游戏目录。
+素材优先从 `.local/hotlinemiami/assets/manifest.json` 读取；研究素材不存在时，可使用 `games/hotlinemiami/assets/public/hotlinemiami/manifest.json` 中已恢复的正式资源。当前扩充交付清单必须包含 6 张地图、8 个角色、12 类武器以及非空图片集合。旧版 3 张地图、5 个角色、7 类武器的清单即使拥有有效运行时和资源摘要，也不能作为当前版本成功交付。缺失、损坏或不完整资源会明确失败，不发布空游戏目录。
 
 每个资源的 `file` 均为清单目录内的相对路径，并提供实际 `bytes` 与 SHA-256。构建校验全部描述，拒绝父目录、绝对路径、反斜杠和符号链接。新交付先在临时目录完整验证，成功后替换；失败保留上一份有效产物。
 
-WASM 从 `games/hotlinemiami/cmd/motion` 以 `GOOS=js`、`GOARCH=wasm` 构建。缓存绑定 `engine/`、`cmd/`、`data/` 全部 Go 源文件、`go.mod`／`go.sum`、构建参数、构建脚本、Go 工具链版本、官方支持脚本与许可证。已有缓存须再次核对大小、摘要和 WASM 格式，不能仅根据文件存在复用。源码构建期间变化时不发布旧绑定。
+WASM 从 `games/hotlinemiami/cmd/motion` 以 `GOOS=js`、`GOARCH=wasm` 构建。缓存绑定 `engine/`、`cmd/`、`data/` 全部 Go 源文件、`go.mod`／`go.sum`、构建参数、构建脚本、Go 工具链版本、官方支持脚本与许可证。已有缓存须再次核对大小、摘要和 WASM 格式，不能仅根据文件存在复用。源码构建期间变化时不发布旧绑定。内容扩充不改写未变媒体字节；正式发布继续按内容摘要复用原有资源地址，只新增实际变化的对象。
 
 Go 官方 `wasm_exec.js` 经过 esbuild 移除代码注释并压缩空白；其 BSD 许可证单独保留。游戏清单的 `runtime` 包含源码与构建摘要，以及 `wasm`、`script`、`license` 三个资源描述。字节相同的重复构建复用缓存，不重写有效交付。
 

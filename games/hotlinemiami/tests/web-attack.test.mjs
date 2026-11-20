@@ -43,3 +43,14 @@ test("melee has no ammo cost and new life discards previous speculative fire", (
   p.confirm(player({ life: 2, weapon: "pistol", ammo: 1 }));
   assert.equal(p.fire(3, 16), true);
 });
+
+test("unarmed attack immediately drives the next draw without consuming ammunition or adding a selectable weapon", () => {
+  const before = structuredClone(weapons);
+  const p = new AttackPresentation(weapons, { id: "", cooldown: 22, melee: true });
+  p.confirm(player({ weapon: "", ammo: 0 }));
+  assert.equal(p.fire(1, 0), true);
+  assert.equal(p.fire(2, 21), false);
+  assert.equal(p.fire(3, 22), true);
+  assert.deepEqual(weapons, before);
+  assert.equal(weapons.some(weapon => weapon.id === ""), false);
+});

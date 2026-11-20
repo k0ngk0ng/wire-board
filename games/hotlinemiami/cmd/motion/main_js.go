@@ -62,12 +62,17 @@ func main() {
 	weapons := js.FuncOf(func(this js.Value, args []js.Value) any {
 		return string(weaponJSON)
 	})
+	unarmedJSON, _ := json.Marshal(engine.UnarmedWeapon())
+	unarmed := js.FuncOf(func(this js.Value, args []js.Value) any {
+		return string(unarmedJSON)
+	})
 	api.Set("version", 1)
 	api.Set("unit", engine.Unit)
 	api.Set("fps", engine.FPS)
 	api.Set("init", init)
 	api.Set("move", move)
 	api.Set("weapons", weapons)
+	api.Set("unarmed", unarmed)
 	js.Global().Set("hotlineMotion", api)
 	select {}
 }

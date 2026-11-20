@@ -31,7 +31,7 @@ test("verified assets initialize under the platform CSP without blob image or sc
       if (scriptURL.startsWith("blob:")) { element.onerror(); return; }
       window.Go = class {
         importObject = {};
-        async run() { window.hotlineMotion = { init: () => true, move: () => [0, 0, 0], weapons: () => "[]" }; }
+        async run() { window.hotlineMotion = { init: () => true, move: () => [0, 0, 0], weapons: () => "[]", unarmed: () => '{"id":"","cooldown":22,"melee":true}' }; }
       };
       element.onload();
     } },
@@ -43,6 +43,9 @@ test("verified assets initialize under the platform CSP without blob image or sc
     assert.equal(bitmapCount, 1);
     assert.equal(scriptURL, "/csp-test/hotlinemiami/test-go.js");
     assert.equal(assets.images.size, 1);
+    assert.equal(assets.weapons.length, 0);
+    assert.equal(assets.unarmed.id, "");
+    assert.equal(assets.unarmed.melee, true);
     const progress = reports.findLast(report => report[2]);
     assert.equal(assets.sounds.size, 2);
     assert.equal(assets.sounds.get("pistol"), assets.sounds.get("uzi"));

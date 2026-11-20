@@ -70,7 +70,7 @@ func TestParallelRoomBudget(t *testing.T) {
 	rooms := make([]runningRoom, 8)
 	for index := range rooms {
 		ctx := gameapi.Context{Players: 4, Now: time.Unix(100000, 0), Automated: []bool{true, true, true, true}}
-		match, err := module.Start(ctx, encode(map[string]any{"map": []string{"no-talk", "full-house", "push-it"}[index%3]}))
+		match, err := module.Start(ctx, encode(map[string]any{"map": []string{"no-talk", "full-house", "push-it", "overdose", "tension", "neighbors"}[index%6]}))
 		if err != nil {
 			t.Fatal(err)
 		}

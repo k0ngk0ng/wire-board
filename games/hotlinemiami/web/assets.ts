@@ -4,7 +4,7 @@ import type { WeaponTiming } from "./attack.ts";
 declare global {
   interface Window {
     Go?: new () => { importObject: WebAssembly.Imports; run: (instance: WebAssembly.Instance) => Promise<void> };
-    hotlineMotion?: { init: (map: string) => boolean; move: MotionFunction; weapons: () => string };
+    hotlineMotion?: { init: (map: string) => boolean; move: MotionFunction; weapons: () => string; unarmed: () => string };
   }
 }
 
@@ -16,6 +16,7 @@ export type LoadedAssets = {
   sounds: Map<string, string>;
   motion: MotionFunction;
   weapons: WeaponTiming[];
+  unarmed: WeaponTiming;
   music?: string;
 };
 
@@ -227,8 +228,9 @@ export async function loadBattleAssets(base: string, mapID: string, characters: 
   for (const id of Object.keys(audio)) sounds.set(id, resourceURLs.get(`sound:${id}`)!);
   signal.throwIfAborted();
   const weapons = JSON.parse(window.hotlineMotion.weapons()) as WeaponTiming[];
+  const unarmed = JSON.parse(window.hotlineMotion.unarmed()) as WeaponTiming;
   const music = manifest.music ? assetURL(base, manifest.music.file) : undefined;
-  return { manifest, map, rules, images, sounds, motion: window.hotlineMotion.move, weapons, music };
+  return { manifest, map, rules, images, sounds, motion: window.hotlineMotion.move, weapons, unarmed, music };
 }
 
 export function imageResource(manifest: AssetManifest, reference: string): { resource: ImageResource; frame?: { x: number; y: number; w: number; h: number } } | undefined {

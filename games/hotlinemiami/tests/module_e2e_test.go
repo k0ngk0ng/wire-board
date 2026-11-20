@@ -107,7 +107,7 @@ func TestConfigurationAndPreparation(t *testing.T) {
 }
 
 func TestNaturalCompleteMatches(t *testing.T) {
-	for _, mapID := range []string{"no-talk", "full-house", "push-it"} {
+	for _, mapID := range []string{"no-talk", "full-house", "push-it", "overdose", "tension", "neighbors"} {
 		for _, count := range []int{2, 3, 4} {
 			t.Run(fmt.Sprintf("%s-%d", mapID, count), func(t *testing.T) {
 				module := game.Module()

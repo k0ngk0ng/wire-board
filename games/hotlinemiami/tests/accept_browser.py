@@ -16,7 +16,7 @@ BASE = ROOT / '.local/hotlinemiami/browser'
 REPORT_NAME = os.environ.get('HOTLINE_BROWSER_REPORT', 'current')
 assert re.fullmatch(r'[a-zA-Z0-9_-]{1,40}', REPORT_NAME), 'invalid report directory name'
 OUT = BASE / 'reports' / REPORT_NAME
-for directory in [BASE, OUT, ROOT / '.local/hotlinemiami/tmp', ROOT / '.local/hotlinemiami/go-cache', ROOT / '.local/hotlinemiami/go-mod', ROOT / '.local/hotlinemiami/s', BASE / 'main-profile', BASE / 'peer-profile']:
+for directory in [BASE, OUT, ROOT / '.local/hotlinemiami/tmp', ROOT / '.local/hotlinemiami/go-cache', ROOT / '.local/hotlinemiami/go-mod', ROOT / '.local/hotlinemiami/s', BASE / 'cache', BASE / 'main-profile', BASE / 'peer-profile']:
     directory.mkdir(parents=True, exist_ok=True)
 ENV = dict(os.environ, TMPDIR=str(ROOT / '.local/hotlinemiami/tmp'), GOTMPDIR=str(ROOT / '.local/hotlinemiami/tmp'), GOCACHE=str(ROOT / '.local/hotlinemiami/go-cache'), GOMODCACHE=str(ROOT / '.local/hotlinemiami/go-mod'), GOTOOLCHAIN='local', AGENT_BROWSER_SOCKET_DIR=str(ROOT / '.local/hotlinemiami/s'), XDG_CACHE_HOME=str(BASE / 'cache'), WIRE_BOARD_HOTLINE_BROWSER='1')
 REPORT = {'passed': False, 'scope': 'production HTTP/SQLite/WS rooms, native Chromium keyboard/mouse and simulated touch; no rule/state injection', 'cases': [], 'failures': [], 'diagnostic': os.environ.get('HOTLINE_BROWSER_DIAGNOSTIC') == '1', 'budgets': {'keyboardP95MS': 33, 'touchP95MS': 50, 'frameP95MS': 20, 'frameP99MS': 33, 'minimumVisibleFPS': 55}}
@@ -136,6 +136,21 @@ def image_audit(client):
     return evaluate(client, '([...document.querySelectorAll(".hm-preparation img,.hm-options img")].map(image=>({src:image.getAttribute("src"),loaded:image.complete&&image.naturalWidth>0,alt:image.alt,rect:image.getBoundingClientRect().toJSON()})))')
 
 
+def select_loadout(client, seat, character=None, weapon=None):
+    for kind, value in [('character', character), ('weapon', weapon)]:
+        if value is None:
+            continue
+        summary = '.hm-seat-choices:nth-child(' + str(seat + 1) + ') ' + ('.hm-picker:not(.hm-weapon-picker) summary' if kind == 'character' else '.hm-weapon-picker summary')
+        selector = '[data-hotlinemiami-' + kind + '="' + value + '"][data-seat="' + str(seat) + '"]'
+        wait_for(lambda: enabled(client, selector))
+        browser(client, 'scrollintoview', summary)
+        browser(client, 'click', summary)
+        browser(client, 'scrollintoview', selector)
+        browser(client, 'click', selector)
+        field = 'characters' if kind == 'character' else 'weapons'
+        wait_for(lambda: room(client)['options'][field][seat] == value and enabled(client, selector))
+
+
 def viewport_audit(client):
     return evaluate(client, '({width:innerWidth,height:innerHeight,overflow:document.documentElement.scrollWidth>innerWidth,canvas:document.querySelector("[data-hotlinemiami-canvas]")?.getBoundingClientRect().toJSON(),sticks:[...document.querySelectorAll("[data-hotlinemiami-stick]")].map(element=>({kind:element.dataset.hotlinemiamiStick,rect:element.getBoundingClientRect().toJSON()}))})')
 
@@ -214,6 +229,9 @@ def production_run():
             browser(client, 'reload')
             browser(client, 'wait', '--fn', 'document.body.innerText.includes("创建房间")')
             evaluate(client, '''(() => {window.__hotlineTrustedEvents=[];for(const type of ['keydown','keyup'])window.addEventListener(type,event=>{if(event.isTrusted)window.__hotlineTrustedEvents.push({type:event.type,at:performance.now(),trusted:true,key:event.code});},true);return true})()''')
+        catalogue = evaluate('main', 'fetch("/hotlinemiami/manifest.json").then(response=>response.json()).then(manifest=>({maps:manifest.maps,characters:manifest.characters,weapons:manifest.weapons}))')
+        assert [len(catalogue[key]) for key in ['maps', 'characters', 'weapons']] == [6, 8, 12], 'production catalogue differs from expanded release'
+        REPORT['catalogue'] = {key: [entry['id'] for entry in catalogue[key]] for key in ['maps', 'characters', 'weapons']}
         for mode in ['humans', 'computer']:
             password = uuid.uuid4().hex
             current = request('main', '/rooms', {'kind': 'hotlinemiami', 'name': '热线发布验收' + uuid.uuid4().hex[:6], 'password': password, 'capacity': 2, 'options': {'map': 'no-talk', 'roundSeconds': 180}})
@@ -224,7 +242,7 @@ def production_run():
                 request('peer', '/rooms/' + current['id'], {'type': 'join', 'version': room()['version'], 'nonce': uuid.uuid4().hex, 'password': password})
             else:
                 command('main', 'add_bot')
-            wait_for(lambda: len(image_audit('main')) >= 7 and all(image['loaded'] for image in image_audit('main')), 60)
+            wait_for(lambda: len(image_audit('main')) >= 10 and all(image['loaded'] for image in image_audit('main')), 60)
             screenshot('main', 'production-' + mode + '-waiting')
             command('main', 'ready')
             if mode == 'humans':
@@ -309,7 +327,13 @@ try:
           }, true);
           return true;
         })()''')
-    for index, (map_id, count, width, height) in enumerate([('no-talk', 2, 1440, 1000), ('full-house', 3, 390, 844), ('push-it', 4, 320, 760)]):
+    catalogue = evaluate('main', 'fetch("/hotlinemiami/manifest.json").then(response=>response.json()).then(manifest=>({maps:manifest.maps,characters:manifest.characters,weapons:manifest.weapons}))')
+    assert [len(catalogue[key]) for key in ['maps', 'characters', 'weapons']] == [6, 8, 12], 'expanded content catalogue is incomplete'
+    for key in ['maps', 'characters', 'weapons']:
+        assert len({entry['id'] for entry in catalogue[key]}) == len(catalogue[key]), 'duplicate content identity: ' + key
+    REPORT['catalogue'] = {key: [{'id': entry['id'], 'name': entry['name']} for entry in catalogue[key]] for key in ['maps', 'characters', 'weapons']}
+    cases = [(entry['id'], [2, 3, 4][index % 3], [1440, 390, 320][index % 3], [1000, 844, 760][index % 3]) for index, entry in enumerate(catalogue['maps'])]
+    for index, (map_id, count, width, height) in enumerate(cases):
         set_network('main', 40, 10)
         set_network('peer', 40, 10)
         browser('main', 'set', 'viewport', width, height)
@@ -318,7 +342,7 @@ try:
             browser('main', 'find', 'role', 'button', 'click', '--name', '创建房间', '--exact')
             browser('main', 'find', 'role', 'button', 'click', '--name', '迈阿密热线')
             browser('main', 'wait', '[data-create-step=setup]')
-            wait_for(lambda: evaluate('main', '[...document.querySelectorAll("[data-hotlinemiami-map] img")].filter(image=>image.complete&&image.naturalWidth>0).length===3'))
+            wait_for(lambda: evaluate('main', '[...document.querySelectorAll("[data-hotlinemiami-map] img")].filter(image=>image.complete&&image.naturalWidth>0).length===6'))
             screenshot('main', 'create-map-previews')
             browser('main', 'click', '[data-hotlinemiami-map="' + map_id + '"]')
             browser('main', 'select', '[aria-label="座位上限"]', str(count))
@@ -330,15 +354,44 @@ try:
         request('peer', '/rooms/' + current['id'], {'type': 'join', 'version': current['version'], 'nonce': uuid.uuid4().hex})
         for bot in range(count - 2):
             command('main', 'add_bot')
-        wait_for(lambda: len(image_audit('main')) >= 3 + count * 2 and all(image['loaded'] for image in image_audit('main')))
-        browser('main', 'click', '.hm-seat-choices:nth-child(1) .hm-picker:not(.hm-weapon-picker) summary')
-        browser('main', 'click', '[data-hotlinemiami-character="biker"][data-seat="0"]')
-        wait_for(lambda: room()['options']['characters'][0] == 'biker')
-        wait_for(lambda: enabled('main', '[data-hotlinemiami-character=biker][data-seat="0"]'))
-        browser('main', 'click', '.hm-seat-choices:nth-child(1) .hm-weapon-picker summary')
-        wait_for(lambda: enabled('main', '[data-hotlinemiami-weapon=uzi][data-seat="0"]'))
-        browser('main', 'click', '[data-hotlinemiami-weapon="uzi"][data-seat="0"]')
-        wait_for(lambda: room()['options']['weapons'][0] == 'uzi')
+        wait_for(lambda: len(image_audit('main')) >= 6 + count * 2 and all(image['loaded'] for image in image_audit('main')))
+        assert evaluate('main', 'document.querySelectorAll(' + json.dumps('[data-hotlinemiami-character][data-seat="0"]') + ').length') == 8
+        assert evaluate('main', 'document.querySelectorAll(' + json.dumps('[data-hotlinemiami-weapon][data-seat="0"]') + ').length') == 12
+        if index == 0:
+            for kind, picker in [('characters', '.hm-picker:not(.hm-weapon-picker)'), ('weapons', '.hm-weapon-picker')]:
+                summary = '.hm-seat-choices:nth-child(1) ' + picker + ' summary'
+                browser('main', 'scrollintoview', summary)
+                browser('main', 'click', summary)
+                browser('main', 'scrollintoview', '.hm-seat-choices:nth-child(1) ' + picker + ' .hm-picker-grid')
+                screenshot('main', 'expanded-' + kind + '-references')
+                browser('main', 'scrollintoview', summary)
+                browser('main', 'click', summary)
+            for character in catalogue['characters']:
+                select_loadout('main', 0, character=character['id'])
+            for weapon in catalogue['weapons']:
+                select_loadout('main', 0, weapon=weapon['id'])
+            browser('main', 'find', 'role', 'button', 'click', '--name', '玩法速查', '--exact')
+            wait_for(lambda: evaluate('main', '!!document.querySelector("[role=dialog]")'))
+            rule_rows = evaluate('main', 'Object.fromEntries(["map","character","weapon"].map(kind=>[kind,[...document.querySelectorAll("[data-hotlinemiami-rule-"+kind+"]")].map(row=>({id:row.getAttribute("data-hotlinemiami-rule-"+kind),description:row.querySelector("dd")?.textContent}))]))')
+            assert [len(rule_rows[key]) for key in ['map', 'character', 'weapon']] == [6, 8, 12]
+            assert all(row['description'] and len(row['description']) >= 6 for rows in rule_rows.values() for row in rows)
+            for group in range(1, 6):
+                selector = '[role=dialog] .hm-rule-group:nth-of-type(' + str(group) + ') summary'
+                browser('main', 'scrollintoview', selector)
+                browser('main', 'click', selector)
+            rules = evaluate('main', 'document.querySelector("[role=dialog]").innerText')
+            assert all(keyword in rules for keyword in ['地图', '造型', '武器', '弹药', '投掷', '复活', '混战', 'MP5', '双管', '斧', '砍']), 'expanded rules are incomplete'
+            REPORT['rules'] = rules
+            REPORT['ruleRows'] = rule_rows
+            screenshot('main', 'expanded-rules')
+            browser('main', 'scrollintoview', '[role=dialog] button[aria-label="关闭"]')
+            browser('main', 'click', '[role=dialog] button[aria-label="关闭"]')
+        character = catalogue['characters'][index % 8]['id']
+        weapon = ['uzi', 'magnum', 'mp5', 'double-barrel', 'm16', 'shotgun'][index]
+        select_loadout('main', 0, character=character, weapon=weapon)
+        select_loadout('peer', 1, character=catalogue['characters'][(index + 6) % 8]['id'], weapon=['axe', 'machete', 'katana', 'knife', 'bat', 'pistol'][index])
+        for seat in range(2, count):
+            select_loadout('main', seat, character=catalogue['characters'][(index + seat) % 8]['id'])
         options = room()['options']
         denied_selector = '[data-hotlinemiami-character][data-seat="0"],[data-hotlinemiami-weapon][data-seat="0"]'
         denied = evaluate('peer', '([...document.querySelectorAll(' + json.dumps(denied_selector) + ')].every(button=>button.disabled))')
@@ -351,17 +404,19 @@ try:
         command('main', 'start')
         wait_for(loaded, 60)
         wait_for(lambda: input_ready('main') and input_ready('peer'), 60)
+        peer_attack = native('peer', map_id + '-peer-attack')
         browser('main', 'scrollintoview', '[data-hotlinemiami-board]')
         audit = viewport_audit('main')
         assert not audit['overflow'], audit
         contrast = visual_audit('main')
         assert contrast and all(item['contrast'] >= 4.5 for item in contrast), contrast
         before = room()['game']['data']
-        entry = {'map': map_id, 'players': count, 'viewport': [width, height], 'images': preview_images, 'layout': audit, 'contrast': contrast, 'epoch': before['epoch'], 'transport': {'injectedRTTMS': 40, 'perDirectionJitterMS': 10, 'httpRoundTripMS': measured_http_round_trip('main'), 'httpProbeIncludesApplicationAndBrowserQueue': True}}
+        assert before['players'][0]['character'] == character and before['players'][0]['weapon'] == weapon
+        entry = {'map': map_id, 'players': count, 'viewport': [width, height], 'loadout': {'character': character, 'weapon': weapon}, 'peerAttack': peer_attack, 'images': preview_images, 'layout': audit, 'contrast': contrast, 'epoch': before['epoch'], 'transport': {'injectedRTTMS': 40, 'perDirectionJitterMS': 10, 'httpRoundTripMS': measured_http_round_trip('main'), 'httpProbeIncludesApplicationAndBrowserQueue': True}}
         REPORT['cases'].append(entry)
         save()
         if width >= 650:
-            entry['normal'] = native('main', map_id + '-normal')
+            entry['normal'] = native('main', map_id + '-normal', unarmed=index == 0)
         else:
             entry['touch'] = native('main', map_id + '-touch', touch=True)
         entry['observedNetwork'] = [seat.get('network') for seat in room()['seats']]
@@ -379,7 +434,7 @@ try:
         browser('main', 'click', 'button[aria-label="退出全屏"]')
         wait_for(lambda: not evaluate('main', '!!document.querySelector("[data-room-fullscreen]")'))
         browser('main', 'scrollintoview', '[data-hotlinemiami-board]')
-        if count == 4:
+        if index == len(cases) - 1:
             set_network('peer', 250, 15)
             peer_epoch = room('peer')['game']['data']['epoch']
             entry['slowPeerTransport'] = {'injectedRTTMS': 250, 'perDirectionJitterMS': 15, 'httpRoundTripMS': measured_http_round_trip('peer'), 'httpProbeIncludesApplicationAndBrowserQueue': True}

@@ -27,8 +27,14 @@ test("native WASM movement hook shares integer collision and bounded prediction"
   assert.equal(motion.version, 1);
   assert.equal(motion.unit, 256);
   const weapons = JSON.parse(motion.weapons());
-  assert.equal(weapons.length, 7);
+  assert.equal(weapons.length, 12);
   assert.equal(weapons.find((weapon) => weapon.id === "pistol").cooldown, 15);
+  const unarmed = JSON.parse(motion.unarmed());
+  assert.equal(unarmed.id, "");
+  assert.equal(unarmed.cooldown, 22);
+  assert.equal(unarmed.range, 25 * 256);
+  assert.equal(unarmed.melee, true);
+  assert.equal(weapons.some((weapon) => weapon.id === ""), false);
   assert.equal(motion.init(JSON.stringify({ id: "fixture", width: 163840, height: 122880, walls: [{ x: 32768, y: 0, w: 256, h: 122880 }], spawns: [], doors: [] })), true);
   const moved = motion.move(25600, 51200, 0, 1000, 0, 9);
   assert.ok(moved[0] > 25600 && moved[0] <= 32768 - 9 * 256);
