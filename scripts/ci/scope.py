@@ -349,6 +349,9 @@ def ci_path(path):
 def game_names(root):
     return sorted(p.name for p in (root/'games').iterdir() if p.is_dir() and not p.name.startswith(('.', '_')))
 
+def cover_path(path, games):
+    return any(path in (f'games/{game}/web/Cover.tsx', f'scripts/{game}/accept_cover.py', f'scripts/{game}/cover_harness.tsx') for game in games)
+
 def plan(paths, games, manual='', legacy_sources=None, contra_campaigns=False, validation='auto', resume_games=()):
     if validation not in ('auto', 'quick', 'full'): raise ValueError('Unknown validation mode: ' + validation)
     if validation == 'full': manual = 'all'
@@ -366,7 +369,7 @@ def plan(paths, games, manual='', legacy_sources=None, contra_campaigns=False, v
     for path in paths:
         active_path = path
         if path.endswith('.md') or path.startswith('docs/'): continue
-        if ci_path(path): continue
+        if ci_path(path) or cover_path(path, games): continue
         if path == 'cmd/verify-yuyu-arena-aux/main.go':
             add('yuyuhakusho', True)
             continue
@@ -424,7 +427,7 @@ def plan(paths, games, manual='', legacy_sources=None, contra_campaigns=False, v
         elif path.startswith('cmd/'):
             components.add('ci')
             shared = True
-        elif path.startswith(('web/src/', 'web/tests/')) or path == 'scripts/check-release-history.py':
+        elif cover_path(path, games) or path.startswith(('web/src/', 'web/tests/')) or path == 'scripts/check-release-history.py':
             frontend_checks = True
         elif path in ('scripts/update.sh', 'scripts/test_update.py', 'compose.yaml', 'Dockerfile', '.env.example'):
             components.add('deployment')

@@ -31,6 +31,29 @@ scope = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(scope)
 
 class ScopeTests(unittest.TestCase):
+    def test_cover_changes_build_frontend_without_game_ci(self):
+        for game in scope.game_names(ROOT):
+            paths = [f'games/{game}/web/Cover.tsx', f'scripts/{game}/accept_cover.py', f'scripts/{game}/cover_harness.tsx']
+            for path in paths:
+                with self.subTest(path=path):
+                    result = self.plan(path)
+                    self.assertEqual(result['games'], [])
+                    self.assertEqual(result['quick_components'], ['frontend'])
+                    self.assertFalse(result['has_shared'])
+                    self.assertTrue(result['frontend_checks'])
+                    self.assertTrue(result['build_required'])
+
+    def test_cover_exemption_preserves_mixed_and_explicit_game_checks(self):
+        cover = 'games/basketball/web/Cover.tsx'
+        for path, backend in [('games/basketball/web/Board.tsx', False), ('games/basketball/server/module.go', True)]:
+            result = self.plan(cover, path)
+            self.assertEqual(result['games'], [{'game': 'basketball', 'backend': backend}])
+            self.assertTrue(result['frontend_checks'])
+        explicit = self.plan(cover, manual='basketball')
+        self.assertEqual(explicit['games'], [{'game': 'basketball', 'backend': True}])
+        self.assertTrue(self.plan(cover, manual='all')['has_games'])
+        self.assertTrue(self.plan('games/unknown/web/Cover.tsx')['has_shared'])
+
     def test_candidate_smoke_receives_the_complete_oss_configuration(self):
         workflow = (ROOT / '.github/workflows/build.yml').read_text()
         smoke = workflow.split('      - name: Smoke test Linux binary', 1)[1].split('      - uses:', 1)[0]
