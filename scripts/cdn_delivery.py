@@ -345,7 +345,7 @@ def publish(dist,rows,bucket,endpoint):
   previous=unique.get(row['url'])
   if previous is not None and any(previous[key]!=row[key] for key in ('sha256','bytes','mime','encoding')):raise ValueError('One URL has conflicting identities')
   unique[row['url']]=row
- with concurrent.futures.ThreadPoolExecutor(max_workers=6) as pool:results=list(pool.map(lambda row:retry_request(lambda:upload(row),row["url"]),unique.values()))
+ with concurrent.futures.ThreadPoolExecutor(max_workers=48) as pool:results=list(pool.map(lambda row:retry_request(lambda:upload(row),row["url"]),unique.values()))
  stats={'logicalFiles':len(rows),'reusedObjects':sum(not created for created,size,reused,raw in results),'reusedBytes':sum(raw for created,size,reused,raw in results if not created),'reusedWireBytes':sum(reused for created,size,reused,raw in results),'uploadedObjects':sum(created for created,size,reused,raw in results),'uploadedBytes':sum(size for created,size,reused,raw in results),'putRequests':sum(count for count,size in attempts.values()),'submittedBytes':sum(size for count,size in attempts.values())}
  print(json.dumps(stats),flush=True)
  return stats
@@ -402,7 +402,7 @@ def main():
   if inventory(args.dist,base)!=rows or receipt.exists() and sha(receipt.read_bytes())!=report.get('contraDeliverySHA256'):raise ValueError('Local assets changed during upload')
   report.update(passed=True,stage='uploaded');args.report.write_text(json.dumps(report,indent=2)+'\n');print(f'Uploaded {len(rows)} immutable OSS assets; CDN readback awaits local verification');return
  unique={row['url']:row for row in rows+external}
- with concurrent.futures.ThreadPoolExecutor(max_workers=6) as pool:list(pool.map(verify,unique.values()))
+ with concurrent.futures.ThreadPoolExecutor(max_workers=24) as pool:list(pool.map(verify,unique.values()))
  if inventory(args.dist,base)!=rows or receipt.exists() and sha(receipt.read_bytes())!=report.get('contraDeliverySHA256'):raise ValueError('Local assets changed during CDN verification')
  report.update(passed=True,stage='verified',cdnVerified=True,verificationLocation='local');args.report.write_text(json.dumps(report,indent=2)+'\n');print(f'Locally verified {len(rows)} CDN assets; MIME, CORS and SHA-256 passed')
 if __name__=='__main__':main()

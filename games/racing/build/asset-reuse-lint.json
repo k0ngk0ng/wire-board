@@ -27,6 +27,7 @@
   "files": [
     "scripts/asset_reuse.py",
     "scripts/cdn_delivery.py",
+    "scripts/ci/cdn_concurrency_e2e_test.py",
     "scripts/asset_reuse_e2e_test.py",
     "internal/server/static_media.go",
     "internal/server/static_media_reuse_e2e_test.go",

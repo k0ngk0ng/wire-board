@@ -33,6 +33,8 @@ gh workflow run build.yml --ref main -f validation=full
 
 普通源码变更仍需构建当前应用。自动模式的构建与快速结果分别显示；快速结果不等待资源上传和二进制打包。仅修改 CI 或文档时没有发布包，这类成功验证也会推进增量基线，避免下一次把旧改动重复计算进来。
 
+资源发布工具 `scripts/cdn_delivery.py` 及其测试归 CI 工具验收，同时要求重新构建候选包；它们不改变游戏规则或游戏检查输入。OSS 发布使用 48 路持久连接核对已有对象，本地 CDN 回读使用 24 路连接；每个对象的摘要、大小、MIME、编码及音频 Range 校验保持不变。真实 HTTPS 批量验收覆盖重复对象去重、签名和末尾对象损坏导致整批失败，结果保存在 `.local/resource-cleanup/cdn-concurrency/`。
+
 ## 魂斗罗与资源绑定
 
 `contra` 是魂斗罗的游戏 ID。初始化、错误注入和竞态验收归魂斗罗任务，只有改到该游戏时才执行。电脑通关研究迁至独立的 `Optional Contra computer research` 工作流，只能手动触发，不出现在普通主流程中。

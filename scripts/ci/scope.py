@@ -335,9 +335,10 @@ FAST_COMPONENTS = {
 }
 
 LINT_TOOL_FILES = {'games/racing/build/lint_go.go'}
+ASSET_DELIVERY_FILES = {'scripts/cdn_delivery.py', 'scripts/test_cdn_delivery.py'}
 
 def ci_path(path):
-    return path.startswith(('.github/workflows/', 'scripts/ci/')) or path in {
+    return path in ASSET_DELIVERY_FILES or path.startswith(('.github/workflows/', 'scripts/ci/')) or path in {
         'scripts/release-source.cjs', 'scripts/release-source.test.cjs',
         'scripts/cdn_local_ready.py', 'scripts/test_cdn_local_ready.py',
         'games/racing/build/asset-reuse-lint.json',
@@ -436,7 +437,7 @@ def plan(paths, games, manual='', legacy_sources=None, contra_campaigns=False, v
     if frontend_checks: components.add('frontend')
     if validation == 'quick' and any(p.startswith('web/') and not p.endswith('.md') for p in paths):
         components.add('typescript')
-    build_required = validation != 'quick' and bool(manual or resume_games or any(not ci_path(p) for p in code_paths))
+    build_required = validation != 'quick' and bool(manual or resume_games or any(not ci_path(p) or p in ASSET_DELIVERY_FILES for p in code_paths))
     return {'games': rows, 'matrix': {'include': matrix}, 'has_games': bool(rows),
             'has_shared': shared, 'has_quick': bool(components),
             'quick_components': sorted(components),
@@ -565,6 +566,8 @@ def quick_commands(root, components):
                 ['python3', '-B', 'scripts/ci/pal-release-e2e.py'],
                 ['node', '--test', 'scripts/ci/baseline.test.cjs', 'scripts/release-source.test.cjs'],
                 ['python3', '-B', 'scripts/test_cdn_local_ready.py'],
+                ['python3', '-B', 'scripts/test_cdn_delivery.py'],
+                ['python3', '-B', 'scripts/ci/cdn_concurrency_e2e_test.py'],
             ]
         elif component == 'deployment':
             commands += [['bash', '-n', 'scripts/update.sh'], ['python3', '-B', 'scripts/test_update.py']]

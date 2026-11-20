@@ -31,6 +31,18 @@ scope = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(scope)
 
 class ScopeTests(unittest.TestCase):
+    def test_asset_delivery_tools_require_fresh_build_and_their_own_acceptance(self):
+        for path in ['scripts/cdn_delivery.py', 'scripts/test_cdn_delivery.py']:
+            result = self.plan(path)
+            self.assertEqual(result['quick_components'], ['ci'])
+            self.assertFalse(result['has_shared'])
+            self.assertFalse(result['frontend_checks'])
+            self.assertEqual(result['games'], [])
+            self.assertTrue(result['build_required'])
+        commands = scope.quick_commands(ROOT, ['ci'])
+        self.assertIn(['python3', '-B', 'scripts/test_cdn_delivery.py'], commands)
+        self.assertIn(['python3', '-B', 'scripts/ci/cdn_concurrency_e2e_test.py'], commands)
+
     def test_resumed_games_remain_required_and_proof_is_bound_to_the_plan(self):
         result = scope.plan(['scripts/ci/scope.py'], scope.game_names(ROOT), resume_games=('catan',))
         self.assertEqual(result['games'], [{'game': 'catan', 'backend': True}])
