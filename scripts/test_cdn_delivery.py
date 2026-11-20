@@ -371,14 +371,14 @@ class NetworkRecovery(unittest.TestCase):
   import io
   from unittest.mock import patch
   from urllib.error import HTTPError,URLError
-  body=b'asset';response=io.BytesIO(body);response.headers={'Content-Type':'application/octet-stream'}
+  body=b'asset';response=io.BytesIO(b'');response.headers={'Content-Type':'application/octet-stream','Content-Length':str(len(body)),'ETag':'"'+hashlib.md5(body).hexdigest()+'"'}
   row={'url':'https://cdn.ichenj.com/bga/asset','path':'asset','bytes':len(body),'encoding':'','sha256':cdn.sha(body),'mime':'application/octet-stream'}
   with tempfile.TemporaryDirectory() as temp:
    dist=Path(temp);(dist/'asset').write_bytes(body)
    with patch.object(cdn,'credentials',return_value=('test','test')),patch.object(cdn.time,'sleep'),patch.object(cdn,'urlopen',side_effect=[HTTPError('url',404,'missing',{},None),URLError(TimeoutError()),response]) as request:
     stats=cdn.publish(dist,[row],'bucket','example.invalid')
     self.assertEqual(stats['uploadedObjects'],1);self.assertEqual(stats['uploadedBytes'],len(body));self.assertEqual(stats['putRequests'],1)
-    self.assertEqual([c.args[0].get_method() for c in request.call_args_list],['GET','PUT','GET'])
+    self.assertEqual([c.args[0].get_method() for c in request.call_args_list],['HEAD','PUT','HEAD'])
     self.assertEqual(request.call_args_list[1].args[0].get_header('X-oss-forbid-overwrite'),'true')
  def test_range_network_retry_still_checks_full_body_and_range(self):
   import io

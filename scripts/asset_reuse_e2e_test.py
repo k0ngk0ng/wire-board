@@ -239,9 +239,10 @@ class AssetReuseE2E(unittest.TestCase):
                 yield response
             elif key in store:
                 body, headers = store[key]
-                response = BytesIO(body)
+                self.assertEqual(request.get_method(), 'HEAD')
+                response = BytesIO(b'')
                 response.status = 200
-                response.headers = headers
+                response.headers = {**headers, 'Content-Length': str(len(body)), 'ETag': '"' + hashlib.md5(body).hexdigest() + '"'}
                 yield response
             else:
                 raise HTTPError(request.full_url, 404, 'missing', {}, BytesIO())

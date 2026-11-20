@@ -1,0 +1,52 @@
+name: Restore verified resources without paid downloads
+description: Restore only declared scope inputs from verified GitHub caches and fail closed on a cache miss
+inputs:
+  scope:
+    description: frontend, server, shared, or game
+    required: true
+  game:
+    description: Game ID for a game scope
+    default: ''
+  report-suffix:
+    description: Distinguish parallel research jobs
+    default: '0'
+runs:
+  using: composite
+  steps:
+    - name: Enforce resource traffic policy
+      shell: bash
+      run: python3 -B scripts/ci/traffic_lint.py --self-test
+    - name: Plan immutable resource cache
+      id: plan
+      shell: bash
+      env:
+        RESOURCE_SCOPE: ${{ inputs.scope }}
+        RESOURCE_GAME: ${{ inputs.game }}
+      run: |
+        args=(plan --scope "$RESOURCE_SCOPE" --github-output "$GITHUB_OUTPUT")
+        if [ -n "$RESOURCE_GAME" ]; then args+=(--game "$RESOURCE_GAME"); fi
+        python3 -B scripts/ci/resources.py "${args[@]}"
+    - uses: actions/cache/restore@v4
+      with:
+        path: ${{ steps.plan.outputs.path }}
+        key: ${{ steps.plan.outputs.key }}
+        restore-keys: ${{ steps.plan.outputs.prefix }}
+    - name: Verify and restore cached inputs with zero OSS budget
+      shell: bash
+      env:
+        RESOURCE_SCOPE: ${{ inputs.scope }}
+        RESOURCE_GAME: ${{ inputs.game }}
+      run: |
+        args=(restore --scope "$RESOURCE_SCOPE" --max-download-bytes 0)
+        if [ -n "$RESOURCE_GAME" ]; then args+=(--game "$RESOURCE_GAME"); fi
+        python3 -B scripts/ci/resources.py "${args[@]}"
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: resource-traffic-${{ inputs.scope }}-${{ inputs.game || 'platform' }}-${{ inputs.report-suffix }}
+        path: |
+          .local/ci-traffic/lint.json
+          ${{ steps.plan.outputs.report }}
+        include-hidden-files: true
+        if-no-files-found: error
+        retention-days: 7

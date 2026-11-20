@@ -307,38 +307,67 @@ def retry_request(action,label):
 
 def publish(dist,rows,bucket,endpoint):
  key_id,secret=credentials()
- attempts={}
+ attempts={};counts={'headRequests':0,'getRequests':0,'downloadedBytes':0,'receiptReusedObjects':0};lock=threading.Lock()
+ def head(row,key,url,body):
+  date=formatdate(usegmt=True)
+  canonical=f'HEAD\n\n\n{date}\n/{bucket}/{key}'
+  signature=base64.b64encode(hmac.new(secret.encode(),canonical.encode(),hashlib.sha1).digest()).decode()
+  request=Request(url,method='HEAD',headers={'Date':date,'Authorization':f'OSS {key_id}:{signature}'})
+  with lock:counts['headRequests']+=1
+  with urlopen(request,timeout=45) as response:
+   headers=response.headers
+   encoding=headers.get('Content-Encoding','')
+   mime=headers.get('Content-Type','').split(';')[0].lower()
+   if encoding not in ({row['encoding']} if row.get('encoding') else {'','identity'}):raise ValueError('Immutable encoding differs: '+key)
+   if mime!=row['mime'] and not (row['mime']=='text/javascript' and mime=='application/javascript'):raise ValueError('Immutable MIME differs: '+key)
+   digest=headers.get('x-oss-meta-sha256')
+   size=headers.get('x-oss-meta-decoded-bytes')
+   if digest is not None and digest!=row['sha256'] or size is not None and size!=str(row['bytes']):raise ValueError('Immutable object already differs: '+key)
+   if body is not None:
+    etags={hashlib.md5(body).hexdigest()}
+    if row.get('encoding')=='gzip':
+     for operating_system in [3,255]:
+      compatible=bytearray(body);compatible[9]=operating_system;etags.add(hashlib.md5(compatible).hexdigest())
+    if headers.get('Content-Length')!=str(len(body)) or headers.get('ETag','').strip('"').lower() not in etags:raise ValueError('Immutable object already differs: '+key)
+   elif digest!=row['sha256'] or size!=str(row['bytes']):raise ValueError('External object requires a verified receipt or SHA-256 metadata: '+key)
+   elif not row.get('encoding') and headers.get('Content-Length')!=str(row['bytes']):raise ValueError('Immutable object already differs: '+key)
  def upload(row):
   key=urlsplit(row['url']).path.lstrip('/')
   url='https://'+endpoint+'/'+key
-
-  date=formatdate(usegmt=True)
-  canonical=f'GET\n\n\n{date}\n/{bucket}/{key}'
-  signature=base64.b64encode(hmac.new(secret.encode(),canonical.encode(),hashlib.sha1).digest()).decode()
-  get=Request(url,headers={'Date':date,'Authorization':f'OSS {key_id}:{signature}'})
+  if row.get('receiptVerified'):
+   if not row.get('previouslyPublished'):raise ValueError('Unbound immutable publication receipt')
+   with lock:counts['receiptReusedObjects']+=1
+   return False,0,0,row['bytes']
+  target=dist/row['path']
+  if target.is_symlink() or not target.resolve().is_relative_to(dist.resolve()):raise ValueError('Unsafe publication input')
+  body=target.read_bytes() if target.is_file() else None
+  if body is not None:
+   if len(body)!=row['bytes'] or sha(body)!=row['sha256']:raise ValueError('Local publication input differs: '+key)
+   if row.get('encoding'):body=gzip.compress(body,mtime=0)
   try:
-   with urlopen(get,timeout=45) as r:
-    stored=r.read();existing=decoded(stored,r.headers)
-    if r.headers.get('Content-Encoding','') not in ({row['encoding']} if row.get('encoding') else {'','identity'}):raise ValueError('Immutable encoding differs: '+key)
-   mime=r.headers.get('Content-Type','').split(';')[0].lower()
-   if mime!=row['mime'] and not (row['mime']=='text/javascript' and mime=='application/javascript'):raise ValueError('Immutable MIME differs: '+key)
-   if len(existing)!=row['bytes'] or sha(existing)!=row['sha256']:raise ValueError('Immutable object already differs: '+key)
+   head(row,key,url,body)
    submitted=attempts.get(row['url'])
-   return (True,len(stored),0,row['bytes']) if submitted else (False,0,len(stored),row['bytes'])
+   return (True,submitted[1],0,row['bytes']) if submitted else (False,0,0,row['bytes'])
   except HTTPError as e:
    if e.code!=404:raise
    e.close()
    if row.get('previouslyPublished'):raise ValueError('Previously published object is missing: '+key)
-  body=(dist/row['path']).read_bytes()
-  if row['encoding']:body=gzip.compress(body,mtime=0)
+  if body is None:raise ValueError('Missing local publication input: '+key)
   md5=base64.b64encode(hashlib.md5(body).digest()).decode();date=formatdate(usegmt=True)
-  canonical=f'PUT\n{md5}\n{row["mime"]}\n{date}\nx-oss-forbid-overwrite:true\n/{bucket}/{key}'
+  metadata={'x-oss-forbid-overwrite':'true','x-oss-meta-decoded-bytes':str(row['bytes']),'x-oss-meta-sha256':row['sha256']}
+  extra=''.join(name+':'+value+'\n' for name,value in sorted(metadata.items()))
+  canonical=f'PUT\n{md5}\n{row["mime"]}\n{date}\n{extra}/{bucket}/{key}'
   signature=base64.b64encode(hmac.new(secret.encode(),canonical.encode(),hashlib.sha1).digest()).decode()
-  request=Request(url,data=body,method='PUT',headers={'Content-MD5':md5,'Content-Type':row['mime'],'Date':date,'x-oss-forbid-overwrite':'true','Cache-Control':'public, max-age=31536000, immutable','Authorization':f'OSS {key_id}:{signature}'})
+  request=Request(url,data=body,method='PUT',headers={'Content-MD5':md5,'Content-Type':row['mime'],'Date':date,**metadata,'Cache-Control':'public, max-age=31536000, immutable','Authorization':f'OSS {key_id}:{signature}'})
   if row['encoding']:request.add_header('Content-Encoding',row['encoding'])
   previous=attempts.get(row['url'],(0,0));attempts[row['url']]=(previous[0]+1,previous[1]+len(body))
-  with urlopen(request,timeout=45) as r:
-   if r.status!=200:raise ValueError('Upload failed: '+key)
+  try:
+   with urlopen(request,timeout=45) as r:
+    if r.status!=200:raise ValueError('Upload failed: '+key)
+  except HTTPError as error:
+   if error.code!=409:raise
+   error.close();head(row,key,url,body)
+   return False,0,0,row['bytes']
   return True,len(body),0,row['bytes']
  unique={}
  for row in rows:
@@ -346,11 +375,20 @@ def publish(dist,rows,bucket,endpoint):
   if previous is not None and any(previous[key]!=row[key] for key in ('sha256','bytes','mime','encoding')):raise ValueError('One URL has conflicting identities')
   unique[row['url']]=row
  results=[];started=time.monotonic_ns()
- with concurrent.futures.ThreadPoolExecutor(max_workers=48) as pool:
-  for count,result in enumerate(pool.map(lambda row:retry_request(lambda:upload(row),row["url"]),unique.values()),1):
-   results.append(result)
-   if count%1000==0 or count==len(unique):print(json.dumps({'stage':'oss-verification','verifiedObjects':count,'totalObjects':len(unique),'elapsedSeconds':(time.monotonic_ns()-started)//1000000000}),flush=True)
- stats={'logicalFiles':len(rows),'reusedObjects':sum(not created for created,size,reused,raw in results),'reusedBytes':sum(raw for created,size,reused,raw in results if not created),'reusedWireBytes':sum(reused for created,size,reused,raw in results),'uploadedObjects':sum(created for created,size,reused,raw in results),'uploadedBytes':sum(size for created,size,reused,raw in results),'putRequests':sum(count for count,size in attempts.values()),'submittedBytes':sum(size for count,size in attempts.values())}
+ def statistics():
+  return {'logicalFiles':len(rows),'reusedObjects':sum(not created for created,size,reused,raw in results),'reusedBytes':sum(raw for created,size,reused,raw in results if not created),'reusedWireBytes':0,'uploadedObjects':sum(created for created,size,reused,raw in results),'uploadedBytes':sum(size for created,size,reused,raw in results),'putRequests':sum(count for count,size in attempts.values()),'submittedBytes':sum(size for count,size in attempts.values()),**counts}
+ def process(row):
+  result=retry_request(lambda:upload(row),row['url'])
+  with lock:results.append(result)
+  return result
+ try:
+  with concurrent.futures.ThreadPoolExecutor(max_workers=48) as pool:
+   for count,result in enumerate(pool.map(process,unique.values()),1):
+    if count%1000==0 or count==len(unique):print(json.dumps({'stage':'oss-verification','verifiedObjects':count,'totalObjects':len(unique),'elapsedSeconds':(time.monotonic_ns()-started)//1000000000}),flush=True)
+ except Exception as error:
+  error.publication=statistics()
+  raise
+ stats=statistics()
  print(json.dumps(stats),flush=True)
  return stats
 
@@ -364,7 +402,10 @@ def external_inventory(dist):
  rows=[]
  for path,record in document.get('external',{}).items():
   validate_asset_url(record['url'])
-  row={**record,'path':path.lstrip('/'),'previouslyPublished':True}
+  known=document.get('objects',{}).get(record['url'],{})
+  verified=known.get('verified') is True
+  if verified and any(known.get(key,'')!=record.get(key,'') for key in ('sha256','bytes','mime','encoding')):raise ValueError('External publication receipt differs')
+  row={**record,'path':path.lstrip('/'),'previouslyPublished':verified,'receiptVerified':verified}
   if row['mime'].startswith('audio/'):row['requiresRange']=True
   rows.append(row)
  return rows
@@ -401,7 +442,12 @@ def main():
  receipt=args.dist/'contra-delivery.json'
  if receipt.exists():report['contraDeliverySHA256']=sha(receipt.read_bytes())
  args.report.write_text(json.dumps(report,indent=2)+'\n')
- if args.action in ('upload','publish'):report['publication']=publish(args.dist,rows+external,configuration()['OSS_BUCKET'],configuration()['OSS_ENDPOINT'])
+ if args.action in ('upload','publish'):
+  try:report['publication']=publish(args.dist,rows+external,configuration()['OSS_BUCKET'],configuration()['OSS_ENDPOINT'])
+  except Exception as error:
+   report.update(stage='upload-failed',error=str(error),publication=getattr(error,'publication',{'getRequests':0,'downloadedBytes':0}))
+   args.report.write_text(json.dumps(report,indent=2)+'\n')
+   raise
  if args.action=='upload':
   if inventory(args.dist,base)!=rows or receipt.exists() and sha(receipt.read_bytes())!=report.get('contraDeliverySHA256'):raise ValueError('Local assets changed during upload')
   report.update(passed=True,stage='uploaded');args.report.write_text(json.dumps(report,indent=2)+'\n');print(f'Uploaded {len(rows)} immutable OSS assets; CDN readback awaits local verification');return

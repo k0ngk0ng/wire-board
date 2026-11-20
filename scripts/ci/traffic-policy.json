@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "normalDownloadBytes": 0,
+  "publicationGetBytes": 0,
+  "maintenanceMaxDownloadBytes": 2147483648,
+  "frontendInputs": [
+    "web/public/**",
+    "web/src/**",
+    "games/*/assets/public/**",
+    "games/*/web/**",
+    "games/contra/assets/audio-pack-v1.tar.xz"
+  ],
+  "serverInputs": [
+    "games/pal/native/upstream/fontglyph*.h",
+    "games/pal/native/upstream/ascii.h"
+  ],
+  "pythonFiles": [
+    "scripts/ci/resources.py",
+    "scripts/ci/resources_e2e_test.py",
+    "scripts/ci/publication_traffic_e2e_test.py",
+    "scripts/ci/traffic_lint.py",
+    "scripts/ci/traffic_lint_e2e_test.py"
+  ]
+}

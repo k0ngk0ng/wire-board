@@ -34,7 +34,43 @@ gh workflow run build.yml --ref main -f validation=full
 
 普通源码变更仍需构建当前应用。自动模式的构建与快速结果分别显示；快速结果不等待资源上传和二进制打包。仅修改 CI 或文档时没有发布包，这类成功验证也会推进增量基线，避免下一次把旧改动重复计算进来。
 
-资源发布工具 `scripts/cdn_delivery.py` 及其测试归 CI 工具验收，同时要求重新构建候选包；它们不改变游戏规则或游戏检查输入。OSS 发布使用 48 路持久连接核对已有对象，本地 CDN 回读使用 24 路连接；每个对象的摘要、大小、MIME、编码及音频 Range 校验保持不变。真实 HTTPS 批量验收覆盖重复对象去重、签名和末尾对象损坏导致整批失败，结果保存在 `.local/resource-cleanup/cdn-concurrency/`。
+资源发布、恢复与复用工具及其测试归 CI 工具验收，同时要求重新构建候选包；它们不改变游戏规则或游戏检查输入。OSS 发布使用 HEAD 验证当前构建对象，并复用已通过本地回读的外部对象身份记录，不 GET 对象正文。本地 CDN 回读继续执行正文、MIME、编码、CORS 和音频 Range 校验。真实 HTTPS 验收覆盖去重、签名、并发冲突和损坏导致整批失败。
+
+## 零付费下载与资源缓存
+
+普通 CI 的资源正文下载预算为 0。前端、共享、服务器和单游戏分别通过 `.github/actions/restore-resources` 恢复 GitHub 缓存；缺失或损坏时失败，并上传 `resource-traffic-*` 报告，不自动访问 OSS／CDN。主工作流、全量游戏入口和魂斗罗研究入口使用同一约束。
+
+| 用途 | 恢复范围 |
+| --- | --- |
+| `frontend` | 公开素材、前端导入的图片与字体、声明的客户端运行时资源、魂斗罗音频包和必要生产嵌入输入 |
+| `server` | 生产嵌入输入、PAL 服务端构建头文件和已登记服务端发行包 |
+| `shared` | 平台测试资源和生产嵌入输入 |
+| `game` | 指定游戏、公共测试和生产嵌入输入 |
+
+缓存键只取本用途选中的对象身份和映射。应用代码变化或无关游戏资源变化不会改变缓存键；旧键恢复后仍按当前清单验证每个对象。每个对象按内容地址去重，正文验证通过后才恢复逻辑路径。
+
+游戏缓存与报告分别保存在 `.local/<game-id>/cache/ci-resources/` 和 `.local/<game-id>/verification/ci-traffic/`；平台缓存与报告使用 `.local/ci-resource-cache/` 和 `.local/ci-traffic/`。手动准备发现精确命中的缓存键已损坏时，校验修复成功后仅替换该键；完整缓存不重新上传。
+
+首次启用、增加资源或缓存被 GitHub 淘汰后，需要显式准备对应用途。先查看计划，再以明确字节预算运行手动工作流。单次上限为 2 GiB；预算为 0 时拒绝缺失对象下载。预算按缺失对象的最大响应大小预留，包含 gzip 上界和超限探测字节；失败不自动重试，后续准备保留并复用已校验对象。
+
+```sh
+python3 -B scripts/ci/resources.py plan --scope frontend
+python3 -B scripts/ci/resources.py plan --scope game --game gomoku
+gh workflow run resource-cache.yml --ref main -f scope=frontend -f max_download_bytes=536870912
+gh workflow run resource-cache.yml --ref main -f scope=server -f max_download_bytes=16777216
+gh workflow run resource-cache.yml --ref main -f scope=game -f game=gomoku -f max_download_bytes=67108864
+```
+
+示例预算不是自动授权；实际缺失量以本次计划和缓存报告为准。准备工作流只读取私有桶，不发布版本、不更新服务器。普通资源恢复步骤没有 OSS 密钥。资源缓存只保存经过摘要验证的内容，不保存凭据或旧的 `wire-board` 服务端二进制。
+
+复跑以下验收只访问本机服务，不消耗线上资源流量。结果保存在 `.local/ci-traffic/`；并发发布结果仍保存在 `.local/resource-cleanup/cdn-concurrency/`。
+
+```sh
+python3 -B scripts/ci/resources_e2e_test.py
+python3 -B scripts/ci/publication_traffic_e2e_test.py
+python3 -B scripts/ci/traffic_lint_e2e_test.py
+python3 -B scripts/ci/traffic_lint.py --self-test
+```
 
 ## 魂斗罗与资源绑定
 

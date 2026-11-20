@@ -31,6 +31,14 @@ scope = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(scope)
 
 class ScopeTests(unittest.TestCase):
+    def test_paid_traffic_policy_runs_before_build_selection_and_shared_vet_is_scoped(self):
+        workflow = (ROOT / '.github/workflows/build.yml').read_text()
+        plan = workflow.split('  plan:', 1)[1].split('  quick:', 1)[0]
+        self.assertIn('python3 -B scripts/ci/traffic_lint.py --self-test', plan)
+        self.assertLess(plan.index('traffic_lint.py'), plan.index('Find the last verified ancestor'))
+        self.assertIn('go vet . ./internal/...', workflow)
+        self.assertNotIn('go vet ./...', workflow)
+
     def test_cover_changes_build_frontend_without_game_ci(self):
         for game in scope.game_names(ROOT):
             paths = [f'games/{game}/web/Cover.tsx', f'scripts/{game}/accept_cover.py', f'scripts/{game}/cover_harness.tsx']
@@ -94,14 +102,14 @@ class ScopeTests(unittest.TestCase):
         workflow=(ROOT/'.github/workflows/build.yml').read_text()
         for job,following,validation in [('shared','games','Test shared platform behavior'),('games','verify','Install dependencies for game rendering checks'),('verify','complete','Preserve source-bound runtime metadata')]:
             block=workflow.split('  '+job+':',1)[1].split('  '+following+':',1)[0]
-            restore='python3 -B scripts/resource_store.py hydrate --oss'
-            if job=='games':
-                restore+=' --game "${{ matrix.game }}"'
+            restore='uses: ./.github/actions/restore-resources'
             self.assertIn(restore,block,job)
+            self.assertNotIn('scripts/resource_store.py hydrate',block,job)
+            self.assertNotIn('OSS_ACCESS_KEY_SECRET',block.split(validation,1)[0],job)
             self.assertLess(block.index(restore),block.index(validation),job)
         research=(ROOT/'.github/workflows/contra-research.yml').read_text()
         self.assertIn('CDN_ORIGIN: ${{ vars.CDN_ORIGIN }}',research)
-        self.assertLess(research.index('scripts/resource_store.py hydrate --oss --game contra'),research.index('scripts/contra/campaign_modes.py'))
+        self.assertLess(research.index('uses: ./.github/actions/restore-resources'),research.index('scripts/contra/campaign_modes.py'))
 
     def test_pokepath_frontend_uses_clean_serial_delivery_entry(self):
         temporary=ROOT/'.local/tmp'

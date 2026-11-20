@@ -47,7 +47,7 @@ def identity(row):
 
 def objects(baseline):
     result = {}
-    for raw in list(baseline.get('objects', {}).values()) + list(baseline.get('files', {}).values()):
+    for raw in list(baseline.get('objects', {}).values()) + list(baseline.get('files', {}).values()) + list(baseline.get('external', {}).values()):
         row = normalized(raw)
         previous = result.get(row['url'])
         if previous is not None and identity(previous) != identity(row):

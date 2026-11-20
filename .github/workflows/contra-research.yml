@@ -32,10 +32,11 @@ jobs:
             go.sum
             scripts/ci/go-cache-version
       - name: Restore resources outside Git
-        env:
-          OSS_ACCESS_KEY_ID: ${{ secrets.OSS_ACCESS_KEY_ID }}
-          OSS_ACCESS_KEY_SECRET: ${{ secrets.OSS_ACCESS_KEY_SECRET }}
-        run: python3 -B scripts/resource_store.py hydrate --oss --game contra
+        uses: ./.github/actions/restore-resources
+        with:
+          scope: game
+          game: contra
+          report-suffix: ${{ matrix.mode }}-${{ matrix.players }}
       - name: Run experimental computer checks without a delivery gate
         env:
           CAMPAIGN_MODE: ${{ matrix.mode }}

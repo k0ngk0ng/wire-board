@@ -1,4 +1,5 @@
 import json
+import hashlib
 import io
 from contextlib import redirect_stdout
 from pathlib import Path
@@ -27,7 +28,7 @@ class PublicationConcurrencyE2E(unittest.TestCase):
             subprocess.run(['openssl', 'req', '-x509', '-newkey', 'rsa:2048', '-nodes', '-days', '1', '-subj', '/CN=localhost', '-addext', 'subjectAltName=IP:127.0.0.1', '-keyout', str(key), '-out', str(cert)], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             payload = b'unchanged immutable resource'
             lock, released = threading.Lock(), threading.Event()
-            state = {'active': 0, 'peak': 0, 'paths': [], 'authorized': True}
+            state = {'active': 0, 'peak': 0, 'paths': [], 'authorized': True, 'gets': 0}
 
             class Handler(BaseHTTPRequestHandler):
                 protocol_version = 'HTTP/1.1'
@@ -36,6 +37,10 @@ class PublicationConcurrencyE2E(unittest.TestCase):
                     pass
 
                 def do_GET(self):
+                    state['gets'] += 1
+                    self.send_error(500, 'Publication cannot download object bodies')
+
+                def do_HEAD(self):
                     with lock:
                         state['active'] += 1
                         state['peak'] = max(state['peak'], state['active'])
@@ -48,8 +53,8 @@ class PublicationConcurrencyE2E(unittest.TestCase):
                     self.send_response(200)
                     self.send_header('Content-Type', 'application/octet-stream')
                     self.send_header('Content-Length', str(len(body)))
+                    self.send_header('ETag', '"' + hashlib.md5(body).hexdigest() + '"')
                     self.end_headers()
-                    self.wfile.write(body)
                     with lock:
                         state['active'] -= 1
 
@@ -65,6 +70,8 @@ class PublicationConcurrencyE2E(unittest.TestCase):
             thread = threading.Thread(target=server.serve_forever, daemon=True)
             thread.start()
             rows = [{'url': 'https://example.invalid/bga/_common/' + str(index) + '.bin', 'path': str(index) + '.bin', 'bytes': len(payload), 'sha256': cdn.sha(payload), 'mime': 'application/octet-stream', 'encoding': ''} for index in range(64)]
+            for row in rows:
+                (folder / row['path']).write_bytes(payload)
             try:
                 with patch.object(cdn, 'credentials', return_value=('test', 'test')), patch.object(cdn, '_https_proxy', None), patch('ssl._create_default_https_context', return_value=trusted):
                     if corrupt:
@@ -78,13 +85,16 @@ class PublicationConcurrencyE2E(unittest.TestCase):
                         self.assertEqual(stats['uploadedObjects'], 0)
                         self.assertEqual(stats['putRequests'], 0)
                         self.assertEqual(stats['reusedBytes'], 64 * len(payload))
+                        self.assertEqual(stats['reusedWireBytes'], 0)
+                        self.assertEqual(stats['getRequests'], 0)
                         progress = [json.loads(line) for line in output.getvalue().splitlines() if line.startswith('{')]
                         self.assertTrue(any(row.get('stage') == 'oss-verification' and row.get('verifiedObjects') == 64 and row.get('totalObjects') == 64 for row in progress))
                 self.assertTrue(state['authorized'])
+                self.assertEqual(state['gets'], 0)
                 self.assertEqual(sorted(state['paths']), sorted('/bga/_common/' + str(index) + '.bin' for index in range(64)))
                 self.assertGreaterEqual(state['peak'], 8, 'Bulk publication must not serialize a large immutable inventory through six connections')
                 self.assertLessEqual(state['peak'], 64)
-                return {'corrupt': corrupt, 'requests': len(state['paths']), 'peak': state['peak'], 'passed': True}
+                return {'corrupt': corrupt, 'requests': len(state['paths']), 'peak': state['peak'], 'getRequests': state['gets'], 'downloadedBytes': 0, 'passed': True}
             finally:
                 released.set()
                 cdn.close_connections()

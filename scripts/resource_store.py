@@ -137,6 +137,9 @@ class ObjectStore:
         date = formatdate(usegmt=True)
         digest = base64.b64encode(hashlib.md5(body).digest()).decode() if body is not None else ''
         oss_headers = {'x-oss-forbid-overwrite': 'true'} if method == 'PUT' else {}
+        if method == 'PUT' and body is not None:
+            decoded = gzip.decompress(body) if encoding == 'gzip' else body
+            oss_headers.update({'x-oss-meta-sha256': hashlib.sha256(decoded).hexdigest(), 'x-oss-meta-decoded-bytes': str(len(decoded))})
         oss_headers.update(extra_headers or {})
         extra = ''.join(name + ':' + value + '\n' for name, value in sorted(oss_headers.items()))
         canonical = method + '\n' + digest + '\n' + mime + '\n' + date + '\n' + extra + '/' + self.bucket + '/' + key
@@ -351,6 +354,8 @@ def main():
     parser.add_argument('--execute', action='store_true')
     parser.add_argument('--report', type=Path)
     args = parser.parse_args()
+    if args.action == 'hydrate' and os.environ.get('GITHUB_ACTIONS') == 'true':
+        raise ValueError('CI must restore verified GitHub resource caches; paid downloads require the manual resource-cache workflow')
     if args.action == 'export-env':
         export_environment()
         return

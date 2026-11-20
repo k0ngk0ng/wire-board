@@ -335,7 +335,7 @@ FAST_COMPONENTS = {
 }
 
 LINT_TOOL_FILES = {'games/racing/build/lint_go.go'}
-ASSET_DELIVERY_FILES = {'scripts/cdn_delivery.py', 'scripts/test_cdn_delivery.py'}
+ASSET_DELIVERY_FILES = {'scripts/cdn_delivery.py', 'scripts/test_cdn_delivery.py', 'scripts/resource_store.py', 'scripts/resource_store_e2e_test.py', 'scripts/asset_reuse.py', 'scripts/asset_reuse_e2e_test.py'}
 
 def ci_path(path):
     return path in ASSET_DELIVERY_FILES or path.startswith(('.github/workflows/', 'scripts/ci/')) or path in {
@@ -556,6 +556,10 @@ def quick_commands(root, components):
                 grouped.setdefault('./' + path.parent.relative_to(root).as_posix(), set()).update(tests)
         elif component == 'ci':
             commands += [
+                ['python3', '-B', 'scripts/ci/traffic_lint.py', '--self-test'],
+                ['python3', '-B', 'scripts/ci/resources_e2e_test.py'],
+                ['python3', '-B', 'scripts/ci/publication_traffic_e2e_test.py'],
+                ['python3', '-B', 'scripts/ci/traffic_lint_e2e_test.py'],
                 ['python3', '-B', 'scripts/ci/test_scope.py'],
                 ['python3', '-B', 'scripts/ci/partition_e2e_test.py'],
                 ['python3', '-B', 'scripts/ci/catan_suite_e2e_test.py'],

@@ -131,7 +131,12 @@
     "scripts/ci/game_tools.py",
     "scripts/ci/game_tools_e2e_test.py",
     "games/yuyuhakusho/cmd/verify-arena-aux/main.go",
-    "scripts/yuyuhakusho/summarize_additional_arenas.py"
+    "scripts/yuyuhakusho/summarize_additional_arenas.py",
+    "scripts/ci/resources.py",
+    "scripts/ci/resources_e2e_test.py",
+    "scripts/ci/publication_traffic_e2e_test.py",
+    "scripts/ci/traffic_lint.py",
+    "scripts/ci/traffic_lint_e2e_test.py"
   ],
   "rules": [
     "Go 文件 snake_case；Python 文件沿用 snake_case 或 kebab-case；JS/TS 文件 kebab-case；React TSX 组件允许 PascalCase",

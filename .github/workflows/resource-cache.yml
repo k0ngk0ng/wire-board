@@ -1,0 +1,84 @@
+name: Prepare bounded private resource cache
+on:
+  workflow_dispatch:
+    inputs:
+      scope:
+        description: Resource scope to prepare
+        required: true
+        type: choice
+        options: [frontend, server, shared, game]
+      game:
+        description: Game ID when scope is game
+        default: ''
+        type: string
+      max_download_bytes:
+        description: Explicit maximum OSS response bytes, at most 2147483648; zero refuses downloads
+        default: '0'
+        type: string
+permissions:
+  contents: read
+  actions: write
+concurrency:
+  group: resource-cache-${{ inputs.scope }}-${{ inputs.game || 'platform' }}
+  cancel-in-progress: false
+env:
+  PUBLIC_ORIGIN: ${{ vars.PUBLIC_ORIGIN }}
+  CDN_ORIGIN: ${{ vars.CDN_ORIGIN }}
+  OSS_BUCKET: ${{ vars.OSS_BUCKET }}
+  OSS_ENDPOINT: ${{ vars.OSS_ENDPOINT }}
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Enforce bounded resource traffic policy
+        run: python3 -B scripts/ci/traffic_lint.py --self-test
+      - name: Plan immutable resource cache
+        id: plan
+        env:
+          RESOURCE_SCOPE: ${{ inputs.scope }}
+          RESOURCE_GAME: ${{ inputs.game }}
+        run: |
+          args=(plan --scope "$RESOURCE_SCOPE" --github-output "$GITHUB_OUTPUT")
+          if [ -n "$RESOURCE_GAME" ]; then args+=(--game "$RESOURCE_GAME"); fi
+          python3 -B scripts/ci/resources.py "${args[@]}"
+      - uses: actions/cache/restore@v4
+        id: cache
+        with:
+          path: ${{ steps.plan.outputs.path }}
+          key: ${{ steps.plan.outputs.key }}
+          restore-keys: ${{ steps.plan.outputs.prefix }}
+      - name: Prepare private inputs within the explicit byte budget
+        id: prime
+        env:
+          RESOURCE_SCOPE: ${{ inputs.scope }}
+          RESOURCE_GAME: ${{ inputs.game }}
+          MAX_DOWNLOAD_BYTES: ${{ inputs.max_download_bytes }}
+          OSS_ACCESS_KEY_ID: ${{ secrets.OSS_ACCESS_KEY_ID }}
+          OSS_ACCESS_KEY_SECRET: ${{ secrets.OSS_ACCESS_KEY_SECRET }}
+        run: |
+          args=(prime --scope "$RESOURCE_SCOPE" --max-download-bytes "$MAX_DOWNLOAD_BYTES" --github-output "$GITHUB_OUTPUT")
+          if [ -n "$RESOURCE_GAME" ]; then args+=(--game "$RESOURCE_GAME"); fi
+          python3 -B scripts/ci/resources.py "${args[@]}"
+      - name: Replace only the repaired immutable GitHub cache key
+        if: steps.cache.outputs.cache-hit == 'true' && steps.prime.outputs.repaired == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CACHE_KEY: ${{ steps.plan.outputs.key }}
+        run: gh cache delete "$CACHE_KEY" --repo "$GITHUB_REPOSITORY"
+      - uses: actions/cache/save@v4
+        if: steps.cache.outputs.cache-hit != 'true' || steps.prime.outputs.repaired == 'true'
+        with:
+          path: ${{ steps.plan.outputs.path }}
+          key: ${{ steps.plan.outputs.key }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bounded-resource-cache-traffic
+          path: |
+            .local/ci-traffic/lint.json
+            ${{ steps.plan.outputs.report }}
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
