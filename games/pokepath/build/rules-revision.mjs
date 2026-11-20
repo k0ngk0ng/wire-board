@@ -103,6 +103,11 @@ export async function generateRulesRevision(options = {}) {
     if (await changed(filename, bytes)) differences.push([filename, bytes]);
   }
   if (JSON.stringify(await engineInputs(root)) !== JSON.stringify(inputs)) throw Error("Rules source changed during revision generation; retry after writes finish");
+  if (options.publicOnly) {
+    const tracked = new Set([path.join(root, revisionName), path.join(root, revisionManifest)]);
+    const stale = differences.filter(([filename]) => tracked.has(filename));
+    if (stale.length) throw Error(`Stale tracked rules identity: ${stale.map(([filename]) => path.relative(root, filename)).join(", ")}`);
+  }
   if (options.check && differences.length) throw Error(`Stale generated rules revision: ${differences.map(([filename]) => path.relative(root, filename)).join(", ")}`);
   if (!options.check) for (const [filename, bytes] of differences) {
     await mkdir(path.dirname(filename), { recursive: true });
@@ -111,4 +116,4 @@ export async function generateRulesRevision(options = {}) {
   return manifest;
 }
 
-if (process.argv[1] && path.resolve(process.argv[1]) === generatorPath) generateRulesRevision({ check: process.argv.includes("--check") }).then((manifest) => process.stdout.write(`${JSON.stringify({ checked: process.argv.includes("--check"), rulesRevision: manifest.rulesRevision, factsSHA256: manifest.factsSHA256, clientDataSHA256: manifest.clientData.sha256, engineFiles: manifest.engine.files.length, clientDataFiles: manifest.clientData.files.length })}\n`)).catch((error) => { process.stderr.write(`${error.stack}\n`); process.exitCode = 1; });
+if (process.argv[1] && path.resolve(process.argv[1]) === generatorPath) generateRulesRevision({ check: process.argv.includes("--check"), publicOnly: process.argv.includes("--public-only") }).then((manifest) => process.stdout.write(`${JSON.stringify({ checked: process.argv.includes("--check"), rulesRevision: manifest.rulesRevision, factsSHA256: manifest.factsSHA256, clientDataSHA256: manifest.clientData.sha256, engineFiles: manifest.engine.files.length, clientDataFiles: manifest.clientData.files.length })}\n`)).catch((error) => { process.stderr.write(`${error.stack}\n`); process.exitCode = 1; });

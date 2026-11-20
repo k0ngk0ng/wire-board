@@ -28,6 +28,7 @@ test("clean checkout delivery checks preserve native trace order and serial Wasm
   }
   const report = { passed: false, scope: "Independent deliverable checks from a clean checkout; original-browser and pixel research stay in local acceptance artifacts", checks: [] };
   const commands = [
+    [process.execPath, ["games/pokepath/build/rules-revision.mjs", "--public-only"]],
     [process.execPath, ["games/pokepath/build/rules-revision.mjs", "--check"]],
     ["go", ["test", "./games/pokepath/engine", "./games/pokepath/tests", "-run", "^(TestCoreTowerOrderingReferenceFixtureE2E|TestNativeAttackModeProducesGoWasmParityTracesE2E)$", "-count=1"]],
     [process.execPath, ["--experimental-strip-types", "--test", "--test-concurrency=1", ...files]],
@@ -38,7 +39,7 @@ test("clean checkout delivery checks preserve native trace order and serial Wasm
       const result = await execute(command, args, { cwd: root, env: environment, timeout: 540000, maxBuffer: 16 << 20 });
       const log = join(output, `${index}.log`);
       await writeFile(log, result.stdout + result.stderr);
-      if (index === 2) {
+      if (command === process.execPath && args.includes("--test")) {
         assert.doesNotMatch(result.stdout + result.stderr, /called recursively/);
         const count = result.stdout.match(/(?:tests |# tests )([0-9]+)/);
         assert.ok(count && Number(count[1]) >= files.length, "the delivery child must execute its selected tests");
