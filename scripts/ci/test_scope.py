@@ -31,6 +31,13 @@ scope = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(scope)
 
 class ScopeTests(unittest.TestCase):
+    def test_shared_action_definitions_are_ci_configuration(self):
+        result = self.plan('.github/actions/restore-resources/action.yml')
+        self.assertEqual(result['quick_components'], ['ci'])
+        self.assertFalse(result['has_shared'])
+        self.assertFalse(result['has_games'])
+        self.assertFalse(result['build_required'])
+
     def test_paid_traffic_policy_runs_before_build_selection_and_shared_vet_is_scoped(self):
         workflow = (ROOT / '.github/workflows/build.yml').read_text()
         plan = workflow.split('  plan:', 1)[1].split('  quick:', 1)[0]

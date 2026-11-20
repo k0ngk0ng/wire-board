@@ -338,7 +338,7 @@ LINT_TOOL_FILES = {'games/racing/build/lint_go.go'}
 ASSET_DELIVERY_FILES = {'scripts/cdn_delivery.py', 'scripts/test_cdn_delivery.py', 'scripts/resource_store.py', 'scripts/resource_store_e2e_test.py', 'scripts/asset_reuse.py', 'scripts/asset_reuse_e2e_test.py'}
 
 def ci_path(path):
-    return path in ASSET_DELIVERY_FILES or path.startswith(('.github/workflows/', 'scripts/ci/')) or path in {
+    return path in ASSET_DELIVERY_FILES or path.startswith(('.github/workflows/', '.github/actions/', 'scripts/ci/')) or path in {
         'scripts/release-source.cjs', 'scripts/release-source.test.cjs',
         'scripts/cdn_local_ready.py', 'scripts/test_cdn_local_ready.py',
         'games/racing/build/asset-reuse-lint.json',
