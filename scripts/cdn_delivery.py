@@ -184,11 +184,12 @@ def decoded(body,headers):
   except (OSError,EOFError) as e:raise ValueError('Invalid gzip response') from e
  return body
 
+def mime_compatible(expected,actual):
+ return expected==actual or expected=='text/javascript' and actual=='application/javascript' or expected in ('audio/wav','audio/x-wav') and actual in ('audio/wav','audio/x-wav')
+
 def validate_headers(row,headers):
  mime=headers.get('Content-Type','').split(';')[0].lower()
- compatible={row['mime']}
- if row['mime']=='text/javascript':compatible.add('application/javascript')
- if mime not in compatible:raise ValueError('CDN MIME mismatch: '+row['url'])
+ if not mime_compatible(row['mime'],mime):raise ValueError('CDN MIME mismatch: '+row['url'])
  if headers.get('Access-Control-Allow-Origin') not in ('*',configuration()['PUBLIC_ORIGIN']):raise ValueError('CDN CORS missing: '+row['url'])
 
 def validate_response(row,body,headers):
@@ -319,7 +320,7 @@ def publish(dist,rows,bucket,endpoint):
    encoding=headers.get('Content-Encoding','')
    mime=headers.get('Content-Type','').split(';')[0].lower()
    if encoding not in ({row['encoding']} if row.get('encoding') else {'','identity'}):raise ValueError('Immutable encoding differs: '+key)
-   if mime!=row['mime'] and not (row['mime']=='text/javascript' and mime=='application/javascript'):raise ValueError('Immutable MIME differs: '+key)
+   if not mime_compatible(row['mime'],mime):raise ValueError('Immutable MIME differs: '+key)
    digest=headers.get('x-oss-meta-sha256')
    size=headers.get('x-oss-meta-decoded-bytes')
    if digest is not None and digest!=row['sha256'] or size is not None and size!=str(row['bytes']):raise ValueError('Immutable object already differs: '+key)
