@@ -167,7 +167,11 @@ export function buildBrowserRuntime(options = {}) {
       writeFileSync(join(destination, "manifest.json"), JSON.stringify(manifest, null, 2) + "\n");
       const concurrent = valid(runtimeRoot, sourceSHA256, buildSHA256, dependencies);
       if (concurrent) return { publicRoot, runtimeRoot, manifest: concurrent, cached: true };
-      if (existsSync(target)) throw Error("An existing runtime cache failed validation; its files were preserved");
+      if (existsSync(target)) {
+        const published = valid(runtimeRoot, sourceSHA256, buildSHA256, dependencies);
+        if (published) return { publicRoot, runtimeRoot, manifest: published, cached: true };
+        throw Error("An existing runtime cache failed validation; its files were preserved");
+      }
       try { renameSync(temporary, target); }
       catch (error) {
         const published = valid(runtimeRoot, sourceSHA256, buildSHA256, dependencies);

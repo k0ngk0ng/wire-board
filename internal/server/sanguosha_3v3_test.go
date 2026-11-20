@@ -13,6 +13,16 @@ import (
 	"github.com/k0ngk0ng/wire-board/internal/game"
 )
 
+func sanguoshaThreeMissingRoundSeat(acted, flipped []bool, active int, after *game.State) int {
+	for seat, marked := range acted {
+		player := after.Sanguosha.Players[seat]
+		if !marked && !player.Dead && seat != active && !(flipped[seat] && !player.Flipped) {
+			return seat
+		}
+	}
+	return -1
+}
+
 func TestSanguoshaThreeV3RoomCapacityHTTP(t *testing.T) {
 	s, ts := setupServer(t)
 	stopBotTicker(s)
@@ -29,10 +39,6 @@ func TestSanguoshaThreeV3RoomCapacityHTTP(t *testing.T) {
 	}
 }
 
-// Failure scenarios: premature lineup disclosure; missing/repeated opening
-// cards; a vanguard opening the game; duplicate or skipped turns in a round;
-// ignored vanguard order; a handoff resetting marks; and a restart losing the
-// pending action right. All commands below use the real authenticated HTTP API.
 func TestSanguoshaThreeV3OpeningAndRoundsHTTP(t *testing.T) {
 	s, ts := setupServer(t)
 	stopBotTicker(s)
@@ -52,8 +58,6 @@ func TestSanguoshaThreeV3OpeningAndRoundsHTTP(t *testing.T) {
 	}
 	host.command(current(host), "start", nil, 200)
 	clients[6].post("/api/rooms/"+id+"/watch", map[string]any{}, 200)
-	// The printed 3v3 draft opens on four face-down piles of eight: the warm
-	// leader takes one, the cold leader takes from the remaining three.
 	opening := s.rooms[id].Game.Sanguosha
 	if opening.Pending == nil || opening.Pending.Kind != "sg_3v3_pile" {
 		t.Fatalf("first 3v3 prompt %+v", opening.Pending)
@@ -71,9 +75,6 @@ func TestSanguoshaThreeV3OpeningAndRoundsHTTP(t *testing.T) {
 	for viewer := 0; viewer < 6; viewer++ {
 		draft := current(clients[viewer])["game"].(map[string]any)["sanguosha"].(map[string]any)
 		three := draft["threeV3"].(map[string]any)
-		// Failure scenario: while the piles are still face down the payload
-		// must stay render-safe. A null `pool` blanks the whole table in the
-		// browser, so every viewer has to receive an array.
 		pool, ok := three["pool"].([]any)
 		if !ok {
 			t.Fatalf("viewer %d received a non-array pool %#v", viewer, three["pool"])
@@ -107,7 +108,7 @@ func TestSanguoshaThreeV3OpeningAndRoundsHTTP(t *testing.T) {
 	}
 	var turns []map[string]int
 	t.Cleanup(func() {
-		path := filepath.Join("..", "..", ".local", "3v3-opening-rounds.json")
+		path := filepath.Join("..", "..", ".local", "sanguosha", "verification", "3v3-opening-rounds.json")
 		if err := os.MkdirAll(filepath.Dir(path), 0o700); err != nil {
 			t.Error(err)
 			return
@@ -120,7 +121,6 @@ func TestSanguoshaThreeV3OpeningAndRoundsHTTP(t *testing.T) {
 			t.Error(err)
 		}
 	})
-	// Draft using public choices. No fixture edits or direct engine commands.
 	for step := 0; step < 30 && s.rooms[id].Game.Sanguosha.ThreeV3.Stage != "firstSide"; step++ {
 		if left := time.Until(time.UnixMilli(s.rooms[id].TurnDeadline)); left < 118*time.Second || left > 120*time.Second {
 			t.Errorf("draft choices need 120 seconds, got %s", left)
@@ -176,8 +176,6 @@ func TestSanguoshaThreeV3OpeningAndRoundsHTTP(t *testing.T) {
 		state = s.rooms[id].Game
 		g := state.Sanguosha
 		if g.TurnSequence != lastSequence {
-			// One action can advance the counter twice: a flipped (翻面) seat
-			// burns its turn without ever reaching the play phase.
 			delta := g.TurnSequence - lastSequence
 			lastSequence = g.TurnSequence
 			if seen[state.Round] == nil {
@@ -189,8 +187,6 @@ func TestSanguoshaThreeV3OpeningAndRoundsHTTP(t *testing.T) {
 			seen[state.Round][state.Turn] = true
 			turns = append(turns, map[string]int{"round": state.Round, "seat": state.Turn})
 			if requestedFirst >= 0 && state.Turn != requestedFirst {
-				// The requested vanguard may be flipped; the rules then hand
-				// the camp's unit to its partner vanguard instead.
 				partner := delta == 2 && campOf(state.Turn) == campOf(requestedFirst) &&
 					state.Turn != g.ThreeV3.Leaders[campOf(state.Turn)] && g.ThreeV3.Acted[requestedFirst]
 				if !partner {
@@ -227,7 +223,6 @@ func TestSanguoshaThreeV3OpeningAndRoundsHTTP(t *testing.T) {
 					}
 					restarted = true
 				}
-				// Always request the highest-numbered eligible vanguard first.
 				a = game.Action{Type: "sg_respond", Prompt: q.ID, Choice: "leader"}
 				for i := 0; i < 6; i++ {
 					if g.ThreeV3.Camps[i] == g.ThreeV3.Camps[actor] && i != actor && !g.ThreeV3.Acted[i] {
@@ -235,7 +230,6 @@ func TestSanguoshaThreeV3OpeningAndRoundsHTTP(t *testing.T) {
 						requestedFirst = i
 					}
 				}
-				// An exhausted leader must be rejected without changing state.
 				if g.ThreeV3.Acted[actor] {
 					before := current(clients[actor])
 					clients[actor].command(before, "action", game.Action{Type: "sg_respond", Prompt: q.ID, Choice: "leader"}, 400)
@@ -254,22 +248,21 @@ func TestSanguoshaThreeV3OpeningAndRoundsHTTP(t *testing.T) {
 			a = game.Action{Type: "sg_end"}
 		}
 		beforeActed := append([]bool{}, g.ThreeV3.Acted...)
+		beforeTurn := state.Turn
+		beforeFlipped := make([]bool, len(g.Players))
+		for seat, player := range g.Players {
+			beforeFlipped[seat] = player.Flipped
+		}
 		beforeRound := state.Round
 		clients[actor].command(current(clients[actor]), "action", a, 200)
 		after := s.rooms[id].Game
 		if after.Round > beforeRound {
-			// A round only turns over once every living seat has been marked
-			// acted; the seat that just finished is marked during its own end.
-			for seat, acted := range beforeActed {
-				if !after.Sanguosha.Players[seat].Dead && !acted && seat != actor {
-					t.Fatalf("round %d advanced while seat %d had not acted: %v", beforeRound, seat, beforeActed)
-				}
+			if seat := sanguoshaThreeMissingRoundSeat(beforeActed, beforeFlipped, beforeTurn, after); seat >= 0 {
+				t.Fatalf("round %d advanced while seat %d had not acted: %v", beforeRound, seat, beforeActed)
 			}
 			rounds++
-			// The printed rule starts the new round with the camp that did not
-			// act last.
-			if campOf(actor) == after.Sanguosha.ThreeV3.Side {
-				t.Fatalf("round %d started with the camp that just acted (seat %d)", after.Round, actor)
+			if campOf(after.Turn) == after.Sanguosha.ThreeV3.Side {
+				t.Fatalf("round %d started with the camp that just acted (seat %d)", after.Round, after.Turn)
 			}
 		}
 	}
@@ -279,8 +272,6 @@ func TestSanguoshaThreeV3OpeningAndRoundsHTTP(t *testing.T) {
 	t.Logf("HTTP draft, opening cards, two rounds, vanguard order and restart passed: %v", turns)
 }
 
-// A six-seat 3v3 room drafts over HTTP, plays to a leader death and records the
-// mode in the player history.
 func TestSanguoshaThreeV3HTTPAcceptance(t *testing.T) {
 	s, ts := setupServer(t)
 	stopBotTicker(s)

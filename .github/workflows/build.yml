@@ -294,7 +294,7 @@ jobs:
     needs: [plan, frontend]
     if: needs.plan.outputs.has_games == 'true'
     runs-on: ubuntu-latest
-    timeout-minutes: 180
+    timeout-minutes: ${{ inputs.validation != 'full' && contains(fromJSON('["basketball","catan","starfort","yuyuhakusho"]'), matrix.game) && 30 || 180 }}
     strategy:
       fail-fast: false
       max-parallel: 16
@@ -347,7 +347,7 @@ jobs:
         run: |
           args=(--game "$GAME_ID")
           if [ "$BACKEND_CHANGED" = true ]; then args+=(--backend); fi
-          if [ "$GAME_ID" = catan ] && [ "$FULL_VALIDATION" = true ]; then args+=(--catan-extended); fi
+          if [ "$FULL_VALIDATION" = true ]; then args+=(--extended); fi
           if [ "$GAME_ID" = pvz ]; then
             export PATH="$PWD/.local/pvz/ci-assets/bin:$PWD/.local/pvz/ci-assets/venv/bin:$PATH"
             export TMPDIR="$PWD/.local/tmp"
@@ -383,6 +383,9 @@ jobs:
           path: |
             .local/ci/${{ matrix.game }}/
             .local/pokepath/verification/ci/
+            .local/pokepath/verification/native-runtime/*.json
+            .local/sanguosha/verification/
+            .local/catan/verification/
             .local/ci/contra-binding/result.json
             .local/pvz/ci-assets/*.json
           include-hidden-files: true

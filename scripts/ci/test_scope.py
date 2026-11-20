@@ -89,10 +89,10 @@ class ScopeTests(unittest.TestCase):
 
     def test_starfort_unsharded_suite_retains_campaigns_with_adequate_time(self):
         for race in [False, True]:
-            commands = scope.go_commands(ROOT, 'starfort', race=race)
+            commands = scope.go_commands(ROOT, 'starfort', race=race, extended=True)
             self.assertTrue(commands)
             self.assertTrue(all('-timeout=90m' in c for c in commands))
-        full = ' '.join(' '.join(c) for c in scope.go_commands(ROOT, 'starfort'))
+        full = ' '.join(' '.join(c) for c in scope.go_commands(ROOT, 'starfort', extended=True))
         for name in ['TestStarfortPublicNatural', 'TestStarfortLatestNatural',
                      'TestStarfortWorldNaturalCampaigns', 'TestStarfortWorldEndlessForty',
                      'TestStarfortPublicRewardChoiceClock']:
@@ -100,7 +100,7 @@ class ScopeTests(unittest.TestCase):
         for game in ['shared', 'rail']:
             self.assertTrue(all('-timeout=45m' in c for c in scope.go_commands(ROOT, game)))
         for shard in range(4):
-            self.assertTrue(all('-timeout=45m' in c for c in scope.go_commands(ROOT, 'starfort', shard, 4)))
+            self.assertTrue(all('-timeout=45m' in c for c in scope.go_commands(ROOT, 'starfort', shard, 4, extended=True)))
 
 
 
@@ -136,13 +136,13 @@ class ScopeTests(unittest.TestCase):
         for name,(prefix,package) in expected.items():
             cases=[]
             for shard in range(16):
-                selected=[c for c in scope.go_commands(ROOT,'yuyuhakusho',shard,16) if '^'+name+'$' in c]
+                selected=[c for c in scope.go_commands(ROOT,'yuyuhakusho',shard,16,extended=True) if '^'+name+'$' in c]
                 self.assertEqual(len(selected),1,(name,shard,selected))
                 self.assertEqual(selected[0][:3],['env',prefix+'_SHARDS=16',prefix+'_SHARD='+str(shard)])
                 self.assertEqual(selected[0][-1],package)
                 cases += [index for index in range(len(rows)) if index%16==shard]
             self.assertEqual(sorted(cases),list(range(49)))
-            single=[c for c in scope.go_commands(ROOT,'yuyuhakusho') if '^'+name+'$' in c]
+            single=[c for c in scope.go_commands(ROOT,'yuyuhakusho',extended=True) if '^'+name+'$' in c]
             self.assertEqual(len(single),1)
             self.assertEqual(single[0][:3],['env',prefix+'_SHARDS=1',prefix+'_SHARD=0'])
             self.assertFalse(any(name in ' '.join(c) for c in scope.go_commands(ROOT,'yuyuhakusho',race=True)))
@@ -448,7 +448,8 @@ class ScopeTests(unittest.TestCase):
 
 
         expected = {'BASKETBALL_PREPARATION_MATRIX', 'BASKETBALL_SELECTION_ADMISSION', 'BASKETBALL_FULL_HTTP'}
-        self.assertTrue(all(scope.verification_env('basketball', True, {})[key] == '1' for key in expected))
+        self.assertEqual(scope.verification_env('basketball', True, {}), {'BASKETBALL_FULL_HTTP': '1'})
+        self.assertTrue(all(scope.verification_env('basketball', True, {}, extended=True)[key] == '1' for key in expected))
         for game, backend in [('basketball', False), ('shared', True), ('racing', True)]:
             self.assertFalse(expected.intersection(scope.verification_env(game, backend, {})))
 

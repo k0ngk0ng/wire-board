@@ -226,6 +226,85 @@ CATAN_EXTENDED_TESTS = (
     ('./internal/server', 'TestCatanWondersFullHTTPGames'),
 )
 
+BASKETBALL_EXTENDED_TESTS = (
+    ('./games/basketball/engine', 'TestRuntimePreparedConfigurationsCompleteMatchAndRestore'),
+    ('./games/basketball/engine', 'TestRuntimeOriginalSelectionAdmissionMatrix'),
+    ('./games/basketball/engine', 'TestRuntimeAllOriginalCharactersAdmission'),
+)
+
+STARFORT_EXTENDED_TESTS = (
+    ('./games/starfort/tests', 'TestStarfortGeologyNaturalCampaigns'),
+    ('./games/starfort/tests', 'TestStarfortLatestNatural'),
+    ('./games/starfort/tests', 'TestStarfortRebalanceNaturalCampaign'),
+    ('./games/starfort/tests', 'TestStarfortRebalanceNaturalModes'),
+    ('./games/starfort/tests', 'TestStarfortRevisionNatural'),
+    ('./games/starfort/tests', 'TestStarfortRulesNaturalCampaigns'),
+    ('./games/starfort/tests', 'TestStarfortRulesNaturalEndless'),
+    ('./games/starfort/tests', 'TestStarfortRulesNaturalLoss'),
+    ('./games/starfort/tests', 'TestStarfortSpecializationNaturalCampaign'),
+    ('./games/starfort/tests', 'TestStarfortWeatherNaturalCampaign'),
+    ('./games/starfort/tests', 'TestStarfortWeatherNaturalModes'),
+    ('./games/starfort/tests', 'TestStarfortWorldNaturalCampaigns'),
+)
+
+YUYU_EXTENDED_TESTS = (
+    ('./games/yuyuhakusho/audio/score', 'TestObservedOriginalTrajectories'),
+    ('./games/yuyuhakusho/audio/score', 'TestOriginalContinuousDriver'),
+    ('./games/yuyuhakusho/audio/score', 'TestInstrumentWorkBoundCatalogOriginalTrajectories'),
+    ('./games/yuyuhakusho/audio/scoreclock', 'TestNoteVoiceCompleteOriginalCallsAndActualOwners'),
+    ('./games/yuyuhakusho/engine', 'TestWorldSoundLiveOriginalPasses'),
+)
+
+YUYU_EXTENDED_TRAJECTORIES = (
+    'arena-2-duel',
+    'arena-2-four',
+    'arena-2-pan',
+    'arena-2-team',
+    'arena-2-three',
+    'arena-4-duel',
+    'arena-4-four',
+    'arena-4-pan',
+    'arena-4-team',
+    'arena-4-three',
+    'arena-6-duel',
+    'arena-6-four',
+    'arena-6-pan',
+    'arena-6-team',
+    'arena-6-three',
+    'arena-8-duel',
+    'arena-8-four',
+    'arena-8-pan',
+    'arena-8-team',
+    'arena-8-three',
+    'arena-a-duel',
+    'arena-a-four',
+    'arena-a-team',
+    'arena-a-three',
+    'arena-c-duel',
+    'arena-c-four',
+    'arena-c-pan',
+    'arena-c-team',
+    'arena-c-three',
+    'arena-e-duel',
+    'arena-e-pan',
+    'arena-e-team',
+    'arena-e-three',
+    'legacy-four',
+    'legacy-itsuki-elder',
+    'legacy-itsuki-genkai',
+    'legacy-itsuki-hiei',
+    'legacy-itsuki-itsuki',
+    'legacy-itsuki-jin',
+    'legacy-itsuki-kurama',
+    'legacy-itsuki-kuwabara',
+    'legacy-itsuki-sensui',
+    'legacy-itsuki-younger',
+    'legacy-itsuki-yusuke',
+)
+
+GAME_EXTENDED_TESTS = {'basketball': BASKETBALL_EXTENDED_TESTS, 'catan': CATAN_EXTENDED_TESTS, 'starfort': STARFORT_EXTENDED_TESTS, 'yuyuhakusho': YUYU_EXTENDED_TESTS}
+GAME_PARTITIONS = {'catan': (4, 20), 'yuyuhakusho': (4, 16)}
+
 MULTI = {
     'TestBotsFinishBothGames': ('splendor', 'rail'),
     'TestSoloGamesAIContinuationPersistenceAndRematch': ('splendor', 'rail'),
@@ -359,6 +438,12 @@ def owner(path, name, games):
     named = {g for g in games if g in name.lower() or path.name.startswith(g + '_')}
     return named
 
+def trajectory_cases(root, extended=False):
+    rows = json.loads((root / 'games/yuyuhakusho/renderstate/testdata/bridge-reference.json').read_text())['rows']
+    names = [row['configuration']['name'] for row in rows]
+    if len(names) != len(set(names)): raise ValueError('Duplicate trajectory case')
+    return names if extended else [name for name in names if name not in YUYU_EXTENDED_TRAJECTORIES]
+
 def go_commands(root, game, index=0, count=1, race=False, extended=False):
     if count < 1 or not 0 <= index < count: raise ValueError('Invalid shard')
     games = game_names(root)
@@ -378,13 +463,15 @@ def go_commands(root, game, index=0, count=1, race=False, extended=False):
             owners = owner(relative, name, games)
             if (game == 'shared' and owners) or (game != 'shared' and game not in owners): continue
             package = './' + relative.parent.as_posix() if relative.parent.as_posix() != '.' else '.'
-            if game == 'catan' and not extended and (package, name) in CATAN_EXTENDED_TESTS: continue
+            if not extended and (package, name) in GAME_EXTENDED_TESTS.get(game, ()): continue
             if game == 'yuyuhakusho' and not race and name in trajectory_prefixes:
                 trajectories.append(('./' + relative.parent.as_posix(), name, trajectory_prefixes[name]))
                 continue
             if int.from_bytes(hashlib.sha256(name.encode()).digest()[:8], 'big') % count != index: continue
             if race and game != 'shared':
                 selected_race = bool(re.search(r'Concurrent|AutoPlay|Timeout|Spectator|LongGameArtifact', name))
+                if game == 'catan' and not extended:
+                    selected_race = bool(re.search(r'Concurrent|Spectator', name))
                 if game == 'basketball':
                     selected_race = selected_race or name.startswith(('TestBasketballRealtime', 'TestCampaignPresentation', 'TestCampaignEnding', 'TestRuntimePresentation', 'TestDunkSharedTarget', 'TestHighPassHeight')) or name == 'TestBasketballHTTPCompleteOriginalSelection'
                 if game == 'contra':
@@ -404,7 +491,7 @@ def go_commands(root, game, index=0, count=1, race=False, extended=False):
                 grouped.setdefault(package, []).append(name)
 
 
-    timeout = '20m' if game == 'catan' and not extended else '150m' if game in ('catan', 'yuyuhakusho') and count == 1 else '90m' if game == 'starfort' and count == 1 else '45m'
+    timeout = '20m' if game in GAME_EXTENDED_TESTS and not extended else '150m' if game in ('catan', 'yuyuhakusho') and count == 1 else '90m' if game == 'starfort' and count == 1 else '45m'
     base = ['go', 'test', '-json', '-count=1', '-timeout=' + timeout]
     if race: base.append('-race')
     commands = [base + ['-run', '^(?:' + '|'.join(re.escape(n) for n in sorted(set(names))) + ')$', package]
@@ -413,9 +500,13 @@ def go_commands(root, game, index=0, count=1, race=False, extended=False):
 
 
 
-    commands += [['env', prefix + '_SHARDS=' + str(count), prefix + '_SHARD=' + str(index)]
-                 + base + ['-run', '^' + name + '$', package]
-                 for package, name, prefix in trajectories]
+    for package, name, prefix in trajectories:
+        pattern = '^' + name + '$'
+        if not extended:
+            chosen = trajectory_cases(root)
+            if not chosen: raise ValueError('No required trajectory cases')
+            pattern += '/^(?:' + '|'.join(re.escape(case) for case in chosen) + ')$'
+        commands.append(['env', prefix + '_SHARDS=' + str(count), prefix + '_SHARD=' + str(index)] + base + ['-run', pattern, package])
     return commands
 
 def quick_commands(root, components):
@@ -434,6 +525,7 @@ def quick_commands(root, components):
                 ['python3', '-B', 'scripts/ci/test_scope.py'],
                 ['python3', '-B', 'scripts/ci/partition_e2e_test.py'],
                 ['python3', '-B', 'scripts/ci/catan_suite_e2e_test.py'],
+                ['python3', '-B', 'scripts/ci/game_suites_e2e_test.py'],
                 ['python3', '-B', 'scripts/ci/check-plan.py'],
                 ['python3', '-B', 'scripts/ci/check-lanes.py'],
                 ['python3', '-B', 'scripts/ci/release-image-e2e.py'],
@@ -455,12 +547,14 @@ def quick_commands(root, components):
     return commands
 
 def verification_env(game, backend, base=None, extended=False):
+    explicit = {'WIRE_BOARD_NESTING_ACCEPTANCE', 'BASKETBALL_PREPARATION_MATRIX', 'BASKETBALL_SELECTION_ADMISSION', 'BASKETBALL_FULL_HTTP'}
     env = {k: v for k, v in (os.environ if base is None else base).items()
-           if not k.startswith('CONTRA_BOT_') and k != 'WIRE_BOARD_NESTING_ACCEPTANCE'}
+           if not k.startswith('CONTRA_BOT_') and k not in explicit}
     if backend and game == 'snooker': env['WIRE_BOARD_SNOOKER_HTTP_FULL'] = '1'
     if backend and game == 'catan' and extended: env['WIRE_BOARD_NESTING_ACCEPTANCE'] = '1'
     if backend and game == 'basketball':
-        env.update(BASKETBALL_PREPARATION_MATRIX='1', BASKETBALL_SELECTION_ADMISSION='1', BASKETBALL_FULL_HTTP='1')
+        env['BASKETBALL_FULL_HTTP'] = '1'
+        if extended: env.update(BASKETBALL_PREPARATION_MATRIX='1', BASKETBALL_SELECTION_ADMISSION='1')
     return env
 
 def frontend_tests(root, game):
@@ -529,12 +623,15 @@ def build_commands(root, game, index=0):
              for name in ('identity_test.py', 'media_test.py', 'media_archive_test.py', 'builder_inputs_test.py', 'runtime_assets_test.py', 'delivery_test.py', 'ci_runtime_test.py')]
             + [['node', '--test', str(root/'games/contra/build/runtime-delivery.test.mjs')]])
 
-def run_catan_partitions(args):
-    output = ROOT/'.local/ci/catan'
+def extended_mode(args):
+    return getattr(args, 'extended', False) or getattr(args, 'catan_extended', False)
+
+def run_game_partitions(args):
+    output = ROOT/'.local/ci'/args.game
     output.mkdir(parents=True, exist_ok=True)
     destination = output/'partitions.json'
-    extended = getattr(args, 'catan_extended', False)
-    count = 20 if extended else 4
+    extended = extended_mode(args)
+    count = GAME_PARTITIONS[args.game][1 if extended else 0]
     report = {'passed': False, 'suite': 'extended' if extended else 'standard', 'partitions': count, 'workers': 2, 'completed': [], 'failed': []}
     destination.write_text(json.dumps(report, indent=2)+'\n')
     try:
@@ -557,21 +654,28 @@ def run_catan_partitions(args):
         report['passed'] = True
     finally:
         destination.write_text(json.dumps(report, indent=2)+'\n')
-    print(f'PASS catan: {report["suite"]}; all {count} backend partitions and selected frontend checks', flush=True)
+    print(f'PASS {args.game}: {report["suite"]}; all {count} backend partitions and selected frontend checks', flush=True)
 
 
-def catan_deferred(root):
+def deferred_tests(root, game):
     available, result = {}, []
-    for package, name in CATAN_EXTENDED_TESTS:
+    for package, name in GAME_EXTENDED_TESTS.get(game, ()):
         if package not in available:
             available[package] = {test for path in (root / package.removeprefix('./')).glob('*_test.go') for test in re.findall(r'^func ((?:Test|Example|Fuzz)\w*)\(', path.read_text(), re.M)}
         if name in available[package]: result.append({'package': package, 'name': name})
     return result
 
+def deferred_subtests(root, game):
+    if game != 'yuyuhakusho': return []
+    fixture = root / 'games/yuyuhakusho/renderstate/testdata/bridge-reference.json'
+    if not fixture.is_file(): return []
+    names = {row['configuration']['name'] for row in json.loads(fixture.read_text())['rows']}
+    return [{'name': parent, 'case': name} for parent in ['TestRenderFrozenBridgeTrajectories', 'TestSchema2FrozenWholeTrajectories'] for name in YUYU_EXTENDED_TRAJECTORIES if name in names]
+
 def run(args):
-    extended = getattr(args, 'catan_extended', False)
-    if args.game == 'catan' and args.backend and args.count == 1:
-        return run_catan_partitions(args)
+    extended = extended_mode(args)
+    if args.game in GAME_PARTITIONS and args.backend and args.count == 1:
+        return run_game_partitions(args)
     output = ROOT/'.local/ci'/args.game
     output.mkdir(parents=True, exist_ok=True)
     if args.game == 'pvz' and args.shard == 0:
@@ -596,8 +700,8 @@ def run(args):
     env = verification_env(args.game, args.backend, extended=extended)
     commands += build_commands(ROOT, args.game, args.shard)
     manifest = {'game': args.game, 'backend': args.backend, 'shard': args.shard, 'commands': commands, 'passed': False}
-    if args.game == 'catan':
-        manifest.update(suite='extended' if extended else 'standard', deferredTests=[] if extended or not args.backend else catan_deferred(ROOT))
+    if args.game in GAME_EXTENDED_TESTS:
+        manifest.update(suite='extended' if extended else 'standard', deferredTests=[] if extended or not args.backend else deferred_tests(ROOT, args.game), deferredSubtests=[] if extended or not args.backend else deferred_subtests(ROOT, args.game))
     destination = output/f'result-{args.shard}.json'
     destination.write_text(json.dumps(manifest, indent=2) + '\n')
     for i, command in enumerate(commands):
@@ -668,7 +772,7 @@ def main():
     r.add_argument('--backend', action='store_true')
     r.add_argument('--shard', type=int, default=0)
     r.add_argument('--count', type=int, default=1)
-    r.add_argument('--catan-extended', action='store_true', help='Run all Catan combination/full-game batches explicitly')
+    r.add_argument('--extended', '--catan-extended', dest='extended', action='store_true', help='Run the explicitly requested full acceptance matrices')
     sub.add_parser('pvz-tools', help='Bind the scoped PvZ media verifier executable')
     args = parser.parse_args()
     if args.command == 'run': return run(args)

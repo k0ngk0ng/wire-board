@@ -46,7 +46,7 @@ class CatanSuiteE2E(unittest.TestCase):
         for race in [False, True]:
             full = selected(scope.go_commands(ROOT, 'catan', race=race, extended=True))
             standard = selected(scope.go_commands(ROOT, 'catan', race=race))
-            expected = Counter({key: count for key, count in full.items() if key not in deferred})
+            expected = Counter({key: count for key, count in full.items() if key not in deferred and (not race or any(word in key[1] for word in ['Concurrent', 'Spectator']))})
             self.assertEqual(standard, expected)
             self.assertTrue(all(value == 1 for value in full.values()))
             if not race:
@@ -123,7 +123,7 @@ if os.environ.get('CATAN_FAIL') and os.environ['CATAN_FAIL'] in ' '.join(sys.arg
         self.assertIn('if: always()', workflow)
         build = (ROOT / '.github/workflows/build.yml').read_text()
         self.assertIn('FULL_VALIDATION: ${{ inputs.validation == \'full\' }}', build)
-        self.assertIn('args+=(--catan-extended)', build)
+        self.assertIn('args+=(--extended)', build)
 
 
 if __name__ == '__main__':
