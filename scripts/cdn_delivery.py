@@ -345,7 +345,11 @@ def publish(dist,rows,bucket,endpoint):
   previous=unique.get(row['url'])
   if previous is not None and any(previous[key]!=row[key] for key in ('sha256','bytes','mime','encoding')):raise ValueError('One URL has conflicting identities')
   unique[row['url']]=row
- with concurrent.futures.ThreadPoolExecutor(max_workers=48) as pool:results=list(pool.map(lambda row:retry_request(lambda:upload(row),row["url"]),unique.values()))
+ results=[];started=time.monotonic_ns()
+ with concurrent.futures.ThreadPoolExecutor(max_workers=48) as pool:
+  for count,result in enumerate(pool.map(lambda row:retry_request(lambda:upload(row),row["url"]),unique.values()),1):
+   results.append(result)
+   if count%1000==0 or count==len(unique):print(json.dumps({'stage':'oss-verification','verifiedObjects':count,'totalObjects':len(unique),'elapsedSeconds':(time.monotonic_ns()-started)//1000000000}),flush=True)
  stats={'logicalFiles':len(rows),'reusedObjects':sum(not created for created,size,reused,raw in results),'reusedBytes':sum(raw for created,size,reused,raw in results if not created),'reusedWireBytes':sum(reused for created,size,reused,raw in results),'uploadedObjects':sum(created for created,size,reused,raw in results),'uploadedBytes':sum(size for created,size,reused,raw in results),'putRequests':sum(count for count,size in attempts.values()),'submittedBytes':sum(size for count,size in attempts.values())}
  print(json.dumps(stats),flush=True)
  return stats

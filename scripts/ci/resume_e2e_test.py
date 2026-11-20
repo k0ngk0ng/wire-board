@@ -12,7 +12,7 @@ WORK.mkdir(parents=True, exist_ok=True)
 
 
 class ResumeE2E(unittest.TestCase):
-    def replay(self, change='ci', changed_command=False, failed_shared=False, ambiguous=False):
+    def replay(self, change='ci', changed_command=False, failed_shared=False, ambiguous=False, recovered=False, newer_failure=False, newer_shared_failure=False):
         with tempfile.TemporaryDirectory(dir=WORK) as folder:
             root = Path(folder)
             def run(*args):
@@ -37,14 +37,14 @@ def verification_env(game,backend,base=None):return {}
 def plan(paths,games):return {'has_shared':any(p.startswith('internal/') for p in paths),'frontend_checks':False,'games':[{'game':g,'backend':True} for g in games if any(p.startswith('games/'+g+'/') for p in paths)]}
 '''
             write('scripts/ci/scope.py', fixture)
-            write('.github/workflows/build.yml', 'name: CI\njobs:\n  frontend:\n    run: frontend\n  shared:\n    run: shared\n  games:\n    run: games\n  verify:\n    run: build\n  complete:\n    run: complete\n')
+            write('.github/workflows/build.yml', 'name: CI\njobs:\n  frontend:\n    run: frontend\n  shared:\n    run: shared\n  games:\n    run: games\n  verify:\n    needs: [games]\n    steps:\n      - run: build\n  complete:\n    run: complete\n')
             write('games/rail/server/rules.go', 'package rail\n')
             write('games/catan/server/rules.go', 'package catan\n')
             run('git', 'add', '.')
             run('git', 'commit', '-qm', 'source validation')
             base = run('git', 'rev-parse', 'HEAD')
             write('scripts/ci/resume.py', (ROOT / 'scripts/ci/resume.py').read_text())
-            write('scripts/ci/scope.py', fixture.replace("return [['go','test',game,'old']]", "return [['go','test',game,'new' if game=='catan' else 'old']]" if not changed_command else "return [['go','test',game,'old' if game=='shared' else 'new']]"))
+            write('scripts/ci/scope.py', fixture if recovered else fixture.replace("return [['go','test',game,'old']]", "return [['go','test',game,'new' if game=='catan' else 'old']]" if not changed_command else "return [['go','test',game,'old' if game=='shared' else 'new']]"))
             if change == 'business':write('games/rail/server/rules.go', 'package rail\nconst value=1\n')
             if change == 'shared':write('internal/server/rules.go', 'package server\n')
             if change == 'workflow':write('.github/workflows/build.yml', (root / '.github/workflows/build.yml').read_text().replace('run: games', 'run: changed'))
@@ -53,28 +53,47 @@ def plan(paths,games):return {'has_shared':any(p.startswith('internal/') for p i
             head = run('git', 'rev-parse', 'HEAD')
             jobs = [{'name': 'Build application assets', 'conclusion': 'success', 'id': 1}, {'name': 'Shared platform HTTP, persistence and race checks', 'conclusion': 'failure' if failed_shared else 'success', 'id': 2}, {'name': 'Game rail', 'conclusion': 'success', 'id': 3}, {'name': 'Game catan', 'conclusion': 'cancelled', 'id': 4}]
             if ambiguous:jobs.append(dict(jobs[2], id=5))
-            data = {'workflow_runs': [{'id': 123, 'head_sha': base, 'head_branch': 'main', 'event': 'push', 'path': '.github/workflows/build.yml', 'status': 'completed', 'conclusion': 'cancelled'}], 'jobs': jobs}
+            data = {'workflow_runs': [{'id': 123, 'head_sha': base, 'head_branch': 'main', 'event': 'push', 'path': '.github/workflows/build.yml', 'status': 'completed', 'conclusion': 'cancelled'}], 'jobs': {'123': jobs}}
+            intermediate = head
+            if recovered:
+                jobs[-1]['conclusion'] = 'success'
+                latest = [{'name': 'Build application assets', 'conclusion': 'success', 'id': 10}, {'name': 'Shared platform HTTP, persistence and race checks', 'conclusion': 'failure' if newer_shared_failure else 'skipped', 'id': 11}, {'name': 'Game catan', 'conclusion': 'failure' if newer_failure else 'success', 'id': 12}]
+                data['workflow_runs'].insert(0, dict(data['workflow_runs'][0], id=124, head_sha=intermediate, conclusion='failure'))
+                data['jobs']['124'] = latest
+                write('scripts/ci/fix.txt', 'candidate repair\n')
+                if change == 'build-step':write('.github/workflows/build.yml', (root / '.github/workflows/build.yml').read_text().replace('run: build', 'run: fixed-build'))
+                if change == 'build-gate':write('.github/workflows/build.yml', (root / '.github/workflows/build.yml').read_text().replace('needs: [games]', 'needs: []'))
+                run('git', 'add', '.')
+                run('git', 'commit', '-qm', 'repair publication only')
+                head = run('git', 'rev-parse', 'HEAD')
             write('.local/fixture.json', json.dumps(data))
             binary = root / '.local/bin'
             binary.mkdir()
             driver = binary / 'gh'
             driver.write_text('''#!/usr/bin/env python3
-import json,os,sys
+import json,os,re,sys
 from pathlib import Path
 data=json.loads(Path(os.environ['RESUME_FIXTURE']).read_text())
-print(json.dumps({'jobs':data['jobs']} if '/jobs' in sys.argv[-1] else {'workflow_runs':data['workflow_runs']}))
+print(json.dumps({'jobs':data['jobs'][re.search(r'/runs/([0-9]+)/jobs',sys.argv[-1]).group(1)]} if '/jobs' in sys.argv[-1] else {'workflow_runs':data['workflow_runs']}))
 ''')
             driver.chmod(0o755)
             env = dict(os.environ, PATH=str(binary) + os.pathsep + os.environ['PATH'], RESUME_FIXTURE=str(root / '.local/fixture.json'))
             result = subprocess.run(['python3', '-B', 'scripts/ci/resume.py', '--repo', 'fixture/repo', '--head', head, '--out', '.local/resume.json'], cwd=root, env=env, capture_output=True, text=True)
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
             report = json.loads((root / '.local/resume.json').read_text())
-            eligible = change in ['ci', 'business'] and not failed_shared and not ambiguous
+            eligible = change in ['ci', 'business', 'build-step'] and not failed_shared and not ambiguous and not newer_shared_failure
             self.assertEqual(report['eligible'], eligible)
             if eligible:
                 self.assertEqual(report['head'], head)
-                self.assertEqual(report['base'], base)
-                self.assertEqual(report['sourceRun'], 123)
+                self.assertEqual(report['base'], intermediate if recovered else base)
+                self.assertEqual(report['sourceRun'], 124 if recovered else 123)
+                if recovered:
+                    expected = ['rail'] if change == 'business' else ['catan'] if newer_failure else []
+                    self.assertEqual(report['pendingGames'], expected)
+                    sources = {row['game']: row['sourceRun'] for row in report['reusedGames']}
+                    if 'catan' not in expected:self.assertEqual(sources['catan'], 124)
+                    if 'rail' not in expected:self.assertEqual(sources['rail'], 123)
+                    return
                 all_pending = changed_command or change == 'business'
                 self.assertEqual(report['pendingGames'], ['catan', 'rail'] if all_pending else ['catan'])
                 self.assertEqual([r['game'] for r in report['reusedGames']], [] if all_pending else ['rail'])
@@ -93,6 +112,18 @@ print(json.dumps({'jobs':data['jobs']} if '/jobs' in sys.argv[-1] else {'workflo
     def test_missing_success_or_ambiguous_job_fails_closed(self):
         self.replay(failed_shared=True)
         self.replay(ambiguous=True)
+
+    def test_completed_games_from_later_failed_publication_are_bound_individually(self):
+        self.replay(recovered=True)
+        self.replay(recovered=True, change='business')
+
+    def test_publication_steps_can_change_but_build_dependencies_cannot(self):
+        self.replay(recovered=True, change='build-step')
+        self.replay(recovered=True, change='build-gate')
+
+    def test_a_newer_failure_cannot_be_hidden_by_an_older_success(self):
+        self.replay(recovered=True, newer_failure=True)
+        self.replay(recovered=True, newer_shared_failure=True)
 
 
 if __name__ == '__main__':

@@ -490,6 +490,9 @@ jobs:
           retention-days: 30
       - name: Smoke test Linux binary
         env:
+          OSS_ENDPOINT: https://${{ vars.OSS_ENDPOINT }}
+          OSS_ACCESS_KEY_ID: ${{ secrets.OSS_ACCESS_KEY_ID }}
+          OSS_ACCESS_KEY_SECRET: ${{ secrets.OSS_ACCESS_KEY_SECRET }}
           INVITE_CODE: ci-smoke-only
           DATA_DIR: ${{ github.workspace }}/.local/smoke-data
           ADDR: 127.0.0.1:18080

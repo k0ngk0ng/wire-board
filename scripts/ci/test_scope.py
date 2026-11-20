@@ -31,6 +31,13 @@ scope = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(scope)
 
 class ScopeTests(unittest.TestCase):
+    def test_candidate_smoke_receives_the_complete_oss_configuration(self):
+        workflow = (ROOT / '.github/workflows/build.yml').read_text()
+        smoke = workflow.split('      - name: Smoke test Linux binary', 1)[1].split('      - uses:', 1)[0]
+        self.assertIn('OSS_ENDPOINT: https://${{ vars.OSS_ENDPOINT }}', smoke)
+        for key in ['OSS_ACCESS_KEY_ID', 'OSS_ACCESS_KEY_SECRET']:
+            self.assertIn(key + ': ${{ secrets.' + key + ' }}', smoke)
+
     def test_asset_delivery_tools_require_fresh_build_and_their_own_acceptance(self):
         for path in ['scripts/cdn_delivery.py', 'scripts/test_cdn_delivery.py']:
             result = self.plan(path)

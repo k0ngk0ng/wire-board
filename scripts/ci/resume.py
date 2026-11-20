@@ -32,12 +32,13 @@ def signature(module, root, game):
 
 
 def execution_sections(text):
-    sections = []
+    sections = [text.split('jobs:', 1)[0]]
     for name in ['frontend', 'shared', 'games', 'verify', 'complete']:
         match = re.search(r'^  ' + name + r':\n.*?(?=^  [A-Za-z_][A-Za-z0-9_-]*:|\Z)', text, re.M | re.S)
         if not match:
             raise ValueError('Missing execution job: ' + name)
-        sections.append(match[0])
+        section = match[0]
+        sections.append(section.split('    steps:\n', 1)[0] if name == 'verify' else section)
     return sections
 
 
@@ -45,9 +46,12 @@ def recover(root, head, runs, jobs_for):
     current = module_at(root, head)
     games = current.game_names(root)
     workflow = git(root, 'show', head + ':.github/workflows/build.yml')
+    sections = execution_sections(workflow)
+    candidates = []
+    positions = {sha: index for index, sha in enumerate(git(root, 'rev-list', head).splitlines())}
     for run in runs:
         base = run.get('head_sha', '')
-        if run.get('head_branch') != 'main' or run.get('event') != 'push' or run.get('path') != '.github/workflows/build.yml' or run.get('status') != 'completed' or run.get('conclusion') not in ['cancelled', 'failure', 'timed_out'] or base == head or not re.fullmatch(r'[a-f0-9]{40}', base):
+        if run.get('head_branch') != 'main' or run.get('event') != 'push' or run.get('path') != '.github/workflows/build.yml' or run.get('status') != 'completed' or run.get('conclusion') not in ['success', 'cancelled', 'failure', 'timed_out'] or base == head or not re.fullmatch(r'[a-f0-9]{40}', base):
             continue
         if subprocess.run(['git', 'merge-base', '--is-ancestor', base, head], cwd=root, capture_output=True).returncode:
             continue
@@ -55,8 +59,7 @@ def recover(root, head, runs, jobs_for):
         delta = current.plan(paths, games)
         if delta['has_shared'] or delta['frontend_checks']:
             continue
-        affected = {row['game'] for row in delta['games']}
-        if execution_sections(workflow) != execution_sections(git(root, 'show', base + ':.github/workflows/build.yml')):
+        if sections != execution_sections(git(root, 'show', base + ':.github/workflows/build.yml')):
             continue
         jobs = jobs_for(run['id'])
         named = {}
@@ -68,21 +71,34 @@ def recover(root, head, runs, jobs_for):
             named[name] = job
         if ambiguous:
             continue
-        required = ['Build application assets', 'Shared platform HTTP, persistence and race checks']
-        if any(named.get(name, {}).get('conclusion') != 'success' for name in required):
+        if named.get('Build application assets', {}).get('conclusion') != 'success':
             continue
-        previous = module_at(root, base)
-        if previous.go_commands(root, 'shared', race=True) != current.go_commands(root, 'shared', race=True):
-            continue
+        candidates.append({'run': run, 'base': base, 'paths': paths, 'affected': {row['game'] for row in delta['games']}, 'named': named, 'module': module_at(root, base)})
+    candidates.sort(key=lambda row: (positions[row['base']], -row['run']['id']))
+    shared_name = 'Shared platform HTTP, persistence and race checks'
+    shared_commands = current.go_commands(root, 'shared', race=True)
+    shared_results = [row for row in candidates if row['named'].get(shared_name, {}).get('conclusion') in ['success', 'failure', 'timed_out'] and row['module'].go_commands(root, 'shared', race=True) == shared_commands]
+    platform = shared_results[0] if shared_results and shared_results[0]['named'][shared_name]['conclusion'] == 'success' else None
+    if candidates and platform:
         reused, pending = [], []
         for game in games:
-            job = named.get('Game ' + game)
             digest = signature(current, root, game)
-            if game not in affected and job and job['conclusion'] == 'success' and digest == signature(previous, root, game):
-                reused.append({'game': game, 'job': job['id'], 'signatureSHA256': digest})
+            selected = None
+            for candidate in candidates:
+                job = candidate['named'].get('Game ' + game)
+                if game in candidate['affected'] or not job or digest != signature(candidate['module'], root, game):
+                    continue
+                if job['conclusion'] in ['failure', 'timed_out']:
+                    break
+                if job['conclusion'] == 'success':
+                    selected = {'game': game, 'job': job['id'], 'signatureSHA256': digest, 'sourceRun': candidate['run']['id'], 'sourceSHA': candidate['base']}
+                    break
+            if selected:
+                reused.append(selected)
             else:
                 pending.append(game)
-        return {'eligible': True, 'head': head, 'base': base, 'sourceRun': run['id'], 'changedPaths': paths, 'affectedGames': sorted(affected), 'reusedGames': reused, 'pendingGames': pending, 'sharedJob': named[required[1]]['id'], 'frontendJob': named[required[0]]['id']}
+        baseline = candidates[0]
+        return {'eligible': True, 'head': head, 'base': baseline['base'], 'sourceRun': baseline['run']['id'], 'changedPaths': baseline['paths'], 'affectedGames': sorted(baseline['affected']), 'reusedGames': reused, 'pendingGames': pending, 'platformSourceRun': platform['run']['id'], 'platformSourceSHA': platform['base'], 'sharedJob': platform['named'][shared_name]['id'], 'frontendJob': baseline['named']['Build application assets']['id']}
     return {'eligible': False, 'head': head, 'base': '', 'reusedGames': [], 'pendingGames': []}
 
 

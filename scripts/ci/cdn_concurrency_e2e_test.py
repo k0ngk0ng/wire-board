@@ -1,4 +1,6 @@
 import json
+import io
+from contextlib import redirect_stdout
 from pathlib import Path
 import ssl
 import subprocess
@@ -69,11 +71,15 @@ class PublicationConcurrencyE2E(unittest.TestCase):
                         with self.assertRaisesRegex(ValueError, 'Immutable object already differs'):
                             cdn.publish(folder, rows, 'fixture', '127.0.0.1:' + str(server.server_port))
                     else:
-                        stats = cdn.publish(folder, rows + rows[:8], 'fixture', '127.0.0.1:' + str(server.server_port))
+                        output = io.StringIO()
+                        with redirect_stdout(output):
+                            stats = cdn.publish(folder, rows + rows[:8], 'fixture', '127.0.0.1:' + str(server.server_port))
                         self.assertEqual(stats['reusedObjects'], 64)
                         self.assertEqual(stats['uploadedObjects'], 0)
                         self.assertEqual(stats['putRequests'], 0)
                         self.assertEqual(stats['reusedBytes'], 64 * len(payload))
+                        progress = [json.loads(line) for line in output.getvalue().splitlines() if line.startswith('{')]
+                        self.assertTrue(any(row.get('stage') == 'oss-verification' and row.get('verifiedObjects') == 64 and row.get('totalObjects') == 64 for row in progress))
                 self.assertTrue(state['authorized'])
                 self.assertEqual(sorted(state['paths']), sorted('/bga/_common/' + str(index) + '.bin' for index in range(64)))
                 self.assertGreaterEqual(state['peak'], 8, 'Bulk publication must not serialize a large immutable inventory through six connections')
