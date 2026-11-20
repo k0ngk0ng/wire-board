@@ -11,7 +11,7 @@ export function isTransientSyncError(error: unknown): boolean {
     [409, 429, 503].includes(e.status ?? 0) ||
     (error instanceof TypeError &&
       /fetch|network|load failed|网络/i.test(e.message ?? "")) ||
-    /实时连接|实时操作确认超时|局面已更新|挥拍时间已过期|来球已更新|服务器已重启/.test(
+    /实时连接|实时操作确认超时|局面已更新|挥拍时间已过期|来球已更新|服务器已重启|当前由电脑托管，请先取消托管再手动操作/.test(
       e.message ?? "",
     )
   );

@@ -334,7 +334,7 @@ FAST_COMPONENTS = {
     'account-password': ({'internal/server/account_password.go', 'internal/server/account_password_e2e_test.go'}, ['internal/server/account_password_e2e_test.go']),
 }
 
-LINT_TOOL_FILES = {'games/racing/build/lint_go.go'}
+LINT_TOOL_FILES = {'games/racing/build/lint_go.go', 'games/hotlinemiami/build/lint_go.go'}
 ASSET_DELIVERY_FILES = {'scripts/cdn_delivery.py', 'scripts/test_cdn_delivery.py', 'scripts/resource_store.py', 'scripts/resource_store_e2e_test.py', 'scripts/asset_reuse.py', 'scripts/asset_reuse_e2e_test.py'}
 
 def ci_path(path):
@@ -651,6 +651,8 @@ def prepare_pvz_asset_tools(root):
     return report
 
 def build_commands(root, game, index=0):
+    if game == 'hotlinemiami' and index == 0:
+        return [['node', str(root/'games/hotlinemiami/build/lint.mjs')]]
     if game == 'yuyuhakusho' and index == 0:
         return [['node','--test',str(root/'games/yuyuhakusho/build/runtime-delivery.test.mjs')], ['go','test','-run','^$','./games/yuyuhakusho/cmd/verify-arena-aux']]
     if game == 'pvz' and index == 0:

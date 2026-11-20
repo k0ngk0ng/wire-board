@@ -1,0 +1,234 @@
+{
+  "version": 1,
+  "game": "hotlinemiami",
+  "entries": [
+    {
+      "file": "hotlinemiami/go-runtime-LICENSE.txt",
+      "bytes": 1604,
+      "sha256": "49bc7e20dfa2b7367e1a98ece647fed88ddfd78684b0d543585ee044b5f54f3e",
+      "mime": "text/plain"
+    },
+    {
+      "file": "hotlinemiami/hotline-motion.wasm",
+      "bytes": 3311986,
+      "sha256": "409c9c36266365704c3a516f7a0b3ec2472a73cd22f4a733528827a1d363e4ab",
+      "mime": "application/wasm"
+    },
+    {
+      "file": "hotlinemiami/manifest.json",
+      "bytes": 108185,
+      "sha256": "63364bc3bbe45eaa7b353f53eeb64615feca95c364621e43dfd7866a23b94f66",
+      "mime": "application/json"
+    },
+    {
+      "file": "hotlinemiami/runtime/bat.flac",
+      "bytes": 22094,
+      "sha256": "7b693b2e5c860e63cb27f1868f25efaf9cac582db1fdeb41a77e8b72848aa3b7",
+      "mime": "audio/flac"
+    },
+    {
+      "file": "hotlinemiami/runtime/bodyguard-walk.png",
+      "bytes": 1148,
+      "sha256": "ac3ba515c58f61acc30b46c41388b980d0c4f2dafbf51513961565fd6288a995",
+      "mime": "image/png"
+    },
+    {
+      "file": "hotlinemiami/runtime/door.flac",
+      "bytes": 19976,
+      "sha256": "93854adac11e6ec55ff0e5f243404840dbec4642fd1ce54e669cc226bbe87c93",
+      "mime": "audio/flac"
+    },
+    {
+      "file": "hotlinemiami/runtime/down.flac",
+      "bytes": 27458,
+      "sha256": "348b841007c83ee7ad6a9081ec09d63c2d719ac6f440107af2c5ccca8edb7150",
+      "mime": "audio/flac"
+    },
+    {
+      "file": "hotlinemiami/runtime/father-walk.png",
+      "bytes": 764,
+      "sha256": "d462bbb297ea484a569ebd896ba9eb6f3c6c1f5cb9650883b1f53674019b6ca7",
+      "mime": "image/png"
+    },
+    {
+      "file": "hotlinemiami/runtime/katana.flac",
+      "bytes": 22532,
+      "sha256": "4ac5152da974b5f89c05265b0fb32e1e3feebc7d5ca6f06eacf41909dfc1ff22",
+      "mime": "audio/flac"
+    },
+    {
+      "file": "hotlinemiami/runtime/kill.flac",
+      "bytes": 55383,
+      "sha256": "2dd1b62e4483d26b9c73abd78a2bea1c277109bd2dfcfe6dbc2c822fe9859c5c",
+      "mime": "audio/flac"
+    },
+    {
+      "file": "hotlinemiami/runtime/knife.flac",
+      "bytes": 22532,
+      "sha256": "4ac5152da974b5f89c05265b0fb32e1e3feebc7d5ca6f06eacf41909dfc1ff22",
+      "mime": "audio/flac"
+    },
+    {
+      "file": "hotlinemiami/runtime/m16.flac",
+      "bytes": 43413,
+      "sha256": "401015ad6c4dd0452d9bb018d5afe52981f8319c4f5a314f24cf161aa4625d4f",
+      "mime": "audio/flac"
+    },
+    {
+      "file": "hotlinemiami/runtime/map-full-house.png",
+      "bytes": 49190,
+      "sha256": "1eb0cd8a027bf6f286b71bf55fdfca1521407585d97d05d633191c5d0c89002e",
+      "mime": "image/png"
+    },
+    {
+      "file": "hotlinemiami/runtime/map-no-talk.png",
+      "bytes": 44013,
+      "sha256": "3f3d5de7636e84503c020ac3700719fadbbe25abd158f53151d5728e458766db",
+      "mime": "image/png"
+    },
+    {
+      "file": "hotlinemiami/runtime/map-push-it.png",
+      "bytes": 35556,
+      "sha256": "c4ae393c27e8263dd65219f3d28febab0247103164d46ad0cf4626f6aaf2fbd1",
+      "mime": "image/png"
+    },
+    {
+      "file": "hotlinemiami/runtime/music.ogg",
+      "bytes": 8855631,
+      "sha256": "158d123a6e56cefacf8b9ff9e68466c9dfc3b643f6faa61acb37c910e582303c",
+      "mime": "audio/ogg"
+    },
+    {
+      "file": "hotlinemiami/runtime/pickup.wav",
+      "bytes": 23034,
+      "sha256": "82a8528f9d62bf8fe0064004684dc9bb0501da9ea9e1847f3aa71332485a01d7",
+      "mime": "audio/x-wav"
+    },
+    {
+      "file": "hotlinemiami/runtime/pistol.flac",
+      "bytes": 32287,
+      "sha256": "bb248aa10b997669f285a5a9741d7b7289f6c6dc8347f41fe92a9ad54deb9a3d",
+      "mime": "audio/flac"
+    },
+    {
+      "file": "hotlinemiami/runtime/portrait-biker.png",
+      "bytes": 3108,
+      "sha256": "d298bee460ee782716db696ad827401d0e030e225bdd444dff171f34b642aa5c",
+      "mime": "image/png"
+    },
+    {
+      "file": "hotlinemiami/runtime/portrait-bodyguard.png",
+      "bytes": 2519,
+      "sha256": "dcc6e43c58af7913f885356e3bff543585edadb7c7d8a34e75f03ea69a05748f",
+      "mime": "image/png"
+    },
+    {
+      "file": "hotlinemiami/runtime/portrait-father.png",
+      "bytes": 1936,
+      "sha256": "770e9455486d00ca2c1d63e7b30db2ae7af05c98258f4b7022cedc76c9a3e41c",
+      "mime": "image/png"
+    },
+    {
+      "file": "hotlinemiami/runtime/portrait-jacket.png",
+      "bytes": 1645,
+      "sha256": "39355764a7d5240ab447e498519d908301c07365660873070d6445e55fd6287e",
+      "mime": "image/png"
+    },
+    {
+      "file": "hotlinemiami/runtime/portrait-richter.png",
+      "bytes": 1996,
+      "sha256": "1d98ee47b6cf5880f76b1f9d640fcb84efc85aa2f20c3d6ded3d5bdc60d11bd8",
+      "mime": "image/png"
+    },
+    {
+      "file": "hotlinemiami/runtime/preview-full-house.png",
+      "bytes": 16148,
+      "sha256": "102b761aa6bfc74691b9fc6f462253e8b46a015215c6454f5d530216baca8a21",
+      "mime": "image/png"
+    },
+    {
+      "file": "hotlinemiami/runtime/preview-no-talk.png",
+      "bytes": 13426,
+      "sha256": "e2a41d13be5a7d08b3e1ccafa757f870d95faf4ba3ad3ceaae5d198965d2027e",
+      "mime": "image/png"
+    },
+    {
+      "file": "hotlinemiami/runtime/preview-push-it.png",
+      "bytes": 12621,
+      "sha256": "7e43b659e1b62684589c95dd93232ffc010ac8ec309e03de773ce43fa81e3281",
+      "mime": "image/png"
+    },
+    {
+      "file": "hotlinemiami/runtime/shotgun.flac",
+      "bytes": 73391,
+      "sha256": "1799aae48983e2cfcd4f737ae30c8e7a813a7d87f6b64c5a4bb511bd8c45d8bf",
+      "mime": "audio/flac"
+    },
+    {
+      "file": "hotlinemiami/runtime/sprites.png",
+      "bytes": 39899,
+      "sha256": "76076b50cb350813ab054b18d803f9d6710f4e462e19c99ae03d07a143346ea4",
+      "mime": "image/png"
+    },
+    {
+      "file": "hotlinemiami/runtime/throw.wav",
+      "bytes": 11326,
+      "sha256": "5fe82aa2c75f581fb3978814e0b4b67e4b9802bd3196f315c9ad25b8543398f7",
+      "mime": "audio/x-wav"
+    },
+    {
+      "file": "hotlinemiami/runtime/uzi.flac",
+      "bytes": 26976,
+      "sha256": "95c59ccbc8ade86a83c481a3843ad4f5433705806069aedf168cdbe9b740a88e",
+      "mime": "audio/flac"
+    },
+    {
+      "file": "hotlinemiami/runtime/weapon-bat.png",
+      "bytes": 238,
+      "sha256": "2c1e64dd77d32cc29616f4e053ec0582f8c799ac1296e9ca9191a83932ccb99d",
+      "mime": "image/png"
+    },
+    {
+      "file": "hotlinemiami/runtime/weapon-katana.png",
+      "bytes": 193,
+      "sha256": "eb81eca55711e4db82821a29dd6eb66e6bedbfc960246aa14467caead739a024",
+      "mime": "image/png"
+    },
+    {
+      "file": "hotlinemiami/runtime/weapon-knife.png",
+      "bytes": 156,
+      "sha256": "8d50d7b2c795bd291f1c446783d817afc7a919dfc7e7d921baa2ca95b2c3615f",
+      "mime": "image/png"
+    },
+    {
+      "file": "hotlinemiami/runtime/weapon-m16.png",
+      "bytes": 244,
+      "sha256": "5b8f1af764d0ab11f4e6495dfbc76d1d6da5a9ed815e1feadccf0562cb378bd7",
+      "mime": "image/png"
+    },
+    {
+      "file": "hotlinemiami/runtime/weapon-pistol.png",
+      "bytes": 238,
+      "sha256": "e33fe3cac11f5ed3bcf6d5628241c60f1cb7405ea889cadd01951178620e92c1",
+      "mime": "image/png"
+    },
+    {
+      "file": "hotlinemiami/runtime/weapon-shotgun.png",
+      "bytes": 236,
+      "sha256": "cf6a81aae7bed420568867fa4bea840b0fb3b2a272554e49c11890efa67b9e97",
+      "mime": "image/png"
+    },
+    {
+      "file": "hotlinemiami/runtime/weapon-uzi.png",
+      "bytes": 254,
+      "sha256": "29cd3dcf584a53b97273e65f833beeffb70808b2b20f6a9eee21105e077cec40",
+      "mime": "image/png"
+    },
+    {
+      "file": "hotlinemiami/wasm-exec.js",
+      "bytes": 10541,
+      "sha256": "b2e15cb26b2d64c1153c744068c8c50c00a92ec2ad8e26af6f4801570e6ca120",
+      "mime": "text/javascript"
+    }
+  ]
+}

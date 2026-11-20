@@ -12,6 +12,7 @@ import (
 	fortressblue "github.com/k0ngk0ng/wire-board/games/fortressblue/server"
 	gomoku "github.com/k0ngk0ng/wire-board/games/gomoku/server"
 	guandan "github.com/k0ngk0ng/wire-board/games/guandan/server"
+	hotlinemiami "github.com/k0ngk0ng/wire-board/games/hotlinemiami/server"
 	junqi "github.com/k0ngk0ng/wire-board/games/junqi/server"
 	monopoly "github.com/k0ngk0ng/wire-board/games/monopoly/server"
 	pairs "github.com/k0ngk0ng/wire-board/games/pairs/server"
@@ -38,6 +39,7 @@ func Modules() []gameapi.Module {
 	modules = append(modules, escape.Module())
 	modules = append(modules, stoneage.Module())
 	modules = append(modules, pokepath.Module())
+	modules = append(modules, hotlinemiami.Module())
 	for i := range modules {
 		modules[i].Controls = ControllerDefinitionFor(modules[i].ID)
 	}

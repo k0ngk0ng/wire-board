@@ -45,6 +45,7 @@
 | 军棋 | [junqi.md](rules/junqi.md) |
 | 强手棋 | [monopoly.md](rules/monopoly.md) |
 | 连连看 | [pairs.md](rules/pairs.md) |
+| 迈阿密热线 | [hotlinemiami.md](rules/hotlinemiami.md) |
 | 极品飞车 | [racing.md](rules/racing.md) |
 | 铁路环游 | [rail.md](rules/rail.md) |
 | 三国杀 | [sanguosha.md](rules/sanguosha.md) |
