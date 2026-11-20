@@ -94,6 +94,10 @@ if (process.argv.includes("--self-test")) {
   const fixtures = ["package racing\nfunc driveCar() {}", "package racing\nfunc bad_name() {}", "package racing\n// forbidden\nfunc driveCar() {}", "package wrong\nfunc driveCar() {}", "package racing\nvar bad_name = 1"];
   const checked = inspectGo(fixtures.map(source => ({ path: "games/racing/server/fixture.go", source })));
   for (let i = 0; i < checked.length; i++) { assert.equal(checked[i].length > 0, i > 0); examples++; }
+  const commands = inspectGo([{ path: "games/racing/cmd/tool/main.go", source: "package main\nfunc main() {}" }, { path: "games/racing/cmd/tool/main.go", source: "package racing\nfunc main() {}" }]);
+  assert.deepEqual(commands[0], []);
+  assert(commands[1].includes("package-directory"));
+  examples += 2;
   const python = inspectPython(["def drive_car(max_speed):\n return max_speed", "def wrongName():\n pass", "# forbidden\npass", "eval('1')"].map(source => ({ source })));
   for (let i = 0; i < python.length; i++) { assert.equal(python[i].length > 0, i > 0); examples++; }
   for (const [source, invalid] of [[".racing-preview {color:#203d37}", false], [".bad_name {color:#000}", true], ["/* forbidden */ .racing-preview {}", true]]) { assert.equal(inspectCSS(source).length > 0, invalid); examples++; }

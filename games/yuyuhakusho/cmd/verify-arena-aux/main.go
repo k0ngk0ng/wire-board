@@ -1,6 +1,3 @@
-// Command verify-yuyu-arena-aux verifies the complete production presentation
-// path for the six arena-A raw submissions against compact original video.
-// It is an offline verification harness, not a game or reference-core runtime.
 package main
 
 import (

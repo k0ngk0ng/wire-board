@@ -19,7 +19,8 @@
     "web/",
     "games/tetris/",
     "games/spf2t/",
-    "games/splendor/"
+    "games/splendor/",
+    "games/yuyuhakusho/"
   ],
   "allowUpperSnakeConstants": true,
   "evidenceDirectory": ".local/asset-reuse/lint",
@@ -123,7 +124,13 @@
     "internal/server/sanguosha_3v3_test.go",
     "internal/server/sanguosha_3v3_observation_test.go",
     "internal/server/catan_concurrency_e2e_test.go",
-    "scripts/ci/game_suites_e2e_test.py"
+    "scripts/ci/game_suites_e2e_test.py",
+    "scripts/ci/resume.py",
+    "scripts/ci/resume_e2e_test.py",
+    "scripts/ci/game_tools.py",
+    "scripts/ci/game_tools_e2e_test.py",
+    "games/yuyuhakusho/cmd/verify-arena-aux/main.go",
+    "scripts/yuyuhakusho/summarize_additional_arenas.py"
   ],
   "rules": [
     "Go 文件 snake_case；Python 文件沿用 snake_case 或 kebab-case；JS/TS 文件 kebab-case；React TSX 组件允许 PascalCase",

@@ -38,7 +38,7 @@ Native 与 Wasm 两端各验证以下六项拒绝：
 ```sh
 GOCACHE="$PWD/.local/go-cache" GOMODCACHE="$PWD/.local/go-mod" \
 GOTMPDIR="$PWD/.local/md-yuyuhakusho/tmp" TMPDIR="$PWD/.local/md-yuyuhakusho/tmp" \
-go run -race ./cmd/verify-yuyu-arena-aux
+go run -race ./games/yuyuhakusho/cmd/verify-arena-aux
 ```
 
 使用同样命令增加 `-mode no-aux` 可复现真实失败。其他负向模式为 `wrong-bank`、`bad-x`、`bad-tile`、`mask-all` 和 `bad-expected`；这些命令应返回非零退出码。

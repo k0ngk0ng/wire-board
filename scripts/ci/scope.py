@@ -18,6 +18,7 @@ LEGACY = ('splendor', 'rail', 'catan', 'carcassonne', 'sanguosha')
 CATAN_EXTENDED_TESTS = (
     ('./games/catan/server', 'TestCatanAttackCityNaturalEngine'),
     ('./games/catan/server', 'TestCatanAttackDesertExtendedNatural'),
+    ('./games/catan/server', 'TestCatanAttackDesertFourNatural'),
     ('./games/catan/server', 'TestCatanAttackPiratesNatural'),
     ('./games/catan/server', 'TestCatanAttackShoresExtendedNatural'),
     ('./games/catan/server', 'TestCatanAttackTransportKnightsNaturalEngine'),
@@ -103,12 +104,18 @@ CATAN_EXTENDED_TESTS = (
     ('./games/catan/server', 'TestCatanTransportNaturalMatches'),
     ('./games/catan/server', 'TestCatanTransportSeaModulesNatural'),
     ('./games/catan/server', 'TestCatanTransportSeaNatural'),
+    ('./games/catan/server', 'TestCatanTwoAttackCityNaturalEngine'),
     ('./games/catan/server', 'TestCatanTwoAttackDesertNatural'),
     ('./games/catan/server', 'TestCatanTwoAttackSeaNatural'),
     ('./games/catan/server', 'TestCatanTwoCaravansSeaNatural'),
     ('./games/catan/server', 'TestCatanTwoCaravansShoresLongGames'),
     ('./games/catan/server', 'TestCatanTwoFishingSeafarersNaturalGames'),
     ('./games/catan/server', 'TestCatanTwoHelpersKnightsNaturalGames'),
+    ('./games/catan/server', 'TestCatanTwoRiversSeaNatural'),
+    ('./games/catan/server', 'TestCatanTwoRiversWorldNatural'),
+    ('./games/catan/server', 'TestCatanTwoSeafarersKnightsCompleteGames'),
+    ('./games/catan/server', 'TestCatanTwoSeafarersNaturalGames'),
+    ('./games/catan/server', 'TestCatanWondersBotsComplete'),
     ('./internal/server', 'TestCatanAttackDesertHTTP'),
     ('./internal/server', 'TestCatanAttackKnightsNaturalHTTP'),
     ('./internal/server', 'TestCatanAttackPiratesHTTP'),
@@ -204,9 +211,12 @@ CATAN_EXTENDED_TESTS = (
     ('./internal/server', 'TestCatanRiversTransportNaturalHTTP'),
     ('./internal/server', 'TestCatanSeaNestingsE2E'),
     ('./internal/server', 'TestCatanSeafarersPublicCompleteHTTPGames'),
+    ('./internal/server', 'TestCatanTradersHelpersPublicHTTP'),
+    ('./internal/server', 'TestCatanTradersVariantsPublicHTTP'),
     ('./internal/server', 'TestCatanTransportEventsNaturalHTTP'),
     ('./internal/server', 'TestCatanTransportKnightsNaturalHTTP'),
     ('./internal/server', 'TestCatanTransportNaturalHTTPMatches'),
+    ('./internal/server', 'TestCatanTransportSeaHTTP'),
     ('./internal/server', 'TestCatanTribeKnightsNaturalHTTP'),
     ('./internal/server', 'TestCatanTwoAttackCompleteHTTPGames'),
     ('./internal/server', 'TestCatanTwoCaravansCompleteHTTPGames'),
@@ -303,7 +313,7 @@ YUYU_EXTENDED_TRAJECTORIES = (
 )
 
 GAME_EXTENDED_TESTS = {'basketball': BASKETBALL_EXTENDED_TESTS, 'catan': CATAN_EXTENDED_TESTS, 'starfort': STARFORT_EXTENDED_TESTS, 'yuyuhakusho': YUYU_EXTENDED_TESTS}
-GAME_PARTITIONS = {'catan': (4, 20), 'yuyuhakusho': (4, 16)}
+GAME_PARTITIONS = {'catan': (8, 20), 'yuyuhakusho': (4, 16)}
 
 MULTI = {
     'TestBotsFinishBothGames': ('splendor', 'rail'),
@@ -331,12 +341,14 @@ def ci_path(path):
         'scripts/release-source.cjs', 'scripts/release-source.test.cjs',
         'scripts/cdn_local_ready.py', 'scripts/test_cdn_local_ready.py',
         'games/racing/build/asset-reuse-lint.json',
+        'games/racing/build/lint_go.go',
+        'games/racing/build/lint.mjs',
     }
 
 def game_names(root):
     return sorted(p.name for p in (root/'games').iterdir() if p.is_dir() and not p.name.startswith(('.', '_')))
 
-def plan(paths, games, manual='', legacy_sources=None, contra_campaigns=False, validation='auto'):
+def plan(paths, games, manual='', legacy_sources=None, contra_campaigns=False, validation='auto', resume_games=()):
     if validation not in ('auto', 'quick', 'full'): raise ValueError('Unknown validation mode: ' + validation)
     if validation == 'full': manual = 'all'
     selected = {}
@@ -354,6 +366,9 @@ def plan(paths, games, manual='', legacy_sources=None, contra_campaigns=False, v
         active_path = path
         if path.endswith('.md') or path.startswith('docs/'): continue
         if ci_path(path): continue
+        if path == 'cmd/verify-yuyu-arena-aux/main.go':
+            add('yuyuhakusho', True)
+            continue
         parts = path.split('/')
         if path.startswith('internal/') and path.endswith('_test.go'):
             source = (legacy_sources or {}).get(path)
@@ -384,6 +399,9 @@ def plan(paths, games, manual='', legacy_sources=None, contra_campaigns=False, v
         if manual not in (*games, 'all', 'shared'): raise ValueError(f'Unknown game: {manual}')
         if manual != 'shared':
             for game in games if manual == 'all' else [manual]: add(game, True)
+    for game in resume_games:
+        if game not in games: raise ValueError('Unknown resumed game: ' + game)
+        add(game, True)
     rows = [{'game': g, 'backend': selected[g]} for g in sorted(selected)]
     matrix = []
     for row in rows:
@@ -393,6 +411,7 @@ def plan(paths, games, manual='', legacy_sources=None, contra_campaigns=False, v
                  for mode in ('standard-terminal', 'assisted-clear') for players in (1, 2)] if contra_campaigns else []
     code_paths = {p for p in paths if not p.endswith('.md') and not p.startswith('docs/')}
     components = set()
+    if any(path.startswith('cmd/') for path in paths): components.add('ci')
     shared = manual in ('shared', 'all')
     frontend_checks = manual == 'all'
     for path in sorted(code_paths - game_paths):
@@ -401,6 +420,9 @@ def plan(paths, games, manual='', legacy_sources=None, contra_campaigns=False, v
             components.update(matched)
         elif ci_path(path):
             components.add('ci')
+        elif path.startswith('cmd/'):
+            components.add('ci')
+            shared = True
         elif path.startswith(('web/src/', 'web/tests/')) or path == 'scripts/check-release-history.py':
             frontend_checks = True
         elif path in ('scripts/update.sh', 'scripts/test_update.py', 'compose.yaml', 'Dockerfile', '.env.example'):
@@ -414,7 +436,7 @@ def plan(paths, games, manual='', legacy_sources=None, contra_campaigns=False, v
     if frontend_checks: components.add('frontend')
     if validation == 'quick' and any(p.startswith('web/') and not p.endswith('.md') for p in paths):
         components.add('typescript')
-    build_required = validation != 'quick' and bool(manual or any(not ci_path(p) for p in code_paths))
+    build_required = validation != 'quick' and bool(manual or resume_games or any(not ci_path(p) for p in code_paths))
     return {'games': rows, 'matrix': {'include': matrix}, 'has_games': bool(rows),
             'has_shared': shared, 'has_quick': bool(components),
             'quick_components': sorted(components),
@@ -427,6 +449,14 @@ def plan(paths, games, manual='', legacy_sources=None, contra_campaigns=False, v
 
 def changed_names(raw):
     return [p.decode('utf-8') for p in raw.split(b'\0') if p]
+
+def resume_selection(proof, head, base, games):
+    if not proof.get('eligible'): return []
+    pending = proof.get('pendingGames', [])
+    reused = [row['game'] for row in proof.get('reusedGames', [])]
+    if proof.get('head') != head or proof.get('base') != base or len(set(pending + reused)) != len(pending + reused) or set(pending + reused) != set(games):
+        raise ValueError('Resume evidence differs from the exact plan inputs')
+    return pending
 
 def owner(path, name, games):
     parts = path.parts
@@ -526,6 +556,9 @@ def quick_commands(root, components):
                 ['python3', '-B', 'scripts/ci/partition_e2e_test.py'],
                 ['python3', '-B', 'scripts/ci/catan_suite_e2e_test.py'],
                 ['python3', '-B', 'scripts/ci/game_suites_e2e_test.py'],
+                ['python3', '-B', 'scripts/ci/resume_e2e_test.py'],
+                ['python3', '-B', 'scripts/ci/game_tools.py'],
+                ['python3', '-B', 'scripts/ci/game_tools_e2e_test.py'],
                 ['python3', '-B', 'scripts/ci/check-plan.py'],
                 ['python3', '-B', 'scripts/ci/check-lanes.py'],
                 ['python3', '-B', 'scripts/ci/release-image-e2e.py'],
@@ -609,7 +642,7 @@ def prepare_pvz_asset_tools(root):
 
 def build_commands(root, game, index=0):
     if game == 'yuyuhakusho' and index == 0:
-        return [['node','--test',str(root/'games/yuyuhakusho/build/runtime-delivery.test.mjs')]]
+        return [['node','--test',str(root/'games/yuyuhakusho/build/runtime-delivery.test.mjs')], ['go','test','-run','^$','./games/yuyuhakusho/cmd/verify-arena-aux']]
     if game == 'pvz' and index == 0:
         base, output = root/'games/pvz/build', root/'.local/pvz/ci-assets'
         return [
@@ -765,6 +798,7 @@ def main():
     p.add_argument('--head', default='HEAD')
     p.add_argument('--manual', default='')
     p.add_argument('--validation', choices=['auto', 'quick', 'full'], default='auto')
+    p.add_argument('--resume-proof', type=Path)
     p.add_argument('--contra-campaigns', action='store_true', help='Opt into non-blocking Contra computer research campaigns')
     r = sub.add_parser('run')
     r.add_argument('--game', required=True, choices=['quick', 'shared', *game_names(ROOT)])
@@ -797,7 +831,12 @@ def main():
                 old = subprocess.run(['git', 'show', args.base + ':' + path], cwd=ROOT, text=True, capture_output=True)
                 source = changed_test_source(old.stdout if old.returncode == 0 else '', source, retired=retired)
             legacy_sources[path] = source
-    result = plan(paths, game_names(ROOT), args.manual, legacy_sources, contra_campaigns=args.contra_campaigns, validation=args.validation)
+    proof = json.loads(args.resume_proof.read_text()) if args.resume_proof else {'eligible': False}
+    resumed = resume_selection(proof, subprocess.check_output(['git', 'rev-parse', args.head], cwd=ROOT, text=True).strip(), args.base, active_games)
+    result = plan(paths, game_names(ROOT), args.manual, legacy_sources, contra_campaigns=args.contra_campaigns, validation=args.validation, resume_games=resumed)
+    if proof.get('eligible'):
+        result['reusedValidation'] = proof
+        if args.validation != 'quick': result['build_required'] = True
     result.update(base=args.base, head=args.head, paths=changed_names(raw))
     out = ROOT/'.local/ci'
     out.mkdir(parents=True, exist_ok=True)
@@ -814,6 +853,8 @@ def main():
         with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as f:
             f.write('## Verification scope\n\nBaseline: `' + (args.base or 'bootstrap') + '`\n\n')
             f.write('Fast checks: ' + (', '.join(result['quick_components']) or 'none') + '\n\n')
+            if proof.get('eligible'):
+                f.write('Unchanged game validations reused from run ' + str(proof['sourceRun']) + ': ' + ', '.join(row['game'] for row in proof['reusedGames']) + '\n\n')
             f.write('Shared backend: ' + str(result['has_shared']).lower() + '; application build: ' + str(result['build_required']).lower() + '\n\nSelected games:\n\n')
             f.write('\n'.join('- ' + r['game'] + (': frontend/build and Go contracts; optional computer research listed separately' if r['game'] == 'contra' and r['backend'] else ': frontend, rules, full matches and race checks' if r['backend'] else ': frontend/assets only') for r in result['games']) or '- None')
             f.write('\n')

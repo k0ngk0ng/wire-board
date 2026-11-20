@@ -31,6 +31,17 @@ scope = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(scope)
 
 class ScopeTests(unittest.TestCase):
+    def test_resumed_games_remain_required_and_proof_is_bound_to_the_plan(self):
+        result = scope.plan(['scripts/ci/scope.py'], scope.game_names(ROOT), resume_games=('catan',))
+        self.assertEqual(result['games'], [{'game': 'catan', 'backend': True}])
+        self.assertTrue(result['build_required'])
+        self.assertFalse(result['has_shared'])
+        proof = {'eligible': True, 'head': 'a' * 40, 'base': 'b' * 40, 'pendingGames': ['catan'], 'reusedGames': [{'game': 'rail'}]}
+        self.assertEqual(scope.resume_selection(proof, 'a' * 40, 'b' * 40, ['catan', 'rail']), ['catan'])
+        for changed in [dict(proof, head='c' * 40), dict(proof, base='c' * 40), dict(proof, pendingGames=[]), dict(proof, pendingGames=['catan', 'rail'])]:
+            with self.assertRaises(ValueError):
+                scope.resume_selection(changed, 'a' * 40, 'b' * 40, ['catan', 'rail'])
+
     def test_stoneage_namespace_checks_install_their_build_dependency(self):
         workflow=(ROOT/'.github/workflows/build.yml').read_text()
         block=workflow.split('      - name: Install dependencies for game rendering checks',1)[1].split('      - name: Prepare PvZ asset verification environment',1)[0]
@@ -149,7 +160,7 @@ class ScopeTests(unittest.TestCase):
             self.assertFalse(any(name in ' '.join(c) for c in scope.go_commands(ROOT,'shared')))
 
     def test_yuyuhakusho_build_binding_checks_run_only_once(self):
-        self.assertEqual(scope.build_commands(ROOT,'yuyuhakusho',0),[['node','--test',str(ROOT/'games/yuyuhakusho/build/runtime-delivery.test.mjs')]])
+        self.assertEqual(scope.build_commands(ROOT,'yuyuhakusho',0),[['node','--test',str(ROOT/'games/yuyuhakusho/build/runtime-delivery.test.mjs')], ['go','test','-run','^$','./games/yuyuhakusho/cmd/verify-arena-aux']])
         self.assertEqual(scope.build_commands(ROOT,'yuyuhakusho',1),[])
 
     def test_yuyuhakusho_backend_shards_do_not_repeat_other_games(self):
@@ -399,7 +410,10 @@ class ScopeTests(unittest.TestCase):
     def plan(self, *paths, manual='', contra_campaigns=False):
         return scope.plan(paths, scope.game_names(ROOT), manual, contra_campaigns=contra_campaigns)
     def test_racing_lint_tool_does_not_start_driving_rules(self):
-        self.assertEqual(self.plan('games/racing/build/lint_go.go')['games'], [{'game': 'racing', 'backend': False}])
+        result = self.plan('games/racing/build/lint_go.go')
+        self.assertEqual(result['games'], [])
+        self.assertEqual(result['quick_components'], ['ci'])
+        self.assertFalse(result['build_required'])
         self.assertEqual(self.plan('games/racing/server/classic_motion.go')['games'], [{'game': 'racing', 'backend': True}])
 
     def test_mobile_and_pairs_frontend_do_not_start_rules(self):

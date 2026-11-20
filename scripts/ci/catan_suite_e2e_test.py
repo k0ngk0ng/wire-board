@@ -57,6 +57,10 @@ class CatanSuiteE2E(unittest.TestCase):
                 self.assertIn(('./internal/server', 'TestCatanCaravansAttackNaturalHTTP'), deferred)
                 self.assertIn(('./internal/server', 'TestCatanAttackShoresHTTP'), deferred)
                 self.assertIn(('./internal/server', 'TestCatanSeaNestingsE2E'), deferred)
+                for name in ['TestCatanTransportSeaHTTP', 'TestCatanTradersHelpersPublicHTTP', 'TestCatanTradersVariantsPublicHTTP']:
+                    self.assertIn(('./internal/server', name), deferred)
+                for name in ['TestCatanTwoSeafarersKnightsCompleteGames', 'TestCatanTwoRiversSeaNatural', 'TestCatanWondersBotsComplete']:
+                    self.assertIn(('./games/catan/server', name), deferred)
                 self.assertFalse(any(any(word in name for word in ['Timeout', 'Privacy', 'Clock']) for package, name in deferred))
         for game in ['rail', 'shared']:
             self.assertEqual(scope.go_commands(ROOT, game), scope.go_commands(ROOT, game, extended=True))
@@ -93,7 +97,7 @@ if os.environ.get('CATAN_FAIL') and os.environ['CATAN_FAIL'] in ' '.join(sys.arg
             self.assertEqual(result.returncode == 0, not fail, result.stdout + result.stderr)
             receipt = json.loads((root / '.local/ci/catan/result-0.json').read_text())
             aggregate = json.loads((root / '.local/ci/catan/partitions.json').read_text())
-            self.assertEqual(aggregate['partitions'], 4)
+            self.assertEqual(aggregate['partitions'], 8)
             self.assertEqual(aggregate['workers'], 2)
             self.assertEqual(aggregate['suite'], 'standard')
             self.assertEqual(aggregate['passed'], not fail)

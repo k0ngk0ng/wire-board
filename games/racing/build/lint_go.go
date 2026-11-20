@@ -30,7 +30,7 @@ func inspectSource(input sourceInput) []string {
 	if strings.HasPrefix(input.Path, "internal/server/") {
 		want = "server"
 	}
-	if strings.Contains(input.Path, "/build/") {
+	if strings.Contains(input.Path, "/build/") || strings.Contains(input.Path, "/cmd/") {
 		want = "main"
 	} else if strings.Contains(input.Path, "/tests/") {
 		want += "_test"

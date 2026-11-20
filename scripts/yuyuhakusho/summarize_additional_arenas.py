@@ -4,7 +4,8 @@ import datetime, hashlib, json, subprocess
 
 ROOT = Path(__file__).resolve().parents[2]
 GAME = ROOT / 'games/yuyuhakusho'
-OUT = GAME / 'verification'
+OUT = ROOT / '.local/yuyuhakusho/verification/additional-arenas-summary'
+OUT.mkdir(parents=True, exist_ok=True)
 
 def digest(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
@@ -76,7 +77,6 @@ for name in ('additional-arena-player-tsc.txt', 'additional-arena-vet.txt'):
     path = OUT / name
     assert path.exists() and not path.read_text().strip(), name
 
-# These are deliberate earlier failures, not a claim that every invocation exited0.
 required_reds = ['arena-source-backdrop-red.jsonl', 'arena-aux-sprite-symbol-red.jsonl', 'additional-arena-bridge-symbol-red.jsonl', 'additional-arena-player-red.log', 'additional-arena-e2e-native.log', 'additional-arena-e2e-wasm.log']
 red_artifacts = []
 for name in required_reds:
@@ -90,7 +90,7 @@ source_paths = []
 for directory in ('engine', 'presentation', 'runtimebridge'):
     source_paths += sorted((GAME / directory).glob('*.go'))
 source_paths += sorted((GAME / 'cmd').glob('*/main*.go'))
-source_paths += [ROOT / 'cmd/verify-yuyu-arena-aux/main.go', ROOT / 'scripts/yuyuhakusho/local_player.tsx', ROOT / 'scripts/yuyuhakusho/serve_local_player.py', ROOT / 'scripts/yuyuhakusho/verify_arena_sessions.py', ROOT / 'scripts/yuyuhakusho/verify_arena_checks.py', ROOT / 'scripts/yuyuhakusho/verify_arena_pan.py', Path(__file__).resolve()]
+source_paths += [ROOT / 'games/yuyuhakusho/cmd/verify-arena-aux/main.go', ROOT / 'scripts/yuyuhakusho/local_player.tsx', ROOT / 'scripts/yuyuhakusho/serve_local_player.py', ROOT / 'scripts/yuyuhakusho/verify_arena_sessions.py', ROOT / 'scripts/yuyuhakusho/verify_arena_checks.py', ROOT / 'scripts/yuyuhakusho/verify_arena_pan.py', Path(__file__).resolve()]
 source_paths += [ROOT / 'scripts/yuyuhakusho/verify_arena_legacy.py', ROOT / 'scripts/yuyuhakusho/check_arena_player.py']
 source_paths += sorted((GAME / 'data').glob('*.json.gz'))
 summary = {

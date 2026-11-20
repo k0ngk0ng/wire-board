@@ -76,15 +76,24 @@ jobs:
               ancestor: async base => ancestors.has(base),
             };
             core.setOutput('sha', await baseline(api, context.runId, publishedSHA) || '');
+      - name: Verify reusable unchanged game inputs
+        id: resume
+        if: steps.baseline.outputs.sha == '' && inputs.validation != 'full'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_SHA: ${{ github.sha }}
+          REPOSITORY: ${{ github.repository }}
+        run: python3 -B scripts/ci/resume.py --repo "$REPOSITORY" --head "$SOURCE_SHA" --out .local/ci/resume.json --github-output "$GITHUB_OUTPUT"
       - name: Plan changed games, including cancelled predecessor commits
         id: scope
         env:
-          BASE_SHA: ${{ steps.baseline.outputs.sha }}
+          BASE_SHA: ${{ steps.baseline.outputs.sha || steps.resume.outputs.sha }}
           SOURCE_SHA: ${{ github.sha }}
           MANUAL_GAME: ${{ inputs.game }}
           VALIDATION: ${{ inputs.validation || 'auto' }}
         run: |
           args=(plan --base "$BASE_SHA" --head "$SOURCE_SHA" --manual "$MANUAL_GAME" --validation "$VALIDATION")
+          if [ -f .local/ci/resume.json ]; then args+=(--resume-proof .local/ci/resume.json); fi
           python3 -B scripts/ci/scope.py "${args[@]}"
       - uses: actions/upload-artifact@v4
         with:

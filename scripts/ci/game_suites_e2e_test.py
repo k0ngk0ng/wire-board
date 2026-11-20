@@ -115,7 +115,7 @@ if os.environ.get('GAME_FAIL') and 'TestConcurrentUnknownYuyuhakusho' in ' '.joi
                     observed = [json.loads(path.read_text()) for path in calls.glob('*.json')]
                     self.assertEqual(sum(row['tool'] == 'node' for row in observed), 2)
                     self.assertEqual(sum('runtime-delivery.test.mjs' in ' '.join(row['args']) for row in observed), 1)
-                    self.assertEqual(sum(row['tool'] == 'go' for row in observed), 2)
+                    self.assertEqual(sum(row['tool'] == 'go' for row in observed), 3)
 
     def test_full_entry_and_standard_budget_are_explicit(self):
         workflow = (ROOT / '.github/workflows/games-extended.yml').read_text()
