@@ -20,7 +20,7 @@ const VEHICLES = new Set(["p911", "fm50", "ldia", "mcf1", "ccor", "bmw5", "jxkr"
 
 export function classicResourceBase(value: string): string {
   if (value === "/") return "";
-  if (value === "/_media") return value;
+  if (value === "/_media" || value === "/bga") return value;
   if (!/^https:\/\/cdn\.ichenj\.com\/bga\/web\/[a-f0-9]{40}\/$/.test(value))
     throw Error("赛车资源必须使用当前构建目录");
   return value.slice(0, -1);

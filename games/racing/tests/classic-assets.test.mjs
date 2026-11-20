@@ -1,20 +1,43 @@
-// Failure scenarios are declared in the v3 implementation plan before code:
-// wrong-route preloading, duplicate car requests, premature readiness, corrupt
-// byte/hash acceptance, cancellation poisoning future attempts, unbounded cache.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
-import { ClassicAssetCache, selectClassicAssets, fetchClassicFiles, classicResourceBase } from '../web/classic-assets.ts';
+import { ClassicAssetCache, selectClassicAssets, fetchClassicFiles, classicResourceBase, classicAssetURL } from '../web/classic-assets.ts';
 
 const record = (path, text) => ({path, bytes: Buffer.byteLength(text), sha256: createHash('sha256').update(text).digest('hex'), mime: 'application/octet-stream'});
 const paths = ['tracks/france.collision.json', 'tracks/uk.collision.json', 'props/france.json', 'props/uk.json', 'tracks/france.glb', 'tracks/france.route.json', 'tracks/france-sky.png', 'tracks/france-night.glb', 'tracks/france-night-sky.png', 'tracks/uk.glb', 'tracks/uk.route.json', 'tracks/uk-sky.png', 'cars/p911.glb', 'cars/fm50.glb', 'cars/ldia.glb'];
 const manifest = {version: 3, assets: paths.map(p => record(p, p))};
 
-test('new racing assets bind to the current build CDN base, never a legacy media directory',()=>{
+test('racing resources preserve pinned build bases and local development roots',()=>{
   assert.equal(classicResourceBase('/'), '');
+  assert.equal(classicResourceBase('/_media'), '/_media');
   const base='https://cdn.ichenj.com/bga/web/'+'a'.repeat(40)+'/';
   assert.equal(classicResourceBase(base),base.slice(0,-1));
   for(const invalid of ['https://cdn.ichenj.com/bga/v20261002-1','https://outside.example/','../racing'])assert.throws(()=>classicResourceBase(invalid));
+});
+
+test('canonical publication media root loads racing through the verified redirect catalog', async () => {
+  const published = {assetBase: 'https://cdn.example/bga/', mediaBase: '/bga'};
+  const base = classicResourceBase(published.mediaBase ?? published.assetBase);
+  assert.equal(base, '/bga');
+  assert.equal(classicAssetURL(base, 'manifest.json'), '/bga/racing/v3/manifest.json');
+  const file = record('tracks/france.glb', 'verified-track');
+  const requests = [];
+  const progress = [];
+  const loaded = await fetchClassicFiles([file], {
+    base,
+    cache: new ClassicAssetCache(),
+    fetcher: async url => {
+      requests.push(url);
+      return new Response('verified-track');
+    },
+    progress: value => progress.push(value),
+  });
+  assert.deepEqual(requests, ['/bga/racing/v3/tracks/france.glb']);
+  assert.equal(new TextDecoder().decode(loaded.get(file.path)), 'verified-track');
+  assert.equal(progress.at(-1).loaded, file.bytes);
+  assert.equal(progress.at(-1).total, file.bytes);
+  for (const invalid of ['/bga-other', '/bga/../other', '//outside.example/bga', '/bga?other'])
+    assert.throws(() => classicResourceBase(invalid));
 });
 
 test('selected daylight route and current cars only; duplicate cars deduplicated', () => {
@@ -87,7 +110,6 @@ test('a selected scene cannot become ready without its exact props catalog',()=>
  assert.equal(files.find(f=>f.path.startsWith('props/')).path,'props/france.json');
 });
 
-// Native ground is selected by the current route, never guessed by off-road distance.
 test('selected native terrain is mandatory and never preloads another course',()=>{
  const missing={...manifest,assets:manifest.assets.filter(x=>x.path!=='tracks/france.collision.json')};
  assert.throws(()=>selectClassicAssets(missing,'france','day',['p911']),/collision|清单/);

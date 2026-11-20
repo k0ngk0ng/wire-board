@@ -45,6 +45,7 @@
     "games/racing/web/classic-catalog.ts",
     "games/racing/web/classic-motion.ts",
     "games/racing/web/classic-assets.ts",
+    "games/racing/tests/classic-assets.test.mjs",
     "games/racing/web/module.tsx",
     "games/racing/web/style.css",
     "games/racing/tests/content-assets.test.mjs",
