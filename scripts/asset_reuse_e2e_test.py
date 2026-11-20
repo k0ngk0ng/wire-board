@@ -102,6 +102,40 @@ class AssetReuseE2E(unittest.TestCase):
             with self.assertRaises(ValueError):
                 reuse.published_baseline()
 
+    def test_unverified_deployment_uses_only_the_verified_ancestor_artifact(self):
+        sha = 'd' * 40
+        base = 'https://cdn.ichenj.com/bga/web/' + sha + '/'
+        @contextlib.contextmanager
+        def origin(url, timeout=30):
+            yield BytesIO(json.dumps(self.baseline).encode())
+        trusted = {'version': 1, 'assetBase': base, 'files': {'/images/trusted.webp': self.record(base + 'images/trusted.webp', b'trusted pixels', 'image/webp')}}
+        def download(command, check=True):
+            folder = Path(command[-1])
+            (folder / 'images').mkdir()
+            (folder / 'images/trusted.webp').write_bytes(b'trusted pixels')
+            (folder / 'game-load-manifest.json').write_text(json.dumps({'assetBase': base}))
+            (folder / 'cdn-assets-manifest.json').write_text(json.dumps(trusted))
+        runs = json.dumps({'workflow_runs': [{'id': 8123, 'head_sha': sha, 'head_branch': 'main', 'event': 'push'}]})
+        def readback(value, required=True):
+            if value == sha:
+                return 8123
+            if required:
+                raise ValueError('Baseline has no successful local CDN readback')
+            return False
+        with patch.object(reuse, 'ROOT', self.root), patch.object(reuse, 'urlopen', origin), patch.object(reuse, 'successful_readback', side_effect=readback), patch.object(reuse.subprocess, 'check_output', return_value=runs), patch.object(reuse.subprocess, 'run', side_effect=download), patch.dict(os.environ, {'VERIFIED_ANCESTOR': sha}):
+            baseline = reuse.published_baseline()
+            self.assertEqual(baseline['files'], trusted['files'])
+            self.assertIn(base + 'images/trusted.webp', reuse.objects(baseline))
+            self.assertNotIn(OLD + 'images/original.webp', reuse.objects(baseline))
+
+    def test_no_verified_deployment_or_ancestor_refuses_reuse(self):
+        @contextlib.contextmanager
+        def origin(url, timeout=30):
+            yield BytesIO(json.dumps(self.baseline).encode())
+        with patch.object(reuse, 'urlopen', origin), patch.object(reuse, 'successful_readback', return_value=False), patch.dict(os.environ, {'VERIFIED_ANCESTOR': 'd' * 40}):
+            with self.assertRaisesRegex(ValueError, 'successful local CDN readback'):
+                reuse.published_baseline()
+
     def test_response_format_is_part_of_identity(self):
         for field, value in [('bytes', 999), ('mime', 'image/png'), ('encoding', 'gzip')]:
             with self.subTest(field=field):

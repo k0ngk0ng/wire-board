@@ -256,10 +256,14 @@ def published_baseline():
     if not cdn.BASE.fullmatch(base):
         raise ValueError('Invalid deployed asset base')
     source_sha = baseline.get('sourceSHA') or base.rstrip('/').split('/')[-1]
-    successful_readback(source_sha)
-    objects(baseline)
+    deployed_verified = successful_readback(source_sha, required=False)
     sha = os.environ.get('VERIFIED_ANCESTOR', '')
     source_run = successful_readback(sha, required=False) if re.fullmatch('[a-f0-9]{40}', sha) else None
+    if not deployed_verified:
+        if not source_run:
+            raise ValueError('Baseline has no successful local CDN readback')
+        baseline = {'version': 1, 'assetBase': base, 'files': {}}
+    objects(baseline)
     if source_run:
         runs = json.loads(subprocess.check_output(['gh', 'api', 'repos/k0ngk0ng/wire-board/actions/workflows/build.yml/runs?head_sha=' + sha + '&status=success&per_page=100'], text=True))['workflow_runs']
         run = next((row for row in runs if row['id'] == source_run and row['head_sha'] == sha and row['head_branch'] == 'main' and row['event'] == 'push'), None)
@@ -285,7 +289,10 @@ def published_baseline():
         history = objects(baseline)
         delivery = folder / 'cdn-assets-manifest.json'
         if delivery.exists():
-            history.update(objects(json.loads(delivery.read_bytes())))
+            ancestor = json.loads(delivery.read_bytes())
+            history.update(objects(ancestor))
+            if not deployed_verified:
+                baseline = ancestor
         for row in rows:
             history.setdefault(row['url'], normalized(row))
         baseline['objects'] = history
