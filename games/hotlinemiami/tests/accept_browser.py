@@ -253,7 +253,7 @@ def production_run():
             wait_for(lambda: input_ready('main'), 60)
             browser('main', 'set', 'viewport', 1440, 1000)
             browser('main', 'scrollintoview', '[data-hotlinemiami-board]')
-            entry = {'production': True, 'mode': mode, 'players': 2, 'keyboard': native('main', 'production-' + mode + '-keyboard', samples=8)}
+            entry = {'production': True, 'mode': mode, 'players': 2, 'keyboard': native('main', 'production-' + mode + '-keyboard', samples=8, unarmed=mode == 'humans', requireAudio=['pistol', 'throw'] if mode == 'humans' else [])}
             REPORT['cases'].append(entry)
             assert_no_errors('main')
             entry['observedNetwork'] = [seat.get('network') for seat in room()['seats']]
@@ -425,7 +425,7 @@ try:
         REPORT['cases'].append(entry)
         save()
         if width >= 650:
-            entry['normal'] = native('main', map_id + '-normal', unarmed=index == 0)
+            entry['normal'] = native('main', map_id + '-normal', unarmed=index == 0, requireAudio=['uzi', 'throw'] if index == 0 else [])
         else:
             entry['touch'] = native('main', map_id + '-touch', touch=True)
         entry['observedNetwork'] = [seat.get('network') for seat in room()['seats']]

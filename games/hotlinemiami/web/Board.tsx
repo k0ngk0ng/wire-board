@@ -182,7 +182,7 @@ export function Board(props: BoardProps<View>) {
           const sounds = loaded.current?.sounds;
           const key = event.type === "fire" ? event.weapon ?? "pistol" : event.type;
           const url = sounds?.get(key);
-          if (url) void props.audio.effect(`hotline:${event.id % 8}`, [url], { playbackID: `${data.epoch}:${event.id}`, reuseLoaded: true });
+          if (url) void props.audio.effect(`hotline:${event.id % 8}`, [url], { playbackID: `${data.epoch}:${event.id}` });
         }
       }
     }

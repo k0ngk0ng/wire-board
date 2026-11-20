@@ -11,7 +11,7 @@ mkdirSync(dirname(outputFile), { recursive: true });
 const socket = new WebSocket(endpoint);
 const requests = new Map();
 const network = { sentBytes: 0, receivedBytes: 0, sentMessages: 0, receivedMessages: 0, largestMessage: 0, messageTypes: {}, messages: [], acks: [], applications: [] };
-const media = { players: [], events: [], properties: [] };
+const media = { players: [], events: [], properties: [], messages: [], errors: [], captureBegan: 0 };
 const sent = new Map();
 const sentInputs = new Map();
 let ordinal = 0;
@@ -32,8 +32,10 @@ socket.onmessage = ({ data }) => {
   if (message.sessionId !== session) return;
   if (message.method?.startsWith("Media.")) {
     if (message.method === "Media.playersCreated") media.players.push(...message.params.players);
-    if (message.method === "Media.playerEventsAdded" && media.events.length < 200) media.events.push(...message.params.events.map(event => ({ timestamp: event.timestamp, value: event.value })));
-    if (message.method === "Media.playerPropertiesChanged" && media.properties.length < 200) media.properties.push(...message.params.properties.filter(property => !property.name.toLowerCase().includes("url")));
+    if (message.method === "Media.playerEventsAdded" && media.events.length < 1200) media.events.push(...message.params.events.map(event => ({ playerId: message.params.playerId, timestamp: event.timestamp, value: event.value })));
+    if (message.method === "Media.playerPropertiesChanged" && media.properties.length < 1200) media.properties.push(...message.params.properties.map(property => ({ playerId: message.params.playerId, ...property })));
+    if (message.method === "Media.playerMessagesLogged" && media.messages.length < 200) media.messages.push(...message.params.messages.map(entry => ({ playerId: message.params.playerId, ...entry })));
+    if (message.method === "Media.playerErrorsRaised" && media.errors.length < 200) media.errors.push(...message.params.errors.map(entry => ({ playerId: message.params.playerId, ...entry })));
     return;
   }
   if (!message.method?.startsWith("Network.webSocketFrame")) return;
@@ -90,10 +92,13 @@ try {
   session = (await call("Target.attachToTarget", { targetId: target.targetId, flatten: true }, undefined)).sessionId;
   await call("Page.bringToFront");
   await call("Performance.enable");
-  navigationStart = ((await call("Performance.getMetrics")).metrics.find(metric => metric.name === "NavigationStart")?.value ?? 0) * 1000;
+  const performanceMetrics = (await call("Performance.getMetrics")).metrics;
+  navigationStart = (performanceMetrics.find(metric => metric.name === "NavigationStart")?.value ?? 0) * 1000;
+  media.captureBegan = performanceMetrics.find(metric => metric.name === "Timestamp")?.value ?? 0;
   network.navigationStart = navigationStart;
   await call("Network.enable");
   await call("Media.enable").catch(() => {});
+  const requiredAudio = options.requireAudio?.length ? await evaluate(`fetch('/hotlinemiami/manifest.json').then(response=>{if(!response.ok)throw Error('audio manifest missing');return response.json()}).then(manifest=>${JSON.stringify(options.requireAudio)}.map(id=>{const file=(manifest.sounds??manifest.audio??{})[id]?.file;if(!file)throw Error('required audio source missing: '+id);return {id,file}}))`) : [];
   await evaluate(`(() => {
     const canvas = document.querySelector('[data-hotlinemiami-canvas]');
     if (!canvas || !canvas.__hotlineFrame?.local) throw new Error('production canvas has not initialized');
@@ -266,7 +271,21 @@ try {
   const elapsed = observation.frames.at(-1).at - observation.frames[0].at;
   const counts = observation.frames.map((entry) => entry.drawCount);
   const changes = counts.slice(1).filter((count, index) => count !== counts[index]).length;
-  const result = { ...observation, touch: !!options.touch, quickTap, interruptedAttacks, unarmed, cameraAimChecks, browserVersion, network, media, measurement: "trusted native DOM event to rendered canvas pixel response; excludes physical display panel latency", summary: { responses: responseTimes.length, responseP95: percentile(responseTimes, 0.95), frameP95: percentile(intervals, 0.95), frameP99: percentile(intervals, 0.99), visibleFPS: changes * 1000 / elapsed, elapsed, visibleUpdates: changes, sentBytesPerSecond: network.sentBytes * 1000 / elapsed, receivedBytesPerSecond: network.receivedBytes * 1000 / elapsed, receivedMessagesPerSecond: network.receivedMessages * 1000 / elapsed, gameMessagesPerSecond: (network.messageTypes['in:game'] ?? 0) * 1000 / elapsed, ackP95MS: percentile(network.acks.map(entry => entry.microseconds / 1000), 0.95), appliedP95MS: percentile(network.applications.map(entry => entry.microseconds / 1000), 0.95), maxPredictionLeadFrames: Math.max(0, ...observation.frames.map(entry => entry.predictedFrame - entry.serverFrame)), maxPendingInputs: Math.max(0, ...observation.frames.map(entry => entry.pending ?? 0)) } };
+  const playback = [];
+  for (const playerId of new Set(media.events.map(event => event.playerId))) {
+    let source;
+    for (const row of media.events.filter(event => event.playerId === playerId).sort((a, b) => a.timestamp - b.timestamp)) {
+      let event;
+      try { event = JSON.parse(row.value); } catch { continue; }
+      if (event.event === "kLoad") {
+        source = { playerId, url: event.url, loadedAt: row.timestamp, playingAt: [], duration: null };
+        playback.push(source);
+      } else if (source && event.event === "kPipelineStateChange" && event.pipeline_state === "kPlaying") source.playingAt.push(row.timestamp);
+      else if (source && event.event === "kDurationChanged") source.duration = event.duration;
+    }
+  }
+  const audio = { captureBegan: media.captureBegan, validPlayerAttribution: media.events.length > 0 && media.events.every(event => typeof event.playerId === "string" && event.playerId.length > 0), playback, requirements: requiredAudio.map(resource => ({ ...resource, playingPlayerIds: [...new Set(playback.filter(source => (resource.file.startsWith("https:") ? source.url === resource.file : new URL(source.url).pathname.endsWith("/" + resource.file)) && source.playingAt.some(at => at >= media.captureBegan)).map(source => source.playerId))] })) };
+  const result = { ...observation, touch: !!options.touch, quickTap, interruptedAttacks, unarmed, cameraAimChecks, browserVersion, network, media, audio, measurement: "trusted native DOM event to rendered canvas pixel response; excludes physical display panel latency", summary: { responses: responseTimes.length, responseP95: percentile(responseTimes, 0.95), frameP95: percentile(intervals, 0.95), frameP99: percentile(intervals, 0.99), visibleFPS: changes * 1000 / elapsed, elapsed, visibleUpdates: changes, sentBytesPerSecond: network.sentBytes * 1000 / elapsed, receivedBytesPerSecond: network.receivedBytes * 1000 / elapsed, receivedMessagesPerSecond: network.receivedMessages * 1000 / elapsed, gameMessagesPerSecond: (network.messageTypes['in:game'] ?? 0) * 1000 / elapsed, ackP95MS: percentile(network.acks.map(entry => entry.microseconds / 1000), 0.95), appliedP95MS: percentile(network.applications.map(entry => entry.microseconds / 1000), 0.95), maxPredictionLeadFrames: Math.max(0, ...observation.frames.map(entry => entry.predictedFrame - entry.serverFrame)), maxPendingInputs: Math.max(0, ...observation.frames.map(entry => entry.pending ?? 0)), verifiedEffectSounds: audio.requirements.filter(resource => resource.playingPlayerIds.length > 0).map(resource => resource.id) } };
   writeFileSync(outputFile, JSON.stringify(result));
   console.log(JSON.stringify({ output: outputFile, summary: result.summary }));
   assert.ok(observation.events.some((entry) => entry.trusted), "no trusted native events observed");
@@ -284,6 +303,8 @@ try {
   assert.ok(result.summary.responseP95 <= (options.touch ? 50 : 33), JSON.stringify(result.summary));
   assert.ok(result.summary.frameP95 <= 20 && result.summary.frameP99 <= 33, JSON.stringify(result.summary));
   assert.ok(result.summary.visibleFPS >= 55, JSON.stringify(result.summary));
+  if (requiredAudio.length) assert.ok(audio.validPlayerAttribution && media.captureBegan > 0, "native media attribution or capture clock is missing");
+  assert.ok(audio.requirements.every(resource => resource.playingPlayerIds.length > 0), "required native effect never reached kPlaying: " + JSON.stringify(audio.requirements));
 } finally {
   for (const request of requests.values()) clearTimeout(request.timer);
   socket.close();
