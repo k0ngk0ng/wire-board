@@ -4,6 +4,7 @@ import { Board } from "./Board";
 import { Cover } from "./Cover";
 import { OptionsForm } from "./Options";
 import { Preparation } from "./Preparation";
+import { Rules } from "./Rules";
 import { characters } from "./labels";
 import type { NetworkView, GameOptions } from "./types";
 export default defineGame<NetworkView, GameOptions>({
@@ -30,6 +31,7 @@ export default defineGame<NetworkView, GameOptions>({
   Cover,
   Options: OptionsForm,
   Preparation,
+  Rules,
   PlayerSummary: ({ data, seat }) => {
     const player = data.players.find((value) => value.seat === seat);
     return player ? (
