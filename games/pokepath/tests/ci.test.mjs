@@ -11,7 +11,7 @@ const execute = promisify(execFile);
 const files = [
   "native-architecture", "native-reference", "rules-revision", "lint",
   "native-runtime-build-e2e", "native-runtime-unicode", "native-attack-modes-wasm", "tower-order-wasm-e2e",
-  "prediction-handles", "prediction", "prediction-session-e2e", "prediction-frame-cache-e2e",
+  "prediction-handles", "prediction", "prediction-session-e2e", "prediction-frame-cache-e2e", "personal-view",
   "damage-labels", "frontend-audio", "frontend-classic", "frontend-language", "frontend-native", "frontend-render",
   "keyboard-command", "keyboard-controller", "pointer-aim", "presentation-proxy", "ui-delivery", "world-animations",
 ].map(name => `games/pokepath/tests/${name}.test.mjs`);

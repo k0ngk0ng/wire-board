@@ -56,7 +56,7 @@ func TestAIProposalIsReadOnlyAndSharedResourcesRemainLegal(t *testing.T) {
 	}
 	trace := []aiRecordedAction{}
 	for controller := 0; controller < 40; controller++ {
-		action := Propose(state)
+		action := ProposePlayer(state, controller%4)
 		if action == nil {
 			break
 		}
@@ -92,10 +92,10 @@ func aiRunCampaign(t *testing.T, starter string, players int, seed uint64, targe
 		if elapsed%120000 == 0 {
 			aiSaveArtifact(t, fmt.Sprintf("progress-%s-%d-%d.json", starter, players, seed), map[string]any{"elapsed": elapsed, "wave": state.Wave, "record": state.Records[0], "gold": state.Gold, "health": state.Health, "phase": state.Phase, "team": state.Team, "state": state, "lastActions": trace[max(0, len(trace)-8):]})
 		}
-		action := Propose(state)
+		actor := int(elapsed/100) % players
+		action := ProposePlayer(state, actor)
 		if action != nil {
-			gold := state.Gold
-			actor := int(elapsed/100) % players
+			gold := PlayerGold(state, actor)
 			if err := Apply(state, actor, *action); err != nil {
 				t.Fatalf("at %d wave %d record %d action %+v: %v", elapsed, state.Wave, state.Records[0], *action, err)
 			}
@@ -156,7 +156,7 @@ func TestAIMovementLockKeepsOrdinaryActionsLegal(t *testing.T) {
 		if !terrainAllowed(pokemon, CatalogData().Species[pokemon.Species], tile.Terrain) {
 			continue
 		}
-		if err := Apply(state, 1, Action{Type: "deploy", Epoch: state.Epoch, PokemonID: pokemon.ID, TileID: tile.ID}); err != nil {
+		if err := Apply(state, 0, Action{Type: "deploy", Epoch: state.Epoch, PokemonID: pokemon.ID, TileID: tile.ID}); err != nil {
 			t.Fatal(err)
 		}
 		break

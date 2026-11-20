@@ -620,6 +620,10 @@ func progressionGold(state *State, amount int64) {
 	state.Gold += amount
 	if amount > 0 {
 		state.Progression.TotalGold += amount
+		for actor := 1; actor < len(state.Trainers); actor++ {
+			state.Trainers[actor].Gold += amount
+			state.Trainers[actor].Progression.TotalGold += amount
+		}
 	}
 }
 
@@ -954,6 +958,14 @@ func progressionDNA(state *State, id, targetID int) error {
 }
 
 func progressionHasSpecies(state *State, key string) bool {
+	if len(state.Trainers) > 0 {
+		for actor := range state.Trainers {
+			if !progressionHasSpecies(trainerLens(state, actor), key) {
+				return false
+			}
+		}
+		return true
+	}
 	catalog := CatalogData()
 	species, ok := catalog.Species[key]
 	if !ok {
@@ -968,6 +980,17 @@ func progressionHasSpecies(state *State, key string) bool {
 }
 
 func GrantProgressionSecret(state *State, key string) bool {
+	if state != nil && len(state.Trainers) > 0 {
+		granted := false
+		for actor := range state.Trainers {
+			value := trainerLens(state, actor)
+			if GrantProgressionSecret(value, key) {
+				commitTrainer(state, value, actor)
+				granted = true
+			}
+		}
+		return granted
+	}
 	if state == nil || state.Progression.CustomRoute != nil || key == "" || state.Progression.Secrets[key] {
 		return false
 	}
@@ -985,6 +1008,24 @@ func GrantProgressionSecret(state *State, key string) bool {
 }
 
 func progressionGrantPokemon(state *State, key string, allowDuplicate bool) error {
+	if len(state.Trainers) > 0 {
+		granted := false
+		for actor := range state.Trainers {
+			value := trainerLens(state, actor)
+			if !allowDuplicate && progressionHasSpecies(value, key) {
+				continue
+			}
+			if err := progressionGrantPokemon(value, key, allowDuplicate); err != nil {
+				return err
+			}
+			commitTrainer(state, value, actor)
+			granted = true
+		}
+		if !granted {
+			return errors.New("已经拥有这个收集编号的伙伴")
+		}
+		return nil
+	}
 	if !allowDuplicate && progressionHasSpecies(state, key) {
 		return errors.New("已经拥有这个收集编号的伙伴")
 	}

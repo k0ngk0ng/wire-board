@@ -14,7 +14,7 @@ func TestInventoryStableIDSwapAcrossSharedSeatsAndRestore(t *testing.T) {
 	state.Inventory = []OwnedItem{{ID: "protein", EquippedBy: state.Team[0].ID}, {ID: "quickClaw"}, {ID: "lifeOrb"}}
 	state.Team[0].Item = "protein"
 	before := Project(state)
-	coreApply(t, state, 3, Action{Type: "swapItems", ItemID: "protein", Name: "lifeOrb"})
+	coreApply(t, state, 0, Action{Type: "swapItems", ItemID: "protein", Name: "lifeOrb"})
 	want := []OwnedItem{{ID: "lifeOrb"}, {ID: "quickClaw"}, {ID: "protein", EquippedBy: state.Team[0].ID}}
 	if !reflect.DeepEqual(state.Inventory, want) || state.Gold != before.Gold || state.Health != before.Health || state.Team[0].Item != "protein" {
 		t.Fatal("inventory order must retain ownership and shared resources", state.Inventory)

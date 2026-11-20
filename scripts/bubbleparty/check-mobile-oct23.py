@@ -1,17 +1,18 @@
-#!/usr/bin/env python3
-"""Production Bubbleparty: floating touch origin, two independent thumbs,
-cancellation, real movement/bombs, and unchanged native PC keyboard input.
-No fabricated game state or synthetic DOM pointer events.
-"""
 import argparse,hashlib,http.cookiejar,json,os,shutil,subprocess,time,urllib.request,uuid
 from pathlib import Path
 root=Path(__file__).resolve().parents[2]
-p=argparse.ArgumentParser();p.add_argument('--out',default='.local/optimization-20261023/mobile');args=p.parse_args()
+p=argparse.ArgumentParser();p.add_argument('--out',default='.local/bubbleparty/native-mobile');p.add_argument('--web',default='web/dist');args=p.parse_args()
 out=(root/args.out).resolve();assert out.is_relative_to(root) and out!=root;out.mkdir(parents=True,exist_ok=True)
-temp=out/'temporary';sockets=root/'.s'/('bm'+uuid.uuid4().hex[:5]);env=dict(os.environ)
+temp=out/'temporary';sockets=root/'.local/bubbleparty/s'/('bm'+uuid.uuid4().hex[:5]);env=dict(os.environ)
 for k,v in {'TMPDIR':temp/'tmp','GOTMPDIR':temp/'tmp','AGENT_BROWSER_PROFILE':temp/'profile','AGENT_BROWSER_SOCKET_DIR':sockets,'GOCACHE':root/'.local/go-build','GOMODCACHE':root/'.local/go-mod'}.items():v.mkdir(parents=True,exist_ok=True);env[k]=str(v)
-env.update(AGENT_BROWSER_SESSION='bm',AGENT_BROWSER_ARGS='--mute-audio,--disable-breakpad,--disable-crash-reporter',WIRE_BOARD_BUBBLEPARTY_BROWSER='1',WIRE_BOARD_BUBBLEPARTY_BROWSER_OUT=str(out),GOTOOLCHAIN='local')
-report={'passed':False,'checks':[],'scope':__doc__,'distSHA256':hashlib.sha256((root/'web/dist/index.html').read_bytes()).hexdigest()};opened=False;server=log=None
+env.update(AGENT_BROWSER_SESSION='bm',AGENT_BROWSER_ARGS='--mute-audio,--disable-breakpad,--disable-crash-reporter',AGENT_BROWSER_NO_VERSION_CHECK='1',WIRE_BOARD_BUBBLEPARTY_BROWSER='1',WIRE_BOARD_BUBBLEPARTY_BROWSER_OUT=str(out),GOTOOLCHAIN='local')
+web=(root/args.web).resolve();assert web.is_relative_to(root) and (web/'index.html').is_file()
+staged_web=temp/'web';shutil.copytree(web,staged_web,dirs_exist_ok=True);shutil.copytree(root/'games/bubbleparty/assets/public',staged_web,dirs_exist_ok=True);web=staged_web
+fixture=root/'games/bubbleparty/tests/browser_fixture_test.go'
+fixture_override=temp/'browser_fixture_test.go'
+fixture_override.write_text(fixture.read_text().replace('os.DirFS(filepath.Join(root, \"web/dist\"))','os.DirFS('+json.dumps(str(web))+')'))
+overlay=temp/'overlay.json';overlay.write_text(json.dumps({'Replace':{str(fixture):str(fixture_override)}}));env['GOFLAGS']=(env.get('GOFLAGS','')+' -overlay='+str(overlay)).strip()
+report={'command':'python3 -B scripts/bubbleparty/check-mobile-oct23.py --web '+args.web+' --out '+args.out,'passed':False,'checks':[],'scope':'Native game movement and water-bomb input with independent left and right thumbs','distSHA256':hashlib.sha256((web/'index.html').read_bytes()).hexdigest()};opened=False;server=log=None
 CDP=r'''const [endpoint,base,raw]=process.argv.slice(2),spec=JSON.parse(raw),ws=new WebSocket(endpoint);await new Promise((r,j)=>{ws.onopen=r;ws.onerror=j});let seq=0;const pending=new Map();ws.onmessage=({data})=>{const m=JSON.parse(data),p=pending.get(m.id);if(!p)return;pending.delete(m.id);m.error?p.j(Error(JSON.stringify(m.error))):p.r(m.result)};const call=(method,params={},sessionId)=>new Promise((r,j)=>{const id=++seq;pending.set(id,{r,j});ws.send(JSON.stringify({id,method,params,sessionId}))});let sid;
 try{const {targetInfos}=await call('Target.getTargets');const t=targetInfos.find(t=>t.type==='page'&&t.url.startsWith(base));({sessionId:sid}=await call('Target.attachToTarget',{targetId:t.targetId,flatten:true}));
 const evaluate=async expression=>{const r=await call('Runtime.evaluate',{expression,returnByValue:true,awaitPromise:true},sid);if(r.exceptionDetails)throw Error(JSON.stringify(r.exceptionDetails));return r.result.value};
@@ -51,8 +52,8 @@ try:
  for name in ['url','stop']:(out/name).unlink(missing_ok=True)
  log=(out/'server.log').open('w');server=subprocess.Popen(['go','test','-count=1','-timeout=12m','-run','^TestBubblepartyBrowserFixture$','./games/bubbleparty/tests'],cwd=root,env=env,stdout=log,stderr=subprocess.STDOUT);wait(lambda:(out/'url').exists(),100);base=(out/'url').read_text();b('open',base);opened=True
  api('/login',{'name':'泡泡验收管理员','password':'bubbleparty-browser-test-only'})
- for width in [320,390,1280]:
-  b('set','viewport',str(width),'640' if width<600 else '1000')
+ for width in [320,390,844,1280]:
+  b('set','viewport',str(width),'640' if width<600 else '390' if width<1100 else '1000')
   room=api('/rooms',{'kind':'bubbleparty','name':'双拇指操作验收','capacity':2,'options':{'map':'community10','roundSeconds':300}})
   c=urllib.request.build_opener(urllib.request.HTTPCookieProcessor(http.cookiejar.CookieJar()));peer=lambda path,body=None:request(c,path,body)
   peer('/register',{'name':'触控对手'+str(width),'password':'bubbleparty-browser-test-only','invite':'bubbleparty-browser'});peer('/rooms/'+room['id'],dict(type='join',version=api('/state')['room']['version'],nonce=uuid.uuid4().hex));r=peer('/state')['room'];peer('/rooms/'+room['id'],dict(type='ready',version=r['version'],nonce=uuid.uuid4().hex));cmd('ready');cmd('start')
@@ -61,12 +62,14 @@ try:
   b('reload');b('wait','[data-bubbleparty-canvas]');wait(lambda:api('/state')['room']['game']['data']['phase']=='playing')
   js('window.scrollTo({top:document.querySelector(".bubble-board").getBoundingClientRect().top+scrollY-8,behavior:"instant"})');js('new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)))')
   layout=js('(()=>{const sels=["[data-bubbleparty-canvas]",".bubble-joystick","[data-bubbleparty-bomb]"];return sels.map(s=>{const e=document.querySelector(s),r=e.getBoundingClientRect(),h=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return {selector:s,rect:r.toJSON(),visible:r.y>=0&&r.bottom<=innerHeight,hit:h===e||e.contains(h)}})})()')
-  if width<600:assert all(x['visible'] and x['hit'] for x in layout),layout
+  if width<1100:
+   assert all(x['visible'] and x['hit'] for x in layout),layout
+   pad,bomb=layout[1]['rect'],layout[2]['rect'];assert pad['x']+pad['width']/2<width/2<bomb['x']+bomb['width']/2 and pad['right']<=bomb['x'],layout
   view=api('/state')['room']['game']['data'];p=view['players'][0]
   direction=next(name for name,dx,dy in [('right',1,0),('left',-1,0),('down',0,1),('up',0,-1)] if 0<=p['x']+dx<15 and 0<=p['y']+dy<13 and view['cells'][(p['y']+dy)*15+p['x']+dx]==0)
-  native=subprocess.run(['node','--input-type=module','-',b('get','cdp-url')['cdpUrl'],base,json.dumps({'direction':direction,'keyboard':width>=600})],input=CDP,cwd=root,env=env,capture_output=True,text=True,timeout=25);assert native.returncode==0,native.stdout+native.stderr;trace=json.loads(native.stdout);(out/f'{width}-input.json').write_text(json.dumps(trace,indent=2));samples=trace['samples'];start=trace['before']['player']
+  native=subprocess.run(['node','--input-type=module','-',b('get','cdp-url')['cdpUrl'],base,json.dumps({'direction':direction,'keyboard':width>=1100})],input=CDP,cwd=root,env=env,capture_output=True,text=True,timeout=25);assert native.returncode==0,native.stdout+native.stderr;trace=json.loads(native.stdout);(out/f'{width}-input.json').write_text(json.dumps(trace,indent=2));samples=trace['samples'];start=trace['before']['player']
   def dist(p):return abs(p['px']-start['px'])+abs(p['py']-start['py'])
-  if width<600:
+  if width<1100:
    assert dist(samples[0]['player'])<.03,'off-center touch moved before dragging'
    assert dist(samples[1]['player'])>.1,'touch drag did not move'
    assert samples[2]['player']['applied']['move']=='none' and samples[2]['active']=='false','cancel did not release'

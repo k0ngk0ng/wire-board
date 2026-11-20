@@ -12,7 +12,7 @@ export function audioCues(view: View, catalog: Catalog | undefined, events: View
     let category: AudioCue["category"] = "effects";
     if (event.type === "fire") {
       const tower = view.towers.find(tower => tower.id === event.source);
-      const pokemon = view.team.find(pokemon => pokemon.id === tower?.pokemonID || pokemon.id === event.source);
+      const pokemon = (view.battleTeam ?? view.team).find(pokemon => pokemon.id === tower?.pokemonID || pokemon.id === event.source);
       const species = pokemon && catalog ? effectiveResourceSpecies(pokemon, catalog, view.progression?.dna) : undefined;
       const fact = species?.facts?.projectileSound;
       if (typeof fact !== "string" || !/^[a-zA-Z][A-Za-z0-9_-]*$/.test(fact)) continue;

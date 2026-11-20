@@ -5,6 +5,11 @@ import { fileURLToPath } from "node:url";
 import { join } from "node:path";
 import { randomUUID } from "node:crypto";
 
+if (!process.argv.slice(2).some(argument => ["--challenge", "--box", "--maps", "--range", "--mobile-ux", "--result-victory", "--result-defeat", "--result-restart", "--serve"].includes(argument))) {
+  await import("./native-trainers-browser.mjs");
+  process.exit(0);
+}
+
 const root = fileURLToPath(new URL("../../../", import.meta.url));
 const owner = randomUUID().slice(0, 8);
 const output = join(root, ".local/pokepath/native-browser", `run-${owner}`);

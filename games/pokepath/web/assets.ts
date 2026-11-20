@@ -209,7 +209,7 @@ export class AssetStore {
   async prepare(view: View, catalog: Catalog, route: Route) {
     const paths = new Set<string>([mapArtwork(view, route) ?? route.background, "src/assets/images/textures/texture1.png", `src/assets/images/portraits/${view.progression?.portrait ?? 0}.png`, ...["heart", "no-heart", "ribbon1", "pokeball-close", "pokeball-open", "profile", "box", "inventory", "shop", "map", "challenge", "dex", "damageDealt", "menu", "curse"].map(name => `src/assets/images/icons/${name}.png`)]);
     if (route.effect) paths.add(route.effect);
-    const sprites: Sprite[] = [...view.team.flatMap(pokemon => pokemonSprites(pokemon, catalog, view.progression?.dna)), ...view.enemies.map(enemy => enemy.sprite ?? catalog.enemies[enemy.key]?.sprite), ...view.projectiles.map(projectile => projectile.sprite), ...(view.attackModes?.effects?.map(effect => effect.sprite) ?? [])].filter((sprite): sprite is Sprite => Boolean(sprite));
+    const sprites: Sprite[] = [...(view.battleTeam ?? view.team).flatMap(pokemon => pokemonSprites(pokemon, catalog, view.progression?.dna)), ...view.enemies.map(enemy => enemy.sprite ?? catalog.enemies[enemy.key]?.sprite), ...view.projectiles.map(projectile => projectile.sprite), ...(view.attackModes?.effects?.map(effect => effect.sprite) ?? [])].filter((sprite): sprite is Sprite => Boolean(sprite));
     for (const piece of route.chessPlacements ?? []) if (catalog.species[piece.species]?.sprite) sprites.push(catalog.species[piece.species].sprite);
     for (const key of route.waves[String(view.wave)]?.preview ?? []) if (catalog.enemies[key]?.sprite) sprites.push(catalog.enemies[key].sprite);
     for (const sprite of sprites) for (const path of [sprite.image, sprite.base]) if (path) paths.add(path);
@@ -217,7 +217,7 @@ export class AssetStore {
     await Promise.all([...paths].map(path => this.image(path)));
     await this.font(view.progression?.settings.font ?? "PressStart2P");
     const sounds = new Set(["src/assets/sounds/ui/click1.wav"]);
-    for (const pokemon of view.team) {
+    for (const pokemon of (view.battleTeam ?? view.team)) {
       const key = effectiveResourceSpecies(pokemon, catalog, view.progression?.dna)?.facts?.projectileSound;
       if (typeof key === "string" && /^[a-zA-Z][A-Za-z0-9_-]*$/.test(key)) sounds.add(`src/assets/sounds/effect/${key}.wav`);
     }

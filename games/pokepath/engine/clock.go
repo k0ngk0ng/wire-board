@@ -410,9 +410,8 @@ func resolveEnemyDeath(state *State, enemy *Enemy) ([]EnemyPassiveEvent, error) 
 	state.WaveKills++
 	state.TotalKills++
 	if state.Progression.CustomRoute == nil {
-		state.Gold += enemy.Gold
+		progressionGold(state, enemy.Gold)
 		state.WaveGold += enemy.Gold
-		state.Progression.TotalGold += enemy.Gold
 	}
 	if pokemon := pokemonFor(state, enemy.LastHitBy); pokemon != nil {
 		pokemon.Kills++

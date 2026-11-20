@@ -28,7 +28,7 @@ func contextFor(state *State, tower *Tower, pokemon *Pokemon, target *Enemy, rol
 	if state.Progression.Challenge.Active && state.Progression.Challenge.LevelCap > 0 {
 		level = state.Progression.Challenge.LevelCap
 	}
-	context := AbilityContext{PokemonID: pokemon.ID, AbilityID: species.AbilityID, ItemID: pokemon.Item, WeatherID: state.Weather, Level: level, Terrain: terrain, Stars: state.Stars, Hearts: state.Health, MaxHearts: state.MaxHealth, Targets: len(state.Enemies), Power: pokemon.Stats.Power, Range: pokemon.Stats.Range, AttackMS: pokemon.Stats.AttackMS, CriticalPct: pokemon.Stats.CriticalPct, CriticalDamage: 1.5, SameTargetHits: tower.SameTargetHits, AttackCount: tower.AttackCount, WaveKills: state.WaveKills, HealedHearts: state.WaveHeartsHealed, HeartsLost: state.WaveHeartsLost, MissingAllies: max(0, 10-len(state.Team)), Ribbons: state.Ribbons, DeployedMS: tower.DeployedMS, IdleMS: tower.IdleMS, StoredShots: tower.StoredShots, Charges: tower.Charges, Day: (state.Now/3600000+state.Clock/3600000+8)%24 >= 8 && (state.Now/3600000+state.Clock/3600000+8)%24 < 18, SpeciesID: species.ID, Random: roll, EffectsVolume: state.Progression.Settings.Audio.Effects, AttackType: species.AttackType, StreamAngle: factNumber(species.Facts, "streamAngle")}
+	context := AbilityContext{PokemonID: pokemon.ID, AbilityID: species.AbilityID, ItemID: pokemon.Item, WeatherID: state.Weather, Level: level, Terrain: terrain, Stars: state.Stars, Hearts: state.Health, MaxHearts: state.MaxHealth, Targets: len(state.Enemies), Power: pokemon.Stats.Power, Range: pokemon.Stats.Range, AttackMS: pokemon.Stats.AttackMS, CriticalPct: pokemon.Stats.CriticalPct, CriticalDamage: 1.5, SameTargetHits: tower.SameTargetHits, AttackCount: tower.AttackCount, WaveKills: state.WaveKills, HealedHearts: state.WaveHeartsHealed, HeartsLost: state.WaveHeartsLost, MissingAllies: max(0, 10-len(state.Team)), Ribbons: state.Ribbons, DeployedMS: tower.DeployedMS, IdleMS: tower.IdleMS, StoredShots: tower.StoredShots, Charges: tower.Charges, Day: (state.Now/3600000+state.Clock/3600000+8)%24 >= 8 && (state.Now/3600000+state.Clock/3600000+8)%24 < 18, SpeciesID: species.ID, Random: roll, EffectsVolume: pokemonSettings(state, pokemon).Audio.Effects, AttackType: species.AttackType, StreamAngle: factNumber(species.Facts, "streamAngle")}
 	context.Ricochet = int(factNumber(species.Facts, "ricochet"))
 	switch state.Route {
 	case 3, 4, 5, 10, 21, 22, 23, 24, 42, 43, 44, 45:
@@ -574,9 +574,8 @@ func applyProjectileHitWithCritical(state *State, projectile *Projectile, enemy 
 
 	if state.Progression.CustomRoute == nil {
 		gain := int64(math.Ceil(float64(enemy.Gold)*profile.GoldTargetFraction) + math.Ceil(amount*profile.GoldDamageFraction))
-		state.Gold += gain
+		progressionGold(state, gain)
 		state.WaveGold += gain
-		state.Progression.TotalGold += gain
 		state.Progression.Profile.StolenGold += gain
 	}
 	if err := WorldOnHit(state, projectile, enemy, profile, lost); err != nil {

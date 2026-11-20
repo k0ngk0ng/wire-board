@@ -108,7 +108,7 @@ func TestCoreTowerOrderingReferenceFixtureE2E(t *testing.T) {
 				}
 			}
 			for index, slot := range input.Order {
-				coreApply(t, state, index%2, Action{Type: "deploy", PokemonID: state.Team[slot].ID, TileID: []int{1, 2, 14}[index]})
+				coreApply(t, state, 0, Action{Type: "deploy", PokemonID: state.Team[slot].ID, TileID: []int{1, 2, 14}[index]})
 			}
 			coreApply(t, state, 0, Action{Type: "wave"})
 			owners := map[int]int{}

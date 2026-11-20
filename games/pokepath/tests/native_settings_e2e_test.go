@@ -11,7 +11,7 @@ import (
 
 func settingsStart(t *testing.T) *engine.State {
 	t.Helper()
-	state, err := engine.New(engine.Options{Starter: "charmander"}, 2, 123456, 1730000000000)
+	state, err := referenceNew(engine.Options{Starter: "charmander"}, 2, 123456, 1730000000000)
 	if err != nil {
 		t.Fatal(err)
 	}

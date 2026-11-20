@@ -99,7 +99,7 @@ func TestNativePlatformRegistrationOptionsAndSharedStart(t *testing.T) {
 	for players := 1; players <= 4; players++ {
 		module, ctx, match := nativeStart(t, players)
 		view := nativeObserve(t, module, match, 0)
-		if view.Epoch <= 0 || view.Gold != 50 || view.Health != 14 || view.Wave != 1 || len(view.Team) != 1 || len(view.Snapshot) == 0 || len(match.Actors) != players {
+		if view.Epoch <= 0 || view.Gold != 50 || view.Health != 14 || view.Wave != 1 || len(view.Team) != 3 || len(view.Snapshot) == 0 || len(match.Actors) != players {
 			t.Fatalf("cooperative start duplicated or omitted original resources: %+v", view)
 		}
 		ctx.Actor = players - 1

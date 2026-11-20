@@ -232,7 +232,7 @@ function paintWorld(context: CanvasRenderingContext2D, view: View, assets: Asset
     const persistent = paintPersistentZone(context, zone, Date.now(), { opacity: effectOpacity(view, "special"), particles: view.progression?.settings.particles !== false });
     context.restore();
     if (persistent) continue;
-    const owner = view.team.find(pokemon => pokemon.id === zone.pokemonID);
+    const owner = (view.battleTeam ?? view.team).find(pokemon => pokemon.id === zone.pokemonID);
     const definition = owner && assets.catalog ? effectiveResourceSpecies(owner, assets.catalog, view.progression?.dna) : undefined;
     const projectile = assets.catalog?.projectiles[String(definition?.projectileId ?? "")];
     const spec = typeof projectile?.sprite === "object" ? projectile.sprite : undefined;
@@ -292,7 +292,7 @@ function paintWorld(context: CanvasRenderingContext2D, view: View, assets: Asset
   }
   for (const effect of view.attackModes?.effects ?? []) {
     if (effect.ageMS < effect.delayMS) continue;
-    const owner = view.team.find(pokemon => pokemon.id === effect.pokemonID);
+    const owner = (view.battleTeam ?? view.team).find(pokemon => pokemon.id === effect.pokemonID);
     const color = owner && assets.catalog ? effectiveResourceSpecies(owner, assets.catalog, view.progression?.dna)?.color ?? "#fff0a5" : "#fff0a5";
     context.save();
     context.globalAlpha = 1;
@@ -358,7 +358,7 @@ function paintChess(context: CanvasRenderingContext2D, view: View, assets: Asset
 function paintAim(context: CanvasRenderingContext2D, view: View, assets: Assets, selectedID?: number) {
   const aim = selectedID === undefined ? undefined : view.attackModes?.towers?.[String(selectedID)];
   const tower = view.towers.find(tower => tower.pokemonID === selectedID);
-  const owner = view.team.find(pokemon => pokemon.id === selectedID);
+  const owner = (view.battleTeam ?? view.team).find(pokemon => pokemon.id === selectedID);
   const species = owner && assets.catalog ? effectiveResourceSpecies(owner, assets.catalog, view.progression?.dna) : undefined;
   if (!aim?.hasAim || !tower) return;
   context.save();
@@ -371,7 +371,7 @@ function paintProjectiles(context: CanvasRenderingContext2D, view: View, assets:
   for (const projectile of projectiles) {
     if (beamKinds.has(projectile.kind ?? "") && (projectile.beamWidth ?? 0) > 0) {
       const tower = view.towers.find(tower => tower.id === projectile.towerID);
-      const owner = view.team.find(pokemon => pokemon.id === (projectile.pokemonID ?? tower?.pokemonID));
+      const owner = (view.battleTeam ?? view.team).find(pokemon => pokemon.id === (projectile.pokemonID ?? tower?.pokemonID));
       const species = owner && assets.catalog ? effectiveResourceSpecies(owner, assets.catalog, view.progression?.dna) : undefined;
       const duration = projectile.profile?.beamDurationMs || 260;
       const endpoint = { x: projectile.targetX ?? projectile.x, y: projectile.targetY ?? projectile.y };
@@ -393,7 +393,7 @@ function paintProjectiles(context: CanvasRenderingContext2D, view: View, assets:
     context.restore();
     if (drawn) { context.restore(); continue; }
     const tower = view.towers.find(tower => tower.id === projectile.towerID);
-    const pokemon = view.team.find(pokemon => pokemon.id === tower?.pokemonID);
+    const pokemon = (view.battleTeam ?? view.team).find(pokemon => pokemon.id === tower?.pokemonID);
     const color = pokemon ? assets.catalog?.species[pokemon.species]?.color : undefined;
     const dx = (projectile.targetX ?? projectile.x) - projectile.x;
     const dy = (projectile.targetY ?? projectile.y) - projectile.y;
@@ -475,7 +475,7 @@ export function paintBattle(context: CanvasRenderingContext2D, view: View, asset
   if (presentation) presentation.surface = surface;
   if (background) context.drawImage(background, 0, 0, width, height);
   context.imageSmoothingEnabled = true;
-  const selected = view.team.find(pokemon => pokemon.id === selectedID);
+  const selected = (view.battleTeam ?? view.team).find(pokemon => pokemon.id === selectedID);
   const selectedTower = view.towers.find(tower => tower.pokemonID === selectedID);
   paintWorld(context, view, assets, selectedID, presentation, "under");
   for (let index = view.enemies.length - 1; index >= 0; index--) {
@@ -484,7 +484,7 @@ export function paintBattle(context: CanvasRenderingContext2D, view: View, asset
     if (enemy.x < -padding || enemy.x > width + padding || enemy.y < -padding || enemy.y > height + padding) continue;
     paintEnemy(context, view, assets, enemy, presentation);
   }
-  const party = new Map(view.team.map(pokemon => [pokemon.id, pokemon]));
+  const party = new Map((view.battleTeam ?? view.team).map(pokemon => [pokemon.id, pokemon]));
   for (const tower of towersByDepth(view.towers, party)) {
     const pokemon = party.get(tower.pokemonID);
     if (!pokemon) continue;
@@ -548,7 +548,7 @@ export function paintBattle(context: CanvasRenderingContext2D, view: View, asset
 }
 
 export function pokemonAt(view: View, point: Point): Pokemon | undefined {
-  const party = new Map(view.team.map(pokemon => [pokemon.id, pokemon]));
+  const party = new Map((view.battleTeam ?? view.team).map(pokemon => [pokemon.id, pokemon]));
   const tower = towersByDepth(view.towers, party).reverse().find(tower => {
     const pokemon = party.get(tower.pokemonID);
     if (!pokemon) return false;

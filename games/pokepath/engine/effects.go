@@ -969,7 +969,7 @@ func RefreshConditionSources(state *State, enemy *Enemy) error {
 			continue
 		}
 		level := owner.Level
-		profile, err := BuildAttackProfile(AbilityContext{ItemID: owner.Item, Level: level, Power: owner.Stats.Power, Range: owner.Stats.Range, AttackMS: owner.Stats.AttackMS, CriticalPct: owner.Stats.CriticalPct, Hearts: state.Health, MaxHearts: state.MaxHealth, Stars: state.Stars, Ribbons: state.Ribbons, HealingUnit: true, EffectsVolume: state.Progression.Settings.Audio.Effects, Random: 0.5})
+		profile, err := BuildAttackProfile(AbilityContext{ItemID: owner.Item, Level: level, Power: owner.Stats.Power, Range: owner.Stats.Range, AttackMS: owner.Stats.AttackMS, CriticalPct: owner.Stats.CriticalPct, Hearts: state.Health, MaxHearts: state.MaxHealth, Stars: state.Stars, Ribbons: state.Ribbons, HealingUnit: true, EffectsVolume: pokemonSettings(state, owner).Audio.Effects, Random: 0.5})
 		if err != nil {
 			return err
 		}

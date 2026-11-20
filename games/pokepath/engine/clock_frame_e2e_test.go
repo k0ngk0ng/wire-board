@@ -12,7 +12,7 @@ func coreFrameState(t *testing.T, speed float64) *State {
 	if err != nil {
 		t.Fatal(err)
 	}
-	coreApply(t, state, 1, Action{Type: "deploy", PokemonID: state.Team[0].ID, TileID: 1})
+	coreApply(t, state, 0, Action{Type: "deploy", PokemonID: state.Team[0].ID, TileID: 1})
 	coreApply(t, state, 0, Action{Type: "wave"})
 	return state
 }

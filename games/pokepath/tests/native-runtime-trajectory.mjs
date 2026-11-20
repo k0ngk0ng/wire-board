@@ -29,7 +29,8 @@ func main() {
     state,err:=engine.New(options,players,candidate,now)
     if err!=nil { panic(err) }
     if err=engine.Apply(state,1,engine.Action{Type:"egg",Epoch:state.Epoch});err!=nil { panic(err) }
-    if len(state.Team)>1 && state.Team[1].Species=="mudkip" { seed=candidate;break }
+    personal:=engine.ProjectPlayer(state,1)
+    if len(personal.Team)>3 && personal.Team[3].Species=="mudkip" { seed=candidate;break }
   }
   if seed==0 { panic("deterministic first egg seed not found") }
   state,err:=engine.New(options,players,seed,now)
@@ -49,7 +50,7 @@ func main() {
     operations=append(operations,operation{Type:"action",Actor:actor,Action:&value})
   }
   apply(1,engine.Action{Type:"egg"})
-  capture("natural-second-partner")
+  capture("natural-additional-partner")
   kinds:=map[string]bool{}
   firstFlight:=false
   upgrades:=0
@@ -57,8 +58,9 @@ func main() {
   firstComplete:=false
   elapsed:=int64(0)
   for ;elapsed<600000;elapsed+=100 {
-    if action:=engine.Propose(state);action!=nil {
-      apply(int(elapsed/100)%players,*action)
+    actor:=int(elapsed/100)%players
+    if action:=engine.ProposePlayer(state,actor);action!=nil {
+      apply(actor,*action)
       if action.Type=="upgrade" { upgrades++;if upgrades==1 { capture("paid-level-up") } }
       if len(state.Towers)>maximumTowers { maximumTowers=len(state.Towers);if maximumTowers<=3 { capture(fmt.Sprintf("deployed-%d-towers",maximumTowers)) } }
     }

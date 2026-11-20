@@ -31,7 +31,7 @@ func attackModeEvidence(t *testing.T) {
 func attackModeFixture(t *testing.T, key string) *engine.State {
 	t.Helper()
 	attackModeEvidence(t)
-	state, err := engine.New(engine.Options{Starter: "charmander", Speed: 1}, 4, 87654321, 1794919872358)
+	state, err := referenceNew(engine.Options{Starter: "charmander", Speed: 1}, 4, 87654321, 1794919872358)
 	if err != nil {
 		t.Fatal(err)
 	}

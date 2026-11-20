@@ -184,6 +184,30 @@ func aiTileValue(state *State, pokemon Pokemon, tile Placement, live bool) float
 	if !valid {
 		return 0
 	}
+	return aiTileValueWithProfile(state, pokemon, tile, live, profile)
+}
+
+func aiTileScorer(state *State) func(Pokemon, Placement, bool) float64 {
+	type entry struct {
+		profile AttackProfile
+		valid   bool
+	}
+	profiles := map[[2]int]entry{}
+	return func(pokemon Pokemon, tile Placement, live bool) float64 {
+		key := [2]int{pokemon.ID, tile.Terrain}
+		value, exists := profiles[key]
+		if !exists {
+			value.profile, value.valid = aiProfile(state, pokemon, pokemon.Level, tile.Terrain)
+			profiles[key] = value
+		}
+		if !value.valid {
+			return 0
+		}
+		return aiTileValueWithProfile(state, pokemon, tile, live, value.profile)
+	}
+}
+
+func aiTileValueWithProfile(state *State, pokemon Pokemon, tile Placement, live bool, profile AttackProfile) float64 {
 	species := ProgressionSpecies(state, &pokemon)
 	center := Point{X: tile.X + 12, Y: tile.Y + 12}
 	score := 0.0
@@ -238,6 +262,12 @@ func aiDeployment(state *State, live bool) *Action {
 	if state.World.MovementLocked {
 		return nil
 	}
+	tileValue := aiTileScorer(state)
+	if live {
+		if action := aiCounterDeployment(state, tileValue); action != nil {
+			return action
+		}
+	}
 	route, exists := routeForState(state)
 	if !exists {
 		return nil
@@ -254,14 +284,14 @@ func aiDeployment(state *State, live bool) *Action {
 		current := 0.0
 		for _, tile := range route.Placements {
 			if tile.ID == pokemon.TileID {
-				current = aiTileValue(state, pokemon, tile, live)
+				current = tileValue(pokemon, tile, live)
 			}
 		}
 		for _, tile := range route.Placements {
 			if tile.ID == pokemon.TileID || !aiUsableTile(state, pokemon, tile) {
 				continue
 			}
-			score := aiTileValue(state, pokemon, tile, live)
+			score := tileValue(pokemon, tile, live)
 			gain := score - current
 			if live && score <= current*1.4+2 || score <= 0 {
 				continue
@@ -276,6 +306,66 @@ func aiDeployment(state *State, live bool) *Action {
 		}
 	}
 	return action
+}
+
+func aiCounterDeployment(state *State, tileValue func(Pokemon, Placement, bool) float64) *Action {
+	if !slices.ContainsFunc(state.Enemies, func(enemy Enemy) bool {
+		return enemy.Boss && enemy.Entered && !enemy.Dead && !enemy.Escaped && enemy.PassiveID == "naturalCure"
+	}) {
+		return nil
+	}
+	route, exists := routeForState(state)
+	if !exists {
+		return nil
+	}
+	inFlight := func(id int) bool {
+		return slices.ContainsFunc(state.Projectiles, func(projectile Projectile) bool { return projectile.PokemonID == id })
+	}
+	score := func(pokemon Pokemon, tile Placement) int64 {
+		return int64(math.Round(tileValue(pokemon, tile, true) * 1000))
+	}
+	for _, pokemon := range state.Team {
+		profile, valid := aiProfile(state, pokemon, pokemon.Level, 0)
+		if !valid || pokemon.TileID < 0 || !aiHasCondition(profile, "nightmare") || inFlight(pokemon.ID) {
+			continue
+		}
+		if slices.ContainsFunc(route.Placements, func(tile Placement) bool { return tile.ID == pokemon.TileID && score(pokemon, tile) > 0 }) {
+			continue
+		}
+		for _, tile := range route.Placements {
+			if aiUsableTile(state, pokemon, tile) && score(pokemon, tile) > 0 {
+				return aiAction(state, Action{Type: "deploy", PokemonID: pokemon.ID, TileID: tile.ID})
+			}
+		}
+		for _, tile := range route.Placements {
+			if !terrainAllowed(pokemon, ProgressionSpecies(state, &pokemon), tile.Terrain) || score(pokemon, tile) <= 0 {
+				continue
+			}
+			for _, blocker := range state.Team {
+				if blocker.ID == pokemon.ID || blocker.TileID != tile.ID || inFlight(blocker.ID) {
+					continue
+				}
+				blockerProfile, valid := aiProfile(state, blocker, blocker.Level, 0)
+				if !valid || aiHasCondition(blockerProfile, "nightmare") {
+					continue
+				}
+				bestScore, bestTile := int64(-1), -1
+				for _, alternative := range route.Placements {
+					if alternative.ID == tile.ID || !aiUsableTile(state, blocker, alternative) {
+						continue
+					}
+					value := score(blocker, alternative)
+					if value > bestScore {
+						bestScore, bestTile = value, alternative.ID
+					}
+				}
+				if bestTile >= 0 {
+					return aiAction(state, Action{Type: "deploy", PokemonID: blocker.ID, TileID: bestTile})
+				}
+			}
+		}
+	}
+	return nil
 }
 
 func aiFormation(state *State) *Action {

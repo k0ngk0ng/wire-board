@@ -28,14 +28,7 @@ func Apply(state *State, actor int, action Action) error {
 	if err != nil {
 		return err
 	}
-	handled, err := handleEditorAction(candidate, actor, action)
-	if err == nil && !handled {
-		handled, err = ApplyProgressionAction(candidate, actor, action)
-	}
-	if err == nil && !handled {
-		err = applyCoreAction(candidate, actor, action)
-	}
-	if err != nil {
+	if err := applyTrainerAction(candidate, actor, action); err != nil {
 		return err
 	}
 	candidate.Sequence++
@@ -44,6 +37,17 @@ func Apply(state *State, actor int, action Action) error {
 	}
 	*state = *candidate
 	return nil
+}
+
+func executeAction(state *State, actor int, action Action) error {
+	handled, err := handleEditorAction(state, actor, action)
+	if err == nil && !handled {
+		handled, err = ApplyProgressionAction(state, actor, action)
+	}
+	if err == nil && !handled {
+		err = applyCoreAction(state, actor, action)
+	}
+	return err
 }
 
 func applyCoreAction(state *State, actor int, action Action) error {

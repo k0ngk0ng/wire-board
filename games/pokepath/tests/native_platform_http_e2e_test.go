@@ -185,8 +185,32 @@ func TestNativePlatformHTTPSharedActionsNonceAndRollback(t *testing.T) {
 		t.Fatalf("shared balance admitted %d concurrent upgrades", successes)
 	}
 	afterRace := nativeHTTPData(owner.room(t))
-	if afterRace["gold"] != float64(10) || nativeHTTPObject(afterRace["team"].([]any)[0])["level"] != float64(2) || afterRace["gold"] != nativeHTTPData(partner.room(t))["gold"] {
-		t.Fatal("shared gold or stable owned-Pokémon identity diverged")
+	if afterRace["gold"] != float64(10) || nativeHTTPObject(afterRace["team"].([]any)[0])["level"] != float64(2) || nativeHTTPData(partner.room(t))["gold"] != float64(50) {
+		t.Fatal("independent gold or stable owned-Pokémon identity diverged")
+	}
+	personalRoom := owner.room(t)
+	personalResults := make([]outcome, 2)
+	personalStart := make(chan struct{})
+	for index, client := range []*nativeHTTPClient{owner, partner} {
+		quote := nativeHTTPObject(nativeHTTPData(client.room(t))["progression"])["remainingEggs"]
+		group.Add(1)
+		go func(index int, client *nativeHTTPClient, quote any) {
+			defer group.Done()
+			<-personalStart
+			body := map[string]any{"type": "action", "version": personalRoom["version"], "nonce": fmt.Sprintf("native-personal-shop-%012d", index), "action": map[string]any{"epoch": nativeHTTPData(personalRoom)["epoch"], "type": "egg", "quote": quote, "clientInputID": fmt.Sprintf("personal-shop-seat-%d", index)}}
+			personalResults[index].result, personalResults[index].status, personalResults[index].err = client.exchange("POST", "/api/rooms/"+roomID, body)
+		}(index, client, quote)
+	}
+	close(personalStart)
+	group.Wait()
+	for _, result := range personalResults {
+		if result.err != nil || result.status != 200 {
+			t.Fatalf("independent simultaneous purchase failed: status=%d error=%v", result.status, result.err)
+		}
+	}
+	ownerData, partnerData := nativeHTTPData(owner.room(t)), nativeHTTPData(partner.room(t))
+	if ownerData["gold"] != float64(0) || partnerData["gold"] != float64(40) || len(ownerData["team"].([]any)) != 4 || len(partnerData["team"].([]any)) != 4 {
+		t.Fatal("simultaneous purchases shared a wallet or roster")
 	}
 	owner.action(t, map[string]any{"type": "pause"}, 200)
 	frozen := nativeHTTPData(owner.room(t))["snapshot"]

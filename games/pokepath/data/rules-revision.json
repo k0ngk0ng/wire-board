@@ -1,8 +1,8 @@
 {
   "format": 1,
   "version": "1.7.3",
-  "rulesRevision": "401d71da4e3677ea2f18c69822760e066026d1e96ed303234a43b5e8a7d5a616",
-  "rulesVersion": "pokepath-native-1/401d71da4e3677ea2f18c69822760e066026d1e96ed303234a43b5e8a7d5a616/1a87b0c593060ef3bc849dbd033590a9c247c5ba1e485f0ced16f6b1fd50454b",
+  "rulesRevision": "a74d870e816519f54c32cedea2a21c6ccc84b23a96d752e5da394e029fbe4e44",
+  "rulesVersion": "pokepath-native-1/a74d870e816519f54c32cedea2a21c6ccc84b23a96d752e5da394e029fbe4e44/1a87b0c593060ef3bc849dbd033590a9c247c5ba1e485f0ced16f6b1fd50454b",
   "factsSHA256": "1a87b0c593060ef3bc849dbd033590a9c247c5ba1e485f0ced16f6b1fd50454b",
   "engine": {
     "format": 1,
@@ -15,13 +15,13 @@
       },
       {
         "path": "games/pokepath/engine/actions.go",
-        "bytes": 11905,
-        "sha256": "08f3341b0d938cd7c377016c2fd72fa650123910b8e2a45cd7886290dbec2ef2"
+        "bytes": 12028,
+        "sha256": "17cbc0235c2ffa663d8ac002e50f866dba03ed8a39b0ab0342e1ad718a761ee1"
       },
       {
         "path": "games/pokepath/engine/ai.go",
-        "bytes": 18101,
-        "sha256": "f1daaa0e06ff8c4555a60694e6d39811397f02a85f45e604b41589d99ce2faa5"
+        "bytes": 21151,
+        "sha256": "782ff09b6ac68eb780ef076bebfd2ce220df0215f8f27cf31de63a8c35fa3566"
       },
       {
         "path": "games/pokepath/engine/attack_modes.go",
@@ -45,13 +45,13 @@
       },
       {
         "path": "games/pokepath/engine/clock.go",
-        "bytes": 14920,
-        "sha256": "0e35d3e359dea78fbbc7bd52653f5493cb31c6816c9c87cc7d0517bb2f5320e6"
+        "bytes": 14886,
+        "sha256": "6739bbc85ef809208855cc898545ac9f7f7ba7f31e0673f4ac8dab9f7f707c68"
       },
       {
         "path": "games/pokepath/engine/combat.go",
-        "bytes": 31640,
-        "sha256": "09e4969bee8e0d49f9d56f001ceef1033faddfc89f7ce3e557f1b243b5df60c1"
+        "bytes": 31617,
+        "sha256": "de4030317b4e6e7ca38ee506364f569cf5dc357649b434bf857c066c96606425"
       },
       {
         "path": "games/pokepath/engine/combat_counters.go",
@@ -80,8 +80,8 @@
       },
       {
         "path": "games/pokepath/engine/effects.go",
-        "bytes": 44120,
-        "sha256": "0ae998edc1f86d12ae22cf9a5477de9b0b2d726ab93ff6166ec372dd58ae4e36"
+        "bytes": 44123,
+        "sha256": "c5012847412c9074867fdd46f1c3ebf2c81f7a10a73d164fb401dd4f5956b5b1"
       },
       {
         "path": "games/pokepath/engine/flying_control.go",
@@ -125,13 +125,13 @@
       },
       {
         "path": "games/pokepath/engine/progression.go",
-        "bytes": 81227,
-        "sha256": "36c00deb4c8fdbce68c84cb7c6874657b34550c62c0b2d968b0f652ef378dfe0"
+        "bytes": 82293,
+        "sha256": "553c3cebc8abe05a7e6e96a08f8e6ff93b9af66a2ea098dfb334882f41fcb876"
       },
       {
         "path": "games/pokepath/engine/projectile_links.go",
-        "bytes": 6212,
-        "sha256": "a529a3fb3594c6df980e77697c73a7204380e0c2e175939f639f8cee9abc1154"
+        "bytes": 6222,
+        "sha256": "467265e3be7f5cd43c0f58751c65028fc62eb91a5ae5dd5a12689fbcccd69812"
       },
       {
         "path": "games/pokepath/engine/projectile_motion.go",
@@ -190,8 +190,8 @@
       },
       {
         "path": "games/pokepath/engine/state.go",
-        "bytes": 17049,
-        "sha256": "44cb7eefb8b3c6d44f9b6126334bb20f36fad88c05efbc089f44ecdea200ffca"
+        "bytes": 17052,
+        "sha256": "c64795cce794f56b833ba54f264dbeff060dbc1462872fe1d5cc795ec6c04da9"
       },
       {
         "path": "games/pokepath/engine/targeting.go",
@@ -199,9 +199,19 @@
         "sha256": "21b5d2c909f1339ffce001795f151a6b9ac5ffefdcb9826d23d0713429e2c841"
       },
       {
+        "path": "games/pokepath/engine/trainer_migration.go",
+        "bytes": 3318,
+        "sha256": "fa2926757c1238b989967418d33d59aeead9cce92e687de8567c685baf498b3b"
+      },
+      {
+        "path": "games/pokepath/engine/trainers.go",
+        "bytes": 12642,
+        "sha256": "ee95937e1a58c3ef12aba40192cbe07a539aeb76445de98346b5a93e5cccdfe2"
+      },
+      {
         "path": "games/pokepath/engine/types.go",
-        "bytes": 22421,
-        "sha256": "0c97cbfa26dc23b0be84a94cfd749acb2510bd8cb548e9e2aa354917a4581569"
+        "bytes": 22747,
+        "sha256": "2b9003ff0fd1a7d6746d12c71353f4e8c192a90b00772140f8af2e5506954bbd"
       },
       {
         "path": "games/pokepath/engine/vector_length.go",
@@ -471,5 +481,5 @@
     ]
   },
   "generatorSHA256": "10fee953a764b58e81d9a0290e93a030e6b47d6558b4da7045c3ac723c08295f",
-  "revisionFileSHA256": "3262d2a6d6c512fcf17d42da6f7630f22b863e4e82bf20112c868e7a069d577e"
+  "revisionFileSHA256": "9e924c8900b07714c0db5a4bdb1c212c5e228e876081dce1cc1b2947a62ee1e6"
 }

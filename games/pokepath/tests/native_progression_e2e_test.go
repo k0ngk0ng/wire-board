@@ -32,7 +32,7 @@ func progressionEvidence(t *testing.T) {
 func progressionNew(t *testing.T) *engine.State {
 	t.Helper()
 	progressionEvidence(t)
-	state, err := engine.New(engine.Options{Starter: "charmander"}, 4, 87654321, 1794919872358)
+	state, err := referenceNew(engine.Options{Starter: "charmander"}, 4, 87654321, 1794919872358)
 	if err != nil {
 		t.Fatal(err)
 	}

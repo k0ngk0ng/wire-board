@@ -368,8 +368,7 @@
   }
 }
 
-/* Keep the whole arena and pointer controls together on desktop. The map keeps
-   its 15:13 geometry; extra width belongs to controls, never a stretched map. */
+
 @media (min-width: 601px) {
   .bubble-board {
     width: min(100%, max(540px, calc((100dvh - 550px) * 1.154 + 178px)), 820px);
@@ -441,13 +440,12 @@
 .bubble-bomb small {
   color: #fff4eb;
 }
-/* Normal, trapped and spectator hints share one stable row. */
+
 .bubble-status {
   height: 64px;
   min-height: 64px;
 }
-/* A disabled action still needs readable labels; override the shared button
-   opacity locally, preserving the common room and player layout. */
+
 .bubble-dpad button:disabled {
   opacity: 1;
   background: #c8d3c3;
@@ -649,7 +647,7 @@
   }
 }
 
-/* One selected-map preview, shared by create and waiting options. */
+
 .bubble-map-preview {
   margin: 0;
   padding: 12px;
@@ -715,7 +713,7 @@
   color: #405a48;
 }
 
-/* Left thumb travel and right thumb action have separate capture surfaces. */
+
 .bubble-dpad.bubble-joystick {
   border: 0;
   background: transparent;
@@ -802,5 +800,47 @@
     font-size: 11px;
     padding-top: 4px;
     gap: 4px;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) and (min-width: 601px),
+  (min-width: 601px) and (max-width: 1100px) and (max-height: 600px) {
+  .bubble-board,
+  [data-room-fullscreen] .bubble-board {
+    width: 100%;
+    max-width: 1100px;
+    grid-template-columns: 128px minmax(0, 1fr) 104px;
+    column-gap: 8px;
+    padding: 8px;
+  }
+  .bubble-stage {
+    grid-column: 2;
+    grid-row: 3;
+    min-width: 0;
+    width: min(100%, calc((100dvh - 150px) * 384 / 364));
+    justify-self: center;
+  }
+  .bubble-controls {
+    display: contents;
+  }
+  .bubble-dpad.bubble-joystick {
+    grid-column: 1;
+    grid-row: 3;
+    align-self: center;
+    justify-self: start;
+    width: 128px;
+    height: 128px;
+    min-width: 0;
+  }
+  .bubble-bomb {
+    grid-column: 3;
+    grid-row: 3;
+    align-self: center;
+    justify-self: end;
+    width: 84px;
+    height: 84px;
+    min-height: 84px;
+    margin-right: max(4px, env(safe-area-inset-right));
+    border-radius: 50%;
   }
 }

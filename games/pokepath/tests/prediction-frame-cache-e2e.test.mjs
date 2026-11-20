@@ -55,7 +55,7 @@ test("render-only projection reuse preserves the complete actual Wasm view and i
     assert.throws(() => { first.team[0].stats.power = -1; });
     assert.deepEqual(runtime.export(baseline), initial);
     compare(keep(runtime.advance(baseline, 30)));
-    const branch = keep(runtime.apply(baseline, 1, { type: "upgrade", epoch: initial.epoch, pokemonID: initial.team[0].id }));
+    const branch = keep(runtime.apply(baseline, 0, { type: "upgrade", epoch: initial.epoch, pokemonID: initial.team[0].id }));
     const changed = compare(branch);
     assert.notEqual(changed.gold, first.gold);
     assert.equal(runtime.frame(baseline).gold, first.gold);

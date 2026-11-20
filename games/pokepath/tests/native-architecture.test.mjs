@@ -31,6 +31,6 @@ test("original browser programs are excluded from public game assets", () => {
 test("the live board uses retained prediction handles throughout its frame loop", () => {
   const source = readFileSync(join(game, "web/Board.tsx"), "utf8");
   assert.match(source, /const opaque = native\.createPredictionRuntime\(\)/);
-  assert.match(source, /runtime: \{ clone: opaque\.clone, apply: opaque\.apply, advance: opaque\.advance, project: opaque\.frame, release: opaque\.release \}/);
+  assert.match(source, /runtime: \{ clone: opaque\.clone, apply: opaque\.apply, advance: opaque\.advance, project: state => personalView\(opaque\.frame\(state\), current\.current\.room\.you\), release: opaque\.release \}/);
   assert.doesNotMatch(source, /native\.(?:clone|advance|project|apply)\(/);
 });

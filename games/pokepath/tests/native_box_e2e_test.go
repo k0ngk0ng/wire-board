@@ -47,10 +47,10 @@ func TestNativePlatformBoxSlotReplacesOnlyTheQuotedPartner(t *testing.T) {
 	}
 	tileID := places[index].ID
 	match = nativeAction(t, module, ctx, match, fmt.Sprintf(`"type":"deploy","pokemonID":%d,"tileID":%d`, first.ID, tileID))
-	for _, pokemon := range []engine.Pokemon{second, third} {
+	for _, pokemon := range engine.ProjectPlayer(from, 0).Team[1:] {
 		match = nativeAction(t, module, ctx, match, fmt.Sprintf(`"type":"team","pokemonID":%d,"mode":"box"`, pokemon.ID))
 	}
-	ctx.Actor = 1
+	ctx.Actor = 0
 	drop := func(id, target, slot, epoch int, input string) json.RawMessage {
 		return json.RawMessage(fmt.Sprintf(`{"type":"teamSlot","epoch":%d,"pokemonID":%d,"targetID":%d,"slot":%d,"clientInputID":%q}`, epoch, id, target, slot, input))
 	}
@@ -59,18 +59,19 @@ func TestNativePlatformBoxSlotReplacesOnlyTheQuotedPartner(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	view := nativeObserve(t, module, moved, 3)
+	view := nativeObserve(t, module, moved, 0)
 	after, err := engine.Unmarshal(view.Snapshot)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(after.Team) != 1 || after.Team[0].ID != second.ID || after.Team[0].TileID != -1 || len(after.Towers) != 0 || !slices.ContainsFunc(after.Box, func(pokemon engine.Pokemon) bool { return pokemon.ID == first.ID && pokemon.TileID == -1 }) {
+	personal := engine.ProjectPlayer(after, 0)
+	if len(personal.Team) != 1 || personal.Team[0].ID != second.ID || personal.Team[0].TileID != -1 || len(after.Towers) != 0 || !slices.ContainsFunc(after.Box, func(pokemon engine.Pokemon) bool { return pokemon.ID == first.ID && pokemon.TileID == -1 }) {
 		t.Fatalf("replacement did not retire the previous occupant and preserve both partners: team=%+v box=%+v towers=%+v", after.Team, after.Box, after.Towers)
 	}
 	if replay, err := module.Apply(ctx, moved, input); err != nil || !bytes.Equal(replay.Data, moved.Data) {
 		t.Fatal("an exact retransmission was not idempotent", err)
 	}
-	ctx.Actor = 3
+	ctx.Actor = 0
 	for _, rejected := range []json.RawMessage{
 		drop(third.ID, first.ID, 0, view.Epoch, "stale-occupant"),
 		drop(third.ID, 0, 0, view.Epoch, "false-empty"),
@@ -88,8 +89,9 @@ func TestNativePlatformBoxSlotReplacesOnlyTheQuotedPartner(t *testing.T) {
 	}
 	for _, seat := range []int{0, 1, 2, 3} {
 		state, err := engine.Unmarshal(nativeObserve(t, module, filled, seat).Snapshot)
-		if err != nil || len(state.Team) != 2 || state.Team[0].ID != second.ID || state.Team[1].ID != third.ID || state.Gold != from.Gold {
-			t.Fatalf("seat %d does not see the shared slot order and unchanged gold: %v", seat, err)
+		personal := engine.ProjectPlayer(state, 0)
+		if err != nil || len(personal.Team) != 2 || personal.Team[0].ID != second.ID || personal.Team[1].ID != third.ID || state.Gold != from.Gold {
+			t.Fatalf("seat %d does not see the owner slot order and unchanged gold: %v", seat, err)
 		}
 	}
 }

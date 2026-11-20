@@ -1,5 +1,6 @@
 import type { BoxDisplay } from "./BoxPanel";
 import { HatchPanel } from "./ShopPanel";
+import { personalView } from "./personal-view";
 import { hasRouteResult, ResultPanel } from "./ResultPanel";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { api } from "../../../web/src/ui/board-host";
@@ -171,7 +172,7 @@ export function Board(props: BoardProps<StreamView>) {
     const opaque = native.createPredictionRuntime();
     fast.current = opaque;
     const prediction = createPredictionController<NativeHandle, View, Action>({
-      runtime: { clone: opaque.clone, apply: opaque.apply, advance: opaque.advance, project: opaque.frame, release: opaque.release },
+      runtime: { clone: opaque.clone, apply: opaque.apply, advance: opaque.advance, project: state => personalView(opaque.frame(state), current.current.room.you), release: opaque.release },
       actor: () => current.current.room.you,
       readClock: value => Number(value.clock ?? 0),
       readPaused: value => Boolean(value.paused),
@@ -440,7 +441,7 @@ export function Board(props: BoardProps<StreamView>) {
     if (fromController && !placing && aiming === undefined) { commandHandler.current({ type: "wave" }); return; }
     if (aiming !== undefined && controlRef.current) { act({ type: "aim", pokemonID: aiming, x: location.x, y: location.y }); setAiming(undefined); return; }
     const placed = pokemonAt(value, location);
-    if (placed && !placing) { setSelected(placed.id); setDetails(placed.id); return; }
+    if (placed && !placing && value.team.some(pokemon => pokemon.id === placed.id)) { setSelected(placed.id); setDetails(placed.id); return; }
     const target = pointerTarget(value, assetsRef.current.catalog, selected, controlRef.current && !placing && panel === "team" && details === undefined);
     if (target) { pointerAim.current?.edge({ ...target, ...location }); return; }
     if (!placing && controlRef.current) {

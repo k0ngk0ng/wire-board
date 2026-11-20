@@ -55,12 +55,13 @@ test("spectators receive disabled world-changing controls", async () => {
   assert.ok(wave?.includes("disabled"));
 });
 
-test("the shared catalogue and starter options remain native", async () => {
+test("the native catalogue describes all three independent starting partners", async () => {
   const game = await loadModule();
   assert.equal(game.minPlayers, 1);
   assert.equal(game.maxPlayers, 4);
   assert.equal(game.asyncBoard, true);
-  const html = renderToStaticMarkup(React.createElement(game.Options, { value: { starter: "charmander" }, onChange() {}, disabled: false, capacity: 2 }));
+  assert.equal(game.Options, undefined);
+  const html = renderToStaticMarkup(React.createElement(game.Rules));
   for (const name of ["小火龙", "木守宫", "呱呱泡蛙"]) assert.ok(html.includes(name));
 });
 

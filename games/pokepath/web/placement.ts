@@ -25,11 +25,11 @@ export function siteAt(tiles: readonly Tile[], point: Point, size: number, touch
 export function deploymentKey(view: View, pokemonID: number) {
   const world = view.world;
   return JSON.stringify([view.epoch, view.route, view.phase, view.health > 0, view.paused, view.progression?.draft?.active, world?.movementLocked, world?.pressure, pokemonID,
-    view.team.map(member => [member.id, member.species, member.item, view.progression?.dna?.[member.id]]), view.towers.map(tower => [tower.pokemonID, tower.tileID, world?.passengerHosts?.[tower.pokemonID]])]);
+    (view.battleTeam ?? view.team).map(member => [member.id, member.species, member.item, view.progression?.dna?.[member.id]]), view.towers.map(tower => [tower.pokemonID, tower.tileID, world?.passengerHosts?.[tower.pokemonID]])]);
 }
 
 export function deploymentRangeKey(view: View, pokemonID: number) {
   return `${deploymentKey(view, pokemonID)}:${JSON.stringify([view.weather, view.health, view.stars, view.ribbons, view.wave, view.waveActive,
-    view.progression?.challenge?.levelCap, view.team.map(member => [member.id, member.level, member.stats.range, member.combatStats?.range, member.combatRangeType, member.combatRangeHalfWidth, member.combatInnerRange]),
+    view.progression?.challenge?.levelCap, (view.battleTeam ?? view.team).map(member => [member.id, member.level, member.stats.range, member.combatStats?.range, member.combatRangeType, member.combatRangeHalfWidth, member.combatInnerRange]),
     view.towers.map(tower => [tower.pokemonID, tower.x, tower.y])])}`;
 }

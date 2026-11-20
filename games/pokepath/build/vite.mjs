@@ -21,6 +21,7 @@ export default defineConfig({
   base: "/",
   publicDir: destination,
   plugins: [react(), gameLoadManifest()],
-  resolve: { dedupe: ["react", "react-dom", "lucide-react", "three"] },
+  resolve: { dedupe: ["react", "react-dom", "lucide-react", "three", "fflate"] },
+  worker: { format: "es" },
   build: { target: "es2022", outDir: join(root, ".local/pokepath/native-web"), emptyOutDir: true },
 });

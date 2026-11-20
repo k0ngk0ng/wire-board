@@ -19,14 +19,14 @@ func TestNativePlatformSharedCostAndDiscardedCandidate(t *testing.T) {
 	upgraded := nativeAction(t, module, ctx, match, fmt.Sprintf(`"type":"upgrade","pokemonID":%d`, owned.ID))
 	ctx.Actor = 1
 	if _, err := module.Apply(ctx, upgraded, json.RawMessage(fmt.Sprintf(`{"epoch":%d,"type":"upgrade","pokemonID":%d}`, nativeObserve(t, module, upgraded, 1).Epoch, owned.ID))); err == nil {
-		t.Fatal("second seat spent already exhausted shared gold")
+		t.Fatal("second seat upgraded a teammate")
 	}
 	if !bytes.Equal(before, match.Data) {
 		t.Fatal("accepted candidate mutated its transaction input")
 	}
-	retried := nativeAction(t, module, ctx, match, `"type":"egg","quote":149`)
+	retried := nativeAction(t, module, ctx, match, `"type":"egg","quote":147`)
 	recovered := nativeObserve(t, module, retried, 1)
-	if recovered.Gold != 40 || len(recovered.Team) != 2 {
+	if recovered.Gold != 40 || len(recovered.Team) != 4 {
 		t.Fatal("a discarded candidate leaked into another player's transaction")
 	}
 }
@@ -98,7 +98,7 @@ func TestNativePlatformStreamCarriesOnlyDeterministicOperations(t *testing.T) {
 		if err := json.Unmarshal(raw, &fields); err != nil {
 			t.Fatal(err)
 		}
-		allowed := map[string]bool{"epoch": true, "sequence": true, "engineSequence": true, "clock": true, "serverAt": true, "players": true, "paused": true, "saving": true, "gold": true, "health": true, "wave": true, "route": true, "fromSequence": true, "operations": true}
+		allowed := map[string]bool{"balances": true, "epoch": true, "sequence": true, "engineSequence": true, "clock": true, "serverAt": true, "players": true, "paused": true, "saving": true, "gold": true, "health": true, "wave": true, "route": true, "fromSequence": true, "operations": true}
 		for field := range fields {
 			if !allowed[field] {
 				t.Fatalf("normal deterministic stream repeats %s: %d bytes", field, len(raw))

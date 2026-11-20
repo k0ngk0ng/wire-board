@@ -70,6 +70,7 @@ type View struct {
 }
 
 type streamUpdate struct {
+	Balances       []int64     `json:"balances"`
 	Epoch          int         `json:"epoch"`
 	Sequence       uint64      `json:"sequence"`
 	EngineSequence uint64      `json:"engineSequence"`
@@ -201,6 +202,15 @@ func decode(match gameapi.Match) (state, error) {
 	}
 	if saved.Schema != moduleSchema || saved.Snapshot == nil || saved.Hash == "" || saved.Hash != ruleHash(saved.Snapshot.RulesVersion) {
 		return saved, errors.New("巡径守卫规则或资源版本不兼容，原存档已保留")
+	}
+	if engine.LegacySharedSave(saved.Snapshot) {
+		if err := engine.MigrateSharedSave(saved.Snapshot); err != nil {
+			return saved, err
+		}
+		saved.Hash = ruleHash(saved.Snapshot.RulesVersion)
+		if err := bumpEpoch(&saved); err != nil {
+			return saved, err
+		}
 	}
 	if err := engine.Validate(saved.Snapshot); err != nil {
 		return saved, err
@@ -423,8 +433,8 @@ func timer(ctx gameapi.Context, match gameapi.Match) (gameapi.Match, error) {
 	return saved.match()
 }
 
-func project(saved state) View {
-	native := engine.Project(saved.Snapshot)
+func project(saved state, viewer int) View {
+	native := engine.ProjectPlayer(saved.Snapshot, viewer)
 	return View{View: native, Sequence: saved.Sequence, EngineSequence: native.Sequence, ServerAt: saved.ServerAt, Players: saved.Snapshot.Players, Paused: saved.paused(), Saving: saved.Saving}
 }
 
@@ -447,7 +457,7 @@ func view(match gameapi.Match, viewer int) (any, error) {
 	if viewer < -1 || viewer >= saved.Snapshot.Players {
 		return nil, errors.New("巡径守卫观看席位无效")
 	}
-	result := project(saved)
+	result := project(saved, viewer)
 	result.Snapshot = saved.Snapshot
 	result.AcceptedInputs = acceptedInputs(saved, viewer)
 	return result, nil
@@ -480,7 +490,11 @@ func streamView(match gameapi.Match, viewer int, cursor string) (gameapi.StreamV
 	}
 	if valid {
 		world := saved.Snapshot
-		result := streamUpdate{Epoch: world.Epoch, Sequence: saved.Sequence, EngineSequence: world.Sequence, Clock: world.Clock, ServerAt: saved.ServerAt, Players: world.Players, Paused: saved.paused(), Saving: saved.Saving, Gold: world.Gold, Health: world.Health, Wave: world.Wave, Route: world.Route, FromSequence: sequence, Operations: []operation{}}
+		balances := make([]int64, world.Players)
+		for actor := range balances {
+			balances[actor] = engine.PlayerGold(world, actor)
+		}
+		result := streamUpdate{Balances: balances, Epoch: world.Epoch, Sequence: saved.Sequence, EngineSequence: world.Sequence, Clock: world.Clock, ServerAt: saved.ServerAt, Players: world.Players, Paused: saved.paused(), Saving: saved.Saving, Gold: engine.PlayerGold(world, viewer), Health: world.Health, Wave: world.Wave, Route: world.Route, FromSequence: sequence, Operations: []operation{}}
 		for _, event := range saved.Journal {
 			if event.Sequence > sequence {
 				result.Operations = append(result.Operations, event.Operation)
@@ -488,7 +502,7 @@ func streamView(match gameapi.Match, viewer int, cursor string) (gameapi.StreamV
 		}
 		return gameapi.StreamViewResult{Data: result, Cursor: fmt.Sprintf("%d:%d", world.Epoch, saved.Sequence)}, nil
 	}
-	result := project(saved)
+	result := project(saved, viewer)
 	result.Snapshot = saved.Snapshot
 	result.AcceptedInputs = acceptedInputs(saved, viewer)
 	return gameapi.StreamViewResult{Data: result, Cursor: fmt.Sprintf("%d:%d", saved.Snapshot.Epoch, saved.Sequence)}, nil
@@ -519,16 +533,6 @@ func botAction(ctx gameapi.Context, match gameapi.Match) (json.RawMessage, error
 	if ctx.Actor < 0 || ctx.Actor >= saved.Snapshot.Players || ctx.Players != saved.Snapshot.Players || saved.paused() {
 		return nil, nil
 	}
-	if len(ctx.Automated) == ctx.Players {
-		for actor, controlled := range ctx.Automated {
-			if controlled {
-				if actor != ctx.Actor {
-					return nil, nil
-				}
-				break
-			}
-		}
-	}
 	var action *engine.Action
 	phase := saved.Snapshot.Phase
 	if phase == "route_complete" || phase == "practice_complete" || phase == "defeat" {
@@ -546,13 +550,13 @@ func botAction(ctx gameapi.Context, match gameapi.Match) (json.RawMessage, error
 		case "practice_complete":
 			action = &engine.Action{Type: "custom_retry"}
 		case "defeat":
-			action = engine.Propose(saved.Snapshot)
+			action = engine.ProposePlayer(saved.Snapshot, ctx.Actor)
 			if action == nil {
 				action = &engine.Action{Type: "retry", Mode: "restart"}
 			}
 		}
 	} else {
-		action = engine.Propose(saved.Snapshot)
+		action = engine.ProposePlayer(saved.Snapshot, ctx.Actor)
 	}
 	if action == nil {
 		return nil, nil

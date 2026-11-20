@@ -109,7 +109,7 @@ func spreadCurseHit(state *State, projectile *Projectile, source *Enemy, profile
 		}
 		if projectile.Context.ItemID == "amuletCoin" && state.Progression.CustomRoute == nil {
 			gold := int64(math.Ceil(amount * .0005 * float64(state.Stars)))
-			state.Gold += gold
+			progressionGold(state, gold)
 			state.WaveGold += gold
 		}
 		if err := WorldOnHit(state, &linked, enemy, profile, actual); err != nil {

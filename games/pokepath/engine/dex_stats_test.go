@@ -32,7 +32,7 @@ func observeDexStats(t *testing.T, state *State) map[string]observedDexStats {
 
 func TestDexStatisticsTrackHitsDefeatsAndEscapesInOneWave(t *testing.T) {
 	state := coreNew(t, 4)
-	coreApply(t, state, 3, Action{Type: "deploy", PokemonID: state.Team[0].ID, TileID: coreTile(t, state)})
+	coreApply(t, state, 0, Action{Type: "deploy", PokemonID: state.Team[0].ID, TileID: coreTile(t, state)})
 	coreApply(t, state, 1, Action{Type: "wave"})
 	state.Enemies = []Enemy{}
 	tower := state.Towers[0]
@@ -138,7 +138,7 @@ func TestDexTowerActiveTimeUsesWallTimeAndFinalWaveCounts(t *testing.T) {
 		t.Fatalf("first 1.55 s wall interval was not recorded: %+v", got)
 	}
 	coreApply(t, state, 0, Action{Type: "retire", PokemonID: id})
-	coreApply(t, state, 1, Action{Type: "deploy", PokemonID: id, TileID: coreTile(t, state)})
+	coreApply(t, state, 0, Action{Type: "deploy", PokemonID: id, TileID: coreTile(t, state)})
 	state.Enemies = []Enemy{}
 	state.Wave = 100
 	if err := Advance(state, 20); err != nil {

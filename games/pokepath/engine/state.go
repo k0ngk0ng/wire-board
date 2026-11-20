@@ -69,15 +69,10 @@ func New(options Options, players int, seed uint64, now int64) (*State, error) {
 		random = 0x9e3779b9
 	}
 	state := &State{Schema: SchemaVersion, RulesVersion: RulesVersion(), Options: options, Players: players, Epoch: 1, Now: now, Random: random, NextID: 1, NextEventID: 1, Phase: "prepare", Gold: 50, Health: 14, MaxHealth: 14, TeamSlots: 6, Route: 0, Wave: 1, Speed: options.Speed, Weather: route.WeatherID, Records: map[int]int{}, RouteWaves: map[int]int{0: 1}, Team: []Pokemon{}, Box: []Pokemon{}, Inventory: []OwnedItem{}, Towers: []Tower{}, Enemies: []Enemy{}, Projectiles: []Projectile{}, Events: []Event{}}
-	if err := InitProgression(state); err != nil {
+	if err := initializeTrainers(state); err != nil {
 		return nil, err
 	}
-	pokemon, err := newPokemon(state, options.Starter, 1)
-	if err != nil {
-		return nil, err
-	}
-	state.Team = append(state.Team, pokemon)
-	if err = Validate(state); err != nil {
+	if err := Validate(state); err != nil {
 		return nil, err
 	}
 	return state, nil
@@ -306,7 +301,7 @@ func cloneStateValue(value reflect.Value) reflect.Value {
 
 func Validate(state *State) error {
 	catalog := CatalogData()
-	if state == nil || catalog == nil || state.Schema != SchemaVersion || state.RulesVersion != RulesVersion() || state.Players < 1 || state.Players > 4 || state.Epoch < 1 || state.Epoch > 1000000000 || state.Sequence > 9007199254740991 || state.Now < 0 || state.Now > 9007199254740991 || state.Clock < 0 || state.Clock > 9007199254740991 || state.Tick < 0 || state.Tick > 9007199254740991 || !battleClockValid(state) || state.Random == 0 || state.NextID < 1 || state.NextID > 1000000000 || state.NextEventID < 1 || state.NextEventID > 1000000000 || state.Gold < 0 || state.Gold > 9007199254740991 || state.Health < 0 || state.Health > state.MaxHealth || state.MaxHealth < 1 || state.MaxHealth > 10000 || state.TeamSlots < 1 || state.TeamSlots > 10 || len(state.Team) > state.TeamSlots || len(state.Towers) > 20 || len(state.Enemies) > 4096 || len(state.Projectiles) > 8192 || len(state.Events) > 128 || !finiteNumber(state.TotalDamage) || state.TotalDamage < 0 || !finiteNumber(state.TotalOverdamage) || state.TotalOverdamage < 0 || !validSpeed(state.Speed) || state.Wave < 1 {
+	if state == nil || catalog == nil || state.Schema != SchemaVersion || state.RulesVersion != RulesVersion() || state.Players < 1 || state.Players > 4 || state.Epoch < 1 || state.Epoch > 1000000000 || state.Sequence > 9007199254740991 || state.Now < 0 || state.Now > 9007199254740991 || state.Clock < 0 || state.Clock > 9007199254740991 || state.Tick < 0 || state.Tick > 9007199254740991 || !battleClockValid(state) || state.Random == 0 || state.NextID < 1 || state.NextID > 1000000000 || state.NextEventID < 1 || state.NextEventID > 1000000000 || state.Gold < 0 || state.Gold > 9007199254740991 || state.Health < 0 || state.Health > state.MaxHealth || state.MaxHealth < 1 || state.MaxHealth > 10000 || state.TeamSlots < 1 || state.TeamSlots > 10 || len(state.Team) > state.TeamSlots*max(1, len(state.Trainers)) || len(state.Towers) > 20*state.Players || len(state.Enemies) > 4096 || len(state.Projectiles) > 8192 || len(state.Events) > 128 || !finiteNumber(state.TotalDamage) || state.TotalDamage < 0 || !finiteNumber(state.TotalOverdamage) || state.TotalOverdamage < 0 || !validSpeed(state.Speed) || state.Wave < 1 {
 		return errors.New("巡径守卫状态结构无效")
 	}
 	route, ok := routeForState(state)
@@ -315,7 +310,7 @@ func Validate(state *State) error {
 	}
 	ids := map[int]bool{}
 	for _, pokemon := range append(append([]Pokemon{}, state.Team...), state.Box...) {
-		if pokemon.ID < 1 || ids[pokemon.ID] || pokemon.ID >= state.NextID || pokemon.Level < 1 || pokemon.Level > 100 || !validateDexTowerStats(pokemon.Dex) {
+		if pokemon.Owner < 0 || pokemon.Owner >= state.Players || pokemon.ID < 1 || ids[pokemon.ID] || pokemon.ID >= state.NextID || pokemon.Level < 1 || pokemon.Level > 100 || !validateDexTowerStats(pokemon.Dex) {
 			return errors.New("伙伴标识或等级无效")
 		}
 		if _, ok := catalog.Species[pokemon.Species]; !ok {
@@ -351,7 +346,7 @@ func Validate(state *State) error {
 	if err := ValidateAttackModes(state); err != nil {
 		return err
 	}
-	return ValidateProgression(state)
+	return validateTrainers(state)
 }
 
 func Project(state *State) View {
@@ -376,7 +371,7 @@ func ProjectTransient(state *State) View {
 	}
 	route, _ := routeForState(state)
 	paths := pathsForState(state)
-	return projectViewLists(View{PhysicsClock: state.Tick, Tick: state.Tick, RemainderMS: state.RemainderMS, RulesVersion: state.RulesVersion, Epoch: state.Epoch, Sequence: state.Sequence, Clock: state.Clock, Random: state.Random, Phase: state.Phase, Gold: state.Gold, Health: state.Health, MaxHealth: state.MaxHealth, Stars: state.Stars, Ribbons: state.Ribbons, TeamSlots: state.TeamSlots, Route: state.Route, Wave: state.Wave, WaveActive: state.WaveActive, WaveGold: state.WaveGold, TotalDamage: state.TotalDamage, TotalOverdamage: state.TotalOverdamage, WaveElapsedMS: state.World.WaveElapsedMS, Paused: state.Paused, AutoWave: state.AutoWave, Speed: state.Speed, Weather: state.Weather, Width: route.Width, Height: route.Height, Background: route.Background, Tiles: route.Placements, Paths: paths, Team: team, Box: state.Box, Items: state.Inventory, Towers: state.Towers, Enemies: state.Enemies, Projectiles: state.Projectiles, Events: state.Events, Records: state.Records, Progression: ProjectProgression(state), World: state.World, AttackModes: state.AttackModes})
+	return projectTrainers(state, projectViewLists(View{PhysicsClock: state.Tick, Tick: state.Tick, RemainderMS: state.RemainderMS, RulesVersion: state.RulesVersion, Epoch: state.Epoch, Sequence: state.Sequence, Clock: state.Clock, Random: state.Random, Phase: state.Phase, Gold: state.Gold, Health: state.Health, MaxHealth: state.MaxHealth, Stars: state.Stars, Ribbons: state.Ribbons, TeamSlots: state.TeamSlots, Route: state.Route, Wave: state.Wave, WaveActive: state.WaveActive, WaveGold: state.WaveGold, TotalDamage: state.TotalDamage, TotalOverdamage: state.TotalOverdamage, WaveElapsedMS: state.World.WaveElapsedMS, Paused: state.Paused, AutoWave: state.AutoWave, Speed: state.Speed, Weather: state.Weather, Width: route.Width, Height: route.Height, Background: route.Background, Tiles: route.Placements, Paths: paths, Team: team, Box: state.Box, Items: state.Inventory, Towers: state.Towers, Enemies: state.Enemies, Projectiles: state.Projectiles, Events: state.Events, Records: state.Records, Progression: ProjectProgression(trainerLens(state, 0)), World: state.World, AttackModes: state.AttackModes}))
 }
 
 func projectCombatStats(state *State) ([]Pokemon, error) {

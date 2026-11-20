@@ -206,6 +206,7 @@ type Stats struct {
 
 type Pokemon struct {
 	ID                   int              `json:"id"`
+	Owner                int              `json:"owner"`
 	Dex                  DexTowerStats    `json:"dex,omitzero"`
 	Species              string           `json:"species"`
 	UpgradeCost          int64            `json:"upgradeCost"`
@@ -234,6 +235,7 @@ type Pokemon struct {
 
 type OwnedItem struct {
 	ID         string `json:"id"`
+	Owner      int    `json:"owner"`
 	EquippedBy int    `json:"equippedBy"`
 	Favorite   bool   `json:"favorite"`
 }
@@ -381,6 +383,7 @@ type Action struct {
 }
 
 type State struct {
+	Trainers         []TrainerState   `json:"trainers,omitempty"`
 	Schema           int              `json:"schema"`
 	RulesVersion     string           `json:"rulesVersion"`
 	Options          Options          `json:"options"`
@@ -435,6 +438,9 @@ type State struct {
 }
 
 type View struct {
+	Balances        []int64         `json:"balances"`
+	Trainers        []TrainerView   `json:"trainers,omitempty"`
+	BattleTeam      []Pokemon       `json:"battleTeam,omitempty"`
 	PhysicsClock    int64           `json:"physicsClock"`
 	Tick            int64           `json:"tick"`
 	RemainderMS     int64           `json:"remainderMS"`

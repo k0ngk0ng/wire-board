@@ -13,7 +13,7 @@ import (
 
 func waScenario(t *testing.T) *engine.State {
 	t.Helper()
-	state, err := engine.New(engine.Options{Starter: "charmander", Speed: 1}, 4, 99127, 1730000000000)
+	state, err := referenceNew(engine.Options{Starter: "charmander", Speed: 1}, 4, 99127, 1730000000000)
 	if err != nil {
 		t.Fatal(err)
 	}

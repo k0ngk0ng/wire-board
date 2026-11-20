@@ -1,6 +1,6 @@
 # 宝可梦：巡径守卫
 
-参照 PokéPath TD v1.7.3 独立重写的合作塔防，支持 1～4 人守同一张地图，共享队伍、金币与波次。规则由本项目 Go 实现，界面使用原生 React／Canvas；不嵌入原网页，也不运行上游游戏程序。
+参照 PokéPath TD v1.7.3 独立重写的合作塔防，支持 1～4 人守同一张地图，共享生命、波次与路线进度。每名玩家各有 50 金币和三只御三家伙伴，独立管理队伍、仓库、商店、背包和个人设置。规则由本项目 Go 实现，界面使用原生 React／Canvas；不嵌入原网页，也不运行上游游戏程序。
 
 ## 目录
 
@@ -26,7 +26,7 @@
 node --test games/pokepath/tests/native-architecture.test.mjs games/pokepath/tests/lint.test.mjs
 node games/pokepath/build/lint.mjs
 node --experimental-strip-types --test --test-concurrency=1 games/pokepath/tests/*.test.mjs
-go test ./games/pokepath/engine ./games/pokepath/tests -count=1
+go test ./games/pokepath/engine ./games/pokepath/tests -count=1 -timeout=25m
 python3 -B scripts/check_game_boundaries.py
 ```
 

@@ -11,6 +11,8 @@
 - 开放 2／3／4 人混战和 4 人组队；原版角色槽分别为 `[0,3]`、`[0,1,3]`、`[0,1,2,3]`。平台席位负责鉴权与托管，不能直接作为原版槽号。四人组队为槽 0／1 对槽 2／3；未占用的原版槽不自动生成电脑。
 - 来源角色 8 是户愚吕兄，10 是户愚吕弟。11 个人物与八个偶数场地 ID `0/2/4/6/8/a/c/e` 分别维护玩法和素材证据；不得根据画像或旧错误名称交换来源编号。
 - 控制器方案 ID／契约布局为 `md-6`，SVG 的 `data-controller-layout="md"` 只是视觉属性。默认 W／S／A／D、F Mode、空格 Start、J A、K B、L C、U X、I Y、O Z；U／I 是普通 X／Y，不使用 FC 连发。按键必须完整保留 12 bit。
+- MD 手机触控按原生 Touch 标识分别保存每根手指，持续核对当前触点；不能只依赖 PointerEvent 的按下和松开。方向与多个攻击键可以同时按住；攻击区滑动换键及时释放旧键，抬起或取消一根手指不能释放其他手指。方向手指不能滑入攻击区取得动作，攻击手指也不能取得方向。
+- 触控验收使用 `node games/yuyuhakusho/tests/md-touch-browser.mjs`，经过实际 `MDController` 和游戏的 `MDInput`，覆盖 320 px 竖屏与手机横屏。结果、原生事件轨迹和截图位于 `.local/yuyuhakusho/mobile-controls/`。本次公共控制器与验收脚本的命名、目录和禁用写法检查使用 `node games/yuyuhakusho/build/lint.mjs`，实际范围在 `build/lint-rules.json` 登记。
 
 ## 选人、场地与联机
 

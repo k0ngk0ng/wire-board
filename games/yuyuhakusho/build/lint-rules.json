@@ -1,0 +1,29 @@
+{
+  "targets": [
+    "web/src/controllers/MDController.tsx",
+    "web/src/controllers/pointer-controller.ts",
+    "games/yuyuhakusho/tests/MDTouchFixture.tsx",
+    "games/yuyuhakusho/tests/md-touch-browser.mjs",
+    "games/yuyuhakusho/build/lint.mjs",
+    "games/yuyuhakusho/tests/lint.test.mjs",
+    "web/tests/controller-touch-lint.test.mjs"
+  ],
+  "languages": {
+    ".ts": {
+      "directory": "^web/src/controllers/",
+      "filename": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*\\.ts$",
+      "comments": false
+    },
+    ".tsx": {
+      "directory": "^(?:web/src/controllers/|games/yuyuhakusho/tests/)",
+      "filename": "^[A-Z][A-Za-z0-9]*\\.tsx$",
+      "comments": false
+    },
+    ".mjs": {
+      "directory": "^(?:games/yuyuhakusho/(?:tests|build)/|web/tests/)",
+      "filename": "^[a-z][a-z0-9]*(?:[-.][a-z0-9]+)*\\.mjs$",
+      "comments": false
+    }
+  },
+  "identifiers": "^(?:_?[A-Za-z][A-Za-z0-9]*|_)$"
+}

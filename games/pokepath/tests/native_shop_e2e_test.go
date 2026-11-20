@@ -21,7 +21,8 @@ func TestNativePlatformShopRejectsTheOldEggQuoteAndAttributesReceipt(t *testing.
 		t.Fatal(err)
 	}
 	world.Gold = 1500000
-	world.Progression.EggPrice = 50000
+	world.Trainers[1].Gold = 1500000
+	world.Trainers[1].Progression.EggPrice = 50000
 	envelope["snapshot"], err = engine.Marshal(world)
 	if err != nil {
 		t.Fatal(err)
@@ -50,22 +51,22 @@ func TestNativePlatformShopRejectsTheOldEggQuoteAndAttributesReceipt(t *testing.
 		t.Fatal(err)
 	}
 	match.Data = bought
-	view := nativeObserve(t, module, match, 2)
+	view := nativeObserve(t, module, match, 1)
 	state, err := engine.Unmarshal(view.Snapshot)
 	if err != nil {
 		t.Fatal(err)
 	}
 	last := state.Events[len(state.Events)-1]
-	if view.Gold != 1450000 || len(state.Progression.EggPool) != count-1 || last.Type != "shopEgg" || last.Source != 2 || last.Target != beforeID || last.Amount != 50000 || last.Key == "" || !slices.ContainsFunc(state.Team, func(p engine.Pokemon) bool { return p.ID == last.Target && p.Species == last.Key }) {
+	if view.Gold != 1450000 || len(state.Trainers[1].Progression.EggPool) != count-1 || last.Type != "shopEgg" || last.Source != 2 || last.Target != beforeID || last.Amount != 50000 || last.Key == "" || !slices.ContainsFunc(state.Team, func(p engine.Pokemon) bool { return p.ID == last.Target && p.Species == last.Key }) {
 		t.Fatalf("wrong authoritative cap-price state or seat-specific egg receipt: %+v", last)
 	}
-	if _, err := apply(count, 3, "late"); err == nil {
+	if _, err := apply(count, 1, "late"); err == nil {
 		t.Fatal("stale egg quote succeeded when price was already capped")
 	}
 	if replay, err := apply(count, 1, "seat-one"); err != nil || !bytes.Equal(replay, bought) {
 		t.Fatal("retrying the same confirmed egg changed the shared state", err)
 	}
-	if _, err := apply(count-1, 3, "fresh"); err != nil {
+	if _, err := apply(count-1, 1, "fresh"); err != nil {
 		t.Fatal("freshly rendered quote did not allow the next purchase", err)
 	}
 }

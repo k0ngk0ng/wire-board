@@ -1,0 +1,28 @@
+{
+  "targets": [
+    "games/bubbleparty/web/style.css",
+    "games/bubbleparty/tests/mobile-controls-browser.mjs",
+    "games/bubbleparty/build/lint.mjs",
+    "scripts/bubbleparty/check-mobile-oct23.py",
+    "games/bubbleparty/build/lint-python.py",
+    "games/bubbleparty/tests/lint.test.mjs"
+  ],
+  "languages": {
+    ".css": {
+      "directory": "^games/bubbleparty/web/",
+      "filename": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*\\.css$",
+      "comments": false
+    },
+    ".mjs": {
+      "directory": "^games/bubbleparty/(?:tests|build)/",
+      "filename": "^[a-z][a-z0-9]*(?:[-.][a-z0-9]+)*\\.mjs$",
+      "comments": false
+    },
+    ".py": {
+      "directory": "^(?:scripts/bubbleparty/|games/bubbleparty/build/)",
+      "filename": "^[a-z][a-z0-9]*(?:[-_][a-z0-9]+)*\\.py$",
+      "comments": false
+    }
+  },
+  "identifiers": "^(?:_?[A-Za-z][A-Za-z0-9]*|_)$"
+}

@@ -45,7 +45,6 @@ const names: Record<string, string> = {
   z: "Z",
 };
 
-/** MD six-button faceplate; shared by settings and games. */
 export function MDController({
   profile,
   bindingLabels,
@@ -56,7 +55,7 @@ export function MDController({
   onRemap,
   sink,
 }: MDControllerProps) {
-  const { active, pointers, press, end, lost, direction, down } =
+  const { active, pointers, press, end, lost, direction, down, surface } =
     useControllerPointers({ profile, mode, disabled, sink });
   const control = (button: string, dpad = false) => (
     <button
@@ -96,6 +95,7 @@ export function MDController({
   );
   return (
     <div
+      ref={surface}
       className={`md-controller md-${mode}${disabled ? " is-disabled" : ""}`}
       data-controller-layout="md"
     >

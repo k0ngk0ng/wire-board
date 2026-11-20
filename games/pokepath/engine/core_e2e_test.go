@@ -35,15 +35,15 @@ func coreTile(t *testing.T, state *State) int {
 
 func TestCoreSharedCampaignE2E(t *testing.T) {
 	state := coreNew(t, 4)
-	if state.Gold != 50 || state.Health != 14 || len(state.Team) != 1 {
+	if state.Gold != 50 || state.Health != 14 || len(state.Team) != 12 {
 		t.Fatal("invalid initial shared world", state.Gold, state.Health, len(state.Team))
 	}
 	pokemonID := state.Team[0].ID
 	coreApply(t, state, 0, Action{Type: "deploy", PokemonID: pokemonID, TileID: coreTile(t, state)})
 	beforeGold := state.Gold
-	coreApply(t, state, 3, Action{Type: "upgrade", PokemonID: pokemonID})
+	coreApply(t, state, 0, Action{Type: "upgrade", PokemonID: pokemonID})
 	if state.Team[0].Level != 2 || state.Gold >= beforeGold || len(state.Towers) != 1 {
-		t.Fatal("the second participant did not use the shared world")
+		t.Fatal("the owner did not upgrade its own partner")
 	}
 	coreApply(t, state, 2, Action{Type: "wave"})
 	if !state.WaveActive || len(state.Enemies) == 0 {
