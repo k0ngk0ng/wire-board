@@ -15,6 +15,217 @@ ROOT = Path(__file__).resolve().parents[2]
 POKER = ('doudizhu', 'guandan', 'shengji')
 LEGACY = ('splendor', 'rail', 'catan', 'carcassonne', 'sanguosha')
 
+CATAN_EXTENDED_TESTS = (
+    ('./games/catan/server', 'TestCatanAttackCityNaturalEngine'),
+    ('./games/catan/server', 'TestCatanAttackDesertExtendedNatural'),
+    ('./games/catan/server', 'TestCatanAttackPiratesNatural'),
+    ('./games/catan/server', 'TestCatanAttackShoresExtendedNatural'),
+    ('./games/catan/server', 'TestCatanAttackTransportKnightsNaturalEngine'),
+    ('./games/catan/server', 'TestCatanAttackTransportNaturalEngine'),
+    ('./games/catan/server', 'TestCatanAttackTribeNatural'),
+    ('./games/catan/server', 'TestCatanAttackWondersNatural'),
+    ('./games/catan/server', 'TestCatanCaravansAttackNaturalEngine'),
+    ('./games/catan/server', 'TestCatanCaravansDesertSeaNatural'),
+    ('./games/catan/server', 'TestCatanCaravansHelpersNatural'),
+    ('./games/catan/server', 'TestCatanCaravansIslandsNatural'),
+    ('./games/catan/server', 'TestCatanCaravansKnightsNaturalGames'),
+    ('./games/catan/server', 'TestCatanCaravansSeaKnightsNatural'),
+    ('./games/catan/server', 'TestCatanCaravansShoresExtendedNatural'),
+    ('./games/catan/server', 'TestCatanCaravansShoresFourNatural'),
+    ('./games/catan/server', 'TestCatanCaravansTransportNaturalEngine'),
+    ('./games/catan/server', 'TestCatanCaravansTribeNatural'),
+    ('./games/catan/server', 'TestCatanCaravansVariantsNatural'),
+    ('./games/catan/server', 'TestCatanCaravansWorldNatural'),
+    ('./games/catan/server', 'TestCatanCitiesKnightsBotsComplete'),
+    ('./games/catan/server', 'TestCatanCitiesKnightsClothBotsComplete'),
+    ('./games/catan/server', 'TestCatanCitiesKnightsSeafarersBotsComplete'),
+    ('./games/catan/server', 'TestCatanCitiesKnightsWondersBotsComplete'),
+    ('./games/catan/server', 'TestCatanExplorerCityBotNaturalTurnRotations'),
+    ('./games/catan/server', 'TestCatanExplorerFishingNaturalMatches'),
+    ('./games/catan/server', 'TestCatanExplorerFishingStartsAndNaturalTurns'),
+    ('./games/catan/server', 'TestCatanExplorerFullNaturalBotMatches'),
+    ('./games/catan/server', 'TestCatanExplorerHelpersNaturalMatches'),
+    ('./games/catan/server', 'TestCatanExplorerIntroNaturalMatches'),
+    ('./games/catan/server', 'TestCatanExplorerKnightsSetupCompletedLegalOpenings'),
+    ('./games/catan/server', 'TestCatanExplorerLairsNaturalBotMatch'),
+    ('./games/catan/server', 'TestCatanExplorerPairedNaturalMatches'),
+    ('./games/catan/server', 'TestCatanExplorerSpiceNaturalBotMatches'),
+    ('./games/catan/server', 'TestCatanFishingAttackKnightsNaturalEngine'),
+    ('./games/catan/server', 'TestCatanFishingAttackNaturalEngine'),
+    ('./games/catan/server', 'TestCatanFishingAttackSeaNatural'),
+    ('./games/catan/server', 'TestCatanFishingCaravansNaturalEngine'),
+    ('./games/catan/server', 'TestCatanFishingCaravansSeaNatural'),
+    ('./games/catan/server', 'TestCatanFishingCitiesKnightsBotsFinishAndConserve'),
+    ('./games/catan/server', 'TestCatanFishingClothBotsFinishAndConserve'),
+    ('./games/catan/server', 'TestCatanFishingExtendedSeaNaturalGames'),
+    ('./games/catan/server', 'TestCatanFishingFogBotsFinishAndConserve'),
+    ('./games/catan/server', 'TestCatanFishingHelpersKnightsNaturalGames'),
+    ('./games/catan/server', 'TestCatanFishingHelpersNaturalGames'),
+    ('./games/catan/server', 'TestCatanFishingNewWorldBotsComplete'),
+    ('./games/catan/server', 'TestCatanFishingRiversNaturalEngine'),
+    ('./games/catan/server', 'TestCatanFishingRiversSeaNatural'),
+    ('./games/catan/server', 'TestCatanFishingSeaKnightsNaturalGames'),
+    ('./games/catan/server', 'TestCatanFishingSeafarersBotsFinishAndConserve'),
+    ('./games/catan/server', 'TestCatanFishingShoresNaturalGames'),
+    ('./games/catan/server', 'TestCatanFishingTransportNaturalEngine'),
+    ('./games/catan/server', 'TestCatanFishingWondersBotsComplete'),
+    ('./games/catan/server', 'TestCatanFriendlyRobberBotsComplete'),
+    ('./games/catan/server', 'TestCatanFriendlySeafarersBotsComplete'),
+    ('./games/catan/server', 'TestCatanFriendlySeafarersHarborsBotsComplete'),
+    ('./games/catan/server', 'TestCatanHarborsBotsComplete'),
+    ('./games/catan/server', 'TestCatanHelpersKnightsNaturalGames'),
+    ('./games/catan/server', 'TestCatanNewWorldBotsComplete'),
+    ('./games/catan/server', 'TestCatanNewWorldRearrangedCustomMapsComplete'),
+    ('./games/catan/server', 'TestCatanPirateIslandsBotsComplete'),
+    ('./games/catan/server', 'TestCatanRiversAttackKnightsNaturalEngine'),
+    ('./games/catan/server', 'TestCatanRiversAttackNaturalEngine'),
+    ('./games/catan/server', 'TestCatanRiversCaravansNaturalEngine'),
+    ('./games/catan/server', 'TestCatanRiversDesertExtended'),
+    ('./games/catan/server', 'TestCatanRiversDesertNaturalEngine'),
+    ('./games/catan/server', 'TestCatanRiversFogExtendedNaturalEngine'),
+    ('./games/catan/server', 'TestCatanRiversFogNaturalEngine'),
+    ('./games/catan/server', 'TestCatanRiversKnightsNaturalGames'),
+    ('./games/catan/server', 'TestCatanRiversSeaKnightsNatural'),
+    ('./games/catan/server', 'TestCatanRiversSeaNaturalEngine'),
+    ('./games/catan/server', 'TestCatanRiversShoresExtendedNaturalEngine'),
+    ('./games/catan/server', 'TestCatanRiversTransportNaturalEngine'),
+    ('./games/catan/server', 'TestCatanRiversTribeExtendedNatural'),
+    ('./games/catan/server', 'TestCatanRiversTribeNaturalEngine'),
+    ('./games/catan/server', 'TestCatanRiversWorldNaturalEngine'),
+    ('./games/catan/server', 'TestCatanRiversWorldPreparedNaturalEngine'),
+    ('./games/catan/server', 'TestCatanRiversWorldSixNaturalEngine'),
+    ('./games/catan/server', 'TestCatanSeafarersEventDeckNaturalMatches'),
+    ('./games/catan/server', 'TestCatanSeafarersFixedMapsBotsCompleteWithGoldAndHelpers'),
+    ('./games/catan/server', 'TestCatanSeafarersHelperEventDeckNaturalMatches'),
+    ('./games/catan/server', 'TestCatanTradersHelpersNatural'),
+    ('./games/catan/server', 'TestCatanTradersVariantsNatural'),
+    ('./games/catan/server', 'TestCatanTransportKnightsNaturalGames'),
+    ('./games/catan/server', 'TestCatanTransportNaturalMatches'),
+    ('./games/catan/server', 'TestCatanTransportSeaModulesNatural'),
+    ('./games/catan/server', 'TestCatanTransportSeaNatural'),
+    ('./games/catan/server', 'TestCatanTwoAttackDesertNatural'),
+    ('./games/catan/server', 'TestCatanTwoAttackSeaNatural'),
+    ('./games/catan/server', 'TestCatanTwoCaravansSeaNatural'),
+    ('./games/catan/server', 'TestCatanTwoCaravansShoresLongGames'),
+    ('./games/catan/server', 'TestCatanTwoFishingSeafarersNaturalGames'),
+    ('./games/catan/server', 'TestCatanTwoHelpersKnightsNaturalGames'),
+    ('./internal/server', 'TestCatanAttackDesertHTTP'),
+    ('./internal/server', 'TestCatanAttackKnightsNaturalHTTP'),
+    ('./internal/server', 'TestCatanAttackPiratesHTTP'),
+    ('./internal/server', 'TestCatanAttackPublicFullHTTPGames'),
+    ('./internal/server', 'TestCatanAttackShoresExtendedHTTP'),
+    ('./internal/server', 'TestCatanAttackShoresHTTP'),
+    ('./internal/server', 'TestCatanAttackShoresThreeHTTP'),
+    ('./internal/server', 'TestCatanAttackShoresTwoHTTP'),
+    ('./internal/server', 'TestCatanAttackTransportNaturalHTTP'),
+    ('./internal/server', 'TestCatanAttackTribeHTTP'),
+    ('./internal/server', 'TestCatanAttackWondersHTTP'),
+    ('./internal/server', 'TestCatanBaseFixedFullHTTPGames'),
+    ('./internal/server', 'TestCatanCaravansAttackNaturalHTTP'),
+    ('./internal/server', 'TestCatanCaravansCompleteHTTPGames'),
+    ('./internal/server', 'TestCatanCaravansHelpersHTTP'),
+    ('./internal/server', 'TestCatanCaravansIslandsHTTP'),
+    ('./internal/server', 'TestCatanCaravansIslandsOrdinaryHTTP'),
+    ('./internal/server', 'TestCatanCaravansKnightsNaturalHTTP'),
+    ('./internal/server', 'TestCatanCaravansSeaEventsHTTP'),
+    ('./internal/server', 'TestCatanCaravansSeaModulesNaturalHTTP'),
+    ('./internal/server', 'TestCatanCaravansSeaPublicHTTP'),
+    ('./internal/server', 'TestCatanCaravansShoresHTTP'),
+    ('./internal/server', 'TestCatanCaravansTransportNaturalHTTP'),
+    ('./internal/server', 'TestCatanCaravansTribeHTTP'),
+    ('./internal/server', 'TestCatanCaravansVariantsHTTP'),
+    ('./internal/server', 'TestCatanCaravansWorldHTTP'),
+    ('./internal/server', 'TestCatanCitiesKnightsConfiguredFullHTTPGames'),
+    ('./internal/server', 'TestCatanCitiesKnightsSeafarersConfiguredFullHTTPGames'),
+    ('./internal/server', 'TestCatanEventFishingKnightsNaturalHTTP'),
+    ('./internal/server', 'TestCatanEventFishingNaturalHTTP'),
+    ('./internal/server', 'TestCatanEventFishingTribeNaturalHTTP'),
+    ('./internal/server', 'TestCatanEventKnightsEndgameMapsFullHTTPGames'),
+    ('./internal/server', 'TestCatanEventKnightsPublicFullHTTPGames'),
+    ('./internal/server', 'TestCatanEventVariantsKnightsNaturalHTTP'),
+    ('./internal/server', 'TestCatanEventVariantsPublicNaturalHTTP'),
+    ('./internal/server', 'TestCatanExplorerCityNaturalHTTPMatches'),
+    ('./internal/server', 'TestCatanExplorerEventsNaturalHTTPGames'),
+    ('./internal/server', 'TestCatanExplorerFishNaturalManualHTTPMatch'),
+    ('./internal/server', 'TestCatanExplorerFishingNaturalHTTPGames'),
+    ('./internal/server', 'TestCatanExplorerFullNaturalHTTPAutoplayMatch'),
+    ('./internal/server', 'TestCatanExplorerFullNaturalManualHTTPMatch'),
+    ('./internal/server', 'TestCatanExplorerHelpersNaturalHTTPGames'),
+    ('./internal/server', 'TestCatanExplorerIntroNaturalHTTPGames'),
+    ('./internal/server', 'TestCatanExplorerLairsNaturalHTTPAutoplayMatch'),
+    ('./internal/server', 'TestCatanExplorerMissionsPublicCompleteHTTPGames'),
+    ('./internal/server', 'TestCatanExplorerNaturalHTTPMatches'),
+    ('./internal/server', 'TestCatanExplorerPairedHTTPNaturalMatches'),
+    ('./internal/server', 'TestCatanExplorerSpiceNaturalHTTPAutoplayMatch'),
+    ('./internal/server', 'TestCatanExplorerSpiceNaturalManualHTTPMatch'),
+    ('./internal/server', 'TestCatanExplorerSpicePublicCompleteHTTPGames'),
+    ('./internal/server', 'TestCatanExplorerTwoKnightsNaturalHTTP'),
+    ('./internal/server', 'TestCatanFishingAttackNaturalHTTP'),
+    ('./internal/server', 'TestCatanFishingAttackSeaNaturalHTTP'),
+    ('./internal/server', 'TestCatanFishingCaravansNaturalHTTP'),
+    ('./internal/server', 'TestCatanFishingCitiesKnightsPublicFullHTTPGames'),
+    ('./internal/server', 'TestCatanFishingFogExtendedFullHTTPGames'),
+    ('./internal/server', 'TestCatanFishingFourMapsExtendedFullHTTPGames'),
+    ('./internal/server', 'TestCatanFishingHelpersKnightsNaturalHTTPGames'),
+    ('./internal/server', 'TestCatanFishingHelpersNaturalHTTP'),
+    ('./internal/server', 'TestCatanFishingKnightsVariantsPublicFullHTTPGames'),
+    ('./internal/server', 'TestCatanFishingNewWorldExtendedFullHTTPGames'),
+    ('./internal/server', 'TestCatanFishingPublicFullHTTPGames'),
+    ('./internal/server', 'TestCatanFishingRiversNaturalHTTP'),
+    ('./internal/server', 'TestCatanFishingRiversSeaNaturalHTTP'),
+    ('./internal/server', 'TestCatanFishingSeaKnightsNaturalHTTP'),
+    ('./internal/server', 'TestCatanFishingSeaPublicFullHTTPGames'),
+    ('./internal/server', 'TestCatanFishingShoresEventsFullHTTPGames'),
+    ('./internal/server', 'TestCatanFishingShoresFullHTTPGames'),
+    ('./internal/server', 'TestCatanFishingTransportNaturalHTTP'),
+    ('./internal/server', 'TestCatanFishingVariantsPublicFullHTTPGames'),
+    ('./internal/server', 'TestCatanFishingWondersExtendedFullHTTPGames'),
+    ('./internal/server', 'TestCatanFriendlyKnightsPublicFullHTTPGames'),
+    ('./internal/server', 'TestCatanFriendlyPublicFullHTTPGames'),
+    ('./internal/server', 'TestCatanFriendlyRobberBaseFullHTTPGames'),
+    ('./internal/server', 'TestCatanFriendlySeaConfiguredFullHTTPGames'),
+    ('./internal/server', 'TestCatanHarborsBaseFullHTTPGames'),
+    ('./internal/server', 'TestCatanHarborsCitiesKnightsFullHTTPGames'),
+    ('./internal/server', 'TestCatanHarborsSeaKnightsPublicFullHTTPGames'),
+    ('./internal/server', 'TestCatanHarborsSeaPublicFullHTTPGames'),
+    ('./internal/server', 'TestCatanHelpersKnightsNaturalHTTPGames'),
+    ('./internal/server', 'TestCatanHelpersVariantsPublicFullHTTPGames'),
+    ('./internal/server', 'TestCatanNewWorldFullHTTPGames'),
+    ('./internal/server', 'TestCatanPirateEventsFullHTTPGames'),
+    ('./internal/server', 'TestCatanPirateFullHTTPGames'),
+    ('./internal/server', 'TestCatanPirateKnightsNaturalHTTP'),
+    ('./internal/server', 'TestCatanPublicEventsNaturalHTTPMatches'),
+    ('./internal/server', 'TestCatanRiversAttackNaturalHTTP'),
+    ('./internal/server', 'TestCatanRiversCaravansNaturalHTTP'),
+    ('./internal/server', 'TestCatanRiversCompleteHTTPGames'),
+    ('./internal/server', 'TestCatanRiversKnightsNaturalHTTP'),
+    ('./internal/server', 'TestCatanRiversSeaKnightsNaturalHTTP'),
+    ('./internal/server', 'TestCatanRiversSeaNaturalHTTP'),
+    ('./internal/server', 'TestCatanRiversTransportNaturalHTTP'),
+    ('./internal/server', 'TestCatanSeaNestingsE2E'),
+    ('./internal/server', 'TestCatanSeafarersPublicCompleteHTTPGames'),
+    ('./internal/server', 'TestCatanTransportEventsNaturalHTTP'),
+    ('./internal/server', 'TestCatanTransportKnightsNaturalHTTP'),
+    ('./internal/server', 'TestCatanTransportNaturalHTTPMatches'),
+    ('./internal/server', 'TestCatanTribeKnightsNaturalHTTP'),
+    ('./internal/server', 'TestCatanTwoAttackCompleteHTTPGames'),
+    ('./internal/server', 'TestCatanTwoCaravansCompleteHTTPGames'),
+    ('./internal/server', 'TestCatanTwoFishingCompleteHTTPGames'),
+    ('./internal/server', 'TestCatanTwoFishingEventsCompleteHTTPGames'),
+    ('./internal/server', 'TestCatanTwoFishingKnightsCompleteHTTPGames'),
+    ('./internal/server', 'TestCatanTwoFishingSeafarersCompleteHTTPGames'),
+    ('./internal/server', 'TestCatanTwoHelpersKnightsNaturalHTTP'),
+    ('./internal/server', 'TestCatanTwoHelpersNaturalHTTP'),
+    ('./internal/server', 'TestCatanTwoKnightsCompleteHTTPGames'),
+    ('./internal/server', 'TestCatanTwoKnightsEventsCompleteHTTPGames'),
+    ('./internal/server', 'TestCatanTwoRiversCompleteHTTPGames'),
+    ('./internal/server', 'TestCatanTwoSeaHelpersKnightsNaturalHTTP'),
+    ('./internal/server', 'TestCatanTwoSeafarersCompleteHTTPGames'),
+    ('./internal/server', 'TestCatanTwoSeafarersKnightsCompleteHTTPGames'),
+    ('./internal/server', 'TestCatanTwoVariantsCompleteHTTPGames'),
+    ('./internal/server', 'TestCatanWondersFullHTTPGames'),
+)
+
 MULTI = {
     'TestBotsFinishBothGames': ('splendor', 'rail'),
     'TestSoloGamesAIContinuationPersistenceAndRematch': ('splendor', 'rail'),
@@ -40,6 +251,7 @@ def ci_path(path):
     return path.startswith(('.github/workflows/', 'scripts/ci/')) or path in {
         'scripts/release-source.cjs', 'scripts/release-source.test.cjs',
         'scripts/cdn_local_ready.py', 'scripts/test_cdn_local_ready.py',
+        'games/racing/build/asset-reuse-lint.json',
     }
 
 def game_names(root):
@@ -62,6 +274,7 @@ def plan(paths, games, manual='', legacy_sources=None, contra_campaigns=False, v
     for path in paths:
         active_path = path
         if path.endswith('.md') or path.startswith('docs/'): continue
+        if ci_path(path): continue
         parts = path.split('/')
         if path.startswith('internal/') and path.endswith('_test.go'):
             source = (legacy_sources or {}).get(path)
@@ -146,7 +359,7 @@ def owner(path, name, games):
     named = {g for g in games if g in name.lower() or path.name.startswith(g + '_')}
     return named
 
-def go_commands(root, game, index=0, count=1, race=False):
+def go_commands(root, game, index=0, count=1, race=False, extended=False):
     if count < 1 or not 0 <= index < count: raise ValueError('Invalid shard')
     games = game_names(root)
     if game not in (*games, 'shared'): raise ValueError(f'Unknown game: {game}')
@@ -164,6 +377,8 @@ def go_commands(root, game, index=0, count=1, race=False):
                 continue
             owners = owner(relative, name, games)
             if (game == 'shared' and owners) or (game != 'shared' and game not in owners): continue
+            package = './' + relative.parent.as_posix() if relative.parent.as_posix() != '.' else '.'
+            if game == 'catan' and not extended and (package, name) in CATAN_EXTENDED_TESTS: continue
             if game == 'yuyuhakusho' and not race and name in trajectory_prefixes:
                 trajectories.append(('./' + relative.parent.as_posix(), name, trajectory_prefixes[name]))
                 continue
@@ -189,7 +404,7 @@ def go_commands(root, game, index=0, count=1, race=False):
                 grouped.setdefault(package, []).append(name)
 
 
-    timeout = '150m' if game in ('catan', 'yuyuhakusho') and count == 1 else '90m' if game == 'starfort' and count == 1 else '45m'
+    timeout = '20m' if game == 'catan' and not extended else '150m' if game in ('catan', 'yuyuhakusho') and count == 1 else '90m' if game == 'starfort' and count == 1 else '45m'
     base = ['go', 'test', '-json', '-count=1', '-timeout=' + timeout]
     if race: base.append('-race')
     commands = [base + ['-run', '^(?:' + '|'.join(re.escape(n) for n in sorted(set(names))) + ')$', package]
@@ -218,6 +433,7 @@ def quick_commands(root, components):
             commands += [
                 ['python3', '-B', 'scripts/ci/test_scope.py'],
                 ['python3', '-B', 'scripts/ci/partition_e2e_test.py'],
+                ['python3', '-B', 'scripts/ci/catan_suite_e2e_test.py'],
                 ['python3', '-B', 'scripts/ci/check-plan.py'],
                 ['python3', '-B', 'scripts/ci/check-lanes.py'],
                 ['python3', '-B', 'scripts/ci/release-image-e2e.py'],
@@ -238,11 +454,11 @@ def quick_commands(root, components):
                  for package, names in sorted(grouped.items())]
     return commands
 
-def verification_env(game, backend, base=None):
+def verification_env(game, backend, base=None, extended=False):
     env = {k: v for k, v in (os.environ if base is None else base).items()
-           if not k.startswith('CONTRA_BOT_')}
+           if not k.startswith('CONTRA_BOT_') and k != 'WIRE_BOARD_NESTING_ACCEPTANCE'}
     if backend and game == 'snooker': env['WIRE_BOARD_SNOOKER_HTTP_FULL'] = '1'
-    if backend and game == 'catan': env['WIRE_BOARD_NESTING_ACCEPTANCE'] = '1'
+    if backend and game == 'catan' and extended: env['WIRE_BOARD_NESTING_ACCEPTANCE'] = '1'
     if backend and game == 'basketball':
         env.update(BASKETBALL_PREPARATION_MATRIX='1', BASKETBALL_SELECTION_ADMISSION='1', BASKETBALL_FULL_HTTP='1')
     return env
@@ -317,11 +533,13 @@ def run_catan_partitions(args):
     output = ROOT/'.local/ci/catan'
     output.mkdir(parents=True, exist_ok=True)
     destination = output/'partitions.json'
-    report = {'passed': False, 'partitions': 20, 'workers': 2, 'completed': [], 'failed': []}
+    extended = getattr(args, 'catan_extended', False)
+    count = 20 if extended else 4
+    report = {'passed': False, 'suite': 'extended' if extended else 'standard', 'partitions': count, 'workers': 2, 'completed': [], 'failed': []}
     destination.write_text(json.dumps(report, indent=2)+'\n')
     try:
         with ThreadPoolExecutor(max_workers=2) as pool:
-            futures = {pool.submit(run, argparse.Namespace(**{**vars(args), 'shard': index, 'count': 20})): index for index in range(20)}
+            futures = {pool.submit(run, argparse.Namespace(**{**vars(args), 'shard': index, 'count': count})): index for index in range(count)}
             try:
                 for future in as_completed(futures):
                     index = futures[future]
@@ -339,10 +557,19 @@ def run_catan_partitions(args):
         report['passed'] = True
     finally:
         destination.write_text(json.dumps(report, indent=2)+'\n')
-    print('PASS catan: all 20 backend partitions and selected frontend checks', flush=True)
+    print(f'PASS catan: {report["suite"]}; all {count} backend partitions and selected frontend checks', flush=True)
 
+
+def catan_deferred(root):
+    available, result = {}, []
+    for package, name in CATAN_EXTENDED_TESTS:
+        if package not in available:
+            available[package] = {test for path in (root / package.removeprefix('./')).glob('*_test.go') for test in re.findall(r'^func ((?:Test|Example|Fuzz)\w*)\(', path.read_text(), re.M)}
+        if name in available[package]: result.append({'package': package, 'name': name})
+    return result
 
 def run(args):
+    extended = getattr(args, 'catan_extended', False)
     if args.game == 'catan' and args.backend and args.count == 1:
         return run_catan_partitions(args)
     output = ROOT/'.local/ci'/args.game
@@ -364,11 +591,13 @@ def run(args):
             assets = ROOT/'scripts'/args.game/'verify-assets.py'
             if assets.exists(): commands.append(['python3', '-B', str(assets), '--dist'])
         if args.backend:
-            commands += go_commands(ROOT, args.game, args.shard, args.count)
-            commands += go_commands(ROOT, args.game, args.shard, args.count, race=True)
-    env = verification_env(args.game, args.backend)
+            commands += go_commands(ROOT, args.game, args.shard, args.count, extended=extended)
+            commands += go_commands(ROOT, args.game, args.shard, args.count, race=True, extended=extended)
+    env = verification_env(args.game, args.backend, extended=extended)
     commands += build_commands(ROOT, args.game, args.shard)
     manifest = {'game': args.game, 'backend': args.backend, 'shard': args.shard, 'commands': commands, 'passed': False}
+    if args.game == 'catan':
+        manifest.update(suite='extended' if extended else 'standard', deferredTests=[] if extended or not args.backend else catan_deferred(ROOT))
     destination = output/f'result-{args.shard}.json'
     destination.write_text(json.dumps(manifest, indent=2) + '\n')
     for i, command in enumerate(commands):
@@ -439,6 +668,7 @@ def main():
     r.add_argument('--backend', action='store_true')
     r.add_argument('--shard', type=int, default=0)
     r.add_argument('--count', type=int, default=1)
+    r.add_argument('--catan-extended', action='store_true', help='Run all Catan combination/full-game batches explicitly')
     sub.add_parser('pvz-tools', help='Bind the scoped PvZ media verifier executable')
     args = parser.parse_args()
     if args.command == 'run': return run(args)

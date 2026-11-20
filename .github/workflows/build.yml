@@ -343,9 +343,11 @@ jobs:
         env:
           GAME_ID: ${{ matrix.game }}
           BACKEND_CHANGED: ${{ matrix.backend }}
+          FULL_VALIDATION: ${{ inputs.validation == 'full' }}
         run: |
           args=(--game "$GAME_ID")
           if [ "$BACKEND_CHANGED" = true ]; then args+=(--backend); fi
+          if [ "$GAME_ID" = catan ] && [ "$FULL_VALIDATION" = true ]; then args+=(--catan-extended); fi
           if [ "$GAME_ID" = pvz ]; then
             export PATH="$PWD/.local/pvz/ci-assets/bin:$PWD/.local/pvz/ci-assets/venv/bin:$PATH"
             export TMPDIR="$PWD/.local/tmp"

@@ -30,10 +30,10 @@ def selections(commands):
 class PartitionE2E(unittest.TestCase):
     def test_all_real_catan_selections_partition_exactly_once(self):
         for race in [False,True]:
-            original=selections(scope.go_commands(ROOT,'catan',race=race))
+            original=selections(scope.go_commands(ROOT,'catan',race=race,extended=True))
             divided=Counter()
             for index in range(20):
-                commands=scope.go_commands(ROOT,'catan',index,20,race=race)
+                commands=scope.go_commands(ROOT,'catan',index,20,race=race,extended=True)
                 self.assertTrue(all('-timeout=45m' in command for command in commands))
                 divided.update(selections(commands))
             self.assertEqual(divided,original)
@@ -75,7 +75,7 @@ if os.environ.get('PARTITION_FAIL') and os.environ['PARTITION_FAIL'] in ' '.join
                 target.write_text(driver)
                 target.chmod(0o755)
             env={**os.environ,'PATH':str(binary)+os.pathsep+os.environ['PATH'],'PARTITION_CALLS':str(logs),'PARTITION_FAIL':names[0] if fail else ''}
-            args=SimpleNamespace(game='catan',backend=True,shard=0,count=1)
+            args=SimpleNamespace(game='catan',backend=True,shard=0,count=1,catan_extended=True)
             with patch.object(scope,'ROOT',root),patch.dict(os.environ,env,clear=True):
                 if fail:
                     with self.assertRaises(subprocess.CalledProcessError):scope.run(args)
