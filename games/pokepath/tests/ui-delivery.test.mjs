@@ -30,7 +30,8 @@ test("independent language facts are published through the verified resource ind
   assert.equal(manifest.factFiles.some(file => file.path.includes("ui-text")), false, "UI translations must not change independent game-rule facts");
 });
 
-test("the first saved Pokepath game advances the server rollback generation", async () => {
+test("independent multiplayer saves advance the server rollback generation", async () => {
   const dockerfile = await readFile(new URL("../../../Dockerfile", import.meta.url), "utf8");
-  assert.match(dockerfile, /io\.github\.k0ngk0ng\.wire-board\.storage-generation="3"/);
+  const generation = dockerfile.match(/io\.github\.k0ngk0ng\.wire-board\.storage-generation="([0-9]+)"/);
+  assert.ok(generation && Number(generation[1]) >= 4);
 });
