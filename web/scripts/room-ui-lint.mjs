@@ -13,12 +13,17 @@ const files = [
   "web/src/ui/results.tsx",
   "web/src/ui/leave-room-control.tsx",
   "web/src/ui/room-tool-button.tsx",
+  "web/src/ui/saved-games.tsx",
+  "web/src/ui/game-focus.ts",
   "web/src/ui/room-actions.css",
   "web/scripts/room-ui-lint.mjs",
   "web/tests/room-ui-lint.test.mjs",
   "web/tests/room-flow-browser.test.mjs",
+  "web/tests/room-tools.test.mjs",
+  "web/tests/controller-focus-browser.test.mjs",
 ];
 const languages = {
+  ".ts": /^web\/src\/ui\//,
   ".tsx": /^web\/src\/ui\//,
   ".css": /^web\/src\/ui\//,
   ".mjs": /^web\/(scripts|tests)\//,
@@ -30,7 +35,7 @@ export function inspectRoomUiFile(file, source) {
   if (!languages[extension]?.test(file) || file.split("/").includes(".."))
     issues.push("directory");
   if (
-    !/^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*\.(tsx|css|mjs)$/.test(
+    !/^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*\.(ts|tsx|css|mjs)$/.test(
       path.basename(file),
     )
   )
@@ -54,7 +59,11 @@ export function inspectRoomUiFile(file, source) {
     source,
     ts.ScriptTarget.Latest,
     true,
-    extension === ".tsx" ? ts.ScriptKind.TSX : ts.ScriptKind.JS,
+    extension === ".tsx"
+      ? ts.ScriptKind.TSX
+      : extension === ".ts"
+        ? ts.ScriptKind.TS
+        : ts.ScriptKind.JS,
   );
   if (parsed.parseDiagnostics.length) issues.push("syntax");
   const visit = (node) => {
@@ -89,6 +98,95 @@ export function inspectRoomUiFile(file, source) {
   return [...new Set(issues)];
 }
 
+export function inspectRoomToolsContract(source) {
+  const issues = [];
+  const parsed = ts.createSourceFile(
+    "room.tsx",
+    source,
+    ts.ScriptTarget.Latest,
+    true,
+    ts.ScriptKind.TSX,
+  );
+  const inspect = (node) => {
+    if (ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) {
+      const name = node.tagName.getText(parsed);
+      if (name === "button") issues.push("icon-only-room-actions");
+      if (
+        name === "SaveGameControl" &&
+        !node.attributes.properties.some(
+          (attribute) =>
+            ts.isJsxAttribute(attribute) &&
+            attribute.name.getText(parsed) === "iconOnly" &&
+            (!attribute.initializer ||
+              (ts.isJsxExpression(attribute.initializer) &&
+                attribute.initializer.expression?.kind ===
+                  ts.SyntaxKind.TrueKeyword)),
+        )
+      )
+        issues.push("icon-only-save-actions");
+    }
+    ts.forEachChild(node, inspect);
+  };
+  const visit = (node) => {
+    if (
+      ts.isJsxAttribute(node) &&
+      node.name.getText(parsed) === "toolbarActions" &&
+      node.initializer
+    )
+      inspect(node.initializer);
+    if (
+      ts.isJsxElement(node) &&
+      node.openingElement.attributes.properties.some(
+        (attribute) =>
+          ts.isJsxAttribute(attribute) &&
+          attribute.name.getText(parsed) === "className" &&
+          attribute.initializer &&
+          ts.isStringLiteral(attribute.initializer) &&
+          attribute.initializer.text === "room-tools",
+      )
+    )
+      inspect(node);
+    else ts.forEachChild(node, visit);
+  };
+  visit(parsed);
+  return [...new Set(issues)];
+}
+
+export function inspectGameFocusTargets(sources) {
+  const issues = [];
+  for (const file of [
+    "games/contra/web/runtime-board.tsx",
+    "games/basketball/web/Board.tsx",
+    "games/yuyuhakusho/web/Board.tsx",
+  ]) {
+    const parsed = ts.createSourceFile(
+      file,
+      sources[file] ?? "",
+      ts.ScriptTarget.Latest,
+      true,
+      ts.ScriptKind.TSX,
+    );
+    let marked = false;
+    const visit = (node) => {
+      if (ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) {
+        const names = node.attributes.properties
+          .filter(ts.isJsxAttribute)
+          .map((attribute) => attribute.name.getText(parsed));
+        if (
+          ["ref", "tabIndex", "data-game-focus"].every((name) =>
+            names.includes(name),
+          )
+        )
+          marked = true;
+      }
+      ts.forEachChild(node, visit);
+    };
+    visit(parsed);
+    if (!marked) issues.push("game-focus-target:" + file);
+  }
+  return issues;
+}
+
 export function lintRoomUi() {
   const results = files.map((file) => ({
     file,
@@ -97,12 +195,30 @@ export function lintRoomUi() {
       readFileSync(path.join(root, file), "utf8"),
     ),
   }));
+  const contractFiles = [
+    "web/src/main.tsx",
+    "games/contra/web/runtime-board.tsx",
+    "games/basketball/web/Board.tsx",
+    "games/yuyuhakusho/web/Board.tsx",
+  ];
+  const sources = Object.fromEntries(
+    contractFiles.map((file) => [
+      file,
+      readFileSync(path.join(root, file), "utf8"),
+    ]),
+  );
+  const contract = [
+    ...inspectRoomToolsContract(sources["web/src/main.tsx"]),
+    ...inspectGameFocusTargets(sources),
+  ];
   const result = {
-    passed: results.every((file) => !file.issues.length),
+    passed: results.every((file) => !file.issues.length) && !contract.length,
     scope:
-      "Registered shared settlement, leave confirmation, icon tools and related tests; excludes existing main.tsx and global styles",
+      "Registered shared settlement, save controls, focus recovery, icon tools and tests; main room-actions and FC/MD focus markers checked as contracts",
     languages: Object.keys(languages),
     files: results,
+    contractFiles,
+    contract,
   };
   const out = path.join(root, ".local/room-flow/verification");
   mkdirSync(out, { recursive: true });

@@ -904,20 +904,20 @@ function App() {
                         </RoomToolButton>
                       )}
                       <SaveGameControl
+                        iconOnly
                         room={room}
                         userID={state.user.id}
                         busy={busy}
                         command={roomCommand}
                       />
                       {room.game && (
-                        <button
-                          className="subtle"
+                        <RoomToolButton
+                          label="对局日志"
                           aria-haspopup="dialog"
                           onClick={() => setJournalRoom(room.id)}
                         >
                           <ScrollText size={16} />
-                          对局日志
-                        </button>
+                        </RoomToolButton>
                       )}
                       <RoomToolButton
                         label="玩法速查"
@@ -925,8 +925,8 @@ function App() {
                       >
                         <BookOpen size={16} />
                       </RoomToolButton>
-                      <button
-                        className="subtle"
+                      <RoomToolButton
+                        label="邀请朋友"
                         onClick={async () => {
                           try {
                             await navigator.clipboard.writeText(
@@ -939,23 +939,23 @@ function App() {
                         }}
                       >
                         <Copy size={16} />
-                        邀请朋友
-                      </button>
+                      </RoomToolButton>
                       {room.status === "playing" &&
                         !room.spectating &&
                         room.host === state.user.id && (
-                          <button
-                            className="subtle danger"
+                          <RoomToolButton
+                            label="结束牌桌"
+                            className="danger"
                             disabled={busy}
                             aria-haspopup="dialog"
                             onClick={() => setCloseTableRoom(room.id)}
                           >
-                            结束牌桌
-                          </button>
+                            <Flag size={16} />
+                          </RoomToolButton>
                         )}
                       {room.spectating && (
-                        <button
-                          className="subtle"
+                        <RoomToolButton
+                          label="离开观战"
                           disabled={busy}
                           onClick={() =>
                             void run(() =>
@@ -964,22 +964,20 @@ function App() {
                           }
                         >
                           <ArrowLeft size={16} />
-                          离开观战
-                        </button>
+                        </RoomToolButton>
                       )}
                       {!room.spectating &&
                         (room.status !== "playing" ||
                           room.game?.eliminated?.includes(room.you)) && (
-                          <button
-                            className="subtle"
+                          <RoomToolButton
+                            label="离开房间"
                             disabled={busy}
                             data-leave-room
                             aria-haspopup="dialog"
                             onClick={() => setLeaveRoom(room.id)}
                           >
                             <ArrowLeft size={16} />
-                            离开房间
-                          </button>
+                          </RoomToolButton>
                         )}
                     </div>
                   </CompactRoomPanel>
@@ -1092,6 +1090,7 @@ function App() {
                                     gameModule(room.kind)?.viewportFit) ? (
                                     <>
                                       <SaveGameControl
+                                        iconOnly
                                         room={room}
                                         userID={state.user.id}
                                         busy={busy}
@@ -1103,8 +1102,8 @@ function App() {
                                         gameModule(room.kind)?.viewportFit && (
                                           <>
                                             <span role="status">托管中</span>
-                                            <button
-                                              className="subtle"
+                                            <RoomToolButton
+                                              label="取消托管"
                                               data-viewport-resume
                                               disabled={busy}
                                               onClick={() =>
@@ -1114,8 +1113,7 @@ function App() {
                                               }
                                             >
                                               <Hand size={16} />
-                                              取消托管
-                                            </button>
+                                            </RoomToolButton>
                                           </>
                                         )}
                                     </>

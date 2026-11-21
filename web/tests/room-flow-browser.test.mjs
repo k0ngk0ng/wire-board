@@ -417,6 +417,12 @@ if err := http.Serve(listener, app.Handler()); err != nil {panic(err)}
           "!!document.querySelector('[data-fullscreen-enter]:not(:disabled)')",
         );
         check(
+          "all playing room actions are icon buttons " + width,
+          await evaluate(
+            "[...document.querySelectorAll('.room-tools button')].every(button=>button.classList.contains('room-tool-button')&&button.getAttribute('aria-label')&&button.querySelector('svg'))",
+          ),
+        );
+        check(
           "real viewport width " + width,
           (await evaluate("innerWidth")) === width,
         );
@@ -501,6 +507,12 @@ if err := http.Serve(listener, app.Handler()); err != nil {panic(err)}
           "waiting room hides fullscreen " + width,
           await evaluate("!document.querySelector('[data-fullscreen-enter]')"),
         );
+        check(
+          "all waiting room actions are icon buttons " + width,
+          await evaluate(
+            "[...document.querySelectorAll('.room-tools button')].every(button=>button.classList.contains('room-tool-button')&&button.getAttribute('aria-label')&&button.querySelector('svg'))",
+          ),
+        );
         await command("ready");
         await peer.command("ready");
         await command("start");
@@ -511,7 +523,14 @@ if err := http.Serve(listener, app.Handler()); err != nil {panic(err)}
           password: "flow-room-password",
         });
         await browser("press", "Tab");
-        for (const label of ["全屏", "开启托管", "玩法速查"]) {
+        for (const label of [
+          "全屏",
+          "开启托管",
+          "对局日志",
+          "玩法速查",
+          "邀请朋友",
+          "结束牌桌",
+        ]) {
           const selector = `.room-tools button[aria-label="${label}"]`;
           check(
             "icon-only accessible tool " + label + " " + width,
@@ -537,6 +556,30 @@ if err := http.Serve(listener, app.Handler()); err != nil {panic(err)}
           );
         }
         await capture("tools-" + width);
+        await activate(".room-tools [aria-label=对局日志]", touch);
+        await wait(
+          "!!document.querySelector('[role=dialog][aria-label*=日志]')",
+        );
+        await activate(
+          "[role=dialog][aria-label*=日志] [aria-label=关闭]",
+          touch,
+        );
+        await activate(".room-tools [aria-label=邀请朋友]", touch);
+        await wait("!!document.querySelector('.toast:not(.error)')");
+        await activate(".toast [aria-label=关闭提示]", touch);
+        await activate(".room-tools [aria-label=结束牌桌]", touch);
+        await wait(
+          "!!document.querySelector('[role=dialog][aria-label=\"结束当前牌桌？\"]')",
+        );
+        await browser(
+          "find",
+          "role",
+          "button",
+          "click",
+          "--name",
+          "继续游戏",
+          "--exact",
+        );
         await activate(".room-tools [aria-label=玩法速查]", touch);
         await wait(
           "!!document.querySelector('[role=dialog][aria-label*=玩法速查]')",
@@ -738,6 +781,9 @@ if err := http.Serve(listener, app.Handler()); err != nil {panic(err)}
         "web/src/ui/leave-room-control.tsx",
         "web/src/ui/room-tool-button.tsx",
         "web/src/ui/room-actions.css",
+        "web/src/ui/saved-games.tsx",
+        "web/src/ui/game-focus.ts",
+        "web/src/ui/room-fullscreen.tsx",
         "web/tests/room-flow-browser.test.mjs",
       ]) {
         try {

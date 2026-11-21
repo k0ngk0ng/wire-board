@@ -1,6 +1,59 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { inspectRoomUiFile, lintRoomUi } from "../scripts/room-ui-lint.mjs";
+import {
+  inspectRoomUiFile,
+  inspectRoomToolsContract,
+  inspectGameFocusTargets,
+  lintRoomUi,
+} from "../scripts/room-ui-lint.mjs";
+
+test("room tools contract rejects incomplete icon conversion", () => {
+  assert.deepEqual(
+    inspectRoomToolsContract(
+      '<div className="room-tools"><RoomToolButton label="日志"/><SaveGameControl iconOnly/></div>',
+    ),
+    [],
+  );
+  assert.ok(
+    inspectRoomToolsContract(
+      '<div className="room-tools"><button>日志</button></div>',
+    ).includes("icon-only-room-actions"),
+  );
+  assert.ok(
+    inspectRoomToolsContract(
+      '<div className="room-tools"><SaveGameControl/></div>',
+    ).includes("icon-only-save-actions"),
+  );
+  assert.ok(
+    inspectRoomToolsContract(
+      "<GameFullscreen toolbarActions={<button>取消托管</button>}/>",
+    ).includes("icon-only-room-actions"),
+  );
+  assert.ok(
+    inspectRoomToolsContract(
+      "<GameFullscreen toolbarActions={<SaveGameControl/>}/>",
+    ).includes("icon-only-save-actions"),
+  );
+});
+
+test("FC and MD game roots keep their shared keyboard focus markers", () => {
+  const files = [
+    "games/contra/web/runtime-board.tsx",
+    "games/basketball/web/Board.tsx",
+    "games/yuyuhakusho/web/Board.tsx",
+  ];
+  const sources = Object.fromEntries(
+    files.map((file) => [
+      file,
+      "<div ref={root} tabIndex={0} data-game-focus/>",
+    ]),
+  );
+  assert.deepEqual(inspectGameFocusTargets(sources), []);
+  delete sources[files[1]];
+  assert.ok(
+    inspectGameFocusTargets(sources).includes("game-focus-target:" + files[1]),
+  );
+});
 
 test("room UI lint accepts component, script and style conventions", () => {
   for (const [file, source] of [

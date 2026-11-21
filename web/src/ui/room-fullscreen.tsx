@@ -12,6 +12,7 @@ import "./room-fullscreen.css";
 import "./game-control-guard.css";
 import { GameOverlayRoot } from "./game-overlay-root";
 import { protectGameControls } from "./game-control-guard";
+import { restoreGameFocusOnBackground } from "./game-focus";
 
 type Mode = "native" | "page" | "";
 type FullscreenDocument = Document & {
@@ -193,6 +194,9 @@ export function GameFullscreen({
   useEffect(() => {
     if (root) return protectGameControls(root);
   }, [root]);
+  useEffect(() => {
+    if (root && enabled) return restoreGameFocusOnBackground(root);
+  }, [root, enabled]);
   useLayoutEffect(() => {
     onChatTargetChange?.(fullscreen.active ? root : null);
     return () => onChatTargetChange?.(null);

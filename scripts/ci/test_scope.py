@@ -55,6 +55,7 @@ class ScopeTests(unittest.TestCase):
         self.assertIn('scope: frontend', quick)
         self.assertNotIn('scope: game', quick)
         self.assertIn('.local/room-flow/verification/', quick)
+        self.assertIn('.local/room-tools-followup/verification/', quick)
 
     def test_shared_settlement_acceptance_scripts_use_frontend_lane_only(self):
         for path in ['games/monopoly/tests/accept_ui.py', 'games/hotlinemiami/tests/accept_browser.py', 'scripts/basketball/accept_platform_rooms.py', 'scripts/contra/victory_browser_accept.py', 'scripts/game-loading/check-results.py', 'scripts/accept_draw_result.py']:

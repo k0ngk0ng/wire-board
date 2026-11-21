@@ -126,6 +126,7 @@ export function RuntimeBoard(props: Props) {
       className="contra-runtime"
       ref={root}
       tabIndex={-1}
+      data-game-focus
       data-contra-runtime
     >
       <div className="contra-runtime-screen">

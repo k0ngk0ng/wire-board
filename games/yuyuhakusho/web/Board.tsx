@@ -256,6 +256,7 @@ export function Board(props: BoardProps<NetworkView>) {
       className="yuyu-board"
       data-yuyu-board
       tabIndex={0}
+      data-game-focus
       aria-label="魔强统一战比赛画面"
     >
       <div className="yuyu-screen">

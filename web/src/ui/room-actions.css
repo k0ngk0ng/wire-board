@@ -14,7 +14,8 @@
   color: #58674f;
   font-size: 13px;
 }
-.room-tools .room-tool-button {
+.room-tools .room-tool-button,
+.game-fullscreen-actions .room-tool-button {
   position: relative;
   display: inline-flex;
   flex: 0 0 auto;
@@ -56,11 +57,13 @@
   }
 }
 @media (max-width: 600px) {
-  .room-tools .room-tool-button {
+  .room-tools .room-tool-button,
+  .game-fullscreen-actions .room-tool-button {
     width: 44px;
     height: 44px;
   }
-  .room-tools .room-tool-button svg {
+  .room-tools .room-tool-button svg,
+  .game-fullscreen-actions .room-tool-button svg {
     width: 17px;
     height: 17px;
   }
