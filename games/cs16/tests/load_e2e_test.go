@@ -34,19 +34,47 @@ func TestFourTenSeatRoomsWithSlowSpectator(t *testing.T) {
 
 func runFourRoomIsolation(t *testing.T, performance bool) {
 	t.Helper()
-	harness := newHTTPRoom(t, 4)
+	var harness *httpRoom
+	if performance {
+		harness = newHTTPRoom(t, 4)
+	} else {
+		harness = newFortyHumanHTTPRoom(t)
+	}
+	hosts := make([]*httpPerson, 4)
+	for index := range hosts {
+		seat := index
+		if !performance {
+			seat = index * 10
+		}
+		hosts[index] = harness.people[seat]
+	}
 	maps := []string{"de_dust2", "de_inferno", "de_aztec", "cs_assault"}
 	ids := make([]string, 4)
-	for index, person := range harness.people {
+	for index, person := range hosts {
 		created := person.request("POST", "/api/rooms", map[string]any{"kind": "cs16", "name": fmt.Sprintf("十席并行%d", index), "capacity": 10, "options": map[string]any{"map": maps[index], "roundSeconds": 60, "maxRounds": 2}}, 201)
 		ids[index] = created["id"].(string)
-		for range 9 {
-			person.command("add_bot", nil, 200)
+		if performance {
+			for range 9 {
+				person.command("add_bot", nil, 200)
+			}
+		} else {
+			for seat := 1; seat < 10; seat++ {
+				member := harness.people[index*10+seat]
+				member.request("POST", "/api/rooms/"+ids[index], map[string]any{"type": "join", "version": person.room()["version"], "nonce": fmt.Sprintf("race-room-%d-seat-%d", index, seat)}, 200)
+				member.command("ready", nil, 200)
+			}
 		}
 		person.command("ready", nil, 200)
 		person.command("start", nil, 200)
+		if !performance {
+			for _, value := range person.room()["seats"].([]any) {
+				if value.(map[string]any)["bot"] == true {
+					t.Fatal("race isolation fixture must use real authenticated human seats")
+				}
+			}
+		}
 	}
-	waitHTTP(t, harness.people[len(harness.people)-1], func(data map[string]any) bool { return data["phase"] == "live" })
+	waitHTTP(t, hosts[len(hosts)-1], func(data map[string]any) bool { return data["phase"] == "live" })
 	harness.viewer.request("POST", "/api/rooms/"+ids[0]+"/watch", map[string]any{}, 200)
 	transport := &http.Transport{DialContext: func(ctx context.Context, network, address string) (net.Conn, error) {
 		connection, err := (&net.Dialer{}).DialContext(ctx, network, address)
@@ -69,7 +97,7 @@ func runFourRoomIsolation(t *testing.T, performance bool) {
 		t.Fatal(err)
 	}
 	defer slow.CloseNow()
-	person := harness.people[0]
+	person := hosts[0]
 	fast, _, err := websocket.Dial(ctx, "ws"+strings.TrimPrefix(person.base, "http")+"/api/ws?stream=1", &websocket.DialOptions{HTTPClient: person.http})
 	if err != nil {
 		t.Fatal(err)
@@ -83,7 +111,7 @@ func runFourRoomIsolation(t *testing.T, performance bool) {
 	acks := []int64{}
 	lags := []int64{}
 	frames := make([]int64, 4)
-	for index, host := range harness.people {
+	for index, host := range hosts {
 		frames[index] = integer(host.room()["game"].(map[string]any)["data"].(map[string]any)["frame"])
 	}
 	for seq := 1; seq <= 40; seq++ {
@@ -123,14 +151,14 @@ func runFourRoomIsolation(t *testing.T, performance bool) {
 			}
 		}
 		if seq%4 == 0 {
-			for _, host := range harness.people {
+			for _, host := range hosts {
 				data := host.room()["game"].(map[string]any)["data"].(map[string]any)
 				lags = append(lags, max(0, time.Now().UnixMilli()-integer(data["serverAt"])))
 			}
 		}
 		time.Sleep(30 * time.Millisecond)
 	}
-	for index, host := range harness.people {
+	for index, host := range hosts {
 		current := host.room()
 		data := current["game"].(map[string]any)["data"].(map[string]any)
 		if len(data["players"].([]any)) != 10 || integer(data["frame"]) <= frames[index]+50 {
@@ -142,7 +170,11 @@ func runFourRoomIsolation(t *testing.T, performance bool) {
 	}
 	ackP95, lagP95 := percentile(acks, 95), percentile(lags, 95)
 	budgetPassed := ackP95 <= 100000 && lagP95 <= 100
-	artifact(t, map[string]any{"passed": !performance || budgetPassed, "performanceAcceptance": performance, "performanceBudgetPassed": budgetPassed, "scope": "4 authenticated ten-seat rooms and non-reading 1024-byte-buffer spectator; timing is acceptance only in the ordinary performance case", "rooms": 4, "playersPerRoom": 10, "ackMicroseconds": acks, "ruleLagMS": lags, "ackP95Microseconds": ackP95, "ruleLagP95MS": lagP95})
+	humansPerRoom, botsPerRoom := 10, 0
+	if performance {
+		humansPerRoom, botsPerRoom = 1, 9
+	}
+	artifact(t, map[string]any{"passed": !performance || budgetPassed, "performanceAcceptance": performance, "performanceBudgetPassed": budgetPassed, "scope": "4 authenticated ten-seat rooms, one active input stream and non-reading 1024-byte-buffer spectator; timing is acceptance only in the ordinary performance case", "rooms": 4, "playersPerRoom": 10, "humansPerRoom": humansPerRoom, "botsPerRoom": botsPerRoom, "authenticatedSpectators": 1, "independentSourceIPs": !performance, "ackMicroseconds": acks, "ruleLagMS": lags, "ackP95Microseconds": ackP95, "ruleLagP95MS": lagP95})
 	if performance && !budgetPassed {
 		t.Fatal("parallel room performance budget exceeded", ackP95, lagP95)
 	}
