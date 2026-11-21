@@ -24,7 +24,16 @@ func percentile(values []int64, percent int) int64 {
 	return ordered[min(len(ordered)-1, (len(ordered)*percent+99)/100-1)]
 }
 
+func TestFourRoomConcurrentInputsWithSlowPeer(t *testing.T) {
+	runFourRoomIsolation(t, false)
+}
+
 func TestFourTenSeatRoomsWithSlowSpectator(t *testing.T) {
+	runFourRoomIsolation(t, true)
+}
+
+func runFourRoomIsolation(t *testing.T, performance bool) {
+	t.Helper()
 	harness := newHTTPRoom(t, 4)
 	maps := []string{"de_dust2", "de_inferno", "de_aztec", "cs_assault"}
 	ids := make([]string, 4)
@@ -132,8 +141,9 @@ func TestFourTenSeatRoomsWithSlowSpectator(t *testing.T) {
 		}
 	}
 	ackP95, lagP95 := percentile(acks, 95), percentile(lags, 95)
-	artifact(t, map[string]any{"passed": ackP95 <= 100000 && lagP95 <= 100, "scope": "4 authenticated ten-seat rooms and non-reading 1024-byte-buffer spectator", "rooms": 4, "playersPerRoom": 10, "ackMicroseconds": acks, "ruleLagMS": lags, "ackP95Microseconds": ackP95, "ruleLagP95MS": lagP95})
-	if ackP95 > 100000 || lagP95 > 100 {
+	budgetPassed := ackP95 <= 100000 && lagP95 <= 100
+	artifact(t, map[string]any{"passed": !performance || budgetPassed, "performanceAcceptance": performance, "performanceBudgetPassed": budgetPassed, "scope": "4 authenticated ten-seat rooms and non-reading 1024-byte-buffer spectator; timing is acceptance only in the ordinary performance case", "rooms": 4, "playersPerRoom": 10, "ackMicroseconds": acks, "ruleLagMS": lags, "ackP95Microseconds": ackP95, "ruleLagP95MS": lagP95})
+	if performance && !budgetPassed {
 		t.Fatal("parallel room performance budget exceeded", ackP95, lagP95)
 	}
 }

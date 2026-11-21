@@ -533,6 +533,9 @@ def go_commands(root, game, index=0, count=1, race=False, extended=False):
             if int.from_bytes(hashlib.sha256(name.encode()).digest()[:8], 'big') % count != index: continue
             if race and game != 'shared':
                 selected_race = bool(re.search(r'Concurrent|AutoPlay|Timeout|Spectator|LongGameArtifact', name))
+                if game == 'cs16':
+                    if name == 'TestFourTenSeatRoomsWithSlowSpectator': selected_race = False
+                    if name == 'TestColdHistoryCodecBoundsCorruptionAndDeterminism': selected_race = True
                 if game == 'catan' and not extended:
                     selected_race = bool(re.search(r'Concurrent|Spectator', name))
                 if game == 'basketball':

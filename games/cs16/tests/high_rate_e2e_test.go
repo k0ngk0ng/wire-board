@@ -258,6 +258,7 @@ func tenHighRateInputs(t *testing.T, harness *httpRoom, peers []inputPeer) highR
 		}
 	}
 	artifact(t, map[string]any{"passed": report.Passed, "scope": "same 10 real WebSocket connections sample yaw at 100Hz each for one second, max eight in flight, ACK readers maintain authoritative frame", "report": report})
+	t.Logf("CS16_PRESSURE_RESULT %s", encode(map[string]any{"passed": report.Passed, "inputs": report.Inputs, "elapsedMS": report.ElapsedMS, "inputsPerSecond": report.InputsPerSecond, "ackP95Microseconds": report.AckP95Microseconds}))
 	if !report.Passed {
 		t.Fatalf("ten-human 100Hz capacity below frozen bound: %d inputs / %dms (%d/s), ACK P95 %dus", report.Inputs, report.ElapsedMS, report.InputsPerSecond, report.AckP95Microseconds)
 	}
