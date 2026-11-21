@@ -42,9 +42,15 @@ def execution_sections(text):
     return sections
 
 
-def recover(root, head, runs, jobs_for):
+def recover(root, head, runs, jobs_for, verified_base=''):
     current = module_at(root, head)
     games = current.game_names(root)
+    required_games = games
+    if verified_base:
+        if not re.fullmatch(r'[a-f0-9]{40}', verified_base) or subprocess.run(['git', 'merge-base', '--is-ancestor', verified_base, head], cwd=root, capture_output=True).returncode:
+            raise ValueError('Expected an ancestral verified baseline')
+        paths = git(root, 'diff', '--no-renames', '--name-only', verified_base, head).splitlines()
+        required_games = sorted(row['game'] for row in current.plan(paths, games)['games'])
     workflow = git(root, 'show', head + ':.github/workflows/build.yml')
     sections = execution_sections(workflow)
     candidates = []
@@ -81,7 +87,7 @@ def recover(root, head, runs, jobs_for):
     platform = shared_results[0] if shared_results and shared_results[0]['named'][shared_name]['conclusion'] == 'success' else None
     if candidates and platform:
         reused, pending = [], []
-        for game in games:
+        for game in required_games:
             digest = signature(current, root, game)
             selected = None
             for candidate in candidates:
@@ -98,7 +104,10 @@ def recover(root, head, runs, jobs_for):
             else:
                 pending.append(game)
         baseline = candidates[0]
-        return {'eligible': True, 'head': head, 'base': baseline['base'], 'sourceRun': baseline['run']['id'], 'changedPaths': baseline['paths'], 'affectedGames': sorted(baseline['affected']), 'reusedGames': reused, 'pendingGames': pending, 'platformSourceRun': platform['run']['id'], 'platformSourceSHA': platform['base'], 'sharedJob': platform['named'][shared_name]['id'], 'frontendJob': baseline['named']['Build application assets']['id']}
+        result = {'eligible': True, 'head': head, 'base': baseline['base'], 'sourceRun': baseline['run']['id'], 'changedPaths': baseline['paths'], 'affectedGames': sorted(baseline['affected']), 'reusedGames': reused, 'pendingGames': pending, 'platformSourceRun': platform['run']['id'], 'platformSourceSHA': platform['base'], 'sharedJob': platform['named'][shared_name]['id'], 'frontendJob': baseline['named']['Build application assets']['id']}
+        if verified_base:
+            result.update(verifiedBase=verified_base, requiredGames=required_games)
+        return result
     return {'eligible': False, 'head': head, 'base': '', 'reusedGames': [], 'pendingGames': []}
 
 
@@ -106,6 +115,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--repo', required=True)
     parser.add_argument('--head', required=True)
+    parser.add_argument('--baseline', default='')
     parser.add_argument('--out', type=Path, required=True)
     parser.add_argument('--github-output', type=Path)
     args = parser.parse_args()
@@ -116,7 +126,7 @@ def main():
         return json.loads(subprocess.check_output(['gh', 'api', path], text=True))
     prefix = 'repos/' + args.repo + '/actions/runs'
     runs = gh(prefix + '?branch=main&event=push&per_page=30')['workflow_runs']
-    report = recover(root, args.head, runs, lambda run: gh(prefix + '/' + str(run) + '/jobs?per_page=100')['jobs'])
+    report = recover(root, args.head, runs, lambda run: gh(prefix + '/' + str(run) + '/jobs?per_page=100')['jobs'], args.baseline)
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(report, indent=2) + '\n')
     if args.github_output:

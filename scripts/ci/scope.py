@@ -478,7 +478,16 @@ def resume_selection(proof, head, base, games):
     if not proof.get('eligible'): return []
     pending = proof.get('pendingGames', [])
     reused = [row['game'] for row in proof.get('reusedGames', [])]
-    if proof.get('head') != head or proof.get('base') != base or len(set(pending + reused)) != len(pending + reused) or set(pending + reused) != set(games):
+    required = games
+    if proof.get('verifiedBase'):
+        verified = proof['verifiedBase']
+        if not re.fullmatch(r'[a-f0-9]{40}', verified) or subprocess.run(['git', 'merge-base', '--is-ancestor', verified, base], cwd=ROOT, capture_output=True).returncode:
+            raise ValueError('Resume verified baseline is not an ancestor')
+        paths = subprocess.check_output(['git', 'diff', '--no-renames', '--name-only', verified, head], cwd=ROOT, text=True).splitlines()
+        required = sorted(row['game'] for row in plan(paths, games)['games'])
+        if proof.get('requiredGames') != required:
+            raise ValueError('Resume required games differ from the verified baseline')
+    if proof.get('head') != head or proof.get('base') != base or len(set(pending + reused)) != len(pending + reused) or set(pending + reused) != set(required):
         raise ValueError('Resume evidence differs from the exact plan inputs')
     return pending
 

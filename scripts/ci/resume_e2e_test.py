@@ -12,7 +12,7 @@ WORK.mkdir(parents=True, exist_ok=True)
 
 
 class ResumeE2E(unittest.TestCase):
-    def replay(self, change='ci', changed_command=False, failed_shared=False, ambiguous=False, recovered=False, newer_failure=False, newer_shared_failure=False):
+    def replay(self, change='ci', changed_command=False, failed_shared=False, ambiguous=False, recovered=False, newer_failure=False, newer_shared_failure=False, verified_baseline=False):
         with tempfile.TemporaryDirectory(dir=WORK) as folder:
             root = Path(folder)
             def run(*args):
@@ -40,6 +40,16 @@ def plan(paths,games):return {'has_shared':any(p.startswith('internal/') for p i
             write('.github/workflows/build.yml', 'name: CI\njobs:\n  frontend:\n    run: frontend\n  shared:\n    run: shared\n  games:\n    run: games\n  verify:\n    needs: [games]\n    steps:\n      - run: build\n  complete:\n    run: complete\n')
             write('games/rail/server/rules.go', 'package rail\n')
             write('games/catan/server/rules.go', 'package catan\n')
+            baseline = ''
+            if verified_baseline:
+                fixture = fixture.replace("['catan','rail']", "['catan','rail','untouched']")
+                write('scripts/ci/scope.py', fixture)
+                write('games/untouched/server/rules.go', 'package untouched\n')
+                run('git', 'add', '.')
+                run('git', 'commit', '-qm', 'verified ancestor')
+                baseline = run('git', 'rev-parse', 'HEAD')
+                write('games/rail/server/rules.go', 'package rail\nconst first=1\n')
+                write('games/catan/server/rules.go', 'package catan\nconst first=1\n')
             run('git', 'add', '.')
             run('git', 'commit', '-qm', 'source validation')
             base = run('git', 'rev-parse', 'HEAD')
@@ -78,7 +88,9 @@ print(json.dumps({'jobs':data['jobs'][re.search(r'/runs/([0-9]+)/jobs',sys.argv[
 ''')
             driver.chmod(0o755)
             env = dict(os.environ, PATH=str(binary) + os.pathsep + os.environ['PATH'], RESUME_FIXTURE=str(root / '.local/fixture.json'))
-            result = subprocess.run(['python3', '-B', 'scripts/ci/resume.py', '--repo', 'fixture/repo', '--head', head, '--out', '.local/resume.json'], cwd=root, env=env, capture_output=True, text=True)
+            arguments = ['python3', '-B', 'scripts/ci/resume.py', '--repo', 'fixture/repo', '--head', head, '--out', '.local/resume.json']
+            if baseline: arguments += ['--baseline', baseline]
+            result = subprocess.run(arguments, cwd=root, env=env, capture_output=True, text=True)
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
             report = json.loads((root / '.local/resume.json').read_text())
             eligible = change in ['ci', 'business', 'build-step'] and not failed_shared and not ambiguous and not newer_shared_failure
@@ -87,6 +99,18 @@ print(json.dumps({'jobs':data['jobs'][re.search(r'/runs/([0-9]+)/jobs',sys.argv[
                 self.assertEqual(report['head'], head)
                 self.assertEqual(report['base'], intermediate if recovered else base)
                 self.assertEqual(report['sourceRun'], 124 if recovered else 123)
+                if verified_baseline:
+                    self.assertEqual(report['verifiedBase'], baseline)
+                    self.assertEqual(report['requiredGames'], ['catan', 'rail'])
+                    import importlib.util
+                    selection = importlib.util.spec_from_file_location('verified_selection', ROOT / 'scripts/ci/scope.py')
+                    selected = importlib.util.module_from_spec(selection)
+                    selection.loader.exec_module(selected)
+                    selected.ROOT = root
+                    self.assertEqual(selected.resume_selection(report, head, base, ['catan', 'rail', 'untouched']), ['catan'])
+                    broken = dict(report, requiredGames=['catan'])
+                    with self.assertRaises(ValueError):
+                        selected.resume_selection(broken, head, base, ['catan', 'rail', 'untouched'])
                 if recovered:
                     expected = ['rail'] if change == 'business' else ['catan'] if newer_failure else []
                     self.assertEqual(report['pendingGames'], expected)
@@ -124,6 +148,15 @@ print(json.dumps({'jobs':data['jobs'][re.search(r'/runs/([0-9]+)/jobs',sys.argv[
     def test_a_newer_failure_cannot_be_hidden_by_an_older_success(self):
         self.replay(recovered=True, newer_failure=True)
         self.replay(recovered=True, newer_shared_failure=True)
+
+    def test_verified_baseline_reuses_passed_games_without_scheduling_unaffected_games(self):
+        self.replay(verified_baseline=True)
+
+    def test_workflow_attempts_partial_reuse_when_a_verified_ancestor_exists(self):
+        workflow = (ROOT / '.github/workflows/build.yml').read_text()
+        step = workflow.split('      - name: Verify reusable unchanged game inputs', 1)[1].split('      - name:', 1)[0]
+        self.assertNotIn("steps.baseline.outputs.sha == ''", step)
+        self.assertIn('--baseline', step)
 
 
 if __name__ == '__main__':

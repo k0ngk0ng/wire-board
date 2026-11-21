@@ -166,6 +166,11 @@ func actionType(raw json.RawMessage) string {
 }
 
 func apply(ctx gameapi.Context, match gameapi.Match, raw json.RawMessage) (gameapi.Match, error) {
+	if deferredInput(raw) {
+		if archive, ok := readInputArchive(match, ctx.Actor); ok {
+			return applyArchivedInput(ctx, match, raw, archive)
+		}
+	}
 	state, err := decode(match)
 	if err != nil {
 		return match, err

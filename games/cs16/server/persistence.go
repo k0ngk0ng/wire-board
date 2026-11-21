@@ -112,6 +112,9 @@ func unchangedProjection(match gameapi.Match, seat int, cursor string) (bool, er
 }
 
 func decodeInputState(match gameapi.Match, actor int) (*matchState, error) {
+	if archive, ok := readInputArchive(match, actor); ok {
+		return archive.state, nil
+	}
 	var header struct {
 		Schema      int    `json:"schema"`
 		Epoch       string `json:"epoch"`
