@@ -3,10 +3,12 @@ package cs16_test
 import (
 	"bytes"
 	"context"
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
+	"runtime"
 	"runtime/pprof"
 	"strconv"
 	"strings"
@@ -165,7 +167,7 @@ func highRatePeer(parent context.Context, peer inputPeer) highRateTrace {
 
 func tenHighRateInputs(t *testing.T, harness *httpRoom, peers []inputPeer) highRateReport {
 	t.Helper()
-	if os.Getenv("CS16_PROFILE_HIGH_RATE") == "1" {
+	if os.Getenv("CS16_PROFILE_HIGH_RATE") == "1" || os.Getenv("GITHUB_ACTIONS") == "true" {
 		directory := filepath.Join("..", "..", "..", ".local", "cs16", "verification", "server")
 		if err := os.MkdirAll(directory, 0755); err != nil {
 			t.Fatal(err)
@@ -178,7 +180,37 @@ func tenHighRateInputs(t *testing.T, harness *httpRoom, peers []inputPeer) highR
 			file.Close()
 			t.Fatal(err)
 		}
-		defer func() { pprof.StopCPUProfile(); file.Close() }()
+		var before runtime.MemStats
+		runtime.ReadMemStats(&before)
+		readLimits := func() map[string]string {
+			values := map[string]string{}
+			for _, name := range []string{"/sys/fs/cgroup/cpu.max", "/sys/fs/cgroup/cpu.stat", "/sys/fs/cgroup/memory.max"} {
+				if raw, err := os.ReadFile(name); err == nil {
+					values[name] = strings.TrimSpace(string(raw))
+				}
+			}
+			if raw, err := os.ReadFile("/proc/cpuinfo"); err == nil {
+				for _, line := range strings.Split(string(raw), "\n") {
+					if strings.HasPrefix(line, "model name") {
+						values["cpuModel"] = strings.TrimSpace(strings.SplitN(line, ":", 2)[1])
+						break
+					}
+				}
+			}
+			return values
+		}
+		limitsBefore := readLimits()
+		defer func() {
+			pprof.StopCPUProfile()
+			file.Close()
+			var after runtime.MemStats
+			runtime.ReadMemStats(&after)
+			metadata := map[string]any{"goVersion": runtime.Version(), "goos": runtime.GOOS, "goarch": runtime.GOARCH, "numCPU": runtime.NumCPU(), "gomaxprocs": runtime.GOMAXPROCS(0), "allocatedBytes": after.TotalAlloc - before.TotalAlloc, "garbageCollections": after.NumGC - before.NumGC, "limitsBefore": limitsBefore, "limitsAfter": readLimits()}
+			t.Logf("CS16_PRESSURE_ENV %s", encode(metadata))
+			if raw, err := os.ReadFile(file.Name()); err == nil {
+				t.Logf("CS16_PRESSURE_PROFILE %s", base64.StdEncoding.EncodeToString(raw))
+			}
+		}()
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 8*time.Second)
 	defer cancel()
