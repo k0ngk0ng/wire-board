@@ -1,7 +1,7 @@
 import { TouchInput, type TouchState } from './touch-input.ts';
 
 type CaptureTarget = { setPointerCapture: (id: number) => void; hasPointerCapture: (id: number) => boolean; releasePointerCapture: (id: number) => void };
-type Contact = { target: CaptureTarget; captured: boolean };
+type Contact = { target: CaptureTarget; captured: boolean; raw: boolean };
 type TouchCallbacks = { locked: () => boolean; begin: () => void; changed: (state: TouchState) => void; look: (x: number, y: number) => void; interrupted: () => void; failed: (error: unknown) => void };
 
 export class PointerLockHandoff {
@@ -35,13 +35,15 @@ export class TouchOwnership {
     if (this.owns(id)) return;
     try { this.callbacks.begin(); }
     catch (error) { this.callbacks.failed(error); return; }
-    this.contacts.set(id, { target, captured: false });
+    this.contacts.set(id, { target, captured: false, raw: false });
     this.input.press(id, kind, x, y);
     this.publish();
     this.capture(id);
   }
-  move(id: number, x: number, y: number) {
-    if (!this.owns(id)) return;
+  move(id: number, x: number, y: number, raw = false) {
+    const contact = this.contacts.get(id);
+    if (!contact || contact.raw && !raw) return;
+    if (raw) contact.raw = true;
     const delta = this.input.move(id, x, y);
     if (delta) this.callbacks.look(delta.x, delta.y);
     else this.publish();
@@ -90,7 +92,7 @@ export function bindTouchOwnership(target: EventTarget, lockTarget: EventTarget,
     if (disabled() || !input.owns(pointer.pointerId)) return;
     native(event);
     event.preventDefault();
-    input.move(pointer.pointerId, pointer.clientX, pointer.clientY);
+    input.move(pointer.pointerId, pointer.clientX, pointer.clientY, event.type === 'pointerrawupdate');
   };
   const release = (event: Event) => {
     const pointer = event as PointerEvent;
@@ -101,12 +103,14 @@ export function bindTouchOwnership(target: EventTarget, lockTarget: EventTarget,
   const lost = (event: Event) => input.lost((event as PointerEvent).pointerId);
   const capture = () => input.capturePending();
   target.addEventListener('pointermove', move, { capture: true, passive: false });
+  target.addEventListener('pointerrawupdate', move, { capture: true, passive: false });
   target.addEventListener('pointerup', release, true);
   target.addEventListener('pointercancel', release, true);
   target.addEventListener('lostpointercapture', lost, true);
   lockTarget.addEventListener('pointerlockchange', capture);
   return () => {
     target.removeEventListener('pointermove', move, true);
+    target.removeEventListener('pointerrawupdate', move, true);
     target.removeEventListener('pointerup', release, true);
     target.removeEventListener('pointercancel', release, true);
     target.removeEventListener('lostpointercapture', lost, true);

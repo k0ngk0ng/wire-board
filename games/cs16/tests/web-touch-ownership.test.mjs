@@ -192,3 +192,28 @@ test('disposing touch routing clears captures without notifying a disposed owner
     assert.equal(pointer(view.source, 'pointermove', 1, 48, 0).defaultPrevented, false);
   }
 });
+
+test('raw touch movement owns only its active contact and ordinary movement remains the fallback', () => {
+  const view = fixture();
+  view.input.press(1, 'move', 0, 0, view.target('move'));
+  view.input.press(2, 'fire', 100, 100, view.target('fire'));
+  pointer(view.source, 'pointerrawupdate', 2, 120, 104);
+  assert.deepEqual(view.context.looks, [[20, 4]]);
+  pointer(view.source, 'pointermove', 2, 110, 102);
+  assert.deepEqual(view.context.looks, [[20, 4]]);
+  pointer(view.source, 'pointerrawupdate', 2, 130, 106);
+  pointer(view.source, 'pointerrawupdate', 1, 24, 0);
+  assert.deepEqual(view.context.looks, [[20, 4], [10, 2]]);
+  assert.equal(view.input.sample().moveX, 500);
+  assert.equal(pointer(view.source, 'pointerrawupdate', 99, 50, 50).defaultPrevented, false);
+  pointer(view.source, 'pointerup', 2);
+  assert.equal(view.input.sample().moveX, 500);
+  view.input.press(2, 'fire', 100, 100, view.target('fire-again'));
+  pointer(view.source, 'pointermove', 2, 110, 102);
+  assert.deepEqual(view.context.looks.at(-1), [10, 2]);
+  pointer(view.source, 'pointercancel', 2);
+  view.context.disabled = true;
+  assert.equal(pointer(view.source, 'pointerrawupdate', 1, 48, 0).defaultPrevented, false);
+  view.dispose();
+  assert.equal(pointer(view.source, 'pointerrawupdate', 1, 48, 0).defaultPrevented, false);
+});
