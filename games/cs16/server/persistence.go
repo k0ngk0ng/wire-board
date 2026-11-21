@@ -142,7 +142,7 @@ func unchangedProjection(match gameapi.Match, seat int, cursor string) (bool, er
 }
 
 func decodeInputState(match gameapi.Match, actor int) (*matchState, error) {
-	if archive, ok := readInputArchive(match, actor); ok {
+	if archive, ok := readInputArchiveState(match, actor, false); ok {
 		return archive.state, nil
 	}
 	var header struct {
