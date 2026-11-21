@@ -55,7 +55,8 @@
     "default-players.ts",
     "touch-input.ts",
     "action-scope.ts",
-    "stream-delta.ts"
+    "stream-delta.ts",
+    "touch-ownership.ts"
   ],
   "languages": {
     "go": {

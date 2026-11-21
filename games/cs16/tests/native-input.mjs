@@ -662,6 +662,10 @@ try {
     throw Error("rendering did not settle after visual layout change");
   };
   await wait(1100);
+  if (options.touch) {
+    await call("Emulation.setDeviceMetricsOverride", { width: 320, height: 760, deviceScaleFactor: 1, mobile: true });
+    await settle();
+  }
   await photograph(options.touch ? "portrait" : "desktop-idle");
   if (options.touch) {
     await evaluate("window.__cs16TouchCanvas=document.querySelector('[data-cs16-canvas]');true");

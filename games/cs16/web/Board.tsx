@@ -14,6 +14,7 @@ import { matchClock, observerCandidates, viewAngles } from './presentation';
 import { useOverlayInsets } from './overlay-insets';
 import { WeaponHistory } from './weapon-history';
 import { TouchControls, type TouchState } from './TouchControls';
+import { PointerLockHandoff } from './touch-ownership';
 import type { GameEvent, GameInput, InputAction, Player, View } from './types';
 import './style.css';
 
@@ -40,6 +41,7 @@ export function Board(props: BoardProps<View>) {
   const facing = useRef({ yaw: 0, pitch: 0 });
   const mouse = useRef({ fire: false, secondary: false });
   const touch = useRef<TouchState>({ moveX: 0, moveY: 0, actions: new Set() });
+  const touchHandoff = useRef(new PointerLockHandoff());
   const selection = useRef('');
   const buying = useRef(false);
   const actionsBefore = useRef(new Set<string>());
@@ -99,6 +101,7 @@ export function Board(props: BoardProps<View>) {
   }
 
   function release(send = true) {
+    touchHandoff.current.reset();
     wasEnabled.current = false;
     mouse.current = { fire: false, secondary: false };
     touch.current = { moveX: 0, moveY: 0, actions: new Set() };
@@ -109,6 +112,10 @@ export function Board(props: BoardProps<View>) {
     if (send && (latest.current.inputWindow ?? 0) > 0) channel.current?.release(facing.current.yaw, facing.current.pitch);
     prediction.current?.suspend();
     lastInput.current = { input: emptyInput(facing.current.yaw, facing.current.pitch), at: 0 };
+  }
+
+  function beginTouch() {
+    touchHandoff.current.begin(!!document.pointerLockElement, () => release(), () => document.exitPointerLock());
   }
 
   function closeBuy() {
@@ -394,14 +401,14 @@ export function Board(props: BoardProps<View>) {
     };
     const key = (event: KeyboardEvent) => { if (root.current?.contains(document.activeElement) || document.pointerLockElement === element) record(event); };
     const mouseMove = (event: MouseEvent) => {
-      if (document.pointerLockElement !== element || !canControl()) return;
+      if (touchHandoff.current.pending || document.pointerLockElement !== element || !canControl()) return;
       record(event);
       facing.current.yaw = angle(facing.current.yaw - event.movementX * 10);
       facing.current.pitch = safePitch(facing.current.pitch + event.movementY * 10);
       prediction.current?.face(facing.current.yaw, facing.current.pitch);
     };
     const down = (event: MouseEvent) => {
-      if (!canControl() || event.button > 2 || event.button === 1) return;
+      if (touchHandoff.current.pending || !canControl() || event.button > 2 || event.button === 1) return;
       record(event);
       root.current?.focus({ preventScroll: true });
       if (document.pointerLockElement !== element && event.button === 0) {
@@ -417,7 +424,7 @@ export function Board(props: BoardProps<View>) {
       if (event.button === 2) mouse.current.secondary = false;
       process.current(true);
     };
-    const lock = () => { const enabled = document.pointerLockElement === element; setLocked(enabled); if (!enabled) release(); syncKeyboard(); };
+    const lock = () => { const enabled = document.pointerLockElement === element; setLocked(enabled); if (touchHandoff.current.lockChanged(enabled)) release(); syncKeyboard(); };
     const clear = () => { release(); unlockKeyboard(); };
     const hidden = () => { if (document.hidden) clear(); };
     const wheel = (event: WheelEvent) => {
@@ -461,7 +468,7 @@ export function Board(props: BoardProps<View>) {
       </>}
       {(!own?.alive || props.room.spectating) && <div className="cs16-spectator"><strong>{own ? '阵亡观战' : '观战'}</strong><select aria-label="观战玩家" value={watch} onChange={event => setWatch(Number(event.target.value))}><option value={-1}>自动选择</option>{observerCandidates(props.data.players, own, !!props.room.spectating).map(player => <option value={player.seat} key={player.seat}>{props.room.seats[player.seat]?.name ?? '玩家'}</option>)}</select></div>}
       {!locked && own?.alive && !buyOpen && <button type="button" className="cs16-lock-hint" onClick={() => { root.current?.focus({ preventScroll: true }); try { const result = canvas.current?.requestPointerLock(); if (result) void result.catch(() => {}); } catch { setError('无法锁定鼠标'); } }}>点击战场锁定鼠标</button>}
-      {own?.alive && <TouchControls disabled={!canControl()} weapon={own.weapon} weaponState={own.inventory?.find(item => item.id === own.weapon)} useLabel={props.data.bomb?.planted && own.team === 'ct' ? '拆弹' : mode === 'hostage' && own.team === 'ct' ? '营救' : '使用'} native={record} interrupted={() => channel.current?.release(facing.current.yaw, facing.current.pitch)} changed={value => { touch.current = value; process.current(true); }} look={(x, y) => { if (!canControl()) return; facing.current.yaw = angle(facing.current.yaw - x * 144); facing.current.pitch = safePitch(facing.current.pitch + y * 96); prediction.current?.face(facing.current.yaw, facing.current.pitch); }} />}
+      {own?.alive && <TouchControls disabled={!canControl()} weapon={own.weapon} weaponState={own.inventory?.find(item => item.id === own.weapon)} useLabel={props.data.bomb?.planted && own.team === 'ct' ? '拆弹' : mode === 'hostage' && own.team === 'ct' ? '营救' : '使用'} native={record} begin={beginTouch} error={setError} interrupted={() => channel.current?.release(facing.current.yaw, facing.current.pitch)} changed={value => { touch.current = value; process.current(true); }} look={(x, y) => { if (!canControl()) return; facing.current.yaw = angle(facing.current.yaw - x * 144); facing.current.pitch = safePitch(facing.current.pitch + y * 96); prediction.current?.face(facing.current.yaw, facing.current.pitch); }} />}
     </>}
     {scoreboard && <div className="cs16-scoreboard" role="dialog" aria-label="对局战绩"><header><strong>战绩</strong><button type="button" onClick={() => setScoreboard(false)}>返回战场</button></header>{['t', 'ct'].map(team => <section key={team}><h3>{team === 'ct' ? '反恐精英' : '恐怖分子'}</h3>{props.data.players.filter(player => player.team === team).map(player => <div key={player.seat}><span>{props.room.seats[player.seat]?.name ?? '玩家'}{player.alive ? '' : ' · 阵亡'}</span><span>{player.kills} / {player.deaths}</span></div>)}</section>)}</div>}
     {buyOpen && own && <BuyMenu player={own} prices={loaded.current?.weapons ?? []} mode={mode} allowed={!!props.data.buyAllowed} close={closeBuy} error={error} buy={item => { setError(''); void props.act({ type: 'buy', epoch: props.data.epoch, life: own.life, round: props.data.round, item }).catch(error => setError(error instanceof Error ? error.message : '购买失败')); }} />}
