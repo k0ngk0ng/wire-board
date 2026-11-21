@@ -22,10 +22,10 @@ def main():
   assert mid is not None
   rows.append(dict(actor=actor,action=action,entered=entered,beforeFlag=flag,preparedFlag=mid[0x554+actor],afterFlag=m[0x554+actor],before=decode_world_action_state(r),after=decode_world_action_state(bytes(m[:2048])),context=context(r)['actions']))
  out=ROOT/'games/basketball/engine/testdata';payload=(json.dumps(rows,separators=(',',':'))+'\n').encode();packed=gzip.compress(payload,mtime=0);(out/'landing-special-clear.json.gz').write_bytes(packed)
- before=(ROOT/'.local/basketball/rea/special-shot-clear/runtime-before.json').read_bytes()
+ before=(ROOT/'.local/basketball/research/rea/special-shot-clear/runtime-before.json').read_bytes()
  assert hashlib.sha256(before).hexdigest()=='f1dfb112e822033c27680fc9ab5e36f9bd5fc2390f334c9b995569ddd7b7eba9'
  (out/'landing-special-runtime-before.json.gz').write_bytes(gzip.compress(before,mtime=0))
- source=(ROOT/'.local/nes-basket/runs/ball-rest-team5-aligned/world-after.ram').read_bytes()
+ source=(ROOT/'.local/basketball/research/original/runs/ball-rest-team5-aligned/world-after.ram').read_bytes()
  assert hashlib.sha256(source).hexdigest()=='93fd388aab383aa7a82c7bff46981266027a080cc26b8cf2146297765d9dc8a5'
  expected=[decode_world_action_state(source[i*2048:(i+1)*2048]) for i in range(1013,1073)]
  (out/'landing-special-runtime-worlds.json.gz').write_bytes(gzip.compress(json.dumps(expected,separators=(',',':')).encode(),mtime=0))

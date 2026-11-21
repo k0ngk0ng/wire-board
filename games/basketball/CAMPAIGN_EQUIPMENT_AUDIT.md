@@ -107,7 +107,7 @@ Original default is **4**. The menu appears after roster preparation when a team
 
 ## Minimal original end-to-end evidence now available
 
-All runs and exact snapshots are indexed in `.local/basketball/rea/campaign-audit/verified-selection.json`.
+All runs and exact snapshots are indexed in `.local/basketball/research/rea/campaign-audit/verified-selection.json`.
 
 1. **New single-player story to live first match:** normal mode menu → 1P → New York map selection → roster preparation → tactic confirmation → travel/court opening → actual Scene1/phase129, Mode0, Period0, Court1. Complete controller timeline and screenshots retained; no match timer or outcome was edited.
 2. **Two-player cooperative story to live first match:** original 2P selection yields Mode1 and controller assignments `[0,1,FF,FF]`, then enters the same first match without artificial AI replacement.
@@ -145,4 +145,4 @@ New REA evidence:
 - Bank3 campaign/map/equipment/tactic batch: `ev_c779850b25af5ea09638e3a7932acad486df46837988564e2e058cdd7d6a8b4c`.
 - Follow-up preparation/ending/name-rendering batch: `ev_37af32e9b034716efaee6f2adaafab2a2553752baa05f1e2889edf15118919bd`.
 
-Both complete bundles and snapshots are under `.local/basketball/rea/campaign-audit/`. Existing result-transition and opening-attribute evidence was reused. Decompiler output around rendering waits contains unreachable-block/infinite-loop warnings; original instruction checks and normal controller captures constrain those conclusions. Static code and a normal menu opening do not prove full reward, ending, all-equipment or complete-campaign gameplay acceptance.
+Both complete bundles and snapshots are under `.local/basketball/research/rea/campaign-audit/`. Existing result-transition and opening-attribute evidence was reused. Decompiler output around rendering waits contains unreachable-block/infinite-loop warnings; original instruction checks and normal controller captures constrain those conclusions. Static code and a normal menu opening do not prove full reward, ending, all-equipment or complete-campaign gameplay acceptance.

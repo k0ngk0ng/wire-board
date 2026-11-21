@@ -1,9 +1,9 @@
 """Unmodified A8DE entered-mode26 direct plans; random table is untouched."""
 import gzip,hashlib,itertools,json,sys
 from pathlib import Path
-ROOT=Path(__file__).resolve().parents[2];sys.path.insert(0,str(ROOT/'.local/basketball/python'))
+ROOT=Path(__file__).resolve().parents[2];sys.path.insert(0,str(ROOT/'.local/basketball/research/python'))
 from py65.devices.mpu6502 import MPU
-ROM=(ROOT/'.local/nes-basket/basketball.nes').read_bytes();PRG=ROM[16:16+131072]
+ROM=(ROOT/'.local/basketball/research/original/basketball.nes').read_bytes();PRG=ROM[16:16+131072]
 
 def execute(case,retained=None):
  fresh=retained is None or retained[0] is None

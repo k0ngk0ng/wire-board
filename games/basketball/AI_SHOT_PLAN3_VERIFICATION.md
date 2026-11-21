@@ -16,7 +16,7 @@ B471 完整原函数见 REA `ev_8bac8418e07eaa8a98c2ac6472d25618bfc7cb159ee63296
 
 只读18,000帧参考捕获到1次完整自然B471调用，完整WorldInputState精确匹配，全部RAM/PNG与参考相同。另执行原B471隔离矩阵5120组，覆盖4席位、8grade、5种mount字节、8zone、动作及Entered边界，全部与Go匹配；矩阵不计入自然覆盖。
 
-测试先于实现。当前MountFlags经AIShotContext只读引用世界唯一字段，兼容单人物入口可显式传入；没有新增永久config。原生竞态、Wasm、旧计划2/7及283规划调用、1998/57连续世界回归通过，日志位于 `.local/basketball/rea/shot-plan3/`。此修复把裸cold推进5081的mode22边界；后续见AI_COMMAND_RESUME_VERIFICATION与COLD_RUNTIME_VERIFICATION。
+测试先于实现。当前MountFlags经AIShotContext只读引用世界唯一字段，兼容单人物入口可显式传入；没有新增永久config。原生竞态、Wasm、旧计划2/7及283规划调用、1998/57连续世界回归通过，日志位于 `.local/basketball/research/rea/shot-plan3/`。此修复把裸cold推进5081的mode22边界；后续见AI_COMMAND_RESUME_VERIFICATION与COLD_RUNTIME_VERIFICATION。
 
 ```sh
 PYTHONDONTWRITEBYTECODE=1 .local/monopoly/venv/bin/python scripts/basketball/capture_ai_shot_plan2.py --plan 3

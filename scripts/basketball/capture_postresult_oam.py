@@ -49,7 +49,7 @@ def main():
  with (reference/'frames.csv').open() as f:mapping={int(r['frame']):int(r['emulator_frame']) for r in csv.DictReader(f)}
  selected={mapping[n] for n in spec['captures']};table='{'+','.join(f'[{n}]=true' for n in sorted(selected))+'}'
  spec['name']=f'postresult-{args.kind}-oam';spec['hooks_lua']+='\n'+HOOK.replace('SELECTED',table)
- target=ROOT/'.local/postresult-surface-source'/f'{args.kind}-capture.json';target.write_text(json.dumps(spec,indent=2)+'\n');run(target)
+ target=ROOT/'.local/basketball/research/postresult-surface-source'/f'{args.kind}-capture.json';target.write_text(json.dumps(spec,indent=2)+'\n');run(target)
  observed=BASE/'runs'/spec['name']
  files=['ram.bin','injection.json']+[f'frame-{n:05d}.png' for n in spec['captures']]
  assert all((observed/name).read_bytes()==(reference/name).read_bytes() for name in files)

@@ -1,6 +1,7 @@
 import {
   KeyboardController,
   actionsForKey,
+  mappedModifiersAllowed,
   type ControllerModel,
   type ControllerProfile,
 } from "./input";
@@ -13,6 +14,7 @@ export type GameControllerContext = {
   menuActions?: Record<string, string>;
   changed: () => void;
   keyboardTarget?: (target: EventTarget | null) => boolean;
+  captureMappedModifiers?: () => boolean;
 };
 
 // Samples only when the owning game asks. Key edges also notify the game's
@@ -113,8 +115,7 @@ export class GameController {
       !this.keyboardAllowed(event.target) ||
       event.defaultPrevented ||
       event.isComposing ||
-      ((event.ctrlKey || event.metaKey || event.altKey) &&
-        !/^(Control|Alt|Meta)/.test(event.code))
+      !mappedModifiersAllowed(this.profile, event, this.context.captureMappedModifiers?.() ?? false, code => this.keyboard.heldKey(code))
     )
       return;
     if (!actionsForKey(this.profile, event.code).length) return;

@@ -4,7 +4,7 @@ from verify_pass_floor_original import ROOT,Memory,MPU,put
 from extract_world_actions import decode_world_action_state
 
 def main():
- rom=(ROOT/'.local/nes-basket/basketball.nes').read_bytes();prg=rom[16:16+131072];base=(ROOT/'.local/nes-basket/runs/ball-pass/ram.bin').read_bytes()[:2048];rows=[]
+ rom=(ROOT/'.local/basketball/research/original/basketball.nes').read_bytes();prg=rom[16:16+131072];base=(ROOT/'.local/basketball/research/original/runs/ball-pass/ram.bin').read_bytes()[:2048];rows=[]
  for chain,(object,height,facing,arc,diagonal) in enumerate(itertools.product([4,5],[0,55,56,151,152,271],[0,128],[1,3],[False,True])):
   r=bytearray(base);a=object
   for address,value in {0x512+a:2,0x51f+a:128,0x52c+a:255,0x437+a:0,0x444+a:0,0x451+a:0,0x46b+a:128,0x5f7+a:128,0x642+a:128,0x539+a:0,0x3d6+a:14,0x46b:facing,0x55d:7,0x58d:0,0x589:129,0x58b:1}.items():r[address]=value

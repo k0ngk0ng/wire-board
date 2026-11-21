@@ -18,7 +18,7 @@
 
 从真实故障存档开始，`verify_hoop_incident_continuation.py` 通过正式原生 runtime-stdio 接口继续比赛；只提供物理按键，不修改物理状态、得分或 AI。默认路径仅在中场按 START；`--controls` 路径持续输入方向、A、B 与组合键。每批推进均恢复前一份存档，在独立会话重演同一输入，并比较完整引擎状态。
 
-两条路径都须经过中场、下半场并到达原版确认结算。`.local/basketball-incident-20261023/continuation-idle.json` 与 `continuation-controls.json` 保存完整状态摘要、恢复次数和结果。此验证证明本次故障状态可继续并可重复恢复，不代替对所有设备或所有可能玩法的穷尽验证。
+两条路径都须经过中场、下半场并到达原版确认结算。`.local/basketball/verification/incident-20261023/continuation-idle.json` 与 `continuation-controls.json` 保存完整状态摘要、恢复次数和结果。此验证证明本次故障状态可继续并可重复恢复，不代替对所有设备或所有可能玩法的穷尽验证。
 
 ```sh
 source scripts/env.sh

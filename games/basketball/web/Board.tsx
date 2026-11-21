@@ -257,6 +257,7 @@ export function Board(props: BoardProps<BasketballNetworkView>) {
       ref={root}
       className="basketball-board"
       tabIndex={0}
+      data-game-focus
       data-basketball-ready={ready}
       aria-label="热血篮球比赛"
     >

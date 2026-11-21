@@ -1,0 +1,12 @@
+{
+  "repository": "https://github.com/rehlds/ReGameDLL_CS",
+  "commit": "1f16a7f25c14225931f8df1abc51f68d18ded839",
+  "url": "https://codeload.github.com/rehlds/ReGameDLL_CS/zip/1f16a7f25c14225931f8df1abc51f68d18ded839",
+  "archive": ".local/cs16/research/regamedll-reference.zip",
+  "bytes": 33467452,
+  "sha256": "5f0cbe86827009e8fec5400b4ad9af1ca0bd59858d4afaf7ca53ec3aa7b7659d",
+  "authority": "public-reference-source",
+  "limitations": [
+    "ReGameDLL_CS is a modified reverse engineered implementation, not original Valve game binary"
+  ]
+}

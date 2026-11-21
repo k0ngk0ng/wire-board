@@ -18,7 +18,7 @@
 - `B51D` 比较横向速度高字节的符号和进攻方向；相同方向且垂直速度高字节等于 0 时进入空中瞄准。方向不同时直接执行 `B540`，不先改写计划号。
 - `B540` 在垂直速度高字节等于 0 时启动持球跳跃、写跳跃阶段 -1、下一计划 1。`B557` 在相同条件下只选择下一计划 2，不在本次提前执行。
 - 瞬时上下文 `HorizontalSpeed` 来自当前人物横向速度，接入独立人物调用和完整世界输入；不新增存档字段。
-- REA 的 mode31 证据位于 `.local/basketball/rea/ai-batch/batch.json`，ID `ev_eef21fb30302a3ec59b8b3dc097be9a7fa2a559339d598963a8489a9d646759d`；计划分派证据位于 `.local/basketball/rea/shot-planning/dispatch/batch.json`，ID `ev_8bac8418e07eaa8a98c2ac6472d25618bfc7cb159ee632963fe08b31581cafda`。静态分析用于定位，结论另以原指令实际执行核验。
+- REA 的 mode31 证据位于 `.local/basketball/research/rea/ai-batch/batch.json`，ID `ev_eef21fb30302a3ec59b8b3dc097be9a7fa2a559339d598963a8489a9d646759d`；计划分派证据位于 `.local/basketball/research/rea/shot-planning/dispatch/batch.json`，ID `ev_8bac8418e07eaa8a98c2ac6472d25618bfc7cb159ee632963fe08b31581cafda`。静态分析用于定位，结论另以原指令实际执行核验。
 
 ## 对照矩阵
 
@@ -28,7 +28,7 @@
 - 13,440 条持久化调用，覆盖计划 1／2／8／9／10、动作 62／20／26、水平速度高字节 -128／-1／0／127、垂直速度高字节 -128／-1／0／1／2／3／127、跳跃阶段、离地状态与真人队伍。
 - 比较动作及进入位、模式及进入位、计划、计数器、目标、目的地、朝向、跳跃阶段、投篮周期、下一动作和完整 RNG。
 - 原表只有七个意图明确的阈值对；难度 28–31 会读到紧邻的指令字节 BD／72。实现保留原读取结果，并由矩阵验证，不外推新的阈值。
-- 红测先得到 `original AI strategy mode 31 not reconstructed`；实现后全部矩阵通过。红绿日志位于 `.local/basketball/rea/ai-mode31/`，可重建夹具和来源摘要位于 `engine/testdata/ai-mode31-function*`。
+- 红测先得到 `original AI strategy mode 31 not reconstructed`；实现后全部矩阵通过。红绿日志位于 `.local/basketball/research/rea/ai-mode31/`，可重建夹具和来源摘要位于 `engine/testdata/ai-mode31-function*`。
 
 复现：
 
@@ -42,7 +42,7 @@ go test ./games/basketball/engine -run '^TestAIMode31IsolatedOriginalMatrix$' -c
 
 上述受控输入仅用于隔离原函数，不修改自然捕获 RAM，也不改变完整比赛的固定种子 `0x12345678`、恢复间隔或 48,000 视频帧上限。mode34 等未恢复分支仍显式报错；该矩阵不代表全部原版 AI、完整赛程或产品复刻已完成。
 
-定向 `-race` 与 Node Wasm 验证均通过，覆盖 mode31、Action3E、强制投篮、已有投篮计划、人物接口与完整世界输入／循环（包括 1,998 个原始连续逻辑帧）。结果分别见 `.local/basketball/rea/ai-mode31/race.log` 和 `wasm.log`。
+定向 `-race` 与 Node Wasm 验证均通过，覆盖 mode31、Action3E、强制投篮、已有投篮计划、人物接口与完整世界输入／循环（包括 1,998 个原始连续逻辑帧）。结果分别见 `.local/basketball/research/rea/ai-mode31/race.log` 和 `wasm.log`。
 
 ```sh
 go test -race ./games/basketball/engine -run 'Test(AIMode31|OriginalAction3E|AIForcedShot|OriginalAIShotPlan|ShotPlan(Two|Seven)|ComputerActor|World(Inputs|Loop))' -count=1 -v

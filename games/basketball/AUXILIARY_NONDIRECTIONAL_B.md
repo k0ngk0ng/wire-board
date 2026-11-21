@@ -12,7 +12,7 @@ REA 证据：`ev_2b5588b7f56a312eba6a999f127fbd52cb7aa05f20460fa4bfe45970af72155
 
 另有一条 17 周期原 805C 输入→人物／辅助动作链：A 拾起后只输入无方向 B，原请求为4F。Go 从同一初态持续运行真实输入及生产动作 callback，最终人物与道具回到 idle、道具 owner=-1。保留34个人物／道具动作边界及每次输入内存，未中途灌回坐标或动画。这是显式起点的原函数链，不是完整自然比赛。
 
-原始夹具与 SHA 位于 `engine/testdata/auxiliary-setdown-*-source.json`；提取脚本为 `scripts/basketball/probe_auxiliary_setdown.py`。先失败及结果日志为 `.local/basketball/engine/auxiliary-setdown-{before,after,world-before,world-after,race,wasm}.log`。
+原始夹具与 SHA 位于 `engine/testdata/auxiliary-setdown-*-source.json`；提取脚本为 `scripts/basketball/probe_auxiliary_setdown.py`。先失败及结果日志为 `.local/basketball/verification/engine/auxiliary-setdown-{before,after,world-before,world-after,race,wasm}.log`。
 
 ## 68 与 65 的区别及后续边界
 
@@ -22,7 +22,7 @@ REA 证据：`ev_2b5588b7f56a312eba6a999f127fbd52cb7aa05f20460fa4bfe45970af72155
 - 7/0 使用 handler 8，读取当前人物 Pressed 的 A 位；已由动作上下文显式传递，缺失时仍报错，不能默认无按键。
 - 其余27项的负 handler 有明确原行为：回到 `$23` 携物急停，不是通用高抛，也不是任选攻击。
 
-空中 B 请求 `$65`，含义是角色空中 B 攻击。32个表项中，现有攻击组件覆盖 handler 2／19／15 的21项；其余11项分布于 handler 11／20／16／31／10。不能把已覆盖角色的行为外推到全部角色。角色映射记录在 `.local/basketball/rea/auxiliary-nondirectional/role-map.json`。
+空中 B 请求 `$65`，含义是角色空中 B 攻击。32个表项中，现有攻击组件覆盖 handler 2／19／15 的21项；其余11项分布于 handler 11／20／16／31／10。不能把已覆盖角色的行为外推到全部角色。角色映射记录在 `.local/basketball/research/rea/auxiliary-nondirectional/role-map.json`。
 
 4F 与68现已接入真实世界动作。68恢复了32个角色表项，以及辅助动作8／9／10／11的联动，详见 [跑动无方向 B 恢复验收](AUXILIARY_RUNNING_B.md)。上述65缺失handler仍需独立恢复与门禁，未用修改输入规避。REA 辅助证据为 `ev_d34ee42f7f50a2d1a6e06a804e4df085557dcdaed7655cf9ff66330f8af30552`。
 

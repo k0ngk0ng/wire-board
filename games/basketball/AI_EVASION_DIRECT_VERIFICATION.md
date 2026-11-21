@@ -22,7 +22,7 @@
 
 Native、race、Wasm 定向检查通过，且包含既有运球避让、计划 2／3／4 和计划 11 的原证据回归。旧测试使用计划 13 作为未恢复哨兵；本轮恢复后将哨兵改为 14，旧失败保存在 `regression-sentinel.log`。这些调用链是 AI 组件验证，不是完整物理、完整比赛或原版菜单路径。
 
-REA / Ghidra 证据保存在 `.local/basketball/rea/evasion-direct/analysis/`。分派 `$B7CD` 的证据为 `ev_4cc09a551f3605a39a7e3d8c15e8ecfa642769b2bc61ef01aed1657e6e9e9cf2`，其已解析调用者为 `$A8DE`；各直接处理函数保留独立函数证据。
+REA / Ghidra 证据保存在 `.local/basketball/research/rea/evasion-direct/analysis/`。分派 `$B7CD` 的证据为 `ev_4cc09a551f3605a39a7e3d8c15e8ecfa642769b2bc61ef01aed1657e6e9e9cf2`，其已解析调用者为 `$A8DE`；各直接处理函数保留独立函数证据。
 
 ## 实际调用者和入口限制
 

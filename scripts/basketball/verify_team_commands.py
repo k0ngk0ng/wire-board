@@ -3,8 +3,8 @@ import gzip,hashlib,itertools,json
 from pathlib import Path
 from verify_pass_floor_original import ROOT,MPU
 from extract_world_inputs import decode_world_input_state
-ROM=(ROOT/'.local/nes-basket/basketball.nes').read_bytes();PRG=ROM[16:16+131072]
-BASE=(ROOT/'.local/nes-basket/runs/team-ai-shot-observation/team-ai-ram.bin').read_bytes()[:2048]
+ROM=(ROOT/'.local/basketball/research/original/basketball.nes').read_bytes();PRG=ROM[16:16+131072]
+BASE=(ROOT/'.local/basketball/research/original/runs/team-ai-shot-observation/team-ai-ram.bin').read_bytes()[:2048]
 
 def state(r):
     s=decode_world_input_state(r)

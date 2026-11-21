@@ -48,7 +48,7 @@ def main():
   else:raise RuntimeError('dunk did not land')
   chains.append(chain)
  out=ROOT/'games/basketball/engine/testdata';packed=gzip.compress(json.dumps(dict(calls=rows,chains=chains),separators=(',',':')).encode(),mtime=0);(out/'dunk-variants.json.gz').write_bytes(packed)
- before=ROOT/'.local/basketball/team7-after-ball18/native/court1-teams0-7-characters0-1-0-1/before.json';(out/'dunk-variants-runtime-before.json.gz').write_bytes(gzip.compress(before.read_bytes(),mtime=0))
+ before=ROOT/'.local/basketball/verification/team7-after-ball18/native/court1-teams0-7-characters0-1-0-1/before.json';(out/'dunk-variants-runtime-before.json.gz').write_bytes(gzip.compress(before.read_bytes(),mtime=0))
  source=dict(calls=len(rows),chains=len(chains),chainCalls=sum(map(len,chains)),naturalGameplay=False,originalInstructionsUnchanged=True,entry='fixed E165..E168 / bank6 8E9D',soundScope='FBCC sink',ROM_SHA256=hashlib.sha256(ROM).hexdigest(),SHA256=hashlib.sha256(packed).hexdigest(),runtimeBeforeSHA256=hashlib.sha256(before.read_bytes()).hexdigest());(out/'dunk-variants-source.json').write_text(json.dumps(source,indent=2)+'\n');print(json.dumps(source))
 
 if __name__=='__main__':main()

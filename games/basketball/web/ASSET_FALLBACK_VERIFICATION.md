@@ -9,6 +9,6 @@ source scripts/env.sh
 PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/accept_asset_fallback.py
 ```
 
-失败记录为 `.local/asset-fallback-red.log`，通过记录为 `.local/asset-fallback-green.log`。完整 324 条请求记录与结果保存在 `.local/basketball-asset-fallback/result.json`，浏览器截图为同目录 `browser.png`。
+失败记录为 `.local/asset-fallback-red.log`，通过记录为 `.local/asset-fallback-green.log`。完整 324 条请求记录与结果保存在 `.local/basketball/verification/asset-fallback/result.json`，浏览器截图为同目录 `browser.png`。
 
 这些是本地服务模拟的远端故障，未验证实际 OSS 网络。游戏专属素材地址、生产打包和真实 CDN 回读分别验收。

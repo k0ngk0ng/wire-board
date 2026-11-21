@@ -8,7 +8,7 @@ import sys
 import wave
 
 ROOT=Path(__file__).resolve().parents[2]
-OUT=ROOT/'.local/basketball/audio/export'
+OUT=ROOT/'.local/basketball/assets/audio/export'
 
 
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
@@ -43,7 +43,7 @@ def main():
             'captures':captures,'capture_sha256':{kind:sha(OUT/path) for kind,path in captures[0].items()},
             'driver_end_step':end_step,'main_sequence_jumps':jumps,'loop':False,'preview_only':ident==76,
             'accepted_for_release':False,'listening_accepted':False,'render_volume':192,
-            'source_rom_sha256':sha(ROOT/'.local/nes-basket/basketball.nes'),
+            'source_rom_sha256':sha(ROOT/'.local/basketball/research/original/basketball.nes'),
             'processing':'source PCM prefix only; no waveform processing',
             'limitation':None if ident==75 else 'This is a333-second original timeline with a one-time tempo129 intro and tempo140 loop section; it is not an indefinite or intro-free loop and is not registered for runtime playback.'}
         tracks.append(track)

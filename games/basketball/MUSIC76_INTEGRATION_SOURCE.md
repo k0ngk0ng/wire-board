@@ -8,7 +8,7 @@ The existing76 preview is too short to contain one complete repeating driver pha
 
 ROM SHA-256: `0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b`.
 
-Retained source is `.local/basketball/audio/export/court-music-076-20000-run-{1,2}/`. Both captures' PCM, complete231-byte driver RAM, APU writes, call log, sample cursors and jump records are byte-identical. The existing WAV/preview SHA-256 is `570cbe70d5f3daa2ff849a3e74e5d1f37f10feef72ba0de28a71ceb47d050d84`; full driver capture SHA-256 is `0778ba69a3ec926d594586e55132c997cc0639e2cf36ba5204f664afbe0b7eed`.
+Retained source is `.local/basketball/assets/audio/export/court-music-076-20000-run-{1,2}/`. Both captures' PCM, complete231-byte driver RAM, APU writes, call log, sample cursors and jump records are byte-identical. The existing WAV/preview SHA-256 is `570cbe70d5f3daa2ff849a3e74e5d1f37f10feef72ba0de28a71ceb47d050d84`; full driver capture SHA-256 is `0778ba69a3ec926d594586e55132c997cc0639e2cf36ba5204f664afbe0b7eed`.
 
 Reusable REA sources:
 
@@ -81,6 +81,6 @@ Rejected shortcuts: loop the preview; truncate to one musical sequence; use `tim
 PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/probe_music76_timeline.py
 ```
 
-Source results, failure inventory, raw extension, hashes and repeat check live in `.local/music76-source/`. The19,997 captured-state matches establish source consistency; the45,000-step extension supplies the previously missing complete control-period witness. It supplies no additional PCM.
+Source results, failure inventory, raw extension, hashes and repeat check live in `.local/basketball/research/music76-source/`. The19,997 captured-state matches establish source consistency; the45,000-step extension supplies the previously missing complete control-period witness. It supplies no additional PCM.
 
 At the proposal boundary, the player change and longer PCM derivation required parent review. That review approved `loopStartSeconds`; subsequent source/asset and native-media results are recorded in the two reports linked above. The failed4304 anchor remains retained rather than being relabelled as accepted. Device validation, listening acceptance and any gapless-output claim remain outstanding.

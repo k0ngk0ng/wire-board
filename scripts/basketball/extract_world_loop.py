@@ -10,7 +10,7 @@ from extract_world_preparation import state as preparation_state, context as pre
 from extract_world_inputs import decode_world_input_state
 
 ROOT=Path(__file__).resolve().parents[2]
-RUNS=ROOT/'.local/nes-basket/runs'
+RUNS=ROOT/'.local/basketball/research/original/runs'
 
 
 def load(run,stem):

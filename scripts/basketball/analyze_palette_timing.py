@@ -2,9 +2,9 @@
 from pathlib import Path
 from collections import Counter
 import json,hashlib
-ROOT=Path(__file__).resolve().parents[2];out=ROOT/'.local/basketball/palette-timing';capture=json.loads((out/'capture.json').read_text());samples=[];summaries=[];special={}
+ROOT=Path(__file__).resolve().parents[2];out=ROOT/'.local/basketball/research/palette-timing';capture=json.loads((out/'capture.json').read_text());samples=[];summaries=[];special={}
 for record in capture['records']:
- run=ROOT/'.local/nes-basket/runs'/record['observed'];log=run/'palette.jsonl';events=[json.loads(line) for line in log.read_text().splitlines()];pending=None;before=None;committed=None;normal=[];all_commits=[]
+ run=ROOT/'.local/basketball/research/original/runs'/record['observed'];log=run/'palette.jsonl';events=[json.loads(line) for line in log.read_text().splitlines()];pending=None;before=None;committed=None;normal=[];all_commits=[]
  for event in events:
   if event['kind']=='queue':pending=event
   elif event['kind']=='commit-before':

@@ -29,7 +29,7 @@ All state is returned by value. Text, phase and actor failures return the origin
 
 ## Source-first comparison results
 
-The failure inventory and Go comparisons were written before the implementation. `.local/ending-scene-audit/red.txt` records the undefined API failure. The targeted suite then passed in 2.549 s:
+The failure inventory and Go comparisons were written before the implementation. `.local/basketball/research/ending-scene-audit/red.txt` records the undefined API failure. The targeted suite then passed in 2.549 s:
 
 - 12,745 consecutive unchanged-ROM FD0A→FC83 calls match complete semantic state, context and ordered requests. The test starts from the first retained Scene7 text boundary and continues from its previous semantic result. No expected RAM is reloaded. JSON restoration is checked every64 calls and at reset.
 - 13,358 ordinary calls from the real whole-console capture match complete `OpeningState`, complete context and ordered text/audio requests between FD0A entry and BF3F return.
@@ -40,7 +40,7 @@ The whole-console comparisons are independent before/after call comparisons, eac
 
 ## Exact source boundaries
 
-Whole-console input: `.local/nes-basket/runs/postresult-ending-observed/events.jsonl` and `boundaries.ram`. Scene7 `textBegin` is FD0A before instructions; `textEnd` is FD16 after A496; `endingBegin` is B995 after text returns; `endingEnd` is BF3F after all actors. The capture executes real rendering, waits and NMI. Its ending was triggered by one declared score/Period28/win-bit injection at the first BA40; it is not a naturally earned final victory.
+Whole-console input: `.local/basketball/research/original/runs/postresult-ending-observed/events.jsonl` and `boundaries.ram`. Scene7 `textBegin` is FD0A before instructions; `textEnd` is FD16 after A496; `endingBegin` is B995 after text returns; `endingEnd` is BF3F after all actors. The capture executes real rendering, waits and NMI. Its ending was triggered by one declared score/Period28/win-bit injection at the first BA40; it is not a naturally earned final victory.
 
 The logical source oracle executes complete original FD0A and FC83, including phase, actors, motion and C00C projection. Before each call, the harness explicitly sets only the two pending upload-header high bytes030B/032E toFF, copies pending to displayed camera, and clears draw count/slots0..11 at the documented D063 boundary. Address low bytes, length and data remain untouched. No expected snapshot, timer, phase, score or RNG value is loaded between calls.
 
@@ -61,6 +61,6 @@ PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/ver
 GOCACHE="$PWD/.local/go-build" GOMODCACHE="$PWD/.local/go-mod" GOTMPDIR="$PWD/.local/tmp" TMPDIR="$PWD/.local/tmp" GOTOOLCHAIN=local go test ./games/basketball/engine -run '^TestOriginalEndingScene' -count=1 -v
 ```
 
-`engine/testdata/ending-scene-source.json` preserves source digests, counts and external boundaries. The compressed fixture retains all observed text/phase entry/exit snapshots, resource-boundary labels and request observations, plus every continuous logical output. Local generation/check/test logs are in `.local/ending-scene-audit/`.
+`engine/testdata/ending-scene-source.json` preserves source digests, counts and external boundaries. The compressed fixture retains all observed text/phase entry/exit snapshots, resource-boundary labels and request observations, plus every continuous logical output. Local generation/check/test logs are in `.local/basketball/research/ending-scene-audit/`.
 
 No runtime, video scheduler, renderer or server integration is included. Real fade/background state effects, queue completion timing, pixels/audio and natural full-campaign acceptance remain outstanding. The complete game reconstruction is not finished.

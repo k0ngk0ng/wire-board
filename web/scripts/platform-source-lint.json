@@ -1,0 +1,47 @@
+{
+  "scope": "Only explicitly registered new platform TypeScript/JavaScript/JSON files and Git-added lines of registered existing files; no game imports or game execution",
+  "sources": [
+    "web/src/audio-spatial.ts",
+    "web/src/game-api/default-players.ts",
+    "web/scripts/platform-source-lint.mjs",
+    "web/scripts/platform-source-lint.json",
+    "web/tests/game-default-players.test.mjs",
+    "web/tests/platform-source-lint.test.mjs",
+    "web/src/game-api/action-scope.ts",
+    "web/tests/action-scope.test.mjs"
+  ],
+  "patterns": [
+    {
+      "directory": "web/tests",
+      "filename": "^audio-spatial(?:[.-][a-z0-9]+)*\\.test\\.mjs$"
+    }
+  ],
+  "patchSources": [
+    "web/src/audio.ts",
+    "web/src/game-api/module.ts",
+    "web/src/game-api/host.tsx",
+    "web/src/main.tsx"
+  ],
+  "platformAudioSources": [
+    "web/src/audio-spatial.ts",
+    "web/src/audio.ts"
+  ],
+  "businessSources": [
+    "web/src/game-api/default-players.ts",
+    "web/src/game-api/action-scope.ts"
+  ],
+  "localOutputRoots": [
+    ".local/cs16"
+  ],
+  "filename": "^(?:[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*\\.(?:tsx?|mjs|json)|[A-Z][A-Za-z0-9]*\\.tsx)$",
+  "rules": [
+    "camelCase/PascalCase bindings and kebab-case filenames",
+    "No code comments, TypeScript any or dynamic execution",
+    "No imports from games or workspace escape",
+    "Integer numeric literals and deterministic logic in businessSources",
+    "AudioContext physical destination cannot receive output; platformAudioSources use a native MediaStream destination",
+    "Only declared platform audio may create native audio players or AudioContext",
+    "All temporary output is explicitly in a declared local workspace root",
+    "Existing sources inspect added lines only; new sources are inspected in full"
+  ]
+}

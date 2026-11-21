@@ -17,7 +17,7 @@ def execute(cpu):
     return dict(status='instruction-limit',pc=cpu.pc,history=history,selectedIndex=selected)
 
 def main():
-    out=ROOT/'.local/basketball/rea/ai-mode15-audit';out.mkdir(parents=True,exist_ok=True)
+    out=ROOT/'.local/basketball/research/rea/ai-mode15-audit';out.mkdir(parents=True,exist_ok=True)
     samples={}
     for high in range(256):
         seed=(high<<24)|0x3456
@@ -29,7 +29,7 @@ def main():
     command=[read(word(0x9467+2*t)+i) for t in range(6) for i in range(12)]
     computer=[read(word(word(0x967e+2*t)+2*s)+i) for t in range(8) for s in range(7) for i in range(6)]
     resume=json.loads(gzip.decompress((ROOT/'games/basketball/engine/testdata/ai-command-resume-function.json.gz').read_bytes()))
-    csvpath=ROOT/'.local/nes-basket/runs/ai-shot-observation/ai.csv';rows=list(csv.DictReader(csvpath.open()))
+    csvpath=ROOT/'.local/basketball/research/original/runs/ai-shot-observation/ai.csv';rows=list(csv.DictReader(csvpath.open()))
     matches=[]
     # Byte-pattern candidates only: data and instruction alignment are not proven.
     for bankid in range(8):

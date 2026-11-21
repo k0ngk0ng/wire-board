@@ -29,6 +29,6 @@ function finish_probe()log:close()end
   assert (reference/'ram.bin').read_bytes()==(observed/'ram.bin').read_bytes()
   for n in spec['captures']:assert (reference/f'frame-{n:05d}.png').read_bytes()==(observed/f'frame-{n:05d}.png').read_bytes()
   records.append({'court':court,'original_source':json.loads((reference/'source.json').read_text()),'run':spec['name'],'observed_source':json.loads((observed/'source.json').read_text()),'frames':[{'frame':n,'emulator_frame':frames[n]} for n in spec['captures']],'ram_and_png_equal':True})
- out=ROOT/'.local/basketball/irq-raster';out.mkdir(exist_ok=True);(out/('holdout-timing-capture.json' if holdout else 'clock-capture.json')).write_text(json.dumps({'scope':'original IRQ writes and cycle timestamps; not Go runtime timing','records':records},indent=2)+'\n')
+ out=ROOT/'.local/basketball/research/irq-raster';out.mkdir(parents=True,exist_ok=True);(out/('holdout-timing-capture.json' if holdout else 'clock-capture.json')).write_text(json.dumps({'scope':'original IRQ writes and cycle timestamps; not Go runtime timing','records':records},indent=2)+'\n')
 if __name__=='__main__':
  p=argparse.ArgumentParser();p.add_argument('--holdout',action='store_true');main(p.parse_args().holdout)

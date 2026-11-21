@@ -17,8 +17,8 @@ import time
 import wave
 
 ROOT = Path(__file__).resolve().parents[2]
-OUT = ROOT / '.local/basketball/audio/export'
-BASE = ROOT / '.local/nes-basket'
+OUT = ROOT / '.local/basketball/assets/audio/export'
+BASE = ROOT / '.local/basketball/research/original'
 SOURCE_SHA = '0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b'
 CATALOG = ROOT / 'games/basketball/assets/audio-catalog.json'
 
@@ -94,7 +94,7 @@ def record(nsf, run, bridge, frames, volume):
     script = run / 'record.lua'
     script.write_text(LUA)
     home = OUT / 'fceux-home'
-    home.mkdir(exist_ok=True)
+    home.mkdir(parents=True,exist_ok=True)
     # The Qt/OpenGL default crashes once the offscreen window's delayed first
     # paint runs. Use FCEUX's software painter in this private capture profile.
     (home/'fceux.cfg').write_text('SDL.OpenGL = 0\nSDL.VideoDriver = 2\nSDL.VideoVsync = 0\n')

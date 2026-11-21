@@ -10,7 +10,7 @@
 - 行走／站立／跑步离开平台后未切 Falling，落地后仍保持下落动作。
 - 附着、持球、持物状态被当作普通人物处理，跳过其原独立落地动作；未知上下文必须明确保留限制。
 
-原始证据：bank 6 `$8938` 为普通跳跃，`$9749` 为 Falling。独立 REA 批处理在 `.local/basketball/rea/free-jump/`。自然采样仅选择世界步骤前没有附着、没有球或物体的普通跳跃／下落人物，不写入 RAM；所有入选样本都参与比较。
+原始证据：bank 6 `$8938` 为普通跳跃，`$9749` 为 Falling。独立 REA 批处理在 `.local/basketball/research/rea/free-jump/`。自然采样仅选择世界步骤前没有附着、没有球或物体的普通跳跃／下落人物，不写入 RAM；所有入选样本都参与比较。
 
 ## 本次结果
 
@@ -21,7 +21,7 @@
 - 新 API `StepFreePlayerWithContext` 接收 `Computer` 和 `JumpPhase`，旧入口保持兼容。附着、持球或持物的 Falling 特殊姿态／落地目标不在普通人物上下文内，仍由对应物体动作链处理；本次没有假定它们都落入普通 ActionLand。
 - 上述明确范围的竞态检查与 Wasm 执行均通过，日志为 `race.json` 与 `wasm.log`；完整包验证由集成阶段另行执行。
 
-后续集成已将 `ComputerActorState.JumpPhase` 传入该入口，并通过模式 7 快速跳跃的固定集成验证。整个篮球包的竞态与 Wasm 验证随后通过，记录在 `.local/basketball/engine/world-preparation-native-tests.json` 和 `world-preparation-wasm-tests.log`。
+后续集成已将 `ComputerActorState.JumpPhase` 传入该入口，并通过模式 7 快速跳跃的固定集成验证。整个篮球包的竞态与 Wasm 验证随后通过，记录在 `.local/basketball/verification/engine/world-preparation-native-tests.json` 和 `world-preparation-wasm-tests.log`。
 
 ## 单次动作接口拆分前的失败场景
 

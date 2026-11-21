@@ -9,7 +9,7 @@ import argparse,json
 from PIL import Image,ImageDraw
 from graphics import render_sprites
 
-p=argparse.ArgumentParser();p.add_argument('--captures',type=Path,default=Path('.local/nes-basket/runs'));p.add_argument('--output',type=Path,default=Path('.local/basketball/atlas'))
+p=argparse.ArgumentParser();p.add_argument('--captures',type=Path,default=Path('.local/basketball/research/original/runs'));p.add_argument('--output',type=Path,default=Path('.local/basketball/assets/atlas'))
 args=p.parse_args();args.output.mkdir(parents=True,exist_ok=True)
 frames={};skipped=[]
 for directory in sorted(args.captures.glob('graphics-*')):

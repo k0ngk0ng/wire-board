@@ -13,7 +13,7 @@ def execute(cpu,entry,obj):
 
 
 def main():
-    rom=(ROOT/'.local/nes-basket/basketball.nes').read_bytes();prg=rom[16:16+131072];base=(ROOT/'.local/nes-basket/runs/ball-pass/ram.bin').read_bytes()[:2048];rows=[]
+    rom=(ROOT/'.local/basketball/research/original/basketball.nes').read_bytes();prg=rom[16:16+131072];base=(ROOT/'.local/basketball/research/original/runs/ball-pass/ram.bin').read_bytes()[:2048];rows=[]
     for obj,column,phase,facing,arc in itertools.product([4,5],range(64),[0,1],[0,128],[1,3]):
         r=bytearray(base)
         for address,value in {0x512+obj:2,0x51f+obj:128,0x52c+obj:255,0x437+obj:0,0x444+obj:0,0x451+obj:0,0x46b+obj:facing,0x5f7+obj:128,0x642+obj:0,0x539+obj:255,0x3d6+obj:12 if obj==4 else 11,0x55d:7,0x58d:128,0x589:phase,0x58b:5,0x3a1:column}.items():r[address]=value

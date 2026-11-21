@@ -4,6 +4,7 @@ import { NetworkSignal } from "./ui/network-signal";
 import type { NetworkInfo } from "./network-quality";
 import { isTransientSyncError, quietSyncError } from "./game-api/sync-error";
 import { blocksAutoplayAction } from "./game-api/autoplay-action";
+import { ActionScopes, type ActionScopeToken } from "./game-api/action-scope";
 import {
   GameFullscreen,
   type GameFullscreenHandle,
@@ -53,7 +54,6 @@ import {
   Maximize,
   LogOut,
   Plus,
-  RotateCcw,
   ScrollText,
   ShieldCheck,
   Sparkles,
@@ -112,6 +112,8 @@ import "./room-option-cards.css";
 import "./style.css";
 import { useRoomPresentation } from "./game-api/presentation";
 import { ResultOverlay } from "./ui/result-overlay";
+import { LeaveRoomConfirmation } from "./ui/leave-room-control";
+import { RoomToolButton } from "./ui/room-tool-button";
 import { RoomHeading } from "./ui/room-heading";
 import { ClosedRoomDescription } from "./ui/closed-room";
 import { CreateRoom } from "./ui/create-room";
@@ -157,6 +159,8 @@ function App() {
     history.replaceState(null, "", url);
   };
   const [state, setState] = useState<State>();
+  const [actionScopes] = useState(() => new ActionScopes());
+  const actionState = useRef<State | undefined>(undefined);
   const mediaBase = mediaAssetsBase(state?.assetsBaseURL || "", location.origin);
   const [streamInputs] = useState(() => new StreamInputs());
   const serverInstance = useRef<string | undefined>(undefined);
@@ -173,9 +177,22 @@ function App() {
   useTurnTitle(presented.room);
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState("");
+  const clearScopedError = (message: string | undefined) => {
+    if (message !== undefined)
+      setError((current) => current === message ? "" : current);
+  };
+  const syncActionScope = (next: State | undefined) => {
+    actionState.current = next;
+    clearScopedError(actionScopes.update(next));
+  };
+  useEffect(() => () => {
+    actionScopes.pause();
+    actionState.current = undefined;
+  }, [actionScopes]);
   const networkFailure = useRef(false);
   const networkMessage = "网络连接中断，正在重新连接。";
-  const reportError = (error: unknown) => {
+  const reportError = (error: unknown, scope?: ActionScopeToken) => {
+    if (scope && !actionScopes.isCurrent(scope)) return;
     if (
       state?.room &&
       gameModule(state.room.kind)?.realtime &&
@@ -184,11 +201,16 @@ function App() {
       networkFailure.current = true;
       return;
     }
+    const message = error instanceof TypeError
+      ? networkMessage
+      : error instanceof Error ? error.message : "操作失败，请重试。";
+    if (scope) {
+      if (!actionScopes.report(scope, message)) return;
+    } else actionScopes.forgetError();
     if (error instanceof TypeError) {
       networkFailure.current = true;
-      setError(networkMessage);
-    } else
-      setError(error instanceof Error ? error.message : "操作失败，请重试。");
+    }
+    setError(message);
   };
   const [busy, setBusy] = useState(false);
   const [online, setOnline] = useState(false);
@@ -208,6 +230,8 @@ function App() {
   const [rules, setRules] = useState(false);
   const [journalRoom, setJournalRoom] = useState("");
   const [closeTableRoom, setCloseTableRoom] = useState("");
+  const [leaveRoom, setLeaveRoom] = useState("");
+  useEffect(() => setLeaveRoom(""), [state?.room?.id]);
   const [profileID, setProfileID] = useState("");
   const [passwordEditing, setPasswordEditing] = useState(false);
   useEffect(() => setPasswordEditing(false), [profileID, state?.user.id]);
@@ -289,8 +313,11 @@ function App() {
       serverInstance.current = data.serverInstance;
       resyncRequired.current = true;
     }
+    const receivedAt = performance.now();
+    syncActionScope(mergeStreamState(actionState.current, data, receivedAt));
     if (networkFailure.current) {
       networkFailure.current = false;
+      actionScopes.forgetError(networkMessage);
       setError((message) => (message === networkMessage ? "" : message));
     }
     if (
@@ -310,7 +337,7 @@ function App() {
       setPresentationEpoch((v) => v + 1);
       resyncRequired.current = false;
     }
-    setState((previous) => mergeStreamState(previous, data, performance.now()));
+    setState((previous) => mergeStreamState(previous, data, receivedAt));
     setLoaded(true);
   };
   refreshWork.current = async () => {
@@ -320,6 +347,7 @@ function App() {
       if (generation === snapshotGeneration.current) acceptState.current(data);
     } catch (e) {
       if ((e as { status: number }).status === 401) {
+        syncActionScope(undefined);
         previousRoom.current = undefined;
         setState(undefined);
       } else reportError(e);
@@ -365,11 +393,13 @@ function App() {
               setConnectionNetwork(packet.self);
             setState((previous) => mergeNetworkState(previous, packet));
           } else if (packet.type === "game") {
+            const receivedAt = performance.now();
+            syncActionScope(mergeStreamGame(actionState.current, packet as GamePacket, receivedAt));
             setState((previous) =>
               mergeStreamGame(
                 previous,
                 packet as GamePacket,
-                performance.now(),
+                receivedAt,
               ),
             );
           } else if (packet.type === "ack") {
@@ -448,6 +478,7 @@ function App() {
   const run = async (fn: () => Promise<unknown>) => {
     if (busy) return;
     setBusy(true);
+    actionScopes.forgetError();
     setError("");
     try {
       await fn();
@@ -457,6 +488,16 @@ function App() {
       await refresh();
     } finally {
       setBusy(false);
+    }
+  };
+  const transitionActionScope = async <T,>(operation: () => Promise<T>): Promise<T> => {
+    const intent = actionScopes.pause();
+    clearScopedError(intent.cleared);
+    try {
+      return await operation();
+    } catch (error) {
+      actionScopes.resume(intent.token, actionState.current);
+      throw error;
     }
   };
   const command = async (
@@ -472,12 +513,15 @@ function App() {
       ).join(""),
       ...extra,
     };
-    try {
-      return await api(`/rooms/${room.id}`, body);
-    } catch (e) {
-      if (e instanceof TypeError) return api(`/rooms/${room.id}`, body);
-      throw e;
-    }
+    const send = async () => {
+      try {
+        return await api(`/rooms/${room.id}`, body);
+      } catch (e) {
+        if (e instanceof TypeError) return api(`/rooms/${room.id}`, body);
+        throw e;
+      }
+    };
+    return ["leave", "close", "rematch"].includes(type) ? transitionActionScope(send) : send();
   };
   const act: Act = async (action) => {
     if (!state?.room || presented.blocked) return;
@@ -501,27 +545,36 @@ function App() {
         state.room.seats[state.room.you]?.left
       )
         return;
+      const actionRoom = state.room;
+      const requestScope = actionScopes.capture(state, action.epoch);
       try {
-        if (streamInputs.connected) {
-          await streamInputs.send({
-            serverInstance: state.serverInstance,
-            roomId: state.room.id,
-            version: state.room.version,
-            nonce: crypto.randomUUID(),
-            action,
-          });
-        } else if (module.streamInputOnly) {
-          throw new Error("实时连接尚未就绪");
-        } else {
-          await command(state.room, "action", {
-            action,
-            serverInstance: state.serverInstance,
-          });
-          void refresh();
-        }
+        await actionScopes.run(requestScope, async () => {
+          if (streamInputs.connected) {
+            await streamInputs.send({
+              serverInstance: state.serverInstance,
+              roomId: actionRoom.id,
+              version: actionRoom.version,
+              nonce: crypto.randomUUID(),
+              action,
+            });
+          } else if (module.streamInputOnly) {
+            throw new Error("实时连接尚未就绪");
+          } else {
+            await command(actionRoom, "action", {
+              action,
+              serverInstance: state.serverInstance,
+            });
+            void refresh();
+          }
+        }, (error, scope) => {
+          const failure = quietSyncError(error);
+          if (!isTransientSyncError(failure)) {
+            if ((failure as { status?: number })?.status === 401) reportError(failure);
+            else reportError(failure, scope);
+          }
+        });
       } catch (e) {
         const failure = quietSyncError(e);
-        if (!isTransientSyncError(failure)) reportError(failure);
         void refresh();
         throw failure;
       }
@@ -800,7 +853,7 @@ function App() {
               <GameFeedback>
                 <div className="toast error" role="alert">
                   {error}
-                  <button aria-label="关闭错误" onClick={() => setError("")}>
+                  <button aria-label="关闭错误" onClick={() => { actionScopes.forgetError(); setError(""); }}>
                     <X size={16} />
                   </button>
                 </div>
@@ -877,21 +930,20 @@ function App() {
                       {room.game &&
                         (room.status === "playing" ||
                           room.status === "finished") && (
-                          <button
-                            className="subtle"
+                          <RoomToolButton
+                            label="全屏"
                             data-fullscreen-enter
                             data-fullscreen-toggle
-                            aria-label="全屏"
                             disabled={!gameFullscreenReady}
                             onClick={() => gameFullscreen.current?.enter()}
                           >
                             <Maximize size={16} />
-                            全屏
-                          </button>
+                          </RoomToolButton>
                         )}
                       {canAutoPlay && (
-                        <button
-                          className={`subtle autoplay-control ${autoPlay ? "active" : ""}`}
+                        <RoomToolButton
+                          label={autoPlay ? "取消托管" : "开启托管"}
+                          className={`autoplay-control ${autoPlay ? "active" : ""}`}
                           aria-pressed={autoPlay}
                           disabled={busy}
                           onClick={() =>
@@ -899,31 +951,32 @@ function App() {
                           }
                         >
                           {autoPlay ? <Hand size={16} /> : <Bot size={16} />}
-                          {autoPlay ? "取消托管" : "开启托管"}
-                        </button>
+                        </RoomToolButton>
                       )}
                       <SaveGameControl
+                        iconOnly
                         room={room}
                         userID={state.user.id}
                         busy={busy}
                         command={roomCommand}
                       />
                       {room.game && (
-                        <button
-                          className="subtle"
+                        <RoomToolButton
+                          label="对局日志"
                           aria-haspopup="dialog"
                           onClick={() => setJournalRoom(room.id)}
                         >
                           <ScrollText size={16} />
-                          对局日志
-                        </button>
+                        </RoomToolButton>
                       )}
-                      <button className="subtle" onClick={() => setRules(true)}>
+                      <RoomToolButton
+                        label="玩法速查"
+                        onClick={() => setRules(true)}
+                      >
                         <BookOpen size={16} />
-                        玩法速查
-                      </button>
-                      <button
-                        className="subtle"
+                      </RoomToolButton>
+                      <RoomToolButton
+                        label="邀请朋友"
                         onClick={async () => {
                           try {
                             await navigator.clipboard.writeText(
@@ -936,45 +989,45 @@ function App() {
                         }}
                       >
                         <Copy size={16} />
-                        邀请朋友
-                      </button>
+                      </RoomToolButton>
                       {room.status === "playing" &&
                         !room.spectating &&
                         room.host === state.user.id && (
-                          <button
-                            className="subtle danger"
+                          <RoomToolButton
+                            label="结束牌桌"
+                            className="danger"
                             disabled={busy}
                             aria-haspopup="dialog"
                             onClick={() => setCloseTableRoom(room.id)}
                           >
-                            结束牌桌
-                          </button>
+                            <Flag size={16} />
+                          </RoomToolButton>
                         )}
                       {room.spectating && (
-                        <button
-                          className="subtle"
+                        <RoomToolButton
+                          label="离开观战"
                           disabled={busy}
                           onClick={() =>
                             void run(() =>
-                              api(`/rooms/${room.id}/watch`, { leave: true }),
+                              transitionActionScope(() => api(`/rooms/${room.id}/watch`, { leave: true })),
                             )
                           }
                         >
                           <ArrowLeft size={16} />
-                          离开观战
-                        </button>
+                        </RoomToolButton>
                       )}
                       {!room.spectating &&
                         (room.status !== "playing" ||
                           room.game?.eliminated?.includes(room.you)) && (
-                          <button
-                            className="subtle"
+                          <RoomToolButton
+                            label="离开房间"
                             disabled={busy}
-                            onClick={() => roomCommand("leave")}
+                            data-leave-room
+                            aria-haspopup="dialog"
+                            onClick={() => setLeaveRoom(room.id)}
                           >
                             <ArrowLeft size={16} />
-                            离开房间
-                          </button>
+                          </RoomToolButton>
                         )}
                     </div>
                   </CompactRoomPanel>
@@ -1044,8 +1097,8 @@ function App() {
                           disabled={busy}
                           onClick={() => roomCommand("rematch")}
                         >
-                          <RotateCcw size={18} />
-                          再开一局
+                          <ArrowLeft size={18} />
+                          返回房间
                         </button>
                       )}
                   </div>
@@ -1087,6 +1140,7 @@ function App() {
                                     gameModule(room.kind)?.viewportFit) ? (
                                     <>
                                       <SaveGameControl
+                                        iconOnly
                                         room={room}
                                         userID={state.user.id}
                                         busy={busy}
@@ -1098,8 +1152,8 @@ function App() {
                                         gameModule(room.kind)?.viewportFit && (
                                           <>
                                             <span role="status">托管中</span>
-                                            <button
-                                              className="subtle"
+                                            <RoomToolButton
+                                              label="取消托管"
                                               data-viewport-resume
                                               disabled={busy}
                                               onClick={() =>
@@ -1109,8 +1163,7 @@ function App() {
                                               }
                                             >
                                               <Hand size={16} />
-                                              取消托管
-                                            </button>
+                                            </RoomToolButton>
                                           </>
                                         )}
                                     </>
@@ -1129,19 +1182,22 @@ function App() {
                                   room.game?.finished && (
                                     <ResultOverlay
                                       key={`${room.id}:${room.result?.id || "finished"}`}
+                                      busy={busy}
+                                      onReturn={
+                                        !room.spectating &&
+                                        room.host === state.user.id &&
+                                        state.availableGames.includes(
+                                          room.kind,
+                                        )
+                                          ? () => roomCommand("rematch")
+                                          : undefined
+                                      }
+                                      waitingForHost={
+                                        !room.spectating &&
+                                        room.host !== state.user.id
+                                      }
                                     >
-                                      <Results
-                                        room={room}
-                                        host={
-                                          !room.spectating &&
-                                          room.host === state.user.id &&
-                                          state.availableGames.includes(
-                                            room.kind,
-                                          )
-                                        }
-                                        busy={busy}
-                                        command={roomCommand}
-                                      />
+                                      <Results room={room} />
                                     </ResultOverlay>
                                   )
                                 }
@@ -1240,6 +1296,17 @@ function App() {
                 </form>
               </Modal>
             )}
+            {room && !room.spectating && leaveRoom === room.id && (
+              <LeaveRoomConfirmation
+                room={room}
+                busy={busy}
+                onCancel={() => setLeaveRoom("")}
+                onConfirm={() => {
+                  setLeaveRoom("");
+                  roomCommand("leave");
+                }}
+              />
+            )}
             {room?.status === "playing" &&
               !room.spectating &&
               room.host === state.user.id &&
@@ -1330,7 +1397,7 @@ function App() {
                             disabled={busy}
                             onClick={() =>
                               void run(async () => {
-                                await api("/logout", {});
+                                await transitionActionScope(() => api("/logout", {}));
                                 setProfileID("");
                               })
                             }

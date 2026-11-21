@@ -7,8 +7,8 @@ all output samples, then a second encoding verifies byte reproducibility.
 from pathlib import Path
 import array,csv,fcntl,hashlib,json,math,os,re,subprocess,wave
 
-ROOT=Path(__file__).resolve().parents[2];OUT=ROOT/'.local/basketball/audio/export'
-WORK=ROOT/'.local/basketball/audio/compression'
+ROOT=Path(__file__).resolve().parents[2];OUT=ROOT/'.local/basketball/assets/audio/export'
+WORK=ROOT/'.local/basketball/assets/audio/compression'
 IDS=[60,66,75,64,61,65,59,63,62]
 
 

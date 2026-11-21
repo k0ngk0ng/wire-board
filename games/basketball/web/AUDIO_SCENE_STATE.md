@@ -42,11 +42,11 @@ python3 scripts/basketball/accept_network_scene.py
 BASKETBALL_BROWSER_E2E=1 go test ./games/basketball/server -run '^TestBasketballBrowserNetworkBoard$' -count=1 -v
 ```
 
-真实 MP3 浏览器验收覆盖服务端 checkpoint 的位置恢复、原暂停、新曲清除暂停、循环取模、暂停快照恢复、继续、有限曲结束和平台静音，共 9 项；未请求旧效果或 WAV 母版。记录为 `.local/basketball/audio-recovery-browser/result.json`。
+真实 MP3 浏览器验收覆盖服务端 checkpoint 的位置恢复、原暂停、新曲清除暂停、循环取模、暂停快照恢复、继续、有限曲结束和平台静音，共 9 项；未请求旧效果或 WAV 母版。记录为 `.local/basketball/verification/audio-recovery-browser/result.json`。
 
-真实 HTTP／房间页面另验证向平台端口传递当前音乐位置，以及首次播放被拒绝后的原生手势恢复。此房间用例的音频端口是明确的测试替身；真实媒体证据来自上一项，不能把两者表述为已经完成跨浏览器整局混音验收。记录为 `.local/basketball/network-board/result.json`。
+真实 HTTP／房间页面另验证向平台端口传递当前音乐位置，以及首次播放被拒绝后的原生手势恢复。此房间用例的音频端口是明确的测试替身；真实媒体证据来自上一项，不能把两者表述为已经完成跨浏览器整局混音验收。记录为 `.local/basketball/verification/network-board/result.json`。
 
-服务端验证原命令、重复请求、效果不改变音乐、暂停／继续、新曲和清除、游戏暂停期间 BGM 继续，以及持久化恢复。记录为 `.local/basketball/engine/music-state-race.log`。实现前失败记录保留为 `audio-offset-before.log`、`music-state-before.log`、`audio-recovery-before.log`、`audio-recovery-error-before.log` 和 `music-scene-before.log`。
+服务端验证原命令、重复请求、效果不改变音乐、暂停／继续、新曲和清除、游戏暂停期间 BGM 继续，以及持久化恢复。记录为 `.local/basketball/verification/engine/music-state-race.log`。实现前失败记录保留为 `audio-offset-before.log`、`music-state-before.log`、`audio-recovery-before.log`、`audio-recovery-error-before.log` 和 `music-scene-before.log`。
 
 当前偏移在请求播放时计算；真实远端加载延迟和跨设备漂移仍需进一步测量，不能把本地媒体检查当作样本级同步证明。真实 Safari／手机、服务器重启后跨页面的媒体恢复、人工听感和完整对局混音仍未完成。素材发布标记保持 `false`，未上传 OSS。
 

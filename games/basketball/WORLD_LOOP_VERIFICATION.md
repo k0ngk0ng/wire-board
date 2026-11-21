@@ -17,9 +17,9 @@
 
 `StepWorldLoop` 已从唯一初始状态连续推进全部 1,998 次更新，复现 26,093 次对象动作调用；人物、辅助对象、篮球、篮筐、球权、AI、共享随机流、接触阶段元数据、分数、相机、缓存投影和绘制顺序逐步匹配原轨迹。循环代码只读取当前状态、初始静态配置与控制器输入，不读取任何后续预期状态。
 
-`TestWorldLoopSingleInitialStateOriginalTrajectory` 只执行一次 `state = fixture.Initial`，随后每次将返回状态送入下一步。序列化恢复后的下一步相同；错误返回完整原状态，不留下计数、HUD 快照或半步音效。原生竞态和 Wasm 检查通过，证据为 `.local/basketball/world-loop/{native-tests.json,wasm-tests.log}`。
+`TestWorldLoopSingleInitialStateOriginalTrajectory` 只执行一次 `state = fixture.Initial`，随后每次将返回状态送入下一步。序列化恢复后的下一步相同；错误返回完整原状态，不留下计数、HUD 快照或半步音效。原生竞态和 Wasm 检查通过，证据为 `.local/basketball/verification/world-loop/{native-tests.json,wasm-tests.log}`。
 
-主线程提供的独立 `verify-world` CLI 也通过原生／Wasm 一致性检查。一次初始化、1,998 次更新，结束比分 `[0,33]`，状态轨迹 SHA-256 为 `c785fc7047eb5860f3c38d444082509d89af1d602e4d84717d4899418ad19d8a`。空轨迹、篡改最后预期随机数和不支持场地在两种运行时共 6 个负例均失败，完整报告位于 `.local/basketball/engine/continuous-runtime/verification.json`。
+主线程提供的独立 `verify-world` CLI 也通过原生／Wasm 一致性检查。一次初始化、1,998 次更新，结束比分 `[0,33]`，状态轨迹 SHA-256 为 `c785fc7047eb5860f3c38d444082509d89af1d602e4d84717d4899418ad19d8a`。空轨迹、篡改最后预期随机数和不支持场地在两种运行时共 6 个负例均失败，完整报告位于 `.local/basketball/verification/engine/continuous-runtime/verification.json`。
 
 ## 状态与阶段边界
 

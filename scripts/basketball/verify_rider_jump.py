@@ -9,7 +9,7 @@ from verify_pass_floor_original import ROOT, Memory, MPU, put
 from extract_world_actions import decode_world_action_state
 from extract_world_preparation import context
 from verify_court_profiles import image, EXPECTED
-rom=(ROOT/'.local/nes-basket/basketball.nes').read_bytes()
+rom=(ROOT/'.local/basketball/research/original/basketball.nes').read_bytes()
 assert hashlib.sha256(rom).hexdigest()==EXPECTED
 base=image()
 

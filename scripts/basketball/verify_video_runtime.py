@@ -16,7 +16,7 @@ def main():
     parser.add_argument('--output')
     args = parser.parse_args()
     full_match = args.full_match or args.all_computer
-    default_output = '.local/basketball/video-runtime-all-computer' if args.all_computer else '.local/basketball/video-runtime'
+    default_output = '.local/basketball/verification/video-runtime-all-computer' if args.all_computer else '.local/basketball/verification/video-runtime'
     output = (ROOT / (args.output or default_output)).resolve()
     if not output.is_relative_to(ROOT):
         parser.error('output must stay in the workspace')

@@ -26,7 +26,7 @@ Evidence:
 - ROM SHA-256: `0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b`.
 - Fixture SHA-256: `fddd1b3e14d50d168cf4bae2e95e96b337f96408990160c163fc6112ce09ebe6`.
 - Actual controlled-world pass trace SHA-256: `381712b2ab41f5adcaa946fbfdffc95a7e768895898fe35e6cb1c9af3ebf8ee6`.
-- `.local/basketball/rea/negative-pass-height/{red,after,race,wasm,reproduce}.log` retains test and reproduction results. The first race attempt captured an unrelated worker's temporary missing postresult symbol; that attempt is retained separately once rerun.
+- `.local/basketball/research/rea/negative-pass-height/{red,after,race,wasm,reproduce}.log` retains test and reproduction results. The first race attempt captured an unrelated worker's temporary missing postresult symbol; that attempt is retained separately once rerun.
 - `capture_negative_pass_height.py` reproduces the declared-origin original-machine observation. It does not assert a natural menu path or use repeated state injection.
 
 ```sh

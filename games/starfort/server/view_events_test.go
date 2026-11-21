@@ -18,10 +18,14 @@ func TestViewBoundsHistoricalEventsWithoutChangingMatch(t *testing.T) {
 		s.Events = append(s.Events, Event{ID: i, Tick: int64(i), AtMS: &at, Type: "shot"})
 	}
 	s.EventSerial = 1000
+	// Old archives can still contain the full ring. Read-only projection must
+	// accept them without rewriting the saved bytes.
+	legacy, _ := json.Marshal(s)
 	m, err := s.Envelope()
 	if err != nil {
 		t.Fatal(err)
 	}
+	m.Data = legacy
 	before := append([]byte{}, m.Data...)
 	v, err := view(m, 0)
 	if err != nil {
@@ -43,6 +47,81 @@ func TestViewBoundsHistoricalEventsWithoutChangingMatch(t *testing.T) {
 		t.Fatal("save history lost", err)
 	}
 }
+
+// Before persistence compaction: the cutoff drops a fractional-time attack;
+// legacy tick-only events use a different window; an idle cursor disappears;
+// expired targets remain reachable in the slice tail; pruning hides invalid
+// old events; or a failed envelope mutates the caller's event history.
+func TestEnvelopeReleasesOnlyExpiredPresentationEvents(t *testing.T) {
+	for _, tc := range []struct {
+		name   string
+		events []Event
+		want   []int
+	}{
+		{"fractional_boundary", []Event{
+			{ID: 1, Tick: 994},
+			{ID: 2, Tick: 995, AtMS: eventTime(199000)},
+			{ID: 3, Tick: 996, AtMS: eventTime(199001)},
+			{ID: 4, Tick: 996, AtMS: eventTime(199200)},
+			{ID: 5, Tick: 1000, AtMS: eventTime(200000)},
+		}, []int{3, 4, 5}},
+		{"legacy_tick", []Event{{ID: 1, Tick: 995}, {ID: 2, Tick: 996}}, []int{2}},
+		{"idle_cursor", []Event{{ID: 1, Tick: 1}, {ID: 2, Tick: 2}}, []int{2}},
+		{"empty", nil, nil},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			s := centralCase(t, 1)
+			s.Tick, s.ElapsedMS = 1000, 200000
+			s.Events = tc.events
+			s.EventSerial = len(tc.events)
+			backing := s.Events
+			if len(backing) > 1 {
+				backing[0].TargetID = 1
+				backing[0].Target = &ViewEnemy{Enemy: Enemy{ID: 1}}
+				s.EnemySerial = 1
+			}
+			m, err := s.Envelope()
+			if err != nil {
+				t.Fatal(err)
+			}
+			restored, err := decode(m)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if len(restored.Events) != len(tc.want) {
+				t.Fatalf("saved %d events, want IDs %v", len(restored.Events), tc.want)
+			}
+			for i, id := range tc.want {
+				if restored.Events[i].ID != id {
+					t.Fatalf("event %d: got %d want %d", i, restored.Events[i].ID, id)
+				}
+			}
+			if len(backing) > len(s.Events) {
+				for _, old := range backing[len(s.Events):] {
+					if old.Target != nil || old.AtMS != nil || old.ID != 0 {
+						t.Fatal("expired event remains reachable in the backing array")
+					}
+				}
+			}
+			if restored.EventSerial != len(tc.events) {
+				t.Fatal("event sequence reset")
+			}
+		})
+	}
+	s := centralCase(t, 1)
+	s.Tick, s.ElapsedMS, s.EventSerial = 1000, 200000, 2
+	s.Events = []Event{{ID: 1, Tick: 1, TargetID: 1, Target: &ViewEnemy{Enemy: Enemy{ID: 2}}}, {ID: 2, Tick: 1000}}
+	before, _ := json.Marshal(s.Events)
+	if _, err := s.Envelope(); err == nil {
+		t.Fatal("invalid expired event accepted")
+	}
+	after, _ := json.Marshal(s.Events)
+	if !bytes.Equal(before, after) {
+		t.Fatal("failed envelope discarded event data")
+	}
+}
+
+func eventTime(at int64) *int64 { return &at }
 func TestViewKeepsIdleCursorAndLegacyRecentEvents(t *testing.T) {
 	s := centralCase(t, 1)
 	s.Tick = 1000

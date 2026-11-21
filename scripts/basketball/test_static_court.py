@@ -12,7 +12,7 @@ from static_court import build_court,build_hud_template,build_hud_glyphs,render_
 ROOT=Path(__file__).resolve().parents[2]
 class StaticCourtTests(unittest.TestCase):
  def setUp(self):
-  self.rom=SpriteROM((ROOT/'.local/nes-basket/basketball.nes').read_bytes());self.colors=(ROOT/'.local/nes-basket/runs/graphics-right/nes-colors.rgb').read_bytes()
+  self.rom=SpriteROM((ROOT/'.local/basketball/research/original/basketball.nes').read_bytes());self.colors=(ROOT/'.local/basketball/research/original/runs/graphics-right/nes-colors.rgb').read_bytes()
  def test_camera_pages_and_template_exclusions(self):
   self.assertEqual(camera_source_y(0xef),239)
   self.assertEqual(camera_source_y(0x100),240)
@@ -25,7 +25,7 @@ class StaticCourtTests(unittest.TestCase):
    for x in range(256):self.assertEqual(base.getpixel((x,y))[3]==0,hud_dynamic_cell(x//8,y//8),(x,y))
  def test_initial_ring_and_column_stream(self):
   ring=initial_court_ring(self.rom)
-  directory=ROOT/'.local/nes-basket/runs/graphics-right'
+  directory=ROOT/'.local/basketball/research/original/runs/graphics-right'
   ppu=sorted(directory.glob('ppu-*-field.bin'))[0].read_bytes()
   self.assertEqual(ring['tiles'][1],list(ppu[0x2800:0x2bc0]))
   self.assertEqual(ring['attributes'][1],list(ppu[0x2bc0:0x2c00]))
@@ -35,9 +35,9 @@ class StaticCourtTests(unittest.TestCase):
  def test_observed_background_and_hud_pixels(self):
   court=build_court(self.rom,self.colors);self.assertEqual(court.size,(512,432))
   glyphs=build_hud_glyphs(self.rom,self.colors);base=build_hud_template(self.rom,self.colors)
-  observations=json.loads((ROOT/'.local/basketball/graphics/verification.json').read_text())['frames_detail'];count=0;continuous_differences=0;background_pixels=0;hud_pixels=0;reports=[];court_tiles=build_court_tiles(self.rom,self.colors)
+  observations=json.loads((ROOT/'.local/basketball/assets/graphics/verification.json').read_text())['frames_detail'];count=0;continuous_differences=0;background_pixels=0;hud_pixels=0;reports=[];court_tiles=build_court_tiles(self.rom,self.colors)
   for item in observations:
-   directory=ROOT/'.local/nes-basket/runs'/('graphics-'+item['scenario']);stem='ppu-%05d'%item['emulator_frame']
+   directory=ROOT/'.local/basketball/research/original/runs'/('graphics-'+item['scenario']);stem='ppu-%05d'%item['emulator_frame']
    original=Image.open(directory/('frame-%05d.png'%item['frame'])).convert('RGB');ppu=(directory/(stem+'-ppu.bin')).read_bytes();oam=(directory/(stem+'-oam.bin')).read_bytes();ctrl=(directory/(stem+'-ctrl.bin')).read_bytes()[0]
    sprites=render_sprites(ppu,oam,ctrl,self.colors);sx,sy=(directory/(stem+'-scroll.bin')).read_bytes()
    ram=(directory/'ram.bin').read_bytes()[(item['frame']-1)*2048:item['frame']*2048];self.assertEqual(ram[0x399],sy)

@@ -2,9 +2,10 @@
 from pathlib import Path
 from http.server import BaseHTTPRequestHandler,ThreadingHTTPServer
 import json,os,re,subprocess,threading,uuid
-ROOT=Path(__file__).resolve().parents[2];OUT=ROOT/'.local/basketball/audio-recovery-browser';OUT.mkdir(parents=True,exist_ok=True)
-env=dict(os.environ,AGENT_BROWSER_SESSION='bkar-'+uuid.uuid4().hex[:6],AGENT_BROWSER_SOCKET_DIR=str(ROOT/'.local/bkar-sockets'),TMPDIR=str(ROOT/'.local/tmp'))
-Path(env['AGENT_BROWSER_SOCKET_DIR']).mkdir(exist_ok=True)
+ROOT=Path(__file__).resolve().parents[2];OUT=ROOT/'.local/basketball/verification/audio-recovery-browser';OUT.mkdir(parents=True,exist_ok=True)
+env=dict(os.environ,AGENT_BROWSER_SESSION='bkar-'+uuid.uuid4().hex[:6],AGENT_BROWSER_SOCKET_DIR=str(ROOT/'.local/basketball/tmp/s'),TMPDIR=str(ROOT/'.local/tmp'))
+Path(env['TMPDIR']).mkdir(parents=True, exist_ok=True)
+Path(env['AGENT_BROWSER_SOCKET_DIR']).mkdir(parents=True,exist_ok=True)
 requests=[];checks=[];opened=False
 def browser(*args):
  r=subprocess.run(['agent-browser',*args,'--json'],env=env,capture_output=True,text=True,timeout=40)
@@ -20,8 +21,8 @@ class Handler(BaseHTTPRequestHandler):
   route=self.path.split('?')[0];requests.append(route)
   if route=='/':body=b'<!doctype html><meta charset="utf-8"><title>Music recovery acceptance</title><button>Restore current music</button><script type="module" src="/harness.js"></script>';mime='text/html'
   else:
-   files={'/harness.js':OUT/'harness.js','/host-music-view.json':ROOT/'.local/basketball/network-scene/host-music-view.json'};path=files.get(route)
-   if re.fullmatch(r'/audio/music-(?:066-loop|075)\.mp3',route):path=ROOT/'.local/basketball/audio/export'/route.rsplit('/',1)[1]
+   files={'/harness.js':OUT/'harness.js','/host-music-view.json':ROOT/'.local/basketball/verification/network-scene/host-music-view.json'};path=files.get(route)
+   if re.fullmatch(r'/audio/music-(?:066-loop|075)\.mp3',route):path=ROOT/'.local/basketball/assets/audio/export'/route.rsplit('/',1)[1]
    if path is None or not path.is_file():self.send_error(404);return
    body=path.read_bytes();mime='audio/mpeg' if path.suffix=='.mp3' else 'application/json' if path.suffix=='.json' else 'text/javascript'
   start=0;end=len(body)-1;match=re.fullmatch(r'bytes=(\d+)-(\d*)',self.headers.get('Range',''))

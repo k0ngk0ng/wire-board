@@ -16,7 +16,7 @@ TDD后全部10次原自然A49E调用完整WorldInputState匹配，原18,000帧RA
 
 完成本分支后，固定cold默认配置和seed12345678达到6000逻辑更新，重复两次结果相同，最终scores=[12,55]，轨迹SHA-256为`4a81c896e779e4bdec6ca7d8bd461c0fb92cdc20bc18a8e3ec580b4794afcef8`。原生与Wasm各重复两次均得同一摘要。这里仍未加入视频时钟，不能称为完整比赛或整个游戏已复刻完成。
 
-本轮自然/隔离测试与Wasm日志位于 `.local/basketball/rea/ai-forced-shot/`，可重复cold结果位于 `.local/basketball/rea/cold-runtime/{native-result.json,wasm-result.json}`。
+本轮自然/隔离测试与Wasm日志位于 `.local/basketball/research/rea/ai-forced-shot/`，可重复cold结果位于 `.local/basketball/research/rea/cold-runtime/{native-result.json,wasm-result.json}`。
 
 ```sh
 PYTHONDONTWRITEBYTECODE=1 .local/monopoly/venv/bin/python scripts/basketball/capture_ai_forced_shot.py

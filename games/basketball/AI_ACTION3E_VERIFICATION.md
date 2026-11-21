@@ -10,7 +10,7 @@
 
 ## 已执行验证
 
-- REA 的 bank5 A05D 分派分析保留于 `.local/basketball/rea/ai-batch/batch.json`，证据 ID：`ev_eef21fb30302a3ec59b8b3dc097be9a7fa2a559339d598963a8489a9d646759d`。
+- REA 的 bank5 A05D 分派分析保留于 `.local/basketball/research/rea/ai-batch/batch.json`，证据 ID：`ev_eef21fb30302a3ec59b8b3dc097be9a7fa2a559339d598963a8489a9d646759d`。
 - `verify_ai_action3e.py` 使用未修改的原 ROM 指令，生成 2,016 个 A05D 分派入口和 288 个完整 A05D→A11E 调用。包含全部 42 个模式、4 个席位、持球与进入位组合。
 - `TestOriginalAction3EDispatchAndPossession` 对照原版结果通过。夹具及摘要位于 `engine/testdata/ai-action3e-function*`。
 - 首次修复后两个固定 Court2 完整验收推进到同一帧的 Action62 物理边界；并非通过该对局。后续 Action62 和 mode31 的验证分别记录在相应文档。

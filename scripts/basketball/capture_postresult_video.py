@@ -8,7 +8,7 @@ import argparse, hashlib, json
 from pathlib import Path
 from capture_reference import ROOT,BASE,run
 
-OUT=ROOT/'.local/postresult-video'
+OUT=ROOT/'.local/basketball/research/postresult-video'
 
 def injection(kind):
     changes={0x166:20,0x167:10,0x168:0,0x169:0}
@@ -100,7 +100,7 @@ function finish_probe()log:close();raw:close();writefile('observation-complete.j
 def main():
     p=argparse.ArgumentParser();p.add_argument('kind',choices=['seed','reward','ending']);p.add_argument('--observe',action='store_true');p.add_argument('--mirroring',action='store_true');p.add_argument('--raster-states',action='store_true');p.add_argument('--start-frame',type=int);p.add_argument('--frames',type=int);p.add_argument('--repeat',action='store_true');args=p.parse_args()
     if sum([args.observe,args.mirroring,args.raster_states])>1:p.error('Choose one observation mode')
-    OUT.mkdir(exist_ok=True)
+    OUT.mkdir(parents=True,exist_ok=True)
     if args.kind=='seed':
         spec=json.loads((BASE/'runs/match-clock-complete/scenario.json').read_text())
         spec.update(name='postresult-natural-seed',frames=22050,captures=[22050],save_slot=91)

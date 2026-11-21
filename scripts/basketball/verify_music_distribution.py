@@ -2,7 +2,7 @@
 from pathlib import Path
 import hashlib,json,wave
 
-ROOT=Path(__file__).resolve().parents[2];OUT=ROOT/'.local/basketball/audio/export'
+ROOT=Path(__file__).resolve().parents[2];OUT=ROOT/'.local/basketball/assets/audio/export'
 
 
 def sha(path):
@@ -13,7 +13,7 @@ def sha(path):
 
 
 def verify_music76(playback):
-    evidence=ROOT/'.local/music76-source/assets'
+    evidence=ROOT/'.local/basketball/research/music76-source/assets'
     path=OUT/'music76-delivery-manifest.json';entry=json.loads(path.read_text());p=playback['76']
     assert sha(path)==sha(evidence/path.name),'staged76 manifest differs from original verification'
     assert entry['status']=='offline-asset-verified' and entry['id']==76

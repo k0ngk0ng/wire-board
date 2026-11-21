@@ -28,7 +28,7 @@ def context(r):
 
 
 def main():
-    source=ROOT/'.local/nes-basket/runs/world-preparation-cpu-long'
+    source=ROOT/'.local/basketball/research/original/runs/world-preparation-cpu-long'
     rows=list(csv.DictReader((source/'world-preparation.csv').open()))
     raw=(source/'world-preparation-ram.bin').read_bytes()
     assert len(rows)==1997 and len(raw)==len(rows)*4096

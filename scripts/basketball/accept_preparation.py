@@ -6,9 +6,10 @@ human character, changing the opposing team, overflow/too-small targets at 320px
 from pathlib import Path
 import functools, http.server, json, os, subprocess, threading, uuid
 ROOT=Path(__file__).resolve().parents[2]
-OUT=ROOT/'.local/basketball/preparation-ui';OUT.mkdir(parents=True,exist_ok=True)
-env=dict(os.environ,AGENT_BROWSER_SESSION='bprep-'+uuid.uuid4().hex[:7],AGENT_BROWSER_SOCKET_DIR=str(ROOT/'.local/bprep-sockets'),TMPDIR=str(ROOT/'.local/tmp'),NODE_PATH=str(ROOT/'web/node_modules'))
-Path(env['AGENT_BROWSER_SOCKET_DIR']).mkdir(exist_ok=True)
+OUT=ROOT/'.local/basketball/verification/preparation-ui';OUT.mkdir(parents=True,exist_ok=True)
+env=dict(os.environ,AGENT_BROWSER_SESSION='bprep-'+uuid.uuid4().hex[:7],AGENT_BROWSER_SOCKET_DIR=str(ROOT/'.local/basketball/tmp/s'),TMPDIR=str(ROOT/'.local/tmp'),NODE_PATH=str(ROOT/'web/node_modules'))
+Path(env['TMPDIR']).mkdir(parents=True, exist_ok=True)
+Path(env['AGENT_BROWSER_SOCKET_DIR']).mkdir(parents=True,exist_ok=True)
 checks=[];opened=False;server=None;inspector=None
 
 def browser(*args):
@@ -39,7 +40,7 @@ def expect(name,ok):
 class Handler(http.server.SimpleHTTPRequestHandler):
  def translate_path(self,path):
   if path.startswith('/basketball/v1/selection/'):
-   return str(ROOT/'.local/basketball/selection-assets'/path.split('/selection/',1)[1])
+   return str(ROOT/'.local/basketball/assets/selection-assets'/path.split('/selection/',1)[1])
   return super().translate_path(path)
  def log_message(self,*args):pass
 try:

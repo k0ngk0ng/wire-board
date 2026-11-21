@@ -30,7 +30,7 @@ end)
 '''
 
 def main():
- evidence=json.loads((ROOT/'.local/basketball/graphics/verification.json').read_text());sources=[]
+ evidence=json.loads((ROOT/'.local/basketball/assets/graphics/verification.json').read_text());sources=[]
  for name in sorted({r['scenario'] for r in evidence['frames_detail']}):
   reference=BASE/'runs'/('graphics-'+name);spec=json.loads((reference/'scenario.json').read_text());hook=spec['hooks_lua']
   hook=hook.replace('local rendered_order=false','local rendered_order=false\n'+EXTRA)
@@ -43,5 +43,5 @@ def main():
   observed=BASE/'runs'/spec['name'];assert (observed/'ram.bin').read_bytes()==(reference/'ram.bin').read_bytes()
   for image in reference.glob('frame-*.png'):assert image.read_bytes()==(observed/image.name).read_bytes()
   sources.append(dict(scenario=name,ram_matches=True,source=json.loads((observed/'source.json').read_text())))
- out=ROOT/'.local/basketball/renderer';out.mkdir(parents=True,exist_ok=True);(out/'capture.json').write_text(json.dumps({'scope':'renderer input observation, not Go world execution','sources':sources},indent=2)+'\n')
+ out=ROOT/'.local/basketball/verification/renderer';out.mkdir(parents=True,exist_ok=True);(out/'capture.json').write_text(json.dumps({'scope':'renderer input observation, not Go world execution','sources':sources},indent=2)+'\n')
 if __name__=='__main__':main()

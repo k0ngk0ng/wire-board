@@ -2,10 +2,10 @@
 from pathlib import Path
 import hashlib,itertools,json,sys
 ROOT=Path(__file__).resolve().parents[2]
-sys.path.insert(0,str(ROOT/'.local/basketball/python'))
+sys.path.insert(0,str(ROOT/'.local/basketball/research/python'))
 from py65.devices.mpu6502 import MPU
 from capture_special_contact import contact_state,contact_context
-code=(ROOT/'.local/basketball/ai/bank5-visible.bin').read_bytes()
+code=(ROOT/'.local/basketball/research/ai/bank5-visible.bin').read_bytes()
 def word(r,lo,hi,v):r[lo]=v&255;r[hi]=(v>>8)&255
 def make_case(index,action,player_action,variant,facing,vx,**options):
  r=bytearray(2048)

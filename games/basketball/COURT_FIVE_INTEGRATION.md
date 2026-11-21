@@ -35,7 +35,7 @@ python3 -B scripts/basketball/probe_auxiliary_unowned_lob.py
 go test -race ./games/basketball/engine -run '^(TestCourtFive.*|TestOriginalBackgroundColumnLaunchAlias|TestOriginalUnownedAuxiliaryLobFromBackgroundColumn|TestUnownedAuxiliaryLobRequiresExplicitHeight|TestOriginalAuxiliaryLob.*|TestOriginalAuxiliaryCarryHiddenAndThrowInstructions)$' -count=1 -v
 ```
 
-日志位于 `.local/basketball/rea/court-five/`：`binding-{before,after,race,wasm}.log`、`alias-{before,after,race,wasm}.log`。源夹具及摘要保存在 `engine/testdata/court-five-motion*`、`background-launch-alias*`、`auxiliary-unowned-lob*`。既有完整原地形、运动、动画、人物弹射及道具调用也纳入定向回归。
+日志位于 `.local/basketball/research/rea/court-five/`：`binding-{before,after,race,wasm}.log`、`alias-{before,after,race,wasm}.log`。源夹具及摘要保存在 `engine/testdata/court-five-motion*`、`background-launch-alias*`、`auxiliary-unowned-lob*`。既有完整原地形、运动、动画、人物弹射及道具调用也纳入定向回归。
 
 ## 运行时接线
 
@@ -64,7 +64,7 @@ Court 5 开场、运动、准备与动作门禁已接入。动画复用 Court 2 
 | 双人合作 | 22,373 | 7,429 | 84 | 0∶85 |
 | 双人对战 | 22,385 | 7,433 | 84 | 39∶6 |
 
-复跑日志为 `.local/basketball/rea/court-five/resume-{native,race,wasm}-final.log`；仅日志终态 `PASS` 才表示对应运行完成。定向回归包含旧 1,998 次世界更新、26,093 次动作调用、原自由人物、骑乘、下落和完整运动绑定，不运行其他游戏。
+复跑日志为 `.local/basketball/research/rea/court-five/resume-{native,race,wasm}-final.log`；仅日志终态 `PASS` 才表示对应运行完成。定向回归包含旧 1,998 次世界更新、26,093 次动作调用、原自由人物、骑乘、下落和完整运动绑定，不运行其他游戏。
 
 独立观察程序 `observe-runtime.go` 从冷启动以同样配置运行完整比赛，`natural-runtime-events*.json` 记录自然 Go 运行中的设备音效 21、背景列更新与动画补丁。四配置均观察到设备和背景列变化，但没有观察到无主道具发射；无主发射目前由原 1,024 组函数链和世界来源顺序测试覆盖，不能据此宣称自然比赛或浏览器已覆盖。
 

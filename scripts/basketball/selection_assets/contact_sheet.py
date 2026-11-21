@@ -6,8 +6,8 @@ from PIL import Image, ImageDraw
 
 ROOT=Path(__file__).resolve().parents[3]
 parser=argparse.ArgumentParser(description=__doc__)
-parser.add_argument('--assets',type=Path,default=ROOT/'.local/basketball/selection-assets')
-parser.add_argument('--output',type=Path,default=ROOT/'.local/basketball/selection-assets-evidence')
+parser.add_argument('--assets',type=Path,default=ROOT/'.local/basketball/assets/selection-assets')
+parser.add_argument('--output',type=Path,default=ROOT/'.local/basketball/verification/selection-assets-evidence')
 args=parser.parse_args()
 if not args.output.resolve().is_relative_to(ROOT):
     raise ValueError('review output must remain in the workspace')

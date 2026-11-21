@@ -2,7 +2,7 @@
 import hashlib,json
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
-rom=(ROOT/'.local/nes-basket/basketball.nes').read_bytes();digest=hashlib.sha256(rom).hexdigest();assert digest=='0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b'
+rom=(ROOT/'.local/basketball/research/original/basketball.nes').read_bytes();digest=hashlib.sha256(rom).hexdigest();assert digest=='0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b'
 bank=rom[16+5*16384:16+6*16384];read=lambda a:bank[a-0x8000];word=lambda a:read(a)+256*read(a+1)
 selectors=[[0 if holder==6 else read(0x9c8b+actor*4+holder) for holder in range(7)] for actor in range(4)]
 plans=[[[read(word(0x9467+profile*2)+selectors[actor][holder]) for holder in range(7)] for actor in range(4)] for profile in range(6)]

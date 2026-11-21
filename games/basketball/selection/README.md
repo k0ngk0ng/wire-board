@@ -17,12 +17,12 @@
 
 ## 已生成资源与原来源
 
-- [catalog.json](catalog.json)：8 个场地、8 队 × 4 个人物。实际图片目录是 `.local/basketball/selection-assets/`，其 `manifest.json` 与此文件字节相同。
+- [catalog.json](catalog.json)：8 个场地、8 队 × 4 个人物。实际图片目录是 `.local/basketball/assets/selection-assets/`，其 `manifest.json` 与此文件字节相同。
 - [support-gates.json](support-gates.json)：仅记录内容审计时已完成比赛的历史基线，明确 `authority=evidence-only-not-an-allowlist`。它不是选择允许列表；服务端须按当前验收结果验证整组场地／队伍／人物／模式／装备配置。生成器不读取引擎开关，不自动放开玩法。
-- 场地 PNG：`courts/court-{id}.png`，512 × 288。来源为 `.local/basketball/courts/{id}/court-{id+1}.png` 的 `[0,144,512,432]` 裁切，不缩放、不加 HUD／人物／文字。预览保留用于识别场地的下方建筑和场上区域；完整纵向场景仍由原球场资源提供。
+- 场地 PNG：`courts/court-{id}.png`，512 × 288。来源为 `.local/basketball/assets/courts/{id}/court-{id+1}.png` 的 `[0,144,512,432]` 裁切，不缩放、不加 HUD／人物／文字。预览保留用于识别场地的下方建筑和场上区域；完整纵向场景仍由原球场资源提供。
 - 人物头像：`players/team-{team}-character-{character}-portrait.png`，96 × 96。
 - 人物全身：`players/team-{team}-character-{character}-body.png`，128 × 160。
-- 人物来自 `.local/basketball/static-atlas/atlas.json` 的 `pose=0`、`facing=0`、`priority=forward`。原 128 × 128 帧中，全身裁切 `[48,61,80,101]`、头像裁切 `[52,61,76,85]`，统一最近邻放大 4 倍。全身没有剪掉任何非透明原像素；头像有意保留头部和上身。图片透明背景，不烘焙卡片底色。
+- 人物来自 `.local/basketball/assets/static-atlas/atlas.json` 的 `pose=0`、`facing=0`、`priority=forward`。原 128 × 128 帧中，全身裁切 `[48,61,80,101]`、头像裁切 `[52,61,76,85]`，统一最近邻放大 4 倍。全身没有剪掉任何非透明原像素；头像有意保留头部和上身。图片透明背景，不烘焙卡片底色。
 
 使用原比赛中的站立人物图，不冒充已恢复的原选人菜单插图。原 team／character 均为 0 基编号；人物唯一键为 `team-{team}-character-{character}`，不能用平台座位编号替代。`displayName` 的「球队 N／球员 N／球场 N」是明确编号标签，不是原名字；`nameVerified=false`。只有已核定的纽约场地保留中文名称。没有将头部表的额外索引 4 算作第 5 名可选人物。
 
@@ -71,8 +71,8 @@ PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/sel
 PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/selection_assets/contact_sheet.py
 ```
 
-测试的临时目录固定在工作区 `.local/basketball/selection-assets-evidence/` 下。导出器仅接受工作区内的输出路径。重新生成并核验后，将 `manifest.json`／`support-gates.json` 同步到本目录同名契约文件（`manifest.json` 在此保存为 `catalog.json`）。本任务没有修改现有 renderer、球场导出器、引擎、服务端或前端。
+测试的临时目录固定在工作区 `.local/basketball/verification/selection-assets-evidence/` 下。导出器仅接受工作区内的输出路径。重新生成并核验后，将 `manifest.json`／`support-gates.json` 同步到本目录同名契约文件（`manifest.json` 在此保存为 `catalog.json`）。本任务没有修改现有 renderer、球场导出器、引擎、服务端或前端。
 
-可复查产物位于 `.local/basketball/selection-assets-evidence/`：`tests-before.log`、`tests-after.log`、`export.log`，以及 `players-contact-sheet.png`、`portraits-contact-sheet.png`、`courts-contact-sheet.png`。已查看总览，人物头脚完整、头像槽位有区别、场地独立；总览中的编号仅供开发核对，正式 PNG 不含文字。
+可复查产物位于 `.local/basketball/verification/selection-assets-evidence/`：`tests-before.log`、`tests-after.log`、`export.log`，以及 `players-contact-sheet.png`、`portraits-contact-sheet.png`、`courts-contact-sheet.png`。已查看总览，人物头脚完整、头像槽位有区别、场地独立；总览中的编号仅供开发核对，正式 PNG 不含文字。
 
 72 张图片均为开发资源，`accepted_for_release=false`。未上传 OSS，也未据此注册或上架游戏；发布许可、正式素材分发及玩法支持仍按整体任务验收。

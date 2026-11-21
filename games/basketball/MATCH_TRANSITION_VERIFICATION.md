@@ -6,7 +6,7 @@
 
 ## 分派与状态边界
 
-REA 批量证据 `ev_7945a86e38a813fa472f9a63045cf673ae9f0c3702f1a79b6c8a17e20eebeefb`、函数报告及快照保存在 `.local/basketball/rea/match-transition/`。D19D 的表已按原字节核对：
+REA 批量证据 `ev_7945a86e38a813fa472f9a63045cf673ae9f0c3702f1a79b6c8a17e20eebeefb`、函数报告及快照保存在 `.local/basketball/research/rea/match-transition/`。D19D 的表已按原字节核对：
 
 | 阶段 | 原入口 | 逻辑 |
 | --- | --- | --- |
@@ -54,4 +54,4 @@ source scripts/env.sh
 go test -v ./games/basketball/engine -run 'TestOriginalMatchTransitions|TestPeriod'
 ```
 
-夹具位于 `engine/testdata/match-transition.{json,ram.gz}`，源身份在 `match-transition-source.json`。失败与通过日志保存在 `.local/basketball/engine/match-transition-{before,after,race,wasm}.log`。定向竞态与 Wasm 构建时，另一工作项的 `rider_player_test.go` 尚在测试先行阶段，因此编译文件列表仅排除它；未修改它，集成后仍需整体检查。
+夹具位于 `engine/testdata/match-transition.{json,ram.gz}`，源身份在 `match-transition-source.json`。失败与通过日志保存在 `.local/basketball/verification/engine/match-transition-{before,after,race,wasm}.log`。定向竞态与 Wasm 构建时，另一工作项的 `rider_player_test.go` 尚在测试先行阶段，因此编译文件列表仅排除它；未修改它，集成后仍需整体检查。

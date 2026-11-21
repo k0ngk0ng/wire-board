@@ -6,8 +6,8 @@ from hashlib import sha256
 import argparse,json
 from static_sprites import SpriteROM,DIGEST
 from static_court import build_court,build_hud_template,build_hud_glyphs,build_court_tiles,court_tile_layers,initial_court_ring,stream_court_column,hud_dynamic_cell
-p=argparse.ArgumentParser();p.add_argument('--output',type=Path,default=Path('.local/basketball/court'));p.add_argument('--verification-log',type=Path,default=Path('.local/basketball/rea/static-background/tests-after.log'));args=p.parse_args()
-rom=SpriteROM(Path('.local/nes-basket/basketball.nes').read_bytes());rgb_path=Path('.local/nes-basket/runs/graphics-right/nes-colors.rgb');colors=rgb_path.read_bytes();args.output.mkdir(parents=True,exist_ok=True)
+p=argparse.ArgumentParser();p.add_argument('--output',type=Path,default=Path('.local/basketball/assets/court'));p.add_argument('--verification-log',type=Path,default=Path('.local/basketball/research/rea/static-background/tests-after.log'));args=p.parse_args()
+rom=SpriteROM(Path('.local/basketball/research/original/basketball.nes').read_bytes());rgb_path=Path('.local/basketball/research/original/runs/graphics-right/nes-colors.rgb');colors=rgb_path.read_bytes();args.output.mkdir(parents=True,exist_ok=True)
 report=None
 for line in args.verification_log.read_text().splitlines():
  if line.startswith('{'):

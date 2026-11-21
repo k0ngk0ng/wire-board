@@ -15,11 +15,11 @@ from static_sprites import SpriteROM
 
 ROOT = Path(__file__).resolve().parents[2]
 ART = ROOT / '.local/basketball'
-OUT = ART / 'rea/court-six'
+OUT = ART / 'research/rea/court-six'
 
 
 def main():
-    rom_bytes = (ROOT / '.local/nes-basket/basketball.nes').read_bytes()
+    rom_bytes = (ROOT / '.local/basketball/research/original/basketball.nes').read_bytes()
     rom = SpriteROM(rom_bytes)
     oracle = json.loads((OUT / 'result-palette-oracle.json').read_text())
     assert oracle['source_rom_sha256'] == sha256(rom_bytes).hexdigest()
@@ -32,7 +32,7 @@ def main():
                     for v in full[case['paletteID'], tuple(case['teams']), case['flags']]]
         assert expected == case['colors']
     capture = json.loads((OUT / 'result-capture.json').read_text())
-    directory = ROOT / '.local/nes-basket/runs' / capture['run']
+    directory = ROOT / '.local/basketball/research/original/runs' / capture['run']
     reference = directory.parent / 'court-six-result-reference'
     assert (directory / 'ram.bin').read_bytes() == (reference / 'ram.bin').read_bytes()
     for frame in capture['frames']:
@@ -42,7 +42,7 @@ def main():
     field = (directory / (stem + '-field.bin')).read_bytes()
     hud = (directory / (stem + '-ppu.bin')).read_bytes()
     colors = (directory / 'nes-colors.rgb').read_bytes()
-    records = json.loads((ART / 'results/manifest.json').read_text())['courts'][6]
+    records = json.loads((ART / 'assets/results/manifest.json').read_text())['courts'][6]
     variants = {7: records, **{r['paletteID']: r for r in records['paletteVariants']}}
     reports = []
     for palette_id in [7, 11, 12, 13, 14, 15]:
@@ -77,7 +77,7 @@ def main():
         expected.update(hudTiles=tiles, digits=digits)
         for role, image in expected.items():
             entry = variants[palette_id][role]
-            file = ART / 'results' / entry['file']
+            file = ART / 'assets/results' / entry['file']
             assert sha256(file.read_bytes()).hexdigest() == entry['sha256']
             actual = Image.open(file).convert('RGBA')
             assert actual.size == image.size

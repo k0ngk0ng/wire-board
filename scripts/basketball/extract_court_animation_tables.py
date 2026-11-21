@@ -2,7 +2,7 @@
 from pathlib import Path
 import hashlib
 ROOT=Path(__file__).resolve().parents[2]
-r=(ROOT/'.local/nes-basket/basketball.nes').read_bytes();assert hashlib.sha256(r).hexdigest()=='0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b'
+r=(ROOT/'.local/basketball/research/original/basketball.nes').read_bytes();assert hashlib.sha256(r).hexdigest()=='0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b'
 b=r[16+4*16384:16+5*16384]
 def values(address,n):return list(b[address-0x8000:address-0x8000+n])
 def pointer(address):v=values(address,2);return v[0]+256*v[1]

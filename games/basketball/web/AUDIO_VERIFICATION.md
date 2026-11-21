@@ -34,11 +34,11 @@ sounds.dispose(); // 离桌，只清理该平台 owner
 
 ## 验证结果
 
-`games/basketball/tests/audio.test.mjs` 的 6 项测试覆盖全部效果映射、OSS／本地候选顺序、控制交错、重复批次、恢复水位、未知 ID、同步抛错／异步拒绝及未完成播放 Promise。实现前失败记录、通过记录分别为 `.local/basketball/audio/adapter-before.log`、`adapter-after.log`。全前端 TypeScript 编译通过，记录为 `adapter-typecheck.log`。
+`games/basketball/tests/audio.test.mjs` 的 6 项测试覆盖全部效果映射、OSS／本地候选顺序、控制交错、重复批次、恢复水位、未知 ID、同步抛错／异步拒绝及未完成播放 Promise。实现前失败记录、通过记录分别为 `.local/basketball/assets/audio/adapter-before.log`、`adapter-after.log`。全前端 TypeScript 编译通过，记录为 `adapter-typecheck.log`。
 
 后续增加各场地独立音乐、有限结局曲／76 边界以及新增效果测试。有限曲 75 的真实浏览器到尾测试还发现公共媒体 Task 结束后 owner 信息丢失；先保留失败并写 4 项回归，再补充加载来源的 owner。该轮公共音频及游戏侧 53 项通过，未运行其他游戏完整对局。有限曲结束后 dispose 的真实来源清理也已重验。
 
-压缩分发阶段新增「缺少压缩条目不能回退至巨大 WAV」测试，该轮游戏侧共 10 项通过，记录为 `.local/basketball/audio/compression/adapter-after.log`；实现前失败记录为 `no-wav-fallback-before.log`。这些数量描述对应保存记录，不覆盖后续联机恢复接口的新增测试。
+压缩分发阶段新增「缺少压缩条目不能回退至巨大 WAV」测试，该轮游戏侧共 10 项通过，记录为 `.local/basketball/assets/audio/compression/adapter-after.log`；实现前失败记录为 `no-wav-fallback-before.log`。这些数量描述对应保存记录，不覆盖后续联机恢复接口的新增测试。
 
 ```sh
 source scripts/env.sh
@@ -58,7 +58,7 @@ web/node_modules/.bin/tsc -p web/tsconfig.json
 
 `verify_music_loop.py` 在实现前已定义素材验收：完整驱动状态相等、周期长度不变、窗口外样本不变、接缝连续、无削波，以及 8 毫秒窗口／2 毫秒步长的局部 RMS 偏差不能超过 ±2 dB。实际结果：边界相对原相邻样本误差为 0，末 16 样本误差为 0，局部 RMS 最大偏差约 −0.308 dB，最大相邻步幅 1,982，低于两段原源的 2,249。没有仅凭首尾两个样本相等就宣布通过。
 
-独立 `agent-browser` 原生媒体验收使用真实循环 WAV、平台 GameAudio 和本适配器，seek 到曲尾前测试两次实际循环，没有缩短素材或提高播放速率。两次都跨尾继续播放、保持同一媒体及来源；253／255 保留播放位置，dispose 清理来源。产物在 `.local/basketball/audio/loop-browser/result.json` 和 `verified.png`。
+独立 `agent-browser` 原生媒体验收使用真实循环 WAV、平台 GameAudio 和本适配器，seek 到曲尾前测试两次实际循环，没有缩短素材或提高播放速率。两次都跨尾继续播放、保持同一媒体及来源；253／255 保留播放位置，dispose 清理来源。产物在 `.local/basketball/assets/audio/loop-browser/result.json` 和 `verified.png`。
 
 ```sh
 source scripts/env.sh
@@ -76,6 +76,6 @@ PYTHONDONTWRITEBYTECODE=1 python3 scripts/basketball/accept_audio_loop.py
 
 9 首运行时音乐已改为 MP3 128 kbps，完整解码样本数与 WAV 母版逐项相等，合计从 1,343,940,008 字节降至 243,808,096 字节。CDN 和本地候选都使用压缩文件；没有 WAV 网络回退。完整参数、格式取舍、分发清单约定和复现命令见 [MUSIC_DISTRIBUTION.md](../assets/MUSIC_DISTRIBUTION.md)。
 
-8 首压缩循环曲分别通过两次实际跨尾，75 通过有限曲到尾，另有 66 模拟 CDN 失败后使用本地 MP3 的用例。全部验证 253／255、来源保持和 dispose 清理，并检查未请求 WAV。结果在 `.local/basketball/audio/encoded-loop-browser-NNN/` 与 `encoded-loop-browser-66-cdn-fallback/`；汇总脚本 `scripts/basketball/verify_music_browser.py` 将 10 个结果绑定至素材和实际测试 bundle 的 SHA。
+8 首压缩循环曲分别通过两次实际跨尾，75 通过有限曲到尾，另有 66 模拟 CDN 失败后使用本地 MP3 的用例。全部验证 253／255、来源保持和 dispose 清理，并检查未请求 WAV。结果在 `.local/basketball/assets/audio/encoded-loop-browser-NNN/` 与 `encoded-loop-browser-66-cdn-fallback/`；汇总脚本 `scripts/basketball/verify_music_browser.py` 将 10 个结果绑定至素材和实际测试 bundle 的 SHA。
 
 验证使用本地 Chromium，未覆盖真实 Safari／iOS／Android。记录属于对应保存的编译 bundle，不能覆盖公共播放器或适配器后续的联机恢复修改。

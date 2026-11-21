@@ -2,7 +2,7 @@
 
 Court 4 的 16 个角色／控制配置首次运行有 12 个通过、4 个停在 `original prop kind 10 contact not reconstructed`。4 个失败前态分别来自视频帧 15,479、11,357、5,699 和 20,276，均为 Kind 10 道具的动作 13。完整前态保存在 `engine/testdata/kind10-runtime-failures.json.gz`；没有修改种子、计时或缩减可选配置。
 
-原 bank 5 `$876F` 的 REA 档案为 `ev_85a7bb29ede12dea40b0e12334c9754763ff0df7584b2b182200d7f250638b62`，位于 `.local/basketball/rea/prop-attack/analysis/function-0x876f.json`。`$8786..$87BA` 明确区分捕获和普通碰撞：
+原 bank 5 `$876F` 的 REA 档案为 `ev_85a7bb29ede12dea40b0e12334c9754763ff0df7584b2b182200d7f250638b62`，位于 `.local/basketball/research/rea/prop-attack/analysis/function-0x876f.json`。`$8786..$87BA` 明确区分捕获和普通碰撞：
 
 - 目标须为人物，整数高度为 0；高度小数不会阻止捕获。
 - 扫描对象 0～5 的附着标志。只有最高位开启且 `link & 0x7f` 等于目标时才阻止捕获，不能改用低四位父对象掩码。
@@ -13,7 +13,7 @@ Court 4 的 16 个角色／控制配置首次运行有 12 个通过、4 个停�
 
 `verify_kind10_contact.py` 执行未修改的原 `$8653 → $876F` 指令，只截获 `$C000` 音效请求。1,162 组输入覆盖人物／道具目标、动作 0／3／6／10／13／16、整数与小数高度、六个可能的附着来源、掩码差异及原固定对象引用，其中 32 组进入捕获分支。这是配置输入的原函数隔离验证，不是自然比赛。源摘要和 ROM 映射摘要保存在 `engine/testdata/kind10-contact-source.json`。
 
-先写原函数、未知上下文／回滚和真实前态测试，再实现分支；初始失败记录为 `.local/basketball/rea/court-four/kind10-before.log`。4 个真实前态分别继续 24 个正常视频帧，每帧同时验证 JSON 恢复后的重放一致性。定向原生、race 和 Wasm 记录为 `kind10-{after,race,wasm}.log`，另有 `capture-source-{before,after}.log` 验证原字节提取。
+先写原函数、未知上下文／回滚和真实前态测试，再实现分支；初始失败记录为 `.local/basketball/research/rea/court-four/kind10-before.log`。4 个真实前态分别继续 24 个正常视频帧，每帧同时验证 JSON 恢复后的重放一致性。定向原生、race 和 Wasm 记录为 `kind10-{after,race,wasm}.log`，另有 `capture-source-{before,after}.log` 验证原字节提取。
 
 ```sh
 source scripts/env.sh

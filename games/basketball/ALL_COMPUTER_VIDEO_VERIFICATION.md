@@ -13,7 +13,7 @@
 
 首次独立测试在video557／logic183触及原追逐索引88。`PoseSource`由对应动作恢复工作按056A实际写入维护；AI仅惰性读取动作源、F4深度和DA／CD坐标。具体来源、缺字段语义和原函数对照见AI_PURSUIT_ALIAS_VERIFICATION，不以Holder或LastTouch代替源字节。
 
-首差完整前态归档为`.local/basketball/video-runtime-all-computer/first-alias88-failure.json`，来源为PoseSource恢复期间的真实失败日志并附SHA。当前成功报告更新后仍保留此失败证据。
+首差完整前态归档为`.local/basketball/verification/video-runtime-all-computer/first-alias88-failure.json`，来源为PoseSource恢复期间的真实失败日志并附SHA。当前成功报告更新后仍保留此失败证据。
 
 ## 完成结果
 
@@ -25,7 +25,7 @@
 
 仍保持48000帧上限和每300帧恢复检查，没有缩短时钟、固定胜负或注入快照。`Playing.Context.Actions.Controls`每次均核对四席实际电脑标志。原两个混合测试只把原默认配置显式传给共用helper，seed和配置未变；race回归仍通过原混合首节及完整比赛（22383视频／7435逻辑、比分[12,45]），同时通过全电脑完整比赛和alias88边界测试。
 
-独立结果目录为`.local/basketball/video-runtime-all-computer/`：`native-all-computer-full-match-result.json`、`wasm-all-computer-full-match-result.json`及相邻JSONL；完整race日志为`regression-race.jsonl`。原默认报告目录与测试选择保持不变，只有显式`--all-computer`选择本项完整比赛和独立输出。
+独立结果目录为`.local/basketball/verification/video-runtime-all-computer/`：`native-all-computer-full-match-result.json`、`wasm-all-computer-full-match-result.json`及相邻JSONL；完整race日志为`regression-race.jsonl`。原默认报告目录与测试选择保持不变，只有显式`--all-computer`选择本项完整比赛和独立输出。
 
 原PoseSource字段迁移后，1998/57两份原loop通过CLI与Wasm，旧字段保持不变。此项视频测试是固定冷配置的运行、时钟、显示、结算和恢复集成验收，不是原ROM全比赛逐帧oracle，也不证明战役／菜单或全部可能配置均已恢复。
 

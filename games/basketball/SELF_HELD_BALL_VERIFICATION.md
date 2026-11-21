@@ -15,7 +15,7 @@
 
 ## 原阶段确认与实现
 
-复用 REA / Ghidra 证据 `ev_83eb8e40e7f1fc57f720bf11e1cf022f07b914951cdf9616b092fa8c2fdb6a89` 中 `$B585` 和 `$EC7B`，另存于 `.local/basketball/rea/held-ball-self/reused-rea.json`。
+复用 REA / Ghidra 证据 `ev_83eb8e40e7f1fc57f720bf11e1cf022f07b914951cdf9616b092fa8c2fdb6a89` 中 `$B585` 和 `$EC7B`，另存于 `.local/basketball/research/rea/held-ball-self/reused-rea.json`。
 
 从精确失败前态编码完整语义状态后，原 `$D314` 准备与 `$D345..$D348` 的完整 13 对象动作阶段确实发生：人物 0 在 `$9270` 把球动作 10 改为 2，Holder 保持 6；球随后进入 `$B585`。因此这是原代码允许的自身索引，不是重新选择人物的理由。
 
@@ -37,7 +37,7 @@
 
 最终前态为时钟 0、比分 51:54，Holder6、BallDribble1，球仍腾空，速度和重力均为 0，保留待处理偏转请求 8。原 `$D314` 加完整 `$D345` 单阶段对照也保持同一球动作、位置和请求，只推进动画 elapsed85→86。当时的单阶段证据不足以证明原机器完整比赛永久卡住；后续完整原机链反证了这一归因，见下节。没有修改比赛结束、AI、时钟或原悬空球政策。
 
-失败与当前结果保存在 `.local/basketball/rea/held-ball-self/`：`native-config-summary.json`、`wasm-config-summary.json`、两份 `*-limit-before.json`、`limit-original-stage.json`。初始矩阵的失败记录继续保留。
+失败与当前结果保存在 `.local/basketball/research/rea/held-ball-self/`：`native-config-summary.json`、`wasm-config-summary.json`、两份 `*-limit-before.json`、`limit-original-stage.json`。初始矩阵的失败记录继续保留。
 
 可重复执行：
 
@@ -67,7 +67,7 @@ BASKETBALL_PREPARATION_MATRIX=1 go test ./games/basketball/engine -run '^TestRun
 - 补充定向 Native、race、Wasm通过，覆盖新绑定、新旧自身球路径和完整66世界对照；保留 `binding-before.log` 等红灯证据。
 - 从冷启动重新跑唯一失败配置：场地1、默认球员、全电脑、Mode128。Native、Wasm各完成两次正常两节比赛，均22373视频帧／7429逻辑步、84次恢复、比分31:48，轨迹摘要 `c2e5eda8b5b386a0adbfd5e60351354f9aef038580ec6d650efff15cdd67d376`。四次运行使用同一稳定源码摘要 `5ab82a7fc338e236ece15f476df5c6c268ec984c94bcb80809deeb72a8be90fa`，均 accepted。冷启动与旧21719前态是不同起点；更早的绑定修复会改变全程轨迹，不能混用比分作比较。
 
-补充结果：`native-after-binding-config-summary.json`、`wasm-after-binding-config-summary.json`、`original-machine-result.json`、`world-comparison-after-binding.json`。原机采集与独立Go推进脚本保存在 `.local/basketball/rea/held-ball-self/`；原指令／66世界夹具通过 `scripts/basketball/verify_dribble_idle_binding.py` 重建。原 `$907E` REA 函数证据 `ev_a96fad29a2b9b83a9434e6600d9cfeb7538f31ceef2293f7fb50248c794b3c08` 继续复用。
+补充结果：`native-after-binding-config-summary.json`、`wasm-after-binding-config-summary.json`、`original-machine-result.json`、`world-comparison-after-binding.json`。原机采集与独立Go推进脚本保存在 `.local/basketball/research/rea/held-ball-self/`；原指令／66世界夹具通过 `scripts/basketball/verify_dribble_idle_binding.py` 重建。原 `$907E` REA 函数证据 `ev_a96fad29a2b9b83a9434e6600d9cfeb7538f31ceef2293f7fb50248c794b3c08` 继续复用。
 
 ```sh
 source scripts/env.sh

@@ -43,7 +43,7 @@ def main():
     compressed=gzip.compress(raw,mtime=0);raw_path.with_suffix('.bin.gz').write_bytes(compressed)
     raw_path.unlink()
     summary=dict(complete_phases=len(rows),object_input_calls=len(rows)*10,identical_frames=spec['frames'],identical_screenshots=len(images),trace_sha256=hashlib.sha256(raw).hexdigest(),compressed_trace_sha256=hashlib.sha256(compressed).hexdigest(),source=json.loads((observed/'source.json').read_text()))
-    out=ROOT/'.local/basketball/rea/world-inputs';out.mkdir(parents=True,exist_ok=True);(out/'capture.json').write_text(json.dumps(summary,indent=2)+'\n');print(json.dumps(summary))
+    out=ROOT/'.local/basketball/research/rea/world-inputs';out.mkdir(parents=True,exist_ok=True);(out/'capture.json').write_text(json.dumps(summary,indent=2)+'\n');print(json.dumps(summary))
 
 
 if __name__=='__main__':main()

@@ -14,7 +14,7 @@ from verify_court_profiles import image, profiles
 
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('--mode',choices=['solo','coop'],default='solo');parser.add_argument('--cold',action='store_true');args=parser.parse_args()
-    base=ROOT/'.local/basketball/rea/campaign-home-stall'/args.mode
+    base=ROOT/'.local/basketball/research/rea/campaign-home-stall'/args.mode
     rows=json.loads((base/'first-entry/history.json').read_text())
     out=base/'cold' if args.cold else base;out.mkdir(parents=True,exist_ok=True)
     origin=json.loads((base/'cold-origin.json').read_text()) if args.cold else rows[0]['Before'];assert origin['config']['match']['Court']==0

@@ -12,7 +12,7 @@
 
 ## 首个边界（历史记录）
 
-首次执行固定测试在第 230 次更新停止：`actions: object 1: special shot has not been reconstructed`。人物 1 前态为动作 `0x1B`、待执行动作 `0x1D`，ShotCycle=4、AimWindow=32，持球者为 1。完整前态和固定配置保存于 `.local/basketball/rea/cold-runtime/first-failure.json`，原测试输出为 `first-failure.log`。该人物／球动作交对应恢复工作处理；当时尚未通过 6,000 次更新；以下历史失败未被删除或替换。
+首次执行固定测试在第 230 次更新停止：`actions: object 1: special shot has not been reconstructed`。人物 1 前态为动作 `0x1B`、待执行动作 `0x1D`，ShotCycle=4、AimWindow=32，持球者为 1。完整前态和固定配置保存于 `.local/basketball/research/rea/cold-runtime/first-failure.json`，原测试输出为 `first-failure.log`。该人物／球动作交对应恢复工作处理；当时尚未通过 6,000 次更新；以下历史失败未被删除或替换。
 
 复跑命令：
 
@@ -31,6 +31,6 @@ go test ./games/basketball/engine -run TestColdConfiguredWorldSixThousandUpdates
 
 ## 当前完成结果
 
-原生和Wasm的可复跑报告均为passed=true、exitCode=0，各有两条updates=6000的completedRuns。四次完整状态累积SHA-256均为`4a81c896e779e4bdec6ca7d8bd461c0fb92cdc20bc18a8e3ec580b4794afcef8`，最终scores=[12,55]。报告为 `.local/basketball/rea/cold-runtime/native-result.json` 和 `wasm-result.json`，对应JSONL保留精确Go命令和测试输出；首次失败产物继续保留。
+原生和Wasm的可复跑报告均为passed=true、exitCode=0，各有两条updates=6000的completedRuns。四次完整状态累积SHA-256均为`4a81c896e779e4bdec6ca7d8bd461c0fb92cdc20bc18a8e3ec580b4794afcef8`，最终scores=[12,55]。报告为 `.local/basketball/research/rea/cold-runtime/native-result.json` 和 `wasm-result.json`，对应JSONL保留精确Go命令和测试输出；首次失败产物继续保留。
 
 初始化仍为DefaultOriginalMatchConfiguration，纽约、teams0/1、seed0x12345678，真人0闲置，其余原AI；运行期间没有中间快照注入，没有缩短目标或改变seed。所有原规则缺口逐一恢复并附各自证据，未补自创AI。此结果只覆盖该固定冷配置的6000逻辑更新，视频时钟、比赛结束和更多主动输入由独立Runtime验收覆盖。

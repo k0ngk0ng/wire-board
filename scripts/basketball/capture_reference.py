@@ -10,7 +10,7 @@ import time
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[2]
-BASE = ROOT / '.local/nes-basket'
+BASE = ROOT / '.local/basketball/research/original'
 
 
 def run(scenario_path):

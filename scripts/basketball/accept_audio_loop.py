@@ -22,11 +22,11 @@ LOOP=TRACK!=75
 PROBE=os.getenv('BASKETBALL_AUDIO_CODEC_PROBE','')
 FALLBACK=os.getenv('BASKETBALL_AUDIO_CDN_FAILURE','')=='1'
 assert not PROBE or re.fullmatch(r'[a-z0-9.-]+',PROBE)
-MASTER=ROOT/'.local/basketball/audio/export'/f'music-{TRACK:03}{"-loop" if LOOP else ""}.wav'
+MASTER=ROOT/'.local/basketball/assets/audio/export'/f'music-{TRACK:03}{"-loop" if LOOP else ""}.wav'
 PLAYBACK=json.loads((ROOT/'games/basketball/assets/audio-playback.json').read_text())['music'][str(TRACK)]
-ASSET=(ROOT/'.local/basketball/audio/compression/probes'/PROBE) if PROBE else ROOT/'.local/basketball/audio/export'/PLAYBACK.get('file',PLAYBACK['wav'])
+ASSET=(ROOT/'.local/basketball/assets/audio/compression/probes'/PROBE) if PROBE else ROOT/'.local/basketball/assets/audio/export'/PLAYBACK.get('file',PLAYBACK['wav'])
 DIRECTORY=(('codec-probe-'+PROBE) if PROBE else (('encoded-loop-browser-'+str(TRACK)) if ASSET.suffix!='.wav' else ('loop-browser' if TRACK==66 else f'loop-browser-{TRACK:03}'))) + ('-cdn-fallback' if FALLBACK else '')
-OUT=ROOT/'.local/basketball/audio'/DIRECTORY
+OUT=ROOT/'.local/basketball/assets/audio'/DIRECTORY
 if os.getenv('BASKETBALL_AUDIO_EVIDENCE_DIR'):
     OUT=(ROOT/os.environ['BASKETBALL_AUDIO_EVIDENCE_DIR']).resolve()
     assert OUT.is_relative_to(ROOT), 'audio evidence must remain in the workspace'
@@ -35,8 +35,9 @@ if os.getenv('BASKETBALL_AUDIO_EVIDENCE_DIR'):
 def main():
     OUT.mkdir(parents=True,exist_ok=True)
     env=dict(os.environ,AGENT_BROWSER_SESSION='q'+uuid.uuid4().hex[:4],
-        AGENT_BROWSER_SOCKET_DIR=str(ROOT/'.local/s'),TMPDIR=str(ROOT/'.local/tmp'))
-    Path(env['AGENT_BROWSER_SOCKET_DIR']).mkdir(exist_ok=True)
+        AGENT_BROWSER_SOCKET_DIR=str(ROOT/'.local/basketball/tmp/s'),TMPDIR=str(ROOT/'.local/tmp'))
+    Path(env['TMPDIR']).mkdir(parents=True, exist_ok=True)
+    Path(env['AGENT_BROWSER_SOCKET_DIR']).mkdir(parents=True,exist_ok=True)
     subprocess.run([str(ROOT/'web/node_modules/.bin/esbuild'),str(ROOT/'scripts/basketball/audio_loop_browser.ts'),
         '--bundle','--format=esm','--target=es2022','--outfile='+str(OUT/'loop.js')],env=env,cwd=ROOT,check=True)
     requests=[]

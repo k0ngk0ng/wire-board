@@ -7,12 +7,12 @@ from postresult_art import PRESETS,BG_PALETTES,SPRITE_PALETTES,POSE_BOUNDS,SPRIT
 ROOT=Path(__file__).resolve().parents[2]
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--out',type=Path,default=ROOT/'.local/postresult-assets');args=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--out',type=Path,default=ROOT/'.local/basketball/assets/postresult');args=p.parse_args()
     out=args.out.resolve()
     if not out.is_relative_to(ROOT.resolve()):raise ValueError('Export must remain in worktree')
     out.mkdir(parents=True,exist_ok=True)
-    rom=SpriteROM((ROOT/'.local/nes-basket/basketball.nes').read_bytes())
-    colors=(ROOT/'.local/nes-basket/runs/graphics-right/nes-colors.rgb').read_bytes()
+    rom=SpriteROM((ROOT/'.local/basketball/research/original/basketball.nes').read_bytes())
+    colors=(ROOT/'.local/basketball/research/original/runs/graphics-right/nes-colors.rgb').read_bytes()
     if hashlib.sha256(colors).hexdigest()!='da30843b331e2e4474395866bc9871fcd60a7d716b3c8ee5ce3c89ee46e8c91e':raise ValueError('Expected pinned retained console RGB lookup')
     backgrounds=[decode_background(rom,preset) for preset in PRESETS]
     court_starts=[rom.prg[16384+0x3ec5+court] for court in range(8)]

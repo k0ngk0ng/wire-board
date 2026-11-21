@@ -7,11 +7,13 @@ import base64,hashlib,json,os,re,subprocess,threading,uuid
 from http.server import BaseHTTPRequestHandler,ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import urlparse
-ROOT=Path(__file__).resolve().parents[2];OUT=ROOT/'.local/music76-source/browser';ASSETS=ROOT/'.local/basketball/audio/export'
+ROOT=Path(__file__).resolve().parents[2];OUT=ROOT/'.local/basketball/research/music76-source/browser';ASSETS=ROOT/'.local/basketball/assets/audio/export'
 ENTRY=json.load(open(ROOT/'games/basketball/assets/audio-playback.json'))['music']['76'];I=ENTRY['loop_start_sample']/ENTRY['sample_rate'];D=ENTRY['decoded_samples']/ENTRY['sample_rate'];L=D-I
 
 def main():
- OUT.mkdir(parents=True,exist_ok=True);env=dict(os.environ,AGENT_BROWSER_SESSION='m'+uuid.uuid4().hex[:4],AGENT_BROWSER_SOCKET_DIR=str(ROOT/'.local/s'),TMPDIR=str(ROOT/'.local/tmp'))
+ OUT.mkdir(parents=True,exist_ok=True);env=dict(os.environ,AGENT_BROWSER_SESSION='m'+uuid.uuid4().hex[:4],AGENT_BROWSER_SOCKET_DIR=str(ROOT/'.local/basketball/tmp/s'),TMPDIR=str(ROOT/'.local/tmp'))
+ Path(env['TMPDIR']).mkdir(parents=True, exist_ok=True)
+ Path(env['AGENT_BROWSER_SOCKET_DIR']).mkdir(parents=True, exist_ok=True)
  subprocess.run([str(ROOT/'web/node_modules/.bin/esbuild'),str(ROOT/'scripts/basketball/music76_browser.ts'),'--bundle','--format=esm','--target=es2022','--outfile='+str(OUT/'harness.js')],env=env,cwd=ROOT,check=True)
  requests=[]
  class Handler(BaseHTTPRequestHandler):

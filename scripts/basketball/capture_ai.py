@@ -42,7 +42,7 @@ rows=list(csv.DictReader((capture/'ai.csv').open()));assert rows
 assert (capture/'ai-ram.bin').stat().st_size==len(rows)*4096
 rom=(BASE/'basketball.nes').read_bytes()[16:16+131072];bank=rom[5*16384:6*16384]
 handlers=struct.unpack('<42H',bank[0x209c:0x20f0])
-out=Path('.local/basketball/ai');out.mkdir(parents=True,exist_ok=True)
+out=Path('.local/basketball/research/ai');out.mkdir(parents=True,exist_ok=True)
 summary={'calls':len(rows),'actors':sorted({int(r['actor']) for r in rows}),'observed_modes':sorted({int(r['mode_before'])&0x7f for r in rows}),'dispatch_table':[{'mode':i,'address':f'0x{a:04x}'} for i,a in enumerate(handlers)],'state_changed_by_observation':False,'identical_screenshots':len(screenshots),'source':'PRG 16 KiB bank 5, CPU $A05D; return at fixed-bank $FD8E','status':'captured, not implemented'}
 (out/'capture.json').write_text(json.dumps(summary,indent=2)+'\n')
 (out/'bank5-visible.bin').write_bytes(bank+rom[-16384:])

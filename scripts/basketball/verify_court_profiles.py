@@ -7,7 +7,7 @@ import copy,gzip,hashlib,json,sys
 from pathlib import Path
 from py65.devices.mpu6502 import MPU
 ROOT=Path(__file__).resolve().parents[2]
-ROM=ROOT/'.local/nes-basket/basketball.nes'
+ROM=ROOT/'.local/basketball/research/original/basketball.nes'
 DATA=ROOT/'games/basketball/engine/testdata'
 EXPECTED='0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b'
 ROW_COUNTS=[10,12,10,11,10,11,9,11]

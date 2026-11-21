@@ -9,7 +9,7 @@ ROOT = Path(__file__).resolve().parents[2]
 def main():
     fixture = ROOT / 'games/basketball/engine/testdata/campaign-home-entry.json'
     expected = json.loads(fixture.read_text())
-    raw = (ROOT / '.local/nes-basket/runs' / expected['run'] / 'ram.bin').read_bytes()
+    raw = (ROOT / '.local/basketball/research/original/runs' / expected['run'] / 'ram.bin').read_bytes()
     assert hashlib.sha256(raw).hexdigest() == expected['sourceSHA256']
     a = raw[(expected['entryFrame'] - 1) * 2048:expected['entryFrame'] * 2048]
     b = raw[(expected['playingFrame'] - 1) * 2048:expected['playingFrame'] * 2048]

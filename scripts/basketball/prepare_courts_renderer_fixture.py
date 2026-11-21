@@ -7,9 +7,9 @@ from derive_irq_timing import derive
 ROOT=Path(__file__).resolve().parents[2]
 def prepare(holdout=False):
  timings=derive()['cases']
- out=ROOT/'.local/basketball/renderer/browser';capture=json.loads((ROOT/('.local/basketball/irq-raster/holdout-capture.json' if holdout else '.local/basketball/courts/capture.json')).read_text());cases=[]
+ out=ROOT/'.local/basketball/verification/renderer/browser';capture=json.loads((ROOT/('.local/basketball/research/irq-raster/holdout-capture.json' if holdout else '.local/basketball/assets/courts/capture.json')).read_text());cases=[]
  for record in capture['records']:
-  court=record['court'];directory=ROOT/'.local/nes-basket/runs'/record.get('run',f'court-{court}-observed')
+  court=record['court'];directory=ROOT/'.local/basketball/research/original/runs'/record.get('run',f'court-{court}-observed')
   for item in record['frames']:
    if holdout and item['frame'] in [1600,1680,1750]:continue
    stem=f"ppu-{item['emulator_frame']:05d}";source=json.loads((directory/(stem+'-semantic.json')).read_text());ppu=(directory/(stem+'-ppu.bin')).read_bytes()

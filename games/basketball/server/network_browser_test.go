@@ -42,7 +42,7 @@ func TestBasketballBrowserNetworkBoard(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	out := filepath.Join(root, ".local/basketball/network-board")
+	out := filepath.Join(root, ".local/basketball/verification/network-board")
 	delayMS := 0
 	if value := os.Getenv("BASKETBALL_CHECKPOINT_DELAY_MS"); value != "" {
 		delayMS, err = strconv.Atoi(value)
@@ -58,7 +58,7 @@ func TestBasketballBrowserNetworkBoard(t *testing.T) {
 		if err != nil || rtt < 0 || rtt > 1000 {
 			t.Fatal("invalid RTT")
 		}
-		out = filepath.Join(root, ".local/basketball/input-sync-rtt"+strconv.Itoa(rtt))
+		out = filepath.Join(root, ".local/basketball/verification/input-sync-rtt"+strconv.Itoa(rtt))
 		if cpu := os.Getenv("BASKETBALL_BROWSER_CPU_RATE"); cpu != "" {
 			out += "-cpu" + cpu
 		}

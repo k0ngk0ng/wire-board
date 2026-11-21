@@ -1,0 +1,27 @@
+{
+  "scope": "All authored Go, TypeScript, JavaScript, Python, CSS and JSON in games/hotlinemiami and scripts/hotlinemiami; this is not a whole-repository check",
+  "directories": ["games/hotlinemiami", "scripts/hotlinemiami"],
+  "output": ".local/hotlinemiami/verification/lint",
+  "externalResourceDirectory": "games/hotlinemiami/assets/public",
+  "businessTypeScript": ["input.ts", "prediction.ts", "motion.ts", "simulation.ts", "attack.ts", "feedback.ts"],
+  "languages": {
+    "go": { "extensions": [".go"], "filename": "^[a-z][a-z0-9_]*\\.go$", "comments": false },
+    "typescript": { "extensions": [".ts", ".tsx"], "filename": "^(?:[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*\\.tsx?|[A-Z][A-Za-z0-9]*\\.tsx)$", "comments": false },
+    "javascript": { "extensions": [".js", ".mjs", ".cjs"], "filename": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*\\.(?:[mc]js|js)$", "comments": false },
+    "python": { "extensions": [".py"], "filename": "^[a-z][a-z0-9]*(?:[_-][a-z0-9]+)*\\.py$", "comments": false },
+    "css": { "extensions": [".css"], "filename": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*\\.css$", "comments": false },
+    "json": { "extensions": [".json"], "filename": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*\\.json$", "comments": false }
+  },
+  "rules": [
+    "All code comments and Python docstrings are prohibited",
+    "TypeScript/JavaScript and Go bindings use camelCase/PascalCase; uppercase snake constants are permitted in TypeScript/JavaScript",
+    "Python bindings use snake_case, uppercase snake constants, and PascalCase classes",
+    "Go package names match engine, server, data, command and test directory roles",
+    "Business Go uses integer types and integer numeric literals; input and prediction TypeScript reject fractional numeric constants, Number.EPSILON and Math.random",
+    "Dynamic evaluation, TypeScript any, cross-game implementation imports, direct audio players and embedded media payloads are prohibited",
+    "Temporary output paths are restricted to .local/hotlinemiami and system-default temporary directories are prohibited",
+    "CSS classes and custom properties use kebab-case; JSON must parse and cannot contain prototype keys",
+    "Symlink traversal and unsupported source locations are rejected",
+    "assets/public is externally restored payload: exclude it from authored source parsing only while every file is registered and verified against assets/resources.json bytes and SHA-256; authored assets metadata outside public remains checked"
+  ]
+}

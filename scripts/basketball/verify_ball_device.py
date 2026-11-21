@@ -10,8 +10,8 @@ def decode(r):
  return d
 
 def main():
- rom=(ROOT/'.local/nes-basket/basketball.nes').read_bytes();digest=hashlib.sha256(rom).hexdigest();assert digest=='0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b'
- ram=(ROOT/'.local/nes-basket/runs/ball-pass/ram.bin').read_bytes()[:2048];records=[]
+ rom=(ROOT/'.local/basketball/research/original/basketball.nes').read_bytes();digest=hashlib.sha256(rom).hexdigest();assert digest=='0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b'
+ ram=(ROOT/'.local/basketball/research/original/runs/ball-pass/ram.bin').read_bytes()[:2048];records=[]
  def run(r,entry,kind):
   mem=Memory(rom[16:16+131072],r);cpu=MPU(memory=mem);cpu.sp=255;cpu.stPushWord(0x6fff);cpu.pc,cpu.x,cpu.p=entry,6,0x20;before=decode(mem)
   for steps in range(30000):

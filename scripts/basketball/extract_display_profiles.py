@@ -1,7 +1,7 @@
 """Export original character/tactic glyphs, ball pages and New York shadow codes."""
 from pathlib import Path
 import hashlib,json
-ROOT=Path(__file__).resolve().parents[2];rom=(ROOT/'.local/nes-basket/basketball.nes').read_bytes();prg=rom[16:131088];bank=prg[65536:81920];fixed=prg[-16384:]
+ROOT=Path(__file__).resolve().parents[2];rom=(ROOT/'.local/basketball/research/original/basketball.nes').read_bytes();prg=rom[16:131088];bank=prg[65536:81920];fixed=prg[-16384:]
 def word(a):return int.from_bytes(bank[a-0x8000:a-0x8000+2],'little')
 def decode(address,length,mode,source=bank):
  upper=[];lower=[];ended=False
@@ -36,4 +36,4 @@ for y in range(12):
   ptr=word(word(table+page*2)+y*2);row.extend(bank[ptr-0x8000+x]&248 for x in range(32))
  lines.append(array(row)+',')
 lines+=['}'];(ROOT/'games/basketball/engine/display_profiles.go').write_text('\n'.join(lines)+'\n')
-(ROOT/'.local/basketball/rea/display/profiles.json').write_text(json.dumps({'rom_sha256':hashlib.sha256(rom).hexdigest(),'name_pointer':'bank4:B24E','glyph_transform':'fixed:C13F/C03F/C19B','tactics':'bank4:B33F','team_names':'bank3:B6A7; B3A7 length13 mode0','ball_chr':'fixed:F061','shadow_surface':'bank4:8B1F[1]','teams':8,'characters_per_team':4,'tactics':13,'source_is_static_rom':True},indent=2)+'\n')
+(ROOT/'.local/basketball/research/rea/display/profiles.json').write_text(json.dumps({'rom_sha256':hashlib.sha256(rom).hexdigest(),'name_pointer':'bank4:B24E','glyph_transform':'fixed:C13F/C03F/C19B','tactics':'bank4:B33F','team_names':'bank3:B6A7; B3A7 length13 mode0','ball_chr':'fixed:F061','shadow_surface':'bank4:8B1F[1]','teams':8,'characters_per_team':4,'tactics':13,'source_is_static_rom':True},indent=2)+'\n')

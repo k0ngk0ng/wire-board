@@ -12,7 +12,7 @@ from PIL import Image
 from static_sprites import SpriteROM, render_player
 
 ROOT = Path(__file__).resolve().parents[2]
-ROM = ROOT/'.local/nes-basket/basketball.nes'
+ROM = ROOT/'.local/basketball/research/original/basketball.nes'
 
 class StaticSpriteTests(unittest.TestCase):
     def test_bounds_and_identity(self):
@@ -28,7 +28,7 @@ class StaticSpriteTests(unittest.TestCase):
 
     def test_team_palette_and_chr_from_rom(self):
         rom=SpriteROM(ROM.read_bytes())
-        directory=ROOT/'.local/nes-basket/runs/graphics-right'
+        directory=ROOT/'.local/basketball/research/original/runs/graphics-right'
         ppu=next(directory.glob('ppu-*-ppu.bin')).read_bytes()
         self.assertEqual(rom.team_palette(0)[1:4],ppu[0x3f11:0x3f14])
         self.assertEqual(rom.team_palette(0)[5:8],ppu[0x3f15:0x3f18])
@@ -39,7 +39,7 @@ class StaticSpriteTests(unittest.TestCase):
 
     def test_all_static_player_poses(self):
         rom=SpriteROM(ROM.read_bytes())
-        colors=(ROOT/'.local/nes-basket/runs/graphics-right/nes-colors.rgb').read_bytes()
+        colors=(ROOT/'.local/basketball/research/original/runs/graphics-right/nes-colors.rgb').read_bytes()
         for team in range(8):
             palette=bytes(16)+rom.team_palette(team)*2
             for pose in range(rom.pose_count(team)):
@@ -50,12 +50,12 @@ class StaticSpriteTests(unittest.TestCase):
 
     def test_recorded_original_frames(self):
         rom = SpriteROM(ROM.read_bytes())
-        doc=json.loads((ROOT/'.local/basketball/atlas/atlas.json').read_text())
+        doc=json.loads((ROOT/'.local/basketball/assets/atlas/atlas.json').read_text())
         checked=0
         for entry in doc['frames']:
             if entry['object'] >=4: continue
             source=entry['sources'][0]
-            directory=ROOT/'.local/nes-basket/runs'/source['capture']
+            directory=ROOT/'.local/basketball/research/original/runs'/source['capture']
             stem='ppu-%05d'%source['frame']
             ppu=(directory/(stem+'-ppu.bin')).read_bytes()
             colors=(directory/'nes-colors.rgb').read_bytes()
@@ -64,7 +64,7 @@ class StaticSpriteTests(unittest.TestCase):
             generated=render_player(rom,state['ram03d6'],state['ram005b'],char,owner,
                 rom.identify_chr_pages(ppu[:8192]),ppu[0x3f00:0x3f20],colors,
                 reverse=source['priority']=='reverse')
-            expected=Image.open(ROOT/'.local/basketball/atlas'/entry['file']).convert('RGBA')
+            expected=Image.open(ROOT/'.local/basketball/assets/atlas'/entry['file']).convert('RGBA')
             self.assertEqual(generated.tobytes(),expected.tobytes(),entry['file'])
             checked+=1
         self.assertGreaterEqual(checked,30)

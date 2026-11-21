@@ -18,15 +18,15 @@ The current implementation has **31 of the original 42 personal mode entries**, 
 
 ## Evidence boundary
 
-The original ROM is `.local/nes-basket/basketball.nes`, SHA-256 `0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b`. All addresses below refer to its PRG bank 5. This audit read the actual pointer bytes and compared every index with current Go dispatch; it did not infer completeness from TODO strings or historical reports.
+The original ROM is `.local/basketball/research/original/basketball.nes`, SHA-256 `0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b`. All addresses below refer to its PRG bank 5. This audit read the actual pointer bytes and compared every index with current Go dispatch; it did not infer completeness from TODO strings or historical reports.
 
 | Original source | Existing evidence |
 |---|---|
-| Personal dispatch `A05D`, 42 pointers at `A09C`, handlers and helper entries | `.local/basketball/rea/ai-batch/batch.json`, `ev_eef21fb30302a3ec59b8b3dc097be9a7fa2a559339d598963a8489a9d646759d` |
-| Team dispatch `9AF6`, 14 pointers at `9B08`, command handlers | `.local/basketball/rea/world-schedule/global/batch.json`, `ev_07eaf15f099c93a5a0f6613a4e0d132dbdd15765b5a764f002e85ad934bec0fa` |
-| Team schedule `99F0` and role assignment | `.local/basketball/rea/team-ai/reused-analysis.json`, including `ev_9c8ecd00722363df65731629837cf49a46ae7226853abf7fd56d941dde66660c` and `ev_d2d269c7f23f7ce3ec46c51ff7d4bc6f86433d921ec1b889d3b678bf784f6030` |
-| Shot dispatch `B383`, 16 pointers at `B38B` | `.local/basketball/rea/shot-planning/dispatch/batch.json`, `ev_8bac8418e07eaa8a98c2ac6472d25618bfc7cb159ee632963fe08b31581cafda` |
-| Evasion dispatch `B7CD`, 14 pointers at `B7D3` | `.local/basketball/rea/dribble-evasion/batch.json`, `ev_58b2c56658b4321b847a48fb0a53b4d307c599eecc82b6aff7938aefa72b9dde`; actual ROM pointer bytes establish the bounded table |
+| Personal dispatch `A05D`, 42 pointers at `A09C`, handlers and helper entries | `.local/basketball/research/rea/ai-batch/batch.json`, `ev_eef21fb30302a3ec59b8b3dc097be9a7fa2a559339d598963a8489a9d646759d` |
+| Team dispatch `9AF6`, 14 pointers at `9B08`, command handlers | `.local/basketball/research/rea/world-schedule/global/batch.json`, `ev_07eaf15f099c93a5a0f6613a4e0d132dbdd15765b5a764f002e85ad934bec0fa` |
+| Team schedule `99F0` and role assignment | `.local/basketball/research/rea/team-ai/reused-analysis.json`, including `ev_9c8ecd00722363df65731629837cf49a46ae7226853abf7fd56d941dde66660c` and `ev_d2d269c7f23f7ce3ec46c51ff7d4bc6f86433d921ec1b889d3b678bf784f6030` |
+| Shot dispatch `B383`, 16 pointers at `B38B` | `.local/basketball/research/rea/shot-planning/dispatch/batch.json`, `ev_8bac8418e07eaa8a98c2ac6472d25618bfc7cb159ee632963fe08b31581cafda` |
+| Evasion dispatch `B7CD`, 14 pointers at `B7D3` | `.local/basketball/research/rea/dribble-evasion/batch.json`, `ev_58b2c56658b4321b847a48fb0a53b4d307c599eecc82b6aff7938aefa72b9dde`; actual ROM pointer bytes establish the bounded table |
 | Human tactical profiles | Six pointers at `9467`, normal and command subrows at `9473` through `94AE`; `engine/ai_team_profiles.go`, `engine/ai_command_resume_profiles.go` and their source metadata |
 
 REA pseudocode is static evidence, not proof of a natural match. Existing natural/isolated validation reports remain separately scoped. Historical `AI_SHOT_VERIFICATION.md` and `AI_TEAM_VERIFICATION.md` describe earlier milestones; their old limitations are not the authoritative current dispatch list.

@@ -7,7 +7,7 @@ def load(name):
 pack=load('package_assets')
 class PackagingTests(unittest.TestCase):
  def setUp(self):
-  parent=ROOT/'.local/asset-package-tests';parent.mkdir(parents=True,exist_ok=True)
+  parent=ROOT/'.local/basketball/tmp/asset-package-tests';parent.mkdir(parents=True,exist_ok=True)
   self.tmp=tempfile.TemporaryDirectory(dir=parent);self.root=Path(self.tmp.name)
  def tearDown(self):self.tmp.cleanup()
  def fixture(self):
@@ -18,24 +18,24 @@ class PackagingTests(unittest.TestCase):
   def manifest(base,name='manifest.json'):
    digest=put(base+'/tile.png',png)
    doc(base+'/'+name,{'source':{'rom_sha256':pack.ROM_SHA,'privateSource':'secret location'},'accepted_for_release':False,'assets':{'tile.png':{'sha256':digest}},'verification':{'log':'research.log'}})
-  for group in ['court','raster','results']:manifest('.local/basketball/'+group)
-  for group in ['static-atlas','static-objects']:manifest('.local/basketball/'+group,'atlas.json')
-  manifest('.local/postresult-assets');manifest('.local/basketball/selection-assets')
+  for group in ['court','raster','results']:manifest('.local/basketball/assets/'+group)
+  for group in ['static-atlas','static-objects']:manifest('.local/basketball/assets/'+group,'atlas.json')
+  manifest('.local/basketball/assets/postresult');manifest('.local/basketball/assets/selection-assets')
   courts=[]
   for i in range(8):
-   base=f'.local/basketball/courts/{i}';manifest(base)
+   base=f'.local/basketball/assets/courts/{i}';manifest(base)
    courts.append({'court':i,'manifest':f'{i}/manifest.json','sha256':hashlib.sha256((r/base/'manifest.json').read_bytes()).hexdigest()})
-  doc('.local/basketball/courts/manifest.json',{'source':{'rom_sha256':pack.ROM_SHA},'courts':courts})
-  wav=b'RIFF'+(8).to_bytes(4,'little')+b'WAVE';digest=put('.local/basketball/audio/export/sound-003.wav',wav)
+  doc('.local/basketball/assets/courts/manifest.json',{'source':{'rom_sha256':pack.ROM_SHA},'courts':courts})
+  wav=b'RIFF'+(8).to_bytes(4,'little')+b'WAVE';digest=put('.local/basketball/assets/audio/export/sound-003.wav',wav)
   doc('games/basketball/assets/audio-catalog.json',{'source_rom_sha256':pack.ROM_SHA,'effects':[{'id':3,'wav':'sound-003.wav'}]})
-  doc('.local/basketball/audio/export/manifest.json',{'rom_sha256':pack.ROM_SHA,'sounds':[{'id':3,'wav':'sound-003.wav','sha256':{'sound-003.wav':digest}}]})
-  mp3=b'ID3test-delivery';digest=put('.local/basketball/audio/export/music-075.mp3',mp3)
+  doc('.local/basketball/assets/audio/export/manifest.json',{'rom_sha256':pack.ROM_SHA,'sounds':[{'id':3,'wav':'sound-003.wav','sha256':{'sound-003.wav':digest}}]})
+  mp3=b'ID3test-delivery';digest=put('.local/basketball/assets/audio/export/music-075.mp3',mp3)
   doc('games/basketball/assets/audio-playback.json',{'accepted_for_release':False,'effects':{},'music':{'75':{'file':'music-075.mp3','mime_type':'audio/mpeg','distribution_sha256':digest,'encoding_manifest':'encoding.json','source_manifest':'music-source.json','wav':'music-075.wav','loop':False}}})
-  doc('.local/basketball/audio/export/encoding.json',{'tracks':[{'id':75,'file':'music-075.mp3','sha256':digest}]})
-  doc('.local/basketball/audio/export/music-source.json',{'rom_sha256':pack.ROM_SHA})
-  for filename in ['basketball.nes','sound-003.nsf','music-075.wav','research.html','driver-ram.bin','capture.log']:put('.local/basketball/audio/export/'+filename,b'private')
+  doc('.local/basketball/assets/audio/export/encoding.json',{'tracks':[{'id':75,'file':'music-075.mp3','sha256':digest}]})
+  doc('.local/basketball/assets/audio/export/music-source.json',{'rom_sha256':pack.ROM_SHA})
+  for filename in ['basketball.nes','sound-003.nsf','music-075.wav','research.html','driver-ram.bin','capture.log']:put('.local/basketball/assets/audio/export/'+filename,b'private')
  def fixture_music76(self):
-  self.fixture();base=self.root/'.local/basketball/audio/export'
+  self.fixture();base=self.root/'.local/basketball/assets/audio/export'
   mp3=b'ID3verified-compound-delivery';master=b'private-source-bound-master'
   (base/'music-076-intro-loop.mp3').write_bytes(mp3);(base/'music-076-intro-loop.wav').write_bytes(master)
   timing={'sample_rate':44100,'loop_start_sample':5465255,'loop_end_sample':32515748,'loop_samples':27050493,'decoded_samples':32515748}
@@ -85,7 +85,7 @@ class PackagingTests(unittest.TestCase):
  def test_invalid_manifest_digest_or_rom(self):
   for corrupt in ['sha','rom']:
    with self.subTest(corrupt=corrupt):
-    self.fixture();p=self.root/'.local/basketball/court/manifest.json';d=json.loads(p.read_text())
+    self.fixture();p=self.root/'.local/basketball/assets/court/manifest.json';d=json.loads(p.read_text())
     if corrupt=='sha':d['assets']['tile.png']['sha256']='0'*64
     else:d['source']['rom_sha256']='0'*64
     p.write_text(json.dumps(d))
@@ -93,9 +93,9 @@ class PackagingTests(unittest.TestCase):
  def test_bad_paths_and_nested_symlinks(self):
   for value in ['../secret','/etc/passwd','https://bad/x','a\\b','a/../b','a//b','%2e%2e/x','x?y','x#z']:
    with self.subTest(value=value),self.assertRaises(ValueError):pack.safe_relative(value)
-  self.fixture();p=self.root/'.local/basketball/court/tile.png';p.unlink();p.symlink_to(self.root/'.local/basketball/raster/tile.png')
+  self.fixture();p=self.root/'.local/basketball/assets/court/tile.png';p.unlink();p.symlink_to(self.root/'.local/basketball/assets/raster/tile.png')
   with self.assertRaises(ValueError):pack.build_package(self.root,self.root/'out')
-  p.unlink();self.fixture();directory=self.root/'.local/basketball/court';saved=directory.with_name('court-saved');directory.rename(saved);directory.symlink_to(saved,target_is_directory=True)
+  p.unlink();self.fixture();directory=self.root/'.local/basketball/assets/court';saved=directory.with_name('court-saved');directory.rename(saved);directory.symlink_to(saved,target_is_directory=True)
   with self.assertRaises(ValueError):pack.build_package(self.root,self.root/'out-dir')
  def test_output_boundary_existing_and_tamper(self):
   self.fixture()
@@ -107,7 +107,7 @@ class PackagingTests(unittest.TestCase):
   (self.root/'out/public/basketball/v1/audio/music-075.mp3').write_bytes(b'changed')
   with self.assertRaises(ValueError):pack.verify_package(self.root/'out',self.root)
  def test_unhashed_or_forbidden_manifest_reference(self):
-  self.fixture();p=self.root/'.local/basketball/court/manifest.json';d=json.loads(p.read_text());d['extra']={'file':'secret.nes','sha256':'0'*64};p.write_text(json.dumps(d))
+  self.fixture();p=self.root/'.local/basketball/assets/court/manifest.json';d=json.loads(p.read_text());d['extra']={'file':'secret.nes','sha256':'0'*64};p.write_text(json.dumps(d))
   with self.assertRaises(ValueError):pack.build_package(self.root,self.root/'out')
   self.fixture();p=self.root/'games/basketball/assets/audio-playback.json';d=json.loads(p.read_text());d['music']['77']=d['music'].pop('75');p.write_text(json.dumps(d))
   with self.assertRaises(ValueError):pack.build_package(self.root,self.root/'wrong-track')

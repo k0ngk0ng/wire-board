@@ -1,0 +1,469 @@
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import type { BoardProps } from '../../../web/src/game-api/module';
+import { useGameController } from '../../../web/src/controllers/use-game-controller';
+import { loadBattleAssets, type LoadedAssets } from './assets';
+import { validateRulesIdentity } from './asset-contract';
+import { BuyMenu } from './BuyMenu';
+import { inventorySlots, itemName, mapName, weapons } from './content';
+import { emptyInput, InputChannel } from './input';
+import { announcementSound, eventFeedback, localFeedback, type FeedbackKind } from './feedback';
+import { EventCursor, MotionPrediction } from './prediction';
+import { BattleRenderer } from './renderer';
+import { BrushCache } from './brush-cache';
+import { formatDuration, observerCandidates, viewAngles } from './presentation';
+import { useOverlayInsets } from './overlay-insets';
+import { WeaponHistory } from './weapon-history';
+import { TouchControls, type TouchState } from './TouchControls';
+import type { GameEvent, GameInput, InputAction, Player, View } from './types';
+import './style.css';
+
+type Metrics = { inputs: { at: number; createdAt: number; dispatchedAt: number; type: string; trusted: boolean }[]; responses: { inputAt: number; visibleAt: number; type: string; seq?: number }[]; frames: number[] };
+type ObservedCanvas = HTMLCanvasElement & { __cs16Metrics?: Metrics; __cs16Frame?: Record<string, unknown>; __cs16Assets?: Record<string, unknown> };
+const angle = (value: number) => (Math.round(value) % 65536 + 65536) % 65536;
+const safePitch = (value: number) => Math.max(-16000, Math.min(16000, Math.round(value)));
+let keyboardOwner: symbol | undefined;
+
+export function Board(props: BoardProps<View>) {
+  const brushCache = useRef(new BrushCache());
+  const brushes = brushCache.current.update(props.data.epoch, props.data.mapId, props.data.brushes);
+  const latest = useRef(props);
+  latest.current = { ...props, data: { ...props.data, brushes } };
+  const root = useRef<HTMLDivElement>(null);
+  useOverlayInsets(root);
+  const canvas = useRef<ObservedCanvas>(null);
+  const loaded = useRef<LoadedAssets | undefined>(undefined);
+  const renderer = useRef<BattleRenderer | undefined>(undefined);
+  const prediction = useRef<MotionPrediction | undefined>(undefined);
+  const channel = useRef<InputChannel | undefined>(undefined);
+  const cursor = useRef(new EventCursor());
+  const initialized = useRef(false);
+  const facing = useRef({ yaw: 0, pitch: 0 });
+  const mouse = useRef({ fire: false, secondary: false });
+  const touch = useRef<TouchState>({ moveX: 0, moveY: 0, actions: new Set() });
+  const selection = useRef('');
+  const buying = useRef(false);
+  const actionsBefore = useRef(new Set<string>());
+  const lastInput = useRef({ input: emptyInput(), at: 0 });
+  const lifeBefore = useRef(0);
+  const wasEnabled = useRef(false);
+  const wasLive = useRef(false);
+  const automatedBefore = useRef(false);
+  const cancellation = useRef(0);
+  const process = useRef<(force?: boolean) => void>(() => {});
+  const draw = useRef<(at: number) => void>(() => {});
+  const receivedAt = useRef(performance.now());
+  const metrics = useRef<Metrics>({ inputs: [], responses: [], frames: [] });
+  const waiting = useRef<{ at: number; type: string; seq?: number } | undefined>(undefined);
+  const processedAt = useRef(0);
+  const lastVisible = useRef('');
+  const drawCount = useRef(0);
+  const lastShot = useRef({ at: -10000, weapon: '', soundAt: -10000 });
+  const localFlash = useRef(0);
+  const localAnimation = useRef(0);
+  const lastFeedback = useRef<{ kind: FeedbackKind; at: number } | undefined>(undefined);
+  const predictedWeapon = useRef<{ seq: number; life: number; id: string } | undefined>(undefined);
+  const weaponHistory = useRef(new WeaponHistory());
+  const [ready, setReady] = useState(false);
+  const [, setControlRevision] = useState(0);
+  const [error, setError] = useState('');
+  const [attempt, setAttempt] = useState(0);
+  const [buyOpen, setBuyOpen] = useState(false);
+  const [scoreboard, setScoreboard] = useState(false);
+  const [now, setNow] = useState(performance.now());
+  const [feed, setFeed] = useState<GameEvent[]>([]);
+  const [watch, setWatch] = useState(props.room.you);
+  const [locked, setLocked] = useState(false);
+  const own = props.data.players.find(player => player.seat === props.room.you);
+  const identity = `${props.room.id}:${props.data.epoch}:${props.data.mapId}:${props.room.you}`;
+
+  function canControl() {
+    const current = latest.current;
+    const player = current.data.players.find(player => player.seat === current.room.you);
+    return initialized.current && !buying.current && !channel.current?.recovering && !current.busy && !current.clock.paused && !document.hidden && document.hasFocus() && !current.room.spectating && current.room.you >= 0 && !current.room.seats[current.room.you]?.autoPlay && !current.room.seats[current.room.you]?.left && current.data.canAct && !current.data.finished && !!player?.alive && (current.inputWindow ?? 0) > 0;
+  }
+
+  const controller = useGameController({ gameId: 'cs16', userId: props.room.seats[props.room.you]?.id ?? props.room.seats[0]?.id ?? '', scope: identity, root,
+    enabled: canControl, menu: () => root.current?.querySelector<HTMLElement>('.cs16-buy-menu') ?? null,
+    captureMappedModifiers: () => document.pointerLockElement === canvas.current && canControl(),
+    menuActions: { forward: 'up', backward: 'down', left: 'left', right: 'right', use: 'confirm', jump: 'confirm', buy: 'cancel' },
+    changed: () => process.current(true), error: setError,
+  });
+  if (!channel.current) channel.current = new InputChannel(action => latest.current.act({ ...action }), setError);
+
+  function record(event: Event) {
+    const at = performance.now();
+    const createdAt = Number.isFinite(event.timeStamp) && event.timeStamp >= 0 && event.timeStamp <= at + 1000 ? event.timeStamp : at;
+    metrics.current.inputs.push({ at, createdAt, dispatchedAt: at, type: event.type, trusted: event.isTrusted });
+    if (metrics.current.inputs.length > 1024) metrics.current.inputs.shift();
+    if (canControl()) waiting.current = { at: createdAt, type: event.type };
+  }
+
+  function release(send = true) {
+    wasEnabled.current = false;
+    mouse.current = { fire: false, secondary: false };
+    touch.current = { moveX: 0, moveY: 0, actions: new Set() };
+    selection.current = '';
+    predictedWeapon.current = undefined;
+    actionsBefore.current.clear();
+    controller.current?.clear();
+    if (send && (latest.current.inputWindow ?? 0) > 0) channel.current?.release(facing.current.yaw, facing.current.pitch);
+    prediction.current?.suspend();
+    lastInput.current = { input: emptyInput(facing.current.yaw, facing.current.pitch), at: 0 };
+  }
+
+  function closeBuy() {
+    buying.current = false;
+    setBuyOpen(false);
+    controller.current?.clear();
+    root.current?.focus({ preventScroll: true });
+    prediction.current?.resume(performance.now());
+    process.current(true);
+  }
+
+  function openBuy() {
+    if (!own?.alive || props.room.spectating) return;
+    release();
+    buying.current = true;
+    setBuyOpen(true);
+    if (document.pointerLockElement === canvas.current) document.exitPointerLock();
+  }
+
+  function select(id: string) {
+    if (!canControl()) return;
+    selection.current = id;
+    process.current(true);
+  }
+
+  function soundFor(event: GameEvent) {
+    const sounds = loaded.current?.sounds;
+    if (!sounds) return;
+    if (event.global) { const key = announcementSound(event); return key ? sounds.get(key) : undefined; }
+    const weapon = event.weapon === 'mp5navy' ? 'mp5' : event.weapon;
+    const silenced = event.value === 1 && (weapon === 'm4a1' || weapon === 'usp');
+    const candidates = event.type === 'shot' || event.type === 'fire' ? weapon === 'knife' ? [event.value === 1 ? 'weapons/knife_stab.wav' : 'weapons/knife_slash1.wav'] : [...(silenced ? [`weapons/${weapon}-1.wav`, `weapons/${weapon}1.wav`] : [`weapons/${weapon}_unsil-1.wav`]), `weapons/${weapon}-1.wav`, `weapons/${weapon}-2.wav`, `weapons/${weapon}_fire1.wav`, `weapons/${weapon}1.wav`]
+      : event.type === 'step' ? ['player/pl_step1.wav']
+      : event.type === 'reload' ? [`weapons/${weapon}_clipout.wav`, `weapons/${weapon}_magout.wav`]
+      : event.type === 'bomb_planted' ? ['weapons/c4_plant.wav', 'radio/bombpl.wav']
+      : event.type === 'bomb_defused' ? ['weapons/c4_disarm.wav', 'radio/bombdef.wav']
+      : event.type === 'bomb_exploded' || event.type === 'grenade_explode' || event.type === 'explode' ? event.weapon === 'flashbang' ? ['weapons/flashbang-1.wav'] : ['weapons/hegrenade-1.wav']
+      : event.type === 'kill' ? ['player/die1.wav'] : [];
+    const key = candidates.find(candidate => sounds.has(candidate));
+    return key ? sounds.get(key) : undefined;
+  }
+
+  function playEvent(event: GameEvent, predicted = false) {
+    const current = latest.current;
+    if (!current.sound || document.hidden) return;
+    const source = soundFor(event);
+    if (!source) return;
+    if (event.global) { void current.audio.playWithFallback([source]); return; }
+    const player = current.data.players.find(player => player.seat === current.room.you);
+    const candidates = observerCandidates(current.data.players, player, !!current.room.spectating);
+    const listener = player?.alive ? player : candidates.find(player => player.seat === watch) ?? candidates[0] ?? player;
+    if (!listener || !Number.isFinite(listener.x)) return;
+    if (!predicted && event.seat === current.room.you && (event.type === 'shot' || event.type === 'fire') && performance.now() - lastShot.current.soundAt < 180) return;
+    if (event.seat === current.room.you && (event.type === 'shot' || event.type === 'fire')) lastShot.current.soundAt = performance.now();
+    void current.audio.spatial(`cs16:${event.type}:${event.seat}`, [source], { playbackID: `${current.data.epoch}:${predicted ? `prediction:${event.id}` : event.id}`, source: { x: (event.x ?? listener.x) / 256, y: (event.y ?? listener.y) / 256, z: (event.z ?? listener.z) / 256 }, listener: { x: listener.x / 256, y: listener.y / 256, z: listener.z / 256, yaw: facing.current.yaw * Math.PI * 2 / 65536 }, maxDistance: 2400 });
+  }
+
+  process.current = (force = false) => {
+    const current = latest.current;
+    const player = current.data.players.find(player => player.seat === current.room.you);
+    const at = performance.now();
+    const enabled = canControl();
+    channel.current!.update({ identity, epoch: current.data.epoch, life: player?.life ?? 0, receivedSeq: player?.receivedSeq ?? 0, enabled, window: current.inputWindow ?? 0, frame: current.data.frame });
+    const control = controller.current;
+    const actions = control?.sample(at) ?? new Set<string>();
+    const cancelled = control?.cancelVersion ?? 0;
+    if (cancelled !== cancellation.current) { cancellation.current = cancelled; if (!actions.has('fire') && !touch.current.actions.has('fire') && !mouse.current.fire) channel.current!.release(facing.current.yaw, facing.current.pitch); }
+    if (actions.has('buy') && !actionsBefore.current.has('buy')) { if (buying.current) closeBuy(); else openBuy(); }
+    if (actions.has('scoreboard') !== actionsBefore.current.has('scoreboard')) setScoreboard(actions.has('scoreboard'));
+    if (!enabled || !player) {
+      if (wasEnabled.current) { release(); wasEnabled.current = false; }
+      actionsBefore.current = actions;
+      return;
+    }
+    if (!wasEnabled.current) prediction.current?.resume(at);
+    wasEnabled.current = true;
+    if (actions.has('lastWeapon') && !actionsBefore.current.has('lastWeapon') && player.inventory?.some(item => item.id === weaponHistory.current.previous)) selection.current = weaponHistory.current.previous;
+    for (const [action, item] of [['buyPrimaryAmmo', 'primammo'], ['buySecondaryAmmo', 'secammo']]) if (actions.has(action) && !actionsBefore.current.has(action)) {
+      void current.act({ type: 'buy', epoch: current.data.epoch, life: player.life, round: current.data.round, item }).catch(error => setError(error instanceof Error ? error.message : '购买弹药失败'));
+    }
+    const strength = (id: string) => Math.round((control?.values.get(id) ?? (actions.has(id) ? 1 : 0)) * 1000);
+    const dt = Math.max(1, Math.min(40, at - processedAt.current));
+    processedAt.current = at;
+    facing.current.yaw = angle(facing.current.yaw + (strength('lookLeft') - strength('lookRight')) * dt * 3 / 100);
+    facing.current.pitch = safePitch(facing.current.pitch + (strength('lookDown') - strength('lookUp')) * dt * 3 / 100);
+    prediction.current?.face(facing.current.yaw, facing.current.pitch);
+    for (const slot of [1, 2, 3, 4, 5]) if (actions.has(`slot${slot}`) && !actionsBefore.current.has(`slot${slot}`)) {
+      const items = player.inventory?.filter(item => slot === 3 ? item.id === 'knife' : slot === 4 ? ['hegrenade', 'flashbang', 'smokegrenade'].includes(item.id) : slot === 5 ? item.id === 'c4' : weapons.find(weapon => weapon.id === item.id)?.slot === slot) ?? [];
+      if (items.length) selection.current = items[(items.findIndex(item => item.id === player.weapon) + 1) % items.length].id;
+    }
+    const held = (id: string) => actions.has(id) || touch.current.actions.has(id);
+    const input: GameInput = {
+      moveX: Math.max(-1000, Math.min(1000, strength('right') - strength('left') + touch.current.moveX)),
+      moveY: Math.max(-1000, Math.min(1000, strength('forward') - strength('backward') + touch.current.moveY)),
+      yaw: facing.current.yaw, pitch: facing.current.pitch, fire: held('fire') || mouse.current.fire, secondary: held('secondary') || mouse.current.secondary,
+      jump: held('jump'), crouch: held('crouch'), walk: held('walk'), reload: held('reload'), use: held('use'), drop: held('drop'), select: selection.current,
+    };
+    const previousInput = lastInput.current.input;
+    const changed = Object.keys(input).some(key => input[key as keyof GameInput] !== lastInput.current.input[key as keyof GameInput]);
+    if (force || changed || at - lastInput.current.at >= 40) {
+      const sent = channel.current!.push(input, action => {
+        if (current.data.phase === 'live') prediction.current?.input(action, at);
+        if (action.select && weaponHistory.current.select(action.select, action.seq, player.inventory)) predictedWeapon.current = { seq: action.seq, life: player.life, id: action.select };
+        if (waiting.current) waiting.current.seq = action.seq;
+      });
+      if (sent) { lastInput.current = { input: { ...input }, at }; selection.current = ''; }
+    }
+    const weapon = loaded.current?.weapons.find(weapon => weapon.id === player.weapon);
+    const previousFire = actionsBefore.current.has('__fire');
+    const feedback = localFeedback(player.weapon, input, previousInput, player.ammo);
+    const attackFeedback = feedback === 'shot' || feedback === 'slash' || feedback === 'stab';
+    const cooldown = feedback === 'slash' ? 350 : feedback === 'stab' ? 1000 : Number(weapon?.cycle ?? 10) * 10;
+    const blocked = (player.nextAttack ?? 0) > current.data.frame || (player.inventory?.find(item => item.id === player.weapon)?.reloadUntil ?? 0) > current.data.frame;
+    const reloadAllowed = feedback !== 'reload' || player.reserve > 0 && player.ammo < Number(weapon?.ammo ?? 0);
+    if (feedback && !blocked && reloadAllowed && current.data.phase === 'live' && (!attackFeedback || (weapon?.automatic !== false || !previousFire || player.weapon === 'knife') && at - lastShot.current.at >= cooldown)) {
+      lastShot.current = { ...lastShot.current, at, weapon: player.weapon };
+      lastFeedback.current = { kind: feedback, at };
+      localAnimation.current++;
+      if (feedback === 'shot') localFlash.current = at + 70;
+      renderer.current?.feedback(feedback, at);
+      if (attackFeedback) playEvent({ id: channel.current!.seq, type: 'shot', frame: current.data.frame, seat: player.seat, weapon: player.weapon, x: player.x, y: player.y, z: player.z, value: feedback === 'stab' || player.inventory?.find(item => item.id === player.weapon)?.silenced ? 1 : 0 }, true);
+    }
+    const nextActions = new Set(actions);
+    if (input.fire) nextActions.add('__fire');
+    actionsBefore.current = nextActions;
+  };
+
+  useLayoutEffect(() => {
+    receivedAt.current = performance.now();
+    if (!initialized.current || !loaded.current || !prediction.current) return;
+    try { validateRulesIdentity(loaded.current.manifest.maps[props.data.mapId]?.rules, props.data.rulesSHA256); }
+    catch (error) { release(); initialized.current = false; setError(error instanceof Error ? error.message : '地图规则版本不一致'); return; }
+    const player = props.data.players.find(player => player.seat === props.room.you);
+    loaded.current.dynamics(brushes, props.data.players);
+    renderer.current?.update(latest.current.data, receivedAt.current);
+    if (player && Number.isFinite(player.x)) {
+      const automated = !!props.room.seats[props.room.you]?.autoPlay;
+      facing.current = viewAngles(player, facing.current, automated || automatedBefore.current);
+      automatedBefore.current = automated;
+      if (automated) lastFeedback.current = undefined;
+      if (lifeBefore.current !== player.life) {
+        lifeBefore.current = player.life;
+        facing.current = { yaw: player.yaw, pitch: player.pitch };
+        mouse.current = { fire: false, secondary: false };
+        touch.current = { moveX: 0, moveY: 0, actions: new Set() };
+        controller.current?.clear();
+      }
+      weaponHistory.current.confirm(player, identity, !!props.data.recover);
+      prediction.current.confirm(player, props.data.frame, receivedAt.current, identity, !!props.data.recover);
+      if (predictedWeapon.current && (props.data.recover || player.life !== predictedWeapon.current.life || player.appliedSeq >= predictedWeapon.current.seq)) predictedWeapon.current = undefined;
+      if (props.data.phase !== 'live') prediction.current.suspend();
+      else if (!wasLive.current) prediction.current.resume(receivedAt.current);
+      wasLive.current = props.data.phase === 'live';
+    }
+    const events = cursor.current.consume(props.data.epoch, props.data.eventId, props.data.events ?? []);
+    for (const event of events) {
+      const feedback = lastFeedback.current;
+      const predicted = feedback && event.seat === props.room.you && feedback.kind === eventFeedback(event) && receivedAt.current - feedback.at < 350;
+      if (!predicted) renderer.current?.event(event, receivedAt.current, props.room.seats[props.room.you]?.autoPlay ? -1 : props.room.you);
+      playEvent(event);
+    }
+    if (events.some(event => event.type === 'kill')) setFeed(previous => [...previous, ...events.filter(event => event.type === 'kill')].slice(-5));
+    process.current();
+  }, [props.data, props.inputWindow, props.clock.paused, props.busy, identity]);
+
+  useEffect(() => {
+    const abort = new AbortController();
+    let active = true;
+    initialized.current = false;
+    channel.current?.dispose();
+    const ownedChannel = new InputChannel(action => {
+      const current = latest.current;
+      const scope = `${current.room.id}:${current.data.epoch}:${current.data.mapId}:${current.room.you}`;
+      if (!active || scope !== identity) return Promise.resolve();
+      return current.act({ ...action }).catch(error => {
+        const owner = latest.current.data.players.find(player => player.seat === latest.current.room.you);
+        if (active && action.select && owner && weaponHistory.current.reject(action.seq, owner, identity)) predictedWeapon.current = undefined;
+        throw error;
+      });
+    }, message => { if (active) { setError(message); setControlRevision(value => value + 1); } }, undefined, () => { prediction.current?.suspend(); wasEnabled.current = false; mouse.current = { fire: false, secondary: false }; touch.current = { moveX: 0, moveY: 0, actions: new Set() }; controller.current?.clear(); });
+    channel.current = ownedChannel;
+    setReady(false);
+    setError('');
+    let bytes = { loaded: 0, total: 0 };
+    void loadBattleAssets(props.assets, props.data.mapId, [...new Set(props.data.options.characters)], abort.signal, (percent, label, value) => {
+      if (value) bytes = value;
+      if (active) latest.current.onLoadProgress?.(percent, label, value);
+    }, props.data.rulesSHA256).then(async assets => {
+      if (!active || !canvas.current) return;
+      loaded.current = assets;
+      canvas.current.__cs16Assets = assets.audit;
+      renderer.current = new BattleRenderer(canvas.current, assets);
+      prediction.current = new MotionPrediction(assets.motion, assets.canSmooth);
+      const current = latest.current;
+      assets.dynamics(current.data.brushes ?? [], current.data.players);
+      const player = current.data.players.find(player => player.seat === current.room.you);
+      if (player && Number.isFinite(player.x)) {
+        facing.current = { yaw: player.yaw, pitch: player.pitch };
+        lifeBefore.current = player.life;
+        weaponHistory.current.confirm(player, identity, true);
+        prediction.current.confirm(player, current.data.frame, performance.now(), identity);
+        if (current.data.phase !== 'live') prediction.current.suspend();
+      }
+      cursor.current.consume(current.data.epoch, current.data.eventId, current.data.events ?? []);
+      renderer.current.update(current.data, performance.now());
+      renderer.current.draw(current.data, player?.alive ? player : undefined, current.room.you, performance.now(), player && !current.room.spectating ? player.team : undefined);
+      const preparedSound = soundFor({ id: 0, type: 'shot', frame: current.data.frame, seat: current.room.you, weapon: player?.weapon ?? 'glock18' });
+      if (preparedSound) await current.audio.prepare([preparedSound], { signal: abort.signal });
+      if (!active) return;
+      initialized.current = true;
+      setReady(true);
+      current.onLoadProgress?.(100, '战场已就绪', bytes);
+      current.onReady?.();
+      process.current(true);
+    }).catch(error => {
+      if (!active || abort.signal.aborted) return;
+      const message = error instanceof Error ? error.message : '战场加载失败';
+      setError(message);
+      latest.current.onLoadError?.(message);
+    });
+    return () => { active = false; abort.abort(); initialized.current = false; ownedChannel.dispose(); release(false); if (channel.current === ownedChannel) channel.current = undefined; renderer.current?.dispose(); renderer.current = undefined; prediction.current = undefined; loaded.current = undefined; props.audio.stopSpatial(); };
+  }, [identity, props.assets, attempt]);
+
+  useEffect(() => {
+    let animation = 0;
+    const tick = (at: number) => { draw.current(at); animation = requestAnimationFrame(tick); };
+    animation = requestAnimationFrame(tick);
+    const interval = window.setInterval(() => setNow(performance.now()), 100);
+    return () => { cancelAnimationFrame(animation); clearInterval(interval); };
+  }, []);
+
+  draw.current = at => {
+    if (!initialized.current || !renderer.current) return;
+    try {
+      process.current();
+      const current = latest.current;
+      const player = current.data.players.find(player => player.seat === current.room.you);
+      const automated = !!current.room.seats[current.room.you]?.autoPlay;
+      const local = player?.alive && !automated ? current.data.phase === 'live' && canControl() && prediction.current ? prediction.current.sample(at) : { ...player, yaw: facing.current.yaw, pitch: facing.current.pitch } : undefined;
+      const selectedWeapon = predictedWeapon.current && local?.inventory?.find(item => item.id === predictedWeapon.current?.id);
+      if (local && selectedWeapon) { local.weapon = selectedWeapon.id; local.ammo = selectedWeapon.ammo; local.reserve = selectedWeapon.reserve; }
+      const presented = local && current.data.phase === 'live' && canControl() ? prediction.current?.present(local, at) ?? local : local;
+      const candidates = observerCandidates(current.data.players, player, !!current.room.spectating);
+      const candidate = presented ?? candidates.find(player => player.seat === watch) ?? candidates[0] ?? player;
+      const seat = player?.alive ? current.room.you : candidate?.seat ?? -1;
+      const viewPlayer = renderer.current.draw(current.data, presented, seat, at, player && !current.room.spectating ? player.team : undefined) ?? candidate;
+      if (viewPlayer && current.sound) current.audio.spatialListener({ x: viewPlayer.x / 256, y: viewPlayer.y / 256, z: viewPlayer.z / 256, yaw: viewPlayer.yaw * Math.PI * 2 / 65536 });
+      const visible = `${viewPlayer?.x}:${viewPlayer?.y}:${viewPlayer?.z}:${viewPlayer?.yaw}:${viewPlayer?.pitch}:${viewPlayer?.weapon}:${at < localFlash.current}:${localAnimation.current}`;
+      if (waiting.current && lastVisible.current && visible !== lastVisible.current) {
+        metrics.current.responses.push({ inputAt: waiting.current.at, visibleAt: performance.now(), type: waiting.current.type, seq: waiting.current.seq });
+        if (metrics.current.responses.length > 1024) metrics.current.responses.shift();
+        waiting.current = undefined;
+      }
+      lastVisible.current = visible;
+      metrics.current.frames.push(at);
+      if (metrics.current.frames.length > 8192) metrics.current.frames.shift();
+      drawCount.current++;
+      if (canvas.current) {
+        canvas.current.__cs16Metrics = metrics.current;
+        canvas.current.__cs16Frame = { at, drawCount: drawCount.current, x: viewPlayer?.x, y: viewPlayer?.y, z: viewPlayer?.z, yaw: viewPlayer?.yaw, pitch: viewPlayer?.pitch, serverFrame: current.data.frame, predictedFrame: prediction.current?.predictedFrame ?? current.data.frame, receivedSeq: player?.receivedSeq ?? 0, appliedSeq: player?.appliedSeq ?? 0, inputWindow: current.inputWindow ?? 0, pending: prediction.current?.pendingCount ?? 0, inputEnabled: canControl(), weapon: viewPlayer?.weapon, life: player?.life, phase: current.data.phase, mapId: current.data.mapId, previousWeapon: weaponHistory.current.previous, currentWeapon: weaponHistory.current.current, controllerActions: [...actionsBefore.current] };
+      }
+    } catch (error) {
+      initialized.current = false;
+      release();
+      setError(error instanceof Error ? error.message : '画面暂时无法继续，请重试');
+    }
+  };
+
+  useLayoutEffect(() => {
+    const element = canvas.current;
+    if (!element) return;
+    const keyboard = (navigator as Navigator & { keyboard?: { lock: (keys: string[]) => Promise<void>; unlock: () => void } }).keyboard;
+    const owner = Symbol('cs16-keyboard');
+    let disposed = false;
+    const unlockKeyboard = () => { if (keyboard && keyboardOwner === owner) { keyboard.unlock(); keyboardOwner = undefined; } };
+    const keyboardActive = () => !disposed && document.pointerLockElement === element && !!document.fullscreenElement?.contains(element) && canControl();
+    const syncKeyboard = () => {
+      if (!keyboard || !keyboardActive()) { unlockKeyboard(); return; }
+      keyboardOwner = owner;
+      void keyboard.lock(['ControlLeft', 'ControlRight', 'KeyW', 'KeyR']).then(() => {
+        if (!keyboardActive() && (keyboardOwner === owner || keyboardOwner === undefined)) { keyboard.unlock(); if (keyboardOwner === owner) keyboardOwner = undefined; }
+      }).catch(() => { if (keyboardOwner === owner) keyboardOwner = undefined; });
+    };
+    const key = (event: KeyboardEvent) => { if (root.current?.contains(document.activeElement) || document.pointerLockElement === element) record(event); };
+    const mouseMove = (event: MouseEvent) => {
+      if (document.pointerLockElement !== element || !canControl()) return;
+      record(event);
+      facing.current.yaw = angle(facing.current.yaw - event.movementX * 10);
+      facing.current.pitch = safePitch(facing.current.pitch + event.movementY * 10);
+      prediction.current?.face(facing.current.yaw, facing.current.pitch);
+    };
+    const down = (event: MouseEvent) => {
+      if (!canControl() || event.button > 2 || event.button === 1) return;
+      record(event);
+      root.current?.focus({ preventScroll: true });
+      if (document.pointerLockElement !== element && event.button === 0) {
+        try { const result = element.requestPointerLock(); if (result) void result.catch(() => {}); } catch { setError('鼠标锁定暂时不可用，可使用方向键转向。'); }
+      }
+      if (event.button === 0) mouse.current.fire = true;
+      if (event.button === 2) mouse.current.secondary = true;
+      event.preventDefault();
+      process.current(true);
+    };
+    const up = (event: MouseEvent) => {
+      if (event.button === 0) mouse.current.fire = false;
+      if (event.button === 2) mouse.current.secondary = false;
+      process.current(true);
+    };
+    const lock = () => { const enabled = document.pointerLockElement === element; setLocked(enabled); if (!enabled) release(); syncKeyboard(); };
+    const clear = () => { release(); unlockKeyboard(); };
+    const hidden = () => { if (document.hidden) clear(); };
+    const wheel = (event: WheelEvent) => {
+      if (!canControl()) return;
+      event.preventDefault();
+      const player = latest.current.data.players.find(player => player.seat === latest.current.room.you);
+      const inventory = player?.inventory ?? [];
+      if (!inventory.length) return;
+      const index = inventory.findIndex(item => item.id === player?.weapon);
+      select(inventory[(index + (event.deltaY > 0 ? 1 : inventory.length - 1)) % inventory.length].id);
+    };
+    window.addEventListener('keydown', key, true);
+    document.addEventListener('mousemove', mouseMove);
+    element.addEventListener('mousedown', down);
+    window.addEventListener('mouseup', up);
+    document.addEventListener('pointerlockchange', lock);
+    document.addEventListener('fullscreenchange', syncKeyboard);
+    window.addEventListener('blur', clear);
+    document.addEventListener('visibilitychange', hidden);
+    element.addEventListener('wheel', wheel, { passive: false });
+    return () => { disposed = true; unlockKeyboard(); window.removeEventListener('keydown', key, true); document.removeEventListener('mousemove', mouseMove); element.removeEventListener('mousedown', down); window.removeEventListener('mouseup', up); document.removeEventListener('pointerlockchange', lock); document.removeEventListener('fullscreenchange', syncKeyboard); window.removeEventListener('blur', clear); document.removeEventListener('visibilitychange', hidden); element.removeEventListener('wheel', wheel); };
+  }, [identity]);
+
+  const frame = props.data.frame + (props.clock.paused ? 0 : Math.max(0, Math.min(15, Math.floor((now - receivedAt.current) / 10))));
+  const zoom = own?.inventory?.find(item => item.id === own.weapon)?.zoom ?? 0;
+  const flash = own && (own.flashUntil ?? 0) > frame ? Math.max(0, Math.min(1, (own.flashStrength ?? 1000) / 1000)) : 0;
+  const phaseLabel = props.data.finished ? '比赛结束' : props.clock.paused ? '已暂停' : props.data.phase === 'freeze' ? '准备开战' : props.data.phase === 'round_end' ? '回合结束' : props.data.bomb?.planted ? '炸弹已安装' : '';
+  return <div className={`cs16-board${buyOpen ? ' cs16-buying' : ''}`} data-cs16-board data-ready={ready ? 'true' : 'false'} ref={root} tabIndex={-1} aria-label="反恐精英战场">
+    <canvas ref={canvas} data-cs16-canvas aria-label={`${mapName(props.data.mapId)}第一人称战场`} />
+    {ready && <>
+      <div className="cs16-match-hud"><span className="cs16-score-t">T <strong>{props.data.teamScores[0]}</strong></span><div><span>{phaseLabel || `第 ${props.data.round} / ${props.data.options.maxRounds} 回合`}</span><strong>{formatDuration((props.data.bomb?.planted ? props.data.bomb.explodesAt : props.data.phaseEndsAt) - frame)}</strong></div><span className="cs16-score-ct"><strong>{props.data.teamScores[1]}</strong> CT</span></div>
+      <div className={`cs16-crosshair${zoom ? ' cs16-scoped' : ''}`} aria-hidden="true"><i /><b /></div>
+      {!!flash && <div className="cs16-flash" style={{ opacity: flash }} aria-hidden="true" />}
+      <div className="cs16-kill-feed">{feed.filter(event => event.frame > frame - 700).map(event => <div key={event.id}><span>{props.room.seats[event.seat]?.name ?? '玩家'}</span><span>{itemName(event.weapon ?? '')}</span><span>{props.room.seats[event.target ?? -1]?.name ?? '玩家'}</span></div>)}</div>
+      {own && <>
+        <div className="cs16-vitals"><span aria-label={`生命 ${own.health ?? 0}`}>✚ <strong>{own.health ?? 0}</strong></span><span aria-label={`护甲 ${own.armor ?? 0}`}>◇ <strong>{own.armor ?? 0}</strong></span><span className="cs16-money">${own.money ?? 0}</span></div>
+        <div className="cs16-ammo"><span>{itemName(own.weapon)}</span><strong>{own.ammo ?? 0}<small> / {own.reserve ?? 0}</small></strong></div>
+        <div className="cs16-inventory" aria-label="携带装备">{inventorySlots(own.inventory ?? [], own.weapon).map(item => <button type="button" key={item.id} data-cs16-select={item.id} aria-label={`切换${item.label === '投掷物' ? `${item.label}：${itemName(item.next)}` : item.label}`} aria-pressed={own.weapon === item.id} disabled={!canControl()} onClick={() => select(item.next)}>{item.label}</button>)}</div>
+        <div className="cs16-battle-tools"><button type="button" data-cs16-open-buy disabled={!own.alive || props.room.spectating} onClick={openBuy}>购买</button><button type="button" aria-pressed={scoreboard} onClick={() => setScoreboard(value => !value)}>战绩</button></div>
+      </>}
+      {(!own?.alive || props.room.spectating) && <div className="cs16-spectator"><strong>{own ? '阵亡观战' : '观战'}</strong><select aria-label="观战玩家" value={watch} onChange={event => setWatch(Number(event.target.value))}><option value={-1}>自动选择</option>{observerCandidates(props.data.players, own, !!props.room.spectating).map(player => <option value={player.seat} key={player.seat}>{props.room.seats[player.seat]?.name ?? '玩家'}</option>)}</select></div>}
+      {!locked && own?.alive && !buyOpen && <button type="button" className="cs16-lock-hint" onClick={() => { root.current?.focus({ preventScroll: true }); try { const result = canvas.current?.requestPointerLock(); if (result) void result.catch(() => {}); } catch { setError('无法锁定鼠标'); } }}>点击战场锁定鼠标</button>}
+      {own?.alive && <TouchControls disabled={!canControl()} weapon={own.weapon} weaponState={own.inventory?.find(item => item.id === own.weapon)} useLabel={props.data.bomb?.planted && own.team === 'ct' ? '拆弹' : props.data.mapId === 'cs_assault' && own.team === 'ct' ? '营救' : '使用'} native={record} interrupted={() => channel.current?.release(facing.current.yaw, facing.current.pitch)} changed={value => { touch.current = value; process.current(true); }} look={(x, y) => { if (!canControl()) return; facing.current.yaw = angle(facing.current.yaw - x * 144); facing.current.pitch = safePitch(facing.current.pitch + y * 96); prediction.current?.face(facing.current.yaw, facing.current.pitch); }} />}
+    </>}
+    {scoreboard && <div className="cs16-scoreboard" role="dialog" aria-label="对局战绩"><header><strong>战绩</strong><button type="button" onClick={() => setScoreboard(false)}>返回战场</button></header>{['t', 'ct'].map(team => <section key={team}><h3>{team === 'ct' ? '反恐精英' : '恐怖分子'}</h3>{props.data.players.filter(player => player.team === team).map(player => <div key={player.seat}><span>{props.room.seats[player.seat]?.name ?? '玩家'}{player.alive ? '' : ' · 阵亡'}</span><span>{player.kills} / {player.deaths}</span></div>)}</section>)}</div>}
+    {buyOpen && own && <BuyMenu player={own} prices={loaded.current?.weapons ?? []} mode={props.data.mapId === 'cs_assault' ? 'hostage' : 'bomb'} allowed={!!props.data.buyAllowed} close={closeBuy} error={error} buy={item => { setError(''); void props.act({ type: 'buy', epoch: props.data.epoch, life: own.life, round: props.data.round, item }).catch(error => setError(error instanceof Error ? error.message : '购买失败')); }} />}
+    {error && !buyOpen && <div className="cs16-error-banner" role="alert"><span>{error}</span>{!initialized.current && <button type="button" onClick={() => setAttempt(value => value + 1)}>重试加载</button>}</div>}
+  </div>;
+}

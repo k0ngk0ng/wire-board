@@ -17,7 +17,7 @@
 
 本组件对应页 5 `$84B9` 入口至调用者 `$801D` 返回位置，包含所有攻击响应和后续自动接球。新采样复用原 3,600 帧参考，全部 1,197 个阶段保留；原逐帧 RAM 和 30 张截图一致。阶段内有 9 次普通攻击与 11 次球权转移，当前自然记录没有「同一步受击且有球接触候选」的场景，该顺序另外由原代码和固定规则用例验证。
 
-REA 复用 `.local/basketball/rea/world-schedule/bank5/batch.json` 的 `$84B9` 分析，以及已核对的 combat／catch 分支。源码尾段普通接球不调用音效；本次完整阶段记录的 9 次音效均来自攻击，未观察到额外接球音效。
+REA 复用 `.local/basketball/research/rea/world-schedule/bank5/batch.json` 的 `$84B9` 分析，以及已核对的 combat／catch 分支。源码尾段普通接球不调用音效；本次完整阶段记录的 9 次音效均来自攻击，未观察到额外接球音效。
 
 ## 实现与结果
 
@@ -27,7 +27,7 @@ REA 复用 `.local/basketball/rea/world-schedule/bank5/batch.json` 的 `$84B9` �
 
 固定规则用例覆盖受击后原跑动接球资格失效、持球者未到动作阶段不能丢球、普通接球只写原动作命令、占手传球撞击不转移球权，以及未恢复特殊球的整阶段回退。这些用例不计入自然调用数量。
 
-验证记录位于 `.local/basketball/rea/interactions/{test-before.log,test-after.log,native-tests.json,wasm-tests.log}`；来源、逐帧一致性及 REA Evidence 索引分别为 `capture.json`、`reused-analysis.json`。可通过 `capture_interactions.py` 与 `extract_interactions.py` 重新采样、提取全部夹具。
+验证记录位于 `.local/basketball/research/rea/interactions/{test-before.log,test-after.log,native-tests.json,wasm-tests.log}`；来源、逐帧一致性及 REA Evidence 索引分别为 `capture.json`、`reused-analysis.json`。可通过 `capture_interactions.py` 与 `extract_interactions.py` 重新采样、提取全部夹具。
 
 ## 接入范围
 

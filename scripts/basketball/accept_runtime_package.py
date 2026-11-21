@@ -7,7 +7,7 @@ from urllib.error import HTTPError, URLError
 import hashlib, json, os, socket, subprocess, time, uuid, shutil
 
 ROOT = Path(__file__).resolve().parents[2]
-OUT = ROOT / '.local/basketball/runtime-package'
+OUT = ROOT / '.local/basketball/verification/runtime-package'
 OUT.mkdir(parents=True, exist_ok=True)
 env = dict(os.environ)
 checks = []
@@ -54,7 +54,7 @@ try:
                 check('embedded bytes match verified build: ' + name, response.read() == (runtime / name).read_bytes())
                 policy = response.headers.get('Content-Security-Policy', '')
                 check('production CSP allows Wasm and immutable OSS: ' + name, "'wasm-unsafe-eval'" in policy and "connect-src 'self' https://cdn.ichenj.com;" in policy and "'unsafe-eval'" not in policy)
-        for route in ['/basketball/v1/runtime/basketball.wasm', '/basketball/v1/audio/music-066-loop.mp3', '/basketball/v1/graphics/raster/manifest.json', '/basketball/v1/selection/manifest.json', '/games/basketball/engine/runtime.go', '/.local/basketball/rom.nes']:
+        for route in ['/basketball/v1/runtime/basketball.wasm', '/basketball/v1/audio/music-066-loop.mp3', '/basketball/v1/graphics/raster/manifest.json', '/basketball/v1/selection/manifest.json', '/games/basketball/engine/runtime.go', '/.local/basketball/verification/rom.nes']:
             try:
                 with urlopen(base + route, timeout=3) as response:
                     status = response.status

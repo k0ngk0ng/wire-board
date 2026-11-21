@@ -4,7 +4,7 @@ The original console now supplies complete **controlled** reward and ending obse
 
 ## Initial state and explicit intervention
 
-The initial state replays the previously recorded `match-clock-complete` controller timeline through local video frame 22050. Its complete RAM prefix matches the retained reference byte for byte. At that frame the game is in normal match-end phase 5, before the first `BA40` result entry. The dedicated workspace state is `.local/nes-basket/states/slot-91.fcs`, SHA-256 `407339935ae9bdfba99cbfbc23f502fa53a40fc17745b1d0ca0614da33785adc`.
+The initial state replays the previously recorded `match-clock-complete` controller timeline through local video frame 22050. Its complete RAM prefix matches the retained reference byte for byte. At that frame the game is in normal match-end phase 5, before the first `BA40` result entry. The dedicated workspace state is `.local/basketball/research/original/states/slot-91.fcs`, SHA-256 `407339935ae9bdfba99cbfbc23f502fa53a40fc17745b1d0ca0614da33785adc`.
 
 Both controlled runs load that state and alter bytes **once, at original bank4 `BA40` entry**, absolute emulator frame 25593 / CPU cycle 762146744. This is a function boundary; execution continues at the unchanged entry instruction. The full 2 KiB before/after RAM and every requested override are retained as `injection-before.ram`, `injection-after.ram` and `injection.json`.
 
@@ -29,7 +29,7 @@ Reward uses no controller input for 1100 subsequent video frames. Ending uses no
 
 The minimally instrumented reference contains only the declared entry override. Observed runs add read-only callbacks. This repeated comparison proves that those callbacks preserve this controlled execution; it does not transform the intervention into an earned victory.
 
-Artifacts are under `.local/nes-basket/runs/postresult-{reward,ending}-{reference,observed}/`. Ending additionally has `postresult-ending-mirroring/` and `postresult-ending-raster-states/`. The compact summaries and all important raw-log hashes are `.local/postresult-video/{reward,ending}-summary.json`. Contact sheet: `.local/postresult-video/original-console-contact-sheet.png`; these are actual original console screenshots, distinct from the earlier static nametable previews.
+Artifacts are under `.local/basketball/research/original/runs/postresult-{reward,ending}-{reference,observed}/`. Ending additionally has `postresult-ending-mirroring/` and `postresult-ending-raster-states/`. The compact summaries and all important raw-log hashes are `.local/basketball/research/postresult-video/{reward,ending}-summary.json`. Contact sheet: `.local/basketball/research/postresult-video/original-console-contact-sheet.png`; these are actual original console screenshots, distinct from the earlier static nametable previews.
 
 ## Actual video schedule
 
@@ -82,7 +82,7 @@ The seed can already be inside a fade begun before capture, and a capture can st
 
 ## Renderer resource contract
 
-`prepare_postresult_raster_reference.py` produces `.local/postresult-video/raster-reference.json`: eight selected frames with hashed screenshot/PPU/OAM/control sources, palette, exact observed CHR pages, original register-write cycles, and all before/after IRQ PPU snapshots. It is a renderer **test observation**. Production rendering must use recovered semantic scene state and static art, never replay these recorded RAM/OAM frames.
+`prepare_postresult_raster_reference.py` produces `.local/basketball/research/postresult-video/raster-reference.json`: eight selected frames with hashed screenshot/PPU/OAM/control sources, palette, exact observed CHR pages, original register-write cycles, and all before/after IRQ PPU snapshots. It is a renderer **test observation**. Production rendering must use recovered semantic scene state and static art, never replay these recorded RAM/OAM frames.
 
 The first exact full-band contract is final-picture Scene7 phase9, local13500 / emulator39049:
 
@@ -90,7 +90,7 @@ The first exact full-band contract is final-picture Scene7 phase9, local13500 / 
 {"y0":0,"y1":240,"nametable":8192,"scrollX":0,"scrollY":0,"backgroundCHR":[20,21,22,23],"spriteCHR":[56,57,11,40]}
 ```
 
-Files are `postresult-ending-observed/frame-13500.png`, `ppu-39049-ppu.bin`, `ppu-39049-oam.bin`, `ppu-39049-ctrl.bin`. Existing independent offline tile/sprite readers reproduce **all 61440 pixels exactly**, retained as `.local/postresult-video/phase9-offline.png`. Mirroring register is1. This single full contract does not establish the other scenes' fetch boundaries.
+Files are `postresult-ending-observed/frame-13500.png`, `ppu-39049-ppu.bin`, `ppu-39049-oam.bin`, `ppu-39049-ctrl.bin`. Existing independent offline tile/sprite readers reproduce **all 61440 pixels exactly**, retained as `.local/basketball/research/postresult-video/phase9-offline.png`. Mirroring register is1. This single full contract does not establish the other scenes' fetch boundaries.
 
 | Sample local frame | Scene | First visible CHR pages | Relevant raster behavior |
 | --- | --- | --- | --- |

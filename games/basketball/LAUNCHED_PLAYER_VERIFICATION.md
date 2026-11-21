@@ -12,13 +12,13 @@
 
 World 接线由 `world_launched.go` 完成：先提交准备阶段的随机数、姿态源、轨迹及特殊投篮标记，再调用物理。当前事务内的物理写入不被旧局部状态覆盖，声音 6 在设备声音 21 前。Court1 的继续帧附着旁路沿用原整数坐标跟随；Court2 使用完整原物理绑定。
 
-目标高度函数的 REA 证据为 `ev_a5a9880155a1395bfe2d2d59cef703b8cc7dc8bc3c3b4b18469993d1fc31fd5f`，保存在 `.local/basketball/rea/launched-player/analysis/`。本次只恢复 `$3E`，同入口的 `$3F` 分支仍未开放。
+目标高度函数的 REA 证据为 `ev_a5a9880155a1395bfe2d2d59cef703b8cc7dc8bc3c3b4b18469993d1fc31fd5f`，保存在 `.local/basketball/research/rea/launched-player/analysis/`。本次只恢复 `$3E`，同入口的 `$3F` 分支仍未开放。
 
 ## 验证和限制
 
 64 次受控原指令调用覆盖 Court1／Court2、首入／继续、随机两种朝向、附着、辅助物所有者、装备、真人上键、电脑计数、请求落地与持球人标记消费。每次分别比较原 `$9E99` 准备边界及最终世界字段、声音序列。源 RAM、ROM 和夹具摘要在 `launched-player-source.json`；没有把 Go 输出作为原版预期值。
 
-定向 race／Wasm 验证通过，包含本次矩阵、World 提交时序、原 1,998／57 次连续更新、原完整动作阶段及球跟随偏移。结果在 `.local/basketball/rea/launched-player/race.json` 和 `wasm.log`。
+定向 race／Wasm 验证通过，包含本次矩阵、World 提交时序、原 1,998／57 次连续更新、原完整动作阶段及球跟随偏移。结果在 `.local/basketball/research/rea/launched-player/race.json` 和 `wasm.log`。
 
 两份保留的 Court2 真实 Go 故障快照经运行时协议重放后均通过原动作 `$3E` 的阻塞点，但在后续 video tick 3 遇到未恢复的 AI mode 31。`fixed-runtime-probes.json` 保留源 SHA、原时钟及错误；24 tick 请求没有完成，不能据此声称 Court2 完整比赛已通过。该后续 AI 分支已交接处理。
 

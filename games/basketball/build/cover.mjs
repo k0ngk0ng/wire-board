@@ -74,7 +74,7 @@ export function loadCoverPin(directory) {
 function context(directory) {
   const root = realpathSync(directory),
     pin = loadCoverPin(root),
-    parent = inside(root, ".local/basketball-cover-cache"),
+    parent = inside(root, ".local/basketball/cache/cover"),
     cache = inside(root, path.join(parent, pin.sha256));
   return { root, pin, parent, cache, publicRoot: path.join(cache, "public") };
 }

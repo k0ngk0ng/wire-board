@@ -3,9 +3,9 @@ from pathlib import Path
 import json
 ROOT=Path(__file__).resolve().parents[2]
 def prepare(palette_variant=False,court_six=False):
- source='.local/basketball/rea/court-six/result-capture.json' if court_six else '.local/basketball/palette-timing/result-capture.json' if palette_variant else '.local/basketball/result-art/capture.json'
+ source='.local/basketball/research/rea/court-six/result-capture.json' if court_six else '.local/basketball/research/palette-timing/result-capture.json' if palette_variant else '.local/basketball/assets/result-art/capture.json'
  prefix='result-court-six' if court_six else 'result-palette' if palette_variant else 'result'
- out=ROOT/'.local/basketball/renderer/browser';capture=json.loads((ROOT/source).read_text());directory=ROOT/'.local/nes-basket/runs'/capture.get('run','result-art-observed');hud=json.loads((out/'cases.json').read_text())['cases'][0]['snapshot']['hud'];cases=[]
+ out=ROOT/'.local/basketball/verification/renderer/browser';capture=json.loads((ROOT/source).read_text());directory=ROOT/'.local/basketball/research/original/runs'/capture.get('run','result-art-observed');hud=json.loads((out/'cases.json').read_text())['cases'][0]['snapshot']['hud'];cases=[]
  for item in capture['frames']:
   source=json.loads((directory/f"ppu-{item['emulator_frame']:05d}-semantic.json").read_text());history=[]
   for commit in source['courtCommits']:

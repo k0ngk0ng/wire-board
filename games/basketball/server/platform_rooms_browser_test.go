@@ -28,7 +28,7 @@ func TestBasketballBrowserPlatformRooms(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	out := filepath.Join(root, ".local/basketball/platform-rooms")
+	out := filepath.Join(root, ".local/basketball/verification/platform-rooms")
 	if rtt := os.Getenv("BASKETBALL_BROWSER_RTT_MS"); rtt != "" {
 		ms, e := strconv.Atoi(rtt)
 		if e != nil || ms < 0 || ms > 1000 {

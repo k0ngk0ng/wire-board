@@ -3,8 +3,8 @@ import gzip,hashlib,itertools,json
 from verify_pass_floor_original import ROOT,Memory,MPU,put
 from extract_world_actions import decode_world_action_state
 from extract_world_preparation import context
-ROM=(ROOT/'.local/nes-basket/basketball.nes').read_bytes();PRG=ROM[16:131088]
-BASE=(ROOT/'.local/nes-basket/runs/ball-pass/ram.bin').read_bytes()[:2048]
+ROM=(ROOT/'.local/basketball/research/original/basketball.nes').read_bytes();PRG=ROM[16:131088]
+BASE=(ROOT/'.local/basketball/research/original/runs/ball-pass/ram.bin').read_bytes()[:2048]
 assert hashlib.sha256(ROM).hexdigest()=='0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b'
 ACTIONS=[4,5,13,20,21,36,37,52,53,68,69]
 def initial(action=4,item=23,mode=0,team=0,char=0,actor=0,phase=0,stage=0,court=1,heading=64):

@@ -43,7 +43,7 @@ def main():
   r=initial(actor,entered,support,held,assisted)
   rows.append(dict(label=f'{actor}-{entered}-{support}-{held}-{assisted}',**run(r,actor)))
  out=ROOT/'games/basketball/engine/testdata';packed=gzip.compress((json.dumps(rows,separators=(',',':'))+'\n').encode(),mtime=0);(out/'hurt-rider.json.gz').write_bytes(packed)
- before=(ROOT/'.local/basketball/roster-rotation-special-balls-20261018/case-11/before.json').read_bytes();(out/'hurt-rider-runtime-before.json.gz').write_bytes(gzip.compress(before,mtime=0))
+ before=(ROOT/'.local/basketball/verification/roster-rotation-special-balls-20261018/case-11/before.json').read_bytes();(out/'hurt-rider-runtime-before.json.gz').write_bytes(gzip.compress(before,mtime=0))
  meta=dict(scope='controlled original9673 full calls with attachment; exact retained native runtime failure separately',records=len(rows),entry='bank6 9673',prepared='96F1',beforeMotion='96F4',romSHA256=hashlib.sha256(ROM).hexdigest(),baseSHA256=hashlib.sha256(BASE).hexdigest(),fixtureSHA256=hashlib.sha256(packed).hexdigest(),runtimeBeforeSHA256=hashlib.sha256(before).hexdigest())
  (out/'hurt-rider-source.json').write_text(json.dumps(meta,indent=2)+'\n');print(json.dumps(meta))
 if __name__=='__main__':main()

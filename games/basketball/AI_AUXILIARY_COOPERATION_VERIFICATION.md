@@ -14,7 +14,7 @@
 
 ## 原代码证据
 
-REA / Ghidra 证据保存在 `.local/basketball/rea/ai-auxiliary-cooperation/analysis/`。
+REA / Ghidra 证据保存在 `.local/basketball/research/rea/ai-auxiliary-cooperation/analysis/`。
 
 | 原函数 | 证据 ID |
 | --- | --- |
@@ -41,4 +41,4 @@ go test -race ./games/basketball/engine -run '^TestOriginalAuxiliary' -count=1
 GOOS=js GOARCH=wasm go test ./games/basketball/engine -run '^TestOriginalAuxiliary' -count=1 -exec "$(go env GOROOT)/lib/wasm/go_js_wasm_exec"
 ```
 
-结果与源码摘要见 `.local/basketball/rea/ai-auxiliary-cooperation/result.json`，原 ROM、夹具 SHA-256 见对应 `testdata/*-source.json`。
+结果与源码摘要见 `.local/basketball/research/rea/ai-auxiliary-cooperation/result.json`，原 ROM、夹具 SHA-256 见对应 `testdata/*-source.json`。

@@ -17,7 +17,7 @@ Scope: new standalone text progress/message components only. Runtime/server/disp
 
 ## Source and scope
 
-REA `ev_3ba34f52bc8520fc29bd1d7ec8a342a72172e090d4e73917cf6a81458ab55640` covers bank4 A496, its text command handlers, C036/BE6E, C13F glyph decomposition and C1A4 buffer preparation. Complete bundle: `.local/postresult-text/analysis/evidence.json`. The analysis session exported and closed normally. ROM SHA-256 remains `0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b`.
+REA `ev_3ba34f52bc8520fc29bd1d7ec8a342a72172e090d4e73917cf6a81458ab55640` covers bank4 A496, its text command handlers, C036/BE6E, C13F glyph decomposition and C1A4 buffer preparation. Complete bundle: `.local/basketball/research/postresult-text/analysis/evidence.json`. The analysis session exported and closed normally. ROM SHA-256 remains `0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b`.
 
 `verify_postresult_text.py` executes unchanged original instructions. All FD0A/A496 cases return normally without skipping calls. C036/BE6E cases execute both original glyph/buffer helpers and stop at BEBC before the explicit NMI wait. Fixtures retain full raw input/output RAM, instruction counts and pending-header stores. These are controlled inputs, not invented earned histories.
 
@@ -70,11 +70,11 @@ The art/source worker supplied controlled full-console runs `postresult-ending-o
 - One final C036 call begins at emulator frame 26649 but the capture ends before its return. It is explicitly excluded and listed as incomplete.
 - Reward messages 28,30,29 are observed at frames 26185,26186,26187 while reward timer remains 40. Each completes its own next-NMI wait. Combining them into one instantaneous frame would lose this source behavior.
 
-Exact capture event/RAM hashes, call counts and NMI-consumption records are in `.local/postresult-text/whole-console-corroboration.json`. The comparator reports zero unexplained differences. This corroborates the source primitive; the new logical composition still requires its own Go-to-console and display checks.
+Exact capture event/RAM hashes, call counts and NMI-consumption records are in `.local/basketball/research/postresult-text/whole-console-corroboration.json`. The comparator reports zero unexplained differences. This corroborates the source primitive; the new logical composition still requires its own Go-to-console and display checks.
 
 ## Tests and reproduction
 
-Tests and fixture generation preceded implementation. `.local/postresult-text/before.log` records failures for the first original text stream, control handler and C036 message. The completed tests compare all 37 streams continuously from a single initial state per stream, all fields/queued buffers, command branches, original message layouts, JSON restoration and atomic error behavior. Native, race and Wasm pass. Source fixture and generated table reproduction also pass.
+Tests and fixture generation preceded implementation. `.local/basketball/research/postresult-text/before.log` records failures for the first original text stream, control handler and C036 message. The completed tests compare all 37 streams continuously from a single initial state per stream, all fields/queued buffers, command branches, original message layouts, JSON restoration and atomic error behavior. Native, race and Wasm pass. Source fixture and generated table reproduction also pass.
 
 ```sh
 PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/verify_postresult_text.py --check
@@ -85,4 +85,4 @@ go test -race ./games/basketball/engine -run '^(TestOriginalSceneText.*|TestOrig
 GOOS=js GOARCH=wasm go test ./games/basketball/engine -exec="$(go env GOROOT)/lib/wasm/go_js_wasm_exec" -run '^(TestOriginalSceneText.*|TestOriginalPostResultMessageSources|TestOriginalResultActor.*)$' -count=1 -v
 ```
 
-Logs: `.local/postresult-text/{before,after,race,wasm,oracle-repeat,tables-repeat,whole-console-corroboration}.log`. No runtime, server, shared display or lifecycle implementation was modified by this task. Original upload timing, text/phase/actor composition, rendering, audio76 and a naturally completed campaign remain separate acceptance requirements.
+Logs: `.local/basketball/research/postresult-text/{before,after,race,wasm,oracle-repeat,tables-repeat,whole-console-corroboration}.log`. No runtime, server, shared display or lifecycle implementation was modified by this task. Original upload timing, text/phase/actor composition, rendering, audio76 and a naturally completed campaign remain separate acceptance requirements.

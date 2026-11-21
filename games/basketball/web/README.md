@@ -14,14 +14,14 @@ boundary, not an implementation of the remaining campaign.
 
 Run `python3 scripts/basketball/accept_live.py` after `source scripts/env.sh`
 for the actual Go/Wasm browser segment; evidence is retained in
-`.local/basketball/live-browser/`. Add `--full-match` to run the cold default
+`.local/basketball/verification/live-browser/`. Add `--full-match` to run the cold default
 New York match through both halves, native Start confirmation and the final
-result; its artifacts are in `.local/basketball/full-match-browser/`. That
+result; its artifacts are in `.local/basketball/verification/full-match-browser/`. That
 scenario passes at 22,383 video ticks with score 12:45. This remains a
 development client: other teams/courts and platform multiplayer acceptance are
 not covered by that result. Add `--all-computer` alongside `--full-match` for
 the separate four-computer case; it passes at 22,512 video ticks with score
-45:49, with evidence in `.local/basketball/all-computer-full-match-browser/`.
+45:49, with evidence in `.local/basketball/verification/all-computer-full-match-browser/`.
 
 ## Renderer
 
@@ -76,7 +76,7 @@ First generate the offline assets and observations in the authorized workspace:
 ```sh
 PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/export_static_atlas.py
 PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/export_static_objects.py
-PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/test_static_court.py > .local/basketball/rea/static-background/tests-after.log 2>&1
+PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/test_static_court.py > .local/basketball/research/rea/static-background/tests-after.log 2>&1
 PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/export_static_court.py
 PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/export_raster_assets.py
 PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/capture_renderer.py
@@ -98,7 +98,7 @@ recorded separately in `initial-display-recovery.json`; it does not recover or
 claim the old fractional physics state. All later selected frames use observed
 original draw-stage semantic inputs directly.
 
-Artifacts are in `.local/basketball/renderer/browser/`: `result.json`,
+Artifacts are in `.local/basketball/verification/renderer/browser/`: `result.json`,
 `requests.json`, `responsive.json`, `desktop.png`, `mobile-320.png`, and the
 unscaled `canvas.png`. This proves the renderer and its original assets, not a
 Go-driven full game, input responsiveness, audio, networking or release

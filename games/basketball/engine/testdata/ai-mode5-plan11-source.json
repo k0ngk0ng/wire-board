@@ -115,7 +115,7 @@
   },
   "sound_scope": "C000 returns without audio-driver execution; gameplay instructions are unchanged",
   "initial_rng": "12345678",
-  "ram_source": ".local/nes-basket/runs/ball-pass/ram.bin",
+  "ram_source": ".local/basketball/research/original/runs/ball-pass/ram.bin",
   "ram_sha256": "80944347155c86accf2b9dba3f9b38e8ed37b1f4f3f839154c570ca7fb9143f2",
   "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
   "bank5_sha256": "025909ee6b8dcf27215d1d6b183d6e913e878141d11e985e07930a912cb722ec",

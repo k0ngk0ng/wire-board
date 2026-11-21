@@ -9,7 +9,7 @@
 - 无关人物、道具、接触步骤把共享值重置为零。
 - 更新原版夹具时修改已有动作、位置、随机数或时钟，掩盖轨迹偏差。
 
-原版函数证据保留在 `.local/basketball/rea/pose-source/analysis/`。夹具增加字段必须来自原始 RAM 采样的 `$056A`，不能用 Go 输出补全预期。
+原版函数证据保留在 `.local/basketball/research/rea/pose-source/analysis/`。夹具增加字段必须来自原始 RAM 采样的 `$056A`，不能用 Go 输出补全预期。
 
 ## 当前恢复范围
 
@@ -31,4 +31,4 @@ go test -v ./games/basketball/engine -run 'Test(WorldBallPoseSourceWrites|WorldA
 go test -race ./games/basketball/engine -run 'Test(WorldBallPoseSourceWrites|WorldActions|WorldInputs|WorldPreparation)'
 ```
 
-证据位于 `.local/basketball/rea/pose-source/`：`tests-behavior-before.log`、`corpus-before.log`、`world-phases-after.log`、`fixture-migration-audit.json`、`write-audit.json` 和 `target-race.json`。原始轨迹的预期值来自采样 RAM，没有使用 Go 输出补写。
+证据位于 `.local/basketball/research/rea/pose-source/`：`tests-behavior-before.log`、`corpus-before.log`、`world-phases-after.log`、`fixture-migration-audit.json`、`write-audit.json` 和 `target-race.json`。原始轨迹的预期值来自采样 RAM，没有使用 Go 输出补写。

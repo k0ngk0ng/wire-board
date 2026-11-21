@@ -2,12 +2,12 @@
 import gzip,hashlib,itertools,json,sys
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
-sys.path.insert(0,str(ROOT/'.local/basketball/python'))
+sys.path.insert(0,str(ROOT/'.local/basketball/research/python'))
 from py65.devices.mpu6502 import MPU
 
 
 def main():
- rom=(ROOT/'.local/nes-basket/basketball.nes').read_bytes();digest=hashlib.sha256(rom).hexdigest();assert digest=='0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b'
+ rom=(ROOT/'.local/basketball/research/original/basketball.nes').read_bytes();digest=hashlib.sha256(rom).hexdigest();assert digest=='0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b'
  prg=rom[16:16+131072];cpu=MPU();cpu.memory[0x8000:0xc000]=prg[5*16384:6*16384];cpu.memory[0xc000:]=prg[-16384:];gates=[];waits=[]
  for mode,entered,actor,holder_kind,action_entered in itertools.product(range(42),[False,True],range(4),range(3),[False,True]):
   holder=[actor,actor^1,6][holder_kind]

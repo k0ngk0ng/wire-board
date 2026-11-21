@@ -11,7 +11,7 @@
 
 ## 首差与恢复
 
-首次执行在update519的actor0输入失败；诊断确认mode28 A95F。恢复后同一阶段actor1暴露配对mode29 AA2C。完整前态及失败输出保留在`.local/basketball/rea/all-computer-cold/first-failure.json`、`first-mode.log`和`after-mode28.log`，没有删除失败记录或换种子。
+首次执行在update519的actor0输入失败；诊断确认mode28 A95F。恢复后同一阶段actor1暴露配对mode29 AA2C。完整前态及失败输出保留在`.local/basketball/research/rea/all-computer-cold/first-failure.json`、`first-mode.log`和`after-mode28.log`，没有删除失败记录或换种子。
 
 mode28／29分别按原函数和辅助函数恢复，通过15360／9176组原程序隔离矩阵。既有自然18,000帧参考两个入口均未命中，明确不计自然对局覆盖。没有接管辅助物理或prop动作13，也没有以AI直接修改球权、链接、分数或碰撞结果。
 
@@ -21,7 +21,7 @@ mode28／29分别按原函数和辅助函数恢复，通过15360／9176组原程
 
 原mixed测试源码与目标没有改动，回归仍是两次6000，scores=[12,55]及原摘要`4a81c896e779e4bdec6ca7d8bd461c0fb92cdc20bc18a8e3ec580b4794afcef8`。原1998次连续更新、57次主动更新轨迹也保留，原生竞态与Wasm检查通过。默认视频长测没有修改。
 
-可复跑结果独立保存在`.local/basketball/rea/all-computer-cold/{native-result.json,wasm-result.json}`和相邻JSONL；并行回归日志为`regression-race.json`、`regression-wasm.log`。命令的默认模式仍验证原mixed配置，只有显式`--all-computer`才选择新测试和独立输出目录。
+可复跑结果独立保存在`.local/basketball/research/rea/all-computer-cold/{native-result.json,wasm-result.json}`和相邻JSONL；并行回归日志为`regression-race.json`、`regression-wasm.log`。命令的默认模式仍验证原mixed配置，只有显式`--all-computer`才选择新测试和独立输出目录。
 
 ```sh
 PYTHONDONTWRITEBYTECODE=1 python3 scripts/basketball/verify_cold_runtime.py --all-computer

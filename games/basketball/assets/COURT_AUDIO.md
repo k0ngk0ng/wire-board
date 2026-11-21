@@ -19,7 +19,7 @@
 
 `court-music-source.json` 保存 ROM 表字节、请求入口、REA 证据和结果／奖励的范围。源 ROM SHA-256 是 `0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b`。来源为用户提供的《热血篮球》ROM；对外分发许可尚未建立，素材没有上传 OSS。
 
-`.local/basketball/audio/export/court-music-manifest.json` 保存各项双录文件、完整状态和样本区间、派生方法、SHA、节拍、圈数及局部 RMS。播放清单 `audio-playback.json` 的 `wav`／`sha256` 保留独立母版身份，`file`／`distribution_sha256` 指定实际分发的 MP3 及其摘要。所有播放仍通过平台 `GameAudioPort`。
+`.local/basketball/assets/audio/export/court-music-manifest.json` 保存各项双录文件、完整状态和样本区间、派生方法、SHA、节拍、圈数及局部 RMS。播放清单 `audio-playback.json` 的 `wav`／`sha256` 保留独立母版身份，`file`／`distribution_sha256` 指定实际分发的 MP3 及其摘要。所有播放仍通过平台 `GameAudioPort`。
 
 新增 7 首各自独立渲染两次，保留未加工的 PCM、APU 写入、完整声音驱动 RAM、原序列跳转、PCM 游标和调用记录。两次文件摘要全部一致。纽约 66 原录没有重录，其既有循环文件 SHA 保持不变。
 
@@ -64,4 +64,4 @@ node --experimental-strip-types --test games/basketball/tests/audio.test.mjs
 BASKETBALL_AUDIO_TEST_TRACK=59 PYTHONDONTWRITEBYTECODE=1 python3 scripts/basketball/accept_audio_loop.py
 ```
 
-早期 WAV 验收记录保留于 `.local/basketball/audio/loop-browser-NNN/`（纽约为 `loop-browser/`）。当前 8 首压缩场地曲均通过两次真实原生媒体跨尾循环、同一来源保持、253／255 不重置位置及 dispose 清理；75 的 MP3 另验到尾结束，66 另验压缩 CDN 失败后使用本地 MP3。压缩结果位于 `encoded-loop-browser-NNN/`，汇总见 `compression/acceptance-summary.json`。测试 seek 到尾部附近，不缩短或加速原文件，不代表人工听感或整场游戏验收。
+早期 WAV 验收记录保留于 `.local/basketball/assets/audio/loop-browser-NNN/`（纽约为 `loop-browser/`）。当前 8 首压缩场地曲均通过两次真实原生媒体跨尾循环、同一来源保持、253／255 不重置位置及 dispose 清理；75 的 MP3 另验到尾结束，66 另验压缩 CDN 失败后使用本地 MP3。压缩结果位于 `encoded-loop-browser-NNN/`，汇总见 `compression/acceptance-summary.json`。测试 seek 到尾部附近，不缩短或加速原文件，不代表人工听感或整场游戏验收。

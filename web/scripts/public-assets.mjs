@@ -3,13 +3,19 @@ import path from "node:path";
 
 // Materialize only explicitly public assets. Source code and private game data
 // never enter Vite's public directory. All generated files stay in the repo.
-export function preparePublicAssets(root, generatedSources = []) {
+export function preparePublicAssets(root, generatedSources = [], generatedGames = []) {
   const destination = path.join(root, ".local/web-public");
   const sources = [path.join(root, "web/public"), ...generatedSources];
+  for (const game of generatedGames) {
+    if (typeof game !== "string" || !/^[a-z][a-z0-9_-]*$/.test(game) || !existsSync(path.join(root, "games", game)))
+      throw new Error("Invalid generated game");
+    if (!generatedSources.some(source => existsSync(path.join(source, game))))
+      throw new Error(`Missing generated public assets: ${game}`);
+  }
   for (const entry of readdirSync(path.join(root, "games"), {
     withFileTypes: true,
   })) {
-    if (entry.isDirectory())
+    if (entry.isDirectory() && !generatedGames.includes(entry.name))
       sources.push(path.join(root, "games", entry.name, "assets/public"));
   }
   const owners = new Map();

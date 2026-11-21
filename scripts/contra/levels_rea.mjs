@@ -1,6 +1,6 @@
-// Private stdio REA session: never changes the shared MCP target.
-import { Client } from '../../.local/nes-basket/tools/rea-runtime/node_modules/@modelcontextprotocol/client/dist/index.mjs';
-import { StdioClientTransport } from '../../.local/nes-basket/tools/rea-runtime/node_modules/@modelcontextprotocol/client/dist/stdio.mjs';
+
+import { Client } from '../../.local/tools/nes-research/rea-runtime/node_modules/@modelcontextprotocol/client/dist/index.mjs';
+import { StdioClientTransport } from '../../.local/tools/nes-research/rea-runtime/node_modules/@modelcontextprotocol/client/dist/stdio.mjs';
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { resolve, sep } from 'node:path';
@@ -14,7 +14,7 @@ if(createHash('sha256').update(readFileSync(target)).digest('hex')!==spec.file_s
 const client=new Client({name:'contra-levels-recovery',version:'1.0.0'},{capabilities:{}});
 const transport=new StdioClientTransport({command:'rea',args:['--mcp'],env:{...process.env,
  TMPDIR:tmp,REA_DARWIN_MODULE_CACHE_PATH:local('.local/contra-levels/swift-cache'),
- GHIDRA_INSTALL_DIR:process.env.GHIDRA_INSTALL_DIR??local('.local/nes-basket/tools/ghidra_12.1.4_PUBLIC'),
+ GHIDRA_INSTALL_DIR:process.env.GHIDRA_INSTALL_DIR??local('.local/tools/nes-research/ghidra_12.1.4_PUBLIC'),
  JAVA_HOME:process.env.JAVA_HOME??'/opt/homebrew/opt/openjdk@26/libexec/openjdk.jdk/Contents/Home',
  REA_GHIDRA_SEED_FILE:local(spec.seeds),REA_LOG_LEVEL:'silent'},stderr:'pipe'});
 if(transport.stderr)transport.stderr.on('data',c=>process.stderr.write(c));

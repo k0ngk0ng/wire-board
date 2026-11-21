@@ -63,7 +63,7 @@ export function loadBasketballAssetPin(directory) {
   return pin;
 }
 function context(directory) {
-  const root = realpathSync(directory), pin = loadBasketballAssetPin(root), parent = within(root, ".local/basketball-asset-build"), cache = within(root, path.join(parent, pin.contentSHA256));
+  const root = realpathSync(directory), pin = loadBasketballAssetPin(root), parent = within(root, ".local/basketball/cache/assets"), cache = within(root, path.join(parent, pin.contentSHA256));
   return { root, pin, parent, cache, publicRoot: path.join(cache, "public") };
 }
 function publicInventory(directory, prefix = "") {

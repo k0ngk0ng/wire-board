@@ -7,8 +7,8 @@ import gzip,hashlib,json,sys
 from pathlib import Path
 from capture_court_animation import state,patches,scores
 from verify_pass_floor_original import ROOT,Memory,MPU
-rom=(ROOT/'.local/nes-basket/basketball.nes').read_bytes();prg=rom[16:16+131072]
-source=ROOT/'.local/nes-basket/runs/court-six-slot-observed-v2/slot-goals.ram';raw=source.read_bytes();assert len(raw)==14*4096
+rom=(ROOT/'.local/basketball/research/original/basketball.nes').read_bytes();prg=rom[16:16+131072]
+source=ROOT/'.local/basketball/research/original/runs/court-six-slot-observed-v2/slot-goals.ram';raw=source.read_bytes();assert len(raw)==14*4096
 class Trace(Memory):
  def __init__(self,ram):
   self.active=False;self.queues=[];super().__init__(prg,ram);self[0x8000:0xc000]=prg[4*16384:5*16384]

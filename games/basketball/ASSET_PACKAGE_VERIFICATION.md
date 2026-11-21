@@ -15,7 +15,7 @@ This preparation task creates local artifacts and publication tooling without up
 
 ## Current candidate: 67-page atlas and music76
 
-The current pinned package is `.local/basketball-asset-package/final-76-a/`; `final-76-b/` is an independently generated identical copy. It includes **448 files, 266,164,513 public bytes** and a **259,604,624-byte archive**. The three generated archive/manifest/provenance artifacts compare byte-for-byte. The earlier candidate1/candidate2 figures below remain historical evidence of the initial packaging step.
+The current pinned package is `.local/basketball/cache/asset-package/final-76-a/`; `final-76-b/` is an independently generated identical copy. It includes **448 files, 266,164,513 public bytes** and a **259,604,624-byte archive**. The three generated archive/manifest/provenance artifacts compare byte-for-byte. The earlier candidate1/candidate2 figures below remain historical evidence of the initial packaging step.
 
 - Content identity: `2d05c1115cfc05aa3f87ae6ad7a49bad9bec7357ec0dda3917480739a573d68d`.
 - Archive SHA-256: `3e442cdaac3e0e273ebf607bb4aa07a86ba3439cfc9d9ebd3c646034ac5ef0ab`.
@@ -25,9 +25,9 @@ The current pinned package is `.local/basketball-asset-package/final-76-a/`; `fi
 
 The packaged postresult atlas manifest contains67 pages. Music76 is exactly `music-076-intro-loop.mp3`, SHA-256 `7e0eb8fcaa8cbc9c426b93fc19d63ac06451874cd9008aecd11d4cb99e733469`. Its public playback metadata preserves sample_rate44100, loop_start_sample5465255, loop_end_sample32515748, loop_samples27050493, decoded_samples32515748 and loop=true from the verified central entry. The WAV master and delivery/source evidence manifests remain private.
 
-The Node build allowlist had a retained RED for this actual filename before adding an exact76 exception. It still rejects `music-076.mp3`, `music-076-loop.mp3`, music76 WAV masters and arbitrary other `music-###-intro-loop.mp3` names. The music worker's8 packaging tests and the8 Node build/base cases pass. The real Node prepare hook and existing public collector verify all448 local fallbacks under the new pin. No upload occurred; `.local/basketball-asset-package/final-76-publication-plan.json` is a zero-write plan.
+The Node build allowlist had a retained RED for this actual filename before adding an exact76 exception. It still rejects `music-076.mp3`, `music-076-loop.mp3`, music76 WAV masters and arbitrary other `music-###-intro-loop.mp3` names. The music worker's8 packaging tests and the8 Node build/base cases pass. The real Node prepare hook and existing public collector verify all448 local fallbacks under the new pin. No upload occurred; `.local/basketball/cache/asset-package/final-76-publication-plan.json` is a zero-write plan.
 
-Use `BASKETBALL_ASSET_PACKAGE=.local/basketball-asset-package/final-76-a` for the next local application build. The old candidate1 package is intentionally rejected after repinning. Full evidence is `.local/basketball-asset-package/final-result.json`, with `music76-build-red.log`, `music76-build-after.log`, `music76-package-tests.log`, `final-76-node-tests.log`, `final-76-build-acceptance.log` and `final-76-local-verify.json`.
+Use `BASKETBALL_ASSET_PACKAGE=.local/basketball/cache/asset-package/final-76-a` for the next local application build. The old candidate1 package is intentionally rejected after repinning. Full evidence is `.local/basketball/cache/asset-package/final-result.json`, with `music76-build-red.log`, `music76-build-after.log`, `music76-package-tests.log`, `final-76-node-tests.log`, `final-76-build-acceptance.log` and `final-76-local-verify.json`.
 
 ## Initial prepared result
 
@@ -40,7 +40,7 @@ Use `BASKETBALL_ASSET_PACKAGE=.local/basketball-asset-package/final-76-a` for th
 - `package-manifest.json`: every public path, MIME, byte length and SHA-256; archive/provenance hashes; ROM identity and content-addressed OSS target.
 - `provenance.json`: separate source manifest hashes, generation/source/license notes and original acceptance/listening flags. This file is excluded from the public tree and archive.
 
-The snapshot in `.local/basketball-asset-package/candidate-1/` has **447 public objects, 254,366,026 bytes**, with a **247,900,678-byte archive**. Candidate2 is a separate identical build. Music59..66 and75 have explicit delivery entries in this snapshot; music76 is intentionally not guessed from files lying in the export directory. A later valid music76 playback/encoding entry is automatically included on the next build; the synthetic fixture already checks this path.
+The snapshot in `.local/basketball/cache/asset-package/candidate-1/` has **447 public objects, 254,366,026 bytes**, with a **247,900,678-byte archive**. Candidate2 is a separate identical build. Music59..66 and75 have explicit delivery entries in this snapshot; music76 is intentionally not guessed from files lying in the export directory. A later valid music76 playback/encoding entry is automatically included on the next build; the synthetic fixture already checks this path.
 
 | Group | Public files |
 |---|---:|
@@ -92,19 +92,19 @@ No upload was performed. Actual OSS credentials, bucket access and CDN availabil
 
 ## Tests and reproduction
 
-The failure inventory and six test methods were written before implementation; initial missing-script failures are retained. Tests cover deterministic manifests/archive, runtime allowlisting, private provenance, source/hash corruption, path traversal, nested symlinks, output boundaries, tampering, future music76 inclusion, network-free publication planning, preflight collisions, successful mocked OSS/CDN readback, zero-write idempotent publication and corrupted CDN rejection. Temporary test files stay under `.local/asset-package-tests/`.
+The failure inventory and six test methods were written before implementation; initial missing-script failures are retained. Tests cover deterministic manifests/archive, runtime allowlisting, private provenance, source/hash corruption, path traversal, nested symlinks, output boundaries, tampering, future music76 inclusion, network-free publication planning, preflight collisions, successful mocked OSS/CDN readback, zero-write idempotent publication and corrupted CDN rejection. Temporary test files stay under `.local/basketball/tmp/asset-package-tests/`.
 
 ```sh
 PYTHONDONTWRITEBYTECODE=1 python3 scripts/basketball/test_package_assets.py
-PYTHONDONTWRITEBYTECODE=1 python3 scripts/basketball/package-assets.py --output .local/basketball-asset-package/new-candidate
-PYTHONDONTWRITEBYTECODE=1 python3 scripts/basketball/package-assets.py --verify .local/basketball-asset-package/new-candidate
-PYTHONDONTWRITEBYTECODE=1 python3 scripts/basketball/publish-assets.py --package .local/basketball-asset-package/new-candidate
+PYTHONDONTWRITEBYTECODE=1 python3 scripts/basketball/package-assets.py --output .local/basketball/cache/asset-package/new-candidate
+PYTHONDONTWRITEBYTECODE=1 python3 scripts/basketball/package-assets.py --verify .local/basketball/cache/asset-package/new-candidate
+PYTHONDONTWRITEBYTECODE=1 python3 scripts/basketball/publish-assets.py --package .local/basketball/cache/asset-package/new-candidate
 ```
 
 After all required acceptance checks pass, publication can proceed under the existing session authorization using:
 
 ```sh
-PYTHONDONTWRITEBYTECODE=1 python3 scripts/basketball/publish-assets.py --package .local/basketball-asset-package/new-candidate --execute --report .local/basketball-asset-package/oss-readback.json
+PYTHONDONTWRITEBYTECODE=1 python3 scripts/basketball/publish-assets.py --package .local/basketball/cache/asset-package/new-candidate --execute --report .local/basketball/cache/asset-package/oss-readback.json
 ```
 
-Two real package builds produced byte-identical `package-manifest.json`, `provenance.json` and `asset-package.tar.gz`. The real publication plan reports `writesPerformed:0`. `.local/basketball-asset-package/result.json`, `verify.json`, `publication-plan.json`, `test-red.log`, `track-binding-red.log`, `source-revalidation.json` and `test.log` preserve the checks. No game production code, registry, deployment script or workflow was changed.
+Two real package builds produced byte-identical `package-manifest.json`, `provenance.json` and `asset-package.tar.gz`. The real publication plan reports `writesPerformed:0`. `.local/basketball/cache/asset-package/result.json`, `verify.json`, `publication-plan.json`, `test-red.log`, `track-binding-red.log`, `source-revalidation.json` and `test.log` preserve the checks. No game production code, registry, deployment script or workflow was changed.

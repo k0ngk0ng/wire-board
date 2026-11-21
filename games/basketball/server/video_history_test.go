@@ -150,7 +150,7 @@ func writeVideoFixture(t *testing.T, name string, value any) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	dir := filepath.Join(root, ".local/basketball/network-scene")
+	dir := filepath.Join(root, ".local/basketball/verification/network-scene")
 	if err = os.MkdirAll(dir, 0755); err != nil {
 		t.Fatal(err)
 	}

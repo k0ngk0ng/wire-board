@@ -33,7 +33,7 @@ memory.registerexec(0xe14c,1,function()if pending then snap();f:write(string.for
 function finish_probe()assert(not pending);f:close();raw:close()end
 '''
 def main():
- out=ROOT/'.local/basketball/rea/ball-rest-stall';base=json.loads((BASE/'opening-from-menu.json').read_text());base.pop('save_slot',None)
+ out=ROOT/'.local/basketball/research/rea/ball-rest-stall';base=json.loads((BASE/'opening-from-menu.json').read_text());base.pop('save_slot',None)
  base.update(frames=15000,captures=[1500,6000,8000,12000,15000])
  paths=[]
  for label,hook in [('reference',CONFIG),('observed',CONFIG+'\n'+HOOK)]:

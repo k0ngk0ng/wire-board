@@ -18,7 +18,7 @@
 
 ### Go 失败与原球组件
 
-原失败：`.local/basketball/team5-after-handler20/native/`。48,000 视频帧、160 次保存恢复仍未结束，源码摘要稳定。
+原失败：`.local/basketball/verification/team5-after-handler20/native/`。48,000 视频帧、160 次保存恢复仍未结束，源码摘要稳定。
 
 `TestBallRestStallDiagnostic` 从相同冷配置重新开始，不改变任何游戏状态，保留第一段持续悬空状态及前 50 个逻辑更新。`probe_rest_stall.py` 将这 50 个真实状态逐个送入未修改的原 `$E149..E14C` 完整球分派，50／50 相同；只初始化第一次后连续执行原球分派，也 50／50 相同。这一层单独不能证明完整原程序也会卡住。
 
@@ -46,20 +46,20 @@
 
 ## 可复核产物
 
-目录 `.local/basketball/rea/ball-rest-stall/`：
+目录 `.local/basketball/research/rea/ball-rest-stall/`：
 
 - `first-entry/`、`original-approach.json`：最早触发状态、完整球源调用及连续链。
 - `original-configured-result.json`：只配置初始选项的参考运行；其统计中的 91 帧静止悬空球属于开场阶段，不是比赛卡局。
 - `aligned-patch.json`、`aligned-spec.json`：受控起点字段和完整控制器时间线。
 - `aligned-result.json`：原整机复现及 reference RAM／截图一致结果。
 - `aligned-world-comparison.json`：独立 Go 与原完整世界的逐字段比较，保留 SpecialShot 差异。
-- 原始整机 RAM、每个完整世界 RAM、截图在 `.local/nes-basket/runs/ball-rest-team5-aligned/`，reference 在同名 `-reference/`。
+- 原始整机 RAM、每个完整世界 RAM、截图在 `.local/basketball/research/original/runs/ball-rest-team5-aligned/`，reference 在同名 `-reference/`。
 
 原完整世界轨迹 SHA-256：`93fd388aab383aa7a82c7bff46981266027a080cc26b8cf2146297765d9dc8a5`。整机全视频 RAM SHA-256：`6d074a5040abe19f5d83c252d2c933875f6d2475ccea67e329af55bb01cfc4a2`。ROM SHA-256：`0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b`。
 
 ```sh
 source scripts/env.sh
-BASKETBALL_REST_STALL_OUTPUT="$PWD/.local/basketball/rea/ball-rest-stall/first-entry-repeat" go test ./games/basketball/engine -run '^TestBallRestStallDiagnostic$' -count=1 -v
+BASKETBALL_REST_STALL_OUTPUT="$PWD/.local/basketball/research/rea/ball-rest-stall/first-entry-repeat" go test ./games/basketball/engine -run '^TestBallRestStallDiagnostic$' -count=1 -v
 PYTHONDONTWRITEBYTECODE=1 python3 scripts/basketball/probe_rest_stall.py
 PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/capture_rest_stall_aligned.py
 PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/compare_rest_stall_worlds.py

@@ -12,7 +12,7 @@ import hashlib
 import json
 
 ROOT = Path(__file__).resolve().parents[2]
-AUDIO = ROOT / '.local/basketball/audio'
+AUDIO = ROOT / '.local/basketball/assets/audio'
 
 
 def sha(path):
@@ -28,7 +28,7 @@ def artifact(path):
 
 
 def verify_music76(catalog):
-    directory=ROOT/'.local/music76-source/browser';path=directory/'result.json'
+    directory=ROOT/'.local/basketball/research/music76-source/browser';path=directory/'result.json'
     result=json.loads(path.read_text());entry=catalog['76'];rate=entry['sample_rate']
     delivery=json.loads((AUDIO/'export/music76-delivery-manifest.json').read_text())
     for key in ['sample_rate','loop_start_sample','loop_end_sample','loop_samples','decoded_samples']:
@@ -94,7 +94,7 @@ def verify_music76(catalog):
 
 
 def verify_selected_regression(ident,folder,track,catalog):
-    directory=ROOT/'.local/music76-source'/folder;path=directory/'result.json';r=json.loads(path.read_text())
+    directory=ROOT/'.local/basketball/research/music76-source'/folder;path=directory/'result.json';r=json.loads(path.read_text())
     assert r['status']=='passed' and r['music_id']==ident and r['asset_file']==track['file']==catalog[str(ident)]['file']
     assert r['asset_sha256']==track['sha256']==catalog[str(ident)]['distribution_sha256']==sha(AUDIO/'export'/track['file'])
     assert r['wav_sha256']==track['master_sha256']==sha(AUDIO/'export'/track['master']) and r['bundle_sha256']==sha(directory/'loop.js')

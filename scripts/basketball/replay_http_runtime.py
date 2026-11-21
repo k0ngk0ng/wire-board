@@ -9,7 +9,7 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 def main():
     p=argparse.ArgumentParser(description=__doc__)
-    p.add_argument('evidence');p.add_argument('--output',default='.local/basketball/http-runtime-replay')
+    p.add_argument('evidence');p.add_argument('--output',default='.local/basketball/verification/http-runtime-replay')
     args=p.parse_args();source=(ROOT/args.evidence).resolve();out=(ROOT/args.output).resolve()
     if not source.is_relative_to(ROOT) or not out.is_relative_to(ROOT):p.error('paths must stay inside workspace')
     out.mkdir(parents=True,exist_ok=True)

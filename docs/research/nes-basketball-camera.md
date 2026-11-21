@@ -50,7 +50,7 @@ REA 与指令核对确认 `$F002` 只把 `$0200..02FF` 中的 64 个 OAM 精灵�
 - 相机：1,997 次完整阶段，所有接口拥有的字段一致。
 - 拥挤：1,997 次完整阶段，标志结果一致。
 - 投影：1,998 次完整 13 对象阶段，共 25,974 次对象投影；坐标缓存、列表和计数一致。多出的一次来自首次比赛更新跳过相机前置阶段。
-- 原生竞态与 Wasm 使用同一阶段夹具验证；日志位于 `.local/basketball/rea/camera/`。
+- 原生竞态与 Wasm 使用同一阶段夹具验证；日志位于 `.local/basketball/research/rea/camera/`。
 
 原阶段中的异步中断还可能更新声音、显示缓冲和时钟字段。这些变化不是相机算法的输出，当前相机对照没有把它们当作自身状态写入。自然记录只覆盖画面布局 1、跟随对象 6，未出现震动；其他布局、震动和边界来自静态指令支持的针对性用例，不能称为自然运行覆盖。
 
@@ -63,6 +63,6 @@ PYTHONDONTWRITEBYTECODE=1 python3 scripts/basketball/extract_camera.py
 go test ./games/basketball/engine -run 'TestOriginal(CompleteCamera|CameraBoundaries|Crowding|CompleteProjection|ProjectionVisibility)' -v
 ```
 
-失败场景先记录在 `games/basketball/CAMERA_VERIFICATION.md`，测试先于实现编写，失败记录为 `test-before.log`。原始 RAM、调用次序、源 SHA 和阶段摘要保存在 `.local/nes-basket/runs/camera-cpu-long/` 与 `.local/basketball/rea/camera/capture.json`；压缩后的语义夹具及摘要位于 `games/basketball/engine/testdata/*-stages*`。
+失败场景先记录在 `games/basketball/CAMERA_VERIFICATION.md`，测试先于实现编写，失败记录为 `test-before.log`。原始 RAM、调用次序、源 SHA 和阶段摘要保存在 `.local/basketball/research/original/runs/camera-cpu-long/` 与 `.local/basketball/research/rea/camera/capture.json`；压缩后的语义夹具及摘要位于 `games/basketball/engine/testdata/*-stages*`。
 
-REA 主证据：`ev_7d4bb1bab4e26ad2dfb292ff555c68dac98d509b93da9ad6632b1fda0efd131c`。绘制排序和 OAM 反向排列证据：`ev_10ba6dfb306da34bbed8036d16307088dea75d4d4640237d4668e7360a833b46`。完整批次、函数报告和快照均保存在 `.local/basketball/rea/camera/`。
+REA 主证据：`ev_7d4bb1bab4e26ad2dfb292ff555c68dac98d509b93da9ad6632b1fda0efd131c`。绘制排序和 OAM 反向排列证据：`ev_10ba6dfb306da34bbed8036d16307088dea75d4d4640237d4668e7360a833b46`。完整批次、函数报告和快照均保存在 `.local/basketball/research/rea/camera/`。

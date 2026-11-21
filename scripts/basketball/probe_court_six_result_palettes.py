@@ -1,10 +1,10 @@
 """Isolated execution of original bank4 $9526 for palette/level/group coverage."""
 import json,hashlib,sys
 from pathlib import Path
-ROOT=Path(__file__).resolve().parents[2];sys.path.insert(0,str(ROOT/'.local/basketball/python'))
+ROOT=Path(__file__).resolve().parents[2];sys.path.insert(0,str(ROOT/'.local/basketball/research/python'))
 from py65.devices.mpu6502 import MPU
 from static_sprites import SpriteROM,DIGEST
-rom=SpriteROM((ROOT/'.local/nes-basket/basketball.nes').read_bytes());cases=[]
+rom=SpriteROM((ROOT/'.local/basketball/research/original/basketball.nes').read_bytes());cases=[]
 for palette in [7,11,12,13,14,15]:
  for teams in [(0,1),(7,6)]:
   for flags in [0,128]:
@@ -16,4 +16,4 @@ for palette in [7,11,12,13,14,15]:
     else:raise AssertionError('Original palette builder did not return')
     assert cpu.memory[0x374]==0x3f and cpu.memory[0x376]==32
     cases.append({'paletteID':palette,'teams':teams,'flags':flags,'level':level,'colors':list(cpu.memory[0x377:0x397])})
-out=ROOT/'.local/basketball/rea/court-six';out.mkdir(parents=True,exist_ok=True);data={'scope':'120 isolated original $9526 executions; controlled threshold and selectors, not natural frames','source_rom_sha256':DIGEST,'original_source_sha256':hashlib.sha256(rom.prg[4*16384+0x1526:4*16384+0x162f]).hexdigest(),'cases':cases};(out/'result-palette-oracle.json').write_text(json.dumps(data,indent=2)+'\n');print(json.dumps({'cases':len(cases),'scope':data['scope']}))
+out=ROOT/'.local/basketball/research/rea/court-six';out.mkdir(parents=True,exist_ok=True);data={'scope':'120 isolated original $9526 executions; controlled threshold and selectors, not natural frames','source_rom_sha256':DIGEST,'original_source_sha256':hashlib.sha256(rom.prg[4*16384+0x1526:4*16384+0x162f]).hexdigest(),'cases':cases};(out/'result-palette-oracle.json').write_text(json.dumps(data,indent=2)+'\n');print(json.dumps({'cases':len(cases),'scope':data['scope']}))

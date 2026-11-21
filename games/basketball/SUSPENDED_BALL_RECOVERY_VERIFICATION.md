@@ -6,7 +6,7 @@ After a successful original ball dispatch, `recoverUnsupportedLooseBall` checks 
 
 ## Test-first and source compatibility
 
-The failure inventory preceded code in `SUSPENDED_BALL_REPAIR_PROPOSAL.md`. Missing-helper and missing-dispatch-hook failures are preserved in `.local/basketball/rea/suspended-repair-proposal/repair-red.log` and `repair-dispatch-red.log`.
+The failure inventory preceded code in `SUSPENDED_BALL_REPAIR_PROPOSAL.md`. Missing-helper and missing-dispatch-hook failures are preserved in `.local/basketball/research/rea/suspended-repair-proposal/repair-red.log` and `repair-dispatch-red.log`.
 
 Six retained actual source states cover Court0/1/7 roll-off triggers and already suspended saves. `prepare_suspended_ball_recovery.py` independently executes their unchanged original complete ball handler, retains its original results and checks deterministic regeneration. Tests distinguish strict source output from the two-field repaired output, validate idempotence/JSON, and assert exactly one source motion event per dispatch. Thirty-six negative scenarios exclude intentional actions, possession/attachments, pending requests, vertical motion and actual support. Unknown terrain errors atomically.
 
@@ -34,7 +34,7 @@ Court1/team5 has direct causal evidence: the first policy-on/off world differenc
 
 The event's authentic checkpoint is separately restored for desktop and 320px viewport checks. Both produce the same 48-frame continuation: source half-pixel gravity appears, the visible ball falls from height64 to ground, and rendered captures are retained. No fields in that checkpoint are edited. Screenshots were visually inspected.
 
-Artifacts: `.local/basketball/all-computer-full-match-browser-teams-0-5-characters-0-1-0-1-rolloff-recovery/`, including `natural-result.json`, `natural-rolloff-events.json`, `rolloff-rendered-continuation.json`, `rolloff-{desktop,mobile}-*.png` and final states. The harness now accepts Court7 without opening it in platform selection; existing source compatibility/whole-game admission is still required. Its socket directory resolves to the existing shorter workspace path because the worktree path exceeded agent-browser's Unix socket limit; the initial infrastructure failure log is retained.
+Artifacts: `.local/basketball/verification/all-computer-full-match-browser-teams-0-5-characters-0-1-0-1-rolloff-recovery/`, including `natural-result.json`, `natural-rolloff-events.json`, `rolloff-rendered-continuation.json`, `rolloff-{desktop,mobile}-*.png` and final states. The harness now accepts Court7 without opening it in platform selection; existing source compatibility/whole-game admission is still required. Its socket directory resolves to the existing shorter workspace path because the worktree path exceeded agent-browser's Unix socket limit; the initial infrastructure failure log is retained.
 
 ## Explicit legacy-save opt-in and recovered follow-up boundary
 
@@ -57,7 +57,7 @@ BASKETBALL_RUNTIME_DIAGNOSTIC=1 BASKETBALL_RUNTIME_SELECTION='{"court":1,"teams"
 go test ./games/basketball/engine -run '^TestSuspendedBallRecoveryRetainedRuntime$' -count=1 -v
 ```
 
-The last command also exercises the separately recovered negative receiver-height boundary; its earlier red evidence remains retained. Logs are in `.local/basketball/rea/suspended-repair-proposal/`: `repair-after.log`, `repair-race.log`, `repair-wasm.log`, `fullgames-native.log`, `team5-native.log`, `team5-browser.log`, `retained-runtime-native.log` and `retained-newyork-failure.log`. Native/race/Wasm cold trajectory hashes match within each configuration; logs retain the exact values.
+The last command also exercises the separately recovered negative receiver-height boundary; its earlier red evidence remains retained. Logs are in `.local/basketball/research/rea/suspended-repair-proposal/`: `repair-after.log`, `repair-race.log`, `repair-wasm.log`, `fullgames-native.log`, `team5-native.log`, `team5-browser.log`, `retained-runtime-native.log` and `retained-newyork-failure.log`. Native/race/Wasm cold trajectory hashes match within each configuration; logs retain the exact values.
 
 
 ## Campaign policy inheritance

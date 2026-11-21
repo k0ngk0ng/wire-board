@@ -15,7 +15,7 @@ local original_finish=finish_probe
 function finish_probe()original_finish();writes:close()end
 '''
 def main():
- out=ROOT/'.local/basketball/rea/special-shot-clear'
+ out=ROOT/'.local/basketball/research/rea/special-shot-clear'
  reference=BASE/'runs/ball-rest-team5-aligned';spec=json.loads((reference/'scenario.json').read_text());spec.update(name='special-shot-clear-team5',hooks_lua=spec['hooks_lua']+'\n'+HOOK)
  path=out/'spec.json';path.write_text(json.dumps(spec,indent=2)+'\n');run(path)
  observed=BASE/'runs'/spec['name'];assert (observed/'ram.bin').read_bytes()==(reference/'ram.bin').read_bytes()

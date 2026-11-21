@@ -28,8 +28,8 @@ export function verifyRuntimePin(manifest, pin) {
       "/basketball.wasm",
   );
 }
-/** Compile/verify locally; ship only the JS loader and source-bound descriptor.
- * The Wasm binary stays in the research cache and immutable OSS object. */
+
+
 export function prepareBasketballDelivery(root) {
   const compiled = path.join(
     prepareBasketballRuntime(root),
@@ -47,7 +47,7 @@ export function prepareBasketballDelivery(root) {
   verifyRuntimePin(manifest, pin);
   const publicRoot = path.join(
     root,
-    ".local/basketball/runtime-delivery/public",
+    ".local/basketball/cache/runtime-delivery/public",
   );
   rmSync(publicRoot, { recursive: true, force: true });
   const target = path.join(publicRoot, "basketball/v1/runtime");

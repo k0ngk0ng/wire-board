@@ -6,8 +6,9 @@ recording, not server permission or rule validation. Parent owns HTTP tests.
 """
 from pathlib import Path
 import functools,http.server,json,os,subprocess,threading,uuid
-ROOT=Path(__file__).resolve().parents[2];OUT=ROOT/'.local/single-preparation';OUT.mkdir(parents=True,exist_ok=True)
-env=dict(os.environ,AGENT_BROWSER_SESSION='bsp-'+uuid.uuid4().hex[:5],AGENT_BROWSER_SOCKET_DIR=str((ROOT/'.local/basketball').resolve()/'bkn-sockets'),NODE_PATH=str(ROOT/'web/node_modules'))
+ROOT=Path(__file__).resolve().parents[2];OUT=ROOT/'.local/basketball/verification/single-preparation';OUT.mkdir(parents=True,exist_ok=True)
+env=dict(os.environ,AGENT_BROWSER_SESSION='bsp-'+uuid.uuid4().hex[:5],AGENT_BROWSER_SOCKET_DIR=str((ROOT/'.local/basketball/tmp/s').resolve()),NODE_PATH=str(ROOT/'web/node_modules'))
+Path(env['AGENT_BROWSER_SOCKET_DIR']).mkdir(parents=True, exist_ok=True)
 def browser(*args):
  p=subprocess.run(['agent-browser',*args,'--json'],env=env,capture_output=True,text=True,timeout=60)
  if p.returncode:raise RuntimeError(p.stdout+p.stderr)
@@ -36,7 +37,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
  def translate_path(self,path):
   if path.startswith('/basketball/v1/selection/'):
    relative=Path(path.split('/selection/',1)[1]);assert '..' not in relative.parts
-   return str(ROOT/'.local/basketball/selection-assets'/relative)
+   return str(ROOT/'.local/basketball/assets/selection-assets'/relative)
   return super().translate_path(path)
  def log_message(self,*args):pass
 

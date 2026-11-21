@@ -1,0 +1,207 @@
+{
+  "layout": "game",
+  "actions": [
+    {
+      "id": "up",
+      "label": "向上移动",
+      "keys": [
+        "KeyW"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 12
+        },
+        {
+          "type": "axis",
+          "index": 1,
+          "direction": -1
+        }
+      ],
+      "continuous": true
+    },
+    {
+      "id": "down",
+      "label": "向下移动",
+      "keys": [
+        "KeyS"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 13
+        },
+        {
+          "type": "axis",
+          "index": 1,
+          "direction": 1
+        }
+      ],
+      "continuous": true
+    },
+    {
+      "id": "left",
+      "label": "向左移动",
+      "keys": [
+        "KeyA"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 14
+        },
+        {
+          "type": "axis",
+          "index": 0,
+          "direction": -1
+        }
+      ],
+      "continuous": true
+    },
+    {
+      "id": "right",
+      "label": "向右移动",
+      "keys": [
+        "KeyD"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 15
+        },
+        {
+          "type": "axis",
+          "index": 0,
+          "direction": 1
+        }
+      ],
+      "continuous": true
+    },
+    {
+      "id": "aimUp",
+      "label": "向上瞄准",
+      "keys": [
+        "ArrowUp"
+      ],
+      "gamepad": [
+        {
+          "type": "axis",
+          "index": 3,
+          "direction": -1
+        }
+      ],
+      "continuous": true
+    },
+    {
+      "id": "aimDown",
+      "label": "向下瞄准",
+      "keys": [
+        "ArrowDown"
+      ],
+      "gamepad": [
+        {
+          "type": "axis",
+          "index": 3,
+          "direction": 1
+        }
+      ],
+      "continuous": true
+    },
+    {
+      "id": "aimLeft",
+      "label": "向左瞄准",
+      "keys": [
+        "ArrowLeft"
+      ],
+      "gamepad": [
+        {
+          "type": "axis",
+          "index": 2,
+          "direction": -1
+        }
+      ],
+      "continuous": true
+    },
+    {
+      "id": "aimRight",
+      "label": "向右瞄准",
+      "keys": [
+        "ArrowRight"
+      ],
+      "gamepad": [
+        {
+          "type": "axis",
+          "index": 2,
+          "direction": 1
+        }
+      ],
+      "continuous": true
+    },
+    {
+      "id": "fire",
+      "label": "攻击",
+      "keys": [
+        "KeyJ"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 7
+        }
+      ],
+      "continuous": true
+    },
+    {
+      "id": "throw",
+      "label": "投掷武器",
+      "keys": [
+        "KeyQ"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 5
+        }
+      ]
+    },
+    {
+      "id": "pickup",
+      "label": "拾取武器",
+      "keys": [
+        "KeyE"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 0
+        }
+      ]
+    },
+    {
+      "id": "finish",
+      "label": "处决",
+      "keys": [
+        "Space"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 2
+        }
+      ]
+    },
+    {
+      "id": "interact",
+      "label": "开关门",
+      "keys": [
+        "KeyF"
+      ],
+      "gamepad": [
+        {
+          "type": "button",
+          "index": 1
+        }
+      ]
+    }
+  ]
+}

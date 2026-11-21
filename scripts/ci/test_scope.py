@@ -31,6 +31,41 @@ scope = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(scope)
 
 class ScopeTests(unittest.TestCase):
+    def test_game_control_policy_tools_select_frontend_checks_only(self):
+        for path in ['web/scripts/game-control-lint.mjs', 'web/scripts/game-control-lint.json', 'web/scripts/room-ui-lint.mjs']:
+            with self.subTest(path=path):
+                result = self.plan(path)
+                self.assertEqual(result['quick_components'], ['frontend'])
+                self.assertFalse(result['has_shared'])
+                self.assertFalse(result['has_games'])
+                self.assertTrue(result['frontend_checks'])
+                self.assertTrue(result['build_required'])
+
+    def test_frontend_checks_install_go_for_real_http_browser_fixture(self):
+        result = self.plan('web/src/ui/result-overlay.tsx')
+        self.assertTrue(result['frontend_checks'])
+        self.assertTrue(result['quick_go'])
+        self.assertFalse(result['has_shared'])
+        self.assertFalse(result['has_games'])
+
+    def test_real_http_browser_fixture_restores_frontend_application_inputs(self):
+        workflow = (ROOT / '.github/workflows/build.yml').read_text()
+        quick = workflow.split('  quick:', 1)[1].split('  frontend:', 1)[0]
+        self.assertIn('Restore application inputs for browser E2E', quick)
+        self.assertIn('scope: frontend', quick)
+        self.assertNotIn('scope: game', quick)
+        self.assertIn('.local/room-flow/verification/', quick)
+        self.assertIn('.local/room-tools-followup/verification/', quick)
+
+    def test_shared_settlement_acceptance_scripts_use_frontend_lane_only(self):
+        for path in ['games/monopoly/tests/accept_ui.py', 'games/hotlinemiami/tests/accept_browser.py', 'scripts/basketball/accept_platform_rooms.py', 'scripts/contra/victory_browser_accept.py', 'scripts/game-loading/check-results.py', 'scripts/accept_draw_result.py']:
+            with self.subTest(path=path):
+                result = self.plan(path)
+                self.assertEqual(result['quick_components'], ['frontend'])
+                self.assertFalse(result['has_shared'])
+                self.assertFalse(result['has_games'])
+                self.assertTrue(result['build_required'])
+
     def test_shared_action_definitions_are_ci_configuration(self):
         result = self.plan('.github/actions/restore-resources/action.yml')
         self.assertEqual(result['quick_components'], ['ci'])

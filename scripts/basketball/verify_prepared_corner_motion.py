@@ -12,12 +12,12 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 def main():
-    rom = (ROOT/'.local/nes-basket/basketball.nes').read_bytes()
+    rom = (ROOT/'.local/basketball/research/original/basketball.nes').read_bytes()
     digest = hashlib.sha256(rom).hexdigest()
     assert digest == '0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b'
-    baseline = (ROOT/'.local/nes-basket/runs/ball-pass/ram.bin').read_bytes()[:2048]
+    baseline = (ROOT/'.local/basketball/research/original/runs/ball-pass/ram.bin').read_bytes()[:2048]
     rows, trace = [], bytearray()
-    for path in sorted((ROOT/'.local/basketball/rea/preparation-matrix').glob('court1-roster3*.json')):
+    for path in sorted((ROOT/'.local/basketball/research/rea/preparation-matrix').glob('court1-roster3*.json')):
         r = json.loads(path.read_text())
         b = r['state']['playing']['world']['Preparation']['Actions']['ball']
         ram = bytearray(baseline)

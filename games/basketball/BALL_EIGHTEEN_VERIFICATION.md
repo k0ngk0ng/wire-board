@@ -16,7 +16,7 @@
 
 ## 原函数与实现
 
-REA / Ghidra 对 bank 6 `$BCAA`、`$BAAB`、`$BDD2` 和 `$B998` 的分析保存在 `.local/basketball/rea/ball18/analysis/`；函数证据 ID 为 `ev_ab466be88002c3df1f3f7ee04a161d6315baf1c0f5e13b814ad7491f978f6f51`。原 ROM SHA-256 与夹具 SHA-256 见 `engine/testdata/ball18-source.json`。
+REA / Ghidra 对 bank 6 `$BCAA`、`$BAAB`、`$BDD2` 和 `$B998` 的分析保存在 `.local/basketball/research/rea/ball18/analysis/`；函数证据 ID 为 `ev_ab466be88002c3df1f3f7ee04a161d6315baf1c0f5e13b814ad7491f978f6f51`。原 ROM SHA-256 与夹具 SHA-256 见 `engine/testdata/ball18-source.json`。
 
 `shot_ball18.go` 将动作分成准备和完成两段。首入用既有原投篮目标和发射函数，设置计数 6、共享 ContactLatch=128，并释放球权。准备命令及声 30 在场地物理之前提交。完成段在物理之后重新读取共享 latch、选中篮筐和随机数，而不是重新提交物理前的副本。
 
@@ -32,7 +32,7 @@ REA / Ghidra 对 bank 6 `$BCAA`、`$BAAB`、`$BDD2` 和 `$B998` 的分析保存�
 - 定向 native 通过；race 10.325 秒、Wasm 3.051 秒通过，包含旧动作 12／14／15 的回归。
 - 同一固定 seed `0x12345678`、正常两节时钟、全原版电脑策略继续整局诊断，前进至 video 21080 / logic 7011；下一缺口是人物 3 的动作 `0x59`。Native 诊断源码摘要在运行前后相同；Wasm 诊断在同一帧遇到同一缺口，失败前状态 SHA-256 相同，但运行期间其他引擎文件被修改，故保留 `sourceStable:false`、不接纳为完整配置验收。未把此次运行标为完整比赛通过，也未开放球队选择。
 
-保留红灯与修复记录：`.local/basketball/rea/ball18/before.log`、`after.log`、`after2.log`。首次实现遗漏了未越线但已经落地时的最终动作 6 写入，原函数夹具捕获后修正。完整诊断及下一首失败状态保存在 `.local/basketball/team7-after-ball18/`。
+保留红灯与修复记录：`.local/basketball/research/rea/ball18/before.log`、`after.log`、`after2.log`。首次实现遗漏了未越线但已经落地时的最终动作 6 写入，原函数夹具捕获后修正。完整诊断及下一首失败状态保存在 `.local/basketball/verification/team7-after-ball18/`。
 
 可重复执行：
 
@@ -41,7 +41,7 @@ PYTHONDONTWRITEBYTECODE=1 python3 scripts/basketball/verify_ball18.py
 source scripts/env.sh
 go test -race ./games/basketball/engine -run '^TestOriginal(Ball18|TeamSpecialBall)' -count=1
 GOOS=js GOARCH=wasm go test ./games/basketball/engine -run '^TestOriginal(Ball18|TeamSpecialBall)' -count=1 -exec "$(go env GOROOT)/lib/wasm/go_js_wasm_exec"
-python3 scripts/basketball/diagnose_team_rosters.py --court 1 --teams 0 7 --characters 0 1 0 1 --output .local/basketball/team7-ball18-repeat
+python3 scripts/basketball/diagnose_team_rosters.py --court 1 --teams 0 7 --characters 0 1 0 1 --output .local/basketball/verification/team7-ball18-repeat
 ```
 
 此处证明的是原规则函数、连续链与自然配置续跑；不是所有特殊球、完整球队矩阵、浏览器视觉或人工试听通过。没有增加生产注册、上传素材或发布。

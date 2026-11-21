@@ -46,10 +46,10 @@ All 29,960 terrain probes and 19,968 object boundary cases match original instru
 
 New York's 12×64 old-floor cache matches the existing display surface table cell-for-cell. Its existing natural plateau-motion fixture still passes. The unchanged cold New York complete match repeats identically twice: 22,383 video ticks, 7,435 logic updates, 84 save/restore comparisons, score 12–45 and trajectory SHA-256 `3aff241fb5090fc176c9ea579929e9113d89f3797145e7d76e28b662ce65629a`.
 
-Native race and Wasm profile tests pass. Logs are `.local/basketball/engine/court-profile-{before,after,race,wasm}.log`. Reproduce:
+Native race and Wasm profile tests pass. Logs are `.local/basketball/verification/engine/court-profile-{before,after,race,wasm}.log`. Reproduce:
 
 ```sh
-PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="$PWD/.local/basketball/python" python3 scripts/basketball/verify_court_profiles.py
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="$PWD/.local/basketball/research/python" python3 scripts/basketball/verify_court_profiles.py
 source scripts/env.sh
 go test -race ./games/basketball/engine -run '^TestOriginal(EightCourt|CourtProfile)' -count=1 -v
 GOOS=js GOARCH=wasm go test ./games/basketball/engine -exec="$(go env GOROOT)/lib/wasm/go_js_wasm_exec" -run '^TestOriginal(EightCourt|CourtProfile)' -count=1 -v
@@ -81,7 +81,7 @@ Restored behaviors include floor equality/landing, negative/high-page height bra
 
 Both floor suites pass native race and Wasm. Existing New York plateau motion still passes unchanged. The cold complete New York match again repeats with 22,383 videos, 7,435 logic updates, 84 restoration comparisons and score 12–45. The serialized trajectory now includes explicit display Court metadata and has repeatable SHA-256 `32c8fa757593a3be5792020bc451e84b434671e7efea109e9d9c157429c8089c`.
 
-Evidence logs: `.local/basketball/engine/court-floor-{before,after,race,wasm}.log`. Natural and configured fixtures retain separate provenance and must not be combined into a natural-gameplay coverage claim.
+Evidence logs: `.local/basketball/verification/engine/court-floor-{before,after,race,wasm}.log`. Natural and configured fixtures retain separate provenance and must not be combined into a natural-gameplay coverage claim.
 
 ### Remaining integration boundary
 
@@ -94,12 +94,12 @@ Reproduce phase verification:
 ```sh
 source scripts/env.sh
 PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/capture_court_floor.py
-PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="$PWD/.local/basketball/python" python3 scripts/basketball/verify_court_floor.py
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="$PWD/.local/basketball/research/python" python3 scripts/basketball/verify_court_floor.py
 go test -race ./games/basketball/engine -run '^TestOriginalCourtFloor' -count=1 -v
 GOOS=js GOARCH=wasm go test ./games/basketball/engine -exec="$(go env GOROOT)/lib/wasm/go_js_wasm_exec" -run '^TestOriginalCourtFloor' -count=1 -v
 ```
 
-Focused REA device batch `ev_4f740cca747dd4aad8894e0f9f027a601b02c4f9dfd1fa5454b37b39f44e693a` in `.local/basketball/rea/court-floor-devices/` independently decompiles 846E, 85B5, 84E4, 863C, 89AE and 89E6. Five addresses decompile successfully; 846E remains an explicit provider failure in this batch. Its exact instructions and original execution are covered by the configured oracle rather than a claimed recovered decompilation. The implementation preserves byte-level effects where decompiler prose loses detail.
+Focused REA device batch `ev_4f740cca747dd4aad8894e0f9f027a601b02c4f9dfd1fa5454b37b39f44e693a` in `.local/basketball/research/rea/court-floor-devices/` independently decompiles 846E, 85B5, 84E4, 863C, 89AE and 89E6. Five addresses decompile successfully; 846E remains an explicit provider failure in this batch. Its exact instructions and original execution are covered by the configured oracle rather than a claimed recovered decompilation. The implementation preserves byte-level effects where decompiler prose loses detail.
 
 
 ## Complete motion wrapper and Court 0 runtime integration
@@ -125,7 +125,7 @@ With the original fixed seed 12345678, normal clocks, controller input only and 
 
 Each cold configuration repeats twice; these are integrated semantic-runtime checks, not a claim of cycle-exact original full-match trajectories. Separate original instruction/natural-call evidence supports the restored pieces. New York's 1,998 original complete action stages (26,093 actual object visits), 14,456 terrain writes, 389 rider terrain writes and transaction rollback checks also remain passing.
 
-Logs: `.local/basketball/engine/court-motion-{before,after,ny-regression,race,wasm}.log`, `runtime-court-zero-{before,ledge,after,race}.log`, and the display workstream's `court-animation-display-*` / `court-animation-empty-before.log`. Tests use `runtime_court_zero_test.go` and the existing cold-runtime gate without shortening clocks or rewriting its expected control configuration.
+Logs: `.local/basketball/verification/engine/court-motion-{before,after,ny-regression,race,wasm}.log`, `runtime-court-zero-{before,ledge,after,race}.log`, and the display workstream's `court-animation-display-*` / `court-animation-empty-before.log`. Tests use `runtime_court_zero_test.go` and the existing cold-runtime gate without shortening clocks or rewriting its expected control configuration.
 
 Final cross-runtime validation is complete: all four cold-match configurations above passed Wasm with the same native digests (98.747 seconds total). Both complete Court 0 configurations also passed native race, including repeated runs and restoration checks (177.402 seconds). The independent original action/motion/event corpus and rollback race checks passed separately. No other game's tests were included.
 

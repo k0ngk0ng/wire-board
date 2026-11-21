@@ -4,7 +4,7 @@ Sound and palette peripheral entries are observed commands; original RNG execute
 import gzip,hashlib,json,sys
 from pathlib import Path
 from capture_court_animation import ROOT,state,patches,scores
-sys.path.insert(0,str(ROOT/'.local/basketball/python'))
+sys.path.insert(0,str(ROOT/'.local/basketball/research/python'))
 from py65.devices.mpu6502 import MPU
 class Trace(list):
  active=False
@@ -12,7 +12,7 @@ class Trace(list):
  def __setitem__(self,k,v):
   super().__setitem__(k,v)
   if self.active and isinstance(k,int) and k in (0x30b,0x32e,0x351):self.addresses.append(k)
-rom=(ROOT/'.local/nes-basket/basketball.nes').read_bytes();prg=rom[16:16+131072];m=Trace([0]*65536);m[0x8000:0xc000]=prg[4*16384:5*16384];m[0xc000:]=prg[-16384:];cpu=MPU(memory=m);rows=[]
+rom=(ROOT/'.local/basketball/research/original/basketball.nes').read_bytes();prg=rom[16:16+131072];m=Trace([0]*65536);m[0x8000:0xc000]=prg[4*16384:5*16384];m[0xc000:]=prg[-16384:];cpu=MPU(memory=m);rows=[]
 configurations={0:[[i]+[0]*8 for i in range(4)],1:[[0]*9],2:[[side,128,128,t,t,0,0,0,0] for side in (0,1) for t in (0,1,2)],3:[[flags,t]+[0]*7 for flags,t in [(0,0),(128,0),(1,8),(1,1)]],4:[[f,d]+[0]*7 for f in range(3) for d in (0,1)],5:[[side,128,128,t,t,0,0,0,0] for side in (0,1) for t in (0,1,2)],6:[[0,2,4,6,0,2,0,0,0],[128,132,134,128,132,134,1,1,0],[128,132,134,128,132,134,0x1d,0x3d,0],[128,132,134,128,132,134,0x6d,0x6d,128]],7:[[0]*9]}
 for court in (2,5):
  configurations[court]+=[[side,0,0,t,t,0,0,0,0] for side in (0,1) for t in (0,1,2)]

@@ -18,3 +18,4 @@
 
 - [模块目录](../games/basketball/)
 - [玩法、实现与验收说明](../games/basketball/README.md)
+- [本地文件与迁移检查](../docs/basketball-local-files.md)

@@ -29,7 +29,7 @@ def main():
      writes=list(csv.DictReader((observed/'alias-writes.csv').open()));probes=list(csv.DictReader((observed/'alias-probes.csv').open()))
      result.append(dict(reference=name,frames=spec['frames'],writes=writes,probes=probes,reference_sha256=hashlib.sha256((reference/'ram.bin').read_bytes()).hexdigest(),unchanged=True))
      print(name,'writes',len(writes),'probes',len(probes),flush=True)
-    (ROOT/'.local/basketball/rea/pursuit-alias74/write-observation.json').write_text(json.dumps(result,indent=2)+'\n')
+    (ROOT/'.local/basketball/research/rea/pursuit-alias74/write-observation.json').write_text(json.dumps(result,indent=2)+'\n')
 
 
 if __name__=='__main__':main()

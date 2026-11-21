@@ -18,7 +18,7 @@ def call(r,actor):
 
 def main():
  assert hashlib.sha256(ROM).hexdigest()=='0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b'
- source=ROOT/'.local/nes-basket/runs/self-held-mode128-observed/world-after.ram';trace=source.read_bytes();base=trace[5*2048:6*2048]
+ source=ROOT/'.local/basketball/research/original/runs/self-held-mode128-observed/world-after.ram';trace=source.read_bytes();base=trace[5*2048:6*2048]
  assert base[0x512]==16 and base[0x53f]==6
  rows=[]
  for actor,entered,holder,x,ball in itertools.product(range(4),[False,True],[0,1,2,3,6],[30,200,480],[1,2,10]):

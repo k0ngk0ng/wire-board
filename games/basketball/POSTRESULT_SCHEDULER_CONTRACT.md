@@ -20,7 +20,7 @@ This document records the source investigation and test oracles before implement
 
 ## Proven wait rules
 
-The oracle is `scripts/basketball/investigate_postresult_scheduler.py`. It executes bounded unchanged-ROM source functions through the existing Python source-probe tools and checks retained whole-console event logs. No interpreter is added to the product. The generated instructions and detailed oracle are `.local/postresult-scheduler/{instructions.txt,oracle.json}`.
+The oracle is `scripts/basketball/investigate_postresult_scheduler.py`. It executes bounded unchanged-ROM source functions through the existing Python source-probe tools and checks retained whole-console event logs. No interpreter is added to the product. The generated instructions and detailed oracle are `.local/basketball/research/postresult-scheduler/{instructions.txt,oracle.json}`.
 
 ### Outer dispatch: CA54, CAA4/CAE3, CAE9
 

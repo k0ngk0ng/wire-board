@@ -33,11 +33,11 @@
 
 ## 原版驱动和 REA 证据
 
-源 ROM SHA-256：`0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b`。提取使用 `.local/nes-basket/basketball.nes`，原文件不变。
+源 ROM SHA-256：`0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b`。提取使用 `.local/basketball/research/original/basketball.nes`，原文件不变。
 
 固定 `$C000` 跳转到 `$FBCC`，保存当前 bank，切 bank 0，将 A 中的 ID 交给 `$8000`，再恢复原 bank。更新入口 `$FBE3` 映射 bank 0 并调用 `$8003`；实际驱动位于 `$8183`。正数 ID 使用 `$8BE0 + 2 × (ID − 1)` 的小端指针；`$80B0` 加载声道和优先级，`$8166` 重置状态。
 
-REA 输入 `.local/basketball/audio/bank0-visible.bin` 将原 bank 0 映射到 `$8000–$BFFF`，固定 bank 7 映射到 `$C000–$FFFF`。保留的批次为：
+REA 输入 `.local/basketball/assets/audio/bank0-visible.bin` 将原 bank 0 映射到 `$8000–$BFFF`，固定 bank 7 映射到 `$C000–$FFFF`。保留的批次为：
 
 - 请求入口：`ev_47846c00a63fba1c06339b9ef74ac40f0d659bd4b8ab5537fa514ab02924fd1a`，目录 `audio/rea/`。
 - 声道驱动：`ev_9925b47bdf83028e38be3e23572c67d65c54c6cacd64b34f9b239f465eadaa73`，目录 `audio/driver-rea/`。
@@ -67,7 +67,7 @@ PYTHONDONTWRITEBYTECODE=1 python3 scripts/basketball/extract_audio.py
 PYTHONDONTWRITEBYTECODE=1 python3 scripts/basketball/verify_audio.py
 ```
 
-输出目录 `.local/basketball/audio/export/` 中：
+输出目录 `.local/basketball/assets/audio/export/` 中：
 
 - `manifest.json` 保存源 ROM、目录清单、提取脚本、FCEUX 二进制、NSF、原录音、裁剪结果和执行记录的 SHA-256，以及效果／音乐分类、音量和 DPCM 区间。
 - `verification.json` 保存 28 项素材的通过结果。
@@ -85,7 +85,7 @@ Go 引擎继续输出原 ID 和有序事件。前端维护事件序号以避免�
 
 统一静音、设备媒体音量、页面隐藏和离桌清理由平台负责。篮球目录不创建播放器或 `AudioContext`。游戏侧 `web/audio.ts` 已使用平台新增的 owner 范围 `pause()`／`resume()` 接口；恢复不重装源、不重播曲头。客户端只消费 Go 新发的 ID，原 `StartOriginalCourt` 已发出纽约音乐 66，不按画面阶段另补一份。适配器的水位、错误处理和验收见 `games/basketball/web/AUDIO_VERIFICATION.md`。
 
-追加 20,000 帧接缝审计确认，完整声音驱动状态在 16,384 帧（5 次曲目循环）后才重合，但原 PCM 相位仍不同。单循环边界跳变为 805，五循环边界为 430；原证据保存在 `.local/basketball/audio/seam-verification.json`，不把未加工片段冒称为无缝循环。
+追加 20,000 帧接缝审计确认，完整声音驱动状态在 16,384 帧（5 次曲目循环）后才重合，但原 PCM 相位仍不同。单循环边界跳变为 805，五循环边界为 430；原证据保存在 `.local/basketball/assets/audio/seam-verification.json`，不把未加工片段冒称为无缝循环。
 
 持续播放使用另外制作的 `music-066-loop.wav`：保留 272.617732 秒原 5 循环周期，只对末尾 1,411 样本（31.995 毫秒）做披露的余弦衔接；源片段、公式及 SHA 在 `music-066-loop-source.json`。99.9883% 样本未变，接缝相对原相邻样本误差为 0；8 毫秒窗口／2 毫秒步长的局部 RMS 最大偏差约 −0.308 dB，无削波。两次独立原录音和派生结果一致。
 

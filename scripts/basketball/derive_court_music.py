@@ -14,7 +14,7 @@ import sys
 import wave
 
 ROOT=Path(__file__).resolve().parents[2]
-OUT=ROOT/'.local/basketball/audio/export'
+OUT=ROOT/'.local/basketball/assets/audio/export'
 FRAMES={59:213000,60:20000,61:69000,62:250000,63:224000,64:59000,65:86000}
 BLEND=1411
 

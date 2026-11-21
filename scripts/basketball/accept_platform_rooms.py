@@ -1,9 +1,10 @@
 """Real React Board, authenticated HTTP, browser Wasm and native keyboard/touch."""
 from pathlib import Path
 import json,os,subprocess,uuid
-ROOT=Path(__file__).resolve().parents[2];OUT=Path(os.environ.get('BASKETBALL_BROWSER_OUTPUT',str(ROOT/'.local/basketball/platform-rooms'))).resolve();assert OUT.is_relative_to((ROOT/'.local/basketball').resolve());OUT.mkdir(parents=True,exist_ok=True)
-env=dict(os.environ,AGENT_BROWSER_SESSION='bkp-'+uuid.uuid4().hex[:6],AGENT_BROWSER_SOCKET_DIR=os.environ.get('AGENT_BROWSER_SOCKET_DIR',str(ROOT/'.local/bkn-sockets')),TMPDIR=str(ROOT/'.local/tmp'),NODE_PATH=str(ROOT/'web/node_modules'))
-Path(env['AGENT_BROWSER_SOCKET_DIR']).mkdir(exist_ok=True)
+ROOT=Path(__file__).resolve().parents[2];OUT=Path(os.environ.get('BASKETBALL_BROWSER_OUTPUT',str(ROOT/'.local/basketball/verification/platform-rooms'))).resolve();assert OUT.is_relative_to((ROOT/'.local/basketball').resolve());OUT.mkdir(parents=True,exist_ok=True)
+env=dict(os.environ,AGENT_BROWSER_SESSION='bkp-'+uuid.uuid4().hex[:6],AGENT_BROWSER_SOCKET_DIR=os.environ.get('AGENT_BROWSER_SOCKET_DIR',str(ROOT/'.local/basketball/tmp/s')),TMPDIR=str(ROOT/'.local/tmp'),NODE_PATH=str(ROOT/'web/node_modules'))
+Path(env['TMPDIR']).mkdir(parents=True, exist_ok=True)
+Path(env['AGENT_BROWSER_SOCKET_DIR']).mkdir(parents=True,exist_ok=True)
 base=env['BASKETBALL_HTTP_URL'];checks=[];opened=False;inspector=None
 def browser(*args):
  if inspector and args[0] in ('click','select','fill') and not args[1].startswith('@'):
@@ -67,7 +68,7 @@ try:
  expect('campaign waiting room does not overflow 320px',js('document.documentElement.scrollWidth<=innerWidth'))
  browser('screenshot',str(OUT/'campaign-waiting-mobile.png'),'--full')
  browser('set','viewport','1280','900');browser('screenshot',str(OUT/'campaign-waiting-desktop.png'),'--full')
- browser('find','role','button','click','--name','离开房间');wait('!document.querySelector(".waiting-seats")')
+ browser('find','role','button','click','--name','离开房间');browser('click','[data-leave-confirm]');wait('!document.querySelector(".waiting-seats")')
  for mode,capacity in [('solo',1),('cooperative',2),('versus',2)]:
   browser('find','role','button','click','--name','创建房间')
   browser('fill','[aria-label="搜索可选游戏"]','热血篮球')
@@ -93,7 +94,7 @@ try:
   expect('all eight original courts appear only in waiting preparation '+mode,js('document.querySelectorAll(".basketball-preparation [data-court]").length===8'))
   browser('screenshot',str(OUT/(mode+'-waiting-mobile.png')),'--full')
   if mode!='versus':
-   browser('find','role','button','click','--name','离开房间');wait('!document.querySelector(".waiting-seats")');continue
+   browser('find','role','button','click','--name','离开房间');browser('click','[data-leave-confirm]');wait('!document.querySelector(".waiting-seats")');continue
   expect('unfilled human seat is not mislabeled as a computer',js('[...document.querySelectorAll(".basketball-roster-player")].find(e=>e.dataset.actor==="2").querySelector(".basketball-player-owner strong").textContent==="等待玩家"'))
   browser('set','viewport','1280','900')
   browser('screenshot',str(OUT/'versus-waiting-desktop.png'),'--full')

@@ -21,7 +21,7 @@ def decode_world_input_state(r):
 
 
 def main():
-    run=ROOT/'.local/nes-basket/runs/world-inputs-cpu-long'
+    run=ROOT/'.local/basketball/research/original/runs/world-inputs-cpu-long'
     rows=list(csv.DictReader((run/'world-inputs.csv').open()));compressed=(run/'world-inputs-ram.bin.gz').read_bytes();raw=gzip.decompress(compressed)
     assert len(rows)==1998 and len(raw)==1998*4096
     records=[]
@@ -37,7 +37,7 @@ def main():
     payload=(json.dumps(records,separators=(',',':'))+'\n').encode();packed=gzip.compress(payload,mtime=0)
     out=ROOT/'games/basketball/engine/testdata';p=out/'world-inputs.json.gz';p.write_bytes(packed)
     p.with_name('world-inputs-source.json').write_text(json.dumps(dict(source_is_original_execution=True,records=len(rows),phase_boundary='fixed D32C..D345',all_records_retained=True,uncompressed_sha256=hashlib.sha256(payload).hexdigest(),sha256=hashlib.sha256(packed).hexdigest(),trace_sha256=hashlib.sha256(raw).hexdigest(),compressed_trace_sha256=hashlib.sha256(compressed).hexdigest(),source=json.loads((run/'source.json').read_text())),indent=2)+'\n')
-    rom=(ROOT/'.local/nes-basket/basketball.nes').read_bytes();bank=rom[16+5*16384:16+6*16384];read=lambda a:bank[a-0x8000];word=lambda a:read(a)+256*read(a+1)
+    rom=(ROOT/'.local/basketball/research/original/basketball.nes').read_bytes();bank=rom[16+5*16384:16+6*16384];read=lambda a:bank[a-0x8000];word=lambda a:read(a)+256*read(a+1)
     profiles=[[read(word(0x897e+2*t)+j) for j in range(4)] for t in range(6)]
     q=out/'human-command-profiles.json';q.write_text(json.dumps(profiles)+'\n')
     q.with_name('human-command-profiles-source.json').write_text(json.dumps(dict(source='Original bank5 $897E command message selection',rom_sha256=hashlib.sha256(rom).hexdigest(),sha256=hashlib.sha256(q.read_bytes()).hexdigest()),indent=2)+'\n')

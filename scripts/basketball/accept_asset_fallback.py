@@ -3,10 +3,12 @@ corrupted PNG hash, and both sources unavailable. No mixed-version bundle.
 """
 import functools,http.server,json,os,subprocess,threading,uuid,argparse
 from pathlib import Path
-ROOT=Path(__file__).resolve().parents[2];OUT=ROOT/'.local/basketball-asset-fallback';OUT.mkdir(exist_ok=True)
-env=dict(os.environ,AGENT_BROWSER_SESSION='baf-'+uuid.uuid4().hex[:6],AGENT_BROWSER_SOCKET_DIR=str((ROOT/'.local/basketball').resolve()/'bkn-sockets'),TMPDIR=str(ROOT/'.local/tmp'))
+ROOT=Path(__file__).resolve().parents[2];OUT=ROOT/'.local/basketball/verification/asset-fallback';OUT.mkdir(parents=True,exist_ok=True)
+env=dict(os.environ,AGENT_BROWSER_SESSION='baf-'+uuid.uuid4().hex[:6],AGENT_BROWSER_SOCKET_DIR=str((ROOT/'.local/basketball/tmp/s').resolve()),TMPDIR=str(ROOT/'.local/tmp'))
+Path(env['TMPDIR']).mkdir(parents=True, exist_ok=True)
+Path(env['AGENT_BROWSER_SOCKET_DIR']).mkdir(parents=True, exist_ok=True)
 requests=[]
-assetRoot=ROOT/".local/basketball"
+assetRoot=ROOT/".local/basketball/assets"
 class Handler(http.server.SimpleHTTPRequestHandler):
     def log_message(self,*args):pass
     def do_GET(self):
@@ -36,7 +38,7 @@ def main():
     (OUT/'index.html').write_text('<!doctype html><meta charset="utf-8"><style>body{white-space:pre-wrap}</style><script type="module" src="check.js"></script>')
     server=http.server.ThreadingHTTPServer(('127.0.0.1',0),functools.partial(Handler,directory=str(ROOT)));t=threading.Thread(target=server.serve_forever,daemon=True);t.start();opened=False
     try:
-        browser('--profile',str(OUT/'profile'),'open',f'http://127.0.0.1:{server.server_port}/.local/basketball-asset-fallback/index.html');opened=True
+        browser('--profile',str(OUT/'profile'),'open',f'http://127.0.0.1:{server.server_port}/.local/basketball/verification/asset-fallback/index.html');opened=True
         browser('wait','--fn','window.result !== undefined')
         result=browser('eval','window.result')['result'];result['requests']=requests
         (OUT/('dist-result.json' if args.dist else 'result.json')).write_text(json.dumps(result,indent=2)+'\n')

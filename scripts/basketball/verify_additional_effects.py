@@ -2,7 +2,7 @@ from pathlib import Path
 import array,csv,hashlib,json,wave
 from extract_audio import BASE,SOURCE_SHA,carrier
 
-ROOT=Path(__file__).resolve().parents[2];OUT=ROOT/'.local/basketball/audio/export'
+ROOT=Path(__file__).resolve().parents[2];OUT=ROOT/'.local/basketball/assets/audio/export'
 
 
 def main():

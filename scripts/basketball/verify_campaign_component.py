@@ -99,7 +99,7 @@ def main():
   payload=gzip.compress((json.dumps(rows,separators=(',',':'))+'\n').encode(),mtime=0);f=OUT/(name+'.json.gz');f.write_bytes(payload);files[f.name]=dict(records=len(rows),sha256=hashlib.sha256(payload).hexdigest())
  normal=[]
  for name,frames in [('campaign-audit-password-equip-commit',[1200,2800]),('campaign-audit-equipped-home-match',[4700]),('campaign-audit-equipment-remove',[2800,3600]),('campaign-audit-equipment-swap-final',[1200,2600,3700]),('campaign-audit-loss-continue',[24000,26400])]:
-  path=ROOT/'.local/nes-basket/runs'/name;d=(path/'ram.bin').read_bytes();rows=[]
+  path=ROOT/'.local/basketball/research/original/runs'/name;d=(path/'ram.bin').read_bytes();rows=[]
   for frame in frames:
    r=d[(frame-1)*2048:frame*2048];rows.append(dict(frame=frame,progress=progress(r),scene=r[0x588],phase=r[0x589],court=r[0x58b],teams=list(r[0x586:0x588])))
   normal.append(dict(run=name,ramSHA256=hashlib.sha256(d).hexdigest(),frames=rows))

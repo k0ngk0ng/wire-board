@@ -4,7 +4,7 @@ from probe_rest_stall import ROOT,ROM,PRG
 from verify_pass_floor_original import Memory,MPU,put
 from extract_world_actions import decode_world_action_state
 
-SOURCE=ROOT/'.local/nes-basket/runs/negative-pass-height-observed/pass-ram.bin'
+SOURCE=ROOT/'.local/basketball/research/original/runs/negative-pass-height-observed/pass-ram.bin'
 BASE=SOURCE.read_bytes()[:2048]
 
 

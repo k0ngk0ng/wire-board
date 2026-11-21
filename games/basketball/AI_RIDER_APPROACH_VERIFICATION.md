@@ -12,7 +12,7 @@
 
 ## 原函数证据与验证
 
-独立REA证据`ev_0513f7e82b4cc05cb6d447b7ebccc67037a0580eeb3c5d263c8272ae8aa6f29a`位于`.local/basketball/rea/ai-rider-approach/analysis/`，覆盖AA2C、ADA4、B05C、B1E9。保留原窄X窗口中的非对称深度窗口、X远时固定向下斜跑、跳跃阶段的无符号速度门槛，以及3F姿态下持球目标接近窗口。
+独立REA证据`ev_0513f7e82b4cc05cb6d447b7ebccc67037a0580eeb3c5d263c8272ae8aa6f29a`位于`.local/basketball/research/rea/ai-rider-approach/analysis/`，覆盖AA2C、ADA4、B05C、B1E9。保留原窄X窗口中的非对称深度窗口、X远时固定向下斜跑、跳跃阶段的无符号速度门槛，以及3F姿态下持球目标接近窗口。
 
 原18,000帧自然参考未命中AA2C；零命中记录保留，不能冒充自然验证。原AA2C连同其完整辅助函数另执行9176组隔离场景，覆盖接近、等待、跳跃、grade、phase、速度、持球位置与字节边界；比较全部Go决策与实际应用后的平面速度／JumpPhase，结果相同。
 

@@ -16,7 +16,7 @@
 
 ## REA 与自然计划 2 对照
 
-复用 `.local/basketball/rea/shot-planning/dispatch/batch.json`，REA 证据 `ev_8bac8418e07eaa8a98c2ac6472d25618bfc7cb159ee632963fe08b31581cafda`。该证据覆盖 B413（计划 2）、B4EE（计划 7）与 B58E（低跳分支），原分派表和完整 B383 证据为 `ev_1c67e123737322edbaaed8ac4bc6d1899caaa8f66b392f8d1fd10e8e5bec0d2b`。
+复用 `.local/basketball/research/rea/shot-planning/dispatch/batch.json`，REA 证据 `ev_8bac8418e07eaa8a98c2ac6472d25618bfc7cb159ee632963fe08b31581cafda`。该证据覆盖 B413（计划 2）、B4EE（计划 7）与 B58E（低跳分支），原分派表和完整 B383 证据为 `ev_1c67e123737322edbaaed8ac4bc6d1899caaa8f66b392f8d1fd10e8e5bec0d2b`。
 
 计划 2 自然捕获来自 18,000 帧 `special-ball-cpu-command` 时间线，进入 B413 后到固定 FD8E 的全部 57 次完整调用均保留；全部 RAM／PNG 和参考相同。以完整 WorldInputState 比较后两次起跳、AimAirShot、ShotCycle、RNG 和未参与对象全部匹配。样本不是人为注入模式，也没有截短未通过的记录。
 
@@ -32,7 +32,7 @@
 
 ## 结果与下一边界
 
-所有新增测试均先于实现。原生竞态和 Wasm 验证通过：计划 2 的 57 次自然完整调用、计划 7 的 8,192 组隔离原函数执行、原 283 次投篮规划、单人物命令集成、1,998 输入／连续世界更新与 57 主动完整更新。日志位于 `.local/basketball/rea/shot-plan7/{native-tests.json,wasm-tests.log}`；初次失败测试位于各 `shot-plan2/shot-plan7/tests-before.log`。
+所有新增测试均先于实现。原生竞态和 Wasm 验证通过：计划 2 的 57 次自然完整调用、计划 7 的 8,192 组隔离原函数执行、原 283 次投篮规划、单人物命令集成、1,998 输入／连续世界更新与 57 主动完整更新。日志位于 `.local/basketball/research/rea/shot-plan7/{native-tests.json,wasm-tests.log}`；初次失败测试位于各 `shot-plan2/shot-plan7/tests-before.log`。
 
 固定冷配置从 1363 经 1592 推进至 1598／6000，下一边界是人物 1 动作103／variant93／frame0 的攻击碰撞资料；完整前态在 `shot-plan7/cold-next.json`，已交主线程核对来源。未为未知攻击 variant 添加默认几何，也未降低 6000 目标。
 

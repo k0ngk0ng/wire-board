@@ -3,9 +3,9 @@ import base64,gzip,hashlib,json,itertools
 from pathlib import Path
 from verify_pass_floor_original import Memory,MPU
 ROOT=Path(__file__).resolve().parents[2];OUT=ROOT/'games/basketball/engine/testdata'
-ROM=(ROOT/'.local/nes-basket/basketball.nes').read_bytes();PRG=ROM[16:131088]
+ROM=(ROOT/'.local/basketball/research/original/basketball.nes').read_bytes();PRG=ROM[16:131088]
 assert hashlib.sha256(ROM).hexdigest()=='0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b'
-SOURCE=ROOT/'.local/postresult-source-map'
+SOURCE=ROOT/'.local/basketball/research/postresult-source-map'
 RAW=gzip.decompress((SOURCE/'ending-None.ram.gz').read_bytes())
 TRACE=json.loads(gzip.decompress((SOURCE/'ending-None.json.gz').read_bytes()))
 class Mem(Memory):

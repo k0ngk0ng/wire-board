@@ -10,7 +10,7 @@ from PIL import Image,ImageChops
 from capture_reference import ROOT,BASE
 from graphics import render_background,render_sprites
 
-OUT=ROOT/'.local/postresult-video'
+OUT=ROOT/'.local/basketball/research/postresult-video'
 
 def state_fields(file):
     raw=file.read_bytes();assert raw[:4]==b'FCSX' and raw[12:16]==b'\xff'*4

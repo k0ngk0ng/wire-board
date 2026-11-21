@@ -42,7 +42,7 @@ leave for the original menu.
 
 Tests and source fixture extraction preceded implementation. The initial API
 failure, malformed-state failure, and subsequent runs remain in
-`.local/basketball/palette-timing/runtime-fade-*.log`. Existing display regression
+`.local/basketball/research/palette-timing/runtime-fade-*.log`. Existing display regression
 found one stale Court4-rejection assertion; Court4 already has independent full
 integration evidence, so the assertion now rejects Courts5–7.
 
@@ -58,7 +58,7 @@ integration evidence, so the assertion now rejects Courts5–7.
 
 The separate keyboard/touch carrying acceptance now also verifies nondirectional
 B set-down and picking up the same prop again: 41 checks pass in
-`.local/basketball/engine/carry-setdown-browser.log`.
+`.local/basketball/verification/engine/carry-setdown-browser.log`.
 
 ## Rendering validation status
 
@@ -71,7 +71,7 @@ and result entry. Each four-step sequence has distinct actual Canvas pixel
 hashes at two-video intervals; both exits are visibly black and result entry
 fades the result background. Mid-fade and final-picture restoration pass.
 Evidence is `live-fade-full-timeline.log` and
-`.local/basketball/all-computer-full-match-browser-court-4/natural-fades.json`.
+`.local/basketball/verification/all-computer-full-match-browser-court-4/natural-fades.json`.
 The separate original screenshot regression now passes: 107 fade frames and
 6,574,080 pixels compare exactly. Four original runs retain 112 observed frames;
 five preceding-menu black frames are explicitly outside the court renderer.

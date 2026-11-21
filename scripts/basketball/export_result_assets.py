@@ -6,8 +6,8 @@ from PIL import Image
 from static_sprites import SpriteROM,DIGEST,signed
 from static_court import paint_tile
 from result_art import build_result_images,palette_for_court
-ROOT=Path(__file__).resolve().parents[2];out=ROOT/'.local/basketball/results';out.mkdir(parents=True,exist_ok=True)
-rom=SpriteROM((ROOT/'.local/nes-basket/basketball.nes').read_bytes());colors=(ROOT/'.local/nes-basket/runs/graphics-right/nes-colors.rgb').read_bytes()
+ROOT=Path(__file__).resolve().parents[2];out=ROOT/'.local/basketball/assets/results';out.mkdir(parents=True,exist_ok=True)
+rom=SpriteROM((ROOT/'.local/basketball/research/original/basketball.nes').read_bytes());colors=(ROOT/'.local/basketball/research/original/runs/graphics-right/nes-colors.rgb').read_bytes()
 manifest={'accepted_for_release':False,'source':{'rom_sha256':DIGEST,'decompressor':'fixed DBF8 / DCC3 / DCD4 / DCE5 / DD05','presets':'fixed D8C4 descriptors; compressed streams in CHR pages116/120/124','large_digits':'bank4 BCF0 / BD82','result_actor_kind':17,'actor_layout':'bank2 8000 kind17 -> 863A'},'actorProfiles':[[{'tile':t,'attributes':a,'x':signed(x),'y':signed(y)-23} for t,a,x,y in rom.pieces(17,p)] for p in range(rom.pose_count(17))],'courts':[],'layout':{'camera':{'x':0,'y':296},'field_source':[0,40,256,194],'hud_source':[0,3,256,45],'hud_destination':[0,194],'digit_size':[16,24],'digit_destinations':[[64,199],[144,199]],'hud_last_scanline':'Original preset99 writes only six rows; canvas row239 reads retained upper court-ring row6 using result HUD tiles.'},'limitations':['Stable original pixel verification covers New York, configured Court4 results with retained palette9, and configured Court6 results with retained palette15.','Other result courts, Court4 palette10, Court6 palettes11..14 and all120 actor poses have static coverage; not full natural-game acceptance.','Fade-in/fade-out palette transitions are outside the selected stable result frames.']}
 def export_palette(court,palette_id,variant=False):
  images=build_result_images(rom,court,colors,palette_id=palette_id);entry={}

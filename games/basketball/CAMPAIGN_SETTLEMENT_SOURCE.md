@@ -10,8 +10,8 @@ The original first result entry is reused from `engine/testdata/match-transition
 
 Existing REA evidence was reused:
 
-- `BA40` result and `BD8E` continuation: `ev_7945a86e38a813fa472f9a63045cf673ae9f0c3702f1a79b6c8a17e20eebeefb`, `.local/basketball/rea/match-transition/`.
-- `BE39` defeat/continue selection: `ev_37af32e9b034716efaee6f2adaafab2a2553752baa05f1e2889edf15118919bd`, `.local/basketball/rea/campaign-audit/followup-analysis/`.
+- `BA40` result and `BD8E` continuation: `ev_7945a86e38a813fa472f9a63045cf673ae9f0c3702f1a79b6c8a17e20eebeefb`, `.local/basketball/research/rea/match-transition/`.
+- `BE39` defeat/continue selection: `ev_37af32e9b034716efaee6f2adaafab2a2553752baa05f1e2889edf15118919bd`, `.local/basketball/research/rea/campaign-audit/followup-analysis/`.
 
 `verify_campaign_settlement.py` executes unchanged original instructions under the existing py65 mapper. It explicitly omits C000 sound requests, C021 palette waits, C024 background uploads, C036 message uploads and BCF0 result-score glyph uploads/NMI waits. Every omitted call is listed in each phase record. Result calls stop at BC96 before celebration actors, reward calls at BE63 before award actors, Continue at BF35 before rendering, and quit at F79D before machine reset.
 

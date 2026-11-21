@@ -9,8 +9,8 @@ from PIL import Image
 from graphics import decode_tile
 from palette_fade import build_palette_fade_lut
 from static_sprites import SpriteROM,DIGEST,signed
-ROOT=Path(__file__).resolve().parents[2];out=ROOT/'.local/basketball/raster';out.mkdir(parents=True,exist_ok=True)
-rom=SpriteROM((ROOT/'.local/nes-basket/basketball.nes').read_bytes());colors=(ROOT/'.local/nes-basket/runs/graphics-right/nes-colors.rgb').read_bytes();banks=list(range(9))+[13]+list(range(32,36));atlas=Image.new('RGBA',(512,len(banks)*16*8))
+ROOT=Path(__file__).resolve().parents[2];out=ROOT/'.local/basketball/assets/raster';out.mkdir(parents=True,exist_ok=True)
+rom=SpriteROM((ROOT/'.local/basketball/research/original/basketball.nes').read_bytes());colors=(ROOT/'.local/basketball/research/original/runs/graphics-right/nes-colors.rgb').read_bytes();banks=list(range(9))+[13]+list(range(32,36));atlas=Image.new('RGBA',(512,len(banks)*16*8))
 for bi,bank in enumerate(banks):
  for team in range(8):
   palette=rom.team_palette(team)

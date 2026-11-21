@@ -1,6 +1,6 @@
 # 落地首入清除特殊投篮标记
 
-原完整世界对照发现人物 1 的 SpecialShot 清零遗漏。初始失败源与修复前 4,531 世界对照均保留在 `.local/basketball/rea/ball-rest-stall/`，没有以新轨迹覆盖旧差异。
+原完整世界对照发现人物 1 的 SpecialShot 清零遗漏。初始失败源与修复前 4,531 世界对照均保留在 `.local/basketball/research/rea/ball-rest-stall/`，没有以新轨迹覆盖旧差异。
 
 ## 原写入来源
 
@@ -8,7 +8,7 @@
 
 分派表让动作 `0x06／0x16／0x26／0x36／0x46` 共享该入口。只有未进入的动作清零，已进入的落地帧保留当前标记。目标是当前行动人物的 SpecialShot，不是球主、LastShooter 或无主球标记。
 
-补采样版本与同一起点 reference 的 15,000 视频帧 RAM 和 5 张截图完全相同，证明读取追踪没有改写运行状态。证据 `.local/basketball/rea/special-shot-clear/provenance.json`。
+补采样版本与同一起点 reference 的 15,000 视频帧 RAM 和 5 张截图完全相同，证明读取追踪没有改写运行状态。证据 `.local/basketball/research/rea/special-shot-clear/provenance.json`。
 
 ## 实现和验证
 
@@ -16,7 +16,7 @@
 
 测试先于实现，覆盖：遗漏首帧、错误重复清零、清错人物、清非落地动作、物理前时序及物理后的新标记被旧命令覆盖。原入口 oracle 执行 160 个完整 `$8BBD` 调用，包含五个分派别名、四席位、进入状态及四种标记；其中已恢复的三类落地共有 96 次完整 World 适配调用逐字段一致。未将另外两个别名的首入验证宣称为其完整携筐／携人动作已恢复。
 
-真实 Go video 3152 前态随后推进 180 视频帧，与原整机连续 60 个完整 World 的 Actions 字段逐项相同，并逐帧验证 JSON 恢复结果一致。Native 通过；race／Wasm 的最终结果记录在本文件收尾段及 `.local/basketball/rea/special-shot-clear/`。
+真实 Go video 3152 前态随后推进 180 视频帧，与原整机连续 60 个完整 World 的 Actions 字段逐项相同，并逐帧验证 JSON 恢复结果一致。Native 通过；race／Wasm 的最终结果记录在本文件收尾段及 `.local/basketball/research/rea/special-shot-clear/`。
 
 另独立重跑 Go 的 4,531 个完整世界，原剩余 SpecialShot 差异全部消失：除明确排除的零页 contact scratch 和渲染投影外，规则语义全部一致，球、TeamAI、输入和人物字段均为 4,531／4,531。新结果为 `aligned-world-comparison-after-clear.json`。
 

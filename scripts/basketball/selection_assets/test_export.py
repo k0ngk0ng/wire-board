@@ -28,13 +28,14 @@ def digest(path):
 class SelectionArtifacts(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.workspace = tempfile.TemporaryDirectory(prefix='selection-', dir=ROOT/'.local/basketball/selection-assets-evidence')
+        (ROOT/'.local/basketball/verification/selection-assets-evidence').mkdir(parents=True, exist_ok=True)
+        cls.workspace = tempfile.TemporaryDirectory(prefix='selection-', dir=ROOT/'.local/basketball/verification/selection-assets-evidence')
         cls.base = Path(cls.workspace.name)
         cls.output = cls.base/'first'
         cls.command(cls.output, check=True)
         cls.manifest = json.loads((cls.output/'manifest.json').read_text())
-        cls.rom = SpriteROM((ROOT/'.local/nes-basket/basketball.nes').read_bytes())
-        cls.colors = (ROOT/'.local/nes-basket/runs/graphics-right/nes-colors.rgb').read_bytes()
+        cls.rom = SpriteROM((ROOT/'.local/basketball/research/original/basketball.nes').read_bytes())
+        cls.colors = (ROOT/'.local/basketball/research/original/runs/graphics-right/nes-colors.rgb').read_bytes()
 
     @classmethod
     def tearDownClass(cls):
@@ -103,8 +104,8 @@ class SelectionArtifacts(unittest.TestCase):
         self.assertEqual(files(self.output),files(second))
 
     def test_incorrect_source_digest_fails_before_output(self):
-        bad=self.base/'bad-atlas';bad.mkdir(exist_ok=True)
-        atlas=json.loads((ART/'static-atlas/atlas.json').read_text());atlas['source']['rom_sha256']='0'*64
+        bad=self.base/'bad-atlas';bad.mkdir(parents=True,exist_ok=True)
+        atlas=json.loads((ART/'assets/static-atlas/atlas.json').read_text());atlas['source']['rom_sha256']='0'*64
         (bad/'atlas.json').write_text(json.dumps(atlas))
         out=self.base/'bad-digest-output';result=self.command(out,'--atlas-dir',bad)
         self.assertNotEqual(result.returncode,0)
@@ -112,8 +113,8 @@ class SelectionArtifacts(unittest.TestCase):
         self.assertFalse(out.exists())
 
     def test_duplicate_character_source_fails_before_output(self):
-        bad=self.base/'duplicate-atlas';bad.mkdir(exist_ok=True)
-        atlas=json.loads((ART/'static-atlas/atlas.json').read_text());atlas['sheets'].append(atlas['sheets'][0])
+        bad=self.base/'duplicate-atlas';bad.mkdir(parents=True,exist_ok=True)
+        atlas=json.loads((ART/'assets/static-atlas/atlas.json').read_text());atlas['sheets'].append(atlas['sheets'][0])
         (bad/'atlas.json').write_text(json.dumps(atlas))
         out=self.base/'duplicate-output';result=self.command(out,'--atlas-dir',bad)
         self.assertNotEqual(result.returncode,0)
@@ -121,8 +122,8 @@ class SelectionArtifacts(unittest.TestCase):
         self.assertFalse(out.exists())
 
     def test_missing_source_image_fails_before_output(self):
-        bad=self.base/'missing-atlas';bad.mkdir(exist_ok=True)
-        (bad/'atlas.json').write_bytes((ART/'static-atlas/atlas.json').read_bytes())
+        bad=self.base/'missing-atlas';bad.mkdir(parents=True,exist_ok=True)
+        (bad/'atlas.json').write_bytes((ART/'assets/static-atlas/atlas.json').read_bytes())
         out=self.base/'missing-output';result=self.command(out,'--atlas-dir',bad)
         self.assertNotEqual(result.returncode,0)
         self.assertFalse(out.exists())

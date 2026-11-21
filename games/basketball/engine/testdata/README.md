@@ -28,7 +28,7 @@
 
 `input.json` 保存原版第 6 页 `$805C` 到 `$8085` 的 638 次真人输入调用，包括按钮、动作上下文及输入记忆的前后值。比完整动作阶段多 5 条，是因为对应视频采样末尾的世界动作调用尚未返回。来源摘要见 `input-source.json`；通过 `scripts/basketball/capture_input.py` 重采样。独立输入验证和 633 次连续动作回放均已在原生 Go 与 Wasm 中通过；尚未验证浏览器游戏接线、其他人物、持球／依附、接触战斗或高台地形。
 
-重采样分别使用 `scripts/basketball/capture_animation.py` 和 `scripts/basketball/capture_free_player.py`。当前场景名和初始化存档在本机 `.local/nes-basket/` 下保留；来源 ROM 摘要由通用采样器强制核对。
+重采样分别使用 `scripts/basketball/capture_animation.py` 和 `scripts/basketball/capture_free_player.py`。当前场景名和初始化存档在本机 `.local/basketball/research/original/` 下保留；来源 ROM 摘要由通用采样器强制核对。
 
 ## 持球与传球
 

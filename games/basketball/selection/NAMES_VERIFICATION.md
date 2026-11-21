@@ -45,7 +45,7 @@ constraint follows from a shared number or label.
    already independently recovered those display inputs.
 3. Original CHR pages 96–99 supply the glyph pixels. The source-bound existing
    `hud-glyphs.png` renders these bytes into
-   `.local/basketball/selection-names/verified-labels.png` for visual review.
+   `.local/basketball/assets/selection-names/verified-labels.png` for visual review.
    A consistency check rejects assigning two different kana to the same source
    byte across the 32 transcriptions; it caught an initially misread Hawaii name.
 4. **Natural menus corroborate all 32 names.** Eight normal controller routes
@@ -66,7 +66,7 @@ Original menu order differs from ID order:
 `capture_selection_names.py` records these routes in `natural-menu.json`.
 The initial menu savestate is identified by SHA-256 there. It was originally
 created by the ordinary boot timeline in
-`.local/nes-basket/runs/navigation-1/scenario.json` (Start at frames 400 and 600,
+`.local/basketball/research/original/runs/navigation-1/scenario.json` (Start at frames 400 and 600,
 A at 800, then save the mode menu after frame 1200). It contains no patched RAM.
 The user-supplied ROM, FCEUX, and existing workspace capture setup are required.
 This is a reconstruction research tool, not a shipped emulator dependency.
@@ -106,8 +106,8 @@ PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/ver
 
 Captures are reused only when their complete marker and exact recorded scenario
 match. Each original run retains `scenario.json`, `source.json`, `hashes.json`,
-RAM, PNGs and the capture log under `.local/nes-basket/runs/selection-names-*`.
-The summary files are in `.local/basketball/selection-names/`:
+RAM, PNGs and the capture log under `.local/basketball/research/original/runs/selection-names-*`.
+The summary files are in `.local/basketball/assets/selection-names/`:
 
 - `natural-menu.json`: eight courts and eight teams, source state identity.
 - `team-pairs.json`: all 56 ordered pairs, final IDs and original run paths.
@@ -121,4 +121,4 @@ never makes an unverified character action or court playable. No preparation
 options were widened and no assets were uploaded or published by this work.
 ## Subsequent preparation UI integration
 
-The name-research step above did not change UI. A later integration exports the compact `labels.json` via `scripts/basketball/export_selection_labels.py` and uses those labels in `web/Preparation.tsx`. This excludes private provenance paths from the client bundle. The development UI remains restricted to courts 0–6 and default teams 0/1, character slots 0/1; source names do not unlock gameplay. Component checks (15), actual platform checks (33), build and packaging passed in `.local/basketball/engine/preparation-names-*.log`.
+The name-research step above did not change UI. A later integration exports the compact `labels.json` via `scripts/basketball/export_selection_labels.py` and uses those labels in `web/Preparation.tsx`. This excludes private provenance paths from the client bundle. The development UI remains restricted to courts 0–6 and default teams 0/1, character slots 0/1; source names do not unlock gameplay. Component checks (15), actual platform checks (33), build and packaging passed in `.local/basketball/verification/engine/preparation-names-*.log`.

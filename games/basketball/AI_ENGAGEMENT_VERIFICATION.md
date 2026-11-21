@@ -11,7 +11,7 @@
 - 跑跳攻击分支未保留高度低字节 16 阈值、首次选择跳跃时误立即攻击。
 - 不同分支错误消耗随机数、替换已选择目标或改变计划；未支持参数不明确报错。
 
-证据：bank 5 `$A2E9 → $AE96` 的 12 项分派表和 `$AF90` 动作表；REA 批量输出保存在 `.local/basketball/rea/engagement/`。全部原始模式 7 样本纳入，不筛掉不匹配分支。攻击仅产出动作／停止命令，物理与命中留给世界步骤。
+证据：bank 5 `$A2E9 → $AE96` 的 12 项分派表和 `$AF90` 动作表；REA 批量输出保存在 `.local/basketball/research/rea/engagement/`。全部原始模式 7 样本纳入，不筛掉不匹配分支。攻击仅产出动作／停止命令，物理与命中留给世界步骤。
 
 ## 本次结果
 
@@ -30,11 +30,11 @@
 
 结果与复跑：
 
-- REA `ev_acea39eea50c9f4d0e8d88d628d86e308a4ff819486b40cbac3d329a1df4eaca`，A2E9/AEB6/B1E9成功解析，输出 `.local/basketball/rea/prop-kind10/engagement-analysis/`。
+- REA `ev_acea39eea50c9f4d0e8d88d628d86e308a4ff819486b40cbac3d329a1df4eaca`，A2E9/AEB6/B1E9成功解析，输出 `.local/basketball/research/rea/prop-kind10/engagement-analysis/`。
 - `engagement-hoop-isolated.json`包含48条未修改原A2E9机器码执行，四个actor均以原target7完成停止、面向和动作请求。覆盖等整数不同小数、目标两侧及16位整数高位。TrackedObject没有改写。
 - 新代码只把face的「仅人物」限制替换为已审计的`originalPursuitX`坐标来源读取；原12分支、随机数、计划与控制目标保持。其余来源仍按既有错误处理。
-- 原206条自然mode7调用、新48条隔离调用和原边界测试通过；接触/profile/engagement共26项定向race通过，日志 `.local/basketball/rea/prop-kind10/race-contact-engagement.json`。
-- 固定Court0全电脑video4952/logic1648前态保存在 `.local/basketball/rea/prop-kind10/all-computer-before-engagement.json`。同期显示列历史的empty/nil恢复问题另由其维护者修复后，两次完整冷局均通过：22407video、7443logic、84次恢复、比分52:29，轨迹SHA均为`26eca49b43278bbfa82b2534d573cfb2c6f7779d3ff5ad026e60924296265f98`。最终报告归档在 `.local/basketball/rea/prop-kind10/court-zero-final-runtime.log`，注明原报告来源和SHA；这仍不等于原ROM整局逐帧一致性证明。
+- 原206条自然mode7调用、新48条隔离调用和原边界测试通过；接触/profile/engagement共26项定向race通过，日志 `.local/basketball/research/rea/prop-kind10/race-contact-engagement.json`。
+- 固定Court0全电脑video4952/logic1648前态保存在 `.local/basketball/research/rea/prop-kind10/all-computer-before-engagement.json`。同期显示列历史的empty/nil恢复问题另由其维护者修复后，两次完整冷局均通过：22407video、7443logic、84次恢复、比分52:29，轨迹SHA均为`26eca49b43278bbfa82b2534d573cfb2c6f7779d3ff5ad026e60924296265f98`。最终报告归档在 `.local/basketball/research/rea/prop-kind10/court-zero-final-runtime.log`，注明原报告来源和SHA；这仍不等于原ROM整局逐帧一致性证明。
 
 ```sh
 PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/verify_engagement_hoop_original.py

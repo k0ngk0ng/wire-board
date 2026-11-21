@@ -198,14 +198,15 @@ func TestStarfortGrowthVolley(t *testing.T) {
 			b.timer(time.Second)
 			count = 0
 			for _, e := range cadenceState(b).Events {
-				if e.Type == "knockback" {
+				if e.ID > s.EventSerial && e.Type == "knockback" {
 					count++
-					if count == 2 && e.Amount != want/2 {
+					if e.Amount != want/2 {
 						t.Fatal("eight-second same-tower reduction", e.Amount)
 					}
 				}
 			}
-			if count != 2 {
+			// The first push was checked in its own batch above.
+			if count != 1 {
 				t.Fatal("repeat should be reduced, not immune")
 			}
 		})

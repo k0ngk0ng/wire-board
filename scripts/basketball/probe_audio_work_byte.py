@@ -15,8 +15,8 @@ from pathlib import Path
 from verify_pass_floor_original import ROOT, Memory, MPU
 from py65.disassembler import Disassembler
 
-OUT = ROOT / '.local/basketball/audio/work-byte'
-ROM_PATH = ROOT / '.local/nes-basket/basketball.nes'
+OUT = ROOT / '.local/basketball/assets/audio/work-byte'
+ROM_PATH = ROOT / '.local/basketball/research/original/basketball.nes'
 EXPECTED_ROM = '0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b'
 WRITERS = {0x80b0, 0x8275, 0x832a, 0x8364, 0x846d, 0x8746, 0x880d, 0x888e, 0x88f2, 0x8968}
 
@@ -110,7 +110,7 @@ def main():
     rom = ROM_PATH.read_bytes()
     assert hashlib.sha256(rom).hexdigest() == EXPECTED_ROM
     prg = rom[16:16+131072]
-    reference_path = ROOT / '.local/basketball/rea/special-turn-alias/music-shot-work.json'
+    reference_path = ROOT / '.local/basketball/research/rea/special-turn-alias/music-shot-work.json'
     reference = json.loads(reference_path.read_text())
     cases, observed, counts, memories = [], [], collections.Counter(), []
     for music in range(59, 67):
@@ -145,7 +145,7 @@ def main():
         for tick in range(5):
             controls.append(dict(kind=name+'_tick', tick=tick+1, **call(control_memory, 0x8003)))
     (OUT/'control-writers.json').write_text(json.dumps(controls, indent=2)+'\n')
-    fceux = [compare_fceux(prg, ROOT/'.local/basketball/audio/export'/directory) for directory in [
+    fceux = [compare_fceux(prg, ROOT/'.local/basketball/assets/audio/export'/directory) for directory in [
         'additional-sound-030-run-1', 'court-music-061-20000-run-1']]
     memory = DriverMemory(prg)
     disassembler = Disassembler(MPU(memory=memory))

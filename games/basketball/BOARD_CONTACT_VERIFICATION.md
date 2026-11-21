@@ -15,7 +15,7 @@
 
 ## 验证结果
 
-- REA 复用证据 `ev_002ef250d27905f7202ab9b6c551b0e1e613f0b55baa32d489c00b08ebcae83b`（`.local/basketball/rea/world-schedule/bank4/batch.json`）。伪代码在 `$9016` 数据区误反汇编并有重叠警告，因此 `$8E33..9035`、`$9270..946D` 的分支与表按原指令核对。
+- REA 复用证据 `ev_002ef250d27905f7202ab9b6c551b0e1e613f0b55baa32d489c00b08ebcae83b`（`.local/basketball/research/rea/world-schedule/bank4/batch.json`）。伪代码在 `$9016` 数据区误反汇编并有重叠警告，因此 `$8E33..9035`、`$9270..946D` 的分支与表按原指令核对。
 - 采样获得 1,997 个完整阶段，每阶段严格对象 12→0，共 25,961 次调用。比动作阶段少一次是比赛初始化直接进入输入阶段，未执行第一次前置交互。
 - 逐对象状态及从阶段首态连续执行 13 次所得终态全部匹配。自然记录含 11 次得分、3 次篮筐重新挂载、3 次人物 X 修正、25 次球 X 修正。球 X 修正计数包含进球对齐，不等同于 25 次碰板。
 - 持球者、对象动作／请求、位置／速度、小数、篮筐占用与耐久、得分锁、动作历史、得分和共享 RNG 均参与比较。声卡内部 RAM、CPU 暂存字节与显示中断时钟不属于此组件；平台可从 SoundIDs 接收原声音编号。
@@ -32,4 +32,4 @@ go test -v ./games/basketball/engine -run TestBoardContact
 
 原始 RAM 经 gzip 保存于 `engine/testdata/board-contact.ram.gz`，源身份、校验和及记录格式见相邻 `board-contact-source.json`。测试流式读取每条记录，不把前置阶段通过等同于完整比赛循环通过。
 
-篮球前置碰撞定向原生竞态与 Wasm 测试已通过，日志位于 `.local/basketball/engine/board-contact-{race,wasm}.log`。运行时另一工作项的 `dunk_chain_test.go` 正处于测试先行、实现尚未写入的阶段，因此这次按 Go 文件列表排除该文件进行编译；未删改它。此结果仅证明本组件的跨目标行为，合并后仍需篮球包整体检查。
+篮球前置碰撞定向原生竞态与 Wasm 测试已通过，日志位于 `.local/basketball/verification/engine/board-contact-{race,wasm}.log`。运行时另一工作项的 `dunk_chain_test.go` 正处于测试先行、实现尚未写入的阶段，因此这次按 Go 文件列表排除该文件进行编译；未删改它。此结果仅证明本组件的跨目标行为，合并后仍需篮球包整体检查。

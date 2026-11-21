@@ -5,7 +5,7 @@ from extract_world_actions import decode_world_action_state
 from extract_world_inputs import decode_world_input_state
 
 def main():
- rom=(ROOT/'.local/nes-basket/basketball.nes').read_bytes();prg=rom[16:16+131072];source=ROOT/'.local/nes-basket/runs/court-3-reference/ram.bin';base=source.read_bytes()[1500*2048:1501*2048]
+ rom=(ROOT/'.local/basketball/research/original/basketball.nes').read_bytes();prg=rom[16:16+131072];source=ROOT/'.local/basketball/research/original/runs/court-3-reference/ram.bin';base=source.read_bytes()[1500*2048:1501*2048]
  rows=[];chains=[];controllers=[]
  def invoke(memory,address,actor):
   memory[0x8000:0xc000]=prg[6*16384:7*16384];cpu=MPU(memory=memory);cpu.pc,cpu.x,cpu.p=address,actor,0x20;cpu.sp=255;cpu.stPushWord(0x6fff)

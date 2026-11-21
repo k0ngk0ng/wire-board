@@ -1,5 +1,5 @@
 {
-  "source": ".local/basketball/server-http/TestBasketballHTTPComputersAndTimeoutAutoplay.json",
+  "source": ".local/basketball/verification/server-http/TestBasketballHTTPComputersAndTimeoutAutoplay.json",
   "sourceSHA256": "41232c67532a926f778e5f2700e92589cd94ab9d0167f357ef9a1d311b18c879",
   "scope": "idle runtime replay before first platform deadline; no original-ROM claim",
   "maximumAdditionalVideoTicks": 784,

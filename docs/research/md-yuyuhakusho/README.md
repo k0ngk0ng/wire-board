@@ -1,21 +1,5 @@
 # MD《幽游白书：魔强统一战》复刻可行性与实施方案
 
-当前进度按[待办清单](TODO.md)更新，完成项以各自范围的验收证据为准。
-
-2026-11-06：全 11 人物／8 场地已接入本地平台。真实认证双人房间正常约 60 帧／秒，单端每次 TCP 写入延迟 120 ms 时慢端约 58 帧／秒；输入增量、公共加载、改键、竖屏／横屏原生触摸、全屏与重连通过，完整游戏声音继续完成。见[平台主机](PLATFORM_HOST.md)、[三款即时游戏同步对照](SYNC_REFERENCE.md)及[当前进度](../../../games/yuyuhakusho/PROGRESS.md)。
-
-本文保留首轮研究记录。2026-10-26 后续已在独立 worktree 启动规则恢复，并定位、修正研究工具的存档时序遗漏；最新状态见 [复刻进度](../../../games/yuyuhakusho/PROGRESS.md)。下文的 10 帧 RAM 差异是首轮原始工具结果，不代表附加时钟恢复后的新工具结果。
-
-2026-11-06 客户端共享状态已完成[精确资源与 schema 2 验收](CLIENT_RUNTIME_SCHEMA2.md)：原生／Wasm 各 49 条完整冻结轨迹、浏览器原样 checkpoint 和预测预览通过。42 个自然终局的恢复画面与真实结束帧逐字节一致，帧号保持 F；此前「空事件会丢失角色」的推断已由[实际终态订正](CLIENT_TERMINAL_PREVIEW_CORRECTION.md)撤回。正式平台页面、网络延迟和音频的进展仍按各自验收范围记录。
-
-截至 2026-11-05，酎／默认场地已有[独立浏览器研究页](LOCAL_PLAYER.md)，全新对局、动态背景、HUD、存档恢复及原生／Wasm 轨迹一致性已验收。公共 MD 六键控制器已增加、SFC 配置已移除；其他角色动作、场地、声音和平台联机仍在继续。下文保留首轮时的方案与覆盖边界；当前范围统一见 [PROGRESS.md](../../../games/yuyuhakusho/PROGRESS.md)。
-
-随后补齐户愚吕兄，浏览器现可在两个已恢复人物之间选择，完整动作／世界／新建对局与呈现结果见[双角色验收](../../../games/yuyuhakusho/verification/fighter10-session.json)。
-
-当前进一步开放幻海，包含完整蓄力／散射父子对象与[三角色验收](../../../games/yuyuhakusho/verification/genkai-session.json)。来源 ID 与姓名已按[原 HUD 字形](CHARACTER_IDS.md)绑定，来源 0 为幻海、来源 3 为幽助。
-
-现已进一步开放幽助，四个人物共用完整驱动，原世界／新建对局／原生输入证据见[四角色验收](../../../games/yuyuhakusho/verification/yusuke-session.json)。
-
 研究日期：2026-10-26。用户已确认目标为 Treasure 开发的 MD《幽游白书：魔强统一战》，不是 FC、SFC 或 3DO 同名作品。本轮交付研究方案、工具探针和原版运行证据，未接入新游戏、改动平台实现或发布资源。
 
 **结论：技术上可行，建议沿用「原版逐帧取证 → 独立 Go 规则 → 同源 Wasm 预测 → 原版对照验收」的路线。当前可以进入工具和规则取证阶段，尚不能承诺完整原版手感或发布工期。** 平台已有可参考的实时联机实现；主要难点是 68000 分析通路、战斗状态与招式判定还原、四人低延迟同步，以及 MD 三／六键输入。
@@ -186,7 +170,7 @@ mkdir -p docs/research/md-yuyuhakusho/ghidra-work \
   "$MD_RESEARCH_ROOT/tmp/java-home" "$MD_RESEARCH_ROOT/tmp/config" "$MD_RESEARCH_ROOT/tmp/cache"
 JAVA_TOOL_OPTIONS="-Duser.home=$MD_RESEARCH_ROOT/tmp/java-home -Djava.io.tmpdir=$MD_RESEARCH_ROOT/tmp -Dapplication.settingsdir=$MD_RESEARCH_ROOT/tmp/config -Dapplication.cachedir=$MD_RESEARCH_ROOT/tmp/cache -Dapplication.tempdir=$MD_RESEARCH_ROOT/tmp" \
 PATH="/opt/homebrew/Cellar/openjdk/26.0.1/libexec/openjdk.jdk/Contents/Home/bin:$PATH" \
-.local/nes-basket/tools/ghidra_12.1.4_PUBLIC/support/analyzeHeadless \
+.local/tools/nes-research/ghidra_12.1.4_PUBLIC/support/analyzeHeadless \
   "$PWD/docs/research/md-yuyuhakusho/ghidra-work" md-entry \
   -import "$MD_RESEARCH_ROOT/downloads/yuyuhakusho-jp.bin" \
   -loader BinaryLoader -loader-baseAddr 0 -processor 68000:BE:32:default \
@@ -203,15 +187,3 @@ PATH="/opt/homebrew/Cellar/openjdk/26.0.1/libexec/openjdk.jdk/Contents/Home/bin:
 保留：研究方案、脚本、原版输入、ROM／内核身份、REA 证据、Ghidra 有限范围输出、逐帧摘要、严格回放差异报告、必要截图，以及本地复跑所需 ROM／内核和单份完整存档。
 
 清理范围仅限本次目录：Ghidra 临时项目／配置／编译缓存、浏览器预留空目录、早期探索回放的重复截图与存档、失败运行控制台日志和不再需要的中间 JSON。保留可核验的差异报告，不删除其他游戏研究文件、用户已有资料、已发布资源或当前工作区的其他改动。
-
-当前进一步完成来源 8「户愚吕兄」，六角色世界／新建对局与呈现结果见[六角色验收](../../../games/yuyuhakusho/verification/elder-session.json)。此前把 8／10 的兄弟姓名标注写反，已按原 HUD 放大字形及造型订正为 8「兄」、10「弟」，旧报告保留历史提交与摘要；规则、原 CPU 编号和素材不变。
-
-藏马现已完成，七角色完整 input／action／actor、原世界、新建对局及呈现验证见[七角色验收](../../../games/yuyuhakusho/verification/kurama-session.json)。两种新子对象使用原有字段的临时窄视图，公共姿态 10／11 新增 8 条 AN，索引图形与波表沿用已验资源。原版首采样帧的 driver-entry 边界已依据未改动 CPU 记录纠正，并以旧 `b5723d24` 实现回放确认回归测试能识别来源 1 未实现。
-
-阵已进一步开放，八角色规则／呈现与三条原世界见[八角色验收](../../../games/yuyuhakusho/verification/jin-session.json)。取得真正电脑阵的 1,110 次原 AI 返回，并独立以 Go 单初态完整重建至练习战清场；原容器 `a01e/32` 的等待体与旧等待体逐 byte 相同，未把原 header 改写为其他模式。人类 DD 请求覆盖关系及未自然成功的 `34` 仍按原版边界声明。
-
-飞影已进一步开放。当前九角色验收见[完整摘要](../../../games/yuyuhakusho/verification/hiei-session.json)：普通对战至清场、九种特殊选择根、双真人吞龙强化三条原版流共 7,834 轮，与独立 Go 逐轮／单初态运行一致。强化耗尽、父体参数恢复及七段独立身体绘制均已验证；schema3 增加九条公共 AN、原 signed-word 曲线和强化参数，schema1/2 仍可读取。默认场地之外的七个场地、仙水和树、平台房间及网络／音频播放仍未完成。
-
-仙水已进一步开放，当前为十个可玩人物／默认场地，详见[十角色验收](../../../games/yuyuhakusho/verification/sensui-session.json)。新增普通与特殊原世界 4,917 轮、65,195 回调，普通清场、反射父体修改、三个子对象和特殊有序绘制均与独立规则对照。23 组规则对局和 13 组完整呈现跨原生／Wasm 一致；旧九角色 234 份对局报告保持世界、事件与生命周期。剩余人物为树，七个其他场地、音频播放与平台房间／网络仍未完成。
-
-树已进一步开放，当前全11人物／默认场地可玩，见[全人物验收](../../../games/yuyuhakusho/verification/itsuki-session.json)。普通及特殊原世界新增6844轮、91803回调，含跨父体停顿、sibling跟随、实际pan生命周期和有序Draw；25组规则与14组完整呈现、280份旧报告通过两端对照。完整场景还推动修复共享滚动／录制输入的单一owner和精确外部声音消费者验证边界，原失败与兼容证据保留。其他七场地、音频播放与平台房间／网络仍未完成，见[下一场地起点](OTHER_ARENAS_PLAN.md)。

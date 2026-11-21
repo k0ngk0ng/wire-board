@@ -20,7 +20,7 @@
 
 ## 来源与已实现行为
 
-来源为 `EQUIPMENT_EFFECTS_SOURCE.md` 的 L/D 分支及 `.local/equipment-effects-catalog/instructions.txt`。ROM SHA-256 为 `0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b`。完整处理入口为 bank6 `8BBD`，固定选择函数为 `EE52..EEF3`。
+来源为 `EQUIPMENT_EFFECTS_SOURCE.md` 的 L/D 分支及 `.local/basketball/research/equipment-effects-catalog/instructions.txt`。ROM SHA-256 为 `0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b`。完整处理入口为 bank6 `8BBD`，固定选择函数为 `EE52..EEF3`。
 
 `world_landing_equipment.go` 恢复五个入口的共同顺序：首次初始化并清除个人特殊投篮标志、动画、`8B90` 按下 A/B 的后续攻击动作、按住 B 的落地选择、`EEFF` 场地运动。动作 26 使用原表的姿势 16／2 帧；其余落地别名使用姿势 5／4 帧。选择只改变动作及进入标志，不在同一次调用提前执行低跳动作。
 
@@ -32,7 +32,7 @@
 
 ## 可重复执行证据
 
-先创建失败清单、生成来源夹具并编写测试。实现前测试因两个待实现函数未定义失败，原记录保存在 `.local/landing-equipment-restore/red.txt`。
+先创建失败清单、生成来源夹具并编写测试。实现前测试因两个待实现函数未定义失败，原记录保存在 `.local/basketball/research/landing-equipment-restore/red.txt`。
 
 ```sh
 PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/verify_landing_equipment.py

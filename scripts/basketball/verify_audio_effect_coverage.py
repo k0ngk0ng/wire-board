@@ -5,7 +5,7 @@ This is not a static proof of every dynamically selected engine request.
 from pathlib import Path
 import hashlib,json,re
 ROOT=Path(__file__).resolve().parents[2]
-OUT=ROOT/'.local/basketball/audio/export'
+OUT=ROOT/'.local/basketball/assets/audio/export'
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 def main():
  catalog=json.loads((ROOT/'games/basketball/assets/audio-catalog.json').read_text())
@@ -40,5 +40,5 @@ def main():
  assert {1,23,48}<={r['id'] for r in requests}
  assert catalog['accepted_for_release'] is playback['accepted_for_release'] is False
  result=dict(status='passed',attack_entries=len(attack),attack_ids=sorted(set(attack)),literal_requests=requests,effects=assets,source_table_sha256=sha(profile),scope='9 x 32 original attack sound table and explicit SoundIDs/CombatSound literals; not arbitrary dynamic data-flow or playback mixing',accepted_for_release=False)
- target=ROOT/'.local/basketball/audio-resume/coverage.json';target.parent.mkdir(parents=True,exist_ok=True);target.write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(dict(status='passed',effects=len(assets),attack_entries=len(attack),literal_requests=len(requests))))
+ target=ROOT/'.local/basketball/verification/audio-resume/coverage.json';target.parent.mkdir(parents=True,exist_ok=True);target.write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(dict(status='passed',effects=len(assets),attack_entries=len(attack),literal_requests=len(requests))))
 if __name__=='__main__':main()

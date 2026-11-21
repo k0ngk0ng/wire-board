@@ -14,7 +14,7 @@
 
 ## 验证与产物
 
-失败场景及测试先于实现，初始编译失败记录保存在工作树 `.local/campaign-host-preparation/before.log`。
+失败场景及测试先于实现，初始编译失败记录保存在工作树 `.local/basketball/verification/campaign-host-preparation/before.log`。
 
 | 验证 | 结果与范围 |
 | --- | --- |
@@ -31,9 +31,9 @@ HTTP 测试的 Start 包装器仅安装从原密码 `020010`、原开局配置�
 
 产物位置：
 
-- 工作树 `.local/campaign-host-preparation/`：初始失败、模块／HTTP／race 日志、关联回归 JSONL 和 `host-views.json`。
+- 工作树 `.local/basketball/verification/campaign-host-preparation/`：初始失败、模块／HTTP／race 日志、关联回归 JSONL 和 `host-views.json`。
 - 工作树 `.local/poker/basketball/http/TestCampaignPreparationHTTPPersistence.json`：真实 HTTP／SQLite 过程记录。
-- 共享 `.local/basketball/network-scene/`：浏览器 `result.json`、`desktop.png` 和 `mobile-320.png`。
+- 共享 `.local/basketball/verification/network-scene/`：浏览器 `result.json`、`desktop.png` 和 `mobile-320.png`。
 
 复现时在工作树根目录运行；前端依赖须已安装：
 

@@ -44,7 +44,7 @@ At detection the only new writes are action10 and clearing its entry bit; no RNG
 
 All action10 candidates reach ordinary rest after their normal bounce sequence within 96 calls. The probe does **not** establish full-world catch/scoring completion, and does not claim the original ever selects action10 from the buggy rest state. The new selection would be the explicitly authorized repair.
 
-Artifacts: `.local/basketball/rea/suspended-repair-proposal/paths.json`. Reproduce:
+Artifacts: `.local/basketball/research/rea/suspended-repair-proposal/paths.json`. Reproduce:
 
 ```sh
 source scripts/env.sh

@@ -19,7 +19,7 @@ def run(r,entry,exit):
  return bytes(m[:2048]),calls,sounds,writes
 
 def main():
- source=ROOT/'.local/basketball/roster-rotation-special-balls-20261018/case-04/before.json';snapshot=json.loads(source.read_text());patch,_=encode_world_probe(snapshot);ram=bytearray(BASE)
+ source=ROOT/'.local/basketball/verification/roster-rotation-special-balls-20261018/case-04/before.json';snapshot=json.loads(source.read_text());patch,_=encode_world_probe(snapshot);ram=bytearray(BASE)
  for a,v in patch.items():ram[a]=v
  prepared,_,_,_=run(ram,0xd314,0xd345)
  after,calls,sounds,writes=run(prepared,0xd345,0xd348)

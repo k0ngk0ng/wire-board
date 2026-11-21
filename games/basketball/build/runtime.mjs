@@ -17,11 +17,6 @@ const packagePath = "./games/basketball/cmd/browser-wasm";
 const flags = ["-trimpath", "-buildvcs=false", "-ldflags=-s -w"];
 const digest = (value) => createHash("sha256").update(value).digest("hex");
 
-/** Compile only this game's independent Go runtime. The returned directory
- * contains explicitly public executable files, never ROMs or research data.
- * Source/toolchain-addressed output and checksum verification prevent a failed
- * compile or a stale local cache from entering a new application artifact.
- */
 export function prepareBasketballRuntime(directory) {
   const root = realpathSync(directory);
   const env = {
@@ -30,8 +25,7 @@ export function prepareBasketballRuntime(directory) {
     GOARCH: "wasm",
     CGO_ENABLED: "0",
     GOWORK: "off",
-    // Match the exact compiler selected by main CI, independently of the
-    // developer machine's installed patch version.
+
     GOTOOLCHAIN: "go" + readFileSync(path.join(root,"go.mod"),"utf8").match(/^go (\S+)/m)[1],
     GOENV: "off",
     GOFLAGS: "",
@@ -93,7 +87,7 @@ export function prepareBasketballRuntime(directory) {
     builderSHA256: digest(readFileSync(fileURLToPath(import.meta.url))),
   };
   const key = digest(JSON.stringify(source));
-  const parent = path.join(root, ".local/basketball/runtime-build");
+  const parent = path.join(root, ".local/basketball/cache/runtime-build");
   mkdirSync(parent, { recursive: true });
   const cache = path.join(parent, key);
   const publicRoot = path.join(cache, "public");
@@ -158,7 +152,7 @@ export function prepareBasketballRuntime(directory) {
       path.join(target, "build.json"),
       JSON.stringify(manifest, null, 2) + "\n",
     );
-    if (valid()) return publicRoot; // A concurrent identical build finished first.
+    if (valid()) return publicRoot;
     if (existsSync(cache)) rmSync(cache, { recursive: true, force: true });
     try {
       renameSync(temporary, cache);

@@ -12,6 +12,6 @@ python3 -B scripts/basketball/verify_held_low_jump_ball.py --write-fixture
 go test ./games/basketball/engine -run '^(TestOriginalHeldBallLowJumpCalls|TestSelfHeldBall|TestSelfDribble|TestCatchHeldBall|TestWorldActionsEntireCapturedCorpus)' -count=1
 ```
 
-结果索引：`.local/basketball/rea/held-low-jump/result.json`。实际平台原模式 128 的浏览器完整比赛另通过 34 项检查，正常电脑选择计划 12，记录了 16 个真正进入可见绘制列表、位于视区内的低跳姿态及 Canvas 截图。原位图仍由已有原素材渲染，不将模拟状态刚变化但尚未提交显示的帧冒充可见动画。
+结果索引：`.local/basketball/research/rea/held-low-jump/result.json`。实际平台原模式 128 的浏览器完整比赛另通过 34 项检查，正常电脑选择计划 12，记录了 16 个真正进入可见绘制列表、位于视区内的低跳姿态及 Canvas 截图。原位图仍由已有原素材渲染，不将模拟状态刚变化但尚未提交显示的帧冒充可见动画。
 
-浏览器入口：`python3 -B scripts/basketball/accept_live.py --court 1 --full-match --all-computer --observe-plan12 --match-mode 128`，产物位于 `.local/basketball/all-computer-full-match-browser-plan12-mode128/`。这是完整单场与所观察动作的验收，不代表完整战役或所有特殊动作画面都已通过。
+浏览器入口：`python3 -B scripts/basketball/accept_live.py --court 1 --full-match --all-computer --observe-plan12 --match-mode 128`，产物位于 `.local/basketball/verification/all-computer-full-match-browser-plan12-mode128/`。这是完整单场与所观察动作的验收，不代表完整战役或所有特殊动作画面都已通过。

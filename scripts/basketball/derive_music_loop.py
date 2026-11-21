@@ -15,7 +15,7 @@ import sys
 import wave
 
 ROOT=Path(__file__).resolve().parents[2]
-OUT=ROOT/'.local/basketball/audio/export'
+OUT=ROOT/'.local/basketball/assets/audio/export'
 START,END=3279,19663
 BLEND=1411
 
@@ -63,7 +63,7 @@ def main():
         'source':{'recording':str((runs[0]/'full.wav').relative_to(OUT)),'sha256':sha(runs[0]/'full.wav'),
             'driver':str((runs[0]/'driver-ram.bin').relative_to(OUT)),'driver_sha256':sha(runs[0]/'driver-ram.bin'),
             'samples':str((runs[0]/'sample-cursors.csv').relative_to(OUT)),'frame_range':[START,END],'sample_range':list(ranges[0]),
-            'render_volume':192,'rom_sha256':sha(ROOT/'.local/nes-basket/basketball.nes'),
+            'render_volume':192,'rom_sha256':sha(ROOT/'.local/basketball/research/original/basketball.nes'),
             'repeated_recordings':[str((run/'full.wav').relative_to(OUT)) for run in runs],
             'repeated_capture_sha256':{name:sha(runs[0]/name) for name in names}},
         'processing':{'method':'raised-cosine convex blend of original corresponding passages; final window only; unchanged period',

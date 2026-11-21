@@ -8,8 +8,8 @@ from verify_pass_floor_original import ROOT, Memory, MPU, put
 from verify_court_profiles import EXPECTED
 from extract_world_actions import decode_world_action_state
 from extract_world_preparation import context
-rom=(ROOT/'.local/nes-basket/basketball.nes').read_bytes();assert hashlib.sha256(rom).hexdigest()==EXPECTED
-base=(ROOT/'.local/nes-basket/runs/world-actions-cpu-long/world-actions-ram.bin').read_bytes()[:2048]
+rom=(ROOT/'.local/basketball/research/original/basketball.nes').read_bytes();assert hashlib.sha256(rom).hexdigest()==EXPECTED
+base=(ROOT/'.local/basketball/research/original/runs/world-actions-cpu-long/world-actions-ram.bin').read_bytes()[:2048]
 def setup(actor,entered,cursor,linked,attached,left,court):
  r=bytearray(base);r[0x58b]=court;r[0x512+actor]=7|(128 if entered else 0);r[0x51f+actor]=128
  r[0x539:0x53d]=[128]*4;r[0x550+actor]=linked;r[0x642+actor]=(128|(actor^1)) if attached else 64

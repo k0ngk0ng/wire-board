@@ -1,0 +1,31 @@
+{
+  "layout": "game",
+  "actions": [
+    {"id":"forward","label":"前进","keys":["KeyW"],"gamepad":[{"type":"axis","index":1,"direction":-1}],"continuous":true},
+    {"id":"backward","label":"后退","keys":["KeyS"],"gamepad":[{"type":"axis","index":1,"direction":1}],"continuous":true},
+    {"id":"left","label":"向左平移","keys":["KeyA"],"gamepad":[{"type":"axis","index":0,"direction":-1}],"continuous":true},
+    {"id":"right","label":"向右平移","keys":["KeyD"],"gamepad":[{"type":"axis","index":0,"direction":1}],"continuous":true},
+    {"id":"lookUp","label":"向上看","keys":["ArrowUp"],"gamepad":[{"type":"axis","index":3,"direction":-1}],"continuous":true},
+    {"id":"lookDown","label":"向下看","keys":["ArrowDown"],"gamepad":[{"type":"axis","index":3,"direction":1}],"continuous":true},
+    {"id":"lookLeft","label":"向左看","keys":["ArrowLeft"],"gamepad":[{"type":"axis","index":2,"direction":-1}],"continuous":true},
+    {"id":"lookRight","label":"向右看","keys":["ArrowRight"],"gamepad":[{"type":"axis","index":2,"direction":1}],"continuous":true},
+    {"id":"fire","label":"开火","keys":["KeyJ"],"gamepad":[{"type":"button","index":7}],"continuous":true},
+    {"id":"secondary","label":"武器特殊功能","keys":["KeyK"],"gamepad":[{"type":"button","index":6}]},
+    {"id":"jump","label":"跳跃","keys":["Space"],"gamepad":[{"type":"button","index":0}]},
+    {"id":"crouch","label":"蹲下","keys":["ControlLeft"],"gamepad":[{"type":"button","index":11}],"continuous":true},
+    {"id":"walk","label":"静步","keys":["ShiftLeft"],"gamepad":[{"type":"button","index":10}],"continuous":true},
+    {"id":"reload","label":"装填弹药","keys":["KeyR"],"gamepad":[{"type":"button","index":2}]},
+    {"id":"use","label":"使用或拆弹","keys":["KeyE"],"gamepad":[{"type":"button","index":1}],"continuous":true},
+    {"id":"drop","label":"丢弃武器","keys":["KeyG"],"gamepad":[{"type":"button","index":3}]},
+    {"id":"buy","label":"购买装备","keys":["KeyB"],"gamepad":[{"type":"button","index":9}]},
+    {"id":"scoreboard","label":"战绩","keys":["Tab"],"gamepad":[{"type":"button","index":8}]},
+    {"id":"slot1","label":"主武器","keys":["Digit1"],"gamepad":[{"type":"button","index":4}]},
+    {"id":"slot2","label":"副武器","keys":["Digit2"],"gamepad":[{"type":"button","index":5}]},
+    {"id":"slot3","label":"小刀","keys":["Digit3"]},
+    {"id":"slot4","label":"投掷物","keys":["Digit4"]},
+    {"id":"slot5","label":"C4","keys":["Digit5"]},
+    {"id":"lastWeapon","label":"上一把武器","keys":["KeyQ"],"gamepad":[{"type":"button","index":12}]},
+    {"id":"buyPrimaryAmmo","label":"购买主武器弹药","keys":["Comma"]},
+    {"id":"buySecondaryAmmo","label":"购买副武器弹药","keys":["Period"]}
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "repository": "https://github.com/hpoon/HLDS-CS1.6",
+  "ref": "ce852844b4adf87dfcc6782cfb9021adf0ab35f4",
+  "files": [
+    {
+      "path": "navigation/cs_assault.pwf",
+      "source": "https://raw.githubusercontent.com/hpoon/HLDS-CS1.6/ce852844b4adf87dfcc6782cfb9021adf0ab35f4/cstrike/addons/podbot/wptdefault/cs_assault.pwf",
+      "bytes": 95960,
+      "sha256": "95f9992161bcbe32795ac5bf864efdefc9994a0a34a16af9e0e531e3cdcf92d4",
+      "git_blob_sha1": "f976180cad19c7e21b65226ed8442e67b6a3b39f"
+    },
+    {
+      "path": "navigation/de_aztec.pwf",
+      "source": "https://raw.githubusercontent.com/hpoon/HLDS-CS1.6/ce852844b4adf87dfcc6782cfb9021adf0ab35f4/cstrike/addons/podbot/wptdefault/de_aztec.pwf",
+      "bytes": 106364,
+      "sha256": "61ba5020131d7b6fe81072dc2ed5a0636535a0e69c4679c0284c7593f8ef7f06",
+      "git_blob_sha1": "507721ae0174bd9f3218a0a4cdc20b208a829246"
+    },
+    {
+      "path": "navigation/de_dust2.pwf",
+      "source": "https://raw.githubusercontent.com/hpoon/HLDS-CS1.6/ce852844b4adf87dfcc6782cfb9021adf0ab35f4/cstrike/addons/podbot/wptdefault/de_dust2.pwf",
+      "bytes": 88412,
+      "sha256": "b0c045c8fe2a304a83b53a2e2a8450635136535975dd560d804a066223697f23",
+      "git_blob_sha1": "a7452e1f295ac9b2bbf4c65fc00f0a2201c83179"
+    },
+    {
+      "path": "navigation/de_inferno.pwf",
+      "source": "https://raw.githubusercontent.com/hpoon/HLDS-CS1.6/ce852844b4adf87dfcc6782cfb9021adf0ab35f4/cstrike/addons/podbot/wptdefault/de_inferno.pwf",
+      "bytes": 89840,
+      "sha256": "0bf5010f14fe52c6da8dcb9defa18034b88a8750fa9c8d0604852880336c6b32",
+      "git_blob_sha1": "4da53202adc9930af4c7a61ede53a4340af7316c"
+    }
+  ],
+  "limitations": [
+    "Third-party bot navigation files, not map-author or Valve rule authority",
+    "Waypoint edges must be checked against selected BSP collision before use"
+  ]
+}

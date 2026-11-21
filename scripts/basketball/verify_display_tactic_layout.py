@@ -26,7 +26,7 @@ m=RecordedMemory(r);cpu=MPU(memory=m);sequence=[]
 for i in range(12):
  m.writes=[];before=dict(turn=m[0x3ce],cache=list(m[0x3c7:0x3cb]));call(cpu,0xaff3,0,4)
  sequence.append(dict(before=before,after=dict(turn=m[0x3ce],cache=list(m[0x3c7:0x3cb])),cacheWrites=[[hex(a),v] for a,v in m.writes if 0x3c7<=a<0x3cb]))
-out=ROOT/'.local/basketball/rea/hud-command-layout'
+out=ROOT/'.local/basketball/research/rea/hud-command-layout'
 out.mkdir(parents=True,exist_ok=True)
 (out/'panel-calls.json').write_text(json.dumps(rows,indent=2)+'\n');(out/'scheduler-chain.json').write_text(json.dumps(sequence,indent=2)+'\n')
 assert all(not r['cacheWrites'] and r['cacheBefore']==r['cacheAfter'] for r in rows)

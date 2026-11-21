@@ -18,7 +18,7 @@
 
 实现前原函数和真实 team 7 前态均因未恢复 59 失败，保留 `before.log`。实现后附着入口矩阵进一步发现旧 58 路径在运动后才清支撑，导致沿旧支撑移动；保留 `attachment-before.log`，修正为原 `$8ED6` 在 EEFF 前清除。最终正常包 Native／race／Wasm 验证包含全部新样本、原自然扣篮语料与世界扣篮阶段。
 
-日志位于 `.local/basketball/dunk-variants-20261018/`。真实 team 7 首失败前态（video 21080）连续 120 帧及逐帧 JSON 恢复通过。
+日志位于 `.local/basketball/verification/dunk-variants-20261018/`。真实 team 7 首失败前态（video 21080）连续 120 帧及逐帧 JSON 恢复通过。
 
 复现：
 
@@ -30,4 +30,4 @@ go test -race ./games/basketball/engine -run '^Test(DunkVariants|OriginalDunkAnd
 GOOS=js GOARCH=wasm go test ./games/basketball/engine -exec "$(go env GOROOT)/lib/wasm/go_js_wasm_exec" -run '^Test(DunkVariants|OriginalDunkAndReleasedBallTrace|DunkPreserves|WorldActionsOriginalDunkStage)' -count=1 -v
 ```
 
-同一场地 1、球队 `[0,7]`、角色 `[0,1,0,1]`、全原版 AI 与种子 `0x12345678`，两遍完整赛均通过：22,631 视频帧、7,515 逻辑更新、每遍 85 次 JSON 恢复，轨迹 SHA-256 均为 `f8d5876ade681c07765d272d524b59e70ea49fbc1ce3f74cb7b9ad209fb6548f`。源代码前后哈希一致，记录在 `.local/basketball/dunk-variants-team7-20261018/native/`。这是该明确配置的整场证据，不代表全部球队 7 球员组合或整款游戏已经完成。
+同一场地 1、球队 `[0,7]`、角色 `[0,1,0,1]`、全原版 AI 与种子 `0x12345678`，两遍完整赛均通过：22,631 视频帧、7,515 逻辑更新、每遍 85 次 JSON 恢复，轨迹 SHA-256 均为 `f8d5876ade681c07765d272d524b59e70ea49fbc1ce3f74cb7b9ad209fb6548f`。源代码前后哈希一致，记录在 `.local/basketball/verification/dunk-variants-team7-20261018/native/`。这是该明确配置的整场证据，不代表全部球队 7 球员组合或整款游戏已经完成。

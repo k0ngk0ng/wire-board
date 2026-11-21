@@ -38,7 +38,7 @@ func TestBasketballHTTPJavaScriptTransport(t *testing.T) {
 	cmd.Dir = root
 	cmd.Env = append(os.Environ(), "BASKETBALL_HTTP_URL="+h.Server.URL)
 	output, err := cmd.CombinedOutput()
-	dir := filepath.Join(root, ".local/basketball/server-http")
+	dir := filepath.Join(root, ".local/basketball/verification/server-http")
 	if e := os.MkdirAll(dir, 0755); e != nil {
 		t.Fatal(e)
 	}

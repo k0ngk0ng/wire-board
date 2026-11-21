@@ -23,11 +23,11 @@ mode5恢复在`ai_home_guard.go`，由原个人分派入口选择；只调整原
 
 ## 验证结果
 
-- REA `ev_ec24c8549046c6114830d3e8af0a1790fdbbd825ee9983299e860f53acd9fd7a`：A229、B97B、A8DE、B007、BACC均成功解析；完整产物位于 `.local/basketball/rea/ai-mode5-plan11/analysis/`。选择界面另保留带bank3 SHA的`selection-source.txt`。
+- REA `ev_ec24c8549046c6114830d3e8af0a1790fdbbd825ee9983299e860f53acd9fd7a`：A229、B97B、A8DE、B007、BACC均成功解析；完整产物位于 `.local/basketball/research/rea/ai-mode5-plan11/analysis/`。选择界面另保留带bank3 SHA的`selection-source.txt`。
 - `ai-mode5-isolated.json.gz`的1584条原调用覆盖四席、入场/持久状态、zone22及边界、持球身份、松球两侧阈值和原BACC子路由，比较完整WorldInputState，包括未改字段。
 - `ai-plan11-isolated.json.gz`的1200条原调用包括1008条动作/进入位/计数/zone矩阵，以及192条首次选择、人类队友覆盖、负计划参数与NY后场例外。覆盖DEC的127/128/255边界；无替代随机或新按键策略。
 - 原选择链与team2对手链各保留独立夹具。所有原输入、来源RAM/ROM SHA、输出SHA、调用范围与音频返回桩限制见 `testdata/ai-mode5-plan11-source.json`。这些都是隔离原函数证据，不冒称自然原版完整对局。
-- Native、race、Wasm相同30项定向测试全部通过，含原球队/个人、球反应、避让、1998次完整输入阶段及原子性回归。结果与日志SHA保存于 `.local/basketball/rea/ai-mode5-plan11/verification.json`。没有修改或重跑root负责的完整比赛门禁。
+- Native、race、Wasm相同30项定向测试全部通过，含原球队/个人、球反应、避让、1998次完整输入阶段及原子性回归。结果与日志SHA保存于 `.local/basketball/research/rea/ai-mode5-plan11/verification.json`。没有修改或重跑root负责的完整比赛门禁。
 
 当前范围仅新增个人mode5与mode26的plan11；个人mode11、33/34/35和其他未恢复计划仍明确报错。mode5的原B1E9目标仅覆盖当前已恢复的持球身份0..3/6，未知来源不默认为人物或球。菜单呈现及自然操作进入完整比赛不由本项证明。
 

@@ -23,7 +23,7 @@ def differences(a,b,path=''):
  elif a!=b:yield path,a,b
 
 def main():
- parser=argparse.ArgumentParser();parser.add_argument('--go',default='go-aligned-worlds.jsonl');parser.add_argument('--output',default='aligned-world-comparison.json');parser.add_argument('--directory',default='.local/basketball/rea/ball-rest-stall');parser.add_argument('--source',default='.local/nes-basket/runs/ball-rest-team5-aligned/world-after.ram');parser.add_argument('--initial-updates',type=int,default=1);args=parser.parse_args()
+ parser=argparse.ArgumentParser();parser.add_argument('--go',default='go-aligned-worlds.jsonl');parser.add_argument('--output',default='aligned-world-comparison.json');parser.add_argument('--directory',default='.local/basketball/research/rea/ball-rest-stall');parser.add_argument('--source',default='.local/basketball/research/original/runs/ball-rest-team5-aligned/world-after.ram');parser.add_argument('--initial-updates',type=int,default=1);args=parser.parse_args()
  out=(ROOT/args.directory).resolve();source=(ROOT/args.source).resolve();go=out/args.go
  assert out.is_relative_to(ROOT) and source.is_relative_to(ROOT)
  assert go.resolve().is_relative_to(out.resolve()) and (out/args.output).resolve().is_relative_to(out.resolve())

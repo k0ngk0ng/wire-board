@@ -15,7 +15,7 @@
 
 ## 源行为
 
-REA / Ghidra 批量证据为 `ev_5681069475a63dd3365263e723c01ee88206c93e498114d7e1d0a94c27e37140`，保存于 `.local/basketball/rea/ai-command-pass/analysis/`。`$A208` 的反编译结果无法可靠表达 `$BACC` 返回的 carry，原指令验证在 `$A21A` 直接记录真实处理器 carry，不以反编译的 `in_C` 变量代替执行结果。
+REA / Ghidra 批量证据为 `ev_5681069475a63dd3365263e723c01ee88206c93e498114d7e1d0a94c27e37140`，保存于 `.local/basketball/research/rea/ai-command-pass/analysis/`。`$A208` 的反编译结果无法可靠表达 `$BACC` 返回的 carry，原指令验证在 `$A21A` 直接记录真实处理器 carry，不以反编译的 `in_C` 变量代替执行结果。
 
 模式 10 只在首次进入时直接写传球动作 `$17` 和个人模式 1，不修改恢复计划。模式 11 标记为已进入；动作整数值位于 `$10..$13` 时写传球动作、个人模式 1 和恢复计划 22。直接写动作会清除 Entered 位，即使原动作值相同也不能使用「相同动作不重启」逻辑。
 

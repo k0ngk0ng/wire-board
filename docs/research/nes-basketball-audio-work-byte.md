@@ -8,7 +8,7 @@
 
 `held_ball_offset` 的 612,544 次受控原函数调用已证明：特殊球动作 14 被设备改为 4 后，`$BDD2` 越过原偏移表，偶数篮圈选择会读取 `$00FF..0100`。上传完成时 `$0100=255`，右侧目标位置成为 `207 + $00FF`。合法 Court 2 的 X=280／380 会因声音状态不同而得到不同的下一动作。
 
-原证据位于 `.local/basketball/rea/special-turn-alias/`。`court2-counterexamples.json` 使用实际 music 61、先更新 90 次、再请求 sound 30 的声音驱动结果。它是原组件可达值与原比较函数的组合验证，不是完整自然对局中已出现该错误的证明。
+原证据位于 `.local/basketball/research/rea/special-turn-alias/`。`court2-counterexamples.json` 使用实际 music 61、先更新 90 次、再请求 sound 30 的声音驱动结果。它是原组件可达值与原比较函数的组合验证，不是完整自然对局中已出现该错误的证明。
 
 新增探测把三个关键结果追到最后写入：
 
@@ -114,16 +114,16 @@
 
 复用的 REA 证据：
 
-- `.local/basketball/audio/rea/evidence.json`：请求和更新入口，`ev_b7dcc4d2199f88363f0de9659e2a278ac02a6d6435cfd7d88be1dde49fc632ec`、`ev_88919b8f185184e91d70fe32056d61eed05f0a14407c07fda56b62bf97ceb4f0`。
-- `.local/basketball/audio/driver-rea/evidence.json`：通道加载和参数应用，`ev_42ffd9de3ec090c8c149e9d2c42489b502c91856f02ffe62fe6bb57e82c09425`、`ev_19b2850af73d02221f78d39dea5b061bd81ed4e00d1e38fe5e9f012235339688`。
-- `.local/basketball/audio/music-rea/evidence.json`：序列跳转和 DPCM，`ev_9a9854fcb3e8501642256c4655e7dcc84f0b20b4ad4adc958db214e9a990f5c1`、`ev_6849ad7405eccfae03f61c6956ebadc11b8210bdae5778b9073128dc6a2268ef`。
+- `.local/basketball/assets/audio/rea/evidence.json`：请求和更新入口，`ev_b7dcc4d2199f88363f0de9659e2a278ac02a6d6435cfd7d88be1dde49fc632ec`、`ev_88919b8f185184e91d70fe32056d61eed05f0a14407c07fda56b62bf97ceb4f0`。
+- `.local/basketball/assets/audio/driver-rea/evidence.json`：通道加载和参数应用，`ev_42ffd9de3ec090c8c149e9d2c42489b502c91856f02ffe62fe6bb57e82c09425`、`ev_19b2850af73d02221f78d39dea5b061bd81ed4e00d1e38fe5e9f012235339688`。
+- `.local/basketball/assets/audio/music-rea/evidence.json`：序列跳转和 DPCM，`ev_9a9854fcb3e8501642256c4655e7dcc84f0b20b4ad4adc958db214e9a990f5c1`、`ev_6849ad7405eccfae03f61c6956ebadc11b8210bdae5778b9073128dc6a2268ef`。
 
 新增结果：
 
-- `.local/basketball/audio/work-byte/probe-summary.json`：10 个写入点、动态命中数、1,440 个既有 music／shot 结果匹配，以及两组 FCEUX 状态比较。
+- `.local/basketball/assets/audio/work-byte/probe-summary.json`：10 个写入点、动态命中数、1,440 个既有 music／shot 结果匹配，以及两组 FCEUX 状态比较。
 - 同目录 `music-shot-writers.json`：每次请求／更新的工作字节前后值、每个写入点、通道、节拍和相位；`control-writers.json`：reset／pause／resume 对照。
 - 同目录 `order-summary.json`：自然运行顺序、NMI 插入和声音请求配对。
-- `.local/nes-basket/runs/audio-work-order-v2/audio-work-order.jsonl`：完整自然观察事件；`source.json`、`scenario.json`、`ram.bin` 和截图保留来源与相同输入。
+- `.local/basketball/research/original/runs/audio-work-order-v2/audio-work-order.jsonl`：完整自然观察事件；`source.json`、`scenario.json`、`ram.bin` 和截图保留来源与相同输入。
 
 受控原驱动探测使用仓库内已有 py65；自然观察使用已有 FCEUX 和图片处理环境，不安装依赖，不重录音频：
 

@@ -14,7 +14,7 @@
 
 ## 测试先于实现
 
-先列出提前发奖、重复发奖、进度回退错误、空槽越界、自动装备、重新抽随机数和篡改结果等失败场景，再写集成和原夹具测试。缺少 API 的编译失败保留在工作树 `.local/campaign-settlement/before.log`、`before-complete.log`。新增敌方选择器接线前的失败保留在 `before-roster-handoff.log`。
+先列出提前发奖、重复发奖、进度回退错误、空槽越界、自动装备、重新抽随机数和篡改结果等失败场景，再写集成和原夹具测试。缺少 API 的编译失败保留在工作树 `.local/basketball/research/campaign-settlement/before.log`、`before-complete.log`。新增敌方选择器接线前的失败保留在 `before-roster-handoff.log`。
 
 720 组源结算数据全部匹配：普通胜利 560、败局 128、最终胜利 32，其中 112 个满库存案例保留原展示但不入库。测试用原指令产生的已确认结果构造隔离 Runtime 外壳，只比较结算；不把该外壳称为完整自然对局。原代码省略的显示／等待入口、实际写入和 RNG 调用均列在 [源报告](CAMPAIGN_SETTLEMENT_SOURCE.md)。
 
@@ -35,7 +35,7 @@ go test -race ./games/basketball/engine -run '^(TestCampaignSettlement|TestOrigi
 GOOS=js GOARCH=wasm go test ./games/basketball/engine -run '^(TestCampaignSettlement|TestOriginalCampaignRoster)' -count=1 -v -exec "$(go env GOROOT)/lib/wasm/go_js_wasm_exec"
 ```
 
-日志和结果索引位于工作树 `.local/campaign-settlement/`。夹具元数据保留原 ROM、基础 RAM 和生成内容摘要。
+日志和结果索引位于工作树 `.local/basketball/research/campaign-settlement/`。夹具元数据保留原 ROM、基础 RAM 和生成内容摘要。
 
 ## 仍需完成
 

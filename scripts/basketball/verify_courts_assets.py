@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 from hashlib import sha256
 from PIL import Image
-ROOT=Path(__file__).resolve().parents[2];root=ROOT/'.local/basketball/courts';top=json.loads((root/'manifest.json').read_text());assert not top['accepted_for_release'];images=0;jsons=0;identities=[]
+ROOT=Path(__file__).resolve().parents[2];root=ROOT/'.local/basketball/assets/courts';top=json.loads((root/'manifest.json').read_text());assert not top['accepted_for_release'];images=0;jsons=0;identities=[]
 for rec in top['courts']:
  p=root/rec['manifest'];assert sha256(p.read_bytes()).hexdigest()==rec['sha256'];m=json.loads(p.read_text());assert m['court']==rec['court'] and not m['accepted_for_release'];d=p.parent
  for name,a in m['assets'].items():

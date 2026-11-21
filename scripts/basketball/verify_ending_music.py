@@ -6,7 +6,7 @@ import json
 import wave
 
 ROOT=Path(__file__).resolve().parents[2]
-OUT=ROOT/'.local/basketball/audio/export'
+OUT=ROOT/'.local/basketball/assets/audio/export'
 
 
 def data(path):

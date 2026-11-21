@@ -5,8 +5,10 @@ views are presentation fixtures; this does not claim full browser gameplay.
 """
 from pathlib import Path
 import functools,http.server,json,os,subprocess,threading,uuid,sys
-ROOT=Path(__file__).resolve().parents[2];OUT=ROOT/'.local/campaign-ui';OUT.mkdir(parents=True,exist_ok=True)
-env=dict(os.environ,AGENT_BROWSER_SESSION='bcu-'+uuid.uuid4().hex[:5],AGENT_BROWSER_SOCKET_DIR=str((ROOT/'.local/basketball').resolve()/'bkn-sockets'),TMPDIR=str(ROOT/'.local/tmp'),NODE_PATH=str(ROOT/'web/node_modules'))
+ROOT=Path(__file__).resolve().parents[2];OUT=ROOT/'.local/basketball/research/campaign-ui';OUT.mkdir(parents=True,exist_ok=True)
+env=dict(os.environ,AGENT_BROWSER_SESSION='bcu-'+uuid.uuid4().hex[:5],AGENT_BROWSER_SOCKET_DIR=str((ROOT/'.local/basketball/tmp/s').resolve()),TMPDIR=str(ROOT/'.local/tmp'),NODE_PATH=str(ROOT/'web/node_modules'))
+Path(env['TMPDIR']).mkdir(parents=True, exist_ok=True)
+Path(env['AGENT_BROWSER_SOCKET_DIR']).mkdir(parents=True, exist_ok=True)
 def browser(*args):
  p=subprocess.run(['agent-browser',*args,'--json'],env=env,capture_output=True,text=True,timeout=60)
  if p.returncode:raise RuntimeError(p.stdout+p.stderr)
@@ -34,7 +36,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
  def translate_path(self,path):
   if path.startswith('/basketball/v1/selection/'):
    relative=Path(path.split('/selection/',1)[1]);assert '..' not in relative.parts
-   return str(ROOT/'.local/basketball/selection-assets'/relative)
+   return str(ROOT/'.local/basketball/assets/selection-assets'/relative)
   return super().translate_path(path)
  def log_message(self,*args):pass
 
@@ -42,13 +44,13 @@ def main():
  (OUT/'result.json').write_text('{"status":"running"}\n')
  # Reproduce the actual server-bound views instead of maintaining invented gear.
  if '--reuse-fixtures' not in sys.argv:subprocess.run(['go','test','./games/basketball/server','-run','^TestCampaignEntryPreparationHTTP$|^TestCampaignLifecycleHTTP$|^TestHostCampaignPreparationCommitRestore$|^TestCampaignAttributesOwnedPreviewAndProjection$','-count=1'],cwd=ROOT,env=env,check=True)
- entry=json.loads((ROOT/'.local/poker/basketball/http/TestCampaignEntryPreparationHTTP.json').read_text())
- lifecycle=json.loads((ROOT/'.local/poker/basketball/http/TestCampaignLifecycleHTTP.json').read_text())
+ entry=json.loads((ROOT/'.local/basketball/verification/http/TestCampaignEntryPreparationHTTP.json').read_text())
+ lifecycle=json.loads((ROOT/'.local/basketball/verification/http/TestCampaignLifecycleHTTP.json').read_text())
  waiting=next(t['views'][0] for t in entry['trace'] if t['views'][0]['status']=='waiting')
  reward=next(t['views'][0]['game']['data'] for t in lifecycle['trace'] if t['views'][0]['game']['data']['phase']=='campaign-reward')
  prepared=next(t['views'][0]['game']['data'] for t in lifecycle['trace'] if t['views'][0]['game']['data']['phase']=='campaign-prepare')
- half=json.loads((ROOT/'.local/campaign-host-preparation/host-views.json').read_text())['views'][1]
- (OUT/'fixtures.json').write_text(json.dumps(dict(waiting=waiting,reward=reward,prepared=prepared,halftime=half,attributeOptions=json.loads((ROOT/'.local/campaign-attributes/preview-options.json').read_text()),mixedAttributeOptions=json.loads((ROOT/'.local/campaign-attributes/mixed-preview-options.json').read_text()),largeAttributeOptions=json.loads((ROOT/'.local/campaign-attributes/large-preview-options.json').read_text()))))
+ half=json.loads((ROOT/'.local/basketball/verification/campaign-host-preparation/host-views.json').read_text())['views'][1]
+ (OUT/'fixtures.json').write_text(json.dumps(dict(waiting=waiting,reward=reward,prepared=prepared,halftime=half,attributeOptions=json.loads((ROOT/'.local/basketball/verification/campaign-attributes/preview-options.json').read_text()),mixedAttributeOptions=json.loads((ROOT/'.local/basketball/verification/campaign-attributes/mixed-preview-options.json').read_text()),largeAttributeOptions=json.loads((ROOT/'.local/basketball/verification/campaign-attributes/large-preview-options.json').read_text()))))
  subprocess.run([str(ROOT/'web/node_modules/.bin/esbuild'),str(ROOT/'scripts/basketball/campaign_ui_harness.tsx'),'--bundle','--format=esm','--jsx=automatic','--loader:.svg=dataurl','--target=es2022','--outfile='+str(OUT/'ui.js')],cwd=ROOT,env=env,check=True)
  (OUT/'index.html').write_text('<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>战役准备验收</title><link rel="stylesheet" href="/ui.css"><style>.campaign-fixture{max-width:920px;margin:auto;padding:12px}.campaign-fixture h1{font-size:20px}</style><div id="root"></div><script type="module" src="/ui.js"></script>')
  server=http.server.ThreadingHTTPServer(('127.0.0.1',0),functools.partial(Handler,directory=str(OUT)));threading.Thread(target=server.serve_forever,daemon=True).start();opened=False

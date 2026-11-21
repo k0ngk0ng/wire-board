@@ -49,6 +49,13 @@ export type ControllerSettingsData = {
   profiles: Record<string, ControllerProfile>;
 };
 
+export function mappedModifiersAllowed(profile: ControllerProfile, event: Pick<KeyboardEvent, 'code' | 'ctrlKey' | 'metaKey' | 'altKey'>, capture: boolean, held: (code: string) => boolean): boolean {
+  if (!event.ctrlKey && !event.metaKey && !event.altKey || /^(Control|Alt|Meta)/.test(event.code)) return true;
+  if (!capture || event.metaKey || !actionsForKey(profile, event.code).length) return false;
+  const bound = (keys: string[]) => keys.some(code => held(code) && actionsForKey(profile, code).length > 0);
+  return (!event.ctrlKey || bound(['ControlLeft', 'ControlRight'])) && (!event.altKey || bound(['AltLeft', 'AltRight']));
+}
+
 // Keyboard, touch pads and physical controllers share logical turbo
 // timing. A game only converts these logical names to its own input protocol.
 export function sampleLogicalControllerButton(
@@ -106,6 +113,8 @@ export class KeyboardController {
         this.actionStarts.delete(action);
     }
   }
+
+  heldKey(code: string): boolean { return this.held.has(code); }
 
   clear() {
     this.held.clear();

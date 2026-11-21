@@ -1,6 +1,6 @@
-// Build acceptance specified before implementation. Failures: absent/stale
-// Wasm enters web/dist; mismatched Go loader; corrupted cache reused; source
-// files/ROM exposed; a failed compile silently falls back to an old runtime.
+
+
+
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import {
@@ -17,7 +17,7 @@ import { fileURLToPath } from "node:url";
 import { prepareBasketballRuntime } from "../../games/basketball/build/runtime.mjs";
 
 const root = fileURLToPath(new URL("../../", import.meta.url));
-const out = path.join(root, ".local/basketball/runtime-build-acceptance");
+const out = path.join(root, ".local/basketball/verification/runtime-build-acceptance");
 mkdirSync(out, { recursive: true });
 const checks = [];
 const hash = (data) => createHash("sha256").update(data).digest("hex");

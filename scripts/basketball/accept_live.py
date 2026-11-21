@@ -34,7 +34,7 @@ if ARGS.spring and ARGS.court!=2:parser.error('--spring requires --court 2')
 if ARGS.gate and ARGS.court!=3:parser.error('--gate requires --court 3')
 if ARGS.carry and ARGS.court!=3:parser.error('--carry requires --court 3')
 if ARGS.running_carry and ARGS.court!=3:parser.error('--running-carry requires --court 3')
-OUT=ROOT/('.local/basketball/all-computer-full-match-browser' if ARGS.all_computer else '.local/basketball/full-match-browser' if ARGS.full_match else '.local/basketball/live-browser')
+OUT=ROOT/('.local/basketball/verification/all-computer-full-match-browser' if ARGS.all_computer else '.local/basketball/verification/full-match-browser' if ARGS.full_match else '.local/basketball/verification/live-browser')
 if ARGS.court!=1:OUT=OUT.with_name(OUT.name+'-court-'+str(ARGS.court))
 if ARGS.teams is not None:OUT=OUT.with_name(OUT.name+'-teams-'+'-'.join(map(str,ARGS.teams)))
 if ARGS.characters is not None:OUT=OUT.with_name(OUT.name+'-characters-'+'-'.join(map(str,ARGS.characters)))
@@ -43,8 +43,9 @@ if ARGS.observe_rolloff:OUT=OUT.with_name(OUT.name+'-rolloff-recovery')
 if ARGS.observe_plan12:OUT=OUT.with_name(OUT.name+'-plan12')
 if ARGS.match_mode is not None:OUT=OUT.with_name(OUT.name+'-mode'+str(ARGS.match_mode))
 OUT.mkdir(parents=True,exist_ok=True)
-env=dict(os.environ,AGENT_BROWSER_SESSION='bkl-'+uuid.uuid4().hex[:6],AGENT_BROWSER_SOCKET_DIR=str((ROOT/'.local/basketball').resolve()/'bkl-sockets'),TMPDIR=str(ROOT/'.local/tmp'),NODE_PATH=str(ROOT/'web/node_modules'))
-Path(env['AGENT_BROWSER_SOCKET_DIR']).mkdir(exist_ok=True)
+env=dict(os.environ,AGENT_BROWSER_SESSION='bkl-'+uuid.uuid4().hex[:6],AGENT_BROWSER_SOCKET_DIR=str((ROOT/'.local/basketball/tmp/s').resolve()),TMPDIR=str(ROOT/'.local/tmp'),NODE_PATH=str(ROOT/'web/node_modules'))
+Path(env['TMPDIR']).mkdir(parents=True, exist_ok=True)
+Path(env['AGENT_BROWSER_SOCKET_DIR']).mkdir(parents=True,exist_ok=True)
 requests=[]
 audio_catalog=json.loads((ROOT/'games/basketball/assets/audio-catalog.json').read_text())
 audio_playback=json.loads((ROOT/'games/basketball/assets/audio-playback.json').read_text())
@@ -58,9 +59,9 @@ class Handler(BaseHTTPRequestHandler):
         if route.startswith('/assets/'):
             rel=Path(route[8:])
             if rel.parts and '..' not in rel.parts and rel.parts[0] in ('court','courts','static-atlas','static-objects','raster','results') and rel.suffix in ('.json','.png'):
-                allowed=(ROOT/'.local/basketball'/rel.parts[0]).resolve();candidate=(ROOT/'.local/basketball'/rel).resolve()
+                allowed=(ROOT/'.local/basketball/assets'/rel.parts[0]).resolve();candidate=(ROOT/'.local/basketball/assets'/rel).resolve()
                 if candidate.is_relative_to(allowed):path=candidate
-        if route.startswith('/audio/') and route[7:] in audio_files:path=ROOT/'.local/basketball/audio/export'/route[7:]
+        if route.startswith('/audio/') and route[7:] in audio_files:path=ROOT/'.local/basketball/assets/audio/export'/route[7:]
         if path is None or not path.is_file():self.send_error(404);return
         content=path.read_bytes();mime={'.wasm':'application/wasm','.png':'image/png','.json':'application/json','.wav':'audio/wav','.mp3':'audio/mpeg','.html':'text/html','.css':'text/css'}.get(path.suffix,'text/javascript')
         match=re.fullmatch(r'bytes=(\d+)-(\d*)',self.headers.get('Range',''));start=0;end=len(content)-1

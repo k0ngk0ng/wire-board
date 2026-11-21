@@ -17,7 +17,7 @@
 
 新采样覆盖固定 `$D32C → D345`，共 1,998 次完整阶段、19,980 次对象输入调用。原 6,000 帧 RAM 及截图均一致。原始输入阶段 RAM 与提取 JSON 使用确定性 gzip，保留未压缩和压缩 SHA-256，减少仓库与重复读取开销。
 
-REA 主入口及持球输入结果位于 `.local/basketball/rea/world-inputs/`。真人前处理 `$88A6`、计时 `$895E`、按键保持 `$8936` 和请求分组 `$8537` 单独保留批量分析；不把这些包装层当作无副作用跳板。
+REA 主入口及持球输入结果位于 `.local/basketball/research/rea/world-inputs/`。真人前处理 `$88A6`、计时 `$895E`、按键保持 `$8936` 和请求分组 `$8537` 单独保留批量分析；不把这些包装层当作无副作用跳板。
 
 ## 实现与结果
 
@@ -27,7 +27,7 @@ REA 主入口及持球输入结果位于 `.local/basketball/rea/world-inputs/`�
 
 完整自然阶段在第 1,368 条遇到原个人模式 32，已依据 `$ABCE/$B213` 与 `$9620` 的 8 项表恢复。新增 `ScoreDifference` 显式输入，按球队方向选择下一模式，不消耗随机数或重写恢复计划。两队正负分差边界和已进入状态有固定用例；全阶段记录没有被过滤或截断。
 
-原生竞态与 Wasm 验证通过，同时检查兼容 `ComputerActor` 与压缩迁移后的全部动作阶段。记录位于 `.local/basketball/rea/world-inputs/{native-tests.json,wasm-tests.log}`；REA Evidence、目标与结果校验和见 `index.json`。
+原生竞态与 Wasm 验证通过，同时检查兼容 `ComputerActor` 与压缩迁移后的全部动作阶段。记录位于 `.local/basketball/research/rea/world-inputs/{native-tests.json,wasm-tests.log}`；REA Evidence、目标与结果校验和见 `index.json`。
 
 完整输入夹具 `world-inputs.json.gz` 包含全部阶段，未压缩约 29.6 MB，压缩后为 335,982 字节。动作夹具也保留全部 1,998 条，迁移为 `world-actions.json.gz`；关联 held-terrain 来源摘要已重新生成。两个加载器在测试进程内只读缓存一次。
 

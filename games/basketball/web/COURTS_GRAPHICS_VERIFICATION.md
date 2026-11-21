@@ -42,7 +42,7 @@ The renderer contract is:
   unordered independent histories would be incorrect. The Go display integration
   must retain order or discard superseded tile patches before compaction.
 
-Assets under `.local/basketball/courts/` contain 8 independent manifests, 60 PNGs
+Assets under `.local/basketball/assets/courts/` contain 8 independent manifests, 60 PNGs
 (including palette variants), and 16 initial-ring/column-packet JSONs. All
 images come from each court's original maps, tiles and palettes. Original
 screenshots are reference evidence only. No ROM, captured RAM, OAM or PPU
@@ -59,7 +59,7 @@ reference without graphics hooks. The 48 observed frames include ordered column
 and animation-patch commits. They do not derive game decisions from screenshots.
 
 The before-implementation failures are retained in `courts-before.log`,
-`courts-browser-before.log` and `.local/basketball/irq-raster/`. The former
+`courts-browser-before.log` and `.local/basketball/research/irq-raster/`. The former
 four mismatches (Court 3 frames 1600/1680/1750 and Court 4 frame 1750) are now
 resolved by the original font/scroll split projection. The HUD font is selected
 before the old court-address tile prefetch drains; treating this as a single
@@ -100,10 +100,10 @@ PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/acc
 
 All three commands pass with the retained evidence present.
 The default command retains complete results in
-`.local/basketball/renderer/browser/result.json`; the scoped regression writes
+`.local/basketball/verification/renderer/browser/result.json`; the scoped regression writes
 `legacy-result.json`. Eight individual court screenshots and
 `courts-contact-sheet.png` show the separate graphics. Source capture identities
-are in `.local/basketball/courts/capture.json`. No OSS upload or release occurred.
+are in `.local/basketball/assets/courts/capture.json`. No OSS upload or release occurred.
 
 ## Actual local client routing and patch-only redraw
 
@@ -132,7 +132,7 @@ PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/acc
 ```
 
 No `--full-match` flag was used. Evidence is under
-`.local/basketball/live-browser/`: `result.json`, `asset-routes.json`,
+`.local/basketball/verification/live-browser/`: `result.json`, `asset-routes.json`,
 `patch-contract.json`, `courts-route-before.log`, `courts-route-after.log`,
 `patch-before.log`, `patch-after.log`, `desktop.png`, `mobile.png` and
 `result-{desktop,mobile}.png`. This earlier local-client success is separate from the subsequent exact raster

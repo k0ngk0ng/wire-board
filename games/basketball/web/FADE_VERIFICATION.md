@@ -92,7 +92,7 @@ After `source scripts/env.sh`, reproduce with:
 ```sh
 PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/capture_fade_graphics.py
 PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/test_palette_fade.py
-PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/verify_result_assets.py .local/basketball/results
+PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/verify_result_assets.py .local/basketball/assets/results
 PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/verify_courts_assets.py
 PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/accept_renderer.py
 PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/verify_fade_evidence.py
@@ -100,8 +100,8 @@ PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/ver
 
 `capture_fade_graphics.py` reuses terminal captures and rechecks reference equality;
 it does not rerun completed original observations. Actual passing logs are in
-`.local/basketball/fade/`: `capture-revalidated.log`, `lut-rebased.log`,
+`.local/basketball/research/fade/`: `capture-revalidated.log`, `lut-rebased.log`,
 `result-assets-rebased.log`, `court-assets-rebased.log`, `renderer-rebased.log`,
 and `evidence-rebased.log`. `evidence-verification.json` binds the coverage report
 to current inputs. Full per-frame comparisons and PC/320px screenshots are in
-`.local/basketball/renderer/browser/`. No OSS upload or release was performed.
+`.local/basketball/verification/renderer/browser/`. No OSS upload or release was performed.

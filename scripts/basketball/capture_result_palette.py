@@ -15,5 +15,5 @@ def main():
  for n in spec['captures']:
   assert (reference/f'frame-{n:05d}.png').read_bytes()==(observed/f'frame-{n:05d}.png').read_bytes()
   ram=(observed/'ram.bin').read_bytes()[(n-1)*2048:n*2048];assert ram[0x589]==134 and ram[0x304]==9 and ram[0x58b]==4
- out=ROOT/'.local/basketball/palette-timing';(out/'result-capture.json').write_text(json.dumps({'source':json.loads((observed/'source.json').read_text()),'run':spec['name'],'frames':[{'frame':n,'emulator_frame':frames[n]} for n in spec['captures']],'court':4,'paletteID':9,'ram_and_png_equal':True,'scope':'original result after normal configured Court4 match; no injected scores/result state'},indent=2)+'\n')
+ out=ROOT/'.local/basketball/research/palette-timing';(out/'result-capture.json').write_text(json.dumps({'source':json.loads((observed/'source.json').read_text()),'run':spec['name'],'frames':[{'frame':n,'emulator_frame':frames[n]} for n in spec['captures']],'court':4,'paletteID':9,'ram_and_png_equal':True,'scope':'original result after normal configured Court4 match; no injected scores/result state'},indent=2)+'\n')
 if __name__=='__main__':main()

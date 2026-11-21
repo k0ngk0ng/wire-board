@@ -128,9 +128,9 @@ def build(atlas_dir, courts_dir):
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--atlas-dir',type=Path,default=ROOT/'.local/basketball/static-atlas')
-    parser.add_argument('--courts-dir',type=Path,default=ROOT/'.local/basketball/courts')
-    parser.add_argument('--output',type=Path,default=ROOT/'.local/basketball/selection-assets')
+    parser.add_argument('--atlas-dir',type=Path,default=ROOT/'.local/basketball/assets/static-atlas')
+    parser.add_argument('--courts-dir',type=Path,default=ROOT/'.local/basketball/assets/courts')
+    parser.add_argument('--output',type=Path,default=ROOT/'.local/basketball/assets/selection-assets')
     args=parser.parse_args()
     if not args.output.resolve().is_relative_to(ROOT):
         raise ValueError('selection output must remain inside the workspace')

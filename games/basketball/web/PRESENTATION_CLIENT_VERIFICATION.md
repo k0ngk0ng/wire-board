@@ -29,7 +29,7 @@ The browser acceptance uses actual Go/Wasm, production artwork loader, renderer,
 and network scene. It covers 367 earned-reward video frames and 15 checks: preload, live reward
 rendering, native/Wasm state equality, confirmed-presentation prediction,
 spectator replay and reconnect without replaying old sound/pictures. Inspectable
-artifacts are `.local/presentation-client/result.json`, `desktop.png`, and
+artifacts are `.local/basketball/verification/presentation-client/result.json`, `desktop.png`, and
 `mobile-320.png`. The browser profile is task-owned and closed after execution.
 The mobile screenshot shows the reward building and original actors inside a
 320px viewport.
@@ -38,7 +38,7 @@ The existing production-renderer source-frame acceptance also passed 16 source
 frames and 983040 pixels with zero differences, including hidden resource-page
 transitions and rejection of visible unknown artwork. Run
 `accept_postresult_raster.py --renderer` with the existing workspace Python that
-provides Pillow. Its result and screenshots remain in `.local/postresult-raster/`.
+provides Pillow. Its result and screenshots remain in `.local/basketball/research/postresult-raster/`.
 The controlled ending also advances 12,884 actual Go/Wasm ticks and paints 441
 sampled frames, covering phases 0,1,2,3,4,5,6,8,9,10,7. Its terminal state matches
 native Go exactly; Start is delivered only at the recorded source confirmation

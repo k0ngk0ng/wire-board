@@ -16,7 +16,7 @@
 
 ## 测试与结果
 
-先列失败场景、写测试并保留缺失 API 的编译失败，再编写实现。记录在工作树 `.local/campaign-intermission/before.log`、`before-complete.log`。
+先列失败场景、写测试并保留缺失 API 的编译失败，再编写实现。记录在工作树 `.local/basketball/research/campaign-intermission/before.log`、`before-complete.log`。
 
 - 四条原菜单来源同时覆盖单人、合作、装备主场和真实半场。提交核心与四人物尾段分别将整个 `OpeningState` 与原 RAM 解码结果比较，全部一致；字段夹具保留写入顺序、源摘要和采样限制。
 - 真实单人半场保留 15:9 比分、Period3 和完整 Carry。测试等待数帧后确认，敌方由槽 `[0,3]` 改为 `[0,2]`，新姓名 HUD、角色和等级同步。连续按住 Start 与恢复后的逐帧状态、显示、声音保持一致。
@@ -37,4 +37,4 @@ GOOS=js GOARCH=wasm go test ./games/basketball/engine -run '^(TestCampaignConfir
 GOOS=js GOARCH=wasm go test ./games/basketball/engine -run '^TestCampaignPasswordEquipmentRuntimeFlow/solo$' -count=1 -v -exec "$(go env GOROOT)/lib/wasm/go_js_wasm_exec"
 ```
 
-本轮日志及结果索引位于工作树 `.local/campaign-intermission/`。半场主动换己方角色、装备和战术的界面与服务器协议尚未接入；完整战役、结局、联机和素材发布验收仍未完成。
+本轮日志及结果索引位于工作树 `.local/basketball/research/campaign-intermission/`。半场主动换己方角色、装备和战术的界面与服务器协议尚未接入；完整战役、结局、联机和素材发布验收仍未完成。

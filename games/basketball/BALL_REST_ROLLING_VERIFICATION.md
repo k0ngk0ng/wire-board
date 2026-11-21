@@ -19,7 +19,7 @@
 
 ## REA 证据与自然运行
 
-有效证据位于 `.local/basketball/rea/ball-rest-rolling/bank6-corrected/`：
+有效证据位于 `.local/basketball/research/rea/ball-rest-rolling/bank6-corrected/`：
 
 - `$B52E` 静止：`ev_14b338a12db4481cf74b9ad8f54274d88e8ce9ebaaae989b20e48b204f4bf7fa`。
 - `$B6A1` 滚动：`ev_11dd131099c315015d1f4a75ce34c410db7b8f377dea88dc3ce74619b868c307`。

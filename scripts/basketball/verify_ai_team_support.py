@@ -2,12 +2,12 @@
 import gzip,hashlib,itertools,json,sys
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
-sys.path.insert(0,str(ROOT/'.local/basketball/python'))
+sys.path.insert(0,str(ROOT/'.local/basketball/research/python'))
 from py65.devices.mpu6502 import MPU
 
 
 def main():
- rom=(ROOT/'.local/nes-basket/basketball.nes').read_bytes();digest=hashlib.sha256(rom).hexdigest();assert digest=='0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b'
+ rom=(ROOT/'.local/basketball/research/original/basketball.nes').read_bytes();digest=hashlib.sha256(rom).hexdigest();assert digest=='0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b'
  prg=rom[16:16+131072];cpu=MPU();cpu.memory[0x8000:0xc000]=prg[5*16384:6*16384];cpu.memory[0xc000:]=prg[-16384:];rows=[]
  for actor,entered,action,action_entered,human,link_kind,owner_kind,zone in itertools.product(range(4),[False,True],[0,1,2],[False,True],[False,True],range(5),range(4),[0x20,0x25,0x30,0x35,0x40,0x45,0x50,0x75]):
   link=[0,64,128|actor,128|(actor^1),128|4][link_kind];holder=[actor,actor^1,actor^2,6][owner_kind]

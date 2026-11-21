@@ -5,7 +5,7 @@ are not changed or shortened. Existing matching evidence is reused.
 import argparse,hashlib,json
 from pathlib import Path
 from capture_reference import ROOT,BASE,run
-OUT=ROOT/'.local/basketball/rea/campaign-audit'
+OUT=ROOT/'.local/basketball/research/rea/campaign-audit'
 ROM=BASE/'basketball.nes'
 SHA='0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b'
 def digest(p):return hashlib.sha256(p.read_bytes()).hexdigest()

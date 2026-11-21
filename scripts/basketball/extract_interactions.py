@@ -8,7 +8,7 @@ ROOT=Path(__file__).resolve().parents[2]
 
 
 def main():
-    run=ROOT/'.local/nes-basket/runs/interaction-shot-observation'
+    run=ROOT/'.local/basketball/research/original/runs/interaction-shot-observation'
     rows=list(csv.DictReader((run/'combat-phases.csv').open()));raw=(run/'combat-phase-ram.bin').read_bytes()
     assert len(rows)==1197 and len(raw)==len(rows)*4096
     def state(r):
@@ -24,7 +24,7 @@ def main():
     records=[dict(frame=int(row['frame']),before=state(raw[i*4096:i*4096+2048]),after=state(raw[i*4096+2048:(i+1)*4096]),sounds=[int(x) for x in row['sounds'].split(';') if x]) for i,row in enumerate(rows)]
     out=ROOT/'games/basketball/engine/testdata';p=out/'interactions.json';p.write_text(json.dumps(records,separators=(',',':'))+'\n')
     p.with_name('interactions-source.json').write_text(json.dumps(dict(source_is_original_execution=True,records=len(rows),trace_sha256=hashlib.sha256(raw).hexdigest(),sha256=hashlib.sha256(p.read_bytes()).hexdigest(),source=json.loads((run/'source.json').read_text())),indent=2)+'\n')
-    rom=(ROOT/'.local/nes-basket/basketball.nes').read_bytes();b=rom[16+5*16384:16+6*16384]
+    rom=(ROOT/'.local/basketball/research/original/basketball.nes').read_bytes();b=rom[16+5*16384:16+6*16384]
     p=out/'player-catch-flags.json';p.write_text(json.dumps(list(b[0x1321:0x1321+96]))+'\n')
     p.with_name('player-catch-flags-source.json').write_text(json.dumps(dict(source='Original bank 5 $9321, actions 0..95; catcher checks bit 16',rom_sha256=hashlib.sha256(rom).hexdigest(),sha256=hashlib.sha256(p.read_bytes()).hexdigest()),indent=2)+'\n')
     print('interactions',len(records))

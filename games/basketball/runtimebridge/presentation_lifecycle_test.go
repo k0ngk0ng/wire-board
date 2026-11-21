@@ -119,7 +119,7 @@ func TestBridgeEarnedPresentationLifecycle(t *testing.T) {
 	}
 	fixture := map[string]any{"start": start, "middle": middle, "finish": finish.State, "stepsToMiddle": 60, "inputs": inputs, "scope": "earned original configured match, reward playback; not a 14-win ending or original-console timing oracle"}
 	data, _ := json.Marshal(fixture)
-	out := "../../../.local/presentation-client"
+	out := "../../../.local/basketball/verification/presentation-client"
 	if err = os.MkdirAll(out, 0755); err != nil {
 		t.Fatal(err)
 	}

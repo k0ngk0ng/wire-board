@@ -10,8 +10,8 @@ async function pixels(url: string) {
 }
 (async()=>{
   const fixture=await (await fetch("fixture.json")).json();
-  const manifest=await (await fetch("../../.local/postresult-assets/manifest.json")).json();
-  const atlas=await pixels("../../.local/postresult-assets/chr-indices.png");
+  const manifest=await (await fetch("../../.local/basketball/assets/postresult/manifest.json")).json();
+  const atlas=await pixels("../../.local/basketball/assets/postresult/chr-indices.png");
   const assets={pages:manifest.indexAtlas.pages,indices:atlas.data,rgb:manifest.rgbPalette};
   const render=fixture.rows?rasterizePostResultRows:rasterizePostResult;
   const engine=fixture.wasm?await loadBasketballWasm("./runtime"):undefined;

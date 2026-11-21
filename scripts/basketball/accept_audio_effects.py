@@ -6,9 +6,10 @@ from pathlib import Path
 from http.server import BaseHTTPRequestHandler,ThreadingHTTPServer
 import hashlib,json,os,re,subprocess,threading,uuid
 ROOT=Path(__file__).resolve().parents[2]
-OUT=ROOT/'.local/basketball/audio-effects-browser';OUT.mkdir(parents=True,exist_ok=True)
-env=dict(os.environ,AGENT_BROWSER_SESSION='bkae-'+uuid.uuid4().hex[:6],AGENT_BROWSER_SOCKET_DIR=str(ROOT/'.local/bkae-sockets'),TMPDIR=str(ROOT/'.local/tmp'))
-Path(env['AGENT_BROWSER_SOCKET_DIR']).mkdir(exist_ok=True)
+OUT=ROOT/'.local/basketball/verification/audio-effects-browser';OUT.mkdir(parents=True,exist_ok=True)
+env=dict(os.environ,AGENT_BROWSER_SESSION='bkae-'+uuid.uuid4().hex[:6],AGENT_BROWSER_SOCKET_DIR=str(ROOT/'.local/basketball/tmp/s'),TMPDIR=str(ROOT/'.local/tmp'))
+Path(env['TMPDIR']).mkdir(parents=True, exist_ok=True)
+Path(env['AGENT_BROWSER_SOCKET_DIR']).mkdir(parents=True,exist_ok=True)
 requests=[];checks=[];observations=[];opened=False
 def browser(*args):
  r=subprocess.run(['agent-browser',*args,'--json'],env=env,capture_output=True,text=True,timeout=40)
@@ -26,7 +27,7 @@ class Handler(BaseHTTPRequestHandler):
   route=self.path.split('?')[0];requests.append(route)
   if route=='/':body=b'<!doctype html><meta charset="utf-8"><title>Original effect acceptance</title><button>Play original effect</button><script type="module" src="/harness.js"></script>';mime='text/html'
   else:
-   file=OUT/'harness.js' if route=='/harness.js' else ROOT/'.local/basketball/audio/export'/route.rsplit('/',1)[1] if re.fullmatch(r'/audio/sound-(001|023|048)\.wav',route) else None
+   file=OUT/'harness.js' if route=='/harness.js' else ROOT/'.local/basketball/assets/audio/export'/route.rsplit('/',1)[1] if re.fullmatch(r'/audio/sound-(001|023|048)\.wav',route) else None
    if file is None or not file.is_file():self.send_error(404);return
    body=file.read_bytes();mime='audio/wav' if file.suffix=='.wav' else 'text/javascript'
   self.send_response(200);self.send_header('Content-Type',mime);self.send_header('Content-Length',str(len(body)));self.end_headers()
@@ -53,7 +54,7 @@ try:
  check('unknown request is explicit and does not fetch a guessed file',unknown['unsupported']==[254] and len(requests)==count)
  js('effects.adapter.dispose();effects.audio.dispose()')
  check('dispose removes the platform media element',js('document.querySelectorAll("audio").length')==0)
- assets={f'sound-{i:03}.wav':hashlib.sha256((ROOT/'.local/basketball/audio/export'/f'sound-{i:03}.wav').read_bytes()).hexdigest() for i in [1,23,48]}
+ assets={f'sound-{i:03}.wav':hashlib.sha256((ROOT/'.local/basketball/assets/audio/export'/f'sound-{i:03}.wav').read_bytes()).hexdigest() for i in [1,23,48]}
  result=dict(status='passed',checks=checks,observations=observations,requests=requests,assets=assets,scope='native desktop Chromium platform media; synthetic original IDs; not a full gameplay timing or physical phone listening acceptance')
  (OUT/'result.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result))
 except Exception as error:

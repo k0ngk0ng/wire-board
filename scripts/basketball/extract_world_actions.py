@@ -28,7 +28,7 @@ def decode_world_action_state(r):
 
 
 def main():
-    run=ROOT/'.local/nes-basket/runs/world-actions-cpu-long'
+    run=ROOT/'.local/basketball/research/original/runs/world-actions-cpu-long'
     rows=list(csv.DictReader((run/'world-actions.csv').open()));raw=(run/'world-actions-ram.bin').read_bytes()
     assert len(rows)==1998 and len(raw)==len(rows)*4096
     schedules=json.loads((ROOT/'games/basketball/engine/testdata/action-schedule.json').read_text())

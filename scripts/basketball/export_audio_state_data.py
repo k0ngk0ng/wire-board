@@ -11,7 +11,7 @@ ROOT=Path(__file__).resolve().parents[2]
 
 
 def main():
-    rom=(ROOT/'.local/nes-basket/basketball.nes').read_bytes()
+    rom=(ROOT/'.local/basketball/research/original/basketball.nes').read_bytes()
     assert hashlib.sha256(rom).hexdigest()=='0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b'
     bank=rom[16:16+16384]
     def byte(address):
@@ -96,7 +96,7 @@ def main():
     out.write_text(json.dumps(data,separators=(',',':'))+'\n')
     summary={key:len(data[key]) for key in ['sounds','headers','instructions','instruments','envelopes','percussion']}
     summary.update(sha256=hashlib.sha256(out.read_bytes()).hexdigest(),rom_sha256=data['rom_sha256'],generator_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),scope='parsed music command graph and instrument parameters; no runtime ROM or instruction emulator')
-    (ROOT/'.local/basketball/audio/state/data-export.json').write_text(json.dumps(summary,indent=2)+'\n')
+    (ROOT/'.local/basketball/assets/audio/state/data-export.json').write_text(json.dumps(summary,indent=2)+'\n')
     (out.parent/'source-data-source.json').write_text(json.dumps(summary,indent=2)+'\n')
     print(json.dumps(summary))
 

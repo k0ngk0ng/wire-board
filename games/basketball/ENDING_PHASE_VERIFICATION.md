@@ -40,9 +40,9 @@ The fixture retains1,798 unchanged-ROM calls, each with complete initial/final R
 
 All calls stop at BF35 before actor execution or F79D before machine reset. C000/C006/C021/C024 are intercepted as request boundaries. The outer FD0A text processor, controller/video loop, NMI waits and rendering are omitted explicitly. The retained source trajectory starts from a declared controlled settlement case; it is not an earned final victory or a whole-console movie.
 
-Tests were written before implementation; `.local/ending-phase-restore/red.txt` records missing API types/functions. After implementation, all1,798 full state/context/request comparisons passed; JSON round-trip replay passed for every row; unsupported scene/phase or unrecovered table contexts return errors without partial changes. The targeted suite passed in0.827s. No source case was skipped after failure. Zero original and semantic RNG calls occur in this component.
+Tests were written before implementation; `.local/basketball/research/ending-phase-restore/red.txt` records missing API types/functions. After implementation, all1,798 full state/context/request comparisons passed; JSON round-trip replay passed for every row; unsupported scene/phase or unrecovered table contexts return errors without partial changes. The targeted suite passed in0.827s. No source case was skipped after failure. Zero original and semantic RNG calls occur in this component.
 
-A second source run reproduced fixture SHA-256 `7e9d1d8013ec7f56d0f513d27ad57967ff57a00bf18de3a4bb90ed5416ad654d`. `engine/testdata/ending-phase-source.json` retains exact sampled ordinals, source RAM digest and omissions. Local execution logs are in `.local/ending-phase-restore/`.
+A second source run reproduced fixture SHA-256 `7e9d1d8013ec7f56d0f513d27ad57967ff57a00bf18de3a4bb90ed5416ad654d`. `engine/testdata/ending-phase-source.json` retains exact sampled ordinals, source RAM digest and omissions. Local execution logs are in `.local/basketball/research/ending-phase-restore/`.
 
 ## Integration boundary and remaining work
 

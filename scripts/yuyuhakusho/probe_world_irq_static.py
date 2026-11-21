@@ -13,7 +13,7 @@ assert not (OUT/'validation.json').exists(),'Choose a new suffix; completed evid
 OUT.mkdir(parents=True,exist_ok=True)
 ROM=ROOT/'.local/md-yuyuhakusho/downloads/yuyuhakusho-jp.bin'
 assert hashlib.sha256(ROM.read_bytes()).hexdigest()=='c39d52b2e2298b3784ada3de70d64b26b67e172114c7d18494faad70fc4d7c06'
-TOOL=Path('/Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/nes-basket/tools/ghidra_12.1.4_PUBLIC/support/analyzeHeadless')
+TOOL=Path('/Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/tools/nes-research/ghidra_12.1.4_PUBLIC/support/analyzeHeadless')
 JAVA=Path('/opt/homebrew/Cellar/openjdk/26.0.1/libexec/openjdk.jdk/Contents/Home')
 assert TOOL.is_file() and (JAVA/'bin/java').is_file()
 project=ROOT/'docs/research/md-yuyuhakusho/static-work'/('world-audio-irq-'+args.suffix)

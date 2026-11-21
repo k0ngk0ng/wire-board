@@ -5,8 +5,9 @@ are editorial suggestions, not an assertion of an official localization.
 from pathlib import Path
 import hashlib,json
 from PIL import Image,ImageDraw
+from local_paths import original_path
 ROOT=Path(__file__).resolve().parents[2]
-OUT=ROOT/'.local/basketball/selection-names'
+OUT=ROOT/'.local/basketball/assets/selection-names'
 NAMES=[['くにお','りき','ごだい','ジョニー'],['マイケル','エディ','セラリ','ルード'],['ミック','ショーン','リック','ライン'],['スナイプ','ホーク','ジャガー','ジミー'],['アッシュ','ウルフ','トライブ','ブレイク'],['きらうえ','へっど','わいいき','ぼーん'],['スロット','ルーク','ポーカー','ギャモン'],['ピエール','ホフマン','エスパ','グリース']]
 TEAM_JA=['ねっけつ','ニューヨーク','サンフランシスコ','テキサス','US NAVY','ハワイ','ラスベガス','フロリダ']
 TEAM_ZH=['热血','纽约','旧金山','得克萨斯','美国海军','夏威夷','拉斯维加斯','佛罗里达']
@@ -15,7 +16,7 @@ COURT_ZH=['尼亚加拉',*TEAM_ZH[1:]]
 CHAR_ZH=[['国夫','阿力','五代','约翰尼'],['迈克尔','埃迪','塞拉利','鲁德'],['米克','肖恩','里克','莱恩'],['斯奈普','霍克','贾格','吉米'],['阿什','沃尔夫','特赖布','布雷克'],['基拉韦','海德','威基基','博恩'],['斯洛特','卢克','波克','加蒙'],['皮埃尔','霍夫曼','埃斯帕','格里斯']]
 def digest(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 def main():
-    rom=ROOT/'.local/nes-basket/basketball.nes';raw=rom.read_bytes();assert digest(rom)=='0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b'
+    rom=ROOT/'.local/basketball/research/original/basketball.nes';raw=rom.read_bytes();assert digest(rom)=='0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b'
     bank=raw[16+4*16384:16+5*16384];fixed=raw[16+7*16384:16+8*16384];team_bank=raw[16+3*16384:16+4*16384]
     def word(source,address):return int.from_bytes(source[address-0x8000:address-0x8000+2],'little')
     def codes(source,pointer,length):
@@ -25,7 +26,7 @@ def main():
             result.append(value)
         return result
     def image_label(encoded,mode):
-        glyph=Image.open(ROOT/'.local/basketball/court/hud-glyphs.png');result=Image.new('RGBA',(8*len(encoded),16))
+        glyph=Image.open(ROOT/'.local/basketball/assets/court/hud-glyphs.png');result=Image.new('RGBA',(8*len(encoded),16))
         for x,v in enumerate(encoded):
             mark=[0,229][mode];flag=fixed[0x3f+v]
             if flag: v-=1 if flag==12 else 2;mark=([12,254] if flag==12 else [13,255])[mode]
@@ -33,7 +34,7 @@ def main():
         return result
     menu=json.loads((OUT/'natural-menu.json').read_text());courts=[];teams=[]
     for observed in menu['teams']+menu['courts']:
-        directory=ROOT/observed['path'];frame=observed['selectedFrame']
+        directory=original_path(ROOT,observed['path']);frame=observed['selectedFrame']
         observed['evidenceSHA256']={name:digest(directory/name) for name in ('scenario.json','ram.bin',f'frame-{frame:05d}.png')}
         if 'menuFrame' in observed:
             name=f"frame-{observed['menuFrame']:05d}.png";observed['evidenceSHA256'][name]=digest(directory/name)

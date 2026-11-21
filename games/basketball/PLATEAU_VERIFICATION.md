@@ -6,7 +6,7 @@
 
 ## 原代码和自然记录
 
-REA 复用 `.local/basketball/rea/auxiliary-rest/terrain/` 的表面主分支；新增批量证据 `ev_d1a2ac6742dc81078ff4fda47d598dcbb0492134a4a44086dfa918b553789b8a` 位于 `.local/basketball/rea/plateau/`，包括 `$8249/$840B/$8458/$86AF/$873C`。纽约的 `$8458` 分派到 `$84D6` 返回；不能拿其他场地副作用套入纽约。
+REA 复用 `.local/basketball/research/rea/auxiliary-rest/terrain/` 的表面主分支；新增批量证据 `ev_d1a2ac6742dc81078ff4fda47d598dcbb0492134a4a44086dfa918b553789b8a` 位于 `.local/basketball/research/rea/plateau/`，包括 `$8249/$840B/$8458/$86AF/$873C`。纽约的 `$8458` 分派到 `$84D6` 返回；不能拿其他场地副作用套入纽约。
 
 纽约地形表深度 72～79 行在台面格为 67（高度 64、属性 3）；80～87 行为 66（高度 64、属性 2）。属性控制落地后的深度修正；球动作 1／2 明确跳过该修正。高度主判断看高字节与低字节，但侧碰辅助比较仅用低字节，通道中负高度不能直接用有符号整值代替。
 

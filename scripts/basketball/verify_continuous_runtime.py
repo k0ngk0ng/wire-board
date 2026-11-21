@@ -8,7 +8,7 @@ from pathlib import Path
 import subprocess
 
 ROOT = Path(__file__).resolve().parents[2]
-OUT = ROOT / '.local/basketball/engine/continuous-runtime'
+OUT = ROOT / '.local/basketball/verification/engine/continuous-runtime'
 FIXTURE = ROOT / 'games/basketball/engine/testdata/world-loop.json.gz'
 
 

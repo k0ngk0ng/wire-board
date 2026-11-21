@@ -8,7 +8,7 @@ import argparse,base64,gzip,hashlib,json,subprocess
 from pathlib import Path
 from verify_pass_floor_original import Memory,MPU
 ROOT=Path(__file__).resolve().parents[2];OUT=ROOT/'games/basketball/engine/testdata'
-ROM=(ROOT/'.local/nes-basket/basketball.nes').read_bytes();PRG=ROM[16:131088];BANK=PRG[3*16384:4*16384]
+ROM=(ROOT/'.local/basketball/research/original/basketball.nes').read_bytes();PRG=ROM[16:131088];BANK=PRG[3*16384:4*16384]
 SHA='0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b'
 assert hashlib.sha256(ROM).hexdigest()==SHA
 LENGTH={0xf0:4,0xf1:6,0xf2:4,0xf3:4,0xf4:2,0xf5:2,0xf6:2,0xf7:4,0xf8:2,0xf9:4,0xfa:4,0xfb:4,0xfc:2,0xfd:2,0xfe:4,0xff:4}

@@ -26,5 +26,5 @@ def main():
  spec.update(name='result-art-observed',hooks_lua=hook);path=BASE/(spec['name']+'.json');path.write_text(json.dumps(spec,indent=2)+'\n');run(path)
  observed=BASE/'runs'/spec['name'];assert (observed/'ram.bin').read_bytes()==(reference/'ram.bin').read_bytes()
  for im in reference.glob('frame-*.png'):assert im.read_bytes()==(observed/im.name).read_bytes()
- out=ROOT/'.local/basketball/result-art';out.mkdir(parents=True,exist_ok=True);manifest={'source':json.loads((observed/'source.json').read_text()),'frames':[{'frame':n,'emulator_frame':frames[n]} for n in spec['captures']],'ram_and_png_match_uninstrumented':True,'scope':'original phase6 result rendering; not Go whole-game proof'};(out/'capture.json').write_text(json.dumps(manifest,indent=2)+'\n');print(json.dumps({'frames':len(selected),'matched':True}))
+ out=ROOT/'.local/basketball/assets/result-art';out.mkdir(parents=True,exist_ok=True);manifest={'source':json.loads((observed/'source.json').read_text()),'frames':[{'frame':n,'emulator_frame':frames[n]} for n in spec['captures']],'ram_and_png_match_uninstrumented':True,'scope':'original phase6 result rendering; not Go whole-game proof'};(out/'capture.json').write_text(json.dumps(manifest,indent=2)+'\n');print(json.dumps({'frames':len(selected),'matched':True}))
 if __name__=='__main__':main()

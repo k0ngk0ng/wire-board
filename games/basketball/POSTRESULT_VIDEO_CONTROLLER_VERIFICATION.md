@@ -2,7 +2,7 @@
 
 The standalone controller now preserves reward and ending resource waits, phase continuations, actor timing, shared NMI counter behavior and request ordering. It runs no CPU/PPU interpreter and does not load captured state in production. Runtime/server integration remains a separate task.
 
-The source contract and pre-implementation failure inventory are in `POSTRESULT_SCHEDULER_CONTRACT.md`. Tests were written before the controller/assets/constructor implementations; missing-API RED logs are retained under `.local/postresult-scheduler/`.
+The source contract and pre-implementation failure inventory are in `POSTRESULT_SCHEDULER_CONTRACT.md`. Tests were written before the controller/assets/constructor implementations; missing-API RED logs are retained under `.local/basketball/research/postresult-scheduler/`.
 
 ## APIs and ownership
 
@@ -117,7 +117,7 @@ Asset fixture SHA-256: `95b8f2526df2750a4b0c0b17aea2b5d931018b011473b2e0a33e8d97
 
 ROM SHA-256: `0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b`.
 
-Source metadata retains capture hashes, generated-table digest and handoff byte ranges. Local RED/pass/repeat logs are under `.local/postresult-scheduler/`.
+Source metadata retains capture hashes, generated-table digest and handoff byte ranges. Local RED/pass/repeat logs are under `.local/basketball/research/postresult-scheduler/`.
 
 ```sh
 PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/investigate_postresult_scheduler.py --check

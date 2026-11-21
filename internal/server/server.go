@@ -24,6 +24,7 @@ import (
 	"slices"
 	"strings"
 	"sync"
+	"sync/atomic"
 	"time"
 	"unicode/utf8"
 )
@@ -148,6 +149,8 @@ type bucket struct {
 	Count int
 }
 type Server struct {
+	sessionSQLReads     atomic.Int64
+	authSessions        *verifiedSessions
 	instance            string
 	realtimeCheckpoints map[string]*realtimeCheckpoint
 	inputMu             sync.Mutex
@@ -218,17 +221,15 @@ func New(cfg Config, files fs.FS) (*Server, error) {
 		return nil, err
 	}
 	path := filepath.Join(cfg.DataDir, "wire-board.db")
-	db, e := sql.Open("sqlite", path)
-	if e != nil {
-		return nil, e
-	}
+	authSessions := newVerifiedSessions()
+	db := sql.OpenDB(newSessionConnector(path, authSessions))
 	db.SetMaxOpenConns(1)
-	_, e = db.Exec(`PRAGMA journal_mode=WAL; PRAGMA busy_timeout=5000; CREATE TABLE IF NOT EXISTS users(id TEXT PRIMARY KEY,name TEXT UNIQUE NOT NULL,password TEXT NOT NULL); CREATE TABLE IF NOT EXISTS sessions(token TEXT PRIMARY KEY,user_id TEXT NOT NULL,expires INTEGER NOT NULL); CREATE TABLE IF NOT EXISTS rooms(id TEXT PRIMARY KEY,snapshot BLOB NOT NULL); CREATE TABLE IF NOT EXISTS match_history(id TEXT PRIMARY KEY,ended INTEGER NOT NULL,snapshot BLOB NOT NULL); CREATE TABLE IF NOT EXISTS match_members(match_id TEXT,user_id TEXT,PRIMARY KEY(match_id,user_id)); CREATE INDEX IF NOT EXISTS match_members_user ON match_members(user_id); CREATE TABLE IF NOT EXISTS friendships(a TEXT,b TEXT,requester TEXT NOT NULL,status TEXT NOT NULL,PRIMARY KEY(a,b)); CREATE TABLE IF NOT EXISTS rating_ledger(match_id TEXT NOT NULL,user_id TEXT NOT NULL,delta INTEGER NOT NULL,rank INTEGER NOT NULL,PRIMARY KEY(match_id,user_id)); CREATE INDEX IF NOT EXISTS rating_user ON rating_ledger(user_id); CREATE TABLE IF NOT EXISTS actions(room_id TEXT,user_id TEXT,nonce TEXT,version INTEGER,action BLOB,created INTEGER,PRIMARY KEY(room_id,user_id,nonce)); CREATE TABLE IF NOT EXISTS wishes(id TEXT PRIMARY KEY,user_id TEXT NOT NULL,user_name TEXT NOT NULL,text TEXT NOT NULL,image_url TEXT NOT NULL DEFAULT '',status TEXT NOT NULL DEFAULT 'pending' CHECK(status IN ('pending','approved','in_progress','implemented','rejected')),review_note TEXT NOT NULL DEFAULT '',reviewed_by TEXT NOT NULL DEFAULT '',reviewed_by_name TEXT NOT NULL DEFAULT '',created_at INTEGER NOT NULL,reviewed_at INTEGER NOT NULL DEFAULT 0); CREATE INDEX IF NOT EXISTS wishes_status ON wishes(status,created_at); CREATE INDEX IF NOT EXISTS wishes_user ON wishes(user_id,created_at); CREATE TABLE IF NOT EXISTS wish_questions(id INTEGER PRIMARY KEY AUTOINCREMENT,wish_id TEXT NOT NULL,question TEXT NOT NULL,answer TEXT NOT NULL DEFAULT '',asked_at INTEGER NOT NULL,answered_at INTEGER NOT NULL DEFAULT 0); CREATE INDEX IF NOT EXISTS wish_questions_wish ON wish_questions(wish_id,id);`)
+	_, e := db.Exec(`PRAGMA journal_mode=WAL; PRAGMA busy_timeout=5000; CREATE TABLE IF NOT EXISTS users(id TEXT PRIMARY KEY,name TEXT UNIQUE NOT NULL,password TEXT NOT NULL); CREATE TABLE IF NOT EXISTS sessions(token TEXT PRIMARY KEY,user_id TEXT NOT NULL,expires INTEGER NOT NULL); CREATE TABLE IF NOT EXISTS rooms(id TEXT PRIMARY KEY,snapshot BLOB NOT NULL); CREATE TABLE IF NOT EXISTS match_history(id TEXT PRIMARY KEY,ended INTEGER NOT NULL,snapshot BLOB NOT NULL); CREATE TABLE IF NOT EXISTS match_members(match_id TEXT,user_id TEXT,PRIMARY KEY(match_id,user_id)); CREATE INDEX IF NOT EXISTS match_members_user ON match_members(user_id); CREATE TABLE IF NOT EXISTS friendships(a TEXT,b TEXT,requester TEXT NOT NULL,status TEXT NOT NULL,PRIMARY KEY(a,b)); CREATE TABLE IF NOT EXISTS rating_ledger(match_id TEXT NOT NULL,user_id TEXT NOT NULL,delta INTEGER NOT NULL,rank INTEGER NOT NULL,PRIMARY KEY(match_id,user_id)); CREATE INDEX IF NOT EXISTS rating_user ON rating_ledger(user_id); CREATE TABLE IF NOT EXISTS actions(room_id TEXT,user_id TEXT,nonce TEXT,version INTEGER,action BLOB,created INTEGER,PRIMARY KEY(room_id,user_id,nonce)); CREATE TABLE IF NOT EXISTS wishes(id TEXT PRIMARY KEY,user_id TEXT NOT NULL,user_name TEXT NOT NULL,text TEXT NOT NULL,image_url TEXT NOT NULL DEFAULT '',status TEXT NOT NULL DEFAULT 'pending' CHECK(status IN ('pending','approved','in_progress','implemented','rejected')),review_note TEXT NOT NULL DEFAULT '',reviewed_by TEXT NOT NULL DEFAULT '',reviewed_by_name TEXT NOT NULL DEFAULT '',created_at INTEGER NOT NULL,reviewed_at INTEGER NOT NULL DEFAULT 0); CREATE INDEX IF NOT EXISTS wishes_status ON wishes(status,created_at); CREATE INDEX IF NOT EXISTS wishes_user ON wishes(user_id,created_at); CREATE TABLE IF NOT EXISTS wish_questions(id INTEGER PRIMARY KEY AUTOINCREMENT,wish_id TEXT NOT NULL,question TEXT NOT NULL,answer TEXT NOT NULL DEFAULT '',asked_at INTEGER NOT NULL,answered_at INTEGER NOT NULL DEFAULT 0); CREATE INDEX IF NOT EXISTS wish_questions_wish ON wish_questions(wish_id,id);`)
 	if e != nil {
 		db.Close()
 		return nil, e
 	}
-	s := &Server{instance: randomID(16), newGame: game.New, db: db, cfg: cfg, rooms: map[string]*Room{}, watchers: map[chan struct{}]bool{}, limits: map[string]bucket{}, files: files, hiddenGames: map[string]bool{}, presence: map[string]time.Time{}, connections: map[chan struct{}]string{}}
+	s := &Server{instance: randomID(16), newGame: game.New, db: db, authSessions: authSessions, cfg: cfg, rooms: map[string]*Room{}, watchers: map[chan struct{}]bool{}, limits: map[string]bucket{}, files: files, hiddenGames: map[string]bool{}, presence: map[string]time.Time{}, connections: map[chan struct{}]string{}}
 	if e = s.initWishEditing(); e != nil {
 		db.Close()
 		return nil, e
@@ -577,13 +578,11 @@ func decode(w http.ResponseWriter, r *http.Request, v any) bool {
 	return true
 }
 func (s *Server) user(r *http.Request) (User, error) {
-	var u User
-	c, e := r.Cookie("wb_session")
-	if e != nil {
-		return u, e
+	c, err := r.Cookie("wb_session")
+	if err != nil {
+		return User{}, err
 	}
-	e = s.db.QueryRow("SELECT users.id,users.name FROM sessions JOIN users ON users.id=sessions.user_id LEFT JOIN user_controls c ON c.user_id=users.id WHERE token=? AND expires>? AND COALESCE(c.disabled,0)=0", digest(c.Value), time.Now().Unix()).Scan(&u.ID, &u.Name)
-	return u, e
+	return s.verifiedSession(c.Value)
 }
 func (s *Server) needUser(w http.ResponseWriter, r *http.Request) (User, bool) {
 	u, e := s.user(r)

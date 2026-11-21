@@ -37,7 +37,7 @@ def main():
     raw=(out/'world-actions-ram.bin').read_bytes()
     assert len(raw)>=len(rows)*4096 and len(raw)<len(rows)*4096+4096
     summary=dict(records=len(rows),complete_bytes=len(rows)*4096,ram_matches_uninstrumented=True,source=json.loads((out/'source.json').read_text()),trace_sha256=hashlib.sha256(raw).hexdigest())
-    target=ROOT/'.local/basketball/world-actions';target.mkdir(parents=True,exist_ok=True)
+    target=ROOT/'.local/basketball/verification/world-actions';target.mkdir(parents=True,exist_ok=True)
     (target/'capture.json').write_text(json.dumps(summary,indent=2)+'\n')
     print(json.dumps(summary))
 

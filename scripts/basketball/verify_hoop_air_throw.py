@@ -42,7 +42,7 @@ def main():
     assert hashlib.sha256(ROM).hexdigest()=='0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b'
     origin=ROOT/'games/basketball/engine/testdata/hoop-air-throw-runtime.json.gz'
     snapshot=json.loads(gzip.decompress(origin.read_bytes()))
-    basefile=ROOT/'.local/nes-basket/runs/court-4-reference/ram.bin'
+    basefile=ROOT/'.local/basketball/research/original/runs/court-4-reference/ram.bin'
     base=basefile.read_bytes()[1500*2048:1501*2048];assert len(base)==2048
     patch,_=encode_world_probe(snapshot);ram=bytearray(base)
     for a,v in patch.items():ram[a]=v

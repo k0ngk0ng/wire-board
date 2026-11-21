@@ -136,7 +136,7 @@ class Collector:
     node['sha256']=sha(child)
   result=encoded(public);self.add(mount+'/'+name,result);return result
  def audio(self):
-  assets=self.root/'games/basketball/assets';base=self.root/'.local/basketball/audio/export'
+  assets=self.root/'games/basketball/assets';base=self.root/'.local/basketball/assets/audio/export'
   catalog,catalog_raw=self.document(assets,'audio-catalog.json',True);playback,_=self.document(assets,'audio-playback.json')
   source,_=self.document(base,'manifest.json',True)
   if 'catalog_sha256' in source:require(source['catalog_sha256']==sha(catalog_raw),'audio source catalog hash differs')
@@ -181,9 +181,9 @@ class Collector:
 def collect(root):
  c=Collector(root)
  for group in ['court','courts','static-atlas','static-objects','raster','results']:
-  c.manifest(root/'.local/basketball'/group,'atlas.json' if group.startswith('static-') else 'manifest.json','basketball/v1/graphics/'+group)
- c.manifest(root/'.local/postresult-assets','manifest.json','basketball/v1/graphics/postresult')
- c.manifest(root/'.local/basketball/selection-assets','manifest.json','basketball/v1/selection')
+  c.manifest(root/'.local/basketball/assets'/group,'atlas.json' if group.startswith('static-') else 'manifest.json','basketball/v1/graphics/'+group)
+ c.manifest(root/'.local/basketball/assets/postresult','manifest.json','basketball/v1/graphics/postresult')
+ c.manifest(root/'.local/basketball/assets/selection-assets','manifest.json','basketball/v1/selection')
  c.audio();return c
 def archive(files):
  raw=io.BytesIO()

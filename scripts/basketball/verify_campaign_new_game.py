@@ -4,7 +4,7 @@ This does not recapture gameplay or regenerate expected values with Go's RNG.
 import argparse,gzip,hashlib,json
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
-SOURCE=ROOT/'.local/basketball/rea/campaign-new-game/calls.json'
+SOURCE=ROOT/'.local/basketball/research/rea/campaign-new-game/calls.json'
 EXPECTED='08836c0a95cf13a9319f65506efd721f57b3bab34adfc360db67773ac7342c03'
 def signed(v):return v if v<128 else v-256
 def progress(s,mode,reward):

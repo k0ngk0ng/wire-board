@@ -6,7 +6,7 @@ import json
 ROOT=Path(__file__).resolve().parents[2]
 
 def main():
-    rom=(ROOT/'.local/nes-basket/basketball.nes').read_bytes()
+    rom=(ROOT/'.local/basketball/research/original/basketball.nes').read_bytes()
     digest=hashlib.sha256(rom).hexdigest()
     assert digest=='0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b'
     bank=rom[16+5*16384:16+6*16384]

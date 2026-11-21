@@ -6,7 +6,7 @@ from pathlib import Path
 import json,hashlib
 ROOT=Path(__file__).resolve().parents[2]
 def derive():
- state=ROOT/'.local/nes-basket/states/slot-2.fcs';raw=state.read_bytes();assert raw[:4]==b'FCSX' and raw[12:16]==b'\xff'*4
+ state=ROOT/'.local/basketball/research/original/states/slot-2.fcs';raw=state.read_bytes();assert raw[:4]==b'FCSX' and raw[12:16]==b'\xff'*4
  fields={};position=16
  while position<len(raw):
   length=int.from_bytes(raw[position+1:position+5],'little');cursor=position+5;end=cursor+length
@@ -15,11 +15,11 @@ def derive():
   position=end
  base=int.from_bytes(fields['TSBS'],'little');remainder=int.from_bytes(fields['ICou'],'little',signed=True);initial_kook=fields['KOOK'][0]
  assert initial_kook in [0,1] and remainder%16==0 and fields['DEAD']==b'\0'
- base_dot=base*3+remainder//16;out=ROOT/'.local/basketball/irq-raster';cases={};sources=[]
+ base_dot=base*3+remainder//16;out=ROOT/'.local/basketball/research/irq-raster';cases={};sources=[]
  for file in ['clock-capture.json','holdout-timing-capture.json']:
   capture=json.loads((out/file).read_text())
   for record in capture['records']:
-   run=ROOT/'.local/nes-basket/runs'/record['run'];initial=json.loads((run/'initial-clock.json').read_text());assert initial['cycles']==base
+   run=ROOT/'.local/basketball/research/original/runs'/record['run'];initial=json.loads((run/'initial-clock.json').read_text());assert initial['cycles']==base
    events=[json.loads(line) for line in (run/'irq.jsonl').read_text().splitlines()]
    for item in record['frames']:
     n=item['frame'];prior=n-1;kook=initial_kook^(prior&1);prior_dots=prior*89342-(prior//2+(prior%2)*initial_kook)

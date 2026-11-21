@@ -35,7 +35,7 @@ Original source: bank3 9598/95B4/9769/C00C, REA `ev_f0ce6b1dbcabba1133dc39a0adf0
 
 `testdata/result-actor-extension.json.gz` contains 2,168 complete unchanged original actor calls, including actual C00C/CD3C/D0D9 projection, and 64 explicitly isolated original command-handler cases. Only C000 audio-driver execution is replaced with ordered sound-ID recording. Handler cases use declared RAM0180 operand bytes without changing original instructions, and stop before the next command fetch. F7 palette and FE/FF alias cases prove those handlers under controlled operands, not a naturally executed source script. SHA-256: `8851dfb356fb67336c54e68ee9c3e906092cbb82f208b4942a07d19bffc59582`.
 
-RED was captured before implementation: `action-62-slot-3-mirror-0: unrestored result animation action 98 cursor 3` in `.local/result-actor-extension/before.log`. The contextual/handler/invalid-input tests were also written before their implementation; `context-before.log` retains their failures. The passing source tests compare complete `OpeningState`, contextual fields, sounds and JSON restoration. The existing 145 natural BA40 calls / 580 actor updates still match.
+RED was captured before implementation: `action-62-slot-3-mirror-0: unrestored result animation action 98 cursor 3` in `.local/basketball/research/result-actor-extension/before.log`. The contextual/handler/invalid-input tests were also written before their implementation; `context-before.log` retains their failures. The passing source tests compare complete `OpeningState`, contextual fields, sounds and JSON restoration. The existing 145 natural BA40 calls / 580 actor updates still match.
 
 Reproduction (from the worktree):
 
@@ -47,7 +47,7 @@ go test -race ./games/basketball/engine -run '^(TestOriginalResultActor.*|TestOr
 GOOS=js GOARCH=wasm go test ./games/basketball/engine -exec="$(go env GOROOT)/lib/wasm/go_js_wasm_exec" -run '^(TestOriginalResultActor.*|TestOriginalFullResultPresentation|TestResultActorScriptsAndConfirmation|TestRuntimeResultOutcomeRestoreAndBoundary|TestCampaignConfirmationOriginalOperations|TestOriginalCampaignRosterCommitAndTail|TestCampaignIntermissionStartCommitsOnce)$' -count=1 -v
 ```
 
-Logs are under `.local/result-actor-extension/`: `after.log`, `race.log`, `wasm.log`, `oracle-repeat.log`, `tables-repeat.log`. Native source/regression checks passed; final race/Wasm status is recorded below. Parent reward-driver integration separately passed 1,146 full calls across 15 chains with continuous caller RNG and JSON replay; those fixtures and lifecycle work belong to the parent.
+Logs are under `.local/basketball/research/result-actor-extension/`: `after.log`, `race.log`, `wasm.log`, `oracle-repeat.log`, `tables-repeat.log`. Native source/regression checks passed; final race/Wasm status is recorded below. Parent reward-driver integration separately passed 1,146 full calls across 15 chains with continuous caller RNG and JSON replay; those fixtures and lifecycle work belong to the parent.
 
 Remaining boundaries: source text processing, uploads/fades, ending phase integration, scene resources/audio76, original scheduler and whole-platform E2E. This actor extension does not claim a completed ending movie or fourteen-win campaign.
 

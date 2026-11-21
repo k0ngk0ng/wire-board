@@ -27,5 +27,5 @@ def main():
  paused=[i+1 for i in range(300) if raw[i*2048+0x589]==2]
  assert paused==list(range(62,92));assert paused_updates==30;assert all(row['id'] not in (253,255) for row in requests)
  result=dict(same_ram=True,same_screenshots=True,paused_input_frames=paused,paused_audio_driver_updates=paused_updates,audio_driver_updates=len(updates),requests=requests,source=json.loads((out/'source.json').read_text()),sound_trace_sha256=hashlib.sha256((out/'sound-requests.jsonl').read_bytes()).hexdigest())
- (ROOT/'.local/basketball/engine/runtime-pause-audio.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result))
+ (ROOT/'.local/basketball/verification/engine/runtime-pause-audio.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result))
 if __name__=='__main__':main()

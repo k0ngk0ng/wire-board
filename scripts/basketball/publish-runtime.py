@@ -17,7 +17,7 @@ def main():
  for cdn in (False,True):
   data,mime=oss.get(key,cdn=cdn);assert data==b and mime=='application/wasm','readback differs'
  (ROOT/'games/basketball/assets/runtime-manifest.json').write_text(json.dumps(pin,indent=2)+'\n')
- out=ROOT/'.local/basketball-loading';out.mkdir(parents=True,exist_ok=True)
+ out=ROOT/'.local/basketball/verification/loading';out.mkdir(parents=True,exist_ok=True)
  (out/'runtime-oss.json').write_text(json.dumps(dict(status='verified-published',**pin),indent=2)+'\n')
  print(json.dumps(dict(status='verified-published',**pin)))
 if __name__=='__main__':main()

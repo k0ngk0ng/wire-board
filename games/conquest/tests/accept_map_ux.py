@@ -464,11 +464,11 @@ def preserve_platform_controls(map_id,peer):
     browser('scrollintoview','.cq-viewport');before=js('document.querySelector(".cq-viewport").getBoundingClientRect().toJSON()')
     peer.act('resign');browser('wait','[role=dialog][aria-label="本局结果"]')
     assert view()['phase']=='finished'
-    click('关闭');wait('!document.querySelector(".match-result-modal")')
+    click('查看最终画面');wait('!document.querySelector(".match-result-modal")')
     after=js('document.querySelector(".cq-viewport").getBoundingClientRect().toJSON()')
     assert abs(before['y']-after['y'])<1,(before,after)
     api('/state');assert not js('!!document.querySelector(".match-result-modal")')
-    click('查看结果');browser('wait','.match-result-modal');click('关闭')
+    click('查看结果');browser('wait','.match-result-modal');click('查看最终画面')
     screenshot(map_id+'-final-board')
     command('rematch');browser('wait','.waiting-actions')
     command('ready');peer.command('ready');command('start');peer.ready_load();ready()

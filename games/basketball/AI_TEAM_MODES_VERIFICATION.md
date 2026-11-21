@@ -24,7 +24,7 @@
 
 ## 原指令与调用证据
 
-REA `ev_ee1f781ed69881c4b9ef47d01fc03943dcd8af32c6a005d5bcdc83ba43ea83a5`覆盖ABEF/AAC7/AC3A/AE96/B05C/B20C，完整分析位于 `.local/basketball/rea/ai-team-modes/analysis/`。
+REA `ev_ee1f781ed69881c4b9ef47d01fc03943dcd8af32c6a005d5bcdc83ba43ea83a5`覆盖ABEF/AAC7/AC3A/AE96/B05C/B20C，完整分析位于 `.local/basketball/research/rea/ai-team-modes/analysis/`。
 
 `verify_ai_team_modes.py`执行原A05D完整个人分派：
 
@@ -42,7 +42,7 @@ REA `ev_ee1f781ed69881c4b9ef47d01fc03943dcd8af32c6a005d5bcdc83ba43ea83a5`覆盖A
 
 ## 验收与限制
 
-Native、race、Wasm同一39项定向测试全部通过，覆盖新增模式与选择链、mode7/3E、既有mode5/plan11、队伍分派及1998次完整输入阶段回归。完整记录、测试集合和源码/日志SHA位于 `.local/basketball/rea/ai-team-modes/verification.json`。
+Native、race、Wasm同一39项定向测试全部通过，覆盖新增模式与选择链、mode7/3E、既有mode5/plan11、队伍分派及1998次完整输入阶段回归。完整记录、测试集合和源码/日志SHA位于 `.local/basketball/research/rea/ai-team-modes/verification.json`。
 
 未修改world_actions.go或world_loop.go，也未重复完整比赛门禁。缺少mode34实际读取的搭档状态、无来源目标坐标、无效原跳跃参数或mode35阈值表外难度仍明确失败；早退分支不强求未读取的上下文。其他未恢复个人模式/计划保持原有错误。
 

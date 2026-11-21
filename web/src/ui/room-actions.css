@@ -1,0 +1,77 @@
+.result-actions {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+}
+.result-actions button {
+  min-height: 44px;
+  font-size: 13px;
+}
+.match-result-modal .result-waiting {
+  margin: 16px 0 0;
+  color: #58674f;
+  font-size: 13px;
+}
+.room-tools .room-tool-button,
+.game-fullscreen-actions .room-tool-button {
+  position: relative;
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+}
+.room-tool-tooltip {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 55;
+  padding: 6px 9px;
+  border-radius: 6px;
+  background: #243e35;
+  color: #fffef9;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0s 150ms,
+    visibility 0s 150ms;
+}
+.room-tool-button:focus-visible .room-tool-tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+@media (hover: hover) {
+  .room-tool-button:hover .room-tool-tooltip {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+@media (max-width: 600px) {
+  .room-tools .room-tool-button,
+  .game-fullscreen-actions .room-tool-button {
+    width: 44px;
+    height: 44px;
+  }
+  .room-tools .room-tool-button svg,
+  .game-fullscreen-actions .room-tool-button svg {
+    width: 17px;
+    height: 17px;
+  }
+  .result-actions {
+    gap: 8px;
+  }
+  .result-actions button {
+    flex: 1 0 auto;
+    padding: 10px;
+  }
+}

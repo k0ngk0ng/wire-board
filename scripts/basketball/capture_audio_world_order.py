@@ -114,7 +114,7 @@ def capture(name,frames,team0,team1,segments=None):
     runs=[]
     for suffix,hook in [('reference',config),('observed',config+'\n'+HOOK)]:
         spec=dict(base,name=name+'-'+suffix,hooks_lua=hook)
-        out=BASE/'runs'/spec['name'];path=ROOT/'.local/basketball/audio/world-order'/(spec['name']+'.json')
+        out=BASE/'runs'/spec['name'];path=ROOT/'.local/basketball/assets/audio/world-order'/(spec['name']+'.json')
         path.parent.mkdir(parents=True,exist_ok=True);path.write_text(json.dumps(spec,indent=2)+'\n')
         if not ((out/'capture-complete.json').exists() and json.loads((out/'scenario.json').read_text())==spec):run(path)
         runs.append(out)
@@ -130,7 +130,7 @@ def capture(name,frames,team0,team1,segments=None):
         'ram_sha256':sha(observed/'ram.bin'),'events_sha256':sha(observed/'audio-world-order.jsonl'),
         'trace':str((observed/'audio-world-order.jsonl').relative_to(ROOT)),'counts':dict(counts),'chains':chains,
         'chain_ram_sha256':sha(observed/'turn-chains.ram'),'source':json.loads((observed/'source.json').read_text())}
-    (ROOT/'.local/basketball/audio/world-order'/(name+'-summary.json')).write_text(json.dumps(summary,indent=2)+'\n')
+    (ROOT/'.local/basketball/assets/audio/world-order'/(name+'-summary.json')).write_text(json.dumps(summary,indent=2)+'\n')
     print(json.dumps({key:summary[key] for key in ['name','frames','counts','ram_and_screenshots_match_reference']}))
 
 

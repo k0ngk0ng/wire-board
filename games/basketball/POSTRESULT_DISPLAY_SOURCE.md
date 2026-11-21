@@ -28,7 +28,7 @@ Scene7 NMI uses fixed F0F2→F18F; fixed F1DA has twelve(selector,latch) pairs. 
 
 Named chains are phases0–2 `14→2→1`;3–4 `2→1`;5–7 `3→4→2→1`;8 `15→16→17→18→2→1`;9 `1`;10–11 `2→1`. Selector1 disables IRQ then runs the original sound driver. The render helper must leave sound-driver execution to the appropriate audio/scheduler owner.
 
-Bounded source disassembly is retained in `.local/postresult-display-source/fixed-raster.asm`. Data tables were printed for inspection but must not be treated as executable instructions. The completed controlled probes execute the original NMI and IRQ handlers with declared inactive queues/silent audio state, retain complete writes and relative cycles, and compare helpers only against their owned rendering effects.
+Bounded source disassembly is retained in `.local/basketball/research/postresult-display-source/fixed-raster.asm`. Data tables were printed for inspection but must not be treated as executable instructions. The completed controlled probes execute the original NMI and IRQ handlers with declared inactive queues/silent audio state, retain complete writes and relative cycles, and compare helpers only against their owned rendering effects.
 
 ## Implemented API and ownership
 
@@ -49,7 +49,7 @@ The browser receives tile-row references and palette. Recorded OAM remains an in
 
 The declared I/O adapter records PPU/MMC3/APU writes and supplies neutral status reads. OAM DMA hardware stalls are not emulated; NMI raster cycle origins are explicitly **after** DMA/queue work. The fixture's full instruction count is not a claim about a full live audio driver's cost or physical video duration. The Go helper returns only owned rendering effects and their source-relative cycles.
 
-The first Go test failed on missing helper symbols before implementation; see `.local/postresult-display-source/expected-red-go.log`. Source comparisons, rejection tests and JSON restoration now pass. Original phase6's special font page14 and phase7's page98 are separately covered for live selector0; unsupported table indexes are rejected.
+The first Go test failed on missing helper symbols before implementation; see `.local/basketball/research/postresult-display-source/expected-red-go.log`. Source comparisons, rejection tests and JSON restoration now pass. Original phase6's special font page14 and phase7's page98 are separately covered for live selector0; unsupported table indexes are rejected.
 
 The source-controlled cases keep source fields constant between handler calls. The live-source test additionally reproduces the observed credits ordering: at local10500, early IRQs read184/92; mainline then changes the credits; later IRQs read45/91. At airplane local9000, the lower strip reads updated06D9=199 while the NMI snapshot had204. Source observations prove why a whole-frame frozen NMI snapshot is incorrect. This does not establish every possible IRQ/mainline interleaving.
 
@@ -57,7 +57,7 @@ The source-controlled cases keep source fields constant between handler calls. T
 
 The helper uses original **instruction-start** cycles. FCEUX's execution callback has a different timestamp convention: `src/x6502.cpp` calls `ADDCYC(CycTable[b1])` before `CallRegisteredLuaMemHook(...EXEC)`. Consequently the recorded `irqBefore` callback atF2D4 already includes its first `PHA` instruction's three cycles. A source-observed IRQ anchor is therefore `irqBefore.cycles - 3` when positioning these handler effects. This is a source-proven instrumentation boundary, not a screenshot-fitted offset.
 
-The upstream `v2.6.6/src/x6502.cpp` evidence and digest are retained in `.local/postresult-display-source/`. NMI anchors must likewise use their declared instruction-start boundary rather than blindly using an execution callback's timestamp.
+The upstream `v2.6.6/src/x6502.cpp` evidence and digest are retained in `.local/basketball/research/postresult-display-source/`. NMI anchors must likewise use their declared instruction-start boundary rather than blindly using an execution callback's timestamp.
 
 Logical phase/actors alone do not identify which original CPU instruction was interrupted, its remaining cycles, or all mid-frame mainline changes. Production may use an explicitly documented deterministic **canonical visual sampling** policy while keeping original gameplay/phase/animation semantics. Such sampling must remain distinct from exact source-observed pixel timing. No captured IRQ times or captured interleavings are embedded into production code, and no CPU interpreter is introduced to conceal this remaining timing boundary.
 
@@ -80,8 +80,8 @@ source scripts/env.sh
 go test ./games/basketball/engine -run '^TestOriginalPostResultRaster' -count=1
 ```
 
-Both generated fixtures reproduce byte-for-byte. Their tracked `*-source.json` files contain hashes, counts and scope. Test logs, initial failures, source disassembly, REA output, source-file hashes and repeated-generation results are in `.local/postresult-display-source/`.
+Both generated fixtures reproduce byte-for-byte. Their tracked `*-source.json` files contain hashes, counts and scope. Test logs, initial failures, source disassembly, REA output, source-file hashes and repeated-generation results are in `.local/basketball/research/postresult-display-source/`.
 
 Remaining owner integration: source-timed resource commits; actor submission rather than post-tail instant display; explicit live/canonical IRQ sampling; runtime/server/Wasm/browser wiring; whole playback/reconnect/restoration E2E; and the independently outstanding earned campaign acceptance. These helpers do not complete or release the game.
 
-New REA evidence: `ev_b1ac981cf9f7603a7fe81c3a78d8cceaa67e066ea9db3354588d71129f8ad775`, retained at `.local/postresult-display-source/analysis/evidence.json`. All15 requested fixed-bank functions were analyzed and the session was closed. Instruction-executed fixtures constrain decompiler limitations. `.local/postresult-display-source/manifest.json` records source/evidence/log hashes.
+New REA evidence: `ev_b1ac981cf9f7603a7fe81c3a78d8cceaa67e066ea9db3354588d71129f8ad775`, retained at `.local/basketball/research/postresult-display-source/analysis/evidence.json`. All15 requested fixed-bank functions were analyzed and the session was closed. Instruction-executed fixtures constrain decompiler limitations. `.local/basketball/research/postresult-display-source/manifest.json` records source/evidence/log hashes.

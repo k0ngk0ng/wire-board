@@ -9,8 +9,10 @@ from prepare_renderer_fixture import ROOT,prepare
 from prepare_result_renderer_fixture import prepare as prepare_results
 from prepare_courts_renderer_fixture import prepare as prepare_courts
 from prepare_fade_fixture import prepare as prepare_fades
-out=prepare();prepare_results();prepare_results(palette_variant=True);prepare_results(court_six=True);prepare_courts();prepare_courts(holdout=True);prepare_fades();legacy_only='--legacy-only' in sys.argv;profile=out/'profile';sockets=ROOT/'.local/bks';sockets.mkdir(exist_ok=True)
+out=prepare();prepare_results();prepare_results(palette_variant=True);prepare_results(court_six=True);prepare_courts();prepare_courts(holdout=True);prepare_fades();legacy_only='--legacy-only' in sys.argv;profile=out/'profile';sockets=ROOT/'.local/basketball/tmp/s';sockets.mkdir(parents=True,exist_ok=True)
 env=dict(os.environ,AGENT_BROWSER_SESSION='bkr-'+uuid.uuid4().hex[:4],AGENT_BROWSER_SOCKET_DIR=str(sockets),TMPDIR=str(ROOT/'.local/tmp'))
+Path(env['TMPDIR']).mkdir(parents=True, exist_ok=True)
+Path(env['AGENT_BROWSER_SOCKET_DIR']).mkdir(parents=True, exist_ok=True)
 requests=[]
 class Handler(BaseHTTPRequestHandler):
  def log_message(self,*args):pass
@@ -21,28 +23,28 @@ class Handler(BaseHTTPRequestHandler):
   elif route=='/result-court-six-cases.json':path=out/'result-court-six-cases.json'
   elif route.startswith('/result-court-six-reference/'):
    name=route.rsplit('/',1)[-1]
-   if name.endswith('.png') and name[:-4].isdigit():path=ROOT/'.local/nes-basket/runs/court-six-result-observed'/('frame-'+name)
+   if name.endswith('.png') and name[:-4].isdigit():path=ROOT/'.local/basketball/research/original/runs/court-six-result-observed'/('frame-'+name)
   elif route.startswith('/assets/'):
    rel=Path(route.removeprefix('/assets/'))
-   if rel.parts and '..' not in rel.parts and rel.parts[0] in ('court','static-atlas','static-objects','raster','results','courts'):path=ROOT/'.local/basketball'/rel
+   if rel.parts and '..' not in rel.parts and rel.parts[0] in ('court','static-atlas','static-objects','raster','results','courts'):path=ROOT/'.local/basketball/assets'/rel
   elif route.startswith('/fade-reference/'):
    parts=route.split('/')
-   if len(parts)==4 and parts[2] in ('ny-open','ny-match','court4-match','court4-palette10') and parts[3].endswith('.png') and parts[3][:-4].isdigit():path=ROOT/f'.local/nes-basket/runs/fade-v2-{parts[2]}-observed'/('frame-'+parts[3])
+   if len(parts)==4 and parts[2] in ('ny-open','ny-match','court4-match','court4-palette10') and parts[3].endswith('.png') and parts[3][:-4].isdigit():path=ROOT/f'.local/basketball/research/original/runs/fade-v2-{parts[2]}-observed'/('frame-'+parts[3])
   elif route.startswith('/irq-reference/'):
    parts=route.split('/')
-   if len(parts)==4 and parts[2] in ('3','4') and parts[3].endswith('.png') and parts[3][:-4].isdigit():path=ROOT/f'.local/nes-basket/runs/court-{parts[2]}-irq-holdout-observed'/('frame-'+parts[3])
+   if len(parts)==4 and parts[2] in ('3','4') and parts[3].endswith('.png') and parts[3][:-4].isdigit():path=ROOT/f'.local/basketball/research/original/runs/court-{parts[2]}-irq-holdout-observed'/('frame-'+parts[3])
   elif route.startswith('/court-reference/'):
    parts=route.split('/')
-   if len(parts)==4 and parts[2].isdigit() and 0<=int(parts[2])<8 and parts[3].endswith('.png') and parts[3][:-4].isdigit():path=ROOT/f'.local/nes-basket/runs/court-{parts[2]}-observed'/('frame-'+parts[3])
+   if len(parts)==4 and parts[2].isdigit() and 0<=int(parts[2])<8 and parts[3].endswith('.png') and parts[3][:-4].isdigit():path=ROOT/f'.local/basketball/research/original/runs/court-{parts[2]}-observed'/('frame-'+parts[3])
   elif route.startswith('/result-palette-reference/'):
    name=route.rsplit('/',1)[-1]
-   if name.endswith('.png') and name[:-4].isdigit():path=ROOT/'.local/nes-basket/runs/court-4-result-observed'/('frame-'+name)
+   if name.endswith('.png') and name[:-4].isdigit():path=ROOT/'.local/basketball/research/original/runs/court-4-result-observed'/('frame-'+name)
   elif route.startswith('/result-reference/'):
    name=route.rsplit('/',1)[-1]
-   if name.endswith('.png') and name[:-4].isdigit():path=ROOT/'.local/nes-basket/runs/result-art-observed'/('frame-'+name)
+   if name.endswith('.png') and name[:-4].isdigit():path=ROOT/'.local/basketball/research/original/runs/result-art-observed'/('frame-'+name)
   elif route.startswith('/reference/'):
    parts=route.split('/')
-   if len(parts)==4 and parts[2].replace('-','').isalpha() and parts[3].endswith('.png') and parts[3][:-4].isdigit():path=ROOT/'.local/nes-basket/runs'/('renderer-'+parts[2])/('frame-'+parts[3])
+   if len(parts)==4 and parts[2].replace('-','').isalpha() and parts[3].endswith('.png') and parts[3][:-4].isdigit():path=ROOT/'.local/basketball/research/original/runs'/('renderer-'+parts[2])/('frame-'+parts[3])
   if path is None or not path.is_file():self.send_error(404);return
   content=path.read_bytes();mime='image/png' if path.suffix=='.png' else 'application/json' if path.suffix=='.json' else 'text/html' if path.suffix=='.html' else 'text/javascript'
   self.send_response(200);self.send_header('Content-Type',mime);self.send_header('Content-Length',str(len(content)));self.end_headers();self.wfile.write(content)

@@ -201,6 +201,7 @@ def finish_room():
             pass
     try:
         b("find", "role", "button", "click", "--name", "离开房间", "--exact")
+        b("click", "[data-leave-confirm]")
     except Exception:
         try:
             b("find", "role", "link", "click", "--name", "围桌首页", "--exact")
@@ -442,12 +443,12 @@ try:
     shot("result-1280")
     b("set", "viewport", "320", "740")
     shot("result-320")
-    b("click", ".modal-head button[aria-label=关闭]")
+    b("click", ".result-review")
     b("wait", ".result-reopen")
     b("click", ".result-reopen")
     b("wait", ".match-result-modal")
     check("result-closable-reopenable")
-    b("find", "role", "button", "click", "--name", "再来一局", "--exact")
+    b("find", "role", "button", "click", "--name", "返回房间", "--exact")
     b("wait", ".waiting-layout")
     check("rematch-returns-to-waiting")
     leave_room()

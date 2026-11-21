@@ -3,8 +3,8 @@ import sys,json,hashlib,itertools,gzip
 from pathlib import Path
 ROOT=Path.cwd();sys.path.insert(0,str(ROOT/'scripts/basketball'))
 from verify_pass_floor_original import MPU
-ROM=(ROOT/'.local/nes-basket/basketball.nes').read_bytes();assert hashlib.sha256(ROM).hexdigest()=='0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b';prg=ROM[16:16+131072]
-out=ROOT/'games/basketball/engine/testdata';source=ROOT/'.local/nes-basket/runs/campaign-audit-equipped-home-match/ram.bin';raw=source.read_bytes();BASE=raw[3409*2048:3410*2048]
+ROM=(ROOT/'.local/basketball/research/original/basketball.nes').read_bytes();assert hashlib.sha256(ROM).hexdigest()=='0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b';prg=ROM[16:16+131072]
+out=ROOT/'games/basketball/engine/testdata';source=ROOT/'.local/basketball/research/original/runs/campaign-audit-equipped-home-match/ram.bin';raw=source.read_bytes();BASE=raw[3409*2048:3410*2048]
 def machine(r):
  m=list(r)+[0]*(65536-len(r));m[0x8000:0xc000]=prg[3*16384:4*16384];m[0xc000:]=prg[-16384:];return MPU(memory=m)
 def decode(r):return dict(mode=r[0x58d],period=r[0x58c],teams=list(r[0x586:0x588]),pending=list(r[0x3cb:0x3cf]),characters=list(r[0x3e3:0x3e7]),random=int.from_bytes(bytes(r[0x48:0x4c]),'big'),phase=r[0x589],selectorTeam=r[0x6d7],enemyController=r[0x4ea],enemySelectionStatus=r[0x3d2],court=r[0x58b])
@@ -28,7 +28,7 @@ def main():
   row,_=run(r);boundaries.append(row);assert row['randomCalls']==0 and row['after']['pending']==row['before']['pending']
  natural=[]
  for name,frame in [('campaign-audit-first-match-confirm',769),('campaign-audit-coop-first-match',769),('campaign-audit-equipped-home-match',3410),('campaign-audit-loss-continue',11009)]:
-  path=ROOT/'.local/nes-basket/runs'/name/'ram.bin'
+  path=ROOT/'.local/basketball/research/original/runs'/name/'ram.bin'
   if not path.exists():continue
   b=path.read_bytes();r=b[(frame-1)*2048:frame*2048];next=b[frame*2048:(frame+1)*2048];row,_=run(r)
   assert row['after']['pending']==list(next[0x3cb:0x3cf]) and row['after']['random']==int.from_bytes(next[0x48:0x4c],'big')

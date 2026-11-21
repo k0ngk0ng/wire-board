@@ -16,7 +16,7 @@ ROOT=Path(__file__).resolve().parents[2]
 
 
 def main():
-    root=ROOT/'.local/basketball/audio'
+    root=ROOT/'.local/basketball/assets/audio'
     run=root/'export/music-loop-boundary-run-1'
     driver=(run/'driver-ram.bin').read_bytes()
     assert len(driver)==20000*231
@@ -44,7 +44,7 @@ def main():
     # analog-output approximation still has a different oscillator phase.
     result={'status':'analysis-complete','seamless_loop_accepted':False,
         'reason':'Raw original loop boundaries have different PCM phase; no crossfade or sample replacement was applied.',
-        'source_rom_sha256':hashlib.sha256((ROOT/'.local/nes-basket/basketball.nes').read_bytes()).hexdigest(),
+        'source_rom_sha256':hashlib.sha256((ROOT/'.local/basketball/research/original/basketball.nes').read_bytes()).hexdigest(),
         'candidates':candidates,
         'source_sha256':{name:hashlib.sha256((run/name).read_bytes()).hexdigest() for name in ['full.wav','driver-ram.bin','sample-cursors.csv','sequence-jumps.csv','apu.csv','calls.csv']}}
     (root/'seam-verification.json').write_text(json.dumps(result,indent=2)+'\n')

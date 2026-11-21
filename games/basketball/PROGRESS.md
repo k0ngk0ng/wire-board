@@ -31,17 +31,17 @@
 
 可供网页使用的素材已独立导出：128 张人物图集（10,944 帧）、32 张非人物对象图集（3,840 帧）、纽约完整场地／图块与 HUD，以及 27 个原效果音和纽约背景音乐 66。83 帧的背景与 HUD 静态重建分别核对 3,981,018 和 977,408 个像素，按原列状态重建没有差异；直接裁切全图的旧边缘差异已单独保留。图集数量包含方向、队伍、角色与显示顺序变体，不能当作动作数量。持续背景音乐采用原五循环录音的独立派生文件，末尾 32ms 明确处理；接缝数值检查及真实媒体跨尾循环已通过，听感仍未人工验收。其他队伍与场地的自然画面验证、特殊阶段 HUD、其余音乐及效果仍未完成。
 
-完整浏览器验收从 Go 新建的冷配置开始，不修改时钟、位置、分数或随机状态；中场以原生 Space 输入映射至 Start，最终比分 `12:45`，确认后继续推进及恢复存档均保持最终状态和画面。证据在 `.local/basketball/full-match-browser/`。PC 键盘和手机触屏交互另在同一验收脚本的前段覆盖；这组混合配置不是人工逐球操作，也不代表其他球队、场地或平台联机已完成。完整平台前端／联机／观战／重连、OSS 素材发布与完整内容验收仍待完成，素材清单的 `accepted_for_release` 为 `false`。
+完整浏览器验收从 Go 新建的冷配置开始，不修改时钟、位置、分数或随机状态；中场以原生 Space 输入映射至 Start，最终比分 `12:45`，确认后继续推进及恢复存档均保持最终状态和画面。证据在 `.local/basketball/verification/full-match-browser/`。PC 键盘和手机触屏交互另在同一验收脚本的前段覆盖；这组混合配置不是人工逐球操作，也不代表其他球队、场地或平台联机已完成。完整平台前端／联机／观战／重连、OSS 素材发布与完整内容验收仍待完成，素材清单的 `accepted_for_release` 为 `false`。
 
-四电脑随后使用独立配置和产物目录完成实际浏览器整场，证据在 `.local/basketball/all-computer-full-match-browser/`；`--full-match --all-computer` 可复跑。仍保留原混合配置，不用其中一个成功结果代替另一个。
+四电脑随后使用独立配置和产物目录完成实际浏览器整场，证据在 `.local/basketball/verification/all-computer-full-match-browser/`；`--full-match --all-computer` 可复跑。仍保留原混合配置，不用其中一个成功结果代替另一个。
 
 平台服务端现以真实宿主时钟处理输入，按 60Hz 视频时序保留连续按键边沿；原 AI 只在原世界输入阶段运行。真实 HTTP 随机配置另外暴露了反向道具撞人和持球普通动作缺口：保留实际前态、从原代码恢复，再重放到原超时边界，没有换随机种子绕过。`server/README.md` 与 `PLATFORM_CONTRACT.md` 记录接口和限制；当前不宣称完整多人浏览器或网络预测已完成。
 
 独立 `web/renderer.ts` 已使用浏览器 Canvas 验证 83 个场内帧、15 个结果帧，共 6,021,120 个像素，差异为 0；包含原每扫描线 8 个精灵片段限制、64 个片段容量、动态 HUD、结果大比分和 320px 显示。结果页恢复原 kind 17 人物、CHR 页 13 和背景加载链，未套用普通球场。渲染器只消费语义显示快照及图像／图块数据，没有 ROM 执行器。6 个存档初始画面的旧显示球在离线夹具适配时单独恢复并保留证据；见 `web/RENDERER_VERIFICATION.md`。`BasketballClient` 已连接真实 Go／Wasm、Canvas、个人控制器映射与平台音频，短段和整场证据范围见 `WEB_RUNTIME_VERIFICATION.md`。
 
-历史基线 `.local/basketball/engine/continuous-integrated-summary.json` 记录了当时源码的篮球包竞态／Wasm 通过结果，不能覆盖之后新增的恢复代码。固定 6,000 次世界更新已在原生／Wasm 各重复两次通过，四次完整轨迹摘要相同，比分 `[12,55]`；见 `COLD_RUNTIME_VERIFICATION.md`。独立四电脑配置同样达到两次 6,000 次更新，比分 `[6,9]`，其更长视频流程单独验收。自然视频长测固定种子 `0x12345678`，每 300 帧进行 JSON 恢复对照；人物／道具接触、持筐拒绝请求、中场显示与最终结果显示的首差逐项恢复后，已通过完整上下半场及原结果确认。历史失败日志保留，当前报告见 `.local/basketball/video-runtime/*-full-match-result.json`。这些是固定配置与内容范围的验证，不是全部原版内容已经复刻的声明。仅运行篮球及受影响的公共组件，不运行其他游戏完整对局。
+历史基线 `.local/basketball/verification/engine/continuous-integrated-summary.json` 记录了当时源码的篮球包竞态／Wasm 通过结果，不能覆盖之后新增的恢复代码。固定 6,000 次世界更新已在原生／Wasm 各重复两次通过，四次完整轨迹摘要相同，比分 `[12,55]`；见 `COLD_RUNTIME_VERIFICATION.md`。独立四电脑配置同样达到两次 6,000 次更新，比分 `[6,9]`，其更长视频流程单独验收。自然视频长测固定种子 `0x12345678`，每 300 帧进行 JSON 恢复对照；人物／道具接触、持筐拒绝请求、中场显示与最终结果显示的首差逐项恢复后，已通过完整上下半场及原结果确认。历史失败日志保留，当前报告见 `.local/basketball/verification/video-runtime/*-full-match-result.json`。这些是固定配置与内容范围的验证，不是全部原版内容已经复刻的声明。仅运行篮球及受影响的公共组件，不运行其他游戏完整对局。
 
-此前阶段的 `.local/basketball/current-integration-summary.json` 保留当时 375 项竞态检查及 589 个文件摘要，不能代替后续变更的验收。最新 `.local/basketball/platform-integration-summary.json` 关联整套引擎 411 项竞态检查、服务端 8 项竞态检查、四电脑实际浏览器 28 项检查、公共控制元数据及真实 HTTP 证据，明确 `goalComplete: false`、`releaseReady: false`。测试数量不等于比赛场数。
+此前阶段的 `.local/basketball/verification/legacy/current-integration-summary.json` 保留当时 375 项竞态检查及 589 个文件摘要，不能代替后续变更的验收。最新 `.local/basketball/verification/legacy/platform-integration-summary.json` 关联整套引擎 411 项竞态检查、服务端 8 项竞态检查、四电脑实际浏览器 28 项检查、公共控制元数据及真实 HTTP 证据，明确 `goalComplete: false`、`releaseReady: false`。测试数量不等于比赛场数。
 
 ## 历史恢复记录
 
@@ -53,7 +53,7 @@
 - 独立解码 2bpp 图块、精灵翻转、透明色、OAM 顺序、每行精灵数量与左侧裁切；根据原版的滚屏值重新组合场地、人物、篮球及计分板。
 - 扩展到 11 组输入后，83 张采样画面通过 **5,099,520 个像素逐一比较，差异为 0**。覆盖空输入、方向移动、A+B、A、B、跑动／急停和跑动跳跃。这是这些纽约场景的离线绘制对照，不代表玩法或所有场地已经复刻。
 - 从原版绘制代码的对象索引识别精灵归属，导出独立、透明、以脚部为定位点的角色／球／篮筐帧。扩展运动采样后得到 75 张不同图像、9,367 条来源记录；其中受控角色索引 0 有 19 张帧图，含朝向与精灵优先级变体，不等于 19 个独立动作。镜头边缘可能裁切的 686 个姿态已明确跳过，未补画或冒充完整帧。
-- 已记录原版重排 OAM 的显示阶段。同一姿态可能因重叠部件的先后次序而有两张图；现在可用「姿态／朝向 + 优先级方向」唯一选择国夫帧图，避免把这种差异误当成新动作。供后续渲染使用的精简索引为 `.local/basketball/atlas/kunio-frames.json`。
+- 已记录原版重排 OAM 的显示阶段。同一姿态可能因重叠部件的先后次序而有两张图；现在可用「姿态／朝向 + 优先级方向」唯一选择国夫帧图，避免把这种差异误当成新动作。供后续渲染使用的精简索引为 `.local/basketball/assets/atlas/kunio-frames.json`。
 - 已捕获人物受击、倒地和持球等图像，但图像数量不是动作规则覆盖率。无球基本动作及部分持球动作的实现见下文；接触战斗、完整比赛及特殊动作仍须继续恢复。
 
 关键坐标和绘制证据：
@@ -71,7 +71,7 @@
 
 ## 可重复验证
 
-当前机器已准备的用户 ROM、初始比赛存档和输入时间线位于 `.local/nes-basket/`，原文件未修改。所有导出图片和原始数据仅在工作区忽略目录中。
+当前机器已准备的用户 ROM、初始比赛存档和输入时间线位于 `.local/basketball/research/original/`，原文件未修改。所有导出图片和原始数据仅在工作区忽略目录中。
 
 ```sh
 # 图块、翻转与裁切的轻量检查。
@@ -80,21 +80,21 @@ PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/tes
 # 对任一已有输入场景重新采样，例如向右移动。
 PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python \
   scripts/basketball/capture_graphics.py \
-  --scenario .local/nes-basket/control-right.json
+  --scenario .local/basketball/research/original/control-right.json
 
 # 从原始图块和精灵重建，并逐像素比较完整画面。
 PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python \
   scripts/basketball/verify_graphics.py \
-  .local/nes-basket/runs/graphics-right \
-  --output .local/basketball/graphics/right
+  .local/basketball/research/original/runs/graphics-right \
+  --output .local/basketball/assets/graphics/right
 
 # 导出独立对象帧，校验透明度、定位点、内容摘要和来源。
 PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/export_atlas.py
 PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python \
-  scripts/basketball/verify_atlas.py .local/basketball/atlas
+  scripts/basketball/verify_atlas.py .local/basketball/assets/atlas
 ```
 
-结果在 `.local/basketball/graphics/verification.json` 和 `.local/basketball/atlas/verification.json`。重建整幅画面见 `.local/basketball/graphics/right/frame-00060-scene.png`，独立动作图像见 `.local/basketball/atlas/contact-sheet.png`。两者都是离线资产／绘制证据，不是可玩的 Go 游戏。
+结果在 `.local/basketball/assets/graphics/verification.json` 和 `.local/basketball/assets/atlas/verification.json`。重建整幅画面见 `.local/basketball/assets/graphics/right/frame-00060-scene.png`，独立动作图像见 `.local/basketball/assets/atlas/contact-sheet.png`。两者都是离线资产／绘制证据，不是可玩的 Go 游戏。
 
 采样脚本沿用已固定的 FCEUX 2.6.6、ROM 摘要和存档；换 ROM 或工具版本需要重新建立基准。输入时间线也保存在 `scripts/basketball/reference_scenarios.json`。当前重建器遇到尚未处理的背景优先级精灵会明确失败，不能据已有 83 帧通过推断所有特殊遮挡均正确。
 
@@ -108,14 +108,14 @@ PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python \
 - `engine/animation.go` 已还原帧时长、翻转、循环和动画结束后的动作请求，1,406 次原版调用、14 个采样序列通过。
 - `engine/player.go` 已还原国夫在平地、无持球／依附关系时的待机、行走、跑动、急停、普通／跑动跳跃、落地和 A／B 出招状态。11 组输入场景共 633 次完整世界动作阶段与原版一致。人物接触、攻击命中和伤害尚未实现。
 - `engine/input.go` 已还原无球基础动作的逻辑按键解析，包括方向、双击跑动、反向急停和 A+B 缓冲，638 次原版输入调用通过。平台物理键位到逻辑按钮的映射仍由公共控制器负责。
-- 连续回放现在只从原记录输入按住／新按下的逻辑按钮，动作请求、朝向、按键窗口、位置、速度和动画由 Go 连续维护。11 组场景、633 次完整动作更新通过，原生和 Wasm（Node 执行）输出一致。玩家状态摘要为 `cbd1c0ea8959def8c483f003ad4bf4310a2616018f6da44f53ff213d0fa79c08`，输入状态摘要为 `60141f56a7122f026e29c15ad5607770e9b454e1b39fe58e7f66d3d80c8602e0`。命令为 `go run ./games/basketball/cmd/verify-player`；结果保存在 `.local/basketball/engine/controlled-replay-native.json` 和 `controlled-replay-wasm.json`。
+- 连续回放现在只从原记录输入按住／新按下的逻辑按钮，动作请求、朝向、按键窗口、位置、速度和动画由 Go 连续维护。11 组场景、633 次完整动作更新通过，原生和 Wasm（Node 执行）输出一致。玩家状态摘要为 `cbd1c0ea8959def8c483f003ad4bf4310a2616018f6da44f53ff213d0fa79c08`，输入状态摘要为 `60141f56a7122f026e29c15ad5607770e9b454e1b39fe58e7f66d3d80c8602e0`。命令为 `go run ./games/basketball/cmd/verify-player`；结果保存在 `.local/basketball/verification/engine/controlled-replay-native.json` 和 `controlled-replay-wasm.json`。
 - 本轮确认原版起跳首次更新会再处理一次角色，落地时又会回退该次地面位移；这两个阶段已明确实现。不是通过随意缩短动画或添加位移补偿来凑轨迹。
 
 ## 原版 AI 追踪
 
 已确认电脑路径从 16 KiB PRG 第 5 页的 `$A05D` 进入，在固定页 `$FD8E` 返回。录下原版 3,600 帧过程中三个电脑对象的 3,594 次调用，观察到 15 个分派编号；原分派表有 42 个槽位，其中有多个共用处理地址。不能将槽位数描述成已恢复的独立策略数。
 
-采样保留调用前后 RAM、当前动作、请求动作、原 AI 状态、计划状态和持球对象；完整逐帧 RAM 与无钩子运行一致。数据在 `.local/nes-basket/runs/ai-shot-observation/`，分派表和 REA 分析在 `.local/basketball/ai/`。`scripts/basketball/capture_ai.py` 可从固定存档重复采样。
+采样保留调用前后 RAM、当前动作、请求动作、原 AI 状态、计划状态和持球对象；完整逐帧 RAM 与无钩子运行一致。数据在 `.local/basketball/research/original/runs/ai-shot-observation/`，分派表和 REA 分析在 `.local/basketball/research/ai/`。`scripts/basketball/capture_ai.py` 可从固定存档重复采样。
 
 REA 当前按一个明确的换页视图分析这些指令，伪代码仍包含跨页调用和控制流警告。恢复策略时必须结合实际指令和输入／输出，不能直接复制伪代码，也没有加入自创替代 AI。
 
@@ -127,7 +127,7 @@ REA 当前按一个明确的换页视图分析这些指令，伪代码仍包含�
 
 已从比赛存档通过方向和 A+B 正常接球，得到真人索引 0 持球的起始状态，没有改写 RAM。输入时间线保存在 `scripts/basketball/possession_scenarios.json`，运行 `scripts/basketball/capture_possession.py` 可重建该基线及 8 组后续场景：持球等待、行走、传球、按住 B 后松开、短按 B、持球跳跃、空中传球和空中投篮。
 
-每组分别运行带采样钩子和不带钩子的原版，逐帧 RAM 完全一致。共记录 320 次完整输入调用、329 次人物动作调用、315 次完整世界动作阶段及 315 次完整篮球更新；视频采样结束时未返回的调用另存，不计入完整结果。后续遭到电脑攻击、失去持球等原版行为原样保留，没有冻结对手。结果在 `.local/basketball/possession/verification.json`。
+每组分别运行带采样钩子和不带钩子的原版，逐帧 RAM 完全一致。共记录 320 次完整输入调用、329 次人物动作调用、315 次完整世界动作阶段及 315 次完整篮球更新；视频采样结束时未返回的调用另存，不计入完整结果。后续遭到电脑攻击、失去持球等原版行为原样保留，没有冻结对手。结果在 `.local/basketball/research/possession/verification.json`。
 
 `engine/possession.go`、`carrier_input.go` 和 `ball.go` 已实现普通持球的等待、行走、跳跃、落地、传球、投篮按住／松开与人物随后的动作，以及持球偏移和传球飞行。174 次输入解析、177 次人物动作、128 次持球更新和 33 次传球飞行更新通过原版数值对照。普通投篮及篮圈接触、计分的进展见下文；扣篮动作、篮板交互和完整比赛仍未完成。
 
@@ -137,7 +137,7 @@ REA 当前按一个明确的换页视图分析这些指令，伪代码仍包含�
 
 短按投篮的第 34 次更新前，原版篮筐处理会将速度降为约四分之一，但球仍保持投篮动作编号。最初按动作编号推断的前缀过长；通过写入追踪确认这是独立的篮筐／得分阶段，当前前缀固定在该阶段之前。首次不匹配保留在研究记录中，没有回填原版速度使连续验收通过。
 
-上述检查已在原生 Go 与 Wasm（Node 执行）中通过；最新结果为 `.local/basketball/engine/world-preparation-native-tests.json` 和 `world-preparation-wasm-tests.log`。这仍是连续逻辑验收，尚未成为浏览器可玩的完整比赛。
+上述检查已在原生 Go 与 Wasm（Node 执行）中通过；最新结果为 `.local/basketball/verification/engine/world-preparation-native-tests.json` 和 `world-preparation-wasm-tests.log`。这仍是连续逻辑验收，尚未成为浏览器可玩的完整比赛。
 
 ## 普通投篮、反弹与随机数
 
@@ -147,7 +147,7 @@ REA 当前按一个明确的换页视图分析这些指令，伪代码仍包含�
 
 `engine/random.go` 已还原原版四字节反馈寄存器，283 次连续随机调用逐次匹配完整状态与返回值。篮筐判定会结合该随机序列和人物能力，不能把接触范围内的球全部计为进球。随机数尚未接入完整世界／电脑调用顺序，不能据该函数通过推断比赛结果一致。
 
-采样器已改为关闭输出后原子写入完成标记，停止推进帧，再由父进程回收 FCEUX，避开 Qt／Lua 退出路径的崩溃。已重复验证原失败场景，并验证旧完成标记不能使后续 Lua 异常被当成成功。结果在 `.local/basketball/capture-verification.json`。
+采样器已改为关闭输出后原子写入完成标记，停止推进帧，再由父进程回收 FCEUX，避开 Qt／Lua 退出路径的崩溃。已重复验证原失败场景，并验证旧完成标记不能使后续 Lua 异常被当成成功。结果在 `.local/basketball/verification/legacy/capture-verification.json`。
 
 ## 篮圈判定与首次进球衔接
 
@@ -191,7 +191,7 @@ REA 当前按一个明确的换页视图分析这些指令，伪代码仍包含�
 
 ## REA 批量分析与电脑持球交接
 
-已完成 REA 6.5.0 的 Codex MCP 和技能安装，并实际验证服务启动及 `binary_session` 响应。使用 Ghidra 对第 5 页视图一次批量反编译 39 个入口，另对 6 个追逐辅助入口获取伪代码和完整指令档案；第 6 页持球输入另有独立分析。快照、完整 Evidence 与调用规格保存在 `.local/basketball/rea/`。`scripts/basketball/rea_batch.mjs` 可按已有规格重复执行，单个会话复用目标，避免逐函数重新启动分析器。
+已完成 REA 6.5.0 的 Codex MCP 和技能安装，并实际验证服务启动及 `binary_session` 响应。使用 Ghidra 对第 5 页视图一次批量反编译 39 个入口，另对 6 个追逐辅助入口获取伪代码和完整指令档案；第 6 页持球输入另有独立分析。快照、完整 Evidence 与调用规格保存在 `.local/basketball/research/rea/`。`scripts/basketball/rea_batch.mjs` 可按已有规格重复执行，单个会话复用目标，避免逐函数重新启动分析器。
 
 `ai_control.go` 和 `ai_pursuit.go` 新增模式 1 的持球交接与模式 2 的追球分派。原执行记录中的全部 166 次模式 1、976 次模式 2 调用均通过；比较策略、动作、方向、随机状态、球命令和球权。全电脑队伍会先按原顺序检查球附近的对手，有真人队友时走共享球反应；不会替换成最近对象策略。接球结束后的跳转目标保持原编号，后续尚未实现的策略仍明确报错。
 
@@ -214,15 +214,15 @@ REA 当前按一个明确的换页视图分析这些指令，伪代码仍包含�
 | 19 | 按难度等待、后退及重新接近 | 128 |
 | 26 | 运球避让选择和动作请求 | 5 |
 
-本轮新增 1,111 次原版调用对照，与先前 2,483 次合并，覆盖原保留记录中的全部 **3,594 次 AI 调用、15 个模式**。`scripts/basketball/verify_ai_trace_coverage.py` 按原帧／角色键核对全部 9 份夹具，确认无重复、无遗漏；结果在 `.local/basketball/engine/ai-trace-coverage.json`。这是同一原始记录的完整单次决策对照，不是新增 3,594 场比赛，也不是完整世界连续推演。
+本轮新增 1,111 次原版调用对照，与先前 2,483 次合并，覆盖原保留记录中的全部 **3,594 次 AI 调用、15 个模式**。`scripts/basketball/verify_ai_trace_coverage.py` 按原帧／角色键核对全部 9 份夹具，确认无重复、无遗漏；结果在 `.local/basketball/verification/engine/ai-trace-coverage.json`。这是同一原始记录的完整单次决策对照，不是新增 3,594 场比赛，也不是完整世界连续推演。
 
 `ComputerActorState.JumpPhase` 保存原跳跃阶段；投篮球种、跳跃阶段、清零纵深速度、停止平面运动和下一动作均作为显式命令，在人物动作物理之前应用。电脑上下文传入原场地、难度、队伍和搭档连接状态，自身高度速度与跳跃阶段来自人物状态，不由外部每帧回填。固定集成验证覆盖移动命令和跳跃相位传递；攻击命中、伤害和得分仍由待恢复的世界阶段负责。
 
-REA 批量证据按 `positioning-batch`、`jump-setup-batch`、`dribble-attack`、`marking`、`shot-planning`、`engagement`、`dribble-evasion` 保存在 `.local/basketball/rea/`。对手交互的两处函数查询遇到映射错误，已保留错误与同源原始指令，并以原执行记录核对；没有将失败查询描述为成功反编译。每个独立模块的失败场景、静态与动态边界分别记录在 `AI_*_VERIFICATION.md`。
+REA 批量证据按 `positioning-batch`、`jump-setup-batch`、`dribble-attack`、`marking`、`shot-planning`、`engagement`、`dribble-evasion` 保存在 `.local/basketball/research/rea/`。对手交互的两处函数查询遇到映射错误，已保留错误与同源原始指令，并以原执行记录核对；没有将失败查询描述为成功反编译。每个独立模块的失败场景、静态与动态边界分别记录在 `AI_*_VERIFICATION.md`。
 
 投篮选择当前恢复方案 0／1／14／15，避让恢复方案 0／1／5；其他方案仍明确报错。共享入口的模式 12／16／39 没有此记录中的自然样本。AI 已能输出某种特殊投篮或攻击，不代表对应动作、球体、碰撞或伤害已经实现：特殊投篮、闪避动作 `$2E`、部分无球快速起跳及攻击动作仍是接下来恢复的重点。不能据 15 个已观察模式通过推断原分派表 42 个槽位或所有队伍／场地已验收。
 
-篮球内核的原生竞态检查与 Wasm 编译后 Node 执行通过；证据为 `.local/basketball/engine/ai-attack-native-tests.json`、`ai-attack-wasm-tests.log` 和 `ai-attack-summary.json`。没有运行其他游戏的规则或完整对局检查。原版对照总目标仍未完成，游戏未注册、未发布。
+篮球内核的原生竞态检查与 Wasm 编译后 Node 执行通过；证据为 `.local/basketball/verification/engine/ai-attack-native-tests.json`、`ai-attack-wasm-tests.log` 和 `ai-attack-summary.json`。没有运行其他游戏的规则或完整对局检查。原版对照总目标仍未完成，游戏未注册、未发布。
 
 ## 人物动作执行与世界前置阶段
 
@@ -238,7 +238,7 @@ REA 批量证据按 `positioning-batch`、`jump-setup-batch`、`dribble-attack`�
 
 全队自然记录只覆盖策略 9／10／12／13，无主动真人配合指令。真人战术／配合请求、队伍策略 4～7、策略 11 的特殊地面重分配、道具持球等仍明确未恢复；不能以完整阶段样本通过推断原 14 项策略全部完成。四人连续物理、攻击受击、骑乘、篮板、特殊球、时钟与比赛结束仍属于最终范围。
 
-合并后的整个篮球包原生竞态检查与 Wasm（Node 执行）通过。证据保存在 `.local/basketball/engine/world-preparation-native-tests.json`、`world-preparation-wasm-tests.log` 和 `world-preparation-summary.json`；没有扩大到其他游戏。
+合并后的整个篮球包原生竞态检查与 Wasm（Node 执行）通过。证据保存在 `.local/basketball/verification/engine/world-preparation-native-tests.json`、`world-preparation-wasm-tests.log` 和 `world-preparation-summary.json`；没有扩大到其他游戏。
 
 ## 接下来仍需完成
 

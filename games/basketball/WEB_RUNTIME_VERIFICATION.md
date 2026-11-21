@@ -20,18 +20,18 @@ source scripts/env.sh
 python3 scripts/basketball/accept_live.py
 ```
 
-检查游玩模式不显示键盘映射、连发键位于对应 B／A 上方且在手柄内、原生键盘与触屏输入、暂停／恢复、输入取消及 PC／320px 一屏布局。结果与截图保存在 `.local/basketball/live-browser/`。控制器设置的映射显示、重绑和型号隔离另由 `python3 scripts/accept_fc_controller.py` 验证，产物保存在 `.local/fc-controller/browser/`。
+检查游玩模式不显示键盘映射、连发键位于对应 B／A 上方且在手柄内、原生键盘与触屏输入、暂停／恢复、输入取消及 PC／320px 一屏布局。结果与截图保存在 `.local/basketball/verification/live-browser/`。控制器设置的映射显示、重绑和型号隔离另由 `python3 scripts/accept_fc_controller.py` 验证，产物保存在 `.local/fc-controller/browser/`。
 
-自然跨节另由 `python3 scripts/basketball/verify_video_runtime.py` 验证，可加 `--race` 或 `--wasm`。从配置和固定种子建立开局，仅调用 `StepVideo`，不注入存档或缩短比赛时钟；只有原中场等待时输入 Start。每 300 帧和中场阶段对 JSON 保存／恢复后的下一帧完整状态、画面、声音进行比较；两次运行的逻辑步骤摘要必须一致。最多推进 24,000 个视频 tick，必须自然走完第一节并进入第二节才能通过，超出上限或未恢复分支均失败。日志、首差完整前态和已完成运行的摘要保存在 `.local/basketball/video-runtime/`；这个门槛不代表完整比赛验收。
+自然跨节另由 `python3 scripts/basketball/verify_video_runtime.py` 验证，可加 `--race` 或 `--wasm`。从配置和固定种子建立开局，仅调用 `StepVideo`，不注入存档或缩短比赛时钟；只有原中场等待时输入 Start。每 300 帧和中场阶段对 JSON 保存／恢复后的下一帧完整状态、画面、声音进行比较；两次运行的逻辑步骤摘要必须一致。最多推进 24,000 个视频 tick，必须自然走完第一节并进入第二节才能通过，超出上限或未恢复分支均失败。日志、首差完整前态和已完成运行的摘要保存在 `.local/basketball/verification/video-runtime/`；这个门槛不代表完整比赛验收。
 
 增加 `--full-match` 后，上限为 48,000 个视频 tick，必须自然完成上下半场及原结果计时，核对确认结果、得分、赢家和结果显示。它与第一节检查分别输出文件，不覆盖或冒充对方的通过状态。已修复道具接触／滑动、持筐旧请求与场景显示的首差；当前默认纽约配置在原生与 Wasm 中各重复两次通过，均在 22,383 个视频 tick／7,435 次逻辑更新结束，84 次 JSON 恢复验证保持一致。
 
-`python3 scripts/basketball/accept_live.py --full-match` 在实际浏览器运行同一冷配置，逐帧调用真实 Go／Wasm 并交给 Canvas。只在中场使用原生键盘 Space 经个人配置映射至 Start，不改时钟、位置、比分、随机数或后续世界状态。自然比赛最终 `12:45`，结果确认后继续推进和恢复存档均保持最终图像。报告、时间线和 PC／320px 最终截图在 `.local/basketball/full-match-browser/`；共 27 项检查通过，包含此前键盘／触屏片段与独立的显式结果边界。加速执行视频 tick 只加快测试耗时，不改游戏内时钟。这不是人工逐球操作的整场测试，也不代表全电脑整场、其他球队／场地、战役菜单或平台联机已验证。
+`python3 scripts/basketball/accept_live.py --full-match` 在实际浏览器运行同一冷配置，逐帧调用真实 Go／Wasm 并交给 Canvas。只在中场使用原生键盘 Space 经个人配置映射至 Start，不改时钟、位置、比分、随机数或后续世界状态。自然比赛最终 `12:45`，结果确认后继续推进和恢复存档均保持最终图像。报告、时间线和 PC／320px 最终截图在 `.local/basketball/verification/full-match-browser/`；共 27 项检查通过，包含此前键盘／触屏片段与独立的显式结果边界。加速执行视频 tick 只加快测试耗时，不改游戏内时钟。这不是人工逐球操作的整场测试，也不代表全电脑整场、其他球队／场地、战役菜单或平台联机已验证。
 
-独立增加 `--all-computer` 时，仍保留原默认混合测试，另外从四个原电脑席位开始完整比赛。该实际浏览器场景已在 22,512 视频 tick／7,478 逻辑更新后完成，比分 `45:49`，共 28 项检查通过；产物位于 `.local/basketball/all-computer-full-match-browser/`。对应 Go／Wasm 各两次完整轨迹及 85 次恢复验证见 `ALL_COMPUTER_VIDEO_VERIFICATION.md`。这项电脑整场通过仍不代表其他场地或平台多人联机已经完成。
+独立增加 `--all-computer` 时，仍保留原默认混合测试，另外从四个原电脑席位开始完整比赛。该实际浏览器场景已在 22,512 视频 tick／7,478 逻辑更新后完成，比分 `45:49`，共 28 项检查通过；产物位于 `.local/basketball/verification/all-computer-full-match-browser/`。对应 Go／Wasm 各两次完整轨迹及 85 次恢复验证见 `ALL_COMPUTER_VIDEO_VERIFICATION.md`。这项电脑整场通过仍不代表其他场地或平台多人联机已经完成。
 
-整场浏览器最初发现自然中场被当成球场提交零相机的缺陷。运行器现保留菜单期间最后合法场内画面，并在新球场初始化完成后恢复提交；没有放宽渲染器的球场相机范围。开发页在中场显示「中场休息 · 按 START 开始下半场」，避免等待缺少操作提示。失败与修复记录分别保留在 `.local/basketball/full-match-browser.log`、`full-match-prompt-before.log`、`full-match-prompt-after.log`。
+整场浏览器最初发现自然中场被当成球场提交零相机的缺陷。运行器现保留菜单期间最后合法场内画面，并在新球场初始化完成后恢复提交；没有放宽渲染器的球场相机范围。开发页在中场显示「中场休息 · 按 START 开始下半场」，避免等待缺少操作提示。失败与修复记录分别保留在 `.local/basketball/verification/legacy/full-match-browser.log`、`full-match-prompt-before.log`、`full-match-prompt-after.log`。
 
 `runtimebridge` 是单场会话。原 `Outcome.Confirmed` 出现后，先保留该步声音并提交已经暂存的最终结果画面，再停止推进。后续 `advance` 返回同一结果，不重播声音、不重开比赛、不消耗下一场输入；非法请求仍拒绝。原奖励／菜单去向保留在 `outcome.nextScene/nextPhase`，不在这个单场接口中执行，完整战役仍未完成。此策略避免大批量推进越过终场后，因为未恢复菜单而回滚整个结算。
 
-`accept_wasm_runtime.py` 的 35 条原生／真实浏览器 Wasm 请求已覆盖上述边界、最终画面提交、重复推进、保存／恢复、非法请求及会话清理。结果阶段采用显式构造的规则边界快照，报告中标记 `result_boundary_is_synthetic: true`；不能据此宣称自然打完一场。测试先观察原实现在第 443 个批量 tick 报未恢复场景而丢弃结果，再验证单场接口修复。日志与结果保存在 `.local/basketball/wasm-runtime/`。
+`accept_wasm_runtime.py` 的 35 条原生／真实浏览器 Wasm 请求已覆盖上述边界、最终画面提交、重复推进、保存／恢复、非法请求及会话清理。结果阶段采用显式构造的规则边界快照，报告中标记 `result_boundary_is_synthetic: true`；不能据此宣称自然打完一场。测试先观察原实现在第 443 个批量 tick 报未恢复场景而丢弃结果，再验证单场接口修复。日志与结果保存在 `.local/basketball/verification/wasm-runtime/`。

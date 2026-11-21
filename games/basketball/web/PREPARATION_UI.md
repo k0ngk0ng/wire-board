@@ -20,9 +20,9 @@ source scripts/env.sh
 python3 scripts/basketball/accept_preparation.py
 ```
 
-验收使用真实 React 组件、原版 PNG 和原生鼠标／触摸，记录各模式归属、选择命令、只读权限、图片回退、最终计算色对比、320px 实际宽度及点击目标尺寸。产物位于 `.local/basketball/preparation-ui/`：`result.json`、`contrast.json`、PC／手机／观战截图。
+验收使用真实 React 组件、原版 PNG 和原生鼠标／触摸，记录各模式归属、选择命令、只读权限、图片回退、最终计算色对比、320px 实际宽度及点击目标尺寸。产物位于 `.local/basketball/verification/preparation-ui/`：`result.json`、`contrast.json`、PC／手机／观战截图。
 
 这是组件级浏览器验收，不能代替真实房间鉴权、服务端保存／恢复、准备状态失效或比赛启动配置的集成验收。素材仍未获发布验收，未上传 OSS。
 
 
-实际平台页面另覆盖了图片卡受公共按钮样式影响时的布局：场地图片独立成行，名称和「已选」在图片下方，不能被挤到图片旁边。双人房间未入座的人类角色显示「等待玩家」，不误标为电脑。完整平台证据位于 `.local/basketball/platform-rooms/`；配置开始与图片呈现通过，所有新阵容的完整比赛仍以服务端门禁报告为准。
+实际平台页面另覆盖了图片卡受公共按钮样式影响时的布局：场地图片独立成行，名称和「已选」在图片下方，不能被挤到图片旁边。双人房间未入座的人类角色显示「等待玩家」，不误标为电脑。完整平台证据位于 `.local/basketball/verification/platform-rooms/`；配置开始与图片呈现通过，所有新阵容的完整比赛仍以服务端门禁报告为准。

@@ -1,5 +1,5 @@
 {
-  "source": ".local/basketball/rea/captured-player/route/cooperative-failure-state.json",
+  "source": ".local/basketball/research/rea/captured-player/route/cooperative-failure-state.json",
   "original_error": "actions: object 1: rider support object 4 requires its original kind",
   "runtime_video": 845,
   "state_injected": false,

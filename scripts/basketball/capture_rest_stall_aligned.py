@@ -9,7 +9,7 @@ from capture_rest_stall_original import CONFIG
 from extract_world_loop import loop_state
 
 def main():
- out=ROOT/'.local/basketball/rea/ball-rest-stall';go=json.loads((out/'go-cold-first-playing.json').read_text());a=go['playing']['world']['Preparation']['Actions'];c=go['playing']['match']['Clock']
+ out=ROOT/'.local/basketball/research/rea/ball-rest-stall';go=json.loads((out/'go-cold-first-playing.json').read_text());a=go['playing']['world']['Preparation']['Actions'];c=go['playing']['match']['Clock']
  patch={0x8f:a['actors'][0]['player']['body']['position']['depth']&255,0x69:a['actors'][1]['player']['body']['position']['x']&255,0x300:go['playing']['world']['LogicFrame'],0x6c2:c['Minutes'],0x6c3:c['Tens'],0x6c4:c['Ones'],0x6c5:c['VideoRemainder'],0x3cd:c['DisplayedSecond'],0x3ce:c['HUDTurn'],0x3cb:c['ScoreLowCache'][0],0x3cc:c['ScoreLowCache'][1]}
  for i,b in enumerate(a['Random'].to_bytes(4,'big')):patch[0x48+i]=b
  initial=';'.join(f'memory.writebyte({k},{v})' for k,v in sorted(patch.items()))

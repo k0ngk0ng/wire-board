@@ -526,22 +526,7 @@ func view(m gameapi.Match, p int) (any, error) {
 	if err != nil {
 		return nil, err
 	}
-	// Send recent complete batches, not the entire persisted event ring on
-	// every update. Keep the idle cursor so the next batch remains contiguous.
-	cutoff := s.ElapsedMS - 1000
-	first := 0
-	for first < len(s.Events)-1 {
-		event := s.Events[first]
-		at := event.Tick * StepMS
-		if event.AtMS != nil {
-			at = *event.AtMS
-		}
-		if at > cutoff {
-			break
-		}
-		first++
-	}
-	s.Events = s.Events[first:]
+	s.Events = s.Events[s.recentEventStart():]
 	towers := make([]ViewTower, 0, len(s.Towers))
 	for _, tower := range s.Towers {
 		damage, radius, interval := s.towerStats(tower)

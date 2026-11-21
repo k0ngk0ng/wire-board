@@ -30,7 +30,7 @@ The retained Court 7 stall evidence already compares 3,864 complete worlds from 
 - Fixture SHA-256: `445459afdd7f2ba14c71d40162498a7e5ea2ef60786da1c2d0c4dfc564eb1e2e`.
 - Full original dispatcher source context reuses REA evidence `ev_eef21fb30302a3ec59b8b3dc097be9a7fa2a559339d598963a8489a9d646759d`; actual behavioral evidence is the newly retained unmodified ROM execution fixture and source manifest.
 - Original result boundary reuses `campaign-settlement-source.json`, REA evidence `ev_7945a86e38a813fa472f9a63045cf673ae9f0c3702f1a79b6c8a17e20eebeefb` and `ev_37af32e9b034716efaee6f2adaafab2a2553752baa05f1e2889edf15118919bd`.
-- Logs: `.local/basketball/rea/ai-mode15-audit/late-difficulty-{source,test,reproduce,race}.log`.
+- Logs: `.local/basketball/research/rea/ai-mode15-audit/late-difficulty-{source,test,reproduce,race}.log`.
 
 ```sh
 source scripts/env.sh

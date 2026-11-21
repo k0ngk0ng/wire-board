@@ -133,7 +133,7 @@ try:
     audit_result(result, 'result-desktop')
     result.b('set', 'viewport', 320, 760)
     audit_result(result, 'result-320')
-    result.b('press', 'Escape')
+    result.b('click', '.result-review')
     result.b('click', 'button[aria-label="全屏"]')
     result.b('wait', '[data-room-fullscreen]')
     result.b('click', '.result-reopen')

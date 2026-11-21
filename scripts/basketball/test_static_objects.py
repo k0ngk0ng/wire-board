@@ -11,21 +11,21 @@ ROOT=Path(__file__).resolve().parents[2]
 
 class StaticObjectsTests(unittest.TestCase):
  def setUp(self):
-  self.rom=SpriteROM((ROOT/'.local/nes-basket/basketball.nes').read_bytes())
-  self.colors=(ROOT/'.local/nes-basket/runs/graphics-right/nes-colors.rgb').read_bytes()
+  self.rom=SpriteROM((ROOT/'.local/basketball/research/original/basketball.nes').read_bytes())
+  self.colors=(ROOT/'.local/basketball/research/original/runs/graphics-right/nes-colors.rgb').read_bytes()
  def test_ball_chr_selection(self):
   self.assertEqual([self.rom.ball_chr_bank(i) for i in range(40)],[32,32,32,32,35,35,32,32,32,32,32,34,34,32,32,32,32,33,33,33,33,33,33,33,33,33,33,34,34,34,34,34,34,34,34,34,34,34,35,35])
   self.assertEqual(self.rom.ball_chr_bank(127),32)
   self.assertEqual(self.rom.ball_chr_bank(128),32)
   with self.assertRaises(ValueError):self.rom.ball_chr_bank(40)
  def test_all_recorded_object_images(self):
-  doc=json.loads((ROOT/'.local/basketball/atlas/atlas.json').read_text());checked=0
+  doc=json.loads((ROOT/'.local/basketball/assets/atlas/atlas.json').read_text());checked=0
   for entry in doc['frames']:
    if entry['object']<4:continue
-   source=entry['sources'][0];directory=ROOT/'.local/nes-basket/runs'/source['capture'];stem='ppu-%05d'%source['frame']
+   source=entry['sources'][0];directory=ROOT/'.local/basketball/research/original/runs'/source['capture'];stem='ppu-%05d'%source['frame']
    ppu=(directory/(stem+'-ppu.bin')).read_bytes();pages=self.rom.identify_chr_pages(ppu[:8192]);state=source['state']
    got=render_object(self.rom,state['ram03d6'],state['ram005b'],pages,ppu[0x3f00:0x3f20],self.colors,reverse=source['priority']=='reverse')
-   want=Image.open(ROOT/'.local/basketball/atlas'/entry['file']).convert('RGBA')
+   want=Image.open(ROOT/'.local/basketball/assets/atlas'/entry['file']).convert('RGBA')
    self.assertEqual(got.tobytes(),want.tobytes(),entry['file']);checked+=1
   self.assertEqual(checked,7)
  def test_static_objects_never_clip_or_mix_teams(self):

@@ -4,8 +4,8 @@ from verify_pass_floor_original import ROOT,Memory,MPU,put
 from extract_world_inputs import decode_world_input_state
 from capture_world_human_input import context
 
-ROM=(ROOT/'.local/nes-basket/basketball.nes').read_bytes();PRG=ROM[16:16+131072]
-SOURCE=ROOT/'.local/nes-basket/runs/court-3-reference/ram.bin';BASE=SOURCE.read_bytes()[1500*2048:1501*2048]
+ROM=(ROOT/'.local/basketball/research/original/basketball.nes').read_bytes();PRG=ROM[16:16+131072]
+SOURCE=ROOT/'.local/basketball/research/original/runs/court-3-reference/ram.bin';BASE=SOURCE.read_bytes()[1500*2048:1501*2048]
 
 def state(r):
     value=decode_world_input_state(r)

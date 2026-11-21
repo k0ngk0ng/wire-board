@@ -2,7 +2,7 @@
   "scope": "controlled complete E165..E168 player releases and D345..D348 world action phases; no natural-shot claim",
   "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
   "normalEquippedMenuSource": {
-    "path": ".local/nes-basket/runs/campaign-audit-equipped-home-match/ram.bin",
+    "path": ".local/basketball/research/original/runs/campaign-audit-equipped-home-match/ram.bin",
     "frame": 4345,
     "fullTraceSHA256": "c7c6cffa803c4d996d86cd7b8968c5788fc953f1545f3d9d070dce96e42b7173",
     "frameSHA256": "3e978fd5e3b07f04b4ed26754bfc6bd5d5a274eb34b85996a7a932cc296ae2df"

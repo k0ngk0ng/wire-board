@@ -2,14 +2,14 @@
 import gzip,hashlib,itertools,json,sys
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
-sys.path.insert(0,str(ROOT/'.local/basketball/python'))
+sys.path.insert(0,str(ROOT/'.local/basketball/research/python'))
 from verify_pass_floor_original import Memory,MPU
 from verify_court_floor import initial
 from verify_court_profiles import image,profiles,EXPECTED
 
 
 def main():
-    rom=(ROOT/'.local/nes-basket/basketball.nes').read_bytes();assert hashlib.sha256(rom).hexdigest()==EXPECTED
+    rom=(ROOT/'.local/basketball/research/original/basketball.nes').read_bytes();assert hashlib.sha256(rom).hexdigest()==EXPECTED
     base=image();grid=profiles(base)[6];trace=bytearray();rows=[]
     for obj,x,y,variant in itertools.product(range(13),[7,8,39,40,255,256,471,472,503,504],[0,1,70,71],range(4)):
         floor=grid[y//8][x//8]&248

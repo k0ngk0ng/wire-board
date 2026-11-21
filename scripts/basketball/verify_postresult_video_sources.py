@@ -39,7 +39,7 @@ def generate_tables():
 def videos():
  chains=[]
  for kind in ['reward','ending']:
-  p=ROOT/f'.local/nes-basket/runs/postresult-{kind}-observed';events=[json.loads(x)for x in (p/'events.jsonl').open()];raw=(p/'ram.bin').read_bytes();boundaries=(p/'boundaries.ram').read_bytes()
+  p=ROOT/f'.local/basketball/research/original/runs/postresult-{kind}-observed';events=[json.loads(x)for x in (p/'events.jsonl').open()];raw=(p/'ram.bin').read_bytes();boundaries=(p/'boundaries.ram').read_bytes()
   start=next(e for e in events if e['kind']=='resultEnd' and (e['scene']==7 if kind=='ending' else e['scene']==1 and e['phase']==7))
   end=next(e for e in events if e['kind']=='reset')if kind=='ending'else next(e for e in events if e['kind']=='rewardEnd'and e['scene']==2)
   initial=raw[(start['frame']-25550)*2048:(start['frame']-25549)*2048]

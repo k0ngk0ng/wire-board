@@ -36,7 +36,7 @@ Go 投影对照全部原调用，另外检查角色之间不串装备、非法�
 - 属性增减及正文的最终计算颜色通过对比度检查，保存桌面和 320px 截图。
 - 六个相关顶层服务端 race 测试通过。首次 race 发现观战请求可能先因房间版本变化返回 409，而非权限返回 400；验收现允许这两类拒绝，并核对权威奖励／阶段完全未变，没有把失败请求当成成功或跳过检查。
 
-工作树产物在 `.local/campaign-attributes/`，浏览器产物仍在 `.local/campaign-ui/` 和共享 `.local/basketball/platform-rooms/`。保留初始编译失败、无属性界面的失败、长库存比较离开可视区的失败及首次 race 记录。
+工作树产物在 `.local/basketball/verification/campaign-attributes/`，浏览器产物仍在 `.local/basketball/research/campaign-ui/` 和共享 `.local/basketball/verification/platform-rooms/`。保留初始编译失败、无属性界面的失败、长库存比较离开可视区的失败及首次 race 记录。
 
 复现：
 

@@ -51,6 +51,7 @@ export function useGameController(
           changed: () => latest.current.changed(),
           keyboardTarget: (target) =>
             latest.current.keyboardTarget?.(target) ?? true,
+          captureMappedModifiers: () => latest.current.captureMappedModifiers?.() ?? false,
         });
         root.dataset.controllerInput = options.gameId;
         latest.current.changed();

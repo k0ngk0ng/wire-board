@@ -40,7 +40,7 @@
 
 自然参考从原槽 2 按既有正常菜单输入运行 1,550 帧，再同输入加探针。完整 RAM 与五张截图均一致。**37 个原调用**逐字段及声音匹配：属性初始化 1、场地初始化 1、进入开球 1、裁判开球 33、开节 1。另有全部 32 项 ROM 参数核对、装备边界和纯配置开球测试。
 
-REA 证据位于 `.local/basketball/rea/opening/`：
+REA 证据位于 `.local/basketball/research/rea/opening/`：
 
 - 属性：`ev_40057efcf991665ca15ce10475fca6517cb3df7c53cb4b75307e8d25b9460d53`。
 - 场地／开球：`ev_1695bcef64f07da4c4d8f62847d1e933817d3c10244e70814f3d21ca35e1b3fe`。
@@ -60,4 +60,4 @@ source scripts/env.sh
 go test -v ./games/basketball/engine -run 'TestOriginalOpening|TestNewMatchConfiguration|TestOriginalCharacterGrade|TestOriginalEquipmentGrade|TestConfiguredOpening|TestOpeningWorld'
 ```
 
-原始 RAM 与调用索引位于 `engine/testdata/opening.{ram.gz,json}`；源清单包含原槽 2 的 SHA-256。属性清单为 `character-grades.json`。日志位于 `.local/basketball/engine/opening-{before,after,race,wasm}.log` 和 `opening-world-{before,after}.log`。
+原始 RAM 与调用索引位于 `engine/testdata/opening.{ram.gz,json}`；源清单包含原槽 2 的 SHA-256。属性清单为 `character-grades.json`。日志位于 `.local/basketball/verification/engine/opening-{before,after,race,wasm}.log` 和 `opening-world-{before,after}.log`。

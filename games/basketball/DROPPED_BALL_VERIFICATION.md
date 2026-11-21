@@ -15,7 +15,7 @@
 
 ## 原始证据
 
-REA 从第 6 页 `$B4FC` 球动作表定位动作 11 到 `$B8EC`、动作 7 到 `$B7A0`；初始化与动画辅助分别为 `$86CF/$EC59/$8726`。独立分支分析保存于 `.local/basketball/rea/dropped-ball/`，间接分派伪代码中过度扩展出的无效分支不作为依据。
+REA 从第 6 页 `$B4FC` 球动作表定位动作 11 到 `$B8EC`、动作 7 到 `$B7A0`；初始化与动画辅助分别为 `$86CF/$EC59/$8726`。独立分支分析保存于 `.local/basketball/research/rea/dropped-ball/`，间接分派伪代码中过度扩展出的无效分支不作为依据。
 
 已有 `ball.json` 包含动作 11 的全部 40 次记录、动作 7 的全部 25 次记录。另对原 `hoop-control-cpu-long` 的 6,000 帧无输入时间线完整采样，保留全部 84 次对应调用：动作 7 飞行 25 次，动作 11 共 59 次，其中进入 4 次、落地 4 次。新采样补充排除接球者、场地和共享随机流；原全部逐帧 RAM 及截图保持一致。两组记录存在时间段重叠，不能相加称为独立调用数量。
 
@@ -27,6 +27,6 @@ REA 从第 6 页 `$B4FC` 球动作表定位动作 11 到 `$B8EC`、动作 7 到 
 
 固定边界用例覆盖动作 11 保留水平／深度小数速度、连续两步不重复初始化、场地深区阈值，以及动作 7 首次反向和落地 `0x84` 计数。这些是按原指令构造的规则用例；当前自然样本尚未覆盖动作 7 的首次进入与落地，不能把固定用例称为自然记录。
 
-验证产物位于 `.local/basketball/rea/dropped-ball/{test-before.log,test-after.log,native-tests.json,wasm-tests.log}`，采样来源与一致性见 `capture.json`。REA Evidence 索引为 `index.json`，其中独立动作分析为 `ev_b03c5da575b479939a24dbd0162e17c4495718ba784f26c46e474a3feaf55808` 与 `ev_b75e738e9931e5479cf963d8ee69b6e90d0a061e1b8547df8fe8bb7b04b2ced5`。
+验证产物位于 `.local/basketball/research/rea/dropped-ball/{test-before.log,test-after.log,native-tests.json,wasm-tests.log}`，采样来源与一致性见 `capture.json`。REA Evidence 索引为 `index.json`，其中独立动作分析为 `ev_b03c5da575b479939a24dbd0162e17c4495718ba784f26c46e474a3feaf55808` 与 `ev_b75e738e9931e5479cf963d8ee69b6e90d0a061e1b8547df8fe8bb7b04b2ced5`。
 
 地面和纽约高台处理复用现有球场组件，其未恢复的地形分支仍返回错误。未新增跨阶段球请求接受规则，也未接入完整世界入口；篮圈、人物接触与重新持球仍由各自阶段负责。

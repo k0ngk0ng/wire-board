@@ -43,14 +43,14 @@ web/node_modules/.bin/tsc -p web/tsconfig.json --noEmit
 
 | 范围 | 产物 |
 | --- | --- |
-| 服务端竞态 | `.local/basketball/engine/network-presentation-race.log` |
-| 逐帧画面与校正 | `.local/basketball/network-scene/result.json`、`desktop.png`、`mobile-320.png` |
-| 真实房间页面 | `.local/basketball/network-board/result.json`、`desktop.png`、`mobile-320.png`、`spectator-mobile.png` |
-| 原协议回归 | `.local/basketball/wasm-runtime/result.json` |
-| CSP | `.local/basketball/engine/network-csp-after.log` |
-| 编译 | `.local/basketball/engine/network-typecheck.log` |
+| 服务端竞态 | `.local/basketball/verification/engine/network-presentation-race.log` |
+| 逐帧画面与校正 | `.local/basketball/verification/network-scene/result.json`、`desktop.png`、`mobile-320.png` |
+| 真实房间页面 | `.local/basketball/verification/network-board/result.json`、`desktop.png`、`mobile-320.png`、`spectator-mobile.png` |
+| 原协议回归 | `.local/basketball/verification/wasm-runtime/result.json` |
+| CSP | `.local/basketball/verification/engine/network-csp-after.log` |
+| 编译 | `.local/basketball/verification/engine/network-typecheck.log` |
 
-实现前及修复前失败记录包括 `video-history-before.log`、`network-scene-before.log`、`network-scene-resume-before.log`、`network-scene-result-before.log`、`network-board-before.log`、`network-board-profile-before.log`、`network-board-csp-before.log` 和 `network-csp-before.log`，均在 `.local/basketball/engine/`。真实失败暴露的账号切换就绪状态、生产 CSP、挂起恢复和结果停车问题已修复；未删除失败记录。
+实现前及修复前失败记录包括 `video-history-before.log`、`network-scene-before.log`、`network-scene-resume-before.log`、`network-scene-result-before.log`、`network-board-before.log`、`network-board-profile-before.log`、`network-board-csp-before.log` 和 `network-csp-before.log`，均在 `.local/basketball/verification/engine/`。真实失败暴露的账号切换就绪状态、生产 CSP、挂起恢复和结果停车问题已修复；未删除失败记录。
 
 ## 尚未完成
 

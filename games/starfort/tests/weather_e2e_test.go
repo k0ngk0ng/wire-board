@@ -222,9 +222,10 @@ func TestStarfortWeatherHeartAndGuards(t *testing.T) {
 		s.Towers[0].Cooldown = 900
 		cadenceSave(b, s)
 		b.timer(time.Second)
+		count = 0
 		for _, e := range cadenceState(b).Events {
-			if e.Type == "knockback" {
-				count--
+			if e.ID > s.EventSerial && e.Type == "knockback" {
+				count++
 			}
 		}
 		if count != 0 {

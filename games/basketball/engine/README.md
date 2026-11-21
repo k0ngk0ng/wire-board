@@ -22,14 +22,14 @@ go test -count=1 ./games/basketball/engine
 go run ./games/basketball/cmd/verify-player
 
 # 验证同一 Go 代码编译为 Wasm 后的数值结果。
-mkdir -p .local/basketball/engine
+mkdir -p .local/basketball/verification/engine
 GOOS=js GOARCH=wasm go test -c \
-  -o .local/basketball/engine/motion.test.wasm ./games/basketball/engine
+  -o .local/basketball/verification/engine/motion.test.wasm ./games/basketball/engine
 basketball_goroot=$(go env GOROOT)
 (
   cd games/basketball/engine
   node "$basketball_goroot/lib/wasm/wasm_exec_node.js" \
-    ../../../.local/basketball/engine/motion.test.wasm -test.v
+    ../../../.local/basketball/verification/engine/motion.test.wasm -test.v
 )
 ```
 

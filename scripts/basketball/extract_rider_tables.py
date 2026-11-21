@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[2]
-rom=(ROOT/'.local/nes-basket/basketball.nes').read_bytes()
+rom=(ROOT/'.local/basketball/research/original/basketball.nes').read_bytes()
 prg=rom[16:16+131072]
 mapped=prg[6*16384:7*16384]+prg[7*16384:8*16384]
 read=lambda address:mapped[address-0x8000]

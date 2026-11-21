@@ -7,7 +7,7 @@ from extract_world_loop import loop_state
 from compare_rest_stall_worlds import normalized,differences
 
 def main():
- out=ROOT/'.local/basketball/rea/court-seven-stall';origin=json.loads((out/'controlled-origin.json').read_text());patch,names=encode_world_probe(origin)
+ out=ROOT/'.local/basketball/research/rea/court-seven-stall';origin=json.loads((out/'controlled-origin.json').read_text());patch,names=encode_world_probe(origin)
  config=CONFIG.replace('memory.writebyte(0x587,5)','memory.writebyte(0x587,1)').replace('"teams":[0,5]','"teams":[0,1]').replace('memory.writebyte(0x58b,1)','memory.writebyte(0x58b,7)').replace('"court":1','"court":7')
  writes=';'.join(f'memory.writebyte({a},{v})' for a,v in sorted(patch.items()))
  hook=r'''

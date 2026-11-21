@@ -30,11 +30,11 @@
 
 固定边界用例还覆盖高度小数的地面判定、饱和扣减、动作 `$47`／攻击能力至少 7 的强制击飞、深区场地速度、镜像、游标环绕、左右后坐差异和道具分支失败时的完整回退。这些是按原指令构造的边界用例，不是新增的自然对局记录。
 
-原生竞态与 Wasm 定向验证均通过，证据保存于 `.local/basketball/rea/combat/{native-tests.json,wasm-tests.log}`；实现前后记录为 `test-before.log`、`test-after.log`。`capture.json` 保存整场采样一致性与原始 RAM SHA-256。
+原生竞态与 Wasm 定向验证均通过，证据保存于 `.local/basketball/research/rea/combat/{native-tests.json,wasm-tests.log}`；实现前后记录为 `test-before.log`、`test-after.log`。`capture.json` 保存整场采样一致性与原始 RAM SHA-256。
 
 ## 数据来源与接入限制
 
-12 组响应参数、103 项攻击变体映射、7 档抗击扣减和 8 个场地标志来自原第 5 页 `$93B8/$9400/$8889/$886B`。`extract_combat.py --write-go` 重新生成独立 Go 常量数据及源校验信息；运行时不读取 ROM。REA 复用记录位于 `.local/basketball/rea/combat/reused-analysis.json`，对应 `$8653/$8821/$8738` 及道具分支的既有批量证据。
+12 组响应参数、103 项攻击变体映射、7 档抗击扣减和 8 个场地标志来自原第 5 页 `$93B8/$9400/$8889/$886B`。`extract_combat.py --write-go` 重新生成独立 Go 常量数据及源校验信息；运行时不读取 ROM。REA 复用记录位于 `.local/basketball/research/rea/combat/reused-analysis.json`，对应 `$8653/$8821/$8738` 及道具分支的既有批量证据。
 
 世界入口应在搜索、依附关系处理后调用本阶段，再将更新的人物动作交给自动接球及后续动作处理。`$48/$49` 动作在此仅被设置，移动、落地、丢球与恢复由后续动作阶段负责。音效返回事件由平台播放器执行。
 

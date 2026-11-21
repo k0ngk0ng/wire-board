@@ -20,7 +20,7 @@ def main():
     rows=list(csv.DictReader((observed/'combat-phases.csv').open()));raw=(observed/'combat-phase-ram.bin').read_bytes()
     assert len(rows)==1197 and len(raw)==len(rows)*4096
     summary=dict(complete_phases=len(rows),identical_frames=spec['frames'],identical_screenshots=len(images),trace_sha256=hashlib.sha256(raw).hexdigest(),source=json.loads((observed/'source.json').read_text()))
-    out=ROOT/'.local/basketball/rea/interactions';out.mkdir(parents=True,exist_ok=True)
+    out=ROOT/'.local/basketball/research/rea/interactions';out.mkdir(parents=True,exist_ok=True)
     (out/'capture.json').write_text(json.dumps(summary,indent=2)+'\n');print(json.dumps(summary))
 
 

@@ -19,16 +19,16 @@ All **eight primary frames / 491520 pixels** match the original console capture 
 | Ending credits | 10500,12000 | — |
 | Ending final picture | 13500 | 14000 |
 
-The initial missing-module failure was recorded in `.local/postresult-fetch/expected-red.log` before `postresult_fetch.py` existed. Passing results, reconstructed images, difference images and semantic frame JSON are in the same directory. Holdout results are separately retained as `holdout-result.json`. Expected images are read only in the verification calls; `derive_frame` and `render_frame` never open them.
+The initial missing-module failure was recorded in `.local/basketball/research/postresult-fetch/expected-red.log` before `postresult_fetch.py` existed. Passing results, reconstructed images, difference images and semantic frame JSON are in the same directory. Holdout results are separately retained as `holdout-result.json`. Expected images are read only in the verification calls; `derive_frame` and `render_frame` never open them.
 
 ## Source model and timing
 
 The image reference is the existing FCEUX 2.6.6 original-ROM capture, not a physical NTSC capture. The offline derivation uses its documented old-PPU fetch grouping. Supporting source was read from the upstream `v2.6.6` tag and retained only in the workspace:
 
-- `https://raw.githubusercontent.com/TASEmulators/fceux/v2.6.6/src/ppu.cpp` → `.local/postresult-fetch/fceux-ppu.cpp`.
-- `https://raw.githubusercontent.com/TASEmulators/fceux/v2.6.6/src/pputile.inc` → `.local/postresult-fetch/fceux-pputile.inc`.
+- `https://raw.githubusercontent.com/TASEmulators/fceux/v2.6.6/src/ppu.cpp` → `.local/basketball/research/postresult-fetch/fceux-ppu.cpp`.
+- `https://raw.githubusercontent.com/TASEmulators/fceux/v2.6.6/src/pputile.inc` → `.local/basketball/research/postresult-fetch/fceux-pputile.inc`.
 
-Exact downloaded-file digests are in `.local/postresult-fetch/manifest.json`. No FCEUX code is bundled into production. Its frame schedule, `ResetRL`, `RefreshLine`, `Fixit1/2` and ordinary tile-fetch branch explain the recorded reference pixels. Original game register writes, CHR pages, nametable bytes and OAM remain the authoritative content.
+Exact downloaded-file digests are in `.local/basketball/research/postresult-fetch/manifest.json`. No FCEUX code is bundled into production. Its frame schedule, `ResetRL`, `RefreshLine`, `Fixit1/2` and ordinary tile-fetch branch explain the recorded reference pixels. Original game register writes, CHR pages, nametable bytes and OAM remain the authoritative content.
 
 For the saved state immediately before each selected frame:
 

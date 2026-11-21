@@ -8,7 +8,7 @@ F18F(Scene7) orF206(Scene1); IRQ effects precede audio work atselector1.
 import argparse,gzip,hashlib,json
 from pathlib import Path
 from verify_pass_floor_original import ROOT,Memory,MPU
-ROM=(ROOT/'.local/nes-basket/basketball.nes').read_bytes();PRG=ROM[16:131088]
+ROM=(ROOT/'.local/basketball/research/original/basketball.nes').read_bytes();PRG=ROM[16:131088]
 OUT=ROOT/'games/basketball/engine/testdata'
 
 class Devices(Memory):

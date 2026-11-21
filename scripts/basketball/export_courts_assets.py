@@ -4,15 +4,15 @@ from hashlib import sha256
 import json
 from static_sprites import SpriteROM,DIGEST
 from static_court import build_court,build_court_tiles,build_hud_template,build_hud_glyphs,initial_court_ring,stream_court_column
-ROOT=Path(__file__).resolve().parents[2];out=ROOT/'.local/basketball/courts';rom=SpriteROM((ROOT/'.local/nes-basket/basketball.nes').read_bytes());colors=(ROOT/'.local/nes-basket/runs/graphics-right/nes-colors.rgb').read_bytes()
+ROOT=Path(__file__).resolve().parents[2];out=ROOT/'.local/basketball/assets/courts';rom=SpriteROM((ROOT/'.local/basketball/research/original/basketball.nes').read_bytes());colors=(ROOT/'.local/basketball/research/original/runs/graphics-right/nes-colors.rgb').read_bytes()
 def digest(path):return sha256(path.read_bytes()).hexdigest()
-log=ROOT/'.local/basketball/irq-raster/python-after.log';
-if not log.exists():log=ROOT/'.local/basketball/courts-after.log'
+log=ROOT/'.local/basketball/research/irq-raster/python-after.log';
+if not log.exists():log=ROOT/'.local/basketball/verification/legacy/courts-after.log'
 capture=json.loads((out/'capture.json').read_text());assert sum(len(r['frames']) for r in capture['records'])==48
-pixel_path=ROOT/'.local/basketball/renderer/browser/result.json';pixel_report=json.loads(pixel_path.read_text()) if pixel_path.exists() else {'status':'not_run'}
+pixel_path=ROOT/'.local/basketball/verification/renderer/browser/result.json';pixel_report=json.loads(pixel_path.read_text()) if pixel_path.exists() else {'status':'not_run'}
 records=[]
 for court in range(8):
- directory=out/str(court);directory.mkdir(exist_ok=True);assets={}
+ directory=out/str(court);directory.mkdir(parents=True,exist_ok=True);assets={}
  def save(name,data):
   path=directory/name
   if hasattr(data,'save'):data.save(path);record={'size':list(data.size)}

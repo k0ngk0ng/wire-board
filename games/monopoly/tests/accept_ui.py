@@ -442,6 +442,7 @@ try:
     check_cash_visibility('cash-bankrupt')
     checkpoint('bankrupt-can-leave')
     click('离开房间')
+    click('确认离开')
     browser('wait', '.room-list')
     assert api('/state').get('room') is None
     assert len(peers[0].api('/state')['room']['seats']) == 3
@@ -454,7 +455,7 @@ try:
     browser('reload'); browser('wait', '.results')
     assert room()['result'] == result
     checkpoint('finished-result-restored')
-    click('再来一局')
+    click('返回房间')
     browser('wait', '.waiting-layout')
     assert room()['status'] == 'waiting' and not room().get('game')
     checkpoint('rematch-waiting')

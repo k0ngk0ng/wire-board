@@ -67,7 +67,7 @@ when it changes. A failed step must not mutate the input state's backing data.
 Native race and Wasm targeted checks pass. The Canvas browser regression still
 matches all 83 original frames / 5,099,520 pixels and additionally checks multiple
 name accents and the second-half clock label. Source and result records are in
-`.local/basketball/rea/display/`.
+`.local/basketball/research/rea/display/`.
 
 These are original phase tests plus renderer tests. They do not prove the entire
 Go/video/display schedule against every original frame. Scene phase 6's special

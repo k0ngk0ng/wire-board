@@ -6,7 +6,7 @@ per call, resets the renderer draw list, and copies camera at its boundary.
 """
 import argparse,base64,gzip,hashlib,json
 from verify_ending_presentation import ROOT,OUT,ROM,PRG,Mem,execute
-CAPTURE=ROOT/'.local/nes-basket/runs/postresult-ending-observed'
+CAPTURE=ROOT/'.local/basketball/research/original/runs/postresult-ending-observed'
 class TextMemory(Mem):
  def __init__(self,*args):self.headers=[];super().__init__(*args)
  def __setitem__(self,a,v):

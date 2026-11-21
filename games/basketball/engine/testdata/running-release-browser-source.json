@@ -1,7 +1,7 @@
 {
   "scope": "Real cold Court3 keyboard scenario: original running B on team7 character0, followed by A release; Go/Wasm failure before-state, not original ROM state",
   "command": "source scripts/env.sh && python3 scripts/basketball/accept_live.py --court 3 --running-carry",
-  "sourceLog": ".local/basketball/engine/running-carry-browser-after.log",
+  "sourceLog": ".local/basketball/verification/engine/running-carry-browser-after.log",
   "sourceLogSHA256": "5f380eac8e64ba97c0b288c364505129d4430f2fb0c90e5b8f8d6b11c40edbb9",
   "stateSHA256": "3d6bcf0868507ef307edc2376d19092d1a84172d6d0471301e2edd136667d7c1",
   "videoFrame": 560,
@@ -18,5 +18,5 @@
     "TestOriginalRunningReleaseContactTail",
     "TestRuntimeNativeRunningReleasePrestateContinues"
   ],
-  "currentBrowserResult": ".local/basketball/engine/running-carry-browser-rebased.log"
+  "currentBrowserResult": ".local/basketball/verification/engine/running-carry-browser-rebased.log"
 }

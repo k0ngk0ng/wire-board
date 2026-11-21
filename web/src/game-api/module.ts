@@ -68,6 +68,9 @@ export type GameAudioPort = {
     },
   ) => Promise<boolean>;
   stopEffect: (lane: string, expectedPlaybackID?: string) => void;
+  spatial: (key: string, sources: readonly string[], options: import("../audio-spatial").SpatialOptions) => Promise<boolean>;
+  spatialListener: (listener: import("../audio-spatial").SpatialListener) => void;
+  stopSpatial: (key?: string) => void;
   openStream: (
     options: import("./audio-stream").GameAudioStreamConfig,
   ) => import("./audio-stream").GameAudioStreamHandle | undefined;
@@ -218,6 +221,7 @@ export type GameModule<Data = unknown, Options = unknown> = {
   requiresFullTable?: boolean;
   minPlayers: number;
   maxPlayers: number;
+  defaultPlayers?: number;
   playerCounts?: readonly number[];
   supportsBots?: boolean;
   mobilePlayNotice?: boolean;

@@ -9,7 +9,7 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 def main():
-    source = ROOT/'.local/nes-basket/runs/camera-cpu-long'
+    source = ROOT/'.local/basketball/research/original/runs/camera-cpu-long'
     dest = ROOT/'games/basketball/engine/testdata'
 
     def state(r):

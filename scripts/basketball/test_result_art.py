@@ -12,14 +12,14 @@ from result_art import decode_background,build_result_images,compose_result_back
 ROOT=Path(__file__).resolve().parents[2]
 class ResultArtTests(unittest.TestCase):
  def setUp(self):
-  self.rom=SpriteROM((ROOT/'.local/nes-basket/basketball.nes').read_bytes());self.directory=ROOT/'.local/nes-basket/runs/result-art-observed';self.colors=(self.directory/'nes-colors.rgb').read_bytes()
+  self.rom=SpriteROM((ROOT/'.local/basketball/research/original/basketball.nes').read_bytes());self.directory=ROOT/'.local/basketball/research/original/runs/result-art-observed';self.colors=(self.directory/'nes-colors.rgb').read_bytes()
  def test_original_background_presets(self):
   r=decode_background(self.rom,102);self.assertEqual(r['target'],0x2800);self.assertEqual(len(r['data']),1024)
-  item=json.loads((ROOT/'.local/basketball/result-art/capture.json').read_text())['frames'][0];p=self.directory/f"ppu-{item['emulator_frame']:05d}-field.bin";ppu=p.read_bytes()
+  item=json.loads((ROOT/'.local/basketball/assets/result-art/capture.json').read_text())['frames'][0];p=self.directory/f"ppu-{item['emulator_frame']:05d}-field.bin";ppu=p.read_bytes()
   self.assertEqual(bytes(r['data']),ppu[0x2800:0x2c00])
   with self.assertRaises(ValueError):decode_background(self.rom,255)
  def test_result_original_pixels(self):
-  observations=json.loads((ROOT/'.local/basketball/result-art/capture.json').read_text())['frames'];images=build_result_images(self.rom,1,self.colors);count=0
+  observations=json.loads((ROOT/'.local/basketball/assets/result-art/capture.json').read_text())['frames'];images=build_result_images(self.rom,1,self.colors);count=0
   for item in observations:
    stem='ppu-%05d'%item['emulator_frame'];s=json.loads((self.directory/(stem+'-semantic.json')).read_text());ppu=(self.directory/(stem+'-ppu.bin')).read_bytes();oam=(self.directory/(stem+'-oam.bin')).read_bytes();ctrl=(self.directory/(stem+'-ctrl.bin')).read_bytes()[0]
    original=Image.open(self.directory/('frame-%05d.png'%item['frame'])).convert('RGB');bg=compose_result_background(images,s['result']['digits'],s['camera']);sprites=render_sprites(ppu,oam,ctrl,self.colors);mismatch=[]

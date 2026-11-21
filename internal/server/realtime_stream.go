@@ -3,6 +3,7 @@ package server
 import (
 	"bytes"
 	"context"
+	"crypto/sha256"
 	"encoding/json"
 	"io"
 	"net/http"
@@ -96,9 +97,23 @@ func (s *Server) streamCommand(r *http.Request, raw []byte) streamAck {
 // and room metadata. View is still computed per authenticated viewer; private
 // data must never be shared between seats by a room-wide serialization cache.
 type streamConnectionCursor struct {
-	RoomID string
-	Viewer int
-	Value  string
+	RoomID   string
+	Viewer   int
+	Value    string
+	Envelope [sha256.Size]byte
+}
+
+type streamGameUnchanged struct{}
+
+func streamEnvelopeFingerprint(packet map[string]any) ([sha256.Size]byte, error) {
+	stable := make(map[string]any, len(packet))
+	for key, value := range packet {
+		if key != "version" && key != "serverNow" {
+			stable[key] = value
+		}
+	}
+	raw, err := json.Marshal(stable)
+	return sha256.Sum256(raw), err
 }
 
 func (s *Server) streamGame(r *http.Request) (any, bool) {
@@ -146,13 +161,35 @@ func (s *Server) streamGameCursor(r *http.Request, previous streamConnectionCurs
 	if err != nil {
 		return nil, next, false
 	}
+	var packet map[string]any
+	if json.Unmarshal(rawEnvelope, &packet) != nil {
+		return nil, next, false
+	}
+	next.Envelope, err = streamEnvelopeFingerprint(packet)
+	if err != nil {
+		return nil, next, false
+	}
 	value, err := module.StreamView(match, viewer, cursor)
 	if err != nil {
 		return nil, next, false
 	}
-	var packet map[string]any
-	if json.Unmarshal(rawEnvelope, &packet) != nil {
-		return nil, next, false
+	if value.Unchanged {
+		if cursor != "" && previous.RoomID == next.RoomID && previous.Viewer == next.Viewer && previous.Envelope == next.Envelope {
+			return streamGameUnchanged{}, previous, true
+		}
+		if cursor != "" {
+			value, err = module.StreamView(match, viewer, "")
+			if err != nil {
+				return nil, next, false
+			}
+		}
+		if value.Unchanged {
+			value.Data, err = module.View(match, viewer)
+			value.Cursor = ""
+			if err != nil {
+				return nil, next, false
+			}
+		}
 	}
 	packet["game"].(map[string]any)["data"] = value.Data
 	next.Value = value.Cursor
@@ -266,6 +303,9 @@ func (s *Server) streamSocket(w http.ResponseWriter, r *http.Request, user User)
 		packet, nextCursor, valid := s.streamGameCursor(r, cursor)
 		if !valid {
 			return false
+		}
+		if _, unchanged := packet.(streamGameUnchanged); unchanged {
+			return true
 		}
 		if packet == nil {
 			return state()

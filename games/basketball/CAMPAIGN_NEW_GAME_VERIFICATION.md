@@ -21,7 +21,7 @@ Unsupported modes return an error, unchanged Random and no created Progress. The
 
 ## Source evidence reused
 
-The original investigation is preserved in `.local/basketball/rea/campaign-new-game/calls.json`, SHA-256 `08836c0a95cf13a9319f65506efd721f57b3bab34adfc360db67773ac7342c03`.
+The original investigation is preserved in `.local/basketball/research/rea/campaign-new-game/calls.json`, SHA-256 `08836c0a95cf13a9319f65506efd721f57b3bab34adfc360db67773ac7342c03`.
 
 - Original C9C6/A08C clearing/initialization establishes Period0, zero win masks and FF/-1 in all inventory/equipment slots.
 - 32 actual unentered A1F8 calls cover sixteen returned-byte values across0..255 and two prior reward selectors. Each makes one original F9C3 call and writes the returned byte&3. The same corpus separately records32 entered-gate calls making no new reward draw.
@@ -43,7 +43,7 @@ Existing REA evidence is `ev_37af32e9b034716efaee6f2adaafab2a2553752baa05f1e2889
 
 ## Tests-first acceptance
 
-The new tests and source fixture were written before `campaign_new_game.go`; the initial undefined-API compilation failure remains in `.local/campaign-new-game-factory/before.log`.
+The new tests and source fixture were written before `campaign_new_game.go`; the initial undefined-API compilation failure remains in `.local/basketball/research/campaign-new-game-factory/before.log`.
 
 Coverage includes all four reward selectors, both normal story modes, exact source random outputs, valid empty progress, deterministic immutable inputs, JSON round trips and24 unsupported-mode/random combinations. Mode0/1 are independent of the reward choice. Invalid input does not return an advanced random register or a usable partial campaign.
 
@@ -59,4 +59,4 @@ GOOS=js GOARCH=wasm go test -exec "$(go env GOROOT)/lib/wasm/go_js_wasm_exec" ./
 
 The exporter can regenerate the committed `engine/testdata/campaign-new-game-*` fixture without re-running the original machine. `--check` verifies compressed-byte equality without rewriting it. Platform new-game UI, preparation integration, match startup and full campaign completion remain separate work; this factory does not claim them complete.
 
-Native, race and Wasm targeted checks passed. Exact source/fixture/log hashes and result index: worktree `.local/campaign-new-game-factory/result.json`.
+Native, race and Wasm targeted checks passed. Exact source/fixture/log hashes and result index: worktree `.local/basketball/research/campaign-new-game-factory/result.json`.

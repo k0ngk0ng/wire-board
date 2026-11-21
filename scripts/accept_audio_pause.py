@@ -3,7 +3,7 @@ Run against a workspace Vite server; all browser state/results stay in workspace
 """
 import json,os,subprocess,sys,uuid
 from pathlib import Path
-root=Path(__file__).resolve().parents[1];out=root/'.local/basketball/audio-pause-browser';out.mkdir(parents=True,exist_ok=True)
+root=Path(__file__).resolve().parents[1];out=root/'.local/basketball/verification/audio-pause-browser';out.mkdir(parents=True,exist_ok=True)
 env=dict(os.environ,AGENT_BROWSER_SESSION='ap-'+uuid.uuid4().hex[:6],AGENT_BROWSER_SOCKET_DIR=str(root/'.local/ap-sockets'),TMPDIR=str(root/'.local/tmp'))
 Path(env['AGENT_BROWSER_SOCKET_DIR']).mkdir(exist_ok=True)
 def browser(*args):

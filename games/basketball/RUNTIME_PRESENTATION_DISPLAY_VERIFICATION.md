@@ -57,7 +57,7 @@ From the basketball worktree:
 ```sh
 source scripts/env.sh
 PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/generate_postresult_runtime_seed.py --generate-code
-BASKETBALL_PRESENTATION_ARTIFACT_DIR="$PWD/.local/presentation-client" go test ./games/basketball/engine -run '^TestRuntimePresentationDisplay|^TestRuntimePresentationCanonical' -count=1 -v
+BASKETBALL_PRESENTATION_ARTIFACT_DIR="$PWD/.local/basketball/verification/presentation-client" go test ./games/basketball/engine -run '^TestRuntimePresentationDisplay|^TestRuntimePresentationCanonical' -count=1 -v
 go test ./games/basketball/engine -run '^TestRuntimePresentation|^TestOriginalPostResult|^TestRuntime.*Replay|^TestRuntime.*Result' -count=1 -v
 go test -race ./games/basketball/engine -run '^TestRuntimePresentation|^TestOriginalPostResultDisplayCommitOwnership' -count=1 -v
 ```
@@ -78,4 +78,4 @@ harness and its own report.
 
 Retained local evidence: `.local/runtime-presentation-source.log`,
 `.local/runtime-presentation-display.log`, `.local/runtime-presentation-regression.log`,
-`.local/runtime-presentation-race.log` and `.local/presentation-client/`.
+`.local/runtime-presentation-race.log` and `.local/basketball/verification/presentation-client/`.

@@ -9,7 +9,7 @@ ROOT=Path(__file__).resolve().parents[2]
 
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('--index',type=int,choices=[22,54],default=22);args=parser.parse_args()
-    run=ROOT/'.local/nes-basket/runs/world-rider-natural';raw=(run/'world-inputs-ram.bin').read_bytes();rows=list(csv.DictReader((run/'world-inputs.csv').open()));index=args.index
+    run=ROOT/'.local/basketball/research/original/runs/world-rider-natural';raw=(run/'world-inputs-ram.bin').read_bytes();rows=list(csv.DictReader((run/'world-inputs.csv').open()));index=args.index
     assert len(raw)==len(rows)*4096
     b,a=raw[index*4096:index*4096+2048],raw[index*4096+2048:(index+1)*4096]
     frames=[]

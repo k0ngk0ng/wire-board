@@ -57,12 +57,12 @@ Reproduce from the workspace after `source scripts/env.sh`:
 
 ```sh
 PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/test_result_art.py
-PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/verify_result_assets.py .local/basketball/results
+PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/verify_result_assets.py .local/basketball/assets/results
 PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/accept_renderer.py
 ```
 
-Retained evidence is in `.local/basketball/rea/result-art/` and
-`.local/basketball/renderer/browser/` (`result.json`, `result-canvas.png`,
+Retained evidence is in `.local/basketball/research/rea/result-art/` and
+`.local/basketball/verification/renderer/browser/` (`result.json`, `result-canvas.png`,
 desktop/mobile screenshots, requested asset paths and responsive measurements).
 This proves the renderer against original semantic inputs, not a natural
 end-to-end Go match. Assets remain `accepted_for_release: false`.

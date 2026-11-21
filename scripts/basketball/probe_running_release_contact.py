@@ -2,9 +2,9 @@
 from pathlib import Path
 import hashlib,json,sys
 ROOT=Path(__file__).resolve().parents[2]
-sys.path.insert(0,str(ROOT/'.local/basketball/python'))
+sys.path.insert(0,str(ROOT/'.local/basketball/research/python'))
 from py65.devices.mpu6502 import MPU
-rom=(ROOT/'.local/nes-basket/basketball.nes').read_bytes()
+rom=(ROOT/'.local/basketball/research/original/basketball.nes').read_bytes()
 assert hashlib.sha256(rom).hexdigest()=='0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b'
 prg=rom[16:16+131072];rows=[]
 for kind in range(8):

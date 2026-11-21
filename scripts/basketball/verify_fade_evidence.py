@@ -23,11 +23,11 @@ def read(path):
 
 
 def main():
-    capture = read(ART / 'fade/capture.json')
-    rom_digest = digest(ROOT / '.local/nes-basket/basketball.nes')
+    capture = read(ART / 'research/fade/capture.json')
+    rom_digest = digest(ROOT / '.local/basketball/research/original/basketball.nes')
     frames = []
     for record in capture['records']:
-        observed = ROOT / '.local/nes-basket/runs' / record['run']
+        observed = ROOT / '.local/basketball/research/original/runs' / record['run']
         reference = observed.parent / ('fade-' + record['label'] + '-reference')
         assert (observed / 'capture-complete.json').is_file()
         assert (reference / 'capture-complete.json').is_file()
@@ -41,8 +41,8 @@ def main():
             frames.append({'label': record['label'], 'frame': frame['frame'],
                            'sha256': digest(observed / name)})
     assert len(frames) == 112
-    fixture = read(ART / 'renderer/browser/fade-cases.json')
-    result = read(ART / 'renderer/browser/result.json')
+    fixture = read(ART / 'verification/renderer/browser/fade-cases.json')
+    result = read(ART / 'verification/renderer/browser/result.json')
     assert result['status'] == 'passed' and result['firstFailure'] is None
     expected = {(x['label'], x['frame']) for x in frames}
     selected = {(x['label'], x['frame']) for x in fixture['cases']}
@@ -60,9 +60,9 @@ def main():
         assert all((palette, 'out', level) in levels for level in range(5))
     for palette in (2, 5, 9):
         assert all((palette, 'in', level) in levels for level in range(1, 5))
-    raster_path = ART / 'raster/manifest.json'
+    raster_path = ART / 'assets/raster/manifest.json'
     raster = read(raster_path)
-    colors = ROOT / '.local/nes-basket/runs/graphics-right/nes-colors.rgb'
+    colors = ROOT / '.local/basketball/research/original/runs/graphics-right/nes-colors.rgb'
     assert raster['accepted_for_release'] is False
     assert raster['source']['rom_sha256'] == rom_digest
     assert raster['paletteFade']['rgb_sha256'] == digest(colors)
@@ -79,9 +79,9 @@ def main():
     assert extra_frames in (0, 8)
     if extra_frames:
         assert all(x['mismatches'] == 0 for x in result['resultCourtSixFramesDetail'])
-    inputs = [raster_path, ART / 'fade/capture.json', ART / 'fade/index-oracle.json',
-              ART / 'renderer/browser/fade-cases.json', ART / 'renderer/browser/result.json',
-              ART / 'renderer/browser/renderer.js', ROOT / 'games/basketball/web/renderer.ts']
+    inputs = [raster_path, ART / 'research/fade/capture.json', ART / 'research/fade/index-oracle.json',
+              ART / 'verification/renderer/browser/fade-cases.json', ART / 'verification/renderer/browser/result.json',
+              ART / 'verification/renderer/browser/renderer.js', ROOT / 'games/basketball/web/renderer.ts']
     report = {'status': 'passed', 'scope': 'retained original render inputs and browser pixel comparison; not Go world equivalence',
               'sourceFrames': 112, 'excludedPreviousMenuFrames': 5, 'fadeFrames': 107,
               'fadePixels': 107 * 256 * 240, 'fadeRegressionFrames': sum(counts), 'additionalCourtSixResultFrames': extra_frames,
@@ -91,7 +91,7 @@ def main():
               'groups': [{'label': k[0], 'paletteID': k[1], 'direction': k[2],
                           'result': k[3], 'frames': v} for k, v in sorted(groups.items())],
               'inputs': {str(p.relative_to(ROOT)): digest(p) for p in inputs}}
-    (ART / 'fade/evidence-verification.json').write_text(json.dumps(report, indent=2) + '\n')
+    (ART / 'research/fade/evidence-verification.json').write_text(json.dumps(report, indent=2) + '\n')
     print(json.dumps({k: v for k, v in report.items() if k not in ('frames', 'groups', 'inputs')}))
 
 

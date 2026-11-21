@@ -21,7 +21,7 @@ def main():
     p=ROOT/'games/basketball/engine/testdata/loose-ball.json';p.write_text(json.dumps(rows,separators=(',',':'))+'\n')
     summary=dict(source_is_original_execution=True,records=len(rows),all_ball_phases=len(all_rows),identical_frames=spec['frames'],identical_screenshots=len(images),sha256=hashlib.sha256(p.read_bytes()).hexdigest(),source=json.loads((observed/'source.json').read_text()))
     p.with_name('loose-ball-source.json').write_text(json.dumps(summary,indent=2)+'\n')
-    out=ROOT/'.local/basketball/rea/dropped-ball';(out/'capture.json').write_text(json.dumps(summary,indent=2)+'\n');print(json.dumps(summary))
+    out=ROOT/'.local/basketball/research/rea/dropped-ball';(out/'capture.json').write_text(json.dumps(summary,indent=2)+'\n');print(json.dumps(summary))
 
 
 if __name__=='__main__':main()

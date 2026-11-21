@@ -3,9 +3,11 @@
 from pathlib import Path
 import re
 import sys
+from check_local_game_paths import check_workspace
 
 root = Path(__file__).resolve().parents[1]
 failures = []
+failures.extend(check_workspace(root)['issues'])
 games = [p for p in (root / "games").iterdir() if p.is_dir() and not p.name.startswith(("_", "."))]
 for game in games:
     for area in ("server", "web"):

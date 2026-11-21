@@ -4,9 +4,9 @@ import csv, fcntl, hashlib, json, os, subprocess, time, wave
 from extract_audio import LUA, SOURCE_SHA, carrier
 
 ROOT = Path(__file__).resolve().parents[2]
-ASSETS = ROOT / '.local/music76-source/assets'
-OLD = ROOT / '.local/basketball/audio/export'
-BASE = ROOT / '.local/nes-basket'
+ASSETS = ROOT / '.local/basketball/research/music76-source/assets'
+OLD = ROOT / '.local/basketball/assets/audio/export'
+BASE = ROOT / '.local/basketball/research/original'
 NAMES = ['full.wav', 'driver-ram.bin', 'sample-cursors.csv', 'sequence-jumps.csv', 'apu.csv', 'calls.csv']
 
 def sha(p):
@@ -35,9 +35,9 @@ def main():
             old = json.loads(info.read_text()); assert old['settings'] == settings
             assert all(sha(run/k) == v for k, v in old['files'].items())
             print('reused', run.name, flush=True); continue
-        run.mkdir(exist_ok=True)
+        run.mkdir(parents=True,exist_ok=True)
         assert not (run/'complete').exists(), 'unverified completed capture requires inspection'
-        home = run/'fceux-home'; home.mkdir(exist_ok=True)
+        home = run/'fceux-home'; home.mkdir(parents=True,exist_ok=True)
         (home/'fceux.cfg').write_text('SDL.OpenGL = 0\nSDL.VideoDriver = 2\nSDL.VideoVsync = 0\n')
         script = run/'record.lua'; script.write_text(LUA)
         env = dict(os.environ, QT_QPA_PLATFORM='offscreen', SDL_AUDIODRIVER='dummy',

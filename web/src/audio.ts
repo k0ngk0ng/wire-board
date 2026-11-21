@@ -3,6 +3,7 @@ import { toneDataURL, type Sound } from "./audio-tones.ts";
 import { NativeAudioStream, normalizeStreamConfig } from "./audio-stream.ts";
 import { NativePCMStream, normalizePCMConfig } from "./audio-pcm-stream.ts";
 import { NativeContinuousLoops } from "./audio-continuous.ts";
+import { NativeSpatialAudio, normalizeSpatialOptions, type SpatialListener, type SpatialOptions } from "./audio-spatial.ts";
 import { NativeAudioPreparation } from "./audio-preparation.ts";
 import type {
   GameAudioPCMStreamConfig,
@@ -97,6 +98,8 @@ export class GameAudio {
   private backgroundSources = "";
   private loops = new Map<string, LoopVoice>();
   private continuous?: NativeContinuousLoops;
+  private spatial?: NativeSpatialAudio;
+  private spatialHistory = new Map<string, Set<string>>();
 
 
   private tracks = new Map<string, TrackVoice>();
@@ -127,6 +130,7 @@ export class GameAudio {
     this.stream?.controller.setVolume(this.level);
     this.pcm?.controller.setVolume(this.level);
     this.continuous?.setVolume(this.level);
+    this.spatial?.setVolume(this.level);
     for (const voice of this.finite.values())
       voice.player.setVolume(this.level);
     for (const voice of this.loops.values())
@@ -180,6 +184,7 @@ export class GameAudio {
     if (!this.available()) return false;
     void this.background?.unlock();
     void this.continuous?.unlock();
+    void this.spatial?.unlock();
     if (this.primed || this.task) return true;
     const media = this.element(),
       serial = this.serial;
@@ -205,6 +210,7 @@ export class GameAudio {
   pause(owner: string) {
     this.pausedOwners.add(owner);
     this.continuous?.pause(owner);
+    if (this.spatial?.owner === owner) { this.spatial.stop(); this.spatial = undefined; }
     if (this.task?.owner === owner) {
       this.task.generation++;
       this.media?.pause();
@@ -302,6 +308,7 @@ export class GameAudio {
     else this.pausedOwners.delete(owner);
     this.stopEffects(owner);
     if (owner === undefined || this.continuous?.owner === owner) { this.continuous?.stop();this.continuous = undefined; }
+    if (owner === undefined || this.spatial?.owner === owner) { this.spatial?.stop(); this.spatial = undefined; }
     if (owner === undefined || this.stream?.owner === owner)
       this.stream?.controller.stop();
     if (owner === undefined || this.pcm?.owner === owner)
@@ -382,6 +389,9 @@ export class GameAudio {
         this.finite.delete(key);
         voice.player.dispose();
       },
+      spatial: (key: string, sources: readonly string[], options: SpatialOptions) => this.startSpatial(owner, key, sources, options),
+      spatialListener: (listener: SpatialListener) => { if (this.spatial?.owner === owner) this.spatial.setListener(listener); },
+      stopSpatial: (key?: string) => { if (this.spatial?.owner === owner) this.spatial.stopKey(key); },
       openStream: (options: GameAudioStreamConfig) =>
         this.openStream(owner, options),
       openPCMStream: (options: GameAudioPCMStreamConfig) =>
@@ -433,6 +443,29 @@ export class GameAudio {
   }
   private trackKey(owner: string, key: string) {
     return JSON.stringify([owner, key]);
+  }
+  private startSpatial(owner: string, key: string, requested: readonly string[], options: SpatialOptions): Promise<boolean> {
+    const normalized = normalizeSpatialOptions(options);
+    const sources = [...new Set(requested.filter(source => typeof source === "string" && source.length > 0 && source.length <= 4096))];
+    if (!normalized || !key || key.length > 128 || !sources.length || sources.length > 4) return Promise.resolve(false);
+    let history = this.spatialHistory.get(owner);
+    if (!history) {
+      if (this.spatialHistory.size >= 8) this.spatialHistory.delete(this.spatialHistory.keys().next().value!);
+      this.spatialHistory.set(owner, history = new Set());
+    }
+    const identity = JSON.stringify([key, normalized.playbackID]);
+    if (history.has(identity)) return Promise.resolve(false);
+    if (history.size >= 256) history.delete(history.values().next().value!);
+    history.add(identity);
+    if (!this.available() || this.pausedOwners.has(owner)) return Promise.resolve(false);
+    if (this.spatial && (this.spatial.owner !== owner || this.spatial.stopped)) { this.spatial.stop(); this.spatial = undefined; }
+    if (!this.spatial) {
+      this.playbackSession();
+      this.spatial = NativeSpatialAudio.prepare(owner, () => this.createElement(), () => this.available() && !this.pausedOwners.has(owner));
+    }
+    if (!this.spatial) return Promise.resolve(false);
+    this.spatial.setVolume(this.level);
+    return this.spatial.play(key, sources, normalized);
   }
   private releaseTrack(voice: TrackVoice) {
     voice.stopped = true;

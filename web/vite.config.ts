@@ -9,11 +9,13 @@ import { prepareContraDelivery } from "../games/contra/build/runtime-delivery.mj
 import { prepareYuYuDelivery } from "../games/yuyuhakusho/build/runtime-delivery.mjs";
 import { preparePvZRuntime } from "../games/pvz/build/runtime.mjs";
 import { preparePokepathNative } from "../games/pokepath/build/browser-runtime.mjs";
+import { prepareHotlineDelivery } from "../games/hotlinemiami/build/runtime-delivery.mjs";
+import { prepareCS16Delivery } from "../games/cs16/build/runtime-delivery.mjs";
 const root = fileURLToPath(new URL("../", import.meta.url));
 export default defineConfig({
   base: assetBase(process.env.WIRE_BOARD_ASSET_BASE),
   define: { "import.meta.env.VITE_CDN_ORIGIN": JSON.stringify(process.env.CDN_ORIGIN || "") },
-  publicDir: preparePublicAssets(root, [prepareBasketballDelivery(root), prepareContraDelivery(root), preparePvZRuntime(root), prepareYuYuDelivery(root), preparePokepathNative()]),
+  publicDir: preparePublicAssets(root, [prepareBasketballDelivery(root), prepareContraDelivery(root), preparePvZRuntime(root), prepareYuYuDelivery(root), preparePokepathNative(), prepareHotlineDelivery(root), prepareCS16Delivery(root)], ["hotlinemiami", "cs16"]),
   plugins: [react(), gameLoadManifest()],
   resolve: { dedupe: ["react", "react-dom", "lucide-react", "three", "fflate"] },
   worker: { format: "es" },

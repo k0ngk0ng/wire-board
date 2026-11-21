@@ -16,6 +16,7 @@ const StepMS = 200
 const MaxEnemies = 64
 const MaxWaveEnemies = 44
 const MaxEvents = 1024
+const eventWindowMS = 1000
 const maxSnapshotBytes = 2 * 1024 * 1024
 const maxValue = 1e12
 
@@ -313,6 +314,23 @@ func (s *State) event(e Event) {
 	}
 }
 
+func (s *State) recentEventStart() int {
+	cutoff := s.ElapsedMS - eventWindowMS
+	first := 0
+	for first < len(s.Events)-1 {
+		event := s.Events[first]
+		at := event.Tick * StepMS
+		if event.AtMS != nil {
+			at = *event.AtMS
+		}
+		if at > cutoff {
+			break
+		}
+		first++
+	}
+	return first
+}
+
 func (s *State) finished() bool { return s.Phase == "won" || s.Phase == "lost" }
 func (s *State) actors() []int {
 	a := []int{}
@@ -459,6 +477,7 @@ func (s *State) Envelope() (gameapi.Match, error) {
 	if err := s.valid(); err != nil {
 		return gameapi.Match{}, err
 	}
+	s.Events = slices.Delete(s.Events, 0, s.recentEventStart())
 	raw, err := json.Marshal(s)
 	if err != nil {
 		return gameapi.Match{}, err

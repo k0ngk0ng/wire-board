@@ -8,7 +8,7 @@ import argparse,gzip,hashlib,json,subprocess,time
 from pathlib import Path
 root=Path(__file__).resolve().parents[2]
 parser=argparse.ArgumentParser();parser.add_argument('--controls',action='store_true');args=parser.parse_args()
-out=root/'.local/basketball-incident-20261023';out.mkdir(parents=True,exist_ok=True)
+out=root/'.local/basketball/verification/incident-20261023';out.mkdir(parents=True,exist_ok=True)
 variant='controls' if args.controls else 'idle'
 initial=json.loads(gzip.decompress((root/'games/basketball/engine/testdata/hoop-air-throw-runtime.json.gz').read_bytes()))
 process=subprocess.Popen(['go','run','./games/basketball/cmd/runtime-stdio'],stdin=subprocess.PIPE,stdout=subprocess.PIPE,text=True,cwd=root)

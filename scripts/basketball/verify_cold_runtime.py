@@ -21,7 +21,7 @@ def main():
     if args.race and args.wasm:
         parser.error('Go race detection is not available for Wasm')
     test = 'TestAllComputerColdWorldSixThousandUpdates' if args.all_computer else TEST
-    default_output = '.local/basketball/rea/all-computer-cold' if args.all_computer else '.local/basketball/rea/cold-runtime'
+    default_output = '.local/basketball/research/rea/all-computer-cold' if args.all_computer else '.local/basketball/research/rea/cold-runtime'
     output = (ROOT / (args.output or default_output)).resolve()
     if not output.is_relative_to(ROOT):
         parser.error('output must remain inside the workspace')

@@ -10,26 +10,26 @@
 ## 当前验证记录
 
 - 公共准备扩展：真实 HTTP、配置复验、权限、SQLite 故障回滚、nonce 重试、输入／输出切片隔离，以及既有模块生命周期的定向 race 通过。证据 `.local/module-preparation/{http,ui-render}.json`、`.local/module-preparation-race.log`。
-- 篮球准备：已通过场地权限、本人／他人角色限制、电脑队友交换、真人准备清理、SQLite 重启、开始使用选定场地和人物、开赛后禁止修改。证据 `.local/basketball/engine/preparation-server-race.log`、`preparation-court-three-after.log`。
-- 组件浏览器：13 项检查通过，原生鼠标／触摸、图片实载与回退、PC／320px、只读权限及实际文字对比度。证据 `.local/basketball/preparation-ui/`。
-- 完整平台：登录、标准创建弹窗、等待房间图片选择、第二人加入、双方准备与开赛配置通过；创建阶段没有场地／球员面板，未入座的人类角色标为「等待玩家」。证据 `.local/basketball/platform-rooms/`。
-- 新选择的全场验证：`BASKETBALL_PREPARATION_MATRIX=1 go test ./games/basketball/engine -run '^TestRuntimePreparedConfigurationsCompleteMatchAndRestore$' -count=1 -parallel=4 -v`。64 组包括球场 0–3、两队球员 0／1 的四种排列、单人／合作／对战／全电脑；每组正常上下半场、固定 seed、两次重复与周期 JSON 恢复。首轮 57 组通过，7 组缺口保留 `.local/basketball/rea/preparation-matrix/failures.json`。修复后重跑纽约全部 16 组、其他斜传首差 3 组，再重跑道具反弹 1 组，均通过；64 组现均有有效通过证据。未缩减选择范围或修改种子绕过，未把首轮失败记录改成成功。对应原函数与真实前态对照见 `PREPARED_DIAGONAL_VERIFICATION.md`、`BALL_PROP_CONTACT_VERIFICATION.md`。
+- 篮球准备：已通过场地权限、本人／他人角色限制、电脑队友交换、真人准备清理、SQLite 重启、开始使用选定场地和人物、开赛后禁止修改。证据 `.local/basketball/verification/engine/preparation-server-race.log`、`preparation-court-three-after.log`。
+- 组件浏览器：13 项检查通过，原生鼠标／触摸、图片实载与回退、PC／320px、只读权限及实际文字对比度。证据 `.local/basketball/verification/preparation-ui/`。
+- 完整平台：登录、标准创建弹窗、等待房间图片选择、第二人加入、双方准备与开赛配置通过；创建阶段没有场地／球员面板，未入座的人类角色标为「等待玩家」。证据 `.local/basketball/verification/platform-rooms/`。
+- 新选择的全场验证：`BASKETBALL_PREPARATION_MATRIX=1 go test ./games/basketball/engine -run '^TestRuntimePreparedConfigurationsCompleteMatchAndRestore$' -count=1 -parallel=4 -v`。64 组包括球场 0–3、两队球员 0／1 的四种排列、单人／合作／对战／全电脑；每组正常上下半场、固定 seed、两次重复与周期 JSON 恢复。首轮 57 组通过，7 组缺口保留 `.local/basketball/research/rea/preparation-matrix/failures.json`。修复后重跑纽约全部 16 组、其他斜传首差 3 组，再重跑道具反弹 1 组，均通过；64 组现均有有效通过证据。未缩减选择范围或修改种子绕过，未把首轮失败记录改成成功。对应原函数与真实前态对照见 `PREPARED_DIAGONAL_VERIFICATION.md`、`BALL_PROP_CONTACT_VERIFICATION.md`。
 
 界面与开局链路通过不等于所有完整比赛通过。当前开发阶段支持 4 个球场、固定两支球队的各两个已恢复人物槽；资源已导出全部 8 场／32 人，剩余玩法仍按整体复刻目标继续恢复。未发布、未上传 OSS。
 
 
-真实时钟端到端补充：`BASKETBALL_FULL_HTTP=1 go test ./games/basketball/server -run '^TestBasketballHTTPCompletePreparedMatch$' -count=1 -v` 已完成。两名真实认证用户先操作，再托管、接回对方席位、以原 START 暂停并重启 SQLite 服务，随后原 AI 完成正常上下半场及结果动画；22,383 视频帧、7,435 逻辑更新，比分 64–36，实际耗时 6 分 13 秒。未缩短比赛钟或注入预定结果。记录 `.local/basketball/full-http/result.json`；这是完整 HTTP／主机验证，不能代替完整多人浏览器或所有游戏内容验收。
+真实时钟端到端补充：`BASKETBALL_FULL_HTTP=1 go test ./games/basketball/server -run '^TestBasketballHTTPCompletePreparedMatch$' -count=1 -v` 已完成。两名真实认证用户先操作，再托管、接回对方席位、以原 START 暂停并重启 SQLite 服务，随后原 AI 完成正常上下半场及结果动画；22,383 视频帧、7,435 逻辑更新，比分 64–36，实际耗时 6 分 13 秒。未缩短比赛钟或注入预定结果。记录 `.local/basketball/verification/full-http/result.json`；这是完整 HTTP／主机验证，不能代替完整多人浏览器或所有游戏内容验收。
 
 ## 第五个球场与准备流程复验
 
 当前开发版可在等待房间选择 Court 0–4。新增 Court 4 的 16 种阵容／控制配置首轮 12 组通过，4 组暴露原 Kind10 捕获分支；修复后这 4 组完整比赛通过，合计 80 种已开放配置均有通过证据。失败记录未覆盖或删除，仍不能据此开放其余场地和人物。
 
-实际平台重新构建并通过登录、三种房间模式、准备区图片加载、第五球场选择保存、球员调整、第二人加入、准备及直接开赛，共 33 项检查。PC 和 320px 截图位于 `.local/basketball/platform-rooms/`，重复执行入口仍为 `TestBasketballBrowserPlatformRooms`。最新构建、浏览器和 Wasm 来源绑定日志为 `.local/basketball/engine/preparation-five-courts-{rebuild,browsers-after,package-after}.log`；它们对应后续四阶转场实现之前的源码，不替代后续改动验收。
+实际平台重新构建并通过登录、三种房间模式、准备区图片加载、第五球场选择保存、球员调整、第二人加入、准备及直接开赛，共 33 项检查。PC 和 320px 截图位于 `.local/basketball/verification/platform-rooms/`，重复执行入口仍为 `TestBasketballBrowserPlatformRooms`。最新构建、浏览器和 Wasm 来源绑定日志为 `.local/basketball/verification/engine/preparation-five-courts-{rebuild,browsers-after,package-after}.log`；它们对应后续四阶转场实现之前的源码，不替代后续改动验收。
 
 ## 第六个球场续作
 
-Court 5 已完成四种默认控制配置的 Native／race／Wasm 完整比赛，以及新增 16 组阵容／控制配置。首轮 13 组通过，3 组在原抬起、发射链暴露缺口；原分支恢复后，这 3 组复验通过。原种子、比赛时钟和失败记录均保留，汇总为 `.local/basketball/rea/court-five/resume-summary.json`。
+Court 5 已完成四种默认控制配置的 Native／race／Wasm 完整比赛，以及新增 16 组阵容／控制配置。首轮 13 组通过，3 组在原抬起、发射链暴露缺口；原分支恢复后，这 3 组复验通过。原种子、比赛时钟和失败记录均保留，汇总为 `.local/basketball/research/rea/court-five/resume-summary.json`。
 
-开发版准备区现有六张场地图片卡。HTTP 验收增加 Court 5 的保存、SQLite 重启、开赛配置以及仍拒绝 Court 6；实际平台浏览器也直接以所选 Court 5 开赛。组件 13 项、完整平台 33 项检查通过；实际 Go／Wasm 全电脑 Court 5 浏览器完整比赛另通过 40 项检查。对应日志为 `.local/basketball/engine/court-five-{preparation-after,preparation-component,stable-build,stable-package,stable-browsers,browser}.log`。这是记录时构建的验证，后续规则修改仍需各自验收和新的来源绑定构建。
+开发版准备区现有六张场地图片卡。HTTP 验收增加 Court 5 的保存、SQLite 重启、开赛配置以及仍拒绝 Court 6；实际平台浏览器也直接以所选 Court 5 开赛。组件 13 项、完整平台 33 项检查通过；实际 Go／Wasm 全电脑 Court 5 浏览器完整比赛另通过 40 项检查。对应日志为 `.local/basketball/verification/engine/court-five-{preparation-after,preparation-component,stable-build,stable-package,stable-browsers,browser}.log`。这是记录时构建的验证，后续规则修改仍需各自验收和新的来源绑定构建。
 
 没有开放其他球队或尚未完成的球场，也未改变生产上下架设置。

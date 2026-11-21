@@ -19,7 +19,7 @@ HumanCommandState.EvenStatus保存0657/659，原Status继续保存0658/65A；零
 
 测试先于实现。原18,000帧参考中全部43次自然A8C1调用完整WorldInputState一致，所有RAM/PNG与参考一致。另有2016组原A8C1隔离执行，覆盖非零状态、模式进入位、角色索引和全部既有tactic/holder选择；逐组比较整个世界输入状态，明确区别于自然对局。
 
-该步骤越过cold5081，真实返回mode24，下一帧按原进入A49E。原1998输入与1998/57连续轨迹保持通过；最终Wasm与相关测试见 `.local/basketball/rea/ai-forced-shot/wasm-tests.log`。本子阶段早期仅因另一代理result测试尚未实现而临时按文件列表排除result_test.go；最终包级编译与验证未排除文件。
+该步骤越过cold5081，真实返回mode24，下一帧按原进入A49E。原1998输入与1998/57连续轨迹保持通过；最终Wasm与相关测试见 `.local/basketball/research/rea/ai-forced-shot/wasm-tests.log`。本子阶段早期仅因另一代理result测试尚未实现而临时按文件列表排除result_test.go；最终包级编译与验证未排除文件。
 
 ```sh
 PYTHONDONTWRITEBYTECODE=1 .local/monopoly/venv/bin/python scripts/basketball/capture_ai_command_resume.py

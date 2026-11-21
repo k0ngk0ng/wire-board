@@ -10,7 +10,7 @@ from capture_reference import ROOT,BASE,run
 from capture_renderer import EXTRA
 
 def main():
- out=ROOT/'.local/basketball/courts';out.mkdir(parents=True,exist_ok=True);records=[]
+ out=ROOT/'.local/basketball/assets/courts';out.mkdir(parents=True,exist_ok=True);records=[]
  for court in range(8):
   spec=json.loads((BASE/'opening-from-menu.json').read_text());spec.pop('hooks_lua',None)
   selection='''local selected=false

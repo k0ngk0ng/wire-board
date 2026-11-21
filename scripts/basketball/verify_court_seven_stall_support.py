@@ -4,7 +4,7 @@ from probe_rest_stall import ROOT,encode,run,SoundMemory,PRG,ROM
 from verify_court_profiles import image,profiles
 
 def main():
- out=ROOT/'.local/basketball/rea/court-seven-stall';source=ROOT/'.local/basketball/rea/court-seven/runtime-all-computer-limit-before.json';s=json.loads(source.read_text());grid=profiles(image())[7];rows=[]
+ out=ROOT/'.local/basketball/research/rea/court-seven-stall';source=ROOT/'.local/basketball/research/rea/court-seven/runtime-all-computer-limit-before.json';s=json.loads(source.read_text());grid=profiles(image())[7];rows=[]
  assert hashlib.sha256(ROM).hexdigest()=='0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b'
  for depth in [79*256+218,80*256,80*256+218]:
   for airborne in [False,True]:

@@ -334,8 +334,28 @@ FAST_COMPONENTS = {
     'account-password': ({'internal/server/account_password.go', 'internal/server/account_password_e2e_test.go'}, ['internal/server/account_password_e2e_test.go']),
 }
 
-LINT_TOOL_FILES = {'games/racing/build/lint_go.go'}
-ASSET_DELIVERY_FILES = {'scripts/cdn_delivery.py', 'scripts/test_cdn_delivery.py', 'scripts/resource_store.py', 'scripts/resource_store_e2e_test.py', 'scripts/asset_reuse.py', 'scripts/asset_reuse_e2e_test.py'}
+LINT_TOOL_FILES = {'games/racing/build/lint_go.go', 'games/hotlinemiami/build/lint_go.go', 'games/cs16/build/lint_go.go'}
+FRONTEND_POLICY_FILES = {'web/scripts/game-control-lint.mjs', 'web/scripts/game-control-lint.json', 'web/scripts/platform-source-lint.mjs', 'web/scripts/platform-source-lint.json', 'web/scripts/room-ui-lint.mjs'}
+SHARED_UI_ACCEPTANCE_FILES = {
+    'games/conquest/tests/accept_map_ux.py',
+    'games/hotlinemiami/tests/accept_browser.py',
+    'games/monopoly/tests/accept_ui.py',
+    'games/pvz/tests/followup-ui-browser.py',
+    'games/tabletennis/tests/accept_browser.py',
+    'scripts/accept_account_password_and_starfort_result.py',
+    'scripts/accept_draw_result.py',
+    'scripts/accept_turn_layout_http.py',
+    'scripts/basketball/accept_platform_rooms.py',
+    'scripts/battlecity/check-browser.py',
+    'scripts/bubbleparty/check-refactor.py',
+    'scripts/contra/terminal_browser_accept.py',
+    'scripts/contra/victory_browser_accept.py',
+    'scripts/game-loading/check-results.py',
+    'scripts/racing/check-remake.py',
+    'scripts/spf2t/check-browser.py',
+    'scripts/tetris/check-browser.py',
+}
+ASSET_DELIVERY_FILES = {'scripts/cdn_delivery.py', 'scripts/test_cdn_delivery.py', 'scripts/test_cdn_manual_gzip.py', 'scripts/resource_store.py', 'scripts/resource_store_e2e_test.py', 'scripts/asset_reuse.py', 'scripts/asset_reuse_e2e_test.py'}
 
 def ci_path(path):
     return path in ASSET_DELIVERY_FILES or path.startswith(('.github/workflows/', '.github/actions/', 'scripts/ci/')) or path in {
@@ -369,7 +389,7 @@ def plan(paths, games, manual='', legacy_sources=None, contra_campaigns=False, v
     for path in paths:
         active_path = path
         if path.endswith('.md') or path.startswith('docs/'): continue
-        if ci_path(path) or cover_path(path, games): continue
+        if ci_path(path) or cover_path(path, games) or path in SHARED_UI_ACCEPTANCE_FILES: continue
         if path == 'cmd/verify-yuyu-arena-aux/main.go':
             add('yuyuhakusho', True)
             continue
@@ -427,7 +447,7 @@ def plan(paths, games, manual='', legacy_sources=None, contra_campaigns=False, v
         elif path.startswith('cmd/'):
             components.add('ci')
             shared = True
-        elif cover_path(path, games) or path.startswith(('web/src/', 'web/tests/')) or path == 'scripts/check-release-history.py':
+        elif cover_path(path, games) or path.startswith(('web/src/', 'web/tests/')) or path == 'scripts/check-release-history.py' or path in FRONTEND_POLICY_FILES or path in SHARED_UI_ACCEPTANCE_FILES:
             frontend_checks = True
         elif path in ('scripts/update.sh', 'scripts/test_update.py', 'compose.yaml', 'Dockerfile', '.env.example'):
             components.add('deployment')
@@ -444,7 +464,7 @@ def plan(paths, games, manual='', legacy_sources=None, contra_campaigns=False, v
     return {'games': rows, 'matrix': {'include': matrix}, 'has_games': bool(rows),
             'has_shared': shared, 'has_quick': bool(components),
             'quick_components': sorted(components),
-            'quick_go': bool(components.intersection(FAST_COMPONENTS) or 'ci' in components),
+            'quick_go': bool(components.intersection(FAST_COMPONENTS) or 'ci' in components or frontend_checks),
             'quick_node_deps': bool(components.intersection({'frontend', 'typescript'})),
             'frontend_checks': frontend_checks, 'build_required': build_required,
             'validation': validation,
@@ -574,6 +594,7 @@ def quick_commands(root, components):
                 ['node', '--test', 'scripts/ci/baseline.test.cjs', 'scripts/release-source.test.cjs'],
                 ['python3', '-B', 'scripts/test_cdn_local_ready.py'],
                 ['python3', '-B', 'scripts/test_cdn_delivery.py'],
+                ['python3', '-B', 'scripts/test_cdn_manual_gzip.py'],
                 ['python3', '-B', 'scripts/ci/cdn_concurrency_e2e_test.py'],
             ]
         elif component == 'deployment':
@@ -651,6 +672,8 @@ def prepare_pvz_asset_tools(root):
     return report
 
 def build_commands(root, game, index=0):
+    if game in ('hotlinemiami', 'cs16') and index == 0:
+        return [['node', str(root/'games'/game/'build/lint.mjs')]]
     if game == 'yuyuhakusho' and index == 0:
         return [['node','--test',str(root/'games/yuyuhakusho/build/runtime-delivery.test.mjs')], ['go','test','-run','^$','./games/yuyuhakusho/cmd/verify-arena-aux']]
     if game == 'pvz' and index == 0:

@@ -29,7 +29,7 @@
 
 ## 原指令及原整机对照
 
-`probe_rest_stall.py --directory .local/basketball/rea/court-seven-stall` 比较触发前后 50 个真实 Go 球状态：分别独立执行原完整球分派，50／50 相同；只初始化一次连续执行原球分派，也是 50／50 相同。
+`probe_rest_stall.py --directory .local/basketball/research/rea/court-seven-stall` 比较触发前后 50 个真实 Go 球状态：分别独立执行原完整球分派，50／50 相同；只初始化一次连续执行原球分派，也是 50／50 相同。
 
 进一步取 Go video 13980、仍在台面滚动的完整世界作为唯一受控起点。通过 `encode_world_probe.py` 将当前动作、球、篮筐、AI、输入、接触事件、位置、随机数、成绩和时钟等已建模语义字段写入原机，逐字段清单保留在 `controlled-patch.json`。原编码重新解码为 World，和起点语义完全一致。这个起点不是原菜单自然路径，也不是逐帧注入。
 
@@ -43,17 +43,17 @@
 
 ## 证据与复跑
 
-目录 `.local/basketball/rea/court-seven-stall/` 包含首触发前态、50 帧历史、原球调用、支撑面探针、受控起点字段、原整机结果和 Go／原机世界对照。原始整机 RAM／逐世界 RAM／截图在 `.local/nes-basket/runs/court7-rest-stall-observed/`，无观察参考在 `court7-rest-stall-reference/`。
+目录 `.local/basketball/research/rea/court-seven-stall/` 包含首触发前态、50 帧历史、原球调用、支撑面探针、受控起点字段、原整机结果和 Go／原机世界对照。原始整机 RAM／逐世界 RAM／截图在 `.local/basketball/research/original/runs/court7-rest-stall-observed/`，无观察参考在 `court7-rest-stall-reference/`。
 
 原世界轨迹 SHA-256：`f51e25a70d7e57ca868bf117e55c0f1083ab8906e5065b9cb9e89803d5ff65f0`。整机全视频 RAM SHA-256：`90a8ef0b3ea4c24f91c07e06a0fb70585da06e947fd14ca3312007eaf53f6dab`。
 
 ```sh
 source scripts/env.sh
-BASKETBALL_REST_STALL_OUTPUT="$PWD/.local/basketball/rea/court-seven-stall/first-entry-repeat" BASKETBALL_REST_STALL_SOURCE="$PWD/.local/basketball/rea/court-seven/runtime-all-computer-limit-before.json" go test ./games/basketball/engine -run '^TestBallRestStallDiagnostic$' -count=1 -v
-PYTHONDONTWRITEBYTECODE=1 python3 scripts/basketball/probe_rest_stall.py --directory .local/basketball/rea/court-seven-stall
+BASKETBALL_REST_STALL_OUTPUT="$PWD/.local/basketball/research/rea/court-seven-stall/first-entry-repeat" BASKETBALL_REST_STALL_SOURCE="$PWD/.local/basketball/research/rea/court-seven/runtime-all-computer-limit-before.json" go test ./games/basketball/engine -run '^TestBallRestStallDiagnostic$' -count=1 -v
+PYTHONDONTWRITEBYTECODE=1 python3 scripts/basketball/probe_rest_stall.py --directory .local/basketball/research/rea/court-seven-stall
 PYTHONDONTWRITEBYTECODE=1 python3 scripts/basketball/verify_court_seven_stall_support.py
 PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/capture_court_seven_stall.py
-PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/compare_rest_stall_worlds.py --directory .local/basketball/rea/court-seven-stall --source .local/nes-basket/runs/court7-rest-stall-observed/world-after.ram --initial-updates 913 --go go-worlds.jsonl --output world-comparison.json
+PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/compare_rest_stall_worlds.py --directory .local/basketball/research/rea/court-seven-stall --source .local/basketball/research/original/runs/court7-rest-stall-observed/world-after.ram --initial-updates 913 --go go-worlds.jsonl --output world-comparison.json
 ```
 
 ## 修复候选边界，尚未实施

@@ -10,7 +10,7 @@ from PIL import Image
 from static_sprites import SpriteROM
 from prepare_postresult_raster_reference import state_fields
 
-ROOT=Path(__file__).resolve().parents[2];BASE=ROOT/'.local/nes-basket'
+ROOT=Path(__file__).resolve().parents[2];BASE=ROOT/'.local/basketball/research/original'
 
 @lru_cache(None)
 def observed(kind):

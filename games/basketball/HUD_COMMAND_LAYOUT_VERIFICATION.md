@@ -8,7 +8,7 @@
 - Updating the wrong team's panel or overwriting player-name rows.
 - Assuming `TacticCache` must change without inspecting original writes, thereby changing original scheduler behavior.
 
-These scenarios and the source test draft were written under `.local/basketball/rea/hud-command-layout/` while runtime verification had a source freeze. After unfreeze, `display_tactic_layout_test.go` and the original fixture were installed and a failing test was retained before editing the implementation.
+These scenarios and the source test draft were written under `.local/basketball/research/rea/hud-command-layout/` while runtime verification had a source freeze. After unfreeze, `display_tactic_layout_test.go` and the original fixture were installed and a failing test was retained before editing the implementation.
 
 ## Original layout evidence
 
@@ -16,8 +16,8 @@ The ROM SHA-256 is `0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff
 
 Existing REA/Ghidra evidence was reused:
 
-- Display glyph builder `B31E`: `ev_e2cdc63188d762884208bfee004817ad3ec5e9ca3fdf0a43e558c2d6047d3ca2`, `.local/basketball/rea/display/batch.json`.
-- HUD scheduler and upload builder `AFF3/B074`: `ev_e512234c54456fd3a167b904732643cc324552d487272a08277c6aa6c25f14b0`, `.local/basketball/rea/match-clock/batch.json`. The historical query for `B19D` failed; this is not represented as a successfully decompiled function. The unchanged ROM instructions provide the executed oracle.
+- Display glyph builder `B31E`: `ev_e2cdc63188d762884208bfee004817ad3ec5e9ca3fdf0a43e558c2d6047d3ca2`, `.local/basketball/research/rea/display/batch.json`.
+- HUD scheduler and upload builder `AFF3/B074`: `ev_e512234c54456fd3a167b904732643cc324552d487272a08277c6aa6c25f14b0`, `.local/basketball/research/rea/match-clock/batch.json`. The historical query for `B19D` failed; this is not represented as a successfully decompiled function. The unchanged ROM instructions provide the executed oracle.
 
 Bank 4 `B17A` contains offsets **0, 7, 0, 7**. `B074` copies each decoded six-glyph label into its team's shared upper and lower upload buffers at those offsets. `B0A7..B0AC` clear index 6; `B0AF..B0B4` request only nine uploaded glyphs per row. The visible layout is therefore **six message glyphs + one blank + two reply glyphs**. The source writes all six response glyphs into scratch memory, but only its first two lie in the nine-glyph upload. Original response IDs 1 and 2 contain two characters; ID 0 is blank.
 
@@ -47,6 +47,6 @@ GOOS=js GOARCH=wasm go test -exec "$(go env GOROOT)/lib/wasm/go_js_wasm_exec" ./
 
 The new source test checks both glyph rows against original upload bytes, blank cell 6, and preservation of names and the other team panel. Existing original display-stage and match-clock tests are included as targeted regression evidence. Only `ObserveDisplayHUD` presentation projection changed; no world inputs, tactics, RNG, match scheduler, timer, score calculation or cache mutation code was edited. The full 12-configuration gameplay matrix is therefore not repeated for this display-only correction. Actual visible browser command/reply checks belong to the parent task's updated PC/mobile E2E.
 
-Logs, original per-address writes, retained-cache snapshot hashes, and comparison output are under `.local/basketball/rea/hud-command-layout/`; the source-bound fixture is `engine/testdata/display-tactic-layout.json.gz` with adjacent metadata.
+Logs, original per-address writes, retained-cache snapshot hashes, and comparison output are under `.local/basketball/research/rea/hud-command-layout/`; the source-bound fixture is `engine/testdata/display-tactic-layout.json.gz` with adjacent metadata.
 
-Targeted Native, race and Wasm checks passed. Exact current-source and log hashes are recorded in `.local/basketball/rea/hud-command-layout/verification.json`.
+Targeted Native, race and Wasm checks passed. Exact current-source and log hashes are recorded in `.local/basketball/research/rea/hud-command-layout/verification.json`.

@@ -11,7 +11,7 @@ from verify_postresult_assets import background_oracle
 ROOT=Path(__file__).resolve().parents[2]
 def main():
  p=argparse.ArgumentParser();p.add_argument('--generate-code',action='store_true');a=p.parse_args()
- rom=SpriteROM((ROOT/'.local/nes-basket/basketball.nes').read_bytes())
+ rom=SpriteROM((ROOT/'.local/basketball/research/original/basketball.nes').read_bytes())
  presets={i:decode_background(rom,i) for i in [99,*range(101,109)]}
  for i,row in presets.items():
   source=background_oracle(rom,i)

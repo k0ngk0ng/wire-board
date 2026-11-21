@@ -15,7 +15,7 @@
 ## 来源与恢复结果
 
 - ROM SHA-256：`0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b`。
-- REA/Ghidra 分析 `bank6 BD23`、`BDD2`、`BAAB`；完整证据位于 `.local/basketball/rea/ball22/analysis/`。批次 Evidence ID：`ev_dac80373a79e243901074958000b47dedb8ee272753c0aa7197d9d9fa01cc77e`。静态反编译仅解释分支，由未修改原指令的 py65 执行补充动态对照。
+- REA/Ghidra 分析 `bank6 BD23`、`BDD2`、`BAAB`；完整证据位于 `.local/basketball/research/rea/ball22/analysis/`。批次 Evidence ID：`ev_dac80373a79e243901074958000b47dedb8ee272753c0aa7197d9d9fa01cc77e`。静态反编译仅解释分支，由未修改原指令的 py65 执行补充动态对照。
 - 进入时请求声音 30，动画从光标 4 开始；垂直速度置为 -1472，水平速度置为 ±2048，保留原重力和深度速度。按球当前高度与朝向选择篮筐，持有者改为球自身。
 - 尾段动画为 pose 32、255 tick；达到目标附近的转向线时偏移为 16 像素。低于 88 像素先转动作 12 并只修改垂直速度高字节；达到 88 像素后进入动作 22 主段、按原半场重定位下落。主段依次 pose 32/30/31，其 FD FF 结束操作保留原 255 次计数和下一动作机制。
 - 球落地但尚在尾段时，原版强制未镜像 pose 31。主段落地转普通反弹动作 6。
@@ -36,4 +36,4 @@ GOOS=js GOARCH=wasm go test -exec "$(go env GOROOT)/lib/wasm/go_js_wasm_exec" ./
 
 这些证据不等同于自然完整比赛、所有场地、所有玩家或设备替换路径通过；共享世界接入由独立适配器验证覆盖。
 
-Native、race、Wasm 定向验证均通过，夹具重新生成哈希一致。日志和结果索引：`.local/basketball/rea/ball22/result.json`。
+Native、race、Wasm 定向验证均通过，夹具重新生成哈希一致。日志和结果索引：`.local/basketball/research/rea/ball22/result.json`。

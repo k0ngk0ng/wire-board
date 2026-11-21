@@ -9,7 +9,10 @@ import {
 } from "react";
 import { Maximize, Minimize } from "lucide-react";
 import "./room-fullscreen.css";
+import "./game-control-guard.css";
 import { GameOverlayRoot } from "./game-overlay-root";
+import { protectGameControls } from "./game-control-guard";
+import { restoreGameFocusOnBackground } from "./game-focus";
 
 type Mode = "native" | "page" | "";
 type FullscreenDocument = Document & {
@@ -20,7 +23,6 @@ type FullscreenElement = HTMLElement & {
   webkitRequestFullscreen?: () => Promise<void> | void;
 };
 
-// Only the game surface enters fullscreen; the surrounding room stays mounted.
 function useRoomFullscreen(
   scope: string | undefined,
   root: FullscreenElement | null,
@@ -39,7 +41,6 @@ function useRoomFullscreen(
       if (doc.exitFullscreen) await doc.exitFullscreen();
       else await doc.webkitExitFullscreen?.();
     } catch {
-      // A simultaneous browser exit can invalidate the request.
     }
   };
   const update = (next: Mode) => {
@@ -63,8 +64,6 @@ function useRoomFullscreen(
     const key = (event: KeyboardEvent) => {
       if (event.key !== "Escape" || !control.current.wanted) return;
       event.preventDefault();
-      // Games also use Escape to cancel a held shot or gesture. Let their
-      // handlers release input while the platform restores the page layout.
       exit();
     };
     document.addEventListener("fullscreenchange", change);
@@ -192,6 +191,12 @@ export function GameFullscreen({
   const board = useRef<HTMLDivElement>(null);
   const [rightInset, setRightInset] = useState(0);
   const fullscreen = useRoomFullscreen(enabled || preserveWhileLoading ? scope : undefined, root);
+  useEffect(() => {
+    if (root) return protectGameControls(root);
+  }, [root]);
+  useEffect(() => {
+    if (root && enabled) return restoreGameFocusOnBackground(root);
+  }, [root, enabled]);
   useLayoutEffect(() => {
     onChatTargetChange?.(fullscreen.active ? root : null);
     return () => onChatTargetChange?.(null);
@@ -247,6 +252,7 @@ export function GameFullscreen({
         {fullscreen.active && (
           <div
             className="game-fullscreen-toolbar"
+            data-game-controls
             style={{ paddingRight: rightInset }}
           >
             {fullscreen.active && status && (
@@ -261,6 +267,7 @@ export function GameFullscreen({
         <div
           ref={board}
           className="game-fullscreen-board"
+          data-game-controls
           data-fullscreen-board
           tabIndex={-1}
         >

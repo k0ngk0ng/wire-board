@@ -7,7 +7,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 
 def main():
-    run = ROOT / '.local/nes-basket/runs/ai-shot-observation'
+    run = ROOT / '.local/basketball/research/original/runs/ai-shot-observation'
     raw = (run / 'ai-ram.bin').read_bytes()
     rows = list(csv.DictReader((run / 'ai.csv').open()))
     assert len(raw) == len(rows) * 4096

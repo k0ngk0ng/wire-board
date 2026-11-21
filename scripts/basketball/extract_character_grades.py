@@ -3,7 +3,7 @@ from pathlib import Path
 import argparse,hashlib,json
 ROOT=Path(__file__).resolve().parents[2]
 p=argparse.ArgumentParser();p.add_argument('--write-go',action='store_true');args=p.parse_args()
-rom=(ROOT/'.local/nes-basket/basketball.nes').read_bytes();assert hashlib.sha256(rom).hexdigest()=='0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b'
+rom=(ROOT/'.local/basketball/research/original/basketball.nes').read_bytes();assert hashlib.sha256(rom).hexdigest()=='0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b'
 fixed=rom[16+7*16384:16+8*16384]
 read=lambda a:fixed[a-0xc000]
 word=lambda a:read(a)+256*read(a+1)

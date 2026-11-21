@@ -27,13 +27,13 @@
 
 ## 证据与限制
 
-REA 证据：`ev_3fb4a9e82c28e78326cecbf7989d21c6afda7465ddd29c906610caa566273c7a`，保存在 `.local/basketball/rea/court-animation/analysis/`。反编译中的移位、进位和间接表按原机器码核对，未直接翻译反编译器的临时变量。
+REA 证据：`ev_3fb4a9e82c28e78326cecbf7989d21c6afda7465ddd29c906610caa566273c7a`，保存在 `.local/basketball/research/rea/court-animation/analysis/`。反编译中的移位、进位和间接表按原机器码核对，未直接翻译反编译器的临时变量。
 
 `court-animation.json.gz` 保留八场地共 **912 次**完整函数调用。沿用图形验收场景，只在首次球场初始化时选择球场；随后按原输入运行，八次采样的整段 RAM 和截图均与相同配置、无动画钩子的参考运行一致。该证据不是自然菜单选择记录。原采样中球场 2／5 没有触发机关，球场 6 没有获得奖励，不能用这些样本声称自然对局覆盖奖励。
 
 `court-animation-probes.json.gz` 另保留 **13,312 次**隔离原指令执行，覆盖 256 个相机位置、触发位、冷却结束、门动画、正反调色板、滚轴停止及四类匹配奖励。原 RNG 指令实际执行；声音和调色板外设入口仅记录命令。隔离探测不计为自然比赛或浏览器验收。
 
-实现前失败场景见 `VERIFICATION.md`。测试先失败记录、通过记录及 native race／Wasm 输出分别为 `.local/basketball/engine/court-animation-{before,after,race,wasm}.log`。
+实现前失败场景见 `VERIFICATION.md`。测试先失败记录、通过记录及 native race／Wasm 输出分别为 `.local/basketball/verification/engine/court-animation-{before,after,race,wasm}.log`。
 
 ## 重复执行
 
@@ -60,9 +60,9 @@ GOOS=js GOARCH=wasm go test -exec "$basketball_goroot/lib/wasm/go_js_wasm_exec" 
 
 `QueueDisplayPatches` 只暂存 tile 命令，下一次 `CommitDisplayVideo` 才提交。提交顺序与原视频例程一致：先列流送，再背景 patch。`CourtPatches` 仅保留每格最后写入，列覆盖时删除同一物理列旧 patch，最多 1,728 格。恢复先重放至多 32 个 `CourtColumns`，再重放剩余 `CourtPatches`；patch 独立提交也递增 `CourtSerial`，使客户端重新绘图。背景重置同时清除已提交及待提交 patch。
 
-新增测试先捕获未接线时水面帧不变，再验证真实运行的 36 视频帧、6 次水面推进、6 次视频提交及每帧 JSON 恢复一致。另覆盖裁切取旧显示相机、逻辑计数与视频计数相反时的相位、列覆盖、多 tile 展开、历史容量、输入切片隔离及非法 patch 原子拒绝。日志位于 `.local/basketball/engine/court-animation-{runtime-before,runtime-after,display-before,display-after,display-race,display-wasm}.log`。该短运行验证不是完整球场 0 比赛或原画面逐像素一致性证明。
+新增测试先捕获未接线时水面帧不变，再验证真实运行的 36 视频帧、6 次水面推进、6 次视频提交及每帧 JSON 恢复一致。另覆盖裁切取旧显示相机、逻辑计数与视频计数相反时的相位、列覆盖、多 tile 展开、历史容量、输入切片隔离及非法 patch 原子拒绝。日志位于 `.local/basketball/verification/engine/court-animation-{runtime-before,runtime-after,display-before,display-after,display-race,display-wasm}.log`。该短运行验证不是完整球场 0 比赛或原画面逐像素一致性证明。
 
-集成中的第 600 视频帧恢复检查另发现：相机移出水面区域、列流送清掉最后一个 patch 后，非 `nil` 空切片被 `omitempty` 丢弃，恢复成 `nil` 导致结构不一致。已先用 `TestDisplayCourtFinalPatchOverwriteRoundTrips` 复现，再将空历史规范化为 `nil`；保留旧快照和纽约序列的字段省略行为。先失败记录为 `.local/basketball/engine/court-animation-empty-before.log`。
+集成中的第 600 视频帧恢复检查另发现：相机移出水面区域、列流送清掉最后一个 patch 后，非 `nil` 空切片被 `omitempty` 丢弃，恢复成 `nil` 导致结构不一致。已先用 `TestDisplayCourtFinalPatchOverwriteRoundTrips` 复现，再将空历史规范化为 `nil`；保留旧快照和纽约序列的字段省略行为。先失败记录为 `.local/basketball/verification/engine/court-animation-empty-before.log`。
 
 
 球场 3 接线与原调用／完整对局／浏览器门禁见 [COURT_THREE_INTEGRATION.md](COURT_THREE_INTEGRATION.md)。

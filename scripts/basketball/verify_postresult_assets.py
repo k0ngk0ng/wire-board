@@ -72,7 +72,7 @@ def main():
     p=argparse.ArgumentParser();p.add_argument('directory',type=Path);args=p.parse_args()
     # Import after parsing so the initial expected red is explicit and repeatable.
     from postresult_art import decode_background,actor_profiles,palette_groups
-    rom=SpriteROM((ROOT/'.local/nes-basket/basketball.nes').read_bytes())
+    rom=SpriteROM((ROOT/'.local/basketball/research/original/basketball.nes').read_bytes())
     m=json.loads((args.directory/'manifest.json').read_text())
     assert m['source']['rom_sha256']==DIGEST and m['accepted_for_release'] is False
     assert [b['preset'] for b in m['backgrounds']]==list(PRESETS)

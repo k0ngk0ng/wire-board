@@ -34,5 +34,5 @@ def main():
   assert (observed/'ram.bin').read_bytes()==raw
   for n in chosen:assert (reference/f'frame-{n:05d}.png').read_bytes()==(observed/f'frame-{n:05d}.png').read_bytes()
   records.append({'label':label,'court':court,'run':spec['name'],'slot':spec['load_slot'],'frames':[{'frame':n,'emulator_frame':frames[n],'direction':next(m['direction'] for m in markers if m['frame'] in [n,n-1])} for n in chosen],'markers':markers,'source':json.loads((observed/'source.json').read_text()),'ram_and_png_equal':True})
- out=ROOT/'.local/basketball/fade';(out/'capture.json').write_text(json.dumps({'scope':'original normal-input fade frames and committed palette state; Court4 selected only at initial court setup','records':records},indent=2)+'\n');print(json.dumps({'runs':len(records),'frames':sum(len(r['frames'])for r in records)}))
+ out=ROOT/'.local/basketball/research/fade';(out/'capture.json').write_text(json.dumps({'scope':'original normal-input fade frames and committed palette state; Court4 selected only at initial court setup','records':records},indent=2)+'\n');print(json.dumps({'runs':len(records),'frames':sum(len(r['frames'])for r in records)}))
 if __name__=='__main__':main()

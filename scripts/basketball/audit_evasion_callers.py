@@ -3,7 +3,7 @@ import hashlib,json
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 def main():
- rom=(ROOT/'.local/nes-basket/basketball.nes').read_bytes();prg=rom[16:16+131072];out=ROOT/'.local/basketball/rea/evasion-direct';direct=[];adjacent=[];modeWrites=[];calls=[]
+ rom=(ROOT/'.local/basketball/research/original/basketball.nes').read_bytes();prg=rom[16:16+131072];out=ROOT/'.local/basketball/research/rea/evasion-direct';direct=[];adjacent=[];modeWrites=[];calls=[]
  for bank in range(8):
   b=prg[bank*16384:(bank+1)*16384];start=0xc000 if bank==7 else 0x8000
   for i in range(len(b)-2):

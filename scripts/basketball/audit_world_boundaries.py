@@ -12,7 +12,7 @@ from pathlib import Path
 from extract_world_actions import decode_world_action_state
 
 ROOT=Path(__file__).resolve().parents[2]
-RUNS=ROOT/'.local/nes-basket/runs'
+RUNS=ROOT/'.local/basketball/research/original/runs'
 
 
 def load(name,stem):
@@ -50,7 +50,7 @@ def main():
                 if expected!=rhs['random']:rng_mismatches.append(n)
         reports.append(dict(boundary=name,records=count,changed_fields=dict(counts),examples=examples,extra_rng_step_mismatches=rng_mismatches if next_iteration else None))
     result=dict(scope='original phase-boundary analysis; not a Go continuous replay',phase_counts=dict(actions=len(actions),preparations=len(preparations),inputs=len(inputs)),source_sha256=dict(actions=hashlib.sha256(a).hexdigest(),preparations=hashlib.sha256(p).hexdigest(),inputs=hashlib.sha256(i).hexdigest()),boundaries=reports)
-    out=ROOT/'.local/basketball/world-actions/boundary-audit.json'
+    out=ROOT/'.local/basketball/verification/world-actions/boundary-audit.json'
     out.write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')
     print(json.dumps(reports,ensure_ascii=False))
 

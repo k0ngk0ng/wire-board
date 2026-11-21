@@ -1,7 +1,7 @@
 """Register only the independently verified76 derivative; no upload or rerip."""
 import hashlib,json,shutil
 from pathlib import Path
-ROOT=Path(__file__).resolve().parents[2];SOURCE=ROOT/'.local/music76-source/assets';TARGET=ROOT/'.local/basketball/audio/export'
+ROOT=Path(__file__).resolve().parents[2];SOURCE=ROOT/'.local/basketball/research/music76-source/assets';TARGET=ROOT/'.local/basketball/assets/audio/export'
 def sha(p):return hashlib.file_digest(p.open('rb'),'sha256').hexdigest()
 def main():
  p=SOURCE/'music76-delivery-manifest.json';m=json.loads(p.read_text())

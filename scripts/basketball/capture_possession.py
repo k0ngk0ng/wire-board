@@ -92,7 +92,7 @@ def main():
                            ram_sha256=hashlib.sha256(actual_ram).hexdigest(),
                            trace_sha256=hashlib.sha256((observed / 'possession.jsonl').read_bytes()).hexdigest(),
                            ram_matches_uninstrumented=True))
-    output = ROOT / '.local/basketball/possession'
+    output = ROOT / '.local/basketball/research/possession'
     output.mkdir(parents=True, exist_ok=True)
     result = dict(status='passed', baseline='normal controller inputs from slot 5; no RAM writes',
                   baseline_ram_sha256=hashlib.sha256(baseline_end).hexdigest(),

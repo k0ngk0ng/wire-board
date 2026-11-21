@@ -15,7 +15,7 @@ end)
 function finish_probe()f:close();calls:close()end
 '''
 def main():
- out=ROOT/'.local/basketball/rea/evasion-direct';reference=BASE/'runs/special-ball-cpu-command';spec=json.loads((reference/'scenario.json').read_text());spec.pop('save_slot',None);spec.update(name='evasion-setter-audit',hooks_lua=HOOK);path=out/'capture-spec.json';path.write_text(json.dumps(spec,indent=2)+'\n');run(path)
+ out=ROOT/'.local/basketball/research/rea/evasion-direct';reference=BASE/'runs/special-ball-cpu-command';spec=json.loads((reference/'scenario.json').read_text());spec.pop('save_slot',None);spec.update(name='evasion-setter-audit',hooks_lua=HOOK);path=out/'capture-spec.json';path.write_text(json.dumps(spec,indent=2)+'\n');run(path)
  observed=BASE/'runs'/spec['name'];assert (observed/'ram.bin').read_bytes()==(reference/'ram.bin').read_bytes();images=list(reference.glob('frame-*.png'))
  for image in images:assert image.read_bytes()==(observed/image.name).read_bytes()
  writes=[json.loads(x) for x in (observed/'parameter-writes.jsonl').read_text().splitlines()];calls=[json.loads(x) for x in (observed/'evasion-dispatches.jsonl').read_text().splitlines()]

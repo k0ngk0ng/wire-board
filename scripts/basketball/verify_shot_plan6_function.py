@@ -2,12 +2,12 @@
 import gzip, hashlib, itertools, json, sys
 from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT / '.local/basketball/python'))
+sys.path.insert(0, str(ROOT / '.local/basketball/research/python'))
 from py65.devices.mpu6502 import MPU
 
 
 def main():
-    rom = (ROOT / '.local/nes-basket/basketball.nes').read_bytes()
+    rom = (ROOT / '.local/basketball/research/original/basketball.nes').read_bytes()
     digest = hashlib.sha256(rom).hexdigest()
     assert digest == '0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b'
     prg = rom[16:16+131072]
@@ -35,7 +35,7 @@ def main():
     packed = gzip.compress(payload,mtime=0)
     output = ROOT / 'games/basketball/engine/testdata'
     (output / 'ai-shot-plan6-function.json.gz').write_bytes(packed)
-    beforepath = ROOT / '.local/basketball/team-roster-after-attacks-20261018/native/court1-teams0-2-characters0-1-0-1/before.json'
+    beforepath = ROOT / '.local/basketball/verification/team-roster-after-attacks-20261018/native/court1-teams0-2-characters0-1-0-1/before.json'
     before = beforepath.read_bytes()
     (output / 'ai-shot-plan6-runtime-before.json.gz').write_bytes(gzip.compress(before,mtime=0))
     source = dict(records=len(rows), entry='bank5 B4E3', source_is_natural_execution=False, isolated_original_function_execution=True, rom_sha256=digest, sha256=hashlib.sha256(packed).hexdigest(), runtime_before_path=str(beforepath.relative_to(ROOT)), runtime_before_sha256=hashlib.sha256(before).hexdigest())

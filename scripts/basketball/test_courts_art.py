@@ -14,16 +14,16 @@ from static_court import build_court,build_court_tiles,build_hud_glyphs,render_h
 ROOT=Path(__file__).resolve().parents[2]
 class CourtsArtTests(unittest.TestCase):
  def setUp(self):
-  self.rom=SpriteROM((ROOT/'.local/nes-basket/basketball.nes').read_bytes());self.colors=(ROOT/'.local/nes-basket/runs/graphics-right/nes-colors.rgb').read_bytes()
+  self.rom=SpriteROM((ROOT/'.local/basketball/research/original/basketball.nes').read_bytes());self.colors=(ROOT/'.local/basketball/research/original/runs/graphics-right/nes-colors.rgb').read_bytes()
  def test_distinct_sources_and_invalid_ids(self):
   images=[build_court(self.rom,self.colors,court=c) for c in range(8)]
   self.assertEqual(len({im.tobytes() for im in images}),8)
   for c in [-1,8]:
    with self.assertRaises(ValueError):build_court(self.rom,self.colors,court=c)
  def test_original_configured_frames(self):
-  capture=json.loads((ROOT/'.local/basketball/courts/capture.json').read_text());timings=derive()['cases'];reports=[];pixels=0
+  capture=json.loads((ROOT/'.local/basketball/assets/courts/capture.json').read_text());timings=derive()['cases'];reports=[];pixels=0
   for entry in capture['records']:
-   court=entry['court'];directory=ROOT/f'.local/nes-basket/runs/court-{court}-observed';glyphs=build_court_tiles(self.rom,self.colors,court=court);hudglyphs=build_hud_glyphs(self.rom,self.colors,court=court)
+   court=entry['court'];directory=ROOT/f'.local/basketball/research/original/runs/court-{court}-observed';glyphs=build_court_tiles(self.rom,self.colors,court=court);hudglyphs=build_hud_glyphs(self.rom,self.colors,court=court)
    for record in entry['frames']:
     n=record['frame'];palette_id=(directory/'ram.bin').read_bytes()[(n-1)*2048+0x304];glyphs=build_court_tiles(self.rom,self.colors,court=court,palette_id=palette_id);hudglyphs=build_hud_glyphs(self.rom,self.colors,court=court,palette_id=palette_id);stem=f"ppu-{record['emulator_frame']:05d}";state=json.loads((directory/(stem+'-semantic.json')).read_text());ring=initial_court_ring(self.rom,court=court)
     for event in state['courtEvents']:

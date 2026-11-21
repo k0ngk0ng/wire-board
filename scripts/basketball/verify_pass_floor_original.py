@@ -7,7 +7,7 @@ import gzip, hashlib, itertools, json, sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT / '.local/basketball/python'))
+sys.path.insert(0, str(ROOT / '.local/basketball/research/python'))
 from py65.devices.mpu6502 import MPU
 
 
@@ -52,10 +52,10 @@ def put(r, value, *addresses):
 
 
 def main():
-    rom = (ROOT / '.local/nes-basket/basketball.nes').read_bytes()
+    rom = (ROOT / '.local/basketball/research/original/basketball.nes').read_bytes()
     digest = hashlib.sha256(rom).hexdigest()
     assert digest == '0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b'
-    source = ROOT / '.local/nes-basket/runs/ball-pass/ram.bin'
+    source = ROOT / '.local/basketball/research/original/runs/ball-pass/ram.bin'
     ram = source.read_bytes()[:2048]
     assert len(ram) == 2048
     records = []

@@ -36,11 +36,11 @@
 
 冷启动没有可重放的旧 NES 菜单画面，首个逻辑更新前不提交清零的对象／drawOrder。初始化场地后才出现真实空绘制列表和 `(128,297)` 镜头，避免重复对象 0 或幽灵人物；客户端不需要过滤错误状态。
 
-普通 Start 暂停／恢复**没有**原 253／255 声音请求。D35A 与 D3C4/D3EB 的静态指令没有发声，全局 FBCC 的独立 300 帧暂停观测也没有这两个命令；FBE3 音频驱动更新了 300 次，其中暂停的 30 帧也更新 30 次，原 BGM 持续更新。253／255 仅按背景装载等实际 Go 事件交给声音适配器；客户端不能按 phase 自造原声音事件。源记录见 `.local/basketball/engine/runtime-pause-audio.json`，复现脚本 `scripts/basketball/capture_runtime_pause_audio.py`。
+普通 Start 暂停／恢复**没有**原 253／255 声音请求。D35A 与 D3C4/D3EB 的静态指令没有发声，全局 FBCC 的独立 300 帧暂停观测也没有这两个命令；FBE3 音频驱动更新了 300 次，其中暂停的 30 帧也更新 30 次，原 BGM 持续更新。253／255 仅按背景装载等实际 Go 事件交给声音适配器；客户端不能按 phase 自造原声音事件。源记录见 `.local/basketball/verification/engine/runtime-pause-audio.json`，复现脚本 `scripts/basketball/capture_runtime_pause_audio.py`。
 
 ## 验证
 
-REA 节奏／控制器证据 `ev_bafdbdc0d57607ca23239718fb492b5d98c00431b1a6fed6e83cfe77b983f63f` 位于 `.local/basketball/rea/runtime/`。Ghidra 对 CAE9 主循环展开有不完整控制流，节奏结论同时核对原 CB06 表 `[0,2,0,0,0,0,0,0]`、CAF1 阈值和 CAF7 等待下一沿的指令。
+REA 节奏／控制器证据 `ev_bafdbdc0d57607ca23239718fb492b5d98c00431b1a6fed6e83cfe77b983f63f` 位于 `.local/basketball/research/rea/runtime/`。Ghidra 对 CAE9 主循环展开有不完整控制流，节奏结论同时核对原 CB06 表 `[0,2,0,0,0,0,0,0]`、CAF1 阈值和 CAF7 等待下一沿的指令。
 
 运行器定向测试覆盖正常视频节奏、短 B／方向输入、暂停／恢复、完整 JSON 恢复、输入手势取消、多控制器隔离、跨节比分保留与再开球、冷显示边界。跨节测试使用明确的规则边界状态触发节结束，不冒称已经由真人完整打完一局。原子失败不改旧快照。原开球、动作、HUD 和结束等组件的自然调用证据仍见各自验证文档。
 
@@ -52,9 +52,9 @@ go test -v ./games/basketball/engine -run TestRuntime
 go test -race ./games/basketball/engine -run TestRuntime
 ```
 
-当前七项运行器测试已通过；竞态／Wasm 日志保存在 `.local/basketball/engine/runtime-{race,wasm}.log`，实施前记录包括 `runtime-before.log`、`runtime-cold-display-before.log`、`runtime-short-direction-before.log`、`runtime-cancel-before.log`、`runtime-cancel-buttons-before.log`。并行工作项若尚在测试先行、导致其他测试引用未实现类型，定向构建仅包含生产文件与 `runtime_test.go`，不修改或删掉其他测试。浏览器、音频与 WASM 协议 E2E 由主线程另行验证，不能用这些 Go 定向结果替代。
+当前七项运行器测试已通过；竞态／Wasm 日志保存在 `.local/basketball/verification/engine/runtime-{race,wasm}.log`，实施前记录包括 `runtime-before.log`、`runtime-cold-display-before.log`、`runtime-short-direction-before.log`、`runtime-cancel-before.log`、`runtime-cancel-buttons-before.log`。并行工作项若尚在测试先行、导致其他测试引用未实现类型，定向构建仅包含生产文件与 `runtime_test.go`，不修改或删掉其他测试。浏览器、音频与 WASM 协议 E2E 由主线程另行验证，不能用这些 Go 定向结果替代。
 
-结果阶段新增完整原版比对、分支确认、每帧 JSON 恢复验收。145 次自然完整结果调用（580 次人物更新）逐字段与声音一致；竞态及 Wasm 日志为 `.local/basketball/engine/result-{race,wasm}.log`，详情见 [结果验证](RESULT_VERIFICATION.md)。结果 `Confirmed` 只表示本场结果呈现结束，不表示奖励或完整战役完成。
+结果阶段新增完整原版比对、分支确认、每帧 JSON 恢复验收。145 次自然完整结果调用（580 次人物更新）逐字段与声音一致；竞态及 Wasm 日志为 `.local/basketball/verification/engine/result-{race,wasm}.log`，详情见 [结果验证](RESULT_VERIFICATION.md)。结果 `Confirmed` 只表示本场结果呈现结束，不表示奖励或完整战役完成。
 
 ## 中场显示边界
 
@@ -62,4 +62,4 @@ go test -race ./games/basketball/engine -run TestRuntime
 
 `runtimeHasCourtDisplaySource` 根据实际场景和初始化状态控制提交：Scene 2 菜单及未进入的 Scene 1／phase 0 保留最后有效球场提交。D1B5 完成后恢复正常提交，使用已初始化的 `(128,297)` 镜头。显示层不接收菜单坐标，渲染器的合法相机范围保持不变。该规则同时覆盖冷启动和第二节开球。
 
-先行测试 `TestRuntimeIntermissionRetainsCourtUntilInitialized` 复现了零相机提交；修复后验证 60 个视频 tick 的中场等待、逐帧 JSON 恢复、Start 输入边沿、下一节初始化及裁判开球。Native race 和 Wasm 定向测试通过，日志保存在 `.local/basketball/engine/intermission-display-{before,after,race,wasm}.log`。测试通过缩短规则边界触发中场，完整自然浏览器对局由主线程单独复跑，不以此定向结果代替。
+先行测试 `TestRuntimeIntermissionRetainsCourtUntilInitialized` 复现了零相机提交；修复后验证 60 个视频 tick 的中场等待、逐帧 JSON 恢复、Start 输入边沿、下一节初始化及裁判开球。Native race 和 Wasm 定向测试通过，日志保存在 `.local/basketball/verification/engine/intermission-display-{before,after,race,wasm}.log`。测试通过缩短规则边界触发中场，完整自然浏览器对局由主线程单独复跑，不以此定向结果代替。

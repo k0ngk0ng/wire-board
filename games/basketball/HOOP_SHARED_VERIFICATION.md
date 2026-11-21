@@ -26,4 +26,4 @@ go test ./games/basketball/engine -run '^TestHoop(SharedOriginalCalls|LobOrigina
 go test ./games/basketball/engine -run '^(Test.*Hoop.*|Test.*Held.*Pose.*|TestWorldActionsOriginal.*|TestWorldActionsEntireCapturedCorpus|TestOriginalAuxiliaryLobLaunchAndFlight)$' -count=1
 ```
 
-两组测试均已通过，记录保存在 `.local/basketball-hoop-shared/green.log` 和 `regression.log`。原版来源与夹具 SHA-256 在 `engine/testdata/hoop-shared-source.json`。REA 指令证据为 `ev_1ad622c6f6d8c5c1804e844fa9f245547533fd4359788aab647902a76e77679a`，完整副本在 `.local/basketball-hoop-shared/rea-handlers.json`；其中地址为文件偏移，加载地址为 0x8000。
+两组测试均已通过，记录保存在 `.local/basketball/verification/hoop-shared/green.log` 和 `regression.log`。原版来源与夹具 SHA-256 在 `engine/testdata/hoop-shared-source.json`。REA 指令证据为 `ev_1ad622c6f6d8c5c1804e844fa9f245547533fd4359788aab647902a76e77679a`，完整副本在 `.local/basketball/verification/hoop-shared/rea-handlers.json`；其中地址为文件偏移，加载地址为 0x8000。

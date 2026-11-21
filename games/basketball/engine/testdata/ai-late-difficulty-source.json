@@ -1,6 +1,6 @@
 {
   "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
-  "ramSource": ".local/nes-basket/runs/ball-pass/ram.bin",
+  "ramSource": ".local/basketball/research/original/runs/ball-pass/ram.bin",
   "ramSHA256": "80944347155c86accf2b9dba3f9b38e8ed37b1f4f3f839154c570ca7fb9143f2",
   "fixtureSHA256": "445459afdd7f2ba14c71d40162498a7e5ea2ef60786da1c2d0c4dfc564eb1e2e",
   "uncompressedSHA256": "fff246c1d36bef613da5ad797df02144533e0a26996941b9f1be3abceeb71f23",

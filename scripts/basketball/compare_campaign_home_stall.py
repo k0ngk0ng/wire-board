@@ -7,7 +7,7 @@ from compare_rest_stall_worlds import normalized, differences
 
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('--mode',choices=['solo','coop'],default='solo');parser.add_argument('--cold',action='store_true');args=parser.parse_args()
-    out=ROOT/'.local/basketball/rea/campaign-home-stall'/args.mode
+    out=ROOT/'.local/basketball/research/rea/campaign-home-stall'/args.mode
     if args.cold:out=out/'cold'
     meta=json.loads((out/'original-world-result.json').read_text())
     path=BASE/'runs'/('campaign-home-stall-'+args.mode+('-cold' if args.cold else '')+'-observed')/'world-after.ram';raw=path.read_bytes()
@@ -32,7 +32,7 @@ def main():
     segments=[]
     for mode in ['solo','coop']:
         for cold in [False,True]:
-            directory=ROOT/'.local/basketball/rea/campaign-home-stall'/mode
+            directory=ROOT/'.local/basketball/research/rea/campaign-home-stall'/mode
             if cold:directory=directory/'cold'
             if not (directory/'world-comparison.json').exists():return
             capture=json.loads((directory/'original-world-result.json').read_text())

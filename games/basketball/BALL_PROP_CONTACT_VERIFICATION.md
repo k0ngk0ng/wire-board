@@ -26,4 +26,4 @@ source scripts/env.sh
 go test -race ./games/basketball/engine -run 'Test(OriginalBallProp|BallProp|AutomaticCatches|CatchEligibility|AttachedAndOccupied|OriginalContactCandidates|OriginalSpecialBallContact|SpecialBallContactFailure|OriginalPlayerProp|OriginalCompleteInteraction|OriginalPlayerCatchFlags|Interactions|WorldLoop)'
 ```
 
-证据保留于 `.local/basketball/rea/ball-prop-contact/`：`before.log`、`after.log`、`race.json`、`wasm.log` 和 REA 导出。两份夹具各有来源摘要，真实 Go 快照与原指令矩阵明确分开。
+证据保留于 `.local/basketball/research/rea/ball-prop-contact/`：`before.log`、`after.log`、`race.json`、`wasm.log` 和 REA 导出。两份夹具各有来源摘要，真实 Go 快照与原指令矩阵明确分开。

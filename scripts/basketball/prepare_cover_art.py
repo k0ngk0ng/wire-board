@@ -73,8 +73,8 @@ def prepare(source, output):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--source', type=Path, default=Path('.local/basketball-character-references/dodge-kunio-riki.jpg'))
-    parser.add_argument('--output', type=Path, default=Path('.local/basketball-cover/heroes.png'))
+    parser.add_argument('--source', type=Path, default=Path('.local/basketball/assets/reference-art/dodge-kunio-riki.jpg'))
+    parser.add_argument('--output', type=Path, default=Path('.local/basketball/assets/cover/heroes.png'))
     args = parser.parse_args()
     source, output = (ROOT / args.source).resolve(), (ROOT / args.output).resolve()
     assert source.is_relative_to(ROOT) and output.is_relative_to(ROOT)

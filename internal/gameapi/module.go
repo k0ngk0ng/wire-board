@@ -113,8 +113,9 @@ type Result struct {
 // StreamViewResult is an optional per-connection realtime projection. Cursor
 // belongs to the game and advances only after a successful socket write.
 type StreamViewResult struct {
-	Data   any
-	Cursor string
+	Data      any
+	Cursor    string
+	Unchanged bool
 }
 
 type Module struct {
@@ -170,8 +171,9 @@ type Module struct {
 	// Realtime opts into the fast SystemDeadline clock. Each due frame submits
 	// all controlled actors through BotAction/Apply, then OnTimer, atomically.
 	// Callbacks must stay bounded; asynchronous BotSearch cannot run in a frame.
-	Realtime               bool `json:"-"`
-	RealtimeDeadlineFrames bool `json:"-"`
+	Realtime               bool                       `json:"-"`
+	RealtimeDeadlineFrames bool                       `json:"-"`
+	RealtimeDeferredInput  func(json.RawMessage) bool `json:"-"`
 	// BotAction is a fast pure fallback; use BotSearch for expensive computation.
 	// BotAction may return nil, nil when no decision is available. The host
 	// tries the remaining controlled actors without persisting an idle action.
@@ -233,6 +235,9 @@ func (m Module) Validate() error {
 	}
 	if m.RealtimeDeadlineFrames && (!m.Realtime || m.StreamView == nil) {
 		return fmt.Errorf("deadline frames require realtime stream projection: %s", m.ID)
+	}
+	if m.RealtimeDeferredInput != nil && (!m.Realtime || m.OnTimer == nil || m.StreamView == nil) {
+		return fmt.Errorf("deferred input requires realtime timer and stream projection: %s", m.ID)
 	}
 	if m.OnPausedTimer != nil && !m.Realtime {
 		return fmt.Errorf("paused timer requires realtime registration: %s", m.ID)

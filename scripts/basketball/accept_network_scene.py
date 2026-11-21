@@ -4,9 +4,10 @@ from http.server import BaseHTTPRequestHandler,ThreadingHTTPServer
 from urllib.parse import unquote
 import json,os,subprocess,threading,uuid
 ROOT=Path(__file__).resolve().parents[2]
-OUT=ROOT/'.local/basketball/network-scene';OUT.mkdir(parents=True,exist_ok=True)
-env=dict(os.environ,AGENT_BROWSER_SESSION='bkn-'+uuid.uuid4().hex[:6],AGENT_BROWSER_SOCKET_DIR=os.environ.get('AGENT_BROWSER_SOCKET_DIR',str(ROOT/'.local/bkn-sockets')),TMPDIR=str(ROOT/'.local/tmp'))
-Path(env['AGENT_BROWSER_SOCKET_DIR']).mkdir(exist_ok=True)
+OUT=ROOT/'.local/basketball/verification/network-scene';OUT.mkdir(parents=True,exist_ok=True)
+env=dict(os.environ,AGENT_BROWSER_SESSION='bkn-'+uuid.uuid4().hex[:6],AGENT_BROWSER_SOCKET_DIR=os.environ.get('AGENT_BROWSER_SOCKET_DIR',str(ROOT/'.local/basketball/tmp/s')),TMPDIR=str(ROOT/'.local/tmp'))
+Path(env['TMPDIR']).mkdir(parents=True, exist_ok=True)
+Path(env['AGENT_BROWSER_SOCKET_DIR']).mkdir(parents=True,exist_ok=True)
 def browser(*args):
  r=subprocess.run(['agent-browser',*args,'--json'],env=env,capture_output=True,text=True,timeout=60)
  if r.returncode:raise RuntimeError(r.stdout+r.stderr)
@@ -20,7 +21,7 @@ class Handler(BaseHTTPRequestHandler):
   if route=='/':
    body=b'<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Basketball network scene acceptance</title><style>body{margin:16px;background:#172126;color:#f4eedb;font-family:sans-serif}canvas{display:block;width:min(100%,640px);image-rendering:pixelated;aspect-ratio:256/240}output{display:block;padding:12px 0}</style><canvas width="256" height="240"></canvas><output>Running</output><script type="module" src="/scene.js"></script>';mime='text/html'
   else:
-   files={'/scene.js':OUT/'scene.js','/host-views.json':OUT/'host-views.json','/campaign-preparation-views.json':ROOT/'.local/campaign-host-preparation/host-views.json','/host-result-views.json':OUT/'host-result-views.json','/runtime/wasm_exec.js':ROOT/'web/dist/basketball/v1/runtime/wasm_exec.js','/runtime/build.json':ROOT/'web/dist/basketball/v1/runtime/build.json'}
+   files={'/scene.js':OUT/'scene.js','/host-views.json':OUT/'host-views.json','/campaign-preparation-views.json':ROOT/'.local/basketball/verification/campaign-host-preparation/host-views.json','/host-result-views.json':OUT/'host-result-views.json','/runtime/wasm_exec.js':ROOT/'web/dist/basketball/v1/runtime/wasm_exec.js','/runtime/build.json':ROOT/'web/dist/basketball/v1/runtime/build.json'}
    path=files.get(route)
    if route.startswith('/assets/'):
     rel=Path(route[8:])

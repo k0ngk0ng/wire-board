@@ -35,7 +35,7 @@ Specific observed distinctions:
 | Shirt7 original random mapping | 64 actual F9C3 calls, with both fallback and mapped ball outcomes. Seed0 is included: a random call can leave its zero state unchanged, so observed call count is checked separately from state inequality. |
 | Already-entered release animation | No repeated first-entry shot selection. |
 
-The first test run matched all player/world states but failed its coverage assertion because the observer counted C018 instead of F9C3. That instrumentation failure is preserved in `.local/campaign-shot-equipment/first-run.log`. The probe address was corrected; no expected gameplay state or production rule was changed.
+The first test run matched all player/world states but failed its coverage assertion because the observer counted C018 instead of F9C3. That instrumentation failure is preserved in `.local/basketball/research/campaign-shot-equipment/first-run.log`. The probe address was corrected; no expected gameplay state or production rule was changed.
 
 ## Reproduction and limits
 
@@ -53,4 +53,4 @@ Source fixtures and hashes use the new `engine/testdata/campaign-shot-*` prefix.
 
 These checks establish source-correct release decisions and immediate complete action-phase wiring. They do not establish a naturally recorded shirt1 shot from human input, a complete special-ball flight/contact/score chain, or resolution of the separately investigated all-computer campaign stall. A matching release cannot rule out a later motion, collision, hoop or possession problem.
 
-Native, race and Wasm targeted checks passed; hashes and result index are in the worktree-local `.local/campaign-shot-equipment/result.json`.
+Native, race and Wasm targeted checks passed; hashes and result index are in the worktree-local `.local/basketball/research/campaign-shot-equipment/result.json`.

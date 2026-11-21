@@ -56,7 +56,7 @@
 
 赛后 HTTP 验收的 Start 包装器安装由实际 Go 比赛生成的结果快照，之后使用真实模块、身份、计时器和 SQLite。没有改写比分、缩短比赛或替换 AI；该测试仍是受控结果边界验收，不是从自然房间创建开始运行完整战役。模块测试明确区分新入口、实际比赛轨迹、源规则组合和平台结果封装。
 
-产物在工作树 `.local/campaign-lifecycle/`，包括 `before.log`、`preparation-before.log`、`default-opponent-before.log`、`countdown-before.log`、`native.log`、`race.jsonl`、`regression.jsonl` 和 `countdown-after-race.log`。真实 HTTP 记录在 `.local/poker/basketball/http/TestCampaignEntryPreparationHTTP.json` 与 `TestCampaignLifecycleHTTP.json`。
+产物在工作树 `.local/basketball/research/campaign-lifecycle/`，包括 `before.log`、`preparation-before.log`、`default-opponent-before.log`、`countdown-before.log`、`native.log`、`race.jsonl`、`regression.jsonl` 和 `countdown-after-race.log`。真实 HTTP 记录在 `.local/poker/basketball/http/TestCampaignEntryPreparationHTTP.json` 与 `TestCampaignLifecycleHTTP.json`。
 
 复现：
 

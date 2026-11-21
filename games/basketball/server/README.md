@@ -78,7 +78,7 @@ go test -race ./games/basketball/engine -run '^TestRuntimeAutomation' -count=1
 
 初次服务端适配的 8 项验收通过：5 项明确的模块边界验证，以及 3 项真实 HTTP／身份／系统时钟／SQLite 验证。覆盖默认下架、独立并发输入、观众与注入拒绝、两次连发、取消隔离、暂停／接管／恢复、真实超时托管、三名电脑参与、长停顿和团队结果。HTTP 房间使用随机种子；两次实际运行暴露的道具撞人和持球普通动作缺口均已保留失败前态，并从原代码恢复后重放验证，没有换种子绕过。
 
-最终日志：`.local/basketball/engine/platform-race-verified.log`；HTTP 快照：`.local/basketball/server-http/`。定时规则失败前态另存为 `*-timer-failure.json`，空输入 HTTP 快照可用 `scripts/basketball/replay_http_runtime.py` 在下一个平台控制期限前复现。此范围不是完整 HTTP 对局、多人浏览器或网络预测验收。
+最终日志：`.local/basketball/verification/engine/platform-race-verified.log`；HTTP 快照：`.local/basketball/verification/server-http/`。定时规则失败前态另存为 `*-timer-failure.json`，空输入 HTTP 快照可用 `scripts/basketball/replay_http_runtime.py` 在下一个平台控制期限前复现。此范围不是完整 HTTP 对局、多人浏览器或网络预测验收。
 
 可靠批次新增验证：
 
@@ -90,7 +90,7 @@ go test -race ./games/basketball/server -run '^TestHost|^TestBasketballHTTPJavaS
 
 批次接入阶段的记录为 10 项 JavaScript 隔离测试、13 项 Go 竞态检查通过；此后新增的逐帧历史检查见联机画面报告。真实 JavaScript 发送器通过认证 HTTP 路径验证 9 个条件，覆盖延迟投递、响应丢失、取消抢先到达、过期清理和部分设备取消。测试仅显式延迟请求／响应，未替换游戏动作、注入世界状态或缩短时钟；先用真实 Start 暂停比赛，再检查网络边界。
 
-记录为 `.local/basketball/engine/network-client-after.log`、`network-final-race.log` 和 `.local/basketball/server-http/javascript-transport.jsonl`；实现前失败记录保留为 `network-batch-before.log`、`network-client-before.log`、`network-partial-before.log`、`network-client-partial-before.log`。该发送器使用 Node 执行以跨越真实 HTTP 边界，不能当作真实浏览器的预测、渲染或多端完整对局验收。
+记录为 `.local/basketball/verification/engine/network-client-after.log`、`network-final-race.log` 和 `.local/basketball/verification/server-http/javascript-transport.jsonl`；实现前失败记录保留为 `network-batch-before.log`、`network-client-before.log`、`network-partial-before.log`、`network-client-partial-before.log`。该发送器使用 Node 执行以跨越真实 HTTP 边界，不能当作真实浏览器的预测、渲染或多端完整对局验收。
 
 
 人数模式本次验收与复现命令见 [PLAYER_MODES.md](PLAYER_MODES.md)。既有四席开发验收继续保留，不能将它误认为正式入口人数。

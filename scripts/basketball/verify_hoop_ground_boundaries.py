@@ -4,7 +4,7 @@ from verify_hoop_air_throw import ROOT,ROM,run,world,put,context,encode_world_pr
 
 def main():
  origin=ROOT/'games/basketball/engine/testdata/hoop-air-throw-runtime.json.gz';snapshot=json.loads(gzip.decompress(origin.read_bytes()))
- raw=(ROOT/'.local/nes-basket/runs/court-4-reference/ram.bin').read_bytes()[1500*2048:1501*2048]
+ raw=(ROOT/'.local/basketball/research/original/runs/court-4-reference/ram.bin').read_bytes()[1500*2048:1501*2048]
  seed=bytearray(raw);patch,_=encode_world_probe(snapshot)
  for a,v in patch.items():seed[a]=v
  seed[:8]=bytes(8);base,_,_,_,_=run(seed,0,0xd314,0xd345)

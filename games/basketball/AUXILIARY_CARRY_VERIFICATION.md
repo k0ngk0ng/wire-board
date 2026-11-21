@@ -4,7 +4,7 @@
 
 ## 原阶段
 
-REA 证据 `ev_3939685c9d4209552369ace82e9f9ba03708e1f7fe2eb66c03a731bc74c42a7e` 位于 `.local/basketball/rea/auxiliary-carry/analysis/`。
+REA 证据 `ev_3939685c9d4209552369ace82e9f9ba03708e1f7fe2eb66c03a731bc74c42a7e` 位于 `.local/basketball/research/rea/auxiliary-carry/analysis/`。
 
 | 对象／动作 | 原函数 | 行为 |
 | --- | --- | --- |
@@ -50,7 +50,7 @@ basketball_goroot=$(go env GOROOT)
 GOOS=js GOARCH=wasm go test -exec "$basketball_goroot/lib/wasm/go_js_wasm_exec" ./games/basketball/engine -run '^(TestOriginalAuxiliary|TestAuxiliary|TestOriginalKind14PickupThrowContactChain|TestWorldActionsEntireCapturedCorpus|TestWorldPreparationEveryOriginalCompleteStage)'
 ```
 
-结果日志：`.local/basketball/engine/auxiliary-carry-{before,after,race,wasm}.log`，请求表先失败日志为 `auxiliary-request-before.log`。
+结果日志：`.local/basketball/verification/engine/auxiliary-carry-{before,after,race,wasm}.log`，请求表先失败日志为 `auxiliary-request-before.log`。
 
 世界接线从 `WorldInputs` 已提交修改后的 `Preparation.Contacts.Marks[:4]` 获取拾取标志。当前 `WorldLoop` 已把输入阶段的 `ChangePickupFlags` 写回该位置。通过 `WorldActionContext.PickupFlags *[4]uint8` 可空指针传入动作上下文，只有确实提供原来源时设置 `PickupFlagsKnown`；准备场景等没有该来源的路径不能默认填 0。
 
@@ -60,11 +60,11 @@ GOOS=js GOARCH=wasm go test -exec "$basketball_goroot/lib/wasm/go_js_wasm_exec" 
 
 新增固定规则世界链验证：人物拾取绑定、准备动作 14、保持 owner 到动作 3 入场、释放后的飞行和落地，以及没有拾取标志时原子拒绝。每次世界动作阶段前调用原 `BeginOriginalContacts` 清除调度 processed 位；绑定后的最终 attachment 为 192，释放后为 64，未忽略该位。此测试不冒称原完整对局。已有 1,998 原动作阶段、1,998 连续世界更新和 1,997 原准备阶段保持通过。
 
-世界接线日志：`.local/basketball/engine/auxiliary-world-{before,after,race,wasm}.log`。本次没有运行完整比赛，集中门禁由主任务执行。
+世界接线日志：`.local/basketball/verification/engine/auxiliary-world-{before,after,race,wasm}.log`。本次没有运行完整比赛，集中门禁由主任务执行。
 
 ## 携物移动与 B 抛弧组件扩展
 
-本节先完成独立组件验收，随后按下述世界适配接入新增动作。原 group20 分派证据为 `ev_dec0f416070efb8b82777831be8085b1764776c97a199f46e161599489631eec`（`.local/basketball/rea/auxiliary-movement/analysis/`）。
+本节先完成独立组件验收，随后按下述世界适配接入新增动作。原 group20 分派证据为 `ev_dec0f416070efb8b82777831be8085b1764776c97a199f46e161599489631eec`（`.local/basketball/research/rea/auxiliary-movement/analysis/`）。
 
 恢复 `$21` 行走、`$22` 跑动、`$23` 急停、`$24/$25` 立即起跳、`$26` 落地、携物 `$0F` 下落，以及地面／空中 A、B 投掷相关 `$27..$2C`。`$24/$25` 不插入空手蹲跳：原函数先清附着／processed 位，立即设置速度后执行当次物理。B 链使用道具动作 2；空中 B 先进入道具 15，再进入 2。道具 2 读取旧 owner 朝向／高度和共享选筐弧标志，经原弹道计算后才释放 owner。
 
@@ -82,7 +82,7 @@ GOOS=js GOARCH=wasm go test -exec "$basketball_goroot/lib/wasm/go_js_wasm_exec" 
 
 `$2D/$2E` 的闪避及 `$2F` 双方联动没有扩展到本组件；同时持球／持道具的跑动蓄势和搬运人物空中投掷仍未恢复；Falling 的共同持有分支已由下述世界接线补齐。`world_human_input.go` 仍有持道具按键分支的明确未恢复错误，新增动作组件本身不等同于真人完整携物控制已可用。
 
-本轮日志为 `.local/basketball/engine/auxiliary-movement-{before,after,race,wasm}.log`，道具抛弧先失败为 `auxiliary-lob-before.log`。新增提取脚本为 `probe_auxiliary_movement.py`、`probe_auxiliary_lob.py`。本轮未改 `world_actions.go`／`world_loop.go`，未重复完整比赛门禁。
+本轮日志为 `.local/basketball/verification/engine/auxiliary-movement-{before,after,race,wasm}.log`，道具抛弧先失败为 `auxiliary-lob-before.log`。新增提取脚本为 `probe_auxiliary_movement.py`、`probe_auxiliary_lob.py`。本轮未改 `world_actions.go`／`world_loop.go`，未重复完整比赛门禁。
 
 ## 携物移动世界适配
 
@@ -92,7 +92,7 @@ GOOS=js GOARCH=wasm go test -exec "$basketball_goroot/lib/wasm/go_js_wasm_exec" 
 
 辅助对象的动作 2／15 已加入同一分派，抛弧标志取当前 SelectedHoop 对应的挂载标志（或原其他对象弧标志），未提供有效选择时不默认填零。LaunchPlan 只更新共享 Target／ArcHeight，SelectedHoop 与 BallLanding 保留原值。
 
-`world_auxiliary_movement_test.go` 将 4,672 个原人物调用经过真实世界人物适配逐项比较，并将 152 个辅助调用与 308 个抛弧调用经过真实世界对象适配比较完整状态。固定规则测试另检查动态 Kind14 支撑与 owner／attachment 指向不同对象时的位置来源。这些测试不冒称完整对局。世界接线先失败及结果保存在 `.local/basketball/engine/auxiliary-world-movement-{before,after,race,wasm}.log`。
+`world_auxiliary_movement_test.go` 将 4,672 个原人物调用经过真实世界人物适配逐项比较，并将 152 个辅助调用与 308 个抛弧调用经过真实世界对象适配比较完整状态。固定规则测试另检查动态 Kind14 支撑与 owner／attachment 指向不同对象时的位置来源。这些测试不冒称完整对局。世界接线先失败及结果保存在 `.local/basketball/verification/engine/auxiliary-world-movement-{before,after,race,wasm}.log`。
 
 真人持物输入入口由另一个独立任务恢复，本次不修改 `world_human_input.go`；完整比赛仍由主任务集中验收。
 

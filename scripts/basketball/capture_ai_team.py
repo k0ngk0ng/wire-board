@@ -54,7 +54,7 @@ def main():
                    identical_screenshots=len(screenshots),
                    trace_sha256=hashlib.sha256(raw).hexdigest(),
                    source=json.loads((recorded/'source.json').read_text()))
-    out = ROOT/'.local/basketball/rea/team-ai'
+    out = ROOT/'.local/basketball/research/rea/team-ai'
     out.mkdir(parents=True, exist_ok=True)
     (out/'capture.json').write_text(json.dumps(summary, indent=2)+'\n')
     print(json.dumps(summary))

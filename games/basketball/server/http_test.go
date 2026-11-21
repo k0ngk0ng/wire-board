@@ -44,7 +44,7 @@ func observedModule(t *testing.T) gameapi.Module {
 		next, err := timer(ctx, before)
 		if err != nil {
 			once.Do(func() {
-				dir := filepath.Join(root, ".local", "basketball", "server-http")
+				dir := filepath.Join(root, ".local/basketball/verification/server-http")
 				if e := os.MkdirAll(dir, 0755); e != nil {
 					t.Error(e)
 				} else {
@@ -117,7 +117,7 @@ func evidence(t *testing.T) func(string, game.View) {
 			}
 			dir = next
 		}
-		dir = filepath.Join(dir, ".local", "basketball", "server-http")
+		dir = filepath.Join(dir, ".local/basketball/verification/server-http")
 		if err := os.MkdirAll(dir, 0755); err != nil {
 			t.Error(err)
 			return

@@ -6,7 +6,7 @@ from PIL import Image,ImageDraw
 from capture_reference import ROOT,BASE
 from static_sprites import SpriteROM
 
-OUT=ROOT/'.local/postresult-video'
+OUT=ROOT/'.local/basketball/research/postresult-video'
 
 def digest(file):return hashlib.sha256(file.read_bytes()).hexdigest()
 def main():

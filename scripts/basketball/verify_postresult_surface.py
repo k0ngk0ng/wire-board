@@ -4,7 +4,7 @@ physical nametables and standard palette aliases, not a video/CPU runtime.
 """
 import argparse,gzip,hashlib,json
 from verify_pass_floor_original import ROOT,Memory,MPU
-ROM=(ROOT/'.local/nes-basket/basketball.nes').read_bytes();PRG=ROM[16:131088]
+ROM=(ROOT/'.local/basketball/research/original/basketball.nes').read_bytes();PRG=ROM[16:131088]
 class Surface(Memory):
  def __init__(self,ram,mirror):
   super().__init__(PRG,ram);self.mirror=mirror;self.tables=[[((bank*97+i*11)&255) for i in range(1024)] for bank in range(2)];self.palette=[(i*3)&63 for i in range(32)]

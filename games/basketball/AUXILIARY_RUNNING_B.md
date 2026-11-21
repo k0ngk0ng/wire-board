@@ -30,7 +30,7 @@ REA后续证据：`ev_e5908940b5fa47d5b7cfd97cfe65b1def1cd51a8283bdffbcae284f4eb
 
 这些链来自明确的Court3初态，没有中途灌回oracle，也不等于从开机菜单到完整比赛的自然流程；键盘／手机端E2E由平台验收另行记录。
 
-先失败记录：`.local/basketball/engine/auxiliary-running-before.log`（缺上下文API）、`auxiliary-running-dispatch-before.log`（缺handler9和aux8）、`auxiliary-running-alias-before.log`（FF链接选错目标）。定向执行结果位于同目录 `auxiliary-running-after.log`，race／Wasm及邻接回归分别保留 `auxiliary-running-{race,wasm,neighbor}.log`；必须核对各测试实际运行记录，不能仅凭进程退出码判断。
+先失败记录：`.local/basketball/verification/engine/auxiliary-running-before.log`（缺上下文API）、`auxiliary-running-dispatch-before.log`（缺handler9和aux8）、`auxiliary-running-alias-before.log`（FF链接选错目标）。定向执行结果位于同目录 `auxiliary-running-after.log`，race／Wasm及邻接回归分别保留 `auxiliary-running-{race,wasm,neighbor}.log`；必须核对各测试实际运行记录，不能仅凭进程退出码判断。
 
 ## 复跑
 

@@ -12,11 +12,11 @@
 
 球的跟随偏移完整恢复固定页 `$ECF5` 的 106 个动作选择项、`$ED65` 指针与偏移数据；212 个动作／朝向组合对照原表通过。整数纵深保留原字节回绕，小数继续取球自身坐标。完整偏移表只用于球的位置跟随，不代表尚未恢复的人物动作已经开放。
 
-REA 证据：`ev_faeeb9b491f0f58dc9027340ac979a2b3b5c8f96f497c2b75ee8292e54971cc4`（请求、待机、偏移），`ev_0be536c2b08edf3fa9ac78aa4cae0898009c0678c8c350787809ed8ac4ab0931`（共享跑动、动画、行走、急停、跳跃）。完整输出位于 `.local/basketball/rea/possessed-idle/`。
+REA 证据：`ev_faeeb9b491f0f58dc9027340ac979a2b3b5c8f96f497c2b75ee8292e54971cc4`（请求、待机、偏移），`ev_0be536c2b08edf3fa9ac78aa4cae0898009c0678c8c350787809ed8ac4ab0931`（共享跑动、动画、行走、急停、跳跃）。完整输出位于 `.local/basketball/research/rea/possessed-idle/`。
 
 ## 重放与验收
 
-先保留真实 HTTP 前态并确认 24 个视频更新的测试在首步失败，再恢复行为。相同种子、时钟、球权和请求下，24 个视频更新通过，结束于 video 260／logic 84；原存档到首次平台控制期限前的全部 664 个视频更新也通过，报告在 `.local/basketball/http-possessed-after/result.json`。这段平台重放没有新缺口，不能据此声称完整游戏所有分支均已实现。
+先保留真实 HTTP 前态并确认 24 个视频更新的测试在首步失败，再恢复行为。相同种子、时钟、球权和请求下，24 个视频更新通过，结束于 video 260／logic 84；原存档到首次平台控制期限前的全部 664 个视频更新也通过，报告在 `.local/basketball/verification/http-possessed-after/result.json`。这段平台重放没有新缺口，不能据此声称完整游戏所有分支均已实现。
 
 ```sh
 PYTHONDONTWRITEBYTECODE=1 python3 scripts/basketball/extract_possessed_free_actions.py

@@ -14,7 +14,7 @@
 
 ## 证据范围
 
-静态分析入口为 `$A8DE`，方案分派为 `$B7CD`。REA 分析、批量结果及快照保存在 `.local/basketball/rea/dribble-evasion/`。动态对照只读 `.local/nes-basket/runs/ai-shot-observation/`，不修改原版内存。
+静态分析入口为 `$A8DE`，方案分派为 `$B7CD`。REA 分析、批量结果及快照保存在 `.local/basketball/research/rea/dribble-evasion/`。动态对照只读 `.local/basketball/research/original/runs/ai-shot-observation/`，不修改原版内存。
 
 ## 本次结果与限制
 

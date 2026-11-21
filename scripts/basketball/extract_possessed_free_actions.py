@@ -3,9 +3,9 @@ import gzip,hashlib,json,sys
 from pathlib import Path
 from extract_world_actions import ROOT,decode_world_action_state
 from extract_world_preparation import context
-sys.path.insert(0,str(ROOT/'.local/basketball/python'))
+sys.path.insert(0,str(ROOT/'.local/basketball/research/python'))
 from py65.devices.mpu6502 import MPU
-rom=(ROOT/'.local/nes-basket/basketball.nes').read_bytes();prg=rom[16:16+131072]
+rom=(ROOT/'.local/basketball/research/original/basketball.nes').read_bytes();prg=rom[16:16+131072]
 class Memory(list):
  def __init__(self):
   super().__init__([0]*65536);self.bank_select=0
@@ -18,7 +18,7 @@ class Memory(list):
     super().__setitem__(slice(start,start+8192),prg[(value%16)*8192:(value%16+1)*8192])
    return
   super().__setitem__(address,value)
-source=ROOT/'.local/nes-basket/runs/world-actions-cpu-long/world-actions-ram.bin';base=source.read_bytes()[:2048]
+source=ROOT/'.local/basketball/research/original/runs/world-actions-cpu-long/world-actions-ram.bin';base=source.read_bytes()[:2048]
 rows=[]
 for action in range(7):
  for computer in (False,True):

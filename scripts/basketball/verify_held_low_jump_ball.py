@@ -32,7 +32,7 @@ def main():
         r=initial(actor,0x16,0,True,elapsed,4,left);r[0x44a]=cursor;rows.append(dict(label=f'continued-{actor}-{cursor}-{elapsed}-{left}',**run(r)))
     for cursor,elapsed,left in itertools.product([0,2,3,4,5,6,7,9,10,11,12],[0,254,255],[False,True]):
         r=initial(6,2,cursor,True,elapsed,0,left);rows.append(dict(label=f'self-tail-{cursor}-{elapsed}-{left}',**run(r)))
-    out=ROOT/'.local/basketball/rea/held-low-jump';out.mkdir(parents=True,exist_ok=True)
+    out=ROOT/'.local/basketball/research/rea/held-low-jump';out.mkdir(parents=True,exist_ok=True)
     packed=gzip.compress((json.dumps(rows,separators=(',',':'))+'\n').encode(),mtime=0);(out/'held-low-jump-ball.json.gz').write_bytes(packed)
     meta=dict(scope='controlled original B585 full calls; low-jump owner action/cursor header plus persistent animation after owner changes action; not a natural match',entry='bank6 B585 through original E149 action dispatcher',calls=len(rows),romSHA256=hashlib.sha256(ROM).hexdigest(),baseSHA256=hashlib.sha256(BASE).hexdigest(),fixtureSHA256=hashlib.sha256(packed).hexdigest())
     (out/'source.json').write_text(json.dumps(meta,indent=2)+'\n')

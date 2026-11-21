@@ -21,7 +21,7 @@ import {
   loadCoverPin,
 } from "../build/cover.mjs";
 const root = fileURLToPath(new URL("../../../", import.meta.url));
-const parent = path.join(root, ".local/basketball-cover-tests");
+const parent = path.join(root, ".local/basketball/tmp/cover-tests");
 mkdirSync(parent, { recursive: true });
 const png = createPNG();
 const sha = (b) => createHash("sha256").update(b).digest("hex");
@@ -56,6 +56,7 @@ test("cold cover download produces verified local fallback and warm cache reuses
       return new Response(png, { headers: { "content-type": "image/png" } });
     },
   });
+  assert.equal(output, path.join(f.dir, ".local/basketball/cache/cover", f.pin.sha256, "public"));
   assert.equal(calls, 1);
   assert.equal(
     sha(readFileSync(path.join(output, f.pin.localPath))),
@@ -127,8 +128,8 @@ test("pins and symlinks cannot redirect the artifact outside the fixed public lo
     assert.throws(() => loadCoverPin(f.dir));
   }
   const f = fixture(t);
-  mkdirSync(path.join(f.dir, ".local"));
-  symlinkSync(parent, path.join(f.dir, ".local/basketball-cover-cache"), "dir");
+  mkdirSync(path.join(f.dir, ".local/basketball/cache"), { recursive: true });
+  symlinkSync(parent, path.join(f.dir, ".local/basketball/cache/cover"), "dir");
   await assert.rejects(
     materializeCover(f.dir, {
       fetchImpl: () => {

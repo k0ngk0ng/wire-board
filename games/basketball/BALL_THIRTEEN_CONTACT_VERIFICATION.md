@@ -16,11 +16,11 @@
 
 球队 4 正常两节、固定 seed `0x12345678` 的完整比赛运行两次，均为 22,373 视频帧、7,429 逻辑更新、84 次恢复；轨迹 SHA-256 均为 `1854bfd61c881ba3e752c3f0d05fd1ad42d686fddcadc713d6981fb43bb7c727`，运行前后源码摘要一致，`accepted:true`。此项不代表所有角色／球队／场地验收。
 
-证据目录：`.local/basketball/rea/ball13-contact/` 和 `.local/basketball/team4-after-ball13-contact/native/`。原始失败目录 `.local/basketball/team4-after-handler17/native/` 保留。
+证据目录：`.local/basketball/research/rea/ball13-contact/` 和 `.local/basketball/verification/team4-after-ball13-contact/native/`。原始失败目录 `.local/basketball/verification/team4-after-handler17/native/` 保留。
 
 ```sh
 PYTHONDONTWRITEBYTECODE=1 python3 scripts/basketball/verify_ball13_contact.py
 source scripts/env.sh
 go test -race ./games/basketball/engine -run '^TestOriginal(Ball13Contact|AttackContactTailGeometry|SpecialBallContact)' -count=1
-python3 scripts/basketball/diagnose_team_rosters.py --court 1 --teams 0 4 --characters 0 1 0 1 --output .local/basketball/team4-contact-repeat
+python3 scripts/basketball/diagnose_team_rosters.py --court 1 --teams 0 4 --characters 0 1 0 1 --output .local/basketball/verification/team4-contact-repeat
 ```

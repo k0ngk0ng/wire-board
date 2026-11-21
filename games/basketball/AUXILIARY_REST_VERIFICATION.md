@@ -14,7 +14,7 @@
 
 ## 本次结果
 
-- REA 动作／辅助函数证据 `ev_617c1c0928012ac5d116bb5468dcb134bfd85be2882f2e36df76b0cb1d9faea7`（6/6 成功）；纽约地形证据 `ev_b618a1d77454e328308befc87f536eeead9325fd771af4f40edcab7c95578f5e`（5/5 成功）。保留于 `.local/basketball/rea/auxiliary-rest/`。
+- REA 动作／辅助函数证据 `ev_617c1c0928012ac5d116bb5468dcb134bfd85be2882f2e36df76b0cb1d9faea7`（6/6 成功）；纽约地形证据 `ev_b618a1d77454e328308befc87f536eeead9325fd771af4f40edcab7c95578f5e`（5/5 成功）。保留于 `.local/basketball/research/rea/auxiliary-rest/`。
 - 自然样本 3996 次全部是动作0，没有动作12。全部样本通过，包含首次 X32→X48 边界修正，以及持续 X48／X464、Depth70 的原物理状态；完整6000帧RAM与未插桩参考一致。
 - 动作12只有静态原代码和预先编写的固定规则测试依据，本次没有自然执行覆盖。固定规则另覆盖原动画时钟不被静置进入重置、owner姿态命令、边界小数保留及落地前后动作切换时序。
 - `AuxiliaryState.ObjectLink` 对应 `$056B + object`，不是所有对象共用的 `$056B`；调度集成须按该真实位置解释状态。对象5时它与 `$0570` 重合，不能另建一份互不相干的世界状态。

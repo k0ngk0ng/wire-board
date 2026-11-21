@@ -184,7 +184,7 @@ func TestHostCampaignPreparationCommitRestore(t *testing.T) {
 				t.Fatal(err)
 			}
 			t.Logf("host preparation edits=4 frame=%d second-half=%d scores=%v", initial.Runtime.VideoFrames, s.Runtime.VideoFrames, s.scores())
-			dir := filepath.Join("..", "..", "..", ".local", "campaign-host-preparation")
+			dir := filepath.Join("..", "..", "..", ".local/basketball/verification/campaign-host-preparation")
 			if err := os.MkdirAll(dir, 0755); err != nil {
 				t.Fatal(err)
 			}

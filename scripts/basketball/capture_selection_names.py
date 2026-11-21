@@ -4,7 +4,7 @@ No RAM writes or gameplay availability changes. Artifacts remain workspace-local
 from pathlib import Path
 import json, hashlib
 from capture_reference import ROOT, BASE, run
-OUT=ROOT/'.local/basketball/selection-names'
+OUT=ROOT/'.local/basketball/assets/selection-names'
 
 def capture(name,segments,frames,captures):
     spec=dict(name='selection-names-'+name,load_slot=1,frames=frames,segments=segments,captures=captures)

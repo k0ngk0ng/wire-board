@@ -9,7 +9,7 @@ from extract_world_actions import decode_world_action_state
 
 
 def main():
-    cases=[('home0','.local/basketball/rea/campaign-home-stall/solo/first-entry/stalled.json'),('newyork1','.local/basketball/rea/ball-rest-stall/first-entry/stalled.json'),('court7','.local/basketball/rea/court-seven-stall/first-entry/stalled.json')]
+    cases=[('home0','.local/basketball/research/rea/campaign-home-stall/solo/first-entry/stalled.json'),('newyork1','.local/basketball/research/rea/ball-rest-stall/first-entry/stalled.json'),('court7','.local/basketball/research/rea/court-seven-stall/first-entry/stalled.json')]
     results=[]
     for name,path in cases:
         data=(ROOT/path).read_bytes();snapshot=json.loads(data)
@@ -28,7 +28,7 @@ def main():
             else:assert firstGround is not None
             results.append(dict(court=name,source=path,sourceSHA256=hashlib.sha256(data).hexdigest(),choice=choice,declaredInitialPatch=patch,before=before,firstGround=firstGround,rows=rows))
     doc=dict(romSHA256=hashlib.sha256(ROM).hexdigest(),scope='controlled original ball-only E149 calls after a declared candidate initial patch; proposals only, no production behavior change, no full-world/catch/score proof',naturalRecovery=False,originalInstructionsUnmodified=True,stepsPerCandidate=96,cases=results)
-    out=ROOT/'.local/basketball/rea/suspended-repair-proposal';out.mkdir(parents=True,exist_ok=True)
+    out=ROOT/'.local/basketball/research/rea/suspended-repair-proposal';out.mkdir(parents=True,exist_ok=True)
     (out/'paths.json').write_text(json.dumps(doc,indent=2)+'\n')
     for row in results:
         print(row['court'],row['choice'],'firstGround',row['firstGround'],'first',row['rows'][0]['ball']['body'],'lastAction',row['rows'][-1]['ball']['action'])

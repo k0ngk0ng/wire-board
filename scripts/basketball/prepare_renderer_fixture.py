@@ -45,11 +45,11 @@ def recover_initial_display_ball(snapshot,oam,rom):
  return {'source':'loaded-save submitted display, inverse static-metasprite match','oam_sha256':hashlib.sha256(oam).hexdigest(),'candidate_count':len(matches),'pose':packed,'projection':[x,y],'integer_height':height,'fractional_physics_height':'not recovered or asserted'}
 
 def prepare():
- out=ROOT/'.local/basketball/renderer/browser';out.mkdir(parents=True,exist_ok=True)
- rom=SpriteROM((ROOT/'.local/nes-basket/basketball.nes').read_bytes());initial_recoveries=[]
- observations=json.loads((ROOT/'.local/basketball/graphics/verification.json').read_text())['frames_detail'];cases=[]
+ out=ROOT/'.local/basketball/verification/renderer/browser';out.mkdir(parents=True,exist_ok=True)
+ rom=SpriteROM((ROOT/'.local/basketball/research/original/basketball.nes').read_bytes());initial_recoveries=[]
+ observations=json.loads((ROOT/'.local/basketball/assets/graphics/verification.json').read_text())['frames_detail'];cases=[]
  for name in sorted({i['scenario'] for i in observations}):
-  directory=ROOT/'.local/nes-basket/runs'/('renderer-'+name);selected={i['emulator_frame']:i for i in observations if i['scenario']==name};commits=[]
+  directory=ROOT/'.local/basketball/research/original/runs'/('renderer-'+name);selected={i['emulator_frame']:i for i in observations if i['scenario']==name};commits=[]
   for file in sorted(directory.glob('*-semantic.json')):
    d=json.loads(file.read_text());commits.extend(d['courtCommits']);frame=int(file.name.split('-')[1])
    if frame not in selected:continue

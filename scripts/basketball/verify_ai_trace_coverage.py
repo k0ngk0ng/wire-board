@@ -10,7 +10,7 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-TRACE = ROOT / '.local/nes-basket/runs/ai-shot-observation'
+TRACE = ROOT / '.local/basketball/research/original/runs/ai-shot-observation'
 FIXTURES = ROOT / 'games/basketball/engine/testdata'
 STEMS = (
     'ai-control', 'ai-possession-control', 'ai-positioning',
@@ -51,7 +51,7 @@ def main():
         'trace_csv_sha256': digest(TRACE / 'ai.csv'),
         'ram_matches_uninstrumented': True, 'fixtures': inventory,
     }
-    output = ROOT / '.local/basketball/engine/ai-trace-coverage.json'
+    output = ROOT / '.local/basketball/verification/engine/ai-trace-coverage.json'
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n')
     print(json.dumps({k: v for k, v in report.items() if k != 'fixtures'}, ensure_ascii=False))

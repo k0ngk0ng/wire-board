@@ -7,8 +7,8 @@ from capture_rest_stall_original import CONFIG
 from encode_world_probe import encode_world_probe
 from extract_world_loop import loop_state
 from compare_rest_stall_worlds import normalized,differences
-out=ROOT/'.local/basketball/rea/negative-pass-height'
-origin=json.loads((ROOT/'.local/basketball/rea/suspended-repair-proposal/retained-newyork-failure.json').read_text());patch,names=encode_world_probe(origin)
+out=ROOT/'.local/basketball/research/rea/negative-pass-height'
+origin=json.loads((ROOT/'.local/basketball/research/rea/suspended-repair-proposal/retained-newyork-failure.json').read_text());patch,names=encode_world_probe(origin)
 writes=';'.join(f'memory.writebyte({a},{v})' for a,v in sorted(patch.items()))
 hook=r'''
 local aligned=false;local count=0;local pending=false

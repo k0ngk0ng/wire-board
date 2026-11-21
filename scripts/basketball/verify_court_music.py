@@ -9,7 +9,7 @@ import sys
 import wave
 
 ROOT=Path(__file__).resolve().parents[2]
-OUT=ROOT/'.local/basketball/audio/export'
+OUT=ROOT/'.local/basketball/assets/audio/export'
 
 
 def sha(p):
@@ -34,7 +34,7 @@ def main():
     assert source['court_table']['ids']==[59,66,61,64,60,62,63,65]
     assert {x['id'] for x in manifest['tracks']}==set(source['court_table']['ids'])
     assert manifest['accepted_for_release'] is False
-    rom=(ROOT/'.local/nes-basket/basketball.nes').read_bytes()
+    rom=(ROOT/'.local/basketball/research/original/basketball.nes').read_bytes()
     assert hashlib.sha256(rom).hexdigest()==source['rom_sha256']=='0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b'
     reports=[]
     for track in manifest['tracks']:

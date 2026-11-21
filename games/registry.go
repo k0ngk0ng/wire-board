@@ -7,11 +7,13 @@ import (
 	bubbleparty "github.com/k0ngk0ng/wire-board/games/bubbleparty/server"
 	chess "github.com/k0ngk0ng/wire-board/games/chess/server"
 	conquest "github.com/k0ngk0ng/wire-board/games/conquest/server"
+	cs16 "github.com/k0ngk0ng/wire-board/games/cs16/server"
 	doudizhu "github.com/k0ngk0ng/wire-board/games/doudizhu/server"
 	escape "github.com/k0ngk0ng/wire-board/games/escape/server"
 	fortressblue "github.com/k0ngk0ng/wire-board/games/fortressblue/server"
 	gomoku "github.com/k0ngk0ng/wire-board/games/gomoku/server"
 	guandan "github.com/k0ngk0ng/wire-board/games/guandan/server"
+	hotlinemiami "github.com/k0ngk0ng/wire-board/games/hotlinemiami/server"
 	junqi "github.com/k0ngk0ng/wire-board/games/junqi/server"
 	monopoly "github.com/k0ngk0ng/wire-board/games/monopoly/server"
 	pairs "github.com/k0ngk0ng/wire-board/games/pairs/server"
@@ -38,6 +40,8 @@ func Modules() []gameapi.Module {
 	modules = append(modules, escape.Module())
 	modules = append(modules, stoneage.Module())
 	modules = append(modules, pokepath.Module())
+	modules = append(modules, hotlinemiami.Module())
+	modules = append(modules, cs16.Module())
 	for i := range modules {
 		modules[i].Controls = ControllerDefinitionFor(modules[i].ID)
 	}

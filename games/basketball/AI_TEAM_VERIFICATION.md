@@ -21,7 +21,7 @@
 
 `StepOriginalTeamAI` 读取独立的 `TeamAIState` 与 `TeamAIContext`，返回两队策略和四名人物的个人模式／计划。1,197 次完整阶段全部匹配：`(9,10)` 共 741 次，`(13,12)` 共 456 次。测试还核对人物计数、目标、区域目的地和方案参数未被错误覆盖；共享随机流、持球者、前次持球者及世界位置与原始阶段保持一致。
 
-原生竞态与 Wasm 定向验证通过，证据位于 `.local/basketball/rea/team-ai/{native-tests.json,wasm-tests.log}`。实现前的编译失败和实现后的对照记录为 `test-before.log`、`test-after.log`。采样中全部逐帧 RAM 和 30 张截图与参考一致，详见 `capture.json`。
+原生竞态与 Wasm 定向验证通过，证据位于 `.local/basketball/research/rea/team-ai/{native-tests.json,wasm-tests.log}`。实现前的编译失败和实现后的对照记录为 `test-before.log`、`test-after.log`。采样中全部逐帧 RAM 和 30 张截图与参考一致，详见 `capture.json`。
 
 世界入口应在原接触／接球、区域缓存和比分等级阶段之后调用本组件，将返回的个人 AI 状态传给之后的四人输入／AI 阶段。`ScoreDifference` 接前一阶段的原 `$0696` 编码。调用成功后才由世界入口提交前次持球者；本组件不修改所有权、不推进物理，也不消耗随机数。
 
@@ -35,4 +35,4 @@
 
 采样期间少量 `$06C5` 和声音内存变化来自异步中断，不作为全队策略输出。原始完整 RAM 仍保留，可追查这些差异；没有把它们写回 Go 结果来补齐对照。
 
-本次复用已有世界调度 REA 批量结果，索引为 `.local/basketball/rea/team-ai/reused-analysis.json`，包含原分析路径、Evidence ID 和校验和。`$9AF6` 的间接分派只采用核对过的原表项，不采用 Ghidra 扩展出的无效大范围分支。
+本次复用已有世界调度 REA 批量结果，索引为 `.local/basketball/research/rea/team-ai/reused-analysis.json`，包含原分析路径、Evidence ID 和校验和。`$9AF6` 的间接分派只采用核对过的原表项，不采用 Ghidra 扩展出的无效大范围分支。

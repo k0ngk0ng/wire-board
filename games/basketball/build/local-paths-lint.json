@@ -1,0 +1,15 @@
+{
+  "game": "basketball",
+  "aliases": ["nes-basket", "nes-basketball"],
+  "directories": ["assets", "research", "cache", "verification", "history", "tmp"],
+  "languages": {
+    "python": [".py"],
+    "javascript": [".js", ".mjs", ".cjs"],
+    "typescript": [".ts", ".tsx"],
+    "go": [".go"],
+    "shell": [".sh"],
+    "lua": [".lua"],
+    "html": [".html"],
+    "css": [".css"]
+  }
+}

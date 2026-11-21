@@ -4,7 +4,7 @@
 
 ## 实现前列出的失败场景
 
-先在 `.local/basketball/rea/campaign-opponent-roster/FAILURE_SCENARIOS.md` 记录失败清单，再编写测试、保留缺少API的红灯，最后实现组件。核心要求包括：不随机第一名、不改为均匀三选一、不重复抽取、不在NewRuntime／恢复／ACBB时重抽、不覆盖己方角色、不把Mode128／129对战选人自动化。非法参数须不推进随机状态。
+先在 `.local/basketball/research/rea/campaign-opponent-roster/FAILURE_SCENARIOS.md` 记录失败清单，再编写测试、保留缺少API的红灯，最后实现组件。核心要求包括：不随机第一名、不改为均匀三选一、不重复抽取、不在NewRuntime／恢复／ACBB时重抽、不覆盖己方角色、不把Mode128／129对战选人自动化。非法参数须不推进随机状态。
 
 ## 函数、表和顺序
 
@@ -51,7 +51,7 @@
 - 392次原选人调用：Mode0／1 × 7个Period样本 × 7个敌队 × 4个随机低位。待选己方角色保持不变，敌方为 `[0, table[value&3]]`，随机只推进一次。
 - 64次Mode128／129边界调用，实际覆盖 `$03D2` 的正负和当前选择队伍，证明不抽本次自动选人随机数；组件因此拒绝这两个模式，保留输入随机状态。
 - 4条自然菜单边界，原指令输出与相邻已记录帧的角色待选值和完整随机状态一致。
-- 4条自然提交边界，原角色提交及 `$ACBB` 后全部20个等级字节一致；不属于组件的生产职责，单独证据保存在 `.local/basketball/rea/campaign-opponent-roster/original-commit-probes.json`。
+- 4条自然提交边界，原角色提交及 `$ACBB` 后全部20个等级字节一致；不属于组件的生产职责，单独证据保存在 `.local/basketball/research/rea/campaign-opponent-roster/original-commit-probes.json`。
 
 ROM、原记录及夹具SHA-256见 `engine/testdata/campaign-roster-source.json`。正常调用夹具、边界和4条自然边界合并在 `campaign-roster-calls.json.gz`。
 
@@ -64,7 +64,7 @@ ROM、原记录及夹具SHA-256见 `engine/testdata/campaign-roster-source.json`
 - `$0589 = $1F`：进入未初始化的阶段31（战术等后续确认界面），尚未直接开始比赛。
 - 自动选人已写的 `$03CD/$03CE` 和更新后的共享RNG保留，等待后续 `$B2EF` 提交；菜单中的 `$03CB..$03CE` 又与比赛HUD缓存地址复用，不能把它们当两份独立的持久真相。
 
-另用4条相同自然菜单边界执行了原 `$896D→$8088`，包含上述清理；模式、待选阵容、阶段、Kind5、全部9字节工作状态和RNG均匹配相邻原帧。证据为 `.local/basketball/rea/campaign-opponent-roster/original-confirmation-cleanup.json`。本次纯选人API没有实现这些菜单状态命令；半场确认的完整事务仍待root接线，不能仅在Start分支随意插入一次随机调用就声称原路径完成。
+另用4条相同自然菜单边界执行了原 `$896D→$8088`，包含上述清理；模式、待选阵容、阶段、Kind5、全部9字节工作状态和RNG均匹配相邻原帧。证据为 `.local/basketball/research/rea/campaign-opponent-roster/original-confirmation-cleanup.json`。本次纯选人API没有实现这些菜单状态命令；半场确认的完整事务仍待root接线，不能仅在Start分支随意插入一次随机调用就声称原路径完成。
 
 ## 实现与验证范围
 
@@ -80,7 +80,7 @@ SelectOriginalCampaignRoster(mode uint8, teammates [2]uint8, random RandomState)
 
 **后续实际接线：** 带战役快照的 `AwaitingNextPeriod` → Start 默认确认现已调用本选择器，并将原清理、角色提交、等级重算和四人物更新合为事务，见 [半场确认验证](CAMPAIGN_INTERMISSION_VERIFICATION.md)。本报告上方纯组件和源采样范围不变；主动修改己方角色／装备／战术的半场界面尚未接入，不能将默认确认通过写成完整菜单已恢复。
 
-REA已解析证据为 `ev_9c7c151477c4c3be70add1a38a4bac802ebfc370cd36c27318f9a45883cbdea1`，位于 `.local/basketball/rea/campaign-opponent-roster/analysis-corrected/`。初次工具调用遇到工作树与原目录Swift模块缓存路径冲突，失败证据保留；改用已有rea.sh的规范化真实路径后完成，没有重装或修改工具配置。初次错误的872A种子位于指令参数中，没有使用其失败结果；有效默认值块从872C解析。
+REA已解析证据为 `ev_9c7c151477c4c3be70add1a38a4bac802ebfc370cd36c27318f9a45883cbdea1`，位于 `.local/basketball/research/rea/campaign-opponent-roster/analysis-corrected/`。初次工具调用遇到工作树与原目录Swift模块缓存路径冲突，失败证据保留；改用已有rea.sh的规范化真实路径后完成，没有重装或修改工具配置。初次错误的872A种子位于指令参数中，没有使用其失败结果；有效默认值块从872C解析。
 
 可重复执行：
 
@@ -93,4 +93,4 @@ GOOS=js GOARCH=wasm go test ./games/basketball/engine -run '^TestOriginalCampaig
 ```
 
 
-定向验收结果：Native0.587秒、race1.698秒、Wasm0.250秒通过。红灯、通过日志与摘要均保存于 `.local/basketball/rea/campaign-opponent-roster/`。这些结果只覆盖本独立组件及已保留的原选人边界；完整赛后／半场运行验收由相应集成负责。
+定向验收结果：Native0.587秒、race1.698秒、Wasm0.250秒通过。红灯、通过日志与摘要均保存于 `.local/basketball/research/rea/campaign-opponent-roster/`。这些结果只覆盖本独立组件及已保留的原选人边界；完整赛后／半场运行验收由相应集成负责。

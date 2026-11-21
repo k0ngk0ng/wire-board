@@ -194,7 +194,7 @@ func TestCampaignAttributesOwnedPreviewAndProjection(t *testing.T) {
 	if e != nil {
 		t.Fatal(e)
 	}
-	dir := filepath.Join("..", "..", "..", ".local", "campaign-attributes")
+	dir := filepath.Join("..", "..", "..", ".local/basketball/verification/campaign-attributes")
 	if e = os.MkdirAll(dir, 0755); e != nil {
 		t.Fatal(e)
 	}

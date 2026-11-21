@@ -16,7 +16,7 @@
 -map_metadata -1 -vn -ac 1 -ar 44100 -c:a libmp3lame -b:a 128k -write_xing 1 -id3v2_version 3 -f mp3
 ```
 
-工具二进制 SHA-256 为 `9f5ddd4f8b36eb07b0c5d60ab6ea1e618bedd70bc45feab82b4dc23be1596ad1`。每首的完整命令、母版摘要、压缩摘要、重复编码摘要、解码 PCM 摘要及验证指标保存于 `.local/basketball/audio/export/music-distribution-manifest.json`。工具摘要标识本次编码程序，不保证不同版本或构建的编码字节相同。
+工具二进制 SHA-256 为 `9f5ddd4f8b36eb07b0c5d60ab6ea1e618bedd70bc45feab82b4dc23be1596ad1`。每首的完整命令、母版摘要、压缩摘要、重复编码摘要、解码 PCM 摘要及验证指标保存于 `.local/basketball/assets/audio/export/music-distribution-manifest.json`。工具摘要标识本次编码程序，不保证不同版本或构建的编码字节相同。
 
 每首独立编码两次，MP3 字节摘要相同。全部完整解码后，样本数与相应母版一致，容器时长误差小于 1 个样本；保留原有循环时基。固定质量条件包括 SI-SDR 至少 24 dB、解码后无削波、接缝跳变处于邻近样本步幅范围内、首尾局部 RMS 相对母版偏差不超过 1.5 dB。9 首全部使用 128 kbps 通过，SI-SDR 实测约 26.86～30.32 dB。这些数值不能替代人工听感验收。
 
@@ -45,11 +45,11 @@ CDN 用例由本地服务模拟压缩源失败，再以同一 MP3 本地来源�
 
 可核验产物：
 
-- `.local/basketball/audio/export/music-distribution-verification.json`：9 首编码和母版验证结果。
-- `.local/basketball/audio/encoded-loop-browser-59/` 至 `-66/`、`-75/`：各曲 `result.json`、`verified.png` 和实际执行的 `loop.js`。
-- `.local/basketball/audio/encoded-loop-browser-66-cdn-fallback/`：失败回退结果、请求路径和截图。
-- `.local/basketball/audio/compression/acceptance-summary.json`：10 个结果及其文件摘要、素材摘要、bundle 摘要和范围限制。
-- `.local/basketball/audio/compression/` 中 `adapter-before.log`、`no-wav-fallback-before.log`、`material-before.log`：实现前失败记录；`adapter-after.log`、`material-after.log` 和 `typecheck.log`：该轮通过记录。
+- `.local/basketball/assets/audio/export/music-distribution-verification.json`：9 首编码和母版验证结果。
+- `.local/basketball/assets/audio/encoded-loop-browser-59/` 至 `-66/`、`-75/`：各曲 `result.json`、`verified.png` 和实际执行的 `loop.js`。
+- `.local/basketball/assets/audio/encoded-loop-browser-66-cdn-fallback/`：失败回退结果、请求路径和截图。
+- `.local/basketball/assets/audio/compression/acceptance-summary.json`：10 个结果及其文件摘要、素材摘要、bundle 摘要和范围限制。
+- `.local/basketball/assets/audio/compression/` 中 `adapter-before.log`、`no-wav-fallback-before.log`、`material-before.log`：实现前失败记录；`adapter-after.log`、`material-after.log` 和 `typecheck.log`：该轮通过记录。
 
 这些记录绑定保存的 `loop.js` 摘要。公共播放器或适配器后续修改需要按影响范围重新验收，不能把已有记录宣称为后续实现的结果。
 

@@ -307,14 +307,14 @@ class ContraDelivery(unittest.TestCase):
 class WaveRangeHTTP(unittest.TestCase):
  def test_real_range_response_and_failure_boundaries(self):
   self.exercise('audio/wav','wav')
- def exercise(self,expected_mime,extension):
-  payload=(b'fLaC' if extension=='flac' else b'RIFF')+bytes(range(128));state={'mode':'good','requests':[]}
+ def exercise(self,expected_mime,extension,observed_mime=None,payload=None):
+  payload=(b'fLaC' if extension=='flac' else b'RIFF')+bytes(range(128)) if payload is None else payload;state={'mode':'good','requests':[]}
   class Handler(BaseHTTPRequestHandler):
    def log_message(self,*args):pass
    def do_GET(self):
     requested=self.headers.get('Range')
     state['requests'].append({'range':requested,'origin':self.headers.get('Origin'),'encoding':self.headers.get('Accept-Encoding')})
-    body=payload;status=200;mime=expected_mime;cors='*';content_range=None;encoding=None
+    body=payload;status=200;mime=observed_mime or expected_mime;cors='*';content_range=None;encoding=None
     if requested:
      body=payload[:64];status=206;content_range=f'bytes 0-63/{len(payload)}'
      if state['mode']=='status':status=200
@@ -345,6 +345,67 @@ class WaveRangeHTTP(unittest.TestCase):
 class FlacRangeHTTP(WaveRangeHTTP):
  def test_real_range_response_and_failure_boundaries(self):
   self.exercise('audio/flac','flac')
+
+class WaveMimeAliases(unittest.TestCase):
+ @classmethod
+ def setUpClass(cls):
+  cls.output=Path(__file__).resolve().parents[1]/'.local/hotlinemiami/verification/cdn-wav-alias'
+  cls.work=cls.output/'tmp';cls.work.mkdir(parents=True,exist_ok=True);cls.results=[];cls.sources={}
+ @classmethod
+ def tearDownClass(cls):
+  (cls.output/'regression.json').write_text(json.dumps({'passed':len(cls.results)==3,'cases':cls.results,'sources':cls.sources},indent=2)+'\n')
+ def payload(self,name):
+  import io,wave
+  source=Path(__file__).resolve().parents[1]/'games/hotlinemiami/assets/public/hotlinemiami/runtime'/name
+  if source.is_file():body=source.read_bytes();origin='restored-local-source'
+  else:
+   buffer=io.BytesIO()
+   with wave.open(buffer,'wb') as output:output.setnchannels(1);output.setsampwidth(2);output.setframerate(22050);output.writeframes(bytes(range(128))*2)
+   body=buffer.getvalue();origin='generated-local-WAVE-fixture'
+  self.assertEqual(body[:4],b'RIFF');self.assertEqual(body[8:12],b'WAVE')
+  self.sources[name]={'source':origin,'bytes':len(body),'sha256':cdn.sha(body)}
+  return body
+ def row(self,name,body,mime):
+  return {'url':'https://fixture.invalid/bga/hotlinemiami/'+cdn.sha(body)+'.wav','path':'hotlinemiami/runtime/'+name,'bytes':len(body),'sha256':cdn.sha(body),'mime':mime,'encoding':'','requiresRange':True}
+ def publish_existing(self,name,body,mime,observed,changes=None):
+  import io
+  row=self.row(name,body,mime);unchanged=dict(row)
+  headers={'Content-Type':observed,'Content-Length':str(len(body)),'ETag':'"'+hashlib.md5(body).hexdigest()+'"','x-oss-meta-sha256':cdn.sha(body),'x-oss-meta-decoded-bytes':str(len(body))}
+  headers.update(changes or {});original_headers=dict(headers);requests=[]
+  def response(request,timeout):
+   requests.append({'method':request.get_method(),'url':request.full_url})
+   self.assertEqual(request.get_method(),'HEAD','existing immutable objects must not be downloaded or overwritten')
+   result=io.BytesIO(b'');result.headers=headers;result.status=200
+   return result
+  with tempfile.TemporaryDirectory(dir=self.work) as folder:
+   dist=Path(folder);target=dist/row['path'];target.parent.mkdir(parents=True);target.write_bytes(body)
+   with patch.object(cdn,'credentials',return_value=('fixture','fixture')),patch.object(cdn,'urlopen',side_effect=response),patch('sys.stdout',io.StringIO()):
+    try:result=cdn.publish(dist,[row],'fixture','fixture.invalid')
+    finally:
+     self.assertEqual(target.read_bytes(),body);self.assertEqual(row,unchanged);self.assertEqual(headers,original_headers)
+   self.assertEqual(requests,[{'method':'HEAD','url':row['url']}])
+   self.assertEqual(result['reusedObjects'],1);self.assertEqual(result['putRequests'],0);self.assertEqual(result['uploadedObjects'],0);self.assertEqual(result['getRequests'],0);self.assertEqual(result['downloadedBytes'],0)
+   return result
+ def test_existing_pickup_and_throw_wave_aliases_reuse_without_writes(self):
+  for name in ['pickup.wav','throw.wav']:
+   body=self.payload(name)
+   for expected in ['audio/wav','audio/x-wav']:
+    for observed in ['audio/wav','audio/x-wav']:
+     with self.subTest(file=name,expected=expected,observed=observed):self.publish_existing(name,body,expected,observed)
+  self.results.append({'scenario':'existing-wave-alias-HEAD','passed':True,'objects':2,'mimePairs':4,'putRequests':0,'getRequests':0})
+ def test_head_alias_does_not_relax_mime_digest_size_etag_or_encoding(self):
+  body=self.payload('pickup.wav')
+  cases=[('text/plain',None,'MIME'),('audio/mpeg',None,'MIME'),('audio/flac',None,'MIME'),('audio/vnd.wave',None,'MIME'),('audio/x-wav',{'x-oss-meta-sha256':'0'*64},'already differs'),('audio/x-wav',{'x-oss-meta-decoded-bytes':str(len(body)+1)},'already differs'),('audio/x-wav',{'Content-Length':str(len(body)+1)},'already differs'),('audio/x-wav',{'ETag':'"wrong"'},'already differs'),('audio/x-wav',{'Content-Encoding':'gzip'},'encoding')]
+  for observed,changes,message in cases:
+   with self.subTest(observed=observed,changes=changes),self.assertRaisesRegex(ValueError,message):self.publish_existing('pickup.wav',body,'audio/wav',observed,changes)
+  cdn.validate_headers({'url':'https://fixture.invalid/script.js','mime':'text/javascript'},{'Content-Type':'application/javascript','Access-Control-Allow-Origin':'*'})
+  self.results.append({'scenario':'immutable-HEAD-negative-boundaries','passed':True,'cases':len(cases),'javascriptCompatibility':True})
+ def test_original_wave_aliases_pass_complete_and_range_loopback_readback(self):
+  for name in ['pickup.wav','throw.wav']:
+   body=self.payload(name)
+   for expected,observed in [('audio/wav','audio/x-wav'),('audio/x-wav','audio/wav')]:
+    with self.subTest(file=name,expected=expected,observed=observed):WaveRangeHTTP.exercise(self,expected,'wav',observed,body)
+  self.results.append({'scenario':'full-and-Range-loopback-readback','passed':True,'objects':2,'mimeDirections':2,'strictFailureModes':['status','range','body','mime','cors','encoding','full-body']})
 
 
 

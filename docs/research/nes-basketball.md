@@ -39,10 +39,10 @@ ZIP SHA-256:
 
 预览采用任意四级灰度，尚未恢复真实调色板、精灵拼接、翻转关系、动画帧序列和背景地图布局。图块不能直接当成完整角色动画交付。
 
-本机研究产物保存在 Git 忽略目录 `.local/nes-basket/`：`probe.py`、`inspection.json`、`chr-overview.png` 以及 32 张分组预览。可在当前仓库根目录重复执行：
+本机研究产物保存在 Git 忽略目录 `.local/basketball/research/original/`：`probe.py`、`inspection.json`、`chr-overview.png` 以及 32 张分组预览。可在当前仓库根目录重复执行：
 
 ```sh
-.local/board-art-env/bin/python .local/nes-basket/probe.py
+.local/board-art-env/bin/python .local/basketball/research/original/probe.py
 ```
 
 脚本固定本次 ROM 摘要，验证 ZIP CRC、头部、声明长度、尾部组成、8,192 个图块往返编码及输入文件不变。原 ROM 和提取图块未提交、上传 OSS 或作为正式游戏素材发布。
@@ -175,7 +175,7 @@ Go 按实际指令重写的输出：65600 / 256 = 256.25
 
 ### 复查与重复执行
 
-所有工具运行包、原版截图、存档和追踪数据均留在当前仓库的忽略目录内。REA 源码从用户提供的本地目录读取；为避免改动该目录，使用同版本的 npm 运行包安装到 `.local/nes-basket/tools/rea-runtime/`，未注册全局客户端配置。
+所有工具运行包、原版截图、存档和追踪数据均留在当前仓库的忽略目录内。REA 源码从用户提供的本地目录读取；为避免改动该目录，使用同版本的 npm 运行包安装到 `.local/tools/nes-research/rea-runtime/`，未注册全局客户端配置。
 
 Ghidra 官方 12.1.4 包的 SHA-256 为 `ddac49f903da9d5bac833e5cc79395098b9c33cfd3279be5f31bd00387d2d4db`。其 ARM64 反编译器使用包内源码编译，所有输出留在当前仓库。完整 JDK 使用本机已有的 OpenJDK 26.0.1。
 
@@ -183,26 +183,26 @@ Ghidra 官方 12.1.4 包的 SHA-256 为 `ddac49f903da9d5bac833e5cc79395098b9c33c
 
 ```sh
 # 重新运行六组输入和投篮观察段，比较原始数据，再验证 Go 样例。
-.local/board-art-env/bin/python .local/nes-basket/verify.py
+.local/board-art-env/bin/python .local/basketball/research/original/verify.py
 
 # 重新查询已固定映射的移动代码片段。
-sh .local/nes-basket/rea.sh function \
-  "$PWD/.local/nes-basket/movement-ef5f.bin" 0xef5f \
+sh .local/basketball/research/original/rea.sh function \
+  "$PWD/.local/basketball/research/original/movement-ef5f.bin" 0xef5f \
   --target-format raw-binary --architecture 6502 \
   --entry-point 0xef5f --provider ghidra --json
 ```
 
 主要产物：
 
-- `.local/nes-basket/verification.json`：逐场景验收结果、摘要、换页匹配及范围限制。
-- `.local/nes-basket/runs/`：每次执行的输入配置、实际 Lua 脚本、日志、逐帧 RAM、程序页和截图。
-- `.local/nes-basket/first-score.gif`、`first-score-sequence.png`：原版电脑投篮和得分过程，非 Go 游戏截图。
-- `.local/nes-basket/control-montage.png`：六组控制输入的画面对比。
-- `.local/nes-basket/rea-movement.json`：REA 的指令、伪代码和来源证据。
-- `.local/nes-basket/x-updates.json`：2,377 条原版执行输入／输出记录。
-- `.local/nes-basket/decompiler-carry-differences.json`：本次伪代码与原版的反例。
-- `.local/nes-basket/go-proof/`：独立 Go 实验模块及先写的测试。
-- `.local/nes-basket/go-test-before-implementation.json`、`go-test-results.json`：实现前失败及实现后通过的测试结果。
+- `.local/basketball/research/original/verification.json`：逐场景验收结果、摘要、换页匹配及范围限制。
+- `.local/basketball/research/original/runs/`：每次执行的输入配置、实际 Lua 脚本、日志、逐帧 RAM、程序页和截图。
+- `.local/basketball/research/original/first-score.gif`、`first-score-sequence.png`：原版电脑投篮和得分过程，非 Go 游戏截图。
+- `.local/basketball/research/original/control-montage.png`：六组控制输入的画面对比。
+- `.local/basketball/research/original/rea-movement.json`：REA 的指令、伪代码和来源证据。
+- `.local/basketball/research/original/x-updates.json`：2,377 条原版执行输入／输出记录。
+- `.local/basketball/research/original/decompiler-carry-differences.json`：本次伪代码与原版的反例。
+- `.local/basketball/research/original/go-proof/`：独立 Go 实验模块及先写的测试。
+- `.local/basketball/research/original/go-test-before-implementation.json`、`go-test-results.json`：实现前失败及实现后通过的测试结果。
 
 FCEUX 使用仓库内配置和限制文件写入范围的进程沙箱。REA 的进程管理需要调用 macOS 的 setuid `ps`，该程序无法在此沙箱中启动；REA 改用显式的工作区目录配置，Ghidra 的 Java 用户目录、缓存及临时目录由其启动器放入会话目录。Swift 模块缓存显式设置为仓库内路径。由于 Ghidra 项目路径不接受点开头的目录，会话临时目录使用忽略的 `dist/nes-tmp/`，不使用 `.local/`。
 

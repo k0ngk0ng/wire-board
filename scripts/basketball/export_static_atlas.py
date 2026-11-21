@@ -7,9 +7,9 @@ import argparse,json
 from PIL import Image
 from static_sprites import SpriteROM,DIGEST,render_player
 p=argparse.ArgumentParser()
-p.add_argument('--rom',type=Path,default=Path('.local/nes-basket/basketball.nes'))
-p.add_argument('--colors',type=Path,default=Path('.local/nes-basket/runs/graphics-right/nes-colors.rgb'))
-p.add_argument('--output',type=Path,default=Path('.local/basketball/static-atlas'))
+p.add_argument('--rom',type=Path,default=Path('.local/basketball/research/original/basketball.nes'))
+p.add_argument('--colors',type=Path,default=Path('.local/basketball/research/original/runs/graphics-right/nes-colors.rgb'))
+p.add_argument('--output',type=Path,default=Path('.local/basketball/assets/static-atlas'))
 args=p.parse_args();rom=SpriteROM(args.rom.read_bytes());colors=args.colors.read_bytes()
 args.output.mkdir(parents=True,exist_ok=True)
 doc={'accepted_for_release':False,'source':{'rom_sha256':DIGEST,'metasprite_bank':2,'kind_pointer_table':'0x8000','decoder':'fixed 0xD079 / 0xD0C6','head_mapping':'fixed 0xCF30 / 0xD12D','chr_setup':'bank 3 0x82E5..0x8303','palette_setup':'bank 4 0x9526 / 0x97AB','rgb_sha256':sha256(colors).hexdigest()},'pose_counts':[rom.pose_count(i) for i in range(8)],'sheets':[], 'limitations':['Static pose availability does not establish all gameplay actions or transitions.','Character selection metadata/names require separate menu recovery.','Head variants 0..3 exported; extra table entry 4 is not claimed to be a selectable character.','Player-only sheets exclude shadows, ball, hoops and court art.','Current RGB appearance uses the verified original capture renderer palette.']}

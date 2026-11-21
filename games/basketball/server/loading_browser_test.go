@@ -42,7 +42,7 @@ func TestBasketballBrowserLoading(t *testing.T) {
 		mux.ServeHTTP(w, r)
 	}))
 	defer host.Close()
-	out := filepath.Join(root, ".local/basketball/loading-browser")
+	out := filepath.Join(root, ".local/basketball/verification/loading-browser")
 	os.MkdirAll(out, 0755)
 	ctx, cancel := context.WithTimeout(context.Background(), 180*time.Second)
 	defer cancel()

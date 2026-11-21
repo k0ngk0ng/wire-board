@@ -6,7 +6,7 @@ from probe_rest_stall import ROOT,ROM,PRG,encode,run,SoundMemory
 def main():
  parser=argparse.ArgumentParser();parser.add_argument('--check',action='store_true');args=parser.parse_args()
  records=[];runtimes=[]
- for label,path,video in [('home0','.local/basketball/rea/campaign-home-stall/solo/first-entry',3384),('newyork1','.local/basketball/rea/ball-rest-stall/first-entry',6300),('court7','.local/basketball/rea/court-seven-stall/first-entry',13989)]:
+ for label,path,video in [('home0','.local/basketball/research/rea/campaign-home-stall/solo/first-entry',3384),('newyork1','.local/basketball/research/rea/ball-rest-stall/first-entry',6300),('court7','.local/basketball/research/rea/court-seven-stall/first-entry',13989)]:
   directory=ROOT/path;runtimes.append(dict(name=label,state=json.loads((directory/'stalled.json').read_text())))
   history=json.loads((directory/'history.json').read_text());row=next(r for r in history if r['Video']==video)
   for kind,before,after in [('trigger',row['Before'],row['After']),('stalled',json.loads((directory/'stalled.json').read_text()),None)]:

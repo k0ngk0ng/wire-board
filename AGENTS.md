@@ -12,7 +12,7 @@
 | [存档与续玩规范](rules/saved-games.md) | 可选接入、原账号权限、席位释放、冻结时钟、事务与幂等、版本兼容和续玩验收 |
 | [扑克牌游戏开发规范](rules/poker.md) | 选牌、牌面、手牌布局、牌桌稳定性和手机交互 |
 | [复刻游戏开发规范](rules/recreation.md) | 原版对照、独立规则实现、平台席位与原版角色映射 |
-| [界面与交互开发规范](rules/ui.md) | 公共界面、视觉、动画、全屏和游戏目录 |
+| [界面与交互开发规范](rules/ui.md) | 公共界面、视觉、动画、原生选择与菜单保护、全屏和游戏目录 |
 | [控制器开发规范](rules/controller.md) | 按游戏改键、实体手柄、触屏、导航、连发和输入释放 |
 | [加载与资源发布规范](rules/loading.md) | 按需加载、就绪门槛、OSS/CDN 资源和构建剥离 |
 | [音效开发规范](rules/audio.md) | 平台音频接口、静音、媒体播放和音频恢复 |
@@ -35,6 +35,7 @@
 | 泡泡堂 | [bubbleparty.md](rules/bubbleparty.md) |
 | 卡卡颂 | [carcassonne.md](rules/carcassonne.md) |
 | 卡坦岛 | [catan.md](rules/catan.md) |
+| 反恐精英 | [cs16.md](rules/cs16.md) |
 | 国际象棋 | [chess.md](rules/chess.md) |
 | 征服时代 | [conquest.md](rules/conquest.md) |
 | 魂斗罗 | [contra.md](rules/contra.md) |
@@ -45,6 +46,7 @@
 | 军棋 | [junqi.md](rules/junqi.md) |
 | 强手棋 | [monopoly.md](rules/monopoly.md) |
 | 连连看 | [pairs.md](rules/pairs.md) |
+| 迈阿密热线 | [hotlinemiami.md](rules/hotlinemiami.md) |
 | 极品飞车 | [racing.md](rules/racing.md) |
 | 铁路环游 | [rail.md](rules/rail.md) |
 | 三国杀 | [sanguosha.md](rules/sanguosha.md) |

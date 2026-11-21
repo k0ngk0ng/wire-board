@@ -8,7 +8,7 @@ import { test } from "node:test";
 import { materializeBasketballAssets, prepareBasketballAssets, verifyBasketballAssets, verifyBasketballPublicFiles, loadBasketballAssetPin } from "../../games/basketball/build/assets.mjs";
 
 const root = fileURLToPath(new URL("../../", import.meta.url));
-const parent = path.join(root, ".local/basketball-asset-build-tests");
+const parent = path.join(root, ".local/basketball/tmp/asset-build-tests");
 mkdirSync(parent, { recursive: true });
 const sha = b => createHash("sha256").update(b).digest("hex");
 const canonical = value => JSON.stringify(value, Object.keys(value).sort());
@@ -35,6 +35,7 @@ test("cold immutable download, verified warm cache, corrupt cache repair and fai
   const f = fixture(t), calls = [];
   const fetchImpl = async (url, options) => { calls.push(url); assert.equal(options.redirect, "error"); assert.ok(url.startsWith(f.pin.assetsBaseURL)); const [data, mime] = f.files.get(url.slice(f.pin.assetsBaseURL.length)); return new Response(data, { headers: { "Content-Type": mime, ...(mime === "application/json" ? { "Content-Encoding": "gzip", "Content-Length": "2" } : {}) } }); };
   const publicRoot = await materializeBasketballAssets(f.dir, { fetchImpl });
+  assert.equal(publicRoot, path.join(f.dir, ".local/basketball/cache/assets", f.pin.contentSHA256, "public"));
   assert.equal(calls.length, 3); verifyBasketballAssets(f.dir, publicRoot);
   const again = await materializeBasketballAssets(f.dir, { fetchImpl: () => { throw Error("warm cache fetched"); } }); assert.equal(again, publicRoot);
   const damaged = path.join(publicRoot, "basketball/v1/audio/music-076-intro-loop.mp3"); writeFileSync(damaged, "corrupt");

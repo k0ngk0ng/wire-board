@@ -3,8 +3,8 @@ import gzip,hashlib,itertools,json
 from pathlib import Path
 from verify_pass_floor_original import ROOT,Memory,put,MPU
 from extract_world_actions import decode_world_action_state
-rom=(ROOT/'.local/nes-basket/basketball.nes').read_bytes();prg=rom[16:16+131072]
-base=(ROOT/'.local/nes-basket/runs/world-actions-cpu-long/world-actions-ram.bin').read_bytes()[:2048]
+rom=(ROOT/'.local/basketball/research/original/basketball.nes').read_bytes();prg=rom[16:16+131072]
+base=(ROOT/'.local/basketball/research/original/runs/world-actions-cpu-long/world-actions-ram.bin').read_bytes()[:2048]
 rows=[]
 cases=list(itertools.product([0,2,3,8,10,13,15,21],[0,1,6,7],[0,255,256,-256],[70*256+255,71*256],[0,255,256,383,-1,-256],[4,5]))
 for action,prop_action,height,depth,gravity,target in cases:

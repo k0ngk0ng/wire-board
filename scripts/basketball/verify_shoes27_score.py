@@ -1,8 +1,8 @@
 """Full original9035..9290 rim calls; see SHOES27_SCORE_VERIFICATION.md first."""
 import base64,gzip,hashlib,itertools,json
 from verify_pass_floor_original import ROOT,Memory,MPU,put
-ROM=(ROOT/'.local/nes-basket/basketball.nes').read_bytes();PRG=ROM[16:131088]
-BASE=(ROOT/'.local/nes-basket/runs/ball-pass/ram.bin').read_bytes()[:2048]
+ROM=(ROOT/'.local/basketball/research/original/basketball.nes').read_bytes();PRG=ROM[16:131088]
+BASE=(ROOT/'.local/basketball/research/original/runs/ball-pass/ram.bin').read_bytes()[:2048]
 assert hashlib.sha256(ROM).hexdigest()=='0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b'
 def main():
  rows=[]

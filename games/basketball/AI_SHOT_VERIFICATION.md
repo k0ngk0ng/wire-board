@@ -14,7 +14,7 @@
 
 ## 证据
 
-静态分析复用 `.local/basketball/rea/ai-batch/normalized.json`，补充 REA 批量分析保存于 `.local/basketball/rea/shot-planning/`。原版动态记录为 `.local/nes-basket/runs/ai-shot-observation/{ai.csv,ai-ram.bin}`，只读提取，不修改原版内存。
+静态分析复用 `.local/basketball/research/rea/ai-batch/normalized.json`，补充 REA 批量分析保存于 `.local/basketball/research/rea/shot-planning/`。原版动态记录为 `.local/basketball/research/original/runs/ai-shot-observation/{ai.csv,ai-ram.bin}`，只读提取，不修改原版内存。
 
 `scripts/basketball/extract_ai_shot_plan.py` 可重新生成样本及源 SHA-256。原始 283 次调用覆盖实际场地 1、加权方案 14、真人队伍方案 0 及不可行动状态；其他场地分支需要另行动态验证，不能把静态恢复称为整场验收。
 
@@ -22,7 +22,7 @@
 
 283 次模式 6 原始调用全部通过，包括 AI 状态、行动、朝向、共享随机流、投篮周期命令和跳跃阶段命令。另有固定边界用例覆盖垂直速度的无符号判断、真人队伍入口和第 7 队的空中瞄准入口。
 
-原生竞态和 Wasm 定向验证均通过，记录保存在 `.local/basketball/rea/shot-planning/native-tests.json` 与 `wasm-tests.log`。实现前编译失败记录为 `test-before.log`，实现后原版对照为 `test-after.log`。
+原生竞态和 Wasm 定向验证均通过，记录保存在 `.local/basketball/research/rea/shot-planning/native-tests.json` 与 `wasm-tests.log`。实现前编译失败记录为 `test-before.log`，实现后原版对照为 `test-after.log`。
 
 已恢复投篮选择入口以及方案 0、1、14、15。方案 14／15 的场地 2、3、5 依据静态代码恢复，尚无自然运行对照；其余方案明确返回未恢复错误。此结果不代表所有投篮方案、完整比赛或浏览器玩法已经完成。
 

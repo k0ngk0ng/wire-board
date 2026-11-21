@@ -181,7 +181,7 @@ try:
      wait(lambda:js('document.querySelector(".racing-board")?.dataset.phase==="finished"'),240)
      wait(lambda:js('!!document.querySelector(".match-result-modal")&&!document.querySelector("[aria-label=赛道地图]")'))
      assert js('!!document.activeElement?.closest(".match-result-modal")');shot('real-result-320');check('real finish closes map and preserves result modal focus',result=room()['game'].get('winners'))
-     browser('click','.match-result-modal button[aria-label="关闭"]');wait(lambda:not js('!!document.querySelector(".match-result-modal")'));time.sleep(.5);assert not js('!!document.querySelector(".match-result-modal")');shot('final-scene-320');check('closed result stays closed with final scene visible')
+     browser('click','.match-result-modal .result-review');wait(lambda:not js('!!document.querySelector(".match-result-modal")'));time.sleep(.5);assert not js('!!document.querySelector(".match-result-modal")');shot('final-scene-320');check('closed result stays closed with final scene visible')
 
    browser('set','viewport','320','844');js('document.querySelector(".racing-chase").scrollIntoView({block:"center"})');time.sleep(.3);shot(track+'-320');assert js('document.documentElement.scrollWidth<=innerWidth+2');check(track+' 320px visible, no horizontal overflow');close()
  report['passed']=True

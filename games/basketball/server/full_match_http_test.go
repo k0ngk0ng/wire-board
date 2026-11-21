@@ -34,7 +34,7 @@ func TestBasketballHTTPCompletePreparedMatch(t *testing.T) {
 		stages = append(stages, map[string]any{"label": label, "elapsedSeconds": time.Since(began).Seconds(), "videoFrames": v.Runtime.VideoFrames, "logicSteps": v.Runtime.LogicSteps, "phase": v.Phase, "scores": v.Scores, "controls": v.Runtime.Config.Match.ControllerAssignments})
 	}
 	t.Cleanup(func() {
-		dir := filepath.Join("..", "..", "..", ".local", "basketball", "full-http")
+		dir := filepath.Join("..", "..", "..", ".local/basketball/verification/full-http")
 		if err := os.MkdirAll(dir, 0755); err != nil {
 			t.Error(err)
 			return

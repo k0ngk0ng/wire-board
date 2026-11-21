@@ -3,7 +3,7 @@ from pathlib import Path
 import argparse,hashlib,json,os,subprocess
 ROOT=Path(__file__).resolve().parents[2]
 p=argparse.ArgumentParser();p.add_argument('--out',type=Path,required=True);a=p.parse_args();out=a.out.resolve();assert out.is_relative_to(ROOT);out.mkdir(parents=True,exist_ok=True)
-ghidra=ROOT.parents[1]/'.local/nes-basket/tools/ghidra_12.1.4_PUBLIC'
+ghidra=ROOT.parents[1]/'.local/tools/nes-research/ghidra_12.1.4_PUBLIC'
 # Worktree is repo/worktrees/yuyuhakusho: installed existing tool is in repo.
 assert (ghidra/'support/analyzeHeadless').is_file(),ghidra
 java=Path('/opt/homebrew/Cellar/openjdk/26.0.1/libexec/openjdk.jdk/Contents/Home');assert(java/'bin/java').is_file()

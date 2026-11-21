@@ -46,7 +46,7 @@ This closes the suspected upstream gameplay divergence for these two bounded col
 
 ## Artifacts and reproduction
 
-All original and Go evidence is retained under `.local/basketball/rea/campaign-home-stall/`, with `solo/` and `coop/` directories. Each contains the cold diagnostic `first-entry/`, component source calls, declared origin/patch, observed/reference specifications, original result and full Go world JSONL. The `cold/` subdirectory contains the separate first-playing-world comparison. Full machine RAM and screenshots are in `.local/nes-basket/runs/campaign-home-stall-{solo,coop}[-cold]-{reference,observed}/`.
+All original and Go evidence is retained under `.local/basketball/research/rea/campaign-home-stall/`, with `solo/` and `coop/` directories. Each contains the cold diagnostic `first-entry/`, component source calls, declared origin/patch, observed/reference specifications, original result and full Go world JSONL. The `cold/` subdirectory contains the separate first-playing-world comparison. Full machine RAM and screenshots are in `.local/basketball/research/original/runs/campaign-home-stall-{solo,coop}[-cold]-{reference,observed}/`.
 
 The input snapshots `equipment-runtime-regression-{0,1}.json` are extracted verbatim from the retained failing test's `before=` log lines, not edited runtime states. `.local/equipment-baseline-regression.log`, `.local/equipment-baseline-coop.log` and `.local/equipment-runtime-regression.log` retain the pre-change/current failure evidence.
 
@@ -54,14 +54,14 @@ For solo, using the retained failure snapshot:
 
 ```sh
 source scripts/env.sh
-BASKETBALL_REST_STALL_OUTPUT="$PWD/.local/basketball/rea/campaign-home-stall/solo/first-entry" BASKETBALL_REST_STALL_SOURCE="$PWD/.local/basketball/rea/campaign-home-stall/equipment-runtime-regression-0.json" go test ./games/basketball/engine -run '^TestBallRestStallDiagnostic$' -count=1 -v
+BASKETBALL_REST_STALL_OUTPUT="$PWD/.local/basketball/research/rea/campaign-home-stall/solo/first-entry" BASKETBALL_REST_STALL_SOURCE="$PWD/.local/basketball/research/rea/campaign-home-stall/equipment-runtime-regression-0.json" go test ./games/basketball/engine -run '^TestBallRestStallDiagnostic$' -count=1 -v
 .local/board-art-env/bin/python -B scripts/basketball/capture_campaign_home_stall.py --mode solo
-go run ./scripts/basketball/replay_world_segment .local/basketball/rea/campaign-home-stall/solo/controlled-origin.json 3864 > .local/basketball/rea/campaign-home-stall/solo/go-worlds.jsonl
+go run ./scripts/basketball/replay_world_segment .local/basketball/research/rea/campaign-home-stall/solo/controlled-origin.json 3864 > .local/basketball/research/rea/campaign-home-stall/solo/go-worlds.jsonl
 .local/board-art-env/bin/python -B scripts/basketball/compare_campaign_home_stall.py --mode solo
 
-go run ./scripts/basketball/replay_world_segment --cold-origin .local/basketball/rea/campaign-home-stall/equipment-runtime-regression-0.json > .local/basketball/rea/campaign-home-stall/solo/cold-origin.json
+go run ./scripts/basketball/replay_world_segment --cold-origin .local/basketball/research/rea/campaign-home-stall/equipment-runtime-regression-0.json > .local/basketball/research/rea/campaign-home-stall/solo/cold-origin.json
 .local/board-art-env/bin/python -B scripts/basketball/capture_campaign_home_stall.py --mode solo --cold
-go run ./scripts/basketball/replay_world_segment .local/basketball/rea/campaign-home-stall/solo/cold-origin.json 3864 > .local/basketball/rea/campaign-home-stall/solo/cold/go-worlds.jsonl
+go run ./scripts/basketball/replay_world_segment .local/basketball/research/rea/campaign-home-stall/solo/cold-origin.json 3864 > .local/basketball/research/rea/campaign-home-stall/solo/cold/go-worlds.jsonl
 .local/board-art-env/bin/python -B scripts/basketball/compare_campaign_home_stall.py --mode solo --cold
 ```
 

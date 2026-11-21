@@ -14,10 +14,11 @@ ROOT=Path(__file__).resolve().parents[2]
 parser=argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--cooperative',action='store_true',help='same native sequence with two original AI opponents; do not force five escapes')
 ARGS=parser.parse_args()
-OUT=ROOT/('.local/basketball/captured-native-browser-cooperative' if ARGS.cooperative else '.local/basketball/captured-native-browser')
+OUT=ROOT/('.local/basketball/verification/captured-native-browser-cooperative' if ARGS.cooperative else '.local/basketball/verification/captured-native-browser')
 OUT.mkdir(parents=True,exist_ok=True)
-env=dict(os.environ,AGENT_BROWSER_SESSION='bkc-'+uuid.uuid4().hex[:8],AGENT_BROWSER_SOCKET_DIR=str(ROOT/'.local/bkc-sockets'),TMPDIR=str(ROOT/'.local/tmp'),NODE_PATH=str(ROOT/'web/node_modules'))
-Path(env['AGENT_BROWSER_SOCKET_DIR']).mkdir(exist_ok=True)
+env=dict(os.environ,AGENT_BROWSER_SESSION='bkc-'+uuid.uuid4().hex[:8],AGENT_BROWSER_SOCKET_DIR=str(ROOT/'.local/basketball/tmp/s'),TMPDIR=str(ROOT/'.local/tmp'),NODE_PATH=str(ROOT/'web/node_modules'))
+Path(env['TMPDIR']).mkdir(parents=True, exist_ok=True)
+Path(env['AGENT_BROWSER_SOCKET_DIR']).mkdir(parents=True,exist_ok=True)
 requests=[]
 class Handler(BaseHTTPRequestHandler):
     def log_message(self,*args):pass
@@ -27,7 +28,7 @@ class Handler(BaseHTTPRequestHandler):
         if route.startswith('/assets/'):
             rel=Path(route[8:])
             if rel.parts and '..' not in rel.parts and rel.parts[0] in ('court','courts','static-atlas','static-objects','raster','results') and rel.suffix in ('.json','.png'):
-                allowed=(ROOT/'.local/basketball'/rel.parts[0]).resolve();candidate=(ROOT/'.local/basketball'/rel).resolve()
+                allowed=(ROOT/'.local/basketball/assets'/rel.parts[0]).resolve();candidate=(ROOT/'.local/basketball/assets'/rel).resolve()
                 if candidate.is_relative_to(allowed):path=candidate
         if path is None or not path.is_file():self.send_error(404);return
         content=path.read_bytes();self.send_response(200)

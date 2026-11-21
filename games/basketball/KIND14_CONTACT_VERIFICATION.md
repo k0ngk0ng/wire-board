@@ -9,7 +9,7 @@
 - 双action6人工输入的原别名写结果继续保留并明确拒绝，不能删除不匹配记录。
 - Native、race、Wasm 使用相同夹具与测试范围；本项不代替Court3完整比赛门禁，也不改动opening/world/runtime文件。
 
-复用 REA `ev_28ff5df98684db5f3fe58534b0506c5cfc3e41fbad9c8a013ccdc808f97f542a` 的8318/876F/87EA，分析文件位于 `.local/basketball/rea/prop-kind13/analysis/`。当前bank5 SHA-256为 `025909ee6b8dcf27215d1d6b183d6e913e878141d11e985e07930a912cb722ec`。
+复用 REA `ev_28ff5df98684db5f3fe58534b0506c5cfc3e41fbad9c8a013ccdc808f97f542a` 的8318/876F/87EA，分析文件位于 `.local/basketball/research/rea/prop-kind13/analysis/`。当前bank5 SHA-256为 `025909ee6b8dcf27215d1d6b183d6e913e878141d11e985e07930a912cb722ec`。
 
 已观察到的不同分支：原8318在Kind14/action3/cursor0..3下分别返回shape指针`0080/0000/0080/0000`；改变显式合成RAM输入后形状字节随之改变。后续原拾取/A投掷函数链证实cursor0/3可达，现已按真实语义来源恢复0..3；不是用静态零形状替代。完整自然比赛可达性仍不能仅由隔离链推断。
 
@@ -18,13 +18,13 @@
 - 静态几何原函数对照扩展至418条，新增Kind14的78条；原普通形状为X[-8,8]、height[1,11]，并非Kind13的X[-4,4]、height[1,15]。原action0..15中除action3外按源数组完整导出。
 - `auxiliary-geometry-dynamic-isolated.json`独立保留8条原action3结果与两种合成RAM模式。无上下文的静态查询仍明确拒绝；有语义上下文时由专门解析器读取实际控制器/坐标。其来源及SHA由配套source.json记录。
 - 原反向接触oracle扩展至1596条，新增384条Kind14：受支持状态逐字段匹配，Endurance与旧对象字段保持；原6条双action6人工输入仍保留机器码输出并测试原子拒绝。
-- 静态阶段Native、race、Wasm同一13项定向测试通过；增加动态语义接线后，同一21项定向测试在三者均通过，记录为 `.local/basketball/rea/prop-kind14/dynamic-{native,race,wasm}.json`。结果、测试清单及日志/夹具SHA保存在 `dynamic-verification.json`。未运行或修改root负责的Court3完整比赛门禁。
+- 静态阶段Native、race、Wasm同一13项定向测试通过；增加动态语义接线后，同一21项定向测试在三者均通过，记录为 `.local/basketball/research/rea/prop-kind14/dynamic-{native,race,wasm}.json`。结果、测试清单及日志/夹具SHA保存在 `dynamic-verification.json`。未运行或修改root负责的Court3完整比赛门禁。
 
 ## 动作3入口审计
 
-bank6 `AFED`经`B001`表分派到`B0B1`。动作3入场将动画cursor设为3，读取旧Owner朝向，`EBE9`设VX为±12像素/逻辑步，VZ=-3、重力0，并清Owner/Attachment；后续平面速度为0时设重力1并重置cursor0，落地转idle。故在该动作首帧，Kind14的原接触形状指针为`0000`。指令保存于 `.local/basketball/rea/prop-kind14/action3-source.txt`。
+bank6 `AFED`经`B001`表分派到`B0B1`。动作3入场将动画cursor设为3，读取旧Owner朝向，`EBE9`设VX为±12像素/逻辑步，VZ=-3、重力0，并清Owner/Attachment；后续平面速度为0时设重力1并重置cursor0，落地转idle。故在该动作首帧，Kind14的原接触形状指针为`0000`。指令保存于 `.local/basketball/research/rea/prop-kind14/action3-source.txt`。
 
-已定位的一个裸写入口为扣篮链`8E9D → 8FBB → 8FC8`，写action3到`056E`所选对象；`0547`高位为1时覆盖成9。该调用链本身不证明目标会选到Kind14，其他间接/请求入口尚未穷尽。复用既有 `.local/basketball/rea/dunk-chain/analysis/` 证据。
+已定位的一个裸写入口为扣篮链`8E9D → 8FBB → 8FC8`，写action3到`056E`所选对象；`0547`高位为1时覆盖成9。该调用链本身不证明目标会选到Kind14，其他间接/请求入口尚未穷尽。复用既有 `.local/basketball/research/rea/dunk-chain/analysis/` 证据。
 
 ## 原拾取与A投掷链
 

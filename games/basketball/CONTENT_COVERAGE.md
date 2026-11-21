@@ -16,27 +16,27 @@
 
 赛后数据接线继续推进：新增 `SettleCampaignRuntime`，720 组原结算数据在 Native／race／Wasm 全部对齐；真实装备比赛获胜后，已验证原奖励入库、原敌方选人和下一场 Court4／Period4 进入 Playing。新的选人组件有原调用及正常菜单边界证据，但原半场确认路径尚未接入该组件和完整清理事务。服务器／平台界面、完整战役、结局与卡局策略仍未完成，详见 [赛后接线](CAMPAIGN_SETTLEMENT_INTEGRATION.md)。
 
-战役接线新增进度：`NewCampaignRuntime` 已接通 `020010`→拥有物品装备→Court0／Period2 的真实比赛，正常单人路线 Native／Wasm 各两场通过；完整战役、服务器／准备界面与赛后继续尚未接通。全电脑的单人／合作场景均新增可重复的 32 像素高台悬空球失败，测试明确保留。装备 1 的 3,184 次原释放和 96 次完整调度已对齐，详见 [战役运行时接线](CAMPAIGN_RUNTIME_INTEGRATION.md)。通道修复后的扩展阵容复验仍为 12／16 通过，结果在独立工作树 `.local/roster-after-corner-mode128/`；本轮没有发布。
+战役接线新增进度：`NewCampaignRuntime` 已接通 `020010`→拥有物品装备→Court0／Period2 的真实比赛，正常单人路线 Native／Wasm 各两场通过；完整战役、服务器／准备界面与赛后继续尚未接通。全电脑的单人／合作场景均新增可重复的 32 像素高台悬空球失败，测试明确保留。装备 1 的 3,184 次原释放和 96 次完整调度已对齐，详见 [战役运行时接线](CAMPAIGN_RUNTIME_INTEGRATION.md)。通道修复后的扩展阵容复验仍为 12／16 通过，结果在独立工作树 `.local/basketball/research/roster-after-corner-mode128/`；本轮没有发布。
 
-恢复开发后的最新修复：纽约高台的斜向出口被误判为通道入口，另有通道入口纵向位置处理遗漏。480 次原调用与原机连续 864 个世界状态已对齐；此前失败的 `tactic2-button64` 在 Native／Wasm 各完成两场，12 组指令配置在 Native 各完成两场，见 [通道边界验证](NEW_YORK_CORNER_VERIFICATION.md)。下方 112 组准备矩阵和扩展阵容结果对应通道修复前的代码，本次未重跑，不能直接作为当前提交的全配置证明。当前主目录保持 `main`，复刻在 `.local/basketball-worktree` 的独立分支继续。
+恢复开发后的最新修复：纽约高台的斜向出口被误判为通道入口，另有通道入口纵向位置处理遗漏。480 次原调用与原机连续 864 个世界状态已对齐；此前失败的 `tactic2-button64` 在 Native／Wasm 各完成两场，12 组指令配置在 Native 各完成两场，见 [通道边界验证](NEW_YORK_CORNER_VERIFICATION.md)。下方 112 组准备矩阵和扩展阵容结果对应通道修复前的代码，本次未重跑，不能直接作为当前提交的全配置证明。当前主目录保持 `main`，复刻在 `.local/basketball/history/worktree` 的独立分支继续。
 
 最新修正优先于下方历史记录：原普通投篮选择表的第 6 项应为计划 12，旧实现误映射为 7；现已按完整原选择器及正常 A2AB 调用修正，并补齐直接计划 11／12／13 和其他避让入口。模式 15 与未证明的别名入口仍明确保留边界，不能把入口数量当作完整玩法覆盖率。
 
 随后发现 Mode128 超时是复刻遗漏：人物进入运球待机时漏绑球权。原机从精确前态正常结束，逐帧首差已修复，原机／Go 连续 66 个完整世界一致。不能将这一例归为原版卡局；旧自引用状态长链只证明该初态的行为。普通持球分支遗漏的 5A／5C 动画也已恢复，见 [自身持球及球权](SELF_HELD_BALL_VERIFICATION.md) 与 [低跳持球动画](HELD_LOW_JUMP_BALL_VERIFICATION.md)。
 
-上述最终代码下，当前开放的 7 场地／4 阵容／4 控制配置共 112 组均各完成两场，源状态稳定；七场地默认阵容全电脑还完成 Wasm 双重复。平台实际 Mode128 的浏览器完整比赛通过 34 项，观察到正常计划 12 与可见低跳动作。扩展轮换阵容另按运行模式分别验证：受控 Mode0 诊断为 13／16，通过原平台单场 Mode128 则为 12／16，后者 4 组静止球悬空仍需逐源追踪。Mode0 中非热血左队的配置不代表合法原战役菜单路径；两套结果分别保留，不混为同一验收，也不删除失败。最新汇总位于 `.local/basketball/preparation-final-ai-20261018/summary.json` 和 `.local/basketball/roster-final-ai-20261018/summary.json`。Court7 四种默认控制配置的 Native 复验现已通过，但完整准备组合及平台验收未补齐，尚未开放。
+上述最终代码下，当前开放的 7 场地／4 阵容／4 控制配置共 112 组均各完成两场，源状态稳定；七场地默认阵容全电脑还完成 Wasm 双重复。平台实际 Mode128 的浏览器完整比赛通过 34 项，观察到正常计划 12 与可见低跳动作。扩展轮换阵容另按运行模式分别验证：受控 Mode0 诊断为 13／16，通过原平台单场 Mode128 则为 12／16，后者 4 组静止球悬空仍需逐源追踪。Mode0 中非热血左队的配置不代表合法原战役菜单路径；两套结果分别保留，不混为同一验收，也不删除失败。最新汇总位于 `.local/basketball/verification/preparation-final-ai-20261018/summary.json` 和 `.local/basketball/verification/roster-final-ai-20261018/summary.json`。Court7 四种默认控制配置的 Native 复验现已通过，但完整准备组合及平台验收未补齐，尚未开放。
 
 战役规则已从正常菜单、合法原密码及原函数核定：7 队各主客场共 14 场，正常战术菜单仅 profile1–5，默认4；profile0 是内部表项。新增独立 `campaign` 包恢复密码、库存、装备和地图规则，通过 Native／race／Wasm 原源对照；尚未接入 Runtime、服务器、平台准备或赛后继续，不能称为可玩的战役。见 [战役调查](CAMPAIGN_EQUIPMENT_AUDIT.md) 与 [组件验证](campaign/VERIFICATION.md)。
 
 本节为当前续作记录，下方清单保留最初审计快照。分支 `wip/nes-basketball-20261017` 已基于 `main` 的 `068f485`，前次进度保存于 `9801ab9`。本轮继续恢复代码，尚未注册生产服务端、上传 OSS 或发布。
 
-开发准备区开放 Court 0–6。七场地、四种默认阵容排列与四种控制配置共 112 组已有各两次完整比赛证据，见 `.local/basketball/preparation-matrix-summary.json`；这不覆盖所有 32 人物或真人操作路径。Court 6 的原滚轴奖励、共享 RNG、权威比分和延后 HUD 更新已接入，并通过真实浏览器整场观察。Court 7 的单人、合作、对战固定配置已完成，四电脑配置仍被悬空球卡局阻断，未开放。
+开发准备区开放 Court 0–6。七场地、四种默认阵容排列与四种控制配置共 112 组已有各两次完整比赛证据，见 `.local/basketball/verification/legacy/preparation-matrix-summary.json`；这不覆盖所有 32 人物或真人操作路径。Court 6 的原滚轴奖励、共享 RNG、权威比分和延后 HUD 更新已接入，并通过真实浏览器整场观察。Court 7 的单人、合作、对战固定配置已完成，四电脑配置仍被悬空球卡局阻断，未开放。
 
 已核定 8 场地、8 球队、32 角色的原名称和编辑译名，准备区已使用对应标签；可选范围未扩大到未验收角色。源图逐像素证据现为 303 帧、18,616,320 像素，其中 107 帧为四阶转场。其余原 IRQ 光栅残差、物理设备听感和完整联机验收仍独立保留，不能由此宣布所有画面已完成。
 
 此前恢复攻击 handler 10／17／20／25／27／28／31、合法受击尾段、助攻、骑乘／抬起、原投篮计划 6、低跳 5A／5C、扣篮 59／5B 和特殊球 18。本轮补入特殊球 16／17／19／22：1,586 次独立原调用、28 条连续链共 1,666 次更新，以及 16 个完整原动作调度阶段通过。组件和接线均有 Native／race／Wasm 验证，详见 [特殊球 17 与世界接线](BALL_SEVENTEEN_VERIFICATION.md) 及各动作报告。
 
-新的 16 组球队／人物轮换完整比赛首轮为 11 组通过、5 组失败，构建期间源码保持一致。通过配置各完成两场；3 组失败呈现原版悬空球形态，另 2 组持球归属和附着人物动作仍在定位。原始失败不删除，不靠换种子、缩短时钟、改电脑策略或自动结算绕过。结果位于 `.local/basketball/roster-rotation-special-balls-20261018/summary.json`。 后续恢复了原受击解绑顺序，case 11 在 Native／Wasm 各两场通过，现共 12 个不同配置完成；case 4 的原球自引用路径已恢复，但仍在时钟归零后隐藏悬空，原机对齐初态后的 864 个世界状态与 Go 一致。其余 3 个悬空配置未绕过。详见 [受击支撑解绑](HURT_RIDER_VERIFICATION.md) 与 [球自引用](SELF_DRIBBLE_VERIFICATION.md)。
+新的 16 组球队／人物轮换完整比赛首轮为 11 组通过、5 组失败，构建期间源码保持一致。通过配置各完成两场；3 组失败呈现原版悬空球形态，另 2 组持球归属和附着人物动作仍在定位。原始失败不删除，不靠换种子、缩短时钟、改电脑策略或自动结算绕过。结果位于 `.local/basketball/verification/roster-rotation-special-balls-20261018/summary.json`。 后续恢复了原受击解绑顺序，case 11 在 Native／Wasm 各两场通过，现共 12 个不同配置完成；case 4 的原球自引用路径已恢复，但仍在时钟归零后隐藏悬空，原机对齐初态后的 864 个世界状态与 Go 一致。其余 3 个悬空配置未绕过。详见 [受击支撑解绑](HURT_RIDER_VERIFICATION.md) 与 [球自引用](SELF_DRIBBLE_VERIFICATION.md)。
 
 纽约和 Court 7 的悬空球已有对齐初态后原整机与 Go 的连续一致证据，见 [原版卡局](SUSPENDED_BALL_ORIGINAL_BUG.md) 与 [Court 7](COURT_SEVEN_SUSPENDED_BALL_VERIFICATION.md)。是否修复原缺陷仍待用户选择，当前保持原行为；这不是原菜单自然整局的全轨迹证明。
 
@@ -76,7 +76,7 @@
 | 6／名称待核 | 纵深上限 72；六滚轴、停止进度、图案奖励／得分／调色板；音乐 63 | 独立动画及奖励指令对照；未计为真实 Runtime 奖励覆盖 | 权威比分和 RNG 接线、滚轴自然触发、奖励声音、完整比赛 |
 | 7／名称待核 | 纵深上限 81；两侧高平台边缘；背景动画无操作；音乐 65 | 独立地形组件；未计为完整 Runtime 覆盖 | 边缘、击飞、平台 AI、完整比赛 |
 
-每场已有独立背景、图块、调色板与音乐包，不复用纽约图像或曲目。[八场图形验证](web/COURTS_GRAPHICS_VERIFICATION.md) 的 48 张配置探测截图仍为 **44 张精确一致、4 张失败**：场地 3 的 3 帧与场地 4 的 1 帧存在扫描线内 IRQ 切换残差，不能忽略或改容差宣布通过。对应 [浏览器结果](../../.local/basketball/renderer/browser/result.json) 的状态仍为 `failed`。八场采样通过在首次初始化选择场地，属于显式配置探测，不是原菜单自然选择或 Go 完整比赛。
+每场已有独立背景、图块、调色板与音乐包，不复用纽约图像或曲目。[八场图形验证](web/COURTS_GRAPHICS_VERIFICATION.md) 的 48 张配置探测截图仍为 **44 张精确一致、4 张失败**：场地 3 的 3 帧与场地 4 的 1 帧存在扫描线内 IRQ 切换残差，不能忽略或改容差宣布通过。对应 [浏览器结果](../../.local/basketball/verification/renderer/browser/result.json) 的状态仍为 `failed`。八场采样通过在首次初始化选择场地，属于显式配置探测，不是原菜单自然选择或 Go 完整比赛。
 
 [八场音乐](assets/COURT_AUDIO.md) 已各自导出并保留周期与摘要；素材清单 `accepted_for_release`、听感验收仍未通过，未上传 OSS。31 个当前实现中的效果 ID 已有素材，不代表尚未恢复动作的全部声音已齐。
 
@@ -179,11 +179,11 @@
 
 | 范围 | 可复查入口 |
 | --- | --- |
-| 原表及开局属性 | [character-grades-source.json](engine/testdata/character-grades-source.json)、[opening_test.go](engine/opening_test.go)、[OPENING_VERIFICATION.md](OPENING_VERIFICATION.md)、[REA 属性证据](../../.local/basketball/rea/opening/attributes/batch.json) |
-| 队伍／AI／特殊球 | [ai-team-source.json](engine/testdata/ai-team-source.json)、[SPECIAL_SHOT_VERIFICATION.md](SPECIAL_SHOT_VERIFICATION.md)、[AI_MODE31_VERIFICATION.md](AI_MODE31_VERIFICATION.md)、[REA 个人分派](../../.local/basketball/rea/ai-batch/batch.json)、[REA 投篮分派](../../.local/basketball/rea/shot-planning/dispatch/batch.json) |
+| 原表及开局属性 | [character-grades-source.json](engine/testdata/character-grades-source.json)、[opening_test.go](engine/opening_test.go)、[OPENING_VERIFICATION.md](OPENING_VERIFICATION.md)、[REA 属性证据](../../.local/basketball/research/rea/opening/attributes/batch.json) |
+| 队伍／AI／特殊球 | [ai-team-source.json](engine/testdata/ai-team-source.json)、[SPECIAL_SHOT_VERIFICATION.md](SPECIAL_SHOT_VERIFICATION.md)、[AI_MODE31_VERIFICATION.md](AI_MODE31_VERIFICATION.md)、[REA 个人分派](../../.local/basketball/research/rea/ai-batch/batch.json)、[REA 投篮分派](../../.local/basketball/research/rea/shot-planning/dispatch/batch.json) |
 | 场地／机关／动画 | [COURT_TERRAIN_VERIFICATION.md](COURT_TERRAIN_VERIFICATION.md)、[COURT_ANIMATION_VERIFICATION.md](COURT_ANIMATION_VERIFICATION.md)、[COURT_TWO_INTEGRATION.md](COURT_TWO_INTEGRATION.md)、[runtime_court_two_test.go](engine/runtime_court_two_test.go) |
-| 完整比赛 | [Court0 测试](engine/runtime_court_zero_test.go)、[Court2 Native 日志](../../.local/basketball/engine/runtime-court-two-after.log)、[Court2 Wasm 日志](../../.local/basketball/engine/runtime-court-two-wasm.log)、[Court2 race 日志](../../.local/basketball/engine/runtime-court-two-race.log)、[四电脑视频验收](ALL_COMPUTER_VIDEO_VERIFICATION.md) |
-| 真实产品边界 | [平台模式](server/PLAYER_MODES.md)、[平台契约](PLATFORM_CONTRACT.md)、[联机呈现](web/NETWORK_PRESENTATION_VERIFICATION.md)、[平台汇总](../../.local/basketball/platform-integration-summary.json) |
+| 完整比赛 | [Court0 测试](engine/runtime_court_zero_test.go)、[Court2 Native 日志](../../.local/basketball/verification/engine/runtime-court-two-after.log)、[Court2 Wasm 日志](../../.local/basketball/verification/engine/runtime-court-two-wasm.log)、[Court2 race 日志](../../.local/basketball/verification/engine/runtime-court-two-race.log)、[四电脑视频验收](ALL_COMPUTER_VIDEO_VERIFICATION.md) |
+| 真实产品边界 | [平台模式](server/PLAYER_MODES.md)、[平台契约](PLATFORM_CONTRACT.md)、[联机呈现](web/NETWORK_PRESENTATION_VERIFICATION.md)、[平台汇总](../../.local/basketball/verification/legacy/platform-integration-summary.json) |
 | 图像、声音及发布 | [八场图形](web/COURTS_GRAPHICS_VERIFICATION.md)、[渲染](web/RENDERER_VERIFICATION.md)、[音乐](assets/COURT_AUDIO.md)、[分发素材](assets/MUSIC_DISTRIBUTION.md) |
 
 最终关闭条件来自 README：原内容清单中的每项都有原来源、可维护实现、真实调用链及相应验收；自然观察、隔离探测和整场证据分别标明；原模式／人物／装备选择由平台完整承接；原 AI 无占位替代；完整内容、联机、画面、操作、音效和发布素材均通过。当前这些条件尚未全部满足。

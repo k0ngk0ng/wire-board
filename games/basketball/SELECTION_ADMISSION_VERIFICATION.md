@@ -111,7 +111,7 @@ go test -race ./games/basketball/engine -run '^(TestDunkSharedTarget|TestDunkVar
 GOOS=js GOARCH=wasm go test ./games/basketball/engine -exec "$(go env GOROOT)/lib/wasm/go_js_wasm_exec" -run '^(TestDunkSharedTarget|TestDunkVariants|TestHighPassHeight|TestNegativeReceiverHeight|TestPassLaunchAgainstOriginal|TestDiagonalLaunchAgainstOriginalFunction|TestPassFloorAgainstOriginalFunction)' -count=1 -v
 ```
 
-Evidence directory: `.local/selection-admission/`. Original source hashes and
+Evidence directory: `.local/basketball/research/selection-admission/`. Original source hashes and
 scope are in `source-audit.json` and committed source fixture metadata. Initial
 bounded/failure runs, exact pre-failure RuntimeStates, targeted follow-ups, final
 matrix, source Native/race/Wasm logs are separately named. Server/UI admission,
@@ -121,4 +121,4 @@ platform acceptance responsibilities; this audit changes no server or UI files.
 Final result: all96 configurations /192 complete-match repetitions passed in
 198.639 seconds. New source-domain Native/race/Wasm checks passed; race6.002s
 and Wasm1.687s. The machine-readable index, per-case names and artifact SHA-256
-bindings are in `.local/selection-admission/result.json`.
+bindings are in `.local/basketball/research/selection-admission/result.json`.

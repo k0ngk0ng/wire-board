@@ -26,7 +26,7 @@ def run(m):
  return decode_world_action_state(bytes(m[:2048]))['ball'],sounds
 
 def main():
- parser=argparse.ArgumentParser();parser.add_argument('--directory',default='.local/basketball/rea/ball-rest-stall');args=parser.parse_args()
+ parser=argparse.ArgumentParser();parser.add_argument('--directory',default='.local/basketball/research/rea/ball-rest-stall');args=parser.parse_args()
  out=(ROOT/args.directory).resolve();assert out.is_relative_to(ROOT);rows=json.loads((out/'first-entry/history.json').read_text());calls=[]
  for row in rows:
   m=SoundMemory(PRG,encode(row['Before']));actual,sounds=run(m);want=row['After']['playing']['world']['Preparation']['Actions']['ball']

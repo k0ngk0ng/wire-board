@@ -19,7 +19,7 @@
 | bank6 `$B1BD` | 道具动作 7 清除固定对象 4 对应的特殊持有人 |
 | bank6 `$9749`、`$978D` | 普通坠落检查 `$053D..$0546` 的所有权；`$056B` 不在该扫描范围内 |
 
-REA 静态来源保留在 `.local/basketball/rea/captured-player/analysis/`，批量反编译 Evidence ID 为 `ev_aaa1d310233d2f1144674761bc118a019f79f8190ae14cd85d7a1530a20c1e0f`。共享跑动来源另见 `.local/basketball/rea/possessed-idle/shared-run/`。
+REA 静态来源保留在 `.local/basketball/research/rea/captured-player/analysis/`，批量反编译 Evidence ID 为 `ev_aaa1d310233d2f1144674761bc118a019f79f8190ae14cd85d7a1530a20c1e0f`。共享跑动来源另见 `.local/basketball/research/rea/possessed-idle/shared-run/`。
 
 原指令夹具由 `scripts/basketball/extract_captured_player.py` 生成，保存在 `engine/testdata/captured-player.json.gz`，摘要及 ROM、初始 RAM、夹具的 SHA-256 保存在相邻的 `captured-player-source.json`。原指令执行仅截获 `$FBCC` 作为音效请求出口，不运行目标音频设备。
 
@@ -51,8 +51,8 @@ REA 静态来源保留在 `.local/basketball/rea/captured-player/analysis/`，�
 ```sh
 source scripts/env.sh
 PYTHONDONTWRITEBYTECODE=1 python3 scripts/basketball/extract_captured_player.py
-go test -race ./games/basketball/engine -run '^(TestWorldCaptured|TestWorldKind10CaptureToComputerEscape|TestOriginalCaptured|TestCapturedDropRequest|TestKind10|TestBallDeflectionAndDispatchAgainstOriginal|TestBallRequestRetainsIllegalAndProcessedRequests|TestFalling|TestWorldLoop)' -count=1 -json > .local/basketball/rea/captured-player/final-race.json
-GOOS=js GOARCH=wasm go test ./games/basketball/engine -exec "$(go env GOROOT)/lib/wasm/go_js_wasm_exec" -run '^(TestWorldCaptured|TestWorldKind10CaptureToComputerEscape|TestOriginalCaptured|TestCapturedDropRequest|TestKind10|TestBallDeflectionAndDispatchAgainstOriginal|TestBallRequestRetainsIllegalAndProcessedRequests|TestFalling|TestWorldLoop)' -count=1 -v > .local/basketball/rea/captured-player/final-wasm.log
+go test -race ./games/basketball/engine -run '^(TestWorldCaptured|TestWorldKind10CaptureToComputerEscape|TestOriginalCaptured|TestCapturedDropRequest|TestKind10|TestBallDeflectionAndDispatchAgainstOriginal|TestBallRequestRetainsIllegalAndProcessedRequests|TestFalling|TestWorldLoop)' -count=1 -json > .local/basketball/research/rea/captured-player/final-race.json
+GOOS=js GOARCH=wasm go test ./games/basketball/engine -exec "$(go env GOROOT)/lib/wasm/go_js_wasm_exec" -run '^(TestWorldCaptured|TestWorldKind10CaptureToComputerEscape|TestOriginalCaptured|TestCapturedDropRequest|TestKind10|TestBallDeflectionAndDispatchAgainstOriginal|TestBallRequestRetainsIllegalAndProcessedRequests|TestFalling|TestWorldLoop)' -count=1 -v > .local/basketball/research/rea/captured-player/final-wasm.log
 ```
 
 重建原指令夹具需要工作区内已有的授权 ROM、初始 RAM 和 py65；运行 Go 及 Wasm 测试只读取已提交夹具，不需要 ROM。
@@ -91,13 +91,13 @@ GOOS=js GOARCH=wasm go test ./games/basketball/engine -exec "$(go env GOROOT)/li
 
 ```sh
 source scripts/env.sh
-go test -race ./games/basketball/engine -run '^(TestOriginalCapturedHumanInput|TestWorldCapturedHumanInputThroughEscape)$' -count=1 -v > .local/basketball/rea/captured-player/human-input-resume-race.log
-GOOS=js GOARCH=wasm go test ./games/basketball/engine -exec "$(go env GOROOT)/lib/wasm/go_js_wasm_exec" -run '^(TestOriginalCapturedHumanInput|TestWorldCapturedHumanInputThroughEscape)$' -count=1 -v > .local/basketball/rea/captured-player/human-input-resume-wasm.log
-go test -race ./games/basketball/engine -run '^TestRuntimeCourtFourHumanCaptureColdControllerRoute$' -count=2 -v > .local/basketball/rea/captured-player/cold-native-route-race.log
-GOOS=js GOARCH=wasm go test ./games/basketball/engine -exec "$(go env GOROOT)/lib/wasm/go_js_wasm_exec" -run '^TestRuntimeCourtFourHumanCaptureColdControllerRoute$' -count=2 -v > .local/basketball/rea/captured-player/cold-native-route-wasm.log
+go test -race ./games/basketball/engine -run '^(TestOriginalCapturedHumanInput|TestWorldCapturedHumanInputThroughEscape)$' -count=1 -v > .local/basketball/research/rea/captured-player/human-input-resume-race.log
+GOOS=js GOARCH=wasm go test ./games/basketball/engine -exec "$(go env GOROOT)/lib/wasm/go_js_wasm_exec" -run '^(TestOriginalCapturedHumanInput|TestWorldCapturedHumanInputThroughEscape)$' -count=1 -v > .local/basketball/research/rea/captured-player/human-input-resume-wasm.log
+go test -race ./games/basketball/engine -run '^TestRuntimeCourtFourHumanCaptureColdControllerRoute$' -count=2 -v > .local/basketball/research/rea/captured-player/cold-native-route-race.log
+GOOS=js GOARCH=wasm go test ./games/basketball/engine -exec "$(go env GOROOT)/lib/wasm/go_js_wasm_exec" -run '^TestRuntimeCourtFourHumanCaptureColdControllerRoute$' -count=2 -v > .local/basketball/research/rea/captured-player/cold-native-route-wasm.log
 ```
 
-以上四次进程状态码均为 0；输入范围 race 11.000 秒、Wasm 3.242 秒，冷启动路线重复两次分别 2.303 秒和 0.361 秒。`.local/basketball/rea/captured-player/route/result.json` 保存精确按键表、结果与 SHA-256；`cold-route-states.json` 保存各按键段边界的完整 Runtime；`cooperative-failure-state.json` 保存合作模式失败前态和当帧输入。未将受控调用、冷启动逻辑按键或失败的合作路线记为已完成浏览器验收。
+以上四次进程状态码均为 0；输入范围 race 11.000 秒、Wasm 3.242 秒，冷启动路线重复两次分别 2.303 秒和 0.361 秒。`.local/basketball/research/rea/captured-player/route/result.json` 保存精确按键表、结果与 SHA-256；`cold-route-states.json` 保存各按键段边界的完整 Runtime；`cooperative-failure-state.json` 保存合作模式失败前态和当帧输入。未将受控调用、冷启动逻辑按键或失败的合作路线记为已完成浏览器验收。
 
 ## 原生浏览器双控制器验收
 
@@ -105,7 +105,7 @@ GOOS=js GOARCH=wasm go test ./games/basketball/engine -exec "$(go env GOROOT)/li
 
 桌面场景从冷启动开始，全部按键经浏览器原生键盘事件输入；320px 场景的移动、拾取、投掷仍由两套原生键盘输入，角色 1 的五次 A+B 改用真实双指触摸共享手柄。共记录 10 次可信 `pointerdown(pointerType=touch)`。这验证手机尺寸下的真人跳脱触摸链，不声称在一部手机完成双人导航与比赛，也不是网络房间或开放四人产品模式。
 
-两个场景均复现捕获视频帧 246、五次落地 `[336,462,588,714,840]`、939 恢复步行。捕获中保存／恢复完整快照，验证状态和 Canvas 像素逐项保持一致。截图实际检查了被捕获角色位于相机内、画面下方的两个手柄、320px 宽度无溢出及双指按钮的实际坐标。每段快照、逐视频输入和状态、可信事件来源、关键帧截图保存在 `.local/basketball/captured-native-browser/`，`result.json` 列出范围、检查项及 SHA-256。
+两个场景均复现捕获视频帧 246、五次落地 `[336,462,588,714,840]`、939 恢复步行。捕获中保存／恢复完整快照，验证状态和 Canvas 像素逐项保持一致。截图实际检查了被捕获角色位于相机内、画面下方的两个手柄、320px 宽度无溢出及双指按钮的实际坐标。每段快照、逐视频输入和状态、可信事件来源、关键帧截图保存在 `.local/basketball/verification/captured-native-browser/`，`result.json` 列出范围、检查项及 SHA-256。
 
 执行命令：
 
@@ -114,7 +114,7 @@ source scripts/env.sh
 python3 scripts/basketball/accept_captured.py
 ```
 
-首次运行发现测试页面读取计数 0 时未处理 JSON `omitempty`，第二次发现一次取回整个逐帧记录超过 CDP 超时；两项均仅修正测试采集器，日志 `browser-first.log`、`browser-second.log` 保留在 `.local/basketball/rea/captured-player/`。采集器现按 30 帧分页读取，未缩短游戏时间、跳过动作或改变生产逻辑。
+首次运行发现测试页面读取计数 0 时未处理 JSON `omitempty`，第二次发现一次取回整个逐帧记录超过 CDP 超时；两项均仅修正测试采集器，日志 `browser-first.log`、`browser-second.log` 保留在 `.local/basketball/research/rea/captured-player/`。采集器现按 30 帧分页读取，未缩短游戏时间、跳过动作或改变生产逻辑。
 
 最终 `browser-final.log` 进程状态码为 0，46 项检查通过。桌面与 320px 场景各保留 939 帧记录、34 个可信原生输入事件；手机场景 Canvas 为 256×240，两个手柄下缘分别为 478.77px、614.53px，均位于 760px 验收视口内。已目视检查桌面捕获和手机双指起跳截图。该结果补齐本节限定范围的浏览器输入证据，不替代完整比赛、原 ROM 冷启动轨迹对照或合作模式中的电脑交互验收。
 
@@ -129,7 +129,7 @@ python3 scripts/basketball/accept_captured.py
 - 视频帧 357：原版电脑接触使真人进入动作 `$48`，特殊持有人清为 -1，计数仍为 3。之后的 A+B 继续按原当前动作处理，不强行留在捕获动作，也不人为补出五次跳脱。
 - 视频帧 939 到 1029：继续按住真人控制器 Left，人物 X 从 125 移至 65，骑乘后的方向输入仍可操作。
 
-冷启动测试逐视频对比 JSON 恢复重放。原失败快照回归与整条冷启动路线均通过 native、race（7.880 秒）和 Wasm（2.505 秒），对应 `.local/basketball/rea/captured-player/cooperative-resume-{first,race,wasm}.log`，状态码均为 0。没有改变 AI、随机种子、原时钟或 World 状态以制造五次跳脱。
+冷启动测试逐视频对比 JSON 恢复重放。原失败快照回归与整条冷启动路线均通过 native、race（7.880 秒）和 Wasm（2.505 秒），对应 `.local/basketball/research/rea/captured-player/cooperative-resume-{first,race,wasm}.log`，状态码均为 0。没有改变 AI、随机种子、原时钟或 World 状态以制造五次跳脱。
 
 独立浏览器测试支持以下命令：
 
@@ -138,4 +138,4 @@ source scripts/env.sh
 python3 scripts/basketball/accept_captured.py --cooperative
 ```
 
-桌面原生双键盘与 320px 场景的原生双指按键均通过 38 项检查，实际捕获、第一次落地及 AI 打断帧与 Go 路线相同，继续至 1029 无异常。关键截图包括 `mobile-320-ai-interruption.png` 和 `desktop-continued-human-input.png`，产物位于 `.local/basketball/captured-native-browser-cooperative/`；`result.json` 保存检查和 SHA-256，`cooperative-browser-first.log` 保存成功进程输出。手机场景仍是键盘导航加触屏 A+B 的组合验收，开发页面没有网络房间，也不宣称完整手机双人模式。这一结果闭合前文所列 Kind14 失败，但不会把 AI 提前打断记为五次跳脱成功。
+桌面原生双键盘与 320px 场景的原生双指按键均通过 38 项检查，实际捕获、第一次落地及 AI 打断帧与 Go 路线相同，继续至 1029 无异常。关键截图包括 `mobile-320-ai-interruption.png` 和 `desktop-continued-human-input.png`，产物位于 `.local/basketball/verification/captured-native-browser-cooperative/`；`result.json` 保存检查和 SHA-256，`cooperative-browser-first.log` 保存成功进程输出。手机场景仍是键盘导航加触屏 A+B 的组合验收，开发页面没有网络房间，也不宣称完整手机双人模式。这一结果闭合前文所列 Kind14 失败，但不会把 AI 提前打断记为五次跳脱成功。

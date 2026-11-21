@@ -17,7 +17,7 @@
 - 子阶段失败时留下部分攻击、分数、随机数或已发声音。
 - 把 1,997 个独立原始输入的完整阶段测试称为单一初态的连续整场回放。
 
-使用 `.local/nes-basket/runs/world-preparation-cpu-long` 已捕获的原 `$D317 → D326` 完整阶段。测试先于组合实现；比较所有纳入语义状态的字段及有序声音。只支持已核验的纽约场地编号 1；其他场地复用 RAM 的含义尚未组合，明确返回错误。
+使用 `.local/basketball/research/original/runs/world-preparation-cpu-long` 已捕获的原 `$D317 → D326` 完整阶段。测试先于组合实现；比较所有纳入语义状态的字段及有序声音。只支持已核验的纽约场地编号 1；其他场地复用 RAM 的含义尚未组合，明确返回错误。
 
 ## 实现和状态边界
 
@@ -55,4 +55,4 @@ PYTHONDONTWRITEBYTECODE=1 python3 scripts/basketball/extract_world_preparation.p
 go test -race ./games/basketball/engine -run 'TestWorldPreparation|TestOriginal.*Team' -v
 ```
 
-阶段验证、错误回滚、状态序列化、篮筐 owner 适配回归及原队伍策略测试通过。原生竞态、Wasm 记录与首次失败日志保存在 `.local/basketball/rea/world-preparation/`。组合层仍需接入真正的连续世界循环，与相机、时钟、输入、动作和场地后处理共同验收。
+阶段验证、错误回滚、状态序列化、篮筐 owner 适配回归及原队伍策略测试通过。原生竞态、Wasm 记录与首次失败日志保存在 `.local/basketball/research/rea/world-preparation/`。组合层仍需接入真正的连续世界循环，与相机、时钟、输入、动作和场地后处理共同验收。

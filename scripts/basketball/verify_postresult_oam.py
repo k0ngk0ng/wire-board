@@ -6,7 +6,7 @@ from pathlib import Path
 from static_sprites import SpriteROM,DIGEST
 from postresult_art import POSE_BOUNDS
 from verify_pass_floor_original import ROOT,Memory,MPU
-ROM=(ROOT/'.local/nes-basket/basketball.nes').read_bytes();assert hashlib.sha256(ROM).hexdigest()==DIGEST
+ROM=(ROOT/'.local/basketball/research/original/basketball.nes').read_bytes();assert hashlib.sha256(ROM).hexdigest()==DIGEST
 PRG=ROM[16:131088];OUT=ROOT/'games/basketball/engine/testdata'
 FRAMES=[('reward',540),('reward',660),('ending',600),('ending',1800),('ending',6000),('ending',10500),('ending',12000),('ending',13500),('reward',600),('reward',720),('ending',900),('ending',1200),('ending',3000),('ending',4800),('ending',9000),('ending',14000)]
 
@@ -63,7 +63,7 @@ def main():
  for owner in range(4):actor(r,owner,19,0,64+owner*40,120)
  r[0x41d:0x429]=bytes([0,1,2,3]*3);cases.append(record('capacity',r,'controlled abnormal draw-list repetition'))
  for kind,frame in FRAMES:
-  path=ROOT/f'.local/nes-basket/runs/postresult-{kind}-oam'
+  path=ROOT/f'.local/basketball/research/original/runs/postresult-{kind}-oam'
   with (path/'frames.csv').open() as f:video=next(int(x['emulator_frame']) for x in csv.DictReader(f) if int(x['frame'])==frame)
   dma=next(json.loads(l) for l in (path/'dma-source.jsonl').read_text().splitlines() if json.loads(l)['frame']==video)
   assert not dma['partialDraw'] and dma['submittedIndex']>=0

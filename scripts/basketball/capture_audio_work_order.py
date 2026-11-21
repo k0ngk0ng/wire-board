@@ -33,7 +33,7 @@ def main():
     spec = json.loads((reference/'scenario.json').read_text())
     spec.update(name='audio-work-order-v2', hooks_lua=HOOK)
     out = BASE / 'runs' / spec['name']
-    spec_path = ROOT / '.local/basketball/audio/work-byte/order-scenario.json'
+    spec_path = ROOT / '.local/basketball/assets/audio/work-byte/order-scenario.json'
     spec_path.parent.mkdir(parents=True, exist_ok=True)
     spec_path.write_text(json.dumps(spec, indent=2)+'\n')
     # A completed matching capture is reusable. Never start another process
@@ -83,7 +83,7 @@ def main():
         'counts': counts, 'nmi_during_audio_irq': nested_nmis,
         'request_pairs': request_pairs, 'world_entries': world,
         'ordering_note': '$FBDE is shared bank-return code; only entries paired with $FBCC are sound request completion. NMI may interrupt the audio IRQ; the main thread resumes after IRQ completion.'}
-    (ROOT/'.local/basketball/audio/work-byte/order-summary.json').write_text(json.dumps(summary,indent=2)+'\n')
+    (ROOT/'.local/basketball/assets/audio/work-byte/order-summary.json').write_text(json.dumps(summary,indent=2)+'\n')
     print(json.dumps({'same_ram': True, 'counts': counts, 'nested_nmis': len(nested_nmis), 'request_pairs': len(request_pairs), 'trace': summary['trace']}))
 
 

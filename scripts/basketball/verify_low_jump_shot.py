@@ -54,7 +54,7 @@ def main():
         chains.append(chain)
     out=ROOT/'games/basketball/engine/testdata';packed=gzip.compress(json.dumps(dict(calls=rows,chains=chains),separators=(',',':')).encode(),mtime=0)
     (out/'low-jump-shot.json.gz').write_bytes(packed)
-    before=ROOT/'.local/basketball/team-roster-after-attacks-20261018/native/court1-teams0-4-characters0-1-0-1/before.json'
+    before=ROOT/'.local/basketball/verification/team-roster-after-attacks-20261018/native/court1-teams0-4-characters0-1-0-1/before.json'
     (out/'low-jump-shot-runtime-before.json.gz').write_bytes(gzip.compress(before.read_bytes(),mtime=0))
     source=dict(calls=len(rows),chains=len(chains),chainCalls=sum(map(len,chains)),originalInstructionsUnchanged=True,naturalGameplay=False,entry='fixed E165..E168, bank6 9040; preparation boundary 9064',soundScope='FBCC sink',ROM_SHA256=hashlib.sha256(ROM).hexdigest(),SHA256=hashlib.sha256(packed).hexdigest(),runtimeBeforeSHA256=hashlib.sha256(before.read_bytes()).hexdigest())
     (out/'low-jump-shot-source.json').write_text(json.dumps(source,indent=2)+'\n');print(json.dumps(source))

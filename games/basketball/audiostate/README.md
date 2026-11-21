@@ -35,7 +35,7 @@ work := state.WorkByte
 
 ## 先行 oracle 与验证
 
-实现前先列出失败场景并导出原指令 oracle，再编写 `state_test.go`；缺少实现的失败记录在 `.local/basketball/audio/state/before.log`。开发 oracle 使用已有 py65 执行未改动的原声音驱动，不读取 APU 状态；该工具只在研究脚本中，产品包不依赖它。
+实现前先列出失败场景并导出原指令 oracle，再编写 `state_test.go`；缺少实现的失败记录在 `.local/basketball/assets/audio/state/before.log`。开发 oracle 使用已有 py65 执行未改动的原声音驱动，不读取 APU 状态；该工具只在研究脚本中，产品包不依赖它。
 
 `testdata/original-driver.json.gz` 有 87 个场景、77,369 次请求／更新。每一步同时核对工作字节和 `$0700..07E6` 的完整原控制状态。RAM 投影只存在于测试，运行时使用命名字段。覆盖包括：
 
@@ -44,7 +44,7 @@ work := state.WorkByte
 - reset 保留工作字节、暂停后效果继续、同帧顺序请求、优先级、同曲和重新加载的恢复、周期重触发关闭。
 - JSON 保存后继续 300 次更新不分歧；未知请求和坏音序位置显式报错。
 
-独立来源绑定另外核对 sound 30、music 61 各 597 个已有 FCEUX 状态，与 oracle 逐字节相同。来源记录在 `.local/basketball/audio/state/source-binding.json`；这 1,194 个状态不需要重新采样或录音。
+独立来源绑定另外核对 sound 30、music 61 各 597 个已有 FCEUX 状态，与 oracle 逐字节相同。来源记录在 `.local/basketball/assets/audio/state/source-binding.json`；这 1,194 个状态不需要重新采样或录音。
 
 ```sh
 source scripts/env.sh
@@ -53,7 +53,7 @@ go test -race ./games/basketball/audiostate
 PYTHONDONTWRITEBYTECODE=1 python3 scripts/basketball/verify_audio_state_evidence.py
 ```
 
-该包的普通及竞态测试已通过，记录为 `.local/basketball/audio/state/implementation-second.log`、`race.log`。原始完整 oracle 可由 `export_audio_state_oracle.py` 重新生成；正常验证直接复用已保存夹具。
+该包的普通及竞态测试已通过，记录为 `.local/basketball/assets/audio/state/implementation-second.log`、`race.log`。原始完整 oracle 可由 `export_audio_state_oracle.py` 重新生成；正常验证直接复用已保存夹具。
 
 ## 接线边界
 

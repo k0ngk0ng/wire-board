@@ -3,8 +3,8 @@ import gzip,hashlib,itertools,json
 from verify_pass_floor_original import ROOT,Memory,MPU,put
 from extract_world_actions import decode_world_action_state
 from extract_world_preparation import context
-rom=(ROOT/'.local/nes-basket/basketball.nes').read_bytes();prg=rom[16:16+131072]
-base=(ROOT/'.local/nes-basket/runs/world-actions-cpu-long/world-actions-ram.bin').read_bytes()[:2048]
+rom=(ROOT/'.local/basketball/research/original/basketball.nes').read_bytes();prg=rom[16:16+131072]
+base=(ROOT/'.local/basketball/research/original/runs/world-actions-cpu-long/world-actions-ram.bin').read_bytes()[:2048]
 def setup(action,entered,computer,held,counter,variant):
  r=bytearray(base);actor=1
  r[0x513]=action|(128 if entered else 0);r[0x520]=128;r[0x53a]=128 if computer else 0

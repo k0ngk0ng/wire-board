@@ -4,7 +4,7 @@ from verify_pass_floor_original import ROOT, Memory, MPU, put
 from extract_world_actions import decode_world_action_state
 
 def main():
-    rom=(ROOT/'.local/nes-basket/basketball.nes').read_bytes();source=ROOT/'.local/nes-basket/runs/ball-pass/ram.bin';ram=source.read_bytes()[:2048]
+    rom=(ROOT/'.local/basketball/research/original/basketball.nes').read_bytes();source=ROOT/'.local/basketball/research/original/runs/ball-pass/ram.bin';ram=source.read_bytes()[:2048]
     rows=[]
     for case,(actor,facing,x,entered,height,depth) in enumerate(itertools.product([4,5],[0,128],[48,200,464],[False,True],[0,127,512],[71,72])):
         r=bytearray(ram)

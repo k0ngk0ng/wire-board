@@ -45,10 +45,10 @@ python3 scripts/accept_fc_controller.py
 
 浏览器验收需要本地已恢复的球场素材。完整平台页面测试使用正式前端构建和实际 API，服务端仅在测试注册表装载篮球，图片由隔离的本地素材路由提供；不修改生产注册或上架设置。
 
-- 模式与输入截图／报告：`.local/basketball/network-board/`。
-- 标准平台创建、等待与比赛截图／报告：`.local/basketball/platform-rooms/`。
+- 模式与输入截图／报告：`.local/basketball/verification/network-board/`。
+- 标准平台创建、等待与比赛截图／报告：`.local/basketball/verification/platform-rooms/`。
 - HTTP／SQLite 记录：`.local/poker/basketball/http/TestBasketballHTTPPlayerModes-*.json`、`TestBasketballHTTPVersusTimeout.json`。
-- 命令日志、阶段失败记录与最终结果：`.local/basketball/engine/player-modes-*.log`、`controller-placement-*.log`、`turbo-*.log`。
-- 汇总与文件 SHA-256：`.local/basketball/platform-integration-summary.json`。
+- 命令日志、阶段失败记录与最终结果：`.local/basketball/verification/engine/player-modes-*.log`、`controller-placement-*.log`、`turbo-*.log`。
+- 汇总与文件 SHA-256：`.local/basketball/verification/legacy/platform-integration-summary.json`。
 
 已加入正式服务端注册，素材已按不可变版本发布到 OSS。当前玩法范围、WebSocket 和最新验收见 [main 接入记录](../REALTIME_MAIN_INTEGRATION.md)；本文保留的早期样本不替代最终验证。

@@ -111,7 +111,7 @@
 
 例如原帧 3507 到 3511，个人模式从 `[0,0,0]` 变为 `[2,2,4]`，队伍策略变为 `[141,140]`，两个队伍计数均置为 48。这证实不能只串联个人 AI 调用来生成后续输入。
 
-这些间隙同时含动作阶段、下次前置阶段和真人输入。因此边界差异不能单独证明某次变化由 `$99F0` 产生；归因仍需阶段记录。完整比较保存于 `.local/basketball/rea/world-schedule/natural-inter-update-gaps.json`，包含源 SHA-256 和具体差异。
+这些间隙同时含动作阶段、下次前置阶段和真人输入。因此边界差异不能单独证明某次变化由 `$99F0` 产生；归因仍需阶段记录。完整比较保存于 `.local/basketball/research/rea/world-schedule/natural-inter-update-gaps.json`，包含源 SHA-256 和具体差异。
 
 ## 下一步验证建议
 
@@ -121,7 +121,7 @@
 
 ## REA 证据与限制
 
-所有本次输出位于 `.local/basketball/rea/world-schedule/`，`index.json` 汇总目标 SHA-256、Evidence ID、地址、记录校验和与限制。各子目录保留 `batch.json`、`evidence.json` 和关闭时的快照。
+所有本次输出位于 `.local/basketball/research/rea/world-schedule/`，`index.json` 汇总目标 SHA-256、Evidence ID、地址、记录校验和与限制。各子目录保留 `batch.json`、`evidence.json` 和关闭时的快照。
 
 主要证据：固定主循环 `ev_c534723b09fba51d4124ddb51e08079129ba049b61883c6260937deb9f8f7d48`；页 5 前置阶段 `ev_9c8ecd00722363df65731629837cf49a46ae7226853abf7fd56d941dde66660c`；页 4 交互阶段 `ev_002ef250d27905f7202ab9b6c551b0e1e613f0b55baa32d489c00b08ebcae83b`；比赛初始化 `ev_c858b1c14b921f4ba1d3ebb25cf4e878e603df8808884036b7c3b91293ad7bce`；时钟 `ev_9a4618c74e7d4ebb6b0eb07d0a79bd5c360b490c75a5ad0793c89163d132055b`。
 

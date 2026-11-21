@@ -11,7 +11,7 @@ frames; see `FADE_VERIFICATION.md` and `../DISPLAY_FADE_VERIFICATION.md`.
 
 REA evidence `ev_60bb8c335abec4b399b8e7f0ee297b2c8b137d4a7038cf6272e0b6508d30a53d`
 for `$94E0,$9526,$CCE4,$D231,$D420,$BA40` is retained under
-`.local/basketball/rea/palette-timing/`. The existing court-animation evidence is
+`.local/basketball/research/rea/palette-timing/`. The existing court-animation evidence is
 `ev_3fb4a9e82c28e78326cecbf7989d21c6afda7465ddd29c906610caa566273c7a`.
 Source instructions and original execution are both used; decompiler output is
 not treated as the original source language.
@@ -30,7 +30,7 @@ colors equal the queued bytes. NMI serials are observed at the original vector
 `$FFF1`. Some queue and commit events share an emulator frame label, so frame-label
 `+1` is not a valid substitute for the actual video boundary.
 
-`.local/basketball/palette-timing/samples.json` contains 12 representative normal
+`.local/basketball/research/palette-timing/samples.json` contains 12 representative normal
 ID transitions, queue/commit cycles and NMI ordinals, colors before/after commit,
 pause evidence, intermission selection changes and complete fade buffers. The
 normal full-match observations include both directions: 5→9→10→5 and 5→10→9→5.
@@ -112,7 +112,7 @@ naturally reached result screenshot.
 The stable-frame renderer baseline covers 188 frames and 11,550,720 pixels,
 including the existing New York, eight-court and IRQ-boundary cases. Strict
 renderer/client TypeScript checks pass. The eight-frame PNG proof is
-`.local/basketball/renderer/browser/result-palette-canvas.png`; complete comparison
+`.local/basketball/verification/renderer/browser/result-palette-canvas.png`; complete comparison
 records are in the same directory's `result.json`.
 
 ## Four-level fade boundary now verified
@@ -139,14 +139,14 @@ coverage adds eight frames for 303 / 18,616,320 pixels; see
 `COURT_SIX_RESULT_VERIFICATION.md`. The source provenance,
 PNG hashes, exact coverage partition, generated lookup-table identity and atlas
 hash are checked by `verify_fade_evidence.py`. Rebased-run logs are retained at
-`.local/basketball/fade/{capture-revalidated,renderer-rebased,evidence-rebased}.log`.
-The detailed evidence index is `.local/basketball/fade/evidence-verification.json`.
+`.local/basketball/research/fade/{capture-revalidated,renderer-rebased,evidence-rebased}.log`.
+The detailed evidence index is `.local/basketball/research/fade/evidence-verification.json`.
 
 Reproduce after `source scripts/env.sh`:
 
 ```sh
 PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/analyze_palette_timing.py
-PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/verify_result_assets.py .local/basketball/results
+PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/verify_result_assets.py .local/basketball/assets/results
 PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/accept_renderer.py
 PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/verify_fade_evidence.py
 ```

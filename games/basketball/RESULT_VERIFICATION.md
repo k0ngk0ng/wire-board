@@ -19,11 +19,11 @@ Evidence: REA result-actors batch `ev_93cedbb127d764b97aff2143de421dba36068fe4f8
 
 `scripts/basketball/capture_match_result.py` passively observes BA40 through BCA0 in the existing natural 24,000-video-frame reference. All final RAM bytes and three PNG captures equal the uninstrumented reference. It records 145 complete calls, including 580 actor animation/motion/projection updates. Full `OpeningState` fields and ordered sounds match every record.
 
-Fixture: `engine/testdata/match-result.ram.gz`, SHA-256 `4f61bfa317dbebe742710673017e0693784f2a28ac78baa7fe15e48360963d1a`; metadata and per-call frame/tick/sound index are adjacent. REA analysis is in `.local/basketball/rea/result-actors/`.
+Fixture: `engine/testdata/match-result.ram.gz`, SHA-256 `4f61bfa317dbebe742710673017e0693784f2a28ac78baa7fe15e48360963d1a`; metadata and per-call frame/tick/sound index are adjacent. REA analysis is in `.local/basketball/research/rea/result-actors/`.
 
 Targeted validation covers campaign/versus, both winners and automatic/A/Start confirmation. Every video update is compared with JSON-restored execution. Completed result state preserves the original next scene/phase and rejects unsupported continuation atomically. The original reward-entry actor poses (98/99/100) are restored only for BA40's final call; the phase 7 reward stage remains explicitly unsupported.
 
-Native race passes all three result tests plus the seven existing Runtime tests. Wasm passes the three result tests. Logs: `.local/basketball/engine/result-before.log`, `result-after.log`, `result-runtime-before.log`, `result-runtime-after.log`, `result-race.log`, `result-wasm.log`.
+Native race passes all three result tests plus the seven existing Runtime tests. Wasm passes the three result tests. Logs: `.local/basketball/verification/engine/result-before.log`, `result-after.log`, `result-runtime-before.log`, `result-runtime-after.log`, `result-race.log`, `result-wasm.log`.
 
 Reproduce targeted tests:
 

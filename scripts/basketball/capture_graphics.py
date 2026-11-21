@@ -1,7 +1,7 @@
 """Capture separate field/HUD pattern mappings and current sprites from FCEUX.
 
 Requires the pinned ROM and initial match savestate prepared by the research
-workflow. All output stays in .local/nes-basket; it is not a runtime dependency.
+workflow. All output stays in .local/basketball/research/original; it is not a runtime dependency.
 """
 from pathlib import Path
 import argparse,json

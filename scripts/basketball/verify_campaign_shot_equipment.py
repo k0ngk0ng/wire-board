@@ -6,10 +6,10 @@ import gzip,hashlib,itertools,json
 from verify_pass_floor_original import ROOT,Memory,MPU,put
 from extract_world_actions import decode_world_action_state
 from extract_world_preparation import context
-ROM=(ROOT/'.local/nes-basket/basketball.nes').read_bytes();PRG=ROM[16:131088]
-HOME=ROOT/'.local/nes-basket/runs/campaign-audit-equipped-home-match/ram.bin'
+ROM=(ROOT/'.local/basketball/research/original/basketball.nes').read_bytes();PRG=ROM[16:131088]
+HOME=ROOT/'.local/basketball/research/original/runs/campaign-audit-equipped-home-match/ram.bin'
 HOME_DATA=HOME.read_bytes();BASE=HOME_DATA[(4345-1)*2048:4345*2048]
-NY=(ROOT/'.local/nes-basket/runs/world-actions-cpu-long/world-actions-ram.bin').read_bytes()[:2048]
+NY=(ROOT/'.local/basketball/research/original/runs/world-actions-cpu-long/world-actions-ram.bin').read_bytes()[:2048]
 assert hashlib.sha256(HOME_DATA).hexdigest()=='c7c6cffa803c4d996d86cd7b8968c5788fc953f1545f3d9d070dce96e42b7173'
 assert BASE[0x6e4]==1 and BASE[0x58d]==0 and BASE[0x58c]==2
 class SoundMemory(Memory):

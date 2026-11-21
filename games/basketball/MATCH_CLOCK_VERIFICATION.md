@@ -15,7 +15,7 @@
 
 ## 实现与证据
 
-REA 新批量证据为 `ev_e512234c54456fd3a167b904732643cc324552d487272a08277c6aa6c25f14b0`，完整结果、快照与可重跑 spec 位于 `.local/basketball/rea/match-clock/`。旧 clock-exact 的 `ev_9a4618c74e7d4ebb6b0eb07d0a79bd5c360b490c75a5ad0793c89163d132055b` 与 bank6 的 D36C 结果共同交叉核对。
+REA 新批量证据为 `ev_e512234c54456fd3a167b904732643cc324552d487272a08277c6aa6c25f14b0`，完整结果、快照与可重跑 spec 位于 `.local/basketball/research/rea/match-clock/`。旧 clock-exact 的 `ev_9a4618c74e7d4ebb6b0eb07d0a79bd5c360b490c75a5ad0793c89163d132055b` 与 bank6 的 D36C 结果共同交叉核对。
 
 `MatchState` 明确保留比赛阶段和进入标志、节数、延长标志、十进制时钟及比分缓存。接口按实际调用拆分：
 
@@ -43,6 +43,6 @@ source scripts/env.sh
 go test -v ./games/basketball/engine -run 'TestOriginalMatchClock|TestMatch|TestHUD'
 ```
 
-采样脚本声明并按需创建无探针输入参考；依赖既有原 ROM、离屏 FCEUX 和原第 5 槽。`--reuse-existing` 只复用输入／hooks 完全相同、并再次与无探针对照一致的记录。夹具与源校验和在 `engine/testdata/match-clock.json.gz`、`match-clock-source.json`；实现前失败及通过日志为 `.local/basketball/engine/match-clock-{before,after,race,wasm}.log`。
+采样脚本声明并按需创建无探针输入参考；依赖既有原 ROM、离屏 FCEUX 和原第 5 槽。`--reuse-existing` 只复用输入／hooks 完全相同、并再次与无探针对照一致的记录。夹具与源校验和在 `engine/testdata/match-clock.json.gz`、`match-clock-source.json`；实现前失败及通过日志为 `.local/basketball/verification/engine/match-clock-{before,after,race,wasm}.log`。
 
 定向原生竞态与 Wasm 验证通过。执行时另一工作项的 `ai_command_apply_test.go` 尚缺实现，所以这次编译文件列表仅排除该文件；没有修改或删除它。合并后仍需篮球包整体检查，此处不把本组件的定向验证替代世界循环验收。

@@ -40,5 +40,5 @@ def main():
   assert (reference/'ram.bin').read_bytes()==(observed/'ram.bin').read_bytes()
   for n in spec['captures']:assert (reference/f'frame-{n:05d}.png').read_bytes()==(observed/f'frame-{n:05d}.png').read_bytes()
   records.append({'reference':reference_spec['name'],'observed':spec['name'],'source':json.loads((observed/'source.json').read_text()),'ram_and_png_equal':True})
- out=ROOT/'.local/basketball/palette-timing';out.mkdir(parents=True,exist_ok=True);(out/'capture.json').write_text(json.dumps({'scope':'original configured court4 palette selection/queue/video writes; no Go runtime modifications','records':records},indent=2)+'\n')
+ out=ROOT/'.local/basketball/research/palette-timing';out.mkdir(parents=True,exist_ok=True);(out/'capture.json').write_text(json.dumps({'scope':'original configured court4 palette selection/queue/video writes; no Go runtime modifications','records':records},indent=2)+'\n')
 if __name__=='__main__':main()

@@ -29,7 +29,7 @@ Preparation chooses equipment from the current holder's action (1B/1C), not a ne
 
 `court_two_binding_test.go` was added before the device writeback change. It first failed at the runtime gate, then reproduced jump phases 7 and -32 overwriting the device's zero. It also checks the later held-ball write and sound order. `launched_world_test.go` first failed before the raw actor input field/dispatcher existed; it verifies attached preparation, physical integration rather than stale following, raw actor/controller distinction, global launch metadata and continuation behavior.
 
-Logs: `.local/basketball/engine/court-two-binding-{before,gate-after,after}.log` and `launched-world-{before,after}.log`.
+Logs: `.local/basketball/verification/engine/court-two-binding-{before,gate-after,after}.log` and `launched-world-{before,after}.log`.
 
 The existing 14,458 natural floor calls, 68,094 configured original floor/device calls, 13,229 complete natural EEFF calls and 1,998 original world action stages still pass. The separate contact, launched-player and AI workstreams retain original-source evidence for Kind13 geometry, the 64 Action3E calls, A05D possession routing and mode31/shot-plan8/9/10. Configured instruction matrices are not labeled as natural whole matches.
 
@@ -53,6 +53,6 @@ go test -race ./games/basketball/engine -run '^TestRuntimeCourtTwo' -count=1 -v
 GOOS=js GOARCH=wasm go test ./games/basketball/engine -exec="$(go env GOROOT)/lib/wasm/go_js_wasm_exec" -run '^TestRuntimeCourtTwo' -count=1 -v
 ```
 
-Full reports are `.local/basketball/engine/runtime-court-two-{after,race,wasm}.log`. These prove integrated semantic runtime completion and restoration; they do not claim cycle-exact original complete-match timing, complete campaign/menu recovery, browser pixel acceptance or production registration.
+Full reports are `.local/basketball/verification/engine/runtime-court-two-{after,race,wasm}.log`. These prove integrated semantic runtime completion and restoration; they do not claim cycle-exact original complete-match timing, complete campaign/menu recovery, browser pixel acceptance or production registration.
 
 Final validation passed: Court 2's two complete configurations plus the device/launch integration regressions pass Node Wasm in 49.488 seconds and native race in 167.800 seconds. Native, Wasm and race report the same two trajectory hashes above. Old-court/source-corpus native regression completed successfully in 19.638 seconds. No production configuration registration was changed by this workstream.

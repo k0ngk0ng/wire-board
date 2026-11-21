@@ -22,7 +22,7 @@ BASE = ROOT / ".local/battlecity"
 ROM = BASE / "rom/Battle City (J).nes"
 ROM_SHA256 = "a869aead5b6957fc62002ff9636e048cc34baf0100d629b07dc51aa18f220c0c"
 FCEUX = "/opt/homebrew/bin/fceux"
-SANDBOX = ROOT / ".local/nes-basket/workspace.sb"
+SANDBOX = ROOT / ".local/basketball/research/original/workspace.sb"
 
 
 def main() -> None:

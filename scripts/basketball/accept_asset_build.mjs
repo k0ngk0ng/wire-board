@@ -1,5 +1,5 @@
-/** Real offline candidate -> game build hook -> existing public collector.
- * Uses an isolated collector workspace; does not replace active web public files. */
+
+
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
@@ -11,7 +11,7 @@ import { preparePublicAssets } from "../../web/scripts/public-assets.mjs";
 const root = fileURLToPath(new URL("../../", import.meta.url));
 const packageDirectory = process.argv[2];
 assert.ok(packageDirectory, "Pass a verified package directory inside this checkout");
-const out = path.join(root, ".local/basketball-asset-build-acceptance");
+const out = path.join(root, ".local/basketball/verification/asset-build-acceptance");
 mkdirSync(out, { recursive: true });
 const publicRoot = prepareBasketballAssets(root, { packageDirectory });
 verifyBasketballAssets(root, publicRoot);

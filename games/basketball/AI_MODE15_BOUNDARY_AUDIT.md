@@ -13,4 +13,4 @@ source scripts/env.sh
 .local/board-art-env/bin/python -B scripts/basketball/audit_ai_mode15.py
 ```
 
-Result: `.local/basketball/rea/ai-mode15-audit/result.json`, including ROM SHA, exact samples, table sets, trace identity and limitations. The probe never stubs an unknown call or skips an original device write; any unsupported execution is recorded as such. This is a retained-evidence/source-instruction audit; it does not replace original-menu/campaign acceptance.
+Result: `.local/basketball/research/rea/ai-mode15-audit/result.json`, including ROM SHA, exact samples, table sets, trace identity and limitations. The probe never stubs an unknown call or skips an original device write; any unsupported execution is recorded as such. This is a retained-evidence/source-instruction audit; it does not replace original-menu/campaign acceptance.

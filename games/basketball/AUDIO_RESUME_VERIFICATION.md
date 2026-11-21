@@ -27,7 +27,7 @@
 | 23 | sound-023.wav（沿用） | `138dd8a1c4e010204770cb507336778155dd6336b0813c42821b74c2a47af23d` |
 | 48 | sound-048.wav | `c80b939e0e2e6e97b30ecff18c8b8a5f02e0e3d73a17e515e0404c0f64c029f6` |
 
-所有媒体与原始记录在 `.local/basketball/audio/export/`。`additional-effects-manifest.json` 记录 ROM SHA、来源、样本范围和录音路径。失败与通过记录在 `.local/basketball/audio-resume/`；浏览器逐事件证据在 `.local/basketball/audio-effects-browser/result.json`。
+所有媒体与原始记录在 `.local/basketball/assets/audio/export/`。`additional-effects-manifest.json` 记录 ROM SHA、来源、样本范围和录音路径。失败与通过记录在 `.local/basketball/verification/audio-resume/`；浏览器逐事件证据在 `.local/basketball/verification/audio-effects-browser/result.json`。
 
 复验命令（仓库根目录）：
 

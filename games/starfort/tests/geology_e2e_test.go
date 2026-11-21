@@ -536,19 +536,23 @@ func TestStarfortGeologyTyphoonBudgetAndProtection(t *testing.T) {
 	s.Towers = []starfort.Tower{{ID: 1, Pad: pad, Kind: "arrow", Level: 1, Owner: 0, Spent: 90, Priority: "first"}}
 	s = geoPatch(s, map[string]any{"geoRng": 5, "geology": map[string]any{"wave": s.Wave, "kind": "typhoon", "triggered": true, "zones": []any{map[string]any{"id": 1, "kind": "typhoon", "route": r.ID, "progress": progress, "x": x, "y": y, "radius": 75, "speed": 40, "createdMS": 0, "activated": true}}, "routePeaks": map[string]float64{}}})
 	cadenceSave(b, s)
+	last := int64(-1000)
+	misses, cursor := 0, s.EventSerial
 	for i := 0; i < 4; i++ {
 		b.timer(time.Second)
-	}
-	s = cadenceState(b)
-	last := int64(-1000)
-	misses := 0
-	for _, e := range s.Events {
-		if e.Type == "miss" && e.Skill == "typhoon" {
-			if e.Tick-last < 25 {
-				t.Fatal("same wind bypassed protection")
+		// Collect each batch: expired animation events are no longer archived.
+		for _, e := range cadenceState(b).Events {
+			if e.ID <= cursor {
+				continue
 			}
-			last = e.Tick
-			misses++
+			cursor = e.ID
+			if e.Type == "miss" && e.Skill == "typhoon" {
+				if e.Tick-last < 25 {
+					t.Fatal("same wind bypassed protection")
+				}
+				last = e.Tick
+				misses++
+			}
 		}
 	}
 	if misses == 0 {

@@ -4,7 +4,7 @@ records stop before actor rendering or machine reset and state that boundary.
 """
 import argparse,base64,gzip,hashlib,itertools,json
 from verify_pass_floor_original import ROOT,Memory,MPU
-ROM=(ROOT/'.local/nes-basket/basketball.nes').read_bytes();PRG=ROM[16:131088]
+ROM=(ROOT/'.local/basketball/research/original/basketball.nes').read_bytes();PRG=ROM[16:131088]
 OUT=ROOT/'games/basketball/engine/testdata'
 TRANSITION_ROWS=json.loads((OUT/'match-transition.json').read_text())
 TRANSITION_RAW=gzip.decompress((OUT/'match-transition.ram.gz').read_bytes())
@@ -83,7 +83,7 @@ def main():
  for mode,reward,opponent,period,shape in itertools.product([0,1],range(4),range(1,8),[0,2],['empty','duplicates','equipped','last-slot','full']):cases.append(settlement(mode,reward,opponent,period,shape,True))
  for mode,reward,opponent,period,shape in itertools.product([0,1],[0,3],[1,7],[0,2,24,26],['empty','duplicates','equipped','full']):cases.append(settlement(mode,reward,opponent,period,shape,False))
  for mode,reward,opponent,shape in itertools.product([0,1],[0,3],[1,7],['empty','duplicates','equipped','full']):cases.append(settlement(mode,reward,opponent,26,shape,True))
- loss_path=ROOT/'.local/nes-basket/runs/campaign-audit-loss-continue/ram.bin';loss_data=loss_path.read_bytes();before=loss_data[(24000-1)*2048:24000*2048];after=loss_data[(26400-1)*2048:26400*2048]
+ loss_path=ROOT/'.local/basketball/research/original/runs/campaign-audit-loss-continue/ram.bin';loss_data=loss_path.read_bytes();before=loss_data[(24000-1)*2048:24000*2048];after=loss_data[(26400-1)*2048:26400*2048]
  natural=dict(run='campaign-audit-loss-continue',beforeFrame=24000,afterFrame=26400,traceSHA256=hashlib.sha256(loss_data).hexdigest(),before=snapshot(before),after=snapshot(after),scope='retained normal loss/continue controller run; prior24000 RAM/PNG matches old reference')
  choices=[]
  for choice,shape in itertools.product(['continue','quit'],['empty','equipped','full']):

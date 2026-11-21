@@ -21,7 +21,7 @@
 - `HurtState.Endurance` 只实现原 `$47` 恢复动作的抗击余量重置 255，本模块不扣血、不计算伤害或命中。`RecoveryGrade` 是原 `$0621` 的恢复等级。
 - `HurtContext` 的对象引用字段用 -1 表示无对象；调用方须提供完整当前世界上下文。输出的球和对象命令由世界阶段按原调用顺序应用。
 - 限制：原 `$49` 进入时已有负附着标记的骑乘解绑链尚未恢复，明确返回错误；`$4B..$4D` 未在本次原记录出现，仍明确不支持。其他辅助物、搭档连接分支有静态恢复，但此次自然语料没有覆盖每种组合，不能据此宣称完整战斗系统完成。
-- 红灯与通过日志保存为 `.local/basketball/rea/hurt-player/test-before.log`、`test-after.log`，不补写实现之后的单元测试。
+- 红灯与通过日志保存为 `.local/basketball/research/rea/hurt-player/test-before.log`、`test-after.log`，不补写实现之后的单元测试。
 
 - `$0611` 为抗击余量（`Endurance`），不是比赛生命值；归零不淘汰球员，`$47` 恢复动作将其重置为 255。保留原始夹具中的 `health` 键，只调整生产语义。
 - 805 调用及固定规则测试的竞态与 Wasm 检查通过。生产字段重命名后的最终复核使用 `scoped-commands.json` 中的全部生产文件与两个相关测试文件，原因是并行中的 `combat_test.go` 尚未具备实现；未补桩、未省略生产源。最终结果保留为 `race-scoped.json/wasm.log`，`race.json` 保留此时全包编译被未完成战斗测试阻挡的实际结果，完整包仍需集成阶段执行。

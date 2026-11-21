@@ -1,22 +1,46 @@
-import { useState } from "react";
+import { useState, type ButtonHTMLAttributes } from "react";
 import { Check, FolderOpen, RotateCcw, Save, Undo2 } from "lucide-react";
 import { gameName } from "../game-api/registry";
 import type { Room, SavedGame } from "../types";
 import type { GameRoom } from "../game-api/module";
 import { Modal } from "./board-host";
 import { GameFeedback } from "./game-overlay-root";
+import { RoomToolButton } from "./room-tool-button";
 import "./saved-games.css";
+
+function SaveControlButton({
+  iconOnly,
+  label,
+  children,
+  ...props
+}: ButtonHTMLAttributes<HTMLButtonElement> & {
+  iconOnly: boolean;
+  label: string;
+}) {
+  return iconOnly ? (
+    <RoomToolButton {...props} label={label}>
+      {children}
+    </RoomToolButton>
+  ) : (
+    <button {...props} type="button">
+      {children}
+      {label}
+    </button>
+  );
+}
 
 export function SaveGameControl({
   room,
   userID,
   busy,
   command,
+  iconOnly = false,
 }: {
   room: GameRoom;
   userID: string;
   busy: boolean;
   command: (kind: string) => void;
+  iconOnly?: boolean;
 }) {
   const [loadingCheckpoint, setLoadingCheckpoint] = useState(false);
   const [restarting, setRestarting] = useState(false);
@@ -35,7 +59,9 @@ export function SaveGameControl({
   return (
     <span className="saved-game-control">
       {room.supportsCheckpoint && (
-        <button
+        <SaveControlButton
+          iconOnly={iconOnly}
+          label="读取存档"
           className="subtle"
           data-load-checkpoint
           disabled={busy || frozen || !room.checkpointSavedAt}
@@ -43,21 +69,31 @@ export function SaveGameControl({
           onClick={() => setLoadingCheckpoint(true)}
         >
           <FolderOpen size={16} />
-          读取存档
-        </button>
+        </SaveControlButton>
       )}
       {room.supportsCheckpoint && room.game?.restartable && (
-        <button
+        <SaveControlButton
+          iconOnly={iconOnly}
+          label="重新开始"
           className="subtle"
           data-restart-journey
           disabled={busy || frozen}
           onClick={() => setRestarting(true)}
         >
           <RotateCcw size={16} />
-          重新开始
-        </button>
+        </SaveControlButton>
       )}
-      <button
+      <SaveControlButton
+        iconOnly={iconOnly}
+        label={
+          approved
+            ? frozen
+              ? "取消保存"
+              : "撤回保存"
+            : frozen
+              ? "同意保存"
+              : "保存并退出"
+        }
         className="subtle"
         disabled={busy}
         data-save-game={approved ? undefined : ""}
@@ -65,24 +101,18 @@ export function SaveGameControl({
         onClick={() => command(approved ? "save_cancel" : "save")}
       >
         {approved ? <Undo2 size={16} /> : <Save size={16} />}
-        {approved
-          ? frozen
-            ? "取消保存"
-            : "撤回保存"
-          : frozen
-            ? "同意保存"
-            : "保存并退出"}
-      </button>
+      </SaveControlButton>
       {frozen && !approved && (
-        <button
+        <SaveControlButton
+          iconOnly={iconOnly}
+          label="取消保存"
           className="subtle"
           data-decline-save
           disabled={busy}
           onClick={() => command("save_cancel")}
         >
           <Undo2 size={16} />
-          取消保存
-        </button>
+        </SaveControlButton>
       )}
       {votes.length > 0 && (
         <span role="status">
@@ -97,7 +127,8 @@ export function SaveGameControl({
             initialFocus="[data-cancel-checkpoint]"
           >
             <p>
-              回到 {new Date(room.checkpointSavedAt).toLocaleString("zh-CN")} 的存档，放弃之后未保存的进度。
+              回到 {new Date(room.checkpointSavedAt).toLocaleString("zh-CN")}{" "}
+              的存档，放弃之后未保存的进度。
             </p>
             <div className="modal-actions">
               <button

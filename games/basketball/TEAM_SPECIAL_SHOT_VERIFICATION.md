@@ -14,7 +14,7 @@
 
 `PrepareOriginalTeamSpecialBall` 返回物理前命令，World 必须先提交球权、接球排除、特殊标记、选中篮筐、发射目标和准备音效，再调用 `CompleteOriginalTeamSpecialBall`。完成段清除已提交的准备命令，仅保留物理后新增的震屏和声音。准备和完成都使用同一 `OriginalShotBallStep` 元数据，没有第二份世界状态。
 
-REA 确认记录：`ev_4e6f03893cd259169fd795ee3de8fa880241515e4686c8e5a392ea8c6bf39f0f`，保存在 `.local/basketball/rea/shot-team-special/analysis-verified/`。原动作 14／15 的完整函数体及 `$BDD2` 阈值分支同时保留指令证据。
+REA 确认记录：`ev_4e6f03893cd259169fd795ee3de8fa880241515e4686c8e5a392ea8c6bf39f0f`，保存在 `.local/basketball/research/rea/shot-team-special/analysis-verified/`。原动作 14／15 的完整函数体及 `$BDD2` 阈值分支同时保留指令证据。
 
 ## 验证范围
 
@@ -25,7 +25,7 @@ REA 确认记录：`ev_4e6f03893cd259169fd795ee3de8fa880241515e4686c8e5a392ea8c6
 
 夹具来源为受控原指令执行，使用原 ROM、保留的 RAM 基底和 MMC3 PRG 映射。APU 写入只记录寄存器值，不用其输出决定规则；声音资源另由原音频驱动采样。此验证不代表全场景自然比赛或浏览器视觉验收。
 
-原位图素材已包含所需球姿态 0～3、6～10。声 30 已注册；缺少的声 10 已用原驱动采样两次并核验字节一致，输出长度约 0.839 秒，通过现有扩展音效清单注册到平台播放。素材仍仅在本地，未发布，人工试听标志保持未验收。来源及波形校验见 `.local/basketball/audio/export/additional-effects-manifest.json` 和 `additional-effects-verification.json`；`assets-audit.json` 只证明素材可用性，不冒充浏览器验收。
+原位图素材已包含所需球姿态 0～3、6～10。声 30 已注册；缺少的声 10 已用原驱动采样两次并核验字节一致，输出长度约 0.839 秒，通过现有扩展音效清单注册到平台播放。素材仍仅在本地，未发布，人工试听标志保持未验收。来源及波形校验见 `.local/basketball/assets/audio/export/additional-effects-manifest.json` 和 `additional-effects-verification.json`；`assets-audit.json` 只证明素材可用性，不冒充浏览器验收。
 
 ```sh
 PYTHONDONTWRITEBYTECODE=1 python3 scripts/basketball/extract_team_special_shots.py
@@ -40,4 +40,4 @@ PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/ver
 已确认一条尚未恢复的边界：场地设备在动作 14 的物理阶段把动作改成 4 后，原 `$BDD2` 按新动作查表，`$BE96` 指向 `$00FF`，后续读取依赖原音频工作字节 `$00FF` 和图形上传前缀 `$0100..$0102`（并非普通调用栈）。当前未用动作 14 的常量 32 替代该读取，而是明确返回未恢复错误，且整 World 调用原子回滚。固定原路径和替换选择器来源在 `changed-selector-before.log`、`replaced-selector.json`；不能将普通链通过扩展为所有设备碰撞通过。
 
 
-该边界的后续源审计见 `.local/basketball/rea/special-turn-alias/audit.json` 和 `court2-counterexamples.json`。612,544 次原 `$BDD2` 指令调用核对了真实 X 范围、两方向和上传前缀约束；上传已完成时，右侧阈值为 `207 + 音频工作字节`，不能普遍化为常量。Court2 的原 music61／shot30 指令产生的不同工作字节，在合法设备 X=280／380 的受控调用中分别得到动作 12 或 4。该证据证明现有规则上下文不足，不等同于自然整局轨迹；保护错误继续保留，未引入任意 RAM 快照或运行时 APU。
+该边界的后续源审计见 `.local/basketball/research/rea/special-turn-alias/audit.json` 和 `court2-counterexamples.json`。612,544 次原 `$BDD2` 指令调用核对了真实 X 范围、两方向和上传前缀约束；上传已完成时，右侧阈值为 `207 + 音频工作字节`，不能普遍化为常量。Court2 的原 music61／shot30 指令产生的不同工作字节，在合法设备 X=280／380 的受控调用中分别得到动作 12 或 4。该证据证明现有规则上下文不足，不等同于自然整局轨迹；保护错误继续保留，未引入任意 RAM 快照或运行时 APU。

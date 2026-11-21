@@ -2,9 +2,9 @@
 import hashlib,json,collections
 from pathlib import Path
 from verify_pass_floor_original import ROOT,Memory,MPU,put
-rom=(ROOT/'.local/nes-basket/basketball.nes').read_bytes();prg=rom[16:16+131072]
-out=ROOT/'.local/basketball/rea/special-turn-alias';out.mkdir(exist_ok=True)
-base=(ROOT/'.local/nes-basket/runs/world-actions-cpu-long/world-actions-ram.bin').read_bytes()[:2048]
+rom=(ROOT/'.local/basketball/research/original/basketball.nes').read_bytes();prg=rom[16:16+131072]
+out=ROOT/'.local/basketball/research/rea/special-turn-alias';out.mkdir(parents=True,exist_ok=True)
+base=(ROOT/'.local/basketball/research/original/runs/world-actions-cpu-long/world-actions-ram.bin').read_bytes()[:2048]
 class AudioMemory(Memory):
  def __setitem__(self,a,v):
   if isinstance(a,int) and 0x4000<=a<=0x4017:list.__setitem__(self,a,v);return
@@ -22,7 +22,7 @@ for music in range(59,67):
  call(m,0x8000,30)
  for tick in range(180):call(m,0x8003);audio.append(dict(music=music,frameAfterShot=tick+1,soundWork=m[0xff]))
 (out/'music-shot-work.json').write_text(json.dumps(audio)+'\n')
-raw=(ROOT/'.local/nes-basket/runs/world-actions-cpu-long/world-actions-ram.bin').read_bytes()
+raw=(ROOT/'.local/basketball/research/original/runs/world-actions-cpu-long/world-actions-ram.bin').read_bytes()
 prefixes=collections.Counter(tuple(raw[n+0x100:n+0x103]) for n in range(0,len(raw),2048))
 first_tiles=sorted({p[2] for p in prefixes})
 assert {p[0] for p in prefixes}=={0x20,0xff}

@@ -12,7 +12,7 @@
 
 ## 原版证据与事件边界
 
-复用 REA 证据 `ev_b618a1d77454e328308befc87f536eeead9325fd771af4f40edcab7c95578f5e`（`.local/basketball/rea/auxiliary-rest/terrain/batch.json`）：bank4 `$8249` 调用 `$89FB`，后者用旧 `$75/$82/$9C` 查地形并写 `$05EA`。未提交的下一位置位于 `$058E/$059B/$05A8/$05B5/$05C2`，不是这次缓存的来源。
+复用 REA 证据 `ev_b618a1d77454e328308befc87f536eeead9325fd771af4f40edcab7c95578f5e`（`.local/basketball/research/rea/auxiliary-rest/terrain/batch.json`）：bank4 `$8249` 调用 `$89FB`，后者用旧 `$75/$82/$9C` 查地形并写 `$05EA`。未提交的下一位置位于 `$058E/$059B/$05A8/$05B5/$05C2`，不是这次缓存的来源。
 
 `capture_motion_surface.py` 同时监听真实 `$EF5F` 入口、`$05EA..$05F6` 写入和完整动作阶段边界。6000 帧参考产生 1998 个完整阶段、14456 次写；主动骑乘参考产生 57 个完整阶段、389 次写。长参考中另有 150 次物理入口没有地形写，均保留于 `extra-surface-writes.csv`；首例 phase49/frame3655 actor2 位于纽约穿道状态。此分支执行积分但绕过地形查表，事件也必须省略。捕获尾部事件保留在来源文件，未伪装成完成阶段。两组全部 RAM 与参考逐字节相同，截图亦完全一致。
 

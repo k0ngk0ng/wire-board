@@ -47,7 +47,7 @@ PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/ver
 GOCACHE="$PWD/.local/go-build" GOMODCACHE="$PWD/.local/go-mod" GOTMPDIR="$PWD/.local/tmp" TMPDIR="$PWD/.local/tmp" GOTOOLCHAIN=local go test ./games/basketball/engine -run '^TestOriginalEndingPresentation' -count=1 -v
 ```
 
-Failure inventory and comparison tests were written before the wrapper implementation. `.local/ending-phase-restore/full-red.txt` records the missing wrapper failure. `full-tests.txt` records the passing test output; `full-source.json` and `full-source-check.json` retain generation/check summaries.
+Failure inventory and comparison tests were written before the wrapper implementation. `.local/basketball/research/ending-phase-restore/full-red.txt` records the missing wrapper failure. `full-tests.txt` records the passing test output; `full-source.json` and `full-source-check.json` retain generation/check summaries.
 
 ## Explicit component boundary
 

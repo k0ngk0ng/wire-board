@@ -41,4 +41,4 @@ python3 -B scripts/accept_create_size.py
 python3 -B scripts/accept_bot_layout.py
 ```
 
-结果、截图与测量分别保存在 `.local/basketball-incident-20261023/`、`.local/basketball/input-sync-rtt300-incident-media/`、`.local/create-size/verified/` 和 `.local/bot-layout/verified/`。版本发布仍须复用同一提交在 main 验证成功的构建；tag 不重新编译或重复规则验收。
+结果、截图与测量分别保存在 `.local/basketball/verification/incident-20261023/`、`.local/basketball/verification/input-sync-rtt300-incident-media/`、`.local/create-size/verified/` 和 `.local/bot-layout/verified/`。版本发布仍须复用同一提交在 main 验证成功的构建；tag 不重新编译或重复规则验收。

@@ -49,7 +49,7 @@ The equipment matrix covers all32 item categories, all four character indices, m
 
 The map probe skips only display/text or sound entry points outside the semantic selection, then stops at the original render call. The equipment probe stops at its first post-write display entry. These boundaries are recorded in source metadata; no ROM instruction or intermediate gameplay state is patched during an executed call; each explicitly controlled starting state is kept separate from normal-menu evidence.
 
-Tests were written before implementation. The initial undefined-API failure is retained in `.local/basketball/rea/campaign-component/before.log`.
+Tests were written before implementation. The initial undefined-API failure is retained in `.local/basketball/research/rea/campaign-component/before.log`.
 
 ## Original normal-menu data flow
 
@@ -60,7 +60,7 @@ The tests separately consume snapshots extracted from previously verified normal
 - `020120` restores inventory[0,1]. First equip compacts to[1], then replacing it swaps to[0]. Every step matches original menu snapshots. Encoding then decoding restores earned inventory, not the equipped save state; this distinction is explicitly checked.
 - The retained natural loss and appended ordinary Continue input have identical progress before/after. The leaf does not calculate the loss rollback or advance matches; those remain engine work.
 
-These are source-derived preparation-to-match data-flow checks, not a claim that Runtime/server/UI has been integrated. The underlying original menu captures and screenshot/RAM hashes are indexed in `../CAMPAIGN_EQUIPMENT_AUDIT.md` and `.local/basketball/rea/campaign-audit/verified-selection.json`.
+These are source-derived preparation-to-match data-flow checks, not a claim that Runtime/server/UI has been integrated. The underlying original menu captures and screenshot/RAM hashes are indexed in `../CAMPAIGN_EQUIPMENT_AUDIT.md` and `.local/basketball/research/rea/campaign-audit/verified-selection.json`.
 
 ## Reproduction
 
@@ -74,4 +74,4 @@ GOOS=js GOARCH=wasm go test -exec "$(go env GOROOT)/lib/wasm/go_js_wasm_exec" ./
 
 The fixture `testdata/source.json` binds ROM/base RAM identity, source boundaries and fixture hashes. Original normal-menu RAM traces are not bundled as enormous per-video fixtures; selected snapshots retain their source-run identity and SHA-256.
 
-Native, race and Wasm targeted tests passed. `go list -deps` confirms the only non-standard package is this leaf itself. Current source hashes and result index: `.local/basketball/rea/campaign-component/result.json`.
+Native, race and Wasm targeted tests passed. `go list -deps` confirms the only non-standard package is this leaf itself. Current source hashes and result index: `.local/basketball/research/rea/campaign-component/result.json`.

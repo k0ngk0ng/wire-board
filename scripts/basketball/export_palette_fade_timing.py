@@ -2,7 +2,7 @@
 from pathlib import Path
 import hashlib,json
 ROOT=Path(__file__).resolve().parents[2]
-source=ROOT/'.local/nes-basket/runs/court-4-palette-complete-palette-nmi-observed/palette.jsonl'
+source=ROOT/'.local/basketball/research/original/runs/court-4-palette-complete-palette-nmi-observed/palette.jsonl'
 events=[json.loads(line) for line in source.read_text().splitlines()]
 cases=[]
 for name,start,end,out in [('period-one-out',14362,14370,True),('second-opening-in',14554,14562,False),('period-two-out',25508,25516,True),('result-in',25530,25538,False)]:

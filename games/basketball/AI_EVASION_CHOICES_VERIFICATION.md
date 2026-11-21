@@ -11,7 +11,7 @@
 
 ## 原版证据与范围
 
-本轮 REA 原函数证据 `ev_df0e795cb32e40f07adf423936c903e7a326d63ac3c6a24a6f0286d657a5dbd5`，位于 `.local/basketball/rea/evasion-choices/analysis/`，分别覆盖 B840／B87F／B885。B7CD 的原分派表对应计划2／3／4；既有随机选择表保持不变。
+本轮 REA 原函数证据 `ev_df0e795cb32e40f07adf423936c903e7a326d63ac3c6a24a6f0286d657a5dbd5`，位于 `.local/basketball/research/rea/evasion-choices/analysis/`，分别覆盖 B840／B87F／B885。B7CD 的原分派表对应计划2／3／4；既有随机选择表保持不变。
 
 `capture_ai_evasion_choices.py` 在原 18,000 帧参考中监听这三个真实入口，保留两个完整自然调用（计划2、4各一次），全部 RAM／PNG 与参考一致。测试比较完整 WorldInputState，包含动作命令、AI模式、参数、JumpPhase、随机流以及未改动的其他人物／球。
 
@@ -19,7 +19,7 @@
 
 ## 验收结果与下一边界
 
-先写测试再实现。新增自然／隔离调用、原5次mode26调用、1998输入阶段、1998单初态连续更新和57主动完整更新，均通过原生竞态与Wasm验证。日志为 `.local/basketball/rea/evasion-choices/{tests-before.log,native-tests.json,wasm-tests.log}`。
+先写测试再实现。新增自然／隔离调用、原5次mode26调用、1998输入阶段、1998单初态连续更新和57主动完整更新，均通过原生竞态与Wasm验证。日志为 `.local/basketball/research/rea/evasion-choices/{tests-before.log,native-tests.json,wasm-tests.log}`。
 
 固定cold配置同一种子推进到2885／6000，下一错误是特殊球20的接触响应（`preparation: interactions: special-ball contact response not reconstructed`）。完整前态保存为同目录 `cold-next.json`，已交主线程分派物理／交互恢复。本轮未改变随机权重、测试目标、物理或碰撞结果。
 

@@ -1,6 +1,6 @@
 # Music 76 asset verification
 
-**Current outcome: offline asset verification passed using the approved source-boundary follow-up, at source frames 7,449→44,313.** The first rejected anchor and its unchanged manifest are retained below. Delivery artifact: `.local/music76-source/assets/music-076-intro-loop.mp3`; delivery metadata: `music76-delivery-manifest.json` in the same directory. This does not establish browser, human-listening or device acceptance.
+**Current outcome: offline asset verification passed using the approved source-boundary follow-up, at source frames 7,449→44,313.** The first rejected anchor and its unchanged manifest are retained below. Delivery artifact: `.local/basketball/research/music76-source/assets/music-076-intro-loop.mp3`; delivery metadata: `music76-delivery-manifest.json` in the same directory. This does not establish browser, human-listening or device acceptance.
 
 ## Predeclared failure inventory
 
@@ -48,7 +48,7 @@ The verification was executed twice and reproduced the rejected manifest byte-fo
 
 ## Artifacts and reproduction
 
-All artifacts are under `.local/music76-source/assets/`:
+All artifacts are under `.local/basketball/research/music76-source/assets/`:
 
 - `capture-45000-run-1/` and `capture-45000-run-2/`: original audio/state evidence, settings, exact commands, tool hashes and capture logs.
 - `capture-verification.json`: independent-capture and old-prefix validation.
@@ -107,7 +107,7 @@ Measured SI-SDR is 28.3341 dB against the ≥24 dB requirement. Decoded peak is 
 | `music-076-intro-loop.mp3` | `7e0eb8fcaa8cbc9c426b93fc19d63ac06451874cd9008aecd11d4cb99e733469` |
 | Decoded MP3 PCM | `4f6f79fbc461fa9173c07a3c8a7708ee2242272126f9f0bb4dccc6cc55ae52f9` |
 
-The MP3 is 11,798,194 bytes. The independent source captures, two derived masters, two encode candidates, decode logs, exact commands, source/tool/script hashes, candidate failure records and all numeric checks remain in `.local/music76-source/assets/`. `music76-delivery-manifest.json` is the accepted offline delivery manifest; `music76-asset-manifest.json` remains the unchanged rejected-anchor record. The source preview and existing masters/manifests are preserved.
+The MP3 is 11,798,194 bytes. The independent source captures, two derived masters, two encode candidates, decode logs, exact commands, source/tool/script hashes, candidate failure records and all numeric checks remain in `.local/basketball/research/music76-source/assets/`. `music76-delivery-manifest.json` is the accepted offline delivery manifest; `music76-asset-manifest.json` remains the unchanged rejected-anchor record. The source preview and existing masters/manifests are preserved.
 
 ```sh
 PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/verify_music76_sequence_anchors.py
@@ -133,7 +133,7 @@ PYTHONDONTWRITEBYTECODE=1 python3 -B scripts/basketball/verify_music_distributio
 PYTHONDONTWRITEBYTECODE=1 python3 -B scripts/basketball/verify_music_browser.py
 ```
 
-The ending validator confirms the preserved333-second preview is still unregistered and distinguishes the separately registered compound76 MP3. Distribution validation checks the historical nine-track batch and the separate music76 source/staged hashes, independently derived/encoded artifacts, delay/padding, exact decoded count and EOF→loop-start metrics. The historical browser validator validates only its ten saved cases and saved bundles; it explicitly sets `current_shared_player_verified: false` and links `.local/music76-source/browser/result.json` as separate evidence, pending when absent. It does not infer current-player success from those old bundles.
+The ending validator confirms the preserved333-second preview is still unregistered and distinguishes the separately registered compound76 MP3. Distribution validation checks the historical nine-track batch and the separate music76 source/staged hashes, independently derived/encoded artifacts, delay/padding, exact decoded count and EOF→loop-start metrics. The historical browser validator validates only its ten saved cases and saved bundles; it explicitly sets `current_shared_player_verified: false` and links `.local/basketball/research/music76-source/browser/result.json` as separate evidence, pending when absent. It does not infer current-player success from those old bundles.
 
 A real audio-only collection produced 45 audio payload files, including ten music tracks, with all five music76 timing integers intact and no music WAV. Public audio metadata SHA-256: `6659776ac58466429f5b34705dca55e1901e5df75db4ce6625a865094bc210f5`. The sanitized payload and result are retained as `packaged-audio-playback.json` and `package-audio-verification.json`. No graphics collection changes or upload were made in this audio subtask. Current native music76 browser validation remains owned by the parent task.
 
@@ -145,8 +145,8 @@ The music76 result has 11 checks and two actual suffix boundaries. The validator
 
 Verified run artifacts:
 
-- `.local/music76-source/browser/result.json` and `harness.js` (11 checks, two suffix boundaries).
-- `.local/music76-source/whole-loop-66/result.json` and `loop.js` (two native whole-resource wraps).
-- `.local/music76-source/finite-75/result.json` and `loop.js` (finite ended state).
+- `.local/basketball/research/music76-source/browser/result.json` and `harness.js` (11 checks, two suffix boundaries).
+- `.local/basketball/research/music76-source/whole-loop-66/result.json` and `loop.js` (two native whole-resource wraps).
+- `.local/basketball/research/music76-source/finite-75/result.json` and `loop.js` (finite ended state).
 
-`PYTHONDONTWRITEBYTECODE=1 python3 -B scripts/basketball/verify_music_browser.py` passes; output is retained in `browser-aggregate-current-validation.log`. The aggregate remains `.local/basketball/audio/compression/acceptance-summary.json`. This follow-up reran no captures, encodes or browsers. Human listening, Safari/iOS/Android device coverage, continuous output-gap measurement and release acceptance remain pending.
+`PYTHONDONTWRITEBYTECODE=1 python3 -B scripts/basketball/verify_music_browser.py` passes; output is retained in `browser-aggregate-current-validation.log`. The aggregate remains `.local/basketball/assets/audio/compression/acceptance-summary.json`. This follow-up reran no captures, encodes or browsers. Human listening, Safari/iOS/Android device coverage, continuous output-gap measurement and release acceptance remain pending.

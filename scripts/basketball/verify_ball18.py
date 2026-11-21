@@ -4,9 +4,9 @@ from pathlib import Path
 from verify_pass_floor_original import ROOT,Memory,MPU,put
 from extract_world_actions import decode_world_action_state
 from extract_world_preparation import context
-ROM=(ROOT/'.local/nes-basket/basketball.nes').read_bytes()
+ROM=(ROOT/'.local/basketball/research/original/basketball.nes').read_bytes()
 PRG=ROM[16:16+131072]
-BASE=(ROOT/'.local/nes-basket/runs/world-actions-cpu-long/world-actions-ram.bin').read_bytes()[:2048]
+BASE=(ROOT/'.local/basketball/research/original/runs/world-actions-cpu-long/world-actions-ram.bin').read_bytes()[:2048]
 class SoundMemory(Memory):
  def __setitem__(self,a,v):
   if isinstance(a,int) and 0x4000<=a<=0x4015: list.__setitem__(self,a,v);return
@@ -56,7 +56,7 @@ def main():
  output=ROOT/'games/basketball/engine/testdata'
  packed=gzip.compress((json.dumps(dict(calls=calls,chains=chains),separators=(',',':'))+'\n').encode(),mtime=0)
  (output/'ball18.json.gz').write_bytes(packed)
- path=ROOT/'.local/basketball/team7-after-contact-tails/native/court1-teams0-7-characters0-1-0-1/before.json'
+ path=ROOT/'.local/basketball/verification/team7-after-contact-tails/native/court1-teams0-7-characters0-1-0-1/before.json'
  before=path.read_bytes();(output/'ball18-runtime-before.json.gz').write_bytes(gzip.compress(before,mtime=0))
  meta=dict(entry='bank6 BCAA via original E149..E14C dispatch',scope='controlled original calls, uninterrupted chains, separate real Go runtime failure',calls=len(calls),chains=[len(c['records']) for c in chains],romSHA256=hashlib.sha256(ROM).hexdigest(),baseSHA256=hashlib.sha256(BASE).hexdigest(),fixtureSHA256=hashlib.sha256(packed).hexdigest(),runtimeBefore=str(path.relative_to(ROOT)),runtimeBeforeSHA256=hashlib.sha256(before).hexdigest())
  (output/'ball18-source.json').write_text(json.dumps(meta,indent=2)+'\n');print(json.dumps(meta))

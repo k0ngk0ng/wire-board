@@ -21,7 +21,7 @@ def run(r,entry,exit):
 
 def main():
  assert hashlib.sha256(ROM).hexdigest()=='0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b'
- source=ROOT/'.local/basketball/preparation-after-source-plan12-20261018/court1-roster0-all-computer/before.json';snapshot=json.loads(source.read_text());patch,_=encode_world_probe(snapshot);ram=bytearray(BASE)
+ source=ROOT/'.local/basketball/verification/preparation-after-source-plan12-20261018/court1-roster0-all-computer/before.json';snapshot=json.loads(source.read_text());patch,_=encode_world_probe(snapshot);ram=bytearray(BASE)
  assert snapshot['videoFrames']==21719 and snapshot['config']['match']['Mode']==128
  for a,v in patch.items():ram[a]=v
  prepared,_,_,_,_=run(ram,0xd314,0xd345)

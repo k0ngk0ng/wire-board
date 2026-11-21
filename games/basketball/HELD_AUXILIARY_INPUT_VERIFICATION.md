@@ -41,11 +41,11 @@ Go测试从每条链的唯一初态持续保存输入/世界状态，先运行�
 
 `audit_auxiliary_heading.py`核对19174个原RAM快照（自然world actions/inputs/preparation和AI记录），04F0/04F1均为0，证明这些旧主夹具零值的来源。92个carry动作边界重新从原函数链提取Heading后，移除新增字段即可恢复旧夹具SHA `2541ae0b3cedd024400aab6dd7fc29dcffabb7fd308504125e7b2588db57ccd4`，所有旧字段完全不变。
 
-原92边界动作测试只增加外部输入阶段的Aux.Heading同步，与原有Player.Request/Heading同属输入效果；位置、速度、动作与动画继续连续维护。迁移审计及原始来源SHA位于 `.local/basketball/rea/held-auxiliary-input/heading-migration.json`。
+原92边界动作测试只增加外部输入阶段的Aux.Heading同步，与原有Player.Request/Heading同属输入效果；位置、速度、动作与动画继续连续维护。迁移审计及原始来源SHA位于 `.local/basketball/research/rea/held-auxiliary-input/heading-migration.json`。
 
 ## 验收与范围
 
-Native、race、Wasm同一13项测试全部通过，包含1714次新输入、五条连续链、原1117次主动输入、1998次完整输入/动作阶段及准备阶段回归。Native记录分为输入12项和补充完整动作1项；三种运行的测试集合一致，清单与SHA见 `.local/basketball/rea/held-auxiliary-input/verification.json`。
+Native、race、Wasm同一13项测试全部通过，包含1714次新输入、五条连续链、原1117次主动输入、1998次完整输入/动作阶段及准备阶段回归。Native记录分为输入12项和补充完整动作1项；三种运行的测试集合一致，清单与SHA见 `.local/basketball/research/rea/held-auxiliary-input/verification.json`。
 
 本次没有修改world_actions.go或world_loop.go；携物动作适配由其维护者提供。4F/68等原请求在输入矩阵中核对，但其完整动作范围不能由上述五条链外推。实际浏览器WASD/J/K拾取/投掷E2E由root独立执行。
 

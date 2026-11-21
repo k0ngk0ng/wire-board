@@ -16,7 +16,7 @@
 
 ## 原指令与语义实现
 
-REA / Ghidra 证据保存在 `.local/basketball/rea/ball16/analysis/`。批量分析证据 ID 为 `ev_c1c6d67c5d2a4c3058283078065a3c4ad59de065a6ef4be45664de326012cb4d`，包含 `$BB78`、`$B998`、`$BDD2`、`$BD14`。ROM、初始 RAM 及夹具 SHA-256 见 `engine/testdata/ball16-source.json`。静态分析用于定位分支；实际结果由未改写 ROM 的 py65 调用验证。
+REA / Ghidra 证据保存在 `.local/basketball/research/rea/ball16/analysis/`。批量分析证据 ID 为 `ev_c1c6d67c5d2a4c3058283078065a3c4ad59de065a6ef4be45664de326012cb4d`，包含 `$BB78`、`$B998`、`$BDD2`、`$BD14`。ROM、初始 RAM 及夹具 SHA-256 见 `engine/testdata/ball16-source.json`。静态分析用于定位分支；实际结果由未改写 ROM 的 py65 调用验证。
 
 `PrepareOriginalBall16` 在 `$BB8E` 动画前结束。原发射保留水平和深度速度，将竖直速度设为 4 像素／更新并清空重力。先提交原音效 30、球权与目标信息，再执行场地物理。
 
@@ -30,7 +30,7 @@ REA / Ghidra 证据保存在 `.local/basketball/rea/ball16/analysis/`。批量�
 - 6 条连续轨迹，共 397 步，左右方向各覆盖初始高度 30、100、210。Go 从每条首状态独立推进，不用后续原状态回填；每步经过 JSON 保存恢复，均抵达动作 6。
 - Native、race、Wasm 定向验证均通过，最终结果见 `native-final.log`、`race-final.log`、`wasm-final.log`。单元测试先于实现编写，缺少 API 的失败保存在 `before.log`；并行任务编译窗口日志保存在 `after.log`、`race.log`、`wasm.log`，不能视为本组件规则失败或通过。
 
-边界夹具经过复核：目标 X 取运动后的 79／80／81、446／447／448，生成器逐条断言物理完成时的整数 X；初始夹具仍保存在 `.local/basketball/rea/ball16/initial-ball16.json.gz`，最终夹具重新执行 Native／race／Wasm。
+边界夹具经过复核：目标 X 取运动后的 79／80／81、446／447／448，生成器逐条断言物理完成时的整数 X；初始夹具仍保存在 `.local/basketball/research/rea/ball16/initial-ball16.json.gz`，最终夹具重新执行 Native／race／Wasm。
 
 可重复执行：
 

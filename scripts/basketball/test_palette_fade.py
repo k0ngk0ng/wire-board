@@ -5,9 +5,9 @@ import json,unittest
 from palette_fade import fade_nes_index,build_palette_fade_lut
 ROOT=Path(__file__).resolve().parents[2]
 class PaletteFadeTests(unittest.TestCase):
- def setUp(self):self.colors=(ROOT/'.local/nes-basket/runs/graphics-right/nes-colors.rgb').read_bytes()
+ def setUp(self):self.colors=(ROOT/'.local/basketball/research/original/runs/graphics-right/nes-colors.rgb').read_bytes()
  def test_original_function_buffers(self):
-  cases=json.loads((ROOT/'.local/basketball/fade/index-oracle.json').read_text())['cases'];full={(c['paletteID'],tuple(c['teams']),c['flags']):c['colors'] for c in cases if c['level']==4}
+  cases=json.loads((ROOT/'.local/basketball/research/fade/index-oracle.json').read_text())['cases'];full={(c['paletteID'],tuple(c['teams']),c['flags']):c['colors'] for c in cases if c['level']==4}
   for case in cases:self.assertEqual([fade_nes_index(v,case['level']) for v in full[case['paletteID'],tuple(case['teams']),case['flags']]],case['colors'])
   self.assertEqual(len(cases),80)
  def test_rgb_alias_classes_preserve_index_results(self):

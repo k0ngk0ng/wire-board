@@ -17,5 +17,5 @@ def main():
   assert (reference/'ram.bin').read_bytes()==(observed/'ram.bin').read_bytes()
   for n in spec['captures']:assert (reference/f'frame-{n:05d}.png').read_bytes()==(observed/f'frame-{n:05d}.png').read_bytes()
   records.append({'court':court,'run':spec['name'],'source':json.loads((observed/'source.json').read_text()),'frames':[{'frame':n,'emulator_frame':frames[n]} for n in spec['captures']],'ram_and_png_equal':True})
- out=ROOT/'.local/basketball/irq-raster';(out/'holdout-capture.json').write_text(json.dumps({'scope':'40 additional configured original frames; not Go whole-game proof','records':records},indent=2)+'\n')
+ out=ROOT/'.local/basketball/research/irq-raster';(out/'holdout-capture.json').write_text(json.dumps({'scope':'40 additional configured original frames; not Go whole-game proof','records':records},indent=2)+'\n')
 if __name__=='__main__':main()

@@ -18,7 +18,7 @@ source scripts/env.sh
 go test -race ./games/basketball/engine -run 'Test(OriginalSpecialLaunchContext|WorldSpecialLaunchReadsCurrentSecondPlayerX|OriginalLaunchedPlayer|WorldLaunched|OriginalTeamSpecialBall|WorldTeamSpecial|WorldLoop)'
 ```
 
-证据位于 `.local/basketball/rea/special-launch-context/`，包括 `world-before.log`、`world-after.log`、`race.json`、`wasm.log`；夹具和原指令来源摘要位于 `testdata/special-launch-context*`。
+证据位于 `.local/basketball/research/rea/special-launch-context/`，包括 `world-before.log`、`world-after.log`、`race.json`、`wasm.log`；夹具和原指令来源摘要位于 `testdata/special-launch-context*`。
 
 ## 设备改写特殊球的限制
 

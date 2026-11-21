@@ -40,7 +40,7 @@ def main():
     parser.add_argument("--court", type=int, choices=(0, 1), default=1)
     parser.add_argument("--wasm", action="store_true")
     parser.add_argument("--list", action="store_true", help="print selections without running")
-    parser.add_argument("--output", default=".local/basketball/team-roster-diagnostics")
+    parser.add_argument("--output", default=".local/basketball/verification/team-roster-diagnostics")
     args = parser.parse_args()
     if args.characters is not None and args.teams is None:
         parser.error("--characters requires --teams")

@@ -1,12 +1,12 @@
 """Verify Court2-specific BDD2 counterexamples using actual music61+shot30 work bytes."""
 import hashlib,json
 from verify_pass_floor_original import ROOT,Memory,MPU,put
-out=ROOT/'.local/basketball/rea/special-turn-alias'
-rom=(ROOT/'.local/nes-basket/basketball.nes').read_bytes();prg=rom[16:16+131072]
+out=ROOT/'.local/basketball/research/rea/special-turn-alias'
+rom=(ROOT/'.local/basketball/research/original/basketball.nes').read_bytes();prg=rom[16:16+131072]
 audio=json.loads((out/'music-shot-work.json').read_text());track=[r for r in audio if r['music']==61]
-columns=json.loads((ROOT/'.local/basketball/courts/2/stream-columns.json').read_text())['initialization']
+columns=json.loads((ROOT/'.local/basketball/assets/courts/2/stream-columns.json').read_text())['initialization']
 column=next(r for r in columns if r['column']==47);prefix=[255,192+(47&31),column['tiles'][0][0]]
-base=(ROOT/'.local/nes-basket/runs/world-actions-cpu-long/world-actions-ram.bin').read_bytes()[:2048]
+base=(ROOT/'.local/basketball/research/original/runs/world-actions-cpu-long/world-actions-ram.bin').read_bytes()[:2048]
 rows=[]
 for x,works in [(280,[54,132]),(380,[54,179])]:
  for work in works:

@@ -12,11 +12,11 @@
 - 战术是按队伍保存的指令，不是两名真人各一份。原菜单只允许“一名真人＋一名电脑”的队伍编辑。接口只允许修改热血队的战术，另一队值保持不变；两名真人或全电脑队伍不能新改搭档战术。已接受的选择不会因随后托管切换而被撤销。
 - 恢复校验拒绝更改 Mode、胜场进度、奖励组、对方战术、非法角色及不可能的库存变化。满库存卸装沿用原丢弃行为，并通过 `DiscardedItem` 显式报告。该容量边界不代表正常战役自然拥有这些物品；保存来源与身份验证仍由平台负责。
 
-源调查索引为共享 `.local/basketball/rea/campaign-preparation-semantics/REPORT.md`。战术资格与控制器的原路由在报告中单独列出，不能把 UI 的每席设置误当两份独立库存。
+源调查索引为共享 `.local/basketball/research/rea/campaign-preparation-semantics/REPORT.md`。战术资格与控制器的原路由在报告中单独列出，不能把 UI 的每席设置误当两份独立库存。
 
 ## 实现前的失败清单与验证
 
-先写测试、保存缺少 API 的编译失败，再编写实现。红灯日志位于工作树 `.local/campaign-preparation/before.log`。
+先写测试、保存缺少 API 的编译失败，再编写实现。红灯日志位于工作树 `.local/basketball/research/campaign-preparation/before.log`。
 
 884 条已有原装备记录验证准备编辑的装备、卸装、空库存拒绝与取消不提交行为，包含 12 次原满库存丢弃。真实对局从 `020010` 装备主场进入半场后，依次卸下角色 0 的 item1、给角色 1 装备、交换上场位置并将本队战术改为 2；每次修改都经过 JSON 保存恢复，旧版本请求被拒绝。修改本身不改变原 Runtime 配置、比分、Carry、逻辑帧或 RNG。
 
@@ -33,7 +33,7 @@ go test -race ./games/basketball/engine -run '^TestCampaignPreparation' -count=1
 GOOS=js GOARCH=wasm go test ./games/basketball/engine -run '^TestCampaignPreparation' -count=1 -v -exec "$(go env GOROOT)/lib/wasm/go_js_wasm_exec"
 ```
 
-日志和摘要在工作树 `.local/campaign-preparation/`。这些是源规则和引擎流程验证，不是浏览器／服务器接口验收。
+日志和摘要在工作树 `.local/basketball/research/campaign-preparation/`。这些是源规则和引擎流程验证，不是浏览器／服务器接口验收。
 
 ## 平台接线待办
 

@@ -9,7 +9,7 @@ ROOT=Path(__file__).resolve().parents[2]
 
 
 def main(write_go=False):
-    run=ROOT/'.local/nes-basket/runs/combat-shot-observation'
+    run=ROOT/'.local/basketball/research/original/runs/combat-shot-observation'
     def state(r):
         def word(a,b):return r[a]+256*r[b]
         def body(i):
@@ -31,7 +31,7 @@ def main(write_go=False):
         p=out/f'combat-{kind}s.json';p.write_text(json.dumps(records,separators=(',',':'))+'\n')
         p.with_name(f'combat-{kind}s-source.json').write_text(json.dumps(dict(source_is_original_execution=True,records=count,trace_sha256=hashlib.sha256(raw).hexdigest(),sha256=hashlib.sha256(p.read_bytes()).hexdigest(),source=json.loads((run/'source.json').read_text())),indent=2)+'\n')
         print(kind,count)
-    rom=(ROOT/'.local/nes-basket/basketball.nes').read_bytes();b=rom[16+5*16384:16+6*16384];r=lambda a:b[a-0x8000]
+    rom=(ROOT/'.local/basketball/research/original/basketball.nes').read_bytes();b=rom[16+5*16384:16+6*16384];r=lambda a:b[a-0x8000]
     tables=dict(profiles=[[r(0x93b8+i*6+j) for j in range(6)] for i in range(12)],variants=[r(0x9400+i) for i in range(103)],resistanceDamage=[r(0x8889+i) for i in range(7)],depthPushCourts=[bool(r(0x886b+i)) for i in range(8)])
     p=out/'combat-profiles.json';p.write_text(json.dumps(tables,indent=2)+'\n')
     p.with_name('combat-profiles-source.json').write_text(json.dumps(dict(source='Original bank 5 $93B8/$9400/$8889/$886B',rom_sha256=hashlib.sha256(rom).hexdigest(),sha256=hashlib.sha256(p.read_bytes()).hexdigest()),indent=2)+'\n')

@@ -73,7 +73,7 @@ The browser also renders every supported Court6 result palette and requires the
 exact manifest set `[7,11,12,13,14,15]`.
 
 Actual logs and the source-backed image report are in
-`.local/basketball/rea/court-six/`:
+`.local/basketball/research/rea/court-six/`:
 
 - `result-source.log` and `result-capture.json`: two completed original runs,
   complete RAM identity and eight observed frames.
@@ -83,13 +83,13 @@ Actual logs and the source-backed image report are in
 - `result-browser-after.log`: the complete 303-frame browser regression.
 
 Full per-frame results and `result-court-six-canvas.png` are in
-`.local/basketball/renderer/browser/`. Reproduce after `source scripts/env.sh`:
+`.local/basketball/verification/renderer/browser/`. Reproduce after `source scripts/env.sh`:
 
 ```sh
 PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/capture_court_six_result.py
 PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/probe_court_six_result_palettes.py
 PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/export_result_assets.py
-PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/verify_result_assets.py .local/basketball/results
+PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/verify_result_assets.py .local/basketball/assets/results
 PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/verify_court_six_result_art.py
 PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/accept_renderer.py
 ```

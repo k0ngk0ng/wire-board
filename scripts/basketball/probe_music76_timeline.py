@@ -1,12 +1,12 @@
 """Unchanged original76 driver timeline; retained PCM is never rewritten."""
 import csv,gzip,hashlib,json,math,sys
 from pathlib import Path
-ROOT=Path(__file__).resolve().parents[2];OUT=ROOT/'.local/music76-source';OUT.mkdir(parents=True,exist_ok=True)
+ROOT=Path(__file__).resolve().parents[2];OUT=ROOT/'.local/basketball/research/music76-source';OUT.mkdir(parents=True,exist_ok=True)
 sys.path.insert(0,str(ROOT/'scripts/basketball'))
 from verify_pass_floor_original import Memory,MPU
-ROM=(ROOT/'.local/nes-basket/basketball.nes').read_bytes();PRG=ROM[16:131088]
+ROM=(ROOT/'.local/basketball/research/original/basketball.nes').read_bytes();PRG=ROM[16:131088]
 assert hashlib.sha256(ROM).hexdigest()=='0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b'
-BASE=ROOT/'.local/basketball/audio/export'
+BASE=ROOT/'.local/basketball/assets/audio/export'
 entry=next(r for r in json.load(open(BASE/'ending-music-manifest.json'))['tracks']if r['id']==76)
 files=entry['captures'][0]
 for k,p in files.items():

@@ -39,6 +39,6 @@ go test -race ./games/basketball/server -run '^TestBasketball(RealtimeLoadingHTT
 python3 -B scripts/ci/scope.py run --game basketball --backend
 ```
 
-浏览器结果及截图位于 `.local/basketball/loading-browser/`；原有控制器和完整房间界面回归分别位于 `network-board/`、`platform-rooms/`。加载验收使用生产前端和真实服务端，故意延迟 Wasm、使一张球场图片失败，再验证重试、等待第二位真人及开赛后的重载。测试将校验过的 OSS 字节映射到本地测试服务，以适配回环地址的 CORS；这些结果不代表生产网络速度。OSS 上传工具另行保留远端回读记录。
+浏览器结果及截图位于 `.local/basketball/verification/loading-browser/`；原有控制器和完整房间界面回归分别位于 `network-board/`、`platform-rooms/`。加载验收使用生产前端和真实服务端，故意延迟 Wasm、使一张球场图片失败，再验证重试、等待第二位真人及开赛后的重载。测试将校验过的 OSS 字节映射到本地测试服务，以适配回环地址的 CORS；这些结果不代表生产网络速度。OSS 上传工具另行保留远端回读记录。
 
 历史文档中关于“容器内完整回退包”的说明记录的是 v1.26.0 及以前的实现，以本文的分发边界为准。

@@ -15,13 +15,13 @@
 
 ## 来源与阶段边界
 
-原始数据为 `.local/nes-basket/runs/world-actions-cpu-long/{world-actions.csv,world-actions-ram.bin}`，每条含 `$D345` 到 `$D348` 的完整前后 RAM。实际动作调用序列取 `testdata/action-schedule.json`。此入口只组合动作处理；每个阶段的前置输入／AI 已完成，阶段之间仍可能发生尚未接入的接触和策略变化。
+原始数据为 `.local/basketball/research/original/runs/world-actions-cpu-long/{world-actions.csv,world-actions-ram.bin}`，每条含 `$D345` 到 `$D348` 的完整前后 RAM。实际动作调用序列取 `testdata/action-schedule.json`。此入口只组合动作处理；每个阶段的前置输入／AI 已完成，阶段之间仍可能发生尚未接入的接触和策略变化。
 
 ## 本次结果
 
 验证已从最初 59 个阶段扩展到全部 1,998 个原始动作阶段。13 个对象的实际 26,093 次调用、调用顺序、人物／辅助对象／篮球／篮筐状态和已建模的共享命令全部匹配；没有裁掉后续阶段或跳过失败对象。总调用比每步固定 13 次多 119 次，重访由调度器根据即时标志决定。
 
-原生竞态与 Wasm 定向验证通过，记录位于 `.local/basketball/world-actions/{native-tests.json,wasm-tests.log}`。全 1,998 条夹具已压缩为 `world-actions.json.gz`，从未压缩的约 24 MB 降为 303,157 字节；保留两种 SHA-256，旧大 JSON 已删除。每个测试进程只读解析一次；缓存不共享可变游戏状态，场景以值复制，序列化往返后重复执行同一动作阶段仍一致。压缩迁移与统一输入组合的再验证记录位于 `.local/basketball/rea/world-inputs/{native-tests.json,wasm-tests.log}`。
+原生竞态与 Wasm 定向验证通过，记录位于 `.local/basketball/verification/world-actions/{native-tests.json,wasm-tests.log}`。全 1,998 条夹具已压缩为 `world-actions.json.gz`，从未压缩的约 24 MB 降为 303,157 字节；保留两种 SHA-256，旧大 JSON 已删除。每个测试进程只读解析一次；缓存不共享可变游戏状态，场景以值复制，序列化往返后重复执行同一动作阶段仍一致。压缩迁移与统一输入组合的再验证记录位于 `.local/basketball/research/rea/world-inputs/{native-tests.json,wasm-tests.log}`。
 
 此验证逐条使用原阶段入口状态，不是从一个初始状态连续生成全部比赛。阶段间的输入、接触、全队策略和篮板结算仍需由完整世界循环接入，不得将这些记录描述为已完成一场原版比赛。
 
@@ -37,7 +37,7 @@
 
 完整组合验证暴露了单人物或单球夹具中未覆盖的持球地形、持球下落、瞄准转扣篮和扣篮球偏移。这些差异通过对应原处理器恢复，未在世界入口写入预期位置来补齐结果。
 
-世界适配另外保留两个原查表行为：篮筐投掷在选定对象小于 7 时仍读取原弧高表的前 7 项；篮筐进入 ready 时通过固定 `$DFBD` 按高度和半场计算实际挂点，而不是使用自身对象编号。后者的 REA 证据位于 `.local/basketball/rea/world-actions-hoop/`，Evidence 为 `ev_bce61c10ea6d8b34100f94f1af1a3eda14bf95d331a7ad35ec502e5e941630f0`。
+世界适配另外保留两个原查表行为：篮筐投掷在选定对象小于 7 时仍读取原弧高表的前 7 项；篮筐进入 ready 时通过固定 `$DFBD` 按高度和半场计算实际挂点，而不是使用自身对象编号。后者的 REA 证据位于 `.local/basketball/research/rea/world-actions-hoop/`，Evidence 为 `ev_bce61c10ea6d8b34100f94f1af1a3eda14bf95d331a7ad35ec502e5e941630f0`。
 
 `TestWorldHeldEntryClearsExclusion` 验证持球动作 2 首次进入清 `$0561`，但不改变球权；已进入时不重复清理。独立原传球发射参数还验证世界适配保存目标、弧高、落点和排除者。这些固定／局部参数用例不计入 1,998 个完整阶段。
 

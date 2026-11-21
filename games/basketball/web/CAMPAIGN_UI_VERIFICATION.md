@@ -16,7 +16,7 @@
 
 ## 原名称与接口修正
 
-`selection/campaign-labels.json` 保存 32 件装备、5 种战术的原名、编辑译名、原指针与字形编码。`export_campaign_labels.py` 核对原 ROM SHA-256、固定区 C2C8 装备名称指针、九字节原记录和既有角色字形转写；遇到 FF 停止，不能把下一条名称的字节拼到前一条。源字形核对图保存在 `.local/campaign-ui/equipment-source-names.png`。
+`selection/campaign-labels.json` 保存 32 件装备、5 种战术的原名、编辑译名、原指针与字形编码。`export_campaign_labels.py` 核对原 ROM SHA-256、固定区 C2C8 装备名称指针、九字节原记录和既有角色字形转写；遇到 FF 停止，不能把下一条名称的字节拼到前一条。源字形核对图保存在 `.local/basketball/research/campaign-ui/equipment-source-names.png`。
 
 中文名称属于编辑翻译，不声称官方译名，也不从名称推断装备效果。名称文件 SHA-256：`e8c8a798f4752a186c0e362fba5ceb77dc79cd8a7d0897774370d24a598ff0ac`。
 
@@ -42,8 +42,8 @@
 
 产物：
 
-- 工作树 `.local/campaign-ui/`：`result.json`、`contrast.json`、各失败日志、`server-race.jsonl`、构建日志和组件截图。
-- 共享 `.local/basketball/platform-rooms/`：真实页面 `result.json`、`campaign-contrast.json`、操作日志及战役／单场 PC、手机截图。
+- 工作树 `.local/basketball/research/campaign-ui/`：`result.json`、`contrast.json`、各失败日志、`server-race.jsonl`、构建日志和组件截图。
+- 共享 `.local/basketball/verification/platform-rooms/`：真实页面 `result.json`、`campaign-contrast.json`、操作日志及战役／单场 PC、手机截图。
 
 已有前端依赖和本地原图时，在工作树根目录复现：
 

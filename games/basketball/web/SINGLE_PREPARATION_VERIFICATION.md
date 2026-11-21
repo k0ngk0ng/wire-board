@@ -33,7 +33,7 @@ court native mouse actions, native mobile touch, all source PNG fallback loads,
 React updates and source-image effects are allowed two animation frames before
 the 56-pair imagery assertions.
 
-Artifacts: `.local/single-preparation/result.json`, `contrast.json`,
+Artifacts: `.local/basketball/verification/single-preparation/result.json`, `contrast.json`,
 `desktop.png` and `mobile-320.png`. Both screenshots were visually inspected.
 The harness records requests; it does not simulate server authorization or
 claim a complete match. The host's separate HTTP/rule tests cover acceptance.

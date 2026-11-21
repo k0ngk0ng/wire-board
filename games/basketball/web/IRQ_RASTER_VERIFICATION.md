@@ -13,7 +13,7 @@ The pinned ROM SHA-256 is
 `0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b`.
 REA evidence `ev_0b7775d88a48b030637b0d428eb13f069041ea9e81832a2c4b0b555dea6357ad`
 resolves fixed-bank `$F298`, `$F2D4` and `$F317`; the complete batch, snapshot and
-source identity are retained under `.local/basketball/rea/irq-raster/`.
+source identity are retained under `.local/basketball/research/rea/irq-raster/`.
 
 The original `$F317` handler performs the fixed delay, selects font CHR pages at
 `$F331/$F33B`, writes `$2000` to the background address at `$F343/$F348`, and
@@ -33,7 +33,7 @@ The installed reference is FCEUX 2.6.6 with `SDL.NewPPU=0` and `SDL.PAL=0`.
 Pinned upstream `ppu.cpp`, `pputile.inc`, `x6502.cpp` and `state.cpp` explain
 `ResetRL`, `GETLASTPIXEL`, the two-row prefetch and saved cycle remainder.
 Their exact URLs/hashes and the actual emulator binary hash are retained in
-`.local/basketball/irq-raster/source.json`. They are research evidence, not
+`.local/basketball/research/irq-raster/source.json`. They are research evidence, not
 browser dependencies.
 
 ## Clock-derived boundaries
@@ -109,8 +109,8 @@ PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/acc
 
 To recreate the additional source observations, run `capture_irq_holdout.py`,
 then `capture_irq_raster.py` with and without `--holdout`. Logs and source
-manifests are under `.local/basketball/irq-raster/`; the full browser result is
-`.local/basketball/renderer/browser/result.json`.
+manifests are under `.local/basketball/research/irq-raster/`; the full browser result is
+`.local/basketball/verification/renderer/browser/result.json`.
 
 ## Remaining boundary
 

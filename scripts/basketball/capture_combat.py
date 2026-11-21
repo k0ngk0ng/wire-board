@@ -56,7 +56,7 @@ def main():
         raw=(observed/f'combat-{kind}-ram.bin').read_bytes()
         assert len(raw)==len(rows)*4096
         summary[kind]=dict(records=len(rows),sha256=hashlib.sha256(raw).hexdigest())
-    out=ROOT/'.local/basketball/rea/combat';out.mkdir(parents=True,exist_ok=True)
+    out=ROOT/'.local/basketball/research/rea/combat';out.mkdir(parents=True,exist_ok=True)
     (out/'capture.json').write_text(json.dumps(summary,indent=2)+'\n');print(json.dumps(summary))
 
 

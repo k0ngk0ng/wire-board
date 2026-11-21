@@ -20,7 +20,7 @@
 
 Source ROM SHA-256: `0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b`. Retained NES RGB lookup SHA-256: `da30843b331e2e4474395866bc9871fcd60a7d716b3c8ee5ce3c89ee46e8c91e`. Both are pinned by the exporter. Palette RGB is the existing capture tool's 64-color lookup, not a claim about a specific physical display.
 
-New REA evidence `ev_b5a7b0814ff69b7d44f8d5248f3503031ab3bbcc1f85c3d1371e645ebb2a4a79` covers descriptor loading, all four decompressor branches and the original sprite piece reader. Retained bundle: `.local/postresult-art-source/analysis/evidence.json`. Its imported `bank3-visible.bin` SHA-256 is `38f5141f8b77e75504ddd5e23586c54ea1d61d4835071937c5a8d809322e9877`; fixed-bank resource procedures are unchanged in that mapped image. The CLI session was closed after export. Pseudocode is supporting evidence; isolated unchanged 6502 instructions provide the comparisons.
+New REA evidence `ev_b5a7b0814ff69b7d44f8d5248f3503031ab3bbcc1f85c3d1371e645ebb2a4a79` covers descriptor loading, all four decompressor branches and the original sprite piece reader. Retained bundle: `.local/basketball/research/postresult-art-source/analysis/evidence.json`. Its imported `bank3-visible.bin` SHA-256 is `38f5141f8b77e75504ddd5e23586c54ea1d61d4835071937c5a8d809322e9877`; fixed-bank resource procedures are unchanged in that mapped image. The CLI session was closed after export. Pseudocode is supporting evidence; isolated unchanged 6502 instructions provide the comparisons.
 
 | Preset | PPU destination | Bytes | Two 2 KiB CHR starts | Background palette | Meaning |
 | --- | --- | --- | --- | --- | --- |
@@ -40,7 +40,7 @@ Actor profile table bounds are kind 17 `863A..872A` (120 poses), kind 18 `872A..
 
 All nine background writes match original `DC15..DC96` execution, including the real `DD34` buffered PPU read and `DD61` upload instructions. The adapter substitutes only `FA0B`'s CHR commit with a four-page CHR view; it does not simulate an NMI or claim upload duration. Original palette function `9526` was compared for 19 background palettes × 15 sprite palette-pair IDs = **285 calls**, stopping at `9619` before its NMI handshake. The validation includes the universal-background normalization of every fourth palette entry. It preserves two independent eight-color sprite selections.
 
-The local fallback bundle `.local/postresult-assets/` contains nine PNGs and `manifest.json`: eight complete source-nametable previews and one 67-page index atlas. Every index-atlas pixel (274,432 pixels) is checked against independent direct bitplane extraction. PNG file hashes, modes and dimensions are verified. Reward 26 has no fabricated full preview because its attributes and lower screen are retained from prior state. `.local/postresult-art-source/contact-sheet.png` is an inspected contact sheet of the raw nametable previews, **not** a console screenshot.
+The local fallback bundle `.local/basketball/assets/postresult/` contains nine PNGs and `manifest.json`: eight complete source-nametable previews and one 67-page index atlas. Every index-atlas pixel (274,432 pixels) is checked against independent direct bitplane extraction. PNG file hashes, modes and dimensions are verified. Reward 26 has no fabricated full preview because its attributes and lower screen are retained from prior state. `.local/basketball/research/postresult-art-source/contact-sheet.png` is an inspected contact sheet of the raw nametable previews, **not** a console screenshot.
 
 ## Consumption contract
 
@@ -56,10 +56,10 @@ From the basketball worktree:
 
 ```sh
 PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/export_postresult_assets.py
-PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/verify_postresult_assets.py .local/postresult-assets
+PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/verify_postresult_assets.py .local/basketball/assets/postresult
 ```
 
-Initial expected-red result is retained in `.local/postresult-art-source/expected-red.log`; the missing `postresult_art` module failed before implementation. Passing source/resource comparisons are in `validation.log`. `reproducibility.json` retains all output hashes from two fresh exports into separate worktree-local directories and checks byte-for-byte equality. The exporter refuses an output path outside this worktree; it performs no upload or writes to the linked shared result-assets directory.
+Initial expected-red result is retained in `.local/basketball/research/postresult-art-source/expected-red.log`; the missing `postresult_art` module failed before implementation. Passing source/resource comparisons are in `validation.log`. `reproducibility.json` retains all output hashes from two fresh exports into separate worktree-local directories and checks byte-for-byte equality. The exporter refuses an output path outside this worktree; it performs no upload or writes to the linked shared result-assets directory.
 
 ## Remaining integration boundaries
 

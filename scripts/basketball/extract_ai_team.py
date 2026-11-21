@@ -9,7 +9,7 @@ ROOT=Path(__file__).resolve().parents[2]
 
 
 def main(write_go=False):
-    run=ROOT/'.local/nes-basket/runs/team-ai-shot-observation'
+    run=ROOT/'.local/basketball/research/original/runs/team-ai-shot-observation'
     rows=list(csv.DictReader((run/'team-ai.csv').open()))
     raw=(run/'team-ai-ram.bin').read_bytes()
     assert len(raw)==len(rows)*4096 and len(rows)==1197
@@ -29,7 +29,7 @@ def main(write_go=False):
     out=ROOT/'games/basketball/engine/testdata'
     target=out/'ai-team.json';target.write_text(json.dumps(records,separators=(',',':'))+'\n')
     target.with_name('ai-team-source.json').write_text(json.dumps(dict(source_is_original_execution=True,records=len(rows),trace_sha256=hashlib.sha256(raw).hexdigest(),sha256=hashlib.sha256(target.read_bytes()).hexdigest(),source=json.loads((run/'source.json').read_text())),indent=2)+'\n')
-    rom=(ROOT/'.local/nes-basket/basketball.nes').read_bytes();bank=rom[16+5*16384:16+6*16384]
+    rom=(ROOT/'.local/basketball/research/original/basketball.nes').read_bytes();bank=rom[16+5*16384:16+6*16384]
     r=lambda a:bank[a-0x8000]
     w=lambda a:r(a)+256*r(a+1)
     tables=dict(computer=[[[r(w(w(0x967e+2*t)+2*s)+i) for i in range(6)] for s in range(7)] for t in range(8)],

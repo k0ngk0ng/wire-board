@@ -69,6 +69,8 @@ SERVER_METADATA={'index.html','game-load-manifest.json','contra-delivery.json','
 SHA256=re.compile(r'[a-f0-9]{64}\Z')
 PVZR_MAX_COMPRESSED_BYTES=16*1024*1024
 PVZR_MAX_DECODED_BYTES=64*1024*1024
+MANUAL_GZIP_MAX_COMPRESSED_BYTES=32*1024*1024
+MANUAL_GZIP_MAX_DECODED_BYTES=128*1024*1024
 def sha(data):return hashlib.sha256(data).hexdigest()
 def validate_pvzr(data):
 
@@ -123,10 +125,77 @@ def contra_inventory(dist,base):
  if not isinstance(manifest,dict) or manifest.get('version')!=1 or manifest.get('rulesBuildID')!=rules:raise ValueError('Contra runtime rules identity differs from receipt')
  return rows
 
+def validate_manual_gzip_payload(body,mime):
+ if mime=='application/json':
+  json.loads(body)
+  return
+ if mime!='model/gltf-binary' or len(body)<20 or body[:4]!=b'glTF' or int.from_bytes(body[4:8],'little')!=2 or int.from_bytes(body[8:12],'little')!=len(body):
+  raise ValueError('Invalid declared gzip payload MIME')
+ offset=12
+ kinds=[]
+ while offset<len(body):
+  if offset+8>len(body):raise ValueError('Invalid declared gzip GLB chunk')
+  size=int.from_bytes(body[offset:offset+4],'little')
+  kind=body[offset+4:offset+8]
+  offset+=8
+  if size%4 or offset+size>len(body) or kind not in (b'JSON',b'BIN\0') or kind in kinds or not kinds and kind!=b'JSON':raise ValueError('Invalid declared gzip GLB chunk')
+  if kind==b'JSON':
+   document=json.loads(body[offset:offset+size])
+   if not isinstance(document,dict) or not isinstance(document.get('asset'),dict) or document['asset'].get('version')!='2.0':raise ValueError('Invalid declared gzip GLB JSON')
+  kinds.append(kind)
+  offset+=size
+ if not kinds or offset!=len(body):raise ValueError('Invalid declared gzip GLB length')
+
+def manual_gzip_inventory(dist,base):
+ expected={}
+ for manifest in sorted(dist.glob('*/manifest.json')):
+  folder=manifest.parent
+  if manifest.is_symlink() or folder.is_symlink():raise ValueError('Symlink declared gzip manifest')
+  try:document=json.loads(manifest.read_bytes())
+  except (ValueError,OSError) as error:raise ValueError('Invalid declared gzip manifest: '+manifest.relative_to(dist).as_posix()) from error
+  def visit(value):
+   if isinstance(value,dict):
+    if 'file' in value and value.get('encoding')=='gzip':
+     name=value['file']
+     if not isinstance(document,dict) or type(document.get('schema')) is not int or document['schema']!=1:raise ValueError('Unsupported declared gzip manifest schema')
+     if not isinstance(name,str) or not re.fullmatch(r'[A-Za-z0-9._/-]+',name) or Path(name).is_absolute() or Path(name).as_posix()!=name or any(part.startswith('.') for part in Path(name).parts):raise ValueError('Noncanonical declared gzip resource path')
+     suffix=Path(name).with_suffix('').suffix
+     if not name.endswith('.gz') or suffix not in ('.json','.glb') or value.get('mime')!=MIME[suffix]:raise ValueError('Invalid declared gzip resource MIME')
+     if any(type(value.get(key)) is not int or value[key]<=0 for key in ('bytes','decodedBytes')) or value['bytes']>MANUAL_GZIP_MAX_COMPRESSED_BYTES or value['decodedBytes']>MANUAL_GZIP_MAX_DECODED_BYTES:raise ValueError('Invalid declared gzip resource size')
+     if any(not isinstance(value.get(key),str) or not SHA256.fullmatch(value[key]) for key in ('sha256','decodedSHA256')):raise ValueError('Invalid declared gzip resource digest')
+     target=folder/name
+     ancestor=target
+     while ancestor!=dist:
+      if ancestor.is_symlink():raise ValueError('Symlink declared gzip resource')
+      ancestor=ancestor.parent
+     if not target.is_file():raise ValueError('Missing declared gzip resource: '+name)
+     if target.stat().st_size!=value['bytes']:raise ValueError('Declared gzip compressed size differs: '+name)
+     rel=target.relative_to(dist).as_posix()
+     record={key:value[key] for key in ('bytes','sha256','mime','encoding','decodedBytes','decodedSHA256')}
+     if rel in expected and expected[rel]!=record:raise ValueError('Conflicting declared gzip identities: '+rel)
+     expected[rel]=record
+    for child in value.values():visit(child)
+   elif isinstance(value,list):
+    for child in value:visit(child)
+  visit(document)
+ rows={}
+ for rel,record in sorted(expected.items()):
+  encoded=(dist/rel).read_bytes()
+  try:
+   if len(encoded)!=record['bytes'] or sha(encoded)!=record['sha256'] or not encoded.startswith(b'\x1f\x8b\x08'):raise ValueError('Compressed identity differs')
+   decoder=zlib.decompressobj(16+zlib.MAX_WBITS)
+   raw=decoder.decompress(encoded,record['decodedBytes']+1)
+   if len(raw)!=record['decodedBytes'] or sha(raw)!=record['decodedSHA256'] or not decoder.eof or decoder.unused_data or decoder.unconsumed_tail:raise ValueError('Decoded identity or gzip stream differs')
+   validate_manual_gzip_payload(raw,record['mime'])
+  except (ValueError,OSError,zlib.error,UnicodeError) as error:raise ValueError('Invalid declared gzip resource: '+rel) from error
+  rows[rel]={'url':base+rel,'path':rel,'bytes':len(encoded),'sha256':record['sha256'],'mime':'application/gzip','encoding':'','wireBytes':len(encoded)}
+ return rows
+
 def inventory(dist,base):
  if not BASE.fullmatch(base):raise ValueError('Expected immutable commit-bound CDN base')
  if dist.is_symlink():raise ValueError('Symlink public directory')
  runtime_rows=contra_inventory(dist,base)
+ manual_gzip=manual_gzip_inventory(dist,base)
  rows=[]
  for p in sorted(dist.rglob('*')):
   if p.is_symlink():raise ValueError('Symlink in public directory')
@@ -135,6 +204,9 @@ def inventory(dist,base):
   if not re.fullmatch(r'[A-Za-z0-9._/-]+',rel) or any(part.startswith('.') for part in Path(rel).parts):raise ValueError('Noncanonical public asset path: '+rel)
   if rel in SERVER_METADATA or rel.startswith('contra/'):continue
   if p.suffix=='.gz':
+   if rel in manual_gzip:
+    rows.append(manual_gzip[rel])
+    continue
    canonical=p.with_suffix('')
    if canonical.is_file():
     if canonical.suffix not in MIME or gzip.decompress(p.read_bytes())!=canonical.read_bytes():raise ValueError('Invalid precompressed asset: '+rel)
@@ -184,15 +256,17 @@ def decoded(body,headers):
   except (OSError,EOFError) as e:raise ValueError('Invalid gzip response') from e
  return body
 
+def mime_compatible(expected,actual):
+ return expected==actual or expected=='text/javascript' and actual=='application/javascript' or expected in ('audio/wav','audio/x-wav') and actual in ('audio/wav','audio/x-wav')
+
 def validate_headers(row,headers):
  mime=headers.get('Content-Type','').split(';')[0].lower()
- compatible={row['mime']}
- if row['mime']=='text/javascript':compatible.add('application/javascript')
- if mime not in compatible:raise ValueError('CDN MIME mismatch: '+row['url'])
+ if not mime_compatible(row['mime'],mime):raise ValueError('CDN MIME mismatch: '+row['url'])
  if headers.get('Access-Control-Allow-Origin') not in ('*',configuration()['PUBLIC_ORIGIN']):raise ValueError('CDN CORS missing: '+row['url'])
 
 def validate_response(row,body,headers):
  if row.get('encoding') and headers.get('Content-Encoding')!=row['encoding']:raise ValueError('CDN compression missing: '+row['url'])
+ if row.get('mime')=='application/gzip' and headers.get('Content-Encoding') not in (None,'','identity'):raise ValueError('Application gzip must use identity HTTP encoding: '+row['url'])
  if row.get('requiresRange') and headers.get('Content-Encoding') not in (None,'','identity'):raise ValueError('Seekable audio must use identity encoding: '+row['url'])
  body=decoded(body,headers)
  if len(body)!=row['bytes'] or sha(body)!=row['sha256']:raise ValueError('CDN content mismatch: '+row['url'])
@@ -238,10 +312,11 @@ def trim(dist,report):
   manifest['objects']=previous.get('objects',load_manifest.get('assetObjects',{}))
   for row in rows:manifest['files']['/'+row['path']]['encoding']=row['encoding']
  delivery_path.write_text(json.dumps(manifest,separators=(',',':'),sort_keys=True)+'\n')
+ published_paths={row['path'] for row in rows}
  for row in rows:
   target=dist/row['path'];target.unlink()
   compressed=target.with_suffix(target.suffix+'.gz')
-  if compressed.exists():compressed.unlink()
+  if compressed.exists() and compressed.relative_to(dist).as_posix() not in published_paths:compressed.unlink()
  for p in sorted(dist.rglob('*'),key=lambda p:len(p.parts),reverse=True):
   if p.is_dir() and not any(p.iterdir()):p.rmdir()
  remaining={p.relative_to(dist).as_posix() for p in dist.rglob('*') if p.is_file()}
@@ -319,7 +394,7 @@ def publish(dist,rows,bucket,endpoint):
    encoding=headers.get('Content-Encoding','')
    mime=headers.get('Content-Type','').split(';')[0].lower()
    if encoding not in ({row['encoding']} if row.get('encoding') else {'','identity'}):raise ValueError('Immutable encoding differs: '+key)
-   if mime!=row['mime'] and not (row['mime']=='text/javascript' and mime=='application/javascript'):raise ValueError('Immutable MIME differs: '+key)
+   if not mime_compatible(row['mime'],mime):raise ValueError('Immutable MIME differs: '+key)
    digest=headers.get('x-oss-meta-sha256')
    size=headers.get('x-oss-meta-decoded-bytes')
    if digest is not None and digest!=row['sha256'] or size is not None and size!=str(row['bytes']):raise ValueError('Immutable object already differs: '+key)
@@ -411,7 +486,7 @@ def external_inventory(dist):
  return rows
 
 def verify_once(row):
- with urlopen(Request(row['url'],headers={'Origin':configuration()['PUBLIC_ORIGIN'],'Accept-Encoding':'identity' if row.get('requiresRange') else 'gzip'}),timeout=60) as r:
+ with urlopen(Request(row['url'],headers={'Origin':configuration()['PUBLIC_ORIGIN'],'Accept-Encoding':'identity' if row.get('requiresRange') or row.get('mime')=='application/gzip' else 'gzip'}),timeout=60) as r:
   body=r.read();validate_response(row,body,r.headers)
   if row.get('requiresRange'):expected=body[:64]
  if row.get('requiresRange'):

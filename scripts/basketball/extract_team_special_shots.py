@@ -4,13 +4,13 @@ from pathlib import Path
 from verify_pass_floor_original import ROOT,Memory,put,MPU
 from extract_world_actions import decode_world_action_state
 from extract_world_preparation import context
-rom=(ROOT/'.local/nes-basket/basketball.nes').read_bytes();prg=rom[16:16+131072]
+rom=(ROOT/'.local/basketball/research/original/basketball.nes').read_bytes();prg=rom[16:16+131072]
 class SoundMemory(Memory):
  def __setitem__(self,a,v):
   if isinstance(a,int) and 0x4000<=a<=0x4015:
    list.__setitem__(self,a,v);return
   super().__setitem__(a,v)
-base=(ROOT/'.local/nes-basket/runs/world-actions-cpu-long/world-actions-ram.bin').read_bytes()[:2048]
+base=(ROOT/'.local/basketball/research/original/runs/world-actions-cpu-long/world-actions-ram.bin').read_bytes()[:2048]
 
 def initial(action,left=False,entered=False,variant='normal'):
  r=bytearray(base)

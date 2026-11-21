@@ -44,7 +44,7 @@ save("complete.json",'{"passed":true}');while true do end
 (OUT/'complete.json').unlink(missing_ok=True)
 env=dict(os.environ,FCEUX_HOME=str(ROOT/'.local/battlecity/fceux-home'),FCEUX_CONFIG_DIR=str(ROOT/'.local/battlecity/fceux-home'),QT_QPA_PLATFORM='offscreen',SDL_AUDIODRIVER='dummy',XDG_RUNTIME_DIR=str(ROOT/'.local/battlecity/runtime'),NES_PROBE_OUT=str(OUT),TMPDIR=str(ROOT/'.local/tmp'))
 with (OUT/'emulator.log').open('w') as log:
- p=subprocess.Popen(['sandbox-exec','-f',str(ROOT/'.local/nes-basket/workspace.sb'),'/opt/homebrew/bin/fceux','--sound','0','--loadlua',str(OUT/'record.lua'),str(ROM)],env=env,stdout=log,stderr=subprocess.STDOUT)
+ p=subprocess.Popen(['sandbox-exec','-f',str(ROOT/'.local/basketball/research/original/workspace.sb'),'/opt/homebrew/bin/fceux','--sound','0','--loadlua',str(OUT/'record.lua'),str(ROM)],env=env,stdout=log,stderr=subprocess.STDOUT)
  try:
   start=time.monotonic()
   while p.poll() is None and not (OUT/'complete.json').exists():

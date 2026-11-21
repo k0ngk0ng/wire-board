@@ -24,7 +24,7 @@ Court 6 的独立运动、原进球触发和老虎机机关已完成 Native、ra
 
 ## 运动绑定
 
-先记录纵深边界错误、共享滚轮字节被当作通道、错误调用其他场地设备、辅助对象拒绝绑定及其他对象写入丢失等失败场景，再增加 `court_six_binding_test.go`。首失败保存在 `.local/basketball/rea/court-six/binding-before.log`。
+先记录纵深边界错误、共享滚轮字节被当作通道、错误调用其他场地设备、辅助对象拒绝绑定及其他对象写入丢失等失败场景，再增加 `court_six_binding_test.go`。首失败保存在 `.local/basketball/research/rea/court-six/binding-before.log`。
 
 `verify_court_six_motion.py` 对全部 13 个对象各执行 160 次原 `$EEFF`，共 2,080 次，覆盖横向边界、纵深 0／1／70／71、持有状态、纵深移动与下落。完整运动状态、共享标记、绑定提交和地形缓存均匹配；设备音效请求为 0，与 `$84D6` 空入口一致。
 
@@ -32,7 +32,7 @@ Court 6 的独立运动、原进球触发和老虎机机关已完成 Native、ra
 
 ## 原版普通输入与真实奖励
 
-原参考从既有存档开始，仅在第一次 `$D1B5` 选择 Court 6，之后通过控制器输入完成原菜单与中场确认。没有改分数、滚轮、随机数或比赛时钟。26,000 视频帧参考保存在 `.local/nes-basket/runs/court-six-slot-complete-reference/`；它不是从原菜单自然选择 Court 6 的证明。
+原参考从既有存档开始，仅在第一次 `$D1B5` 选择 Court 6，之后通过控制器输入完成原菜单与中场确认。没有改分数、滚轮、随机数或比赛时钟。26,000 视频帧参考保存在 `.local/basketball/research/original/runs/court-six-slot-complete-reference/`；它不是从原菜单自然选择 Court 6 的证明。
 
 被动观测 `court-six-slot-observed-v2` 的全部 RAM 和 6 张 PNG 与参考逐字节一致，记录：
 
@@ -71,7 +71,7 @@ go test -race ./games/basketball/engine -run '^(TestCourtSix.*|TestCourtAnimatio
 GOOS=js GOARCH=wasm go test ./games/basketball/engine -exec "$(go env GOROOT)/lib/wasm/go_js_wasm_exec" -run '^(TestCourtSix.*|TestCourtAnimationInactiveVideoAndInvalidCourt)$' -count=1 -v
 ```
 
-终态日志位于 `.local/basketball/rea/court-six/independent-{native,race,wasm}.log`，三者均 `PASS`。未重跑 Court 5 完整比赛或其他游戏。
+终态日志位于 `.local/basketball/research/rea/court-six/independent-{native,race,wasm}.log`，三者均 `PASS`。未重跑 Court 5 完整比赛或其他游戏。
 
 
 ## 运行时接线与正常比赛增量验收
@@ -87,13 +87,13 @@ GOOS=js GOARCH=wasm go test ./games/basketball/engine -exec "$(go env GOROOT)/li
 | 双人合作 | 22,796 | 7,570 | 85 | 0∶73 |
 | 双人对战 | 22,430 | 7,448 | 84 | 66∶9 |
 
-Native 日志为 `.local/basketball/engine/court-six-runtime-full.log`，race／Wasm 日志为 `.local/basketball/rea/court-six/runtime-{race,wasm}.log`。后两者还覆盖旧开场、原转场、比分保留、显示提交与恢复、1,998 次连续世界更新及事务回滚，均已取得终态 `PASS`：race 371.911 秒、Wasm 109.936 秒。
+Native 日志为 `.local/basketball/verification/engine/court-six-runtime-full.log`，race／Wasm 日志为 `.local/basketball/research/rea/court-six/runtime-{race,wasm}.log`。后两者还覆盖旧开场、原转场、比分保留、显示提交与恢复、1,998 次连续世界更新及事务回滚，均已取得终态 `PASS`：race 371.911 秒、Wasm 109.936 秒。
 
 准备矩阵仅扩展 Court 6 的四种球员排序与四种控制配置，`preparation-incremental-native.log` 中全部 16 个配置首轮通过，每个重复两遍。没有重跑前 96 个已验收配置、Court 5 完整赛或其他游戏。准备矩阵固定 Mode 128；上表默认单人／全电脑仍用原默认 Mode 0，不能混淆这两个配置范围。
 
 ## Go 整局的真实老虎机奖励
 
-只读程序 `.local/basketball/rea/court-six/observe-runtime.go` 从同样的冷启动配置推进完整比赛，只输入原中场 Start；不改变 RNG、比分、道具、滚轮、状态或时钟。`natural-{solo,all-computer,cooperative,versus}.json` 及各自 `events.jsonl` 保存实际老虎机进度、滚轮、奖励标记、比分、音效、HUD 与调色板事件。它证明 Go 整局行为，不替代前述原版证据。
+只读程序 `.local/basketball/research/rea/court-six/observe-runtime.go` 从同样的冷启动配置推进完整比赛，只输入原中场 Start；不改变 RNG、比分、道具、滚轮、状态或时钟。`natural-{solo,all-computer,cooperative,versus}.json` 及各自 `events.jsonl` 保存实际老虎机进度、滚轮、奖励标记、比分、音效、HUD 与调色板事件。它证明 Go 整局行为，不替代前述原版证据。
 
 | 配置 | 观察到的首次奖励视频帧 | 奖励前后比分 | 整局奖励次数 |
 | --- | ---: | --- | ---: |
@@ -109,11 +109,11 @@ Native 日志为 `.local/basketball/engine/court-six-runtime-full.log`，race／
 ```sh
 source scripts/env.sh
 BASKETBALL_PREPARATION_MATRIX=1 go test ./games/basketball/engine -run '^TestRuntimePreparedConfigurationsCompleteMatchAndRestore$/^court6-' -parallel 4 -count=1 -v
-go run .local/basketball/rea/court-six/observe-runtime.go solo
-go run .local/basketball/rea/court-six/observe-runtime.go all-computer
-go run .local/basketball/rea/court-six/observe-runtime.go cooperative
-go run .local/basketball/rea/court-six/observe-runtime.go versus
-go run .local/basketball/rea/court-six/observe-runtime.go solo platform
+go run .local/basketball/research/rea/court-six/observe-runtime.go solo
+go run .local/basketball/research/rea/court-six/observe-runtime.go all-computer
+go run .local/basketball/research/rea/court-six/observe-runtime.go cooperative
+go run .local/basketball/research/rea/court-six/observe-runtime.go versus
+go run .local/basketball/research/rea/court-six/observe-runtime.go solo platform
 ```
 
-验收汇总为 `.local/basketball/rea/court-six/runtime-summary.json`，同目录 `summarize-runtime.py` 从现有日志和观察产物重新生成，保留各日志／事件文件 SHA-256、完整赛轨迹哈希及具体配置。
+验收汇总为 `.local/basketball/research/rea/court-six/runtime-summary.json`，同目录 `summarize-runtime.py` 从现有日志和观察产物重新生成，保留各日志／事件文件 SHA-256、完整赛轨迹哈希及具体配置。

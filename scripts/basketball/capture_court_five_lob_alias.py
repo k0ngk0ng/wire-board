@@ -37,7 +37,7 @@ def main():
         expected=lookup[row['court'],row['column'],0 if row['phase']&127==0 else 1]
         assert (row['low'],row['high'])==(expected['low'],expected['high']),(row,expected)
     result=dict(unchanged_gameplay_trace=True,scope='original Court5 reference with existing isolated court selection; read-only write hooks',writes=len(writes),matchedCompletedColumns=len(columns),writers=sorted(set((v['bank'],v['pc']) for v in writes)),lobEntries=len(entries),unownedEntries=sum(v['owner']>=128 for v in entries),ram_sha256=hashlib.sha256((out/'ram.bin').read_bytes()).hexdigest(),source=json.loads((out/'source.json').read_text()))
-    dest=ROOT/'.local/basketball/rea/court-five/alias-writers.json';dest.write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result))
+    dest=ROOT/'.local/basketball/research/rea/court-five/alias-writers.json';dest.write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result))
 
 
 if __name__=='__main__':main()

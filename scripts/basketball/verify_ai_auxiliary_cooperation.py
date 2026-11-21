@@ -1,9 +1,9 @@
 """Original bank5 modes13/3/14, explicit bounded state matrices."""
 import gzip,hashlib,itertools,json,sys
 from pathlib import Path
-ROOT=Path(__file__).resolve().parents[2];sys.path.insert(0,str(ROOT/'.local/basketball/python'))
+ROOT=Path(__file__).resolve().parents[2];sys.path.insert(0,str(ROOT/'.local/basketball/research/python'))
 from py65.devices.mpu6502 import MPU
-ROM=(ROOT/'.local/nes-basket/basketball.nes').read_bytes();PRG=ROM[16:16+131072]
+ROM=(ROOT/'.local/basketball/research/original/basketball.nes').read_bytes();PRG=ROM[16:16+131072]
 
 def initial(actor,mode,entered=False):
  return dict(actor=actor,mode=mode|(128 if entered else 0),plan=14,action=130,heading=32,facing=128,destination=71,target=2,status=129,message=7,owners=[255,255],auxiliaryActions=[0,0],heights=[0,0],positions=[dict(x=(200+20*i)*256+17,depth=40*256+33,height=0) for i in range(6)],link=64,holder=6,playerActions=[128]*4)

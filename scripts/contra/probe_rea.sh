@@ -8,7 +8,7 @@ mkdir -p "$task_root/dist/contra-research-tmp" "$task_out/swift-cache"
 # Ghidra rejects dot-prefixed project paths; keep its temporary root under dist.
 export TMPDIR="$task_root/dist/contra-research-tmp"
 export REA_DARWIN_MODULE_CACHE_PATH="$task_out/swift-cache"
-export GHIDRA_INSTALL_DIR="${GHIDRA_INSTALL_DIR:-$task_root/.local/nes-basket/tools/ghidra_12.1.4_PUBLIC}"
+export GHIDRA_INSTALL_DIR="${GHIDRA_INSTALL_DIR:-$task_root/.local/tools/nes-research/ghidra_12.1.4_PUBLIC}"
 export JAVA_HOME="${JAVA_HOME:-/opt/homebrew/opt/openjdk@26/libexec/openjdk.jdk/Contents/Home}"
 export REA_LOG_LEVEL=silent
 rea function "$task_out/contra-j-reset-f80d.bin" 0xf80d \

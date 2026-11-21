@@ -13,7 +13,7 @@
 
 门装置的原动作表对篮球写 **4**，对人物写十进制 **62**（`$3E`），不是篮球动作 9 或人物 `$62`。挂框 9 来自 `ResolveRimContact` 的原随机挂框分支，不能用门装置逻辑替代。
 
-REA 证据：`ev_e334d6e67ec5f29ef0edf180d96d811d9eb87ed5f6ae515c56546d71b603e97b`，完整记录在 `.local/basketball/rea/ball-device/analysis/`。
+REA 证据：`ev_e334d6e67ec5f29ef0edf180d96d811d9eb87ed5f6ae515c56546d71b603e97b`，完整记录在 `.local/basketball/research/rea/ball-device/analysis/`。
 
 ## 接口
 
@@ -25,7 +25,7 @@ REA 证据：`ev_e334d6e67ec5f29ef0edf180d96d811d9eb87ed5f6ae515c56546d71b603e97
 
 `ball-device.json.gz` 保留 **1,054 次**原完整函数指令执行：88 次 owner 6 发射、6 次挂框初入、960 次挂框更新。覆盖目标高度边界、左右朝向、篮筐标志、独立特殊标记、左右抖动边界、正负速度、动画游标及倒计时 0／1／2／96。使用已记录的原场地 RAM 初始化隔离执行，执行原 MMC3 换页与场地运动；不是自然比赛录像或完整对局证明。
 
-实现前失败场景见 `VERIFICATION.md`。先失败及通过日志为 `.local/basketball/engine/ball-device-{before,after,race,wasm}.log`。回归另保留已有普通／特殊球真实调用与普通投篮飞行对照。
+实现前失败场景见 `VERIFICATION.md`。先失败及通过日志为 `.local/basketball/verification/engine/ball-device-{before,after,race,wasm}.log`。回归另保留已有普通／特殊球真实调用与普通投篮飞行对照。
 
 尚未扩大到 owner 4／5、任意负高度或未恢复特殊球动作。挂框接触的产生及场地运动副作用仍归既有对应模块；本次不修改 RNG、AI、比赛时钟或设备触发条件。
 
@@ -45,4 +45,4 @@ GOOS=js GOARCH=wasm go test -exec "$basketball_goroot/lib/wasm/go_js_wasm_exec" 
 
 `ball-device-runtime.json.gz` 原样保存两份 Go 完整比赛失败前态（视频帧 2,081／逻辑步 691，视频帧 2,339／逻辑步 777）。回归从各前态执行正常 `StepVideo`，分别验证无持球人投篮与挂框初入成功；这是 Go 集成回归，不计为原 ROM 自然执行。固定规则测试另验证非零 `$055A` 只清自己的槽，以及挂框读取当前选中篮筐高度并保留篮球小数。原 1,998 动作阶段和 1,998 连续世界更新保持通过。
 
-世界层针对日志为 `.local/basketball/engine/ball-device-world-{before,after,race,wasm}.log`。球场 3 四配置完整比赛由主任务统一继续验收，本组件日志不宣称已通过完整比赛。
+世界层针对日志为 `.local/basketball/verification/engine/ball-device-world-{before,after,race,wasm}.log`。球场 3 四配置完整比赛由主任务统一继续验收，本组件日志不宣称已通过完整比赛。

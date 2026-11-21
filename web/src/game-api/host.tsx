@@ -12,6 +12,7 @@ import { NetworkSignal } from "../ui/network-signal";
 import { cooperativeRatingNotice } from "../ui/cooperative-rating";
 import { GameMobilePlayNotice } from "../ui/game-mobile-play-notice";
 import { NavigationController } from "../controllers/NavigationController";
+import { gameDefaultPlayers } from "./default-players";
 
 export function GameBoard({
   room,
@@ -97,7 +98,7 @@ export function ModuleCreate({
   onDraftChange,
 }: GameSetupFormProps) {
   const module = gameModule(kind)!;
-  const [capacity, setCapacity] = useState(module.minPlayers);
+  const [capacity, setCapacity] = useState(() => gameDefaultPlayers(module));
   const [options, setOptions] = useState<unknown>(module.defaultOptions ?? {});
   const Options = module.Options;
   return (

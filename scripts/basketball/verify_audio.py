@@ -17,7 +17,7 @@ def sha(path):
 
 def verify(directory):
     manifest = json.loads((directory / 'manifest.json').read_text())
-    rom = (ROOT / '.local/nes-basket/basketball.nes').read_bytes()
+    rom = (ROOT / '.local/basketball/research/original/basketball.nes').read_bytes()
     assert hashlib.sha256(rom).hexdigest() == manifest['rom_sha256'] == SOURCE_SHA
     assert manifest['accepted_for_release'] is False
     catalog = json.loads((ROOT/'games/basketball/assets/audio-catalog.json').read_text())
@@ -114,4 +114,4 @@ def verify(directory):
 
 
 if __name__ == '__main__':
-    verify(Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / '.local/basketball/audio/export')
+    verify(Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / '.local/basketball/assets/audio/export')

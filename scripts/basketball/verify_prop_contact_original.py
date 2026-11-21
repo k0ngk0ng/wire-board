@@ -1,11 +1,11 @@
 """Run isolated original 8653 player-to-prop calls on explicit synthetic states."""
 from pathlib import Path
 import hashlib,itertools,json,sys
-ROOT=Path(__file__).resolve().parents[2];sys.path.insert(0,str(ROOT/'.local/basketball/python'))
+ROOT=Path(__file__).resolve().parents[2];sys.path.insert(0,str(ROOT/'.local/basketball/research/python'))
 from py65.devices.mpu6502 import MPU
 from verify_special_contact_original import make_case,word
 from capture_prop_contact import state
-code=(ROOT/'.local/basketball/ai/bank5-visible.bin').read_bytes()
+code=(ROOT/'.local/basketball/research/ai/bank5-visible.bin').read_bytes()
 def build(index,source,target,side,height,air,action):
  r=make_case(index,20,0,0,False,896)
  r[0x3c:0x42]=bytes([128]*6);r[0x3c+source]=target;r[0x56b]=(source+1)%4

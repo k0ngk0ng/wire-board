@@ -10,8 +10,8 @@ from verify_pass_floor_original import Memory,MPU
 from static_sprites import SpriteROM
 from py65.disassembler import Disassembler
 from postresult_art import decode_background,PRESETS
-ROOT=Path(__file__).resolve().parents[2];OUT=ROOT/'.local/postresult-scheduler'
-ROM=(ROOT/'.local/nes-basket/basketball.nes').read_bytes();PRG=ROM[16:131088]
+ROOT=Path(__file__).resolve().parents[2];OUT=ROOT/'.local/basketball/research/postresult-scheduler'
+ROM=(ROOT/'.local/basketball/research/original/basketball.nes').read_bytes();PRG=ROM[16:131088]
 assert hashlib.sha256(ROM).hexdigest()=='0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b'
 
 class ResourceMemory(Memory):
@@ -121,7 +121,7 @@ def message_probes():
 
 
 def observed(kind,bg):
- p=ROOT/f'.local/nes-basket/runs/postresult-{kind}-observed';events=[json.loads(l)for l in (p/'events.jsonl').open()]
+ p=ROOT/f'.local/basketball/research/original/runs/postresult-{kind}-observed';events=[json.loads(l)for l in (p/'events.jsonl').open()]
  intervals=[];dispatch=None;wait=None;fades=[];messages=[];backgrounds=[];openings={};unmatched=[]
  for e in events:
   k=e['kind']
@@ -176,7 +176,7 @@ def source_instructions():
 
 
 def main():
- p=argparse.ArgumentParser();p.add_argument('--check',action='store_true');args=p.parse_args();OUT.mkdir(exist_ok=True)
+ p=argparse.ArgumentParser();p.add_argument('--check',action='store_true');args=p.parse_args();OUT.mkdir(parents=True,exist_ok=True)
  instructions=source_instructions();instruction_path=OUT/'instructions.txt'
  if args.check:assert instruction_path.read_bytes()==instructions
  else:instruction_path.write_bytes(instructions)

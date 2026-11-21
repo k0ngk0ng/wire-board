@@ -5,7 +5,11 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"reflect"
+	"slices"
 	"time"
+
+	"github.com/k0ngk0ng/wire-board/internal/gameapi"
 )
 
 type queuedRealtimeInput struct {
@@ -99,6 +103,23 @@ type realtimeJournalEntry struct {
 }
 type realtimeNonce struct{ user, nonce string }
 
+func deferredRealtimeInput(module gameapi.Module, before, after *Room, action json.RawMessage) (deferred bool) {
+	defer func() {
+		if recover() != nil {
+			deferred = false
+		}
+	}()
+	if module.RealtimeDeferredInput == nil || before.Module == nil || after.Module == nil || before.Game == nil || after.Game == nil ||
+		before.Module.Paused || after.Module.Paused || before.Module.SystemDeadline <= 0 || after.Module.SystemDeadline <= 0 ||
+		realtimeCritical(before, after) || before.Kind != after.Kind || before.SetupVersion != after.SetupVersion ||
+		before.ClockOffsetMS != after.ClockOffsetMS || before.TurnDeadline != after.TurnDeadline ||
+		!reflect.DeepEqual(before.loadingView(), after.loadingView()) ||
+		!reflect.DeepEqual(streamModuleViewData(before, *before.Module), streamModuleViewData(after, *after.Module)) {
+		return false
+	}
+	return module.RealtimeDeferredInput(slices.Clone(action))
+}
+
 // Called by one worker per room, in admission order. The host lock still orders
 // control/lifecycle changes and simulation. Ordinary batches publish in memory;
 // critical phase transitions require a transaction before any success ACK.
@@ -117,6 +138,7 @@ func (s *Server) commitRealtimeInputs(roomID string, jobs []*queuedRealtimeInput
 	original := s.rooms[roomID]
 	candidate := original
 	critical := false
+	deferredOnly := true
 	var checkpoint *realtimeCheckpoint
 	if original != nil {
 		checkpoint = s.realtimeCheckpoint(original)
@@ -157,6 +179,9 @@ func (s *Server) commitRealtimeInputs(roomID string, jobs []*queuedRealtimeInput
 			answers[i].Status, answers[i].Error = status, err.Error()
 			continue
 		}
+		if deferredOnly && !deferredRealtimeInput(s.modules[candidate.Kind], candidate, next, job.input.Action) {
+			deferredOnly = false
+		}
 		critical = critical || realtimeCritical(candidate, next)
 		candidate = next
 		entries = append(entries, realtimeJournalEntry{job: job, version: next.Version, record: record, at: next.Updated})
@@ -185,7 +210,11 @@ func (s *Server) commitRealtimeInputs(roomID string, jobs []*queuedRealtimeInput
 				job := jobs[index]
 				checkpoint.remember(realtimeNonce{job.userID, job.input.Nonce}, answers[index])
 			}
-			s.broadcastGameChange(candidate)
+			if deferredOnly && !critical {
+				s.cancelStaleBotSearches()
+			} else {
+				s.broadcastGameChange(candidate)
+			}
 		}
 	}
 	for index, earlier := range dependent {

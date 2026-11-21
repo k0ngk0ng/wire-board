@@ -6,10 +6,10 @@ import hashlib,json,sys
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2];sys.path.insert(0,str(ROOT/'scripts/basketball'))
 from verify_postresult_text import execute
-OUT=ROOT/'.local/postresult-text';OUT.mkdir(parents=True,exist_ok=True)
+OUT=ROOT/'.local/basketball/research/postresult-text';OUT.mkdir(parents=True,exist_ok=True)
 results=[]
 for name in ['postresult-ending-observed','postresult-reward-observed']:
- p=ROOT/'.local/nes-basket/runs'/name;events=p/'events.jsonl';ram=p/'boundaries.ram';active={};counts={'text':0,'message':0};consumed=[];errors=[];queues=[]
+ p=ROOT/'.local/basketball/research/original/runs'/name;events=p/'events.jsonl';ram=p/'boundaries.ram';active={};counts={'text':0,'message':0};consumed=[];errors=[];queues=[]
  with ram.open('rb')as f:
   def read(e):f.seek(e['raw']*2048);r=f.read(2048);assert len(r)==2048;return r
   for line in events.open():

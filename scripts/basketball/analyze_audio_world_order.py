@@ -55,7 +55,7 @@ def main():
         'limitations':['Recent marker is not a proof of function-stack ownership outside bounded call windows.',
             'Initial team/court selection is configured; later game state is not injected.',
             'A finite negative search does not prove Ball14-to-4 is unreachable.']}
-    destination=ROOT/'.local/basketball/audio/world-order'/(path.parent.name+'-ordering.json')
+    destination=ROOT/'.local/basketball/assets/audio/world-order'/(path.parent.name+'-ordering.json')
     destination.write_text(json.dumps(report,indent=2)+'\n')
     print(json.dumps({'path':str(destination.relative_to(ROOT)),'complete_irqs':complete_ticks,'not_ready_irqs':len(ready_returns),'irq_inside_requests':len(interrupted),'nmi_inside_irqs':len(nested),'ball14_calls':len(ball),'world_gap_histogram':report['complete_irqs_between_world_starts']}))
 

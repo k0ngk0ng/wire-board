@@ -1,6 +1,6 @@
 {
   "records": 64,
-  "source": ".local/basketball/rea/campaign-new-game/calls.json",
+  "source": ".local/basketball/research/rea/campaign-new-game/calls.json",
   "sourceSHA256": "08836c0a95cf13a9319f65506efd721f57b3bab34adfc360db67773ac7342c03",
   "fixtureSHA256": "bfde7ed3f32a586cdf1c2c33ecfa4707f2852afefd9d9a0dce785c13c8bcfa95",
   "factoryBoundary": "already initialized random register immediately before A205 inner draw; excludes CABC outer draw",

@@ -103,11 +103,11 @@ func TestStarfortRebalanceControlBoundaries(t *testing.T) {
 		b.timer(time.Second)
 		hits := 0
 		for _, e := range cadenceState(b).Events {
-			if e.Type == "knockback" && (e.TargetID == 2 || e.TargetID == 3) {
+			if e.ID > after.EventSerial && e.Type == "knockback" && (e.TargetID == 2 || e.TargetID == 3) {
 				hits++
 			}
 		}
-		if hits != heavyHits {
+		if hits != 0 {
 			t.Fatal("same tower ignored eight-second guard")
 		}
 		s = cadenceState(b)

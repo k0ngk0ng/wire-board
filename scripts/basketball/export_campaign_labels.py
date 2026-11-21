@@ -9,8 +9,8 @@ JP=['ピカピカのシャツ','ロケットシャツ','ブルースのシャツ
 ZH=['闪亮球衣','火箭球衣','布鲁斯球衣','钢铁球衣','二层球衣','太阳球衣','滑溜球衣','扣将球衣','羽毛球衣','幻影球衣','闪亮短裤','火箭短裤','万能短裤','羽毛短裤','马赫短裤','丁字短裤','布鲁斯短裤','皱皱短裤','鬼纹短裤','斑渍短裤','幻影短裤','闪亮球鞋','火箭球鞋','气垫球鞋','布鲁斯球鞋','科技球鞋','独齿木屐','富豪球鞋','羽毛球鞋','驹形木屐','舞蹈球鞋','幻影球鞋']
 def main():
  parser=argparse.ArgumentParser();parser.add_argument('--check',action='store_true');args=parser.parse_args()
- rom=(ROOT/'.local/nes-basket/basketball.nes').read_bytes();sha=hashlib.sha256(rom).hexdigest();assert sha=='0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b'
- source=ROOT/'.local/basketball/rea/campaign-audit/verified-selection.json';audit=json.loads(source.read_text());assert audit['romSHA256']==sha
+ rom=(ROOT/'.local/basketball/research/original/basketball.nes').read_bytes();sha=hashlib.sha256(rom).hexdigest();assert sha=='0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b'
+ source=ROOT/'.local/basketball/research/rea/campaign-audit/verified-selection.json';audit=json.loads(source.read_text());assert audit['romSHA256']==sha
  fixed=rom[16+7*16384:16+8*16384];bank=rom[16+3*16384:16+4*16384]
  known={int(k):v for k,v in json.loads((ROOT/'games/basketball/selection/names.json').read_text())['characterGlyphTranscriptions'].items()};known.update({0:' ',3:'2',36:'T'})
  def transcribe(encoded,label):

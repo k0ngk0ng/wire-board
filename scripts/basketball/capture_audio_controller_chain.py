@@ -65,7 +65,7 @@ function finish_probe()prior_finish();inputlog:close()end
 
 
 def execute(spec):
-    out=BASE/'runs'/spec['name'];path=ROOT/'.local/basketball/audio/world-order'/(spec['name']+'.json')
+    out=BASE/'runs'/spec['name'];path=ROOT/'.local/basketball/assets/audio/world-order'/(spec['name']+'.json')
     path.parent.mkdir(parents=True,exist_ok=True);path.write_text(json.dumps(spec,indent=2)+'\n')
     if not ((out/'capture-complete.json').exists() and json.loads((out/'scenario.json').read_text())==spec):run(path)
     return out
@@ -99,7 +99,7 @@ def main():
         'events_sha256':hashlib.sha256((observed/'audio-world-order.jsonl').read_bytes()).hexdigest(),
         'chain_ram_sha256':hashlib.sha256((observed/'turn-chains.ram').read_bytes()).hexdigest(),
         'source':json.loads((observed/'source.json').read_text())}
-    (ROOT/'.local/basketball/audio/world-order'/(name+'-summary.json')).write_text(json.dumps(report,indent=2)+'\n')
+    (ROOT/'.local/basketball/assets/audio/world-order'/(name+'-summary.json')).write_text(json.dumps(report,indent=2)+'\n')
     print(json.dumps({key:report[key] for key in ['frames','input_segments','ram_and_screenshots_match_static_input_replay','counts']}))
 
 

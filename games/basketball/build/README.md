@@ -12,7 +12,7 @@
 
 ## 缓存与失败处理
 
-缓存位于工作区 `.local/basketball/runtime-build/`，按源码、工具链、编译器支持代码和构建脚本的摘要分目录。复用前核对来源、文件校验和及 Wasm 有效性。源码或工具链改变后生成新目录；文件或来源记录损坏则重建；编译失败直接停止，不能返回另一份旧源码产物。
+缓存位于工作区 `.local/basketball/cache/runtime-build/`，按源码、工具链、编译器支持代码和构建脚本的摘要分目录。复用前核对来源、文件校验和及 Wasm 有效性。源码或工具链改变后生成新目录；文件或来源记录损坏则重建；编译失败直接停止，不能返回另一份旧源码产物。
 
 使用 `-trimpath`、`-buildvcs=false` 和固定编译参数，清除环境中的隐式 `GOFLAGS`、Go workspace 和实验开关。未显式提供的 Go 缓存与临时目录默认放入工作区 `.local`。相同源码和工具链在不同检出路径下生成相同 Wasm；来源记录不含绝对工作区路径或构建时间。
 
@@ -37,8 +37,8 @@ node games/basketball/build/verify-runtime.mjs web/dist
 
 结果保留在：
 
-- `.local/basketball/runtime-build-acceptance/result.json`
-- `.local/basketball/runtime-package/result.json`
-- `.local/basketball/engine/runtime-dist-verified.json`
+- `.local/basketball/verification/runtime-build-acceptance/result.json`
+- `.local/basketball/verification/runtime-package/result.json`
+- `.local/basketball/verification/engine/runtime-dist-verified.json`
 
-实现前失败记录为 `.local/basketball/engine/runtime-build-before.log`、`runtime-manifest-before.log` 和 `runtime-package-before.log`。CI 范围、游戏边界和发布来源检查也已通过，记录在同目录的 `runtime-ci-scope.log`、`runtime-boundaries.log` 和 `runtime-release-guards.log`。
+实现前失败记录为 `.local/basketball/verification/engine/runtime-build-before.log`、`runtime-manifest-before.log` 和 `runtime-package-before.log`。CI 范围、游戏边界和发布来源检查也已通过，记录在同目录的 `runtime-ci-scope.log`、`runtime-boundaries.log` 和 `runtime-release-guards.log`。

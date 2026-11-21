@@ -11,7 +11,7 @@
 
 ## 原版证据和范围
 
-新 REA 完整函数证据 `ev_e5ee9618afe7af1df31ab2462a11aa2c6af8d954fd246d832b5a312ab587c8c0` 位于 `.local/basketball/rea/contact-static/analysis/function-0x8318.json`：`$8318` 屏蔽动作高位，`$60` 以上跳往独立攻击 variant 入口；正常动作依次读取 `$8CF2` kind 表、动作 group、`$8FA5` frame pointer 表及 cursor 对应 shape pointer。源码未增加 ROM 解释器；ROM 仅供离线参数导出。
+新 REA 完整函数证据 `ev_e5ee9618afe7af1df31ab2462a11aa2c6af8d954fd246d832b5a312ab587c8c0` 位于 `.local/basketball/research/rea/contact-static/analysis/function-0x8318.json`：`$8318` 屏蔽动作高位，`$60` 以上跳往独立攻击 variant 入口；正常动作依次读取 `$8CF2` kind 表、动作 group、`$8FA5` frame pointer 表及 cursor 对应 shape pointer。源码未增加 ROM 解释器；ROM 仅供离线参数导出。
 
 正常 group 表范围 `$8FA5..$8FE0` 共 30 项，指向 `$8FE1..$912E` 的帧数组，按相邻唯一数组起点界定范围；`$912F` 是独立攻击 shape 基址指针，不并入正常帧。玩家 action map 为 `$8ED8..$8F37`，球 action map 为 `$8F38..$8F50`。这 30 组含 175 个源帧条目，覆盖 1077 个正常动作／帧键。其存在不代表未实现动作已经可玩。
 
@@ -21,7 +21,7 @@ BallRolling 路径为 kind8→`$8F38[5]=4`→`$8FA5[4]=$900F`，源数组 15 帧
 
 ## 验收与下一边界
 
-测试通过 2392 个原接触搜索阶段、1197 个 contact reset 阶段、1997 个完整 preparation 阶段，以及新增源表边界检查。原 cold 配置第 322 次更新已经通过 preparation，随后在 action 阶段遇到 `object 6: ball action 0 not reconstructed`；完整前态保存在 `.local/basketball/rea/contact-static/cold-next.log`，交球动作恢复工作处理。6000 目标未改变、尚未通过。
+测试通过 2392 个原接触搜索阶段、1197 个 contact reset 阶段、1997 个完整 preparation 阶段，以及新增源表边界检查。原 cold 配置第 322 次更新已经通过 preparation，随后在 action 阶段遇到 `object 6: ball action 0 not reconstructed`；完整前态保存在 `.local/basketball/research/rea/contact-static/cold-next.log`，交球动作恢复工作处理。6000 目标未改变、尚未通过。
 
 ```sh
 PYTHONDONTWRITEBYTECODE=1 python3 scripts/basketball/export_contact_profiles.py
@@ -30,7 +30,7 @@ gofmt -w games/basketball/engine/contact_profiles.go
 go test -race ./games/basketball/engine -run 'TestBallRollingContact|TestNormalContactSource|TestPlayerKinds|TestOriginalContact|TestWorldPreparation' -count=1
 ```
 
-完整包编译下的原生竞态和 Wasm 定向测试均通过，未排除任何并行测试文件；结果位于 `.local/basketball/rea/contact-static/{native-tests.json,wasm-tests.log}`。
+完整包编译下的原生竞态和 Wasm 定向测试均通过，未排除任何并行测试文件；结果位于 `.local/basketball/research/rea/contact-static/{native-tests.json,wasm-tests.log}`。
 
 ## 攻击 variant 源表：实现前失败场景
 
@@ -46,7 +46,7 @@ REA `ev_8f6ec94a9284a3c93bcce71dc0be376ee57c73f229f13970beaee02150e5a6c7` 的 ba
 
 `verify_attack_contact_function.py` 先隔离执行原 E18B 和 9FA7，确认 cold1598 请求29在动作103下被拒绝，角色0/1真正选 variant93、handler A40A；随后执行原 8318→82E4 的全部226次合法形状读取，保存指针和8字节结果。Go测试将其在8个玩家kind和10个攻击action flags下逐项比较，并检查动画帧覆盖、未知variant和帧末边界。它是隔离原函数证据，不冒充自然整局。运行时只使用导出的Go参数表。
 
-TDD初次失败、导出摘要、原生竞态和Wasm结果位于 `.local/basketball/rea/contact-attack/`；2392接触阶段、1197 reset阶段、1997 preparation阶段、1998单初态连续更新及57主动更新仍通过。源表记录为 `testdata/contact-attack-source.json`，独立原函数执行记录为 `contact-attack-function.json.gz` 及来源JSON。
+TDD初次失败、导出摘要、原生竞态和Wasm结果位于 `.local/basketball/research/rea/contact-attack/`；2392接触阶段、1197 reset阶段、1997 preparation阶段、1998单初态连续更新及57主动更新仍通过。源表记录为 `testdata/contact-attack-source.json`，独立原函数执行记录为 `contact-attack-function.json.gz` 及来源JSON。
 
 固定cold轨迹推进到1909／6000，下一首差是人物2 mode26 dribble-evasion分支；完整前态为 `contact-attack/cold-next.json`。攻击选型、请求路由及物理没有被替换，下一AI分支另按原证据恢复。
 

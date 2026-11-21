@@ -18,7 +18,7 @@ Court 7 的地形表有 11 行，纵深排他上限为 81。原图格共有 640 
 
 ## 测试先行与独立运动接线
 
-先列出纵深边界、后排高度分界、动作 14 的分数字节、空气／边缘位、辅助对象种类、其他对象写回及纽约通道误用等失败场景，再增加 `court_seven_binding_test.go`。首失败日志为 `.local/basketball/rea/court-seven/binding-before.log`，失败原因是独立运动门禁尚未允许 Court 7。
+先列出纵深边界、后排高度分界、动作 14 的分数字节、空气／边缘位、辅助对象种类、其他对象写回及纽约通道误用等失败场景，再增加 `court_seven_binding_test.go`。首失败日志为 `.local/basketball/research/rea/court-seven/binding-before.log`，失败原因是独立运动门禁尚未允许 Court 7。
 
 随后只修改两处：
 
@@ -63,4 +63,4 @@ go test -race ./games/basketball/engine -run '^TestCourtSeven.*$' -count=1 -v
 GOOS=js GOARCH=wasm go test ./games/basketball/engine -exec "$(go env GOROOT)/lib/wasm/go_js_wasm_exec" -run '^TestCourtSeven.*$' -count=1 -v
 ```
 
-`.local/basketball/rea/court-seven/independent-{native,race,wasm}.log` 均已终态 `PASS`，耗时分别为 0.691／3.119／0.675 秒。未重跑 Court 5／6 的完整比赛或准备矩阵，也未运行其他游戏。
+`.local/basketball/research/rea/court-seven/independent-{native,race,wasm}.log` 均已终态 `PASS`，耗时分别为 0.691／3.119／0.675 秒。未重跑 Court 5／6 的完整比赛或准备矩阵，也未运行其他游戏。

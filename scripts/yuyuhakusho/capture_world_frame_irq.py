@@ -71,7 +71,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--out', type=Path, required=True)
     parser.add_argument('--disassemble', action='store_true', help='also run the installed Ghidra in a private project')
-    parser.add_argument('--ghidra-install', type=Path, default=Path('/Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/nes-basket/tools/ghidra_12.1.4_PUBLIC'))
+    parser.add_argument('--ghidra-install', type=Path, default=Path('/Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/tools/nes-research/ghidra_12.1.4_PUBLIC'))
     parser.add_argument('--java-home', type=Path, default=Path('/opt/homebrew/Cellar/openjdk/26.0.1/libexec/openjdk.jdk/Contents/Home'))
     args = parser.parse_args()
     out = inside(args.out)

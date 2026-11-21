@@ -114,17 +114,17 @@
 
 来源：bank4 `91BD..91E1`，指针表 `94D8 = [06E4,06E7,06EA,06ED]`。基础进球分值写入 `1B` 后，检查原 `LastShooter`（`06D1`）小于2，再按此对象的角色编号选装备指针，以槽位2读取鞋 ID；等于27时将基础分值加2，随后执行原计分累加。这里使用**对象编号0/1**，没有调用共同 `EBFC`，也没有独立 Mode 或 team 判定。正常对战的空装备仍不产生加分；不能将这个消费者错误改成「任意team0对象均可加分」。
 
-原指令及指针字节保存在 `.local/equipment-effects-catalog/shoes27-source.json`。这是独立静态来源补充，不计入上述9,600次 helper调用。初轮发现 `rim.go` 已有 `ScoringBonus`，但缺少生产初始化。后续已修复 `opening_world.go` 与恢复校验，并通过 6,912 次原版完整篮筐调用、合法密码恢复27→装备→实际开局→JSON恢复；详见 `SHOES27_SCORE_VERIFICATION.md`。此前直接地址检索没有发现本项，正是其不覆盖间接读取的实际例子。
+原指令及指针字节保存在 `.local/basketball/research/equipment-effects-catalog/shoes27-source.json`。这是独立静态来源补充，不计入上述9,600次 helper调用。初轮发现 `rim.go` 已有 `ScoringBonus`，但缺少生产初始化。后续已修复 `opening_world.go` 与恢复校验，并通过 6,912 次原版完整篮筐调用、合法密码恢复27→装备→实际开局→JSON恢复；详见 `SHOES27_SCORE_VERIFICATION.md`。此前直接地址检索没有发现本项，正是其不覆盖间接读取的实际例子。
 
 ## 本轮产物与复现
 
 工作树内执行：
 
 ```sh
-PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python .local/equipment-effects-catalog/probe.py
+PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python .local/basketball/research/equipment-effects-catalog/probe.py
 ```
 
-脚本不写入生产代码或 `engine/testdata`。先列出的失败场景位于 `.local/equipment-effects-catalog/FAILURE_SCENARIOS.md`。结果：
+脚本不写入生产代码或 `engine/testdata`。先列出的失败场景位于 `.local/basketball/research/equipment-effects-catalog/FAILURE_SCENARIOS.md`。结果：
 
 - `calls.json.gz`：9,600 次调用，保存每条完整初始 RAM、RAM 差分、入口／出口、执行 PC 路径、RNG 次数和关键输出。
 - 夹具 SHA-256：`0bb830546caee07a754907acb2dc1331a399b5e9122955ab130e8f589668522a`。
@@ -185,4 +185,4 @@ PRG 扫描仅查 `LDA/STA absolute/absolute-X/absolute-Y` 对 `06E4..06EF` 的�
 3. **通用弧线的 RAM 别名**：fixed `E058` 读 `06E9 + selectedHoop` 的 bit1。正常篮筐对象7..12读篮筐标志；对象0..6可能读角色1..3的装备尾部。已有 `OtherObjectArcFlags` 映射保留这些字节，不能新增按物品名称推断的效果；仍需按可达对象／调用链证明具体触发范围。
 4. **特殊获取与未知指针路径**：21/24既不在普通奖励表中，也未在等级程序内改值；特殊密码、异常选择域和计算生成的指针仍未全面验证。没有证据时保留未知，不增加任意获取规则或新效果。
 
-复现清单：`PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python .local/equipment-effects-catalog/audit_indirect.py`。产物 `indirect-inventory.json` 保存候选、四表引用、已核对的指令窗口和边界声明，SHA-256 为 `8fbc6bdf6a29c5a88b8037ad28c0a41f1077d3b2fc283d79481c9284463d007e`。未宣称覆盖任意算术生成指针、所有零页别名传播或全部装备的自然整场录像。
+复现清单：`PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python .local/basketball/research/equipment-effects-catalog/audit_indirect.py`。产物 `indirect-inventory.json` 保存候选、四表引用、已核对的指令窗口和边界声明，SHA-256 为 `8fbc6bdf6a29c5a88b8037ad28c0a41f1077d3b2fc283d79481c9284463d007e`。未宣称覆盖任意算术生成指针、所有零页别名传播或全部装备的自然整场录像。

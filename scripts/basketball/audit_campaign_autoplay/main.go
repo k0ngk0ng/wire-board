@@ -18,7 +18,7 @@ import (
 )
 
 func main() {
-	output := flag.String("output", ".local/basketball/campaign-autoplay-audit", "workspace output directory")
+	output := flag.String("output", ".local/basketball/verification/campaign-autoplay-audit", "workspace output directory")
 	initial := flag.String("initial", "", "replay retained initial public module Match, without reseeding")
 	resume := flag.String("resume", "", "continue an actual retained Match and host time, counting only newly completed matches")
 	matches := flag.Int("matches", 20, "maximum actual completed matches before bounded stop")

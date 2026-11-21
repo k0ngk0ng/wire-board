@@ -1,0 +1,142 @@
+{
+  "scope": "All authored Go, TypeScript, JavaScript, Python, CSS and JSON in games/cs16 and scripts/cs16; full web/src/audio-spatial.ts, web/src/game-api/default-players.ts and their registered web/tests; added lines only in web/src/audio.ts and web/src/game-api/module.ts and web/src/game-api/host.tsx; this is not a whole-repository check; full scripts/test_cdn_manual_gzip.py and added lines only in scripts/cdn_delivery.py; full registered Unchanged Go tests and added lines only in internal/gameapi/module.go and internal/server/realtime_stream.go; full action-scope.ts and action-scope.test.mjs, added lines only in main.tsx; full internal/server/session_cache.go and session_cache_e2e_test.go, added lines only in internal/server/server.go; full declared Deferred Input Go tests, added lines only in internal/server/realtime_batch.go",
+  "directories": [
+    "games/cs16",
+    "scripts/cs16"
+  ],
+  "sharedSources": [
+    "web/src/audio-spatial.ts",
+    "web/src/game-api/default-players.ts",
+    "web/src/game-api/action-scope.ts"
+  ],
+  "sharedTestPatterns": [
+    {
+      "directory": "web/tests",
+      "filename": "^audio-spatial(?:[.-][a-z0-9]+)*\\.test\\.mjs$"
+    },
+    {
+      "directory": "web/tests",
+      "filename": "^game-default-players\\.test\\.mjs$"
+    },
+    {
+      "directory": "web/tests",
+      "filename": "^controller-modifiers\\.test\\.mjs$"
+    },
+    {
+      "directory": "web/tests",
+      "filename": "^action-scope\\.test\\.mjs$"
+    }
+  ],
+  "sharedPatchSources": [
+    "web/src/audio.ts",
+    "web/src/game-api/module.ts",
+    "web/src/game-api/host.tsx",
+    "web/src/controllers/input.ts",
+    "web/src/controllers/game-controller.ts",
+    "web/src/controllers/use-game-controller.ts",
+    "web/src/main.tsx"
+  ],
+  "output": ".local/cs16/verification/lint",
+  "externalResourceDirectory": "games/cs16/assets/public",
+  "businessTypeScript": [
+    "input.ts",
+    "prediction.ts",
+    "motion.ts",
+    "simulation.ts",
+    "attack.ts",
+    "combat.ts",
+    "weapons.ts",
+    "feedback.ts",
+    "default-players.ts",
+    "touch-input.ts",
+    "action-scope.ts"
+  ],
+  "languages": {
+    "go": {
+      "extensions": [
+        ".go"
+      ],
+      "filename": "^[a-z][a-z0-9_]*\\.go$",
+      "comments": false
+    },
+    "typescript": {
+      "extensions": [
+        ".ts",
+        ".tsx"
+      ],
+      "filename": "^(?:[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*\\.tsx?|[A-Z][A-Za-z0-9]*\\.tsx)$",
+      "comments": false
+    },
+    "javascript": {
+      "extensions": [
+        ".js",
+        ".mjs",
+        ".cjs"
+      ],
+      "filename": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*\\.(?:[mc]js|js)$",
+      "comments": false
+    },
+    "python": {
+      "extensions": [
+        ".py"
+      ],
+      "filename": "^[a-z][a-z0-9]*(?:[_-][a-z0-9]+)*\\.py$",
+      "comments": false
+    },
+    "css": {
+      "extensions": [
+        ".css"
+      ],
+      "filename": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*\\.css$",
+      "comments": false
+    },
+    "json": {
+      "extensions": [
+        ".json"
+      ],
+      "filename": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*\\.json$",
+      "comments": false
+    }
+  },
+  "rules": [
+    "All code comments and Python docstrings are prohibited",
+    "TypeScript/JavaScript and Go bindings use camelCase/PascalCase; uppercase snake constants are permitted in TypeScript/JavaScript",
+    "Python bindings use snake_case, uppercase snake constants, and PascalCase classes",
+    "Go package names match engine, server, data, command and test directory roles",
+    "Business Go uses integer types and integer numeric literals; input and prediction TypeScript reject fractional numeric constants, Number.EPSILON and Math.random",
+    "Dynamic evaluation, TypeScript any, cross-game implementation imports, direct audio players and embedded media payloads are prohibited",
+    "Original BSP, WAD, MDL, image, audio, video, model, archive and WebAssembly payloads cannot enter Git, including assets/public; only registered ignored external payloads are restored",
+    "Temporary output paths are restricted to .local/cs16 and system-default temporary directories are prohibited",
+    "CSS classes and custom properties use kebab-case; JSON must parse and cannot contain prototype keys",
+    "Symlink traversal and unsupported source locations are rejected",
+    "assets/public is externally restored payload: exclude it from authored source parsing only while every file is registered and verified against assets/resources.json bytes and SHA-256; authored assets metadata outside public remains checked",
+    "Shared platform spatial audio may own an AudioContext and native media but cannot route to AudioContext.destination; its destination must be a MediaStreamAudioDestinationNode feeding the platform native media channel",
+    "Shared spatial audio sources and tests receive complete checks; existing audio.ts and game-api/module.ts are inspected only at Git-added lines, preserving pre-existing comments and unrelated source",
+    "Registered shared Go files use explicitly mapped server/gameapi packages; full new files and added lines in existing files retain integer/no-comment/no-game-import rules without exempting any game rule",
+    "Go forbids unsafe imports and package-global sql.Register/sqlite.RegisterConnectionHook references, including aliases; instance SQLite connection hooks remain allowed"
+  ],
+  "sharedPythonSources": [
+    "scripts/test_cdn_manual_gzip.py"
+  ],
+  "sharedPythonPatchSources": [
+    "scripts/cdn_delivery.py"
+  ],
+  "sharedGoSources": [
+    "internal/gameapi/stream_unchanged_test.go",
+    "internal/server/realtime_unchanged_e2e_test.go",
+    "internal/server/session_cache.go",
+    "internal/server/session_cache_e2e_test.go",
+    "internal/gameapi/deferred_input_test.go",
+    "internal/server/realtime_deferred_input_e2e_test.go"
+  ],
+  "sharedGoPatchSources": [
+    "internal/gameapi/module.go",
+    "internal/server/realtime_stream.go",
+    "internal/server/server.go",
+    "internal/server/realtime_batch.go"
+  ],
+  "sharedGoPackages": {
+    "internal/gameapi": "gameapi",
+    "internal/server": "server"
+  }
+}

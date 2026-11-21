@@ -8,7 +8,7 @@ from pathlib import Path
 from verify_pass_floor_original import MPU,Memory
 
 ROOT=Path(__file__).resolve().parents[2]
-ROM=(ROOT/'.local/nes-basket/basketball.nes').read_bytes()
+ROM=(ROOT/'.local/basketball/research/original/basketball.nes').read_bytes()
 PRG=ROM[16:16+131072]
 CASES=[
  ('campaign-audit-first-match-confirm',769,1612),
@@ -71,7 +71,7 @@ def main():
  assert romSHA=='0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b'
  rows=[]
  for name,selectionFrame,commitFrame in CASES:
-  source=ROOT/'.local/nes-basket/runs'/name/'ram.bin';raw=source.read_bytes()
+  source=ROOT/'.local/basketball/research/original/runs'/name/'ram.bin';raw=source.read_bytes()
   selectionBefore=frame(raw,selectionFrame)
   selectionAfter,selectionCounts,_=execute(selectionBefore,0x896d,0x8088)
   assert selection(selectionAfter)==selection(frame(raw,selectionFrame+1))

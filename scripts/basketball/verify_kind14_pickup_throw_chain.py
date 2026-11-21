@@ -9,8 +9,8 @@ from verify_pass_floor_original import ROOT,Memory,MPU,put
 from extract_world_actions import decode_world_action_state
 
 def main():
-    rom=(ROOT/'.local/nes-basket/basketball.nes').read_bytes();prg=rom[16:16+131072]
-    source=ROOT/'.local/nes-basket/runs/court-3-reference/ram.bin';source_ram=source.read_bytes()[1500*2048:1501*2048]
+    rom=(ROOT/'.local/basketball/research/original/basketball.nes').read_bytes();prg=rom[16:16+131072]
+    source=ROOT/'.local/basketball/research/original/runs/court-3-reference/ram.bin';source_ram=source.read_bytes()[1500*2048:1501*2048]
     records=[];chains=[]
     for spare_buttons in (0,0x41):
         r=bytearray(source_ram);assert r[0x58b]==3 and r[0x3db]==14

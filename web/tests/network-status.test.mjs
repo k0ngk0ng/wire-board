@@ -100,3 +100,13 @@ test("transient sync rejection stays rejected but has no dismissible message", (
   const invalid = Object.assign(Error("不能这样出牌"), { status: 400 });
   assert.equal(quietSyncError(invalid), invalid);
 });
+
+test("a manual input rejected during an autoplay handoff resyncs without an obsolete error toast", () => {
+  const original = Object.assign(new Error("当前由电脑托管，请先取消托管再手动操作"), { status: 400 });
+  const failure = quietSyncError(original);
+  assert.equal(isTransientSyncError(failure), true);
+  assert.equal(failure.message, "");
+  assert.equal(failure.cause, original);
+  const denied = Object.assign(new Error("只能修改本人或房主管理的电脑"), { status: 400 });
+  assert.equal(quietSyncError(denied), denied);
+});

@@ -59,7 +59,7 @@ def main():
         if name == 'projection':
             assert all(row['objects'] == ';'.join(map(str,range(13))) for row in rows)
         summary[name] = dict(records=len(rows), sha256=hashlib.sha256(raw).hexdigest())
-    dest = ROOT/'.local/basketball/rea/camera/capture.json'
+    dest = ROOT/'.local/basketball/research/rea/camera/capture.json'
     dest.write_text(json.dumps(summary, indent=2)+'\n')
     print(json.dumps(summary))
 

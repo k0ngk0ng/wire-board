@@ -1,5 +1,5 @@
 {
-  "source": ".local/basketball/rea/preparation-matrix/court3-roster2-controls0--1-2--1.json",
+  "source": ".local/basketball/research/rea/preparation-matrix/court3-roster2-controls0--1-2--1.json",
   "sourceSHA256": "b1ec10d5313757aa179843dbaea7ea13075070dc610405b1c5eef0bf1352ed89",
   "fixtureSHA256": "39335079afb87c9717fa02b8db20d237f748774d2c9675f267dd0586071c312b",
   "scope": "actual Go runtime failure state; no ROM execution claim",

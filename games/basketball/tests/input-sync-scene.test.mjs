@@ -1,7 +1,7 @@
-// Written before the compact scene integration: only explicit bootstraps may
-// import full state; pushes replay just new inputs, duplicates are inert,
-// input/hash/revision gaps request one recovery, and native prediction forks
-// must not round-trip simulation state through JavaScript.
+
+
+
+
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {execFileSync} from 'node:child_process';
@@ -10,7 +10,7 @@ import {fileURLToPath,pathToFileURL} from 'node:url';
 import path from 'node:path';
 const root=fileURLToPath(new URL('../../../',import.meta.url));
 execFileSync('go',['test','./games/basketball/server','-run','^TestHostVideoHistoryReplaysExactInputAndHandoff$','-count=1'],{cwd:root,stdio:'pipe'});
-const fixture=JSON.parse(readFileSync(path.join(root,'.local/basketball/network-scene/host-views.json'),'utf8'));
+const fixture=JSON.parse(readFileSync(path.join(root,'.local/basketball/verification/network-scene/host-views.json'),'utf8'));
 const runtime=execFileSync(process.execPath,['--input-type=module','-e','import {prepareBasketballRuntime} from "./games/basketball/build/runtime.mjs";console.log(prepareBasketballRuntime(process.cwd()))'],{cwd:root,encoding:'utf8'}).trim();
 await import(pathToFileURL(path.join(runtime,'basketball/v1/runtime/wasm_exec.js')).href);
 const go=new globalThis.Go();const loaded=await WebAssembly.instantiate(readFileSync(path.join(runtime,'basketball/v1/runtime/basketball.wasm')),go.importObject);void go.run(loaded.instance);
@@ -80,12 +80,12 @@ test('recovery catches up buffered authority without replaying stale presentatio
  assert.deepEqual(scene.lastReplayState,fixture.checkpoints.at(-1).state);
 });
 
-// Failure cases specified before implementation: deterministic native rule
-// errors must not download the same checkpoint/restart audio; duplicate views,
-// new envelope versions and RAF gaps cannot clear the fault; authority that
-// actually advances may recover; unknown errors may try one checkpoint but
-// cannot restart that allowance by reinstalling the same state. Existing
-// checksum/history/epoch tests above retain normal recoverable behavior.
+
+
+
+
+
+
 test('native rule failure freezes presentation without checkpoint or audio-reset loops',t=>{
  let broken=true;const resets=[],faults=[],frames=[],resync=[],calls=[];
  const scene=new BasketballNetworkScene({controller:0,engine:{request:c=>{

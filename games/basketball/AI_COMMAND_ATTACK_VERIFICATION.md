@@ -14,7 +14,7 @@
 
 ## Source and implementation
 
-The unchanged original bank5 dispatch uses `A09C[36..38] -> A63D` and `A09C[41] -> AD17`. Existing REA evidence `ev_eef21fb30302a3ec59b8b3dc097be9a7fa2a559339d598963a8489a9d646759d` (`.local/basketball/rea/ai-batch/batch.json`) contains both complete entries. This recovery reused that analysis and checked the original instructions and selector bytes at `A691..A69E`; it did not re-import identical source into a new REA session.
+The unchanged original bank5 dispatch uses `A09C[36..38] -> A63D` and `A09C[41] -> AD17`. Existing REA evidence `ev_eef21fb30302a3ec59b8b3dc097be9a7fa2a559339d598963a8489a9d646759d` (`.local/basketball/research/rea/ai-batch/batch.json`) contains both complete entries. This recovery reused that analysis and checked the original instructions and selector bytes at `A691..A69E`; it did not re-import identical source into a new REA session.
 
 `ai_command_attack.go` adds two independent typed helpers, with no ROM interpretation at runtime:
 
@@ -29,7 +29,7 @@ All data comes from existing `AIControlView` fields. No shared context/type addi
 
 Another 36 two-call chains retain the original state between command attack and actual mode7 consumption, with JSON restore checks on the Go path. These are AI-only handoff chains: actor action/animation/physics and complete A/B command-consumer gameplay are outside this component's acceptance scope.
 
-The test compares the full `WorldInputState`, including action entered bits, heading, control fields, shared random state and all unchanged actors/objects/command fields. Tests and failure scenarios preceded implementation. The initial undefined-helper failure and the next unsupported shared-dispatch failure remain in `.local/basketball/rea/ai-command-attack/`.
+The test compares the full `WorldInputState`, including action entered bits, heading, control fields, shared random state and all unchanged actors/objects/command fields. Tests and failure scenarios preceded implementation. The initial undefined-helper failure and the next unsupported shared-dispatch failure remain in `.local/basketball/research/rea/ai-command-attack/`.
 
 Reproduction:
 
@@ -41,4 +41,4 @@ go test -race ./games/basketball/engine -run '^TestOriginalAICommandAttack' -cou
 GOOS=js GOARCH=wasm go test -exec "$(go env GOROOT)/lib/wasm/go_js_wasm_exec" ./games/basketball/engine -run '^TestOriginalAICommandAttack' -count=1
 ```
 
-Native、race and Wasm targeted acceptance all passed after shared dispatcher integration. The fixture regenerated identically. Exact source/table/log checksums and result index: `.local/basketball/rea/ai-command-attack/result.json` and `table-equality.json`.
+Native、race and Wasm targeted acceptance all passed after shared dispatcher integration. The fixture regenerated identically. Exact source/table/log checksums and result index: `.local/basketball/research/rea/ai-command-attack/result.json` and `table-equality.json`.
