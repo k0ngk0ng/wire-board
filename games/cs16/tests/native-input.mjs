@@ -5,6 +5,7 @@ import { dirname, resolve, sep } from "node:path";
 import { WireSelfObserver } from './wire-self-observer.mjs';
 import { withProxyReconnect } from './browser-network-control.mjs';
 import { createPixelProbe } from './gpu-pixel-probe.mjs';
+import { nativeLifeInterrupted } from './native-life.mjs';
 
 const input = JSON.parse(readFileSync(0, "utf8"));
 const { endpoint, pageURL, options = {} } = input;
@@ -377,9 +378,11 @@ try {
     const lastAction = () => report.network.lastInput?.action;
     report.singleFingerReleases = [];
     for (let index = 0; index < (options.samples ?? 24); index++) {
+      assert.ok(!nativeLifeInterrupted(report.network.lastAuthority, report.network.measurementStartIdentity), "native touch group was interrupted by authority");
       await call("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: centers });
       const moved = centers.map((point, id) => ({ ...point, x: point.x + (id ? 20 : index % 2 ? 24 : -24) }));
       await sample("touch", () => call("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: moved }));
+      assert.ok(!nativeLifeInterrupted(report.network.lastAuthority, report.network.measurementStartIdentity), "native touch group was interrupted by authority");
       const keep = index % 2 ? 0 : 1;
       await call("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [moved[1 - keep]] });
       await wait(60);
@@ -394,6 +397,7 @@ try {
     const combined = report.network.messages.filter(item => !item.incoming && item.action?.fire && (item.action.moveX !== 0 || item.action.moveY !== 0)).map(item => item.action);
     const afterTouch = await evaluate("fetch('/api/state').then(response=>response.json()).then(state=>state.room.game.data.players[state.room.you])");
     report.twoThumbs = { combined, before: beforeTouch, after: afterTouch, lastInput: lastAction() };
+    assert.ok(!nativeLifeInterrupted(report.network.lastAuthority, report.network.measurementStartIdentity), "native touch group was interrupted by authority");
     assert.ok(combined.length > 0 && new Set(combined.map(action => action.yaw)).size > 1, "two thumbs did not simultaneously move, aim and fire");
     assert.ok(beforeTouch.life === afterTouch.life && afterTouch.ammo < beforeTouch.ammo, "two-thumb fire was not applied by authority");
     assert.ok(!lastAction().fire && lastAction().moveX === 0 && lastAction().moveY === 0, "touch release retained an input");

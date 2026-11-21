@@ -262,7 +262,7 @@ def native(client, name, touch=False, allow_life_interruption=False, **extra):
         lives = {entry['life'] for entry in observation.get('frames', []) if isinstance(entry.get('life'), int)}
         replaced = authority.get('epoch') == bootstrap.get('epoch') and isinstance(authority.get('life'), int) and isinstance(bootstrap.get('life'), int) and authority['life'] != bootstrap['life']
         interrupted = authority.get('player', {}).get('alive') is False or replaced
-        interruption_errors = ('native modifier combination', 'native weapon selection', 'too few real pixel responses', 'ongoing movement prevented', 'two-thumb fire was not applied', 'mobile crouch toggle', 'both rapid selections', 'rapid Digit3 and Q', 'getBoundingClientRect', 'native transport baseline was interrupted by authoritative death')
+        interruption_errors = ('native modifier combination', 'native weapon selection', 'too few real pixel responses', 'ongoing movement prevented', 'two-thumb fire was not applied', 'mobile crouch toggle', 'both rapid selections', 'rapid Digit3 and Q', 'getBoundingClientRect', 'native transport baseline was interrupted by authoritative death', 'native touch group was interrupted by authority')
         eligible = any(message in observation.get('error', '') for message in interruption_errors)
         assert not observation.get('layoutFailures') and not observation.get('network', {}).get('internalFieldLeaks'), observation
         if not accepted and interrupted and eligible:
