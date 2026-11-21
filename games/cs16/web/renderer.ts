@@ -40,7 +40,7 @@ export class BattleRenderer {
 
   constructor(canvas: HTMLCanvasElement, assets: LoadedAssets) {
     this.assets = assets;
-    this.renderer = new T.WebGLRenderer({ canvas, antialias: false, alpha: false, powerPreference: 'high-performance' });
+    this.renderer = new T.WebGLRenderer({ canvas, antialias: true, alpha: false, powerPreference: 'high-performance' });
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     this.renderer.outputColorSpace = T.SRGBColorSpace;
     this.renderer.toneMapping = T.NoToneMapping;

@@ -4,7 +4,7 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve, sep } from "node:path";
 import { WireSelfObserver } from './wire-self-observer.mjs';
 import { withProxyReconnect } from './browser-network-control.mjs';
-import { createPixelProbe } from './gpu-pixel-probe.mjs';
+import { createPixelProbe, createPixelRing } from './gpu-pixel-probe.mjs';
 
 const input = JSON.parse(readFileSync(0, "utf8"));
 const { endpoint, pageURL, options = {} } = input;
@@ -314,8 +314,11 @@ try {
     if (!canvas?.__cs16Frame) throw Error('production canvas is not ready');
     const gl = canvas.getContext('webgl2') || canvas.getContext('webgl');
     if (!gl) throw Error('real WebGL context is missing');
-    const hash = (${createPixelProbe.toString()})(gl,canvas).hash;
-    const probe={events:[],frames:[],responses:[],longTasks:[],longTasksSupported:PerformanceObserver.supportedEntryTypes.includes('longtask'),running:true,pending:null,lastHash:null};
+    const createPixels = (${createPixelProbe.toString()});
+    const pixels = (${createPixelRing.toString()})(gl,canvas,createPixels);
+    const reads=new Set();
+    let sequence=0;
+    const probe={events:[],frames:[],responses:[],longTasks:[],longTasksSupported:PerformanceObserver.supportedEntryTypes.includes('longtask'),running:true,pending:null,latest:null,lastHash:null};
     const longTaskObserver=probe.longTasksSupported?new PerformanceObserver(list=>probe.longTasks.push(...list.getEntries().map(entry=>({at:entry.startTime,milliseconds:entry.duration})))):null;
     longTaskObserver?.observe({type:'longtask',buffered:false});
     const types=['keydown','keyup','pointerdown','pointermove','pointerup','pointercancel','touchstart','touchmove','touchend','touchcancel'];
@@ -327,35 +330,40 @@ try {
       const entry={type:event.type,at,dispatchedAt,queueMS:dispatchedAt-at,trusted:event.isTrusted,key:event.code??null,pointerId:event.pointerId??null,target:event.target?.dataset?.cs16Action??event.target?.dataset?.cs16Stick??null};
       probe.events.push(entry);
       const item=probe.pending;
-      if(item&&item.inputAt===null&&((item.kind==='key'&&event.type==='keydown')||(item.kind==='mouse'&&event.type==='pointermove')||(item.kind==='touch'&&(event.type==='pointermove'||event.type==='touchmove'))))item.inputAt=entry.at;
+      if(item&&item.inputAt===null&&((item.kind==='key'&&event.type==='keydown')||(item.kind==='mouse'&&event.type==='pointermove')||(item.kind==='touch'&&(event.type==='pointermove'||event.type==='touchmove')))){item.inputAt=entry.at;item.dispatchedAt=entry.dispatchedAt;}
     };
     for(const type of types)document.addEventListener(type,listener,true);
-    probe.arm=(kind,code)=>{probe.pending={kind,code,inputAt:null,before:structuredClone(canvas.__cs16Frame),hash:probe.lastHash,armedAt:performance.now()};};
+    probe.arm=(kind,code)=>{if(!probe.latest)throw Error('completed GPU baseline is missing');probe.pending={kind,code,inputAt:null,dispatchedAt:null,before:structuredClone(probe.latest.frame),hash:probe.latest.hash,baselineIndex:probe.latest.index,armedAt:performance.now()};};
     const loop=at=>{
       if(!probe.running)return;
       const frame=canvas.__cs16Frame;
+      const index=++sequence;
       const pixelReadbackStartAt=performance.now();
-      const currentHash=hash();
-      const pixelReadbackEndAt=performance.now();
-      if(probe.frames.length<2500)probe.frames.push({...frame,at,pixelHash:currentHash,pixelReadbackStartAt,pixelReadbackEndAt});
-      const item=probe.pending;
-      if(item?.kind==='key'&&item.inputAt===null){
-        const entry=canvas.__cs16Metrics?.inputs?.find(entry=>entry.type==='keydown'&&entry.trusted&&entry.at>=item.armedAt);
-        if(entry){item.inputAt=entry.createdAt??entry.at;probe.events.push({...entry,queueMS:(entry.dispatchedAt??entry.at)-(entry.createdAt??entry.at),key:item.code,source:'native-window-capture'});}
-      }
-      if(item?.kind==='mouse'&&item.inputAt===null){
-        const entry=canvas.__cs16Metrics?.inputs?.find(entry=>entry.type==='mousemove'&&entry.trusted&&entry.at>=item.armedAt);
-        if(entry){item.inputAt=entry.createdAt??entry.at;probe.events.push({...entry,queueMS:(entry.dispatchedAt??entry.at)-(entry.createdAt??entry.at),source:'native-locked-mouse'});}
-      }
-      if(item&&item.inputAt!==null&&frame&&frame.inputEnabled&&item.before.inputEnabled&&frame.life===item.before.life){
-        const before=item.before;
-        const changed=item.kind==='mouse'||item.code?.startsWith('Arrow')?frame.yaw!==before.yaw||frame.pitch!==before.pitch:frame.x!==before.x||frame.y!==before.y||frame.z!==before.z||item.kind==='touch'&&(frame.yaw!==before.yaw||frame.pitch!==before.pitch);
-        if(changed&&item.hash!==null&&currentHash!==item.hash){const visibleAt=performance.now();probe.responses.push({kind:item.kind,inputAt:item.inputAt,visibleAt,milliseconds:visibleAt-item.inputAt,pixelReadbackStartAt,pixelReadbackEndAt,pixelsChanged:true,beforeHash:item.hash,afterHash:currentHash,before,after:structuredClone(frame)});probe.pending=null;}
-      }
-      probe.lastHash=currentHash;
+      const record={...frame,at,captureIndex:index,pixelReadbackStartAt};
+      if(probe.frames.length<2500)probe.frames.push(record);
+      const reading=pixels.hashAsync().then(currentHash=>{
+        const pixelReadbackEndAt=performance.now();
+        Object.assign(record,{pixelHash:currentHash,pixelReadbackEndAt});
+        const item=probe.pending;
+        if(item?.kind==='key'&&item.inputAt===null){
+          const entry=canvas.__cs16Metrics?.inputs?.find(entry=>entry.type==='keydown'&&entry.trusted&&entry.at>=item.armedAt);
+          if(entry){item.inputAt=entry.createdAt??entry.at;item.dispatchedAt=entry.dispatchedAt??entry.at;probe.events.push({...entry,queueMS:(entry.dispatchedAt??entry.at)-(entry.createdAt??entry.at),key:item.code,source:'native-window-capture'});}
+        }
+        if(item?.kind==='mouse'&&item.inputAt===null){
+          const entry=canvas.__cs16Metrics?.inputs?.find(entry=>entry.type==='mousemove'&&entry.trusted&&entry.at>=item.armedAt);
+          if(entry){item.inputAt=entry.createdAt??entry.at;item.dispatchedAt=entry.dispatchedAt??entry.at;probe.events.push({...entry,queueMS:(entry.dispatchedAt??entry.at)-(entry.createdAt??entry.at),source:'native-locked-mouse'});}
+        }
+        if(item&&item.inputAt!==null&&item.dispatchedAt!==null&&pixelReadbackStartAt>=item.dispatchedAt&&frame&&frame.inputEnabled&&item.before.inputEnabled&&frame.life===item.before.life){
+          const before=item.before;
+          const changed=item.kind==='mouse'||item.code?.startsWith('Arrow')?frame.yaw!==before.yaw||frame.pitch!==before.pitch:frame.x!==before.x||frame.y!==before.y||frame.z!==before.z||item.kind==='touch'&&(frame.yaw!==before.yaw||frame.pitch!==before.pitch);
+          if(changed&&item.hash!==null&&currentHash!==item.hash){const visibleAt=performance.now();probe.responses.push({kind:item.kind,inputAt:item.inputAt,visibleAt,milliseconds:visibleAt-item.inputAt,captureIndex:index,baselineCaptureIndex:item.baselineIndex,pixelReadbackStartAt,pixelReadbackEndAt,pixelsChanged:true,beforeHash:item.hash,afterHash:currentHash,before,after:structuredClone(frame)});probe.pending=null;}
+        }
+        if(!probe.latest||index>probe.latest.index){probe.latest={index,frame,hash:currentHash};probe.lastHash=currentHash;}
+      }).catch(error=>{probe.error=String(error.stack??error);probe.running=false;}).finally(()=>reads.delete(reading));
+      reads.add(reading);
       requestAnimationFrame(loop);
     };
-    probe.stop=()=>{probe.running=false;longTaskObserver?.disconnect();for(const type of types)document.removeEventListener(type,listener,true);};
+    probe.stop=async()=>{probe.running=false;longTaskObserver?.disconnect();for(const type of types)document.removeEventListener(type,listener,true);await Promise.all(reads);probe.readback={method:'GPU tile gather, pixel pack buffer and fence',sampledPixels:768,sampledBytes:3072,slots:16,peakPending:pixels.peak,captures:sequence,completed:probe.frames.filter(frame=>frame.pixelHash!==undefined).length,error:probe.error};pixels.dispose();};
     window.__cs16NativeProbe=probe;
     requestAnimationFrame(loop);
     return true;
@@ -418,7 +426,7 @@ try {
       document.addEventListener('contextmenu',context,true);
       document.addEventListener('selectionchange',selection);
       const stop=probe.stop;
-      probe.stop=()=>{stop();document.removeEventListener('contextmenu',context,true);document.removeEventListener('selectionchange',selection);};
+      probe.stop=async()=>{document.removeEventListener('contextmenu',context,true);document.removeEventListener('selectionchange',selection);await stop();};
       return true;
     })()`);
     const label = await evaluate("document.querySelector('[data-cs16-action=reload]').getBoundingClientRect().toJSON()");
@@ -579,9 +587,12 @@ try {
     await clickSelector('.chat-toggle');
   }
   await wait(options.observeMS ?? 1200);
-  const observation = await evaluate("(()=>{const probe=window.__cs16NativeProbe;probe.stop();return {events:probe.events,responses:probe.responses,frames:probe.frames,longTasks:probe.longTasks,longTasksSupported:probe.longTasksSupported,final:document.querySelector('[data-cs16-canvas]').__cs16Frame,metrics:document.querySelector('[data-cs16-canvas]').__cs16Metrics}})()");
+  const observation = await evaluate("(async()=>{const probe=window.__cs16NativeProbe;await probe.stop();return {events:probe.events,responses:probe.responses,frames:probe.frames,longTasks:probe.longTasks,longTasksSupported:probe.longTasksSupported,readback:probe.readback,final:document.querySelector('[data-cs16-canvas]').__cs16Frame,metrics:document.querySelector('[data-cs16-canvas]').__cs16Metrics}})()");
   Object.assign(report, observation);
+  assert.ok(observation.readback && !observation.readback.error, JSON.stringify(observation.readback));
   const frames = observation.frames;
+  assert.equal(observation.readback.completed, observation.readback.captures, "GPU captures were dropped");
+  assert.equal(observation.readback.completed, frames.length, "GPU frames and completed captures differ");
   const intervals = frames.slice(1).map((entry, index) => entry.at - frames[index].at);
   const elapsed = frames.at(-1).at - frames[0].at;
   const changes = frames.slice(1).filter((entry, index) => entry.drawCount !== frames[index].drawCount).length;
@@ -720,7 +731,7 @@ try {
   if (temporaryTarget) await call("Target.closeTarget", { targetId: temporaryTarget }, undefined).catch(() => {});
   if (session) await evaluate("if(document.pointerLockElement)document.exitPointerLock();true").catch(() => {});
   if (session && !report.frames && !options.scrollOnly && !options.backgroundOnly && !options.observeOnly) {
-    const partial = await evaluate("(()=>{const probe=window.__cs16NativeProbe;if(!probe)return {};probe.stop();return {events:probe.events,responses:probe.responses,frames:probe.frames,longTasks:probe.longTasks,longTasksSupported:probe.longTasksSupported,final:document.querySelector('[data-cs16-canvas]')?.__cs16Frame}})()").catch(() => ({}));
+    const partial = await evaluate("(async()=>{const probe=window.__cs16NativeProbe;if(!probe)return {};await probe.stop();return {events:probe.events,responses:probe.responses,frames:probe.frames,longTasks:probe.longTasks,longTasksSupported:probe.longTasksSupported,readback:probe.readback,final:document.querySelector('[data-cs16-canvas]')?.__cs16Frame}})()").catch(() => ({}));
     Object.assign(report, partial);
   }
   if (session) await call("Target.detachFromTarget", { sessionId: session }, undefined).catch(() => {});
