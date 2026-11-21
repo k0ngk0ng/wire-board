@@ -36,8 +36,12 @@ test(
         process.env.AGENT_BROWSER_SOCKET_DIR ?? path.join(owned, "s"),
       AGENT_BROWSER_PROFILE: path.join(temporary, "profile"),
       AGENT_BROWSER_NO_VERSION_CHECK: "1",
-      AGENT_BROWSER_ARGS:
-        "--mute-audio,--disable-breakpad,--disable-crash-reporter",
+      AGENT_BROWSER_ARGS: [
+        "--mute-audio",
+        "--disable-breakpad",
+        "--disable-crash-reporter",
+        ...(process.env.GITHUB_ACTIONS === "true" ? ["--no-sandbox"] : []),
+      ].join(","),
     };
     for (const directory of [
       out,
@@ -690,6 +694,8 @@ if err := http.Serve(listener, app.Handler()); err != nil {panic(err)}
       report.passed = true;
     } catch (error) {
       report.error = error.stack;
+      if (error.stdout || error.stderr)
+        report.browserFailure = { stdout: error.stdout, stderr: error.stderr };
       if (session) {
         try {
           await browser("screenshot", path.join(out, "failure.png"), "--full");

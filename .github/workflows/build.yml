@@ -154,6 +154,7 @@ jobs:
             .local/ci/quick/
             .local/ci-lanes/result.json
             .local/ci-scope/git-e2e.json
+            .local/room-flow/verification/
           include-hidden-files: true
           if-no-files-found: error
           retention-days: 7
