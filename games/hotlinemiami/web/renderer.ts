@@ -1,12 +1,12 @@
 import type { LoadedAssets } from "./assets";
-import { isMeleeWeapon, playerColors, type GameEvent, type Player, type View } from "./types.ts";
+import { isMeleeWeapon, playerColors, type GameEvent, type Player, type View, type Viewport } from "./types.ts";
 import type { FeedbackPulse } from "./feedback.ts";
 
 export type DrawPlayer = Pick<Player, "x" | "y" | "aim" | "life" | "alive">;
 export type Camera = { x: number; y: number; width: number; height: number };
 
-export function cameraForPlayer(focus: { x: number; y: number } | undefined, mapWidth: number, mapHeight: number): Camera {
-  const width = Math.min(384, mapWidth), height = width * 5 / 8;
+export function cameraForPlayer(focus: { x: number; y: number } | undefined, mapWidth: number, mapHeight: number, viewport: Viewport): Camera {
+  const width = Math.min(viewport.width, mapWidth), height = width * viewport.height / viewport.width;
   const x = focus ? focus.x / 256 : mapWidth / 2;
   const y = focus ? focus.y / 256 : mapHeight / 2;
   return {
@@ -30,7 +30,9 @@ export class BattleRenderer {
   private marks: Mark[] = [];
   private flashes = new Map<number, number>();
   private labelSize = 8;
-  private camera: Camera = { x: 0, y: 0, width: 384, height: 240 };
+  private outlineSize = 1.5;
+  private ringSize = 15;
+  private camera: Camera;
   private reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   constructor(canvas: HTMLCanvasElement, assets: LoadedAssets) {
@@ -39,6 +41,7 @@ export class BattleRenderer {
     this.canvas = canvas;
     this.context = context;
     this.assets = assets;
+    this.camera = cameraForPlayer(undefined, assets.rules.width / 256, assets.rules.height / 256, assets.viewport);
   }
 
   get viewCamera() {
@@ -46,7 +49,7 @@ export class BattleRenderer {
   }
 
   pointFromPointer(x: number, y: number, focus: { x: number; y: number }) {
-    return pointerWorldPoint(x, y, cameraForPlayer(focus, this.assets.rules.width / 256, this.assets.rules.height / 256));
+    return pointerWorldPoint(x, y, cameraForPlayer(focus, this.assets.rules.width / 256, this.assets.rules.height / 256, this.assets.viewport));
   }
 
   ingest(events: GameEvent[]) {
@@ -72,9 +75,11 @@ export class BattleRenderer {
     const mapWidth = this.assets.rules.width / 256;
     const mapHeight = this.assets.rules.height / 256;
     const focus = local ?? view.players.find(player => player.alive) ?? view.players[0];
-    this.camera = cameraForPlayer(focus, mapWidth, mapHeight);
+    this.camera = cameraForPlayer(focus, mapWidth, mapHeight, this.assets.viewport);
     const worldWidth = this.camera.width, worldHeight = this.camera.height;
     this.labelSize = Math.max(8, 10 * worldWidth / Math.max(1, rect.width));
+    this.outlineSize = Math.max(1.5, worldWidth / Math.max(1, rect.width));
+    this.ringSize = Math.max(15, 12 * worldWidth / Math.max(1, rect.width));
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.fillStyle = "#15131f";
     ctx.fillRect(0, 0, width, height);
@@ -262,15 +267,15 @@ export class BattleRenderer {
       return;
     }
     ctx.strokeStyle = color;
-    ctx.lineWidth = 1.5;
+    ctx.lineWidth = this.outlineSize;
     ctx.beginPath();
-    ctx.ellipse(x, y + 3, 15, 9, 0, 0, Math.PI * 2);
+    ctx.ellipse(x, y + 3, this.ringSize, this.ringSize * 3 / 5, 0, 0, Math.PI * 2);
     ctx.stroke();
     if (player.protectedUntil > frame) {
       ctx.strokeStyle = `${color}c9`;
       ctx.setLineDash([3, 3]);
       ctx.beginPath();
-      ctx.arc(x, y, 17, 0, Math.PI * 2);
+      ctx.arc(x, y, Math.max(17, this.ringSize + 3), 0, Math.PI * 2);
       ctx.stroke();
       ctx.setLineDash([]);
     }

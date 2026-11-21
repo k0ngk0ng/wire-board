@@ -15,7 +15,7 @@ RESEARCH = ROOT / ".local/hotlinemiami/research"
 sys.path.insert(0, str(ROOT / ".local/hotlinemiami/tools/python"))
 sys.path.insert(0, str(ROOT / "scripts/hotlinemiami"))
 from PIL import Image, ImageDraw
-from build_maps import METADATA, ORIGINAL, read_object_data, read_rooms, read_sprite_data, recover_maps
+from build_maps import METADATA, ORIGINAL, SELECTION, is_scene_actor, read_object_data, read_rooms, read_sprite_data, recover_maps
 from extract_assets import read_wad
 
 
@@ -110,6 +110,14 @@ def static_environment(name):
     return name.startswith("Enviroment/") and not any(value in name for value in ["/explosion/", "sprRoomExplosion"])
 
 
+def static_scene_object(object_id, objects, sprites):
+    object_data = objects[object_id]
+    sprite = sprites.get(object_data[1])
+    if is_scene_actor(object_id, objects, sprites):
+        return False
+    return bool(sprite and static_environment(sprite["name"]) and object_data[6] != 0 and not any(value in sprite["name"] for value in ["/Walls/sprDoor", "GlassPanel", "/Walls/sprWindow"]))
+
+
 def map_background(source, room, objects, sprites):
     image = Image.new("RGBA", (room["width"], room["height"]), (10, 8, 18, 255))
     backgrounds = {0: source_frame(source, "background0"), 1: source_frame(source, "background1")}
@@ -125,9 +133,7 @@ def map_background(source, room, objects, sprites):
     for instance, object_id, x, y, _ in sorted(room["objects"], key=lambda item: -objects[item[1]][2]):
         object_data = objects[object_id]
         sprite = sprites.get(object_data[1])
-        if not sprite or not static_environment(sprite["name"]) or object_data[6] == 0:
-            continue
-        if any(value in sprite["name"] for value in ["/Walls/sprDoor", "GlassPanel", "/Walls/sprWindow"]):
+        if not static_scene_object(object_id, objects, sprites):
             continue
         name = sprite["name"].split("/")[-1]
         if name not in source["sprites"]:
@@ -148,6 +154,63 @@ def fixed_rules(arena):
     for key in ["walls", "doors", "spawns", "weaponSpawns"]:
         rules[key] = [{field: value * 256 if field in ["x", "y", "w", "h"] else value for field, value in item.items()} for item in arena[key]]
     return rules
+
+
+def scene_actor_audit():
+    rooms = read_rooms((METADATA / "hotline_rooms.bin").read_bytes())
+    objects = read_object_data()
+    sprites = read_sprite_data()
+    audit = {"metadataSHA256": {name: hashlib.sha256((METADATA / name).read_bytes()).hexdigest() for name in ["hotline_rooms.bin", "hotline_objects.bin", "hotline_sprites.bin"]}, "maps": []}
+    for identity, _, room_id, source_name in SELECTION:
+        room = rooms[room_id]
+        removed = {}
+        for instance, object_id, x, y, _ in room["objects"]:
+            if not is_scene_actor(object_id, objects, sprites):
+                continue
+            sprite_id = objects[object_id][1]
+            path = sprites[sprite_id]["name"]
+            actor = removed.setdefault(object_id, {"objectId": object_id, "name": path.rsplit("/", 1)[-1], "spriteId": sprite_id, "sourceSprite": path, "ancestors": [], "instances": []})
+            ancestor = object_id
+            while ancestor in objects and ancestor not in actor["ancestors"]:
+                actor["ancestors"].append(ancestor)
+                ancestor = objects[ancestor][3]
+            actor["instances"].append({"sourceInstance": instance, "x": x, "y": y})
+        for actor in removed.values():
+            actor["instanceCount"] = len(actor["instances"])
+        audit["maps"].append({"id": identity, "sourceRoomId": room_id, "sourceRoomName": source_name, "width": room["width"], "height": room["height"], "removedInstanceCount": sum(actor["instanceCount"] for actor in removed.values()), "removedActors": sorted(removed.values(), key=lambda actor: actor["objectId"])})
+    return audit
+
+
+def add_maps(source, manifest, arenas):
+    rooms = read_rooms((METADATA / "hotline_rooms.bin").read_bytes())
+    objects = read_object_data()
+    sprites = read_sprite_data()
+    manifest["maps"] = []
+    for arena in arenas:
+        room = rooms[arena["sourceRoomId"]]
+        if arena["width"] != room["width"] or arena["height"] != room["height"] or arena["coordinateScale"] != 1:
+            raise ValueError("map rules do not preserve native room dimensions")
+        image = map_background(source, room, objects, sprites)
+        identity = "map-" + arena["id"]
+        preview_id = "preview-" + arena["id"]
+        register_image(manifest, identity, image)
+        preview = image.resize((320, image.height * 320 // image.width), Image.Resampling.NEAREST)
+        register_image(manifest, preview_id, preview)
+        manifest["maps"].append({"id": arena["id"], "name": arena["name"], "width": image.width, "height": image.height, "image": identity, "preview": preview_id, "rules": fixed_rules(arena)})
+
+
+def update_map_assets(arenas=None):
+    source = load_source_manifest()
+    manifest = json.loads((ASSETS / "manifest.json").read_text())
+    if arenas is None:
+        arenas = json.loads((ROOT / "games/hotlinemiami/data/maps.json").read_text())
+    add_maps(source, manifest, arenas)
+    (ASSETS / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, separators=(",", ":")) + "\n")
+    output = ROOT / ".local/hotlinemiami/verification/assets"
+    output.mkdir(parents=True, exist_ok=True)
+    (output / "scene-actor-audit.json").write_text(json.dumps(scene_actor_audit(), ensure_ascii=False, indent=2) + "\n")
+    contact_sheet(manifest, source)
+    return manifest
 
 
 def add_audio(manifest):
@@ -201,7 +264,8 @@ def add_music(manifest):
 
 
 def contact_sheet(manifest, source):
-    sheet = Image.new("RGB", (1200, 1280), (24, 19, 30))
+    map_height = ((len(manifest["maps"]) + 2) // 3) * 330
+    sheet = Image.new("RGB", (1200, map_height + 620), (24, 19, 30))
     draw = ImageDraw.Draw(sheet)
     for index, arena in enumerate(manifest["maps"]):
         preview = Image.open(ASSETS / manifest["images"][arena["preview"]]["file"]).convert("RGBA")
@@ -213,7 +277,7 @@ def contact_sheet(manifest, source):
     for index, character in enumerate(manifest["characters"]):
         portrait = Image.open(ASSETS / manifest["images"][character["portrait"]]["file"]).convert("RGBA")
         portrait.thumbnail((130, 120))
-        sheet.paste(portrait, (index * 150 + 10, 710), portrait)
+        sheet.paste(portrait, (index * 150 + 10, map_height + 50), portrait)
         if character["sprite"] in source["sprites"]:
             sprite = source_frame(source, character["sprite"])
         else:
@@ -228,12 +292,12 @@ def contact_sheet(manifest, source):
         if bounds:
             sprite = sprite.crop(bounds)
         sprite = sprite.resize((sprite.width * 3, sprite.height * 3), Image.Resampling.NEAREST)
-        sheet.paste(sprite, (index * 150 + 20, 865), sprite)
-        draw.text((index * 150 + 10, 690), character["id"], fill="white")
+        sheet.paste(sprite, (index * 150 + 20, map_height + 205), sprite)
+        draw.text((index * 150 + 10, map_height + 30), character["id"], fill="white")
     for index, weapon in enumerate(manifest["weapons"]):
         icon = Image.open(ASSETS / manifest["images"][weapon["icon"]]["file"]).convert("RGBA")
         x = index % 6 * 200 + 20
-        y = index // 6 * 110 + 1040
+        y = index // 6 * 110 + map_height + 380
         sheet.paste(icon, (x, y + 25), icon)
         draw.text((x, y), weapon["id"], fill="white")
     output = ROOT / ".local/hotlinemiami/verification/assets/contact-sheet.png"
@@ -278,17 +342,7 @@ def create_runtime_assets():
         register_image(manifest, identity, padded)
         manifest["sprites"][identity] = {"image": identity, "frames": [{"x": 0, "y": 0, "w": 64, "h": 64, "originX": 32, "originY": 32}], "width": 64, "height": 64, "originX": 32, "originY": 32}
         manifest["weapons"].append({**weapon, "sprite": identity, "icon": identity})
-    rooms = read_rooms((METADATA / "hotline_rooms.bin").read_bytes())
-    objects = read_object_data()
-    sprites = read_sprite_data()
-    for arena in recover_maps():
-        image = map_background(source, rooms[arena["sourceRoomId"]], objects, sprites)
-        identity = "map-" + arena["id"]
-        preview_id = "preview-" + arena["id"]
-        register_image(manifest, identity, image)
-        preview = image.resize((320, image.height * 320 // image.width), Image.Resampling.NEAREST)
-        register_image(manifest, preview_id, preview)
-        manifest["maps"].append({"id": arena["id"], "name": arena["name"], "width": image.width, "height": image.height, "image": identity, "preview": preview_id, "rules": fixed_rules(arena)})
+    add_maps(source, manifest, recover_maps())
     add_audio(manifest)
     add_music(manifest)
     (ASSETS / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, separators=(",", ":")) + "\n")
@@ -297,5 +351,11 @@ def create_runtime_assets():
 
 
 if __name__ == "__main__":
-    manifest = create_runtime_assets()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--maps-only", action="store_true")
+    parser.add_argument("--map-rules", type=Path)
+    arguments = parser.parse_args()
+    arenas = json.loads(arguments.map_rules.read_text()) if arguments.map_rules else None
+    manifest = update_map_assets(arenas) if arguments.maps_only else create_runtime_assets()
     print(json.dumps({"maps": len(manifest["maps"]), "characters": len(manifest["characters"]), "weapons": len(manifest["weapons"]), "images": len(manifest["images"]), "bytes": sum(image["bytes"] for image in manifest["images"].values())}, ensure_ascii=False))
+import argparse

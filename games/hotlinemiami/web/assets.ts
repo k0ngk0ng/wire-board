@@ -1,10 +1,10 @@
-import type { AssetManifest, BinaryResource, ImageResource, MapAsset, MapRules, MotionFunction } from "./types.ts";
+import type { AssetManifest, BinaryResource, ImageResource, MapAsset, MapRules, MotionFunction, Viewport } from "./types.ts";
 import type { WeaponTiming } from "./attack.ts";
 
 declare global {
   interface Window {
     Go?: new () => { importObject: WebAssembly.Imports; run: (instance: WebAssembly.Instance) => Promise<void> };
-    hotlineMotion?: { init: (map: string) => boolean; move: MotionFunction; weapons: () => string; unarmed: () => string };
+    hotlineMotion?: { init: (map: string) => boolean; move: MotionFunction; weapons: () => string; unarmed: () => string; viewport: () => unknown };
   }
 }
 
@@ -17,6 +17,7 @@ export type LoadedAssets = {
   motion: MotionFunction;
   weapons: WeaponTiming[];
   unarmed: WeaponTiming;
+  viewport: Viewport;
   music?: string;
 };
 
@@ -29,6 +30,13 @@ let runtime: Promise<void> | undefined;
 export function assetURL(base: string, file: string) {
   if (file.startsWith("/") || /^https?:/.test(file)) return file;
   return `${base.replace(/\/$/, "")}/hotlinemiami/${file}`;
+}
+
+export function validateViewport(value: unknown): Viewport {
+  if (!value || typeof value !== "object") throw Error("视野规则元数据无效");
+  const { width, height } = value as Record<string, unknown>;
+  if (typeof width !== "number" || typeof height !== "number" || !Number.isSafeInteger(width) || !Number.isSafeInteger(height) || width <= 0 || height <= 0 || width * 5 !== height * 8) throw Error("视野规则须为正整数且保持 8:5 比例");
+  return { width, height };
 }
 
 export function loadManifest(base: string) {
@@ -229,8 +237,10 @@ export async function loadBattleAssets(base: string, mapID: string, characters: 
   signal.throwIfAborted();
   const weapons = JSON.parse(window.hotlineMotion.weapons()) as WeaponTiming[];
   const unarmed = JSON.parse(window.hotlineMotion.unarmed()) as WeaponTiming;
+  if (typeof window.hotlineMotion.viewport !== "function") throw Error("缺少视野规则元数据");
+  const viewport = validateViewport(window.hotlineMotion.viewport());
   const music = manifest.music ? assetURL(base, manifest.music.file) : undefined;
-  return { manifest, map, rules, images, sounds, motion: window.hotlineMotion.move, weapons, unarmed, music };
+  return { manifest, map, rules, images, sounds, motion: window.hotlineMotion.move, weapons, unarmed, viewport, music };
 }
 
 export function imageResource(manifest: AssetManifest, reference: string): { resource: ImageResource; frame?: { x: number; y: number; w: number; h: number } } | undefined {

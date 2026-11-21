@@ -12,7 +12,7 @@ func BotInput(s *State, seat int) Input {
 	world := s.world()
 	weapon, _ := WeaponByID(p.Weapon)
 	target := -1
-	nearest := int64(640*Unit) * int64(640*Unit)
+	nearest := int64(ViewportWidthPixels*Unit)*int64(ViewportWidthPixels*Unit) + int64(ViewportHeightPixels*Unit)*int64(ViewportHeightPixels*Unit) + 1
 	for _, other := range s.Players {
 		if other.Seat == seat || !other.Alive || !insideCamera(world, p.X, p.Y, other.X, other.Y) {
 			continue
@@ -79,7 +79,7 @@ func BotInput(s *State, seat int) Input {
 }
 
 func insideCamera(world Map, x, y, tx, ty int) bool {
-	width, height := 384*Unit, 240*Unit
+	width, height := ViewportWidthPixels*Unit, ViewportHeightPixels*Unit
 	left := clamp(x-width/2, 0, max(0, world.Width-width))
 	top := clamp(y-height/2, 0, max(0, world.Height-height))
 	return tx >= left && tx <= left+width && ty >= top && ty <= top+height

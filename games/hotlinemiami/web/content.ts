@@ -5,6 +5,9 @@ export const mapGuide = [
   { id: "overdose", name: "过量", description: "红、蓝地板房间围绕中间通路，门口密集，侧翼房间相互连接，适合从相邻门口绕侧。", recommendedPlayers: "2 至 4" },
   { id: "tension", name: "紧绷", description: "多组房间分成左右区域，黄色走道连接中央与上下侧房，家具提供绕行掩体，转线距离较长。", recommendedPlayers: "2 至 4" },
   { id: "neighbors", name: "邻居", description: "纵向走廊串接几处房间，通路较窄、门较少，拐角交火突出，换位时注意走廊尽头。", recommendedPlayers: "2 至 4" },
+  { id: "highball", name: "高球", description: "左侧餐桌与卡座连接中间包房、卫生间，右侧是并排保龄球道，长通道与小隔间形成不同交火距离。", recommendedPlayers: "4" },
+  { id: "exposed", name: "暴露", description: "横向展开的宽幅展馆，围栏分隔展位、街机与展台，纵横通道连接各区，远距离转线空间较大。", recommendedPlayers: "4" },
+  { id: "hot-heavy", name: "火热行动", description: "浴场中轴长廊连接浴池、桑拿房与喷泉庭院，直线通道和两侧房间交错，留意侧门与狭口。", recommendedPlayers: "4" },
 ] as const;
 
 export const characterGuide = [

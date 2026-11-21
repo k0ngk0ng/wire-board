@@ -91,6 +91,7 @@ export type View = {
   brokenGlass?: number[];
   corpses?: { x: number; y: number; aim: number; character: string; frame: number }[];
   map?: MapRules;
+  recover?: boolean;
 };
 
 export type ImageResource = { file: string; width: number; height: number; bytes: number; sha256: string };
@@ -114,6 +115,7 @@ export type AssetManifest = {
 };
 
 export type MotionFunction = (x: number, y: number, aim: number, moveX: number, moveY: number, frames: number, doors?: string, brokenGlass?: string) => number[];
+export type Viewport = { width: number; height: number };
 
 export { characterNames, weaponNames, mapNames, isMeleeWeapon } from "./content.ts";
 

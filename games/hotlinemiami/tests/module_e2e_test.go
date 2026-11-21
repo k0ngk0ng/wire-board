@@ -11,6 +11,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/k0ngk0ng/wire-board/games/hotlinemiami/engine"
 	game "github.com/k0ngk0ng/wire-board/games/hotlinemiami/server"
 	"github.com/k0ngk0ng/wire-board/internal/gameapi"
 )
@@ -107,7 +108,7 @@ func TestConfigurationAndPreparation(t *testing.T) {
 }
 
 func TestNaturalCompleteMatches(t *testing.T) {
-	for _, mapID := range []string{"no-talk", "full-house", "push-it", "overdose", "tension", "neighbors"} {
+	for _, mapID := range naturalMatchMaps() {
 		for _, count := range []int{2, 3, 4} {
 			t.Run(fmt.Sprintf("%s-%d", mapID, count), func(t *testing.T) {
 				module := game.Module()
@@ -179,6 +180,30 @@ func TestNaturalCompleteMatches(t *testing.T) {
 			})
 		}
 	}
+}
+
+func naturalMatchMaps() []string {
+	return []string{"no-talk", "full-house", "push-it", "overdose", "tension", "neighbors", "highball", "exposed", "hot-heavy"}
+}
+
+func TestNaturalCompleteMatchMatrixCoverage(t *testing.T) {
+	plan := naturalMatchMaps()
+	if len(plan) != 9 || len(engine.Maps()) != 9 {
+		t.Fatalf("natural complete match plan has %d maps, want nine", len(plan))
+	}
+	seen := map[string]bool{}
+	for _, id := range plan {
+		if seen[id] || engine.MapByID(id).ID == "" {
+			t.Fatalf("invalid natural match map %s", id)
+		}
+		seen[id] = true
+	}
+	for _, world := range engine.Maps() {
+		if !seen[world.ID] {
+			t.Fatalf("natural match plan omits %s", world.ID)
+		}
+	}
+	artifact(t, map[string]any{"passed": true, "maps": plan, "players": []int{2, 3, 4}, "matches": len(plan) * 3, "ruleFPS": 60, "roundSeconds": 180})
 }
 
 func TestInputEpochOwnershipAndReclaim(t *testing.T) {

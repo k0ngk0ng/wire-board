@@ -12,7 +12,7 @@ export function Rules() {
     </details>
     <details className="hm-rule-group">
       <summary>武器与弹药</summary>
-      <p>每次复活携带自己在房间选择的起始武器。枪械弹药有限，不能装填；打空后投掷、拾取或换枪。拾起掉落枪械会保留它的剩余弹药，不能靠反复拾取补满。近战武器不消耗弹药。</p>
+      <p>每次复活携带自己在房间选择的起始武器。枪械弹药有限，不能装填；弹药用尽时，可投掷空枪后拾取其他武器，也可直接拾取换枪。拾起掉落枪械会保留它的剩余弹药，不能靠反复拾取补满。近战武器不消耗弹药。</p>
       <h4>枪械</h4>
       <dl className="hm-guide-list">{weaponGuide.filter(weapon => weapon.group === "gun").map(weapon => <div key={weapon.id} data-hotlinemiami-rule-weapon={weapon.id}>
         <dt>{weapon.name}</dt><dd>{weapon.description}</dd>

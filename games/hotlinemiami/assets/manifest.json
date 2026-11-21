@@ -10,14 +10,14 @@
     },
     {
       "file": "hotlinemiami/hotline-motion.wasm",
-      "bytes": 3336159,
-      "sha256": "39a16095621809aa1ffaff2fe1983f9624c7efde89dab585d0025da148d3a76c",
+      "bytes": 3365244,
+      "sha256": "17db24f3e3273f27ec261273e26fc1ff73573bf4edf5f999bb2fe052a216feda",
       "mime": "application/wasm"
     },
     {
       "file": "hotlinemiami/manifest.json",
-      "bytes": 195227,
-      "sha256": "502ba7097b7e3a57c316639520e73438979fc1b835336f6ebb0c3bb087c7cb9d",
+      "bytes": 289024,
+      "sha256": "9603abea7a06ba5b9ff42152cfee5cf211bc2732a685ea25c2f52bd1505bdfdc",
       "mime": "application/json"
     },
     {
@@ -111,9 +111,27 @@
       "mime": "audio/flac"
     },
     {
+      "file": "hotlinemiami/runtime/map-exposed.png",
+      "bytes": 111890,
+      "sha256": "fa164ba916853b66484d2b59d7b07f03e25028ee5535d49ad22c1ed622117901",
+      "mime": "image/png"
+    },
+    {
       "file": "hotlinemiami/runtime/map-full-house.png",
       "bytes": 49190,
       "sha256": "1eb0cd8a027bf6f286b71bf55fdfca1521407585d97d05d633191c5d0c89002e",
+      "mime": "image/png"
+    },
+    {
+      "file": "hotlinemiami/runtime/map-highball.png",
+      "bytes": 101472,
+      "sha256": "9c25246f31a1c63e1f117ab6d8c48bdd8c3e09ba82cd12423fdff4023e4b44ed",
+      "mime": "image/png"
+    },
+    {
+      "file": "hotlinemiami/runtime/map-hot-heavy.png",
+      "bytes": 72642,
+      "sha256": "15911a62b9b3bfe0b9fec052ea3795a21d93264b4c86c20d84222f8e73b8e311",
       "mime": "image/png"
     },
     {
@@ -130,20 +148,20 @@
     },
     {
       "file": "hotlinemiami/runtime/map-overdose.png",
-      "bytes": 55466,
-      "sha256": "bad38d0335adcf98c522cb53ce220725259a979bb07bd9ab993a17f8c8bfeab5",
+      "bytes": 54866,
+      "sha256": "50088deea34fd9de506a0017c8ce3528df4a9c28f4d0182ffdbbcc0454d15f5d",
       "mime": "image/png"
     },
     {
       "file": "hotlinemiami/runtime/map-push-it.png",
-      "bytes": 35556,
-      "sha256": "c4ae393c27e8263dd65219f3d28febab0247103164d46ad0cf4626f6aaf2fbd1",
+      "bytes": 34195,
+      "sha256": "c3aa83e6a29a8e6f779b281ef3d0ee0a7fc45a69cb3106fb8e62af0e9992860d",
       "mime": "image/png"
     },
     {
       "file": "hotlinemiami/runtime/map-tension.png",
-      "bytes": 71155,
-      "sha256": "184fa4361c8dfbf7ff34c93444e736aa225c00173bf5d0bef003040a64d2a570",
+      "bytes": 69695,
+      "sha256": "60b7f75cf3ea18bda58c322e8a86a685ef0cec1a5da0e7a8eb5370baa4b4366c",
       "mime": "image/png"
     },
     {
@@ -219,9 +237,27 @@
       "mime": "image/png"
     },
     {
+      "file": "hotlinemiami/runtime/preview-exposed.png",
+      "bytes": 16700,
+      "sha256": "6508ad00770050d5ebfbd7c935f2745c86b2e28b223e7674cade7874243101f9",
+      "mime": "image/png"
+    },
+    {
       "file": "hotlinemiami/runtime/preview-full-house.png",
       "bytes": 16148,
       "sha256": "102b761aa6bfc74691b9fc6f462253e8b46a015215c6454f5d530216baca8a21",
+      "mime": "image/png"
+    },
+    {
+      "file": "hotlinemiami/runtime/preview-highball.png",
+      "bytes": 35539,
+      "sha256": "203ba69f7c5377144d1b9153939a73b8bdc504851d0340095c0afb497e4f260e",
+      "mime": "image/png"
+    },
+    {
+      "file": "hotlinemiami/runtime/preview-hot-heavy.png",
+      "bytes": 24835,
+      "sha256": "26f86fa7837129a8c7353326b7b6c640efae55b6d95ea10a4460e28f7fc59954",
       "mime": "image/png"
     },
     {
@@ -238,20 +274,20 @@
     },
     {
       "file": "hotlinemiami/runtime/preview-overdose.png",
-      "bytes": 17966,
-      "sha256": "1e2eab43ed721692e4ce2dc31816ce63f4026f773816a0089b737aa63cdbea36",
+      "bytes": 17763,
+      "sha256": "532366d49048eb21b46f94576d9380d98a2e2b2eee7e7442cf3009c1fbca4624",
       "mime": "image/png"
     },
     {
       "file": "hotlinemiami/runtime/preview-push-it.png",
-      "bytes": 12621,
-      "sha256": "7e43b659e1b62684589c95dd93232ffc010ac8ec309e03de773ce43fa81e3281",
+      "bytes": 12114,
+      "sha256": "8ce88a8e8b32ec186e4454433831462c6456703bf0ecd3a86c646a6767fcd24b",
       "mime": "image/png"
     },
     {
       "file": "hotlinemiami/runtime/preview-tension.png",
-      "bytes": 24796,
-      "sha256": "809140405872b5a15754de536094d53f7e08c535defe558640c586747f97566b",
+      "bytes": 24380,
+      "sha256": "849de904924d3f710148a52c73da0757f337cc37a74d3a4ddbc1d011c5d7ff73",
       "mime": "image/png"
     },
     {

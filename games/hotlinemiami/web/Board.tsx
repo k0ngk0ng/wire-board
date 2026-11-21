@@ -9,8 +9,11 @@ import { BattleRenderer } from "./renderer";
 import { AttackPresentation } from "./attack";
 import { ActionFeedback } from "./feedback";
 import { aimAngle, preparePredictedInput } from "./camera-input";
+import { ammoLabel } from "./hud";
+import { BottomHint } from "./BottomHint";
+import { PosePresentation } from "./pose-presentation";
 import { TouchControls } from "./TouchControls";
-import { isMeleeWeapon, mapNames, playerColors, weaponNames, type GameEvent, type GameInput, type Player, type View } from "./types";
+import { mapNames, playerColors, weaponNames, type GameEvent, type GameInput, type Player, type View } from "./types";
 import "./style.css";
 
 type Metrics = {
@@ -36,6 +39,7 @@ export function Board(props: BoardProps<View>) {
   const loaded = useRef<LoadedAssets | undefined>(undefined);
   const renderer = useRef<BattleRenderer | undefined>(undefined);
   const prediction = useRef<MotionPrediction | undefined>(undefined);
+  const presentation = useRef(new PosePresentation());
   const attack = useRef<AttackPresentation | undefined>(undefined);
   const feedback = useRef(new ActionFeedback());
   const channel = useRef<InputChannel | undefined>(undefined);
@@ -99,6 +103,7 @@ export function Board(props: BoardProps<View>) {
     last.current.input = emptyInput();
     if (send) channel.current?.release();
     prediction.current?.clear(performance.now());
+    presentation.current.reset();
     attack.current?.clear();
     feedback.current.clear();
     awaitingResponse.current = undefined;
@@ -109,7 +114,7 @@ export function Board(props: BoardProps<View>) {
       const assets = loaded.current;
       if (!prediction.current || !assets) return;
       const point = pointer.current.positioned ? { x: pointer.current.screenX, y: pointer.current.screenY } : undefined;
-      preparePredictedInput(prediction.current, prepared, now, point, { width: assets.rules.width / 256, height: assets.rules.height / 256 });
+      preparePredictedInput(prediction.current, prepared, now, point, { width: assets.rules.width / 256, height: assets.rules.height / 256 }, assets.viewport, (logical, at) => presentation.current.sample(logical, at));
       if (point) pointer.current.aim = prepared.aim;
     });
     if (!action) return;
@@ -147,7 +152,8 @@ export function Board(props: BoardProps<View>) {
       pointer.current.aim = aimAngle(aimX, aimY);
       pointer.current.positioned = false;
     } else if (pointer.current.positioned && renderer.current) {
-      const local = prediction.current?.sample(now) ?? currentPlayer;
+      const logical = prediction.current?.sample(now) ?? currentPlayer;
+      const local = presentation.current.sample(logical, now);
       const point = renderer.current.pointFromPointer(pointer.current.screenX, pointer.current.screenY, local);
       pointer.current.x = point.x;
       pointer.current.y = point.y;
@@ -170,7 +176,13 @@ export function Board(props: BoardProps<View>) {
     const prior = received.current.view;
     if (prior.frame < data.frame) previous.current = prior;
     if (prior.frame <= data.frame) received.current = { view: data, at: now };
-    if (prediction.current && player) prediction.current.confirm(player, data.frame, now, identity, JSON.stringify(data.doors), JSON.stringify(data.brokenGlass ?? []));
+    if (prediction.current && player) {
+      const before = prediction.current.sample(now);
+      prediction.current.confirm(player, data.frame, now, identity, JSON.stringify(data.doors), JSON.stringify(data.brokenGlass ?? []));
+      const after = prediction.current.sample(now);
+      const changedGeometry = !!data.recover || prior.epoch !== data.epoch || prior.mapId !== data.mapId || JSON.stringify(prior.doors) !== JSON.stringify(data.doors) || JSON.stringify(prior.brokenGlass ?? []) !== JSON.stringify(data.brokenGlass ?? []);
+      presentation.current.reconcile(before, after, now, changedGeometry || !canControl());
+    }
     if (player) attack.current?.confirm(player);
     const fresh = timeline.current.consume(identity, data.events);
     renderer.current?.ingest(fresh);
@@ -200,6 +212,7 @@ export function Board(props: BoardProps<View>) {
       loaded.current = assets;
       renderer.current = new BattleRenderer(canvas.current, assets);
       prediction.current = new MotionPrediction(assets.motion);
+      presentation.current.reset();
       attack.current = new AttackPresentation(assets.weapons, assets.unarmed);
       const currentPlayer = latest.current.data.players[latest.current.room.you];
       if (currentPlayer) prediction.current.confirm(currentPlayer, latest.current.data.frame, performance.now(), identity, JSON.stringify(latest.current.data.doors));
@@ -240,7 +253,8 @@ export function Board(props: BoardProps<View>) {
       process.current();
       const current = latest.current;
       const currentPlayer = current.data.players[current.room.you];
-      const local = currentPlayer && prediction.current ? prediction.current.sample(now) : currentPlayer;
+      const logical = currentPlayer && prediction.current ? prediction.current.sample(now) : currentPlayer;
+      const local = logical ? presentation.current.sample(logical, performance.now()) : undefined;
       if (local && canControl()) {
         if (pointer.current.positioned && renderer.current) {
           const point = renderer.current.pointFromPointer(pointer.current.screenX, pointer.current.screenY, local);
@@ -269,6 +283,8 @@ export function Board(props: BoardProps<View>) {
         if (local) lastDrawn.current = { x: local.x, y: local.y, aim: local.aim, flash: flash.current, pulse };
         canvas.current.__hotlineFrame = {
           now, local: local ? { ...local, ...screen } : null,
+          logical: logical ? { ...logical } : null,
+          camera: { ...renderer.current.viewCamera }, viewport: loaded.current?.viewport,
           frame: current.data.frame, serverFrame: current.data.frame, predictedFrame: prediction.current?.predictedFrame ?? current.data.frame,
           receivedSeq: currentPlayer?.receivedSeq ?? 0, appliedSeq: currentPlayer?.appliedSeq ?? 0,
           attackFlashUntil: flash.current, inputEnabled: canControl(), inputWindow: current.inputWindow ?? 0, pending: prediction.current?.pendingCount ?? 0,
@@ -311,7 +327,9 @@ export function Board(props: BoardProps<View>) {
     pointer.current.screenX = (event.clientX - rect.left) / rect.width;
     pointer.current.screenY = (event.clientY - rect.top) / rect.height;
     pointer.current.positioned = true;
-    const local = prediction.current?.sample(performance.now()) ?? latest.current.data.players[latest.current.room.you];
+    const at = performance.now();
+    const logical = prediction.current?.sample(at) ?? latest.current.data.players[latest.current.room.you];
+    const local = logical ? presentation.current.sample(logical, at) : undefined;
     if (local) {
       const point = renderer.current.pointFromPointer(pointer.current.screenX, pointer.current.screenY, local);
       pointer.current.x = point.x;
@@ -336,7 +354,7 @@ export function Board(props: BoardProps<View>) {
     <div className="hm-battle-heading">
       <div><span className="hm-map-label">{mapNames[data.mapId] ?? "混战"}</span><strong>{room.spectating ? "观战中" : player && !player.alive ? "等待复活" : "自由混战"}</strong></div>
       <time className={seconds <= 30 ? "hm-timer hm-timer-final" : "hm-timer"} aria-label={`剩余 ${timer}`}>{timer}</time>
-      <div className="hm-ammo"><strong>{player ? weaponNames[player.weapon] ?? player.weapon : "自由视角"}</strong><span>{player ? isMeleeWeapon(player.weapon) ? "近战" : `${player.ammo} 发` : `${data.players.length} 人`}</span></div>
+      <div className="hm-ammo"><strong>{player ? weaponNames[player.weapon] ?? player.weapon : "自由视角"}</strong><span>{player ? ammoLabel(player.weapon, player.ammo) : `${data.players.length} 人`}</span></div>
     </div>
     <div className="hm-score-strip" aria-label="实时比分">
       {data.players.map(candidate => <div key={candidate.seat} className={candidate.seat === seat ? "hm-score hm-score-self" : "hm-score"} style={{ "--hm-player-color": playerColors[candidate.seat % 4] } as React.CSSProperties}>
@@ -364,7 +382,7 @@ export function Board(props: BoardProps<View>) {
       {feed.length > 0 && <div className="hm-kill-feed" aria-live="polite">{feed.filter(event => data.frame - event.frame < 240).map(event => <span key={event.id}>{room.seats[event.seat]?.name ?? "玩家"}<b>击倒</b>{room.seats[event.target ?? -1]?.name ?? "对手"}</span>)}</div>}
     </div>
     <TouchControls disabled={!enabled} native={recordNative} move={stick => { touch.current.moveX = stick.x; touch.current.moveY = stick.y; process.current(true); }} aim={stick => { touch.current.aimX = stick.x; touch.current.aimY = stick.y; touch.current.fire = stick.x * stick.x + stick.y * stick.y >= 360000; process.current(true); }} edge={edge} />
-    <div className="hm-bottom-line"><span>{player && player.protectedUntil > data.frame ? "出生保护 · 攻击后解除" : player && player.downUntil > data.frame ? "倒地中" : <><span className="hm-desktop-hint">WASD 移动 · 左键攻击 · 右键投掷 · E 拾取</span><span className="hm-touch-hint">右摇杆外推攻击 · 拾取与投掷换武器</span></>}</span><span>击杀 +1</span></div>
+    <BottomHint player={player} frame={data.frame} finished={data.finished} />
     {error && <div className="hm-error" role="alert">{error}{!ready && <button type="button" onClick={() => setAttempt(value => value + 1)}>重试</button>}</div>}
     <output className="hm-sr-only" aria-live="off">{uiNow ? "战场运行中" : "准备战场"}</output>
   </div>;

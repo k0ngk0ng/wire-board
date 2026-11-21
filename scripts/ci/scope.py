@@ -335,6 +335,7 @@ FAST_COMPONENTS = {
 }
 
 LINT_TOOL_FILES = {'games/racing/build/lint_go.go', 'games/hotlinemiami/build/lint_go.go'}
+FRONTEND_POLICY_FILES = {'web/scripts/game-control-lint.mjs', 'web/scripts/game-control-lint.json'}
 ASSET_DELIVERY_FILES = {'scripts/cdn_delivery.py', 'scripts/test_cdn_delivery.py', 'scripts/resource_store.py', 'scripts/resource_store_e2e_test.py', 'scripts/asset_reuse.py', 'scripts/asset_reuse_e2e_test.py'}
 
 def ci_path(path):
@@ -427,7 +428,7 @@ def plan(paths, games, manual='', legacy_sources=None, contra_campaigns=False, v
         elif path.startswith('cmd/'):
             components.add('ci')
             shared = True
-        elif cover_path(path, games) or path.startswith(('web/src/', 'web/tests/')) or path == 'scripts/check-release-history.py':
+        elif cover_path(path, games) or path.startswith(('web/src/', 'web/tests/')) or path == 'scripts/check-release-history.py' or path in FRONTEND_POLICY_FILES:
             frontend_checks = True
         elif path in ('scripts/update.sh', 'scripts/test_update.py', 'compose.yaml', 'Dockerfile', '.env.example'):
             components.add('deployment')

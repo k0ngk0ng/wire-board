@@ -8,7 +8,7 @@ const root = resolve(import.meta.dirname, "../../../..");
 for (const path of ["cache/go", "tmp", "verification/maps"]) mkdirSync(resolve(root, ".local/hotlinemiami", path), { recursive: true });
 
 test("recovered rule source reproducibly generates registered Go maps", () => {
-  assert.equal(JSON.parse(readFileSync(resolve(root, "games/hotlinemiami/data/maps.json"), "utf8")).length, 6);
+  assert.equal(JSON.parse(readFileSync(resolve(root, "games/hotlinemiami/data/maps.json"), "utf8")).length, 9);
   const result = spawnSync("go", ["run", "./games/hotlinemiami/cmd/maps", "--check"], {
     cwd: root,
     env: { ...process.env, GOTELEMETRY: "off", GOCACHE: resolve(root, ".local/hotlinemiami/cache/go"), GOTMPDIR: resolve(root, ".local/hotlinemiami/tmp") },

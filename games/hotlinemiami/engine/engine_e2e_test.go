@@ -73,26 +73,89 @@ func TestInputOrderAndShortEdges(t *testing.T) {
 }
 
 func TestComputerUsesSameVisibleCamera(t *testing.T) {
-	s := match(t, 2)
 	u := engine.Unit
+	setup := func(t *testing.T) *engine.State {
+		world := engine.Map{ID: "camera-fixture", Name: "镜头验证", Width: 1600 * u, Height: 1200 * u, Spawns: []engine.Point{{X: 800 * u, Y: 600 * u}, {X: 1000 * u, Y: 600 * u}, {X: 800 * u, Y: 800 * u}, {X: 1000 * u, Y: 800 * u}}}
+		s, err := engine.NewWithMap(engine.Options{Map: world.ID}, 2, 19, world)
+		if err != nil {
+			t.Fatal(err)
+		}
+		s.Players[0].X, s.Players[0].Y = 800*u, 600*u
+		s.Players[0].ProtectedUntil, s.Players[1].ProtectedUntil = 0, 0
+		return s
+	}
+	cases := []struct {
+		Name string
+		X    int
+		Y    int
+		Want bool
+	}{
+		{"right-inside", 1088*u - 1, 600 * u, true}, {"right-edge", 1088 * u, 600 * u, true}, {"right-outside", 1088*u + 1, 600 * u, false},
+		{"left-outside", 512*u - 1, 600 * u, false}, {"left-edge", 512 * u, 600 * u, true}, {"left-inside", 512*u + 1, 600 * u, true},
+		{"bottom-inside", 800 * u, 780*u - 1, true}, {"bottom-edge", 800 * u, 780 * u, true}, {"bottom-outside", 800 * u, 780*u + 1, false},
+		{"top-outside", 800 * u, 420*u - 1, false}, {"top-edge", 800 * u, 420 * u, true}, {"top-inside", 800 * u, 420*u + 1, true},
+	}
+	for _, scenario := range cases {
+		t.Run(scenario.Name, func(t *testing.T) {
+			s := setup(t)
+			s.Players[1].X, s.Players[1].Y = scenario.X, scenario.Y
+			if got := engine.BotInput(s, 0).Fire; got != scenario.Want {
+				t.Fatalf("shared 576x360 viewport target=%d,%d fire=%v want=%v", scenario.X, scenario.Y, got, scenario.Want)
+			}
+		})
+	}
+	s := setup(t)
 	s.Players[0].X, s.Players[0].Y = 80*u, 80*u
-	s.Players[1].X, s.Players[1].Y = 400*u, 80*u
-	s.Players[0].ProtectedUntil, s.Players[1].ProtectedUntil = 0, 0
-	if engine.BotInput(s, 0).Fire {
-		t.Fatal("computer fired at an enemy outside its visible camera")
-	}
-	s.Players[1].X = 360 * u
+	s.Players[1].X, s.Players[1].Y = 560*u, 80*u
 	if !engine.BotInput(s, 0).Fire {
-		t.Fatal("computer failed to fire at a visible enemy")
+		t.Fatal("expanded camera did not clamp to left map edge")
 	}
-	s.Players[1].X, s.Players[1].Y = 80*u, 260*u
-	if engine.BotInput(s, 0).Fire {
-		t.Fatal("computer fired below the visible camera")
-	}
-	s.Players[0].X, s.Players[0].Y = 600*u, 440*u
-	s.Players[1].X, s.Players[1].Y = 270*u, 440*u
+	s.Players[0].X, s.Players[0].Y = 9*u, 9*u
+	s.Players[1].X, s.Players[1].Y = 576*u, 360*u
 	if !engine.BotInput(s, 0).Fire {
-		t.Fatal("computer camera did not clamp to map edge")
+		t.Fatal("an obsolete distance cap hid a target inside the clamped viewport and pistol range")
+	}
+	s.Players[0].X, s.Players[0].Y = 1520*u, 1120*u
+	s.Players[1].X, s.Players[1].Y = 1024*u-1, 1120*u
+	if engine.BotInput(s, 0).Fire {
+		t.Fatal("camera included the integer beyond its right-edge clamp")
+	}
+	s.Players[1].X = 1024 * u
+	if !engine.BotInput(s, 0).Fire {
+		t.Fatal("camera excluded its right-edge clamp boundary")
+	}
+	s.Players[1].X, s.Players[1].Y = 1520*u, 840*u-1
+	if engine.BotInput(s, 0).Fire {
+		t.Fatal("camera included the integer beyond its bottom-edge clamp")
+	}
+	s.Players[1].Y = 840 * u
+	if !engine.BotInput(s, 0).Fire {
+		t.Fatal("camera excluded its bottom-edge clamp boundary")
+	}
+	blocked := setup(t)
+	blocked.Players[1].X, blocked.Players[1].Y = 950*u, 600*u
+	blocked.World.Walls = []engine.Rect{{X: 900 * u, Y: 550 * u, W: 8 * u, H: 100 * u}}
+	if engine.BotInput(blocked, 0).Fire {
+		t.Fatal("expanded view bypassed wall line of sight")
+	}
+	blocked.World.Walls = nil
+	blocked.World.Doors = []engine.DoorDef{{ID: 10, X: 900 * u, Y: 550 * u, W: 8 * u, H: 100 * u}}
+	blocked.Doors = []engine.Door{{ID: 10}}
+	if engine.BotInput(blocked, 0).Fire {
+		t.Fatal("expanded view bypassed a closed door")
+	}
+	blocked.Doors[0].Open = true
+	if !engine.BotInput(blocked, 0).Fire {
+		t.Fatal("open-door visible target was ignored")
+	}
+}
+
+func TestSharedViewportPixelConstants(t *testing.T) {
+	if engine.ViewportWidthPixels != 576 || engine.ViewportHeightPixels != 360 || engine.ViewportWidthPixels*5 != engine.ViewportHeightPixels*8 {
+		t.Fatal("shared viewport must be 576x360 raw integer pixels at 8:5")
+	}
+	if engine.Unit != 256 || engine.FPS != 60 || engine.MoveSpeed != 3*engine.Unit || engine.Radius != 9*engine.Unit {
+		t.Fatal("viewport metadata changed physical or time units")
 	}
 }
 

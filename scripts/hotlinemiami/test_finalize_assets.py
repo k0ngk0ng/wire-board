@@ -31,9 +31,55 @@ class RuntimeAssetTest(unittest.TestCase):
         self.assertFalse(ASSETS.static_environment("Enviroment/Furniture/Levels/05_Tension/explosion/sprRoomExplosion"))
         self.assertTrue(ASSETS.static_environment("Enviroment/Furniture/Levels/05_Tension/sprBombCables"))
 
+    def test_native_people_are_never_static_furniture(self):
+        objects = ASSETS.read_object_data()
+        sprites = ASSETS.read_sprite_data()
+        for identity in [503, 416, 417, 418, 535, 536, 537, 373, 377, 547, 390, 862, 863, 699]:
+            self.assertFalse(ASSETS.static_scene_object(identity, objects, sprites), identity)
+        for identity in [506, 148, 527, 859, 860, 861, 864]:
+            self.assertTrue(ASSETS.static_scene_object(identity, objects, sprites), identity)
+
+    def test_actor_identity_mismatch_is_rejected(self):
+        objects = ASSETS.read_object_data()
+        sprites = ASSETS.read_sprite_data()
+        changed = {**objects, 503: (503, 873, *objects[503][2:])}
+        with self.assertRaises(ValueError):
+            ASSETS.static_scene_object(503, changed, sprites)
+
+    def test_map_only_refresh_preserves_other_resource_bytes(self):
+        baseline = json.loads((ROOT / ".local/hotlinemiami/verification/assets/large-map-baseline.json").read_text())
+        manifest = ASSETS.update_map_assets()
+        self.assertEqual(len(manifest["maps"]), 9)
+        self.assertEqual(manifest["characters"], baseline["characters"])
+        self.assertEqual(manifest["weapons"], baseline["weapons"])
+        self.assertEqual(manifest["sprites"], baseline["sprites"])
+        self.assertEqual(manifest["sounds"], baseline["sounds"])
+        self.assertEqual(manifest["music"], baseline["music"])
+        native = json.loads((ROOT / "games/hotlinemiami/data/maps.json").read_text())
+        self.assertEqual([arena["rules"] for arena in manifest["maps"]], [ASSETS.fixed_rules(arena) for arena in native])
+        changed = {"map-push-it", "preview-push-it", "map-overdose", "preview-overdose", "map-tension", "preview-tension"}
+        for identity, resource in baseline["images"].items():
+            if identity in changed:
+                self.assertNotEqual(manifest["images"][identity]["sha256"], resource["sha256"], identity)
+            else:
+                self.assertEqual(manifest["images"][identity], resource, identity)
+        for arena in manifest["maps"]:
+            image = manifest["images"][arena["image"]]
+            self.assertEqual((image["width"], image["height"]), (arena["width"], arena["height"]))
+            self.assertEqual(arena["rules"]["width"], arena["width"] * 256)
+
+    def test_actor_audit_covers_every_native_room(self):
+        audit = ASSETS.scene_actor_audit()
+        self.assertEqual([arena["removedInstanceCount"] for arena in audit["maps"]], [0, 0, 2, 1, 3, 0, 3, 7, 0])
+        for arena in audit["maps"]:
+            for actor in arena["removedActors"]:
+                self.assertEqual(actor["instanceCount"], len(actor["instances"]))
+                self.assertIn("sourceSprite", actor)
+                self.assertIn("spriteId", actor)
+
     def test_room_preview_and_background_share_dimensions(self):
-        manifest = ASSETS.create_runtime_assets()
-        self.assertEqual(len(manifest["maps"]), 6)
+        manifest = ASSETS.update_map_assets()
+        self.assertEqual(len(manifest["maps"]), 9)
         self.assertEqual(len(manifest["characters"]), 8)
         self.assertEqual(len(manifest["weapons"]), 12)
         for arena in manifest["maps"]:
@@ -52,15 +98,6 @@ class RuntimeAssetTest(unittest.TestCase):
             self.assertIn("adaptation", sprite)
         self.assertEqual(manifest["music"]["bytes"], 8855631)
         self.assertEqual(manifest["music"]["mime"], "audio/ogg")
-        baseline = json.loads((ROOT / ".local/hotlinemiami/verification/assets/expansion-baseline.json").read_text())
-        for identity, resource in baseline["images"].items():
-            if identity == "weapon-knife":
-                self.assertNotEqual(manifest["images"][identity]["sha256"], resource["sha256"])
-            else:
-                self.assertEqual(manifest["images"][identity], resource, identity)
-        for identity, resource in baseline["sounds"].items():
-            self.assertEqual(manifest["sounds"][identity], resource, identity)
-        self.assertEqual(manifest["music"], baseline["music"])
 
 
 if __name__ == "__main__":

@@ -1,16 +1,18 @@
 package engine
 
 const (
-	Unit        = 256
-	FPS         = 60
-	Radius      = 9 * Unit
-	MoveSpeed   = 3 * Unit
-	MaxEvents   = 128
-	MaxDrops    = 48
-	MaxBullets  = 128
-	MaxCorpses  = 48
-	MaxPending  = 64
-	MaxInputSeq = int64(1_000_000_000_000)
+	Unit                 = 256
+	FPS                  = 60
+	Radius               = 9 * Unit
+	MoveSpeed            = 3 * Unit
+	MaxEvents            = 128
+	MaxDrops             = 48
+	MaxBullets           = 128
+	MaxCorpses           = 48
+	MaxPending           = 64
+	MaxInputSeq          = int64(1_000_000_000_000)
+	ViewportWidthPixels  = 576
+	ViewportHeightPixels = 360
 )
 
 type Options struct {

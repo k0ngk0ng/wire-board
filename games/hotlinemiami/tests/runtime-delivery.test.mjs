@@ -15,7 +15,7 @@ const ts = require("typescript");
 const digest = bytes => createHash("sha256").update(bytes).digest("hex");
 const results = [];
 
-function fixture(counts = { maps: 6, characters: 8, weapons: 12 }) {
+function fixture(counts = { maps: 9, characters: 8, weapons: 12 }) {
   const directory = mkdtempSync(path.join(output, "workspace-"));
   for (const folder of ["games/hotlinemiami/engine", "games/hotlinemiami/cmd/motion", "games/hotlinemiami/data", ".local/hotlinemiami/assets/images"]) mkdirSync(path.join(directory, folder), { recursive: true });
   writeFileSync(path.join(directory, "go.mod"), "module fixture.test/hotline\n\ngo 1.26.0\n");
@@ -24,7 +24,18 @@ function fixture(counts = { maps: 6, characters: 8, weapons: 12 }) {
   writeFileSync(path.join(directory, "games/hotlinemiami/cmd/motion/main_js.go"), 'package main\nimport ("syscall/js"; "fixture.test/hotline/games/hotlinemiami/engine")\nfunc main() {js.Global().Set("fixtureVersion", engine.Value()); select {}}\n');
   const image = Buffer.from("fixture image bytes");
   writeFileSync(path.join(directory, ".local/hotlinemiami/assets/images/fixture.png"), image);
-  const source = { version: 1, sourceSHA256: "a".repeat(64), images: { fixture: { file: "images/fixture.png", bytes: image.length, sha256: digest(image), width: 1, height: 1 } }, sprites: {}, maps: Array.from({ length: counts.maps }, (_, index) => ({ id: `map-${index}`, image: "fixture" })), characters: Array.from({ length: counts.characters }, (_, index) => ({ id: `character-${index}`, image: "fixture" })), weapons: Array.from({ length: counts.weapons }, (_, index) => ({ id: `weapon-${index}`, image: "fixture" })) };
+  const scenes = [["no-talk", 17], ["full-house", 31], ["push-it", 33], ["overdose", 20], ["tension", 49], ["neighbors", 35], ["highball", 65], ["exposed", 148], ["hot-heavy", 59]];
+  const nativeMaps = scenes.slice(0, counts.maps).map(([id, sourceRoomId], index) => ({ id, sourceRoomId, sourceRoomName: `native-room-${sourceRoomId}`, sourceRoomOffset: index * 100, width: 640, height: 480, coordinateScale: 1 }));
+  for (const map of nativeMaps) map.arenaAudit = { gridStep: 16, radius: 9, floorCells: 1150, walkableFloorCells: 1100, reachableFloorCells: 1000, reachableAreaPx2: 256000, reachablePermille: 909, minSpawnPathPx: 128, baselineReachableFloorCells: 1000, baselineRatioPermille: 1000, allSpawnAndWeaponsReachable: true, sourceFloorSHA256: "a".repeat(64), sourceMetadataSHA256: "b".repeat(64) };
+  const proof = { sourceMetadataSHA256: "b".repeat(64), maps: nativeMaps.map(map => {
+    const floor = Array.from({ length: map.arenaAudit.floorCells }, (_, index) => ({ x: 8 + index % 40 * 16, y: 8 + Math.floor(index / 40) * 16 }));
+    map.arenaAudit.sourceFloorSHA256 = digest(JSON.stringify(floor));
+    return { id: map.id, sourceRoomId: map.sourceRoomId, floor };
+  }) };
+  mkdirSync(path.join(directory, "games/hotlinemiami/engine/testdata"), { recursive: true });
+  writeFileSync(path.join(directory, "games/hotlinemiami/engine/testdata/native-floor-points.json"), JSON.stringify(proof));
+  writeFileSync(path.join(directory, "games/hotlinemiami/data/maps.json"), JSON.stringify(nativeMaps));
+  const source = { version: 1, sourceSHA256: "a".repeat(64), images: { fixture: { file: "images/fixture.png", bytes: image.length, sha256: digest(image), width: 640, height: 480 } }, sprites: {}, maps: nativeMaps.map(map => ({ id: map.id, image: "fixture", preview: "fixture", width: map.width, height: map.height, rules: { ...map, width: map.width * 256, height: map.height * 256, coordinateScale: 256 } })), characters: Array.from({ length: counts.characters }, (_, index) => ({ id: `character-${index}`, image: "fixture" })), weapons: Array.from({ length: counts.weapons }, (_, index) => ({ id: `weapon-${index}`, image: "fixture" })) };
   writeFileSync(path.join(directory, ".local/hotlinemiami/assets/manifest.json"), JSON.stringify(source));
   return { directory, source };
 }
@@ -125,9 +136,20 @@ test("hydrated formal resources remain verifiable without local research assets"
 test("the previous three-map five-character seven-weapon source cannot satisfy the expanded release", () => {
   const { directory } = fixture({ maps: 3, characters: 5, weapons: 7 });
   try {
-    assert.throws(() => prepareHotlineDelivery(directory), /Incomplete Hotline maps: expected 6/);
+    assert.throws(() => prepareHotlineDelivery(directory), /Incomplete Hotline maps: expected 9/);
     assert.equal(existsSync(path.join(directory, ".local/hotlinemiami/delivery/public/hotlinemiami/manifest.json")), false);
     results.push({ scenario: "previous-source-content-rejected", passed: true });
+  } finally {
+    rmSync(directory, { recursive: true, force: true });
+  }
+});
+
+test("the previous six-map release cannot satisfy the nine original scenes", () => {
+  const { directory } = fixture({ maps: 6, characters: 8, weapons: 12 });
+  try {
+    assert.throws(() => prepareHotlineDelivery(directory), /Incomplete Hotline maps: expected 9/);
+    assert.equal(existsSync(path.join(directory, ".local/hotlinemiami/delivery/public/hotlinemiami/manifest.json")), false);
+    results.push({ scenario: "previous-six-map-source-rejected", passed: true });
   } finally {
     rmSync(directory, { recursive: true, force: true });
   }
@@ -140,13 +162,11 @@ test("a fully hydrated previous content manifest is rejected despite valid runti
     const hydrated = path.join(directory, "games/hotlinemiami/assets/public/hotlinemiami");
     cpSync(path.join(publicRoot, "hotlinemiami"), hydrated, { recursive: true });
     const previous = JSON.parse(readFileSync(path.join(hydrated, "manifest.json"), "utf8"));
-    previous.maps = previous.maps.slice(0, 3);
-    previous.characters = previous.characters.slice(0, 5);
-    previous.weapons = previous.weapons.slice(0, 7);
+    previous.maps = previous.maps.slice(0, 6);
     writeFileSync(path.join(hydrated, "manifest.json"), JSON.stringify(previous));
     renameSync(path.join(directory, ".local/hotlinemiami/assets"), path.join(directory, ".local/hotlinemiami/assets-backup"));
     rmSync(publicRoot, { recursive: true });
-    assert.throws(() => prepareHotlineDelivery(directory), /Incomplete Hotline maps: expected 6/);
+    assert.throws(() => prepareHotlineDelivery(directory), /Incomplete Hotline maps: expected 9/);
     assert.equal(existsSync(path.join(publicRoot, "hotlinemiami/manifest.json")), false);
     results.push({ scenario: "previous-hydrated-content-rejected", passed: true });
   } finally {
@@ -183,5 +203,5 @@ test("resource symlinks are rejected even when they point inside the asset root"
 });
 
 test.after(() => {
-  writeFileSync(path.join(output, "result.json"), JSON.stringify({ passed: results.length === 8 && results.every(row => row.passed), cases: results }, null, 2) + "\n");
+  writeFileSync(path.join(output, "result.json"), JSON.stringify({ passed: results.length === 9 && results.every(row => row.passed), cases: results }, null, 2) + "\n");
 });

@@ -1,0 +1,12 @@
+.game-fullscreen-surface [data-game-controls],
+.game-fullscreen-surface [data-game-controls] * {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+.game-fullscreen-surface [data-game-controls] :is(input:not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="image"]), textarea, select, [contenteditable]:not([contenteditable="false"])),
+.game-fullscreen-surface [data-game-controls] [contenteditable]:not([contenteditable="false"]) * {
+  -webkit-user-select: text;
+  user-select: text;
+  -webkit-touch-callout: default;
+}

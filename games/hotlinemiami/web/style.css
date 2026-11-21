@@ -64,7 +64,10 @@
 .hm-touch-actions>button{min-width:36px;min-height:38px;padding:6px 4px;border:1px solid #95788b;border-radius:7px;background:#3c2e42;color:#f2dfe5;font-size:11px;touch-action:none}
 .hm-touch-actions>button:active{background:#715064;border-color:#f5c7b3}
 .hm-touch-actions>button:disabled{color:#bfb0c0;border-color:#665469;background:#302737}
-.hm-bottom-line{display:flex;justify-content:space-between;gap:12px;padding:9px 14px;background:#211b29;color:#cdbacb;border-top:1px solid #443445;font-size:10px;line-height:1.5}
+.hm-bottom-line{display:flex;align-items:center;justify-content:space-between;gap:12px;block-size:44px;box-sizing:border-box;flex:none;padding:6px 14px;background:#211b29;color:#cdbacb;border-top:1px solid #443445;font-size:10px;line-height:1.5}
+.hm-bottom-line>span:first-child{min-width:0;max-height:3em;overflow:hidden}
+.hm-bottom-line>span:last-child{flex:none;white-space:nowrap}
+.hm-bottom-line[data-hotlinemiami-hint=empty]{color:#ffe0a6}
 .hm-touch-hint{display:none}
 .hm-error{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px;margin:0;color:#ffbac4;background:#392330;border:1px solid #8d526a;border-radius:6px;font-size:12px}
 .hm-error button{padding:5px 10px;border:1px solid #d5a1a7;border-radius:5px;background:#6c3c53;color:#ffe6dc}
@@ -87,6 +90,7 @@
 .hm-results>div>span:last-child{grid-column:1/-1;font-size:12px}
 .hm-sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 [data-room-fullscreen] .hm-board{max-width:min(1100px,100%);max-height:100%;flex:1;min-height:0}
+[data-room-fullscreen][data-fullscreen-toolbar-overlay] .hm-ammo{margin-inline-end:calc(40px + max(8px,env(safe-area-inset-right,0px)))}
 [data-room-fullscreen] .hm-surface{min-height:0;flex:1;aspect-ratio:8/5}
 @media(pointer:coarse),(max-width:640px){.hm-touch-controls{display:flex}.hm-desktop-hint{display:none}.hm-touch-hint{display:inline}.hm-bottom-line>span:first-child{max-width:75%}.hm-battle-heading{padding:10px 12px;gap:8px}.hm-battle-heading strong{font-size:12px}.hm-timer{font-size:25px}.hm-score-strip{gap:2px;padding:6px}.hm-score{font-size:10px;padding:3px}.hm-kill-feed{top:7px;right:7px}.hm-kill-feed>span{font-size:9px;padding:3px 6px}.hm-roster{gap:9px}.hm-seat-choices{padding:9px}.hm-picker>summary{gap:6px;padding:5px;grid-template-columns:34px minmax(0,1fr) 9px}.hm-portrait{width:32px;height:32px}.hm-weapon-image{width:32px;height:22px}.hm-picker-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hm-map-choices{gap:6px}.hm-map-choices>button{font-size:11px;padding:5px 5px 8px}}
 @media(max-width:370px){.hm-touch-controls{gap:4px;padding:6px;min-height:108px}.hm-stick{width:90px;height:96px}.hm-stick-orbit{inset:4px 1px 8px}.hm-stick-thumb{left:27px;top:28px}.hm-touch-actions{gap:5px}.hm-touch-actions>button{min-width:34px;min-height:35px;font-size:10px}.hm-ammo strong{font-size:10px}.hm-map-label{font-size:10px}.hm-bottom-line{font-size:9px;padding:7px 9px}.hm-roster{grid-template-columns:1fr}.hm-picker-grid{grid-template-columns:repeat(5,minmax(0,1fr))}.hm-weapon-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.hm-score-strip{grid-template-columns:repeat(2,minmax(0,1fr))}}

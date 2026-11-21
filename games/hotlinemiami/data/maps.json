@@ -1,9 +1,133 @@
 [
   {
+    "arenaAudit": {
+      "allSpawnAndWeaponsReachable": true,
+      "baselineRatioPermille": 697,
+      "baselineReachableFloorCells": 152,
+      "floorCells": 725,
+      "gridStep": 16,
+      "minSpawnPathPx": 64,
+      "radius": 9,
+      "reachableAreaPx2": 27136,
+      "reachableFloorCells": 106,
+      "reachablePermille": 317,
+      "sourceFloorSHA256": "4d7f6dbcebd5c4f2ebb31b9a4e649565fb1bd425f2475361181ed4d4e7d260cf",
+      "sourceMetadataSHA256": "895b1393117d98964229b9410c5ade3a0c6fa744afc1d54e66459be92b06049c",
+      "walkableFloorCells": 334
+    },
+    "coordinateScale": 1,
+    "doors": [
+      {
+        "x": 158,
+        "y": 96,
+        "w": 4,
+        "h": 32,
+        "sourceInstance": 101967,
+        "sourceObject": 21,
+        "sourceSprite": "Enviroment/Walls/sprDoorV",
+        "id": 0
+      },
+      {
+        "x": 96,
+        "y": 222,
+        "w": 32,
+        "h": 4,
+        "sourceInstance": 101972,
+        "sourceObject": 31,
+        "sourceSprite": "Enviroment/Walls/sprDoorH",
+        "id": 1
+      },
+      {
+        "x": 352,
+        "y": 222,
+        "w": 32,
+        "h": 4,
+        "sourceInstance": 101973,
+        "sourceObject": 31,
+        "sourceSprite": "Enviroment/Walls/sprDoorH",
+        "id": 2
+      },
+      {
+        "x": 518,
+        "y": 256,
+        "w": 4,
+        "h": 32,
+        "sourceInstance": 101975,
+        "sourceObject": 21,
+        "sourceSprite": "Enviroment/Walls/sprDoorV",
+        "id": 3
+      },
+      {
+        "x": 574,
+        "y": 256,
+        "w": 4,
+        "h": 32,
+        "sourceInstance": 101976,
+        "sourceObject": 21,
+        "sourceSprite": "Enviroment/Walls/sprDoorV",
+        "id": 4
+      },
+      {
+        "x": 320,
+        "y": 318,
+        "w": 32,
+        "h": 4,
+        "sourceInstance": 101979,
+        "sourceObject": 31,
+        "sourceSprite": "Enviroment/Walls/sprDoorH",
+        "id": 5
+      },
+      {
+        "x": 448,
+        "y": 318,
+        "w": 32,
+        "h": 4,
+        "sourceInstance": 101980,
+        "sourceObject": 31,
+        "sourceSprite": "Enviroment/Walls/sprDoorH",
+        "id": 6
+      }
+    ],
+    "height": 480,
     "id": "no-talk",
     "name": "不许交谈",
-    "width": 640,
-    "height": 480,
+    "sourceRoomId": 17,
+    "sourceRoomName": "rmApartment1Upstairs",
+    "sourceRoomOffset": 478264,
+    "spawns": [
+      {
+        "x": 360,
+        "y": 200
+      },
+      {
+        "x": 184,
+        "y": 88
+      },
+      {
+        "x": 504,
+        "y": 296
+      },
+      {
+        "x": 232,
+        "y": 200
+      },
+      {
+        "x": 488,
+        "y": 184
+      },
+      {
+        "x": 440,
+        "y": 248
+      },
+      {
+        "x": 296,
+        "y": 184
+      },
+      {
+        "x": 424,
+        "y": 184
+      }
+    ],
     "walls": [
       {
         "x": 249,
@@ -1316,112 +1440,6 @@
         "kind": "wall"
       }
     ],
-    "doors": [
-      {
-        "x": 158,
-        "y": 96,
-        "w": 4,
-        "h": 32,
-        "sourceInstance": 101967,
-        "sourceObject": 21,
-        "sourceSprite": "Enviroment/Walls/sprDoorV",
-        "id": 0
-      },
-      {
-        "x": 96,
-        "y": 222,
-        "w": 32,
-        "h": 4,
-        "sourceInstance": 101972,
-        "sourceObject": 31,
-        "sourceSprite": "Enviroment/Walls/sprDoorH",
-        "id": 1
-      },
-      {
-        "x": 352,
-        "y": 222,
-        "w": 32,
-        "h": 4,
-        "sourceInstance": 101973,
-        "sourceObject": 31,
-        "sourceSprite": "Enviroment/Walls/sprDoorH",
-        "id": 2
-      },
-      {
-        "x": 518,
-        "y": 256,
-        "w": 4,
-        "h": 32,
-        "sourceInstance": 101975,
-        "sourceObject": 21,
-        "sourceSprite": "Enviroment/Walls/sprDoorV",
-        "id": 3
-      },
-      {
-        "x": 574,
-        "y": 256,
-        "w": 4,
-        "h": 32,
-        "sourceInstance": 101976,
-        "sourceObject": 21,
-        "sourceSprite": "Enviroment/Walls/sprDoorV",
-        "id": 4
-      },
-      {
-        "x": 320,
-        "y": 318,
-        "w": 32,
-        "h": 4,
-        "sourceInstance": 101979,
-        "sourceObject": 31,
-        "sourceSprite": "Enviroment/Walls/sprDoorH",
-        "id": 5
-      },
-      {
-        "x": 448,
-        "y": 318,
-        "w": 32,
-        "h": 4,
-        "sourceInstance": 101980,
-        "sourceObject": 31,
-        "sourceSprite": "Enviroment/Walls/sprDoorH",
-        "id": 6
-      }
-    ],
-    "spawns": [
-      {
-        "x": 360,
-        "y": 200
-      },
-      {
-        "x": 184,
-        "y": 88
-      },
-      {
-        "x": 504,
-        "y": 296
-      },
-      {
-        "x": 232,
-        "y": 200
-      },
-      {
-        "x": 488,
-        "y": 184
-      },
-      {
-        "x": 440,
-        "y": 248
-      },
-      {
-        "x": 296,
-        "y": 184
-      },
-      {
-        "x": 424,
-        "y": 184
-      }
-    ],
     "weaponSpawns": [
       {
         "x": 360,
@@ -1464,16 +1482,137 @@
         "weapon": "pistol"
       }
     ],
-    "sourceRoomId": 17,
-    "sourceRoomName": "rmApartment1Upstairs",
-    "sourceRoomOffset": 478264,
-    "coordinateScale": 1
+    "width": 640
   },
   {
+    "arenaAudit": {
+      "allSpawnAndWeaponsReachable": true,
+      "baselineRatioPermille": 1000,
+      "baselineReachableFloorCells": 152,
+      "floorCells": 985,
+      "gridStep": 16,
+      "minSpawnPathPx": 144,
+      "radius": 9,
+      "reachableAreaPx2": 38912,
+      "reachableFloorCells": 152,
+      "reachablePermille": 340,
+      "sourceFloorSHA256": "623c68520fad56d2f7b1ef1478c232dc6131ebed2650cf022c75ed8dfd5497df",
+      "sourceMetadataSHA256": "895b1393117d98964229b9410c5ade3a0c6fa744afc1d54e66459be92b06049c",
+      "walkableFloorCells": 447
+    },
+    "coordinateScale": 1,
+    "doors": [
+      {
+        "x": 158,
+        "y": 432,
+        "w": 4,
+        "h": 32,
+        "sourceInstance": 103501,
+        "sourceObject": 21,
+        "sourceSprite": "Enviroment/Walls/sprDoorV",
+        "id": 0
+      },
+      {
+        "x": 222,
+        "y": 432,
+        "w": 4,
+        "h": 32,
+        "sourceInstance": 103502,
+        "sourceObject": 21,
+        "sourceSprite": "Enviroment/Walls/sprDoorV",
+        "id": 1
+      },
+      {
+        "x": 158,
+        "y": 240,
+        "w": 4,
+        "h": 32,
+        "sourceInstance": 103503,
+        "sourceObject": 21,
+        "sourceSprite": "Enviroment/Walls/sprDoorV",
+        "id": 2
+      },
+      {
+        "x": 158,
+        "y": 144,
+        "w": 4,
+        "h": 32,
+        "sourceInstance": 103504,
+        "sourceObject": 21,
+        "sourceSprite": "Enviroment/Walls/sprDoorV",
+        "id": 3
+      },
+      {
+        "x": 192,
+        "y": 302,
+        "w": 32,
+        "h": 4,
+        "sourceInstance": 103505,
+        "sourceObject": 31,
+        "sourceSprite": "Enviroment/Walls/sprDoorH",
+        "id": 4
+      },
+      {
+        "x": 480,
+        "y": 302,
+        "w": 32,
+        "h": 4,
+        "sourceInstance": 103506,
+        "sourceObject": 31,
+        "sourceSprite": "Enviroment/Walls/sprDoorH",
+        "id": 5
+      },
+      {
+        "x": 96,
+        "y": 110,
+        "w": 32,
+        "h": 4,
+        "sourceInstance": 103554,
+        "sourceObject": 31,
+        "sourceSprite": "Enviroment/Walls/sprDoorH",
+        "id": 6
+      }
+    ],
+    "height": 600,
     "id": "full-house",
     "name": "满屋",
-    "width": 640,
-    "height": 600,
+    "sourceRoomId": 31,
+    "sourceRoomName": "rmHouse2Downstairs",
+    "sourceRoomOffset": 800944,
+    "spawns": [
+      {
+        "x": 360,
+        "y": 88
+      },
+      {
+        "x": 568,
+        "y": 472
+      },
+      {
+        "x": 184,
+        "y": 440
+      },
+      {
+        "x": 392,
+        "y": 328
+      },
+      {
+        "x": 584,
+        "y": 328
+      },
+      {
+        "x": 248,
+        "y": 328
+      },
+      {
+        "x": 248,
+        "y": 24
+      },
+      {
+        "x": 440,
+        "y": 440
+      }
+    ],
     "walls": [
       {
         "x": 497,
@@ -3226,112 +3365,6 @@
         "kind": "wall"
       }
     ],
-    "doors": [
-      {
-        "x": 158,
-        "y": 432,
-        "w": 4,
-        "h": 32,
-        "sourceInstance": 103501,
-        "sourceObject": 21,
-        "sourceSprite": "Enviroment/Walls/sprDoorV",
-        "id": 0
-      },
-      {
-        "x": 222,
-        "y": 432,
-        "w": 4,
-        "h": 32,
-        "sourceInstance": 103502,
-        "sourceObject": 21,
-        "sourceSprite": "Enviroment/Walls/sprDoorV",
-        "id": 1
-      },
-      {
-        "x": 158,
-        "y": 240,
-        "w": 4,
-        "h": 32,
-        "sourceInstance": 103503,
-        "sourceObject": 21,
-        "sourceSprite": "Enviroment/Walls/sprDoorV",
-        "id": 2
-      },
-      {
-        "x": 158,
-        "y": 144,
-        "w": 4,
-        "h": 32,
-        "sourceInstance": 103504,
-        "sourceObject": 21,
-        "sourceSprite": "Enviroment/Walls/sprDoorV",
-        "id": 3
-      },
-      {
-        "x": 192,
-        "y": 302,
-        "w": 32,
-        "h": 4,
-        "sourceInstance": 103505,
-        "sourceObject": 31,
-        "sourceSprite": "Enviroment/Walls/sprDoorH",
-        "id": 4
-      },
-      {
-        "x": 480,
-        "y": 302,
-        "w": 32,
-        "h": 4,
-        "sourceInstance": 103506,
-        "sourceObject": 31,
-        "sourceSprite": "Enviroment/Walls/sprDoorH",
-        "id": 5
-      },
-      {
-        "x": 96,
-        "y": 110,
-        "w": 32,
-        "h": 4,
-        "sourceInstance": 103554,
-        "sourceObject": 31,
-        "sourceSprite": "Enviroment/Walls/sprDoorH",
-        "id": 6
-      }
-    ],
-    "spawns": [
-      {
-        "x": 360,
-        "y": 88
-      },
-      {
-        "x": 568,
-        "y": 472
-      },
-      {
-        "x": 184,
-        "y": 440
-      },
-      {
-        "x": 392,
-        "y": 328
-      },
-      {
-        "x": 584,
-        "y": 328
-      },
-      {
-        "x": 248,
-        "y": 328
-      },
-      {
-        "x": 248,
-        "y": 24
-      },
-      {
-        "x": 440,
-        "y": 440
-      }
-    ],
     "weaponSpawns": [
       {
         "x": 360,
@@ -3374,16 +3407,167 @@
         "weapon": "pistol"
       }
     ],
-    "sourceRoomId": 31,
-    "sourceRoomName": "rmHouse2Downstairs",
-    "sourceRoomOffset": 800944,
-    "coordinateScale": 1
+    "width": 640
   },
   {
+    "arenaAudit": {
+      "allSpawnAndWeaponsReachable": true,
+      "baselineRatioPermille": 513,
+      "baselineReachableFloorCells": 152,
+      "floorCells": 718,
+      "gridStep": 16,
+      "minSpawnPathPx": 48,
+      "radius": 9,
+      "reachableAreaPx2": 19968,
+      "reachableFloorCells": 78,
+      "reachablePermille": 224,
+      "sourceFloorSHA256": "b60ae32b7da85bda194220faf42847a4c738574d3bdb8a0b03dd64b4de053552",
+      "sourceMetadataSHA256": "895b1393117d98964229b9410c5ade3a0c6fa744afc1d54e66459be92b06049c",
+      "walkableFloorCells": 347
+    },
+    "coordinateScale": 1,
+    "doors": [
+      {
+        "x": 288,
+        "y": 158,
+        "w": 32,
+        "h": 4,
+        "sourceInstance": 103922,
+        "sourceObject": 31,
+        "sourceSprite": "Enviroment/Walls/sprDoorH",
+        "id": 0
+      },
+      {
+        "x": 96,
+        "y": 158,
+        "w": 32,
+        "h": 4,
+        "sourceInstance": 103923,
+        "sourceObject": 31,
+        "sourceSprite": "Enviroment/Walls/sprDoorH",
+        "id": 1
+      },
+      {
+        "x": 480,
+        "y": 158,
+        "w": 32,
+        "h": 4,
+        "sourceInstance": 103924,
+        "sourceObject": 31,
+        "sourceSprite": "Enviroment/Walls/sprDoorH",
+        "id": 2
+      },
+      {
+        "x": 158,
+        "y": 96,
+        "w": 4,
+        "h": 32,
+        "sourceInstance": 103925,
+        "sourceObject": 21,
+        "sourceSprite": "Enviroment/Walls/sprDoorV",
+        "id": 3
+      },
+      {
+        "x": 446,
+        "y": 96,
+        "w": 4,
+        "h": 32,
+        "sourceInstance": 103926,
+        "sourceObject": 21,
+        "sourceSprite": "Enviroment/Walls/sprDoorV",
+        "id": 4
+      },
+      {
+        "x": 382,
+        "y": 352,
+        "w": 4,
+        "h": 32,
+        "sourceInstance": 103927,
+        "sourceObject": 21,
+        "sourceSprite": "Enviroment/Walls/sprDoorV",
+        "id": 5
+      },
+      {
+        "x": 222,
+        "y": 352,
+        "w": 4,
+        "h": 32,
+        "sourceInstance": 103928,
+        "sourceObject": 21,
+        "sourceSprite": "Enviroment/Walls/sprDoorV",
+        "id": 6
+      },
+      {
+        "x": 288,
+        "y": 30,
+        "w": 32,
+        "h": 4,
+        "sourceInstance": 103948,
+        "sourceObject": 31,
+        "sourceSprite": "Enviroment/Walls/sprDoorH",
+        "id": 7
+      },
+      {
+        "x": 416,
+        "y": 382,
+        "w": 32,
+        "h": 4,
+        "sourceInstance": 103974,
+        "sourceObject": 31,
+        "sourceSprite": "Enviroment/Walls/sprDoorH",
+        "id": 8
+      },
+      {
+        "x": 160,
+        "y": 382,
+        "w": 32,
+        "h": 4,
+        "sourceInstance": 103976,
+        "sourceObject": 31,
+        "sourceSprite": "Enviroment/Walls/sprDoorH",
+        "id": 9
+      }
+    ],
+    "height": 608,
     "id": "push-it",
     "name": "夜店",
-    "width": 640,
-    "height": 608,
+    "sourceRoomId": 33,
+    "sourceRoomName": "rmHouse3Downstairs",
+    "sourceRoomOffset": 879172,
+    "spawns": [
+      {
+        "x": 312,
+        "y": 72
+      },
+      {
+        "x": 184,
+        "y": 136
+      },
+      {
+        "x": 424,
+        "y": 136
+      },
+      {
+        "x": 264,
+        "y": 136
+      },
+      {
+        "x": 344,
+        "y": 136
+      },
+      {
+        "x": 392,
+        "y": 88
+      },
+      {
+        "x": 232,
+        "y": 88
+      },
+      {
+        "x": 184,
+        "y": 88
+      }
+    ],
     "walls": [
       {
         "x": 12,
@@ -3663,16 +3847,6 @@
         "sourceInstance": 113741,
         "sourceObject": 504,
         "sourceSprite": "Enviroment/Furniture/Levels/09_Push_It/sprDJRecords",
-        "kind": "furniture"
-      },
-      {
-        "x": 280,
-        "y": 409,
-        "w": 16,
-        "h": 15,
-        "sourceInstance": 113742,
-        "sourceObject": 503,
-        "sourceSprite": "Enviroment/Furniture/Levels/09_Push_It/sprDJ",
         "kind": "furniture"
       },
       {
@@ -4906,142 +5080,6 @@
         "kind": "wall"
       }
     ],
-    "doors": [
-      {
-        "x": 288,
-        "y": 158,
-        "w": 32,
-        "h": 4,
-        "sourceInstance": 103922,
-        "sourceObject": 31,
-        "sourceSprite": "Enviroment/Walls/sprDoorH",
-        "id": 0
-      },
-      {
-        "x": 96,
-        "y": 158,
-        "w": 32,
-        "h": 4,
-        "sourceInstance": 103923,
-        "sourceObject": 31,
-        "sourceSprite": "Enviroment/Walls/sprDoorH",
-        "id": 1
-      },
-      {
-        "x": 480,
-        "y": 158,
-        "w": 32,
-        "h": 4,
-        "sourceInstance": 103924,
-        "sourceObject": 31,
-        "sourceSprite": "Enviroment/Walls/sprDoorH",
-        "id": 2
-      },
-      {
-        "x": 158,
-        "y": 96,
-        "w": 4,
-        "h": 32,
-        "sourceInstance": 103925,
-        "sourceObject": 21,
-        "sourceSprite": "Enviroment/Walls/sprDoorV",
-        "id": 3
-      },
-      {
-        "x": 446,
-        "y": 96,
-        "w": 4,
-        "h": 32,
-        "sourceInstance": 103926,
-        "sourceObject": 21,
-        "sourceSprite": "Enviroment/Walls/sprDoorV",
-        "id": 4
-      },
-      {
-        "x": 382,
-        "y": 352,
-        "w": 4,
-        "h": 32,
-        "sourceInstance": 103927,
-        "sourceObject": 21,
-        "sourceSprite": "Enviroment/Walls/sprDoorV",
-        "id": 5
-      },
-      {
-        "x": 222,
-        "y": 352,
-        "w": 4,
-        "h": 32,
-        "sourceInstance": 103928,
-        "sourceObject": 21,
-        "sourceSprite": "Enviroment/Walls/sprDoorV",
-        "id": 6
-      },
-      {
-        "x": 288,
-        "y": 30,
-        "w": 32,
-        "h": 4,
-        "sourceInstance": 103948,
-        "sourceObject": 31,
-        "sourceSprite": "Enviroment/Walls/sprDoorH",
-        "id": 7
-      },
-      {
-        "x": 416,
-        "y": 382,
-        "w": 32,
-        "h": 4,
-        "sourceInstance": 103974,
-        "sourceObject": 31,
-        "sourceSprite": "Enviroment/Walls/sprDoorH",
-        "id": 8
-      },
-      {
-        "x": 160,
-        "y": 382,
-        "w": 32,
-        "h": 4,
-        "sourceInstance": 103976,
-        "sourceObject": 31,
-        "sourceSprite": "Enviroment/Walls/sprDoorH",
-        "id": 9
-      }
-    ],
-    "spawns": [
-      {
-        "x": 312,
-        "y": 72
-      },
-      {
-        "x": 184,
-        "y": 136
-      },
-      {
-        "x": 424,
-        "y": 136
-      },
-      {
-        "x": 264,
-        "y": 136
-      },
-      {
-        "x": 344,
-        "y": 136
-      },
-      {
-        "x": 392,
-        "y": 88
-      },
-      {
-        "x": 232,
-        "y": 88
-      },
-      {
-        "x": 184,
-        "y": 88
-      }
-    ],
     "weaponSpawns": [
       {
         "x": 312,
@@ -5084,16 +5122,157 @@
         "weapon": "pistol"
       }
     ],
-    "sourceRoomId": 33,
-    "sourceRoomName": "rmHouse3Downstairs",
-    "sourceRoomOffset": 879172,
-    "coordinateScale": 1
+    "width": 640
   },
   {
+    "arenaAudit": {
+      "allSpawnAndWeaponsReachable": true,
+      "baselineRatioPermille": 427,
+      "baselineReachableFloorCells": 152,
+      "floorCells": 872,
+      "gridStep": 16,
+      "minSpawnPathPx": 48,
+      "radius": 9,
+      "reachableAreaPx2": 16640,
+      "reachableFloorCells": 65,
+      "reachablePermille": 162,
+      "sourceFloorSHA256": "8dd5d8ab57fbd7ecc5d81d000141d063c7b2a5dfa0ddd1992ea305941e5a239b",
+      "sourceMetadataSHA256": "895b1393117d98964229b9410c5ade3a0c6fa744afc1d54e66459be92b06049c",
+      "walkableFloorCells": 400
+    },
+    "coordinateScale": 1,
+    "doors": [
+      {
+        "x": 94,
+        "y": 128,
+        "w": 4,
+        "h": 32,
+        "sourceInstance": 102264,
+        "sourceObject": 21,
+        "sourceSprite": "Enviroment/Walls/sprDoorV",
+        "id": 0
+      },
+      {
+        "x": 478,
+        "y": 128,
+        "w": 4,
+        "h": 32,
+        "sourceInstance": 102265,
+        "sourceObject": 21,
+        "sourceSprite": "Enviroment/Walls/sprDoorV",
+        "id": 1
+      },
+      {
+        "x": 606,
+        "y": 160,
+        "w": 4,
+        "h": 32,
+        "sourceInstance": 102266,
+        "sourceObject": 21,
+        "sourceSprite": "Enviroment/Walls/sprDoorV",
+        "id": 2
+      },
+      {
+        "x": 30,
+        "y": 192,
+        "w": 4,
+        "h": 32,
+        "sourceInstance": 102267,
+        "sourceObject": 21,
+        "sourceSprite": "Enviroment/Walls/sprDoorV",
+        "id": 3
+      },
+      {
+        "x": 224,
+        "y": 190,
+        "w": 32,
+        "h": 4,
+        "sourceInstance": 102268,
+        "sourceObject": 31,
+        "sourceSprite": "Enviroment/Walls/sprDoorH",
+        "id": 4
+      },
+      {
+        "x": 352,
+        "y": 190,
+        "w": 32,
+        "h": 4,
+        "sourceInstance": 102269,
+        "sourceObject": 31,
+        "sourceSprite": "Enviroment/Walls/sprDoorH",
+        "id": 5
+      },
+      {
+        "x": 542,
+        "y": 256,
+        "w": 4,
+        "h": 32,
+        "sourceInstance": 102279,
+        "sourceObject": 21,
+        "sourceSprite": "Enviroment/Walls/sprDoorV",
+        "id": 6
+      },
+      {
+        "x": 224,
+        "y": 318,
+        "w": 32,
+        "h": 4,
+        "sourceInstance": 102282,
+        "sourceObject": 31,
+        "sourceSprite": "Enviroment/Walls/sprDoorH",
+        "id": 7
+      },
+      {
+        "x": 414,
+        "y": 384,
+        "w": 4,
+        "h": 32,
+        "sourceInstance": 102290,
+        "sourceObject": 21,
+        "sourceSprite": "Enviroment/Walls/sprDoorV",
+        "id": 8
+      }
+    ],
+    "height": 480,
     "id": "overdose",
     "name": "过量",
-    "width": 640,
-    "height": 480,
+    "sourceRoomId": 20,
+    "sourceRoomName": "rmApartment2Upstairs",
+    "sourceRoomOffset": 534492,
+    "spawns": [
+      {
+        "x": 328,
+        "y": 264
+      },
+      {
+        "x": 216,
+        "y": 216
+      },
+      {
+        "x": 408,
+        "y": 216
+      },
+      {
+        "x": 248,
+        "y": 296
+      },
+      {
+        "x": 408,
+        "y": 296
+      },
+      {
+        "x": 344,
+        "y": 216
+      },
+      {
+        "x": 280,
+        "y": 248
+      },
+      {
+        "x": 376,
+        "y": 264
+      }
+    ],
     "walls": [
       {
         "x": 301,
@@ -6736,132 +6915,6 @@
         "kind": "wall"
       }
     ],
-    "doors": [
-      {
-        "x": 94,
-        "y": 128,
-        "w": 4,
-        "h": 32,
-        "sourceInstance": 102264,
-        "sourceObject": 21,
-        "sourceSprite": "Enviroment/Walls/sprDoorV",
-        "id": 0
-      },
-      {
-        "x": 478,
-        "y": 128,
-        "w": 4,
-        "h": 32,
-        "sourceInstance": 102265,
-        "sourceObject": 21,
-        "sourceSprite": "Enviroment/Walls/sprDoorV",
-        "id": 1
-      },
-      {
-        "x": 606,
-        "y": 160,
-        "w": 4,
-        "h": 32,
-        "sourceInstance": 102266,
-        "sourceObject": 21,
-        "sourceSprite": "Enviroment/Walls/sprDoorV",
-        "id": 2
-      },
-      {
-        "x": 30,
-        "y": 192,
-        "w": 4,
-        "h": 32,
-        "sourceInstance": 102267,
-        "sourceObject": 21,
-        "sourceSprite": "Enviroment/Walls/sprDoorV",
-        "id": 3
-      },
-      {
-        "x": 224,
-        "y": 190,
-        "w": 32,
-        "h": 4,
-        "sourceInstance": 102268,
-        "sourceObject": 31,
-        "sourceSprite": "Enviroment/Walls/sprDoorH",
-        "id": 4
-      },
-      {
-        "x": 352,
-        "y": 190,
-        "w": 32,
-        "h": 4,
-        "sourceInstance": 102269,
-        "sourceObject": 31,
-        "sourceSprite": "Enviroment/Walls/sprDoorH",
-        "id": 5
-      },
-      {
-        "x": 542,
-        "y": 256,
-        "w": 4,
-        "h": 32,
-        "sourceInstance": 102279,
-        "sourceObject": 21,
-        "sourceSprite": "Enviroment/Walls/sprDoorV",
-        "id": 6
-      },
-      {
-        "x": 224,
-        "y": 318,
-        "w": 32,
-        "h": 4,
-        "sourceInstance": 102282,
-        "sourceObject": 31,
-        "sourceSprite": "Enviroment/Walls/sprDoorH",
-        "id": 7
-      },
-      {
-        "x": 414,
-        "y": 384,
-        "w": 4,
-        "h": 32,
-        "sourceInstance": 102290,
-        "sourceObject": 21,
-        "sourceSprite": "Enviroment/Walls/sprDoorV",
-        "id": 8
-      }
-    ],
-    "spawns": [
-      {
-        "x": 328,
-        "y": 264
-      },
-      {
-        "x": 216,
-        "y": 216
-      },
-      {
-        "x": 408,
-        "y": 216
-      },
-      {
-        "x": 248,
-        "y": 296
-      },
-      {
-        "x": 408,
-        "y": 296
-      },
-      {
-        "x": 344,
-        "y": 216
-      },
-      {
-        "x": 280,
-        "y": 248
-      },
-      {
-        "x": 376,
-        "y": 264
-      }
-    ],
     "weaponSpawns": [
       {
         "x": 328,
@@ -6904,16 +6957,127 @@
         "weapon": "m16"
       }
     ],
-    "sourceRoomId": 20,
-    "sourceRoomName": "rmApartment2Upstairs",
-    "sourceRoomOffset": 534492,
-    "coordinateScale": 1
+    "width": 640
   },
   {
+    "arenaAudit": {
+      "allSpawnAndWeaponsReachable": true,
+      "baselineRatioPermille": 934,
+      "baselineReachableFloorCells": 152,
+      "floorCells": 1211,
+      "gridStep": 16,
+      "minSpawnPathPx": 96,
+      "radius": 9,
+      "reachableAreaPx2": 36352,
+      "reachableFloorCells": 142,
+      "reachablePermille": 211,
+      "sourceFloorSHA256": "0cc9c476d03db66399faf970c435299d9f9e840c5ed5448435c3880fb1186298",
+      "sourceMetadataSHA256": "895b1393117d98964229b9410c5ade3a0c6fa744afc1d54e66459be92b06049c",
+      "walkableFloorCells": 672
+    },
+    "coordinateScale": 1,
+    "doors": [
+      {
+        "x": 352,
+        "y": 382,
+        "w": 32,
+        "h": 4,
+        "sourceInstance": 105777,
+        "sourceObject": 31,
+        "sourceSprite": "Enviroment/Walls/sprDoorH",
+        "id": 0
+      },
+      {
+        "x": 512,
+        "y": 382,
+        "w": 32,
+        "h": 4,
+        "sourceInstance": 105779,
+        "sourceObject": 31,
+        "sourceSprite": "Enviroment/Walls/sprDoorH",
+        "id": 1
+      },
+      {
+        "x": 286,
+        "y": 64,
+        "w": 4,
+        "h": 32,
+        "sourceInstance": 105780,
+        "sourceObject": 21,
+        "sourceSprite": "Enviroment/Walls/sprDoorV",
+        "id": 2
+      },
+      {
+        "x": 446,
+        "y": 192,
+        "w": 4,
+        "h": 32,
+        "sourceInstance": 105781,
+        "sourceObject": 21,
+        "sourceSprite": "Enviroment/Walls/sprDoorV",
+        "id": 3
+      },
+      {
+        "x": 128,
+        "y": 158,
+        "w": 32,
+        "h": 4,
+        "sourceInstance": 112260,
+        "sourceObject": 173,
+        "sourceSprite": "Enviroment/Walls/sprDoorH2",
+        "id": 4
+      },
+      {
+        "x": 222,
+        "y": 224,
+        "w": 4,
+        "h": 32,
+        "sourceInstance": 112271,
+        "sourceObject": 420,
+        "sourceSprite": "Enviroment/Walls/sprDoorV2",
+        "id": 5
+      }
+    ],
+    "height": 640,
     "id": "tension",
     "name": "紧绷",
-    "width": 800,
-    "height": 640,
+    "sourceRoomId": 49,
+    "sourceRoomName": "rmHouse5Upstairs",
+    "sourceRoomOffset": 1233092,
+    "spawns": [
+      {
+        "x": 120,
+        "y": 488
+      },
+      {
+        "x": 24,
+        "y": 344
+      },
+      {
+        "x": 200,
+        "y": 344
+      },
+      {
+        "x": 216,
+        "y": 520
+      },
+      {
+        "x": 24,
+        "y": 520
+      },
+      {
+        "x": 120,
+        "y": 392
+      },
+      {
+        "x": 216,
+        "y": 424
+      },
+      {
+        "x": 40,
+        "y": 440
+      }
+    ],
     "walls": [
       {
         "x": 313,
@@ -8766,102 +8930,6 @@
         "kind": "wall"
       }
     ],
-    "doors": [
-      {
-        "x": 352,
-        "y": 382,
-        "w": 32,
-        "h": 4,
-        "sourceInstance": 105777,
-        "sourceObject": 31,
-        "sourceSprite": "Enviroment/Walls/sprDoorH",
-        "id": 0
-      },
-      {
-        "x": 512,
-        "y": 382,
-        "w": 32,
-        "h": 4,
-        "sourceInstance": 105779,
-        "sourceObject": 31,
-        "sourceSprite": "Enviroment/Walls/sprDoorH",
-        "id": 1
-      },
-      {
-        "x": 286,
-        "y": 64,
-        "w": 4,
-        "h": 32,
-        "sourceInstance": 105780,
-        "sourceObject": 21,
-        "sourceSprite": "Enviroment/Walls/sprDoorV",
-        "id": 2
-      },
-      {
-        "x": 446,
-        "y": 192,
-        "w": 4,
-        "h": 32,
-        "sourceInstance": 105781,
-        "sourceObject": 21,
-        "sourceSprite": "Enviroment/Walls/sprDoorV",
-        "id": 3
-      },
-      {
-        "x": 128,
-        "y": 158,
-        "w": 32,
-        "h": 4,
-        "sourceInstance": 112260,
-        "sourceObject": 173,
-        "sourceSprite": "Enviroment/Walls/sprDoorH2",
-        "id": 4
-      },
-      {
-        "x": 222,
-        "y": 224,
-        "w": 4,
-        "h": 32,
-        "sourceInstance": 112271,
-        "sourceObject": 420,
-        "sourceSprite": "Enviroment/Walls/sprDoorV2",
-        "id": 5
-      }
-    ],
-    "spawns": [
-      {
-        "x": 120,
-        "y": 488
-      },
-      {
-        "x": 24,
-        "y": 344
-      },
-      {
-        "x": 200,
-        "y": 344
-      },
-      {
-        "x": 216,
-        "y": 520
-      },
-      {
-        "x": 24,
-        "y": 520
-      },
-      {
-        "x": 120,
-        "y": 392
-      },
-      {
-        "x": 216,
-        "y": 424
-      },
-      {
-        "x": 40,
-        "y": 440
-      }
-    ],
     "weaponSpawns": [
       {
         "x": 120,
@@ -8904,16 +8972,87 @@
         "weapon": "m16"
       }
     ],
-    "sourceRoomId": 49,
-    "sourceRoomName": "rmHouse5Upstairs",
-    "sourceRoomOffset": 1233092,
-    "coordinateScale": 1
+    "width": 800
   },
   {
+    "arenaAudit": {
+      "allSpawnAndWeaponsReachable": true,
+      "baselineRatioPermille": 763,
+      "baselineReachableFloorCells": 152,
+      "floorCells": 468,
+      "gridStep": 16,
+      "minSpawnPathPx": 96,
+      "radius": 9,
+      "reachableAreaPx2": 29696,
+      "reachableFloorCells": 116,
+      "reachablePermille": 613,
+      "sourceFloorSHA256": "0d7bba024d8849ab407f72eab2fda195ea14e02e73d55f5e2583447129cd29b4",
+      "sourceMetadataSHA256": "895b1393117d98964229b9410c5ade3a0c6fa744afc1d54e66459be92b06049c",
+      "walkableFloorCells": 189
+    },
+    "coordinateScale": 1,
+    "doors": [
+      {
+        "x": 318,
+        "y": 352,
+        "w": 4,
+        "h": 32,
+        "sourceInstance": 104326,
+        "sourceObject": 21,
+        "sourceSprite": "Enviroment/Walls/sprDoorV",
+        "id": 0
+      },
+      {
+        "x": 318,
+        "y": 160,
+        "w": 4,
+        "h": 32,
+        "sourceInstance": 104327,
+        "sourceObject": 21,
+        "sourceSprite": "Enviroment/Walls/sprDoorV",
+        "id": 1
+      }
+    ],
+    "height": 480,
     "id": "neighbors",
     "name": "邻居",
-    "width": 640,
-    "height": 480,
+    "sourceRoomId": 35,
+    "sourceRoomName": "rmBuildingFloor3",
+    "sourceRoomOffset": 950620,
+    "spawns": [
+      {
+        "x": 344,
+        "y": 408
+      },
+      {
+        "x": 312,
+        "y": 24
+      },
+      {
+        "x": 184,
+        "y": 264
+      },
+      {
+        "x": 376,
+        "y": 216
+      },
+      {
+        "x": 392,
+        "y": 104
+      },
+      {
+        "x": 296,
+        "y": 296
+      },
+      {
+        "x": 392,
+        "y": 312
+      },
+      {
+        "x": 280,
+        "y": 88
+      }
+    ],
     "walls": [
       {
         "x": 185,
@@ -9906,62 +10045,6 @@
         "kind": "wall"
       }
     ],
-    "doors": [
-      {
-        "x": 318,
-        "y": 352,
-        "w": 4,
-        "h": 32,
-        "sourceInstance": 104326,
-        "sourceObject": 21,
-        "sourceSprite": "Enviroment/Walls/sprDoorV",
-        "id": 0
-      },
-      {
-        "x": 318,
-        "y": 160,
-        "w": 4,
-        "h": 32,
-        "sourceInstance": 104327,
-        "sourceObject": 21,
-        "sourceSprite": "Enviroment/Walls/sprDoorV",
-        "id": 1
-      }
-    ],
-    "spawns": [
-      {
-        "x": 344,
-        "y": 408
-      },
-      {
-        "x": 312,
-        "y": 24
-      },
-      {
-        "x": 184,
-        "y": 264
-      },
-      {
-        "x": 376,
-        "y": 216
-      },
-      {
-        "x": 392,
-        "y": 104
-      },
-      {
-        "x": 296,
-        "y": 296
-      },
-      {
-        "x": 392,
-        "y": 312
-      },
-      {
-        "x": 280,
-        "y": 88
-      }
-    ],
     "weaponSpawns": [
       {
         "x": 344,
@@ -10004,9 +10087,5880 @@
         "weapon": "m16"
       }
     ],
-    "sourceRoomId": 35,
-    "sourceRoomName": "rmBuildingFloor3",
-    "sourceRoomOffset": 950620,
-    "coordinateScale": 1
+    "width": 640
+  },
+  {
+    "arenaAudit": {
+      "allSpawnAndWeaponsReachable": true,
+      "baselineRatioPermille": 5171,
+      "baselineReachableFloorCells": 152,
+      "floorCells": 1976,
+      "gridStep": 16,
+      "minSpawnPathPx": 288,
+      "radius": 9,
+      "reachableAreaPx2": 201216,
+      "reachableFloorCells": 786,
+      "reachablePermille": 871,
+      "sourceFloorSHA256": "76ab7479a44ac229dd9958bfdbd13c9d00268961d693ae3d09613df8455c52ff",
+      "sourceMetadataSHA256": "895b1393117d98964229b9410c5ade3a0c6fa744afc1d54e66459be92b06049c",
+      "walkableFloorCells": 902
+    },
+    "coordinateScale": 1,
+    "doors": [
+      {
+        "x": 352,
+        "y": 62,
+        "w": 32,
+        "h": 4,
+        "sourceInstance": 116970,
+        "sourceObject": 31,
+        "sourceSprite": "Enviroment/Walls/sprDoorH",
+        "id": 0
+      },
+      {
+        "x": 448,
+        "y": 62,
+        "w": 32,
+        "h": 4,
+        "sourceInstance": 116971,
+        "sourceObject": 31,
+        "sourceSprite": "Enviroment/Walls/sprDoorH",
+        "id": 1
+      },
+      {
+        "x": 384,
+        "y": 62,
+        "w": 32,
+        "h": 4,
+        "sourceInstance": 116973,
+        "sourceObject": 173,
+        "sourceSprite": "Enviroment/Walls/sprDoorH2",
+        "id": 2
+      },
+      {
+        "x": 480,
+        "y": 62,
+        "w": 32,
+        "h": 4,
+        "sourceInstance": 116974,
+        "sourceObject": 173,
+        "sourceSprite": "Enviroment/Walls/sprDoorH2",
+        "id": 3
+      },
+      {
+        "x": 286,
+        "y": 320,
+        "w": 4,
+        "h": 32,
+        "sourceInstance": 117322,
+        "sourceObject": 21,
+        "sourceSprite": "Enviroment/Walls/sprDoorV",
+        "id": 4
+      },
+      {
+        "x": 318,
+        "y": 656,
+        "w": 4,
+        "h": 32,
+        "sourceInstance": 117360,
+        "sourceObject": 21,
+        "sourceSprite": "Enviroment/Walls/sprDoorV",
+        "id": 5
+      },
+      {
+        "x": 318,
+        "y": 688,
+        "w": 4,
+        "h": 32,
+        "sourceInstance": 117361,
+        "sourceObject": 21,
+        "sourceSprite": "Enviroment/Walls/sprDoorV",
+        "id": 6
+      },
+      {
+        "x": 478,
+        "y": 624,
+        "w": 4,
+        "h": 32,
+        "sourceInstance": 117362,
+        "sourceObject": 21,
+        "sourceSprite": "Enviroment/Walls/sprDoorV",
+        "id": 7
+      },
+      {
+        "x": 478,
+        "y": 656,
+        "w": 4,
+        "h": 32,
+        "sourceInstance": 117363,
+        "sourceObject": 21,
+        "sourceSprite": "Enviroment/Walls/sprDoorV",
+        "id": 8
+      },
+      {
+        "x": 478,
+        "y": 688,
+        "w": 4,
+        "h": 32,
+        "sourceInstance": 117364,
+        "sourceObject": 21,
+        "sourceSprite": "Enviroment/Walls/sprDoorV",
+        "id": 9
+      },
+      {
+        "x": 352,
+        "y": 718,
+        "w": 32,
+        "h": 4,
+        "sourceInstance": 117365,
+        "sourceObject": 31,
+        "sourceSprite": "Enviroment/Walls/sprDoorH",
+        "id": 10
+      },
+      {
+        "x": 416,
+        "y": 718,
+        "w": 32,
+        "h": 4,
+        "sourceInstance": 117366,
+        "sourceObject": 31,
+        "sourceSprite": "Enviroment/Walls/sprDoorH",
+        "id": 11
+      },
+      {
+        "x": 352,
+        "y": 542,
+        "w": 32,
+        "h": 4,
+        "sourceInstance": 117422,
+        "sourceObject": 31,
+        "sourceSprite": "Enviroment/Walls/sprDoorH",
+        "id": 12
+      },
+      {
+        "x": 416,
+        "y": 542,
+        "w": 32,
+        "h": 4,
+        "sourceInstance": 117423,
+        "sourceObject": 31,
+        "sourceSprite": "Enviroment/Walls/sprDoorH",
+        "id": 13
+      }
+    ],
+    "height": 800,
+    "id": "highball",
+    "name": "高球",
+    "sourceRoomId": 65,
+    "sourceRoomName": "rmHighballer",
+    "sourceRoomOffset": 1873376,
+    "spawns": [
+      {
+        "x": 360,
+        "y": 184
+      },
+      {
+        "x": 552,
+        "y": 712
+      },
+      {
+        "x": 72,
+        "y": 600
+      },
+      {
+        "x": 776,
+        "y": 328
+      },
+      {
+        "x": 24,
+        "y": 56
+      },
+      {
+        "x": 632,
+        "y": 56
+      },
+      {
+        "x": 344,
+        "y": 504
+      },
+      {
+        "x": 88,
+        "y": 328
+      }
+    ],
+    "walls": [
+      {
+        "x": 229,
+        "y": 247,
+        "w": 20,
+        "h": 18,
+        "sourceInstance": 117432,
+        "sourceObject": 691,
+        "sourceSprite": "Enviroment/Furniture/Levels/21_Highball/sprHighballChair",
+        "kind": "furniture"
+      },
+      {
+        "x": 233,
+        "y": 205,
+        "w": 20,
+        "h": 18,
+        "sourceInstance": 117434,
+        "sourceObject": 691,
+        "sourceSprite": "Enviroment/Furniture/Levels/21_Highball/sprHighballChair",
+        "kind": "furniture"
+      },
+      {
+        "x": 281,
+        "y": 193,
+        "w": 20,
+        "h": 18,
+        "sourceInstance": 117437,
+        "sourceObject": 691,
+        "sourceSprite": "Enviroment/Furniture/Levels/21_Highball/sprHighballChair",
+        "kind": "furniture"
+      },
+      {
+        "x": 321,
+        "y": 187,
+        "w": 20,
+        "h": 18,
+        "sourceInstance": 117439,
+        "sourceObject": 691,
+        "sourceSprite": "Enviroment/Furniture/Levels/21_Highball/sprHighballChair",
+        "kind": "furniture"
+      },
+      {
+        "x": 377,
+        "y": 193,
+        "w": 20,
+        "h": 18,
+        "sourceInstance": 117441,
+        "sourceObject": 691,
+        "sourceSprite": "Enviroment/Furniture/Levels/21_Highball/sprHighballChair",
+        "kind": "furniture"
+      },
+      {
+        "x": 425,
+        "y": 193,
+        "w": 20,
+        "h": 18,
+        "sourceInstance": 117444,
+        "sourceObject": 691,
+        "sourceSprite": "Enviroment/Furniture/Levels/21_Highball/sprHighballChair",
+        "kind": "furniture"
+      },
+      {
+        "x": 473,
+        "y": 193,
+        "w": 20,
+        "h": 18,
+        "sourceInstance": 117446,
+        "sourceObject": 691,
+        "sourceSprite": "Enviroment/Furniture/Levels/21_Highball/sprHighballChair",
+        "kind": "furniture"
+      },
+      {
+        "x": 521,
+        "y": 193,
+        "w": 20,
+        "h": 18,
+        "sourceInstance": 117448,
+        "sourceObject": 691,
+        "sourceSprite": "Enviroment/Furniture/Levels/21_Highball/sprHighballChair",
+        "kind": "furniture"
+      },
+      {
+        "x": 557,
+        "y": 205,
+        "w": 20,
+        "h": 18,
+        "sourceInstance": 117450,
+        "sourceObject": 691,
+        "sourceSprite": "Enviroment/Furniture/Levels/21_Highball/sprHighballChair",
+        "kind": "furniture"
+      },
+      {
+        "x": 229,
+        "y": 287,
+        "w": 20,
+        "h": 18,
+        "sourceInstance": 117452,
+        "sourceObject": 691,
+        "sourceSprite": "Enviroment/Furniture/Levels/21_Highball/sprHighballChair",
+        "kind": "furniture"
+      },
+      {
+        "x": 561,
+        "y": 247,
+        "w": 20,
+        "h": 18,
+        "sourceInstance": 117453,
+        "sourceObject": 691,
+        "sourceSprite": "Enviroment/Furniture/Levels/21_Highball/sprHighballChair",
+        "kind": "furniture"
+      },
+      {
+        "x": 561,
+        "y": 285,
+        "w": 20,
+        "h": 18,
+        "sourceInstance": 117454,
+        "sourceObject": 691,
+        "sourceSprite": "Enviroment/Furniture/Levels/21_Highball/sprHighballChair",
+        "kind": "furniture"
+      },
+      {
+        "x": 428,
+        "y": 51,
+        "w": 7,
+        "h": 9,
+        "sourceInstance": 117502,
+        "sourceObject": 696,
+        "sourceSprite": "Enviroment/Furniture/Levels/21_Highball/sprSign",
+        "kind": "furniture"
+      },
+      {
+        "x": 336,
+        "y": 51,
+        "w": 7,
+        "h": 9,
+        "sourceInstance": 117503,
+        "sourceObject": 696,
+        "sourceSprite": "Enviroment/Furniture/Levels/21_Highball/sprSign",
+        "kind": "furniture"
+      },
+      {
+        "x": 532,
+        "y": 51,
+        "w": 7,
+        "h": 9,
+        "sourceInstance": 117504,
+        "sourceObject": 696,
+        "sourceSprite": "Enviroment/Furniture/Levels/21_Highball/sprSign",
+        "kind": "furniture"
+      },
+      {
+        "x": 520,
+        "y": 350,
+        "w": 32,
+        "h": 5,
+        "sourceInstance": 118674,
+        "sourceObject": 702,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceH",
+        "kind": "furniture"
+      },
+      {
+        "x": 96,
+        "y": 32,
+        "w": 32,
+        "h": 10,
+        "sourceInstance": 116976,
+        "sourceObject": 10,
+        "sourceSprite": "Enviroment/Walls/sprWindowUp",
+        "kind": "glass"
+      },
+      {
+        "x": 128,
+        "y": 32,
+        "w": 32,
+        "h": 10,
+        "sourceInstance": 116977,
+        "sourceObject": 10,
+        "sourceSprite": "Enviroment/Walls/sprWindowUp",
+        "kind": "glass"
+      },
+      {
+        "x": 160,
+        "y": 32,
+        "w": 32,
+        "h": 10,
+        "sourceInstance": 116978,
+        "sourceObject": 10,
+        "sourceSprite": "Enviroment/Walls/sprWindowUp",
+        "kind": "glass"
+      },
+      {
+        "x": 192,
+        "y": 32,
+        "w": 32,
+        "h": 10,
+        "sourceInstance": 116979,
+        "sourceObject": 10,
+        "sourceSprite": "Enviroment/Walls/sprWindowUp",
+        "kind": "glass"
+      },
+      {
+        "x": 224,
+        "y": 32,
+        "w": 32,
+        "h": 10,
+        "sourceInstance": 116980,
+        "sourceObject": 10,
+        "sourceSprite": "Enviroment/Walls/sprWindowUp",
+        "kind": "glass"
+      },
+      {
+        "x": 256,
+        "y": 32,
+        "w": 32,
+        "h": 10,
+        "sourceInstance": 116981,
+        "sourceObject": 10,
+        "sourceSprite": "Enviroment/Walls/sprWindowUp",
+        "kind": "glass"
+      },
+      {
+        "x": -2,
+        "y": 64,
+        "w": 10,
+        "h": 32,
+        "sourceInstance": 117294,
+        "sourceObject": 11,
+        "sourceSprite": "Enviroment/Walls/sprWindowRight",
+        "kind": "glass"
+      },
+      {
+        "x": -2,
+        "y": 96,
+        "w": 10,
+        "h": 32,
+        "sourceInstance": 117295,
+        "sourceObject": 11,
+        "sourceSprite": "Enviroment/Walls/sprWindowRight",
+        "kind": "glass"
+      },
+      {
+        "x": -2,
+        "y": 128,
+        "w": 10,
+        "h": 32,
+        "sourceInstance": 117296,
+        "sourceObject": 11,
+        "sourceSprite": "Enviroment/Walls/sprWindowRight",
+        "kind": "glass"
+      },
+      {
+        "x": -2,
+        "y": 160,
+        "w": 10,
+        "h": 32,
+        "sourceInstance": 117297,
+        "sourceObject": 11,
+        "sourceSprite": "Enviroment/Walls/sprWindowRight",
+        "kind": "glass"
+      },
+      {
+        "x": -2,
+        "y": 192,
+        "w": 10,
+        "h": 32,
+        "sourceInstance": 117298,
+        "sourceObject": 11,
+        "sourceSprite": "Enviroment/Walls/sprWindowRight",
+        "kind": "glass"
+      },
+      {
+        "x": -2,
+        "y": 224,
+        "w": 10,
+        "h": 32,
+        "sourceInstance": 117299,
+        "sourceObject": 11,
+        "sourceSprite": "Enviroment/Walls/sprWindowRight",
+        "kind": "glass"
+      },
+      {
+        "x": -2,
+        "y": 256,
+        "w": 10,
+        "h": 32,
+        "sourceInstance": 117300,
+        "sourceObject": 11,
+        "sourceSprite": "Enviroment/Walls/sprWindowRight",
+        "kind": "glass"
+      },
+      {
+        "x": 64,
+        "y": 32,
+        "w": 32,
+        "h": 10,
+        "sourceInstance": 117301,
+        "sourceObject": 10,
+        "sourceSprite": "Enviroment/Walls/sprWindowUp",
+        "kind": "glass"
+      },
+      {
+        "x": 32,
+        "y": 32,
+        "w": 32,
+        "h": 10,
+        "sourceInstance": 117302,
+        "sourceObject": 10,
+        "sourceSprite": "Enviroment/Walls/sprWindowUp",
+        "kind": "glass"
+      },
+      {
+        "x": 576,
+        "y": 32,
+        "w": 32,
+        "h": 10,
+        "sourceInstance": 117303,
+        "sourceObject": 10,
+        "sourceSprite": "Enviroment/Walls/sprWindowUp",
+        "kind": "glass"
+      },
+      {
+        "x": 608,
+        "y": 32,
+        "w": 32,
+        "h": 10,
+        "sourceInstance": 117304,
+        "sourceObject": 10,
+        "sourceSprite": "Enviroment/Walls/sprWindowUp",
+        "kind": "glass"
+      },
+      {
+        "x": 640,
+        "y": 32,
+        "w": 32,
+        "h": 10,
+        "sourceInstance": 117305,
+        "sourceObject": 10,
+        "sourceSprite": "Enviroment/Walls/sprWindowUp",
+        "kind": "glass"
+      },
+      {
+        "x": 672,
+        "y": 32,
+        "w": 32,
+        "h": 10,
+        "sourceInstance": 117306,
+        "sourceObject": 10,
+        "sourceSprite": "Enviroment/Walls/sprWindowUp",
+        "kind": "glass"
+      },
+      {
+        "x": 704,
+        "y": 32,
+        "w": 32,
+        "h": 10,
+        "sourceInstance": 117307,
+        "sourceObject": 10,
+        "sourceSprite": "Enviroment/Walls/sprWindowUp",
+        "kind": "glass"
+      },
+      {
+        "x": 736,
+        "y": 32,
+        "w": 32,
+        "h": 10,
+        "sourceInstance": 117308,
+        "sourceObject": 10,
+        "sourceSprite": "Enviroment/Walls/sprWindowUp",
+        "kind": "glass"
+      },
+      {
+        "x": 572,
+        "y": 21,
+        "w": 32,
+        "h": 69,
+        "sourceInstance": 117309,
+        "sourceObject": 587,
+        "sourceSprite": "Enviroment/Furniture/Levels/18_Fun\u0026Games/sprBasketBallGame",
+        "kind": "furniture"
+      },
+      {
+        "x": 448,
+        "y": 392,
+        "w": 64,
+        "h": 64,
+        "sourceInstance": 117312,
+        "sourceObject": 681,
+        "sourceSprite": "Enviroment/Furniture/Levels/21_Highball/sprKaraokeCouchPink",
+        "kind": "furniture"
+      },
+      {
+        "x": 296,
+        "y": 392,
+        "w": 64,
+        "h": 64,
+        "sourceInstance": 117313,
+        "sourceObject": 682,
+        "sourceSprite": "Enviroment/Furniture/Levels/21_Highball/sprKaraokeCouchBlack",
+        "kind": "furniture"
+      },
+      {
+        "x": 464,
+        "y": 412,
+        "w": 24,
+        "h": 47,
+        "sourceInstance": 117314,
+        "sourceObject": 119,
+        "sourceSprite": "Enviroment/Furniture/Misc/sprGlassTable",
+        "kind": "furniture"
+      },
+      {
+        "x": 320,
+        "y": 412,
+        "w": 24,
+        "h": 47,
+        "sourceInstance": 117315,
+        "sourceObject": 119,
+        "sourceSprite": "Enviroment/Furniture/Misc/sprGlassTable",
+        "kind": "furniture"
+      },
+      {
+        "x": 293,
+        "y": 457,
+        "w": 27,
+        "h": 27,
+        "sourceInstance": 117316,
+        "sourceObject": 683,
+        "sourceSprite": "Enviroment/Furniture/Levels/21_Highball/sprSpeakerTable",
+        "kind": "furniture"
+      },
+      {
+        "x": 489,
+        "y": 457,
+        "w": 27,
+        "h": 27,
+        "sourceInstance": 117317,
+        "sourceObject": 683,
+        "sourceSprite": "Enviroment/Furniture/Levels/21_Highball/sprSpeakerTable",
+        "kind": "furniture"
+      },
+      {
+        "x": 302,
+        "y": 462,
+        "w": 13,
+        "h": 13,
+        "sourceInstance": 117318,
+        "sourceObject": 110,
+        "sourceSprite": "Enviroment/Furniture/Misc/sprSpeaker",
+        "kind": "furniture"
+      },
+      {
+        "x": 494,
+        "y": 462,
+        "w": 13,
+        "h": 13,
+        "sourceInstance": 117319,
+        "sourceObject": 110,
+        "sourceSprite": "Enviroment/Furniture/Misc/sprSpeaker",
+        "kind": "furniture"
+      },
+      {
+        "x": 390,
+        "y": 553,
+        "w": 13,
+        "h": 29,
+        "sourceInstance": 117323,
+        "sourceObject": 435,
+        "sourceSprite": "Enviroment/Furniture/Levels/07_Clean_Hit/sprHotelSink",
+        "kind": "furniture"
+      },
+      {
+        "x": 390,
+        "y": 585,
+        "w": 13,
+        "h": 29,
+        "sourceInstance": 117324,
+        "sourceObject": 435,
+        "sourceSprite": "Enviroment/Furniture/Levels/07_Clean_Hit/sprHotelSink",
+        "kind": "furniture"
+      },
+      {
+        "x": 390,
+        "y": 617,
+        "w": 13,
+        "h": 29,
+        "sourceInstance": 117325,
+        "sourceObject": 435,
+        "sourceSprite": "Enviroment/Furniture/Levels/07_Clean_Hit/sprHotelSink",
+        "kind": "furniture"
+      },
+      {
+        "x": 502,
+        "y": 553,
+        "w": 13,
+        "h": 29,
+        "sourceInstance": 117326,
+        "sourceObject": 435,
+        "sourceSprite": "Enviroment/Furniture/Levels/07_Clean_Hit/sprHotelSink",
+        "kind": "furniture"
+      },
+      {
+        "x": 502,
+        "y": 585,
+        "w": 13,
+        "h": 29,
+        "sourceInstance": 117327,
+        "sourceObject": 435,
+        "sourceSprite": "Enviroment/Furniture/Levels/07_Clean_Hit/sprHotelSink",
+        "kind": "furniture"
+      },
+      {
+        "x": 296,
+        "y": 668,
+        "w": 18,
+        "h": 15,
+        "sourceInstance": 117350,
+        "sourceObject": 436,
+        "sourceSprite": "Enviroment/Furniture/Levels/07_Clean_Hit/sprHotelSuiteToilet",
+        "kind": "furniture"
+      },
+      {
+        "x": 296,
+        "y": 700,
+        "w": 18,
+        "h": 15,
+        "sourceInstance": 117351,
+        "sourceObject": 436,
+        "sourceSprite": "Enviroment/Furniture/Levels/07_Clean_Hit/sprHotelSuiteToilet",
+        "kind": "furniture"
+      },
+      {
+        "x": 488,
+        "y": 636,
+        "w": 18,
+        "h": 15,
+        "sourceInstance": 117352,
+        "sourceObject": 436,
+        "sourceSprite": "Enviroment/Furniture/Levels/07_Clean_Hit/sprHotelSuiteToilet",
+        "kind": "furniture"
+      },
+      {
+        "x": 488,
+        "y": 668,
+        "w": 18,
+        "h": 15,
+        "sourceInstance": 117353,
+        "sourceObject": 436,
+        "sourceSprite": "Enviroment/Furniture/Levels/07_Clean_Hit/sprHotelSuiteToilet",
+        "kind": "furniture"
+      },
+      {
+        "x": 488,
+        "y": 700,
+        "w": 18,
+        "h": 15,
+        "sourceInstance": 117354,
+        "sourceObject": 436,
+        "sourceSprite": "Enviroment/Furniture/Levels/07_Clean_Hit/sprHotelSuiteToilet",
+        "kind": "furniture"
+      },
+      {
+        "x": 366,
+        "y": 395,
+        "w": 34,
+        "h": 50,
+        "sourceInstance": 117369,
+        "sourceObject": 684,
+        "sourceSprite": "Enviroment/Furniture/Levels/21_Highball/sprKaraokeMachine",
+        "kind": "furniture"
+      },
+      {
+        "x": 406,
+        "y": 395,
+        "w": 34,
+        "h": 50,
+        "sourceInstance": 117370,
+        "sourceObject": 684,
+        "sourceSprite": "Enviroment/Furniture/Levels/21_Highball/sprKaraokeMachine",
+        "kind": "furniture"
+      },
+      {
+        "x": 10,
+        "y": 398,
+        "w": 45,
+        "h": 68,
+        "sourceInstance": 117379,
+        "sourceObject": 685,
+        "sourceSprite": "Enviroment/Furniture/Levels/21_Highball/sprHighballBooth",
+        "kind": "furniture"
+      },
+      {
+        "x": 10,
+        "y": 462,
+        "w": 45,
+        "h": 68,
+        "sourceInstance": 117380,
+        "sourceObject": 685,
+        "sourceSprite": "Enviroment/Furniture/Levels/21_Highball/sprHighballBooth",
+        "kind": "furniture"
+      },
+      {
+        "x": 10,
+        "y": 526,
+        "w": 45,
+        "h": 68,
+        "sourceInstance": 117381,
+        "sourceObject": 685,
+        "sourceSprite": "Enviroment/Furniture/Levels/21_Highball/sprHighballBooth",
+        "kind": "furniture"
+      },
+      {
+        "x": 10,
+        "y": 590,
+        "w": 45,
+        "h": 68,
+        "sourceInstance": 117382,
+        "sourceObject": 685,
+        "sourceSprite": "Enviroment/Furniture/Levels/21_Highball/sprHighballBooth",
+        "kind": "furniture"
+      },
+      {
+        "x": 10,
+        "y": 654,
+        "w": 45,
+        "h": 68,
+        "sourceInstance": 117383,
+        "sourceObject": 685,
+        "sourceSprite": "Enviroment/Furniture/Levels/21_Highball/sprHighballBooth",
+        "kind": "furniture"
+      },
+      {
+        "x": 75,
+        "y": 654,
+        "w": 171,
+        "h": 85,
+        "sourceInstance": 117384,
+        "sourceObject": 669,
+        "sourceSprite": "Enviroment/Furniture/Levels/15_Vengeance/sprStage",
+        "kind": "furniture"
+      },
+      {
+        "x": 102,
+        "y": 575,
+        "w": 22,
+        "h": 49,
+        "sourceInstance": 117419,
+        "sourceObject": 689,
+        "sourceSprite": "Enviroment/Furniture/Levels/21_Highball/sprLaptopTable",
+        "kind": "furniture"
+      },
+      {
+        "x": 150,
+        "y": 575,
+        "w": 22,
+        "h": 49,
+        "sourceInstance": 117420,
+        "sourceObject": 689,
+        "sourceSprite": "Enviroment/Furniture/Levels/21_Highball/sprLaptopTable",
+        "kind": "furniture"
+      },
+      {
+        "x": 198,
+        "y": 575,
+        "w": 22,
+        "h": 49,
+        "sourceInstance": 117421,
+        "sourceObject": 689,
+        "sourceSprite": "Enviroment/Furniture/Levels/21_Highball/sprLaptopTable",
+        "kind": "furniture"
+      },
+      {
+        "x": 10,
+        "y": 318,
+        "w": 45,
+        "h": 68,
+        "sourceInstance": 117426,
+        "sourceObject": 690,
+        "sourceSprite": "Enviroment/Furniture/Levels/21_Highball/sprHighballBoothBlack",
+        "kind": "furniture"
+      },
+      {
+        "x": 10,
+        "y": 254,
+        "w": 45,
+        "h": 68,
+        "sourceInstance": 117427,
+        "sourceObject": 690,
+        "sourceSprite": "Enviroment/Furniture/Levels/21_Highball/sprHighballBoothBlack",
+        "kind": "furniture"
+      },
+      {
+        "x": 104,
+        "y": 320,
+        "w": 41,
+        "h": 41,
+        "sourceInstance": 117455,
+        "sourceObject": 692,
+        "sourceSprite": "Enviroment/Furniture/Levels/21_Highball/sprSquareTable",
+        "kind": "furniture"
+      },
+      {
+        "x": 104,
+        "y": 260,
+        "w": 41,
+        "h": 41,
+        "sourceInstance": 117456,
+        "sourceObject": 692,
+        "sourceSprite": "Enviroment/Furniture/Levels/21_Highball/sprSquareTable",
+        "kind": "furniture"
+      },
+      {
+        "x": 44,
+        "y": 176,
+        "w": 41,
+        "h": 41,
+        "sourceInstance": 117457,
+        "sourceObject": 692,
+        "sourceSprite": "Enviroment/Furniture/Levels/21_Highball/sprSquareTable",
+        "kind": "furniture"
+      },
+      {
+        "x": 44,
+        "y": 60,
+        "w": 41,
+        "h": 41,
+        "sourceInstance": 117458,
+        "sourceObject": 692,
+        "sourceSprite": "Enviroment/Furniture/Levels/21_Highball/sprSquareTable",
+        "kind": "furniture"
+      },
+      {
+        "x": 44,
+        "y": 116,
+        "w": 41,
+        "h": 41,
+        "sourceInstance": 117459,
+        "sourceObject": 692,
+        "sourceSprite": "Enviroment/Furniture/Levels/21_Highball/sprSquareTable",
+        "kind": "furniture"
+      },
+      {
+        "x": 104,
+        "y": 60,
+        "w": 41,
+        "h": 41,
+        "sourceInstance": 117460,
+        "sourceObject": 692,
+        "sourceSprite": "Enviroment/Furniture/Levels/21_Highball/sprSquareTable",
+        "kind": "furniture"
+      },
+      {
+        "x": 104,
+        "y": 116,
+        "w": 41,
+        "h": 41,
+        "sourceInstance": 117461,
+        "sourceObject": 692,
+        "sourceSprite": "Enviroment/Furniture/Levels/21_Highball/sprSquareTable",
+        "kind": "furniture"
+      },
+      {
+        "x": 164,
+        "y": 60,
+        "w": 41,
+        "h": 41,
+        "sourceInstance": 117462,
+        "sourceObject": 692,
+        "sourceSprite": "Enviroment/Furniture/Levels/21_Highball/sprSquareTable",
+        "kind": "furniture"
+      },
+      {
+        "x": 224,
+        "y": 60,
+        "w": 41,
+        "h": 41,
+        "sourceInstance": 117463,
+        "sourceObject": 692,
+        "sourceSprite": "Enviroment/Furniture/Levels/21_Highball/sprSquareTable",
+        "kind": "furniture"
+      },
+      {
+        "x": 104,
+        "y": 176,
+        "w": 41,
+        "h": 41,
+        "sourceInstance": 117464,
+        "sourceObject": 692,
+        "sourceSprite": "Enviroment/Furniture/Levels/21_Highball/sprSquareTable",
+        "kind": "furniture"
+      },
+      {
+        "x": 734,
+        "y": 342,
+        "w": 45,
+        "h": 68,
+        "sourceInstance": 117473,
+        "sourceObject": 690,
+        "sourceSprite": "Enviroment/Furniture/Levels/21_Highball/sprHighballBoothBlack",
+        "kind": "furniture"
+      },
+      {
+        "x": 658,
+        "y": 344,
+        "w": 45,
+        "h": 68,
+        "sourceInstance": 117474,
+        "sourceObject": 690,
+        "sourceSprite": "Enviroment/Furniture/Levels/21_Highball/sprHighballBoothBlack",
+        "kind": "furniture"
+      },
+      {
+        "x": 656,
+        "y": 60,
+        "w": 41,
+        "h": 41,
+        "sourceInstance": 117475,
+        "sourceObject": 692,
+        "sourceSprite": "Enviroment/Furniture/Levels/21_Highball/sprSquareTable",
+        "kind": "furniture"
+      },
+      {
+        "x": 728,
+        "y": 60,
+        "w": 41,
+        "h": 41,
+        "sourceInstance": 117476,
+        "sourceObject": 692,
+        "sourceSprite": "Enviroment/Furniture/Levels/21_Highball/sprSquareTable",
+        "kind": "furniture"
+      },
+      {
+        "x": 692,
+        "y": 108,
+        "w": 41,
+        "h": 41,
+        "sourceInstance": 117477,
+        "sourceObject": 692,
+        "sourceSprite": "Enviroment/Furniture/Levels/21_Highball/sprSquareTable",
+        "kind": "furniture"
+      },
+      {
+        "x": 656,
+        "y": 152,
+        "w": 41,
+        "h": 41,
+        "sourceInstance": 117478,
+        "sourceObject": 692,
+        "sourceSprite": "Enviroment/Furniture/Levels/21_Highball/sprSquareTable",
+        "kind": "furniture"
+      },
+      {
+        "x": 728,
+        "y": 152,
+        "w": 41,
+        "h": 41,
+        "sourceInstance": 117479,
+        "sourceObject": 692,
+        "sourceSprite": "Enviroment/Furniture/Levels/21_Highball/sprSquareTable",
+        "kind": "furniture"
+      },
+      {
+        "x": 244,
+        "y": 208,
+        "w": 320,
+        "h": 143,
+        "sourceInstance": 117522,
+        "sourceObject": 697,
+        "sourceSprite": "Enviroment/Furniture/Levels/21_Highball/sprHighballBar",
+        "kind": "furniture"
+      },
+      {
+        "x": 288,
+        "y": 32,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 116953,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 320,
+        "y": 64,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 116955,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 416,
+        "y": 64,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 116956,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 512,
+        "y": 64,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 116957,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 320,
+        "y": 32,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 116967,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 288,
+        "y": 256,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 116989,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 320,
+        "y": 256,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 116990,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 352,
+        "y": 256,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 116991,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 384,
+        "y": 256,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 116992,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 416,
+        "y": 256,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 116993,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 448,
+        "y": 256,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 116994,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 480,
+        "y": 256,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 116995,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 288,
+        "y": 384,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 116996,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 320,
+        "y": 384,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 116997,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 352,
+        "y": 384,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 116998,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 384,
+        "y": 384,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 116999,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 416,
+        "y": 384,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 117000,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 448,
+        "y": 384,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 117001,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 480,
+        "y": 384,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 117002,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 64,
+        "y": 736,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 117027,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 96,
+        "y": 736,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 117028,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 128,
+        "y": 736,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 117029,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 160,
+        "y": 736,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 117030,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 192,
+        "y": 736,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 117031,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 288,
+        "y": 480,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 117055,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 384,
+        "y": 480,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 117057,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 480,
+        "y": 480,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 117059,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 288,
+        "y": 544,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 117060,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 384,
+        "y": 544,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 117062,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 480,
+        "y": 544,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 117064,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 320,
+        "y": 544,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 117069,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 448,
+        "y": 544,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 117070,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 288,
+        "y": 768,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 117071,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 320,
+        "y": 768,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 117073,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 352,
+        "y": 768,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 117074,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 384,
+        "y": 768,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 117075,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 416,
+        "y": 768,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 117076,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 448,
+        "y": 768,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 117077,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 480,
+        "y": 768,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 117078,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 224,
+        "y": 736,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 117079,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 256,
+        "y": 736,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 117080,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 512,
+        "y": 736,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 117081,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 544,
+        "y": 736,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 117082,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 576,
+        "y": 736,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 117083,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 608,
+        "y": 736,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 117084,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 640,
+        "y": 736,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 117085,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 672,
+        "y": 736,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 117086,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 704,
+        "y": 736,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 117087,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 736,
+        "y": 736,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 117088,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 768,
+        "y": 736,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 117089,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 400,
+        "y": 544,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117095,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 400,
+        "y": 576,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117096,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 400,
+        "y": 608,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117097,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 400,
+        "y": 640,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117098,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 400,
+        "y": 672,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117099,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 400,
+        "y": 704,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117100,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 400,
+        "y": 736,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117101,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 288,
+        "y": 544,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117102,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 288,
+        "y": 576,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117103,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 288,
+        "y": 608,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117104,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 288,
+        "y": 640,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117105,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 288,
+        "y": 672,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117106,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 288,
+        "y": 704,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117107,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 288,
+        "y": 736,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117108,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 512,
+        "y": 544,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117113,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 512,
+        "y": 576,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117114,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 512,
+        "y": 608,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117115,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 512,
+        "y": 640,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117116,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 512,
+        "y": 672,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117117,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 512,
+        "y": 704,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117118,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 512,
+        "y": 736,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117121,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 288,
+        "y": 256,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117186,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 288,
+        "y": 288,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117187,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 288,
+        "y": 352,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117189,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 288,
+        "y": 448,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117190,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 288,
+        "y": 416,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117191,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 288,
+        "y": 384,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117192,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 400,
+        "y": 448,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117193,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 400,
+        "y": 416,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117194,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 400,
+        "y": 384,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117195,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 512,
+        "y": 448,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117196,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 512,
+        "y": 416,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117197,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 512,
+        "y": 384,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117202,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 512,
+        "y": 352,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117203,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 512,
+        "y": 320,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117204,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 512,
+        "y": 288,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117205,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 512,
+        "y": 256,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117206,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 0,
+        "y": 736,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 117239,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 32,
+        "y": 736,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 117240,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 0,
+        "y": 32,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 117243,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 0,
+        "y": 32,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117244,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 0,
+        "y": 288,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117252,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 0,
+        "y": 320,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117253,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 0,
+        "y": 352,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117254,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 0,
+        "y": 384,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117255,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 0,
+        "y": 416,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117256,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 0,
+        "y": 448,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117257,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 0,
+        "y": 480,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117258,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 0,
+        "y": 512,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117259,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 0,
+        "y": 544,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117262,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 0,
+        "y": 576,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117263,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 0,
+        "y": 608,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117264,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 0,
+        "y": 640,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117265,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 0,
+        "y": 672,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117266,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 0,
+        "y": 704,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117267,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 544,
+        "y": 32,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117268,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 800,
+        "y": 704,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117269,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 800,
+        "y": 672,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117270,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 800,
+        "y": 640,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117271,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 800,
+        "y": 608,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117272,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 800,
+        "y": 576,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117273,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 800,
+        "y": 544,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117274,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 800,
+        "y": 512,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117275,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 800,
+        "y": 480,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117276,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 800,
+        "y": 448,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117277,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 800,
+        "y": 416,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117278,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 800,
+        "y": 384,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117279,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 800,
+        "y": 352,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117280,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 800,
+        "y": 320,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117281,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 800,
+        "y": 288,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117282,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 800,
+        "y": 256,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117283,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 800,
+        "y": 224,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117284,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 800,
+        "y": 192,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117285,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 800,
+        "y": 160,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117286,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 800,
+        "y": 128,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117287,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 800,
+        "y": 96,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117288,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 800,
+        "y": 64,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117289,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 800,
+        "y": 32,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 117290,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 544,
+        "y": 32,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 117292,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 768,
+        "y": 32,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 117293,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 320,
+        "y": 480,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 117321,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 288,
+        "y": 720,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 117330,
+        "sourceObject": 39,
+        "sourceSprite": "Enviroment/Walls/sprWallSoftH",
+        "kind": "wall"
+      },
+      {
+        "x": 320,
+        "y": 720,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 117333,
+        "sourceObject": 39,
+        "sourceSprite": "Enviroment/Walls/sprWallSoftH",
+        "kind": "wall"
+      },
+      {
+        "x": 384,
+        "y": 720,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 117334,
+        "sourceObject": 39,
+        "sourceSprite": "Enviroment/Walls/sprWallSoftH",
+        "kind": "wall"
+      },
+      {
+        "x": 448,
+        "y": 720,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 117335,
+        "sourceObject": 39,
+        "sourceSprite": "Enviroment/Walls/sprWallSoftH",
+        "kind": "wall"
+      },
+      {
+        "x": 480,
+        "y": 720,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 117336,
+        "sourceObject": 39,
+        "sourceSprite": "Enviroment/Walls/sprWallSoftH",
+        "kind": "wall"
+      },
+      {
+        "x": 288,
+        "y": 688,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 117341,
+        "sourceObject": 39,
+        "sourceSprite": "Enviroment/Walls/sprWallSoftH",
+        "kind": "wall"
+      },
+      {
+        "x": 288,
+        "y": 656,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 117342,
+        "sourceObject": 39,
+        "sourceSprite": "Enviroment/Walls/sprWallSoftH",
+        "kind": "wall"
+      },
+      {
+        "x": 480,
+        "y": 688,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 117343,
+        "sourceObject": 39,
+        "sourceSprite": "Enviroment/Walls/sprWallSoftH",
+        "kind": "wall"
+      },
+      {
+        "x": 480,
+        "y": 656,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 117344,
+        "sourceObject": 39,
+        "sourceSprite": "Enviroment/Walls/sprWallSoftH",
+        "kind": "wall"
+      },
+      {
+        "x": 480,
+        "y": 624,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 117345,
+        "sourceObject": 39,
+        "sourceSprite": "Enviroment/Walls/sprWallSoftH",
+        "kind": "wall"
+      },
+      {
+        "x": 448,
+        "y": 480,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 117368,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      }
+    ],
+    "weaponSpawns": [
+      {
+        "x": 360,
+        "y": 184,
+        "weapon": "pistol"
+      },
+      {
+        "x": 552,
+        "y": 712,
+        "weapon": "uzi"
+      },
+      {
+        "x": 72,
+        "y": 600,
+        "weapon": "m16"
+      },
+      {
+        "x": 776,
+        "y": 328,
+        "weapon": "shotgun"
+      },
+      {
+        "x": 24,
+        "y": 56,
+        "weapon": "knife"
+      },
+      {
+        "x": 632,
+        "y": 56,
+        "weapon": "bat"
+      },
+      {
+        "x": 344,
+        "y": 504,
+        "weapon": "katana"
+      },
+      {
+        "x": 88,
+        "y": 328,
+        "weapon": "pistol"
+      }
+    ],
+    "width": 808
+  },
+  {
+    "arenaAudit": {
+      "allSpawnAndWeaponsReachable": true,
+      "baselineRatioPermille": 13197,
+      "baselineReachableFloorCells": 152,
+      "floorCells": 2537,
+      "gridStep": 16,
+      "minSpawnPathPx": 496,
+      "radius": 9,
+      "reachableAreaPx2": 513536,
+      "reachableFloorCells": 2006,
+      "reachablePermille": 913,
+      "sourceFloorSHA256": "2ea85f0478c2a9a1d8a583bdb3aebcd63e3a628217e2db11eba4089c7328aa9c",
+      "sourceMetadataSHA256": "895b1393117d98964229b9410c5ade3a0c6fa744afc1d54e66459be92b06049c",
+      "walkableFloorCells": 2195
+    },
+    "coordinateScale": 1,
+    "doors": [],
+    "height": 640,
+    "id": "exposed",
+    "name": "暴露",
+    "sourceRoomId": 148,
+    "sourceRoomName": "rmEurogamer",
+    "sourceRoomOffset": 3333972,
+    "spawns": [
+      {
+        "x": 776,
+        "y": 312
+      },
+      {
+        "x": 24,
+        "y": 536
+      },
+      {
+        "x": 1416,
+        "y": 584
+      },
+      {
+        "x": 1224,
+        "y": 24
+      },
+      {
+        "x": 344,
+        "y": 264
+      },
+      {
+        "x": 1128,
+        "y": 376
+      },
+      {
+        "x": 536,
+        "y": 568
+      },
+      {
+        "x": 664,
+        "y": 24
+      }
+    ],
+    "walls": [
+      {
+        "x": 528,
+        "y": 302,
+        "w": 32,
+        "h": 5,
+        "sourceInstance": 117588,
+        "sourceObject": 702,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceH",
+        "kind": "furniture"
+      },
+      {
+        "x": 560,
+        "y": 302,
+        "w": 32,
+        "h": 5,
+        "sourceInstance": 117589,
+        "sourceObject": 702,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceH",
+        "kind": "furniture"
+      },
+      {
+        "x": 656,
+        "y": 302,
+        "w": 32,
+        "h": 5,
+        "sourceInstance": 117592,
+        "sourceObject": 702,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceH",
+        "kind": "furniture"
+      },
+      {
+        "x": 688,
+        "y": 302,
+        "w": 32,
+        "h": 5,
+        "sourceInstance": 117593,
+        "sourceObject": 702,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceH",
+        "kind": "furniture"
+      },
+      {
+        "x": 720,
+        "y": 302,
+        "w": 32,
+        "h": 5,
+        "sourceInstance": 117594,
+        "sourceObject": 702,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceH",
+        "kind": "furniture"
+      },
+      {
+        "x": 496,
+        "y": 302,
+        "w": 32,
+        "h": 5,
+        "sourceInstance": 117595,
+        "sourceObject": 702,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceH",
+        "kind": "furniture"
+      },
+      {
+        "x": 750,
+        "y": 272,
+        "w": 5,
+        "h": 32,
+        "sourceInstance": 117633,
+        "sourceObject": 703,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceV",
+        "kind": "furniture"
+      },
+      {
+        "x": 496,
+        "y": 78,
+        "w": 32,
+        "h": 5,
+        "sourceInstance": 117636,
+        "sourceObject": 702,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceH",
+        "kind": "furniture"
+      },
+      {
+        "x": 528,
+        "y": 78,
+        "w": 32,
+        "h": 5,
+        "sourceInstance": 117637,
+        "sourceObject": 702,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceH",
+        "kind": "furniture"
+      },
+      {
+        "x": 560,
+        "y": 78,
+        "w": 32,
+        "h": 5,
+        "sourceInstance": 117638,
+        "sourceObject": 702,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceH",
+        "kind": "furniture"
+      },
+      {
+        "x": 592,
+        "y": 78,
+        "w": 32,
+        "h": 5,
+        "sourceInstance": 117639,
+        "sourceObject": 702,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceH",
+        "kind": "furniture"
+      },
+      {
+        "x": 624,
+        "y": 78,
+        "w": 32,
+        "h": 5,
+        "sourceInstance": 117641,
+        "sourceObject": 702,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceH",
+        "kind": "furniture"
+      },
+      {
+        "x": 656,
+        "y": 78,
+        "w": 32,
+        "h": 5,
+        "sourceInstance": 117642,
+        "sourceObject": 702,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceH",
+        "kind": "furniture"
+      },
+      {
+        "x": 688,
+        "y": 78,
+        "w": 32,
+        "h": 5,
+        "sourceInstance": 117643,
+        "sourceObject": 702,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceH",
+        "kind": "furniture"
+      },
+      {
+        "x": 720,
+        "y": 78,
+        "w": 32,
+        "h": 5,
+        "sourceInstance": 117645,
+        "sourceObject": 702,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceH",
+        "kind": "furniture"
+      },
+      {
+        "x": 750,
+        "y": 240,
+        "w": 5,
+        "h": 32,
+        "sourceInstance": 117649,
+        "sourceObject": 703,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceV",
+        "kind": "furniture"
+      },
+      {
+        "x": 750,
+        "y": 208,
+        "w": 5,
+        "h": 32,
+        "sourceInstance": 117650,
+        "sourceObject": 703,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceV",
+        "kind": "furniture"
+      },
+      {
+        "x": 750,
+        "y": 112,
+        "w": 5,
+        "h": 32,
+        "sourceInstance": 117652,
+        "sourceObject": 703,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceV",
+        "kind": "furniture"
+      },
+      {
+        "x": 750,
+        "y": 80,
+        "w": 5,
+        "h": 32,
+        "sourceInstance": 117653,
+        "sourceObject": 703,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceV",
+        "kind": "furniture"
+      },
+      {
+        "x": 494,
+        "y": 80,
+        "w": 5,
+        "h": 32,
+        "sourceInstance": 117654,
+        "sourceObject": 703,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceV",
+        "kind": "furniture"
+      },
+      {
+        "x": 494,
+        "y": 112,
+        "w": 5,
+        "h": 32,
+        "sourceInstance": 117655,
+        "sourceObject": 703,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceV",
+        "kind": "furniture"
+      },
+      {
+        "x": 494,
+        "y": 144,
+        "w": 5,
+        "h": 32,
+        "sourceInstance": 117656,
+        "sourceObject": 703,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceV",
+        "kind": "furniture"
+      },
+      {
+        "x": 494,
+        "y": 176,
+        "w": 5,
+        "h": 32,
+        "sourceInstance": 117657,
+        "sourceObject": 703,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceV",
+        "kind": "furniture"
+      },
+      {
+        "x": 494,
+        "y": 208,
+        "w": 5,
+        "h": 32,
+        "sourceInstance": 117658,
+        "sourceObject": 703,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceV",
+        "kind": "furniture"
+      },
+      {
+        "x": 494,
+        "y": 240,
+        "w": 5,
+        "h": 32,
+        "sourceInstance": 117659,
+        "sourceObject": 703,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceV",
+        "kind": "furniture"
+      },
+      {
+        "x": 494,
+        "y": 272,
+        "w": 5,
+        "h": 32,
+        "sourceInstance": 117660,
+        "sourceObject": 703,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceV",
+        "kind": "furniture"
+      },
+      {
+        "x": 656,
+        "y": 302,
+        "w": 32,
+        "h": 5,
+        "sourceInstance": 117663,
+        "sourceObject": 702,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceH",
+        "kind": "furniture"
+      },
+      {
+        "x": 750,
+        "y": 176,
+        "w": 5,
+        "h": 32,
+        "sourceInstance": 117668,
+        "sourceObject": 703,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceV",
+        "kind": "furniture"
+      },
+      {
+        "x": 750,
+        "y": 144,
+        "w": 5,
+        "h": 32,
+        "sourceInstance": 117669,
+        "sourceObject": 703,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceV",
+        "kind": "furniture"
+      },
+      {
+        "x": 958,
+        "y": 544,
+        "w": 5,
+        "h": 32,
+        "sourceInstance": 117682,
+        "sourceObject": 703,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceV",
+        "kind": "furniture"
+      },
+      {
+        "x": 958,
+        "y": 512,
+        "w": 5,
+        "h": 32,
+        "sourceInstance": 117683,
+        "sourceObject": 703,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceV",
+        "kind": "furniture"
+      },
+      {
+        "x": 958,
+        "y": 416,
+        "w": 5,
+        "h": 32,
+        "sourceInstance": 117686,
+        "sourceObject": 703,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceV",
+        "kind": "furniture"
+      },
+      {
+        "x": 958,
+        "y": 384,
+        "w": 5,
+        "h": 32,
+        "sourceInstance": 117687,
+        "sourceObject": 703,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceV",
+        "kind": "furniture"
+      },
+      {
+        "x": 958,
+        "y": 352,
+        "w": 5,
+        "h": 32,
+        "sourceInstance": 117688,
+        "sourceObject": 703,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceV",
+        "kind": "furniture"
+      },
+      {
+        "x": 958,
+        "y": 320,
+        "w": 5,
+        "h": 32,
+        "sourceInstance": 117689,
+        "sourceObject": 703,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceV",
+        "kind": "furniture"
+      },
+      {
+        "x": 958,
+        "y": 288,
+        "w": 5,
+        "h": 32,
+        "sourceInstance": 117690,
+        "sourceObject": 703,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceV",
+        "kind": "furniture"
+      },
+      {
+        "x": 958,
+        "y": 256,
+        "w": 5,
+        "h": 32,
+        "sourceInstance": 117691,
+        "sourceObject": 703,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceV",
+        "kind": "furniture"
+      },
+      {
+        "x": 958,
+        "y": 224,
+        "w": 5,
+        "h": 32,
+        "sourceInstance": 117692,
+        "sourceObject": 703,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceV",
+        "kind": "furniture"
+      },
+      {
+        "x": 958,
+        "y": 128,
+        "w": 5,
+        "h": 32,
+        "sourceInstance": 117698,
+        "sourceObject": 703,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceV",
+        "kind": "furniture"
+      },
+      {
+        "x": 958,
+        "y": 96,
+        "w": 5,
+        "h": 32,
+        "sourceInstance": 117699,
+        "sourceObject": 703,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceV",
+        "kind": "furniture"
+      },
+      {
+        "x": 958,
+        "y": 64,
+        "w": 5,
+        "h": 32,
+        "sourceInstance": 117700,
+        "sourceObject": 703,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceV",
+        "kind": "furniture"
+      },
+      {
+        "x": 958,
+        "y": 32,
+        "w": 5,
+        "h": 32,
+        "sourceInstance": 117701,
+        "sourceObject": 703,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceV",
+        "kind": "furniture"
+      },
+      {
+        "x": 958,
+        "y": 0,
+        "w": 5,
+        "h": 32,
+        "sourceInstance": 117702,
+        "sourceObject": 703,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceV",
+        "kind": "furniture"
+      },
+      {
+        "x": 960,
+        "y": 334,
+        "w": 32,
+        "h": 5,
+        "sourceInstance": 117704,
+        "sourceObject": 702,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceH",
+        "kind": "furniture"
+      },
+      {
+        "x": 992,
+        "y": 334,
+        "w": 32,
+        "h": 5,
+        "sourceInstance": 117705,
+        "sourceObject": 702,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceH",
+        "kind": "furniture"
+      },
+      {
+        "x": 1024,
+        "y": 334,
+        "w": 32,
+        "h": 5,
+        "sourceInstance": 117706,
+        "sourceObject": 702,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceH",
+        "kind": "furniture"
+      },
+      {
+        "x": 1056,
+        "y": 334,
+        "w": 32,
+        "h": 5,
+        "sourceInstance": 117707,
+        "sourceObject": 702,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceH",
+        "kind": "furniture"
+      },
+      {
+        "x": 1088,
+        "y": 334,
+        "w": 32,
+        "h": 5,
+        "sourceInstance": 117708,
+        "sourceObject": 702,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceH",
+        "kind": "furniture"
+      },
+      {
+        "x": 1120,
+        "y": 334,
+        "w": 32,
+        "h": 5,
+        "sourceInstance": 117709,
+        "sourceObject": 702,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceH",
+        "kind": "furniture"
+      },
+      {
+        "x": 1152,
+        "y": 334,
+        "w": 32,
+        "h": 5,
+        "sourceInstance": 117710,
+        "sourceObject": 702,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceH",
+        "kind": "furniture"
+      },
+      {
+        "x": 1184,
+        "y": 334,
+        "w": 32,
+        "h": 5,
+        "sourceInstance": 117711,
+        "sourceObject": 702,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceH",
+        "kind": "furniture"
+      },
+      {
+        "x": 1216,
+        "y": 334,
+        "w": 32,
+        "h": 5,
+        "sourceInstance": 117712,
+        "sourceObject": 702,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceH",
+        "kind": "furniture"
+      },
+      {
+        "x": 1248,
+        "y": 334,
+        "w": 32,
+        "h": 5,
+        "sourceInstance": 117713,
+        "sourceObject": 702,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceH",
+        "kind": "furniture"
+      },
+      {
+        "x": 1280,
+        "y": 334,
+        "w": 32,
+        "h": 5,
+        "sourceInstance": 117716,
+        "sourceObject": 702,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceH",
+        "kind": "furniture"
+      },
+      {
+        "x": 1312,
+        "y": 334,
+        "w": 32,
+        "h": 5,
+        "sourceInstance": 117724,
+        "sourceObject": 702,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceH",
+        "kind": "furniture"
+      },
+      {
+        "x": 1344,
+        "y": 334,
+        "w": 32,
+        "h": 5,
+        "sourceInstance": 117727,
+        "sourceObject": 702,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceH",
+        "kind": "furniture"
+      },
+      {
+        "x": 1376,
+        "y": 334,
+        "w": 32,
+        "h": 5,
+        "sourceInstance": 117728,
+        "sourceObject": 702,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceH",
+        "kind": "furniture"
+      },
+      {
+        "x": 1408,
+        "y": 334,
+        "w": 32,
+        "h": 5,
+        "sourceInstance": 117729,
+        "sourceObject": 702,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceH",
+        "kind": "furniture"
+      },
+      {
+        "x": 1438,
+        "y": 336,
+        "w": 5,
+        "h": 32,
+        "sourceInstance": 117730,
+        "sourceObject": 703,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceV",
+        "kind": "furniture"
+      },
+      {
+        "x": 1438,
+        "y": 368,
+        "w": 5,
+        "h": 32,
+        "sourceInstance": 117735,
+        "sourceObject": 703,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceV",
+        "kind": "furniture"
+      },
+      {
+        "x": 1438,
+        "y": 400,
+        "w": 5,
+        "h": 32,
+        "sourceInstance": 117736,
+        "sourceObject": 703,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceV",
+        "kind": "furniture"
+      },
+      {
+        "x": 1438,
+        "y": 432,
+        "w": 5,
+        "h": 32,
+        "sourceInstance": 117737,
+        "sourceObject": 703,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceV",
+        "kind": "furniture"
+      },
+      {
+        "x": 1438,
+        "y": 464,
+        "w": 5,
+        "h": 32,
+        "sourceInstance": 117738,
+        "sourceObject": 703,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceV",
+        "kind": "furniture"
+      },
+      {
+        "x": 1438,
+        "y": 496,
+        "w": 5,
+        "h": 32,
+        "sourceInstance": 117739,
+        "sourceObject": 703,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceV",
+        "kind": "furniture"
+      },
+      {
+        "x": 1438,
+        "y": 528,
+        "w": 5,
+        "h": 32,
+        "sourceInstance": 117740,
+        "sourceObject": 703,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceV",
+        "kind": "furniture"
+      },
+      {
+        "x": 1438,
+        "y": 560,
+        "w": 5,
+        "h": 32,
+        "sourceInstance": 117741,
+        "sourceObject": 703,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceV",
+        "kind": "furniture"
+      },
+      {
+        "x": 1246,
+        "y": 0,
+        "w": 5,
+        "h": 32,
+        "sourceInstance": 117753,
+        "sourceObject": 703,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceV",
+        "kind": "furniture"
+      },
+      {
+        "x": 1246,
+        "y": 32,
+        "w": 5,
+        "h": 32,
+        "sourceInstance": 117754,
+        "sourceObject": 703,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceV",
+        "kind": "furniture"
+      },
+      {
+        "x": 1246,
+        "y": 64,
+        "w": 5,
+        "h": 32,
+        "sourceInstance": 117755,
+        "sourceObject": 703,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceV",
+        "kind": "furniture"
+      },
+      {
+        "x": 1246,
+        "y": 96,
+        "w": 5,
+        "h": 32,
+        "sourceInstance": 117756,
+        "sourceObject": 703,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceV",
+        "kind": "furniture"
+      },
+      {
+        "x": 1246,
+        "y": 128,
+        "w": 5,
+        "h": 32,
+        "sourceInstance": 117757,
+        "sourceObject": 703,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceV",
+        "kind": "furniture"
+      },
+      {
+        "x": 1246,
+        "y": 160,
+        "w": 5,
+        "h": 32,
+        "sourceInstance": 117758,
+        "sourceObject": 703,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceV",
+        "kind": "furniture"
+      },
+      {
+        "x": 1246,
+        "y": 192,
+        "w": 5,
+        "h": 32,
+        "sourceInstance": 117759,
+        "sourceObject": 703,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceV",
+        "kind": "furniture"
+      },
+      {
+        "x": 1246,
+        "y": 224,
+        "w": 5,
+        "h": 32,
+        "sourceInstance": 117760,
+        "sourceObject": 703,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceV",
+        "kind": "furniture"
+      },
+      {
+        "x": 1246,
+        "y": 256,
+        "w": 5,
+        "h": 32,
+        "sourceInstance": 117761,
+        "sourceObject": 703,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceV",
+        "kind": "furniture"
+      },
+      {
+        "x": 1246,
+        "y": 288,
+        "w": 5,
+        "h": 32,
+        "sourceInstance": 117762,
+        "sourceObject": 703,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceV",
+        "kind": "furniture"
+      },
+      {
+        "x": 1246,
+        "y": 304,
+        "w": 5,
+        "h": 32,
+        "sourceInstance": 117764,
+        "sourceObject": 703,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceV",
+        "kind": "furniture"
+      },
+      {
+        "x": 960,
+        "y": -2,
+        "w": 32,
+        "h": 5,
+        "sourceInstance": 117765,
+        "sourceObject": 702,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceH",
+        "kind": "furniture"
+      },
+      {
+        "x": 992,
+        "y": -2,
+        "w": 32,
+        "h": 5,
+        "sourceInstance": 117766,
+        "sourceObject": 702,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceH",
+        "kind": "furniture"
+      },
+      {
+        "x": 1024,
+        "y": -2,
+        "w": 32,
+        "h": 5,
+        "sourceInstance": 117767,
+        "sourceObject": 702,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceH",
+        "kind": "furniture"
+      },
+      {
+        "x": 1056,
+        "y": -2,
+        "w": 32,
+        "h": 5,
+        "sourceInstance": 117768,
+        "sourceObject": 702,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceH",
+        "kind": "furniture"
+      },
+      {
+        "x": 1088,
+        "y": -2,
+        "w": 32,
+        "h": 5,
+        "sourceInstance": 117769,
+        "sourceObject": 702,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceH",
+        "kind": "furniture"
+      },
+      {
+        "x": 1120,
+        "y": -2,
+        "w": 32,
+        "h": 5,
+        "sourceInstance": 117770,
+        "sourceObject": 702,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceH",
+        "kind": "furniture"
+      },
+      {
+        "x": 1152,
+        "y": -2,
+        "w": 32,
+        "h": 5,
+        "sourceInstance": 117771,
+        "sourceObject": 702,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceH",
+        "kind": "furniture"
+      },
+      {
+        "x": 1184,
+        "y": -2,
+        "w": 32,
+        "h": 5,
+        "sourceInstance": 117772,
+        "sourceObject": 702,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceH",
+        "kind": "furniture"
+      },
+      {
+        "x": 1216,
+        "y": -2,
+        "w": 32,
+        "h": 5,
+        "sourceInstance": 117773,
+        "sourceObject": 702,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceH",
+        "kind": "furniture"
+      },
+      {
+        "x": 256,
+        "y": 462,
+        "w": 32,
+        "h": 5,
+        "sourceInstance": 117779,
+        "sourceObject": 702,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceH",
+        "kind": "furniture"
+      },
+      {
+        "x": 288,
+        "y": 462,
+        "w": 32,
+        "h": 5,
+        "sourceInstance": 117780,
+        "sourceObject": 702,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceH",
+        "kind": "furniture"
+      },
+      {
+        "x": 320,
+        "y": 462,
+        "w": 32,
+        "h": 5,
+        "sourceInstance": 117781,
+        "sourceObject": 702,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceH",
+        "kind": "furniture"
+      },
+      {
+        "x": 352,
+        "y": 462,
+        "w": 32,
+        "h": 5,
+        "sourceInstance": 117782,
+        "sourceObject": 702,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceH",
+        "kind": "furniture"
+      },
+      {
+        "x": 254,
+        "y": 464,
+        "w": 5,
+        "h": 32,
+        "sourceInstance": 117783,
+        "sourceObject": 703,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceV",
+        "kind": "furniture"
+      },
+      {
+        "x": 254,
+        "y": 576,
+        "w": 5,
+        "h": 32,
+        "sourceInstance": 117785,
+        "sourceObject": 703,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceV",
+        "kind": "furniture"
+      },
+      {
+        "x": 382,
+        "y": 464,
+        "w": 5,
+        "h": 32,
+        "sourceInstance": 117787,
+        "sourceObject": 703,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceV",
+        "kind": "furniture"
+      },
+      {
+        "x": 382,
+        "y": 576,
+        "w": 5,
+        "h": 32,
+        "sourceInstance": 117790,
+        "sourceObject": 703,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceV",
+        "kind": "furniture"
+      },
+      {
+        "x": 256,
+        "y": 606,
+        "w": 32,
+        "h": 5,
+        "sourceInstance": 117791,
+        "sourceObject": 702,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceH",
+        "kind": "furniture"
+      },
+      {
+        "x": 288,
+        "y": 606,
+        "w": 32,
+        "h": 5,
+        "sourceInstance": 117792,
+        "sourceObject": 702,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceH",
+        "kind": "furniture"
+      },
+      {
+        "x": 320,
+        "y": 606,
+        "w": 32,
+        "h": 5,
+        "sourceInstance": 117793,
+        "sourceObject": 702,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceH",
+        "kind": "furniture"
+      },
+      {
+        "x": 352,
+        "y": 606,
+        "w": 32,
+        "h": 5,
+        "sourceInstance": 117794,
+        "sourceObject": 702,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceH",
+        "kind": "furniture"
+      },
+      {
+        "x": 958,
+        "y": 576,
+        "w": 5,
+        "h": 32,
+        "sourceInstance": 117801,
+        "sourceObject": 703,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceV",
+        "kind": "furniture"
+      },
+      {
+        "x": 1438,
+        "y": 592,
+        "w": 5,
+        "h": 32,
+        "sourceInstance": 117802,
+        "sourceObject": 703,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroFenceV",
+        "kind": "furniture"
+      },
+      {
+        "x": 784,
+        "y": 282,
+        "w": 17,
+        "h": 14,
+        "sourceInstance": 117827,
+        "sourceObject": 213,
+        "sourceSprite": "Enviroment/Furniture/Levels/04_Decadence/sprPornCamera",
+        "kind": "furniture"
+      },
+      {
+        "x": 1176,
+        "y": 378,
+        "w": 17,
+        "h": 14,
+        "sourceInstance": 117828,
+        "sourceObject": 213,
+        "sourceSprite": "Enviroment/Furniture/Levels/04_Decadence/sprPornCamera",
+        "kind": "furniture"
+      },
+      {
+        "x": 584,
+        "y": 58,
+        "w": 17,
+        "h": 14,
+        "sourceInstance": 117829,
+        "sourceObject": 213,
+        "sourceSprite": "Enviroment/Furniture/Levels/04_Decadence/sprPornCamera",
+        "kind": "furniture"
+      },
+      {
+        "x": 688,
+        "y": 409,
+        "w": 15,
+        "h": 14,
+        "sourceInstance": 117872,
+        "sourceObject": 710,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroIce",
+        "kind": "furniture"
+      },
+      {
+        "x": 768,
+        "y": 409,
+        "w": 15,
+        "h": 14,
+        "sourceInstance": 117873,
+        "sourceObject": 710,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroIce",
+        "kind": "furniture"
+      },
+      {
+        "x": 920,
+        "y": 305,
+        "w": 15,
+        "h": 14,
+        "sourceInstance": 117874,
+        "sourceObject": 710,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroIce",
+        "kind": "furniture"
+      },
+      {
+        "x": 912,
+        "y": 321,
+        "w": 15,
+        "h": 14,
+        "sourceInstance": 117875,
+        "sourceObject": 710,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroIce",
+        "kind": "furniture"
+      },
+      {
+        "x": 912,
+        "y": 337,
+        "w": 15,
+        "h": 14,
+        "sourceInstance": 117876,
+        "sourceObject": 710,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroIce",
+        "kind": "furniture"
+      },
+      {
+        "x": 920,
+        "y": 353,
+        "w": 15,
+        "h": 14,
+        "sourceInstance": 117877,
+        "sourceObject": 710,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroIce",
+        "kind": "furniture"
+      },
+      {
+        "x": 1354,
+        "y": 394,
+        "w": 13,
+        "h": 12,
+        "sourceInstance": 117878,
+        "sourceObject": 711,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroTrash",
+        "kind": "furniture"
+      },
+      {
+        "x": 754,
+        "y": 90,
+        "w": 13,
+        "h": 12,
+        "sourceInstance": 117879,
+        "sourceObject": 711,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroTrash",
+        "kind": "furniture"
+      },
+      {
+        "x": 754,
+        "y": 282,
+        "w": 13,
+        "h": 12,
+        "sourceInstance": 117880,
+        "sourceObject": 711,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroTrash",
+        "kind": "furniture"
+      },
+      {
+        "x": 1098,
+        "y": 114,
+        "w": 13,
+        "h": 12,
+        "sourceInstance": 117881,
+        "sourceObject": 711,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroTrash",
+        "kind": "furniture"
+      },
+      {
+        "x": 1098,
+        "y": 258,
+        "w": 13,
+        "h": 12,
+        "sourceInstance": 117882,
+        "sourceObject": 711,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroTrash",
+        "kind": "furniture"
+      },
+      {
+        "x": 394,
+        "y": 466,
+        "w": 13,
+        "h": 12,
+        "sourceInstance": 117883,
+        "sourceObject": 711,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroTrash",
+        "kind": "furniture"
+      },
+      {
+        "x": 314,
+        "y": 378,
+        "w": 13,
+        "h": 12,
+        "sourceInstance": 117884,
+        "sourceObject": 711,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroTrash",
+        "kind": "furniture"
+      },
+      {
+        "x": 234,
+        "y": 314,
+        "w": 13,
+        "h": 12,
+        "sourceInstance": 117885,
+        "sourceObject": 711,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroTrash",
+        "kind": "furniture"
+      },
+      {
+        "x": 975,
+        "y": 34,
+        "w": 15,
+        "h": 14,
+        "sourceInstance": 117894,
+        "sourceObject": 710,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroIce",
+        "kind": "furniture"
+      },
+      {
+        "x": 1219,
+        "y": 35,
+        "w": 15,
+        "h": 14,
+        "sourceInstance": 117895,
+        "sourceObject": 710,
+        "sourceSprite": "Enviroment/Furniture/Levels/22_Eurogamer/sprEuroIce",
+        "kind": "furniture"
+      },
+      {
+        "x": 962,
+        "y": 323,
+        "w": 11,
+        "h": 10,
+        "sourceInstance": 117821,
+        "sourceObject": 214,
+        "sourceSprite": "Enviroment/Furniture/Levels/04_Decadence/sprPornLight",
+        "kind": "furniture"
+      },
+      {
+        "x": 1234,
+        "y": 323,
+        "w": 11,
+        "h": 10,
+        "sourceInstance": 117822,
+        "sourceObject": 214,
+        "sourceSprite": "Enviroment/Furniture/Levels/04_Decadence/sprPornLight",
+        "kind": "furniture"
+      },
+      {
+        "x": 962,
+        "y": 339,
+        "w": 11,
+        "h": 10,
+        "sourceInstance": 117823,
+        "sourceObject": 214,
+        "sourceSprite": "Enviroment/Furniture/Levels/04_Decadence/sprPornLight",
+        "kind": "furniture"
+      },
+      {
+        "x": 1418,
+        "y": 347,
+        "w": 11,
+        "h": 10,
+        "sourceInstance": 117824,
+        "sourceObject": 214,
+        "sourceSprite": "Enviroment/Furniture/Levels/04_Decadence/sprPornLight",
+        "kind": "furniture"
+      },
+      {
+        "x": 266,
+        "y": 475,
+        "w": 11,
+        "h": 10,
+        "sourceInstance": 117825,
+        "sourceObject": 214,
+        "sourceSprite": "Enviroment/Furniture/Levels/04_Decadence/sprPornLight",
+        "kind": "furniture"
+      },
+      {
+        "x": 362,
+        "y": 587,
+        "w": 11,
+        "h": 10,
+        "sourceInstance": 117826,
+        "sourceObject": 214,
+        "sourceSprite": "Enviroment/Furniture/Levels/04_Decadence/sprPornLight",
+        "kind": "furniture"
+      }
+    ],
+    "weaponSpawns": [
+      {
+        "x": 776,
+        "y": 312,
+        "weapon": "pistol"
+      },
+      {
+        "x": 24,
+        "y": 536,
+        "weapon": "uzi"
+      },
+      {
+        "x": 1416,
+        "y": 584,
+        "weapon": "m16"
+      },
+      {
+        "x": 1224,
+        "y": 24,
+        "weapon": "shotgun"
+      },
+      {
+        "x": 344,
+        "y": 264,
+        "weapon": "knife"
+      },
+      {
+        "x": 1128,
+        "y": 376,
+        "weapon": "bat"
+      },
+      {
+        "x": 536,
+        "y": 568,
+        "weapon": "katana"
+      },
+      {
+        "x": 664,
+        "y": 24,
+        "weapon": "pistol"
+      }
+    ],
+    "width": 1500
+  },
+  {
+    "arenaAudit": {
+      "allSpawnAndWeaponsReachable": true,
+      "baselineRatioPermille": 1835,
+      "baselineReachableFloorCells": 152,
+      "floorCells": 1113,
+      "gridStep": 16,
+      "minSpawnPathPx": 128,
+      "radius": 9,
+      "reachableAreaPx2": 71424,
+      "reachableFloorCells": 279,
+      "reachablePermille": 386,
+      "sourceFloorSHA256": "42ee53036fafd7287a306648447bdd58bcf548a374ccef6805df65118bd40bb4",
+      "sourceMetadataSHA256": "895b1393117d98964229b9410c5ade3a0c6fa744afc1d54e66459be92b06049c",
+      "walkableFloorCells": 721
+    },
+    "coordinateScale": 1,
+    "doors": [
+      {
+        "x": 446,
+        "y": 256,
+        "w": 4,
+        "h": 32,
+        "sourceInstance": 107695,
+        "sourceObject": 21,
+        "sourceSprite": "Enviroment/Walls/sprDoorV",
+        "id": 0
+      },
+      {
+        "x": 160,
+        "y": 158,
+        "w": 32,
+        "h": 4,
+        "sourceInstance": 107696,
+        "sourceObject": 31,
+        "sourceSprite": "Enviroment/Walls/sprDoorH",
+        "id": 1
+      },
+      {
+        "x": 384,
+        "y": 318,
+        "w": 32,
+        "h": 4,
+        "sourceInstance": 107697,
+        "sourceObject": 31,
+        "sourceSprite": "Enviroment/Walls/sprDoorH",
+        "id": 2
+      },
+      {
+        "x": 160,
+        "y": 574,
+        "w": 32,
+        "h": 4,
+        "sourceInstance": 107701,
+        "sourceObject": 31,
+        "sourceSprite": "Enviroment/Walls/sprDoorH",
+        "id": 3
+      },
+      {
+        "x": 606,
+        "y": 256,
+        "w": 4,
+        "h": 32,
+        "sourceInstance": 107705,
+        "sourceObject": 21,
+        "sourceSprite": "Enviroment/Walls/sprDoorV",
+        "id": 4
+      },
+      {
+        "x": 702,
+        "y": 256,
+        "w": 4,
+        "h": 32,
+        "sourceInstance": 107706,
+        "sourceObject": 21,
+        "sourceSprite": "Enviroment/Walls/sprDoorV",
+        "id": 5
+      },
+      {
+        "x": 94,
+        "y": 64,
+        "w": 4,
+        "h": 32,
+        "sourceInstance": 107707,
+        "sourceObject": 21,
+        "sourceSprite": "Enviroment/Walls/sprDoorV",
+        "id": 6
+      },
+      {
+        "x": 608,
+        "y": 382,
+        "w": 32,
+        "h": 4,
+        "sourceInstance": 107708,
+        "sourceObject": 31,
+        "sourceSprite": "Enviroment/Walls/sprDoorH",
+        "id": 7
+      },
+      {
+        "x": -2,
+        "y": 64,
+        "w": 4,
+        "h": 32,
+        "sourceInstance": 107709,
+        "sourceObject": 21,
+        "sourceSprite": "Enviroment/Walls/sprDoorV",
+        "id": 8
+      },
+      {
+        "x": 480,
+        "y": 318,
+        "w": 32,
+        "h": 4,
+        "sourceInstance": 107710,
+        "sourceObject": 31,
+        "sourceSprite": "Enviroment/Walls/sprDoorH",
+        "id": 9
+      }
+    ],
+    "height": 640,
+    "id": "hot-heavy",
+    "name": "火热行动",
+    "sourceRoomId": 59,
+    "sourceRoomName": "rmHouse4Middle",
+    "sourceRoomOffset": 1674524,
+    "spawns": [
+      {
+        "x": 472,
+        "y": 56
+      },
+      {
+        "x": 120,
+        "y": 88
+      },
+      {
+        "x": 568,
+        "y": 296
+      },
+      {
+        "x": 296,
+        "y": 136
+      },
+      {
+        "x": 584,
+        "y": 152
+      },
+      {
+        "x": 472,
+        "y": 216
+      },
+      {
+        "x": 344,
+        "y": 24
+      },
+      {
+        "x": 584,
+        "y": 24
+      }
+    ],
+    "walls": [
+      {
+        "x": 320,
+        "y": 320,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107698,
+        "sourceObject": 57,
+        "sourceSprite": "Enviroment/Walls/sprGlassPanelV",
+        "kind": "glass"
+      },
+      {
+        "x": 320,
+        "y": 352,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107699,
+        "sourceObject": 57,
+        "sourceSprite": "Enviroment/Walls/sprGlassPanelV",
+        "kind": "glass"
+      },
+      {
+        "x": 320,
+        "y": 384,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107700,
+        "sourceObject": 57,
+        "sourceSprite": "Enviroment/Walls/sprGlassPanelV",
+        "kind": "glass"
+      },
+      {
+        "x": 104,
+        "y": 101,
+        "w": 24,
+        "h": 30,
+        "sourceInstance": 107711,
+        "sourceObject": 145,
+        "sourceSprite": "Enviroment/Furniture/Misc/sprArmchair",
+        "kind": "furniture"
+      },
+      {
+        "x": 104,
+        "y": 29,
+        "w": 24,
+        "h": 30,
+        "sourceInstance": 107712,
+        "sourceObject": 145,
+        "sourceSprite": "Enviroment/Furniture/Misc/sprArmchair",
+        "kind": "furniture"
+      },
+      {
+        "x": 107,
+        "y": 454,
+        "w": 18,
+        "h": 13,
+        "sourceInstance": 118492,
+        "sourceObject": 523,
+        "sourceSprite": "Enviroment/Furniture/Levels/11_Hot\u0026Heavy/sprCandleTableBurning",
+        "kind": "furniture"
+      },
+      {
+        "x": 107,
+        "y": 558,
+        "w": 18,
+        "h": 13,
+        "sourceInstance": 118493,
+        "sourceObject": 523,
+        "sourceSprite": "Enviroment/Furniture/Levels/11_Hot\u0026Heavy/sprCandleTableBurning",
+        "kind": "furniture"
+      },
+      {
+        "x": 259,
+        "y": 328,
+        "w": 27,
+        "h": 64,
+        "sourceInstance": 118494,
+        "sourceObject": 832,
+        "sourceSprite": "Enviroment/Furniture/Levels/11_Hot\u0026Heavy/sprSaunaCounter",
+        "kind": "furniture"
+      },
+      {
+        "x": 512,
+        "y": 549,
+        "w": 24,
+        "h": 30,
+        "sourceInstance": 118495,
+        "sourceObject": 447,
+        "sourceSprite": "Enviroment/Furniture/Levels/07_Clean_Hit/sprHotelChair",
+        "kind": "furniture"
+      },
+      {
+        "x": 432,
+        "y": 549,
+        "w": 24,
+        "h": 30,
+        "sourceInstance": 118496,
+        "sourceObject": 447,
+        "sourceSprite": "Enviroment/Furniture/Levels/07_Clean_Hit/sprHotelChair",
+        "kind": "furniture"
+      },
+      {
+        "x": 464,
+        "y": 555,
+        "w": 15,
+        "h": 17,
+        "sourceInstance": 118497,
+        "sourceObject": 600,
+        "sourceSprite": "Enviroment/Furniture/Levels/17_Safehouse/sprBuddhaStatue",
+        "kind": "furniture"
+      },
+      {
+        "x": 488,
+        "y": 555,
+        "w": 15,
+        "h": 17,
+        "sourceInstance": 118498,
+        "sourceObject": 600,
+        "sourceSprite": "Enviroment/Furniture/Levels/17_Safehouse/sprBuddhaStatue",
+        "kind": "furniture"
+      },
+      {
+        "x": 585,
+        "y": 292,
+        "w": 23,
+        "h": 25,
+        "sourceInstance": 118503,
+        "sourceObject": 605,
+        "sourceSprite": "Enviroment/Furniture/Levels/17_Safehouse/sprChineseLight",
+        "kind": "furniture"
+      },
+      {
+        "x": 585,
+        "y": 224,
+        "w": 23,
+        "h": 25,
+        "sourceInstance": 118504,
+        "sourceObject": 605,
+        "sourceSprite": "Enviroment/Furniture/Levels/17_Safehouse/sprChineseLight",
+        "kind": "furniture"
+      },
+      {
+        "x": 581,
+        "y": 171,
+        "w": 29,
+        "h": 42,
+        "sourceInstance": 118508,
+        "sourceObject": 833,
+        "sourceSprite": "Enviroment/Furniture/Levels/11_Hot\u0026Heavy/sprSaunaFountain",
+        "kind": "furniture"
+      },
+      {
+        "x": 648,
+        "y": 539,
+        "w": 24,
+        "h": 35,
+        "sourceInstance": 118510,
+        "sourceObject": 443,
+        "sourceSprite": "Enviroment/Furniture/Levels/07_Clean_Hit/sprCleaningCart",
+        "kind": "furniture"
+      },
+      {
+        "x": 416,
+        "y": 160,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107732,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 384,
+        "y": 160,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107733,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 352,
+        "y": 160,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107734,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 320,
+        "y": 160,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107735,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 288,
+        "y": 160,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107736,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 256,
+        "y": 160,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107737,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 224,
+        "y": 160,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107738,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 192,
+        "y": 160,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107739,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 448,
+        "y": 320,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107740,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 512,
+        "y": 320,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107741,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 608,
+        "y": 224,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107742,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 608,
+        "y": 288,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107743,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 448,
+        "y": 160,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107744,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 448,
+        "y": 192,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107745,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 448,
+        "y": 224,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107746,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 448,
+        "y": 288,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107747,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 416,
+        "y": 224,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107748,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 384,
+        "y": 224,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107749,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 352,
+        "y": 224,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107750,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 320,
+        "y": 224,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107751,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 288,
+        "y": 224,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107752,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 416,
+        "y": 320,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107753,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 352,
+        "y": 320,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107754,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 320,
+        "y": 320,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107755,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 256,
+        "y": 320,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107756,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 256,
+        "y": 224,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107757,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 288,
+        "y": 320,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107758,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 256,
+        "y": 224,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107759,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 256,
+        "y": 256,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107760,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 256,
+        "y": 288,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107761,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 128,
+        "y": 160,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107762,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 96,
+        "y": 160,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107763,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 256,
+        "y": 192,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107764,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 256,
+        "y": 160,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107765,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 416,
+        "y": 0,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107766,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 224,
+        "y": 128,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107767,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 256,
+        "y": 128,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107768,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 224,
+        "y": 0,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107769,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 256,
+        "y": 0,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107770,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 384,
+        "y": 0,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107771,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 384,
+        "y": 128,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107772,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 416,
+        "y": 128,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107773,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 384,
+        "y": 128,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107774,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 224,
+        "y": 128,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107775,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 224,
+        "y": 32,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107776,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 384,
+        "y": 32,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107777,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 416,
+        "y": 416,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107778,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 512,
+        "y": 416,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107779,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 416,
+        "y": 448,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107780,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 512,
+        "y": 448,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107781,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 448,
+        "y": 416,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107782,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 512,
+        "y": 416,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107783,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 608,
+        "y": 224,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107784,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 640,
+        "y": 224,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107785,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 672,
+        "y": 224,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107786,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 608,
+        "y": 320,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107787,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 640,
+        "y": 320,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107788,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 672,
+        "y": 320,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107789,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 704,
+        "y": 224,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107790,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 704,
+        "y": 288,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107791,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 96,
+        "y": 0,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107792,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 128,
+        "y": 0,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107793,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 160,
+        "y": 0,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107794,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 192,
+        "y": 0,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107795,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 224,
+        "y": 0,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107796,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 256,
+        "y": 0,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107797,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 288,
+        "y": 0,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107798,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 320,
+        "y": 0,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107799,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 352,
+        "y": 0,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107800,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 384,
+        "y": 0,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107801,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 416,
+        "y": 0,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107802,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 448,
+        "y": 0,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107803,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 480,
+        "y": 0,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107804,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 512,
+        "y": 0,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107805,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 544,
+        "y": 0,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107806,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 576,
+        "y": 0,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107807,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 576,
+        "y": 320,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107808,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 544,
+        "y": 320,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107809,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 512,
+        "y": 576,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107810,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 480,
+        "y": 576,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107811,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 448,
+        "y": 576,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107812,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 416,
+        "y": 576,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107813,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 384,
+        "y": 416,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107814,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 352,
+        "y": 416,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107815,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 320,
+        "y": 416,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107816,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 288,
+        "y": 416,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107817,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 256,
+        "y": 416,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107818,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 224,
+        "y": 576,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107819,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 192,
+        "y": 576,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107820,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 128,
+        "y": 576,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107821,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 96,
+        "y": 576,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107822,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 96,
+        "y": 0,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107823,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 96,
+        "y": 128,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107824,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 96,
+        "y": 160,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107825,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 96,
+        "y": 192,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107826,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 96,
+        "y": 224,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107827,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 96,
+        "y": 256,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107828,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 96,
+        "y": 288,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107829,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 96,
+        "y": 320,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107830,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 96,
+        "y": 352,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107831,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 96,
+        "y": 384,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107832,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 96,
+        "y": 416,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107833,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 256,
+        "y": 544,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107838,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 256,
+        "y": 512,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107839,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 256,
+        "y": 480,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107840,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 256,
+        "y": 448,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107841,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 256,
+        "y": 416,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107842,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 416,
+        "y": 416,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107843,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 416,
+        "y": 448,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107844,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 416,
+        "y": 480,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107845,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 416,
+        "y": 512,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107846,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 416,
+        "y": 544,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107847,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 544,
+        "y": 448,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107848,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 544,
+        "y": 416,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107849,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 544,
+        "y": 384,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107850,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 544,
+        "y": 352,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107851,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 544,
+        "y": 320,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107852,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 608,
+        "y": 192,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107853,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 608,
+        "y": 160,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107854,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 608,
+        "y": 128,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107855,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 608,
+        "y": 96,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107856,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 608,
+        "y": 64,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107857,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 608,
+        "y": 32,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107858,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 608,
+        "y": 0,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107859,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 544,
+        "y": 480,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107860,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 544,
+        "y": 544,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107861,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 544,
+        "y": 480,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107862,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 544,
+        "y": 576,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107863,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 576,
+        "y": 576,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107864,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 608,
+        "y": 576,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107865,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 640,
+        "y": 576,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107866,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 576,
+        "y": 448,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107867,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 576,
+        "y": 416,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107868,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 576,
+        "y": 384,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107869,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 672,
+        "y": 384,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107870,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 672,
+        "y": 416,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107871,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 672,
+        "y": 448,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107872,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 672,
+        "y": 480,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107873,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 672,
+        "y": 512,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107874,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 672,
+        "y": 544,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107875,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 576,
+        "y": 384,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107876,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 640,
+        "y": 384,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107877,
+        "sourceObject": 4,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyH",
+        "kind": "wall"
+      },
+      {
+        "x": 64,
+        "y": 128,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107878,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 0,
+        "y": 128,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107879,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 64,
+        "y": 24,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107880,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 32,
+        "y": 24,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107881,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 0,
+        "y": 24,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107882,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 32,
+        "y": 128,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 107883,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 0,
+        "y": 32,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107884,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 0,
+        "y": 96,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107885,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 96,
+        "y": 32,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107886,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 96,
+        "y": 96,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 107887,
+        "sourceObject": 3,
+        "sourceSprite": "Enviroment/Walls/sprWallHeavyV",
+        "kind": "wall"
+      },
+      {
+        "x": 16,
+        "y": 448,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 118482,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 16,
+        "y": 480,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 118483,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 16,
+        "y": 512,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 118484,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 16,
+        "y": 544,
+        "w": 8,
+        "h": 32,
+        "sourceInstance": 118485,
+        "sourceObject": 64,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickV",
+        "kind": "wall"
+      },
+      {
+        "x": 64,
+        "y": 448,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 118486,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 32,
+        "y": 448,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 118487,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 16,
+        "y": 448,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 118488,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 16,
+        "y": 576,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 118489,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 48,
+        "y": 576,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 118490,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      },
+      {
+        "x": 64,
+        "y": 576,
+        "w": 32,
+        "h": 8,
+        "sourceInstance": 118491,
+        "sourceObject": 65,
+        "sourceSprite": "Enviroment/Walls/sprWallBrickH",
+        "kind": "wall"
+      }
+    ],
+    "weaponSpawns": [
+      {
+        "x": 472,
+        "y": 56,
+        "weapon": "pistol"
+      },
+      {
+        "x": 120,
+        "y": 88,
+        "weapon": "uzi"
+      },
+      {
+        "x": 568,
+        "y": 296,
+        "weapon": "m16"
+      },
+      {
+        "x": 296,
+        "y": 136,
+        "weapon": "shotgun"
+      },
+      {
+        "x": 584,
+        "y": 152,
+        "weapon": "knife"
+      },
+      {
+        "x": 472,
+        "y": 216,
+        "weapon": "bat"
+      },
+      {
+        "x": 344,
+        "y": 24,
+        "weapon": "katana"
+      },
+      {
+        "x": 584,
+        "y": 24,
+        "weapon": "pistol"
+      }
+    ],
+    "width": 800
   }
 ]

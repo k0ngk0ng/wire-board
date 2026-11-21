@@ -31,6 +31,16 @@ scope = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(scope)
 
 class ScopeTests(unittest.TestCase):
+    def test_game_control_policy_tools_select_frontend_checks_only(self):
+        for path in ['web/scripts/game-control-lint.mjs', 'web/scripts/game-control-lint.json']:
+            with self.subTest(path=path):
+                result = self.plan(path)
+                self.assertEqual(result['quick_components'], ['frontend'])
+                self.assertFalse(result['has_shared'])
+                self.assertFalse(result['has_games'])
+                self.assertTrue(result['frontend_checks'])
+                self.assertTrue(result['build_required'])
+
     def test_shared_action_definitions_are_ci_configuration(self):
         result = self.plan('.github/actions/restore-resources/action.yml')
         self.assertEqual(result['quick_components'], ['ci'])

@@ -14,7 +14,15 @@ import (
 
 func main() {
 	check := flag.Bool("check", false, "检查原版规则生成结果")
+	auditSource := flag.String("audit-source", "", "用原版房间数据重算可达面积与来源证明")
 	flag.Parse()
+	if *auditSource != "" {
+		if err := updateMapAudit(*auditSource); err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(1)
+		}
+		return
+	}
 	if err := generate(*check); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
@@ -32,8 +40,8 @@ func generate(check bool) error {
 	if err = json.Unmarshal(raw, &maps); err != nil {
 		return err
 	}
-	if len(maps) != 6 {
-		return fmt.Errorf("应包含六张原版规则地图")
+	if len(maps) != 9 {
+		return fmt.Errorf("应包含九张原版规则地图")
 	}
 	buffer := &bytes.Buffer{}
 	fmt.Fprintln(buffer, "package engine\n\nvar recoveredMaps = []Map{")

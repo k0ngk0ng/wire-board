@@ -7,6 +7,7 @@
 ```sh
 node --test games/hotlinemiami/tests/lint.test.mjs
 node games/hotlinemiami/build/lint.mjs
+node --test games/hotlinemiami/tests/runtime-catalog.test.mjs
 node --test games/hotlinemiami/tests/runtime-delivery.test.mjs
 ```
 
@@ -20,7 +21,9 @@ node games/hotlinemiami/build/runtime-delivery.mjs
 
 `prepareHotlineDelivery(root)` 为 Vite 提供公共根目录 `.local/hotlinemiami/delivery/public/`。游戏文件位于该目录的 `hotlinemiami/`，包括素材、`hotline-motion.wasm`、`wasm-exec.js`、`go-runtime-LICENSE.txt` 和合并后的 `manifest.json`。
 
-素材优先从 `.local/hotlinemiami/assets/manifest.json` 读取；研究素材不存在时，可使用 `games/hotlinemiami/assets/public/hotlinemiami/manifest.json` 中已恢复的正式资源。当前扩充交付清单必须包含 6 张地图、8 个角色、12 类武器以及非空图片集合。旧版 3 张地图、5 个角色、7 类武器的清单即使拥有有效运行时和资源摘要，也不能作为当前版本成功交付。缺失、损坏或不完整资源会明确失败，不发布空游戏目录。
+素材优先从 `.local/hotlinemiami/assets/manifest.json` 读取；研究素材不存在时，可使用 `games/hotlinemiami/assets/public/hotlinemiami/manifest.json` 中已恢复的正式资源。当前交付清单必须包含 9 张地图、8 个角色、12 类武器以及非空图片集合。旧版 3／5／7 或 6／8／12 的清单即使拥有有效运行时和资源摘要，也不能作为当前版本成功交付。缺失、损坏或不完整资源会明确失败，不发布空游戏目录。
+
+新增场景为原版 highball／65、exposed／148、hot-heavy／59。地图身份、原始场景名称与偏移、图像和规则尺寸均须与 `data/maps.json` 的同源数据一致；规则坐标保持原像素的 256 倍定点值。`arenaAudit` 验证原版地面、碰撞后可走格、同一分量可达格、出生与武器可达性、面积计算、基线统计和源摘要字段，不写死面积倍率。重复旧图、只放大图像、加黑边或拼接其他楼层不能代替原版单场景恢复；原始地面与可达统计还须通过引擎的源数据回归。
 
 每个资源的 `file` 均为清单目录内的相对路径，并提供实际 `bytes` 与 SHA-256。构建校验全部描述，拒绝父目录、绝对路径、反斜杠和符号链接。新交付先在临时目录完整验证，成功后替换；失败保留上一份有效产物。
 
@@ -28,4 +31,4 @@ WASM 从 `games/hotlinemiami/cmd/motion` 以 `GOOS=js`、`GOARCH=wasm` 构建。
 
 Go 官方 `wasm_exec.js` 经过 esbuild 移除代码注释并压缩空白；其 BSD 许可证单独保留。游戏清单的 `runtime` 包含源码与构建摘要，以及 `wasm`、`script`、`license` 三个资源描述。字节相同的重复构建复用缓存，不重写有效交付。
 
-`verifyHotlineDelivery(root, publicRoot)` 复核完整素材、当前源码绑定和运行时；`buildHotlineRuntime(root)` 可单独构建共享运动规则，返回运行时缓存路径、清单和 `cached` 状态。单独构建运行时不代表完整素材交付或游戏 E2E 验收通过。
+`validateHotlineAssets(manifest, nativeMaps)` 仅校验本地内容与同源地图元数据，可在不编译运行时的情况下执行。`verifyHotlineDelivery(root, publicRoot)` 复核完整素材、当前源码绑定和运行时；`buildHotlineRuntime(root)` 可单独构建共享运动规则，返回运行时缓存路径、清单和 `cached` 状态。单独构建运行时不代表完整素材交付或游戏 E2E 验收通过。

@@ -5,11 +5,11 @@ import { fileURLToPath } from "node:url";
 import { mkdir, unlink, writeFile } from "node:fs/promises";
 import { mapGuide, characterGuide, weaponGuide, isMeleeWeapon } from "../web/content.ts";
 
-const maps = ["no-talk", "full-house", "push-it", "overdose", "tension", "neighbors"];
+const maps = ["no-talk", "full-house", "push-it", "overdose", "tension", "neighbors", "highball", "exposed", "hot-heavy"];
 const characters = ["jacket", "biker", "bodyguard", "father", "richter", "producer", "beard", "hobo"];
 const weapons = ["pistol", "uzi", "m16", "shotgun", "knife", "bat", "katana", "magnum", "mp5", "double-barrel", "axe", "machete"];
 
-test("content choices cover six real maps, eight cosmetic characters and twelve distinct weapons", () => {
+test("content choices cover nine real maps, eight cosmetic characters and twelve distinct weapons", () => {
   assert.deepEqual(mapGuide.map(item => item.id), maps);
   assert.deepEqual(characterGuide.map(item => item.id), characters);
   assert.deepEqual(weaponGuide.map(item => item.id), weapons);

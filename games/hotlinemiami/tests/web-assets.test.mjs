@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { loadBattleAssets } from "../web/assets.ts";
+import { loadBattleAssets, validateViewport } from "../web/assets.ts";
 
 test("verified assets initialize under the platform CSP without blob image or script URLs", async () => {
   const bytes = new Uint8Array([1, 2]);
@@ -31,7 +31,7 @@ test("verified assets initialize under the platform CSP without blob image or sc
       if (scriptURL.startsWith("blob:")) { element.onerror(); return; }
       window.Go = class {
         importObject = {};
-        async run() { window.hotlineMotion = { init: () => true, move: () => [0, 0, 0], weapons: () => "[]", unarmed: () => '{"id":"","cooldown":22,"melee":true}' }; }
+        async run() { window.hotlineMotion = { init: () => true, move: () => [0, 0, 0], weapons: () => "[]", unarmed: () => '{"id":"","cooldown":22,"melee":true}', viewport: () => ({ width: 576, height: 360 }) }; }
       };
       element.onload();
     } },
@@ -46,6 +46,7 @@ test("verified assets initialize under the platform CSP without blob image or sc
     assert.equal(assets.weapons.length, 0);
     assert.equal(assets.unarmed.id, "");
     assert.equal(assets.unarmed.melee, true);
+    assert.deepEqual(assets.viewport, { width: 576, height: 360 });
     const progress = reports.findLast(report => report[2]);
     assert.equal(assets.sounds.size, 2);
     assert.equal(assets.sounds.get("pistol"), assets.sounds.get("uzi"));
@@ -59,4 +60,10 @@ test("verified assets initialize under the platform CSP without blob image or sc
     }
     WebAssembly.instantiate = original.instantiate;
   }
+});
+
+test("viewport dimensions come from positive integer 8:5 runtime metadata without a frontend default", () => {
+  assert.deepEqual(validateViewport({ width: 576, height: 360 }), { width: 576, height: 360 });
+  assert.deepEqual(validateViewport({ width: 640, height: 400 }), { width: 640, height: 400 });
+  for (const value of [undefined, null, "576x360", { width: 0, height: 360 }, { width: -576, height: 360 }, { width: 577, height: 360 }, { width: 576, height: 361 }, { width: 576.5, height: 360 }]) assert.throws(() => validateViewport(value));
 });

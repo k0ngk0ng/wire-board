@@ -54,6 +54,8 @@ socket.onmessage = ({ data }) => {
   if (!incoming && body.action?.seq) sentInputs.set(body.action.seq, at);
   if (incoming && body.type === "ack" && sent.has(body.nonce)) network.acks.push({ microseconds: at - sent.get(body.nonce), status: body.status });
   const projectedPlayer = body.game?.data?.players?.[body.game?.data?.you];
+  const authority = incoming && projectedPlayer ? { x: projectedPlayer.x, y: projectedPlayer.y, life: projectedPlayer.life, receivedSeq: projectedPlayer.receivedSeq, appliedSeq: projectedPlayer.appliedSeq } : undefined;
+  if (authority) network.lastAuthority = { ...authority, frame: body.game.data.frame, at, localAt: message.params.timestamp * 1000 - navigationStart };
   if (incoming && projectedPlayer) for (const [sequence, began] of sentInputs) {
     if (sequence <= projectedPlayer.appliedSeq) {
       network.applications.push({ seq: sequence, microseconds: at - began, serverFrame: body.game.data.frame });
@@ -61,7 +63,8 @@ socket.onmessage = ({ data }) => {
     }
   }
   const action = !incoming && body.action ? Object.fromEntries(["seq", "life", "moveX", "moveY", "aim", "fire", "throw", "pickup", "finish", "interact"].map(key => [key, body.action[key]])) : undefined;
-  if (network.messages.length < 600) network.messages.push({ incoming, bytes, type: body.type, at, localAt: message.params.timestamp * 1000 - navigationStart, action, serverFrame: body.game?.data?.frame, serverNow: body.serverNow, receivedSeq: body.game?.data?.players?.[body.game?.data?.you]?.receivedSeq, appliedSeq: body.game?.data?.players?.[body.game?.data?.you]?.appliedSeq });
+  if (action) network.lastInput = action;
+  if (network.messages.length < 600) network.messages.push({ incoming, bytes, type: body.type, at, localAt: message.params.timestamp * 1000 - navigationStart, action, authority, serverFrame: body.game?.data?.frame, serverNow: body.serverNow, receivedSeq: body.game?.data?.players?.[body.game?.data?.you]?.receivedSeq, appliedSeq: body.game?.data?.players?.[body.game?.data?.you]?.appliedSeq });
 };
 const call = (method, params = {}, sessionId = session) => new Promise((resolve, reject) => {
   const id = ++ordinal;
@@ -110,7 +113,7 @@ try {
       for (let index = 0; index < pixels.length; index += 16) value = Math.imul(value ^ pixels[index], 16777619);
       return value >>> 0;
     };
-    probe.arm = (kind, x, y) => { probe.pending = { kind, x, y, before: structuredClone(canvas.__hotlineFrame.local), beforeFlash: canvas.__hotlineFrame.attackFlashUntil ?? 0, hash: hash(), at: null, armedAt: performance.now() }; };
+    probe.arm = (kind, x, y) => { probe.pending = { kind, x, y, before: structuredClone(canvas.__hotlineFrame.local), beforeLogical: structuredClone(canvas.__hotlineFrame.logical), beforeFlash: canvas.__hotlineFrame.attackFlashUntil ?? 0, hash: hash(), at: null, armedAt: performance.now() }; };
     const listener = (event) => {
       if (!event.isTrusted) return;
       const current = probe.pending;
@@ -124,7 +127,7 @@ try {
     const loop = (at) => {
       if (!probe.running) return;
       const frame = canvas.__hotlineFrame;
-      if (probe.frames.length < 1500) probe.frames.push({ at, drawCount: frame?.drawCount ?? frame?.frame, x: frame?.local?.x, y: frame?.local?.y, serverFrame: frame?.serverFrame, predictedFrame: frame?.predictedFrame, receivedSeq: frame?.receivedSeq, appliedSeq: frame?.appliedSeq, inputWindow: frame?.inputWindow, pending: frame?.pending });
+      if (probe.frames.length < 1500) probe.frames.push({ at, drawCount: frame?.drawCount ?? frame?.frame, x: frame?.local?.x, y: frame?.local?.y, logicalX: frame?.logical?.x, logicalY: frame?.logical?.y, cameraX: frame?.camera?.x, cameraY: frame?.camera?.y, cameraWidth: frame?.camera?.width, cameraHeight: frame?.camera?.height, viewportWidth: frame?.viewport?.width, viewportHeight: frame?.viewport?.height, serverFrame: frame?.serverFrame, predictedFrame: frame?.predictedFrame, receivedSeq: frame?.receivedSeq, appliedSeq: frame?.appliedSeq, inputWindow: frame?.inputWindow, pending: frame?.pending });
       const pending = probe.pending;
       const local = frame?.local;
       if (pending?.kind === 'key' && pending.at === null) {
@@ -140,7 +143,7 @@ try {
           const visibleAt = performance.now();
           const afterHash = hash();
           if (afterHash !== pending.hash) {
-            probe.responses.push({ kind: pending.kind, inputAt: pending.at, visibleAt, milliseconds: visibleAt - pending.at, pixelsChanged: true, before: pending.before, after: structuredClone(local) });
+            probe.responses.push({ kind: pending.kind, inputAt: pending.at, visibleAt, milliseconds: visibleAt - pending.at, pixelsChanged: true, before: pending.before, after: structuredClone(local), beforeLogical: pending.beforeLogical, afterLogical: structuredClone(frame.logical) });
             probe.pending = null;
           }
         }
@@ -264,6 +267,85 @@ try {
     const after = await evaluate('fetch("/api/state").then(response=>response.json()).then(state=>state.room.game.data)');
     unarmed = { weapon: after.players[state.you].weapon, ammo: after.players[state.you].ammo, events: after.events.filter(event => event.id > state.data.eventId && event.type === "fire" && event.seat === state.you && !event.weapon) };
   }
+  let mobileAudit;
+  if (options.mobileAudit) {
+    await evaluate(`(() => {window.__hotlineMobileAudit={contextMenus:[],selections:[]};document.addEventListener('contextmenu',event=>{queueMicrotask(()=>window.__hotlineMobileAudit.contextMenus.push({trusted:event.isTrusted,prevented:event.defaultPrevented,target:event.target.tagName}));},true);document.addEventListener('selectionchange',()=>{const text=getSelection()?.toString()??'';if(text)window.__hotlineMobileAudit.selections.push(text);});return true})()`);
+    const snapshot = () => evaluate(`(()=>{const canvas=document.querySelector('[data-hotlinemiami-canvas]');const hint=document.querySelector('[data-hotlinemiami-hint]');const ammo=[...document.querySelectorAll('.hm-ammo,.hm-ammo strong,.hm-ammo span')].map(element=>({tag:element.tagName,text:element.textContent,rect:element.getBoundingClientRect().toJSON()}));const toolbar=document.querySelector('.game-fullscreen-toolbar .room-fullscreen-toggle')?.getBoundingClientRect().toJSON();return {rect:canvas.getBoundingClientRect().toJSON(),local:canvas.__hotlineFrame.local,hint:hint?.dataset.hotlinemiamiHint,text:hint?.textContent,ammo,toolbar,ammoToolbarOverlap:!!toolbar&&ammo.some(item=>item.rect.left<toolbar.right&&item.rect.right>toolbar.left&&item.rect.top<toolbar.bottom&&item.rect.bottom>toolbar.top),scrollY}})()`);
+    const photograph = async name => { const shot = await call("Page.captureScreenshot", { format: "png" }); writeFileSync(resolve(dirname(outputFile), name + ".png"), Buffer.from(shot.data, "base64")); };
+    const clickButton = async label => {
+      const rectangle = await evaluate(`(()=>{const element=document.querySelector('button[aria-label=${JSON.stringify(label)}]');element.scrollIntoView({block:'center'});return element.getBoundingClientRect().toJSON()})()`);
+      const point = { x: rectangle.x + rectangle.width / 2, y: rectangle.y + rectangle.height / 2, button: "left", clickCount: 1 };
+      await call("Input.dispatchMouseEvent", { type: "mousePressed", ...point, buttons: 1 });
+      await call("Input.dispatchMouseEvent", { type: "mouseReleased", ...point, buttons: 0 });
+      await wait(120);
+    };
+    const geometryEqual = (left, right) => ["top", "height", "width"].every(key => left.rect[key] === right.rect[key]);
+    const controls = await snapshot();
+    assert.ok(controls.local.alive && controls.local.ammo > 0, "mobile ammunition scenario requires a live gun");
+    const aim = await evaluate("document.querySelector('[data-hotlinemiami-stick=aim]').getBoundingClientRect().toJSON()");
+    const firePoint = { x: aim.x + aim.width * 0.93, y: aim.y + aim.height / 2, radiusX: 4, radiusY: 4, force: 1, id: 0 };
+    await call("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [firePoint] });
+    let empty;
+    for (let attempt = 0; attempt < 160; attempt++) {
+      empty = await snapshot();
+      if (empty.local.ammo === 0) break;
+      await wait(40);
+    }
+    await call("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+    await wait(150);
+    empty = await snapshot();
+    assert.ok(empty.local.alive && empty.local.weapon && empty.local.ammo === 0 && empty.hint === "empty" && empty.text.includes("投掷空枪") && empty.text.includes("拾取"), JSON.stringify(empty));
+    assert.ok(geometryEqual(controls, empty), "empty-gun hint moved the normal canvas");
+    await photograph("mobile-empty-normal");
+    await clickButton("全屏");
+    const fullEmpty = await snapshot();
+    assert.equal(fullEmpty.hint, "empty");
+    await photograph("mobile-empty-fullscreen");
+    const throwButton = await evaluate("document.querySelector('button[aria-label=投掷武器]').getBoundingClientRect().toJSON()");
+    const throwPoint = { x: throwButton.x + throwButton.width / 2, y: throwButton.y + throwButton.height / 2, radiusX: 4, radiusY: 4, force: 1, id: 0 };
+    await call("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [throwPoint] });
+    await call("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+    let fullUnarmed;
+    for (let attempt = 0; attempt < 100; attempt++) {
+      fullUnarmed = await snapshot();
+      if (fullUnarmed.local.weapon === "") break;
+      await wait(30);
+    }
+    assert.ok(fullUnarmed.local.weapon === "" && fullUnarmed.hint === "unarmed" && geometryEqual(fullEmpty, fullUnarmed), "unarmed hint moved the fullscreen canvas");
+    const guards = [];
+    for (const mode of ["fullscreen", "normal"]) {
+      if (mode === "normal") {
+        await clickButton("退出全屏");
+        await evaluate(`scrollTo(0,${controls.scrollY});true`);
+        await wait(120);
+        assert.ok(geometryEqual(empty, await snapshot()), "unarmed hint moved the normal canvas after fullscreen");
+      }
+      for (const selector of ["[data-hotlinemiami-stick=move] .hm-stick-name", ".hm-bottom-line", "[data-hotlinemiami-canvas]"]) {
+        const rectangle = await evaluate(`document.querySelector(${JSON.stringify(selector)}).getBoundingClientRect().toJSON()`);
+        const point = { x: rectangle.x + rectangle.width / 2, y: rectangle.y + rectangle.height / 2, radiusX: 4, radiusY: 4, force: 1, id: 0 };
+        await call("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [point] });
+        await wait(720);
+        await call("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+        await call("Input.dispatchMouseEvent", { type: "mousePressed", x: point.x, y: point.y, button: "right", buttons: 2, clickCount: 1 });
+        await call("Input.dispatchMouseEvent", { type: "mouseReleased", x: point.x, y: point.y, button: "right", buttons: 0, clickCount: 1 });
+        await wait(60);
+        const state = await evaluate("({selection:getSelection()?.toString()??'',contexts:window.__hotlineMobileAudit.contextMenus.slice(-1),selections:window.__hotlineMobileAudit.selections})");
+        assert.ok(!state.selection && state.selections.length === 0 && state.contexts[0]?.trusted && state.contexts[0]?.prevented, "native control selection/context menu was not suppressed: " + JSON.stringify(state));
+        guards.push({ mode, selector, ...state });
+      }
+    }
+    const sticks = await evaluate("['move','aim'].map(kind=>document.querySelector('[data-hotlinemiami-stick='+kind+']').getBoundingClientRect().toJSON())");
+    const points = sticks.map((rect, index) => ({ x: rect.x + rect.width / 2 + (index ? 12 : 24), y: rect.y + rect.height / 2, radiusX: 4, radiusY: 4, force: 1, id: index }));
+    await call("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: points });
+    await wait(150);
+    await call("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+    await wait(240);
+    const released = await evaluate("[...document.querySelectorAll('.hm-stick-thumb')].map(element=>{const transform=new DOMMatrix(getComputedStyle(element).transform);return {x:transform.m41,y:transform.m42}})");
+    const neutral = network.lastInput;
+    writeFileSync(resolve(dirname(outputFile), "mobile-release.json"), JSON.stringify({ released, neutral, guards }));
+    assert.ok(released.length === 2 && released.every(stick => stick.x === 0 && stick.y === 0) && neutral?.moveX === 0 && neutral?.moveY === 0 && !neutral?.fire, "multitouch release retained an input: " + JSON.stringify({ released, neutral }));
+    mobileAudit = { controls, empty, fullEmpty, fullUnarmed, final: await snapshot(), guards, released, neutral };
+  }
   await wait(options.observeMS ?? 2200);
   const observation = await evaluate(`(() => { const probe=window.__hotlineNativeProbe;probe.stop();const canvas=document.querySelector('[data-hotlinemiami-canvas]');return { events:probe.events,responses:probe.responses,frames:probe.frames,final:canvas.__hotlineFrame,metrics:canvas.__hotlineMetrics,rendered:canvas.width>0&&canvas.height>0 }; })()`);
   const responseTimes = observation.responses.map((entry) => entry.milliseconds);
@@ -286,10 +368,12 @@ try {
   }
   const audio = { captureBegan: media.captureBegan, validPlayerAttribution: media.events.length > 0 && media.events.every(event => typeof event.playerId === "string" && event.playerId.length > 0), playback, requirements: requiredAudio.map(resource => ({ ...resource, playingPlayerIds: [...new Set(playback.filter(source => (resource.file.startsWith("https:") ? source.url === resource.file : new URL(source.url).pathname.endsWith("/" + resource.file)) && source.playingAt.some(at => at >= media.captureBegan)).map(source => source.playerId))] })) };
   const result = { ...observation, touch: !!options.touch, quickTap, interruptedAttacks, unarmed, cameraAimChecks, browserVersion, network, media, audio, measurement: "trusted native DOM event to rendered canvas pixel response; excludes physical display panel latency", summary: { responses: responseTimes.length, responseP95: percentile(responseTimes, 0.95), frameP95: percentile(intervals, 0.95), frameP99: percentile(intervals, 0.99), visibleFPS: changes * 1000 / elapsed, elapsed, visibleUpdates: changes, sentBytesPerSecond: network.sentBytes * 1000 / elapsed, receivedBytesPerSecond: network.receivedBytes * 1000 / elapsed, receivedMessagesPerSecond: network.receivedMessages * 1000 / elapsed, gameMessagesPerSecond: (network.messageTypes['in:game'] ?? 0) * 1000 / elapsed, ackP95MS: percentile(network.acks.map(entry => entry.microseconds / 1000), 0.95), appliedP95MS: percentile(network.applications.map(entry => entry.microseconds / 1000), 0.95), maxPredictionLeadFrames: Math.max(0, ...observation.frames.map(entry => entry.predictedFrame - entry.serverFrame)), maxPendingInputs: Math.max(0, ...observation.frames.map(entry => entry.pending ?? 0)), verifiedEffectSounds: audio.requirements.filter(resource => resource.playingPlayerIds.length > 0).map(resource => resource.id) } };
+  if (mobileAudit) result.mobileAudit = mobileAudit;
   writeFileSync(outputFile, JSON.stringify(result));
   console.log(JSON.stringify({ output: outputFile, summary: result.summary }));
   assert.ok(observation.events.some((entry) => entry.trusted), "no trusted native events observed");
   assert.ok(observation.rendered, "canvas has no pixels");
+  assert.ok(observation.frames.every(frame => frame.viewportWidth === 576 && frame.viewportHeight === 360 && frame.cameraWidth === 576 && frame.cameraHeight === 360), "rendered viewport/camera differs from shared 576x360 metadata");
   assert.ok(quickTap?.events.length > 0, "native short press/release lost its fire edge");
   assert.ok(quickTap.life !== quickTap.beforeLife || (quickTap.melee ? quickTap.afterAmmo === quickTap.beforeAmmo : quickTap.afterAmmo < quickTap.beforeAmmo), "native attack violated its authoritative ammunition rule");
   if (options.unarmed) {
@@ -303,6 +387,7 @@ try {
   assert.ok(result.summary.responseP95 <= (options.touch ? 50 : 33), JSON.stringify(result.summary));
   assert.ok(result.summary.frameP95 <= 20 && result.summary.frameP99 <= 33, JSON.stringify(result.summary));
   assert.ok(result.summary.visibleFPS >= 55, JSON.stringify(result.summary));
+  if (mobileAudit) assert.ok(mobileAudit.fullEmpty.toolbar && !mobileAudit.fullEmpty.ammoToolbarOverlap, "fullscreen toolbar overlaps weapon/ammunition: " + JSON.stringify({ ammo: mobileAudit.fullEmpty.ammo, toolbar: mobileAudit.fullEmpty.toolbar }));
   if (requiredAudio.length) assert.ok(audio.validPlayerAttribution && media.captureBegan > 0, "native media attribution or capture clock is missing");
   assert.ok(audio.requirements.every(resource => resource.playingPlayerIds.length > 0), "required native effect never reached kPlaying: " + JSON.stringify(audio.requirements));
 } finally {

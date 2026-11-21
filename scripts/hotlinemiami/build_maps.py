@@ -1,13 +1,30 @@
 import json
+import os
 import struct
 from collections import deque
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[2]
-ORIGINAL = ROOT / ".local/hotlinemiami/research/original/gog-linux-2.0.0.4"
+ORIGINAL = Path(os.environ.get("HOTLINEMIAMI_ORIGINAL", ROOT / ".local/hotlinemiami/research/original/gog-linux-2.0.0.4"))
 METADATA = ORIGINAL / "metadata"
-SELECTION = [("no-talk", "不许交谈", 17, "rmApartment1Upstairs"), ("full-house", "满屋", 31, "rmHouse2Downstairs"), ("push-it", "夜店", 33, "rmHouse3Downstairs"), ("overdose", "过量", 20, "rmApartment2Upstairs"), ("tension", "紧绷", 49, "rmHouse5Upstairs"), ("neighbors", "邻居", 35, "rmBuildingFloor3")]
+SELECTION = [("no-talk", "不许交谈", 17, "rmApartment1Upstairs"), ("full-house", "满屋", 31, "rmHouse2Downstairs"), ("push-it", "夜店", 33, "rmHouse3Downstairs"), ("overdose", "过量", 20, "rmApartment2Upstairs"), ("tension", "紧绷", 49, "rmHouse5Upstairs"), ("neighbors", "邻居", 35, "rmBuildingFloor3"), ("highball", "高球", 65, "rmHighballer"), ("exposed", "暴露", 148, "rmEurogamer"), ("hot-heavy", "火热行动", 59, "rmHouse4Middle")]
+SCENE_ACTORS = {
+    373: (681, "Enviroment/Furniture/Interludes/Bar/Bar_Guests/sprMoon"),
+    377: (674, "Enviroment/Furniture/Interludes/Pizza/sprNicklasDead"),
+    390: (710, "Enviroment/Furniture/Interludes/Apartments/Jacket/sprGirlfriendDead"),
+    416: (743, "Enviroment/Furniture/Levels/05_Tension/sprBombGuy"),
+    417: (756, "Enviroment/Furniture/Levels/05_Tension/sprEBombTinker"),
+    418: (755, "Enviroment/Furniture/Levels/05_Tension/sprEStandGuard"),
+    503: (870, "Enviroment/Furniture/Levels/09_Push_It/sprDJ"),
+    535: (938, "Enviroment/Furniture/Levels/11_Hot&Heavy/sprCobraDead"),
+    536: (941, "Enviroment/Furniture/Levels/09_Push_It/sprLocustDead"),
+    537: (942, "Enviroment/Furniture/Levels/03_Overdose/sprWalrusDead"),
+    547: (673, "Enviroment/Furniture/Interludes/VHS/sprNicklasTiedUp"),
+    699: (1173, "Enviroment/Furniture/Levels/21_Highball/sprWiley"),
+    862: (1467, "Enviroment/Furniture/Levels/21_Highball/sprBrandonBoyer"),
+    863: (1468, "Enviroment/Furniture/Levels/21_Highball/sprSacrifice"),
+}
 
 
 def read_rooms(data):
@@ -70,6 +87,21 @@ def read_object_data():
     return {struct.unpack_from("<i", record)[0]: struct.unpack_from("<10i", record) for record in records}
 
 
+def is_scene_actor(object_id, objects, sprites):
+    ancestors = set()
+    while object_id in objects and object_id not in ancestors:
+        ancestors.add(object_id)
+        object_data = objects[object_id]
+        if object_id in SCENE_ACTORS:
+            sprite_id, path = SCENE_ACTORS[object_id]
+            sprite = sprites.get(object_data[1])
+            if object_data[1] != sprite_id or not sprite or sprite["name"] != path:
+                raise ValueError("scene actor source identity mismatch: " + str(object_id))
+            return True
+        object_id = object_data[3]
+    return False
+
+
 def walkable(x, y, walls, radius):
     return all(x + radius <= wall["x"] or x - radius >= wall["x"] + wall["w"] or y + radius <= wall["y"] or y - radius >= wall["y"] + wall["h"] for wall in walls)
 
@@ -116,6 +148,8 @@ def recover_maps():
             if create != 0:
                 raise ValueError("selected room requires unknown instance create transform")
             object_data = objects[object_id]
+            if is_scene_actor(object_id, objects, sprites):
+                continue
             sprite = sprites.get(object_data[1])
             if not sprite:
                 continue

@@ -26,6 +26,10 @@ test("native WASM movement hook shares integer collision and bounded prediction"
   const motion = globalThis.hotlineMotion;
   assert.equal(motion.version, 1);
   assert.equal(motion.unit, 256);
+  const viewport = motion.viewport();
+  assert.deepEqual(viewport, { width: 576, height: 360 });
+  assert.equal(Number.isInteger(viewport.width) && Number.isInteger(viewport.height), true);
+  assert.equal(viewport.width * 5, viewport.height * 8);
   const weapons = JSON.parse(motion.weapons());
   assert.equal(weapons.length, 12);
   assert.equal(weapons.find((weapon) => weapon.id === "pistol").cooldown, 15);
@@ -42,5 +46,5 @@ test("native WASM movement hook shares integer collision and bounded prediction"
   const blocked = motion.move(moved[0], 51200, 0, 1000, 0, 9);
   assert.equal(blocked[0], moved[0]);
   assert.equal(motion.init("{}"), false);
-  writeFileSync(resolve(output, "result.json"), JSON.stringify({ status: "pass", moved, blocked, unit: 256, frames: 9 }) + "\n");
+  writeFileSync(resolve(output, "result.json"), JSON.stringify({ status: "pass", moved, blocked, viewport, unit: 256, frames: 9 }) + "\n");
 });

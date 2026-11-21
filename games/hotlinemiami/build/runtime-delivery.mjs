@@ -116,9 +116,59 @@ function resources(manifest) {
   return [...selected.values()].sort((left, right) => left.file.localeCompare(right.file));
 }
 
-function validateAssets(manifest) {
+function validateNativeFloorAudit(nativeMaps) {
+  for (const source of nativeMaps) {
+    const audit = source.arenaAudit;
+    const counts = [audit?.floorCells, audit?.walkableFloorCells, audit?.reachableFloorCells, audit?.reachableAreaPx2, audit?.baselineReachableFloorCells];
+    if (!audit || audit.gridStep !== 16 || audit.radius !== 9 || counts.some(value => !Number.isSafeInteger(value) || value <= 0) || audit.reachableFloorCells > audit.walkableFloorCells || audit.walkableFloorCells > audit.floorCells || audit.reachableAreaPx2 !== audit.reachableFloorCells * 256 || audit.reachablePermille !== Math.floor(audit.reachableFloorCells * 1000 / audit.walkableFloorCells) || !Number.isSafeInteger(audit.minSpawnPathPx) || audit.minSpawnPathPx < 0 || audit.allSpawnAndWeaponsReachable !== true || !/^[0-9a-f]{64}$/.test(audit.sourceFloorSHA256) || !/^[0-9a-f]{64}$/.test(audit.sourceMetadataSHA256)) throw Error("Invalid original floor source audit or reachable metrics: " + source.id);
+  }
+  const additions = new Set(["highball", "exposed", "hot-heavy"]);
+  const baseline = Math.max(...nativeMaps.filter(source => !additions.has(source.id)).map(source => source.arenaAudit.reachableFloorCells));
+  for (const source of nativeMaps) if (source.arenaAudit.baselineReachableFloorCells !== baseline || source.arenaAudit.baselineRatioPermille !== Math.floor(source.arenaAudit.reachableFloorCells * 1000 / baseline)) throw Error("Original floor baseline audit differs: " + source.id);
+}
+
+export function validateHotlineAssets(manifest, nativeMaps) {
   if (manifest.version !== 1 || !manifest.images || !Object.keys(manifest.images).length) throw Error("Incomplete Hotline assets manifest");
-  for (const [key, count] of [["maps", 6], ["characters", 8], ["weapons", 12]]) if (!Array.isArray(manifest[key]) || manifest[key].length !== count) throw Error("Incomplete Hotline " + key + ": expected " + count);
+  for (const [key, count] of [["maps", 9], ["characters", 8], ["weapons", 12]]) if (!Array.isArray(manifest[key]) || manifest[key].length !== count) throw Error("Incomplete Hotline " + key + ": expected " + count);
+  if (!Array.isArray(nativeMaps) || nativeMaps.length !== 9) throw Error("Incomplete native scene catalog");
+  const sources = new Map(nativeMaps.map(map => [map.id, map]));
+  const rooms = new Set();
+  const identities = new Set();
+  if (sources.size !== 9) throw Error("Duplicate native scene identity");
+  for (const map of manifest.maps) {
+    const source = sources.get(map.id);
+    const rules = map.rules;
+    if (!source || identities.has(map.id) || !rules || rules.id !== map.id || rules.sourceRoomId !== source.sourceRoomId || rules.sourceRoomName !== source.sourceRoomName || rules.sourceRoomOffset !== source.sourceRoomOffset || rooms.has(rules.sourceRoomId)) throw Error("Invalid or duplicate native scene source: " + map.id);
+    const image = manifest.images[map.image];
+    const preview = manifest.images[map.preview];
+    if (!image || !preview) throw Error("Missing native scene image or preview: " + map.id);
+    if (!Number.isSafeInteger(map.width) || !Number.isSafeInteger(map.height) || map.width <= 0 || map.height <= 0 || source.coordinateScale !== 1 || source.width !== map.width || source.height !== map.height || image.width !== map.width || image.height !== map.height || rules.coordinateScale !== 256 || rules.width !== map.width * 256 || rules.height !== map.height * 256) throw Error("Native scene dimensions or coordinate scale differ: " + map.id);
+    rooms.add(rules.sourceRoomId);
+    identities.add(map.id);
+  }
+  for (const [id, room] of [["highball", 65], ["exposed", 148], ["hot-heavy", 59]]) if (!manifest.maps.some(map => map.id === id && map.rules.sourceRoomId === room)) throw Error("Missing original large native scene: " + id);
+  validateNativeFloorAudit(nativeMaps);
+}
+
+export function validateHotlineNativeSources(nativeMaps, proof) {
+  if (!proof || !/^[0-9a-f]{64}$/.test(proof.sourceMetadataSHA256) || !Array.isArray(proof.maps) || proof.maps.length !== nativeMaps.length) throw Error("Incomplete original floor source proof");
+  const sources = new Map(proof.maps.map(source => [source.id, source]));
+  if (sources.size !== nativeMaps.length) throw Error("Duplicate original floor scene proof");
+  for (const map of nativeMaps) {
+    const source = sources.get(map.id);
+    const audit = map.arenaAudit;
+    if (!source || source.sourceRoomId !== map.sourceRoomId || !Array.isArray(source.floor) || source.floor.length !== audit?.floorCells || audit.sourceMetadataSHA256 !== proof.sourceMetadataSHA256) throw Error("Original floor scene or metadata source differs: " + map.id);
+    if (source.floor.some(point => !Number.isSafeInteger(point?.x) || !Number.isSafeInteger(point?.y))) throw Error("Invalid original floor coordinates: " + map.id);
+    const points = source.floor.map(point => ({ x: point.x, y: point.y }));
+    if (new Set(points.map(point => point.x + ":" + point.y)).size !== points.length || digest(JSON.stringify(points)) !== audit.sourceFloorSHA256) throw Error("Original floor source bytes differ: " + map.id);
+  }
+}
+
+function sourceMapCatalog(root) {
+  const maps = JSON.parse(readFileSync(path.join(root, "games/hotlinemiami/data/maps.json"), "utf8"));
+  const proof = JSON.parse(readFileSync(path.join(root, "games/hotlinemiami/engine/testdata/native-floor-points.json"), "utf8"));
+  validateHotlineNativeSources(maps, proof);
+  return maps;
 }
 
 function verifyRuntime(directory, runtime, expected) {
@@ -193,7 +243,7 @@ export function verifyHotlineDelivery(workspace, publicRoot) {
   const root = path.resolve(workspace);
   const directory = path.join(publicRoot, "hotlinemiami");
   const manifest = JSON.parse(readFileSync(path.join(directory, "manifest.json"), "utf8"));
-  validateAssets(manifest);
+  validateHotlineAssets(manifest, sourceMapCatalog(root));
   const selected = resources(manifest);
   for (const item of selected) readResource(directory, item);
   const expected = identity(root, environment(root));
@@ -210,7 +260,7 @@ export function prepareHotlineDelivery(workspace) {
   if (!source) throw Error("Missing Hotline assets manifest: generate .local/hotlinemiami/assets or hydrate formal resources");
   const raw = readFileSync(path.join(source, "manifest.json"));
   const manifest = JSON.parse(raw);
-  validateAssets(manifest);
+  validateHotlineAssets(manifest, sourceMapCatalog(root));
   const allResources = resources(manifest);
   for (const item of allResources) readResource(source, item);
   delete manifest.runtime;

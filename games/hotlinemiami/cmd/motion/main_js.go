@@ -66,6 +66,9 @@ func main() {
 	unarmed := js.FuncOf(func(this js.Value, args []js.Value) any {
 		return string(unarmedJSON)
 	})
+	viewport := js.FuncOf(func(this js.Value, args []js.Value) any {
+		return map[string]any{"width": engine.ViewportWidthPixels, "height": engine.ViewportHeightPixels}
+	})
 	api.Set("version", 1)
 	api.Set("unit", engine.Unit)
 	api.Set("fps", engine.FPS)
@@ -73,6 +76,7 @@ func main() {
 	api.Set("move", move)
 	api.Set("weapons", weapons)
 	api.Set("unarmed", unarmed)
+	api.Set("viewport", viewport)
 	js.Global().Set("hotlineMotion", api)
 	select {}
 }

@@ -17,8 +17,8 @@ func TestRecoveredMapRulesMatchSource(t *testing.T) {
 	if err = json.Unmarshal(raw, &source); err != nil {
 		t.Fatal(err)
 	}
-	if len(source) != 6 || len(engine.Maps()) != 6 {
-		t.Fatal("six recovered maps must be registered")
+	if len(source) != 9 || len(engine.Maps()) != 9 {
+		t.Fatal("nine recovered maps must be registered")
 	}
 	for _, original := range source {
 		world := engine.MapByID(original.ID)
