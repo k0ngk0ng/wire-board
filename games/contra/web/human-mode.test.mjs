@@ -1,22 +1,18 @@
-// Failure inventory before human-only delivery: computer/auto-play controls
-// remain visible; solo capacity disappears or cannot start; two humans cannot
-// start; a one-seat room still asks for friends; no-bot metadata says computers
-// auto-ready. Exercise real common templates and the actual autoplay gate.
 import test from "node:test";
 import assert from "node:assert/strict";
 import { build } from "../../../web/node_modules/esbuild/lib/main.js";
 import { createRequire } from "node:module";
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync, unlinkSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 
 const root = fileURLToPath(new URL("../../../", import.meta.url));
-const out = path.join(root, ".local/contra-frontend-human");
+const out = path.join(root, ".local/contra/verification/frontend-human");
 mkdirSync(out, { recursive: true });
 const main = readFileSync(path.join(root, "web/src/main.tsx"), "utf8");
 const gate = main.match(/const canAutoPlay =([\s\S]*?);\n  const boardBusy/);
 const button = main.match(
-  /\{canAutoPlay && \(\s*(<button[\s\S]*?<\/button>)\s*\)\}/,
+  /\{canAutoPlay && \(\s*(<RoomToolButton[\s\S]*?<\/RoomToolButton>)\s*\)\}/,
 );
 assert.ok(gate && button, "common autoplay control must have an explicit gate");
 const built = await build({
@@ -25,6 +21,7 @@ const built = await build({
 import React from "react";
 import {renderToStaticMarkup} from "react-dom/server";
 import {Hand,Bot} from "lucide-react";
+import {RoomToolButton} from "./web/src/ui/room-tool-button";
 import catalog from "./games/contra/web/catalog.tsx";
 import {ModuleCreate,ModuleWaiting} from "./web/src/game-api/host.tsx";
 export const metadata=catalog;
@@ -99,7 +96,7 @@ function room(capacity, occupied = capacity, status = "waiting") {
     host: "h0",
     you: 0,
     game: status === "playing" ? { data: {}, eliminated: [] } : undefined,
-    seats: Array.from({ length: occupied }, (_, n) => ({
+    seats: Array.from({ length: occupied }, (value, n) => ({
       id: `h${n}`,
       name: `玩家${n}`,
       ready: true,
@@ -174,7 +171,8 @@ test("actual common playing control gate hides both enable and cancel autoplay",
   }
 });
 
-test.after(() =>
+test.after(() => {
+  unlinkSync(compiled);
   writeFileSync(
     path.join(out, "render-evidence.json"),
     JSON.stringify(
@@ -186,5 +184,5 @@ test.after(() =>
       null,
       2,
     ) + "\n",
-  ),
-);
+  );
+});

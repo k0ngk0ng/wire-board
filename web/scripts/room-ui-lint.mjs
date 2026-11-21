@@ -21,12 +21,13 @@ const files = [
   "web/tests/room-flow-browser.test.mjs",
   "web/tests/room-tools.test.mjs",
   "web/tests/controller-focus-browser.test.mjs",
+  "games/contra/web/human-mode.test.mjs",
 ];
 const languages = {
   ".ts": /^web\/src\/ui\//,
   ".tsx": /^web\/src\/ui\//,
   ".css": /^web\/src\/ui\//,
-  ".mjs": /^web\/(scripts|tests)\//,
+  ".mjs": /^(?:web\/(?:scripts|tests)\/|games\/contra\/web\/)/,
 };
 
 export function inspectRoomUiFile(file, source) {
