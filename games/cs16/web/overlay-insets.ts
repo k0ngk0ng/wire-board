@@ -29,12 +29,16 @@ export function useOverlayInsets(root: RefObject<HTMLElement | null>) {
     const schedule = () => { if (!pending) pending = requestAnimationFrame(measure); };
     const resize = new ResizeObserver(schedule);
     const mutation = new MutationObserver(schedule);
+    const descendants = new MutationObserver(schedule);
     resize.observe(board);
-    if (surface) mutation.observe(surface, { attributes: true, childList: true, attributeFilter: ['data-room-fullscreen', 'style', 'class'] });
+    if (surface) {
+      mutation.observe(surface, { attributes: true, childList: true, attributeFilter: ['data-room-fullscreen', 'style', 'class'] });
+      descendants.observe(surface, { childList: true, subtree: true });
+    }
     window.addEventListener('resize', schedule);
     window.addEventListener('scroll', schedule, true);
     document.addEventListener('fullscreenchange', schedule);
     measure();
-    return () => { cancelAnimationFrame(pending); resize.disconnect(); mutation.disconnect(); window.removeEventListener('resize', schedule); window.removeEventListener('scroll', schedule, true); document.removeEventListener('fullscreenchange', schedule); };
+    return () => { cancelAnimationFrame(pending); resize.disconnect(); mutation.disconnect(); descendants.disconnect(); window.removeEventListener('resize', schedule); window.removeEventListener('scroll', schedule, true); document.removeEventListener('fullscreenchange', schedule); };
   }, [root]);
 }

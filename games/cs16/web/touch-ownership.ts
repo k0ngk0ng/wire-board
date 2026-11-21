@@ -73,14 +73,14 @@ export class TouchOwnership {
     try { if (contact.target.hasPointerCapture(id)) contact.target.releasePointerCapture(id); }
     catch (error) { this.callbacks.failed(error); }
   }
-  clear() {
+  clear(notify = true) {
     const fire = this.input.sample().actions.has('fire');
     const contacts = [...this.contacts];
     this.contacts.clear();
     this.input.clear();
-    if (fire) this.callbacks.interrupted();
+    if (fire && notify) this.callbacks.interrupted();
     for (const [id, contact] of contacts) this.releaseCapture(id, contact);
-    this.publish();
+    if (notify) this.publish();
   }
 }
 
@@ -111,6 +111,6 @@ export function bindTouchOwnership(target: EventTarget, lockTarget: EventTarget,
     target.removeEventListener('pointercancel', release, true);
     target.removeEventListener('lostpointercapture', lost, true);
     lockTarget.removeEventListener('pointerlockchange', capture);
-    input.clear();
+    input.clear(false);
   };
 }

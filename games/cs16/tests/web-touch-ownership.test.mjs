@@ -168,3 +168,27 @@ test('normal unlock keeps its cleanup while failed or cancelled handoff cannot s
   assert.deepEqual(view.context.errors, ['exit failed']);
   view.dispose();
 });
+
+test('disposing touch routing clears captures without notifying a disposed owner', () => {
+  for (const pending of [false, true]) {
+    const view = fixture(pending);
+    const move = view.target('move');
+    const fire = view.target('fire');
+    view.input.press(1, 'move', 0, 0, move);
+    view.input.press(2, 'fire', 100, 100, fire);
+    pointer(view.source, 'pointermove', 1, 24, 0);
+    const notifications = view.context.states.length;
+    const interruptions = view.context.interrupted;
+    view.dispose();
+    assert.equal(view.context.states.length, notifications);
+    assert.equal(view.context.interrupted, interruptions);
+    assert.deepEqual(view.input.sample(), { moveX: 0, moveY: 0, actions: new Set() });
+    assert.equal(move.captured.size, 0);
+    assert.equal(fire.captured.size, 0);
+    view.context.locked = false;
+    view.lockSource.dispatchEvent(new Event('pointerlockchange'));
+    assert.equal(view.input.owns(1), false);
+    assert.equal(view.input.owns(2), false);
+    assert.equal(pointer(view.source, 'pointermove', 1, 48, 0).defaultPrevented, false);
+  }
+});
