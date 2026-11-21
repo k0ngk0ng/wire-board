@@ -31,6 +31,15 @@ scope = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(scope)
 
 class ScopeTests(unittest.TestCase):
+    def test_verified_resume_base_preserves_frontend_only_game_scope(self):
+        games = scope.game_names(ROOT)
+        paths = ['games/cs16/tests/gpu-pixel-probe.test.mjs']
+        proof = {'eligible': True, 'head': 'a' * 40, 'base': 'b' * 40, 'verifiedBase': 'b' * 40, 'requiredGames': ['cs16'], 'pendingGames': ['cs16'], 'reusedGames': []}
+        with patch.object(scope.subprocess, 'run', return_value=SimpleNamespace(returncode=0)), patch.object(scope.subprocess, 'check_output', return_value='\n'.join(paths)):
+            resumed = scope.resume_selection(proof, proof['head'], proof['base'], games)
+        result = scope.plan(paths, games, resume_games=resumed)
+        self.assertEqual(result['games'], [{'game': 'cs16', 'backend': False}])
+
     def test_cs16_race_contract_keeps_ordinary_performance_budget_separate(self):
         normal = scope.go_commands(ROOT, 'cs16')
         raced = scope.go_commands(ROOT, 'cs16', race=True)

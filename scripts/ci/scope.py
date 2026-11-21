@@ -489,7 +489,7 @@ def resume_selection(proof, head, base, games):
             raise ValueError('Resume required games differ from the verified baseline')
     if proof.get('head') != head or proof.get('base') != base or len(set(pending + reused)) != len(pending + reused) or set(pending + reused) != set(required):
         raise ValueError('Resume evidence differs from the exact plan inputs')
-    return pending
+    return [] if proof.get('verifiedBase') == base else pending
 
 def owner(path, name, games):
     parts = path.parts

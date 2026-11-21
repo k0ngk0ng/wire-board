@@ -4,6 +4,7 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve, sep } from "node:path";
 import { WireSelfObserver } from './wire-self-observer.mjs';
 import { withProxyReconnect } from './browser-network-control.mjs';
+import { createPixelProbe } from './gpu-pixel-probe.mjs';
 
 const input = JSON.parse(readFileSync(0, "utf8"));
 const { endpoint, pageURL, options = {} } = input;
@@ -312,15 +313,7 @@ try {
     if (!canvas?.__cs16Frame) throw Error('production canvas is not ready');
     const gl = canvas.getContext('webgl2') || canvas.getContext('webgl');
     if (!gl) throw Error('real WebGL context is missing');
-    const pixels = new Uint8Array(16 * 16 * 4);
-    const hash = () => {
-      let result = 2166136261;
-      for (const [x, y] of [[canvas.width / 2,canvas.height / 2],[canvas.width / 2,canvas.height / 4],[canvas.width / 4,canvas.height / 3]]) {
-        gl.readPixels(Math.max(0,Math.floor(x)-8),Math.max(0,Math.floor(y)-8),16,16,gl.RGBA,gl.UNSIGNED_BYTE,pixels);
-        for (let index=0;index<pixels.length;index+=4) result=Math.imul(result^pixels[index]^pixels[index+1]^pixels[index+2],16777619);
-      }
-      return result>>>0;
-    };
+    const hash = (${createPixelProbe.toString()})(gl,canvas).hash;
     const probe={events:[],frames:[],responses:[],longTasks:[],longTasksSupported:PerformanceObserver.supportedEntryTypes.includes('longtask'),running:true,pending:null,lastHash:null};
     const longTaskObserver=probe.longTasksSupported?new PerformanceObserver(list=>probe.longTasks.push(...list.getEntries().map(entry=>({at:entry.startTime,milliseconds:entry.duration})))):null;
     longTaskObserver?.observe({type:'longtask',buffered:false});
