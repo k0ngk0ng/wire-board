@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
+import { execFileSync } from "node:child_process";
 
 const root = fileURLToPath(new URL("../../../", import.meta.url));
 const require = createRequire(new URL("../../../web/package.json", import.meta.url));
@@ -11,12 +12,15 @@ const rules = JSON.parse(readFileSync(new URL("./lint-rules.json", import.meta.u
 const args = process.argv.slice(2);
 const targets = args[0] === "--stdin" ? [args[1]] : rules.targets;
 let issues = 0;
+const goSources = [];
 for (const name of targets) {
   const rule = rules.languages[path.extname(name)];
   if (!rule || rule.comments !== false || !new RegExp(rule.directory).test(name) || !new RegExp(rule.filename).test(path.basename(name)) || name.split("/").includes("..")) throw Error(`Unregistered lint path: ${name}`);
   const source = readFileSync(args[0] === "--stdin" ? 0 : path.join(root, name), "utf8");
   const report = message => { issues++; process.stderr.write(`${name}: ${message}\n`); };
-  if (name.endsWith(".css")) {
+  if (name.endsWith(".go")) {
+    goSources.push({ File: name, Source: source });
+  } else if (name.endsWith(".css")) {
     postcss.parse(source).walkComments(() => report("prohibited code comment"));
   } else {
     const file = ts.createSourceFile(name, source, ts.ScriptTarget.Latest, true, name.endsWith(".tsx") ? ts.ScriptKind.TSX : name.endsWith(".ts") ? ts.ScriptKind.TS : ts.ScriptKind.JS);
@@ -30,6 +34,13 @@ for (const name of targets) {
     walk(file);
     for (const diagnostic of file.parseDiagnostics) report(ts.flattenDiagnosticMessageText(diagnostic.messageText, " "));
   }
+}
+if (goSources.length > 0) {
+  const result = JSON.parse(execFileSync("go", ["run", "games/yuyuhakusho/build/lint_go.go"], { cwd: root, input: JSON.stringify(goSources), encoding: "utf8" }));
+  result.forEach((messages, index) => messages.forEach(message => {
+    issues++;
+    process.stderr.write(`${goSources[index].File}: ${message}\n`);
+  }));
 }
 process.stdout.write(`${JSON.stringify({ passed: issues === 0, targets, issues })}\n`);
 process.exitCode = issues ? 1 : 0;

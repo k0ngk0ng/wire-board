@@ -5,7 +5,7 @@ import { Cover } from "./Cover";
 import { OptionsForm } from "./Options";
 import { Preparation } from "./Preparation";
 import { Rules } from "./Rules";
-import { characters } from "./labels";
+import { characters, teamGroups } from "./labels";
 import type { NetworkView, GameOptions } from "./types";
 export default defineGame<NetworkView, GameOptions>({
   ...catalog,
@@ -15,17 +15,10 @@ export default defineGame<NetworkView, GameOptions>({
   viewportFit: true,
   playerLayout: {
     density: "compact",
-    groups: (_room, data) =>
-      data?.options.teamBattle
-        ? [
-            { id: "team-a", label: "A队", seats: [0, 1] },
-            { id: "team-b", label: "B队", seats: [2, 3] },
-          ]
-        : [],
+    groups: (room, data) =>
+      teamGroups(data?.options ?? (room.options as GameOptions | undefined)),
   },
   defaultOptions: { arena: 0, teamBattle: false, characters: [3, 9] },
-  // The Board verifies the runtime and exact selected-scene JSON bytes itself.
-  // An empty public-media list prevents the host preloading all eight arenas.
   resources: () => [],
   Board,
   Cover,

@@ -1,3 +1,8 @@
+import type { GameOptions } from "./types";
+
+export const randomCharacter = 255;
+export const randomArena = 65535;
+
 export const characters = [
   "幻海",
   "藏马",
@@ -26,4 +31,18 @@ export function defaults(capacity: number) {
   if (capacity === 3) return [3, 1, 9];
   if (capacity === 4) return [3, 1, 0, 10];
   throw Error("比赛支持 2 至 4 人");
+}
+export function teamGroups(
+  options: Pick<GameOptions, "teamBattle" | "oneVsThree"> | undefined,
+) {
+  if (!options?.teamBattle) return [];
+  return options.oneVsThree
+    ? [
+        { id: "solo", label: "单人方", seats: [0] },
+        { id: "team", label: "三人队", seats: [1, 2, 3] },
+      ]
+    : [
+        { id: "team-a", label: "A 队", seats: [0, 1] },
+        { id: "team-b", label: "B 队", seats: [2, 3] },
+      ];
 }

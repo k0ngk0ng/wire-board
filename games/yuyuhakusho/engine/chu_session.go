@@ -15,6 +15,7 @@ type ChuSessionOptions struct {
 	Difficulty uint16
 	Players    []ChuSessionPlayer
 	TeamBattle bool
+	OneVsThree bool   `json:",omitempty"`
 	Arena      uint16 `json:",omitempty"`
 }
 
@@ -23,16 +24,32 @@ type ChuSessionResource struct {
 	Palette0 [16]uint16
 }
 
-// DefaultChuSessionResource is the32-byte palette part of the verified default
-// arena resource. It is rule/fade setup data, not a texture or CPU image.
+func (options ChuSessionOptions) Grouping() uint16 {
+	if options.OneVsThree {
+		return 6
+	}
+	if options.TeamBattle {
+		return 4
+	}
+	return 2
+}
+
+func (options ChuSessionOptions) Team(slot uint8) uint8 {
+	if !options.TeamBattle {
+		return slot + 1
+	}
+	if slot >= 2 || options.OneVsThree && slot >= 1 {
+		return 4
+	}
+	return 1
+}
+
 func DefaultChuSessionResource() ChuSessionResource {
 	return ChuSessionResource{Source: 0x21720, Palette0: [16]uint16{2662, 512, 3822, 3786, 2150, 1126, 2728, 3240, 3240, 2184, 1092, 2694, 1058, 1604, 3786, 1090}}
 }
 
 var chuArenaBehaviors = [8]uint32{0x20918, 0x20ae0, 0x20cb2, 0x20e28, 0x20fb4, 0x21126, 0x212f8, 0x21412}
 
-// ChuSessionResourceForArena returns immutable fade/setup metadata for the
-// selected scene. Old rule bundles retain their verified default resource.
 func ChuSessionResourceForArena(arena uint16, library ChuWorldLibrary) (ChuSessionResource, error) {
 	if arena > 14 || arena&1 != 0 || library.MatchStart.ArenaBehaviors[arena/2] != chuArenaBehaviors[arena/2] {
 		return ChuSessionResource{}, errors.New("selected arena rules are unavailable")
@@ -84,11 +101,8 @@ func ChuSessionResourceForArena(arena uint16, library ChuWorldLibrary) (ChuSessi
 	return resource, nil
 }
 
-// NewChuSession prepares an independent platform match from configuration.
-// It performs manager setup before the gameplay clock starts and waits for an
-// explicit one-time resource-ready delivery. It never loads a reference state.
 func NewChuSession(options ChuSessionOptions, library ChuWorldLibrary) (ChuWorldState, []ChuWorldEvent, error) {
-	if len(options.Players) < 2 || len(options.Players) > 4 || options.Difficulty > 6 || options.Difficulty&1 != 0 || options.TeamBattle && len(options.Players) != 4 {
+	if len(options.Players) < 2 || len(options.Players) > 4 || options.Difficulty > 6 || options.Difficulty&1 != 0 || options.TeamBattle && len(options.Players) != 4 || options.OneVsThree && !options.TeamBattle {
 		return ChuWorldState{}, nil, errors.New("unsupported Chu match size, difficulty or team configuration")
 	}
 	if len(library.Commands) == 0 || len(library.Animations) == 0 {
@@ -103,11 +117,8 @@ func NewChuSession(options ChuSessionOptions, library ChuWorldLibrary) (ChuWorld
 	}, RandomSeed: options.Seed, Difficulty: options.Difficulty, ResetEnabled: 1, SceneMode: 52,
 		Clock: WorldClockState{ControllerCount: 4}, Throws: ThrowContactBuffer{Records: make([]ThrowContactRecord, 16)},
 		Registration: FighterRegistrationState{Owners: make([]uint16, 64)}, Stream: make([]byte, 1024)}
-	state.Match.Rule, state.Match.Layout, state.Match.Grouping = 2, uint16(len(options.Players)), 2
+	state.Match.Rule, state.Match.Layout, state.Match.Grouping = 2, uint16(len(options.Players)), options.Grouping()
 	state.Match.Arena = options.Arena
-	if options.TeamBattle {
-		state.Match.Grouping = 4
-	}
 	var slots, humanChannels uint8
 	for _, player := range options.Players {
 		if player.Slot >= 4 || player.CharacterID > 10 || player.Color >= 12 || slots&(1<<player.Slot) != 0 || !player.Computer && (player.HumanChannel >= 4 || humanChannels&(1<<player.HumanChannel) != 0) {
@@ -126,13 +137,7 @@ func NewChuSession(options ChuSessionOptions, library ChuWorldLibrary) (ChuWorld
 		}
 		slots |= 1 << player.Slot
 		state.Match.Characters[player.Slot], state.Match.Colors[player.Slot] = player.CharacterID+1, player.Color
-		state.Match.BaseTeams[player.Slot] = player.Slot + 1
-		if options.TeamBattle {
-			state.Match.BaseTeams[player.Slot] = 1
-			if player.Slot >= 2 {
-				state.Match.BaseTeams[player.Slot] = 4
-			}
-		}
+		state.Match.BaseTeams[player.Slot] = options.Team(player.Slot)
 		if !player.Computer {
 			humanChannels |= 1 << player.HumanChannel
 			state.Match.Controllers[player.Slot] = player.HumanChannel + 1
@@ -141,11 +146,6 @@ func NewChuSession(options ChuSessionOptions, library ChuWorldLibrary) (ChuWorld
 	return StepChuWorldObjects(state, ChuWorldView{}, library)
 }
 
-// CompleteChuSessionResource acknowledges exactly the pending selected resource.
-// Code/assets/canvas readiness remains the host's real loading gate. Duplicate
-// or mismatched completions cannot reset a running match or its colors.
-// The optional library preserves the historical two-argument default API;
-// additional arenas require the same immutable library used to construct them.
 func CompleteChuSessionResource(state ChuWorldState, resource ChuSessionResource, libraries ...ChuWorldLibrary) (ChuWorldState, error) {
 	expected := DefaultChuSessionResource()
 	if len(libraries) > 1 || len(libraries) == 0 && state.Match.Arena != 0 {
@@ -164,25 +164,19 @@ func CompleteChuSessionResource(state ChuWorldState, resource ChuSessionResource
 	}
 	copy(state.Palette.Primary[:16], resource.Palette0[:])
 	state.ResourceBusy = 0
-	state.Palette.Flags |= 0x80 // The verified scene resource display-ready flag.
-	state.InterruptMode = 4     // Retained context identity; no IRQ is executed.
+	state.Palette.Flags |= 0x80
+	state.InterruptMode = 4
 	return state, nil
 }
 
-// StepChuSessionFrame runs one independent logical tick. Only physical logical
-// button bits enter this boundary; both pressed/released edges are calculated
-// locally. Internal world state is never replaced by a reference frame.
 func StepChuSessionFrame(state ChuWorldState, held [8]Buttons, library ChuWorldLibrary) (ChuWorldState, []ChuWorldEvent, WorldFrameOutcome, error) {
 	return StepChuSessionFrameObserved(state, held, library, nil)
 }
 
-// StepChuSessionFrameObserved includes input and palette in the World rollback.
-// It does not infer interrupt times or retain the synchronous hook.
 func StepChuSessionFrameObserved(state ChuWorldState, held [8]Buttons, library ChuWorldLibrary, hook WorldSoundHook) (ChuWorldState, []ChuWorldEvent, WorldFrameOutcome, error) {
 	return StepChuSessionFrameWithHooks(state, held, library, ChuWorldHooks{Sound: hook})
 }
 
-// StepChuSessionFrameWithHooks keeps observed work inside the frame transaction.
 func StepChuSessionFrameWithHooks(state ChuWorldState, held [8]Buttons, library ChuWorldLibrary, hooks ChuWorldHooks) (ChuWorldState, []ChuWorldEvent, WorldFrameOutcome, error) {
 	original := state
 	if state.MatchComplete {

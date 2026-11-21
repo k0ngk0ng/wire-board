@@ -6,6 +6,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"errors"
+	"math/rand/v2"
 	"sync/atomic"
 
 	"github.com/k0ngk0ng/wire-board/games/yuyuhakusho/engine"
@@ -35,12 +36,19 @@ func start(ctx gameapi.Context, raw json.RawMessage) (gameapi.Match, error) {
 	if err != nil {
 		return gameapi.Match{}, err
 	}
-	// Entropy is acquired once during package initialization. Match callbacks
-	// perform only deterministic in-memory token derivation and rule evaluation.
 	seedInput := append([]byte(nil), resources.nonce[:]...)
 	seedInput = binary.BigEndian.AppendUint64(seedInput, matchSerial.Add(1))
 	seedInput = binary.BigEndian.AppendUint64(seedInput, uint64(ctx.Now.UnixNano()))
 	sum := sha256.Sum256(seedInput)
+	random := rand.New(rand.NewChaCha8(sum))
+	if o.Arena == 65535 {
+		o.Arena = uint16(random.IntN(8) * 2)
+	}
+	for seat, character := range o.Characters {
+		if character == 255 {
+			o.Characters[seat] = uint8(random.IntN(11))
+		}
+	}
 	config, err := sessionOptions(o, flags, binary.BigEndian.Uint32(sum[:4]))
 	if err != nil {
 		return gameapi.Match{}, err

@@ -1,4 +1,3 @@
-// Package yuyuhakusho adapts platform seat identity to recovered game rules.
 package yuyuhakusho
 
 import (
@@ -14,6 +13,7 @@ import (
 type Options struct {
 	Arena      uint16  `json:"arena"`
 	TeamBattle bool    `json:"teamBattle"`
+	OneVsThree bool    `json:"oneVsThree,omitempty"`
 	Characters []uint8 `json:"characters"`
 }
 
@@ -64,14 +64,14 @@ func defaultOptions(capacity int) Options {
 	return Options{Characters: append([]uint8(nil), roster...)}
 }
 func validateOptions(capacity int, o Options) error {
-	if capacity < 2 || capacity > 4 || len(o.Characters) != capacity || o.TeamBattle && capacity != 4 {
+	if capacity < 2 || capacity > 4 || len(o.Characters) != capacity || o.TeamBattle && capacity != 4 || o.OneVsThree && !o.TeamBattle {
 		return errors.New("人数与比赛设置不一致")
 	}
-	if o.Arena > 14 || o.Arena&1 != 0 {
+	if o.Arena != 65535 && (o.Arena > 14 || o.Arena&1 != 0) {
 		return errors.New("请选择已恢复的场地")
 	}
 	for _, character := range o.Characters {
-		if character > 10 {
+		if character > 10 && character != 255 {
 			return errors.New("请选择有效角色")
 		}
 	}
@@ -83,7 +83,7 @@ func configure(capacity int, raw json.RawMessage) (json.RawMessage, error) {
 	}
 	o := defaultOptions(capacity)
 	if len(bytes.TrimSpace(raw)) != 0 {
-		if _, err := strictOptionsObject(raw, "arena", "teamBattle", "characters"); err != nil {
+		if _, err := strictOptionsObject(raw, "arena", "teamBattle", "oneVsThree", "characters"); err != nil {
 			return nil, err
 		}
 		if err := json.Unmarshal(raw, &o); err != nil {
@@ -107,7 +107,7 @@ func prepare(ctx gameapi.PreparationContext, raw, action json.RawMessage) (json.
 	if err = json.Unmarshal(normalized, &o); err != nil {
 		return nil, err
 	}
-	fields, err := strictOptionsObject(action, "type", "seat", "character", "arena", "teamBattle")
+	fields, err := strictOptionsObject(action, "type", "seat", "character", "arena", "teamBattle", "oneVsThree")
 	if err != nil {
 		return nil, err
 	}
@@ -117,7 +117,7 @@ func prepare(ctx gameapi.PreparationContext, raw, action json.RawMessage) (json.
 	}
 	switch kind {
 	case "character":
-		if len(fields["character"]) == 0 || len(fields["arena"]) != 0 || len(fields["teamBattle"]) != 0 {
+		if len(fields["character"]) == 0 || len(fields["arena"]) != 0 || len(fields["teamBattle"]) != 0 || len(fields["oneVsThree"]) != 0 {
 			return nil, errors.New("角色操作字段无效")
 		}
 		target := ctx.Actor
@@ -130,12 +130,12 @@ func prepare(ctx gameapi.PreparationContext, raw, action json.RawMessage) (json.
 			return nil, errors.New("只能选择自己或电脑席位的角色")
 		}
 		var character uint8
-		if json.Unmarshal(fields["character"], &character) != nil || character > 10 {
+		if json.Unmarshal(fields["character"], &character) != nil || character > 10 && character != 255 {
 			return nil, errors.New("请选择有效角色")
 		}
 		o.Characters[target] = character
 	case "arena":
-		if !ctx.Host || len(fields["arena"]) == 0 || len(fields["seat"]) != 0 || len(fields["character"]) != 0 || len(fields["teamBattle"]) != 0 {
+		if !ctx.Host || len(fields["arena"]) == 0 || len(fields["seat"]) != 0 || len(fields["character"]) != 0 || len(fields["teamBattle"]) != 0 || len(fields["oneVsThree"]) != 0 {
 			return nil, errors.New("仅房主可设置场地")
 		}
 		if json.Unmarshal(fields["arena"], &o.Arena) != nil {
@@ -146,6 +146,10 @@ func prepare(ctx gameapi.PreparationContext, raw, action json.RawMessage) (json.
 			return nil, errors.New("仅房主可设置赛制")
 		}
 		if json.Unmarshal(fields["teamBattle"], &o.TeamBattle) != nil {
+			return nil, errors.New("比赛模式无效")
+		}
+		o.OneVsThree = false
+		if value := fields["oneVsThree"]; value != nil && json.Unmarshal(value, &o.OneVsThree) != nil {
 			return nil, errors.New("比赛模式无效")
 		}
 	default:
@@ -170,7 +174,7 @@ func sessionOptions(o Options, automated []bool, seed uint32) (engine.ChuSession
 	} else if capacity == 4 {
 		slots = []uint8{0, 1, 2, 3}
 	}
-	out := engine.ChuSessionOptions{Arena: o.Arena, Seed: seed, Difficulty: 6, TeamBattle: o.TeamBattle}
+	out := engine.ChuSessionOptions{Arena: o.Arena, Seed: seed, Difficulty: 6, TeamBattle: o.TeamBattle, OneVsThree: o.OneVsThree}
 	for seat, slot := range slots {
 		out.Players = append(out.Players, engine.ChuSessionPlayer{Slot: slot, CharacterID: o.Characters[seat], Color: uint8(seat), Computer: automated[seat], HumanChannel: uint8(seat)})
 	}

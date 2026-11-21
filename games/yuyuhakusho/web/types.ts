@@ -2,6 +2,7 @@ import type { GameClock } from "../../../web/src/game-api/module";
 export type GameOptions = {
   arena: number;
   teamBattle: boolean;
+  oneVsThree?: boolean;
   characters: number[];
 };
 export type PlayerSummary = {
@@ -72,7 +73,6 @@ export type Progress = {
 };
 export const FPS = 59.92274340431231;
 export const FRAME_MS = 1000 / FPS;
-// Bounded speculative lead covers the verified delayed four-player profile.
 export const MAX_PREDICTION = 20;
 export function frameNumber(value: string): bigint {
   if (!/^(0|[1-9][0-9]*)$/.test(value)) throw Error("无效帧号");

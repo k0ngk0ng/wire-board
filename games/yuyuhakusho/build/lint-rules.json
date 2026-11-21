@@ -6,24 +6,57 @@
     "games/yuyuhakusho/tests/md-touch-browser.mjs",
     "games/yuyuhakusho/build/lint.mjs",
     "games/yuyuhakusho/tests/lint.test.mjs",
-    "web/tests/controller-touch-lint.test.mjs"
+    "web/tests/controller-touch-lint.test.mjs",
+    "games/yuyuhakusho/server/options.go",
+    "games/yuyuhakusho/server/module.go",
+    "games/yuyuhakusho/server/module_state.go",
+    "games/yuyuhakusho/server/match_options_e2e_test.go",
+    "games/yuyuhakusho/engine/chu_session.go",
+    "games/yuyuhakusho/engine/match_lifecycle.go",
+    "games/yuyuhakusho/engine/one_vs_three_test.go",
+    "games/yuyuhakusho/sessiontick/tick.go",
+    "games/yuyuhakusho/build/lint_go.go",
+    "games/yuyuhakusho/web/types.ts",
+    "games/yuyuhakusho/web/labels.ts",
+    "games/yuyuhakusho/web/Options.tsx",
+    "games/yuyuhakusho/web/Preparation.tsx",
+    "games/yuyuhakusho/web/CharacterPicker.tsx",
+    "games/yuyuhakusho/web/ArenaPicker.tsx",
+    "games/yuyuhakusho/web/module.tsx",
+    "games/yuyuhakusho/web/Rules.tsx",
+    "games/yuyuhakusho/web/network.css",
+    "games/yuyuhakusho/tests/MatchOptionsFixture.tsx",
+    "games/yuyuhakusho/tests/match-options-browser.mjs",
+    "games/yuyuhakusho/tests/match-options-lint.test.mjs",
+    "games/yuyuhakusho/platformtest/match_options_e2e_test.go",
+    "games/yuyuhakusho/web/catalog.tsx"
   ],
   "languages": {
     ".ts": {
-      "directory": "^web/src/controllers/",
+      "directory": "^(?:web/src/controllers/|games/yuyuhakusho/web/)",
       "filename": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*\\.ts$",
       "comments": false
     },
     ".tsx": {
-      "directory": "^(?:web/src/controllers/|games/yuyuhakusho/tests/)",
-      "filename": "^[A-Z][A-Za-z0-9]*\\.tsx$",
+      "directory": "^(?:web/src/controllers/|games/yuyuhakusho/(?:tests|web)/)",
+      "filename": "^(?:[A-Z][A-Za-z0-9]*|module|catalog)\\.tsx$",
       "comments": false
     },
     ".mjs": {
       "directory": "^(?:games/yuyuhakusho/(?:tests|build)/|web/tests/)",
       "filename": "^[a-z][a-z0-9]*(?:[-.][a-z0-9]+)*\\.mjs$",
       "comments": false
+    },
+    ".css": {
+      "directory": "^games/yuyuhakusho/web/",
+      "filename": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*\\.css$",
+      "comments": false
+    },
+    ".go": {
+      "directory": "^games/yuyuhakusho/(?:server|engine|sessiontick|platformtest|build)/",
+      "filename": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*\\.go$",
+      "comments": false
     }
   },
-  "identifiers": "^(?:_?[A-Za-z][A-Za-z0-9]*|_)$"
+  "identifiers": "^(?:_?[A-Za-z][A-Za-z0-9]*|_|[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)*)$"
 }

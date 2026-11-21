@@ -16,10 +16,6 @@ type MatchFighter struct {
 	BaseTeam uint8
 }
 
-// MatchLifecycleState covers the battle-manager phases after scene/actor
-// creation. Team codes are original game identities, never platform seats.
-// The three statistics arrays retain their actual contiguous storage meaning;
-// LossesByCharacter[60:64] aliases input-recording EndMarkers at FFFC..FFFF.
 type MatchLifecycleState struct {
 	Manager                                 MatchObjectHeader
 	Fighters                                [4]MatchFighter
@@ -53,10 +49,6 @@ type MatchLifecycleOutcome struct {
 	ClearWorldFrom uint16
 }
 
-// StepMatchLifecycle recovers complete manager stages 4..26 at 0xf2a4,
-// including their fallthroughs. Stages 0/2 still require separate scene/actor
-// initialization. ClearWorldFrom requests clearing every object from 8040 to
-// A000, including fields outside this typed view; the caller must apply it.
 func StepMatchLifecycle(state MatchLifecycleState) (MatchLifecycleState, MatchLifecycleOutcome, error) {
 	return stepMatchLifecycleWithSound(state, nil)
 }
@@ -77,7 +69,6 @@ func stepMatchLifecycleWithSound(state MatchLifecycleState, soundPort *worldSoun
 		state.PaletteMode, state.PaletteTarget, state.PaletteStep = 0, 0x0fff, 0x100
 		state.SecondaryColors = state.CurrentColors
 		state.Manager.Stage += 2
-		// The following stage's signed palette test sees the newly set 0x80.
 	case 6:
 		if int8(state.PaletteStatus) >= 0 {
 			state.Manager.Stage += 2
@@ -196,8 +187,6 @@ func configureMatchPause(state *MatchLifecycleState) {
 	}
 }
 
-// The byte minimum is the original unassigned sentinel. High-bit base-team
-// values retain the original repeated-first-team behavior in isolated inputs.
 func matchSurvivorTeam(fighters [4]MatchFighter, waitingForRetirement bool) uint8 {
 	team := uint8(0x80)
 	for _, fighter := range fighters {
@@ -276,6 +265,21 @@ func recordMatchStatistics(state *MatchLifecycleState) error {
 	if state.Rule != 2 || state.WinnerCode <= 0 {
 		return nil
 	}
+	if state.Grouping == 6 {
+		for winner, fighter := range state.Fighters {
+			if int16(fighter.BaseTeam) != state.WinnerCode {
+				continue
+			}
+			for loser, opponent := range state.Fighters {
+				if opponent.BaseTeam != fighter.BaseTeam {
+					if err := recordMatchPair(state, winner, loser); err != nil {
+						return err
+					}
+				}
+			}
+		}
+		return nil
+	}
 	if state.Grouping == 2 {
 		winner := int(state.WinnerCode) - 1
 		if winner < 0 || winner >= 4 {
@@ -350,7 +354,21 @@ func maybeMatchTaunt(state *MatchLifecycleState, soundPort *worldSoundPort) erro
 	}
 	var frame int16
 	var err error
-	if state.Grouping == 4 {
+	if state.Grouping == 6 {
+		for index, fighter := range state.Fighters {
+			if int16(fighter.BaseTeam) != state.WinnerCode {
+				continue
+			}
+			var duration int16
+			duration, err = lookup(index)
+			if err != nil {
+				return err
+			}
+			if duration > frame {
+				frame = duration
+			}
+		}
+	} else if state.Grouping == 4 {
 		index := int(uint16(state.WinnerCode) >> 1)
 		var other int16
 		frame, err = lookup(index)

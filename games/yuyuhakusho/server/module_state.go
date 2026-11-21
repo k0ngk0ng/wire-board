@@ -101,7 +101,8 @@ func decode(m gameapi.Match) (State, error) {
 	if err := validateOptions(n, s.Options); err != nil {
 		return State{}, err
 	}
-	if len(s.Epoch) != 24 || s.ServerAt < 0 || s.ServerAt > int64(^uint64(0)>>1)-maxAdvanceMS || s.Remainder < 0 || s.Remainder >= clockDenominator || len(s.Inputs) != n || len(s.World.Stream) != 1024 || len(s.World.Objects) > 128 || s.World.Match.Arena != s.Options.Arena || s.World.Match.Grouping == 4 != s.Options.TeamBattle || s.World.Clock.Frame != uint16(s.Frame) {
+	options := engine.ChuSessionOptions{TeamBattle: s.Options.TeamBattle, OneVsThree: s.Options.OneVsThree}
+	if len(s.Epoch) != 24 || s.ServerAt < 0 || s.ServerAt > int64(^uint64(0)>>1)-maxAdvanceMS || s.Remainder < 0 || s.Remainder >= clockDenominator || len(s.Inputs) != n || len(s.World.Stream) != 1024 || len(s.World.Objects) > 128 || s.World.Match.Arena != s.Options.Arena || s.World.Match.Grouping != options.Grouping() || s.World.Clock.Frame != uint16(s.Frame) {
 		return State{}, errors.New("无效对局状态")
 	}
 	if _, err := hex.DecodeString(s.Epoch); err != nil {
@@ -115,8 +116,11 @@ func decode(m gameapi.Match) (State, error) {
 		return State{}, errors.New("资源就绪状态不一致")
 	}
 	for seat, slot := range seatSlots(n) {
-		if s.World.Match.Characters[slot] != s.Options.Characters[seat]+1 {
+		if s.Options.Characters[seat] > 10 || s.World.Match.Characters[slot] != s.Options.Characters[seat]+1 {
 			return State{}, errors.New("角色与存档配置不一致")
+		}
+		if s.World.Match.BaseTeams[slot] != options.Team(slot) {
+			return State{}, errors.New("队伍与存档配置不一致")
 		}
 	}
 	for _, input := range s.Inputs {
@@ -171,8 +175,6 @@ func (s State) match() (gameapi.Match, error) {
 	if err != nil {
 		return gameapi.Match{}, err
 	}
-	// All original active actors correspond to platform seats; there are no
-	// hidden non-seat AI fighters. Host bot/autoplay metadata remains separate.
 	m := gameapi.Match{Schema: 1, Data: raw, Actors: []int{}, TimeoutActors: []int{}, Attention: []int{}, CheckpointKey: s.checkpointKey()}
 	n := len(s.Inputs)
 	if s.World.MatchComplete {
@@ -185,13 +187,7 @@ func (s State) match() (gameapi.Match, error) {
 			}
 		} else {
 			for seat, slot := range seatSlots(n) {
-				team := int16(slot + 1)
-				if s.Options.TeamBattle {
-					team = 1
-					if slot >= 2 {
-						team = 4
-					}
-				}
+				team := int16(s.World.Match.BaseTeams[slot])
 				if team == s.World.Match.WinnerCode {
 					result.Winners = append(result.Winners, seat)
 				}
