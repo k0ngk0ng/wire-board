@@ -108,8 +108,13 @@ test("shared game protection covers native holds and menus while preserving cont
     await mouse("[data-probe=outside]", "left", 3);
     check("outside text can be selected", (await evaluate("getSelection().toString()")).length > 0);
     await evaluate("getSelection().removeAllRanges();true");
+    await call("Page.bringToFront");
+    await call("Emulation.setFocusEmulationEnabled", { enabled: true });
     await browser("focus", "[data-probe=input]");
+    report.observations.editorBefore = await evaluate("(()=>{const e=document.querySelector('[data-probe=input]');return {active:document.activeElement===e,focused:document.hasFocus(),start:e.selectionStart,end:e.selectionEnd,value:e.value}})()");
     await browser("press", process.platform === "darwin" ? "Meta+a" : "Control+a");
+    await browser("wait", "--fn", "(()=>{const e=document.querySelector('[data-probe=input]');return e.selectionEnd>e.selectionStart})()");
+    report.observations.editorAfter = await evaluate("(()=>{const e=document.querySelector('[data-probe=input]');return {active:document.activeElement===e,focused:document.hasFocus(),start:e.selectionStart,end:e.selectionEnd,value:e.value}})()");
     check("editor selection retained", await evaluate("(()=>{const e=document.querySelector('[data-probe=input]');return e.selectionEnd-e.selectionStart})()") > 0);
     await evaluate("document.activeElement.blur();getSelection().removeAllRanges();true");
     const hint = await rect("[data-probe=hint]");
