@@ -128,7 +128,7 @@ func readInputArchive(match gameapi.Match, actor int) (inputArchive, bool) {
 	var options struct {
 		Map string `json:"map"`
 	}
-	if !archiveField(worldRaw, world, "options", &options) || state.Schema != 1 || len(state.Epoch) != 24 || state.BaseAt <= 0 || state.World.Frame < 0 || options.Map != state.World.MapID || len(state.RulesSHA256) != 64 || rulesIdentities[state.World.MapID] != state.RulesSHA256 {
+	if !archiveField(worldRaw, world, "options", &options) || !validStoredSchema(state.Schema) || len(state.Epoch) != 24 || state.BaseAt <= 0 || state.World.Frame < 0 || options.Map != state.World.MapID || len(state.RulesSHA256) != 64 || rulesIdentities[state.World.MapID] != state.RulesSHA256 {
 		return archive, false
 	}
 	playersSpan, exists := world["players"]

@@ -12,13 +12,15 @@ import (
 )
 
 type matchState struct {
-	Schema      int          `json:"schema"`
-	Epoch       string       `json:"epoch"`
-	BaseAt      int64        `json:"baseAt"`
-	ObservedAt  int64        `json:"observedAt"`
-	RulesSHA256 string       `json:"rulesSHA256"`
-	World       engine.State `json:"world"`
-	history     json.RawMessage
+	Schema        int          `json:"schema"`
+	Epoch         string       `json:"epoch"`
+	BaseAt        int64        `json:"baseAt"`
+	ObservedAt    int64        `json:"observedAt"`
+	RulesSHA256   string       `json:"rulesSHA256"`
+	World         engine.State `json:"world"`
+	history       json.RawMessage
+	historyPacked []byte
+	historyBytes  int
 }
 
 type inputAction struct {
@@ -70,7 +72,7 @@ func start(ctx gameapi.Context, raw json.RawMessage) (gameapi.Match, error) {
 
 func decode(match gameapi.Match) (*matchState, error) {
 	var state matchState
-	if state.UnmarshalJSON(match.Data) != nil || state.Schema != 1 || len(state.Epoch) != 24 || state.BaseAt <= 0 || state.World.Frame < 0 || len(state.World.Players) < 2 || len(state.World.Players) > 10 {
+	if state.UnmarshalJSON(match.Data) != nil || !validStoredSchema(state.Schema) || len(state.Epoch) != 24 || state.BaseAt <= 0 || state.World.Frame < 0 || len(state.World.Players) < 2 || len(state.World.Players) > 10 {
 		return nil, errors.New("反恐精英状态无法恢复")
 	}
 	state.World.World = engine.MapByID(state.World.MapID)

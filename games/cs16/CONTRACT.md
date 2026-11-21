@@ -22,6 +22,8 @@ GoldSrc 坐标保持 X、Y 水平，Z 向上。位置和速度采用原始单位
 
 ## 服务器与视图
 
+私有持久化格式 2 使用 `historyPacked` 与 `historyBytes` 保存完整历史冷检查点，解压上限为 2 MiB，拒绝 CRC 错误、尾随数据与声明长度不符。格式 1 的旧历史继续可读；公开视图仍使用 schema 1，不发送冷检查点。
+
 服务端负责 `games/cs16/server/`、平台注册及控制器声明，新增模块 `cs16.Module()`。`View` 顶层为 `{schema,epoch,serverAt,startAt,frame,mapId,rulesSHA256,options,players,events,eventId,round,phase,phaseEndsAt,teamScores,bomb,hostages,grenades,drops,finished,you,canAct}`。每玩家至少 `{seat,team,character,x,y,z,yaw,pitch,alive,life,health,armor,money,weapon,ammo,reserve,kills,deaths,receivedSeq,appliedSeq,crouch}`；他人私有库存、资金等按权限裁剪。常规和恢复投影均不发送 Map；使用 `mapId` 与 `rulesSHA256` 绑定规则身份，并复用已校验的资源缓存。动态数据使用连接事件游标。
 
 帧与输入序号上限必须明确；离散边沿有序保留。初次加载统一就绪，断线不自动托管，重连只恢复本端。输入、权威应用、事件和生命代次分别校验。人物死亡可观战但不能继续提交攻击。

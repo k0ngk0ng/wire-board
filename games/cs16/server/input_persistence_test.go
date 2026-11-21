@@ -3,6 +3,7 @@ package cs16
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"reflect"
 	"strings"
 	"testing"
@@ -58,8 +59,8 @@ func TestQueuedInputPersistenceMatchesCompleteRules(t *testing.T) {
 					if err != nil || bytes.Equal(before, actual.Data) {
 						t.Fatal("input did not enter a new snapshot", err)
 					}
-					var first, second legacyMatchState
-					if json.Unmarshal(actual.Data, &first) != nil || json.Unmarshal(expected.Data, &second) != nil || !reflect.DeepEqual(first, second) {
+					first, second := expandedMatchState(t, actual), expandedMatchState(t, expected)
+					if !reflect.DeepEqual(first, second) {
 						t.Fatal("queued input changed authoritative state", mapID, tick, actor)
 					}
 				}
@@ -111,11 +112,12 @@ func TestQueuedInputArchiveValidationMatchesOriginalPath(t *testing.T) {
 		t.Fatal(err)
 	}
 	raw, _ := json.Marshal(inputAction{Type: "input", Epoch: state.Epoch, Input: engine.Input{Seq: 1, Life: state.World.Players[ctx.Actor].Life, ViewFrame: state.World.Frame}})
+	prefix := fmt.Sprintf("\"schema\":%d", state.Schema)
 	for _, data := range []string{
 		string(match.Data),
-		strings.Replace(string(match.Data), "\"schema\":1", "\"schema\":1,\"schema\":1", 1),
-		strings.Replace(string(match.Data), "\"schema\":1", "\"schema\":\"1\"", 1),
-		strings.Replace(string(match.Data), "\"schema\":1", "\"schema\":0", 1),
+		strings.Replace(string(match.Data), prefix, prefix+","+prefix, 1),
+		strings.Replace(string(match.Data), prefix, "\"schema\":\"1\"", 1),
+		strings.Replace(string(match.Data), prefix, "\"schema\":0", 1),
 		strings.Replace(string(match.Data), "\"world\":", "\"\\u0077orld\":", 1),
 		string(match.Data[:len(match.Data)-1]),
 	} {
@@ -127,8 +129,8 @@ func TestQueuedInputArchiveValidationMatchesOriginalPath(t *testing.T) {
 			t.Fatal("archive validation changed", data, got, want)
 		}
 		if got == nil {
-			var first, second legacyMatchState
-			if json.Unmarshal(actual.Data, &first) != nil || json.Unmarshal(expected.Data, &second) != nil || !reflect.DeepEqual(first, second) {
+			first, second := expandedMatchState(t, actual), expandedMatchState(t, expected)
+			if !reflect.DeepEqual(first, second) {
 				t.Fatal("archive layout changed rule output")
 			}
 		}

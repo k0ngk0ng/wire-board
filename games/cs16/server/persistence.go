@@ -1,6 +1,7 @@
 package cs16
 
 import (
+	"bytes"
 	"crypto/sha256"
 	"encoding/json"
 	"errors"
@@ -16,12 +17,14 @@ type historyWorld struct {
 }
 
 type storedMatchState struct {
-	Schema      int          `json:"schema"`
-	Epoch       string       `json:"epoch"`
-	BaseAt      int64        `json:"baseAt"`
-	ObservedAt  int64        `json:"observedAt"`
-	RulesSHA256 string       `json:"rulesSHA256"`
-	World       historyWorld `json:"world"`
+	Schema        int          `json:"schema"`
+	Epoch         string       `json:"epoch"`
+	BaseAt        int64        `json:"baseAt"`
+	ObservedAt    int64        `json:"observedAt"`
+	RulesSHA256   string       `json:"rulesSHA256"`
+	World         historyWorld `json:"world"`
+	HistoryPacked []byte       `json:"historyPacked,omitempty"`
+	HistoryBytes  int          `json:"historyBytes,omitempty"`
 }
 
 func (state *matchState) UnmarshalJSON(raw []byte) error {
@@ -29,29 +32,56 @@ func (state *matchState) UnmarshalJSON(raw []byte) error {
 	if err := json.Unmarshal(raw, &stored); err != nil {
 		return err
 	}
+	if stored.Schema == 2 {
+		if len(stored.HistoryPacked) == 0 || len(stored.HistoryPacked) > maxHistoryBytes || stored.HistoryBytes <= 0 || stored.HistoryBytes > maxHistoryBytes || len(stored.World.History) != 0 && !bytes.Equal(bytes.TrimSpace(stored.World.History), []byte("null")) {
+			return errors.New("历史检查点封装无效")
+		}
+	} else if len(stored.HistoryPacked) != 0 || stored.HistoryBytes != 0 {
+		return errors.New("历史检查点版本无效")
+	}
 	state.Schema, state.Epoch, state.BaseAt, state.ObservedAt, state.RulesSHA256 = stored.Schema, stored.Epoch, stored.BaseAt, stored.ObservedAt, stored.RulesSHA256
 	state.World = stored.World.State
 	state.history = stored.World.History
+	state.historyPacked, state.historyBytes = stored.HistoryPacked, stored.HistoryBytes
 	return nil
 }
 
 func (state *matchState) MarshalJSON() ([]byte, error) {
-	history := state.history
-	if state.World.History != nil || len(history) == 0 {
+	packed, size := state.historyPacked, state.historyBytes
+	if state.World.History != nil || len(packed) == 0 {
+		history := state.history
 		var err error
-		history, err = json.Marshal(state.World.History)
+		if state.World.History != nil || len(history) == 0 {
+			history, err = json.Marshal(state.World.History)
+			if err != nil {
+				return nil, err
+			}
+		}
+		packed, err = compressHistory(history)
 		if err != nil {
 			return nil, err
 		}
+		size = len(history)
 	}
-	return json.Marshal(storedMatchState{Schema: state.Schema, Epoch: state.Epoch, BaseAt: state.BaseAt, ObservedAt: state.ObservedAt, RulesSHA256: state.RulesSHA256, World: historyWorld{State: state.World, History: history}})
+	return json.Marshal(storedMatchState{Schema: 2, Epoch: state.Epoch, BaseAt: state.BaseAt, ObservedAt: state.ObservedAt, RulesSHA256: state.RulesSHA256, World: historyWorld{State: state.World}, HistoryPacked: packed, HistoryBytes: size})
 }
 
 func loadHistory(state *matchState) error {
-	if state.World.History != nil || len(state.history) == 0 {
+	if state.World.History != nil {
 		return nil
 	}
-	if err := json.Unmarshal(state.history, &state.World.History); err != nil {
+	history := state.history
+	if len(state.historyPacked) != 0 {
+		var err error
+		history, err = expandHistory(state.historyPacked, state.historyBytes)
+		if err != nil {
+			return err
+		}
+	}
+	if len(history) == 0 {
+		return nil
+	}
+	if err := json.Unmarshal(history, &state.World.History); err != nil {
 		return errors.New("历史检查点无法恢复")
 	}
 	if len(state.World.History) > engine.MaxHistory {
@@ -95,7 +125,7 @@ func unchangedProjection(match gameapi.Match, seat int, cursor string) (bool, er
 	if err := json.Unmarshal(match.Data, &header); err != nil {
 		return false, err
 	}
-	if header.Schema != 1 || len(header.Epoch) != 24 || header.BaseAt <= 0 || header.World.Frame < 0 || len(header.World.Players) < 2 || len(header.World.Players) > 10 || header.World.Options.Map != header.World.MapID || len(header.RulesSHA256) != 64 || header.RulesSHA256 != rulesIdentities[header.World.MapID] {
+	if !validStoredSchema(header.Schema) || len(header.Epoch) != 24 || header.BaseAt <= 0 || header.World.Frame < 0 || len(header.World.Players) < 2 || len(header.World.Players) > 10 || header.World.Options.Map != header.World.MapID || len(header.RulesSHA256) != 64 || header.RulesSHA256 != rulesIdentities[header.World.MapID] {
 		return false, errors.New("实时投影身份无效")
 	}
 	catchingUp := header.ObservedAt-header.BaseAt-header.World.Frame*1000/engine.FPS > 200
@@ -137,7 +167,7 @@ func decodeInputState(match gameapi.Match, actor int) (*matchState, error) {
 	if err := json.Unmarshal(match.Data, &header); err != nil {
 		return nil, err
 	}
-	if header.Schema != 1 || len(header.Epoch) != 24 || header.BaseAt <= 0 || header.World.Frame < 0 || len(header.World.Players) < 2 || len(header.World.Players) > 10 || header.World.MapID != header.World.Options.Map || len(header.RulesSHA256) != 64 || header.RulesSHA256 != rulesIdentities[header.World.MapID] {
+	if !validStoredSchema(header.Schema) || len(header.Epoch) != 24 || header.BaseAt <= 0 || header.World.Frame < 0 || len(header.World.Players) < 2 || len(header.World.Players) > 10 || header.World.MapID != header.World.Options.Map || len(header.RulesSHA256) != 64 || header.RulesSHA256 != rulesIdentities[header.World.MapID] {
 		return nil, errors.New("实时输入身份无效")
 	}
 	state := &matchState{Schema: header.Schema, Epoch: header.Epoch, BaseAt: header.BaseAt, RulesSHA256: header.RulesSHA256, World: engine.State{Frame: header.World.Frame, Finished: header.World.Finished, Players: make([]engine.Player, len(header.World.Players))}}

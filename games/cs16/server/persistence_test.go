@@ -20,6 +20,18 @@ type legacyMatchState struct {
 	World       engine.State `json:"world"`
 }
 
+func expandedMatchState(t *testing.T, match gameapi.Match) legacyMatchState {
+	t.Helper()
+	state, err := decode(match)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err = loadHistory(state); err != nil {
+		t.Fatal(err)
+	}
+	return legacyMatchState{Schema: state.Schema, Epoch: state.Epoch, BaseAt: state.BaseAt, ObservedAt: state.ObservedAt, RulesSHA256: state.RulesSHA256, World: state.World}
+}
+
 func TestLazyHistoryPreservesLegacyStateAndSubsequentRules(t *testing.T) {
 	ctx, match := cursorFixture(t)
 	ctx.Now = ctx.Now.Add(time.Second)
@@ -28,9 +40,14 @@ func TestLazyHistoryPreservesLegacyStateAndSubsequentRules(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	var original legacyMatchState
-	if json.Unmarshal(match.Data, &original) != nil || len(original.World.History) != engine.MaxHistory {
+	original := expandedMatchState(t, match)
+	if len(original.World.History) != engine.MaxHistory {
 		t.Fatal("ordinary persisted history missing")
+	}
+	original.Schema = 1
+	match.Data, err = json.Marshal(original)
+	if err != nil {
+		t.Fatal(err)
 	}
 	lazy, err := decode(match)
 	if err != nil {
@@ -44,8 +61,8 @@ func TestLazyHistoryPreservesLegacyStateAndSubsequentRules(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	var stored legacyMatchState
-	if json.Unmarshal(updated.Data, &stored) != nil || !reflect.DeepEqual(original.World.History, stored.World.History) {
+	stored := expandedMatchState(t, updated)
+	if !reflect.DeepEqual(original.World.History, stored.World.History) {
 		t.Fatal("control rewrite changed legacy history")
 	}
 	if stored.Schema != original.Schema || stored.Epoch != original.Epoch || stored.BaseAt != original.BaseAt {
@@ -64,10 +81,7 @@ func TestLazyHistoryPreservesLegacyStateAndSubsequentRules(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	var actualState legacyMatchState
-	if json.Unmarshal(actual.Data, &actualState) != nil {
-		t.Fatal("new state no longer readable as legacy format")
-	}
+	actualState := expandedMatchState(t, actual)
 	expectedRaw, _ := json.Marshal(original.World)
 	actualRaw, _ := json.Marshal(actualState.World)
 	if !bytes.Equal(expectedRaw, actualRaw) {
@@ -136,8 +150,8 @@ func TestPersistenceOmitsOnlyUnusedHistoricalBrushCopies(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	var saved legacyMatchState
-	if json.Unmarshal(match.Data, &saved) != nil || len(saved.World.History) != engine.MaxHistory || len(saved.World.Brushes) == 0 {
+	saved := expandedMatchState(t, match)
+	if len(saved.World.History) != engine.MaxHistory || len(saved.World.Brushes) == 0 {
 		t.Fatal("current collision state or complete target history missing")
 	}
 	for _, frame := range saved.World.History {
