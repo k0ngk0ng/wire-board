@@ -205,6 +205,7 @@ try {
     report.network.bootstrapPhase.receivedBytes = report.network.receivedBytes;
     report.network.bootstrapPhase.sentBytes = report.network.sentBytes;
   }
+  report.graphics = await evaluate("(()=>{const canvas=document.querySelector('[data-cs16-canvas]');const gl=canvas.getContext('webgl2')||canvas.getContext('webgl');return {attributes:gl.getContextAttributes(),width:canvas.width,height:canvas.height}})()");
   await call("Performance.enable");
   if (options.observeOnly) {
     report.scope = options.denseExpected ? "natural ten-seat combat wire and authoritative clock observation" : "wire observation across transport loss and real page restore";
@@ -317,7 +318,7 @@ try {
     const probe={events:[],frames:[],responses:[],longTasks:[],longTasksSupported:PerformanceObserver.supportedEntryTypes.includes('longtask'),running:true,pending:null,lastHash:null};
     const longTaskObserver=probe.longTasksSupported?new PerformanceObserver(list=>probe.longTasks.push(...list.getEntries().map(entry=>({at:entry.startTime,milliseconds:entry.duration})))):null;
     longTaskObserver?.observe({type:'longtask',buffered:false});
-    const types=['keydown','keyup','pointerdown','pointerrawupdate','pointermove','pointerup','pointercancel','touchstart','touchmove','touchend','touchcancel'];
+    const types=['keydown','keyup','pointerdown','pointermove','pointerup','pointercancel','touchstart','touchmove','touchend','touchcancel'];
     const listener=event=>{
       if(!event.isTrusted)return;
       const dispatchedAt=performance.now();
@@ -326,7 +327,7 @@ try {
       const entry={type:event.type,at,dispatchedAt,queueMS:dispatchedAt-at,trusted:event.isTrusted,key:event.code??null,pointerId:event.pointerId??null,target:event.target?.dataset?.cs16Action??event.target?.dataset?.cs16Stick??null};
       probe.events.push(entry);
       const item=probe.pending;
-      if(item&&item.inputAt===null&&((item.kind==='key'&&event.type==='keydown')||(item.kind==='mouse'&&event.type==='pointermove')||(item.kind==='touch'&&(event.type==='pointerrawupdate'||event.type==='pointermove'||event.type==='touchmove'))))item.inputAt=entry.at;
+      if(item&&item.inputAt===null&&((item.kind==='key'&&event.type==='keydown')||(item.kind==='mouse'&&event.type==='pointermove')||(item.kind==='touch'&&(event.type==='pointermove'||event.type==='touchmove'))))item.inputAt=entry.at;
     };
     for(const type of types)document.addEventListener(type,listener,true);
     probe.arm=(kind,code)=>{probe.pending={kind,code,inputAt:null,before:structuredClone(canvas.__cs16Frame),hash:probe.lastHash,armedAt:performance.now()};};
