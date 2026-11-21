@@ -53,7 +53,6 @@ import {
   Maximize,
   LogOut,
   Plus,
-  RotateCcw,
   ScrollText,
   ShieldCheck,
   Sparkles,
@@ -112,6 +111,8 @@ import "./room-option-cards.css";
 import "./style.css";
 import { useRoomPresentation } from "./game-api/presentation";
 import { ResultOverlay } from "./ui/result-overlay";
+import { LeaveRoomConfirmation } from "./ui/leave-room-control";
+import { RoomToolButton } from "./ui/room-tool-button";
 import { RoomHeading } from "./ui/room-heading";
 import { ClosedRoomDescription } from "./ui/closed-room";
 import { CreateRoom } from "./ui/create-room";
@@ -208,6 +209,8 @@ function App() {
   const [rules, setRules] = useState(false);
   const [journalRoom, setJournalRoom] = useState("");
   const [closeTableRoom, setCloseTableRoom] = useState("");
+  const [leaveRoom, setLeaveRoom] = useState("");
+  useEffect(() => setLeaveRoom(""), [state?.room?.id]);
   const [profileID, setProfileID] = useState("");
   const [passwordEditing, setPasswordEditing] = useState(false);
   useEffect(() => setPasswordEditing(false), [profileID, state?.user.id]);
@@ -877,21 +880,20 @@ function App() {
                       {room.game &&
                         (room.status === "playing" ||
                           room.status === "finished") && (
-                          <button
-                            className="subtle"
+                          <RoomToolButton
+                            label="全屏"
                             data-fullscreen-enter
                             data-fullscreen-toggle
-                            aria-label="全屏"
                             disabled={!gameFullscreenReady}
                             onClick={() => gameFullscreen.current?.enter()}
                           >
                             <Maximize size={16} />
-                            全屏
-                          </button>
+                          </RoomToolButton>
                         )}
                       {canAutoPlay && (
-                        <button
-                          className={`subtle autoplay-control ${autoPlay ? "active" : ""}`}
+                        <RoomToolButton
+                          label={autoPlay ? "取消托管" : "开启托管"}
+                          className={`autoplay-control ${autoPlay ? "active" : ""}`}
                           aria-pressed={autoPlay}
                           disabled={busy}
                           onClick={() =>
@@ -899,8 +901,7 @@ function App() {
                           }
                         >
                           {autoPlay ? <Hand size={16} /> : <Bot size={16} />}
-                          {autoPlay ? "取消托管" : "开启托管"}
-                        </button>
+                        </RoomToolButton>
                       )}
                       <SaveGameControl
                         room={room}
@@ -918,10 +919,12 @@ function App() {
                           对局日志
                         </button>
                       )}
-                      <button className="subtle" onClick={() => setRules(true)}>
+                      <RoomToolButton
+                        label="玩法速查"
+                        onClick={() => setRules(true)}
+                      >
                         <BookOpen size={16} />
-                        玩法速查
-                      </button>
+                      </RoomToolButton>
                       <button
                         className="subtle"
                         onClick={async () => {
@@ -970,7 +973,9 @@ function App() {
                           <button
                             className="subtle"
                             disabled={busy}
-                            onClick={() => roomCommand("leave")}
+                            data-leave-room
+                            aria-haspopup="dialog"
+                            onClick={() => setLeaveRoom(room.id)}
                           >
                             <ArrowLeft size={16} />
                             离开房间
@@ -1044,8 +1049,8 @@ function App() {
                           disabled={busy}
                           onClick={() => roomCommand("rematch")}
                         >
-                          <RotateCcw size={18} />
-                          再开一局
+                          <ArrowLeft size={18} />
+                          返回房间
                         </button>
                       )}
                   </div>
@@ -1129,19 +1134,22 @@ function App() {
                                   room.game?.finished && (
                                     <ResultOverlay
                                       key={`${room.id}:${room.result?.id || "finished"}`}
+                                      busy={busy}
+                                      onReturn={
+                                        !room.spectating &&
+                                        room.host === state.user.id &&
+                                        state.availableGames.includes(
+                                          room.kind,
+                                        )
+                                          ? () => roomCommand("rematch")
+                                          : undefined
+                                      }
+                                      waitingForHost={
+                                        !room.spectating &&
+                                        room.host !== state.user.id
+                                      }
                                     >
-                                      <Results
-                                        room={room}
-                                        host={
-                                          !room.spectating &&
-                                          room.host === state.user.id &&
-                                          state.availableGames.includes(
-                                            room.kind,
-                                          )
-                                        }
-                                        busy={busy}
-                                        command={roomCommand}
-                                      />
+                                      <Results room={room} />
                                     </ResultOverlay>
                                   )
                                 }
@@ -1239,6 +1247,17 @@ function App() {
                   </button>
                 </form>
               </Modal>
+            )}
+            {room && !room.spectating && leaveRoom === room.id && (
+              <LeaveRoomConfirmation
+                room={room}
+                busy={busy}
+                onCancel={() => setLeaveRoom("")}
+                onConfirm={() => {
+                  setLeaveRoom("");
+                  roomCommand("leave");
+                }}
+              />
             )}
             {room?.status === "playing" &&
               !room.spectating &&

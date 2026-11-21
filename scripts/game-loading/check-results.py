@@ -97,10 +97,10 @@ try:
   b('wait','.results');assert not js('!!document.querySelector("[data-game-loading]")'),'late result load replaced completed game'
   assert js('!!document.querySelector(".poker-board")'),'final table disappeared'
   b('screenshot',str(out/'guandan-finished-320.png'),'--full');report['checks'].append('guandan-result-with-late-scripts-blocked');report['steps']=steps
-  b('click','.match-result-modal button[aria-label=关闭]');assert not js('!!document.querySelector(".results")')
+  b('click','.match-result-modal .result-review');assert not js('!!document.querySelector(".results")')
   b('click','.result-reopen');b('wait','.results');report['checks'].append('reopen-result')
   b('network','unroute');b('reload');b('wait','.results');b('wait','--fn','!document.querySelector("[data-game-loading]")');report['checks'].append('reload-finished-room')
-  b('find','role','button','click','--name','再来一局','--exact');b('wait','.waiting-layout');assert not js('!!document.querySelector(".results")');report['checks'].append('rematch')
+  b('find','role','button','click','--name','返回房间','--exact');b('wait','.waiting-layout');assert not js('!!document.querySelector(".results")');report['checks'].append('rematch')
  report['passed']=True
 except Exception as e:
  import traceback;traceback.print_exc();report['error']=repr(e)

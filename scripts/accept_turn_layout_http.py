@@ -68,13 +68,13 @@ try:
  assert js('document.querySelector(".results h2").textContent.includes("获胜")')
  for width in [1440,390,320]:
   b('set','viewport',str(width),'900');js('new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)))');position=js('document.querySelector(".game-layout").getBoundingClientRect().top+scrollY')
-  b('screenshot',str(out/f'{width}-result-overlay.png'),'--full');(out/f'{width}-result-contrast.json').write_text(json.dumps(contrast(),ensure_ascii=False,indent=2));b('click','.match-result-modal button[aria-label=关闭]');print('CLOSED RESULT',width,flush=True);(out/f'{width}-closed.snapshot.json').write_text(json.dumps(b('snapshot','-i'),ensure_ascii=False));assert js('document.querySelector(".results")===null')
+  b('screenshot',str(out/f'{width}-result-overlay.png'),'--full');(out/f'{width}-result-contrast.json').write_text(json.dumps(contrast(),ensure_ascii=False,indent=2));b('click','.match-result-modal .result-review');print('CLOSED RESULT',width,flush=True);(out/f'{width}-closed.snapshot.json').write_text(json.dumps(b('snapshot','-i'),ensure_ascii=False));assert js('document.querySelector(".results")===null')
   assert abs(js('document.querySelector(".game-layout").getBoundingClientRect().top+scrollY')-position)<.5,'closing result moved the board'
   hit=js('(()=>{const e=document.querySelector(".result-reopen"),r=e.getBoundingClientRect();return {rect:r.toJSON(),top:document.elementFromPoint(r.x+r.width/2,r.y+r.height/2)?.outerHTML}})()');(out/f'{width}-reopen-hit.json').write_text(json.dumps(hit,ensure_ascii=False,indent=2));assert 'result-reopen' in hit['top'] or '<svg' in hit['top'] or '<path' in hit['top'],hit
   b('click','.result-reopen');b('wait','.results');assert abs(js('document.querySelector(".game-layout").getBoundingClientRect().top+scrollY')-position)<.5,'opening result moved the board'
   assert js('document.documentElement.scrollWidth<=innerWidth+1')
- b('click','.match-result-modal button[aria-label=关闭]');b('wait','15500');assert js('document.querySelector(".results")===null'),'state poll reopened dismissed result'
- b('click','.result-reopen');b('find','role','button','click','--name','再来一局','--exact');b('wait','.waiting-layout');assert js('document.querySelector(".results")===null&&document.querySelector(".result-reopen")===null')
+ b('click','.match-result-modal .result-review');b('wait','15500');assert js('document.querySelector(".results")===null'),'state poll reopened dismissed result'
+ b('click','.result-reopen');b('find','role','button','click','--name','返回房间','--exact');b('wait','.waiting-layout');assert js('document.querySelector(".results")===null&&document.querySelector(".result-reopen")===null')
  command('ready',True);command('ready');command('start');b('wait','.weiqi-board')
  for _ in range(2):
   r=room();c=peer_api if r['game']['data']['turn']==1 else api;r=c('/state')['room'];d=r['game']['data'];c('/rooms/'+r['id'],dict(type='action',version=r['version'],nonce=uuid.uuid4().hex,action=dict(type='place',round=d['round'],ply=d['ply'],revision=d['revision'],pos=d['legal'][0])));b('wait','--fn','document.querySelector(".weiqi-board").dataset.ply==='+json.dumps(str(d['ply']+1))+'&&!document.querySelector(".weiqi-board").dataset.moving')

@@ -446,17 +446,17 @@ try:
     shot("practice-result-1280")
     b("set", "viewport", "320", "740")
     shot("practice-result-320")
-    b("click", ".modal-head button[aria-label=关闭]")
+    b("click", ".result-review")
     b("wait", ".result-reopen")
     b("click", ".result-reopen")
     b("wait", ".match-result-modal")
     check("practice-unrated-and-reopen", result=result, rating=after_rating)
 
     close_button = js(
-        '[...document.querySelectorAll(".match-result-modal button")].find(b=>/再来一局/.test(b.textContent))?.textContent||""'
+        '[...document.querySelectorAll(".match-result-modal button")].find(b=>/返回房间/.test(b.textContent))?.textContent||""'
     )
-    assert "再来一局" in close_button
-    b("find", "role", "button", "click", "--name", "再来一局", "--exact")
+    assert "返回房间" in close_button
+    b("find", "role", "button", "click", "--name", "返回房间", "--exact")
     b("wait", ".waiting-layout")
     check("rematch-returns-to-waiting")
     report["passed"] = True

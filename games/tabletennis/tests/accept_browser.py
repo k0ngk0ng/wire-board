@@ -125,9 +125,9 @@ try:
    cmd('autoplay',enabled=True);wait(lambda:room()['game']['data']['phase']=='finished',480)
    wait(lambda:js('!!document.querySelector("[role=dialog]")'));b('screenshot',OUT/(court+'-result.png'))
    report['cases'][-1]['naturalResult']=room()['result']
-   b('click','[role="dialog"] button[aria-label="关闭"]');time.sleep(.4);assert not js('!!document.querySelector("[role=dialog]")')
+   b('click','.result-review');time.sleep(.4);assert not js('!!document.querySelector("[role=dialog]")')
    b('click','button.result-reopen');wait(lambda:js('!!document.querySelector("[role=dialog]")'));report['cases'][-1]['resultReopened']=True
-   b('click','[role="dialog"] button[aria-label="关闭"]')
+   b('click','.result-review')
   if os.environ.get('TT_BROWSER_SERVICE'):
    cmd('autoplay',enabled=True);serves={};initial=room()['game']['data'];target=sum(initial['score'])+6
    def service_progress():

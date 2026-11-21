@@ -101,8 +101,9 @@ Board:({room,data,act,busy})=><section className="draw-acceptance"><p>{data.offe
     b('reload'); b('wait', '.results')
     assert api('/state')['room']['result'] == result
     assert js('document.querySelector(".results h2").textContent.includes("和棋")')
-    # Escape closes only the overlay; subsequent profile fetches must still finish.
     b('press', 'Escape')
+    assert js('!!document.querySelector(".match-result-modal")')
+    b('click', '.result-review')
     b('find', 'role', 'button', 'click', '--name', '我的战绩与好友', '--exact')
     b('wait', '.profile-history article')
     assert js('document.querySelector(".profile-history article header").textContent.includes("和棋")')

@@ -1,4 +1,4 @@
-import { Crown, RotateCcw } from "lucide-react";
+import { Crown } from "lucide-react";
 import type { Room } from "../types";
 import { PlayerName } from "../profiles";
 import { gameModule, isIndependentGame } from "../game-api/registry";
@@ -7,19 +7,7 @@ import { splendorResultDescription } from "../../../games/splendor/web/splendor-
 import { cooperativeOutcomeLabel } from "./cooperative-rating";
 import { RatingChanges } from "./rating-changes";
 
-// Platform settlement UI is part of the application, available before play.
-// Finishing a match must never trigger a download of legacy game interfaces.
-export function Results({
-  room,
-  host,
-  busy,
-  command,
-}: {
-  room: Room;
-  host: boolean;
-  busy: boolean;
-  command: (t: string) => void;
-}) {
+export function Results({ room }: { room: Room }) {
   const g = room.game!;
   const ResultDetails = gameModule(room.kind)?.ResultDetails;
   return (
@@ -98,16 +86,6 @@ export function Results({
             );
           })}
         </div>
-      )}
-      {host && (
-        <button
-          className="primary"
-          disabled={busy}
-          onClick={() => command("rematch")}
-        >
-          <RotateCcw size={17} />
-          再来一局
-        </button>
       )}
     </section>
   );

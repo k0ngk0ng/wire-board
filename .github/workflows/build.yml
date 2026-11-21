@@ -125,6 +125,12 @@ jobs:
       - name: Install shared frontend test dependencies
         if: needs.plan.outputs.quick_node_deps == 'true'
         run: npm --prefix web ci
+      - name: Restore application inputs for browser E2E
+        if: needs.plan.outputs.frontend_checks == 'true'
+        uses: ./.github/actions/restore-resources
+        with:
+          scope: frontend
+          report-suffix: browser
       - name: Prepare browser for frontend checks
         if: needs.plan.outputs.frontend_checks == 'true'
         run: |

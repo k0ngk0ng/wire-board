@@ -1,0 +1,57 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import { inspectRoomUiFile, lintRoomUi } from "../scripts/room-ui-lint.mjs";
+
+test("room UI lint accepts component, script and style conventions", () => {
+  for (const [file, source] of [
+    [
+      "web/src/ui/example.tsx",
+      "export function Example({label}:{label:string}){return <button aria-label={label}/>;}",
+    ],
+    ["web/tests/example.test.mjs", "const buttonLabel = '全屏';"],
+    [
+      "web/src/ui/example.css",
+      ".room-tool-button { color: #fff; background: #123; }",
+    ],
+  ])
+    assert.deepEqual(inspectRoomUiFile(file, source), [], file);
+});
+
+test("room UI lint rejects comments, invalid paths and names, and dynamic execution", () => {
+  for (const [file, source, issue] of [
+    [
+      "web/src/ui/example.tsx",
+      "// hidden behavior\nconst label = '全屏';",
+      "no-comments",
+    ],
+    [
+      "web/src/ui/example.css",
+      "/* hidden behavior */ .button {color:#fff}",
+      "no-comments",
+    ],
+    [
+      "web/src/ui/example.tsx",
+      "const button_label = '全屏';",
+      "identifier-case",
+    ],
+    ["web/src/ui/example.css", ".button_label {color:#fff}", "class-case"],
+    ["web/src/ui/Example.tsx", "const label = '全屏';", "filename"],
+    ["web/src/ui/../example.tsx", "const label = '全屏';", "directory"],
+    ["web/other/example.mjs", "const label = '全屏';", "directory"],
+    ["web/src/ui/example.tsx", "eval('click()');", "no-dynamic-execution"],
+    [
+      "web/tests/example.test.mjs",
+      "new Function('click()');",
+      "no-dynamic-execution",
+    ],
+  ])
+    assert.ok(
+      inspectRoomUiFile(file, source).includes(issue),
+      `${file}: ${issue}`,
+    );
+});
+
+test("registered room UI files pass their scoped lint", () => {
+  const result = lintRoomUi();
+  assert.equal(result.passed, true, JSON.stringify(result));
+});

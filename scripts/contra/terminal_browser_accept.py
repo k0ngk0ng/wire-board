@@ -71,7 +71,7 @@ try:
     rect = '(()=>{const r=document.querySelector(".contra-runtime canvas").getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height}})()'
     report['boardBeforeClose'] = js(rect)
     browser('screenshot', str(out / 'desktop-result.png'))
-    browser('click', '.match-result-modal button[aria-label="关闭"]')
+    browser('click', '.match-result-modal .result-review')
     time.sleep(.4); assert not js('!!document.querySelector(".match-result-modal")')
     report['boardAfterClose'] = js(rect)
     assert report['boardBeforeClose'] == report['boardAfterClose'], 'closing results moved final board'

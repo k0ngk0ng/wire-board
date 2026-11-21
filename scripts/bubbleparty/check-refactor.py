@@ -432,7 +432,7 @@ try:
     check('appearance-to-result-keeps-focus-inside-result')
     result_top = js('document.querySelector("[data-bubbleparty-canvas]").getBoundingClientRect().top+scrollY')
     shot('result-320')
-    browser('click', '.modal-head button[aria-label=关闭]')
+    browser('click', '.result-review')
     browser('wait', '.result-reopen')
     closed_top = js('document.querySelector("[data-bubbleparty-canvas]").getBoundingClientRect().top+scrollY')
     shot('result-closed-final-board-320')
@@ -455,7 +455,7 @@ try:
     record('death-final-frame-pixels',{'final':final_patch,'refreshed':refreshed_patch,'snapshot':snapshot_patch})
     assert final_patch == refreshed_patch == snapshot_patch, (final_patch,refreshed_patch,snapshot_patch)
     if js('!!document.querySelector(".match-result-modal")'):
-        browser('click','.modal-head button[aria-label=关闭]')
+        browser('click','.result-review')
     shot('refreshed-final-death-320')
     check('normal-motion-ended-death-does-not-replay-after-refresh-or-snapshot',pixels=final_patch)
     browser('click', '.result-reopen')

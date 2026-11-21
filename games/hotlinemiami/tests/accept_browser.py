@@ -539,7 +539,7 @@ try:
                 save()
                 wait_for(lambda: evaluate('main', '!!document.querySelector("[role=dialog]")'))
                 screenshot('main', 'natural-finished-result')
-                browser('main', 'click', '[role=dialog] button[aria-label="关闭"]')
+                browser('main', 'click', '.result-review')
                 wait_for(lambda: not evaluate('main', '!!document.querySelector("[role=dialog]")'))
                 browser('main', 'click', 'button.result-reopen')
                 wait_for(lambda: evaluate('main', '!!document.querySelector("[role=dialog]")'))
