@@ -34,11 +34,15 @@ class ScopeTests(unittest.TestCase):
     def test_cs16_race_contract_keeps_ordinary_performance_budget_separate(self):
         normal = scope.go_commands(ROOT, 'cs16')
         raced = scope.go_commands(ROOT, 'cs16', race=True)
-        ordinary = 'TestFourTenSeatRoomsWithSlowSpectator'
-        concurrent = 'TestFourRoomConcurrentInputsWithSlowPeer'
-        self.assertTrue(any(ordinary in ' '.join(command) for command in normal))
-        self.assertFalse(any(ordinary in ' '.join(command) for command in raced))
-        self.assertTrue(any(concurrent in ' '.join(command) for command in raced))
+        cases = [
+            ('TestFourTenSeatRoomsWithSlowSpectator', 'TestFourRoomConcurrentInputsWithSlowPeer'),
+            ('TestSmallMapFourTenSeatRoomsWithSlowSpectator', 'TestSmallMapFourRoomConcurrentInputsWithSlowPeer'),
+        ]
+        for ordinary, concurrent in cases:
+            with self.subTest(ordinary=ordinary):
+                self.assertTrue(any(ordinary in ' '.join(command) for command in normal))
+                self.assertFalse(any(ordinary in ' '.join(command) for command in raced))
+                self.assertTrue(any(concurrent in ' '.join(command) for command in raced))
 
     def test_game_control_policy_tools_select_frontend_checks_only(self):
         for path in ['web/scripts/game-control-lint.mjs', 'web/scripts/game-control-lint.json', 'web/scripts/room-ui-lint.mjs']:

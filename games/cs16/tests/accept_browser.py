@@ -232,8 +232,13 @@ def check_sample_budgets(summary):
 
 def native(client, name, touch=False, allow_life_interruption=False, **extra):
     selected = OUT / (name + '-native.json')
-    inputs = {'endpoint': endpoint(client), 'pageURL': URLS[client], 'options': dict(touch=touch, output=str(selected), diagnostic=REPORT['diagnostic'], **extra)}
-    result = subprocess.run(['node', str(HERE / 'native-input.mjs')], cwd=ROOT, env=ENV, input=json.dumps(inputs), text=True, capture_output=True, timeout=60)
+    control = BASE / ('network-' + client + '.json')
+    original_control = control.read_bytes()
+    inputs = {'endpoint': endpoint(client), 'pageURL': URLS[client], 'options': dict(touch=touch, output=str(selected), diagnostic=REPORT['diagnostic'], networkControl=str(control), **extra)}
+    try:
+        result = subprocess.run(['node', str(HERE / 'native-input.mjs')], cwd=ROOT, env=ENV, input=json.dumps(inputs), text=True, capture_output=True, timeout=60)
+    finally:
+        control.write_bytes(original_control)
     (OUT / (name + '-native.log')).write_text(result.stdout + result.stderr)
     observation = json.loads(selected.read_text()) if selected.exists() else {}
     if observation.get('frames'):
@@ -253,11 +258,11 @@ def native(client, name, touch=False, allow_life_interruption=False, **extra):
         check_sample_budgets(measured)
         assert not observation.get('performanceFailures'), observation['performanceFailures']
         authority = observation.get('network', {}).get('lastAuthority', {})
-        bootstrap = observation.get('network', {}).get('observerBootstrap', {})
+        bootstrap = observation.get('network', {}).get('measurementStartIdentity', {})
         lives = {entry['life'] for entry in observation.get('frames', []) if isinstance(entry.get('life'), int)}
         replaced = authority.get('epoch') == bootstrap.get('epoch') and isinstance(authority.get('life'), int) and isinstance(bootstrap.get('life'), int) and authority['life'] != bootstrap['life']
         interrupted = authority.get('player', {}).get('alive') is False or replaced
-        interruption_errors = ('native modifier combination', 'native weapon selection', 'too few real pixel responses', 'ongoing movement prevented', 'two-thumb fire was not applied', 'mobile crouch toggle', 'both rapid selections', 'rapid Digit3 and Q', 'getBoundingClientRect')
+        interruption_errors = ('native modifier combination', 'native weapon selection', 'too few real pixel responses', 'ongoing movement prevented', 'two-thumb fire was not applied', 'mobile crouch toggle', 'both rapid selections', 'rapid Digit3 and Q', 'getBoundingClientRect', 'native transport baseline was interrupted by authoritative death')
         eligible = any(message in observation.get('error', '') for message in interruption_errors)
         assert not observation.get('layoutFailures') and not observation.get('network', {}).get('internalFieldLeaks'), observation
         if not accepted and interrupted and eligible:

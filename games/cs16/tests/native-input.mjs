@@ -1,7 +1,9 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve, sep } from "node:path";
 import { WireSelfObserver } from './wire-self-observer.mjs';
+import { withProxyReconnect } from './browser-network-control.mjs';
 
 const input = JSON.parse(readFileSync(0, "utf8"));
 const { endpoint, pageURL, options = {} } = input;
@@ -18,6 +20,7 @@ const selfObserver = new WireSelfObserver();
 let ordinal = 0;
 let session;
 let temporaryTarget;
+let baselineCanvasObject;
 await new Promise((accept, reject) => { socket.onopen = accept; socket.onerror = reject; });
 socket.onmessage = event => {
   const message = JSON.parse(event.data);
@@ -28,6 +31,11 @@ socket.onmessage = event => {
     message.error ? selected.reject(message.error) : selected.accept(message.result);
   }
   if (message.sessionId !== session) return;
+  if (["Network.webSocketCreated", "Network.webSocketClosed"].includes(message.method)) {
+    report.network.socketLifecycle ??= [];
+    report.network.socketLifecycle.push({ type: message.method.endsWith("Closed") ? "closed" : "created", requestId: message.params.requestId, at: typeof message.params.timestamp === "number" ? message.params.timestamp * 1000 : undefined, hostObservedAt: Date.now() });
+    return;
+  }
   if (message.method === "Network.webSocketFrameError") {
     report.network.socketErrors ??= [];
     report.network.socketErrors.push(message.params);
@@ -98,6 +106,10 @@ socket.onmessage = event => {
   }
   const observed = incoming && data ? selfObserver.observe(data) : undefined;
   const player = observed?.player;
+  if (incoming && data?.schema === 1 && player && !observed.partial) {
+    report.network.fullBaselines ??= [];
+    report.network.fullBaselines.push({ schema: 1, at, requestId: message.params.requestId, bytes, sha256: createHash("sha256").update(payload).digest("hex"), payload, epoch: observed.epoch, life: observed.life, seat: selfObserver.seat, frame: data.frame, mapId: data.mapId });
+  }
   if (incoming && player) report.network.lastAuthority = { at, frame: data.frame, player, partial: observed.partial, epoch: observed.epoch, life: observed.life };
   if (incoming && player && observed.appliedObserved) for (const [key, value] of sequences) {
     if (key === `${body.serverInstance ?? body.state?.serverInstance}:${observed.epoch}:${observed.life}:${value.seq}` && value.seq <= player.appliedSeq) {
@@ -149,6 +161,49 @@ try {
   const selfContext = await evaluate("fetch('/api/state').then(response=>response.json()).then(state=>({seat:state.room.you,epoch:state.room.game.data.epoch,life:state.room.game.data.players.find(player=>player.seat===state.room.you)?.life}))");
   selfObserver.bind(selfContext);
   report.network.observerBootstrap = { ...selfContext, source: 'authenticated HTTP identity only; player fields are observed from raw socket frames' };
+  if (!options.observeOnly && !options.backgroundOnly && !options.scrollOnly) {
+    assert.ok(options.networkControl, "ordinary input requires a confined fixture network control path");
+    baselineCanvasObject = (await call("Runtime.evaluate", { expression: "document.querySelector('[data-cs16-canvas]')" })).result.objectId;
+    assert.ok(baselineCanvasObject, "baseline setup requires the existing canvas");
+    const closureStart = report.network.socketLifecycle?.length ?? 0;
+    const baselineStart = report.network.fullBaselines?.length ?? 0;
+    let closed;
+    report.network.bootstrapPhase = { fullBaselineStart: baselineStart, hostStartedAt: Date.now() };
+    const awaitObserved = async (predicate, milliseconds, message) => {
+      const began = Date.now();
+      while (Date.now() - began < milliseconds) {
+        const value = predicate();
+        if (value) return value;
+        await wait(10);
+      }
+      throw Error(message);
+    };
+    report.network.transportBaseline = await withProxyReconnect(options.networkControl, async () => {
+      closed = await awaitObserved(() => report.network.socketLifecycle?.slice(closureStart).find(item => item.type === "closed"), 5000, "fixture proxy did not close the observed socket");
+      return closed;
+    }, async () => {
+      const baseline = await awaitObserved(() => report.network.fullBaselines?.slice(baselineStart).find(item => item.requestId !== closed.requestId && item.epoch === selfContext.epoch), 10000, "reconnected socket did not deliver a real schema 1 full baseline");
+      return { schema: baseline.schema, at: baseline.at, requestId: baseline.requestId, bytes: baseline.bytes, sha256: baseline.sha256, epoch: baseline.epoch, life: baseline.life, frame: baseline.frame };
+    });
+    const sameCanvas = await call("Runtime.callFunctionOn", { objectId: baselineCanvasObject, functionDeclaration: "function(){return this===document.querySelector('[data-cs16-canvas]');}", returnByValue: true });
+    assert.equal(sameCanvas.result.value, true, "transport baseline setup replaced the canvas");
+    report.network.transportBaseline.sameCanvas = true;
+    let ready;
+    for (let attempt = 0; attempt < 750; attempt++) {
+      const authority = report.network.lastAuthority;
+      assert.equal(authority?.epoch, selfContext.epoch, "transport baseline changed the match epoch");
+      if (authority.player.alive === false) throw Error("native transport baseline was interrupted by authoritative death");
+      const shown = await view();
+      if (!authority.partial && shown?.inputEnabled && shown.phase === "live" && shown.life === authority.life) { ready = authority; break; }
+      await wait(20);
+    }
+    assert.ok(ready, "native input control did not recover after transport baseline setup");
+    report.network.measurementStartIdentity = { epoch: ready.epoch, life: ready.life, seat: selfObserver.seat, frame: ready.frame, at: ready.at, source: "complete raw socket projection after controlled reconnect" };
+    report.network.bootstrapPhase.hostCompletedAt = Date.now();
+    report.network.bootstrapPhase.lastWireAt = report.network.lastAt;
+    report.network.bootstrapPhase.receivedBytes = report.network.receivedBytes;
+    report.network.bootstrapPhase.sentBytes = report.network.sentBytes;
+  }
   await call("Performance.enable");
   if (options.observeOnly) {
     report.scope = options.denseExpected ? "natural ten-seat combat wire and authoritative clock observation" : "wire observation across transport loss and real page restore";
@@ -446,7 +501,13 @@ try {
     const knife = await displayedWeapon(weapon => weapon === "knife");
     await press("KeyQ", "q", 81);
     const previous = await displayedWeapon(weapon => weapon === ownAfter.weapon);
-    const rapid = (report.network.selects ?? []).slice(beforeSelect);
+    let rapid = [];
+    for (let attempt = 0; attempt < 200; attempt++) {
+      rapid = (report.network.selects ?? []).slice(beforeSelect);
+      if (rapid.length >= 2) break;
+      assert.ok(!rapid[0] || !report.network.acks.some(ack => ack.nonce === rapid[0].nonce), "rapid Q verification waited for the first selection ACK");
+      await wait(5);
+    }
     assert.deepEqual(rapid.slice(0, 2).map(item => item.item), ["knife", ownAfter.weapon], "rapid Digit3 and Q did not send both ordered selections");
     const confirmed = await authoritativeWeapon(ownAfter.weapon, rapid[1].seq);
     const firstAck = report.network.acks.find(ack => ack.nonce === rapid[0].nonce);
@@ -470,8 +531,8 @@ try {
       }
       throw Error("native modifier combination did not reach server projection");
     };
-    const reloadSetup = await evaluate("fetch('/api/state').then(response=>response.json()).then(state=>({source:'authenticated HTTP precondition only',player:state.room.game.data.players.find(player=>player.seat===state.room.you)}))");
-    report.reloadSetup = { source: reloadSetup.source, ammo: reloadSetup.player.ammo, reserve: reloadSetup.player.reserve, wirePartial: pistolAuthority.partial };
+    const reloadSetup = await authorityWhere(state => !state.partial && Number.isSafeInteger(state.player.reserve));
+    report.reloadSetup = { source: "complete raw socket projection precondition", ammo: reloadSetup.player.ammo, reserve: reloadSetup.player.reserve, wirePartial: reloadSetup.partial };
     if (reloadSetup.player.reserve === 0) {
       assert.ok(options.allowAmmoPurchase !== false, "ground-map reload requires legitimately acquired reserve; spawn purchase is forbidden");
       await press("Period", ".", 190);
@@ -655,6 +716,7 @@ try {
   report.error = String(error.stack ?? error);
   process.exitCode = 1;
 } finally {
+  if (baselineCanvasObject && session) await call("Runtime.releaseObject", { objectId: baselineCanvasObject }).catch(() => {});
   if (session && options.touch && !options.observeOnly) await call("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] }).catch(() => {});
   if (session && options.backgroundOnly) await evaluate("window.__cs16LifecycleCleanup?.();true").catch(() => {});
   if (temporaryTarget) await call("Target.closeTarget", { targetId: temporaryTarget }, undefined).catch(() => {});
