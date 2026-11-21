@@ -49,6 +49,7 @@ test(
         "--mute-audio",
         "--disable-breakpad",
         "--disable-crash-reporter",
+        "--blink-settings=primaryHoverType=2",
         ...(process.env.GITHUB_ACTIONS === "true" ? ["--no-sandbox"] : []),
       ].join(","),
     };
@@ -550,6 +551,12 @@ if err := http.Serve(listener, app.Handler()); err != nil {panic(err)}
           );
         }
         if (!touch) {
+          check(
+            "desktop browser exposes mouse hover " + width,
+            await evaluate("matchMedia('(hover:hover)').matches"),
+          );
+          await activate(".room-heading h1", false);
+          await browser("scrollintoview", ".room-tools [aria-label=玩法速查]");
           await browser("hover", ".room-tools [aria-label=玩法速查]");
           await wait(
             "getComputedStyle(document.querySelector('[aria-label=玩法速查] .room-tool-tooltip')).opacity==='1'",
