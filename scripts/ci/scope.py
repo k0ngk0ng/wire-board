@@ -750,6 +750,15 @@ def deferred_subtests(root, game):
     names = {row['configuration']['name'] for row in json.loads(fixture.read_text())['rows']}
     return [{'name': parent, 'case': name} for parent in ['TestRenderFrozenBridgeTrajectories', 'TestSchema2FrozenWholeTrajectories'] for name in YUYU_EXTENDED_TRAJECTORIES if name in names]
 
+def collect_cs16_artifacts(output):
+    source = ROOT/'.local/cs16/verification/server'
+    if not source.is_dir(): return
+    for path in sorted(source.rglob('*.json')):
+        if not path.is_file() or path.is_symlink(): continue
+        destination = output/'server'/path.relative_to(source)
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(path, destination)
+
 def run(args):
     extended = extended_mode(args)
     if args.game in GAME_PARTITIONS and args.backend and args.count == 1:
@@ -782,10 +791,13 @@ def run(args):
         manifest.update(suite='extended' if extended else 'standard', deferredTests=[] if extended or not args.backend else deferred_tests(ROOT, args.game), deferredSubtests=[] if extended or not args.backend else deferred_subtests(ROOT, args.game))
     destination = output/f'result-{args.shard}.json'
     destination.write_text(json.dumps(manifest, indent=2) + '\n')
-    for i, command in enumerate(commands):
-        print('RUN', ' '.join(command), flush=True)
-        with (output/f'{args.shard}-{i}.log').open('w') as log:
-            subprocess.run(command, cwd=ROOT, env=env, stdout=log, stderr=subprocess.STDOUT, check=True)
+    try:
+        for i, command in enumerate(commands):
+            print('RUN', ' '.join(command), flush=True)
+            with (output/f'{args.shard}-{i}.log').open('w') as log:
+                subprocess.run(command, cwd=ROOT, env=env, stdout=log, stderr=subprocess.STDOUT, check=True)
+    finally:
+        if args.game == 'cs16': collect_cs16_artifacts(output)
     manifest['passed'] = True
     destination.write_text(json.dumps(manifest, indent=2) + '\n')
     print(f'PASS {args.game}: {len(commands)} scoped checks', flush=True)

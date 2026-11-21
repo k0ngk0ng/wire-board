@@ -8,6 +8,7 @@ import (
 	"os"
 	"path/filepath"
 	"sort"
+	"strconv"
 	"strings"
 	"testing"
 	"time"
@@ -60,6 +61,69 @@ func artifact(t *testing.T, value any) {
 	if err := os.WriteFile(filepath.Join(directory, strings.ReplaceAll(t.Name(), "/", "-")+".json"), encode(value), 0600); err != nil {
 		t.Fatal(err)
 	}
+}
+
+type naturalSurvivor struct {
+	Seat    int    `json:"seat"`
+	Team    string `json:"team"`
+	Life    int    `json:"life"`
+	Health  int    `json:"health"`
+	X       int    `json:"x"`
+	Y       int    `json:"y"`
+	Z       int    `json:"z"`
+	Weapon  string `json:"weapon"`
+	Ammo    int    `json:"ammo"`
+	Reserve int    `json:"reserve"`
+}
+
+type naturalDiagnostic struct {
+	Map          string            `json:"map"`
+	InitialSeed  string            `json:"initialSeed"`
+	FinalSeed    string            `json:"finalSeed"`
+	Frame        int64             `json:"frame"`
+	Phase        string            `json:"phase"`
+	Round        int               `json:"round"`
+	Survivors    []naturalSurvivor `json:"survivors"`
+	RoundReasons map[string]int    `json:"roundReasons"`
+}
+
+func naturalMatchDiagnostics(initial, checkpoint json.RawMessage, reasons map[string]int) (naturalDiagnostic, error) {
+	value := naturalDiagnostic{Survivors: []naturalSurvivor{}, RoundReasons: map[string]int{}}
+	var before struct {
+		World struct {
+			Seed uint64 `json:"seed"`
+		} `json:"world"`
+	}
+	var after struct {
+		World struct {
+			MapID   string `json:"mapId"`
+			Seed    uint64 `json:"seed"`
+			Frame   int64  `json:"frame"`
+			Phase   string `json:"phase"`
+			Round   int    `json:"round"`
+			Players []struct {
+				naturalSurvivor
+				Alive bool `json:"alive"`
+			} `json:"players"`
+		} `json:"world"`
+	}
+	if err := json.Unmarshal(initial, &before); err != nil {
+		return value, err
+	}
+	if err := json.Unmarshal(checkpoint, &after); err != nil {
+		return value, err
+	}
+	value.Map, value.InitialSeed, value.FinalSeed = after.World.MapID, strconv.FormatUint(before.World.Seed, 10), strconv.FormatUint(after.World.Seed, 10)
+	value.Frame, value.Phase, value.Round = after.World.Frame, after.World.Phase, after.World.Round
+	for _, player := range after.World.Players {
+		if player.Alive {
+			value.Survivors = append(value.Survivors, player.naturalSurvivor)
+		}
+	}
+	for reason, count := range reasons {
+		value.RoundReasons[reason] = count
+	}
+	return value, nil
 }
 
 func TestConfigurationAndPreparationTenSeats(t *testing.T) {
@@ -340,6 +404,32 @@ func TestNaturalTenSeatClassicMapMatches(t *testing.T) {
 				t.Fatal(err)
 			}
 			initial := json.RawMessage(append([]byte(nil), match.Data...))
+			roundEndReasons := map[string]int{}
+			failureDetails := map[string]any{}
+			defer func() {
+				if !t.Failed() {
+					return
+				}
+				diagnostic, err := naturalMatchDiagnostics(initial, match.Data, roundEndReasons)
+				if err != nil {
+					t.Logf("natural-match-failure diagnostics-error=%v", err)
+					failureDetails["diagnosticsError"] = err.Error()
+				} else {
+					t.Logf("natural-match-failure %s", encode(diagnostic))
+					failureDetails["diagnostics"] = diagnostic
+				}
+				failureDetails["passed"], failureDetails["map"] = false, mapID
+				failureDetails["initial"], failureDetails["privateCheckpoint"] = initial, json.RawMessage(match.Data)
+				if final, err := module.View(match, -1); err == nil {
+					failureDetails["final"] = final
+				}
+				artifact(t, failureDetails)
+			}()
+			startDiagnostic, err := naturalMatchDiagnostics(initial, initial, roundEndReasons)
+			if err != nil {
+				t.Fatal(err)
+			}
+			t.Logf("natural-match-start map=%s initialSeed=%s", mapID, startDiagnostic.InitialSeed)
 			elimination := mapID == "fy_iceworld" || mapID == "cs_bloodstrike"
 			initialView := view(t, module, match, -1)
 			initialGroundWeapons := len(initialView["drops"].([]any))
@@ -355,7 +445,6 @@ func TestNaturalTenSeatClassicMapMatches(t *testing.T) {
 			base := ctx.Now
 			inputs, buys, peakBytes := 0, 0, 0
 			pickups, objectiveEvents := 0, 0
-			roundEndReasons := map[string]int{}
 			projectionCount, totalProjectionBytes, peakStreamProjectionBytes, initialProjectionBytes := 0, 0, 0, 0
 			type projectionSecond struct {
 				Second      int64 `json:"second"`
@@ -475,11 +564,11 @@ func TestNaturalTenSeatClassicMapMatches(t *testing.T) {
 				acquisitions, requiredAcquisitions = buys+pickups, 1
 			}
 			if match.Result == nil || inputs < 100 || acquisitions < requiredAcquisitions || !match.Result.Team || len(match.Result.Ranks) != 10 || !match.HasComputerPlayers || peakBytes > 32000 {
-				artifact(t, map[string]any{"passed": false, "scope": "natural ten-seat match failed completion or acquisition contract without forced rule results", "map": mapID, "initial": initial, "inputs": inputs, "buys": buys, "pickups": pickups, "objectiveEvents": objectiveEvents, "roundEndReasons": roundEndReasons, "final": view(t, module, match, -1), "privateCheckpoint": json.RawMessage(match.Data), "result": match.Result})
+				failureDetails = map[string]any{"scope": "natural ten-seat match failed completion or acquisition contract without forced rule results", "inputs": inputs, "buys": buys, "pickups": pickups, "objectiveEvents": objectiveEvents, "roundEndReasons": roundEndReasons, "result": match.Result}
 				t.Fatal("incomplete ten-seat match", inputs, buys, pickups, peakBytes, match.Result)
 			}
 			if elimination && (objectiveEvents != 0 || len(roundEndReasons) != 1 || roundEndReasons["elimination"] != 2) {
-				artifact(t, map[string]any{"passed": false, "scope": "elimination match incorrectly used an objective or non-elimination round result", "map": mapID, "objectiveEvents": objectiveEvents, "roundEndReasons": roundEndReasons, "final": view(t, module, match, -1), "privateCheckpoint": json.RawMessage(match.Data), "result": match.Result})
+				failureDetails = map[string]any{"scope": "elimination match incorrectly used an objective or non-elimination round result", "objectiveEvents": objectiveEvents, "roundEndReasons": roundEndReasons, "result": match.Result}
 				t.Fatal("small map did not finish through two natural eliminations", objectiveEvents, roundEndReasons)
 			}
 			final := view(t, module, match, -1)

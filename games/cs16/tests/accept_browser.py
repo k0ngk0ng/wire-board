@@ -338,15 +338,37 @@ def check_action_error(client, stage):
     browser(client, 'click', 'button[aria-label="关闭错误"]')
 
 
-def viewport(client):
-    return evaluate(client, '''(() => {
+def viewport_expression():
+    return '''(() => {
       const rect=element=>element.getBoundingClientRect().toJSON();
       const visible=element=>{const box=element.getBoundingClientRect();if(!box.width||!box.height||element.closest('[inert]')||document.fullscreenElement&&!document.fullscreenElement.contains(element))return false;const hit=document.elementFromPoint(box.x+box.width/2,box.y+box.height/2);return !!hit&&(hit===element||element.contains(hit));};
       const controls=[...document.querySelectorAll('[data-cs16-action],[data-fullscreen-toggle],.chat-toggle:not([aria-hidden=true])')].filter(visible).map(element=>({kind:element.dataset.cs16Action??(element.matches('.chat-toggle')?'platform-chat':'platform-fullscreen'),rect:rect(element)}));
       const hud=[...document.querySelectorAll('.cs16-vitals,.cs16-ammo,.cs16-match-hud,.cs16-inventory')].map(element=>({kind:element.className,text:element.textContent,rect:rect(element),color:getComputedStyle(element).color,background:getComputedStyle(element).backgroundColor}));
       const overlap=(a,b)=>a.left<b.right&&a.right>b.left&&a.top<b.bottom&&a.bottom>b.top;
       return {width:innerWidth,height:innerHeight,overflow:document.documentElement.scrollWidth>innerWidth,canvas:document.querySelector('[data-cs16-canvas]')?.getBoundingClientRect().toJSON(),sticks:[...document.querySelectorAll('[data-cs16-stick]')].map(element=>({kind:element.dataset.cs16Stick,rect:rect(element)})),controls,hud,overlaps:hud.flatMap(item=>controls.filter(control=>overlap(item.rect,control.rect)).map(control=>({hud:item.kind,control:control.kind})))};
-    })()''')
+    })()'''
+
+
+def viewport(client):
+    return evaluate(client, viewport_expression())
+
+
+def fullscreen_viewport(client, stage=''):
+    value = evaluate(client, '''new Promise(resolve => {
+      const audit=()=>''' + viewport_expression() + ''';
+      const canvas=document.querySelector('[data-cs16-canvas]');
+      const board=document.querySelector('[data-cs16-board]');
+      const sample=frame=>({frame,at:performance.now(),drawCount:canvas?.__cs16Frame?.drawCount??0,chatInset:board.style.getPropertyValue('--cs16-chat-right'),computedChatInset:getComputedStyle(board).getPropertyValue('--cs16-chat-right'),audit:audit()});
+      const trace=[sample(0)];
+      let frame=0;
+      const next=()=>{frame++;if(frame===1||frame===3)trace.push(sample(frame));if(frame===3)resolve({trace,audit:trace.at(-1).audit});else requestAnimationFrame(next);};
+      requestAnimationFrame(next);
+    })''')
+    REPORT.setdefault('fullscreenFrameTraces', []).append({'client': client, 'stage': stage, **value})
+    save()
+    assert [item['frame'] for item in value['trace']] == [0, 1, 3], value
+    assert value['trace'][-1]['drawCount'] - value['trace'][0]['drawCount'] >= 3, value
+    return value
 
 
 def check_layout(audit, stage):
@@ -410,11 +432,12 @@ def fullscreen_audit(client, map_id):
         mode = wait_for(lambda: evaluate(client, 'document.querySelector("[data-room-fullscreen]")?.dataset.roomFullscreen'))
         assert mode == 'page' if fallback else mode in ['native', 'page']
         assert evaluate(client, 'window.__cs16OriginalCanvas===document.querySelector("[data-cs16-canvas]")')
-        audit = viewport(client)
+        transition = fullscreen_viewport(client, map_id + '-fullscreen-' + mode)
+        audit = transition['audit']
         assert not audit['overflow'] and audit['canvas']['width'] > 0 and audit['canvas']['height'] > 0, audit
         check_layout(audit, map_id + '-fullscreen-' + mode)
         screenshot(client, map_id + '-fullscreen-' + mode)
-        modes.append({'mode': mode, 'simulatedNativeRefusal': fallback, 'viewport': audit, 'sameCanvas': True})
+        modes.append({'mode': mode, 'simulatedNativeRefusal': fallback, 'viewport': audit, 'sameCanvas': True, 'frameTrace': transition['trace']})
         if fallback:
             browser(client, 'click', 'button[aria-label="退出全屏"]')
         else:

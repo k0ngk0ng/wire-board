@@ -30,29 +30,55 @@ func eliminationPatrolDestination(state *State, seat int) (Vec3, bool) {
 		own, opponent = opponent, own
 	}
 	start := botNearestNode(&state.World, position)
-	useOwn := false
+	goals := eliminationPatrolGoals(&state.World, start, [][]Spawn{opponent, own})
+	if len(goals) == 0 {
+		return Vec3{}, false
+	}
+	initial := (seat/2 + state.Round - 1) * 2 % len(goals)
 	if player.BotDecision > 0 {
-		for _, spawn := range opponent {
-			if point, found := eliminationSpawnGoal(&state.World, start, spawn); found && Distance(point, player.BotGoal) < Unit {
-				useOwn = true
+		for index, point := range goals {
+			if Distance(point, player.BotGoal) < Unit {
+				initial = (index + 1) % len(goals)
 				break
 			}
 		}
 	}
-	groups := [][]Spawn{opponent, own}
-	if useOwn {
-		groups[0], groups[1] = groups[1], groups[0]
-	}
-	for _, spawns := range groups {
-		if len(spawns) == 0 {
-			continue
-		}
-		initial := (seat/2 + state.Round - 1) % len(spawns)
-		for offset := range len(spawns) {
-			if point, found := eliminationSpawnGoal(&state.World, start, spawns[(initial+offset)%len(spawns)]); found && Distance(position, point) > 48*Unit {
-				return point, true
-			}
+	for offset := range len(goals) {
+		point := goals[(initial+offset)%len(goals)]
+		if Distance(position, point) > 48*Unit {
+			return point, true
 		}
 	}
 	return Vec3{}, false
+}
+
+func eliminationPatrolGoals(world *Map, start int, groups [][]Spawn) []Vec3 {
+	goals := []Vec3{}
+	maximum := 0
+	for _, spawns := range groups {
+		maximum = max(maximum, len(spawns))
+	}
+	for index := range maximum {
+		for _, spawns := range groups {
+			if index >= len(spawns) {
+				continue
+			}
+			offset := index/2 + index%2*((len(spawns)+1)/2)
+			point, found := eliminationSpawnGoal(world, start, spawns[offset])
+			if !found {
+				continue
+			}
+			duplicate := false
+			for _, goal := range goals {
+				if goal == point {
+					duplicate = true
+					break
+				}
+			}
+			if !duplicate {
+				goals = append(goals, point)
+			}
+		}
+	}
+	return goals
 }
