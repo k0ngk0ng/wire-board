@@ -32,8 +32,24 @@ func TestFourTenSeatRoomsWithSlowSpectator(t *testing.T) {
 	runFourRoomIsolation(t, true)
 }
 
+func TestSmallMapFourRoomConcurrentInputsWithSlowPeer(t *testing.T) {
+	runFourRoomMapIsolation(t, false, []string{"fy_iceworld", "cs_bloodstrike", "fy_iceworld", "cs_bloodstrike"})
+}
+
+func TestSmallMapFourTenSeatRoomsWithSlowSpectator(t *testing.T) {
+	runFourRoomMapIsolation(t, true, []string{"fy_iceworld", "cs_bloodstrike", "fy_iceworld", "cs_bloodstrike"})
+}
+
 func runFourRoomIsolation(t *testing.T, performance bool) {
 	t.Helper()
+	runFourRoomMapIsolation(t, performance, []string{"de_dust2", "de_inferno", "de_aztec", "cs_assault"})
+}
+
+func runFourRoomMapIsolation(t *testing.T, performance bool, maps []string) {
+	t.Helper()
+	if len(maps) != 4 {
+		t.Fatal("isolation acceptance requires exactly four rooms")
+	}
 	var harness *httpRoom
 	if performance {
 		harness = newHTTPRoom(t, 4)
@@ -48,7 +64,6 @@ func runFourRoomIsolation(t *testing.T, performance bool) {
 		}
 		hosts[index] = harness.people[seat]
 	}
-	maps := []string{"de_dust2", "de_inferno", "de_aztec", "cs_assault"}
 	ids := make([]string, 4)
 	for index, person := range hosts {
 		created := person.request("POST", "/api/rooms", map[string]any{"kind": "cs16", "name": fmt.Sprintf("十席并行%d", index), "capacity": 10, "options": map[string]any{"map": maps[index], "roundSeconds": 60, "maxRounds": 2}}, 201)
@@ -110,6 +125,9 @@ func runFourRoomIsolation(t *testing.T, performance bool) {
 	viewFrame := integer(initial["frame"])
 	acks := []int64{}
 	lags := []int64{}
+	applicationBytes, firingApplicationBytes := []int64{}, []int64{}
+	lastWireEventID := integer(initial["eventId"])
+	shotEvents := 0
 	frames := make([]int64, 4)
 	for index, host := range hosts {
 		frames[index] = integer(host.room()["game"].(map[string]any)["data"].(map[string]any)["frame"])
@@ -136,6 +154,21 @@ func runFourRoomIsolation(t *testing.T, performance bool) {
 			if answer["type"] == "game" {
 				if game, ok := answer["game"].(map[string]any); ok {
 					if data, ok := game["data"].(map[string]any); ok {
+						applicationBytes = append(applicationBytes, int64(len(raw)))
+						shots := 0
+						if events, ok := data["events"].([]any); ok {
+							for _, event := range events {
+								value := event.(map[string]any)
+								if integer(value["id"]) > lastWireEventID && value["type"] == "shot" {
+									shots++
+								}
+							}
+						}
+						lastWireEventID = max(lastWireEventID, integer(data["eventId"]))
+						if shots > 0 {
+							shotEvents += shots
+							firingApplicationBytes = append(firingApplicationBytes, int64(len(raw)))
+						}
 						if frame, ok := data["frame"].(json.Number); ok {
 							viewFrame = max(viewFrame, integer(frame))
 						}
@@ -174,7 +207,7 @@ func runFourRoomIsolation(t *testing.T, performance bool) {
 	if performance {
 		humansPerRoom, botsPerRoom = 1, 9
 	}
-	artifact(t, map[string]any{"passed": !performance || budgetPassed, "performanceAcceptance": performance, "performanceBudgetPassed": budgetPassed, "scope": "4 authenticated ten-seat rooms, one active input stream and non-reading 1024-byte-buffer spectator; timing is acceptance only in the ordinary performance case", "rooms": 4, "playersPerRoom": 10, "humansPerRoom": humansPerRoom, "botsPerRoom": botsPerRoom, "authenticatedSpectators": 1, "independentSourceIPs": !performance, "ackMicroseconds": acks, "ruleLagMS": lags, "ackP95Microseconds": ackP95, "ruleLagP95MS": lagP95})
+	artifact(t, map[string]any{"passed": !performance || budgetPassed, "performanceAcceptance": performance, "performanceBudgetPassed": budgetPassed, "scope": "4 authenticated ten-seat rooms, one active input stream and non-reading 1024-byte-buffer spectator; timing is acceptance only in the ordinary performance case; application bytes include platform JSON envelope but exclude WebSocket/TCP/TLS framing", "rooms": 4, "maps": maps, "wireObservedMap": maps[0], "playersPerRoom": 10, "humansPerRoom": humansPerRoom, "botsPerRoom": botsPerRoom, "authenticatedSpectators": 1, "independentSourceIPs": !performance, "ackMicroseconds": acks, "ruleLagMS": lags, "ackP95Microseconds": ackP95, "ruleLagP95MS": lagP95, "applicationPacketBytes": applicationBytes, "applicationP95Bytes": percentile(applicationBytes, 95), "firingApplicationPacketBytes": firingApplicationBytes, "firingApplicationP95Bytes": percentile(firingApplicationBytes, 95), "shotEvents": shotEvents})
 	if performance && !budgetPassed {
 		t.Fatal("parallel room performance budget exceeded", ackP95, lagP95)
 	}

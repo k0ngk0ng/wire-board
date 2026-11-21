@@ -95,6 +95,31 @@ def entry_valid(entry):
 def validate_manifest(manifest, kind):
     if not isinstance(manifest, dict) or not isinstance(manifest.get("files"), list) or not manifest["files"]:
         raise ValueError("Invalid source manifest")
+    if kind == "community":
+        sources = manifest.get("sources")
+        if manifest.get("schema") != 1 or not isinstance(sources, dict) or not sources or len(sources) > 32:
+            raise ValueError("Invalid community source directory")
+        for name, source in sources.items():
+            if not re.fullmatch(r"[a-z][a-z0-9-]*", name) or not isinstance(source, dict) or not re.fullmatch(r"https://github\.com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", str(source.get("repository"))) or not re.fullmatch(r"[0-9a-f]{40}", str(source.get("commit"))):
+                raise ValueError("Community source repository or ref is not pinned")
+        seen = set()
+        for entry in manifest["files"]:
+            if not isinstance(entry, dict):
+                raise ValueError("Invalid community source entry")
+            entry_valid(entry)
+            path = entry["path"]
+            if path.casefold() in seen or not (path.startswith("original/") or path.startswith("navigation/")):
+                raise ValueError("Duplicate or unsupported community source path")
+            seen.add(path.casefold())
+            source = sources.get(entry.get("source"))
+            if source is None:
+                raise ValueError("Unknown community source repository")
+            source_path = entry.get("source_path")
+            relative_parts(source_path)
+            expected = "https://raw.githubusercontent.com/" + source["repository"].removeprefix("https://github.com/") + "/" + source["commit"] + "/" + source_path
+            if entry.get("url") != expected or not entry.get("git_blob_sha1"):
+                raise ValueError("Unpinned community source URL or Git blob")
+        return manifest["files"]
     if kind == "original":
         repository = "https://github.com/martinsam16/cstrike"
         ref = manifest.get("commit")
@@ -283,6 +308,10 @@ def fetch_sources(check=False, reference=False):
     original_entries = validate_manifest(original, "original")
     navigation_entries = validate_manifest(navigation, "navigation")
     jobs = [(entry, RESEARCH / "original") for entry in original_entries] + [(entry, RESEARCH) for entry in navigation_entries]
+    community = None
+    if (METADATA / "community-sources.json").is_file():
+        community = load_metadata("community-sources.json")
+        jobs.extend((entry, RESEARCH) for entry in validate_manifest(community, "community"))
     records = []
     with concurrent.futures.ThreadPoolExecutor(max_workers=6) as pool:
         futures = [pool.submit(fetch_entry, entry, directory, check) for entry, directory in jobs]
@@ -303,6 +332,8 @@ def fetch_sources(check=False, reference=False):
     if not check:
         write_metadata(RESEARCH / "original-samples.json", original)
         write_metadata(RESEARCH / "navigation-samples.json", navigation)
+        if community is not None:
+            write_metadata(RESEARCH / "community-source-catalog.json", community)
     return {"passed": True, "check": check, "reference": reference, "files": len(records), "reused": sum(row["status"] == "reused" for row in records), "downloaded": sum(row["status"] == "downloaded" for row in records), "verifiedBytes": sum(row["bytes"] for row in records), "referenceMembers": extracted}
 
 

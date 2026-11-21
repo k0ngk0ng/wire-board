@@ -11,7 +11,8 @@ const { transformSync } = require("esbuild");
 const builderFile = fileURLToPath(import.meta.url);
 const flags = ["-trimpath", "-buildvcs=false", "-ldflags=-s -w"];
 const digest = bytes => createHash("sha256").update(bytes).digest("hex");
-const maps = ["de_dust2", "de_inferno", "de_aztec", "cs_assault"];
+const maps = ["de_dust2", "de_inferno", "de_aztec", "cs_assault", "fy_iceworld", "cs_bloodstrike"];
+const mapMode = id => id === "cs_assault" ? "hostage" : id === "fy_iceworld" || id === "cs_bloodstrike" ? "elimination" : "bomb";
 const players = ["terror", "leet", "arctic", "guerilla", "urban", "gsg9", "sas", "gign"];
 const weapons = ["glock18", "usp", "p228", "deagle", "elite", "fiveseven", "m3", "xm1014", "mp5navy", "tmp", "p90", "mac10", "ump45", "galil", "famas", "ak47", "m4a1", "sg552", "aug", "scout", "awp", "g3sg1", "sg550", "m249"];
 
@@ -61,6 +62,46 @@ export function sourceIdentity(root) {
   return { files: sources, sha256: digest(JSON.stringify(sources)) };
 }
 
+export function mapRulesIdentity(root) {
+  const source = readFileSync(path.join(root, "games/cs16/data/maps.go"), "utf8");
+  const match = source.match(/\bconst\s+MapsJSON\s*=\s*`([^`]*)`/);
+  if (!match) throw Error("Missing CS16 raw map rule catalog");
+  const values = JSON.parse(match[1]);
+  if (!Array.isArray(values)) throw Error("Invalid CS16 map rule catalog");
+  const rows = [];
+  let quoted = false;
+  let escaped = false;
+  let depth = 0;
+  let start = -1;
+  for (let index = 0; index < match[1].length; index++) {
+    const character = match[1][index];
+    if (quoted) {
+      if (escaped) escaped = false;
+      else if (character === "\\") escaped = true;
+      else if (character === '"') quoted = false;
+    } else if (character === '"') quoted = true;
+    else if (character === "{") {
+      if (depth === 0) start = index;
+      depth++;
+    } else if (character === "}") {
+      depth--;
+      if (depth === 0) rows.push(match[1].slice(start, index + 1));
+    }
+  }
+  if (rows.length !== values.length || depth !== 0 || quoted) throw Error("Invalid CS16 raw map rule boundaries");
+  const selected = new Map();
+  for (const row of rows) {
+    const world = JSON.parse(row);
+    if (typeof world.id !== "string" || selected.has(world.id)) throw Error("Duplicate or invalid CS16 map rule identity");
+    selected.set(world.id, { world, row });
+  }
+  return Object.fromEntries(maps.map(id => {
+    const entry = selected.get(id);
+    if (!entry || entry.world.mode !== mapMode(id) || !/^[0-9a-f]{64}$/.test(entry.world.sourceSHA256)) throw Error("Missing or invalid CS16 map rules: " + id);
+    return [id, { mode: entry.world.mode, sourceSHA256: entry.world.sourceSHA256, rulesSHA256: digest(entry.row) }];
+  }));
+}
+
 export function resourceDescriptors(manifest) {
   const items = new Map();
   function visit(value) {
@@ -103,10 +144,26 @@ export function validateResource(root, item) {
 export function validateAssets(manifest) {
   if (manifest.schema !== 1) throw Error("Unsupported CS16 asset schema");
   const resource = value => typeof value?.file === "string" && Number.isSafeInteger(value.bytes) && value.bytes > 0 && /^[0-9a-f]{64}$/.test(value.sha256) && typeof value.mime === "string";
-  for (const id of maps) for (const key of ["render", "rules", "preview"]) if (!resource(manifest.maps?.[id]?.[key])) throw Error("Missing classic map resource: " + id + " " + key);
+  for (const id of maps) {
+    for (const key of ["render", "rules", "preview"]) if (!resource(manifest.maps?.[id]?.[key])) throw Error("Missing classic map resource: " + id + " " + key);
+    if (manifest.maps[id].mode !== mapMode(id)) throw Error("Invalid classic map mode: " + id);
+  }
   for (const id of players) if (!resource(manifest.players?.[id])) throw Error("Missing player model: " + id);
   for (const id of weapons) for (const key of ["view", "player", "world"]) if (!resource(manifest.weapons?.[id]?.[key])) throw Error("Missing firearm model: " + id + " " + key);
   if (!resourceDescriptors(manifest).length) throw Error("Empty CS16 resource manifest");
+}
+
+export function validateMapRules(workspace, assets, manifest, identities = mapRulesIdentity(workspace)) {
+  validateAssets(manifest);
+  return Object.fromEntries(maps.map(id => {
+    const expected = identities[id];
+    const selected = manifest.maps[id];
+    const packed = validateResource(assets, selected.rules);
+    const decoded = selected.rules.encoding === "gzip" ? gunzipSync(packed) : packed;
+    const world = JSON.parse(decoded.toString("utf8"));
+    if (!expected || digest(decoded) !== expected.rulesSHA256 || world.id !== id || world.mode !== expected.mode || world.sourceSHA256 !== expected.sourceSHA256 || selected.sourceSHA256 !== expected.sourceSHA256) throw Error("CS16 map rules do not match server identity: " + id);
+    return [id, { ...expected, resourceSHA256: selected.rules.sha256, decodedRulesSHA256: digest(decoded) }];
+  }));
 }
 
 function descriptor(file, bytes, mime) {
@@ -122,12 +179,13 @@ function runtimeIdentity(root, env) {
   if (!licenseFile) throw Error("Go toolchain license is missing");
   const copyright = upstream.split("\n").slice(0, 4).filter(line => line.startsWith("//")).map(line => line.replace(/^\/\/\s?/, "")).join("\n");
   const license = copyright + "\n\n" + readFileSync(licenseFile, "utf8");
-  const binding = { version: 1, sourceSHA256: source.sha256, goVersion: tools.GOVERSION, builderSHA256: digest(readFileSync(builderFile)), scriptSHA256: digest(script), licenseSHA256: digest(license), flags };
+  const binding = { version: 1, sourceSHA256: source.sha256, mapRules: mapRulesIdentity(root), goVersion: tools.GOVERSION, builderSHA256: digest(readFileSync(builderFile)), scriptSHA256: digest(script), licenseSHA256: digest(license), flags };
   return { ...binding, sourceFiles: source.files, buildSHA256: digest(JSON.stringify(binding)), script, license };
 }
 
 function verifyRuntime(root, runtime, identity) {
   if (runtime?.version !== 1 || runtime.sourceSHA256 !== identity.sourceSHA256 || runtime.buildSHA256 !== identity.buildSHA256 || runtime.goVersion !== identity.goVersion) throw Error("CS16 runtime source binding mismatch");
+  if (JSON.stringify(runtime.mapRules) !== JSON.stringify(identity.mapRules)) throw Error("CS16 runtime map rule binding mismatch");
   const wasm = validateResource(root, runtime.wasm);
   validateResource(root, runtime.script);
   validateResource(root, runtime.license);
@@ -169,8 +227,10 @@ export function verifyCS16Delivery(workspace, publicRoot) {
   const manifest = JSON.parse(readFileSync(path.join(selected, "manifest.json"), "utf8"));
   validateAssets(manifest);
   for (const item of resourceDescriptors(manifest)) validateResource(selected, item);
-  verifyRuntime(selected, manifest.runtime, runtimeIdentity(root, environment(root)));
-  return { passed: true, resources: resourceDescriptors(manifest).length, sourceSHA256: manifest.runtime.sourceSHA256, wasmSHA256: manifest.runtime.wasm.sha256 };
+  const identity = runtimeIdentity(root, environment(root));
+  verifyRuntime(selected, manifest.runtime, identity);
+  const mapRules = validateMapRules(root, selected, manifest, identity.mapRules);
+  return { passed: true, resources: resourceDescriptors(manifest).length, sourceSHA256: manifest.runtime.sourceSHA256, wasmSHA256: manifest.runtime.wasm.sha256, mapRules };
 }
 
 export function prepareCS16Delivery(workspace) {
@@ -182,6 +242,7 @@ export function prepareCS16Delivery(workspace) {
   delete manifest.runtime;
   validateAssets(manifest);
   for (const item of resourceDescriptors(manifest)) validateResource(source, item);
+  validateMapRules(root, source, manifest);
   const compiled = buildCS16Runtime(root);
   const publicRoot = directory(root, "delivery/public");
   const target = path.join(publicRoot, "cs16");

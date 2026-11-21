@@ -6,8 +6,8 @@ CS 1.6 的独立网页复刻，游戏 ID 为 `cs16`。首版支持 2 至 10 人�
 
 | 类型 | 范围 |
 | --- | --- |
-| 地图 | de_dust2 沙漠 2、de_inferno 炼狱小镇、de_aztec 阿兹特克、cs_assault 仓库突击 |
-| 玩法 | 三张爆破地图，以及仓库的人质营救 |
+| 地图 | de_dust2 沙漠 2、de_inferno 炼狱小镇、de_aztec 阿兹特克、cs_assault 仓库突击、fy_iceworld 冰雪世界、cs_bloodstrike 血战回廊 |
+| 玩法 | 三张爆破地图、仓库人质营救，以及冰雪世界与血战回廊的回合歼灭 |
 | 手枪 | Glock 18、USP、P228、Desert Eagle、Dual Elites、Five-SeveN |
 | 霰弹枪 | M3、XM1014 |
 | 冲锋枪 | MP5 Navy、TMP、P90、MAC-10、UMP45 |
@@ -32,6 +32,8 @@ Go 引擎以 100 Hz 候选规则步推进，网络投影与显示刷新分别调
 
 私有存档格式 2 将完整历史保存为有长度和校验约束的 gzip 冷检查点，规则推进时再展开，兼容格式 1 的旧 JSON 历史。普通输入只更新当前席位，不重复处理历史正文；冷检查点不进入公开投影或恢复网络包。
 
+客户端只发送操作。服务器按每个连接的可见范围和基线发送变化字段、实体新增／移除及新增事件；首次和恢复时发送完整公开视图。固定地图、规则和选项不随常规帧重复发送，HTTP 快照不替换 WebSocket 解码基线。
+
 游戏采用明确单位的定点整数，渲染变换使用浮点数。原版 GoldSrc 使用浮点运动，当前实现须以已保存的轨迹和参数对照说明差异，不声称逐位等价。
 
 ## 原版样本与证据
@@ -51,13 +53,13 @@ python3 -B scripts/cs16/build_assets.py
 node games/cs16/build/runtime-delivery.mjs
 ```
 
-`--check` 完全离线。参考源码尚未恢复时，先显式运行 `fetch_sources.py --reference`。普通 CI 只使用已经校验的资源缓存，不自动执行下载入口。已登记的发布资源也可通过平台统一恢复入口读取；本次仅完成本地登记与校验，尚未上传或发布 CDN 对象。
+`--check` 完全离线。参考源码尚未恢复时，先显式运行 `fetch_sources.py --reference`。普通 CI 只使用已经校验的资源缓存，不自动执行下载入口。发布资源按内容摘要登记与复用，上传过程使用 HEAD／PUT；最终应用构建另行执行本地 CDN 回读。社区小图来源与增量转换见[原图接入记录](../../docs/research/cs16/community-maps.md)。
 
 先显式创建本游戏的缓存和临时目录，再运行工具。测试结果保存在 `.local/cs16/verification/`；具体通过范围以本次 JSON 报告为准。
 
 ```sh
 mkdir -p .local/cs16/go-cache .local/cs16/go-mod .local/cs16/tmp .local/cs16/verification
-GOCACHE="$PWD/.local/cs16/go-cache" GOMODCACHE="$PWD/.local/cs16/go-mod" GOTMPDIR="$PWD/.local/cs16/tmp" TMPDIR="$PWD/.local/cs16/tmp" GOTOOLCHAIN=local GOTELEMETRY=off go test -json -count=1 -timeout=20m ./games/cs16/engine ./games/cs16/tests
+GOCACHE="$PWD/.local/cs16/go-cache" GOMODCACHE="$PWD/.local/cs16/go-mod" GOTMPDIR="$PWD/.local/cs16/tmp" TMPDIR="$PWD/.local/cs16/tmp" GOTOOLCHAIN=local GOTELEMETRY=off go test -json -count=1 -timeout=20m ./games/cs16/engine ./games/cs16/server ./games/cs16/tests
 node --experimental-strip-types --test games/cs16/tests/*.test.mjs
 node games/cs16/build/lint.mjs
 node games/cs16/build/runtime-delivery.mjs

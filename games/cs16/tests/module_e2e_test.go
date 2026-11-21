@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"sort"
 	"strings"
 	"testing"
 	"time"
@@ -112,7 +113,7 @@ func TestConfigurationAndPreparationTenSeats(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, id := range []string{"de_dust2", "de_inferno", "de_aztec", "cs_assault"} {
+	for _, id := range []string{"de_dust2", "de_inferno", "de_aztec", "cs_assault", "fy_iceworld", "cs_bloodstrike"} {
 		if _, err = module.Configure(10, encode(map[string]any{"map": id})); err != nil {
 			t.Fatal(id, err)
 		}
@@ -120,7 +121,7 @@ func TestConfigurationAndPreparationTenSeats(t *testing.T) {
 	if _, err = module.Configure(10, encode(map[string]any{"roundSeconds": 300})); err != nil {
 		t.Fatal("public five-minute option rejected", err)
 	}
-	artifact(t, map[string]any{"passed": true, "options": json.RawMessage(options), "teams": counts, "maps": []string{"de_dust2", "de_inferno", "de_aztec", "cs_assault"}})
+	artifact(t, map[string]any{"passed": true, "options": json.RawMessage(options), "teams": counts, "maps": []string{"de_dust2", "de_inferno", "de_aztec", "cs_assault", "fy_iceworld", "cs_bloodstrike"}})
 }
 
 func TestInputAuthorityProjectionAndReclaim(t *testing.T) {
@@ -330,7 +331,7 @@ func TestLongClockPauseUsesBoundedCatchup(t *testing.T) {
 }
 
 func TestNaturalTenSeatClassicMapMatches(t *testing.T) {
-	for _, mapID := range []string{"de_dust2", "de_inferno", "de_aztec", "cs_assault"} {
+	for _, mapID := range []string{"de_dust2", "de_inferno", "de_aztec", "cs_assault", "fy_iceworld", "cs_bloodstrike"} {
 		t.Run(mapID, func(t *testing.T) {
 			module := game.Module()
 			ctx := gameapi.Context{Players: 10, Now: time.Unix(100000, 0), Automated: []bool{true, true, true, true, true, true, true, true, true, true}}
@@ -339,13 +340,28 @@ func TestNaturalTenSeatClassicMapMatches(t *testing.T) {
 				t.Fatal(err)
 			}
 			initial := json.RawMessage(append([]byte(nil), match.Data...))
+			elimination := mapID == "fy_iceworld" || mapID == "cs_bloodstrike"
+			initialView := view(t, module, match, -1)
+			initialGroundWeapons := len(initialView["drops"].([]any))
+			if elimination && (integer(initialView["bomb"].(map[string]any)["carrier"]) != -1 || len(initialView["hostages"].([]any)) != 0) {
+				t.Fatal("elimination map contains an objective")
+			}
+			if mapID == "fy_iceworld" && initialGroundWeapons != 24 || mapID == "cs_bloodstrike" && initialGroundWeapons != 0 {
+				t.Fatal("original map ground weapon count changed", mapID, initialGroundWeapons)
+			}
+			if mapID == "cs_bloodstrike" && view(t, module, match, 0)["buyAllowed"] != true {
+				t.Fatal("bloodstrike spawn fallback buy area missing")
+			}
 			base := ctx.Now
 			inputs, buys, peakBytes := 0, 0, 0
+			pickups, objectiveEvents := 0, 0
+			roundEndReasons := map[string]int{}
 			projectionCount, totalProjectionBytes, peakStreamProjectionBytes, initialProjectionBytes := 0, 0, 0, 0
 			type projectionSecond struct {
-				Second int64 `json:"second"`
-				Bytes  int   `json:"bytes"`
-				Shots  int   `json:"shots"`
+				Second      int64 `json:"second"`
+				Bytes       int   `json:"bytes"`
+				Shots       int   `json:"shots"`
+				PacketBytes []int `json:"packetBytes"`
 			}
 			seconds := map[int64]*projectionSecond{}
 			cursor := ""
@@ -386,13 +402,20 @@ func TestNaturalTenSeatClassicMapMatches(t *testing.T) {
 					t.Fatal(streamErr)
 				}
 				cursor = packet.Cursor
-				projected := packet.Data.(game.View)
+				var projected struct {
+					ServerAt int64            `json:"serverAt"`
+					Events   []game.EventView `json:"events"`
+				}
+				if json.Unmarshal(encode(packet.Data), &projected) != nil {
+					t.Fatal("stream event header invalid")
+				}
 				var persisted struct {
 					World struct {
 						EventID int64 `json:"eventId"`
 						Events  []struct {
-							ID   int64  `json:"id"`
-							Kind string `json:"type"`
+							ID     int64  `json:"id"`
+							Kind   string `json:"type"`
+							Weapon string `json:"weapon"`
 						} `json:"events"`
 					} `json:"world"`
 				}
@@ -400,23 +423,36 @@ func TestNaturalTenSeatClassicMapMatches(t *testing.T) {
 					t.Fatal("persisted rule audit invalid")
 				}
 				for _, event := range persisted.World.Events {
-					if event.ID > privateEventCursor && event.Kind == "buy" {
+					if event.ID <= privateEventCursor {
+						continue
+					}
+					if event.Kind == "buy" {
 						buys++
+					}
+					if event.Kind == "pickup" {
+						pickups++
+					}
+					if event.Kind == "round_end" {
+						roundEndReasons[event.Weapon]++
+					}
+					if strings.HasPrefix(event.Kind, "bomb_") || strings.HasPrefix(event.Kind, "hostage_") {
+						objectiveEvents++
 					}
 				}
 				privateEventCursor = persisted.World.EventID
-				projectionBytes := len(encode(projected))
+				projectionBytes := len(encode(packet.Data))
 				if projectionCount == 0 {
 					initialProjectionBytes = projectionBytes
 				}
 				projectionCount++
 				totalProjectionBytes += projectionBytes
 				peakStreamProjectionBytes = max(peakStreamProjectionBytes, projectionBytes)
-				second := (projected.ServerAt - projected.StartAt) / 1000
+				second := (projected.ServerAt - base.UnixMilli()) / 1000
 				if seconds[second] == nil {
 					seconds[second] = &projectionSecond{Second: second}
 				}
 				seconds[second].Bytes += projectionBytes
+				seconds[second].PacketBytes = append(seconds[second].PacketBytes, projectionBytes)
 				for _, event := range projected.Events {
 					if event.Kind == "shot" {
 						seconds[second].Shots++
@@ -434,8 +470,17 @@ func TestNaturalTenSeatClassicMapMatches(t *testing.T) {
 				own := view(t, module, match, seat)["players"].([]any)[seat].(map[string]any)
 				inputs += int(integer(own["receivedSeq"]))
 			}
-			if match.Result == nil || inputs < 100 || buys < 10 || !match.Result.Team || len(match.Result.Ranks) != 10 || !match.HasComputerPlayers || peakBytes > 32000 {
-				t.Fatal("incomplete ten-seat match", inputs, buys, peakBytes, match.Result)
+			acquisitions, requiredAcquisitions := buys, 10
+			if elimination {
+				acquisitions, requiredAcquisitions = buys+pickups, 1
+			}
+			if match.Result == nil || inputs < 100 || acquisitions < requiredAcquisitions || !match.Result.Team || len(match.Result.Ranks) != 10 || !match.HasComputerPlayers || peakBytes > 32000 {
+				artifact(t, map[string]any{"passed": false, "scope": "natural ten-seat match failed completion or acquisition contract without forced rule results", "map": mapID, "initial": initial, "inputs": inputs, "buys": buys, "pickups": pickups, "objectiveEvents": objectiveEvents, "roundEndReasons": roundEndReasons, "final": view(t, module, match, -1), "privateCheckpoint": json.RawMessage(match.Data), "result": match.Result})
+				t.Fatal("incomplete ten-seat match", inputs, buys, pickups, peakBytes, match.Result)
+			}
+			if elimination && (objectiveEvents != 0 || len(roundEndReasons) != 1 || roundEndReasons["elimination"] != 2) {
+				artifact(t, map[string]any{"passed": false, "scope": "elimination match incorrectly used an objective or non-elimination round result", "map": mapID, "objectiveEvents": objectiveEvents, "roundEndReasons": roundEndReasons, "final": view(t, module, match, -1), "privateCheckpoint": json.RawMessage(match.Data), "result": match.Result})
+				t.Fatal("small map did not finish through two natural eliminations", objectiveEvents, roundEndReasons)
 			}
 			final := view(t, module, match, -1)
 			simulatedMs := integer(final["serverAt"]) - integer(final["startAt"])
@@ -444,13 +489,16 @@ func TestNaturalTenSeatClassicMapMatches(t *testing.T) {
 				t.Fatal(recoveryErr)
 			}
 			secondRecords := []projectionSecond{}
+			packetBytes, firingPacketBytes := []int{}, []int{}
 			peakSecondBytes, fireSecondBytes, fireSeconds, shotEvents := 0, 0, 0, 0
 			for second := int64(0); second <= simulatedMs/1000; second++ {
 				if record := seconds[second]; record != nil {
 					secondRecords = append(secondRecords, *record)
 					peakSecondBytes = max(peakSecondBytes, record.Bytes)
 					shotEvents += record.Shots
+					packetBytes = append(packetBytes, record.PacketBytes...)
 					if record.Shots > 0 {
+						firingPacketBytes = append(firingPacketBytes, record.PacketBytes...)
 						fireSecondBytes += record.Bytes
 						fireSeconds++
 					}
@@ -463,9 +511,18 @@ func TestNaturalTenSeatClassicMapMatches(t *testing.T) {
 			if match.Result.Draw && len(match.Result.Winners) != 0 {
 				t.Fatal("draw represented as shared victory")
 			}
-			artifact(t, map[string]any{"passed": kills > 0, "scope": "production module full ten-seat match through ordinary QueueInput and Buy rules with accelerated wall clock only; projection byte metrics are JSON game-data bodies excluding platform envelope, compression and browser transport", "initial": initial, "inputs": inputs, "buys": buys, "kills": kills, "peakProjectionBytes": peakBytes, "streamProjectionCount": projectionCount, "streamProjectionBytes": totalProjectionBytes, "averageProjectionBytesPerSecond": int64(totalProjectionBytes) * 1000 / max(int64(1), simulatedMs), "peakStreamProjectionBytes": peakStreamProjectionBytes, "peakOneSecondProjectionBytes": peakSecondBytes, "initialProjectionBytes": initialProjectionBytes, "recoveryBytes": len(encode(recovery)), "shotEvents": shotEvents, "firingSecondCount": fireSeconds, "averageFiringSecondProjectionBytes": fireSecondBytes / max(1, fireSeconds), "projectionSeconds": secondRecords, "final": final, "result": match.Result})
-			if kills == 0 {
-				t.Fatal("computers completed clock without genuine combat")
+			sort.Ints(packetBytes)
+			sort.Ints(firingPacketBytes)
+			bodyP95, firingBodyP95 := 0, 0
+			if len(packetBytes) > 0 {
+				bodyP95 = packetBytes[(len(packetBytes)*95+99)/100-1]
+			}
+			if len(firingPacketBytes) > 0 {
+				firingBodyP95 = firingPacketBytes[(len(firingPacketBytes)*95+99)/100-1]
+			}
+			artifact(t, map[string]any{"passed": kills > 0 && shotEvents > 0, "scope": "production module full ten-seat match through ordinary QueueInput, Buy and ground pickup rules with accelerated wall clock only; projection byte metrics are JSON game-data bodies excluding platform envelope, compression and browser transport", "initial": initial, "elimination": elimination, "initialGroundWeapons": initialGroundWeapons, "inputs": inputs, "buys": buys, "pickups": pickups, "objectiveEvents": objectiveEvents, "roundEndReasons": roundEndReasons, "kills": kills, "peakProjectionBytes": peakBytes, "streamProjectionCount": projectionCount, "streamProjectionBytes": totalProjectionBytes, "streamBodyP95Bytes": bodyP95, "firingSecondBodyP95Bytes": firingBodyP95, "averageProjectionBytesPerSecond": int64(totalProjectionBytes) * 1000 / max(int64(1), simulatedMs), "peakStreamProjectionBytes": peakStreamProjectionBytes, "peakOneSecondProjectionBytes": peakSecondBytes, "initialProjectionBytes": initialProjectionBytes, "recoveryBytes": len(encode(recovery)), "shotEvents": shotEvents, "firingSecondCount": fireSeconds, "averageFiringSecondProjectionBytes": fireSecondBytes / max(1, fireSeconds), "projectionSeconds": secondRecords, "final": final, "result": match.Result})
+			if kills == 0 || shotEvents == 0 {
+				t.Fatal("computers completed clock without genuine shooting combat")
 			}
 		})
 	}

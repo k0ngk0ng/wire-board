@@ -278,15 +278,20 @@ func (s *Server) streamSocket(w http.ResponseWriter, r *http.Request, user User)
 		defer stop()
 		return conn.Write(writeCtx, websocket.MessageText, raw) == nil
 	}
+	cursor := streamConnectionCursor{}
 	state := func() bool {
 		status, raw := s.statePayload(r)
 		if status != http.StatusOK {
 			return false
 		}
-		return write(struct {
+		if !write(struct {
 			Type  string          `json:"type"`
 			State json.RawMessage `json:"state"`
-		}{"state", raw})
+		}{"state", raw}) {
+			return false
+		}
+		cursor = streamConnectionCursor{}
+		return true
 	}
 	if !state() {
 		return
@@ -297,7 +302,6 @@ func (s *Server) streamSocket(w http.ResponseWriter, r *http.Request, user User)
 	push := time.NewTicker(50 * time.Millisecond)
 	defer push.Stop()
 	pending := false
-	cursor := streamConnectionCursor{}
 	pushFrame := func() bool {
 		pending = false
 		packet, nextCursor, valid := s.streamGameCursor(r, cursor)

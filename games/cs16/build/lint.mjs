@@ -4,6 +4,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { createRequire } from "node:module";
 import { spawnSync } from "node:child_process";
+import { inspectNumericComparisons } from "../../../web/scripts/numeric-comparisons.mjs";
 
 const root = fileURLToPath(new URL("../../../", import.meta.url));
 const require = createRequire(new URL("../../../web/package.json", import.meta.url));
@@ -108,7 +109,8 @@ function inspectScript(item) {
       for (const element of node.elements) if (ts.isBindingElement(element)) binding(element.name);
     }
   };
-  const business = policy.businessTypeScript.includes(path.basename(item.file));
+  const deterministic = policy.businessTypeScript.includes(path.basename(item.file)) && policy.deterministicTypeScriptPrefixes.some(prefix => item.file.startsWith(prefix));
+  const business = deterministic || policy.sharedComparisonTypeScript.includes(item.file);
   function walk(node) {
     collect(ts.getLeadingCommentRanges(item.source, node.getFullStart()));
     collect(ts.getTrailingCommentRanges(item.source, node.end));
@@ -121,7 +123,7 @@ function inspectScript(item) {
     }
     if (ts.isCallExpression(node) && expressionName(node.expression) === "connect" && node.arguments.some(destinationValue)) emit("native-media-output-only", node);
     if (ts.isStringLiteralLike(node) && active(node.getStart(file), node.end)) literals.push(node.text);
-    if (business && ts.isNumericLiteral(node) && /[.eE]/.test(node.text)) emit("integer-business-number", node);
+    if (deterministic && ts.isNumericLiteral(node) && /[.eE]/.test(node.text)) emit("integer-business-number", node);
     if (ts.isCallExpression(node) && ts.isIdentifier(node.expression) && node.expression.text === "eval") emit("no-dynamic-evaluation", node);
     if (ts.isCallExpression(node) && ["tmpdir", "homedir"].includes(expressionName(node.expression))) emit("workspace-output-directory", node);
     if (ts.isNewExpression(node)) {
@@ -130,7 +132,7 @@ function inspectScript(item) {
       if (!platformAudio && ["Audio", "AudioContext", "webkitAudioContext"].includes(constructor)) emit("platform-audio-only", node);
     }
     if (!platformAudio && ts.isCallExpression(node) && ts.isPropertyAccessExpression(node.expression) && node.expression.name.text === "createElement" && node.arguments.some(argument => ts.isStringLiteral(argument) && ["audio", "video"].includes(argument.text.toLowerCase()))) emit("platform-audio-only", node);
-    if (business && ts.isPropertyAccessExpression(node) && (node.getText(file) === "Number.EPSILON" || node.getText(file) === "Math.random")) emit("integer-business-number", node);
+    if (deterministic && ts.isPropertyAccessExpression(node) && (node.getText(file) === "Number.EPSILON" || node.getText(file) === "Math.random")) emit("integer-business-number", node);
     if ((ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) && node.moduleSpecifier && ts.isStringLiteral(node.moduleSpecifier)) {
       const imported = node.moduleSpecifier.text;
       if (imported.startsWith(".")) {
@@ -148,6 +150,7 @@ function inspectScript(item) {
     for (const child of node.getChildren(file)) walk(child);
   }
   walk(file);
+  if (business && !deterministic) inspectNumericComparisons(file, emit);
   collect(ts.getLeadingCommentRanges(item.source, 0));
   if (comments.size) issues.push("no-comments");
   return [...issues, ...inspectPaths(item, literals)];
@@ -189,7 +192,7 @@ function runHelper(language, items) {
   const args = language === "go" ? ["run", "games/cs16/build/lint_go.go"] : ["-B", "games/cs16/build/lint-python.py"];
   const run = spawnSync(executable, args, {
     cwd: root,
-    input: JSON.stringify(items.map(item => language === "go" ? { ...item, expectedPackage: policy.sharedGoPackages?.[path.posix.dirname(item.file)] } : item)),
+    input: JSON.stringify(items.map(item => language === "go" ? { ...item, expectedPackage: policy.sharedGoPackages?.[path.posix.dirname(item.file)], strictIntegers: policy.deterministicGoPrefixes.some(prefix => item.file.startsWith(prefix)) } : item)),
     encoding: "utf8",
     env: { ...process.env, GOCACHE: goCache, GOMODCACHE: goModules, GOTMPDIR: temporary, TMPDIR: temporary, GOTOOLCHAIN: "local", GOTELEMETRY: "off" },
   });

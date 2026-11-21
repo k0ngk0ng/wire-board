@@ -5,6 +5,8 @@ export const maps = [
   { id: 'de_inferno', name: '炼狱小镇', mode: 'bomb' },
   { id: 'de_aztec', name: '阿兹特克', mode: 'bomb' },
   { id: 'cs_assault', name: '仓库突击', mode: 'hostage' },
+  { id: 'fy_iceworld', name: '冰雪世界', mode: 'elimination' },
+  { id: 'cs_bloodstrike', name: '血战回廊', mode: 'elimination' },
 ] as const;
 
 export const characters = [
@@ -50,6 +52,8 @@ export const equipment = [
 
 export const itemName = (id: string) => weapons.find(weapon => weapon.id === id)?.name ?? equipment.find(item => item.id === id)?.name ?? ({ knife: '小刀', c4: 'C4' } as Record<string, string>)[id] ?? id;
 export const mapName = (id: string) => maps.find(map => map.id === id)?.name ?? id;
+export const mapMode = (id: string) => maps.find(map => map.id === id)?.mode;
+export const modeName = (mode: string) => ({ bomb: '爆破', hostage: '人质营救', elimination: '回合歼灭' } as Record<string, string>)[mode] ?? mode;
 export function inventorySlots(inventory: { id: string; ammo: number }[], current: string) {
   const utilities = inventory.filter(item => ['hegrenade', 'flashbang', 'smokegrenade'].includes(item.id) && item.ammo > 0);
   const selected = utilities.findIndex(item => item.id === current);

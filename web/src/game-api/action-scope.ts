@@ -24,7 +24,7 @@ function gameEpoch(
   const epoch = (data as { epoch?: unknown }).epoch;
   if (
     typeof epoch === "string" ||
-    (typeof epoch === "number" && Number.isFinite(epoch))
+    (typeof epoch === "number" && Number.isSafeInteger(epoch))
   )
     return epoch;
 }
@@ -70,10 +70,11 @@ export class ActionScopes {
     requestedEpoch?: unknown,
   ): ActionScopeToken | undefined {
     const epoch = gameEpoch(state);
+    if (typeof requestedEpoch === "number" && !Number.isSafeInteger(requestedEpoch)) return;
     if (
       (typeof requestedEpoch === "string" ||
         (typeof requestedEpoch === "number" &&
-          Number.isFinite(requestedEpoch))) &&
+          Number.isSafeInteger(requestedEpoch))) &&
       epoch !== undefined &&
       requestedEpoch !== epoch
     )

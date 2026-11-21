@@ -54,6 +54,13 @@ func botHostageDestination(state *State, player *Player) (Vec3, int) {
 
 func botDestination(state *State, seat int) (Vec3, int, bool) {
 	player := &state.Players[seat]
+	if state.World.Mode == "elimination" {
+		if point, found := MapWeaponGoal(state, seat); found {
+			return point, 0, true
+		}
+		point, found := eliminationPatrolDestination(state, seat)
+		return point, 0, found
+	}
 	if state.World.Mode == "bomb" {
 		if state.Bomb.Planted {
 			point, _ := botBombDestination(state, seat)

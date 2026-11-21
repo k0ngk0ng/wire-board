@@ -104,7 +104,11 @@ func BotInput(state *State, seat int) (input Input) {
 	}
 	p := &state.Players[seat]
 	input = Input{Seq: p.ReceivedSeq + 1, Life: p.Life, ViewFrame: state.Frame, Yaw: p.Yaw, Pitch: p.Pitch}
-	defer func() { botAvoidPlayers(state, seat, &input); botAvoidFriendlyFire(state, seat, &input) }()
+	defer func() {
+		BotWeapon(state, seat, &input)
+		botAvoidPlayers(state, seat, &input)
+		botAvoidFriendlyFire(state, seat, &input)
+	}()
 	if !p.Alive || state.Finished || state.Phase != "live" {
 		return input
 	}
@@ -150,7 +154,7 @@ func BotInput(state *State, seat int) (input Input) {
 		input.Yaw = AngleTo(dx, dy)
 		input.Pitch = -botAngleDifference(AngleTo(botHorizontalDistance(eye, Vec3{target.X, target.Y, target.Z}), dz), 0)
 		input.Pitch = max(-16000, min(16000, input.Pitch))
-		input.Select = objectiveBestWeapon(p)
+		input.Select = botBestWeapon(p)
 		weapon, ok := WeaponByID(input.Select)
 		input.Fire = ok && (weapon.ID != "knife" || enemyDistance < 70*Unit)
 		if !weapon.Automatic && weapon.ID != "knife" && state.Frame%40 >= 20 {
@@ -178,6 +182,11 @@ func BotInput(state *State, seat int) (input Input) {
 		return input
 	}
 	goal := position
+	if state.World.Mode == "elimination" {
+		if point, _, found := botDestination(state, seat); found {
+			goal = point
+		}
+	}
 	if state.World.Mode == "bomb" {
 		if state.Bomb.Planted {
 			goal, _ = botBombDestination(state, seat)
@@ -236,7 +245,7 @@ func BotInput(state *State, seat int) (input Input) {
 	if p.Ammo == 0 && p.Reserve > 0 {
 		input.Reload = true
 	}
-	input.Select = objectiveBestWeapon(p)
+	input.Select = botBestWeapon(p)
 	return botNavigate(state, seat, goal, state.World.Mode == "hostage" && p.Team == "ct", input)
 }
 
@@ -262,6 +271,12 @@ func botNavigate(state *State, seat int, goal Vec3, escort bool, input Input) In
 	waypoint, flags, connection, committed := botCommittedWaypoint(state, seat, goal, mode)
 	if !committed {
 		waypoint, flags, connection = botWaypointWithRules(state, position, goal, carryingHostages, escort || carryingHostages)
+	}
+	if state.World.Mode == "elimination" {
+		direct := TraceWorld(state, position, goal, 0)
+		if !direct.StartSolid && direct.Fraction == NormalUnit {
+			waypoint, flags, connection = goal, 0, 0
+		}
 	}
 	input.Yaw = AngleTo(waypoint.X-position.X, waypoint.Y-position.Y)
 	input.Pitch = 0

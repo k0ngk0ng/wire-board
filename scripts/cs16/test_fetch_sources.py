@@ -178,9 +178,13 @@ class SourceFetchTest(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
         report = json.loads(result.stdout)
         self.assertEqual(report["downloaded"], 0)
-        self.assertEqual(report["reused"], 752)
+        catalogs = [("original-sources.json", "original"), ("navigation-sources.json", "navigation")]
+        if (ROOT / "games/cs16/assets/community-sources.json").is_file():
+            catalogs.append(("community-sources.json", "community"))
+        expected = sum(len(MODULE.validate_manifest(json.loads((ROOT / "games/cs16/assets" / name).read_text()), kind)) for name, kind in catalogs)
+        self.assertEqual(report["reused"], expected)
         self.assertTrue(report["check"])
-        (OUTPUT / "offline-check.json").write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n")
+        (OUTPUT / "offline-community-check.json").write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n")
 
 
 if __name__ == "__main__":

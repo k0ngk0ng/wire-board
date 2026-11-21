@@ -25,6 +25,10 @@
     {
       "directory": "web/tests",
       "filename": "^action-scope\\.test\\.mjs$"
+    },
+    {
+      "directory": "web/tests",
+      "filename": "^realtime-game-decoder\\.test\\.mjs$"
     }
   ],
   "sharedPatchSources": [
@@ -34,7 +38,8 @@
     "web/src/controllers/input.ts",
     "web/src/controllers/game-controller.ts",
     "web/src/controllers/use-game-controller.ts",
-    "web/src/main.tsx"
+    "web/src/main.tsx",
+    "web/src/realtime-stream.ts"
   ],
   "output": ".local/cs16/verification/lint",
   "externalResourceDirectory": "games/cs16/assets/public",
@@ -49,7 +54,8 @@
     "feedback.ts",
     "default-players.ts",
     "touch-input.ts",
-    "action-scope.ts"
+    "action-scope.ts",
+    "stream-delta.ts"
   ],
   "languages": {
     "go": {
@@ -103,7 +109,7 @@
     "TypeScript/JavaScript and Go bindings use camelCase/PascalCase; uppercase snake constants are permitted in TypeScript/JavaScript",
     "Python bindings use snake_case, uppercase snake constants, and PascalCase classes",
     "Go package names match engine, server, data, command and test directory roles",
-    "Business Go uses integer types and integer numeric literals; input and prediction TypeScript reject fractional numeric constants, Number.EPSILON and Math.random",
+    "CS16 deterministic Go prefixes and private input/prediction TypeScript retain integer-chain types and literals; generic shared Go/TS permit floating calculation but reject floating business comparisons",
     "Dynamic evaluation, TypeScript any, cross-game implementation imports, direct audio players and embedded media payloads are prohibited",
     "Original BSP, WAD, MDL, image, audio, video, model, archive and WebAssembly payloads cannot enter Git, including assets/public; only registered ignored external payloads are restored",
     "Temporary output paths are restricted to .local/cs16 and system-default temporary directories are prohibited",
@@ -113,7 +119,8 @@
     "Shared platform spatial audio may own an AudioContext and native media but cannot route to AudioContext.destination; its destination must be a MediaStreamAudioDestinationNode feeding the platform native media channel",
     "Shared spatial audio sources and tests receive complete checks; existing audio.ts and game-api/module.ts are inspected only at Git-added lines, preserving pre-existing comments and unrelated source",
     "Registered shared Go files use explicitly mapped server/gameapi packages; full new files and added lines in existing files retain integer/no-comment/no-game-import rules without exempting any game rule",
-    "Go forbids unsafe imports and package-global sql.Register/sqlite.RegisterConnectionHook references, including aliases; instance SQLite connection hooks remain allowed"
+    "Go forbids unsafe imports and package-global sql.Register/sqlite.RegisterConnectionHook references, including aliases; instance SQLite connection hooks remain allowed",
+    "Generic comparison checks follow numeric variables, fields, local function returns, tolerance, extrema and sort APIs; explicit quantization and integer guards establish integer comparison operands"
   ],
   "sharedPythonSources": [
     "scripts/test_cdn_manual_gzip.py"
@@ -127,7 +134,8 @@
     "internal/server/session_cache.go",
     "internal/server/session_cache_e2e_test.go",
     "internal/gameapi/deferred_input_test.go",
-    "internal/server/realtime_deferred_input_e2e_test.go"
+    "internal/server/realtime_deferred_input_e2e_test.go",
+    "internal/server/realtime_stream_baseline_e2e_test.go"
   ],
   "sharedGoPatchSources": [
     "internal/gameapi/module.go",
@@ -138,5 +146,16 @@
   "sharedGoPackages": {
     "internal/gameapi": "gameapi",
     "internal/server": "server"
-  }
+  },
+  "deterministicGoPrefixes": [
+    "games/cs16/"
+  ],
+  "deterministicTypeScriptPrefixes": [
+    "games/cs16/web/"
+  ],
+  "sharedComparisonTypeScript": [
+    "web/src/game-api/default-players.ts",
+    "web/src/game-api/action-scope.ts",
+    "web/src/realtime-stream.ts"
+  ]
 }

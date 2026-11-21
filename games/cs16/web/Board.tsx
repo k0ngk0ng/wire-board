@@ -4,13 +4,13 @@ import { useGameController } from '../../../web/src/controllers/use-game-control
 import { loadBattleAssets, type LoadedAssets } from './assets';
 import { validateRulesIdentity } from './asset-contract';
 import { BuyMenu } from './BuyMenu';
-import { inventorySlots, itemName, mapName, weapons } from './content';
+import { inventorySlots, itemName, mapName, mapMode, weapons } from './content';
 import { emptyInput, InputChannel } from './input';
 import { announcementSound, eventFeedback, localFeedback, type FeedbackKind } from './feedback';
 import { EventCursor, MotionPrediction } from './prediction';
 import { BattleRenderer } from './renderer';
 import { BrushCache } from './brush-cache';
-import { formatDuration, observerCandidates, viewAngles } from './presentation';
+import { matchClock, observerCandidates, viewAngles } from './presentation';
 import { useOverlayInsets } from './overlay-insets';
 import { WeaponHistory } from './weapon-history';
 import { TouchControls, type TouchState } from './TouchControls';
@@ -445,10 +445,11 @@ export function Board(props: BoardProps<View>) {
   const zoom = own?.inventory?.find(item => item.id === own.weapon)?.zoom ?? 0;
   const flash = own && (own.flashUntil ?? 0) > frame ? Math.max(0, Math.min(1, (own.flashStrength ?? 1000) / 1000)) : 0;
   const phaseLabel = props.data.finished ? '比赛结束' : props.clock.paused ? '已暂停' : props.data.phase === 'freeze' ? '准备开战' : props.data.phase === 'round_end' ? '回合结束' : props.data.bomb?.planted ? '炸弹已安装' : '';
+  const mode = mapMode(props.data.mapId) ?? '';
   return <div className={`cs16-board${buyOpen ? ' cs16-buying' : ''}`} data-cs16-board data-ready={ready ? 'true' : 'false'} ref={root} tabIndex={-1} aria-label="反恐精英战场">
     <canvas ref={canvas} data-cs16-canvas aria-label={`${mapName(props.data.mapId)}第一人称战场`} />
     {ready && <>
-      <div className="cs16-match-hud"><span className="cs16-score-t">T <strong>{props.data.teamScores[0]}</strong></span><div><span>{phaseLabel || `第 ${props.data.round} / ${props.data.options.maxRounds} 回合`}</span><strong>{formatDuration((props.data.bomb?.planted ? props.data.bomb.explodesAt : props.data.phaseEndsAt) - frame)}</strong></div><span className="cs16-score-ct"><strong>{props.data.teamScores[1]}</strong> CT</span></div>
+      <div className="cs16-match-hud"><span className="cs16-score-t">T <strong>{props.data.teamScores[0]}</strong></span><div><span>{phaseLabel || `第 ${props.data.round} / ${props.data.options.maxRounds} 回合`}</span><strong>{matchClock(mode, props.data.phase, (props.data.bomb?.planted ? props.data.bomb.explodesAt : props.data.phaseEndsAt) - frame)}</strong></div><span className="cs16-score-ct"><strong>{props.data.teamScores[1]}</strong> CT</span></div>
       <div className={`cs16-crosshair${zoom ? ' cs16-scoped' : ''}`} aria-hidden="true"><i /><b /></div>
       {!!flash && <div className="cs16-flash" style={{ opacity: flash }} aria-hidden="true" />}
       <div className="cs16-kill-feed">{feed.filter(event => event.frame > frame - 700).map(event => <div key={event.id}><span>{props.room.seats[event.seat]?.name ?? '玩家'}</span><span>{itemName(event.weapon ?? '')}</span><span>{props.room.seats[event.target ?? -1]?.name ?? '玩家'}</span></div>)}</div>
@@ -460,10 +461,10 @@ export function Board(props: BoardProps<View>) {
       </>}
       {(!own?.alive || props.room.spectating) && <div className="cs16-spectator"><strong>{own ? '阵亡观战' : '观战'}</strong><select aria-label="观战玩家" value={watch} onChange={event => setWatch(Number(event.target.value))}><option value={-1}>自动选择</option>{observerCandidates(props.data.players, own, !!props.room.spectating).map(player => <option value={player.seat} key={player.seat}>{props.room.seats[player.seat]?.name ?? '玩家'}</option>)}</select></div>}
       {!locked && own?.alive && !buyOpen && <button type="button" className="cs16-lock-hint" onClick={() => { root.current?.focus({ preventScroll: true }); try { const result = canvas.current?.requestPointerLock(); if (result) void result.catch(() => {}); } catch { setError('无法锁定鼠标'); } }}>点击战场锁定鼠标</button>}
-      {own?.alive && <TouchControls disabled={!canControl()} weapon={own.weapon} weaponState={own.inventory?.find(item => item.id === own.weapon)} useLabel={props.data.bomb?.planted && own.team === 'ct' ? '拆弹' : props.data.mapId === 'cs_assault' && own.team === 'ct' ? '营救' : '使用'} native={record} interrupted={() => channel.current?.release(facing.current.yaw, facing.current.pitch)} changed={value => { touch.current = value; process.current(true); }} look={(x, y) => { if (!canControl()) return; facing.current.yaw = angle(facing.current.yaw - x * 144); facing.current.pitch = safePitch(facing.current.pitch + y * 96); prediction.current?.face(facing.current.yaw, facing.current.pitch); }} />}
+      {own?.alive && <TouchControls disabled={!canControl()} weapon={own.weapon} weaponState={own.inventory?.find(item => item.id === own.weapon)} useLabel={props.data.bomb?.planted && own.team === 'ct' ? '拆弹' : mode === 'hostage' && own.team === 'ct' ? '营救' : '使用'} native={record} interrupted={() => channel.current?.release(facing.current.yaw, facing.current.pitch)} changed={value => { touch.current = value; process.current(true); }} look={(x, y) => { if (!canControl()) return; facing.current.yaw = angle(facing.current.yaw - x * 144); facing.current.pitch = safePitch(facing.current.pitch + y * 96); prediction.current?.face(facing.current.yaw, facing.current.pitch); }} />}
     </>}
     {scoreboard && <div className="cs16-scoreboard" role="dialog" aria-label="对局战绩"><header><strong>战绩</strong><button type="button" onClick={() => setScoreboard(false)}>返回战场</button></header>{['t', 'ct'].map(team => <section key={team}><h3>{team === 'ct' ? '反恐精英' : '恐怖分子'}</h3>{props.data.players.filter(player => player.team === team).map(player => <div key={player.seat}><span>{props.room.seats[player.seat]?.name ?? '玩家'}{player.alive ? '' : ' · 阵亡'}</span><span>{player.kills} / {player.deaths}</span></div>)}</section>)}</div>}
-    {buyOpen && own && <BuyMenu player={own} prices={loaded.current?.weapons ?? []} mode={props.data.mapId === 'cs_assault' ? 'hostage' : 'bomb'} allowed={!!props.data.buyAllowed} close={closeBuy} error={error} buy={item => { setError(''); void props.act({ type: 'buy', epoch: props.data.epoch, life: own.life, round: props.data.round, item }).catch(error => setError(error instanceof Error ? error.message : '购买失败')); }} />}
+    {buyOpen && own && <BuyMenu player={own} prices={loaded.current?.weapons ?? []} mode={mode} allowed={!!props.data.buyAllowed} close={closeBuy} error={error} buy={item => { setError(''); void props.act({ type: 'buy', epoch: props.data.epoch, life: own.life, round: props.data.round, item }).catch(error => setError(error instanceof Error ? error.message : '购买失败')); }} />}
     {error && !buyOpen && <div className="cs16-error-banner" role="alert"><span>{error}</span>{!initialized.current && <button type="button" onClick={() => setAttempt(value => value + 1)}>重试加载</button>}</div>}
   </div>;
 }

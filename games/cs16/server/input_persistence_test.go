@@ -31,7 +31,7 @@ func ordinaryInputReference(ctx gameapi.Context, match gameapi.Match, raw json.R
 }
 
 func TestQueuedInputPersistenceMatchesCompleteRules(t *testing.T) {
-	for _, mapID := range []string{"de_dust2", "de_inferno", "de_aztec", "cs_assault"} {
+	for _, mapID := range []string{"de_dust2", "de_inferno", "de_aztec", "cs_assault", "fy_iceworld", "cs_bloodstrike"} {
 		for _, friendly := range []bool{false, true} {
 			ctx := gameapi.Context{Now: time.Unix(1700000000, 0), Players: 10, Automated: make([]bool, 10)}
 			options, _ := json.Marshal(map[string]any{"map": mapID, "roundSeconds": 120, "maxRounds": 2, "friendlyFire": friendly})

@@ -2,11 +2,8 @@ package cs16
 
 import (
 	"crypto/sha256"
-	"encoding/hex"
 	"encoding/json"
 	"fmt"
-	"strconv"
-	"strings"
 
 	"github.com/k0ngk0ng/wire-board/games/cs16/engine"
 	"github.com/k0ngk0ng/wire-board/internal/gameapi"
@@ -289,10 +286,13 @@ func syncSnapshot(match gameapi.Match, seat int) (any, error) {
 }
 
 func streamView(match gameapi.Match, seat int, cursor string) (gameapi.StreamViewResult, error) {
-	if unchanged, err := unchangedProjection(match, seat, cursor); err != nil {
-		return gameapi.StreamViewResult{}, err
-	} else if unchanged {
-		return gameapi.StreamViewResult{Cursor: cursor, Unchanged: true}, nil
+	baseline, valid := readStreamCursor(cursor, seat)
+	if valid {
+		if unchanged, err := unchangedProjection(match, seat, baseline.Header); err != nil {
+			return gameapi.StreamViewResult{}, err
+		} else if unchanged {
+			return gameapi.StreamViewResult{Cursor: cursor, Unchanged: true}, nil
+		}
 	}
 	state, err := decode(match)
 	if err != nil {
@@ -303,45 +303,20 @@ func streamView(match gameapi.Match, seat int, cursor string) (gameapi.StreamVie
 		return gameapi.StreamViewResult{}, err
 	}
 	brushDigest := fmt.Sprintf("%x", sha256.Sum256(brushBytes))
-	serverAt := state.BaseAt + state.World.Frame*1000/engine.FPS
-	catchingUp := state.ObservedAt-serverAt > 200
-	canAct := hasViewSeat(state, seat) && state.World.Players[seat].Alive && !state.World.Finished && !catchingUp
-	lastEvent := int64(0)
-	lastFrame := int64(-1)
-	lastRound := 0
-	lastBrush := ""
-	lastCanAct, lastCatchingUp := false, false
-	recover := false
-	parts := strings.Split(cursor, ":")
-	if cursor != "" {
-		if len(parts) != 8 || parts[0] != state.Epoch {
+	recover := cursor != "" && !valid
+	if valid {
+		recover = baseline.Epoch != state.Epoch || baseline.Frame > state.World.Frame || baseline.EventID > state.World.EventID || baseline.Round > state.World.Round
+		if len(state.World.Events) > 0 && baseline.EventID < state.World.Events[0].ID-1 {
 			recover = true
-		} else {
-			var frameErr, roundErr error
-			lastFrame, frameErr = strconv.ParseInt(parts[1], 10, 64)
-			lastEvent, err = strconv.ParseInt(parts[2], 10, 64)
-			lastRound, roundErr = strconv.Atoi(parts[3])
-			lastBrush = parts[4]
-			_, digestErr := hex.DecodeString(lastBrush)
-			lastCanAct, lastCatchingUp = parts[5] == "1", parts[6] == "1"
-			cursorSeat, seatErr := strconv.Atoi(parts[7])
-			if frameErr != nil || err != nil || roundErr != nil || digestErr != nil || seatErr != nil || cursorSeat != seat || len(lastBrush) != 64 || lastRound < 1 || lastRound > state.World.Round || (parts[5] != "0" && parts[5] != "1") || (parts[6] != "0" && parts[6] != "1") || lastFrame < 0 || lastFrame > state.World.Frame || lastEvent < 0 || lastEvent > state.World.EventID {
-				recover = true
-			}
-			if len(state.World.Events) > 0 && lastEvent < state.World.Events[0].ID-1 {
-				recover = true
-			}
 		}
-	}
-	if cursor != "" && !recover && lastFrame == state.World.Frame && lastEvent == state.World.EventID && lastRound == state.World.Round && lastBrush == brushDigest && lastCanAct == canAct && lastCatchingUp == catchingUp {
-		return gameapi.StreamViewResult{Cursor: cursor, Unchanged: true}, nil
 	}
 	value := projection(state, seat)
 	value.Recover = recover
+	lastEvent := int64(0)
 	if recover {
 		lastEvent = value.EventID
-	} else if cursor != "" && lastBrush == brushDigest && lastRound == state.World.Round {
-		value.Brushes = nil
+	} else if valid {
+		lastEvent = baseline.EventID
 	}
 	events := make([]EventView, 0, len(value.Events))
 	for _, event := range value.Events {
@@ -350,12 +325,20 @@ func streamView(match gameapi.Match, seat int, cursor string) (gameapi.StreamVie
 		}
 	}
 	value.Events = events
-	canActBit, catchingUpBit := 0, 0
-	if canAct {
-		canActBit = 1
+	object, err := baselineObject(value)
+	if err != nil {
+		return gameapi.StreamViewResult{}, err
 	}
-	if catchingUp {
-		catchingUpBit = 1
+	nextCursor, err := makeStreamCursor(value, object, brushDigest)
+	if err != nil {
+		return gameapi.StreamViewResult{}, err
 	}
-	return gameapi.StreamViewResult{Data: value, Cursor: fmt.Sprintf("%s:%d:%d:%d:%s:%d:%d:%d", state.Epoch, value.Frame, value.EventID, value.Round, brushDigest, canActBit, catchingUpBit, seat)}, nil
+	if valid && !recover {
+		delta, deltaErr := fieldDelta(baseline, value, object)
+		if deltaErr == nil {
+			return gameapi.StreamViewResult{Data: delta, Cursor: nextCursor}, nil
+		}
+		value.Recover, value.Events = true, []EventView{}
+	}
+	return gameapi.StreamViewResult{Data: value, Cursor: nextCursor}, nil
 }

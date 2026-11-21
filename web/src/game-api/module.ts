@@ -230,6 +230,7 @@ export type GameModule<Data = unknown, Options = unknown> = {
   // The module must coalesce input and validate its own sequence/epoch on server.
   realtime?: boolean;
   streamInputOnly?: boolean;
+  mergeStreamData?: (previous: unknown, incoming: unknown) => unknown;
   // Allow only input cleanup during manual autoplay, never a gameplay action.
   // The server must independently declare and validate the same capability.
   isInputRelease?: (action: Record<string, unknown>) => boolean;

@@ -34,9 +34,11 @@ import {
 import {
   mergeStreamState,
   mergeStreamGame,
+  decodeStreamGamePacket,
   mergeNetworkState,
   StreamInputs,
   type GamePacket,
+  type StreamDataBaseline,
 } from "./realtime-stream";
 import {
   ArrowLeft,
@@ -369,6 +371,7 @@ function App() {
       const connection = new WebSocket(
         `${location.protocol === "https:" ? "wss" : "ws"}://${location.host}/api/ws?stream=1`,
       );
+      let streamBaseline: StreamDataBaseline | undefined;
       socket = connection;
       socket.onopen = () => {
         if (stopped || socket !== connection) return;
@@ -385,6 +388,8 @@ function App() {
           if (packet.type === "state") {
             if (!streamInputs.connected) streamInputs.attach(socket);
             acceptState.current(packet.state);
+            const room = packet.state?.room;
+            streamBaseline = room?.game ? { serverInstance: packet.state.serverInstance, roomId: room.id, setupVersion: room.setupVersion, data: room.game.data } : undefined;
           } else if (packet.type === "network") {
             if (
               packet.serverInstance === serverInstance.current &&
@@ -394,11 +399,15 @@ function App() {
             setState((previous) => mergeNetworkState(previous, packet));
           } else if (packet.type === "game") {
             const receivedAt = performance.now();
-            syncActionScope(mergeStreamGame(actionState.current, packet as GamePacket, receivedAt));
+            const baseline = streamBaseline ?? { serverInstance: packet.serverInstance, roomId: packet.roomId, setupVersion: packet.setupVersion, data: undefined };
+            const decoded = decodeStreamGamePacket(actionState.current, packet as GamePacket, receivedAt, kind => gameModule(kind)?.mergeStreamData, baseline);
+            if (!decoded) return;
+            streamBaseline = { serverInstance: decoded.serverInstance, roomId: decoded.roomId, setupVersion: decoded.setupVersion, data: decoded.game.data };
+            syncActionScope(mergeStreamGame(actionState.current, decoded, receivedAt));
             setState((previous) =>
               mergeStreamGame(
                 previous,
-                packet as GamePacket,
+                decoded,
                 receivedAt,
               ),
             );
@@ -408,7 +417,7 @@ function App() {
             void refresh();
           }
         } catch {
-          socket.close();
+          connection.close();
         }
       };
       socket.onclose = () => {

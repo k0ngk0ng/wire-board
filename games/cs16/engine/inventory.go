@@ -82,7 +82,7 @@ func Buy(state *State, seat int, item string) error {
 			price = 650
 		}
 	case "defuser":
-		if p.Team != "ct" || p.Defuser || state.World.Mode == "hostage" {
+		if p.Team != "ct" || p.Defuser || state.World.Mode != "bomb" {
 			return errors.New("当前不能购买拆弹钳")
 		}
 		price = 200
@@ -189,9 +189,7 @@ func dropWeapon(state *State, player *Player, index int) {
 		state.NextID++
 		item.ReloadUntil, item.BurstLeft = 0, 0
 		state.Drops = append(state.Drops, Drop{ID: state.NextID, X: player.X, Y: player.Y, Z: player.Z, Weapon: item, Frame: state.Frame})
-		if len(state.Drops) > 64 {
-			state.Drops = state.Drops[len(state.Drops)-64:]
-		}
+		trimDynamicDrops(state)
 	}
 	player.Inventory = append(player.Inventory[:index], player.Inventory[index+1:]...)
 }
@@ -215,6 +213,9 @@ func PickupDrop(state *State, seat int) {
 	}
 	p := &state.Players[seat]
 	for i, drop := range state.Drops {
+		if drop.SpawnID > 0 {
+			continue
+		}
 		if Distance(combatPosition(p), Vec3{drop.X, drop.Y, drop.Z}) > 48*Unit {
 			continue
 		}

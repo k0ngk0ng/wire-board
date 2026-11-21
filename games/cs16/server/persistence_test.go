@@ -186,10 +186,14 @@ func TestHeaderFastPathRequiresExactScopedProjection(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if unchanged, err := unchangedProjection(match, 0, first.Cursor); err != nil || !unchanged {
+	baseline, valid := readStreamCursor(first.Cursor, 0)
+	if !valid {
+		t.Fatal("stream baseline missing")
+	}
+	if unchanged, err := unchangedProjection(match, 0, baseline.Header); err != nil || !unchanged {
 		t.Fatal("unchanged header not recognized", err)
 	}
-	if unchanged, _ := unchangedProjection(match, 1, first.Cursor); unchanged {
+	if unchanged, _ := unchangedProjection(match, 1, baseline.Header); unchanged {
 		t.Fatal("header fast path crossed viewer")
 	}
 	state, err := decode(match)
@@ -201,7 +205,7 @@ func TestHeaderFastPathRequiresExactScopedProjection(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if unchanged, _ := unchangedProjection(changed, 0, first.Cursor); unchanged {
+	if unchanged, _ := unchangedProjection(changed, 0, baseline.Header); unchanged {
 		t.Fatal("header fast path ignored brush update")
 	}
 	state, err = decode(match)
@@ -213,11 +217,11 @@ func TestHeaderFastPathRequiresExactScopedProjection(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if unchanged, _ := unchangedProjection(changed, 0, first.Cursor); unchanged {
+	if unchanged, _ := unchangedProjection(changed, 0, baseline.Header); unchanged {
 		t.Fatal("header fast path ignored permission update")
 	}
 	bad := gameapi.Match{Data: json.RawMessage(`{"schema":1,"world":`)}
-	if _, err = unchangedProjection(bad, 0, first.Cursor); err == nil {
+	if _, err = unchangedProjection(bad, 0, baseline.Header); err == nil {
 		t.Fatal("invalid storage header accepted")
 	}
 }

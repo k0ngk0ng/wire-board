@@ -85,7 +85,7 @@ func configure(capacity int, raw json.RawMessage) (json.RawMessage, error) {
 			return nil, errors.New("队伍和造型数量须与席位一致")
 		}
 	}
-	if !slices.Contains([]string{"de_dust2", "de_inferno", "de_aztec", "cs_assault"}, options.Map) || engine.MapByID(options.Map).ID == "" {
+	if !slices.Contains([]string{"de_dust2", "de_inferno", "de_aztec", "cs_assault", "fy_iceworld", "cs_bloodstrike"}, options.Map) || engine.MapByID(options.Map).ID == "" {
 		return nil, errors.New("请选择有效地图")
 	}
 	if !slices.Contains([]int{60, 90, 120, 180, 300}, options.RoundSeconds) || !slices.Contains([]int{2, 4, 6, 10, 16, 24, 30}, options.MaxRounds) {

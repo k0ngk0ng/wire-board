@@ -85,6 +85,9 @@ func InitRound(state *State) {
 		state.Bomb.Carrier = carrier
 		state.Players[carrier].Inventory = append(state.Players[carrier].Inventory, WeaponState{ID: "c4", Ammo: 1})
 	}
+	if len(state.World.WorldWeapons) > 0 {
+		InitMapWeapons(state)
+	}
 	Emit(state, Event{Kind: "round_start", Seat: -1, Target: -1, Value: state.Round})
 }
 
@@ -197,7 +200,11 @@ func StepObjectives(state *State) {
 	if state.Phase == "freeze" {
 		if state.Frame >= state.PhaseEndsAt {
 			state.Phase = "live"
-			state.PhaseEndsAt = state.Frame + int64(state.Options.RoundSeconds)*FPS
+			if state.World.Mode == "elimination" {
+				state.PhaseEndsAt = 0
+			} else {
+				state.PhaseEndsAt = state.Frame + int64(state.Options.RoundSeconds)*FPS
+			}
 			Emit(state, Event{Kind: "round_live", Seat: -1, Target: -1})
 		}
 		return
@@ -231,7 +238,7 @@ func StepObjectives(state *State) {
 		RoundWon(state, "ct", "elimination")
 		return
 	}
-	if state.Frame >= state.PhaseEndsAt && !state.Bomb.Planted {
+	if state.World.Mode != "elimination" && state.Frame >= state.PhaseEndsAt && !state.Bomb.Planted {
 		winner := "ct"
 		if state.World.Mode == "hostage" {
 			winner = "t"

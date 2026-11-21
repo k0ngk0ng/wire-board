@@ -10,6 +10,7 @@ import (
 	"net/http/httptest"
 	"os"
 	"path/filepath"
+	"sort"
 	"strings"
 	"sync"
 	"testing"
@@ -50,11 +51,12 @@ type inputPeer struct {
 }
 
 type inputTrace struct {
-	Seat            int     `json:"seat"`
-	Inputs          int     `json:"inputs"`
-	LastSeq         int64   `json:"lastSeq"`
-	AckMicroseconds []int64 `json:"ackMicroseconds"`
-	Error           string  `json:"error,omitempty"`
+	Seat                   int     `json:"seat"`
+	Inputs                 int     `json:"inputs"`
+	LastSeq                int64   `json:"lastSeq"`
+	AckMicroseconds        []int64 `json:"ackMicroseconds"`
+	StreamApplicationBytes []int   `json:"streamApplicationBytes"`
+	Error                  string  `json:"error,omitempty"`
 }
 
 type inputClock struct {
@@ -120,6 +122,9 @@ func tenConcurrentInputs(t *testing.T, harness *httpRoom) ([]inputTrace, []input
 					if answer["type"] == "game" {
 						if game, ok := answer["game"].(map[string]any); ok {
 							if data, ok := game["data"].(map[string]any); ok {
+								if integer(data["schema"]) == 2 {
+									trace.StreamApplicationBytes = append(trace.StreamApplicationBytes, len(raw))
+								}
 								if frame, ok := data["frame"].(json.Number); ok {
 									peer.frame = max(peer.frame, integer(frame))
 								}
@@ -166,8 +171,10 @@ func tenConcurrentInputs(t *testing.T, harness *httpRoom) ([]inputTrace, []input
 		}
 	}
 	traces := make([]inputTrace, len(peers))
+	applicationBytes := []int{}
 	for trace := range results {
 		traces[trace.Seat] = trace
+		applicationBytes = append(applicationBytes, trace.StreamApplicationBytes...)
 		if trace.Error != "" || trace.Inputs != 40 {
 			t.Fatalf("seat %d concurrent stream failed: %s (%d)", trace.Seat, trace.Error, trace.Inputs)
 		}
@@ -176,6 +183,10 @@ func tenConcurrentInputs(t *testing.T, harness *httpRoom) ([]inputTrace, []input
 		})
 		peers[trace.Seat].seq = trace.LastSeq
 		peers[trace.Seat].frame = clocks[len(clocks)-1].Frame
+	}
+	sort.Ints(applicationBytes)
+	if len(applicationBytes) < 100 || applicationBytes[(len(applicationBytes)*95+99)/100-1] > 2048 {
+		t.Fatal("ordinary ten-seat application packet P95 exceeds 2KiB or has insufficient samples", len(applicationBytes), applicationBytes)
 	}
 	highRate := tenHighRateInputs(t, harness, peers)
 	return traces, clocks, highRate

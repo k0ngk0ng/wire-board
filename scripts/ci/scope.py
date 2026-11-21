@@ -335,7 +335,7 @@ FAST_COMPONENTS = {
 }
 
 LINT_TOOL_FILES = {'games/racing/build/lint_go.go', 'games/hotlinemiami/build/lint_go.go', 'games/cs16/build/lint_go.go'}
-FRONTEND_POLICY_FILES = {'web/scripts/game-control-lint.mjs', 'web/scripts/game-control-lint.json', 'web/scripts/platform-source-lint.mjs', 'web/scripts/platform-source-lint.json', 'web/scripts/room-ui-lint.mjs'}
+FRONTEND_POLICY_FILES = {'web/scripts/game-control-lint.mjs', 'web/scripts/game-control-lint.json', 'web/scripts/platform-source-lint.mjs', 'web/scripts/platform-source-lint.json', 'web/scripts/room-ui-lint.mjs', 'web/scripts/numeric-comparisons.mjs'}
 SHARED_UI_ACCEPTANCE_FILES = {
     'games/conquest/tests/accept_map_ux.py',
     'games/hotlinemiami/tests/accept_browser.py',

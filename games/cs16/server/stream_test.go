@@ -49,9 +49,9 @@ func TestCursorBrushReuseAndRecovery(t *testing.T) {
 	if err != nil || next.Unchanged {
 		t.Fatal("new rule frame skipped", err)
 	}
-	advanced := next.Data.(View)
-	raw, _ := json.Marshal(advanced)
-	if advanced.Brushes != nil || bytes.Contains(raw, []byte(`"brushes"`)) {
+	advanced := streamTestMerge(t, initial, next.Data)
+	raw, _ := json.Marshal(next.Data)
+	if advanced.Brushes == nil || bytes.Contains(raw, []byte(`"brushes"`)) {
 		t.Fatal("unchanged brush table repeated")
 	}
 	state, err := decode(match)
@@ -64,7 +64,7 @@ func TestCursorBrushReuseAndRecovery(t *testing.T) {
 		t.Fatal(err)
 	}
 	update, err := streamView(changed, 0, next.Cursor)
-	if err != nil || update.Unchanged || update.Data.(View).Brushes == nil {
+	if err != nil || update.Unchanged || len(update.Data.(DeltaView).Collections["brushes"].Upsert) != 1 {
 		t.Fatal("changed brush table omitted", err)
 	}
 	state.World.Round++
@@ -73,7 +73,7 @@ func TestCursorBrushReuseAndRecovery(t *testing.T) {
 		t.Fatal(err)
 	}
 	reset, err := streamView(round, 0, update.Cursor)
-	if err != nil || reset.Unchanged || reset.Data.(View).Brushes == nil {
+	if err != nil || reset.Unchanged || len(reset.Data.(DeltaView).Collections["brushes"].Upsert) != len(state.World.Brushes) {
 		t.Fatal("round reset did not send full brush state", err)
 	}
 	state.World.Brushes = []engine.BrushState{}
@@ -85,8 +85,7 @@ func TestCursorBrushReuseAndRecovery(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	emptyRaw, _ := json.Marshal(empty.Data)
-	if !bytes.Contains(emptyRaw, []byte(`"brushes":[]`)) {
+	if len(empty.Data.(DeltaView).Collections["brushes"].Remove) != len(*initial.Brushes) {
 		t.Fatal("empty brush state cannot clear cache")
 	}
 	for _, cursor := range []string{"other:0:0", "malformed", first.Cursor + ":extra"} {
@@ -109,7 +108,7 @@ func TestCursorBrushReuseAndRecovery(t *testing.T) {
 
 func TestRecoveryUsesVerifiedStaticRulesReference(t *testing.T) {
 	sizes := []map[string]any{}
-	for _, mapID := range []string{"de_dust2", "de_inferno", "de_aztec", "cs_assault"} {
+	for _, mapID := range []string{"de_dust2", "de_inferno", "de_aztec", "cs_assault", "fy_iceworld", "cs_bloodstrike"} {
 		ctx := gameapi.Context{Players: 10, Actor: 0, Now: time.Unix(100000, 0)}
 		raw, _ := json.Marshal(map[string]any{"map": mapID})
 		match, err := start(ctx, raw)
@@ -151,6 +150,37 @@ func TestRecoveryUsesVerifiedStaticRulesReference(t *testing.T) {
 			row[[]string{"initialBytes", "snapshotBytes", "cursorRecoveryBytes"}[index]] = len(body)
 			row["rulesSHA256"] = identity
 		}
+		ctx.Now = ctx.Now.Add(30 * time.Millisecond)
+		advanced, err := onTimer(ctx, match)
+		if err != nil {
+			t.Fatal(err)
+		}
+		legacy := expandedMatchState(t, advanced)
+		legacy.Schema = 1
+		legacyMatch := advanced
+		legacyMatch.Data, err = json.Marshal(legacy)
+		if err != nil {
+			t.Fatal(err)
+		}
+		restored, err := restore(ctx, legacyMatch)
+		if err != nil {
+			t.Fatal("legacy map checkpoint did not restore", mapID, err)
+		}
+		for seat := range legacy.World.Players {
+			engine.ClearInput(&legacy.World, seat)
+		}
+		recovered := expandedMatchState(t, restored)
+		expectedWorld, _ := json.Marshal(legacy.World)
+		actualWorld, _ := json.Marshal(recovered.World)
+		if recovered.Epoch != legacy.Epoch || recovered.BaseAt != legacy.BaseAt || recovered.RulesSHA256 != legacy.RulesSHA256 || !bytes.Equal(expectedWorld, actualWorld) {
+			t.Fatal("legacy map restore changed identity, full history or rule state", mapID)
+		}
+		legacyView, err := syncSnapshot(restored, 0)
+		if err != nil || legacyView.(View).Schema != 1 || legacyView.(View).MapID != mapID || legacyView.(View).RulesSHA256 != legacy.RulesSHA256 || !legacyView.(View).Recover {
+			t.Fatal("legacy map restore did not project schema1 recovery", mapID, err)
+		}
+		legacyBytes, _ := json.Marshal(legacyView)
+		row["legacySchema1RecoveryBytes"], row["legacyHistoryFrames"] = len(legacyBytes), len(recovered.World.History)
 		sizes = append(sizes, row)
 		state, err := decode(match)
 		if err != nil {
@@ -169,7 +199,7 @@ func TestRecoveryUsesVerifiedStaticRulesReference(t *testing.T) {
 	if err := os.MkdirAll(directory, 0755); err != nil {
 		t.Fatal(err)
 	}
-	body, err := json.Marshal(map[string]any{"passed": true, "scope": "10-seat initial and recovery dynamic projections, no static Map payload", "maps": sizes})
+	body, err := json.Marshal(map[string]any{"passed": true, "scope": "six-map 10-seat initial, cursor recovery and legacy schema1 checkpoint recovery dynamic projections, no static Map payload", "maps": sizes})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -212,7 +242,8 @@ func TestCursorPermissionsAndInputDeadline(t *testing.T) {
 		t.Fatal(err)
 	}
 	permission, err := streamView(lagged, 0, first.Cursor)
-	if err != nil || permission.Unchanged || !permission.Data.(View).CatchingUp || permission.Data.(View).CanAct {
+	permissionView := streamTestMerge(t, first.Data.(View), permission.Data)
+	if err != nil || permission.Unchanged || !permissionView.CatchingUp || permissionView.CanAct {
 		t.Fatal("catchup permission change was skipped", err)
 	}
 	ctx.Actor = 0

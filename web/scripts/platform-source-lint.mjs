@@ -4,6 +4,7 @@ import { createRequire } from "node:module";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
+import { inspectNumericComparisons } from "./numeric-comparisons.mjs";
 
 const root = fileURLToPath(new URL("../../", import.meta.url));
 const require = createRequire(new URL("../package.json", import.meta.url));
@@ -109,7 +110,6 @@ function inspectScript(item) {
     }
     if (ts.isCallExpression(node) && expressionName(node.expression) === "connect" && node.arguments.some(destinationValue)) emit("native-media-output-only", node);
     if (ts.isStringLiteralLike(node) && active(node.getStart(file), node.end)) literals.push(node.text);
-    if (business && ts.isNumericLiteral(node) && /[.eE]/.test(node.text)) emit("integer-business-number", node);
     if (ts.isCallExpression(node) && ts.isIdentifier(node.expression) && node.expression.text === "eval") emit("no-dynamic-evaluation", node);
     if (ts.isCallExpression(node) && ["tmpdir", "homedir"].includes(expressionName(node.expression))) emit("workspace-output-directory", node);
     if (ts.isNewExpression(node)) {
@@ -118,7 +118,6 @@ function inspectScript(item) {
       if (!platformAudio && ["Audio", "AudioContext", "webkitAudioContext"].includes(constructor)) emit("platform-audio-only", node);
     }
     if (!platformAudio && ts.isCallExpression(node) && ts.isPropertyAccessExpression(node.expression) && node.expression.name.text === "createElement" && node.arguments.some(argument => ts.isStringLiteral(argument) && ["audio", "video"].includes(argument.text.toLowerCase()))) emit("platform-audio-only", node);
-    if (business && ts.isPropertyAccessExpression(node) && (node.getText(file) === "Number.EPSILON" || node.getText(file) === "Math.random")) emit("integer-business-number", node);
     if ((ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) && node.moduleSpecifier && ts.isStringLiteral(node.moduleSpecifier)) {
       const imported = node.moduleSpecifier.text;
       if (imported.startsWith(".")) {
@@ -136,6 +135,7 @@ function inspectScript(item) {
     for (const child of node.getChildren(file)) walk(child);
   }
   walk(file);
+  if (business) inspectNumericComparisons(file, emit);
   collect(ts.getLeadingCommentRanges(item.source, 0));
   if (comments.size) issues.push("no-comments");
   return [...issues, ...inspectPaths(item, literals)];

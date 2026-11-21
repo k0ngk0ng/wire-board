@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { OptionsProps, PreparationProps } from '../../../web/src/game-api/module';
 import { assetURL, loadManifest } from './assets';
-import { characters, maps, normalizeOptions } from './content';
+import { characters, maps, mapMode, modeName, normalizeOptions } from './content';
 import type { AssetManifest, GameOptions } from './types';
 import './style.css';
 
@@ -20,7 +20,7 @@ function MapChoices({ selected, disabled, change, base, manifest }: { selected: 
   return <div className="cs16-map-grid" role="group" aria-label="经典地图">
     {maps.map(map => <button type="button" key={map.id} data-cs16-map={map.id} disabled={disabled} aria-pressed={selected === map.id} onClick={() => change(map.id)}>
       {manifest?.maps[map.id]?.preview ? <img src={assetURL(base, manifest.maps[map.id].preview.file)} alt={`${map.name}原地图俯视图`} draggable={false} /> : <span className="cs16-map-placeholder" />}
-      <strong>{map.name}</strong><span>{map.mode === 'bomb' ? '爆破' : '人质营救'}</span>
+      <strong>{map.name}</strong><span>{modeName(map.mode)}</span>
     </button>)}
   </div>;
 }
@@ -40,7 +40,7 @@ export function Options({ value, onChange, disabled, capacity }: OptionsProps<Ga
 
 function Settings({ value, disabled, change }: { value: GameOptions; disabled: boolean; change: (value: Partial<GameOptions>) => void }) {
   return <div className="cs16-settings">
-    <label>每回合<select aria-label="每回合时长" value={value.roundSeconds} disabled={disabled} onChange={event => change({ roundSeconds: Number(event.target.value) })}><option value={60}>1 分钟</option><option value={90}>1 分 30 秒</option><option value={120}>2 分钟</option><option value={180}>3 分钟</option><option value={300}>5 分钟</option></select></label>
+    {mapMode(value.map) !== 'elimination' && <label>每回合<select aria-label="每回合时长" value={value.roundSeconds} disabled={disabled} onChange={event => change({ roundSeconds: Number(event.target.value) })}><option value={60}>1 分钟</option><option value={90}>1 分 30 秒</option><option value={120}>2 分钟</option><option value={180}>3 分钟</option><option value={300}>5 分钟</option></select></label>}
     <label>比赛局数<select aria-label="比赛局数" value={value.maxRounds} disabled={disabled} onChange={event => change({ maxRounds: Number(event.target.value) })}>{[2, 4, 6, 10, 16, 24, 30].map(rounds => <option key={rounds} value={rounds}>{rounds} 局</option>)}</select></label>
     <label className="cs16-friendly-fire"><input type="checkbox" aria-label="允许队友伤害" data-cs16-setting="friendly-fire" checked={value.friendlyFire ?? false} disabled={disabled} onChange={event => change({ friendlyFire: event.target.checked })} />允许队友伤害</label>
   </div>;

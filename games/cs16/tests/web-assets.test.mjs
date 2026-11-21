@@ -3,7 +3,8 @@ import assert from 'node:assert/strict';
 import { assetURL, validateManifest, validateResource, selectModelKeys, validateRulesIdentity } from '../web/asset-contract.ts';
 
 const resource = (file = 'maps/de_dust2.json') => ({ file, bytes: 100, sha256: 'a'.repeat(64) });
-const manifest = () => ({ schema: 1, maps: Object.fromEntries(['de_dust2', 'de_inferno', 'de_aztec', 'cs_assault'].map(id => [id, { name: id, mode: id === 'cs_assault' ? 'hostage' : 'bomb', render: resource(), rules: resource(), preview: resource(), sky: [] }])), models: {}, sounds: {} });
+const mapModes = [['de_dust2', 'bomb'], ['de_inferno', 'bomb'], ['de_aztec', 'bomb'], ['cs_assault', 'hostage'], ['fy_iceworld', 'elimination'], ['cs_bloodstrike', 'elimination']];
+const manifest = () => ({ schema: 1, maps: Object.fromEntries(mapModes.map(([id, mode]) => [id, { name: id, mode, render: resource(), rules: resource(), preview: resource(), sky: [] }])), models: {}, sounds: {} });
 
 test('rejects traversal, invalid byte counts and unknown media protocols', () => {
   for (const file of ['../outside', 'maps/../../outside', 'file:///tmp/test', 'javascript:alert(1)', 'maps\\outside']) assert.throws(() => validateResource(resource(file)));
@@ -12,11 +13,20 @@ test('rejects traversal, invalid byte counts and unknown media protocols', () =>
   assert.doesNotThrow(() => validateResource(resource()));
 });
 
-test('requires four original maps and independently validates render/rules identities', () => {
+test('requires six classic maps with explicit modes and independently validates render/rules identities', () => {
   assert.doesNotThrow(() => validateManifest(manifest()));
-  const incomplete = manifest();
-  delete incomplete.maps.cs_assault;
-  assert.throws(() => validateManifest(incomplete));
+  for (const [id] of mapModes) {
+    const incomplete = manifest();
+    delete incomplete.maps[id];
+    assert.throws(() => validateManifest(incomplete));
+  }
+  for (const id of ['fy_iceworld', 'cs_bloodstrike']) {
+    for (const mode of ['bomb', 'hostage']) {
+      const wrongMode = manifest();
+      wrongMode.maps[id].mode = mode;
+      assert.throws(() => validateManifest(wrongMode));
+    }
+  }
   const invalid = manifest();
   invalid.maps.de_dust2.rules.sha256 = 'bad';
   assert.throws(() => validateManifest(invalid));
@@ -29,6 +39,7 @@ test('selects all firearm view models and participating player models without un
   assert.equal(new Set(keys).size, keys.length);
   assert.equal(selectModelKeys(['urban'], 'bomb').includes('hostage'), false);
   assert.equal(selectModelKeys(['urban'], 'hostage').includes('hostage'), true);
+  assert.equal(selectModelKeys(['urban'], 'elimination').includes('hostage'), false);
 });
 
 test('asset URL preserves CDN object URLs and prefixes game resources once', () => {

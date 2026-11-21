@@ -8,7 +8,10 @@
     "web/tests/game-default-players.test.mjs",
     "web/tests/platform-source-lint.test.mjs",
     "web/src/game-api/action-scope.ts",
-    "web/tests/action-scope.test.mjs"
+    "web/tests/action-scope.test.mjs",
+    "web/scripts/numeric-comparisons.mjs",
+    "web/tests/numeric-comparisons.test.mjs",
+    "web/tests/realtime-game-decoder.test.mjs"
   ],
   "patterns": [
     {
@@ -20,7 +23,8 @@
     "web/src/audio.ts",
     "web/src/game-api/module.ts",
     "web/src/game-api/host.tsx",
-    "web/src/main.tsx"
+    "web/src/main.tsx",
+    "web/src/realtime-stream.ts"
   ],
   "platformAudioSources": [
     "web/src/audio-spatial.ts",
@@ -28,7 +32,8 @@
   ],
   "businessSources": [
     "web/src/game-api/default-players.ts",
-    "web/src/game-api/action-scope.ts"
+    "web/src/game-api/action-scope.ts",
+    "web/src/realtime-stream.ts"
   ],
   "localOutputRoots": [
     ".local/cs16"
@@ -38,7 +43,7 @@
     "camelCase/PascalCase bindings and kebab-case filenames",
     "No code comments, TypeScript any or dynamic execution",
     "No imports from games or workspace escape",
-    "Integer numeric literals and deterministic logic in businessSources",
+    "Integer or fixed-point numeric comparison operands in businessSources; pure floating storage and calculation are allowed, while tolerance/extrema/sorting cannot hide floating comparison",
     "AudioContext physical destination cannot receive output; platformAudioSources use a native MediaStream destination",
     "Only declared platform audio may create native audio players or AudioContext",
     "All temporary output is explicitly in a declared local workspace root",

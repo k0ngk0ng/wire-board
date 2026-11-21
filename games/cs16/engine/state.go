@@ -160,6 +160,9 @@ func Advance(state *State, targetFrame int64) {
 				p.Input = Input{Life: p.Life, Yaw: p.Yaw, Pitch: p.Pitch}
 			}
 			movePlayer(state, p)
+			if len(state.World.WorldWeapons) > 0 {
+				TouchMapWeapons(state, seat)
+			}
 		}
 		StepCombat(state)
 		StepObjectives(state)

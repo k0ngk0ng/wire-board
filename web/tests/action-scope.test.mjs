@@ -203,6 +203,17 @@ test("old action epochs and repeated room IDs never regain validity", () => {
   evidence.push({ scenario: "bounded-reused-room", passed: true });
 });
 
+test("numeric epochs are safe integers before any identity comparison", () => {
+  const source = state();
+  source.room.game.data.epoch = 4;
+  const scopes = new ActionScopes();
+  scopes.update(source);
+  assert(scopes.capture(source, 4));
+  for (const epoch of [4.5, Number.NaN, Number.POSITIVE_INFINITY, Number.MAX_SAFE_INTEGER + 1]) assert.equal(scopes.capture(source, epoch), undefined);
+  assert.equal(scopes.capture(source, "4"), undefined);
+  evidence.push({ scenario: "safe-integer-epochs", passed: true });
+});
+
 test("main captures the action scope and invalidates transition intentions", () => {
   const source = readFileSync(path.join(root, "web/src/main.tsx"), "utf8");
   assert.match(source, /from ["']\.\/game-api\/action-scope["']/);
@@ -220,7 +231,7 @@ test.after(() => {
   writeFileSync(
     path.join(output, "test-results.json"),
     JSON.stringify(
-      { passed: evidence.length === 10, cases: evidence },
+      { passed: evidence.length === 11, cases: evidence },
       null,
       2,
     ) + "\n",

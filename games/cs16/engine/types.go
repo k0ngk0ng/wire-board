@@ -78,32 +78,43 @@ type Surface struct {
 	Vertices []Vec3 `json:"vertices"`
 	Brush    int    `json:"brush"`
 }
+type MapWeaponSpawn struct {
+	ID     int    `json:"id"`
+	Item   int    `json:"item"`
+	Weapon string `json:"weapon"`
+	X      int    `json:"x"`
+	Y      int    `json:"y"`
+	Z      int    `json:"z"`
+	Yaw    int    `json:"yaw"`
+	Count  int    `json:"count"`
+}
 type Map struct {
-	ID              string        `json:"id"`
-	Name            string        `json:"name"`
-	Mode            string        `json:"mode"`
-	Planes          []Plane       `json:"planes"`
-	Nodes           []Node        `json:"nodes"`
-	Root            int           `json:"root"`
-	Hulls           []Hull        `json:"hulls"`
-	SpawnsT         []Spawn       `json:"spawnsT"`
-	SpawnsCT        []Spawn       `json:"spawnsCT"`
-	Bombsites       []Bounds      `json:"bombsites"`
-	RescueZones     []Bounds      `json:"rescueZones"`
-	RescueLegacy    bool          `json:"rescueLegacy,omitempty"`
-	BuyZones        []Bounds      `json:"buyZones"`
-	Hostages        []Spawn       `json:"hostages"`
-	Brushes         []Brush       `json:"brushes,omitempty"`
-	Ladders         []Bounds      `json:"ladders,omitempty"`
-	Nav             []Vec3        `json:"nav,omitempty"`
-	NavEdges        [][]int       `json:"navEdges,omitempty"`
-	NavFlags        []int         `json:"navFlags,omitempty"`
-	NavConnections  [][]int       `json:"navConnections,omitempty"`
-	Surfaces        []Surface     `json:"surfaces,omitempty"`
-	NavCosts        [][]int       `json:"-"`
-	NavHostageCosts [][]int       `json:"-"`
-	NavGroundCosts  [][]int       `json:"-"`
-	SurfaceIndex    map[int][]int `json:"-"`
+	ID              string           `json:"id"`
+	Name            string           `json:"name"`
+	Mode            string           `json:"mode"`
+	Planes          []Plane          `json:"planes"`
+	Nodes           []Node           `json:"nodes"`
+	Root            int              `json:"root"`
+	Hulls           []Hull           `json:"hulls"`
+	SpawnsT         []Spawn          `json:"spawnsT"`
+	SpawnsCT        []Spawn          `json:"spawnsCT"`
+	Bombsites       []Bounds         `json:"bombsites"`
+	RescueZones     []Bounds         `json:"rescueZones"`
+	RescueLegacy    bool             `json:"rescueLegacy,omitempty"`
+	BuyZones        []Bounds         `json:"buyZones"`
+	WorldWeapons    []MapWeaponSpawn `json:"worldWeapons,omitempty"`
+	Hostages        []Spawn          `json:"hostages"`
+	Brushes         []Brush          `json:"brushes,omitempty"`
+	Ladders         []Bounds         `json:"ladders,omitempty"`
+	Nav             []Vec3           `json:"nav,omitempty"`
+	NavEdges        [][]int          `json:"navEdges,omitempty"`
+	NavFlags        []int            `json:"navFlags,omitempty"`
+	NavConnections  [][]int          `json:"navConnections,omitempty"`
+	Surfaces        []Surface        `json:"surfaces,omitempty"`
+	NavCosts        [][]int          `json:"-"`
+	NavHostageCosts [][]int          `json:"-"`
+	NavGroundCosts  [][]int          `json:"-"`
+	SurfaceIndex    map[int][]int    `json:"-"`
 }
 
 type Input struct {
@@ -282,12 +293,15 @@ type Grenade struct {
 	Active     bool   `json:"active"`
 }
 type Drop struct {
-	ID     int         `json:"id"`
-	X      int         `json:"x"`
-	Y      int         `json:"y"`
-	Z      int         `json:"z"`
-	Weapon WeaponState `json:"weapon"`
-	Frame  int64       `json:"frame"`
+	ID        int         `json:"id"`
+	X         int         `json:"x"`
+	Y         int         `json:"y"`
+	Z         int         `json:"z"`
+	Weapon    WeaponState `json:"weapon"`
+	Frame     int64       `json:"frame"`
+	SpawnID   int         `json:"spawnId,omitempty"`
+	Remaining int         `json:"remaining,omitempty"`
+	Yaw       int         `json:"yaw,omitempty"`
 }
 type BrushState struct {
 	ID        int   `json:"id"`

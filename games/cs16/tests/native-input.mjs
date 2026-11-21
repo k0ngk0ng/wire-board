@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve, sep } from "node:path";
+import { WireSelfObserver } from './wire-self-observer.mjs';
 
 const input = JSON.parse(readFileSync(0, "utf8"));
 const { endpoint, pageURL, options = {} } = input;
@@ -13,6 +14,7 @@ const report = { passed: false, scope: "trusted Chromium input to rendered WebGL
 const sent = new Map();
 const sequences = new Map();
 const eventIDs = new Set();
+const selfObserver = new WireSelfObserver();
 let ordinal = 0;
 let session;
 let temporaryTarget;
@@ -55,7 +57,7 @@ socket.onmessage = event => {
   const classification = (incoming ? "in:" : "out:") + body.type;
   report.network.messageTypes[classification] = (report.network.messageTypes[classification] ?? 0) + 1;
   if (!incoming && body.nonce) sent.set(body.nonce, at);
-  if (!incoming && body.action?.seq) sequences.set(body.action.seq, at);
+  if (!incoming && body.action?.seq) sequences.set(`${body.serverInstance}:${body.action.epoch}:${body.action.life}:${body.action.seq}`, { seq: body.action.seq, at });
   if (!incoming && body.action?.type === "input") report.network.lastInput = { at, action: body.action };
   if (!incoming && body.action?.select) {
     report.network.selects ??= [];
@@ -94,12 +96,13 @@ socket.onmessage = event => {
       }
     }
   }
-  const player = data?.players?.[data.you];
-  if (incoming && player) report.network.lastAuthority = { at, frame: data.frame, player };
-  if (incoming && player) for (const [seq, began] of sequences) {
-    if (seq <= player.appliedSeq) {
-      report.network.applications.push({ seq, milliseconds: at - began, frame: data.frame });
-      sequences.delete(seq);
+  const observed = incoming && data ? selfObserver.observe(data) : undefined;
+  const player = observed?.player;
+  if (incoming && player) report.network.lastAuthority = { at, frame: data.frame, player, partial: observed.partial, epoch: observed.epoch, life: observed.life };
+  if (incoming && player && observed.appliedObserved) for (const [key, value] of sequences) {
+    if (key === `${body.serverInstance ?? body.state?.serverInstance}:${observed.epoch}:${observed.life}:${value.seq}` && value.seq <= player.appliedSeq) {
+      report.network.applications.push({ seq: value.seq, milliseconds: at - value.at, frame: data.frame });
+      sequences.delete(key);
     }
   }
   if (report.network.messages.length < 1000) report.network.messages.push({ incoming, at, bytes, type: body.type, frame: data?.frame, receivedSeq: player?.receivedSeq, appliedSeq: player?.appliedSeq, action: body.action });
@@ -143,6 +146,9 @@ try {
   await evaluate("document.querySelector('[data-cs16-board]').scrollIntoView({block:'center',inline:'nearest'});true");
   report.emulation = await evaluate("({touchPoints:navigator.maxTouchPoints,coarse:matchMedia('(pointer:coarse)').matches,width:innerWidth,height:innerHeight})");
   await call("Network.enable");
+  const selfContext = await evaluate("fetch('/api/state').then(response=>response.json()).then(state=>({seat:state.room.you,epoch:state.room.game.data.epoch,life:state.room.game.data.players.find(player=>player.seat===state.room.you)?.life}))");
+  selfObserver.bind(selfContext);
+  report.network.observerBootstrap = { ...selfContext, source: 'authenticated HTTP identity only; player fields are observed from raw socket frames' };
   await call("Performance.enable");
   if (options.observeOnly) {
     report.scope = options.denseExpected ? "natural ten-seat combat wire and authoritative clock observation" : "wire observation across transport loss and real page restore";
@@ -451,7 +457,9 @@ try {
     const wheel = await displayedWeapon(weapon => weapon !== previous.weapon);
     const wheelAuthority = await authoritativeWeapon(wheel.weapon);
     await press("Digit2", "2", 50);
-    const pistol = await displayedWeapon(weapon => weapon === ownAfter.weapon);
+    const sidearm = ownAfter.inventory.find(item => ["glock18", "usp", "p228", "deagle", "elite", "fiveseven"].includes(item.id));
+    assert.ok(sidearm, "native slot two requires a legitimately owned sidearm");
+    const pistol = await displayedWeapon(weapon => weapon === sidearm.id);
     const pistolAuthority = await authoritativeWeapon(pistol.weapon);
     report.legacyWeaponControls = { digit3: knife, quickSwap: previous, rapid, firstAck, secondAck, confirmed, wheel, wheelAuthority, digit2: pistol, pistolAuthority };
     const authorityWhere = async predicate => {
@@ -462,7 +470,10 @@ try {
       }
       throw Error("native modifier combination did not reach server projection");
     };
-    if (pistolAuthority.player.reserve === 0) {
+    const reloadSetup = await evaluate("fetch('/api/state').then(response=>response.json()).then(state=>({source:'authenticated HTTP precondition only',player:state.room.game.data.players.find(player=>player.seat===state.room.you)}))");
+    report.reloadSetup = { source: reloadSetup.source, ammo: reloadSetup.player.ammo, reserve: reloadSetup.player.reserve, wirePartial: pistolAuthority.partial };
+    if (reloadSetup.player.reserve === 0) {
+      assert.ok(options.allowAmmoPurchase !== false, "ground-map reload requires legitimately acquired reserve; spawn purchase is forbidden");
       await press("Period", ".", 190);
       await authorityWhere(state => state.player.reserve > 0);
     }
@@ -644,6 +655,7 @@ try {
   report.error = String(error.stack ?? error);
   process.exitCode = 1;
 } finally {
+  if (session && options.touch && !options.observeOnly) await call("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] }).catch(() => {});
   if (session && options.backgroundOnly) await evaluate("window.__cs16LifecycleCleanup?.();true").catch(() => {});
   if (temporaryTarget) await call("Target.closeTarget", { targetId: temporaryTarget }, undefined).catch(() => {});
   if (session) await evaluate("if(document.pointerLockElement)document.exitPointerLock();true").catch(() => {});

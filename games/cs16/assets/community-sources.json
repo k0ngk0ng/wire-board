@@ -1,0 +1,137 @@
+{
+  "schema": 1,
+  "authority": "third-party-public-community-map-archives",
+  "limitations": [
+    "No map-author distribution signature established",
+    "Static BSP and navigation records do not establish original runtime behavior"
+  ],
+  "sources": {
+    "hpoon": {
+      "repository": "https://github.com/hpoon/HLDS-CS1.6",
+      "commit": "ce852844b4adf87dfcc6782cfb9021adf0ab35f4"
+    },
+    "eallion": {
+      "repository": "https://github.com/eallion/CS1.6",
+      "commit": "4ea6a91b53520649e8171bfa70e93d6157b74ce4"
+    }
+  },
+  "files": [
+    {
+      "source_path": "cstrike/maps/fy_iceworld.bsp",
+      "path": "original/cstrike/maps/fy_iceworld.bsp",
+      "url": "https://raw.githubusercontent.com/hpoon/HLDS-CS1.6/ce852844b4adf87dfcc6782cfb9021adf0ab35f4/cstrike/maps/fy_iceworld.bsp",
+      "bytes": 124792,
+      "sha256": "d36fe2c8cb774a08c0ab25af403204162596d5729a74d22dd68946d382a69481",
+      "git_blob_sha1": "df97c7a1cc228a5976fc2bf645ef1515ea83ad04",
+      "source": "hpoon"
+    },
+    {
+      "source_path": "cstrike/maps/cs_bloodstrike.bsp",
+      "path": "original/cstrike/maps/cs_bloodstrike.bsp",
+      "url": "https://raw.githubusercontent.com/hpoon/HLDS-CS1.6/ce852844b4adf87dfcc6782cfb9021adf0ab35f4/cstrike/maps/cs_bloodstrike.bsp",
+      "bytes": 152380,
+      "sha256": "4d274b42c9fea481333dafd53aaac8edc83dbd051511610c448a1b39378eeeba",
+      "git_blob_sha1": "167d121235e8cefab16cfc8b99c7aef4ebdf149c",
+      "source": "hpoon"
+    },
+    {
+      "source_path": "Counter-Strike/cstrike/maps/fy_iceworld.nav",
+      "path": "navigation/fy_iceworld.nav",
+      "url": "https://raw.githubusercontent.com/eallion/CS1.6/4ea6a91b53520649e8171bfa70e93d6157b74ce4/Counter-Strike/cstrike/maps/fy_iceworld.nav",
+      "bytes": 39846,
+      "sha256": "e6eadd49776156bf0d1975b6860ec31d35c1df72a31d7e7bb1e8248e5b2214a4",
+      "git_blob_sha1": "8904baa367e89fa96777e4c64dfe79a3463d6f96",
+      "source": "eallion"
+    },
+    {
+      "source_path": "Counter-Strike/cstrike/maps/cs_bloodstrike.nav",
+      "path": "navigation/cs_bloodstrike.nav",
+      "url": "https://raw.githubusercontent.com/eallion/CS1.6/4ea6a91b53520649e8171bfa70e93d6157b74ce4/Counter-Strike/cstrike/maps/cs_bloodstrike.nav",
+      "bytes": 18453,
+      "sha256": "20e52e88056dc6aa6b999166d588ea32235084fe636311d2b74150e70b1b6833",
+      "git_blob_sha1": "48aae8f08bea35307c64ddb51d2033cdb9eb70fc",
+      "source": "eallion"
+    },
+    {
+      "source_path": "Counter-Strike/cstrike/cs_office.wad",
+      "path": "original/cstrike/cs_office.wad",
+      "url": "https://raw.githubusercontent.com/eallion/CS1.6/4ea6a91b53520649e8171bfa70e93d6157b74ce4/Counter-Strike/cstrike/cs_office.wad",
+      "bytes": 3405860,
+      "sha256": "88bd8e7ea8914e9ca6d5a89cf1abe2151f228af8fb2f13fd7543222877f2b1be",
+      "git_blob_sha1": "374886189edb3c77c9f92d836f4452d6b8e25913",
+      "source": "eallion"
+    },
+    {
+      "source_path": "Counter-Strike/cstrike/cstrike.wad",
+      "path": "original/cstrike/cstrike.wad",
+      "url": "https://raw.githubusercontent.com/eallion/CS1.6/4ea6a91b53520649e8171bfa70e93d6157b74ce4/Counter-Strike/cstrike/cstrike.wad",
+      "bytes": 2681364,
+      "sha256": "63bd011178c7563e38168de21bf6cd0d09c5e7c25f7936dea5f0c5200bfad267",
+      "git_blob_sha1": "061c23520c0e54a47dbfb90654f6d14fbcffac55",
+      "source": "eallion"
+    },
+    {
+      "source_path": "cstrike/de_vegas.wad",
+      "path": "original/cstrike/de_vegas.wad",
+      "url": "https://raw.githubusercontent.com/hpoon/HLDS-CS1.6/ce852844b4adf87dfcc6782cfb9021adf0ab35f4/cstrike/de_vegas.wad",
+      "bytes": 2263636,
+      "sha256": "54eab2821a73aff61e56a766deaf75e5d5b597fb0fa4e11647ce268400cac676",
+      "git_blob_sha1": "7886ffd7f2883e508adc8ad218cfd9c3aebd24e0",
+      "source": "hpoon"
+    },
+    {
+      "source_path": "cstrike/gfx/env/snowrt.tga",
+      "path": "original/cstrike/gfx/env/snowrt.tga",
+      "url": "https://raw.githubusercontent.com/hpoon/HLDS-CS1.6/ce852844b4adf87dfcc6782cfb9021adf0ab35f4/cstrike/gfx/env/snowrt.tga",
+      "bytes": 262188,
+      "sha256": "62a6190ee6356829960b84838845fec7445c4166da4f5275720b099a88b3e5c2",
+      "git_blob_sha1": "48aa4e6f35fee9fada5ad838c87f917a97a15fdd",
+      "source": "hpoon"
+    },
+    {
+      "source_path": "cstrike/gfx/env/snowlf.tga",
+      "path": "original/cstrike/gfx/env/snowlf.tga",
+      "url": "https://raw.githubusercontent.com/hpoon/HLDS-CS1.6/ce852844b4adf87dfcc6782cfb9021adf0ab35f4/cstrike/gfx/env/snowlf.tga",
+      "bytes": 262188,
+      "sha256": "bc17e23dd1f490782030da54113815a3ab043cb5a37263754f40fddf4d336a3c",
+      "git_blob_sha1": "0b3549c49c38a993d68c77e88ee2d3337694318b",
+      "source": "hpoon"
+    },
+    {
+      "source_path": "cstrike/gfx/env/snowup.tga",
+      "path": "original/cstrike/gfx/env/snowup.tga",
+      "url": "https://raw.githubusercontent.com/hpoon/HLDS-CS1.6/ce852844b4adf87dfcc6782cfb9021adf0ab35f4/cstrike/gfx/env/snowup.tga",
+      "bytes": 262188,
+      "sha256": "2b3707d73e7656df46dfe0dcfed8f88ff9be17c17ea97791e753cb4ae7554972",
+      "git_blob_sha1": "1dda80161b2bc32fa6e40f27837550712c2d29de",
+      "source": "hpoon"
+    },
+    {
+      "source_path": "cstrike/gfx/env/snowdn.tga",
+      "path": "original/cstrike/gfx/env/snowdn.tga",
+      "url": "https://raw.githubusercontent.com/hpoon/HLDS-CS1.6/ce852844b4adf87dfcc6782cfb9021adf0ab35f4/cstrike/gfx/env/snowdn.tga",
+      "bytes": 262188,
+      "sha256": "4788139489da1640ef18c317a57b8d69a28bae6b372d233a85c5018d46b3e958",
+      "git_blob_sha1": "e119775a6dfb3ff362d8f1b6cd49e8898da1f071",
+      "source": "hpoon"
+    },
+    {
+      "source_path": "cstrike/gfx/env/snowft.tga",
+      "path": "original/cstrike/gfx/env/snowft.tga",
+      "url": "https://raw.githubusercontent.com/hpoon/HLDS-CS1.6/ce852844b4adf87dfcc6782cfb9021adf0ab35f4/cstrike/gfx/env/snowft.tga",
+      "bytes": 262188,
+      "sha256": "7bb8519a6beacc32ede2ddbcb18a100d5bb43a37041df6f67862212e7a99c655",
+      "git_blob_sha1": "89cb6c697524a8adc156b3b49512e08bd8e20dc0",
+      "source": "hpoon"
+    },
+    {
+      "source_path": "cstrike/gfx/env/snowbk.tga",
+      "path": "original/cstrike/gfx/env/snowbk.tga",
+      "url": "https://raw.githubusercontent.com/hpoon/HLDS-CS1.6/ce852844b4adf87dfcc6782cfb9021adf0ab35f4/cstrike/gfx/env/snowbk.tga",
+      "bytes": 262188,
+      "sha256": "ed2ccb7f7d5bd7e2dee1bd6aca58d117c12473b94fd226f3c1e0c0e90a143127",
+      "git_blob_sha1": "c3b9672645cf6b60150767d0259298ff56479efe",
+      "source": "hpoon"
+    }
+  ]
+}

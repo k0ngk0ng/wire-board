@@ -339,7 +339,7 @@ export class BattleRenderer {
       if (brush.kind === 'func_door_rotating') brush.root.rotation.z = (brush.angle || 16384) * (state.progress ?? 0) / 1000 * Math.PI * 2 / 65536 * (brush.flags & 2 ? -1 : 1) * (state.direction || 1);
     }
     const used = new Set<string>();
-    const place = (key: string, modelKey: string, x: number, y: number, z: number) => {
+    const place = (key: string, modelKey: string, x: number, y: number, z: number, yaw = 0) => {
       used.add(key);
       let object = this.objects.get(key);
       if (!object) {
@@ -350,10 +350,11 @@ export class BattleRenderer {
         this.objects.set(key, object);
       }
       object.position.set(x / 256, y / 256, z / 256);
+      object.rotation.z = yaw * Math.PI * 2 / 65536;
     };
     if (view.bomb?.planted || view.bomb?.dropped) place('bomb', 'w-backpack', view.bomb.x, view.bomb.y, view.bomb.z);
     for (const hostage of view.hostages ?? []) if (!hostage.rescued && hostage.health > 0) place(`hostage:${hostage.id}`, 'hostage', hostage.x, hostage.y, hostage.z);
-    for (const drop of view.drops ?? []) place(`drop:${drop.id}`, `w-${drop.weapon.id === 'mp5navy' ? 'mp5' : drop.weapon.id}`, drop.x, drop.y, drop.z);
+    for (const drop of view.drops ?? []) place(`drop:${drop.id}`, `w-${drop.weapon.id === 'mp5navy' ? 'mp5' : drop.weapon.id}`, drop.x, drop.y, drop.z, drop.yaw ?? 0);
     for (const grenade of view.grenades ?? []) {
       if (grenade.kind === 'smokegrenade' && grenade.active) {
         let smoke = this.smoke.get(grenade.id);

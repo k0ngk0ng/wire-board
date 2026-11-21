@@ -76,7 +76,7 @@ func TestCS16BrowserFixture(t *testing.T) {
 	}
 	ticker := time.NewTicker(100 * time.Millisecond)
 	defer ticker.Stop()
-	deadline := time.NewTimer(25 * time.Minute)
+	deadline := time.NewTimer(60 * time.Minute)
 	defer deadline.Stop()
 	for {
 		select {

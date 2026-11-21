@@ -143,6 +143,18 @@ export function mergeStreamGame(
   };
 }
 
+export type StreamDataDecoder = (previous: unknown, incoming: unknown) => unknown;
+export type StreamDataBaseline = { serverInstance?: string; roomId: string; setupVersion: number; data: unknown };
+export function decodeStreamGamePacket(previous: StreamState | undefined, packet: GamePacket, receivedAt: number, resolve: (kind: string) => StreamDataDecoder | undefined, baseline?: StreamDataBaseline): GamePacket | undefined {
+  const accepted = mergeStreamGame(previous, packet, receivedAt);
+  if (accepted === previous || !accepted?.room) return;
+  const decode = resolve(accepted.room.kind);
+  if (!decode) return packet;
+  const source = baseline === undefined ? previous?.room?.game?.data : baseline.serverInstance === packet.serverInstance && baseline.roomId === packet.roomId && Number.isSafeInteger(baseline.setupVersion) && Number.isSafeInteger(packet.setupVersion) && baseline.setupVersion === packet.setupVersion ? baseline.data : undefined;
+  const data = decode(source, packet.game?.data);
+  return { ...packet, game: { ...packet.game, data } };
+}
+
 type Socket = {
   readyState: number;
   bufferedAmount: number;

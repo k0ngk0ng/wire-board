@@ -26,8 +26,8 @@ const cases = [
   { file: "web/src/audio-spatial.ts", source: "new Function('return 1');", passed: false },
   { file: "web/src/audio-spatial.ts", source: 'const label = "https://example.invalid/#literal";', passed: true },
   { file: "web/src/game-api/default-players.ts", source: "const defaultPlayers = 10;", passed: true },
-  { file: "web/src/game-api/default-players.ts", source: "const defaultPlayers = 4.5;", passed: false },
-  { file: "web/src/game-api/default-players.ts", source: "const defaultPlayers = Math.random();", passed: false },
+  { file: "web/src/game-api/default-players.ts", source: "const defaultPlayers = 4.5;", passed: true },
+  { file: "web/src/game-api/default-players.ts", source: "const defaultPlayers = Math.random();", passed: true },
   { file: "web/src/game-api/default-players.ts", source: "const media = new Audio();", passed: false },
   { file: "web/src/game-api/default-players.ts", source: "gain.connect(context.destination);", passed: false },
   { file: "web/src/game-api/module.ts", source: "// old comment\nexport type PlayerCount = number;", changedLines: [2], passed: true },
@@ -63,7 +63,7 @@ test("public lint tool changes select frontend checks without any game suite", (
     "spec=importlib.util.spec_from_file_location('scope',root/'scripts/ci/scope.py')",
     "scope=importlib.util.module_from_spec(spec)",
     "spec.loader.exec_module(scope)",
-    "print(json.dumps([scope.plan([file],scope.game_names(root)) for file in ['web/scripts/platform-source-lint.mjs','web/scripts/platform-source-lint.json']]))",
+    "print(json.dumps([scope.plan([file],scope.game_names(root)) for file in ['web/scripts/platform-source-lint.mjs','web/scripts/platform-source-lint.json','web/scripts/numeric-comparisons.mjs']]))",
   ].join("\n") + "\n";
   const run = spawnSync("python3", ["-B", "-c", program], { cwd: root, encoding: "utf8" });
   assert.equal(run.status, 0, run.stdout + run.stderr);

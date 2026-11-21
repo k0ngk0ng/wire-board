@@ -1,5 +1,6 @@
 from pathlib import Path
 import csv
+import gzip
 import hashlib
 import json
 import os
@@ -18,7 +19,7 @@ REPORT_NAME = os.environ.get('CS16_BROWSER_REPORT', 'current')
 assert re.fullmatch(r'[a-zA-Z0-9_-]{1,40}', REPORT_NAME)
 OUT = BASE / 'reports' / REPORT_NAME
 SOCKETS = ROOT / '.local/cs16/s'
-for directory in [BASE, OUT, ROOT / '.local/cs16/tmp', ROOT / '.local/cs16/go-cache', ROOT / '.local/cs16/go-mod', SOCKETS, BASE / 'cache', BASE / 'main-profile', BASE / 'peer-profile', BASE / 'watch-profile']:
+for directory in [BASE, OUT, ROOT / '.local/cs16/tmp', ROOT / '.local/cs16/go-cache', ROOT / '.local/cs16/go-mod', SOCKETS, BASE / 'cache']:
     directory.mkdir(parents=True, exist_ok=True)
 ENV = dict(os.environ, TMPDIR=str(ROOT / '.local/cs16/tmp'), GOTMPDIR=str(ROOT / '.local/cs16/tmp'), GOCACHE=str(ROOT / '.local/cs16/go-cache'), GOMODCACHE=str(ROOT / '.local/cs16/go-mod'), GOTOOLCHAIN='local', GOTELEMETRY='off', AGENT_BROWSER_SOCKET_DIR=str(SOCKETS), XDG_CACHE_HOME=str(BASE / 'cache'), AGENT_BROWSER_NO_VERSION_CHECK='1', WIRE_BOARD_CS16_BROWSER='1')
 REPORT = {'passed': False, 'scope': 'production HTTP/SQLite/WebSocket, two native Chromium player pages plus eight bots and one spectator page; original maps and models, no rule state injection', 'touchBoundary': 'Chromium touch simulation, not physical mobile hardware', 'diagnostic': os.environ.get('CS16_BROWSER_DIAGNOSTIC') == '1', 'cases': [], 'failures': [], 'performanceFailures': [], 'budgets': {'keyboardP95MS': 33, 'touchP95MS': 50, 'frameP95MS': 20, 'minimumVisibleFPS': 55}, 'testFirst': {'scenarios': 'games/cs16/tests/browser-scenarios.md', 'red': '.local/cs16/browser/reports/current/fixture-red.log'}}
@@ -27,6 +28,65 @@ SESSIONS = {}
 URLS = {}
 CAPTURES = []
 FIREARMS = set('glock18 usp p228 deagle elite fiveseven m3 xm1014 mp5navy tmp p90 mac10 ump45 galil famas ak47 m4a1 sg552 aug scout awp g3sg1 sg550 m249'.split())
+CLASSIC_MAPS = ('de_dust2', 'de_inferno', 'de_aztec', 'cs_assault')
+ADDED_MAPS = ('fy_iceworld', 'cs_bloodstrike')
+MAPS = CLASSIC_MAPS + ADDED_MAPS
+REPORT['expectedMaps'] = list(MAPS)
+REPORT['expectedCaseCount'] = len(MAPS)
+REPORT['caseCount'] = 0
+REPORT['lifecycle'] = {'fixtureMinutes': 60, 'goTestTimeoutMinutes': 61, 'nativeProcessSeconds': 60, 'nextLifeSeconds': 120, 'denseCombatMaximumSeconds': 45, 'naturalFinishSeconds': 240}
+MAP_MODES = {'de_dust2': 'bomb', 'de_inferno': 'bomb', 'de_aztec': 'bomb', 'cs_assault': 'hostage', 'fy_iceworld': 'elimination', 'cs_bloodstrike': 'elimination'}
+ADDED_MAP_NAMES = {'fy_iceworld': '冰雪世界', 'cs_bloodstrike': '血战回廊'}
+
+
+def check_catalogue(manifest):
+    assert set(manifest['maps']) == set(MAPS), {'expectedMaps': list(MAPS), 'actualMaps': list(manifest['maps'])}
+    assert len(manifest['players']) == 8 and FIREARMS.issubset(set(manifest['weapons']))
+    assert {key: value['mode'] for key, value in manifest['maps'].items()} == MAP_MODES
+    assert all(manifest['maps'][key]['name'] == name for key, name in ADDED_MAP_NAMES.items())
+
+
+def check_case_coverage(cases, selected, skip_finish=False):
+    expected = selected or set(MAPS)
+    actual = [case['map'] for case in cases]
+    assert len(actual) == len(expected) and set(actual) == expected, {'expectedMaps': sorted(expected), 'actualMaps': actual}
+    for case in cases:
+        assert case['players'] == 10
+        if case['map'] in ADDED_MAPS:
+            required = {'mapRules', 'desktopNative', 'touchNative', 'slowPlayerInput', 'slowPeerFastInput', 'denseWire', 'naturalFinish'}
+            if skip_finish:
+                required -= {'denseWire', 'naturalFinish'}
+            assert required.issubset(case), {'map': case['map'], 'missingCases': sorted(required - set(case))}
+            if not skip_finish:
+                assert case['naturalFinish']['status'] == 'finished'
+
+
+def map_rules_audit(map_id, initial):
+    manifest = json.loads((ROOT / 'web/dist/cs16/manifest.json').read_text())
+    entry = manifest['maps'][map_id]
+    resource = entry['rules']
+    path = ROOT / 'web/dist/cs16' / resource['file']
+    assert path.resolve().is_relative_to((ROOT / 'web/dist/cs16').resolve())
+    carrier = path.read_bytes()
+    assert len(carrier) == resource['bytes'] and hashlib.sha256(carrier).hexdigest() == resource['sha256']
+    decoded = gzip.decompress(carrier) if resource.get('encoding') == 'gzip' else carrier
+    rules = json.loads(decoded)
+    assert rules['id'] == map_id and rules['mode'] == MAP_MODES[map_id]
+    assert hashlib.sha256(decoded).hexdigest() == initial['rulesSHA256'] == resource.get('decodedSHA256', resource['sha256'])
+    if map_id in ADDED_MAPS:
+        spawn_count = 12 if map_id == 'fy_iceworld' else 10
+        assert len(rules['spawnsT']) == len(rules['spawnsCT']) == spawn_count
+        assert not rules['bombsites'] and not rules['hostages'] and not initial['hostages']
+        assert not any(item['id'] == 'c4' for player in initial['players'] for item in player.get('inventory', []))
+        assert len(rules['buyZones']) == (1 if map_id == 'fy_iceworld' else 0)
+        weapons = rules.get('worldWeapons', [])
+        assert len(weapons) == (24 if map_id == 'fy_iceworld' else 0)
+        if map_id == 'fy_iceworld':
+            expected = set('mp5navy tmp p90 mac10 ak47 sg552 m4a1 aug awp m3 xm1014 m249'.split())
+            assert {weapon['weapon'] for weapon in weapons} == expected
+            assert all(sum(item['weapon'] == weapon for item in weapons) == 2 for weapon in expected)
+            assert len({weapon['id'] for weapon in weapons}) == 24 and all(weapon['count'] == 1 for weapon in weapons)
+    return {'mode': rules['mode'], 'rulesSHA256': initial['rulesSHA256'], 'sourceSHA256': entry['sourceSHA256'], 'spawnsT': len(rules['spawnsT']), 'spawnsCT': len(rules['spawnsCT']), 'buyZones': rules['buyZones'], 'worldWeapons': rules.get('worldWeapons', [])}
 
 
 def source_snapshot():
@@ -153,7 +213,24 @@ def endpoint(client):
     return value if isinstance(value, str) else value.get('url', value.get('cdpUrl', value.get('value')))
 
 
-def native(client, name, touch=False, **extra):
+def sample_summary(observations):
+    responses = [response for observation in observations for response in observation.get('responses', [])]
+    groups = [observation.get('frames', []) for observation in observations]
+    intervals = [frame['at'] - frames[index]['at'] for frames in groups for index, frame in enumerate(frames[1:])]
+    elapsed = sum(frames[-1]['at'] - frames[0]['at'] for frames in groups if len(frames) > 1)
+    updates = sum(frame['drawCount'] != frames[index]['drawCount'] for frames in groups for index, frame in enumerate(frames[1:]))
+    def percentile(values, percent=95):
+        return sorted(values)[(len(values) * percent + 99) // 100 - 1] if values else None
+    return {'responses': len(responses), 'keyboardP95MS': percentile([item['milliseconds'] for item in responses if item['kind'] == 'key']), 'mouseP95MS': percentile([item['milliseconds'] for item in responses if item['kind'] == 'mouse']), 'touchP95MS': percentile([item['milliseconds'] for item in responses if item['kind'] == 'touch']), 'frameP95MS': percentile(intervals), 'frameP99MS': percentile(intervals, 99), 'visibleFPS': updates * 1000 / elapsed if elapsed else None}
+
+
+def check_sample_budgets(summary):
+    for field, limit in [('keyboardP95MS', 33), ('mouseP95MS', 33), ('touchP95MS', 50), ('frameP95MS', 20), ('frameP99MS', 33)]:
+        assert summary[field] is None or summary[field] <= limit, {'performanceBudgetFailure': field, 'limit': limit, 'actual': summary[field]}
+    assert summary['visibleFPS'] is None or summary['visibleFPS'] >= 55, summary
+
+
+def native(client, name, touch=False, allow_life_interruption=False, **extra):
     selected = OUT / (name + '-native.json')
     inputs = {'endpoint': endpoint(client), 'pageURL': URLS[client], 'options': dict(touch=touch, output=str(selected), diagnostic=REPORT['diagnostic'], **extra)}
     result = subprocess.run(['node', str(HERE / 'native-input.mjs')], cwd=ROOT, env=ENV, input=json.dumps(inputs), text=True, capture_output=True, timeout=60)
@@ -171,6 +248,20 @@ def native(client, name, touch=False, **extra):
             writer.writeheader()
             writer.writerows(observation['responses'])
     accepted = result.returncode == 0 and (observation.get('passed') or REPORT['diagnostic'] and observation.get('functionalPassed'))
+    if allow_life_interruption:
+        measured = sample_summary([observation])
+        check_sample_budgets(measured)
+        assert not observation.get('performanceFailures'), observation['performanceFailures']
+        authority = observation.get('network', {}).get('lastAuthority', {})
+        bootstrap = observation.get('network', {}).get('observerBootstrap', {})
+        lives = {entry['life'] for entry in observation.get('frames', []) if isinstance(entry.get('life'), int)}
+        replaced = authority.get('epoch') == bootstrap.get('epoch') and isinstance(authority.get('life'), int) and isinstance(bootstrap.get('life'), int) and authority['life'] != bootstrap['life']
+        interrupted = authority.get('player', {}).get('alive') is False or replaced
+        interruption_errors = ('native modifier combination', 'native weapon selection', 'too few real pixel responses', 'ongoing movement prevented', 'two-thumb fire was not applied', 'mobile crouch toggle', 'both rapid selections', 'rapid Digit3 and Q', 'getBoundingClientRect')
+        eligible = any(message in observation.get('error', '') for message in interruption_errors)
+        assert not observation.get('layoutFailures') and not observation.get('network', {}).get('internalFieldLeaks'), observation
+        if not accepted and interrupted and eligible:
+            return {'interrupted': True, 'rawAuthority': authority, 'observedLives': sorted(lives), 'report': str(selected.relative_to(ROOT)), 'allMeasuredSamples': measured}
     if not accepted and REPORT['diagnostic']:
         failure = {'case': name, 'nativeFailure': observation.get('error', result.stderr)}
         REPORT['failures'].append(failure)
@@ -183,6 +274,26 @@ def native(client, name, touch=False, **extra):
         REPORT['failures'].append({'case': name, 'nativeLayoutFailures': observation['layoutFailures']})
         save()
     return observation['summary']
+
+
+def elimination_native(client, map_id, name, touch=False):
+    attempts = []
+    observations = []
+    for attempt in range(3):
+        browser(client, 'scrollintoview', '[data-cs16-board]')
+        browser(client, 'click', '[data-cs16-board]')
+        wait_for(lambda: frame(client) and frame(client).get('inputEnabled') and room(client)['game']['data']['phase'] == 'live', 120)
+        label = map_id + '-' + name + ('-attempt' + str(attempt + 1) if attempt else '')
+        result = native(client, label, touch=touch, allow_life_interruption=True, allowAmmoPurchase=map_id != 'fy_iceworld')
+        observations.append(json.loads((OUT / (label + '-native.json')).read_text()))
+        measured = sample_summary(observations)
+        check_sample_budgets(measured)
+        attempts.append(result)
+        if not result.get('interrupted'):
+            return {'attempts': attempts, 'summary': result, 'allMeasuredSamples': measured}
+        REPORT.setdefault('lifeInterruptions', []).append({'map': map_id, 'client': client, 'case': label, 'evidence': result})
+        save()
+    raise AssertionError({'map': map_id, 'client': client, 'error': 'three native groups were interrupted by authoritative death or life replacement', 'attempts': attempts})
 
 
 def begin_native_capture(client, name, milliseconds=12000):
@@ -248,6 +359,7 @@ def check_layout(audit, stage):
 
 
 def buy_audit(client, map_id, mobile=False):
+    assert map_id in CLASSIC_MAPS + ('cs_bloodstrike',), {'map': map_id, 'error': 'map uses original ground equipment and does not allow spawn purchasing'}
     browser(client, 'scrollintoview', '[data-cs16-board]')
     browser(client, 'focus', '[data-cs16-board]')
     browser(client, 'press', 'b')
@@ -268,6 +380,21 @@ def buy_audit(client, map_id, mobile=False):
     browser(client, 'click', 'button[aria-label="关闭购买菜单"]')
     wait_for(lambda: frame(client).get('weapon') == 'deagle')
     return {'catalogue': entries, 'team': own['team'], 'moneyBefore': own['money'], 'purchased': 'deagle', 'authoritativeAndVisible': True, 'scroll': scroll, 'ammunition': ammunition}
+
+
+def ground_equipment_audit(client, map_id):
+    current = room(client)
+    data = current['game']['data']
+    own = next(player for player in data['players'] if player['seat'] == current['you'])
+    assert data.get('buyAllowed') is False and own['weapon'] in FIREARMS and any(item['id'] in {'glock18', 'usp'} for item in own['inventory']), {'map': map_id, 'player': own, 'buyAllowed': data.get('buyAllowed')}
+    browser(client, 'focus', '[data-cs16-board]')
+    browser(client, 'press', 'b')
+    wait_for(lambda: evaluate(client, 'document.querySelectorAll("[data-cs16-buy]").length>=24'))
+    entries = evaluate(client, '[...document.querySelectorAll("[data-cs16-buy]")].map(button=>({id:button.dataset.cs16Buy,disabled:button.disabled}))')
+    assert FIREARMS.issubset({entry['id'] for entry in entries}) and all(entry['disabled'] for entry in entries), entries
+    screenshot(client, map_id + '-spawn-buy-disabled')
+    browser(client, 'click', 'button[aria-label="关闭购买菜单"]')
+    return {'source': 'original spawn sidearm and world armoury; no spawn purchase', 'player': own, 'catalogue': entries, 'buyAllowedAtSpawn': False, 'initialDrops': data['drops']}
 
 
 def fullscreen_audit(client, map_id):
@@ -322,9 +449,9 @@ def cleanup_room():
     wait_for(lambda: room() is None)
 
 
-def prepare_room(map_id, mobile=False):
+def prepare_room(map_id, mobile=False, dual=False, natural=False):
     browser('main', 'set', 'viewport', 320 if mobile else 1440, 760 if mobile else 1000)
-    browser('peer', 'set', 'viewport', 1440, 1000)
+    browser('peer', 'set', 'viewport', 320 if dual else 1440, 760 if dual else 1000)
     if map_id == 'de_dust2':
         browser('main', 'find', 'role', 'button', 'click', '--name', '创建房间', '--exact')
         browser('main', 'find', 'role', 'button', 'click', '--name', '反恐精英 1.6', '--exact')
@@ -339,7 +466,7 @@ def prepare_room(map_id, mobile=False):
         created = wait_for(lambda: room() if room() and room()['status'] == 'waiting' else None)
         REPORT['defaultTenSeatCreationUI'] = True
     else:
-        created = request('main', '/rooms', {'kind': 'cs16', 'name': 'CS十席原图验收', 'capacity': 10, 'options': {'map': map_id, 'roundSeconds': 60 if map_id in ['de_inferno', 'cs_assault'] else 120, 'maxRounds': 2}})
+        created = request('main', '/rooms', {'kind': 'cs16', 'name': 'CS十席原图验收', 'capacity': 10, 'options': {'map': map_id, 'roundSeconds': 60 if map_id in ('de_inferno', 'cs_assault') + ADDED_MAPS else 120, 'maxRounds': 30 if map_id in ADDED_MAPS and not natural else 2}})
     request('peer', '/rooms/' + created['id'], {'type': 'join', 'version': room()['version'], 'nonce': uuid.uuid4().hex})
     for index in range(8):
         command('main', 'add_bot')
@@ -354,9 +481,12 @@ def prepare_room(map_id, mobile=False):
     if friendly_fire:
         browser('main', 'check', '[data-cs16-setting=friendly-fire]')
         wait_for(lambda: room()['options'].get('friendlyFire') is True)
-    wait_for(lambda: evaluate('main', 'document.querySelectorAll("[data-cs16-map]").length>=4'))
-    images = evaluate('main', '[...document.querySelectorAll("[data-cs16-map] img")].map(image=>({loaded:image.complete&&image.naturalWidth>0,src:image.src,rect:image.getBoundingClientRect().toJSON()}))')
-    assert len(images) >= 4 and all(image['loaded'] for image in images), images
+    wait_for(lambda: evaluate('main', 'document.querySelectorAll("[data-cs16-map]").length===' + str(len(MAPS))))
+    images = evaluate('main', '[...document.querySelectorAll("[data-cs16-map] img")].map(image=>({map:image.closest("[data-cs16-map]").dataset.cs16Map,label:image.closest("[data-cs16-map]").textContent,loaded:image.complete&&image.naturalWidth>0,src:image.src,rect:image.getBoundingClientRect().toJSON()}))')
+    assert len(images) == len(MAPS) and {image['map'] for image in images} == set(MAPS) and all(image['loaded'] for image in images), images
+    for image in images:
+        if image['map'] in ADDED_MAP_NAMES:
+            assert ADDED_MAP_NAMES[image['map']] in image['label'] and '人质' not in image['label'] and '爆破' not in image['label'], image
     screenshot('main', map_id + '-waiting')
     if mobile:
         browser('main', 'set', 'viewport', 310, 760)
@@ -385,12 +515,42 @@ def prepare_room(map_id, mobile=False):
     return data
 
 
+def elimination_match(map_id):
+    initial = prepare_room(map_id, natural=True)
+    command('main', 'autoplay', enabled=True)
+    command('peer', 'autoplay', enabled=True)
+    capture = native('watch', map_id + '-natural-dense-wire', observeOnly=True, observeMS=10000, denseExpected=True)
+    if map_id == 'fy_iceworld':
+        assert capture['wire']['eventCounts'].get('pickup', 0) > 0, {'map': map_id, 'error': 'natural raw wire did not observe an original-world weapon pickup', 'capture': capture}
+    finished = wait_for(lambda: room() if room()['status'] == 'finished' or room().get('game', {}).get('finished') else None, 240)
+    assert len(finished['seats']) == 10 and sum(bool(seat.get('bot')) for seat in finished['seats']) == 8
+    assert all(seat.get('autoPlay') for seat in finished['seats'] if not seat.get('bot'))
+    screenshot('main', map_id + '-natural-finish')
+    return {'initial': initial, 'denseWire': capture, 'finished': finished}
+
+
+if os.environ.get('CS16_BROWSER_PREFLIGHT_ONLY') == '1':
+    REPORT['partial'] = True
+    REPORT['scope'] = 'offline six-map catalogue preflight; no browser or server started'
+    try:
+        check_catalogue(json.loads((ROOT / 'web/dist/cs16/manifest.json').read_text()))
+        REPORT['preflightPassed'] = True
+    except AssertionError as error:
+        REPORT['failures'].append({'cataloguePreflight': str(error)})
+        save()
+        raise SystemExit(1)
+    save()
+    raise SystemExit(0)
+
+
 try:
-    REPORT['commands'] = {'browser': 'python3 -B games/cs16/tests/accept_browser.py', 'server': 'WIRE_BOARD_CS16_BROWSER=1 go test -count=1 -timeout=26m -run ^TestCS16BrowserFixture$ ./games/cs16/tests', 'options': {key: value for key, value in os.environ.items() if key.startswith('CS16_BROWSER_')}}
+    REPORT['commands'] = {'browser': 'python3 -B games/cs16/tests/accept_browser.py', 'server': 'WIRE_BOARD_CS16_BROWSER=1 go test -count=1 -timeout=61m -run ^TestCS16BrowserFixture$ ./games/cs16/tests', 'options': {key: value for key, value in os.environ.items() if key.startswith('CS16_BROWSER_')}}
     REPORT['environment'] = {'platform': sys.platform, 'python': sys.version.split()[0], 'workspace': str(ROOT)}
     REPORT['sources'] = source_snapshot()
     REPORT['artifacts'] = artifact_snapshot()
     REPORT['sourceIdentitySHA256'] = hashlib.sha256(json.dumps(REPORT['sources'], sort_keys=True).encode()).hexdigest()
+    for client in ['main', 'peer', 'watch']:
+        (BASE / (client + '-profile')).mkdir(parents=True, exist_ok=True)
     for client, prefix in [('main', 'cm'), ('peer', 'cp'), ('watch', 'cw')]:
         result = subprocess.run(['agent-browser', 'session', 'id', '--scope', 'worktree', '--prefix', prefix], cwd=ROOT, env=ENV, text=True, capture_output=True, timeout=10)
         assert result.returncode == 0, result.stderr
@@ -399,7 +559,7 @@ try:
     for name in ['urls.json', 'stop']:
         (BASE / name).unlink(missing_ok=True)
     log = (OUT / 'server.log').open('w')
-    SERVER = subprocess.Popen(['go', 'test', '-count=1', '-timeout=26m', '-run', '^TestCS16BrowserFixture$', './games/cs16/tests'], cwd=ROOT, env=ENV, stdout=log, stderr=subprocess.STDOUT)
+    SERVER = subprocess.Popen(['go', 'test', '-count=1', '-timeout=61m', '-run', '^TestCS16BrowserFixture$', './games/cs16/tests'], cwd=ROOT, env=ENV, stdout=log, stderr=subprocess.STDOUT)
     wait_for(lambda: (BASE / 'urls.json').exists(), 180)
     URLS = json.loads((BASE / 'urls.json').read_text())
     REPORT['serverBinary'] = json.loads((BASE / 'server-binary.json').read_text())
@@ -410,28 +570,36 @@ try:
         browser(client, 'wait', '--fn', 'document.body.innerText.includes("创建房间")')
     REPORT['controllers'] = request('main', '/controllers?game=cs16')
     manifest = evaluate('main', 'fetch("/cs16/manifest.json").then(response=>response.json()).then(manifest=>({maps:manifest.maps,players:manifest.players,weapons:manifest.weapons,runtime:manifest.runtime}))')
-    assert set(manifest['maps']) == {'de_dust2', 'de_inferno', 'de_aztec', 'cs_assault'}
-    assert len(manifest['players']) == 8 and FIREARMS.issubset(set(manifest['weapons']))
+    check_catalogue(manifest)
     REPORT['catalogue'] = {'maps': list(manifest['maps']), 'players': list(manifest['players']), 'weapons': list(manifest['weapons'])}
     REPORT['bindings'] = {'runtime': manifest['runtime'], 'indexSHA256': hashlib.sha256((ROOT / 'web/dist/index.html').read_bytes()).hexdigest()}
     selected = set(filter(None, os.environ.get('CS16_BROWSER_MAP_FILTER', '').split(',')))
     assert selected.issubset(set(manifest['maps']))
     REPORT['partial'] = bool(selected) or REPORT['diagnostic']
-    for map_id in ['de_dust2', 'de_inferno', 'de_aztec', 'cs_assault']:
+    for map_id in MAPS:
         if selected and map_id not in selected:
             continue
         set_network('main', 40, 5)
         set_network('peer', 40, 5)
-        initial = prepare_room(map_id, mobile=map_id == 'de_aztec')
+        added = map_id in ADDED_MAPS
+        initial = prepare_room(map_id, mobile=map_id == 'de_aztec', dual=added)
         case = {'map': map_id, 'players': len(initial['players']), 'viewport': viewport('main'), 'initial': initial}
+        case['mapRules'] = map_rules_audit(map_id, initial)
         case['friendlyFire'] = {'selected': map_id == 'de_inferno', 'initial': initial['options'].get('friendlyFire', False), 'waitingHostOnly': True}
-        case['purchase'] = buy_audit('main', map_id, mobile=map_id == 'de_aztec')
+        case['purchase'] = ground_equipment_audit('main', map_id) if map_id == 'fy_iceworld' else buy_audit('main', map_id, mobile=map_id == 'de_aztec')
         wait_for(lambda: room()['game']['data']['phase'] == 'live', 30)
         measured_client = 'peer' if map_id == 'cs_assault' else 'main'
         case['measuredClient'] = measured_client
         case['assetAudit'] = evaluate(measured_client, 'document.querySelector("[data-cs16-canvas]")?.__cs16Assets')
         assert case['assetAudit'] and case['assetAudit']['texturedMaterialCount'] > 0 and not case['assetAudit']['missingTextures'], case['assetAudit']
-        case['native'] = native(measured_client, map_id + '-input', touch=map_id == 'de_aztec', visualAudit=map_id == 'de_dust2')
+        if added:
+            case['desktopNative'] = elimination_native('main', map_id, 'desktop-input')
+            case['touchNative'] = elimination_native('peer', map_id, 'touch-input', touch=True)
+            case['native'] = case['desktopNative']['summary']
+            case['touchAssetAudit'] = evaluate('peer', 'document.querySelector("[data-cs16-canvas]")?.__cs16Assets')
+            assert case['touchAssetAudit'] and not case['touchAssetAudit']['missingTextures']
+        else:
+            case['native'] = native(measured_client, map_id + '-input', touch=map_id == 'de_aztec', visualAudit=map_id == 'de_dust2')
         case['measuredViewport'] = viewport(measured_client)
         screenshot(measured_client, map_id + '-measured-client')
         check_action_error('main', map_id + '-after-native')
@@ -464,6 +632,11 @@ try:
             wait_for(lambda: frame('peer') and frame('peer').get('inputEnabled'), 120)
             case['disconnect'] = {'fastFrames': fast_after - fast_before, 'humanNotAutoTaken': True, 'recovered': True}
             case['recoveryWire'] = finish_native_capture(recovery_capture)
+        if added:
+            set_network('peer', 250, 20)
+            case['slowPlayerInput'] = elimination_native('peer', map_id, 'slow-touch-input', touch=True)
+            case['slowPeerFastInput'] = elimination_native('main', map_id, 'slow-peer-desktop-input')
+            set_network('peer', 40, 5)
         spectator = room('watch')
         assert spectator.get('spectating')
         case['spectator'] = {'readOnly': spectator['game']['data'].get('canAct') is False}
@@ -485,9 +658,20 @@ try:
             screenshot('main', map_id + '-natural-finish')
         elif map_id == 'cs_assault':
             REPORT['partial'] = True
+        if added and os.environ.get('CS16_BROWSER_SKIP_FINISH') != '1':
+            case['manualMatchEpoch'] = initial['epoch']
+            cleanup_room()
+            natural_match = elimination_match(map_id)
+            case['naturalStart'] = natural_match['initial']
+            case['denseWire'] = natural_match['denseWire']
+            case['naturalFinish'] = natural_match['finished']
+        elif added:
+            REPORT['partial'] = True
         REPORT['cases'].append(case)
+        REPORT['caseCount'] = len(REPORT['cases'])
         save()
         cleanup_room()
+    check_case_coverage(REPORT['cases'], selected, os.environ.get('CS16_BROWSER_SKIP_FINISH') == '1')
     after_sources = source_snapshot()
     REPORT['sourceChangedDuringRun'] = [name for name in set(REPORT['sources']) | set(after_sources) if REPORT['sources'].get(name) != after_sources.get(name)]
     after_artifacts = artifact_snapshot()

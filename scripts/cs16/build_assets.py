@@ -15,12 +15,13 @@ import zlib
 
 
 ROOT = Path(__file__).resolve().parents[2]
-MAPS = {"de_dust2": "沙漠 2", "de_inferno": "炼狱小镇", "de_aztec": "阿兹特克", "cs_assault": "仓库突击"}
+MAPS = {"de_dust2": "沙漠 2", "de_inferno": "炼狱小镇", "de_aztec": "阿兹特克", "cs_assault": "仓库突击", "fy_iceworld": "冰雪世界", "cs_bloodstrike": "血战回廊"}
 UNIT = 256
 NORMAL_UNIT = 1048576
 LUMP_SIZES = {1: 20, 3: 12, 5: 24, 6: 40, 7: 20, 9: 8, 10: 28, 11: 2, 12: 4, 13: 4, 14: 64}
 SKY_SIDES = ("rt", "lf", "up", "dn", "ft", "bk")
 GUN_IDS = ("p228", "scout", "xm1014", "mac10", "aug", "elite", "fiveseven", "ump45", "sg550", "galil", "famas", "usp", "glock18", "awp", "mp5navy", "m249", "m3", "m4a1", "tmp", "g3sg1", "deagle", "sg552", "ak47", "p90", "knife", "hegrenade", "flashbang", "smokegrenade", "c4")
+ARMOURY_ITEMS = ("mp5navy", "tmp", "p90", "mac10", "ak47", "sg552", "m4a1", "aug", "scout", "g3sg1", "awp", "m3", "xm1014", "m249", "flashbang", "hegrenade", "vest", "vesthelm", "smokegrenade", "shield", "famas", "sg550", "galil", "ump45", "glock18", "usp", "elite", "fiveseven", "p228", "deagle")
 
 
 def owned_output(path):
@@ -286,6 +287,161 @@ def decode_navigation(path, bsp):
     return {"nav": [nav[index] for index in valid_indices], "navFlags": [flags[index] | (4 if validations[index]["stand"] == -2 else 0) for index in valid_indices], "navEdges": [[mapping[target] for target in edges[index] if target in mapping] for index in valid_indices], "navConnections": [[flag for target, flag in zip(edges[index], connections[index]) if target in mapping] for index in valid_indices], "navigationSourceSHA256": digest(raw), "navigationSourceIndices": valid_indices, "navigationValidation": validations}
 
 
+class NavReader:
+    def __init__(self, raw):
+        self.raw = raw
+        self.offset = 0
+
+    def take(self, format_string):
+        size = struct.calcsize(format_string)
+        if self.offset + size > len(self.raw):
+            raise ValueError("Truncated GoldSrc NAV record")
+        values = struct.unpack_from(format_string, self.raw, self.offset)
+        self.offset += size
+        if any(isinstance(value, float) and not math.isfinite(value) for value in values):
+            raise ValueError("GoldSrc NAV contains a non-finite coordinate")
+        return values
+
+    def skip(self, size):
+        if size < 0 or self.offset + size > len(self.raw):
+            raise ValueError("GoldSrc NAV record exceeds file bounds")
+        self.offset += size
+
+
+def parse_nav5(raw, bsp_bytes):
+    reader = NavReader(raw)
+    magic, version, expected_bytes = reader.take("<III")
+    if magic != 0xfeedface or version != 5 or expected_bytes != bsp_bytes:
+        raise ValueError("GoldSrc NAV identity, version or BSP size mismatch")
+    places = reader.take("<H")[0]
+    if places > 8192:
+        raise ValueError("GoldSrc NAV place count exceeds budget")
+    for _ in range(places):
+        size = reader.take("<H")[0]
+        if size < 1 or size > 256:
+            raise ValueError("GoldSrc NAV place name is invalid")
+        reader.skip(size)
+    count = reader.take("<I")[0]
+    if count < 1 or count > 20000:
+        raise ValueError("GoldSrc NAV area count exceeds budget")
+    areas = []
+    identifiers = set()
+    for _ in range(count):
+        area_id, flags, *extent = reader.take("<IB6f")
+        ne_z, sw_z = reader.take("<ff")
+        if area_id == 0 or area_id in identifiers or extent[0] > extent[3] or extent[1] > extent[4]:
+            raise ValueError("Invalid GoldSrc NAV area identity or extent")
+        identifiers.add(area_id)
+        connections = []
+        for _ in range(4):
+            connected = reader.take("<I")[0]
+            if connected > count:
+                raise ValueError("GoldSrc NAV connection count exceeds area count")
+            connections.append(list(reader.take("<" + "I" * connected)))
+        hiding = reader.take("<B")[0]
+        reader.skip(hiding * 17)
+        approaches = reader.take("<B")[0]
+        if approaches > 16:
+            raise ValueError("GoldSrc NAV approach count exceeds source limit")
+        reader.skip(approaches * 14)
+        encounters = reader.take("<I")[0]
+        if encounters > 100000:
+            raise ValueError("GoldSrc NAV encounter count exceeds budget")
+        for _ in range(encounters):
+            reader.take("<IBIB")
+            spots = reader.take("<B")[0]
+            reader.skip(spots * 5)
+        place = reader.take("<H")[0]
+        if place > places:
+            raise ValueError("GoldSrc NAV place reference outside directory")
+        areas.append({"id": area_id, "flags": flags, "lo": extent[:3], "hi": extent[3:], "neZ": ne_z, "swZ": sw_z, "connections": connections})
+    if reader.offset != len(raw):
+        raise ValueError("Unconsumed bytes after GoldSrc NAV areas")
+    if any(target != 0 and target not in identifiers for area in areas for targets in area["connections"] for target in targets):
+        raise ValueError("GoldSrc NAV connection references an unknown area")
+    return areas
+
+
+def nav_height(area, x, y):
+    width = area["hi"][0] - area["lo"][0]
+    height = area["hi"][1] - area["lo"][1]
+    fx = (x - area["lo"][0]) / width if width else 0
+    fy = (y - area["lo"][1]) / height if height else 0
+    fx = max(0, min(1, fx))
+    fy = max(0, min(1, fy))
+    top = area["lo"][2] * (1 - fx) + area["neZ"] * fx
+    bottom = area["swZ"] * (1 - fx) + area["hi"][2] * fx
+    return top * (1 - fy) + bottom * fy
+
+
+def decode_nav5(path, bsp):
+    raw = path.read_bytes()
+    areas = parse_nav5(raw, len(bsp.raw))
+    source_areas = {area["id"]: area for area in areas}
+    nav = []
+    flags = []
+    edges = []
+    connections = []
+    validations = []
+    source_indices = []
+    lookup = {}
+    centres = {}
+    stand_root = bsp.models[0][10]
+    crouch_root = bsp.models[0][12]
+    def add_point(x, y, ground, source_id, source_flags):
+        standing = point_object((x, y, ground + 36))
+        crouching = point_object((x, y, ground + 18))
+        stand = bsp.contents(stand_root, tuple(standing[axis] / UNIT for axis in ("x", "y", "z")))
+        crouch = bsp.contents(crouch_root, tuple(crouching[axis] / UNIT for axis in ("x", "y", "z")))
+        needs_crouch = bool(source_flags & 1) or stand == -2
+        if needs_crouch and crouch == -2:
+            return None
+        point = crouching if needs_crouch else standing
+        key = tuple(point[axis] for axis in ("x", "y", "z")) + (needs_crouch,)
+        if key in lookup:
+            return lookup[key]
+        index = len(nav)
+        nav.append(point)
+        flags.append(4 if needs_crouch else 0)
+        edges.append([])
+        connections.append([])
+        validations.append({"node": index, "sourceArea": source_id, "stand": stand, "crouch": crouch})
+        source_indices.append(source_id)
+        lookup[key] = index
+        return index
+    def connect(start, end, jump):
+        if start is not None and end is not None and start != end and end not in edges[start]:
+            edges[start].append(end)
+            connections[start].append(1 if jump else 0)
+    for area in areas:
+        x = (area["lo"][0] + area["hi"][0]) / 2
+        y = (area["lo"][1] + area["hi"][1]) / 2
+        centres[area["id"]] = add_point(x, y, nav_height(area, x, y), area["id"], area["flags"])
+    for area in areas:
+        start = centres[area["id"]]
+        for targets in area["connections"]:
+            for target in targets:
+                if target == 0:
+                    continue
+                other = source_areas[target]
+                end = centres[target]
+                lower = [max(area["lo"][axis], other["lo"][axis]) for axis in range(2)]
+                upper = [min(area["hi"][axis], other["hi"][axis]) for axis in range(2)]
+                jump = bool((area["flags"] | other["flags"]) & 2)
+                if lower[0] <= upper[0] and lower[1] <= upper[1]:
+                    x, y = [(lower[axis] + upper[axis]) / 2 for axis in range(2)]
+                    ground = max(nav_height(area, x, y), nav_height(other, x, y))
+                    portal = add_point(x, y, ground, area["id"], area["flags"] | other["flags"])
+                    if portal is not None:
+                        connect(start, portal, jump)
+                        connect(portal, end, jump)
+                        continue
+                connect(start, end, jump)
+    if len(nav) < 2 or not any(edges):
+        raise ValueError("GoldSrc NAV has no traversable source-bound graph")
+    return {"nav": nav, "navFlags": flags, "navEdges": edges, "navConnections": connections, "navigationFormat": "GoldSrc-NAV5", "navigationSourceSHA256": digest(raw), "navigationSourceIndices": source_indices, "navigationValidation": validations}
+
+
 def texture_material(name, materials):
     if name.startswith(("+", "-")):
         name = name[2:]
@@ -322,13 +478,22 @@ def collision_surfaces(bsp, source, brushes):
 def rules_for_map(bsp, map_id, source=None):
     source = Path(source) if source is not None else ROOT / ".local/cs16/research/original"
     world = node_graph(bsp, bsp.models[0][9], False)
-    rule = {"id": map_id, "name": MAPS[map_id], "mode": "hostage" if map_id.startswith("cs_") else "bomb", "sourceSHA256": digest(bsp.raw), "planes": [{"x": round(p[0] * NORMAL_UNIT), "y": round(p[1] * NORMAL_UNIT), "z": round(p[2] * NORMAL_UNIT), "dist": round(p[3] * UNIT)} for p in bsp.planes], "nodes": world["nodes"], "root": world["root"], "hulls": [node_graph(bsp, bsp.models[0][10], True), node_graph(bsp, bsp.models[0][12], True)], "spawnsT": [], "spawnsCT": [], "bombsites": [], "rescueZones": [], "hostages": [], "buyZones": [], "brushes": [], "ladders": []}
+    kinds = {entity.get("classname") for entity in bsp.entities}
+    mode = "bomb" if kinds & {"func_bomb_target", "info_bomb_target"} else "hostage" if "hostage_entity" in kinds else "elimination"
+    rule = {"id": map_id, "name": MAPS[map_id], "mode": mode, "sourceSHA256": digest(bsp.raw), "planes": [{"x": round(p[0] * NORMAL_UNIT), "y": round(p[1] * NORMAL_UNIT), "z": round(p[2] * NORMAL_UNIT), "dist": round(p[3] * UNIT)} for p in bsp.planes], "nodes": world["nodes"], "root": world["root"], "hulls": [node_graph(bsp, bsp.models[0][10], True), node_graph(bsp, bsp.models[0][12], True)], "spawnsT": [], "spawnsCT": [], "bombsites": [], "rescueZones": [], "hostages": [], "buyZones": [], "brushes": [], "ladders": []}
+    world_weapons = []
     for entity_index, entity in enumerate(bsp.entities):
         kind = entity.get("classname", "")
         if kind in ("info_player_start", "info_player_deathmatch"):
             rule["spawnsCT" if kind == "info_player_start" else "spawnsT"].append(spawn(entity))
         if kind == "hostage_entity":
             rule["hostages"].append(spawn(entity))
+        if kind == "armoury_entity":
+            item = int(entity.get("item", "0"))
+            count = max(1, int(entity.get("count", "1")))
+            if item < 0 or item >= len(ARMOURY_ITEMS) or count > 1024:
+                raise ValueError("Map armoury item or quantity is unsupported")
+            world_weapons.append({"id": entity_index, "item": item, "weapon": ARMOURY_ITEMS[item], **spawn(entity), "count": count})
         if kind in ("func_bomb_target", "func_hostage_rescue", "func_buyzone", "func_ladder"):
             bounds = entity_bounds(bsp, entity)
             if kind == "func_buyzone":
@@ -356,8 +521,13 @@ def rules_for_map(bsp, map_id, source=None):
         for at in rule["spawnsCT"]:
             rule["rescueZones"].append({"min": {axis: at[axis] - 256 * UNIT for axis in ("x", "y", "z")}, "max": {axis: at[axis] + 256 * UNIT for axis in ("x", "y", "z")}})
     nav_path = ROOT / ".local/cs16/research/navigation" / (map_id + ".pwf")
-    rule.update(decode_navigation(nav_path, bsp))
+    if nav_path.is_file():
+        rule.update(decode_navigation(nav_path, bsp))
+    else:
+        rule.update(decode_nav5(nav_path.with_suffix(".nav"), bsp))
     rule["surfaces"] = collision_surfaces(bsp, source, rule["brushes"])
+    if world_weapons:
+        rule["worldWeapons"] = world_weapons
     return rule
 
 
@@ -514,7 +684,7 @@ def map_preview(render, map_id):
     scale = min((width - 24) / (max_x - min_x), (height - 24) / (max_y - min_y))
     offset_x = (width - (max_x - min_x) * scale) / 2
     offset_y = (height - (max_y - min_y) * scale) / 2
-    colors = {"de_dust2": (183, 160, 108), "de_inferno": (169, 139, 112), "de_aztec": (125, 145, 108), "cs_assault": (142, 151, 158)}
+    colors = {"de_dust2": (183, 160, 108), "de_inferno": (169, 139, 112), "de_aztec": (125, 145, 108), "cs_assault": (142, 151, 158), "fy_iceworld": (176, 205, 216), "cs_bloodstrike": (176, 126, 101)}
     color = colors[map_id]
     for mesh in render["meshes"]:
         positions = mesh["positions"]
@@ -612,7 +782,26 @@ def build_map(source, output, map_id):
         width, height, rgba = decode_tga(sorted(candidates)[0].read_bytes())
         metadata["sky"].append(write_resource(output, "maps/" + map_id + "/sky-" + side + ".png", png_bytes(width, height, rgba), "image/png"))
     metadata["resources"] = list(render["textures"].values()) + [render["lightmap"]]
+    provenance = community_map_source(map_id, bsp.raw)
+    if provenance is not None:
+        metadata["source"] = provenance
     return rule, metadata
+
+
+def community_map_source(map_id, raw):
+    path = ROOT / "games/cs16/assets/community-sources.json"
+    if not path.is_file():
+        return None
+    catalog = json.loads(path.read_text())
+    relative = "original/cstrike/maps/" + map_id + ".bsp"
+    entries = [entry for entry in catalog["files"] if entry["path"] == relative]
+    if not entries:
+        return None
+    if len(entries) != 1 or entries[0]["bytes"] != len(raw) or entries[0]["sha256"] != digest(raw):
+        raise ValueError("Community map differs from its pinned source identity")
+    entry = entries[0]
+    source = catalog["sources"][entry["source"]]
+    return {"repository": source["repository"], "commit": source["commit"], "path": entry["source_path"], "bytes": len(raw), "sha256": digest(raw), "gitBlobSHA1": entry["git_blob_sha1"], "authority": catalog["authority"]}
 
 
 def build_audio(source, output):
@@ -733,6 +922,53 @@ def refresh_rules(source, output):
     return manifest
 
 
+def extend_maps(source, output, selected):
+    source = Path(source).resolve()
+    output = owned_output(output)
+    manifest_path = output / "manifest.json"
+    manifest = json.loads(manifest_path.read_text())
+    if manifest.get("schema") != 1 or not isinstance(manifest.get("maps"), dict) or not set(manifest["maps"]).issubset(MAPS):
+        raise ValueError("An existing source-bound CS16 manifest is required")
+    if not selected or len(set(selected)) != len(selected) or any(map_id not in MAPS for map_id in selected):
+        raise ValueError("Choose unique registered CS16 maps to append")
+    data_path = ROOT / "games/cs16/data/maps.go"
+    existing = data_path.read_text().split("`", 2)
+    if len(existing) != 3:
+        raise ValueError("Existing source-bound map data is not a raw JSON constant")
+    rules = json.loads(existing[1])
+    rule_ids = {value["id"] for value in rules}
+    if len(rule_ids) != len(rules) or rule_ids != set(manifest["maps"]):
+        raise ValueError("Existing public and server map catalogs disagree")
+    resources = {value["file"] for value in manifest["resources"]}
+    for map_id in selected:
+        if map_id in manifest["maps"]:
+            raw = (source / "cstrike/maps" / (map_id + ".bsp")).read_bytes()
+            if manifest["maps"][map_id].get("sourceSHA256") != digest(raw):
+                raise ValueError("An existing map source changed; append cannot replace it")
+            continue
+        rule, metadata = build_map(source, output, map_id)
+        metadata["render"] = write_resource(output, "maps/" + map_id + "/render.json.gz", (output / metadata["render"]["file"]).read_bytes(), "application/json", compressed=True)
+        metadata["rules"] = write_resource(output, "maps/" + map_id + "/rules.json.gz", json_bytes(rule), "application/json", compressed=True)
+        for descriptor in metadata.pop("resources"):
+            if descriptor["file"] not in resources:
+                resources.add(descriptor["file"])
+                manifest["resources"].append(descriptor)
+        manifest["maps"][map_id] = metadata
+        rules.append(rule)
+    data_path.write_text(existing[0] + "`" + json_bytes(rules).decode("utf-8") + "`" + existing[2])
+    manifest_path.write_bytes(json_bytes(manifest) + b"\n")
+    metadata_path = ROOT / "games/cs16/assets/source.json"
+    provenance = json.loads(metadata_path.read_text())
+    for map_id in selected:
+        entry = manifest["maps"][map_id]
+        provenance["maps"][map_id] = {"sourceSHA256": entry["sourceSHA256"], "name": entry["name"], "mode": entry["mode"], "source": entry.get("source")}
+    metadata_path.write_bytes(json_bytes(provenance) + b"\n")
+    verification = ROOT / ".local/cs16/verification/community-maps"
+    verification.mkdir(parents=True, exist_ok=True)
+    (verification / "source-resources.json").write_bytes(json_bytes(resource_records(manifest, output)) + b"\n")
+    return manifest
+
+
 def resource_records(manifest, output):
     output = owned_output(output)
     files = {}
@@ -767,11 +1003,14 @@ def main():
     mode.add_argument("--skip-models", action="store_true")
     mode.add_argument("--models-only", action="store_true")
     mode.add_argument("--rules-only", action="store_true")
+    mode.add_argument("--add-maps", nargs="+")
     arguments = parser.parse_args()
     if arguments.models_only:
         manifest = refresh_models(arguments.source, arguments.output)
     elif arguments.rules_only:
         manifest = refresh_rules(arguments.source, arguments.output)
+    elif arguments.add_maps:
+        manifest = extend_maps(arguments.source, arguments.output, arguments.add_maps)
     else:
         manifest = build_assets(arguments.source, arguments.output, arguments.skip_models)
     print(json.dumps({"passed": True, "maps": list(manifest["maps"]), "models": len(manifest["models"]), "weapons": len(manifest["weapons"]), "sounds": len(manifest["sounds"])}, ensure_ascii=False))
