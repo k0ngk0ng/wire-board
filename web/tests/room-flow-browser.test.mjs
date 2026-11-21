@@ -15,6 +15,14 @@ test(
     const root = fileURLToPath(new URL("../../", import.meta.url));
     const require = createRequire(new URL("../package.json", import.meta.url));
     const execute = promisify(execFile);
+    const common = (
+      await execute(
+        "git",
+        ["rev-parse", "--path-format=absolute", "--git-common-dir"],
+        { cwd: root },
+      )
+    ).stdout.trim();
+    const workspace = path.dirname(common);
     const owned = path.join(root, ".local/room-flow");
     const out = path.join(
       owned,
@@ -30,10 +38,11 @@ test(
       GOMODCACHE: path.join(root, ".local/go-mod"),
       GOTMPDIR: path.join(temporary, "go"),
       TEST_TELEMETRY_DIR: path.join(temporary, "telemetry"),
-      TMPDIR: path.join(temporary, "tmp"),
+      TMPDIR: path.join(workspace, ".local/rft"),
       XDG_CACHE_HOME: path.join(temporary, "cache"),
       AGENT_BROWSER_SOCKET_DIR:
-        process.env.AGENT_BROWSER_SOCKET_DIR ?? path.join(owned, "s"),
+        process.env.AGENT_BROWSER_SOCKET_DIR ??
+        path.join(workspace, ".local/room-flow/s"),
       AGENT_BROWSER_PROFILE: path.join(temporary, "profile"),
       AGENT_BROWSER_NO_VERSION_CHECK: "1",
       AGENT_BROWSER_ARGS: [
