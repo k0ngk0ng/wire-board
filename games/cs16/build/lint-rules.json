@@ -56,7 +56,8 @@
     "touch-input.ts",
     "action-scope.ts",
     "stream-delta.ts",
-    "touch-ownership.ts"
+    "touch-ownership.ts",
+    "motion-colliders.ts"
   ],
   "languages": {
     "go": {

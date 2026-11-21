@@ -1,3 +1,4 @@
+import { motionColliders, type MotionCollider } from './motion-colliders.ts';
 import { gunzipSync } from 'fflate';
 import { GLTFLoader, type GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import * as T from 'three';
@@ -229,7 +230,7 @@ export async function loadBattleAssets(base: string, mapID: string, characters: 
   const api = window.cs16Motion!;
   if (!api.init(JSON.stringify(rules))) throw Error('运动碰撞规则初始化失败');
   let brushes: unknown[] = [];
-  let players: Player[] = [];
+  let players: MotionCollider[] = [];
   const motion: MotionFunction = (player, input, frames) => {
     const value = JSON.parse(api.move(JSON.stringify({ player, input, frames, brushes, players }))) as Player & { error?: string };
     if (value.error) throw Error(value.error);
@@ -237,7 +238,7 @@ export async function loadBattleAssets(base: string, mapID: string, characters: 
   };
   const sounds = new Map(soundIDs.map(key => [key, assetURL(base, manifest.sounds[key].file)]));
   signal.throwIfAborted();
-  return { manifest, map, rules, images, models, sounds, weapons: api.weapons ? JSON.parse(api.weapons()) as WeaponInfo[] : [], motion, audit, canSmooth: (from, to, crouch) => api.canSmooth(JSON.stringify({ from: { x: from.x, y: from.y, z: from.z }, to: { x: to.x, y: to.y, z: to.z }, crouch, brushes })), dynamics: (nextBrushes, nextPlayers) => { brushes = nextBrushes; players = nextPlayers.filter(player => player.visible !== false && Number.isFinite(player.x) && Number.isFinite(player.y) && Number.isFinite(player.z)); } };
+  return { manifest, map, rules, images, models, sounds, weapons: api.weapons ? JSON.parse(api.weapons()) as WeaponInfo[] : [], motion, audit, canSmooth: (from, to, crouch) => api.canSmooth(JSON.stringify({ from: { x: from.x, y: from.y, z: from.z }, to: { x: to.x, y: to.y, z: to.z }, crouch, brushes })), dynamics: (nextBrushes, nextPlayers) => { brushes = nextBrushes; players = motionColliders(nextPlayers); } };
 }
 
 export { assetURL } from './asset-contract.ts';
