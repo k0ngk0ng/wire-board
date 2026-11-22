@@ -214,7 +214,10 @@ export function Board(props: BoardProps<View>) {
       const source = key && loaded.current?.sounds.get(key);
       return source ? [{ source, volumeMilli: layer.volumeMilli }] : [];
     }) ?? []];
-    for (const [index, layer] of layers.entries()) void current.audio.spatial(`cs16:${event.type}:${event.seat}:${index}`, [layer.source], { playbackID: `${current.data.epoch}:${event.life ?? 0}:${event.id}:${index}`, source: { x: (event.x ?? listener.x) / 256, y: (event.y ?? listener.y) / 256, z: (event.z ?? listener.z) / 256 }, listener: { x: listener.x / 256, y: listener.y / 256, z: listener.z / 256, yaw: facing.current.yaw * Math.PI * 2 / 65536 }, maxDistance: cue.range, volume: layer.volumeMilli / 1000 });
+    for (const [index, layer] of layers.entries()) {
+      const suffix = index === 0 ? '' : `:${index}`;
+      void current.audio.spatial(`cs16:${event.type}:${event.seat}${suffix}`, [layer.source], { playbackID: `${current.data.epoch}:${event.life ?? 0}:${event.id}${suffix}`, source: { x: (event.x ?? listener.x) / 256, y: (event.y ?? listener.y) / 256, z: (event.z ?? listener.z) / 256 }, listener: { x: listener.x / 256, y: listener.y / 256, z: listener.z / 256, yaw: facing.current.yaw * Math.PI * 2 / 65536 }, maxDistance: cue.range, volume: layer.volumeMilli / 1000 });
+    }
   }
 
   process.current = (force = false) => {
