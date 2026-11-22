@@ -377,6 +377,14 @@ try {
     const centers = areas.map((rect, id) => ({ x: rect.x + rect.width / 2, y: rect.y + rect.height / 2, radiusX: 4, radiusY: 4, force: 1, id }));
     const beforeTouch = await evaluate("fetch('/api/state').then(response=>response.json()).then(state=>state.room.game.data.players[state.room.you])");
     const lastAction = () => report.network.lastInput?.action;
+    const waitForAction = async predicate => {
+      for (let attempt = 0; attempt < 100; attempt++) {
+        const action = lastAction();
+        if (action && predicate(action)) return action;
+        await wait(10);
+      }
+      throw Error('native touch release did not leave the bounded transport queue');
+    };
     report.singleFingerReleases = [];
     for (let index = 0; index < (options.samples ?? 24); index++) {
       assert.ok(!nativeLifeInterrupted(report.network.lastAuthority, report.network.measurementStartIdentity), "native touch group was interrupted by authority");
@@ -386,13 +394,16 @@ try {
       assert.ok(!nativeLifeInterrupted(report.network.lastAuthority, report.network.measurementStartIdentity), "native touch group was interrupted by authority");
       const keep = index % 2 ? 0 : 1;
       await call("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [moved[1 - keep]] });
+      await evaluate("new Promise(resolve=>requestAnimationFrame(resolve))");
+      const local = (await view()).touch;
+      assert.ok(local && (keep ? local.moveX === 0 && local.moveY === 0 && local.actions.includes('fire') : (local.moveX !== 0 || local.moveY !== 0) && !local.actions.includes('fire')), 'one finger release cancelled or retained the wrong local input: ' + JSON.stringify(local));
       await wait(60);
-      const action = lastAction();
+      const action = await waitForAction(action => keep ? action.moveX === 0 && action.moveY === 0 && action.fire : (action.moveX !== 0 || action.moveY !== 0) && !action.fire);
       if (index < 2) {
-        assert.ok(action && (keep ? action.moveX === 0 && action.moveY === 0 && action.fire : (action.moveX !== 0 || action.moveY !== 0) && !action.fire), "one finger release cancelled or retained the wrong input: " + JSON.stringify(action));
-        report.singleFingerReleases.push({ remaining: keep ? "fire" : "move", action });
+        report.singleFingerReleases.push({ remaining: keep ? "fire" : "move", local, action });
       }
       await call("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+      await waitForAction(action => !action.fire && action.moveX === 0 && action.moveY === 0);
       await wait(30);
     }
     const combined = report.network.messages.filter(item => !item.incoming && item.action?.fire && (item.action.moveX !== 0 || item.action.moveY !== 0)).map(item => item.action);
