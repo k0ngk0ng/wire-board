@@ -123,6 +123,7 @@ export class BattleRenderer {
     this.weaponScene.add(new T.HemisphereLight(0xffffff, 0x958c79, 2.5));
     const muzzleTexture = createMuzzleTexture();
     this.textures.push(muzzleTexture);
+    this.renderer.initTexture(muzzleTexture);
     const muzzleMaterial = new T.SpriteMaterial({ map: muzzleTexture, color: '#fff2ac', opacity: 0.9, transparent: true, depthTest: false, depthWrite: false, blending: T.AdditiveBlending });
     this.muzzle = new T.Sprite(muzzleMaterial);
     this.muzzle.position.set(3.8, -4, -26);
@@ -137,6 +138,11 @@ export class BattleRenderer {
     if (previous?.view.frame === view.frame && previous.view.eventId === view.eventId) return;
     this.frames.push({ view, at });
     if (this.frames.length > 6) this.frames.shift();
+  }
+
+  async prepare() {
+    await this.renderer.compileAsync(this.scene, this.camera);
+    await this.renderer.compileAsync(this.weaponScene, this.weaponCamera);
   }
 
   get visualStats() {

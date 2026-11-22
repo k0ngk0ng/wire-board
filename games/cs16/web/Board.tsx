@@ -331,6 +331,8 @@ export function Board(props: BoardProps<View>) {
       cursor.current.consume(current.data.epoch, current.data.eventId, current.data.events ?? []);
       renderer.current.update(current.data, performance.now());
       renderer.current.draw(current.data, player?.alive ? player : undefined, current.room.you, performance.now(), player && !current.room.spectating ? player.team : undefined);
+      await renderer.current.prepare();
+      if (!active) return;
       const preparedSound = soundFor({ id: 0, type: 'shot', frame: current.data.frame, seat: current.room.you, weapon: player?.weapon ?? 'glock18' });
       if (preparedSound) await current.audio.prepare([preparedSound], { signal: abort.signal });
       if (!active) return;
