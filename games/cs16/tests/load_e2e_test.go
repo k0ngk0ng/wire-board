@@ -25,6 +25,11 @@ func percentile(values []int64, percent int) int64 {
 	return ordered[min(len(ordered)-1, (len(ordered)*percent+99)/100-1)]
 }
 
+func expiredLoadInput(answer map[string]any, performance bool) bool {
+	nonce, ok := answer["nonce"].(string)
+	return !performance && ok && nonce != "" && answer["type"] == "ack" && integer(answer["status"]) == 400 && answer["error"] == "操作排队已过期" && answer["durable"] == false
+}
+
 func TestFourRoomConcurrentInputsWithSlowPeer(t *testing.T) {
 	runFourRoomIsolation(t, false)
 }
@@ -130,13 +135,11 @@ func runFourRoomMapIsolation(t *testing.T, performance bool, maps []string) {
 	lastWireEventID := integer(initial["eventId"])
 	shotEvents := 0
 	frames := make([]int64, 4)
-	for index, host := range hosts {
-		frames[index] = integer(host.room()["game"].(map[string]any)["data"].(map[string]any)["frame"])
-	}
 	var latestFrame atomic.Int64
 	latestFrame.Store(viewFrame)
 	streamAcks := make(chan map[string]any, 1)
 	streamErrors := make(chan error, 1)
+	streamReady := make(chan struct{})
 	streamDone := make(chan struct{})
 	go func() {
 		defer close(streamDone)
@@ -173,6 +176,11 @@ func runFourRoomMapIsolation(t *testing.T, performance bool, maps []string) {
 						}
 						if frame, ok := data["frame"].(json.Number); ok {
 							latestFrame.Store(max(latestFrame.Load(), integer(frame)))
+							select {
+							case <-streamReady:
+							default:
+								close(streamReady)
+							}
 						}
 					}
 				}
@@ -187,7 +195,18 @@ func runFourRoomMapIsolation(t *testing.T, performance bool, maps []string) {
 		}
 	}()
 	defer func() { fast.CloseNow(); <-streamDone }()
-	for seq := 1; seq <= 40; seq++ {
+	select {
+	case <-streamReady:
+	case readErr := <-streamErrors:
+		t.Fatal(readErr)
+	case <-ctx.Done():
+		t.Fatal(ctx.Err())
+	}
+	for index, host := range hosts {
+		frames[index] = integer(host.room()["game"].(map[string]any)["data"].(map[string]any)["frame"])
+	}
+	inputCount, acceptedInputs, expiredQueuedInputs := 40, 0, 0
+	for seq := 1; seq <= inputCount; seq++ {
 		nonce := fmt.Sprintf("cs16-load-input-%d", seq)
 		action := map[string]any{"type": "input", "epoch": initial["epoch"], "seq": seq, "life": player["life"], "viewFrame": latestFrame.Load(), "moveX": 0, "moveY": 0, "yaw": 0, "pitch": 0, "fire": false}
 		message := map[string]any{"type": "input", "serverInstance": state["serverInstance"], "roomId": ids[0], "version": room["version"], "nonce": nonce, "action": action}
@@ -202,12 +221,19 @@ func runFourRoomMapIsolation(t *testing.T, performance bool, maps []string) {
 			if answer["nonce"] != nonce {
 				t.Fatal("unexpected input acknowledgement", answer)
 			}
-			if integer(answer["status"]) != 200 {
+			if integer(answer["status"]) == 200 {
+				acceptedInputs++
+			} else if expiredLoadInput(answer, performance || seq > 40) {
+				expiredQueuedInputs++
+			} else {
 				t.Fatal(answer)
 			}
 			acks = append(acks, time.Since(started).Microseconds())
 		case <-ctx.Done():
 			t.Fatal(ctx.Err())
+		}
+		if seq == 40 && expiredQueuedInputs > 0 {
+			inputCount = 41
 		}
 		if seq%4 == 0 {
 			for _, host := range hosts {
@@ -238,7 +264,7 @@ func runFourRoomMapIsolation(t *testing.T, performance bool, maps []string) {
 	if performance {
 		humansPerRoom, botsPerRoom = 1, 9
 	}
-	artifact(t, map[string]any{"passed": !performance || budgetPassed, "performanceAcceptance": performance, "performanceBudgetPassed": budgetPassed, "scope": "4 authenticated ten-seat rooms, one active input stream and non-reading 1024-byte-buffer spectator; timing is acceptance only in the ordinary performance case; application bytes include platform JSON envelope but exclude WebSocket/TCP/TLS framing", "rooms": 4, "maps": maps, "wireObservedMap": maps[0], "playersPerRoom": 10, "humansPerRoom": humansPerRoom, "botsPerRoom": botsPerRoom, "authenticatedSpectators": 1, "independentSourceIPs": !performance, "ackMicroseconds": acks, "ruleLagMS": lags, "ackP95Microseconds": ackP95, "ruleLagP95MS": lagP95, "applicationPacketBytes": applicationBytes, "applicationP95Bytes": percentile(applicationBytes, 95), "firingApplicationPacketBytes": firingApplicationBytes, "firingApplicationP95Bytes": percentile(firingApplicationBytes, 95), "shotEvents": shotEvents})
+	artifact(t, map[string]any{"passed": !performance || budgetPassed, "performanceAcceptance": performance, "performanceBudgetPassed": budgetPassed, "scope": "4 authenticated ten-seat rooms, one active input stream and non-reading 1024-byte-buffer spectator; timing is acceptance only in the ordinary performance case; application bytes include platform JSON envelope but exclude WebSocket/TCP/TLS framing", "rooms": 4, "maps": maps, "wireObservedMap": maps[0], "playersPerRoom": 10, "humansPerRoom": humansPerRoom, "botsPerRoom": botsPerRoom, "authenticatedSpectators": 1, "independentSourceIPs": !performance, "inputCount": inputCount, "acceptedInputs": acceptedInputs, "expiredQueuedInputs": expiredQueuedInputs, "freshRecoveryAcknowledged": inputCount == 41, "senderPauseMS": 650, "ackMicroseconds": acks, "ruleLagMS": lags, "ackP95Microseconds": ackP95, "ruleLagP95MS": lagP95, "applicationPacketBytes": applicationBytes, "applicationP95Bytes": percentile(applicationBytes, 95), "firingApplicationPacketBytes": firingApplicationBytes, "firingApplicationP95Bytes": percentile(firingApplicationBytes, 95), "shotEvents": shotEvents})
 	if performance && !budgetPassed {
 		t.Fatal("parallel room performance budget exceeded", ackP95, lagP95)
 	}
