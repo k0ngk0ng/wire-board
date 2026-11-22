@@ -6,12 +6,12 @@ test("十席团队游戏默认创建5对5", () => {
   assert.equal(gameDefaultPlayers({ minPlayers: 2, maxPlayers: 10, playerCounts: [2, 4, 6, 8, 10], defaultPlayers: 10 }), 10);
 });
 
-test("既有模块沿用最少人数，默认人数须是合法整数选项", () => {
-  assert.equal(gameDefaultPlayers({ minPlayers: 2, maxPlayers: 10 }), 2);
+test("新建房间使用最大合法人数，不沿用较小默认值", () => {
+  assert.equal(gameDefaultPlayers({ minPlayers: 2, maxPlayers: 10 }), 10);
   for (const defaultPlayers of [0, 1, 3, 11, 4.5, Number.NaN, Number.POSITIVE_INFINITY]) {
-    assert.equal(gameDefaultPlayers({ minPlayers: 2, maxPlayers: 10, playerCounts: [2, 4, 6, 8, 10], defaultPlayers }), 2);
+    assert.equal(gameDefaultPlayers({ minPlayers: 2, maxPlayers: 10, playerCounts: [2, 4, 6, 8, 10], defaultPlayers }), 10);
   }
-  assert.equal(gameDefaultPlayers({ minPlayers: 2, maxPlayers: 10, defaultPlayers: 6 }), 6);
+  assert.equal(gameDefaultPlayers({ minPlayers: 2, maxPlayers: 10, defaultPlayers: 6 }), 10);
 });
 
 test("人数边界和枚举先校验整数，不将浮点元数据带入比较", () => {
@@ -25,4 +25,11 @@ test("人数边界和枚举先校验整数，不将浮点元数据带入比较",
     assert.equal(gameDefaultPlayers({ minPlayers: 2, maxPlayers: 10, playerCounts, defaultPlayers: 6 }), 2);
   }
   assert.equal(gameDefaultPlayers({ minPlayers: 2, maxPlayers: 10, playerCounts: [2, 4, 6], defaultPlayers: 6 }), 6);
+});
+
+test("人数枚举使用实际最大值，固定或单人游戏保持合法人数", () => {
+  assert.equal(gameDefaultPlayers({ minPlayers: 2, maxPlayers: 10, playerCounts: [6, 2, 4], defaultPlayers: 2 }), 6);
+  assert.equal(gameDefaultPlayers({ minPlayers: 2, maxPlayers: 10, playerCounts: [2, 4, 6] }), 6);
+  assert.equal(gameDefaultPlayers({ minPlayers: 2, maxPlayers: 2 }), 2);
+  assert.equal(gameDefaultPlayers({ minPlayers: 1, maxPlayers: 1 }), 1);
 });

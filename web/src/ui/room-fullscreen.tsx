@@ -13,6 +13,7 @@ import "./game-control-guard.css";
 import { GameOverlayRoot } from "./game-overlay-root";
 import { protectGameControls } from "./game-control-guard";
 import { restoreGameFocusOnBackground } from "./game-focus";
+import { placeFullscreenOverlay } from "./fullscreen-overlay";
 
 type Mode = "native" | "page" | "";
 type FullscreenDocument = Document & {
@@ -189,7 +190,9 @@ export function GameFullscreen({
 }) {
   const [root, setRoot] = useState<HTMLDivElement | null>(null);
   const board = useRef<HTMLDivElement>(null);
-  const [rightInset, setRightInset] = useState(0);
+  const toolbar = useRef<HTMLDivElement>(null);
+  const statusRoot = useRef<HTMLDivElement>(null);
+  const overlay = toolbarOverlay !== false;
   const fullscreen = useRoomFullscreen(enabled || preserveWhileLoading ? scope : undefined, root);
   useEffect(() => {
     if (root) return protectGameControls(root);
@@ -212,36 +215,72 @@ export function GameFullscreen({
   }, [enabled, root, onReadyChange]);
   useLayoutEffect(() => {
     const container = board.current;
-    if (!container) return;
+    const actions = toolbar.current;
+    if (!container || !root || !actions || !fullscreen.active || !overlay) return;
+    let frame = 0;
+    const rectangle = (element: Element) => {
+      const value = element.getBoundingClientRect();
+      return { left: Math.round(value.left * 1000), top: Math.round(value.top * 1000), right: Math.round(value.right * 1000), bottom: Math.round(value.bottom * 1000) };
+    };
+    const position = (element: HTMLElement, obstacles: ReturnType<typeof rectangle>[], edge: 'left' | 'right') => {
+      for (const property of ['left', 'top', 'right']) element.style.removeProperty(property);
+      const style = getComputedStyle(element);
+      const safeTop = Math.round(parseFloat(style.top) * 1000);
+      const safeEdge = Math.round(parseFloat(edge === 'right' ? style.right : style.left) * 1000);
+      const inset = Math.max(8000, Number.isSafeInteger(safeTop) ? safeTop : 8000, Number.isSafeInteger(safeEdge) ? safeEdge : 8000);
+      const box = element.getBoundingClientRect();
+      const size = { width: Math.round(box.width * 1000), height: Math.round(box.height * 1000) };
+      if (size.width <= 0 || size.height <= 0) return undefined;
+      const bounds = rectangle(root);
+      const placed = placeFullscreenOverlay({ bounds, size, obstacles, edge, inset });
+      element.style.left = (placed.left - bounds.left) / 1000 + 'px';
+      element.style.top = (placed.top - bounds.top) / 1000 + 'px';
+      element.style.right = 'auto';
+      element.dataset.fullscreenOccluded = placed.overlap ? 'true' : 'false';
+      return { left: placed.left, top: placed.top, right: placed.left + size.width, bottom: placed.top + size.height };
+    };
     const measure = () => {
-      const target = container.firstElementChild;
-      if (!target) return;
-      const outer = container.getBoundingClientRect(),
-        inner = target.getBoundingClientRect();
-      setRightInset(Math.max(0, outer.right - inner.right));
+      frame = 0;
+      const obstacles = [...container.querySelectorAll<HTMLElement>('button,input,select,[role="button"],[data-fullscreen-protected],[data-chat-protected],[data-touch-protected]')].filter(element => {
+        if (element.closest('[data-controller-group="board"],[data-controller-group="grid"]') && !element.matches('[data-fullscreen-protected],[data-chat-protected],[data-touch-protected]')) return false;
+        return element.getClientRects().length > 0 && getComputedStyle(element).visibility !== 'hidden';
+      }).map(rectangle).filter(rect => rect.right > rect.left && rect.bottom > rect.top);
+      const actionBox = position(actions, obstacles, 'right');
+      root.style.setProperty('--game-fullscreen-toolbar-width', actionBox ? (actionBox.right - actionBox.left) / 1000 + 'px' : '0px');
+      const status = statusRoot.current;
+      const statusBox = status ? position(status, actionBox ? [...obstacles, actionBox] : obstacles, 'left') : undefined;
+      root.style.setProperty('--game-fullscreen-status-width', status ? status.getBoundingClientRect().width + 'px' : '0px');
+      root.style.setProperty('--game-fullscreen-status-offset', statusBox ? (statusBox.right - rectangle(root).left + 8000) / 1000 + 'px' : '0px');
+      root.style.setProperty('--game-fullscreen-toolbar-offset', actionBox ? (rectangle(root).right - actionBox.left + 8000) / 1000 + 'px' : '0px');
+      const bottom = Math.max(actionBox?.bottom ?? 0, statusBox?.bottom ?? 0) - rectangle(root).top + 8000;
+      root.style.setProperty('--game-fullscreen-toolbar-bottom', bottom / 1000 + 'px');
     };
-    const resize = new ResizeObserver(measure);
+    const schedule = () => { if (!frame) frame = requestAnimationFrame(measure); };
+    const resize = new ResizeObserver(schedule);
     resize.observe(container);
-    const observeBoard = () => {
-      if (container.firstElementChild)
-        resize.observe(container.firstElementChild);
-      measure();
-    };
-    const changes = new MutationObserver(observeBoard);
-    changes.observe(container, { childList: true });
-    observeBoard();
+    resize.observe(actions);
+    if (statusRoot.current) resize.observe(statusRoot.current);
+    if (container.firstElementChild) resize.observe(container.firstElementChild);
+    const changes = new MutationObserver(schedule);
+    changes.observe(container, { childList: true, subtree: true, characterData: true });
+    window.addEventListener('resize', schedule);
+    measure();
     return () => {
+      cancelAnimationFrame(frame);
       resize.disconnect();
       changes.disconnect();
+      window.removeEventListener('resize', schedule);
+      for (const property of ['--game-fullscreen-toolbar-width', '--game-fullscreen-status-width', '--game-fullscreen-toolbar-bottom', '--game-fullscreen-status-offset', '--game-fullscreen-toolbar-offset']) root.style.removeProperty(property);
     };
-  }, []);
+  }, [fullscreen.active, root, overlay]);
   return (
     <div
       ref={setRoot}
       className="game-fullscreen-surface"
       data-game-fullscreen-surface
       data-room-fullscreen={fullscreen.mode || undefined}
-      data-fullscreen-toolbar-overlay={toolbarOverlay || undefined}
+      data-fullscreen-toolbar-overlay={overlay || undefined}
+      data-fullscreen-toolbar-owned={toolbarOverlay === true || undefined}
       onKeyDown={(event) => {
         if (event.key !== "F11" || (!enabled && !fullscreen.active)) return;
         event.preventDefault();
@@ -249,14 +288,15 @@ export function GameFullscreen({
       }}
     >
       <GameOverlayRoot.Provider value={root}>
+        {fullscreen.active && overlay && status && <div ref={statusRoot} className="game-fullscreen-status" data-game-controls>{status}</div>}
         {fullscreen.active && (
           <div
+            ref={toolbar}
             className="game-fullscreen-toolbar"
             data-game-controls
-            style={{ paddingRight: rightInset }}
           >
-            {fullscreen.active && status && (
-              <div className="game-fullscreen-status">{status}</div>
+            {!overlay && status && (
+              <div ref={statusRoot} className="game-fullscreen-status">{status}</div>
             )}
             {toolbarActions && (
               <div className="game-fullscreen-actions">{toolbarActions}</div>

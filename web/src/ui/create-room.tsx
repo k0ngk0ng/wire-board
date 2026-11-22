@@ -70,12 +70,22 @@ export function CreateRoom({
             )
               return;
             pending.current = true;
+            const capacity = gameDefaultPlayers(game);
             onSubmit({
               kind,
-              capacity: gameDefaultPlayers(game),
+              capacity,
               ...(game.legacy
-                ? { railMap: kind === "rail" ? "usa" : undefined }
-                : { options: game.defaultOptions ?? {} }),
+                ? {
+                    railMap: kind === "rail" ? "usa" : undefined,
+                    catanOptions:
+                      kind === "catan"
+                        ? {
+                            fiveSix:
+                              Number.isSafeInteger(capacity) && capacity > 4,
+                          }
+                        : undefined,
+                  }
+                : { options: {} }),
             });
           }}
         />

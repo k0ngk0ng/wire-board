@@ -22,6 +22,7 @@ test('grenades pull pin and throw on release while C4 uses a plant animation', (
 test('server mode and utility event names select corresponding original animation classes', () => {
   assert.equal(eventFeedback({ type: 'mode', weapon: 'm4a1' }), 'mode');
   assert.equal(eventFeedback({ type: 'shot', weapon: 'knife', value: 1 }), 'stab');
+  assert.equal(eventFeedback({ type: 'knife_air', weapon: 'knife', value: 0 }), undefined);
   assert.equal(eventFeedback({ type: 'grenade_pin', weapon: 'hegrenade' }), 'pin');
   assert.equal(eventFeedback({ type: 'throw', weapon: 'hegrenade' }), 'throw');
   assert.equal(eventFeedback({ type: 'plant_start', weapon: 'c4' }), 'plant');

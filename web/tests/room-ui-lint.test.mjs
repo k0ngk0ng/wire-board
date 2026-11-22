@@ -7,6 +7,13 @@ import {
   lintRoomUi,
 } from "../scripts/room-ui-lint.mjs";
 
+test('fullscreen board layout sources and JSON fixtures have explicit lint scope', () => {
+  assert.deepEqual(inspectRoomUiFile('games/chess/web/style.css', '.chess-board { height: 100%; }'), []);
+  assert.deepEqual(inspectRoomUiFile('web/tests/fixtures/board-fullscreen.json', '{"cases":[]}'), []);
+  assert.ok(inspectRoomUiFile('web/tests/fixtures/board-fullscreen.json', '{/* no */"cases":[]}').includes('syntax'));
+  assert.ok(inspectRoomUiFile('games/other/web/style.css', '.board {}').includes('directory'));
+});
+
 test("room tools contract rejects incomplete icon conversion", () => {
   assert.deepEqual(inspectRoomUiFile('web/tests/ControllerOverlayFixture.tsx', 'export function ControllerOverlayFixture(){return <div/>;}'), []);
   assert.deepEqual(

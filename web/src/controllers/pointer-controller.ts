@@ -70,6 +70,8 @@ export function useControllerPointers({
       if (document.hidden) cancelAll();
     };
     const touch = (event: TouchEvent) => touchChanged.current(event);
+    const pointerMode = window.matchMedia("(pointer: coarse)");
+    pointerMode.addEventListener("change", blur);
     window.addEventListener("blur", blur);
     window.addEventListener("resize", blur);
     window.addEventListener("orientationchange", blur);
@@ -80,6 +82,7 @@ export function useControllerPointers({
       window.removeEventListener("resize", blur);
       window.removeEventListener("orientationchange", blur);
       document.removeEventListener("visibilitychange", visibility);
+      pointerMode.removeEventListener("change", blur);
       for (const type of ["touchstart", "touchmove", "touchend", "touchcancel"] as const) document.removeEventListener(type, touch, true);
       for (const [id, p] of pointers.current) p.sink.releasePointer(id, true);
       pointers.current.clear();

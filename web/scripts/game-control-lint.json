@@ -7,12 +7,13 @@
     "web/scripts/game-control-lint.mjs",
     "web/scripts/game-control-lint.json",
     "web/tests/game-control-lint.test.mjs",
-    "web/tests/game-control-browser.test.mjs"
+    "web/tests/game-control-browser.test.mjs",
+    "web/tests/game-control-fixture.tsx"
   ],
   "contractFiles": ["web/src/main.tsx"],
   "languages": {
     ".ts": {"directory": "^web/src/ui/", "filename": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*\\.ts$", "comments": false},
-    ".tsx": {"directory": "^web/src/ui/", "filename": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*\\.tsx$", "comments": false},
+    ".tsx": {"directory": "^web/(?:src/ui|tests)/", "filename": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*\\.tsx$", "comments": false},
     ".mjs": {"directory": "^web/(?:scripts|tests)/", "filename": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*\\.mjs$", "comments": false},
     ".css": {"directory": "^web/src/ui/", "filename": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*\\.css$", "comments": false},
     ".json": {"directory": "^web/scripts/", "filename": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*\\.json$", "comments": false}

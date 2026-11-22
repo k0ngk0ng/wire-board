@@ -71,6 +71,7 @@ func Buy(state *State, seat int, item string) error {
 		return errors.New("当前不在购买区域或购买时间内")
 	}
 	p := &state.Players[seat]
+	helmetOwned := p.Helmet && (p.Armor > 0 || p.ArmorRemainder > 0)
 	price := 0
 	switch item {
 	case "vest":
@@ -79,13 +80,13 @@ func Buy(state *State, seat int, item string) error {
 		}
 		price = 650
 	case "vesthelm":
-		if p.Armor >= 100 && p.Helmet {
+		if p.Armor >= 100 && helmetOwned {
 			return errors.New("防弹衣与头盔已齐全")
 		}
 		price = 1000
 		if p.Armor >= 100 {
 			price = 350
-		} else if p.Helmet {
+		} else if helmetOwned {
 			price = 650
 		}
 	case "defuser":
@@ -93,6 +94,11 @@ func Buy(state *State, seat int, item string) error {
 			return errors.New("当前不能购买拆弹钳")
 		}
 		price = 200
+	case "nvgs":
+		if p.NightVisionOwned {
+			return errors.New("已持有夜视仪")
+		}
+		price = 1250
 	case "primammo", "secammo":
 		slot := 1
 		if item == "secammo" {
@@ -169,11 +175,14 @@ func Buy(state *State, seat int, item string) error {
 	p.Money -= price
 	switch item {
 	case "vest":
-		p.Armor = 100
+		p.Armor, p.ArmorRemainder = 100, 0
+		p.Helmet = helmetOwned
 	case "vesthelm":
-		p.Armor, p.Helmet = 100, true
+		p.Armor, p.ArmorRemainder, p.Helmet = 100, 0, true
 	case "defuser":
 		p.Defuser = true
+	case "nvgs":
+		p.NightVisionOwned = true
 	}
 	Emit(state, Event{Kind: "buy", Seat: seat, Weapon: item, Value: price})
 	return nil
@@ -221,6 +230,9 @@ func DropWeapons(state *State, seat int) {
 		return
 	}
 	p := &state.Players[seat]
+	if !p.Alive {
+		p.NightVision = false
+	}
 	for i := len(p.Inventory) - 1; i >= 0; i-- {
 		if p.Inventory[i].ID != "knife" {
 			dropWeapon(state, p, i)

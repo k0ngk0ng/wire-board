@@ -119,18 +119,21 @@ func stepBomb(state *State) {
 		return
 	}
 	if state.Frame >= state.Bomb.ExplodesAt {
-		Emit(state, Event{Kind: "bomb_exploded", Seat: -1, Target: -1, Weapon: "c4", X: state.Bomb.X, Y: state.Bomb.Y, Z: state.Bomb.Z})
+		center := blastOrigin(state, bombPosition(state.Bomb))
+		source := center
+		source.Z += Unit
+		Emit(state, Event{Kind: "bomb_exploded", Seat: -1, Target: -1, Weapon: "c4", X: center.X, Y: center.Y, Z: center.Z})
 		for seat := range state.Players {
 			p := &state.Players[seat]
 			if !p.Alive {
 				continue
 			}
-			distance := Distance(objectivePosition(p), bombPosition(state.Bomb))
-			if distance < 1750*Unit {
-				damage := max(0, 500-distance*500/(1750*Unit))
-				DamagePlayer(state, -1, seat, damage, 500, 0, "c4")
+			if blastWaterAllowed(state, center, p.WaterLevel) {
+				damage := blastDamageUnits(source, objectivePosition(p), 500, 1750*Unit)
+				damagePlayerUnitsFrom(state, -1, seat, damage, 500, 0, "c4", center, true)
 			}
 		}
+		damageBlastBrushes(state, -1, center, source, 500, 1750*Unit, "c4")
 		RoundWon(state, "t", "bomb_exploded")
 	}
 }

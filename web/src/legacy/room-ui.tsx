@@ -1204,7 +1204,6 @@ export function LegacyWaiting({
         </span>
       </div>
       <div className="waiting-seats">
-        <span className="eyebrow">TAKE YOUR SEAT</span>
         <h2>朋友或电脑，到齐就开局。</h2>
         {(twoLabel ||
           (room.kind === "catan" &&

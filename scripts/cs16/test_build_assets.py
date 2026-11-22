@@ -76,6 +76,40 @@ class AssetParsingTest(unittest.TestCase):
 
 
 class OriginalMapE2ETest(unittest.TestCase):
+    def test_original_breakable_materials_match_bsp_entities(self):
+        source = ROOT / ".local/cs16/research/original"
+        observations = []
+        for map_id in MODULE.MAPS:
+            bsp = MODULE.Bsp((source / "cstrike/maps" / (map_id + ".bsp")).read_bytes())
+            rule = MODULE.rules_for_map(bsp, map_id, source)
+            brushes = {brush["id"]: brush for brush in rule["brushes"]}
+            for index, entity in enumerate(bsp.entities):
+                if entity.get("classname") == "func_breakable":
+                    expected = int(entity.get("material", "0"))
+                    self.assertEqual(brushes[index].get("material"), expected, (map_id, index))
+                    observations.append({"map": map_id, "id": index, "material": expected})
+        (OUTPUT / "breakable-materials.json").write_text(json.dumps({"passed": True, "entities": observations}, indent=2) + "\n")
+
+    def test_material_rule_migration_rejects_geometry_or_source_changes(self):
+        old = {"id": "fixture", "sourceSHA256": "a" * 64, "brushes": [{"id": 1, "kind": "func_breakable", "health": 20, "bounds": {"min": {"x": 0}, "max": {"x": 10}}}]}
+        updated = json.loads(json.dumps(old))
+        updated["brushes"][0]["material"] = 7
+        rows = MODULE.material_rule_compatibility([old], [updated], [])
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["mapId"], "fixture")
+        self.assertEqual(rows[0]["from"], hashlib.sha256(MODULE.json_bytes(old)).hexdigest())
+        self.assertEqual(rows[0]["to"], hashlib.sha256(MODULE.json_bytes(updated)).hexdigest())
+        self.assertEqual(MODULE.material_rule_compatibility([updated], [updated], rows), rows)
+        for field in ["sourceSHA256", "id", "bounds"]:
+            changed = json.loads(json.dumps(updated))
+            if field == "sourceSHA256":
+                changed[field] = "b" * 64
+            elif field == "id":
+                changed["brushes"][0][field] = 2
+            else:
+                changed["brushes"][0][field]["max"]["x"] = 11
+            self.assertEqual(MODULE.material_rule_compatibility([old], [changed], rows), [])
+
     def test_original_assault_legacy_rescue_is_marked_spherical(self):
         source = ROOT / ".local/cs16/research/original"
         bsp = MODULE.Bsp((source / "cstrike/maps/cs_assault.bsp").read_bytes())

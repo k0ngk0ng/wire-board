@@ -18,6 +18,7 @@
     {"id":"use","label":"使用或拆弹","keys":["KeyE"],"gamepad":[{"type":"button","index":1}],"continuous":true},
     {"id":"drop","label":"丢弃武器","keys":["KeyG"],"gamepad":[{"type":"button","index":3}]},
     {"id":"buy","label":"购买装备","keys":["KeyB"],"gamepad":[{"type":"button","index":9}]},
+    {"id":"buyEquipment","label":"装备菜单","keys":["KeyO"]},
     {"id":"scoreboard","label":"战绩","keys":["Tab"],"gamepad":[{"type":"button","index":8}]},
     {"id":"slot1","label":"主武器","keys":["Digit1"],"gamepad":[{"type":"button","index":4}]},
     {"id":"slot2","label":"副武器","keys":["Digit2"],"gamepad":[{"type":"button","index":5}]},
@@ -27,6 +28,7 @@
     {"id":"lastWeapon","label":"上一把武器","keys":["KeyQ"],"gamepad":[{"type":"button","index":12}]},
     {"id":"buyPrimaryAmmo","label":"购买主武器弹药","keys":["Comma"]},
     {"id":"buySecondaryAmmo","label":"购买副武器弹药","keys":["Period"]},
-    {"id":"flashlight","label":"手电筒","keys":["KeyF"]}
+    {"id":"flashlight","label":"手电筒","keys":["KeyF"]},
+    {"id":"nightVision","label":"夜视仪","keys":["KeyN"]}
   ]
 }

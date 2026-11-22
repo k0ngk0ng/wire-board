@@ -202,11 +202,7 @@ func StepCombat(state *State) {
 		secondaryKnife := weapon.ID == "knife" && p.Input.Secondary && !p.Previous.Secondary
 		if (primary || secondaryKnife) && state.Frame >= p.NextAttack && item.BurstLeft == 0 {
 			if weapon.ID == "knife" {
-				damage := 20
-				if item.Shots > 0 && state.Frame-item.LastShot <= 40 {
-					damage = 15
-				}
-				shot := combatShot{Seat: seat, Life: p.Life, Weapon: weapon, Start: combatEye(p), Yaw: p.Yaw, Pitch: p.Pitch, ViewFrame: state.Frame, Secondary: secondaryKnife, Damage: damage}
+				shot := combatShot{Seat: seat, Life: p.Life, Weapon: weapon, Start: combatEye(p), Yaw: p.Yaw, Pitch: p.Pitch, ViewFrame: state.Frame, Secondary: secondaryKnife, Damage: 15}
 				item.Shots++
 				item.LastShot = state.Frame
 				shots = append(shots, shot)
@@ -691,6 +687,17 @@ func modelHitFraction(target HistoryPlayer, character string, start, end Vec3) (
 
 func resolveGunshot(state *State, shot combatShot) {
 	targets := historicalTargets(state, shot.ViewFrame)
+	pendingSeat, pendingHostage, pendingBrush, pendingGroup, pendingDamage := -1, -1, -1, 0, int64(0)
+	flush := func() {
+		if pendingSeat >= 0 {
+			takeDamagePlayerUnitsFrom(state, shot.Seat, pendingSeat, pendingDamage, shot.Weapon.ArmorRatio, pendingGroup, shot.Weapon.ID, shot.Start, true)
+		} else if pendingHostage >= 0 {
+			damageHostageMultiUnits(state, shot.Seat, pendingHostage, pendingDamage, pendingGroup)
+		} else if pendingBrush >= 0 {
+			damageBreakableUnits(state, shot.Seat, pendingBrush, pendingDamage, shot.Weapon.ID)
+		}
+		pendingSeat, pendingHostage, pendingBrush, pendingDamage = -1, -1, -1, 0
+	}
 	for pellet := 0; pellet < max(1, shot.Weapon.Pellets); pellet++ {
 		spreadX := combatRandom(state, 10001) + combatRandom(state, 10001) - 10000
 		spreadY := combatRandom(state, 10001) + combatRandom(state, 10001) - 10000
@@ -700,10 +707,8 @@ func resolveGunshot(state *State, shot combatShot) {
 		direction.X += int((int64(right.X)*int64(spreadX) + int64(up.X)*int64(spreadY)) * int64(shot.Spread) / 100000000)
 		direction.Y += int((int64(right.Y)*int64(spreadX) + int64(up.Y)*int64(spreadY)) * int64(shot.Spread) / 100000000)
 		direction.Z += int((int64(right.Z)*int64(spreadX) + int64(up.Z)*int64(spreadY)) * int64(shot.Spread) / 100000000)
-		start := shot.Start
-		remaining := shot.Weapon.Range
-		damage := shot.Weapon.Damage
-		modifier := shot.Weapon.RangeModifier
+		start, remaining := shot.Start, shot.Weapon.Range
+		damage, modifier := shot.Weapon.Damage, shot.Weapon.RangeModifier
 		if shot.Silenced && shot.Weapon.ID == "usp" {
 			damage = 30
 		}
@@ -714,76 +719,97 @@ func resolveGunshot(state *State, shot combatShot) {
 			damage = 34
 		}
 		if shot.Secondary && shot.Weapon.ID == "glock18" {
-			modifier = 900
+			damage, modifier = 18, 900
 		}
-		penetrations := shot.Weapon.Penetration
+		penetrations, power := max(1, shot.Weapon.Penetration), shot.Weapon.PenetrationPower
 		ignored := map[int]bool{}
-		for segments := 0; segments < 8 && remaining > 0 && damage > 0; segments++ {
+		for segments := 0; segments < 8 && remaining > 0 && damage > 0 && penetrations > 0; segments++ {
 			end := combatAddRay(start, direction, remaining)
 			wall := TraceWorld(state, start, end, -1)
 			seat, fraction, group := nearestPlayerHit(state, shot, start, end, targets, ignored)
 			hostage, hostageFraction, hostageGroup := nearestHostageHit(state, start, end, ignored)
 			if hostage >= 0 && hostageFraction <= wall.Fraction && (seat < 0 || hostageFraction < fraction) {
-				distance := int(int64(remaining) * int64(hostageFraction) / NormalUnit)
-				DamageHostage(state, shot.Seat, hostage, hostageHitDamage(rangeDamage(damage, modifier, distance), hostageGroup))
-				ignored[10000+hostage] = true
-				if penetrations <= 1 {
-					break
-				}
-				penetrations--
-				damage /= 2
-				remaining -= distance + 42*Unit
-				start = combatAddRay(start, direction, distance+42*Unit)
-				continue
+				fraction, group = hostageFraction, hostageGroup
+				seat = -1
+			} else {
+				hostage = -1
 			}
-			if seat >= 0 && fraction <= wall.Fraction {
-				distance := int(int64(remaining) * int64(fraction) / NormalUnit)
-				hit := combatAddRay(start, direction, distance)
-				DamagePlayer(state, shot.Seat, seat, rangeDamage(damage, modifier, distance), shot.Weapon.ArmorRatio, group, shot.Weapon.ID)
-				ignored[seat] = true
-				if penetrations <= 1 {
-					break
-				}
-				penetrations--
-				damage /= 2
-				remaining -= distance + 42*Unit
-				start = combatAddRay(hit, direction, 42*Unit)
-				continue
-			}
-			if wall.Fraction >= NormalUnit {
-				break
-			}
-			if damageBrush(state, shot.Seat, wall.End, damage, shot.Weapon.ID) {
-				start = combatAddRay(wall.End, direction, Unit)
-				remaining -= Distance(start, wall.End) + 1
-				continue
-			}
-			if penetrations <= 1 || shot.Weapon.PenetrationPower <= 0 {
-				break
-			}
-			exit, depth, found := wall.End, 0, false
-			power, damageModifier := materialPenetration(shot.Weapon, combatMaterial(state, wall))
-			if Distance(shot.Start, wall.End) > penetrationDistance(shot.Weapon.AmmoType) {
-				break
-			}
-			for depth = Unit; depth <= power; depth += Unit {
-				exit = combatAddRay(wall.End, direction, depth)
-				probe := TraceWorld(state, exit, exit, -1)
-				if !probe.StartSolid && !probe.AllSolid {
-					found = true
-					break
+			if seat < 0 || fraction > wall.Fraction {
+				seat = -1
+				if hostage < 0 {
+					fraction = wall.Fraction
 				}
 			}
-			if !found {
+			if fraction >= NormalUnit {
 				break
 			}
-			travel := Distance(start, wall.End) + depth + Unit
-			damage = rangeDamage(damage, modifier, travel) * damageModifier / 1000
-			remaining -= travel
-			start = combatAddRay(exit, direction, Unit)
+			distance := int(int64(remaining) * int64(fraction) / NormalUnit)
+			if shot.Weapon.Pellets > 1 {
+				damage = 20 * (NormalUnit - fraction) / NormalUnit
+			} else {
+				damage = rangeDamage(damage, modifier, distance)
+			}
 			penetrations--
+			if distance > penetrationDistance(shot.Weapon.AmmoType) {
+				penetrations = 0
+			}
+			hit := combatAddRay(start, direction, distance)
+			if seat >= 0 {
+				if shot.Weapon.Pellets > 1 {
+					if pendingSeat != seat {
+						flush()
+					}
+					units := int64(damage) * damageUnit
+					switch group {
+					case 1:
+						units *= 4
+					case 3:
+						units = units * 5 / 4
+					case 6, 7:
+						units = units * 3 / 4
+					}
+					pendingSeat, pendingGroup, pendingDamage = seat, group, pendingDamage+units
+				} else {
+					DamagePlayer(state, shot.Seat, seat, damage, shot.Weapon.ArmorRatio, group, shot.Weapon.ID)
+				}
+				ignored[seat] = true
+				start = combatAddRay(hit, direction, 42*Unit)
+				remaining = (remaining - distance) * 3 / 4
+				damage = damage * 3 / 4
+			} else if hostage >= 0 {
+				if shot.Weapon.Pellets > 1 {
+					if pendingHostage != hostage {
+						flush()
+					}
+					units := hostageTraceUnits(int64(damage)*damageUnit, group)
+					pendingHostage, pendingGroup, pendingDamage = hostage, group, pendingDamage+units
+				} else {
+					damageHostageTraceUnits(state, shot.Seat, hostage, int64(damage)*damageUnit, group)
+				}
+				ignored[10000+hostage] = true
+				start = combatAddRay(hit, direction, 42*Unit)
+				remaining = (remaining - distance) * 3 / 4
+				damage = damage * 3 / 4
+			} else {
+				materialWeapon := shot.Weapon
+				materialWeapon.PenetrationPower = power
+				var damageModifier int
+				power, damageModifier = materialPenetration(materialWeapon, combatMaterial(state, wall))
+				if shot.Weapon.Pellets > 1 && wall.Brush >= 0 && brushReceivesDamage(state, wall.Brush) {
+					if pendingBrush != wall.Brush {
+						flush()
+					}
+					pendingBrush, pendingDamage = wall.Brush, pendingDamage+int64(damage)*damageUnit
+				} else {
+					damageBrush(state, shot.Seat, wall.End, damage, shot.Weapon.ID)
+				}
+				start = combatAddRay(hit, direction, power)
+				remaining = (remaining - distance) / 2
+				damage = penetrationDamage(damage, damageModifier)
+			}
 		}
 	}
+	flush()
 }
 
 func nearestHostageHit(state *State, start, end Vec3, ignored map[int]bool) (int, int, int) {
@@ -810,19 +836,7 @@ func nearestHostageHit(state *State, start, end Vec3, ignored map[int]bool) (int
 }
 
 func hostageHitDamage(damage, group int) int {
-	switch group {
-	case 0, 3:
-		return damage * 7 / 4
-	case 1:
-		return damage * 5 / 2
-	case 2:
-		return damage * 3 / 2
-	case 4, 5:
-		return damage * 3 / 4
-	case 6, 7:
-		return damage * 3 / 5
-	}
-	return damage * 3 / 2
+	return int(hostageHitUnits(int64(damage)*damageUnit, group) / damageUnit)
 }
 
 func penetrationDistance(ammoType string) int {
@@ -846,7 +860,7 @@ func penetrationDistance(ammoType string) int {
 }
 
 func materialPenetration(weapon Weapon, material string) (int, int) {
-	power, damage := weapon.PenetrationPower, 500
+	power, damage := weapon.PenetrationPower/Unit, 500
 	switch material {
 	case "M":
 		power, damage = power*15/100, 200
@@ -863,7 +877,7 @@ func materialPenetration(weapon Weapon, material string) (int, int) {
 	case "W":
 		damage = 600
 	}
-	return power, damage
+	return power * Unit, damage
 }
 
 func combatMaterial(state *State, trace TraceResult) string {
@@ -958,19 +972,12 @@ func combatMaterial(state *State, trace TraceResult) string {
 }
 
 func rangeDamage(damage, modifier, distance int) int {
-	for distance >= 500*Unit && damage > 0 {
-		damage = damage * modifier / 1000
-		distance -= 500 * Unit
-	}
-	return damage * (1000 - (1000-modifier)*distance/(500*Unit)) / 1000
+	return exponentialRangeDamage(damage, modifier, distance)
 }
 
 func damageBrush(state *State, attacker int, point Vec3, damage int, weapon string) bool {
-	for _, brush := range state.World.Brushes {
-		if brush.Kind != "func_breakable" && brush.Kind != "breakable" {
-			continue
-		}
-		if brush.Flags&1 != 0 {
+	for index, brush := range state.World.Brushes {
+		if !brushReceivesDamage(state, index) {
 			continue
 		}
 		bounds := brush.Bounds
@@ -983,17 +990,7 @@ func damageBrush(state *State, attacker int, point Vec3, damage int, weapon stri
 		if !combatInside(point, bounds) {
 			continue
 		}
-		for i := range state.Brushes {
-			if state.Brushes[i].ID == brush.ID && !state.Brushes[i].Open {
-				state.Brushes[i].Health -= damage
-				if state.Brushes[i].Health <= 0 {
-					state.Brushes[i].Open = true
-					Emit(state, Event{Kind: "break", Seat: attacker, Target: brush.ID, Weapon: weapon, X: point.X, Y: point.Y, Z: point.Z})
-					return true
-				}
-				return false
-			}
-		}
+		return damageBreakableUnits(state, attacker, index, int64(damage)*damageUnit, weapon)
 	}
 	return false
 }
@@ -1007,7 +1004,16 @@ func resolveKnife(state *State, shot combatShot) {
 	wall := TraceWorld(state, shot.Start, end, -1)
 	targets := historicalTargets(state, state.Frame)
 	seat, fraction, group := nearestPlayerHit(state, shot, shot.Start, end, targets, map[int]bool{})
-	if seat < 0 && wall.Fraction >= NormalUnit {
+	if fraction >= NormalUnit {
+		seat, fraction = -1, NormalUnit+1
+	}
+	hostageIndex, hostageFraction, hostageGroup := nearestHostageHit(state, shot.Start, end, map[int]bool{})
+	if hostageIndex >= 0 && hostageFraction < NormalUnit && (seat < 0 || hostageFraction < fraction) {
+		seat, fraction, group = -1, hostageFraction, hostageGroup
+	} else {
+		hostageIndex = -1
+	}
+	if seat < 0 && hostageIndex < 0 && wall.Fraction >= NormalUnit {
 		wall = TraceWorld(state, shot.Start, end, 1)
 		for _, target := range targets {
 			if target.Seat == shot.Seat || !target.Alive || !state.Players[target.Seat].Alive {
@@ -1019,8 +1025,18 @@ func resolveKnife(state *State, shot combatShot) {
 			}
 			minPoint := Vec3{target.X - 32*Unit, target.Y - 32*Unit, target.Z + bottom - 18*Unit}
 			maxPoint := Vec3{target.X + 32*Unit, target.Y + 32*Unit, target.Z + top + 18*Unit}
-			if hit, valid := rayBoxFraction(shot.Start, end, minPoint, maxPoint); valid && hit < fraction {
-				seat, fraction, group = target.Seat, hit, 0
+			if hit, valid := rayBoxFraction(shot.Start, end, minPoint, maxPoint); valid && hit < fraction && hit < NormalUnit {
+				seat, hostageIndex, fraction, group = target.Seat, -1, hit, 0
+			}
+		}
+		for index, hostage := range state.Hostages {
+			if hostage.Rescued || hostage.Health <= 0 {
+				continue
+			}
+			minPoint := Vec3{hostage.X - 26*Unit, hostage.Y - 26*Unit, hostage.Z - 18*Unit}
+			maxPoint := Vec3{hostage.X + 26*Unit, hostage.Y + 26*Unit, hostage.Z + 80*Unit}
+			if hit, valid := rayBoxFraction(shot.Start, end, minPoint, maxPoint); valid && hit < fraction && hit < NormalUnit {
+				seat, hostageIndex, fraction, group = -1, index, hit, 0
 			}
 		}
 	}
@@ -1028,7 +1044,7 @@ func resolveKnife(state *State, shot combatShot) {
 	if shot.Secondary {
 		value = 1
 	}
-	if seat < 0 || fraction > wall.Fraction {
+	if seat < 0 && hostageIndex < 0 || fraction >= NormalUnit || fraction > wall.Fraction {
 		kind, point := "knife_air", shot.Start
 		if wall.Fraction < NormalUnit {
 			kind, point = "knife_wall", wall.End
@@ -1041,23 +1057,29 @@ func resolveKnife(state *State, shot combatShot) {
 		Emit(state, Event{Kind: kind, Seat: shot.Seat, Target: -1, Weapon: "knife", Value: value, X: point.X, Y: point.Y, Z: point.Z, Life: shot.Life})
 		return
 	}
-	target := state.Players[seat]
-	if shot.Secondary {
-		facing := Direction(target.Yaw, 0)
-		toward := Direction(shot.Yaw, 0)
-		if int64(facing.X)*int64(toward.X)+int64(facing.Y)*int64(toward.Y) > int64(NormalUnit)*int64(NormalUnit)*4/5 {
-			damage *= 3
-		}
-	}
 	point := combatAddRay(shot.Start, Direction(shot.Yaw, shot.Pitch), int(int64(rangeUnits)*int64(fraction)/NormalUnit))
-	Emit(state, Event{Kind: "knife_hit", Seat: shot.Seat, Target: seat, Weapon: "knife", Value: value, Hitgroup: group, X: point.X, Y: point.Y, Z: point.Z, Life: shot.Life})
 	if shot.Secondary {
 		state.Players[shot.Seat].NextAttack = state.Frame + 110
 	} else {
 		state.Players[shot.Seat].NextAttack = state.Frame + 40
 	}
+	if hostageIndex >= 0 {
+		Emit(state, Event{Kind: "knife_hit", Seat: shot.Seat, Target: -1, Weapon: "knife", Value: value, Hitgroup: group, X: point.X, Y: point.Y, Z: point.Z, Life: shot.Life})
+		damageHostageTraceUnits(state, shot.Seat, hostageIndex, int64(damage)*damageUnit, group)
+		return
+	}
+	target := state.Players[seat]
+	if shot.Secondary {
+		difference := ((target.Yaw - shot.Yaw + 32768) & 65535) - 32768
+		if difference >= -6711 && difference <= 6711 {
+			damage *= 3
+		}
+	}
+	Emit(state, Event{Kind: "knife_hit", Seat: shot.Seat, Target: seat, Weapon: "knife", Value: value, Hitgroup: group, X: point.X, Y: point.Y, Z: point.Z, Life: shot.Life})
 	DamagePlayer(state, shot.Seat, seat, damage, 850, group, "knife")
 }
+
+const damageUnit int64 = 800000
 
 func DamagePlayer(state *State, attacker, target, damage, armorRatio, hitgroup int, weapon string) {
 	source, hasSource := Vec3{}, false
@@ -1070,7 +1092,23 @@ func DamagePlayer(state *State, attacker, target, damage, armorRatio, hitgroup i
 }
 
 func damagePlayerFrom(state *State, attacker, target, damage, armorRatio, hitgroup int, weapon string, source Vec3, hasSource bool) {
-	if target < 0 || target >= len(state.Players) || damage <= 0 {
+	damagePlayerUnitsFrom(state, attacker, target, int64(damage)*damageUnit, armorRatio, hitgroup, weapon, source, hasSource)
+}
+
+func damagePlayerUnitsFrom(state *State, attacker, target int, damageUnits int64, armorRatio, hitgroup int, weapon string, source Vec3, hasSource bool) {
+	switch hitgroup {
+	case 1:
+		damageUnits *= 4
+	case 3:
+		damageUnits = damageUnits * 5 / 4
+	case 6, 7:
+		damageUnits = damageUnits * 3 / 4
+	}
+	takeDamagePlayerUnitsFrom(state, attacker, target, damageUnits, armorRatio, hitgroup, weapon, source, hasSource)
+}
+
+func takeDamagePlayerUnitsFrom(state *State, attacker, target int, damageUnits int64, armorRatio, hitgroup int, weapon string, source Vec3, hasSource bool) {
+	if target < 0 || target >= len(state.Players) || damageUnits <= 0 {
 		return
 	}
 	p := &state.Players[target]
@@ -1081,37 +1119,32 @@ func damagePlayerFrom(state *State, attacker, target, damage, armorRatio, hitgro
 	if teamAttack && !state.Options.FriendlyFire {
 		return
 	}
-	switch hitgroup {
-	case 1:
-		damage *= 4
-	case 3:
-		damage = damage * 5 / 4
-	case 6, 7:
-		damage = damage * 3 / 4
-	}
+
 	if teamAttack && weapon != "hegrenade" {
-		damage = damage * 35 / 100
+		damageUnits = damageUnits * 35 / 100
 	}
-	armored := p.Armor > 0 && hitgroup != 6 && hitgroup != 7 && (hitgroup != 1 || p.Helmet)
+	armorUnits := int64(p.Armor)*damageUnit + int64(p.ArmorRemainder)
+	armored := armorUnits > 0 && hitgroup != 6 && hitgroup != 7 && (hitgroup != 1 || p.Helmet)
 	if armored {
-		healthDamage := damage * max(0, min(1000, armorRatio)) / 1000
-		armorDamage := (damage - healthDamage) / 2
-		if hitgroup == 0 {
-			armorDamage = damage - healthDamage
-		}
-		if armorDamage > p.Armor {
-			absorbed := p.Armor * 2
-			if hitgroup == 0 {
-				absorbed = p.Armor
+		healthDamage := damageUnits * int64(max(0, min(1000, armorRatio))) / 1000
+		armorDamage := (damageUnits - healthDamage) / 2
+		if armorDamage > armorUnits {
+			absorbed := armorUnits * 2
+			if weapon == "hegrenade" || weapon == "c4" {
+				absorbed = armorUnits
 			}
-			damage -= absorbed
-			p.Armor = 0
+			damageUnits -= absorbed
+			p.Armor, p.ArmorRemainder = 0, 0
 		} else {
-			p.Armor -= armorDamage
-			damage = healthDamage
+			armorUnits -= armorDamage
+			p.Armor, p.ArmorRemainder = int(armorUnits/damageUnit), int(armorUnits%damageUnit)
+			damageUnits = healthDamage
+		}
+		if p.Armor == 0 && p.ArmorRemainder == 0 {
+			p.Helmet = false
 		}
 	}
-	damage = max(1, damage)
+	damage := int(damageUnits / damageUnit)
 	p.Health = max(0, p.Health-damage)
 	Emit(state, Event{Kind: "hit", Seat: attacker, Target: target, Weapon: weapon, Value: damage, Hitgroup: hitgroup, X: p.X, Y: p.Y, Z: p.Z, Life: p.Life})
 	if p.Health > 0 {

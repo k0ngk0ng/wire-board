@@ -62,6 +62,7 @@ type Brush struct {
 	Origin     Vec3   `json:"origin"`
 	Open       bool   `json:"open"`
 	Health     int    `json:"health"`
+	Material   int    `json:"material,omitempty"`
 	Move       Vec3   `json:"move"`
 	Speed      int    `json:"speed"`
 	Wait       int64  `json:"wait"`
@@ -134,6 +135,7 @@ type Input struct {
 	Use         bool   `json:"use"`
 	Drop        bool   `json:"drop"`
 	Flashlight  bool   `json:"flashlight,omitempty"`
+	NightVision bool   `json:"nightVision,omitempty"`
 	Select      string `json:"select,omitempty"`
 	QueuedFrame int64  `json:"queuedFrame,omitempty"`
 }
@@ -199,6 +201,7 @@ type Player struct {
 	Life             int           `json:"life"`
 	Health           int           `json:"health"`
 	Armor            int           `json:"armor"`
+	ArmorRemainder   int           `json:"armorRemainder,omitempty"`
 	Helmet           bool          `json:"helmet"`
 	Defuser          bool          `json:"defuser"`
 	Money            int           `json:"money"`
@@ -223,6 +226,9 @@ type Player struct {
 	Flashlight       bool          `json:"flashlight,omitempty"`
 	FlashlightCharge int           `json:"flashlightCharge,omitempty"`
 	FlashlightAt     int64         `json:"flashlightAt,omitempty"`
+	NightVisionOwned bool          `json:"nightVisionOwned,omitempty"`
+	NightVision      bool          `json:"nightVision,omitempty"`
+	NightVisionAt    int64         `json:"nightVisionAt,omitempty"`
 	ReceivedSeq      int64         `json:"receivedSeq"`
 	AppliedSeq       int64         `json:"appliedSeq"`
 	Input            Input         `json:"input"`
@@ -298,6 +304,11 @@ type HostageRoute struct {
 	PlannedAt int64 `json:"plannedAt"`
 	VZ        int   `json:"vz"`
 }
+type HostageDamageState struct {
+	ID              int `json:"id"`
+	HealthRemainder int `json:"healthRemainder,omitempty"`
+	Hitgroup        int `json:"hitgroup,omitempty"`
+}
 type Grenade struct {
 	ID         int    `json:"id"`
 	Owner      int    `json:"owner"`
@@ -336,6 +347,11 @@ type BrushState struct {
 	OpenedAt  int64 `json:"openedAt"`
 	Direction int   `json:"direction,omitempty"`
 }
+
+type BrushDamageState struct {
+	ID              int `json:"id"`
+	HealthRemainder int `json:"healthRemainder,omitempty"`
+}
 type HistoryPlayer struct {
 	Seat   int    `json:"seat"`
 	X      int    `json:"x"`
@@ -353,29 +369,31 @@ type History struct {
 	Brushes []BrushState    `json:"brushes"`
 }
 type State struct {
-	Options        Options        `json:"options"`
-	Frame          int64          `json:"frame"`
-	MapID          string         `json:"mapId"`
-	World          Map            `json:"-"`
-	Players        []Player       `json:"players"`
-	Events         []Event        `json:"events"`
-	EventID        int64          `json:"eventId"`
-	Round          int            `json:"round"`
-	Phase          string         `json:"phase"`
-	PhaseEndsAt    int64          `json:"phaseEndsAt"`
-	BuyEndsAt      int64          `json:"buyEndsAt"`
-	TeamScores     [2]int         `json:"teamScores"`
-	Bomb           Bomb           `json:"bomb"`
-	Hostages       []Hostage      `json:"hostages"`
-	HostageRoutes  []HostageRoute `json:"hostageRoutes,omitempty"`
-	Grenades       []Grenade      `json:"grenades"`
-	Drops          []Drop         `json:"drops"`
-	Brushes        []BrushState   `json:"brushes"`
-	History        []History      `json:"history"`
-	Finished       bool           `json:"finished"`
-	Seed           uint64         `json:"seed"`
-	NextID         int            `json:"nextId"`
-	LastWinner     string         `json:"lastWinner"`
-	LossStreak     [2]int         `json:"lossStreak"`
-	LoserBonusBase int            `json:"loserBonusBase"`
+	Options             Options              `json:"options"`
+	Frame               int64                `json:"frame"`
+	MapID               string               `json:"mapId"`
+	World               Map                  `json:"-"`
+	Players             []Player             `json:"players"`
+	Events              []Event              `json:"events"`
+	EventID             int64                `json:"eventId"`
+	Round               int                  `json:"round"`
+	Phase               string               `json:"phase"`
+	PhaseEndsAt         int64                `json:"phaseEndsAt"`
+	BuyEndsAt           int64                `json:"buyEndsAt"`
+	TeamScores          [2]int               `json:"teamScores"`
+	Bomb                Bomb                 `json:"bomb"`
+	Hostages            []Hostage            `json:"hostages"`
+	HostageRoutes       []HostageRoute       `json:"hostageRoutes,omitempty"`
+	HostageDamageStates []HostageDamageState `json:"hostageDamageStates,omitempty"`
+	BrushDamageStates   []BrushDamageState   `json:"brushDamageStates,omitempty"`
+	Grenades            []Grenade            `json:"grenades"`
+	Drops               []Drop               `json:"drops"`
+	Brushes             []BrushState         `json:"brushes"`
+	History             []History            `json:"history"`
+	Finished            bool                 `json:"finished"`
+	Seed                uint64               `json:"seed"`
+	NextID              int                  `json:"nextId"`
+	LastWinner          string               `json:"lastWinner"`
+	LossStreak          [2]int               `json:"lossStreak"`
+	LoserBonusBase      int                  `json:"loserBonusBase"`
 }

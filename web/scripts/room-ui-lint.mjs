@@ -9,8 +9,14 @@ const postcss = require("postcss");
 const root = fileURLToPath(new URL("../../", import.meta.url));
 const files = [
   "web/src/ui/board-host.tsx",
+  "web/src/ui/room-fullscreen.tsx",
+  "web/src/ui/room-fullscreen.css",
+  "web/src/ui/fullscreen-overlay.ts",
+  "web/src/ui/map-controls.ts",
   "web/src/ui/create-room.tsx",
   "web/src/ui/room-settings.tsx",
+  "web/src/ui/room-command-queue.ts",
+  "web/tests/room-command-queue.test.mjs",
   "web/src/ui/game-choices.tsx",
   "web/src/ui/result-overlay.tsx",
   "web/src/ui/results.tsx",
@@ -29,13 +35,25 @@ const files = [
   "web/tests/controller-focus-browser.test.mjs",
   "web/tests/controller-overlay-browser.mjs",
   "web/tests/ControllerOverlayFixture.tsx",
+  "web/tests/BoardFullscreenFixture.tsx",
+  "web/tests/board-fullscreen-browser.test.mjs",
+  "web/tests/fullscreen-overlay.test.mjs",
+  "web/tests/fixtures/board-fullscreen.json",
+  "games/gomoku/web/Board.tsx",
+  "games/gomoku/web/module.tsx",
+  "games/gomoku/web/style.css",
+  "games/weiqi/web/style.css",
+  "games/chess/web/style.css",
+  "games/xiangqi/web/style.css",
+  "games/junqi/web/style.css",
   "games/contra/web/human-mode.test.mjs",
 ];
 const languages = {
   ".ts": /^web\/src\/ui\//,
-  ".tsx": /^web\/(?:src\/ui|tests)\//,
-  ".css": /^web\/src\/ui\//,
+  ".tsx": /^(?:web\/(?:src\/ui|tests)\/|games\/gomoku\/web\/)/,
+  ".css": /^(?:web\/src\/ui\/|games\/(?:gomoku|weiqi|chess|xiangqi|junqi)\/web\/)/,
   ".mjs": /^(?:web\/(?:scripts|tests)\/|games\/contra\/web\/)/,
+  ".json": /^web\/tests\/fixtures\//,
 };
 
 export function inspectRoomUiFile(file, source) {
@@ -44,11 +62,15 @@ export function inspectRoomUiFile(file, source) {
   if (!languages[extension]?.test(file) || file.split("/").includes(".."))
     issues.push("directory");
   if (
-    !/^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*\.(ts|tsx|css|mjs)$/.test(
+    !/^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*\.(ts|tsx|css|mjs|json)$/.test(
       path.basename(file),
-    ) && !(file.startsWith('web/tests/') && /^[A-Z][A-Za-z0-9]*\.tsx$/.test(path.basename(file)))
+    ) && !((file.startsWith('web/tests/') || file.startsWith('games/gomoku/web/')) && /^[A-Z][A-Za-z0-9]*\.tsx$/.test(path.basename(file)))
   )
     issues.push("filename");
+  if (extension === '.json') {
+    try { JSON.parse(source); } catch { issues.push('syntax'); }
+    return [...new Set(issues)];
+  }
   if (extension === ".css") {
     try {
       const parsed = postcss.parse(source);

@@ -32,3 +32,20 @@ test('flashlight updates share one local beam and preserve baked map lighting se
   assert.equal(shader.uniforms.csFlashPower.value, 0);
   material.dispose();
 });
+
+test('night vision uses a separate local light state and restores unchanged baked lighting on exit', () => {
+  const light = new MapFlashlight();
+  const material = new T.MeshBasicMaterial({ lightMapIntensity: 1 });
+  light.apply(material);
+  const shader = { vertexShader: '#include <common>\n#include <project_vertex>', fragmentShader: '#include <common>\n#include <opaque_fragment>', uniforms: {} };
+  material.onBeforeCompile(shader, undefined);
+  assert.equal(shader.uniforms.csNightVisionPower.value, 0);
+  light.update(new T.Vector3(10, 20, 30), new T.Vector3(1, 0, 0), false, true);
+  assert.equal(shader.uniforms.csNightVisionPower.value, 1);
+  assert.equal(shader.uniforms.csFlashPower.value, 0);
+  assert.equal(material.lightMapIntensity, 1);
+  light.update(new T.Vector3(), new T.Vector3(0, 0, -1), true, false);
+  assert.equal(shader.uniforms.csNightVisionPower.value, 0);
+  assert.equal(shader.uniforms.csFlashPower.value, 1);
+  material.dispose();
+});

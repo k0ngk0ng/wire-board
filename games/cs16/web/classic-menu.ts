@@ -15,6 +15,7 @@ export function classicBuyEntries(team: string, category: number, mode: string):
     8: ['vest', 'vesthelm', 'flashbang', 'hegrenade', 'smokegrenade'],
   };
   const entries = (groups[category] ?? []).map((item, index) => ({ key: index + 1, item, label: itemName(item) }));
+  if (category === 8) entries.push({ key: 6, item: 'nvgs', label: itemName('nvgs') });
   if (category === 8 && ct && mode === 'bomb') entries.push({ key: 7, item: 'defuser', label: itemName('defuser') });
   return entries;
 }

@@ -114,7 +114,7 @@ export function Board(props: BoardProps<View>) {
       const assets = loaded.current;
       if (!prediction.current || !assets) return;
       const point = pointer.current.positioned ? { x: pointer.current.screenX, y: pointer.current.screenY } : undefined;
-      preparePredictedInput(prediction.current, prepared, now, point, { width: assets.rules.width / 256, height: assets.rules.height / 256 }, assets.viewport, (logical, at) => presentation.current.sample(logical, at));
+      preparePredictedInput(prediction.current, prepared, now, point, { width: assets.rules.width / 256, height: assets.rules.height / 256 }, assets.viewport, (logical, at) => presentation.current.sample(logical, at), renderer.current?.viewLayout);
       if (point) pointer.current.aim = prepared.aim;
     });
     if (!action) return;
@@ -284,7 +284,7 @@ export function Board(props: BoardProps<View>) {
         canvas.current.__hotlineFrame = {
           now, local: local ? { ...local, ...screen } : null,
           logical: logical ? { ...logical } : null,
-          camera: { ...renderer.current.viewCamera }, viewport: loaded.current?.viewport,
+          camera: { ...renderer.current.viewCamera }, cameraLayout: renderer.current.viewLayout, viewport: loaded.current?.viewport,
           frame: current.data.frame, serverFrame: current.data.frame, predictedFrame: prediction.current?.predictedFrame ?? current.data.frame,
           receivedSeq: currentPlayer?.receivedSeq ?? 0, appliedSeq: currentPlayer?.appliedSeq ?? 0,
           attackFlashUntil: flash.current, inputEnabled: canControl(), inputWindow: current.inputWindow ?? 0, pending: prediction.current?.pendingCount ?? 0,
@@ -351,12 +351,12 @@ export function Board(props: BoardProps<View>) {
   const enabled = ready && !props.busy && !room.spectating && !room.seats[seat]?.autoPlay && !data.finished && !!player?.alive && (props.inputWindow ?? 0) > 0;
   const respawn = player && !player.alive ? Math.max(1, Math.ceil((player.respawnFrame - data.frame) / 60)) : 0;
   return <div ref={root} className="hm-board" data-hotlinemiami-board data-ready={ready ? "true" : "false"}>
-    <div className="hm-battle-heading">
+    <div className="hm-battle-heading" data-fullscreen-protected data-chat-protected>
       <div><span className="hm-map-label">{mapNames[data.mapId] ?? "混战"}</span><strong>{room.spectating ? "观战中" : player && !player.alive ? "等待复活" : "自由混战"}</strong></div>
       <time className={seconds <= 30 ? "hm-timer hm-timer-final" : "hm-timer"} aria-label={`剩余 ${timer}`}>{timer}</time>
       <div className="hm-ammo"><strong>{player ? weaponNames[player.weapon] ?? player.weapon : "自由视角"}</strong><span>{player ? ammoLabel(player.weapon, player.ammo) : `${data.players.length} 人`}</span></div>
     </div>
-    <div className="hm-score-strip" aria-label="实时比分">
+    <div className="hm-score-strip" aria-label="实时比分" data-fullscreen-protected data-chat-protected>
       {data.players.map(candidate => <div key={candidate.seat} className={candidate.seat === seat ? "hm-score hm-score-self" : "hm-score"} style={{ "--hm-player-color": playerColors[candidate.seat % 4] } as React.CSSProperties}>
         <i aria-hidden="true" /><span>{room.seats[candidate.seat]?.name ?? "玩家"}</span><strong>{candidate.score}</strong>
       </div>)}
@@ -380,10 +380,10 @@ export function Board(props: BoardProps<View>) {
       {!!respawn && !data.finished && <div className="hm-death-notice"><strong>倒下了</strong><span>{respawn} 秒后重返赛场</span></div>}
       {ready && !enabled && !props.busy && !data.finished && player?.alive && !room.spectating && !room.seats[seat]?.autoPlay && <div className="hm-connection-notice">正在恢复连接</div>}
       {feed.length > 0 && <div className="hm-kill-feed" aria-live="polite">{feed.filter(event => data.frame - event.frame < 240).map(event => <span key={event.id}>{room.seats[event.seat]?.name ?? "玩家"}<b>击倒</b>{room.seats[event.target ?? -1]?.name ?? "对手"}</span>)}</div>}
+      <TouchControls disabled={!enabled} native={recordNative} move={stick => { touch.current.moveX = stick.x; touch.current.moveY = stick.y; process.current(true); }} aim={stick => { touch.current.aimX = stick.x; touch.current.aimY = stick.y; touch.current.fire = stick.x * stick.x + stick.y * stick.y >= 360000; process.current(true); }} edge={edge} />
+      <BottomHint player={player} frame={data.frame} finished={data.finished} />
     </div>
-    <TouchControls disabled={!enabled} native={recordNative} move={stick => { touch.current.moveX = stick.x; touch.current.moveY = stick.y; process.current(true); }} aim={stick => { touch.current.aimX = stick.x; touch.current.aimY = stick.y; touch.current.fire = stick.x * stick.x + stick.y * stick.y >= 360000; process.current(true); }} edge={edge} />
-    <BottomHint player={player} frame={data.frame} finished={data.finished} />
-    {error && <div className="hm-error" role="alert">{error}{!ready && <button type="button" onClick={() => setAttempt(value => value + 1)}>重试</button>}</div>}
+    {error && !ready && <div className="hm-error" role="alert">{error}<button type="button" onClick={() => setAttempt(value => value + 1)}>重试</button></div>}
     <output className="hm-sr-only" aria-live="off">{uiNow ? "战场运行中" : "准备战场"}</output>
   </div>;
 }

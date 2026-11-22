@@ -2,6 +2,7 @@ import * as T from 'three';
 import { loadBattleAssets, loadManifest } from '../web/assets.ts';
 import { BattleRenderer } from '../web/renderer.ts';
 import type { Player, View } from '../web/types.ts';
+import '../web/style.css';
 
 const canvas = document.createElement('canvas');
 canvas.style.cssText = 'width:640px;height:480px;display:block';
@@ -34,8 +35,9 @@ const image = () => new Promise(resolve => requestAnimationFrame(() => {
   const bytes = new Uint8Array(64 * 64 * 4);
   gl.readPixels(canvas.width / 2 - 32, canvas.height / 2 - 32, 64, 64, gl.RGBA, gl.UNSIGNED_BYTE, bytes);
   let hash = 2166136261, light = 0;
-  for (let i = 0; i < bytes.length; i++) { hash = Math.imul(hash ^ bytes[i], 16777619); if (i % 4 !== 3) light += bytes[i]; }
-  resolve({ hash: hash >>> 0, light, ...stats() });
+  const rgb = [0, 0, 0];
+  for (let i = 0; i < bytes.length; i++) { hash = Math.imul(hash ^ bytes[i], 16777619); if (i % 4 !== 3) { light += bytes[i]; rgb[i % 4] += bytes[i]; } }
+  resolve({ hash: hash >>> 0, light, rgb, ...stats() });
 }));
 Object.assign(window, { cs16RendererAudit: {
   set: (values: Partial<Player>) => { player = { ...player, ...values }; view = { ...view, frame: view.frame + 1 }; update(); },

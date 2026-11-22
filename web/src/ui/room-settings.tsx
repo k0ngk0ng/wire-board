@@ -2,24 +2,25 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import type { Room } from "../types";
 import { gameModule } from "../game-api/registry";
 
+type SettingsPatch = { capacity?: number; roomPassword?: string };
+
 export function RoomSettings({
   room,
   host,
   busy,
   command,
-  options,
-  optionsDirty = false,
-  onCapacityChange,
+  optionsForCapacity,
   playerCounts,
   children,
 }: {
   room: Room;
   host: boolean;
   busy: boolean;
-  command: (type: string, extra?: Record<string, unknown>) => void;
-  options?: unknown;
-  optionsDirty?: boolean;
-  onCapacityChange?: (capacity: number) => void;
+  command: (
+    type: string,
+    extra?: Record<string, unknown>,
+  ) => void | Promise<unknown>;
+  optionsForCapacity?: (capacity: number) => unknown;
   playerCounts?: readonly number[];
   children?: ReactNode;
 }) {
@@ -27,24 +28,83 @@ export function RoomSettings({
   const [capacity, setCapacity] = useState(room.capacity);
   const [password, setPassword] = useState("");
   const [passwordDirty, setPasswordDirty] = useState(false);
-  const submittedVersion = useRef<number | undefined>(undefined);
+  const [, setRevision] = useState(0);
+  const latest = useRef({ room, password, capacity });
+  latest.current = { room, password, capacity };
+  const pending = useRef(new Map<object, SettingsPatch>());
   useEffect(() => {
+    pending.current.clear();
     setCapacity(room.capacity);
-    onCapacityChange?.(room.capacity);
-  }, [room.id, room.capacity, onCapacityChange]);
-  useEffect(() => {
     setPassword("");
     setPasswordDirty(false);
-  }, [room.id, room.locked]);
+  }, [host, room.id]);
   useEffect(() => {
-    if (busy || submittedVersion.current === undefined) return;
-    if (room.version > submittedVersion.current) {
-      setPassword("");
-      setPasswordDirty(false);
-    }
-    submittedVersion.current = undefined;
-  }, [busy, room.version]);
-  const dirty = capacity !== room.capacity || passwordDirty || optionsDirty;
+    const requested = [...pending.current.values()]
+      .reverse()
+      .find((patch) => patch.capacity !== undefined)?.capacity;
+    setCapacity(requested ?? room.capacity);
+  }, [room.capacity]);
+  const enqueue = (patch: SettingsPatch) => {
+    if (
+      !host ||
+      [...pending.current.values()].some(
+        (entry) =>
+          (patch.roomPassword !== undefined &&
+            entry.roomPassword === patch.roomPassword) ||
+          (patch.capacity !== undefined && entry.capacity === patch.capacity),
+      )
+    )
+      return;
+    const submission = {};
+    const roomId = room.id;
+    pending.current.set(submission, patch);
+    setRevision((value) => value + 1);
+    Promise.resolve(
+      command("room_settings", {
+        capacity: patch.capacity ?? room.capacity,
+        ...patch,
+        ...(patch.capacity === undefined || !optionsForCapacity
+          ? {}
+          : { options: optionsForCapacity(patch.capacity) }),
+      }),
+    )
+      .then((success) => {
+        if (
+          !pending.current.has(submission) ||
+          latest.current.room.id !== roomId
+        )
+          return;
+        if (success === false) {
+          if (
+            patch.capacity !== undefined &&
+            patch.capacity === latest.current.capacity
+          )
+            setCapacity(latest.current.room.capacity);
+          return;
+        }
+        if (
+          patch.roomPassword !== undefined &&
+          latest.current.password === patch.roomPassword
+        ) {
+          setPassword("");
+          setPasswordDirty(false);
+        }
+      })
+      .catch(() => {
+        if (
+          pending.current.has(submission) &&
+          latest.current.room.id === roomId
+        )
+          setCapacity(latest.current.room.capacity);
+      })
+      .finally(() => {
+        if (!pending.current.delete(submission)) return;
+        setRevision((value) => value + 1);
+      });
+  };
+  const finishPassword = () => {
+    if (passwordDirty) enqueue({ roomPassword: password });
+  };
   const counts =
     playerCounts ??
     game.playerCounts ??
@@ -55,15 +115,10 @@ export function RoomSettings({
   return (
     <form
       className="room-settings"
+      aria-busy={busy}
       onSubmit={(event) => {
         event.preventDefault();
-        if (!host || busy || !dirty) return;
-        submittedVersion.current = room.version;
-        command("room_settings", {
-          capacity,
-          ...(options === undefined ? {} : { options }),
-          ...(passwordDirty ? { roomPassword: password } : {}),
-        });
+        finishPassword();
       }}
     >
       <div className="form-grid">
@@ -72,11 +127,20 @@ export function RoomSettings({
           <select
             aria-label="房间人数"
             value={capacity}
-            disabled={!host || busy || counts.length === 1}
+            disabled={
+              !host ||
+              busy ||
+              counts.length === 1 ||
+              [...pending.current.values()].some(
+                (patch) => patch.capacity !== undefined,
+              )
+            }
             onChange={(event) => {
               const value = Number(event.target.value);
+              if (!Number.isSafeInteger(value)) return;
+              if (value === room.capacity && pending.current.size === 0) return;
               setCapacity(value);
-              onCapacityChange?.(value);
+              enqueue({ capacity: value });
             }}
           >
             {counts.map((count) => (
@@ -98,13 +162,14 @@ export function RoomSettings({
               type="password"
               autoComplete="new-password"
               maxLength={72}
-              disabled={busy}
+              disabled={busy || pending.current.size > 0}
               value={password}
               placeholder={room.locked ? "输入新密码" : "不设密码"}
               onChange={(event) => {
                 setPassword(event.target.value);
                 setPasswordDirty(true);
               }}
+              onBlur={finishPassword}
             />
           </label>
         )}
@@ -114,26 +179,17 @@ export function RoomSettings({
           type="button"
           className="subtle"
           data-room-password-remove
-          disabled={busy}
+          disabled={busy || pending.current.size > 0}
           onClick={() => {
             setPassword("");
-            setPasswordDirty(true);
+            setPasswordDirty(false);
+            enqueue({ roomPassword: "" });
           }}
         >
           移除密码
         </button>
       )}
       {children}
-      {host && (
-        <button
-          className="outline"
-          data-room-settings-save
-          disabled={busy || !dirty}
-          type="submit"
-        >
-          保存设置
-        </button>
-      )}
     </form>
   );
 }

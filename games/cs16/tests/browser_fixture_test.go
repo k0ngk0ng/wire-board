@@ -99,7 +99,11 @@ func cs16BrowserModule() gameapi.Module {
 		if err != nil {
 			return match, err
 		}
-		return cs16BrowserSampleHealth(ctx, match)
+		match, err = cs16BrowserSampleHealth(ctx, match)
+		if err != nil {
+			return match, err
+		}
+		return cs16BrowserSampleWallet(ctx, match)
 	}
 	module.OnTimer = func(ctx gameapi.Context, previous gameapi.Match) (gameapi.Match, error) {
 		match, err := timer(ctx, previous)
@@ -145,6 +149,61 @@ func cs16BrowserSampleHealth(ctx gameapi.Context, match gameapi.Match) (gameapi.
 		}
 		if alive && !ctx.Automated[seat] {
 			players[seat]["health"] = json.RawMessage("10000")
+			changed = true
+		}
+	}
+	if !changed {
+		return match, nil
+	}
+	var err error
+	world["players"], err = json.Marshal(players)
+	if err != nil {
+		return match, err
+	}
+	fields["world"], err = json.Marshal(world)
+	if err != nil {
+		return match, err
+	}
+	match.Data, err = json.Marshal(fields)
+	return match, err
+}
+
+func cs16BrowserSampleWallet(ctx gameapi.Context, match gameapi.Match) (gameapi.Match, error) {
+	var fields map[string]json.RawMessage
+	if err := json.Unmarshal(match.Data, &fields); err != nil {
+		return match, err
+	}
+	var world map[string]json.RawMessage
+	if err := json.Unmarshal(fields["world"], &world); err != nil {
+		return match, err
+	}
+	var header struct {
+		MapID   string `json:"mapId"`
+		Phase   string `json:"phase"`
+		Round   int    `json:"round"`
+		Frame   int64  `json:"frame"`
+		Options struct {
+			MaxRounds int `json:"maxRounds"`
+		} `json:"options"`
+	}
+	if err := json.Unmarshal(fields["world"], &header); err != nil {
+		return match, err
+	}
+	if header.MapID != "fy_iceworld" && header.MapID != "cs_bloodstrike" || header.Options.MaxRounds != 30 || header.Phase != "freeze" || header.Round != 1 || header.Frame != 0 {
+		return match, nil
+	}
+	var players []map[string]json.RawMessage
+	if err := json.Unmarshal(world["players"], &players); err != nil {
+		return match, err
+	}
+	changed := false
+	for seat := range min(2, len(players), len(ctx.Automated)) {
+		var alive bool
+		if err := json.Unmarshal(players[seat]["alive"], &alive); err != nil {
+			return match, err
+		}
+		if alive && !ctx.Automated[seat] {
+			players[seat]["money"] = json.RawMessage("16000")
 			changed = true
 		}
 	}

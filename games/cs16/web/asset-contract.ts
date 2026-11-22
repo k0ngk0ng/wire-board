@@ -43,7 +43,7 @@ export function validateManifest(value: AssetManifest): AssetManifest {
 }
 
 export function selectSoundKeys(sounds: Record<string, unknown>, mode: string) {
-  return Object.keys(sounds).filter(key => key.startsWith('weapons/') || key.startsWith('player/') || ['items/9mmclip1.wav', 'items/flashlight1.wav', 'items/gunpickup2.wav', 'items/kevlar.wav'].includes(key) || /radio\/(?:bombpl|bombdef|ctwin|terwin|rounddraw|rescued)/.test(key) || mode === 'hostage' && key.startsWith('hostage/'));
+  return Object.keys(sounds).filter(key => key.startsWith('weapons/') || key.startsWith('player/') || ['items/9mmclip1.wav', 'items/flashlight1.wav', 'items/gunpickup2.wav', 'items/kevlar.wav', 'items/equip_nvg.wav', 'items/nvg_on.wav', 'items/nvg_off.wav'].includes(key) || /radio\/(?:bombpl|bombdef|ctwin|terwin|rounddraw|rescued)/.test(key) || mode === 'hostage' && key.startsWith('hostage/'));
 }
 
 export function selectModelKeys(characters: string[], mode = 'bomb') {

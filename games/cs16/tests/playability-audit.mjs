@@ -81,7 +81,7 @@ export async function auditPlayability({ call, evaluate, view, photograph, nativ
   await tap('button[aria-label="全屏"]');
   await waitMode(null);
   await evaluate('window.__cs16PlayabilityCanvas=document.querySelector("[data-cs16-canvas]");true');
-  for (const [width, height] of [[466, 678], [678, 466], [626, 890], [890, 626], [744, 1133], [1133, 744], [820, 1180], [1180, 820], [1024, 1366], [1366, 1024]]) {
+  for (const [width, height] of [[320, 760], [760, 360], [466, 678], [678, 466], [626, 890], [890, 626], [744, 1133], [1133, 744], [820, 1180], [1180, 820], [1024, 1366], [1366, 1024]]) {
     await call('Emulation.setDeviceMetricsOverride', { width, height, screenWidth: width, screenHeight: height, deviceScaleFactor: 1, mobile: true, screenOrientation: { type: width > height ? 'landscapePrimary' : 'portraitPrimary', angle: width > height ? 90 : 0 } });
     await settle();
     const geometry = await evaluate(`(()=>{const box=element=>element.getBoundingClientRect().toJSON();const canvas=document.querySelector('[data-cs16-canvas]');return {width:innerWidth,height:innerHeight,canvas:box(canvas),inventory:box(document.querySelector('.cs16-inventory')),move:box(document.querySelector('[data-cs16-stick=move]')),right:[...document.querySelectorAll('.cs16-touch-actions button')].map(button=>({action:button.dataset.cs16Action,rect:box(button)}))}})()`);
@@ -93,6 +93,11 @@ export async function auditPlayability({ call, evaluate, view, photograph, nativ
     await point('[data-cs16-stick=move]');
     await point('[data-cs16-action=fire]');
     await photograph('tablet-' + width + 'x' + height);
+    await tap('[data-cs16-controls-menu]');
+    geometry.openMenuToggle = await point('[data-cs16-controls-menu]');
+    await point('.cs16-touch-more-panel [data-cs16-action=flashlight]');
+    await tap('[data-cs16-controls-menu]');
+    assert.equal(await evaluate('!!document.querySelector(".cs16-touch-more-panel")'), false, 'touch More could not close at ' + width + 'x' + height);
     evidence.tablets.push(geometry);
   }
   await tap('[data-cs16-controls-menu]');

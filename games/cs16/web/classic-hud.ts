@@ -11,7 +11,8 @@ export function actionProgress(player: Pick<Player, 'seat' | 'alive' | 'action' 
 
 export function soundCues(event: Pick<GameEvent, 'type' | 'weapon' | 'value' | 'hitgroup'>): { files: string[]; range: number; local?: boolean; volumeMilli?: number } {
   const weapon = event.weapon === 'mp5navy' ? 'mp5' : event.weapon;
-  if (event.type === 'buy') return { files: [event.weapon === 'primammo' || event.weapon === 'secammo' ? 'items/9mmclip1.wav' : event.weapon === 'vest' || event.weapon === 'vesthelm' || event.weapon === 'defuser' ? 'items/kevlar.wav' : 'items/gunpickup2.wav'], range: 0, local: true };
+  if (event.type === 'buy') return { files: [event.weapon === 'nvgs' ? 'items/equip_nvg.wav' : event.weapon === 'primammo' || event.weapon === 'secammo' ? 'items/9mmclip1.wav' : event.weapon === 'vest' || event.weapon === 'vesthelm' || event.weapon === 'defuser' ? 'items/kevlar.wav' : 'items/gunpickup2.wav'], range: 0, local: true };
+  if (event.type === 'nightvision') return { files: [event.value === 1 ? 'items/nvg_on.wav' : 'items/nvg_off.wav'], range: 0, local: true };
   if (event.type === 'pickup') return { files: [event.weapon === 'defuser' ? 'items/kevlar.wav' : 'items/gunpickup2.wav'], range: 1250 };
   if (event.type === 'knife_air') return { files: ['weapons/knife_slash1.wav', 'weapons/knife_slash2.wav'], range: 1250 };
   if (event.type === 'knife_hit') return { files: event.value === 1 ? ['weapons/knife_stab.wav'] : ['weapons/knife_hit1.wav', 'weapons/knife_hit2.wav', 'weapons/knife_hit3.wav', 'weapons/knife_hit4.wav'], range: 1250 };

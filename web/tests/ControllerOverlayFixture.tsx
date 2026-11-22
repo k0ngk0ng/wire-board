@@ -8,6 +8,7 @@ import { TeamHud, TouchPad } from "../../games/battlecity/web/Board";
 import { GameFullscreen, type GameFullscreenHandle } from "../src/ui/room-fullscreen";
 import { useChatPosition } from "../src/ui/chat-position";
 import "../src/style.css";
+import "../src/controllers/settings.css";
 import "../../games/contra/web/runtime.css";
 import "../../games/basketball/web/network.css";
 import "../../games/yuyuhakusho/web/network.css";
@@ -22,6 +23,7 @@ function Game({ fullscreen }: { fullscreen: boolean }) {
   useEffect(() => { Object.assign(window, { controllerOverlayReady: true }); }, []);
   const sink = { pressPointer: (id: number, buttons: readonly string[]) => { contacts.current.set(id, buttons); probe.actions = [...contacts.current.values()].flatMap(value => [...value]); }, releasePointer: (id: number) => { contacts.current.delete(id); probe.actions = [...contacts.current.values()].flatMap(value => [...value]); } };
   const kind = new URLSearchParams(location.search).get("kind");
+  if (new URLSearchParams(location.search).has("configure")) return <div className="controller-settings" data-overlay-stage>{kind === "yuyuhakusho" ? <MDController mode="configure" profile={profile} /> : <FCController mode="configure" profile={profile} />}</div>;
   const canvas = <canvas width={256} height={240} className={kind === 'battlecity' ? 'bc-canvas' : undefined} style={{ background: "linear-gradient(#428aad,#5a8b3e 65%,#283e28)" }} />;
   const style = fullscreen ? undefined : { height: "calc(100dvh - 20px)" };
   if (kind === "contra") return <div className="contra-runtime touch-controller-stage" data-overlay-stage style={style}><div className="contra-runtime-screen touch-controller-picture">{canvas}</div><div className="contra-runtime-controller touch-controller-overlay"><FCController mode="play" profile={profile} sink={sink} /></div></div>;

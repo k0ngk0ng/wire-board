@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import type { OptionsProps, PreparationProps } from "../../../web/src/game-api/module";
 import { assetURL, imageResource, loadManifest } from "./assets";
 import { characterNames, mapNames, weaponNames, type AssetManifest, type GameOptions } from "./types";
+import { resizeOptions } from "./options";
 import "./style.css";
 
 export function useManifest(base: string) {
@@ -42,9 +43,7 @@ export function Options({ value, onChange, disabled, capacity }: OptionsProps<Ga
   const { manifest, error } = useManifest("");
   useEffect(() => {
     if (value.characters.length === capacity && value.weapons.length === capacity) return;
-    const characters = Array.from({ length: capacity }, (_, seat) => value.characters[seat] ?? Object.keys(characterNames)[seat % Object.keys(characterNames).length]);
-    const weapons = Array.from({ length: capacity }, (_, seat) => value.weapons[seat] ?? "pistol");
-    onChange({ ...value, characters, weapons });
+    onChange(resizeOptions(value, capacity));
   }, [capacity, value, onChange]);
   return <div className="hm-options">
     <MapChoices value={value.map} disabled={disabled} onChange={map => onChange({ ...value, map })} manifest={manifest} base="" />

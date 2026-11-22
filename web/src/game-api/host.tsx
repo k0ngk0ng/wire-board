@@ -205,24 +205,7 @@ export function ModuleWaiting({
   const module = gameModule(room.kind)!;
   const assets = useContext(AssetsContext);
   const Preparation = module.Preparation;
-  const [capacity, setCapacity] = useState(room.capacity);
-  const [options, setOptions] = useState<unknown>(room.options ?? {});
-  const savedOptions = JSON.stringify(room.options ?? {});
-  useEffect(
-    () => setOptions(JSON.parse(savedOptions)),
-    [room.id, savedOptions],
-  );
-  const Options =
-    module.preparationOwnsOptions && Preparation && capacity === room.capacity
-      ? undefined
-      : module.Options;
-  const optionsDirty =
-    (!!Options && JSON.stringify(options) !== savedOptions) ||
-    capacity !== room.capacity;
-  // Ready confirmations belong to the saved rules. A host previewing a new
-  // draft must not carry human confirmations over to that draft; bots remain
-  // ready, just as they do when the server saves the changed options.
-  const draftNeedsReady = host && optionsDirty;
+  const Options = module.preparationOwnsOptions && Preparation ? undefined : module.Options;
   return (
     <div className="waiting-layout">
       <div className="waiting-cover">
@@ -241,7 +224,6 @@ export function ModuleWaiting({
         </span>
       </div>
       <div className="waiting-seats">
-        <span className="eyebrow">TAKE YOUR SEAT</span>
         <h2>
           {room.capacity === 1
             ? "准备好，就能开局。"
@@ -255,30 +237,23 @@ export function ModuleWaiting({
           host={host}
           busy={busy}
           command={command}
-          options={options}
-          optionsDirty={optionsDirty}
-          onCapacityChange={setCapacity}
+          optionsForCapacity={module.resizeOptions ? (capacity) => module.resizeOptions!(room.options ?? module.defaultOptions ?? {}, capacity) : undefined}
         >
           {Options && (
             <Options
-              value={options}
-              onChange={setOptions}
-              capacity={capacity}
+              value={room.options ?? module.defaultOptions ?? {}}
+              onChange={(options) => command("room_settings", { capacity: room.capacity, options })}
+              capacity={room.capacity}
               disabled={!host || busy}
             />
           )}
         </RoomSettings>
-        {draftNeedsReady && (
-          <p className="muted small" role="status">
-            人数或规则尚未保存，保存后需重新准备。
-          </p>
-        )}
         {Preparation && (
           <Preparation
             room={room}
             options={room.options ?? module.defaultOptions ?? {}}
             host={host}
-            busy={busy || optionsDirty}
+            busy={busy}
             assets={assets}
             prepare={(action) => command("prepare", { action })}
           />
@@ -305,7 +280,7 @@ export function ModuleWaiting({
                 </h3>
                 <span className="waiting-seat-status">
                   {seat
-                    ? seat.ready && (!draftNeedsReady || seat.bot)
+                    ? seat.ready
                       ? "✓ 已准备"
                       : "等待准备"
                     : "邀请一位朋友"}
@@ -343,23 +318,11 @@ export function ModuleWaiting({
                 </button>
               )}
             <button
-              className={
-                draftNeedsReady
-                  ? "primary"
-                  : room.seats[room.you]?.ready
-                    ? "outline"
-                    : "primary"
-              }
-              disabled={busy || capacity !== room.capacity}
-              onClick={() =>
-                command("ready", draftNeedsReady ? { options } : undefined)
-              }
+              className={room.seats[room.you]?.ready ? "outline" : "primary"}
+              disabled={busy}
+              onClick={() => command("ready")}
             >
-              {draftNeedsReady
-                ? "保存并准备"
-                : room.seats[room.you]?.ready
-                  ? "取消准备"
-                  : "我准备好了"}
+              {room.seats[room.you]?.ready ? "取消准备" : "我准备好了"}
               <Check size={18} />
             </button>
             {host && (
@@ -367,7 +330,6 @@ export function ModuleWaiting({
                 className="primary gold"
                 disabled={
                   busy ||
-                  optionsDirty ||
                   room.seats.length < module.minPlayers ||
                   (!!module.requiresFullTable &&
                     room.seats.length !== room.capacity) ||
@@ -385,9 +347,7 @@ export function ModuleWaiting({
           {room.spectating
             ? "等待玩家准备下一局。"
             : host
-              ? optionsDirty
-                ? "先保存地图与规则设置，才能开始游戏。"
-                : module.supportsBots
+              ? module.supportsBots
                   ? "电脑自动准备。你准备好后即可开始，也可以继续邀请朋友。"
                   : room.capacity === 1
                     ? "准备好后即可开始。"

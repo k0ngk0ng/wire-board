@@ -5,13 +5,14 @@ import { Cover } from "./Cover";
 import { OptionsForm } from "./Options";
 import { Preparation } from "./Preparation";
 import { Rules } from "./Rules";
-import { characters, defaults, randomArena, teamGroups } from "./labels";
+import { characters, defaults, randomArena, resizeOptions, teamGroups } from "./labels";
 import type { NetworkView, GameOptions } from "./types";
 export default defineGame<NetworkView, GameOptions>({
   ...catalog,
   asyncBoard: true,
   assetLoading: "board",
   preparationOwnsOptions: true,
+  resizeOptions,
   viewportFit: true,
   playerLayout: {
     density: "compact",

@@ -4,8 +4,24 @@ import type { FeedbackPulse } from "./feedback.ts";
 
 export type DrawPlayer = Pick<Player, "x" | "y" | "aim" | "life" | "alive">;
 export type Camera = { x: number; y: number; width: number; height: number };
+export type CameraLayout = { width: number; height: number; minimumScale: number; insets: { top: number; bottom: number; left: number; right: number } };
 
-export function cameraForPlayer(focus: { x: number; y: number } | undefined, mapWidth: number, mapHeight: number, viewport: Viewport): Camera {
+export function cameraForPlayer(focus: { x: number; y: number } | undefined, mapWidth: number, mapHeight: number, viewport: Viewport, layout?: CameraLayout): Camera {
+  if (layout) {
+    const scale = Math.max(layout.minimumScale, layout.width / Math.min(viewport.width, mapWidth), layout.height / Math.min(viewport.height, mapHeight));
+    const width = layout.width / scale, height = layout.height / scale;
+    const safe = layout.insets;
+    const x = focus ? focus.x / 256 : mapWidth / 2;
+    const y = focus ? focus.y / 256 : mapHeight / 2;
+    const targetX = safe.left + Math.max(1, layout.width - safe.left - safe.right) / 2;
+    const targetY = safe.top + Math.max(1, layout.height - safe.top - safe.bottom) / 2;
+    return {
+      x: Math.max(-safe.left / scale, Math.min(mapWidth - width + safe.right / scale, x - targetX / scale)),
+      y: Math.max(-safe.top / scale, Math.min(mapHeight - height + safe.bottom / scale, y - targetY / scale)),
+      width,
+      height,
+    };
+  }
   const width = Math.min(viewport.width, mapWidth), height = width * viewport.height / viewport.width;
   const x = focus ? focus.x / 256 : mapWidth / 2;
   const y = focus ? focus.y / 256 : mapHeight / 2;
@@ -34,6 +50,7 @@ export class BattleRenderer {
   private ringSize = 15;
   private camera: Camera;
   private reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  private coarse = matchMedia("(pointer: coarse)");
 
   constructor(canvas: HTMLCanvasElement, assets: LoadedAssets) {
     const context = canvas.getContext("2d", { alpha: false });
@@ -48,8 +65,34 @@ export class BattleRenderer {
     return this.camera;
   }
 
+  get viewLayout() {
+    return this.measureLayout(this.canvas.getBoundingClientRect());
+  }
+
+  private measureLayout(rect: DOMRect): CameraLayout {
+    const insets = { top: 0, bottom: 0, left: 0, right: 0 };
+    const root = this.canvas.closest(".hm-board");
+    const overlap = (box: DOMRect) => box.width > 0 && box.height > 0 && box.left < rect.right && box.right > rect.left && box.top < rect.bottom && box.bottom > rect.top;
+    for (const element of root?.querySelectorAll(".hm-battle-heading,.hm-score-strip,.hm-bottom-line") ?? []) {
+      const box = element.getBoundingClientRect();
+      if (!overlap(box)) continue;
+      if (box.top < rect.top + rect.height / 2) insets.top = Math.max(insets.top, box.bottom - rect.top + 4);
+      else insets.bottom = Math.max(insets.bottom, rect.bottom - box.top + 4);
+    }
+    for (const element of root?.querySelectorAll(".hm-touch-controls") ?? []) {
+      const box = element.getBoundingClientRect();
+      if (overlap(box)) insets.bottom = Math.max(insets.bottom, rect.bottom - box.top + 4);
+    }
+    const chat = document.querySelector(".chat-toggle")?.getBoundingClientRect();
+    if (chat && overlap(chat)) {
+      if (chat.top > rect.top + rect.height / 2) insets.bottom = Math.max(insets.bottom, rect.bottom - chat.top + 8);
+      else insets.top = Math.max(insets.top, chat.bottom - rect.top + 8);
+    }
+    return { width: Math.max(1, rect.width), height: Math.max(1, rect.height), minimumScale: this.coarse.matches ? 2 : 1, insets };
+  }
+
   pointFromPointer(x: number, y: number, focus: { x: number; y: number }) {
-    return pointerWorldPoint(x, y, cameraForPlayer(focus, this.assets.rules.width / 256, this.assets.rules.height / 256, this.assets.viewport));
+    return pointerWorldPoint(x, y, cameraForPlayer(focus, this.assets.rules.width / 256, this.assets.rules.height / 256, this.assets.viewport, this.viewLayout));
   }
 
   ingest(events: GameEvent[]) {
@@ -75,7 +118,7 @@ export class BattleRenderer {
     const mapWidth = this.assets.rules.width / 256;
     const mapHeight = this.assets.rules.height / 256;
     const focus = local ?? view.players.find(player => player.alive) ?? view.players[0];
-    this.camera = cameraForPlayer(focus, mapWidth, mapHeight, this.assets.viewport);
+    this.camera = cameraForPlayer(focus, mapWidth, mapHeight, this.assets.viewport, this.measureLayout(rect));
     const worldWidth = this.camera.width, worldHeight = this.camera.height;
     this.labelSize = Math.max(8, 10 * worldWidth / Math.max(1, rect.width));
     this.outlineSize = Math.max(1.5, worldWidth / Math.max(1, rect.width));

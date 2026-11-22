@@ -4,7 +4,7 @@ import { TouchOwnership, bindTouchOwnership } from './touch-ownership';
 import type { WeaponState } from './types';
 
 export type { TouchState } from './touch-input';
-export function TouchControls({ disabled, changed, look, native, weapon, weaponState, useLabel, interrupted, begin, error, buy, score }: { disabled: boolean; changed: (state: TouchState) => void; look: (x: number, y: number) => void; native: (event: Event) => void; weapon: string; weaponState?: WeaponState; useLabel: string; interrupted: () => void; begin: () => void; error: (message: string) => void; buy?: () => void; score?: () => void }) {
+export function TouchControls({ disabled, changed, look, native, weapon, weaponState, useLabel, interrupted, begin, error, buy, score, nightVisionOwned, nightVision }: { disabled: boolean; changed: (state: TouchState) => void; look: (x: number, y: number) => void; native: (event: Event) => void; weapon: string; weaponState?: WeaponState; useLabel: string; interrupted: () => void; begin: () => void; error: (message: string) => void; buy?: () => void; score?: () => void; nightVisionOwned?: boolean; nightVision?: boolean }) {
   const [state, setState] = useState<TouchState>({ moveX: 0, moveY: 0, actions: new Set() });
   const [more, setMore] = useState(false);
   const [fireArea, setFireArea] = useState(false);
@@ -48,6 +48,7 @@ export function TouchControls({ disabled, changed, look, native, weapon, weaponS
     {more && <div className="cs16-touch-more-panel" role="group" aria-label="更多操作">
         <button type="button" data-touch-control data-cs16-action="use" disabled={disabled} onPointerDown={event => down(event, 'use')}>{useLabel}</button>
         <button type="button" data-touch-control data-cs16-action="flashlight" disabled={disabled} onPointerDown={event => down(event, 'flashlight')}>手电筒</button>
+        {nightVisionOwned && <button type="button" data-touch-control data-cs16-action="nightVision" aria-pressed={!!nightVision} disabled={disabled} onPointerDown={event => down(event, 'nightVision')}>夜视仪</button>}
         <button type="button" data-touch-control data-cs16-action="drop" disabled={disabled} onPointerDown={event => down(event, 'drop')}>丢弃</button>
         {!scoped && ['knife', 'm4a1', 'usp', 'glock18', 'famas'].includes(weapon) && <button type="button" data-touch-control data-cs16-action="secondary" disabled={disabled} onPointerDown={event => down(event, 'secondary')}>{secondary}</button>}
         {buy && <button type="button" data-touch-control disabled={disabled} onClick={() => { setMore(false); buy(); }}>购买</button>}

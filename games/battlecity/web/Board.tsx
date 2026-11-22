@@ -260,9 +260,11 @@ export function TouchPad({
   const firePointer = useRef<number | null>(null);
   useEffect(() => {
     const clear = () => { pointer.current = null; firePointer.current = null; latest.current.onMove("none"); latest.current.onFire(false); };
+    const pointerMode = window.matchMedia("(pointer: coarse)");
+    pointerMode.addEventListener("change", clear);
     window.addEventListener("resize", clear);
     window.addEventListener("orientationchange", clear);
-    return () => { window.removeEventListener("resize", clear); window.removeEventListener("orientationchange", clear); };
+    return () => { window.removeEventListener("resize", clear); window.removeEventListener("orientationchange", clear); pointerMode.removeEventListener("change", clear); };
   }, []);
   const update = (event: ReactPointerEvent<HTMLDivElement>) => {
     const rect = event.currentTarget.getBoundingClientRect();

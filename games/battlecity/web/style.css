@@ -415,6 +415,10 @@
   gap: 6px;
 }
 
+@media not (pointer: coarse) {
+  .battlecity-board .bc-controls { display: none; }
+}
+
 .bc-keyboard-hint {
   color: var(--bc-muted);
   font-size: 12px;

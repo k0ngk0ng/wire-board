@@ -43,6 +43,7 @@ export class BattleRenderer {
   private viewImpulse = new ViewImpulse();
   private viewIdentity = '';
   private flashlight = new MapFlashlight();
+  private nightVision = false;
   private flashlightDirection = new T.Vector3();
   private mapMeshes: T.Mesh[] = [];
   private corpseRay = new T.Raycaster();
@@ -163,7 +164,7 @@ export class BattleRenderer {
   }
 
   get visualStats() {
-    return { ...this.effects.stats, muzzle: this.muzzle.visible, muzzleAttachmentCount: this.muzzleNodes.length, lightmapColorSpace: this.mapLighting?.colorSpace, cameraFov: this.camera.fov, weaponAnimation: this.weapon?.animation, flashlight: this.flashlight.uniforms.csFlashPower.value, corpses: [...this.actors.values()].filter(actor => !actor.alive && actor.root.visible).length };
+    return { ...this.effects.stats, muzzle: this.muzzle.visible, muzzleAttachmentCount: this.muzzleNodes.length, lightmapColorSpace: this.mapLighting?.colorSpace, cameraFov: this.camera.fov, weaponAnimation: this.weapon?.animation, weaponShots: this.weaponShots, weaponBack: this.weaponRoot.position.z, cameraPitch: Math.asin(-this.flashlightDirection.y), flashlight: this.flashlight.uniforms.csFlashPower.value, nightVision: this.nightVision, corpses: [...this.actors.values()].filter(actor => !actor.alive && actor.root.visible).length };
   }
 
   shoot(now: number) {
@@ -182,12 +183,11 @@ export class BattleRenderer {
     if (event.type === 'hit' && event.seat === localSeat) this.effects.confirmHit();
     const actor = this.actors.get(event.seat);
     if (event.type === 'shot') {
-      if (event.seat === localSeat) return;
       if (actor) this.animate(actor, /shoot|aim_/i, true);
     }
     if (event.seat === localSeat || event.seat === this.observedSeat) {
       const kind = eventFeedback(event);
-      if (kind && (event.seat !== localSeat || kind !== 'shot' && kind !== 'slash' && kind !== 'stab')) this.feedback(kind, now);
+      if (kind) this.feedback(kind, now);
     }
   }
 
@@ -275,7 +275,9 @@ export class BattleRenderer {
       this.camera.lookAt(this.camera.position.x + Math.cos(yaw) * Math.cos(pitch), this.camera.position.y - Math.sin(pitch), this.camera.position.z - Math.sin(yaw) * Math.cos(pitch));
       this.camera.rotateZ((deadView?.roll ?? 0) + impulse.roll);
       this.camera.getWorldDirection(this.flashlightDirection);
-      this.flashlight.update(this.camera.position, this.flashlightDirection, cameraPlayer.alive && !!cameraPlayer.flashlight && (cameraPlayer.flashlightCharge ?? 100) > 0);
+      const nightVision = cameraPlayer.alive && !!cameraPlayer.nightVisionOwned && !!cameraPlayer.nightVision;
+      if (this.nightVision !== nightVision) { this.nightVision = nightVision; canvas.classList.toggle('cs16-night-vision', nightVision); }
+      this.flashlight.update(this.camera.position, this.flashlightDirection, cameraPlayer.alive && !!cameraPlayer.flashlight && (cameraPlayer.flashlightCharge ?? 100) > 0, nightVision);
       this.weaponRoot.position.set(0, impulse.weaponUp, impulse.weaponBack);
       const weaponState = cameraPlayer.inventory?.find(item => item.id === cameraPlayer.weapon);
       this.weaponSilenced = weaponState?.silenced ?? false;
@@ -530,6 +532,7 @@ export class BattleRenderer {
 
   dispose() {
     this.disposed = true;
+    this.renderer.domElement.classList.remove('cs16-night-vision');
     this.effects.dispose();
     for (const actor of this.actors.values()) actor.mixer.stopAllAction();
     this.weapon?.mixer.stopAllAction();

@@ -53,12 +53,15 @@
   padding: 0;
   overflow: hidden;
   --game-fullscreen-toolbar-bottom: calc(max(8px, env(safe-area-inset-top)) + 40px);
+  --game-fullscreen-safe-top: max(8px, env(safe-area-inset-top));
+  --game-fullscreen-safe-right: max(8px, env(safe-area-inset-right));
+  --game-fullscreen-safe-left: max(8px, env(safe-area-inset-left));
 }
 [data-room-fullscreen][data-fullscreen-toolbar-overlay]
   > .game-fullscreen-toolbar {
   position: absolute;
-  top: max(8px, env(safe-area-inset-top));
-  right: max(8px, env(safe-area-inset-right));
+  top: var(--game-fullscreen-safe-top);
+  right: var(--game-fullscreen-safe-right);
   max-width: calc(100% - 16px);
   min-height: 32px;
   border-radius: 7px;
@@ -69,6 +72,21 @@
   > .game-fullscreen-board {
   width: 100%;
   height: 100%;
+}
+[data-room-fullscreen][data-fullscreen-toolbar-overlay] > .game-fullscreen-status {
+  position: absolute;
+  top: var(--game-fullscreen-safe-top);
+  left: var(--game-fullscreen-safe-left);
+  z-index: 44;
+  max-width: calc(100% - var(--game-fullscreen-toolbar-width, 32px) - 24px);
+  padding: 4px 8px;
+  border: 1px solid #a6b5a4;
+  border-radius: 7px;
+  background: #f8f4e8f2;
+  color: #244836;
+}
+@media (pointer: coarse) {
+  [data-room-fullscreen][data-fullscreen-toolbar-overlay]:not([data-fullscreen-toolbar-owned]) .game-fullscreen-toolbar button { width: 44px; min-width: 44px; min-height: 44px; height: 44px; }
 }
 [data-room-fullscreen][data-fullscreen-toolbar-overlay]
   .game-fullscreen-toolbar button {
@@ -119,8 +137,6 @@
   border: 1px solid #a6b5a4;
 }
 
-/* A single shared chat moves into the surface for both fullscreen modes.
-   Its initial corner position can be moved locally by mouse or touch. */
 .game-fullscreen-surface[data-room-fullscreen] .table-chat {
   position: fixed;
   top: auto;
@@ -227,7 +243,6 @@
   flex-shrink: 0;
 }
 
-/* Keep the editor available when a tablet keyboard reduces the visual viewport. */
 .game-fullscreen-surface[data-room-fullscreen] .chat-heading,
 .game-fullscreen-surface[data-room-fullscreen] .chat-compose {
   flex-shrink: 0;

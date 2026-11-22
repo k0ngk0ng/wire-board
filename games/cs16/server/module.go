@@ -83,12 +83,12 @@ func decode(match gameapi.Match) (*matchState, error) {
 }
 
 func released(input engine.Input) bool {
-	return input.MoveX == 0 && input.MoveY == 0 && !input.Fire && !input.Secondary && !input.Jump && !input.Crouch && !input.Walk && !input.Reload && !input.Use && !input.Drop && !input.Flashlight && input.Select == ""
+	return input.MoveX == 0 && input.MoveY == 0 && !input.Fire && !input.Secondary && !input.Jump && !input.Crouch && !input.Walk && !input.Reload && !input.Use && !input.Drop && !input.Flashlight && !input.NightVision && input.Select == ""
 }
 
 func validatedInput(ctx gameapi.Context, state *matchState, raw json.RawMessage) (inputAction, error) {
 	var action inputAction
-	fields, err := object(raw, "type", "epoch", "seq", "life", "viewFrame", "moveX", "moveY", "yaw", "pitch", "fire", "secondary", "jump", "crouch", "walk", "reload", "use", "drop", "flashlight", "select", "cancel")
+	fields, err := object(raw, "type", "epoch", "seq", "life", "viewFrame", "moveX", "moveY", "yaw", "pitch", "fire", "secondary", "jump", "crouch", "walk", "reload", "use", "drop", "flashlight", "nightVision", "select", "cancel")
 	if err != nil {
 		return action, err
 	}
@@ -317,7 +317,11 @@ func reclaim(ctx gameapi.Context, match gameapi.Match) (gameapi.Match, error) {
 }
 
 func restore(ctx gameapi.Context, match gameapi.Match) (gameapi.Match, error) {
-	state, err := decode(match)
+	candidate, err := migrateMaterialRules(match)
+	if err != nil {
+		return match, err
+	}
+	state, err := decode(candidate)
 	if err != nil {
 		return match, err
 	}

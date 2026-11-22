@@ -7,7 +7,9 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = fileURLToPath(new URL("../../", import.meta.url));
-const out = path.join(root, ".local/contra/controller-overlay");
+const run = process.env.CONTROLLER_OVERLAY_RUN ?? "";
+assert.match(run, /^(?:[a-z0-9]+(?:-[a-z0-9]+)*)?$/);
+const out = path.join(root, ".local/contra/controller-overlay", run);
 const temporary = path.join(out, "temporary");
 const sockets = path.join(root, ".local/contra/s");
 for (const folder of [out, temporary, sockets, ...["config", "data", "cache", "profile"].map(name => path.join(temporary, name))]) await mkdir(folder, { recursive: true });
@@ -25,7 +27,7 @@ let socket;
 const reports = [];
 try {
   await browser("open", server.resolvedUrls.local[0] + "?kind=contra&protected=1");
-  await browser("wait", "[data-controller-dpad]");
+  await browser("wait", "--fn", "window.controllerOverlayReady===true");
   const endpoint = await browser("get", "cdp-url");
   socket = new WebSocket(typeof endpoint === "string" ? endpoint : endpoint.cdpUrl);
   await new Promise((resolve, reject) => { socket.onopen = resolve; socket.onerror = reject; });
@@ -37,6 +39,22 @@ try {
   const target = targetInfos.find(value => value.type === "page" && value.url.startsWith(server.resolvedUrls.local[0]));
   let { sessionId } = await call("Target.attachToTarget", { targetId: target.targetId, flatten: true });
   const evaluate = async expression => { const result = await call("Runtime.evaluate", { expression, returnByValue: true, awaitPromise: true }, sessionId); assert.ok(!result.exceptionDetails, JSON.stringify(result.exceptionDetails)); return result.result.value; };
+  const frames = () => evaluate("new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>requestAnimationFrame(resolve))))");
+  const waitFixture = async url => {
+    let ready = false;
+    for (let attempt = 0; attempt < 100; attempt++) {
+      try { ready = await evaluate(`location.href===${JSON.stringify(url)}&&window.controllerOverlayReady===true&&!!document.querySelector('[data-controller-dpad],[data-battlecity-dpad]')`); } catch {}
+      if (ready) break;
+      await new Promise(resolve => setTimeout(resolve, 50));
+    }
+    assert.ok(ready, "controller fixture did not become ready");
+  };
+  const mouseClick = async selector => {
+    const box = await evaluate(`(()=>{const element=document.querySelector(${JSON.stringify(selector)});const box=element.getBoundingClientRect();const hit=document.elementFromPoint(box.x+box.width/2,box.y+box.height/2);if(hit!==element&&!element.contains(hit))throw Error('fullscreen action is covered');return box.toJSON()})()`);
+    const mouse = { x: box.x + box.width / 2, y: box.y + box.height / 2, button: "left", clickCount: 1 };
+    await call("Input.dispatchMouseEvent", { type: "mousePressed", ...mouse, buttons: 1 }, sessionId);
+    await call("Input.dispatchMouseEvent", { type: "mouseReleased", ...mouse, buttons: 0 }, sessionId);
+  };
   await evaluate("new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))");
   const desktopHud = await evaluate("(()=>{const hud=document.querySelector('[data-chat-protected]').getBoundingClientRect();const chat=document.querySelector('.chat-toggle').getBoundingClientRect();return {coarse:matchMedia('(pointer:coarse)').matches,hud:hud.toJSON(),chat:chat.toJSON(),overlap:hud.left<chat.right&&hud.right>chat.left&&hud.top<chat.bottom&&hud.bottom>chat.top}})()");
   assert.equal(await evaluate('document.querySelector(".chat-toggle").textContent.trim()'), '', 'chat bubble contains a visible text label');
@@ -45,14 +63,14 @@ try {
   assert.equal(desktopHud.coarse, false);
   assert.equal(desktopHud.overlap, false, "normal desktop chat covers protected game HUD: " + JSON.stringify(desktopHud));
   for (const kind of ["contra", "basketball", "yuyuhakusho", "battlecity"]) {
-    const directory = path.join(root, ".local", kind, "controller-overlay");
+    const directory = path.join(root, ".local", kind, "controller-overlay", run);
     await mkdir(directory, { recursive: true });
     const pageURL = server.resolvedUrls.local[0] + "?kind=" + kind;
     if (kind !== "contra") {
       socket.close();
       await browser("close");
       await browser("open", pageURL);
-      await browser("wait", kind === "battlecity" ? "[data-battlecity-dpad]" : "[data-controller-dpad]");
+      await browser("wait", "--fn", "window.controllerOverlayReady===true");
       const nextEndpoint = await browser("get", "cdp-url");
       socket = new WebSocket(typeof nextEndpoint === "string" ? nextEndpoint : nextEndpoint.cdpUrl);
       await new Promise((resolve, reject) => { socket.onopen = resolve; socket.onerror = reject; });
@@ -63,20 +81,47 @@ try {
       ({ sessionId } = await call("Target.attachToTarget", { targetId: nextTarget.targetId, flatten: true }));
     }
     await call("Page.navigate", { url: pageURL }, sessionId);
-    let ready = false;
-    for (let attempt = 0; attempt < 100; attempt++) {
-      try { ready = await evaluate(`location.href===${JSON.stringify(pageURL)}&&window.controllerOverlayReady===true&&!!document.querySelector('[data-controller-dpad],[data-battlecity-dpad]')`); } catch {}
-      if (ready) break;
-      await new Promise(resolve => setTimeout(resolve, 50));
-    }
-    assert.ok(ready, "controller fixture did not become ready");
+    await waitFixture(pageURL);
     await call("Target.detachFromTarget", { sessionId });
     const currentTargets = await call("Target.getTargets");
     const currentTarget = currentTargets.targetInfos.find(value => value.type === "page" && value.url === server.resolvedUrls.local[0] + "?kind=" + kind);
     assert.ok(currentTarget, "current controller fixture target is missing");
     ({ sessionId } = await call("Target.attachToTarget", { targetId: currentTarget.targetId, flatten: true }));
-    const report = { kind, passed: false, scope: "actual shared controller and game CSS in a UI fixture; native touch, not a complete rule match or physical handset", layouts: [] };
+    const report = { kind, passed: false, scope: "actual shared controller and game CSS in a UI fixture; desktop visibility and native touch, not a complete rule match or physical handset", desktop: [], layouts: [] };
     reports.push(report);
+    for (const [width, height] of [[1280, 900], [320, 760]]) {
+      await call("Emulation.setTouchEmulationEnabled", { enabled: false }, sessionId);
+      await call("Emulation.setDeviceMetricsOverride", { width, height, screenWidth: width, screenHeight: height, deviceScaleFactor: 1, mobile: false }, sessionId);
+      await frames();
+      const geometry = await evaluate("(()=>{const panel=document.querySelector('.touch-controller-overlay,.bc-controls');const rect=panel.getBoundingClientRect();return {coarse:matchMedia('(pointer:coarse)').matches,display:getComputedStyle(panel).display,width:rect.width,height:rect.height,targets:[...panel.querySelectorAll('[data-controller-button],.bc-dpad,.bc-fire')].map(element=>{const box=element.getBoundingClientRect();return {width:box.width,height:box.height}})}})()");
+      const desktop = { width, height, geometry };
+      report.desktop.push(desktop);
+      const image = await call("Page.captureScreenshot", { format: "png", captureBeyondViewport: false }, sessionId);
+      await writeFile(path.join(directory, width + "x" + height + "-desktop.png"), Buffer.from(image.data, "base64"));
+      assert.equal(geometry.coarse, false);
+      assert.equal(geometry.display, "none", kind + " desktop exposes a touch controller at " + width);
+      assert.equal(geometry.height, 0, kind + " desktop retains an external controller row");
+      assert.ok(geometry.targets.every(target => target.width === 0 && target.height === 0), kind + " desktop touch target is still visible");
+      await mouseClick("#fixture-fullscreen");
+      await frames();
+      desktop.fullscreen = await evaluate("(()=>{const panel=document.querySelector('.touch-controller-overlay,.bc-controls');return {active:!!document.querySelector('[data-room-fullscreen]'),display:getComputedStyle(panel).display,height:panel.getBoundingClientRect().height}})()");
+      assert.ok(desktop.fullscreen.active);
+      assert.equal(desktop.fullscreen.display, "none", kind + " fullscreen exposes desktop controls");
+      assert.equal(desktop.fullscreen.height, 0);
+      await mouseClick('button[aria-label="退出全屏"]');
+      await frames();
+    }
+    if (kind !== "battlecity") {
+      const configURL = pageURL + "&configure=1";
+      await call("Page.navigate", { url: configURL }, sessionId);
+      await waitFixture(configURL);
+      report.configuration = await evaluate("(()=>{const panel=document.querySelector('.fc-configure,.md-configure');const box=panel.getBoundingClientRect();return {display:getComputedStyle(panel).display,width:box.width,height:box.height}})()");
+      assert.ok(report.configuration.display !== "none" && report.configuration.width > 0 && report.configuration.height > 0, kind + " desktop configuration controller was hidden");
+      const image = await call("Page.captureScreenshot", { format: "png", captureBeyondViewport: false }, sessionId);
+      await writeFile(path.join(directory, "desktop-configuration.png"), Buffer.from(image.data, "base64"));
+      await call("Page.navigate", { url: pageURL }, sessionId);
+      await waitFixture(pageURL);
+    }
     for (const [width, height] of [[320, 760], [844, 390], [466, 678], [678, 466], [626, 890], [890, 626], [744, 1133], [1133, 744], [820, 1180], [1180, 820], [1024, 1366], [1366, 1024]]) {
       await call("Emulation.setDeviceMetricsOverride", { width, height, screenWidth: width, screenHeight: height, deviceScaleFactor: 1, mobile: true, screenOrientation: { type: width > height ? "landscapePrimary" : "portraitPrimary", angle: width > height ? 90 : 0 } }, sessionId);
       await call("Emulation.setTouchEmulationEnabled", { enabled: true, maxTouchPoints: 5 }, sessionId);
@@ -130,6 +175,20 @@ try {
       const released = await evaluate("({...window.controllerOverlayProbe})");
       layout.released = released;
       assert.ok(kind === "battlecity" ? released.move === "none" && !released.fire : released.actions.length === 0, kind + " retained input");
+      if (width === 320 && height === 760) {
+        await call("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: points }, sessionId);
+        await frames();
+        await call("Emulation.setTouchEmulationEnabled", { enabled: false }, sessionId);
+        await frames();
+        layout.pointerModeRelease = await evaluate("(()=>{const panel=document.querySelector('.touch-controller-overlay,.bc-controls');return {coarse:matchMedia('(pointer:coarse)').matches,display:getComputedStyle(panel).display,probe:{...window.controllerOverlayProbe}}})()");
+        assert.equal(layout.pointerModeRelease.coarse, false);
+        assert.equal(layout.pointerModeRelease.display, "none");
+        assert.ok(kind === "battlecity" ? layout.pointerModeRelease.probe.move === "none" && !layout.pointerModeRelease.probe.fire : layout.pointerModeRelease.probe.actions.length === 0, kind + " hidden controls retain a touch input");
+        await call("Emulation.setTouchEmulationEnabled", { enabled: true, maxTouchPoints: 5 }, sessionId);
+        await frames();
+        await call("Input.dispatchTouchEvent", { type: "touchCancel", touchPoints: [] }, sessionId).catch(error => { if (!error.message.includes("Must send a TouchStart first")) throw error; });
+        assert.ok(await evaluate("matchMedia('(pointer:coarse)').matches&&document.querySelector('.touch-controller-overlay,.bc-controls').getBoundingClientRect().height>0"), kind + " touch controls did not return");
+      }
       if (width === 626 && height === 890) {
         await call("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: points }, sessionId);
         await evaluate("new Promise(resolve=>requestAnimationFrame(resolve))");
@@ -143,12 +202,6 @@ try {
       }
       const image = await call("Page.captureScreenshot", { format: "png", captureBeyondViewport: false, clip: { x: 0, y: 0, width, height, scale: 1 } }, sessionId);
       await writeFile(path.join(directory, width + "x" + height + ".png"), Buffer.from(image.data, "base64"));
-      const mouseClick = async selector => {
-        const box = await evaluate(`(()=>{const element=document.querySelector(${JSON.stringify(selector)});const box=element.getBoundingClientRect();const hit=document.elementFromPoint(box.x+box.width/2,box.y+box.height/2);if(hit!==element&&!element.contains(hit))throw Error('fullscreen action is covered');return box.toJSON()})()`);
-        const mouse = { x: box.x + box.width / 2, y: box.y + box.height / 2, button: "left", clickCount: 1 };
-        await call("Input.dispatchMouseEvent", { type: "mousePressed", ...mouse, buttons: 1 }, sessionId);
-        await call("Input.dispatchMouseEvent", { type: "mouseReleased", ...mouse, buttons: 0 }, sessionId);
-      };
       await mouseClick("#fixture-fullscreen");
       let fullscreenReady = false;
       for (let attempt = 0; attempt < 100; attempt++) {

@@ -59,7 +59,7 @@ func TestFriendlyFireKnifeAndHEE2E(t *testing.T) {
 		StepCombat(s)
 		want := 100
 		if enabled {
-			want = 72
+			want = 79
 		}
 		knifeHead := false
 		for _, event := range s.Events {

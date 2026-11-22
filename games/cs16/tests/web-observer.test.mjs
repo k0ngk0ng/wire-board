@@ -29,8 +29,8 @@ test('countdown rounds total seconds before splitting minutes so minute boundari
   for (const [frames, label] of [[12000, '2:00'], [11999, '2:00'], [11900, '1:59'], [6000, '1:00'], [5999, '1:00'], [5900, '0:59'], [1, '0:01'], [0, '0:00'], [-1, '0:00']]) assert.equal(formatDuration(frames), label);
 });
 
-test('live elimination shows its objective while freeze and round-end keep authoritative countdowns', () => {
-  for (const frames of [0, -1, -12000, 12000]) assert.equal(matchClock('elimination', 'live', frames), '歼灭敌队');
+test('live elimination leaves the clock area empty while freeze and round-end keep authoritative countdowns', () => {
+  for (const frames of [0, -1, -12000, 12000]) assert.equal(matchClock('elimination', 'live', frames), '');
   for (const phase of ['freeze', 'round_end']) {
     for (const [frames, label] of [[300, '0:03'], [1, '0:01'], [0, '0:00']]) assert.equal(matchClock('elimination', phase, frames), label);
   }

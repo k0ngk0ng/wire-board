@@ -58,10 +58,14 @@ func stepGrenades(state *State) {
 		}
 		if state.Frame >= grenade.ExplodesAt {
 			grenade.Active = true
-			Emit(state, Event{Kind: "explode", Seat: grenade.Owner, Target: grenade.ID, Weapon: grenade.Kind, X: grenade.X, Y: grenade.Y, Z: grenade.Z})
+			center := Vec3{grenade.X, grenade.Y, grenade.Z}
+			if grenade.Kind == "hegrenade" {
+				center = blastOrigin(state, center)
+			}
+			Emit(state, Event{Kind: "explode", Seat: grenade.Owner, Target: grenade.ID, Weapon: grenade.Kind, X: center.X, Y: center.Y, Z: center.Z})
 			switch grenade.Kind {
 			case "hegrenade":
-				explodeHE(state, grenade)
+				explodeHEAt(state, grenade.Owner, center)
 			case "flashbang":
 				explodeFlash(state, grenade)
 			case "smokegrenade":
@@ -92,37 +96,34 @@ func stepGrenades(state *State) {
 }
 
 func explodeHE(state *State, grenade Grenade) {
-	center := Vec3{grenade.X, grenade.Y, grenade.Z}
+	center := blastOrigin(state, Vec3{grenade.X, grenade.Y, grenade.Z})
+	explodeHEAt(state, grenade.Owner, center)
+}
+
+func explodeHEAt(state *State, owner int, center Vec3) {
+	source := center
+	source.Z += Unit
 	for seat := range state.Players {
 		p := &state.Players[seat]
 		if !p.Alive {
 			continue
 		}
-		distance := Distance(center, combatPosition(p))
-		if distance >= 350*Unit {
+		if !blastWaterAllowed(state, center, p.WaterLevel) {
 			continue
 		}
-		trace := TraceWorld(state, center, combatEye(p), -1)
-		if trace.Fraction < NormalUnit && !trace.StartSolid {
-			continue
-		}
-		damage := 100 * (350*Unit - distance) / (350 * Unit)
-		damagePlayerFrom(state, grenade.Owner, seat, damage, 500, 0, "hegrenade", center, true)
+		damage := blastDamageUnits(source, combatPosition(p), 100, 350*Unit)
+		damagePlayerUnitsFrom(state, owner, seat, damage, 500, 0, "hegrenade", center, true)
 	}
 	for index := range state.Hostages {
 		h := state.Hostages[index]
 		if h.Rescued || h.Health <= 0 {
 			continue
 		}
-		distance := Distance(center, Vec3{h.X, h.Y, h.Z})
-		if distance >= 350*Unit {
-			continue
-		}
-		trace := TraceWorld(state, center, Vec3{h.X, h.Y, h.Z + 20*Unit}, -1)
-		if trace.Fraction >= NormalUnit {
-			DamageHostage(state, grenade.Owner, index, hostageHitDamage(100*(350*Unit-distance)/(350*Unit), 0))
-		}
+		damage := blastDamageUnits(source, Vec3{h.X, h.Y, h.Z}, 100, 350*Unit)
+		group := hostageDamageStateFor(state, index).Hitgroup
+		damageHostageUnits(state, owner, index, hostageHitUnits(damage, group))
 	}
+	damageBlastBrushes(state, owner, center, source, 100, 350*Unit, "hegrenade")
 }
 
 func explodeFlash(state *State, grenade Grenade) {
@@ -161,22 +162,5 @@ func CancelGrenade(player *Player) {
 }
 
 func DamageHostage(state *State, attacker, index, damage int) {
-	if index < 0 || index >= len(state.Hostages) || damage <= 0 {
-		return
-	}
-	h := &state.Hostages[index]
-	if h.Rescued || h.Health <= 0 {
-		return
-	}
-	damage = min(damage, h.Health)
-	h.Health -= damage
-	penalty := 20 * damage
-	if h.Health == 0 {
-		h.Following = -1
-		penalty += 500
-	}
-	if attacker >= 0 && attacker < len(state.Players) {
-		state.Players[attacker].Money = max(0, state.Players[attacker].Money-penalty)
-	}
-	Emit(state, Event{Kind: "hostage_hit", Seat: attacker, Target: h.ID, Value: damage, X: h.X, Y: h.Y, Z: h.Z})
+	damageHostageUnits(state, attacker, index, int64(damage)*damageUnit)
 }

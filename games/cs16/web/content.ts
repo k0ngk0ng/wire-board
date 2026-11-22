@@ -46,6 +46,7 @@ export const weapons = [
 export const equipment = [
   { id: 'vest', name: '防弹衣', price: 650 }, { id: 'vesthelm', name: '防弹衣与头盔', price: 1000 },
   { id: 'defuser', name: '拆弹器', price: 200 }, { id: 'hegrenade', name: '高爆手雷', price: 300 },
+  { id: 'nvgs', name: '夜视仪', price: 1250 },
   { id: 'flashbang', name: '闪光弹', price: 200 }, { id: 'smokegrenade', name: '烟雾弹', price: 300 },
   { id: 'primammo', name: '主武器弹药', price: 0 }, { id: 'secammo', name: '副武器弹药', price: 0 },
 ] as const;

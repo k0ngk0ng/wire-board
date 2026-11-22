@@ -114,7 +114,7 @@ func QueueInput(state *State, seat int, input Input) error {
 }
 
 func InputReleased(input Input) bool {
-	return input.MoveX == 0 && input.MoveY == 0 && !input.Fire && !input.Secondary && !input.Jump && !input.Crouch && !input.Walk && !input.Reload && !input.Use && !input.Drop && !input.Flashlight && input.Select == ""
+	return input.MoveX == 0 && input.MoveY == 0 && !input.Fire && !input.Secondary && !input.Jump && !input.Crouch && !input.Walk && !input.Reload && !input.Use && !input.Drop && !input.Flashlight && !input.NightVision && input.Select == ""
 }
 
 func ClearInput(state *State, seat int) {
@@ -160,6 +160,7 @@ func Advance(state *State, targetFrame int64) {
 				p.Input = Input{Life: p.Life, Yaw: p.Yaw, Pitch: p.Pitch}
 			}
 			before := Position(*p)
+			stepNightVision(state, p)
 			movePlayer(state, p)
 			stepFootsteps(state, p, before)
 			PickupDrop(state, seat)

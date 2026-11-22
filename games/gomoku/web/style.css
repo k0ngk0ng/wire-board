@@ -102,7 +102,6 @@
 .gomoku-cell[aria-disabled="true"] {
   cursor: default;
 }
-/* A board target must not inherit the platform button's pressed translation. */
 .gomoku-board .gomoku-cell:active {
   transform: translate(-50%, -50%);
 }
@@ -295,3 +294,20 @@
     animation: none;
   }
 }
+
+[data-room-fullscreen] .gomoku-board { width: 100%; height: 100%; max-width: none; min-height: 0; display: grid; grid-template-rows: auto minmax(0,1fr); gap: 8px; padding: var(--game-fullscreen-safe-top,8px) var(--game-fullscreen-safe-right,8px) max(8px,env(safe-area-inset-bottom)) var(--game-fullscreen-safe-left,8px); box-sizing: border-box; }
+[data-room-fullscreen] .gomoku-heading { margin: 0; min-height: 32px; padding-left: max(0px, calc(var(--game-fullscreen-status-offset,8px) - var(--game-fullscreen-safe-left,8px))); padding-right: max(0px, calc(var(--game-fullscreen-toolbar-offset,40px) - var(--game-fullscreen-safe-right,8px))); }
+[data-room-fullscreen] .gomoku-heading > div { display: none; }
+[data-room-fullscreen] .gomoku-heading > strong { font-size: 12px; line-height: 16px; }
+[data-room-fullscreen] .gomoku-workspace { min-width: 0; min-height: 0; height: 100%; width: 100%; display: grid; grid-template-columns: minmax(0,1fr) clamp(200px,23vw,300px); gap: 8px; align-items: stretch; justify-content: stretch; container-type: size; }
+[data-room-fullscreen] .gomoku-play-area { min-width: 0; min-height: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; container-type: size; }
+[data-room-fullscreen] .gomoku-actions { min-height: 0; height: 100%; overflow: auto; overscroll-behavior: contain; padding: 8px; gap: 8px; }
+[data-room-fullscreen] .gomoku-map-tools { flex: none; width: 100%; margin: 0 0 4px; gap: 4px; }
+[data-room-fullscreen] .gomoku-map-tools > span:last-child { display: none; }
+[data-room-fullscreen] .gomoku-viewport { width: 100%; flex: 1 1 auto; height: 0; min-height: 0; max-height: none; aspect-ratio: auto; }
+@media (orientation: portrait), (max-width: 640px) {
+  [data-room-fullscreen] .gomoku-workspace { display: flex; flex-direction: column; }
+  [data-room-fullscreen] .gomoku-play-area { flex: none; width: 100%; height: min(calc(100cqw / 1 + 58px), calc(100cqh - 104px)); }
+  [data-room-fullscreen] .gomoku-actions { flex: 1 1 auto; width: 100%; min-height: 96px; height: 0; }
+}
+@media (pointer: coarse) { [data-room-fullscreen] .gomoku-board button { min-height: 44px; } [data-room-fullscreen] .gomoku-board [data-controller-group="board"] button, [data-room-fullscreen] .gomoku-board [data-controller-group="grid"] button { min-height: 0; } }

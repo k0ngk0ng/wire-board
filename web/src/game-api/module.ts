@@ -235,6 +235,7 @@ export type GameModule<Data = unknown, Options = unknown> = {
   // The server must independently declare and validate the same capability.
   isInputRelease?: (action: Record<string, unknown>) => boolean;
   defaultOptions?: Options;
+  resizeOptions?: (options: Options, capacity: number) => Options;
   // Optional game-owned visual timeline. Preserve host room metadata; never
   // modify authoritative snapshots or decide outcomes in this adapter.
   createPresentation?: () => RoomPresentation;

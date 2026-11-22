@@ -1,3 +1,6 @@
+@media not (pointer: coarse) {
+  .touch-controller-stage .touch-controller-overlay { display: none; }
+}
 @media (pointer: coarse) {
   .touch-controller-overlay {
     --control-safe-left: max(10px, env(safe-area-inset-left));

@@ -4,12 +4,14 @@ import catalog from "./catalog";
 import { Options, Preparation } from "./Preparation";
 import { characterNames, isMeleeWeapon, playerColors, weaponNames, type GameOptions, type View } from "./types";
 import { Rules } from "./Rules";
+import { resizeOptions } from "./options";
 
 export default defineGame<View, GameOptions>({
   ...catalog,
   assetLoading: "board",
   asyncBoard: true,
   preparationOwnsOptions: true,
+  resizeOptions,
   fullscreenToolbarOverlay: true,
   playerLayout: { density: "compact" },
   defaultOptions: {

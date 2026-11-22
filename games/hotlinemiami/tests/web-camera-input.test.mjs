@@ -45,3 +45,14 @@ test("the transmitted aim follows the final displayed pose during a small correc
   assert.equal(logical.x, 286 * 256);
   assert.equal(input.aim, expected);
 });
+
+test("portrait aim shares the render camera zoom and safe-area offset after immediate movement", () => {
+  const prediction = new MotionPrediction(motion);
+  const initial = { x: 320 * 256, y: 300 * 256, aim: 0, life: 1, alive: true, downUntil: 0, appliedSeq: 0 };
+  prediction.confirm(initial, 0, 0, "portrait");
+  const input = { type: "input", epoch: "portrait", seq: 1, life: 1, viewFrame: 0, moveX: -1000, moveY: 0, aim: 0, fire: false, throw: false, pickup: false, finish: false, interact: false };
+  const layout = { width: 320, height: 568, minimumScale: 2, insets: { top: 100, bottom: 112, left: 0, right: 0 } };
+  preparePredictedInput(prediction, input, 8, { x: 0.75, y: 0.25 }, { width: 800, height: 640 }, viewport, undefined, layout);
+  assert.equal(input.aim, aimAngle(40 * 256, -68 * 256));
+  assert.equal(prediction.sample(8).aim, input.aim);
+});

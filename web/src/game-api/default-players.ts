@@ -8,9 +8,13 @@ type PlayerCapacity = {
 export function gameDefaultPlayers(module: PlayerCapacity): number {
   const minimum = Number.isSafeInteger(module.minPlayers) ? module.minPlayers : 1;
   if (!Number.isSafeInteger(module.minPlayers) || !Number.isSafeInteger(module.maxPlayers)) return minimum;
-  const counts = module.playerCounts ?? [];
-  if (!counts.every(Number.isSafeInteger)) return minimum;
-  const selected = module.defaultPlayers;
-  if (selected !== undefined && Number.isSafeInteger(selected) && selected >= module.minPlayers && selected <= module.maxPlayers && (!module.playerCounts || counts.includes(selected))) return selected;
-  return minimum;
+  if (module.maxPlayers < minimum) return minimum;
+  if (!module.playerCounts) return module.maxPlayers;
+  let selected = minimum;
+  for (const count of module.playerCounts) {
+    if (!Number.isSafeInteger(count)) return minimum;
+    if (count < module.minPlayers || count > module.maxPlayers) continue;
+    selected = Math.max(selected, count);
+  }
+  return selected;
 }

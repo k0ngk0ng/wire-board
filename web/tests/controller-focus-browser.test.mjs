@@ -63,6 +63,7 @@ test(
       scope:
         "Native browser events across actual FC, MD, basketball and common input adapters inside the production GameFullscreen; isolated from physics and server rules",
       checks: [],
+      observations: [],
     };
     let server,
       session,
@@ -112,8 +113,15 @@ test(
       assert.ok(value, name);
     };
     const wait = (condition) => browser("wait", "--fn", condition);
+    const observe = async (adapter, stage) => {
+      report.observations.push({
+        adapter,
+        stage,
+        state: await evaluate("window.fixture.inspect()"),
+      });
+    };
     try {
-      const source = `import {createRoot} from 'react-dom/client';import {useEffect,useRef,useState} from 'react';import {GameFullscreen} from ${JSON.stringify(path.join(root, "web/src/ui/room-fullscreen.tsx"))};import {RuntimeInput} from ${JSON.stringify(path.join(root, "games/contra/web/runtime-input.ts"))};import {BasketballInput} from ${JSON.stringify(path.join(root, "games/basketball/web/input.ts"))};import {MDInput,mdBits} from ${JSON.stringify(path.join(root, "games/yuyuhakusho/web/input.ts"))};import {GameController} from ${JSON.stringify(path.join(root, "web/src/controllers/game-controller.ts"))};const mode=new URLSearchParams(location.search).get('adapter')||'contra';const state=window.fixture={x:20,mask:0,cancels:0,clicks:0,enabled:true};let controller;const profile={revision:1,turboHz:10,keyboard:{right:'KeyD',start:'Space'}};function App(){const game=useRef(null),fullscreen=useRef(null);const [enabled,setEnabled]=useState(true);const [ready,setReady]=useState(false);useEffect(()=>{const cancel=()=>{state.mask=0;state.cancels++};if(mode==='md'){controller=new MDInput(game.current,{...profile,keyboard:Object.fromEntries(Object.keys(mdBits).map(name=>[name,name==='right'?'KeyD':name==='start'?'Space':'']))},cancel);controller.setEnabled(true)}else if(mode==='basketball')controller=new BasketballInput(profile,game.current,cancel);else if(mode==='common')controller=new GameController(game.current,profile,{id:'fixture',name:'fixture',buttons:[{id:'right',label:'右'},{id:'start',label:'开始'}],defaults:profile},{enabled:()=>state.enabled,changed:()=>{}});else controller=new RuntimeInput(profile,game.current,cancel);state.read=()=>{const sampled=controller.sample(performance.now());return typeof sampled==='number'?sampled:(sampled.has('right')?1:0)|(sampled.has('start')?16:0)};state.setEnabled=value=>{state.enabled=value;controller.setEnabled?.(value);setEnabled(value)};state.dispose=()=>controller.dispose();let frame;const draw=()=>{state.mask=state.read();if(state.mask&(mode==='md'?8:1))state.x=Math.min(260,state.x+2);const canvas=game.current.querySelector('canvas'),ctx=canvas.getContext('2d');ctx.fillStyle='#e8ede5';ctx.fillRect(0,0,320,100);ctx.fillStyle='#176247';ctx.fillRect(state.x,35,24,24);frame=requestAnimationFrame(draw)};draw();return()=>{cancelAnimationFrame(frame);controller.dispose()}},[]);return <><div id='blank' tabIndex={-1}>房间空白与普通文字</div><input id='chat' placeholder='聊天'/><textarea id='textarea'/><div id='editable' contentEditable>编辑内容</div><button id='outside-button' onClick={()=>state.clicks++}>房间操作</button><a id='outside-link' href='#outside'>房间链接</a><button id='open-modal' onClick={()=>document.querySelector('dialog').showModal()}>打开设置</button><button id='fullscreen' disabled={!ready} onClick={()=>fullscreen.current.enter()}>全屏测试</button><dialog><input id='dialog-input'/><button id='close-modal' onClick={()=>document.querySelector('dialog').close()}>关闭设置</button></dialog><GameFullscreen ref={fullscreen} scope='focus-fixture' enabled={enabled} onReadyChange={setReady}><div id='padding' tabIndex={-1}>游戏区边缘</div><section ref={game} id='game' data-game-focus tabIndex={0}><canvas width='320' height='100'/></section></GameFullscreen></>};createRoot(document.getElementById('root')).render(<App/>);`;
+      const source = `import {createRoot} from 'react-dom/client';import {useEffect,useRef,useState} from 'react';import {GameFullscreen} from ${JSON.stringify(path.join(root, "web/src/ui/room-fullscreen.tsx"))};import {RuntimeInput} from ${JSON.stringify(path.join(root, "games/contra/web/runtime-input.ts"))};import {BasketballInput} from ${JSON.stringify(path.join(root, "games/basketball/web/input.ts"))};import {MDInput,mdBits} from ${JSON.stringify(path.join(root, "games/yuyuhakusho/web/input.ts"))};import {GameController} from ${JSON.stringify(path.join(root, "web/src/controllers/game-controller.ts"))};const mode=new URLSearchParams(location.search).get('adapter')||'contra';const state=window.fixture={x:20,mask:0,cancels:0,clicks:0,enabled:true,frames:0,events:[]};state.inspect=()=>({enabled:state.enabled,committedEnabled:document.querySelector('#game')?.dataset.enabled,ready:document.querySelector('#game')?.dataset.ready,fullscreenDisabled:document.querySelector('#fullscreen')?.disabled,active:document.activeElement?.id,focused:document.hasFocus(),hidden:document.hidden,visibility:document.visibilityState,mask:state.mask,x:state.x,frames:state.frames,events:state.events});for(const type of ['keydown','keyup','click','focusin','focusout','visibilitychange','blur','focus'])window.addEventListener(type,event=>queueMicrotask(()=>{state.events.push({type,trusted:event.isTrusted,target:event.target?.id||event.target?.nodeName||'',active:document.activeElement?.id,focused:document.hasFocus(),hidden:document.hidden,enabled:state.enabled,committedEnabled:document.querySelector('#game')?.dataset.enabled,ready:document.querySelector('#game')?.dataset.ready,code:event.code,prevented:event.defaultPrevented});if(state.events.length>200)state.events.shift()}),true);let controller;const profile={revision:1,turboHz:10,keyboard:{right:'KeyD',start:'Space'}};function App(){const game=useRef(null),fullscreen=useRef(null);const [enabled,setEnabled]=useState(true);const [ready,setReady]=useState(false);useEffect(()=>{const cancel=()=>{state.mask=0;state.cancels++};if(mode==='md'){controller=new MDInput(game.current,{...profile,keyboard:Object.fromEntries(Object.keys(mdBits).map(name=>[name,name==='right'?'KeyD':name==='start'?'Space':'']))},cancel);controller.setEnabled(true)}else if(mode==='basketball')controller=new BasketballInput(profile,game.current,cancel);else if(mode==='common')controller=new GameController(game.current,profile,{id:'fixture',name:'fixture',buttons:[{id:'right',label:'右'},{id:'start',label:'开始'}],defaults:profile},{enabled:()=>state.enabled,changed:()=>{}});else controller=new RuntimeInput(profile,game.current,cancel);state.read=()=>{const sampled=controller.sample(performance.now());return typeof sampled==='number'?sampled:(sampled.has('right')?1:0)|(sampled.has('start')?16:0)};state.setEnabled=value=>{state.enabled=value;controller.setEnabled?.(value);setEnabled(value)};state.dispose=()=>controller.dispose();let frame;const draw=()=>{state.frames++;state.mask=state.read();if(state.mask&(mode==='md'?8:1))state.x=Math.min(260,state.x+2);const canvas=game.current.querySelector('canvas'),ctx=canvas.getContext('2d');ctx.fillStyle='#e8ede5';ctx.fillRect(0,0,320,100);ctx.fillStyle='#176247';ctx.fillRect(state.x,35,24,24);frame=requestAnimationFrame(draw)};draw();return()=>{cancelAnimationFrame(frame);controller.dispose()}},[]);return <><div id='blank' tabIndex={-1}>房间空白与普通文字</div><input id='chat' placeholder='聊天'/><textarea id='textarea'/><div id='editable' contentEditable>编辑内容</div><button id='outside-button' onClick={()=>state.clicks++}>房间操作</button><a id='outside-link' href='#outside'>房间链接</a><button id='open-modal' onClick={()=>document.querySelector('dialog').showModal()}>打开设置</button><button id='fullscreen' disabled={!ready} onClick={()=>fullscreen.current.enter()}>全屏测试</button><dialog><input id='dialog-input'/><button id='close-modal' onClick={()=>document.querySelector('dialog').close()}>关闭设置</button></dialog><GameFullscreen ref={fullscreen} scope='focus-fixture' enabled={enabled} onReadyChange={setReady}><div id='padding' tabIndex={-1}>游戏区边缘</div><section ref={game} id='game' data-enabled={enabled} data-ready={ready} data-game-focus tabIndex={0}><canvas width='320' height='100'/></section></GameFullscreen></>};createRoot(document.getElementById('root')).render(<App/>);`;
       await writeFile(path.join(temporary, "fixture.tsx"), source);
       await require("esbuild").build({
         entryPoints: [path.join(temporary, "fixture.tsx")],
@@ -199,6 +207,7 @@ test(
         await browser("open", origin + "/?adapter=" + adapter);
         await browser("wait", "#game");
         await wait("typeof window.fixture.read==='function'");
+        await wait("document.querySelector('#game').dataset.enabled==='true'&&document.querySelector('#game').dataset.ready==='true'&&!document.querySelector('#fullscreen').disabled");
         await browser("click", "#game");
         await key("keyDown");
         await wait("window.fixture.mask>0");
@@ -294,6 +303,7 @@ test(
           await evaluate("window.fixture.read()===0"),
         );
         await evaluate("window.fixture.setEnabled(false);true");
+        await wait("document.querySelector('#game').dataset.enabled==='false'&&document.querySelector('#game').dataset.ready==='false'&&document.querySelector('#fullscreen').disabled");
         await browser("click", "#blank");
         await key("keyDown");
         check(
@@ -304,11 +314,17 @@ test(
         );
         await key("keyUp");
         await evaluate("window.fixture.setEnabled(true);true");
+        await wait("document.querySelector('#game').dataset.enabled==='true'&&document.querySelector('#game').dataset.ready==='true'&&!document.querySelector('#fullscreen').disabled&&document.hasFocus()&&!document.hidden");
         await browser("click", "#blank");
+        check(
+          adapter + " re-enabled background restores game focus",
+          await evaluate("document.activeElement.id==='game'"),
+        );
         await key("keyDown");
         await wait("window.fixture.mask>0");
         await key("keyUp");
         await wait("window.fixture.mask===0");
+        await observe(adapter, "enabled-input-recovered");
         await browser("screenshot", path.join(out, adapter + ".png"));
         await writeFile(
           path.join(out, adapter + ".snapshot.json"),
@@ -334,6 +350,7 @@ test(
       if (session) {
         try {
           report.page = {
+            state: await evaluate("window.fixture.inspect()"),
             url: await browser("get", "url"),
             tabs: await browser("tab"),
             snapshot: await browser("snapshot", "-i"),

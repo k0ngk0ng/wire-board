@@ -37,7 +37,8 @@ export function Board({
   audio,
   clock,
 }: BoardProps<View>) {
-  const controls = useMapControls({ aspect: 1, minMobileWidth: 480 });
+  const controls = useMapControls({ aspect: 1, minMobileWidth: 480, fitFullscreen: true });
+  const overview = controls.fullscreen && controls.mobile && Math.round(controls.mapStyle.width * 1000 / 16) < 28000;
   const [selected, setSelected] = useState<number | null>(null),
     [focus, setFocus] = useState(112),
     [resign, setResign] = useState(false),
@@ -127,7 +128,7 @@ export function Board({
       controls.mapStyle.top + v * controls.mapStyle.height - e.clientHeight / 2;
     trackView();
   };
-  const grid = Array.from({ length: 15 }, (_, i) => (
+  const grid = Array.from({ length: 15 }, (value, i) => (
     <path key={i} d={`M30 ${30 + i * 30}H450M${30 + i * 30} 30V450`} />
   ));
   const first = data.line?.[0],
@@ -138,6 +139,7 @@ export function Board({
       data-ply={data.ply}
       data-zoom={controls.zoom}
       data-selected={selected ?? ""}
+      data-overview={overview}
     >
       <div className="gomoku-heading">
         <div>
@@ -233,7 +235,7 @@ export function Board({
                       fill="#655037"
                     />
                   ))}
-                  {Array.from({ length: 15 }, (_, i) => (
+                  {Array.from({ length: 15 }, (value, i) => (
                     <g key={i} fill="#493c2d" fontSize="10" textAnchor="middle">
                       <text x={(i + 1) * 30} y="16">
                         {String.fromCharCode(65 + i)}
@@ -258,11 +260,17 @@ export function Board({
                       top: `${(Math.floor(index / 15) + 1) * 6.25}%`,
                     }}
                     aria-label={`${label(index)}，${color === 1 ? "黑棋" : color === 2 ? "白棋" : "空点"}`}
-                    aria-disabled={!canPlace || color !== 0}
+                    aria-disabled={!overview && (!canPlace || color !== 0)}
                     aria-pressed={selected === index}
                     tabIndex={focus === index ? 0 : -1}
                     onFocus={() => setFocus(index)}
-                    onClick={() => {
+                    onClick={(event) => {
+                      if (overview) {
+                        const viewport = controls.viewport.current?.getBoundingClientRect();
+                        const cell = event.currentTarget.getBoundingClientRect();
+                        if (viewport) controls.zoomAt(Math.min(3, 480 / controls.mapStyle.width), (event.detail ? event.clientX : cell.left + cell.width / 2) - viewport.left, (event.detail ? event.clientY : cell.top + cell.height / 2) - viewport.top);
+                        return;
+                      }
                       if (canPlace && !color) setSelected(index);
                     }}
                     onKeyDown={(e) => {

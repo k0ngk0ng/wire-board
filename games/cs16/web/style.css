@@ -104,7 +104,7 @@
 .cs16-touch-actions{right:max(var(--cs16-safe-right),var(--cs16-chat-right,0px));bottom:calc(var(--cs16-safe-bottom) + 8px);width:128px;height:196px}
 .cs16-touch-actions button[data-cs16-action=fire]{right:0;bottom:0}.cs16-touch-actions button[data-cs16-action=jump]{right:0;bottom:84px}.cs16-touch-actions button[data-cs16-action=crouch]{right:56px;bottom:84px}.cs16-touch-actions button[data-cs16-action=secondary]{right:0;bottom:140px}
 .cs16-touch-utility{inset:0;display:block;pointer-events:none}.cs16-touch-utility>button{position:absolute;pointer-events:auto}.cs16-touch-utility>[data-cs16-action=reload]{left:calc(var(--cs16-safe-left) + 112px);bottom:calc(var(--cs16-safe-bottom) + 8px)}.cs16-touch-utility>[data-cs16-controls-menu]{left:var(--cs16-safe-left);bottom:calc(var(--cs16-safe-bottom) + 176px)}
-.cs16-touch-more-panel{left:var(--cs16-safe-left);top:auto;bottom:calc(var(--cs16-safe-bottom) + 64px);max-height:calc(100% - 100px)}
+.cs16-touch-more-panel{left:var(--cs16-safe-left);top:auto;bottom:calc(var(--cs16-safe-bottom) + 116px);max-height:calc(100% - var(--cs16-safe-bottom) - 132px)}
 .cs16-inventory{left:var(--cs16-safe-left);bottom:calc(var(--cs16-safe-bottom) + 124px);width:calc(50% - 20px);max-width:calc(50% - 20px)}
 .cs16-vitals,.cs16-ammo{top:calc(max(12px,var(--cs16-toolbar-bottom,0px)) + 56px);bottom:auto}
 .cs16-look-zone{width:50%;bottom:8px}
@@ -132,6 +132,7 @@
 @media(pointer:coarse){.cs16-buy-menu{left:12px;top:12%;width:min(360px,calc(100% - 24px));max-height:86%}.cs16-buy-menu button{min-height:44px}.cs16-preparation .cs16-seat select,.cs16-preparation .cs16-seat button{height:44px;min-height:44px}.cs16-team-roster{height:370px;grid-auto-rows:74px}.cs16-preparation .cs16-seat{height:74px;grid-template-rows:18px 44px}.cs16-preparation .cs16-join-team{min-height:44px;height:44px}}
 .cs16-board{color:#ffb000}
 .cs16-hud-sprite{display:inline-block;flex:0 0 auto;vertical-align:middle;background:currentColor}
+.cs16-night-vision{filter:grayscale(1) sepia(1) saturate(5) hue-rotate(55deg)}
 .cs16-hud-number{display:inline-flex;align-items:center;white-space:nowrap;font-variant-numeric:tabular-nums}
 .cs16-status-icons{position:absolute;left:5px;bottom:50%;display:flex;flex-direction:column-reverse;gap:5px;color:#00a000;pointer-events:none;z-index:3}
 .cs16-status-icons>span{display:flex}

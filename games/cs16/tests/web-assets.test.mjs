@@ -14,6 +14,13 @@ test('original HUD atlas is validated and item confirmation sounds are loaded', 
   assert.deepEqual(selectSoundKeys({ 'items/9mmclip1.wav': {}, 'items/flashlight1.wav': {}, 'items/gunpickup2.wav': {}, 'weapons/ak47-1.wav': {}, 'hostage/h.wav': {}, 'radio/bombpl.wav': {}, 'unrelated.wav': {} }, 'bomb'), ['items/9mmclip1.wav', 'items/flashlight1.wav', 'items/gunpickup2.wav', 'weapons/ak47-1.wav', 'radio/bombpl.wav']);
 });
 
+test('night vision purchase and toggles load their existing original audio in every map mode', () => {
+  for (const mode of ['bomb', 'hostage', 'elimination']) {
+    const sounds = { 'items/equip_nvg.wav': {}, 'items/nvg_on.wav': {}, 'items/nvg_off.wav': {} };
+    assert.deepEqual(selectSoundKeys(sounds, mode), Object.keys(sounds));
+  }
+});
+
 test('rejects traversal, invalid byte counts and unknown media protocols', () => {
   for (const file of ['../outside', 'maps/../../outside', 'file:///tmp/test', 'javascript:alert(1)', 'maps\\outside']) assert.throws(() => validateResource(resource(file)));
   for (const bytes of [-1, 1.5, NaN]) assert.throws(() => validateResource({ ...resource(), bytes }));

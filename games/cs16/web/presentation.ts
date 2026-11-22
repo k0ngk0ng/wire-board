@@ -5,7 +5,7 @@ export function formatDuration(frames: number) {
   const total = Math.ceil(Math.max(0, frames) / 100);
   return `${Math.floor(total / 60)}:${String(total % 60).padStart(2, '0')}`;
 }
-export function matchClock(mode: string, phase: string, frames: number) { return mode === 'elimination' && phase === 'live' ? '歼灭敌队' : formatDuration(frames); }
+export function matchClock(mode: string, phase: string, frames: number) { return mode === 'elimination' && phase === 'live' ? '' : formatDuration(frames); }
 export function viewAngles(authority: { yaw: number; pitch: number }, manual: { yaw: number; pitch: number }, automated: boolean) { return automated ? { yaw: authority.yaw, pitch: authority.pitch } : manual; }
 export function visibleVelocity(previous: { x: number; y: number }, current: { x: number; y: number; vx?: number; vy?: number }, frames: number) {
   return { vx: current.vx ?? Math.round((current.x - previous.x) * 100 / Math.max(1, frames)), vy: current.vy ?? Math.round((current.y - previous.y) * 100 / Math.max(1, frames)) };

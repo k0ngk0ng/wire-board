@@ -30,6 +30,14 @@ export function defaults(capacity: number) {
   if (![2, 3, 4].includes(capacity)) throw Error("比赛支持 2 至 4 人");
   return Array.from({ length: capacity }, () => randomCharacter);
 }
+export function resizeOptions(value: GameOptions, capacity: number): GameOptions {
+  return {
+    ...value,
+    teamBattle: capacity === 4 && value.teamBattle,
+    oneVsThree: capacity === 4 && value.teamBattle && !!value.oneVsThree,
+    characters: defaults(capacity).map((fallback, seat) => value.characters?.[seat] ?? fallback),
+  };
+}
 export function teamGroups(
   options: Pick<GameOptions, "teamBattle" | "oneVsThree"> | undefined,
 ) {

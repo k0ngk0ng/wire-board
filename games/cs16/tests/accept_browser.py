@@ -36,6 +36,7 @@ REPORT['expectedMaps'] = list(MAPS)
 REPORT['expectedCaseCount'] = len(MAPS)
 REPORT['caseCount'] = 0
 REPORT['sampleHealth'] = {'authorizedBy': 'user', 'maps': list(ADDED_MAPS), 'manualMaxRounds': 30, 'spawnHealth': 10000, 'seats': [0, 1], 'naturalSpawnHealth': 100, 'productionModuleUnchanged': True}
+REPORT['sampleWallet'] = {'maps': list(ADDED_MAPS), 'manualMaxRounds': 30, 'initialWallet': 16000, 'seats': [0, 1], 'initialStartOnly': True, 'naturalAndProductionUnchanged': True}
 REPORT['lifecycle'] = {'fixtureMinutes': 60, 'goTestTimeoutMinutes': 61, 'nativeProcessSeconds': 60, 'nextLifeSeconds': 120, 'denseCombatMaximumSeconds': 45, 'naturalFinishSeconds': 240}
 MAP_MODES = {'de_dust2': 'bomb', 'de_inferno': 'bomb', 'de_aztec': 'bomb', 'cs_assault': 'hostage', 'fy_iceworld': 'elimination', 'cs_bloodstrike': 'elimination'}
 ADDED_MAP_NAMES = {'fy_iceworld': '冰雪世界', 'cs_bloodstrike': '血战回廊'}
@@ -291,7 +292,7 @@ def elimination_native(client, map_id, name, touch=False):
         browser(client, 'click', '[data-cs16-board]')
         wait_for(lambda: frame(client) and frame(client).get('inputEnabled') and room(client)['game']['data']['phase'] == 'live', 120)
         label = map_id + '-' + name + ('-attempt' + str(attempt + 1) if attempt else '')
-        result = native(client, label, touch=touch, allow_life_interruption=True, allowAmmoPurchase=map_id != 'fy_iceworld', playabilityAudit=map_id == 'cs_bloodstrike' and name == 'desktop-input')
+        result = native(client, label, touch=touch, allow_life_interruption=True, allowAmmoPurchase=map_id != 'fy_iceworld', playabilityAudit=map_id == 'cs_bloodstrike' and name == 'desktop-input', classicAudit=map_id == 'cs_bloodstrike' and name == 'desktop-input' and os.environ.get('CS16_BROWSER_CLASSIC_AUDIT') == '1')
         observations.append(json.loads((OUT / (label + '-native.json')).read_text()))
         measured = sample_summary(observations)
         check_sample_budgets(measured)
@@ -408,7 +409,7 @@ def buy_audit(client, map_id, mobile=False):
         wait_for(lambda: evaluate(client, '!!document.querySelector("[data-cs16-buy=secammo]")'))
     unavailable = set('elite mac10 galil ak47 sg552 g3sg1'.split()) if own['team'] == 'ct' else set('fiveseven tmp famas m4a1 aug sg550'.split())
     assert {entry['id'] for entry in entries} == FIREARMS - unavailable, entries
-    assert next(entry for entry in entries if entry['id'] == 'awp')['disabled']
+    assert next(entry for entry in entries if entry['id'] == 'awp')['disabled'] == (own['money'] < 4750)
     browser(client, 'press', '1')
     screenshot(client, map_id + '-buy-menu')
     if not mobile:

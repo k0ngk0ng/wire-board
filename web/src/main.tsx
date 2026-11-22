@@ -1,3 +1,4 @@
+import { RoomCommandQueue } from "./ui/room-command-queue";
 import { CompactRoomPanel } from "./ui/compact-room-panel";
 import { PasswordForm } from "./account/PasswordForm";
 import { NetworkSignal } from "./ui/network-signal";
@@ -162,6 +163,11 @@ function App() {
   const [state, setState] = useState<State>();
   const [actionScopes] = useState(() => new ActionScopes());
   const actionState = useRef<State | undefined>(undefined);
+  const waitingCommands = useMemo(() => new RoomCommandQueue<{ id: string; status: string; version: number; room: Room }>(() => {
+    const latest = actionState.current;
+    if (!latest?.user || !latest.room) return undefined;
+    return { id: `${latest.user.id}:${latest.room.id}`, status: latest.room.status, version: latest.room.version, room: latest.room };
+  }), []);
   const mediaBase = mediaAssetsBase(state?.assetsBaseURL || "", location.origin);
   const [streamInputs] = useState(() => new StreamInputs());
   const serverInstance = useRef<string | undefined>(undefined);
@@ -214,6 +220,8 @@ function App() {
     setError(message);
   };
   const [busy, setBusy] = useState(false);
+  const commandBusy = useRef(false);
+  const [passwordSaving, setPasswordSaving] = useState(false);
   const [online, setOnline] = useState(false);
   const [connectionNetwork, setConnectionNetwork] = useState<NetworkInfo>();
   const [create, setCreate] = useState(false);
@@ -484,7 +492,8 @@ function App() {
     previousTurn.current = key;
   }, [state?.room?.version, sound]);
   const run = async (fn: () => Promise<unknown>) => {
-    if (busy) return;
+    if (commandBusy.current) return;
+    commandBusy.current = true;
     setBusy(true);
     actionScopes.forgetError();
     setError("");
@@ -495,6 +504,7 @@ function App() {
       reportError(e);
       await refresh();
     } finally {
+      commandBusy.current = false;
       setBusy(false);
     }
   };
@@ -666,8 +676,29 @@ function App() {
       clearInvitation();
     });
   }, [state, invitedRoom, busy, join]);
-  const roomCommand = (type: string, extra: Record<string, unknown> = {}) =>
-    void run(() => command(state!.room!, type, extra));
+  const roomCommand = (type: string, extra: Record<string, unknown> = {}) => {
+    const visible = state?.room;
+    const user = state?.user;
+    if (!visible || !user) return Promise.resolve(false);
+    const execute = (room: Room) => {
+      let succeeded = false;
+      return run(async () => {
+        await command(room, type, extra);
+        succeeded = true;
+      }).then(() => succeeded);
+    };
+    if (visible.status !== "waiting") return execute(visible);
+    const passwordOnly = type === "room_settings" && typeof extra.roomPassword === "string" && extra.options === undefined && (extra.capacity === undefined || typeof extra.capacity === "number" && Number.isSafeInteger(extra.capacity) && Number.isSafeInteger(visible.capacity) && extra.capacity === visible.capacity);
+    if (!passwordOnly) setPasswordSaving(false);
+    return waitingCommands.enqueue({ id: `${user.id}:${visible.id}`, status: visible.status, version: visible.version }, async (current) => {
+      setPasswordSaving(passwordOnly);
+      try {
+        return await execute(current.room);
+      } finally {
+        setPasswordSaving(false);
+      }
+    }, passwordOnly);
+  };
   const enableAudio = () => {
     void audio.unlock();
   };
@@ -1074,7 +1105,7 @@ function App() {
                 ) : room.status === "waiting" ? (
                   <Waiting
                     room={room}
-                    busy={busy}
+                    busy={busy && !passwordSaving}
                     host={!room.spectating && room.host === state.user.id}
                     command={roomCommand}
                   />

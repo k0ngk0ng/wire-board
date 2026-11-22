@@ -422,6 +422,16 @@ if err := http.Serve(listener, app.Handler()); err != nil {panic(err)}
               opened.name === "FlowRoot的房间" &&
               !(await evaluate(shown(".create-room-modal"))),
           );
+          check(
+            "room defaults to maximum supported players " + kind + width,
+            opened.capacity === maximum,
+          );
+          check(
+            "room settings have no manual save action " + kind + width,
+            await evaluate(
+              "!document.querySelector('[data-room-settings-save]')",
+            ),
+          );
           if (kind === "gomoku") {
             const invalid = await evaluate(
               `fetch('/api/rooms/${opened.id}',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'room_settings',capacity:3,version:${opened.version},nonce:crypto.randomUUID()})}).then(r=>r.status)`,
@@ -432,10 +442,8 @@ if err := http.Serve(listener, app.Handler()); err != nil {panic(err)}
             );
           }
           await browser("select", '[aria-label="房间人数"]', String(maximum));
-          if (maximum !== opened.capacity)
-            await activate("[data-room-settings-save]", touch);
           await wait(
-            `document.querySelector('[aria-label="房间人数"]').value==='${maximum}'&&!document.querySelector('[data-room-settings-save]:not(:disabled)')`,
+            `document.querySelector('[aria-label="房间人数"]').value==='${maximum}'&&document.querySelectorAll('.waiting-seat').length===${maximum}`,
           );
           check(
             "capacity persisted " + kind + width,
@@ -448,6 +456,23 @@ if err := http.Serve(listener, app.Handler()); err != nil {panic(err)}
             );
           }
           if (kind === "splendor") {
+            await evaluate(
+              `(()=>{const original=window.fetch;window.__roomFlowSettingsStatuses=[];window.fetch=async(...fetchArguments)=>{const response=await original(...fetchArguments);const body=fetchArguments[1]?.body;if(typeof body==='string'&&JSON.parse(body).type==='room_settings')window.__roomFlowSettingsStatuses.push(response.status);return response};return true})()`,
+            );
+            const rejectedPassword = "房".repeat(25);
+            await browser("focus", '[aria-label="房间密码"]');
+            await browser("fill", '[aria-label="房间密码"]', rejectedPassword);
+            await browser("press", "Tab");
+            await wait(
+              "window.__roomFlowSettingsStatuses.includes(400)&&!document.querySelector('[aria-label=房间密码]').disabled",
+            );
+            check(
+              "failed password edit remains available " + width,
+              !(await current()).locked &&
+                (await evaluate(
+                  `document.querySelector('[aria-label="房间密码"]').value===${JSON.stringify(rejectedPassword)}`,
+                )),
+            );
             await browser(
               "fill",
               '[aria-label="房间密码"]',
@@ -470,16 +495,16 @@ if err := http.Serve(listener, app.Handler()); err != nil {panic(err)}
               "occupied seats cannot be removed " + width,
               rejected === 400 && (await current()).capacity === 4,
             );
-            await browser("select", '[aria-label="房间人数"]', "3");
-            await browser(
-              "fill",
-              '[aria-label="房间密码"]',
-              "flow-new-room-password",
-            );
-            await activate("[data-room-settings-save]", touch);
+            await browser("press", "Tab");
             await wait(
-              "!document.querySelector('[data-room-settings-save]:not(:disabled)')",
+              "!!document.querySelector('[data-room-password-remove]')&&document.querySelector('[aria-label=房间密码]').value===''",
             );
+            check(
+              "password commits when editing finishes " + width,
+              (await current()).locked,
+            );
+            await browser("select", '[aria-label="房间人数"]', "3");
+            await wait("document.querySelectorAll('.waiting-seat').length===3");
             const resized = await current();
             check(
               "resize preserves bots and resets human ready " + width,
@@ -510,24 +535,52 @@ if err := http.Serve(listener, app.Handler()); err != nil {panic(err)}
                 (await current()).locked,
             );
             await activate("[data-room-password-remove]", touch);
-            await activate("[data-room-settings-save]", touch);
             await wait(
-              "!document.querySelector('[data-room-settings-save]:not(:disabled)')",
+              "!document.querySelector('[data-room-password-remove]')",
             );
             check(
               "room password removable " + width,
               !(await current()).locked,
             );
+            await browser("focus", '[aria-label="房间密码"]');
+            await browser("fill", '[aria-label="房间密码"]', "flow-final-room-password");
+            await activate("[data-add-bot]", touch);
+            await wait("document.querySelectorAll('.waiting-seat.filled').length===4&&!!document.querySelector('[data-room-password-remove]')");
+            check("finishing password and adding a bot takes one click " + width, (await current()).seats.length===4&&(await current()).locked);
+
           } else {
             await browser("select", '[aria-label="房间人数"]', String(minimum));
-            if (minimum !== maximum)
-              await activate("[data-room-settings-save]", touch);
             await wait(
-              "!document.querySelector('[data-room-settings-save]:not(:disabled)')",
+              `document.querySelectorAll('.waiting-seat').length===${minimum}`,
             );
             check(
               "capacity shrinks " + kind + width,
               (await current()).capacity === minimum,
+            );
+          }
+          if (kind === "yuyuhakusho") {
+            await browser("select", '[aria-label="房间人数"]', "4");
+            await wait(
+              "document.querySelectorAll('.waiting-seat').length===4&&document.querySelectorAll('.yuyu-role').length===4",
+            );
+            check(
+              "four player preparation has one authoritative rule editor " +
+                width,
+              await evaluate(
+                "document.querySelectorAll('.yuyu-room-rules').length===1&&document.querySelectorAll('[aria-label=赛制]').length===1&&!document.querySelector('[data-room-settings-save]')",
+              ),
+            );
+            await browser("select", '[aria-label="赛制"]', "solo");
+            await wait(
+              "document.querySelectorAll('[data-yuyu-team]').length===2",
+            );
+            check(
+              "one versus three applies without saving " + width,
+              (await current()).options.oneVsThree === true,
+            );
+            await browser(
+              "screenshot",
+              path.join(out, `room-settings-yuyuhakusho-${width}.png`),
             );
           }
           if (kind === "catan") {

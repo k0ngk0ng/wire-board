@@ -23,8 +23,11 @@ test('ammunition and equipment retain numeric paths and unavailable choices do n
     assert.deepEqual(classicBuyChoice(team, 0, 8, 'bomb'), { category: 8 });
     assert.deepEqual(classicBuyChoice(team, 8, 0, 'bomb'), { close: true });
     assert.deepEqual(classicBuyChoice(team, 5, 9, 'bomb'), {});
-    assert.deepEqual(classicBuyEntries(team, 8, 'elimination').map(entry => entry.item), ['vest', 'vesthelm', 'flashbang', 'hegrenade', 'smokegrenade']);
+    assert.deepEqual(classicBuyEntries(team, 8, 'elimination').map(entry => entry.item), ['vest', 'vesthelm', 'flashbang', 'hegrenade', 'smokegrenade', 'nvgs']);
+    for (const mode of ['bomb', 'hostage', 'elimination']) assert.deepEqual(classicBuyChoice(team, 8, 6, mode), { item: 'nvgs', close: true });
   }
   assert.equal(classicBuyEntries('ct', 8, 'bomb').find(entry => entry.key === 7)?.item, 'defuser');
+  assert.deepEqual(classicBuyChoice('t', 8, 7, 'bomb'), {});
+  assert.deepEqual(classicBuyChoice('ct', 8, 7, 'elimination'), {});
   assert.equal(classicBuyEntries('t', 8, 'bomb').some(entry => entry.item === 'defuser'), false);
 });

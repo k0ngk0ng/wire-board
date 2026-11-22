@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import type { OptionsProps } from "../../../web/src/game-api/module";
 import type { GameOptions } from "./types";
-import { defaults, randomArena } from "./labels";
+import { randomArena, resizeOptions } from "./labels";
 import { ArenaPicker } from "./ArenaPicker";
 export function OptionsForm({
   value,
@@ -14,12 +14,7 @@ export function OptionsForm({
       value.characters?.length !== capacity ||
       (capacity !== 4 && (value.teamBattle || value.oneVsThree))
     )
-      onChange({
-        ...value,
-        teamBattle: capacity === 4 && !!value.teamBattle,
-        oneVsThree: capacity === 4 && !!value.oneVsThree,
-        characters: defaults(capacity),
-      });
+      onChange(resizeOptions(value, capacity));
   }, [capacity, value, onChange]);
   return (
     <div className="yuyu-options">

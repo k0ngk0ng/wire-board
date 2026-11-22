@@ -23,6 +23,8 @@ func InitRound(state *State) {
 	state.Bomb = Bomb{Carrier: -1, Defuser: -1}
 	state.Hostages = make([]Hostage, len(state.World.Hostages))
 	state.HostageRoutes = nil
+	state.HostageDamageStates = nil
+	state.BrushDamageStates = nil
 	for i, spawn := range state.World.Hostages {
 		state.Hostages[i] = Hostage{ID: i + 1, X: spawn.X, Y: spawn.Y, Z: spawn.Z, Health: 100, Following: -1}
 	}
@@ -34,12 +36,16 @@ func InitRound(state *State) {
 	terrorists := []int{}
 	for seat := range state.Players {
 		p := &state.Players[seat]
+		if p.Armor == 0 && p.ArmorRemainder == 0 {
+			p.Helmet = false
+		}
 		survived := p.Alive && p.Health > 0 && p.Life > 0
 		if !survived {
 			p.Inventory = nil
-			p.Armor = 0
+			p.Armor, p.ArmorRemainder = 0, 0
 			p.Helmet = false
 			p.Defuser = false
+			p.NightVisionOwned = false
 			InitInventory(p)
 		}
 		withoutC4 := p.Inventory[:0]
@@ -61,6 +67,7 @@ func InitRound(state *State) {
 		p.DeathAt, p.DeathHitgroup, p.DeathVX, p.DeathVY, p.DeathVZ = 0, 0, 0, 0, 0
 		p.Stamina, p.StepAt, p.StepIndex = 0, 0, 0
 		p.Flashlight, p.FlashlightCharge, p.FlashlightAt = false, 100, state.Frame+20
+		p.NightVision, p.NightVisionAt = false, 0
 		p.NextAttack = state.Frame
 		p.BotGoal, p.BotPath, p.BotTarget, p.BotDecision = Vec3{}, nil, -1, 0
 		p.BotRouteMode = 0

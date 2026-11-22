@@ -12,9 +12,10 @@ export function useMapControls({
   minMobileWidth = 620,
   fillMobileHeight = false,
   fitMobile = false,
+  fitFullscreen = false,
 } = {}) {
   const viewport = useRef<HTMLDivElement>(null);
-  const [size, setSize] = useState({ width: 0, height: 0, mobile: false });
+  const [size, setSize] = useState({ width: 0, height: 0, mobile: false, fullscreen: false });
   const [zoom, setZoom] = useState(1);
   const [dragging, setDragging] = useState(false);
   const drag = useRef<{
@@ -29,7 +30,7 @@ export function useMapControls({
     null,
   );
   const baseWidth =
-    size.mobile && !fitMobile
+    size.mobile && !fitMobile && !(fitFullscreen && size.fullscreen)
       ? Math.max(
           minMobileWidth,
           size.width,
@@ -44,15 +45,22 @@ export function useMapControls({
   useLayoutEffect(() => {
     const el = viewport.current;
     if (!el) return;
-    const observer = new ResizeObserver(() => {
-      setSize({
+    const measure = () => {
+      const next = {
         width: el.clientWidth,
         height: el.clientHeight,
         mobile: window.innerWidth <= 850,
-      });
-    });
+        fullscreen: !!el.closest('[data-room-fullscreen]'),
+      };
+      setSize(previous => previous.width === next.width && previous.height === next.height && previous.mobile === next.mobile && previous.fullscreen === next.fullscreen ? previous : next);
+    };
+    const observer = new ResizeObserver(measure);
+    const changes = new MutationObserver(measure);
+    const surface = el.closest('[data-game-fullscreen-surface]');
+    if (surface) changes.observe(surface, { attributes: true, attributeFilter: ['data-room-fullscreen'] });
     observer.observe(el);
-    return () => observer.disconnect();
+    measure();
+    return () => { observer.disconnect(); changes.disconnect(); };
   }, []);
 
   const zoomAt = useCallback(
@@ -118,6 +126,7 @@ export function useMapControls({
   return {
     viewport,
     mobile: size.mobile,
+    fullscreen: size.fullscreen,
     zoom,
     zoomAt,
     dragging,

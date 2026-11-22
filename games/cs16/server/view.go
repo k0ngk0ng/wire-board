@@ -13,6 +13,8 @@ type PlayerView struct {
 	Stamina          int                  `json:"stamina,omitempty"`
 	Flashlight       bool                 `json:"flashlight,omitempty"`
 	FlashlightCharge *int                 `json:"flashlightCharge,omitempty"`
+	NightVisionOwned bool                 `json:"nightVisionOwned,omitempty"`
+	NightVision      bool                 `json:"nightVision,omitempty"`
 	DeathAt          int64                `json:"deathAt,omitempty"`
 	DeathHitgroup    int                  `json:"deathHitgroup,omitempty"`
 	DeathVX          int                  `json:"deathVX,omitempty"`
@@ -166,7 +168,7 @@ func eventAudible(state *matchState, seat int, position engine.Vec3, radius int)
 }
 
 func eventVisible(state *matchState, seat int, event engine.Event) bool {
-	if event.Kind == "buy" {
+	if event.Kind == "buy" || event.Kind == "nightvision" {
 		return hasViewSeat(state, seat) && event.Seat == seat
 	}
 	if !hasViewSeat(state, seat) || event.Seat == seat || (event.Kind == "hit" || event.Kind == "kill" || event.Kind == "death" || event.Kind == "knife_hit") && event.Target == seat {
@@ -243,7 +245,9 @@ func projection(state *matchState, seat int) View {
 			logicalInput.QueuedFrame, logicalPrevious.QueuedFrame = 0, 0
 			view.Input, view.Previous = &logicalInput, &logicalPrevious
 			view.Health, view.Armor, view.Money = &player.Health, &player.Armor, &player.Money
-			view.Helmet, view.Defuser = &player.Helmet, &player.Defuser
+			helmet := player.Helmet && (player.Armor > 0 || player.ArmorRemainder > 0)
+			view.Helmet, view.Defuser = &helmet, &player.Defuser
+			view.NightVisionOwned, view.NightVision = player.NightVisionOwned, player.NightVision
 			view.Ammo, view.Reserve = &player.Ammo, &player.Reserve
 			view.Inventory = append([]engine.WeaponState{}, player.Inventory...)
 			view.Grounded = player.Grounded

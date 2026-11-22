@@ -62,6 +62,38 @@ def json_bytes(value):
     return json.dumps(value, ensure_ascii=False, separators=(",", ":"), allow_nan=False).encode("utf-8")
 
 
+def material_geometry_sha(rule):
+    value = json.loads(json_bytes(rule))
+    for brush in value.get("brushes", []):
+        brush.pop("material", None)
+    return digest(json.dumps(value, ensure_ascii=False, separators=(",", ":"), sort_keys=True, allow_nan=False).encode("utf-8"))
+
+
+def material_rule_compatibility(previous, current, known):
+    old_rules = {rule["id"]: rule for rule in previous}
+    transitions = {}
+    for rule in current:
+        identity = digest(json_bytes(rule))
+        geometry = material_geometry_sha(rule)
+        old = old_rules.get(rule["id"])
+        old_identity = digest(json_bytes(old)) if old else ""
+        if old and old_identity != identity and material_geometry_sha(old) == geometry:
+            transitions[old_identity] = {"mapId": rule["id"], "from": old_identity, "to": identity, "geometrySHA256": geometry}
+        for row in known:
+            if row.get("mapId") == rule["id"] and row.get("geometrySHA256") == geometry and row.get("to") in (old_identity, identity) and row.get("from") != identity:
+                transitions[row["from"]] = {**row, "to": identity}
+    return sorted(transitions.values(), key=lambda row: (row["mapId"], row["from"]))
+
+
+def go_json_constant(path, name):
+    if not path.exists():
+        return []
+    match = re.search(r"\bconst\s+" + re.escape(name) + r"\s*=\s*`([^`]*)`", path.read_text())
+    if not match:
+        raise ValueError("Generated Go JSON constant missing")
+    return json.loads(match[1])
+
+
 def png_bytes(width, height, rgba):
     if width < 1 or height < 1 or width > 16384 or height > 16384 or len(rgba) != width * height * 4:
         raise ValueError("Invalid PNG dimensions or pixels")
@@ -514,6 +546,8 @@ def rules_for_map(bsp, map_id, source=None):
             flags = int(entity.get("spawnflags", "0"))
             wait = float(entity.get("wait", "3"))
             rule["brushes"].append({"id": entity_index, "kind": kind, "bounds": entity_bounds(bsp, entity), "hulls": [node_graph(bsp, model[9], False), node_graph(bsp, model[10], True), node_graph(bsp, model[12], True)], "origin": point_object(vector(entity.get("origin", "0 0 0"))), "open": bool(flags & 1) if kind in ("func_door", "func_door_rotating") else False, "health": max(1, round(float(entity.get("health", "20")))), "move": point_object([value * travel for value in direction]), "speed": round(float(entity.get("speed", "100")) * UNIT), "wait": round(wait * 100), "target": entity.get("target", ""), "targetName": entity.get("targetname", ""), "flags": flags, "angle": round(float(entity.get("distance", "90")) * 65536 / 360), "modelIndex": model_id})
+            if kind == "func_breakable":
+                rule["brushes"][-1]["material"] = int(entity.get("material", "0"))
     if len(rule["spawnsT"]) < 5 or len(rule["spawnsCT"]) < 5 or rule["mode"] == "bomb" and not rule["bombsites"] or rule["mode"] == "hostage" and not rule["hostages"]:
         raise ValueError("Map objectives or ten-player spawns missing")
     if not rule["rescueZones"] and rule["mode"] == "hostage":
@@ -904,6 +938,9 @@ def refresh_rules(source, output):
     manifest = json.loads(manifest_path.read_text())
     if manifest.get("schema") != 1 or set(manifest.get("maps", {})) != set(MAPS):
         raise ValueError("An existing complete CS16 asset manifest is required")
+    data_directory = ROOT / "games/cs16/data"
+    previous = go_json_constant(data_directory / "maps.go", "MapsJSON")
+    known = go_json_constant(data_directory / "maps_compat.go", "MaterialRulesCompatibilityJSON")
     rules = []
     for map_id in MAPS:
         bsp = Bsp((source / "cstrike/maps" / (map_id + ".bsp")).read_bytes())
@@ -912,9 +949,10 @@ def refresh_rules(source, output):
         raw = json_bytes(rule)
         write_resource(output, "maps/" + map_id + "/rules.json", raw, "application/json")
         manifest["maps"][map_id]["rules"] = write_resource(output, "maps/" + map_id + "/rules.json.gz", raw, "application/json", compressed=True)
-    data_directory = ROOT / "games/cs16/data"
     data_directory.mkdir(parents=True, exist_ok=True)
     (data_directory / "maps.go").write_text("package data\n\nconst MapsJSON = `" + json_bytes(rules).decode("utf-8") + "`\n")
+    transitions = material_rule_compatibility(previous, rules, known)
+    (data_directory / "maps_compat.go").write_text("package data\n\nconst MaterialRulesCompatibilityJSON = `" + json_bytes(transitions).decode("utf-8") + "`\n")
     manifest_path.write_bytes(json_bytes(manifest) + b"\n")
     verification = ROOT / ".local/cs16/verification"
     verification.mkdir(parents=True, exist_ok=True)

@@ -2,6 +2,41 @@ import type { GameInput } from './types.ts';
 
 export type FeedbackKind = 'shot' | 'slash' | 'stab' | 'pin' | 'throw' | 'plant' | 'mode' | 'reload';
 
+export function attackFeedbackBlocked(value: { kind: FeedbackKind; heldBefore: boolean; nextAttack: number; frame: number; reloadUntil: number }) {
+  return value.reloadUntil > value.frame || value.nextAttack > value.frame || (value.kind === 'shot' || value.kind === 'slash') && value.heldBefore;
+}
+
+export function attackEventInCurrentLife(event: { seat: number; life?: number }, seat: number, life: number) {
+  return event.seat !== seat || event.life === undefined || event.life === life;
+}
+
+export class AttackFeedbackQueue {
+  private serial = 0;
+  private pending: { kind: FeedbackKind; weapon: string; life: number; at: number; seq: number }[] = [];
+
+  predict(kind: FeedbackKind, weapon: string, life: number, at: number, seq = 0) {
+    const now = Math.round(at);
+    this.pending = this.pending.filter(item => now - item.at <= 500).slice(-31);
+    this.pending.push({ kind, weapon, life, at: now, seq });
+    return ++this.serial;
+  }
+
+  reject(seq: number, life: number) {
+    this.pending = this.pending.filter(item => item.seq !== seq || item.life !== life);
+  }
+
+  confirm(kind: FeedbackKind, weapon: string, life: number, at: number) {
+    const now = Math.round(at);
+    this.pending = this.pending.filter(item => now - item.at <= 500);
+    const index = this.pending.findIndex(item => item.kind === kind && item.weapon === weapon && item.life === life && now >= item.at);
+    if (index < 0) return false;
+    this.pending.splice(index, 1);
+    return true;
+  }
+
+  reset() { this.pending = []; }
+}
+
 export function announcementSound(event: { type: string; global?: boolean; value?: number }): string | undefined {
   if (!event.global) return;
   if (event.type === 'bomb_planted') return 'radio/bombpl.wav';
