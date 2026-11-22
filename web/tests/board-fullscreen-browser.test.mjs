@@ -25,6 +25,7 @@ test('shared fullscreen uses overlay controls and maximizes five proportional ch
       result = await execute('agent-browser', ['--session', session, '--profile', environment.AGENT_BROWSER_PROFILE, ...args, '--json'], { cwd: root, env: environment, timeout: 30000, maxBuffer: 4 << 20 });
     } catch (error) {
       const failure = { command: args, message: error.message, stdout: error.stdout, stderr: error.stderr };
+      failure.doctor = await execute('agent-browser', ['--session', session, 'doctor', '--json'], { cwd: root, env: environment, timeout: 10000, maxBuffer: 1 << 20 }).then(value => ({ stdout: value.stdout, stderr: value.stderr }), value => ({ stdout: value.stdout, stderr: value.stderr, message: value.message }));
       await writeFile(path.join(out, 'browser-' + args[0] + '-failure.json'), JSON.stringify(failure, null, 2) + '\n');
       throw Error(JSON.stringify(failure), { cause: error });
     }

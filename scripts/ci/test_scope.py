@@ -70,6 +70,14 @@ class ScopeTests(unittest.TestCase):
         self.assertFalse(result['has_shared'])
         self.assertFalse(result['has_games'])
 
+    def test_resource_identity_registry_builds_without_unmodified_platform_rules(self):
+        result = self.plan('assets/resources.json')
+        self.assertFalse(result['has_shared'])
+        self.assertFalse(result['has_games'])
+        self.assertTrue(result['frontend_checks'])
+        self.assertTrue(result['build_required'])
+        self.assertEqual(result['quick_components'], ['frontend'])
+
     def test_real_http_browser_fixture_restores_frontend_application_inputs(self):
         workflow = (ROOT / '.github/workflows/build.yml').read_text()
         quick = workflow.split('  quick:', 1)[1].split('  frontend:', 1)[0]

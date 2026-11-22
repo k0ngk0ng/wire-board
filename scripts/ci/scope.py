@@ -447,7 +447,7 @@ def plan(paths, games, manual='', legacy_sources=None, contra_campaigns=False, v
         elif path.startswith('cmd/'):
             components.add('ci')
             shared = True
-        elif cover_path(path, games) or path.startswith(('web/src/', 'web/tests/')) or path == 'scripts/check-release-history.py' or path in FRONTEND_POLICY_FILES or path in SHARED_UI_ACCEPTANCE_FILES:
+        elif cover_path(path, games) or path.startswith(('web/src/', 'web/tests/')) or path in {'scripts/check-release-history.py', 'assets/resources.json'} or path in FRONTEND_POLICY_FILES or path in SHARED_UI_ACCEPTANCE_FILES:
             frontend_checks = True
         elif path in ('scripts/update.sh', 'scripts/test_update.py', 'compose.yaml', 'Dockerfile', '.env.example'):
             components.add('deployment')
