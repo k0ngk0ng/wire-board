@@ -36,19 +36,11 @@ func stepBomb(state *State) {
 		if state.Bomb.Carrier >= 0 && state.Bomb.Carrier < len(state.Players) {
 			carrier := &state.Players[state.Bomb.Carrier]
 			if !carrier.Alive || carrier.Input.Drop && carrier.Weapon == "c4" {
-				state.Bomb.X, state.Bomb.Y, state.Bomb.Z = carrier.X, carrier.Y, carrier.Z-28*Unit
-				state.Bomb.Carrier, state.Bomb.Dropped = -1, true
+				placeDroppedBomb(state, carrier)
 				removeC4(carrier)
 				carrier.Action, carrier.ActionSince = "", 0
-				Emit(state, Event{Kind: "bomb_dropped", Seat: carrier.Seat, Target: -1, Weapon: "c4", X: state.Bomb.X, Y: state.Bomb.Y, Z: state.Bomb.Z})
 			} else {
-				inside := false
-				for _, site := range state.World.Bombsites {
-					if objectiveInBounds(objectivePosition(carrier), site) {
-						inside = true
-						break
-					}
-				}
+				inside := InBombZone(state, carrier.Seat)
 				planting := carrier.Team == "t" && carrier.Weapon == "c4" && carrier.Input.Fire && objectiveStill(carrier) && inside
 				if !planting {
 					if carrier.Action == "plant" {
@@ -73,7 +65,7 @@ func stepBomb(state *State) {
 				}
 			}
 		}
-		if state.Bomb.Dropped {
+		if state.Bomb.Dropped && state.Frame >= state.Bomb.PickupAt {
 			for seat := range state.Players {
 				player := &state.Players[seat]
 				if player.Alive && player.Team == "t" && objectiveNear(objectivePosition(player), bombPosition(state.Bomb), 64*Unit) {

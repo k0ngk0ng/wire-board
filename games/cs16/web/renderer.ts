@@ -7,8 +7,10 @@ import { eventFeedback, type FeedbackKind } from './feedback.ts';
 import { eyeOffset, smokeRadius, viewModelHand, viewModelVerticalFov, visibleVelocity } from './presentation.ts';
 import { carriedBoneMap, playerPose } from './model-pose.ts';
 import { createMuzzleTexture, mapTextureColorSpace, muzzleAttachments, ShotEffects } from './shot-effects.ts';
+import { CorpseInterpolation, corpseAge, corpseTravel, deathAnimation, deathView, scopeFov, ViewImpulse, weaponAnimation } from './view-effects.ts';
+import { MapFlashlight } from './flashlight.ts';
 
-type Actor = { root: T.Group; model: T.Object3D; mixer: T.AnimationMixer; clips: T.AnimationClip[]; animation: string; weapon: string; carried?: T.Object3D; carriedBones?: T.Bone[]; carriedSkeletons?: T.Skeleton[]; alive: boolean };
+type Actor = { root: T.Group; model: T.Object3D; mixer: T.AnimationMixer; clips: T.AnimationClip[]; animation: string; weapon: string; carried?: T.Object3D; carriedBones?: T.Bone[]; carriedSkeletons?: T.Skeleton[]; alive: boolean; life: number; deathAt: number; corpseMotion: CorpseInterpolation; settled?: T.Vector3 };
 type Frame = { view: View; at: number };
 
 export class BattleRenderer {
@@ -36,6 +38,19 @@ export class BattleRenderer {
   private pendingShots = 0;
   private muzzleNodes: T.Object3D[] = [];
   private weaponShots = 0;
+  private meleeSwings = 0;
+  private pendingFeedback?: { kind: FeedbackKind; serial: number; contact: string };
+  private viewImpulse = new ViewImpulse();
+  private viewIdentity = '';
+  private flashlight = new MapFlashlight();
+  private flashlightDirection = new T.Vector3();
+  private mapMeshes: T.Mesh[] = [];
+  private corpseRay = new T.Raycaster();
+  private corpseFrom = new T.Vector3();
+  private corpseTo = new T.Vector3();
+  private corpseDirection = new T.Vector3();
+  private collisionDirty = true;
+  private presentationFrame = 0;
   private shotOrigin = new T.Vector3();
   private disposed = false;
   private width = 0;
@@ -70,6 +85,7 @@ export class BattleRenderer {
         if (!map) throw Error(`地图纹理未解码：${mesh.texture}`);
         const transparent = !!mesh.renderMode && mesh.renderMode !== 4;
         material = new T.MeshBasicMaterial({ map, lightMap: lightmap, lightMapIntensity: 1, side: T.DoubleSide, transparent, opacity: transparent ? (mesh.alpha ?? 255) / 255 : 1, depthWrite: !transparent, alphaTest: mesh.transparent || mesh.renderMode === 4 ? 0.5 : 0 });
+        this.flashlight.apply(material);
         materials.set(materialKey, material);
         this.resources.push(material);
       }
@@ -81,6 +97,7 @@ export class BattleRenderer {
       geometry.computeBoundingSphere();
       geometry.computeBoundingBox();
       const object = new T.Mesh(geometry, material);
+      this.mapMeshes.push(object);
       if (mesh.origin) object.position.fromArray(mesh.origin);
       const rules = assets.rules.brushes as { id: number; origin: { x: number; y: number; z: number }; move: { x: number; y: number; z: number }; kind: string; angle: number; flags: number }[] | undefined;
       const brush = rules?.find(brush => brush.id === mesh.brush);
@@ -134,7 +151,7 @@ export class BattleRenderer {
 
   update(view: View, at: number) {
     const previous = this.frames.at(-1);
-    if (previous?.view.epoch !== view.epoch || previous.view.frame > view.frame) this.frames = [];
+    if (previous?.view.epoch !== view.epoch || previous.view.frame > view.frame || previous.view.round !== view.round) { this.frames = []; this.viewImpulse.reset(); this.viewIdentity = ''; this.pendingFeedback = undefined; this.presentationFrame = view.frame; }
     if (previous?.view.frame === view.frame && previous.view.eventId === view.eventId) return;
     this.frames.push({ view, at });
     if (this.frames.length > 6) this.frames.shift();
@@ -146,7 +163,7 @@ export class BattleRenderer {
   }
 
   get visualStats() {
-    return { ...this.effects.stats, muzzle: this.muzzle.visible, muzzleAttachmentCount: this.muzzleNodes.length, lightmapColorSpace: this.mapLighting?.colorSpace };
+    return { ...this.effects.stats, muzzle: this.muzzle.visible, muzzleAttachmentCount: this.muzzleNodes.length, lightmapColorSpace: this.mapLighting?.colorSpace, cameraFov: this.camera.fov, weaponAnimation: this.weapon?.animation, flashlight: this.flashlight.uniforms.csFlashPower.value, corpses: [...this.actors.values()].filter(actor => !actor.alive && actor.root.visible).length };
   }
 
   shoot(now: number) {
@@ -154,14 +171,14 @@ export class BattleRenderer {
   }
 
   feedback(kind: FeedbackKind, now: number) {
-    if (kind === 'shot') { this.muzzleUntil = now + 55; this.pendingShots = Math.min(4, this.pendingShots + 1); this.weaponShots++; }
-    if (!this.weapon) return;
-    const variant = (this.weaponID === 'm4a1' || this.weaponID === 'usp') && !this.weaponSilenced;
-    const pattern = kind === 'shot' ? variant ? /^shoot1_unsil$/i : /^(?:shoot1|fire)$/i : kind === 'slash' ? /^slash|midslash/i : kind === 'stab' ? /^stab/i : kind === 'pin' ? /pullpin/i : kind === 'throw' ? /^throw/i : kind === 'plant' ? /pressbutton/i : kind === 'mode' ? this.weaponSilenced ? /detach_silencer/i : /add_silencer|attach|burst|zoom/i : variant ? /^reload_unsil$/i : /^reload$/i;
-    this.animate(this.weapon, pattern, true);
+    if (kind === 'shot') { this.muzzleUntil = now + 55; this.pendingShots = Math.min(4, this.pendingShots + 1); this.weaponShots++; this.viewImpulse.shot(now); }
+    const serial = kind === 'shot' ? this.weaponShots - 1 : kind === 'slash' ? this.meleeSwings++ : 0;
+    this.pendingFeedback = { kind, serial, contact: 'air' };
   }
 
   event(event: GameEvent, now: number, localSeat: number) {
+    if (event.type === 'land' && (event.seat === localSeat || event.seat === this.observedSeat)) this.viewImpulse.land(event.value ?? 0, now);
+    if ((event.type === 'knife_hit' || event.type === 'knife_wall') && event.value === 1 && (event.seat === localSeat || event.seat === this.observedSeat)) { this.pendingFeedback = { kind: 'stab', serial: 0, contact: 'hit' }; return; }
     if (event.type === 'hit' && event.seat === localSeat) this.effects.confirmHit();
     const actor = this.actors.get(event.seat);
     if (event.type === 'shot') {
@@ -196,6 +213,11 @@ export class BattleRenderer {
     this.last = now;
     for (const mixer of this.decorationMixers) mixer.update(dt);
     const displayed = this.remote(now);
+    const received = this.frames.at(-1);
+    const elapsed = Math.max(0, Math.min(150, Math.round(now - (received?.at ?? now))));
+    const visualFrame = Math.max(this.presentationFrame, view.frame + elapsed / 10);
+    this.presentationFrame = visualFrame;
+    this.collisionDirty = true;
     const active = new Set<number>();
     for (const source of displayed) {
       if (source.visible === false || !Number.isFinite(source.x)) continue;
@@ -209,36 +231,67 @@ export class BattleRenderer {
         this.world.add(actor.root);
       }
       const player = source.seat === seat && local ? local : source;
+      const renewed = actor.life !== source.life;
+      if (renewed) { actor.life = source.life; actor.deathAt = 0; actor.settled = undefined; actor.corpseMotion.reset(); }
       actor.root.position.set(player.x / 256, player.y / 256, player.z / 256);
       actor.root.rotation.z = player.yaw * Math.PI * 2 / 65536;
       actor.root.visible = source.seat !== this.observedSeat;
-      if (actor.alive !== source.alive) {
+      if (actor.alive !== source.alive || renewed) {
         actor.alive = source.alive;
-        this.animate(actor, source.alive ? /^(?:idle1?|idle_aim_)/i : /^(?:death|die)/i, !source.alive);
+        if (source.alive) this.animate(actor, /^(?:idle1?|idle_aim_)/i);
+        else {
+          actor.deathAt = source.deathAt ?? 0;
+          const name = deathAnimation(actor.clips.map(clip => clip.name), source.deathHitgroup ?? 0, source.crouch);
+          if (name) this.animate(actor, new RegExp(`^${name}$`, 'i'), true);
+        }
       } else if (source.alive) {
         const moving = Math.abs(player.vx ?? 0) + Math.abs(player.vy ?? 0) > 1500;
         this.animate(actor, moving ? player.crouch ? /^crouchrun$/i : /^run$/i : new RegExp(`^${playerPose(source.weapon, player.crouch)}$`, 'i'));
       }
       if (actor.weapon !== source.weapon) this.carried(actor, source.weapon);
-      actor.mixer.update(dt);
+      if (actor.carried) actor.carried.visible = source.alive;
+      if (source.alive) actor.mixer.update(dt);
+      else {
+        const age = corpseAge(visualFrame, actor.deathAt);
+        actor.root.position.copy(this.corpsePosition(player, actor, age));
+        const clip = actor.clips.find(clip => clip.name === actor.animation);
+        if (clip) { const action = actor.mixer.clipAction(clip); action.enabled = true; action.paused = true; action.time = Math.min(clip.duration, age / 1000); actor.mixer.update(0); }
+      }
     }
     for (const [id, actor] of this.actors) if (!active.has(id)) actor.root.visible = false;
     const observable = displayed.filter(player => player.visible !== false && Number.isFinite(player.x) && (!observerTeam || player.team === observerTeam));
-    const cameraPlayer = local ?? observable.find(player => player.seat === seat && player.alive) ?? observable.find(player => player.alive) ?? observable[0];
+    const own = view.players.find(player => player.seat === view.you);
+    const deadView = own && !own.alive ? deathView(Math.max(1, corpseAge(visualFrame, own.deathAt)), !observable.some(player => player.alive)) : undefined;
+    const cameraPlayer = deadView ? own : local ?? observable.find(player => player.seat === seat && player.alive) ?? observable.find(player => player.alive) ?? observable[0];
     this.observedSeat = cameraPlayer?.seat ?? -1;
     if (cameraPlayer && Number.isFinite(cameraPlayer.x)) {
+      const identity = `${cameraPlayer.seat}:${cameraPlayer.life}`;
+      if (this.viewIdentity !== identity) { this.viewImpulse.reset(); this.viewIdentity = identity; }
+      const impulse = this.viewImpulse.sample(now);
       const yaw = (cameraPlayer.yaw + (cameraPlayer.recoilYaw ?? 0)) * Math.PI * 2 / 65536;
       const pitch = (cameraPlayer.pitch + (cameraPlayer.recoilPitch ?? 0)) * Math.PI * 2 / 65536;
-      const eye = eyeOffset(cameraPlayer.crouch);
+      const eye = deadView?.eye ?? eyeOffset(cameraPlayer.crouch);
       this.camera.position.set(cameraPlayer.x / 256, cameraPlayer.z / 256 + eye, -cameraPlayer.y / 256);
       this.camera.lookAt(this.camera.position.x + Math.cos(yaw) * Math.cos(pitch), this.camera.position.y - Math.sin(pitch), this.camera.position.z - Math.sin(yaw) * Math.cos(pitch));
+      this.camera.rotateZ((deadView?.roll ?? 0) + impulse.roll);
+      this.camera.getWorldDirection(this.flashlightDirection);
+      this.flashlight.update(this.camera.position, this.flashlightDirection, cameraPlayer.alive && !!cameraPlayer.flashlight && (cameraPlayer.flashlightCharge ?? 100) > 0);
+      this.weaponRoot.position.set(0, impulse.weaponUp, impulse.weaponBack);
       const weaponState = cameraPlayer.inventory?.find(item => item.id === cameraPlayer.weapon);
       this.weaponSilenced = weaponState?.silenced ?? false;
       const zoom = weaponState?.zoom ?? 0;
-      const fov = zoom > 1 ? 15 : zoom ? cameraPlayer.weapon === 'awp' || cameraPlayer.weapon === 'scout' ? 40 : 55 : 75;
+      const fov = scopeFov(zoom);
       if (this.camera.fov !== fov) { this.camera.fov = fov; this.camera.updateProjectionMatrix(); }
       this.setWeapon(cameraPlayer.weapon);
       if (this.weapon) {
+        const feedback = this.pendingFeedback;
+        if (feedback) {
+          const name = weaponAnimation(this.weapon.clips.map(clip => clip.name), this.weaponID, feedback.kind, feedback.serial, this.weaponSilenced, feedback.contact);
+          if (name) this.animate(this.weapon, new RegExp(`^${name}$`, 'i'), true);
+          if (feedback.kind === 'shot') this.weaponShots = Math.max(this.weaponShots, feedback.serial + 1);
+          if (feedback.kind === 'slash') this.meleeSwings = Math.max(this.meleeSwings, feedback.serial + 1);
+          this.pendingFeedback = undefined;
+        }
         this.weapon.root.visible = cameraPlayer.alive && !zoom;
         this.weapon.mixer.update(dt);
       }
@@ -290,7 +343,7 @@ export class BattleRenderer {
     const model = clone(asset.scene);
     model.traverse(object => { object.frustumCulled = false; });
     root.add(model);
-    const actor: Actor = { root, model, mixer: new T.AnimationMixer(model), clips: asset.animations, animation: '', weapon: '', alive: true };
+    const actor: Actor = { root, model, mixer: new T.AnimationMixer(model), clips: asset.animations, animation: '', weapon: '', alive: true, life: -1, deathAt: 0, corpseMotion: new CorpseInterpolation() };
     this.animate(actor, /^idle1?$|^idle_aim_|^idle/i);
     return actor;
   }
@@ -305,6 +358,62 @@ export class BattleRenderer {
     action.clampWhenFinished = once;
     action.play();
     actor.animation = clip.name;
+  }
+
+  private corpseHit() {
+    return this.corpseRay.intersectObjects(this.mapMeshes, false).find(hit => {
+      for (let object: T.Object3D | null = hit.object; object; object = object.parent) if (!object.visible) return false;
+      return true;
+    });
+  }
+
+  private corpsePosition(player: Player, actor: Actor, age: number) {
+    if (actor.settled) return actor.settled;
+    const position = actor.corpseMotion.sample(age, at => {
+      const point = this.corpseCollision(player, at);
+      return { x: point.x, y: point.y, z: point.z };
+    });
+    actor.root.position.set(position.x, position.y, position.z);
+    if (age >= 3000) actor.settled = actor.root.position.clone();
+    return actor.root.position;
+  }
+
+  private corpseCollision(player: Player, age: number) {
+    if (this.collisionDirty) { this.world.updateWorldMatrix(true, true); this.collisionDirty = false; }
+    const drift = corpseTravel({ x: player.deathVX ?? 0, y: player.deathVY ?? 0, z: player.deathVZ ?? 0 }, age);
+    const halfHeight = player.crouch ? 18 : 36;
+    this.corpseFrom.set(player.x / 256, player.z / 256, -player.y / 256);
+    this.corpseTo.copy(this.corpseFrom);
+    this.corpseDirection.set(drift.x, 0, -drift.y);
+    const horizontal = this.corpseDirection.length();
+    if (Math.round(horizontal * 256) > 0) {
+      this.corpseDirection.normalize();
+      this.corpseRay.set(this.corpseFrom, this.corpseDirection);
+      this.corpseRay.near = 0.01;
+      this.corpseRay.far = horizontal + 16;
+      const hit = this.corpseHit();
+      this.corpseTo.addScaledVector(this.corpseDirection, hit ? Math.max(0, Math.min(horizontal, hit.distance - 16)) : horizontal);
+    }
+    const originY = this.corpseFrom.y;
+    let height = originY + drift.z;
+    if (Math.round(player.deathVZ ?? 0) > 0) {
+      const velocity = (player.deathVZ ?? 0) / 256;
+      this.corpseRay.set(this.corpseTo, this.corpseDirection.set(0, 1, 0));
+      this.corpseRay.far = Math.min(512, velocity * velocity / 1600) + halfHeight;
+      const ceiling = this.corpseHit();
+      if (ceiling) {
+        const space = Math.max(0, ceiling.point.y - halfHeight - originY);
+        const contact = (velocity - Math.sqrt(Math.max(0, velocity * velocity - 1600 * space))) / 800;
+        const falling = Math.max(0, Math.min(3000, age) / 1000 - contact);
+        height = Math.min(height, ceiling.point.y - halfHeight - 400 * falling * falling);
+      }
+    }
+    this.corpseTo.y = Math.max(originY, height) + 1;
+    this.corpseRay.set(this.corpseTo, this.corpseDirection.set(0, -1, 0));
+    this.corpseRay.far = Math.max(halfHeight + 2, this.corpseTo.y - height + halfHeight + 2);
+    const floor = this.corpseHit();
+    if (floor) height = Math.max(height, floor.point.y + halfHeight);
+    return this.corpseTo.set(this.corpseTo.x, -this.corpseTo.z, height);
   }
 
   private carried(actor: Actor, id: string) {
@@ -342,6 +451,7 @@ export class BattleRenderer {
     if (this.weapon) this.weapon.root.removeFromParent();
     this.weaponID = id;
     this.weaponShots = 0;
+    this.meleeSwings = 0;
     this.muzzleNodes = [];
     const key = id === 'mp5navy' ? 'mp5' : id;
     const asset = this.assets.models.get(`v-${key}`);

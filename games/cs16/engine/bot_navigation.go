@@ -13,11 +13,14 @@ func botBombDestination(state *State, seat int) (Vec3, bool) {
 		return point, true
 	}
 	visible := botPointVisible(state, player, Vec3{point.X, point.Y, point.Z + 8*Unit})
-	if visible || player.BotDecision > 0 && Distance(player.BotGoal, point) < Unit {
+	if visible {
 		return point, true
 	}
+	if player.BotBombKnown {
+		return player.BotBombPoint, true
+	}
 	if len(state.World.Bombsites) > 0 {
-		index := (int(state.Frame/(5*FPS)) + seat/2 + state.Round - 1) % len(state.World.Bombsites)
+		index := player.BotSearchSite % len(state.World.Bombsites)
 		return botPositionBounds(state.World.Bombsites[index]), false
 	}
 	return Position(*player), false
@@ -224,7 +227,11 @@ func botBuildPath(world *Map, position, goal Vec3, mode int) ([]int, int) {
 }
 
 func StepBotNavigation(state *State) {
-	if state.Finished || state.Phase != "live" || len(state.World.Nav) == 0 {
+	if state.Finished || state.Phase != "live" {
+		return
+	}
+	stepBotPerception(state)
+	if len(state.World.Nav) == 0 {
 		return
 	}
 	for seat := range state.Players {

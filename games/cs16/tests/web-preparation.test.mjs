@@ -27,13 +27,13 @@ export function render(map, waiting = false) {
   return renderToStaticMarkup(waiting ? React.createElement(Preparation, { room, options, host: true, busy: false, assets: '', prepare: () => {} }) : React.createElement(Options, { value: options, capacity: 10, disabled: false, onChange: () => {} }));
 }
 export function renderRules() { return renderToStaticMarkup(React.createElement(Rules)); }
-export function renderTouch(weapon) { return renderToStaticMarkup(React.createElement(TouchControls, { disabled: false, weapon, useLabel: '使用', changed: () => {}, look: () => {}, native: () => {}, interrupted: () => {}, begin: () => {}, error: () => {} })); }
+export function renderTouch(weapon, zoom = 0) { return renderToStaticMarkup(React.createElement(TouchControls, { disabled: false, weapon, weaponState: { id: weapon, zoom }, useLabel: '使用', changed: () => {}, look: () => {}, native: () => {}, interrupted: () => {}, begin: () => {}, error: () => {} })); }
 export function renderRoster() {
   const options = normalizeOptions(defaultOptions, 10);
   const room = { capacity: 10, you: 0, spectating: false, seats: [{ name: '房主', ready: true }, { name: '好友', ready: false }, { name: '电脑', bot: true, ready: true }] };
   return renderToStaticMarkup(React.createElement(Preparation, { room, options, host: true, busy: false, assets: '', prepare: () => {} }));
 }
-export function renderBuy(map) { return renderToStaticMarkup(React.createElement(BuyMenu, { player: { team: 'ct', money: 16000 }, prices: [], allowed: true, buy: () => {}, close: () => {}, error: '', mode: mapMode(map) })); }
+export function renderBuy(map) { return renderToStaticMarkup(React.createElement(BuyMenu, { player: { team: 'ct', money: 16000 }, prices: [], allowed: true, buy: () => {}, close: () => {}, error: '', mode: mapMode(map), category: 8 })); }
 export function groundProjection(frames) {
   const renderer = Object.assign(Object.create(BattleRenderer.prototype), { assets: { models: new Map(['w-mp5', 'w-ak47'].map(key => [key, { scene: new T.Group() }])) }, world: new T.Group(), objects: new Map(), brushes: new Map(), smoke: new Map() });
   return frames.map(drops => {
@@ -73,6 +73,12 @@ test('right thumb keeps three primary actions and utility actions move to the le
     assert.ok(html.includes('data-cs16-controls-menu="true"'));
     evidence.push({ check: 'thumb action hierarchy', weapon, html });
   }
+});
+
+test('mobile sniper control identifies the next magnification and then leaving the scope', () => {
+  assert.ok(renderTouch('awp', 0).includes('aria-label="开镜"'));
+  assert.ok(renderTouch('awp', 40).includes('aria-label="放大"'));
+  assert.ok(renderTouch('awp', 10).includes('aria-label="退镜"'));
 });
 
 test('teams count actual participants and expose a clear available destination', () => {

@@ -67,6 +67,13 @@ func TestFreezeInventoryCommandsE2E(t *testing.T) {
 		t.Fatal("freeze drop failed")
 	}
 	freezeCommand(t, s, Input{Use: true})
+	if p.Weapon != "glock18" || len(s.Drops) != 1 {
+		t.Fatal("freeze use grabbed a weapon before its toss landed")
+	}
+	drop := s.Drops[0]
+	s.Drops = []Drop{{ID: drop.ID, X: p.X, Y: p.Y, Z: p.Z, Weapon: drop.Weapon, Frame: drop.Frame}}
+	freezeCommand(t, s, Input{})
+	freezeCommand(t, s, Input{Use: true})
 	if p.Weapon != "ak47" || len(s.Drops) != 0 {
 		t.Fatal("freeze pickup failed")
 	}

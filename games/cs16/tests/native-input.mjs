@@ -7,6 +7,7 @@ import { withProxyReconnect } from './browser-network-control.mjs';
 import { createPixelProbe } from './gpu-pixel-probe.mjs';
 import { nativeLifeInterrupted } from './native-life.mjs';
 import { auditPlayability } from './playability-audit.mjs';
+import { auditClassicInteractions } from './classic-ui-audit.mjs';
 
 const input = JSON.parse(readFileSync(0, "utf8"));
 const { endpoint, pageURL, options = {} } = input;
@@ -638,7 +639,7 @@ try {
       const rect=element=>element.getBoundingClientRect().toJSON();
       const visible=element=>{const box=element.getBoundingClientRect();if(!box.width||!box.height||element.closest('[inert]')||document.fullscreenElement&&!document.fullscreenElement.contains(element))return false;const hit=document.elementFromPoint(box.x+box.width/2,box.y+box.height/2);return !!hit&&(hit===element||element.contains(hit));};
       const controls=[...document.querySelectorAll('[data-cs16-action],[data-fullscreen-toggle],.chat-toggle:not([aria-hidden=true])')].filter(visible).map(element=>({kind:element.dataset.cs16Action??(element.matches('.chat-toggle')?'platform-chat':'platform-fullscreen'),rect:rect(element)}));
-      const hud=[...document.querySelectorAll('.cs16-vitals,.cs16-ammo,.cs16-match-hud,.cs16-inventory')].map(element=>({kind:element.className,text:element.textContent,rect:rect(element)}));
+      const hud=[...document.querySelectorAll('.cs16-vitals,.cs16-ammo,.cs16-match-hud,.cs16-inventory,.cs16-money,.cs16-status-icons')].filter(element=>getComputedStyle(element).display!=='none').map(element=>({kind:element.className,text:element.textContent,rect:rect(element)}));
       const overlap=(a,b)=>a.left<b.right&&a.right>b.left&&a.top<b.bottom&&a.bottom>b.top;
       return {coarse:matchMedia('(pointer:coarse)').matches,width:innerWidth,height:innerHeight,canvas:rect(document.querySelector('[data-cs16-canvas]')),controls,hud,overlaps:hud.flatMap(item=>controls.filter(control=>overlap(item.rect,control.rect)).map(control=>({hud:item.kind,control:control.kind}))),assets:document.querySelector('[data-cs16-canvas]').__cs16Assets};
     })()`);
@@ -723,6 +724,7 @@ try {
     report.passed = report.passed && !report.layoutFailures?.length;
   }
   if (options.playabilityAudit) await auditPlayability({ call, evaluate, view, photograph, nativeClick, settle, waitMode, wait, report, output });
+  if (options.classicAudit) await auditClassicInteractions({ call, evaluate, view, nativeClick, wait, report });
   }
 } catch (error) {
   report.passed = false;

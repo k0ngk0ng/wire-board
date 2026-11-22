@@ -133,6 +133,7 @@ type Input struct {
 	Reload      bool   `json:"reload"`
 	Use         bool   `json:"use"`
 	Drop        bool   `json:"drop"`
+	Flashlight  bool   `json:"flashlight,omitempty"`
 	Select      string `json:"select,omitempty"`
 	QueuedFrame int64  `json:"queuedFrame,omitempty"`
 }
@@ -183,70 +184,88 @@ type WeaponState struct {
 }
 
 type Player struct {
-	Seat           int           `json:"seat"`
-	Team           string        `json:"team"`
-	Character      string        `json:"character"`
-	X              int           `json:"x"`
-	Y              int           `json:"y"`
-	Z              int           `json:"z"`
-	VX             int           `json:"vx"`
-	VY             int           `json:"vy"`
-	VZ             int           `json:"vz"`
-	Yaw            int           `json:"yaw"`
-	Pitch          int           `json:"pitch"`
-	Alive          bool          `json:"alive"`
-	Life           int           `json:"life"`
-	Health         int           `json:"health"`
-	Armor          int           `json:"armor"`
-	Helmet         bool          `json:"helmet"`
-	Defuser        bool          `json:"defuser"`
-	Money          int           `json:"money"`
-	Weapon         string        `json:"weapon"`
-	Ammo           int           `json:"ammo"`
-	Reserve        int           `json:"reserve"`
-	Inventory      []WeaponState `json:"inventory"`
-	Kills          int           `json:"kills"`
-	Deaths         int           `json:"deaths"`
-	Crouch         bool          `json:"crouch"`
-	Grounded       bool          `json:"grounded"`
-	WaterLevel     int           `json:"waterLevel"`
-	LandingSpeed   int           `json:"landingSpeed"`
-	ReceivedSeq    int64         `json:"receivedSeq"`
-	AppliedSeq     int64         `json:"appliedSeq"`
-	Input          Input         `json:"input"`
-	Previous       Input         `json:"previous"`
-	Pending        []Input       `json:"pending,omitempty"`
-	LastInputFrame int64         `json:"lastInputFrame"`
-	NextAttack     int64         `json:"nextAttack"`
-	RecoilYaw      int           `json:"recoilYaw"`
-	RecoilPitch    int           `json:"recoilPitch"`
-	FlashUntil     int64         `json:"flashUntil"`
-	FlashStrength  int           `json:"flashStrength"`
-	ActionSince    int64         `json:"actionSince"`
-	Action         string        `json:"action,omitempty"`
-	BotGoal        Vec3          `json:"botGoal"`
-	BotPath        []int         `json:"botPath,omitempty"`
-	BotTarget      int           `json:"botTarget"`
-	BotDecision    int64         `json:"botDecision"`
-	BotRouteMode   int           `json:"botRouteMode,omitempty"`
-	BotStuck       int           `json:"botStuck"`
-	RemX           int           `json:"remX"`
-	RemY           int           `json:"remY"`
-	RemZ           int           `json:"remZ"`
+	Seat             int           `json:"seat"`
+	Team             string        `json:"team"`
+	Character        string        `json:"character"`
+	X                int           `json:"x"`
+	Y                int           `json:"y"`
+	Z                int           `json:"z"`
+	VX               int           `json:"vx"`
+	VY               int           `json:"vy"`
+	VZ               int           `json:"vz"`
+	Yaw              int           `json:"yaw"`
+	Pitch            int           `json:"pitch"`
+	Alive            bool          `json:"alive"`
+	Life             int           `json:"life"`
+	Health           int           `json:"health"`
+	Armor            int           `json:"armor"`
+	Helmet           bool          `json:"helmet"`
+	Defuser          bool          `json:"defuser"`
+	Money            int           `json:"money"`
+	Weapon           string        `json:"weapon"`
+	Ammo             int           `json:"ammo"`
+	Reserve          int           `json:"reserve"`
+	Inventory        []WeaponState `json:"inventory"`
+	Kills            int           `json:"kills"`
+	Deaths           int           `json:"deaths"`
+	Crouch           bool          `json:"crouch"`
+	Grounded         bool          `json:"grounded"`
+	WaterLevel       int           `json:"waterLevel"`
+	LandingSpeed     int           `json:"landingSpeed"`
+	Stamina          int           `json:"stamina,omitempty"`
+	StepAt           int64         `json:"stepAt,omitempty"`
+	StepIndex        int           `json:"stepIndex,omitempty"`
+	DeathAt          int64         `json:"deathAt,omitempty"`
+	DeathHitgroup    int           `json:"deathHitgroup,omitempty"`
+	DeathVX          int           `json:"deathVX,omitempty"`
+	DeathVY          int           `json:"deathVY,omitempty"`
+	DeathVZ          int           `json:"deathVZ,omitempty"`
+	Flashlight       bool          `json:"flashlight,omitempty"`
+	FlashlightCharge int           `json:"flashlightCharge,omitempty"`
+	FlashlightAt     int64         `json:"flashlightAt,omitempty"`
+	ReceivedSeq      int64         `json:"receivedSeq"`
+	AppliedSeq       int64         `json:"appliedSeq"`
+	Input            Input         `json:"input"`
+	Previous         Input         `json:"previous"`
+	Pending          []Input       `json:"pending,omitempty"`
+	LastInputFrame   int64         `json:"lastInputFrame"`
+	NextAttack       int64         `json:"nextAttack"`
+	RecoilYaw        int           `json:"recoilYaw"`
+	RecoilPitch      int           `json:"recoilPitch"`
+	FlashUntil       int64         `json:"flashUntil"`
+	FlashStrength    int           `json:"flashStrength"`
+	ActionSince      int64         `json:"actionSince"`
+	Action           string        `json:"action,omitempty"`
+	BotGoal          Vec3          `json:"botGoal"`
+	BotPath          []int         `json:"botPath,omitempty"`
+	BotTarget        int           `json:"botTarget"`
+	BotDecision      int64         `json:"botDecision"`
+	BotRouteMode     int           `json:"botRouteMode,omitempty"`
+	BotStuck         int           `json:"botStuck"`
+	BotEnemy         int           `json:"botEnemy,omitempty"`
+	BotSeenAt        int64         `json:"botSeenAt,omitempty"`
+	BotAimSeed       uint32        `json:"botAimSeed,omitempty"`
+	BotBombKnown     bool          `json:"botBombKnown,omitempty"`
+	BotBombPoint     Vec3          `json:"botBombPoint,omitempty"`
+	BotSearchSite    int           `json:"botSearchSite,omitempty"`
+	RemX             int           `json:"remX"`
+	RemY             int           `json:"remY"`
+	RemZ             int           `json:"remZ"`
 }
 
 type Event struct {
-	ID     int64  `json:"id"`
-	Frame  int64  `json:"frame"`
-	Kind   string `json:"type"`
-	Seat   int    `json:"seat"`
-	Target int    `json:"target"`
-	Weapon string `json:"weapon,omitempty"`
-	X      int    `json:"x"`
-	Y      int    `json:"y"`
-	Z      int    `json:"z"`
-	Value  int    `json:"value,omitempty"`
-	Life   int    `json:"life,omitempty"`
+	ID       int64  `json:"id"`
+	Frame    int64  `json:"frame"`
+	Kind     string `json:"type"`
+	Seat     int    `json:"seat"`
+	Target   int    `json:"target"`
+	Weapon   string `json:"weapon,omitempty"`
+	X        int    `json:"x"`
+	Y        int    `json:"y"`
+	Z        int    `json:"z"`
+	Value    int    `json:"value,omitempty"`
+	Life     int    `json:"life,omitempty"`
+	Hitgroup int    `json:"hitgroup,omitempty"`
 }
 type Bomb struct {
 	Carrier    int   `json:"carrier"`
@@ -258,6 +277,7 @@ type Bomb struct {
 	ExplodesAt int64 `json:"explodesAt"`
 	Defuser    int   `json:"defuser"`
 	DefuseAt   int64 `json:"defuseAt"`
+	PickupAt   int64 `json:"pickupAt,omitempty"`
 }
 type Hostage struct {
 	ID        int  `json:"id"`
@@ -302,6 +322,10 @@ type Drop struct {
 	SpawnID   int         `json:"spawnId,omitempty"`
 	Remaining int         `json:"remaining,omitempty"`
 	Yaw       int         `json:"yaw,omitempty"`
+	VX        int         `json:"vx,omitempty"`
+	VY        int         `json:"vy,omitempty"`
+	VZ        int         `json:"vz,omitempty"`
+	Moving    bool        `json:"moving,omitempty"`
 }
 type BrushState struct {
 	ID        int   `json:"id"`

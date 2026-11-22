@@ -1591,10 +1591,11 @@ export function LegacyWaiting({
         {!room.spectating && (
           <>
             <div className="waiting-actions">
-              {host && room.seats.length < room.capacity && (
+              {host && (
                 <button
                   className="outline"
-                  disabled={busy}
+                  data-add-bot
+                  disabled={busy || room.seats.length >= room.capacity}
                   onClick={() => command("add_bot")}
                 >
                   添加电脑玩家

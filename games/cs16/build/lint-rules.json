@@ -1,5 +1,5 @@
 {
-  "scope": "All authored Go, TypeScript, JavaScript, Python, CSS and JSON in games/cs16 and scripts/cs16; full web/src/audio-spatial.ts, web/src/game-api/default-players.ts and their registered web/tests; added lines only in web/src/audio.ts and web/src/game-api/module.ts and web/src/game-api/host.tsx; this is not a whole-repository check; full scripts/test_cdn_manual_gzip.py and added lines only in scripts/cdn_delivery.py; full registered Unchanged Go tests and added lines only in internal/gameapi/module.go and internal/server/realtime_stream.go; full action-scope.ts and action-scope.test.mjs, added lines only in main.tsx; full internal/server/session_cache.go and session_cache_e2e_test.go, added lines only in internal/server/server.go; full declared Deferred Input Go tests, added lines only in internal/server/realtime_batch.go",
+  "scope": "All authored Go, TypeScript, JavaScript, Python, CSS and JSON in games/cs16 and scripts/cs16; full web/src/audio-spatial.ts, web/src/game-api/default-players.ts and their registered web/tests; added lines only in web/src/audio.ts and web/src/game-api/module.ts and web/src/game-api/host.tsx; this is not a whole-repository check; full scripts/test_cdn_manual_gzip.py and added lines only in scripts/cdn_delivery.py; full registered Unchanged Go tests and added lines only in internal/gameapi/module.go and internal/server/realtime_stream.go; full action-scope.ts and action-scope.test.mjs, added lines only in main.tsx; full internal/server/session_cache.go and session_cache_e2e_test.go, added lines only in internal/server/server.go; full declared Deferred Input Go tests, added lines only in internal/server/realtime_batch.go; added lines in legacy/room-ui.tsx for stable add-bot action; shared waiting CSS and chat/controller UI fixtures are covered in room-ui-lint",
   "directories": [
     "games/cs16",
     "scripts/cs16"
@@ -39,7 +39,8 @@
     "web/src/controllers/game-controller.ts",
     "web/src/controllers/use-game-controller.ts",
     "web/src/main.tsx",
-    "web/src/realtime-stream.ts"
+    "web/src/realtime-stream.ts",
+    "web/src/legacy/room-ui.tsx"
   ],
   "output": ".local/cs16/verification/lint",
   "externalResourceDirectory": "games/cs16/assets/public",

@@ -126,37 +126,13 @@ func BotInput(state *State, seat int) (input Input) {
 		input.Use = true
 		return input
 	}
-	closest, enemyDistance := -1, 8192*Unit
-	eye := Eye(*p)
-	if state.Frame >= p.FlashUntil {
-		for i := range state.Players {
-			target := &state.Players[i]
-			if !target.Alive || target.Team == p.Team {
-				continue
-			}
-			aim := Vec3{target.X, target.Y, target.Z + 16*Unit}
-			distance := Distance(eye, aim)
-			if distance >= enemyDistance {
-				continue
-			}
-			if objectiveAbs(botAngleDifference(AngleTo(target.X-p.X, target.Y-p.Y), p.Yaw)) > 8192 {
-				continue
-			}
-			if !Visible(state, seat, i) {
-				continue
-			}
-			closest, enemyDistance = i, distance
-		}
-	}
-	if closest >= 0 {
-		target := &state.Players[closest]
-		dx, dy, dz := target.X-p.X, target.Y-p.Y, target.Z+16*Unit-eye.Z
-		input.Yaw = AngleTo(dx, dy)
-		input.Pitch = -botAngleDifference(AngleTo(botHorizontalDistance(eye, Vec3{target.X, target.Y, target.Z}), dz), 0)
-		input.Pitch = max(-16000, min(16000, input.Pitch))
+	closest, enemyDistance := botVisibleEnemy(state, seat)
+	if closest >= 0 && p.BotEnemy == closest && p.BotSeenAt > 0 && state.Frame-p.BotSeenAt >= 30 {
+		var aligned bool
+		input.Yaw, input.Pitch, aligned = botAimAngles(state, seat, closest)
 		input.Select = botBestWeapon(p)
 		weapon, ok := WeaponByID(input.Select)
-		input.Fire = ok && (weapon.ID != "knife" || enemyDistance < 70*Unit)
+		input.Fire = aligned && ok && (weapon.ID != "knife" || enemyDistance < 70*Unit)
 		if !weapon.Automatic && weapon.ID != "knife" && state.Frame%40 >= 20 {
 			input.Fire = false
 		}
@@ -178,6 +154,9 @@ func BotInput(state *State, seat int) (input Input) {
 		}
 		if weapon.ID == "knife" {
 			input.MoveY = 1000
+		}
+		if state.World.Mode == "bomb" && state.Bomb.Planted && p.Team == "ct" {
+			input = botKeepBombMovement(state, seat, input)
 		}
 		return input
 	}

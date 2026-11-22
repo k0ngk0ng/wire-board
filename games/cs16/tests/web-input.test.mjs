@@ -5,6 +5,18 @@ import { InputChannel, emptyInput } from '../web/input.ts';
 const binding = (changes = {}) => ({ identity: 'room:0', epoch: 'epoch', life: 1, receivedSeq: 0, enabled: true, window: 1, frame: 120, ...changes });
 const turn = async () => { await new Promise(resolve => setImmediate(resolve)); };
 
+test('flashlight press and release remain ordered operation edges with no idle payload field', async () => {
+  const sent = [];
+  const channel = new InputChannel(action => { sent.push(action); return Promise.resolve(); });
+  channel.update(binding({ window: 8 }));
+  channel.push({ ...emptyInput(), flashlight: true });
+  channel.push(emptyInput());
+  await turn();
+  assert.equal(sent[0].flashlight, true);
+  assert.equal('flashlight' in sent[1], false);
+  assert.equal(sent.length, 2);
+});
+
 function fakeClock() {
   let at = 0;
   let serial = 0;

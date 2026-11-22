@@ -2,7 +2,7 @@ import { motionColliders, type MotionCollider } from './motion-colliders.ts';
 import { gunzipSync } from 'fflate';
 import { GLTFLoader, type GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import * as T from 'three';
-import { assetURL, selectModelKeys, validateManifest, validateResource, validateRulesIdentity } from './asset-contract.ts';
+import { assetURL, selectModelKeys, selectSoundKeys, validateManifest, validateResource, validateRulesIdentity } from './asset-contract.ts';
 import { assertModelTextures, decodeEmbeddedTexture } from './embedded-textures.ts';
 import type { AssetManifest, MapRules, MotionFunction, Player, RenderMap, Resource, WeaponInfo } from './types.ts';
 
@@ -157,7 +157,8 @@ export async function loadBattleAssets(base: string, mapID: string, characters: 
     }
     files.set(`model:${key}`, resource);
   }
-  const soundIDs = Object.keys(manifest.sounds).filter(key => key.startsWith('weapons/') || key.startsWith('player/') || /radio\/(?:bombpl|bombdef|ctwin|terwin|rounddraw|rescued)/.test(key) || selected.mode === 'hostage' && key.startsWith('hostage/'));
+  const soundIDs = selectSoundKeys(manifest.sounds, selected.mode);
+  if (manifest.hud) files.set('hud', manifest.hud.atlas);
   for (const key of soundIDs) files.set(`sound:${key}`, manifest.sounds[key]);
   if (!manifest.runtime) throw Error('缺少运动预测运行时');
   files.set('runtime:script', manifest.runtime.script);
@@ -188,7 +189,7 @@ export async function loadBattleAssets(base: string, mapID: string, characters: 
   }));
   signal.throwIfAborted();
   const images = new Map<string, ImageBitmap | HTMLImageElement>();
-  for (const [key, resource] of files) if (key.startsWith('texture:') || key === 'lightmap' || key.startsWith('sky:')) images.set(key, await decodeImage(base, resource, data.get(key)!));
+  for (const [key, resource] of files) if (key.startsWith('texture:') || key === 'lightmap' || key === 'hud' || key.startsWith('sky:')) images.set(key, await decodeImage(base, resource, data.get(key)!));
   report(93, '解码角色与武器', { loaded: total, total });
   const models = new Map<string, GLTF>();
   const audit = { models: 0, materialCount: 0, texturedMaterialCount: 0, missingTextures: [] as string[] };

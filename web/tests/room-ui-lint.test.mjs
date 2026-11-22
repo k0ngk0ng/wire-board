@@ -8,6 +8,7 @@ import {
 } from "../scripts/room-ui-lint.mjs";
 
 test("room tools contract rejects incomplete icon conversion", () => {
+  assert.deepEqual(inspectRoomUiFile('web/tests/ControllerOverlayFixture.tsx', 'export function ControllerOverlayFixture(){return <div/>;}'), []);
   assert.deepEqual(
     inspectRoomToolsContract(
       '<div className="room-tools"><RoomToolButton label="日志"/><SaveGameControl iconOnly/></div>',

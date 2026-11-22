@@ -112,3 +112,54 @@
 .cs16-retry{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:8}
 @media(pointer:coarse){.cs16-battle-tools{top:8px;left:var(--cs16-safe-left);flex-direction:row}}
 .module-player-group:has(.cs16-player-summary)::before{content:attr(aria-label);display:block;padding:3px 5px 6px;color:#293b35;font-size:12px;font-weight:700}.module-player-group:has(.cs16-summary-t){border-top:3px solid #b38365}.module-player-group:has(.cs16-summary-ct){border-top:3px solid #6f91a8}
+.cs16-buy-backdrop{background:transparent;padding:0;align-items:flex-start;justify-content:flex-start;pointer-events:none}
+.cs16-buy-menu{pointer-events:auto;position:absolute;left:24px;top:18%;width:min(360px,calc(100% - 48px));max-height:78%;padding:12px;background:#10150bbb;color:#ffb000;border:0;border-radius:0;box-shadow:none;font-family:Arial,sans-serif;text-shadow:1px 1px #000}
+.cs16-buy-menu>header{position:static;padding:0 0 12px;background:transparent;border:0;color:#ffb000;gap:12px}
+.cs16-buy-menu>header>span{color:inherit;font-size:14px}
+.cs16-buy-menu>header>strong{font-size:18px;font-weight:400}
+.cs16-buy-menu .cs16-buy-list{display:grid;gap:0}
+.cs16-buy-menu button{background:transparent;border:0;border-radius:0;color:#ffb000;font-size:14px;min-height:32px;padding:5px 0;text-shadow:1px 1px #000;box-shadow:none}
+.cs16-buy-menu button:disabled{background:transparent;border:0;color:#b29c65}
+.cs16-buy-menu button:not(:disabled):hover{background:#635b373b;border:0;color:#ffe1a1}
+.cs16-buy-menu>[data-controller-cancel]{margin-top:10px}
+.cs16-team-roster{height:300px;display:grid;grid-auto-rows:60px;align-content:start}
+.cs16-preparation .cs16-team{position:relative;padding-bottom:52px}
+.cs16-preparation .cs16-seat{height:60px;box-sizing:border-box;grid-template-columns:minmax(0,1fr) auto;grid-template-rows:18px 30px;gap:2px 5px;padding:5px 0;min-width:0}
+.cs16-preparation .cs16-seat strong{grid-column:1/-1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px}
+.cs16-preparation .cs16-seat select{height:28px;padding:3px;font-size:10px}
+.cs16-preparation .cs16-seat button{height:28px;min-height:28px;padding:3px;font-size:10px}
+.cs16-preparation .cs16-join-team{position:absolute;left:8px;right:8px;bottom:6px;width:calc(100% - 16px);height:38px;min-height:38px}
+@media(pointer:coarse){.cs16-buy-menu{left:12px;top:12%;width:min(360px,calc(100% - 24px));max-height:86%}.cs16-buy-menu button{min-height:44px}.cs16-preparation .cs16-seat select,.cs16-preparation .cs16-seat button{height:44px;min-height:44px}.cs16-team-roster{height:370px;grid-auto-rows:74px}.cs16-preparation .cs16-seat{height:74px;grid-template-rows:18px 44px}.cs16-preparation .cs16-join-team{min-height:44px;height:44px}}
+.cs16-board{color:#ffb000}
+.cs16-hud-sprite{display:inline-block;flex:0 0 auto;vertical-align:middle;background:currentColor}
+.cs16-hud-number{display:inline-flex;align-items:center;white-space:nowrap;font-variant-numeric:tabular-nums}
+.cs16-status-icons{position:absolute;left:5px;bottom:50%;display:flex;flex-direction:column-reverse;gap:5px;color:#00a000;pointer-events:none;z-index:3}
+.cs16-status-icons>span{display:flex}
+.cs16-match-hud{top:auto;bottom:12px;left:50%;transform:translateX(-50%);gap:6px;padding:0;background:transparent;border:0;border-radius:0;color:#ffb000;box-shadow:none;align-items:center}
+.cs16-match-hud>strong{font-size:24px;font-weight:400;font-variant-numeric:tabular-nums;line-height:1}
+.cs16-round-message{position:absolute;top:22%;left:50%;transform:translateX(-50%);color:#ffb000;font-size:18px;text-shadow:1px 1px #000;pointer-events:none;z-index:3;white-space:nowrap}
+.cs16-vitals{gap:28px;align-items:center;color:#ffb000;pointer-events:none}
+.cs16-vitals>span{display:flex;align-items:center;gap:5px}
+.cs16-money{position:absolute;right:18px;bottom:48px;display:flex;align-items:center;gap:3px;color:#ffb000;pointer-events:none;z-index:3}
+.cs16-ammo{right:18px;bottom:12px;top:auto;display:flex;flex-direction:row;gap:7px;align-items:center;color:#ffb000;max-width:none;pointer-events:none}
+.cs16-ammo-divider{height:24px;width:1px;background:currentColor}
+.cs16-kill-feed>div{align-items:center;background:transparent;border-radius:0;padding:2px 0;color:#ffb000;text-shadow:1px 1px #000;font-family:Arial,sans-serif;font-size:12px}
+.cs16-kill-feed .cs16-name-t{color:#ff6c6c}.cs16-kill-feed .cs16-name-ct{color:#93c8ff}
+.cs16-action-progress{position:absolute;left:30%;right:30%;top:61%;height:10px;border:1px solid #ffb000;background:#17180c88;pointer-events:none;z-index:3}
+.cs16-action-progress>span{display:block;height:100%;background:#ffb000}
+.cs16-flashlight-status{position:absolute;right:18px;top:30%;color:#ffb000;pointer-events:none;z-index:3}
+.cs16-damage-info{position:absolute;left:16px;bottom:46px;color:#e35f35;font-size:13px;pointer-events:none;z-index:3;text-shadow:1px 1px #000}
+@media(pointer:fine){.cs16-inventory,.cs16-battle-tools{display:none}}
+@media(pointer:coarse){
+.cs16-match-hud,[data-room-fullscreen][data-fullscreen-toolbar-overlay] .cs16-match-hud{top:calc(max(12px,var(--cs16-toolbar-bottom,0px)) + 56px);bottom:auto;transform:translateX(-50%) scale(.75);transform-origin:center top}
+.cs16-vitals{top:calc(max(12px,var(--cs16-toolbar-bottom,0px)) + 56px);bottom:auto;gap:18px;transform:scale(.6);transform-origin:left top}
+.cs16-money{top:calc(max(12px,var(--cs16-toolbar-bottom,0px)) + 26px);bottom:auto;right:10px;transform:scale(.65);transform-origin:right top}
+.cs16-ammo,[data-room-fullscreen] .cs16-ammo{top:calc(max(12px,var(--cs16-toolbar-bottom,0px)) + 56px);bottom:auto;right:10px;max-width:none;transform:scale(.65);transform-origin:right top;gap:4px}
+.cs16-damage-info{top:calc(max(12px,var(--cs16-toolbar-bottom,0px)) + 83px);bottom:auto;left:10px;font-size:10px}
+.cs16-kill-feed{top:calc(max(12px,var(--cs16-toolbar-bottom,0px)) + 90px);right:8px;transform:scale(.75);transform-origin:right top}
+.cs16-action-progress{left:24%;right:24%;top:53%}
+.cs16-flashlight-status{top:34%;right:8px}
+}
+@media(pointer:coarse){.cs16-touch-utility>[data-cs16-controls-menu]{left:calc(var(--cs16-safe-left) + 112px);bottom:calc(var(--cs16-safe-bottom) + 64px)}}
+.cs16-board:has(.cs16-touch-more-panel),.cs16-touch-more-panel{touch-action:pan-y}
+.cs16-touch-more-panel{overscroll-behavior:contain}

@@ -1,0 +1,73 @@
+.waiting-seats .seats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 16px;
+}
+.waiting-seats .waiting-seat {
+  width: auto;
+  height: 64px;
+  box-sizing: border-box;
+  padding: 8px 32px 8px 10px;
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  grid-template-rows: 24px 18px;
+  column-gap: 8px;
+  align-content: center;
+}
+.waiting-seats .waiting-seat .avatar {
+  width: 32px;
+  height: 32px;
+  grid-row: 1 / 3;
+  font-size: 14px;
+}
+.waiting-seats .waiting-seat h3 {
+  justify-content: flex-start;
+  margin: 0;
+  min-height: 0;
+  height: 24px;
+  width: 100%;
+  font-size: 12px;
+  gap: 4px;
+}
+.waiting-seats .waiting-seat-status {
+  justify-self: start;
+  white-space: nowrap;
+  font-size: 10px;
+}
+.waiting-seats .waiting-actions {
+  gap: 8px;
+  margin-top: 16px;
+  overflow-anchor: none;
+}
+.waiting-seats .waiting-actions > button {
+  min-height: 44px;
+}
+@media (max-width: 420px) {
+  .waiting-seats .waiting-seat {
+    grid-template-columns: minmax(0, 1fr);
+    padding-left: 8px;
+    column-gap: 0;
+  }
+  .waiting-seats .waiting-seat .avatar {
+    display: none;
+  }
+  .waiting-seats .waiting-actions {
+    gap: 5px;
+  }
+  .waiting-seats .waiting-actions > button {
+    padding: 8px;
+    font-size: 11px;
+  }
+}
+.waiting-seats .waiting-seat .bot-remove {
+  width: 44px;
+  height: 44px;
+  top: 9px;
+  right: 0;
+  background: transparent;
+  border: 0;
+}
+.waiting-seats .waiting-seat.filled {
+  padding-right: 44px;
+}

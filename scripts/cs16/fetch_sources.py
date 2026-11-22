@@ -308,6 +308,10 @@ def fetch_sources(check=False, reference=False):
     original_entries = validate_manifest(original, "original")
     navigation_entries = validate_manifest(navigation, "navigation")
     jobs = [(entry, RESEARCH / "original") for entry in original_entries] + [(entry, RESEARCH) for entry in navigation_entries]
+    hud = None
+    if (METADATA / "hud-sources.json").is_file():
+        hud = load_metadata("hud-sources.json")
+        jobs.extend((entry, RESEARCH / "original") for entry in validate_manifest(hud, "original"))
     community = None
     if (METADATA / "community-sources.json").is_file():
         community = load_metadata("community-sources.json")
@@ -334,6 +338,8 @@ def fetch_sources(check=False, reference=False):
         write_metadata(RESEARCH / "navigation-samples.json", navigation)
         if community is not None:
             write_metadata(RESEARCH / "community-source-catalog.json", community)
+        if hud is not None:
+            write_metadata(RESEARCH / "hud-source-catalog.json", hud)
     return {"passed": True, "check": check, "reference": reference, "files": len(records), "reused": sum(row["status"] == "reused" for row in records), "downloaded": sum(row["status"] == "downloaded" for row in records), "verifiedBytes": sum(row["bytes"] for row in records), "referenceMembers": extracted}
 
 

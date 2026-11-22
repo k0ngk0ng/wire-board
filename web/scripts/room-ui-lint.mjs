@@ -15,17 +15,22 @@ const files = [
   "web/src/ui/room-tool-button.tsx",
   "web/src/ui/saved-games.tsx",
   "web/src/ui/game-focus.ts",
+  "web/src/ui/chat-position.ts",
+  "web/src/ui/chat-anchor.ts",
+  "web/src/ui/room-waiting.css",
   "web/src/ui/room-actions.css",
   "web/scripts/room-ui-lint.mjs",
   "web/tests/room-ui-lint.test.mjs",
   "web/tests/room-flow-browser.test.mjs",
   "web/tests/room-tools.test.mjs",
   "web/tests/controller-focus-browser.test.mjs",
+  "web/tests/controller-overlay-browser.mjs",
+  "web/tests/ControllerOverlayFixture.tsx",
   "games/contra/web/human-mode.test.mjs",
 ];
 const languages = {
   ".ts": /^web\/src\/ui\//,
-  ".tsx": /^web\/src\/ui\//,
+  ".tsx": /^web\/(?:src\/ui|tests)\//,
   ".css": /^web\/src\/ui\//,
   ".mjs": /^(?:web\/(?:scripts|tests)\/|games\/contra\/web\/)/,
 };
@@ -38,7 +43,7 @@ export function inspectRoomUiFile(file, source) {
   if (
     !/^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*\.(ts|tsx|css|mjs)$/.test(
       path.basename(file),
-    )
+    ) && !(file.startsWith('web/tests/') && /^[A-Z][A-Za-z0-9]*\.tsx$/.test(path.basename(file)))
   )
     issues.push("filename");
   if (extension === ".css") {
@@ -215,7 +220,7 @@ export function lintRoomUi() {
   const result = {
     passed: results.every((file) => !file.issues.length) && !contract.length,
     scope:
-      "Registered shared settlement, save controls, focus recovery, icon tools and tests; main room-actions and FC/MD focus markers checked as contracts",
+      "Registered shared settlement, save controls, focus recovery, icon tools, compact waiting CSS, touch chat avoidance and controller UI fixtures; main room-actions and FC/MD focus markers checked as contracts",
     languages: Object.keys(languages),
     files: results,
     contractFiles,

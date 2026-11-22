@@ -51,6 +51,7 @@ func movePlayer(state *State, player *Player) {
 	}
 	input := player.Input
 	player.LandingSpeed = 0
+	player.Stamina = max(0, player.Stamina-1000/FPS)
 	player.Yaw = ((input.Yaw % 65536) + 65536) % 65536
 	player.Pitch = Clamp(input.Pitch, -16000, 16000)
 	if state.Phase != "live" {
@@ -103,6 +104,10 @@ func movePlayer(state *State, player *Player) {
 		return
 	}
 	if player.Grounded {
+		if player.Stamina > 0 {
+			ratio := max(0, 100000-player.Stamina*19)
+			player.VX, player.VY = int(int64(player.VX)*int64(ratio)/100000), int(int64(player.VY)*int64(ratio)/100000)
+		}
 		speed := Length2D(player.VX, player.VY)
 		if speed > 0 {
 			drop := max(speed, 100*Unit) * 4 / FPS
@@ -147,6 +152,7 @@ func movePlayer(state *State, player *Player) {
 	}
 	if player.Grounded && input.Jump && !player.Previous.Jump {
 		player.VZ = Sqrt(int64(2*800*45) * Unit * Unit)
+		player.Stamina = 1316
 		player.Grounded = false
 	}
 	if !player.Grounded {

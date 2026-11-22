@@ -5,7 +5,7 @@ export function emptyInput(yaw = 0, pitch = 0): GameInput {
 }
 
 type Binding = { identity: string; epoch: string; life: number; receivedSeq: number; enabled: boolean; window: number; frame: number };
-const edgeKeys = ['fire', 'secondary', 'jump', 'reload', 'use', 'drop'] as const;
+const edgeKeys = ['fire', 'secondary', 'jump', 'reload', 'use', 'drop', 'flashlight'] as const;
 export function hasInputEdge(previous: GameInput, input: GameInput, cancel = false) { return cancel || !!input.select || edgeKeys.some(key => previous[key] !== input[key]); }
 export type InputClock = { now: () => number; set: (run: () => void, delay: number) => number; clear: (timer: number) => void };
 const nativeClock: InputClock = { now: () => performance.now(), set: (run, delay) => setTimeout(run, delay), clear: timer => clearTimeout(timer) };

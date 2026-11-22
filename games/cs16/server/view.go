@@ -10,66 +10,77 @@ import (
 )
 
 type PlayerView struct {
-	Seat          int                  `json:"seat"`
-	Team          string               `json:"team"`
-	Character     string               `json:"character"`
-	Alive         bool                 `json:"alive"`
-	Life          int                  `json:"life"`
-	Visible       bool                 `json:"visible"`
-	X             *int                 `json:"x,omitempty"`
-	Y             *int                 `json:"y,omitempty"`
-	Z             *int                 `json:"z,omitempty"`
-	VX            *int                 `json:"vx,omitempty"`
-	VY            *int                 `json:"vy,omitempty"`
-	VZ            *int                 `json:"vz,omitempty"`
-	RemX          *int                 `json:"remX,omitempty"`
-	RemY          *int                 `json:"remY,omitempty"`
-	RemZ          *int                 `json:"remZ,omitempty"`
-	Input         *engine.Input        `json:"input,omitempty"`
-	Previous      *engine.Input        `json:"previous,omitempty"`
-	Yaw           *int                 `json:"yaw,omitempty"`
-	Pitch         *int                 `json:"pitch,omitempty"`
-	Health        *int                 `json:"health,omitempty"`
-	Armor         *int                 `json:"armor,omitempty"`
-	Money         *int                 `json:"money,omitempty"`
-	Helmet        *bool                `json:"helmet,omitempty"`
-	Defuser       *bool                `json:"defuser,omitempty"`
-	Weapon        string               `json:"weapon,omitempty"`
-	Ammo          *int                 `json:"ammo,omitempty"`
-	Reserve       *int                 `json:"reserve,omitempty"`
-	Inventory     []engine.WeaponState `json:"inventory,omitempty"`
-	Kills         int                  `json:"kills"`
-	Deaths        int                  `json:"deaths"`
-	Crouch        bool                 `json:"crouch"`
-	Grounded      bool                 `json:"grounded"`
-	WaterLevel    *int                 `json:"waterLevel,omitempty"`
-	ReceivedSeq   int64                `json:"receivedSeq"`
-	AppliedSeq    int64                `json:"appliedSeq"`
-	NextAttack    int64                `json:"nextAttack,omitempty"`
-	RecoilYaw     int                  `json:"recoilYaw,omitempty"`
-	RecoilPitch   int                  `json:"recoilPitch,omitempty"`
-	FlashUntil    int64                `json:"flashUntil,omitempty"`
-	FlashStrength int                  `json:"flashStrength,omitempty"`
-	Action        string               `json:"action,omitempty"`
-	ActionSince   int64                `json:"actionSince,omitempty"`
+	Stamina          int                  `json:"stamina,omitempty"`
+	Flashlight       bool                 `json:"flashlight,omitempty"`
+	FlashlightCharge *int                 `json:"flashlightCharge,omitempty"`
+	DeathAt          int64                `json:"deathAt,omitempty"`
+	DeathHitgroup    int                  `json:"deathHitgroup,omitempty"`
+	DeathVX          int                  `json:"deathVX,omitempty"`
+	DeathVY          int                  `json:"deathVY,omitempty"`
+	DeathVZ          int                  `json:"deathVZ,omitempty"`
+	Seat             int                  `json:"seat"`
+	Team             string               `json:"team"`
+	Character        string               `json:"character"`
+	Alive            bool                 `json:"alive"`
+	Life             int                  `json:"life"`
+	Visible          bool                 `json:"visible"`
+	X                *int                 `json:"x,omitempty"`
+	Y                *int                 `json:"y,omitempty"`
+	Z                *int                 `json:"z,omitempty"`
+	VX               *int                 `json:"vx,omitempty"`
+	VY               *int                 `json:"vy,omitempty"`
+	VZ               *int                 `json:"vz,omitempty"`
+	RemX             *int                 `json:"remX,omitempty"`
+	RemY             *int                 `json:"remY,omitempty"`
+	RemZ             *int                 `json:"remZ,omitempty"`
+	Input            *engine.Input        `json:"input,omitempty"`
+	Previous         *engine.Input        `json:"previous,omitempty"`
+	Yaw              *int                 `json:"yaw,omitempty"`
+	Pitch            *int                 `json:"pitch,omitempty"`
+	Health           *int                 `json:"health,omitempty"`
+	Armor            *int                 `json:"armor,omitempty"`
+	Money            *int                 `json:"money,omitempty"`
+	Helmet           *bool                `json:"helmet,omitempty"`
+	Defuser          *bool                `json:"defuser,omitempty"`
+	Weapon           string               `json:"weapon,omitempty"`
+	Ammo             *int                 `json:"ammo,omitempty"`
+	Reserve          *int                 `json:"reserve,omitempty"`
+	Inventory        []engine.WeaponState `json:"inventory,omitempty"`
+	Kills            int                  `json:"kills"`
+	Deaths           int                  `json:"deaths"`
+	Crouch           bool                 `json:"crouch"`
+	Grounded         bool                 `json:"grounded"`
+	WaterLevel       *int                 `json:"waterLevel,omitempty"`
+	ReceivedSeq      int64                `json:"receivedSeq"`
+	AppliedSeq       int64                `json:"appliedSeq"`
+	NextAttack       int64                `json:"nextAttack,omitempty"`
+	RecoilYaw        int                  `json:"recoilYaw,omitempty"`
+	RecoilPitch      int                  `json:"recoilPitch,omitempty"`
+	FlashUntil       int64                `json:"flashUntil,omitempty"`
+	FlashStrength    int                  `json:"flashStrength,omitempty"`
+	Action           string               `json:"action,omitempty"`
+	ActionSince      int64                `json:"actionSince,omitempty"`
 }
 
 type EventView struct {
-	ID     int64  `json:"id"`
-	Frame  int64  `json:"frame"`
-	Kind   string `json:"type"`
-	Seat   int    `json:"seat"`
-	Target int    `json:"target"`
-	Weapon string `json:"weapon,omitempty"`
-	X      *int   `json:"x,omitempty"`
-	Y      *int   `json:"y,omitempty"`
-	Z      *int   `json:"z,omitempty"`
-	Value  int    `json:"value,omitempty"`
-	Life   int    `json:"life,omitempty"`
-	Global bool   `json:"global,omitempty"`
+	Hitgroup int    `json:"hitgroup,omitempty"`
+	ID       int64  `json:"id"`
+	Frame    int64  `json:"frame"`
+	Kind     string `json:"type"`
+	Seat     int    `json:"seat"`
+	Target   int    `json:"target"`
+	Weapon   string `json:"weapon,omitempty"`
+	X        *int   `json:"x,omitempty"`
+	Y        *int   `json:"y,omitempty"`
+	Z        *int   `json:"z,omitempty"`
+	Value    int    `json:"value,omitempty"`
+	Life     int    `json:"life,omitempty"`
+	Global   bool   `json:"global,omitempty"`
 }
 
 type View struct {
+	BuyZone     bool                 `json:"buyZone,omitempty"`
+	PlantZone   bool                 `json:"plantZone,omitempty"`
 	Schema      int                  `json:"schema"`
 	Epoch       string               `json:"epoch"`
 	ServerAt    int64                `json:"serverAt"`
@@ -138,16 +149,16 @@ func opposingVisible(state *matchState, seat, target int) bool {
 	return false
 }
 
-func eventAudible(state *matchState, seat int, position engine.Vec3) bool {
+func eventAudible(state *matchState, seat int, position engine.Vec3, radius int) bool {
 	if !hasViewSeat(state, seat) {
 		return true
 	}
 	viewer := state.World.Players[seat]
 	if viewer.Alive {
-		return engine.Distance(engine.Position(viewer), position) <= 2048*engine.Unit
+		return engine.Distance(engine.Position(viewer), position) <= radius*engine.Unit
 	}
 	for _, player := range state.World.Players {
-		if player.Alive && player.Team == viewer.Team && engine.Distance(engine.Position(player), position) <= 2048*engine.Unit {
+		if player.Alive && player.Team == viewer.Team && engine.Distance(engine.Position(player), position) <= radius*engine.Unit {
 			return true
 		}
 	}
@@ -158,7 +169,7 @@ func eventVisible(state *matchState, seat int, event engine.Event) bool {
 	if event.Kind == "buy" {
 		return hasViewSeat(state, seat) && event.Seat == seat
 	}
-	if !hasViewSeat(state, seat) || event.Seat == seat || event.Target == seat {
+	if !hasViewSeat(state, seat) || event.Seat == seat || (event.Kind == "hit" || event.Kind == "kill" || event.Kind == "death" || event.Kind == "knife_hit") && event.Target == seat {
 		return true
 	}
 	switch event.Kind {
@@ -172,14 +183,23 @@ func eventVisible(state *matchState, seat int, event engine.Event) bool {
 			return true
 		}
 	}
-	if event.Kind == "shot" || event.Kind == "fire" || event.Kind == "step" || event.Kind == "grenade_explode" {
-		return eventAudible(state, seat, engine.Vec3{X: event.X, Y: event.Y, Z: event.Z})
+	if event.Kind == "shot" || event.Kind == "fire" || event.Kind == "step" || event.Kind == "land" || event.Kind == "knife_air" || event.Kind == "knife_hit" || event.Kind == "knife_wall" || event.Kind == "flashlight" || event.Kind == "grenade_explode" {
+		radius := 2048
+		switch event.Kind {
+		case "step", "knife_air", "knife_hit", "knife_wall":
+			radius = 1250
+		case "land":
+			radius = 512
+		case "flashlight":
+			radius = 256
+		}
+		return eventAudible(state, seat, engine.Vec3{X: event.X, Y: event.Y, Z: event.Z}, radius)
 	}
 	return false
 }
 
 func projectedEvent(event engine.Event) EventView {
-	value := EventView{ID: event.ID, Frame: event.Frame, Kind: event.Kind, Seat: event.Seat, Target: event.Target, Weapon: event.Weapon, X: &event.X, Y: &event.Y, Z: &event.Z, Value: event.Value, Life: event.Life}
+	value := EventView{ID: event.ID, Frame: event.Frame, Kind: event.Kind, Seat: event.Seat, Target: event.Target, Weapon: event.Weapon, X: &event.X, Y: &event.Y, Z: &event.Z, Value: event.Value, Hitgroup: event.Hitgroup, Life: event.Life}
 	switch event.Kind {
 	case "round_start", "round_end", "finished", "kill", "death", "bomb_planted", "bomb_defused", "bomb_exploded", "hostage_rescued":
 		value.Global = true
@@ -198,16 +218,23 @@ func projection(state *matchState, seat int) View {
 		brushes = []engine.BrushState{}
 	}
 	value := View{Schema: 1, Epoch: state.Epoch, ServerAt: state.BaseAt + world.Frame*1000/engine.FPS, StartAt: state.BaseAt, Frame: world.Frame, MapID: world.MapID, RulesSHA256: state.RulesSHA256, Options: world.Options, Players: make([]PlayerView, len(world.Players)), Events: []EventView{}, EventID: world.EventID, Round: world.Round, Phase: world.Phase, PhaseEndsAt: world.PhaseEndsAt, BuyEndsAt: world.BuyEndsAt, TeamScores: world.TeamScores, Bomb: world.Bomb, Hostages: []engine.Hostage{}, Grenades: []engine.Grenade{}, Drops: []engine.Drop{}, Brushes: &brushes, Finished: world.Finished, You: seat, CanAct: hasViewSeat(state, seat) && world.Players[seat].Alive && !world.Finished, BuyAllowed: engine.CanBuy(world, seat)}
+	value.Bomb.PickupAt = 0
+	value.BuyZone, value.PlantZone = engine.InBuyZone(world, seat), engine.InBombZone(world, seat)
 	value.CatchingUp = state.ObservedAt-value.ServerAt > 200
 	value.CanAct = value.CanAct && !value.CatchingUp
 	value.BuyAllowed = value.BuyAllowed && !value.CatchingUp
 	for index, player := range world.Players {
-		visible := !hasViewSeat(state, seat) || index == seat || world.Players[seat].Team == player.Team || opposingVisible(state, seat, index)
+		visible := !hasViewSeat(state, seat) || index == seat || world.Players[seat].Team == player.Team || player.Alive && opposingVisible(state, seat, index) || !player.Alive && pointVisible(state, seat, engine.Position(player))
 		view := PlayerView{Seat: player.Seat, Team: player.Team, Character: player.Character, Alive: player.Alive, Life: player.Life, Visible: visible, Kills: player.Kills, Deaths: player.Deaths}
 		if visible {
 			view.X, view.Y, view.Z = &player.X, &player.Y, &player.Z
 			view.Yaw, view.Pitch = &player.Yaw, &player.Pitch
 			view.Weapon, view.Crouch = player.Weapon, player.Crouch
+			view.Flashlight = player.Flashlight
+			if !player.Alive {
+				view.DeathAt, view.DeathHitgroup = player.DeathAt, player.DeathHitgroup
+				view.DeathVX, view.DeathVY, view.DeathVZ = player.DeathVX, player.DeathVY, player.DeathVZ
+			}
 		}
 		if index == seat {
 			view.VX, view.VY, view.VZ = &player.VX, &player.VY, &player.VZ
@@ -221,6 +248,7 @@ func projection(state *matchState, seat int) View {
 			view.Inventory = append([]engine.WeaponState{}, player.Inventory...)
 			view.Grounded = player.Grounded
 			view.WaterLevel = &player.WaterLevel
+			view.Stamina, view.FlashlightCharge = player.Stamina, &player.FlashlightCharge
 			view.ReceivedSeq, view.AppliedSeq = player.ReceivedSeq, player.AppliedSeq
 			view.NextAttack, view.RecoilYaw, view.RecoilPitch = player.NextAttack, player.RecoilYaw, player.RecoilPitch
 			view.FlashUntil, view.FlashStrength = player.FlashUntil, player.FlashStrength
@@ -240,12 +268,13 @@ func projection(state *matchState, seat int) View {
 	}
 	for _, drop := range world.Drops {
 		if pointVisible(state, seat, engine.Vec3{X: drop.X, Y: drop.Y, Z: drop.Z}) {
+			drop.Moving, drop.VX, drop.VY, drop.VZ = false, 0, 0, 0
 			value.Drops = append(value.Drops, drop)
 		}
 	}
 	if hasViewSeat(state, seat) && world.Players[seat].Team == "ct" {
 		value.Bomb.Carrier = -1
-		if !pointVisible(state, seat, engine.Vec3{X: world.Bomb.X, Y: world.Bomb.Y, Z: world.Bomb.Z}) {
+		if !pointVisible(state, seat, engine.Vec3{X: world.Bomb.X, Y: world.Bomb.Y, Z: world.Bomb.Z}) && !(world.Bomb.Planted && eventAudible(state, seat, engine.Vec3{X: world.Bomb.X, Y: world.Bomb.Y, Z: world.Bomb.Z}, 1000)) {
 			value.Bomb.X, value.Bomb.Y, value.Bomb.Z = 0, 0, 0
 			value.Bomb.Dropped = false
 		}

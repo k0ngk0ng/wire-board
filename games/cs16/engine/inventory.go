@@ -36,6 +36,13 @@ func CanBuy(state *State, seat int) bool {
 	if seat < 0 || seat >= len(state.Players) || state.Finished || state.Phase != "freeze" && state.Phase != "live" || state.Frame > state.BuyEndsAt {
 		return false
 	}
+	return InBuyZone(state, seat)
+}
+
+func InBuyZone(state *State, seat int) bool {
+	if seat < 0 || seat >= len(state.Players) {
+		return false
+	}
 	p := &state.Players[seat]
 	if !p.Alive {
 		return false
@@ -180,15 +187,30 @@ func dropWeapon(state *State, player *Player, index int) {
 	if item.ID == "knife" {
 		return
 	}
+	if weapon, valid := WeaponByID(item.ID); valid && weapon.AmmoType != "" {
+		for other, owned := range player.Inventory {
+			definition, known := WeaponByID(owned.ID)
+			if other != index && known && definition.AmmoType == weapon.AmmoType {
+				item.Reserve = 0
+				break
+			}
+		}
+	}
 	if item.ID == "c4" {
 		if state.Bomb.Carrier == player.Seat {
-			state.Bomb.Carrier, state.Bomb.Dropped = -1, true
-			state.Bomb.X, state.Bomb.Y, state.Bomb.Z = player.X, player.Y, player.Z
+			placeDroppedBomb(state, player)
 		}
 	} else {
 		state.NextID++
 		item.ReloadUntil, item.BurstLeft = 0, 0
-		state.Drops = append(state.Drops, Drop{ID: state.NextID, X: player.X, Y: player.Y, Z: player.Z, Weapon: item, Frame: state.Frame})
+		forward := Direction(player.Yaw, 0)
+		point, velocity := Position(*player), droppedItemVelocity(player)
+		if player.Alive {
+			point = combatAddRay(point, forward, 10*Unit)
+			velocity = Vec3{int(int64(forward.X) * 400 * Unit / NormalUnit), int(int64(forward.Y) * 400 * Unit / NormalUnit), 0}
+		}
+		trace := TraceWorld(state, Position(*player), point, -1)
+		state.Drops = append(state.Drops, Drop{ID: state.NextID, X: trace.End.X, Y: trace.End.Y, Z: trace.End.Z, Yaw: player.Yaw, VX: velocity.X, VY: velocity.Y, VZ: velocity.Z, Weapon: item, Frame: state.Frame, Moving: true})
 		trimDynamicDrops(state)
 	}
 	player.Inventory = append(player.Inventory[:index], player.Inventory[index+1:]...)
@@ -204,41 +226,93 @@ func DropWeapons(state *State, seat int) {
 			dropWeapon(state, p, i)
 		}
 	}
+	if !p.Alive && p.Defuser {
+		state.NextID++
+		velocity := droppedItemVelocity(p)
+		state.Drops = append(state.Drops, Drop{ID: state.NextID, X: p.X, Y: p.Y, Z: p.Z, VX: velocity.X, VY: velocity.Y, VZ: velocity.Z, Moving: true, Weapon: WeaponState{ID: "defuser", Ammo: 1}, Frame: state.Frame})
+		p.Defuser = false
+		trimDynamicDrops(state)
+	}
 	SyncWeapon(p)
 }
 
 func PickupDrop(state *State, seat int) {
-	if seat < 0 || seat >= len(state.Players) || !state.Players[seat].Alive {
+	if state.Finished || state.Phase != "live" && state.Phase != "freeze" || seat < 0 || seat >= len(state.Players) || !state.Players[seat].Alive {
 		return
 	}
 	p := &state.Players[seat]
 	for i, drop := range state.Drops {
-		if drop.SpawnID > 0 {
+		if drop.SpawnID > 0 || drop.Moving {
 			continue
 		}
 		if Distance(combatPosition(p), Vec3{drop.X, drop.Y, drop.Z}) > 48*Unit {
 			continue
 		}
+		if drop.Weapon.ID == "defuser" {
+			if p.Team != "ct" || p.Defuser {
+				continue
+			}
+			p.Defuser = true
+			state.Drops = append(state.Drops[:i], state.Drops[i+1:]...)
+			Emit(state, Event{Kind: "pickup", Seat: seat, Weapon: "defuser", X: p.X, Y: p.Y, Z: p.Z})
+			return
+		}
 		weapon, ok := WeaponByID(drop.Weapon.ID)
 		if !ok {
 			continue
 		}
-		occupied := false
+		occupied, same, count := false, -1, 0
 		for _, item := range p.Inventory {
 			owned, valid := WeaponByID(item.ID)
-			if valid && (owned.ID == weapon.ID || owned.Slot == weapon.Slot && weapon.Slot != 4) {
+			if valid && owned.ID == weapon.ID {
+				count++
+				same = weaponIndex(p, item.ID)
+			}
+			if valid && owned.Slot == weapon.Slot && weapon.Slot != 4 {
 				occupied = true
 			}
+		}
+		if same >= 0 && weapon.Slot <= 2 {
+			amount := min(weapon.Reserve-p.Inventory[same].Reserve, max(0, drop.Weapon.Ammo)+max(0, drop.Weapon.Reserve))
+			if amount <= 0 {
+				continue
+			}
+			syncSharedAmmo(p, weapon.AmmoType, p.Inventory[same].Reserve+amount)
+			state.Drops = append(state.Drops[:i], state.Drops[i+1:]...)
+			SyncWeapon(p)
+			Emit(state, Event{Kind: "pickup", Seat: seat, Weapon: weapon.ID, Value: amount, X: p.X, Y: p.Y, Z: p.Z})
+			return
+		}
+		if weapon.Slot == 4 {
+			limit := 1
+			if weapon.ID == "flashbang" {
+				limit = 2
+			}
+			occupied = count >= limit
 		}
 		if occupied {
 			continue
 		}
-		p.Inventory = append(p.Inventory, drop.Weapon)
+		item := drop.Weapon
+		if weapon.Slot <= 2 && weapon.AmmoType != "" {
+			shared := 0
+			for _, owned := range p.Inventory {
+				definition, known := WeaponByID(owned.ID)
+				if known && definition.AmmoType == weapon.AmmoType {
+					shared = max(shared, owned.Reserve)
+				}
+			}
+			item.Reserve = min(weapon.Reserve, shared+max(0, item.Reserve))
+		}
+		p.Inventory = append(p.Inventory, item)
+		if weapon.Slot <= 2 && weapon.AmmoType != "" {
+			syncSharedAmmo(p, weapon.AmmoType, item.Reserve)
+		}
 		state.Drops = append(state.Drops[:i], state.Drops[i+1:]...)
 		p.Weapon = weapon.ID
 		p.NextAttack = state.Frame + weaponDeployFrames(weapon.ID)
 		SyncWeapon(p)
-		Emit(state, Event{Kind: "pickup", Seat: seat, Weapon: weapon.ID})
+		Emit(state, Event{Kind: "pickup", Seat: seat, Weapon: weapon.ID, X: p.X, Y: p.Y, Z: p.Z})
 		return
 	}
 }

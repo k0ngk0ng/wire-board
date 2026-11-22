@@ -24,7 +24,8 @@
     "web/src/game-api/module.ts",
     "web/src/game-api/host.tsx",
     "web/src/main.tsx",
-    "web/src/realtime-stream.ts"
+    "web/src/realtime-stream.ts",
+    "web/src/legacy/room-ui.tsx"
   ],
   "platformAudioSources": [
     "web/src/audio-spatial.ts",

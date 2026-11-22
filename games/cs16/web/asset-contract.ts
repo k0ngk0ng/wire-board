@@ -26,6 +26,14 @@ export function validateManifest(value: AssetManifest): AssetManifest {
     for (const resource of [selected.render, selected.rules, selected.preview, ...selected.sky ?? []]) validateResource(resource!);
   }
   for (const resource of [...Object.values(value.models), ...Object.values(value.sounds)]) validateResource(resource);
+  if (value.hud) {
+    const hud = value.hud;
+    validateResource(hud.atlas);
+    if (hud.schema !== 1 || !Number.isSafeInteger(hud.width) || hud.width <= 0 || !Number.isSafeInteger(hud.height) || hud.height <= 0) throw Error('原版界面素材无效');
+    for (const bank of Object.values(hud.sprites)) for (const sprite of Object.values(bank)) {
+      if (![sprite.x, sprite.y, sprite.width, sprite.height].every(Number.isSafeInteger) || sprite.x < 0 || sprite.y < 0 || sprite.width <= 0 || sprite.height <= 0 || sprite.x + sprite.width > hud.width || sprite.y + sprite.height > hud.height) throw Error('原版界面图标越界');
+    }
+  }
   if (value.runtime) {
     if (value.runtime.version !== 1 || !/^[a-f0-9]{64}$/.test(value.runtime.sourceSHA256) || !/^[a-f0-9]{64}$/.test(value.runtime.buildSHA256)) throw Error('预测运行时身份无效');
     validateResource(value.runtime.wasm);
@@ -34,7 +42,11 @@ export function validateManifest(value: AssetManifest): AssetManifest {
   return value;
 }
 
+export function selectSoundKeys(sounds: Record<string, unknown>, mode: string) {
+  return Object.keys(sounds).filter(key => key.startsWith('weapons/') || key.startsWith('player/') || ['items/9mmclip1.wav', 'items/flashlight1.wav', 'items/gunpickup2.wav', 'items/kevlar.wav'].includes(key) || /radio\/(?:bombpl|bombdef|ctwin|terwin|rounddraw|rescued)/.test(key) || mode === 'hostage' && key.startsWith('hostage/'));
+}
+
 export function selectModelKeys(characters: string[], mode = 'bomb') {
   const names = weapons.map(weapon => weapon.id === 'mp5navy' ? 'mp5' : weapon.id);
-  return [...new Set([...characters.map(id => `player-${id}`), ...names.flatMap(id => [`v-${id}`, `p-${id}`, `w-${id}`]), ...['knife', 'hegrenade', 'flashbang', 'smokegrenade', 'c4'].flatMap(id => [`v-${id}`, `p-${id}`, `w-${id}`]), 'w-backpack', ...(mode === 'hostage' ? ['hostage'] : [])])];
+  return [...new Set([...characters.map(id => `player-${id}`), ...names.flatMap(id => [`v-${id}`, `p-${id}`, `w-${id}`]), ...['knife', 'hegrenade', 'flashbang', 'smokegrenade', 'c4'].flatMap(id => [`v-${id}`, `p-${id}`, `w-${id}`]), 'w-backpack', ...(mode === 'bomb' ? ['w-defuser'] : []), ...(mode === 'hostage' ? ['hostage'] : [])])];
 }

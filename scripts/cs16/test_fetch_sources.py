@@ -179,6 +179,8 @@ class SourceFetchTest(unittest.TestCase):
         report = json.loads(result.stdout)
         self.assertEqual(report["downloaded"], 0)
         catalogs = [("original-sources.json", "original"), ("navigation-sources.json", "navigation")]
+        if (ROOT / "games/cs16/assets/hud-sources.json").is_file():
+            catalogs.append(("hud-sources.json", "original"))
         if (ROOT / "games/cs16/assets/community-sources.json").is_file():
             catalogs.append(("community-sources.json", "community"))
         expected = sum(len(MODULE.validate_manifest(json.loads((ROOT / "games/cs16/assets" / name).read_text()), kind)) for name, kind in catalogs)

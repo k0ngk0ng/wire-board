@@ -268,6 +268,7 @@ func TestBotUsesVisibleOpponentsE2E(t *testing.T) {
 	state.Frame += FPS
 	fired := false
 	for range FPS {
+		StepBotNavigation(state)
 		input = BotInput(state, 0)
 		if input.Fire {
 			fired = true
@@ -295,6 +296,13 @@ func TestBotSmokeOcclusionAndExpiryE2E(t *testing.T) {
 		t.Fatal("bot acquired target through active smoke")
 	}
 	state.Frame = 1900
+	StepBotNavigation(state)
+	input = BotInput(state, 0)
+	if input.Fire {
+		t.Fatal("bot bypassed reaction when smoke expired")
+	}
+	state.Frame += 30
+	StepBotNavigation(state)
 	input = BotInput(state, 0)
 	if !input.Fire {
 		t.Fatal("bot did not reacquire after smoke expired")
@@ -547,7 +555,7 @@ func TestTenSeatOriginalMapBotMatchesE2E(t *testing.T) {
 					}
 					input := BotInput(state, seat)
 					if err := QueueInput(state, seat, input); err != nil {
-						t.Fatalf("bot input seat %d: %v", seat, err)
+						t.Fatalf("bot input seat %d frame %d input %+v: %v", seat, state.Frame, input, err)
 					}
 				}
 				Advance(state, state.Frame+1)

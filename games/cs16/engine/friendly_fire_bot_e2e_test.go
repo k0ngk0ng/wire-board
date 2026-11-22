@@ -7,6 +7,7 @@ import (
 
 func friendlyBotArena(enabled bool) *State {
 	state := &State{Options: Options{FriendlyFire: enabled}, Phase: "live", Frame: 100, Seed: 71, World: Map{ID: "fixture", Root: ContentsEmpty, Mode: "bomb", Bombsites: []Bounds{{Min: Vec3{-1000 * Unit, -100 * Unit, 0}, Max: Vec3{-900 * Unit, 100 * Unit, 100 * Unit}}}}, Bomb: Bomb{Carrier: -1}, Players: []Player{{Seat: 0, Team: "t", Character: "terror", Alive: true, Life: 1, Health: 100, Yaw: 0, Grounded: true, Weapon: "ak47", Ammo: 30, Inventory: []WeaponState{{ID: "knife", Ammo: 1}, {ID: "ak47", Ammo: 30, Reserve: 90}}}, {Seat: 1, Team: "ct", Character: "urban", Alive: true, Life: 1, Health: 100, X: 250 * Unit, Yaw: 32768, Weapon: "usp"}, {Seat: 2, Team: "t", Character: "leet", Alive: true, Life: 1, Health: 100, X: 125 * Unit, Weapon: "glock18"}}}
+	state.Players[0].BotEnemy, state.Players[0].BotSeenAt, state.Players[0].BotAimSeed = 1, 1, 1
 	return state
 }
 

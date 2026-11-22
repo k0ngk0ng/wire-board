@@ -26,6 +26,7 @@
     {"id":"slot5","label":"C4","keys":["Digit5"]},
     {"id":"lastWeapon","label":"上一把武器","keys":["KeyQ"],"gamepad":[{"type":"button","index":12}]},
     {"id":"buyPrimaryAmmo","label":"购买主武器弹药","keys":["Comma"]},
-    {"id":"buySecondaryAmmo","label":"购买副武器弹药","keys":["Period"]}
+    {"id":"buySecondaryAmmo","label":"购买副武器弹药","keys":["Period"]},
+    {"id":"flashlight","label":"手电筒","keys":["KeyF"]}
   ]
 }

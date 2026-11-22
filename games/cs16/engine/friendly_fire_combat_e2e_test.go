@@ -59,7 +59,16 @@ func TestFriendlyFireKnifeAndHEE2E(t *testing.T) {
 		StepCombat(s)
 		want := 100
 		if enabled {
-			want = 93
+			want = 72
+		}
+		knifeHead := false
+		for _, event := range s.Events {
+			if event.Kind == "knife_hit" && event.Hitgroup == 1 {
+				knifeHead = true
+			}
+		}
+		if !knifeHead {
+			t.Fatal("knife fixture no longer strikes the source head hitbox")
 		}
 		if s.Players[1].Health != want {
 			t.Fatalf("knife friendlyFire %t health %d want %d", enabled, s.Players[1].Health, want)

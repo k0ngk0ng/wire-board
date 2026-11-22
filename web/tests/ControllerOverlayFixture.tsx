@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { createPortal } from "react-dom";
+import { MessageCircle } from "lucide-react";
 import { FCController } from "../src/controllers/FCController";
 import { MDController } from "../src/controllers/MDController";
 import { TeamHud, TouchPad } from "../../games/battlecity/web/Board";
 import { GameFullscreen, type GameFullscreenHandle } from "../src/ui/room-fullscreen";
 import { useChatPosition } from "../src/ui/chat-position";
+import "../src/style.css";
 import "../../games/contra/web/runtime.css";
 import "../../games/basketball/web/network.css";
 import "../../games/yuyuhakusho/web/network.css";
@@ -25,22 +27,22 @@ function Game({ fullscreen }: { fullscreen: boolean }) {
   if (kind === "contra") return <div className="contra-runtime touch-controller-stage" data-overlay-stage style={style}><div className="contra-runtime-screen touch-controller-picture">{canvas}</div><div className="contra-runtime-controller touch-controller-overlay"><FCController mode="play" profile={profile} sink={sink} /></div></div>;
   if (kind === "basketball") return <div className="basketball-board touch-controller-stage" data-overlay-stage style={style}><div className="basketball-screen"><p className="basketball-status">比赛进行中</p><div className="basketball-stage touch-controller-picture">{canvas}</div></div><aside className="basketball-controls touch-controller-overlay"><FCController mode="play" profile={profile} sink={sink} /></aside></div>;
   if (kind === "yuyuhakusho") return <div className="yuyu-board touch-controller-stage" data-overlay-stage style={style}><div className="yuyu-screen touch-controller-picture">{canvas}</div><div className="yuyu-controller touch-controller-overlay"><MDController mode="play" profile={profile} sink={sink} /></div></div>;
-  const room = { seats: Array.from({ length: 6 }, (_, seat) => ({ id: 'player-' + seat, name: '队员 ' + (seat + 1) })) } as unknown as Parameters<typeof TeamHud>[0]['room'];
-  const view = { teamSize: 3, tanks: Array.from({ length: 6 }, (_, seat) => ({ team: Math.floor(seat / 3), alive: true, hp: 3, maxHp: 3, kills: 0, class: 'balanced' })) } as unknown as Parameters<typeof TeamHud>[0]['view'];
+  const room = { seats: Array.from({ length: 6 }, (value, seat) => { void value; return { id: 'player-' + seat, name: '队员 ' + (seat + 1) }; }) } as unknown as Parameters<typeof TeamHud>[0]['room'];
+  const view = { teamSize: 3, tanks: Array.from({ length: 6 }, (value, seat) => { void value; return { team: Math.floor(seat / 3), alive: true, hp: 3, maxHp: 3, kills: 0, class: 'balanced' }; }) } as unknown as Parameters<typeof TeamHud>[0]['view'];
   return <div className="battlecity-board" data-battlecity-phase="playing" data-overlay-stage><div className="bc-status">比赛进行中</div><TeamHud room={room} view={view} team={0} serverNow={0} viewer={0} /><div className="bc-field-wrap">{canvas}</div><TeamHud room={room} view={view} team={1} serverNow={0} viewer={0} /><div className="bc-controls"><TouchPad enabled onMove={value => { probe.move = value; }} onFire={value => { probe.fire = value; }} /></div></div>;
 }
 
-function FixtureChat({ target }: { target: HTMLElement }) {
+function FixtureChat({ target }: { target: HTMLElement | null }) {
   const toggle = useRef<HTMLButtonElement>(null);
   const panel = useRef<HTMLElement>(null);
   const position = useChatPosition(toggle, panel, target, false);
-  return createPortal(<div className="table-chat" style={position.style}><button ref={toggle} type="button" className="chat-toggle" aria-label="聊天" {...position.handlers}>聊</button></div>, target);
+  return createPortal(<div className="table-chat" style={position.style}><button ref={toggle} type="button" className="chat-toggle" aria-label="聊天" {...position.handlers}><MessageCircle size={22} /><span>聊天</span></button></div>, target ?? document.body);
 }
 
 function App() {
   const fullscreen = useRef<GameFullscreenHandle>(null);
   const [target, setTarget] = useState<HTMLElement | null>(null);
-  return <><button id="fixture-fullscreen" style={{ position: 'fixed', top: 0, right: 0, zIndex: 999, display: target ? 'none' : undefined }} onClick={() => fullscreen.current?.enter()}>全屏</button><GameFullscreen ref={fullscreen} scope="controller-overlay" enabled onReadyChange={() => {}} onChatTargetChange={setTarget}><Game fullscreen={!!target} /></GameFullscreen>{target && <FixtureChat target={target} />}</>;
+  return <><button id="fixture-fullscreen" style={{ position: 'fixed', top: 0, right: 0, zIndex: 999, display: target ? 'none' : undefined }} onClick={() => fullscreen.current?.enter()}>全屏</button><GameFullscreen ref={fullscreen} scope="controller-overlay" enabled onReadyChange={() => {}} onChatTargetChange={setTarget}><Game fullscreen={!!target} /></GameFullscreen><FixtureChat target={target} /></>;
 }
 
 createRoot(document.getElementById("root")!).render(<App />);

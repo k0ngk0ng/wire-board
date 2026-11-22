@@ -89,6 +89,7 @@ export async function auditPlayability({ call, evaluate, view, photograph, nativ
     evidence.tablets.push(geometry);
   }
   await tap('[data-cs16-controls-menu]');
+  assert.equal(await evaluate('getComputedStyle(document.querySelector(".cs16-touch-more-panel")).touchAction'), 'pan-y');
   await tap('.cs16-touch-more-panel label');
   assert.ok(await evaluate('!!document.querySelector("[data-cs16-fire-area=true]")&&!document.querySelector("[data-cs16-action=fire]")'), 'aim-area fire mode did not replace the fire button');
   const move = await point('[data-cs16-stick=move]');
@@ -100,6 +101,7 @@ export async function auditPlayability({ call, evaluate, view, photograph, nativ
   await call('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: held });
   await authority(state => !state.player.input?.fire && state.player.input?.moveX === 0 && state.player.input?.moveY === 0);
   await tap('[data-cs16-controls-menu]');
+  assert.equal(await evaluate('getComputedStyle(document.querySelector(".cs16-touch-more-panel")).touchAction'), 'pan-y');
   await tap('.cs16-touch-more-panel label');
   assert.ok(await evaluate('!!document.querySelector("[data-cs16-action=fire]")'), 'button fire mode did not return');
   await call('Emulation.setDeviceMetricsOverride', { width: 890, height: 626, screenWidth: 890, screenHeight: 626, deviceScaleFactor: 2, mobile: true, screenOrientation: { type: 'landscapePrimary', angle: 90 } });

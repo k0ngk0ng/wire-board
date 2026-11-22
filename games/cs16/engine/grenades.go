@@ -107,7 +107,7 @@ func explodeHE(state *State, grenade Grenade) {
 			continue
 		}
 		damage := 100 * (350*Unit - distance) / (350 * Unit)
-		DamagePlayer(state, grenade.Owner, seat, damage, 500, 0, "hegrenade")
+		damagePlayerFrom(state, grenade.Owner, seat, damage, 500, 0, "hegrenade", center, true)
 	}
 	for index := range state.Hostages {
 		h := state.Hostages[index]

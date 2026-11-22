@@ -56,15 +56,15 @@ export function Preparation({ room, options, host, busy, assets, prepare }: Prep
     <Settings value={value} disabled={busy || !host || !participating} change={changes => prepare({ type: 'settings', ...changes })} />
     <div className="cs16-team-grid">{['t', 'ct'].map(team => <section key={team} className={`cs16-team cs16-team-${team}`}>
       <h3>{team === 'ct' ? 'CT · 反恐精英' : 'T · 恐怖分子'}<span>{members(team).length} / 5</span></h3>
-      {participating && value.teams[room.you] !== team && <button type="button" className="cs16-join-team" disabled={busy || members(team).length >= 5} onClick={() => prepare({ type: 'team', team })}>加入 {team === 'ct' ? 'CT' : 'T'}</button>}
-      {members(team).map(({ player, seat }) => {
+      <div className="cs16-team-roster">{members(team).map(({ player, seat }) => {
         const editable = participating && !!player && !busy && (seat === room.you || host && !!player.bot);
         return <div className="cs16-seat" key={seat}>
           <strong>{player.name}{seat === room.you ? ' · 你' : ''}{player.bot ? ' · 电脑' : ''}<span>{player.ready ? '已准备' : '未准备'}</span></strong>
           <select aria-label={`${player?.name ?? '空席'}的造型`} value={value.characters[seat]} disabled={!editable} onChange={event => prepare({ type: 'character', seat, character: event.target.value })}>{characters.filter(character => character.team === team).map(character => <option key={character.id} value={character.id}>{character.name}</option>)}</select>
           <button type="button" disabled={!editable || members(team === 'ct' ? 't' : 'ct').length >= 5} aria-label={`${player.name}加入${team === 'ct' ? 'T' : 'CT'}`} onClick={() => prepare({ type: 'team', seat, team: team === 'ct' ? 't' : 'ct' })}>加入 {team === 'ct' ? 'T' : 'CT'}</button>
         </div>;
-      })}
+      })}</div>
+      {participating && value.teams[room.you] !== team && <button type="button" className="cs16-join-team" disabled={busy || members(team).length >= 5} onClick={() => prepare({ type: 'team', team })}>加入 {team === 'ct' ? 'CT' : 'T'}</button>}
     </section>)}</div>
     {error && <p className="cs16-error" role="alert">{error}</p>}
   </section>;

@@ -1,0 +1,499 @@
+{
+  "repository": "https://github.com/martinsam16/cstrike",
+  "commit": "651d0d248ba04028b1b8167b156888b522bbcb73",
+  "authority": "third-party-public-archive",
+  "limitations": [
+    "No Valve distribution signature or official digest established",
+    "Static sprite and HUD list data do not establish complete original UI runtime behavior"
+  ],
+  "files": [
+    {
+      "path": "cstrike/sprites/640hud1.spr",
+      "source_path": "opt/hlds/cstrike/sprites/640hud1.spr",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/cstrike/sprites/640hud1.spr",
+      "bytes": 66366,
+      "sha256": "1909f7c3b34484d4e8e59c780e527d5c1b2e051a13043f375a7dc6cad5a0e8ed",
+      "git_blob_sha1": "50128c74de637f10194abe3d9fae47dcab2a0944"
+    },
+    {
+      "path": "cstrike/sprites/640hud10.spr",
+      "source_path": "opt/hlds/cstrike/sprites/640hud10.spr",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/cstrike/sprites/640hud10.spr",
+      "bytes": 66366,
+      "sha256": "65c570f7c51618557569f4f11624744ae83cd9230fb7c80d229da2f81c55b843",
+      "git_blob_sha1": "2be59828d7132aad11d4a3da3fe0705deaee1392"
+    },
+    {
+      "path": "cstrike/sprites/640hud11.spr",
+      "source_path": "opt/hlds/cstrike/sprites/640hud11.spr",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/cstrike/sprites/640hud11.spr",
+      "bytes": 66366,
+      "sha256": "c37897eea6139c7ee0ae98fe064fb689d34c0eb2a9c42baf8aeb6d5710f2ebc7",
+      "git_blob_sha1": "e8c1b20c43886b6dc6e3100a3f9f9e25ebae03c4"
+    },
+    {
+      "path": "cstrike/sprites/640hud12.spr",
+      "source_path": "opt/hlds/cstrike/sprites/640hud12.spr",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/cstrike/sprites/640hud12.spr",
+      "bytes": 66366,
+      "sha256": "0439f6755839efd2dd2048f1a747a2da38bf805e167de198fc76b7332e5bf2a5",
+      "git_blob_sha1": "113a5e5b69762e10878caaada48565444aa1d3ff"
+    },
+    {
+      "path": "cstrike/sprites/640hud13.spr",
+      "source_path": "opt/hlds/cstrike/sprites/640hud13.spr",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/cstrike/sprites/640hud13.spr",
+      "bytes": 66366,
+      "sha256": "185f6b23b6a69bf744498bacff8752a2b0726fcc6ed3af4e7ecc13a893637d6a",
+      "git_blob_sha1": "e3c709ae76ba7559012fb4726fa4bfd73a40cecd"
+    },
+    {
+      "path": "cstrike/sprites/640hud14.spr",
+      "source_path": "opt/hlds/cstrike/sprites/640hud14.spr",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/cstrike/sprites/640hud14.spr",
+      "bytes": 66366,
+      "sha256": "553e8bbc844f30b0452336a939f122c83396cae24d194ae11c2e2c12f898a41d",
+      "git_blob_sha1": "4e2a8180a0754352b1e236d6f5be97d9e5ea27e5"
+    },
+    {
+      "path": "cstrike/sprites/640hud15.spr",
+      "source_path": "opt/hlds/cstrike/sprites/640hud15.spr",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/cstrike/sprites/640hud15.spr",
+      "bytes": 66366,
+      "sha256": "50844dc10cb16960ddf734515b5357fd410cb10b79bc803987702b14c9ad8d66",
+      "git_blob_sha1": "984ec59d743b183f8be4c8023fe63ea9f9e11317"
+    },
+    {
+      "path": "cstrike/sprites/640hud16.spr",
+      "source_path": "opt/hlds/cstrike/sprites/640hud16.spr",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/cstrike/sprites/640hud16.spr",
+      "bytes": 66366,
+      "sha256": "13589fd915af580aba377f2a364de9829a39f2ea059f739967a8a5703937e549",
+      "git_blob_sha1": "81af09bfa20b107781001d291b37659d339bc6a8"
+    },
+    {
+      "path": "cstrike/sprites/640hud17.spr",
+      "source_path": "opt/hlds/cstrike/sprites/640hud17.spr",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/cstrike/sprites/640hud17.spr",
+      "bytes": 66366,
+      "sha256": "02e09b29df1e6f0b2c2173673a5393080cd62065bb94e3f411c82f95eb2e4aaa",
+      "git_blob_sha1": "953c8136d1d2ffda3160186ca1dea6de991bd563"
+    },
+    {
+      "path": "cstrike/sprites/640hud18.spr",
+      "source_path": "opt/hlds/cstrike/sprites/640hud18.spr",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/cstrike/sprites/640hud18.spr",
+      "bytes": 66366,
+      "sha256": "d6cad1936c57d16063fc1e0dfe85f543f46ec20209b6ccafa787c8ca260e60ee",
+      "git_blob_sha1": "d8e407968eb28df16dfd8c65187e7123334ada80"
+    },
+    {
+      "path": "cstrike/sprites/640hud2.spr",
+      "source_path": "opt/hlds/cstrike/sprites/640hud2.spr",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/cstrike/sprites/640hud2.spr",
+      "bytes": 66366,
+      "sha256": "465187f66fa38d4fcc93a2026968af85baff09887255843126e428c02aca61d4",
+      "git_blob_sha1": "9762d7c20e3eb4a6c90e5f8af92941d790d518e7"
+    },
+    {
+      "path": "cstrike/sprites/640hud3.spr",
+      "source_path": "opt/hlds/cstrike/sprites/640hud3.spr",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/cstrike/sprites/640hud3.spr",
+      "bytes": 66366,
+      "sha256": "bc84cf45f5a024656d55d9bab18ed94371479533766a053f23f5acadbb03e281",
+      "git_blob_sha1": "563a9419d35676c099ebe57f8274bf1f53326353"
+    },
+    {
+      "path": "cstrike/sprites/640hud4.spr",
+      "source_path": "opt/hlds/cstrike/sprites/640hud4.spr",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/cstrike/sprites/640hud4.spr",
+      "bytes": 66366,
+      "sha256": "17a98c4d84b6146602a354e5dc2fd0acff2cead91dd8e01e5f3fb9d1b4a3459d",
+      "git_blob_sha1": "494e3a3451868f05e9cef439e8c0e75bf59fd2ee"
+    },
+    {
+      "path": "cstrike/sprites/640hud5.spr",
+      "source_path": "opt/hlds/cstrike/sprites/640hud5.spr",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/cstrike/sprites/640hud5.spr",
+      "bytes": 66366,
+      "sha256": "80d03d13bedf261bbe20753e26540746dc4c59addd2cce1273bf14b0d15a321c",
+      "git_blob_sha1": "4ff64e2bfa4b47d07d720de99c09cd64bf4002aa"
+    },
+    {
+      "path": "cstrike/sprites/640hud6.spr",
+      "source_path": "opt/hlds/cstrike/sprites/640hud6.spr",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/cstrike/sprites/640hud6.spr",
+      "bytes": 66366,
+      "sha256": "bc84cf45f5a024656d55d9bab18ed94371479533766a053f23f5acadbb03e281",
+      "git_blob_sha1": "563a9419d35676c099ebe57f8274bf1f53326353"
+    },
+    {
+      "path": "cstrike/sprites/640hud7.spr",
+      "source_path": "opt/hlds/cstrike/sprites/640hud7.spr",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/cstrike/sprites/640hud7.spr",
+      "bytes": 66366,
+      "sha256": "cf8ee32657eddad86b23dd1ef3c71221fc7901f0e3cb3c2a5a52ce845e18c092",
+      "git_blob_sha1": "5f983532e1e5ad005b4973df476cc83509deff46"
+    },
+    {
+      "path": "cstrike/sprites/ch_sniper.spr",
+      "source_path": "opt/hlds/cstrike/sprites/ch_sniper.spr",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/cstrike/sprites/ch_sniper.spr",
+      "bytes": 66366,
+      "sha256": "2722eb365c6f9c5b0fab8cbab8aacc332e276d6f61209eff23210a8f84edb4cc",
+      "git_blob_sha1": "d51fe61777fd00db6cdf4372483e35ce67e0a257"
+    },
+    {
+      "path": "cstrike/sprites/ch_sniper2.spr",
+      "source_path": "opt/hlds/cstrike/sprites/ch_sniper2.spr",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/cstrike/sprites/ch_sniper2.spr",
+      "bytes": 66366,
+      "sha256": "830967ed7fb9afa3a2ea116df8bc34777de3ea81223a5f9661153ee88e8397dd",
+      "git_blob_sha1": "7ab5191c4d6253f3f3eaedb22db5df06b6354618"
+    },
+    {
+      "path": "cstrike/sprites/hud.txt",
+      "source_path": "opt/hlds/cstrike/sprites/hud.txt",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/cstrike/sprites/hud.txt",
+      "bytes": 7218,
+      "sha256": "0c85c594323d9a19cbb53907fe0a6f6aab3070583dc9e99cd64ae343a095141e",
+      "git_blob_sha1": "79f97a0c040a07d22ddfca46b8b4d6fac5905347"
+    },
+    {
+      "path": "cstrike/sprites/radar320.spr",
+      "source_path": "opt/hlds/cstrike/sprites/radar320.spr",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/cstrike/sprites/radar320.spr",
+      "bytes": 4926,
+      "sha256": "bf25863fadee2f1d3ec5c0926acd2c9b2f0b771d1dfa628b7d664cd0e5ef8a53",
+      "git_blob_sha1": "203768400c6e56039206aa060171e55fb3f8fb8d"
+    },
+    {
+      "path": "cstrike/sprites/radar640.spr",
+      "source_path": "opt/hlds/cstrike/sprites/radar640.spr",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/cstrike/sprites/radar640.spr",
+      "bytes": 17214,
+      "sha256": "bbeeda2977d17f7a2d950362f4a9f2711e23d36d2e4fc3642b8006ad61bb1fa1",
+      "git_blob_sha1": "c3d6dc4dba3a3216dfb55e139fa2af3369e06d5c"
+    },
+    {
+      "path": "cstrike/sprites/radaropaque640.spr",
+      "source_path": "opt/hlds/cstrike/sprites/radaropaque640.spr",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/cstrike/sprites/radaropaque640.spr",
+      "bytes": 17214,
+      "sha256": "72b4d9866c48c816876cea1687badd38764380ba513dccd5d64644c435625292",
+      "git_blob_sha1": "4612983cf8861ad48d6fa5f59ae1a95b0338e1c9"
+    },
+    {
+      "path": "cstrike/sprites/sniper_scope.spr",
+      "source_path": "opt/hlds/cstrike/sprites/sniper_scope.spr",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/cstrike/sprites/sniper_scope.spr",
+      "bytes": 66366,
+      "sha256": "eb65dd96208e029c9c92d4de5b74a2654f7e7d5ee29659a63296eb025cbf7f72",
+      "git_blob_sha1": "ee2861a93d96f32c8d3a2eb4ad87b673e9c1c456"
+    },
+    {
+      "path": "cstrike/sprites/weapon_ak47.txt",
+      "source_path": "opt/hlds/cstrike/sprites/weapon_ak47.txt",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/cstrike/sprites/weapon_ak47.txt",
+      "bytes": 359,
+      "sha256": "d861847f1580ba0cd80f5e78f0bab26afcc76eef14c77d00db9153a383882059",
+      "git_blob_sha1": "9b9ef2474218bfc3a5543f142ae7497177df3de5"
+    },
+    {
+      "path": "cstrike/sprites/weapon_aug.txt",
+      "source_path": "opt/hlds/cstrike/sprites/weapon_aug.txt",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/cstrike/sprites/weapon_aug.txt",
+      "bytes": 207,
+      "sha256": "96804ee7a0dfa5a2d250246db509db4d59907cd2fc73c1cac67e9ca2e14472bf",
+      "git_blob_sha1": "92e8c36378d2ba5abcf396018ec40fd3d414a74b"
+    },
+    {
+      "path": "cstrike/sprites/weapon_awp.txt",
+      "source_path": "opt/hlds/cstrike/sprites/weapon_awp.txt",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/cstrike/sprites/weapon_awp.txt",
+      "bytes": 516,
+      "sha256": "295b4f91f830175d925782a1f4b3b0ef3be1a2da89d95a4c5518b1bfe1da6db8",
+      "git_blob_sha1": "44077b17e9c86ea61e4da9472a019d329680b60e"
+    },
+    {
+      "path": "cstrike/sprites/weapon_c4.txt",
+      "source_path": "opt/hlds/cstrike/sprites/weapon_c4.txt",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/cstrike/sprites/weapon_c4.txt",
+      "bytes": 203,
+      "sha256": "032b5e49f72492087de38e2e26404e9a646406d17ae71ab5a3cbf6362bb41946",
+      "git_blob_sha1": "97504b90ac63a6dd2df261ec8c49fc59f2d10b4a"
+    },
+    {
+      "path": "cstrike/sprites/weapon_deagle.txt",
+      "source_path": "opt/hlds/cstrike/sprites/weapon_deagle.txt",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/cstrike/sprites/weapon_deagle.txt",
+      "bytes": 359,
+      "sha256": "24ba48e4bca8a5951a1f3e72495b0f90219ee2c533ebd0a9845b8d60ca74f36f",
+      "git_blob_sha1": "0e92b844656f017d18b7c14b5c0990f62430ee9a"
+    },
+    {
+      "path": "cstrike/sprites/weapon_elite.txt",
+      "source_path": "opt/hlds/cstrike/sprites/weapon_elite.txt",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/cstrike/sprites/weapon_elite.txt",
+      "bytes": 360,
+      "sha256": "80fc6fb6376369b95f7cee79319860ef186f67ba4e5e015a81114b8189b098e4",
+      "git_blob_sha1": "39e807884bf196179eda0af48a24a291e68d3e7e"
+    },
+    {
+      "path": "cstrike/sprites/weapon_famas.txt",
+      "source_path": "opt/hlds/cstrike/sprites/weapon_famas.txt",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/cstrike/sprites/weapon_famas.txt",
+      "bytes": 491,
+      "sha256": "62fb53a53b9bdbb97672db340279d140795f81f46cc660fba83b5a9050be6db6",
+      "git_blob_sha1": "02364e8485e26e4b52073ad0a08d0b85c5b65eaa"
+    },
+    {
+      "path": "cstrike/sprites/weapon_fiveseven.txt",
+      "source_path": "opt/hlds/cstrike/sprites/weapon_fiveseven.txt",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/cstrike/sprites/weapon_fiveseven.txt",
+      "bytes": 366,
+      "sha256": "7924e27911632c71ac3a752e3d80a17a3b5643fc48680de739a2229a22b2d1f1",
+      "git_blob_sha1": "c6501f4983fc7f4c5e6ee375f301860015f7d5e5"
+    },
+    {
+      "path": "cstrike/sprites/weapon_flashbang.txt",
+      "source_path": "opt/hlds/cstrike/sprites/weapon_flashbang.txt",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/cstrike/sprites/weapon_flashbang.txt",
+      "bytes": 360,
+      "sha256": "a7be8c590fc5ca2a0f84e51c85b1fcec39ed8b079583929bbc2109c198291daf",
+      "git_blob_sha1": "981236e57efd40a98c9896e56effcc15b2482dd8"
+    },
+    {
+      "path": "cstrike/sprites/weapon_g3sg1.txt",
+      "source_path": "opt/hlds/cstrike/sprites/weapon_g3sg1.txt",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/cstrike/sprites/weapon_g3sg1.txt",
+      "bytes": 518,
+      "sha256": "5ec627fb897522251f44bc4f4e1c6928b3106f6a6566ea88cfcf8340e46850e5",
+      "git_blob_sha1": "f8ef0558155743606afdd84c731f09797f13d9a8"
+    },
+    {
+      "path": "cstrike/sprites/weapon_galil.txt",
+      "source_path": "opt/hlds/cstrike/sprites/weapon_galil.txt",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/cstrike/sprites/weapon_galil.txt",
+      "bytes": 357,
+      "sha256": "464844e2f38c35cd12b2cbfbf247dbc19dcf64d89fa6d6b73b07dbd334a29cf8",
+      "git_blob_sha1": "ec1b2fe81828e9924a8d2bf3c9c3284d00f232ab"
+    },
+    {
+      "path": "cstrike/sprites/weapon_glock18.txt",
+      "source_path": "opt/hlds/cstrike/sprites/weapon_glock18.txt",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/cstrike/sprites/weapon_glock18.txt",
+      "bytes": 356,
+      "sha256": "8b1569aa74a7152652b5d8e922ac912edab4b665625b7d412d5cff50542931ba",
+      "git_blob_sha1": "8bdbd4bd850cd3785fbe5acebce2d79e52436829"
+    },
+    {
+      "path": "cstrike/sprites/weapon_hegrenade.txt",
+      "source_path": "opt/hlds/cstrike/sprites/weapon_hegrenade.txt",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/cstrike/sprites/weapon_hegrenade.txt",
+      "bytes": 358,
+      "sha256": "9dc2f98fce04beed15afeea36b4fca2beb0fed7b1c1acf0576f8eed4f5da8297",
+      "git_blob_sha1": "23c76be9f3ac347b983e53411681d50f9de894de"
+    },
+    {
+      "path": "cstrike/sprites/weapon_knife.txt",
+      "source_path": "opt/hlds/cstrike/sprites/weapon_knife.txt",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/cstrike/sprites/weapon_knife.txt",
+      "bytes": 355,
+      "sha256": "8c0f3cb213b1fa1c9c0ca451d82cab749c743e54ca8563e82dbc08bf3a091809",
+      "git_blob_sha1": "a00206355db702e561bd038bd72673e742912a21"
+    },
+    {
+      "path": "cstrike/sprites/weapon_m249.txt",
+      "source_path": "opt/hlds/cstrike/sprites/weapon_m249.txt",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/cstrike/sprites/weapon_m249.txt",
+      "bytes": 353,
+      "sha256": "d474d30525b6fe8d75a1fb511b491cc7212731ca8a768ff143c40c2e0a769900",
+      "git_blob_sha1": "81d0fbd26fd8190a0b57007fbe018d9f68e9b310"
+    },
+    {
+      "path": "cstrike/sprites/weapon_m3.txt",
+      "source_path": "opt/hlds/cstrike/sprites/weapon_m3.txt",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/cstrike/sprites/weapon_m3.txt",
+      "bytes": 356,
+      "sha256": "313089efd90ebc4199e54a429c07d36897a04ae5ba01f2fb5de01db78d809fe6",
+      "git_blob_sha1": "5a26fbf2b47c81fe659997f67781d0aa5a5eaf9c"
+    },
+    {
+      "path": "cstrike/sprites/weapon_m4a1.txt",
+      "source_path": "opt/hlds/cstrike/sprites/weapon_m4a1.txt",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/cstrike/sprites/weapon_m4a1.txt",
+      "bytes": 354,
+      "sha256": "d641e9b7c2d05e73058153b79e58b0f1620a942e611349d28a59e57eee035ac4",
+      "git_blob_sha1": "25c2f3893da7add7cd39d7b1bab359f03807f414"
+    },
+    {
+      "path": "cstrike/sprites/weapon_mac10.txt",
+      "source_path": "opt/hlds/cstrike/sprites/weapon_mac10.txt",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/cstrike/sprites/weapon_mac10.txt",
+      "bytes": 358,
+      "sha256": "6ebaa9707f0ebc79af6add8b4f868692bed39636f7b5fa2013772c28f8555ec0",
+      "git_blob_sha1": "086d149bd52d3ca073e02b1baffd41c51087dd4a"
+    },
+    {
+      "path": "cstrike/sprites/weapon_mp5navy.txt",
+      "source_path": "opt/hlds/cstrike/sprites/weapon_mp5navy.txt",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/cstrike/sprites/weapon_mp5navy.txt",
+      "bytes": 358,
+      "sha256": "acf0c1f573abb11d16eae39259d11e0867a25819524b6ef68a1e45c36072d36c",
+      "git_blob_sha1": "564ca4e1ad25c2e8434afeb9ecdcc3790d0f4102"
+    },
+    {
+      "path": "cstrike/sprites/weapon_p228.txt",
+      "source_path": "opt/hlds/cstrike/sprites/weapon_p228.txt",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/cstrike/sprites/weapon_p228.txt",
+      "bytes": 361,
+      "sha256": "38960b94917db88802b3796f9c7ddc20cf68795cf6368fe846e527c7c363df5e",
+      "git_blob_sha1": "22dec94ba8bffbcd4eaadf502418da62b419ccc0"
+    },
+    {
+      "path": "cstrike/sprites/weapon_p90.txt",
+      "source_path": "opt/hlds/cstrike/sprites/weapon_p90.txt",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/cstrike/sprites/weapon_p90.txt",
+      "bytes": 362,
+      "sha256": "ff9fa5b8d987ed625136f3c473e1a63fd143ba98681be914b261138440d37791",
+      "git_blob_sha1": "07536bc1b45eb93dc348232c474a90bdca1cf58a"
+    },
+    {
+      "path": "cstrike/sprites/weapon_scout.txt",
+      "source_path": "opt/hlds/cstrike/sprites/weapon_scout.txt",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/cstrike/sprites/weapon_scout.txt",
+      "bytes": 513,
+      "sha256": "44dafe043d88d2f3d6cc24a43f4a361002cb7d328cd989032abc08dff73a71fe",
+      "git_blob_sha1": "1d5114d342185b980ff3c5a36ba7f22effe07c1f"
+    },
+    {
+      "path": "cstrike/sprites/weapon_sg550.txt",
+      "source_path": "opt/hlds/cstrike/sprites/weapon_sg550.txt",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/cstrike/sprites/weapon_sg550.txt",
+      "bytes": 520,
+      "sha256": "b8489e24e6694fc9322491682df130937bdbcae1856ecc3d91a92c14fb0aea41",
+      "git_blob_sha1": "e1151dfe0f075d11ac8381f305a44b73382a7d34"
+    },
+    {
+      "path": "cstrike/sprites/weapon_sg552.txt",
+      "source_path": "opt/hlds/cstrike/sprites/weapon_sg552.txt",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/cstrike/sprites/weapon_sg552.txt",
+      "bytes": 206,
+      "sha256": "fc3ad113062182a1f7cd8201496e669d64876a91030785d35ebf8fc5cc312899",
+      "git_blob_sha1": "934bc84cb884c2e14d6907611c00c05b501937ca"
+    },
+    {
+      "path": "cstrike/sprites/weapon_smokegrenade.txt",
+      "source_path": "opt/hlds/cstrike/sprites/weapon_smokegrenade.txt",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/cstrike/sprites/weapon_smokegrenade.txt",
+      "bytes": 362,
+      "sha256": "55453f62205e4352eb02a17415196476e2c9e712c797fcb052cd80ec42a13dbe",
+      "git_blob_sha1": "04514b343b1d820811327a0389d6727684e3b861"
+    },
+    {
+      "path": "cstrike/sprites/weapon_tmp.txt",
+      "source_path": "opt/hlds/cstrike/sprites/weapon_tmp.txt",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/cstrike/sprites/weapon_tmp.txt",
+      "bytes": 353,
+      "sha256": "3772c5130e3556e2736c757c21468a7b28fab0bce5d5aef12c3ba89a5df45524",
+      "git_blob_sha1": "8fd23179d6841154ff30a7c742ab6129a67d5334"
+    },
+    {
+      "path": "cstrike/sprites/weapon_ump45.txt",
+      "source_path": "opt/hlds/cstrike/sprites/weapon_ump45.txt",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/cstrike/sprites/weapon_ump45.txt",
+      "bytes": 360,
+      "sha256": "6d286bffb1107f2671a5ec418a034d4aba833302a564f566af0db7c18beaecd1",
+      "git_blob_sha1": "3cc62447da695b782135629eb13e55b5632f97ab"
+    },
+    {
+      "path": "cstrike/sprites/weapon_usp.txt",
+      "source_path": "opt/hlds/cstrike/sprites/weapon_usp.txt",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/cstrike/sprites/weapon_usp.txt",
+      "bytes": 354,
+      "sha256": "929bc553567d41189d7ddaaa5e5d496dbf89a7fce91e9ae1cd95449e0be735b6",
+      "git_blob_sha1": "c9653c029033bcac7e76eea6c9efd30ac69f8e7f"
+    },
+    {
+      "path": "cstrike/sprites/weapon_xm1014.txt",
+      "source_path": "opt/hlds/cstrike/sprites/weapon_xm1014.txt",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/cstrike/sprites/weapon_xm1014.txt",
+      "bytes": 512,
+      "sha256": "046df996ac8c00dbf0754766ff859d49d521a6173b888ab994269ca4c5832370",
+      "git_blob_sha1": "329d9bafcd806ead71c422ef7825a7fe4f764bf6"
+    },
+    {
+      "path": "valve/sound/items/9mmclip1.wav",
+      "source_path": "opt/hlds/valve/sound/items/9mmclip1.wav",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/valve/sound/items/9mmclip1.wav",
+      "bytes": 6734,
+      "sha256": "d422fdc5622bda2792a855eae73f3d184ae8c901132766d9a55ea09b7ae16772",
+      "git_blob_sha1": "ade3e960923e1c1836c7e8984b7ef26713f0b7a8"
+    },
+    {
+      "path": "valve/sound/items/flashlight1.wav",
+      "source_path": "opt/hlds/valve/sound/items/flashlight1.wav",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/valve/sound/items/flashlight1.wav",
+      "bytes": 866,
+      "sha256": "53a98a4c021b38bb087d14e6b9c4db3068b220a4e7faa02134d20cf04a47785b",
+      "git_blob_sha1": "26eef9062ba762a520d0e7a1ca2dcd0467ac9768"
+    },
+    {
+      "path": "valve/sprites/320hud1.spr",
+      "source_path": "opt/hlds/valve/sprites/320hud1.spr",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/valve/sprites/320hud1.spr",
+      "bytes": 66366,
+      "sha256": "a6bc74c26c5039b914d41046f50e98e336fed9212f051196debc407b95a725c1",
+      "git_blob_sha1": "ec6c1c1e314124d06e1a947f29627344ceffa13e"
+    },
+    {
+      "path": "valve/sprites/320hud2.spr",
+      "source_path": "opt/hlds/valve/sprites/320hud2.spr",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/valve/sprites/320hud2.spr",
+      "bytes": 17214,
+      "sha256": "679a6fa7877f91e5593ab584f790a477d07be83311e260970d72e0ef2ab7175d",
+      "git_blob_sha1": "c69dd1bcad0e78cc10e262b9f89df771ced53cc5"
+    },
+    {
+      "path": "valve/sprites/320hud3.spr",
+      "source_path": "opt/hlds/valve/sprites/320hud3.spr",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/valve/sprites/320hud3.spr",
+      "bytes": 17214,
+      "sha256": "3c0714a1b90e20e17a38ade674ca32e14930d4c8a3ef0304ba13d227cabef369",
+      "git_blob_sha1": "3bf5d5e33b391da0dc53203a49577463bd6ffb5b"
+    },
+    {
+      "path": "valve/sprites/320hud4.spr",
+      "source_path": "opt/hlds/valve/sprites/320hud4.spr",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/valve/sprites/320hud4.spr",
+      "bytes": 9022,
+      "sha256": "c35ead1254b11fd6cd856cfcda1fccd755cd892b3be8bfdebf38b4fa24eb3b3e",
+      "git_blob_sha1": "02442ffc8ba7021b33d9e6730caef01fad6d8619"
+    },
+    {
+      "path": "valve/sprites/640hud8.spr",
+      "source_path": "opt/hlds/valve/sprites/640hud8.spr",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/valve/sprites/640hud8.spr",
+      "bytes": 17214,
+      "sha256": "6345eea226684d19b8cfd2cc28600c7c09949361fe19eb7d92113bac55e25998",
+      "git_blob_sha1": "75c7e7894a7b81facc6ae02660f1e2fa733d10f9"
+    },
+    {
+      "path": "valve/sprites/640hud9.spr",
+      "source_path": "opt/hlds/valve/sprites/640hud9.spr",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/valve/sprites/640hud9.spr",
+      "bytes": 17214,
+      "sha256": "30001c3f9b1b5e71903110426d92ffcd9cde92c7438c9a42c6c220d3b42005ae",
+      "git_blob_sha1": "cc33a54a9f3c3c75f453e9649fef1569192e0455"
+    },
+    {
+      "path": "valve/sprites/crosshairs.spr",
+      "source_path": "opt/hlds/valve/sprites/crosshairs.spr",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/valve/sprites/crosshairs.spr",
+      "bytes": 17214,
+      "sha256": "838343954bb8cb581101239df6ab9580b9803bf34a1c6af4fec0172785d7c556",
+      "git_blob_sha1": "d6a0e3ef1fca14f387e0273a0ecbf671b4d6151b"
+    }
+  ]
+}

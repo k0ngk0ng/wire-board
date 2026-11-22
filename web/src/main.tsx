@@ -112,6 +112,7 @@ import {
 } from "./profiles";
 import "./room-option-cards.css";
 import "./style.css";
+import "./ui/room-waiting.css";
 import { useRoomPresentation } from "./game-api/presentation";
 import { ResultOverlay } from "./ui/result-overlay";
 import { LeaveRoomConfirmation } from "./ui/leave-room-control";

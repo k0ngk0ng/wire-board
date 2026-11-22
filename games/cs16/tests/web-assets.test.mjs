@@ -1,10 +1,18 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { assetURL, validateManifest, validateResource, selectModelKeys, validateRulesIdentity } from '../web/asset-contract.ts';
+import { assetURL, validateManifest, validateResource, selectModelKeys, selectSoundKeys, validateRulesIdentity } from '../web/asset-contract.ts';
 
 const resource = (file = 'maps/de_dust2.json') => ({ file, bytes: 100, sha256: 'a'.repeat(64) });
 const mapModes = [['de_dust2', 'bomb'], ['de_inferno', 'bomb'], ['de_aztec', 'bomb'], ['cs_assault', 'hostage'], ['fy_iceworld', 'elimination'], ['cs_bloodstrike', 'elimination']];
 const manifest = () => ({ schema: 1, maps: Object.fromEntries(mapModes.map(([id, mode]) => [id, { name: id, mode, render: resource(), rules: resource(), preview: resource(), sky: [] }])), models: {}, sounds: {} });
+
+test('original HUD atlas is validated and item confirmation sounds are loaded', () => {
+  const value = { ...manifest(), hud: { schema: 1, atlas: resource('hud/atlas.png'), width: 128, height: 128, sprites: { 640: { c4: { x: 0, y: 0, width: 32, height: 32 } } } } };
+  assert.doesNotThrow(() => validateManifest(value));
+  value.hud.sprites[640].c4.x = 129;
+  assert.throws(() => validateManifest(value));
+  assert.deepEqual(selectSoundKeys({ 'items/9mmclip1.wav': {}, 'items/flashlight1.wav': {}, 'items/gunpickup2.wav': {}, 'weapons/ak47-1.wav': {}, 'hostage/h.wav': {}, 'radio/bombpl.wav': {}, 'unrelated.wav': {} }, 'bomb'), ['items/9mmclip1.wav', 'items/flashlight1.wav', 'items/gunpickup2.wav', 'weapons/ak47-1.wav', 'radio/bombpl.wav']);
+});
 
 test('rejects traversal, invalid byte counts and unknown media protocols', () => {
   for (const file of ['../outside', 'maps/../../outside', 'file:///tmp/test', 'javascript:alert(1)', 'maps\\outside']) assert.throws(() => validateResource(resource(file)));
@@ -39,6 +47,8 @@ test('selects all firearm view models and participating player models without un
   assert.equal(new Set(keys).size, keys.length);
   assert.equal(selectModelKeys(['urban'], 'bomb').includes('hostage'), false);
   assert.equal(selectModelKeys(['urban'], 'hostage').includes('hostage'), true);
+  assert.equal(selectModelKeys(['urban'], 'bomb').includes('w-defuser'), true);
+  assert.equal(selectModelKeys(['urban'], 'elimination').includes('w-defuser'), false);
   assert.equal(selectModelKeys(['urban'], 'elimination').includes('hostage'), false);
 });
 

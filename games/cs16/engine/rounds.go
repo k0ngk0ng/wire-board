@@ -58,9 +58,16 @@ func InitRound(state *State) {
 		p.Action, p.ActionSince = "", 0
 		p.RecoilPitch, p.RecoilYaw = 0, 0
 		p.FlashUntil, p.FlashStrength = 0, 0
+		p.DeathAt, p.DeathHitgroup, p.DeathVX, p.DeathVY, p.DeathVZ = 0, 0, 0, 0, 0
+		p.Stamina, p.StepAt, p.StepIndex = 0, 0, 0
+		p.Flashlight, p.FlashlightCharge, p.FlashlightAt = false, 100, state.Frame+20
 		p.NextAttack = state.Frame
 		p.BotGoal, p.BotPath, p.BotTarget, p.BotDecision = Vec3{}, nil, -1, 0
 		p.BotRouteMode = 0
+		p.BotEnemy, p.BotSeenAt = -1, 0
+		p.BotAimSeed = 0
+		p.BotBombKnown, p.BotBombPoint = false, Vec3{}
+		p.BotSearchSite = (seat/2 + state.Round - 1) % max(1, len(state.World.Bombsites))
 		index := teamIndex(p.Team)
 		spawns := state.World.SpawnsT
 		if p.Team == "ct" {

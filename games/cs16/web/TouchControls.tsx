@@ -39,7 +39,7 @@ export function TouchControls({ disabled, changed, look, native, weapon, weaponS
   }, []);
   useEffect(() => bindTouchOwnership(window, document, input.current!, () => latest.current.disabled, event => latest.current.native(event)), []);
   const fireLabel = weapon === 'knife' ? '攻击' : weapon === 'c4' ? '安装' : ['hegrenade', 'flashbang', 'smokegrenade'].includes(weapon) ? '投掷' : '开火';
-  const secondary = weapon === 'knife' ? '重击' : weapon === 'm4a1' || weapon === 'usp' ? weaponState?.silenced ? '卸消音' : '装消音' : weapon === 'glock18' || weapon === 'famas' ? weaponState?.burst ? weapon === 'famas' ? '连发' : '单发' : '三连发' : weaponState?.zoom ? '退镜' : '开镜';
+  const secondary = weapon === 'knife' ? '重击' : weapon === 'm4a1' || weapon === 'usp' ? weaponState?.silenced ? '卸消音' : '装消音' : weapon === 'glock18' || weapon === 'famas' ? weaponState?.burst ? weapon === 'famas' ? '连发' : '单发' : '三连发' : weaponState?.zoom ? ['awp', 'scout', 'sg550', 'g3sg1'].includes(weapon) && weaponState.zoom === 40 ? '放大' : '退镜' : '开镜';
   const scoped = ['awp', 'scout', 'sg550', 'g3sg1', 'aug', 'sg552'].includes(weapon);
   const buttons = [...(scoped ? [['secondary', secondary]] : []), ['crouch', state.actions.has('crouch') ? '起身' : '蹲下'], ['jump', '跳跃'], ...(!fireArea ? [['fire', fireLabel]] : [])];
   return <div className="cs16-touch" aria-label="触屏控制">
@@ -47,6 +47,8 @@ export function TouchControls({ disabled, changed, look, native, weapon, weaponS
     <div className="cs16-look-zone" data-cs16-stick="look" data-cs16-fire-area={fireArea ? 'true' : undefined} aria-label={fireArea ? '按住开火并拖动瞄准' : '拖动转向'} onPointerDown={event => down(event, fireArea ? 'fire' : 'look')} />
     {more && <div className="cs16-touch-more-panel" role="group" aria-label="更多操作">
         <button type="button" data-cs16-action="use" disabled={disabled} onPointerDown={event => down(event, 'use')}>{useLabel}</button>
+        <button type="button" data-cs16-action="flashlight" disabled={disabled} onPointerDown={event => down(event, 'flashlight')}>手电筒</button>
+        <button type="button" data-cs16-action="drop" disabled={disabled} onPointerDown={event => down(event, 'drop')}>丢弃</button>
         {!scoped && ['knife', 'm4a1', 'usp', 'glock18', 'famas'].includes(weapon) && <button type="button" data-cs16-action="secondary" disabled={disabled} onPointerDown={event => down(event, 'secondary')}>{secondary}</button>}
         {buy && <button type="button" disabled={disabled} onClick={() => { setMore(false); buy(); }}>购买</button>}
         {score && <button type="button" onClick={() => { setMore(false); score(); }}>战绩</button>}

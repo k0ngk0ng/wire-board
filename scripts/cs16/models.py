@@ -492,6 +492,8 @@ def build_models(source_root, output_root):
         print(json.dumps({"model": key, **result[key]}, ensure_ascii=False), flush=True)
     for prefix in ("v", "p", "w"):
         result[prefix + "-mp5navy"] = result[prefix + "-mp5"]
+    if "w-thighpack" in result:
+        result["w-defuser"] = result["w-thighpack"]
     return {"models": result}
 
 

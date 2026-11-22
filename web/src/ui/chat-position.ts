@@ -86,21 +86,23 @@ export function useChatPosition(
   };
   const measure = useRef(() => {});
   measure.current = () => {
-    if (!target || !toggle.current) return;
+    if (!toggle.current) return;
+    const surface = target ?? document.body;
     const viewport = window.visualViewport;
     if (viewport && (!(viewport.width > 0) || !(viewport.height > 0))) return;
-    const bounds = boundsFor(target),
+    const bounds = boundsFor(surface),
       rect = toggle.current.getBoundingClientRect();
     const obstacles = window.matchMedia("(pointer: coarse)").matches
-      ? Array.from(target.querySelectorAll<HTMLElement>(touchSelector)).filter(element => element.getClientRects().length > 0).map(element => element.getBoundingClientRect())
+      ? Array.from(surface.querySelectorAll<HTMLElement>(touchSelector)).filter(element => element.getClientRects().length > 0).map(element => element.getBoundingClientRect())
       : [];
-    for (const picture of target.querySelectorAll<HTMLElement>(".touch-controller-picture")) {
+    if (!target && !obstacles.length) { setPosition(undefined); setPanelStyle(undefined); setCompact(false); return; }
+    for (const picture of surface.querySelectorAll<HTMLElement>(".touch-controller-picture")) {
       if (getComputedStyle(picture).getPropertyValue("--touch-picture-gutters").trim() === "1") {
         const canvas = picture.querySelector("canvas");
         if (canvas) obstacles.push(canvas.getBoundingClientRect());
       }
     }
-    const preferred = point.current ?? (obstacles.length
+    const preferred = (target ? point.current : undefined) ?? (obstacles.length
       ? defaultChatAnchor(bounds, rect.width, rect.height, obstacles)
       : { x: bounds.right - rect.width, y: bounds.bottom - rect.height });
     const next = clamp(preferred, bounds, rect.width, rect.height);
@@ -150,16 +152,16 @@ export function useChatPosition(
     measure.current();
   }, [target, open, position]);
   useLayoutEffect(() => {
-    if (!target) return;
     const resized = () => measure.current(),
       cancel = () => finish();
     const observer = new ResizeObserver(resized);
-    observer.observe(target);
+    observer.observe(target ?? document.body);
     const controls = new MutationObserver(records => {
       if (records.some(record => [...record.addedNodes, ...record.removedNodes].some(node => node instanceof Element && (node.matches(touchSelector) || node.querySelector(touchSelector))))) resized();
     });
-    controls.observe(target, { childList: true, subtree: true });
+    controls.observe(target ?? document.body, { childList: true, subtree: true });
     window.addEventListener("resize", resized);
+    window.addEventListener("scroll", resized, true);
     window.addEventListener("blur", cancel);
     window.visualViewport?.addEventListener("resize", resized);
     window.visualViewport?.addEventListener("scroll", resized);
@@ -167,6 +169,7 @@ export function useChatPosition(
       observer.disconnect();
       controls.disconnect();
       window.removeEventListener("resize", resized);
+      window.removeEventListener("scroll", resized, true);
       window.removeEventListener("blur", cancel);
       window.visualViewport?.removeEventListener("resize", resized);
       window.visualViewport?.removeEventListener("scroll", resized);
@@ -222,11 +225,11 @@ export function useChatPosition(
   };
   return {
     style:
-      target && position
+      position
         ? { left: position.x, top: position.y, right: "auto", bottom: "auto" }
         : undefined,
-    panelStyle: target && open ? panelStyle : undefined,
-    compact: !!target && open && compact,
+    panelStyle: open ? panelStyle : undefined,
+    compact: open && compact,
     draggable: !!target && !compact,
     dragging,
     handlers: {

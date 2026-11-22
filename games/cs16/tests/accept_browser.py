@@ -11,6 +11,7 @@ import sys
 import time
 import uuid
 from urllib.parse import urlsplit
+from waiting_ui_audit import audit_waiting
 
 ROOT = Path(__file__).resolve().parents[3]
 HERE = Path(__file__).resolve().parent
@@ -99,7 +100,7 @@ def source_snapshot():
         files.update(source for source in (ROOT / relative).glob('*.go') if not source.name.endswith('_test.go'))
     files.update(source for source in (ROOT / 'games').glob('*.go') if not source.name.endswith('_test.go'))
     files.update((ROOT / 'web/src').glob('audio*.ts'))
-    for relative in ['go.mod', 'go.sum', 'web/src/realtime-stream.ts', 'web/src/main.tsx', 'web/src/ui/room-fullscreen.tsx', 'web/src/ui/game-control-guard.ts', 'web/src/ui/game-control-guard.css', 'web/vite.config.ts', 'web/scripts/game-load-manifest.mjs', 'web/scripts/public-assets.mjs', 'web/scripts/cdn-base.mjs']:
+    for relative in ['go.mod', 'go.sum', 'web/src/realtime-stream.ts', 'web/src/main.tsx', 'web/src/legacy/room-ui.tsx', 'web/src/style.css', 'web/src/ui/room-waiting.css', 'web/src/ui/chat-position.ts', 'web/src/ui/chat-anchor.ts', 'web/src/releases/history.json', 'web/src/ui/room-fullscreen.tsx', 'web/src/ui/game-control-guard.ts', 'web/src/ui/game-control-guard.css', 'web/vite.config.ts', 'web/scripts/game-load-manifest.mjs', 'web/scripts/public-assets.mjs', 'web/scripts/cdn-base.mjs']:
         files.add(ROOT / relative)
     result = {}
     for source in sorted(files):
@@ -349,7 +350,7 @@ def viewport_expression():
       const rect=element=>element.getBoundingClientRect().toJSON();
       const visible=element=>{const box=element.getBoundingClientRect();if(!box.width||!box.height||element.closest('[inert]')||document.fullscreenElement&&!document.fullscreenElement.contains(element))return false;const hit=document.elementFromPoint(box.x+box.width/2,box.y+box.height/2);return !!hit&&(hit===element||element.contains(hit));};
       const controls=[...document.querySelectorAll('[data-cs16-action],[data-fullscreen-toggle],.chat-toggle:not([aria-hidden=true])')].filter(visible).map(element=>({kind:element.dataset.cs16Action??(element.matches('.chat-toggle')?'platform-chat':'platform-fullscreen'),rect:rect(element)}));
-      const hud=[...document.querySelectorAll('.cs16-vitals,.cs16-ammo,.cs16-match-hud,.cs16-inventory')].map(element=>({kind:element.className,text:element.textContent,rect:rect(element),color:getComputedStyle(element).color,background:getComputedStyle(element).backgroundColor}));
+      const hud=[...document.querySelectorAll('.cs16-vitals,.cs16-ammo,.cs16-match-hud,.cs16-inventory,.cs16-money,.cs16-status-icons')].filter(element=>getComputedStyle(element).display!=='none').map(element=>({kind:element.className,text:element.textContent,rect:rect(element),color:getComputedStyle(element).color,background:getComputedStyle(element).backgroundColor}));
       const overlap=(a,b)=>a.left<b.right&&a.right>b.left&&a.top<b.bottom&&a.bottom>b.top;
       return {width:innerWidth,height:innerHeight,overflow:document.documentElement.scrollWidth>innerWidth,canvas:document.querySelector('[data-cs16-canvas]')?.getBoundingClientRect().toJSON(),sticks:[...document.querySelectorAll('[data-cs16-stick]')].map(element=>({kind:element.dataset.cs16Stick,rect:rect(element)})),controls,hud,overlaps:hud.flatMap(item=>controls.filter(control=>overlap(item.rect,control.rect)).map(control=>({hud:item.kind,control:control.kind})))};
     })()'''
@@ -387,25 +388,37 @@ def check_layout(audit, stage):
 
 
 def buy_audit(client, map_id, mobile=False):
-    assert map_id in CLASSIC_MAPS + ('cs_bloodstrike',), {'map': map_id, 'error': 'map uses original ground equipment and does not allow spawn purchasing'}
+    assert map_id in CLASSIC_MAPS + ('cs_bloodstrike',)
     browser(client, 'scrollintoview', '[data-cs16-board]')
     browser(client, 'focus', '[data-cs16-board]')
     browser(client, 'press', 'b')
-    wait_for(lambda: evaluate(client, 'document.querySelectorAll("[data-cs16-buy]").length>=24'))
-    entries = evaluate(client, '[...document.querySelectorAll("[data-cs16-buy]")].map(button=>({id:button.dataset.cs16Buy,disabled:button.disabled,text:button.textContent}))')
-    expected = FIREARMS
-    assert expected.issubset({entry['id'] for entry in entries}), entries
+    wait_for(lambda: evaluate(client, '!!document.querySelector(".cs16-buy-menu")'))
+    scroll = native(client, map_id + '-buy-scroll', touch=True, scrollOnly=True) if mobile else None
+    entries = []
     current = room(client)
     own = current['game']['data']['players'][current['you']]
-    other = 'fiveseven' if own['team'] == 't' else 'elite'
-    assert next(entry for entry in entries if entry['id'] == other)['disabled']
+    for category in range(1, 6):
+        browser(client, 'press', str(category))
+        wait_for(lambda: evaluate(client, 'document.querySelectorAll("[data-cs16-buy]").length>0'))
+        entries.extend(evaluate(client, '[...document.querySelectorAll("[data-cs16-buy]")].map(button=>({id:button.dataset.cs16Buy,disabled:button.disabled,text:button.textContent}))'))
+        browser(client, 'press', '0')
+        browser(client, 'press', 'b')
+        wait_for(lambda: evaluate(client, '!!document.querySelector("[data-cs16-buy=secammo]")'))
+    unavailable = set('elite mac10 galil ak47 sg552 g3sg1'.split()) if own['team'] == 'ct' else set('fiveseven tmp famas m4a1 aug sg550'.split())
+    assert {entry['id'] for entry in entries} == FIREARMS - unavailable, entries
     assert next(entry for entry in entries if entry['id'] == 'awp')['disabled']
-    scroll = native(client, map_id + '-buy-scroll', touch=True, scrollOnly=True) if mobile else None
+    browser(client, 'press', '1')
     screenshot(client, map_id + '-buy-menu')
     browser(client, 'click', '[data-cs16-buy="deagle"]')
     wait_for(lambda: room(client)['game']['data']['players'][current['you']]['weapon'] == 'deagle')
-    ammunition = native(client, map_id + '-buy-ammo-scroll', touch=True, scrollOnly=True, buyItem='secammo') if mobile else None
-    browser(client, 'click', 'button[aria-label="关闭购买菜单"]')
+    if not mobile and evaluate(client, 'matchMedia("(pointer:fine)").matches'):
+        wait_for(lambda: evaluate(client, 'document.pointerLockElement===document.querySelector("[data-cs16-canvas]")'))
+    ammunition = None
+    if mobile:
+        browser(client, 'press', 'b')
+        wait_for(lambda: evaluate(client, '!!document.querySelector(".cs16-buy-menu")'))
+        ammunition = native(client, map_id + '-buy-ammo-scroll', touch=True, scrollOnly=True, buyItem='secammo')
+    wait_for(lambda: not evaluate(client, '!!document.querySelector(".cs16-buy-menu")'))
     wait_for(lambda: frame(client).get('weapon') == 'deagle')
     return {'catalogue': entries, 'team': own['team'], 'moneyBefore': own['money'], 'purchased': 'deagle', 'authoritativeAndVisible': True, 'scroll': scroll, 'ammunition': ammunition}
 
@@ -417,11 +430,19 @@ def ground_equipment_audit(client, map_id):
     assert data.get('buyAllowed') is False and own['weapon'] in FIREARMS and any(item['id'] in {'glock18', 'usp'} for item in own['inventory']), {'map': map_id, 'player': own, 'buyAllowed': data.get('buyAllowed')}
     browser(client, 'focus', '[data-cs16-board]')
     browser(client, 'press', 'b')
-    wait_for(lambda: evaluate(client, 'document.querySelectorAll("[data-cs16-buy]").length>=24'))
-    entries = evaluate(client, '[...document.querySelectorAll("[data-cs16-buy]")].map(button=>({id:button.dataset.cs16Buy,disabled:button.disabled}))')
-    assert FIREARMS.issubset({entry['id'] for entry in entries}) and all(entry['disabled'] for entry in entries), entries
+    wait_for(lambda: evaluate(client, '!!document.querySelector(".cs16-buy-menu")'))
+    entries = []
+    for category in range(1, 6):
+        browser(client, 'press', str(category))
+        wait_for(lambda: evaluate(client, 'document.querySelectorAll("[data-cs16-buy]").length>0'))
+        entries.extend(evaluate(client, '[...document.querySelectorAll("[data-cs16-buy]")].map(button=>({id:button.dataset.cs16Buy,disabled:button.disabled}))'))
+        browser(client, 'press', '0')
+        if category < 5:
+            browser(client, 'press', 'b')
+            wait_for(lambda: evaluate(client, '!!document.querySelector("[data-cs16-buy=secammo]")'))
+    unavailable = set('elite mac10 galil ak47 sg552 g3sg1'.split()) if own['team'] == 'ct' else set('fiveseven tmp famas m4a1 aug sg550'.split())
+    assert {entry['id'] for entry in entries} == FIREARMS - unavailable and all(entry['disabled'] for entry in entries), entries
     screenshot(client, map_id + '-spawn-buy-disabled')
-    browser(client, 'click', 'button[aria-label="关闭购买菜单"]')
     return {'source': 'original spawn sidearm and world armoury; no spawn purchase', 'player': own, 'catalogue': entries, 'buyAllowedAtSpawn': False, 'initialDrops': data['drops']}
 
 
@@ -607,6 +628,13 @@ try:
         browser(client, 'reload')
         browser(client, 'wait', '--fn', 'document.body.innerText.includes("创建房间")')
     REPORT['controllers'] = request('main', '/controllers?game=cs16')
+    if os.environ.get('CS16_BROWSER_WAITING_AUDIT') == '1':
+        REPORT['waitingUI'] = audit_waiting(browser, evaluate, request, room, wait_for, screenshot)
+        browser('main', 'set', 'viewport', 1280, 900)
+        save()
+        if os.environ.get('CS16_BROWSER_WAITING_ONLY') == '1':
+            REPORT['partial'], REPORT['passed'] = True, True
+            raise SystemExit(0)
     manifest = evaluate('main', 'fetch("/cs16/manifest.json").then(response=>response.json()).then(manifest=>({maps:manifest.maps,players:manifest.players,weapons:manifest.weapons,runtime:manifest.runtime}))')
     check_catalogue(manifest)
     REPORT['catalogue'] = {'maps': list(manifest['maps']), 'players': list(manifest['players']), 'weapons': list(manifest['weapons'])}
@@ -646,7 +674,7 @@ try:
             case['touchAssetAudit'] = evaluate('peer', 'document.querySelector("[data-cs16-canvas]")?.__cs16Assets')
             assert case['touchAssetAudit'] and not case['touchAssetAudit']['missingTextures']
         else:
-            case['native'] = native(measured_client, map_id + '-input', touch=map_id == 'de_aztec', visualAudit=map_id == 'de_dust2')
+            case['native'] = native(measured_client, map_id + '-input', touch=map_id == 'de_aztec', visualAudit=map_id == 'de_dust2', classicAudit=map_id == 'de_dust2' and os.environ.get('CS16_BROWSER_CLASSIC_AUDIT') == '1')
         case['measuredViewport'] = viewport(measured_client)
         screenshot(measured_client, map_id + '-measured-client')
         check_action_error('main', map_id + '-after-native')

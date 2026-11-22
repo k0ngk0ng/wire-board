@@ -63,6 +63,7 @@ type combatShot struct {
 	Secondary bool
 	Silenced  bool
 	Burst     bool
+	Damage    int
 }
 
 func StepCombat(state *State) {
@@ -76,11 +77,16 @@ func StepCombat(state *State) {
 	shots := make([]combatShot, 0, len(state.Players))
 	for seat := range state.Players {
 		p := &state.Players[seat]
+		stepFlashlight(state, p)
 		if !p.Alive {
 			continue
 		}
 		landing := p.LandingSpeed
 		p.LandingSpeed = 0
+		if live && landing >= 250*Unit {
+			Emit(state, Event{Kind: "land", Seat: seat, Value: landing / Unit, X: p.X, Y: p.Y, Z: p.Z, Life: p.Life})
+			p.StepAt = state.Frame + 30
+		}
 		if live && landing > 500*Unit && p.WaterLevel == 0 {
 			DamagePlayer(state, -1, seat, (landing-500*Unit)*125/(600*Unit), 1000, 0, "fall")
 			if !p.Alive {
@@ -196,13 +202,19 @@ func StepCombat(state *State) {
 		secondaryKnife := weapon.ID == "knife" && p.Input.Secondary && !p.Previous.Secondary
 		if (primary || secondaryKnife) && state.Frame >= p.NextAttack && item.BurstLeft == 0 {
 			if weapon.ID == "knife" {
-				shot := combatShot{Seat: seat, Life: p.Life, Weapon: weapon, Start: combatEye(p), Yaw: p.Yaw, Pitch: p.Pitch, ViewFrame: state.Frame, Secondary: secondaryKnife}
+				damage := 20
+				if item.Shots > 0 && state.Frame-item.LastShot <= 40 {
+					damage = 15
+				}
+				shot := combatShot{Seat: seat, Life: p.Life, Weapon: weapon, Start: combatEye(p), Yaw: p.Yaw, Pitch: p.Pitch, ViewFrame: state.Frame, Secondary: secondaryKnife, Damage: damage}
+				item.Shots++
+				item.LastShot = state.Frame
 				shots = append(shots, shot)
 				p.NextAttack = state.Frame + 35
 				if secondaryKnife {
 					p.NextAttack = state.Frame + 100
 				}
-				Emit(state, Event{Kind: "shot", Seat: seat, Weapon: weapon.ID, Value: map[bool]int{true: 1, false: 0}[secondaryKnife]})
+				Emit(state, Event{Kind: "shot", Seat: seat, Weapon: weapon.ID, Value: map[bool]int{true: 1, false: 0}[secondaryKnife], X: shot.Start.X, Y: shot.Start.Y, Z: shot.Start.Z, Life: p.Life})
 			} else if item.Ammo > 0 {
 				shots = append(shots, makeCombatShot(state, p, item, weapon, false))
 				if item.Burst {
@@ -987,29 +999,77 @@ func damageBrush(state *State, attacker int, point Vec3, damage int, weapon stri
 }
 
 func resolveKnife(state *State, shot combatShot) {
-	rangeUnits, damage := 48*Unit, 20
+	rangeUnits, damage := 48*Unit, max(15, shot.Damage)
 	if shot.Secondary {
 		rangeUnits, damage = 32*Unit, 65
 	}
 	end := combatAddRay(shot.Start, Direction(shot.Yaw, shot.Pitch), rangeUnits)
 	wall := TraceWorld(state, shot.Start, end, -1)
 	targets := historicalTargets(state, state.Frame)
-	seat, fraction, _ := nearestPlayerHit(state, shot, shot.Start, end, targets, map[int]bool{})
+	seat, fraction, group := nearestPlayerHit(state, shot, shot.Start, end, targets, map[int]bool{})
+	if seat < 0 && wall.Fraction >= NormalUnit {
+		wall = TraceWorld(state, shot.Start, end, 1)
+		for _, target := range targets {
+			if target.Seat == shot.Seat || !target.Alive || !state.Players[target.Seat].Alive {
+				continue
+			}
+			bottom, top := -36*Unit, 36*Unit
+			if target.Crouch {
+				bottom, top = -18*Unit, 18*Unit
+			}
+			minPoint := Vec3{target.X - 32*Unit, target.Y - 32*Unit, target.Z + bottom - 18*Unit}
+			maxPoint := Vec3{target.X + 32*Unit, target.Y + 32*Unit, target.Z + top + 18*Unit}
+			if hit, valid := rayBoxFraction(shot.Start, end, minPoint, maxPoint); valid && hit < fraction {
+				seat, fraction, group = target.Seat, hit, 0
+			}
+		}
+	}
+	value := 0
+	if shot.Secondary {
+		value = 1
+	}
 	if seat < 0 || fraction > wall.Fraction {
+		kind, point := "knife_air", shot.Start
+		if wall.Fraction < NormalUnit {
+			kind, point = "knife_wall", wall.End
+			state.Players[shot.Seat].NextAttack = state.Frame + 40
+			if shot.Secondary {
+				state.Players[shot.Seat].NextAttack = state.Frame + 110
+			}
+			damageBrush(state, shot.Seat, point, damage, "knife")
+		}
+		Emit(state, Event{Kind: kind, Seat: shot.Seat, Target: -1, Weapon: "knife", Value: value, X: point.X, Y: point.Y, Z: point.Z, Life: shot.Life})
 		return
 	}
 	target := state.Players[seat]
 	if shot.Secondary {
 		facing := Direction(target.Yaw, 0)
 		toward := Direction(shot.Yaw, 0)
-		if int64(facing.X)*int64(toward.X)+int64(facing.Y)*int64(toward.Y) > int64(NormalUnit)*int64(NormalUnit)/2 {
+		if int64(facing.X)*int64(toward.X)+int64(facing.Y)*int64(toward.Y) > int64(NormalUnit)*int64(NormalUnit)*4/5 {
 			damage *= 3
 		}
 	}
-	DamagePlayer(state, shot.Seat, seat, damage, 850, 2, "knife")
+	point := combatAddRay(shot.Start, Direction(shot.Yaw, shot.Pitch), int(int64(rangeUnits)*int64(fraction)/NormalUnit))
+	Emit(state, Event{Kind: "knife_hit", Seat: shot.Seat, Target: seat, Weapon: "knife", Value: value, Hitgroup: group, X: point.X, Y: point.Y, Z: point.Z, Life: shot.Life})
+	if shot.Secondary {
+		state.Players[shot.Seat].NextAttack = state.Frame + 110
+	} else {
+		state.Players[shot.Seat].NextAttack = state.Frame + 40
+	}
+	DamagePlayer(state, shot.Seat, seat, damage, 850, group, "knife")
 }
 
 func DamagePlayer(state *State, attacker, target, damage, armorRatio, hitgroup int, weapon string) {
+	source, hasSource := Vec3{}, false
+	if weapon == "c4" {
+		source, hasSource = bombPosition(state.Bomb), true
+	} else if attacker >= 0 && attacker < len(state.Players) {
+		source, hasSource = Position(state.Players[attacker]), true
+	}
+	damagePlayerFrom(state, attacker, target, damage, armorRatio, hitgroup, weapon, source, hasSource)
+}
+
+func damagePlayerFrom(state *State, attacker, target, damage, armorRatio, hitgroup int, weapon string, source Vec3, hasSource bool) {
 	if target < 0 || target >= len(state.Players) || damage <= 0 {
 		return
 	}
@@ -1053,11 +1113,15 @@ func DamagePlayer(state *State, attacker, target, damage, armorRatio, hitgroup i
 	}
 	damage = max(1, damage)
 	p.Health = max(0, p.Health-damage)
-	Emit(state, Event{Kind: "hit", Seat: attacker, Target: target, Weapon: weapon, Value: damage, X: p.X, Y: p.Y, Z: p.Z, Life: p.Life})
+	Emit(state, Event{Kind: "hit", Seat: attacker, Target: target, Weapon: weapon, Value: damage, Hitgroup: hitgroup, X: p.X, Y: p.Y, Z: p.Z, Life: p.Life})
 	if p.Health > 0 {
 		return
 	}
 	p.Alive = false
+	p.DeathAt, p.DeathHitgroup = state.Frame, hitgroup
+	p.DeathVX, p.DeathVY, p.DeathVZ = p.VX, p.VY, p.VZ
+	applyDeathImpulse(state, p, attacker, damage, hitgroup, weapon, source, hasSource)
+	p.Flashlight = false
 	p.Deaths++
 	p.Input = Input{Life: p.Life, Yaw: p.Yaw, Pitch: p.Pitch}
 	p.Pending = nil
@@ -1077,5 +1141,5 @@ func DamagePlayer(state *State, attacker, target, damage, armorRatio, hitgroup i
 		}
 	}
 	DropWeapons(state, target)
-	Emit(state, Event{Kind: "kill", Seat: attacker, Target: target, Weapon: weapon, Value: hitgroup, Life: p.Life})
+	Emit(state, Event{Kind: "kill", Seat: attacker, Target: target, Weapon: weapon, Value: hitgroup, Hitgroup: hitgroup, Life: p.Life})
 }
