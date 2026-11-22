@@ -83,7 +83,6 @@ import { Chat } from "./chat";
 import {
   GameBoard,
   ModuleCover,
-  ModuleCreate,
   ModulePlayers,
   ModuleRules,
   ModuleTurn,
@@ -97,7 +96,6 @@ import {
 } from "./game-api/registry";
 import {
   LegacyCover,
-  LegacyCreate,
   LegacyPlayers,
   LegacyRules,
   LegacyTurn,
@@ -1914,15 +1912,6 @@ function Create(props: {
       onClose={props.onClose}
       onSubmit={props.onSubmit}
       renderCover={(kind) => <Cover kind={kind} mini />}
-      renderForm={(form) =>
-        isIndependentGame(form.kind) ? (
-          <Runtime kind={form.kind}>
-            <ModuleCreate {...form} />
-          </Runtime>
-        ) : (
-          <LegacyCreate {...form} />
-        )
-      }
     />
   );
 }

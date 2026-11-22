@@ -10,6 +10,9 @@ const output = path.join(root, ".local/cs16/verification/lint");
 mkdirSync(output, { recursive: true });
 
 const cases = [
+  { file: "internal/server/room_settings.go", source: "package server\nfunc configureRoomSettings() {}", passed: true },
+  { file: "internal/server/room_settings.go", source: "package server\n// forbidden\nfunc configureRoomSettings() {}", passed: false },
+  { file: "internal/server/room_settings.go", source: "package server\nvar room_capacity = 2", passed: false },
   { file: "internal/gameapi/stream_unchanged_test.go", source: "package gameapi\nfunc TestUnchanged() {}", passed: true },
   { file: "internal/gameapi/stream_unchanged_test.go", source: "package gameapi_test\nfunc TestUnchanged() {}", passed: true },
   { file: "internal/gameapi/stream_unchanged_test.go", source: "package server\nfunc TestUnchanged() {}", passed: false },

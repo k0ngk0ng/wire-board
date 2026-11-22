@@ -3,7 +3,6 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Check } from "lucide-react";
 import { gameModule, gameName } from "../game-api/registry";
 
-/** Keep the shared illustrated choices usable as the catalogue grows. */
 export function GameChoices({
   games,
   value,
@@ -59,9 +58,7 @@ export function GameChoices({
         </label>
       </div>
       <p className="game-choice-summary">
-        {value
-          ? `已选：${gameName(value)}`
-          : "选择游戏后，继续设置房间和规则。"}
+        {value ? `已选：${gameName(value)}` : "选择游戏即可创建房间。"}
         {selectedGame && (
           <span className="game-choice-players">
             {selectedGame.playerCounts

@@ -1,3 +1,4 @@
+import { RoomSettings } from "../ui/room-settings";
 import type { GameSetupFormProps } from "../ui/create-room";
 import { X, ArrowRight, Bot, Check, Clock, Crown, Flag, Plus } from "lucide-react";
 import React, { useContext, useEffect, useState } from "react";
@@ -1554,6 +1555,22 @@ export function LegacyWaiting({
             )}
           </>
         )}
+        <RoomSettings
+          room={room}
+          host={host}
+          busy={busy}
+          command={command}
+          playerCounts={
+            room.kind === "rail" && map
+              ? Array.from(
+                  { length: map.maxPlayers - map.minPlayers + 1 },
+                  (value, index) => map.minPlayers + index,
+                )
+              : room.kind === "sanguosha" && room.sanguoshaOptions?.mode === "3v3"
+                ? [6]
+                : undefined
+          }
+        />
         <div className="seats-grid">
           {Array.from({ length: room.capacity }, (_, i) => {
             const p = room.seats[i];

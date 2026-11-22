@@ -1,3 +1,4 @@
+import { RoomSettings } from "../ui/room-settings";
 import type { GameSetupFormProps } from "../ui/create-room";
 import { useContext, useEffect, useState } from "react";
 import { X, ArrowRight, Check, Clock, Crown, Plus } from "lucide-react";
@@ -204,6 +205,7 @@ export function ModuleWaiting({
   const module = gameModule(room.kind)!;
   const assets = useContext(AssetsContext);
   const Preparation = module.Preparation;
+  const [capacity, setCapacity] = useState(room.capacity);
   const [options, setOptions] = useState<unknown>(room.options ?? {});
   const savedOptions = JSON.stringify(room.options ?? {});
   useEffect(
@@ -211,8 +213,12 @@ export function ModuleWaiting({
     [room.id, savedOptions],
   );
   const Options =
-    module.preparationOwnsOptions && Preparation ? undefined : module.Options;
-  const optionsDirty = !!Options && JSON.stringify(options) !== savedOptions;
+    module.preparationOwnsOptions && Preparation && capacity === room.capacity
+      ? undefined
+      : module.Options;
+  const optionsDirty =
+    (!!Options && JSON.stringify(options) !== savedOptions) ||
+    capacity !== room.capacity;
   // Ready confirmations belong to the saved rules. A host previewing a new
   // draft must not carry human confirmations over to that draft; bots remain
   // ready, just as they do when the server saves the changed options.
@@ -244,37 +250,35 @@ export function ModuleWaiting({
               : "好友到齐，就能开局。"}
         </h2>
         <GameMobilePlayNotice enabled={module.mobilePlayNotice} />
-        {Options && (
-          <>
+        <RoomSettings
+          room={room}
+          host={host}
+          busy={busy}
+          command={command}
+          options={options}
+          optionsDirty={optionsDirty}
+          onCapacityChange={setCapacity}
+        >
+          {Options && (
             <Options
               value={options}
               onChange={setOptions}
-              capacity={room.capacity}
+              capacity={capacity}
               disabled={!host || busy}
             />
-            {host && (
-              <button
-                className="outline"
-                disabled={busy || !optionsDirty}
-                onClick={() => command("options", { options })}
-              >
-                保存设置
-              </button>
-            )}
-            {draftNeedsReady && (
-              <p className="muted small" role="status">
-                地图或规则尚未保存；保存后真人需重新准备。
-                {module.supportsBots && "电脑保持准备。"}
-              </p>
-            )}
-          </>
+          )}
+        </RoomSettings>
+        {draftNeedsReady && (
+          <p className="muted small" role="status">
+            人数或规则尚未保存，保存后需重新准备。
+          </p>
         )}
         {Preparation && (
           <Preparation
             room={room}
             options={room.options ?? module.defaultOptions ?? {}}
             host={host}
-            busy={busy}
+            busy={busy || optionsDirty}
             assets={assets}
             prepare={(action) => command("prepare", { action })}
           />
@@ -346,7 +350,7 @@ export function ModuleWaiting({
                     ? "outline"
                     : "primary"
               }
-              disabled={busy}
+              disabled={busy || capacity !== room.capacity}
               onClick={() =>
                 command("ready", draftNeedsReady ? { options } : undefined)
               }

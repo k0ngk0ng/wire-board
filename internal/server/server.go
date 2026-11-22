@@ -945,6 +945,10 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	req.Name = strings.TrimSpace(req.Name)
+	if req.Name == "" {
+		name := []rune(u.Name)
+		req.Name = string(name[:min(len(name), 37)]) + "的房间"
+	}
 	if req.Name == "" || utf8.RuneCountInString(req.Name) > 40 || len(req.Password) > 72 {
 		fail(w, 400, "房间名需 1–40 字，密码最多 72 字节")
 		return
@@ -1133,6 +1137,8 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	var req struct {
+		Capacity               int                            `json:"capacity"`
+		RoomPassword           *string                        `json:"roomPassword"`
 		Options                json.RawMessage                `json:"options"`
 		RawAction              json.RawMessage                `json:"action"`
 		CatanRiversWorldMap    *game.CatanRiversWorldMap      `json:"catanRiversWorldMap"`
@@ -1253,6 +1259,12 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 	now := time.Now()
 	var err error
 	switch req.Type {
+	case "room_settings":
+		if next.Host != u.ID || next.Status != "waiting" {
+			err = errors.New("只有房主能在开局前修改房间设置")
+			break
+		}
+		err = s.configureRoomSettings(&next, req.Capacity, req.Options, req.RoomPassword)
 	case "save", "save_cancel":
 		err = s.voteSaveGame(&next, idx, req.Type == "save", now)
 	case "load_checkpoint":
@@ -2102,7 +2114,8 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 	next.Updated = time.Now().Unix()
 	next.LastActive = next.Updated
 	snapshot, _ := json.Marshal(next)
-	req.Password = "" // Never persist plaintext room passwords in the action journal.
+	req.Password = ""
+	req.RoomPassword = nil
 	action, _ := json.Marshal(req)
 	tx, e := s.db.Begin()
 	if e == nil {

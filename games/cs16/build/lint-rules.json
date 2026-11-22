@@ -138,7 +138,8 @@
     "internal/server/session_cache_e2e_test.go",
     "internal/gameapi/deferred_input_test.go",
     "internal/server/realtime_deferred_input_e2e_test.go",
-    "internal/server/realtime_stream_baseline_e2e_test.go"
+    "internal/server/realtime_stream_baseline_e2e_test.go",
+    "internal/server/room_settings.go"
   ],
   "sharedGoPatchSources": [
     "internal/gameapi/module.go",

@@ -9,7 +9,7 @@ import path from "node:path";
 import { createHash, randomUUID } from "node:crypto";
 
 test(
-  "completed matches stay understandable and room tools work with icons",
+  "one-click rooms, dynamic settings and completed match tools work through the browser",
   { timeout: 300000 },
   async () => {
     const root = fileURLToPath(new URL("../../", import.meta.url));
@@ -160,7 +160,7 @@ test(
     };
     const client = (origin) => {
       let cookie = "";
-      const request = async (route, body) => {
+      const request = async (route, body, expectedStatus) => {
         const response = await fetch(origin + "/api" + route, {
           headers: {
             "Content-Type": "application/json",
@@ -173,7 +173,10 @@ test(
         if (response.headers.has("set-cookie"))
           cookie = response.headers.get("set-cookie").split(";")[0];
         const data = await response.json();
-        assert.ok(response.ok, JSON.stringify(data));
+        if (expectedStatus === undefined)
+          assert.ok(response.ok, JSON.stringify(data));
+        else
+          assert.equal(response.status, expectedStatus, JSON.stringify(data));
         return data;
       };
       return {
@@ -221,11 +224,15 @@ import (
 "os"
 "testing/fstest"
 gomoku "github.com/k0ngk0ng/wire-board/games/gomoku/server"
+monopoly "github.com/k0ngk0ng/wire-board/games/monopoly/server"
+cs16 "github.com/k0ngk0ng/wire-board/games/cs16/server"
+hotlinemiami "github.com/k0ngk0ng/wire-board/games/hotlinemiami/server"
+yuyuhakusho "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/server"
 "github.com/k0ngk0ng/wire-board/internal/gameapi"
 "github.com/k0ngk0ng/wire-board/internal/server"
 )
 func main() {
-app, err := server.New(server.Config{DataDir:os.Args[1], InviteCode:"flow-invite", AdminUsername:"FlowRoot", AdminPassword:"flow-local-password", Modules:[]gameapi.Module{gomoku.Module()}}, fstest.MapFS{"index.html":{Data:[]byte("local flow acceptance")}})
+app, err := server.New(server.Config{DataDir:os.Args[1], InviteCode:"flow-invite", AdminUsername:"FlowRoot", AdminPassword:"flow-local-password", Modules:[]gameapi.Module{gomoku.Module(),monopoly.Module(),cs16.Module(),hotlinemiami.Module(),yuyuhakusho.Module()}}, fstest.MapFS{"index.html":{Data:[]byte("local flow acceptance")}})
 if err != nil {panic(err)}
 defer app.Close()
 listener, err := net.Listen("tcp", "127.0.0.1:0")
@@ -376,6 +383,186 @@ if err := http.Serve(listener, app.Handler()); err != nil {panic(err)}
           name: "FlowRoot",
           password: "flow-local-password",
         });
+        await browser("reload");
+        await wait(shown(".lobby"));
+        for (const [kind, title, minimum, maximum] of [
+          ["splendor", "璀璨宝石", 2, 4],
+          ["rail", "铁路环游", 2, 5],
+          ["carcassonne", "卡卡颂", 2, 5],
+          ["sanguosha", "三国杀", 4, 8],
+          ["catan", "卡坦岛", 2, 6],
+          ["monopoly", "强手棋", 2, 6],
+          ["gomoku", "五子棋", 2, 2],
+          ["cs16", "反恐精英", 2, 10],
+          ["hotlinemiami", "迈阿密热线", 2, 4],
+          ["yuyuhakusho", "魔强统一战", 2, 4],
+        ]) {
+          await browser(
+            "find",
+            "role",
+            "button",
+            "click",
+            "--name",
+            "创建房间",
+            "--exact",
+          );
+          await browser("fill", '[aria-label="搜索可选游戏"]', title);
+          check(
+            "creation has no name field " + kind + width,
+            await evaluate(
+              '!document.querySelector(".create-room-modal input[name=name]")',
+            ),
+          );
+          await activate(".choose-games button", touch);
+          await wait(shown(".waiting-layout"));
+          const opened = await current();
+          check(
+            "one click enters named room " + kind + width,
+            opened.kind === kind &&
+              opened.name === "FlowRoot的房间" &&
+              !(await evaluate(shown(".create-room-modal"))),
+          );
+          if (kind === "gomoku") {
+            const invalid = await evaluate(
+              `fetch('/api/rooms/${opened.id}',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'room_settings',capacity:3,version:${opened.version},nonce:crypto.randomUUID()})}).then(r=>r.status)`,
+            );
+            check(
+              "fixed player count enforced " + width,
+              invalid === 400 && (await current()).capacity === 2,
+            );
+          }
+          await browser("select", '[aria-label="房间人数"]', String(maximum));
+          if (maximum !== opened.capacity)
+            await activate("[data-room-settings-save]", touch);
+          await wait(
+            `document.querySelector('[aria-label="房间人数"]').value==='${maximum}'&&!document.querySelector('[data-room-settings-save]:not(:disabled)')`,
+          );
+          check(
+            "capacity persisted " + kind + width,
+            (await current()).capacity === maximum,
+          );
+          if (kind === "catan") {
+            check(
+              "six player rules follow capacity " + width,
+              (await current()).catanOptions.fiveSix,
+            );
+          }
+          if (kind === "splendor") {
+            await browser(
+              "fill",
+              '[aria-label="房间密码"]',
+              "flow-new-room-password",
+            );
+            await command("add_bot");
+            await command("add_bot");
+            await command("ready");
+            check(
+              "room updates preserve password draft " + width,
+              await evaluate(
+                'document.querySelector(\'[aria-label="房间密码"]\').value === "flow-new-room-password"',
+              ),
+            );
+            const before = await current();
+            const rejected = await evaluate(
+              `fetch('/api/rooms/${before.id}',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'room_settings',capacity:2,version:${before.version},nonce:crypto.randomUUID()})}).then(r=>r.status)`,
+            );
+            check(
+              "occupied seats cannot be removed " + width,
+              rejected === 400 && (await current()).capacity === 4,
+            );
+            await browser("select", '[aria-label="房间人数"]', "3");
+            await browser(
+              "fill",
+              '[aria-label="房间密码"]',
+              "flow-new-room-password",
+            );
+            await activate("[data-room-settings-save]", touch);
+            await wait(
+              "!document.querySelector('[data-room-settings-save]:not(:disabled)')",
+            );
+            const resized = await current();
+            check(
+              "resize preserves bots and resets human ready " + width,
+              resized.capacity === 3 &&
+                resized.locked &&
+                !resized.seats[0].ready &&
+                resized.seats.slice(1).every((seat) => seat.ready),
+            );
+            await browser("reload");
+            await wait(shown('[aria-label="房间人数"]'));
+            check(
+              "room settings survive reload " + width,
+              (await current()).capacity === 3 && (await current()).locked,
+            );
+            await command("room_settings", { capacity: 4 });
+            check(
+              "capacity change preserves password " + width,
+              (await current()).locked,
+            );
+            const version = (await current()).version;
+            const stale = await evaluate(
+              `fetch('/api/rooms/${opened.id}',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'room_settings',capacity:3,roomPassword:'',version:${version - 1},nonce:crypto.randomUUID()})}).then(r=>r.status)`,
+            );
+            check(
+              "stale settings rejected atomically " + width,
+              stale === 409 &&
+                (await current()).capacity === 4 &&
+                (await current()).locked,
+            );
+            await activate("[data-room-password-remove]", touch);
+            await activate("[data-room-settings-save]", touch);
+            await wait(
+              "!document.querySelector('[data-room-settings-save]:not(:disabled)')",
+            );
+            check(
+              "room password removable " + width,
+              !(await current()).locked,
+            );
+          } else {
+            await browser("select", '[aria-label="房间人数"]', String(minimum));
+            if (minimum !== maximum)
+              await activate("[data-room-settings-save]", touch);
+            await wait(
+              "!document.querySelector('[data-room-settings-save]:not(:disabled)')",
+            );
+            check(
+              "capacity shrinks " + kind + width,
+              (await current()).capacity === minimum,
+            );
+          }
+          if (kind === "catan") {
+            for (const scenario of ["cities-knights", "shores", "rivers"]) {
+              await command("catan_two_scenario", {
+                catanTwoScenario: scenario,
+              });
+              for (const capacity of [3, 6, 2]) {
+                await command("room_settings", { capacity });
+                const adjusted = await current();
+                check(
+                  `catan ${scenario} resizes to ${capacity} ${width}`,
+                  adjusted.capacity === capacity &&
+                    (capacity === 2
+                      ? !!adjusted.catanTwoRules
+                      : !adjusted.catanTwoRules),
+                );
+              }
+            }
+          }
+          if (["splendor", "monopoly", "catan"].includes(kind)) {
+            check(
+              "settings fit viewport " + kind + width,
+              await evaluate(
+                "document.documentElement.scrollWidth<=innerWidth",
+              ),
+            );
+            await browser(
+              "screenshot",
+              path.join(out, `room-settings-${kind}-${width}.png`),
+            );
+          }
+          await command("leave");
+          await wait(shown(".lobby"));
+        }
         const host = client(backendOrigin),
           peer = client(backendOrigin),
           spectator = client(backendOrigin);
@@ -410,9 +597,28 @@ if err := http.Serve(listener, app.Handler()); err != nil {panic(err)}
           nonce: randomUUID(),
           password: "flow-room-password",
         });
+        await peer.request(
+          "/rooms/" + created.id,
+          {
+            type: "room_settings",
+            capacity: 2,
+            roomPassword: "",
+            version: (await current()).version,
+            nonce: randomUUID(),
+          },
+          400,
+        );
+        check("non-host settings rejected " + width, (await current()).locked);
         await command("ready");
         await peer.command("ready");
         await command("start");
+        const started = await current();
+        check(
+          "playing room rejects settings " + width,
+          (await evaluate(
+            `fetch('/api/rooms/${started.id}',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'room_settings',capacity:2,version:${started.version},nonce:crypto.randomUUID()})}).then(r=>r.status)`,
+          )) === 400,
+        );
         await browser("reload");
         await wait(
           "!!document.querySelector('[data-fullscreen-enter]:not(:disabled)')",
@@ -750,6 +956,20 @@ if err := http.Serve(listener, app.Handler()); err != nil {panic(err)}
         "no browser runtime errors",
         !(await browser("errors")).errors.length,
       );
+      const journal = await execute(
+        "python3",
+        [
+          "-B",
+          "-c",
+          "import sqlite3,sys;db=sqlite3.connect(sys.argv[1]);print(db.execute(\"SELECT COUNT(*) FROM actions WHERE instr(CAST(action AS TEXT), 'flow-new-room-password') > 0\").fetchone()[0])",
+          path.join(temporary, "data/wire-board.db"),
+        ],
+        { cwd: root, env: environment },
+      );
+      check(
+        "room password absent from action journal",
+        journal.stdout.trim() === "0",
+      );
       report.passed = true;
     } catch (error) {
       report.error = error.stack;
@@ -782,6 +1002,14 @@ if err := http.Serve(listener, app.Handler()); err != nil {panic(err)}
       }
       for (const file of [
         "web/src/main.tsx",
+        "web/src/game-api/host.tsx",
+        "web/src/legacy/room-ui.tsx",
+        "web/src/ui/game-choices.tsx",
+        "web/src/ui/room-waiting.css",
+        "web/src/ui/create-room.tsx",
+        "web/src/ui/room-settings.tsx",
+        "internal/server/room_settings.go",
+        "internal/server/server.go",
         "web/src/ui/board-host.tsx",
         "web/src/ui/result-overlay.tsx",
         "web/src/ui/results.tsx",

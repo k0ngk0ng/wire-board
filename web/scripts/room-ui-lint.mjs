@@ -9,6 +9,9 @@ const postcss = require("postcss");
 const root = fileURLToPath(new URL("../../", import.meta.url));
 const files = [
   "web/src/ui/board-host.tsx",
+  "web/src/ui/create-room.tsx",
+  "web/src/ui/room-settings.tsx",
+  "web/src/ui/game-choices.tsx",
   "web/src/ui/result-overlay.tsx",
   "web/src/ui/results.tsx",
   "web/src/ui/leave-room-control.tsx",
