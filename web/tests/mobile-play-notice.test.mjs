@@ -56,8 +56,8 @@ export function render(kind,mode,enabled){
           contents: "export const PlayerName=({user})=>user.name;",
           loader: "js",
         }));
-        builder.onResolve({ filter: /^\.\/registry$/ }, (args) =>
-          args.importer.endsWith("/game-api/host.tsx")
+        builder.onResolve({ filter: /(?:^|\/)registry$/ }, (args) =>
+          path.resolve(args.resolveDir, args.path) === path.join(root, "web/src/game-api/registry")
             ? { path: "registry", namespace: "notice-registry" }
             : null,
         );

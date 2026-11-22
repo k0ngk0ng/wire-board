@@ -26,7 +26,11 @@
     "web/src/main.tsx",
     "web/src/realtime-stream.ts",
     "web/src/legacy/room-ui.tsx",
-    "web/src/chat.tsx"
+    "web/src/chat.tsx",
+    "web/tests/mobile-play-notice.test.mjs",
+    "web/tests/module-horizontal-players.test.mjs",
+    "web/tests/module-pause.test.mjs",
+    "web/tests/module-preparation.test.mjs"
   ],
   "platformAudioSources": [
     "web/src/audio-spatial.ts",

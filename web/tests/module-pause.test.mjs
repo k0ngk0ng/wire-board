@@ -33,8 +33,8 @@ export function render(room){return renderToStaticMarkup(React.createElement(Mod
     {
       name: "pause-fixture-imports",
       setup(b) {
-        b.onResolve({ filter: /^\.\/registry$/ }, (args) =>
-          args.importer.endsWith("/game-api/host.tsx")
+        b.onResolve({ filter: /(?:^|\/)registry$/ }, (args) =>
+          path.resolve(args.resolveDir, args.path) === path.join(root, "web/src/game-api/registry")
             ? { path: "registry", namespace: "pause-fixture" }
             : null,
         );
