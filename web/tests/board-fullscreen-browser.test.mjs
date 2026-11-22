@@ -13,13 +13,25 @@ test('shared fullscreen uses overlay controls and maximizes five proportional ch
   const red = process.env.FULLSCREEN_LAYOUT_PHASE === 'red';
   const name = process.env.BOARD_FULLSCREEN_REPORT ?? (red ? 'red' : 'current');
   assert.match(name, /^[a-z0-9]+(?:-[a-z0-9]+)*$/);
-  const out = path.join(root, '.local/room-tools-followup/fullscreen', name);
+  const out = path.join(root, '.local/room-tools-followup/verification/fullscreen', name);
   const temporary = path.join(out, 'temporary');
   const environment = { ...process.env, TMPDIR: path.join(temporary, 'tmp'), XDG_CACHE_HOME: path.join(temporary, 'cache'), XDG_CONFIG_HOME: path.join(temporary, 'config'), XDG_DATA_HOME: path.join(temporary, 'data'), AGENT_BROWSER_PROFILE: path.join(temporary, 'profile'), AGENT_BROWSER_SOCKET_DIR: path.join(root, '.local/room-tools-followup/s'), AGENT_BROWSER_NO_VERSION_CHECK: '1' };
   for (const directory of [out, temporary, environment.TMPDIR, environment.XDG_CACHE_HOME, environment.XDG_CONFIG_HOME, environment.XDG_DATA_HOME, environment.AGENT_BROWSER_PROFILE, environment.AGENT_BROWSER_SOCKET_DIR]) await mkdir(directory, { recursive: true });
   const execute = promisify(execFile);
   const session = (await execute('agent-browser', ['session', 'id', '--scope', 'worktree', '--prefix', 'chfs'], { cwd: root, env: environment })).stdout.trim();
-  const browser = async (...args) => { const result = await execute('agent-browser', ['--session', session, '--profile', environment.AGENT_BROWSER_PROFILE, ...args, '--json'], { cwd: root, env: environment, timeout: 30000, maxBuffer: 4 << 20 }); const value = JSON.parse(result.stdout); assert.ok(value.success, result.stdout); return value.data; };
+  const browser = async (...args) => {
+    let result;
+    try {
+      result = await execute('agent-browser', ['--session', session, '--profile', environment.AGENT_BROWSER_PROFILE, ...args, '--json'], { cwd: root, env: environment, timeout: 30000, maxBuffer: 4 << 20 });
+    } catch (error) {
+      const failure = { command: args, message: error.message, stdout: error.stdout, stderr: error.stderr };
+      await writeFile(path.join(out, 'browser-' + args[0] + '-failure.json'), JSON.stringify(failure, null, 2) + '\n');
+      throw Error(JSON.stringify(failure), { cause: error });
+    }
+    const value = JSON.parse(result.stdout);
+    assert.ok(value.success, result.stdout);
+    return value.data;
+  };
   const require = createRequire(new URL('../package.json', import.meta.url));
   const { createServer } = require('vite');
   const react = require('@vitejs/plugin-react').default;

@@ -65,7 +65,8 @@ def recover(root, head, runs, jobs_for, verified_base=''):
             continue
         paths = git(root, 'diff', '--no-renames', '--name-only', base, head).splitlines()
         delta = current.plan(paths, games)
-        if delta['has_shared'] or delta['frontend_checks']:
+        public_tests_only = all(path.startswith('web/tests/') and path.endswith('.test.mjs') or current.ci_path(path) or path.endswith('.md') for path in paths)
+        if delta['has_shared'] or delta['frontend_checks'] and not public_tests_only:
             continue
         if sections != execution_sections(git(root, 'show', base + ':.github/workflows/build.yml')):
             continue
