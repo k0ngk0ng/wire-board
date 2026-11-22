@@ -1,0 +1,51 @@
+{
+  "repository": "https://github.com/martinsam16/cstrike",
+  "commit": "651d0d248ba04028b1b8167b156888b522bbcb73",
+  "files": [
+    {
+      "path": "valve/sprites/blood.spr",
+      "source_path": "opt/hlds/valve/sprites/blood.spr",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/valve/sprites/blood.spr",
+      "bytes": 3294,
+      "sha256": "42cabfbac848496fde138163bc36de3e71b7e7b4e51926f6f4f9a2ff685f19c8",
+      "git_blob_sha1": "03cb5e556ece0da326644995f71ade67aed3a32c"
+    },
+    {
+      "path": "valve/sprites/bloodspray.spr",
+      "source_path": "opt/hlds/valve/sprites/bloodspray.spr",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/valve/sprites/bloodspray.spr",
+      "bytes": 41970,
+      "sha256": "86769469cf458df8114a7239a9c1b5018ecc8cc2e443d679eb43bad5b70efb89",
+      "git_blob_sha1": "8d514f7cf7f25ee062f8ec8e6bbd33f81f39f4ba"
+    },
+    {
+      "path": "valve/sprites/fexplo.spr",
+      "source_path": "opt/hlds/valve/sprites/fexplo.spr",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/valve/sprites/fexplo.spr",
+      "bytes": 231810,
+      "sha256": "b89ee20a8f588ac5517d43d4e73e2d5411b1f6962a057792c4f13741a9419255",
+      "git_blob_sha1": "979b496fde14c1ef41d41a76e81fd7bc2f0387bd"
+    },
+    {
+      "path": "valve/sprites/eexplo.spr",
+      "source_path": "opt/hlds/valve/sprites/eexplo.spr",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/valve/sprites/eexplo.spr",
+      "bytes": 161310,
+      "sha256": "cebc88024c092fce37476a0ffac3744af521c8f9ff9808f392b1262d50186502",
+      "git_blob_sha1": "0502426fa51a28ff1a568712744a2cd009fe9496"
+    },
+    {
+      "path": "cstrike/gfx/palette.lmp",
+      "source_path": "opt/hlds/cstrike/gfx/palette.lmp",
+      "url": "https://raw.githubusercontent.com/martinsam16/cstrike/651d0d248ba04028b1b8167b156888b522bbcb73/opt/hlds/cstrike/gfx/palette.lmp",
+      "bytes": 768,
+      "sha256": "036b7ea3c8c03be214bb7d22b8d63ac27f63d547e42ca677fef344ddc780961e",
+      "git_blob_sha1": "1a8b9febd1a201c05200caa143d56977f6c4cb3b"
+    }
+  ],
+  "authority": "third-party-public-archive",
+  "limitations": [
+    "No Valve distribution signature or official digest established",
+    "Static SPR format and reference source do not establish original runtime effects behavior"
+  ]
+}

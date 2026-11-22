@@ -4,6 +4,7 @@ import { useGameController } from '../../../web/src/controllers/use-game-control
 import { loadBattleAssets, type LoadedAssets } from './assets';
 import { validateRulesIdentity } from './asset-contract';
 import { BuyMenu } from './BuyMenu';
+import { Scoreboard } from './Scoreboard';
 import { inventorySlots, itemName, mapName, mapMode, weapons } from './content';
 import { emptyInput, InputChannel } from './input';
 import { announcementSound, attackEventInCurrentLife, attackFeedbackBlocked, AttackFeedbackQueue, eventFeedback, localFeedback, type FeedbackKind } from './feedback';
@@ -98,7 +99,7 @@ export function Board(props: BoardProps<View>) {
   }
 
   const controller = useGameController({ gameId: 'cs16', userId: props.room.seats[props.room.you]?.id ?? props.room.seats[0]?.id ?? '', scope: identity, root,
-    enabled: canControl, menu: () => root.current?.querySelector<HTMLElement>('.cs16-buy-menu') ?? null,
+    enabled: () => initialized.current, menu: () => root.current?.querySelector<HTMLElement>('.cs16-buy-menu') ?? null,
     captureMappedModifiers: () => document.pointerLockElement === canvas.current && canControl(),
     menuActions: { forward: 'up', backward: 'down', left: 'left', right: 'right', use: 'confirm', jump: 'confirm', buy: 'cancel', buyEquipment: 'cancel' },
     changed: () => process.current(true), error: setError,
@@ -118,6 +119,7 @@ export function Board(props: BoardProps<View>) {
   }
 
   function release(send = true) {
+    setScoreboard(false);
     touchHandoff.current.reset();
     wasEnabled.current = false;
     mouse.current = { fire: false, secondary: false };
@@ -207,7 +209,12 @@ export function Board(props: BoardProps<View>) {
     const candidates = observerCandidates(current.data.players, player, !!current.room.spectating);
     const listener = player?.alive ? player : candidates.find(player => player.seat === watch) ?? candidates[0] ?? player;
     if (!listener || !Number.isFinite(listener.x)) return;
-    void current.audio.spatial(`cs16:${event.type}:${event.seat}`, [source], { playbackID: `${current.data.epoch}:${event.life ?? 0}:${event.id}`, source: { x: (event.x ?? listener.x) / 256, y: (event.y ?? listener.y) / 256, z: (event.z ?? listener.z) / 256 }, listener: { x: listener.x / 256, y: listener.y / 256, z: listener.z / 256, yaw: facing.current.yaw * Math.PI * 2 / 65536 }, maxDistance: cue.range, volume: (cue.volumeMilli ?? 1000) / 1000 });
+    const layers = [{ source, volumeMilli: cue.volumeMilli ?? 1000 }, ...cue.layers?.flatMap(layer => {
+      const key = layer.files.find(key => loaded.current?.sounds.has(key));
+      const source = key && loaded.current?.sounds.get(key);
+      return source ? [{ source, volumeMilli: layer.volumeMilli }] : [];
+    }) ?? []];
+    for (const [index, layer] of layers.entries()) void current.audio.spatial(`cs16:${event.type}:${event.seat}:${index}`, [layer.source], { playbackID: `${current.data.epoch}:${event.life ?? 0}:${event.id}:${index}`, source: { x: (event.x ?? listener.x) / 256, y: (event.y ?? listener.y) / 256, z: (event.z ?? listener.z) / 256 }, listener: { x: listener.x / 256, y: listener.y / 256, z: listener.z / 256, yaw: facing.current.yaw * Math.PI * 2 / 65536 }, maxDistance: cue.range, volume: layer.volumeMilli / 1000 });
   }
 
   process.current = (force = false) => {
@@ -217,6 +224,7 @@ export function Board(props: BoardProps<View>) {
     const enabled = canControl();
     channel.current!.update({ identity, epoch: current.data.epoch, life: player?.life ?? 0, receivedSeq: player?.receivedSeq ?? 0, enabled, window: current.inputWindow ?? 0, frame: current.data.frame });
     const control = controller.current;
+    if (enabled && !wasEnabled.current) control?.clear();
     const actions = control?.sample(at) ?? new Set<string>();
     const cancelled = control?.cancelVersion ?? 0;
     if (cancelled !== cancellation.current) { cancellation.current = cancelled; if (!actions.has('fire') && !touch.current.actions.has('fire') && !mouse.current.fire) channel.current!.release(facing.current.yaw, facing.current.pitch); }
@@ -505,6 +513,15 @@ export function Board(props: BoardProps<View>) {
     };
     const lock = () => { const enabled = document.pointerLockElement === element; setLocked(enabled); if (touchHandoff.current.lockChanged(enabled)) release(); syncKeyboard(); };
     const clear = () => { release(); unlockKeyboard(); };
+    const surface = root.current?.closest('[data-game-fullscreen-surface]');
+    const fullscreen = () => { release(); syncKeyboard(); };
+    const tab = (event: KeyboardEvent) => {
+      const target = event.target;
+      if (event.code !== 'Tab' || event.ctrlKey || event.altKey || event.metaKey || !(target instanceof Element) || !surface?.hasAttribute('data-room-fullscreen') || !surface.contains(target)) return;
+      event.preventDefault();
+    };
+    const fullscreenChanges = new MutationObserver(fullscreen);
+    if (surface) fullscreenChanges.observe(surface, { attributes: true, attributeFilter: ['data-room-fullscreen'] });
     const hidden = () => { if (document.hidden) clear(); };
     const wheel = (event: WheelEvent) => {
       if (!canControl()) return;
@@ -516,15 +533,16 @@ export function Board(props: BoardProps<View>) {
       select(inventory[(index + (event.deltaY > 0 ? 1 : inventory.length - 1)) % inventory.length].id);
     };
     window.addEventListener('keydown', key, true);
+    window.addEventListener('keydown', tab);
     document.addEventListener('mousemove', mouseMove);
     element.addEventListener('mousedown', down);
     window.addEventListener('mouseup', up);
     document.addEventListener('pointerlockchange', lock);
-    document.addEventListener('fullscreenchange', syncKeyboard);
+    document.addEventListener('fullscreenchange', fullscreen);
     window.addEventListener('blur', clear);
     document.addEventListener('visibilitychange', hidden);
     element.addEventListener('wheel', wheel, { passive: false });
-    return () => { disposed = true; unlockKeyboard(); window.removeEventListener('keydown', key, true); document.removeEventListener('mousemove', mouseMove); element.removeEventListener('mousedown', down); window.removeEventListener('mouseup', up); document.removeEventListener('pointerlockchange', lock); document.removeEventListener('fullscreenchange', syncKeyboard); window.removeEventListener('blur', clear); document.removeEventListener('visibilitychange', hidden); element.removeEventListener('wheel', wheel); };
+    return () => { disposed = true; fullscreenChanges.disconnect(); unlockKeyboard(); window.removeEventListener('keydown', key, true); window.removeEventListener('keydown', tab); document.removeEventListener('mousemove', mouseMove); element.removeEventListener('mousedown', down); window.removeEventListener('mouseup', up); document.removeEventListener('pointerlockchange', lock); document.removeEventListener('fullscreenchange', fullscreen); window.removeEventListener('blur', clear); document.removeEventListener('visibilitychange', hidden); element.removeEventListener('wheel', wheel); };
   }, [identity]);
 
   const frame = props.data.frame + (props.clock.paused ? 0 : Math.max(0, Math.min(15, Math.floor((now - receivedAt.current) / 10))));
@@ -535,7 +553,7 @@ export function Board(props: BoardProps<View>) {
   const hud = loaded.current?.manifest.hud;
   const progress = own ? actionProgress(own, props.data.bomb, frame) : undefined;
   const scoped = !!zoom && ['scout', 'awp', 'g3sg1', 'sg550'].includes(own?.weapon ?? '');
-  return <div className={`cs16-board${buyOpen ? ' cs16-buying' : ''}`} data-cs16-board data-ready={ready ? 'true' : 'false'} ref={root} tabIndex={-1} aria-label="反恐精英战场" onPointerDownCapture={event => { touchPointer.current = event.pointerType === 'touch'; if (event.pointerType === 'touch' && document.pointerLockElement === canvas.current) { try { beginTouch(); } catch {} } }}>
+  return <div className={`cs16-board${buyOpen ? ' cs16-buying' : ''}${scoreboard ? ' cs16-scoring' : ''}`} data-cs16-board data-ready={ready ? 'true' : 'false'} ref={root} tabIndex={-1} aria-label="反恐精英战场" onPointerDownCapture={event => { touchPointer.current = event.pointerType === 'touch'; if (event.pointerType === 'touch' && document.pointerLockElement === canvas.current) { try { beginTouch(); } catch {} } }}>
     <canvas ref={canvas} data-cs16-canvas aria-label={`${mapName(props.data.mapId)}第一人称战场`} />
     {ready && <>
       {matchClock(mode, props.data.phase, (props.data.bomb?.planted ? props.data.bomb.explodesAt : props.data.phaseEndsAt) - frame) && <div data-chat-protected className="cs16-match-hud"><HudSprite hud={hud} base={props.assets} name="stopwatch" /><strong>{matchClock(mode, props.data.phase, (props.data.bomb?.planted ? props.data.bomb.explodesAt : props.data.phaseEndsAt) - frame)}</strong></div>}
@@ -558,7 +576,7 @@ export function Board(props: BoardProps<View>) {
       {!locked && own?.alive && !buyOpen && !props.room.seats[props.room.you]?.autoPlay && <button type="button" className="cs16-lock-hint" onClick={lockMouse}>点击战场锁定鼠标</button>}
       {own?.alive && <TouchControls nightVisionOwned={!!own.nightVisionOwned} nightVision={!!own.nightVision} disabled={!canControl()} weapon={own.weapon} weaponState={own.inventory?.find(item => item.id === own.weapon)} useLabel={props.data.bomb?.planted && own.team === 'ct' ? '拆弹' : mode === 'hostage' && own.team === 'ct' ? '营救' : '使用'} buy={openBuy} score={() => setScoreboard(true)} native={record} begin={beginTouch} error={setError} interrupted={() => channel.current?.release(facing.current.yaw, facing.current.pitch)} changed={value => { touch.current = value; process.current(true); }} look={(x, y) => { if (!canControl()) return; facing.current.yaw = angle(facing.current.yaw - x * 144); facing.current.pitch = safePitch(facing.current.pitch + y * 96); prediction.current?.face(facing.current.yaw, facing.current.pitch); }} />}
     </>}
-    {scoreboard && <div className="cs16-scoreboard" role="dialog" aria-label="对局战绩"><header><strong>战绩</strong><button type="button" onClick={() => setScoreboard(false)}>返回战场</button></header>{['t', 'ct'].map(team => <section key={team}><h3>{team === 'ct' ? '反恐精英' : '恐怖分子'}</h3>{props.data.players.filter(player => player.team === team).map(player => <div key={player.seat}><span>{props.room.seats[player.seat]?.name ?? '玩家'}{player.alive ? '' : ' · 阵亡'}</span><span>{player.kills} / {player.deaths}</span></div>)}</section>)}</div>}
+    {scoreboard && <Scoreboard room={props.room} view={props.data} close={() => setScoreboard(false)} />}
     {buyOpen && own && <BuyMenu player={own} prices={loaded.current?.weapons ?? []} mode={mode} allowed={!!props.data.buyAllowed} close={closeBuy} error="" buy={buyItem} category={buyCategory} choose={chooseBuy} />}
     {error && !buyOpen && !initialized.current && <button type="button" className="cs16-retry" onClick={() => setAttempt(value => value + 1)}>重新加载</button>}
   </div>;

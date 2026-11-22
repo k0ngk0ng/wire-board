@@ -1,0 +1,20 @@
+.cs16-board .cs16-scoreboard{position:absolute;left:50%;top:10%;transform:translateX(-50%);box-sizing:border-box;width:min(520px,calc(100% - 24px));max-height:80%;min-height:min(340px,80%);overflow-y:auto;overflow-x:hidden;padding:8px 10px 14px;border:1px solid #777;background:#000b;color:#ddd;z-index:9;font:12px Arial,sans-serif;line-height:1.5;touch-action:pan-y;overscroll-behavior:contain;scrollbar-width:thin}
+.cs16-board .cs16-scoreboard>header{display:flex;align-items:center;justify-content:space-between;gap:8px;height:24px;padding:0 0 5px;border:0;border-bottom:1px solid #777;color:#eee}
+.cs16-scoreboard>header strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:14px;font-weight:400}
+.cs16-scoreboard table{width:100%;table-layout:fixed;border-collapse:collapse;font:inherit}
+.cs16-scoreboard .cs16-score-status{width:56px}
+.cs16-scoreboard .cs16-score-number{width:40px}
+.cs16-scoreboard .cs16-score-ping{width:46px}
+.cs16-scoreboard th,.cs16-scoreboard td{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:1px 3px;font-weight:400;text-align:right;font-variant-numeric:tabular-nums}
+.cs16-scoreboard tr>th:first-child{text-align:left}
+.cs16-scoreboard thead{color:#ddd}
+.cs16-scoreboard thead th{padding-top:4px;padding-bottom:5px}
+.cs16-scoreboard .cs16-score-team{border-bottom:1px solid currentColor}
+.cs16-scoreboard .cs16-score-team>th,.cs16-scoreboard .cs16-score-team>td{padding-top:12px;padding-bottom:3px}
+.cs16-scoreboard [data-cs16-score-team=t]{color:#ff4040}
+.cs16-scoreboard [data-cs16-score-team=ct]{color:#99ccff}
+.cs16-scoreboard [data-cs16-score-own]{background:#7775;outline:1px solid #aaa6;outline-offset:-1px}
+.cs16-board .cs16-scoreboard [data-cs16-score-close]{display:none}
+.cs16-board.cs16-scoring{touch-action:pan-y}
+@media(pointer:coarse){.cs16-board .cs16-scoreboard>header{position:sticky;top:-8px;z-index:1;height:44px;background:#080c0b}.cs16-board .cs16-scoreboard [data-cs16-score-close]{display:block;min-width:44px;min-height:44px;padding:0;border:0;border-radius:0;background:transparent;color:#ddd;font-size:24px}.cs16-scoreboard th,.cs16-scoreboard td{padding-top:3px;padding-bottom:3px}}
+@media(max-width:480px){.cs16-board .cs16-scoreboard{width:calc(100% - 12px);padding:6px;font-size:11px}.cs16-board .cs16-scoreboard>header{top:-6px}.cs16-scoreboard .cs16-score-status{width:30px}.cs16-scoreboard .cs16-score-number{width:30px}.cs16-scoreboard .cs16-score-ping{width:34px}.cs16-score-team span{font-size:10px}}

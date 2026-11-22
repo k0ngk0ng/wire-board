@@ -2,13 +2,14 @@ import * as T from 'three';
 import { clone } from 'three/examples/jsm/utils/SkeletonUtils.js';
 import type { GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import type { LoadedAssets } from './assets.ts';
-import type { GameEvent, Player, View } from './types.ts';
+import type { EffectName, GameEvent, Player, View } from './types.ts';
 import { eventFeedback, type FeedbackKind } from './feedback.ts';
 import { eyeOffset, smokeRadius, viewModelHand, viewModelVerticalFov, visibleVelocity } from './presentation.ts';
 import { carriedBoneMap, playerPose } from './model-pose.ts';
 import { createMuzzleTexture, mapTextureColorSpace, muzzleAttachments, ShotEffects } from './shot-effects.ts';
 import { CorpseInterpolation, corpseAge, corpseTravel, deathAnimation, deathView, scopeFov, ViewImpulse, weaponAnimation } from './view-effects.ts';
 import { MapFlashlight } from './flashlight.ts';
+import { CombatEffects, hitboxBloodPoint } from './combat-effects.ts';
 
 type Actor = { root: T.Group; model: T.Object3D; mixer: T.AnimationMixer; clips: T.AnimationClip[]; animation: string; weapon: string; carried?: T.Object3D; carriedBones?: T.Bone[]; carriedSkeletons?: T.Skeleton[]; alive: boolean; life: number; deathAt: number; corpseMotion: CorpseInterpolation; settled?: T.Vector3 };
 type Frame = { view: View; at: number };
@@ -35,6 +36,8 @@ export class BattleRenderer {
   private muzzleUntil = 0;
   private muzzle: T.Sprite;
   private effects = new ShotEffects();
+  private combat: CombatEffects;
+  private combatEvents: { event: GameEvent; at: number }[] = [];
   private pendingShots = 0;
   private muzzleNodes: T.Object3D[] = [];
   private weaponShots = 0;
@@ -52,7 +55,6 @@ export class BattleRenderer {
   private corpseDirection = new T.Vector3();
   private collisionDirty = true;
   private presentationFrame = 0;
-  private shotOrigin = new T.Vector3();
   private disposed = false;
   private width = 0;
   private height = 0;
@@ -148,11 +150,23 @@ export class BattleRenderer {
     this.muzzle.scale.set(4, 4, 1);
     this.weaponScene.add(this.muzzle);
     this.resources.push(muzzleMaterial);
+    if (!assets.manifest.effects) throw Error('缺少原版战斗特效');
+    const effectTextures = new Map<EffectName, T.Texture>();
+    for (const name of ['blood', 'bloodspray', 'fexplo', 'eexplo'] as const) {
+      const texture = this.texture(`effect:${name}`, false);
+      if (!texture) throw Error(`原版战斗特效未解码：${name}`);
+      texture.generateMipmaps = false;
+      texture.minFilter = T.LinearFilter;
+      this.renderer.initTexture(texture);
+      effectTextures.set(name, texture);
+    }
+    this.combat = new CombatEffects(assets.manifest.effects, effectTextures);
+    this.scene.add(this.combat.root);
   }
 
   update(view: View, at: number) {
     const previous = this.frames.at(-1);
-    if (previous?.view.epoch !== view.epoch || previous.view.frame > view.frame || previous.view.round !== view.round) { this.frames = []; this.viewImpulse.reset(); this.viewIdentity = ''; this.pendingFeedback = undefined; this.presentationFrame = view.frame; }
+    if (previous?.view.epoch !== view.epoch || previous.view.frame > view.frame || previous.view.round !== view.round || view.recover) { this.frames = []; this.viewImpulse.reset(); this.viewIdentity = ''; this.pendingFeedback = undefined; this.presentationFrame = view.frame; this.combat.reset(); this.combatEvents = []; }
     if (previous?.view.frame === view.frame && previous.view.eventId === view.eventId) return;
     this.frames.push({ view, at });
     if (this.frames.length > 6) this.frames.shift();
@@ -164,7 +178,7 @@ export class BattleRenderer {
   }
 
   get visualStats() {
-    return { ...this.effects.stats, muzzle: this.muzzle.visible, muzzleAttachmentCount: this.muzzleNodes.length, lightmapColorSpace: this.mapLighting?.colorSpace, cameraFov: this.camera.fov, weaponAnimation: this.weapon?.animation, weaponShots: this.weaponShots, weaponBack: this.weaponRoot.position.z, cameraPitch: Math.asin(-this.flashlightDirection.y), flashlight: this.flashlight.uniforms.csFlashPower.value, nightVision: this.nightVision, corpses: [...this.actors.values()].filter(actor => !actor.alive && actor.root.visible).length };
+    return { ...this.effects.stats, ...this.combat.stats, muzzle: this.muzzle.visible, muzzleAttachmentCount: this.muzzleNodes.length, lightmapColorSpace: this.mapLighting?.colorSpace, cameraFov: this.camera.fov, weaponAnimation: this.weapon?.animation, weaponShots: this.weaponShots, weaponBack: this.weaponRoot.position.z, cameraPitch: Math.asin(-this.flashlightDirection.y), flashlight: this.flashlight.uniforms.csFlashPower.value, nightVision: this.nightVision, corpses: [...this.actors.values()].filter(actor => !actor.alive && actor.root.visible).length };
   }
 
   shoot(now: number) {
@@ -178,6 +192,7 @@ export class BattleRenderer {
   }
 
   event(event: GameEvent, now: number, localSeat: number) {
+    if (event.type === 'hit' || event.type === 'explode') this.combatEvents = [...this.combatEvents.slice(-63), { event, at: now }];
     if (event.type === 'land' && (event.seat === localSeat || event.seat === this.observedSeat)) this.viewImpulse.land(event.value ?? 0, now);
     if ((event.type === 'knife_hit' || event.type === 'knife_wall') && event.value === 1 && (event.seat === localSeat || event.seat === this.observedSeat)) { this.pendingFeedback = { kind: 'stab', serial: 0, contact: 'hit' }; return; }
     if (event.type === 'hit' && event.seat === localSeat) this.effects.confirmHit();
@@ -301,19 +316,20 @@ export class BattleRenderer {
     const hidden = this.actors.get(this.observedSeat);
     if (hidden) hidden.root.visible = false;
     this.dynamic(view);
+    for (const item of this.combatEvents) {
+      const target = view.players.find(player => player.seat === item.event.target);
+      const actor = target && this.actors.get(target.seat);
+      const point = actor && target?.visible === true ? hitboxBloodPoint(actor.model, item.event.hitgroup ?? 0, this.camera.position) : undefined;
+      this.combat.event(item.event, item.at, target, point);
+    }
+    this.combatEvents = [];
+    this.combat.update(now, this.camera);
     this.effects.update(now);
     if ((this.pendingShots || now < this.muzzleUntil) && this.muzzleNodes.length) this.muzzleNodes[this.weaponShots % this.muzzleNodes.length].getWorldPosition(this.muzzle.position);
     while (this.pendingShots > 0) {
       this.pendingShots--;
       if (!cameraPlayer?.alive) continue;
-      if (this.muzzleNodes.length) {
-        this.camera.updateMatrixWorld();
-        this.weaponCamera.updateMatrixWorld();
-        this.shotOrigin.copy(this.muzzle.position).project(this.weaponCamera);
-        this.shotOrigin.z = 0.5;
-        this.shotOrigin.unproject(this.camera);
-        this.effects.shoot(this.camera, this.world, now, this.shotOrigin);
-      } else this.effects.shoot(this.camera, this.world, now);
+      this.effects.shoot(this.camera, this.mapMeshes, now);
     }
     this.muzzle.visible = now < this.muzzleUntil && !!cameraPlayer?.alive && !this.weaponSilenced;
     this.renderer.clear();
@@ -534,6 +550,7 @@ export class BattleRenderer {
     this.disposed = true;
     this.renderer.domElement.classList.remove('cs16-night-vision');
     this.effects.dispose();
+    this.combat.dispose();
     for (const actor of this.actors.values()) actor.mixer.stopAllAction();
     this.weapon?.mixer.stopAllAction();
     for (const texture of this.textures) texture.dispose();

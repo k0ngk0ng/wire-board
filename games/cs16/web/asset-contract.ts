@@ -1,5 +1,5 @@
 import { maps, weapons } from './content.ts';
-import type { AssetManifest, Resource } from './types.ts';
+import type { AssetManifest, EffectSprite, Resource } from './types.ts';
 
 export function assetURL(base: string, file: string) {
   if (/^https?:\/\//.test(file)) return file;
@@ -18,6 +18,17 @@ export function validateRulesIdentity(resource: Resource | undefined, authoritat
   if (!authoritative || !/^[a-f0-9]{64}$/.test(authoritative) || authoritative !== identity) throw Error('地图规则版本不一致，请重新加载本端');
 }
 
+export function validateEffectSprite(sprite: EffectSprite) {
+  if (!sprite) throw Error('缺少原版战斗特效');
+  validateResource(sprite.atlas);
+  if (![sprite.width, sprite.height, sprite.textureFormat, sprite.orientation].every(Number.isSafeInteger) || sprite.width <= 0 || sprite.height <= 0 || ![0, 1, 2, 3].includes(sprite.textureFormat) || ![0, 1, 2, 3, 4].includes(sprite.orientation) || !['normal', 'additive'].includes(sprite.blend) || !/^[a-f0-9]{64}$/.test(sprite.sourceSHA256) || !Array.isArray(sprite.frames) || !sprite.frames.length) throw Error('原版战斗特效格式无效');
+  if (sprite.tint && (sprite.tint.length !== 3 || !sprite.tint.every(value => Number.isSafeInteger(value) && value >= 0 && value <= 255)) || sprite.paletteIndex !== undefined && (!Number.isSafeInteger(sprite.paletteIndex) || sprite.paletteIndex < 0 || sprite.paletteIndex > 255)) throw Error('原版战斗特效调色无效');
+  for (const frame of sprite.frames) {
+    if (!Array.isArray(frame.origin) || frame.origin.length !== 2 || ![frame.x, frame.y, frame.width, frame.height, ...frame.origin].every(Number.isSafeInteger) || frame.x < 0 || frame.y < 0 || frame.width <= 0 || frame.height <= 0 || frame.x + frame.width > sprite.width || frame.y + frame.height > sprite.height) throw Error('原版战斗特效帧越界');
+  }
+  return sprite;
+}
+
 export function validateManifest(value: AssetManifest): AssetManifest {
   if (!value || value.schema !== 1 || !value.maps || !value.models || !value.sounds) throw Error('素材清单格式无效');
   for (const map of maps) {
@@ -26,6 +37,7 @@ export function validateManifest(value: AssetManifest): AssetManifest {
     for (const resource of [selected.render, selected.rules, selected.preview, ...selected.sky ?? []]) validateResource(resource!);
   }
   for (const resource of [...Object.values(value.models), ...Object.values(value.sounds)]) validateResource(resource);
+  if (value.effects) for (const name of ['blood', 'bloodspray', 'fexplo', 'eexplo'] as const) validateEffectSprite(value.effects[name]);
   if (value.hud) {
     const hud = value.hud;
     validateResource(hud.atlas);

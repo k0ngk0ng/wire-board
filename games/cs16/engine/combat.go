@@ -159,7 +159,9 @@ func StepCombat(state *State) {
 			SyncWeapon(p)
 			continue
 		}
-		if p.Input.Reload && !p.Previous.Reload && weapon.Slot <= 2 && item.Ammo < weapon.Ammo && item.Reserve > 0 && state.Frame >= p.NextAttack {
+		automaticReload := item.Ammo == 0 && item.BurstLeft == 0 && !p.Input.Secondary && (!p.Input.Fire && state.Frame > p.NextAttack || live && weapon.Pellets > 1 && p.WaterLevel < 3 && p.Input.Fire && state.Frame >= p.NextAttack)
+		manualReload := p.Input.Reload && !p.Previous.Reload && state.Frame >= p.NextAttack
+		if (manualReload || automaticReload) && weapon.Slot <= 2 && item.Ammo < weapon.Ammo && item.Reserve > 0 {
 			duration := weapon.Reload
 			if weapon.ID == "m3" {
 				duration = 100
@@ -1119,6 +1121,7 @@ func takeDamagePlayerUnitsFrom(state *State, attacker, target int, damageUnits i
 	if teamAttack && !state.Options.FriendlyFire {
 		return
 	}
+	fx := impactEffect(*p, hitgroup, weapon)
 
 	if teamAttack && weapon != "hegrenade" {
 		damageUnits = damageUnits * 35 / 100
@@ -1146,7 +1149,7 @@ func takeDamagePlayerUnitsFrom(state *State, attacker, target int, damageUnits i
 	}
 	damage := int(damageUnits / damageUnit)
 	p.Health = max(0, p.Health-damage)
-	Emit(state, Event{Kind: "hit", Seat: attacker, Target: target, Weapon: weapon, Value: damage, Hitgroup: hitgroup, X: p.X, Y: p.Y, Z: p.Z, Life: p.Life})
+	Emit(state, Event{Kind: "hit", Seat: attacker, Target: target, Weapon: weapon, Value: damage, Hitgroup: hitgroup, X: p.X, Y: p.Y, Z: p.Z, Life: p.Life, FX: fx})
 	if p.Health > 0 {
 		return
 	}
@@ -1175,4 +1178,18 @@ func takeDamagePlayerUnitsFrom(state *State, attacker, target int, damageUnits i
 	}
 	DropWeapons(state, target)
 	Emit(state, Event{Kind: "kill", Seat: attacker, Target: target, Weapon: weapon, Value: hitgroup, Hitgroup: hitgroup, Life: p.Life})
+}
+
+func impactEffect(player Player, hitgroup int, weaponID string) int {
+	weapon, known := WeaponByID(weaponID)
+	if !known || weapon.Slot > 2 && weaponID != "knife" {
+		return 0
+	}
+	if hitgroup == 1 && player.Helmet {
+		return 2
+	}
+	if hitgroup >= 2 && hitgroup <= 5 && (player.Armor > 0 || player.ArmorRemainder > 0 || player.Helmet) {
+		return 0
+	}
+	return 1
 }

@@ -72,7 +72,9 @@ test('continuous fire reuses a bounded pool, shows wall effects and expires them
   for (let shot = 0; shot < 100; shot++) effects.shoot(camera, targets, shot * 10);
   assert.equal(effects.root.children.length, allocated);
   assert.ok(effects.root.children.some(object => object.visible));
-  assert.ok(effects.stats.tracers >= 100 && effects.stats.impacts >= 100);
+  assert.equal(effects.stats.tracers, 0);
+  assert.ok(effects.stats.impacts >= 100);
+  assert.ok(effects.root.children.every(object => !object.isLine));
   effects.update(10000);
   assert.ok(effects.root.children.every(object => !object.visible));
   effects.dispose();
@@ -80,11 +82,13 @@ test('continuous fire reuses a bounded pool, shows wall effects and expires them
   wall.material.dispose();
 });
 
-test('the tracer starts at the projected weapon muzzle instead of a fixed screen location', () => {
+test('firing into empty space creates no invented line or blood', () => {
   const effects = new ShotEffects();
   const camera = new T.PerspectiveCamera(75, 1, 1, 2000);
   camera.updateMatrixWorld();
   effects.shoot(camera, new T.Group(), 10, new T.Vector3(7, 8, -12));
-  assert.deepEqual([...effects.root.children[0].geometry.getAttribute('position').array].slice(0, 3), [7, 8, -12]);
+  assert.equal(effects.stats.tracers, 0);
+  assert.equal(effects.stats.impacts, 0);
+  assert.ok(effects.root.children.every(object => !object.isLine && !object.visible));
   effects.dispose();
 });

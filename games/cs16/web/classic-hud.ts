@@ -9,7 +9,7 @@ export function actionProgress(player: Pick<Player, 'seat' | 'alive' | 'action' 
   }
 }
 
-export function soundCues(event: Pick<GameEvent, 'type' | 'weapon' | 'value' | 'hitgroup'>): { files: string[]; range: number; local?: boolean; volumeMilli?: number } {
+export function soundCues(event: Pick<GameEvent, 'type' | 'weapon' | 'value' | 'hitgroup'> & { id?: number }): { files: string[]; range: number; local?: boolean; volumeMilli?: number; layers?: { files: string[]; volumeMilli: number }[] } {
   const weapon = event.weapon === 'mp5navy' ? 'mp5' : event.weapon;
   if (event.type === 'buy') return { files: [event.weapon === 'nvgs' ? 'items/equip_nvg.wav' : event.weapon === 'primammo' || event.weapon === 'secammo' ? 'items/9mmclip1.wav' : event.weapon === 'vest' || event.weapon === 'vesthelm' || event.weapon === 'defuser' ? 'items/kevlar.wav' : 'items/gunpickup2.wav'], range: 0, local: true };
   if (event.type === 'nightvision') return { files: [event.value === 1 ? 'items/nvg_on.wav' : 'items/nvg_off.wav'], range: 0, local: true };
@@ -30,7 +30,14 @@ export function soundCues(event: Pick<GameEvent, 'type' | 'weapon' | 'value' | '
   if (event.type === 'bomb_click') return { files: ['weapons/c4_click.wav'], range: 256 };
   if (event.type === 'bomb_beep') return { files: [`weapons/c4_beep${event.value ?? 1}.wav`], range: 1000 };
   if (event.type === 'bomb_defused') return { files: ['weapons/c4_disarm.wav'], range: 1000 };
-  if (event.type === 'grenade_explode' || event.type === 'explode') return { files: event.weapon === 'flashbang' ? ['weapons/flashbang-1.wav'] : ['weapons/hegrenade-1.wav'], range: 2400 };
+  if (event.type === 'grenade_explode' || event.type === 'explode') {
+    if (event.weapon === 'flashbang') return { files: ['weapons/flashbang-1.wav'], range: 2400 };
+    if (event.weapon === 'smokegrenade') return { files: ['weapons/sg_explode.wav'], range: 2400 };
+    if (event.weapon === 'hegrenade') {
+      const variant = Math.abs(event.id ?? 0) % 3;
+      return { files: [`weapons/explode${variant + 3}.wav`], range: 2400, layers: [{ files: [`weapons/explode${3 + (variant + 1) % 3}.wav`], volumeMilli: 1000 }, { files: [`weapons/debris${variant + 1}.wav`], volumeMilli: 550 }] };
+    }
+  }
   return { files: [], range: 0 };
 }
 

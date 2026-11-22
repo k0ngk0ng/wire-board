@@ -56,8 +56,9 @@ export async function auditPlayability({ call, evaluate, view, photograph, nativ
   const mouse = { x: canvas.x + canvas.width / 2, y: canvas.y + canvas.height / 2, button: 'left', clickCount: 1 };
   try {
     await call('Input.dispatchMouseEvent', { type: 'mousePressed', ...mouse, buttons: 1 });
-    const visible = await evaluate(`new Promise(accept=>{const end=performance.now()+1500;const next=()=>{const frame=document.querySelector('[data-cs16-canvas]').__cs16Frame;if(frame.effects?.muzzle&&frame.effects.tracers>${before.effects.tracers})accept(frame);else if(performance.now()>end)accept(null);else requestAnimationFrame(next)};requestAnimationFrame(next)})`);
-    assert.ok(visible && visible.effects.impacts > before.effects.impacts, 'a live shot had no muzzle, tracer or wall impact');
+    const visible = await evaluate(`new Promise(accept=>{const end=performance.now()+1500;const next=()=>{const frame=document.querySelector('[data-cs16-canvas]').__cs16Frame;if(frame.effects?.muzzle&&frame.effects.weaponShots>${before.effects.weaponShots})accept(frame);else if(performance.now()>end)accept(null);else requestAnimationFrame(next)};requestAnimationFrame(next)})`);
+    assert.ok(visible && visible.effects.impacts > before.effects.impacts, 'a live shot had no muzzle or wall impact');
+    assert.equal(visible.effects.tracers, 0, 'a live shot drew an invented tracer');
     assert.ok(visible.effects.muzzleAttachmentCount > 0, 'muzzle flash is not attached to the original weapon muzzle');
     assert.equal(visible.effects.lightmapColorSpace, 'srgb-linear');
     await photograph('live-shot-effects');

@@ -51,3 +51,15 @@ test('C4 pressbutton sounds follow original MDL event frames', () => {
   assert.equal(plantClick(243, 100), 1);
   assert.equal(plantClick(355, 100), 6);
 });
+
+test('HE explosions reuse native explosion and debris audio without substituting pin or smoke sounds', () => {
+  for (let id = 0; id < 6; id++) {
+    const cue = soundCues({ type: 'explode', weapon: 'hegrenade', id });
+    assert.deepEqual(cue.files, [`weapons/explode${3 + id % 3}.wav`]);
+    assert.deepEqual(cue.layers, [{ files: [`weapons/explode${3 + (id + 1) % 3}.wav`], volumeMilli: 1000 }, { files: [`weapons/debris${1 + id % 3}.wav`], volumeMilli: 550 }]);
+    assert.equal(cue.range, 2400);
+    assert.equal(cue.local, undefined);
+  }
+  assert.deepEqual(soundCues({ type: 'explode', weapon: 'flashbang' }).files, ['weapons/flashbang-1.wav']);
+  assert.deepEqual(soundCues({ type: 'explode', weapon: 'smokegrenade' }).files, ['weapons/sg_explode.wav']);
+});

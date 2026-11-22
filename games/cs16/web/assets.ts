@@ -158,6 +158,8 @@ export async function loadBattleAssets(base: string, mapID: string, characters: 
     files.set(`model:${key}`, resource);
   }
   const soundIDs = selectSoundKeys(manifest.sounds, selected.mode);
+  if (!manifest.effects) throw Error('缺少原版战斗特效');
+  for (const [name, sprite] of Object.entries(manifest.effects)) files.set(`effect:${name}`, sprite.atlas);
   if (manifest.hud) files.set('hud', manifest.hud.atlas);
   for (const key of soundIDs) files.set(`sound:${key}`, manifest.sounds[key]);
   if (!manifest.runtime) throw Error('缺少运动预测运行时');
@@ -189,7 +191,7 @@ export async function loadBattleAssets(base: string, mapID: string, characters: 
   }));
   signal.throwIfAborted();
   const images = new Map<string, ImageBitmap | HTMLImageElement>();
-  for (const [key, resource] of files) if (key.startsWith('texture:') || key === 'lightmap' || key === 'hud' || key.startsWith('sky:')) images.set(key, await decodeImage(base, resource, data.get(key)!));
+  for (const [key, resource] of files) if (key.startsWith('texture:') || key.startsWith('effect:') || key === 'lightmap' || key === 'hud' || key.startsWith('sky:')) images.set(key, await decodeImage(base, resource, data.get(key)!));
   report(93, '解码角色与武器', { loaded: total, total });
   const models = new Map<string, GLTF>();
   const audit = { models: 0, materialCount: 0, texturedMaterialCount: 0, missingTextures: [] as string[] };

@@ -1,10 +1,16 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { assetURL, validateManifest, validateResource, selectModelKeys, selectSoundKeys, validateRulesIdentity } from '../web/asset-contract.ts';
+import { assetURL, validateManifest, validateResource, selectModelKeys, selectSoundKeys, validateRulesIdentity, validateEffectSprite } from '../web/asset-contract.ts';
 
 const resource = (file = 'maps/de_dust2.json') => ({ file, bytes: 100, sha256: 'a'.repeat(64) });
 const mapModes = [['de_dust2', 'bomb'], ['de_inferno', 'bomb'], ['de_aztec', 'bomb'], ['cs_assault', 'hostage'], ['fy_iceworld', 'elimination'], ['cs_bloodstrike', 'elimination']];
 const manifest = () => ({ schema: 1, maps: Object.fromEntries(mapModes.map(([id, mode]) => [id, { name: id, mode, render: resource(), rules: resource(), preview: resource(), sky: [] }])), models: {}, sounds: {} });
+
+test('native effect atlases preserve validated frame bounds, signed pivots, formats and source identity', () => {
+  const sprite = { atlas: resource('effects/blood.png'), width: 32, height: 16, frames: [{ x: 0, y: 0, width: 16, height: 16, origin: [-8, 8] }], textureFormat: 3, orientation: 2, blend: 'normal', sourceSHA256: 'b'.repeat(64) };
+  assert.doesNotThrow(() => validateEffectSprite(sprite));
+  for (const invalid of [{ ...sprite, frames: [] }, { ...sprite, textureFormat: 9 }, { ...sprite, orientation: 9 }, { ...sprite, blend: 'invented' }, { ...sprite, sourceSHA256: 'unknown' }, { ...sprite, frames: [{ ...sprite.frames[0], x: 25 }] }, { ...sprite, frames: [{ ...sprite.frames[0], origin: [0.5, 0] }] }]) assert.throws(() => validateEffectSprite(invalid));
+});
 
 test('original HUD atlas is validated and item confirmation sounds are loaded', () => {
   const value = { ...manifest(), hud: { schema: 1, atlas: resource('hud/atlas.png'), width: 128, height: 128, sprites: { 640: { c4: { x: 0, y: 0, width: 32, height: 32 } } } } };

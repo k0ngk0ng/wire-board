@@ -16,14 +16,12 @@ func stepGrenadeWeapon(state *State, p *Player, item *WeaponState) {
 		p.ActionSince = 0
 		return
 	}
-	pitch := p.Pitch
-	if pitch < 0 {
-		pitch = -1820 + pitch*80/90
-	} else {
-		pitch = -1820 + pitch*100/90
+	pitch36 := -65536 + p.Pitch*40
+	if p.Pitch < 0 {
+		pitch36 = -65536 + p.Pitch*32
 	}
-	speed := min(750*Unit, (16384-pitch)*6*Unit/182)
-	direction := Direction(p.Yaw, pitch)
+	speed := min(750*Unit, (540*65536-pitch36*60)*Unit/65536)
+	direction := Direction(p.Yaw, pitch36/36)
 	start := combatAddRay(combatEye(p), direction, 16*Unit)
 	trace := TraceWorld(state, combatEye(p), start, -1)
 	start = trace.End
@@ -74,7 +72,11 @@ func stepGrenades(state *State) {
 			}
 			continue
 		}
-		grenade.VZ -= 400 * Unit / FPS
+		gravity := 400
+		if grenade.Kind == "hegrenade" {
+			gravity = 440
+		}
+		grenade.VZ -= gravity * Unit / FPS
 		start := Vec3{grenade.X, grenade.Y, grenade.Z}
 		end := Vec3{start.X + grenade.VX/FPS, start.Y + grenade.VY/FPS, start.Z + grenade.VZ/FPS}
 		trace := TraceWorld(state, start, end, -1)

@@ -65,6 +65,7 @@ type PlayerView struct {
 }
 
 type EventView struct {
+	FX       int    `json:"fx,omitempty"`
 	Hitgroup int    `json:"hitgroup,omitempty"`
 	ID       int64  `json:"id"`
 	Frame    int64  `json:"frame"`
@@ -185,7 +186,7 @@ func eventVisible(state *matchState, seat int, event engine.Event) bool {
 			return true
 		}
 	}
-	if event.Kind == "shot" || event.Kind == "fire" || event.Kind == "step" || event.Kind == "land" || event.Kind == "knife_air" || event.Kind == "knife_hit" || event.Kind == "knife_wall" || event.Kind == "flashlight" || event.Kind == "grenade_explode" {
+	if event.Kind == "shot" || event.Kind == "fire" || event.Kind == "step" || event.Kind == "land" || event.Kind == "knife_air" || event.Kind == "knife_hit" || event.Kind == "knife_wall" || event.Kind == "flashlight" || event.Kind == "explode" {
 		radius := 2048
 		switch event.Kind {
 		case "step", "knife_air", "knife_hit", "knife_wall":
@@ -201,7 +202,7 @@ func eventVisible(state *matchState, seat int, event engine.Event) bool {
 }
 
 func projectedEvent(event engine.Event) EventView {
-	value := EventView{ID: event.ID, Frame: event.Frame, Kind: event.Kind, Seat: event.Seat, Target: event.Target, Weapon: event.Weapon, X: &event.X, Y: &event.Y, Z: &event.Z, Value: event.Value, Hitgroup: event.Hitgroup, Life: event.Life}
+	value := EventView{ID: event.ID, Frame: event.Frame, Kind: event.Kind, Seat: event.Seat, Target: event.Target, Weapon: event.Weapon, X: &event.X, Y: &event.Y, Z: &event.Z, Value: event.Value, Hitgroup: event.Hitgroup, Life: event.Life, FX: event.FX}
 	switch event.Kind {
 	case "round_start", "round_end", "finished", "kill", "death", "bomb_planted", "bomb_defused", "bomb_exploded", "hostage_rescued":
 		value.Global = true
@@ -289,7 +290,11 @@ func projection(state *matchState, seat int) View {
 	}
 	for _, event := range world.Events {
 		if eventVisible(state, seat, event) {
-			value.Events = append(value.Events, projectedEvent(event))
+			projected := projectedEvent(event)
+			if event.Kind == "hit" && event.Target >= 0 && event.Target < len(value.Players) && !value.Players[event.Target].Visible {
+				projected.X, projected.Y, projected.Z, projected.FX = nil, nil, nil, 0
+			}
+			value.Events = append(value.Events, projected)
 		}
 	}
 	return value

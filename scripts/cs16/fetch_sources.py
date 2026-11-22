@@ -312,6 +312,10 @@ def fetch_sources(check=False, reference=False):
     if (METADATA / "hud-sources.json").is_file():
         hud = load_metadata("hud-sources.json")
         jobs.extend((entry, RESEARCH / "original") for entry in validate_manifest(hud, "original"))
+    effects = None
+    if (METADATA / "effects-sources.json").is_file():
+        effects = load_metadata("effects-sources.json")
+        jobs.extend((entry, RESEARCH / "original") for entry in validate_manifest(effects, "original"))
     community = None
     if (METADATA / "community-sources.json").is_file():
         community = load_metadata("community-sources.json")
@@ -340,6 +344,8 @@ def fetch_sources(check=False, reference=False):
             write_metadata(RESEARCH / "community-source-catalog.json", community)
         if hud is not None:
             write_metadata(RESEARCH / "hud-source-catalog.json", hud)
+        if effects is not None:
+            write_metadata(RESEARCH / "effects-source-catalog.json", effects)
     return {"passed": True, "check": check, "reference": reference, "files": len(records), "reused": sum(row["status"] == "reused" for row in records), "downloaded": sum(row["status"] == "downloaded" for row in records), "verifiedBytes": sum(row["bytes"] for row in records), "referenceMembers": extracted}
 
 

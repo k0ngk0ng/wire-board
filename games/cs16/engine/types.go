@@ -272,6 +272,7 @@ type Event struct {
 	Value    int    `json:"value,omitempty"`
 	Life     int    `json:"life,omitempty"`
 	Hitgroup int    `json:"hitgroup,omitempty"`
+	FX       int    `json:"fx,omitempty"`
 }
 type Bomb struct {
 	Carrier    int   `json:"carrier"`
