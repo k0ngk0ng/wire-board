@@ -119,9 +119,34 @@ func TestModuleRealtimeCloseAndOrdinaryWebSocketScopesHTTP(t *testing.T) {
 	clients := realtimeNotificationClients(t, f)
 	all := []string{"seat", "seat_second_tab", "spectator", "lobby", "other_room"}
 	trace = append(trace, map[string]any{"event": "close", "notifications": assertRealtimeNotices(t, clients, all, func() { f.a.command(current(f.a), "close", nil, 200) })})
-	closed := current(f.a)
+	presenceContext, cancelPresence := context.WithTimeout(context.Background(), 8*time.Second)
+	defer cancelPresence()
+	presence, _, err := websocket.Dial(presenceContext, "ws"+strings.TrimPrefix(f.ts.URL, "http")+"/api/ws", &websocket.DialOptions{HTTPClient: f.a.client})
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer presence.CloseNow()
+	if _, _, err = presence.Read(presenceContext); err != nil {
+		t.Fatal(err)
+	}
+	closed := roomWithoutNetwork(t, current(f.a))
 	trace = append(trace, map[string]any{"event": "closed_frame", "notifications": assertRealtimeNotices(t, clients, nil, func() { f.frame(time.UnixMilli(f.s.rooms[f.id].Module.SystemDeadline)) })})
-	afterClosedFrame := current(f.a)
+	presence.CloseNow()
+	var afterClosedFrame map[string]any
+	presenceDeadline := time.Now().Add(3 * time.Second)
+	for {
+		afterClosedFrame = current(f.a)
+		seats := afterClosedFrame["seats"].([]any)
+		network := seats[0].(map[string]any)["network"].(map[string]any)
+		if network["connected"] == false {
+			break
+		}
+		if time.Now().After(presenceDeadline) {
+			t.Fatal("closed-room WebSocket presence did not clear")
+		}
+		time.Sleep(10 * time.Millisecond)
+	}
+	afterClosedFrame = roomWithoutNetwork(t, afterClosedFrame)
 	if !reflect.DeepEqual(closed, afterClosedFrame) {
 		for key, before := range closed {
 			if !reflect.DeepEqual(before, afterClosedFrame[key]) {

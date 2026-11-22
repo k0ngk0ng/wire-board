@@ -40,7 +40,8 @@
     "web/src/controllers/use-game-controller.ts",
     "web/src/main.tsx",
     "web/src/realtime-stream.ts",
-    "web/src/legacy/room-ui.tsx"
+    "web/src/legacy/room-ui.tsx",
+    "web/src/chat.tsx"
   ],
   "output": ".local/cs16/verification/lint",
   "externalResourceDirectory": "games/cs16/assets/public",
@@ -145,7 +146,8 @@
     "internal/gameapi/module.go",
     "internal/server/realtime_stream.go",
     "internal/server/server.go",
-    "internal/server/realtime_batch.go"
+    "internal/server/realtime_batch.go",
+    "internal/server/module_realtime_notifications_e2e_test.go"
   ],
   "sharedGoPackages": {
     "internal/gameapi": "gameapi",

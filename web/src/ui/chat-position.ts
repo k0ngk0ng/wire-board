@@ -225,7 +225,7 @@ export function useChatPosition(
   return {
     style:
       position
-        ? { left: position.x, top: position.y, right: "auto", bottom: "auto" }
+        ? { position: 'fixed' as const, margin: 0, left: position.x, top: position.y, right: "auto", bottom: "auto" }
         : undefined,
     panelStyle: open ? panelStyle : undefined,
     compact: open && compact,

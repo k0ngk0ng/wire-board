@@ -165,7 +165,7 @@ try {
   const selfContext = await evaluate("fetch('/api/state').then(response=>response.json()).then(state=>({seat:state.room.you,epoch:state.room.game.data.epoch,life:state.room.game.data.players.find(player=>player.seat===state.room.you)?.life}))");
   selfObserver.bind(selfContext);
   report.network.observerBootstrap = { ...selfContext, source: 'authenticated HTTP identity only; player fields are observed from raw socket frames' };
-  if (!options.observeOnly && !options.backgroundOnly && !options.scrollOnly) {
+  if (!options.observeOnly && !options.backgroundOnly && !options.scrollOnly && !options.buyOnly) {
     assert.ok(options.networkControl, "ordinary input requires a confined fixture network control path");
     baselineCanvasObject = (await call("Runtime.evaluate", { expression: "document.querySelector('[data-cs16-canvas]')" })).result.objectId;
     assert.ok(baselineCanvasObject, "baseline setup requires the existing canvas");
@@ -276,7 +276,9 @@ try {
     report.summary = { background, foreground, createTargetMS: targetCreatedAt - targetRequestAt, releaseDelayMS: release.at - event.at, nativeEvent: event, release: release.action, wireRelease };
     report.functionalPassed = true;
     report.passed = true;
-  } else if (options.scrollOnly) {
+  } else if (options.scrollOnly || options.buyOnly) {
+    report.summary = { nativeTouchPurchase: !!options.buyOnly };
+    if (options.scrollOnly) {
     report.scope = "native Chromium touch scroll of the real buy menu, without state injection";
     const before = await evaluate("(()=>{const menu=document.querySelector('.cs16-buy-menu');return {rect:menu.getBoundingClientRect().toJSON(),top:menu.scrollTop,height:menu.clientHeight,total:menu.scrollHeight,windowY:scrollY}})()");
     assert.ok(before.total > before.height, "mobile buy menu did not create a real scroll range");
@@ -297,6 +299,7 @@ try {
     assert.ok(after.last.top >= after.rect.top && after.last.bottom <= after.rect.bottom + 2, "bottom ammunition row cannot be reached");
     assert.ok(Math.abs(after.windowY - before.windowY) <= 2, "buy scroll escaped into the room page");
     report.summary = { before, after, nativeScrolled: true, bottomReachable: true };
+    }
     if (options.buyItem) {
       const original = await evaluate("fetch('/api/state').then(response=>response.json()).then(state=>state.room.game.data.players[state.room.you])");
       const item = await evaluate(`document.querySelector('[data-cs16-buy=${options.buyItem}]').getBoundingClientRect().toJSON()`);
@@ -305,8 +308,9 @@ try {
       await call("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
       await wait(150);
       const purchased = await evaluate("fetch('/api/state').then(response=>response.json()).then(state=>state.room.game.data.players[state.room.you])");
-      assert.ok(purchased.life === original.life && purchased.reserve > original.reserve && purchased.money < original.money, "native bottom-row ammunition purchase was not applied");
-      report.summary.purchase = { item: options.buyItem, beforeReserve: original.reserve, afterReserve: purchased.reserve, beforeMoney: original.money, afterMoney: purchased.money };
+      const ammunition = ["primammo", "secammo"].includes(options.buyItem);
+      assert.ok(purchased.life === original.life && purchased.money < original.money && (ammunition ? purchased.reserve > original.reserve : purchased.weapon === options.buyItem), "native purchase was not applied");
+      report.summary.purchase = { item: options.buyItem, beforeWeapon: original.weapon, afterWeapon: purchased.weapon, beforeReserve: original.reserve, afterReserve: purchased.reserve, beforeMoney: original.money, afterMoney: purchased.money };
     }
     report.functionalPassed = true;
     report.passed = true;
@@ -737,7 +741,7 @@ try {
   if (session && options.backgroundOnly) await evaluate("window.__cs16LifecycleCleanup?.();true").catch(() => {});
   if (temporaryTarget) await call("Target.closeTarget", { targetId: temporaryTarget }, undefined).catch(() => {});
   if (session) await evaluate("if(document.pointerLockElement)document.exitPointerLock();true").catch(() => {});
-  if (session && !report.frames && !options.scrollOnly && !options.backgroundOnly && !options.observeOnly) {
+  if (session && !report.frames && !options.scrollOnly && !options.buyOnly && !options.backgroundOnly && !options.observeOnly) {
     const partial = await evaluate("(()=>{const probe=window.__cs16NativeProbe;if(!probe)return {};probe.stop();return {events:probe.events,responses:probe.responses,frames:probe.frames,longTasks:probe.longTasks,longTasksSupported:probe.longTasksSupported,final:document.querySelector('[data-cs16-canvas]')?.__cs16Frame}})()").catch(() => ({}));
     Object.assign(report, partial);
   }

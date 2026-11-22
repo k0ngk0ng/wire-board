@@ -211,6 +211,7 @@ export function Chat({
         tabIndex={position.compact ? -1 : undefined}
         aria-hidden={position.compact || undefined}
         className="chat-toggle"
+        style={{ width: 48, height: 48, minHeight: 48, padding: 0, borderRadius: '50%', display: 'grid', placeItems: 'center' }}
         data-chat-draggable={position.draggable || undefined}
         data-chat-dragging={position.dragging || undefined}
         title={position.draggable ? "拖动移动，点击聊天" : undefined}
@@ -236,7 +237,6 @@ export function Chat({
         }}
       >
         <MessageCircle size={22} />
-        <span>聊天</span>
         {!open && unread > 0 && <b>{unread > 99 ? "99+" : unread}</b>}
       </button>
     </div>

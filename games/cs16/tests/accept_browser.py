@@ -414,7 +414,10 @@ def buy_audit(client, map_id, mobile=False):
     if not mobile:
         evaluate(client, 'document.exitPointerLock();true')
         wait_for(lambda: evaluate(client, '!document.pointerLockElement'))
-    browser(client, 'click', '[data-cs16-buy="deagle"]')
+    if mobile:
+        native(client, map_id + '-buy-pistol-touch', touch=True, buyOnly=True, buyItem='deagle')
+    else:
+        browser(client, 'click', '[data-cs16-buy="deagle"]')
     wait_for(lambda: room(client)['game']['data']['players'][current['you']]['weapon'] == 'deagle')
     if os.environ.get('CS16_BROWSER_LOCK_PROBE') == '1':
         REPORT['pointerLockProbe'] = evaluate(client, 'window.cs16LockProbe')
@@ -519,15 +522,16 @@ def prepare_room(map_id, mobile=False, dual=False, natural=False):
     if map_id == 'de_dust2':
         browser('main', 'find', 'role', 'button', 'click', '--name', '创建房间', '--exact')
         browser('main', 'find', 'role', 'button', 'click', '--name', '反恐精英', '--exact')
-        browser('main', 'wait', '[data-create-step=setup]')
-        browser('main', 'wait', '[data-create-step=setup] select[aria-label="座位上限"]')
-        capacity = evaluate('main', 'document.querySelector("[aria-label=座位上限]").value')
-        assert capacity == '10', capacity
-        assert evaluate('main', 'document.querySelector("[data-cs16-setting=friendly-fire]")?.checked') is False
-        browser('main', 'fill', '[data-create-step=setup] input[name=name]', 'CS十席原图验收')
-        browser('main', 'select', '[aria-label="比赛局数"]', '2')
-        browser('main', 'click', '[data-create-step=setup] button[type=submit]')
         created = wait_for(lambda: room() if room() and room()['status'] == 'waiting' else None)
+        assert created['capacity'] == 10, created['capacity']
+        owner = next(seat for seat in created['seats'] if seat['id'] == created['host'])
+        assert created['name'] == owner['name'] + '的房间', created['name']
+        wait_for(lambda: evaluate('main', '!!document.querySelector("[aria-label=房间人数]")'))
+        assert evaluate('main', 'document.querySelector("[aria-label=房间人数]").value') == '10'
+        assert not evaluate('main', '!!document.querySelector("[data-create-step=setup]")')
+        assert evaluate('main', 'document.querySelector("[data-cs16-setting=friendly-fire]")?.checked') is False
+        browser('main', 'select', '[aria-label="比赛局数"]', '2')
+        wait_for(lambda: room()['options']['maxRounds'] == 2)
         REPORT['defaultTenSeatCreationUI'] = True
     else:
         created = request('main', '/rooms', {'kind': 'cs16', 'name': 'CS十席原图验收', 'capacity': 10, 'options': {'map': map_id, 'roundSeconds': 60 if map_id in ('de_inferno', 'cs_assault') + ADDED_MAPS else 120, 'maxRounds': 30 if map_id in ADDED_MAPS and not natural else 2}})

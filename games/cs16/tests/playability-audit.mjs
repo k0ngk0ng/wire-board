@@ -28,17 +28,24 @@ export async function auditPlayability({ call, evaluate, view, photograph, nativ
     await call('Input.dispatchKeyEvent', { type: 'keyUp', code, key: value, windowsVirtualKeyCode });
   };
   await evaluate('document.exitPointerLock();true');
+  const acquisition = await authority(state => state.player.alive && state.player.nextAttack <= state.frame);
   await evaluate(`(()=>{const canvas=document.querySelector('[data-cs16-canvas]');window.__cs16PointerDescriptor=Object.getOwnPropertyDescriptor(canvas,'requestPointerLock');Object.defineProperty(canvas,'requestPointerLock',{configurable:true,value:()=>{throw new DOMException('test browser denial','NotAllowedError')}});return true})()`);
   await nativeClick('[data-cs16-canvas]');
   await settle();
+  const acquired = await authority(state => state.player.life === acquisition.player.life && state.frame >= acquisition.frame + 8);
+  assert.equal(acquired.player.ammo, acquisition.player.ammo, 'mouse acquisition click fired a weapon');
   await noError();
   await evaluate(`(()=>{const canvas=document.querySelector('[data-cs16-canvas]');if(window.__cs16PointerDescriptor)Object.defineProperty(canvas,'requestPointerLock',window.__cs16PointerDescriptor);else delete canvas.requestPointerLock;delete window.__cs16PointerDescriptor;return true})()`);
   await nativeClick('[data-cs16-canvas]');
   for (let attempt = 0; attempt < 100 && !await evaluate('!!document.pointerLockElement'); attempt++) await wait(20);
   assert.ok(await evaluate('document.pointerLockElement===document.querySelector("[data-cs16-canvas]")'), 'a real click did not retry pointer lock');
   evidence.pointerDenial = { silent: true, retryAcquired: true };
+  const selectCount = report.network.selects?.length ?? 0;
   await key('Digit2', '2', 50);
-  let ready = await authority(state => state.player.alive && state.player.weapon !== 'knife' && state.player.nextAttack <= state.frame);
+  for (let attempt = 0; attempt < 100 && (report.network.selects?.length ?? 0) <= selectCount; attempt++) await wait(20);
+  const selected = report.network.selects?.[selectCount];
+  assert.ok(selected, 'pistol selection was not sent');
+  let ready = await authority(state => state.player.alive && state.player.appliedSeq >= selected.seq && state.player.weapon === selected.item && state.player.nextAttack <= state.frame);
   if (ready.player.ammo === 0) {
     await key('KeyR', 'r', 82);
     ready = await authority(state => state.player.ammo > 0 && state.player.nextAttack <= state.frame);

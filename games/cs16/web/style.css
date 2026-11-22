@@ -164,3 +164,4 @@
 .cs16-board:has(.cs16-touch-more-panel),.cs16-touch-more-panel{touch-action:pan-y}
 .cs16-touch-more-panel{overscroll-behavior:contain}
 @media(pointer:coarse){.cs16-touch-actions{right:var(--cs16-safe-right)}}
+@media(max-width:640px) and (pointer:fine){.cs16-vitals{left:8px;bottom:8px;transform:scale(.5);transform-origin:left bottom}.cs16-money{transform:scale(.6);transform-origin:right bottom}.cs16-ammo{transform:scale(.6);transform-origin:right bottom}.cs16-match-hud{transform:translateX(-50%) scale(.65);transform-origin:center bottom}}

@@ -469,8 +469,10 @@ export function Board(props: BoardProps<View>) {
       if (touchHandoff.current.pending || !canControl() || event.button > 2 || event.button === 1) return;
       record(event);
       root.current?.focus({ preventScroll: true });
-      if (document.pointerLockElement !== element && event.button === 0) {
-        lockMouse();
+      if (document.pointerLockElement !== element) {
+        if (event.button === 0) lockMouse();
+        event.preventDefault();
+        return;
       }
       if (event.button === 0) mouse.current.fire = true;
       if (event.button === 2) mouse.current.secondary = true;

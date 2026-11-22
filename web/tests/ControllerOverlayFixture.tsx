@@ -36,7 +36,7 @@ function FixtureChat({ target }: { target: HTMLElement | null }) {
   const toggle = useRef<HTMLButtonElement>(null);
   const panel = useRef<HTMLElement>(null);
   const position = useChatPosition(toggle, panel, target, false);
-  return createPortal(<div className="table-chat" style={position.style}><button ref={toggle} type="button" className="chat-toggle" aria-label="聊天" {...position.handlers}><MessageCircle size={22} /><span>聊天</span></button></div>, target ?? document.body);
+  return createPortal(<div className="table-chat" style={position.style}><button ref={toggle} type="button" className="chat-toggle" style={{ width: 48, height: 48, minHeight: 48, padding: 0, borderRadius: "50%", display: "grid", placeItems: "center" }} aria-label="聊天" {...position.handlers}><MessageCircle size={22} /></button></div>, target ?? document.body);
 }
 
 function App() {

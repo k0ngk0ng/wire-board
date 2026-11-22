@@ -39,6 +39,7 @@ try {
   const evaluate = async expression => { const result = await call("Runtime.evaluate", { expression, returnByValue: true, awaitPromise: true }, sessionId); assert.ok(!result.exceptionDetails, JSON.stringify(result.exceptionDetails)); return result.result.value; };
   await evaluate("new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))");
   const desktopHud = await evaluate("(()=>{const hud=document.querySelector('[data-chat-protected]').getBoundingClientRect();const chat=document.querySelector('.chat-toggle').getBoundingClientRect();return {coarse:matchMedia('(pointer:coarse)').matches,hud:hud.toJSON(),chat:chat.toJSON(),overlap:hud.left<chat.right&&hud.right>chat.left&&hud.top<chat.bottom&&hud.bottom>chat.top}})()");
+  assert.equal(await evaluate('document.querySelector(".chat-toggle").textContent.trim()'), '', 'chat bubble contains a visible text label');
   const desktopImage = await call("Page.captureScreenshot", { format: "png", captureBeyondViewport: false }, sessionId);
   await writeFile(path.join(out, "normal-desktop-hud.png"), Buffer.from(desktopImage.data, "base64"));
   assert.equal(desktopHud.coarse, false);
@@ -85,6 +86,7 @@ try {
       const geometry = await evaluate(`(()=>{const game=document.querySelector('[data-overlay-stage]');const panel=document.querySelector('.touch-controller-overlay,.bc-controls');const screen=document.querySelector('.bc-field-wrap,.contra-runtime-screen,.basketball-screen,.yuyu-screen');const targets=[...panel.querySelectorAll('[data-controller-button],.bc-dpad,.bc-fire')].map(element=>({name:element.dataset.controllerButton??element.className,rect:element.getBoundingClientRect().toJSON(),background:getComputedStyle(element).backgroundColor}));return {game:game.getBoundingClientRect().toJSON(),screen:screen.getBoundingClientRect().toJSON(),panel:panel.getBoundingClientRect().toJSON(),position:getComputedStyle(panel).position,gridArea:getComputedStyle(panel).gridArea,targets}})()`);
       const layout = { width, height, geometry };
       report.layouts.push(layout);
+      assert.ok(await evaluate('document.documentElement.scrollWidth<=innerWidth'), kind + ' normal chat placement created horizontal overflow');
       layout.normalChat = await evaluate(`(()=>{const chat=document.querySelector('.chat-toggle').getBoundingClientRect();return [...document.querySelectorAll('[data-controller-button],.bc-dpad,.bc-fire')].map(element=>{const rect=element.getBoundingClientRect();return {button:element.dataset.controllerButton??element.className,covered:rect.left<chat.right&&rect.right>chat.left&&rect.top<chat.bottom&&rect.bottom>chat.top}})})()`);
       assert.ok(layout.normalChat.every(button => !button.covered), kind + ' normal room chat covers a touch action: ' + JSON.stringify(layout.normalChat));
       if (kind !== "battlecity" && width > height && geometry.game.width >= 760) {
