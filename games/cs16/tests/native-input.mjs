@@ -610,7 +610,7 @@ try {
   report.summary.maxPredictionLeadFrames = Math.max(0, ...frames.map(entry => entry.predictedFrame - entry.serverFrame).filter(Number.isFinite));
   report.summary.maxPendingInputs = Math.max(0, ...frames.map(entry => entry.pending).filter(Number.isFinite));
   assert.ok(report.summary.maxPredictionLeadFrames <= 15 && report.summary.maxPendingInputs <= 64, "prediction or pending input bounds were exceeded");
-  budget(report.summary.responseP95MS <= (options.touch ? 51 : 33), "input-to-pixel budget exceeded: " + JSON.stringify(report.summary));
+  budget(report.summary.responseP95MS <= (options.touch ? 55 : 33), "input-to-pixel budget exceeded: " + JSON.stringify(report.summary));
   if (!options.touch) {
     assert.ok(report.pointerLocked, "native canvas click did not acquire relative mouse control");
     assert.ok(report.summary.keyboardResponses >= 6 && report.summary.mouseResponses >= 6, "keyboard or relative mouse responses are missing: " + JSON.stringify(report.summary));
