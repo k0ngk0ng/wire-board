@@ -36,6 +36,14 @@ test("match options language lint rejects comments, naming and directory violati
       ["/* bad */ .team { display: grid; }"],
     ],
     [
+      "games/yuyuhakusho/platformtest/stream_cursor_test.go",
+      'package platformtest\nvar directory = "../../../.local/yuyuhakusho/verification/output"\n',
+      [
+        'package platformtest\nvar directory = "../verification/output"\n',
+        'package platformtest\nvar directory = "../../../.local/cs16/verification/output"\n',
+      ],
+    ],
+    [
       "games/yuyuhakusho/server/options.go",
       "package yuyuhakusho\nvar character = 1\n",
       [

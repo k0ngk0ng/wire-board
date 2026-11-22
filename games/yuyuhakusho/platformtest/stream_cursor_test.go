@@ -288,7 +288,7 @@ func runCursorTransportScenario(t *testing.T, enforceNativeLatency bool) {
 	if label != "native" && label != "race" {
 		label = "manual"
 	}
-	directory := "../verification/platform-stream-cursor"
+	directory := "../../../.local/yuyuhakusho/verification/platform-stream-cursor"
 	if err = os.MkdirAll(directory, 0755); err != nil {
 		t.Fatal(err)
 	}

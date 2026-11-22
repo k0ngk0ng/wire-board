@@ -23,6 +23,7 @@ func main() {
 	}
 	results := make([][]string, len(inputs))
 	pattern := regexp.MustCompile(`^(?:[A-Za-z][A-Za-z0-9]*|_)$`)
+	localDirectory := regexp.MustCompile(`(?:^|/)\.local/([^/]+)(?:/|$)`)
 	for index, input := range inputs {
 		issues := []string{}
 		file, err := parser.ParseFile(token.NewFileSet(), input.File, input.Source, parser.ParseComments|parser.AllErrors)
@@ -39,6 +40,13 @@ func main() {
 				issues = append(issues, "prohibited code comment")
 			}
 			ast.Inspect(file, func(node ast.Node) bool {
+				if literal, ok := node.(*ast.BasicLit); ok && literal.Kind == token.STRING && input.File != "games/yuyuhakusho/build/lint_go.go" {
+					value, _ := strconv.Unquote(literal.Value)
+					local := localDirectory.FindStringSubmatch(value)
+					if strings.HasPrefix(value, "../verification/") || len(local) > 1 && local[1] != "yuyuhakusho" {
+						issues = append(issues, "prohibited output directory")
+					}
+				}
 				if identifier, ok := node.(*ast.Ident); ok && !pattern.MatchString(identifier.Name) {
 					issues = append(issues, "invalid Go identifier: "+identifier.Name)
 				}
