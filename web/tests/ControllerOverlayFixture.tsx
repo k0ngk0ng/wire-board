@@ -42,7 +42,7 @@ function FixtureChat({ target }: { target: HTMLElement | null }) {
 function App() {
   const fullscreen = useRef<GameFullscreenHandle>(null);
   const [target, setTarget] = useState<HTMLElement | null>(null);
-  return <><button id="fixture-fullscreen" style={{ position: 'fixed', top: 0, right: 0, zIndex: 999, display: target ? 'none' : undefined }} onClick={() => fullscreen.current?.enter()}>全屏</button><GameFullscreen ref={fullscreen} scope="controller-overlay" enabled onReadyChange={() => {}} onChatTargetChange={setTarget}><Game fullscreen={!!target} /></GameFullscreen><FixtureChat target={target} /></>;
+  return <>{new URLSearchParams(location.search).has("protected") && <div data-chat-protected style={{ position: "fixed", right: 16, bottom: 16, width: 180, height: 32, color: "#ffb000", background: "#13201c", zIndex: 3 }}>原版 HUD</div>}<button id="fixture-fullscreen" style={{ position: 'fixed', top: 0, right: 0, zIndex: 999, display: target ? 'none' : undefined }} onClick={() => fullscreen.current?.enter()}>全屏</button><GameFullscreen ref={fullscreen} scope="controller-overlay" enabled onReadyChange={() => {}} onChatTargetChange={setTarget}><Game fullscreen={!!target} /></GameFullscreen><FixtureChat target={target} /></>;
 }
 
 createRoot(document.getElementById("root")!).render(<App />);

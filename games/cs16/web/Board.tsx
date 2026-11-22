@@ -103,6 +103,10 @@ export function Board(props: BoardProps<View>) {
   });
   if (!channel.current) channel.current = new InputChannel(action => latest.current.act({ ...action }), setError);
 
+  useLayoutEffect(() => {
+    controller.current?.sample(performance.now());
+  }, [buyOpen, ready, identity]);
+
   function record(event: Event) {
     const at = performance.now();
     const createdAt = Number.isFinite(event.timeStamp) && event.timeStamp >= 0 && event.timeStamp <= at + 1000 ? event.timeStamp : at;
@@ -142,19 +146,19 @@ export function Board(props: BoardProps<View>) {
     root.current?.focus({ preventScroll: true });
     prediction.current?.resume(performance.now());
     process.current(true);
-    if (restoreMouse.current) lockMouse();
+    if (restoreMouse.current && !touchPointer.current) lockMouse();
   }
 
   function openBuy() {
     const current = latest.current;
     if (!current.data.players.find(player => player.seat === current.room.you)?.alive || current.room.spectating) return;
-    restoreMouse.current = document.pointerLockElement === canvas.current || !touchPointer.current && !matchMedia('(pointer: coarse)').matches;
+    restoreMouse.current = !touchPointer.current && (document.pointerLockElement === canvas.current || !matchMedia('(pointer: coarse)').matches);
     release();
     buying.current = true;
     buyCategoryRef.current = 0;
     setBuyCategory(0);
     setBuyOpen(true);
-    if (document.pointerLockElement === canvas.current) document.exitPointerLock();
+    if (touchPointer.current && document.pointerLockElement === canvas.current) document.exitPointerLock();
   }
 
   function buyItem(item: string) {
@@ -513,20 +517,20 @@ export function Board(props: BoardProps<View>) {
   return <div className={`cs16-board${buyOpen ? ' cs16-buying' : ''}`} data-cs16-board data-ready={ready ? 'true' : 'false'} ref={root} tabIndex={-1} aria-label="反恐精英战场" onPointerDownCapture={event => { touchPointer.current = event.pointerType === 'touch'; if (event.pointerType === 'touch' && document.pointerLockElement === canvas.current) { try { beginTouch(); } catch {} } }}>
     <canvas ref={canvas} data-cs16-canvas aria-label={`${mapName(props.data.mapId)}第一人称战场`} />
     {ready && <>
-      <div className="cs16-match-hud"><HudSprite hud={hud} base={props.assets} name="stopwatch" /><strong>{matchClock(mode, props.data.phase, (props.data.bomb?.planted ? props.data.bomb.explodesAt : props.data.phaseEndsAt) - frame)}</strong></div>
+      <div data-chat-protected className="cs16-match-hud"><HudSprite hud={hud} base={props.assets} name="stopwatch" /><strong>{matchClock(mode, props.data.phase, (props.data.bomb?.planted ? props.data.bomb.explodesAt : props.data.phaseEndsAt) - frame)}</strong></div>
       {phaseLabel && <div className="cs16-round-message">{phaseLabel}</div>}
       <div className={`cs16-crosshair${scoped ? ' cs16-scoped' : ''}${now < hitUntil ? ' cs16-hit-confirmed' : ''}`} aria-hidden="true"><i /><b /></div>
       {!!flash && <div className="cs16-flash" style={{ opacity: flash }} aria-hidden="true" />}
       <div className="cs16-kill-feed">{feed.filter(event => event.frame > frame - 700).map(event => <div key={event.id} aria-label={`${props.room.seats[event.seat]?.name ?? '玩家'}使用${itemName(event.weapon ?? '')}${event.value === 1 ? '爆头' : '击杀'}${props.room.seats[event.target ?? -1]?.name ?? '玩家'}`}><span className={`cs16-name-${props.data.players[event.seat]?.team}`}>{props.room.seats[event.seat]?.name ?? '玩家'}</span><HudSprite hud={hud} base={props.assets} name={hud?.killIcons[event.weapon === 'hegrenade' ? 'grenade' : event.weapon ?? ''] ?? 'd_skull'} label={itemName(event.weapon ?? '')} />{event.value === 1 && <HudSprite hud={hud} base={props.assets} name="d_headshot" label="爆头" />}<span className={`cs16-name-${props.data.players[event.target ?? -1]?.team}`}>{props.room.seats[event.target ?? -1]?.name ?? '玩家'}</span></div>)}</div>
       {own && <>
         <ClassicStatus hud={hud} base={props.assets} player={own} view={props.data} frame={frame} />
-        <div className="cs16-vitals"><span><HudSprite hud={hud} base={props.assets} name="cross" /><HudNumber hud={hud} base={props.assets} value={own.health ?? 0} label={`生命 ${own.health ?? 0}`} /></span><span><HudSprite hud={hud} base={props.assets} name={own.helmet ? 'suithelmet_full' : 'suit_full'} /><HudNumber hud={hud} base={props.assets} value={own.armor ?? 0} label={`护甲 ${own.armor ?? 0}`} /></span></div>
-        <div className="cs16-money"><HudSprite hud={hud} base={props.assets} name="dollar" /><HudNumber hud={hud} base={props.assets} value={own.money ?? 0} label={`金钱 ${own.money ?? 0}`} /></div>
-        <div className="cs16-ammo" aria-label={`${itemName(own.weapon)}，弹匣 ${own.ammo ?? 0}，备弹 ${own.reserve ?? 0}`}><HudNumber hud={hud} base={props.assets} value={own.ammo ?? 0} /><span className="cs16-ammo-divider" /><HudNumber hud={hud} base={props.assets} value={own.reserve ?? 0} /><HudSprite hud={hud} base={props.assets} name={hud?.weapons[own.weapon]?.ammo ?? ''} /></div>
+        <div data-chat-protected className="cs16-vitals"><span><HudSprite hud={hud} base={props.assets} name="cross" /><HudNumber hud={hud} base={props.assets} value={own.health ?? 0} label={`生命 ${own.health ?? 0}`} /></span><span><HudSprite hud={hud} base={props.assets} name={own.helmet ? 'suithelmet_full' : 'suit_full'} /><HudNumber hud={hud} base={props.assets} value={own.armor ?? 0} label={`护甲 ${own.armor ?? 0}`} /></span></div>
+        <div data-chat-protected className="cs16-money"><HudSprite hud={hud} base={props.assets} name="dollar" /><HudNumber hud={hud} base={props.assets} value={own.money ?? 0} label={`金钱 ${own.money ?? 0}`} /></div>
+        <div data-chat-protected className="cs16-ammo" aria-label={`${itemName(own.weapon)}，弹匣 ${own.ammo ?? 0}，备弹 ${own.reserve ?? 0}`}><HudNumber hud={hud} base={props.assets} value={own.ammo ?? 0} /><span className="cs16-ammo-divider" /><HudNumber hud={hud} base={props.assets} value={own.reserve ?? 0} /><HudSprite hud={hud} base={props.assets} name={hud?.weapons[own.weapon]?.ammo ?? ''} /></div>
         {own.flashlight && <div className="cs16-flashlight-status" aria-label={`手电筒，电量 ${own.flashlightCharge ?? 0}`}><HudSprite hud={hud} base={props.assets} name="flash_full" /></div>}
         {damage && now < damage.until && <div className="cs16-damage-info">{damage.group === 1 ? '头部中弹' : damage.group === 6 || damage.group === 7 ? '腿部中弹' : '身体中弹'}</div>}
         {progress && <div className="cs16-action-progress" role="progressbar" aria-label={progress.kind === 'plant' ? '安装 C4' : '拆除 C4'} aria-valuemin={0} aria-valuemax={1000} aria-valuenow={progress.value}><span style={{ width: `${progress.value / 10}%` }} /></div>}
-        <div className="cs16-inventory" aria-label="携带装备">{inventorySlots(own.inventory ?? [], own.weapon).map(item => <button type="button" key={item.id} data-cs16-select={item.id} data-cs16-slot={weapons.find(weapon => weapon.id === item.id)?.slot ?? (item.id === 'knife' ? 3 : 4)} aria-label={`切换${item.label === '投掷物' ? `${item.label}：${itemName(item.next)}` : item.label}`} aria-pressed={own.weapon === item.id} disabled={!canControl()} onClick={() => select(item.next)}>{item.label}</button>)}</div>
+        <div className="cs16-inventory" aria-label="携带装备">{inventorySlots(own.inventory ?? [], own.weapon).map(item => <button type="button" key={item.id} data-touch-control data-cs16-select={item.id} data-cs16-slot={weapons.find(weapon => weapon.id === item.id)?.slot ?? (item.id === 'knife' ? 3 : 4)} aria-label={`切换${item.label === '投掷物' ? `${item.label}：${itemName(item.next)}` : item.label}`} aria-pressed={own.weapon === item.id} disabled={!canControl()} onClick={() => select(item.next)}>{item.label}</button>)}</div>
         <div className="cs16-battle-tools"><button type="button" data-cs16-open-buy disabled={!own.alive || props.room.spectating} onClick={openBuy}>购买</button><button type="button" aria-pressed={scoreboard} onClick={() => setScoreboard(value => !value)}>战绩</button></div>
       </>}
       {(!own?.alive || props.room.spectating) && <div className="cs16-spectator"><strong>{own ? '阵亡观战' : '观战'}</strong><select aria-label="观战玩家" value={watch} onChange={event => setWatch(Number(event.target.value))}><option value={-1}>自动选择</option>{observerCandidates(props.data.players, own, !!props.room.spectating).map(player => <option value={player.seat} key={player.seat}>{props.room.seats[player.seat]?.name ?? '玩家'}</option>)}</select></div>}

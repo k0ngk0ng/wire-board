@@ -19,7 +19,7 @@ export function HudNumber({ hud, base, value, label }: { hud?: HudAssets; base: 
 
 export function ClassicStatus({ hud, base, player, view, frame }: { hud?: HudAssets; base: string; player: Player; view: View; frame: number }) {
   if (!player.alive) return null;
-  return <div className="cs16-status-icons">
+  return <div data-chat-protected className="cs16-status-icons">
     {view.buyZone && <span data-cs16-status="buyzone"><HudSprite hud={hud} base={base} name="buyzone" label="购买区域" /></span>}
     {view.bomb.carrier === player.seat && <span data-cs16-status="c4" data-flashing={!!view.plantZone} style={{ visibility: view.plantZone && Math.floor(frame / 10) % 2 ? 'hidden' : 'visible' }}><HudSprite hud={hud} base={base} name="c4" label="携带 C4" /></span>}
   </div>;

@@ -17,6 +17,7 @@ export async function auditClassicInteractions({ call, evaluate, view, nativeCli
   const before = await view();
   await key('KeyB', 'b');
   await until(() => evaluate('!!document.querySelector(".cs16-buy-menu")'));
+  assert.ok(await evaluate('document.pointerLockElement===document.querySelector("[data-cs16-canvas]")'), 'numeric buying unnecessarily released mouse lock');
   await key('Digit3', '3');
   assert.ok(await evaluate('!!document.querySelector("[data-cs16-buy=mp5navy]")'), 'B3 did not open the original SMG category');
   await key('Digit0', '0');

@@ -389,6 +389,8 @@ def check_layout(audit, stage):
 
 def buy_audit(client, map_id, mobile=False):
     assert map_id in CLASSIC_MAPS + ('cs_bloodstrike',)
+    if os.environ.get('CS16_BROWSER_LOCK_PROBE') == '1':
+        evaluate(client, '''(()=>{const canvas=document.querySelector('[data-cs16-canvas]');const original=canvas.requestPointerLock.bind(canvas);window.cs16LockProbe=[];const record=value=>{window.cs16LockProbe.push({...value,at:performance.now(),active:navigator.userActivation.isActive,focused:document.hasFocus(),locked:document.pointerLockElement===canvas,frame:canvas.__cs16Frame});if(window.cs16LockProbe.length>96)window.cs16LockProbe.shift()};canvas.requestPointerLock=(...args)=>{record({kind:'request'});const result=original(...args);result?.then(()=>record({kind:'resolved'}),error=>record({kind:'rejected',name:error.name,message:error.message}));return result};document.addEventListener('pointerlockchange',()=>record({kind:'change'}));document.addEventListener('click',event=>{if(event.target.closest('[data-cs16-buy]'))record({kind:'purchase-click',trusted:event.isTrusted})},true);return true})()''')
     browser(client, 'scrollintoview', '[data-cs16-board]')
     browser(client, 'focus', '[data-cs16-board]')
     browser(client, 'press', 'b')
@@ -409,8 +411,14 @@ def buy_audit(client, map_id, mobile=False):
     assert next(entry for entry in entries if entry['id'] == 'awp')['disabled']
     browser(client, 'press', '1')
     screenshot(client, map_id + '-buy-menu')
+    if not mobile:
+        evaluate(client, 'document.exitPointerLock();true')
+        wait_for(lambda: evaluate(client, '!document.pointerLockElement'))
     browser(client, 'click', '[data-cs16-buy="deagle"]')
     wait_for(lambda: room(client)['game']['data']['players'][current['you']]['weapon'] == 'deagle')
+    if os.environ.get('CS16_BROWSER_LOCK_PROBE') == '1':
+        REPORT['pointerLockProbe'] = evaluate(client, 'window.cs16LockProbe')
+        save()
     if not mobile and evaluate(client, 'matchMedia("(pointer:fine)").matches'):
         wait_for(lambda: evaluate(client, 'document.pointerLockElement===document.querySelector("[data-cs16-canvas]")'))
     ammunition = None
@@ -478,6 +486,8 @@ def fullscreen_audit(client, map_id):
 
 
 def cleanup_room():
+    for client in ['main', 'peer', 'watch']:
+        evaluate(client, 'if(document.pointerLockElement)document.exitPointerLock();true')
     current = room()
     if current and current['status'] == 'playing':
         check_action_error('main', 'before-close')
@@ -662,6 +672,11 @@ try:
         case['mapRules'] = map_rules_audit(map_id, initial)
         case['friendlyFire'] = {'selected': map_id == 'de_inferno', 'initial': initial['options'].get('friendlyFire', False), 'waitingHostOnly': True}
         case['purchase'] = ground_equipment_audit('main', map_id) if map_id == 'fy_iceworld' else buy_audit('main', map_id, mobile=map_id == 'de_aztec')
+        if os.environ.get('CS16_BROWSER_BUY_ONLY') == '1':
+            REPORT['purchase'] = case['purchase']
+            cleanup_room()
+            REPORT['partial'], REPORT['passed'] = True, True
+            raise SystemExit(0)
         wait_for(lambda: room()['game']['data']['phase'] == 'live', 30)
         measured_client = 'peer' if map_id == 'cs_assault' else 'main'
         case['measuredClient'] = measured_client
@@ -755,6 +770,7 @@ try:
     assert REPORT['diagnostic'] or not REPORT['artifactsChangedDuringRun'], REPORT['artifactsChangedDuringRun']
     REPORT['passed'] = not REPORT['failures'] and not REPORT['performanceFailures']
 except Exception as error:
+    REPORT['passed'] = False
     REPORT['failures'].append({'error': str(error)})
     for client in SESSIONS:
         try:

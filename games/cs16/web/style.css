@@ -163,3 +163,4 @@
 @media(pointer:coarse){.cs16-touch-utility>[data-cs16-controls-menu]{left:calc(var(--cs16-safe-left) + 112px);bottom:calc(var(--cs16-safe-bottom) + 64px)}}
 .cs16-board:has(.cs16-touch-more-panel),.cs16-touch-more-panel{touch-action:pan-y}
 .cs16-touch-more-panel{overscroll-behavior:contain}
+@media(pointer:coarse){.cs16-touch-actions{right:var(--cs16-safe-right)}}

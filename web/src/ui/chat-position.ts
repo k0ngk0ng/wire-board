@@ -10,7 +10,7 @@ import { defaultChatAnchor } from "./chat-anchor";
 
 type Point = { x: number; y: number };
 type Bounds = { left: number; right: number; top: number; bottom: number };
-const touchSelector = ".touch-controller-overlay button, .touch-controller-overlay [data-controller-dpad], [data-touch-control], [data-touch-protected]";
+const touchSelector = ".touch-controller-overlay button, .touch-controller-overlay [data-controller-dpad], [data-touch-control], [data-touch-protected], [data-chat-protected]";
 function boundsFor(root: HTMLElement): Bounds {
   const viewport = window.visualViewport,
     style = getComputedStyle(root);
@@ -92,9 +92,8 @@ export function useChatPosition(
     if (viewport && (!(viewport.width > 0) || !(viewport.height > 0))) return;
     const bounds = boundsFor(surface),
       rect = toggle.current.getBoundingClientRect();
-    const obstacles = window.matchMedia("(pointer: coarse)").matches
-      ? Array.from(surface.querySelectorAll<HTMLElement>(touchSelector)).filter(element => element.getClientRects().length > 0).map(element => element.getBoundingClientRect())
-      : [];
+    const obstacleSelector = window.matchMedia("(pointer: coarse)").matches ? touchSelector : '[data-chat-protected]';
+    const obstacles = Array.from(surface.querySelectorAll<HTMLElement>(obstacleSelector)).filter(element => element.getClientRects().length > 0).map(element => element.getBoundingClientRect());
     if (!target && !obstacles.length) { setPosition(undefined); setPanelStyle(undefined); setCompact(false); return; }
     for (const picture of surface.querySelectorAll<HTMLElement>(".touch-controller-picture")) {
       if (getComputedStyle(picture).getPropertyValue("--touch-picture-gutters").trim() === "1") {

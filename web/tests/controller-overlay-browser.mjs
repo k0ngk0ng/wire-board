@@ -24,7 +24,7 @@ await server.listen();
 let socket;
 const reports = [];
 try {
-  await browser("open", server.resolvedUrls.local[0] + "?kind=contra");
+  await browser("open", server.resolvedUrls.local[0] + "?kind=contra&protected=1");
   await browser("wait", "[data-controller-dpad]");
   const endpoint = await browser("get", "cdp-url");
   socket = new WebSocket(typeof endpoint === "string" ? endpoint : endpoint.cdpUrl);
@@ -37,6 +37,12 @@ try {
   const target = targetInfos.find(value => value.type === "page" && value.url.startsWith(server.resolvedUrls.local[0]));
   let { sessionId } = await call("Target.attachToTarget", { targetId: target.targetId, flatten: true });
   const evaluate = async expression => { const result = await call("Runtime.evaluate", { expression, returnByValue: true, awaitPromise: true }, sessionId); assert.ok(!result.exceptionDetails, JSON.stringify(result.exceptionDetails)); return result.result.value; };
+  await evaluate("new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))");
+  const desktopHud = await evaluate("(()=>{const hud=document.querySelector('[data-chat-protected]').getBoundingClientRect();const chat=document.querySelector('.chat-toggle').getBoundingClientRect();return {coarse:matchMedia('(pointer:coarse)').matches,hud:hud.toJSON(),chat:chat.toJSON(),overlap:hud.left<chat.right&&hud.right>chat.left&&hud.top<chat.bottom&&hud.bottom>chat.top}})()");
+  const desktopImage = await call("Page.captureScreenshot", { format: "png", captureBeyondViewport: false }, sessionId);
+  await writeFile(path.join(out, "normal-desktop-hud.png"), Buffer.from(desktopImage.data, "base64"));
+  assert.equal(desktopHud.coarse, false);
+  assert.equal(desktopHud.overlap, false, "normal desktop chat covers protected game HUD: " + JSON.stringify(desktopHud));
   for (const kind of ["contra", "basketball", "yuyuhakusho", "battlecity"]) {
     const directory = path.join(root, ".local", kind, "controller-overlay");
     await mkdir(directory, { recursive: true });
