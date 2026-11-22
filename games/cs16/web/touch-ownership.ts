@@ -85,6 +85,7 @@ export class TouchOwnership {
 }
 
 export function bindTouchOwnership(target: EventTarget, lockTarget: EventTarget, input: TouchOwnership, disabled: () => boolean, native: (event: Event) => void) {
+  const motion = 'onpointerrawupdate' in target ? 'pointerrawupdate' : 'pointermove';
   const move = (event: Event) => {
     const pointer = event as PointerEvent;
     if (disabled() || !input.owns(pointer.pointerId)) return;
@@ -101,7 +102,7 @@ export function bindTouchOwnership(target: EventTarget, lockTarget: EventTarget,
   const lost = (event: Event) => input.lost((event as PointerEvent).pointerId);
   const capture = () => input.capturePending();
   const resize = () => input.clear();
-  target.addEventListener('pointermove', move, { capture: true, passive: false });
+  target.addEventListener(motion, move, { capture: true, passive: false });
   target.addEventListener('pointerup', release, true);
   target.addEventListener('pointercancel', release, true);
   target.addEventListener('lostpointercapture', lost, true);
@@ -109,7 +110,7 @@ export function bindTouchOwnership(target: EventTarget, lockTarget: EventTarget,
   target.addEventListener('resize', resize);
   target.addEventListener('orientationchange', resize);
   return () => {
-    target.removeEventListener('pointermove', move, true);
+    target.removeEventListener(motion, move, true);
     target.removeEventListener('pointerup', release, true);
     target.removeEventListener('pointercancel', release, true);
     target.removeEventListener('lostpointercapture', lost, true);

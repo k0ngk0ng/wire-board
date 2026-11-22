@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { TouchOwnership, PointerLockHandoff, bindTouchOwnership } from '../web/touch-ownership.ts';
 
-function fixture(locked = false) {
+function fixture(locked = false, raw = false) {
   const context = { locked, releaseOld: 0, unlockRequests: 0, interrupted: 0, disabled: false, native: 0, states: [], looks: [], errors: [], targets: new Map() };
   const handoff = new PointerLockHandoff();
   const input = new TouchOwnership({
@@ -14,6 +14,7 @@ function fixture(locked = false) {
     failed: error => context.errors.push(error.message),
   });
   const source = new EventTarget();
+  if (raw) source.onpointerrawupdate = null;
   const lockSource = new EventTarget();
   const dispose = bindTouchOwnership(source, lockSource, input, () => context.disabled, () => { context.native++; });
   const target = (name, fail = false) => {
@@ -34,6 +35,27 @@ function pointer(source, type, pointerId, clientX = 0, clientY = 0) {
   source.dispatchEvent(event);
   return event;
 }
+
+test('raw pointer updates move both thumbs without processing the later coalesced event twice', () => {
+  const view = fixture(false, true);
+  view.input.press(1, 'move', 0, 0, view.target('move'));
+  view.input.press(2, 'fire', 100, 100, view.target('fire'));
+  pointer(view.source, 'pointerrawupdate', 1, 24, 0);
+  pointer(view.source, 'pointerrawupdate', 2, 120, 100);
+  assert.equal(view.input.sample().moveX, 500);
+  assert.deepEqual(view.context.looks, [[20, 0]]);
+  pointer(view.source, 'pointermove', 1, 48, 0);
+  pointer(view.source, 'pointermove', 2, 140, 100);
+  assert.equal(view.input.sample().moveX, 500);
+  assert.deepEqual(view.context.looks, [[20, 0]]);
+  pointer(view.source, 'pointerup', 1);
+  assert.equal(view.input.sample().moveX, 0);
+  assert.equal(view.input.sample().actions.has('fire'), true);
+  view.dispose();
+  pointer(view.source, 'pointerrawupdate', 2, 160, 100);
+  assert.deepEqual(view.context.looks, [[20, 0]]);
+  assert.equal(view.input.owns(2), false);
+});
 
 test('viewport changes release both thumbs without reviving contacts after a fold', () => {
   const view = fixture();
