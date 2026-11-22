@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"slices"
 	"strings"
+	"sync/atomic"
 	"testing"
 	"time"
 
@@ -132,24 +133,25 @@ func runFourRoomMapIsolation(t *testing.T, performance bool, maps []string) {
 	for index, host := range hosts {
 		frames[index] = integer(host.room()["game"].(map[string]any)["data"].(map[string]any)["frame"])
 	}
-	for seq := 1; seq <= 40; seq++ {
-		nonce := fmt.Sprintf("cs16-load-input-%d", seq)
-		action := map[string]any{"type": "input", "epoch": initial["epoch"], "seq": seq, "life": player["life"], "viewFrame": viewFrame, "moveX": 0, "moveY": 0, "yaw": 0, "pitch": 0, "fire": false}
-		message := map[string]any{"type": "input", "serverInstance": state["serverInstance"], "roomId": ids[0], "version": room["version"], "nonce": nonce, "action": action}
-		started := time.Now()
-		if err = fast.Write(ctx, websocket.MessageText, encode(message)); err != nil {
-			t.Fatal(err)
-		}
+	var latestFrame atomic.Int64
+	latestFrame.Store(viewFrame)
+	streamAcks := make(chan map[string]any, 1)
+	streamErrors := make(chan error, 1)
+	streamDone := make(chan struct{})
+	go func() {
+		defer close(streamDone)
 		for {
 			_, raw, readErr := fast.Read(ctx)
 			if readErr != nil {
-				t.Fatal(readErr)
+				streamErrors <- readErr
+				return
 			}
 			var answer map[string]any
 			decoder := json.NewDecoder(bytes.NewReader(raw))
 			decoder.UseNumber()
-			if decoder.Decode(&answer) != nil {
-				continue
+			if decodeErr := decoder.Decode(&answer); decodeErr != nil {
+				streamErrors <- decodeErr
+				return
 			}
 			if answer["type"] == "game" {
 				if game, ok := answer["game"].(map[string]any); ok {
@@ -170,18 +172,42 @@ func runFourRoomMapIsolation(t *testing.T, performance bool, maps []string) {
 							firingApplicationBytes = append(firingApplicationBytes, int64(len(raw)))
 						}
 						if frame, ok := data["frame"].(json.Number); ok {
-							viewFrame = max(viewFrame, integer(frame))
+							latestFrame.Store(max(latestFrame.Load(), integer(frame)))
 						}
 					}
 				}
 			}
-			if answer["type"] == "ack" && answer["nonce"] == nonce {
-				if integer(answer["status"]) != 200 {
-					t.Fatal(answer)
+			if answer["type"] == "ack" {
+				select {
+				case streamAcks <- answer:
+				case <-ctx.Done():
+					return
 				}
-				acks = append(acks, time.Since(started).Microseconds())
-				break
 			}
+		}
+	}()
+	defer func() { fast.CloseNow(); <-streamDone }()
+	for seq := 1; seq <= 40; seq++ {
+		nonce := fmt.Sprintf("cs16-load-input-%d", seq)
+		action := map[string]any{"type": "input", "epoch": initial["epoch"], "seq": seq, "life": player["life"], "viewFrame": latestFrame.Load(), "moveX": 0, "moveY": 0, "yaw": 0, "pitch": 0, "fire": false}
+		message := map[string]any{"type": "input", "serverInstance": state["serverInstance"], "roomId": ids[0], "version": room["version"], "nonce": nonce, "action": action}
+		started := time.Now()
+		if err = fast.Write(ctx, websocket.MessageText, encode(message)); err != nil {
+			t.Fatal(err)
+		}
+		select {
+		case readErr := <-streamErrors:
+			t.Fatal(readErr)
+		case answer := <-streamAcks:
+			if answer["nonce"] != nonce {
+				t.Fatal("unexpected input acknowledgement", answer)
+			}
+			if integer(answer["status"]) != 200 {
+				t.Fatal(answer)
+			}
+			acks = append(acks, time.Since(started).Microseconds())
+		case <-ctx.Done():
+			t.Fatal(ctx.Err())
 		}
 		if seq%4 == 0 {
 			for _, host := range hosts {
@@ -190,7 +216,12 @@ func runFourRoomMapIsolation(t *testing.T, performance bool, maps []string) {
 			}
 		}
 		time.Sleep(30 * time.Millisecond)
+		if seq == 8 {
+			time.Sleep(650 * time.Millisecond)
+		}
 	}
+	fast.CloseNow()
+	<-streamDone
 	for index, host := range hosts {
 		current := host.room()
 		data := current["game"].(map[string]any)["data"].(map[string]any)
