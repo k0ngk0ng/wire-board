@@ -46,11 +46,13 @@ def recover(root, head, runs, jobs_for, verified_base=''):
     current = module_at(root, head)
     games = current.game_names(root)
     required_games = games
+    verified_plan = None
     if verified_base:
         if not re.fullmatch(r'[a-f0-9]{40}', verified_base) or subprocess.run(['git', 'merge-base', '--is-ancestor', verified_base, head], cwd=root, capture_output=True).returncode:
             raise ValueError('Expected an ancestral verified baseline')
         paths = git(root, 'diff', '--no-renames', '--name-only', verified_base, head).splitlines()
-        required_games = sorted(row['game'] for row in current.plan(paths, games)['games'])
+        verified_plan = current.plan(paths, games)
+        required_games = sorted(row['game'] for row in verified_plan['games'])
     workflow = git(root, 'show', head + ':.github/workflows/build.yml')
     sections = execution_sections(workflow)
     candidates = []
@@ -85,7 +87,8 @@ def recover(root, head, runs, jobs_for, verified_base=''):
     shared_commands = current.go_commands(root, 'shared', race=True)
     shared_results = [row for row in candidates if row['named'].get(shared_name, {}).get('conclusion') in ['success', 'failure', 'timed_out'] and row['module'].go_commands(root, 'shared', race=True) == shared_commands]
     platform = shared_results[0] if shared_results and shared_results[0]['named'][shared_name]['conclusion'] == 'success' else None
-    if candidates and platform:
+    verified_platform = verified_plan is not None and not verified_plan['has_shared'] and not shared_results
+    if candidates and (platform or verified_platform):
         reused, pending = [], []
         for game in required_games:
             digest = signature(current, root, game)
@@ -104,7 +107,12 @@ def recover(root, head, runs, jobs_for, verified_base=''):
             else:
                 pending.append(game)
         baseline = candidates[0]
-        result = {'eligible': True, 'head': head, 'base': baseline['base'], 'sourceRun': baseline['run']['id'], 'changedPaths': baseline['paths'], 'affectedGames': sorted(baseline['affected']), 'reusedGames': reused, 'pendingGames': pending, 'platformSourceRun': platform['run']['id'], 'platformSourceSHA': platform['base'], 'sharedJob': platform['named'][shared_name]['id'], 'frontendJob': baseline['named']['Build application assets']['id']}
+        forced = [game for game in pending if signature(current, root, game) != signature(baseline['module'], root, game)]
+        result = {'eligible': True, 'head': head, 'base': baseline['base'], 'sourceRun': baseline['run']['id'], 'changedPaths': baseline['paths'], 'affectedGames': sorted(baseline['affected']), 'reusedGames': reused, 'pendingGames': pending, 'forceBackendGames': forced, 'frontendJob': baseline['named']['Build application assets']['id']}
+        if platform:
+            result.update(platformSourceRun=platform['run']['id'], platformSourceSHA=platform['base'], sharedJob=platform['named'][shared_name]['id'])
+        else:
+            result['platformVerifiedBase'] = verified_base
         if verified_base:
             result.update(verifiedBase=verified_base, requiredGames=required_games)
         return result

@@ -12,7 +12,7 @@ WORK.mkdir(parents=True, exist_ok=True)
 
 
 class ResumeE2E(unittest.TestCase):
-    def replay(self, change='ci', changed_command=False, failed_shared=False, ambiguous=False, recovered=False, newer_failure=False, newer_shared_failure=False, verified_baseline=False):
+    def replay(self, change='ci', changed_command=False, failed_shared=False, ambiguous=False, recovered=False, newer_failure=False, newer_shared_failure=False, verified_baseline=False, skipped_shared=False):
         with tempfile.TemporaryDirectory(dir=WORK) as folder:
             root = Path(folder)
             def run(*args):
@@ -34,7 +34,7 @@ def go_commands(root,game,**kwargs):return [['go','test',game,'old']]
 def frontend_tests(root,game):return []
 def build_commands(root,game,index=0):return []
 def verification_env(game,backend,base=None):return {}
-def plan(paths,games):return {'has_shared':any(p.startswith('internal/') for p in paths),'frontend_checks':False,'games':[{'game':g,'backend':True} for g in games if any(p.startswith('games/'+g+'/') for p in paths)]}
+def plan(paths,games):return {'has_shared':any(p.startswith('internal/') for p in paths),'frontend_checks':False,'games':[{'game':g,'backend':any(p.startswith('games/'+g+'/') and p.endswith('.go') for p in paths)} for g in games if any(p.startswith('games/'+g+'/') for p in paths)]}
 '''
             write('scripts/ci/scope.py', fixture)
             write('.github/workflows/build.yml', 'name: CI\njobs:\n  frontend:\n    run: frontend\n  shared:\n    run: shared\n  games:\n    run: games\n  verify:\n    needs: [games]\n    steps:\n      - run: build\n  complete:\n    run: complete\n')
@@ -56,12 +56,14 @@ def plan(paths,games):return {'has_shared':any(p.startswith('internal/') for p i
             write('scripts/ci/resume.py', (ROOT / 'scripts/ci/resume.py').read_text())
             write('scripts/ci/scope.py', fixture if recovered else fixture.replace("return [['go','test',game,'old']]", "return [['go','test',game,'new' if game=='catan' else 'old']]" if not changed_command else "return [['go','test',game,'old' if game=='shared' else 'new']]"))
             if change == 'business':write('games/rail/server/rules.go', 'package rail\nconst value=1\n')
+            if change == 'frontend':write('games/rail/web/Board.tsx', 'export const Board=()=>null;\n')
             if change == 'shared':write('internal/server/rules.go', 'package server\n')
             if change == 'workflow':write('.github/workflows/build.yml', (root / '.github/workflows/build.yml').read_text().replace('run: games', 'run: changed'))
             run('git', 'add', '.')
             run('git', 'commit', '-qm', 'policy change')
             head = run('git', 'rev-parse', 'HEAD')
             jobs = [{'name': 'Build application assets', 'conclusion': 'success', 'id': 1}, {'name': 'Shared platform HTTP, persistence and race checks', 'conclusion': 'failure' if failed_shared else 'success', 'id': 2}, {'name': 'Game rail', 'conclusion': 'success', 'id': 3}, {'name': 'Game catan', 'conclusion': 'cancelled', 'id': 4}]
+            if skipped_shared:jobs[1]['conclusion'] = 'skipped'
             if ambiguous:jobs.append(dict(jobs[2], id=5))
             data = {'workflow_runs': [{'id': 123, 'head_sha': base, 'head_branch': 'main', 'event': 'push', 'path': '.github/workflows/build.yml', 'status': 'completed', 'conclusion': 'cancelled'}], 'jobs': {'123': jobs}}
             intermediate = head
@@ -93,7 +95,7 @@ print(json.dumps({'jobs':data['jobs'][re.search(r'/runs/([0-9]+)/jobs',sys.argv[
             result = subprocess.run(arguments, cwd=root, env=env, capture_output=True, text=True)
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
             report = json.loads((root / '.local/resume.json').read_text())
-            eligible = change in ['ci', 'business', 'build-step'] and not failed_shared and not ambiguous and not newer_shared_failure
+            eligible = change in ['ci', 'business', 'frontend', 'build-step'] and not failed_shared and not ambiguous and not newer_shared_failure and (not skipped_shared or verified_baseline)
             self.assertEqual(report['eligible'], eligible)
             if eligible:
                 self.assertEqual(report['head'], head)
@@ -107,7 +109,7 @@ print(json.dumps({'jobs':data['jobs'][re.search(r'/runs/([0-9]+)/jobs',sys.argv[
                     selected = importlib.util.module_from_spec(selection)
                     selection.loader.exec_module(selected)
                     selected.ROOT = root
-                    self.assertEqual(selected.resume_selection(report, head, base, ['catan', 'rail', 'untouched']), ['catan'])
+                    self.assertEqual(selected.resume_selection(report, head, base, ['catan', 'rail', 'untouched']), ['catan', 'rail'] if change == 'frontend' and changed_command else ['catan'])
                     broken = dict(report, requiredGames=['catan'])
                     with self.assertRaises(ValueError):
                         selected.resume_selection(broken, head, base, ['catan', 'rail', 'untouched'])
@@ -118,7 +120,7 @@ print(json.dumps({'jobs':data['jobs'][re.search(r'/runs/([0-9]+)/jobs',sys.argv[
                     if 'catan' not in expected:self.assertEqual(sources['catan'], 124)
                     if 'rail' not in expected:self.assertEqual(sources['rail'], 123)
                     return
-                all_pending = changed_command or change == 'business'
+                all_pending = changed_command or change in ['business', 'frontend']
                 self.assertEqual(report['pendingGames'], ['catan', 'rail'] if all_pending else ['catan'])
                 self.assertEqual([r['game'] for r in report['reusedGames']], [] if all_pending else ['rail'])
 
@@ -151,6 +153,15 @@ print(json.dumps({'jobs':data['jobs'][re.search(r'/runs/([0-9]+)/jobs',sys.argv[
 
     def test_verified_baseline_reuses_passed_games_without_scheduling_unaffected_games(self):
         self.replay(verified_baseline=True)
+
+    def test_verified_baseline_allows_unselected_shared_checks_but_never_hides_a_shared_failure(self):
+        self.replay(verified_baseline=True, skipped_shared=True)
+        self.replay(skipped_shared=True)
+        self.replay(verified_baseline=True, failed_shared=True)
+
+    def test_changed_frontend_keeps_frontend_scope_when_its_previous_game_result_cannot_be_reused(self):
+        self.replay(verified_baseline=True, skipped_shared=True, change='frontend')
+        self.replay(verified_baseline=True, skipped_shared=True, change='frontend', changed_command=True)
 
     def test_workflow_attempts_partial_reuse_when_a_verified_ancestor_exists(self):
         workflow = (ROOT / '.github/workflows/build.yml').read_text()

@@ -29,6 +29,7 @@
     "games/yuyuhakusho/tests/match-options-browser.mjs",
     "games/yuyuhakusho/tests/match-options-lint.test.mjs",
     "games/yuyuhakusho/platformtest/match_options_e2e_test.go",
+    "games/yuyuhakusho/platformtest/stream_cursor_test.go",
     "games/yuyuhakusho/web/catalog.tsx",
     "games/yuyuhakusho/server/options_test.go",
     "games/yuyuhakusho/server/module_numeric_json_test.go",

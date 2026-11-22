@@ -106,7 +106,7 @@ func runCursorTransportScenario(t *testing.T, enforceNativeLatency bool) {
 	}
 	assets := cursorAssets(t)
 	h := gametest.NewHTTP(t, 2, module, "yuyuhakusho")
-	h.Start(map[string]any{"characters": []int{3, 9}})
+	h.Start(map[string]any{"arena": 0, "characters": []int{3, 9}})
 	load(t, h)
 	slow := cursorSocket(t, h.Spectator)
 	for {
@@ -114,7 +114,7 @@ func runCursorTransportScenario(t *testing.T, enforceNativeLatency bool) {
 		if packet.Type == "state" {
 			break
 		}
-	} // No further reads: this connection must not own the fast cursor.
+	}
 	fast := cursorSocket(t, h.People[0])
 	first := cursorGame(t, fast)
 	if !first.Game.Data.Resync || first.Game.Data.Replay.FrameCount != 0 {
@@ -132,8 +132,6 @@ func runCursorTransportScenario(t *testing.T, enforceNativeLatency bool) {
 	idleBytes, denseBytes, idlePackets, densePackets, maxViewBytes := 0, 0, 0, 0, 0
 	maximumACK := time.Duration(0)
 	pending := make(map[string]time.Time)
-	// Record reception independently of rule replay. A race-instrumented full
-	// replay may consume CPU after an ACK already arrived on the socket.
 	type received struct {
 		packet cursorPacket
 		bytes  int
@@ -209,8 +207,6 @@ func runCursorTransportScenario(t *testing.T, enforceNativeLatency bool) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		// The accepted four-player batching fix retains 20 input frames,
-		// independently of the 120-frame reconnect recovery ring.
 		if len(frames) > int(view.Frame-streamAfter)+20 {
 			t.Fatal("connection repeated an oversized recovery ring", len(frames), view.Frame-streamAfter)
 		}

@@ -47,7 +47,7 @@ func TestRandomOneVsThreeRealRoomPersistence(t *testing.T) {
 func TestOneVsThreeRealCheckpointClientReplay(t *testing.T) {
 	assets := cursorAssets(t)
 	h := gametest.NewHTTP(t, 4, registered(t), "yuyuhakusho")
-	h.Start(map[string]any{"characters": []int{255, 255, 255, 255}, "teamBattle": true, "oneVsThree": true})
+	h.Start(map[string]any{"arena": 0, "characters": []int{255, 255, 255, 255}, "teamBattle": true, "oneVsThree": true})
 	load(t, h)
 	initial := checkpoint(t, h.People[0])
 	client, err := runtimebridge.RestoreCheckpoint([]byte(initial.Checkpoint), assets)

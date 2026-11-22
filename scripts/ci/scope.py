@@ -489,7 +489,16 @@ def resume_selection(proof, head, base, games):
             raise ValueError('Resume required games differ from the verified baseline')
     if proof.get('head') != head or proof.get('base') != base or len(set(pending + reused)) != len(pending + reused) or set(pending + reused) != set(required):
         raise ValueError('Resume evidence differs from the exact plan inputs')
-    return [] if proof.get('verifiedBase') == base else pending
+    if proof.get('verifiedBase') == base:
+        return []
+    if 'forceBackendGames' not in proof:
+        return pending
+    paths = subprocess.check_output(['git', 'diff', '--no-renames', '--name-only', base, head], cwd=ROOT, text=True).splitlines()
+    changed = {row['game'] for row in plan(paths, games)['games']}
+    forced = proof.get('forceBackendGames', pending)
+    if not isinstance(forced, list) or not set(forced).issubset(pending):
+        raise ValueError('Resume backend requirements differ from pending games')
+    return [game for game in pending if game not in changed or game in forced]
 
 def owner(path, name, games):
     parts = path.parts
