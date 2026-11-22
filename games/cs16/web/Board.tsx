@@ -245,6 +245,7 @@ export function Board(props: BoardProps<View>) {
 
   useLayoutEffect(() => {
     receivedAt.current = performance.now();
+    if ((props.data.finished || props.room.seats[props.room.you]?.autoPlay) && document.pointerLockElement === canvas.current) document.exitPointerLock();
     if (!initialized.current || !loaded.current || !prediction.current) return;
     try { validateRulesIdentity(loaded.current.manifest.maps[props.data.mapId]?.rules, props.data.rulesSHA256); }
     catch (error) { release(); initialized.current = false; setError(error instanceof Error ? error.message : '地图规则版本不一致'); return; }

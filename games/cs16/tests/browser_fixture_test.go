@@ -9,6 +9,7 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"strings"
 	"sync"
 	"sync/atomic"
 	"testing"
@@ -50,7 +51,7 @@ func TestCS16BrowserFixture(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	module := game.Module()
+	module := cs16BrowserModule()
 	module.Controls = &gameapi.ControllerDefinition{}
 	if err = json.Unmarshal(controls, module.Controls); err != nil {
 		t.Fatal(err)
@@ -88,6 +89,79 @@ func TestCS16BrowserFixture(t *testing.T) {
 			t.Fatal("browser fixture timed out")
 		}
 	}
+}
+
+func cs16BrowserModule() gameapi.Module {
+	module := game.Module()
+	start, timer := module.Start, module.OnTimer
+	module.Start = func(ctx gameapi.Context, options json.RawMessage) (gameapi.Match, error) {
+		match, err := start(ctx, options)
+		if err != nil {
+			return match, err
+		}
+		return cs16BrowserSampleHealth(ctx, match)
+	}
+	module.OnTimer = func(ctx gameapi.Context, previous gameapi.Match) (gameapi.Match, error) {
+		match, err := timer(ctx, previous)
+		if err != nil || match.CheckpointKey == previous.CheckpointKey || !strings.HasSuffix(match.CheckpointKey, ":freeze") {
+			return match, err
+		}
+		return cs16BrowserSampleHealth(ctx, match)
+	}
+	return module
+}
+
+func cs16BrowserSampleHealth(ctx gameapi.Context, match gameapi.Match) (gameapi.Match, error) {
+	var fields map[string]json.RawMessage
+	if err := json.Unmarshal(match.Data, &fields); err != nil {
+		return match, err
+	}
+	var world map[string]json.RawMessage
+	if err := json.Unmarshal(fields["world"], &world); err != nil {
+		return match, err
+	}
+	var header struct {
+		MapID   string `json:"mapId"`
+		Phase   string `json:"phase"`
+		Options struct {
+			MaxRounds int `json:"maxRounds"`
+		} `json:"options"`
+	}
+	if err := json.Unmarshal(fields["world"], &header); err != nil {
+		return match, err
+	}
+	if header.MapID != "fy_iceworld" && header.MapID != "cs_bloodstrike" || header.Options.MaxRounds != 30 || header.Phase != "freeze" {
+		return match, nil
+	}
+	var players []map[string]json.RawMessage
+	if err := json.Unmarshal(world["players"], &players); err != nil {
+		return match, err
+	}
+	changed := false
+	for seat := range min(2, len(players), len(ctx.Automated)) {
+		var alive bool
+		if err := json.Unmarshal(players[seat]["alive"], &alive); err != nil {
+			return match, err
+		}
+		if alive && !ctx.Automated[seat] {
+			players[seat]["health"] = json.RawMessage("10000")
+			changed = true
+		}
+	}
+	if !changed {
+		return match, nil
+	}
+	var err error
+	world["players"], err = json.Marshal(players)
+	if err != nil {
+		return match, err
+	}
+	fields["world"], err = json.Marshal(world)
+	if err != nil {
+		return match, err
+	}
+	match.Data, err = json.Marshal(fields)
+	return match, err
 }
 
 func cs16Proxy(t *testing.T, upstream, control string) string {

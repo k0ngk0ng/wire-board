@@ -22,7 +22,7 @@ SOCKETS = ROOT / '.local/cs16/s'
 for directory in [BASE, OUT, ROOT / '.local/cs16/tmp', ROOT / '.local/cs16/go-cache', ROOT / '.local/cs16/go-mod', SOCKETS, BASE / 'cache']:
     directory.mkdir(parents=True, exist_ok=True)
 ENV = dict(os.environ, TMPDIR=str(ROOT / '.local/cs16/tmp'), GOTMPDIR=str(ROOT / '.local/cs16/tmp'), GOCACHE=str(ROOT / '.local/cs16/go-cache'), GOMODCACHE=str(ROOT / '.local/cs16/go-mod'), GOTOOLCHAIN='local', GOTELEMETRY='off', AGENT_BROWSER_SOCKET_DIR=str(SOCKETS), XDG_CACHE_HOME=str(BASE / 'cache'), AGENT_BROWSER_NO_VERSION_CHECK='1', WIRE_BOARD_CS16_BROWSER='1')
-REPORT = {'passed': False, 'scope': 'production HTTP/SQLite/WebSocket, two native Chromium player pages plus eight bots and one spectator page; original maps and models, no rule state injection', 'touchBoundary': 'Chromium touch simulation, not physical mobile hardware', 'diagnostic': os.environ.get('CS16_BROWSER_DIAGNOSTIC') == '1', 'cases': [], 'failures': [], 'performanceFailures': [], 'budgets': {'keyboardP95MS': 33, 'touchP95MS': 51, 'frameP95MS': 20, 'minimumVisibleFPS': 55}, 'testFirst': {'scenarios': 'games/cs16/tests/browser-scenarios.md', 'red': '.local/cs16/browser/reports/current/fixture-red.log'}}
+REPORT = {'passed': False, 'scope': 'production HTTP/SQLite/WebSocket, two native Chromium player pages plus eight bots and one spectator page; original maps and models; test-only small-map manual spawn health 10000, natural matches use normal health', 'touchBoundary': 'Chromium touch simulation, not physical mobile hardware', 'diagnostic': os.environ.get('CS16_BROWSER_DIAGNOSTIC') == '1', 'cases': [], 'failures': [], 'performanceFailures': [], 'budgets': {'keyboardP95MS': 33, 'touchP95MS': 51, 'frameP95MS': 20, 'minimumVisibleFPS': 55}, 'testFirst': {'scenarios': 'games/cs16/tests/browser-scenarios.md', 'red': '.local/cs16/browser/reports/current/fixture-red.log'}}
 SERVER = None
 SESSIONS = {}
 URLS = {}
@@ -34,6 +34,7 @@ MAPS = CLASSIC_MAPS + ADDED_MAPS
 REPORT['expectedMaps'] = list(MAPS)
 REPORT['expectedCaseCount'] = len(MAPS)
 REPORT['caseCount'] = 0
+REPORT['sampleHealth'] = {'authorizedBy': 'user', 'maps': list(ADDED_MAPS), 'manualMaxRounds': 30, 'spawnHealth': 10000, 'seats': [0, 1], 'naturalSpawnHealth': 100, 'productionModuleUnchanged': True}
 REPORT['lifecycle'] = {'fixtureMinutes': 60, 'goTestTimeoutMinutes': 61, 'nativeProcessSeconds': 60, 'nextLifeSeconds': 120, 'denseCombatMaximumSeconds': 45, 'naturalFinishSeconds': 240}
 MAP_MODES = {'de_dust2': 'bomb', 'de_inferno': 'bomb', 'de_aztec': 'bomb', 'cs_assault': 'hostage', 'fy_iceworld': 'elimination', 'cs_bloodstrike': 'elimination'}
 ADDED_MAP_NAMES = {'fy_iceworld': '冰雪世界', 'cs_bloodstrike': '血战回廊'}
@@ -549,8 +550,13 @@ def prepare_room(map_id, mobile=False, dual=False, natural=False):
 
 def elimination_match(map_id):
     initial = prepare_room(map_id, natural=True)
+    for client in ['main', 'peer']:
+        current = room(client)
+        own = next(player for player in current['game']['data']['players'] if player['seat'] == current['you'])
+        assert 0 < own['health'] <= 100, own
     command('main', 'autoplay', enabled=True)
     command('peer', 'autoplay', enabled=True)
+    wait_for(lambda: evaluate('main', '!document.pointerLockElement'))
     capture = native('watch', map_id + '-natural-dense-wire', observeOnly=True, observeMS=10000, denseExpected=True)
     if map_id == 'fy_iceworld':
         assert capture['wire']['eventCounts'].get('pickup', 0) > 0, {'map': map_id, 'error': 'natural raw wire did not observe an original-world weapon pickup', 'capture': capture}
@@ -616,6 +622,13 @@ try:
         added = map_id in ADDED_MAPS
         initial = prepare_room(map_id, mobile=map_id == 'de_aztec', dual=added)
         case = {'map': map_id, 'players': len(initial['players']), 'viewport': viewport('main'), 'initial': initial}
+        if added:
+            case['manualSampleHealth'] = {}
+            for client in ['main', 'peer']:
+                current = room(client)
+                own = next(player for player in current['game']['data']['players'] if player['seat'] == current['you'])
+                assert 100 < own['health'] <= 10000, own
+                case['manualSampleHealth'][client] = own['health']
         case['mapRules'] = map_rules_audit(map_id, initial)
         case['friendlyFire'] = {'selected': map_id == 'de_inferno', 'initial': initial['options'].get('friendlyFire', False), 'waitingHostOnly': True}
         case['purchase'] = ground_equipment_audit('main', map_id) if map_id == 'fy_iceworld' else buy_audit('main', map_id, mobile=map_id == 'de_aztec')
