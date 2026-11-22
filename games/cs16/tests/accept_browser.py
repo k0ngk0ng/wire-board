@@ -463,8 +463,12 @@ def cleanup_room():
         browser('main', 'find', 'role', 'button', 'click', '--name', '确认结束', '--exact')
         wait_for(lambda: room()['status'] != 'playing')
     for client in ['watch', 'peer', 'main']:
+        selected = room(client)
+        if selected and selected.get('game', {}).get('finished'):
+            wait_for(lambda: evaluate(client, '!!document.querySelector("button.result-review,button.result-reopen")'))
         if evaluate(client, '!!document.querySelector("button.result-review")'):
             browser(client, 'click', 'button.result-review')
+            wait_for(lambda: evaluate(client, '!document.querySelector(".match-result-modal")'))
         current = room(client)
         if current and current.get('spectating'):
             browser(client, 'find', 'role', 'button', 'click', '--name', '离开观战', '--exact')

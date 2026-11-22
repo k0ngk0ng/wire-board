@@ -1190,7 +1190,7 @@ function App() {
                                 result={
                                   room.game?.finished && (
                                     <ResultOverlay
-                                      key={`${room.id}:${room.result?.id || "finished"}`}
+                                      key={`${room.id}:${room.matchId || room.result?.id || "finished"}`}
                                       busy={busy}
                                       onReturn={
                                         !room.spectating &&
