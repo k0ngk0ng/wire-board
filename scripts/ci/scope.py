@@ -424,8 +424,13 @@ def plan(paths, games, manual='', legacy_sources=None, contra_campaigns=False, v
         if manual != 'shared':
             for game in games if manual == 'all' else [manual]: add(game, True)
     for game in resume_games:
-        if game not in games: raise ValueError('Unknown resumed game: ' + game)
-        add(game, True)
+        backend = True
+        if isinstance(game, dict):
+            if set(game) != {'game', 'backend'} or type(game['backend']) is not bool:
+                raise ValueError('Invalid resumed game scope')
+            game, backend = game['game'], game['backend']
+        if game not in games: raise ValueError('Unknown resumed game: ' + str(game))
+        add(game, backend)
     rows = [{'game': g, 'backend': selected[g]} for g in sorted(selected)]
     matrix = []
     for row in rows:
@@ -479,12 +484,14 @@ def resume_selection(proof, head, base, games):
     pending = proof.get('pendingGames', [])
     reused = [row['game'] for row in proof.get('reusedGames', [])]
     required = games
+    verified_scopes = {}
     if proof.get('verifiedBase'):
         verified = proof['verifiedBase']
         if not re.fullmatch(r'[a-f0-9]{40}', verified) or subprocess.run(['git', 'merge-base', '--is-ancestor', verified, base], cwd=ROOT, capture_output=True).returncode:
             raise ValueError('Resume verified baseline is not an ancestor')
         paths = subprocess.check_output(['git', 'diff', '--no-renames', '--name-only', verified, head], cwd=ROOT, text=True).splitlines()
-        required = sorted(row['game'] for row in plan(paths, games)['games'])
+        verified_scopes = {row['game']: row['backend'] for row in plan(paths, games)['games']}
+        required = sorted(verified_scopes)
         if proof.get('requiredGames') != required:
             raise ValueError('Resume required games differ from the verified baseline')
     if proof.get('head') != head or proof.get('base') != base or len(set(pending + reused)) != len(pending + reused) or set(pending + reused) != set(required):
@@ -498,7 +505,7 @@ def resume_selection(proof, head, base, games):
     forced = proof.get('forceBackendGames', pending)
     if not isinstance(forced, list) or not set(forced).issubset(pending):
         raise ValueError('Resume backend requirements differ from pending games')
-    return [game for game in pending if game not in changed or game in forced]
+    return [{'game': game, 'backend': False} if verified_scopes.get(game) is False and game not in forced else game for game in pending if game not in changed or game in forced]
 
 def owner(path, name, games):
     parts = path.parts

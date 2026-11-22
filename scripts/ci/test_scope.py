@@ -40,6 +40,17 @@ class ScopeTests(unittest.TestCase):
         result = scope.plan(paths, games, resume_games=resumed)
         self.assertEqual(result['games'], [{'game': 'cs16', 'backend': False}])
 
+    def test_public_test_retry_preserves_pending_frontend_lane(self):
+        games = scope.game_names(ROOT)
+        original = 'games/cs16/web/style.css'
+        latest = ['web/tests/browser.test.mjs']
+        for forced, backend in [([], False), (['cs16'], True)]:
+            proof = {'eligible': True, 'head': 'a' * 40, 'base': 'b' * 40, 'verifiedBase': 'c' * 40, 'requiredGames': ['cs16'], 'pendingGames': ['cs16'], 'reusedGames': [], 'forceBackendGames': forced}
+            with patch.object(scope.subprocess, 'run', return_value=SimpleNamespace(returncode=0)), patch.object(scope.subprocess, 'check_output', side_effect=[original, '\n'.join(latest)]):
+                resumed = scope.resume_selection(proof, proof['head'], proof['base'], games)
+            result = scope.plan(latest, games, resume_games=resumed)
+            self.assertEqual(result['games'], [{'game': 'cs16', 'backend': backend}])
+
     def test_cs16_race_contract_keeps_ordinary_performance_budget_separate(self):
         normal = scope.go_commands(ROOT, 'cs16')
         raced = scope.go_commands(ROOT, 'cs16', race=True)
