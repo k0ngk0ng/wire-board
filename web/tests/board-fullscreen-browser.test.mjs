@@ -15,7 +15,7 @@ test('shared fullscreen uses overlay controls and maximizes five proportional ch
   assert.match(name, /^[a-z0-9]+(?:-[a-z0-9]+)*$/);
   const out = path.join(root, '.local/room-tools-followup/verification/fullscreen', name);
   const temporary = path.join(out, 'temporary');
-  const environment = { ...process.env, TMPDIR: path.join(temporary, 'tmp'), XDG_CACHE_HOME: path.join(temporary, 'cache'), XDG_CONFIG_HOME: path.join(temporary, 'config'), XDG_DATA_HOME: path.join(temporary, 'data'), AGENT_BROWSER_PROFILE: path.join(temporary, 'profile'), AGENT_BROWSER_SOCKET_DIR: path.join(root, '.local/room-tools-followup/s'), AGENT_BROWSER_NO_VERSION_CHECK: '1' };
+  const environment = { ...process.env, TMPDIR: path.join(root, '.local/chft', process.pid.toString(36)), XDG_CACHE_HOME: path.join(temporary, 'cache'), XDG_CONFIG_HOME: path.join(temporary, 'config'), XDG_DATA_HOME: path.join(temporary, 'data'), AGENT_BROWSER_PROFILE: path.join(temporary, 'profile'), AGENT_BROWSER_SOCKET_DIR: path.join(root, '.local/room-tools-followup/s'), AGENT_BROWSER_NO_VERSION_CHECK: '1' };
   for (const directory of [out, temporary, environment.TMPDIR, environment.XDG_CACHE_HOME, environment.XDG_CONFIG_HOME, environment.XDG_DATA_HOME, environment.AGENT_BROWSER_PROFILE, environment.AGENT_BROWSER_SOCKET_DIR]) await mkdir(directory, { recursive: true });
   const execute = promisify(execFile);
   const session = (await execute('agent-browser', ['session', 'id', '--scope', 'worktree', '--prefix', 'chfs'], { cwd: root, env: environment })).stdout.trim();
@@ -46,6 +46,7 @@ test('shared fullscreen uses overlay controls and maximizes five proportional ch
   const check = (name, passed, detail) => { report.checks.push({ name, passed: !!passed, detail }); };
   let socket;
   try {
+    if (process.platform === 'linux') assert.ok(Buffer.byteLength(path.join(environment.TMPDIR, 'com.google.Chrome.123456/SingletonSocket')) < 108, 'Chromium singleton socket exceeds the Linux pathname limit');
     await browser('open', server.resolvedUrls.local[0]);
     await browser('wait', '--fn', 'window.fullscreenBoardProbe?.ready===true');
     const endpoint = await browser('get', 'cdp-url');
@@ -186,5 +187,6 @@ test('shared fullscreen uses overlay controls and maximizes five proportional ch
     await browser('close').catch(() => {});
     await server.close();
     await rm(temporary, { recursive: true, force: true });
+    await rm(environment.TMPDIR, { recursive: true, force: true });
   }
 });
