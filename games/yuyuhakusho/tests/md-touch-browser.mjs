@@ -47,9 +47,16 @@ try {
     return value.result.value;
   };
   await call("Emulation.setTouchEmulationEnabled", { enabled: true, maxTouchPoints: 5 }, sessionId);
+  await evaluate("document.getElementById('overlay').click();true");
   for (const [width, height] of [[320, 640], [844, 390]]) {
     await call("Emulation.setDeviceMetricsOverride", { width, height, deviceScaleFactor: 1, mobile: true }, sessionId);
     await evaluate("new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))");
+    const overlay = await evaluate(`(()=>{const screen=document.querySelector('.yuyu-screen');const controller=document.querySelector('.yuyu-controller');const boxes=[...controller.querySelectorAll('[data-controller-button]')].map(element=>({name:element.dataset.controllerButton,rect:element.getBoundingClientRect().toJSON(),background:getComputedStyle(element).backgroundColor}));return {position:getComputedStyle(controller).position,screen:screen.getBoundingClientRect().toJSON(),boxes}})()`);
+    assert.equal(overlay.position, "absolute", "MD controls still reserve a separate game row");
+    assert.ok(overlay.boxes.every(value => value.rect.width >= 44 && value.rect.height >= 44), "MD overlay has undersized controls");
+    assert.ok(overlay.boxes.every(value => value.rect.left >= overlay.screen.left && value.rect.right <= overlay.screen.right && value.rect.top >= overlay.screen.top && value.rect.bottom <= overlay.screen.bottom), "MD overlay escapes the game area");
+    assert.ok(overlay.boxes.every(value => value.background.startsWith("rgba(")), "MD overlay is not translucent");
+    result.checks.push({ width, height, overlay });
     const rects = await evaluate(`Object.fromEntries(['[data-controller-dpad]','[data-controller-button=a]','[data-controller-button=b]','[data-controller-button=c]','[data-controller-button=x]','[data-controller-button=y]'].map(selector=>[selector,document.querySelector(selector).getBoundingClientRect().toJSON()]))`);
     const contact = (id, selector, fraction = 0.5) => { const rect = rects[selector]; return { id, x: rect.x + rect.width * fraction, y: rect.y + rect.height / 2, radiusX: 3, radiusY: 3, force: 1 }; };
     const direction = contact(0, "[data-controller-dpad]", 0.2);

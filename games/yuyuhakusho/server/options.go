@@ -55,13 +55,11 @@ func strictOptionsObject(raw json.RawMessage, allowed ...string) (map[string]jso
 	return fields, nil
 }
 func defaultOptions(capacity int) Options {
-	roster := []uint8{3, 1, 9}
-	if capacity == 2 {
-		roster = []uint8{3, 9}
-	} else if capacity == 4 {
-		roster = []uint8{3, 1, 0, 10}
+	roster := make([]uint8, capacity)
+	for seat := range roster {
+		roster[seat] = 255
 	}
-	return Options{Characters: append([]uint8(nil), roster...)}
+	return Options{Arena: 65535, Characters: roster}
 }
 func validateOptions(capacity int, o Options) error {
 	if capacity < 2 || capacity > 4 || len(o.Characters) != capacity || o.TeamBattle && capacity != 4 || o.OneVsThree && !o.TeamBattle {

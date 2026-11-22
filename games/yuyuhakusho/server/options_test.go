@@ -24,8 +24,13 @@ func waitingOptionsTest(t *testing.T, n int, raw string) Options {
 func TestWaitingOptionsCapacityArenaAndCharacters(t *testing.T) {
 	for _, n := range []int{2, 3, 4} {
 		o := waitingOptionsTest(t, n, "")
-		if len(o.Characters) != n || o.TeamBattle || o.Arena != 0 {
+		if len(o.Characters) != n || o.TeamBattle || o.Arena != 65535 {
 			t.Fatal("incomplete room defaults", n, o)
+		}
+		for _, character := range o.Characters {
+			if character != 255 {
+				t.Fatal("new room character must default to random", n, o)
+			}
 		}
 		var raw json.RawMessage
 		for _, arena := range []uint16{0, 2, 4, 6, 8, 10, 12, 14} {

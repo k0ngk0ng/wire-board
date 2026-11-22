@@ -5,7 +5,7 @@ import { Cover } from "./Cover";
 import { OptionsForm } from "./Options";
 import { Preparation } from "./Preparation";
 import { Rules } from "./Rules";
-import { characters, teamGroups } from "./labels";
+import { characters, defaults, randomArena, teamGroups } from "./labels";
 import type { NetworkView, GameOptions } from "./types";
 export default defineGame<NetworkView, GameOptions>({
   ...catalog,
@@ -18,7 +18,7 @@ export default defineGame<NetworkView, GameOptions>({
     groups: (room, data) =>
       teamGroups(data?.options ?? (room.options as GameOptions | undefined)),
   },
-  defaultOptions: { arena: 0, teamBattle: false, characters: [3, 9] },
+  defaultOptions: { arena: randomArena, teamBattle: false, characters: defaults(2) },
   resources: () => [],
   Board,
   Cover,

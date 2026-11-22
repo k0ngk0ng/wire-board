@@ -6,6 +6,7 @@ import { WireSelfObserver } from './wire-self-observer.mjs';
 import { withProxyReconnect } from './browser-network-control.mjs';
 import { createPixelProbe } from './gpu-pixel-probe.mjs';
 import { nativeLifeInterrupted } from './native-life.mjs';
+import { auditPlayability } from './playability-audit.mjs';
 
 const input = JSON.parse(readFileSync(0, "utf8"));
 const { endpoint, pageURL, options = {} } = input;
@@ -611,7 +612,7 @@ try {
   report.functionalPassed = true;
   report.passed = !report.performanceFailures?.length;
   const photograph = async name => {
-    const clip = await evaluate("({x:0,y:0,width:innerWidth,height:innerHeight,scale:1})");
+    const clip = await evaluate("({x:scrollX,y:scrollY,width:innerWidth,height:innerHeight,scale:1})");
     const picture = await call("Page.captureScreenshot", { format: "png", clip, captureBeyondViewport: true });
     const pixels = Buffer.from(picture.data, "base64");
     assert.equal(pixels.readUInt32BE(16), clip.width, "screenshot width does not match the observed viewport");
@@ -710,6 +711,7 @@ try {
     await settle();
     report.passed = report.passed && !report.layoutFailures?.length;
   }
+  if (options.playabilityAudit) await auditPlayability({ call, evaluate, view, photograph, nativeClick, settle, waitMode, wait, report, output });
   }
 } catch (error) {
   report.passed = false;

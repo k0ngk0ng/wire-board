@@ -27,8 +27,6 @@ type Props = Pick<
   controllerDisabled?: boolean;
 };
 
-/** Development-ready game surface, not a lobby/room framework. The final Board
- * supplies its platform profile, audio port, loader callbacks and transport. */
 export function RuntimeBoard(props: Props) {
   const root = useRef<HTMLDivElement>(null),
     canvas = useRef<HTMLCanvasElement>(null),
@@ -79,7 +77,6 @@ export function RuntimeBoard(props: Props) {
         root.current!.dataset.visualFrame = value.frame;
         root.current!.dataset.visualRevision = value.revision;
         root.current!.dataset.predicted = String(predicted);
-        // Drawing diagnostics are separate from verified public state/digest.
         root.current!.dataset.visualPlayers = JSON.stringify(value.players);
       },
       onError: (e) => {
@@ -123,13 +120,13 @@ export function RuntimeBoard(props: Props) {
   }, [props.profile]);
   return (
     <div
-      className="contra-runtime"
+      className="contra-runtime touch-controller-stage"
       ref={root}
       tabIndex={-1}
       data-game-focus
       data-contra-runtime
     >
-      <div className="contra-runtime-screen">
+      <div className="contra-runtime-screen touch-controller-picture">
         <canvas
           ref={canvas}
           width={256}
@@ -143,9 +140,9 @@ export function RuntimeBoard(props: Props) {
           </div>
         )}
       </div>
-      {error && <p role="alert">{error}</p>}
+      {error && <button type="button" onClick={() => window.location.reload()}>重新加载</button>}
       {props.showController !== false && (
-        <div className="contra-runtime-controller">
+        <div className="contra-runtime-controller touch-controller-overlay">
           <FCController
             profile={props.profile}
             mode="play"

@@ -69,8 +69,6 @@ export function Board(props: BoardProps<NetworkView>) {
     if (ready) props.onReady?.();
   }, [ready, props.onReady]);
   useEffect(() => {
-    // The public host gate opens first. Game-owned readiness must never become
-    // an action while another browser is still completing that public gate.
     if (
       !ready ||
       error ||
@@ -253,13 +251,13 @@ export function Board(props: BoardProps<NetworkView>) {
   return (
     <div
       ref={root}
-      className="yuyu-board"
+      className="yuyu-board touch-controller-stage"
       data-yuyu-board
       tabIndex={0}
       data-game-focus
       aria-label="魔强统一战比赛画面"
     >
-      <div className="yuyu-screen">
+      <div className="yuyu-screen touch-controller-picture">
         <canvas
           ref={canvas}
           width={320}
@@ -274,8 +272,7 @@ export function Board(props: BoardProps<NetworkView>) {
         )}
       </div>
       {error ? (
-        <div className="yuyu-status" role="alert">
-          <span>{error}</span>
+        <div className="yuyu-status">
           <button type="button" onClick={() => setRetry((value) => value + 1)}>
             重新连接
           </button>
@@ -286,7 +283,7 @@ export function Board(props: BoardProps<NetworkView>) {
         </p>
       ) : null}
       {profile && !watching && (
-        <div className="yuyu-controller">
+        <div className="yuyu-controller touch-controller-overlay">
           <MDController
             profile={profile}
             mode="play"

@@ -5,6 +5,7 @@ import {
 } from "./pointer-controller";
 import background from "./assets/md-controller.svg";
 import "./md-controller.css";
+import "./touch-overlay.css";
 
 export type MDControllerProps = {
   profile: ControllerProfile;

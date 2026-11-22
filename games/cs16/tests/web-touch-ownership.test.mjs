@@ -35,6 +35,20 @@ function pointer(source, type, pointerId, clientX = 0, clientY = 0) {
   return event;
 }
 
+test('viewport changes release both thumbs without reviving contacts after a fold', () => {
+  const view = fixture();
+  view.input.press(1, 'move', 0, 0, view.target('move'));
+  view.input.move(1, 24, 0);
+  view.input.press(2, 'fire', 100, 100, view.target('fire'));
+  view.source.dispatchEvent(new Event('resize'));
+  assert.deepEqual(view.input.sample(), { moveX: 0, moveY: 0, actions: new Set() });
+  assert.equal(view.input.owns(1), false);
+  assert.equal(view.input.owns(2), false);
+  pointer(view.source, 'pointermove', 1, 50, 0);
+  assert.equal(view.input.sample().moveX, 0);
+  view.dispose();
+});
+
 test('locked mouse hands off once and publishes the first touch before delayed unlock or capture', () => {
   const view = fixture(true);
   const move = view.target('move');

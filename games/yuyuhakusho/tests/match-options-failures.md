@@ -9,5 +9,8 @@
 - 真人与电脑混合、托管与手动接管、恢复后的队伍或已抽取选择变化；电脑不能完成一对三整局。
 - 创建、准备、对局与玩法速查的赛制不一致；队友只靠席位顺序猜测；手机上队伍、玩家名、随机图示或菜单溢出。
 - 新增或修改的 Go、TypeScript、TSX、CSS、MJS 文件未登记 lint 范围；注释、错误文件名、目录或标识符未被拒绝。
+- 新建房间或切换人数后恢复固定场地、固定角色；创建表单与服务端空配置均须默认随机，明确选择仍原样保留。
+- MD 触控区仍占用独立的全屏高度，战场没有扩大；横屏按钮不在游戏区内，或不透明底板遮住角色。用户明确要求手机使用游戏内半透明浮层，竖屏须留出不会挡住角色和体力条的操作空间。
+- 浮层六键或方向键小于 44 px、越过安全区、被原生全屏工具栏或聊天挡住；方向、多个攻击、滑动换键和单指抬起的原生输入验收必须保持通过。
 
 复跑入口：服务端 `go test ./games/yuyuhakusho/server`，引擎 `go test ./games/yuyuhakusho/engine -run 'TestOneVsThree|TestChuSession'`，界面 `node games/yuyuhakusho/tests/match-options-browser.mjs`。界面与测试结果保存在 `.local/yuyuhakusho/match-options/`。

@@ -199,8 +199,6 @@ export function Board(props: BoardProps<RoomRuntimeView>) {
       active = false;
       window.removeEventListener("controller-settings-changed", changed);
       publishRuntimeVisible(visibleKey);
-      // RuntimeBoard owns the mounted client's lifetime and drains its final
-      // release before closing transport. A late loader closes its own result.
     };
   }, [identity, retry]);
 
@@ -271,8 +269,7 @@ export function Board(props: BoardProps<RoomRuntimeView>) {
         )
       )}
       {error && (
-        <div className="contra-board-error" role="alert">
-          <p>{error}</p>
+        <div className="contra-board-retry">
           <button
             onClick={() => {
               client.current = undefined;

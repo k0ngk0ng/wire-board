@@ -8,7 +8,7 @@ import type { GameOptions, View } from './types';
 
 export default defineGame<View, GameOptions>({
   ...catalog, assetLoading: 'board', asyncBoard: true, preparationOwnsOptions: true, fullscreenToolbarOverlay: true,
-  playerLayout: { density: 'compact', groups: (room, data) => ['t', 'ct'].map(team => ({ id: team, label: team === 'ct' ? '反恐精英' : '恐怖分子', seats: data?.players.filter(player => player.team === team).map(player => player.seat) ?? [] })) },
+  playerLayout: { density: 'compact', groups: (room, data) => ['t', 'ct'].map(team => { const seats = data?.players.filter(player => player.team === team).map(player => player.seat) ?? []; return { id: team, label: `${team === 'ct' ? 'CT · 反恐精英' : 'T · 恐怖分子'} · ${seats.length} 人`, seats }; }) },
   defaultOptions, Board, Options, Preparation, Rules,
   isInputRelease: action => action.type === 'input' && action.cancel === true && action.moveX === 0 && action.moveY === 0 && action.fire === false && action.secondary === false && action.jump === false && action.crouch === false && action.walk === false && action.reload === false && action.use === false && action.drop === false && !action.select,
   PlayerSummary: ({ room, data, seat }) => {

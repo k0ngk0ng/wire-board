@@ -75,6 +75,7 @@ export function Board(props: BoardProps<View>) {
   const [feed, setFeed] = useState<GameEvent[]>([]);
   const [watch, setWatch] = useState(props.room.you);
   const [locked, setLocked] = useState(false);
+  const [hitUntil, setHitUntil] = useState(0);
   const own = props.data.players.find(player => player.seat === props.room.you);
   const identity = `${props.room.id}:${props.data.epoch}:${props.data.mapId}:${props.room.you}`;
 
@@ -116,6 +117,12 @@ export function Board(props: BoardProps<View>) {
 
   function beginTouch() {
     touchHandoff.current.begin(!!document.pointerLockElement, () => release(), () => document.exitPointerLock());
+  }
+
+  function lockMouse() {
+    if (!canControl() || !canvas.current || document.pointerLockElement === canvas.current) return;
+    root.current?.focus({ preventScroll: true });
+    try { const request = canvas.current.requestPointerLock(); if (request) void request.catch(() => {}); } catch {}
   }
 
   function closeBuy() {
@@ -273,6 +280,7 @@ export function Board(props: BoardProps<View>) {
     }
     const events = cursor.current.consume(props.data.epoch, props.data.eventId, props.data.events ?? []);
     for (const event of events) {
+      if (event.type === 'hit' && event.seat === props.room.you) setHitUntil(performance.now() + 180);
       const feedback = lastFeedback.current;
       const predicted = feedback && event.seat === props.room.you && feedback.kind === eventFeedback(event) && receivedAt.current - feedback.at < 350;
       if (!predicted) renderer.current?.event(event, receivedAt.current, props.room.seats[props.room.you]?.autoPlay ? -1 : props.room.you);
@@ -376,7 +384,7 @@ export function Board(props: BoardProps<View>) {
       drawCount.current++;
       if (canvas.current) {
         canvas.current.__cs16Metrics = metrics.current;
-        canvas.current.__cs16Frame = { at, drawCount: drawCount.current, x: viewPlayer?.x, y: viewPlayer?.y, z: viewPlayer?.z, yaw: viewPlayer?.yaw, pitch: viewPlayer?.pitch, serverFrame: current.data.frame, predictedFrame: prediction.current?.predictedFrame ?? current.data.frame, receivedSeq: player?.receivedSeq ?? 0, appliedSeq: player?.appliedSeq ?? 0, inputWindow: current.inputWindow ?? 0, pending: prediction.current?.pendingCount ?? 0, inputEnabled: canControl(), weapon: viewPlayer?.weapon, life: player?.life, phase: current.data.phase, mapId: current.data.mapId, previousWeapon: weaponHistory.current.previous, currentWeapon: weaponHistory.current.current, controllerActions: [...actionsBefore.current] };
+        canvas.current.__cs16Frame = { at, drawCount: drawCount.current, x: viewPlayer?.x, y: viewPlayer?.y, z: viewPlayer?.z, yaw: viewPlayer?.yaw, pitch: viewPlayer?.pitch, serverFrame: current.data.frame, predictedFrame: prediction.current?.predictedFrame ?? current.data.frame, receivedSeq: player?.receivedSeq ?? 0, appliedSeq: player?.appliedSeq ?? 0, inputWindow: current.inputWindow ?? 0, pending: prediction.current?.pendingCount ?? 0, inputEnabled: canControl(), weapon: viewPlayer?.weapon, life: player?.life, phase: current.data.phase, mapId: current.data.mapId, previousWeapon: weaponHistory.current.previous, currentWeapon: weaponHistory.current.current, controllerActions: [...actionsBefore.current], effects: renderer.current.visualStats };
       }
     } catch (error) {
       initialized.current = false;
@@ -413,7 +421,7 @@ export function Board(props: BoardProps<View>) {
       record(event);
       root.current?.focus({ preventScroll: true });
       if (document.pointerLockElement !== element && event.button === 0) {
-        try { const result = element.requestPointerLock(); if (result) void result.catch(() => {}); } catch { setError('鼠标锁定暂时不可用，可使用方向键转向。'); }
+        lockMouse();
       }
       if (event.button === 0) mouse.current.fire = true;
       if (event.button === 2) mouse.current.secondary = true;
@@ -454,25 +462,25 @@ export function Board(props: BoardProps<View>) {
   const flash = own && (own.flashUntil ?? 0) > frame ? Math.max(0, Math.min(1, (own.flashStrength ?? 1000) / 1000)) : 0;
   const phaseLabel = props.data.finished ? '比赛结束' : props.clock.paused ? '已暂停' : props.data.phase === 'freeze' ? '准备开战' : props.data.phase === 'round_end' ? '回合结束' : props.data.bomb?.planted ? '炸弹已安装' : '';
   const mode = mapMode(props.data.mapId) ?? '';
-  return <div className={`cs16-board${buyOpen ? ' cs16-buying' : ''}`} data-cs16-board data-ready={ready ? 'true' : 'false'} ref={root} tabIndex={-1} aria-label="反恐精英战场">
+  return <div className={`cs16-board${buyOpen ? ' cs16-buying' : ''}`} data-cs16-board data-ready={ready ? 'true' : 'false'} ref={root} tabIndex={-1} aria-label="反恐精英战场" onPointerDownCapture={event => { if (event.pointerType === 'touch' && document.pointerLockElement === canvas.current) { try { beginTouch(); } catch {} } }}>
     <canvas ref={canvas} data-cs16-canvas aria-label={`${mapName(props.data.mapId)}第一人称战场`} />
     {ready && <>
       <div className="cs16-match-hud"><span className="cs16-score-t">T <strong>{props.data.teamScores[0]}</strong></span><div><span>{phaseLabel || `第 ${props.data.round} / ${props.data.options.maxRounds} 回合`}</span><strong>{matchClock(mode, props.data.phase, (props.data.bomb?.planted ? props.data.bomb.explodesAt : props.data.phaseEndsAt) - frame)}</strong></div><span className="cs16-score-ct"><strong>{props.data.teamScores[1]}</strong> CT</span></div>
-      <div className={`cs16-crosshair${zoom ? ' cs16-scoped' : ''}`} aria-hidden="true"><i /><b /></div>
+      <div className={`cs16-crosshair${zoom ? ' cs16-scoped' : ''}${now < hitUntil ? ' cs16-hit-confirmed' : ''}`} aria-hidden="true"><i /><b /></div>
       {!!flash && <div className="cs16-flash" style={{ opacity: flash }} aria-hidden="true" />}
       <div className="cs16-kill-feed">{feed.filter(event => event.frame > frame - 700).map(event => <div key={event.id}><span>{props.room.seats[event.seat]?.name ?? '玩家'}</span><span>{itemName(event.weapon ?? '')}</span><span>{props.room.seats[event.target ?? -1]?.name ?? '玩家'}</span></div>)}</div>
       {own && <>
         <div className="cs16-vitals"><span aria-label={`生命 ${own.health ?? 0}`}>✚ <strong>{own.health ?? 0}</strong></span><span aria-label={`护甲 ${own.armor ?? 0}`}>◇ <strong>{own.armor ?? 0}</strong></span><span className="cs16-money">${own.money ?? 0}</span></div>
         <div className="cs16-ammo"><span>{itemName(own.weapon)}</span><strong>{own.ammo ?? 0}<small> / {own.reserve ?? 0}</small></strong></div>
-        <div className="cs16-inventory" aria-label="携带装备">{inventorySlots(own.inventory ?? [], own.weapon).map(item => <button type="button" key={item.id} data-cs16-select={item.id} aria-label={`切换${item.label === '投掷物' ? `${item.label}：${itemName(item.next)}` : item.label}`} aria-pressed={own.weapon === item.id} disabled={!canControl()} onClick={() => select(item.next)}>{item.label}</button>)}</div>
+        <div className="cs16-inventory" aria-label="携带装备">{inventorySlots(own.inventory ?? [], own.weapon).map(item => <button type="button" key={item.id} data-cs16-select={item.id} data-cs16-slot={weapons.find(weapon => weapon.id === item.id)?.slot ?? (item.id === 'knife' ? 3 : 4)} aria-label={`切换${item.label === '投掷物' ? `${item.label}：${itemName(item.next)}` : item.label}`} aria-pressed={own.weapon === item.id} disabled={!canControl()} onClick={() => select(item.next)}>{item.label}</button>)}</div>
         <div className="cs16-battle-tools"><button type="button" data-cs16-open-buy disabled={!own.alive || props.room.spectating} onClick={openBuy}>购买</button><button type="button" aria-pressed={scoreboard} onClick={() => setScoreboard(value => !value)}>战绩</button></div>
       </>}
       {(!own?.alive || props.room.spectating) && <div className="cs16-spectator"><strong>{own ? '阵亡观战' : '观战'}</strong><select aria-label="观战玩家" value={watch} onChange={event => setWatch(Number(event.target.value))}><option value={-1}>自动选择</option>{observerCandidates(props.data.players, own, !!props.room.spectating).map(player => <option value={player.seat} key={player.seat}>{props.room.seats[player.seat]?.name ?? '玩家'}</option>)}</select></div>}
-      {!locked && own?.alive && !buyOpen && <button type="button" className="cs16-lock-hint" onClick={() => { root.current?.focus({ preventScroll: true }); try { const result = canvas.current?.requestPointerLock(); if (result) void result.catch(() => {}); } catch { setError('无法锁定鼠标'); } }}>点击战场锁定鼠标</button>}
-      {own?.alive && <TouchControls disabled={!canControl()} weapon={own.weapon} weaponState={own.inventory?.find(item => item.id === own.weapon)} useLabel={props.data.bomb?.planted && own.team === 'ct' ? '拆弹' : mode === 'hostage' && own.team === 'ct' ? '营救' : '使用'} native={record} begin={beginTouch} error={setError} interrupted={() => channel.current?.release(facing.current.yaw, facing.current.pitch)} changed={value => { touch.current = value; process.current(true); }} look={(x, y) => { if (!canControl()) return; facing.current.yaw = angle(facing.current.yaw - x * 144); facing.current.pitch = safePitch(facing.current.pitch + y * 96); prediction.current?.face(facing.current.yaw, facing.current.pitch); }} />}
+      {!locked && own?.alive && !buyOpen && !props.room.seats[props.room.you]?.autoPlay && <button type="button" className="cs16-lock-hint" onClick={lockMouse}>点击战场锁定鼠标</button>}
+      {own?.alive && <TouchControls disabled={!canControl()} weapon={own.weapon} weaponState={own.inventory?.find(item => item.id === own.weapon)} useLabel={props.data.bomb?.planted && own.team === 'ct' ? '拆弹' : mode === 'hostage' && own.team === 'ct' ? '营救' : '使用'} buy={openBuy} score={() => setScoreboard(true)} native={record} begin={beginTouch} error={setError} interrupted={() => channel.current?.release(facing.current.yaw, facing.current.pitch)} changed={value => { touch.current = value; process.current(true); }} look={(x, y) => { if (!canControl()) return; facing.current.yaw = angle(facing.current.yaw - x * 144); facing.current.pitch = safePitch(facing.current.pitch + y * 96); prediction.current?.face(facing.current.yaw, facing.current.pitch); }} />}
     </>}
     {scoreboard && <div className="cs16-scoreboard" role="dialog" aria-label="对局战绩"><header><strong>战绩</strong><button type="button" onClick={() => setScoreboard(false)}>返回战场</button></header>{['t', 'ct'].map(team => <section key={team}><h3>{team === 'ct' ? '反恐精英' : '恐怖分子'}</h3>{props.data.players.filter(player => player.team === team).map(player => <div key={player.seat}><span>{props.room.seats[player.seat]?.name ?? '玩家'}{player.alive ? '' : ' · 阵亡'}</span><span>{player.kills} / {player.deaths}</span></div>)}</section>)}</div>}
-    {buyOpen && own && <BuyMenu player={own} prices={loaded.current?.weapons ?? []} mode={mode} allowed={!!props.data.buyAllowed} close={closeBuy} error={error} buy={item => { setError(''); void props.act({ type: 'buy', epoch: props.data.epoch, life: own.life, round: props.data.round, item }).catch(error => setError(error instanceof Error ? error.message : '购买失败')); }} />}
-    {error && !buyOpen && <div className="cs16-error-banner" role="alert"><span>{error}</span>{!initialized.current && <button type="button" onClick={() => setAttempt(value => value + 1)}>重试加载</button>}</div>}
+    {buyOpen && own && <BuyMenu player={own} prices={loaded.current?.weapons ?? []} mode={mode} allowed={!!props.data.buyAllowed} close={closeBuy} error="" buy={item => { setError(''); void props.act({ type: 'buy', epoch: props.data.epoch, life: own.life, round: props.data.round, item }).catch(error => setError(error instanceof Error ? error.message : '购买失败')); }} />}
+    {error && !buyOpen && !initialized.current && <button type="button" className="cs16-retry" onClick={() => setAttempt(value => value + 1)}>重新加载</button>}
   </div>;
 }

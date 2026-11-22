@@ -6,6 +6,7 @@ import type { GameEvent, Player, View } from './types.ts';
 import { eventFeedback, type FeedbackKind } from './feedback.ts';
 import { eyeOffset, smokeRadius, viewModelHand, viewModelVerticalFov, visibleVelocity } from './presentation.ts';
 import { carriedBoneMap, playerPose } from './model-pose.ts';
+import { createMuzzleTexture, mapTextureColorSpace, muzzleAttachments, ShotEffects } from './shot-effects.ts';
 
 type Actor = { root: T.Group; model: T.Object3D; mixer: T.AnimationMixer; clips: T.AnimationClip[]; animation: string; weapon: string; carried?: T.Object3D; carriedBones?: T.Bone[]; carriedSkeletons?: T.Skeleton[]; alive: boolean };
 type Frame = { view: View; at: number };
@@ -31,9 +32,16 @@ export class BattleRenderer {
   private last = 0;
   private muzzleUntil = 0;
   private muzzle: T.Sprite;
+  private effects = new ShotEffects();
+  private pendingShots = 0;
+  private muzzleNodes: T.Object3D[] = [];
+  private weaponShots = 0;
+  private shotOrigin = new T.Vector3();
   private disposed = false;
   private width = 0;
   private height = 0;
+  private ratio = 0;
+  private mapLighting?: T.Texture;
   private textures: T.Texture[] = [];
   private resources: (T.BufferGeometry | T.Material)[] = [];
   private observedSeat = -1;
@@ -48,8 +56,10 @@ export class BattleRenderer {
     this.scene.background = new T.Color('#82949a');
     this.world.rotation.x = -Math.PI / 2;
     this.scene.add(this.world);
+    this.scene.add(this.effects.root);
     this.world.add(new T.HemisphereLight(0xffffff, 0x9b8f72, 2));
     const lightmap = this.texture('lightmap', false);
+    this.mapLighting = lightmap;
     if (lightmap) lightmap.channel = 1;
     const materials = new Map<string, T.MeshBasicMaterial>();
     for (const mesh of assets.map.meshes) {
@@ -69,6 +79,7 @@ export class BattleRenderer {
       geometry.setAttribute('uv', new T.Float32BufferAttribute(mesh.uv, 2));
       geometry.setAttribute('uv1', new T.Float32BufferAttribute(mesh.uv2, 2));
       geometry.computeBoundingSphere();
+      geometry.computeBoundingBox();
       const object = new T.Mesh(geometry, material);
       if (mesh.origin) object.position.fromArray(mesh.origin);
       const rules = assets.rules.brushes as { id: number; origin: { x: number; y: number; z: number }; move: { x: number; y: number; z: number }; kind: string; angle: number; flags: number }[] | undefined;
@@ -110,7 +121,9 @@ export class BattleRenderer {
     this.weaponRoot.quaternion.setFromRotationMatrix(new T.Matrix4().makeBasis(new T.Vector3(0, 0, -1), new T.Vector3(-1, 0, 0), new T.Vector3(0, 1, 0)));
     this.weaponScene.add(this.weaponRoot);
     this.weaponScene.add(new T.HemisphereLight(0xffffff, 0x958c79, 2.5));
-    const muzzleMaterial = new T.SpriteMaterial({ color: '#fff2ac', opacity: 0.9, transparent: true, depthTest: false, blending: T.AdditiveBlending });
+    const muzzleTexture = createMuzzleTexture();
+    this.textures.push(muzzleTexture);
+    const muzzleMaterial = new T.SpriteMaterial({ map: muzzleTexture, color: '#fff2ac', opacity: 0.9, transparent: true, depthTest: false, depthWrite: false, blending: T.AdditiveBlending });
     this.muzzle = new T.Sprite(muzzleMaterial);
     this.muzzle.position.set(3.8, -4, -26);
     this.muzzle.scale.set(4, 4, 1);
@@ -126,12 +139,16 @@ export class BattleRenderer {
     if (this.frames.length > 6) this.frames.shift();
   }
 
+  get visualStats() {
+    return { ...this.effects.stats, muzzle: this.muzzle.visible, muzzleAttachmentCount: this.muzzleNodes.length, lightmapColorSpace: this.mapLighting?.colorSpace };
+  }
+
   shoot(now: number) {
     this.feedback('shot', now);
   }
 
   feedback(kind: FeedbackKind, now: number) {
-    if (kind === 'shot') this.muzzleUntil = now + 70;
+    if (kind === 'shot') { this.muzzleUntil = now + 55; this.pendingShots = Math.min(4, this.pendingShots + 1); this.weaponShots++; }
     if (!this.weapon) return;
     const variant = (this.weaponID === 'm4a1' || this.weaponID === 'usp') && !this.weaponSilenced;
     const pattern = kind === 'shot' ? variant ? /^shoot1_unsil$/i : /^(?:shoot1|fire)$/i : kind === 'slash' ? /^slash|midslash/i : kind === 'stab' ? /^stab/i : kind === 'pin' ? /pullpin/i : kind === 'throw' ? /^throw/i : kind === 'plant' ? /pressbutton/i : kind === 'mode' ? this.weaponSilenced ? /detach_silencer/i : /add_silencer|attach|burst|zoom/i : variant ? /^reload_unsil$/i : /^reload$/i;
@@ -139,6 +156,7 @@ export class BattleRenderer {
   }
 
   event(event: GameEvent, now: number, localSeat: number) {
+    if (event.type === 'hit' && event.seat === localSeat) this.effects.confirmHit();
     const actor = this.actors.get(event.seat);
     if (event.type === 'shot') {
       if (event.seat === localSeat) return;
@@ -155,9 +173,12 @@ export class BattleRenderer {
     const canvas = this.renderer.domElement;
     const width = Math.max(1, canvas.clientWidth);
     const height = Math.max(1, canvas.clientHeight);
-    if (width !== this.width || height !== this.height) {
+    const ratio = Math.min(window.devicePixelRatio || 1, 2);
+    if (width !== this.width || height !== this.height || ratio !== this.ratio) {
       this.width = width;
       this.height = height;
+      this.ratio = ratio;
+      if (this.renderer.getPixelRatio() !== ratio) this.renderer.setPixelRatio(ratio);
       this.renderer.setSize(width, height, false);
       this.camera.aspect = width / height;
       this.weaponCamera.aspect = width / height;
@@ -219,7 +240,21 @@ export class BattleRenderer {
     const hidden = this.actors.get(this.observedSeat);
     if (hidden) hidden.root.visible = false;
     this.dynamic(view);
-    this.muzzle.visible = now < this.muzzleUntil && !!cameraPlayer?.alive;
+    this.effects.update(now);
+    if ((this.pendingShots || now < this.muzzleUntil) && this.muzzleNodes.length) this.muzzleNodes[this.weaponShots % this.muzzleNodes.length].getWorldPosition(this.muzzle.position);
+    while (this.pendingShots > 0) {
+      this.pendingShots--;
+      if (!cameraPlayer?.alive) continue;
+      if (this.muzzleNodes.length) {
+        this.camera.updateMatrixWorld();
+        this.weaponCamera.updateMatrixWorld();
+        this.shotOrigin.copy(this.muzzle.position).project(this.weaponCamera);
+        this.shotOrigin.z = 0.5;
+        this.shotOrigin.unproject(this.camera);
+        this.effects.shoot(this.camera, this.world, now, this.shotOrigin);
+      } else this.effects.shoot(this.camera, this.world, now);
+    }
+    this.muzzle.visible = now < this.muzzleUntil && !!cameraPlayer?.alive && !this.weaponSilenced;
     this.renderer.clear();
     this.renderer.render(this.scene, this.camera);
     if (this.weapon?.root.visible) {
@@ -233,7 +268,7 @@ export class BattleRenderer {
     const image = this.assets.images.get(key);
     if (!image) return;
     const texture = new T.Texture(image);
-    texture.colorSpace = T.SRGBColorSpace;
+    texture.colorSpace = mapTextureColorSpace(key);
     texture.flipY = false;
     texture.magFilter = T.LinearFilter;
     texture.minFilter = T.LinearMipmapLinearFilter;
@@ -300,10 +335,13 @@ export class BattleRenderer {
     if (this.weaponID === id) return;
     if (this.weapon) this.weapon.root.removeFromParent();
     this.weaponID = id;
+    this.weaponShots = 0;
+    this.muzzleNodes = [];
     const key = id === 'mp5navy' ? 'mp5' : id;
     const asset = this.assets.models.get(`v-${key}`);
     if (!asset) { this.weapon = undefined; return; }
     this.weapon = this.actor(asset);
+    this.muzzleNodes = muzzleAttachments(this.weapon.model);
     this.weapon.root.scale.y = viewModelHand(id);
     this.weaponRoot.add(this.weapon.root);
     const variant = (id === 'm4a1' || id === 'usp') && !this.weaponSilenced;
@@ -376,6 +414,7 @@ export class BattleRenderer {
 
   dispose() {
     this.disposed = true;
+    this.effects.dispose();
     for (const actor of this.actors.values()) actor.mixer.stopAllAction();
     this.weapon?.mixer.stopAllAction();
     for (const texture of this.textures) texture.dispose();

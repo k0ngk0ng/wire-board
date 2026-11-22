@@ -50,18 +50,19 @@ export function Preparation({ room, options, host, busy, assets, prepare }: Prep
   const { manifest, error } = useManifest(assets);
   const value = normalizeOptions(options, room.capacity);
   const participating = room.you >= 0 && !room.spectating;
+  const members = (team: string) => room.seats.map((player, seat) => ({ player, seat })).filter(({ seat }) => value.teams[seat] === team);
   return <section className="cs16-preparation" aria-label="反恐精英准备">
     <MapChoices selected={value.map} disabled={busy || !host || !participating} change={map => prepare({ type: 'map', map })} base={assets} manifest={manifest} />
     <Settings value={value} disabled={busy || !host || !participating} change={changes => prepare({ type: 'settings', ...changes })} />
     <div className="cs16-team-grid">{['t', 'ct'].map(team => <section key={team} className={`cs16-team cs16-team-${team}`}>
-      <h3>{team === 'ct' ? '反恐精英' : '恐怖分子'}<span>{value.teams.filter(value => value === team).length} / 5</span></h3>
-      {Array.from({ length: room.capacity }, (_, seat) => seat).filter(seat => value.teams[seat] === team).map(seat => {
-        const player = room.seats[seat];
+      <h3>{team === 'ct' ? 'CT · 反恐精英' : 'T · 恐怖分子'}<span>{members(team).length} / 5</span></h3>
+      {participating && value.teams[room.you] !== team && <button type="button" className="cs16-join-team" disabled={busy || members(team).length >= 5} onClick={() => prepare({ type: 'team', team })}>加入 {team === 'ct' ? 'CT' : 'T'}</button>}
+      {members(team).map(({ player, seat }) => {
         const editable = participating && !!player && !busy && (seat === room.you || host && !!player.bot);
         return <div className="cs16-seat" key={seat}>
-          <strong>{player?.name ?? '等待玩家'}{seat === room.you ? ' · 你' : ''}</strong>
+          <strong>{player.name}{seat === room.you ? ' · 你' : ''}{player.bot ? ' · 电脑' : ''}<span>{player.ready ? '已准备' : '未准备'}</span></strong>
           <select aria-label={`${player?.name ?? '空席'}的造型`} value={value.characters[seat]} disabled={!editable} onChange={event => prepare({ type: 'character', seat, character: event.target.value })}>{characters.filter(character => character.team === team).map(character => <option key={character.id} value={character.id}>{character.name}</option>)}</select>
-          <button type="button" disabled={!editable || value.teams.filter(value => value !== team).length >= 5} aria-label={`${player?.name ?? '空席'}切换队伍`} onClick={() => prepare({ type: 'team', seat, team: team === 'ct' ? 't' : 'ct' })}>换队</button>
+          <button type="button" disabled={!editable || members(team === 'ct' ? 't' : 'ct').length >= 5} aria-label={`${player.name}加入${team === 'ct' ? 'T' : 'CT'}`} onClick={() => prepare({ type: 'team', seat, team: team === 'ct' ? 't' : 'ct' })}>加入 {team === 'ct' ? 'T' : 'CT'}</button>
         </div>;
       })}
     </section>)}</div>

@@ -71,10 +71,14 @@ export function useControllerPointers({
     };
     const touch = (event: TouchEvent) => touchChanged.current(event);
     window.addEventListener("blur", blur);
+    window.addEventListener("resize", blur);
+    window.addEventListener("orientationchange", blur);
     document.addEventListener("visibilitychange", visibility);
     for (const type of ["touchstart", "touchmove", "touchend", "touchcancel"] as const) document.addEventListener(type, touch, { capture: true, passive: false });
     return () => {
       window.removeEventListener("blur", blur);
+      window.removeEventListener("resize", blur);
+      window.removeEventListener("orientationchange", blur);
       document.removeEventListener("visibilitychange", visibility);
       for (const type of ["touchstart", "touchmove", "touchend", "touchcancel"] as const) document.removeEventListener(type, touch, true);
       for (const [id, p] of pointers.current) p.sink.releasePointer(id, true);

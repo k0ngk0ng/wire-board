@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import type { OptionsProps } from "../../../web/src/game-api/module";
 import type { GameOptions } from "./types";
-import { defaults } from "./labels";
+import { defaults, randomArena } from "./labels";
 import { ArenaPicker } from "./ArenaPicker";
 export function OptionsForm({
   value,
@@ -24,7 +24,7 @@ export function OptionsForm({
   return (
     <div className="yuyu-options">
       <ArenaPicker
-        value={value.arena ?? 0}
+        value={value.arena ?? randomArena}
         disabled={disabled}
         onChange={(arena) => onChange({ ...value, arena })}
       />

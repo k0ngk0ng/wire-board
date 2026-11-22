@@ -39,7 +39,7 @@ type buyAction struct {
 }
 
 func Module() gameapi.Module {
-	return gameapi.Module{ID: "cs16", Name: "反恐精英 1.6", MinPlayers: 2, MaxPlayers: 10, Configure: configure, Prepare: prepare, Start: start, Apply: apply, View: project, Realtime: true, RealtimeDeadlineFrames: true, RealtimeDeferredInput: deferredInput, StreamView: streamView, SyncSnapshot: syncSnapshot, OnTimer: onTimer, BotAction: botAction, Reclaim: reclaim, Restore: restore, AcceptStale: acceptStale, IsInputRelease: isInputRelease}
+	return gameapi.Module{ID: "cs16", Name: "反恐精英", MinPlayers: 2, MaxPlayers: 10, Configure: configure, Prepare: prepare, Start: start, Apply: apply, View: project, Realtime: true, RealtimeDeadlineFrames: true, RealtimeDeferredInput: deferredInput, StreamView: streamView, SyncSnapshot: syncSnapshot, OnTimer: onTimer, BotAction: botAction, Reclaim: reclaim, Restore: restore, AcceptStale: acceptStale, IsInputRelease: isInputRelease}
 }
 
 func computerParticipants(ctx gameapi.Context, previous bool) bool {

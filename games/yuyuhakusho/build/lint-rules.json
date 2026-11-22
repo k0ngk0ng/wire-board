@@ -29,17 +29,35 @@
     "games/yuyuhakusho/tests/match-options-browser.mjs",
     "games/yuyuhakusho/tests/match-options-lint.test.mjs",
     "games/yuyuhakusho/platformtest/match_options_e2e_test.go",
-    "games/yuyuhakusho/web/catalog.tsx"
+    "games/yuyuhakusho/web/catalog.tsx",
+    "games/yuyuhakusho/server/options_test.go",
+    "games/yuyuhakusho/server/module_numeric_json_test.go",
+    "games/yuyuhakusho/tests/random-defaults.test.mjs",
+    "games/yuyuhakusho/web/Board.tsx",
+    "web/src/controllers/FCController.tsx",
+    "web/src/controllers/touch-overlay.css",
+    "web/tests/ControllerOverlayFixture.tsx",
+    "web/tests/controller-overlay-browser.mjs",
+    "games/contra/web/runtime-board.tsx",
+    "games/contra/web/Board.tsx",
+    "games/contra/web/runtime.css",
+    "games/basketball/web/Board.tsx",
+    "games/basketball/web/network.css",
+    "games/battlecity/web/Board.tsx",
+    "games/battlecity/web/style.css",
+    "web/src/ui/chat-anchor.ts",
+    "web/src/ui/chat-position.ts",
+    "web/tests/chat-anchor.test.mjs"
   ],
   "languages": {
     ".ts": {
-      "directory": "^(?:web/src/controllers/|games/yuyuhakusho/web/)",
+      "directory": "^(?:web/src/(?:controllers|ui)/|games/yuyuhakusho/web/)",
       "filename": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*\\.ts$",
       "comments": false
     },
     ".tsx": {
-      "directory": "^(?:web/src/controllers/|games/yuyuhakusho/(?:tests|web)/)",
-      "filename": "^(?:[A-Z][A-Za-z0-9]*|module|catalog)\\.tsx$",
+      "directory": "^(?:web/(?:src/controllers|tests)/|games/(?:yuyuhakusho|contra|basketball|battlecity)/(?:tests|web)/)",
+      "filename": "^(?:[A-Z][A-Za-z0-9]*|module|catalog|runtime-board)\\.tsx$",
       "comments": false
     },
     ".mjs": {
@@ -48,7 +66,7 @@
       "comments": false
     },
     ".css": {
-      "directory": "^games/yuyuhakusho/web/",
+      "directory": "^(?:web/src/controllers/|games/(?:yuyuhakusho|contra|basketball|battlecity)/web/)",
       "filename": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*\\.css$",
       "comments": false
     },

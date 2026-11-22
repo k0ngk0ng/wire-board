@@ -5,6 +5,7 @@ import {
 import { keyLabel, type ControllerProfile } from "./input";
 import background from "./assets/fc-controller.svg";
 import "./fc-controller.css";
+import "./touch-overlay.css";
 
 export type FCControllerSink = ControllerSink;
 export type FCControllerProps = {
@@ -42,7 +43,6 @@ const playLabels: Record<string, string> = {
   turboA: "Turbo A",
 };
 
-/** FC faceplate with paired upper turbo controls. Input and turbo timing belong to the platform sink. */
 export function FCController({
   profile,
   bindingLabels,
@@ -53,7 +53,7 @@ export function FCController({
   onRemap,
   sink,
 }: FCControllerProps) {
-  const { active, pointers, press, end, lost, direction, down } =
+  const { active, pointers, press, end, lost, direction, down, surface } =
     useControllerPointers({ profile, mode, disabled, sink });
   const control = (button: string, dpad = false) => {
     const waiting = recording === button;
@@ -102,6 +102,7 @@ export function FCController({
   };
   return (
     <div
+      ref={surface}
       className={`fc-controller fc-${mode}${disabled ? " is-disabled" : ""}`}
       data-controller-layout="fc"
     >

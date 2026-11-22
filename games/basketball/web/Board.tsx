@@ -255,7 +255,7 @@ export function Board(props: BoardProps<BasketballNetworkView>) {
   return (
     <div
       ref={root}
-      className="basketball-board"
+      className="basketball-board touch-controller-stage"
       tabIndex={0}
       data-game-focus
       data-basketball-ready={ready}
@@ -264,7 +264,7 @@ export function Board(props: BoardProps<BasketballNetworkView>) {
       <div className="basketball-screen">
         <p className="basketball-status" role="status">
           {fault
-            ? "比赛运行异常"
+            ? "等待画面就绪"
             : !ready && !error
               ? "正在加载球场…"
               : !connected
@@ -280,8 +280,7 @@ export function Board(props: BoardProps<BasketballNetworkView>) {
           onOpenChange={setCampaignOpen}
         />
         {(error || fault) && (
-          <div className="basketball-error" role="alert">
-            {fault || error}
+          <div className="basketball-retry">
             <button
               onClick={() =>
                 faultNeedsReload
@@ -294,7 +293,7 @@ export function Board(props: BoardProps<BasketballNetworkView>) {
           </div>
         )}
         <div
-          className="basketball-stage"
+          className="basketball-stage touch-controller-picture"
           onPointerDown={() => root.current?.focus({ preventScroll: true })}
         >
           {(!ready || progress.percent < 100 || data.phase === "loading") && (
@@ -330,7 +329,7 @@ export function Board(props: BoardProps<BasketballNetworkView>) {
         </div>
       </div>
       {!watching && profile && (
-        <aside className="basketball-controls" aria-label="游戏控制器">
+        <aside className="basketball-controls touch-controller-overlay" aria-label="游戏控制器">
           <FCController
             profile={profile}
             mode="play"

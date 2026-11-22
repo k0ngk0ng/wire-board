@@ -322,3 +322,35 @@
     width: 100%;
   }
 }
+@media (pointer: coarse) {
+  .yuyu-board { position: relative; gap: 0; max-width: none; }
+  .game-viewport-fit[data-fit-active]:not([data-fit-fullscreen]) > .yuyu-board { width: 100%; }
+  .yuyu-screen { flex: 1 1 auto; flex-direction: column; width: 100%; height: 100%; padding-bottom: 176px; box-sizing: border-box; }
+  .yuyu-screen canvas { max-height: none; min-height: 0; height: 100%; object-fit: contain; }
+  .yuyu-controller { --md-safe-left: max(10px, env(safe-area-inset-left)); --md-safe-right: max(10px, env(safe-area-inset-right)); --md-safe-bottom: max(12px, env(safe-area-inset-bottom)); position: absolute; inset: 0; width: 100%; height: 100%; padding: 0; pointer-events: none; z-index: 3; }
+  .yuyu-controller .md-controller, [data-room-fullscreen] .yuyu-controller .md-controller { width: 100%; max-width: none; height: 100%; }
+  .yuyu-controller .md-faceplate { width: 100%; height: 100%; aspect-ratio: auto; }
+  .yuyu-controller .md-background { display: none; }
+  .yuyu-controller .md-dpad { top: auto; left: var(--md-safe-left); bottom: var(--md-safe-bottom); width: 132px; height: 132px; pointer-events: auto; }
+  .yuyu-controller .md-control { min-width: 44px; min-height: 44px; font-size: 16px; color: #fff; background: #1b2933bf; border-color: #e2ecf0a6; box-shadow: 0 1px 3px #0008; text-shadow: 0 1px 2px #000; pointer-events: auto; }
+  .yuyu-controller .md-control:disabled { color: #e1e5e8; background: #1b2933bf; }
+  .yuyu-controller .md-control.is-pressed { color: #14212c; background: #e1eaf2d9; text-shadow: none; box-shadow: inset 0 0 0 2px #fff9; }
+  .yuyu-controller .md-x, .yuyu-controller .md-y, .yuyu-controller .md-z, .yuyu-controller .md-a, .yuyu-controller .md-b, .yuyu-controller .md-c { left: auto; top: auto; width: 44px; height: 44px; }
+  .yuyu-controller .md-a, .yuyu-controller .md-b, .yuyu-controller .md-c { bottom: calc(var(--md-safe-bottom) + 60px); }
+  .yuyu-controller .md-x, .yuyu-controller .md-y, .yuyu-controller .md-z { bottom: calc(var(--md-safe-bottom) + 112px); }
+  .yuyu-controller .md-x, .yuyu-controller .md-a { right: calc(var(--md-safe-right) + 104px); }
+  .yuyu-controller .md-y, .yuyu-controller .md-b { right: calc(var(--md-safe-right) + 52px); }
+  .yuyu-controller .md-z, .yuyu-controller .md-c { right: var(--md-safe-right); }
+  .yuyu-controller .md-mode, .yuyu-controller .md-start { top: auto; bottom: var(--md-safe-bottom); width: 44px; height: 44px; font-size: 10px; border-radius: 8px; }
+  .yuyu-controller .md-mode { left: auto; right: calc(var(--md-safe-right) + 104px); }
+  .yuyu-controller .md-start { left: auto; right: calc(var(--md-safe-right) + 52px); }
+  [data-room-fullscreen] .yuyu-board { width: 100%; height: 100%; max-width: none; }
+}
+@media (pointer: coarse) and (orientation: landscape) {
+  .yuyu-screen { padding-bottom: 0; }
+  .yuyu-controller .md-a, .yuyu-controller .md-b, .yuyu-controller .md-c { bottom: var(--md-safe-bottom); }
+  .yuyu-controller .md-x, .yuyu-controller .md-y, .yuyu-controller .md-z { bottom: calc(var(--md-safe-bottom) + 52px); }
+  .yuyu-controller .md-mode, .yuyu-controller .md-start { right: auto; bottom: calc(var(--md-safe-bottom) + 144px); }
+  .yuyu-controller .md-mode { left: var(--md-safe-left); }
+  .yuyu-controller .md-start { left: calc(var(--md-safe-left) + 52px); }
+}

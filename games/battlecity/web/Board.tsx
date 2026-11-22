@@ -76,7 +76,7 @@ function hpPips(tank: TankView) {
   ));
 }
 
-function TeamHud({
+export function TeamHud({
   room,
   view,
   team,
@@ -97,6 +97,7 @@ function TeamHud({
         viewer >= 0 && view.tanks[viewer]?.team === team ? "is-yours" : ""
       }`}
       data-battlecity-team={team}
+      data-touch-protected
     >
       <div className="bc-team-title">
         <span
@@ -244,7 +245,7 @@ function SelectPanel({
   );
 }
 
-function TouchPad({
+export function TouchPad({
   enabled,
   onMove,
   onFire,
@@ -254,6 +255,15 @@ function TouchPad({
   onFire: (fire: boolean) => void;
 }) {
   const pointer = useRef<number | null>(null);
+  const latest = useRef({ onMove, onFire });
+  latest.current = { onMove, onFire };
+  const firePointer = useRef<number | null>(null);
+  useEffect(() => {
+    const clear = () => { pointer.current = null; firePointer.current = null; latest.current.onMove("none"); latest.current.onFire(false); };
+    window.addEventListener("resize", clear);
+    window.addEventListener("orientationchange", clear);
+    return () => { window.removeEventListener("resize", clear); window.removeEventListener("orientationchange", clear); };
+  }, []);
   const update = (event: ReactPointerEvent<HTMLDivElement>) => {
     const rect = event.currentTarget.getBoundingClientRect();
     onMove(padDirection(event.clientX, event.clientY, rect));
@@ -277,7 +287,6 @@ function TouchPad({
       event.currentTarget.releasePointerCapture(event.pointerId);
     onMove("none");
   };
-  const firePointer = useRef<number | null>(null);
   return (
     <div className="bc-touch-controls" aria-label="触屏操作" data-game-controls>
       <div
@@ -285,6 +294,7 @@ function TouchPad({
         role="group"
         aria-label="方向控制"
         data-battlecity-dpad="1"
+        data-touch-control="direction"
         onPointerDown={down}
         onPointerMove={move}
         onPointerUp={end}
@@ -304,6 +314,7 @@ function TouchPad({
         disabled={!enabled}
         aria-label="开火"
         data-battlecity-fire="1"
+        data-touch-control="fire"
         onPointerDown={(event) => {
           if (!enabled || event.button !== 0) return;
           event.preventDefault();
@@ -511,8 +522,6 @@ export function Board(props: BoardProps<View>) {
         : (heldMoves.current[heldMoves.current.length - 1] ?? "none");
     const fire = touchFire.current || keysFire.current.size > 0;
     inputRef.current.set({ move, fire } as Control);
-    // A quick keyboard or touch tap is sent immediately; the interval below
-    // only handles throttled changes, heartbeats and post-flight releases.
     sendOne(true);
   }, [sendOne]);
 
@@ -527,8 +536,6 @@ export function Board(props: BoardProps<View>) {
       touchMove.current = move;
       applyControls();
       if (move === "none") {
-        // A quick tap must survive the 40 ms sender interval; holding a
-        // direction still updates immediately and releases after this latch.
         touchTimers.current.push(
           window.setTimeout(() => {
             touchMove.current = "none";
@@ -859,8 +866,7 @@ export function Board(props: BoardProps<View>) {
         </>
       )}
       {error && (
-        <div className="bc-error" role="alert">
-          <span>{error}</span>
+        <div className="bc-retry">
           <button
             type="button"
             onClick={() => {

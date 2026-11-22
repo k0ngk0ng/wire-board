@@ -27,10 +27,8 @@ export const arenas = [
   { id: 14, name: "山顶" },
 ] as const;
 export function defaults(capacity: number) {
-  if (capacity === 2) return [3, 9];
-  if (capacity === 3) return [3, 1, 9];
-  if (capacity === 4) return [3, 1, 0, 10];
-  throw Error("比赛支持 2 至 4 人");
+  if (![2, 3, 4].includes(capacity)) throw Error("比赛支持 2 至 4 人");
+  return Array.from({ length: capacity }, () => randomCharacter);
 }
 export function teamGroups(
   options: Pick<GameOptions, "teamBattle" | "oneVsThree"> | undefined,

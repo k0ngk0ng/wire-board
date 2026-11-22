@@ -81,8 +81,36 @@ func configure(capacity int, raw json.RawMessage) (json.RawMessage, error) {
 		if json.Unmarshal(raw, &options) != nil {
 			return nil, errors.New("比赛设置格式无效")
 		}
-		if fields["teams"] != nil && len(options.Teams) != capacity || fields["characters"] != nil && len(options.Characters) != capacity {
+		if len(options.Teams) > 10 || len(options.Characters) > 10 || fields["teams"] != nil && fields["characters"] != nil && len(options.Teams) != len(options.Characters) {
 			return nil, errors.New("队伍和造型数量须与席位一致")
+		}
+		if len(options.Teams) > capacity {
+			options.Teams = options.Teams[:capacity]
+		}
+		allocated := map[string]int{}
+		for _, team := range options.Teams {
+			allocated[team]++
+		}
+		for len(options.Teams) < capacity {
+			team := "t"
+			if len(options.Teams)%2 == 1 {
+				team = "ct"
+			}
+			if allocated[team] >= 5 {
+				if team == "t" {
+					team = "ct"
+				} else {
+					team = "t"
+				}
+			}
+			options.Teams = append(options.Teams, team)
+			allocated[team]++
+		}
+		if len(options.Characters) > capacity {
+			options.Characters = options.Characters[:capacity]
+		}
+		for len(options.Characters) < capacity {
+			options.Characters = append(options.Characters, characterForTeam(options.Teams[len(options.Characters)]))
 		}
 	}
 	if !slices.Contains([]string{"de_dust2", "de_inferno", "de_aztec", "cs_assault", "fy_iceworld", "cs_bloodstrike"}, options.Map) || engine.MapByID(options.Map).ID == "" {
@@ -177,8 +205,24 @@ func prepare(ctx gameapi.PreparationContext, raw, action json.RawMessage) (json.
 			return nil, errors.New("请选择队伍或角色")
 		}
 		if input.Type == "team" {
+			previousTeam := options.Teams[seat]
 			options.Teams[seat] = input.Team
 			options.Characters[seat] = characterForTeam(input.Team)
+			count := 0
+			for _, team := range options.Teams {
+				if team == input.Team {
+					count++
+				}
+			}
+			if count > 5 {
+				for empty := len(ctx.Bots); empty < ctx.Capacity; empty++ {
+					if options.Teams[empty] == input.Team {
+						options.Teams[empty] = previousTeam
+						options.Characters[empty] = characterForTeam(previousTeam)
+						break
+					}
+				}
+			}
 		} else {
 			options.Characters[seat] = input.Character
 		}

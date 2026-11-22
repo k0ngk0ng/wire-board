@@ -290,7 +290,7 @@ def elimination_native(client, map_id, name, touch=False):
         browser(client, 'click', '[data-cs16-board]')
         wait_for(lambda: frame(client) and frame(client).get('inputEnabled') and room(client)['game']['data']['phase'] == 'live', 120)
         label = map_id + '-' + name + ('-attempt' + str(attempt + 1) if attempt else '')
-        result = native(client, label, touch=touch, allow_life_interruption=True, allowAmmoPurchase=map_id != 'fy_iceworld')
+        result = native(client, label, touch=touch, allow_life_interruption=True, allowAmmoPurchase=map_id != 'fy_iceworld', playabilityAudit=map_id == 'cs_bloodstrike' and name == 'desktop-input')
         observations.append(json.loads((OUT / (label + '-native.json')).read_text()))
         measured = sample_summary(observations)
         check_sample_budgets(measured)
@@ -487,7 +487,7 @@ def prepare_room(map_id, mobile=False, dual=False, natural=False):
     browser('peer', 'set', 'viewport', 320 if dual else 1440, 760 if dual else 1000)
     if map_id == 'de_dust2':
         browser('main', 'find', 'role', 'button', 'click', '--name', '创建房间', '--exact')
-        browser('main', 'find', 'role', 'button', 'click', '--name', '反恐精英 1.6', '--exact')
+        browser('main', 'find', 'role', 'button', 'click', '--name', '反恐精英', '--exact')
         browser('main', 'wait', '[data-create-step=setup]')
         browser('main', 'wait', '[data-create-step=setup] select[aria-label="座位上限"]')
         capacity = evaluate('main', 'document.querySelector("[aria-label=座位上限]").value')
@@ -622,6 +622,8 @@ try:
         added = map_id in ADDED_MAPS
         initial = prepare_room(map_id, mobile=map_id == 'de_aztec', dual=added)
         case = {'map': map_id, 'players': len(initial['players']), 'viewport': viewport('main'), 'initial': initial}
+        case['teamHeadings'] = evaluate('main', '[...document.querySelectorAll("[data-player-group]")].map(group=>({label:group.getAttribute("aria-label"),heading:getComputedStyle(group,"::before").content,members:group.querySelectorAll("[data-player-seat]").length}))')
+        assert len(case['teamHeadings']) == 2 and all(group['members'] == 5 and group['label'] in group['heading'] for group in case['teamHeadings']), case['teamHeadings']
         if added:
             case['manualSampleHealth'] = {}
             for client in ['main', 'peer']:

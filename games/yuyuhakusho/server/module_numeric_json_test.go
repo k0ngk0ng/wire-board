@@ -10,9 +10,6 @@ import (
 	"github.com/k0ngk0ng/wire-board/internal/gameapi"
 )
 
-// Failure range before the numeric-array fix: Go []uint8 silently becomes a
-// base64 string in Configure/Prepare/State/View/SyncSnapshot. Go []uint8 decode
-// accepts that string and masks the browser's number[] contract failure.
 func moduleNumericArrayTest(t *testing.T, raw []byte, field string, expected []uint8) {
 	t.Helper()
 	var object map[string]json.RawMessage
@@ -63,6 +60,16 @@ func TestModuleWireUsesNumericSeatAndCharacterArrays(t *testing.T) {
 			if err = json.Unmarshal(match.Data, &stored); err != nil {
 				t.Fatal(err)
 			}
+			state, err := decode(match)
+			if err != nil {
+				t.Fatal(err)
+			}
+			for seat, selected := range expected {
+				if selected != 255 && state.Options.Characters[seat] != selected || state.Options.Characters[seat] > 10 {
+					t.Fatal("random selection was unresolved or a fixed choice changed", state.Options.Characters)
+				}
+			}
+			expected = state.Options.Characters
 			moduleNumericArrayTest(t, stored["options"], "characters", expected)
 			for _, seat := range []int{-1, 0, n - 1} {
 				view, err := mod.View(match, seat)

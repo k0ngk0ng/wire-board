@@ -541,7 +541,6 @@ function App() {
         action,
       )
     ) {
-      setNotice("当前由电脑托管，取消托管后即可继续操作。");
       return;
     }
     const module = gameModule(state.room.kind);
@@ -858,7 +857,7 @@ function App() {
                 onClose={() => setControllerSettingsOpen(false)}
               />
             )}
-            {error && (
+            {error && !state.room && (
               <GameFeedback>
                 <div className="toast error" role="alert">
                   {error}

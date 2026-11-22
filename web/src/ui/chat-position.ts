@@ -6,9 +6,11 @@ import {
   type PointerEvent as ReactPointerEvent,
   type RefObject,
 } from "react";
+import { defaultChatAnchor } from "./chat-anchor";
 
 type Point = { x: number; y: number };
 type Bounds = { left: number; right: number; top: number; bottom: number };
+const touchSelector = ".touch-controller-overlay button, .touch-controller-overlay [data-controller-dpad], [data-touch-control], [data-touch-protected]";
 function boundsFor(root: HTMLElement): Bounds {
   const viewport = window.visualViewport,
     style = getComputedStyle(root);
@@ -21,9 +23,6 @@ function boundsFor(root: HTMLElement): Bounds {
   const toolbar = root
     .querySelector(".game-fullscreen-toolbar")
     ?.getBoundingClientRect();
-  // The chat is a fixed viewport overlay. Safari can shrink the fullscreen
-  // root while panning the visual viewport for the keyboard; intersecting
-  // both rectangles subtracts that keyboard space twice and collapses chat.
   const toolbarBottom =
     toolbar && toolbar.top <= top + 12 && toolbar.bottom > top
       ? toolbar.bottom + 8
@@ -92,12 +91,19 @@ export function useChatPosition(
     if (viewport && (!(viewport.width > 0) || !(viewport.height > 0))) return;
     const bounds = boundsFor(target),
       rect = toggle.current.getBoundingClientRect();
-    const preferred = point.current ?? {
-      x: bounds.right - rect.width,
-      y: bounds.bottom - rect.height,
-    };
+    const obstacles = window.matchMedia("(pointer: coarse)").matches
+      ? Array.from(target.querySelectorAll<HTMLElement>(touchSelector)).filter(element => element.getClientRects().length > 0).map(element => element.getBoundingClientRect())
+      : [];
+    for (const picture of target.querySelectorAll<HTMLElement>(".touch-controller-picture")) {
+      if (getComputedStyle(picture).getPropertyValue("--touch-picture-gutters").trim() === "1") {
+        const canvas = picture.querySelector("canvas");
+        if (canvas) obstacles.push(canvas.getBoundingClientRect());
+      }
+    }
+    const preferred = point.current ?? (obstacles.length
+      ? defaultChatAnchor(bounds, rect.width, rect.height, obstacles)
+      : { x: bounds.right - rect.width, y: bounds.bottom - rect.height });
     const next = clamp(preferred, bounds, rect.width, rect.height);
-    // Resizing for the keyboard is temporary; retain the user's drag anchor.
     setPosition((previous) =>
       previous?.x === next.x && previous.y === next.y ? previous : next,
     );
@@ -149,12 +155,17 @@ export function useChatPosition(
       cancel = () => finish();
     const observer = new ResizeObserver(resized);
     observer.observe(target);
+    const controls = new MutationObserver(records => {
+      if (records.some(record => [...record.addedNodes, ...record.removedNodes].some(node => node instanceof Element && (node.matches(touchSelector) || node.querySelector(touchSelector))))) resized();
+    });
+    controls.observe(target, { childList: true, subtree: true });
     window.addEventListener("resize", resized);
     window.addEventListener("blur", cancel);
     window.visualViewport?.addEventListener("resize", resized);
     window.visualViewport?.addEventListener("scroll", resized);
     return () => {
       observer.disconnect();
+      controls.disconnect();
       window.removeEventListener("resize", resized);
       window.removeEventListener("blur", cancel);
       window.visualViewport?.removeEventListener("resize", resized);
