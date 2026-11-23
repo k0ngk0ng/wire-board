@@ -1,0 +1,16 @@
+@media(pointer:coarse){
+.cs16-ammo,[data-room-fullscreen] .cs16-ammo{top:calc(max(8px,var(--cs16-toolbar-bottom,0px)) + 36px);bottom:auto;right:10px;max-width:none;transform:none;gap:5px;filter:drop-shadow(0 1px 1px #000)}
+.cs16-ammo>.cs16-hud-number,.cs16-ammo>.cs16-hud-sprite,.cs16-ammo>.cs16-ammo-divider{max-width:none;overflow:visible;flex-shrink:0}
+.cs16-money{top:calc(max(8px,var(--cs16-toolbar-bottom,0px)) + 8px)}
+.cs16-touch-utility>[data-cs16-action=reload]{left:calc(var(--cs16-safe-left) + 112px);bottom:calc(var(--cs16-safe-bottom) + 8px)}
+.cs16-touch-utility>[data-cs16-action=flashlight]{left:calc(var(--cs16-safe-left) + 112px);bottom:calc(var(--cs16-safe-bottom) + 60px)}
+.cs16-touch-utility>[data-cs16-controls-menu]{left:var(--cs16-safe-left);bottom:calc(var(--cs16-safe-bottom) + 128px)}
+.cs16-touch-utility>[data-cs16-open-buy]{left:calc(var(--cs16-safe-left) + 52px);bottom:calc(var(--cs16-safe-bottom) + 128px)}
+.cs16-inventory{left:var(--cs16-safe-left);bottom:calc(var(--cs16-safe-bottom) + 180px);width:calc(50% - 20px);max-width:calc(50% - 20px)}
+.cs16-touch-actions{right:var(--cs16-safe-right);bottom:calc(var(--cs16-safe-bottom) + 8px);width:104px;height:104px}
+.cs16-touch-actions button[data-cs16-action=crouch]{right:56px;bottom:0}
+.cs16-touch-actions button[data-cs16-action=jump]{right:0;bottom:0}
+.cs16-touch-actions button[data-cs16-action=secondary]{right:0;bottom:56px}
+.cs16-touch-more-panel{left:var(--cs16-safe-left);bottom:calc(var(--cs16-safe-bottom) + 180px);top:auto;max-height:calc(100% - var(--cs16-safe-bottom) - 196px)}
+.cs16-look-zone{top:calc(max(8px,var(--cs16-toolbar-bottom,0px)) + 68px);bottom:0;width:50%}
+}

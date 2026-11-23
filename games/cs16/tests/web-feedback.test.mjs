@@ -44,10 +44,11 @@ test('location-free global objectives use radio announcements without positional
   assert.equal(announcementSound({ type: 'shot', global: false }), undefined);
 });
 
-test('touch utilities retain flashlight and dropping without adding right-thumb buttons', async () => {
+test('touch utilities expose the flashlight directly and keep dropping inside More', async () => {
   const { readFile } = await import('node:fs/promises');
   const source = await readFile(new URL('../web/TouchControls.tsx', import.meta.url), 'utf8');
   const more = source.slice(source.indexOf('{more &&'), source.indexOf('className="cs16-touch-utility"'));
-  assert.ok(more.includes('data-cs16-action="flashlight"'));
+  assert.ok(!more.includes('data-cs16-action="flashlight"'));
   assert.ok(more.includes('data-cs16-action="drop"'));
+  assert.ok(source.slice(source.indexOf('className="cs16-touch-utility"')).includes('data-cs16-action="flashlight"'));
 });

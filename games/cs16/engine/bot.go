@@ -127,12 +127,12 @@ func BotInput(state *State, seat int) (input Input) {
 		return input
 	}
 	closest, enemyDistance := botVisibleEnemy(state, seat)
-	if closest >= 0 && p.BotEnemy == closest && p.BotSeenAt > 0 && state.Frame-p.BotSeenAt >= 30 {
+	if closest >= 0 && p.BotEnemy == closest && p.BotSeenAt > 0 {
 		var aligned bool
 		input.Yaw, input.Pitch, aligned = botAimAngles(state, seat, closest)
 		input.Select = botBestWeapon(p)
 		weapon, ok := WeaponByID(input.Select)
-		input.Fire = aligned && ok && (weapon.ID != "knife" || enemyDistance < 70*Unit)
+		input.Fire = state.Frame-p.BotSeenAt >= 30 && aligned && ok && (weapon.ID != "knife" || enemyDistance < 70*Unit)
 		if !weapon.Automatic && weapon.ID != "knife" && state.Frame%40 >= 20 {
 			input.Fire = false
 		}
@@ -160,6 +160,9 @@ func BotInput(state *State, seat int) (input Input) {
 		}
 		return input
 	}
+	if point, found := botHearingDestination(state, seat); found {
+		return botInvestigateSound(state, seat, point, input)
+	}
 	goal := position
 	if state.World.Mode == "elimination" {
 		if point, _, found := botDestination(state, seat); found {
@@ -170,8 +173,7 @@ func BotInput(state *State, seat int) (input Input) {
 		if state.Bomb.Planted {
 			goal, _ = botBombDestination(state, seat)
 			if p.Team == "t" && botHorizontalDistance(position, goal) < 240*Unit {
-				input.Yaw = (p.Yaw + 2048) & 65535
-				return input
+				return botGuardInput(state, seat, goal, input)
 			}
 		} else if state.Bomb.Dropped && p.Team == "t" {
 			goal = bombPosition(state.Bomb)
@@ -216,8 +218,7 @@ func BotInput(state *State, seat int) (input Input) {
 				return input
 			}
 			if p.Team == "t" && best < 220*Unit {
-				input.Yaw = (p.Yaw + 2048) & 65535
-				return input
+				return botGuardInput(state, seat, goal, input)
 			}
 		}
 	}
@@ -248,10 +249,13 @@ func botNavigate(state *State, seat int, goal Vec3, escort bool, input Input) In
 		mode = 2
 	}
 	waypoint, flags, connection, committed := botCommittedWaypoint(state, seat, goal, mode)
-	if !committed {
+	escape, escaping := botEscapeWaypoint(state, seat)
+	if escaping {
+		waypoint, flags, connection = escape, 0, 0
+	} else if !committed {
 		waypoint, flags, connection = botWaypointWithRules(state, position, goal, carryingHostages, escort || carryingHostages)
 	}
-	if state.World.Mode == "elimination" {
+	if state.World.Mode == "elimination" && !escaping {
 		direct := TraceWorld(state, position, goal, 0)
 		if !direct.StartSolid && direct.Fraction == NormalUnit {
 			waypoint, flags, connection = goal, 0, 0

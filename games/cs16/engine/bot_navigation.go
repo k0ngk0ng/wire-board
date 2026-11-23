@@ -57,6 +57,13 @@ func botHostageDestination(state *State, player *Player) (Vec3, int) {
 
 func botDestination(state *State, seat int) (Vec3, int, bool) {
 	player := &state.Players[seat]
+	if point, found := botHearingDestination(state, seat); found {
+		mode := 0
+		if state.World.Mode == "hostage" && player.Team == "ct" {
+			mode = 1
+		}
+		return point, mode, true
+	}
 	if state.World.Mode == "elimination" {
 		if point, found := MapWeaponGoal(state, seat); found {
 			return point, 0, true

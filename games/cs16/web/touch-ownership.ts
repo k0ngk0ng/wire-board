@@ -102,6 +102,9 @@ export function bindTouchOwnership(target: EventTarget, lockTarget: EventTarget,
   const lost = (event: Event) => input.lost((event as PointerEvent).pointerId);
   const capture = () => input.capturePending();
   const resize = () => input.clear();
+  const pointerMode = (target as Window).matchMedia?.('(pointer: coarse)');
+  const source = (event: Event) => { if (event.type === 'keydown' || (event as PointerEvent).pointerType === 'mouse') input.clear(); };
+  const editor = (event: Event) => { if (event.target instanceof Element && event.target.closest('input,textarea,select,[contenteditable]:not([contenteditable="false"]),.table-chat,.chat-toggle,.cs16-buy-menu,.cs16-scoreboard')) input.clear(); };
   target.addEventListener(motion, move, { capture: true, passive: false });
   target.addEventListener('pointerup', release, true);
   target.addEventListener('pointercancel', release, true);
@@ -109,6 +112,11 @@ export function bindTouchOwnership(target: EventTarget, lockTarget: EventTarget,
   lockTarget.addEventListener('pointerlockchange', capture);
   target.addEventListener('resize', resize);
   target.addEventListener('orientationchange', resize);
+  pointerMode?.addEventListener('change', resize);
+  target.addEventListener('pointerdown', source, true);
+  target.addEventListener('pointerdown', editor, true);
+  target.addEventListener('keydown', source, true);
+  lockTarget.addEventListener('focusin', editor);
   return () => {
     target.removeEventListener(motion, move, true);
     target.removeEventListener('pointerup', release, true);
@@ -117,6 +125,11 @@ export function bindTouchOwnership(target: EventTarget, lockTarget: EventTarget,
     lockTarget.removeEventListener('pointerlockchange', capture);
     target.removeEventListener('resize', resize);
     target.removeEventListener('orientationchange', resize);
+    pointerMode?.removeEventListener('change', resize);
+    target.removeEventListener('pointerdown', source, true);
+    target.removeEventListener('pointerdown', editor, true);
+    target.removeEventListener('keydown', source, true);
+    lockTarget.removeEventListener('focusin', editor);
     input.clear(false);
   };
 }

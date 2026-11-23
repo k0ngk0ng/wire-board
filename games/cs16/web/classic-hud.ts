@@ -41,14 +41,31 @@ export function soundCues(event: Pick<GameEvent, 'type' | 'weapon' | 'value' | '
   return { files: [], range: 0 };
 }
 
-export function bombBeep(frame: number, explodesAt: number) {
-  const elapsed = frame - (explodesAt - 4500);
-  if (elapsed < 50 || frame >= explodesAt) return;
-  let stage = 1;
-  let boundary = 1100;
-  let interval = 990;
-  while (stage < 5 && elapsed >= boundary) { stage++; boundary += interval; interval = Math.floor(interval * 9 / 10); }
-  return { stage, index: Math.floor((elapsed - 50) / 140) };
+export function decodeBombCue(code: number | undefined) {
+  if (!Number.isSafeInteger(code) || !code || code < 8) return;
+  const stage = code % 8, serial = Math.floor(code / 8);
+  if (stage < 1 || stage > 5 || serial < 1) return;
+  return { serial, stage };
+}
+
+export class BombAudioCursor {
+  private identity = '';
+  private previous = 0;
+  private waiting = true;
+
+  suspend() { this.waiting = true; }
+
+  consume(identity: string, code: number | undefined, enabled: boolean, recovered = false) {
+    const cue = decodeBombCue(code), serial = cue?.serial ?? 0;
+    if (identity !== this.identity) { this.identity = identity; this.previous = serial; this.waiting = !enabled || recovered; return; }
+    if (!enabled || recovered) { this.previous = serial; this.waiting = true; return; }
+    if (this.waiting) { this.previous = serial; this.waiting = false; return; }
+    if (!cue) { this.previous = 0; return; }
+    if (serial <= this.previous) return;
+    const consecutive = serial === this.previous + 1;
+    this.previous = serial;
+    return consecutive ? cue.stage : undefined;
+  }
 }
 
 export function plantClick(frame: number, since: number) {

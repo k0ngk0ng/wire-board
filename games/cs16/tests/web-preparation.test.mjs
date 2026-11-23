@@ -59,11 +59,13 @@ test('Counter-Strike has one platform name and ten seats remain a capacity', () 
   assert.notEqual(catalog.requiresFullTable, true);
 });
 
-test('right thumb keeps three primary actions and utility actions move to the left', () => {
+test('right thumb keeps crouch jump and scope while screen aiming fires', () => {
   for (const weapon of ['ak47', 'awp']) {
     const html = renderTouch(weapon);
     const right = html.slice(html.indexOf('class="cs16-touch-actions"'));
-    assert.ok(right.includes('data-cs16-action="fire"'));
+    assert.ok(!right.includes('data-cs16-action="fire"'));
+    assert.ok(html.includes('data-cs16-fire-area="true"'));
+    assert.ok(html.includes('data-cs16-action="flashlight"'));
     assert.ok(right.includes('data-cs16-action="jump"'));
     assert.ok(right.includes('data-cs16-action="crouch"'));
     assert.equal(right.includes('data-cs16-action="secondary"'), weapon === 'awp');

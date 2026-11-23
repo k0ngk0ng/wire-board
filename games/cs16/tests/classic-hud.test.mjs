@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { actionProgress, soundCues, bombBeep, plantClick, CueCursor } from '../web/classic-hud.ts';
+import { actionProgress, soundCues, plantClick, CueCursor } from '../web/classic-hud.ts';
 
 test('plant and defuse progress clamp authoritative frames and disappear on cancellation', () => {
   const bomb = { planted: false };
@@ -29,11 +29,7 @@ test('purchase confirmation and knife contact choose original distinct samples a
   assert.deepEqual(soundCues({ type: 'hit', hitgroup: 2 }).files, ['player/bhit_flesh-1.wav']);
 });
 
-test('bomb timer schedules bounded local cues without network events or historical catch-up', () => {
-  const early = bombBeep(151, 4600);
-  const late = bombBeep(4401, 4600);
-  assert.ok(early && late);
-  assert.ok(late.stage > early.stage);
+test('model cue cursor avoids old identities and repeated local sounds', () => {
   const cursor = new CueCursor();
   assert.equal(cursor.consume('epoch:1', 'beep:1'), false);
   assert.equal(cursor.consume('epoch:1', 'beep:1'), false);
@@ -41,7 +37,6 @@ test('bomb timer schedules bounded local cues without network events or historic
   assert.equal(cursor.consume('epoch:2', 'beep:2'), false);
   assert.equal(cursor.consume('epoch:2', ''), false);
   assert.equal(cursor.consume('epoch:2', 'beep:3'), true);
-  assert.equal(bombBeep(4100, 4100), undefined);
 });
 
 test('C4 pressbutton sounds follow original MDL event frames', () => {

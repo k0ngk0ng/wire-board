@@ -4,7 +4,7 @@
 
 [PUBG Mobile 官方操作说明](https://pubgmobile.helpshift.com/hc/en/3-pubg-mobile/faq/37-what-are-the-controls/)将左侧移动、空白区域拖动观察、独立攻击和右侧瞄准／蹲跳分开。[官方布局说明](https://pubgmobile.helpshift.com/hc/en/3-pubg-mobile/faq/280-i-want-to-change-the-location-of-the-control-key/)支持按玩家习惯调整控件位置。此次只参考操作分工，没有复制其美术或宣称操作布局完全一致。
 
-反恐精英默认保留独立大开火键，按住后可继续拖动瞄准；左侧换枪和装弹，移动摇杆贴近底部安全边缘。右侧只保留开火、蹲下、跳跃及当前武器需要的开镜。使用、购买、战绩及不常用的武器模式放入「更多」。可选择右侧瞄准区按住开火，左侧移动、换枪、菜单和其他按钮不因此变成射击入口。
+当前反恐精英按用户要求取消独立开火按钮，右侧游戏瞄准区按住即射击并可拖动瞄准，作为唯一触屏开火方式；左侧换枪和装弹，移动摇杆贴近底部安全边缘。购买和手电使用独立按钮，购买仅在权威购买区与购买时段均合法且活人可操作时出现。右侧只保留蹲下、跳跃及当前武器需要的开镜；使用、战绩及不常用的武器模式放入「更多」。控件、库存、聊天和购买菜单不成为射击入口。CS 原版没有触屏布局，本方案属于平台适配。
 
 FC／MD 的游玩浮层只作用于手机触控。宽横屏中，控制器优先放在游戏画面两侧；小视区使用半透明贴底布局，竖屏保留操作空间。PC 和配置页面继续使用原控制器外观。坦克大战沿用方形战场，触控与场地图层共用布局区域，横屏将队伍资源放在两侧。
 
@@ -14,7 +14,7 @@ FC／MD 的游玩浮层只作用于手机触控。宽横屏中，控制器优先
 
 控制器矩阵使用以下 CSS 视区：320 × 760、844 × 390、466 × 678、678 × 466、626 × 890、890 × 626、744 × 1133、1133 × 744、820 × 1180、1180 × 820、1024 × 1366、1366 × 1024。四款游戏共 48 组，每组覆盖普通布局与实际公共 GameFullscreen 壳，共 96 个布局状态；使用真实 Chromium 触摸事件检查双指、滑动换键、单指释放及旋转后的旧触点清理。全屏检查接入实际聊天定位 Hook，验证聊天按钮避让触控和必要画面，并覆盖坦克大战六名玩家的资源栏与方形画布。界面夹具不冒充完整规则比赛。
 
-反恐精英另在正式 HTTP／WebSocket 页面验证左侧换枪、鼠标到触屏接管、可选瞄准区射击、相同画布跨视区与像素密度更新。890 × 626、2 倍像素密度时检查实际 1780 × 1252 绘图缓冲及独立绘图帧率。键鼠 33 ms、用户最新允许的触屏 55 ms 上限和显示预算在原测量窗口执行；截图和额外视区功能检查在原测量结束后进行，并明确记录范围。
+反恐精英早期另在正式 HTTP／WebSocket 页面验证左侧换枪、鼠标到触屏接管、可选瞄准区射击、相同画布跨视区与像素密度更新。890 × 626、2 倍像素密度时检查实际 1780 × 1252 绘图缓冲及独立绘图帧率。键鼠 33 ms、用户最新允许的触屏 55 ms 上限和显示预算在原测量窗口执行；截图和额外视区功能检查在原测量结束后进行，并明确记录范围。
 
 桌面 Chromium 的触屏、尺寸和像素密度仿真不能验证实体 iPhone／iPad 的 Safari、刷新率、温度、续航或 GPU 性能；报告不作这些声明。
 
@@ -31,3 +31,9 @@ FC／MD 的游玩浮层只作用于手机触控。宽横屏中，控制器优先
 - 本次共享控制器、聊天定位及四款消费者的完整文件 lint 范围登记在 `games/yuyuhakusho/build/lint-rules.json`；反恐精英及公共入口新增行的范围登记在 `games/cs16/build/lint-rules.json`。这两项检查不代表全仓库检查。
 
 复跑：`node web/tests/controller-overlay-browser.mjs`、`node games/yuyuhakusho/tests/md-touch-browser.mjs`、`node --test games/cs16/tests/web-shot-effects.test.mjs games/cs16/tests/web-preparation.test.mjs games/cs16/tests/web-touch-ownership.test.mjs`，以及 `python3 -B games/cs16/tests/accept_browser.py`。产物分别位于 `.local/<game-id>/controller-overlay/`、`.local/yuyuhakusho/mobile-controls/` 和 `.local/cs16/verification/playability/`／`browser/reports/`。
+
+## 默认屏幕射击与弹药可读性
+
+本轮先登记 `games/cs16/tests/mobile-controls-scenarios.md` 并运行原生触摸 RED，再修改布局。生产 Board 的 UI 夹具加载实际 HUD 图集（SHA-256 `83bc8d03f0fbc42a8c8c7e1682d03986978b463a0635925017208357cc493a5e`），测得旧手机弹药数字被缩小为 16.25 px。现保留原精灵并恢复至 25 px，移除旧数字容器的裁剪上限，逐个检查数字的可见边界和遮挡。
+
+复跑 `CS16_MOBILE_CONTROLS_REPORT=replay node games/cs16/tests/mobile-controls-browser.mjs`，结果、可信触摸、操作提交记录与截图位于 `.local/cs16/verification/mobile-controls/`。矩阵覆盖 320 px、Duo 内外屏和 Pad 横竖屏的普通页面及公共网页全屏；夹具只替换 GPU 渲染与资源加载，实际 HUD 图集保留，不替代完整规则对局、正式输入延迟或实体设备验收。正式 native/playability 和线上 smoke helper 已迁移到默认瞄准区，不再勾选开火模式或恢复独立开火按钮；原性能门槛不变。

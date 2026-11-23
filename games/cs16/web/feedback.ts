@@ -39,6 +39,7 @@ export class AttackFeedbackQueue {
 
 export function announcementSound(event: { type: string; global?: boolean; value?: number }): string | undefined {
   if (!event.global) return;
+  if (event.type === 'bomb_beep') return Number.isSafeInteger(event.value) && event.value! >= 1 && event.value! <= 5 ? `weapons/c4_beep${event.value}.wav` : undefined;
   if (event.type === 'bomb_planted') return 'radio/bombpl.wav';
   if (event.type === 'bomb_defused') return 'radio/bombdef.wav';
   if (event.type === 'bomb_exploded') return 'weapons/c4_explode1.wav';

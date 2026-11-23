@@ -387,6 +387,7 @@ type State struct {
 	HostageRoutes       []HostageRoute       `json:"hostageRoutes,omitempty"`
 	HostageDamageStates []HostageDamageState `json:"hostageDamageStates,omitempty"`
 	BrushDamageStates   []BrushDamageState   `json:"brushDamageStates,omitempty"`
+	BotMemories         []BotMemory          `json:"botMemories,omitempty"`
 	Grenades            []Grenade            `json:"grenades"`
 	Drops               []Drop               `json:"drops"`
 	Brushes             []BrushState         `json:"brushes"`

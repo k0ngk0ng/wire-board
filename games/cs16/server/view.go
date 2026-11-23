@@ -102,6 +102,7 @@ type View struct {
 	BuyAllowed  bool                 `json:"buyAllowed"`
 	TeamScores  [2]int               `json:"teamScores"`
 	Bomb        engine.Bomb          `json:"bomb"`
+	BombCue     int                  `json:"bombCue,omitempty"`
 	Hostages    []engine.Hostage     `json:"hostages"`
 	Grenades    []engine.Grenade     `json:"grenades"`
 	Drops       []engine.Drop        `json:"drops"`
@@ -214,6 +215,22 @@ func projectedEvent(event engine.Event) EventView {
 	return value
 }
 
+func bombSoundCue(world *engine.State) int {
+	installedAt := world.Bomb.ExplodesAt - 45*engine.FPS
+	if !world.Bomb.Planted || world.Frame < installedAt+50 || world.Frame >= world.Bomb.ExplodesAt {
+		return 0
+	}
+	index := (world.Frame - installedAt - 50) / 140
+	elapsed := 50 + index*140
+	stage, boundary, interval := 1, int64(1100), int64(990)
+	for stage < 5 && elapsed >= boundary {
+		stage++
+		boundary += interval
+		interval = interval * 9 / 10
+	}
+	return int(index+1)*8 + stage
+}
+
 func projection(state *matchState, seat int) View {
 	world := &state.World
 	brushes := world.Brushes
@@ -221,7 +238,8 @@ func projection(state *matchState, seat int) View {
 		brushes = []engine.BrushState{}
 	}
 	value := View{Schema: 1, Epoch: state.Epoch, ServerAt: state.BaseAt + world.Frame*1000/engine.FPS, StartAt: state.BaseAt, Frame: world.Frame, MapID: world.MapID, RulesSHA256: state.RulesSHA256, Options: world.Options, Players: make([]PlayerView, len(world.Players)), Events: []EventView{}, EventID: world.EventID, Round: world.Round, Phase: world.Phase, PhaseEndsAt: world.PhaseEndsAt, BuyEndsAt: world.BuyEndsAt, TeamScores: world.TeamScores, Bomb: world.Bomb, Hostages: []engine.Hostage{}, Grenades: []engine.Grenade{}, Drops: []engine.Drop{}, Brushes: &brushes, Finished: world.Finished, You: seat, CanAct: hasViewSeat(state, seat) && world.Players[seat].Alive && !world.Finished, BuyAllowed: engine.CanBuy(world, seat)}
-	value.Bomb.PickupAt = 0
+	value.BombCue = bombSoundCue(world)
+	value.Bomb.PickupAt, value.Bomb.ExplodesAt = 0, 0
 	value.BuyZone, value.PlantZone = engine.InBuyZone(world, seat), engine.InBombZone(world, seat)
 	value.CatchingUp = state.ObservedAt-value.ServerAt > 200
 	value.CanAct = value.CanAct && !value.CatchingUp

@@ -24,6 +24,7 @@ func stepBotPerception(state *State) {
 	}
 	for seat := range state.Players {
 		player := &state.Players[seat]
+		stepBotMemory(state, seat)
 		if !player.Alive {
 			player.BotEnemy, player.BotSeenAt = -1, 0
 			continue

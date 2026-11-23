@@ -373,8 +373,8 @@ try {
     await wait(90);
   };
   if (options.touch) {
-    const areas = await evaluate("[document.querySelector('[data-cs16-stick=move]'),document.querySelector('[data-cs16-action=fire]')].map(element=>element.getBoundingClientRect().toJSON())");
-    report.touchHits = await evaluate("[document.querySelector('[data-cs16-stick=move]'),document.querySelector('[data-cs16-action=fire]')].map(element=>{const rect=element.getBoundingClientRect();const hit=document.elementFromPoint(rect.x+rect.width/2,rect.y+rect.height/2);return {target:element.dataset.cs16Action??element.dataset.cs16Stick,hit:hit?.tagName,owned:!!hit&&(element===hit||element.contains(hit)),rect:rect.toJSON()}})");
+    const areas = await evaluate("[document.querySelector('[data-cs16-stick=move]'),document.querySelector('[data-cs16-stick=look][data-cs16-fire-area=true]')].map(element=>element.getBoundingClientRect().toJSON())");
+    report.touchHits = await evaluate("[document.querySelector('[data-cs16-stick=move]'),document.querySelector('[data-cs16-stick=look][data-cs16-fire-area=true]')].map(element=>{const rect=element.getBoundingClientRect();const hit=document.elementFromPoint(rect.x+rect.width/2,rect.y+rect.height/2);return {target:element.dataset.cs16Action??element.dataset.cs16Stick,hit:hit?.tagName,owned:!!hit&&(element===hit||element.contains(hit)),rect:rect.toJSON()}})");
     assert.ok(report.touchHits.every(item => item.owned), "a primary touch target is covered by another control");
     assert.ok(areas[1].width >= 64 && areas[1].height >= 64, "primary fire target is smaller than 64px");
     const actionAreas = await evaluate("[...document.querySelectorAll('[data-cs16-action]')].map(element=>({id:element.dataset.cs16Action,rect:element.getBoundingClientRect().toJSON()}))");
