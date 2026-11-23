@@ -9,5 +9,6 @@
 - 进入、退出、重连和横竖屏变化不重新挂载游戏；不改游戏时钟。
 - 退出或卸载恢复滚动、inert 和焦点；迟到的原生请求不能把已离开的房间重新全屏。
 - React StrictMode 重复启动 effect 时仍能自动进入，且没有重复保留的监听器。
+- Linux 浏览器的临时目录过长，导致 Chromium 的 SingletonSocket 超过 108 字节；必须先创建游戏目录内的独立短路径并在启动前校验，失败保留完整标准输出和错误，结束后只清理本次路径。
 
 重放：`node --test web/tests/mobile-fullscreen-browser.test.mjs`。结果和截图位于 `.local/yuyuhakusho/mobile-fullscreen/`；这是公共全屏组件的浏览器验证，不冒充实体设备或完整规则对局。

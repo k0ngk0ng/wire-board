@@ -12,14 +12,18 @@ test("mobile realtime play enters fullscreen during loading and respects a manua
   const root = fileURLToPath(new URL("../../", import.meta.url));
   const output = path.join(root, ".local/yuyuhakusho/mobile-fullscreen");
   const temporary = path.join(output, "temporary");
+  const browserTemporary = path.join(root, ".local/yuyuhakusho/t", process.pid.toString(36));
   const sockets = path.join(root, ".local/yuyuhakusho/s");
-  for (const folder of [output, temporary, sockets, ...["profile", "cache", "config", "data"].map(name => path.join(temporary, name))]) await mkdir(folder, { recursive: true });
-  const env = { ...process.env, TMPDIR: temporary, XDG_CONFIG_HOME: path.join(temporary, "config"), XDG_DATA_HOME: path.join(temporary, "data"), XDG_CACHE_HOME: path.join(temporary, "cache"), AGENT_BROWSER_SOCKET_DIR: sockets, AGENT_BROWSER_PROFILE: path.join(temporary, "profile"), AGENT_BROWSER_NO_VERSION_CHECK: "1" };
+  for (const folder of [output, temporary, browserTemporary, sockets, ...["profile", "cache", "config", "data"].map(name => path.join(temporary, name))]) await mkdir(folder, { recursive: true });
+  const env = { ...process.env, TMPDIR: browserTemporary, XDG_CONFIG_HOME: path.join(temporary, "config"), XDG_DATA_HOME: path.join(temporary, "data"), XDG_CACHE_HOME: path.join(temporary, "cache"), AGENT_BROWSER_SOCKET_DIR: sockets, AGENT_BROWSER_PROFILE: path.join(temporary, "profile"), AGENT_BROWSER_NO_VERSION_CHECK: "1" };
   const execute = promisify(execFile);
   const require = createRequire(new URL("../package.json", import.meta.url));
   const session = (await execute("agent-browser", ["session", "id", "--scope", "worktree", "--prefix", "mf"], { cwd: root, env })).stdout.trim();
   const browser = async (...args) => {
-    const { stdout } = await execute("agent-browser", ["--session", session, "--profile", path.join(temporary, "profile"), ...args, "--json"], { cwd: root, env, timeout: 30000 });
+    let stdout;
+    try {
+      ({ stdout } = await execute("agent-browser", ["--session", session, "--profile", path.join(temporary, "profile"), ...args, "--json"], { cwd: root, env, timeout: 30000 }));
+    } catch (error) { throw Error(`${error.message}\n${error.stdout ?? ""}\n${error.stderr ?? ""}`); }
     const value = JSON.parse(stdout);
     assert.equal(value.success, true, stdout);
     return value.data;
@@ -37,6 +41,7 @@ test("mobile realtime play enters fullscreen during loading and respects a manua
     socket.send(JSON.stringify({ id, method, params, sessionId }));
   });
   try {
+    if (process.platform === "linux") assert.ok(Buffer.byteLength(path.join(browserTemporary, "com.google.Chrome.123456/SingletonSocket")) < 108, "Chromium singleton socket exceeds the Linux pathname limit");
     await writeFile(path.join(temporary, "fixture.tsx"), `import {StrictMode,useEffect,useState} from 'react';import {createRoot} from 'react-dom/client';import {GameFullscreen} from '${path.join(root, "web/src/ui/room-fullscreen.tsx")}';const query=new URLSearchParams(location.search);let mounts=0;window.mobileFullscreen={ready:false};function Board(){useEffect(()=>{mounts++;return()=>mounts--},[]);return <section data-game-focus tabIndex={-1} style={{height:'100%',background:'#14292c',color:'#fff'}}>游戏加载中<button data-action>攻击</button></section>}function Fixture(){const [scope,setScope]=useState('first');const [enabled,setEnabled]=useState(false);const [auto,setAuto]=useState(false);const [show,setShow]=useState(false);useEffect(()=>{Object.assign(window.mobileFullscreen,{ready:true,start:()=>{setAuto(true);setShow(true)},loaded:()=>setEnabled(true),next:()=>setScope('next'),close:()=>setShow(false),mounts:()=>mounts})},[]);return <><header data-platform>平台菜单<input /></header>{show&&<GameFullscreen scope={scope} enabled={enabled} autoEnter={auto} onReadyChange={()=>{}}><Board /></GameFullscreen>}</>}const fixture=<Fixture/>;createRoot(document.getElementById('root')).render(query.has('strict')?<StrictMode>{fixture}</StrictMode>:fixture);`);
     await require("esbuild").build({ entryPoints: [path.join(temporary, "fixture.tsx")], outfile: path.join(temporary, "fixture.js"), bundle: true, jsx: "automatic", nodePaths: [path.join(root, "web/node_modules")], define: { "process.env.NODE_ENV": '"development"' }, legalComments: "none" });
     await writeFile(path.join(temporary, "index.html"), '<!doctype html><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="fixture.css"><style>*{box-sizing:border-box}body{margin:0}</style><div id="root"></div><script src="fixture.js"></script>');
@@ -94,11 +99,15 @@ test("mobile realtime play enters fullscreen during loading and respects a manua
       assert.equal(await evaluate("!document.querySelector('[data-platform]').inert&&document.documentElement.style.overflow===''&&window.mobileFullscreen.mounts()===0"), true, "unmount leaks fullscreen state");
     }
     report.passed = true;
+  } catch (error) {
+    report.error = error.stack;
+    throw error;
   } finally {
     await writeFile(path.join(output, "result.json"), JSON.stringify(report, null, 2) + "\n");
     socket?.close();
     await browser("close").catch(() => {});
     await new Promise(resolve => server ? server.close(resolve) : resolve());
     await rm(temporary, { recursive: true, force: true });
+    await rm(browserTemporary, { recursive: true, force: true });
   }
 });
