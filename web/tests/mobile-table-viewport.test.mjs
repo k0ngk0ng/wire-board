@@ -8,9 +8,10 @@ import { fileURLToPath } from "node:url";
 import path from "node:path";
 import { createHash } from "node:crypto";
 
-test("racing and fortress fullscreen CSS uses the whole viewport and retains controls", async () => {
+const kinds = process.env.MOBILE_VIEWPORT_GAME ? [process.env.MOBILE_VIEWPORT_GAME] : ["racing", "fortressblue"];
+
+for (const kind of kinds) test(`${kind} fullscreen CSS uses the whole viewport and retains controls`, async () => {
   const root = fileURLToPath(new URL("../../", import.meta.url));
-  const kind = process.env.MOBILE_VIEWPORT_GAME;
   assert.ok(["racing", "fortressblue"].includes(kind));
   const out = path.join(root, ".local", kind, "fullscreen-viewport");
   const temporary = path.join(out, "temporary");
