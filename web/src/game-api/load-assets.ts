@@ -14,7 +14,6 @@ type Manifest = {
   games: Record<string, File[]>;
   media: Record<string, number>;
 };
-const retainedImages = new Map<string, HTMLImageElement>();
 const verifiedAssets = new VerifiedAssetCache();
 let retainedManifest: Manifest | undefined;
 async function download(
@@ -33,6 +32,8 @@ async function download(
         signal: AbortSignal.any([signal, AbortSignal.timeout(45000)]),
       });
       if (!response.ok) throw Error(`资源下载失败（${response.status}）`);
+      const decode = /\.(png|webp|jpg|jpeg|gif|svg)$/i.test(url);
+      const chunks: Uint8Array<ArrayBuffer>[] = [];
       let bytes = 0;
       const reader = response.body?.getReader();
       if (reader) {
@@ -41,25 +42,36 @@ async function download(
             const { done, value } = await reader.read();
             if (done) break;
             bytes += value.length;
+          if (decode) chunks.push(new Uint8Array(value));
             update(bytes);
           }
         } finally {
           reader.releaseLock();
         }
       } else {
-        bytes = (await response.arrayBuffer()).byteLength;
+        const data = new Uint8Array(await response.arrayBuffer());
+        bytes = data.byteLength;
+        if (decode) chunks.push(data);
         update(bytes);
       }
       if (bytes !== file.bytes) throw Error("资源版本或大小不匹配，请刷新页面");
-      if (
-        /\.(png|webp|jpg|jpeg|gif|svg)$/i.test(url) &&
-        !retainedImages.has(url)
-      ) {
-        const img = new Image();
-        img.src = url;
-        await img.decode();
+      if (decode) {
+        let decoded = false;
+        if (typeof createImageBitmap === "function" && !/\.svg$/i.test(url)) {
+          try {
+            const image = await createImageBitmap(new Blob(chunks, { type: response.headers.get("Content-Type") || "application/octet-stream" }));
+            image.close();
+            decoded = true;
+          } catch {
+            signal.throwIfAborted();
+          }
+        }
+        if (!decoded) {
+          const img = new Image();
+          img.src = url;
+          await img.decode();
+        }
         signal.throwIfAborted();
-        retainedImages.set(url, img);
       }
       return;
     } catch (error) {
@@ -80,17 +92,17 @@ async function batch(
   const counts = new Map<string, number>(),
     total = files.reduce((n, f) => n + f.bytes, 0);
   let index = 0;
+  let loaded = 0;
   await Promise.all(
-    Array.from({ length: Math.min(6, files.length) }, async () => {
+    Array.from({ length: Math.min(16, files.length) }, async () => {
       while (index < files.length) {
         signal.throwIfAborted();
         const file = files[index++];
         const update = (n: number) => {
-          counts.set(file.url, Math.min(n, file.bytes));
-          report(
-            [...counts.values()].reduce((a, b) => a + b, 0),
-            total,
-          );
+          const next = Math.min(n, file.bytes);
+          loaded += next - (counts.get(file.url) ?? 0);
+          counts.set(file.url, next);
+          report(loaded, total);
         };
         await verifiedAssets.load(file, build, base, signal, update, () =>
           download(file, base, signal, update),

@@ -279,6 +279,10 @@ func inspectSource(input sourceInput) []string {
 		}
 	}
 	parts := strings.Split(input.File, "/")
+	ownerGame := "cs16"
+	if len(parts) > 2 && parts[0] == "games" {
+		ownerGame = parts[1]
+	}
 	want := input.ExpectedPackage
 	if want == "" {
 		want = "cs16"
@@ -315,7 +319,7 @@ func inspectSource(input sourceInput) []string {
 		if name == "unsafe" {
 			record("no-unsafe", imported)
 		}
-		if strings.Contains(name, "/games/") && (strings.HasPrefix(input.File, "internal/") || !strings.Contains(name, "/games/cs16/")) {
+		if strings.Contains(name, "/games/") && (strings.HasPrefix(input.File, "internal/") || !strings.Contains(name, "/games/"+ownerGame+"/")) {
 			record("no-cross-game-import", imported)
 		}
 	}

@@ -62,6 +62,7 @@ func (s *State) View(player int) map[string]any {
 	_ = json.Unmarshal(b, &v)
 
 	g := v["splendor"].(map[string]any)
+	g["canPass"] = player == s.Turn && !s.Finished && s.Phase == "turn" && !s.gemHasMove()
 	delete(g, "decks")
 	if player != s.Turn {
 		delete(g, "reserveChoice")

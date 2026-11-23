@@ -136,6 +136,7 @@ export function GameLoading({
           imgs.map(async (img) => {
             if (img.currentSrc || img.src) {
               try {
+                img.loading = "eager";
                 await img.decode();
               } catch {
                 if (!img.complete || !img.naturalWidth)

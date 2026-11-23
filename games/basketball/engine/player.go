@@ -248,10 +248,10 @@ func StepFreePlayerAction(original Player, ctx FreePlayerContext, profile Charac
 	shotCycle := ctx.ShotCycle
 	var sounds []uint8
 	computer := ctx.Computer
-	if p.Heading > HeadingNone || !freeAction(p.Action) || p.Request.Pending && !freeAction(p.Request.Action) && p.Request.Action != ActionCatchBall {
+	if p.Heading > HeadingNone || !freeAction(p.Action) || p.Request.Pending && (p.Request.Action >= 106 || !ctx.RequestResolved && !freeAction(p.Request.Action) && p.Request.Action != ActionCatchBall) {
 		return initial, errors.New("player action/context has not been reconstructed")
 	}
-	if p.Request.Pending && freeTransition(p.Action, p.Request.Action) {
+	if !ctx.RequestResolved && p.Request.Pending && freeTransition(p.Action, p.Request.Action) {
 		p.Action, p.Entered = p.Request.Action, false
 		p.Request.Pending = false
 	}

@@ -4,10 +4,11 @@ package engine
 // jump phase into ordinary movement handlers. Their action IDs can remain
 // active while holding the ball; this context does not select an AI policy.
 type FreePlayerContext struct {
-	Computer  bool
-	HasBall   bool
-	JumpPhase int8
-	ShotCycle int8
+	RequestResolved bool
+	Computer        bool
+	HasBall         bool
+	JumpPhase       int8
+	ShotCycle       int8
 }
 
 func StepFreePlayerWithContext(original Player, ctx FreePlayerContext, profile CharacterProfile, court FlatCourt) (Player, error) {

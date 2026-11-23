@@ -76,7 +76,6 @@ import { catanSeatColor } from "../../games/catan/web/catan-player-colors";
 import { twoResponder } from "../../games/catan/web/catan-two-state";
 import { RailMapsContext, playerColors } from "../../games/rail/web/context";
 import { railMapNames } from "../../games/rail/web/rail-expansions";
-import "../../games/splendor/web/splendor-layout.css";
 import { AdminDashboard } from "./admin";
 import { GameAudio } from "./audio";
 import "./autoplay.css";
@@ -114,6 +113,7 @@ import "./style.css";
 import "./ui/room-waiting.css";
 import { useRoomPresentation } from "./game-api/presentation";
 import { ResultOverlay } from "./ui/result-overlay";
+import { canQuickRematch, quickRematch } from "./ui/solo-rematch";
 import { LeaveRoomConfirmation } from "./ui/leave-room-control";
 import { RoomToolButton } from "./ui/room-tool-button";
 import { RoomHeading } from "./ui/room-heading";
@@ -1226,6 +1226,17 @@ function App() {
                                     <ResultOverlay
                                       key={`${room.id}:${room.matchId || room.result?.id || "finished"}`}
                                       busy={busy}
+                                      onRestart={
+                                        canQuickRematch(room, state.user.id) && state.availableGames.includes(room.kind)
+                                          ? () => void run(async () => {
+                                              await quickRematch(room.id, state.user.id, async () => {
+                                                const latest = await api("/state");
+                                                acceptState.current(latest);
+                                                return latest.room;
+                                              }, command);
+                                            })
+                                          : undefined
+                                      }
                                       onReturn={
                                         !room.spectating &&
                                         room.host === state.user.id &&

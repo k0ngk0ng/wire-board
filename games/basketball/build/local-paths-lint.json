@@ -1,7 +1,7 @@
 {
   "game": "basketball",
   "aliases": ["nes-basket", "nes-basketball"],
-  "directories": ["assets", "research", "cache", "verification", "history", "tmp"],
+  "directories": ["assets", "research", "cache", "verification", "history", "tmp", "audit", "live-stall"],
   "languages": {
     "python": [".py"],
     "javascript": [".js", ".mjs", ".cjs"],

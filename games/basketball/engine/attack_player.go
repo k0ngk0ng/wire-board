@@ -36,7 +36,7 @@ func StepPlayerAttack(original AttackState, ctx AttackContext, profile Character
 	if action < 0x60 || action > 0x68 || ctx.Team >= 8 || ctx.Character >= 4 || p.Heading > HeadingNone {
 		return fail("action or character profile outside recovered table")
 	}
-	if ctx.Attachment&128 != 0 {
+	if ctx.Attachment&128 != 0 && court.originalMotion == nil {
 		return fail("attached-player attack physics is not reconstructed")
 	}
 	role := int(ctx.Team)*4 + int(ctx.Character)

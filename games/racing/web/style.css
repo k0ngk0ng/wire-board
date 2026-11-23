@@ -1074,9 +1074,7 @@
   transform: none;
 }
 [data-room-fullscreen] .racing-board.is-classic {
-  --racing-view-height: calc(
-    100dvh - 54px - max(8px, env(safe-area-inset-bottom))
-  );
+  --racing-view-height: 100dvh;
   width: 100%;
   max-width: none;
 }
@@ -1086,9 +1084,7 @@
     --racing-instrument-top: 62px;
   }
   [data-room-fullscreen] .racing-board.is-classic {
-    --racing-view-height: calc(
-      100dvh - 54px - max(8px, env(safe-area-inset-bottom))
-    );
+    --racing-view-height: 100dvh;
   }
   .is-classic .racing-hud {
     padding: 6px 10px;
@@ -1297,4 +1293,18 @@
   .is-classic[data-mirror-visible="true"] .racing-hud > div:nth-of-type(4) {
     grid-column: 5;
   }
+}
+
+.game-fullscreen-surface:has(.racing-board) {
+  --game-fullscreen-pin-exit: 1;
+}
+[data-room-fullscreen] .racing-board.is-classic {
+  height: 100%;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+}
+[data-room-fullscreen] .is-classic .racing-stage {
+  border: 0;
+  border-radius: 0;
 }

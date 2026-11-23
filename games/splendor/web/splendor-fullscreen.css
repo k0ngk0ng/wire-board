@@ -1,13 +1,13 @@
 .splendor-fullscreen-players { display: none; }
-.splendor-table, .splendor-sidebar { display: contents; }
-[data-room-fullscreen] .splendor-board {
+.game-fullscreen-surface:has(.splendor-board) { --game-fullscreen-pin-exit: 1; }
+[data-room-fullscreen] .splendor-board:has(.splendor-table) {
   width: 100%; max-width: none; height: 100%; min-height: 0; margin: 0; padding: 6px;
   display: grid; grid-template-columns: minmax(0,1fr); grid-template-rows: auto minmax(0,1fr);
   grid-template-areas: "players" "table"; gap: 6px; border: 0; border-radius: 0;
 }
 [data-room-fullscreen] .splendor-fullscreen-players {
   grid-area: players; display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 6px;
-  padding: 0 50px 0 0; color: #293b35; background: #e9ede0;
+  padding: 0 52px 0 0; color: #293b35; background: #e9ede0;
 }
 [data-room-fullscreen] .splendor-fullscreen-players:has(> :last-child:nth-child(2)) { grid-template-columns: repeat(2,minmax(0,1fr)); }
 .splendor-fullscreen-player { min-width: 0; padding: 4px 6px; border: 1px solid #a7b4a1; border-radius: 7px; background: #f6f8ef; color: #293b35; }
@@ -21,10 +21,10 @@
 .splendor-public-resources b, .splendor-public-resources [data-public-token] { display: inline-block; width: 18px; height: 18px; text-align: center; background: var(--public-gem); color: var(--public-ink); border: 1px solid #182d3866; }
 .splendor-public-resources b { border-radius: 3px; }
 .splendor-public-resources [data-public-token] { border-radius: 50%; }
-[data-room-fullscreen] .splendor-board .splendor-table { grid-area: table; display: grid; grid-template-columns: minmax(0,1fr) 232px; gap: 10px; min-height: 0; min-width: 0; }
-[data-room-fullscreen] .splendor-board .splendor-sidebar { display: flex; flex-direction: column; gap: 12px; min-width: 0; min-height: 0; overflow: auto; overscroll-behavior: contain; padding: 4px 6px 8px; }
+[data-room-fullscreen] .splendor-board > .splendor-table { grid-area: table; display: grid; grid-template-columns: minmax(0,1fr) clamp(292px, 30vw, 340px); grid-template-areas: "market sidebar"; gap: 10px; min-height: 0; min-width: 0; }
+[data-room-fullscreen] .splendor-board .splendor-sidebar { display: flex; flex-direction: column; gap: 12px; min-width: 0; min-height: 0; overflow: auto; overscroll-behavior: contain; padding: 4px 6px 54px; }
 [data-room-fullscreen] .splendor-board .market {
-  grid-area: auto; width: 100%; min-height: 0; height: 100%; display: flex; flex-direction: column; justify-content: center; gap: 6px; container-type: size;
+  grid-area: market; width: 100%; min-height: 0; height: 100%; display: flex; flex-direction: column; justify-content: center; gap: 6px; container-type: size;
   --fullscreen-card-height: min(calc((100cqh - 12px) / 3), calc((100cqw - 24px) * 7 / 25));
 }
 [data-room-fullscreen] .splendor-board .market-row { grid-template-columns: repeat(5,calc(var(--fullscreen-card-height) * 5 / 7)); gap: 6px; justify-content: center; width: 100%; max-width: none; margin: 0; }
@@ -35,9 +35,9 @@
 [data-room-fullscreen] .splendor-board .nobles-row .board-section-label { display: none; }
 [data-room-fullscreen] .splendor-board .nobles { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; padding: 0; }
 [data-room-fullscreen] .splendor-board .nobles .noble { width: 60px; height: 60px; margin: 0; }
-[data-room-fullscreen] .splendor-board .gem-bank .token-row { grid-template-columns: repeat(6,minmax(0,1fr)); gap: 2px; }
+[data-room-fullscreen] .splendor-board .gem-bank .token-row { grid-template-columns: repeat(6,minmax(44px,1fr)); gap: 2px; }
 [data-room-fullscreen] .splendor-board .gem-bank .token { width: 30px; height: 30px; }
-[data-room-fullscreen] .splendor-board .gem-bank .token-button { min-width: 0; min-height: 44px; padding: 0; }
+[data-room-fullscreen] .splendor-board .gem-bank .token-button { min-width: 44px; min-height: 48px; padding: 0; }
 [data-room-fullscreen] .splendor-board .gem-bank .token-button > b { min-width: 16px; font-size: 10px; line-height: 16px; }
 [data-room-fullscreen] .splendor-board .gem-bank .bank-actions { margin-top: 4px; gap: 4px; }
 [data-room-fullscreen] .splendor-board .gem-bank .bank-actions .primary { min-height: 44px; width: auto; margin-left: auto; font-size: 12px; }
@@ -55,13 +55,14 @@
 [data-room-fullscreen] .splendor-board .show-orient .orient-row { grid-template-columns: repeat(3,calc(var(--fullscreen-card-height) * 5 / 7)); }
 [data-room-fullscreen] .splendor-board > .action-prompt,
 [data-room-fullscreen] .splendor-board > .pass-button { position: absolute; bottom: 8px; left: 8px; z-index: 5; grid-area: auto; background: #f6f8ef; color: #293b35; padding: 8px; border-radius: 6px; }
-@media (orientation: portrait), (max-width: 600px) {
-  [data-room-fullscreen] .splendor-fullscreen-players { grid-template-columns: repeat(2,minmax(0,1fr)); padding-top: 0; padding-right: 0; }
+@media (orientation: portrait), (max-width: 700px) {
+  [data-room-fullscreen] .splendor-fullscreen-players { grid-template-columns: repeat(2,minmax(0,1fr)); padding-top: 0; padding-right: 52px; }
   .splendor-fullscreen-player header { gap: 4px; font-size: 10px; }
   .splendor-public-resources > div { flex-direction: column; gap: 2px; }
-  [data-room-fullscreen] .splendor-board .splendor-table { grid-template-columns: minmax(0,1fr); grid-template-rows: auto minmax(0,1fr); gap: 6px; }
-  [data-room-fullscreen] .splendor-board .market { height: min(calc((100vw - 36px) * 21 / 25 + 66px), calc(100dvh - 270px)); justify-content: flex-end; }
-  [data-room-fullscreen] .splendor-board .with-orient-market { height: min(calc((100vw - 36px) * 21 / 25 + 110px), calc(100dvh - 270px)); }
+  [data-room-fullscreen] .splendor-board > .splendor-table { grid-template-columns: minmax(0,1fr); grid-template-areas: "market" "sidebar"; grid-template-rows: auto minmax(0,1fr); gap: 6px; }
+  [data-room-fullscreen] .splendor-board .gem-bank { order: -1; }
+  [data-room-fullscreen] .splendor-board .market { height: min(calc((100vw - 36px) * 21 / 25 + 12px), calc(100dvh - 260px)); justify-content: center; }
+  [data-room-fullscreen] .splendor-board .with-orient-market { height: min(calc((100vw - 36px) * 21 / 25 + 56px), calc(100dvh - 260px)); }
   [data-room-fullscreen] .splendor-board .splendor-sidebar { padding-top: 0; gap: 8px; }
   [data-room-fullscreen] .splendor-board .nobles .noble { width: 44px; height: 44px; }
 }
@@ -73,3 +74,201 @@
 [data-room-fullscreen] .splendor-board .gem-cities { background: #e9ede0; color: #293b35; }
 [data-room-fullscreen] .splendor-board .gem-cities .gem-city-caption { color: #52644e; }
 [data-room-fullscreen] .splendor-board .gem-city-expand { background: #f6f8ef; color: #293b35; border-color: #a7b4a1; }
+
+[data-room-fullscreen] .splendor-board > .pass-button {
+  position: static;
+  grid-column: 1;
+  padding: 4px;
+  font-size: 10px;
+  line-height: 1.2;
+}
+[data-room-fullscreen] .splendor-board:has(.splendor-table) {
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-areas: "players" "table" "prompt";
+}
+[data-room-fullscreen] .splendor-board .gem-bank .bank-actions {
+  display: grid;
+}
+[data-room-fullscreen] .splendor-board .market {
+  padding: 0;
+}
+[data-room-fullscreen] .splendor-board .personal-area {
+  grid-area: auto;
+}
+[data-room-fullscreen] .splendor-board .nobles-row {
+  grid-area: auto;
+}
+[data-room-fullscreen] .splendor-board .gem-bank {
+  grid-area: auto;
+}
+@media (max-height: 450px) and (orientation: landscape) {
+  [data-room-fullscreen] .splendor-fullscreen-players {
+    padding-top: 0;
+    padding-right: 52px;
+  }
+}
+@media (orientation: landscape) and (min-width: 701px) {
+  [data-room-fullscreen] .splendor-board:has(.splendor-table) {
+    grid-template-columns: minmax(0, min(calc((100dvh - 210px) * 25 / 21 + 24px), calc(100dvw - 380px))) 144px 180px;
+    justify-content: center;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    grid-template-areas: "players players players" "market bank nobles" "personal personal nobles";
+    gap: 10px;
+    padding: 8px;
+  }
+  [data-room-fullscreen] .splendor-board > .splendor-table,
+  [data-room-fullscreen] .splendor-board .splendor-sidebar {
+    display: contents;
+  }
+  [data-room-fullscreen] .splendor-board .market-row {
+    justify-content: start;
+  }
+  [data-room-fullscreen] .splendor-board .nobles-row {
+    grid-area: nobles;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+  }
+  [data-room-fullscreen] .splendor-board .nobles-row .board-section-label {
+    display: flex;
+    justify-content: center;
+    padding-top: 4px;
+  }
+  [data-room-fullscreen] .splendor-board .nobles {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  [data-room-fullscreen] .splendor-board .nobles .noble {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+  }
+  [data-room-fullscreen] .splendor-board .gem-bank {
+    grid-area: bank;
+    align-self: start;
+  }
+  [data-room-fullscreen] .splendor-board .gem-bank .token-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
+  }
+  [data-room-fullscreen] .splendor-board .gem-bank .token-button {
+    width: 48px;
+  }
+  [data-room-fullscreen] .splendor-board .gem-bank .token {
+    width: 40px;
+    height: 40px;
+  }
+  [data-room-fullscreen] .splendor-board .gem-bank .bank-actions {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  [data-room-fullscreen] .splendor-board .gem-bank .bank-actions .primary {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+  [data-room-fullscreen] .splendor-board .personal-area {
+    grid-area: personal;
+    display: grid;
+    grid-template-columns: minmax(300px, 1fr) minmax(0, 1fr);
+    grid-template-areas: "summary summary" "wallet reserved";
+    gap: 6px 14px;
+  }
+  [data-room-fullscreen] .splendor-board .splendor-wallet {
+    display: block;
+    max-width: 430px;
+    padding: 8px 6px;
+  }
+  [data-room-fullscreen] .wallet-caption {
+    margin-bottom: 10px;
+  }
+  [data-room-fullscreen] .wallet-caption > span,
+  [data-room-fullscreen] .wallet-caption > b {
+    background: #303650;
+    color: #f4eedc;
+    padding: 2px 5px;
+  }
+  [data-room-fullscreen] .wallet-caption small {
+    color: #e0ded0;
+  }
+  [data-room-fullscreen] .wallet-counts {
+    flex-direction: row;
+    min-height: 28px;
+    gap: 2px;
+  }
+  [data-room-fullscreen] .wallet-gem {
+    padding: 6px 1px 2px;
+  }
+  [data-room-fullscreen] .wallet-discount,
+  [data-room-fullscreen] .wallet-held,
+  [data-room-fullscreen] .discount-card-icon,
+  [data-room-fullscreen] .wallet-token {
+    min-width: 18px;
+    width: 18px;
+    height: 20px;
+  }
+  [data-room-fullscreen] .wallet-counts b,
+  [data-room-fullscreen] .wallet-counts strong {
+    font-size: 15px;
+  }
+  [data-room-fullscreen] .splendor-board .gem-cities {
+    grid-area: nobles;
+    max-height: 100%;
+    overflow-y: auto;
+  }
+  [data-room-fullscreen] .splendor-court {
+    grid-area: nobles;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-height: 0;
+    overflow-y: auto;
+  }
+  [data-room-fullscreen] .splendor-court .gem-trading-posts {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  [data-room-fullscreen] .splendor-court .gem-cities {
+    max-height: none;
+    overflow: visible;
+  }
+}
+@media (orientation: landscape) and (max-height: 480px) and (min-width: 701px) {
+  [data-room-fullscreen] .splendor-board:has(.splendor-table) {
+    grid-template-columns: minmax(0, min(calc((100dvh - 130px) * 25 / 21 + 24px), calc(100dvw - 320px))) 140px 150px;
+    gap: 6px;
+    padding: 6px;
+    grid-template-areas: "players players players" "market bank nobles" "personal personal personal";
+  }
+  [data-room-fullscreen] .splendor-board .gem-bank .token-row {
+    grid-template-columns: repeat(3, minmax(44px, 1fr));
+    gap: 2px;
+  }
+  [data-room-fullscreen] .splendor-board .gem-bank .token-button {
+    width: 100%;
+    min-height: 44px;
+  }
+  [data-room-fullscreen] .splendor-board .gem-bank .token {
+    width: 32px;
+    height: 32px;
+  }
+  [data-room-fullscreen] .splendor-board .personal-area {
+    gap: 2px 8px;
+  }
+  [data-room-fullscreen] .splendor-board .reserved:not(:has(.dev-card)) > p {
+    display: none;
+  }
+  [data-room-fullscreen] .splendor-board .splendor-wallet {
+    padding: 5px;
+  }
+}
+@media (max-width: 360px) {
+  [data-room-fullscreen] .splendor-fullscreen-players {
+    padding: 52px 0 0;
+  }
+}
+@media (orientation: landscape) and (min-width: 701px) and (min-height: 481px) {
+  [data-room-fullscreen] .splendor-board .gem-bank {
+    padding-top: 36px;
+  }
+}

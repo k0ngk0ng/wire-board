@@ -23,6 +23,7 @@ export function SplendorCities({
     <section
       className={`gem-cities ${expanded ? "is-expanded" : "is-compact"}`}
       aria-label="城市目标"
+      data-fullscreen-protected
     >
       <header>
         <Landmark size={18} />
@@ -57,7 +58,7 @@ export function SplendorCities({
           const art = cityAtlasStyle(assets, city.tile);
           const progress = me ? gemCityProgress(me, city) : undefined;
           const eligible = !!progress?.eligible;
-          const owners = room.seats.filter((_, seat) =>
+          const owners = room.seats.filter((person, seat) =>
             s.cityEligibility?.[seat]?.includes(index),
           );
           return (

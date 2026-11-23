@@ -20,6 +20,8 @@
     }
   ],
   "patchSources": [
+    "web/src/game-api/load-assets.ts",
+    "web/src/game-api/loading.tsx",
     "web/src/audio.ts",
     "web/src/game-api/module.ts",
     "web/src/game-api/host.tsx",

@@ -130,6 +130,10 @@ test("registered room UI files pass their scoped lint", () => {
 test("Splendor fullscreen files and evidence follow registered conventions", () => {
   assert.deepEqual(inspectRoomUiFile("games/splendor/web/splendor-fullscreen-players.tsx", "export function Players(){return <div/>;}"), []);
   assert.deepEqual(inspectRoomUiFile("games/splendor/web/splendor-fullscreen.css", ".splendor-table { display: grid; }"), []);
+  assert.deepEqual(inspectRoomUiFile("games/splendor/web/splendor-layout.css", ".splendor-board { display: grid; }"), []);
+  assert.ok(lintRoomUi().files.some(file => file.file === "games/splendor/web/splendor-layout.css"));
+  assert.ok(lintRoomUi().files.some(file => file.file === "games/fortressblue/web/style.css"));
+  assert.ok(lintRoomUi().files.some(file => file.file === "games/racing/web/style.css"));
   assert.ok(inspectRoomUiFile("games/splendor/web/Bad_name.tsx", "const value=1;").includes("filename"));
   assert.ok(inspectRoomUiFile("games/splendor/web/splendor-fullscreen.css", "/* no */ .splendor-table{}").includes("no-comments"));
   assert.ok(inspectRoomUiFile("web/tests/tabletop-room-browser.mjs", 'const output=".local/unrelated";').includes("workspace-output-directory"));

@@ -18,7 +18,7 @@ function OptionsForm({
     if (value.teams.length !== capacity)
       onChange({
         ...value,
-        teams: Array.from({ length: capacity }, (_, p) => p % 2),
+        teams: Array.from({ length: capacity }, (item, p) => p % 2),
       });
   }, [capacity]);
   const teams =
@@ -94,6 +94,10 @@ export default defineGame<View, Options>({
   asyncBoard: true,
   createPresentation: createPlayback,
   defaultOptions: { bestOf: 1, teams: [0, 1], aimAssist: "line" },
+  resizeOptions: (options, capacity) => ({
+    ...options,
+    teams: capacity === 2 ? [0, 1] : options.teams.length === 4 ? options.teams : [0, 1, 0, 1],
+  }),
   Board,
   Cover,
   Options: OptionsForm,

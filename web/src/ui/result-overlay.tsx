@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from "react";
-import { ArrowLeft, Crown, Eye } from "lucide-react";
+import { ArrowLeft, Crown, Eye, RotateCcw } from "lucide-react";
 import { Modal } from "./board-host";
 import "./room-actions.css";
 
@@ -7,11 +7,13 @@ export function ResultOverlay({
   children,
   busy,
   onReturn,
+  onRestart,
   waitingForHost,
 }: {
   children: ReactNode;
   busy: boolean;
   onReturn?: () => void;
+  onRestart?: () => void;
   waitingForHost: boolean;
 }) {
   const [open, setOpen] = useState(true);
@@ -47,6 +49,12 @@ export function ResultOverlay({
           >
             <ArrowLeft size={17} />
             返回房间
+          </button>
+        )}
+        {onRestart && (
+          <button type="button" className="primary result-restart" disabled={busy} onClick={onRestart}>
+            <RotateCcw size={17} />
+            再来一局
           </button>
         )}
       </div>

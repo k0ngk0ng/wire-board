@@ -52,13 +52,25 @@ const files = [
   "games/splendor/web/board.tsx",
   "games/splendor/web/splendor-fullscreen-players.tsx",
   "games/splendor/web/splendor-fullscreen.css",
+  "games/splendor/web/splendor-layout.css",
+  "games/splendor/web/splendor-cities.tsx",
+  "games/splendor/web/splendor-rules.tsx",
+  "games/fortressblue/web/style.css",
+  "games/racing/web/style.css",
+  "games/snooker/web/module.tsx",
+  "games/yuyuhakusho/web/network.css",
+  "games/basketball/build/lint.mjs",
+  "web/src/ui/solo-rematch.ts",
+  "web/tests/solo-rematch.test.mjs",
+  "web/tests/solo-rematch-browser.mjs",
+  "web/tests/mobile-table-viewport.test.mjs",
   "web/tests/tabletop-room-browser.mjs",
 ];
 const languages = {
   ".ts": /^web\/src\/ui\//,
-  ".tsx": /^(?:web\/(?:src\/ui|tests)\/|games\/(?:gomoku|splendor)\/web\/)/,
-  ".css": /^(?:web\/src\/ui\/|games\/(?:gomoku|weiqi|chess|xiangqi|junqi|splendor)\/web\/)/,
-  ".mjs": /^(?:web\/(?:scripts|tests)\/|games\/contra\/web\/)/,
+  ".tsx": /^(?:web\/(?:src\/ui|tests)\/|games\/(?:gomoku|splendor|snooker)\/web\/)/,
+  ".css": /^(?:web\/src\/ui\/|games\/(?:gomoku|weiqi|chess|xiangqi|junqi|splendor|racing|fortressblue|yuyuhakusho)\/web\/)/,
+  ".mjs": /^(?:web\/(?:scripts|tests)\/|games\/(?:contra\/web|basketball\/build)\/)/,
   ".json": /^web\/tests\/fixtures\//,
 };
 

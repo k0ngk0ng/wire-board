@@ -89,6 +89,7 @@ export type SplendorState = {
   players: GemPlayer[];
   remaining: number[];
   lastRound: boolean;
+  canPass?: boolean;
 };
 export type RoomOptions = { splendorOptions?: SplendorOptions };
 export type Game = GameHeader & { splendor?: SplendorState };

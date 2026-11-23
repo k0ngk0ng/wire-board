@@ -252,7 +252,8 @@ export function GameFullscreen({
         if (element.closest('[data-controller-group="board"],[data-controller-group="grid"]') && !element.matches('[data-fullscreen-protected],[data-chat-protected],[data-touch-protected]')) return false;
         return element.getClientRects().length > 0 && getComputedStyle(element).visibility !== 'hidden';
       }).map(rectangle).filter(rect => rect.right > rect.left && rect.bottom > rect.top);
-      const actionBox = position(actions, obstacles, 'right');
+      const pinned = getComputedStyle(root).getPropertyValue('--game-fullscreen-pin-exit').trim() === '1';
+      const actionBox = position(actions, pinned ? [] : obstacles, 'right');
       root.style.setProperty('--game-fullscreen-toolbar-width', actionBox ? (actionBox.right - actionBox.left) / 1000 + 'px' : '0px');
       const status = statusRoot.current;
       const statusBox = status ? position(status, actionBox ? [...obstacles, actionBox] : obstacles, 'left') : undefined;

@@ -10,6 +10,7 @@ import { SplendorCities } from "./splendor-cities";
 import { gemNobleEligible } from "./splendor-city-state";
 import { SplendorExpansionBoard } from "./splendor-expansions";
 import { SplendorFullscreenPlayers } from "./splendor-fullscreen-players";
+import "./splendor-layout.css";
 import "./splendor-fullscreen.css";
 import { SplendorMarket } from "./splendor-market";
 import { extraNobleName, nobleArtwork } from "./splendor-nobles";
@@ -244,6 +245,7 @@ export function SplendorBoard({
         )}
       />
       <aside className="splendor-sidebar">
+      <div className="splendor-court">
       {s.options?.cities ? (
         <SplendorCities
           room={room}
@@ -252,7 +254,7 @@ export function SplendorBoard({
         />
       ) : (
         <div className="nobles-row">
-          <div className="board-section-label">
+          <div className="board-section-label" data-fullscreen-protected>
             <Crown size={18} />
             <span>
               贵族来访<small>满足条件 · 获得 3 分</small>
@@ -285,6 +287,7 @@ export function SplendorBoard({
         renderCost={(cost) => <Cost cost={cost} />}
         renderGem={(color) => <Gemstone color={color} />}
       />
+      </div>
       <div className="gem-bank">
         <div className="section-line">
           <h3>公共宝石</h3>
@@ -364,7 +367,7 @@ export function SplendorBoard({
               <ChevronRight size={15} />
             </button>
           </div>
-          <div className="splendor-wallet" aria-label="你的宝石与永久折扣">
+          <div className="splendor-wallet" aria-label="你的宝石与永久折扣" data-fullscreen-protected>
             <div className="wallet-caption">
               <span>
                 我的宝石 <small>永久折扣 / 手持筹码</small>
@@ -583,15 +586,15 @@ export function SplendorBoard({
           renderCost={(cost) => <Cost cost={cost} />}
         />
       )}
-      <button
-        className={`pass-button ${taking ? "" : "splendor-action-placeholder"}`}
-        aria-hidden={!taking}
-        inert={!taking}
-        disabled={!taking || busy}
-        onClick={() => void act({ type: "pass" })}
-      >
-        无合法行动时跳过回合
-      </button>
+      {taking && s.canPass && (
+        <button
+          className="pass-button"
+          disabled={busy}
+          onClick={() => void act({ type: "pass" })}
+        >
+          跳过回合
+        </button>
+      )}
       <SplendorCardAnimation
         room={room}
         assets={assets}
