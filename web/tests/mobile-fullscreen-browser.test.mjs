@@ -44,7 +44,7 @@ test("mobile realtime play enters fullscreen during loading and respects a manua
     if (process.platform === "linux") assert.ok(Buffer.byteLength(path.join(browserTemporary, "com.google.Chrome.123456/SingletonSocket")) < 108, "Chromium singleton socket exceeds the Linux pathname limit");
     await writeFile(path.join(temporary, "fixture.tsx"), `import {StrictMode,useEffect,useState} from 'react';import {createRoot} from 'react-dom/client';import {GameFullscreen} from '${path.join(root, "web/src/ui/room-fullscreen.tsx")}';const query=new URLSearchParams(location.search);let mounts=0;window.mobileFullscreen={ready:false};function Board(){useEffect(()=>{mounts++;return()=>mounts--},[]);return <section data-game-focus tabIndex={-1} style={{height:'100%',background:'#14292c',color:'#fff'}}>游戏加载中<button data-action>攻击</button></section>}function Fixture(){const [scope,setScope]=useState('first');const [enabled,setEnabled]=useState(false);const [auto,setAuto]=useState(false);const [show,setShow]=useState(false);useEffect(()=>{Object.assign(window.mobileFullscreen,{ready:true,start:()=>{setAuto(true);setShow(true)},loaded:()=>setEnabled(true),next:()=>setScope('next'),close:()=>setShow(false),mounts:()=>mounts})},[]);return <><header data-platform>平台菜单<input /></header>{show&&<GameFullscreen scope={scope} enabled={enabled} autoEnter={auto} onReadyChange={()=>{}}><Board /></GameFullscreen>}</>}const fixture=<Fixture/>;createRoot(document.getElementById('root')).render(query.has('strict')?<StrictMode>{fixture}</StrictMode>:fixture);`);
     await require("esbuild").build({ entryPoints: [path.join(temporary, "fixture.tsx")], outfile: path.join(temporary, "fixture.js"), bundle: true, jsx: "automatic", nodePaths: [path.join(root, "web/node_modules")], define: { "process.env.NODE_ENV": '"development"' }, legalComments: "none" });
-    await writeFile(path.join(temporary, "index.html"), '<!doctype html><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="fixture.css"><style>*{box-sizing:border-box}body{margin:0}</style><div id="root"></div><script src="fixture.js"></script>');
+    await writeFile(path.join(temporary, "index.html"), '<!doctype html><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="fixture.css"><style>*{box-sizing:border-box}body{margin:0;overflow-anchor:none}</style><div id="root"></div><div style="height:1800px"></div><script src="fixture.js"></script>');
     const files = new Map(await Promise.all(["index.html", "fixture.js", "fixture.css"].map(async name => [name, await readFile(path.join(temporary, name))])));
     server = createServer((request, response) => {
       const name = new URL(request.url, "http://127.0.0.1").pathname.slice(1) || "index.html";
@@ -70,6 +70,8 @@ test("mobile realtime play enters fullscreen during loading and respects a manua
       await browser("wait", "--fn", "window.mobileFullscreen?.ready===true");
       assert.equal(await evaluate("matchMedia('(pointer:coarse)').matches"), mobile);
       assert.equal(await evaluate("!!document.querySelector('[data-room-fullscreen]')"), false);
+      await evaluate("document.body.style.setProperty('position','relative','important');document.body.style.top='1px';document.body.style.width='99%';document.body.style.overflow='auto';document.body.style.overscrollBehavior='contain';window.scrollTo(0,180);true");
+      await frames();
       await evaluate("window.mobileFullscreen.start();true");
       await frames();
       await evaluate("window.boardIdentity=document.querySelector('[data-game-focus]');true");
@@ -84,6 +86,12 @@ test("mobile realtime play enters fullscreen during loading and respects a manua
       assert.equal(geometry.inert, true);
       assert.equal(geometry.focused, true);
       assert.equal(geometry.mounts, 1);
+      const scrollLock = await evaluate("(()=>{window.scrollTo(0,260);return {position:document.body.style.position,overflow:document.body.style.overflow,overscroll:document.body.style.overscrollBehavior,scroll:window.scrollY}})()");
+      check.scrollLock = scrollLock;
+      assert.equal(scrollLock.position, "fixed", "fullscreen must freeze the background page");
+      assert.equal(scrollLock.overflow, "hidden");
+      assert.equal(scrollLock.overscroll, "none");
+      assert.equal(scrollLock.scroll, 0);
       await browser("screenshot", path.join(output, name + ".png"));
       await browser("click", 'button[aria-label="退出全屏"]');
       await frames();
@@ -91,12 +99,16 @@ test("mobile realtime play enters fullscreen during loading and respects a manua
       await frames();
       assert.equal(await evaluate("!!document.querySelector('[data-room-fullscreen]')"), false, "load completion re-enters after explicit exit");
       assert.equal(await evaluate("!document.querySelector('[data-platform]').inert&&document.documentElement.style.overflow===''&&window.boardIdentity===document.querySelector('[data-game-focus]')"), true);
+      const restored = await evaluate("({position:document.body.style.position,priority:document.body.style.getPropertyPriority('position'),top:document.body.style.top,width:document.body.style.width,overflow:document.body.style.overflow,overscroll:document.body.style.overscrollBehavior,scroll:window.scrollY})");
+      check.restored = restored;
+      assert.deepEqual(restored, {position:"relative",priority:"important",top:"1px",width:"99%",overflow:"auto",overscroll:"contain",scroll:180});
       await evaluate("window.mobileFullscreen.next();true");
       await frames();
       assert.equal(await evaluate("!!document.querySelector('[data-room-fullscreen]')"), true, "new match must auto enter");
       await evaluate("window.mobileFullscreen.close();true");
       await frames();
       assert.equal(await evaluate("!document.querySelector('[data-platform]').inert&&document.documentElement.style.overflow===''&&window.mobileFullscreen.mounts()===0"), true, "unmount leaks fullscreen state");
+      assert.equal(await evaluate("document.body.style.position==='relative'&&document.body.style.getPropertyPriority('position')==='important'&&document.body.style.overscrollBehavior==='contain'&&window.scrollY===180"), true, "unmount must restore background page styles and scroll");
     }
     report.passed = true;
   } catch (error) {

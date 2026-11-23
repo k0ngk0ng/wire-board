@@ -136,7 +136,6 @@ export class MDInput {
       buttons.some((name) => !Object.hasOwn(mdBits, name))
     )
       throw Error("MD 触屏输入无效");
-    this.root.focus({ preventScroll: true });
     const next = new Set(buttons as MDButton[]),
       old = this.pointers.get(id);
     if (
@@ -145,6 +144,8 @@ export class MDInput {
       [...next].every((name) => old.has(name))
     )
       return;
+    if (document.activeElement !== this.root)
+      this.root.focus({ preventScroll: true });
     this.pointers.set(id, next);
     this.taps.set("pointer:" + id, next);
   }

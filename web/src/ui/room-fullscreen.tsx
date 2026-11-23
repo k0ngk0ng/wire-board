@@ -93,8 +93,15 @@ function useRoomFullscreen(
         }
       }
     }
-    const overflow = document.documentElement.style.overflow;
-    document.documentElement.style.overflow = "hidden";
+    const locked: [CSSStyleDeclaration, string, string, string][] = [];
+    const lock = (element: HTMLElement, values: Record<string, string>) => {
+      for (const [property, value] of Object.entries(values)) {
+        locked.push([element.style, property, element.style.getPropertyValue(property), element.style.getPropertyPriority(property)]);
+        element.style.setProperty(property, value);
+      }
+    };
+    lock(document.documentElement, { overflow: "hidden", "overscroll-behavior": "none" });
+    lock(document.body, { position: "fixed", top: -scroll.current.y + "px", left: -scroll.current.x + "px", width: "100%", overflow: "hidden", "overscroll-behavior": "none" });
     root.scrollTop = 0;
     const gameFocus = root.querySelector<HTMLElement>("[data-game-focus]") ??
       root.querySelector<HTMLElement>("[data-fullscreen-board]");
@@ -103,7 +110,10 @@ function useRoomFullscreen(
       siblings.forEach(([element, inert]) => {
         element.inert = inert;
       });
-      document.documentElement.style.overflow = overflow;
+      for (const [style, property, value, priority] of locked) {
+        if (value) style.setProperty(property, value, priority);
+        else style.removeProperty(property);
+      }
       const focusTarget = trigger.current?.isConnected
         ? trigger.current
         : root.querySelector<HTMLElement>("[data-fullscreen-board]");

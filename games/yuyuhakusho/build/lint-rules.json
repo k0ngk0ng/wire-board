@@ -1,5 +1,6 @@
 {
   "targets": [
+    "games/yuyuhakusho/web/input.ts",
     "internal/gametest/controller_gamepad_browser_test.go",
     "web/src/controllers/MDController.tsx",
     "web/src/controllers/pointer-controller.ts",

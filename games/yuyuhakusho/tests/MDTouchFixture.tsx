@@ -5,7 +5,7 @@ import { MDInput } from "../web/input";
 import "../web/network.css";
 
 const initial = { revision: 0, turboHz: 10, keyboard: { up: "KeyW", down: "KeyS", left: "KeyA", right: "KeyD", mode: "KeyF", start: "Space", a: "KeyJ", b: "KeyK", c: "KeyL", x: "KeyU", y: "KeyI", z: "KeyO" } };
-const probe = { mask: 0, events: [] as { type: string; trusted: boolean }[] };
+const probe = { mask: 0, focusCalls: 0, events: [] as { type: string; trusted: boolean }[] };
 Object.assign(window, { mdTouchProbe: probe });
 for (const type of ["touchstart", "touchmove", "touchend", "touchcancel"]) document.addEventListener(type, event => { probe.events.push({ type, trusted: event.isTrusted }); });
 
@@ -16,13 +16,16 @@ function App() {
   const [profile, setProfile] = useState(initial);
   const [overlay, setOverlay] = useState(false);
   useEffect(() => {
+    const target = root.current!;
+    const focus = target.focus.bind(target);
+    target.focus = options => { probe.focusCalls++; focus(options); };
     const source = new MDInput(root.current!, initial, mask => { probe.mask = mask; });
     input.current = source;
     source.setEnabled(true);
     let frame = 0;
     const sample = () => { probe.mask = source.sample(); frame = requestAnimationFrame(sample); };
     frame = requestAnimationFrame(sample);
-    return () => { cancelAnimationFrame(frame); source.dispose(); input.current = undefined; };
+    return () => { cancelAnimationFrame(frame); source.dispose(); target.focus = focus; input.current = undefined; };
   }, []);
   useEffect(() => { input.current?.setEnabled(!disabled); }, [disabled]);
   useEffect(() => { input.current?.configure(profile); }, [profile]);

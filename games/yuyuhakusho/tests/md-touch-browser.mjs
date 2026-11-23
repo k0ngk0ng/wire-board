@@ -76,12 +76,27 @@ try {
       assert.equal(mask, expected, JSON.stringify(events.at(-1)));
     };
     await touch("touchStart", [direction], 4);
+    const firstFocus = await evaluate("window.mdTouchProbe.focusCalls");
     await touch("touchStart", [direction, a], 68);
     await touch("touchStart", [direction, a, b], 84);
     await touch("touchMove", [direction, c, b], 52);
     await touch("touchEnd", [direction], 48);
     await touch("touchEnd", [c], 16);
     await touch("touchCancel", [], 0);
+    const stableFocus = await evaluate("({calls:window.mdTouchProbe.focusCalls,active:document.activeElement===document.querySelector('main')})");
+    result.checks.push({ width, height, focus: stableFocus, firstFocus });
+    assert.equal(stableFocus.active, true);
+    assert.equal(stableFocus.calls, firstFocus, "unchanged game focus must not be requested again for touch updates");
+    await evaluate("(()=>{const button=document.createElement('button');button.id='outside-game';button.textContent='外部控件';button.style.cssText='position:fixed;top:0;left:0';document.body.append(button);button.focus();return true})()");
+    await touch("touchStart", [a], 64);
+    assert.equal(await evaluate("window.mdTouchProbe.focusCalls"), firstFocus + 1, "touch must reacquire focus after an external control");
+    await touch("touchEnd", [], 0);
+    for (let tap = 0; tap < 20; tap++) {
+      await touch("touchStart", [a], 64);
+      await touch("touchEnd", [], 0);
+    }
+    assert.equal(await evaluate("window.mdTouchProbe.focusCalls"), firstFocus + 1, "rapid taps must preserve existing game focus");
+    await evaluate("document.getElementById('outside-game').remove();true");
     await touch("touchStart", [direction, a, b, x, y], 1620);
     await touch("touchEnd", [x], 596);
     await touch("touchCancel", [], 0);
