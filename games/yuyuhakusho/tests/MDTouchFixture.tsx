@@ -22,7 +22,7 @@ function App() {
     let frame = 0;
     const sample = () => { probe.mask = source.sample(); frame = requestAnimationFrame(sample); };
     frame = requestAnimationFrame(sample);
-    return () => { cancelAnimationFrame(frame); source.destroy(); input.current = undefined; };
+    return () => { cancelAnimationFrame(frame); source.dispose(); input.current = undefined; };
   }, []);
   useEffect(() => { input.current?.setEnabled(!disabled); }, [disabled]);
   useEffect(() => { input.current?.configure(profile); }, [profile]);
@@ -30,7 +30,7 @@ function App() {
     <button id="disable" onClick={() => setDisabled(value => !value)}>切换禁用</button>
     <button id="profile" onClick={() => setProfile(value => ({ ...value, revision: value.revision + 1 }))}>切换配置</button>
     <button id="overlay" onClick={() => setOverlay(value => !value)}>切换游戏浮层</button>
-    {overlay ? <div className="yuyu-board" style={{ height: 'calc(100dvh - 50px)', maxWidth: 'none' }}><div className="yuyu-screen"><canvas width={320} height={224} /><div className="yuyu-controller"><MDController profile={profile} mode="play" disabled={disabled} sink={{ pressPointer: (id, buttons) => input.current?.pressPointer(id, buttons), releasePointer: (id, cancelled) => input.current?.releasePointer(id, cancelled) }} /></div></div></div> : <MDController profile={profile} mode="play" disabled={disabled} sink={{ pressPointer: (id, buttons) => input.current?.pressPointer(id, buttons), releasePointer: (id, cancelled) => input.current?.releasePointer(id, cancelled) }} />}
+    {overlay ? <div className="yuyu-board touch-controller-stage" style={{ height: 'calc(100dvh - 50px)', maxWidth: 'none' }}><div className="yuyu-screen touch-controller-picture"><canvas width={320} height={224} /></div><div className="yuyu-controller touch-controller-overlay"><MDController profile={profile} mode="play" disabled={disabled} sink={{ pressPointer: (id, buttons) => input.current?.pressPointer(id, buttons), releasePointer: (id, cancelled) => input.current?.releasePointer(id, cancelled) }} /></div></div> : <MDController profile={profile} mode="play" disabled={disabled} sink={{ pressPointer: (id, buttons) => input.current?.pressPointer(id, buttons), releasePointer: (id, cancelled) => input.current?.releasePointer(id, cancelled) }} />}
   </main>;
 }
 

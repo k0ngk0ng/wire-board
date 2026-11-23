@@ -13,7 +13,7 @@ import path from "node:path";
 const root = fileURLToPath(new URL("../../", import.meta.url));
 const out = path.join(root, ".local/mobile-play-notice");
 mkdirSync(out, { recursive: true });
-const text = "建议使用电脑游玩。手机可能出现卡顿，组合按键需要多指操作。";
+const text = "建议使用电脑游玩。手机可能出现卡顿。";
 const built = await build({
   stdin: {
     contents: `

@@ -10,11 +10,12 @@ const root = fileURLToPath(new URL("../../../", import.meta.url));
 const out = path.join(root, ".local/yuyuhakusho/mobile-controls");
 const temporary = path.join(out, "temporary");
 const sockets = path.join(root, ".local/yuyuhakusho/s");
-for (const folder of [out, temporary, sockets]) await mkdir(folder, { recursive: true });
-const env = { ...process.env, TMPDIR: temporary, AGENT_BROWSER_PROFILE: path.join(temporary, "profile"), AGENT_BROWSER_SOCKET_DIR: sockets, AGENT_BROWSER_NO_VERSION_CHECK: "1" };
+for (const folder of [out, temporary, sockets, ...["profile", "cache", "config", "data"].map(name => path.join(temporary, name))]) await mkdir(folder, { recursive: true });
+const env = { ...process.env, TMPDIR: temporary, XDG_CONFIG_HOME: path.join(temporary, "config"), XDG_DATA_HOME: path.join(temporary, "data"), XDG_CACHE_HOME: path.join(temporary, "cache"), AGENT_BROWSER_PROFILE: path.join(temporary, "profile"), AGENT_BROWSER_SOCKET_DIR: sockets, AGENT_BROWSER_NO_VERSION_CHECK: "1" };
 const execute = promisify(execFile);
+const session = (await execute("agent-browser", ["session", "id", "--scope", "worktree", "--prefix", "mt"], { cwd: root, env, timeout: 10000 })).stdout.trim();
 const browser = async (...args) => {
-  const { stdout } = await execute("agent-browser", ["--session", "ym", ...args, "--json"], { cwd: root, env, timeout: 30000 });
+  const { stdout } = await execute("agent-browser", ["--session", session, "--profile", path.join(temporary, "profile"), ...args, "--json"], { cwd: root, env, timeout: 30000 });
   const value = JSON.parse(stdout);
   assert.equal(value.success, true, stdout);
   return value.data;

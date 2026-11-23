@@ -6,19 +6,33 @@ export type ControllerSink = {
   releasePointer(id: number, cancelled: boolean): void;
 };
 type OwnedPointer = { buttons: readonly string[]; sink: ControllerSink };
-type TouchContact = { dpad: boolean; button: string };
+type TouchContact = { dpad: boolean; button: string; face: boolean };
 
 const faceButtons = new Set(["a", "b", "c", "x", "y", "z", "turboA", "turboB"]);
 
 function directionAt(element: HTMLElement, clientX: number, clientY: number): string[] {
   const rect = element.getBoundingClientRect();
-  const x = ((clientX - rect.left) / rect.width) * 2 - 1;
-  const y = ((clientY - rect.top) / rect.height) * 2 - 1;
-  if (!rect.width || !rect.height || Math.abs(x) > 1 || Math.abs(y) > 1 || Math.max(Math.abs(x), Math.abs(y)) < 0.22) return [];
-  const buttons: string[] = [];
-  if (Math.abs(y) >= Math.abs(x) * 0.5) buttons.push(y < 0 ? "up" : "down");
-  if (Math.abs(x) >= Math.abs(y) * 0.5) buttons.push(x < 0 ? "left" : "right");
-  return buttons;
+  const widthMilli = Math.round(rect.width * 1000);
+  const heightMilli = Math.round(rect.height * 1000);
+  if (widthMilli <= 0 || heightMilli <= 0 || !Number.isFinite(clientX) || !Number.isFinite(clientY)) return [];
+  const x = Math.round((2 * Math.round((clientX - rect.left) * 1000) - widthMilli) * 10000 / widthMilli);
+  const y = Math.round((2 * Math.round((clientY - rect.top) * 1000) - heightMilli) * 10000 / heightMilli);
+  const absX = Math.abs(x);
+  const absY = Math.abs(y);
+  if (absX > 10000 || absY > 10000 || Math.max(absX, absY) < 2200) return [];
+  const vertical = y < 0 ? "up" : "down";
+  const horizontal = x < 0 ? "left" : "right";
+  if (absY * 1000000 > absX * 2144507) return [vertical];
+  if (absY * 1000000 < absX * 466308) return [horizontal];
+  return [vertical, horizontal];
+}
+
+function logicalButtons(element: HTMLElement): string[] {
+  return element.dataset.controllerCombo?.split(" ") ?? [element.dataset.controllerButton ?? ""];
+}
+
+function isFaceControl(element: HTMLElement): boolean {
+  return !!element.dataset.controllerCombo || faceButtons.has(element.dataset.controllerButton ?? "");
 }
 
 export function useControllerPointers({
@@ -114,7 +128,7 @@ export function useControllerPointers({
     event: PointerEvent<HTMLElement>,
     buttons: readonly string[],
   ) => {
-    if (event.button !== 0 || disabled || mode !== "play" || !sink) return;
+    if (!Number.isInteger(event.button) || event.button !== 0 || disabled || mode !== "play" || !sink) return;
     if (event.pointerType === "touch" && surface.current) return;
     event.preventDefault();
     event.currentTarget.setPointerCapture(event.pointerId);
@@ -124,14 +138,14 @@ export function useControllerPointers({
     const root = surface.current;
     const context = current.current;
     if (!root || context.disabled || context.mode !== "play" || !context.sink) return;
-    const wasOwned = touches.current.size > 0;
+    const wasOwned = Boolean(touches.current.size);
     if (event.type === "touchstart") {
       for (const contact of Array.from(event.changedTouches)) {
         if (!(contact.target instanceof Element) || !root.contains(contact.target)) continue;
-        const button = contact.target.closest<HTMLButtonElement>("[data-controller-button]");
+        const button = contact.target.closest<HTMLElement>("[data-controller-button],[data-controller-combo]");
         const dpad = contact.target.closest<HTMLElement>("[data-controller-dpad]");
-        if (!dpad && (!button || button.disabled)) continue;
-        touches.current.set(contact.identifier, { dpad: Boolean(dpad), button: button?.dataset.controllerButton ?? "" });
+        if (!dpad && (!button || button.matches(":disabled,[aria-disabled=true]"))) continue;
+        touches.current.set(contact.identifier, { dpad: Boolean(dpad), button: button?.dataset.controllerButton ?? "", face: !!button && isFaceControl(button) });
       }
     }
     const activeIDs = new Set(Array.from(event.touches, contact => contact.identifier));
@@ -148,13 +162,13 @@ export function useControllerPointers({
         const pad = root.querySelector<HTMLElement>("[data-controller-dpad]");
         if (pad) buttons = directionAt(pad, contact.clientX, contact.clientY);
       } else {
-        const target = document.elementFromPoint(contact.clientX, contact.clientY)?.closest<HTMLButtonElement>("[data-controller-button]");
+        const target = document.elementFromPoint(contact.clientX, contact.clientY)?.closest<HTMLElement>("[data-controller-button],[data-controller-combo]");
         const button = target?.dataset.controllerButton;
-        if (target && root.contains(target) && !target.disabled && button && (faceButtons.has(owned.button) ? faceButtons.has(button) : button === owned.button)) buttons = [button];
+        if (target && root.contains(target) && !target.matches(":disabled,[aria-disabled=true]") && (owned.face ? isFaceControl(target) : button === owned.button)) buttons = logicalButtons(target);
       }
       press(-contact.identifier - 1, buttons);
     }
-    if ((wasOwned || touches.current.size > 0) && event.cancelable) event.preventDefault();
+    if ((wasOwned || touches.current.size) && event.cancelable) event.preventDefault();
   };
   return { active, pointers, press, end, lost, direction, down, surface };
 }

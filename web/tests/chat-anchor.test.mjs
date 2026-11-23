@@ -9,6 +9,18 @@ test('the default chat corner stays at the bottom when no control occupies it', 
   assert.deepEqual(defaultChatAnchor(bounds, 44, 44, []), { x: 756, y: 356 });
 });
 
+test('a preferred chat position is retained while it remains clear', () => {
+  assert.deepEqual(defaultChatAnchor(bounds, 44, 44, [], { x: 100, y: 120 }), { x: 100, y: 120 });
+});
+
+test('a preferred chat position moves away from controls after a layout change', () => {
+  const control = { left: 720, top: 180, right: 800, bottom: 260 };
+  const preferred = { x: 756, y: 198 };
+  const point = defaultChatAnchor(bounds, 44, 44, [control], preferred);
+  assert.ok(!overlaps(point, control));
+  assert.ok(point.x >= bounds.left && point.y >= bounds.top && point.x + 44 <= bounds.right && point.y + 44 <= bounds.bottom);
+});
+
 test('a fire control moves the default chat to the nearest free position', () => {
   const fire = { left: 720, top: 328, right: 800, bottom: 400 };
   const picture = { left: 0, top: 0, right: 650, bottom: 400 };

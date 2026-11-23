@@ -12,8 +12,6 @@ import { createRuntimeRoomPresentation } from "./runtime-result";
 export default defineGame<RoomRuntimeView>({
   ...catalog,
   asyncBoard: true,
-  // Runtime assets use the verified commit CDN root and are fetched by Board
-  // for the current stage or sound event, never by the host's image preloader.
   resources: () => [],
   isInputRelease: (action) => action.type === "release",
   createPresentation: () => createRuntimeRoomPresentation(readRuntimeVisible),
@@ -23,6 +21,7 @@ export default defineGame<RoomRuntimeView>({
       方向键移动和瞄准，B 射击，A 跳跃。原地按「下」 + A 可穿过单向平台；
       生命耗尽后可按 A 借用队友的备用生命。Start
       暂停或继续，双人合作由第一位玩家控制暂停。 通关八关后结算。
+      手机和平板开局自动进入游戏区全屏；方向区按住滑动可连续输入八向，斜向同时按住相邻两个方向。按 A 与 B 之间的连接处可同时射击和跳跃，滑向单键即切换为该键，松手全部释放。Turbo B、Turbo A 为独立连发键。
     </p>
   ),
   PlayerSummary: ({ room, data, seat }) => {

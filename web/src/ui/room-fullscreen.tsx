@@ -112,17 +112,14 @@ function useRoomFullscreen(
     };
   }, [mode, root]);
 
-  const toggle = async () => {
-    if (control.current.wanted) {
-      exit();
-      return;
-    }
-    if (!scope || !root) return;
+  const enter = async () => {
+    if (control.current.wanted || !scope || !root) return;
     trigger.current = document.activeElement as HTMLElement | null;
     scroll.current = { x: window.scrollX, y: window.scrollY };
     control.current.wanted = true;
     const generation = ++control.current.generation;
     setPending(true);
+    update("page");
     try {
       if (root.requestFullscreen) await root.requestFullscreen();
       else if (root.webkitRequestFullscreen)
@@ -138,7 +135,8 @@ function useRoomFullscreen(
       if (generation === control.current.generation) setPending(false);
     }
   };
-  return { active: !!mode, mode, pending, toggle };
+  const toggle = () => control.current.wanted ? exit() : void enter();
+  return { active: !!mode, mode, pending, toggle, enter };
 }
 
 function FullscreenButton({
@@ -167,6 +165,7 @@ export function GameFullscreen({
   ref,
   scope,
   enabled,
+  autoEnter = false,
   children,
   result,
   status,
@@ -179,6 +178,7 @@ export function GameFullscreen({
   ref?: Ref<GameFullscreenHandle>;
   scope: string;
   enabled: boolean;
+  autoEnter?: boolean;
   children: ReactNode;
   result?: ReactNode;
   status?: ReactNode;
@@ -192,8 +192,15 @@ export function GameFullscreen({
   const board = useRef<HTMLDivElement>(null);
   const toolbar = useRef<HTMLDivElement>(null);
   const statusRoot = useRef<HTMLDivElement>(null);
+  const autoStarted = useRef("");
   const overlay = toolbarOverlay !== false;
-  const fullscreen = useRoomFullscreen(enabled || preserveWhileLoading ? scope : undefined, root);
+  const fullscreen = useRoomFullscreen(enabled || preserveWhileLoading || autoEnter ? scope : undefined, root);
+  useEffect(() => {
+    if (!autoEnter || !root || autoStarted.current === scope || !window.matchMedia("(pointer: coarse)").matches) return;
+    autoStarted.current = scope;
+    void fullscreen.enter();
+    return () => { autoStarted.current = ""; };
+  }, [autoEnter, root, scope]);
   useEffect(() => {
     if (root) return protectGameControls(root);
   }, [root]);
@@ -206,7 +213,7 @@ export function GameFullscreen({
   }, [fullscreen.active, root, onChatTargetChange]);
   useImperativeHandle(ref, () => ({
     enter: () => {
-      if (enabled && !fullscreen.active) void fullscreen.toggle();
+      if (enabled) void fullscreen.enter();
     },
   }));
   useEffect(() => {

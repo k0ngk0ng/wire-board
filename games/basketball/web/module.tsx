@@ -7,6 +7,7 @@ import {
 import { Board } from "./Board";
 import { Cover } from "./Cover";
 import { Preparation } from "./Preparation";
+import { Rules } from "./Rules";
 import type { BasketballNetworkView } from "./network-scene";
 
 export type BasketballOptions = {
@@ -164,8 +165,6 @@ export function OptionsForm({
   );
 }
 
-// The frontend discovers this metadata automatically. The server registry
-// remains gated by gameplay, asset distribution and release acceptance.
 export default defineGame<BasketballNetworkView, BasketballOptions>({
   ...catalog,
   asyncBoard: true,
@@ -179,6 +178,7 @@ export default defineGame<BasketballNetworkView, BasketballOptions>({
   Cover,
   Options: OptionsForm,
   Preparation,
+  Rules,
   PlayerSummary: ({ data, seat }) => {
     const actor = data.seatActors?.[seat] ?? seat;
     const team = Math.floor(actor / 2);

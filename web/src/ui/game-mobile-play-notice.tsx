@@ -8,7 +8,7 @@ export function GameMobilePlayNotice({ enabled }: { enabled?: boolean }) {
       data-mobile-play-notice
       role="note"
     >
-      建议使用电脑游玩。手机可能出现卡顿，组合按键需要多指操作。
+      建议使用电脑游玩。手机可能出现卡顿。
     </aside>
   );
 }

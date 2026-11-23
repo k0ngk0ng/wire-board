@@ -1166,6 +1166,11 @@ function App() {
                                 onChatTargetChange={setChatFullscreenTarget}
                                 scope={`${room.id}:${room.supportsCheckpoint ? "checkpoint" : room.matchId ?? room.setupVersion}`}
                                 enabled={!loading && !!room.game}
+                                autoEnter={
+                                  room.status === "playing" &&
+                                  !room.spectating &&
+                                  !!gameModule(room.kind)?.realtime
+                                }
                                 preserveWhileLoading={!!room.supportsCheckpoint}
                                 toolbarOverlay={
                                   gameModule(room.kind)?.fullscreenToolbarOverlay

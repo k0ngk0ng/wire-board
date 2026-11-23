@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { promisify } from "node:util";
 import { execFile } from "node:child_process";
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, writeFile, rm } from "node:fs/promises";
 import { createRequire } from "node:module";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -25,6 +25,7 @@ const server = await createServer({ configFile: false, root: temporary, cacheDir
 await server.listen();
 let socket;
 const reports = [];
+const kinds = process.env.CONTROLLER_OVERLAY_KINDS?.split(",") ?? ["contra", "basketball", "yuyuhakusho", "battlecity"];
 try {
   await browser("open", server.resolvedUrls.local[0] + "?kind=contra&protected=1");
   await browser("wait", "--fn", "window.controllerOverlayReady===true");
@@ -62,7 +63,7 @@ try {
   await writeFile(path.join(out, "normal-desktop-hud.png"), Buffer.from(desktopImage.data, "base64"));
   assert.equal(desktopHud.coarse, false);
   assert.equal(desktopHud.overlap, false, "normal desktop chat covers protected game HUD: " + JSON.stringify(desktopHud));
-  for (const kind of ["contra", "basketball", "yuyuhakusho", "battlecity"]) {
+  for (const kind of kinds) {
     const directory = path.join(root, ".local", kind, "controller-overlay", run);
     await mkdir(directory, { recursive: true });
     const pageURL = server.resolvedUrls.local[0] + "?kind=" + kind;
@@ -135,14 +136,20 @@ try {
       layout.normalChat = await evaluate(`(()=>{const chat=document.querySelector('.chat-toggle').getBoundingClientRect();return [...document.querySelectorAll('[data-controller-button],.bc-dpad,.bc-fire')].map(element=>{const rect=element.getBoundingClientRect();return {button:element.dataset.controllerButton??element.className,covered:rect.left<chat.right&&rect.right>chat.left&&rect.top<chat.bottom&&rect.bottom>chat.top}})})()`);
       assert.ok(layout.normalChat.every(button => !button.covered), kind + ' normal room chat covers a touch action: ' + JSON.stringify(layout.normalChat));
       if (kind !== "battlecity" && width > height && geometry.game.width >= 760) {
-        layout.picture = await evaluate("document.querySelector('[data-overlay-stage] canvas').getBoundingClientRect().toJSON()");
-        assert.ok(layout.picture.width >= 320, kind + " side controls shrank the picture too far");
-        assert.ok(geometry.targets.every(value => value.rect.right <= layout.picture.left || value.rect.left >= layout.picture.right), kind + " side controls cover the game picture");
+        layout.picture = await evaluate("(()=>{const canvas=document.querySelector('[data-overlay-stage] canvas');const b=canvas.getBoundingClientRect();const width=Math.min(Math.round(b.width*1000),Math.floor(b.height*1000*canvas.width/canvas.height));const height=Math.floor(width*canvas.height/canvas.width);const left=Math.round(b.left*1000)+Math.floor((Math.round(b.width*1000)-width)/2);return {left,right:left+width,width,height}})()");
+        assert.ok(layout.picture.width >= 320000, kind + " side controls shrank the picture too far");
+        const leftSpace = layout.picture.left - Math.round(geometry.game.left * 1000);
+        const rightSpace = Math.round(geometry.game.right * 1000) - layout.picture.right;
+        if (leftSpace >= 160000 && rightSpace >= 170000) assert.ok(geometry.targets.every(value => Math.round(value.rect.right * 1000) <= layout.picture.left || Math.round(value.rect.left * 1000) >= layout.picture.right), kind + " controls ignore available side space");
       }
       assert.ok(kind === "battlecity" ? geometry.gridArea.includes("field") : geometry.position === "absolute", kind + " still reserves an external controller row");
       assert.ok(geometry.targets.every(value => value.rect.width >= 44 && value.rect.height >= 44), kind + " undersized touch target");
       assert.ok(geometry.targets.every(value => value.rect.left >= geometry.game.left && value.rect.right <= geometry.game.right && value.rect.top >= geometry.game.top && value.rect.bottom <= geometry.game.bottom), kind + " touch target escaped game area");
       assert.ok(geometry.targets.every(value => value.background.startsWith("rgba(")), kind + " opaque control background");
+      if (kind !== "battlecity" && width > height) {
+        const pad = await evaluate("document.querySelector('[data-controller-dpad]').getBoundingClientRect().toJSON()");
+        assert.ok(Math.abs(Math.round((pad.top + pad.height / 2 - geometry.game.top - geometry.game.height / 2) * 1000)) <= 1000, kind + " landscape direction control is not vertically centered");
+      }
       const beforeImage = await call("Page.captureScreenshot", { format: "png", captureBeyondViewport: false, clip: { x: 0, y: 0, width, height, scale: 1 } }, sessionId);
       await writeFile(path.join(directory, width + "x" + height + "-before.png"), Buffer.from(beforeImage.data, "base64"));
       const selectors = kind === "battlecity" ? ["[data-battlecity-dpad]", "[data-battlecity-fire]"] : ["[data-controller-dpad]", "[data-controller-button=a]"];
@@ -229,8 +236,9 @@ try {
     await writeFile(path.join(directory, "report.json"), JSON.stringify(report, null, 2) + "\n");
   }
 } finally {
-  await writeFile(path.join(out, "all-games.json"), JSON.stringify({ passed: reports.length === 4 && reports.every(report => report.passed), reports }, null, 2) + "\n");
+  await writeFile(path.join(out, "all-games.json"), JSON.stringify({ passed: reports.length === kinds.length && reports.every(report => report.passed), reports }, null, 2) + "\n");
   socket?.close();
   await browser("close").catch(() => {});
   await server.close();
+  await rm(temporary, { recursive: true, force: true });
 }

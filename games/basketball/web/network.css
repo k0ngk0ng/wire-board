@@ -109,7 +109,6 @@
 }
 @media (pointer: coarse) {
   .basketball-board { position: relative; gap: 0; }
-  .basketball-screen { padding-bottom: 176px; }
   .basketball-stage { width: 100%; }
   .basketball-stage canvas { object-fit: contain; }
   [data-room-fullscreen] .basketball-board { height: 100%; }

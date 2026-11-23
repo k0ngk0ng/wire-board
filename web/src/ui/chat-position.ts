@@ -95,16 +95,10 @@ export function useChatPosition(
     const obstacleSelector = window.matchMedia("(pointer: coarse)").matches ? touchSelector : '[data-chat-protected]';
     const obstacles = Array.from(surface.querySelectorAll<HTMLElement>(obstacleSelector)).filter(element => element.getClientRects().length > 0).map(element => element.getBoundingClientRect());
     if (!target && !obstacles.length) { setPosition(undefined); setPanelStyle(undefined); setCompact(false); return; }
-    for (const picture of surface.querySelectorAll<HTMLElement>(".touch-controller-picture")) {
-      if (getComputedStyle(picture).getPropertyValue("--touch-picture-gutters").trim() === "1") {
-        const canvas = picture.querySelector("canvas");
-        if (canvas) obstacles.push(canvas.getBoundingClientRect());
-      }
-    }
     const preferred = (target ? point.current : undefined) ?? (obstacles.length
       ? defaultChatAnchor(bounds, rect.width, rect.height, obstacles)
       : { x: bounds.right - rect.width, y: bounds.bottom - rect.height });
-    const next = clamp(preferred, bounds, rect.width, rect.height);
+    const next = defaultChatAnchor(bounds, rect.width, rect.height, obstacles, clamp(preferred, bounds, rect.width, rect.height));
     setPosition((previous) =>
       previous?.x === next.x && previous.y === next.y ? previous : next,
     );
@@ -154,9 +148,15 @@ export function useChatPosition(
     const resized = () => measure.current(),
       cancel = () => finish();
     const observer = new ResizeObserver(resized);
-    observer.observe(target ?? document.body);
+    const observeControls = () => {
+      observer.disconnect();
+      const surface = target ?? document.body;
+      observer.observe(surface);
+      for (const control of surface.querySelectorAll(touchSelector + ',[data-controller-layout]')) observer.observe(control);
+    };
+    observeControls();
     const controls = new MutationObserver(records => {
-      if (records.some(record => [...record.addedNodes, ...record.removedNodes].some(node => node instanceof Element && (node.matches(touchSelector) || node.querySelector(touchSelector))))) resized();
+      if (records.some(record => [...record.addedNodes, ...record.removedNodes].some(node => node instanceof Element && (node.matches(touchSelector) || node.querySelector(touchSelector))))) { observeControls(); resized(); }
     });
     controls.observe(target ?? document.body, { childList: true, subtree: true });
     window.addEventListener("resize", resized);

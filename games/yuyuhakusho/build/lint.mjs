@@ -3,6 +3,7 @@ import path from "node:path";
 import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
 import { execFileSync } from "node:child_process";
+import { inspectNumericComparisons } from "../../../web/scripts/numeric-comparisons.mjs";
 
 const root = fileURLToPath(new URL("../../../", import.meta.url));
 const require = createRequire(new URL("../../../web/package.json", import.meta.url));
@@ -29,9 +30,14 @@ for (const name of targets) {
       if ((ts.isVariableDeclaration(node) || ts.isParameter(node) || ts.isFunctionDeclaration(node)) && node.name && ts.isIdentifier(node.name) && !new RegExp(rules.identifiers).test(node.name.text)) report(`invalid identifier: ${node.name.text}`);
       if (ts.isCallExpression(node) && ts.isIdentifier(node.expression) && node.expression.text === "eval") report("prohibited eval");
       if (ts.isNewExpression(node) && ts.isIdentifier(node.expression) && node.expression.text === "Function") report("prohibited Function constructor");
+      if (rules.outputSources?.includes(name)) {
+        if (ts.isStringLiteral(node) && ((node.text.includes(".local/") && !rules.localOutputRoots.some(folder => node.text.startsWith(folder))) || /^(?:\/tmp\/|\/private\/tmp\/|~\/)/.test(node.text))) report("invalid game output directory");
+        if (ts.isCallExpression(node) && ts.isIdentifier(node.expression) && ["tmpdir", "homedir"].includes(node.expression.text)) report("prohibited external temporary directory");
+      }
       ts.forEachChild(node, walk);
     };
     walk(file);
+    if (rules.numericSources?.includes(name)) inspectNumericComparisons(file, message => report(message));
     for (const diagnostic of file.parseDiagnostics) report(ts.flattenDiagnosticMessageText(diagnostic.messageText, " "));
   }
 }

@@ -7,6 +7,14 @@ import {
   lintRoomUi,
 } from "../scripts/room-ui-lint.mjs";
 
+test("mobile fullscreen evidence stays in the declared game workspace", () => {
+  const file = "web/tests/mobile-fullscreen-browser.test.mjs";
+  assert.deepEqual(inspectRoomUiFile(file, 'const output = ".local/yuyuhakusho/mobile-fullscreen";'), []);
+  for (const source of ['const output = ".local/fullscreen";', 'const output = "/tmp/fullscreen";', 'const output = tmpdir();']) {
+    assert.ok(inspectRoomUiFile(file, source).includes("workspace-output-directory"));
+  }
+});
+
 test('fullscreen board layout sources and JSON fixtures have explicit lint scope', () => {
   assert.deepEqual(inspectRoomUiFile('games/chess/web/style.css', '.chess-board { height: 100%; }'), []);
   assert.deepEqual(inspectRoomUiFile('web/tests/fixtures/board-fullscreen.json', '{"cases":[]}'), []);

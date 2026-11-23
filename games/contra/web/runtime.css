@@ -99,7 +99,7 @@
 }
 @media (pointer: coarse) {
   .contra-runtime { position: relative; max-width: none; }
-  .contra-runtime-screen { aspect-ratio: auto; padding-bottom: 176px; box-sizing: border-box; }
+  .contra-runtime-screen { aspect-ratio: auto; box-sizing: border-box; }
   .contra-runtime-screen canvas { height: auto; aspect-ratio: 256/240; object-fit: contain; }
   [data-room-fullscreen] .contra-board { height: 100%; display: flex; flex-direction: column; min-height: 0; }
   [data-room-fullscreen] .contra-runtime { flex: 1 1 auto; min-height: 0; height: 100%; max-width: none; }

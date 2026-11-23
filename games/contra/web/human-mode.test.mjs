@@ -64,8 +64,8 @@ export function render(mode,room,capability=catalog.supportsBots){
             loader: "js",
           }),
         );
-        builder.onResolve({ filter: /^\.\/registry$/ }, (args) =>
-          args.importer.endsWith("/game-api/host.tsx")
+        builder.onResolve({ filter: /(?:^|\/)registry(?:\.ts)?$/ }, (args) =>
+          path.resolve(path.dirname(args.importer), args.path).replace(/\.ts$/, "") === path.join(root, "web/src/game-api/registry")
             ? { path: "registry", namespace: "contra-human-registry" }
             : null,
         );

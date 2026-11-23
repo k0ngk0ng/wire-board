@@ -10,6 +10,7 @@ const root = fileURLToPath(new URL("../../", import.meta.url));
 const files = [
   "web/src/ui/board-host.tsx",
   "web/src/ui/room-fullscreen.tsx",
+  "web/src/ui/game-mobile-play-notice.tsx",
   "web/src/ui/room-fullscreen.css",
   "web/src/ui/fullscreen-overlay.ts",
   "web/src/ui/map-controls.ts",
@@ -38,6 +39,7 @@ const files = [
   "web/tests/BoardFullscreenFixture.tsx",
   "web/tests/board-fullscreen-browser.test.mjs",
   "web/tests/fullscreen-overlay.test.mjs",
+  "web/tests/mobile-fullscreen-browser.test.mjs",
   "web/tests/fixtures/board-fullscreen.json",
   "games/gomoku/web/Board.tsx",
   "games/gomoku/web/module.tsx",
@@ -98,6 +100,10 @@ export function inspectRoomUiFile(file, source) {
   );
   if (parsed.parseDiagnostics.length) issues.push("syntax");
   const visit = (node) => {
+    if (file === "web/tests/mobile-fullscreen-browser.test.mjs") {
+      if (ts.isStringLiteral(node) && ((node.text.includes(".local/") && !node.text.startsWith(".local/yuyuhakusho/")) || /^(?:\/tmp\/|\/private\/tmp\/|~\/)/.test(node.text))) issues.push("workspace-output-directory");
+      if (ts.isCallExpression(node) && ts.isIdentifier(node.expression) && ["tmpdir", "homedir"].includes(node.expression.text)) issues.push("workspace-output-directory");
+    }
     if (
       ts.getLeadingCommentRanges(source, node.pos)?.length ||
       ts.getTrailingCommentRanges(source, node.end)?.length

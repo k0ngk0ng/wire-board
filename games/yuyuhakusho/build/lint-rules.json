@@ -2,6 +2,10 @@
   "targets": [
     "web/src/controllers/MDController.tsx",
     "web/src/controllers/pointer-controller.ts",
+    "web/tests/ControllerComboFixture.tsx",
+    "web/tests/controller-combos-browser.mjs",
+    "web/tests/controller-combo-lint.test.mjs",
+    "web/tests/controller-room-browser.mjs",
     "games/yuyuhakusho/tests/MDTouchFixture.tsx",
     "games/yuyuhakusho/tests/md-touch-browser.mjs",
     "games/yuyuhakusho/build/lint.mjs",
@@ -42,8 +46,11 @@
     "games/contra/web/runtime-board.tsx",
     "games/contra/web/Board.tsx",
     "games/contra/web/runtime.css",
+    "games/contra/web/module.tsx",
     "games/basketball/web/Board.tsx",
     "games/basketball/web/network.css",
+    "games/basketball/web/module.tsx",
+    "games/basketball/web/Rules.tsx",
     "games/battlecity/web/Board.tsx",
     "games/battlecity/web/style.css",
     "web/src/ui/chat-anchor.ts",
@@ -77,5 +84,8 @@
       "comments": false
     }
   },
-  "identifiers": "^(?:_?[A-Za-z][A-Za-z0-9]*|_|[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)*)$"
+  "identifiers": "^(?:_?[A-Za-z][A-Za-z0-9]*|_|[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)*)$",
+  "numericSources": ["web/src/controllers/pointer-controller.ts"],
+  "outputSources": ["web/tests/controller-combos-browser.mjs", "web/tests/controller-room-browser.mjs"],
+  "localOutputRoots": [".local/yuyuhakusho/", ".local/contra/"]
 }
