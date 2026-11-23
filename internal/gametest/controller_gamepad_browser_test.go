@@ -1,7 +1,5 @@
 package gametest
 
-// Opt-in browser fixture: production auth/settings/SQLite and registered game
-// modules. Only the browser hardware source is virtualized by the JS harness.
 import (
 	"crypto/sha256"
 	"encoding/hex"
@@ -97,7 +95,7 @@ func TestControllerGamepadBrowserFixture(t *testing.T) {
 		prefix := "/contra/runtime-" + runtimeID + "/"
 		mux.Handle(prefix, http.StripPrefix(prefix, http.FileServer(http.Dir(public))))
 	}
-	host, err := server.New(server.Config{DataDir: filepath.Join(out, "data"), InviteCode: "gamepad-browser", AdminUsername: "手柄验收管理员", AdminPassword: "gamepad-browser-test-only", Modules: modules, ClientLoading: true}, os.DirFS(web))
+	host, err := server.New(server.Config{DataDir: filepath.Join(out, "data"), InviteCode: "gamepad-browser", AdminUsername: "手柄验收管理员", AdminPassword: "gamepad-browser-test-only", Modules: modules, AssetsBaseURL: os.Getenv("WIRE_BOARD_GAMEPAD_ASSETS_BASE"), ClientLoading: true}, os.DirFS(web))
 	if err != nil {
 		t.Fatal(err)
 	}

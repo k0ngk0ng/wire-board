@@ -13,9 +13,9 @@ test('shared fullscreen uses overlay controls and maximizes five proportional ch
   const red = process.env.FULLSCREEN_LAYOUT_PHASE === 'red';
   const name = process.env.BOARD_FULLSCREEN_REPORT ?? (red ? 'red' : 'current');
   assert.match(name, /^[a-z0-9]+(?:-[a-z0-9]+)*$/);
-  const out = path.join(root, '.local/room-tools-followup/verification/fullscreen', name);
+  const out = path.join(root, '.local/xiangqi/fullscreen', name);
   const temporary = path.join(out, 'temporary');
-  const environment = { ...process.env, TMPDIR: path.join(root, '.local/chft', process.pid.toString(36)), XDG_CACHE_HOME: path.join(temporary, 'cache'), XDG_CONFIG_HOME: path.join(temporary, 'config'), XDG_DATA_HOME: path.join(temporary, 'data'), AGENT_BROWSER_PROFILE: path.join(temporary, 'profile'), AGENT_BROWSER_SOCKET_DIR: path.join(root, '.local/room-tools-followup/s'), AGENT_BROWSER_NO_VERSION_CHECK: '1' };
+  const environment = { ...process.env, TMPDIR: path.join(root, '.local/xiangqi/t', process.pid.toString(36)), XDG_CACHE_HOME: path.join(temporary, 'cache'), XDG_CONFIG_HOME: path.join(temporary, 'config'), XDG_DATA_HOME: path.join(temporary, 'data'), AGENT_BROWSER_PROFILE: path.join(temporary, 'profile'), AGENT_BROWSER_SOCKET_DIR: path.join(root, '.local/xiangqi/s'), AGENT_BROWSER_NO_VERSION_CHECK: '1' };
   for (const directory of [out, temporary, environment.TMPDIR, environment.XDG_CACHE_HOME, environment.XDG_CONFIG_HOME, environment.XDG_DATA_HOME, environment.AGENT_BROWSER_PROFILE, environment.AGENT_BROWSER_SOCKET_DIR]) await mkdir(directory, { recursive: true });
   const execute = promisify(execFile);
   const session = (await execute('agent-browser', ['session', 'id', '--scope', 'worktree', '--prefix', 'chfs'], { cwd: root, env: environment })).stdout.trim();
@@ -76,6 +76,7 @@ test('shared fullscreen uses overlay controls and maximizes five proportional ch
     const operate = async (current, touch, id) => {
       const before = await evaluate('window.fullscreenBoardProbe.actions.length');
       if (current.kind === 'chess' || current.kind === 'xiangqi') {
+        await evaluate("document.querySelector('[data-fullscreen-board]').focus({preventScroll:true});true");
         const occupied = await evaluate(`([...document.querySelectorAll('[data-${current.kind}-square][aria-pressed=true]')].map(element=>element.dataset.${current.kind}Square))`);
         const width = current.kind === 'chess' ? 8 : 9;
         const label = value => String.fromCharCode(97 + value % width) + (current.kind === 'chess' ? Math.floor(value / width) + 1 : 9 - Math.floor(value / width));
@@ -113,8 +114,9 @@ test('shared fullscreen uses overlay controls and maximizes five proportional ch
     };
     const fixtures = JSON.parse(await readFile(path.join(root, 'web/tests/fixtures/board-fullscreen.json'), 'utf8'));
     const views = red ? [[1280, 900, false], [320, 760, true]] : [[1280, 900, false], [320, 760, true], [890, 626, true], [1024, 1366, true]];
-    for (const current of [...fixtures.cases, { id: 'corner-controls', kind: 'gomoku', collision: true }, { id: 'owned-overlay', kind: 'gomoku', collision: true, owned: true }, { id: 'safe-overlay', kind: 'gomoku', collision: true, safe: true }]) {
-      const url = server.resolvedUrls.local[0] + '?case=' + (current.collision ? 'gomoku' : current.id) + (current.collision ? '&collision=1' : '') + (current.owned ? '&owned=1' : '') + (current.safe ? '&safe=1' : '');
+    const warned = { ...fixtures.cases.find(value => value.kind === 'xiangqi'), id: 'xiangqi-warning', warning: true };
+    for (const current of [...(process.env.BOARD_FULLSCREEN_WARNING_ONLY ? [] : fixtures.cases), warned, { id: 'corner-controls', kind: 'gomoku', collision: true }, { id: 'owned-overlay', kind: 'gomoku', collision: true, owned: true }, { id: 'safe-overlay', kind: 'gomoku', collision: true, safe: true }]) {
+      const url = server.resolvedUrls.local[0] + '?case=' + (current.warning ? 'xiangqi' : current.collision ? 'gomoku' : current.id) + (current.warning ? '&warning=1' : '') + (current.collision ? '&collision=1' : '') + (current.owned ? '&owned=1' : '') + (current.safe ? '&safe=1' : '');
       await call('Page.navigate', { url });
       await wait('window.fullscreenBoardProbe?.ready===true');
       await evaluate('window.fullscreenBoardIdentity=document.querySelector("[data-fullscreen-board]").firstElementChild;true');
@@ -135,6 +137,11 @@ test('shared fullscreen uses overlay controls and maximizes five proportional ch
           check(id + ' same board', geometry.identity && geometry.mounts === 1);
           check(id + ' no overflow', !geometry.overflow);
           check(id + ' turn retained', geometry.turn.includes('1:59'));
+          if (current.warning) {
+            const warning = await evaluate("(()=>{const r=document.querySelector('.xiangqi-warning').getBoundingClientRect();return {height:Math.round(r.height*1000),bottom:Math.round(r.bottom*1000)}})()");
+            check(id + ' warning is compact', warning.height > 0 && warning.height <= 64000, warning);
+            check(id + ' warned board remains visible', geometry.map.top >= geometry.board.top && geometry.map.bottom <= geometry.board.bottom && geometry.map.height >= 100000, geometry);
+          }
           if (current.owned) check(id + ' explicit CS-style exit retained', geometry.exit.width === 32000 && geometry.exit.height === 32000, geometry.exit);
           if (current.safe) check(id + ' safe inset retained', geometry.exit.top >= 44000 && geometry.exit.right <= width * 1000 - 20000, geometry.exit);
           if (current.collision) {
@@ -150,8 +157,15 @@ test('shared fullscreen uses overlay controls and maximizes five proportional ch
             check(id + ' maximized board', expected.actualWidth >= expected.idealWidth - 12000, expected);
             if (expected.viewport) check(id + ' initial whole board', geometry.map.width <= expected.viewport.width && geometry.map.height <= expected.viewport.height, expected);
           }
+          if (current.warning) {
+            await evaluate("window.fullscreenBoardProbe.setWarning('');true");
+            await frames();
+            check(id + ' warning clears without remount', await evaluate("!document.querySelector('.xiangqi-warning')&&window.fullscreenBoardProbe.mounts===1"));
+            await evaluate("window.fullscreenBoardProbe.setWarning('玩家 2 须改变长将循环；再次重复将判负');true");
+            await frames();
+          }
           await capture(id + '-fullscreen');
-          const savedSelection = !red && !current.collision ? await operate(current, touch, id) : undefined;
+          const savedSelection = !red && !current.collision && !current.warning ? await operate(current, touch, id) : undefined;
           if (!red) {
             const before = await evaluate('window.fullscreenBoardProbe.actions.length');
             await activate('button[aria-label="保存"]', touch);

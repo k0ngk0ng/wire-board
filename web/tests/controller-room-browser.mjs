@@ -70,10 +70,24 @@ try {
       await delay(2800);
     }
     console.log("Real " + kind + " ready in room " + current.room);
+    if (kind === "yuyuhakusho") {
+      await viewport(844, 390);
+      for (const [button, expected] of [["ac", 96], ["abc", 112]]) {
+        const point = await evaluate(`(()=>{const r=document.querySelector('[data-controller-button=${button}]').getBoundingClientRect();return {id:3,x:r.x+r.width/2,y:r.y+r.height/2}})()`);
+        await call("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [point] }, sessionId);
+        const input = await wait("authoritative " + button, async () => { const room = (await api("/state")).room; return room.game.data.inputs[room.you].appliedButtons === expected ? room.game.data.inputs[room.you] : false; }, 10000);
+        await browser("screenshot", path.join(directory, "phone-" + button + ".png"));
+        current.checks.push({ combo: button, accepted: input });
+        await call("Input.dispatchTouchEvent", { type: "touchCancel", touchPoints: [] }, sessionId);
+      }
+    }
     for (const [label, width, height] of [["phone", 844, 390], ["pad", 1180, 820], ["portrait", 390, 844]]) {
       await viewport(width, height);
       const geometry = await evaluate("(()=>{const box=e=>e.getBoundingClientRect().toJSON();const surface=document.querySelector('[data-room-fullscreen]');return {mode:surface?.dataset.roomFullscreen,game:box(document.querySelector('[data-game-focus]')),canvas:box(document.querySelector('[data-game-focus] canvas')),buttons:[...document.querySelectorAll('button[data-controller-button]')].map(e=>({name:e.dataset.controllerButton,box:box(e),disabled:e.disabled})),dpad:box(document.querySelector('[data-controller-dpad]'))}})()");
       assert.ok(geometry.mode, "automatic game fullscreen is missing");
+      assert.equal(Math.round(geometry.canvas.top), 0, "fullscreen canvas is pushed down by a header row");
+      const mainAction = geometry.buttons.find(value => value.name === "a").box;
+      assert.ok(Math.abs(Math.round((geometry.dpad.top+geometry.dpad.height/2-mainAction.top-mainAction.height/2)*1000)) <= 1000, "actual direction and main action centers differ");
       assert.ok(geometry.buttons.every(value => !value.disabled), "game controls are disabled");
       assert.ok(geometry.buttons.filter(value => ["a", "b", "c", "x", "y", "z"].includes(value.name)).every(value => value.box.left >= width / 2), "action controls are not on the right side of the actual game");
       const chat = await evaluate("document.querySelector('.chat-toggle').getBoundingClientRect().toJSON()");
@@ -100,17 +114,6 @@ try {
       await wait("authoritative release", async () => { const room = (await api("/state")).room; const input = room.game.data.inputs[room.you]; return (input.held ?? input.appliedButtons) === 0; }, 10000);
       current.captures.push({ label, width, height, geometry, pixels, accepted, highlit });
       console.log(kind + " " + label + " actual canvas and authoritative combo verified");
-    }
-    if (kind === "yuyuhakusho") {
-      await viewport(844, 390);
-      for (const [button, expected] of [["ac", 96], ["abc", 112]]) {
-        const point = await evaluate(`(()=>{const r=document.querySelector('[data-controller-button=${button}]').getBoundingClientRect();return {id:3,x:r.x+r.width/2,y:r.y+r.height/2}})()`);
-        await call("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [point] }, sessionId);
-        const input = await wait("authoritative " + button, async () => { const room = (await api("/state")).room; return room.game.data.inputs[room.you].appliedButtons === expected ? room.game.data.inputs[room.you] : false; }, 10000);
-        await browser("screenshot", path.join(directory, "phone-" + button + ".png"));
-        current.checks.push({ combo: button, accepted: input });
-        await call("Input.dispatchTouchEvent", { type: "touchCancel", touchPoints: [] }, sessionId);
-      }
     }
     current.passed = true;
     await writeFile(path.join(directory, "result.json"), JSON.stringify(current, null, 2) + "\n");

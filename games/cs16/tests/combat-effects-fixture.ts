@@ -28,7 +28,7 @@ loader.register(parser => ({ name: 'CS16_effect_fixture_textures', loadTexture: 
   texture.minFilter = T.LinearMipmapLinearFilter; texture.needsUpdate = true;
   return texture;
 }) }));
-for (const name of new Set(['player-terror', 'player-urban', 'v-glock18', 'p-glock18', ...map.decorations?.map(item => item.model) ?? []])) {
+for (const name of new Set(['player-terror', 'player-urban', 'v-glock18', 'p-glock18', 'v-awp', 'v-scout', ...map.decorations?.map(item => item.model) ?? []])) {
   const model = await loader.parseAsync(new Uint8Array(await read(manifest.models[name])).buffer, '');
   assertModelTextures(model.scene); models.set(name, model);
 }
@@ -71,6 +71,7 @@ Object.assign(window, { cs16CombatAudit: {
   advance: (milliseconds: number) => { now += milliseconds; draw(); },
   clear: () => { view = { ...view, round: view.round + 1 }; renderer.update(view, now); draw(); },
   hidden: (hidden: boolean) => { enemy = { ...enemy, visible: !hidden }; view = { ...view, frame: view.frame + 1, players: [player, enemy] }; renderer.update(view, now); draw(); },
+  arm: (weapon: string, zoom: number) => { player.weapon = weapon; player.inventory = [{id:weapon,ammo:10,reserve:10,zoom}]; view = {...view,round:view.round+1}; renderer.update(view,now); draw(); },
   shoot: () => { renderer.feedback('shot', now); draw(); },
   audio: (id: number) => { const cue = soundCues({ type: 'explode', weapon: 'hegrenade', id }); return { cue, sources: [cue.files, ...cue.layers?.map(layer => layer.files) ?? []].map(files => files.map(file => ({ file, resource: manifest.sounds[file], loaded: assets.sounds.has(file) }))) }; },
   dispose: () => renderer.dispose(),

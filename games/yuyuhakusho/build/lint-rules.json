@@ -1,5 +1,6 @@
 {
   "targets": [
+    "internal/gametest/controller_gamepad_browser_test.go",
     "web/src/controllers/MDController.tsx",
     "web/src/controllers/pointer-controller.ts",
     "web/tests/ControllerComboFixture.tsx",
@@ -79,7 +80,7 @@
       "comments": false
     },
     ".go": {
-      "directory": "^games/yuyuhakusho/(?:server|engine|sessiontick|platformtest|build)/",
+      "directory": "^(?:games/yuyuhakusho/(?:server|engine|sessiontick|platformtest|build)/|internal/gametest/)",
       "filename": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*\\.go$",
       "comments": false
     }

@@ -70,6 +70,7 @@ export function MDController({
       type="button"
       data-controller-button={button}
       data-controller-combo={combos[button]?.join(" ")}
+      data-game-hold-control={mode === "play" || undefined}
       className={`md-control md-${button}${combos[button] ? " md-combo" : ""}${(combos[button] ?? [button]).every(name => active.has(name) || activeButtons?.has(name)) ? " is-pressed" : ""}${recording === button ? " recording" : ""}`}
       aria-label={
         mode === "configure" ? `修改 ${labels[button]} 按键` : labels[button]

@@ -212,6 +212,7 @@ func dropWeapon(state *State, player *Player, index int) {
 	} else {
 		state.NextID++
 		item.ReloadUntil, item.BurstLeft = 0, 0
+		item.Zoom, item.ResumeZoom = 0, 0
 		forward := Direction(player.Yaw, 0)
 		point, velocity := Position(*player), droppedItemVelocity(player)
 		if player.Alive {

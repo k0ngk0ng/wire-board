@@ -32,9 +32,11 @@ const act = async (action: Record<string, unknown>) => { probe.actions.push(acti
 
 function Board() {
   useEffect(() => { probe.mounts++; probe.ready = true; }, []);
+  const [warning, setWarning] = useState(query.has('warning') ? '玩家 2 须改变长将循环；再次重复将判负' : '');
+  Object.assign(probe, { setWarning });
   const ActiveBoard = boards[current.kind];
   if (query.has('collision')) return <section data-collision-stage data-game-focus tabIndex={-1} style={{ position: 'relative', width: '100%', height: '100%', background: '#cedfc0' }}><div data-fullscreen-protected style={{ position: 'absolute', top: 8, left: 8, width: 120, height: 44, background: '#173e35', color: '#fff' }}>重要 HUD</div><button data-game-corner style={{ position: 'absolute', top: 8, right: 8, width: 80, height: 44 }} onClick={() => void act({ type: 'corner' })}>游戏按钮</button></section>;
-  return <ActiveBoard room={room} data={data} act={act} command={async () => {}} busy={false} assets={assets} sound={false} audio={audio} clock={{ serverNow: 1700000000000, receivedAt: performance.now(), epoch: 0 }} />;
+  return <ActiveBoard room={room} data={current.kind === 'xiangqi' ? { ...data, warning } : data} act={act} command={async () => {}} busy={false} assets={assets} sound={false} audio={audio} clock={{ serverNow: 1700000000000, receivedAt: performance.now(), epoch: 0 }} />;
 }
 
 function App() {

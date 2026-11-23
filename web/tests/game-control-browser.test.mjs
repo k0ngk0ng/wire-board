@@ -131,6 +131,18 @@ test("shared game protection covers native holds and menus while preserving cont
     await call("Emulation.setTouchEmulationEnabled", { enabled: true, maxTouchPoints: 5 });
     await evaluate("document.querySelector('[data-probe=input]').setAttribute('contenteditable','false');true");
     for (const name of ["heading", "hint", "image", "link", "canvas", "custom", "input", "textarea", "editable", "select", "outside", "outside-input", "overlay"]) await mouse(`[data-probe=${name}]`, "right");
+    await mouse('[data-probe=ordinary]', 'right');
+    check('ordinary button native menu blocked', await evaluate('window.fixture.menus.at(-1).prevented'));
+    const ordinary = await rect('[data-probe=ordinary]');
+    await touch('touchStart', [{ id: 8, x: ordinary.x, y: ordinary.y }]);
+    await pause(1200);
+    check('body-retargeted menu blocked during ordinary button hold', await evaluate("!document.body.dispatchEvent(new MouseEvent('contextmenu',{bubbles:true,cancelable:true}))"));
+    await touch('touchCancel', []);
+    check('body menu restored after cancellation', await evaluate("document.body.dispatchEvent(new MouseEvent('contextmenu',{bubbles:true,cancelable:true}))"));
+    await touch('touchStart', [{ id: 9, x: ordinary.x, y: ordinary.y }]);
+    await touch('touchEnd', []);
+    await pause(100);
+    check('ordinary touch tap retains compatibility click', await evaluate('window.fixture.clicks') === 1);
     report.observations.contextMenus = await evaluate("window.fixture.menus");
     const menus = report.observations.contextMenus;
     for (const name of ["heading", "hint", "image", "link", "canvas", "custom"]) check("protected menu: " + name, menus.some(menu => menu.target === name && menu.prevented && menu.trusted), menus.filter(menu => menu.target === name));
@@ -230,7 +242,7 @@ test("shared game protection covers native holds and menus while preserving cont
     for (const entry of pending.values()) clearTimeout(entry.timer);
     if (session) { try { await browser("close"); } catch {} }
     if (server) await new Promise(resolve => server.close(resolve));
-    for (const file of ["web/src/ui/room-fullscreen.tsx", "web/src/ui/game-control-guard.ts", "web/src/ui/game-control-guard.css", "web/src/style.css", "web/tests/game-control-fixture.tsx", "web/tests/game-control-browser.test.mjs", "games/hotlinemiami/web/TouchControls.tsx", "games/hotlinemiami/web/style.css"]) {
+    for (const file of ["web/src/control-context-menu.ts", "web/src/ui/room-fullscreen.tsx", "web/src/ui/game-control-guard.ts", "web/src/ui/game-control-guard.css", "web/src/style.css", "web/tests/game-control-fixture.tsx", "web/tests/game-control-browser.test.mjs", "games/hotlinemiami/web/TouchControls.tsx", "games/hotlinemiami/web/style.css"]) {
       try { report.sources[file] = createHash("sha256").update(await readFile(path.join(root, file))).digest("hex"); } catch { report.sources[file] = null; }
     }
     await writeFile(path.join(out, "result.json"), JSON.stringify(report, null, 2) + "\n");

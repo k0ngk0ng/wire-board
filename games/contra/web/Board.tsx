@@ -215,7 +215,7 @@ export function Board(props: BoardProps<RoomRuntimeView>) {
     <div className="contra-board">
       {loaded?.identity === identity && profile ? (
         <>
-          <div className="contra-game-resources" aria-label="队伍状态">
+          <div className="contra-game-resources" data-fullscreen-protected aria-label="队伍状态">
             {room.seats.map((seat, index) => (
               <span
                 key={seat.id}

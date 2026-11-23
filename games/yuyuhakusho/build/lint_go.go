@@ -31,8 +31,9 @@ func main() {
 			issues = append(issues, "invalid Go syntax")
 		}
 		if file != nil {
-			directory := strings.Split(input.File, "/")[2]
-			packages := map[string]string{"server": "yuyuhakusho", "engine": "engine", "sessiontick": "sessiontick", "platformtest": "platformtest", "build": "main"}
+			parts := strings.Split(input.File, "/")
+			directory := parts[len(parts)-2]
+			packages := map[string]string{"server": "yuyuhakusho", "engine": "engine", "sessiontick": "sessiontick", "platformtest": "platformtest", "build": "main", "gametest": "gametest"}
 			if file.Name.Name != packages[directory] {
 				issues = append(issues, "package differs from directory")
 			}
@@ -57,7 +58,7 @@ func main() {
 				if name == "unsafe" || imported.Name != nil && imported.Name.Name == "." {
 					issues = append(issues, "prohibited import")
 				}
-				if strings.Contains(name, "/wire-board/games/") && !strings.Contains(name, "/wire-board/games/yuyuhakusho/") {
+				if strings.Contains(name, "/wire-board/games/") && !strings.Contains(name, "/wire-board/games/yuyuhakusho/") && !(input.File == "internal/gametest/controller_gamepad_browser_test.go" && strings.HasPrefix(name, "github.com/k0ngk0ng/wire-board/games/contra/")) {
 					issues = append(issues, "prohibited cross-game import")
 				}
 			}

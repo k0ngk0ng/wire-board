@@ -9,6 +9,8 @@ import { SplendorCardAnimation } from "./splendor-card-animation";
 import { SplendorCities } from "./splendor-cities";
 import { gemNobleEligible } from "./splendor-city-state";
 import { SplendorExpansionBoard } from "./splendor-expansions";
+import { SplendorFullscreenPlayers } from "./splendor-fullscreen-players";
+import "./splendor-fullscreen.css";
 import { SplendorMarket } from "./splendor-market";
 import { extraNobleName, nobleArtwork } from "./splendor-nobles";
 import { OrientCard } from "./splendor-orient-card";
@@ -225,6 +227,23 @@ export function SplendorBoard({
   return (
     <div className={`splendor-board ${s.options?.orient ? "has-orient" : ""}`}>
       <h2 className="sr-only">璀璨宝石游戏桌面</h2>
+      <SplendorFullscreenPlayers room={room} />
+      <div className="splendor-table">
+      <SplendorMarket
+        assets={assets}
+        room={room}
+        busy={busy}
+        onReserve={setBlindTier}
+        renderCard={(c) => (
+          <DevCard
+            card={c}
+            affordable={canAfford(c)}
+            selected={selected?.id === c.id}
+            onClick={() => selectCard(c)}
+          />
+        )}
+      />
+      <aside className="splendor-sidebar">
       {s.options?.cities ? (
         <SplendorCities
           room={room}
@@ -254,20 +273,6 @@ export function SplendorBoard({
           </div>
         </div>
       )}
-      <SplendorMarket
-        assets={assets}
-        room={room}
-        busy={busy}
-        onReserve={setBlindTier}
-        renderCard={(c) => (
-          <DevCard
-            card={c}
-            affordable={canAfford(c)}
-            selected={selected?.id === c.id}
-            onClick={() => selectCard(c)}
-          />
-        )}
-      />
       <SplendorExpansionBoard
         onConquest={(card) => selectCard(card, true)}
         room={room}
@@ -440,6 +445,8 @@ export function SplendorBoard({
           )}
         </div>
       )}
+      </aside>
+      </div>
       {mine && g.phase === "noble" && (
         <div className="action-prompt">
           多位贵族青睐你的商会，请点击一位符合条件的贵族。

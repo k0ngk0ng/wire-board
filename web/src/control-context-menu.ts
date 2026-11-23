@@ -1,15 +1,12 @@
-// Long presses on controls are game input, not copy-menu requests. Keep this
-// separate from pointer handlers so holding, dragging and releasing still run.
 const controls =
   'button,[role="button"],[data-game-controls],input[type="button"],input[type="submit"],input[type="reset"],input[type="image"]';
 const editors =
   'input:not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="image"]),textarea,select,[contenteditable]:not([contenteditable="false"])';
 
-// Opt in only controls already driven by pointerdown/up. Preventing touchstart
-// on ordinary click buttons would suppress their compatibility click in WebKit.
 const heldControls = "[data-game-hold-control]";
 export function installControlContextMenuGuard(root: Document): () => void {
   const heldTouches = new Set<number>();
+  const guardedTouches = new Set<number>();
   const elements = (event: Event) =>
     event
       .composedPath()
@@ -19,7 +16,7 @@ export function installControlContextMenuGuard(root: Document): () => void {
   const onContextMenu = (event: Event) => {
     if (isEditor(event)) return;
     if (
-      heldTouches.size ||
+      guardedTouches.size ||
       elements(event).some((element) => element.closest(controls))
     )
       event.preventDefault();
@@ -29,6 +26,7 @@ export function installControlContextMenuGuard(root: Document): () => void {
     let protectedTouch = false;
     for (const touch of Array.from(event.changedTouches)) {
       const target = touch.target;
+      if (target instanceof Element && target.closest(controls) && !target.closest(editors)) guardedTouches.add(touch.identifier);
       if (
         target instanceof Element &&
         target.closest(heldControls) &&
@@ -38,8 +36,8 @@ export function installControlContextMenuGuard(root: Document): () => void {
         protectedTouch = true;
       }
     }
+    onSelection();
     if (protectedTouch) {
-      onSelection();
       event.preventDefault();
     }
   };
@@ -53,16 +51,22 @@ export function installControlContextMenuGuard(root: Document): () => void {
       event.preventDefault();
   };
   const onTouchEnd = (event: TouchEvent) => {
-    for (const touch of Array.from(event.changedTouches))
-      heldTouches.delete(touch.identifier);
+    const active = new Set(Array.from(event.touches, touch => touch.identifier));
+    for (const contacts of [heldTouches, guardedTouches])
+      for (const id of contacts) if (!active.has(id)) contacts.delete(id);
   };
-  const clear = () => heldTouches.clear();
+  const clear = () => { heldTouches.clear(); guardedTouches.clear(); };
   const onHidden = () => {
     if (root.visibilityState === "hidden") clear();
   };
   const onSelection = () => {
-    if (!heldTouches.size || root.activeElement?.closest(editors)) return;
+    if (root.activeElement?.closest(editors)) return;
     const selection = root.getSelection();
+    const protectedNode = (node: Node | null) => {
+      const element = node instanceof Element ? node : node?.parentElement;
+      return !!element?.closest(controls) && !element.closest(editors);
+    };
+    if (!guardedTouches.size && !protectedNode(selection?.anchorNode ?? null) && !protectedNode(selection?.focusNode ?? null)) return;
     if (selection && !selection.isCollapsed) selection.removeAllRanges();
   };
   const guarded = { capture: true, passive: false };

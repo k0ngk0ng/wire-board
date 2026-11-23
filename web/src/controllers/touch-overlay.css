@@ -71,7 +71,6 @@
 }
 @media (pointer: coarse) and (orientation: landscape) {
   .touch-controller-overlay { --fc-action-bottom: calc(50% - 60px); --md-action-bottom: calc(50% - 48px); }
-  .touch-controller-stage .touch-controller-overlay :is(.fc-dpad, .md-dpad) { bottom: calc(50% - 66px); }
   .touch-controller-stage .touch-controller-overlay :is(.fc-turboA, .fc-turboB) { bottom: calc(50% + 8px); }
   .touch-controller-stage .touch-controller-overlay :is(.md-x, .md-y, .md-z) { bottom: calc(50% + 4px); }
   .touch-controller-stage .touch-controller-overlay .md-combo { bottom: calc(50% - 104px); }
@@ -84,4 +83,13 @@
 }
 @media (pointer: coarse) {
   .touch-controller-stage { container-name: touch-play; container-type: inline-size; }
+}
+
+@media (pointer: coarse) {
+  .touch-controller-stage .touch-controller-overlay .fc-dpad { bottom: calc(var(--fc-action-bottom) - 36px); }
+  .touch-controller-stage .touch-controller-overlay .md-dpad { bottom: calc(var(--md-action-bottom) - 44px); }
+  .touch-controller-stage .touch-controller-overlay :is(.md-mode, .md-start) { bottom: calc(var(--md-action-bottom) + 104px); }
+}
+@media (pointer: coarse) and (orientation: landscape) {
+  .touch-controller-stage .touch-controller-overlay :is(.fc-select, .fc-start) { bottom: calc(var(--fc-action-bottom) + 112px); }
 }

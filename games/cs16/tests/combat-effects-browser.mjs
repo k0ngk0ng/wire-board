@@ -59,6 +59,21 @@ try {
     await writeFile(path.join(out, name + '.png'), Buffer.from(picture.data, 'base64'));
     return result;
   };
+  for (const [weapon, duration] of [['awp', 1450], ['scout', 1250]]) {
+    await evaluate(`window.cs16CombatAudit.arm('${weapon}',40);true`);
+    const scoped = await snapshot(weapon + '-scoped');
+    await evaluate('window.cs16CombatAudit.shoot();true');
+    const fired = await snapshot(weapon + '-bolt');
+    assert.ok(Math.round(fired.cameraFov * 1000) > Math.round(scoped.cameraFov * 1000));
+    assert.ok(/shoot|fire/i.test(fired.weaponAnimation ?? ''), 'native bolt animation missing');
+    await evaluate(`window.cs16CombatAudit.advance(${duration - 1});true`);
+    assert.equal(Math.round((await snapshot(weapon + '-before-rescope')).cameraFov * 1000), Math.round(fired.cameraFov * 1000));
+    await evaluate('window.cs16CombatAudit.advance(1);true');
+    const resumed = await snapshot(weapon + '-resumed');
+    assert.equal(Math.round(resumed.cameraFov * 1000), Math.round(scoped.cameraFov * 1000));
+    report.checks[weapon] = {scoped, fired, resumed};
+  }
+  await evaluate("window.cs16CombatAudit.arm('glock18',0);true");
   const before = await snapshot('before-blood', true);
   await evaluate('window.cs16CombatAudit.event({id:1});true');
   const blood = await snapshot('unarmored-body-blood');

@@ -173,6 +173,7 @@ type WeaponState struct {
 	Silenced            bool   `json:"silenced"`
 	Burst               bool   `json:"burst"`
 	Zoom                int    `json:"zoom"`
+	ResumeZoom          int    `json:"resumeZoom,omitempty"`
 	ReloadUntil         int64  `json:"reloadUntil"`
 	Shots               int    `json:"shots"`
 	LastShot            int64  `json:"lastShot"`

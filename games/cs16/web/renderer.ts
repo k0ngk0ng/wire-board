@@ -1,3 +1,4 @@
+import { zoomAfterShot } from "./round-sniper";
 import * as T from 'three';
 import { clone } from 'three/examples/jsm/utils/SkeletonUtils.js';
 import type { GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
@@ -42,6 +43,7 @@ export class BattleRenderer {
   private muzzleNodes: T.Object3D[] = [];
   private weaponShots = 0;
   private meleeSwings = 0;
+  private scopeShot = { weapon: "", at: -2000 };
   private pendingFeedback?: { kind: FeedbackKind; serial: number; contact: string };
   private viewImpulse = new ViewImpulse();
   private viewIdentity = '';
@@ -166,7 +168,7 @@ export class BattleRenderer {
 
   update(view: View, at: number) {
     const previous = this.frames.at(-1);
-    if (previous?.view.epoch !== view.epoch || previous.view.frame > view.frame || previous.view.round !== view.round || view.recover) { this.frames = []; this.viewImpulse.reset(); this.viewIdentity = ''; this.pendingFeedback = undefined; this.presentationFrame = view.frame; this.combat.reset(); this.combatEvents = []; }
+    if (previous?.view.epoch !== view.epoch || previous.view.frame > view.frame || previous.view.round !== view.round || view.recover) { this.frames = []; this.viewImpulse.reset(); this.viewIdentity = ''; this.pendingFeedback = undefined; this.scopeShot = { weapon: "", at: -2000 }; this.presentationFrame = view.frame; this.combat.reset(); this.combatEvents = []; }
     if (previous?.view.frame === view.frame && previous.view.eventId === view.eventId) return;
     this.frames.push({ view, at });
     if (this.frames.length > 6) this.frames.shift();
@@ -186,7 +188,7 @@ export class BattleRenderer {
   }
 
   feedback(kind: FeedbackKind, now: number) {
-    if (kind === 'shot') { this.muzzleUntil = now + 55; this.pendingShots = Math.min(4, this.pendingShots + 1); this.weaponShots++; this.viewImpulse.shot(now); }
+    if (kind === 'shot') { this.scopeShot = { weapon: this.weaponID, at: now }; this.muzzleUntil = now + 55; this.pendingShots = Math.min(4, this.pendingShots + 1); this.weaponShots++; this.viewImpulse.shot(now); }
     const serial = kind === 'shot' ? this.weaponShots - 1 : kind === 'slash' ? this.meleeSwings++ : 0;
     this.pendingFeedback = { kind, serial, contact: 'air' };
   }
@@ -296,7 +298,7 @@ export class BattleRenderer {
       this.weaponRoot.position.set(0, impulse.weaponUp, impulse.weaponBack);
       const weaponState = cameraPlayer.inventory?.find(item => item.id === cameraPlayer.weapon);
       this.weaponSilenced = weaponState?.silenced ?? false;
-      const zoom = weaponState?.zoom ?? 0;
+      const zoom = zoomAfterShot(cameraPlayer.weapon, weaponState?.zoom ?? 0, this.scopeShot, now);
       const fov = scopeFov(zoom);
       if (this.camera.fov !== fov) { this.camera.fov = fov; this.camera.updateProjectionMatrix(); }
       this.setWeapon(cameraPlayer.weapon);

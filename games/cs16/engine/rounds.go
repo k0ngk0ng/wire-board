@@ -51,6 +51,7 @@ func InitRound(state *State) {
 		withoutC4 := p.Inventory[:0]
 		for _, item := range p.Inventory {
 			if item.ID != "c4" {
+				item.Zoom, item.ResumeZoom = 0, 0
 				withoutC4 = append(withoutC4, item)
 			}
 		}

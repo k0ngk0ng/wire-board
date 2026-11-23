@@ -101,10 +101,11 @@ func StepCombat(state *State) {
 			old := weaponIndex(p, p.Weapon)
 			if old >= 0 {
 				p.Inventory[old].ReloadUntil, p.Inventory[old].BurstLeft = 0, 0
+				p.Inventory[old].Zoom, p.Inventory[old].ResumeZoom = 0, 0
 			}
 			p.Weapon, p.NextAttack = p.Input.Select, state.Frame+weaponDeployFrames(p.Input.Select)
 			index := weaponIndex(p, p.Weapon)
-			p.Inventory[index].Zoom = 0
+			p.Inventory[index].Zoom, p.Inventory[index].ResumeZoom = 0, 0
 			resetWeaponAccuracy(&p.Inventory[index], false)
 			Emit(state, Event{Kind: "select", Seat: seat, Weapon: p.Weapon})
 		}
@@ -134,6 +135,9 @@ func StepCombat(state *State) {
 			}
 			SyncWeapon(p)
 			continue
+		}
+		if item.ResumeZoom > 0 && state.Frame >= p.NextAttack && item.ReloadUntil == 0 {
+			item.Zoom, item.ResumeZoom = item.ResumeZoom, 0
 		}
 		if item.ReloadUntil > 0 {
 			if live && weapon.Pellets > 1 && p.Input.Fire && item.Ammo > 0 {
@@ -169,7 +173,7 @@ func StepCombat(state *State) {
 			if weapon.ID == "xm1014" {
 				duration = 85
 			}
-			item.ReloadUntil, item.Zoom = state.Frame+duration, 0
+			item.ReloadUntil, item.Zoom, item.ResumeZoom = state.Frame+duration, 0, 0
 			resetWeaponAccuracy(item, true)
 			p.NextAttack = item.ReloadUntil
 			Emit(state, Event{Kind: "reload", Seat: seat, Weapon: weapon.ID})
@@ -294,6 +298,9 @@ func makeCombatShot(state *State, p *Player, item *WeaponState, weapon Weapon, s
 		spread = 500
 	}
 	shot := combatShot{Seat: p.Seat, Life: p.Life, Weapon: weapon, Start: combatEye(p), Yaw: (p.Yaw + p.RecoilYaw*2 + 65536) % 65536, Pitch: max(-16000, min(16000, p.Pitch+p.RecoilPitch*2)), Spread: spread, ViewFrame: p.Input.ViewFrame, Secondary: secondary, Silenced: item.Silenced, Burst: item.Burst}
+	if (weapon.ID == "awp" || weapon.ID == "scout") && item.Zoom > 0 {
+		item.ResumeZoom, item.Zoom = item.Zoom, 0
+	}
 	item.Ammo--
 	if !secondary {
 		item.LastShot = state.Frame

@@ -49,11 +49,15 @@ const files = [
   "games/xiangqi/web/style.css",
   "games/junqi/web/style.css",
   "games/contra/web/human-mode.test.mjs",
+  "games/splendor/web/board.tsx",
+  "games/splendor/web/splendor-fullscreen-players.tsx",
+  "games/splendor/web/splendor-fullscreen.css",
+  "web/tests/tabletop-room-browser.mjs",
 ];
 const languages = {
   ".ts": /^web\/src\/ui\//,
-  ".tsx": /^(?:web\/(?:src\/ui|tests)\/|games\/gomoku\/web\/)/,
-  ".css": /^(?:web\/src\/ui\/|games\/(?:gomoku|weiqi|chess|xiangqi|junqi)\/web\/)/,
+  ".tsx": /^(?:web\/(?:src\/ui|tests)\/|games\/(?:gomoku|splendor)\/web\/)/,
+  ".css": /^(?:web\/src\/ui\/|games\/(?:gomoku|weiqi|chess|xiangqi|junqi|splendor)\/web\/)/,
   ".mjs": /^(?:web\/(?:scripts|tests)\/|games\/contra\/web\/)/,
   ".json": /^web\/tests\/fixtures\//,
 };
@@ -100,8 +104,8 @@ export function inspectRoomUiFile(file, source) {
   );
   if (parsed.parseDiagnostics.length) issues.push("syntax");
   const visit = (node) => {
-    if (file === "web/tests/mobile-fullscreen-browser.test.mjs") {
-      if (ts.isStringLiteral(node) && ((node.text.includes(".local/") && !node.text.startsWith(".local/yuyuhakusho/")) || /^(?:\/tmp\/|\/private\/tmp\/|~\/)/.test(node.text))) issues.push("workspace-output-directory");
+    if (file === "web/tests/mobile-fullscreen-browser.test.mjs" || file === "web/tests/tabletop-room-browser.mjs" || file === "web/tests/board-fullscreen-browser.test.mjs") {
+      if (ts.isStringLiteral(node) && ((node.text.includes(".local/") && !node.text.startsWith(file === "web/tests/tabletop-room-browser.mjs" ? ".local/splendor/" : file === "web/tests/board-fullscreen-browser.test.mjs" ? ".local/xiangqi/" : ".local/yuyuhakusho/")) || /^(?:\/tmp\/|\/private\/tmp\/|~\/)/.test(node.text))) issues.push("workspace-output-directory");
       if (ts.isCallExpression(node) && ts.isIdentifier(node.expression) && ["tmpdir", "homedir"].includes(node.expression.text)) issues.push("workspace-output-directory");
     }
     if (

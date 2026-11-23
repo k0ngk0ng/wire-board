@@ -1,14 +1,16 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { GameFullscreen, type GameFullscreenHandle } from "../src/ui/room-fullscreen";
 import { TouchControls } from "../../games/hotlinemiami/web/TouchControls";
 import { BottomHint } from "../../games/hotlinemiami/web/BottomHint";
 import "../../games/hotlinemiami/web/style.css";
 
+import { installControlContextMenuGuard } from "../src/control-context-menu";
+
 type Stick = { x: number; y: number };
 type Contact = { id: number; target: string; x: number; y: number };
 type NativeRecord = { serial: number; type: string; trusted: boolean; kind: string; target: string; id?: number; pointerType?: string; changed?: Contact[]; touches?: Contact[] };
-const probe = { move: [] as Stick[], aim: [] as Stick[], edges: [] as string[], native: [] as NativeRecord[], events: [] as NativeRecord[], menus: [] as { target: string; prevented: boolean; trusted: boolean }[], custom: 0 };
+const probe = { move: [] as Stick[], aim: [] as Stick[], edges: [] as string[], native: [] as NativeRecord[], events: [] as NativeRecord[], menus: [] as { target: string; prevented: boolean; trusted: boolean }[], custom: 0, clicks: 0 };
 const eventIds = new WeakMap<Event, number>();
 let serial = 0;
 Object.assign(window, { fixture: probe });
@@ -31,6 +33,7 @@ function observe(event: Event) {
 }
 
 function Fixture() {
+  useEffect(() => installControlContextMenuGuard(document), []);
   const fullscreen = useRef<GameFullscreenHandle>(null);
   const [ready, setReady] = useState(false);
   return <main onContextMenu={event => {
@@ -56,6 +59,7 @@ function Fixture() {
       </section>
       <section data-probe="editors"><input data-probe="input" defaultValue="可以复制的输入" /><textarea data-probe="textarea" defaultValue="可以复制的文本域" /><div data-probe="editable" contentEditable suppressContentEditableWarning>可以复制的编辑内容</div><select data-probe="select"><option>保留选择器</option></select></section>
     </GameFullscreen>
+    <button data-probe="ordinary" onClick={() => probe.clicks++}><span>普通按钮</span></button>
     <aside data-outside><p data-probe="outside">聊天和玩法说明仍然允许正常选择复制</p><input data-probe="outside-input" defaultValue="区外输入" /></aside>
   </main>;
 }

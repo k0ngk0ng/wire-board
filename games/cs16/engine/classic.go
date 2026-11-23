@@ -49,7 +49,7 @@ func stepFlashlight(state *State, player *Player) {
 }
 
 func stepFootsteps(state *State, player *Player, before Vec3) {
-	if state.Phase != "live" || !player.Alive || !player.Grounded || player.Input.Walk || player.Crouch || Length2D(player.VX, player.VY) <= 150*Unit || player.X == before.X && player.Y == before.Y || state.Frame < player.StepAt {
+	if state.Phase != "live" && state.Phase != "round_end" || !player.Alive || !player.Grounded || player.Input.Walk || player.Crouch || Length2D(player.VX, player.VY) <= 150*Unit || player.X == before.X && player.Y == before.Y || state.Frame < player.StepAt {
 		return
 	}
 	player.StepAt = state.Frame + 30

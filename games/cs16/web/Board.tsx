@@ -1,3 +1,4 @@
+import { motionPhase, zoomAfterShot } from "./round-sniper";
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import type { BoardProps } from '../../../web/src/game-api/module';
 import { useGameController } from '../../../web/src/controllers/use-game-controller';
@@ -72,6 +73,7 @@ export function Board(props: BoardProps<View>) {
   const processedAt = useRef(0);
   const lastVisible = useRef('');
   const drawCount = useRef(0);
+  const scopeShot = useRef({ at: -10000, weapon: "" });
   const lastShot = useRef({ at: -10000, weapon: '' });
   const attackFeedbacks = useRef(new AttackFeedbackQueue());
   const preparedWeapon = useRef('');
@@ -276,7 +278,7 @@ export function Board(props: BoardProps<View>) {
     const changed = [...new Set([...Object.keys(input), ...Object.keys(previousInput)])].some(key => input[key as keyof GameInput] !== previousInput[key as keyof GameInput]);
     if (force || changed || at - lastInput.current.at >= 40) {
       const sent = channel.current!.push(input, action => {
-        if (current.data.phase === 'live') prediction.current?.input(action, at);
+        if (motionPhase(current.data.phase)) prediction.current?.input(action, at);
         if (action.select && weaponHistory.current.select(action.select, action.seq, player.inventory)) predictedWeapon.current = { seq: action.seq, life: player.life, id: action.select };
         if (waiting.current) waiting.current.seq = action.seq;
       });
@@ -294,7 +296,7 @@ export function Board(props: BoardProps<View>) {
       lastShot.current = { ...lastShot.current, at, weapon: player.weapon };
       lastFeedback.current = { kind: feedback, at };
       localAnimation.current++;
-      if (feedback === 'shot') localFlash.current = at + 70;
+      if (feedback === 'shot') { localFlash.current = at + 70; scopeShot.current = { at, weapon: player.weapon }; }
       renderer.current?.feedback(feedback, at);
       if (attackFeedback) {
         const serial = attackFeedbacks.current.predict(feedback, player.weapon, player.life, at, channel.current!.seq);
@@ -341,10 +343,11 @@ export function Board(props: BoardProps<View>) {
       const automated = !!props.room.seats[props.room.you]?.autoPlay;
       facing.current = viewAngles(player, facing.current, automated || automatedBefore.current);
       automatedBefore.current = automated;
-      if (automated || props.data.recover) { lastFeedback.current = undefined; attackFeedbacks.current.reset(); }
+      if (automated || props.data.recover) { scopeShot.current = { at: -10000, weapon: "" }; lastFeedback.current = undefined; attackFeedbacks.current.reset(); }
       if (lifeBefore.current !== player.life) {
         attackFeedbacks.current.reset();
         lifeBefore.current = player.life;
+        scopeShot.current = { at: -10000, weapon: "" };
         facing.current = { yaw: player.yaw, pitch: player.pitch };
         mouse.current = { fire: false, secondary: false };
         touch.current = { moveX: 0, moveY: 0, actions: new Set() };
@@ -358,9 +361,9 @@ export function Board(props: BoardProps<View>) {
       weaponHistory.current.confirm(player, identity, !!props.data.recover);
       prediction.current.confirm(player, props.data.frame, receivedAt.current, identity, !!props.data.recover);
       if (predictedWeapon.current && (props.data.recover || player.life !== predictedWeapon.current.life || player.appliedSeq >= predictedWeapon.current.seq)) predictedWeapon.current = undefined;
-      if (props.data.phase !== 'live') prediction.current.suspend();
+      if (!motionPhase(props.data.phase)) prediction.current.suspend();
       else if (!wasLive.current) prediction.current.resume(receivedAt.current);
-      wasLive.current = props.data.phase === 'live';
+      wasLive.current = motionPhase(props.data.phase);
     }
     const events = cursor.current.consume(props.data.epoch, props.data.eventId, props.data.events ?? []);
     for (const event of events) {
@@ -419,7 +422,7 @@ export function Board(props: BoardProps<View>) {
         lifeBefore.current = player.life;
         weaponHistory.current.confirm(player, identity, true);
         prediction.current.confirm(player, current.data.frame, performance.now(), identity);
-        if (current.data.phase !== 'live') prediction.current.suspend();
+        if (!motionPhase(current.data.phase)) prediction.current.suspend();
       }
       cursor.current.consume(current.data.epoch, current.data.eventId, current.data.events ?? []);
       renderer.current.update(current.data, performance.now());
@@ -458,10 +461,10 @@ export function Board(props: BoardProps<View>) {
       const current = latest.current;
       const player = current.data.players.find(player => player.seat === current.room.you);
       const automated = !!current.room.seats[current.room.you]?.autoPlay;
-      const local = player?.alive && !automated ? current.data.phase === 'live' && canControl() && prediction.current ? prediction.current.sample(at) : { ...player, yaw: facing.current.yaw, pitch: facing.current.pitch } : undefined;
+      const local = player?.alive && !automated ? motionPhase(current.data.phase) && canControl() && prediction.current ? prediction.current.sample(at) : { ...player, yaw: facing.current.yaw, pitch: facing.current.pitch } : undefined;
       const selectedWeapon = predictedWeapon.current && local?.inventory?.find(item => item.id === predictedWeapon.current?.id);
       if (local && selectedWeapon) { local.weapon = selectedWeapon.id; local.ammo = selectedWeapon.ammo; local.reserve = selectedWeapon.reserve; }
-      const presented = local && current.data.phase === 'live' && canControl() ? prediction.current?.present(local, at) ?? local : local;
+      const presented = local && motionPhase(current.data.phase) && canControl() ? prediction.current?.present(local, at) ?? local : local;
       const candidates = observerCandidates(current.data.players, player, !!current.room.spectating);
       const candidate = presented ?? candidates.find(player => player.seat === watch) ?? candidates[0] ?? player;
       const seat = player?.alive ? current.room.you : candidate?.seat ?? -1;
@@ -580,7 +583,7 @@ export function Board(props: BoardProps<View>) {
   }, [identity]);
 
   const frame = props.data.frame + (props.clock.paused ? 0 : Math.max(0, Math.min(15, Math.floor((now - receivedAt.current) / 10))));
-  const zoom = own?.inventory?.find(item => item.id === own.weapon)?.zoom ?? 0;
+  const zoom = zoomAfterShot(own?.weapon ?? '', own?.inventory?.find(item => item.id === own.weapon)?.zoom ?? 0, scopeShot.current, now);
   const flash = own && (own.flashUntil ?? 0) > frame ? Math.max(0, Math.min(1, (own.flashStrength ?? 1000) / 1000)) : 0;
   const phaseLabel = props.data.finished ? '比赛结束' : props.clock.paused ? '已暂停' : props.data.phase === 'freeze' ? '准备开战' : props.data.phase === 'round_end' ? '回合结束' : props.data.bomb?.planted ? '炸弹已安装' : '';
   const mode = mapMode(props.data.mapId) ?? '';

@@ -146,9 +146,9 @@ try {
       assert.ok(geometry.targets.every(value => value.rect.width >= 44 && value.rect.height >= 44), kind + " undersized touch target");
       assert.ok(geometry.targets.every(value => value.rect.left >= geometry.game.left && value.rect.right <= geometry.game.right && value.rect.top >= geometry.game.top && value.rect.bottom <= geometry.game.bottom), kind + " touch target escaped game area");
       assert.ok(geometry.targets.every(value => value.background.startsWith("rgba(")), kind + " opaque control background");
-      if (kind !== "battlecity" && width > height) {
-        const pad = await evaluate("document.querySelector('[data-controller-dpad]').getBoundingClientRect().toJSON()");
-        assert.ok(Math.abs(Math.round((pad.top + pad.height / 2 - geometry.game.top - geometry.game.height / 2) * 1000)) <= 1000, kind + " landscape direction control is not vertically centered");
+      if (kind !== "battlecity") {
+        const centers = await evaluate("(()=>{const pad=document.querySelector('[data-controller-dpad]').getBoundingClientRect();const a=document.querySelector('[data-controller-button=a]').getBoundingClientRect();return {direction:Math.round((pad.top+pad.height/2)*1000),action:Math.round((a.top+a.height/2)*1000)}})()");
+        assert.ok(Math.abs(centers.direction - centers.action) <= 1000, kind + " direction center does not align with the main action row: " + JSON.stringify(centers));
       }
       const beforeImage = await call("Page.captureScreenshot", { format: "png", captureBeyondViewport: false, clip: { x: 0, y: 0, width, height, scale: 1 } }, sessionId);
       await writeFile(path.join(directory, width + "x" + height + "-before.png"), Buffer.from(beforeImage.data, "base64"));

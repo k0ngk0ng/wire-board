@@ -1,6 +1,7 @@
 {
   "scope": "公共游戏选择与菜单保护涉及的已登记 TS、TSX、JavaScript 和 CSS 文件，不代表全仓库 lint",
   "files": [
+    "web/src/control-context-menu.ts",
     "web/src/ui/game-control-guard.ts",
     "web/src/ui/game-control-guard.css",
     "web/src/ui/room-fullscreen.tsx",
@@ -12,7 +13,7 @@
   ],
   "contractFiles": ["web/src/main.tsx"],
   "languages": {
-    ".ts": {"directory": "^web/src/ui/", "filename": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*\\.ts$", "comments": false},
+    ".ts": {"directory": "^web/src/(?:ui/|control-context-menu\\.ts$)", "filename": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*\\.ts$", "comments": false},
     ".tsx": {"directory": "^web/(?:src/ui|tests)/", "filename": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*\\.tsx$", "comments": false},
     ".mjs": {"directory": "^web/(?:scripts|tests)/", "filename": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*\\.mjs$", "comments": false},
     ".css": {"directory": "^web/src/ui/", "filename": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*\\.css$", "comments": false},

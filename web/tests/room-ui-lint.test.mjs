@@ -8,6 +8,8 @@ import {
 } from "../scripts/room-ui-lint.mjs";
 
 test("mobile fullscreen evidence stays in the declared game workspace", () => {
+  assert.deepEqual(inspectRoomUiFile("web/tests/board-fullscreen-browser.test.mjs", 'const output=".local/xiangqi/fullscreen";'), []);
+  assert.ok(inspectRoomUiFile("web/tests/board-fullscreen-browser.test.mjs", 'const output=".local/room-tools";').includes("workspace-output-directory"));
   const file = "web/tests/mobile-fullscreen-browser.test.mjs";
   assert.deepEqual(inspectRoomUiFile(file, 'const output = ".local/yuyuhakusho/mobile-fullscreen";'), []);
   for (const source of ['const output = ".local/fullscreen";', 'const output = "/tmp/fullscreen";', 'const output = tmpdir();']) {
@@ -123,4 +125,12 @@ test("room UI lint rejects comments, invalid paths and names, and dynamic execut
 test("registered room UI files pass their scoped lint", () => {
   const result = lintRoomUi();
   assert.equal(result.passed, true, JSON.stringify(result));
+});
+
+test("Splendor fullscreen files and evidence follow registered conventions", () => {
+  assert.deepEqual(inspectRoomUiFile("games/splendor/web/splendor-fullscreen-players.tsx", "export function Players(){return <div/>;}"), []);
+  assert.deepEqual(inspectRoomUiFile("games/splendor/web/splendor-fullscreen.css", ".splendor-table { display: grid; }"), []);
+  assert.ok(inspectRoomUiFile("games/splendor/web/Bad_name.tsx", "const value=1;").includes("filename"));
+  assert.ok(inspectRoomUiFile("games/splendor/web/splendor-fullscreen.css", "/* no */ .splendor-table{}").includes("no-comments"));
+  assert.ok(inspectRoomUiFile("web/tests/tabletop-room-browser.mjs", 'const output=".local/unrelated";').includes("workspace-output-directory"));
 });

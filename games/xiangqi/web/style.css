@@ -321,3 +321,6 @@
   [data-room-fullscreen] .xiangqi-actions { flex: 1 1 auto; width: 100%; min-height: 96px; height: 0; }
 }
 @media (pointer: coarse) { [data-room-fullscreen] .xiangqi-board button { min-height: 44px; } [data-room-fullscreen] .xiangqi-board [data-controller-group="board"] button, [data-room-fullscreen] .xiangqi-board [data-controller-group="grid"] button { min-height: 0; } }
+
+[data-room-fullscreen] .xiangqi-board:has(> .xiangqi-warning) { grid-template-rows: auto auto minmax(0,1fr); }
+[data-room-fullscreen] .xiangqi-warning { margin: 0; padding: 6px 10px; max-height: 64px; overflow: auto; line-height: 20px; }

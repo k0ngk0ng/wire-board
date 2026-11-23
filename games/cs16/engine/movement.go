@@ -54,7 +54,7 @@ func movePlayer(state *State, player *Player) {
 	player.Stamina = max(0, player.Stamina-1000/FPS)
 	player.Yaw = ((input.Yaw % 65536) + 65536) % 65536
 	player.Pitch = Clamp(input.Pitch, -16000, 16000)
-	if state.Phase != "live" {
+	if state.Phase != "live" && state.Phase != "round_end" {
 		player.VX, player.VY, player.VZ = 0, 0, 0
 		return
 	}

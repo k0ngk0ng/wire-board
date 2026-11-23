@@ -11,6 +11,7 @@ export function SplendorRules({ room }: { room: Room }) {
         成为宝石商人，购买发展卡积累永久折扣和声望。2–4 人，
         {splendorRulesLabel(options)}。
       </p>
+      <p>全屏顶部显示每位玩家的分数、各色永久折扣、筹码及预留数量；方形数字为折扣，圆形数字为筹码。对手的预留牌面保持隐藏。</p>
       <ol>
         <li>
           <b>每回合选择一个行动：</b>

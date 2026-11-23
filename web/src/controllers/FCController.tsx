@@ -103,6 +103,7 @@ export function FCController({
   return (
     <div
       ref={surface}
+      data-game-hold-control={mode === "play" || undefined}
       className={`fc-controller fc-${mode}${disabled ? " is-disabled" : ""}`}
       data-controller-layout="fc"
     >
