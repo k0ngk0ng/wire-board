@@ -86,7 +86,7 @@ class ResourceStoreE2E(unittest.TestCase):
         self.assertEqual(store.owner_for('docs/research/md-yuyuhakusho/evidence/frame.png'), 'yuyuhakusho')
         self.assertEqual(store.owner_for('docs/research/racing-nfs/car.png'), 'racing')
         self.assertEqual(store.owner_for('assets/poker/source/backs/pine.svg'), '_common')
-        for owner in ['splendor', 'stoneage', '_common']:
+        for owner in ['splendor', 'racing', '_common']:
             key = store.object_key(owner, b'generated resource', '.webp')
             self.assertEqual(key, 'bga/' + owner + '/' + hashlib.sha256(b'generated resource').hexdigest() + '.webp')
         for owner in ['web', 'v20261002-1', '../splendor', 'unknown-game']:
@@ -105,7 +105,7 @@ class ResourceStoreE2E(unittest.TestCase):
     def test_real_http_copy_migrates_known_bytes_without_overwrite(self):
         body = b'generated pixels'
         self.objects['/stoneage/assets/bitmap.png'] = (body, 'image/png')
-        record = {'key': store.object_key('stoneage', body, '.png'), 'sha256': hashlib.sha256(body).hexdigest(), 'bytes': len(body), 'mime': 'image/png'}
+        record = {'key': store.object_key('splendor', body, '.png'), 'sha256': hashlib.sha256(body).hexdigest(), 'bytes': len(body), 'mime': 'image/png'}
         store.copy_resource(self.client, record, 'stoneage/assets/bitmap.png')
         store.copy_resource(self.client, record, 'stoneage/assets/bitmap.png')
         self.assertEqual(self.puts, 1)
