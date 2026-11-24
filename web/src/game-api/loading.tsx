@@ -2,6 +2,7 @@ import {
   Component,
   useCallback,
   useEffect,
+  useLayoutEffect,
   useRef,
   useState,
   type ReactNode,
@@ -16,6 +17,7 @@ import { prepareGame, type LoadProgress } from "./load-assets";
 import "./loading.css";
 import { revealGameOnEntry } from "../game-entry-scroll";
 import { entryAutoScrollAllowed } from "./viewport-fit-core";
+import { loadingClientID } from "./loading-session";
 class LoadBoundary extends Component<
   { children: ReactNode; failed: (message: string) => void },
   { error: boolean }
@@ -55,6 +57,7 @@ export function GameLoading({
   const [loadSizes, setLoadSizes] = useState<Readonly<Record<string, number>>>(
     {},
   );
+  const [target, setTarget] = useState<HTMLElement | null>(null);
   const latest = useRef(room);
   latest.current = room;
   const host = useRef<HTMLDivElement>(null),
@@ -108,7 +111,7 @@ export function GameLoading({
     setProgress({ percent: 0, label: "准备加载" });
     const initial = latest.current,
       gate = initial.loading,
-      client = crypto.randomUUID();
+      client = loadingClientID();
     let done = false,
       build = "",
       assetsReady = false,
@@ -193,6 +196,20 @@ export function GameLoading({
     if (mounted && !asyncBoard) onReady();
   }, [mounted, asyncBoard, onReady, identity]);
   const blocked = !ready || !!room.loading || !!error;
+  useLayoutEffect(() => {
+    const surface = host.current;
+    const update = () => setTarget(surface?.querySelector<HTMLElement>("[data-room-fullscreen]") ?? null);
+    update();
+    if (!surface) return;
+    const observer = new MutationObserver(update);
+    observer.observe(surface, {
+      attributes: true,
+      attributeFilter: ["data-room-fullscreen"],
+      childList: true,
+      subtree: true,
+    });
+    return () => observer.disconnect();
+  }, [mounted, identity, attempt]);
   useEffect(() => {
     if (
       !blocked &&
@@ -204,7 +221,6 @@ export function GameLoading({
       return revealGameOnEntry(surface);
     }
   }, [blocked]);
-  const target = retained.current ? host.current?.querySelector<HTMLElement>("[data-room-fullscreen]") : null;
   const cover = blocked && (
         <section
           className={`game-loading${target ? " game-loading-fullscreen" : ""}`}
@@ -289,9 +305,9 @@ export function GameLoading({
       {mounted && (
         <div
           ref={host}
-          className={`game-ready-surface${blocked && !retained.current ? " game-loading-staging" : ""}`}
-          inert={blocked && !retained.current || undefined}
-          aria-hidden={blocked && !retained.current || undefined}
+          className={`game-ready-surface${blocked && !retained.current && !target ? " game-loading-staging" : ""}`}
+          inert={blocked && !retained.current && !target || undefined}
+          aria-hidden={blocked && !retained.current && !target || undefined}
           key={`${surfaceIdentity.current}:${attempt}`}
         >
           <LoadBoundary failed={onLoadError}>

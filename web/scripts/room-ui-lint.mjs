@@ -12,6 +12,7 @@ const files = [
   "web/src/ui/room-fullscreen.tsx",
   "web/src/ui/game-mobile-play-notice.tsx",
   "web/src/ui/room-fullscreen.css",
+  "web/src/game-api/loading.css",
   "web/src/ui/fullscreen-overlay.ts",
   "web/src/ui/map-controls.ts",
   "web/src/ui/create-room.tsx",
@@ -69,7 +70,7 @@ const files = [
 const languages = {
   ".ts": /^web\/src\/ui\//,
   ".tsx": /^(?:web\/(?:src\/ui|tests)\/|games\/(?:gomoku|splendor|snooker)\/web\/)/,
-  ".css": /^(?:web\/src\/ui\/|games\/(?:gomoku|weiqi|chess|xiangqi|junqi|splendor|racing|fortressblue|yuyuhakusho)\/web\/)/,
+  ".css": /^(?:web\/src\/(?:ui\/|game-api\/loading\.css$)|games\/(?:gomoku|weiqi|chess|xiangqi|junqi|splendor|racing|fortressblue|yuyuhakusho)\/web\/)/,
   ".mjs": /^(?:web\/(?:scripts|tests)\/|games\/(?:contra\/web|basketball\/build)\/)/,
   ".json": /^web\/tests\/fixtures\//,
 };

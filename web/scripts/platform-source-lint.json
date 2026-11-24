@@ -3,6 +3,9 @@
   "sources": [
     "web/src/audio-spatial.ts",
     "web/src/game-api/default-players.ts",
+    "web/src/game-api/loading-session.ts",
+    "web/tests/loading-session.test.mjs",
+    "web/tests/loading-rematch-browser.mjs",
     "web/scripts/platform-source-lint.mjs",
     "web/scripts/platform-source-lint.json",
     "web/tests/game-default-players.test.mjs",

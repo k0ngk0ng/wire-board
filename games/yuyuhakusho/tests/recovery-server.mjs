@@ -8,11 +8,12 @@ import path from "node:path";
 
 const root = fileURLToPath(new URL("../../../", import.meta.url));
 const resources = path.resolve(process.argv[2] ?? "");
+const terminal = process.argv.includes("--terminal");
 if (!process.argv[2] || path.relative(root, resources).startsWith(".."))
   throw Error("Provide the prepared asset directory inside this workspace");
 const temporary = path.join(
   root,
-  ".local/yuyuhakusho/recovery-loop/fixture-temporary",
+  terminal ? ".local/yuyuhakusho/recovery-loop/terminal-fixture-temporary" : ".local/yuyuhakusho/recovery-loop/fixture-temporary",
 );
 for (const folder of [
   temporary,
@@ -38,12 +39,24 @@ import (
  "os"
  "os/signal"
  "syscall"
+ ${terminal ? '"encoding/json"' : ""}
  yuyu "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/server"
  "github.com/k0ngk0ng/wire-board/internal/gameapi"
  "github.com/k0ngk0ng/wire-board/internal/server"
 )
 func main(){
- app,err:=server.New(server.Config{ClientLoading:true,Modules:[]gameapi.Module{yuyu.Module()},DataDir:os.Getenv("WIRE_BOARD_TEST_DATA"),InviteCode:"gamepad-browser",AssetsBaseURL:"https://assets.example.test/bga"},os.DirFS("web/dist"));if err!=nil{panic(err)};defer app.Close()
+ module:=yuyu.Module()
+ ${terminal ? `original:=module.Start
+ module.Start=func(ctx gameapi.Context,raw json.RawMessage)(gameapi.Match,error){
+  match,err:=original(ctx,raw);if err!=nil{return match,err}
+  var state yuyu.State;if err=json.Unmarshal(match.Data,&state);err!=nil{return match,err}
+  prior,err:=os.ReadFile("games/yuyuhakusho/verification/client-terminal-preview/sample-legacy-four/prior-checkpoint.json");if err!=nil{return match,err}
+  var checkpoint yuyu.Checkpoint;if err=json.Unmarshal(prior,&checkpoint);err!=nil{return match,err}
+  state.Frame=checkpoint.Frame;state.World=checkpoint.World;state.Presentation=checkpoint.Presentation;state.Loading=nil
+  match.Data,err=json.Marshal(state);match.SystemDeadline=ctx.Now.UnixMilli()+50
+  return match,err
+ }` : ""}
+ app,err:=server.New(server.Config{ClientLoading:true,Modules:[]gameapi.Module{module},DataDir:os.Getenv("WIRE_BOARD_TEST_DATA"),InviteCode:"gamepad-browser",AssetsBaseURL:"https://assets.example.test/bga"},os.DirFS("web/dist"));if err!=nil{panic(err)};defer app.Close()
  listener,err:=net.Listen("tcp","127.0.0.1:0");if err!=nil{panic(err)}
  fmt.Println("http://"+listener.Addr().String())
  service:=&http.Server{Handler:app.Handler()};go service.Serve(listener)

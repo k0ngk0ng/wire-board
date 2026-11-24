@@ -17,7 +17,7 @@
   opacity: 0.12;
   pointer-events: none;
 }
-.game-loading-fullscreen {
+.game-loading.game-loading-fullscreen {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -25,6 +25,7 @@
   min-height: 0;
   border-radius: 0;
   z-index: 40;
+  overflow: auto;
 }
 .game-loading-cover .cover {
   height: 100%;
