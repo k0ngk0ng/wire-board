@@ -59,7 +59,7 @@ test("replacement covers register game ownership and matching publication metada
   assert.deepEqual(Object.keys(manifest.games).sort(), [...games].sort());
   for (const game of games) {
     const cover = manifest.games[game];
-    assert.equal(cover.path, `/${game}/covers/cover.png`);
+    assert.equal(cover.path, `/game-covers/${game}.png`);
     const file = `games/${game}/assets/public${cover.path}`;
     assert.equal(cover.width, 480);
     assert.equal(cover.height, 285);
@@ -105,7 +105,7 @@ test("catalog, legacy pages and loaded runtime render the replacement covers", a
       for (const base of ["", "/bga"]) {
         const markup = render(registry.gameModule(game).Cover, base);
         assert.ok(
-          markup.includes(`src="${base}/${game}/covers/cover.png"`),
+          markup.includes(`src="${base}/game-covers/${game}.png"`),
           game,
         );
         assert.ok(markup.includes('width="480" height="285"'), game);
@@ -122,7 +122,7 @@ test("catalog, legacy pages and loaded runtime render the replacement covers", a
       "sanguosha",
     ]) {
       const markup = render(LegacyCover, "/bga", { kind: game, mini: true });
-      assert.ok(markup.includes(`src="/bga/${game}/covers/cover.png"`), game);
+      assert.ok(markup.includes(`src="/bga/game-covers/${game}.png"`), game);
       assert.ok(markup.includes(`cover ${game} mini`), game);
       report.legacy.push(game);
     }
@@ -130,7 +130,7 @@ test("catalog, legacy pages and loaded runtime render the replacement covers", a
     await registry.loadGame("gomoku");
     assert.ok(
       render(registry.gameModule("gomoku").Cover, "/bga").includes(
-        'src="/bga/gomoku/covers/cover.png"',
+        'src="/bga/game-covers/gomoku.png"',
       ),
     );
     report.runtime = "gomoku";

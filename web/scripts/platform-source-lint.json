@@ -40,7 +40,9 @@
     "web/tests/auth-page.test.mjs",
     "web/tests/auth-page-browser.test.mjs",
     "assets/game-covers.json",
-    "games/retired_registry_test.go"
+    "games/retired_registry_test.go",
+    "web/src/ui/lobby-theme.css",
+    "web/tests/room-flow-browser.test.mjs"
   ],
   "patterns": [
     {
@@ -86,7 +88,9 @@
     ".local/go-build",
     ".local/go-mod",
     ".local/_common",
-    ".local/platform-lint"
+    ".local/platform-lint",
+    ".local/room-flow",
+    ".local/rft"
   ],
   "filename": "^(?:[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*\\.(?:tsx?|mjs|json|css)|[A-Z][A-Za-z0-9]*\\.tsx)$",
   "rules": [

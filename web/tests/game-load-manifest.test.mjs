@@ -1,6 +1,3 @@
-
-
-
 import test from "node:test";
 import assert from "node:assert/strict";
 import {
@@ -46,7 +43,10 @@ test("preload static programs only; lazy maps load on selection and legacy shell
       viteMetadata: { importedCss: new Set(css) },
     });
     const bundle = {
-      "assets/resident-worker-qwertyui.js": { type: "asset", fileName: "assets/resident-worker-qwertyui.js" },
+      "assets/resident-worker-qwertyui.js": {
+        type: "asset",
+        fileName: "assets/resident-worker-qwertyui.js",
+      },
       "assets/home.js": {
         ...chunk(
           "assets/home.js",
@@ -86,19 +86,42 @@ test("preload static programs only; lazy maps load on selection and legacy shell
       ]),
       "assets/optional.js": chunk("assets/optional.js", ["/optional.ts"]),
       "assets/modern.css": { type: "asset", fileName: "assets/modern.css" },
-      "assets/modern-cover.png": { type: "asset", fileName: "assets/modern-cover.png", originalFileNames: [path.join(fixture, "games/modern/assets/cover.png")] },
-      "assets/controller.woff2": { type: "asset", fileName: "assets/controller.woff2", originalFileNames: ["/web/src/controllers/font.woff2"] },
+      "assets/modern-cover.png": {
+        type: "asset",
+        fileName: "assets/modern-cover.png",
+        originalFileNames: [
+          path.join(fixture, "games/modern/assets/cover.png"),
+        ],
+      },
+      "assets/controller.woff2": {
+        type: "asset",
+        fileName: "assets/controller.woff2",
+        originalFileNames: ["/web/src/controllers/font.woff2"],
+      },
     };
-    bundle["assets/modern.js"].viteMetadata.importedAssets = new Set(["assets/modern-cover.png"]);
-    bundle["assets/shared.js"].viteMetadata.importedAssets = new Set(["assets/controller.woff2"]);
+    bundle["assets/modern.js"].viteMetadata.importedAssets = new Set([
+      "assets/modern-cover.png",
+    ]);
+    bundle["assets/shared.js"].viteMetadata.importedAssets = new Set([
+      "assets/controller.woff2",
+    ]);
     writeFileSync(
       path.join(out, "index.html"),
       '<script src="/assets/home.js"></script>',
     );
     for (const name of Object.keys(bundle))
       writeFileSync(path.join(out, name), "export const ready = true;");
-    const binaryPaths = ["modern/dynamic/font.woff2", "modern/dynamic/pages.idx", "modern/dynamic/colors.rgb", "modern/dynamic/scene.pack"];
-    for (const file of binaryPaths) { mkdirSync(path.dirname(path.join(out,file)),{recursive:true});writeFileSync(path.join(out,file),"resident-body"); }
+    const binaryPaths = [
+      "modern/dynamic/font.woff2",
+      "modern/dynamic/pages.idx",
+      "modern/dynamic/colors.rgb",
+      "modern/dynamic/scene.pack",
+      "game-covers/contra.png",
+    ];
+    for (const file of binaryPaths) {
+      mkdirSync(path.dirname(path.join(out, file)), { recursive: true });
+      writeFileSync(path.join(out, file), "resident-body");
+    }
     const plugin = gameLoadManifest();
     plugin.configResolved({
       base: "https://cdn.ichenj.com/bga/",
@@ -107,11 +130,22 @@ test("preload static programs only; lazy maps load on selection and legacy shell
     const manifest = JSON.parse(
       readFileSync(path.join(out, "game-load-manifest.json")),
     );
-    assert.equal(manifest.worker, "https://cdn.ichenj.com/bga/assets/resident-worker-qwertyui.js");
+    assert.equal(
+      manifest.worker,
+      "https://cdn.ichenj.com/bga/assets/resident-worker-qwertyui.js",
+    );
     assert.equal(manifest.workerPath, "assets/resident-worker-qwertyui.js");
-    for (const file of binaryPaths) assert.equal(manifest.media["/"+file],13,file);
-    assert.ok(!manifest.home.files.some(file=>file.url===manifest.worker));
-    assert.ok(Object.values(manifest.games).every(files=>files.some(file=>file.url===manifest.worker)));
+    for (const file of binaryPaths)
+      assert.equal(manifest.media["/" + file], 13, file);
+    assert.ok(
+      !manifest.home.files.some((file) => file.url === manifest.worker),
+    );
+    assert.ok(
+      Object.values(manifest.games).every((files) =>
+        files.some((file) => file.url === manifest.worker),
+      ),
+    );
+    assert.equal(manifest.owners["game-covers/contra.png"], "contra");
     assert.equal(manifest.owners["assets/modern-cover.png"], "modern");
     assert.equal(manifest.owners["assets/controller.woff2"], "_common");
     const modernURLs = manifest.games.modern.map((f) => path.basename(f.url));
@@ -125,22 +159,21 @@ test("preload static programs only; lazy maps load on selection and legacy shell
     ]);
     assert.deepEqual(
       manifest.games.legacy.map((f) => path.basename(f.url)).sort(),
-      ["controller.woff2", "legacy-static.js", "legacy.js", "resident-worker-qwertyui.js", "room-ui.js", "shared.js"],
+      [
+        "controller.woff2",
+        "legacy-static.js",
+        "legacy.js",
+        "resident-worker-qwertyui.js",
+        "room-ui.js",
+        "shared.js",
+      ],
     );
-    assert.ok(
-      manifest.entry.startsWith(
-        "https://cdn.ichenj.com/bga/",
-      ),
-    );
+    assert.ok(manifest.entry.startsWith("https://cdn.ichenj.com/bga/"));
     assert.ok(
       Object.values(manifest.games)
         .flat()
         .every(
-          (f) =>
-            f.bytes > 0 &&
-            f.url.startsWith(
-              "https://cdn.ichenj.com/bga/",
-            ),
+          (f) => f.bytes > 0 && f.url.startsWith("https://cdn.ichenj.com/bga/"),
         ),
     );
     writeFileSync(

@@ -125,10 +125,35 @@ test(
       });
     const activate = async (selector, touch = false) => {
       await browser("scrollintoview", selector);
-      if (!touch) return browser("click", selector);
+      await browser(
+        "wait",
+        "--fn",
+        `(()=>{const element=document.querySelector(${JSON.stringify(selector)});if(!element)return false;const box=element.getBoundingClientRect();return box.width>0&&box.height>0&&getComputedStyle(element).visibility!=="hidden"})()`,
+      );
       const point = await evaluate(
         `(()=>{const r=document.querySelector(${JSON.stringify(selector)}).getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2}})()`,
       );
+      if (!touch) {
+        await call("Input.dispatchMouseEvent", {
+          type: "mouseMoved",
+          ...point,
+        });
+        await call("Input.dispatchMouseEvent", {
+          type: "mousePressed",
+          ...point,
+          button: "left",
+          buttons: 1,
+          clickCount: 1,
+        });
+        await call("Input.dispatchMouseEvent", {
+          type: "mouseReleased",
+          ...point,
+          button: "left",
+          buttons: 0,
+          clickCount: 1,
+        });
+        return;
+      }
       await call("Input.dispatchTouchEvent", {
         type: "touchStart",
         touchPoints: [{ ...point, id: 1 }],
@@ -281,6 +306,19 @@ if err := http.Serve(listener, app.Handler()); err != nil {panic(err)}
           reject(Error("backend exited: " + code + " " + backendLog));
         });
       });
+      const coverManifest = JSON.parse(
+        await readFile(path.join(root, "assets/game-covers.json"), "utf8"),
+      );
+      const coverImages = new Map(
+        await Promise.all(
+          Object.entries(coverManifest.games).map(async ([game, cover]) => [
+            cover.path,
+            await readFile(
+              path.join(root, `games/${game}/assets/public${cover.path}`),
+            ),
+          ]),
+        ),
+      );
       const { createServer } = await import(require.resolve("vite"));
       frontend = await createServer({
         configFile: false,
@@ -295,6 +333,13 @@ if err := http.Serve(listener, app.Handler()); err != nil {panic(err)}
           {
             name: "room-flow-manifest",
             configureServer(server) {
+              server.middlewares.use((request, response, next) => {
+                const body = coverImages.get(request.url.split("?")[0]);
+                if (body) {
+                  response.setHeader("Content-Type", "image/png");
+                  response.end(body);
+                } else next();
+              });
               server.middlewares.use(
                 "/game-load-manifest.json",
                 (request, response) => {
@@ -386,6 +431,26 @@ if err := http.Serve(listener, app.Handler()); err != nil {panic(err)}
         });
         await browser("reload");
         await wait(shown(".lobby"));
+        const lobbyGeometry = await evaluate(
+          '({title:Math.round(parseFloat(getComputedStyle(document.querySelector(".room-list h1")).fontSize)),radius:Math.round(parseFloat(getComputedStyle(document.querySelector(".empty-room")).borderRadius)),controls:[...document.querySelectorAll(".room-filters input,.room-filters select,.lobby-create")].map(e=>Math.round(e.getBoundingClientRect().height))})',
+        );
+        check(
+          "reference lobby dimensions " + width,
+          lobbyGeometry.title >= (touch ? 26 : 32) &&
+            lobbyGeometry.radius === 22 &&
+            lobbyGeometry.controls.every((height) => height >= 44),
+          lobbyGeometry,
+        );
+        await capture("lobby-empty-" + width);
+        await browser("fill", '[aria-label="搜索房间"]', "没有匹配的房间");
+        await browser("find", "role", "button", "click", "--name", "清除筛选");
+        check(
+          "lobby filters can be reset " + width,
+          await evaluate(
+            'document.querySelector(\'[aria-label="搜索房间"]\').value === ""',
+          ),
+        );
+
         for (const [kind, title, minimum, maximum] of [
           ["splendor", "璀璨宝石", 2, 4],
           ["rail", "铁路环游", 2, 5],
@@ -407,6 +472,22 @@ if err := http.Serve(listener, app.Handler()); err != nil {panic(err)}
             "创建房间",
             "--exact",
           );
+          if (kind === "splendor") {
+            const columns = await evaluate(
+              'getComputedStyle(document.querySelector(".create-room-choosing .choose-games")).gridTemplateColumns.split(" ").length',
+            );
+            check(
+              "reference game grid " + width,
+              columns === (touch ? 2 : 6),
+              columns,
+            );
+            await browser(
+              "wait",
+              "--fn",
+              'Array.from(document.querySelectorAll(".create-room-choosing img")).every(image=>image.complete&&image.naturalWidth===480)',
+            );
+            await capture("create-picker-" + width);
+          }
           await browser("fill", '[aria-label="搜索可选游戏"]', title);
           check(
             "creation has no name field " + kind + width,
@@ -417,6 +498,17 @@ if err := http.Serve(listener, app.Handler()); err != nil {panic(err)}
           await activate(".choose-games button", touch);
           await wait(shown(".waiting-layout"));
           const opened = await current();
+          if (kind === "cs16") {
+            const cover = await evaluate(
+              '(()=>{const r=document.querySelector(".waiting-cover>.cover").getBoundingClientRect();return {ratio1000:Math.round(r.width/r.height*1000),width:Math.round(r.width)}})()',
+            );
+            check(
+              "waiting cover uses source aspect ratio " + width,
+              cover.ratio1000 === 1684,
+              cover,
+            );
+            await capture("waiting-cs16-" + width);
+          }
           check(
             "one click enters named room " + kind + width,
             opened.kind === kind &&
@@ -544,11 +636,19 @@ if err := http.Serve(listener, app.Handler()); err != nil {panic(err)}
               !(await current()).locked,
             );
             await browser("focus", '[aria-label="房间密码"]');
-            await browser("fill", '[aria-label="房间密码"]', "flow-final-room-password");
+            await browser(
+              "fill",
+              '[aria-label="房间密码"]',
+              "flow-final-room-password",
+            );
             await activate("[data-add-bot]", touch);
-            await wait("document.querySelectorAll('.waiting-seat.filled').length===4&&!!document.querySelector('[data-room-password-remove]')");
-            check("finishing password and adding a bot takes one click " + width, (await current()).seats.length===4&&(await current()).locked);
-
+            await wait(
+              "document.querySelectorAll('.waiting-seat.filled').length===4&&!!document.querySelector('[data-room-password-remove]')",
+            );
+            check(
+              "finishing password and adding a bot takes one click " + width,
+              (await current()).seats.length === 4 && (await current()).locked,
+            );
           } else {
             await browser("select", '[aria-label="房间人数"]', String(minimum));
             await wait(
@@ -748,7 +848,12 @@ if err := http.Serve(listener, app.Handler()); err != nil {panic(err)}
         await wait(shown(".match-result-modal"));
         await browser("reload");
         await wait(shown(".match-result-modal"));
-        await activate(".result-return", touch);
+        await browser(
+          "wait",
+          "--fn",
+          'Array.from(document.querySelectorAll(".match-result-modal .result-return")).some(button=>{const r=button.getBoundingClientRect();return r.width>0&&r.height>0&&getComputedStyle(button).visibility!=="hidden"})',
+        );
+        await activate(".match-result-modal .result-return", touch);
         await wait(
           "!document.querySelector('.match-result-modal')&&!!document.querySelector('.waiting-layout')",
         );

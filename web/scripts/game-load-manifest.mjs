@@ -113,6 +113,11 @@ export function gameLoadManifest() {
         }
       }
       walk();
+      const covers = JSON.parse(readFileSync(new URL("../../assets/game-covers.json", import.meta.url), "utf8"));
+      for (const [owner, cover] of Object.entries(covers.games)) {
+        const file = cover.path.slice(1);
+        if (existsSync(path.join(dir, file))) owners[file] = owner;
+      }
       const externalPath = new URL("../../assets/external-resources.json", import.meta.url);
       const externalRaw = existsSync(externalPath) ? readFileSync(externalPath) : undefined;
       if (externalRaw) {

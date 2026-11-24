@@ -58,6 +58,8 @@ import {
   LogOut,
   Plus,
   ScrollText,
+  Search,
+  Trophy,
   ShieldCheck,
   Sparkles,
   Users,
@@ -109,6 +111,7 @@ import {
 } from "./profiles";
 import "./room-option-cards.css";
 import "./style.css";
+import "./ui/lobby-theme.css";
 import "./ui/room-waiting.css";
 import { useRoomPresentation } from "./game-api/presentation";
 import { ResultOverlay } from "./ui/result-overlay";
@@ -136,7 +139,9 @@ const statusName: Record<string, string> = {
 function Logo() {
   return (
     <a className="logo" href="/" aria-label="围桌首页">
-      <img src="/favicon.svg" width="36" height="36" alt="" />
+      <span className="platform-logo-mark" aria-hidden="true">
+        <span /><span /><span /><span />
+      </span>
       <span>
         围桌<small>WIRE BOARD</small>
       </span>
@@ -842,6 +847,7 @@ function App() {
                     className="subtle"
                     onClick={() => setShowLeaderboard(true)}
                   >
+                    <Trophy size={16} />
                     积分榜
                   </button>
                   <NetworkSignal info={connectionNetwork} connected={online} />
@@ -1607,6 +1613,8 @@ function Lobby({
         <div className="room-filters">
           <label className="game-search room-search">
             搜索房间
+            <span className="lobby-search-input">
+              <Search size={17} aria-hidden="true" />
             <input
               type="search"
               aria-label="搜索房间"
@@ -1614,6 +1622,7 @@ function Lobby({
               value={roomQuery}
               onChange={(event) => setRoomQuery(event.target.value)}
             />
+            </span>
           </label>
           <CategoryFilter
             value={category}
