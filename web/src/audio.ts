@@ -110,6 +110,8 @@ export class GameAudio {
   private level = 1;
   private clipVolume = 1;
   private primed = false;
+  private unlocking?: Promise<boolean>;
+  private cancelUnlock?: () => void;
   private serial = 0;
   private task?: Task;
   private assets = "";
@@ -182,6 +184,7 @@ export class GameAudio {
   }
   async unlock(): Promise<boolean> {
     if (!this.available()) return false;
+    if (this.unlocking) return this.unlocking;
     void this.background?.unlock();
     void this.continuous?.unlock();
     void this.spatial?.unlock();
@@ -192,20 +195,41 @@ export class GameAudio {
     this.mediaOwner = undefined;
     media.src = SILENCE;
     media.muted = true;
-    try {
-      await media.play();
-      if (serial !== this.serial || !this.allowed) return false;
-      this.primed = true;
-      if (media.src === SILENCE) {
-        media.pause();
-        media.removeAttribute("src");
-        media.load();
+    const pending = new Promise<boolean>((resolve) => {
+      let finished = false;
+      const finish = (success: boolean) => {
+        if (finished) return;
+        finished = true;
+        clearTimeout(timeout);
+        media.removeEventListener("error", cancel);
+        if (this.cancelUnlock === cancel) this.cancelUnlock = undefined;
+        const current = serial === this.serial;
+        const primed =
+          success && current && this.available() && media.src === SILENCE;
+        if (current) {
+          this.primed = primed;
+          if (media.src === SILENCE) {
+            media.pause();
+            media.removeAttribute("src");
+            media.load();
+          }
+        }
+        resolve(primed);
+      };
+      const cancel = () => finish(false);
+      const timeout = setTimeout(cancel, 2000);
+      this.cancelUnlock = cancel;
+      media.addEventListener("error", cancel, { once: true });
+      try {
+        void media.play().then(() => finish(true), cancel);
+      } catch {
+        cancel();
       }
-      return true;
-    } catch {
-      if (serial === this.serial) this.primed = false;
-      return false;
-    }
+    }).finally(() => {
+      if (this.unlocking === pending) this.unlocking = undefined;
+    });
+    this.unlocking = pending;
+    return pending;
   }
   pause(owner: string) {
     this.pausedOwners.add(owner);
@@ -333,6 +357,8 @@ export class GameAudio {
     if (owner !== undefined && (this.task?.owner ?? this.mediaOwner) !== owner)
       return;
     this.serial++;
+    this.cancelUnlock?.();
+    this.unlocking = undefined;
     this.task = undefined;
     this.mediaOwner = undefined;
     if (this.media) {

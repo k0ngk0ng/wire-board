@@ -23,7 +23,7 @@ function setup(t,{deferDecode=false,unsupported=false,decodeError=false,denyPlay
   createMediaStreamDestination(){const track={stopped:false,stop(){this.stopped=true;}};tracks.push(track);return {stream:{getTracks:()=>[track],getAudioTracks:()=>[track]}};}
   resume(){this.state="running";return Promise.resolve();}suspend(){this.state="suspended";return Promise.resolve();}close(){this.closed=true;this.state="closed";return Promise.resolve();}
  }
- class Media{dataset={};paused=true;muted=false;volume=1;playbackRate=1;src="";srcObject=null;calls=0;removed=false;loop=false;play(){this.calls++;if(this.srcObject&&!api.allowPlay)return Promise.reject(Error('NotAllowedError'));this.paused=false;return Promise.resolve();}pause(){this.paused=true;}load(){}removeAttribute(n){if(n==="src")this.src="";}remove(){this.removed=true;}}
+ class Media extends EventTarget{dataset={};paused=true;muted=false;volume=1;playbackRate=1;src="";srcObject=null;calls=0;removed=false;loop=false;play(){this.calls++;if(this.srcObject&&!api.allowPlay)return Promise.reject(Error('NotAllowedError'));this.paused=false;return Promise.resolve();}pause(){this.paused=true;}load(){}removeAttribute(n){if(n==="src")this.src="";}remove(){this.removed=true;}}
  const document=new EventTarget();document.hidden=false;document.body={append(){}};
  for(const[n,value]of Object.entries({AudioContext:unsupported?undefined:Context,webkitAudioContext:undefined,document,navigator:{audioSession:{type:"auto"}},fetch:()=>{throw Error('inline data must not use connect-src fetch')}}))Object.defineProperty(globalThis,n,{value,writable:true,configurable:true});
  const audio=new GameAudio(()=>{const m=new Media();elements.push(m);return m;}),port=audio.channel('race-a');audio.mount();

@@ -11,7 +11,9 @@
     "web/tests/action-scope.test.mjs",
     "web/scripts/numeric-comparisons.mjs",
     "web/tests/numeric-comparisons.test.mjs",
-    "web/tests/realtime-game-decoder.test.mjs"
+    "web/tests/realtime-game-decoder.test.mjs",
+    "web/tests/platform-audio-unlock.test.mjs",
+    "web/tests/audio-unlock-browser.mjs"
   ],
   "patterns": [
     {
@@ -32,7 +34,10 @@
     "web/tests/mobile-play-notice.test.mjs",
     "web/tests/module-horizontal-players.test.mjs",
     "web/tests/module-pause.test.mjs",
-    "web/tests/module-preparation.test.mjs"
+    "web/tests/module-preparation.test.mjs",
+    "web/src/audio-silence.ts",
+    "web/tests/audio-silence.test.mjs",
+    "web/tests/platform-audio-continuous.test.mjs"
   ],
   "platformAudioSources": [
     "web/src/audio-spatial.ts",
@@ -44,7 +49,8 @@
     "web/src/realtime-stream.ts"
   ],
   "localOutputRoots": [
-    ".local/cs16"
+    ".local/cs16",
+    ".local/yuyuhakusho"
   ],
   "filename": "^(?:[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*\\.(?:tsx?|mjs|json)|[A-Z][A-Za-z0-9]*\\.tsx)$",
   "rules": [
