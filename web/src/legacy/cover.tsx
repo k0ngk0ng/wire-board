@@ -1,5 +1,6 @@
 import { SanguoshaCover } from "../../../games/sanguosha/web/Cover";
 import { gemColors } from "../../../games/splendor/web/colors";
+import { catalogCover } from "../game-api/catalog-cover";
 export function LegacyCover({
   kind,
   mini = false,
@@ -7,6 +8,13 @@ export function LegacyCover({
   kind: string;
   mini?: boolean;
 }) {
+  const Cover = catalogCover(kind);
+  if (Cover)
+    return (
+      <div className={`cover ${kind} ${mini ? "mini" : ""}`} aria-hidden="true">
+        <Cover />
+      </div>
+    );
   return (
     <div className={`cover ${kind} ${mini ? "mini" : ""}`} aria-hidden="true">
       {kind === "sanguosha" ? (

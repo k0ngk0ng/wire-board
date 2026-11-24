@@ -10,11 +10,11 @@ const temporary=path.join(out,"frontend-temporary");
 await mkdir(temporary,{recursive:true});
 const require=createRequire(new URL("../package.json",import.meta.url));
 test("retired games leave the actual frontend catalog and runtime while historical names remain readable",async()=>{
- const server=await require("vite").createServer({configFile:false,root:path.join(root,"web"),cacheDir:path.join(temporary,"vite"),publicDir:false,esbuild:{jsx:"automatic"},optimizeDeps:{noDiscovery:true},resolve:{dedupe:["react","react-dom","lucide-react","three","fflate"]},server:{middlewareMode:true,fs:{allow:[root]}}});
- const report={passed:false,removed:["stoneage","spf2t"],remaining:[]};
+ const server=await require("vite").createServer({configFile:false,root:path.join(root,"web"),cacheDir:path.join(temporary,"vite"),publicDir:false,esbuild:{jsx:"automatic"},optimizeDeps:{noDiscovery:true},resolve:{dedupe:["react","react-dom","lucide-react","three","fflate"]},server:{middlewareMode:true,hmr:false,fs:{allow:[root]}}});
+ const report={passed:false,removed:["stoneage","spf2t","escape"],remaining:[]};
  try {
   const registry=await server.ssrLoadModule("/src/game-api/registry.ts");
-  for(const [kind,name] of [["stoneage","石器竞技场"],["spf2t","街霸方块"]]) {
+  for(const [kind,name] of [["stoneage","石器竞技场"],["spf2t","街霸方块"],["escape","密室逃脱"]]) {
    assert.equal(registry.gameModule(kind),undefined,kind);
    assert.equal(registry.isIndependentGame(kind),false,kind);
    await assert.rejects(registry.loadGame(kind),/未找到游戏界面/);

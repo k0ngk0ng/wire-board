@@ -22,7 +22,7 @@ func TestRetiredIndependentGamesHTTP(t *testing.T) {
 	defer ts.Close()
 	root := newClient(t, ts.URL)
 	root.post("/api/login", map[string]any{"name": "RetireRoot", "password": "retirement-local-password"}, 200)
-	for _, kind := range []string{"stoneage", "spf2t"} {
+	for _, kind := range []string{"stoneage", "spf2t", "escape"} {
 		if slices.Contains(s.availableGames(), kind) {
 			t.Fatalf("retired game remains available: %s", kind)
 		}
@@ -41,7 +41,7 @@ func TestRetiredIndependentGamesRestoreKeepsRecords(t *testing.T) {
 		t.Fatal(err)
 	}
 	originals := map[string][]byte{}
-	for _, kind := range []string{"stoneage", "spf2t"} {
+	for _, kind := range []string{"stoneage", "spf2t", "escape"} {
 		raw, marshalErr := json.Marshal(map[string]any{"id": "retired-" + kind, "kind": kind, "status": "playing", "capacity": 2, "version": 2, "module": map[string]any{"kind": kind, "data": map[string]any{"retiredVersion": 1, "private": []int{1, 2, 3}}}})
 		if marshalErr != nil {
 			t.Fatal(marshalErr)

@@ -38,10 +38,15 @@ const cases = [
   { file: "web/tests/game-default-players.test.mjs", source: "const defaultPlayers = 4.5;", passed: true },
   { file: "web/scripts/platform-source-lint.mjs", source: "import { tmpdir } from 'node:os'; const output = tmpdir();", passed: false },
   { file: "web/src/unregistered.ts", source: "const value = 1;", passed: false },
+  { file: "games/retired_registry_test.go", source: "package games\nvar coverValid = true\n", language: "go", passed: true },
+  { file: "games/retired_registry_test.go", source: "package wrong\nvar coverValid = true\n", language: "go", passed: false },
+  { file: "games/retired_registry_test.go", source: "package games\nvar cover_valid = true\n", language: "go", passed: false },
+  { file: "games/retired_registry_test.go", source: "package games\n// forbidden\nvar coverValid = true\n", language: "go", passed: false },
+  { file: "games/RetiredRegistryTest.go", source: "package games\n", language: "go", passed: false },
 ];
 
 test("public source policy rejects scoped failures with positive examples", () => {
-  const rows = inspectSources(cases.map(row => ({ ...row, language: row.file.endsWith(".mjs") ? "javascript" : "typescript" })));
+  const rows = inspectSources(cases.map(row => ({ ...row, language: row.language ?? (row.file.endsWith(".mjs") ? "javascript" : "typescript") })));
   for (const [index, row] of rows.entries()) assert.equal(row.passed, cases[index].passed, JSON.stringify({ ...cases[index], actual: row }));
 });
 
@@ -49,7 +54,7 @@ test("new platform sources pass without importing or executing a game check", ()
   const sources = discoverPlatformSources(root);
   assert(sources.some(row => row.file === "web/src/audio-spatial.ts"));
   assert(sources.some(row => row.file === "web/src/game-api/default-players.ts"));
-  assert(sources.every(row => row.file.startsWith("web/")));
+  assert(sources.every(row => ["web/", "internal/server/", "assets/", "games/"].some(prefix => row.file.startsWith(prefix))));
   const rows = inspectSources(sources);
   const report = { passed: rows.every(row => row.passed), files: rows, examples: cases.length };
   writeFileSync(path.join(output, "platform-source.json"), JSON.stringify(report, null, 2) + "\n");

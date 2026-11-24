@@ -55,7 +55,6 @@
 | 斯诺克 | [snooker.md](rules/snooker.md) |
 | 璀璨宝石 | [splendor.md](rules/splendor.md) |
 | 星垒 | [starfort.md](rules/starfort.md) |
-| 密室逃脱 | [escape.md](rules/escape.md) |
 | 仙剑奇侠传 | [pal.md](rules/pal.md) |
 | 植物大战僵尸 | [pvz.md](rules/pvz.md) |
 | 乒乓球 | [tabletennis.md](rules/tabletennis.md) |

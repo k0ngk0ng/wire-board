@@ -1,4 +1,4 @@
-import { readFileSync, existsSync, readdirSync, lstatSync, realpathSync } from "node:fs";
+import { readFileSync, existsSync, readdirSync, lstatSync, realpathSync, mkdirSync } from "node:fs";
 import { createHash } from "node:crypto";
 import { createRequire } from "node:module";
 import { spawnSync } from "node:child_process";
@@ -24,8 +24,8 @@ function validate(item) {
   const target = path.resolve(root, item.file);
   const relative = path.relative(root, target).split(path.sep).join("/");
   if (!within(root, target) || !registered(relative) && !(Array.isArray(item.changedLines) && policy.patchSources.includes(relative))) return ["source-location"];
-  if (!new RegExp(policy.filename).test(path.basename(target))) return ["source-filename"];
-  if (!['typescript', 'javascript', 'json'].includes(item.language)) return ["source-language"];
+  if (!new RegExp(item.language === "go" ? policy.goFilename : policy.filename).test(path.basename(target))) return ["source-filename"];
+  if (!['typescript', 'javascript', 'json', 'go', 'css'].includes(item.language)) return ["source-language"];
   let ancestor = target;
   while (!existsSync(ancestor) && path.dirname(ancestor) !== ancestor) ancestor = path.dirname(ancestor);
   if (!within(root, realpathSync(ancestor))) return ["source-symlink"];
@@ -155,9 +155,31 @@ function inspectJSON(item) {
 }
 
 export function inspectSources(items) {
+  const goItems = items.filter(item => item.language === "go" && !validate(item).length);
+  let goResults = [];
+  if (goItems.length) {
+    const environment = { ...process.env, GOCACHE: path.join(root, ".local/go-build"), GOMODCACHE: path.join(root, ".local/go-mod"), GOTMPDIR: path.join(root, ".local/platform-lint/tmp"), TMPDIR: path.join(root, ".local/platform-lint/tmp"), GOTOOLCHAIN: "local", GOTELEMETRY: "off" };
+    for (const directory of [environment.GOCACHE, environment.GOMODCACHE, environment.GOTMPDIR]) mkdirSync(directory, { recursive: true });
+    const run = spawnSync("go", ["run", "games/cs16/build/lint_go.go"], { cwd: root, env: environment, input: JSON.stringify(goItems.map(item => ({ ...item, expectedPackage: policy.goPackages[path.posix.dirname(item.file)] }))), encoding: "utf8" });
+    if (run.status !== 0) throw Error(run.stdout + run.stderr);
+    goResults = JSON.parse(run.stdout);
+  }
   return items.map(item => {
     const issues = validate(item);
-    if (!issues.length) issues.push(...(item.language === "json" ? inspectJSON(item) : inspectScript(item)));
+    if (!issues.length) {
+      if (item.language === "go") issues.push(...goResults[goItems.indexOf(item)]);
+      else if (item.language === "json") issues.push(...inspectJSON(item));
+      else if (item.language === "css") {
+        const postcss = require("postcss");
+        try {
+          const file = postcss.parse(item.source);
+          const changed = item.changedLines ? new Set(item.changedLines) : undefined;
+          const active = node => !changed || [...changed].some(line => line >= node.source.start.line && line <= node.source.end.line);
+          file.walkComments(node => { if (active(node)) issues.push("no-comments"); });
+          file.walkRules(rule => { if (active(rule)) for (const match of rule.selector.matchAll(/\.([A-Za-z_][\w-]*)/g)) if (!/^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$/.test(match[1])) issues.push("kebab-case-class"); });
+        } catch { issues.push("syntax"); }
+      } else issues.push(...inspectScript(item));
+    }
     return { file: item.file, language: item.language, coverage: Array.isArray(item.changedLines) ? "added-lines" : "full-source", changedLines: item.changedLines, sourceSHA256: createHash("sha256").update(item.source).digest("hex"), issues: [...new Set(issues)], passed: issues.length === 0 };
   });
 }
@@ -181,7 +203,11 @@ function changedSources(workspace) {
     } else if (current && line.startsWith("+")) changes.get(current).add(lineNumber++);
     else if (current && line.startsWith(" ")) lineNumber++;
   }
-  return [...changes].flatMap(([file, lines]) => lines.size ? [{ file, language: "typescript", source: readFileSync(path.join(workspace, file), "utf8"), changedLines: [...lines].sort((left, right) => left - right) }] : []);
+  return [...changes].flatMap(([file, lines]) => lines.size ? [{ file, language: sourceLanguage(file), source: readFileSync(path.join(workspace, file), "utf8"), changedLines: [...lines].sort((left, right) => left - right) }] : []);
+}
+
+function sourceLanguage(file) {
+  return file.endsWith(".go") ? "go" : file.endsWith(".css") ? "css" : file.endsWith(".mjs") ? "javascript" : file.endsWith(".json") ? "json" : "typescript";
 }
 
 export function discoverPlatformSources(workspace = root) {
@@ -195,7 +221,7 @@ export function discoverPlatformSources(workspace = root) {
     const target = path.join(workspace, file);
     if (!existsSync(target)) throw Error("Missing registered source: " + file);
     if (lstatSync(target).isSymbolicLink()) throw Error("Symlink registered source: " + file);
-    return { file, language: file.endsWith(".mjs") ? "javascript" : file.endsWith(".json") ? "json" : "typescript", source: readFileSync(target, "utf8") };
+    return { file, language: sourceLanguage(file), source: readFileSync(target, "utf8") };
   }).concat(changedSources(workspace));
 }
 

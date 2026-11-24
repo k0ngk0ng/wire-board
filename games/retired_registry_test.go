@@ -6,7 +6,7 @@ import (
 )
 
 func TestRetiredIndependentModulesAbsent(t *testing.T) {
-	retired := []string{"stoneage", "spf2t"}
+	retired := []string{"stoneage", "spf2t", "escape"}
 	for _, module := range Modules() {
 		if slices.Contains(retired, module.ID) {
 			t.Fatalf("retired module remains registered: %s", module.ID)

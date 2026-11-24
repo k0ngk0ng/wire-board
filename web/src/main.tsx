@@ -1,3 +1,4 @@
+import { Auth } from "./ui/auth";
 import { RoomCommandQueue } from "./ui/room-command-queue";
 import { CompactRoomPanel } from "./ui/compact-room-panel";
 import { PasswordForm } from "./account/PasswordForm";
@@ -50,7 +51,6 @@ import {
   Copy,
   Eye,
   Flag,
-  Gem,
   Gamepad2,
   Hand,
   Lock,
@@ -60,7 +60,6 @@ import {
   ScrollText,
   ShieldCheck,
   Sparkles,
-  TrainFront,
   Users,
   Wifi,
   X,
@@ -1536,140 +1535,6 @@ function App() {
         </RailMapsContext.Provider>
       </AssetsContext.Provider>
     </ProfileContext.Provider>
-  );
-}
-function Auth({
-  busy,
-  error,
-  invited,
-  submit,
-}: {
-  busy: boolean;
-  error: string;
-  invited: boolean;
-  submit: (body: unknown, register: boolean) => void;
-}) {
-  const [register, setRegister] = useState(false);
-  return (
-    <main className="auth-page">
-      <section className="auth-story">
-        <Logo />
-        <div className="auth-copy">
-          <span className="eyebrow">A TABLE FOR YOUR PEOPLE</span>
-          <h1>
-            把朋友，约到
-            <br />
-            同一张桌上。
-          </h1>
-          <p>
-            收集一颗宝石，连接一座城市。
-            <br />
-            从一局好游戏，开始今晚的相聚。
-          </p>
-          <div className="auth-covers">
-            <Cover kind="splendor" />
-            <Cover kind="rail" />
-          </div>
-          <div className="auth-caption">
-            <span>
-              <Gem size={17} />
-              卡牌与策略
-            </span>
-            <span>
-              <TrainFront size={17} />
-              探索与冒险
-            </span>
-            <span>联机游戏 · 好友相聚 · 无限好时光</span>
-          </div>
-        </div>
-        <small>YOUR FRIENDS. YOUR TABLE. YOUR NEXT MOVE.</small>
-      </section>
-      <section className="auth-form">
-        <div className="auth-form-inner">
-          <span className="eyebrow">WELCOME TO WIRE BOARD</span>
-          <h2>{register ? "留一个你的座位" : "欢迎回来，入座吧。"}</h2>
-          <p>
-            {register
-              ? "使用朋友分享的邀请码，加入这个私人游戏大厅。"
-              : invited
-                ? "朋友在牌桌等你，登录后将自动进入邀请的房间。"
-                : "桌布铺好了，就等你和朋友们。"}
-          </p>
-          <div className="auth-tabs">
-            <button
-              className={!register ? "active" : ""}
-              onClick={() => setRegister(false)}
-            >
-              登录
-            </button>
-            <button
-              className={register ? "active" : ""}
-              onClick={() => setRegister(true)}
-            >
-              创建账号
-            </button>
-          </div>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              const f = new FormData(e.currentTarget);
-              submit(Object.fromEntries(f.entries()), register);
-            }}
-          >
-            <label>
-              玩家昵称
-              <input
-                name="name"
-                placeholder="你的游戏昵称"
-                required
-                minLength={2}
-                maxLength={20}
-                autoComplete="username"
-              />
-            </label>
-            <label>
-              密码
-              <input
-                name="password"
-                type="password"
-                placeholder="至少 8 位"
-                required
-                minLength={8}
-                maxLength={72}
-                autoComplete={register ? "new-password" : "current-password"}
-              />
-            </label>
-            {register && (
-              <label>
-                邀请码
-                <input
-                  name="invite"
-                  placeholder="向朋友获取邀请码"
-                  required
-                  autoComplete="off"
-                />
-              </label>
-            )}
-            {error && (
-              <p className="inline-error" role="alert">
-                {error}
-              </p>
-            )}
-            <button className="primary wide" disabled={busy}>
-              {busy ? "请稍候…" : register ? "创建账号，入座" : "进入游戏大厅"}
-              <ArrowRight size={18} />
-            </button>
-          </form>
-          <div className="auth-note">
-            <Lock size={14} />
-            只属于你和朋友的游戏空间
-          </div>
-          <a href="/releases" data-release-entry>
-            更新日志
-          </a>
-        </div>
-      </section>
-    </main>
   );
 }
 function Lobby({

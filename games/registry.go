@@ -9,7 +9,6 @@ import (
 	conquest "github.com/k0ngk0ng/wire-board/games/conquest/server"
 	cs16 "github.com/k0ngk0ng/wire-board/games/cs16/server"
 	doudizhu "github.com/k0ngk0ng/wire-board/games/doudizhu/server"
-	escape "github.com/k0ngk0ng/wire-board/games/escape/server"
 	fortressblue "github.com/k0ngk0ng/wire-board/games/fortressblue/server"
 	gomoku "github.com/k0ngk0ng/wire-board/games/gomoku/server"
 	guandan "github.com/k0ngk0ng/wire-board/games/guandan/server"
@@ -35,7 +34,6 @@ import (
 // its frontend is discovered from games/<id>/web/module.tsx automatically.
 func Modules() []gameapi.Module {
 	modules := []gameapi.Module{basketball.Module(), monopoly.Module(), starfort.Module(), doudizhu.Module(), guandan.Module(), shengji.Module(), snooker.Module(), pairs.Module(), gomoku.Module(), junqi.Module(), chess.Module(), xiangqi.Module(), weiqi.Module(), racing.Module(), tetris.Module(), battlecity.Module(), bubbleparty.Module(), fortressblue.Module(), conquest.Module(), tabletennis.Module(), yuyuhakusho.Module(), pvz.Module()}
-	modules = append(modules, escape.Module())
 	modules = append(modules, pokepath.Module())
 	modules = append(modules, hotlinemiami.Module())
 	modules = append(modules, cs16.Module())

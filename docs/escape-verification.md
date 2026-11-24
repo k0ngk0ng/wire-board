@@ -1,5 +1,7 @@
 # 密室逃脱验收记录
 
+「密室逃脱」已从当前游戏目录移除。本文保留历史验收记录，源码链接指向 `v1.44.0`。
+
 场景精简与统一物品栏的后续结果见[场景探索与物品栏验收](escape-scene-discovery.md)。本文保留首版玩法、美术和实时同步记录。
 
 本次交付在独立 worktree 中实现。游戏入口为「密室逃脱」，密室可选「封锁站」和「沉没档案馆」。以下结果来自正式注册模块、真实 HTTP／WebSocket／SQLite 和实际浏览器输入；测试服务器的网络故障入口不进入生产程序。
@@ -44,12 +46,12 @@
 
 另验证单端真实连接中断、重新获得权威状态、清除旧按住输入和新输入恢复；健康端连接没有中断，规则持续推进。标准 Gamepad API 以虚拟设备验证模拟轴值、抖动合并和回中释放，未将其描述为实体手柄实测。[8 组性能与网络结果](research/escape-verification/performance.json)
 
-以上是本次前台 Chromium 与当前机器的测量，不替代其他设备的性能测试。冻结指标、失败清单与复现命令见 [游戏说明](../games/escape/README.md) 和[先行验收](../games/escape/ACCEPTANCE.md)。
+以上是本次前台 Chromium 与当前机器的测量，不替代其他设备的性能测试。冻结指标、失败清单与复现命令见 [游戏说明](https://github.com/k0ngk0ng/wire-board/blob/v1.44.0/games/escape/README.md) 和[先行验收](https://github.com/k0ngk0ng/wire-board/blob/v1.44.0/games/escape/ACCEPTANCE.md)。
 
 ## 美术与资源
 
 场景、设备、角色及行走帧由用户指定的 `gpt-image-2.5` 经 API 生成，所选原图和参考帧保存在游戏目录。运行素材统一裁切、调整比例并验证 SHA-256；四人靠近时仅在呈现层让出空间，保留真实交互位置。音频为原创合成，FLAC 与原 PCM 逐字节往返校验。
 
-[美术规格](../games/escape/assets/art-direction.md) · [场景与精灵提示词](../games/escape/assets/prompts.jsonl) · [行走帧提示词](../games/escape/assets/walk-prompts.json) · [图像清单](../games/escape/assets/manifest.json) · [音频清单](../games/escape/assets/audio-manifest.json)
+[美术规格](https://github.com/k0ngk0ng/wire-board/blob/v1.44.0/games/escape/assets/art-direction.md) · [场景与精灵提示词](https://github.com/k0ngk0ng/wire-board/blob/v1.44.0/games/escape/assets/prompts.jsonl) · [行走帧提示词](https://github.com/k0ngk0ng/wire-board/blob/v1.44.0/games/escape/assets/walk-prompts.json) · [图像清单](https://github.com/k0ngk0ng/wire-board/blob/v1.44.0/games/escape/assets/manifest.json) · [音频清单](https://github.com/k0ngk0ng/wire-board/blob/v1.44.0/games/escape/assets/audio-manifest.json)
 
 所有公开结果与截图的摘要保存在[验收产物清单](research/escape-verification/artifacts.json)。发布仍须通过同一提交的 CI、正式构建、本地 CDN 回读与生产更新检查。

@@ -1,0 +1,165 @@
+{
+  "games": {
+    "basketball": {
+      "height": 285,
+      "path": "/basketball/covers/cover.png",
+      "width": 480
+    },
+    "battlecity": {
+      "height": 285,
+      "path": "/battlecity/covers/cover.png",
+      "width": 480
+    },
+    "bubbleparty": {
+      "height": 285,
+      "path": "/bubbleparty/covers/cover.png",
+      "width": 480
+    },
+    "carcassonne": {
+      "height": 285,
+      "path": "/carcassonne/covers/cover.png",
+      "width": 480
+    },
+    "catan": {
+      "height": 285,
+      "path": "/catan/covers/cover.png",
+      "width": 480
+    },
+    "chess": {
+      "height": 285,
+      "path": "/chess/covers/cover.png",
+      "width": 480
+    },
+    "conquest": {
+      "height": 285,
+      "path": "/conquest/covers/cover.png",
+      "width": 480
+    },
+    "contra": {
+      "height": 285,
+      "path": "/contra/covers/cover.png",
+      "width": 480
+    },
+    "cs16": {
+      "height": 285,
+      "path": "/cs16/covers/cover.png",
+      "width": 480
+    },
+    "doudizhu": {
+      "height": 285,
+      "path": "/doudizhu/covers/cover.png",
+      "width": 480
+    },
+    "fortressblue": {
+      "height": 285,
+      "path": "/fortressblue/covers/cover.png",
+      "width": 480
+    },
+    "gomoku": {
+      "height": 285,
+      "path": "/gomoku/covers/cover.png",
+      "width": 480
+    },
+    "guandan": {
+      "height": 285,
+      "path": "/guandan/covers/cover.png",
+      "width": 480
+    },
+    "hotlinemiami": {
+      "height": 285,
+      "path": "/hotlinemiami/covers/cover.png",
+      "width": 480
+    },
+    "junqi": {
+      "height": 285,
+      "path": "/junqi/covers/cover.png",
+      "width": 480
+    },
+    "monopoly": {
+      "height": 285,
+      "path": "/monopoly/covers/cover.png",
+      "width": 480
+    },
+    "pairs": {
+      "height": 285,
+      "path": "/pairs/covers/cover.png",
+      "width": 480
+    },
+    "pal": {
+      "height": 285,
+      "path": "/pal/covers/cover.png",
+      "width": 480
+    },
+    "pokepath": {
+      "height": 285,
+      "path": "/pokepath/covers/cover.png",
+      "width": 480
+    },
+    "pvz": {
+      "height": 285,
+      "path": "/pvz/covers/cover.png",
+      "width": 480
+    },
+    "racing": {
+      "height": 285,
+      "path": "/racing/covers/cover.png",
+      "width": 480
+    },
+    "rail": {
+      "height": 285,
+      "path": "/rail/covers/cover.png",
+      "width": 480
+    },
+    "sanguosha": {
+      "height": 285,
+      "path": "/sanguosha/covers/cover.png",
+      "width": 480
+    },
+    "shengji": {
+      "height": 285,
+      "path": "/shengji/covers/cover.png",
+      "width": 480
+    },
+    "snooker": {
+      "height": 285,
+      "path": "/snooker/covers/cover.png",
+      "width": 480
+    },
+    "splendor": {
+      "height": 285,
+      "path": "/splendor/covers/cover.png",
+      "width": 480
+    },
+    "starfort": {
+      "height": 285,
+      "path": "/starfort/covers/cover.png",
+      "width": 480
+    },
+    "tabletennis": {
+      "height": 285,
+      "path": "/tabletennis/covers/cover.png",
+      "width": 480
+    },
+    "tetris": {
+      "height": 285,
+      "path": "/tetris/covers/cover.png",
+      "width": 480
+    },
+    "weiqi": {
+      "height": 285,
+      "path": "/weiqi/covers/cover.png",
+      "width": 480
+    },
+    "xiangqi": {
+      "height": 285,
+      "path": "/xiangqi/covers/cover.png",
+      "width": 480
+    },
+    "yuyuhakusho": {
+      "height": 285,
+      "path": "/yuyuhakusho/covers/cover.png",
+      "width": 480
+    }
+  },
+  "version": 1
+}

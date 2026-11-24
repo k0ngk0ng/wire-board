@@ -1,5 +1,7 @@
 # 密室场景精简与物品栏验收
 
+「密室逃脱」已从当前游戏目录移除。本文保留历史验收记录，源码链接指向 `v1.44.0`。
+
 场景移除常驻的东南西北文字、独立门形图标、物件角标和未调查物件的地面标记。原有通行、调查与触屏命中区域保留；鼠标悬停和键盘焦点仍提供高亮，点击后显示调查反馈。
 
 所有密室共用「物品栏」弹框。工具栏保留地图、笔记、物品栏、呼叫四个入口；弹框显示队伍物资的名称、数量、用途与可用操作，并单独显示个人携带物。封锁站显示电池、急救包、保险丝，沉没档案馆显示电池、急救包和已运回档案。物品使用仍由原有服务器操作校验。
@@ -15,7 +17,7 @@
 | 原有机关与新物品入口 | 封锁站桌面、档案馆手机共 2 组通过：读取线索、校准水阀、普通调查收集补给，在物品栏使用电池并验证电力恢复、库存扣减及界面同步，再完成配电与自然合作结算。手机电池通过原生触摸使用。[交互与结算结果](research/escape-scene-discovery/interaction.json) |
 | 构建与对应前端检查 | `npm --prefix web run build`、`python3 -B scripts/ci/scope.py run --game escape` 通过。本次未修改规则与移动同步，不重复运行其他游戏验收。 |
 
-以上手机结果来自桌面 Chromium 的 320px 视区和 CDP 原生触摸输入，不表示已在实体手机 Safari 上实测。测试入口、服务器启动方式见[游戏说明](../games/escape/README.md)。结果和截图的大小与 SHA-256 见[产物清单](research/escape-scene-discovery/artifacts.json)。
+以上手机结果来自桌面 Chromium 的 320px 视区和 CDP 原生触摸输入，不表示已在实体手机 Safari 上实测。测试入口、服务器启动方式见[游戏说明](https://github.com/k0ngk0ng/wire-board/blob/v1.44.0/games/escape/README.md)。结果和截图的大小与 SHA-256 见[产物清单](research/escape-scene-discovery/artifacts.json)。
 
 ## 画面
 

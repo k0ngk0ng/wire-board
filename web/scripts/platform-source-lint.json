@@ -1,5 +1,5 @@
 {
-  "scope": "Only explicitly registered new platform TypeScript/JavaScript/JSON files and Git-added lines of registered existing files; no game imports or game execution",
+  "scope": "Only explicitly registered platform TypeScript/JavaScript/JSON/Go/CSS files and Git-added lines of registered existing files; no game imports or game execution, with the shared Go AST lint helper reused without running game code",
   "sources": [
     "web/src/audio-spatial.ts",
     "web/src/game-api/default-players.ts",
@@ -31,7 +31,16 @@
     "web/tests/resident-rematch-browser.mjs",
     "web/src/game-api/registry.ts",
     "web/tests/retired-games.test.mjs",
-    "web/tests/splendor-take-browser.mjs"
+    "web/tests/splendor-take-browser.mjs",
+    "web/src/game-api/catalog-cover.tsx",
+    "web/tests/catalog-covers.test.mjs",
+    "internal/server/retired_independent_e2e_test.go",
+    "web/src/ui/auth.tsx",
+    "web/src/ui/auth.css",
+    "web/tests/auth-page.test.mjs",
+    "web/tests/auth-page-browser.test.mjs",
+    "assets/game-covers.json",
+    "games/retired_registry_test.go"
   ],
   "patterns": [
     {
@@ -54,7 +63,10 @@
     "web/src/audio-silence.ts",
     "web/tests/audio-silence.test.mjs",
     "web/tests/platform-audio-continuous.test.mjs",
-    "web/vite.config.ts"
+    "web/vite.config.ts",
+    "web/src/legacy/cover.tsx",
+    "web/src/style.css",
+    "games/registry.go"
   ],
   "platformAudioSources": [
     "web/src/audio-spatial.ts",
@@ -72,11 +84,13 @@
     ".local/stoneage",
     ".local/splendor",
     ".local/go-build",
-    ".local/go-mod"
+    ".local/go-mod",
+    ".local/_common",
+    ".local/platform-lint"
   ],
-  "filename": "^(?:[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*\\.(?:tsx?|mjs|json)|[A-Z][A-Za-z0-9]*\\.tsx)$",
+  "filename": "^(?:[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*\\.(?:tsx?|mjs|json|css)|[A-Z][A-Za-z0-9]*\\.tsx)$",
   "rules": [
-    "camelCase/PascalCase bindings and kebab-case filenames",
+    "camelCase/PascalCase bindings; kebab-case web filenames/classes and snake_case Go filenames with package matching the registered directory",
     "No code comments, TypeScript any or dynamic execution",
     "No imports from games or workspace escape",
     "Integer or fixed-point numeric comparison operands in businessSources; pure floating storage and calculation are allowed, while tolerance/extrema/sorting cannot hide floating comparison",
@@ -84,5 +98,10 @@
     "Only declared platform audio may create native audio players or AudioContext",
     "All temporary output is explicitly in a declared local workspace root",
     "Existing sources inspect added lines only; new sources are inspected in full"
-  ]
+  ],
+  "goFilename": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*\\.go$",
+  "goPackages": {
+    "internal/server": "server",
+    "games": "games"
+  }
 }

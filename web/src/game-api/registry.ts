@@ -1,6 +1,7 @@
 import { LegacyCover } from "../legacy/cover";
 import { createElement, useSyncExternalStore } from "react";
 import type { GameModule } from "./module";
+import { catalogCover } from "./catalog-cover";
 const catalogs = import.meta.glob<{ default: Omit<GameModule, "Board"> }>(
   "../../../games/*/web/catalog.tsx",
   { eager: true },
@@ -20,9 +21,11 @@ for (const [path, entry] of Object.entries(catalogs)) {
     throw new Error(`无效或重复的游戏模块：${path}`);
   modules.set(meta.id, {
     ...meta,
-    ...(meta.legacy
-      ? { Cover: () => createElement(LegacyCover, { kind: meta.id }) }
-      : {}),
+    Cover:
+      catalogCover(meta.id) ??
+      (meta.legacy
+        ? () => createElement(LegacyCover, { kind: meta.id })
+        : meta.Cover),
     Board: () => null,
   });
   loaders.set(meta.id, runtimes[path.replace("catalog.tsx", "module.tsx")]);
@@ -30,7 +33,12 @@ for (const [path, entry] of Object.entries(catalogs)) {
 export function gameModule(kind: string) {
   return modules.get(kind);
 }
-const retiredNames: Record<string, string> = { dota: "兵线争锋", stoneage: "石器竞技场", spf2t: "街霸方块" };
+const retiredNames: Record<string, string> = {
+  dota: "兵线争锋",
+  escape: "密室逃脱",
+  stoneage: "石器竞技场",
+  spf2t: "街霸方块",
+};
 export function gameName(kind: string) {
   return modules.get(kind)?.name || retiredNames[kind] || kind;
 }
@@ -49,7 +57,8 @@ export function loadGame(kind: string): Promise<GameModule> {
       kind,
       loader()
         .then(({ default: module }) => {
-          module.Cover ??= modules.get(kind)?.Cover;
+          module.Cover =
+            catalogCover(kind) ?? module.Cover ?? modules.get(kind)?.Cover;
           modules.set(kind, module);
           loaded.add(kind);
           revision++;

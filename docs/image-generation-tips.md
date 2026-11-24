@@ -2,6 +2,8 @@
 
 本文记录「密室逃脱」美术素材的实际制作流程，供后续游戏复用。覆盖当前 Codex 所配置 API 的调用、风格统一、行走图集、素材处理与验收。资源接入和发布仍遵循[加载与资源发布规范](../rules/loading.md)及[界面与交互开发规范](../rules/ui.md)。
 
+密室逃脱现已移除。文中的素材处理命令是历史示例，需先从 `v1.44.0` 恢复对应文件。
+
 ## 模型与调用方式
 
 本次经用户授权，通过当前配置的 API 使用 `gpt-image-2.5`，生成与编辑均已实际使用。执行工具为已安装 imagegen Skill 自带的 `scripts/image_gen.py`，没有修改 Skill，也没有另写 SDK 生图程序。
@@ -87,7 +89,7 @@ imagegen generate \
   --dry-run
 ```
 
-本次六个初始素材的精确任务保存在 [prompts.jsonl](../games/escape/assets/prompts.jsonl)。每行含 `model`、`out`、`size`、`quality`、`prompt`；`out` 是 `--out-dir` 下的文件名。背景请求 `1536x1024`，人物请求 `1024x1536`，装置图集请求 `1024x1024`，均使用 `quality: "high"`。
+本次六个初始素材的精确任务保存在 [prompts.jsonl](https://github.com/k0ngk0ng/wire-board/blob/v1.44.0/games/escape/assets/prompts.jsonl)。每行含 `model`、`out`、`size`、`quality`、`prompt`；`out` 是 `--out-dir` 下的文件名。背景请求 `1536x1024`，人物请求 `1024x1536`，装置图集请求 `1024x1024`，均使用 `quality: "high"`。
 
 ```bash
 imagegen generate-batch \
@@ -108,7 +110,7 @@ imagegen generate-batch \
 | 4 行 | 朝下／正面、朝上／背面、朝左、朝右 |
 | 4 列 | 左脚向前、过渡落脚、右脚向前、过渡落脚 |
 
-身份图集的「行代表角色、列代表方向」与行走图集不同，裁切和运行时取帧不能混用。参考图和精确编辑提示词见 [walk-prompts.json](../games/escape/assets/walk-prompts.json)。以下示例提取第一个角色的已存提示词，输出新版本，不覆盖原稿。
+身份图集的「行代表角色、列代表方向」与行走图集不同，裁切和运行时取帧不能混用。参考图和精确编辑提示词见 [walk-prompts.json](https://github.com/k0ngk0ng/wire-board/blob/v1.44.0/games/escape/assets/walk-prompts.json)。以下示例提取第一个角色的已存提示词，输出新版本，不覆盖原稿。
 
 ```bash
 mkdir -p tmp/imagegen
@@ -130,11 +132,11 @@ imagegen edit \
 
 提示词明确保留身份、服装、发型、色彩、身体比例、投影和光向；要求完整头脚、透明留白、固定格数，无文字、网格线、地面或外部阴影。整张生成有助于一致性，但不保证格子等距、步态不同或循环流畅，仍需逐格和播放检查。本次在首个角色确认后，再并行编辑其余三个角色。
 
-运行时按方向选行，每 125 ms 切换一列，即每秒约 8 次姿态切换；人物位置插值和画面渲染独立进行。动画来自预生成图集，游戏运行中不调用生图 API。取帧实现见 [canvas.ts](../games/escape/web/canvas.ts)。
+运行时按方向选行，每 125 ms 切换一列，即每秒约 8 次姿态切换；人物位置插值和画面渲染独立进行。动画来自预生成图集，游戏运行中不调用生图 API。取帧实现见 [canvas.ts](https://github.com/k0ngk0ng/wire-board/blob/v1.44.0/games/escape/web/canvas.ts)。
 
 ## 先约定美术规格，再写提示词
 
-- 固定投影、调色板、光照方向、人物比例、像素笔触密度和墙地分界；本次规格见[密室逃脱美术规格](../games/escape/assets/art-direction.md)。
+- 固定投影、调色板、光照方向、人物比例、像素笔触密度和墙地分界；本次规格见[密室逃脱美术规格](https://github.com/k0ngk0ng/wire-board/blob/v1.44.0/games/escape/assets/art-direction.md)。
 - 分开生成背景、交互装置和角色。灯光、积水、粒子、设备状态与 UI 由程序按游戏状态叠加，减少背景与交互位置冲突。
 - 背景提示词写清中心可行走区域和边缘家具范围。固定镜头，排除消失点和菱形等距构图，不把人物、中央交互装置、文字或 UI 烘焙进背景。
 - 图集写清行列含义、完整轮廓和每格留白。参考图通过编辑接口传入，并在每次提示词中重复需要保持的属性。
@@ -152,7 +154,7 @@ imagegen edit \
 
 第一张工程师行走图集虽然为 RGBA，仍有半透明白色蒙层；仅删除低 Alpha 像素没有去净。白底扩大了内容包围盒，归一化后角色比站立时明显缩小。
 
-本次仅对这张受影响的 `walk-0`，逐格从外边缘做连通区域清理。候选条件为 `a < 8`，或 `min(r,g,b) > 135` 且 `max(r,g,b) - min(r,g,b) < 55`，命中的外连通像素 Alpha 设为 0，保留护目镜等封闭高光。实现见 [prepare.py](../games/escape/assets/prepare.py) 的 `clear_white_matte`。
+本次仅对这张受影响的 `walk-0`，逐格从外边缘做连通区域清理。候选条件为 `a < 8`，或 `min(r,g,b) > 135` 且 `max(r,g,b) - min(r,g,b) < 55`，命中的外连通像素 Alpha 设为 0，保留护目镜等封闭高光。实现见 [prepare.py](https://github.com/k0ngk0ng/wire-board/blob/v1.44.0/games/escape/assets/prepare.py) 的 `clear_white_matte`。
 
 这些阈值适用于本次素材，不能作为通用抠图参数；浅色衣服可能与背景连通。先在深色、彩色和棋盘背景上检查，再决定是保留原生透明、定向清理还是重新生成。透明像素保留非零 RGB 并不等于有残底，应结合 Alpha 判断。
 
@@ -169,7 +171,7 @@ imagegen edit \
 1. 记录提示词、模型、生成／编辑方式、输入参考图和批准的原稿；原稿与运行时素材分开保存。
 2. 检查实际尺寸、Alpha、非空帧、头脚裁切、脚底锚点和各帧比例。在真实游戏中播放四向循环，检查重复帧、抖动、首尾衔接，以及站立与行走的尺寸变化。
 3. 在 PC 和手机上检查角色识别、四人重叠、交互区域与背景的关系。静态图集预览不能替代实际动画验收。
-4. 归一化并压缩后，记录源文件和产物的 SHA-256、尺寸、体积、Alpha 和帧边界，保证产物与记录一致。本次样例见 [manifest.json](../games/escape/assets/manifest.json)；现有检查可在仓库根目录运行 `node --test games/escape/tests/assets.test.mjs`。
+4. 归一化并压缩后，记录源文件和产物的 SHA-256、尺寸、体积、Alpha 和帧边界，保证产物与记录一致。本次样例见 [manifest.json](https://github.com/k0ngk0ng/wire-board/blob/v1.44.0/games/escape/assets/manifest.json)；现有检查可在仓库根目录运行 `node --test games/escape/tests/assets.test.mjs`。
 5. 游戏引用应用相对路径，例如 `/escape/v1/walk-0.webp`，由平台资源清单解析到当前提交的 CDN 地址。本次直接拼接旧 `assetsBaseURL` 曾导致新增素材指向缺失路径，接入时需验证真实加载地址。
 6. 按[加载与资源发布规范](../rules/loading.md)发布公开素材，保留原稿和提示词供追溯，避免把原稿和客户端载荷重复打入生产二进制或镜像。完成后清理本次临时提示词、缓存和失败产物。
 
