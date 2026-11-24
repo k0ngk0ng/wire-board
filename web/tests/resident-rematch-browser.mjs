@@ -1,0 +1,70 @@
+import assert from "node:assert/strict";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { fileURLToPath, pathToFileURL } from "node:url";
+import path from "node:path";
+
+const root=fileURLToPath(new URL("../../",import.meta.url));
+const out=path.join(root,".local/yuyuhakusho/resident-assets/rematch");
+await mkdir(out,{recursive:true});
+process.env.TMPDIR=out;
+const {webkit}=await import(pathToFileURL(process.argv[3]));
+const browser=await webkit.launch({headless:false,executablePath:process.argv[4]});
+const page=await browser.newPage({viewport:{width:844,height:390},isMobile:true,hasTouch:true});
+const report={passed:false,rounds:[],errors:[]};
+page.on('pageerror',error=>report.errors.push(String(error)));
+const api=(suffix,body)=>page.evaluate(async({suffix,body})=>{const response=await fetch('/api'+suffix,{method:body?'POST':'GET',headers:{'Content-Type':'application/json'},body:body?JSON.stringify(body):undefined});const result=await response.json();if(!response.ok)throw Error(JSON.stringify(result));return result},{suffix,body});
+const command=async type=>{const {room}=await api('/state');return api('/rooms/'+room.id,{type,version:room.version,nonce:crypto.randomUUID()})};
+const requests=()=>page.evaluate(async()=>await(await fetch('/__resident-stats')).json());
+try{
+ await page.goto(process.argv[2]);
+ await page.waitForSelector('input');
+ await api('/register',{name:'资源重开'+Date.now().toString().slice(-8),password:'resident-rematch-local',invite:'gamepad-browser'});
+ await api('/rooms',{kind:'yuyuhakusho',capacity:4,options:{arena:0,characters:[7,0,3,10]},name:'资源驻留重开'});
+ for(let seat=1;seat<4;seat++)await command('add_bot');
+ await page.reload();
+ await page.getByRole('button',{name:'我准备好了',exact:true}).tap();
+ await page.getByRole('button',{name:'开始游戏',exact:true}).tap();
+ await page.waitForSelector('.result-restart',{timeout:120000});
+ const initial=(await api('/state')).room;
+ report.initialResources=await requests();
+ assert.ok(report.initialResources.count>136);
+ for(let round=0;round<3;round++){
+  const previous=(await api('/state')).room.matchId;
+  await Promise.all([page.waitForResponse(response=>response.request().postData()?.includes('\"type\":\"start\"')),page.locator('.result-restart').tap()]);
+  await page.waitForFunction(async previous=>{const state=await(await fetch('/api/state')).json();return state.room?.matchId!==previous&&state.room?.status==='finished'},previous,{timeout:90000,polling:100});
+  await page.waitForSelector('.result-restart',{timeout:90000});
+  const current=(await api('/state')).room;
+  report.rounds.push({round,previous,match:current.matchId,status:current.status,additionalResourceDownloads:(await requests()).count-report.initialResources.count});
+  assert.notEqual(current.matchId,previous);
+  assert.equal(current.id,initial.id);
+  assert.deepEqual(current.options,initial.options);
+  assert.equal((await requests()).count,report.initialResources.count);
+ }
+ const release=JSON.parse(await readFile(path.join(root,'games/yuyuhakusho/assets/audio-release.json'),'utf8'));
+ const broken=release.assetsBaseURL+'/06.flac';
+ await page.evaluate(async url=>{const cache=await caches.open('wire-board-resident-assets-v1');window.savedResidentResponse=await cache.match(url);if(!savedResidentResponse)throw Error('fault target not preloaded');await cache.delete(url)},broken);
+ await page.locator('.result-restart').tap();
+ await page.waitForSelector('[data-game-loading] [role=alert]',{timeout:90000});
+ assert.equal((await requests()).count,report.initialResources.count);
+ const failure=await page.locator('[data-game-loading] [role=alert]').innerText();
+ assert.match(failure,/本地资源|资源尚未完整加载/);
+ const button=page.locator('[data-game-loading] button.primary');
+ await Promise.all([page.waitForResponse(response=>response.request().postData()?.includes('"type":"load_begin"')),button.tap()]);
+ await page.waitForSelector('[data-game-loading] [role=alert]');
+ assert.equal((await requests()).count,report.initialResources.count);
+ await page.screenshot({path:path.join(out,'lost-resource-no-redownload.png')});
+ await page.evaluate(async url=>{await(await caches.open('wire-board-resident-assets-v1')).put(url,savedResidentResponse);savedResidentResponse=undefined},broken);
+ await button.tap();
+ await page.waitForSelector('.result-restart',{timeout:90000});
+ assert.equal((await requests()).count,report.initialResources.count);
+ report.lostBody={failedLocally:true,afterExplicitRetryDownloads:0,recoveredFromSavedLocalBody:true};
+ await page.locator('.result-review').tap();
+ await page.locator('button[aria-label="退出全屏"]').tap();
+ assert.equal(await page.evaluate(()=>!!document.querySelector('[data-room-fullscreen]')||!!document.querySelector('header[inert]')),false);
+ assert.deepEqual(report.errors,[]);
+ await page.screenshot({path:path.join(out,'complete.png')});
+ report.passed=true;
+}catch(error){report.error=String(error);report.stack=error.stack;report.text=await page.locator('body').innerText().catch(()=>null);process.exitCode=1;await page.screenshot({path:path.join(out,'failure.png')}).catch(()=>{});}finally{
+ await writeFile(path.join(out,'result.json'),JSON.stringify(report,null,2)+'\n');
+ await browser.close();
+}

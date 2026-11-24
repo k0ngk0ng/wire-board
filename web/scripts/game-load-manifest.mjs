@@ -15,6 +15,9 @@ export function gameLoadManifest() {
     writeBundle(options, bundle) {
       const dir = options.dir;
       const chunks = Object.values(bundle).filter((x) => x.type === "chunk");
+      const workerFiles = Object.keys(bundle).filter(file => /(?:^|\/)resident-worker-[A-Za-z0-9_-]+\.js$/.test(file));
+      if (workerFiles.length > 1) throw Error("Duplicate resident worker entry");
+      const workerPath = workerFiles[0];
       const entry =
         chunks.find(
           (x) => x.isEntry && x.facadeModuleId?.endsWith("/index.html"),
@@ -38,6 +41,7 @@ export function gameLoadManifest() {
           bytes: statSync(path.join(dir, f)).size,
         }));
       const homeFiles = graph(entry.fileName);
+      if (workerPath) homeFiles.add(workerPath);
       const home = {
         files: records(homeFiles),
         bytes: [...homeFiles].reduce(
@@ -112,8 +116,7 @@ export function gameLoadManifest() {
       const externalRaw = existsSync(externalPath) ? readFileSync(externalPath) : undefined;
       if (externalRaw) {
         const external = JSON.parse(externalRaw);
-        const providedOwners = new Set(Object.keys(media).map(file => file.split("/")[1]));
-        for (const [file, record] of Object.entries(external.files)) if (!file.startsWith("/stoneage/") && !providedOwners.has(file.split("/")[1]) && !media[file]) media[file] = record.bytes;
+        for (const [file, record] of Object.entries(external.files)) if (!media[file]) media[file] = record.bytes;
       }
       const build = createHash("sha256")
         .update(readFileSync(path.join(dir, "index.html")))
@@ -124,6 +127,8 @@ export function gameLoadManifest() {
           build,
           sourceSHA: process.env.GITHUB_SHA || process.env.SOURCE_SHA || execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim(),
           entry: assetURL(base, entry.fileName),
+          worker: workerPath ? assetURL(base, workerPath) : undefined,
+          workerPath,
           assetBase: base,
           games,
           media,

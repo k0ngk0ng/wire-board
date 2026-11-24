@@ -67,6 +67,19 @@ class AssetReuseE2E(unittest.TestCase):
         self.prepare()
         self.assertEqual(before, {str(p.relative_to(self.dist)): p.read_bytes() for p in self.dist.rglob('*') if p.is_file()})
 
+    def test_service_worker_entry_follows_the_verified_immutable_worker_object(self):
+        body = b'self.addEventListener("install",()=>self.skipWaiting());'
+        self.put('assets/resident-worker.js', body)
+        self.baseline['files']['/assets/previous-worker.js'] = self.record(OLD + 'assets/previous-worker.js', body, 'text/javascript', 'gzip')
+        file = self.dist / 'game-load-manifest.json'
+        manifest = json.loads(file.read_text())
+        manifest.update(worker=NEW + 'assets/resident-worker.js', workerPath='assets/resident-worker.js')
+        file.write_text(json.dumps(manifest))
+        self.prepare()
+        manifest = json.loads(file.read_text())
+        self.assertEqual(manifest['worker'], OLD + 'assets/previous-worker.js')
+        self.assertEqual(manifest['workerPath'], 'assets/resident-worker.js')
+
     def test_one_changed_file_preserves_other_urls_and_old_references(self):
         self.put('images/original.webp', self.body + b'changed')
         self.put('images/other.webp', self.body)

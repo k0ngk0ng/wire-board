@@ -1,4 +1,5 @@
 import catalog from "./catalog";
+import { matchResources } from "./assets";
 import { defineGame } from "../../../web/src/game-api/module";
 import { Board } from "./Board";
 import { createPlayback } from "./presentation";
@@ -9,6 +10,8 @@ export default defineGame<View, Options>({
   ...catalog,
   asyncBoard: true,
   assetLoading: "board",
+  resources: () => [],
+  residentResources: room => matchResources(room.game?.data as View),
   createPresentation: createPlayback,
   defaultOptions: {
     turnSeconds: 25,

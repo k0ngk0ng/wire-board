@@ -241,6 +241,7 @@ export type GameModule<Data = unknown, Options = unknown> = {
   // modify authoritative snapshots or decide outcomes in this adapter.
   createPresentation?: () => RoomPresentation;
   resources?: (room: GameRoom, media: Record<string, number>) => string[];
+  residentResources?: (room: GameRoom, media: Record<string, number>, assets: string) => readonly import("./resident-assets").ResidentResource[] | Promise<readonly import("./resident-assets").ResidentResource[]>;
   assetLoading?: "board";
   asyncBoard?: boolean;
   Board: ComponentType<BoardProps<Data>>;

@@ -41,6 +41,7 @@ func acceptsGzip(value string) bool {
 func staticFiles(files fs.FS) http.Handler {
 	fallback := http.FileServerFS(files)
 	delivery, deliveryErr := readDeliveredAssets(files)
+	workerEntry, workerErr := residentWorkerEntry(files, delivery)
 	type cached struct {
 		data []byte
 		etag string
@@ -64,6 +65,23 @@ func staticFiles(files fs.FS) http.Handler {
 		if deliveryErr != nil {
 			w.Header().Set("Cache-Control", "no-store")
 			http.Error(w, "Asset delivery unavailable", http.StatusServiceUnavailable)
+			return
+		}
+		if r.URL.Path == "/asset-cache-worker.js" {
+			w.Header().Set("Cache-Control", "no-cache")
+			if r.Method != http.MethodGet && r.Method != http.MethodHead {
+				w.Header().Set("Allow", "GET, HEAD")
+				http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+			} else if workerErr != nil {
+				http.Error(w, "Resident worker entry unavailable", http.StatusServiceUnavailable)
+			} else {
+				w.Header().Set("Content-Type", "text/javascript; charset=utf-8")
+				w.Header().Set("Service-Worker-Allowed", "/")
+				w.Header().Set("Content-Length", strconv.Itoa(len(workerEntry)))
+				if r.Method != http.MethodHead {
+					_, _ = w.Write(workerEntry)
+				}
+			}
 			return
 		}
 		if r.URL.Path == "/releases" || strings.HasPrefix(r.URL.Path, "/releases/") {

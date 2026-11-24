@@ -1,5 +1,6 @@
 import { defineGame } from "../../../web/src/game-api/module";
 import catalog from "./catalog";
+import { palResidentResources } from "./resident-assets";
 import { Board } from "./Board";
 import type { PalView } from "./view";
 
@@ -9,6 +10,7 @@ export default defineGame<PalView>({
   streamInputOnly: true,
   assetLoading: "board",
   resources: () => [],
+  residentResources: room => palResidentResources(room.game?.data as PalView),
   isInputRelease: (a) => (a.type === "input" || a.type === "local_input" || a.type === "local_release") && a.direction === 4 && !a.keys,
   Board,
   Rules: () => (

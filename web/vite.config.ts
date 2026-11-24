@@ -20,6 +20,7 @@ export default defineConfig({
   resolve: { dedupe: ["react", "react-dom", "lucide-react", "three", "fflate"] },
   worker: { format: "es" },
   server: {
+    headers: { "Service-Worker-Allowed": "/" },
     proxy: {
       "/api": { target: "http://127.0.0.1:8080", ws: true },
       "/healthz": "http://127.0.0.1:8080",

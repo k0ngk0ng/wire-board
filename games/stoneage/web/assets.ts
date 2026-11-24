@@ -126,6 +126,24 @@ export function neededAssets(v: View): string[] {
   }
   return [...files];
 }
+export function matchResources(view: View) {
+  const files = new Set(neededAssets(view));
+  files.add("battle/battle_00.png");
+  for (const pair of Object.values(art.ui)) { files.add(pair.normal); files.add(pair.pressed); }
+  if (view.phase === "selection") {
+    const graphics = new Set([...view.pool.pets, ...view.pool.rides].map(pet => pet.graphic));
+    for (const ride of view.pool.rides) for (const rider of ride.riders ?? []) { graphics.add(rider.avatar); graphics.add(rider.graphic); }
+    for (const graphic of graphics) for (const action of art.sprites[String(graphic)] ?? []) for (const frame of action.frames) files.add(frame.file);
+    for (const frame of Object.values(projectileBitmaps)) files.add(frame.file);
+  }
+  const result = [...files].map(file => {
+    const resource = resources[file];
+    if (!resource) throw Error(`素材清单缺少 ${file}`);
+    return { url: assetURL(file), bytes: resource.bytes };
+  });
+  for (const [path, resource] of Object.entries(audio)) result.push({ url: audioURL(path as keyof typeof audio), bytes: resource.bytes });
+  return [...new Map(result.map(file => [file.url, file])).values()];
+}
 export async function loadAssets(
   files: readonly string[],
   signal: AbortSignal,

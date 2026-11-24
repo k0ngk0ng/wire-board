@@ -35,7 +35,7 @@ var mediaHash = regexp.MustCompile(`^[a-f0-9]{64}$`)
 
 func serverMetadataPath(name string) bool {
 	switch name {
-	case "/", "/index.html", "/game-load-manifest.json", "/contra-delivery.json", "/cdn-assets-manifest.json":
+	case "/", "/index.html", "/game-load-manifest.json", "/contra-delivery.json", "/cdn-assets-manifest.json", "/asset-cache-worker.js":
 		return true
 	}
 	return false

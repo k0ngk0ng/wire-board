@@ -46,6 +46,7 @@ test("preload static programs only; lazy maps load on selection and legacy shell
       viteMetadata: { importedCss: new Set(css) },
     });
     const bundle = {
+      "assets/resident-worker-qwertyui.js": { type: "asset", fileName: "assets/resident-worker-qwertyui.js" },
       "assets/home.js": {
         ...chunk(
           "assets/home.js",
@@ -104,6 +105,9 @@ test("preload static programs only; lazy maps load on selection and legacy shell
     const manifest = JSON.parse(
       readFileSync(path.join(out, "game-load-manifest.json")),
     );
+    assert.equal(manifest.worker, "https://cdn.ichenj.com/bga/assets/resident-worker-qwertyui.js");
+    assert.equal(manifest.workerPath, "assets/resident-worker-qwertyui.js");
+    assert.ok(manifest.home.files.some(file=>file.url===manifest.worker));
     assert.equal(manifest.owners["assets/modern-cover.png"], "modern");
     assert.equal(manifest.owners["assets/controller.woff2"], "_common");
     const modernURLs = manifest.games.modern.map((f) => path.basename(f.url));

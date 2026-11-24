@@ -3,7 +3,10 @@ import { defineGame, type OptionsProps } from "../../../web/src/game-api/module"
 import catalog from "./catalog";
 import { Board } from "./Board";
 import type { Options, View } from "./types";
-import { SCENES } from "./scene";
+import { SCENES, mapFor } from "./scene";
+import { codeMediaBase } from "../../../web/src/media-assets";
+import { pvzResidentResources } from "./resident-assets";
+import type { ArtManifest } from "./art";
 import { ResultDetails } from "./ResultDetails";
 import "./style.css";
 
@@ -31,9 +34,12 @@ export default defineGame<View, Options>({
   ...catalog,
   asyncBoard: true,
   assetLoading: "board",
-  // The Board loads the selected scene and public decks from this build's CDN
-  // root. The shared legacy-media prefix does not own PvZ's new assets.
   resources: () => [],
+  residentResources: async (room, media) => {
+    const response = await fetch(codeMediaBase(import.meta.env.BASE_URL).replace(/\/$/, "") + "/pvz/classic-v2/manifest.json");
+    if (!response.ok) throw Error("场景资源清单加载失败");
+    return pvzResidentResources(mapFor(room.game?.data as View).id, await response.json() as ArtManifest, media);
+  },
   Board,
   ResultDetails,
   Options: PvzOptions,

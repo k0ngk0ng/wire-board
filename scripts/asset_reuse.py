@@ -165,6 +165,7 @@ def prepare(dist, baseline):
     home = manifest.get('home', {})
     home_group = [(record, logical(record)) for record in home.get('files', [])]
     entry = manifest.get('entryPath') or logical({'url': manifest['entry']})
+    worker = manifest.get('workerPath') or (logical({'url': manifest['worker']}) if manifest.get('worker') else None)
     manifest.pop('assetMap', None)
     manifest.pop('assetObjects', None)
     file.write_text(json.dumps(manifest, separators=(',', ':')) + '\n')
@@ -219,6 +220,8 @@ def prepare(dist, baseline):
     unique = {row['url']: row for row in rows}
     summary = {'logicalFiles': len(rows), 'reusedObjects': sum(url in old_urls for url in unique), 'reusedBytes': sum(row['bytes'] for url, row in unique.items() if url in old_urls), 'newObjects': sum(url not in old_urls for url in unique), 'uploadBytes': sum(row['wireBytes'] for url, row in unique.items() if url not in old_urls)}
     manifest.update(mediaBase='/bga' if owners is not None else '/_media', entry=by_path[entry]['url'], entryPath=entry, assetPlan=summary, build=cdn.sha((dist / 'index.html').read_bytes()))
+    if worker:
+        manifest.update(worker=by_path[worker]['url'], workerPath=worker)
     delivery = {'version': 1, 'assetBase': base, 'files': {'/' + row['path']: normalized(row) for row in rows}, 'objects': known}
     external = dict(manifest.get('external', {}))
     if manifest.get('externalRegistrySHA256'):

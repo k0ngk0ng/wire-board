@@ -4,16 +4,20 @@ import { promisify } from "node:util";
 import { mkdir, readFile, writeFile, rm } from "node:fs/promises";
 import { createReadStream, existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
+import { Readable } from "node:stream";
 import path from "node:path";
 
 const root = fileURLToPath(new URL("../../../", import.meta.url));
 const resources = path.resolve(process.argv[2] ?? "");
 const terminal = process.argv.includes("--terminal");
+const basketball = process.argv.includes("--basketball");
+const observe = process.argv.includes("--observe-resources");
+const resourceRequests = [];
 if (!process.argv[2] || path.relative(root, resources).startsWith(".."))
   throw Error("Provide the prepared asset directory inside this workspace");
 const temporary = path.join(
   root,
-  terminal ? ".local/yuyuhakusho/recovery-loop/terminal-fixture-temporary" : ".local/yuyuhakusho/recovery-loop/fixture-temporary",
+  basketball ? ".local/basketball/resident-fixture/temporary" : terminal ? ".local/yuyuhakusho/recovery-loop/terminal-fixture-temporary" : ".local/yuyuhakusho/recovery-loop/fixture-temporary",
 );
 for (const folder of [
   temporary,
@@ -39,13 +43,14 @@ import (
  "os"
  "os/signal"
  "syscall"
- ${terminal ? '"encoding/json"' : ""}
- yuyu "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/server"
+ ${terminal || basketball ? '"encoding/json"' : ""}
+ ${basketball ? 'basketball "github.com/k0ngk0ng/wire-board/games/basketball/server"' : 'yuyu "github.com/k0ngk0ng/wire-board/games/yuyuhakusho/server"'}
  "github.com/k0ngk0ng/wire-board/internal/gameapi"
  "github.com/k0ngk0ng/wire-board/internal/server"
 )
 func main(){
- module:=yuyu.Module()
+ module:=${basketball ? "basketball" : "yuyu"}.Module()
+ ${basketball ? `controls:=new(gameapi.ControllerDefinition);controlData,controlErr:=os.ReadFile("games/basketball/controls.json");if controlErr!=nil{panic(controlErr)};if controlErr=json.Unmarshal(controlData,controls);controlErr!=nil{panic(controlErr)};module.Controls=controls` : ""}
  ${terminal ? `original:=module.Start
  module.Start=func(ctx gameapi.Context,raw json.RawMessage)(gameapi.Match,error){
   match,err:=original(ctx,raw);if err!=nil{return match,err}
@@ -93,10 +98,28 @@ const require = createRequire(
 const manifest = JSON.parse(
   await readFile(path.join(root, "web/dist/game-load-manifest.json"), "utf8"),
 );
+const business = JSON.parse(await readFile(path.join(root,".local/business.json"),"utf8"));
+manifest.assetBase = (process.env.CDN_ORIGIN || business.CDN_ORIGIN).replace(/\/$/, "") + "/bga/";
+const external = JSON.parse(await readFile(path.join(root,"assets/external-resources.json"),"utf8"));
+for (const [file,record] of Object.entries(external.files)) manifest.media[file] ??= record.bytes;
+const basketballRelease = basketball ? JSON.parse(await readFile(path.join(root,"games/basketball/assets/release-manifest.json"),"utf8")) : undefined;
 const plugin = {
+  transform(source,id) {
+    if (!observe || new URLSearchParams(id.split("?")[1] || "").has("url") || !id.split("?")[0].endsWith("/game-api/resident-worker.ts")) return;
+    return `const observedFetch=globalThis.fetch.bind(globalThis);globalThis.fetch=async(input,options)=>{const target=new URL(typeof input==="string"?input:input.url,self.location.href);if(!target.pathname.startsWith("/api/")&&!target.pathname.startsWith("/__resident-"))await observedFetch("/__resident-observe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({url:target.href})});return observedFetch(input,options)};\n`+source;
+  },
   name: "recovery-fixture-assets",
   configureServer(server) {
     server.middlewares.use((request, response, next) => {
+      if (request.url === "/__resident-observe" && request.method === "POST") {
+        let body="";request.on("data",chunk=>body+=chunk);request.on("end",()=>{resourceRequests.push(JSON.parse(body));response.writeHead(204);response.end()});return;
+      }
+      if (request.url === "/__resident-stats") { response.setHeader("Content-Type","application/json");response.end(JSON.stringify({count:resourceRequests.length,requests:resourceRequests}));return; }
+      if (basketball && (request.url.startsWith("/bga/basketball/") || request.url.startsWith("/basketball/"))) {
+        const logical=new URL(request.url,"http://127.0.0.1").pathname.replace(/^\/bga/,"");
+        const record=basketballRelease.files[logical];
+        if(record){void fetch(record.url).then(source=>{response.statusCode=source.status;response.setHeader("Content-Type",source.headers.get("Content-Type")||"application/octet-stream");if(!source.headers.get("Content-Encoding")&&source.headers.get("Content-Length"))response.setHeader("Content-Length",source.headers.get("Content-Length"));Readable.fromWeb(source.body).pipe(response)}).catch(()=>{response.statusCode=502;response.end()});return;}
+      }
       if (request.url === "/api/version") {
         response.setHeader("Content-Type", "application/json");
         response.end(JSON.stringify({ version: "dev", assets: [] }));
@@ -108,6 +131,7 @@ const plugin = {
           JSON.stringify({
             ...manifest,
             entry: "/src/main.tsx",
+            home: { files: [], bytes: 0, modules: [] },
             games: Object.fromEntries(
               Object.keys(manifest.games).map((kind) => [kind, []]),
             ),
@@ -117,7 +141,8 @@ const plugin = {
       }
       if (
         (request.url?.startsWith("/bga/yuyuhakusho/") ||
-          request.url?.startsWith("/yuyuhakusho/")) &&
+          request.url?.startsWith("/yuyuhakusho/") ||
+          basketball && (request.url?.startsWith("/basketball/") || request.url?.startsWith("/bga/basketball/"))) &&
         !request.url.includes("..")
       ) {
         const relative = decodeURIComponent(
@@ -169,6 +194,7 @@ const server = await require("vite").createServer({
     dedupe: ["react", "react-dom", "lucide-react", "three", "fflate"],
   },
   server: {
+    headers: { "Service-Worker-Allowed": "/" },
     host: "127.0.0.1",
     port: 0,
     hmr: false,

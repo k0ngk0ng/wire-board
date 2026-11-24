@@ -1,0 +1,14 @@
+{
+  "go": {
+    "directory": "^internal/server/",
+    "filename": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*\\.go$",
+    "sources": ["internal/server/resident_assets.go", "internal/server/resident_assets_e2e_test.go", "internal/server/static_delivery.go", "internal/server/static_media.go"],
+    "strictIntegerSources": ["internal/server/resident_assets.go", "internal/server/resident_assets_e2e_test.go"]
+  },
+  "python": {
+    "directory": "^scripts/(?:ci/)?",
+    "filename": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*\\.py$",
+    "sources": ["scripts/asset_reuse.py", "scripts/asset_reuse_e2e_test.py", "scripts/ci/resident_source_lint.py"]
+  },
+  "outputRoots": [".local/asset-reuse", ".local/yuyuhakusho"]
+}

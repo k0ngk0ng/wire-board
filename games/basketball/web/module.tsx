@@ -1,4 +1,5 @@
 import catalog from "./catalog";
+import { basketballAudioResources } from "./audio-resources";
 import { useEffect } from "react";
 import {
   defineGame,
@@ -168,6 +169,11 @@ export function OptionsForm({
 export default defineGame<BasketballNetworkView, BasketballOptions>({
   ...catalog,
   asyncBoard: true,
+  resources: () => [],
+  residentResources: (room, media) => [
+    ...Object.entries(media).filter(([url]) => url.startsWith("/basketball/") && !url.includes("/audio/")).map(([url, bytes]) => ({ url, bytes })),
+    ...basketballAudioResources(room),
+  ],
   defaultOptions: {
     court: "new-york",
     mode: "solo",

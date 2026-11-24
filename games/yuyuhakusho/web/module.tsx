@@ -1,3 +1,5 @@
+import { yuyuAudioResources } from "./audio-resources";
+import { localAudioFixture } from "./release-assets";
 import { defineGame } from "../../../web/src/game-api/module";
 import catalog from "./catalog";
 import { Board } from "./Board";
@@ -21,6 +23,7 @@ export default defineGame<NetworkView, GameOptions>({
   },
   defaultOptions: { arena: randomArena, teamBattle: false, characters: defaults(2) },
   resources: () => [],
+  residentResources: (room, _media, assets) => yuyuAudioResources(room, localAudioFixture() ? assets : undefined),
   Board,
   Cover,
   Options: OptionsForm,

@@ -18,6 +18,7 @@ import "./loading.css";
 import { revealGameOnEntry } from "../game-entry-scroll";
 import { entryAutoScrollAllowed } from "./viewport-fit-core";
 import { loadingClientID } from "./loading-session";
+import { releaseResidentResources, sealResidentResources, watchResidentResources } from "./resident-assets";
 class LoadBoundary extends Component<
   { children: ReactNode; failed: (message: string) => void },
   { error: boolean }
@@ -66,7 +67,6 @@ export function GameLoading({
     failed = useRef(false);
   const token = room.loading?.token;
   const retained = useRef(false);
-  // A completed gate disappearing must not recreate this local load session.
   const generation = useRef(token);
   if (token && generation.current !== token) {
     retained.current = !!room.supportsCheckpoint && !!host.current?.querySelector("[data-room-fullscreen]");
@@ -96,13 +96,17 @@ export function GameLoading({
               ? 35 + Math.min(100, Math.max(0, percent)) * 0.64
               : 90 + Math.min(100, Math.max(0, percent)) * 0.09,
           label,
-          ...(bytes ? { loaded: bytes.loaded, total: bytes.total } : {}),
+
         }));
     },
     [],
   );
   useEffect(() => {
     const abort = new AbortController();
+    const lease = crypto.randomUUID();
+    const unwatch = watchResidentResources(lease, bytes => {
+      if (!abort.signal.aborted) setProgress(previous => ({ ...previous, ...bytes }));
+    });
     alive.current = true;
     failed.current = false;
     if (!retained.current) setMounted(false);
@@ -133,7 +137,6 @@ export function GameLoading({
       if (done || failed.current || abort.signal.aborted) return;
       done = true;
       void (async () => {
-        // Decode rendered HTML images too (legacy card art is discovered from DOM).
         const imgs = [...(host.current?.querySelectorAll("img") ?? [])];
         await Promise.all(
           imgs.map(async (img) => {
@@ -152,6 +155,7 @@ export function GameLoading({
           requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
         );
         abort.signal.throwIfAborted();
+        await sealResidentResources(lease, abort.signal);
         if (failed.current) return;
         if (gate && !initial.spectating && initial.you >= 0)
           await send("load_ready");
@@ -174,7 +178,8 @@ export function GameLoading({
         initial,
         assets,
         abort.signal,
-        (incoming) => setProgress((previous) => ({ ...previous, ...incoming })),
+        (incoming) => setProgress((previous) => ({ ...previous, percent: incoming.percent, label: incoming.label })),
+        lease,
       );
       build = result.build;
       setLoadSizes(result.media);
@@ -188,6 +193,8 @@ export function GameLoading({
     return () => {
       alive.current = false;
       abort.abort();
+      unwatch();
+      void releaseResidentResources(lease);
       complete.current = () => {};
     };
   }, [identity, attempt, assets]);

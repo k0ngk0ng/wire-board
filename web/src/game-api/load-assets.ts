@@ -1,4 +1,7 @@
 import { VerifiedAssetCache } from "./load-cache";
+import workerEntry from "./resident-worker.ts?worker&url";
+import { aliasResidentResource, beginResidentResources, declareResidentResources } from "./resident-assets";
+import { residentResourcePlan } from "./resident-resource-plan";
 import { loadGame } from "./registry";
 import type { GameRoom } from "./module";
 type File = { url: string; bytes: number };
@@ -13,24 +16,32 @@ type Manifest = {
   entry: string;
   games: Record<string, File[]>;
   media: Record<string, number>;
+  assetBase?: string;
+  home?: { files: File[] };
 };
 const verifiedAssets = new VerifiedAssetCache();
 let retainedManifest: Manifest | undefined;
+function resourceSources(url: string, base: string) {
+  return /^(?:https?:\/\/|\/(?:bga|_media)\/)/.test(url) || !base ? [url] : [base.replace(/\/$/, "") + url, url];
+}
+function residentFiles(files: readonly File[], base: string) {
+  return files.map(file => ({ ...file, url: new URL(resourceSources(file.url, base)[0], location.href).href }));
+}
 async function download(
   file: File,
   base: string,
   signal: AbortSignal,
   update: (n: number) => void,
+  lease: string,
 ) {
-  const urls = base
-    ? [base.replace(/\/$/, "") + file.url, file.url]
-    : [file.url];
+  const urls = resourceSources(file.url, base);
   let last: unknown;
   for (const url of urls) {
     try {
       const response = await fetch(url, {
         signal: AbortSignal.any([signal, AbortSignal.timeout(45000)]),
       });
+      if (response.headers.get("X-Wire-Board-Resident") === "resident" && !response.ok) throw Object.assign(Error("本地资源不可用，请重新打开游戏"), { resident: true });
       if (!response.ok) throw Error(`资源下载失败（${response.status}）`);
       const decode = /\.(png|webp|jpg|jpeg|gif|svg)$/i.test(url);
       const chunks: Uint8Array<ArrayBuffer>[] = [];
@@ -73,8 +84,10 @@ async function download(
         }
         signal.throwIfAborted();
       }
+      if (url !== urls[0]) await aliasResidentResource(lease, new URL(urls[0], location.href).href, new URL(url, location.href).href, signal);
       return;
     } catch (error) {
+      if ((error as { resident?: boolean }).resident) throw error;
       last = error;
       if (signal.aborted) throw error;
       update(0);
@@ -88,6 +101,7 @@ async function batch(
   base: string,
   signal: AbortSignal,
   report: (loaded: number, total: number) => void,
+  lease: string,
 ) {
   const counts = new Map<string, number>(),
     total = files.reduce((n, f) => n + f.bytes, 0);
@@ -105,7 +119,7 @@ async function batch(
           report(loaded, total);
         };
         await verifiedAssets.load(file, build, base, signal, update, () =>
-          download(file, base, signal, update),
+          download(file, base, signal, update, lease),
         );
       }
     }),
@@ -116,11 +130,10 @@ export async function prepareGame(
   assets: string,
   signal: AbortSignal,
   progress: (p: LoadProgress) => void,
+  lease: string,
 ) {
   progress({ percent: 0, label: "准备对局" });
   let manifest: Manifest;
-  // A new loading gate carries the authoritative build identity. Without one,
-  // revalidate the manifest so reconnects cannot quietly reuse an old release.
   if (
     retainedManifest &&
     room.loading?.build === retainedManifest.build &&
@@ -143,8 +156,11 @@ export async function prepareGame(
   )
     throw Error("页面版本已更新，请刷新后加载");
   retainedManifest = manifest;
-  const files = manifest.games[room.kind];
-  if (!files) throw Error("未找到游戏资源清单");
+  const programs = manifest.games[room.kind];
+  if (!programs) throw Error("未找到游戏资源清单");
+  const files = [...new Map([...programs, ...(manifest.home?.files ?? [])].map(file => [file.url, file])).values()];
+  const origins = [...new Set([location.origin, new URL(manifest.assetBase || location.origin, location.href).origin])];
+  await beginResidentResources(workerEntry, lease, manifest.build, residentFiles(files, ""), origins, signal);
   const warmCode = files.every((file) =>
     verifiedAssets.has(file, manifest.build, ""),
   );
@@ -155,6 +171,7 @@ export async function prepareGame(
       loaded,
       total,
     }),
+    lease,
   );
   const module = await loadGame(room.kind);
   signal.throwIfAborted();
@@ -164,11 +181,8 @@ export async function prepareGame(
     Object.keys(manifest.media).filter((p) =>
       p.startsWith("/" + room.kind + "/"),
     );
-  const media = [...new Set(paths)].map((url) => {
-    const bytes = manifest.media[url];
-    if (!bytes) throw Error("资源清单缺少 " + url);
-    return { url, bytes };
-  });
+  const media = residentResourcePlan(room.kind, manifest.media, paths, await module.residentResources?.(room, manifest.media, assets));
+  await declareResidentResources(lease, residentFiles(media, assets), signal);
   const warmMedia = media.every((file) =>
     verifiedAssets.has(file, manifest.build, assets),
   );
@@ -179,6 +193,7 @@ export async function prepareGame(
       loaded,
       total,
     }),
+    lease,
   );
   progress({
     percent: module.assetLoading === "board" ? 35 : 90,

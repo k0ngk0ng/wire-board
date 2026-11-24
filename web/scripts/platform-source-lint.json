@@ -17,7 +17,18 @@
     "web/tests/realtime-game-decoder.test.mjs",
     "web/tests/platform-audio-unlock.test.mjs",
     "web/tests/audio-unlock-browser.mjs",
-    "web/tests/transient-audio-browser.mjs"
+    "web/tests/transient-audio-browser.mjs",
+    "web/src/game-api/resident-assets.ts",
+    "web/src/game-api/resident-worker.ts",
+    "web/src/game-api/resident-resource-plan.ts",
+    "web/tests/resident-assets-browser.mjs",
+    "web/tests/resident-resource-plan.test.mjs",
+    "web/tests/resident-source-lint.test.mjs",
+    "web/scripts/game-load-manifest.mjs",
+    "web/tests/game-load-manifest.test.mjs",
+    "web/src/game-api/load-assets.ts",
+    "web/src/game-api/loading.tsx",
+    "web/tests/resident-rematch-browser.mjs"
   ],
   "patterns": [
     {
@@ -26,8 +37,6 @@
     }
   ],
   "patchSources": [
-    "web/src/game-api/load-assets.ts",
-    "web/src/game-api/loading.tsx",
     "web/src/audio.ts",
     "web/src/game-api/module.ts",
     "web/src/game-api/host.tsx",
@@ -41,7 +50,8 @@
     "web/tests/module-preparation.test.mjs",
     "web/src/audio-silence.ts",
     "web/tests/audio-silence.test.mjs",
-    "web/tests/platform-audio-continuous.test.mjs"
+    "web/tests/platform-audio-continuous.test.mjs",
+    "web/vite.config.ts"
   ],
   "platformAudioSources": [
     "web/src/audio-spatial.ts",
@@ -54,7 +64,8 @@
   ],
   "localOutputRoots": [
     ".local/cs16",
-    ".local/yuyuhakusho"
+    ".local/yuyuhakusho",
+    ".local/conquest"
   ],
   "filename": "^(?:[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*\\.(?:tsx?|mjs|json)|[A-Z][A-Za-z0-9]*\\.tsx)$",
   "rules": [
