@@ -33,7 +33,7 @@ const media = createServer((request, response) => {
   response.setHeader("Access-Control-Allow-Origin", "*");
   response.setHeader("Access-Control-Expose-Headers", "Content-Length,Content-Range,Accept-Ranges");
   response.setHeader("Cache-Control", "no-store");
-  const body = name === "/picture.svg" ? svg : ["/tone.wav", "/head-tone.wav"].includes(name) ? wav : name === "/resident-worker.js" ? worker : undefined;
+  const body = ["/picture.svg", "/legacy-picture.svg"].includes(name) ? svg : ["/tone.wav", "/head-tone.wav"].includes(name) ? wav : name === "/resident-worker.js" ? worker : undefined;
   response.writeHead(body ? 200 : 404, { "Content-Type": name.endsWith(".wav") ? "audio/wav" : name.endsWith(".js") ? "text/javascript" : "image/svg+xml", "Content-Length": body?.length ?? 0, "Accept-Ranges": "bytes" });
   response.flushHeaders();
   if (name === "/picture.svg") setTimeout(() => response.end(body), 100);
@@ -60,10 +60,14 @@ const engines = await import(pathToFileURL(modulePath));
 const browser = await engines[engine].launch({ headless: false, ...(process.argv[3] ? { executablePath: path.resolve(process.argv[3]) } : {}) });
 const report = { passed: false, engine, checks: [], logs: [], hits };
 try {
-  const page = await browser.newPage({ viewport: { width: 844, height: 390 }, isMobile: true, hasTouch: true });
+  const context = await browser.newContext({ viewport: { width: 844, height: 390 }, isMobile: true, hasTouch: true });
+  const page = await context.newPage();
   page.setDefaultTimeout(15000);
   page.on("pageerror", error => report.logs.push(String(error)));
   page.on("console", message => { if (message.type() === "error") report.logs.push(message.text()); });
+  const legacyPage = await page.context().newPage();
+  await legacyPage.goto(base);
+  await legacyPage.waitForFunction(()=>window.clientReady);
   await page.goto(base);
   await page.waitForFunction(()=>window.clientReady);
   await page.evaluate(async cdn=>{
@@ -166,6 +170,13 @@ try {
   },{cdn,bytes:svg.length});
   assert.equal(hits.filter(hit=>hit.name==='/initial-missing.svg').length,1);
   report.checks.push({name:"an initial loading alternative is retained without later retries",passed:true});
+  await legacyPage.waitForFunction(()=>!!navigator.serviceWorker.controller);
+  const legacyHits = hits.length;
+  const legacyRead = await legacyPage.evaluate(async cdn=>{const response=await fetch(cdn+'/legacy-picture.svg');return {status:response.status,bytes:(await response.arrayBuffer()).byteLength}},cdn);
+  assert.deepEqual(legacyRead,{status:200,bytes:svg.length});
+  assert.equal(hits.length-legacyHits,1);
+  report.checks.push({name:'an already open legacy tab remains usable until it joins resident loading',passed:true});
+  await legacyPage.close();
   const headHits = hits.length;
   await page.evaluate(async ({cdn,bytes})=>{
     await beginProbe({lease:'head-first',build:'same-build',origins:[location.origin,cdn],resources:[{url:cdn+'/head-tone.wav',bytes}]});

@@ -16,7 +16,7 @@ type ResourceEvent = LifetimeEvent & { request: Request; clientId: string; resul
 type CommandEvent = LifetimeEvent & { data: unknown; source: { id: string } | null; ports: readonly MessagePort[] };
 type ResidentScope = {
   location: Location;
-  clients: { claim: () => Promise<void>; get: (id: string) => Promise<{ postMessage: (value: unknown) => void } | undefined> };
+  clients: { claim: () => Promise<void>; get: (id: string) => Promise<{ postMessage: (value: unknown) => void; type?: string } | undefined> };
   skipWaiting: () => Promise<void>;
   addEventListener(type: "install" | "activate", listener: (event: LifetimeEvent) => void): void;
   addEventListener(type: "fetch", listener: (event: ResourceEvent) => void): void;
@@ -234,6 +234,7 @@ async function observeResource(contract: Contract, lease: string, resource: Stor
 async function residentResponse(event: ResourceEvent): Promise<Response> {
   const source = normalized(event.request.url);
   const contract = await readContract(event.clientId);
+  if (!contract && (await scope.clients.get(event.clientId))?.type === "window") return fetch(event.request);
   const cache = await caches.open(assetCacheName);
   const mapped = contract ? await mappedTarget(contract, source) : undefined;
   const target = mapped ?? source;
