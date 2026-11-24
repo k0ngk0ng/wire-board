@@ -107,7 +107,8 @@ test("preload static programs only; lazy maps load on selection and legacy shell
     );
     assert.equal(manifest.worker, "https://cdn.ichenj.com/bga/assets/resident-worker-qwertyui.js");
     assert.equal(manifest.workerPath, "assets/resident-worker-qwertyui.js");
-    assert.ok(manifest.home.files.some(file=>file.url===manifest.worker));
+    assert.ok(!manifest.home.files.some(file=>file.url===manifest.worker));
+    assert.ok(Object.values(manifest.games).every(files=>files.some(file=>file.url===manifest.worker)));
     assert.equal(manifest.owners["assets/modern-cover.png"], "modern");
     assert.equal(manifest.owners["assets/controller.woff2"], "_common");
     const modernURLs = manifest.games.modern.map((f) => path.basename(f.url));
@@ -116,11 +117,12 @@ test("preload static programs only; lazy maps load on selection and legacy shell
       "modern-cover.png",
       "modern.css",
       "modern.js",
+      "resident-worker-qwertyui.js",
       "shared.js",
     ]);
     assert.deepEqual(
       manifest.games.legacy.map((f) => path.basename(f.url)).sort(),
-      ["controller.woff2", "legacy-static.js", "legacy.js", "room-ui.js", "shared.js"],
+      ["controller.woff2", "legacy-static.js", "legacy.js", "resident-worker-qwertyui.js", "room-ui.js", "shared.js"],
     );
     assert.ok(
       manifest.entry.startsWith(

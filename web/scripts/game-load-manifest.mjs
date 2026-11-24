@@ -41,7 +41,7 @@ export function gameLoadManifest() {
           bytes: statSync(path.join(dir, f)).size,
         }));
       const homeFiles = graph(entry.fileName);
-      if (workerPath) homeFiles.add(workerPath);
+      if (workerPath) homeFiles.delete(workerPath);
       const home = {
         files: records(homeFiles),
         bytes: [...homeFiles].reduce(
@@ -61,6 +61,7 @@ export function gameLoadManifest() {
           .find(Boolean);
         if (id) {
           const files = graph(c.fileName);
+          if (workerPath) files.add(workerPath);
           const modulePath = Object.keys(c.modules).find((p) =>
             p.endsWith(`/games/${id}/web/module.tsx`),
           );
