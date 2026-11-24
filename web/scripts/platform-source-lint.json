@@ -30,7 +30,8 @@
     "web/src/game-api/loading.tsx",
     "web/tests/resident-rematch-browser.mjs",
     "web/src/game-api/registry.ts",
-    "web/tests/retired-games.test.mjs"
+    "web/tests/retired-games.test.mjs",
+    "web/tests/splendor-take-browser.mjs"
   ],
   "patterns": [
     {
@@ -68,7 +69,10 @@
     ".local/cs16",
     ".local/yuyuhakusho",
     ".local/conquest",
-    ".local/stoneage"
+    ".local/stoneage",
+    ".local/splendor",
+    ".local/go-build",
+    ".local/go-mod"
   ],
   "filename": "^(?:[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*\\.(?:tsx?|mjs|json)|[A-Z][A-Za-z0-9]*\\.tsx)$",
   "rules": [

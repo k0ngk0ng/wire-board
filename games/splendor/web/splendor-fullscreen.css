@@ -233,7 +233,7 @@
     overflow: visible;
   }
 }
-@media (orientation: landscape) and (max-height: 480px) and (min-width: 701px) {
+@media (orientation: landscape) and (max-height: 650px) and (min-width: 701px) {
   [data-room-fullscreen] .splendor-board:has(.splendor-table) {
     grid-template-columns: minmax(0, min(calc((100dvh - 130px) * 25 / 21 + 24px), calc(100dvw - 320px))) 140px 150px;
     gap: 6px;
