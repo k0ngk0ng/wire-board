@@ -76,6 +76,11 @@ test("catalog, legacy pages and loaded runtime render the replacement covers", a
   await mkdir(temporary, { recursive: true });
   const server = await require("vite").createServer({
     configFile: false,
+    define: {
+      "import.meta.env.VITE_CDN_ORIGIN": JSON.stringify(
+        "https://assets.example.test",
+      ),
+    },
     root: path.join(root, "web"),
     cacheDir: path.join(temporary, "vite"),
     publicDir: false,
@@ -88,6 +93,11 @@ test("catalog, legacy pages and loaded runtime render the replacement covers", a
   });
   const report = { passed: false, games: [], legacy: [], runtime: "" };
   try {
+    const external = JSON.parse(
+      await readFile(path.join(root, "assets/external-resources.json"), "utf8"),
+    ).files;
+    const expected = (game) =>
+      "https://assets.example.test/" + external[`/game-covers/${game}.png`].key;
     const registry = await server.ssrLoadModule("/src/game-api/registry.ts");
     const { LegacyCover } = await server.ssrLoadModule("/src/legacy/cover.tsx");
     const { AssetsContext } = await server.ssrLoadModule(
@@ -104,10 +114,7 @@ test("catalog, legacy pages and loaded runtime render the replacement covers", a
     for (const game of games) {
       for (const base of ["", "/bga"]) {
         const markup = render(registry.gameModule(game).Cover, base);
-        assert.ok(
-          markup.includes(`src="${base}/game-covers/${game}.png"`),
-          game,
-        );
+        assert.ok(markup.includes(`src="${expected(game)}"`), game);
         assert.ok(markup.includes('width="480" height="285"'), game);
         assert.ok(markup.includes("object-fit:cover"), game);
         assert.ok(!markup.includes("<svg"), game);
@@ -122,7 +129,7 @@ test("catalog, legacy pages and loaded runtime render the replacement covers", a
       "sanguosha",
     ]) {
       const markup = render(LegacyCover, "/bga", { kind: game, mini: true });
-      assert.ok(markup.includes(`src="/bga/game-covers/${game}.png"`), game);
+      assert.ok(markup.includes(`src="${expected(game)}"`), game);
       assert.ok(markup.includes(`cover ${game} mini`), game);
       report.legacy.push(game);
     }
@@ -130,7 +137,7 @@ test("catalog, legacy pages and loaded runtime render the replacement covers", a
     await registry.loadGame("gomoku");
     assert.ok(
       render(registry.gameModule("gomoku").Cover, "/bga").includes(
-        'src="/bga/game-covers/gomoku.png"',
+        `src="${expected("gomoku")}"`,
       ),
     );
     report.runtime = "gomoku";

@@ -69,6 +69,9 @@ test(
     const hero = publication.files.find((row) => row.mime === "image/webp").url;
     const server = await require("vite").createServer({
       configFile: false,
+      define: {
+        "import.meta.env.VITE_CDN_ORIGIN": JSON.stringify(new URL(hero).origin),
+      },
       root: path.join(root, "web"),
       cacheDir: path.join(temporary, "vite"),
       publicDir: false,
@@ -118,6 +121,12 @@ test(
         "wait",
         "--fn",
         'document.querySelector(".login-hero img")?.complete && document.querySelector(".login-hero img")?.naturalWidth===700',
+      );
+      assert.equal(
+        await evaluate(
+          'document.querySelector(".login-hero img").getAttribute("src")',
+        ),
+        hero,
       );
       await browser("snapshot", "-i");
       await browser("find", "label", "玩家昵称", "fill", "layout-player");

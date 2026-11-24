@@ -42,7 +42,11 @@
     "assets/game-covers.json",
     "games/retired_registry_test.go",
     "web/src/ui/lobby-theme.css",
-    "web/tests/room-flow-browser.test.mjs"
+    "web/tests/room-flow-browser.test.mjs",
+    "web/src/ui/published-image.ts",
+    "web/src/ui/published-images.json",
+    "web/tests/published-images.test.mjs",
+    "web/tests/published-images-browser.test.mjs"
   ],
   "patterns": [
     {

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { ArrowRight, Lock, Ticket, UserRound } from "lucide-react";
+import { publishedImageURL } from "./published-image";
 import "./auth.css";
 
 export function Auth({
@@ -46,7 +47,7 @@ export function Auth({
         </div>
         <div className="login-hero" aria-hidden="true">
           <img
-            src="/_common/login/hero.webp"
+            src={publishedImageURL("/_common/login/hero.webp")}
             width="700"
             height="700"
             alt=""

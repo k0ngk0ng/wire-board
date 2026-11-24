@@ -32,6 +32,11 @@ test("login preserves invitation, credentials, errors, pending state and release
   await mkdir(temporary, { recursive: true });
   const server = await require("vite").createServer({
     configFile: false,
+    define: {
+      "import.meta.env.VITE_CDN_ORIGIN": JSON.stringify(
+        "https://assets.example.test",
+      ),
+    },
     root: path.join(root, "web"),
     cacheDir: temporary,
     publicDir: false,
@@ -54,7 +59,14 @@ test("login preserves invitation, credentials, errors, pending state and release
         }),
       );
     const markup = render({});
-    assert.match(markup, /src="\/_common\/login\/hero.webp"/);
+    const external = JSON.parse(
+      await readFile(path.join(root, "assets/external-resources.json"), "utf8"),
+    ).files;
+    assert.ok(
+      markup.includes(
+        `src="https://assets.example.test/${external["/_common/login/hero.webp"].key}"`,
+      ),
+    );
     assert.match(markup, /name="name"/);
     assert.match(markup, /name="password"/);
     assert.match(markup, /autoComplete="current-password"/i);

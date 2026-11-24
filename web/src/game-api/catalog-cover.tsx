@@ -1,6 +1,5 @@
-import { useContext } from "react";
 import coverManifest from "../../../assets/game-covers.json";
-import { AssetsContext } from "../ui/board-host";
+import { publishedImageURL } from "../ui/published-image";
 
 const covers: Record<string, { path: string; width: number; height: number }> =
   coverManifest.games;
@@ -9,10 +8,9 @@ export function catalogCover(kind: string) {
   const cover = covers[kind];
   if (!cover) return undefined;
   return function Cover() {
-    const base = useContext(AssetsContext);
     return (
       <img
-        src={`${base}${cover.path}`}
+        src={publishedImageURL(cover.path)}
         alt=""
         width={cover.width}
         height={cover.height}
