@@ -62,7 +62,8 @@
     "games/yuyuhakusho/tests/network-stream.test.mjs",
     "games/yuyuhakusho/tests/recovery-browser.mjs",
     "games/yuyuhakusho/web/network-scene.ts",
-    "games/yuyuhakusho/tests/recovery-server.mjs"
+    "games/yuyuhakusho/tests/recovery-server.mjs",
+    "games/yuyuhakusho/tests/recovery-lifecycle.mjs"
   ],
   "languages": {
     ".ts": {
@@ -99,7 +100,8 @@
     "web/tests/controller-combos-browser.mjs",
     "web/tests/controller-room-browser.mjs",
     "games/yuyuhakusho/tests/recovery-browser.mjs",
-    "games/yuyuhakusho/tests/recovery-server.mjs"
+    "games/yuyuhakusho/tests/recovery-server.mjs",
+    "games/yuyuhakusho/tests/recovery-lifecycle.mjs"
   ],
   "localOutputRoots": [
     ".local/yuyuhakusho/",

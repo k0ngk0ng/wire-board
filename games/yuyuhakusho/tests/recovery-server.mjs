@@ -138,6 +138,11 @@ const plugin = {
     });
   },
 };
+const terminationHandlers = process.listeners("SIGTERM");
+const inputEndHandlers = process.stdin.listeners("end");
+process.once("exit", () => {
+  if (backend.exitCode === null) backend.kill("SIGTERM");
+});
 const server = await require("vite").createServer({
   configFile: false,
   root: path.join(root, "web"),
@@ -158,6 +163,10 @@ const server = await require("vite").createServer({
     fs: { allow: [root] },
   },
 });
+for (const handler of process.listeners("SIGTERM"))
+  if (!terminationHandlers.includes(handler)) process.off("SIGTERM", handler);
+for (const handler of process.stdin.listeners("end"))
+  if (!inputEndHandlers.includes(handler)) process.stdin.off("end", handler);
 await server.listen();
 console.log(server.resolvedUrls.local[0]);
 await new Promise((resolve) => {
@@ -167,4 +176,5 @@ await new Promise((resolve) => {
 await server.close();
 backend.kill("SIGTERM");
 await new Promise((resolve) => backend.once("exit", resolve));
+await promisify(execFile)("go", ["clean", "-modcache"], { cwd: root, env });
 await rm(temporary, { recursive: true, force: true });
