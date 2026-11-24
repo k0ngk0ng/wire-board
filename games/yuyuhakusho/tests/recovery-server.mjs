@@ -17,7 +17,7 @@ if (!process.argv[2] || path.relative(root, resources).startsWith(".."))
   throw Error("Provide the prepared asset directory inside this workspace");
 const temporary = path.join(
   root,
-  basketball ? ".local/basketball/resident-fixture/temporary" : terminal ? ".local/yuyuhakusho/recovery-loop/terminal-fixture-temporary" : ".local/yuyuhakusho/recovery-loop/fixture-temporary",
+  basketball ? ".local/basketball/cache/resident-fixture/temporary" : terminal ? ".local/yuyuhakusho/recovery-loop/terminal-fixture-temporary" : ".local/yuyuhakusho/recovery-loop/fixture-temporary",
 );
 for (const folder of [
   temporary,

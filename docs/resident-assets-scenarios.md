@@ -32,7 +32,7 @@
 - 公共浏览器：`node web/tests/resident-assets-browser.mjs <Playwright 模块> <WebKit 可执行文件>`；Chromium 使用 `BROWSER_ENGINE=chromium` 并传入对应可执行文件。报告、请求计数和截图写入 `.local/yuyuhakusho/resident-assets/`。
 - 真实房间：使用 `games/yuyuhakusho/tests/recovery-server.mjs <已准备素材目录>` 启动隔离 Go 房间；`--basketball --observe-resources` 用于篮球，`--terminal --observe-resources` 用于真实终局重开。
 - 幽游白书：`node games/yuyuhakusho/tests/resident-gameplay-browser.mjs <房间地址> <Playwright 模块> <WebKit 可执行文件>`。音源正文保持原发布版本，以独立资源服务器的请求计数验证，额外记录规则恢复和音频输出。`resourcePolicyPassed` 与 `gameplayHealthy` 分别报告，不能用资源策略通过代表全部规则健康。
-- 篮球：`node games/basketball/tests/resident-gameplay-browser.mjs <房间地址> <Playwright 模块> <WebKit 可执行文件>`。结果保存在 `.local/basketball/resident-assets/`。
+- 篮球：`node games/basketball/tests/resident-gameplay-browser.mjs <房间地址> <Playwright 模块> <WebKit 可执行文件>`。结果保存在 `.local/basketball/verification/resident-assets/`。
 - 重开：`node web/tests/resident-rematch-browser.mjs <终局房间地址> <Playwright 模块> <WebKit 可执行文件>`，验证真实新对局身份、相同配置、零新增下载、本地正文丢失及恢复、退出全屏无操作屏蔽残留。
 
 浏览器模拟与 iPhone 真机验收分别记录。资源策略通过不代表未覆盖的规则分支、整局稳定性或真机性能已经通过；发现规则错误时保留具体帧、原因和隔离房间状态。
