@@ -40,6 +40,7 @@ function validate(item) {
 function inspectPaths(item, literals) {
   const issues = [];
   for (const value of literals) {
+    if (policy.configuredImageSources?.includes(item.file) && (/https?:\/\/|\/\/[a-z0-9]/i.test(value) || /^[a-z0-9-]+(?:\.[a-z0-9-]+){2,}$/i.test(value))) issues.push("configured-image-origin");
     for (const match of value.matchAll(/\.local\/[a-z][a-z0-9_-]*(?:\/|$|\s)/g)) if (!policy.localOutputRoots.some(folder => match[0].startsWith(folder + "/") || match[0].trimEnd() === folder)) issues.push("local-output-directory");
     if (/^(?:\/tmp\/.+|\/private\/tmp\/.+|~\/.+)/.test(value)) issues.push("workspace-output-directory");
     if (/data:(?:image|audio|video|application\/wasm)[^,]*;base64,/i.test(value)) issues.push("no-embedded-media");
@@ -146,6 +147,7 @@ function inspectJSON(item) {
   try {
     JSON.parse(item.source, (key, value) => {
       if (["__proto__", "constructor", "prototype"].includes(key)) issues.push("no-prototype-key");
+      if (typeof value === "string") issues.push(...inspectPaths(item, [value]));
       return value;
     });
   } catch {

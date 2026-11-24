@@ -111,5 +111,11 @@
   "goPackages": {
     "internal/server": "server",
     "games": "games"
-  }
+  },
+  "configuredImageSources": [
+    "web/src/ui/published-image.ts",
+    "web/src/ui/published-images.json",
+    "web/src/game-api/catalog-cover.tsx",
+    "web/src/ui/auth.tsx"
+  ]
 }

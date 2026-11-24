@@ -11,6 +11,11 @@ const output = path.join(root, ".local/cs16/verification/lint");
 mkdirSync(output, { recursive: true });
 
 const cases = [
+  { file: "web/src/ui/published-image.ts", source: "const origin = import.meta.env.VITE_CDN_ORIGIN;", passed: true },
+  { file: "web/src/ui/published-image.ts", source: "const origin = 'https://assets.example.test';", passed: false },
+  { file: "web/src/ui/published-image.ts", source: "const origin = 'assets.example.test';", passed: false },
+  { file: "web/src/ui/published-images.json", source: '{"/image.png":"bga/_common/image.png"}', language: "json", passed: true },
+  { file: "web/src/ui/published-images.json", source: '{"/image.png":"https://assets.example.test/image.png"}', language: "json", passed: false },
   { file: "web/src/audio-spatial.ts", source: "const context = new AudioContext(); const output = context.createMediaStreamDestination(); gain.connect(output);", passed: true },
   { file: "web/src/audio-spatial.ts", source: "const audio_context = new AudioContext();", passed: false },
   { file: "web/src/audio-spatial.ts", source: "// forbidden\nconst context = new AudioContext();", passed: false },
