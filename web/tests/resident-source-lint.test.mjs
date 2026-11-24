@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
-import { mkdirSync, writeFileSync } from "node:fs";
+import { mkdirSync, writeFileSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 const root=fileURLToPath(new URL("../../",import.meta.url));
@@ -27,4 +27,11 @@ test("resident source lint checks its registered Go and publication Python sourc
  const report=JSON.parse(execFileSync("python3",["-B","scripts/ci/resident_source_lint.py"],{cwd:root,encoding:"utf8"}));
  writeFileSync(path.join(output,"result.json"),JSON.stringify(report,null,2)+'\n');
  assert.equal(report.passed,true,JSON.stringify(report));
+});
+
+test("the unchanged legacy gzip parser is bounded without Git history and cannot hide new floating comparisons",()=>{
+ const file="internal/server/static_delivery.go",source=readFileSync(path.join(root,file),"utf8");
+ assert.equal(inspect([{file,source}]).passed,true);
+ assert.equal(inspect([{file,source:source.replace("quality > 0","quality > 1")}]).passed,false);
+ assert.equal(inspect([{file,source:source+"\nfunc invalidBoundary(value float64) bool { return value > 0.5 }\n"}]).passed,false);
 });

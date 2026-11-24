@@ -2,13 +2,35 @@
   "go": {
     "directory": "^internal/server/",
     "filename": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*\\.go$",
-    "sources": ["internal/server/resident_assets.go", "internal/server/resident_assets_e2e_test.go", "internal/server/static_delivery.go", "internal/server/static_media.go"],
-    "strictIntegerSources": ["internal/server/resident_assets.go", "internal/server/resident_assets_e2e_test.go"]
+    "sources": [
+      "internal/server/resident_assets.go",
+      "internal/server/resident_assets_e2e_test.go",
+      "internal/server/static_delivery.go",
+      "internal/server/static_media.go"
+    ],
+    "strictIntegerSources": [
+      "internal/server/resident_assets.go",
+      "internal/server/resident_assets_e2e_test.go"
+    ],
+    "legacyFragments": [
+      {
+        "file": "internal/server/static_delivery.go",
+        "pattern": "(?m)^func acceptsGzip\\(value string\\) bool \\{[\\s\\S]*?^\\}",
+        "sha256": "7b9850ce5e8ad5683a66bddf68010e94b353e9274252173c492bfb2f4dfdcd59"
+      }
+    ]
   },
   "python": {
     "directory": "^scripts/(?:ci/)?",
     "filename": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*\\.py$",
-    "sources": ["scripts/asset_reuse.py", "scripts/asset_reuse_e2e_test.py", "scripts/ci/resident_source_lint.py"]
+    "sources": [
+      "scripts/asset_reuse.py",
+      "scripts/asset_reuse_e2e_test.py",
+      "scripts/ci/resident_source_lint.py"
+    ]
   },
-  "outputRoots": [".local/asset-reuse", ".local/yuyuhakusho"]
+  "outputRoots": [
+    ".local/asset-reuse",
+    ".local/yuyuhakusho"
+  ]
 }

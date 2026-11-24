@@ -47,21 +47,16 @@ def python_issues(source):
     return sorted(set(issues))
 
 
-def added_lines(name):
-    command = ['git', 'diff', 'HEAD', '--unified=0', '--', name]
-    patch = subprocess.check_output(command, cwd=ROOT, text=True)
-    if not patch:
-        revision = subprocess.check_output(['git', 'log', '-1', '--format=%H', '--', name], cwd=ROOT, text=True).strip()
-        patch = subprocess.check_output(['git', 'diff', revision + '^', revision, '--unified=0', '--', name], cwd=ROOT, text=True)
-    lines = []
-    current = 0
-    for line in patch.splitlines():
-        if line.startswith('@@'):
-            current = int(re.search(r'\+(\d+)', line).group(1))
-        elif line.startswith('+') and not line.startswith('+++'):
-            lines.append(current)
-            current += 1
-    return lines
+def checked_lines(name, source):
+    excluded = set()
+    for fragment in POLICY['go'].get('legacyFragments', []):
+        if fragment['file'] != name:
+            continue
+        match = re.search(fragment['pattern'], source)
+        if match and hashlib.sha256(match[0].encode()).hexdigest() == fragment['sha256']:
+            first = source.count('\n', 0, match.start()) + 1
+            excluded.update(range(first, first + match[0].count('\n') + 1))
+    return [line for line in range(1, len(source.splitlines()) + 1) if line not in excluded]
 
 
 def inspect(items):
@@ -82,7 +77,7 @@ def inspect(items):
             go_indexes.append(len(files))
             entry = {'file': name, 'source': item['source'], 'expectedPackage': 'server', 'strictIntegers': name in rule['strictIntegerSources']}
             if name == 'internal/server/static_delivery.go':
-                entry['changedLines'] = added_lines(name)
+                entry['changedLines'] = checked_lines(name, item['source'])
             go_sources.append(entry)
         files.append({'file': name, 'sourceSHA256': hashlib.sha256(item['source'].encode()).hexdigest(), 'issues': issues})
     if go_sources:

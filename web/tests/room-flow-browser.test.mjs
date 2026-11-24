@@ -313,6 +313,7 @@ if err := http.Serve(listener, app.Handler()); err != nil {panic(err)}
           },
         ],
         server: {
+          headers: { "Service-Worker-Allowed": "/" },
           host: "127.0.0.1",
           port: 0,
           fs: { allow: [root] },
