@@ -97,6 +97,8 @@ test("preload static programs only; lazy maps load on selection and legacy shell
     );
     for (const name of Object.keys(bundle))
       writeFileSync(path.join(out, name), "export const ready = true;");
+    const binaryPaths = ["modern/dynamic/font.woff2", "modern/dynamic/pages.idx", "modern/dynamic/colors.rgb", "modern/dynamic/scene.pack"];
+    for (const file of binaryPaths) { mkdirSync(path.dirname(path.join(out,file)),{recursive:true});writeFileSync(path.join(out,file),"resident-body"); }
     const plugin = gameLoadManifest();
     plugin.configResolved({
       base: "https://cdn.ichenj.com/bga/",
@@ -107,6 +109,7 @@ test("preload static programs only; lazy maps load on selection and legacy shell
     );
     assert.equal(manifest.worker, "https://cdn.ichenj.com/bga/assets/resident-worker-qwertyui.js");
     assert.equal(manifest.workerPath, "assets/resident-worker-qwertyui.js");
+    for (const file of binaryPaths) assert.equal(manifest.media["/"+file],13,file);
     assert.ok(!manifest.home.files.some(file=>file.url===manifest.worker));
     assert.ok(Object.values(manifest.games).every(files=>files.some(file=>file.url===manifest.worker)));
     assert.equal(manifest.owners["assets/modern-cover.png"], "modern");
