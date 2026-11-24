@@ -57,7 +57,12 @@
     "games/battlecity/web/style.css",
     "web/src/ui/chat-anchor.ts",
     "web/src/ui/chat-position.ts",
-    "web/tests/chat-anchor.test.mjs"
+    "web/tests/chat-anchor.test.mjs",
+    "games/yuyuhakusho/web/network-stream.ts",
+    "games/yuyuhakusho/tests/network-stream.test.mjs",
+    "games/yuyuhakusho/tests/recovery-browser.mjs",
+    "games/yuyuhakusho/web/network-scene.ts",
+    "games/yuyuhakusho/tests/recovery-server.mjs"
   ],
   "languages": {
     ".ts": {
@@ -87,7 +92,17 @@
     }
   },
   "identifiers": "^(?:_?[A-Za-z][A-Za-z0-9]*|_|[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)*)$",
-  "numericSources": ["web/src/controllers/pointer-controller.ts"],
-  "outputSources": ["web/tests/controller-combos-browser.mjs", "web/tests/controller-room-browser.mjs"],
-  "localOutputRoots": [".local/yuyuhakusho/", ".local/contra/"]
+  "numericSources": [
+    "web/src/controllers/pointer-controller.ts"
+  ],
+  "outputSources": [
+    "web/tests/controller-combos-browser.mjs",
+    "web/tests/controller-room-browser.mjs",
+    "games/yuyuhakusho/tests/recovery-browser.mjs",
+    "games/yuyuhakusho/tests/recovery-server.mjs"
+  ],
+  "localOutputRoots": [
+    ".local/yuyuhakusho/",
+    ".local/contra/"
+  ]
 }

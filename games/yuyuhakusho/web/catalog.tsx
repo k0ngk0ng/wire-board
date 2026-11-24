@@ -1,4 +1,5 @@
 import { Cover } from "./Cover";
+import { mergeNetworkStream } from "./network-stream";
 export default {
   id: "yuyuhakusho",
   name: "魔强统一战",
@@ -10,6 +11,7 @@ export default {
   requiresFullTable: true,
   supportsBots: true,
   realtime: true,
+  mergeStreamData: mergeNetworkStream,
   ownsSounds: true,
   Cover,
 } as const;

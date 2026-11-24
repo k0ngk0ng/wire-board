@@ -14,7 +14,6 @@ import {
 } from "./wasm";
 
 type Scheduled = LocalEvent & { frame: bigint };
-/** Two isolated Go sessions: authority is replayed; only its fork predicts. */
 export class NetworkScene {
   readonly pixels = new Uint8Array(320 * 224 * 4);
   private confirmed = 0;
@@ -94,7 +93,6 @@ export class NetworkScene {
     this.rebuild(pending);
     this.replayTarget = this.confirmedFrame;
     this.tickAt = undefined;
-    // Preview draws F+1 on a detached fork. It never advances authority F.
     const preview = this.wasm.request(
       { op: "preview", session: this.confirmed },
       this.pixels,
@@ -133,9 +131,6 @@ export class NetworkScene {
         ? previousTarget
         : this.confirmedFrame;
     if (this.replayTarget > limit) this.replayTarget = limit;
-    // A timely confirmation may catch the local target by one tick. Keep the
-    // native RAF phase: restarting it here repeatedly drops the next60Hz RAF
-    // against the original59.92Hz game period. Restore/stall own clock resets.
     return true;
   }
   private rebuild(pending: LocalEvent[]) {
@@ -195,6 +190,8 @@ export class NetworkScene {
     )
       return false;
     const limit = this.confirmedFrame + BigInt(MAX_PREDICTION);
+    if (this.tickAt === undefined) this.tickAt = now - FRAME_MS;
+    const due = Math.max(0, Math.floor((now - this.tickAt + 1e-6) / FRAME_MS));
     let changed = false,
       steps = 0;
     const advance = (target: bigint, historical = false) => {
@@ -204,14 +201,16 @@ export class NetworkScene {
         steps++ < MAX_PREDICTION
       ) {
         const next = this.predictedFrame + 1n;
-        // One transition per tick preserves press/release taps even after correction.
         if (this.queue[0] && this.queue[0].frame <= next) {
           const event = this.queue.shift()!;
           if (this.localSeat >= 0) this.held[this.localSeat] = event.buttons;
         }
         const result = this.wasm.request(
           {
-            op: historical && next < target ? "advance" : "step",
+            op:
+              historical && (next < target || (due > 0 && target < limit))
+                ? "advance"
+                : "step",
             session: this.predicted,
             held: this.held,
             automated: this.automated,
@@ -229,14 +228,10 @@ export class NetworkScene {
         if (result.view.completed || this.predictedFrame < next) break;
       }
     };
-    // Correct to the previous local target without consuming native clock
-    // ticks. Packet age is not a reason to instantly spend the whole prediction window.
     advance(this.replayTarget, true);
     this.replayTarget = this.predictedFrame;
     this.inputTarget = this.queue[0]?.frame ?? this.predictedFrame;
     if (this.current?.completed) return changed;
-    if (this.tickAt === undefined) this.tickAt = now - FRAME_MS;
-    const due = Math.max(0, Math.floor((now - this.tickAt + 1e-6) / FRAME_MS));
     const beforeNative = this.predictedFrame;
     let target = beforeNative + BigInt(Math.min(MAX_PREDICTION, due));
     if (this.inputTarget > target) target = this.inputTarget;
@@ -244,8 +239,6 @@ export class NetworkScene {
     advance(target);
     const advanced = Number(this.predictedFrame - beforeNative);
     this.tickAt += advanced * FRAME_MS;
-    // A genuinely stalled authority freezes at the same fixed cap. Discard
-    // elapsed debt so its return cannot create an ever-growing catch-up burst.
     if (this.predictedFrame >= limit && due > advanced) this.tickAt = now;
     this.inputTarget = this.queue[0]?.frame ?? this.predictedFrame;
     return changed;
