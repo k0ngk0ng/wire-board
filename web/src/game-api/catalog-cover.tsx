@@ -1,19 +1,15 @@
-import coverManifest from "../../../assets/game-covers.json";
-import { publishedImageURL } from "../ui/published-image";
-
-const covers: Record<string, { path: string; width: number; height: number }> =
-  coverManifest.games;
+import { hasPublishedImage, publishedImageURL } from "../ui/published-image";
 
 export function catalogCover(kind: string) {
-  const cover = covers[kind];
-  if (!cover) return undefined;
+  const path = `/game-covers/${kind}.png`;
+  if (!hasPublishedImage(path)) return undefined;
   return function Cover() {
     return (
       <img
-        src={publishedImageURL(cover.path)}
+        src={publishedImageURL(path)}
         alt=""
-        width={cover.width}
-        height={cover.height}
+        width={480}
+        height={285}
         style={{
           width: "100%",
           height: "100%",

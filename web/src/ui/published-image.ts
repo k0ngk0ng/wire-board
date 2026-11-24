@@ -2,8 +2,12 @@ import publishedImages from "./published-images.json";
 
 const images: Record<string, string> = publishedImages;
 
+export function hasPublishedImage(path: string) {
+  return Object.hasOwn(images, path);
+}
+
 export function publishedImageURL(path: string) {
-  if (!Object.hasOwn(images, path)) throw new Error(`未登记的图片：${path}`);
+  if (!hasPublishedImage(path)) throw new Error(`未登记的图片：${path}`);
   const configured = import.meta.env.VITE_CDN_ORIGIN;
   if (!configured) {
     if (import.meta.env.PROD) throw new Error("缺少 CDN_ORIGIN 配置");
