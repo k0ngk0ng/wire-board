@@ -416,6 +416,11 @@ export class GameAudio {
         voice.player.dispose();
       },
       spatial: (key: string, sources: readonly string[], options: SpatialOptions) => this.startSpatial(owner, key, sources, options),
+      transient: (key: string, sources: readonly string[], options: { playbackID: string }) => this.startSpatial(owner, key, sources, {
+        playbackID: options?.playbackID,
+        source: { x: 0, y: 0, z: 0 },
+        listener: { x: 0, y: 0, z: 0, yaw: 0 },
+      }, true),
       spatialListener: (listener: SpatialListener) => { if (this.spatial?.owner === owner) this.spatial.setListener(listener); },
       stopSpatial: (key?: string) => { if (this.spatial?.owner === owner) this.spatial.stopKey(key); },
       openStream: (options: GameAudioStreamConfig) =>
@@ -470,16 +475,17 @@ export class GameAudio {
   private trackKey(owner: string, key: string) {
     return JSON.stringify([owner, key]);
   }
-  private startSpatial(owner: string, key: string, requested: readonly string[], options: SpatialOptions): Promise<boolean> {
+  private startSpatial(owner: string, key: string, requested: readonly string[], options: SpatialOptions, centered = false): Promise<boolean> {
     const normalized = normalizeSpatialOptions(options);
     const sources = [...new Set(requested.filter(source => typeof source === "string" && source.length > 0 && source.length <= 4096))];
-    if (!normalized || !key || key.length > 128 || !sources.length || sources.length > 4) return Promise.resolve(false);
+    if (!normalized || typeof key !== "string" || !key || key.length > 128 || !sources.length || sources.length > 4) return Promise.resolve(false);
+    if (centered) normalized.centered = true;
     let history = this.spatialHistory.get(owner);
     if (!history) {
       if (this.spatialHistory.size >= 8) this.spatialHistory.delete(this.spatialHistory.keys().next().value!);
       this.spatialHistory.set(owner, history = new Set());
     }
-    const identity = JSON.stringify([key, normalized.playbackID]);
+    const identity = JSON.stringify([centered, key, normalized.playbackID]);
     if (history.has(identity)) return Promise.resolve(false);
     if (history.size >= 256) history.delete(history.values().next().value!);
     history.add(identity);

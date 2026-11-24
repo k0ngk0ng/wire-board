@@ -8,8 +8,9 @@ import { BasketballAudio } from '../web/audio.ts';
 
 function port() {
   const calls=[];
-  return { calls, play:async sources=>{calls.push(['playlist',...sources]);return true;},
-    playWithFallback:async sources=>{calls.push(['effect',...sources]);return true;},
+  const transients=[];
+  return { calls, transients, play:async sources=>{calls.push(['playlist',...sources]);return true;},
+    transient:async (lane,sources,options)=>{calls.push(['effect',...sources]);transients.push({lane,options});return true;},
     stop:()=>{calls.push(['stop']);},
     music:async (sources,options)=>{calls.push(['music',sources,options]);return true;},
     stopMusic:()=>{calls.push(['stopMusic']);},
@@ -17,6 +18,23 @@ function port() {
     loop:async()=>{throw Error('private loop route forbidden');},stopLoop:()=>{}
   };
 }
+
+test('rapid repeated basketball effects use bounded transient lanes and unique identities',async()=>{
+  const p=port(),a=new BasketballAudio(p,{localBase:'/audio'});
+  for(let sequence=1;sequence<=80;sequence++)assert.deepEqual((await a.consume([19,21],sequence)).failed,[]);
+  assert.equal(p.transients.length,160);
+  assert.equal(new Set(p.transients.map(call=>call.lane)).size,8);
+  assert.equal(new Set(p.transients.map(call=>call.options.playbackID)).size,160);
+  assert.equal((await a.consume([19],80)).ignored,true);
+  assert.equal(p.transients.length,160);
+});
+
+test('a new match adapter cannot reuse the previous match effect identities',async()=>{
+  const p=port();
+  await new BasketballAudio(p,{localBase:'/audio'}).consume([19],1);
+  await new BasketballAudio(p,{localBase:'/audio'}).consume([19],1);
+  assert.notEqual(p.transients[0].options.playbackID,p.transients[1].options.playbackID);
+});
 
 test('new original music clears pause and repeats of the same ID restart the track',async()=>{
   const p=port(),a=new BasketballAudio(p);
@@ -95,14 +113,14 @@ test('unsupported IDs never become guessed files and no user mute setting is tou
 });
 
 test('platform failures resolve as reports and cannot break the simulation',async()=>{
-  const p=port();p.playWithFallback=()=>{throw Error('blocked');};p.resume=async()=>{throw Error('cancelled');};
+  const p=port();p.transient=()=>{throw Error('blocked');};p.resume=async()=>{throw Error('cancelled');};
   const a=new BasketballAudio(p);
   assert.deepEqual(await a.consume([19,255,66],1),{ignored:false,unsupported:[],failed:[19,255]});
   assert.deepEqual(p.calls,[['music',[release.files['/basketball/v1/audio/music-066-loop.mp3'].url],{loop:true}]]);
 });
 
 test('all calls issue synchronously without a slow media promise delaying later controls',async()=>{
-  const p=port();let settle;p.playWithFallback=s=>{p.calls.push(['effect',...s]);return new Promise(r=>{settle=r;});};
+  const p=port();let settle;p.transient=(lane,s)=>{p.calls.push(['effect',...s]);return new Promise(r=>{settle=r;});};
   const a=new BasketballAudio(p),pending=a.consume([19,253,255,0],1);
   assert.deepEqual(p.calls.map(c=>c[0]),['effect','pause','resume','stop']);
   settle(false);assert.deepEqual((await pending).failed,[19]);

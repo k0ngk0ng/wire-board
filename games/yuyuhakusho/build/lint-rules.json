@@ -1,6 +1,10 @@
 {
   "targets": [
     "games/yuyuhakusho/web/input.ts",
+    "games/yuyuhakusho/web/audio.ts",
+    "games/yuyuhakusho/tests/audio.test.mjs",
+    "games/basketball/web/audio.ts",
+    "games/basketball/tests/audio.test.mjs",
     "internal/gametest/controller_gamepad_browser_test.go",
     "web/src/controllers/MDController.tsx",
     "web/src/controllers/pointer-controller.ts",
@@ -67,7 +71,7 @@
   ],
   "languages": {
     ".ts": {
-      "directory": "^(?:web/src/(?:controllers|ui)/|games/yuyuhakusho/web/)",
+      "directory": "^(?:web/src/(?:controllers|ui)/|games/yuyuhakusho/web/|games/basketball/web/audio\\.ts$)",
       "filename": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*\\.ts$",
       "comments": false
     },
@@ -77,7 +81,7 @@
       "comments": false
     },
     ".mjs": {
-      "directory": "^(?:games/yuyuhakusho/(?:tests|build)/|web/tests/)",
+      "directory": "^(?:games/yuyuhakusho/(?:tests|build)/|web/tests/|games/basketball/tests/audio\\.test\\.mjs$)",
       "filename": "^[a-z][a-z0-9]*(?:[-.][a-z0-9]+)*\\.mjs$",
       "comments": false
     },
@@ -97,6 +101,7 @@
     "web/src/controllers/pointer-controller.ts"
   ],
   "outputSources": [
+    "games/yuyuhakusho/tests/audio.test.mjs",
     "web/tests/controller-combos-browser.mjs",
     "web/tests/controller-room-browser.mjs",
     "games/yuyuhakusho/tests/recovery-browser.mjs",

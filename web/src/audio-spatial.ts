@@ -7,9 +7,10 @@ export type SpatialOptions = {
   volume?: number;
   maxDistance?: number;
 };
-export type NormalizedSpatialOptions = SpatialOptions & { volume: number; maxDistance: number };
+export type NormalizedSpatialOptions = SpatialOptions & { volume: number; maxDistance: number; centered?: true };
 type SpatialBuffer = { pending?: Promise<AudioBuffer>; abort: AbortController; bytes: number };
 type SpatialVoice = {
+  identity: string;
   key: string;
   options: NormalizedSpatialOptions;
   requestedAt: number;
@@ -101,14 +102,15 @@ export class NativeSpatialAudio {
 
   play(key: string, sources: readonly string[], options: NormalizedSpatialOptions): Promise<boolean> {
     if (this.closed || !this.available()) return Promise.resolve(false);
-    this.setListener(options.listener);
-    const previous = this.voices.get(key);
+    if (!options.centered) this.setListener(options.listener);
+    const identity = JSON.stringify([!!options.centered, key]);
+    const previous = this.voices.get(identity);
     if (previous) this.releaseVoice(previous);
     if (this.voices.size >= 32) this.releaseVoice(this.voices.values().next().value!);
     let cancel!: () => void;
     const cancelled = new Promise<boolean>(resolve => { cancel = () => resolve(false); });
-    const voice: SpatialVoice = { key, options, requestedAt: now(), cancel, cancelled };
-    this.voices.set(key, voice);
+    const voice: SpatialVoice = { identity, key, options, requestedAt: now(), cancel, cancelled };
+    this.voices.set(identity, voice);
     const output = this.ensureOutput();
     const pending = this.load(voice, sources, output);
     this.publish();
@@ -116,12 +118,16 @@ export class NativeSpatialAudio {
   }
 
   private current(voice: SpatialVoice) {
-    return !this.closed && this.available() && this.voices.get(voice.key) === voice;
+    return !this.closed && this.available() && this.voices.get(voice.identity) === voice;
   }
 
   private async decode(source: string): Promise<AudioBuffer> {
     const previous = this.buffers.get(source);
-    if (previous?.pending) return previous.pending;
+    if (previous?.pending) {
+      this.buffers.delete(source);
+      this.buffers.set(source, previous);
+      return previous.pending;
+    }
     while (this.buffers.size >= 32) this.evictBuffer(this.buffers.keys().next().value!);
     const entry: SpatialBuffer = { abort: new AbortController(), bytes: 0 };
     entry.pending = (async () => {
@@ -223,9 +229,9 @@ export class NativeSpatialAudio {
 
   private tune(voice: SpatialVoice) {
     if (!voice.gain || !voice.panner) return;
-    const dx = voice.options.source.x - this.listener.x;
-    const dy = voice.options.source.y - this.listener.y;
-    const dz = voice.options.source.z - this.listener.z;
+    const dx = voice.options.centered ? 0 : voice.options.source.x - this.listener.x;
+    const dy = voice.options.centered ? 0 : voice.options.source.y - this.listener.y;
+    const dz = voice.options.centered ? 0 : voice.options.source.z - this.listener.z;
     const distance = Math.hypot(dx, dy, dz);
     const horizontal = Math.hypot(dx, dy);
     const pan = horizontal ? Math.max(-1, Math.min(1, (dx * Math.sin(this.listener.yaw) - dy * Math.cos(this.listener.yaw)) / horizontal)) : 0;
@@ -258,7 +264,7 @@ export class NativeSpatialAudio {
   setVolume(level: number) { if (!this.closed) this.media.volume = level; }
 
   stopKey(key?: string) {
-    for (const voice of [...this.voices.values()]) if (key === undefined || voice.key === key) this.releaseVoice(voice);
+    for (const voice of [...this.voices.values()]) if (!voice.options.centered && (key === undefined || voice.key === key)) this.releaseVoice(voice);
     if (!this.voices.size) {
       for (const [source, entry] of this.buffers) if (!entry.bytes) this.evictBuffer(source);
     }
@@ -266,7 +272,7 @@ export class NativeSpatialAudio {
   }
 
   private releaseVoice(voice: SpatialVoice) {
-    if (this.voices.get(voice.key) === voice) this.voices.delete(voice.key);
+    if (this.voices.get(voice.identity) === voice) this.voices.delete(voice.identity);
     voice.cancel();
     if (voice.node) voice.node.onended = null;
     attempt(() => voice.node?.stop());

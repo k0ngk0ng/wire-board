@@ -68,6 +68,7 @@ export type GameAudioPort = {
     },
   ) => Promise<boolean>;
   stopEffect: (lane: string, expectedPlaybackID?: string) => void;
+  transient: (key: string, sources: readonly string[], options: { playbackID: string }) => Promise<boolean>;
   spatial: (key: string, sources: readonly string[], options: import("../audio-spatial").SpatialOptions) => Promise<boolean>;
   spatialListener: (listener: import("../audio-spatial").SpatialListener) => void;
   stopSpatial: (key?: string) => void;

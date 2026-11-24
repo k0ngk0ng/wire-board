@@ -91,6 +91,8 @@ export class BasketballAudio {
   private disposed = false;
   private paused = false;
   private currentMusic?: number;
+  private readonly effectEpoch = crypto.randomUUID();
+  private effectSerial = 0;
 
   constructor(port: GameAudioPort, options: BasketballAudioOptions = {}) {
     this.port = port;
@@ -151,9 +153,12 @@ export class BasketballAudio {
             (resumed) => resumed || !hadMusic,
           );
           this.paused = false;
-        } else if (effects.has(id))
-          played = this.port.playWithFallback(this.sources(effects.get(id)!));
-        else if (music.has(id)) {
+        } else if (effects.has(id)) {
+          const event = this.effectSerial++;
+          played = this.port.transient("basketball-" + event % 8, this.sources(effects.get(id)!), {
+            playbackID: this.effectEpoch + ":" + event,
+          });
+        } else if (music.has(id)) {
 
 
           const track = music.get(id)!;

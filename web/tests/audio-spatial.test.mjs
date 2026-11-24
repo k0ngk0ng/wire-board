@@ -112,6 +112,67 @@ function setup(t, config = {}) {
   return { audio, port, contexts, elements, connections, fetches, deferred, pendingPlay, clock, document, reads };
 }
 
+test("rapid transient effects share one native output and decoded source", async t => {
+  const x = setup(t);
+  for (let index = 0; index < 80; index++) {
+    assert.equal(await x.port.transient("attack-" + index % 8, ["attack.flac"], { playbackID: String(index) }), true);
+  }
+  const ctx = x.contexts[0];
+  assert.equal(x.contexts.length, 1);
+  assert.equal(x.elements.length, 1);
+  assert.equal(x.elements[0].calls, 1);
+  assert.equal(ctx.decodeCount, 1);
+  assert.equal(ctx.sources.length, 80);
+  assert.ok(ctx.panners.every(node => node.pan.value === 0));
+  assert.ok(ctx.gains.every(node => node.gain.value === 1));
+  assert.equal(await x.port.transient("attack-7", ["attack.flac"], { playbackID: "79" }), false);
+});
+
+test("transient and spatial lanes remain independent when listeners move or stop", async t => {
+  const x = setup(t);
+  await x.port.spatial("same", ["attack.flac"], options("event"));
+  await x.port.transient("same", ["attack.flac"], { playbackID: "event" });
+  const ctx = x.contexts[0];
+  assert.equal(ctx.decodeCount, 1);
+  assert.equal(ctx.sources[0].stops, 0);
+  x.port.spatialListener({ x: 100, y: 200, z: 300, yaw: 1 });
+  assert.equal(ctx.panners[1].pan.value, 0);
+  assert.equal(ctx.gains[1].gain.value, 1);
+  x.port.stopSpatial();
+  assert.equal(ctx.sources[0].stops, 1);
+  assert.equal(ctx.sources[1].stops, 0);
+  x.port.stop();
+  assert.equal(ctx.sources[1].stops, 1);
+});
+
+test("paused and muted transient requests never replay on resume", async t => {
+  const x = setup(t);
+  await x.port.transient("attack", ["attack.flac"], { playbackID: "first" });
+  x.port.pause();
+  assert.equal(x.contexts[0].sources[0].stops, 1);
+  assert.equal(await x.port.transient("attack", ["attack.flac"], { playbackID: "paused" }), false);
+  await x.port.resume();
+  assert.equal(await x.port.transient("attack", ["attack.flac"], { playbackID: "paused" }), false);
+  assert.equal(await x.port.transient("attack", ["attack.flac"], { playbackID: "next" }), true);
+  x.audio.setEnabled(false);
+  assert.equal(x.contexts[1].sources[0].stops, 1);
+  assert.equal(await x.port.transient("attack", ["attack.flac"], { playbackID: "muted" }), false);
+  x.audio.setEnabled(true);
+  assert.equal(await x.port.transient("attack", ["attack.flac"], { playbackID: "muted" }), false);
+  assert.equal(await x.port.transient("attack", ["attack.flac"], { playbackID: "fresh" }), true);
+});
+
+test("frequently used transient clips survive cache pressure from other effects", async t => {
+  const x = setup(t);
+  const play = (source, id) => x.port.transient("attack", [source], { playbackID: String(id) });
+  await play("common.flac", 0);
+  for (let index = 1; index < 32; index++) await play("other-" + index + ".flac", index);
+  await play("common.flac", 32);
+  await play("new.flac", 33);
+  await play("common.flac", 34);
+  assert.equal(x.contexts[0].decodeCount, 33);
+});
+
 test("spatial short sounds use the platform native stream with real pan and distance gain", async t => {
   const x = setup(t);
   assert.equal(await x.port.spatial("gun", ["shot.flac"], options("shot-1")), true);

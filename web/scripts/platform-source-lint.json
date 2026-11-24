@@ -16,7 +16,8 @@
     "web/tests/numeric-comparisons.test.mjs",
     "web/tests/realtime-game-decoder.test.mjs",
     "web/tests/platform-audio-unlock.test.mjs",
-    "web/tests/audio-unlock-browser.mjs"
+    "web/tests/audio-unlock-browser.mjs",
+    "web/tests/transient-audio-browser.mjs"
   ],
   "patterns": [
     {

@@ -11,8 +11,6 @@ const music = playback.music as Record<string, Clip>;
 const effects = playback.effects as Record<string, Clip>;
 const arenaMusic = [0x82, 0x86, 0x83, 0x95, 0x85, 0x8a, 0x88, 0x8d];
 
-/** Frame-based media selection. Playback and the uniform mute belong to the
- * platform. The original hardware's channel stealing/loop phase can differ. */
 export class MatchAudio {
   private watermark = -1n;
   private track: number;
@@ -63,7 +61,6 @@ export class MatchAudio {
   restore(view: NetworkView) {
     this.discardThrough(view.frame);
     this.settle();
-    // Reconnect restores only current background state, never past effects.
     if (view.phase === "result") {
       this.track = 0x8f;
       this.position = 0;
@@ -122,9 +119,7 @@ export class MatchAudio {
       const clip = effects[code];
       if (!clip) return;
       const lane = "yuyu-" + this.lane++ % 8;
-      // A high-water mark survives all prediction forks. Corrections and
-      // repeated input windows never replay a previously presented frame.
-      void Promise.resolve(this.port.effect(lane, this.sources(clip), {
+      void Promise.resolve(this.port.transient(lane, this.sources(clip), {
         playbackID: `${this.epoch}:${view.frame}:${index}:${code}`,
       })).catch(() => {});
     });
