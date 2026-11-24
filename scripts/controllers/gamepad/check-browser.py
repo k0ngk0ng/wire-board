@@ -106,7 +106,7 @@ try:
  if not args.settings_only:
   browser('set','viewport','1280','1000');pad();
   for kind in (args.games.split(',') if args.games else ['contra'] if args.contra else ['basketball','tabletennis']):
-   capacity=4 if kind in ('doudizhu','guandan','shengji','sanguosha') else 2 if kind in ('tabletennis','gomoku','splendor','bubbleparty','battlecity','spf2t','fortressblue','chess','xiangqi','weiqi','racing','monopoly','junqi','carcassonne','rail','catan','conquest','snooker') else 1
+   capacity=4 if kind in ('doudizhu','guandan','shengji','sanguosha') else 2 if kind in ('tabletennis','gomoku','splendor','bubbleparty','battlecity','fortressblue','chess','xiangqi','weiqi','racing','monopoly','junqi','carcassonne','rail','catan','conquest','snooker') else 1
    if kind=='junqi' and args.junqi_teams:capacity=4
    api('/rooms',{'kind':kind,'name':'实体手柄验收 '+kind,'capacity':capacity,'options':({'mapId':'china','turnSeconds':180,'difficulty':'easy','fog':False} if kind=='conquest' else {'mode':'campaign','waves':10,'difficulty':'easy','prepSeconds':45} if kind=='starfort' else {}),**({'catanScenario':'pirate-lairs'} if kind=='catan' and args.catan_explorer else {})})
    browser('wait','.waiting-layout');waiting_menu=js('[...document.querySelectorAll(".room-tools > button")].map(b=>b.textContent.trim())');assert waiting_menu[-1]=='离开房间' and '全屏' not in waiting_menu,waiting_menu
@@ -117,7 +117,7 @@ try:
      watch_api('/register',{'name':'三国对手'+str(index)+run,'password':'gamepad-viewer-only','invite':'gamepad-browser'})
      joining=room();rid=joining['id'];watch_api('/rooms/'+rid,{'type':'join','version':joining['version'],'nonce':uuid.uuid4().hex});watch_browser('reload');watch_browser('wait','.waiting-layout')
      wr=watch_js('(async()=>await(await fetch("/api/state")).json())()')['room'];watch_api('/rooms/'+rid,{'type':'ready','version':wr['version'],'nonce':uuid.uuid4().hex})
-   elif kind in ('bubbleparty','battlecity','spf2t','fortressblue','chess','xiangqi','weiqi','racing','monopoly','junqi','carcassonne','rail','catan','conquest','snooker'):
+   elif kind in ('bubbleparty','battlecity','fortressblue','chess','xiangqi','weiqi','racing','monopoly','junqi','carcassonne','rail','catan','conquest','snooker'):
     watch_env.update(AGENT_BROWSER_SESSION=run+kind[:3],AGENT_BROWSER_PROFILE=str(temp/('opponent-'+kind)))
     watch_browser('open',base);watch_opened=True
     watch_api('/register',{'name':'对手'+kind[:3]+run,'password':'gamepad-viewer-only','invite':'gamepad-browser'})
@@ -656,16 +656,13 @@ try:
     wait(lambda:fb()['canFire'],30);browser('wait','[data-fortressblue-fire]:not(:disabled)');pad();time.sleep(.1);full_before=(fb().get('lastShot') or {}).get('id',0);pad({'0':1})
     wait(lambda:(fb().get('lastShot') or {}).get('id',0)>full_before,8);full=fb();assert int(fb_ui()['fortressbluePower'])==100;time.sleep(.3);assert fb()['lastShot']['id']==full['lastShot']['id'];pad({'0':0})
     save('fortressblue-evidence',{'before':before,'afterRelease':after,'afterFullCharge':full});check(kind,selection=True,aimAndMove=True,weapon=True,item=True,disconnectCancels=True,keyboardSurvivesDisconnect=True,rearm=True,explicitCancel=True,settingsCancel=True,keyboardRemap=True,escCancel=True,cameraZoom=True,nativeTouchCancel=True,nativeTouchMovement=True,releaseFires=True,fullChargeOnce=True,fullscreen=True,mobile320=True)
-   elif kind in ('tetris','spf2t'):
+   elif kind=='tetris':
     browser('wait','[data-controller-input="'+kind+'"]')
-    if kind=='spf2t':
-     watch_browser('wait','.spf2t-card');watch_browser('click','.spf2t-card:first-child')
-     browser('focus','.spf2t-card:first-child');js('window.__pulseGamepad(0,{0:1},{},3)')
     wait(lambda:room()['game']['data']['phase']=='playing',40)
     browser('focus','[data-fullscreen-board]');time.sleep(.2)
     def block_self():
      r=room();return r['game']['data']['players'][r['you']]
-    block_selector='.tetris-board' if kind=='tetris' else '.spf2t-panel.is-self'
+    block_selector='.tetris-board'
     def block_visual():return js('({...document.querySelector('+json.dumps(block_selector)+').dataset})')
     before=block_self();x=before['active']['x'];pad(axes={'0':-1});wait(lambda:block_self()['active']['x']<x);time.sleep(.25);pad(axes={'0':0});time.sleep(.15)
     moved=block_self();assert moved['active']['x']<x
@@ -678,10 +675,10 @@ try:
     press_native('ControlLeft','Control',17,2);wait(lambda:block_self()['active']['rot']!=rotated)
     # Capture a visual change while the production input packet waits in transit.
     seq=block_self().get('seq',0);server_x=block_self()['active']['x'];original=block_visual();axis=1 if server_x<3 else -1
-    field='tetrisActiveX' if kind=='tetris' else 'spf2tActiveX'
+    field='tetrisActiveX'
     js('(()=>{window.__controllerTransportDelay=650;window.__blockFrames=[];window.__blockRecord=true;const node=document.querySelector('+json.dumps(block_selector)+'),field='+json.dumps(field)+';const sample=()=>{window.__blockFrames.push({at:performance.now(),x:+node.dataset[field]});if(window.__blockRecord)requestAnimationFrame(sample)};requestAnimationFrame(sample);return true})()')
     js('window.__pulseGamepad(0,{},'+json.dumps({'0':axis})+',2)');time.sleep(.05);predicted=block_visual();during=block_self()
-    field='tetrisActiveX' if kind=='tetris' else 'spf2tActiveX'
+    field='tetrisActiveX'
     assert predicted[field]!=original[field] and during.get('seq',0)==seq,(original,predicted,during)
     js('window.__controllerTransportDelay=0;true');wait(lambda:block_self().get('seq',0)>seq);time.sleep(.2)
     assert float(block_visual()[field])==block_self()['active']['x']
@@ -695,7 +692,7 @@ try:
     press_native('KeyH','h',72);wait(lambda:block_self()['active']['x']>old_x)
     settings();blocked=block_self().get('seq',0);pad({'0':1},axes={'0':1});time.sleep(.25);assert block_self().get('seq',0)<=blocked+1;pad({'0':0},axes={'0':0});close_settings()
     browser('click','.room-tools > button:first-child');browser('wait','[data-room-fullscreen]');shot(kind+'-fullscreen');browser('set','viewport','320','740');shot(kind+'-320');assert js('document.documentElement.scrollWidth<=innerWidth+1')
-    left_button='.tetris-controls button[aria-label="向左移动"]' if kind=='tetris' else '.spf2t-controls button[aria-label="左移"]'
+    left_button='.tetris-controls button[aria-label="向左移动"]'
     browser('scrollintoview',left_button);point=js('(()=>{const r=document.querySelector('+json.dumps(left_button)+').getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2,id:1}})()')
     touch_before=block_self()['active']['x'];native=subprocess.run(['node','scripts/controllers/gamepad/native-touch.mjs',browser('get','cdp-url')['cdpUrl'],base,json.dumps([{'type':'touchStart','touchPoints':[point],'wait':280},{'type':'touchCancel','touchPoints':[],'wait':200}]),block_selector],cwd=root,env=env,text=True,capture_output=True,timeout=20);assert native.returncode==0,native.stderr
     assert block_self()['active']['x']<touch_before

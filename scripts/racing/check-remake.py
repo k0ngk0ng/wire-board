@@ -70,14 +70,14 @@ try:
  wait(lambda:(out/'url').exists(),120);base=(out/'url').read_text();browser('open',base);opened=True;browser('set','viewport','1280','1000')
  api('/login',{'name':'泡泡验收管理员','password':'bubbleparty-browser-test-only'});browser('reload');browser('wait','.room-list')
  if args.position_only:
-  for kind in ['tetris','bubbleparty','battlecity','spf2t','fortressblue','gomoku']:
+  for kind in ['tetris','bubbleparty','battlecity','fortressblue','gomoku']:
    for width in [1280,320]:
     browser('set','viewport',str(width),'844');api('/rooms',{'kind':kind,'name':'开局自动定位验收','capacity':2});cmd('add_bot');cmd('ready');cmd('start');browser('wait','.game-main');time.sleep(.6)
     layout=js('(()=>{const r=document.querySelector(".game-main").getBoundingClientRect();return {top:r.top,bottom:r.bottom,height:r.height,scrollY,viewport:innerHeight,width:innerWidth,scrollHeight:document.documentElement.scrollHeight}})()')
     parts=js('[...document.querySelectorAll(".game-main [data-game-controls]")].filter(e=>e.getClientRects().length).map(e=>{const r=e.getBoundingClientRect();return {top:r.top,bottom:r.bottom,height:r.height}})')
     layout['controls']=parts
     record(kind+'-'+str(width)+'-entry',layout)
-    if kind in ['tetris','bubbleparty','battlecity','spf2t']:
+    if kind in ['tetris','bubbleparty','battlecity']:
      assert all(r['top']>=0 and r['bottom']<=layout['viewport'] for r in parts),layout
     assert layout['top']>=-1 and (layout['top']<=16 or layout['scrollY']+layout['viewport']>=layout['scrollHeight']-2),layout
     shot(kind+'-'+str(width)+'-entry');browser('scroll','up','10000');time.sleep(.6);assert js('scrollY<2');check(kind+' '+str(width)+' entry reveals board and snapshots preserve manual scroll',layout=layout);close()

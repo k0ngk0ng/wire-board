@@ -75,7 +75,7 @@ def inspect(items):
             issues.extend(python_issues(item['source']))
         if not issues and language == 'go':
             go_indexes.append(len(files))
-            entry = {'file': name, 'source': item['source'], 'expectedPackage': 'server', 'strictIntegers': name in rule['strictIntegerSources']}
+            entry = {'file': name, 'source': item['source'], 'expectedPackage': 'games' if name.startswith('games/') else 'server', 'strictIntegers': name in rule['strictIntegerSources']}
             if name == 'internal/server/static_delivery.go':
                 entry['changedLines'] = checked_lines(name, item['source'])
             go_sources.append(entry)

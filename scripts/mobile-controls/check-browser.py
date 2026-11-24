@@ -2,7 +2,7 @@
 """Native touch acceptance; inventory: docs/research/mobile-controls/PLAN.md."""
 import argparse, base64, hashlib, http.cookiejar, json, os, shutil, subprocess, time, traceback, urllib.request, uuid
 from pathlib import Path
-parser=argparse.ArgumentParser();parser.add_argument('--out',required=True);parser.add_argument('--games',default=','.join(['bubbleparty','battlecity','racing','tetris','spf2t','fortressblue']));args=parser.parse_args()
+parser=argparse.ArgumentParser();parser.add_argument('--out',required=True);parser.add_argument('--games',default=','.join(['bubbleparty','battlecity','racing','tetris','fortressblue']));args=parser.parse_args()
 root=Path(__file__).resolve().parents[2];out=(root/args.out).resolve();assert out.is_relative_to(root) and not out.exists();out.mkdir(parents=True)
 run='touch'+uuid.uuid4().hex[:6];temp=out/'temporary';sockets=root/'.s'/run;env=dict(os.environ)
 for k,v in {'TMPDIR':temp/'tmp','GOTMPDIR':temp/'tmp','GOCACHE':root/'.local/go-build','GOMODCACHE':root/'.local/go-mod','npm_config_cache':root/'.local/npm','AGENT_BROWSER_SOCKET_DIR':sockets,'AGENT_BROWSER_PROFILE':temp/'profile'}.items():v.mkdir(parents=True,exist_ok=True);env[k]=str(v)
@@ -67,7 +67,6 @@ CONFIG={
  'battlecity':('.bc-touch-controls',['.bc-dpad','[data-battlecity-fire]'],True),
  'racing':('.racing-controls',['.racing-wheel','button[aria-label="刹车"]'],True),
  'tetris':('.tetris-controls',['button[aria-label="向左移动"]','button[aria-label="顺时针旋转"]'],False),
- 'spf2t':('.spf2t-controls',['button[aria-label="左移"]','button[aria-label="顺时针"]'],False),
  'fortressblue':('.fb-control-row',['[data-fortressblue-move="-1"]','[data-fortressblue-fire]'],False),
 }
 try:
@@ -87,8 +86,8 @@ try:
   if kind=='bubbleparty' and room()['game']['data']['phase']=='select':
    browser('wait','[data-bubbleparty-character-confirm]');browser('click','[data-bubbleparty-character-confirm]')
    r=other('/state')['room'];other('/rooms/'+r['id'],{'type':'action','version':r['version'],'nonce':uuid.uuid4().hex,'action':{'type':'character','epoch':r['game']['data']['epoch'],'character':0,'confirm':True}})
-  if kind in ('battlecity','spf2t','fortressblue'):
-   attr={'battlecity':'data-battlecity-tank','spf2t':'data-character','fortressblue':'data-fortressblue-tank'}[kind];value=js(f'document.querySelector("[{attr}]").getAttribute("{attr}")');browser('click',f'[{attr}="{value}"]');r=other('/state')['room'];action={'type':'select','epoch':r['game']['data']['epoch'],('character' if kind=='spf2t' else 'tank'):int(value) if kind=='fortressblue' else value};other('/rooms/'+r['id'],{'type':'action','version':r['version'],'nonce':uuid.uuid4().hex,'action':action})
+  if kind in ('battlecity','fortressblue'):
+   attr={'battlecity':'data-battlecity-tank','fortressblue':'data-fortressblue-tank'}[kind];value=js(f'document.querySelector("[{attr}]").getAttribute("{attr}")');browser('click',f'[{attr}="{value}"]');r=other('/state')['room'];action={'type':'select','epoch':r['game']['data']['epoch'],'tank':int(value) if kind=='fortressblue' else value};other('/rooms/'+r['id'],{'type':'action','version':r['version'],'nonce':uuid.uuid4().hex,'action':action})
   wait(lambda:room()['game']['data']['phase'] in ('playing','racing','finishing'));wait(lambda:js('!!document.querySelector('+json.dumps(keys[0])+')&&!document.querySelector('+json.dumps(keys[0])+').disabled'))
   entry={'widths':{}};report['games'][kind]=entry
   for width in [320,390]:

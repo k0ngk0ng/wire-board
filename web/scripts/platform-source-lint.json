@@ -28,7 +28,9 @@
     "web/tests/game-load-manifest.test.mjs",
     "web/src/game-api/load-assets.ts",
     "web/src/game-api/loading.tsx",
-    "web/tests/resident-rematch-browser.mjs"
+    "web/tests/resident-rematch-browser.mjs",
+    "web/src/game-api/registry.ts",
+    "web/tests/retired-games.test.mjs"
   ],
   "patterns": [
     {
@@ -65,7 +67,8 @@
   "localOutputRoots": [
     ".local/cs16",
     ".local/yuyuhakusho",
-    ".local/conquest"
+    ".local/conquest",
+    ".local/stoneage"
   ],
   "filename": "^(?:[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*\\.(?:tsx?|mjs|json)|[A-Z][A-Za-z0-9]*\\.tsx)$",
   "rules": [

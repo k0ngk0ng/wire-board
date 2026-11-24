@@ -58,7 +58,7 @@ node --experimental-strip-types --test web/tests/controller-input.test.mjs web/t
 python3 -B scripts/controllers/gamepad/check-browser.py --out .local/gamepad/combined-acceptance --games basketball,tabletennis,gomoku,doudizhu,splendor
 python3 -B scripts/controllers/gamepad/check-browser.py --out .local/gamepad/contra-final --contra
 python3 -B scripts/controllers/gamepad/check-browser.py --out .local/gamepad/native-touch-final --games battlecity,bubbleparty
-python3 -B scripts/controllers/gamepad/check-browser.py --out .local/gamepad/blocks-touch-second --games tetris,spf2t
+python3 -B scripts/controllers/gamepad/check-browser.py --out .local/gamepad/blocks-touch-second --games tetris
 python3 -B scripts/controllers/gamepad/check-browser.py --out .local/gamepad/fortress-acceptance --games fortressblue
 ```
 

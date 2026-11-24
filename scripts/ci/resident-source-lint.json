@@ -1,16 +1,20 @@
 {
   "go": {
-    "directory": "^internal/server/",
+    "directory": "^(?:internal/server/|games/retired_registry_test\\.go$)",
     "filename": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*\\.go$",
     "sources": [
       "internal/server/resident_assets.go",
       "internal/server/resident_assets_e2e_test.go",
       "internal/server/static_delivery.go",
-      "internal/server/static_media.go"
+      "internal/server/static_media.go",
+      "internal/server/retired_independent_e2e_test.go",
+      "games/retired_registry_test.go"
     ],
     "strictIntegerSources": [
       "internal/server/resident_assets.go",
-      "internal/server/resident_assets_e2e_test.go"
+      "internal/server/resident_assets_e2e_test.go",
+      "internal/server/retired_independent_e2e_test.go",
+      "games/retired_registry_test.go"
     ],
     "legacyFragments": [
       {

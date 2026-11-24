@@ -4,7 +4,7 @@ Uses the existing production-registry browser fixture; native input and passive 
 """
 import argparse, base64, hashlib, http.cookiejar, json, os, shutil, subprocess, time, traceback, urllib.request, uuid
 from pathlib import Path
-p=argparse.ArgumentParser();p.add_argument('--out',default='');p.add_argument('--games',default='bubbleparty,racing,battlecity,tetris,spf2t');p.add_argument('--idle-seconds',type=int,default=65);p.add_argument('--rtt-ms',type=int,default=0);p.add_argument('--prediction',action='store_true');p.add_argument('--reconnect',action='store_true');args=p.parse_args()
+p=argparse.ArgumentParser();p.add_argument('--out',default='');p.add_argument('--games',default='bubbleparty,racing,battlecity,tetris');p.add_argument('--idle-seconds',type=int,default=65);p.add_argument('--rtt-ms',type=int,default=0);p.add_argument('--prediction',action='store_true');p.add_argument('--reconnect',action='store_true');args=p.parse_args()
 root=Path(__file__).resolve().parents[2];run='rt'+uuid.uuid4().hex[:6]
 out=(root/(args.out or '.local/realtime-efficiency/browser-'+run)).resolve()
 assert out.is_relative_to(root) and not out.exists();out.mkdir(parents=True)
@@ -68,7 +68,7 @@ try {
   const quietUntil=Date.now();await keyEvent('keyUp');await new Promise(r=>setTimeout(r,60));
   // Recovery is tested on a controllable piece, not across a legitimate
   // landing/resolution boundary that can reject a delayed movement packet.
-  if(['tetris','spf2t'].includes(options.game)){
+  if(options.game==='tetris'){
    const until=Date.now()+12000;let ready=false;
    while(Date.now()<until){
     const latest=[...events].reverse().find(e=>e.method==='Network.webSocketFrameReceived'&&(()=>{try{return JSON.parse(e.params.response.payloadData).type==='game'}catch{return false}})());
@@ -126,12 +126,12 @@ try:
   r=room();other('/rooms/'+r['id'],{'type':'join','version':r['version'],'nonce':uuid.uuid4().hex})
   r=other('/state')['room'];other('/rooms/'+r['id'],{'type':'ready','version':r['version'],'nonce':uuid.uuid4().hex})
   cmd('ready');cmd('start');browser('wait','.game-layout');time.sleep(3.5)
-  if kind in ('battlecity','spf2t'):
-   attr='data-battlecity-tank' if kind=='battlecity' else 'data-character'
+  if kind=='battlecity':
+   attr='data-battlecity-tank'
    value=js('document.querySelector("['+attr+']").getAttribute("'+attr+'")')
    browser('click','['+attr+'="'+value+'"]')
    opponent_room=other('/state')['room']
-   action={'type':'select','epoch':opponent_room['game']['data']['epoch'],('tank' if kind=='battlecity' else 'character'):value}
+   action={'type':'select','epoch':opponent_room['game']['data']['epoch'],'tank':value}
    other('/rooms/'+opponent_room['id'],{'type':'action','version':opponent_room['version'],'nonce':uuid.uuid4().hex,'action':action})
    wait(lambda:room()['game']['data']['phase']=='playing')
    time.sleep(.5)
@@ -171,7 +171,7 @@ try:
    delays=[next(a['observedAt'] for a in acks if a['nonce']==i['nonce'])-i['observedAt'] for i in inputs]
    assert all(isinstance(a.get('durable'),bool) for a in acks),acks
    check(kind+' authoritative input acknowledgements',rttMS=args.rtt_ms,ackLatencyMS=delays,durable=[a['durable'] for a in acks])
-   if args.rtt_ms>=300 and kind in ('tetris','spf2t'):
+   if args.rtt_ms>=300 and kind=='tetris':
     first_ack=next(a for a in acks if a['nonce']==inputs[0]['nonce'])
     assert len([i for i in inputs if i['observedAt']<first_ack['observedAt']])>=2,(inputs,acks)
     check(kind+' two ordered input batches before first ACK',rttMS=args.rtt_ms)

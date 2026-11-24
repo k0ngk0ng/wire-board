@@ -180,10 +180,11 @@ class ScopeTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 scope.resume_selection(changed, 'a' * 40, 'b' * 40, ['catan', 'rail'])
 
-    def test_stoneage_namespace_checks_install_their_build_dependency(self):
+    def test_active_game_rendering_checks_install_their_build_dependency(self):
         workflow=(ROOT/'.github/workflows/build.yml').read_text()
         block=workflow.split('      - name: Install dependencies for game rendering checks',1)[1].split('      - name: Prepare PvZ asset verification environment',1)[0]
-        self.assertIn("matrix.game == 'stoneage'",block)
+        self.assertIn("matrix.game == 'yuyuhakusho'",block)
+        self.assertNotIn("matrix.game == 'stoneage'",block)
         self.assertIn('npm --prefix web ci',block)
 
     def test_clean_jobs_restore_external_resources_before_validation(self):

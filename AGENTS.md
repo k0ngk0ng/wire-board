@@ -53,10 +53,8 @@
 | 三国杀 | [sanguosha.md](rules/sanguosha.md) |
 | 升级 | [shengji.md](rules/shengji.md) |
 | 斯诺克 | [snooker.md](rules/snooker.md) |
-| 街霸方块 | [spf2t.md](rules/spf2t.md) |
 | 璀璨宝石 | [splendor.md](rules/splendor.md) |
 | 星垒 | [starfort.md](rules/starfort.md) |
-| 石器竞技场 | [stoneage.md](rules/stoneage.md) |
 | 密室逃脱 | [escape.md](rules/escape.md) |
 | 仙剑奇侠传 | [pal.md](rules/pal.md) |
 | 植物大战僵尸 | [pvz.md](rules/pvz.md) |

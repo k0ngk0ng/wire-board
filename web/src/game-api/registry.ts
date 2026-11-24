@@ -30,8 +30,9 @@ for (const [path, entry] of Object.entries(catalogs)) {
 export function gameModule(kind: string) {
   return modules.get(kind);
 }
+const retiredNames: Record<string, string> = { dota: "兵线争锋", stoneage: "石器竞技场", spf2t: "街霸方块" };
 export function gameName(kind: string) {
-  return modules.get(kind)?.name || (kind === "dota" ? "兵线争锋" : kind);
+  return modules.get(kind)?.name || retiredNames[kind] || kind;
 }
 export function isIndependentGame(kind: string) {
   return !!modules.get(kind) && !modules.get(kind)?.legacy;

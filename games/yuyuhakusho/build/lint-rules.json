@@ -72,9 +72,6 @@
     "games/yuyuhakusho/tests/audio-resources.test.mjs",
     "games/basketball/web/audio-resources.ts",
     "games/basketball/tests/audio-resources.test.mjs",
-    "games/stoneage/web/assets.ts",
-    "games/stoneage/web/module.tsx",
-    "games/stoneage/tests/resident-assets.test.mjs",
     "games/yuyuhakusho/tests/resident-gameplay-browser.mjs",
     "games/basketball/tests/resident-gameplay-browser.mjs",
     "games/pal/web/resident-assets.ts",
@@ -85,17 +82,17 @@
   ],
   "languages": {
     ".ts": {
-      "directory": "^(?:web/src/(?:controllers|ui)/|games/yuyuhakusho/web/|games/basketball/web/audio(?:-resources)?\\.ts$|games/stoneage/web/assets\\.ts$|games/(?:pal|pvz)/web/resident-assets\\.ts$)",
+      "directory": "^(?:web/src/(?:controllers|ui)/|games/yuyuhakusho/web/|games/basketball/web/audio(?:-resources)?\\.ts$|games/(?:pal|pvz)/web/resident-assets\\.ts$)",
       "filename": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*\\.ts$",
       "comments": false
     },
     ".tsx": {
-      "directory": "^(?:web/(?:src/controllers|tests)/|games/(?:yuyuhakusho|contra|basketball|battlecity|stoneage|pvz)/(?:tests|web)/)",
+      "directory": "^(?:web/(?:src/controllers|tests)/|games/(?:yuyuhakusho|contra|basketball|battlecity|pvz)/(?:tests|web)/)",
       "filename": "^(?:[A-Z][A-Za-z0-9]*|module|catalog|runtime-board)\\.tsx$",
       "comments": false
     },
     ".mjs": {
-      "directory": "^(?:games/yuyuhakusho/(?:tests|build)/|web/tests/|games/basketball/tests/(?:audio(?:-resources)?\\.test|resident-gameplay-browser)\\.mjs$|games/stoneage/tests/resident-assets\\.test\\.mjs$|games/(?:pal|pvz)/tests/resident-assets\\.test\\.mjs$)",
+      "directory": "^(?:games/yuyuhakusho/(?:tests|build)/|web/tests/|games/basketball/tests/(?:audio(?:-resources)?\\.test|resident-gameplay-browser)\\.mjs$|games/(?:pal|pvz)/tests/resident-assets\\.test\\.mjs$)",
       "filename": "^[a-z][a-z0-9]*(?:[-.][a-z0-9]+)*\\.mjs$",
       "comments": false
     },
@@ -121,7 +118,6 @@
     "games/yuyuhakusho/tests/recovery-browser.mjs",
     "games/yuyuhakusho/tests/recovery-server.mjs",
     "games/yuyuhakusho/tests/recovery-lifecycle.mjs",
-    "games/stoneage/tests/resident-assets.test.mjs",
     "games/yuyuhakusho/tests/resident-gameplay-browser.mjs",
     "games/basketball/tests/resident-gameplay-browser.mjs",
     "games/pal/tests/resident-assets.test.mjs"

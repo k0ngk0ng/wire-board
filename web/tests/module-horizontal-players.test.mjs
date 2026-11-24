@@ -8,7 +8,7 @@ import {mkdirSync,writeFileSync,readFileSync} from 'node:fs';
 import {fileURLToPath} from 'node:url';
 import path from 'node:path';
 const root=fileURLToPath(new URL('../../',import.meta.url));
-const out=path.join(root,'.local/stoneage/verification/player-layout');mkdirSync(out,{recursive:true});
+const out=path.join(root,'.local/yuyuhakusho/verification/player-layout');mkdirSync(out,{recursive:true});
 const result=await build({stdin:{contents:`
 import React from 'react';import {renderToStaticMarkup} from 'react-dom/server';
 import {ModulePlayers} from './src/game-api/host.tsx';

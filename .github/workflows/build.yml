@@ -298,7 +298,7 @@ jobs:
           scope: game
           game: ${{ matrix.game }}
       - name: Install dependencies for game rendering checks
-        if: (matrix.game == 'battlecity' || matrix.game == 'bubbleparty' || matrix.game == 'conquest' || matrix.game == 'tabletennis' || matrix.game == 'contra' || matrix.game == 'racing' || matrix.game == 'pal' || matrix.game == 'pokepath' || matrix.game == 'stoneage' || matrix.game == 'yuyuhakusho' || matrix.game == 'hotlinemiami' || matrix.game == 'cs16')
+        if: (matrix.game == 'battlecity' || matrix.game == 'bubbleparty' || matrix.game == 'conquest' || matrix.game == 'tabletennis' || matrix.game == 'contra' || matrix.game == 'racing' || matrix.game == 'pal' || matrix.game == 'pokepath' || matrix.game == 'yuyuhakusho' || matrix.game == 'hotlinemiami' || matrix.game == 'cs16')
         run: npm --prefix web ci
       - name: Prepare PvZ asset verification environment
         if: matrix.game == 'pvz'

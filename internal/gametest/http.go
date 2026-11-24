@@ -164,7 +164,7 @@ func NewHTTP(t *testing.T, n int, module gameapi.Module, kind string) *HTTP {
 			}
 			dir = parent
 		}
-		if kind == "tetris" || kind == "spf2t" {
+		if kind == "tetris" {
 			dir = filepath.Join(dir, ".local", kind, "verification", "http")
 		} else {
 			artifact := filepath.Join(".local", "poker", kind, "http")

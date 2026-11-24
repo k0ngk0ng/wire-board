@@ -266,7 +266,7 @@ func New(cfg Config, files fs.FS) (*Server, error) {
 		}
 		// Retired rooms remain byte-for-byte in SQLite for historical audit,
 		// but are never admitted to the live room map or resumed by timers.
-		if r.Kind == "dota" {
+		if r.Kind == "dota" || r.Kind == "stoneage" || r.Kind == "spf2t" {
 			continue
 		}
 		moduleMigrated, loadingErr := s.restoreClientLoading(&r)

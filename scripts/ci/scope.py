@@ -352,7 +352,6 @@ SHARED_UI_ACCEPTANCE_FILES = {
     'scripts/contra/victory_browser_accept.py',
     'scripts/game-loading/check-results.py',
     'scripts/racing/check-remake.py',
-    'scripts/spf2t/check-browser.py',
     'scripts/tetris/check-browser.py',
 }
 ASSET_DELIVERY_FILES = {'scripts/cdn_delivery.py', 'scripts/test_cdn_delivery.py', 'scripts/test_cdn_manual_gzip.py', 'scripts/resource_store.py', 'scripts/resource_store_e2e_test.py', 'scripts/asset_reuse.py', 'scripts/asset_reuse_e2e_test.py'}
