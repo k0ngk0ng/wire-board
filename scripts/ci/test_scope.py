@@ -31,6 +31,11 @@ scope = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(scope)
 
 class ScopeTests(unittest.TestCase):
+    def test_pal_lint_policy_selects_frontend_without_rebuilding_native_rules(self):
+        self.assertEqual(self.plan('games/pal/build/lint-rules.json')['games'], [{'game': 'pal', 'backend': False}])
+        for path in ['games/pal/build/native.py', 'games/pal/build/runtime_archive.py', 'games/pal/native/bridge.c']:
+            self.assertEqual(self.plan(path)['games'], [{'game': 'pal', 'backend': True}], path)
+
     def test_verified_resume_base_preserves_frontend_only_game_scope(self):
         games = scope.game_names(ROOT)
         paths = ['games/cs16/tests/gpu-pixel-probe.test.mjs']

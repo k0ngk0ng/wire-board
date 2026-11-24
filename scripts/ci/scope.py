@@ -404,7 +404,7 @@ def plan(paths, games, manual='', legacy_sources=None, contra_campaigns=False, v
 
 
             engine_data = parts[1] == 'contra' and parts[2] == 'engine'
-            pal_rules = parts[1] == 'pal' and (parts[2] in ('native', 'engine', 'resources', 'build') or path in {
+            pal_rules = parts[1] == 'pal' and path != 'games/pal/build/lint-rules.json' and (parts[2] in ('native', 'engine', 'resources', 'build') or path in {
                 'games/pal/assets/source-manifest.json', 'games/pal/assets/authority-release.json', 'games/pal/assets/server-release.json',
             })
             add(parts[1], (path.endswith('.go') and path not in LINT_TOOL_FILES) or parts[2] == 'server' or engine_data or pal_rules or '/tests/testdata/' in path)
