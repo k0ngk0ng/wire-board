@@ -62,7 +62,7 @@ test("F11 uses the shared game fullscreen lifecycle and retains game keyboard fo
     report.checks.push("outside focus");
     await browser("focus", "[data-game-focus]");
     await browser("press", "F11");
-    await wait("document.querySelector('[data-room-fullscreen]') !== null");
+    await wait("document.querySelector('[data-room-fullscreen=native]') !== null");
     assert.equal(await mode(), "native");
     assert.equal(await evaluate("document.fullscreenElement.matches('[data-game-fullscreen-surface]') && !document.fullscreenElement.querySelector('header')"), true);
     assert.equal(await evaluate("document.activeElement.matches('[data-game-focus]')"), true);

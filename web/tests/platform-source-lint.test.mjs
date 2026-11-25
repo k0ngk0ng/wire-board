@@ -11,6 +11,9 @@ const output = path.join(root, ".local/cs16/verification/lint");
 mkdirSync(output, { recursive: true });
 
 const cases = [
+  { file: "scripts/platform-admin/check-browser.py", source: "list_order = []\n", changedLines: [1], language: "python", passed: true },
+  { file: "scripts/platform-admin/check-browser.py", source: "listOrder = []\n", changedLines: [1], language: "python", passed: false },
+  { file: "scripts/platform-admin/check-browser.py", source: "# forbidden\nlist_order = []\n", changedLines: [1, 2], language: "python", passed: false },
   { file: "web/src/ui/published-image.ts", source: "const origin = import.meta.env.VITE_CDN_ORIGIN;", passed: true },
   { file: "web/src/ui/published-image.ts", source: "const origin = 'https://assets.example.test';", passed: false },
   { file: "web/src/ui/published-image.ts", source: "const origin = 'assets.example.test';", passed: false },
@@ -59,7 +62,7 @@ test("new platform sources pass without importing or executing a game check", ()
   const sources = discoverPlatformSources(root);
   assert(sources.some(row => row.file === "web/src/audio-spatial.ts"));
   assert(sources.some(row => row.file === "web/src/game-api/default-players.ts"));
-  assert(sources.every(row => ["web/", "internal/server/", "assets/", "games/"].some(prefix => row.file.startsWith(prefix))));
+  assert(sources.every(row => ["web/", "internal/server/", "assets/", "games/", "scripts/platform-admin/"].some(prefix => row.file.startsWith(prefix))));
   const rows = inspectSources(sources);
   const report = { passed: rows.every(row => row.passed), files: rows, examples: cases.length };
   writeFileSync(path.join(output, "platform-source.json"), JSON.stringify(report, null, 2) + "\n");

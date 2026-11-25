@@ -205,11 +205,11 @@ export function GameFullscreen({
   const autoStarted = useRef("");
   const overlay = toolbarOverlay !== false;
   const fullscreen = useRoomFullscreen(enabled || preserveWhileLoading || autoEnter ? scope : undefined, root);
+  useEffect(() => () => { autoStarted.current = ""; }, [root, scope]);
   useEffect(() => {
-    if (!autoEnter || !root || autoStarted.current === scope || !window.matchMedia("(pointer: coarse)").matches) return;
+    if (!autoEnter || !root || autoStarted.current === scope) return;
     autoStarted.current = scope;
     void fullscreen.enter();
-    return () => { autoStarted.current = ""; };
   }, [autoEnter, root, scope]);
   useEffect(() => {
     if (root) return protectGameControls(root);
@@ -217,6 +217,11 @@ export function GameFullscreen({
   useEffect(() => {
     if (root && enabled) return restoreGameFocusOnBackground(root);
   }, [root, enabled]);
+  useLayoutEffect(() => {
+    if (!enabled || !fullscreen.active || !root || root.contains(document.activeElement)) return;
+    const target = root.querySelector<HTMLElement>("[data-game-focus]") ?? root.querySelector<HTMLElement>("[data-fullscreen-board]");
+    target?.focus({ preventScroll: true });
+  }, [enabled, fullscreen.active, root]);
   useLayoutEffect(() => {
     onChatTargetChange?.(fullscreen.active ? root : null);
     return () => onChatTargetChange?.(null);

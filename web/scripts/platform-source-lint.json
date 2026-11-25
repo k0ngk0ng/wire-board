@@ -1,6 +1,8 @@
 {
   "scope": "Only explicitly registered platform TypeScript/JavaScript/JSON/Go/CSS files and Git-added lines of registered existing files; no game imports or game execution, with the shared Go AST lint helper reused without running game code",
   "sources": [
+    "web/src/admin/game-sort.tsx",
+    "web/tests/admin-game-list-browser.test.mjs",
     "web/src/audio-spatial.ts",
     "web/src/game-api/default-players.ts",
     "web/src/game-api/loading-session.ts",
@@ -32,6 +34,10 @@
     "web/src/game-api/registry.ts",
     "web/tests/retired-games.test.mjs",
     "web/tests/splendor-take-browser.mjs",
+    "internal/server/game_config.go",
+    "internal/server/game_config_e2e_test.go",
+    "internal/server/game_config_browser_test.go",
+    "web/tests/admin-game-config-browser.test.mjs",
     "web/src/game-api/catalog-cover.tsx",
     "web/tests/catalog-covers.test.mjs",
     "internal/server/retired_independent_e2e_test.go",
@@ -55,6 +61,13 @@
     }
   ],
   "patchSources": [
+    "scripts/platform-admin/check-browser.py",
+    "internal/server/game_order.go",
+    "internal/server/admin.go",
+    "internal/server/server.go",
+    "web/src/admin.tsx",
+    "web/src/admin.css",
+    "web/src/types.ts",
     "web/src/audio.ts",
     "web/src/game-api/module.ts",
     "web/src/game-api/host.tsx",
@@ -74,10 +87,7 @@
     "web/src/style.css",
     "games/registry.go"
   ],
-  "platformAudioSources": [
-    "web/src/audio-spatial.ts",
-    "web/src/audio.ts"
-  ],
+  "platformAudioSources": ["web/src/audio-spatial.ts", "web/src/audio.ts"],
   "businessSources": [
     "web/src/game-api/default-players.ts",
     "web/src/game-api/action-scope.ts",
@@ -91,8 +101,9 @@
     ".local/splendor",
     ".local/go-build",
     ".local/go-mod",
-    ".local/_common",
+    ".local/admin-game-config",
     ".local/platform-lint",
+    ".local/_common",
     ".local/room-flow",
     ".local/rft"
   ],
@@ -108,6 +119,7 @@
     "Existing sources inspect added lines only; new sources are inspected in full"
   ],
   "goFilename": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*\\.go$",
+  "pythonFilename": "^[a-z][a-z0-9]*(?:[-_][a-z0-9]+)*\\.py$",
   "goPackages": {
     "internal/server": "server",
     "games": "games"

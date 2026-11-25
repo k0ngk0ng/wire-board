@@ -1,12 +1,13 @@
 import { ResetPasswordField } from "./admin/password-field";
 import { WishContent } from "./admin/wish-content";
 import { GameSort } from "./admin/game-sort";
+import { reorderVisible } from "./admin/game-order";
 import { UserActivity } from "./admin/user-activity";
 import { RoomHistory, type HistoryTarget } from "./admin/room-history";
 import { Modal } from "./ui/board-host";
 import { RefreshButton } from "./ui/refresh-button";
 import { CategoryFilter, matchesCategory } from "./ui/game-category";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   ArrowLeft,
   ShieldCheck,
@@ -26,8 +27,9 @@ import {
   Hammer,
   Trophy,
   XCircle,
+  Settings2,
 } from "lucide-react";
-import type { Room, User } from "./types";
+import type { GameBaseConfig, Room, User } from "./types";
 import { PlayerName } from "./profiles";
 import { WishStatus, type Wish } from "./wishes";
 import "./admin.css";
@@ -48,7 +50,12 @@ type ManagedUser = User & {
   registeredIP: string;
   lastLoginIP: string;
 };
-type Game = { kind: string; name: string; enabled: boolean };
+type Game = {
+  kind: string;
+  name: string;
+  enabled: boolean;
+  config: GameBaseConfig;
+};
 type Overview = {
   users: ManagedUser[];
   rooms: Room[];
@@ -93,6 +100,7 @@ const actions: Record<string, string> = {
   game_published: "上架游戏",
   game_unpublished: "下架游戏",
   game_order: "调整游戏顺序",
+  game_config: "修改游戏基础配置",
   user_enable: "恢复账号",
   user_disable: "停用账号",
   user_logout: "强制退出",
@@ -141,7 +149,14 @@ export function AdminDashboard({
   const [query, setQuery] = useState("");
   const [gameQuery, setGameQuery] = useState("");
   const [gameCategory, setGameCategory] = useState("all");
-  const [sorting, setSorting] = useState(false);
+  const [orderSaving, setOrderSaving] = useState(false);
+  const orderPending = useRef(false);
+  const draggingGame = useRef(false);
+  const onGameDrag = useCallback((active: boolean) => {
+    draggingGame.current = active;
+    if (active) generation.current++;
+  }, []);
+  const [configuredGameID, setConfiguredGameID] = useState("");
   const [activityUser, setActivityUser] = useState<ManagedUser>();
   const [roomFilter, setRoomFilter] = useState("all");
   const [roomHistory, setRoomHistory] = useState(false);
@@ -152,6 +167,7 @@ export function AdminDashboard({
   const [onlineOnly, setOnlineOnly] = useState(false);
   const [decision, setDecision] = useState<Decision>();
   const [busy, setBusy] = useState(false);
+  const [savingGame, setSavingGame] = useState("");
   const [error, setError] = useState("");
   const [loadError, setLoadError] = useState("");
   const [notice, setNotice] = useState("");
@@ -160,6 +176,7 @@ export function AdminDashboard({
   const generation = useRef(0);
   const dialog = useRef<HTMLDivElement>(null);
   async function refresh() {
+    if (orderPending.current || draggingGame.current) return;
     const n = ++generation.current;
     try {
       const next = await request("/admin");
@@ -190,22 +207,74 @@ export function AdminDashboard({
         .toLocaleLowerCase()
         .includes(gameQuery.trim().toLocaleLowerCase()),
   );
-  async function saveOrder(order: string[], expectedOrder: string[]) {
-    if (busy) return;
-    setBusy(true);
+  const configuredGame = data?.games.find(
+    (game) => game.kind === configuredGameID,
+  );
+  async function moveGame(from: string, to: string) {
+    if (!data || busy || orderPending.current || from === to) return;
+    const expectedOrder = data.games.map((game) => game.kind);
+    const order = reorderVisible(
+      expectedOrder,
+      visibleGames.map((game) => game.kind),
+      from,
+      to,
+    );
+    if (order.join() === expectedOrder.join()) return;
+    orderPending.current = true;
+    generation.current++;
+    setOrderSaving(true);
     setError("");
     setNotice("");
     try {
       await request("/admin/games/order", { order, expectedOrder });
-      await refresh();
-      await onChange();
-      setSorting(false);
+      setData(
+        (current) =>
+          current && {
+            ...current,
+            games: order.map((kind) =>
+              current.games.find((game) => game.kind === kind)!,
+            ),
+          },
+      );
       setNotice("游戏顺序已保存");
-    } catch (e) {
-      setError((e as Error).message);
-      throw e;
+      await onChange();
+    } catch (error) {
+      setError((error as Error).message);
+      orderPending.current = false;
+      await refresh();
     } finally {
-      setBusy(false);
+      orderPending.current = false;
+      setOrderSaving(false);
+    }
+  }
+  async function saveGameConfig(game: Game) {
+    if (savingGame) return;
+    setSavingGame(game.kind);
+    setError("");
+    setNotice("");
+    try {
+      const config: GameBaseConfig = await request(
+        `/admin/games/${game.kind}/config`,
+        {
+          autoFullscreen: !game.config.autoFullscreen,
+        },
+      );
+      generation.current++;
+      setData(
+        (current) =>
+          current && {
+            ...current,
+            games: current.games.map((entry) =>
+              entry.kind === game.kind ? { ...entry, config } : entry,
+            ),
+          },
+      );
+      setNotice(`${game.name}的基础配置已保存`);
+      await onChange();
+    } catch (error) {
+      setError((error as Error).message);
+    } finally {
+      setSavingGame("");
     }
   }
   function metric(index: number) {
@@ -429,9 +498,6 @@ export function AdminDashboard({
                   <p>下架会隐藏入口、关闭等待牌桌；已经开始的对局可以继续。</p>
                 </div>
                 <div className="admin-order-actions">
-                  <button className="outline" onClick={() => setSorting(true)}>
-                    游戏排序
-                  </button>
                   <RefreshButton onRefresh={refresh} />
                 </div>
               </div>
@@ -461,46 +527,49 @@ export function AdminDashboard({
                   没有找到匹配的游戏，请换个名称搜索。
                 </p>
               )}
-              <div className="admin-games">
-                {visibleGames.map((g) => {
-                  const i = data.games.findIndex((x) => x.kind === g.kind);
-                  return (
-                    <article
-                      key={g.kind}
-                      data-game-id={g.kind}
-                      className={`admin-game-card ${!g.enabled ? "unpublished" : ""}`}
+              <GameSort
+                games={data.games}
+                visibleGames={visibleGames}
+                busy={busy || orderSaving || !!savingGame}
+                onMove={moveGame}
+                onDragChange={onGameDrag}
+              >
+                {(game) => (
+                  <>
+                    <button
+                      type="button"
+                      className="outline"
+                      data-game-config
+                      aria-label={`${game.name}基础配置`}
+                      disabled={orderSaving || busy}
+                      onClick={() => {
+                        setError("");
+                        setConfiguredGameID(game.kind);
+                      }}
                     >
-                      <div className={`admin-game-number tone-${i}`}>
-                        {String(i + 1).padStart(2, "0")}
-                      </div>
-                      <div>
-                        <span
-                          className={`admin-badge ${g.enabled ? "green" : "gray"}`}
-                        >
-                          {g.enabled ? "已上架" : "已下架"}
-                        </span>
-                        <h3>{g.name}</h3>
-                      </div>
-                      <button
-                        className={g.enabled ? "outline" : "primary"}
-                        onClick={() =>
-                          setDecision({
-                            title: `${g.enabled ? "下架" : "上架"} · ${g.name}`,
-                            text: g.enabled
-                              ? "等待开局的牌桌会关闭，用户不能新建、加入或再开一局。正在进行的对局及历史战绩保留。"
-                              : "用户将在大厅看到这款游戏，并可正常创建、加入和开始对局。",
-                            path: `/admin/games/${g.kind}`,
-                            body: { enabled: !g.enabled },
-                          })
-                        }
-                      >
-                        {g.enabled ? <EyeOff size={16} /> : <Eye size={16} />}{" "}
-                        {g.enabled ? "下架" : "上架"}
-                      </button>
-                    </article>
-                  );
-                })}
-              </div>
+                      <Settings2 size={16} />
+                      基础配置
+                    </button>
+                    <button
+                      className={game.enabled ? "outline" : "primary"}
+                      disabled={orderSaving || busy}
+                      onClick={() =>
+                        setDecision({
+                          title: `${game.enabled ? "下架" : "上架"} · ${game.name}`,
+                          text: game.enabled
+                            ? "等待开局的牌桌会关闭，用户不能新建、加入或再开一局。正在进行的对局及历史战绩保留。"
+                            : "用户将在大厅看到这款游戏，并可正常创建、加入和开始对局。",
+                          path: `/admin/games/${game.kind}`,
+                          body: { enabled: !game.enabled },
+                        })
+                      }
+                    >
+                      {game.enabled ? <EyeOff size={16} /> : <Eye size={16} />}
+                      {game.enabled ? "下架" : "上架"}
+                    </button>
+                  </>
+                )}
+              </GameSort>
             </section>
           )}
           {tab === "wishes" && (
@@ -1014,13 +1083,34 @@ export function AdminDashboard({
           )}
         </>
       )}
-      {sorting && data && (
-        <GameSort
-          games={data.games}
-          busy={busy}
-          onSave={saveOrder}
-          onClose={() => setSorting(false)}
-        />
+      {configuredGame && (
+        <Modal
+          title={`${configuredGame.name} · 基础配置`}
+          className="admin-game-settings"
+          dismissible={!savingGame}
+          onClose={() => setConfiguredGameID("")}
+        >
+          <div className="admin-game-config">
+            <span>开始后自动全屏</span>
+            <button
+              type="button"
+              role="switch"
+              aria-label={`${configuredGame.name}：开始后自动全屏`}
+              aria-checked={configuredGame.config.autoFullscreen}
+              aria-busy={savingGame === configuredGame.kind}
+              disabled={!!savingGame}
+              className="admin-game-config-switch"
+              onClick={() => void saveGameConfig(configuredGame)}
+            >
+              {configuredGame.config.autoFullscreen ? "已开启" : "已关闭"}
+            </button>
+          </div>
+          {error && (
+            <p role="alert" className="admin-error">
+              {error}
+            </p>
+          )}
+        </Modal>
       )}
       {activityUser && (
         <UserActivity

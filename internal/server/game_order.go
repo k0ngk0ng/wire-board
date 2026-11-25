@@ -66,7 +66,7 @@ func (s *Server) adminGameOrder(w http.ResponseWriter, r *http.Request) {
 		names = append(names, s.gameNames[kind])
 	}
 	if !slices.Equal(req.Expected, s.gameKinds) {
-		fail(w, 409, "游戏顺序已更新，请取消本次排序后重新调整")
+		fail(w, 409, "游戏顺序已更新，请按最新列表重新调整")
 		return
 	}
 	if slices.Equal(req.Order, s.gameKinds) {

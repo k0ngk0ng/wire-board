@@ -42,10 +42,12 @@ export function GameLoading({
   room,
   assets,
   children,
+  mountBeforeReady = false,
 }: {
   room: Room;
   assets: string;
-  children: (events: LoadEvents, blocked: boolean) => ReactNode;
+  children: (events: LoadEvents, blocked: boolean, prepared: boolean) => ReactNode;
+  mountBeforeReady?: boolean;
 }) {
   const [attempt, retry] = useState(0),
     [mounted, setMounted] = useState(false),
@@ -309,7 +311,7 @@ export function GameLoading({
   return (
     <>
       {target ? createPortal(cover, target) : cover}
-      {mounted && (
+      {(mounted || mountBeforeReady) && (
         <div
           ref={host}
           className={`game-ready-surface${blocked && !retained.current && !target ? " game-loading-staging" : ""}`}
@@ -321,6 +323,7 @@ export function GameLoading({
             {children(
               { onReady, onLoadError, onLoadProgress, loadSizes },
               blocked,
+              mounted,
             )}
           </LoadBoundary>
         </div>

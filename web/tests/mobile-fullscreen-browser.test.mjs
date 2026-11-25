@@ -8,7 +8,7 @@ import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 
-test("mobile realtime play enters fullscreen during loading and respects a manual exit", { timeout: 120000 }, async () => {
+test("configured play enters fullscreen during loading on every device and respects a manual exit", { timeout: 120000 }, async () => {
   const root = fileURLToPath(new URL("../../", import.meta.url));
   const output = path.join(root, ".local/yuyuhakusho/mobile-fullscreen");
   const temporary = path.join(output, "temporary");
@@ -77,8 +77,7 @@ test("mobile realtime play enters fullscreen during loading and respects a manua
       await evaluate("window.boardIdentity=document.querySelector('[data-game-focus]');true");
       const check = { name, width, height, mobile, strict, mode: await evaluate("document.querySelector('[data-game-fullscreen-surface]').dataset.roomFullscreen||''") };
       report.checks.push(check);
-      assert.equal(check.mode, mobile ? "page" : "", name + " start fullscreen");
-      if (!mobile) continue;
+      assert.equal(check.mode, "page", name + " start fullscreen");
       const geometry = await evaluate("(()=>{const root=document.querySelector('[data-room-fullscreen]');return {root:root.getBoundingClientRect().toJSON(),inert:document.querySelector('[data-platform]').inert,mounts:window.mobileFullscreen.mounts(),focused:document.activeElement===window.boardIdentity}})()");
       check.geometry = geometry;
       assert.equal(Math.round(geometry.root.height), height);

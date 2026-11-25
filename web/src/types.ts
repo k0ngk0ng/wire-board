@@ -130,6 +130,7 @@ export type ChatMessage = {
   sentAt: number;
 };
 export type State = {
+  gameConfigs?: Record<string, GameBaseConfig>;
   saves?: SavedGame[];
   network?: import("./network-quality").NetworkInfo;
   networkAt?: number;
@@ -144,6 +145,7 @@ export type State = {
   assetsBaseURL?: string;
   version?: string;
 };
+export type GameBaseConfig = { autoFullscreen: boolean };
 export type SavedGame = {
   id: string;
   name: string;

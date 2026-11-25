@@ -98,6 +98,9 @@ INSERT OR IGNORE INTO user_controls(user_id) SELECT id FROM users;`)
 	if err = s.loadGameOrder(); err != nil {
 		return err
 	}
+	if err = s.initGameConfigs(); err != nil {
+		return err
+	}
 	if existing := strings.TrimSpace(s.cfg.AdminExistingUsername); existing != "" {
 		if !validName(existing) || s.cfg.AdminUsername != "" || s.cfg.AdminPassword != "" {
 			return errors.New("ADMIN_EXISTING_USERNAME 需为有效现有昵称，不能与新建管理员配置同时使用")
@@ -299,7 +302,7 @@ func (s *Server) adminOverview(w http.ResponseWriter, r *http.Request) {
 	sort.Slice(rooms, func(i, j int) bool { return rooms[i]["id"].(string) < rooms[j]["id"].(string) })
 	games := []map[string]any{}
 	for _, kind := range s.gameKinds {
-		games = append(games, map[string]any{"kind": kind, "name": s.gameNames[kind], "enabled": !s.hiddenGames[kind]})
+		games = append(games, map[string]any{"kind": kind, "name": s.gameNames[kind], "enabled": !s.hiddenGames[kind], "config": s.gameConfigs[kind]})
 	}
 	wishes, wishStats, err := s.adminWishes()
 	if err != nil {

@@ -180,6 +180,7 @@ type Server struct {
 	limits              map[string]bucket
 	files               fs.FS
 	hiddenGames         map[string]bool
+	gameConfigs         map[string]gameBaseConfig
 	presence            map[string]time.Time
 	connections         map[chan struct{}]string
 	streamFrames        map[chan struct{}]chan streamFrameNotice
@@ -476,6 +477,7 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /api/admin/users/{id}/activity", s.adminUserActivity)
 	mux.HandleFunc("GET /api/admin/rooms/history", s.adminRoomHistory)
 	mux.HandleFunc("POST /api/admin/games/{kind}", s.adminGame)
+	mux.HandleFunc("POST /api/admin/games/{kind}/config", s.adminGameConfig)
 	mux.HandleFunc("POST /api/admin/games/order", s.adminGameOrder)
 	mux.HandleFunc("POST /api/admin/users/{id}", s.adminManageUser)
 	mux.HandleFunc("POST /api/admin/rooms/{id}/close", s.adminCloseRoom)
@@ -837,6 +839,7 @@ func (s *Server) statePayload(r *http.Request) (int, []byte) {
 	}
 	out := map[string]any{"serverInstance": s.instance, "user": map[string]any{"id": u.ID, "name": u.Name, "role": s.role(u.ID), "passwordChangeAllowed": s.passwordChangeAllowed(u)}, "availableGames": s.availableGames(), "rooms": rooms, "serverNow": time.Now().UnixMilli(), "assetsBaseURL": s.cfg.AssetsBaseURL, "version": s.cfg.Version, "railMaps": game.RailMapList()}
 	out["modules"] = s.cfg.Modules
+	out["gameConfigs"] = s.gameConfigs
 	out["saves"] = s.savedGamesFor(u.ID)
 	out["network"] = s.networkFor(u.ID)
 	room := s.current(u.ID)

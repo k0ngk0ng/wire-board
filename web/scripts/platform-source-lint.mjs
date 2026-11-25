@@ -24,8 +24,8 @@ function validate(item) {
   const target = path.resolve(root, item.file);
   const relative = path.relative(root, target).split(path.sep).join("/");
   if (!within(root, target) || !registered(relative) && !(Array.isArray(item.changedLines) && policy.patchSources.includes(relative))) return ["source-location"];
-  if (!new RegExp(item.language === "go" ? policy.goFilename : policy.filename).test(path.basename(target))) return ["source-filename"];
-  if (!['typescript', 'javascript', 'json', 'go', 'css'].includes(item.language)) return ["source-language"];
+  if (!new RegExp(item.language === "go" ? policy.goFilename : item.language === "python" ? policy.pythonFilename : policy.filename).test(path.basename(target))) return ["source-filename"];
+  if (!['typescript', 'javascript', 'json', 'go', 'css', 'python'].includes(item.language)) return ["source-language"];
   let ancestor = target;
   while (!existsSync(ancestor) && path.dirname(ancestor) !== ancestor) ancestor = path.dirname(ancestor);
   if (!within(root, realpathSync(ancestor))) return ["source-symlink"];
@@ -157,6 +157,13 @@ function inspectJSON(item) {
 }
 
 export function inspectSources(items) {
+  const pythonItems = items.filter(item => item.language === "python" && !validate(item).length);
+  let pythonResults = [];
+  if (pythonItems.length) {
+    const run = spawnSync("python3", ["-B", "games/cs16/build/lint-python.py"], { cwd: root, input: JSON.stringify(pythonItems), encoding: "utf8" });
+    if (run.status !== 0) throw Error(run.stdout + run.stderr);
+    pythonResults = JSON.parse(run.stdout);
+  }
   const goItems = items.filter(item => item.language === "go" && !validate(item).length);
   let goResults = [];
   if (goItems.length) {
@@ -169,7 +176,8 @@ export function inspectSources(items) {
   return items.map(item => {
     const issues = validate(item);
     if (!issues.length) {
-      if (item.language === "go") issues.push(...goResults[goItems.indexOf(item)]);
+      if (item.language === "python") issues.push(...pythonResults[pythonItems.indexOf(item)]);
+      else if (item.language === "go") issues.push(...goResults[goItems.indexOf(item)]);
       else if (item.language === "json") issues.push(...inspectJSON(item));
       else if (item.language === "css") {
         const postcss = require("postcss");
@@ -209,7 +217,7 @@ function changedSources(workspace) {
 }
 
 function sourceLanguage(file) {
-  return file.endsWith(".go") ? "go" : file.endsWith(".css") ? "css" : file.endsWith(".mjs") ? "javascript" : file.endsWith(".json") ? "json" : "typescript";
+  return file.endsWith(".py") ? "python" : file.endsWith(".go") ? "go" : file.endsWith(".css") ? "css" : file.endsWith(".mjs") ? "javascript" : file.endsWith(".json") ? "json" : "typescript";
 }
 
 export function discoverPlatformSources(workspace = root) {

@@ -1,183 +1,160 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { GripVertical } from "lucide-react";
-import { Modal } from "../ui/board-host";
-import { CategoryFilter, matchesCategory } from "../ui/game-category";
 import { gameModule } from "../game-api/registry";
 import { ModuleCover } from "../game-api/host";
 import { LegacyCover } from "../legacy/cover";
-import { reorderVisible } from "./game-order";
 
 type Game = { kind: string; name: string; enabled: boolean };
-export function GameSort({
+export function GameSort<T extends Game>({
   games,
+  visibleGames,
   busy,
-  onSave,
-  onClose,
+  onMove,
+  onDragChange,
+  children,
 }: {
-  games: Game[];
+  games: T[];
+  visibleGames: T[];
   busy: boolean;
-  onSave: (order: string[], expected: string[]) => Promise<void>;
-  onClose: () => void;
+  onMove: (from: string, to: string) => Promise<void>;
+  onDragChange: (active: boolean) => void;
+  children: (game: T) => ReactNode;
 }) {
-  const base = useRef(games.map((g) => g.kind));
-  const [order, setOrder] = useState(base.current);
-  const [query, setQuery] = useState("");
-  const [category, setCategory] = useState("all");
-  const [error, setError] = useState("");
-  const [announcement, setAnnouncement] = useState("");
   const dragged = useRef<string | null>(null);
-  const visible = order
-    .map((id) => games.find((g) => g.kind === id)!)
-    .filter(
-      (g) =>
-        g &&
-        matchesCategory(g.kind, category) &&
-        `${g.name} ${g.kind}`
-          .toLocaleLowerCase()
-          .includes(query.trim().toLocaleLowerCase()),
-    );
+  const [active, setActive] = useState("");
+  const [target, setTarget] = useState("");
+  useEffect(() => () => onDragChange(false), [onDragChange]);
+  const clear = () => {
+    onDragChange(false);
+    dragged.current = null;
+    setActive("");
+    setTarget("");
+  };
   const move = (from: string, to: string) => {
-    if (busy || from === to) return;
-    setOrder((old) =>
-      reorderVisible(
-        old,
-        visible.map((g) => g.kind),
-        from,
-        to,
-      ),
-    );
-    setAnnouncement(`${games.find((g) => g.kind === from)?.name}的位置已调整`);
+    clear();
+    if (!busy && from !== to) void onMove(from, to);
+  };
+  const begin = (kind: string) => {
+    onDragChange(true);
+    dragged.current = kind;
+    setActive(kind);
   };
   return (
-    <Modal
-      title="游戏排序"
-      className="create-room-modal create-room-choosing admin-sort-modal"
-      dismissible={!busy}
-      onClose={onClose}
-    >
-      <p className="admin-sort-hint">
-        拖动封面调整顺序；触屏拖动右下角手柄，键盘聚焦手柄后使用方向键。
-      </p>
-      <div className="game-choice-filters">
-        <CategoryFilter
-          value={category}
-          onChange={setCategory}
-          label="排序游戏分类"
-        />
-        <label className="game-search">
-          搜索游戏
-          <input
-            type="search"
-            aria-label="搜索排序游戏"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-        </label>
-      </div>
-      <div className="choose-games admin-sort-grid">
-        {visible.map((g, index) => (
-          <article
-            className="admin-sort-card"
-            key={g.kind}
-            data-game-id={g.kind}
+    <div className="admin-games" aria-busy={busy}>
+      {visibleGames.map((game, index) => (
+        <article
+          key={game.kind}
+          data-game-id={game.kind}
+          className={`admin-game-card ${!game.enabled ? "unpublished" : ""} ${active === game.kind ? "dragging" : ""} ${target === game.kind && active !== game.kind ? "drop-target" : ""}`}
+          onDragOver={(event) => {
+            if (!busy && dragged.current) {
+              event.preventDefault();
+              event.dataTransfer.dropEffect = "move";
+              setTarget(game.kind);
+            }
+          }}
+          onDrop={(event) => {
+            event.preventDefault();
+            if (dragged.current) move(dragged.current, game.kind);
+          }}
+        >
+          <div
+            className="admin-game-cover"
             draggable={!busy}
-            onDragStart={(e) => {
-              dragged.current = g.kind;
-              e.dataTransfer.effectAllowed = "move";
-              e.dataTransfer.setData("text/plain", g.kind);
-            }}
-            onDragOver={(e) => {
-              if (dragged.current && !busy) {
-                e.preventDefault();
-                e.dataTransfer.dropEffect = "move";
+            onDragStart={(event) => {
+              if (busy) {
+                event.preventDefault();
+                return;
               }
+              begin(game.kind);
+              event.dataTransfer.effectAllowed = "move";
+              event.dataTransfer.setData("text/plain", game.kind);
             }}
-            onDrop={(e) => {
-              e.preventDefault();
-              if (dragged.current) move(dragged.current, g.kind);
-              dragged.current = null;
-            }}
-            onDragEnd={() => {
-              dragged.current = null;
-            }}
+            onDragEnd={clear}
           >
-            {gameModule(g.kind) ? (
-              <ModuleCover kind={g.kind} mini />
+            {gameModule(game.kind) ? (
+              <ModuleCover kind={game.kind} mini />
             ) : (
-              <LegacyCover kind={g.kind} mini />
+              <LegacyCover kind={game.kind} mini />
             )}
-            <div>
-              <span>
-                {g.name}
-                {!g.enabled && <small>已下架</small>}
-              </span>
+          </div>
+          <div className="admin-game-body">
+            <div className="admin-game-heading">
+              <div className="admin-game-number">
+                {String(
+                  games.findIndex((entry) => entry.kind === game.kind) + 1,
+                ).padStart(2, "0")}
+              </div>
+              <div className="admin-game-title">
+                <h3>{game.name}</h3>
+                <span
+                  className={`admin-badge ${game.enabled ? "green" : "gray"}`}
+                >
+                  {game.enabled ? "已上架" : "已下架"}
+                </span>
+              </div>
               <button
                 type="button"
                 className="admin-sort-handle"
                 disabled={busy}
-                aria-label={`移动${g.name}`}
+                aria-label={`移动${game.name}`}
                 title="拖动或使用方向键排序"
-                onPointerDown={(e) => {
-                  if (e.pointerType === "mouse") return;
-                  dragged.current = g.kind;
-                  e.currentTarget.setPointerCapture(e.pointerId);
+                draggable={!busy}
+                onDragStart={(event) => {
+                  begin(game.kind);
+                  event.dataTransfer.effectAllowed = "move";
+                  event.dataTransfer.setData("text/plain", game.kind);
                 }}
-                onPointerUp={(e) => {
-                  if (e.pointerType === "mouse") return;
-                  const target = document
-                    .elementFromPoint(e.clientX, e.clientY)
-                    ?.closest<HTMLElement>("[data-game-id]");
-                  if (dragged.current && target?.dataset.gameId)
-                    move(dragged.current, target.dataset.gameId);
-                  dragged.current = null;
+                onDragEnd={clear}
+                onPointerDown={(event) => {
+                  if (event.pointerType === "mouse" || busy) return;
+                  event.preventDefault();
+                  begin(game.kind);
+                  event.currentTarget.setPointerCapture(event.pointerId);
                 }}
-                onPointerCancel={() => {
-                  dragged.current = null;
+                onPointerMove={(event) => {
+                  if (
+                    event.pointerType === "mouse" ||
+                    dragged.current !== game.kind
+                  )
+                    return;
+                  const element = document
+                    .elementFromPoint(event.clientX, event.clientY)
+                    ?.closest<HTMLElement>(".admin-game-card");
+                  setTarget(element?.dataset.gameId ?? "");
+                  if (Math.round(event.clientY) < 72) window.scrollBy(0, -24);
+                  else if (Math.round(event.clientY) > window.innerHeight - 72)
+                    window.scrollBy(0, 24);
                 }}
-                onKeyDown={(e) => {
-                  const delta = ["ArrowLeft", "ArrowUp"].includes(e.key)
+                onPointerUp={(event) => {
+                  if (event.pointerType === "mouse") return;
+                  const element = document
+                    .elementFromPoint(event.clientX, event.clientY)
+                    ?.closest<HTMLElement>(".admin-game-card");
+                  if (dragged.current && element?.dataset.gameId)
+                    move(dragged.current, element.dataset.gameId);
+                  else clear();
+                }}
+                onPointerCancel={clear}
+                onKeyDown={(event) => {
+                  const delta = ["ArrowLeft", "ArrowUp"].includes(event.key)
                     ? -1
-                    : ["ArrowRight", "ArrowDown"].includes(e.key)
+                    : ["ArrowRight", "ArrowDown"].includes(event.key)
                       ? 1
                       : 0;
-                  if (delta) {
-                    e.preventDefault();
-                    const target = visible[index + delta];
-                    if (target) move(g.kind, target.kind);
-                  }
+                  if (!delta) return;
+                  event.preventDefault();
+                  if (!event.repeat && visibleGames[index + delta])
+                    move(game.kind, visibleGames[index + delta].kind);
                 }}
               >
                 <GripVertical size={18} />
               </button>
             </div>
-          </article>
-        ))}
-      </div>
-      {!visible.length && <p role="status">没有找到匹配的游戏。</p>}
-      {error && <p role="alert">{error}</p>}
-      <span role="status" className="sr-only">
-        {announcement}
-      </span>
-      <div className="modal-actions">
-        <button className="outline" disabled={busy} onClick={onClose}>
-          取消排序
-        </button>
-        <button
-          className="primary"
-          aria-label="保存游戏顺序"
-          disabled={busy || order.join() === base.current.join()}
-          onClick={async () => {
-            setError("");
-            try {
-              await onSave(order, base.current);
-            } catch (e) {
-              setError((e as Error).message);
-            }
-          }}
-        >
-          {busy ? "正在保存…" : "保存顺序"}
-        </button>
-      </div>
-    </Modal>
+            <div className="admin-game-actions">{children(game)}</div>
+          </div>
+        </article>
+      ))}
+    </div>
   );
 }

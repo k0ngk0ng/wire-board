@@ -1148,11 +1148,12 @@ function App() {
                 ) : (
                   <>
                     <GameLoading
+                      mountBeforeReady
                       key={`${room.id}:${room.supportsCheckpoint ? "checkpoint" : room.matchId ?? room.setupVersion}:${room.you}`}
                       room={room}
                       assets={mediaBase}
                     >
-                      {(loadEvents, loading) => (
+                      {(loadEvents, loading, prepared) => (
                         <>
                           {!room.game?.sanguosha && (
                             <CompactRoomPanel
@@ -1174,7 +1175,7 @@ function App() {
                                 autoEnter={
                                   room.status === "playing" &&
                                   !room.spectating &&
-                                  !!gameModule(room.kind)?.realtime
+                                  !!state.gameConfigs?.[room.kind]?.autoFullscreen
                                 }
                                 preserveWhileLoading={!!room.supportsCheckpoint}
                                 toolbarOverlay={
@@ -1261,22 +1262,30 @@ function App() {
                                   )
                                 }
                               >
-                                <GameBoard
-                                  key={`${room.id}:${state.serverInstance ?? ""}`}
-                                  room={room}
-                                  loadEvents={loadEvents}
-                                  act={act}
-                                  busy={boardBusy || loading}
-                                  assets={mediaBase}
-                                  sound={sound && volume > 0 && !loading}
-                                  audioEnabled={sound && volume > 0}
-                                  audio={gameAudio}
-                                  inputWindow={streamInputs.connected ? 8 : gameModule(room.kind)?.streamInputOnly ? 0 : 1}
-                                  clock={presented.clock}
-                                  command={(type, extra) =>
-                                    run(() => command(room, type, extra))
-                                  }
-                                />
+                                {prepared && (
+                                  <GameBoard
+                                    key={`${room.id}:${state.serverInstance ?? ""}`}
+                                    room={room}
+                                    loadEvents={loadEvents}
+                                    act={act}
+                                    busy={boardBusy || loading}
+                                    assets={mediaBase}
+                                    sound={sound && volume > 0 && !loading}
+                                    audioEnabled={sound && volume > 0}
+                                    audio={gameAudio}
+                                    inputWindow={
+                                      streamInputs.connected
+                                        ? 8
+                                        : gameModule(room.kind)?.streamInputOnly
+                                          ? 0
+                                          : 1
+                                    }
+                                    clock={presented.clock}
+                                    command={(type, extra) =>
+                                      run(() => command(room, type, extra))
+                                    }
+                                  />
+                                )}
                               </GameFullscreen>
                             </div>
                             <aside className="game-sidebar">
