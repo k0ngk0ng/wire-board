@@ -121,13 +121,17 @@ import { RoomToolButton } from "./ui/room-tool-button";
 import { RoomHeading } from "./ui/room-heading";
 import { ClosedRoomDescription } from "./ui/closed-room";
 import { CreateRoom } from "./ui/create-room";
-import { ControllerSettings } from "./controllers/Settings";
 import { useTurnTitle } from "./turn-title";
 import type { Act, Room, State } from "./types";
 import { AssetsContext, Modal, api } from "./ui/board-host";
 import { WishDialog } from "./wishes";
 
 const ReleaseHistory = React.lazy(() => import("./releases"));
+const ControllerSettings = React.lazy(() =>
+  import("./controllers/Settings").then(({ ControllerSettings }) => ({
+    default: ControllerSettings,
+  })),
+);
 
 const statusName: Record<string, string> = {
   waiting: "等待入座",
@@ -884,13 +888,24 @@ function App() {
               </header>
             </CompactRoomPanel>
             {controllerSettingsOpen && (
-              <ControllerSettings
-                key={state.user.id}
-                userId={state.user.id}
-                gameId={room?.kind}
-                availableGames={state.availableGames}
-                onClose={() => setControllerSettingsOpen(false)}
-              />
+              <React.Suspense
+                fallback={
+                  <Modal
+                    title="控制器设置"
+                    onClose={() => setControllerSettingsOpen(false)}
+                  >
+                    <p role="status">正在读取控制器设置…</p>
+                  </Modal>
+                }
+              >
+                <ControllerSettings
+                  key={state.user.id}
+                  userId={state.user.id}
+                  gameId={room?.kind}
+                  availableGames={state.availableGames}
+                  onClose={() => setControllerSettingsOpen(false)}
+                />
+              </React.Suspense>
             )}
             {error && !state.room && (
               <GameFeedback>
