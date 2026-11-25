@@ -497,9 +497,7 @@ export function AdminDashboard({
                   <h2>开放给朋友的游戏</h2>
                   <p>下架会隐藏入口、关闭等待牌桌；已经开始的对局可以继续。</p>
                 </div>
-                <div className="admin-order-actions">
-                  <RefreshButton onRefresh={refresh} />
-                </div>
+                <RefreshButton onRefresh={refresh} />
               </div>
               <CategoryFilter
                 value={gameCategory}
@@ -516,13 +514,7 @@ export function AdminDashboard({
                   onChange={(event) => setGameQuery(event.target.value)}
                 />
               </label>
-              {!data.games.some(
-                (g) =>
-                  matchesCategory(g.kind, gameCategory) &&
-                  `${g.name} ${g.kind}`
-                    .toLocaleLowerCase()
-                    .includes(gameQuery.trim().toLocaleLowerCase()),
-              ) && (
+              {!visibleGames.length && (
                 <p className="game-search-empty" role="status">
                   没有找到匹配的游戏，请换个名称搜索。
                 </p>

@@ -1,4 +1,11 @@
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+  type DragEvent,
+  type PointerEvent,
+} from "react";
 import { GripVertical } from "lucide-react";
 import { gameModule } from "../game-api/registry";
 import { ModuleCover } from "../game-api/host";
@@ -39,6 +46,19 @@ export function GameSort<T extends Game>({
     dragged.current = kind;
     setActive(kind);
   };
+  const dragStart = (event: DragEvent<HTMLElement>, kind: string) => {
+    if (busy) {
+      event.preventDefault();
+      return;
+    }
+    begin(kind);
+    event.dataTransfer.effectAllowed = "move";
+    event.dataTransfer.setData("text/plain", kind);
+  };
+  const pointerGame = (event: PointerEvent<HTMLElement>) =>
+    document
+      .elementFromPoint(event.clientX, event.clientY)
+      ?.closest<HTMLElement>(".admin-game-card")?.dataset.gameId;
   return (
     <div className="admin-games" aria-busy={busy}>
       {visibleGames.map((game, index) => (
@@ -61,15 +81,7 @@ export function GameSort<T extends Game>({
           <div
             className="admin-game-cover"
             draggable={!busy}
-            onDragStart={(event) => {
-              if (busy) {
-                event.preventDefault();
-                return;
-              }
-              begin(game.kind);
-              event.dataTransfer.effectAllowed = "move";
-              event.dataTransfer.setData("text/plain", game.kind);
-            }}
+            onDragStart={(event) => dragStart(event, game.kind)}
             onDragEnd={clear}
           >
             {gameModule(game.kind) ? (
@@ -100,11 +112,7 @@ export function GameSort<T extends Game>({
                 aria-label={`移动${game.name}`}
                 title="拖动或使用方向键排序"
                 draggable={!busy}
-                onDragStart={(event) => {
-                  begin(game.kind);
-                  event.dataTransfer.effectAllowed = "move";
-                  event.dataTransfer.setData("text/plain", game.kind);
-                }}
+                onDragStart={(event) => dragStart(event, game.kind)}
                 onDragEnd={clear}
                 onPointerDown={(event) => {
                   if (event.pointerType === "mouse" || busy) return;
@@ -118,21 +126,15 @@ export function GameSort<T extends Game>({
                     dragged.current !== game.kind
                   )
                     return;
-                  const element = document
-                    .elementFromPoint(event.clientX, event.clientY)
-                    ?.closest<HTMLElement>(".admin-game-card");
-                  setTarget(element?.dataset.gameId ?? "");
+                  setTarget(pointerGame(event) ?? "");
                   if (Math.round(event.clientY) < 72) window.scrollBy(0, -24);
                   else if (Math.round(event.clientY) > window.innerHeight - 72)
                     window.scrollBy(0, 24);
                 }}
                 onPointerUp={(event) => {
                   if (event.pointerType === "mouse") return;
-                  const element = document
-                    .elementFromPoint(event.clientX, event.clientY)
-                    ?.closest<HTMLElement>(".admin-game-card");
-                  if (dragged.current && element?.dataset.gameId)
-                    move(dragged.current, element.dataset.gameId);
+                  const target = pointerGame(event);
+                  if (dragged.current && target) move(dragged.current, target);
                   else clear();
                 }}
                 onPointerCancel={clear}
