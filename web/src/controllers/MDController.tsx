@@ -30,8 +30,6 @@ const labels: Record<string, string> = {
   x: "X",
   y: "Y",
   z: "Z",
-  ac: "A+C",
-  abc: "A+B+C",
 };
 const names: Record<string, string> = {
   up: "↑",
@@ -46,11 +44,7 @@ const names: Record<string, string> = {
   x: "X",
   y: "Y",
   z: "Z",
-  ac: "A+C",
-  abc: "A+B+C",
 };
-const combos: Record<string, readonly string[]> = { ac: ["a", "c"], abc: ["a", "b", "c"] };
-const bridges = [{ name: "ab", buttons: ["a", "b"] }, { name: "bc", buttons: ["b", "c"] }];
 
 export function MDController({
   profile,
@@ -69,17 +63,16 @@ export function MDController({
       key={button}
       type="button"
       data-controller-button={button}
-      data-controller-combo={combos[button]?.join(" ")}
       data-game-hold-control={mode === "play" || undefined}
-      className={`md-control md-${button}${combos[button] ? " md-combo" : ""}${(combos[button] ?? [button]).every(name => active.has(name) || activeButtons?.has(name)) ? " is-pressed" : ""}${recording === button ? " recording" : ""}`}
+      className={`md-control md-${button}${active.has(button) || activeButtons?.has(button) ? " is-pressed" : ""}${recording === button ? " recording" : ""}`}
       aria-label={
         mode === "configure" ? `修改 ${labels[button]} 按键` : labels[button]
       }
-      aria-pressed={mode === "play" ? (combos[button] ?? [button]).every(name => active.has(name)) : undefined}
+      aria-pressed={mode === "play" ? active.has(button) : undefined}
       disabled={disabled}
       onClick={mode === "configure" ? () => onRemap?.(button) : undefined}
       onPointerDown={
-        !dpad && mode === "play" ? (e) => down(e, combos[button] ?? [button]) : undefined
+        !dpad && mode === "play" ? (e) => down(e, [button]) : undefined
       }
       onPointerUp={!dpad && mode === "play" ? (e) => end(e, false) : undefined}
       onPointerCancel={
@@ -140,29 +133,32 @@ export function MDController({
           {["up", "down", "left", "right"].map((button) =>
             control(button, true),
           )}
-          {mode === "play" && [["up-left", "↖"], ["up-right", "↗"], ["down-left", "↙"], ["down-right", "↘"]].map(([name, glyph]) => <span key={name} className={`controller-diagonal controller-${name}`} aria-hidden="true">{glyph}</span>)}
+          {mode === "play" &&
+            [
+              ["up-left", "↖"],
+              ["up-right", "↗"],
+              ["down-left", "↙"],
+              ["down-right", "↘"],
+            ].map(([name, glyph]) => (
+              <span
+                key={name}
+                className={`controller-diagonal controller-${name}`}
+                aria-hidden="true"
+              >
+                {glyph}
+              </span>
+            ))}
         </div>
         {["mode", "start", "x", "y", "z", "a", "b", "c"].map((button) =>
           control(button),
         )}
-        {mode === "play" && <>
-          {["ac", "abc"].map(button => control(button))}
-          {bridges.map(({ name, buttons }) => {
-            return <span
-              key={name}
-              className={`controller-combo-bridge md-bridge-${name}${buttons.every(button => active.has(button)) ? " is-pressed" : ""}`}
-              data-controller-combo={buttons.join(" ")}
-              data-controller-bridge
-              data-touch-protected
-              aria-hidden="true"
-              aria-disabled={disabled}
-              onPointerDown={event => down(event, buttons)}
-              onPointerUp={event => end(event, false)}
-              onPointerCancel={event => end(event, true)}
-              onLostPointerCapture={lost}
-            />;
-          })}
-        </>}
+        {mode === "play" && (
+          <span
+            className="controller-action-zone"
+            data-controller-action-zone
+            aria-hidden="true"
+          />
+        )}
       </div>
     </div>
   );

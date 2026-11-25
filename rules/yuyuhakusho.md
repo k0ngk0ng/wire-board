@@ -13,7 +13,7 @@
 - 控制器方案 ID／契约布局为 `md-6`，SVG 的 `data-controller-layout="md"` 只是视觉属性。默认 W／S／A／D、F Mode、空格 Start、J A、K B、L C、U X、I Y、O Z；U／I 是普通 X／Y，不使用 FC 连发。按键必须完整保留 12 bit。
 - MD 手机触控按原生 Touch 标识分别保存每根手指，持续核对当前触点；不能只依赖 PointerEvent 的按下和松开。方向与多个攻击键可以同时按住；攻击区滑动换键及时释放旧键，抬起或取消一根手指不能释放其他手指。方向手指不能滑入攻击区取得动作，攻击手指也不能取得方向。
 - 按用户明确要求，手机 MD 触控位于游戏区内，使用半透明方向键和六键浮层。横屏及全屏让画面使用全部可用高度，宽屏优先利用两侧留白；竖屏留出操作区域，避免遮住角色和体力条。PC 和控制器配置界面保留原手柄布局。
-- 手机 MD 保留六键，A／B、B／C 的可见连接处支持单指双键，另有 A+C、A+B+C 两个小辅助键；方向沿用公共 RetroArch 八向滑动规范。组合、滑动、混合输入及释放通过 `node web/tests/controller-combos-browser.mjs` 验证，MD 产物在 `.local/yuyuhakusho/controller-combos/`，FC 产物在 `.local/contra/controller-combos/`。
+- 手机 MD 保留六键，A／B／C 按实际接触范围支持单指相邻双键，不增加组合辅助按钮或连接控件；A+C、A+B+C 使用原键多指同按。方向沿用公共 RetroArch 八向滑动规范。组合、滑动、混合输入及释放通过 `node web/tests/controller-combos-browser.mjs` 验证，MD 产物在 `.local/yuyuhakusho/controller-combos/`，FC 产物在 `.local/contra/controller-combos/`。
 - 触控验收使用 `node games/yuyuhakusho/tests/md-touch-browser.mjs`，经过实际 `MDController` 和游戏的 `MDInput`，覆盖 320 px 竖屏与手机横屏。结果、原生事件轨迹和截图位于 `.local/yuyuhakusho/mobile-controls/`。本次公共控制器与验收脚本的命名、目录和禁用写法检查使用 `node games/yuyuhakusho/build/lint.mjs`，实际范围在 `build/lint-rules.json` 登记。
 
 ## 选人、场地与联机

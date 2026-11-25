@@ -137,23 +137,32 @@ export function FCController({
           onLostPointerCapture={mode === "play" ? lost : undefined}
         >
           {["up", "down", "left", "right"].map((b) => control(b, true))}
-          {mode === "play" && [["up-left", "↖"], ["up-right", "↗"], ["down-left", "↙"], ["down-right", "↘"]].map(([name, glyph]) => <span key={name} className={`controller-diagonal controller-${name}`} aria-hidden="true">{glyph}</span>)}
+          {mode === "play" &&
+            [
+              ["up-left", "↖"],
+              ["up-right", "↗"],
+              ["down-left", "↙"],
+              ["down-right", "↘"],
+            ].map(([name, glyph]) => (
+              <span
+                key={name}
+                className={`controller-diagonal controller-${name}`}
+                aria-hidden="true"
+              >
+                {glyph}
+              </span>
+            ))}
         </div>
         {["select", "start", "b", "a", "turboB", "turboA"].map((b) =>
           control(b),
         )}
-        {mode === "play" && <span
-          className={`controller-combo-bridge fc-bridge-ab${active.has("a") && active.has("b") ? " is-pressed" : ""}`}
-          data-controller-combo="a b"
-          data-controller-bridge
-          data-touch-protected
-          aria-hidden="true"
-          aria-disabled={disabled}
-          onPointerDown={event => down(event, ["a", "b"])}
-          onPointerUp={event => end(event, false)}
-          onPointerCancel={event => end(event, true)}
-          onLostPointerCapture={lost}
-        />}
+        {mode === "play" && (
+          <span
+            className="controller-action-zone"
+            data-controller-action-zone
+            aria-hidden="true"
+          />
+        )}
       </div>
     </div>
   );

@@ -1,16 +1,34 @@
 .controller-combo-bridge,
-.controller-diagonal,
-.md-controller.md-play .md-combo { display: none; }
+.controller-diagonal {
+  display: none;
+}
+.controller-action-zone {
+  display: none;
+}
 @media not (pointer: coarse) {
-  .touch-controller-stage .touch-controller-overlay { display: none; }
+  .touch-controller-stage .touch-controller-overlay {
+    display: none;
+  }
 }
 @media (pointer: coarse) {
+  .touch-controller-stage {
+    container-name: touch-play;
+    container-type: inline-size;
+  }
   .touch-controller-overlay {
-    --control-safe-left: max(10px, env(safe-area-inset-left));
-    --control-safe-right: max(10px, env(safe-area-inset-right));
+    --control-safe-left: max(10px, env(safe-area-inset-left), 3.9cqw);
+    --control-safe-right: max(10px, env(safe-area-inset-right), 3.9cqw);
     --control-safe-bottom: max(12px, env(safe-area-inset-bottom));
-    --fc-action-bottom: calc(var(--control-safe-bottom) + 52px);
-    --md-action-bottom: calc(var(--control-safe-bottom) + 60px);
+    --control-size: clamp(44px, 7.5cqw, 96px);
+    --control-gap: clamp(8px, 1.875cqw, 24px);
+    --control-pad-size: clamp(132px, 20cqw, 256px);
+    --control-pad-bottom: var(--control-safe-bottom);
+    --control-main-bottom: calc(
+      var(--control-pad-bottom) +
+        (var(--control-pad-size) - var(--control-size)) / 2
+    );
+    --control-system-width: clamp(58px, 9.765625cqw, 125px);
+    --control-system-height: clamp(44px, 5.46875cqw, 70px);
     position: absolute;
     inset: 0;
     width: 100%;
@@ -20,76 +38,370 @@
     background: transparent;
     z-index: 3;
   }
-  .touch-controller-stage .touch-controller-overlay :is(.fc-controller.fc-play, .md-controller.md-play) { position: absolute; inset: 0; width: auto; max-width: none; height: auto; }
-  .touch-controller-stage .touch-controller-overlay :is(.fc-faceplate, .md-faceplate) { position: absolute; inset: 0; width: auto; height: auto; aspect-ratio: auto; }
-  .touch-controller-stage .touch-controller-overlay :is(.fc-background, .md-background) { display: none; }
-  .touch-controller-stage .touch-controller-overlay :is(.fc-dpad, .md-dpad) { top: auto; left: var(--control-safe-left); bottom: var(--control-safe-bottom); width: 132px; height: 132px; pointer-events: auto; }
-  .touch-controller-stage .touch-controller-overlay :is(.fc-dpad, .md-dpad) { border-radius: 50%; background: #1b29334d; }
-  .touch-controller-stage .touch-controller-overlay :is(.fc-dpad, .md-dpad)::after { content: ""; position: absolute; left: calc(50% - 14px); top: calc(50% - 14px); width: 28px; height: 28px; border: 1px solid #dbe6ec66; border-radius: 50%; background: #7f9aa366; pointer-events: none; }
-  .touch-controller-stage .touch-controller-overlay .controller-diagonal { display: block; position: absolute; font-size: 17px; line-height: 1; color: #d7e6ed; pointer-events: none; }
-  .controller-diagonal.controller-up-left { top: 11px; left: 11px; }
-  .controller-diagonal.controller-up-right { top: 11px; right: 11px; }
-  .controller-diagonal.controller-down-left { bottom: 11px; left: 11px; }
-  .controller-diagonal.controller-down-right { bottom: 11px; right: 11px; }
-  .touch-controller-stage .touch-controller-overlay :is(.fc-control, .md-control) { min-width: 44px; min-height: 44px; font-size: 16px; color: #fff4da; background: #382b25bf; border: 1px solid #f0d8a1a6; box-shadow: 0 1px 3px #0008; text-shadow: 0 1px 2px #000; pointer-events: auto; }
-  .touch-controller-stage .touch-controller-overlay .md-control { color: #fff; background: #1b2933bf; border-color: #e2ecf0a6; }
-  .touch-controller-stage .touch-controller-overlay :is(.fc-control, .md-control):disabled { color: #e1e5e8; background: #263039bf; }
-  .touch-controller-stage .touch-controller-overlay :is(.fc-control, .md-control).is-pressed { color: #14212c; background: #f0e4c5d9; text-shadow: none; box-shadow: inset 0 0 0 2px #fff9; }
-  .touch-controller-stage .touch-controller-overlay .fc-play-name { font-size: 14px; line-height: 1.1; }
-  .touch-controller-stage .touch-controller-overlay .fc-play-direction { display: block; }
-  .touch-controller-stage .touch-controller-overlay :is(.fc-a, .fc-b, .fc-turboA, .fc-turboB, .fc-select, .fc-start, .md-a, .md-b, .md-c, .md-x, .md-y, .md-z, .md-mode, .md-start) { top: auto; left: auto; width: 44px; height: 44px; }
-  .touch-controller-stage .touch-controller-overlay :is(.fc-a, .fc-b) { width: 60px; height: 60px; bottom: var(--fc-action-bottom); border-radius: 50%; }
-  .touch-controller-stage .touch-controller-overlay .fc-a { right: var(--control-safe-right); }
-  .touch-controller-stage .touch-controller-overlay .fc-b { right: calc(var(--control-safe-right) + 72px); }
-  .touch-controller-stage .touch-controller-overlay :is(.fc-turboA, .fc-turboB) { bottom: calc(var(--control-safe-bottom) + 120px); border-radius: 50%; }
-  .touch-controller-stage .touch-controller-overlay .fc-turboA { right: calc(var(--control-safe-right) + 8px); }
-  .touch-controller-stage .touch-controller-overlay .fc-turboB { right: calc(var(--control-safe-right) + 80px); }
-  .touch-controller-stage .touch-controller-overlay :is(.fc-turboA, .fc-turboB) .fc-play-name { font-size: 10px; }
-  .touch-controller-stage .touch-controller-overlay :is(.fc-select, .fc-start) { bottom: var(--control-safe-bottom); border-radius: 8px; }
-  .touch-controller-stage .touch-controller-overlay :is(.fc-select, .fc-start) .fc-play-name { font-size: 9px; }
-  .touch-controller-stage .touch-controller-overlay .fc-select { left: calc(var(--control-safe-left) + 140px); }
-  .touch-controller-stage .touch-controller-overlay .fc-start { left: calc(var(--control-safe-left) + 192px); }
-  .touch-controller-stage .touch-controller-overlay :is(.md-a, .md-b, .md-c) { bottom: var(--md-action-bottom); }
-  .touch-controller-stage .touch-controller-overlay :is(.md-x, .md-y, .md-z) { bottom: calc(var(--control-safe-bottom) + 112px); }
-  .touch-controller-stage .touch-controller-overlay :is(.md-x, .md-a) { right: calc(var(--control-safe-right) + 104px); }
-  .touch-controller-stage .touch-controller-overlay :is(.md-y, .md-b) { right: calc(var(--control-safe-right) + 52px); }
-  .touch-controller-stage .touch-controller-overlay :is(.md-z, .md-c) { right: var(--control-safe-right); }
-  .touch-controller-stage .touch-controller-overlay :is(.md-mode, .md-start) { bottom: var(--control-safe-bottom); font-size: 10px; border-radius: 8px; }
-  .touch-controller-stage .touch-controller-overlay :is(.md-mode, .md-start) { right: auto; bottom: calc(var(--control-safe-bottom) + 144px); }
-  .touch-controller-stage .touch-controller-overlay .md-mode { left: var(--control-safe-left); }
-  .touch-controller-stage .touch-controller-overlay .md-start { left: calc(var(--control-safe-left) + 52px); }
-  .touch-controller-stage .touch-controller-overlay .md-combo { display: flex; top: auto; left: auto; bottom: var(--control-safe-bottom); width: 64px; height: 44px; font-size: 12px; border-radius: 10px; }
-  .touch-controller-stage .touch-controller-overlay .md-ac { right: calc(var(--control-safe-right) + 76px); }
-  .touch-controller-stage .touch-controller-overlay .md-abc { right: var(--control-safe-right); }
-  .touch-controller-stage .touch-controller-overlay .controller-combo-bridge { display: block; position: absolute; z-index: 1; width: 24px; touch-action: none; pointer-events: auto; cursor: pointer; }
-  .touch-controller-stage .touch-controller-overlay .controller-combo-bridge::after { content: ""; position: absolute; left: 0; right: 0; top: calc(50% - 3px); height: 6px; border-block: 1px solid #d7e6ed99; background: #1b293399; pointer-events: none; }
-  .touch-controller-stage .touch-controller-overlay .controller-combo-bridge.is-pressed::after { background: #f0e4c5d9; border-color: #fff; }
-  .touch-controller-stage .touch-controller-overlay .fc-bridge-ab { right: calc(var(--control-safe-right) + 54px); bottom: var(--fc-action-bottom); height: 60px; }
-  .touch-controller-stage .touch-controller-overlay :is(.md-bridge-ab, .md-bridge-bc) { bottom: var(--md-action-bottom); height: 44px; }
-  .touch-controller-stage .touch-controller-overlay .md-bridge-ab { right: calc(var(--control-safe-right) + 88px); }
-  .touch-controller-stage .touch-controller-overlay .md-bridge-bc { right: calc(var(--control-safe-right) + 36px); }
+  .touch-controller-overlay:has(.fc-controller) {
+    --control-size: clamp(52px, 7.5cqw, 96px);
+  }
+  .touch-controller-stage
+    .touch-controller-overlay
+    :is(
+      .fc-controller.fc-play,
+      .md-controller.md-play,
+      .fc-faceplate,
+      .md-faceplate
+    ) {
+    position: absolute;
+    inset: 0;
+    width: auto;
+    max-width: none;
+    height: auto;
+    aspect-ratio: auto;
+  }
+  .touch-controller-stage
+    .touch-controller-overlay
+    :is(.fc-background, .md-background) {
+    display: none;
+  }
+  .touch-controller-stage .touch-controller-overlay :is(.fc-dpad, .md-dpad) {
+    --stick-x: 0%;
+    --stick-y: 0%;
+    top: auto;
+    left: var(--control-safe-left);
+    bottom: var(--control-pad-bottom);
+    width: var(--control-pad-size);
+    height: var(--control-pad-size);
+    border-radius: 0;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    pointer-events: auto;
+  }
+  .touch-controller-stage
+    .touch-controller-overlay
+    :is(.fc-dpad, .md-dpad)::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 1px solid #38e1d447;
+    background:
+      radial-gradient(
+        circle closest-side,
+        transparent 65%,
+        #38e1d459 66%,
+        transparent 67%
+      ),
+      radial-gradient(circle at 50% 38%, #3a404880, #161a1f61 70%);
+    box-shadow:
+      0 0 30px #38e1d41f,
+      inset 0 2px 6px #ffffff0f,
+      inset 0 -6px 14px #0000004d;
+    pointer-events: none;
+  }
+  .touch-controller-stage
+    .touch-controller-overlay
+    :is(.fc-dpad, .md-dpad)::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 28.79%;
+    height: 28.79%;
+    border: 1px solid #ffffff2e;
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 30%, #5a636ed9, #1b2026c7 78%);
+    box-shadow:
+      0 6px 14px #0008,
+      inset 0 1px 2px #ffffff38,
+      inset 0 -4px 8px #0006;
+    transform: translate(
+      calc(-50% + var(--stick-x)),
+      calc(-50% + var(--stick-y))
+    );
+    transition: transform 80ms;
+    pointer-events: none;
+    z-index: 3;
+  }
+  .touch-controller-stage
+    .touch-controller-overlay
+    :is(.fc-dpad, .md-dpad):has([data-controller-button="up"].is-pressed) {
+    --stick-y: -65%;
+  }
+  .touch-controller-stage
+    .touch-controller-overlay
+    :is(.fc-dpad, .md-dpad):has([data-controller-button="down"].is-pressed) {
+    --stick-y: 65%;
+  }
+  .touch-controller-stage
+    .touch-controller-overlay
+    :is(.fc-dpad, .md-dpad):has([data-controller-button="left"].is-pressed) {
+    --stick-x: -65%;
+  }
+  .touch-controller-stage
+    .touch-controller-overlay
+    :is(.fc-dpad, .md-dpad):has([data-controller-button="right"].is-pressed) {
+    --stick-x: 65%;
+  }
+  .touch-controller-stage
+    .touch-controller-overlay
+    :is(.fc-control, .md-control) {
+    --control-neon: #38e1d4;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0;
+    color: #f2f5f7;
+    background: radial-gradient(circle at 50% 34%, #333a4380, #161a1f5c 72%);
+    border: 1px solid var(--control-neon);
+    box-shadow:
+      0 0 16px color-mix(in srgb, var(--control-neon) 35%, transparent),
+      inset 0 2px 4px #ffffff1a,
+      inset 0 -6px 12px #00000073;
+    font:
+      800 clamp(16px, 2.03125cqw, 26px)/1.1 Arial,
+      "PingFang SC",
+      sans-serif;
+    text-shadow: none;
+    pointer-events: auto;
+    z-index: 1;
+    transition:
+      background 80ms,
+      box-shadow 80ms;
+  }
+  .touch-controller-stage
+    .touch-controller-overlay
+    :is(.fc-control, .md-control).is-pressed {
+    background: radial-gradient(
+      circle at 50% 34%,
+      var(--control-neon),
+      #161a1f 80%
+    );
+    color: #12151a;
+    box-shadow: 0 0 26px
+      color-mix(in srgb, var(--control-neon) 60%, transparent);
+  }
+  .touch-controller-stage
+    .touch-controller-overlay
+    :is(.fc-control, .md-control):disabled {
+    color: #e1e5e8;
+    background: #26303999;
+    box-shadow: none;
+    opacity: 0.65;
+  }
+  .touch-controller-stage
+    .touch-controller-overlay
+    :is(.fc-control, .md-control):focus-visible {
+    outline: 2px solid #f5f2ea;
+    outline-offset: 3px;
+  }
+  .touch-controller-stage
+    .touch-controller-overlay
+    :is(
+      .fc-a,
+      .fc-b,
+      .fc-turboA,
+      .fc-turboB,
+      .md-a,
+      .md-b,
+      .md-c,
+      .md-x,
+      .md-y,
+      .md-z
+    ) {
+    top: auto;
+    left: auto;
+    bottom: var(--control-main-bottom);
+    width: var(--control-size);
+    height: var(--control-size);
+    border-radius: 50%;
+  }
+  .touch-controller-stage
+    .touch-controller-overlay
+    :is(
+      .fc-a,
+      .fc-b,
+      .fc-turboA,
+      .fc-turboB,
+      .md-a,
+      .md-b,
+      .md-c,
+      .md-x,
+      .md-y,
+      .md-z
+    )::after {
+    content: "";
+    position: absolute;
+    inset: 12.5%;
+    border-radius: 50%;
+    border: 1px solid color-mix(in srgb, var(--control-neon) 35%, transparent);
+    pointer-events: none;
+  }
+  .touch-controller-stage
+    .touch-controller-overlay
+    :is(.fc-turboA, .fc-turboB, .md-x, .md-y, .md-z) {
+    bottom: calc(
+      var(--control-main-bottom) + var(--control-size) + var(--control-gap)
+    );
+  }
+  .touch-controller-stage
+    .touch-controller-overlay
+    :is(.fc-a, .fc-turboA, .md-c, .md-z) {
+    right: var(--control-safe-right);
+  }
+  .touch-controller-stage
+    .touch-controller-overlay
+    :is(.fc-b, .fc-turboB, .md-b, .md-y) {
+    right: calc(
+      var(--control-safe-right) + var(--control-size) + var(--control-gap)
+    );
+  }
+  .touch-controller-stage .touch-controller-overlay :is(.md-a, .md-x) {
+    right: calc(
+      var(--control-safe-right) + 2 * (var(--control-size) + var(--control-gap))
+    );
+  }
+  .touch-controller-stage .touch-controller-overlay :is(.md-a, .fc-a) {
+    --control-neon: #ff6b5e;
+  }
+  .touch-controller-stage .touch-controller-overlay :is(.md-b, .fc-b) {
+    --control-neon: #ffb84f;
+  }
+  .touch-controller-stage .touch-controller-overlay .md-c {
+    --control-neon: #7bd88f;
+  }
+  .touch-controller-stage .touch-controller-overlay :is(.md-y, .fc-turboA) {
+    --control-neon: #4fa8ff;
+  }
+  .touch-controller-stage .touch-controller-overlay .md-z {
+    --control-neon: #b57bff;
+  }
+  .touch-controller-stage
+    .touch-controller-overlay
+    :is(.fc-select, .fc-start, .md-mode, .md-start) {
+    top: auto;
+    left: var(--control-safe-left);
+    right: auto;
+    bottom: calc(var(--control-pad-bottom) + var(--control-pad-size) + 12px);
+    width: var(--control-system-width);
+    height: var(--control-system-height);
+    border-radius: clamp(10px, 1.40625cqw, 18px);
+    border-color: #38e1d466;
+    background: linear-gradient(160deg, #2e343c6b, #181c214d);
+    font-size: clamp(10px, 1.25cqw, 16px);
+  }
+  .touch-controller-stage .touch-controller-overlay :is(.fc-start, .md-start) {
+    left: calc(
+      var(--control-safe-left) + var(--control-system-width) +
+        var(--control-gap)
+    );
+  }
+  .touch-controller-stage .touch-controller-overlay .fc-play-name {
+    font: inherit;
+  }
+  .touch-controller-stage .touch-controller-overlay .fc-logical-sr-only {
+    position: static;
+    width: auto;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    clip-path: none;
+  }
+  .touch-controller-stage
+    .touch-controller-overlay
+    :is(.fc-turboA, .fc-turboB)
+    .fc-play-name {
+    font-size: clamp(10px, 1.25cqw, 16px);
+  }
+  .touch-controller-stage
+    .touch-controller-overlay
+    :is(.fc-dpad, .md-dpad)
+    :is(.fc-control, .md-control) {
+    width: 33.3333%;
+    height: 33.3333%;
+    background: transparent;
+    border: none;
+    color: #38e1d4bf;
+    box-shadow: none;
+    font-size: 0;
+  }
+  .touch-controller-stage .touch-controller-overlay .fc-play-direction {
+    display: none;
+  }
+  .touch-controller-stage
+    .touch-controller-overlay
+    :is(.fc-dpad, .md-dpad)
+    :is(.fc-control, .md-control)::before {
+    content: "";
+    width: 28%;
+    height: 28%;
+    background: currentColor;
+    clip-path: polygon(50% 0, 100% 100%, 0 100%);
+    filter: drop-shadow(0 0 6px #38e1d480);
+  }
+  .touch-controller-stage
+    .touch-controller-overlay
+    :is(.fc-down, .md-down)::before {
+    transform: rotate(180deg);
+  }
+  .touch-controller-stage
+    .touch-controller-overlay
+    :is(.fc-left, .md-left)::before {
+    transform: rotate(-90deg);
+  }
+  .touch-controller-stage
+    .touch-controller-overlay
+    :is(.fc-right, .md-right)::before {
+    transform: rotate(90deg);
+  }
+  .touch-controller-stage
+    .touch-controller-overlay
+    :is(.fc-dpad, .md-dpad)
+    .is-pressed {
+    color: #8df3ea;
+  }
+  .touch-controller-stage .touch-controller-overlay .controller-diagonal {
+    display: block;
+    position: absolute;
+    font-size: clamp(10px, 1.328125cqw, 17px);
+    line-height: 1;
+    color: #38e1d48c;
+    pointer-events: none;
+  }
+  .controller-diagonal.controller-up-left {
+    top: 20%;
+    left: 20%;
+  }
+  .controller-diagonal.controller-up-right {
+    top: 20%;
+    right: 20%;
+  }
+  .controller-diagonal.controller-down-left {
+    bottom: 20%;
+    left: 20%;
+  }
+  .controller-diagonal.controller-down-right {
+    bottom: 20%;
+    right: 20%;
+  }
+  .touch-controller-stage .touch-controller-overlay .controller-action-zone {
+    display: block;
+    position: absolute;
+    right: var(--control-safe-right);
+    bottom: var(--control-main-bottom);
+    width: calc(3 * var(--control-size) + 2 * var(--control-gap));
+    height: var(--control-size);
+    pointer-events: auto;
+  }
+  .touch-controller-stage
+    .touch-controller-overlay
+    .fc-controller
+    .controller-action-zone {
+    width: calc(2 * var(--control-size) + var(--control-gap));
+  }
 }
 @media (pointer: coarse) and (orientation: landscape) {
-  .touch-controller-overlay { --fc-action-bottom: calc(50% - 60px); --md-action-bottom: calc(50% - 48px); }
-  .touch-controller-stage .touch-controller-overlay :is(.fc-turboA, .fc-turboB) { bottom: calc(50% + 8px); }
-  .touch-controller-stage .touch-controller-overlay :is(.md-x, .md-y, .md-z) { bottom: calc(50% + 4px); }
-  .touch-controller-stage .touch-controller-overlay .md-combo { bottom: calc(50% - 104px); }
-  .touch-controller-stage .touch-controller-overlay :is(.fc-select, .fc-start, .md-mode, .md-start) { right: auto; bottom: calc(50% + 84px); }
-  .touch-controller-stage .touch-controller-overlay :is(.fc-select, .md-mode) { left: var(--control-safe-left); }
-  .touch-controller-stage .touch-controller-overlay :is(.fc-start, .md-start) { left: calc(var(--control-safe-left) + 52px); }
-}
-@media (pointer: coarse) {
-  .touch-controller-stage .touch-controller-overlay .fc-logical-sr-only { position: static; width: auto; height: auto; margin: 0; overflow: visible; clip-path: none; }
-}
-@media (pointer: coarse) {
-  .touch-controller-stage { container-name: touch-play; container-type: inline-size; }
-}
-
-@media (pointer: coarse) {
-  .touch-controller-stage .touch-controller-overlay .fc-dpad { bottom: calc(var(--fc-action-bottom) - 36px); }
-  .touch-controller-stage .touch-controller-overlay .md-dpad { bottom: calc(var(--md-action-bottom) - 44px); }
-  .touch-controller-stage .touch-controller-overlay :is(.md-mode, .md-start) { bottom: calc(var(--md-action-bottom) + 104px); }
-}
-@media (pointer: coarse) and (orientation: landscape) {
-  .touch-controller-stage .touch-controller-overlay :is(.fc-select, .fc-start) { bottom: calc(var(--fc-action-bottom) + 112px); }
+  .touch-controller-overlay {
+    --control-pad-bottom: max(
+      var(--control-safe-bottom),
+      calc(28% - var(--control-pad-size) / 2)
+    );
+  }
 }
