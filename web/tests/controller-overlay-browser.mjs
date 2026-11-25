@@ -142,7 +142,7 @@ try {
         const rightSpace = Math.round(geometry.game.right * 1000) - layout.picture.right;
         if (leftSpace >= 160000 && rightSpace >= 170000) assert.ok(geometry.targets.every(value => Math.round(value.rect.right * 1000) <= layout.picture.left || Math.round(value.rect.left * 1000) >= layout.picture.right), kind + " controls ignore available side space");
       }
-      assert.ok(kind === "battlecity" ? geometry.gridArea.includes("field") : geometry.position === "absolute", kind + " still reserves an external controller row");
+      assert.ok(kind === "battlecity" ? geometry.gridArea.includes("field") : ["top", "left", "bottom", "right"].every(edge => Math.round(geometry.panel[edge]) === Math.round(geometry.game[edge])), kind + " still reserves an external controller row");
       assert.ok(geometry.targets.every(value => value.rect.width >= 44 && value.rect.height >= 44), kind + " undersized touch target");
       assert.ok(geometry.targets.every(value => value.rect.left >= geometry.game.left && value.rect.right <= geometry.game.right && value.rect.top >= geometry.game.top && value.rect.bottom <= geometry.game.bottom), kind + " touch target escaped game area");
       assert.ok(geometry.targets.every(value => value.background.startsWith("rgba(")), kind + " opaque control background");

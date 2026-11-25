@@ -339,10 +339,10 @@
   }
 }
 @media (pointer: coarse) {
-  .yuyu-board { position: relative; gap: 0; max-width: none; }
+  .yuyu-board { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); gap: 0; max-width: none; }
   .game-viewport-fit[data-fit-active]:not([data-fit-fullscreen]) > .yuyu-board { width: 100%; }
-  .yuyu-screen { flex: 1 1 auto; align-items: center; width: 100%; height: 100%; box-sizing: border-box; }
+  .yuyu-screen { grid-area: 1 / 1; align-items: center; width: 100%; height: 100%; box-sizing: border-box; }
   .yuyu-screen canvas { max-height: none; min-height: 0; height: 100%; object-fit: contain; }
-  .yuyu-controller.touch-controller-overlay { padding: 0; }
+  .yuyu-controller.touch-controller-overlay { position: relative; grid-area: 1 / 1; min-height: 0; width: auto; height: auto; padding: 0; }
   [data-room-fullscreen] .yuyu-board { width: 100%; height: 100%; max-width: none; }
 }

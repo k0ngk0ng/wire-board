@@ -53,7 +53,8 @@
     "web/src/ui/published-images.json",
     "web/tests/published-images.test.mjs",
     "web/tests/published-images-browser.test.mjs",
-    "web/tests/room-capacity-browser.test.mjs"
+    "web/tests/room-capacity-browser.test.mjs",
+    "web/tests/controller-fullscreen-browser.mjs"
   ],
   "patterns": [
     {
