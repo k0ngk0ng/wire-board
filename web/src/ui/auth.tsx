@@ -24,6 +24,15 @@ export function Auth({
   return (
     <main className="login-page">
       <section className="login-brand">
+        <div className="login-hero" aria-hidden="true">
+          <img
+            src={publishedImageURL("/_common/login/hero.webp")}
+            width="1373"
+            height="1717"
+            alt=""
+            fetchPriority="high"
+          />
+        </div>
         <a className="login-logo" href="/" aria-label="围桌首页">
           <span className="login-logo-mark" aria-hidden="true">
             <span />
@@ -36,32 +45,28 @@ export function Auth({
           </span>
         </a>
         <div className="login-copy">
+          <p className="login-eyebrow">A Table For Every Game</p>
           <h1>
             一桌装下，
             <br />
             <span>所有好游戏</span>。
           </h1>
-          <p>
+          <p className="login-description">
             卡牌策略、棋盘桌游、街机动作、休闲聚会，各类游戏点开就玩，随时随地开局。
           </p>
-        </div>
-        <div className="login-hero" aria-hidden="true">
-          <img
-            src={publishedImageURL("/_common/login/hero.webp")}
-            width="700"
-            height="700"
-            alt=""
-            fetchPriority="high"
-          />
         </div>
         <div className="login-tags">
           {["卡牌策略", "棋盘桌游", "街机动作", "休闲聚会"].map((label) => (
             <span key={label}>{label}</span>
           ))}
         </div>
+        <p className="login-brand-footer">
+          Your Friends · Your Table · Your Next Move
+        </p>
       </section>
       <section className="login-form">
         <div className="login-form-inner">
+          <p className="login-form-eyebrow">Welcome To Wire Board</p>
           <h2>{register ? "创建新账号，开局吧。" : "欢迎回来，入座吧。"}</h2>
           <p className="login-subtitle">
             {register

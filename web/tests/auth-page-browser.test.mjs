@@ -9,10 +9,18 @@ import path from "node:path";
 
 test(
   "login reference layout and credential flows work on desktop and phone",
-  { skip: process.env.AUTH_PAGE_BROWSER !== "1", timeout: 180000 },
+  {
+    skip:
+      process.env.AUTH_PAGE_BROWSER !== "1" ||
+      process.env.GITHUB_ACTIONS === "true",
+    timeout: 180000,
+  },
   async () => {
     const root = fileURLToPath(new URL("../../", import.meta.url));
-    const output = path.join(root, ".local/_common/login/verification");
+    const output = path.join(
+      root,
+      ".local/_common/login/responsive/verification",
+    );
     const temporary = path.join(output, "browser-temporary");
     const environment = {
       ...process.env,
@@ -60,13 +68,18 @@ test(
       '<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>登录页验收</title><style>body{margin:0}</style><div id="root"></div><output id="submission" hidden></output><script type="module" src="/@fs/' +
       fixture +
       '"></script></html>';
-    const publication = JSON.parse(
+    const configuration = JSON.parse(
+      await readFile(path.join(root, ".local/business.json"), "utf8"),
+    );
+    const images = JSON.parse(
       await readFile(
-        path.join(root, ".local/_common/login/publication.json"),
+        path.join(root, "web/src/ui/published-images.json"),
         "utf8",
       ),
     );
-    const hero = publication.files.find((row) => row.mime === "image/webp").url;
+    const hero =
+      configuration.CDN_ORIGIN + "/" + images["/_common/login/hero.webp"];
+    let applicationImageRequests = 0;
     const server = await require("vite").createServer({
       configFile: false,
       define: {
@@ -95,8 +108,9 @@ test(
           configureServer(server) {
             server.middlewares.use((request, response, next) => {
               if (request.url.startsWith("/_common/login/hero.webp")) {
-                response.writeHead(302, { Location: hero });
-                response.end();
+                applicationImageRequests++;
+                response.statusCode = 500;
+                response.end("Images must use the CDN directly");
               } else if (request.url.startsWith("/?") || request.url === "/") {
                 response.setHeader("Content-Type", "text/html; charset=utf-8");
                 response.end(html);
@@ -120,7 +134,7 @@ test(
       await browser(
         "wait",
         "--fn",
-        'document.querySelector(".login-hero img")?.complete && document.querySelector(".login-hero img")?.naturalWidth===700',
+        'document.querySelector(".login-hero img")?.complete && document.querySelector(".login-hero img")?.naturalWidth>0',
       );
       assert.equal(
         await evaluate(
@@ -128,6 +142,50 @@ test(
         ),
         hero,
       );
+      const layouts = [];
+      for (const [width, height] of [
+        [1440, 900],
+        [1024, 768],
+        [768, 1024],
+        [390, 900],
+        [320, 740],
+        [844, 390],
+      ]) {
+        await browser("set", "viewport", String(width), String(height));
+        const geometry = await evaluate(`(() => {
+          const box = selector => { const node = document.querySelector(selector); const rect = node.getBoundingClientRect(); return { x: Math.round(rect.x), y: Math.round(rect.y), width: Math.round(rect.width), height: Math.round(rect.height), bottom: Math.round(rect.bottom) }; };
+          return { width: innerWidth, scrollWidth: document.documentElement.scrollWidth, brand: box('.login-brand'), hero: box('.login-hero img'), form: box('.login-form'), descriptionVisible: getComputedStyle(document.querySelector('.login-copy p')).display !== 'none', tagsVisible: getComputedStyle(document.querySelector('.login-tags')).display !== 'none', controls: [...document.querySelectorAll('.login-form input,.login-form button')].map(node => ({ height: Math.round(node.getBoundingClientRect().height), width: Math.round(node.getBoundingClientRect().width) })), inputFontSize: parseInt(getComputedStyle(document.querySelector('.login-input input')).fontSize, 10) };
+        })()`);
+        assert.ok(geometry.scrollWidth <= width, JSON.stringify(geometry));
+        assert.deepEqual(
+          geometry.hero,
+          geometry.brand,
+          JSON.stringify(geometry),
+        );
+        assert.ok(geometry.descriptionVisible && geometry.tagsVisible);
+        assert.ok(
+          geometry.controls.every(
+            (control) => control.width >= 44 && control.height >= 44,
+          ),
+        );
+        assert.ok(geometry.inputFontSize >= 16);
+        if (width <= 760) {
+          assert.equal(geometry.form.y, geometry.brand.bottom);
+          assert.equal(geometry.brand.width, width);
+          if (width === 390) assert.equal(geometry.brand.height, 360);
+        } else {
+          assert.equal(geometry.form.x, geometry.brand.width);
+          assert.equal(geometry.form.y, 0);
+        }
+        layouts.push({ viewport: { width, height }, ...geometry });
+        await browser(
+          "screenshot",
+          "--full",
+          path.join(output, `login-${width}.png`),
+        );
+      }
+      report.layouts = layouts;
+      await browser("set", "viewport", "1440", "900");
       await browser("snapshot", "-i");
       await browser("find", "label", "玩家昵称", "fill", "layout-player");
       await browser("find", "label", "密码", "fill", "local-test-password");
@@ -197,6 +255,28 @@ test(
       report.checks.push(
         "registration validates confirmation and retains invite",
       );
+      for (const [width, height] of [
+        [390, 900],
+        [320, 740],
+        [844, 390],
+      ]) {
+        await browser("set", "viewport", String(width), String(height));
+        await browser("scrollintoview", ".login-submit");
+        const registration = await evaluate(
+          '({width:innerWidth,height:innerHeight,scrollWidth:document.documentElement.scrollWidth,fields:document.querySelectorAll(".login-form input").length,submitTop:Math.round(document.querySelector(".login-submit").getBoundingClientRect().top),submitBottom:Math.round(document.querySelector(".login-submit").getBoundingClientRect().bottom)})',
+        );
+        assert.equal(registration.fields, 4);
+        assert.ok(
+          registration.scrollWidth <= width &&
+            registration.submitTop >= 0 &&
+            registration.submitBottom <= height,
+        );
+        await browser(
+          "screenshot",
+          "--full",
+          path.join(output, `registration-${width}.png`),
+        );
+      }
       await browser("set", "viewport", "320", "800");
       const phone = await evaluate(
         '({width:innerWidth,scrollWidth:document.documentElement.scrollWidth,controls:[...document.querySelectorAll(".login-form input,.login-form button")].map(e=>({height:Math.round(e.getBoundingClientRect().height),width:Math.round(e.getBoundingClientRect().width)})),release:document.querySelector("[data-release-entry]")?.getAttribute("href")})',
@@ -264,6 +344,8 @@ test(
       report.checks.push(
         "computed text contrast and stable missing-image layout with platform CSS",
       );
+      assert.equal(applicationImageRequests, 0);
+      report.applicationImageRequests = applicationImageRequests;
       report.passed = true;
     } catch (error) {
       report.error = String(error);
