@@ -171,7 +171,11 @@ export default defineGame<BasketballNetworkView, BasketballOptions>({
   asyncBoard: true,
   resources: () => [],
   residentResources: (room, media) => [
-    ...Object.entries(media).filter(([url]) => url.startsWith("/basketball/") && !url.includes("/audio/")).map(([url, bytes]) => ({ url, bytes })),
+    ...Object.entries(media)
+      .filter(
+        ([url]) => url.startsWith("/basketball/") && !url.includes("/audio/"),
+      )
+      .map(([url, bytes]) => ({ url, bytes })),
     ...basketballAudioResources(room),
   ],
   defaultOptions: {
@@ -183,6 +187,27 @@ export default defineGame<BasketballNetworkView, BasketballOptions>({
   Board,
   Cover,
   Options: OptionsForm,
+  resizeOptions: (options, capacity) => {
+    const mode =
+      capacity === 1
+        ? "solo"
+        : options.mode === "versus"
+          ? "versus"
+          : "cooperative";
+    return {
+      ...options,
+      mode,
+      campaign:
+        mode !== "versus" && options.campaign
+          ? {
+              ...options.campaign,
+              preparation: undefined,
+              availableOpponents: undefined,
+              opponent: 0,
+            }
+          : undefined,
+    };
+  },
   Preparation,
   Rules,
   PlayerSummary: ({ data, seat }) => {

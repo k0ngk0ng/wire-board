@@ -12,6 +12,10 @@ export default defineGame<View, Options>({
     turnSeconds: 120,
     setupSeconds: 180,
   },
+  resizeOptions: (options, capacity) => ({
+    ...options,
+    mode: capacity === 4 ? "teams" : "duel",
+  }),
   createPresentation: () => createPlayback(),
   Board,
   Options: ({ value, onChange, disabled, capacity }) => (

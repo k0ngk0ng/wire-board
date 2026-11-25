@@ -44,6 +44,11 @@ export default defineGame<View, Options>({
   ResultDetails,
   Options: PvzOptions,
   defaultOptions: { mode: "duel", teams: [0, 1], roundSeconds: 360, prepSeconds: 20, scene: "day" },
+  resizeOptions: (options, capacity) => ({
+    ...options,
+    mode: capacity === 4 ? "team" : "duel",
+    teams: options.teams.length === capacity ? options.teams : Array.from({ length: capacity }, (_, index) => index % 2),
+  }),
   PlayerSummary: ({ room, data, seat }) => {
     const player = data.players?.[seat];
     if (!player) return null;

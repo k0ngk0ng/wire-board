@@ -102,6 +102,15 @@ export default defineGame<View, Options>({
     difficulty: "normal",
     court: "club",
   },
+  resizeOptions: (options, capacity) => ({
+    ...options,
+    teams:
+      capacity === 2
+        ? [0, 1]
+        : options.teams.length === 4
+          ? options.teams
+          : [0, 1, 0, 1],
+  }),
   PlayerSummary: ({ data, seat }) => (
     <div className="tt-public-score">
       <strong>

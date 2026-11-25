@@ -1,5 +1,3 @@
-// Production failure: the host preloads every Contra WAV/Wasm through the
-// picture root or trimmed application origin before its runtime loader starts.
 import test from "node:test";
 import assert from "node:assert/strict";
 import path from "node:path";
@@ -21,6 +19,22 @@ test("actual Contra module delegates runtime media to its staged loader", async 
       {
         name: "isolated-game-registry",
         setup(b) {
+          b.onResolve({ filter: /\?worker&url$/ }, () => ({
+            path: "worker-entry",
+            namespace: "fixture-worker",
+          }));
+          b.onLoad({ filter: /.*/, namespace: "fixture-worker" }, () => ({
+            contents: 'export default "/assets/resident-worker-fixture.js"',
+          }));
+          b.onResolve({ filter: /^\.\/resident-assets$/ }, (args) =>
+            args.importer.endsWith("/load-assets.ts")
+              ? { path: "resident-host", namespace: "fixture-resident" }
+              : undefined,
+          );
+          b.onLoad({ filter: /.*/, namespace: "fixture-resident" }, () => ({
+            contents:
+              "export async function beginResidentResources(){};export async function declareResidentResources(){};export async function aliasResidentResource(){}",
+          }));
           b.onResolve({ filter: /^\.\/registry$/ }, (args) =>
             args.importer.endsWith("/load-assets.ts")
               ? { path: "registry", namespace: "fixture" }
@@ -34,7 +48,7 @@ test("actual Contra module delegates runtime media to its staged loader", async 
       },
     ],
   });
-  const parent = path.resolve(".local/contra-loading-tests");
+  const parent = path.resolve(".local/contra/loading-tests");
   mkdirSync(parent, { recursive: true });
   const directory = mkdtempSync(path.join(parent, "case-"));
   t.after(() => rmSync(directory, { recursive: true, force: true }));
@@ -42,7 +56,9 @@ test("actual Contra module delegates runtime media to its staged loader", async 
   writeFileSync(entry, compiled.outputFiles[0].text);
   const { prepareGame } = await import(pathToFileURL(entry).href);
   const code =
-    "https://cdn.ichenj.com/bga/web/" + "a".repeat(40) + "/assets/contra.js";
+    "https://runtime.example.test/bga/web/" +
+    "a".repeat(40) +
+    "/assets/contra.js";
   const manifest = {
     build: "release",
     entry: code,
@@ -55,7 +71,12 @@ test("actual Contra module delegates runtime media to its staged loader", async 
   const requests = [],
     progress = [];
   const oldFetch = globalThis.fetch,
-    oldDocument = globalThis.document;
+    oldDocument = globalThis.document,
+    oldLocation = globalThis.location;
+  globalThis.location = {
+    origin: "https://app.example.test",
+    href: "https://app.example.test/",
+  };
   globalThis.document = { querySelector: () => ({}) };
   globalThis.fetch = async (url) => {
     requests.push(String(url));
@@ -70,6 +91,7 @@ test("actual Contra module delegates runtime media to its staged loader", async 
       "https://images.invalid/old-assets",
       new AbortController().signal,
       (p) => progress.push(p),
+      "contra-stage-test",
     );
     assert.equal(result.module.id, "contra");
     assert.deepEqual(requests, ["/game-load-manifest.json", code]);
@@ -82,5 +104,6 @@ test("actual Contra module delegates runtime media to its staged loader", async 
   } finally {
     globalThis.fetch = oldFetch;
     globalThis.document = oldDocument;
+    globalThis.location = oldLocation;
   }
 });

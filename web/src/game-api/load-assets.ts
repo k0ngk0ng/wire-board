@@ -181,7 +181,8 @@ export async function prepareGame(
     Object.keys(manifest.media).filter((p) =>
       p.startsWith("/" + room.kind + "/"),
     );
-  const media = residentResourcePlan(room.kind, manifest.media, paths, await module.residentResources?.(room, manifest.media, assets));
+  const additional = await module.residentResources?.(room, manifest.media, assets);
+  const media = residentResourcePlan(room.kind, manifest.media, paths, additional ?? (module.resources ? [] : undefined));
   await declareResidentResources(lease, residentFiles(media, assets), signal);
   const warmMedia = media.every((file) =>
     verifiedAssets.has(file, manifest.build, assets),
