@@ -264,7 +264,7 @@ class Acceptance:
         self.browser("select", 'select[aria-label="赛道"]', track)
         self.browser("select", 'select[aria-label="时段"]', "night" if night else "day")
         self.browser("select", 'select[aria-label="座位上限"]', str(players))
-        self.browser("select", 'select[aria-label="比赛圈数"]', str(laps))
+        self.browser("fill", 'input[aria-label="比赛圈数"]', str(laps))
         self.browser("fill", "input[name=name]", "极品飞车原版参考验收")
         self.browser("snapshot", "-i")
         self.screenshot("create-" + track + ("-night" if night else ""))

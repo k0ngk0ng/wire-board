@@ -59,8 +59,13 @@
     "games/racing/web/classic-time-gap.ts",
     "games/racing/web/classic-collision-audio.ts",
     "games/racing/web/use-classic-collision-audio.ts",
+    "games/racing/web/classic-brake-audio.ts",
+    "games/racing/web/use-classic-brake-audio.ts",
+    "games/racing/web/use-classic-engine.ts",
     "games/racing/web/classic-minimap.ts",
     "games/racing/tests/tree_clearance_e2e_test.go",
-    "games/racing/tests/nfs4-refinements.test.mjs"
+    "games/racing/tests/nfs4-refinements.test.mjs",
+    "games/racing/tests/nfs4-polish.test.mjs",
+    "games/racing/tests/nfs4_polish_e2e_test.go"
   ]
 }

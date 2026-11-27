@@ -24,8 +24,8 @@ func strict(raw json.RawMessage, v any) error {
 	return nil
 }
 func configure(n int, raw json.RawMessage) (json.RawMessage, error) {
-	if n < 2 || n > 6 {
-		return nil, errors.New("极品飞车支持 2～6 人")
+	if n < 2 || n > 8 {
+		return nil, errors.New("极品飞车支持 2～8 人")
 	}
 	o := Options{Track: "france", Laps: 3, TimeOfDay: "day"}
 	if len(raw) > 0 {
@@ -36,8 +36,8 @@ func configure(n int, raw json.RawMessage) (json.RawMessage, error) {
 	if _, ok := trackByID(o.Track); !ok {
 		return nil, errors.New("请选择有效赛道")
 	}
-	if o.Laps != 1 && o.Laps != 3 && o.Laps != 5 {
-		return nil, errors.New("圈数可选 1、3 或 5 圈")
+	if o.Laps < 1 || o.Laps > 10 {
+		return nil, errors.New("圈数可选 1～10 圈")
 	}
 	if o.TimeOfDay == "" {
 		o.TimeOfDay = "day"
@@ -45,7 +45,7 @@ func configure(n int, raw json.RawMessage) (json.RawMessage, error) {
 	if o.TimeOfDay != "day" && o.TimeOfDay != "night" {
 		return nil, errors.New("请选择白天或夜间")
 	}
-	if len(o.Vehicles) > 6 {
+	if len(o.Vehicles) > 8 {
 		return nil, errors.New("车型席位超出范围")
 	}
 	if len(o.Vehicles) > n {
@@ -100,7 +100,7 @@ type Action struct {
 }
 
 func Module() gameapi.Module {
-	return gameapi.Module{ID: "racing", Name: "极品飞车", MinPlayers: 2, MaxPlayers: 6, Realtime: true, Configure: configure, Prepare: prepare, Start: start, Apply: apply, View: project, BotAction: botAction, Reclaim: reclaim, Restore: restore, AcceptStale: acceptStale, OnTimer: onTimer}
+	return gameapi.Module{ID: "racing", Name: "极品飞车", MinPlayers: 2, MaxPlayers: 8, Realtime: true, Configure: configure, Prepare: prepare, Start: start, Apply: apply, View: project, BotAction: botAction, Reclaim: reclaim, Restore: restore, AcceptStale: acceptStale, OnTimer: onTimer}
 }
 func start(ctx gameapi.Context, raw json.RawMessage) (gameapi.Match, error) {
 	oRaw, e := configure(ctx.Players, raw)

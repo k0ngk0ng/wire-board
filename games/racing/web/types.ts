@@ -6,7 +6,7 @@ import type { ClassicTerrainWorld } from "./classic-terrain";
 export type Point = { x: number; y: number };
 export type Options = {
   track: "france" | "coastal" | "uk" | "park" | "germany" | "metro" | "harbor" | "woodland" | "coast" | "canyon";
-  laps: 1 | 3 | 5;
+  laps: number;
   timeOfDay?: "day" | "night";
   vehicles?: string[];
 };

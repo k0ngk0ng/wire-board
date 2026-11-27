@@ -182,7 +182,7 @@ func decode(m gameapi.Match) (State, error) {
 			}
 		}
 	}
-	if len(s.Cars) < 2 || len(s.Cars) > 6 || len(s.Track.Points) < 16 || s.Epoch == "" {
+	if len(s.Cars) < 2 || len(s.Cars) > 8 || len(s.Track.Points) < 16 || s.Epoch == "" {
 		return s, errors.New("赛车存档不完整")
 	}
 	return s, nil

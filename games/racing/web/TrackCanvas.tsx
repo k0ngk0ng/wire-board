@@ -23,8 +23,8 @@ import { ClassicGauges, classicGaugeArc } from "./ClassicGauges";
 import { classicGaugeReading } from "./classic-gauges";
 import { classicVehicle } from "./classic-motion";
 import {
+  classicSeatColor,
   minimapBounds,
-  minimapMarkerColors,
   minimapTransform,
   orderedMinimapCars,
 } from "./classic-minimap";
@@ -360,36 +360,40 @@ export function TrackCanvas(props: TrackCanvasProps) {
           }
           for (const c of orderedMinimapCars(cars, follow)) {
             const isSelf = c.seat === follow;
-            const radius = (isSelf ? (compactMini ? 5.6 : 6.8) : compactMini ? 4.4 : 5.4) / tf.scale;
+            const color = classicSeatColor(c.seat);
+            const radius = (isSelf ? (compactMini ? 5.8 : 7.0) : compactMini ? 4.4 : 5.4) / tf.scale;
             if (isSelf) {
               ctx.beginPath();
-              ctx.arc(c.x, c.y, radius + 2.2 / tf.scale, 0, Math.PI * 2);
-              ctx.fillStyle = "rgba(4, 12, 22, 0.92)";
+              ctx.arc(c.x, c.y, radius + 2.8 / tf.scale, 0, Math.PI * 2);
+              ctx.fillStyle = "rgba(4, 12, 22, 0.94)";
               ctx.fill();
               ctx.beginPath();
-              ctx.arc(c.x, c.y, radius + 1.1 / tf.scale, 0, Math.PI * 2);
-              ctx.fillStyle = "#00e5ff";
+              ctx.arc(c.x, c.y, radius + 1.6 / tf.scale, 0, Math.PI * 2);
+              ctx.fillStyle = "#ffffff";
               ctx.fill();
               ctx.beginPath();
               ctx.arc(c.x, c.y, radius, 0, Math.PI * 2);
-              ctx.fillStyle = "#ffffff";
+              ctx.fillStyle = color;
               ctx.fill();
-              const tip = (compactMini ? 8.5 : 10.5) / tf.scale;
-              const wing = (compactMini ? 3.5 : 4.4) / tf.scale;
+              const tip = (compactMini ? 10.2 : 12.2) / tf.scale;
+              const base = (compactMini ? 4.2 : 5.2) / tf.scale;
+              const wing = (compactMini ? 3.4 : 4.2) / tf.scale;
               const cos = Math.cos(c.angle);
               const sin = Math.sin(c.angle);
               ctx.beginPath();
               ctx.moveTo(c.x + cos * tip, c.y + sin * tip);
-              ctx.lineTo(c.x - sin * wing, c.y + cos * wing);
-              ctx.lineTo(c.x + sin * wing, c.y - cos * wing);
+              ctx.lineTo(c.x + cos * base - sin * wing, c.y + sin * base + cos * wing);
+              ctx.lineTo(c.x + cos * base + sin * wing, c.y + sin * base - cos * wing);
               ctx.closePath();
-              ctx.fillStyle = "#00e5ff";
+              ctx.fillStyle = "#ffffff";
               ctx.fill();
+              ctx.lineWidth = 1.2 / tf.scale;
+              ctx.strokeStyle = "#06111c";
+              ctx.stroke();
             } else {
               ctx.beginPath();
               ctx.arc(c.x, c.y, radius, 0, Math.PI * 2);
-              ctx.fillStyle =
-                minimapMarkerColors[c.seat % minimapMarkerColors.length];
+              ctx.fillStyle = color;
               ctx.fill();
               ctx.lineWidth = (compactMini ? 1.6 : 2) / tf.scale;
               ctx.strokeStyle = "#06111c";

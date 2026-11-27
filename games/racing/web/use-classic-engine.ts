@@ -14,7 +14,7 @@ export function useClassicEngine(pack: ClassicScenePack | undefined, car: Car | 
   useEffect(() => {
     setLoaded(undefined);
     playback.stop();
-    if (!pack || !id || !running) return;
+    if (!pack || !id) return;
     const controller = new AbortController();
     const specs = classicEngineAssets(pack.manifest, id);
     void (async () => {
@@ -29,12 +29,12 @@ export function useClassicEngine(pack: ClassicScenePack | undefined, car: Car | 
         sources.set(sample.path, classicFLACDataURL(bytes));
       }
       if (!controller.signal.aborted) setLoaded({ pack, id, playback, engine: { metadata, sources } });
-    })().catch(() => { /* Audio errors never interrupt driving. */ });
+    })().catch(() => {});
     return () => {
       controller.abort();
       playback.stop();
     };
-  }, [pack, id, base, playback, running]);
+  }, [pack, id, base, playback]);
   useEffect(() => {
     playback.update(engine, car?.rpm ?? engine?.metadata.idleRPM ?? 1000, car?.motion?.throttle ?? car?.throttle ?? 0, running && !!car);
   }, [engine, car?.rpm, car?.motion?.throttle, car?.throttle, running, playback]);

@@ -27,11 +27,12 @@ import {
   CLASSIC_DRAW_DISTANCES,
 } from "./classic-camera-modes";
 import { useClassicEngine } from "./use-classic-engine";
+import { useClassicBrakeAudio } from "./use-classic-brake-audio";
 import { useClassicHorn } from "./use-classic-horn";
 import { useClassicCollisionAudio } from "./use-classic-collision-audio";
 import { nfs4CollisionAttenuation } from "./classic-collision-audio";
 import { computeOpponentGaps } from "./classic-time-gap";
-import { minimapMarkerColors } from "./classic-minimap";
+import { classicSeatColor } from "./classic-minimap";
 import "./style.css";
 const actionError = (error: unknown) =>
   error instanceof TypeError
@@ -74,9 +75,6 @@ function ClassicBoard(props: BoardProps<View>) {
     const p = latest.current;
     setPack(null);
     setError("");
-    const followed = p.data.cars.find(
-      (car) => car.seat === (p.room.you < 0 ? 0 : p.room.you),
-    );
     void loadClassicScene(
       p.data,
       p.assets,
@@ -88,7 +86,6 @@ function ClassicBoard(props: BoardProps<View>) {
           { loaded: value.loaded, total: value.total },
         );
       },
-      p.sound ? followed?.vehicle : undefined,
     )
       .then((value) => {
         if (!controller.signal.aborted) setPack(value);
@@ -219,6 +216,7 @@ function RaceBoard(
       alive = false;
     };
   }, [spectating, room.id]);
+  const serverNow = clock.serverNow + now - clock.receivedAt;
   const audioRunning =
     sound &&
     (!audioFailure.current ||
@@ -226,7 +224,7 @@ function RaceBoard(
       d.serverAt > audioFailure.current.serverAt) &&
     focused &&
     !document.hidden &&
-    clock.serverNow + now - clock.receivedAt - d.serverAt <= 1000 &&
+    serverNow - d.serverAt <= 1000 &&
     d.phase !== "finished";
   const stopClassicEngine = useClassicEngine(
     props.classicAssets,
@@ -234,6 +232,29 @@ function RaceBoard(
     assets,
     audio,
     !!props.classicAssets && audioRunning && !followedAudio?.finishAt,
+  );
+  const localBrakeInput =
+    !spectating &&
+    !suspended &&
+    !room.seats[room.you]?.autoPlay &&
+    !car?.finishAt &&
+    d.phase !== "countdown"
+      ? {
+          brake: drive.brake,
+          brakeAmount: drive.brakeAmount,
+          drift: drive.drift,
+        }
+      : undefined;
+  const stopClassicBrake = useClassicBrakeAudio(
+    props.classicAssets,
+    followedAudio,
+    serverNow,
+    localBrakeInput,
+    audio,
+    !!props.classicAssets &&
+      audioRunning &&
+      d.phase !== "countdown" &&
+      !followedAudio?.finishAt,
   );
   const stopClassicHorn = useClassicHorn(
     props.classicAssets,
@@ -418,10 +439,12 @@ function RaceBoard(
     latest.current.audio.stopLoop("racing-engine");
     latest.current.audio.stopLoop("racing-tires");
     stopClassicEngine();
+    stopClassicBrake();
     stopClassicHorn();
   };
   const wake = (touch = false) => {
     const p = latest.current;
+    if (!document.hidden) setFocused(true);
     paused.current = lifecycle.current.sync({
       race: `${p.room.id}:${p.data.epoch}:${p.room.you}`,
       transport: p.clock.epoch ?? 0,
@@ -797,8 +820,7 @@ function RaceBoard(
     },
     [audio],
   );
-  const serverNow = clock.serverNow + now - clock.receivedAt,
-    countdown = Math.max(0, Math.ceil((d.startAt - serverNow) / 1000)),
+  const countdown = Math.max(0, Math.ceil((d.startAt - serverNow) / 1000)),
     lastCount = useRef(countdown);
   useEffect(() => {
     if (countdown > 0 && countdown < lastCount.current && audioRunning)
@@ -806,6 +828,7 @@ function RaceBoard(
     lastCount.current = countdown;
   }, [countdown, audioRunning]);
   useEffect(() => {
+    if (d.physics === 3) return;
     const followed = spectating ? d.cars.find((c) => c.seat === watch) : car;
     const running = audioRunning && followed && !followed.finishAt;
     if (!running) {
@@ -814,12 +837,10 @@ function RaceBoard(
       return;
     }
     const speed = Math.min(1, followed.speed / MAX_ROAD_SPEED);
-    if (d.physics === 3) audio.stopLoop("racing-engine");
-    else
-      void audio.loop("racing-engine", sources(assets, "engine.mp3"), {
-        volume: 0.12 + speed * 0.16,
-        rate: 0.72 + speed * 0.7,
-      });
+    void audio.loop("racing-engine", sources(assets, "engine.mp3"), {
+      volume: 0.12 + speed * 0.16,
+      rate: 0.72 + speed * 0.7,
+    });
     if (
       (enabled && !suspended ? drive.drift : followed.drift) &&
       followed.speed > 70
@@ -829,7 +850,7 @@ function RaceBoard(
         rate: 0.9 + speed * 0.12,
       });
     else audio.stopLoop("racing-tires");
-  }, [now, audioRunning, d.phase, car?.speed, drive.drift, watch]);
+  }, [now, audioRunning, d.phase, d.physics, car?.speed, drive.drift, watch]);
   const steerButton = (side: "left" | "right") => ({
     "data-game-hold-control": true,
     "data-racing-touch-action": side,
@@ -1231,36 +1252,38 @@ function RaceBoard(
               aria-label="车辆差距时间"
               data-racing-gaps
             >
-              {gapRows.map((row) => (
-                <div
-                  key={row.seat}
-                  className={`racing-gap-row ${
-                    row.self
-                      ? "is-self"
-                      : row.deltaLaps < 0 || row.deltaMs < 0
-                        ? "is-ahead"
-                        : "is-behind"
-                  }`}
-                  data-racing-gap-seat={row.seat}
-                >
-                  <span className="racing-gap-rank">{row.rank}</span>
-                  <i
-                    aria-hidden="true"
-                    style={{
-                      background:
-                        minimapMarkerColors[
-                          row.seat % minimapMarkerColors.length
-                        ],
-                    }}
-                  />
-                  <span className="racing-gap-name">
-                    {room.seats[row.seat]?.name ?? `玩家 ${row.seat + 1}`}
-                  </span>
-                  <strong className="racing-gap-time">
-                    {row.self ? "0.00s" : row.relativeText}
-                  </strong>
-                </div>
-              ))}
+              {gapRows.map((row) => {
+                const seatColor = classicSeatColor(row.seat);
+                return (
+                  <div
+                    key={row.seat}
+                    className={`racing-gap-row ${
+                      row.self
+                        ? "is-self"
+                        : row.deltaLaps < 0 || row.deltaMs < 0
+                          ? "is-ahead"
+                          : "is-behind"
+                    }`}
+                    data-racing-gap-seat={row.seat}
+                    data-racing-seat-color={seatColor}
+                  >
+                    <span className="racing-gap-rank">{row.rank}</span>
+                    <i
+                      aria-hidden="true"
+                      style={{ background: seatColor }}
+                    />
+                    <span
+                      className="racing-gap-name"
+                      style={{ color: seatColor }}
+                    >
+                      {room.seats[row.seat]?.name ?? `玩家 ${row.seat + 1}`}
+                    </span>
+                    <strong className="racing-gap-time">
+                      {row.self ? "0.00s" : row.relativeText}
+                    </strong>
+                  </div>
+                );
+              })}
             </div>
           )}
         {d.physics === 3 && drivingControls}

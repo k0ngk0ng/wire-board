@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { gameDefaultPlayers } from "../src/game-api/default-players.ts";
+import { formatPlayerCounts, gameDefaultPlayers } from "../src/game-api/default-players.ts";
 
 test("十席团队游戏默认创建5对5", () => {
   assert.equal(gameDefaultPlayers({ minPlayers: 2, maxPlayers: 10, playerCounts: [2, 4, 6, 8, 10], defaultPlayers: 10 }), 10);
@@ -32,4 +32,13 @@ test("人数枚举使用实际最大值，固定或单人游戏保持合法人�
   assert.equal(gameDefaultPlayers({ minPlayers: 2, maxPlayers: 10, playerCounts: [2, 4, 6] }), 6);
   assert.equal(gameDefaultPlayers({ minPlayers: 2, maxPlayers: 2 }), 2);
   assert.equal(gameDefaultPlayers({ minPlayers: 1, maxPlayers: 1 }), 1);
+});
+
+test("人数文案将连续范围折叠为区间并保留离散枚举", () => {
+  assert.equal(formatPlayerCounts({ minPlayers: 2, maxPlayers: 8, playerCounts: [2, 3, 4, 5, 6, 7, 8] }), "2～8");
+  assert.equal(formatPlayerCounts({ minPlayers: 2, maxPlayers: 6, playerCounts: [2, 3, 4, 5, 6] }), "2～6");
+  assert.equal(formatPlayerCounts({ minPlayers: 2, maxPlayers: 10, playerCounts: [2, 4, 6, 8, 10] }), "2 / 4 / 6 / 8 / 10");
+  assert.equal(formatPlayerCounts({ minPlayers: 1, maxPlayers: 1, playerCounts: [1] }), "1");
+  assert.equal(formatPlayerCounts({ minPlayers: 2, maxPlayers: 2 }), "2");
+  assert.equal(formatPlayerCounts({ minPlayers: 2, maxPlayers: 4 }), "2～4");
 });

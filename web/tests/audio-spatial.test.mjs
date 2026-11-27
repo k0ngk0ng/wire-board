@@ -316,3 +316,17 @@ test("denied or late native output cannot replay a cancelled short sound", async
   await flush();
   assert.ok(x.elements.every(media => media.paused && media.srcObject === null));
 });
+
+test("large inline base64 data URLs decode directly without fetch", async t => {
+  const x = setup(t);
+  const rawBytes = new Uint8Array(6000);
+  rawBytes.fill(65);
+  let binary = "";
+  for (let i = 0; i < rawBytes.length; i++) binary += String.fromCharCode(rawBytes[i]);
+  const inlineSource = "data:audio/flac;base64," + btoa(binary);
+  assert.ok(inlineSource.length > 4096);
+  assert.equal(await x.port.spatial("collision", [inlineSource], options("col-inline")), true);
+  assert.equal(x.fetches.length, 0);
+  assert.equal(x.contexts[0].decodeCount, 1);
+  assert.equal(x.contexts[0].sources.length, 1);
+});

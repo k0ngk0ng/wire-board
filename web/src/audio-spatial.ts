@@ -131,9 +131,19 @@ export class NativeSpatialAudio {
     while (this.buffers.size >= 32) this.evictBuffer(this.buffers.keys().next().value!);
     const entry: SpatialBuffer = { abort: new AbortController(), bytes: 0 };
     entry.pending = (async () => {
-      const response = await fetch(source, { signal: entry.abort.signal });
-      if (!response.ok) throw Error("spatial source failed");
-      const bytes = await this.readSource(response, entry.abort.signal);
+      let bytes: ArrayBuffer;
+      const inline = /^data:audio\/[a-z0-9.+-]+;base64,([a-z0-9+/=]+)$/i.exec(source);
+      if (inline) {
+        const binary = atob(inline[1]);
+        if (!binary.length || binary.length > 2 * 1024 * 1024) throw Error("spatial source invalid");
+        const data = new Uint8Array(binary.length);
+        for (let i = 0; i < binary.length; i++) data[i] = binary.charCodeAt(i);
+        bytes = data.buffer;
+      } else {
+        const response = await fetch(source, { signal: entry.abort.signal });
+        if (!response.ok) throw Error("spatial source failed");
+        bytes = await this.readSource(response, entry.abort.signal);
+      }
       if (entry.abort.signal.aborted || !bytes.byteLength || bytes.byteLength > 2 * 1024 * 1024 || this.closed) throw Error("spatial source invalid");
       const buffer = await this.context.decodeAudioData(bytes);
       if (entry.abort.signal.aborted || this.closed || !Number.isFinite(buffer.duration) || buffer.duration <= 0 || buffer.duration > 5 ||

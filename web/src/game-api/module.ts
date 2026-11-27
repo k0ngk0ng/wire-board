@@ -254,6 +254,7 @@ export type GameModule<Data = unknown, Options = unknown> = {
     seat: number;
     assets: string;
   }>;
+  seatColor?: (seat: number) => string;
   // Creation keeps Options; this waiting-room preparation owns its controls.
   preparationOwnsOptions?: boolean;
   playerLayout?: {

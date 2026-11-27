@@ -189,6 +189,14 @@ function hull(vertices: number[][]): [number, number][] {
 }
 
 
+const classicTrackDisplayNames: Record<string, string> = {
+  france: "法国乡间公路",
+  coastal: "海豚湾",
+  uk: "凯尔特遗迹",
+  park: "金迪亚克公园",
+  germany: "德国乡间公路",
+};
+
 export function classicTrackFromRoute(
   route: NativeClassicRoute,
 ): ClassicRuleTrack {
@@ -253,7 +261,7 @@ export function classicTrackFromRoute(
   return {
     version: 3,
     id: route.id,
-    name: route.name,
+    name: classicTrackDisplayNames[route.id] ?? route.name,
     geometry: route.geometryHash,
     width: numeric(route.bounds.max[0] + 30, 10),
     height: numeric(route.bounds.max[2] + 30, 10),

@@ -806,6 +806,9 @@ function App() {
             onPointerDown={() => {
               if (sound) enableAudio();
             }}
+            onTouchStart={() => {
+              if (sound) enableAudio();
+            }}
             onKeyDown={() => {
               if (sound) enableAudio();
             }}

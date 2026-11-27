@@ -530,11 +530,71 @@
   align-items: flex-start;
   gap: 14px;
 }
-.racing-options > label {
+.racing-options > label,
+.racing-laps-field {
   display: flex;
   flex: 1 1 120px;
   flex-direction: column;
   gap: 6px;
+}
+.racing-laps-field label {
+  font-weight: 500;
+}
+.racing-laps-stepper {
+  display: inline-grid;
+  grid-template-columns: 44px minmax(52px, 1fr) 44px;
+  align-items: stretch;
+  min-height: 44px;
+  border: 1px solid #9caf9f;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #ffffff;
+}
+.racing-laps-step {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: #edf3ee;
+  color: #183b32;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+}
+.racing-laps-step:hover:not(:disabled) {
+  background: #dbe8de;
+}
+.racing-laps-step:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.racing-laps-stepper input {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  border: 0;
+  border-left: 1px solid #c6d4c9;
+  border-right: 1px solid #c6d4c9;
+  border-radius: 0;
+  padding: 0 6px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: #183b32;
+  background: #ffffff;
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+.racing-laps-stepper input::-webkit-outer-spin-button,
+.racing-laps-stepper input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 .racing-track-choice {
   display: grid;
@@ -1454,6 +1514,54 @@
 
 [data-room-fullscreen] .is-classic .racing-pedals .racing-drift {
   right: 98px;
+}
+
+@media (min-width: 700px) and (min-height: 600px) {
+  .is-classic.has-touch .racing-controls,
+  [data-room-fullscreen] .is-classic.has-touch .racing-controls {
+    bottom: clamp(128px, 20dvh, 210px);
+    padding: 0 28px;
+    gap: 24px;
+  }
+  .is-classic.has-touch .racing-steering {
+    gap: 20px;
+  }
+  .is-classic.has-touch .racing-steering button {
+    width: 108px;
+    height: 108px;
+    min-width: 108px;
+    min-height: 108px;
+  }
+  .is-classic.has-touch .racing-steering svg {
+    width: 46px;
+    height: 46px;
+  }
+  .is-classic.has-touch .racing-pedals {
+    gap: 20px;
+  }
+  .is-classic.has-touch .racing-pedals .racing-brake {
+    width: 100px;
+    height: 100px;
+    font-size: 18px;
+  }
+  .is-classic.has-touch .racing-pedals .racing-throttle {
+    width: 112px;
+    height: 112px;
+    font-size: 19px;
+  }
+  .is-classic.has-touch .racing-pedals .racing-drift,
+  [data-room-fullscreen] .is-classic.has-touch .racing-pedals .racing-drift {
+    right: 132px;
+    bottom: -68px;
+    width: 62px;
+    height: 62px;
+    min-height: 62px;
+    font-size: 14px;
+  }
+  .is-classic.has-touch .racing-route-button canvas {
+    width: 176px;
+    height: 124px;
+  }
 }
 
 .racing-board,

@@ -77,6 +77,14 @@ type classicRuleRegistry struct {
 	bodies     map[string]ClassicBody
 }
 
+var classicTrackDisplayNames = map[string]string{
+	"france":  "法国乡间公路",
+	"coastal": "海豚湾",
+	"uk":      "凯尔特遗迹",
+	"park":    "金迪亚克公园",
+	"germany": "德国乡间公路",
+}
+
 var classicRules = loadClassicRules()
 
 func loadClassicRules() classicRuleRegistry {
@@ -111,6 +119,9 @@ func loadClassicRules() classicRuleRegistry {
 		}
 		if track.Version != 3 || len(track.Geometry) != 64 || len(track.Points) < 300 || len(track.Road) != len(track.Points) {
 			panic("invalid classic road data " + entry.Name())
+		}
+		if displayName, ok := classicTrackDisplayNames[track.ID]; ok {
+			track.Name = displayName
 		}
 		result.byGeometry[track.Geometry] = buildClassicTrackInfo(track)
 	}

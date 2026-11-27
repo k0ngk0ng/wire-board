@@ -1,3 +1,4 @@
+import { useEffect, useId, useState } from "react";
 import catalog from "./catalog";
 import {
   defineGame,
@@ -15,7 +16,84 @@ import {
 } from "./classic-catalog";
 import { classicLegacySounds } from "./classic-loading";
 import { formatLeaderGap } from "./classic-time-gap";
-import { minimapMarkerColors } from "./classic-minimap";
+import { classicSeatColor } from "./classic-minimap";
+function LapsStepper({
+  value,
+  onChange,
+  disabled,
+}: {
+  value: number;
+  onChange: (laps: number) => void;
+  disabled: boolean;
+}) {
+  const inputId = useId();
+  const clamped = Math.max(
+    1,
+    Math.min(10, Math.trunc(Number.isFinite(value) ? value : 3)),
+  );
+  const [draft, setDraft] = useState(String(clamped));
+  useEffect(() => {
+    setDraft(String(clamped));
+  }, [clamped]);
+  const commit = (next: number) => {
+    const valid = Math.max(1, Math.min(10, Math.trunc(next)));
+    setDraft(String(valid));
+    if (valid !== clamped) onChange(valid);
+  };
+  return (
+    <div className="racing-laps-field">
+      <label htmlFor={inputId}>比赛圈数</label>
+      <div className="racing-laps-stepper" data-racing-laps-stepper>
+        <button
+          type="button"
+          className="racing-laps-step"
+          aria-label="减少圈数"
+          disabled={disabled || clamped <= 1}
+          onClick={() => commit(clamped - 1)}
+        >
+          −
+        </button>
+        <input
+          id={inputId}
+          type="number"
+          inputMode="numeric"
+          aria-label="比赛圈数"
+          min={1}
+          max={10}
+          step={1}
+          disabled={disabled}
+          value={draft}
+          onChange={(e) => {
+            const rawText = e.target.value;
+            setDraft(rawText);
+            if (!/^\d+$/.test(rawText)) return;
+            const parsed = Number(rawText);
+            if (parsed >= 1 && parsed <= 10 && parsed !== clamped) {
+              onChange(parsed);
+            }
+          }}
+          onBlur={() => {
+            const parsed = Number(draft);
+            if (Number.isFinite(parsed) && draft.trim() !== "") {
+              commit(parsed);
+            } else {
+              setDraft(String(clamped));
+            }
+          }}
+        />
+        <button
+          type="button"
+          className="racing-laps-step"
+          aria-label="增加圈数"
+          disabled={disabled || clamped >= 10}
+          onClick={() => commit(clamped + 1)}
+        >
+          ＋
+        </button>
+      </div>
+    </div>
+  );
+}
 function OptionsForm({ value, onChange, disabled }: OptionsProps<Options>) {
   const previewTrack = Object.hasOwn(classicTrackNames, value.track)
     ? value.track as keyof typeof classicTrackNames
@@ -63,23 +141,13 @@ function OptionsForm({ value, onChange, disabled }: OptionsProps<Options>) {
           <option value="night">夜间</option>
         </select>
       </label>
-      <label>
-        比赛圈数
-        <select
-          aria-label="比赛圈数"
-          disabled={disabled}
-          value={value.laps}
-          onChange={(e) =>
-            onChange({ ...value, laps: +e.target.value as Options["laps"] })
-          }
-        >
-          <option value={1}>1 圈 · 热身</option>
-          <option value={3}>3 圈 · 标准赛</option>
-          <option value={5}>5 圈 · 耐力赛</option>
-        </select>
-      </label>
+      <LapsStepper
+        value={value.laps}
+        disabled={disabled}
+        onChange={(laps) => onChange({ ...value, laps })}
+      />
       <p>
-        2～6 人同时竞速，可添加电脑。车型在等待房间选择；首车过线后，其余车辆有
+        2～8 人同时竞速，可添加电脑。车型在等待房间选择；首车过线后，其余车辆有
         30 秒完成比赛。
       </p>
     </div>
@@ -137,6 +205,7 @@ function WaitingSeatBadge({
 }) {
   const id = options.vehicles?.[seat] ?? classicDefaultVehicleForSeat(seat);
   const vehicle = classicVehicleByID(id);
+  const color = classicSeatColor(seat);
   return (
     <span
       className="racing-seat-vehicle"
@@ -144,6 +213,11 @@ function WaitingSeatBadge({
       title={vehicle.name}
       aria-label={vehicle.name}
       data-racing-seat-vehicle={vehicle.id}
+      data-racing-seat-color={color}
+      style={{
+        borderColor: color,
+        boxShadow: `inset 3px 0 0 ${color}`,
+      }}
     >
       <img
         src={`/racing/v3/previews/cars/${vehicle.id}.webp`}
@@ -161,6 +235,7 @@ export default defineGame<View, Options>({
   ...catalog,
   asyncBoard: true,
   assetLoading: "board",
+  seatColor: classicSeatColor,
   resources: (room, media) => {
     const data = room.game?.data as View | undefined;
     if (
@@ -191,8 +266,8 @@ export default defineGame<View, Options>({
             style={{
               background:
                 d.physics === 3
-                  ? minimapMarkerColors[seat % minimapMarkerColors.length]
-                  : seatColors[seat],
+                  ? classicSeatColor(seat)
+                  : seatColors[seat % seatColors.length],
             }}
           />
           第 {c.rank} 名{room.you === seat && !room.spectating ? " · 你" : ""}
@@ -211,12 +286,11 @@ export default defineGame<View, Options>({
   Rules: () => (
     <div className="racing-rules">
       <p>
-        2～6 人的追车视角竞速，全自动挡。3 秒发车灯后同时起步，按所选的 1、3 或
-        5
-        圈比赛，按最终过线先后排名。{classicVehicles.length} 款经典车型具有各自的动力、传动、制动和抓地特性，可在等待房间选择。
+        2～8 人的追车视角竞速，全自动挡。3 秒发车灯后同时起步，支持 1～10
+        圈自定义比赛，按最终过线先后排名。{classicVehicles.length} 款经典车型具有各自的动力、传动、制动和抓地特性，可在等待房间选择；每位玩家与电脑在房间即分配专属颜色，同步应用于车身涂装、赛道图圆点与差距名单。
       </p>
       <p>
-        沿赛道正向绕行一周后增加圈数；离开路面再返回仍能继续计圈。比赛实时显示与其他车辆的差距时间（领先、时间差或落后圈数），并按距离还原近处撞击声，远处他车撞击不播报。附着由轮胎下的实际地面材质决定，坡度影响行驶。车身可以相撞，没有攻击或防御道具。
+        沿赛道正向绕行一周后增加圈数；离开路面再返回仍能继续计圈。比赛实时显示与其他车辆的差距时间（领先、时间差或落后圈数），还原原版引擎声、路面刹车胎响，并按距离播放近处撞击声，远处他车撞击不播报。附着由轮胎下的实际地面材质决定，坡度影响行驶。车身可以相撞，没有攻击或防御道具。
       </p>
       <p>
         首车冲线后，其他车辆有 30 秒完赛；比赛总时限为 20

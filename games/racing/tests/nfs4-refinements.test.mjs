@@ -124,7 +124,7 @@ test("minimap fits tightly to polyline bounds and draws followed car on top with
     0,
   );
   assert.equal(ordered.at(-1)?.seat, 0);
-  assert.equal(minimapMarkerColors.length, 6);
+  assert.equal(minimapMarkerColors.length, 8);
 });
 
 test("fullscreen gear badge does not stretch dark background with padding-bottom", () => {

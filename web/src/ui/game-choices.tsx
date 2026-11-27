@@ -2,6 +2,7 @@ import { CategoryFilter, matchesCategory } from "./game-category";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Check } from "lucide-react";
 import { gameModule, gameName } from "../game-api/registry";
+import { formatPlayerCounts } from "../game-api/default-players";
 
 export function GameChoices({
   games,
@@ -61,12 +62,7 @@ export function GameChoices({
         {value ? `已选：${gameName(value)}` : "选择游戏即可创建房间。"}
         {selectedGame && (
           <span className="game-choice-players">
-            {selectedGame.playerCounts
-              ? selectedGame.playerCounts.join(" / ")
-              : selectedGame.minPlayers === selectedGame.maxPlayers
-                ? selectedGame.minPlayers
-                : `${selectedGame.minPlayers}–${selectedGame.maxPlayers}`}{" "}
-            人
+            {formatPlayerCounts(selectedGame)} 人
           </span>
         )}
       </p>

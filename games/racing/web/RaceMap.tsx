@@ -27,8 +27,8 @@ import {
   type View,
 } from "./types";
 import {
+  classicSeatColor,
   minimapBounds,
-  minimapMarkerColors,
   minimapTransform,
   orderedMinimapCars,
 } from "./classic-minimap";
@@ -246,18 +246,16 @@ function carBody(
     const markerR = Math.max(24, (own ? 9.5 : 7.5) / scale);
     ctx.beginPath();
     ctx.arc(0, 0, markerR, 0, Math.PI * 2);
-    ctx.fillStyle = own
-      ? "#ffffff"
-      : minimapMarkerColors[c.seat % minimapMarkerColors.length];
+    ctx.fillStyle = classicSeatColor(c.seat);
     ctx.fill();
     ctx.lineWidth = (own ? 3 : 2) / scale;
-    ctx.strokeStyle = own ? "#00e5ff" : "#071320";
+    ctx.strokeStyle = own ? "#ffffff" : "#071320";
     ctx.stroke();
     ctx.restore();
     return;
   }
   if (own) {
-    ctx.strokeStyle = "#00e5ff";
+    ctx.strokeStyle = classicSeatColor(c.seat);
     ctx.lineWidth = 2.6 / scale;
     ctx.beginPath();
     ctx.arc(0, 0, 31, 0, Math.PI * 2);
@@ -289,7 +287,7 @@ function carBody(
       48,
     );
   else {
-    ctx.fillStyle = seatColors[c.seat % 6];
+    ctx.fillStyle = classicSeatColor(c.seat);
     ctx.beginPath();
     ctx.roundRect(-13, -23, 26, 46, 6);
     ctx.fill();
@@ -632,11 +630,9 @@ export function RaceMap(props: Props) {
             c.x,
             c.y,
             (isSelf ? 8 : 6.5) / tf.scale,
-            isSelf
-              ? "#ffffff"
-              : minimapMarkerColors[c.seat % minimapMarkerColors.length],
+            classicSeatColor(c.seat),
           );
-          mc.strokeStyle = isSelf ? "#00e5ff" : "#06111c";
+          mc.strokeStyle = isSelf ? "#ffffff" : "#06111c";
           mc.lineWidth = (isSelf ? 2.5 : 2) / tf.scale;
           mc.stroke();
         }

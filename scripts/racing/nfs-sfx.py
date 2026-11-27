@@ -11,6 +11,14 @@ from speedtools.types import Compression
 from speedtools.utils import get_path_case_insensitive
 
 COLLISION_PATCHES = (24, 25, 29, 30, 31, 32, 33, 34, 35, 36, 37)
+SKID_PATCHES = (41, 42, 45, 46, 47)
+SKID_SURFACES = {
+    41: "cobble",
+    42: "asphalt",
+    45: "dirt",
+    46: "snow",
+    47: "gravel",
+}
 XA_TABLE = ((0, 0), (240, 0), (460, -208), (392, -220))
 
 
@@ -163,6 +171,49 @@ def main():
             "patches": patches,
         }
         (folder / "collision.json").write_bytes(encode_json(metadata))
+        skid_patches = {}
+        for patch in SKID_PATCHES:
+            streams = by_patch.get(patch)
+            if not streams:
+                raise ValueError("Missing gen.bnk skid patch: " + str(patch))
+            stream = streams[0]
+            full_pcm = decode_stream_pcm(stream)
+            frame_bytes = 2 * stream.num_channels
+            total_frames = len(full_pcm) // frame_bytes
+            loop_start = max(0, min(stream.loop_start, total_frames - 1))
+            loop_end = max(loop_start, min(stream.loop_end, total_frames - 1))
+            loop_pcm = full_pcm[loop_start * frame_bytes : (loop_end + 1) * frame_bytes]
+            loop_frames = len(loop_pcm) // frame_bytes
+            rel_path = f"audio/sfx/skid-{patch}.flac"
+            target = stage / rel_path
+            encode_lossless_flac(loop_pcm, stream.sample_rate, stream.num_channels, target)
+            flac_bytes = target.read_bytes()
+            skid_patches[str(patch)] = {
+                "patch": patch,
+                "surface": SKID_SURFACES[patch],
+                "path": rel_path,
+                "compression": stream.compression.name,
+                "sampleRate": stream.sample_rate,
+                "channels": stream.num_channels,
+                "bits": 16,
+                "loopStart": loop_start,
+                "loopEnd": loop_end,
+                "frames": loop_frames,
+                "duration": round(loop_frames / stream.sample_rate, 6),
+                "volume": stream.volume,
+                "bytes": len(flac_bytes),
+                "sha256": sha_hex(flac_bytes),
+                "pcmSha256": sha_hex(loop_pcm),
+            }
+        skid_metadata = {
+            "version": 1,
+            "source": "Data/Audio/Sfx/gen.bnk",
+            "sourceBytes": len(source_bytes),
+            "sourceSha256": sha_hex(source_bytes),
+            "generator": "scripts/racing/nfs-sfx.py",
+            "patches": skid_patches,
+        }
+        (folder / "skid.json").write_bytes(encode_json(skid_metadata))
         assets = []
         for path in sorted(p for p in folder.iterdir() if p.is_file()):
             raw = path.read_bytes()
@@ -177,7 +228,7 @@ def main():
         manifest = {"version": 1, "source": metadata["source"], "assets": assets, "totalBytes": sum(a["bytes"] for a in assets)}
         (stage / "sfx-manifest.json").write_bytes(encode_json(manifest))
         stage.rename(output)
-        print(json.dumps({"output": str(output.relative_to(repository)), "patches": len(patches), "bytes": manifest["totalBytes"]}))
+        print(json.dumps({"output": str(output.relative_to(repository)), "patches": len(patches), "skidPatches": len(skid_patches), "bytes": manifest["totalBytes"]}))
     except BaseException:
         shutil.rmtree(stage)
         raise

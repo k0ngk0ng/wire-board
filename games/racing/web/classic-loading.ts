@@ -6,17 +6,18 @@ import {
   type ClassicAsset,
   type ClassicManifest,
   type ClassicProgress,
-} from "./classic-assets";
+} from "./classic-assets.ts";
 import {
   classicPropWorld,
   classicTrackFromRoute,
   type ClassicPropCatalog,
   type NativeClassicRoute,
-} from "./classic-road";
-import { classicHornAssets } from "./classic-horn";
-import { classicCollisionAssets } from "./classic-collision-audio";
-import { classicTerrainForRoute } from "./classic-terrain-loading";
-import type { Track, View } from "./types";
+} from "./classic-road.ts";
+import { classicHornAssets } from "./classic-horn.ts";
+import { classicCollisionAssets } from "./classic-collision-audio.ts";
+import { classicSkidAssets } from "./classic-brake-audio.ts";
+import { classicTerrainForRoute } from "./classic-terrain-loading.ts";
+import type { Track, View } from "./types.ts";
 
 export type ClassicScenePack = {
   files: Map<string, ArrayBuffer>;
@@ -47,12 +48,27 @@ export function classicEngineAssets(
   return manifest.assets.filter((file) => file.path.startsWith(`audio/${id}/`));
 }
 
+export function collectClassicSceneAssets(
+  manifest: ClassicManifest,
+  track: string,
+  timeOfDay: "day" | "night",
+  vehicles: readonly string[],
+): ClassicAsset[] {
+  const specs = selectClassicAssets(manifest, track, timeOfDay, vehicles);
+  specs.push(...classicHornAssets(manifest));
+  specs.push(...classicCollisionAssets(manifest));
+  specs.push(...classicSkidAssets(manifest));
+  for (const id of new Set(vehicles)) {
+    specs.push(...classicEngineAssets(manifest, id));
+  }
+  return specs;
+}
+
 export async function loadClassicScene(
   data: View,
   _legacyMediaBase: string,
   signal: AbortSignal,
   progress: (value: ClassicLoadProgress) => void,
-  audioVehicle?: string,
 ): Promise<ClassicScenePack> {
   const codeResponse = await fetch("/game-load-manifest.json", {
     signal,
@@ -95,15 +111,12 @@ export async function loadClassicScene(
     codeManifestBytes.byteLength;
   const timeOfDay = data.options.timeOfDay === "night" ? "night" : "day";
   const vehicles = [...new Set(data.cars.map((car) => car.vehicle ?? "p911"))];
-  const specs = selectClassicAssets(
+  const specs = collectClassicSceneAssets(
     manifest,
     data.track.id,
     timeOfDay,
     vehicles,
   );
-  specs.push(...classicHornAssets(manifest));
-  specs.push(...classicCollisionAssets(manifest));
-  if (audioVehicle) specs.push(...classicEngineAssets(manifest, audioVehicle));
   let total = completed;
   const files = await fetchClassicFiles(specs, {
     base,

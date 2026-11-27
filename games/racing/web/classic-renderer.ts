@@ -14,7 +14,8 @@ import { ClassicSkidRenderer } from "./classic-skid-renderer";
 import { classicSkidStrength, classicSkidOnSurface, type ClassicSkidContact } from "./classic-skids";
 import { classicTerrainAt } from "./classic-terrain";
 import { ClassicCockpitDynamics } from "./classic-cockpit-dynamics";
-import { seatColors, type Car, type Track } from "./types";
+import { classicSeatColor, minimapMarkerColors } from "./classic-minimap";
+import type { Car, Track } from "./types";
 import type { SceneFrame } from "./chase-renderer";
 import type { ChasePose } from "./chase-camera";
 
@@ -216,7 +217,7 @@ export class ClassicRenderer {
       });
       await engine.prepareSky(get(`tracks/${name}-sky.png`));
       for (const [id, template] of engine.templates)
-        for (let seat = 0; seat < seatColors.length; seat++)
+        for (let seat = 0; seat < minimapMarkerColors.length; seat++)
           template.traverse((object) => {
             if (object instanceof T.Mesh)
               for (const material of Array.isArray(object.material) ? object.material : [object.material])
@@ -528,7 +529,7 @@ export class ClassicRenderer {
     const definition = classicVehicleByID(id);
     const palette = definition.colors[0];
     if (!palette) throw Error(`车型缺少原始颜色：${id}`);
-    const hex = new T.Color(seatColors[seat % seatColors.length]).getHex(T.SRGBColorSpace);
+    const hex = new T.Color(classicSeatColor(seat)).getHex(T.SRGBColorSpace);
     const primary = [(hex>>16)&255,(hex>>8)&255,hex&255];
     const canvas = document.createElement("canvas"); canvas.width = pixels.width; canvas.height = pixels.height;
     const ctx = canvas.getContext("2d"); if (!ctx) throw Error("原车颜色初始化失败");

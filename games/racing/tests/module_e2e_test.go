@@ -209,12 +209,12 @@ func TestRacingOptions(t *testing.T) {
 	if !mod.Realtime {
 		t.Fatal("racing must opt into simultaneous bot frames")
 	}
-	for _, n := range []int{0, 1, 7, 32} {
+	for _, n := range []int{0, 1, 9, 32} {
 		if _, e := mod.Configure(n, raw(map[string]any{})); e == nil {
 			t.Fatalf("accepted %d seats", n)
 		}
 	}
-	for _, o := range []any{map[string]any{"laps": 2}, map[string]any{"track": "missing"}, map[string]any{"speed": 999}} {
+	for _, o := range []any{map[string]any{"laps": 0}, map[string]any{"laps": 11}, map[string]any{"track": "missing"}, map[string]any{"speed": 999}} {
 		if _, e := mod.Configure(2, raw(o)); e == nil {
 			t.Fatalf("accepted invalid options %v", o)
 		}

@@ -271,8 +271,8 @@ func TestRacingHTTPRejectInvalidConfiguration(t *testing.T) {
 		capacity int
 		options  map[string]any
 	}{
-		{1, map[string]any{}}, {7, map[string]any{}},
-		{2, map[string]any{"track": "unknown"}}, {2, map[string]any{"laps": 2}},
+		{1, map[string]any{}}, {9, map[string]any{}},
+		{2, map[string]any{"track": "unknown"}}, {2, map[string]any{"laps": 11}},
 		{2, map[string]any{"laps": 0}}, {2, map[string]any{"laps": 1, "speed": 200}},
 	} {
 		c.Request("POST", "/api/rooms", map[string]any{"kind": "racing", "name": "invalid racing configuration", "capacity": input.capacity, "options": input.options}, 400)

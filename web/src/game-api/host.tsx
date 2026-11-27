@@ -13,7 +13,7 @@ import { NetworkSignal } from "../ui/network-signal";
 import { cooperativeRatingNotice } from "../ui/cooperative-rating";
 import { GameMobilePlayNotice } from "../ui/game-mobile-play-notice";
 import { NavigationController } from "../controllers/NavigationController";
-import { gameDefaultPlayers } from "./default-players";
+import { formatPlayerCounts, gameDefaultPlayers } from "./default-players";
 
 export function GameBoard({
   room,
@@ -214,9 +214,7 @@ export function ModuleWaiting({
         <h2>{module.name}</h2>
         <p>{module.description}</p>
         <span className="tag">
-          {module.playerCounts?.join(" / ") ??
-            `${module.minPlayers}～${module.maxPlayers}`}{" "}
-          人 ·{" "}
+          {formatPlayerCounts(module)} 人 ·{" "}
           {module.supportsBots
             ? "支持电脑与托管"
             : module.minPlayers === 1
@@ -262,14 +260,19 @@ export function ModuleWaiting({
         <div className="seats-grid">
           {Array.from({ length: room.capacity }, (_, i) => {
             const seat = room.seats[i];
+            const avatarBg = seat
+              ? (module.seatColor?.(i) ?? seatColors[i % seatColors.length])
+              : undefined;
             return (
               <div key={i} className={`waiting-seat ${seat ? "filled" : ""}`}>
                 <span
                   className="avatar"
                   style={{
-                    background: seat
-                      ? seatColors[i % seatColors.length]
-                      : undefined,
+                    background: avatarBg,
+                    color:
+                      avatarBg && module.seatColor
+                        ? compactAvatarInk(avatarBg)
+                        : undefined,
                   }}
                 >
                   {seat ? seat.name[0] : <Plus size={22} />}
@@ -442,10 +445,13 @@ export function ModulePlayers({ room }: { room: Room }) {
         <span
           className="avatar"
           style={{
-            background: seatColors[i % seatColors.length],
-            color: compact
-              ? compactAvatarInk(seatColors[i % seatColors.length])
-              : undefined,
+            background: module?.seatColor?.(i) ?? seatColors[i % seatColors.length],
+            color:
+              compact || module?.seatColor
+                ? compactAvatarInk(
+                    module?.seatColor?.(i) ?? seatColors[i % seatColors.length],
+                  )
+                : undefined,
           }}
         >
           {seat.name[0]}
@@ -531,7 +537,13 @@ export function ModulePlayers({ room }: { room: Room }) {
               >
                 <span
                   className="avatar"
-                  style={{ background: seatColors[i % seatColors.length] }}
+                  style={{
+                    background:
+                      module?.seatColor?.(i) ?? seatColors[i % seatColors.length],
+                    color: module?.seatColor
+                      ? compactAvatarInk(module.seatColor(i))
+                      : undefined,
+                  }}
                 >
                   {seat.name[0]}
                 </span>

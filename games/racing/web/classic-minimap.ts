@@ -1,13 +1,21 @@
 import type { Point } from "./types";
 
 export const minimapMarkerColors = [
-  "#ff4d4f",
-  "#38bdf8",
-  "#34d399",
-  "#ffd43b",
-  "#c084fc",
-  "#fb923c",
+  "#ff4757",
+  "#2e9bff",
+  "#2ed573",
+  "#ffc312",
+  "#c56cf0",
+  "#ff7f2a",
+  "#18dcff",
+  "#ff6eb4",
 ] as const;
+
+export function classicSeatColor(seat: number): string {
+  const index = Math.trunc(Number.isFinite(seat) ? seat : 0);
+  const length = minimapMarkerColors.length;
+  return minimapMarkerColors[((index % length) + length) % length];
+}
 
 export type MinimapBounds = {
   minX: number;

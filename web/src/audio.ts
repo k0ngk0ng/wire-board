@@ -477,7 +477,7 @@ export class GameAudio {
   }
   private startSpatial(owner: string, key: string, requested: readonly string[], options: SpatialOptions, centered = false): Promise<boolean> {
     const normalized = normalizeSpatialOptions(options);
-    const sources = [...new Set(requested.filter(source => typeof source === "string" && source.length > 0 && source.length <= 4096))];
+    const sources = [...new Set(requested.filter(source => typeof source === "string" && source.length > 0 && (source.startsWith("data:audio/") ? source.length <= 2_800_000 : source.length <= 4096)))];
     if (!normalized || typeof key !== "string" || !key || key.length > 128 || !sources.length || sources.length > 4) return Promise.resolve(false);
     if (centered) normalized.centered = true;
     let history = this.spatialHistory.get(owner);
