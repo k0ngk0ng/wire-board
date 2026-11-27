@@ -26,6 +26,12 @@ import {
   type Track,
   type View,
 } from "./types";
+import {
+  minimapBounds,
+  minimapMarkerColors,
+  minimapTransform,
+  orderedMinimapCars,
+} from "./classic-minimap";
 
 type Art = { cars?: HTMLImageElement; scenery?: HTMLImageElement };
 type Frame = { data: View; clock: GameClock; received: number };
@@ -236,11 +242,25 @@ function carBody(
 ) {
   ctx.save();
   ctx.translate(c.x, c.y);
-  if (own) {
-    ctx.strokeStyle = "#fff9dd";
-    ctx.lineWidth = 2 / scale;
+  if (scale < 0.45) {
+    const markerR = Math.max(24, (own ? 9.5 : 7.5) / scale);
     ctx.beginPath();
-    ctx.arc(0, 0, 29, 0, Math.PI * 2);
+    ctx.arc(0, 0, markerR, 0, Math.PI * 2);
+    ctx.fillStyle = own
+      ? "#ffffff"
+      : minimapMarkerColors[c.seat % minimapMarkerColors.length];
+    ctx.fill();
+    ctx.lineWidth = (own ? 3 : 2) / scale;
+    ctx.strokeStyle = own ? "#00e5ff" : "#071320";
+    ctx.stroke();
+    ctx.restore();
+    return;
+  }
+  if (own) {
+    ctx.strokeStyle = "#00e5ff";
+    ctx.lineWidth = 2.6 / scale;
+    ctx.beginPath();
+    ctx.arc(0, 0, 31, 0, Math.PI * 2);
     ctx.stroke();
   }
   ctx.rotate(c.angle + Math.PI / 2);
@@ -583,35 +603,44 @@ export function RaceMap(props: Props) {
       const m = mini.current,
         mc = m?.getContext("2d");
       if (m && mc) {
-        const sx = m.width / d.track.width,
-          sy = m.height / d.track.height;
-        mc.setTransform(sx, 0, 0, sy, 0, 0);
-        mc.fillStyle = "#e5e4ce";
-        mc.fillRect(0, 0, d.track.width, d.track.height);
+        const mb = minimapBounds(d.track.points);
+        const tf = minimapTransform(mb, m.width, m.height, 14);
+        mc.setTransform(1, 0, 0, 1, 0, 0);
+        mc.fillStyle = "#102130";
+        mc.fillRect(0, 0, m.width, m.height);
+        mc.save();
+        mc.translate(tf.offsetX, tf.offsetY);
+        mc.scale(tf.scale, tf.scale);
         path(mc, d.track.points);
-        mc.lineWidth = d.track.roadWidth;
-        mc.strokeStyle = "#5c7473";
+        mc.lineJoin = "round";
+        mc.lineWidth = Math.max(d.track.roadWidth, 5 / tf.scale);
+        mc.strokeStyle = "#87a3b4";
         mc.stroke();
-        mc.strokeStyle = "#274b50";
-        mc.lineWidth = 2 / sx;
+        mc.strokeStyle = "#81d9e0";
+        mc.lineWidth = 2 / tf.scale;
         mc.strokeRect(
           cam.x - v.width / (2 * cam.scale),
           cam.y - v.height / (2 * cam.scale),
           v.width / cam.scale,
           v.height / cam.scale,
         );
-        for (const c of cars) {
+        const activeSeat = seat >= 0 ? seat : watch;
+        for (const c of orderedMinimapCars(cars, activeSeat)) {
+          const isSelf = c.seat === activeSeat;
           dot(
             mc,
             c.x,
             c.y,
-            (c.seat === seat ? 4 : 3) / sx,
-            seatColors[c.seat % 6],
+            (isSelf ? 8 : 6.5) / tf.scale,
+            isSelf
+              ? "#ffffff"
+              : minimapMarkerColors[c.seat % minimapMarkerColors.length],
           );
-          mc.strokeStyle = "#fff7df";
-          mc.lineWidth = 1 / sx;
+          mc.strokeStyle = isSelf ? "#00e5ff" : "#06111c";
+          mc.lineWidth = (isSelf ? 2.5 : 2) / tf.scale;
           mc.stroke();
         }
+        mc.restore();
       }
       request = requestAnimationFrame(draw);
     };
@@ -671,10 +700,14 @@ export function RaceMap(props: Props) {
   };
   const miniPoint = (e: ReactPointerEvent<HTMLCanvasElement>) => {
     const r = e.currentTarget.getBoundingClientRect();
+    const mb = minimapBounds(props.data.track.points);
+    const tf = minimapTransform(mb, r.width, r.height, 7);
+    const worldX = (e.clientX - r.left - tf.offsetX) / tf.scale;
+    const worldY = (e.clientY - r.top - tf.offsetY) / tf.scale;
     camera.current = {
       ...camera.current,
-      x: clamp((e.clientX - r.left) / r.width, 0, 1) * props.data.track.width,
-      y: clamp((e.clientY - r.top) / r.height, 0, 1) * props.data.track.height,
+      x: clamp(worldX, mb.minX, mb.maxX),
+      y: clamp(worldY, mb.minY, mb.maxY),
     };
     follow.current = false;
     setFollowing(false);

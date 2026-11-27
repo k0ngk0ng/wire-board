@@ -11,8 +11,11 @@ import {
   classicTrackNames,
   classicVehicles,
   classicVehicleByID,
+  classicDefaultVehicleForSeat,
 } from "./classic-catalog";
 import { classicLegacySounds } from "./classic-loading";
+import { formatLeaderGap } from "./classic-time-gap";
+import { minimapMarkerColors } from "./classic-minimap";
 function OptionsForm({ value, onChange, disabled }: OptionsProps<Options>) {
   const previewTrack = Object.hasOwn(classicTrackNames, value.track)
     ? value.track as keyof typeof classicTrackNames
@@ -90,8 +93,7 @@ function Preparation({
 }: PreparationProps<Options>) {
   if (room.you < 0) return null;
   const id =
-    options.vehicles?.[room.you] ??
-    classicVehicles[room.you % classicVehicles.length].id;
+    options.vehicles?.[room.you] ?? classicDefaultVehicleForSeat(room.you);
   const vehicle = classicVehicleByID(id);
   return (
     <div className="racing-preparation">
@@ -126,6 +128,35 @@ function Preparation({
     </div>
   );
 }
+function WaitingSeatBadge({
+  options,
+  seat,
+}: {
+  options: Options;
+  seat: number;
+}) {
+  const id = options.vehicles?.[seat] ?? classicDefaultVehicleForSeat(seat);
+  const vehicle = classicVehicleByID(id);
+  return (
+    <span
+      className="racing-seat-vehicle"
+      tabIndex={0}
+      title={vehicle.name}
+      aria-label={vehicle.name}
+      data-racing-seat-vehicle={vehicle.id}
+    >
+      <img
+        src={`/racing/v3/previews/cars/${vehicle.id}.webp`}
+        alt={vehicle.name}
+        width={56}
+        height={26}
+      />
+      <span className="racing-seat-vehicle-tip" role="tooltip">
+        {vehicle.name}
+      </span>
+    </span>
+  );
+}
 export default defineGame<View, Options>({
   ...catalog,
   asyncBoard: true,
@@ -144,14 +175,28 @@ export default defineGame<View, Options>({
   Cover,
   Options: OptionsForm,
   Preparation,
+  WaitingSeatBadge,
   PlayerSummary: ({ room, data: d, seat }) => {
     const c = d.cars.find((c) => c.seat === seat);
     if (!c) return null;
+    const gap =
+      d.phase !== "countdown"
+        ? formatLeaderGap(c.gapMs ?? 0, c.gapLaps ?? 0)
+        : "";
     return (
       <div className="racing-player-summary" data-racing-seat={seat}>
         <strong>
-          <i aria-hidden="true" style={{ background: seatColors[seat] }} />第{" "}
-          {c.rank} 名{room.you === seat && !room.spectating ? " · 你" : ""}
+          <i
+            aria-hidden="true"
+            style={{
+              background:
+                d.physics === 3
+                  ? minimapMarkerColors[seat % minimapMarkerColors.length]
+                  : seatColors[seat],
+            }}
+          />
+          第 {c.rank} 名{room.you === seat && !room.spectating ? " · 你" : ""}
+          {gap ? ` · ${gap}` : ""}
         </strong>
         <span>
           {c.vehicle && `${classicVehicleByID(c.vehicle).name} · `}
@@ -171,7 +216,7 @@ export default defineGame<View, Options>({
         圈比赛，按最终过线先后排名。{classicVehicles.length} 款经典车型具有各自的动力、传动、制动和抓地特性，可在等待房间选择。
       </p>
       <p>
-        沿赛道正向绕行一周后增加圈数；离开路面再返回仍能继续计圈。附着由轮胎下的实际地面材质决定，坡度影响行驶。车身可以相撞，没有攻击或防御道具。
+        沿赛道正向绕行一周后增加圈数；离开路面再返回仍能继续计圈。比赛实时显示与其他车辆的差距时间（领先、时间差或落后圈数），并按距离还原近处撞击声，远处他车撞击不播报。附着由轮胎下的实际地面材质决定，坡度影响行驶。车身可以相撞，没有攻击或防御道具。
       </p>
       <p>
         首车冲线后，其他车辆有 30 秒完赛；比赛总时限为 20

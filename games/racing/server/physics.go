@@ -294,6 +294,7 @@ func advance(s *State, until int64) {
 				drop := stepClassicCar(c, s.Track, stepMS, at, classicCollisionProps(s, i, at))
 				if drop > 45 {
 					s.emit("collision", i, at, clamp(drop/200, 0, 1))
+					s.Events[len(s.Events)-1].Kind = "wall"
 				}
 			} else {
 				stepCar(c, s.Track, stepMS, at)
@@ -308,7 +309,9 @@ func advance(s *State, until int64) {
 				collide(s, at)
 			}
 			for i := range s.Cars {
+				beforeProgress := s.Cars[i].Progress
 				updateProgress(s, &s.Cars[i], previous[i], at)
+				recordGapGateCrossing(s, &s.Cars[i], beforeProgress, s.Cars[i].Progress, at)
 			}
 		}
 		s.ServerAt = at
@@ -323,6 +326,7 @@ func advance(s *State, until int64) {
 		}
 	}
 	rank(s)
+	updateTimeGaps(s)
 	if s.Result == nil && until >= s.MaxRaceAt {
 		s.ServerAt = s.MaxRaceAt
 		s.finish()

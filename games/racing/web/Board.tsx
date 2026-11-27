@@ -2,6 +2,7 @@ import { useGameController } from "../../../web/src/controllers/use-game-control
 import { MAX_ROAD_SPEED } from "./dynamics";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type {
+  CSSProperties,
   PointerEvent as ReactPointerEvent,
   KeyboardEvent as ReactKeyboardEvent,
   FocusEvent as ReactFocusEvent,
@@ -27,6 +28,10 @@ import {
 } from "./classic-camera-modes";
 import { useClassicEngine } from "./use-classic-engine";
 import { useClassicHorn } from "./use-classic-horn";
+import { useClassicCollisionAudio } from "./use-classic-collision-audio";
+import { nfs4CollisionAttenuation } from "./classic-collision-audio";
+import { computeOpponentGaps } from "./classic-time-gap";
+import { minimapMarkerColors } from "./classic-minimap";
 import "./style.css";
 const actionError = (error: unknown) =>
   error instanceof TypeError
@@ -238,6 +243,16 @@ function RaceBoard(
     audio,
     !!props.classicAssets && audioRunning,
   );
+  const classicCollisionAudio = useClassicCollisionAudio(
+    props.classicAssets,
+    followedAudio,
+    audio,
+    !!props.classicAssets && audioRunning,
+  );
+  const collisionAudioRef = useRef(classicCollisionAudio);
+  collisionAudioRef.current = classicCollisionAudio;
+  const followedRef = useRef(followedAudio);
+  followedRef.current = followedAudio;
   const enabled =
     room.status === "playing" &&
     !spectating &&
@@ -721,10 +736,41 @@ function RaceBoard(
       if (event.id <= seen.current.id) continue;
       seen.current.id = event.id;
       if (!audioRunning) continue;
+      const delay = soundDelay(
+        event.at,
+        clock.serverNow + performance.now() - clock.receivedAt,
+        enabled && !suspended,
+      );
+      if (delay === null) continue;
+      if (event.type === "collision" || event.type === "prop") {
+        if (d.physics === 3) {
+          const captured = event;
+          eventTimers.current.enqueue(() => {
+            if (!document.hidden && document.hasFocus())
+              collisionAudioRef.current.playEvent(captured);
+          }, delay);
+        } else if (event.type === "collision") {
+          const listener = followedRef.current;
+          const own = !!listener && event.seat === listener.seat;
+          const distanceMeters = listener
+            ? Math.hypot(event.x - listener.x, event.y - listener.y) / 10
+            : Infinity;
+          const attenuation = own ? 1 : nfs4CollisionAttenuation(distanceMeters);
+          if (attenuation > 0) {
+            const legacyFile =
+              event.intensity > 0.45 ? "collision-heavy" : "collision-light";
+            eventTimers.current.enqueue(() => {
+              if (!document.hidden && document.hasFocus())
+                void audio.play(sources(assets, legacyFile + ".mp3"), {
+                  volume: Math.max(0.05, Math.min(1, attenuation)),
+                });
+            }, delay);
+          }
+        }
+        continue;
+      }
       let file = "";
       if (event.type === "start") file = "start";
-      else if (event.type === "collision")
-        file = event.intensity > 0.45 ? "collision-heavy" : "collision-light";
       else if (event.type === "lap" && (event.seat === room.you || spectating))
         file = "lap";
       else if (
@@ -733,16 +779,10 @@ function RaceBoard(
       )
         file = "finish";
       if (file) {
-        const delay = soundDelay(
-          event.at,
-          clock.serverNow + performance.now() - clock.receivedAt,
-          enabled && !suspended,
-        );
-        if (delay !== null)
-          eventTimers.current.enqueue(() => {
-            if (!document.hidden && document.hasFocus())
-              void audio.playWithFallback(sources(assets, file + ".mp3"));
-          }, delay);
+        eventTimers.current.enqueue(() => {
+          if (!document.hidden && document.hasFocus())
+            void audio.playWithFallback(sources(assets, file + ".mp3"));
+        }, delay);
       }
     }
   }, [d.events, scope, sound]);
@@ -989,10 +1029,12 @@ function RaceBoard(
         </button>
         <button
           type="button"
-          className={drive.brake ? "pressed" : ""}
-          style={{
-            background: `linear-gradient(to top, #386d72 ${(drive.brakeAmount ?? 0) * 100}%, #2a4352 ${(drive.brakeAmount ?? 0) * 100}%)`,
-          }}
+          className={`racing-brake ${drive.brake ? "pressed" : ""}`}
+          style={
+            {
+              "--pedal-fill": `${(drive.brakeAmount ?? 0) * 100}%`,
+            } as CSSProperties
+          }
           aria-label="刹车"
           aria-pressed={drive.brake}
           disabled={!enabled}
@@ -1002,12 +1044,14 @@ function RaceBoard(
         </button>
         <button
           type="button"
-          style={{
-            background: `linear-gradient(to top, #386d72 ${drive.throttle * 100}%, #2a4352 ${drive.throttle * 100}%)`,
-          }}
+          style={
+            {
+              "--pedal-fill": `${drive.throttle * 100}%`,
+            } as CSSProperties
+          }
           aria-label="油门"
           aria-pressed={drive.throttle > 0}
-          className={drive.throttle > 0 ? "pressed" : ""}
+          className={`racing-throttle ${drive.throttle > 0 ? "pressed" : ""}`}
           disabled={!enabled}
           {...heldButton("throttle")}
         >
@@ -1100,6 +1144,20 @@ function RaceBoard(
       </button>
     </div>
   );
+  const referenceSeat = spectating ? watch : room.you;
+  const gapRows = computeOpponentGaps(d.cars, referenceSeat);
+  const selfGapRow = gapRows.find((row) => row.self);
+  const hudGapText = (() => {
+    if (d.phase === "countdown" || !selfGapRow) return "—";
+    if (selfGapRow.rank === 1) {
+      const runnerUp = gapRows.find((row) => !row.self);
+      if (runnerUp && (runnerUp.leaderGapLaps > 0 || runnerUp.leaderGapMs > 0)) {
+        return `领先 ${runnerUp.leaderText.replace(/^\+/, "")}`;
+      }
+      return "领先";
+    }
+    return selfGapRow.leaderText;
+  })();
   return (
     <section
       ref={boardElement}
@@ -1137,6 +1195,10 @@ function RaceBoard(
           </strong>
         </div>
         <div>
+          <span>差距</span>
+          <strong data-racing-gap>{hudGapText}</strong>
+        </div>
+        <div>
           <span>用时</span>
           <strong>
             {timeText(
@@ -1160,6 +1222,47 @@ function RaceBoard(
         </span>
       </div>
       <div className="racing-stage">
+        {d.physics === 3 &&
+          d.phase !== "countdown" &&
+          hudVisible &&
+          gapRows.length > 1 && (
+            <div
+              className="racing-gaps"
+              aria-label="车辆差距时间"
+              data-racing-gaps
+            >
+              {gapRows.map((row) => (
+                <div
+                  key={row.seat}
+                  className={`racing-gap-row ${
+                    row.self
+                      ? "is-self"
+                      : row.deltaLaps < 0 || row.deltaMs < 0
+                        ? "is-ahead"
+                        : "is-behind"
+                  }`}
+                  data-racing-gap-seat={row.seat}
+                >
+                  <span className="racing-gap-rank">{row.rank}</span>
+                  <i
+                    aria-hidden="true"
+                    style={{
+                      background:
+                        minimapMarkerColors[
+                          row.seat % minimapMarkerColors.length
+                        ],
+                    }}
+                  />
+                  <span className="racing-gap-name">
+                    {room.seats[row.seat]?.name ?? `玩家 ${row.seat + 1}`}
+                  </span>
+                  <strong className="racing-gap-time">
+                    {row.self ? "0.00s" : row.relativeText}
+                  </strong>
+                </div>
+              ))}
+            </div>
+          )}
         {d.physics === 3 && drivingControls}
         {d.physics === 3 && mobile && viewControls}
         <TrackCanvas

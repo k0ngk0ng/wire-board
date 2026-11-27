@@ -61,7 +61,13 @@ def main():
         write(out/'terrain'/(spec['geometry']+'.json'),payload)
         index.append({'id':ident,'geometry':spec['geometry'],'sha256':sha(payload),'sourcePath':source_path,'sourceSha256':sha(data),'materialsSha256':sha(material_bytes),'wheelsSha256':sha(wheel_bytes)})
         summary.append({'id':ident,'groups':len(surfaces),'faces':faces,'vertices':vertices,'bytes':len(payload)})
-    write(out/'terrain-index.json',encoded(index))
+    existing_path = out/'terrain-index.json'
+    merged = {entry['geometry']: entry for entry in json.loads(existing_path.read_text())} if existing_path.exists() else {}
+    for entry in index:
+        merged[entry['geometry']] = entry
+    ordered_geoms = [entry['geometry'] for entry in index]
+    ordered = [merged[g] for g in ordered_geoms] + [v for k, v in merged.items() if k not in set(ordered_geoms)]
+    write(existing_path,encoded(ordered))
     if args.client_out:
         client=args.client_out.resolve()
         if not client.is_relative_to(ROOT) or client==ROOT:raise ValueError('Client output must be inside this repository')

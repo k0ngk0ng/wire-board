@@ -248,6 +248,12 @@ export type GameModule<Data = unknown, Options = unknown> = {
   Options?: ComponentType<OptionsProps<Options>>;
   // Waiting-room extension inside the shared shell; never part of creation.
   Preparation?: ComponentType<PreparationProps<Options>>;
+  WaitingSeatBadge?: ComponentType<{
+    room: GameRoom;
+    options: Options;
+    seat: number;
+    assets: string;
+  }>;
   // Creation keeps Options; this waiting-room preparation owns its controls.
   preparationOwnsOptions?: boolean;
   playerLayout?: {

@@ -12,6 +12,13 @@ export type ClassicVehicleDefinition = {
   groundOffset: number;
 };
 export const classicVehicles = vehicles as ClassicVehicleDefinition[];
+const classicSeatDefaults = ["p911", "fm50", "ldia", "mcf1", "ccor"] as const;
+export const classicDefaultVehicleForSeat = (seat: number) =>
+  classicSeatDefaults[
+    ((Math.trunc(Number.isFinite(seat) ? seat : 0) % classicSeatDefaults.length) +
+      classicSeatDefaults.length) %
+      classicSeatDefaults.length
+  ];
 export const classicVehicleByID = (id: string) =>
   classicVehicles.find((vehicle) => vehicle.id === id) ?? classicVehicles[0];
 export const classicTrackNames = {

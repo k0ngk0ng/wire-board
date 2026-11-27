@@ -13,7 +13,7 @@ import math
 from pathlib import Path
 
 
-TRACKS = ("france", "coastal", "uk", "park")
+TRACKS = ("france", "coastal", "uk", "park", "germany")
 
 
 def number(value: float, scale: float = 1) -> float:

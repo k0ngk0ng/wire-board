@@ -170,9 +170,8 @@ func classicCollisionProps(s *State, seat int, at int64) *classicPropCollision {
 		s.emit("prop", seat, at, clamp(closing/20, 0, 1))
 		event := &s.Events[len(s.Events)-1]
 		event.Prop = &index
+		event.Kind = "prop"
 		event.Dir = math.Round(math.Atan2(vz, vx)*1000) / 1000
-		// Project-defined reconstruction threshold, not original runtime proof.
 		event.High = closing >= 8
-		event.X, event.Y = 0, 0
 	}}
 }

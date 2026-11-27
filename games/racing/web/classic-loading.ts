@@ -14,6 +14,7 @@ import {
   type NativeClassicRoute,
 } from "./classic-road";
 import { classicHornAssets } from "./classic-horn";
+import { classicCollisionAssets } from "./classic-collision-audio";
 import { classicTerrainForRoute } from "./classic-terrain-loading";
 import type { Track, View } from "./types";
 
@@ -101,6 +102,7 @@ export async function loadClassicScene(
     vehicles,
   );
   specs.push(...classicHornAssets(manifest));
+  specs.push(...classicCollisionAssets(manifest));
   if (audioVehicle) specs.push(...classicEngineAssets(manifest, audioVehicle));
   let total = completed;
   const files = await fetchClassicFiles(specs, {

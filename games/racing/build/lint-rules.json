@@ -52,6 +52,15 @@
     "games/racing/tests/content_catalog_e2e_test.go",
     "games/racing/build/check_content.py",
     "games/racing/web/catalog.tsx",
-    "scripts/racing/check-nfs.py"
+    "scripts/racing/check-nfs.py",
+    "scripts/racing/nfs-sfx.py",
+    "games/racing/server/time_gap.go",
+    "games/racing/server/time_gap_test.go",
+    "games/racing/web/classic-time-gap.ts",
+    "games/racing/web/classic-collision-audio.ts",
+    "games/racing/web/use-classic-collision-audio.ts",
+    "games/racing/web/classic-minimap.ts",
+    "games/racing/tests/tree_clearance_e2e_test.go",
+    "games/racing/tests/nfs4-refinements.test.mjs"
   ]
 }

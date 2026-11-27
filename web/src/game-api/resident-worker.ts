@@ -415,7 +415,7 @@ function isResource(request: Request) {
   if (!["http:", "https:"].includes(url.protocol)) return false;
   if (url.origin === scope.location.origin && (url.pathname.startsWith("/api/") || ["/game-load-manifest.json", "/cdn-assets-manifest.json", "/asset-cache-worker.js", "/resident-worker.js"].includes(url.pathname))) return false;
   if (request.destination === "script" && /^\/(?:src|@fs|@vite|games)\//.test(url.pathname)) return false;
-  return ["image", "audio", "video", "font", "style", "script", "worker"].includes(request.destination) || /^\/(?:bga|_media)\//.test(url.pathname) || /\.(?:wasm|json|gz|zip|flac|mp3|wav|ogg|png|jpg|jpeg|svg|gif|webp|woff2?|ttf|otf|glb|pvzr|bin|idx|rgb|ico)$/.test(url.pathname);
+  return ["image", "audio", "video", "font", "style", "script", "worker"].includes(request.destination) || /^\/(?:bga|_media|assets)\//.test(url.pathname) || /\.(?:wasm|json|gz|zip|flac|mp3|wav|ogg|png|jpg|jpeg|svg|gif|webp|woff2?|ttf|otf|glb|pvzr|bin|idx|rgb|ico)$/.test(url.pathname);
 }
 
 scope.addEventListener("install", event => event.waitUntil(scope.skipWaiting()));

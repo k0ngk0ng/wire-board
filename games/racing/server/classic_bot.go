@@ -122,6 +122,12 @@ func classicBotAction(ctx gameapi.Context, s State) (json.RawMessage, error) {
 	reverse := missed
 	if recovering && !missed {
 		reverse = c.Driver.ReverseAt == 0 || s.ServerAt-c.Driver.ReverseAt < 6000
+		if reverse && c.Driver.ReverseAt > 0 && s.ServerAt-c.Driver.ReverseAt >= 2000 && c.Speed > 50 {
+			tv := tangent(t, road.Index)
+			if math.Abs(angle(c.Angle-math.Atan2(tv.Y, tv.X))) < .35 {
+				reverse = false
+			}
+		}
 	}
 	if c.Driver != nil && s.ServerAt < c.Driver.ForwardUntil {
 		reverse = false

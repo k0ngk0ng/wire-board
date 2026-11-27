@@ -205,6 +205,7 @@ export function ModuleWaiting({
   const module = gameModule(room.kind)!;
   const assets = useContext(AssetsContext);
   const Preparation = module.Preparation;
+  const WaitingSeatBadge = module.WaitingSeatBadge;
   const Options = module.preparationOwnsOptions && Preparation ? undefined : module.Options;
   return (
     <div className="waiting-layout">
@@ -285,6 +286,16 @@ export function ModuleWaiting({
                       : "等待准备"
                     : "邀请一位朋友"}
                 </span>
+                {seat && WaitingSeatBadge && (
+                  <div className="waiting-seat-badge">
+                    <WaitingSeatBadge
+                      room={room}
+                      options={room.options ?? module.defaultOptions ?? {}}
+                      seat={i}
+                      assets={assets}
+                    />
+                  </div>
+                )}
                 {host && seat?.bot && (
                   <button
                     className="bot-remove"

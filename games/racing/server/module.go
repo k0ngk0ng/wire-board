@@ -339,6 +339,7 @@ func project(m gameapi.Match, seat int) (any, error) {
 		v.Cars[i].Applied = Input{}
 		v.Cars[i].Driver = nil
 		v.Cars[i].LapTrack = nil
+		v.Cars[i].GateTimes = nil
 		if s.Physics == 3 {
 			compactClassicCar(&v.Cars[i])
 		}

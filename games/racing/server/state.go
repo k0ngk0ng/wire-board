@@ -91,6 +91,9 @@ type Car struct {
 	Checkpoint    int                 `json:"checkpoint"`
 	Progress      float64             `json:"progress"`
 	Rank          int                 `json:"rank"`
+	GapMS         int64               `json:"gapMs,omitempty"`
+	GapLaps       int                 `json:"gapLaps,omitempty"`
+	GateTimes     []int64             `json:"gateTimes,omitempty"`
 	FinishAt      int64               `json:"finishAt"`
 	Offroad       bool                `json:"offroad"`
 	LastInputAt   int64               `json:"lastInputAt"`
@@ -103,6 +106,7 @@ type Car struct {
 }
 type Event struct {
 	Prop      *int    `json:"prop,omitempty"`
+	Kind      string  `json:"kind,omitempty"`
 	Dir       float64 `json:"dir,omitempty"`
 	High      bool    `json:"high,omitempty"`
 	ID        int     `json:"id"`
@@ -255,6 +259,7 @@ func rank(s *State) {
 }
 func (s *State) finish() {
 	rank(s)
+	updateTimeGaps(s)
 	s.Phase = "finished"
 	for i := range s.Cars {
 		s.Cars[i].Horn = false
@@ -285,6 +290,7 @@ func (s *State) finish() {
 	resultCars := append([]Car(nil), s.Cars...)
 	for i := range resultCars {
 		resultCars[i].LapTrack = nil
+		resultCars[i].GateTimes = nil
 	}
 	r.Details, _ = json.Marshal(map[string]any{"track": s.Options.Track, "laps": s.Options.Laps, "cars": resultCars, "reason": func() string {
 		if s.ServerAt >= s.MaxRaceAt {

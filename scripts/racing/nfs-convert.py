@@ -24,11 +24,12 @@ import sys
 from speedtools.car_data import CarData
 from speedtools.carp_data import CarpData
 from speedtools.track_data import TrackData
+from speedtools.types import Vector3d
 from speedtools.utils import create_pil_image, get_path_case_insensitive, make_horizon_texture
-from nfs_props import make_catalog
+from nfs_props import make_catalog, object_records
 
 
-TRACK_NAMES = {'france': '法国乡间', 'coastal': '滨海公路', 'uk': '凯尔特遗迹', 'park': '奇迪亚克森林'}
+TRACK_NAMES = {'france': '法国乡间', 'coastal': '滨海公路', 'uk': '凯尔特遗迹', 'park': '奇迪亚克森林', 'germany': '德国乡间公路'}
 SOURCE_TRANSFORM = [-1, 1, 1]
 
 
@@ -275,18 +276,27 @@ class GLB:
         frames = min(len(animation.locations), len(animation.quaternions))
         if frames < 2:
             return
-        times = [index*max(1, animation.delay)/64 for index in range(frames)]
-        locations = [shifted(p, origin) for p in animation.locations[:frames]]
-        rotations = []
+        raw_times = [index*max(1, animation.delay)/64 for index in range(frames)]
+        raw_locations = [shifted(p, origin) for p in animation.locations[:frames]]
+        raw_rotations = []
         for q in animation.quaternions[:frames]:
-            # Frames store inverse native orientations. Invert, then conjugate
-            # by the X reflection so glTF rotation stays in the same RH basis.
-            values = (-q.x, q.y, q.z, q.w)
+            values = (q.x, -q.y, -q.z, q.w)
             magnitude = math.sqrt(sum(value*value for value in values))
             rotation = tuple(value/magnitude for value in values) if magnitude > 1e-12 else (0,0,0,1)
-            if rotations and sum(a*b for a,b in zip(rotation, rotations[-1])) < 0:
+            if raw_rotations and sum(a*b for a,b in zip(rotation, raw_rotations[-1])) < 0:
                 rotation = tuple(-value for value in rotation)
-            rotations.append(rotation)
+            raw_rotations.append(rotation)
+        times, locations, rotations = [], [], []
+        for index in range(frames):
+            times.append(raw_times[index])
+            locations.append(raw_locations[index])
+            rotations.append(raw_rotations[index])
+            if index + 1 < frames:
+                jump = math.dist(raw_locations[index], raw_locations[index+1])
+                if jump > 20.0:
+                    times.append(raw_times[index] + (raw_times[index+1] - raw_times[index]) * 0.999)
+                    locations.append(raw_locations[index])
+                    rotations.append(raw_rotations[index])
         time_accessor = self.accessor(times, 1)
         self.doc['accessors'][time_accessor]['min'] = [times[0]]
         self.doc['accessors'][time_accessor]['max'] = [times[-1]]
@@ -312,7 +322,7 @@ class GLB:
         locations = [vec(p) for p in animation.locations]
         rotations = []
         for q in animation.quaternions:
-            value = (-q.x, q.y, q.z, q.w)
+            value = (q.x, -q.y, -q.z, q.w)
             length = math.sqrt(sum(v*v for v in value))
             if length < 1e-12:
                 raise ValueError('invalid original destruction quaternion')
@@ -506,16 +516,32 @@ def route_export(ident, data, segments, objects, origin, world_bounds):
             barriers.append({'kind': 'wall', 'a': rounded(vertices[0]), 'b': rounded(vertices[1]),
                              'height': round(max(p[1] for p in vertices)-min(p[1] for p in vertices), 6),
                              'segment': segment_index})
-    for index, obj in enumerate(objects):
-        collision_type = int(obj.collision_type)
+    for record in object_records(data):
+        header, attribute, obj = record['header'], record['attribute'], record['value']
+        if int(header.type) != 4 or attribute is None:
+            continue
+        collision_type = int(attribute.collision_type) & 3
         if collision_type == 0:
             continue
-        vertices = [tuple(a-b for a, b in zip(object_point(obj, v.location), origin)) for v in obj.mesh.vertices]
-        if collision_type not in (1, 2):
-            unresolved[f'objectCollisionType{collision_type}'] += 1
-        barriers.append({'kind': 'object', 'object': index, 'collisionType': collision_type,
-                         'bounds': bounds(vertices), 'vertices': [rounded(p) for p in vertices],
-                         'faces': [list(p.face) for p in obj.mesh.polygons]})
+        mesh_vertices = [tuple(a-b for a, b in zip(object_point(obj, v.location), origin)) for v in obj.mesh.vertices]
+        if not mesh_vertices:
+            continue
+        if collision_type == 1:
+            raw_radius = struct.unpack('<h', attribute.unknown1)[0]
+            radius = max(0.05, (raw_radius >> 1) / 256.0)
+            cx, _, cz = shifted(Vector3d.from_frd_int3(attribute.location), origin)
+            min_y = min(p[1] for p in mesh_vertices)
+            max_y = max(p[1] for p in mesh_vertices)
+            ring = [(cx + math.cos(2*math.pi*k/8)*radius, min_y, cz + math.sin(2*math.pi*k/8)*radius) for k in range(8)]
+            vertices = ring + [(cx, max_y, cz)]
+            barriers.append({'kind': 'object', 'object': record['object'], 'segment': record['segment'],
+                             'collisionType': 1, 'attributeRadius': round(radius, 6),
+                             'bounds': bounds(vertices), 'vertices': [rounded(p) for p in vertices], 'faces': []})
+        else:
+            barriers.append({'kind': 'object', 'object': record['object'], 'segment': record['segment'],
+                             'collisionType': collision_type,
+                             'bounds': bounds(mesh_vertices), 'vertices': [rounded(p) for p in mesh_vertices],
+                             'faces': [list(p.face) for p in obj.mesh.polygons]})
     length = sum(math.dist((a['x'], a['y'], a['z']), (b['x'], b['y'], b['z']))
                  for a, b in zip(points, points[1:]+points[:1]))
     first = points[0]
@@ -531,7 +557,7 @@ def route_export(ident, data, segments, objects, origin, world_bounds):
                    'sourceTransform': SOURCE_TRANSFORM, 'surfaces': surfaces}
 
 
-def track_export(root, track, output):
+def track_export(root, track, output, allow_route_update=False):
     ident = track.lower()
     variants = [(False,)+load_track(root, track), (True,)+load_track(root, track, night=True)]
     all_positions = [point for _, _, segments, objects in variants for point in track_positions(segments, objects)]
@@ -548,7 +574,7 @@ def track_export(root, track, output):
                             for name in ('Tr.frd', 'heights.sim')
                             for data in [get_path_case_insensitive(directory, directory/name).read_bytes()]]
     frozen_route = Path(__file__).resolve().parents[2]/'games/racing/assets/public/racing/v3/tracks'/f'{ident}.route.json'
-    if frozen_route.exists() and frozen_route.read_bytes() != encoded(route)+b'\n':
+    if not allow_route_update and frozen_route.exists() and frozen_route.read_bytes() != encoded(route)+b'\n':
         raise ValueError(f'{ident}: prop semantics cannot change the immutable original route')
     catalog,numeric,audit = make_catalog(ident,directory,variants[0][1],variants[1][1],route)
     for folder,value in [('props',catalog),('rules',numeric),('audit',audit)]:
@@ -633,8 +659,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--game-root', type=Path, required=True)
     parser.add_argument('--out', type=Path, required=True)
-    parser.add_argument('--cars', nargs='+', default=['P911', 'FM50'])
+    parser.add_argument('--cars', nargs='*', default=['P911', 'FM50'])
     parser.add_argument('--tracks', nargs='+', default=['France'])
+    parser.add_argument('--allow-route-update', action='store_true')
     args = parser.parse_args()
     root = args.game_root.resolve()
     output = args.out.resolve()
@@ -658,7 +685,7 @@ def main():
         (staging/'cars.json').write_bytes(encoded({'version': 1, 'cars': cars})+b'\n')
         track_stats = {}
         for track in args.tracks:
-            track_stats.update(track_export(root, track, staging))
+            track_stats.update(track_export(root, track, staging, allow_route_update=args.allow_route_update))
         assets = []
         for path in sorted(p for p in staging.rglob('*') if p.is_file() and p.relative_to(staging).parts[0] not in ('rules','audit')):
             data = path.read_bytes()

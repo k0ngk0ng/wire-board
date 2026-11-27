@@ -142,6 +142,9 @@ func staticFiles(files fs.FS) http.Handler {
 		w.Header().Set("Cache-Control", "public, max-age=31536000, immutable")
 		w.Header().Set("ETag", c.etag)
 		w.Header().Set("Content-Type", mime.TypeByExtension(path.Ext(r.URL.Path)))
+		if strings.HasPrefix(r.URL.Path, "/assets/resident-worker-") && strings.HasSuffix(r.URL.Path, ".js") {
+			w.Header().Set("Service-Worker-Allowed", "/")
+		}
 		if zipped {
 			w.Header().Set("Content-Encoding", "gzip")
 		}

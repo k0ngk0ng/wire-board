@@ -61,6 +61,8 @@ export type Car = Point & {
   checkpoint: number;
   progress: number;
   rank: number;
+  gapMs?: number;
+  gapLaps?: number;
   finishAt: number;
   offroad: boolean;
   lastInputAt: number;
@@ -70,6 +72,7 @@ export type Car = Point & {
 export type RaceEvent = Point & {
   id: number;
   type: "start" | "lap" | "finish" | "collision" | "reset" | "prop";
+  kind?: "car" | "wall" | "prop";
   prop?: number;
   dir?: number;
   high?: boolean;

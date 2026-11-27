@@ -22,6 +22,12 @@ import { classicPropWorld, type ClassicRuleTrack } from "./classic-road";
 import { ClassicGauges, classicGaugeArc } from "./ClassicGauges";
 import { classicGaugeReading } from "./classic-gauges";
 import { classicVehicle } from "./classic-motion";
+import {
+  minimapBounds,
+  minimapMarkerColors,
+  minimapTransform,
+  orderedMinimapCars,
+} from "./classic-minimap";
 type Engine = {
   mode: string;
   resize: () => void;
@@ -132,6 +138,7 @@ export function TrackCanvas(props: TrackCanvasProps) {
       statsAt = last;
     let ready = false;
     const miniRoute = new Path2D();
+    const miniBounds = minimapBounds(props.data.track.points);
     props.data.track.points.forEach((point, index) =>
       index
         ? miniRoute.lineTo(point.x, point.y)
@@ -311,31 +318,83 @@ export function TrackCanvas(props: TrackCanvasProps) {
         const m = mini.current,
           ctx = m?.getContext("2d");
         if (m && ctx) {
-          const w = m.width,
-            h = m.height,
-            pad = 10,
-            s = Math.min(
-              (w - pad * 2) / d.track.width,
-              (h - pad * 2) / d.track.height,
-            );
-          ctx.clearRect(0, 0, w, h);
+          const rect = m.getBoundingClientRect();
+          const dpr = Math.min(2, window.devicePixelRatio || 1);
+          const cssW = rect.width > 10 ? rect.width : 208;
+          const cssH = rect.height > 10 ? rect.height : 148;
+          const backingW = Math.max(1, Math.round(cssW * dpr));
+          const backingH = Math.max(1, Math.round(cssH * dpr));
+          if (m.width !== backingW || m.height !== backingH) {
+            m.width = backingW;
+            m.height = backingH;
+          }
+          const compactMini = cssW < 130;
+          const pad = compactMini ? 9 : 13;
+          const tf = minimapTransform(miniBounds, cssW, cssH, pad);
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+          ctx.clearRect(0, 0, cssW, cssH);
           ctx.save();
-          ctx.translate(
-            (w - d.track.width * s) / 2,
-            (h - d.track.height * s) / 2,
-          );
-          ctx.scale(s, s);
-          ctx.strokeStyle = "#8799a9";
-          ctx.lineWidth = 3 / s;
+          ctx.translate(tf.offsetX, tf.offsetY);
+          ctx.scale(tf.scale, tf.scale);
+          ctx.lineJoin = "round";
+          ctx.lineCap = "round";
+          ctx.strokeStyle = "rgba(4, 12, 22, 0.88)";
+          ctx.lineWidth = (compactMini ? 5.6 : 6.8) / tf.scale;
           ctx.stroke(miniRoute);
-          for (const c of cars) {
-            ctx.fillStyle =
-              c.seat === follow
-                ? "#ffffff"
-                : seatColors[c.seat % seatColors.length];
+          ctx.strokeStyle = "#cde0ec";
+          ctx.lineWidth = (compactMini ? 2.8 : 3.5) / tf.scale;
+          ctx.stroke(miniRoute);
+          if (d.track.points.length >= 2) {
+            const p0 = d.track.points[0];
+            const p1 = d.track.points[1];
+            const len = Math.hypot(p1.x - p0.x, p1.y - p0.y) || 1;
+            const nx = -(p1.y - p0.y) / len;
+            const ny = (p1.x - p0.x) / len;
+            const tick = (compactMini ? 4.5 : 6) / tf.scale;
             ctx.beginPath();
-            ctx.arc(c.x, c.y, (c.seat === follow ? 4 : 3) / s, 0, Math.PI * 2);
-            ctx.fill();
+            ctx.moveTo(p0.x - nx * tick, p0.y - ny * tick);
+            ctx.lineTo(p0.x + nx * tick, p0.y + ny * tick);
+            ctx.strokeStyle = "#ffffff";
+            ctx.lineWidth = (compactMini ? 2 : 2.5) / tf.scale;
+            ctx.stroke();
+          }
+          for (const c of orderedMinimapCars(cars, follow)) {
+            const isSelf = c.seat === follow;
+            const radius = (isSelf ? (compactMini ? 5.6 : 6.8) : compactMini ? 4.4 : 5.4) / tf.scale;
+            if (isSelf) {
+              ctx.beginPath();
+              ctx.arc(c.x, c.y, radius + 2.2 / tf.scale, 0, Math.PI * 2);
+              ctx.fillStyle = "rgba(4, 12, 22, 0.92)";
+              ctx.fill();
+              ctx.beginPath();
+              ctx.arc(c.x, c.y, radius + 1.1 / tf.scale, 0, Math.PI * 2);
+              ctx.fillStyle = "#00e5ff";
+              ctx.fill();
+              ctx.beginPath();
+              ctx.arc(c.x, c.y, radius, 0, Math.PI * 2);
+              ctx.fillStyle = "#ffffff";
+              ctx.fill();
+              const tip = (compactMini ? 8.5 : 10.5) / tf.scale;
+              const wing = (compactMini ? 3.5 : 4.4) / tf.scale;
+              const cos = Math.cos(c.angle);
+              const sin = Math.sin(c.angle);
+              ctx.beginPath();
+              ctx.moveTo(c.x + cos * tip, c.y + sin * tip);
+              ctx.lineTo(c.x - sin * wing, c.y + cos * wing);
+              ctx.lineTo(c.x + sin * wing, c.y - cos * wing);
+              ctx.closePath();
+              ctx.fillStyle = "#00e5ff";
+              ctx.fill();
+            } else {
+              ctx.beginPath();
+              ctx.arc(c.x, c.y, radius, 0, Math.PI * 2);
+              ctx.fillStyle =
+                minimapMarkerColors[c.seat % minimapMarkerColors.length];
+              ctx.fill();
+              ctx.lineWidth = (compactMini ? 1.6 : 2) / tf.scale;
+              ctx.strokeStyle = "#06111c";
+              ctx.stroke();
+            }
           }
           ctx.restore();
         }
@@ -411,7 +470,7 @@ export function TrackCanvas(props: TrackCanvasProps) {
         onClick={props.onOpenMap}
         aria-label="查看赛道地图"
       >
-        <canvas ref={mini} width={160} height={112} aria-hidden="true" />
+        <canvas ref={mini} width={416} height={296} aria-hidden="true" />
         <span>赛道图</span>
       </button>
       {props.data.physics === 3 ? <ClassicGauges hidden={props.hudVisible === false} /> : <div

@@ -113,7 +113,9 @@ func collideClassicCars(s *State, at int64, previous ...[]Car) {
 					classicImpactYaw(b, q, ix*ib, iy*ib)
 					if relative > 45 {
 						s.emit("collision", i, at, clamp(relative/350, 0, 1))
+						s.Events[len(s.Events)-1].Kind = "car"
 						s.emit("collision", j, at, clamp(relative/350, 0, 1))
+						s.Events[len(s.Events)-1].Kind = "car"
 					}
 				}
 				a.X += a.VX * remaining
