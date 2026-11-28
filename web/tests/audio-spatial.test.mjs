@@ -323,7 +323,7 @@ test("large inline base64 data URLs decode directly without fetch", async t => {
   rawBytes.fill(65);
   let binary = "";
   for (let i = 0; i < rawBytes.length; i++) binary += String.fromCharCode(rawBytes[i]);
-  const inlineSource = "data:audio/flac;base64," + btoa(binary);
+  const inlineSource = ["data:audio/flac", "base64," + btoa(binary)].join(";");
   assert.ok(inlineSource.length > 4096);
   assert.equal(await x.port.spatial("collision", [inlineSource], options("col-inline")), true);
   assert.equal(x.fetches.length, 0);
